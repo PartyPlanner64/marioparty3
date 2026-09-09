@@ -26,18 +26,14 @@
 
 #define BSS __attribute__((section(".bss")))
 
-typedef union {
-    s32 value;
-    struct {
-        s16 unk;
-        u16 motion;
-    } parts;
-} ModelAnimState;
+typedef s16 SpaceTriple[3];
+typedef s16 SpacePair[2];
+typedef BranchLink BranchPair[2];
 
 typedef struct {
     /* 0x00 */ Object *obj1;
     /* 0x04 */ Object *obj2;
-    /* 0x08 */ ModelAnimState state;
+    /* 0x08 */ s32 state;
     /* 0x0C */ s32 flag;
 } ModelAnimWork;
 
@@ -77,14 +73,6 @@ typedef struct WarpBlockSwapWork {
     /* 0x08 */ s16 duration;
     /* 0x0A */ s16 spriteGroup;
 } WarpBlockSwapWork;
-
-typedef union W06SpriteHandle {
-    s32 value;
-    struct {
-        s16 reserved;
-        s16 id;
-    } parts;
-} W06SpriteHandle;
 
 /* Star-space order and board model resources. */
 s16 D_8011B580_3B0900_w06[] = { 2, 3, 4, 5, 6, 7, 0, 1 };
@@ -2103,9 +2091,9 @@ s32 BSS D_8011E33C_3B36BC_w06;
 s32 BSS D_8011E340_3B36C0_w06;
 u8 *BSS D_8011E344_3B36C4_w06;
 Object *BSS D_8011E348_3B36C8_w06;
-W06SpriteHandle BSS D_8011E34C_3B36CC_w06;
+s32 BSS D_8011E34C_3B36CC_w06;
 s32 BSS D_8011E350_3B36D0_w06;
-W06SpriteHandle BSS D_8011E354_3B36D4_w06;
+s32 BSS D_8011E354_3B36D4_w06;
 Object *BSS D_8011E358_3B36D8_w06;
 Object *BSS D_8011E35C_3B36DC_w06;
 s32 BSS D_8011E360_3B36E0_w06;
@@ -3019,7 +3007,7 @@ void func_80108290_39D610_w06(s16 arg0) {
     if (D_8011E310_3B3690_w06 == NULL) {
         s32 board = GwSystem.current_board_index;
 
-        obj = MBModelCreate((u8)D_8011B72C_3B0AAC_w06[board], D_8011B768_3B0AE8_w06[board]);
+        obj = MBModelCreate(D_8011B72C_3B0AAC_w06[board], D_8011B768_3B0AE8_w06[board]);
         MBModelTempAllocFree(obj);
         D_8011E310_3B3690_w06 = obj;
     } else {
@@ -3191,8 +3179,8 @@ void func_80108A2C_39DDAC_w06(void) {
     for (i = 0; i < 2; i++) {
         Object **objArr = D_8011E32C_3B36AC_w06;
         s16 *coordsArr = D_8011B830_3B0BB0_w06;
-        s16(*masuAArr)[2] = D_8011B834_3B0BB4_w06;
-        s16(*masuBArr)[2] = (s16(*)[2]) & D_8011B834_3B0BB4_w06[0][1];
+        SpacePair *masuAArr = D_8011B834_3B0BB4_w06;
+        SpacePair *masuBArr = (SpacePair *)&D_8011B834_3B0BB4_w06[0][1];
 
         if (i == 0) {
             obj = MBModelFileCreate(0x130187, -1, 1.0f, 0, 0);
@@ -3510,7 +3498,7 @@ void func_801091EC_39E56C_w06(void) {
 void func_8010980C_39EB8C_w06(void) {
     GW_PLAYER *player = MBPlayerGet(-1);
 
-    func_80117814_3ACB94_w06(D_8011C090_3B1410_w06, D_8011C0A4_3B1424_w06, D_8011B870_3B0BF0_w06);
+    func_80117814_3ACB94_w06((SpaceTriple *)D_8011C090_3B1410_w06, (BranchPair *)D_8011C0A4_3B1424_w06, D_8011B870_3B0BF0_w06);
     if (player->nlink == 0x15) {
         func_801091EC_39E56C_w06();
     }
@@ -3525,17 +3513,17 @@ void func_80109870_39EBF0_w06(void) {
         MBMoveNextMasuSet(-1, 3, 4);
         player->rev &= ~1;
     } else {
-        func_80117814_3ACB94_w06(D_8011C0D8_3B1458_w06, D_8011C0EC_3B146C_w06, D_8011B924_3B0CA4_w06);
+        func_80117814_3ACB94_w06((SpaceTriple *)D_8011C0D8_3B1458_w06, (BranchPair *)D_8011C0EC_3B146C_w06, D_8011B924_3B0CA4_w06);
     }
 }
 
 void func_80109918_39EC98_w06(void) {
-    func_80117814_3ACB94_w06(D_8011C120_3B14A0_w06, D_8011C134_3B14B4_w06, D_8011B99C_3B0D1C_w06);
+    func_80117814_3ACB94_w06((SpaceTriple *)D_8011C120_3B14A0_w06, (BranchPair *)D_8011C134_3B14B4_w06, D_8011B99C_3B0D1C_w06);
     omDelPrcObj(NULL);
 }
 
 void func_80109950_39ECD0_w06(void) {
-    func_80117814_3ACB94_w06(D_8011C168_3B14E8_w06, D_8011C17C_3B14FC_w06, D_8011BA2C_3B0DAC_w06);
+    func_80117814_3ACB94_w06((SpaceTriple *)D_8011C168_3B14E8_w06, (BranchPair *)D_8011C17C_3B14FC_w06, D_8011BA2C_3B0DAC_w06);
     omDelPrcObj(NULL);
 }
 
@@ -3543,7 +3531,7 @@ void func_80109988_39ED08_w06(void) {
     GW_PLAYER *player = MBPlayerGet(-1);
 
     if (GwSystem.boardData.halfWordBytes[0] == 0) {
-        func_80117814_3ACB94_w06(D_8011C1B0_3B1530_w06, D_8011C1C4_3B1544_w06, D_8011BA8C_3B0E0C_w06);
+        func_80117814_3ACB94_w06((SpaceTriple *)D_8011C1B0_3B1530_w06, (BranchPair *)D_8011C1C4_3B1544_w06, D_8011BA8C_3B0E0C_w06);
     } else {
         s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
 
@@ -3561,7 +3549,7 @@ void func_80109A50_39EDD0_w06(void) {
     GW_PLAYER *player = MBPlayerGet(-1);
 
     if (GwSystem.boardData.halfWordBytes[0] == 1) {
-        func_80117814_3ACB94_w06(D_8011C1F8_3B1578_w06, D_8011C20C_3B158C_w06, D_8011BB04_3B0E84_w06);
+        func_80117814_3ACB94_w06((SpaceTriple *)D_8011C1F8_3B1578_w06, (BranchPair *)D_8011C20C_3B158C_w06, D_8011BB04_3B0E84_w06);
     } else {
         s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
 
@@ -3576,7 +3564,7 @@ void func_80109A50_39EDD0_w06(void) {
 }
 
 void func_80109B1C_39EE9C_w06(void) {
-    func_80117814_3ACB94_w06(D_8011C240_3B15C0_w06, D_8011C254_3B15D4_w06, D_8011BB4C_3B0ECC_w06);
+    func_80117814_3ACB94_w06((SpaceTriple *)D_8011C240_3B15C0_w06, (BranchPair *)D_8011C254_3B15D4_w06, D_8011BB4C_3B0ECC_w06);
     omDelPrcObj(NULL);
 }
 
@@ -3588,7 +3576,7 @@ void func_80109B54_39EED4_w06(void) {
         MBMoveNextMasuSet(-1, 7, 0);
         player->rev &= ~1;
     } else {
-        func_80117814_3ACB94_w06(D_8011C288_3B1608_w06, D_8011C29C_3B161C_w06, D_8011BBA0_3B0F20_w06);
+        func_80117814_3ACB94_w06((SpaceTriple *)D_8011C288_3B1608_w06, (BranchPair *)D_8011C29C_3B161C_w06, D_8011BBA0_3B0F20_w06);
     }
     omDelPrcObj(NULL);
 }
@@ -3602,7 +3590,7 @@ void func_80109C04_39EF84_w06(void) {
         player->rev |= 1;
     } else {
         MBDlgResultWinExec(0xE01);
-        func_80117814_3ACB94_w06(D_8011C2D0_3B1650_w06, D_8011C2E4_3B1664_w06, D_8011BBB8_3B0F38_w06);
+        func_80117814_3ACB94_w06((SpaceTriple *)D_8011C2D0_3B1650_w06, (BranchPair *)D_8011C2E4_3B1664_w06, D_8011BBB8_3B0F38_w06);
     }
 }
 
@@ -3615,7 +3603,7 @@ void func_80109CA4_39F024_w06(void) {
         player->rev &= ~1;
     } else {
         MBDlgResultWinExec(0xE01);
-        func_80117814_3ACB94_w06(D_8011C318_3B1698_w06, D_8011C32C_3B16AC_w06, D_8011BBD0_3B0F50_w06);
+        func_80117814_3ACB94_w06((SpaceTriple *)D_8011C318_3B1698_w06, (BranchPair *)D_8011C32C_3B16AC_w06, D_8011BBD0_3B0F50_w06);
     }
 }
 
@@ -3626,7 +3614,7 @@ void func_80109D44_39F0C4_w06(void) {
     player = MBPlayerGet(-1);
 
     if (GwSystem.boardData.halfWordBytes[0] == 0 && (player->rev & 0x80)) {
-        func_80117814_3ACB94_w06(D_8011C360_3B16E0_w06, D_8011C374_3B16F4_w06, D_8011BC78_3B0FF8_w06);
+        func_80117814_3ACB94_w06((SpaceTriple *)D_8011C360_3B16E0_w06, (BranchPair *)D_8011C374_3B16F4_w06, D_8011BC78_3B0FF8_w06);
     } else {
         masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
         if (masu == 0x2D) {
@@ -3648,7 +3636,7 @@ void func_80109E28_39F1A8_w06(void) {
     player = MBPlayerGet(-1);
 
     if (GwSystem.boardData.halfWordBytes[0] == 1 && (player->rev & 0x80)) {
-        func_80117814_3ACB94_w06(D_8011C3A8_3B1728_w06, D_8011C3BC_3B173C_w06, D_8011BD38_3B10B8_w06);
+        func_80117814_3ACB94_w06((SpaceTriple *)D_8011C3A8_3B1728_w06, (BranchPair *)D_8011C3BC_3B173C_w06, D_8011BD38_3B10B8_w06);
     } else {
         masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
         if (masu == 0x32) {
@@ -3667,7 +3655,7 @@ void func_80109F10_39F290_w06(void) {
     GW_PLAYER *player = MBPlayerGet(-1);
 
     if ((player->rev & 0x80) && mbWalkNum != 0) {
-        func_80117814_3ACB94_w06(D_8011C3F0_3B1770_w06, D_8011C404_3B1784_w06, D_8011BD98_3B1118_w06);
+        func_80117814_3ACB94_w06((SpaceTriple *)D_8011C3F0_3B1770_w06, (BranchPair *)D_8011C404_3B1784_w06, D_8011BD98_3B1118_w06);
     }
 }
 
@@ -3675,7 +3663,7 @@ void func_80109F68_39F2E8_w06(void) {
     GW_PLAYER *player = MBPlayerGet(-1);
 
     if ((player->rev & 0x80) && mbWalkNum != 0) {
-        func_80117814_3ACB94_w06(D_8011C438_3B17B8_w06, D_8011C44C_3B17CC_w06, D_8011BE04_3B1184_w06);
+        func_80117814_3ACB94_w06((SpaceTriple *)D_8011C438_3B17B8_w06, (BranchPair *)D_8011C44C_3B17CC_w06, D_8011BE04_3B1184_w06);
     }
 }
 
@@ -3683,7 +3671,7 @@ void func_80109FC0_39F340_w06(void) {
     GW_PLAYER *player = MBPlayerGet(-1);
 
     if ((player->rev & 0x80) && mbWalkNum != 0) {
-        func_80117814_3ACB94_w06(D_8011C480_3B1800_w06, D_8011C494_3B1814_w06, D_8011BE64_3B11E4_w06);
+        func_80117814_3ACB94_w06((SpaceTriple *)D_8011C480_3B1800_w06, (BranchPair *)D_8011C494_3B1814_w06, D_8011BE64_3B11E4_w06);
     }
 }
 
@@ -3691,7 +3679,7 @@ void func_8010A018_39F398_w06(void) {
     GW_PLAYER *player = MBPlayerGet(-1);
 
     if ((player->rev & 0x80) && mbWalkNum != 0) {
-        func_80117814_3ACB94_w06(D_8011C4C8_3B1848_w06, D_8011C4DC_3B185C_w06, D_8011BEC4_3B1244_w06);
+        func_80117814_3ACB94_w06((SpaceTriple *)D_8011C4C8_3B1848_w06, (BranchPair *)D_8011C4DC_3B185C_w06, D_8011BEC4_3B1244_w06);
     }
 }
 
@@ -3699,7 +3687,7 @@ void func_8010A070_39F3F0_w06(void) {
     GW_PLAYER *player = MBPlayerGet(-1);
 
     if ((player->rev & 0x80) && mbWalkNum != 0) {
-        func_80117814_3ACB94_w06(D_8011C510_3B1890_w06, D_8011C524_3B18A4_w06, D_8011BEE8_3B1268_w06);
+        func_80117814_3ACB94_w06((SpaceTriple *)D_8011C510_3B1890_w06, (BranchPair *)D_8011C524_3B18A4_w06, D_8011BEE8_3B1268_w06);
     }
 }
 
@@ -3707,7 +3695,7 @@ void func_8010A0C8_39F448_w06(void) {
     GW_PLAYER *player = MBPlayerGet(-1);
 
     if ((player->rev & 0x80) && mbWalkNum != 0) {
-        func_80117814_3ACB94_w06(D_8011C548_3B18C8_w06, D_8011C55C_3B18DC_w06, D_8011BF9C_3B131C_w06);
+        func_80117814_3ACB94_w06((SpaceTriple *)D_8011C548_3B18C8_w06, (BranchPair *)D_8011C55C_3B18DC_w06, D_8011BF9C_3B131C_w06);
     }
 }
 
@@ -3715,7 +3703,7 @@ void func_8010A120_39F4A0_w06(void) {
     GW_PLAYER *player = MBPlayerGet(-1);
 
     if ((player->rev & 0x80) && mbWalkNum != 0) {
-        func_80117814_3ACB94_w06(D_8011C590_3B1910_w06, D_8011C5A4_3B1924_w06, D_8011C014_3B1394_w06);
+        func_80117814_3ACB94_w06((SpaceTriple *)D_8011C590_3B1910_w06, (BranchPair *)D_8011C5A4_3B1924_w06, D_8011C014_3B1394_w06);
     }
 }
 
@@ -5042,7 +5030,7 @@ end:
         func_8001C92C_1D52C(model->omObj1->model[0], 1.2f);
         func_8001C6A8_1D2A8(
             model->omObj1->model[0], D_800CCF58_CDB58[HmfModelData[model->omObj1->model[0]].unk02].unk02);
-        while ((u16)func_800D9E80_EDAA0_shared_board(model) == 0) {
+        while (func_800D9E80_EDAA0_shared_board(model) == 0) {
             HuPrcVSleep();
         }
         MBModelDispOff(effectModel);
@@ -5880,7 +5868,7 @@ finishMenu:
         func_8001C92C_1D52C(model->omObj1->model[0], 1.2f);
         func_8001C6A8_1D2A8(
             model->omObj1->model[0], D_800CCF58_CDB58[HmfModelData[model->omObj1->model[0]].unk02].unk02);
-        while ((u16)func_800D9E80_EDAA0_shared_board(model) == 0) {
+        while (func_800D9E80_EDAA0_shared_board(model) == 0) {
             HuPrcVSleep();
         }
         scale = 1.0f / HuMathSin(50.0f);
@@ -6515,7 +6503,7 @@ void func_80112198_3A7518_w06(void) {
     index = (s32)HuPrcCurrentGet()->user_data;
     dialog = MBPlayerVibrateObjCreate(-1, 1, 5);
     group = HuSprGrpCreate(1, 0);
-    func_80055024_55C24(group, 0, D_8011E34C_3B36CC_w06.parts.id, 0);
+    func_80055024_55C24(group, 0, D_8011E34C_3B36CC_w06, 0);
     HuSprPriSet(group, 0, 0x4780);
     HuSprAttrSet(group, 0, 0x1000);
     func_800F6848_10A468_shared_board(GwSystem.current_player_index, MBItemSelNoGet(), &x, &y);
@@ -6549,7 +6537,7 @@ void func_801123A8_3A7728_w06(void) {
 
     loc = &GwSystem;
     data = DataRead(0x001301B8);
-    D_8011E34C_3B36CC_w06.value = func_80055810_56410(data);
+    D_8011E34C_3B36CC_w06 = func_80055810_56410(data);
     DataClose(data);
     func_80111870_3A6BF0_w06();
 
@@ -6614,7 +6602,7 @@ void func_801123A8_3A7728_w06(void) {
     MBItemRemoveEmpty(loc->current_player_index);
     MBStatusItemTPLvlSet(loc->current_player_index,
                          MBItemSelNoGet(), 0);
-    HuSprKill(D_8011E34C_3B36CC_w06.parts.id);
+    HuSprKill(D_8011E34C_3B36CC_w06);
     MBStatusShrink(-1);
     MBStatusItemDispSetAll(0);
     MBStatusGrow(-1);
@@ -6640,7 +6628,7 @@ void func_80112668_3A79E8_w06(void) {
 
     loc = &GwSystem;
     data = DataRead(0x001301B8);
-    D_8011E34C_3B36CC_w06.value = func_80055810_56410(data);
+    D_8011E34C_3B36CC_w06 = func_80055810_56410(data);
     DataClose(data);
     func_80111870_3A6BF0_w06();
 
@@ -6712,7 +6700,7 @@ retry:
     MBItemRemoveEmpty(loc->current_player_index);
     MBStatusItemTPLvlSet(loc->current_player_index,
                          MBItemSelNoGet(), 0);
-    HuSprKill(D_8011E34C_3B36CC_w06.parts.id);
+    HuSprKill(D_8011E34C_3B36CC_w06);
 
     if (func_800DEB2C_F274C_shared_board(loc->current_player_index) == 3) {
         GWBoardFlagSet(0x17);
@@ -7070,7 +7058,7 @@ void func_8011394C_3A8CCC_w06(void) {
     playerIndex = (s32)HuPrcCurrentGet()->user_data;
     group = HuSprGrpCreate(1, 0);
     setupGroup = group;
-    func_80055024_55C24(setupGroup, 0, D_8011E354_3B36D4_w06.parts.id, 0);
+    func_80055024_55C24(setupGroup, 0, D_8011E354_3B36D4_w06, 0);
     HuSprPriSet(setupGroup, 0, 9);
     HuSprAttrSet(setupGroup, 0, 0x1000);
     MBStatusItemPosGet(D_8011E350_3B36D0_w06, 0, &xPos, &yPos);
@@ -7123,7 +7111,7 @@ void func_80113B68_3A8EE8_w06(void) {
     auraSpriteId = func_80055810_56410(data);
     DataClose(data);
     data = DataRead(0x1301B9);
-    D_8011E354_3B36D4_w06.value = func_80055810_56410(data);
+    D_8011E354_3B36D4_w06 = func_80055810_56410(data);
     DataClose(data);
 
     group = HuSprGrpCreate(2, 2);
@@ -7199,7 +7187,7 @@ void func_80113B68_3A8EE8_w06(void) {
 
     func_80055458_56058(group, 0, 0);
     HuSprGrpKill(group);
-    HuSprKill(D_8011E354_3B36D4_w06.parts.id);
+    HuSprKill(D_8011E354_3B36D4_w06);
     HuSprKill(auraSpriteId);
     HuSprKill(itemSpriteId);
     omDelPrcObj(NULL);
@@ -7756,7 +7744,7 @@ void func_80115920_3AACA0_w06(void) {
     Object *obj1 = data->obj1;
     Object *obj2 = data->obj2;
 
-    MBMotionSet(obj1, -1, data->state.parts.motion);
+    MBMotionSet(obj1, -1, data->state);
     HuVecCopy3F(&obj1->coords, &obj2->coords);
     obj1->coords.y += obj2->velocity.x - 10.0f;
     func_800D9A40_ED660_shared_board(obj1);
@@ -7875,7 +7863,7 @@ void func_801159E0_3AAD60_w06(void) {
     process->user_data = work;
     work->obj1 = model;
     work->obj2 = gameGuyModel;
-    work->state.value = 0;
+    work->state = 0;
     work->flag = 0;
     HuPrcSleep(3);
     *processFlag = 0;
@@ -8399,7 +8387,7 @@ void func_80116F10_3AC290_w06(void) {
     GwSystem.wackyWatchUsedState = 2;
 }
 
-void func_80117814_3ACB94_w06(s16 (*masu)[3], BranchLink (*links)[2], DecisionTreeNonLeafNode **trees) {
+void func_80117814_3ACB94_w06(SpaceTriple *masu, BranchPair *links, DecisionTreeNonLeafNode **trees) {
     GW_PLAYER *player;
     UnkEA790Struct *win;
     BranchLink *link;
@@ -9251,7 +9239,7 @@ void func_80119E00_3AF180_w06(s32 arg0) {
     if (GwSystem.boardData.halfWordBytes[0] == index) {
         HuAudFXPlay(0x1BE);
         func_8001C814_1D414(model->omObj1->model[0], 3, 4);
-        while ((u16)func_800D9E80_EDAA0_shared_board(model) == 0) {
+        while (func_800D9E80_EDAA0_shared_board(model) == 0) {
             HuPrcVSleep();
         }
     } else {
@@ -9278,7 +9266,7 @@ void func_80119E00_3AF180_w06(s32 arg0) {
     if (GwSystem.boardData.halfWordBytes[0] == index) {
         HuAudFXPlay(0x1BE);
         func_8001C814_1D414(model->omObj1->model[0], 3, 4);
-        while ((u16)func_800D9E80_EDAA0_shared_board(model) == 0) {
+        while (func_800D9E80_EDAA0_shared_board(model) == 0) {
             HuPrcVSleep();
         }
     } else {

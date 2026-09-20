@@ -28,5 +28,7 @@ void MBGuideFaceSet(Object* arg0, s32 arg1);
 s32 func_800EF0D8_shared_board(s32 arg0);
 s32 MBPauseMesNumGet(s32 arg0);
 void MBPauseCreate(s32 arg0);
+void func_800EE700_shared_board(void);
+void func_800EE740_shared_board(void);
 
 #endif //_ovl_80_101840

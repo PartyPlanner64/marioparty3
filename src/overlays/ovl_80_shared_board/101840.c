@@ -308,7 +308,6 @@ void func_800EE6C0_shared_board(Object* arg0) {
     }
 }
 
-//unused
 void func_800EE700_shared_board(void) {
     s32 i;
 
@@ -318,7 +317,6 @@ void func_800EE700_shared_board(void) {
     }
 }
 
-//unused
 void func_800EE740_shared_board(void) {
     UnkBoard* temp_s1;
     s32 i;

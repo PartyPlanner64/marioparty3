@@ -259,6 +259,8 @@ guLookAtHilite = 0x8007A514; //rom:0x7B114
 guMtxIdentF = 0x8007DCC0; //rom:0x7E8C0
 guMtxF2L = 0x8007DD20; //rom:0x7E920
 guMtxL2F = 0x8007DDA0; //rom:0x7E9A0
+guMtxCatF = 0x8007DE20; //rom:0x7EA20
+guTranslateF = 0x8007DFE0; //rom:0x7EBE0
 
 guOrthoF = 0x8007ABE0;
 guOrtho = 0x8007AD10;

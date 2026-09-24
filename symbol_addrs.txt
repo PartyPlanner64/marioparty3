@@ -1623,3 +1623,5 @@ D_800C9500_main = 0x800C9500; //size:0x4
 
 D_8010B018_mgresultboard = 0x8010B018; //size:0x30 segment:mgresultboard
 D_8010B048_mgresultboard = 0x8010B048; //size:0x30 segment:mgresultboard
+D_8010AAB8_tidal_toss = 0x8010AAB8; //rom:0x161428 type:u8 size:0x1
+D_8010AAB9_tidal_toss = 0x8010AAB9; //rom:0x161429 type:u8 size:0x1

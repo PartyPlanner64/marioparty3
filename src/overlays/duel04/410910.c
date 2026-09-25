@@ -1,5 +1,28 @@
 #include "common.h"
 
+typedef struct Duel04CamShakeWork {
+    /* 0x00 */ s32 magnitude;
+    /* 0x04 */ s32 decay;
+    /* 0x08 */ char unk_08[0x8];
+} Duel04CamShakeWork; // sizeof 0x10
+
+typedef struct Duel04SpriteWork {
+    /* 0x00 */ Vec pos;
+    /* 0x0C */ char unk_0C[0x4];
+} Duel04SpriteWork; // sizeof 0x10
+
+void func_800FC8C4_name_81(Vec *);
+void *memcpy(void *, const void *, unsigned int);
+extern Vec D_80105540_name_81;
+extern s16 D_8011AFC4_duel04[];
+void func_8010E1C4_duel04(void);
+extern void func_80105CC4_duel04(void);
+extern void func_8010E7D0_duel04(void);
+extern void func_8010630C_duel04(void);
+extern omObjData *D_8011B4FC_duel04;
+extern Object *D_8011B508_duel04;
+extern Object *D_8011B510_duel04;
+
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_801059D0_duel04);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80105A58_duel04);
@@ -14,7 +37,18 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80105C68_duel04);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80105CC4_duel04);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80105EB4_duel04);
+Process *func_80105EB4_duel04(Object *object) {
+    Process *process;
+    Duel04SpriteWork *work;
+
+    process = omAddPrcObj(func_80105CC4_duel04, 0xA, 0, 0x40);
+    work = HuMemMemoryAlloc(process->heap, sizeof(Duel04SpriteWork));
+    process->user_data = work;
+    work->pos.x = object->coords.x;
+    work->pos.y = object->coords.y;
+    work->pos.z = object->coords.z;
+    return process;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80105F24_duel04);
 
@@ -22,7 +56,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_801060D4_duel04);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80106160_duel04);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80106244_duel04);
+void func_80106244_duel04(void) {
+    func_800FC8C4_name_81(&D_80105540_name_81);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80106264_duel04);
 
@@ -30,7 +66,17 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_801062C4_duel04);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010630C_duel04);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80106460_duel04);
+Process *func_80106460_duel04(s32 magnitude, s32 decay) {
+    Process *process;
+    Duel04CamShakeWork *work;
+
+    process = omAddPrcObj(func_8010630C_duel04, 0xA, 0, 0x40);
+    work = HuMemMemoryAlloc(process->heap, sizeof(Duel04CamShakeWork));
+    process->user_data = work;
+    work->magnitude = magnitude;
+    work->decay = decay;
+    return process;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_801064CC_duel04);
 
@@ -64,7 +110,17 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010AFB8_duel04);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010B134_duel04);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010B484_duel04);
+s32 func_8010B484_duel04(void) {
+    UnkDuelObjData *data = D_8011B4FC_duel04->data;
+    s32 i;
+
+    for (i = 0; i < ARRAY_COUNT(data->unk_180); i++) {
+        if (data->unk_180[i] != 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010B4C4_duel04);
 
@@ -104,9 +160,14 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010E018_duel04);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010E1C4_duel04);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010E2DC_duel04);
+void func_8010E2DC_duel04(void) {
+    omAddPrcObj(func_8010E1C4_duel04, 0xA, 0, 0);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010E308_duel04);
+void func_8010E308_duel04(void) {
+    func_8001C814_main(D_8011B508_duel04->omObj1->model[0], 1, 4);
+    func_8001C92C_main(D_8011B508_duel04->omObj1->model[0], 1.0f);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010E358_duel04);
 
@@ -118,9 +179,14 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010E624_duel04);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010E7D0_duel04);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010E8E8_duel04);
+void func_8010E8E8_duel04(void) {
+    omAddPrcObj(func_8010E7D0_duel04, 0xA, 0, 0);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010E914_duel04);
+void func_8010E914_duel04(void) {
+    func_8001C814_main(D_8011B510_duel04->omObj1->model[0], 1, 4);
+    func_8001C92C_main(D_8011B510_duel04->omObj1->model[0], 1.0f);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010E964_duel04);
 
@@ -132,11 +198,18 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010EAF0_duel04);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010EC0C_duel04);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010ECFC_duel04);
+s32 func_8010ECFC_duel04(void) {
+    return (5 - GwPlayer[GwSystem.current_player_index].star) * 10;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010ED34_duel04);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010EDDC_duel04);
+s16 func_8010EDDC_duel04(s32 index) {
+    s16 shakeAngles[12];
+
+    memcpy(shakeAngles, D_8011AFC4_duel04, sizeof(shakeAngles));
+    return shakeAngles[index];
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010EE5C_duel04);
 

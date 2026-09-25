@@ -1,4 +1,13 @@
 #include "common.h"
+#include "../ovl_81_name/ovl_81.h"
+
+extern UnkBoard4 *D_801099A4_boardresult2;
+extern UnkBoard4 *D_801099A8_boardresult2;
+extern UnkBoard4 *D_801099B0_boardresult2[4];
+extern UnkBoard4 *D_801099C0_boardresult2;
+extern UnkBoard4 *D_801099C4_boardresult2;
+
+void func_801096AC_boardresult2(omObjData *);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_801059A0_boardresult2);
 
@@ -10,7 +19,19 @@ INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_80105C68_board
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_80105CB0_boardresult2);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_80106924_boardresult2);
+void func_80106924_boardresult2(void) {
+    s32 i;
+
+    func_800F4584_name_81(D_801099A4_boardresult2);
+    func_800F4584_name_81(D_801099A8_boardresult2);
+
+    for (i = 0; i < 4; i++) {
+        func_800F4584_name_81(D_801099B0_boardresult2[i]);
+    }
+
+    func_800F4584_name_81(D_801099C0_boardresult2);
+    func_800F4584_name_81(D_801099C4_boardresult2);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_801069A4_boardresult2);
 
@@ -54,7 +75,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_80108E1C_board
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_801096AC_boardresult2);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_801096F0_boardresult2);
+void func_801096F0_boardresult2(omObjData *arg0) {
+    if (D_800D530C_main != 0) {
+        arg0->func = func_801096AC_boardresult2;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_80109714_boardresult2);
 

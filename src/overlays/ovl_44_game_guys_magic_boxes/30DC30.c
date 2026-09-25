@@ -1,5 +1,16 @@
 #include "common.h"
 
+typedef struct GameGuysMagicBoxesBanner { // 0x18 bytes
+    /* 0x00 */ HuSprite *sprite;
+    /* 0x04 */ void *unk_04[3];
+    /* 0x10 */ s16 group;
+    /* 0x12 */ s16 timer;
+    /* 0x14 */ s16 unk_14;
+} GameGuysMagicBoxesBanner;
+
+extern GameGuysMagicBoxesBanner D_8010CAE0_game_guys_magic_boxes;
+extern GameGuysMagicBoxesBanner D_8010CAF8_game_guys_magic_boxes;
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/30DC30", func_8010A8C0_game_guys_magic_boxes);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/30DC30", func_8010AB8C_game_guys_magic_boxes);
@@ -8,7 +19,12 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/30DC30", fun
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/30DC30", func_8010B700_game_guys_magic_boxes);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/30DC30", func_8010B8B4_game_guys_magic_boxes);
+void func_8010B8B4_game_guys_magic_boxes(void) {
+    HuSprAttrSet(D_8010CAF8_game_guys_magic_boxes.group, 0, 0x8000);
+    HuSprAttrSet(D_8010CAE0_game_guys_magic_boxes.group, 0, 0x8000);
+    D_8010CAF8_game_guys_magic_boxes.sprite->unk_84->unk00->unk00 = D_8010CAF8_game_guys_magic_boxes.unk_04[0];
+    D_8010CAE0_game_guys_magic_boxes.sprite->unk_84->unk00->unk00 = D_8010CAE0_game_guys_magic_boxes.unk_04[0];
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/30DC30", func_8010B938_game_guys_magic_boxes);
 

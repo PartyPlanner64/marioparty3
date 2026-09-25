@@ -5,19 +5,37 @@ void func_8004F83C_main(s32);
 extern u8 gEncodedSaveBuffer[220];
 extern s32 D_800BBAA0_main;
 extern s32 D_800BBAA4_main;
+extern u8 D_800A1D70_main[];
+extern u8 D_800A1D9C_main[];
+extern u8 D_800A1DC8_main[];
+extern u8 D_800A1DF8_main[];
+extern u8 D_800A1E58_main[];
+
+s32 SaveFileEncode(u8 *sourceData, u8 *encodingScheme);
+
 // extern char D_800A7B40_main[];
 
 INCLUDE_ASM("asm/nonmatchings/saveEncode", func_8004F290_main);
 
-INCLUDE_ASM("asm/nonmatchings/saveEncode", func_8004F504_main);
+s32 func_8004F504_main(GW_SYSTEM *system) {
+    return SaveFileEncode((u8 *)system, D_800A1D9C_main);
+}
 
-INCLUDE_ASM("asm/nonmatchings/saveEncode", func_8004F524_main);
+s32 func_8004F524_main(GW_SYSTEM *system) {
+    return SaveFileEncode((u8 *)system, D_800A1DC8_main);
+}
 
-INCLUDE_ASM("asm/nonmatchings/saveEncode", SavePlayerStruct);
+s32 SavePlayerStruct(GW_PLAYER *player) {
+    return SaveFileEncode((u8 *)player, D_800A1DF8_main);
+}
 
-INCLUDE_ASM("asm/nonmatchings/saveEncode", func_8004F564_main);
+s32 func_8004F564_main(GW_COMMON *common) {
+    return SaveFileEncode((u8 *)common, D_800A1D70_main);
+}
 
-INCLUDE_ASM("asm/nonmatchings/saveEncode", func_8004F584_main);
+s32 func_8004F584_main(GW_STORY *story) {
+    return SaveFileEncode((u8 *)story, D_800A1E58_main);
+}
 
 s32 SaveFileEncode(u8 *sourceData, u8 *encodingScheme) {
     s32 phi_s0;

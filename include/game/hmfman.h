@@ -8,9 +8,9 @@
 #define HU3D_MODEL_MAX 128
 
 typedef struct {
-    Gfx* unk00[4];
-    void* unk10;
-    void* unk14;
+    Gfx *unk00[4];
+    void *unk10;
+    void *unk14;
 } HmfModelData_Unk64_Unk3C_Struct;
 
 typedef struct {
@@ -26,12 +26,14 @@ typedef struct {
     s16 unk2A;
     char unk2C[0x24];
     s32 unk50;
-    HmfModelData_Unk64_Unk60_Unk54_Struct* unk54;
+    HmfModelData_Unk64_Unk60_Unk54_Struct *unk54;
     char unk58[0x10];
 } HmfModelData_Unk64_Unk60_Struct;
 
 typedef struct {
-    char unk00[0x18];
+    char unk00[2];
+    s16 unk02;
+    char unk04[0x14];
 } HmfModelData_Unk64_Unk8C_Struct;
 
 typedef struct {
@@ -54,7 +56,7 @@ typedef struct {
     u8 unk5[4];
     u8 unk9;
     u8 unkA[2];
-    HmfData_Unk84_Entry2* unkC;  // Pointer to something with unk30 field
+    HmfData_Unk84_Entry2 *unkC; // Pointer to something with unk30 field
 } HmfData_Unk84_Entry;
 
 typedef struct {
@@ -67,7 +69,7 @@ typedef struct {
     /* 0x06 */ s8 unk06;
     /* 0x07 */ char unk07[1];
     /* 0x08 */ Light unk08[1]; // length unknown
-} HmfData_UnkD0; // Size unknown
+} HmfData_UnkD0;               // Size unknown
 
 typedef struct {
     /* 0x00 */ u8 unk00;
@@ -78,34 +80,34 @@ typedef struct {
     /* 0x0C */ s8 unk0C;
     /* 0x0E */ s16 unk0E;
     /* 0x10 */ s16 unk10;
-    /* 0x12 */ s16 unk12;  // Changed from char[2] since it's used as s16
+    /* 0x12 */ s16 unk12; // Changed from char[2] since it's used as s16
     /* 0x14 */ s16 unk14;
     /* 0x16 */ char unk16[0xA];
     /* 0x20 */ s16 unk20;
     /* 0x22 */ char unk22[0x16];
     /* 0x38 */ s32 unk38;
-    /* 0x3C */ HmfModelData_Unk64_Unk3C_Struct* unk3C;
-    /* 0x40 */ void* unk40;
-    /* 0x44 */ Vtx* unk44[3];
-    /* 0x50 */ void* unk50;
+    /* 0x3C */ HmfModelData_Unk64_Unk3C_Struct *unk3C;
+    /* 0x40 */ void *unk40;
+    /* 0x44 */ Vtx *unk44[3];
+    /* 0x50 */ void *unk50;
     /* 0x54 */ char unk54[0xC];
-    /* 0x60 */ HmfModelData_Unk64_Unk60_Struct* unk60;
+    /* 0x60 */ HmfModelData_Unk64_Unk60_Struct *unk60;
     /* 0x64 */ char unk64[0x20];
-    /* 0x84 */ HmfData_Unk84_Entry* unk84;  // Array of entries
+    /* 0x84 */ HmfData_Unk84_Entry *unk84; // Array of entries
     /* 0x88 */ char unk88[4];
-    /* 0x8C */ HmfModelData_Unk64_Unk8C_Struct* unk8C;
-    /* 0x90 */ HmfModelData_Unk64_Unk8C_Struct* unk90;
-    /* 0x94 */ HmfModelData_Unk64_Unk8C_Struct* unk94;
-    /* 0x98 */ HmfModelData_Unk64_Unk98_Struct* unk98;
+    /* 0x8C */ HmfModelData_Unk64_Unk8C_Struct *unk8C;
+    /* 0x90 */ HmfModelData_Unk64_Unk8C_Struct *unk90;
+    /* 0x94 */ HmfModelData_Unk64_Unk8C_Struct *unk94;
+    /* 0x98 */ HmfModelData_Unk64_Unk98_Struct *unk98;
     /* 0x9C */ char unk9C[4];
-    /* 0xA0 */ s32 unkA0;
+    /* 0xA0 */ f32 unkA0;
     /* 0xA4 */ f32 unkA4;
     /* 0xA8 */ f32 unkA8;
     /* 0xAC */ f32 unkAC;
     /* 0xB0 */ char unkB0[4];
     /* 0xB4 */ s32 unkB4;
     /* 0xB8 */ char unkB8[8];
-    /* 0xC0 */ void* unkC0; // light data only?
+    /* 0xC0 */ void *unkC0; // light data only?
     /* 0xC4 */ char unkC4[4];
     /* 0xC8 */ s32 unkC8;
     /* 0xCC */ char unkCC[4];
@@ -150,22 +152,22 @@ typedef struct HmfModel {
     /* 0x58 */ f32 unk58;
     /* 0x5C */ f32 unk5C;
     /* 0x60 */ f32 unk60;
-    /* 0x64 */ HmfData* hmf;
+    /* 0x64 */ HmfData *hmf;
     /* 0x68 */ char unk68[8]; // 68 => 60 has size 0x68
     /* 0x70 */ void (*unk70)(Gfx**, s32, s32);
     /* 0x74 */ HuMtx4F mtx;
     /* 0xB4 */ struct HmfModel* unkB4;
     /* 0xB8 */ char unkB8[4];
-    /* 0xBC */ HmfModelData_UnkBC_Struct* unkBC;
+    /* 0xBC */ HmfModelData_UnkBC_Struct *unkBC;
 } HmfModel; // Size 0xC0
 
-void func_8001A070_main(void* arg0, void* arg1, u16 arg2, u16 arg3, u16 arg4, u8 arg5);
-s16 Hu3DModelCreate(u8*, u32);
+void func_8001A070_main(void *arg0, void *arg1, u16 arg2, u16 arg3, u16 arg4, u8 arg5);
+s16 Hu3DModelCreate(u8 *, u32);
 s32 Hu3DModelLink(s16 linkMdlId);
-s32 func_8001A894_main(s32, void*, s32); // unsure about second arg. Gfx*?
-s16 func_8001AC8C_main(s32 arg0, void (*arg1)(Gfx**, s32, s32), u8 arg2);
+s32 func_8001A894_main(s32, void *, s32); // unsure about second arg. Gfx*?
+s16 func_8001AC8C_main(s32 arg0, void (*arg1)(Gfx **, s32, s32), u8 arg2);
 void func_8001ACDC_main(s16);
-void func_8001B0B4_main(void** arg0, u32 arg1);
+void func_8001B0B4_main(void **arg0, u32 arg1);
 void func_8001BF90_main(u32 arg0, u32 arg1);
 void Hu3DModelPosSet(s16 arg0, f32 x, f32 y, f32 z);
 void Hu3DModelRotSet(s16 arg0, f32 x, f32 y, f32 z);
@@ -184,11 +186,11 @@ void func_8001C8E4_main(s16, u32);
 void func_8001C92C_main(s16, f32);
 s32 func_8001C954_main(s16);
 void func_8001EF24_main(s32, s32, s32, s32, s32);
-s32 func_8001F1FC_main(void*, s32);
+s32 func_8001F1FC_main(void *, s32);
 void func_8001F304_main(s16, s16);
 void func_8001F38C_main(s32, s32, s32);
 void func_8001FDE8_main(s16);
 
-extern HmfModel* HmfModelData;
+extern HmfModel *HmfModelData;
 
 #endif

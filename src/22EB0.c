@@ -209,7 +209,9 @@ void func_8002FD48_main(HmfData *arg0) {
     arg0->unkA0 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002FD50_main);
+void func_8002FD50_main(HmfData *arg0) {
+    arg0->unkA0 = arg0->unk8C->unk02 - 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002FD70_main);
 

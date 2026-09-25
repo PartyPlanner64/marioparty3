@@ -1,5 +1,10 @@
 #include "common.h"
 
+void func_800FC8C4_name_81(Vec *);
+extern Vec D_80105540_name_81;
+extern void func_8010E1B8_duel02(void);
+extern void func_8010E7C4_duel02(void);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_801059D0_duel02);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_80105A58_duel02);
@@ -22,7 +27,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_801060D4_duel02);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_80106160_duel02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_80106244_duel02);
+void func_80106244_duel02(void) {
+    func_800FC8C4_name_81(&D_80105540_name_81);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_80106264_duel02);
 
@@ -116,7 +123,9 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/duel02/3EC590", D_80117128_duel02);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010E1B8_duel02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010E2D0_duel02);
+void func_8010E2D0_duel02(void) {
+    omAddPrcObj(func_8010E1B8_duel02, 0xA, 0, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010E2FC_duel02);
 
@@ -130,7 +139,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010E618_duel02);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010E7C4_duel02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010E8DC_duel02);
+void func_8010E8DC_duel02(void) {
+    omAddPrcObj(func_8010E7C4_duel02, 0xA, 0, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010E908_duel02);
 

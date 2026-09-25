@@ -1,6 +1,9 @@
 #include "common.h"
 #include "ovl_81.h"
 
+extern u8 D_80105554_name_81;
+extern f32 D_80105708_name_81;
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C1D60", func_800D9F90_name_81);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C1D60", func_800DA00C_name_81);
@@ -33,7 +36,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C1D60", func_800DB5AC_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C1D60", func_800DB600_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C1D60", func_800DB624_name_81);
+void func_800DB624_name_81(s32 arg0, s8 arg1) {
+    D_800CDBD0_main[arg0].unk_09 = arg1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C1D60", func_800DB648_name_81);
 
@@ -45,15 +50,30 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C1D60", func_800DBEB0_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C1D60", func_800DBEF0_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C1D60", func_800DBFF8_name_81);
+void func_800DBFF8_name_81(void) {
+    D_80105554_name_81 = 1;
+    D_80105708_name_81 = 250.0f;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C1D60", func_800DC018_name_81);
+s32 func_800DC018_name_81(s32 arg0) {
+    if (~D_800CDBD0_main[arg0].unk_16) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C1D60", func_800DC044_name_81);
+void func_800DC044_name_81(s32 arg0, s8 arg1) {
+    D_800CDBD0_main[arg0].rollValue[D_800CDBD0_main[arg0].rollValueIdx] = arg1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C1D60", func_800DC07C_name_81);
+void func_800DC07C_name_81(s32 arg0, s8 arg1) {
+    D_800CDBD0_main[arg0].predecidedRollValue[D_800CDBD0_main[arg0].rollValueIdx] = arg1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C1D60", func_800DC0B4_name_81);
+s8 func_800DC0B4_name_81(s32 arg0) {
+    return D_800CDBD0_main[arg0].rollValue[D_800CDBD0_main[arg0].rollValueIdx];
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C1D60", func_800DC0EC_name_81);
 
@@ -71,7 +91,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C1D60", func_800DC410_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C1D60", func_800DC4B4_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C1D60", func_800DC4C0_name_81);
+void func_800DC4C0_name_81(s32 arg0, s8 arg1) {
+    D_800CDBD0_main[arg0].rollValueIdx = arg1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C1D60", func_800DC4E4_name_81);
 

@@ -1,8 +1,10 @@
 #include "common.h"
 #include "ovl_81.h"
 
-extern SpaceData* D_801050A4_name_81;
-extern LinkData* D_801050A8_name_81;
+extern SpaceData *D_801050A4_name_81;
+extern LinkData *D_801050A8_name_81;
+extern f32 D_80105128_name_81[8];
+extern s32 D_80105148_name_81;
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800E93C0_name_81);
 
@@ -12,7 +14,14 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800E94D0_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800E9524_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800E9530_name_81);
+void func_800E9530_name_81(f32 value) {
+    s32 index = D_80105148_name_81;
+
+    if (index != 8) {
+        D_80105148_name_81 = index + 1;
+        D_80105128_name_81[index] = value;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800E9564_name_81);
 
@@ -28,7 +37,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800E9B10_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800E9D9C_name_81);
 
-SpaceData* MBDMasuGet(s16 spaceIdx) {
+SpaceData *MBDMasuGet(s16 spaceIdx) {
     return &D_801050A4_name_81[spaceIdx];
 }
 
@@ -72,7 +81,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800EA6B0_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800EA708_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800EA760_name_81);
+void func_800EA760_name_81(void) {
+    s32 i;
+
+    for (i = 0; i < 0x13; i++) {
+        GwSystem.unk_2A[i] = 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800EA788_name_81);
 
@@ -84,7 +99,17 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800EA898_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800EA8DC_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800EA940_name_81);
+s32 func_800EA940_name_81(s32 playerIndex) {
+    s32 count = 0;
+    s32 i;
+
+    for (i = 0; i < 0x13; i++) {
+        if (GwSystem.unk_2A[i] == playerIndex + 1) {
+            count++;
+        }
+    }
+    return count;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800EA97C_name_81);
 

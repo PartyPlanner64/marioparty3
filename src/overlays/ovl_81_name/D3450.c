@@ -23,7 +23,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EB984_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EB9D4_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EBA1C_name_81);
+s16 func_800EBA1C_name_81(void) {
+    GW_SYSTEM *system = &GwSystem;
+
+    return system->total_turns - system->current_turn + 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EBA50_name_81);
 
@@ -72,9 +76,17 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800ECD0C_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800ECD88_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800ECDE8_name_81);
+void func_800ECDE8_name_81(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800ECE10_name_81);
+    player->rev |= FLAG_REV;
+}
+
+void func_800ECE10_name_81(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+
+    player->rev &= ~FLAG_REV;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800ECE38_name_81);
 

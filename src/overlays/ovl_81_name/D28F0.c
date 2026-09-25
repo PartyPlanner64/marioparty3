@@ -29,7 +29,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D28F0", func_800EB1D8_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D28F0", func_800EB258_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D28F0", func_800EB278_name_81);
+void func_800EB278_name_81(void) {
+    func_80061A5C_main(D_8010555C_name_81, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D28F0", func_800EB29C_name_81);
 

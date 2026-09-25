@@ -1,6 +1,15 @@
 #include "common.h"
 #include "ovl_81.h"
 
+typedef struct UnkD5B20 {
+    /* 0x00 */ s16 unk_00;
+    /* 0x02 */ s16 unk_02;
+    /* 0x04 */ Object *unk_04;
+    /* 0x08 */ omObjData *unk_08;
+} UnkD5B20; // sizeof 0xC
+
+extern UnkD5B20 D_80105560_name_81[];
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800EDD50_name_81);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800EDDBC_name_81);
@@ -11,7 +20,12 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800EDEC4_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800EDF48_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800EDF78_name_81);
+void func_800EDF78_name_81(void) {
+    if (D_801011F4_name_81 != NULL) {
+        omDelPrcObj(D_801011F4_name_81);
+        D_801011F4_name_81 = NULL;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800EDFAC_name_81);
 
@@ -61,11 +75,24 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800EF754_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800EF7C8_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800EF7D4_name_81);
+s32 func_800EF7D4_name_81(Object *arg0) {
+    s32 ret = 0;
+    if (arg0->velocity.z != 0.0f) {
+        ret = 1;
+    }
+    return ret;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800EF800_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800EF840_name_81);
+void func_800EF840_name_81(void) {
+    s32 i;
+
+    for (i = 0; i < 16; i++) {
+        D_80105560_name_81[i].unk_04 = NULL;
+        D_80105560_name_81[i].unk_08 = NULL;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800EF880_name_81);
 
@@ -81,7 +108,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800EFB00_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800EFB3C_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800EFBE8_name_81);
+s32 func_800EFBE8_name_81(s32 playerIndex) {
+    return GwPlayer[playerIndex].star * 1000 + GwPlayer[playerIndex].coin;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800EFC28_name_81);
 
@@ -117,7 +146,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800F0208_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800F0378_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800F03C8_name_81);
+void func_800F03C8_name_81(s16 arg0) {
+    func_8001C258_main(arg0, 0x4000, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800F03F0_name_81);
 
@@ -205,7 +236,9 @@ GW_PLAYER *MBDGetPlayerStruct(s32 player) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800F379C_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800F37B8_name_81);
+s32 func_800F37B8_name_81(s16 playerIndex) {
+    return MBDGetPlayerStruct(playerIndex)->stat & PLAYER_IS_CPU;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800F37E0_name_81);
 
@@ -221,7 +254,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800F3A04_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800F3AF4_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800F3B54_name_81);
+void func_800F3B54_name_81(s32 playerIndex, u8 cpuDifficulty) {
+    MBDGetPlayerStruct(playerIndex)->cpu_difficulty = D_80101370_name_81[cpuDifficulty];
+}
 
 void func_800F3B8C_name_81(void) {
 }

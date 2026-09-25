@@ -52,6 +52,11 @@ typedef struct UnkBoard5 {
     /* 0x1C */ s16* unk_1C;
 } UnkBoard5; //sizeof 0x20
 
+typedef struct NameEntry {
+    /* 0x00 */ struct NameEntry* next;
+    /* 0x04 */ struct NameEntry* prev;
+} NameEntry; // unknown size
+
 extern UnkBoard4* D_80105400_name_81;
 extern u16 D_80105404_name_81;
 extern PartnerBaseAttributes PartnersBaseStats[];
@@ -76,6 +81,10 @@ extern s32 D_80101998_name_81[];
 extern s16 D_801019C8_name_81[];
 extern s16 D_8010555C_name_81;
 extern s16 D_801011D0_name_81;
+extern Process* D_801011F4_name_81;
+extern u8 D_80101370_name_81[];
+extern NameEntry* D_801029C0_name_81;
+extern s16 D_801029C8_name_81[];
 
 void MBDBackKill(void);
 void MBDBackClose(void);
@@ -231,6 +240,7 @@ extern s32 D_8010570C_name_81;
 extern s32 D_80105718_name_81;
 extern s32 D_8010571C_name_81;
 
+void func_800E3C6C_name_81(void);
 Process* func_800E415C_name_81(void);
 Process* func_800E47B8_name_81(s16, s8, Vec*, Vec*, s32);
 void func_800E5954_name_81(void);
@@ -258,3 +268,4 @@ void func_800EB49C_name_81(s16 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32
 void func_800D85A8_name_81(f32);
 void func_800D87DC_name_81(f32);
 void func_800EF3EC_name_81(s32);
+s32 func_800EF7D4_name_81(Object*);

@@ -1,5 +1,7 @@
 #include "common.h"
 
+extern void func_800E08D8_name_81(void);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C5770", func_800DD9A0_name_81);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C5770", func_800DD9EC_name_81);
@@ -36,7 +38,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C5770", func_800E0888_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C5770", func_800E08D8_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C5770", func_800E0924_name_81);
+void func_800E0924_name_81(void) {
+    omAddPrcObj(func_800E08D8_name_81, 0, 0x2000, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C5770", func_800E0950_name_81);
 

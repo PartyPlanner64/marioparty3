@@ -1,9 +1,17 @@
 #include "common.h"
 #include "ovl_81.h"
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D7D70_name_81);
+void func_800D7D70_name_81(void) {
+    s32 i;
+    for (i = 0; i < 128; i++) {
+        D_801029C8_name_81[i] = 0;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D7DA0_name_81);
+s16 func_800D7DA0_name_81(s16 arg0) {
+    D_801029C8_name_81[arg0]++;
+    return arg0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D7DC8_name_81);
 
@@ -45,7 +53,16 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D8F0C_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D8F3C_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D9098_name_81);
+s32 func_800D9098_name_81(NameEntry *arg0) {
+    NameEntry *node;
+
+    for (node = D_801029C0_name_81; node != NULL; node = node->next) {
+        if (node == arg0) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D90D0_name_81);
 

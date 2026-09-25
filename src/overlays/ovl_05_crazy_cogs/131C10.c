@@ -1,22 +1,65 @@
 #include "common.h"
 
+extern s8 D_8010B9E3_crazy_cogs[13];
+extern omObjData *D_8010B9F0_crazy_cogs;
+extern omObjData *D_8010BA74_crazy_cogs;
+extern omObjData *D_8010BAF8_crazy_cogs;
+extern omObjData *D_8010BB7C_crazy_cogs;
+extern omObjData *D_8010C5CC_crazy_cogs;
+extern omObjData *D_8010C650_crazy_cogs;
+
+void func_80106270_crazy_cogs(omObjData *);
+void func_80106688_crazy_cogs(omObjData *);
+void func_8010683C_crazy_cogs(omObjData *);
+void func_801069DC_crazy_cogs(omObjData *);
+void func_8010AA10_crazy_cogs(omObjData *);
+void func_8010AE08_crazy_cogs(omObjData *);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_801059A0_crazy_cogs);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_801059BC_crazy_cogs);
+f32 func_801059BC_crazy_cogs(f32 arg0, f32 arg1) {
+    f32 angle = arg0 + arg1;
+
+    while (angle >= 360.0f) {
+        angle -= 360.0f;
+    }
+
+    while (angle < 0.0f) {
+        angle += 360.0f;
+    }
+
+    return angle;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80105A3C_crazy_cogs);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80105B04_crazy_cogs);
+void func_80105B04_crazy_cogs(s32 playerIndex) {
+    D_800CDA7C_main[GwPlayer[playerIndex].pad] = 0;
+    D_800D5558_main[GwPlayer[playerIndex].pad] = 0;
+    D_800CBB6E_main[GwPlayer[playerIndex].pad] = 0;
+    D_800D20A1_main[GwPlayer[playerIndex].pad] = 0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80105B7C_crazy_cogs);
+s32 func_80105B7C_crazy_cogs(s32 arg0) {
+    return rand8() % arg0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80105BD0_crazy_cogs);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80105E4C_crazy_cogs);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80106034_crazy_cogs);
+void func_80106034_crazy_cogs(omObjData *arg0, u16 arg1, s16 arg2) {
+    if (arg1 < 0xA) {
+        func_8001C5B4_main(arg0->model[0], arg0->motion[arg1]);
+        func_8001C814_main(arg0->model[0], arg2, arg2);
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_801060A0_crazy_cogs);
+void func_801060A0_crazy_cogs(omObjData *arg0, u16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+    if (arg1 < 0xA) {
+        func_8001C624_main(arg0->model[0], HmfModelData[arg0->motion[arg1]].unk02, arg2, arg3, arg4);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_8010611C_crazy_cogs);
 
@@ -37,7 +80,9 @@ void func_80106268_crazy_cogs(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80106270_crazy_cogs);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_801063DC_crazy_cogs);
+void func_801063DC_crazy_cogs(void) {
+    D_8010B9F0_crazy_cogs = omAddObj(0x1F4, 1, 0, -1, func_80106270_crazy_cogs);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80106418_crazy_cogs);
 
@@ -49,19 +94,25 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_801065F0_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80106688_crazy_cogs);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80106770_crazy_cogs);
+void func_80106770_crazy_cogs(void) {
+    D_8010BA74_crazy_cogs = omAddObj(0x3E8, 2, 0, -1, func_80106688_crazy_cogs);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_801067AC_crazy_cogs);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_8010683C_crazy_cogs);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80106910_crazy_cogs);
+void func_80106910_crazy_cogs(void) {
+    D_8010BAF8_crazy_cogs = omAddObj(0x44C, 2, 0, -1, func_8010683C_crazy_cogs);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_8010694C_crazy_cogs);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_801069DC_crazy_cogs);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80106AB0_crazy_cogs);
+void func_80106AB0_crazy_cogs(void) {
+    D_8010BB7C_crazy_cogs = omAddObj(0x4B0, 2, 0, -1, func_801069DC_crazy_cogs);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80106AEC_crazy_cogs);
 
@@ -119,7 +170,12 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80109A44_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80109B88_crazy_cogs);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80109D24_crazy_cogs);
+void func_80109D24_crazy_cogs(void) {
+    D_8010B9E3_crazy_cogs[0] = 1;
+    D_8010B9E3_crazy_cogs[1] = 1;
+    D_8010B9E3_crazy_cogs[2] = 1;
+    D_8010B9E3_crazy_cogs[3] = 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80109D44_crazy_cogs);
 
@@ -133,7 +189,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_8010A67C_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_8010AA10_crazy_cogs);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_8010AAA4_crazy_cogs);
+void func_8010AAA4_crazy_cogs(void) {
+    D_8010C5CC_crazy_cogs = omAddObj(0x514, 1, 1, -1, func_8010AA10_crazy_cogs);
+}
 
 void func_8010AAE0_crazy_cogs(void) {
 }
@@ -147,7 +205,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_8010ABE0_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_8010AE08_crazy_cogs);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_8010AF58_crazy_cogs);
+void func_8010AF58_crazy_cogs(void) {
+    D_8010C650_crazy_cogs = omAddObj(0x640, 1, 1, -1, func_8010AE08_crazy_cogs);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_8010AF94_crazy_cogs);
 

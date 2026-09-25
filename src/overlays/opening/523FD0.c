@@ -1,6 +1,21 @@
 #include "common.h"
 #include "../ovl_80_shared_board/FA250.h"
 
+typedef struct {
+    /* 0x00 */ s16 modelId;
+    /* 0x02 */ s16 motionId;
+    /* 0x04 */ s32 posX;
+    /* 0x08 */ s32 posY;
+    /* 0x0C */ s32 posZ;
+    /* 0x10 */ f32 scaleX;
+    /* 0x14 */ f32 scaleY;
+    /* 0x18 */ f32 scaleZ;
+    /* 0x1C */ f32 rotX;
+    /* 0x20 */ f32 rotY;
+    /* 0x24 */ f32 rotZ;
+    /* 0x28 */ s32 unk_28;
+} OpModel;
+
 void func_801061F0_opening(void);
 void func_80110B90_opening(void);
 void func_80110F48_opening(void);
@@ -10,6 +25,7 @@ void opContErrorCreate(void);
 extern Vec D_80114BB8_opening;
 extern Vec D_80114BC4_opening;
 extern RectF D_80114BD0_opening;
+extern OpModel D_80115630_opening[0xA0];
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/523FD0", func_801059A0_opening);
 
@@ -101,7 +117,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/523FD0", opModelKill);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/523FD0", opModelKillAll);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/523FD0", opModelIdGet);
+s16 opModelIdGet(s32 modelId) {
+    return D_80115630_opening[modelId].modelId;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/523FD0", opMotionIdGet);
 

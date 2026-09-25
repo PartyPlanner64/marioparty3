@@ -9,6 +9,25 @@ typedef struct {
     /* 0x0C */ char unk0C[0x1D];
 } UnkAudStruct; // Size unknown (min: 0x29, max: 0x30)
 
+typedef struct {
+    s32 unk00;
+    s32 unk04;
+    s32 unk08;
+    s32 unk0C;
+    s32 unk10;
+    s16 unk14;
+    s16 unk16;
+    s16 unk18;
+    s16 unk1A;
+    f32 unk1C;
+    f32 unk20;
+    f32 unk24;
+    f32 unk28;
+    f32 unk2C;
+    f32 unk30;
+    s16 unk34;
+} UnkAudioObjData;
+
 void func_8000086C_main(str800D5298 *);
 s16 func_80003310_main(s16);
 s32 func_80007064_main(s32);
@@ -20,6 +39,7 @@ void func_80007DD8_main(s16);
 extern u8 D_800D09A8_main;
 extern str800D5298 D_800D5298_main;
 extern s32 D_800D52C0_main;
+extern omObjData *D_800D6A40_main;
 
 u16 D_800A1900_main = 1;
 u16 D_800A1902_main = 1;
@@ -51,7 +71,11 @@ s16 HuAudSeqPlay(s16 musId) {
 
 INCLUDE_ASM("asm/nonmatchings/audio", func_8004A5C4_main);
 
-INCLUDE_ASM("asm/nonmatchings/audio", func_8004A650_main);
+void func_8004A650_main(s32 arg0) {
+    if (D_800D6A40_main != NULL) {
+        OM_GET_DATA_PTR(D_800D6A40_main, UnkAudioObjData)->unk34 = arg0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/audio", func_8004A670_main);
 

@@ -1,7 +1,9 @@
 #include "overlays/minigame.h"
+#include "types.h"
 #include "gcc/memory.h"
 #include "game/gamework_data.h"
 #include "game/util.h"
+#include "game/hmfman.h"
 #include "mallocblock.h"
 #include "include_asm.h"
 
@@ -97,15 +99,48 @@ void func_800E1364_minigame(omObjData *arg0, f32 arg1) {
     temp_data->unk70 = arg1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E1370_minigame);
+void func_800E1370_minigame(omObjData *arg0, s32 arg1, f32 arg2) {
+    func_800E1BA8_minigame_ObjData *temp_data = arg0->data;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E139C_minigame);
+    temp_data->unk06 = (arg1 & 0xFF) | temp_data->unk06;
+    if (arg1 & 2) {
+        temp_data->unk14 = arg2;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E13CC_minigame);
+void func_800E139C_minigame(omObjData *arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5) {
+    func_800E1BA8_minigame_ObjData *temp_v0 = arg0->data;
+
+    temp_v0->unk06 |= 0x8;
+    temp_v0->unk14 = arg1;
+    temp_v0->unkA0 = arg2;
+    temp_v0->unkA4 = arg3;
+    temp_v0->unkA8 = arg4;
+    temp_v0->unkAC = arg5;
+}
+
+void func_800E13CC_minigame(omObjData *arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
+    func_800E1BA8_minigame_ObjData *temp_v0 = arg0->data;
+
+    temp_v0->unk06 |= 0x10;
+    temp_v0->unk14 = arg1;
+    temp_v0->unk98 = arg2;
+    temp_v0->unkA0 = arg3;
+    temp_v0->unkA4 = arg4;
+    temp_v0->unkA8 = arg5;
+    temp_v0->unkAC = arg6;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E1404_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E1420_minigame);
+void func_800E1420_minigame(omObjData *arg0, f32 arg1, f32 arg2, f32 arg3) {
+    func_800E1BA8_minigame_ObjData *temp_v0 = arg0->data;
+
+    temp_v0->unk06 |= 0x40;
+    temp_v0->unk14 = arg1;
+    temp_v0->unk98 = arg2;
+    temp_v0->unk9C = arg3;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E1440_minigame);
 
@@ -147,7 +182,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E1840_minigame);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E1854_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E18B4_minigame);
+void func_800E18B4_minigame(void) {
+    s8 temp_s8;
+
+    memset(&temp_s8, 0, sizeof(temp_s8));
+}
 
 void func_800E18D8_minigame(void) {
     D_800EB73C_minigame = 15.0f;
@@ -271,7 +310,14 @@ INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E2250_minigame);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E2308_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E23E0_minigame);
+void func_800E23E0_minigame(omObjData *arg0) {
+    func_800E1BA8_minigame_ObjData *temp_v0 = arg0->data;
+    s32 var_a0;
+
+    for (var_a0 = 0; var_a0 < 6; var_a0++) {
+        temp_v0->unk74[var_a0] = 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E240C_minigame);
 
@@ -283,13 +329,24 @@ INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E2B58_minigame);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E2BD4_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E2C68_minigame);
+void func_800E2C68_minigame(HuMtx4F mtx, Vec *arg1) {
+    f32 x = arg1->x;
+    f32 y = arg1->y;
+    f32 z = arg1->z;
+
+    arg1->y = x * mtx[0][1] + y * mtx[1][1] + z * mtx[2][1] + mtx[3][1];
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E2CA4_minigame);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E2DA4_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E2E98_minigame);
+void func_800E2E98_minigame(omObjData *arg0) {
+    func_800E1BA8_minigame_ObjData *temp_v0 = arg0->data;
+
+    HmfModelData[arg0->model[0]].unk06 = 0xFF;
+    temp_v0->unk50 &= 0xFEFF;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E2ED4_minigame);
 

@@ -1,6 +1,14 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BD210", func_800EA690_minigame);
+extern s16 D_800EBE00_minigame[4];
+
+void func_800EA690_minigame(void) {
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        D_800EBE00_minigame[i] = -1;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BD210", func_800EA6C4_minigame);
 

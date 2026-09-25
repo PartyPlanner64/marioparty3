@@ -1,4 +1,5 @@
 #include "common.h"
+#include "overlays/minigame.h"
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B63A0", func_800E3820_minigame);
 
@@ -26,7 +27,16 @@ INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B63A0", func_800E3FD8_minigame);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B63A0", func_800E4248_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B63A0", func_800E4510_minigame);
+s32 func_800E4510_minigame(omObjData *arg0) {
+    func_800E1BA8_minigame_ObjData *temp_v0 = arg0->data;
+
+    if (temp_v0->unk144 != NULL) {
+        if (temp_v0->unk144(arg0) == 1) {
+            return 0;
+        }
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B63A0", func_800E454C_minigame);
 

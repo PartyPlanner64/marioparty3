@@ -12,7 +12,20 @@ typedef struct {
 } func_800E1BA8_minigame_UnkE8_ObjData; // Size 0xC
 
 typedef struct {
-    /* 0x000 */ char unk00[0x34];
+    /* 0x00 */ u16 unk00;
+    /* 0x02 */ u16 unk02;
+    /* 0x04 */ char unk04[2];
+    /* 0x06 */ s16 unk06;
+    /* 0x08 */ s32 unk08;
+    /* 0x0C */ f32 unk0C;
+} func_800E5638_minigame_UnkD8_ObjData; // Size 0x10
+
+typedef struct {
+    /* 0x000 */ char unk00[6];
+    u16 unk06;
+    char unk08[0xC];
+    f32 unk14;
+    char unk18[0x1C];
     /* 0x034 */ f32 unk34;
     /* 0x038 */ f32 unk38;
     /* 0x03C */ f32 unk3C;
@@ -32,13 +45,14 @@ typedef struct {
     /* 0x068 */ f32 unk68;
     /* 0x06C */ f32 unk6C;
     /* 0x070 */ f32 unk70;
-    /* 0x074 */ char unk74[0x18];
+    /* 0x074 */ s32 unk74[6];
     /* 0x08C */ f32 unk8C;
-    /* 0x090 */ char unk90[0xC];
+    /* 0x090 */ char unk90[8];
+    /* 0x098 */ f32 unk98;
     /* 0x09C */ f32 unk9C;
     /* 0x0A0 */ f32 unkA0;
     /* 0x0A4 */ f32 unkA4;
-    /* 0x0A8 */ char unkA8[4];
+    /* 0x0A8 */ f32 unkA8;
     /* 0x0AC */ f32 unkAC;
     /* 0x0B0 */ f32 unkB0;
     /* 0x0B4 */ f32 unkB4;
@@ -48,13 +62,24 @@ typedef struct {
     /* 0x0C5 */ char unkC5[7];
     /* 0x0CC */ f32 unkCC;
     /* 0x0D0 */ u16 unkD0;
-    /* 0x0D2 */ char unkD2[0x16];
+    /* 0x0D2 */ u16 unkD2;
+    /* 0x0D4 */ u16 unkD4;
+    /* 0x0D6 */ u16 unkD6;
+    /* 0x0D8 */ func_800E5638_minigame_UnkD8_ObjData unkD8;
     /* 0x0E8 */ func_800E1BA8_minigame_UnkE8_ObjData *unkE8;
     /* 0x0EC */ s32 unkEC;
     /* 0x0F0 */ char unkF0[0x14];
-    /* 0x104 */ s32 unk104[21];
+    /* 0x104 */ s32 unk104[16];
+    /* 0x144 */ s32 (*unk144)(omObjData *);
+    /* 0x148 */ s32 unk148[4];
     /* 0x158 */ void *unk158;
 } func_800E1BA8_minigame_ObjData; // Size 0x15C
+
+typedef struct {
+    /* 0x00 */ f32 unk00;
+    /* 0x04 */ f32 unk04;
+    /* 0x08 */ s32 unk08;
+} D_800EBEB8_minigame_Entry; // Size 0xC
 
 typedef struct {
     /* 0x00 */ char unk00;
@@ -78,6 +103,7 @@ void func_800E18D8_minigame(void);
 void func_800E19F0_minigame(s8);
 void func_800E1BA8_minigame(omObjData *, u32, s32, u16, s32, s32);
 void func_800E4E30_minigame(omObjData *);
+void func_800E5638_minigame(func_800E5638_minigame_UnkD8_ObjData *, u16, u16, u16, s16);
 void func_800E5690_minigame(omObjData *, u16);
 void func_800E5A00_minigame(omObjData *, u16, s32, s32, u16);
 void func_800E5EA0_minigame(D_80111B50_vine_with_me_Struct *);
@@ -87,6 +113,8 @@ void func_800E6F34_minigame(s32);
 void func_800E6F40_minigame(void);
 
 extern s16 D_800EBE28_minigame;
+extern s16 D_800EB736_minigame;
+extern D_800EBEB8_minigame_Entry D_800EBEB8_minigame[64];
 extern s16 D_800EC1B8_minigame;
 extern omObjData *D_800EC1C0_minigame[];
 extern u16 D_800EC280_minigame;

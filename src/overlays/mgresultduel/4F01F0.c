@@ -8,10 +8,19 @@ typedef struct UnkOmData {
 } UnkOmData;
 
 extern UnkOmData D_80109338_mgresultduel;
+extern omObjFunc D_80109330_mgresultduel;
+extern omObjFunc D_80109344_mgresultduel;
 extern s8 D_80108E78_mgresultduel;
 void func_80106054_mgresultduel(void);
 void func_80106544_mgresultduel(omObjData *);
 void func_80106270_mgresultduel(omObjData *);
+void func_80106B70_mgresultduel(omObjData *);
+void func_80106CA0_mgresultduel(omObjData *);
+void func_80106D0C_mgresultduel(omObjData *);
+void func_80107178_mgresultduel(omObjData *);
+void func_80107244_mgresultduel(omObjData *);
+void func_801072A8_mgresultduel(omObjData *);
+void func_80107654_mgresultduel(omObjData *);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_801059A0_mgresultduel);
 
@@ -95,16 +104,28 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80106850_mgres
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80106930_mgresultduel);
 
-void func_80106B68_mgresultduel(void) {
+void func_80106B68_mgresultduel(omObjData *arg0) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80106B70_mgresultduel);
+void func_80106B70_mgresultduel(omObjData *arg0) {
+    func_8001C624_main(arg0->model[1], HmfModelData[arg0->motion[4]].unk02, 0, 0x1E, 2);
+    D_80109344_mgresultduel = func_80106B68_mgresultduel;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80106BD8_mgresultduel);
+void func_80106BD8_mgresultduel(omObjData *arg0) {
+    func_8001C624_main(arg0->model[1], HmfModelData[arg0->motion[2]].unk02, 0, 0x1E, 0);
+    D_80109344_mgresultduel = func_80107654_mgresultduel;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80106C3C_mgresultduel);
+void func_80106C3C_mgresultduel(omObjData *arg0) {
+    func_8001C624_main(arg0->model[1], HmfModelData[arg0->motion[3]].unk02, 0, 0x1E, 0);
+    D_80109344_mgresultduel = func_80106B68_mgresultduel;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80106CA0_mgresultduel);
+void func_80106CA0_mgresultduel(omObjData *arg0) {
+    func_8001C624_main(arg0->model[1], HmfModelData[arg0->motion[3]].unk02, 0, 0x1E, 0);
+    D_80109344_mgresultduel = func_80107654_mgresultduel;
+}
 
 void func_80106D04_mgresultduel(void) {
 }
@@ -113,27 +134,49 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80106D0C_mgres
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80106F38_mgresultduel);
 
-void func_80107170_mgresultduel(void) {
+void func_80107170_mgresultduel(omObjData *arg0) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80107178_mgresultduel);
+void func_80107178_mgresultduel(omObjData *arg0) {
+    func_8001C624_main(arg0->model[1], HmfModelData[arg0->motion[4]].unk02, 0, 0x1E, 2);
+    D_80109330_mgresultduel = func_80107170_mgresultduel;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_801071E0_mgresultduel);
+void func_801071E0_mgresultduel(omObjData *arg0) {
+    func_8001C624_main(arg0->model[1], HmfModelData[arg0->motion[2]].unk02, 0, 0x1E, 0);
+    D_80109330_mgresultduel = func_80107654_mgresultduel;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80107244_mgresultduel);
+void func_80107244_mgresultduel(omObjData *arg0) {
+    func_8001C624_main(arg0->model[1], HmfModelData[arg0->motion[3]].unk02, 0, 0x1E, 0);
+    D_80109330_mgresultduel = func_80107170_mgresultduel;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_801072A8_mgresultduel);
 
 void func_801074B0_mgresultduel(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_801074B8_mgresultduel);
+void func_801074B8_mgresultduel(void) {
+    D_80109344_mgresultduel = func_80106D0C_mgresultduel;
+    D_80109330_mgresultduel = func_801072A8_mgresultduel;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_801074DC_mgresultduel);
+void func_801074DC_mgresultduel(s8 arg0) {
+    if (arg0 == -1) {
+        D_80109344_mgresultduel = func_80106B70_mgresultduel;
+    } else {
+        D_80109330_mgresultduel = func_80107178_mgresultduel;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_8010751C_mgresultduel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80107618_mgresultduel);
+void func_80107618_mgresultduel(void) {
+    HuPrcSleep(2);
+    D_80109344_mgresultduel = func_80106CA0_mgresultduel;
+    D_80109330_mgresultduel = func_80107244_mgresultduel;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80107654_mgresultduel);
 

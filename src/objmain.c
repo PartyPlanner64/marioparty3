@@ -11,6 +11,11 @@ typedef struct unkProcessStruct {
     void (*destructor)();
 } unkProcessStruct;
 
+typedef union PauseObjWork {
+    u32 words[4];
+    u16 halfwords[8];
+} PauseObjWork;
+
 extern s16 D_800A1774_main;
 extern s16 D_800A1776_main;
 extern s16 D_800A1778_main;
@@ -1004,7 +1009,9 @@ INCLUDE_ASM("asm/nonmatchings/objmain", func_80048EE8_main);
 
 INCLUDE_ASM("asm/nonmatchings/objmain", func_800499B0_main);
 
-INCLUDE_ASM("asm/nonmatchings/objmain", func_80049F98_main);
+u16 func_80049F98_main(void) {
+    return D_800D2118_main != NULL ? (OM_GET_WORK_PTR(D_800D2118_main, PauseObjWork)->halfwords[1] & 1) : 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/objmain", func_80049FB8_main);
 

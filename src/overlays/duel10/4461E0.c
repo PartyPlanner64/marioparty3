@@ -1,4 +1,13 @@
 #include "common.h"
+#include "process.h"
+
+extern Vec D_80105540_name_81;
+extern u8 D_80100E20_name_81;
+
+void func_800FC8C4_name_81(Vec *);
+extern void func_8010F620_duel10(void);
+extern void func_8010FC2C_duel10(void);
+extern omObjData *D_80114CCC_duel10;
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_801059D0_duel10);
 
@@ -22,7 +31,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010613C_duel10);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_801061C8_duel10);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_801062AC_duel10);
+void func_801062AC_duel10(void) {
+    func_800FC8C4_name_81(&D_80105540_name_81);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_801062CC_duel10);
 
@@ -64,7 +75,17 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010B020_duel10);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010B19C_duel10);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010B4EC_duel10);
+s32 func_8010B4EC_duel10(void) {
+    UnkDuelObjData *data = D_80114CCC_duel10->data;
+    s32 i;
+
+    for (i = 0; i < ARRAY_COUNT(data->unk_180); i++) {
+        if (data->unk_180[i] != 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010B52C_duel10);
 
@@ -112,7 +133,10 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010E37C_duel10);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010E408_duel10);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010E494_duel10);
+void func_8010E494_duel10(void) {
+    D_80100E20_name_81 = 0;
+    HuPrcChildWait();
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010E4B4_duel10);
 
@@ -154,7 +178,9 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/duel10/4461E0", D_80114BBC_duel10);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010F620_duel10);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010F738_duel10);
+void func_8010F738_duel10(void) {
+    omAddPrcObj(func_8010F620_duel10, 0xA, 0, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010F764_duel10);
 
@@ -168,7 +194,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010FA80_duel10);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010FC2C_duel10);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010FD44_duel10);
+void func_8010FD44_duel10(void) {
+    omAddPrcObj(func_8010FC2C_duel10, 0xA, 0, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010FD70_duel10);
 

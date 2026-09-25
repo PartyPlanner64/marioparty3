@@ -59,5 +59,6 @@ void func_80037258_main(void);
 void func_8003F578_main(s16);
 void func_8003F5C0_main(void);
 void func_80045010_main(const s16*, s32);
+s32 func_800452A0_main(void *, void *);
 
 #endif

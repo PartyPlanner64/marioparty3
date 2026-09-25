@@ -66,7 +66,6 @@ s32 func_80111B14_filesel(s32);
 u32 func_80106AD8_filesel(u32);
 s32 func_8010AC58_filesel(s32);
 s32 func_80112494_filesel(s32, u8 *);
-s32 func_800452A0_main(void *, void *);
 void func_8000BBFC_main(u16, s16);
 void func_8000BC48_main(u16, u16);
 void func_8000BC88_main(u16, u16);

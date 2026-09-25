@@ -1,5 +1,22 @@
 #include "common.h"
 
+typedef struct UnkOption {
+    s16 unk_00;
+    s16 unk_02;
+    s32 unk_04;
+    s32 unk_08;
+    s32 unk_0C;
+    f32 unk_10;
+    f32 unk_14;
+    f32 unk_18;
+    f32 unk_1C;
+    f32 unk_20;
+    f32 unk_24;
+    s32 unk_28;
+} UnkOption;
+
+extern UnkOption D_80114F70_option[0x40];
+
 INCLUDE_ASM("asm/nonmatchings/overlays/option/5334D0", func_801059A0_option);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/5334D0", func_801059D0_option);
@@ -286,9 +303,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/option/5334D0", func_801108C4_option);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/5334D0", func_80110974_option);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/5334D0", func_801109AC_option);
+s16 func_801109AC_option(s32 arg0) {
+    return D_80114F70_option[arg0].unk_00;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/5334D0", func_801109D0_option);
+s16 func_801109D0_option(s32 arg0) {
+    return D_80114F70_option[arg0].unk_02;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/5334D0", func_801109F4_option);
 
@@ -410,7 +431,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/option/5334D0", func_801130E8_option);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/5334D0", func_80113204_option);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/5334D0", func_80113218_option);
+s32 func_80113218_option(s32 arg0) {
+    return func_801109AC_option(arg0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/5334D0", func_8011323C_option);
 

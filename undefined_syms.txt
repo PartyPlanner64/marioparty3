@@ -18,3 +18,5 @@ m254_funcGroups = 0x801137E8;
 func_80107CC4_silly_screws = 0x80107CC4;
 D_8010BF80_silly_screws = 0x8010BF80;
 D_8010BF84_silly_screws = 0x8010BF84;
+
+D_800EC1BC_minigame = 0x800EC1BC;

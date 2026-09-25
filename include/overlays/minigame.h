@@ -112,11 +112,14 @@ void func_800E6F1C_minigame(void);
 void func_800E6F34_minigame(s32);
 void func_800E6F40_minigame(void);
 
-extern s16 D_800EBE28_minigame;
+extern u16 D_800EBE28_minigame;
 extern s16 D_800EB736_minigame;
 extern D_800EBEB8_minigame_Entry D_800EBEB8_minigame[64];
 extern s16 D_800EC1B8_minigame;
 extern omObjData *D_800EC1C0_minigame[];
+/* Indexed by D_800EBE28_minigame one slot before D_800EC1C0_minigame, only read
+   by the stardust battle overlay. */
+extern omObjData *D_800EC1BC_minigame[];
 extern u16 D_800EC280_minigame;
 extern omObjData *D_800EC598_minigame[];
 

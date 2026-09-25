@@ -993,8 +993,8 @@ void func_801083A8_eatsa_pizza(omObjData *arg0, func_800E1BA8_minigame_ObjData *
 void func_801083BC_eatsa_pizza(void) {
     D_800EBE28_minigame = 0;
     func_800E1490_minigame(0);
-    D_800EC1C0_minigame[(u16)D_800EBE28_minigame++] = omAddObj(5, 1, 0, -1, func_80108470_eatsa_pizza);
-    D_800EC1C0_minigame[(u16)D_800EBE28_minigame++] = omAddObj(5, 1, 0, -1, func_801084F8_eatsa_pizza);
+    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(5, 1, 0, -1, func_80108470_eatsa_pizza);
+    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(5, 1, 0, -1, func_801084F8_eatsa_pizza);
     D_80109350_eatsa_pizza = 0;
 }
 

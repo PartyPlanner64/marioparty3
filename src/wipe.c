@@ -1,6 +1,8 @@
 #include "game/wipe.h"
 #include "include_asm.h"
 
+extern Gfx *D_800BDA7C_main;
+
 INCLUDE_ASM("asm/nonmatchings/wipe", WipeInit);
 
 INCLUDE_ASM("asm/nonmatchings/wipe", WipeExecAlways);
@@ -67,7 +69,9 @@ INCLUDE_ASM("asm/nonmatchings/wipe", func_80066164_main);
 
 INCLUDE_ASM("asm/nonmatchings/wipe", func_8006619C_main);
 
-INCLUDE_ASM("asm/nonmatchings/wipe", func_800661D4_main);
+void func_800661D4_main(Gfx **arg0, s32 arg1, s32 arg2) {
+    gSPDisplayList((*arg0)++, D_800BDA7C_main);
+}
 
 INCLUDE_ASM("asm/nonmatchings/wipe", func_800661F8_main);
 

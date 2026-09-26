@@ -470,7 +470,7 @@ segments:
       - [0xA2AB0, data, sprput]
       - [0xA2D50, data, window]
       - [0xA32D0, data, wipe]
-      - [0xA3380, data, 6B050]
+      - [0xA3380, .data, 6B050]
       - [0xA3480, data]
       - [0xA3940, .data, 2.0L/audio/sl]
       - [0xA3950, data]

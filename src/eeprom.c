@@ -37,6 +37,7 @@ extern u8 D_800D0E50_main[];
 void ClearBoxBuf(void);
 void ClearCommonBuf(void);
 s32 _WriteEeprom(EepData *arg0);
+s32 _DestroyEeprom(void);
 s32 func_8000C9C8_main(s8);
 s32 WriteEeprom(OSMesgQueue *arg0, u8 arg1, u8 *arg2, s32 arg3);
 
@@ -162,7 +163,11 @@ void ClearCommonBuf(void) {
 
 INCLUDE_ASM("asm/nonmatchings/eeprom", _DestroyEeprom);
 
-INCLUDE_ASM("asm/nonmatchings/eeprom", DestroyEeprom);
+s32 DestroyEeprom(void) {
+    unkMesg sp10;
+
+    return RequestSIFunction(&sp10, (void *)&_DestroyEeprom, NULL, 1);
+}
 
 u16 CalcChecksumEeprom(u8 *data, u16 startIndex, u16 size) {
     u16 checksum = 0;

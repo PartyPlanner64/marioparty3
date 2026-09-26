@@ -16,9 +16,11 @@ void MBBackCreate(s32, s32);
 void func_80105CAC_mgresultbattle(omObjData *);
 void func_80105E64_mgresultbattle(omObjData *);
 void func_80105F50_mgresultbattle(void);
+void func_80105F78_mgresultbattle(Gfx **, s32, s32);
 
 extern u8 D_80108F8C_mgresultbattle[4];
 extern s32 D_80108908_mgresultbattle[];
+extern omObjData *D_80108F90_mgresultbattle;
 
 void func_801059A0_mgresultbattle(void) {
     s16 var_a0_2;
@@ -81,7 +83,15 @@ void func_801059A0_mgresultbattle(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80105CAC_mgresultbattle);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80105E0C_mgresultbattle);
+void func_80105E0C_mgresultbattle(void) {
+    CZoom = 2300.0f;
+    CRot.x = 0.0f;
+    CRot.y = 0.0f;
+    CRot.z = 0.0f;
+    Center.x = 0.0f;
+    Center.y = 390.0f;
+    Center.z = -460.0f;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80105E64_mgresultbattle);
 
@@ -98,7 +108,9 @@ void func_80105EF4_mgresultbattle(void) {
     func_80105F50_mgresultbattle();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80105F50_mgresultbattle);
+void func_80105F50_mgresultbattle(void) {
+    func_8001AC8C_main(0, func_80105F78_mgresultbattle, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80105F78_mgresultbattle);
 
@@ -145,17 +157,34 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_801075FC_mgr
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80107610_mgresultbattle);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80107B5C_mgresultbattle);
+void func_80107B5C_mgresultbattle(f32 arg0, f32 arg1, f32 arg2) {
+    omObjData *itemObj = D_80108F90_mgresultbattle;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80107BDC_mgresultbattle);
+    Hu3DModelPosSet(itemObj->model[1], arg0, arg1, arg2);
+    Hu3DModelPosSet(itemObj->model[3], arg0, arg1, arg2);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80107C44_mgresultbattle);
+void func_80107BDC_mgresultbattle(f32 arg0) {
+    omObjData *itemObj = D_80108F90_mgresultbattle;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80107CA4_mgresultbattle);
+    Hu3DModelRotSet(itemObj->model[1], 0.0f, 0.0f, arg0);
+    Hu3DModelRotSet(itemObj->model[3], 0.0f, 0.0f, arg0);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80107D10_mgresultbattle);
+void func_80107C44_mgresultbattle(void) {
+    omObjData *itemObj = D_80108F90_mgresultbattle;
 
-void func_80107F94_mgresultbattle(void) {
+    func_8001C258_main(itemObj->model[1], 4, 0);
+    func_8001C258_main(itemObj->model[2], 4, 0);
+    func_8001C258_main(itemObj->model[3], 4, 0);
+}
+
+void func_80107CA4_mgresultbattle(void) {
+    omObjData *itemObj = D_80108F90_mgresultbattle;
+
+    func_8001C258_main(itemObj->model[1], 4, 4);
+    func_8001C258_main(itemObj->model[2], 4, 4);
+    func_8001C258_main(itemObj->model[3], 4, 4);
 }
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultbattle/4F3780", D_801089C0_mgresultbattle);
@@ -169,23 +198,3 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultbattle/4F3780", D_801089D8_mgr
 INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultbattle/4F3780", D_80108A00_mgresultbattle);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultbattle/4F3780", D_80108A10_mgresultbattle);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80107F9C_mgresultbattle);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_801080A0_mgresultbattle);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80108130_mgresultbattle);
-
-void func_8010829C_mgresultbattle(void) {
-}
-
-void func_801082A4_mgresultbattle(void) {
-}
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_801082AC_mgresultbattle);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_801082C0_mgresultbattle);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80108510_mgresultbattle);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80108858_mgresultbattle);

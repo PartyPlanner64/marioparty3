@@ -3,6 +3,7 @@
 
 #define SAVE_FILE_HEADER_SIZE 0x20
 #define SAVE_FILE_SIZE 0x2A0
+#define COMMON_BUF_SIZE 0x18
 
 typedef struct EepData {
     /* 0x00 */ u16 eepFileOffset;
@@ -33,6 +34,7 @@ extern u8 D_800AC7F0_main;
 extern u8 D_800AC7F1_main;
 extern u8 D_800D0E50_main[];
 
+void ClearBoxBuf(void);
 void ClearCommonBuf(void);
 s32 _WriteEeprom(EepData *arg0);
 s32 func_8000C9C8_main(s8);
@@ -80,7 +82,7 @@ s32 _InitEeprom(s8 **arg0) {
                 }
 
                 ClearCommonBuf();
-                WriteEeprom(&D_800CE1A0_main, 1, D_800D0450_main, 0x18);
+                WriteEeprom(&D_800CE1A0_main, 1, D_800D0450_main, COMMON_BUF_SIZE);
 
                 for (i = 0; i < 3; i++) {
                     if (func_8000C9C8_main(i)) {
@@ -150,9 +152,13 @@ INCLUDE_ASM("asm/nonmatchings/eeprom", ReadEepromCommonBuf);
 
 INCLUDE_ASM("asm/nonmatchings/eeprom", func_8000C9C8_main);
 
-INCLUDE_ASM("asm/nonmatchings/eeprom", ClearBoxBuf);
+void ClearBoxBuf(void) {
+    memset(D_800D0E50_main, 0, SAVE_FILE_SIZE);
+}
 
-INCLUDE_ASM("asm/nonmatchings/eeprom", ClearCommonBuf);
+void ClearCommonBuf(void) {
+    memset(D_800D0450_main, 0, COMMON_BUF_SIZE);
+}
 
 INCLUDE_ASM("asm/nonmatchings/eeprom", _DestroyEeprom);
 

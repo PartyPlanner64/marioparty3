@@ -328,6 +328,28 @@ typedef struct ALVoiceConfig_s {
     u8                  unityPitch;     /* unity pitch flag             */
 } ALVoiceConfig;
 
+typedef struct ALParam_s {
+    struct ALParam_s *next;
+    s32         delta;
+    s16         type;
+    union {
+        f32     f;
+        s32     i;
+    } data;
+    union {
+        f32     f;
+        s32     i;
+    } moredata;
+    union {
+        f32     f;
+        s32     i;
+    } stillmoredata;
+    union {
+        f32     f;
+        s32     i;
+    } yetstillmoredata;
+} ALParam;
+
 typedef struct {
     ALPlayer    *head;          /* client list head                     */
     ALLink      pFreeList;      /* list of free physical voices         */
@@ -338,7 +360,7 @@ typedef struct {
     ALDMANew    dma;
     ALHeap      *heap;
     
-    struct ALParam_s    *paramList;
+    ALParam     *paramList;
     
     struct ALMainBus_s  *mainBus;
     struct ALAuxBus_s   *auxBus;        /* ptr to array of aux bus structs */

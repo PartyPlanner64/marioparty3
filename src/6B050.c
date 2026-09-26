@@ -23,28 +23,6 @@ typedef struct ALFilter_s {
     s32 (*setParam)(void *filter, s32 paramID, void *param);
 } ALFilter;
 
-typedef struct ALParam_s {
-    struct ALParam_s *next;
-    s32 delta;
-    s16 type;
-    union {
-        f32 f;
-        s32 i;
-    } data;
-    union {
-        f32 f;
-        s32 i;
-    } moredata;
-    union {
-        f32 f;
-        s32 i;
-    } stillmoredata;
-    union {
-        f32 f;
-        s32 i;
-    } yetstillmoredata;
-} ALParam;
-
 typedef struct {
     struct ALParam_s *next;
     s32 delta;

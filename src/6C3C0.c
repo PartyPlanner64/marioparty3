@@ -1,10 +1,22 @@
 #include "common.h"
+#include "PR/sndp.h"
 
 INCLUDE_ASM("asm/nonmatchings/6C3C0", func_8006B7C0_main);
 
 INCLUDE_ASM("asm/nonmatchings/6C3C0", func_8006BA3C_main);
 
-INCLUDE_ASM("asm/nonmatchings/6C3C0", func_8006BBBC_main);
+ALParam *func_8006BBBC_main(void) {
+    AudioManager *manager = D_800A2884_main;
+    ALParam *param = NULL;
+
+    if (manager->freeParamList != NULL) {
+        param = manager->freeParamList;
+        manager->freeParamList = param->next;
+        param->next = NULL;
+    }
+
+    return param;
+}
 
 INCLUDE_ASM("asm/nonmatchings/6C3C0", func_8006BBE8_main);
 

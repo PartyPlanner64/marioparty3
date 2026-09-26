@@ -21,6 +21,13 @@ typedef struct ALSoundState_s {
 typedef struct AudioManager_s {
     /* 0x00 */ char unk_00[0x0C];
     /* 0x0C */ ALSndPlayer *sndp;
+    /* 0x10 */ ALLink pFreeList;
+    /* 0x18 */ ALLink unk_18;
+    /* 0x20 */ ALLink pLameList;
+    /* 0x28 */ s32 curSamples;
+    /* 0x2C */ s32 lastSamples;
+    /* 0x30 */ char unk_30[0x08];
+    /* 0x38 */ ALParam *freeParamList;
 } AudioManager;
 
 extern AudioManager *D_800A2884_main;

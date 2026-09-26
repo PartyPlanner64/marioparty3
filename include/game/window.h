@@ -20,7 +20,13 @@ typedef struct TextWindow {
     /* 0x01A */ s16 unk_1A;
     /* 0x01C */ char pad1C[4];                      /* maybe part of unk_1A[3]? */
     /* 0x020 */ s8 unk20;                           /* inferred */
-    /* 0x021 */ char pad21[8];                      /* maybe part of unk20[9]? */
+    /* 0x021 */ char pad21[1];                      /* maybe part of unk20[9]? */
+    /* 0x022 */ s8 unk_22;
+    /* 0x023 */ s8 unk_23;
+    /* 0x024 */ char pad24[1];                      /* maybe part of unk20[9]? */
+    /* 0x025 */ s8 unk_25;
+    /* 0x026 */ s8 unk_26;
+    /* 0x027 */ char pad27[2];                      /* maybe part of unk20[9]? */
     /* 0x029 */ s8 unk_29;
     /* 0x02A */ s8 unk_2A;
     /* 0x02B */ char pad2B[1];
@@ -29,8 +35,9 @@ typedef struct TextWindow {
     /* 0x030 */ s8 unk_30;                      /* maybe part of unk_2E[3]? */
     /* 0x031 */ s8 unk_31;
     /* 0x032 */ s16 unk_32;
-    /* 0x034 */ s16 unk_34;
-    /* 0x036 */ char pad36[2];                      /* maybe part of unk_34[4]? */
+    /* 0x034 */ u8 unk_34;
+    /* 0x035 */ u8 unk_35;
+    /* 0x036 */ char pad36[2];                      /* maybe part of unk_35[3]? */
     /* 0x038 */ u32 unk_38;
     /* 0x03C */ u16 unk3C;
     /* 0x03E */ u16 unk3E;

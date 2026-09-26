@@ -1,10 +1,40 @@
 #include "common.h"
 
+typedef struct {
+    s16 curGroup;       /* 0x00 */
+    s16 unk_02[0xB];    /* 0x02 */
+    s16 spriteGroup[4]; /* 0x18, unknown size */
+    s16 unk_20[0x1C];   /* 0x20 */
+    Vec2f pos;          /* 0x58 */
+} UnkInst;              /* unknown size */
+
+typedef struct {
+    s16 curGroup;  /* 0x00 */
+    s16 pad_02[5]; /* 0x02 */
+    s16 member;    /* 0x0C */
+} UnkInstWin;      /* sizeof 0x0E */
+
+void func_8010AC30_inst(omObjData *); /* extern */
+void func_8010BE78_inst(s32 arg0);        /* extern */
+
+extern s8 D_8010D408_inst;
+extern s8 D_8010D550_inst;
+extern s8 D_8010D5B0_inst;
+extern void (*D_8010DC94_inst)(omObjData *);
+extern void (*D_8010DCA4_inst)(s32);
+extern UnkInstWin D_8010DCA8_inst;
+extern UnkInst D_8010DCE0_inst;
+extern UnkInst D_8010DD58_inst;
+
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010A1D0_inst);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010A750_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010AC04_inst);
+void func_8010AC04_inst(void) {
+    if (D_8010D550_inst == 1) {
+        D_8010DC94_inst = func_8010AC30_inst;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010AC30_inst);
 
@@ -57,7 +87,14 @@ INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010B628_inst);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010B990_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010BE28_inst);
+void func_8010BE28_inst(void) {
+    if (D_8010D408_inst == 1) {
+        D_8010D5B0_inst = 1;
+    }
+    if (D_8010D5B0_inst == 1) {
+        D_8010DCA4_inst = func_8010BE78_inst;
+    }
+}
 
 void func_8010BE70_inst(void) {
 }
@@ -94,19 +131,34 @@ INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010C8E0_inst);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010CA74_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010CBB8_inst);
+void func_8010CBB8_inst(s32 arg0) {
+    TextWindow *window = &D_800CC69C_main[D_8010DCA8_inst.curGroup];
+    s16 member = D_8010DCA8_inst.member;
+
+    func_80055024_main(window->unk_6C, member, window->unk_6E[member], arg0 & 0xFF);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010CC14_inst);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010CDE4_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010CED0_inst);
+void func_8010CED0_inst(s32 x, s32 y) {
+    func_80054904_main(D_8010DCE0_inst.spriteGroup[D_8010DCE0_inst.curGroup], 0, x, y);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010CF14_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010CF98_inst);
+void func_8010CF98_inst(void) {
+    D_8010DD58_inst.pos.x = 216.0f;
+    D_8010DD58_inst.pos.y = 90.0f;
+    func_80054904_main(D_8010DD58_inst.spriteGroup[D_8010DD58_inst.curGroup], 0, 0xD8, 0x5A);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010CFF4_inst);
+void func_8010CFF4_inst(void) {
+    D_8010DD58_inst.pos.x = 512.0f;
+    D_8010DD58_inst.pos.y = 512.0f;
+    func_80054904_main(D_8010DD58_inst.spriteGroup[D_8010DD58_inst.curGroup], 0, 0x200, 0x200);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010D044_inst);
 

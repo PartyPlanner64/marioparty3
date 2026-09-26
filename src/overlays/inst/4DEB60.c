@@ -11,11 +11,17 @@ void func_80106898_inst(void);         /* extern */
 void func_80106EB4_inst(void);         /* extern */
 void func_80107308_inst(void);         /* extern */
 void func_80107470_inst(void);         /* extern */
+void func_80107A24_inst(omObjData *);  /* extern */
 void func_80108350_inst(void);         /* extern */
 void func_801094B0_inst(void);         /* extern */
 void func_80109A90_inst(void);         /* extern */
 void func_8010A1D0_inst(void);         /* extern */
 void func_8010B990_inst(void);         /* extern */
+void func_8000BC48_main(u16, u16);     /* extern */
+
+extern f32 D_800CB890_main;
+extern f32 D_800CE17C_main[];
+extern f32 D_800D5210_main;
 
 extern s8 D_8010D400_inst[7];
 extern s8 D_8010D407_inst;
@@ -23,8 +29,19 @@ extern s8 D_8010D408_inst;
 extern s8 D_8010D40A_inst;
 extern s8 D_8010D40B_inst;
 extern s8 D_8010D411_inst;
+extern Vec D_8010D418_inst;
+extern Vec D_8010D424_inst;
+extern Vec D_8010D430_inst;
+extern Vec D_8010D450_inst;
 extern Vec D_8010D45C_inst;
+extern Vec D_8010D480_inst;
 extern Vec D_8010D48C_inst;
+extern void *D_8010DC10_inst;
+extern void *D_8010DC14_inst;
+extern void *D_8010DC18_inst;
+extern omObjData *D_8010DDD8_inst;
+extern void (*D_8010DDDC_inst)(omObjData *);
+extern s32 D_8010D658_inst[];
 
 void func_801059A0_inst(void) {
     void (*procFunc)(void) = NULL;
@@ -131,7 +148,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_801061EC_inst);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80106310_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80106388_inst);
+void func_80106388_inst(void) {
+    u16 espriteSlot;
+
+    espriteSlot = InitEspriteSlot(func_8000B838_main(D_8010D658_inst[D_8010D40A_inst]), 0, 0);
+    func_8000BBD4_main(espriteSlot, 0xA0, 0x78);
+    func_8000BC48_main(espriteSlot, 0x4000);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_801063F4_inst);
 
@@ -139,9 +162,28 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4DEB60", D_8010D658_inst);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80106418_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_8010674C_inst);
+void func_8010674C_inst(omObjData *object) {
+    D_800CE17C_main[0] = D_8010D418_inst.x;
+    D_800CE17C_main[1] = D_8010D418_inst.z;
+    D_800CE17C_main[-1] = 0.0f;
+    D_800CE17C_main[2] = gCameraList->fov[0];
+    D_800CE17C_main[3] = D_800D5210_main;
+    D_800CE17C_main[4] = D_800CB890_main;
+    Hu3DCamSetPositionOrientation(0, &D_8010D418_inst, &D_8010D424_inst, &D_8010D430_inst);
+    Hu3DCamUpdateMtx(0);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_801067CC_inst);
+void func_801067CC_inst(void) {
+    D_8010D418_inst.x = D_8010D450_inst.x;
+    D_8010D418_inst.y = D_8010D450_inst.y;
+    D_8010D418_inst.z = D_8010D450_inst.z;
+    D_8010D424_inst.x = D_8010D480_inst.x;
+    D_8010D424_inst.y = D_8010D480_inst.y;
+    D_8010D424_inst.z = D_8010D480_inst.z;
+    D_8010D430_inst.x = 0.0f;
+    D_8010D430_inst.y = 1.0f;
+    D_8010D430_inst.z = -0.000001f;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80106850_inst);
 
@@ -167,7 +209,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80107470_inst);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80107938_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_801079CC_inst);
+void func_801079CC_inst(omObjData *obj) {
+    func_8001C814_main(obj->model[3], 1, 0);
+    func_8001C258_main(obj->model[3], 4, 0);
+    D_8010DDDC_inst = func_80107A24_inst;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80107A24_inst);
 
@@ -274,19 +320,36 @@ INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80107BF8_inst);
 void func_80107E18_inst(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80107E20_inst);
+s32 func_80107E20_inst(void) {
+    s16 modelId = D_8010DDD8_inst->model[0];
+    f32 unk40 = HmfModelData[modelId].unk40;
+    return D_800CCF58_main[HmfModelData[modelId].unk02].unk02 <= unk40;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80107E98_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80107EE0_inst);
+void func_80107EE0_inst(void) {
+    DataClose(D_8010DC18_inst);
+    DataClose(D_8010DC10_inst);
+    DataClose(D_8010DC14_inst);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80107F18_inst);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80107F98_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_801080A8_inst);
+s32 func_801080A8_inst(void) {
+    f32 unk40 = HmfModelData[D_8010DDD8_inst->model[0]].unk40;
+    return unk40 == 0.0f;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_801080FC_inst);
+void func_801080FC_inst(void) {
+    omObjData *obj = D_8010DDD8_inst;
+
+    func_8001C814_main(obj->model[0], 1, 0);
+    func_8001C258_main(obj->model[0], 4, 0);
+    func_8001C814_main(obj->model[0], 4, 4);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_8010815C_inst);
 

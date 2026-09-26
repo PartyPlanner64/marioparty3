@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game/vibrator.h"
+#include "mallocblock.h"
 
 #define UNK_VALUE 0x91
 
@@ -14,6 +15,10 @@ typedef struct UnkFileSelect {
     u8 unk_01[0xB];
     char unk_0C[0x78];
 } UnkFileSelect; // sizeof 0x84
+
+typedef struct UnkFileName {
+    u8 unk_00[0xB];
+} UnkFileName; // sizeof 0xB
 
 typedef struct UnkFileSelect3 {
     s16 unk_00;
@@ -30,24 +35,59 @@ typedef struct UnkFileSelect3 {
     s32 unk_28;
 } UnkFileSelect3;
 
+typedef struct UnkFileSelect4 {
+    s16 unk_00;
+    u16 unk_02;
+    s32 unk_04;
+    s32 unk_08;
+    f32 unk_0C;
+    f32 unk_10;
+    f32 unk_14;
+    s8 unk_18;
+    u8 unk_19[3];
+} UnkFileSelect4; // sizeof 0x1C
+
+typedef struct UnkFileSelect5 {
+    omObjData *unk_00;
+    char unk_04[0x58];
+} UnkFileSelect5; // sizeof 0x5C
+
+void func_80105FBC_filesel(s32, s32, s32);
 void func_801076D0_filesel(s32, u32);
 s32 func_80108834_filesel(void);
 void func_8010AB1C_filesel(s32, u32);
 void func_8010AB58_filesel(s32, u32);
 void func_8010AB60_filesel(s32, u32);
+void func_8010FC58_filesel(omObjData *object);
 void func_80110FB0_filesel(u32);
 void func_801110F0_filesel(u32);
+void func_8011139C_filesel(s32);
 s32 func_80111B14_filesel(s32);
-void func_80019C00_main(s32);
 u32 func_80106AD8_filesel(u32);
 s32 func_8010AC58_filesel(s32);
 s32 func_80112494_filesel(s32, u8 *);
+s32 func_800452A0_main(void *, void *);
+void func_8000BBFC_main(u16, s16);
+void func_8000BC48_main(u16, u16);
+void func_8000BC88_main(u16, u16);
+void func_8000BCC8_main(u16, s32);
+void func_8000BE5C_main(u16, f32, f32);
 
 extern u16 D_800D1244_main;
 extern UnkFileSelect D_801142DC_filesel[3];
-extern UnkFileSelect2 D_80114158_filesel[];
+extern u8 D_80114490_filesel[0x20];
+extern UnkFileSelect2 D_80114158_filesel[0x20]; // sizeof 0xC
 extern UnkFileSelect3 D_80113650_filesel[0x40];
+extern UnkFileSelect4 D_80112ED0_filesel[0x40];
+extern s16 D_801135D0_filesel[0x40];
 extern Process *D_80114504_filesel;
+extern UnkFileSelect5 D_80114598_filesel[3];
+extern u8 *D_801127FC_filesel[];
+extern u8 *D_80112844_filesel[];
+extern u8 *D_8011288C_filesel[];
+extern s16 D_80114150_filesel;
+extern u16 D_80114152_filesel;
+extern s32 D_801146D8_filesel;
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801059D0_filesel);
 
@@ -61,11 +101,21 @@ INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105CB0_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105CC4_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105CE0_filesel);
+void func_80105CE0_filesel(s32 arg0, s32 arg1) {
+    D_801135D0_filesel[arg0] = func_8000B838_main(arg1);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105D18_filesel);
+void func_80105D18_filesel(s32 arg0) {
+    if (D_801135D0_filesel[arg0] != -1) {
+        HuSprKill(D_801135D0_filesel[arg0]);
+    }
+    D_801135D0_filesel[arg0] = -1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105D70_filesel);
+void func_80105D70_filesel(s32 arg0, s16 arg1) {
+    D_80112ED0_filesel[arg0].unk_00 = InitEspriteSlot(D_801135D0_filesel[arg1], 0, 0);
+    func_80105FBC_filesel(arg0, 0xA0, 0x78);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105DD8_filesel);
 
@@ -85,23 +135,46 @@ INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105F84_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105FA0_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105FBC_filesel);
+void func_80105FBC_filesel(s32 arg0, s32 arg1, s32 arg2) {
+    D_80112ED0_filesel[arg0].unk_04 = arg1;
+    D_80112ED0_filesel[arg0].unk_08 = arg2;
+    func_8000BBD4_main(D_80112ED0_filesel[arg0].unk_00, arg1, arg2);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80106014_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80106044_filesel);
+void func_80106044_filesel(s32 arg0, f32 arg1, f32 arg2) {
+    D_80112ED0_filesel[arg0].unk_0C = arg1;
+    D_80112ED0_filesel[arg0].unk_10 = arg2;
+    func_8000BE5C_main(D_80112ED0_filesel[arg0].unk_00, arg1, arg2);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80106094_filesel);
+void func_80106094_filesel(s32 arg0, u16 arg1) {
+    func_8000BBFC_main(D_80112ED0_filesel[arg0].unk_00, arg1);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801060CC_filesel);
+void func_801060CC_filesel(s32 arg0, u16 arg1) {
+    func_8000BC48_main(D_80112ED0_filesel[arg0].unk_00, arg1);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80106100_filesel);
+void func_80106100_filesel(s32 arg0, u16 arg1) {
+    func_8000BC88_main(D_80112ED0_filesel[arg0].unk_00, arg1);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80106134_filesel);
+void func_80106134_filesel(s32 arg0, u16 arg1) {
+    func_8000BCC8_main(D_80112ED0_filesel[arg0].unk_00, arg1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80106168_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801061D4_filesel);
+void func_801061D4_filesel(void) {
+    s32 i;
+
+    for (i = 0; i < ARRAY_COUNT(D_80113650_filesel); i++) {
+        D_80113650_filesel[i].unk_00 = -1;
+        D_80113650_filesel[i].unk_02 = -1;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80106220_filesel);
 
@@ -119,29 +192,64 @@ s16 func_80106450_filesel(s32 arg0) {
     return D_80113650_filesel[arg0].unk_02;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80106474_filesel);
+void func_80106474_filesel(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+    D_80113650_filesel[arg0].unk_1C = arg1;
+    D_80113650_filesel[arg0].unk_20 = arg2;
+    D_80113650_filesel[arg0].unk_24 = arg3;
+    Hu3DModelRotSet(D_80113650_filesel[arg0].unk_00, arg1, arg2, arg3);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801064DC_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80106550_filesel);
+void func_80106550_filesel(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+    D_80113650_filesel[arg0].unk_10 = arg1;
+    D_80113650_filesel[arg0].unk_14 = arg2;
+    D_80113650_filesel[arg0].unk_18 = arg3;
+    Hu3DModelScaleSet(D_80113650_filesel[arg0].unk_00, arg1, arg2, arg3);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801065B8_filesel);
+void func_801065B8_filesel(s32 arg0, f32 *arg1, f32 *arg2, f32 *arg3) {
+    *arg1 = D_80113650_filesel[arg0].unk_04;
+    *arg2 = D_80113650_filesel[arg0].unk_08;
+    *arg3 = D_80113650_filesel[arg0].unk_0C;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010660C_filesel);
+void func_8010660C_filesel(s32 arg0, f32 *arg1, f32 *arg2, f32 *arg3) {
+    *arg1 = D_80113650_filesel[arg0].unk_1C;
+    *arg2 = D_80113650_filesel[arg0].unk_20;
+    *arg3 = D_80113650_filesel[arg0].unk_24;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80106654_filesel);
+void func_80106654_filesel(s32 arg0, f32 *arg1, f32 *arg2, f32 *arg3) {
+    *arg1 = D_80113650_filesel[arg0].unk_10;
+    *arg2 = D_80113650_filesel[arg0].unk_14;
+    *arg3 = D_80113650_filesel[arg0].unk_18;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010669C_filesel);
+void func_8010669C_filesel(s32 arg0) {
+    func_8001C258_main(D_80113650_filesel[arg0].unk_00, 4, 4);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801066DC_filesel);
+void func_801066DC_filesel(s32 arg0) {
+    func_8001C258_main(D_80113650_filesel[arg0].unk_00, 4, 0);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010671C_filesel);
+void func_8010671C_filesel(s32 arg0, s32 arg1) {
+    func_8001C814_main(D_80113650_filesel[arg0].unk_00, -1, arg1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80106760_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801067D0_filesel);
+void func_801067D0_filesel(s32 arg0, s16 arg1) {
+    func_8001C814_main(D_80113650_filesel[arg0].unk_00, arg1, 0);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80106814_filesel);
+void func_80106814_filesel(s32 arg0) {
+    // The original call omits the scale argument.
+    void (*setModelScale)() = (void (*)())func_8001C92C_main;
+
+    setModelScale(D_80113650_filesel[arg0].unk_00);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010684C_filesel);
 
@@ -151,11 +259,32 @@ INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80106950_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801069D8_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80106A48_filesel);
+void func_80106A48_filesel(void) {
+    // The original call omits the resource id.
+    D_80114150_filesel = ((s16 (*)())func_8000B838_main)();
+    D_80114152_filesel = InitEspriteSlot(D_80114150_filesel, 0, 0);
+    func_8000BC48_main(D_80114152_filesel, 0x4000);
+    func_8000BBD4_main(D_80114152_filesel, 0xA0, 0x78);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80106AAC_filesel);
+void func_80106AAC_filesel(void) {
+    func_8000C184_main(D_80114152_filesel);
+    HuSprKill(D_80114150_filesel);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80106AD8_filesel);
+u32 func_80106AD8_filesel(u32 arg0) {
+    char buf[0x100];
+    s32 len;
+    void *ptr;
+
+    if (0x80000000U < arg0) {
+        len = func_800452A0_main(buf, (void *)arg0);
+        ptr = HuMemAlloc(len);
+        bcopy(buf, ptr, len);
+        return (u32)ptr;
+    }
+    return arg0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80106B40_filesel);
 
@@ -171,7 +300,14 @@ INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801072B4_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80107380_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010744C_filesel);
+void func_8010744C_filesel(void) {
+    s32 i;
+
+    for (i = 0; i < ARRAY_COUNT(D_80114158_filesel); i++) {
+        D_80114158_filesel[i].unk_00 = -1;
+        D_80114158_filesel[i].unk_04 = 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80107490_filesel);
 
@@ -179,7 +315,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80107574_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801075D8_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80107608_filesel);
+void func_80107608_filesel(s32 arg0, f32 arg1, f32 arg2) {
+    func_8005BA90_main(D_80114158_filesel[arg0].unk_00, arg1, arg2);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80107670_filesel);
 
@@ -190,7 +328,7 @@ void func_801076D0_filesel(s32 arg0, u32 arg1) {
 
     func_8005D294_main(D_80114158_filesel[arg0].unk_00);
     if (D_80114158_filesel[arg0].unk_04 != 0) {
-        func_80019C00_main(D_80114158_filesel[arg0].unk_04);
+        func_80019C00_main((void *)D_80114158_filesel[arg0].unk_04);
         D_80114158_filesel[arg0].unk_04 = 0;
     }
 
@@ -210,7 +348,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80107810_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010782C_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80107880_filesel);
+void func_80107880_filesel(s32 arg0) {
+    do {
+        HuPrcVSleep();
+    } while (!(arg0 & D_800D5558_main[0]));
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801078BC_filesel);
 
@@ -504,13 +646,28 @@ INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010AB60_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010AC58_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010B4D0_filesel);
+u16 func_8010B4D0_filesel(s32 arg0, s32 arg1) {
+    u8 *str = D_801127FC_filesel[arg0];
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010B4FC_filesel);
+    return (str[arg1 * 2] << 8) | str[arg1 * 2 + 1];
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010B528_filesel);
+u16 func_8010B4FC_filesel(s32 arg0, s32 arg1) {
+    u8 *str = D_80112844_filesel[arg0];
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010B554_filesel);
+    return (str[arg1 * 2] << 8) | str[arg1 * 2 + 1];
+}
+
+u16 func_8010B528_filesel(s32 arg0, s32 arg1) {
+    u8 *str = D_8011288C_filesel[arg1];
+
+    return (str[arg0 * 2] << 8) | str[arg0 * 2 + 1];
+}
+
+void func_8010B554_filesel(u8 *arg0) {
+    bzero(D_80114490_filesel, sizeof(D_80114490_filesel));
+    bcopy(arg0, D_80114490_filesel, sizeof(D_80114490_filesel));
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010B598_filesel);
 
@@ -684,7 +841,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010FBE0_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010FC58_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010FF48_filesel);
+void func_8010FF48_filesel(s32 arg0, s32 arg1) {
+    omObjData *obj = omAddObj(6, 0, 0, -1, func_8010FC58_filesel);
+
+    obj->work[0] = arg0;
+    obj->work[1] = arg1;
+    obj->work[2] = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010FFA0_filesel);
 
@@ -704,9 +867,18 @@ INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80110B4C_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80110B7C_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80110C84_filesel);
+void func_80110C84_filesel(void) {
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80110CC0_filesel);
+    for (i = 0; i < 3; i++) {
+        D_80114598_filesel[i].unk_00 = NULL;
+    }
+}
+
+void func_80110CC0_filesel(s32 arg0) {
+    omDelObj(D_80114598_filesel[arg0].unk_00);
+    D_80114598_filesel[arg0].unk_00 = NULL;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80110D0C_filesel);
 
@@ -724,7 +896,10 @@ INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80111144_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8011132C_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8011139C_filesel);
+void func_8011139C_filesel(s32 arg0) {
+    omDelObj(D_80114598_filesel[arg0].unk_00);
+    D_80114598_filesel[arg0].unk_00 = NULL;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801113E8_filesel);
 
@@ -769,9 +944,39 @@ INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80112508_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80112584_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801125E8_filesel);
+s32 func_801125E8_filesel(UnkFileName *arg0) {
+    s32 i;
+    s32 count;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80112630_filesel);
+    for (i = 0, count = 0; i < 10; i += 2) {
+        if ((u16)((arg0->unk_00[i] << 8) | arg0->unk_00[i + 1]) == 0) {
+            break;
+        }
+        count++;
+    }
+
+    // terminate string
+    arg0->unk_00[i + 1] = '\0';
+    arg0->unk_00[i] = '\0';
+    return count;
+}
+
+void func_80112630_filesel(omObjData *arg0) {
+    s32 *counter;
+    s32 newValue;
+
+    if (D_801146D8_filesel == 0) {
+        RepeatVibrator(0, 5, 0, 5);
+    }
+
+    counter = &D_801146D8_filesel;
+    if (*counter < 0xB) {
+        newValue = *counter + 1;
+    } else {
+        newValue = 0;
+    }
+    *counter = newValue;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80112684_filesel);
 

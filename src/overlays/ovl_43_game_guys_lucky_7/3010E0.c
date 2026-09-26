@@ -1,8 +1,23 @@
 #include "common.h"
 
+extern s16 D_8010D772_game_guys_lucky_7;
+extern s16 D_8010D774_game_guys_lucky_7;
+extern s16 D_8010D776_game_guys_lucky_7;
+extern s16 D_8010D778_game_guys_lucky_7;
+extern s16 D_8010D77A_game_guys_lucky_7;
+
+void func_80107DE4_game_guys_lucky_7(omObjData *object);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", func_801059A0_game_guys_lucky_7);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", func_801059BC_game_guys_lucky_7);
+s32 func_801059BC_game_guys_lucky_7(f32 arg0) {
+    u8 randomByte1 = rand8();
+    u8 randomByte2 = rand8();
+    s32 shiftedByte1 = (randomByte1 << 8);
+    s32 scaledRandom = ((randomByte2 | shiftedByte1) / 65536.0f) * arg0;
+
+    return scaledRandom;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", func_80105A28_game_guys_lucky_7);
 
@@ -65,9 +80,19 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", func_80
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", func_80107EEC_game_guys_lucky_7);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", func_80107F44_game_guys_lucky_7);
+void func_80107F44_game_guys_lucky_7(omObjData *object) {
+    if (D_800D530C_main == 1) {
+        object->func = func_80107DE4_game_guys_lucky_7;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", func_80107F6C_game_guys_lucky_7);
+void func_80107F6C_game_guys_lucky_7(void) {
+    D_8010D772_game_guys_lucky_7 = 0;
+    D_8010D774_game_guys_lucky_7 = 0;
+    D_8010D776_game_guys_lucky_7 = 0;
+    D_8010D778_game_guys_lucky_7 = 0;
+    D_8010D77A_game_guys_lucky_7 = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", func_80107F98_game_guys_lucky_7);
 

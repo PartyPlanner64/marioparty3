@@ -182,6 +182,7 @@ build/src/2.0L/os/recvmesg.c.o: OPTFLAGS = -O2
 build/src/2.0L/os/sendmesg.c.o: OPTFLAGS = -O2
 build/src/88CF0.c.o: OPTFLAGS = -O2
 build/src/88CF0.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
+build/src/6B050.c.o: OPTFLAGS = -O2
 
 # Files that have scommon
 build/src/2.0L/gu/lookathil.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
@@ -201,6 +202,7 @@ build/src/overlays/ovl_80_shared_board/ECA50.c.o: CFLAGS = -G0 -mips3 -mgp32 -mf
 # by stripping the blank newline, this will cause functions with nop issues to match
 NOP_OBJECTS := \
 	build/src/libhmath/gurotate.c.o \
+	build/src/6B050.c.o \
 	build/src/hmfload.c.o \
 	build/src/overlays/ovl_80_shared_board/EC3B0.c.o \
 	build/src/overlays/ovl_80_shared_board/ECA50.c.o \

@@ -1,8 +1,19 @@
 #include "common.h"
 
+void func_801072B4_game_guys_sweet_surprise(omObjData *object);
+void func_8010AB3C_game_guys_sweet_surprise(omObjData *object);
+void func_8010ABD8_game_guys_sweet_surprise(omObjData *object);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_801059A0_game_guys_sweet_surprise);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_801059BC_game_guys_sweet_surprise);
+s32 func_801059BC_game_guys_sweet_surprise(f32 arg0) {
+    u8 randomByte1 = rand8();
+    u8 randomByte2 = rand8();
+    s32 shiftedByte1 = (randomByte1 << 8);
+    s32 scaledRandom = ((randomByte2 | shiftedByte1) / 65536.0f) * arg0;
+
+    return scaledRandom;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_80105A28_game_guys_sweet_surprise);
 
@@ -58,7 +69,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", 
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_80107398_game_guys_sweet_surprise);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_801073F0_game_guys_sweet_surprise);
+void func_801073F0_game_guys_sweet_surprise(omObjData *object) {
+    if (D_800D530C_main == 1) {
+        object->func = func_801072B4_game_guys_sweet_surprise;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_80107418_game_guys_sweet_surprise);
 
@@ -120,7 +135,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", 
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_8010AA94_game_guys_sweet_surprise);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_8010AAD8_game_guys_sweet_surprise);
+void func_8010AAD8_game_guys_sweet_surprise(omObjData *object) {
+    omAddObj(0xC8, 0xA, 0xA, -1, func_8010AB3C_game_guys_sweet_surprise);
+    omAddObj(0x12C, 0xA, 0xA, -1, func_8010ABD8_game_guys_sweet_surprise);
+    object->func = NULL;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_8010AB3C_game_guys_sweet_surprise);
 
@@ -140,7 +159,17 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", 
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_8010B1B4_game_guys_sweet_surprise);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_8010B1F4_game_guys_sweet_surprise);
+Vec2f *func_8010B1F4_game_guys_sweet_surprise(Vec2f *outPos, f32 x, f32 y, f32 z) {
+    Vec pos;
+    Vec2f screenPos;
+
+    pos.x = x;
+    pos.y = y;
+    pos.z = z;
+    Hu3DCam3DToScreen(0, &pos, &screenPos);
+    *outPos = screenPos;
+    return outPos;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", D_8010CDEC_game_guys_sweet_surprise);
 

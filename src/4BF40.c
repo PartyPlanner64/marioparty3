@@ -90,7 +90,15 @@ void func_8004CEA4_main() {
     D_800CE194_main->work[0] = D_800D6AB8_main;
 }
 
-INCLUDE_ASM("asm/nonmatchings/4BF40", func_8004CF00_main);
+void func_8004CF00_main(omObjData *object) {
+    u32 *counter = object->work;
+
+    if (*counter == 0) {
+        D_800D530C_main = 1;
+    } else {
+        *counter -= 1;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/4BF40", func_8004CF30_main);
 

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "overlays/ovl_27.h"
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_801059A0_pipe_cleaners);
 
@@ -32,7 +33,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80105F
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80106078_pipe_cleaners);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_801060D4_pipe_cleaners);
+void func_801060D4_pipe_cleaners(s32 arg0) {
+    s32 *state = &D_8010A928_pipe_cleaners[arg0];
+
+    if (*state == 0) {
+        *state = 1;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_801060FC_pipe_cleaners);
 

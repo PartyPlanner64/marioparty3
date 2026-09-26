@@ -509,7 +509,10 @@ void func_8001C8E4_main(s16 idx, u32 arg1) {
     HmfModelData[idx].hmf->unk00 = (arg1 >> 10) & 7;
 }
 
-INCLUDE_ASM("asm/nonmatchings/hmfman", func_8001C92C_main);
+void func_8001C92C_main(s16 idx, f32 arg1) {
+    HmfModel *model = &HmfModelData[idx];
+    model->unk44 = arg1;
+}
 
 // officially named "DynamicFree"
 INCLUDE_ASM("asm/nonmatchings/hmfman", func_8001C954_main);

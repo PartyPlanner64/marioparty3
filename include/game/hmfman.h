@@ -51,7 +51,7 @@ typedef struct {
 // New struct for the array at unk84 (0x10 bytes per entry)
 typedef struct {
     u8 unk0[3];
-    u8 unk3;
+    s8 unk3;
     u8 unk4;
     u8 unk5[4];
     u8 unk9;

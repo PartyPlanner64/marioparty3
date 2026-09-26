@@ -27,18 +27,23 @@ extern s32 D_80119E94_msetup[];
 extern s32 D_80119EAC_msetup[];
 extern s32 D_80119EC4_msetup[];
 extern s32 D_80119EE0_msetup[];
+extern s16 D_8011A882_msetup;
+extern s16 D_8011A886_msetup;
 extern s16 D_8011A938_msetup;
 extern s16 D_8011A948_msetup;
+extern u8 D_8011AA43_msetup;
 extern u8 D_8011AA45_msetup; // board index chosen
 typedef struct UnkStarLift {
     char unk_00[0x04];
     s16 unk4;
 } UnkStarLift;
 
-s32 _CheckFlag(s32);             /* extern */
+s32 _CheckFlag(s32);            /* extern */
 s16 func_80055810_main(void *); /* extern */
 
 s32 func_80113ED4_msetup(UnkStarLift *arg0);
+
+void func_80107F88_msetup(s16, s16, s16);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801059A0_msetup);
 
@@ -72,7 +77,19 @@ INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801070FC_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80107428_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801077E0_msetup);
+s16 func_801077E0_msetup(s16 stateIndex) {
+    D_8011A882_msetup = 1;
+    do {
+        HuPrcVSleep();
+    } while (D_8011A882_msetup != 0);
+
+    if (D_8011A886_msetup < 0) {
+        stateIndex--;
+    } else {
+        stateIndex++;
+    }
+    return stateIndex;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80107840_msetup);
 
@@ -86,15 +103,49 @@ INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80107CF4_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80107D84_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80107E48_msetup);
+s16 func_80107E48_msetup(s16 stateIndex) {
+    D_8011A882_msetup = 7;
+    do {
+        HuPrcVSleep();
+    } while (D_8011A882_msetup != 0);
+
+    if (D_8011A886_msetup == 0) {
+        D_8011AA43_msetup = 1;
+    } else {
+        D_8011AA43_msetup = 0;
+    }
+
+    if (D_8011A886_msetup < 0) {
+        stateIndex--;
+    } else {
+        stateIndex++;
+    }
+    return stateIndex;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80107ECC_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80107F88_msetup);
+void func_80107F88_msetup(s16 countdown, s16 pointIndex, s16 frame) {
+    if (frame == 0x31) {
+        HuAudSeqPlay(9);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80107FB4_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80108464_msetup);
+s16 func_80108464_msetup(s16 stateIndex) {
+    D_8011A882_msetup = 9;
+    do {
+        HuPrcVSleep();
+    } while (D_8011A882_msetup != 0);
+
+    if (D_8011A886_msetup < 0) {
+        stateIndex--;
+    } else {
+        stateIndex++;
+    }
+    return stateIndex;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801084C4_msetup);
 

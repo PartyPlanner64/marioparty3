@@ -1,4 +1,5 @@
 #include "common.h"
+#include "mallocblock.h"
 
 typedef s16 Array2D[2][18];
 
@@ -16,11 +17,12 @@ void func_8010B82C_msetup(s32);
 void func_8010B858_msetup();
 void func_8010B998_msetup();
 s32 func_8010D684_msetup(s16, s16 *);
-void func_8010DDD8_msetup(void *);
+void func_8010DDD8_msetup(omObjData *);
 omObjData *func_8010DE38_msetup(s32, s32, s32);
 void func_8010E4BC_msetup(Array2D *, s32, s32);
 void func_8010E4D8_msetup(Array2D *, s32);
 void func_8010E8C8_msetup(Array2D *, s32, s32, f32, f32, f32, f32, s32);
+void func_8010EB94_msetup(void);
 void func_8010F320_msetup(s32, s32, s16, s16);
 extern s32 D_80119420_msetup;
 extern s32 D_80119E94_msetup[];
@@ -29,13 +31,33 @@ extern s32 D_80119EC4_msetup[];
 extern s32 D_80119EE0_msetup[];
 extern s16 D_8011A938_msetup;
 extern s16 D_8011A948_msetup;
+extern s16 D_8011A8B0_msetup[];
+extern s16 D_8011A890_msetup;
 extern u8 D_8011AA45_msetup; // board index chosen
 typedef struct UnkStarLift {
     char unk_00[0x04];
     s16 unk4;
 } UnkStarLift;
 
-s32 _CheckFlag(s32);             /* extern */
+typedef struct UnkMsetup {
+    char unk_00[0x8C];
+    s16 *unk8C;
+} UnkMsetup;
+
+typedef struct MsetupBoardAnim {
+    /* 0x00 */ f32 pos[4][3];
+    /* 0x30 */ s16 unk30[5];
+    /* 0x3A */ s16 count;
+} MsetupBoardAnim;
+
+typedef struct UnkMsetupEntry {
+    /* 0x00 */ s16 value;
+    /* 0x02 */ char unk_02[0x12];
+} UnkMsetupEntry; // sizeof 0x14
+
+extern UnkMsetupEntry D_8011A9F2_msetup[];
+
+s32 _CheckFlag(s32);            /* extern */
 s16 func_80055810_main(void *); /* extern */
 
 s32 func_80113ED4_msetup(UnkStarLift *arg0);
@@ -64,7 +86,12 @@ INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010B968_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010B998_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010B9B8_msetup);
+void func_8010B9B8_msetup(s32 arg0, s32 arg1) {
+    // wait for the given status bits of the menu window to be set
+    while ((~func_8005B68C_main(D_8011A890_msetup) & arg0) == arg1) {
+        HuPrcVSleep();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010BA10_msetup);
 
@@ -78,7 +105,14 @@ INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010BC18_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010BE8C_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010BEB0_msetup);
+s16 func_8010BEB0_msetup(s16 arg0, s16 arg1) {
+    s16 prevValue = D_8011A9F2_msetup[arg0].value;
+
+    if (arg1 >= 0) {
+        D_8011A9F2_msetup[arg0].value = arg1;
+    }
+    return prevValue;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010BEF8_msetup);
 
@@ -90,9 +124,19 @@ INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010CD14_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010CE8C_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010D060_msetup);
+void func_8010D060_msetup(HmfData *arg0, s16 arg1) {
+    // 0x80 in unk9 marks the entry's texture as used, but only if a texture is assigned
+    if (arg0->unk84[arg1].unk3 != -1) {
+        arg0->unk84[arg1].unk9 |= 0x80;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010D094_msetup);
+void func_8010D094_msetup(HmfData *arg0, s16 arg1) {
+    // 0x80 in unk9 marks the entry's texture as used, but only if a texture is assigned
+    if (arg0->unk84[arg1].unk3 != -1) {
+        arg0->unk84[arg1].unk9 &= 0x7F;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010D0C8_msetup);
 
@@ -108,13 +152,45 @@ INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010D6D0_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010DAC4_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010DDD8_msetup);
+void func_8010DDD8_msetup(omObjData *object) {
+    func_8000C184_main(object->model[0]);
+    func_8000C184_main(object->model[1]);
+    HuSprKill(object->model[2]);
+    HuSprKill(object->model[3]);
+    HuMemFree(object->data);
+    omDelObj(object);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010DE38_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010E00C_msetup);
+s16 func_8010E00C_msetup(omObjData *arg0, s16 arg1) {
+    MsetupBoardAnim *anim;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010E044_msetup);
+    if (arg0 == NULL) {
+        return 0;
+    }
+    anim = arg0->data;
+    if (arg1 > 4) {
+        arg1 = 4;
+    }
+    anim->count = arg1;
+    return arg1;
+}
+
+void func_8010E044_msetup(omObjData *arg0, s16 arg1, s16 arg2, f32 arg3, f32 arg4, f32 arg5) {
+    MsetupBoardAnim *anim;
+
+    if (arg0 == NULL) {
+        return;
+    }
+    anim = arg0->data;
+    if (arg1 < anim->count) {
+        anim->pos[arg1][0] = arg3;
+        anim->pos[arg1][1] = arg4;
+        anim->pos[arg1][2] = arg5;
+        anim->unk30[arg1] = arg2;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010E09C_msetup);
 
@@ -136,9 +212,21 @@ INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010E8C8_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010EB94_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010F2BC_msetup);
+void func_8010F2BC_msetup(void) {
+    omAddPrcObj(func_8010EB94_msetup, 0x3F00, 0x600, 0)->user_data = &D_8011A8B0_msetup;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010F2F4_msetup);
+s16 func_8010F2F4_msetup(UnkMsetup *arg0, s16 arg1) {
+    s16 *ptr = arg0->unk8C;
+    s32 value = arg1;
+
+    if (value != 0) {
+        *ptr = (s16)arg1;
+    } else {
+        value = *ptr;
+    }
+    return value;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010F320_msetup);
 
@@ -418,7 +506,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_801157B8_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_80115A9C_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_80115E78_msetup);
+void func_80115E78_msetup(s16 idx, f32 x, f32 y, f32 z) {
+    if (idx >= 0 && HmfModelData[idx].hmf != NULL) {
+        HmfModelData[idx].pos.x += x;
+        HmfModelData[idx].pos.y += y;
+        HmfModelData[idx].pos.z += z;
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/msetup/506F20", D_8011A7D8_msetup);
 

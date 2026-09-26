@@ -36,7 +36,11 @@ void func_80014714_main(s16 arg0, s16 arg1) {
     D_800CBB60_main[arg0].nodeIdx = arg1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/14EA0", func_8001473C_main);
+void func_8001473C_main(s16 arg0, s16 arg1) {
+    D_800CBB60_main[arg0].pointIdx = arg1;
+    D_800CBB60_main[arg0].nodeIdx = 0;
+    D_800CBB60_main[arg0].unk_08 = 0;
+}
 
 u16 func_8001476C_main(s16 arg0) {
     return D_800CBB60_main[arg0].nodeIdx;

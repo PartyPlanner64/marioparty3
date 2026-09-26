@@ -1,4 +1,8 @@
 #include "common.h"
+#include "mallocblock.h"
+
+extern s16 D_800B19E0_main;
+extern s16 D_800B19E2_main;
 
 INCLUDE_ASM("asm/nonmatchings/20A20", Hu3DAnimInit);
 
@@ -28,7 +32,11 @@ INCLUDE_ASM("asm/nonmatchings/20A20", func_80021550_main);
 
 INCLUDE_ASM("asm/nonmatchings/20A20", func_800216F8_main);
 
-INCLUDE_ASM("asm/nonmatchings/20A20", func_80021AF4_main);
+void func_80021AF4_main(void) {
+    HuMemFreeAllWithTag(0x55F0);
+    D_800B19E0_main = 0;
+    D_800B19E2_main = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/20A20", func_80021B20_main);
 

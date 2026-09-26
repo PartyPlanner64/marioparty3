@@ -1,4 +1,5 @@
 #include "common.h"
+#include "mallocblock.h"
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3BFA00", func_8010BD30_boardresult);
 
@@ -11,8 +12,14 @@ typedef struct BoardResultWork {
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
-    /* 0x0C */ char unk_0C[0x40];
+    /* 0x0C */ s32 unk_0C;
+    /* 0x10 */ f32 unk_10;
+    /* 0x14 */ s32 unk_14;
+    /* 0x18 */ Vec pos;
+    /* 0x24 */ char unk_24[0x28];
 } BoardResultWork; // sizeof 0x4C
+
+void func_8010DA30_boardresult(void); /* extern */
 
 void func_8010BDBC_boardresult(BoardResultWork *arg0, s32 arg1) {
     arg0->unk_00 = arg1;
@@ -46,6 +53,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3BFA00", func_8010D36C_boardr
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3BFA00", func_8010D87C_boardresult);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3BFA00", func_8010D9D0_boardresult);
+void func_8010D9D0_boardresult(void) {
+    Process *proc = omAddPrcObj(func_8010DA30_boardresult, 0x3F00, 0x2000, 0);
+    BoardResultWork *work = proc->user_data = HuMemAllocTag(sizeof(BoardResultWork), 0x7918);
+
+    work->pos.x = 0.0f;
+    work->pos.y = 100.0f;
+    work->pos.z = 0.0f;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3BFA00", func_8010DA30_boardresult);

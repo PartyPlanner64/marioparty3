@@ -119,7 +119,13 @@ typedef struct {
     /* 0x00 */ s16 unk00;
     /* 0x02 */ s16 unk02;
     /* 0x04 */ u16 unk04;
-    /* 0x08 */ char unk08[0x10];
+    /* 0x08 */ f32 unk08;
+    /* 0x0C */ f32 unk0C;
+    /* 0x10 */ union {
+        f32 f;
+        s32 i;
+    } unk10;
+    /* 0x14 */ f32 unk14;
     /* 0x18 */ void (*unk18)(s16);
 } HmfModelData_UnkBC_Struct; // Size unknown
 

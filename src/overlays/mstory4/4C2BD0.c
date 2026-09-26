@@ -1,5 +1,10 @@
 #include "common.h"
 
+extern s16 D_80112368_mstory4[];
+extern void (*D_801121DC_mstory4)(omObjData *);
+
+void func_80109B5C_mstory4(omObjData *object);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_801059A0_mstory4);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mstory4/4C2BD0", D_80111C10_mstory4);
@@ -157,7 +162,10 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80109B5C_mstory4);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80109CCC_mstory4);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80109E3C_mstory4);
+void func_80109E3C_mstory4(void) {
+    HuPrcSleep(5);
+    D_801121DC_mstory4 = func_80109B5C_mstory4;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80109E68_mstory4);
 
@@ -302,9 +310,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010EDA0_mstory4);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010EE3C_mstory4);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010EF00_mstory4);
+void func_8010EF00_mstory4(s32 index) {
+    func_8000BB54_main(D_80112368_mstory4[index]);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010EF28_mstory4);
+void func_8010EF28_mstory4(s32 index) {
+    func_8000BB94_main(D_80112368_mstory4[index]);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010EF50_mstory4);
 
@@ -485,7 +497,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80110460_mstory4);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80110494_mstory4);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_801104D4_mstory4);
+void func_801104D4_mstory4(s16 modelId, s32 value) {
+    HmfModelData[modelId].unkBC->unk10.i = value;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80110500_mstory4);
 

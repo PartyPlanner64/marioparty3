@@ -2,6 +2,11 @@
 #include "include_asm.h"
 
 extern Gfx *D_800BDA7C_main;
+extern u16 *D_800A26D4_main;
+extern u16 *D_800D5550_main;
+extern u16 *D_800BDA70_main;
+extern u16 *D_800BDA74_main;
+extern u8 D_800D5304_main;
 
 INCLUDE_ASM("asm/nonmatchings/wipe", WipeInit);
 
@@ -73,6 +78,10 @@ void func_800661D4_main(Gfx **arg0, s32 arg1, s32 arg2) {
     gSPDisplayList((*arg0)++, D_800BDA7C_main);
 }
 
-INCLUDE_ASM("asm/nonmatchings/wipe", func_800661F8_main);
+void func_800661F8_main(void) {
+    D_800BDA70_main = D_800A26D4_main;
+    D_800BDA74_main = D_800D5550_main;
+    D_800D5304_main = 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/wipe", func_80066228_main);

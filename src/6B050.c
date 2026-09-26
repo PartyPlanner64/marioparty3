@@ -2,9 +2,19 @@
 
 /* Filter message ids used by the envelope mixer */
 enum {
+    AL_FILTER_FREE_VOICE = 0,
     AL_FILTER_ADD_UPDATE = 3,
     AL_FILTER_RESET = 4,
-    AL_FILTER_START = 9
+    AL_FILTER_SET_WAVETABLE = 5,
+    AL_FILTER_SET_PITCH = 7,
+    AL_FILTER_SET_UNITY_PITCH = 8,
+    AL_FILTER_START = 9,
+    AL_FILTER_SET_VOLUME = 11,
+    AL_FILTER_SET_PAN = 12,
+    AL_FILTER_START_VOICE_ALT = 13,
+    AL_FILTER_START_VOICE = 14,
+    AL_FILTER_STOP_VOICE = 15,
+    AL_FILTER_SET_FXAMT = 16
 };
 
 typedef struct ALFilter_s {
@@ -13,14 +23,55 @@ typedef struct ALFilter_s {
     s32 (*setParam)(void *filter, s32 paramID, void *param);
 } ALFilter;
 
-/* Node of the envelope control list. Nodes are cast to the parameter structs
- * the individual messages need, the widest of which reaches offset 0x1C. */
 typedef struct ALParam_s {
-    /* 0x00 */ struct ALParam_s *next;
-    /* 0x04 */ s32 delta;
-    /* 0x08 */ s16 type;
-    /* 0x0A */ char unk_0A[0x12];
+    struct ALParam_s *next;
+    s32 delta;
+    s16 type;
+    union {
+        f32 f;
+        s32 i;
+    } data;
+    union {
+        f32 f;
+        s32 i;
+    } moredata;
+    union {
+        f32 f;
+        s32 i;
+    } stillmoredata;
+    union {
+        f32 f;
+        s32 i;
+    } yetstillmoredata;
 } ALParam;
+
+typedef struct {
+    struct ALParam_s *next;
+    s32 delta;
+    s16 type;
+    s16 unity; /* disable resampler */
+    f32 pitch;
+    s16 volume;
+    ALPan pan;
+    u8 fxMix;
+    s32 samples;
+    struct ALWaveTable_s *wave;
+} ALStartParamAlt;
+
+typedef struct {
+    struct ALParam_s *next;
+    s32 delta;
+    s16 type;
+    s16 unity; /* disable resampler */
+    struct ALWaveTable_s *wave;
+} ALStartParam;
+
+typedef struct {
+    struct ALParam_s *next;
+    s32 delta;
+    s16 type;
+    struct PVoice_s *pvoice;
+} ALFreeParam;
 
 /* Per voice filter. Sample loading, resampling and the envelope generator are
  * all kept in this single object, so the layout is the libultra load filter,
@@ -66,9 +117,187 @@ typedef struct {
     /* 0x84 */ s32 motion;
 } ALEnvMixer;
 
-s32 func_8006B268_main(ALEnvMixer *e, s32 paramID, void *param);
+typedef struct PVoice_s {
+    ALEnvMixer envmixer;
+    s32 offset;
+} PVoice;
 
-INCLUDE_ASM("asm/nonmatchings/6B050", func_8006A450_main);
+extern s16 D_800A2780_main[128];
+
+void func_8006BBE8_main(ALParam *param);
+void func_8006BC60_main(PVoice *voice);
+s32 func_8006A9C8_main(ALEnvMixer *e, s32 paramID, void *param);
+Acmd *func_8006AA6C_main(ALEnvMixer *filter, s16 *inp, s16 *outp, s32 outCount, Acmd *p);
+s16 func_8006ADCC_main(s16 ivol, s32 samples, s16 ratem, u16 ratel);
+s16 func_8006AC8C_main(f64 vol, f64 tgt, s32 count, u16 *ratel);
+s32 func_8006B268_main(ALEnvMixer *e, s32 paramID, void *param);
+Acmd *func_8006B540_main(ALEnvMixer *e, s16 *inp, Acmd *p);
+
+Acmd *func_8006A450_main(ALEnvMixer *filter, s32 sampleOffset, Acmd *p) {
+    Acmd *ptr = p;
+    ALEnvMixer *e = filter;
+    s16 inp;
+    s32 lastOffset;
+    s32 thisOffset = sampleOffset;
+    s32 outCount = 184;
+    s32 samples;
+    s16 loutp = 0;
+    s32 fVol;
+    ALParam *thisParam;
+
+    inp = 0;
+
+    while (e->ctrlList != 0) {
+        lastOffset = thisOffset;
+        thisOffset = e->ctrlList->delta;
+        /* Control updates are rounded to the nearest 184-sample frame. */
+        samples = ((thisOffset - lastOffset + 92) / 184) * 184;
+        if (samples == 0) {
+            thisOffset = lastOffset;
+        }
+        if (samples > outCount) {
+            break;
+        }
+
+        switch (e->ctrlList->type) {
+            case AL_FILTER_START_VOICE_ALT: {
+                ALStartParamAlt *param = (ALStartParamAlt *)e->ctrlList;
+
+                s32 tmp;
+
+                if (param->unity) {
+                    e->rsUpitch = 1;
+                }
+
+                func_8006B268_main(e, AL_FILTER_SET_WAVETABLE, param->wave);
+                e->motion = AL_PLAYING;
+
+                e->first = 1;
+
+                e->delta = 0;
+                e->segEnd = ((param->samples + 92) / 184) * 184;
+
+                tmp = ((s32)param->volume * (s32)param->volume) >> 15;
+                e->volume = (s16)tmp;
+                e->pan = param->pan;
+                e->dryamt = D_800A2780_main[param->fxMix];
+                e->wetamt = D_800A2780_main[128 - param->fxMix - 1];
+
+                if (param->samples) {
+                    e->cvolL = 1;
+                    e->cvolR = 1;
+                } else {
+                    e->cvolL = (e->volume * D_800A2780_main[e->pan]) >> 15;
+                    e->cvolR = (e->volume * D_800A2780_main[127 - e->pan]) >> 15;
+                }
+
+                e->rsRatio = param->pitch;
+            }
+
+            break;
+
+            case AL_FILTER_SET_FXAMT:
+            case AL_FILTER_SET_PAN:
+            case AL_FILTER_SET_VOLUME:
+                ptr = func_8006AA6C_main(e, &inp, &loutp, samples, ptr);
+
+                if (e->delta >= e->segEnd) {
+                    e->ltgt = (e->volume * D_800A2780_main[e->pan]) >> 15;
+                    e->rtgt = (e->volume * D_800A2780_main[127 - e->pan]) >> 15;
+                    e->delta = e->segEnd;
+                    e->cvolL = e->ltgt;
+                    e->cvolR = e->rtgt;
+                } else {
+                    e->cvolL = func_8006ADCC_main(e->cvolL, e->delta, e->lratm, e->lratl);
+                    e->cvolR = func_8006ADCC_main(e->cvolR, e->delta, e->rratm, e->rratl);
+                }
+
+                if (e->cvolL == 0)
+                    e->cvolL = 1;
+                if (e->cvolR == 0)
+                    e->cvolR = 1;
+
+                if (e->ctrlList->type == AL_FILTER_SET_PAN) {
+                    e->pan = e->ctrlList->data.i;
+                }
+
+                if (e->ctrlList->type == AL_FILTER_SET_VOLUME) {
+                    e->delta = 0;
+
+                    fVol = (e->ctrlList->data.i);
+                    fVol = (fVol * fVol) >> 15;
+                    e->volume = (s16)fVol;
+
+                    e->segEnd = ((e->ctrlList->moredata.i + 92) / 184) * 184;
+                }
+
+                if (e->ctrlList->type == AL_FILTER_SET_FXAMT) {
+                    e->dryamt = D_800A2780_main[e->ctrlList->data.i];
+                    e->wetamt = D_800A2780_main[128 - e->ctrlList->data.i - 1];
+                }
+
+                e->first = 1;
+                break;
+
+            case AL_FILTER_START_VOICE: {
+                ALStartParam *p = (ALStartParam *)e->ctrlList;
+
+                if (p->unity) {
+                    e->rsUpitch = 1;
+                }
+
+                func_8006B268_main(e, AL_FILTER_SET_WAVETABLE, p->wave);
+                e->motion = AL_PLAYING;
+            } break;
+
+            case AL_FILTER_STOP_VOICE: {
+                ptr = func_8006AA6C_main(e, &inp, &loutp, samples, ptr);
+                func_8006A9C8_main(e, AL_FILTER_RESET, 0);
+            } break;
+
+            case AL_FILTER_FREE_VOICE: {
+                ALFreeParam *param = (ALFreeParam *)e->ctrlList;
+                param->pvoice->offset = 0;
+                func_8006BC60_main(param->pvoice);
+            } break;
+
+            case AL_FILTER_SET_PITCH:
+                ptr = func_8006AA6C_main(e, &inp, &loutp, samples, ptr);
+                e->rsRatio = e->ctrlList->data.f;
+                break;
+            case AL_FILTER_SET_UNITY_PITCH:
+                ptr = func_8006AA6C_main(e, &inp, &loutp, samples, ptr);
+                e->rsUpitch = 1;
+                break;
+            case AL_FILTER_SET_WAVETABLE:
+                ptr = func_8006AA6C_main(e, &inp, &loutp, samples, ptr);
+                func_8006B268_main(e, AL_FILTER_SET_WAVETABLE, (void *)e->ctrlList->data.i);
+                break;
+            default:
+
+                ptr = func_8006AA6C_main(e, &inp, &loutp, samples, ptr);
+                func_8006A9C8_main(e, e->ctrlList->type,
+                                   (void *)e->ctrlList->data.i);
+                break;
+        }
+        loutp += (samples << 1);
+        outCount -= samples;
+
+        thisParam = e->ctrlList;
+        e->ctrlList = e->ctrlList->next;
+        if (e->ctrlList == 0)
+            e->ctrlTail = 0;
+
+        func_8006BBE8_main(thisParam);
+    }
+
+    ptr = func_8006AA6C_main(e, &inp, &loutp, outCount, ptr);
+
+    if (e->delta > e->segEnd)
+        e->delta = e->segEnd;
+
+    return ptr;
+}
 
 s32 func_8006A9C8_main(ALEnvMixer *e, s32 paramID, void *param) {
     switch (paramID) {
@@ -104,9 +333,78 @@ s32 func_8006A9C8_main(ALEnvMixer *e, s32 paramID, void *param) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/6B050", func_8006AA6C_main);
+Acmd *func_8006AA6C_main(ALEnvMixer *filter, s16 *inp, s16 *outp, s32 outCount, Acmd *p) {
+    Acmd *ptr = p;
+    ALEnvMixer *e = filter;
 
-INCLUDE_ASM("asm/nonmatchings/6B050", func_8006AC8C_main);
+    if (e->motion != AL_PLAYING || !outCount) {
+        return ptr;
+    }
+
+    ptr = func_8006B540_main(e, inp, p);
+    if (e->first) {
+        Acmd *cmd;
+
+        e->first = 0;
+        e->ltgt = (e->volume * D_800A2780_main[e->pan]) >> 15;
+        e->lratm = func_8006AC8C_main(e->cvolL, e->ltgt, e->segEnd, &e->lratl);
+        e->rtgt = (e->volume * D_800A2780_main[127 - e->pan]) >> 15;
+        e->rratm = func_8006AC8C_main(e->cvolR, e->rtgt, e->segEnd, &e->rratl);
+
+        /* This microcode packs the dry/wet amounts with the left volume,
+         * and the initial right volume into the envelope command. */
+        aSetVolume(ptr++, A_RATE, e->ltgt, e->lratm, e->lratl);
+        aSetVolume(ptr++, A_LEFT | A_VOL, e->cvolL, e->dryamt, e->wetamt);
+        aSetVolume(ptr++, A_VOL, e->rtgt, e->rratm, e->rratl);
+        cmd = ptr++;
+        cmd->words.w0 = _SHIFTL(A_ENVMIXER, 24, 8) | _SHIFTL(A_INIT, 16, 8) | _SHIFTL(e->cvolR, 0, 16);
+        cmd->words.w1 = osVirtualToPhysical(e->envState);
+    } else {
+        aEnvMixer(ptr++, A_CONTINUE, osVirtualToPhysical(e->envState));
+    }
+
+    *inp += 184 * 2;
+    e->delta += 184;
+    return ptr;
+}
+
+s16 func_8006AC8C_main(f64 vol, f64 tgt, s32 count, u16 *ratel) {
+    s16 s;
+    s16 carry;
+    f64 invn;
+    f64 rate;
+
+    if (count == 0) {
+        if (tgt >= vol) {
+            *ratel = 0xFFFF;
+            return 0x7FFF;
+        } else {
+            *ratel = 0;
+            return -0x8000;
+        }
+    }
+
+    invn = 1.0 / count;
+    if (tgt < 1.0) {
+        tgt = 1.0;
+    }
+    if (vol <= 0.0) {
+        vol = 1.0;
+    }
+
+    /* The envelope advances by this signed fixed-point rate every eight samples. */
+    rate = (tgt - vol) * invn;
+    rate *= 8.0;
+    s = rate;
+    rate -= s;
+    rate += 1.0;
+    carry = rate;
+    rate -= carry;
+    s -= 1;
+    s += carry;
+    *ratel = (u32)(rate * 65535.0);
+    return s;
+}
 
 s16 func_8006ADCC_main(s16 ivol, s32 samples, s16 ratem, u16 ratel) {
     s32 inc;

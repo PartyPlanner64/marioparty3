@@ -505,7 +505,10 @@ INCLUDE_ASM("asm/nonmatchings/gamemes", func_8003AE44_main);
 
 INCLUDE_ASM("asm/nonmatchings/gamemes", func_8003AE9C_main);
 
-INCLUDE_ASM("asm/nonmatchings/gamemes", func_8003B128_main);
+void func_8003B128_main(GAMEMES *gMes) {
+    GMesSprKill(gMes);
+    func_80037258_main();
+}
 
 INCLUDE_ASM("asm/nonmatchings/gamemes", func_8003B14C_main);
 

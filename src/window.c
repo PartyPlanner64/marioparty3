@@ -116,7 +116,15 @@ INCLUDE_ASM("asm/nonmatchings/window", func_8005B238_main);
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005B43C_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005B5EC_main);
+s16 func_8005B5EC_main(u8 *str) {
+    s16 len = 0;
+
+    while (*str != 0) {
+        str++;
+        len++;
+    }
+    return len;
+}
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005B614_main);
 
@@ -435,7 +443,12 @@ void func_80060848_main() {
     D_800CD2A4_main = 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_80060858_main);
+void func_80060858_main(s32 winId, s16 arg1) {
+    TextWindow *window;
+
+    window = &D_800CC69C_main[winId];
+    window->unk_A6 = arg1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/window", func_80060880_main);
 

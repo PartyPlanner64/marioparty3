@@ -4,7 +4,17 @@ INCLUDE_ASM("asm/nonmatchings/2.0L/audio/synthesizer", alSynNew);
 
 INCLUDE_ASM("asm/nonmatchings/2.0L/audio/synthesizer", func_800780AC_main);
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/audio/synthesizer", func_8007825C_main);
+ALParam *func_8007825C_main(void) {
+    ALParam *param = NULL;
+
+    if (alGlobals->drvr.paramList != NULL) {
+        param = alGlobals->drvr.paramList;
+        alGlobals->drvr.paramList = param->next;
+        param->next = NULL;
+    }
+
+    return param;
+}
 
 INCLUDE_ASM("asm/nonmatchings/2.0L/audio/synthesizer", func_80078288_main);
 

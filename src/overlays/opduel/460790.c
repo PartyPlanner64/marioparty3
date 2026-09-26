@@ -51,4 +51,7 @@ void func_80109158_opduel(void) {
     MBDBackLoad(sp10[GwSystem.current_board_index]);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opduel/460790", func_801091DC_opduel);
+void func_801091DC_opduel(void) {
+    MBDBackKill();
+    MBDBackClose();
+}

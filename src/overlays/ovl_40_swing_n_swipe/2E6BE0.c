@@ -1,5 +1,7 @@
 #include "common.h"
 
+void func_801066BC_swing_n_swipe(omObjData *object);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_40_swing_n_swipe/2E6BE0", func_801059A0_swing_n_swipe);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_40_swing_n_swipe/2E6BE0", func_801059BC_swing_n_swipe);
@@ -20,7 +22,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_40_swing_n_swipe/2E6BE0", func_801066
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_40_swing_n_swipe/2E6BE0", func_80106704_swing_n_swipe);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_40_swing_n_swipe/2E6BE0", func_8010673C_swing_n_swipe);
+void func_8010673C_swing_n_swipe(omObjData *object) {
+    if (D_800D530C_main == 1) {
+        object->func = func_801066BC_swing_n_swipe;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_40_swing_n_swipe/2E6BE0", func_80106764_swing_n_swipe);
 
@@ -66,7 +72,14 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_40_swing_n_swipe/2E6BE0", func_8010B2
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_40_swing_n_swipe/2E6BE0", func_8010B840_swing_n_swipe);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_40_swing_n_swipe/2E6BE0", func_8010B8EC_swing_n_swipe);
+s16 func_8010B8EC_swing_n_swipe(s32 arg0) {
+    s16 temp = func_8000B13C_main(arg0);
+
+    if (temp < 0) {
+        temp = -1;
+    }
+    return temp;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_40_swing_n_swipe/2E6BE0", func_8010B920_swing_n_swipe);
 

@@ -1,3 +1,7 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/nonmatchings/overlays/slerror/4684F0", func_801059A0_slerror);
+extern OvlEntrypoint D_80105F20_slerror[];
+
+void func_801059A0_slerror(void) {
+    ovlEventCall(D_80105F20_slerror, omovlevtno);
+}

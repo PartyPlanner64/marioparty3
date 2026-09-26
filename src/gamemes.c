@@ -384,7 +384,9 @@ s32 GMesStatGet(void) {
     return stat;
 }
 
-INCLUDE_ASM("asm/nonmatchings/gamemes", func_800370A4_main);
+u8 func_800370A4_main(s16 i) {
+    return gMesData[i].stat;
+}
 
 INCLUDE_ASM("asm/nonmatchings/gamemes", func_800370D0_main);
 

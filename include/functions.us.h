@@ -87,6 +87,7 @@ void func_8004A72C_main(s32);
 void HuVecMulScalar(Vec*, f32, Vec*);
 void func_8000CD00_main(s16, f32, f32, f32);
 s16 func_8000CED8_main(s32, s32);
+s16 func_8000CBA0_main(s32, s32);
 void func_8000CFA4_main(s16, f32, f32, f32);
 void func_8000D018_main(s16, f32);
 void func_8000D044_main(s16);

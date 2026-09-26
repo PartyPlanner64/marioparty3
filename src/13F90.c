@@ -4,11 +4,17 @@ INCLUDE_ASM("asm/nonmatchings/13F90", func_80013390_main);
 
 INCLUDE_ASM("asm/nonmatchings/13F90", func_800138EC_main);
 
-INCLUDE_ASM("asm/nonmatchings/13F90", func_80013928_main);
+s16 func_80013928_main(s16 arg0) {
+    return HmfModelData[arg0].unkBC->unk04;
+}
 
-INCLUDE_ASM("asm/nonmatchings/13F90", func_80013954_main);
+void func_80013954_main(s16 arg0, s16 arg1) {
+    HmfModelData[arg0].unkBC->unk02 = arg1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/13F90", func_80013980_main);
+s16 func_80013980_main(s16 arg0) {
+    return HmfModelData[arg0].unkBC->unk02;
+}
 
 INCLUDE_ASM("asm/nonmatchings/13F90", func_800139AC_main);
 

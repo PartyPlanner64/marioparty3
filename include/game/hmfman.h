@@ -117,7 +117,7 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ s16 unk00;
-    /* 0x02 */ char unk02[2];
+    /* 0x02 */ s16 unk02;
     /* 0x04 */ u16 unk04;
     /* 0x08 */ char unk08[0x10];
     /* 0x18 */ void (*unk18)(s16);

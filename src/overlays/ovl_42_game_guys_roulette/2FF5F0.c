@@ -1,5 +1,16 @@
 #include "common.h"
 
+typedef struct GameGuysRouletteBanner { // 0x18 bytes
+    /* 0x00 */ HuSprite *sprite;
+    /* 0x04 */ void *unk_04[3];
+    /* 0x10 */ s16 group;
+    /* 0x12 */ s16 timer;
+    /* 0x14 */ s16 unk_14;
+} GameGuysRouletteBanner;
+
+extern GameGuysRouletteBanner D_8010AC20_game_guys_roulette;
+extern GameGuysRouletteBanner D_8010AC38_game_guys_roulette;
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_42_game_guys_roulette/2FF5F0", func_80108D20_game_guys_roulette);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_42_game_guys_roulette/2FF5F0", func_80108FEC_game_guys_roulette);
@@ -8,7 +19,12 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_42_game_guys_roulette/2FF5F0", func_8
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_42_game_guys_roulette/2FF5F0", func_80109B60_game_guys_roulette);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_42_game_guys_roulette/2FF5F0", func_80109D14_game_guys_roulette);
+void func_80109D14_game_guys_roulette(void) {
+    HuSprAttrSet(D_8010AC38_game_guys_roulette.group, 0, 0x8000);
+    HuSprAttrSet(D_8010AC20_game_guys_roulette.group, 0, 0x8000);
+    D_8010AC38_game_guys_roulette.sprite->unk_84->unk00->unk00 = D_8010AC38_game_guys_roulette.unk_04[0];
+    D_8010AC20_game_guys_roulette.sprite->unk_84->unk00->unk00 = D_8010AC20_game_guys_roulette.unk_04[0];
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_42_game_guys_roulette/2FF5F0", func_80109D98_game_guys_roulette);
 

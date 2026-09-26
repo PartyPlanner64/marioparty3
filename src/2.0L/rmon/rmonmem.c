@@ -4,7 +4,11 @@ INCLUDE_ASM("asm/nonmatchings/2.0L/rmon/rmonmem", __rmonWriteWordTo);
 
 INCLUDE_ASM("asm/nonmatchings/2.0L/rmon/rmonmem", __rmonReadWordAt);
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/rmon/rmonmem", __rmonMemcpy);
+void __rmonMemcpy(vu8 *dst, vu8 *src, s32 n) {
+    while (n-- != 0) {
+        *dst++ = *src++;
+    }
+}
 
 void __rmonCopyWords(vu32 *dst, vu32 *src, s32 n) {
     while (n-- != 0) {

@@ -16,6 +16,23 @@ typedef struct {
     /* 0x28 */ s32 unk_28;
 } OpModel;
 
+typedef struct {
+    /* 0x00 */ omObjData *obj;
+    /* 0x04 */ char unk_04[0x38];
+} OpObj; // sizeof 0x3C
+
+typedef struct {
+    /* 0x00 */ s16 espriteSlot;
+    /* 0x02 */ s16 unk_02;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ f32 unk_0C;
+    /* 0x10 */ f32 unk_10;
+    /* 0x14 */ f32 unk_14;
+    /* 0x18 */ s8 unk_18;
+    /* 0x19 */ u8 unk_19[3];
+} OpSpr; // sizeof 0x1C
+
 void func_801061F0_opening(void);
 void func_80110B90_opening(void);
 void func_80110F48_opening(void);
@@ -26,6 +43,11 @@ extern Vec D_80114BB8_opening;
 extern Vec D_80114BC4_opening;
 extern RectF D_80114BD0_opening;
 extern OpModel D_80115630_opening[0xA0];
+extern omObjData *D_80117374_opening;
+extern OpObj D_80117388_opening[0x10];
+extern s16 D_801171B0_opening;
+extern u16 D_801171B2_opening;
+extern OpSpr D_80114EB0_opening[0x40];
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opObjectInit);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opTitleObjectSetup);
@@ -100,7 +122,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opSprAttrSet);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opSprAttrReset);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80106734_opening);
+void func_80106734_opening(s32 arg0, u16 arg1) {
+    func_8000BCC8_main(D_80114EB0_opening[arg0].espriteSlot, arg1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80106768_opening);
 
@@ -156,7 +180,10 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opMotionSet);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107048_opening);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_801070AC_opening);
+void func_801070AC_opening(void) {
+    func_8000C184_main(D_801171B2_opening);
+    HuSprKill(D_801171B0_opening);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_801070D8_opening);
 
@@ -251,7 +278,12 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80110F48_opening);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80110FB0_opening);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80111028_opening);
+void func_80111028_opening(void) {
+    if (D_80117374_opening != NULL) {
+        omDelObj(D_80117374_opening);
+    }
+    D_80117374_opening = NULL;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_8011105C_opening);
 
@@ -295,7 +327,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opTitleSprMain);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opTitleKill);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80112944_opening);
+void func_80112944_opening(void) {
+    s32 i;
+
+    for (i = 0; i < 0x10; i++) {
+        D_80117388_opening[i].obj = NULL;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoObjKillAll);
 

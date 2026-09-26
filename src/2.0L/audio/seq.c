@@ -22,7 +22,13 @@ INCLUDE_ASM("asm/nonmatchings/2.0L/audio/seq", func_80077098_main);
 
 INCLUDE_ASM("asm/nonmatchings/2.0L/audio/seq", func_800770B4_main);
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/audio/seq", func_800770C8_main);
+s16 func_800770C8_main(ALSeq *seq) {
+    s16 value = *(seq->curPtr++) << 8;
+
+    value |= *(seq->curPtr++);
+
+    return value;
+}
 
 INCLUDE_ASM("asm/nonmatchings/2.0L/audio/seq", func_800770F8_main);
 

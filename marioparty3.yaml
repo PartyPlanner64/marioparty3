@@ -2428,8 +2428,9 @@ segments:
     bss_size: 0x1510
     subsegments:
       - [0x5334D0, c]
-      - [0x540FE0, data, 5334D0] #801134B0
-      - [0x541550, .rodata, 5334D0] #80113A20
+      - [0x533500, c]
+      - [0x540FE0, data, 533500] #801134B0
+      - [0x541550, .rodata, 533500] #80113A20
       - {0x542220, type: bss, vram: 0x801146F0, name: option_bss}
 
   - type: code

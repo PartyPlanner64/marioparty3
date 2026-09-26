@@ -121,7 +121,9 @@ s16 opModelIdGet(s32 modelId) {
     return D_80115630_opening[modelId].modelId;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/523FD0", opMotionIdGet);
+s16 opMotionIdGet(s32 motionId) {
+    return D_80115630_opening[motionId].motionId;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/523FD0", opModelRotSet);
 

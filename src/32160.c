@@ -1,4 +1,15 @@
 #include "common.h"
+#include "mallocblock.h"
+
+typedef struct {
+    char unk00[0x1C];
+    u8 unk1C;
+    u8 unk1D;
+    s16 unk1E;
+    s16 unk20;
+    void *unk24;
+    void *unk28;
+} HmfPalData;
 
 INCLUDE_ASM("asm/nonmatchings/32160", func_80031560_main);
 
@@ -20,7 +31,11 @@ INCLUDE_ASM("asm/nonmatchings/32160", func_80032038_main);
 
 INCLUDE_ASM("asm/nonmatchings/32160", func_80032104_main);
 
-INCLUDE_ASM("asm/nonmatchings/32160", func_80032194_main);
+void func_80032194_main(HmfPalData *pal) {
+    pal->unk20 = 0;
+    pal->unk24 = NULL;
+    func_80019C00_main(pal->unk28);
+}
 
 INCLUDE_ASM("asm/nonmatchings/32160", func_800321B8_main);
 

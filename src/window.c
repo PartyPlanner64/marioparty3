@@ -184,7 +184,9 @@ void func_8005B8F8_main(s16 arg0, s16 arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005B974_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005BA28_main);
+TextWindow *func_8005BA28_main(s16 win_id) {
+    return &D_800CC69C_main[win_id];
+}
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005BA54_main);
 

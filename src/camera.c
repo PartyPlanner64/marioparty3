@@ -221,6 +221,10 @@ INCLUDE_ASM("asm/nonmatchings/camera", func_80012D0C_main);
 
 INCLUDE_ASM("asm/nonmatchings/camera", func_80012E54_main);
 
-INCLUDE_ASM("asm/nonmatchings/camera", func_80013320_main);
+void func_80013320_main(s16 value, s16 camIndex) {
+    gCameraList[camIndex].unk4 = value;
+}
 
-INCLUDE_ASM("asm/nonmatchings/camera", func_80013350_main);
+void func_80013350_main(s16 camIndex) {
+    gCameraList[camIndex].unk4 = -1;
+}

@@ -55,6 +55,7 @@ void Hu3DCamUpdateMtx(s16 camIndex);
 void func_80012640_main(s16 camIndex, Gfx** dispList);
 void func_800127C4_main(s16 camIndex, Gfx** dispList);
 void func_80012888_main(s16 camIndex, void (*arg1)(void*, struct HmfModel*), void* arg2);
+void func_80013320_main(s16 value, s16 camIndex);
 
 extern HuCamera* gCameraList;
 

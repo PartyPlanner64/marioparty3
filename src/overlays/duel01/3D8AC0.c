@@ -179,7 +179,17 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010AFB4_duel01);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010B130_duel01);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010B480_duel01);
+s32 func_8010B480_duel01(void) {
+    unkStruct07 *data = D_8011948C_duel01->data;
+    s32 i;
+
+    for (i = 0; i < ARRAY_COUNT(data->unk_180); i++) {
+        if (data->unk_180[i] != 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010B4C0_duel01);
 
@@ -229,7 +239,9 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/duel01/3D8AC0", D_80118F18_duel01);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010E1B4_duel01);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010E2CC_duel01);
+void func_8010E2CC_duel01(void) {
+    omAddPrcObj(func_8010E1B4_duel01, 0xA, 0, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010E2F8_duel01);
 
@@ -243,7 +255,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010E614_duel01);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010E7C0_duel01);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010E8D8_duel01);
+void func_8010E8D8_duel01(void) {
+    omAddPrcObj(func_8010E7C0_duel01, 0xA, 0, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010E904_duel01);
 

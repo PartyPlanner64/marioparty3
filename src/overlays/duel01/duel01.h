@@ -44,6 +44,18 @@ typedef struct unkStruct06 {
 /* 0x0C */ char unk_0C[4];
 } unkStruct06;
 
+// Object data block, holding per instance data for 16 model instances
+typedef struct unkStruct07 {
+/* 0x000 */ Vec unk_000[16];
+/* 0x0C0 */ Vec unk_0C0[16];
+/* 0x180 */ s16 unk_180[16];
+/* 0x1A0 */ s16 unk_1A0[16];
+/* 0x1C0 */ s16 unk_1C0[16];
+/* 0x1E0 */ s16 unk_1E0;
+/* 0x1E4 */ f32 unk_1E4[16];
+/* 0x224 */ f32 unk_224[16];
+} unkStruct07; // size = 0x264
+
 extern s16 omovlevtno;
 f32 func_800D76D0_name_81(void*);
 void func_80100CEC_name_81(u8);
@@ -54,6 +66,7 @@ extern s32 D_80119470_duel01;
 extern s32 D_80119474_duel01;
 extern s32 D_80119478_duel01;
 extern s32 D_8011947C_duel01;
+extern omObjData* D_8011948C_duel01;
 void func_800E94D0_name_81(void);
 void func_800E9564_name_81(void);
 void func_800E9B10_name_81(s32, s32);
@@ -80,4 +93,6 @@ void func_800D8E88_name_81(void);
 s16 MBDGetCurrentPlayerIndex(void);
 GW_PLAYER* MBDGetPlayerStruct(s32);
 void func_800F38DC_name_81(s32, s32, s32);
+void func_8010E1B4_duel01(void);
+void func_8010E7C0_duel01(void);
 void func_80110068_duel01(s32);

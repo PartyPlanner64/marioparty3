@@ -1,8 +1,25 @@
 #include "common.h"
+#include "overlays/ovl_24.h"
+
+extern s32 D_8010D35C_fridged_bridges;
+extern s32 D_8010D360_fridged_bridges;
+extern s16 D_8010DA60_fridged_bridges;
+extern s16 D_8010DA68_fridged_bridges;
+extern omObjData **D_8010DA64_fridged_bridges;
+
+void func_80105F34_fridged_bridges(omObjData *arg0);
+void func_80108FBC_fridged_bridges(omObjData *arg0);
+omObjData **func_80047DBC_main(s16 arg0);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_801059A0_fridged_bridges);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_80105F00_fridged_bridges);
+void func_80105F00_fridged_bridges(omObjData *arg0) {
+    D_8010D360_fridged_bridges = 0;
+    D_8010D35C_fridged_bridges = 0;
+    D_8010DA68_fridged_bridges = 0;
+    D_8010DA60_fridged_bridges = -1;
+    arg0->func = func_80105F34_fridged_bridges;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_80105F34_fridged_bridges);
 
@@ -61,7 +78,20 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_8010
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_80108B08_fridged_bridges);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_80108BEC_fridged_bridges);
+void func_80108BEC_fridged_bridges(omObjData *arg0) {
+    omObjData **bridgeObjs = func_80047DBC_main(1);
+    s32 deletedCount = 0;
+    s32 i;
+
+    for (i = 0; i < 12; i++) {
+        deletedCount += bridgeObjs[i] == NULL;
+    }
+
+    if (deletedCount == 12) {
+        arg0->work[0] = 1;
+        arg0->func = func_80108FBC_fridged_bridges;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_80108C60_fridged_bridges);
 
@@ -89,7 +119,17 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_8010
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_8010A360_fridged_bridges);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_8010ADC0_fridged_bridges);
+// True once every player has left the frozen (state 2) pose.
+s32 func_8010ADC0_fridged_bridges(void) {
+    s32 notFrozenCount = 0;
+    s32 i = 0;
+    omObjData **playerObjs = D_8010DA64_fridged_bridges;
+
+    for (; i < 4; i++) {
+        notFrozenCount += OM_GET_DATA_PTR(playerObjs[i], FridgedBridgesPlayer)->state != 2;
+    }
+    return notFrozenCount == 4;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_8010AE0C_fridged_bridges);
 

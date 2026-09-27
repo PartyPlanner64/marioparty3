@@ -121,7 +121,7 @@ void    alLink(ALLink *element, ALLink *after);
 typedef s32 (*ALDMAproc)(s32 addr, s32 len, void *state);
 typedef ALDMAproc (*ALDMANew)(void *state);
 
-void    alCopy(void *src, void *dest, s32 len);
+void    alCopy(u8 *src, u8 *dest, s32 len);
 
 typedef struct {
     u8          *base;

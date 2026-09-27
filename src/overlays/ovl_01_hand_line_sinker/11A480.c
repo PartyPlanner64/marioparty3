@@ -1,8 +1,23 @@
 #include "common.h"
 
+extern s16 D_8010C0EC_hand_line_sinker;
+extern s16 D_8010C0F0_hand_line_sinker;
+extern omObjData *D_8010C0F4_hand_line_sinker;
+extern omObjData *D_8010C0F8_hand_line_sinker;
+extern s16 D_8010C10C_hand_line_sinker;
+
+void func_80105D28_hand_line_sinker(omObjData *);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_801059A0_hand_line_sinker);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_80105CF0_hand_line_sinker);
+void func_80105CF0_hand_line_sinker(omObjData *arg0) {
+    D_8010C0EC_hand_line_sinker = 0;
+    D_8010C0F8_hand_line_sinker = 0;
+    D_8010C0F4_hand_line_sinker = 0;
+    D_8010C0F0_hand_line_sinker = 0;
+    D_8010C10C_hand_line_sinker = 0;
+    arg0->func = func_80105D28_hand_line_sinker;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", D_8010BFB0_hand_line_sinker);
 

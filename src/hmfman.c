@@ -62,13 +62,16 @@ extern s16 D_800C9932_main;
 extern s32 D_800C9940_main;
 extern u16 D_800CBB72_main[];
 extern s8 D_800CC0A8_main;
+extern s16 D_800CC0B6_main;
 extern s32 D_800CC3D8_main[];
 extern u16 D_800CD2F6_main;
+extern s8 D_800CDA84_main;
 extern s16 D_800CDD6A_main;
 extern u8 D_800CE19A_main;
 extern s8 D_800CE1C6_main;
 extern u8 D_800CD280_main;
 extern s32 D_800D0444_main;
+extern s8 D_800D0599_main;
 extern u16 D_800D05A0_main[][128];
 extern s32 D_800D10F4_main;
 extern s32 D_800D1F70_main;
@@ -76,7 +79,9 @@ extern s32 D_800D1FE8_main;
 extern s8 D_800D2008_main;
 extern s8 HmfPauseF;
 extern s16 D_800D20EE_main;
+extern s8 D_800D41C4_main;
 extern u16 D_800D5204_main;
+extern s16 D_800D6B64_main;
 
 const char D_800A6BB8_main[] = "%x\n";
 const char D_800A6BBC_main[] = "Model Entry Over!\n";
@@ -553,7 +558,14 @@ INCLUDE_ASM("asm/nonmatchings/hmfman", func_8001ED54_main);
 
 INCLUDE_ASM("asm/nonmatchings/hmfman", func_8001EED8_main);
 
-INCLUDE_ASM("asm/nonmatchings/hmfman", func_8001EF24_main);
+void func_8001EF24_main(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4) {
+    D_800CE1C6_main = 1;
+    D_800D6B64_main = arg0;
+    D_800CC0B6_main = arg1;
+    D_800D0599_main = arg2;
+    D_800D41C4_main = arg3;
+    D_800CDA84_main = arg4;
+}
 
 void func_8001EF60_main(void) {
     D_800CE1C6_main = 0;
@@ -599,9 +611,25 @@ void func_8001F6B0_main(s8 arg0) {
     D_800CC0A8_main = arg0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/hmfman", func_8001F6BC_main);
+void func_8001F6BC_main(s16 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
+    HmfData *hmf;
 
-INCLUDE_ASM("asm/nonmatchings/hmfman", func_8001F6F8_main);
+    hmf = HmfModelData[arg0].hmf;
+    hmf->unk02[0] = arg1;
+    hmf->unk02[1] = arg2;
+    hmf->unk02[2] = arg3;
+    hmf->unk02[3] = arg4;
+}
+
+void func_8001F6F8_main(s16 arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
+    HmfData *hmf;
+
+    hmf = HmfModelData[arg0].hmf;
+    hmf->unk02[4] = arg1;
+    hmf->unk02[5] = arg2;
+    hmf->unk02[6] = arg3;
+    hmf->unk02[7] = arg4;
+}
 
 INCLUDE_ASM("asm/nonmatchings/hmfman", func_8001F734_main);
 

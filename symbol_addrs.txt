@@ -1036,6 +1036,9 @@ alCents2Ratio = 0x80078B40; //rom:0x79740
 //alCSeqNextEvent = 0x8006E13C; //rom:0x6ED3C
 
 
+//heapinit.c
+alHeapInit = 0x80077250; //rom:0x77E50
+
 //synremoveplayer.c
 alSynRemovePlayer = 0x8006FC50; //rom:0x70850
 

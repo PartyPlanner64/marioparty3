@@ -1,3 +1,12 @@
 #include "common.h"
+#include <PR/viint.h>
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/io/vigetnextframebuf", osViGetNextFramebuffer);
+void *osViGetNextFramebuffer(void) {
+    u32 intMask;
+    void *frameBuffer;
+
+    intMask = __osDisableInt();
+    frameBuffer = __osViNext->framep;
+    __osRestoreInt(intMask);
+    return frameBuffer;
+}

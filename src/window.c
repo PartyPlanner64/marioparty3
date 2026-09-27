@@ -360,7 +360,11 @@ void func_800600C0_main(s16 winId, s32 arg1) {
 }
 
 // Sets an option disabled.
-INCLUDE_ASM("asm/nonmatchings/window", func_8006010C_main);
+void func_8006010C_main(s32 winId, s16 spriteIndex) {
+    TextWindow *window = &D_800CC69C_main[winId];
+
+    window->unk_F4[spriteIndex].unk_00 = 2;
+}
 
 void func_80060144_main(s16 obj) {
 #ifdef DEBUG

@@ -4,9 +4,20 @@
 #include "ultra64.h"
 
 #define WINDOWS_MAX 16
+#define TEXT_WINDOW_SPRITES_MAX 0x18
 
 #define MAKE_MESSID(bank, mess) (((bank) << 16)+(mess))
 #define MAKE_MESSID_PTR(ptr) ((u32)(ptr))
+
+typedef struct TextWindowSprite {
+    /* 0x00 */ u8 unk_00;                           /* 0 = free, 1 = active, 2 = disabled */
+    /* 0x01 */ char pad1[1];
+    /* 0x02 */ s16 unk_02;
+    /* 0x04 */ s16 unk_04;
+    /* 0x06 */ s16 unk_06;
+    /* 0x08 */ s16 unk_08;
+    /* 0x0A */ char padA[6];
+} TextWindowSprite;                                 /* size = 0x10 */
 
 typedef struct TextWindow {
     /* 0x000 */ u8 unk_00;
@@ -61,7 +72,8 @@ typedef struct TextWindow {
     /* 0x0AD */ s8 usingStringIDBool[5];
     /* 0x0B2 */ s8 unk_B2[6];
     /* 0x0B8 */ void *unk_B8[4];
-    /* 0x0C8 */ char padC8[0x1AC];                  /* maybe part of unk_B8[0x1B]? */
+    /* 0x0C8 */ char padC8[0x2C];
+    /* 0x0F4 */ TextWindowSprite unk_F4[TEXT_WINDOW_SPRITES_MAX];
     /* 0x274 */ s16 unk274;
     /* 0x276 */ s16 unk276;
     /* 0x278 */ char pad278[4];                     /* maybe part of unk276[3]? */

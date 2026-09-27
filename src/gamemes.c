@@ -390,7 +390,10 @@ u8 func_800370A4_main(s16 i) {
 
 INCLUDE_ASM("asm/nonmatchings/gamemes", func_800370D0_main);
 
-INCLUDE_ASM("asm/nonmatchings/gamemes", func_80037114_main);
+void func_80037114_main(s16 i, f32 x, f32 y) {
+    gMesData[i].unk60 = x;
+    gMesData[i].unk64 = y;
+}
 
 INCLUDE_ASM("asm/nonmatchings/gamemes", func_8003714C_main);
 

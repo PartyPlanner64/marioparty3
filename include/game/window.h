@@ -31,7 +31,7 @@ typedef struct TextWindow {
     /* 0x01A */ s16 unk_1A;
     /* 0x01C */ char pad1C[4];                      /* maybe part of unk_1A[3]? */
     /* 0x020 */ s8 unk20;                           /* inferred */
-    /* 0x021 */ char pad21[1];                      /* maybe part of unk20[9]? */
+    /* 0x021 */ u8 unk21;                           /* low nibble: enabled inputs */
     /* 0x022 */ s8 unk_22;
     /* 0x023 */ s8 unk_23;
     /* 0x024 */ char pad24[1];                      /* maybe part of unk20[9]? */

@@ -20,12 +20,21 @@ typedef struct {
     /* 0x22 */ char unk22[2];
 } D_800CD1DC_main_Struct; // Size 0x24
 
+typedef struct MgmodeSpaceCoord {
+    /* 0x00 */ s16 x;
+    /* 0x02 */ s16 y;
+} MgmodeSpaceCoord;
+
 extern D_800CD1DC_main_Struct* D_800CD1DC_main;
 extern s16 D_8011B650_mgmode;
 extern s16 D_8011B652_mgmode;
 extern u16* D_8011B654_mgmode[3];
 extern void* D_8011B660_mgmode;
 extern s16 D_8011A3E0_mgmode;
+extern s16 D_8011B664_mgmode;
+extern s16 D_8011B666_mgmode;
+extern s16 D_8011B66A_mgmode;
+extern MgmodeSpaceCoord *D_8011B670_mgmode;
 
 s16 func_80116B20_mgmode(void) {
     s16 sprGrp;
@@ -234,7 +243,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_80117DD0_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_801180A4_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_801181F4_mgmode);
+void func_801181F4_mgmode(s16 index) {
+    D_8011B664_mgmode = D_8011B670_mgmode[index].x;
+    D_8011B666_mgmode = D_8011B670_mgmode[index].y;
+    D_8011B66A_mgmode = index;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_8011822C_mgmode);
 

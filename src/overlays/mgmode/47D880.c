@@ -16,7 +16,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47D880", func_80116794_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47D880", func_801168E0_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47D880", func_80116968_mgmode);
+void func_80116968_mgmode(MgmodeEsprite *arg0, s16 index, s16 arg2, s16 arg3) {
+    func_8000BBD4_main(arg0[index].espriteSlot, arg2, arg3);
+}
 
 void func_801169A0_mgmode(MgmodeEsprite *arg0, s16 index) {
     func_8000BB54_main(arg0[index].espriteSlot);

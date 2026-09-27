@@ -252,7 +252,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107E10_opening);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107E2C_opening);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107E80_opening);
+void func_80107E80_opening(s32 arg0) {
+    do {
+        HuPrcVSleep();
+    } while (!(arg0 & D_800D5558_main[0]));
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107EBC_opening);
 

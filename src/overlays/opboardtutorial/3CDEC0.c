@@ -1,5 +1,9 @@
 #include "common.h"
 #include "../ovl_80_shared_board/FA250.h"
+#include "../ovl_80_shared_board/ECA50.h"
+#include "../ovl_80_shared_board/105D50.h"
+#include "../ovl_80_shared_board/101840.h"
+#include "../ovl_80_shared_board/106640.h"
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opboardtutorial/3CDEC0", func_801059A0_opboardtutorial);
 
@@ -39,9 +43,19 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opboardtutorial/3CDEC0", func_80107448_op
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opboardtutorial/3CDEC0", func_801074A4_opboardtutorial);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opboardtutorial/3CDEC0", func_801074E8_opboardtutorial);
+void func_801074E8_opboardtutorial(void) {
+    MBModelInit();
+    func_800F26E8_shared_board();
+    func_800EE700_shared_board();
+    func_800F2A20_shared_board();
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opboardtutorial/3CDEC0", func_8010751C_opboardtutorial);
+void func_8010751C_opboardtutorial(void) {
+    func_800F2A34_shared_board();
+    func_800EE740_shared_board();
+    func_800F27C4_shared_board();
+    MBModelClose();
+}
 
 void func_80107550_opboardtutorial(void) {
     Hu3DCamInit(1);

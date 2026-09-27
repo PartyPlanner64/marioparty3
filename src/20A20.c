@@ -65,7 +65,9 @@ void func_80021AF4_main(void) {
 
 INCLUDE_ASM("asm/nonmatchings/20A20", func_80021B20_main);
 
-INCLUDE_ASM("asm/nonmatchings/20A20", func_80021BE0_main);
+void func_80021BE0_main(Hu3DQuadPool *pool, u16 numQuads) {
+    pool->quads = HuMemAllocTag(numQuads * sizeof(Hu3DQuad *), 0x55F0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/20A20", func_80021C14_main);
 

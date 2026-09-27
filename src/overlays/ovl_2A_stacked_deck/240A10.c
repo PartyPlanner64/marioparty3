@@ -1,14 +1,51 @@
 #include "common.h"
 
+// One entry of the 50 card stack. Layout derived from the table clear in
+// func_80105A74_stacked_deck, which walks 50 entries of 0x84 bytes.
+typedef struct {
+    /* 0x00 */ omObjData *obj;
+    /* 0x04 */ s16 unk_04[9];
+    /* 0x18 */ s32 unk_18[10];
+    /* 0x40 */ s16 unk_40[2];
+    /* 0x44 */ f32 unk_44[16];
+} StackedDeckCard; //sizeof 0x84
+
+extern StackedDeckCard D_8010F730_stacked_deck[50];
+
+void func_8010655C_stacked_deck(omObjData *object);
+void func_8010669C_stacked_deck(omObjData *object);
+void func_8010DAE4_stacked_deck(omObjData *object);
+void func_8010DDAC_stacked_deck(omObjData *object);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2A_stacked_deck/240A10", func_801059A0_stacked_deck);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2A_stacked_deck/240A10", func_801059BC_stacked_deck);
+f32 func_801059BC_stacked_deck(f32 arg0, f32 arg1) {
+    f32 angle = arg0 + arg1;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2A_stacked_deck/240A10", func_80105A3C_stacked_deck);
+    while (angle >= 360.0f) {
+        angle -= 360.0f;
+    }
+
+    while (angle < 0.0f) {
+        angle += 360.0f;
+    }
+
+    return angle;
+}
+
+u8 func_80105A3C_stacked_deck(s32 arg0) {
+    u32 ret = (rand8() & 0xFF) * arg0;
+    return ret >> 8;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2A_stacked_deck/240A10", func_80105A74_stacked_deck);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2A_stacked_deck/240A10", func_80105B3C_stacked_deck);
+void func_80105B3C_stacked_deck(s32 playerIndex) {
+    D_800CDA7C_main[GwPlayer[playerIndex].pad] = 0;
+    D_800D5558_main[GwPlayer[playerIndex].pad] = 0;
+    D_800CBB6E_main[GwPlayer[playerIndex].pad] = 0;
+    D_800D20A1_main[GwPlayer[playerIndex].pad] = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2A_stacked_deck/240A10", func_80105BB4_stacked_deck);
 
@@ -29,14 +66,22 @@ void func_80106554_stacked_deck(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2A_stacked_deck/240A10", func_8010655C_stacked_deck);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2A_stacked_deck/240A10", func_80106654_stacked_deck);
+void func_80106654_stacked_deck(void) {
+    omObjData *obj = omAddObj(0x3E6, 1, 1, -1, func_8010655C_stacked_deck);
+    obj->work[0] = 0;
+    D_8010F730_stacked_deck[0].obj = obj;
+}
 
 void func_80106694_stacked_deck(void) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2A_stacked_deck/240A10", func_8010669C_stacked_deck);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2A_stacked_deck/240A10", func_80106738_stacked_deck);
+void func_80106738_stacked_deck(void) {
+    omObjData *obj = omAddObj(0x3E7, 1, 1, -1, func_8010669C_stacked_deck);
+    obj->work[0] = 0;
+    D_8010F730_stacked_deck[1].obj = obj;
+}
 
 void func_80106778_stacked_deck(void) {
 }
@@ -69,13 +114,19 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2A_stacked_deck/240A10", func_8010D98
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2A_stacked_deck/240A10", func_8010DAE4_stacked_deck);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2A_stacked_deck/240A10", func_8010DBF4_stacked_deck);
+void func_8010DBF4_stacked_deck(void) {
+    omObjData *obj = omAddObj(0x244, 1, 0, -1, func_8010DAE4_stacked_deck);
+    obj->work[0] = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2A_stacked_deck/240A10", func_8010DC2C_stacked_deck);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2A_stacked_deck/240A10", func_8010DDAC_stacked_deck);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2A_stacked_deck/240A10", func_8010DEBC_stacked_deck);
+void func_8010DEBC_stacked_deck(void) {
+    omObjData *obj = omAddObj(0x24E, 1, 0, -1, func_8010DDAC_stacked_deck);
+    obj->work[0] = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2A_stacked_deck/240A10", func_8010DEF4_stacked_deck);
 

@@ -38,6 +38,7 @@ void func_80110B90_opening(void);
 void func_80110F48_opening(void);
 void func_80112944_opening(void);
 void opContErrorCreate(void);
+void func_8000BC48_main(u16 arg0, u16 arg1);
 void func_8000BC88_main(u16 arg0, u16 arg1);
 
 extern Vec D_80114BB8_opening;
@@ -119,7 +120,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opSprScaleSet);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opSprAlphaSet);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opSprAttrSet);
+void opSprAttrSet(s32 arg0, u16 arg1) {
+    func_8000BC48_main(D_80114EB0_opening[arg0].espriteSlot, arg1);
+}
 
 void opSprAttrReset(s32 arg0, u16 arg1) {
     func_8000BC88_main(D_80114EB0_opening[arg0].espriteSlot, arg1);

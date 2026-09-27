@@ -1,5 +1,12 @@
 #include "common.h"
 
+typedef struct HmfModelSet {
+    /* 0x00 */ s16 nodeCount;
+    /* 0x02 */ s16 unk_02;
+    /* 0x04 */ void *unk_04;
+    /* 0x08 */ void *unk_08;
+} HmfModelSet; // Size 0xC
+
 typedef struct D_800CBB60_main_Struct {
     /* 0x00 */ s16 modelId;
     /* 0x02 */ s16 unk_02;
@@ -79,7 +86,11 @@ INCLUDE_ASM("asm/nonmatchings/14EA0", func_80016FB4_main);
 
 INCLUDE_ASM("asm/nonmatchings/14EA0", func_80017128_main);
 
-INCLUDE_ASM("asm/nonmatchings/14EA0", func_80017320_main);
+void func_80017320_main(HmfModelSet *set) {
+    HuMemMemoryFreePerm(set->unk_08);
+    HuMemMemoryFreePerm(set->unk_04);
+    HuMemMemoryFreePerm(set);
+}
 
 INCLUDE_ASM("asm/nonmatchings/14EA0", func_80017358_main);
 

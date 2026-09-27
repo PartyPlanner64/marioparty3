@@ -8,6 +8,7 @@
 #include "../ovl_80_shared_board/10C230.h"
 #include "../ovl_80_shared_board/FFB10.h"
 #include "../ovl_80_shared_board/113520.h"
+#include "../ovl_80_shared_board/106640.h"
 
 typedef struct UnkBowser {
     s16 unk_00;
@@ -31,7 +32,7 @@ typedef struct UnkBowser2 {
 void func_8005A6B0_main(void);
 void func_80108D2C_koopa(void);
 void func_80109220_koopa(omObjData *);
-s32 func_8010926C_koopa(void);
+void func_8010926C_koopa(void);
 void func_801092D4_koopa(void);
 void func_80107724_koopa(void);
 s32 func_80107A9C_koopa(void);
@@ -515,9 +516,19 @@ INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_801091C4_koopa);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_80109220_koopa);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_8010926C_koopa);
+void func_8010926C_koopa(void) {
+    MBModelInit();
+    func_800F26E8_shared_board();
+    func_800EE700_shared_board();
+    func_800F2A20_shared_board();
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_801092A0_koopa);
+void func_801092A0_koopa(void) {
+    func_800F2A34_shared_board();
+    func_800EE740_shared_board();
+    func_800F27C4_shared_board();
+    MBModelClose();
+}
 
 void func_801092D4_koopa(void) {
     Hu3DCamInit(1);

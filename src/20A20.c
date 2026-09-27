@@ -1,12 +1,37 @@
 #include "common.h"
 #include "mallocblock.h"
 
+typedef struct Hu3DQuad {
+    /* 0x00 */ s16 vtx[4];
+} Hu3DQuad; // sizeof 0x8
+
+typedef struct Hu3DQuadPool {
+    /* 0x00 */ Hu3DQuad **quads;
+    /* 0x04 */ u16 numQuads;
+    /* 0x06 */ u16 curQuad;
+} Hu3DQuadPool; // sizeof 0x8
+
+typedef struct Hu3DAnimPlayer {
+    /* 0x00 */ s32 numFrames;
+    /* 0x04 */ s32 numTracks;
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ s32 unk_0C;
+    /* 0x10 */ void *unk_10;
+    /* 0x14 */ s16 *unk_14;
+    /* 0x18 */ s16 *unk_18;
+    /* 0x1C */ s16 *unk_1C;
+    /* 0x20 */ void *unk_20;
+} Hu3DAnimPlayer; // sizeof 0x24
+
 extern s16 D_800B19E0_main;
 extern s16 D_800B19E2_main;
+extern Hu3DAnimPlayer *D_800D1104_main;
 
 INCLUDE_ASM("asm/nonmatchings/20A20", Hu3DAnimInit);
 
-INCLUDE_ASM("asm/nonmatchings/20A20", func_8001FED0_main);
+s32 func_8001FED0_main(s16 index) {
+    return D_800D1104_main[index].numFrames == D_800D1104_main[index].numTracks;
+}
 
 INCLUDE_ASM("asm/nonmatchings/20A20", func_8001FF04_main);
 
@@ -48,7 +73,12 @@ INCLUDE_ASM("asm/nonmatchings/20A20", func_80021E64_main);
 
 INCLUDE_ASM("asm/nonmatchings/20A20", func_80021F98_main);
 
-INCLUDE_ASM("asm/nonmatchings/20A20", func_80022198_main);
+Hu3DQuad *func_80022198_main(Hu3DQuadPool *pool) {
+    if (pool->curQuad == pool->numQuads) {
+        return NULL;
+    }
+    return pool->quads[pool->curQuad++];
+}
 
 INCLUDE_ASM("asm/nonmatchings/20A20", func_800221CC_main);
 

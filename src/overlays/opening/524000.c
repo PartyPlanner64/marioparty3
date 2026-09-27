@@ -33,6 +33,12 @@ typedef struct {
     /* 0x19 */ u8 unk_19[3];
 } OpSpr; // sizeof 0x1C
 
+typedef struct {
+    /* 0x00 */ Vec pos;
+    /* 0x0C */ Vec at;
+    /* 0x18 */ Vec up;
+} OpCamVecs; // sizeof 0x24
+
 void func_801061F0_opening(void);
 void func_80110B90_opening(void);
 void func_80110F48_opening(void);
@@ -45,6 +51,7 @@ extern Vec D_80114BB8_opening;
 extern Vec D_80114BC4_opening;
 extern RectF D_80114BD0_opening;
 extern OpModel D_80115630_opening[0xA0];
+extern OpCamVecs D_80117350_opening;
 extern omObjData *D_80117374_opening;
 extern OpObj D_80117388_opening[0x10];
 extern s16 D_801171B0_opening;
@@ -291,7 +298,10 @@ void func_80111028_opening(void) {
     D_80117374_opening = NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_8011105C_opening);
+void func_8011105C_opening(void) {
+    Hu3DCamSetPositionOrientation(0, &D_80117350_opening.pos, &D_80117350_opening.at, &D_80117350_opening.up);
+    Hu3DCamUpdateMtx(0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80111090_opening);
 

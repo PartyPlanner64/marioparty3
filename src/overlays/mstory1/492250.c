@@ -1,5 +1,15 @@
 #include "common.h"
 
+typedef struct UnkSeEntry {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s16 unk_08;
+    /* 0x0A */ s16 stopSeNo;
+    char unk_0C[0xC];
+} UnkSeEntry; // sizeof 0x18
+
+extern UnkSeEntry D_80115A3C_mstory1[8];
+
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/492250", func_8010BDC0_mstory1);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/492250", func_8010C0C4_mstory1);
@@ -191,6 +201,21 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/492250", D_80115470_mstory1);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/492250", func_80110248_mstory1);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/492250", func_8011032C_mstory1);
+void func_8011032C_mstory1(s32 index) {
+    if (D_80115A3C_mstory1[index].unk_00 == 1) {
+        D_80115A3C_mstory1[index].unk_00 = 0;
+        switch (index) {
+            case 0:
+            case 2:
+                HuAudFXStop(D_80115A3C_mstory1[index].stopSeNo);
+                break;
+            case 1:
+            case 3:
+            case 4:
+            case 5:
+                break;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/492250", func_801103A8_mstory1);

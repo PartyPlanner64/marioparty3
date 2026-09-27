@@ -1,5 +1,29 @@
 #include "common.h"
 
+typedef struct UnkSeEntry {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s16 unk_08;
+    /* 0x0A */ s16 stopSeNo;
+    char unk_0C[0xC];
+} UnkSeEntry; // sizeof 0x18
+
+extern f32 D_800CB890_main;
+extern f32 D_800CE17C_main[];
+extern f32 D_800D5210_main;
+
+extern Vec D_80114A8C_mstory1;
+extern Vec D_80114A98_mstory1;
+extern Vec D_80114AA4_mstory1;
+
+extern s32 D_80114AB0_mstory1;
+extern s16 D_801158B2_mstory1;
+extern u16 D_801158B8_mstory1;
+extern s32 D_801158E4_mstory1;
+extern UnkSeEntry D_801158FC_mstory1[];
+
+void func_80105FF4_mstory1(void);
+
 INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/48C120", D_80114C50_mstory1);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_80105C90_mstory1);
@@ -8,15 +32,34 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_80105D80_mstory1);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_80105E00_mstory1);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_80105EC0_mstory1);
+void func_80105EC0_mstory1(void) {
+    func_8001C258_main(D_801158B2_mstory1, 4, 4);
+    func_8000BB94_main(D_801158B8_mstory1);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_80105EF4_mstory1);
+void func_80105EF4_mstory1(void) {
+    func_8001C258_main(D_801158B2_mstory1, 4, 0);
+    func_8000BB54_main(D_801158B8_mstory1);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_80105F28_mstory1);
+void func_80105F28_mstory1(void) {
+    D_800CE17C_main[0] = D_80114A8C_mstory1.x;
+    D_800CE17C_main[1] = D_80114A8C_mstory1.z;
+    D_800CE17C_main[-1] = 0.0f;
+    D_800CE17C_main[2] = 35.0f;
+    D_800CE17C_main[3] = D_800D5210_main;
+    D_800CE17C_main[4] = D_800CB890_main;
+    Hu3DCamSetPositionOrientation(0, &D_80114A8C_mstory1, &D_80114A98_mstory1, &D_80114AA4_mstory1);
+    Hu3DCamUpdateMtx(0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_80105FA8_mstory1);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_80105FB8_mstory1);
+void func_80105FB8_mstory1(s32 arg0) {
+    D_801158E4_mstory1 = arg0;
+    D_80114AB0_mstory1 = 0;
+    omAddPrcObj(func_80105FF4_mstory1, 0x1000, 0x800, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_80105FF4_mstory1);
 
@@ -271,6 +314,21 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/48C120", D_8011505C_mstory1);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_8010BB08_mstory1);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_8010BBEC_mstory1);
+void func_8010BBEC_mstory1(s32 index) {
+    if (D_801158FC_mstory1[index].unk_00 == 1) {
+        D_801158FC_mstory1[index].unk_00 = 0;
+        switch (index) {
+            case 0:
+            case 2:
+                HuAudFXStop(D_801158FC_mstory1[index].stopSeNo);
+                break;
+            case 1:
+            case 3:
+            case 4:
+            case 5:
+                break;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_8010BC68_mstory1);

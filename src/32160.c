@@ -63,7 +63,11 @@ INCLUDE_ASM("asm/nonmatchings/32160", func_80032950_main);
 
 INCLUDE_ASM("asm/nonmatchings/32160", func_800329B4_main);
 
-INCLUDE_ASM("asm/nonmatchings/32160", func_80032FC0_main);
+void func_80032FC0_main(s16 animIdx, u8 bitmask, u8 flags) {
+    HmfAnim *anim = &D_800D1714_main[animIdx];
+
+    anim->flags = (anim->flags & ~bitmask) | flags;
+}
 
 void func_80032FF8_main(s16 animIdx, u8 rot) {
     HmfAnim *anim = &D_800D1714_main[animIdx];

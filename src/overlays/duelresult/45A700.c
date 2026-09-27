@@ -1,6 +1,5 @@
 #include "common.h"
-
-INCLUDE_ASM("asm/nonmatchings/overlays/duelresult/45A700", func_8010ABE0_duelresult);
+#include "mallocblock.h"
 
 // Work area allocated by func_8010ABE0 and stored at the process's user_data
 // (see Process.user_data). Total size is 0x4C; fields are added as functions
@@ -11,8 +10,14 @@ typedef struct DuelResultWork {
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
-    /* 0x0C */ char unk_0C[0x40];
+    /* 0x0C */ Vec unk_0C;
+    /* 0x18 */ Vec unk_18;
+    /* 0x24 */ char unk_24[0x28];
 } DuelResultWork; // sizeof 0x4C
+
+void func_8010C8E0_duelresult(void);
+
+INCLUDE_ASM("asm/nonmatchings/overlays/duelresult/45A700", func_8010ABE0_duelresult);
 
 void func_8010AC6C_duelresult(DuelResultWork *arg0, u32 arg1) {
     arg0->unk_00 = arg1;
@@ -46,6 +51,14 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duelresult/45A700", func_8010C21C_duelres
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duelresult/45A700", func_8010C72C_duelresult);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duelresult/45A700", func_8010C880_duelresult);
+void func_8010C880_duelresult(void) {
+    Process *process = omAddPrcObj(func_8010C8E0_duelresult, 0x3F00, 0x2000, 0);
+    DuelResultWork *work = HuMemAllocTag(sizeof(DuelResultWork), 0x7918);
+
+    process->user_data = work;
+    work->unk_18.x = 0.0f;
+    work->unk_18.y = 100.0f;
+    work->unk_18.z = 0.0f;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duelresult/45A700", func_8010C8E0_duelresult);

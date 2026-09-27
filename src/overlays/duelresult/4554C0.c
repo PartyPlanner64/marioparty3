@@ -1,6 +1,8 @@
 #include "common.h"
 #include "../ovl_81_name/ovl_81.h"
 
+extern s32 D_8010D680_duelresult[6];
+
 INCLUDE_ASM("asm/nonmatchings/overlays/duelresult/4554C0", func_801059A0_duelresult);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duelresult/4554C0", func_80105B60_duelresult);
@@ -37,7 +39,16 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duelresult/4554C0", func_80107E7C_duelres
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duelresult/4554C0", func_80107F3C_duelresult);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duelresult/4554C0", func_80108138_duelresult);
+s32 func_80108138_duelresult(void) {
+    s32 i;
+
+    for (i = 0; i < 6; i++) {
+        if (D_8010D680_duelresult[i] == 0) {
+            break;
+        }
+    }
+    return i == 6;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duelresult/4554C0", func_80108174_duelresult);
 

@@ -1,6 +1,10 @@
 #include "common.h"
 #include "overlays/ovl_27.h"
 
+extern void func_80105C50_pipe_cleaners(omObjData *obj);
+extern void func_80105DF0_pipe_cleaners(omObjData *obj);
+extern void func_80108F18_pipe_cleaners(omObjData *obj);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_801059A0_pipe_cleaners);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_801059BC_pipe_cleaners);
@@ -15,14 +19,18 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80105B
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80105C50_pipe_cleaners);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80105DB4_pipe_cleaners);
+void func_80105DB4_pipe_cleaners(void) {
+    omAddObj(0x64, 1, 0, -1, func_80105C50_pipe_cleaners);
+}
 
 void func_80105DE8_pipe_cleaners(void) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80105DF0_pipe_cleaners);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80105E60_pipe_cleaners);
+void func_80105E60_pipe_cleaners(void) {
+    omAddObj(0x6E, 2, 0, -1, func_80105DF0_pipe_cleaners);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80105E94_pipe_cleaners);
 
@@ -127,7 +135,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80108A
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80108F18_pipe_cleaners);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_801091E4_pipe_cleaners);
+void func_801091E4_pipe_cleaners(void) {
+    omAddObj(0x258, 1, 0, -1, func_80108F18_pipe_cleaners);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80109218_pipe_cleaners);
 

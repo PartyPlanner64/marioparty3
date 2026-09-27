@@ -1,16 +1,7 @@
 #include "common.h"
 #include "../ovl_80_shared_board/105D50.h"
+#include "overlays/mgresultboard.h"
 
-typedef struct PlayerResult {
-    /* 0x00 */ s8 idx;
-    /* 0x01 */ s8 unk_01;
-    /* 0x02 */ s8 unk_02;
-    /* 0x03 */ s8 unk_03;
-    /* 0x04 */ s16 score;
-    /* 0x06 */ s16 coin;
-    /* 0x08 */ s16 gameCoin;
-    /* 0x0A */ s16 bonusCoin;
-} PlayerResult; // sizeof 0x0C
 extern PlayerResult D_8010B018_mgresultboard[4];
 extern PlayerResult D_8010B048_mgresultboard[4];
 extern s8 D_8010AAFC_mgresultboard;
@@ -34,6 +25,7 @@ void func_80107234_mgresultboard(void);
 void func_800E6630_shared_board(u32);
 void MBBackCreate(s32, s32);
 void func_80107024_mgresultboard(void);
+void func_8010705C_mgresultboard(Gfx **, s32, s32);
 extern s32 D_8010AD0C_mgresultboard[];
 void MBBackClose(void);
 void MBBackKill(void);
@@ -560,7 +552,9 @@ void func_80106FC8_mgresultboard(void) {
 }
 
 void func_80107024_mgresultboard(void) {
-    func_8001C8A8_main(func_8001AC8C_main(0, func_8010705C_mgresultboard, 2), 1);
+    s16 modelId = func_8001AC8C_main(0, func_8010705C_mgresultboard, 2);
+
+    func_8001C8A8_main(modelId, 1);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E6DC0", func_8010705C_mgresultboard);

@@ -9,7 +9,10 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_801059
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_801059BC_pipe_cleaners);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80105A3C_pipe_cleaners);
+u8 func_80105A3C_pipe_cleaners(s32 arg0) {
+    u32 ret = (rand8() & 0xFF) * arg0;
+    return ret >> 8;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80105A74_pipe_cleaners);
 

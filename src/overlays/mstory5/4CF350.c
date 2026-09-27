@@ -1,5 +1,43 @@
 #include "common.h"
 
+typedef struct UnkStoryObj {
+    /* 0x00 */ omObjData *obj;
+    /* 0x04 */ void (*func)(omObjData *);
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ s32 unk_0C;
+} UnkStoryObj; // sizeof 0x10
+
+typedef struct UnkSeEntry {
+    /* 0x00 */ omObjData *obj;
+    /* 0x04 */ void (*func)(omObjData *);
+    /* 0x08 */ char unk_08[4];
+    /* 0x0C */ s32 unk_0C;
+    /* 0x10 */ s32 unk_10;
+    /* 0x14 */ s16 unk_14;
+    /* 0x16 */ s16 stopSeNo;
+} UnkSeEntry; // sizeof 0x18
+
+extern f32 D_800CB890_main;
+extern f32 D_800CE17C_main[];
+extern f32 D_800D5210_main;
+
+extern Vec D_8011473C_mstory5;
+extern Vec D_80114748_mstory5;
+extern Vec D_80114754_mstory5;
+
+extern s32 D_80114760_mstory5;
+extern s16 D_801151B2_mstory5;
+extern u16 D_801151B8_mstory5;
+extern s32 D_801151E4_mstory5;
+extern UnkSeEntry D_801151F0_mstory5[9];
+extern UnkSeEntry D_801153A0_mstory5[8];
+extern UnkStoryObj D_801152C8_mstory5;
+extern void (*D_801152CC_mstory5)(omObjData *);
+extern UnkStoryObj D_801152E0_mstory5;
+extern void (*D_801152E4_mstory5)(omObjData *);
+
+void func_80106028_mstory5(void);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_801059A0_mstory5);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4CF350", D_801148A0_mstory5);
@@ -16,15 +54,34 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_80105DA0_mstory5);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_80105E34_mstory5);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_80105EF4_mstory5);
+void func_80105EF4_mstory5(void) {
+    func_8001C258_main(D_801151B2_mstory5, 4, 4);
+    func_8000BB94_main(D_801151B8_mstory5);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_80105F28_mstory5);
+void func_80105F28_mstory5(void) {
+    func_8001C258_main(D_801151B2_mstory5, 4, 0);
+    func_8000BB54_main(D_801151B8_mstory5);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_80105F5C_mstory5);
+void func_80105F5C_mstory5(void) {
+    D_800CE17C_main[0] = D_8011473C_mstory5.x;
+    D_800CE17C_main[1] = D_8011473C_mstory5.z;
+    D_800CE17C_main[-1] = 0.0f;
+    D_800CE17C_main[2] = 35.0f;
+    D_800CE17C_main[3] = D_800D5210_main;
+    D_800CE17C_main[4] = D_800CB890_main;
+    Hu3DCamSetPositionOrientation(0, &D_8011473C_mstory5, &D_80114748_mstory5, &D_80114754_mstory5);
+    Hu3DCamUpdateMtx(0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_80105FDC_mstory5);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_80105FEC_mstory5);
+void func_80105FEC_mstory5(s32 arg0) {
+    D_801151E4_mstory5 = arg0;
+    D_80114760_mstory5 = 0;
+    omAddPrcObj(func_80106028_mstory5, 0x1000, 0x800, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_80106028_mstory5);
 
@@ -88,7 +145,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_801083FC_mstory5);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010842C_mstory5);
 
-void func_801085D8_mstory5(void) {
+void func_801085D8_mstory5(omObjData *object) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_801085E0_mstory5);
@@ -284,9 +341,33 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010E3F0_mstory5);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010E538_mstory5);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010E558_mstory5);
+void func_8010E558_mstory5(void) {
+    omObjData *obj = omAddObj(0x14, 0, 0, -1, NULL);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010E5D0_mstory5);
+    D_801152C8_mstory5.obj = obj;
+    D_801152C8_mstory5.unk_08 = 0;
+    D_801152C8_mstory5.unk_0C = 0;
+    D_801152C8_mstory5.func = func_801085D8_mstory5;
+
+    for (;;) {
+        D_801152CC_mstory5(obj);
+        HuPrcVSleep();
+    }
+}
+
+void func_8010E5D0_mstory5(void) {
+    omObjData *obj = omAddObj(0x14, 0, 0, -1, NULL);
+
+    D_801152E0_mstory5.obj = obj;
+    D_801152E0_mstory5.unk_08 = 0;
+    D_801152E0_mstory5.unk_0C = 0;
+    D_801152E0_mstory5.func = func_801085D8_mstory5;
+
+    for (;;) {
+        D_801152E4_mstory5(obj);
+        HuPrcVSleep();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010E648_mstory5);
 
@@ -326,7 +407,22 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4CF350", D_80114CA8_mstory5);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010F14C_mstory5);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010F240_mstory5);
+void func_8010F240_mstory5(s32 index) {
+    if (D_801151F0_mstory5[index].unk_0C == 1) {
+        D_801151F0_mstory5[index].unk_0C = 0;
+        switch (index) {
+            case 0:
+            case 2:
+            case 3:
+                HuAudFXStop(D_801151F0_mstory5[index].stopSeNo);
+            case 1:
+            case 4:
+            case 5:
+            case 6:
+                break;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010F2BC_mstory5);
 
@@ -549,6 +645,20 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4CF350", D_8011514C_mstory5);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8011447C_mstory5);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_80114560_mstory5);
+void func_80114560_mstory5(s32 index) {
+    if (D_801153A0_mstory5[index].unk_0C == 1) {
+        D_801153A0_mstory5[index].unk_0C = 0;
+        switch (index) {
+            case 0:
+            case 2:
+                HuAudFXStop(D_801153A0_mstory5[index].stopSeNo);
+            case 1:
+            case 3:
+            case 4:
+            case 5:
+                break;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_801145DC_mstory5);

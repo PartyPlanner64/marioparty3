@@ -81,7 +81,12 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80105F68_opening);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opTitleMain);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opBtnStartCheck);
+s32 opBtnStartCheck(void) {
+    if (GWContErrorGet() == 1) {
+        return (D_800D5558_main[0] & 0x1000) != 0;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoEndReset);
 

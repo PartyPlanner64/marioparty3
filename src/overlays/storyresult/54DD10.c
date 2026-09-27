@@ -6,6 +6,7 @@ void func_8010818C_storyresult(s16 *, s32);
 extern s16 D_8010A910_storyresult;
 extern s16 D_8010A912_storyresult;
 extern s16 D_8010A914_storyresult;
+extern u8 D_8010AB90_storyresult[];
 extern Vec D_8010AB9C_storyresult[];
 extern s16 D_8010AC28_storyresult;
 extern s16 D_8010AC2A_storyresult;
@@ -110,6 +111,14 @@ INCLUDE_ASM("asm/nonmatchings/overlays/storyresult/54DD10", func_8010A5C4_storyr
 
 INCLUDE_ASM("asm/nonmatchings/overlays/storyresult/54DD10", func_8010A738_storyresult);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/storyresult/54DD10", func_8010A7B0_storyresult);
+s16 func_8010A7B0_storyresult(s16 playerIdx) {
+    s16 bonusCoin = GwPlayer[playerIdx].bonusCoin;
+    s16 value = 0;
+
+    if (bonusCoin >= 0) {
+        value = D_8010AB90_storyresult[bonusCoin];
+    }
+    return value;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/storyresult/54DD10", func_8010A7EC_storyresult);

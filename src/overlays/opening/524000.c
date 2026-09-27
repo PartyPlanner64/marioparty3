@@ -57,6 +57,8 @@ extern OpObj D_80117388_opening[0x10];
 extern s16 D_801171B0_opening;
 extern u16 D_801171B2_opening;
 extern OpSpr D_80114EB0_opening[0x40];
+extern s16 D_801155B0_opening[0x40];
+
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opObjectInit);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opTitleObjectSetup);
@@ -95,7 +97,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opAnimIdGet);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opEspIdGet);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opAnimCreate);
+void opAnimCreate(s32 arg0, s32 arg1) {
+    D_801155B0_opening[arg0] = func_8000B838_main(arg1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opAnimKill);
 

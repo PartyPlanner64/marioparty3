@@ -182,6 +182,7 @@ build/src/2.0L/os/jammesg.c.o: OPTFLAGS = -O2
 build/src/2.0L/os/recvmesg.c.o: OPTFLAGS = -O2
 build/src/2.0L/os/sendmesg.c.o: OPTFLAGS = -O2
 build/src/2.0L/rmon/rmonmem.c.o: OPTFLAGS = -O2
+build/src/6C9F0.c.o: OPTFLAGS = -O2
 build/src/88CF0.c.o: OPTFLAGS = -O2
 build/src/88CF0.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
 build/src/6B050.c.o: OPTFLAGS = -O2

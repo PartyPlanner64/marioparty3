@@ -1,7 +1,9 @@
 #include "common.h"
 
-extern s16 D_80112368_mstory4[];
+extern s16 D_80112122_mstory4;
+extern u16 D_80112128_mstory4;
 extern void (*D_801121DC_mstory4)(omObjData *);
+extern s16 D_80112368_mstory4[];
 
 void func_80109B5C_mstory4(omObjData *object);
 
@@ -21,9 +23,15 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80105EAC_mstory4);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80105F40_mstory4);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80106000_mstory4);
+void func_80106000_mstory4(void) {
+    func_8001C258_main(D_80112122_mstory4, 4, 4);
+    func_8000BB94_main(D_80112128_mstory4);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80106034_mstory4);
+void func_80106034_mstory4(void) {
+    func_8001C258_main(D_80112122_mstory4, 4, 0);
+    func_8000BB54_main(D_80112128_mstory4);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80106068_mstory4);
 
@@ -348,10 +356,10 @@ void func_8000BB94_main(u16);           /* extern */
 void func_8000BD94_main(u16, s32, s32); /* extern */
 void func_8000BDDC_main(u16, s32);      /* extern */
 void func_8000C184_main(u16);
-void func_80017954_main(s16, s16, s16, s16);;
-void Hu3DModelRotSet(s16, f32, f32, f32);                           /* extern */
-void func_800E4F50_name_81(Addr *);                           /* extern */
-void MBDBackCreate(s32, s32);                                       /* extern */
+void func_80017954_main(s16, s16, s16, s16);
+void Hu3DModelRotSet(s16, f32, f32, f32);                    /* extern */
+void func_800E4F50_name_81(Addr *);                          /* extern */
+void MBDBackCreate(s32, s32);                                /* extern */
 void func_80106C78_mstory4(void);                            /* extern */
 void func_80106CA8_mstory4(void);                            /* extern */
 void func_80106CCC_mstory4(s32);                             /* extern */
@@ -493,7 +501,12 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80110270_mstory4);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80110394_mstory4);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80110460_mstory4);
+void func_80110460_mstory4(s16 modelId, s32 x, s32 y, s32 z) {
+    HmfModelData_UnkBC_Struct *model = HmfModelData[modelId].unkBC;
+    model->unk1C.i = x;
+    model->unk20.i = y;
+    model->unk24.i = z;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80110494_mstory4);
 

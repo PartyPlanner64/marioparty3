@@ -1,5 +1,9 @@
 #include "common.h"
 #include "../ovl_80_shared_board/FA250.h"
+#include "../ovl_80_shared_board/ECA50.h"
+#include "../ovl_80_shared_board/105D50.h"
+#include "../ovl_80_shared_board/101840.h"
+#include "../ovl_80_shared_board/106640.h"
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opboard/3CA800", func_801059A0_opboard);
 
@@ -41,9 +45,19 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opboard/3CA800", func_80108BB0_opboard);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opboard/3CA800", func_80108C0C_opboard);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opboard/3CA800", func_80108C58_opboard);
+void func_80108C58_opboard(void) {
+    MBModelInit();
+    func_800F26E8_shared_board();
+    func_800EE700_shared_board();
+    func_800F2A20_shared_board();
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opboard/3CA800", func_80108C8C_opboard);
+void func_80108C8C_opboard(void) {
+    func_800F2A34_shared_board();
+    func_800EE740_shared_board();
+    func_800F27C4_shared_board();
+    MBModelClose();
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/opboard/3CA800", D_80108F80_opboard);
 

@@ -22,7 +22,10 @@ INCLUDE_ASM("asm/nonmatchings/6C3C0", func_8006BBE8_main);
 
 INCLUDE_ASM("asm/nonmatchings/6C3C0", func_8006BC00_main);
 
-INCLUDE_ASM("asm/nonmatchings/6C3C0", func_8006BC60_main);
+void func_8006BC60_main(ALLink *link) {
+    alUnlink(link);
+    alLink(link, &D_800A2884_main->pLameList);
+}
 
 INCLUDE_ASM("asm/nonmatchings/6C3C0", func_8006BC98_main);
 

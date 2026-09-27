@@ -30,7 +30,10 @@ INCLUDE_ASM("asm/nonmatchings/14EA0", HmfSprModelCreate);
 
 INCLUDE_ASM("asm/nonmatchings/14EA0", func_80014618_main);
 
-INCLUDE_ASM("asm/nonmatchings/14EA0", func_800146DC_main);
+void func_800146DC_main(s16 arg0, u16 arg1, u16 arg2) {
+    D_800CBB60_main_Struct *entry = &D_800CBB60_main[arg0];
+    entry->flags = (entry->flags & ~arg1) | arg2;
+}
 
 void func_80014714_main(s16 arg0, s16 arg1) {
     D_800CBB60_main[arg0].nodeIdx = arg1;

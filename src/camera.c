@@ -175,7 +175,7 @@ void Hu3DCam3DToScreen(s16 camIndex, Vec *worldPos, Vec2f *outPos) {
     outPos->y = ((projectedY * (SCREEN_HEIGHT_CENTER / y)) + SCREEN_HEIGHT_CENTER);
 }
 
-void func_80012B14_main(s16 camIndex, Vec *worldPos, Vec *outPos) {
+void func_80012B14_main(s16 camIndex, Vec *worldPos, Vec2f *outPos) {
     f32 x;
     f32 y;
     f32 z;

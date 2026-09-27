@@ -1,5 +1,9 @@
 #include "common.h"
 
+void func_80012B14_main(s16 camIndex, Vec *worldPos, Vec2f *outPos);
+
+extern u16 D_800A1902_main;
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", func_801059A0_ridiculous_relay);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", func_80105D40_ridiculous_relay);
@@ -50,7 +54,16 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_801
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", func_8010AF04_ridiculous_relay);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", func_8010B474_ridiculous_relay);
+f32 func_8010B474_ridiculous_relay(f32 x) {
+    Vec pos;
+    Vec2f out;
+
+    pos.x = x;
+    pos.y = 0.0f;
+    pos.z = 0.0f;
+    func_80012B14_main(1, &pos, &out);
+    return out.x;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_8011108C_ridiculous_relay);
 
@@ -72,6 +85,22 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_801
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", func_8010B4A8_ridiculous_relay);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", func_80110BF4_ridiculous_relay);
+s16 func_80110BF4_ridiculous_relay(s16 arg0, s16 arg1) {
+    if (D_800A1902_main == 0) {
+        return 0;
+    }
+    if (arg0 == 0) {
+        return 0;
+    }
+    return func_8004AC5C_main(arg0, 0);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", func_80110C3C_ridiculous_relay);
+s16 func_80110C3C_ridiculous_relay(s16 seId, s16 playerIdx) {
+    if (D_800A1902_main == 0) {
+        return 0;
+    }
+    if (seId == 0) {
+        return 0;
+    }
+    return func_8004AC5C_main(seId + GwPlayer[playerIdx].chr + 1, 0);
+}

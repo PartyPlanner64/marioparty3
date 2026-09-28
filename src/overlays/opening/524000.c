@@ -183,7 +183,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opModelRotGet);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opModelScaleGet);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opModelDispOff);
+void opModelDispOff(s32 arg0) {
+    func_8001C258_main(D_80115630_opening[arg0].modelId, 4, 4);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opModelDispOn);
 

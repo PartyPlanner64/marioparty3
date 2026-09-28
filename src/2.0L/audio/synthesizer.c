@@ -20,7 +20,10 @@ INCLUDE_ASM("asm/nonmatchings/2.0L/audio/synthesizer", func_80078288_main);
 
 INCLUDE_ASM("asm/nonmatchings/2.0L/audio/synthesizer", func_800782A0_main);
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/audio/synthesizer", func_800782F4_main);
+void func_800782F4_main(ALSynth *drvr, ALLink *link) {
+    alUnlink(link);
+    alLink(link, &drvr->pLameList);
+}
 
 INCLUDE_ASM("asm/nonmatchings/2.0L/audio/synthesizer", func_80078334_main);
 

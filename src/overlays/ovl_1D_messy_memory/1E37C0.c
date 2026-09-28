@@ -1,22 +1,80 @@
 #include "common.h"
 
+// One tile tracked by the object made in func_8010F15C_messy_memory. The
+// object's work[0] is the index of its entry here. Layout derived from the
+// accesses in func_8010EF10_messy_memory.
+typedef struct {
+    /* 0x00 */ omObjData *obj;
+    /* 0x04 */ char unk04[2];
+    /* 0x06 */ u16 unk06;
+    /* 0x07 */ u8 unk07;
+    /* 0x08 */ char unk08[0x7C];
+} MessyMemoryTile; // sizeof 0x84
+
+extern HuSprite_Unk84_Struct *D_80111654_messy_memory;
+extern HuSprite_Unk84_Struct *D_801116D8_messy_memory;
+extern omObjData *D_80111A9C_messy_memory;
+extern MessyMemoryTile D_80113A94_messy_memory[1];
+extern u8 D_80115D8C_messy_memory;
+
+void func_80105B88_messy_memory(Gfx **, s32, s32);
+void func_8010F04C_messy_memory(omObjData *object);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", func_801059A0_messy_memory);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", func_801059BC_messy_memory);
+f32 func_801059BC_messy_memory(f32 arg0, f32 arg1) {
+    f32 angle = arg0 + arg1;
+
+    while (angle >= 360.0f) {
+        angle -= 360.0f;
+    }
+
+    while (angle < 0.0f) {
+        angle += 360.0f;
+    }
+
+    return angle;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", func_80105A3C_messy_memory);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", func_80105B04_messy_memory);
+void func_80105B04_messy_memory(s32 playerIndex) {
+    D_800CDA7C_main[GwPlayer[playerIndex].pad] = 0;
+    D_800D5558_main[GwPlayer[playerIndex].pad] = 0;
+    D_800CBB6E_main[GwPlayer[playerIndex].pad] = 0;
+    D_800D20A1_main[GwPlayer[playerIndex].pad] = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", func_80105B7C_messy_memory);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", func_80105B88_messy_memory);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", func_801060E0_messy_memory);
+void func_801060E0_messy_memory(omObjData *obj) {
+    switch (D_80115D8C_messy_memory) {
+        case 8:
+            func_8001C258_main(*obj->model, 4, 0);
+            break;
+        case 0xC:
+            func_8001C258_main(*obj->model, 4, 4);
+            break;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", func_80106140_messy_memory);
+void func_80106140_messy_memory(omObjData *obj) {
+    *obj->model = func_8001AC8C_main(0, func_80105B88_messy_memory, 2);
+    func_8001C8A8_main(*obj->model, 2);
+    func_8001C258_main(*obj->model, 4, 4);
+    obj->func = func_801060E0_messy_memory;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", func_801061AC_messy_memory);
+void func_801061AC_messy_memory(void) {
+    omObjData *obj;
+    D_80111654_messy_memory = func_80055194_main(func_8000B838_main(0x3E0002));
+    D_801116D8_messy_memory = func_80055194_main(func_8000B838_main(0x3E0004));
+    obj = omAddObj(0xC8, 1, 0, -1, func_80106140_messy_memory);
+    obj->work[0] = 0;
+    D_80111A9C_messy_memory = obj;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", D_801113F0_messy_memory);
 
@@ -88,7 +146,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", func_8010EF1
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", func_8010F04C_messy_memory);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", func_8010F15C_messy_memory);
+void func_8010F15C_messy_memory(void) {
+    omObjData *obj = omAddObj(0xFA, 1, 0xA, -1, func_8010F04C_messy_memory);
+    obj->work[0] = 0;
+    D_80113A94_messy_memory[0].obj = obj;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", func_8010F19C_messy_memory);
 

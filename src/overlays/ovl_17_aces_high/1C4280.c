@@ -1,8 +1,37 @@
 #include "common.h"
 
+typedef struct AceHighCamData {
+    /* 0x00 */ char unk_00[2];
+    /* 0x02 */ u16 camIdx;
+} AceHighCamData;
+
+typedef struct AceHighPlayer {
+    /* 0x00 */ char unk_00[0x28];
+    /* 0x28 */ u16 espriteSlots[2];
+} AceHighPlayer;
+
+extern omObjData *D_8010DE5C_aces_high;
+extern omObjData *D_8010DE60_aces_high;
+extern omObjData **D_8010DE68_aces_high;
+extern s16 D_8010DE8C_aces_high;
+extern s16 D_8010DE8E_aces_high;
+extern s16 D_8010DE90_aces_high;
+extern Vec D_8010DEA8_aces_high;
+extern Vec D_8010DEB4_aces_high;
+extern Vec D_8010DEC0_aces_high;
+
+void func_80105E84_aces_high(omObjData *object);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_801059A0_aces_high);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_80105E44_aces_high);
+void func_80105E44_aces_high(omObjData *object) {
+    D_8010DE60_aces_high = NULL;
+    D_8010DE5C_aces_high = NULL;
+    D_8010DE8C_aces_high = 4;
+    D_8010DE8E_aces_high = -1;
+    D_8010DE90_aces_high = 0;
+    object->func = func_80105E84_aces_high;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_80105E84_aces_high);
 
@@ -32,7 +61,18 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_801081A8_a
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_8010843C_aces_high);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_801085B0_aces_high);
+void func_801085B0_aces_high(void) {
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < 4; i++) {
+        AceHighPlayer *player = OM_GET_DATA_PTR(D_8010DE68_aces_high[i], AceHighPlayer);
+
+        for (j = 0; j < 2; j++) {
+            func_8000BB94_main(player->espriteSlots[j]);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_8010862C_aces_high);
 
@@ -58,7 +98,13 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", D_8010DDA8_a
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_8010AADC_aces_high);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_8010ACE0_aces_high);
+void func_8010ACE0_aces_high(omObjData *object) {
+    AceHighCamData *camData = (AceHighCamData *)((omObjData *)object->work[1])->data;
+
+    CenterM[camData->camIdx].y = 0.0f;
+    CZoomM[camData->camIdx] = 2700.0f;
+    CRotM[camData->camIdx].x = 90.0f;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_8010AD4C_aces_high);
 
@@ -66,7 +112,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_8010AE30_a
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_8010B0E8_aces_high);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_8010B224_aces_high);
+void func_8010B224_aces_high(omObjData *object) {
+    Hu3DCamSetPositionOrientation(OM_GET_WORK_PTR(object, s16)[1], &D_8010DEA8_aces_high, &D_8010DEB4_aces_high,
+                                  &D_8010DEC0_aces_high);
+    Hu3DCamUpdateMtx(OM_GET_WORK_PTR(object, s16)[1]);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_8010B26C_aces_high);
 

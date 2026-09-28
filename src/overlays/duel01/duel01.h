@@ -79,7 +79,6 @@ void func_800D8F0C_name_81(Object*);
 void func_80089A20_main(Vec*, s32);
 void func_800D8E88_name_81(void);
 s16 MBDGetCurrentPlayerIndex(void);
-GW_PLAYER* MBDGetPlayerStruct(s32);
 void func_800F38DC_name_81(s32, s32, s32);
 void func_8010E1B4_duel01(void);
 void func_8010E7C0_duel01(void);

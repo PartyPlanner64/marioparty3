@@ -166,7 +166,6 @@ void func_800E1854_name_81(s32);
 void func_800F4584_name_81(UnkBoard4*);
 void func_800FAD04_name_81(s32 arg0);
 void func_800D8F0C_name_81(Object*);
-GW_PLAYER* MBDGetPlayerStruct(s32 playerIndex);
 Object* MBDGetPlayerPartnerRef(s32 playerIndex, s32 frontOrBackIndex);
 void func_800ECF1C_name_81(s32, Vec*, Vec*);
 void func_800D7828_name_81(Vec*);

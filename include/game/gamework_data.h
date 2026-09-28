@@ -194,4 +194,6 @@ extern GW_STORY GwStory;
 extern GW_SYSTEM GwSystem;
 extern GW_PLAYER GwPlayer[5]; //5 players due to remnants of mp2's bowser bomb
 
+GW_PLAYER* MBDGetPlayerStruct(s32 playerIndex);
+
 #endif

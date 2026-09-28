@@ -146,7 +146,17 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010E8F4_duel10);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010EC1C_duel10);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010EC60_duel10);
+void func_8010EC60_duel10(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    s8 nlink = player->nlink;
+    s8 nidx = player->nidx;
+
+    player->nlink = player->blink;
+    player->nidx = player->bidx;
+    player->blink = nlink;
+    player->bidx = nidx;
+    player->rev = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010ECA0_duel10);
 

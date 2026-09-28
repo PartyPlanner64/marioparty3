@@ -1,6 +1,19 @@
 #include "common.h"
 #include "overlays/ovl_27.h"
 
+// Per-pipe state used by the pipe cleaners (D_8010AB30_pipe_cleaners, one entry per pipe).
+typedef struct PipeCleanerWork {
+    /* 0x00 */ s32 motionId;
+    /* 0x04 */ omObjData *object;
+    /* 0x08 */ s32 counter;
+    /* 0x0C */ s32 playerId;
+    /* 0x10 */ s32 state;
+    /* 0x14 */ f32 rotX;
+    /* 0x18 */ f32 unk18;
+    /* 0x1C */ Vec pos;
+    /* 0x28 */ char unk28[0x10];
+} PipeCleanerWork; // Size 0x38
+
 extern void func_80105C50_pipe_cleaners(omObjData *obj);
 extern void func_80105DF0_pipe_cleaners(omObjData *obj);
 extern void func_80108F18_pipe_cleaners(omObjData *obj);
@@ -88,7 +101,10 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", D_8010A1
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80106BF8_pipe_cleaners);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80106CB4_pipe_cleaners);
+void func_80106CB4_pipe_cleaners(s32 arg0, PipeCleanerWork *work) {
+    func_8001C258_main(work->object->model[2], 4, 4);
+    work->state = 3;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80106CF4_pipe_cleaners);
 

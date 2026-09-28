@@ -83,7 +83,11 @@ s32 func_800EF7D4_name_81(Object *arg0) {
     return ret;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800EF800_name_81);
+void func_800EF800_name_81(Object *arg0) {
+    while (func_800EF7D4_name_81(arg0)) {
+        HuPrcVSleep();
+    }
+}
 
 void func_800EF840_name_81(void) {
     s32 i;

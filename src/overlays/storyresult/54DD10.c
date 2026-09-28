@@ -39,7 +39,17 @@ INCLUDE_ASM("asm/nonmatchings/overlays/storyresult/54DD10", func_80106C84_storyr
 
 INCLUDE_ASM("asm/nonmatchings/overlays/storyresult/54DD10", func_80106E48_storyresult);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/storyresult/54DD10", func_80106FF0_storyresult);
+s16 func_80106FF0_storyresult(void) {
+    s16 count = GwStory.unk73 != 0;
+    s32 i;
+
+    for (i = 0; i < ARRAY_COUNT(GwStory.unk67); i++) {
+        if (GwStory.unk67[i] != 0) {
+            count++;
+        }
+    }
+    return count;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/storyresult/54DD10", func_80107030_storyresult);
 

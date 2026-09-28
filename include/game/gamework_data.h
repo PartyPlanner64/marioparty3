@@ -32,7 +32,11 @@ typedef struct GW_STORY {
     /* 0x10 */ u8 unk10[6][12];
     /* 0x58 */ u8 unk58[6];
     /* 0x5E */ u8 unk5E[6];
-    /* 0x64 */ char unk_64[0x10];
+    /* 0x64 */ u8 unk64;
+    /* 0x65 */ u8 unk65;
+    /* 0x66 */ u8 unk66;
+    /* 0x67 */ u8 unk67[12];
+    /* 0x73 */ u8 unk73;
 } GW_STORY; /* size = 0x74 */
 
 typedef struct GW_SYSTEM {

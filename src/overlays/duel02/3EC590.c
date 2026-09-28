@@ -4,6 +4,7 @@ void func_800FC8C4_name_81(Vec *);
 extern Vec D_80105540_name_81;
 extern void func_8010E1B8_duel02(void);
 extern void func_8010E7C4_duel02(void);
+extern omObjData* D_8011761C_duel02;
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_801059D0_duel02);
 
@@ -73,7 +74,17 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010AFB8_duel02);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010B134_duel02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010B484_duel02);
+s32 func_8010B484_duel02(void) {
+    UnkDuelObjData *data = D_8011761C_duel02->data;
+    s32 i;
+
+    for (i = 0; i < ARRAY_COUNT(data->unk_180); i++) {
+        if (data->unk_180[i] != 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010B4C4_duel02);
 

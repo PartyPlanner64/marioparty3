@@ -180,7 +180,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010AFB4_duel01);
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010B130_duel01);
 
 s32 func_8010B480_duel01(void) {
-    unkStruct07 *data = D_8011948C_duel01->data;
+    UnkDuelObjData *data = D_8011948C_duel01->data;
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(data->unk_180); i++) {

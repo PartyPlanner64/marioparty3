@@ -44,18 +44,6 @@ typedef struct unkStruct06 {
 /* 0x0C */ char unk_0C[4];
 } unkStruct06;
 
-// Object data block, holding per instance data for 16 model instances
-typedef struct unkStruct07 {
-/* 0x000 */ Vec unk_000[16];
-/* 0x0C0 */ Vec unk_0C0[16];
-/* 0x180 */ s16 unk_180[16];
-/* 0x1A0 */ s16 unk_1A0[16];
-/* 0x1C0 */ s16 unk_1C0[16];
-/* 0x1E0 */ s16 unk_1E0;
-/* 0x1E4 */ f32 unk_1E4[16];
-/* 0x224 */ f32 unk_224[16];
-} unkStruct07; // size = 0x264
-
 extern s16 omovlevtno;
 f32 func_800D76D0_name_81(void*);
 void func_80100CEC_name_81(u8);

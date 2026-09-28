@@ -39,6 +39,11 @@ typedef struct {
     /* 0x18 */ Vec up;
 } OpCamVecs; // sizeof 0x24
 
+typedef struct {
+    /* 0x00 */ s16 animId;
+    /* 0x02 */ u16 espriteSlot;
+} OpContError; // sizeof 0x4
+
 void func_801061F0_opening(void);
 void func_80110B90_opening(void);
 void func_80110F48_opening(void);
@@ -59,6 +64,7 @@ extern s16 D_801171B0_opening;
 extern u16 D_801171B2_opening;
 extern OpSpr D_80114EB0_opening[0x40];
 extern s16 D_801155B0_opening[0x40];
+extern OpContError D_80117750_opening;
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opObjectInit);
 
@@ -443,4 +449,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opContErrorDispOn);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opContErrorDispOff);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opContErrorKill);
+void opContErrorKill(void) {
+    if (GWContErrorGet() == 0) {
+        func_8000C184_main(D_80117750_opening.espriteSlot);
+        HuSprKill(D_80117750_opening.animId);
+    }
+}

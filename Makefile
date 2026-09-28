@@ -181,6 +181,7 @@ build/src/2.0L/os/initrdb.c.o: OPTFLAGS = -O2
 build/src/2.0L/os/jammesg.c.o: OPTFLAGS = -O2
 build/src/2.0L/os/recvmesg.c.o: OPTFLAGS = -O2
 build/src/2.0L/os/sendmesg.c.o: OPTFLAGS = -O2
+build/src/2.0L/os/setglobalintmask.c.o: OPTFLAGS = -O2
 build/src/2.0L/rmon/rmonbrk.c.o: OPTFLAGS = -O2
 build/src/2.0L/rmon/rmonmem.c.o: OPTFLAGS = -O2
 build/src/6C9F0.c.o: OPTFLAGS = -O2

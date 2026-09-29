@@ -94,4 +94,8 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_25_awful_tower/21E010", D_8010CFDC
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_25_awful_tower/21E010", func_80108E8C_awful_tower);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_25_awful_tower/21E010", func_8010CB1C_awful_tower);
+void func_8010CB1C_awful_tower(s16 arg0, s16 arg1) {
+    HmfModel *hmfModel = &HmfModelData[arg0];
+
+    hmfModel->hmf->unk98->unk08 = (f32)arg1;
+}

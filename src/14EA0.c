@@ -28,10 +28,23 @@ typedef struct D_800CBB60_main_Struct {
 } D_800CBB60_main_Struct;
 
 extern D_800CBB60_main_Struct *D_800CBB60_main;
+extern u8 D_800A0620_main;
+extern s32 *D_800CC080_main[8];
+extern s32 *D_800CDD54_main;
+extern u8 D_800D2008_main;
+extern s32 *D_800D1F30_main;
+extern u8 D_800D20B8_main[16][3];
 
 INCLUDE_ASM("asm/nonmatchings/14EA0", func_800142A0_main);
 
-INCLUDE_ASM("asm/nonmatchings/14EA0", func_800143F0_main);
+void func_800143F0_main(void) {
+    if (D_800A0620_main) {
+        s32 playerIdx = D_800D2008_main;
+
+        D_800CDD54_main = D_800CC080_main[playerIdx];
+        D_800D1F30_main = ((s32 *const *)&D_800D1360)[playerIdx];
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/14EA0", HmfSprModelCreate);
 
@@ -104,7 +117,9 @@ INCLUDE_ASM("asm/nonmatchings/14EA0", func_80017A84_main);
 
 INCLUDE_ASM("asm/nonmatchings/14EA0", func_80017AD8_main);
 
-INCLUDE_ASM("asm/nonmatchings/14EA0", func_80017B20_main);
+void func_80017B20_main(s16 arg0, s16 arg1, u8 arg2, u8 arg3) {
+    func_80032FC0_main(D_800D20B8_main[arg1][arg0], arg2, arg3);
+}
 
 INCLUDE_ASM("asm/nonmatchings/14EA0", func_80017B6C_main);
 

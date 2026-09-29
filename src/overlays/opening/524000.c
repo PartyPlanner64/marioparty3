@@ -44,6 +44,12 @@ typedef struct {
     /* 0x02 */ u16 espriteSlot;
 } OpContError; // sizeof 0x4
 
+typedef struct {
+    /* 0x00 */ s16 espriteSlot;
+    /* 0x04 */ void *event;
+    /* 0x08 */ s32 unk_08;
+} OpSlot; // sizeof 0xC
+
 void func_801061F0_opening(void);
 void func_80110B90_opening(void);
 void func_80110F48_opening(void);
@@ -62,6 +68,7 @@ extern omObjData *D_80117374_opening;
 extern OpObj D_80117388_opening[0x10];
 extern s16 D_801171B0_opening;
 extern u16 D_801171B2_opening;
+extern OpSlot D_801171B8_opening[0x20];
 extern OpSpr D_80114EB0_opening[0x40];
 extern s16 D_801155B0_opening[0x40];
 extern OpContError D_80117750_opening;
@@ -238,7 +245,14 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_801078B4_opening);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107980_opening);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107A4C_opening);
+void func_80107A4C_opening(void) {
+    s32 i;
+
+    for (i = 0; i < 0x20; i++) {
+        D_801171B8_opening[i].espriteSlot = -1;
+        D_801171B8_opening[i].event = NULL;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107A90_opening);
 
@@ -333,7 +347,14 @@ void func_8011105C_opening(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80111090_opening);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_801110AC_opening);
+void func_801110AC_opening(f32 *posX, f32 *posY, f32 *posZ, f32 *atX, f32 *atY, f32 *atZ) {
+    *posX = D_80117350_opening.pos.x;
+    *posY = D_80117350_opening.pos.y;
+    *posZ = D_80117350_opening.pos.z;
+    *atX = D_80117350_opening.at.x;
+    *atY = D_80117350_opening.at.y;
+    *atZ = D_80117350_opening.at.z;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_801110F0_opening);
 

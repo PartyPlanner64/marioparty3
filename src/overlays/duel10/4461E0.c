@@ -1,13 +1,34 @@
 #include "common.h"
 #include "process.h"
+#include "malloc.h"
+
+typedef struct {
+    /* 0x00 */ s16 spriteGroup;
+    /* 0x02 */ s16 sprites[3];
+} Duel10SprGroup; // sizeof 0x08
+
+typedef struct Duel10CamShakeWork {
+    /* 0x00 */ s32 magnitude;
+    /* 0x04 */ s32 decay;
+    /* 0x08 */ char unk_08[0x8];
+} Duel10CamShakeWork; // sizeof 0x10
+
+typedef struct Duel10SpriteWork {
+    /* 0x00 */ Vec pos;
+    /* 0x0C */ char unk_0C[0x4];
+} Duel10SpriteWork; // sizeof 0x10
 
 extern Vec D_80105540_name_81;
 extern u8 D_80100E20_name_81;
 
 void func_800FC8C4_name_81(Vec *);
+extern void func_80105D2C_duel10(void);
+extern void func_80106374_duel10(void);
 extern void func_8010F620_duel10(void);
 extern void func_8010FC2C_duel10(void);
 extern omObjData *D_80114CCC_duel10;
+extern Object *D_80114CDC_duel10;
+extern Object *D_80114CE4_duel10;
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_801059D0_duel10);
 
@@ -23,7 +44,18 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_80105CD0_duel10);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_80105D2C_duel10);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_80105F1C_duel10);
+Process *func_80105F1C_duel10(Object *object) {
+    Process *process;
+    Duel10SpriteWork *work;
+
+    process = omAddPrcObj(func_80105D2C_duel10, 0xA, 0, 0x40);
+    work = HuMemMemoryAlloc(process->heap, sizeof(Duel10SpriteWork));
+    process->user_data = work;
+    work->pos.x = object->coords.x;
+    work->pos.y = object->coords.y;
+    work->pos.z = object->coords.z;
+    return process;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_80105F8C_duel10);
 
@@ -41,7 +73,17 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010632C_duel10);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_80106374_duel10);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_801064C8_duel10);
+Process *func_801064C8_duel10(s32 magnitude, s32 decay) {
+    Process *process;
+    Duel10CamShakeWork *work;
+
+    process = omAddPrcObj(func_80106374_duel10, 0xA, 0, 0x40);
+    work = HuMemMemoryAlloc(process->heap, sizeof(Duel10CamShakeWork));
+    process->user_data = work;
+    work->magnitude = magnitude;
+    work->decay = decay;
+    return process;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_80106534_duel10);
 
@@ -111,7 +153,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010DB24_duel10);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010DB60_duel10);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010DD5C_duel10);
+void func_8010DD5C_duel10(Duel10SprGroup *arg0) {
+    HuSprKill(arg0->sprites[0]);
+    HuSprKill(arg0->sprites[1]);
+    HuSprKill(arg0->sprites[2]);
+    HuSprGrpKill(arg0->spriteGroup);
+    HuMemMemoryFreePerm(arg0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010DDA4_duel10);
 
@@ -144,7 +192,17 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010E8D4_duel10);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010E8F4_duel10);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010EC1C_duel10);
+void func_8010EC1C_duel10(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    s8 nlink = player->nlink;
+    s8 nidx = player->nidx;
+
+    player->nlink = player->blink;
+    player->nidx = player->bidx;
+    player->blink = nlink;
+    player->bidx = nidx;
+    player->rev = 7;
+}
 
 void func_8010EC60_duel10(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
@@ -192,7 +250,10 @@ void func_8010F738_duel10(void) {
     omAddPrcObj(func_8010F620_duel10, 0xA, 0, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010F764_duel10);
+void func_8010F764_duel10(void) {
+    func_8001C814_main(D_80114CDC_duel10->omObj1->model[0], 1, 4);
+    func_8001C92C_main(D_80114CDC_duel10->omObj1->model[0], 1.0f);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010F7B4_duel10);
 
@@ -208,7 +269,10 @@ void func_8010FD44_duel10(void) {
     omAddPrcObj(func_8010FC2C_duel10, 0xA, 0, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010FD70_duel10);
+void func_8010FD70_duel10(void) {
+    func_8001C814_main(D_80114CE4_duel10->omObj1->model[0], 1, 4);
+    func_8001C92C_main(D_80114CE4_duel10->omObj1->model[0], 1.0f);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010FDC0_duel10);
 
@@ -244,7 +308,17 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8011450C_duel10);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_801148D8_duel10);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_80114940_duel10);
+s32 func_80114940_duel10(void) {
+    s32 playerIndex = GwSystem.current_player_index;
+    s32 otherIndex = (playerIndex + 1) & 1;
+    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *otherPlayer = MBDGetPlayerStruct(otherIndex);
+
+    if (player->nlink == otherPlayer->clink && player->nidx == otherPlayer->cidx) {
+        return 0;
+    }
+    return -1;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/duel10/4461E0", D_80114BD8_duel10);
 

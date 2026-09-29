@@ -388,14 +388,23 @@ u8 func_800370A4_main(s16 i) {
     return gMesData[i].stat;
 }
 
-INCLUDE_ASM("asm/nonmatchings/gamemes", func_800370D0_main);
+void func_800370D0_main(s16 i, s16 value) {
+    if (value == -1) {
+        value = 0x7FFF;
+    }
+    gMesData[i].unk06 = value;
+}
 
 void func_80037114_main(s16 i, f32 x, f32 y) {
     gMesData[i].unk60 = x;
     gMesData[i].unk64 = y;
 }
 
-INCLUDE_ASM("asm/nonmatchings/gamemes", func_8003714C_main);
+void func_8003714C_main(s16 i) {
+    if (gMesData[i].stat != GMES_STAT_NONE) {
+        gMesData[i].stat = GMES_STAT_KILL;
+    }
+}
 
 void GMesClose(void) {
     gMesTimerId = -1;

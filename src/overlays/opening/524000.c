@@ -208,7 +208,11 @@ void opModelRotGet(s32 modelId, f32 *rotX, f32 *rotY, f32 *rotZ) {
     *rotZ = D_80115630_opening[modelId].rotZ;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opModelScaleGet);
+void opModelScaleGet(s32 modelId, f32 *scaleX, f32 *scaleY, f32 *scaleZ) {
+    *scaleX = D_80115630_opening[modelId].scaleX;
+    *scaleY = D_80115630_opening[modelId].scaleY;
+    *scaleZ = D_80115630_opening[modelId].scaleZ;
+}
 
 void opModelDispOff(s32 arg0) {
     func_8001C258_main(D_80115630_opening[arg0].modelId, 4, 4);

@@ -1,5 +1,30 @@
 #include "common.h"
 
+typedef struct {
+    /* 0x00 */ s8 cmdType;   // cmdType
+    /* 0x01 */ s8 voiceSlot; // voiceSlot
+    /* 0x04 */ s32 cmdArg;   // cmdArg
+} AudioCmd;                  // size: 0x8
+
+typedef struct {
+    /* 0x00 */ char unk_00[0x18];
+    /* 0x18 */ s32 unk_18;
+    /* 0x1C */ char unk_1C[0x1C];
+    /* 0x38 */ s32 unk38;           // write index (wraps at 0x80)
+    /* 0x3C */ AudioCmd cmds[0x80]; // ring buffer of commands
+} UnkAudio;
+
+/* One entry of the active sound table the audio manager keeps. Only the
+ * fields the manager's own functions touch are named so far. */
+typedef struct GameSound_s {
+    /* 0x00 */ s32 flags;
+    /* 0x04 */ s32 state;
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ s16 sndId; // ALSndId, -1 when unallocated
+} GameSound;
+
+extern UnkAudio *D_800A97BC_main;
+
 s32 func_80007080_main(s32, s32);
 
 INCLUDE_ASM("asm/nonmatchings/1140", func_80000540_main);
@@ -147,13 +172,41 @@ INCLUDE_ASM("asm/nonmatchings/1140", func_800048D0_main);
 
 INCLUDE_ASM("asm/nonmatchings/1140", func_80004928_main);
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_8000499C_main);
+void func_8000499C_main(GameSound *sound) {
+    if (sound->state != 1) {
+        if (sound->state > 0) {
+            if (sound->state < 5) {
+                D_800A97BC_main->unk_18++;
+            }
+        }
+    } else if (sound->sndId < 0) {
+        // The store lands in the delay slot of a branch-likely, so the state is only
+        // cleared while the id is still valid. Keep the comparison as written.
+        sound->state = 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/1140", func_800049E8_main);
 
 INCLUDE_ASM("asm/nonmatchings/1140", func_80004D4C_main);
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_80005804_main);
+/**
+ * Reads a big-endian style variable length quantity: each byte contributes its
+ * low 7 bits, with bit 7 signalling that another byte follows. Only the final
+ * byte is added unshifted, which is why it is kept out of the loop accumulator.
+ */
+s32 func_80005804_main(u8 **cursor) {
+    s32 value = 0;
+    s32 byte = *(*cursor)++;
+
+    if (byte & 0x80) {
+        do {
+            value = ((byte & 0x7F) | value) << 7;
+            byte = *(*cursor)++;
+        } while (byte & 0x80);
+    }
+    return value + byte;
+}
 
 INCLUDE_ASM("asm/nonmatchings/1140", func_80005850_main);
 
@@ -172,20 +225,6 @@ INCLUDE_ASM("asm/nonmatchings/1140", func_80006830_main);
 INCLUDE_ASM("asm/nonmatchings/1140", func_800068B8_main);
 
 INCLUDE_ASM("asm/nonmatchings/1140", func_80006A8C_main);
-
-typedef struct {
-    /* 0x00 */ s8 cmdType;   // cmdType
-    /* 0x01 */ s8 voiceSlot; // voiceSlot
-    /* 0x04 */ s32 cmdArg;   // cmdArg
-} AudioCmd;                  // size: 0x8
-
-typedef struct {
-    /* 0x00 */ char unk00[0x38];
-    /* 0x38 */ s32 unk38;           // write index (wraps at 0x80)
-    /* 0x3C */ AudioCmd cmds[0x80]; // ring buffer of commands
-} UnkAudio;
-
-extern UnkAudio *D_800A97BC_main;
 
 void func_80006CD4_main(s32 voiceSlot, s32 cmdType, s32 cmdArg) {
     u32 temp_s3;

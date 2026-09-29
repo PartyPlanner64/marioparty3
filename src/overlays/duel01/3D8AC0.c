@@ -267,7 +267,10 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010EA74_duel01);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010EAD4_duel01);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010EB44_duel01);
+void func_8010EB44_duel01(s32 arg0) {
+    func_8001C814_main(D_801194AC_duel01[arg0]->omObj1->model[0], 1, 4);
+    D_8011875C_duel01 = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010EB88_duel01);
 

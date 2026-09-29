@@ -55,6 +55,8 @@ extern s32 D_80119474_duel01;
 extern s32 D_80119478_duel01;
 extern s32 D_8011947C_duel01;
 extern omObjData* D_8011948C_duel01;
+extern Object* D_801194AC_duel01[5];
+extern s32 D_8011875C_duel01;
 void func_800E94D0_name_81(void);
 void func_800E9564_name_81(void);
 void func_800E9B10_name_81(s32, s32);

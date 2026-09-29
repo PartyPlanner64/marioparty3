@@ -17,8 +17,18 @@ typedef struct {
 } OpModel;
 
 typedef struct {
+    u8 r;
+    u8 g;
+    u8 b;
+    u8 a;
+} RGBA;
+
+typedef struct {
     /* 0x00 */ omObjData *obj;
-    /* 0x04 */ char unk_04[0x38];
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ RGBA color;
+    /* 0x10 */ char unk_10[0x2C];
 } OpObj; // sizeof 0x3C
 
 typedef struct {
@@ -444,7 +454,12 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80114250_opening);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opWipeDraw);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opWipeColorSet);
+void opWipeColorSet(s32 arg0, u8 red, u8 green, u8 blue, u8 alpha) {
+    D_80117388_opening[arg0].color.r = red;
+    D_80117388_opening[arg0].color.b = blue;
+    D_80117388_opening[arg0].color.g = green;
+    D_80117388_opening[arg0].color.a = alpha;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opWipeInMain);
 

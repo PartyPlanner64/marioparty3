@@ -202,7 +202,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opModelScaleSet);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opModelPosGet);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opModelRotGet);
+void opModelRotGet(s32 modelId, f32 *rotX, f32 *rotY, f32 *rotZ) {
+    *rotX = D_80115630_opening[modelId].rotX;
+    *rotY = D_80115630_opening[modelId].rotY;
+    *rotZ = D_80115630_opening[modelId].rotZ;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opModelScaleGet);
 

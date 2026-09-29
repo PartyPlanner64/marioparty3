@@ -6,6 +6,8 @@ extern LinkData *D_801050A8_name_81;
 extern f32 D_80105128_name_81[8];
 extern s32 D_80105148_name_81;
 
+extern void func_800EA2C8_name_81(void);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800E93C0_name_81);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800E9468_name_81);
@@ -63,7 +65,10 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800EA22C_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800EA2C8_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800EA388_name_81);
+void func_800EA388_name_81(s16 spaceIdx) {
+    Process *prc = omAddPrcObj(func_800EA2C8_name_81, 0xEF00, 0, 0);
+    prc->user_data = (void *)(s32)spaceIdx;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800EA3CC_name_81);
 

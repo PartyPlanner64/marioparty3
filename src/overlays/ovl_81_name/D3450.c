@@ -1,9 +1,17 @@
 #include "common.h"
 #include "ovl_81.h"
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EB680_name_81);
+void func_800EB680_name_81(s16 playerIdx, s16 spaceIdx, Vec *outCoords) {
+    SpaceData *space = MBDMasuGet(spaceIdx);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EB6C4_name_81);
+    outCoords->x = space->coords.x;
+    outCoords->y = space->coords.y;
+    outCoords->z = space->coords.z;
+}
+
+void func_800EB6C4_name_81(s16 playerIdx, s16 spaceIdx) {
+    func_800EB680_name_81(playerIdx, spaceIdx, &GwPlayer[playerIdx].player_obj->coords);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EB708_name_81);
 

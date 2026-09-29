@@ -5,10 +5,23 @@ typedef struct {
     /* 0x02 */ s16 espriteSlot;
 } MgmodeEsprite;
 
+typedef struct MgmodeModelEntry {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ Vec pos;
+    /* 0x18 */ Vec rot;
+} MgmodeModelEntry; // size 0x24
+
 void func_8000BC48_main(u16, u16);
 void func_8000BC88_main(u16, u16);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47D880", func_80116610_mgmode);
+void func_80116610_mgmode(MgmodeModelEntry *entries, s16 index, s16 modelId) {
+    MgmodeModelEntry *entry = &entries[index];
+
+    Hu3DModelPosSet(modelId, entry->pos.x, entry->pos.y, entry->pos.z);
+    Hu3DModelRotSet(modelId, entry->rot.x, entry->rot.y, entry->rot.z);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47D880", func_8011667C_mgmode);
 
@@ -40,7 +53,10 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47D880", func_80116A48_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47D880", func_80116A78_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47D880", func_80116AA8_mgmode);
+void func_80116AA8_mgmode(MgmodeEsprite *arg0, s16 index, s16 arg2) {
+    func_8000BD50_main(arg0[index].espriteSlot, arg2);
+    func_8000BDDC_main(arg0[index].espriteSlot, 0);
+}
 
 void func_80116AEC_mgmode(MgmodeEsprite *arg0, s16 index, u16 arg2) {
     func_8000BCC8_main(arg0[index].espriteSlot, arg2);

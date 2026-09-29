@@ -1,5 +1,9 @@
 #include "common.h"
 
+extern s16 D_8011B830_mgmode[16];
+extern s16 D_8011B850_mgmode[16];
+extern u8 *D_8011B610_mgmode[3];
+
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80112200_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80112CF4_mgmode);
@@ -56,7 +60,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80115CDC_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80115E20_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80115E4C_mgmode);
+void func_80115E4C_mgmode(void) {
+    s16 i;
+
+    for (i = 0; i < 16; i++) {
+        D_8011B850_mgmode[i] = D_8011B830_mgmode[i] = -1;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80115E9C_mgmode);
 
@@ -66,6 +76,10 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_801160A0_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_8011611C_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80116260_mgmode);
+void func_80116260_mgmode(void) {
+    memset(D_8011B610_mgmode[0], 0xFF, 0x4B00);
+    memset(D_8011B610_mgmode[1], 0xFF, 0x4B00);
+    memset(D_8011B610_mgmode[2], 0xFF, 0x4B00);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_801162B4_mgmode);

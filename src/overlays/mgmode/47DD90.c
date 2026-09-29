@@ -26,6 +26,7 @@ typedef struct MgmodeSpaceCoord {
 } MgmodeSpaceCoord;
 
 extern D_800CD1DC_main_Struct* D_800CD1DC_main;
+extern u8 D_8011B630_mgmode[0x20];
 extern s16 D_8011B650_mgmode;
 extern s16 D_8011B652_mgmode;
 extern u16* D_8011B654_mgmode[3];
@@ -249,7 +250,17 @@ void func_801181F4_mgmode(s16 index) {
     D_8011B66A_mgmode = index;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_8011822C_mgmode);
+void func_8011822C_mgmode(MgmodeSpaceCoord *arg0) {
+    s16 i;
+    MgmodeSpaceCoord *p;
+
+    D_8011B670_mgmode = arg0;
+    for (i = 0; ((p = (MgmodeSpaceCoord *)(i * sizeof(MgmodeSpaceCoord) + (u32)arg0))->x != -1) ||
+                p->y != p->x;
+         i++) {
+        D_8011B630_mgmode[i] = 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_8011829C_mgmode);
 
@@ -261,7 +272,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_801182C0_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_801182DC_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_80118624_mgmode);
+void func_80118624_mgmode(s16 dstModel, s16 srcModel) {
+    HmfModelData[dstModel].pos.x = HmfModelData[srcModel].pos.x;
+    HmfModelData[dstModel].pos.y = HmfModelData[srcModel].pos.y;
+    HmfModelData[dstModel].pos.z = HmfModelData[srcModel].pos.z;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_80118678_mgmode);
 

@@ -561,7 +561,17 @@ INCLUDE_ASM("asm/nonmatchings/hmfman", func_8001EBC0_main);
 
 INCLUDE_ASM("asm/nonmatchings/hmfman", func_8001ED54_main);
 
-INCLUDE_ASM("asm/nonmatchings/hmfman", func_8001EED8_main);
+void func_8001EED8_main(s16 idx, u8 arg1, s8 arg2) {
+    HmfModel *model = &HmfModelData[idx];
+    f32 zero;
+
+    model->unk06 = arg1;
+    zero = 0.0f;
+    model->unk58 = zero;
+    model->unk60 = zero;
+    model->unk07 = arg2;
+    model->unk5C = 1.0f;
+}
 
 void func_8001EF24_main(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4) {
     D_800CE1C6_main = 1;

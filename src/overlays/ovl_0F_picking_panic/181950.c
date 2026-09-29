@@ -26,7 +26,11 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010E9
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", func_80109C00_picking_panic);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", func_8010B11C_picking_panic);
+void func_8010B11C_picking_panic(s16 arg0, s16 arg1) {
+    HmfModel *hmfModel = &HmfModelData[arg0];
+
+    hmfModel->hmf->unk98->unk08 = (f32)arg1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", func_8010B160_picking_panic);
 

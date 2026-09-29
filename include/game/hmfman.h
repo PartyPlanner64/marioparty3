@@ -40,7 +40,7 @@ typedef struct {
     char unk00[2];
     s16 unk02;
     char unk04[4];
-    s32 unk08;
+    f32 unk08;
 } HmfModelData_Unk64_Unk98_Struct;
 
 typedef struct {

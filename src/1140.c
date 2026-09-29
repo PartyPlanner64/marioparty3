@@ -83,7 +83,21 @@ INCLUDE_ASM("asm/nonmatchings/1140", func_80002A28_main);
 
 INCLUDE_ASM("asm/nonmatchings/1140", func_800032B4_main);
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_800032CC_main);
+f32 func_800032CC_main(s32 arg0) {
+    f32 base = 1.03099298f;
+    f32 result = 1.0f;
+
+    if (arg0 & 0xFF) {
+        do {
+            if (arg0 & 1) {
+                result = result * base;
+            }
+            arg0 = (u8)arg0 >> 1;
+            base = base * base;
+        } while (arg0);
+    }
+    return result;
+}
 
 INCLUDE_ASM("asm/nonmatchings/1140", func_80003310_main);
 

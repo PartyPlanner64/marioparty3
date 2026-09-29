@@ -95,7 +95,15 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800EA7D4_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800EA848_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800EA898_name_81);
+void func_800EA898_name_81(s32 playerIndex, s32 newPlayerIndex) {
+    s32 i;
+
+    for (i = 0; i < 0x13; i++) {
+        if (GwSystem.unk_2A[i] - 1 == playerIndex) {
+            GwSystem.unk_2A[i] = newPlayerIndex + 1;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800EA8DC_name_81);
 

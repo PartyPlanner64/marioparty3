@@ -173,6 +173,7 @@ build/src/8A6B0.c.o: OPTFLAGS = -O2 #Could also be -O3?
 build/src/2.0L/gu/%.c.o: OPTFLAGS = -O2
 build/src/2.0L/io/contpfs.c.o: OPTFLAGS = -O2
 build/src/2.0L/io/pirawdma.c.o: OPTFLAGS = -O2
+build/src/2.0L/io/pirawwrite.c.o: OPTFLAGS = -O2
 build/src/2.0L/io/visetyscale.c.o: OPTFLAGS = -O2
 build/src/2.0L/io/viswapbuf.c.o: OPTFLAGS = -O2
 build/src/2.0L/libc/sprintf.c.o: OPTFLAGS = -O2

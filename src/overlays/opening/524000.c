@@ -214,7 +214,9 @@ void opModelDispOn(s32 arg0) {
     func_8001C258_main(D_80115630_opening[arg0].modelId, 4, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opMotionFlagSet);
+void opMotionFlagSet(s32 modelId, s16 arg1) {
+    func_8001C814_main(D_80115630_opening[modelId].modelId, -1, arg1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opMotionShiftSet);
 

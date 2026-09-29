@@ -140,7 +140,7 @@ void func_801008E8_name_81(void);
 void func_80100CA0_name_81(void);
 void func_800DADA0_name_81(s8);
 s32 func_800DB3E0_name_81(s8);
-void func_800DB544_name_81(s8);
+void func_800DB544_name_81(s32);
 void func_800DB5AC_name_81(s8);
 s32 func_800E1824_name_81(s32, s32, s32);
 void func_800E1854_name_81(s32);

@@ -28,7 +28,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C1D60", func_800DB3E0_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C1D60", func_800DB4DC_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C1D60", func_800DB544_name_81);
+void func_800DB544_name_81(s32 arg0) {
+    if (D_800CDBD0_main[arg0].unk_16 != -1) {
+        func_8001C258_main(D_800CDBD0_main[arg0].unk_16, 4, 4);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C1D60", func_800DB58C_name_81);
 

@@ -29,7 +29,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EB8B0_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EB984_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EB9D4_name_81);
+s32 func_800EB9D4_name_81(s8 percent) {
+    return percent > ((rand8() & 0xFF) * 99 >> 8);
+}
 
 s16 func_800EBA1C_name_81(void) {
     GW_SYSTEM *system = &GwSystem;

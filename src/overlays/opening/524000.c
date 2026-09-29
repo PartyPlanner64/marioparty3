@@ -218,7 +218,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opMotionFlagSet);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opMotionShiftSet);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80106DD0_opening);
+void func_80106DD0_opening(s32 modelId, s16 arg1) {
+    func_8001C814_main(D_80115630_opening[modelId].modelId, arg1, 0);
+}
 
 void opMotionSpeedSet(s32 modelId, f32 speed) {
     func_8001C92C_main(D_80115630_opening[modelId].modelId, speed);

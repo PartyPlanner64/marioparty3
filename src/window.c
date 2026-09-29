@@ -261,9 +261,17 @@ INCLUDE_ASM("asm/nonmatchings/window", func_8005CC18_main);
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005CC3C_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005CCF0_main);
+s32 func_8005CCF0_main(TextWindow *window) {
+    window->unk54 = window->unk4C;
+    window->unk56 = window->unk56 + (window->unk_28 + window->unk_2A);
+    return ((s16)window->unk56 + window->unk_28) <= (window->unk4E + window->unk52);
+}
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005CD38_main);
+s32 func_8005CD38_main(TextWindow *window) {
+    window->unk54 = window->unk4C;
+    window->unk56 = window->unk56 + ((window->unk_28 >> 2) + window->unk_2A);
+    return ((s16)window->unk56 + window->unk_28) <= (window->unk4E + window->unk52);
+}
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005CD84_main);
 
@@ -271,7 +279,11 @@ INCLUDE_ASM("asm/nonmatchings/window", func_8005CE10_main);
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005CEB0_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005CF94_main);
+void func_8005CF94_main(s16 winId) {
+    TextWindow *window = &D_800CC69C_main[winId];
+
+    HuSprAttrSet(window->unk_6C, 3, 0x8000);
+}
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005CFE0_main);
 
@@ -383,7 +395,21 @@ s16 func_8006014C_main(s32 winId) {
     return D_800CC69C_main[winId].unk_31;
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_80060174_main);
+// Copies a string, dropping any newline characters it contains.
+void func_80060174_main(u8 *str, u8 *buffer) {
+    if (*str != 0) {
+        do {
+            if (*str == '\n') {
+                str++;
+            } else {
+                *buffer = *str;
+                str++;
+                buffer++;
+            }
+        } while (*str != 0);
+    }
+    *buffer = *str;
+}
 
 INCLUDE_ASM("asm/nonmatchings/window", func_800601BC_main);
 

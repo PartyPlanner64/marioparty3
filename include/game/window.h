@@ -37,9 +37,10 @@ typedef struct TextWindow {
     /* 0x024 */ char pad24[1];                      /* maybe part of unk20[9]? */
     /* 0x025 */ s8 unk_25;
     /* 0x026 */ s8 unk_26;
-    /* 0x027 */ char pad27[2];                      /* maybe part of unk20[9]? */
+    /* 0x027 */ char pad27[1];                      /* maybe part of unk20[9]? */
+    /* 0x028 */ u8 unk_28;                          /* maybe part of unk20[9]? */
     /* 0x029 */ s8 unk_29;
-    /* 0x02A */ s8 unk_2A;
+    /* 0x02A */ u8 unk_2A;
     /* 0x02B */ char pad2B[1];
     /* 0x02C */ s16 unk_2C;
     /* 0x02E */ s16 unk_2E;
@@ -55,10 +56,13 @@ typedef struct TextWindow {
     /* 0x040 */ char pad40[8];                      /* maybe part of unk3E[5]? */
     /* 0x048 */ u16 unk48;
     /* 0x04A */ u16 unk4A;
-    /* 0x04C */ s16 unk4C;
-    /* 0x04E */ char pad4E[6];                      /* maybe part of unk4C[4]? */
-    /* 0x054 */ s16 unk54;
-    /* 0x056 */ char pad56[8];                      /* maybe part of unk54[5]? */
+    /* 0x04C */ u16 unk4C;
+    /* 0x04E */ s16 unk4E;
+    /* 0x050 */ s16 unk50;
+    /* 0x052 */ s16 unk52;
+    /* 0x054 */ u16 unk54;
+    /* 0x056 */ u16 unk56;
+    /* 0x058 */ char pad58[6];                      /* maybe part of unk56[5]? */
     /* 0x05E */ s16 unk5E;
     /* 0x060 */ char pad60[2];
     /* 0x062 */ s16 unk62;
@@ -88,6 +92,8 @@ void func_8005BE30_main(s16, s32);
 void func_8005BEE0_main(s16, s16);
 void func_8005C02C_main(s16, s32);
 void func_8005C060_main(s16, s32, s32, s32, s32);
+s32 func_8005CCF0_main(TextWindow *window);
+s32 func_8005CD38_main(TextWindow *window);
 void func_8005D294_main(s16);
 void func_8005E1A8_main(s16, s16);
 void func_8005F364_main(s16);

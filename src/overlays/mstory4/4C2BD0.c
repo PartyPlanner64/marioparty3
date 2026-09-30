@@ -1,5 +1,11 @@
 #include "common.h"
 
+typedef struct UnkModel {
+    /* 0x00 */ omObjData *obj;
+    /* 0x04 */ char unk_04[0x14];
+    /* 0x18 */ omObjData *obj2;
+} UnkModel; // sizeof 0x14
+
 extern s32 D_80111AF4_mstory4;
 extern s16 D_80112122_mstory4;
 extern u16 D_80112128_mstory4;
@@ -8,6 +14,7 @@ extern void (*D_801121DC_mstory4)(omObjData *);
 extern s16 D_80112366_mstory4;
 extern s16 D_80112368_mstory4[];
 extern u16 D_80112376_mstory4;
+extern UnkModel D_801122A0_mstory4;
 
 void func_80106134_mstory4(void);
 void func_80109B5C_mstory4(omObjData *object);
@@ -350,9 +357,19 @@ void func_8010F0A0_mstory4(void) {
     HuSprKill(*sprite);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010F0E0_mstory4);
+void func_8010F0E0_mstory4(void) {
+    omObjData *obj = D_801122A0_mstory4.obj;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010F12C_mstory4);
+    func_8001C258_main(obj->model[1], 4, 4);
+    func_8001C258_main(obj->model[2], 4, 4);
+}
+
+void func_8010F12C_mstory4(void) {
+    omObjData *obj = D_801122A0_mstory4.obj;
+
+    func_8001C258_main(obj->model[1], 4, 0);
+    func_8001C258_main(obj->model[2], 4, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010F178_mstory4);
 
@@ -397,19 +414,12 @@ extern Vec D_80111AD0_mstory4;
 extern Vec D_80111ADC_mstory4;
 extern s32 D_80111B8C_mstory4;
 
-typedef struct UnkModel {
-    /* 0x00 */ omObjData *obj;
-    /* 0x04 */ char unk_04[0x14];
-    /* 0x18 */ omObjData *obj2;
-} UnkModel; // sizeof 0x14
-
 typedef struct Unk {
     s16 unk_00;
     char unk_02[6];
 } Unk; // sizeof 0x8
 
 extern Unk D_80112088_mstory4[6];
-extern UnkModel D_801122A0_mstory4;
 
 extern s16 D_80112330_mstory4;
 extern s16 D_80112378_mstory4[];

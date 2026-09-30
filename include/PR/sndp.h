@@ -79,7 +79,8 @@ typedef struct PVoice_s {
  * object; the sound player lives at offset 0x0C.
  */
 typedef struct AudioManager_s {
-    /* 0x00 */ char unk_00[0x0C];
+    /* 0x00 */ ALPlayer *head;
+    /* 0x04 */ char unk_04[0x08];
     /* 0x0C */ ALSndPlayer *sndp;
     /* 0x10 */ ALLink pFreeList;
     /* 0x18 */ ALLink unk_18;

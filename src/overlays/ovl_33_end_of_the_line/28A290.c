@@ -1,5 +1,23 @@
 #include "common.h"
 
+// Per-player state for this minigame. Lives in the `data` pointer (0x5C) of each
+// of the group 0 player objects.
+typedef struct EndOfTheLinePlayer {
+    /* 0x00 */ u16 playerIdx;
+    /* 0x02 */ char unk02[0x1E];
+    /* 0x20 */ omObjData *obj;
+} EndOfTheLinePlayer; // sizeof 0x24 (0x94 bytes are allocated for it)
+
+// State for the whole minigame. Lives in the `data` pointer (0x5C) of the main
+// object, D_8010C738_end_of_the_line. The esprite handles a player uses are the
+// slots at [playerIdx], [playerIdx + 2], [playerIdx + 4], ...
+typedef struct EndOfTheLineData {
+    /* 0x00 */ u16 esprites[12];
+    /* 0x18 */ char unk18[0x7900];
+} EndOfTheLineData; // sizeof 0x7918
+
+extern omObjData *D_8010C738_end_of_the_line;
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_801059A0_end_of_the_line);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_80105E0C_end_of_the_line);
@@ -42,13 +60,23 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_8010
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_8010AA1C_end_of_the_line);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_8010AA7C_end_of_the_line);
+void func_8010AA7C_end_of_the_line(EndOfTheLinePlayer *player) {
+    EndOfTheLineData *data = OM_GET_DATA_PTR(D_8010C738_end_of_the_line, EndOfTheLineData);
+    func_8000BB94_main(data->esprites[player->playerIdx + 2]);
+    omDelObj(player->obj);
+    player->obj = NULL;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_8010AAC8_end_of_the_line);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_8010ABD4_end_of_the_line);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_8010AC34_end_of_the_line);
+void func_8010AC34_end_of_the_line(EndOfTheLinePlayer *player) {
+    EndOfTheLineData *data = OM_GET_DATA_PTR(D_8010C738_end_of_the_line, EndOfTheLineData);
+    func_8000BB94_main(data->esprites[player->playerIdx + 4]);
+    omDelObj(player->obj);
+    player->obj = NULL;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_8010AC80_end_of_the_line);
 

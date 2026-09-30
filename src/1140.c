@@ -24,8 +24,11 @@ typedef struct GameSound_s {
 } GameSound;
 
 extern UnkAudio *D_800A97BC_main;
+extern ALHeap D_800A9730_main;
 
 s32 func_80007080_main(s32, s32);
+s32 func_80001134_main(s32 arg0, s32 arg1);
+void *func_80077290_main(u8 *file, s32 line, ALHeap *hp, s32 num, s32 size);
 
 INCLUDE_ASM("asm/nonmatchings/1140", func_80000540_main);
 
@@ -57,7 +60,16 @@ INCLUDE_ASM("asm/nonmatchings/1140", func_80000FC4_main);
 
 INCLUDE_ASM("asm/nonmatchings/1140", func_80000FE4_main);
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_800010B8_main);
+/* Allocates a single element of the given size from the audio heap, reporting a
+ * fatal error if the allocation fails. This is the non-debug alHeapAlloc(). */
+void *func_800010B8_main(s32 size) {
+    void *ptr = func_80077290_main(NULL, 0, &D_800A9730_main, 1, size);
+
+    if (ptr == NULL) {
+        func_80001134_main(0, 1);
+    }
+    return ptr;
+}
 
 INCLUDE_ASM("asm/nonmatchings/1140", func_8000110C_main);
 

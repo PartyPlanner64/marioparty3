@@ -506,6 +506,7 @@ segments:
       - [0xA8C10, .rodata, 6C3C0]
       - [0xA8C30, .rodata, 6C9F0]
       - [0xA8CE0, .rodata, 6DFD0]
+      - [0xA8D20, .rodata, 2.0L/audio/cseq]
       - [0xA8D40, .rodata, 6F470]
       - [0xA8DB0, .rodata, 70C30]
       - [0xA8E10, rodata]

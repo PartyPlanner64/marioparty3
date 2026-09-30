@@ -198,6 +198,7 @@ build/src/88CF0.c.o: OPTFLAGS = -O2
 build/src/88CF0.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
 build/src/6B050.c.o: OPTFLAGS = -O2
 build/src/6C3C0.c.o: OPTFLAGS = -O2
+build/src/6DFD0.c.o: OPTFLAGS = -O2
 build/src/70470.c.o: OPTFLAGS = -O2
 
 # Files that have scommon

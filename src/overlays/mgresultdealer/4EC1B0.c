@@ -1,5 +1,14 @@
 #include "common.h"
 
+extern s8 D_80109940_mgresultdealer;
+extern s8 D_80109941_mgresultdealer;
+extern s32 D_80109950_mgresultdealer;
+extern s32 D_8010A244_mgresultdealer;
+extern omObjFunc D_8010A260_mgresultdealer;
+
+void func_8000BC48_main(u16 arg0, u16 arg1);
+void func_80109710_mgresultdealer(omObjData *);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_801059A0_mgresultdealer);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80105C88_mgresultdealer);
@@ -8,7 +17,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_801061C8_mgr
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80106234_mgresultdealer);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_801062B4_mgresultdealer);
+void func_801062B4_mgresultdealer(void) {
+    u16 espriteSlot;
+
+    espriteSlot = InitEspriteSlot(func_8000B838_main(0x190000), 0, 0);
+    func_8000BBD4_main(espriteSlot, 0xA0, 0x78);
+    func_8000BC48_main(espriteSlot, 0x4000);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_8010630C_mgresultdealer);
 
@@ -81,7 +96,23 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80108AEC_mgr
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80108BD4_mgresultdealer);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80109044_mgresultdealer);
+void func_80109044_mgresultdealer(void) {
+    if (D_80109940_mgresultdealer == 0) {
+        return;
+    }
+
+    D_80109950_mgresultdealer++;
+
+    if (D_80109950_mgresultdealer < 0xF) {
+        return;
+    }
+
+    D_80109940_mgresultdealer = 0;
+    D_80109941_mgresultdealer = 1;
+    D_80109950_mgresultdealer = 0;
+    D_8010A244_mgresultdealer = 0;
+    D_8010A260_mgresultdealer = func_80109710_mgresultdealer;
+}
 
 void func_801090AC_mgresultdealer(void) {
 }

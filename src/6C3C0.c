@@ -27,7 +27,10 @@ void func_8006BC60_main(ALLink *link) {
     alLink(link, &D_800A2884_main->pLameList);
 }
 
-INCLUDE_ASM("asm/nonmatchings/6C3C0", func_8006BC98_main);
+s32 func_8006BC98_main(s32 duration) {
+    f32 samples = ((f32)duration * D_800A2884_main->rate) / 1000000.0 + 0.5;
+    return (s32)samples;
+}
 
 INCLUDE_ASM("asm/nonmatchings/6C3C0", func_8006BCE8_main);
 

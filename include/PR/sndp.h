@@ -89,6 +89,8 @@ typedef struct AudioManager_s {
     /* 0x2C */ s32 lastSamples;
     /* 0x30 */ char unk_30[0x08];
     /* 0x38 */ ALParam *freeParamList;
+    /* 0x3C */ char unk_3C[0x10];
+    /* 0x4C */ s32 rate; // output rate, used to turn microsecond durations into sample counts
 } AudioManager;
 
 extern AudioManager *D_800A2884_main;

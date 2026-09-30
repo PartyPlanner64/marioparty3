@@ -128,7 +128,14 @@ s16 func_8005B5EC_main(u8 *str) {
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005B614_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005B63C_main);
+void func_8005B63C_main(s16 winId, s32 arg1, s32 arg2) {
+    TextWindow *window = &D_800CC69C_main[winId];
+
+    window->unk_38 = arg2 | (window->unk_38 & ~arg1);
+    if (arg2 & 0x20) {
+        window->unk_AA = 0;
+    }
+}
 
 s32 func_8005B68C_main(s16 win_id) {
     return D_800CC69C_main[win_id].unk_38;

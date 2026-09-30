@@ -60,6 +60,7 @@ typedef struct {
     /* 0x08 */ s32 unk_08;
 } OpSlot; // sizeof 0xC
 
+void opTitleSprMain(void);
 void func_801061F0_opening(void);
 void func_80110B90_opening(void);
 void func_80110F48_opening(void);
@@ -103,7 +104,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoEventCreate);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoMain);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80105F68_opening);
+Process *func_80105F68_opening(void) {
+    Process *parentPrc = HuPrcCurrentGet();
+    Process *sprPrc = omAddPrcObj(opTitleSprMain, 0x5000, 0x2000, 0);
+
+    HuPrcChildLink(parentPrc, sprPrc);
+    return sprPrc;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opTitleMain);
 

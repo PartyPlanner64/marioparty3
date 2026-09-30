@@ -67,7 +67,12 @@ void func_80032FF8_main(s16 animIdx, u8 rot) {
 
 INCLUDE_ASM("asm/nonmatchings/32160", func_8003302C_main);
 
-INCLUDE_ASM("asm/nonmatchings/32160", func_800330D4_main);
+u8 func_800330D4_main(s16 animIdx) {
+    HmfAnim *anim = &D_800D1714_main[animIdx];
+    u8 *rotFrames = (u8 *)&D_800D408C_main[anim->animIdx].rot[anim->rot];
+
+    return rotFrames[1];
+}
 
 INCLUDE_ASM("asm/nonmatchings/32160", func_80033128_main);
 

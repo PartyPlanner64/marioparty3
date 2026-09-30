@@ -189,7 +189,26 @@ typedef struct HmfAnim {
     /* 0x0B */ s8 alpha;
 } HmfAnim; // Size 0xC
 
+typedef struct HmfAnimRot {
+    /* 0x00 */ s16 frameCount;
+    /* 0x02 */ s16 totalFrames;
+    /* 0x04 */ void *frames;
+} HmfAnimRot; // Size 0x8
+
+typedef struct HmfAnimSet {
+    /* 0x00 */ s16 unk00;
+    /* 0x02 */ s16 unk02;
+    /* 0x04 */ s16 rotCount;
+    /* 0x06 */ s16 interp;
+    /* 0x08 */ s16 refCount;
+    /* 0x0A */ char unk0A[2];
+    /* 0x0C */ void *unk0C;
+    /* 0x10 */ HmfAnimRot *rot;
+    /* 0x14 */ void *unk14;
+} HmfAnimSet; // Size 0x18
+
 extern HmfAnim *D_800D1714_main;
+extern HmfAnimSet *D_800D408C_main;
 
 void func_8001A070_main(void *arg0, void *arg1, u16 arg2, u16 arg3, u16 arg4, u8 arg5);
 s16 Hu3DModelCreate(u8 *, u32);

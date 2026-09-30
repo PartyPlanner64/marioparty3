@@ -103,6 +103,7 @@ void func_80046558_main(s16);
 void func_80032FC0_main(s16, u8, u8);
 void func_80032FF8_main(s16, u8);
 void func_8003302C_main(s32, u8);
+u8 func_800330D4_main(s16);
 s16 func_80032694_main(HmfData*, u16, s32, char*);
 void func_80033430_main(s16);
 void func_8001D558_main(s16, f32, f32, s32);

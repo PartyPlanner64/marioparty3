@@ -6,6 +6,14 @@ typedef struct UnkModel {
     /* 0x18 */ omObjData *obj2;
 } UnkModel; // sizeof 0x14
 
+typedef struct UnkSeEntry {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s16 unk_08;
+    /* 0x0A */ s16 stopSeNo;
+    char unk_0C[0xC];
+} UnkSeEntry; // sizeof 0x18
+
 extern s32 D_80111AF4_mstory4;
 extern s16 D_80112122_mstory4;
 extern u16 D_80112128_mstory4;
@@ -15,6 +23,7 @@ extern s16 D_80112366_mstory4;
 extern s16 D_80112368_mstory4[];
 extern u16 D_80112376_mstory4;
 extern UnkModel D_801122A0_mstory4;
+extern UnkSeEntry D_801122AC_mstory4[3];
 
 void func_80106134_mstory4(void);
 void func_80109B5C_mstory4(omObjData *object);
@@ -570,7 +579,14 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80111740_mstory4);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_801118F8_mstory4);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8011196C_mstory4);
+void func_8011196C_mstory4(s32 index) {
+    if (D_801122AC_mstory4[index].unk_00 == 1) {
+        D_801122AC_mstory4[index].unk_00 = 0;
+        if (index == 0) {
+            HuAudFXStop(D_801122AC_mstory4[0].stopSeNo);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_801119C0_mstory4);
 

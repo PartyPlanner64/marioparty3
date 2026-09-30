@@ -176,7 +176,14 @@ void func_80106734_opening(s32 arg0, u16 arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80106768_opening);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_801067D4_opening);
+void func_801067D4_opening(void) {
+    s32 i;
+
+    for (i = 0; i < ARRAY_COUNT(D_80115630_opening); i++) {
+        D_80115630_opening[i].modelId = -1;
+        D_80115630_opening[i].motionId = -1;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opModelCreate);
 

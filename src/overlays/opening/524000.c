@@ -61,6 +61,7 @@ typedef struct {
 } OpSlot; // sizeof 0xC
 
 void opTitleSprMain(void);
+void opDemoEvent(void);
 void func_801061F0_opening(void);
 void func_80110B90_opening(void);
 void func_80110F48_opening(void);
@@ -100,7 +101,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opTitleCreate);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoCreate);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoEventCreate);
+Process *opDemoEventCreate(void) {
+    Process *parentPrc = HuPrcCurrentGet();
+    Process *eventPrc = omAddPrcObj(opDemoEvent, 0x5000, 0x2000, 0);
+
+    HuPrcChildLink(parentPrc, eventPrc);
+    return eventPrc;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoMain);
 

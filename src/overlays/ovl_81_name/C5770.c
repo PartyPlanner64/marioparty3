@@ -1,8 +1,15 @@
 #include "common.h"
 
 extern void func_800E08D8_name_81(void);
+extern u32 D_800D2094_main;
+extern u32 D_80100F38_name_81;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C5770", func_800DD9A0_name_81);
+void func_800DD9A0_name_81(void) {
+    if (D_800D2094_main >= (D_80100F38_name_81 + 4)) {
+        HuAudFXPlay(0x104);
+        D_80100F38_name_81 = D_800D2094_main;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C5770", func_800DD9EC_name_81);
 

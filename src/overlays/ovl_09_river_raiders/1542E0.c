@@ -1,12 +1,33 @@
 #include "common.h"
 
+extern omObjData *D_8010EE90_river_raiders;
+
+void func_80106300_river_raiders(omObjData *);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_09_river_raiders/1542E0", func_801059A0_river_raiders);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_09_river_raiders/1542E0", func_801059BC_river_raiders);
+f32 func_801059BC_river_raiders(f32 arg0, f32 arg1) {
+    f32 angle = arg0 + arg1;
+
+    while (angle >= 360.0f) {
+        angle -= 360.0f;
+    }
+
+    while (angle < 0.0f) {
+        angle += 360.0f;
+    }
+
+    return angle;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_09_river_raiders/1542E0", func_80105A3C_river_raiders);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_09_river_raiders/1542E0", func_80105B04_river_raiders);
+void func_80105B04_river_raiders(s32 playerIndex) {
+    D_800CDA7C_main[GwPlayer[playerIndex].pad] = 0;
+    D_800D5558_main[GwPlayer[playerIndex].pad] = 0;
+    D_800CBB6E_main[GwPlayer[playerIndex].pad] = 0;
+    D_800D20A1_main[GwPlayer[playerIndex].pad] = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_09_river_raiders/1542E0", func_80105B7C_river_raiders);
 
@@ -28,7 +49,12 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_09_river_raiders/1542E0", func_801062
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_09_river_raiders/1542E0", func_80106300_river_raiders);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_09_river_raiders/1542E0", func_801063FC_river_raiders);
+void func_801063FC_river_raiders(void) {
+    omObjData *obj = omAddObj(0x3B6, 1, 0xA, -1, func_80106300_river_raiders);
+    obj->work[0] = 0;
+    D_8010EE90_river_raiders = obj;
+    omSetStatBit(obj, 0xA0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_09_river_raiders/1542E0", func_80106448_river_raiders);
 

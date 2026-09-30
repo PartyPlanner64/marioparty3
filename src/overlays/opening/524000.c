@@ -69,6 +69,7 @@ void func_8000BBFC_main(u16 arg0, s16 arg1);
 void func_8000BC48_main(u16 arg0, u16 arg1);
 void func_8000BC88_main(u16 arg0, u16 arg1);
 void func_8000BE5C_main(u16 arg0, f32 arg1, f32 arg2);
+void func_8000BBD4_main(u16 arg0, s16 arg1, s16 arg2);
 
 extern Vec D_80114BB8_opening;
 extern Vec D_80114BC4_opening;
@@ -158,7 +159,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opSprBGDispOn);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opSprBGDispOff);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opSprPosSet);
+void opSprPosSet(s32 arg0, s32 arg1, s32 arg2) {
+    D_80114EB0_opening[arg0].unk_04 = arg1;
+    D_80114EB0_opening[arg0].unk_08 = arg2;
+    func_8000BBD4_main(D_80114EB0_opening[arg0].espriteSlot, arg1, arg2);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opSprPosGet);
 

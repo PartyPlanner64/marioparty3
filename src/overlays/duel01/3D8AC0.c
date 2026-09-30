@@ -243,7 +243,10 @@ void func_8010E2CC_duel01(void) {
     omAddPrcObj(func_8010E1B4_duel01, 0xA, 0, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010E2F8_duel01);
+void func_8010E2F8_duel01(void) {
+    func_8001C814_main(D_80119498_duel01->omObj1->model[0], 1, 4);
+    func_8001C92C_main(D_80119498_duel01->omObj1->model[0], 1.0f);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010E348_duel01);
 
@@ -259,7 +262,10 @@ void func_8010E8D8_duel01(void) {
     omAddPrcObj(func_8010E7C0_duel01, 0xA, 0, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010E904_duel01);
+void func_8010E904_duel01(void) {
+    func_8001C814_main(D_801194A0_duel01->omObj1->model[0], 1, 4);
+    func_8001C92C_main(D_801194A0_duel01->omObj1->model[0], 1.0f);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010E954_duel01);
 

@@ -1,18 +1,45 @@
 #include "common.h"
 #include "ovl_81.h"
 
+extern void *D_80101060_name_81;
 extern SpaceData *D_801050A4_name_81;
 extern LinkData *D_801050A8_name_81;
+extern void *D_801050B0_name_81[19];
 extern f32 D_80105128_name_81[8];
 extern s32 D_80105148_name_81;
+extern s16 D_80105150_name_81[255];
+extern s16 D_8010534E_name_81;
+extern s16 D_80105350_name_81[16];
+extern s16 D_80105370_name_81;
+extern s32 D_80105378_name_81[0x13];
 
+void func_800E93C0_name_81(s16);
 extern void func_800EA2C8_name_81(void);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800E93C0_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800E9468_name_81);
+void func_800E9468_name_81(void) {
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800E94D0_name_81);
+    for (i = 0; i < 0x13; i++) {
+        if (D_801050B0_name_81[i] != 0) {
+            DataClose(D_801050B0_name_81[i]);
+        }
+        D_801050B0_name_81[i] = 0;
+    }
+}
+
+void func_800E94D0_name_81(void) {
+    s32 i;
+
+    func_800E93C0_name_81(0);
+    D_80101060_name_81 = 0;
+    D_80105148_name_81 = 0;
+
+    for (i = 0; i < 0x13; i++) {
+        D_80105378_name_81[i] = 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800E9524_name_81);
 
@@ -82,9 +109,25 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800EA698_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800EA6A4_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800EA6B0_name_81);
+void func_800EA6B0_name_81(s16 *arg0) {
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800EA708_name_81);
+    for (i = 0; *arg0 != -1; i++) {
+        D_80105150_name_81[i] = *arg0++;
+    }
+
+    D_8010534E_name_81 = i;
+}
+
+void func_800EA708_name_81(s16 *arg0) {
+    s32 i;
+
+    for (i = 0; *arg0 != -1; i++) {
+        D_80105350_name_81[i] = *arg0++;
+    }
+
+    D_80105370_name_81 = i;
+}
 
 void func_800EA760_name_81(void) {
     s32 i;

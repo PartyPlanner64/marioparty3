@@ -25,7 +25,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C45D0", func_800DD2DC_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C45D0", func_800DD30C_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C45D0", func_800DD3B4_name_81);
+s32 func_800DD3B4_name_81(s32 arg0) {
+    return D_800CCF58_main[HmfModelData[arg0].unk02].unk02 <= HmfModelData[arg0].unk40;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C45D0", func_800DD41C_name_81);
 

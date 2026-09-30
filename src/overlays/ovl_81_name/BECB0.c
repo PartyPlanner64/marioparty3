@@ -9,7 +9,14 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BECB0", func_800D7280_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BECB0", func_800D742C_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BECB0", func_800D7518_name_81);
+s32 func_800D7518_name_81(UnkEA790Struct *arg0) {
+    if (arg0->proc != NULL) {
+        HuPrcChildLink(HuPrcCurrentGet(), arg0->proc);
+        HuPrcChildWait();
+        arg0->proc = NULL;
+    }
+    return arg0->unk_0C;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BECB0", func_800D7568_name_81);
 

@@ -1,14 +1,31 @@
 #include "common.h"
+#include "game/board.h"
 
 typedef struct UnkC5770 {
     /* 0x00 */ s32 state;
     /* 0x04 */ char unk_04[0xC];
 } UnkC5770; // sizeof 0x10
 
+typedef struct UnkC5770B70 {
+    /* 0x00 */ s16 windowId;
+    /* 0x02 */ u16 unk_02;
+    /* 0x04 */ u16 unk_04;
+    /* 0x06 */ u16 halfWidth;
+    /* 0x08 */ u16 halfHeight;
+} UnkC5770B70; // sizeof 0xA
+
 extern void func_800E03F0_name_81(void);
 extern void func_800E08D8_name_81(void);
 extern u32 D_800D2094_main;
 extern u32 D_80100F38_name_81;
+extern UnkData_CD0A0 D_800CC4A0_main;
+extern u8 D_800CC3E0_main[];
+extern UnkC5770B70 D_80102B70_name_81[5];
+extern omObjData *D_80102BA4_name_81;
+extern s16 D_80102BB0_name_81;
+extern s16 D_80102BB2_name_81;
+extern s16 D_80102BB4_name_81;
+extern s16 D_80102BB6_name_81;
 
 void func_800DD9A0_name_81(void) {
     if (D_800D2094_main >= (D_80100F38_name_81 + 4)) {
@@ -21,9 +38,30 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C5770", func_800DD9EC_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C5770", func_800DE4D0_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C5770", func_800DF154_name_81);
+void func_800DF154_name_81(void) {
+    s32 category;
+    s32 minigameCategoryIndex;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C5770", func_800DF1B0_name_81);
+    for (category = 0; category <= 0; category++) {
+        for (minigameCategoryIndex = 0; minigameCategoryIndex < PREV_MINIGAME_LIST_LENGTH; minigameCategoryIndex++) {
+            D_800CC4A0_main.recentMinigames[category][minigameCategoryIndex] = -1;
+        }
+        D_800CC3E0_main[category] = 0;
+    }
+}
+
+void func_800DF1B0_name_81(void) {
+    s32 i;
+
+    for (i = 0; i < 5; i++) {
+        D_80102B70_name_81[i].windowId = -1;
+    }
+    D_80102BA4_name_81 = NULL;
+    D_80102BB2_name_81 = -1;
+    D_80102BB0_name_81 = -1;
+    D_80102BB6_name_81 = -1;
+    D_80102BB4_name_81 = -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C5770", func_800DF210_name_81);
 

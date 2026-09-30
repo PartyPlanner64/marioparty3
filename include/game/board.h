@@ -9,6 +9,8 @@
 #define COINS_MAX 999
 #define STARS_MAX 99
 
+#define PREV_MINIGAME_LIST_LENGTH 10
+
 typedef struct LinkData {
 /* 0x00 */ s16 chainIndicies;
 /* 0x02 */ s16 unk2;
@@ -193,6 +195,12 @@ typedef struct UnkBoard7 {
     /* 0x08 */ Vec pos;
     /* 0x14 */ Vec vel;
 } UnkBoard7; /* size 0x20 */
+
+typedef struct UnkData_CD0A0 {
+    s16 unk_00;
+    char unk_02[6];
+    s8 recentMinigames[MINIGAME_TYPE_END][PREV_MINIGAME_LIST_LENGTH]; /* recent minigames per player, up to 2 */
+} UnkData_CD0A0; //sizeof 0x44
 
 extern Unk800CD2A0 D_800CD2A0_main;
 extern omOvlHisData D_800D4190_main;

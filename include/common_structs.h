@@ -146,8 +146,9 @@ typedef struct UnkOvl81 {
 
 typedef struct UnkOvl81_1 {
     s32 unk_00;
-    char unk_04[0xC];
-} UnkOvl81_1;
+    s32 unk_04;
+    char unk_08[0x8];
+} UnkOvl81_1; //sizeof 0x10
 
 typedef struct Unk800D6B48 {
     void* unk_00;

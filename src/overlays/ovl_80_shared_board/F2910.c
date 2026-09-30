@@ -1,4 +1,5 @@
 #include "common.h"
+#include "game/board.h"
 #include "F2910.h"
 #include "106A50.h"
 #include "F5E80.h"
@@ -72,14 +73,6 @@ extern u8 D_80100E10_shared_board[];
 
 extern ItemRect D_80100E44_shared_board;
 extern ItemRect D_80100E5C_shared_board;
-
-#define PREV_MINIGAME_LIST_LENGTH 10
-
-typedef struct UnkData_CD0A0 {
-    s16 unk_00;
-    char unk_02[6];
-    s8 recentMinigames[MINIGAME_TYPE_END][PREV_MINIGAME_LIST_LENGTH]; /* recent minigames per player, up to 2 */
-} UnkData_CD0A0;
 
 typedef struct Unk800CC3DC {
     char unk_00[4];

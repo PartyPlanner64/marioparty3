@@ -49,11 +49,25 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D898C_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D8B18_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D8E34_name_81);
+void func_800D8E34_name_81(Object* arg0) {
+    Object* temp_s0 = arg0;
+
+    func_8001C258_main(temp_s0->omObj1->model[0], 4, 0);
+    if (temp_s0->omObj2 != NULL) {
+        func_8001C258_main(temp_s0->omObj2->model[0], 4, 0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D8E88_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D8EB8_name_81);
+void func_800D8EB8_name_81(Object* arg0) {
+    Object* temp_s0 = arg0;
+
+    func_8001C258_main(temp_s0->omObj1->model[0], 4, 4);
+    if (temp_s0->omObj2 != NULL) {
+        func_8001C258_main(temp_s0->omObj2->model[0], 4, 4);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D8F0C_name_81);
 
@@ -96,7 +110,15 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D9668_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D96F4_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D974C_name_81);
+void func_800D974C_name_81(Object* arg0) {
+    Process* proc;
+    Object** work;
+
+    proc = omAddPrcObj(func_800D96F4_name_81, 0, 0, 0x40);
+    work = HuMemMemoryAlloc(proc->heap, 0x10);
+    proc->user_data = work;
+    *work = arg0;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_81_name/BFB40", D_80101C48_name_81);
 

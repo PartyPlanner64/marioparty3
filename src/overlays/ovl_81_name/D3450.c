@@ -92,7 +92,16 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800ECC34_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800ECD0C_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800ECD88_name_81);
+void func_800ECD88_name_81(s16 playerIdx, s16 nlink, s16 nidx) {
+    GW_PLAYER *player = MBDGetPlayerStruct(playerIdx);
+
+    if (nlink >= 0) {
+        player->nlink = nlink;
+    }
+    if (nidx >= 0) {
+        player->nidx = nidx;
+    }
+}
 
 void func_800ECDE8_name_81(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);

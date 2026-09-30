@@ -1,6 +1,14 @@
 #include "common.h"
 #include "ovl_81.h"
 
+typedef struct NameSpriteIds {
+    /* 0x00 */ s16 unk_00;
+    /* 0x02 */ s16 unk_02[2];
+    /* 0x06 */ s16 unk_06;
+    /* 0x08 */ s16 unk_08;
+    /* 0x0A */ s16 unk_0A;
+} NameSpriteIds; // sizeof 0xC
+
 typedef struct NamePlayerData {
     /* 0x00 */ u8 unk_00;
     /* 0x01 */ s8 unk_01;
@@ -26,6 +34,9 @@ typedef struct NamePlayerData {
     /* 0x6B */ s8 unk_6B;
 } NamePlayerData; // sizeof 0x6C
 
+extern NameSpriteIds D_80105414_name_81;
+extern s16 D_80105420_name_81;
+extern s16 D_80105422_name_81;
 extern NamePlayerData D_80105630_name_81[];
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F4710_name_81);
@@ -56,7 +67,19 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F5EB0_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F6110_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F6220_name_81);
+void func_800F6220_name_81(void) {
+    NameSpriteIds *ids = &D_80105414_name_81;
+    s32 i;
+
+    HuSprKill(ids->unk_00);
+
+    for (i = 0; i < 2; i++) {
+        HuSprKill(ids->unk_02[i]);
+    }
+
+    HuSprKill(ids->unk_06);
+    HuSprKill(ids->unk_0A);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F628C_name_81);
 
@@ -98,7 +121,17 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F6CEC_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F6E3C_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F6F84_name_81);
+void func_800F6F84_name_81(void) {
+    if (D_80105420_name_81 != -1) {
+        HuSprGrpKill(D_80105420_name_81);
+        D_80105420_name_81 = -1;
+    }
+
+    if (D_80105422_name_81 != -1) {
+        HuSprKill(D_80105422_name_81);
+        D_80105422_name_81 = -1;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F6FE8_name_81);
 

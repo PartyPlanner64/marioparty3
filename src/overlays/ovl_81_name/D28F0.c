@@ -89,9 +89,17 @@ void func_800EB49C_name_81(s16 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32
     func_800EB2BC_name_81(arg0, arg1, arg2, arg3, arg4, arg5, arg6, -1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D28F0", func_800EB4DC_name_81);
+void func_800EB4DC_name_81(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
+    D_801011D2_name_81 = 1;
+    func_800EB2BC_name_81(arg0, arg1, arg2, arg3, arg4, arg5, arg6, -1);
+    D_801011D2_name_81 = 0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D28F0", func_800EB530_name_81);
+void func_800EB530_name_81(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s16 arg7) {
+    D_801011D2_name_81 = 1;
+    func_800EB2BC_name_81(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+    D_801011D2_name_81 = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D28F0", func_800EB58C_name_81);
 

@@ -29,6 +29,9 @@ typedef struct D_800CBB60_main_Struct {
 
 extern D_800CBB60_main_Struct *D_800CBB60_main;
 extern u8 D_800A0620_main;
+extern s16 D_800A06FC_main[];
+extern s32 D_800A0728_main[8];
+extern u16 D_800A0748_main[172];
 extern s32 *D_800CC080_main[8];
 extern s32 *D_800CDD54_main;
 extern u8 D_800D2008_main;
@@ -79,7 +82,14 @@ void func_800147FC_main(s16 arg0, u8 arg1, u8 arg2, u8 arg3) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/14EA0", func_80014850_main);
+void func_80014850_main(s16 arg0) {
+    D_800CBB60_main_Struct *entry = &D_800CBB60_main[arg0];
+
+    entry->unk_0A = 0;
+    entry->nodeIdx = 0;
+    entry->flags &= 0xFF7F;
+    func_8001C258_main(entry->modelId, 4, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/14EA0", func_800148A8_main);
 
@@ -132,9 +142,17 @@ void func_80017B20_main(s16 arg0, s16 arg1, u8 arg2, u8 arg3) {
     func_80032FC0_main(D_800D20B8_main[arg1][arg0], arg2, arg3);
 }
 
-INCLUDE_ASM("asm/nonmatchings/14EA0", func_80017B6C_main);
+s32 func_80017B6C_main(s16 chr, s16 arg1, s16 arg2) {
+    return func_80017BB8_main(chr, D_800A06FC_main[arg2 * 3 + arg1]);
+}
 
-INCLUDE_ASM("asm/nonmatchings/14EA0", func_80017BB8_main);
+s32 func_80017BB8_main(s16 chr, s16 animId) {
+    if (chr == 7) {
+        u16 packed = D_800A0748_main[animId];
+        return ((packed & 0xFF00) << 8) | (packed & 0xFF);
+    }
+    return D_800A0728_main[chr] | animId;
+}
 
 INCLUDE_ASM("asm/nonmatchings/14EA0", func_80017C10_main);
 

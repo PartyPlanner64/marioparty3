@@ -360,7 +360,19 @@ u8 func_8005FA90_main(u8 *arg0) {
     return 16;
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005FBA4_main);
+// Converts a two byte per character string into a one byte per character string.
+void func_8005FBA4_main(u8 *buffer, s32 message) {
+    u8 *str = (u8 *)message;
+
+    if (*str != 0) {
+        do {
+            *buffer = func_8005FA90_main(str);
+            str += 2;
+            buffer++;
+        } while (*str != 0);
+    }
+    *buffer = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005FBF8_main);
 

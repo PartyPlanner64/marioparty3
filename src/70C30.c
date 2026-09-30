@@ -5,10 +5,23 @@ typedef struct Unk70C30_Tone {
     u8 unk_C;
 } Unk70C30_Tone;
 
+typedef struct Unk70C30_Instrument {
+    u8 unk_00;
+    u8 unk_01;
+    u8 unk_02;
+    char unk_03[9];
+    s16 unk_0C;
+} Unk70C30_Instrument;
+
 typedef struct Unk70C30_Channel {
-    char unk_00[0x7];
-    u8 unk_7;
-    char unk_8[0x8];
+    Unk70C30_Instrument *unk_00;
+    s16 unk_04;
+    u8 unk_06;
+    u8 unk_07;
+    u8 unk_08;
+    u8 unk_09;
+    char unk_0A[2];
+    f32 unk_0C;
 } Unk70C30_Channel;
 
 typedef struct Unk70C30_Node {
@@ -19,6 +32,10 @@ typedef struct Unk70C30_Node {
     u8 unk_31;
     u8 unk_32;
     u8 unk_33;
+    u8 unk_34;
+    u8 unk_35;
+    u8 unk_36;
+    u8 unk_37;
 } Unk70C30_Node;
 
 typedef struct D_80070030_main_Struct {
@@ -50,7 +67,30 @@ INCLUDE_ASM("asm/nonmatchings/70C30", func_8007071C_main);
 
 INCLUDE_ASM("asm/nonmatchings/70C30", func_80070F20_main);
 
-INCLUDE_ASM("asm/nonmatchings/70C30", func_80070F8C_main);
+void func_80070F8C_main(D_80070030_main_Struct *arg0, void *arg1) {
+    Unk70C30_Node *node = arg0->unk_64;
+    Unk70C30_Node *prev = NULL;
+
+    if (node != NULL) {
+        do {
+            if (&node->unk_04 == arg1) {
+                if (prev != NULL) {
+                    prev->unk_00 = node->unk_00;
+                } else {
+                    arg0->unk_64 = node->unk_00;
+                }
+                if (node == arg0->unk_68) {
+                    arg0->unk_68 = prev;
+                }
+                node->unk_00 = arg0->unk_6C;
+                arg0->unk_6C = node;
+                return;
+            }
+            prev = node;
+            node = node->unk_00;
+        } while (node != NULL);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/70C30", func_80070FF0_main);
 
@@ -83,7 +123,16 @@ Unk70C30_Node *func_800711F0_main(D_80070030_main_Struct *arg0, u8 arg1, u8 arg2
     return node;
 }
 
-INCLUDE_ASM("asm/nonmatchings/70C30", func_80071240_main);
+Unk70C30_Node *func_80071240_main(D_80070030_main_Struct *arg0, u8 arg1, u8 arg2) {
+    Unk70C30_Node *node;
+
+    for (node = arg0->unk_64; node != NULL; node = node->unk_00) {
+        if (node->unk_32 == arg1 && node->unk_31 == arg2 && node->unk_35 != 3 && node->unk_35 != 4) {
+            return node;
+        }
+    }
+    return NULL;
+}
 
 INCLUDE_ASM("asm/nonmatchings/70C30", func_80071294_main);
 
@@ -92,7 +141,7 @@ INCLUDE_ASM("asm/nonmatchings/70C30", func_80071368_main);
 INCLUDE_ASM("asm/nonmatchings/70C30", func_800713D8_main);
 
 s32 func_800713F4_main(D_80070030_main_Struct *arg0, D_800713F4_main_Struct *arg1) {
-    s32 value = arg1->unk_60[arg0->unk_31].unk_7;
+    s32 value = arg1->unk_60[arg0->unk_31].unk_07;
     s32 offset = arg0->unk_20->unk_C - 0x40;
     value += offset;
     if (value < 0) {
@@ -110,7 +159,13 @@ INCLUDE_ASM("asm/nonmatchings/70C30", func_800714E4_main);
 
 INCLUDE_ASM("asm/nonmatchings/70C30", func_80071548_main);
 
-INCLUDE_ASM("asm/nonmatchings/70C30", func_800715C8_main);
+void func_800715C8_main(D_800713F4_main_Struct *arg0, Unk70C30_Instrument *arg1, s32 arg2) {
+    arg0->unk_60[arg2].unk_00 = arg1;
+    arg0->unk_60[arg2].unk_07 = arg1->unk_01;
+    arg0->unk_60[arg2].unk_09 = arg1->unk_00;
+    arg0->unk_60[arg2].unk_08 = arg1->unk_02;
+    arg0->unk_60[arg2].unk_04 = arg1->unk_0C;
+}
 
 INCLUDE_ASM("asm/nonmatchings/70C30", func_8007161C_main);
 

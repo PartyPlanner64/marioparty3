@@ -131,7 +131,12 @@ void opAnimCreate(s32 arg0, s32 arg1) {
     D_801155B0_opening[arg0] = func_8000B838_main(arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opAnimKill);
+void opAnimKill(s32 arg0) {
+    if (D_801155B0_opening[arg0] != -1) {
+        HuSprKill(D_801155B0_opening[arg0]);
+    }
+    D_801155B0_opening[arg0] = -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opEspCreate);
 

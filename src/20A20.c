@@ -35,7 +35,14 @@ s32 func_8001FED0_main(s16 index) {
 
 INCLUDE_ASM("asm/nonmatchings/20A20", func_8001FF04_main);
 
-INCLUDE_ASM("asm/nonmatchings/20A20", func_800202A8_main);
+f32 func_800202A8_main(f32 angle) {
+    if (angle >= 360.0f) {
+        angle -= 360.0f;
+    } else if (angle < 0.0f) {
+        angle += 360.0f;
+    }
+    return angle;
+}
 
 INCLUDE_ASM("asm/nonmatchings/20A20", func_800202FC_main);
 

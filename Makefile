@@ -176,6 +176,7 @@ build/src/2.0L/io/piacs.c.o: OPTFLAGS = -O2
 build/src/2.0L/io/pirawdma.c.o: OPTFLAGS = -O2
 build/src/2.0L/io/pirawread.c.o: OPTFLAGS = -O2
 build/src/2.0L/io/pirawwrite.c.o: OPTFLAGS = -O2
+build/src/2.0L/io/siacs.c.o: OPTFLAGS = -O2
 build/src/2.0L/io/visetmode.c.o: OPTFLAGS = -O2
 build/src/2.0L/io/visetyscale.c.o: OPTFLAGS = -O2
 build/src/2.0L/io/viswapbuf.c.o: OPTFLAGS = -O2

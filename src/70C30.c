@@ -11,6 +11,16 @@ typedef struct Unk70C30_Channel {
     char unk_8[0x8];
 } Unk70C30_Channel;
 
+typedef struct Unk70C30_Node {
+    struct Unk70C30_Node *unk_00;
+    char unk_04[0x10];
+    struct Unk70C30_Node *unk_14;
+    char unk_18[0x19];
+    u8 unk_31;
+    u8 unk_32;
+    u8 unk_33;
+} Unk70C30_Node;
+
 typedef struct D_80070030_main_Struct {
     char unk_00[0x18];
     ALSeq *unk_18;
@@ -19,6 +29,10 @@ typedef struct D_80070030_main_Struct {
     s32 unk_24;
     char unk_28[0x9];
     u8 unk_31;
+    char unk_32[0x32];
+    Unk70C30_Node *unk_64;
+    Unk70C30_Node *unk_68;
+    Unk70C30_Node *unk_6C;
 } D_80070030_main_Struct;
 
 typedef struct D_800713F4_main_Struct {
@@ -50,7 +64,24 @@ void func_800711BC_main(D_80070030_main_Struct *arg0, f32 arg1) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/70C30", func_800711F0_main);
+Unk70C30_Node *func_800711F0_main(D_80070030_main_Struct *arg0, u8 arg1, u8 arg2, u8 arg3) {
+    Unk70C30_Node *node = arg0->unk_6C;
+    if (node != NULL) {
+        arg0->unk_6C = node->unk_00;
+        node->unk_00 = NULL;
+        if (arg0->unk_64 == NULL) {
+            arg0->unk_64 = node;
+        } else {
+            arg0->unk_68->unk_00 = node;
+        }
+        arg0->unk_68 = node;
+        node->unk_31 = arg3;
+        node->unk_32 = arg1;
+        node->unk_33 = arg2;
+        node->unk_14 = node;
+    }
+    return node;
+}
 
 INCLUDE_ASM("asm/nonmatchings/70C30", func_80071240_main);
 

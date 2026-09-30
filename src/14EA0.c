@@ -138,7 +138,15 @@ INCLUDE_ASM("asm/nonmatchings/14EA0", func_80017BB8_main);
 
 INCLUDE_ASM("asm/nonmatchings/14EA0", func_80017C10_main);
 
-INCLUDE_ASM("asm/nonmatchings/14EA0", func_80017CD0_main);
+void func_80017CD0_main(HuMtx4F mtx, f32 x, f32 y, f32 z) {
+    s32 i;
+
+    for (i = 0; i < 3; i++) {
+        mtx[0][i] *= x;
+        mtx[1][i] *= y;
+        mtx[2][i] *= z;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/14EA0", func_80017D24_main);
 

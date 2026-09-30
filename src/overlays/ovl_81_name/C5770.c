@@ -1,5 +1,11 @@
 #include "common.h"
 
+typedef struct UnkC5770 {
+    /* 0x00 */ s32 state;
+    /* 0x04 */ char unk_04[0xC];
+} UnkC5770; // sizeof 0x10
+
+extern void func_800E03F0_name_81(void);
 extern void func_800E08D8_name_81(void);
 extern u32 D_800D2094_main;
 extern u32 D_80100F38_name_81;
@@ -41,7 +47,14 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C5770", func_800E0310_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C5770", func_800E03F0_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C5770", func_800E0888_name_81);
+Process *func_800E0888_name_81(void) {
+    Process *process = omAddPrcObj(func_800E03F0_name_81, 0, 0x2000, 0x40);
+    UnkC5770 *work = HuMemMemoryAlloc(process->heap, sizeof(UnkC5770));
+
+    process->user_data = work;
+    work->state = 0;
+    return process;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C5770", func_800E08D8_name_81);
 

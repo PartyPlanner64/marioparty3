@@ -63,6 +63,21 @@ s32 func_8007837C_main(ALSynth *drvr, s32 micros) {
 
 static const f64 FRAMES_TIME_SCALE = 1000000.0;
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/audio/synthesizer", func_800783C8_main);
+/* Finds the client whose frame is due soonest, relative to the current sample
+ * position, and returns the sample count that client is now scheduled for. */
+s32 func_800783C8_main(ALSynth *drvr, ALPlayer **client) {
+    ALPlayer *cur;
+    s32 delta = 0x7FFFFFFF;
+
+    *client = NULL;
+    for (cur = drvr->head; cur != NULL; cur = cur->next) {
+        if (cur->samplesLeft - drvr->curSamples < delta) {
+            *client = cur;
+            delta = cur->samplesLeft - drvr->curSamples;
+        }
+    }
+
+    return (*client)->samplesLeft;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/2.0L/audio/synthesizer", D_800A8518_main);

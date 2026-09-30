@@ -4,6 +4,7 @@
 #include "game/gamework_data.h"
 #include "game/util.h"
 #include "game/hmfman.h"
+#include "game/audio.h"
 #include "mallocblock.h"
 #include "include_asm.h"
 
@@ -16,6 +17,7 @@ void func_800DDD94_minigame(omObjData *);
 
 void func_800E3584_minigame(s16);
 
+extern u8 D_800EB734_minigame;
 extern s8 D_800EB735_minigame;
 extern u8 D_800EB739_minigame;
 extern u8 D_800EB73A_minigame;
@@ -154,7 +156,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E1490_minigame);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E149C_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E14B0_minigame);
+void func_800E14B0_minigame(omObjData *arg0, s32 arg1, s32 arg2) {
+    if (!(arg2 & 0xFF)) {
+        func_8001C258_main(arg0->model[arg1 & 0xFF], 4, 4);
+    } else {
+        func_8001C258_main(arg0->model[arg1 & 0xFF], 4, 0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E1510_minigame);
 
@@ -180,7 +188,17 @@ INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E1830_minigame);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E1840_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E1854_minigame);
+s32 func_800E1854_minigame(s32 arg0) {
+    s32 i;
+
+    for (i = 0; i < D_800EBE28_minigame; i++) {
+        /* Raw byte at 0x5F, inside omObjData's trailing data pointer field. */
+        if (((u8 *)D_800EC1C0_minigame[i])[0x5F] == arg0) {
+            return i;
+        }
+    }
+    return D_800EB734_minigame;
+}
 
 void func_800E18B4_minigame(void) {
     s8 temp_s8;
@@ -218,7 +236,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E19FC_minigame);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E1A9C_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E1B3C_minigame);
+void func_800E1B3C_minigame(void) {
+    s32 i;
+
+    for (i = 0; i < D_800EC280_minigame; i++) {
+        HuAudFXStop(OM_GET_DATA_PTR(D_800EC598_minigame[i], func_800E1BA8_minigame_ObjData)->unkC5[0]);
+    }
+}
 
 void func_800E1BA8_minigame(omObjData *arg0, u32 arg1, s32 arg2, u16 arg3, s32 arg4, s32 arg5) {
     func_800E1BA8_minigame_ObjData *temp_s0;

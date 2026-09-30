@@ -1,4 +1,5 @@
 #include "common.h"
+#include "overlays/minigame.h"
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B8A20", func_800E5EA0_minigame);
 
@@ -28,7 +29,30 @@ INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B8A20", func_800E6E7C_minigame);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B8A20", func_800E6E8C_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B8A20", func_800E6E9C_minigame);
+u16 func_800E6E9C_minigame(void) {
+    s32 value;
+
+    switch (D_800EBDE0_minigame->unk00) {
+        case 0:
+            value = D_800EB910_minigame;
+            break;
+        case 1:
+            value = D_800EB912_minigame;
+            break;
+        case 2:
+            value = D_800EB914_minigame;
+            break;
+        case 3:
+            value = D_800EB916_minigame;
+            break;
+        case 4:
+        default:
+            value = D_800EB918_minigame;
+            break;
+    }
+
+    return value;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B8A20", func_800E6F0C_minigame);
 

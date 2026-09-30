@@ -82,7 +82,7 @@ typedef struct {
 } D_800EBEB8_minigame_Entry; // Size 0xC
 
 typedef struct {
-    /* 0x00 */ char unk00;
+    /* 0x00 */ u8 unk00;
     /* 0x01 */ s8 unk01;
     /* 0x02 */ s8 unk02;
     /* 0x03 */ s8 unk03;
@@ -108,11 +108,17 @@ void func_800E5690_minigame(omObjData *, u16);
 void func_800E5A00_minigame(omObjData *, u16, s32, s32, u16);
 void func_800E5EA0_minigame(D_80111B50_vine_with_me_Struct *);
 u8 func_800E6E8C_minigame(void);
+u16 func_800E6E9C_minigame(void);
 void func_800E6F1C_minigame(void);
 void func_800E6F34_minigame(s32);
 void func_800E6F40_minigame(void);
 
 extern u16 D_800EBE28_minigame;
+extern u16 D_800EB910_minigame;
+extern u16 D_800EB912_minigame;
+extern u16 D_800EB914_minigame;
+extern u16 D_800EB916_minigame;
+extern u16 D_800EB918_minigame;
 extern s16 D_800EB736_minigame;
 extern D_800EBEB8_minigame_Entry D_800EBEB8_minigame[64];
 extern s16 D_800EC1B8_minigame;
@@ -122,5 +128,6 @@ extern omObjData *D_800EC1C0_minigame[];
 extern omObjData *D_800EC1BC_minigame[];
 extern u16 D_800EC280_minigame;
 extern omObjData *D_800EC598_minigame[];
+extern D_80111B50_vine_with_me_Struct *D_800EBDE0_minigame;
 
 #endif

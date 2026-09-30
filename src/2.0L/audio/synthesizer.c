@@ -35,7 +35,17 @@ ALParam *func_8007825C_main(void) {
 
 INCLUDE_ASM("asm/nonmatchings/2.0L/audio/synthesizer", func_80078288_main);
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/audio/synthesizer", func_800782A0_main);
+/* Returns every voice queued up on the lame list back to the free list. The
+ * next pointer is re-read from the list head after every voice, because both
+ * calls below move the node to a different list. */
+void func_800782A0_main(ALSynth *drvr) {
+    ALLink *link;
+
+    for (link = drvr->pLameList.next; link != NULL; link = drvr->pLameList.next) {
+        alUnlink(link);
+        alLink(link, &drvr->pFreeList);
+    }
+}
 
 void func_800782F4_main(ALSynth *drvr, ALLink *link) {
     alUnlink(link);

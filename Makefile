@@ -172,6 +172,7 @@ build/src/2.0L/audio/%.c.o: CPPFLAGS = -I include -I include/PR -I include/gcc -
 build/src/8A6B0.c.o: OPTFLAGS = -O2 #Could also be -O3?
 build/src/2.0L/gu/%.c.o: OPTFLAGS = -O2
 build/src/2.0L/io/contpfs.c.o: OPTFLAGS = -O2
+build/src/2.0L/io/piacs.c.o: OPTFLAGS = -O2
 build/src/2.0L/io/pirawdma.c.o: OPTFLAGS = -O2
 build/src/2.0L/io/pirawread.c.o: OPTFLAGS = -O2
 build/src/2.0L/io/pirawwrite.c.o: OPTFLAGS = -O2

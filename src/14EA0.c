@@ -119,7 +119,12 @@ INCLUDE_ASM("asm/nonmatchings/14EA0", func_80017790_main);
 
 INCLUDE_ASM("asm/nonmatchings/14EA0", func_80017954_main);
 
-INCLUDE_ASM("asm/nonmatchings/14EA0", func_80017A84_main);
+void func_80017A84_main(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+    HmfAnim *anim = &D_800D1714_main[D_800D20B8_main[arg2][arg1]];
+
+    anim->frame = arg3;
+    anim->interp = arg4;
+}
 
 INCLUDE_ASM("asm/nonmatchings/14EA0", func_80017AD8_main);
 

@@ -11,18 +11,6 @@ typedef struct {
     void *unk28;
 } HmfPalData;
 
-typedef struct HmfAnim {
-    /* 0x00 */ s16 animIdx;
-    /* 0x02 */ s16 frame;
-    /* 0x04 */ s16 rot;
-    /* 0x06 */ s16 interp;
-    /* 0x08 */ char unk_08[2];
-    /* 0x0A */ u8 flags;
-    /* 0x0B */ s8 alpha;
-} HmfAnim; // sizeof 0xC
-
-extern HmfAnim *D_800D1714_main;
-
 INCLUDE_ASM("asm/nonmatchings/32160", func_80031560_main);
 
 INCLUDE_ASM("asm/nonmatchings/32160", func_80031630_main);

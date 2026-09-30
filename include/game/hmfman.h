@@ -179,6 +179,18 @@ typedef struct HmfModel {
     /* 0xBC */ HmfModelData_UnkBC_Struct *unkBC;
 } HmfModel; // Size 0xC0
 
+typedef struct HmfAnim {
+    /* 0x00 */ s16 animIdx;
+    /* 0x02 */ s16 frame;
+    /* 0x04 */ s16 rot;
+    /* 0x06 */ s16 interp;
+    /* 0x08 */ char unk_08[2];
+    /* 0x0A */ u8 flags;
+    /* 0x0B */ s8 alpha;
+} HmfAnim; // Size 0xC
+
+extern HmfAnim *D_800D1714_main;
+
 void func_8001A070_main(void *arg0, void *arg1, u16 arg2, u16 arg3, u16 arg4, u8 arg5);
 s16 Hu3DModelCreate(u8 *, u32);
 s32 Hu3DModelLink(s16 linkMdlId);
@@ -196,6 +208,7 @@ void func_8001C448_main(s16);
 s32 func_8001C514_main(s16);
 void func_8001C5B4_main(s16, s16);
 void func_8001C624_main(s16, s16, s16, s16, s16);
+void func_80017A84_main(s16, s16, s16, s16, s16);
 void func_8001C6A8_main(s32, f32);
 f32 func_8001C718_main(s16 arg0);
 f32 func_8001C7D0_main(s16 arg0);

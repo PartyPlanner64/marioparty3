@@ -71,7 +71,13 @@ u16 func_8001476C_main(s16 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/14EA0", func_80014794_main);
 
-INCLUDE_ASM("asm/nonmatchings/14EA0", func_800147FC_main);
+void func_800147FC_main(s16 arg0, u8 arg1, u8 arg2, u8 arg3) {
+    if (arg0 != -1) {
+        D_800CBB60_main[arg0].colorR = arg1;
+        D_800CBB60_main[arg0].colorG = arg2;
+        D_800CBB60_main[arg0].colorB = arg3;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/14EA0", func_80014850_main);
 

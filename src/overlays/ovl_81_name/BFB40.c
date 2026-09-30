@@ -17,7 +17,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D7DC8_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D7E14_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D7E68_name_81);
+s16 func_800D7E68_name_81(s16 arg0) {
+    if (D_801029C8_name_81[arg0] != 0) {
+        D_801029C8_name_81[arg0]++;
+        return arg0;
+    }
+    return -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D7EB8_name_81);
 
@@ -70,7 +76,15 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D918C_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D9234_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D92A8_name_81);
+u16 func_800D92A8_name_81(Object *arg0) {
+    u16 ret;
+
+    ret = 0;
+    if (HmfModelData[arg0->omObj1->model[0]].unk40 == 0.0f) {
+        ret = 1;
+    }
+    return ret;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D92F8_name_81);
 

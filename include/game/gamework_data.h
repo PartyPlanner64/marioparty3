@@ -56,7 +56,7 @@ typedef struct GW_SYSTEM {
     /* 0x14 - 800CD06C */ s8 message_speed; //00 - Fast, 01 - Normal, 02 - Slow
     /* 0x15 - 800CD06D */ s8 walk_speed; //00 - Fast, 01 - Normal, 02 - Slow
     /* 0x16 - 800CD06E */ s8 show_com_minigames; //00 - Show COM minigame, 01 - Hide COM minigame
-    /* 0x17 - 800CD06F */ s8 unk_17[0x13]; //parallel to unk_2A
+    /* 0x17 - 800CD06F */ u8 unk_17[0x13]; //parallel to unk_2A
     /* 0x2A - 800CD082 */ s8 unk_2A[0x13]; //parallel to unk_17
     /* 0x3D - 800CD095 */ char unk_3D; //unknown
     union {

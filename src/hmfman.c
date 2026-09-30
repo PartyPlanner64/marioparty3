@@ -278,7 +278,18 @@ s16 func_8001ABD4_main(s16 arg0, s8 arg1) {
     return idx;
 }
 
-INCLUDE_ASM("asm/nonmatchings/hmfman", func_8001AC34_main);
+void func_8001AC34_main(s16 arg0, s32 arg1) {
+    HmfModel *model = &HmfModelData[arg0];
+    u8 flags = (model->unk00 & 0xF9) | 1;
+    u8 newFlags = arg1 | flags;
+
+    model->unk00 = newFlags;
+    if ((arg1 & 0xFF) == 6) {
+        model->unk01 = 0;
+    } else {
+        model->unk01 = 0xFF;
+    }
+}
 
 s16 func_8001AC8C_main(s32 arg0, void (*arg1)(Gfx **, s32, s32), u8 arg2) {
     s16 idx = func_8001A894_main(arg0, NULL, arg2);

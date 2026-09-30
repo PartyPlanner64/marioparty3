@@ -1,6 +1,33 @@
 #include "common.h"
 #include "ovl_81.h"
 
+typedef struct NamePlayerData {
+    /* 0x00 */ u8 unk_00;
+    /* 0x01 */ s8 unk_01;
+    /* 0x02 */ s16 unk_02;
+    /* 0x04 */ s16 spriteGroup;
+    /* 0x06 */ char unk_06[0x2];
+    /* 0x08 */ s16 unk_08;
+    /* 0x0A */ char unk_0A[0x2];
+    /* 0x0C */ f32 xPos;
+    /* 0x10 */ f32 yPos;
+    /* 0x14 */ f32 unk_14;
+    /* 0x18 */ f32 unk_18;
+    /* 0x1C */ f32 unk_1C;
+    /* 0x20 */ f32 unk_20;
+    /* 0x24 */ f32 unk_24;
+    /* 0x28 */ f32 unk_28;
+    /* 0x2C */ Object *unk_2C;
+    /* 0x30 */ char unk_30[0xA];
+    /* 0x3A */ s16 unk_3A[11];
+    /* 0x50 */ s16 unk_50[11];
+    /* 0x66 */ char unk_66[0x4];
+    /* 0x6A */ s8 unk_6A;
+    /* 0x6B */ s8 unk_6B;
+} NamePlayerData; // sizeof 0x6C
+
+extern NamePlayerData D_80105630_name_81[];
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F4710_name_81);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F4E90_name_81);
@@ -41,7 +68,12 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F64FC_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F6550_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F6600_name_81);
+void func_800F6600_name_81(s32 playerIndex, s16 *outX, s16 *outY) {
+    NamePlayerData *player = &D_80105630_name_81[playerIndex];
+
+    *outX = player->xPos;
+    *outY = player->yPos;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F664C_name_81);
 
@@ -49,7 +81,18 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F6688_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F66BC_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F6CA0_name_81);
+s32 func_800F6CA0_name_81(void) {
+    s32 result = 0;
+    s32 i;
+
+    for (i = 0; i < 2; i++) {
+        if (D_80105630_name_81[i].unk_08 != -2) {
+            result = 1;
+        }
+    }
+
+    return result;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F6CEC_name_81);
 
@@ -67,9 +110,21 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F7394_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F73AC_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F73C0_name_81);
+void func_800F73C0_name_81(void) {
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F740C_name_81);
+    for (i = 0; i < 2; i++) {
+        D_80105630_name_81[i].unk_00 |= 1;
+    }
+}
+
+void func_800F740C_name_81(void) {
+    s32 i;
+
+    for (i = 0; i < 2; i++) {
+        D_80105630_name_81[i].unk_00 &= 0xFE;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F7458_name_81);
 

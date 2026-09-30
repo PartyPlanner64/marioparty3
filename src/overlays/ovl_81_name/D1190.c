@@ -94,7 +94,17 @@ void func_800EA760_name_81(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800EA788_name_81);
+void func_800EA788_name_81(s8 unk_17_value, s8 unk_2A_value) {
+    s32 i;
+
+    for (i = 0; i < 0x13; i++) {
+        if (GwSystem.unk_2A[i] == 0) {
+            GwSystem.unk_17[i] = unk_17_value;
+            GwSystem.unk_2A[i] = unk_2A_value + 1;
+            break;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800EA7D4_name_81);
 

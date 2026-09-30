@@ -27,7 +27,15 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EB804_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EB8B0_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EB984_name_81);
+s16 func_800EB984_name_81(void) {
+    s32 i;
+    s32 totalStars = 0;
+
+    for (i = 0; i < 2; i++) {
+        totalStars += MBDGetPlayerStruct(i)->star;
+    }
+    return totalStars;
+}
 
 s32 func_800EB9D4_name_81(s8 percent) {
     return percent > ((rand8() & 0xFF) * 99 >> 8);

@@ -102,7 +102,16 @@ INCLUDE_ASM("asm/nonmatchings/32160", func_80033D0C_main);
 
 INCLUDE_ASM("asm/nonmatchings/32160", func_80033F8C_main);
 
-INCLUDE_ASM("asm/nonmatchings/32160", func_80033FEC_main);
+s32 func_80033FEC_main(void) {
+    s16 i;
+
+    for (i = 0; i < 0x20; i++) {
+        if (D_800D408C_main[i].unk0C == NULL) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/32160", func_80034048_main);
 

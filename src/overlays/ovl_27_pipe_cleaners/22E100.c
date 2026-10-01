@@ -17,6 +17,9 @@ typedef struct PipeCleanerWork {
 extern void func_80105C50_pipe_cleaners(omObjData *obj);
 extern void func_80105DF0_pipe_cleaners(omObjData *obj);
 extern void func_80108F18_pipe_cleaners(omObjData *obj);
+extern void func_80105F00_pipe_cleaners(omObjData *obj);
+extern void func_80106204_pipe_cleaners(omObjData *obj);
+extern void func_80108194_pipe_cleaners(omObjData *obj);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_801059A0_pipe_cleaners);
 
@@ -55,7 +58,13 @@ void func_80105EF8_pipe_cleaners(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80105F00_pipe_cleaners);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80106078_pipe_cleaners);
+void func_80106078_pipe_cleaners(void) {
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        omAddObj(0x1F4, 1, 0, -1, func_80105F00_pipe_cleaners)->work[0] = i;
+    }
+}
 
 void func_801060D4_pipe_cleaners(s32 arg0) {
     s32 *state = &D_8010A928_pipe_cleaners[arg0];
@@ -69,7 +78,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_801060
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80106204_pipe_cleaners);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_8010638C_pipe_cleaners);
+void func_8010638C_pipe_cleaners(void) {
+    s32 i;
+
+    for (i = 0; i < 0x10; i++) {
+        omAddObj(0x190, 1, 1, -1, func_80106204_pipe_cleaners)->work[0] = i;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_801063E8_pipe_cleaners);
 
@@ -140,7 +155,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_801080
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80108194_pipe_cleaners);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80108428_pipe_cleaners);
+void func_80108428_pipe_cleaners(void) {
+    s32 i;
+
+    for (i = 0; i < 0x10; i++) {
+        omAddObj(0xC8, 1, 2, -1, func_80108194_pipe_cleaners)->work[0] = i;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80108484_pipe_cleaners);
 

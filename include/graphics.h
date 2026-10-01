@@ -31,11 +31,11 @@ extern void		osViBlack(u8);
 extern void		osViSetYScale(f32);
 
 // TODO: Move to respective header files
-typedef struct {
-    s32 unk00;
+typedef struct unkSchedStruct {
+    struct unkSchedStruct *unk00; // next client in list
     OSMesgQueue *unk04;
-    s32 unk08;
-} unkSchedStruct;
+    s32 unk08; // event mask
+} unkSchedStruct; // sizeof 0xC
 
 typedef struct {
     u8 unk00[0x20];

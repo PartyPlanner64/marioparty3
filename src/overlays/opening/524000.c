@@ -50,6 +50,14 @@ typedef struct {
 } OpCamVecs; // sizeof 0x24
 
 typedef struct {
+    /* 0x00 */ omObjData *obj;
+    /* 0x04 */ f32 magnitude;
+    /* 0x08 */ s32 frame;
+    /* 0x0C */ s32 totalFrames;
+    /* 0x10 */ s32 active;
+} OpShake; // sizeof 0x14
+
+typedef struct {
     /* 0x00 */ s16 animId;
     /* 0x02 */ u16 espriteSlot;
 } OpContError; // sizeof 0x4
@@ -64,6 +72,7 @@ void opTitleSprMain(void);
 void opDemoEvent(void);
 void func_801061F0_opening(void);
 void func_80110B90_opening(void);
+void func_80110C04_opening(omObjData *);
 void func_80110F48_opening(void);
 void func_80112944_opening(void);
 void opContErrorCreate(void);
@@ -78,6 +87,7 @@ extern Vec D_80114BC4_opening;
 extern RectF D_80114BD0_opening;
 extern OpModel D_80115630_opening[0xA0];
 extern OpCamVecs D_80117350_opening;
+extern OpShake D_80117338_opening;
 extern omObjData *D_80117374_opening;
 extern OpObj D_80117388_opening[0x10];
 extern s16 D_801171B0_opening;
@@ -381,7 +391,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80110B9C_opening);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80110C04_opening);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80110D8C_opening);
+void func_80110D8C_opening(s32 totalFrames, f32 magnitude) {
+    D_80117338_opening.frame = 0;
+    D_80117338_opening.totalFrames = totalFrames;
+    D_80117338_opening.magnitude = magnitude;
+    D_80117338_opening.active = 1;
+    D_80117338_opening.obj = omAddObj(6, 0, 0, -1, func_80110C04_opening);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoCharCreate);
 

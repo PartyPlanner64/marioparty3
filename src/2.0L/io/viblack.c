@@ -1,3 +1,14 @@
 #include "common.h"
+#include <PR/viint.h>
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/io/viblack", osViBlack);
+void osViBlack(u8 active) {
+    u32 intMask;
+
+    intMask = __osDisableInt();
+    if (active != 0) {
+        __osViNext->state |= VI_STATE_BLACK;
+    } else {
+        __osViNext->state &= ~VI_STATE_BLACK;
+    }
+    __osRestoreInt(intMask);
+}

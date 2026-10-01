@@ -4,7 +4,9 @@
 void func_80018544_main(s32, s32);
 void func_80019C00_main(void *data);
 void func_80022660_main(HmfData *);
+extern s16 D_800A1160_main;
 extern s16 D_800CDD6A_main;
+extern f32 D_800D2120_main;
 extern u16 D_800D5204_main;
 
 INCLUDE_ASM("asm/nonmatchings/22EB0", func_800222B0_main);
@@ -175,7 +177,14 @@ INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002D3AC_main);
 
 INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002D3D0_main);
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002D4B8_main);
+void func_8002D4B8_main(s32 arg0) {
+    s16 modelIndex = arg0;
+
+    if (modelIndex != 0xFF) {
+        HuMemFreeAllWithTag(modelIndex + 0x2874);
+        D_800CCF58_main[modelIndex].unk02 = -1;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002D514_main);
 
@@ -201,7 +210,17 @@ INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002FB08_main);
 
 INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002FB98_main);
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002FC14_main);
+void func_8002FC14_main(HmfData *arg0, f32 arg1) {
+    arg0->unkA0 = arg0->unkA0 - arg1 * D_800D2120_main;
+
+    if (arg0->unkA0 < 0) {
+        if (D_800A1160_main != 0) {
+            arg0->unkA0 = arg0->unk8C->unk02;
+        } else {
+            arg0->unkA0 = 0;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002FC7C_main);
 

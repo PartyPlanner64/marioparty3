@@ -78,7 +78,7 @@ void func_80060388_main(s8);
 void func_800604A8_main(s16*, s16, s16);
 void func_80061934_main(s16, s16);
 void func_80061A5C_main(s16, s16);
-void func_8002D4B8_main(s16);
+void func_8002D4B8_main(s32);
 s32 func_8001F1FC_main(void*, s32);
 void func_8001F9E4_main(s16, u8);
 void func_8001FA68_main(s16);

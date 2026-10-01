@@ -18,6 +18,8 @@ typedef struct EndOfTheLineData {
 
 extern omObjData *D_8010C738_end_of_the_line;
 
+void func_8000BBFC_main(u16 spriteId, s16 alpha);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_801059A0_end_of_the_line);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_80105E0C_end_of_the_line);
@@ -58,7 +60,16 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_8010
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_8010A91C_end_of_the_line);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_8010AA1C_end_of_the_line);
+void func_8010AA1C_end_of_the_line(omObjData *obj) {
+    EndOfTheLineData *data = OM_GET_DATA_PTR(D_8010C738_end_of_the_line, EndOfTheLineData);
+
+    obj->work[2] += obj->work[3];
+    if (obj->work[2] >= 0x100) {
+        obj->work[2] = 0xFF;
+        obj->work[1] = 0;
+    }
+    func_8000BBFC_main(data->esprites[obj->work[0] + 2], OM_GET_WORK_PTR(obj, s16)[5]);
+}
 
 void func_8010AA7C_end_of_the_line(EndOfTheLinePlayer *player) {
     EndOfTheLineData *data = OM_GET_DATA_PTR(D_8010C738_end_of_the_line, EndOfTheLineData);
@@ -69,7 +80,16 @@ void func_8010AA7C_end_of_the_line(EndOfTheLinePlayer *player) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_8010AAC8_end_of_the_line);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_8010ABD4_end_of_the_line);
+void func_8010ABD4_end_of_the_line(omObjData *obj) {
+    EndOfTheLineData *data = OM_GET_DATA_PTR(D_8010C738_end_of_the_line, EndOfTheLineData);
+
+    obj->work[2] += obj->work[3];
+    if (obj->work[2] >= 0x100) {
+        obj->work[2] = 0xFF;
+        obj->work[1] = 0;
+    }
+    func_8000BBFC_main(data->esprites[obj->work[0] + 4], OM_GET_WORK_PTR(obj, s16)[5]);
+}
 
 void func_8010AC34_end_of_the_line(EndOfTheLinePlayer *player) {
     EndOfTheLineData *data = OM_GET_DATA_PTR(D_8010C738_end_of_the_line, EndOfTheLineData);

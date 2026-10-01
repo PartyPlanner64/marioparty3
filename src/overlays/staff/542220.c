@@ -1,4 +1,5 @@
 #include "common.h"
+#include "mallocblock.h"
 #include "../ovl_81_name/ovl_81.h"
 
 typedef struct UnkStaff {
@@ -28,11 +29,48 @@ typedef struct UnkStaff_2 {
     /* 0x0A */ s16 unk_0A;
 } UnkStaff_2;
 
+typedef struct UnkStaff_3 { // sizeof 0x3C
+    /* 0x00 */ Vec unk_00;
+    /* 0x0C */ char unk_0C[0x10];
+    /* 0x1C */ s16 unk_1C;
+    /* 0x1E */ char unk_1E[0x1C];
+    /* 0x3A */ s16 unk_3A;
+} UnkStaff_3;
+
+typedef struct UnkStaff_4 {
+    /* 0x00 */ UnkStaff_3 *unk_00;
+    /* 0x08 */ s16 unk_08;
+} UnkStaff_4;
+
+typedef struct UnkStaff_5 { // sizeof 0x4C
+    /* 0x00 */ char unk_00[0x18];
+    /* 0x18 */ Vec unk_18;
+    /* 0x24 */ char unk_24[0xC];
+    /* 0x30 */ Vec unk_30;
+    /* 0x3C */ char unk_3C[0x10];
+} UnkStaff_5;
+
+typedef struct UnkStaff_6 { // sizeof 0x8
+    /* 0x00 */ s16 unk_00;
+    /* 0x02 */ char unk_02[4];
+    /* 0x06 */ s16 unk_06;
+} UnkStaff_6;
+
+typedef struct UnkStaff_7 { // sizeof 0x14
+    /* 0x00 */ void *unk_00;
+    /* 0x04 */ f32 *unk_04;
+    /* 0x08 */ f32 *unk_08;
+    /* 0x0C */ s16 unk_0C;
+    /* 0x0E */ s16 unk_0E;
+    /* 0x10 */ s16 count;
+} UnkStaff_7;
+
 void func_80105E6C_staff(void *, s16 *, s32);
 void func_8010C680_staff(s16 *, s32 *, f32 *, void *);
 void func_8010C8F4_staff(UnkStaff_1 *);
 void func_8010CD74_staff(UnkStaff_1 *);
 void func_8010CFD4_staff(UnkStaff *);
+void func_8010FB88_staff(void);
 extern f32 D_80110534_staff;
 extern s8 D_80110538_staff;
 extern char D_80110FF4_staff[]; // unk type
@@ -40,6 +78,8 @@ extern Vec D_80111534_staff;
 extern Vec D_80111540_staff;
 extern f32 D_80111560_staff;
 extern f32 D_80111564_staff;
+extern UnkStaff_6 *D_801114C8_staff;
+extern UnkStaff_6 *D_80111508_staff;
 
 INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_801059A0_staff);
 
@@ -75,9 +115,37 @@ INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_80107508_staff);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_80107740_staff);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_80107A9C_staff);
+void func_80107A9C_staff(UnkStaff_7 *arg0) {
+    s32 i;
+    UnkStaff_7 *ptr;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_80107B1C_staff);
+    for (i = 0, ptr = arg0; i < 4; i++, ptr++) {
+        HuSprGrpKill(ptr->unk_0C);
+        HuSprKill(ptr->unk_0E);
+        HuMemFree(ptr->unk_00);
+        HuMemFree(ptr->unk_04);
+        HuMemFree(ptr->unk_08);
+    }
+    HuMemFree(arg0);
+}
+
+void func_80107B1C_staff(UnkStaff_7 *arg0, f32 arg1) {
+    s16 i;
+    s16 j;
+    s16 count;
+    f32 *dest;
+    f32 *src;
+    UnkStaff_7 *ptr;
+
+    for (i = 0, ptr = arg0; i < 4; i++, ptr++) {
+        dest = ptr->unk_04;
+        src = ptr->unk_08;
+        count = ptr->count;
+        for (j = 0; j < count; j++, dest++, src++) {
+            *dest = arg1 * *src;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_80107BA0_staff);
 
@@ -97,11 +165,43 @@ INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_80109264_staff);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_801095E4_staff);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010992C_staff);
+void func_8010992C_staff(Process *prc, s16 modelId) {
+    UnkStaff_4 *staff = prc->user_data;
+    UnkStaff_3 *ptr = staff->unk_00;
+    s32 i;
+
+    for (i = 0; i < 3; i++, ptr++) {
+        if (ptr->unk_3A != 3) {
+            continue;
+        }
+        if (ptr->unk_1C == modelId) {
+            break;
+        }
+    }
+    if (i < 3) {
+        ptr->unk_3A |= 4;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010998C_staff);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_80109D08_staff);
+void func_80109D08_staff(Process *prc, s16 modelId, Vec *pos) {
+    UnkStaff_4 *staff = prc->user_data;
+    UnkStaff_3 *ptr = staff->unk_00;
+    s32 i;
+
+    for (i = 0; i < 3; i++, ptr++) {
+        if (ptr->unk_3A != 3) {
+            continue;
+        }
+        if (ptr->unk_1C == modelId) {
+            break;
+        }
+    }
+    if (i < 3) {
+        ptr->unk_00 = *pos;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_80109D74_staff);
 
@@ -111,9 +211,28 @@ INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010A848_staff);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010B1E0_staff);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010B430_staff);
+void func_8010B430_staff(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
+    HuSprGrp *grp = HuSprGrpData[arg0];
+    HuSprite *sprite = grp->members[arg1];
 
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010B4B4_staff);
+    if ((u32)arg2 || (u32)arg3) {
+        grp->unk_0C = 1;
+        sprite->unk_48 += arg2;
+        sprite->unk_4C += arg3;
+    }
+}
+
+void func_8010B4B4_staff(s16 arg0, s16 arg1, s16 arg2) {
+    f32 value = arg2;
+    HuSprGrp *grp = HuSprGrpData[arg0];
+    HuSprite *sprite = grp->members[arg1];
+
+    if (sprite->unk_4C == value) {
+        return;
+    }
+    grp->unk_0C = 1;
+    sprite->unk_4C = value;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010B514_staff);
 
@@ -121,7 +240,23 @@ INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010B794_staff);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010B8C0_staff);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010B9BC_staff);
+void func_8010B9BC_staff(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
+    UnkStaff_6 *rec;
+
+    switch (arg0) {
+        case 0:
+        default:
+            rec = &D_801114C8_staff[arg1];
+            break;
+        case 1:
+            rec = &D_80111508_staff[arg1];
+            break;
+    }
+
+    if (rec->unk_06 != 0) {
+        func_80054904_main(rec->unk_00, 0, arg2, arg3);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010BA30_staff);
 
@@ -288,7 +423,15 @@ INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010F4C4_staff);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010F9D4_staff);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010FB28_staff);
+void func_8010FB28_staff(void) {
+    Process *prc = omAddPrcObj(func_8010FB88_staff, 0x3F00, 0x2000, 0);
+    UnkStaff_5 *data = HuMemAllocTag(sizeof(UnkStaff_5), 0x7918);
+
+    prc->user_data = data;
+    data->unk_18.x = 0.0f;
+    data->unk_18.y = 100.0f;
+    data->unk_18.z = 0.0f;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010FB88_staff);
 

@@ -47,7 +47,14 @@ INCLUDE_ASM("asm/nonmatchings/32160", HmfAnimCreate);
 
 INCLUDE_ASM("asm/nonmatchings/32160", func_80032694_main);
 
-INCLUDE_ASM("asm/nonmatchings/32160", func_80032950_main);
+void func_80032950_main(void) {
+    s16 i;
+
+    D_800D408C_main = HuMemAlloc(0x300);
+    for (i = 0; i < 0x20; i++) {
+        D_800D408C_main[i].unk0C = NULL;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/32160", func_800329B4_main);
 
@@ -92,15 +99,40 @@ INCLUDE_ASM("asm/nonmatchings/32160", func_800335BC_main);
 
 INCLUDE_ASM("asm/nonmatchings/32160", func_80033694_main);
 
-INCLUDE_ASM("asm/nonmatchings/32160", func_80033910_main);
+void func_80033910_main(HmfData *arg0) {
+    s16 i;
 
-INCLUDE_ASM("asm/nonmatchings/32160", func_80033970_main);
+    for (i = 0; i < arg0->unk12; i++) {
+        if (arg0->unk84[i].unk3 != -1) {
+            arg0->unk84[i].unk9 |= 0x80;
+        }
+    }
+}
+
+void func_80033970_main(HmfData *arg0) {
+    s16 i;
+
+    for (i = 0; i < arg0->unk12; i++) {
+        if (arg0->unk84[i].unk3 != -1) {
+            arg0->unk84[i].unk9 &= 0x7F;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/32160", func_800339D0_main);
 
 INCLUDE_ASM("asm/nonmatchings/32160", func_80033D0C_main);
 
-INCLUDE_ASM("asm/nonmatchings/32160", func_80033F8C_main);
+s32 func_80033F8C_main(void) {
+    s16 i;
+
+    for (i = 0; i < 0x80; i++) {
+        if (D_800D1714_main[i].animIdx == -1) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 s32 func_80033FEC_main(void) {
     s16 i;

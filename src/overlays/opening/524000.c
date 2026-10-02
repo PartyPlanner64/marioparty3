@@ -47,7 +47,8 @@ typedef struct {
     /* 0x00 */ Vec pos;
     /* 0x0C */ Vec at;
     /* 0x18 */ Vec up;
-} OpCamVecs; // sizeof 0x24
+    /* 0x24 */ omObjData *obj;
+} OpCamVecs; // sizeof 0x28
 
 typedef struct {
     /* 0x00 */ omObjData *obj;
@@ -89,7 +90,6 @@ extern RectF D_80114BD0_opening;
 extern OpModel D_80115630_opening[0xA0];
 extern OpCamVecs D_80117350_opening;
 extern OpShake D_80117338_opening;
-extern omObjData *D_80117374_opening;
 extern OpObj D_80117388_opening[0x10];
 extern s16 D_801171B0_opening;
 extern u16 D_801171B2_opening;
@@ -344,7 +344,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107B74_opening);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107BD8_opening);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107C08_opening);
+void func_80107C08_opening(s32 arg0, f32 arg1, f32 arg2) {
+    func_8005BA90_main(D_801171B8_opening[arg0].espriteSlot, arg1, arg2);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107C70_opening);
 
@@ -419,15 +421,20 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoModelKill);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoSprKill);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80110F48_opening);
+void func_80110F48_opening(void) {
+    D_80117350_opening.obj = NULL;
+    HuVecCopyXYZ(&D_80117350_opening.pos, 350.0f, 190.0f, 3770.0f);
+    HuVecCopyXYZ(&D_80117350_opening.at, -1000.0f, 130.0f, 450.0f);
+    HuVecCopyXYZ(&D_80117350_opening.up, 0.0f, 1.0f, 0.0f);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80110FB0_opening);
 
 void func_80111028_opening(void) {
-    if (D_80117374_opening != NULL) {
-        omDelObj(D_80117374_opening);
+    if (D_80117350_opening.obj != NULL) {
+        omDelObj(D_80117350_opening.obj);
     }
-    D_80117374_opening = NULL;
+    D_80117350_opening.obj = NULL;
 }
 
 void func_8011105C_opening(void) {

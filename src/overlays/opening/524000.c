@@ -294,7 +294,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opMotionEndCheck);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opMotionSet);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107048_opening);
+void func_80107048_opening(void) {
+    // The original call omits the resource id.
+    D_801171B0_opening = ((s16 (*)())func_8000B838_main)();
+    D_801171B2_opening = InitEspriteSlot(D_801171B0_opening, 0, 0);
+    func_8000BC48_main(D_801171B2_opening, 0x4000);
+    func_8000BBD4_main(D_801171B2_opening, 0xA0, 0x78);
+}
 
 void func_801070AC_opening(void) {
     func_8000C184_main(D_801171B2_opening);

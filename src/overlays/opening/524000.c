@@ -480,7 +480,12 @@ void func_80112944_opening(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoObjKillAll);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoObjKill);
+void opDemoObjKill(s32 index) {
+    if (D_80117388_opening[index].obj != NULL) {
+        omDelObj(D_80117388_opening[index].obj);
+    }
+    D_80117388_opening[index].obj = NULL;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoObjCreate);
 

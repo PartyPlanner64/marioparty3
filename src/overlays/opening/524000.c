@@ -71,6 +71,7 @@ typedef struct {
 void opTitleSprMain(void);
 void opDemoEvent(void);
 void func_801061F0_opening(void);
+void opModelRotSet(s32 arg0, f32 arg1, f32 arg2, f32 arg3);
 void func_80110B90_opening(void);
 void func_80110C04_opening(omObjData *);
 void func_80110F48_opening(void);
@@ -240,7 +241,12 @@ s16 opMotionIdGet(s32 motionId) {
     return D_80115630_opening[motionId].motionId;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opModelRotSet);
+void opModelRotSet(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+    D_80115630_opening[arg0].rotX = arg1;
+    D_80115630_opening[arg0].rotY = arg2;
+    D_80115630_opening[arg0].rotZ = arg3;
+    Hu3DModelRotSet(D_80115630_opening[arg0].modelId, arg1, arg2, arg3);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opModelPosSet);
 

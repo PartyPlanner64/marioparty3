@@ -1,5 +1,10 @@
 #include "common.h"
 
+extern u16 D_80106E80_mchar;
+extern Vec D_80107A50_mchar;
+
+void func_80106E54_mchar(omObjData *arg0);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/mchar/3D3C80", func_801059A0_mchar);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mchar/3D3C80", func_80105B38_mchar);
@@ -332,8 +337,21 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mchar/3D3C80", func_80106764_mchar);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mchar/3D3C80", func_80106898_mchar);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mchar/3D3C80", func_80106D7C_mchar);
+void func_80106D7C_mchar(void) {
+    D_80107A50_mchar.x = D_80107A50_mchar.y = D_80107A50_mchar.z = 0.0f;
+    CRot.x = CRot.y = CRot.z = 0.0f;
+    CZoom = 400.0f;
+    Center.x = Center.z = 0.0f;
+    Center.y = 64.0f;
+    gCameraList->fov[0] = 45.0f;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mchar/3D3C80", func_80106DF8_mchar);
+void func_80106DF8_mchar(omObjData *arg0) {
+    if ((D_80106E80_mchar != 0) || (D_800D530C_main != 0)) {
+        WipeCreateOut(0, 8);
+        arg0->func = func_80106E54_mchar;
+        HuAudSeqFadeOut(0x3C);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mchar/3D3C80", func_80106E54_mchar);

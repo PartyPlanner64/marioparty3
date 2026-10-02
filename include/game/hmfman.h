@@ -156,7 +156,8 @@ typedef struct HmfModel {
     /* 0x0C */ s16 unk0C;
     /* 0x0E */ s16 unk0E;
     /* 0x10 */ s16 unk10;
-    /* 0x12 */ char unk12[6];
+    /* 0x12 */ char unk12[2];
+    /* 0x14 */ f32 unk14;
     /* 0x18 */ s32 unk18;
     /* 0x1C */ Vec pos;
     /* 0x28 */ Vec rot;
@@ -171,10 +172,11 @@ typedef struct HmfModel {
     /* 0x5C */ f32 unk5C;
     /* 0x60 */ f32 unk60;
     /* 0x64 */ HmfData *hmf;
-    /* 0x68 */ char unk68[8]; // 68 => 60 has size 0x68
-    /* 0x70 */ void (*unk70)(Gfx**, s32, s32);
+    /* 0x68 */ char unk68[4];
+    /* 0x6C */ HmfData *unk6C;
+    /* 0x70 */ void (*unk70)(Gfx **, s32, s32);
     /* 0x74 */ HuMtx4F mtx;
-    /* 0xB4 */ struct HmfModel* unkB4;
+    /* 0xB4 */ struct HmfModel *unkB4;
     /* 0xB8 */ char unkB8[4];
     /* 0xBC */ HmfModelData_UnkBC_Struct *unkBC;
 } HmfModel; // Size 0xC0
@@ -269,6 +271,7 @@ void func_8001EF24_main(s32, s32, s32, s32, u8);
 s32 func_8001F1FC_main(void *, s32);
 void func_8001F304_main(s16, s16);
 void func_8001F38C_main(s32, s32, s32);
+void func_8001F450_main(s16, s16, f32);
 void func_8001FDE8_main(s16);
 
 extern HmfModel *HmfModelData;

@@ -147,7 +147,21 @@ INCLUDE_ASM("asm/nonmatchings/eeprom", _ReadEeprom);
 
 INCLUDE_ASM("asm/nonmatchings/eeprom", ReadEepromBox);
 
-INCLUDE_ASM("asm/nonmatchings/eeprom", WriteEepromCommonBuf);
+s32 WriteEepromCommonBuf(u8 *arg0) {
+    unkMesg sp10;
+    EepData sp20;
+    s32 result;
+
+    bcopy(arg0, D_800D0450_main, COMMON_BUF_SIZE);
+    sp20.eepFileOffset = 8;
+    sp20.eepromBuffer = D_800D0450_main;
+    sp20.size = COMMON_BUF_SIZE;
+    result = RequestSIFunction(&sp10, (void *)&_WriteEeprom, &sp20, 1);
+    if (result != 0) {
+        return result;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/eeprom", ReadEepromCommonBuf);
 

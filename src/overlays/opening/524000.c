@@ -250,7 +250,12 @@ void opModelRotSet(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opModelPosSet);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opModelScaleSet);
+void opModelScaleSet(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+    D_80115630_opening[arg0].scaleX = arg1;
+    D_80115630_opening[arg0].scaleY = arg2;
+    D_80115630_opening[arg0].scaleZ = arg3;
+    Hu3DModelScaleSet(D_80115630_opening[arg0].modelId, arg1, arg2, arg3);
+}
 
 void opModelPosGet(s32 modelId, f32 *posX, f32 *posY, f32 *posZ) {
     *posX = D_80115630_opening[modelId].posX;

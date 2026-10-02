@@ -1,10 +1,24 @@
 #include "common.h"
 
+s32 func_80077148_main(ALSeq *seq);
+
 INCLUDE_ASM("asm/nonmatchings/2.0L/audio/seq", func_80076BB0_main);
 
 INCLUDE_ASM("asm/nonmatchings/2.0L/audio/seq", func_80076C98_main);
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/audio/seq", func_80076E00_main);
+s32 func_80076E00_main(ALSeq *seq, s32 *pDeltaTicks) {
+    u8 *savedPtr;
+
+    if (seq->curPtr >= seq->base + seq->len) {
+        return 0;
+    }
+
+    savedPtr = seq->curPtr;
+    *pDeltaTicks = func_80077148_main(seq);
+    seq->curPtr = savedPtr;
+
+    return 1;
+}
 
 f32 func_80076E68_main(ALSeq *seq, s32 ticks, u32 usecs) {
     return (f32)ticks * usecs / ((f32)seq->division * 1000000.0);

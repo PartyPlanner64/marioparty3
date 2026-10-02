@@ -1,21 +1,46 @@
 #include "game/wipe.h"
 #include "include_asm.h"
 
-extern Gfx *D_800BDA7C_main;
+extern u8 D_800A26D0_main;
 extern u16 *D_800A26D4_main;
-extern u16 *D_800D5550_main;
 extern u16 *D_800BDA70_main;
 extern u16 *D_800BDA74_main;
 extern u8 D_800BDA78_main;
+extern Gfx *D_800BDA7C_main;
+extern u8 D_800CC0BA_main;
+extern u8 D_800CCF84_main;
+extern f32 D_800D0A3C_main;
+extern f32 D_800D51F4_main;
 extern u8 D_800D5304_main;
+extern u16 *D_800D5550_main;
 
 INCLUDE_ASM("asm/nonmatchings/wipe", WipeInit);
 
 INCLUDE_ASM("asm/nonmatchings/wipe", WipeExecAlways);
 
-INCLUDE_ASM("asm/nonmatchings/wipe", WipeCreateIn);
+void WipeCreateIn(s16 arg0, s16 arg1) {
+    if (D_800CCF84_main == 0) {
+        D_800CC0BA_main = 1;
+        D_800CCF84_main = 1;
+        if (arg0 != 0xFF) {
+            D_800A26D0_main = arg0;
+        }
+        D_800D0A3C_main = arg1;
+        D_800D51F4_main = 0.0f;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/wipe", WipeCreateOut);
+void WipeCreateOut(s16 arg0, s16 arg1) {
+    if (D_800CCF84_main == 0) {
+        D_800CC0BA_main = 2;
+        D_800CCF84_main = 1;
+        if (arg0 != 0xFF) {
+            D_800A26D0_main = arg0;
+        }
+        D_800D0A3C_main = arg1;
+        D_800D51F4_main = 0.0f;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/wipe", WipeStatGet);
 

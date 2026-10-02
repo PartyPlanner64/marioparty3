@@ -23,6 +23,13 @@ typedef struct GameSound_s {
     /* 0x0C */ s16 sndId; // ALSndId, -1 when unallocated
 } GameSound;
 
+typedef struct {
+    /* 0x00 */ ALSeqPlayer *seqp;
+    /* 0x04 */ char unk_04[0x18];
+    /* 0x1C */ s32 cspState;
+    /* 0x20 */ s32 state;
+} SeqPlayer;
+
 extern UnkAudio *D_800A97BC_main;
 extern ALHeap D_800A9730_main;
 
@@ -94,7 +101,24 @@ INCLUDE_ASM("asm/nonmatchings/1140", func_80001348_main);
 
 INCLUDE_ASM("asm/nonmatchings/1140", func_80001408_main);
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_80001ADC_main);
+void func_80001ADC_main(SeqPlayer *seqPlayer) {
+    s32 state = alCSPGetState((ALCSPlayer *)seqPlayer->seqp);
+
+    seqPlayer->cspState = state;
+    switch (state) {
+        case 1:
+            if (seqPlayer->state != 1) {
+                seqPlayer->state = 4;
+            }
+            break;
+        case 2:
+            seqPlayer->state = 1;
+            break;
+        default:
+            seqPlayer->state = 0;
+            break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/1140", func_80001B44_main);
 

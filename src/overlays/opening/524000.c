@@ -487,7 +487,14 @@ void opDemoObjKill(s32 index) {
     D_80117388_opening[index].obj = NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoObjCreate);
+void opDemoObjCreate(s32 index, omObjFunc func) {
+    omObjData *obj;
+
+    opDemoObjKill(index);
+    obj = omAddObj(6, 0, 0, -1, func);
+    D_80117388_opening[index].obj = obj;
+    obj->work[0] = index;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80112A74_opening);
 

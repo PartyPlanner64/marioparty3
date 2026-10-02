@@ -4,8 +4,11 @@ void func_80105B64_sldebug(omObjData *); /* extern */
 void func_80106254_sldebug(omObjData *); /* extern */
 void func_80106850_sldebug(void);        /* extern */
 void func_801068D4_sldebug(omObjData *); /* extern */
+void func_80106930_sldebug(omObjData *); /* extern */
+extern u16 D_80106960_sldebug;
 extern Vec D_80106C10_sldebug;
 extern f32 D_80106C1C_sldebug;
+extern Vec D_80106C20_sldebug;
 extern Vec D_80106C2C_sldebug;
 
 void func_801059A0_sldebug(void) {
@@ -97,8 +100,19 @@ INCLUDE_ASM("asm/nonmatchings/overlays/sldebug/3D76C0", func_8010612C_sldebug);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/sldebug/3D76C0", func_80106254_sldebug);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/sldebug/3D76C0", func_80106850_sldebug);
+void func_80106850_sldebug(void) {
+    CRot = D_80106C10_sldebug;
+    D_80106C20_sldebug = CRot;
+    CZoom = D_80106C1C_sldebug;
+    Center = D_80106C2C_sldebug;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/sldebug/3D76C0", func_801068D4_sldebug);
+void func_801068D4_sldebug(omObjData *arg0) {
+    if ((D_80106960_sldebug != 0) || (D_800D530C_main != 0)) {
+        WipeCreateOut(0, 8);
+        arg0->func = func_80106930_sldebug;
+        HuAudSeqFadeOut(0x3C);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/sldebug/3D76C0", func_80106930_sldebug);

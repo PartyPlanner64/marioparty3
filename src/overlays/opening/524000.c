@@ -1,5 +1,6 @@
 #include "common.h"
 #include "../ovl_80_shared_board/FA250.h"
+#include "mallocblock.h"
 
 typedef struct {
     /* 0x00 */ s16 modelId;
@@ -79,11 +80,13 @@ void func_80110C04_opening(omObjData *);
 void func_80110F48_opening(void);
 void func_80112944_opening(void);
 void opContErrorCreate(void);
+void MBCameraOffsetSet(s16 arg0, s16 arg1);
 void func_8000BBFC_main(u16 arg0, s16 arg1);
 void func_8000BC48_main(u16 arg0, u16 arg1);
 void func_8000BC88_main(u16 arg0, u16 arg1);
 void func_8000BE5C_main(u16 arg0, f32 arg1, f32 arg2);
 void func_8000BBD4_main(u16 arg0, s16 arg1, s16 arg2);
+void func_8000BD94_main(u16 arg0, s32 arg1, s32 arg2);
 
 extern Vec D_80114BB8_opening;
 extern Vec D_80114BC4_opening;
@@ -218,7 +221,10 @@ void func_80106734_opening(s32 arg0, u16 arg1) {
     func_8000BCC8_main(D_80114EB0_opening[arg0].espriteSlot, arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80106768_opening);
+void func_80106768_opening(s32 slot, u16 arg1, u16 arg2) {
+    func_8000BDDC_main(D_80114EB0_opening[slot].espriteSlot, 1);
+    func_8000BD94_main(D_80114EB0_opening[slot].espriteSlot, arg1, arg2);
+}
 
 void func_801067D4_opening(void) {
     s32 i;
@@ -322,7 +328,19 @@ void func_801070AC_opening(void) {
     HuSprKill(D_801171B0_opening);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_801070D8_opening);
+u32 func_801070D8_opening(u32 arg0) {
+    char buf[0x100];
+    s32 len;
+    void *ptr;
+
+    if (0x80000000U < arg0) {
+        len = func_800452A0_main(buf, (void *)arg0);
+        ptr = HuMemAlloc(len);
+        bcopy(buf, ptr, len);
+        return (u32)ptr;
+    }
+    return arg0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107140_opening);
 
@@ -410,7 +428,14 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoEventKill);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80110B90_opening);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80110B9C_opening);
+void func_80110B9C_opening(void) {
+    if (D_80117338_opening.obj != NULL) {
+        CameraViewportSet(0, &D_80114BB8_opening, &D_80114BC4_opening);
+        MBCameraOffsetSet(0, 0);
+        omDelObj(D_80117338_opening.obj);
+    }
+    D_80117338_opening.obj = NULL;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80110C04_opening);
 

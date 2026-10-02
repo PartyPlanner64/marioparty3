@@ -1,8 +1,15 @@
 #include "common.h"
+#include "mallocblock.h"
 
 extern s32 *D_800D59F8_main;
 
-INCLUDE_ASM("asm/nonmatchings/30C40", func_80030040_main);
+void func_80030040_main(void) {
+    s16 i;
+    D_800D59F8_main = HuMemAlloc(0x140);
+    for (i = 0; i < 0x10; i++) {
+        D_800D59F8_main[i * 5 + 2] = 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/30C40", func_800300A4_main);
 

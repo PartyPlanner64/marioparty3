@@ -16,4 +16,20 @@ INCLUDE_ASM("asm/nonmatchings/2.0L/audio/bnkf", _bnkfPatchInst);
 
 INCLUDE_ASM("asm/nonmatchings/2.0L/audio/bnkf", _bnkfPatchSound);
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/audio/bnkf", _bnkfPatchWaveTable);
+void _bnkfPatchWaveTable(ALWaveTable *table, u32 start, u32 end) {
+    if (table->flags == 0) {
+        table->flags = 1;
+        table->base += end;
+
+        if (table->type == AL_ADPCM_WAVE) {
+            table->waveInfo.adpcmWave.book = (ALADPCMBook *)((u8 *)table->waveInfo.adpcmWave.book + start);
+            if (table->waveInfo.adpcmWave.loop != NULL) {
+                table->waveInfo.adpcmWave.loop = (ALADPCMloop *)((u8 *)table->waveInfo.adpcmWave.loop + start);
+            }
+        } else if (table->type == AL_RAW16_WAVE) {
+            if (table->waveInfo.rawWave.loop != NULL) {
+                table->waveInfo.rawWave.loop = (ALRawLoop *)((u8 *)table->waveInfo.rawWave.loop + start);
+            }
+        }
+    }
+}

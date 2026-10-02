@@ -207,8 +207,36 @@ typedef struct HmfAnimSet {
     /* 0x14 */ void *unk14;
 } HmfAnimSet; // Size 0x18
 
+typedef struct HmfModelSet {
+    /* 0x00 */ s16 nodeCount;
+    /* 0x02 */ s16 unk_02;
+    /* 0x04 */ void *unk_04;
+    /* 0x08 */ void *unk_08;
+} HmfModelSet; // Size 0xC
+
+typedef struct HmfModelEntry {
+    /* 0x00 */ s16 modelId;
+    /* 0x02 */ s16 unk_02;
+    /* 0x04 */ s16 nodeIdx;
+    /* 0x06 */ s16 pointIdx;
+    /* 0x08 */ s16 unk_08;
+    /* 0x0A */ s16 unk_0A;
+    /* 0x0C */ s16 unk_0C;
+    /* 0x0E */ s16 unk_0E;
+    /* 0x10 */ u16 flags;
+    /* 0x12 */ u8 unk_12;
+    /* 0x13 */ u8 colorR;
+    /* 0x14 */ u8 colorG;
+    /* 0x15 */ u8 colorB;
+    /* 0x16 */ u8 colorStart[4];
+    /* 0x1A */ u8 colorEnd[4];
+    /* 0x1E */ char unk_1E[2];
+    /* 0x20 */ u8 *unk_20;
+} HmfModelEntry; // Size 0x24
+
 extern HmfAnim *D_800D1714_main;
 extern HmfAnimSet *D_800D408C_main;
+extern HmfModelEntry *D_800CBB60_main;
 
 void func_8001A070_main(void *arg0, void *arg1, u16 arg2, u16 arg3, u16 arg4, u8 arg5);
 s16 Hu3DModelCreate(u8 *, u32);

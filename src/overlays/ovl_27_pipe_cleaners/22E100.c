@@ -14,6 +14,8 @@ typedef struct PipeCleanerWork {
     /* 0x28 */ char unk28[0x10];
 } PipeCleanerWork; // Size 0x38
 
+extern void func_800146DC_main(s16 arg0, u16 arg1, u16 arg2);
+extern s16 D_8010A830_pipe_cleaners[4];
 extern void func_80105C50_pipe_cleaners(omObjData *obj);
 extern void func_80105DF0_pipe_cleaners(omObjData *obj);
 extern void func_80108F18_pipe_cleaners(omObjData *obj);
@@ -51,7 +53,12 @@ void func_80105E60_pipe_cleaners(void) {
     omAddObj(0x6E, 2, 0, -1, func_80105DF0_pipe_cleaners);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80105E94_pipe_cleaners);
+void func_80105E94_pipe_cleaners(s32 arg0) {
+    s16 modelId = D_8010A830_pipe_cleaners[arg0];
+
+    func_8001C258_main(D_800CBB60_main[modelId].modelId, 4, 0);
+    func_800146DC_main(modelId, 1, 0);
+}
 
 void func_80105EF8_pipe_cleaners(void) {
 }

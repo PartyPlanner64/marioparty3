@@ -1,33 +1,5 @@
 #include "common.h"
 
-typedef struct HmfModelSet {
-    /* 0x00 */ s16 nodeCount;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ void *unk_04;
-    /* 0x08 */ void *unk_08;
-} HmfModelSet; // Size 0xC
-
-typedef struct D_800CBB60_main_Struct {
-    /* 0x00 */ s16 modelId;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 nodeIdx;
-    /* 0x06 */ s16 pointIdx;
-    /* 0x08 */ s16 unk_08;
-    /* 0x0A */ s16 unk_0A;
-    /* 0x0C */ s16 unk_0C;
-    /* 0x0E */ s16 unk_0E;
-    /* 0x10 */ u16 flags;
-    /* 0x12 */ u8 unk_12;
-    /* 0x13 */ u8 colorR;
-    /* 0x14 */ u8 colorG;
-    /* 0x15 */ u8 colorB;
-    /* 0x16 */ u8 colorStart[4];
-    /* 0x1A */ u8 colorEnd[4];
-    /* 0x1E */ char unk_1E[2];
-    /* 0x20 */ u8 *unk_20;
-} D_800CBB60_main_Struct;
-
-extern D_800CBB60_main_Struct *D_800CBB60_main;
 extern u8 D_800A0620_main;
 extern s16 D_800A06FC_main[];
 extern s32 D_800A0728_main[8];
@@ -54,7 +26,7 @@ INCLUDE_ASM("asm/nonmatchings/14EA0", HmfSprModelCreate);
 INCLUDE_ASM("asm/nonmatchings/14EA0", func_80014618_main);
 
 void func_800146DC_main(s16 arg0, u16 arg1, u16 arg2) {
-    D_800CBB60_main_Struct *entry = &D_800CBB60_main[arg0];
+    HmfModelEntry *entry = &D_800CBB60_main[arg0];
     entry->flags = (entry->flags & ~arg1) | arg2;
 }
 
@@ -83,7 +55,7 @@ void func_800147FC_main(s16 arg0, u8 arg1, u8 arg2, u8 arg3) {
 }
 
 void func_80014850_main(s16 arg0) {
-    D_800CBB60_main_Struct *entry = &D_800CBB60_main[arg0];
+    HmfModelEntry *entry = &D_800CBB60_main[arg0];
 
     entry->unk_0A = 0;
     entry->nodeIdx = 0;

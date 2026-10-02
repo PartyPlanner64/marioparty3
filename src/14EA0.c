@@ -44,7 +44,15 @@ u16 func_8001476C_main(s16 arg0) {
     return D_800CBB60_main[arg0].nodeIdx;
 }
 
-INCLUDE_ASM("asm/nonmatchings/14EA0", func_80014794_main);
+void func_80014794_main(s16 arg0, s16 arg1) {
+    if (arg0 != -1) {
+        s32 visible;
+
+        D_800CBB60_main[arg0].unk_12 = arg1;
+        visible = (u8)arg1 != 0xFF ? 0x10000 : 0;
+        func_8001C2FC_main(D_800CBB60_main[arg0].modelId, 0x10000, visible);
+    }
+}
 
 void func_800147FC_main(s16 arg0, u8 arg1, u8 arg2, u8 arg3) {
     if (arg0 != -1) {
@@ -65,7 +73,14 @@ void func_80014850_main(s16 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/14EA0", func_800148A8_main);
 
-INCLUDE_ASM("asm/nonmatchings/14EA0", func_800149D0_main);
+void func_800149D0_main(s16 arg0, u8 *arg1) {
+    if (arg0 != -1) {
+        func_800146DC_main(arg0, 0x40, 0x40);
+        D_800CBB60_main[arg0].unk_20 = arg1;
+        D_800CBB60_main[arg0].unk_0E = 0;
+        D_800CBB60_main[arg0].unk_0C = 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/14EA0", func_80014A3C_main);
 

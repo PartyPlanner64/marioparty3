@@ -116,4 +116,13 @@ INCLUDE_ASM("asm/nonmatchings/saveEncode", func_8004F9FC_main);
 
 INCLUDE_ASM("asm/nonmatchings/saveEncode", func_8004FA4C_main);
 
-INCLUDE_ASM("asm/nonmatchings/saveEncode", func_8004FC84_main);
+s32 func_8004FC84_main(void) {
+    s32 topBit = gEncodedSaveBuffer[D_800BBAA0_main] & 0x80;
+
+    gEncodedSaveBuffer[D_800BBAA0_main] <<= 1;
+    if (++D_800BBAA4_main >= 8) {
+        D_800BBAA0_main++;
+        D_800BBAA4_main = 0;
+    }
+    return topBit;
+}

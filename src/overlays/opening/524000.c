@@ -72,6 +72,7 @@ typedef struct {
 void opTitleSprMain(void);
 void opDemoEvent(void);
 void func_801061F0_opening(void);
+void opSprPosSet(s32 slot, s32 x, s32 y);
 void opModelRotSet(s32 arg0, f32 arg1, f32 arg2, f32 arg3);
 void func_80110B90_opening(void);
 void func_80110C04_opening(omObjData *);
@@ -164,7 +165,10 @@ void opAnimKill(s32 arg0) {
     D_801155B0_opening[arg0] = -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opEspCreate);
+void opEspCreate(s32 slot, s16 animId) {
+    D_80114EB0_opening[slot].espriteSlot = InitEspriteSlot(D_801155B0_opening[animId], 0, 0);
+    opSprPosSet(slot, 0xA0, 0x78);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opEspKill);
 

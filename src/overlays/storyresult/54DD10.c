@@ -1,5 +1,17 @@
 #include "common.h"
+#include "mallocblock.h"
 #include "../ovl_81_name/ovl_81.h"
+
+// Partial definition of the 0x7918 byte work struct allocated by
+// func_8010A4A4_storyresult and stored in the `user_data` pointer (0x8C) of the
+// process it spawns.
+typedef struct StoryResultWork {
+    /* 0x00 */ s16 unk_00;
+    /* 0x02 */ s16 unk_02;
+    /* 0x04 */ s16 state;
+    /* 0x08 */ s16 unk_08;
+    /* 0x0A */ s16 unk_0A;
+} StoryResultWork;
 
 void func_801060D0_storyresult(Vec *);
 void func_8010818C_storyresult(s16 *, s32);
@@ -53,7 +65,18 @@ s16 func_80106FF0_storyresult(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/storyresult/54DD10", func_80107030_storyresult);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/storyresult/54DD10", func_801070D8_storyresult);
+s16 func_801070D8_storyresult(void) {
+    s16 idx = GwStory.unk1;
+    s16 count = GwStory.unk58[idx] != 0;
+    s32 i;
+
+    for (i = 0; i < ARRAY_COUNT(GwStory.unk10[0]); i++) {
+        if (GwStory.unk10[idx][i] != 0) {
+            count++;
+        }
+    }
+    return count;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/storyresult/54DD10", func_80107140_storyresult);
 
@@ -115,7 +138,22 @@ INCLUDE_ASM("asm/nonmatchings/overlays/storyresult/54DD10", func_8010A370_storyr
 
 INCLUDE_ASM("asm/nonmatchings/overlays/storyresult/54DD10", func_8010A4A4_storyresult);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/storyresult/54DD10", func_8010A558_storyresult);
+s32 func_8010A558_storyresult(Process *prc) {
+    StoryResultWork *work;
+    s32 result;
+
+    if (prc == NULL) {
+        return 0;
+    }
+    work = prc->user_data;
+    work->state = 0xFF;
+    do {
+        HuPrcVSleep();
+    } while (work->state != 0);
+    result = omDelPrcObj(prc);
+    HuMemFree(work);
+    return result;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/storyresult/54DD10", func_8010A5C4_storyresult);
 

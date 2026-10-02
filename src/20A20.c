@@ -1,6 +1,12 @@
 #include "common.h"
 #include "mallocblock.h"
 
+typedef struct Hu3DPoint {
+    /* 0x00 */ s16 x;
+    /* 0x02 */ s16 y;
+    /* 0x04 */ s16 z;
+} Hu3DPoint; // sizeof 0x6
+
 typedef struct Hu3DQuad {
     /* 0x00 */ s16 vtx[4];
 } Hu3DQuad; // sizeof 0x8
@@ -48,7 +54,13 @@ INCLUDE_ASM("asm/nonmatchings/20A20", func_800202FC_main);
 
 INCLUDE_ASM("asm/nonmatchings/20A20", func_8002038C_main);
 
-INCLUDE_ASM("asm/nonmatchings/20A20", func_8002048C_main);
+f32 func_8002048C_main(f32 x, f32 z, Hu3DPoint *p, Hu3DPoint *q) {
+    f32 px = p->x - x;
+    f32 pz = p->z - z;
+    f32 qx = q->x - x;
+    f32 qz = q->z - z;
+    return -(pz * qx - px * qz);
+}
 
 INCLUDE_ASM("asm/nonmatchings/20A20", func_800204F4_main);
 

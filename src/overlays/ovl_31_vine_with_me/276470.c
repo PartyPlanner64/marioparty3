@@ -381,7 +381,7 @@ void func_80106004_vine_with_me(omObjData *arg0) {
                 func_800E6F1C_minigame();
                 D_8011558C_vine_with_me--;
                 D_80111B50_vine_with_me.unk06 = 0;
-                D_80111B50_vine_with_me.unk18 = D_80115670_vine_with_me[D_8011558C_vine_with_me];
+                D_80111B50_vine_with_me.unk18[0] = D_80115670_vine_with_me[D_8011558C_vine_with_me];
             }
             if (D_801155D0_vine_with_me == 2 && D_801155D0_vine_with_me != D_8011558C_vine_with_me) {
                 func_800E6F34_minigame(0x1E);

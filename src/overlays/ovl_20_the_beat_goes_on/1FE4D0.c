@@ -1,4 +1,5 @@
 #include "common.h"
+#include "overlays/minigame.h"
 
 // Grid position of a single marker in the "Beat Goes On" note field.
 typedef struct {
@@ -25,7 +26,26 @@ extern s8 D_8010C4E9_the_beat_goes_on;
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_20_the_beat_goes_on/1FE4D0", func_801059A0_the_beat_goes_on);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_20_the_beat_goes_on/1FE4D0", func_80105C68_the_beat_goes_on);
+void func_80105C68_the_beat_goes_on(D_80111B50_vine_with_me_Struct *arg0) {
+    s32 i;
+
+    arg0->unk00 = 0;
+    arg0->unk01 = 0;
+    arg0->unk02 = 2;
+    arg0->unk03 = 0;
+    arg0->unk04 = 0;
+    arg0->unk05 = 0;
+    arg0->unk06 = 0;
+    arg0->unk1C = 64;
+    arg0->unk1E = -1;
+    arg0->unk20 = 0;
+    arg0->unk22 = -1;
+    arg0->unk24 = 150;
+    for (i = 0; i < 4; i++) {
+        arg0->unk08[i] = 0;
+        arg0->unk18[i] = 0xFF;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_20_the_beat_goes_on/1FE4D0", func_80105CDC_the_beat_goes_on);
 

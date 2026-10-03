@@ -302,7 +302,9 @@ void opMotionFlagSet(s32 modelId, s16 arg1) {
     func_8001C814_main(D_80115630_opening[modelId].modelId, -1, arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opMotionShiftSet);
+void opMotionShiftSet(s32 modelId, s32 motionId, s16 arg2, s16 arg3, s16 arg4) {
+    func_8001C624_main(D_80115630_opening[modelId].modelId, D_80115630_opening[motionId].motionId, arg2, arg3, arg4);
+}
 
 void func_80106DD0_opening(s32 modelId, s16 arg1) {
     func_8001C814_main(D_80115630_opening[modelId].modelId, arg1, 0);

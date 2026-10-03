@@ -75,6 +75,7 @@ void opDemoEvent(void);
 void func_801061F0_opening(void);
 void opSprPosSet(s32 slot, s32 x, s32 y);
 void opModelRotSet(s32 arg0, f32 arg1, f32 arg2, f32 arg3);
+void opMotionSet(s32 modelId, s32 motionId, s16 arg2);
 void func_80110B90_opening(void);
 void func_80110C04_opening(omObjData *);
 void func_80110F48_opening(void);
@@ -320,7 +321,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opMotionEndWait);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opMotionEndCheck);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opMotionSet);
+void opMotionSet(s32 modelId, s32 motionId, s16 arg2) {
+    s16 model = opModelIdGet(modelId);
+    s16 motion = opMotionIdGet(motionId);
+
+    func_8001F304_main(model, motion);
+    func_8001C814_main(model, -1, arg2);
+}
 
 void func_80107048_opening(void) {
     // The original call omits the resource id.

@@ -44,10 +44,15 @@ void func_80105DB4_pipe_cleaners(void) {
     omAddObj(0x64, 1, 0, -1, func_80105C50_pipe_cleaners);
 }
 
-void func_80105DE8_pipe_cleaners(void) {
+void func_80105DE8_pipe_cleaners(omObjData *object) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80105DF0_pipe_cleaners);
+void func_80105DF0_pipe_cleaners(omObjData *obj) {
+    obj->model[0] = func_8000B108_main(0x480001, 0x299);
+    obj->model[1] = func_8000B108_main(0x480002, 0x299);
+    obj->trans.x = obj->trans.y = obj->trans.z = 0.0f;
+    obj->func = func_80105DE8_pipe_cleaners;
+}
 
 void func_80105E60_pipe_cleaners(void) {
     omAddObj(0x6E, 2, 0, -1, func_80105DF0_pipe_cleaners);

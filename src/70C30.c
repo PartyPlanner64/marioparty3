@@ -57,6 +57,8 @@ typedef struct D_800713F4_main_Struct {
     Unk70C30_Channel *unk_60;
 } D_800713F4_main_Struct;
 
+void func_800711BC_main(D_80070030_main_Struct *arg0, f32 arg1);
+
 INCLUDE_ASM("asm/nonmatchings/70C30", func_80070030_main);
 
 INCLUDE_ASM("asm/nonmatchings/70C30", func_800701AC_main);
@@ -65,7 +67,17 @@ INCLUDE_ASM("asm/nonmatchings/70C30", func_80070660_main);
 
 INCLUDE_ASM("asm/nonmatchings/70C30", func_8007071C_main);
 
-INCLUDE_ASM("asm/nonmatchings/70C30", func_80070F20_main);
+void func_80070F20_main(D_80070030_main_Struct *arg0, ALEvent *arg1) {
+    ALEvent evt;
+
+    if (arg1->msg.tempo.status == AL_MIDI_Meta) {
+        if (arg1->msg.tempo.type == AL_MIDI_META_TEMPO) {
+            func_800711BC_main(arg0,
+                               (arg1->msg.tempo.byte1 << 16) | (arg1->msg.tempo.byte2 << 8) |
+                                   arg1->msg.tempo.byte3);
+        }
+    }
+}
 
 void func_80070F8C_main(D_80070030_main_Struct *arg0, void *arg1) {
     Unk70C30_Node *node = arg0->unk_64;

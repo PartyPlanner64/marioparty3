@@ -88,7 +88,15 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D90D0_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D918C_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D9234_name_81);
+u16 func_800D9234_name_81(Object *arg0) {
+    u16 ret;
+
+    ret = 0;
+    if (HmfModelData[arg0->omObj1->model[0]].unk40 == D_800CCF58_main[HmfModelData[arg0->omObj1->model[0]].unk02].unk02) {
+        ret = 1;
+    }
+    return ret;
+}
 
 u16 func_800D92A8_name_81(Object *arg0) {
     u16 ret;

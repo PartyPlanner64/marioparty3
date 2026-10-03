@@ -173,7 +173,12 @@ void opEspCreate(s32 slot, s16 animId) {
     opSprPosSet(slot, 0xA0, 0x78);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opEspKill);
+void opEspKill(s32 slot) {
+    if (D_80114EB0_opening[slot].espriteSlot != -1) {
+        func_8000C184_main(D_80114EB0_opening[slot].espriteSlot);
+    }
+    D_80114EB0_opening[slot].espriteSlot = -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opSprCreate);
 

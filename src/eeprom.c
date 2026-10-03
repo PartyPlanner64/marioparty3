@@ -37,6 +37,7 @@ extern u8 D_800D0E50_main[];
 void ClearBoxBuf(void);
 void ClearCommonBuf(void);
 s32 _WriteEeprom(EepData *arg0);
+s32 _ReadEeprom(EepData *arg0);
 s32 _DestroyEeprom(void);
 s32 func_8000C9C8_main(s8);
 s32 WriteEeprom(OSMesgQueue *arg0, u8 arg1, u8 *arg2, s32 arg3);
@@ -163,9 +164,32 @@ s32 WriteEepromCommonBuf(u8 *arg0) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/eeprom", ReadEepromCommonBuf);
+s32 ReadEepromCommonBuf(u8 *arg0) {
+    unkMesg sp10;
+    EepData sp20;
+    u8 *commonBuf;
+    s32 result;
 
-INCLUDE_ASM("asm/nonmatchings/eeprom", func_8000C9C8_main);
+    sp20.eepFileOffset = 8;
+    commonBuf = D_800D0450_main;
+    sp20.eepromBuffer = commonBuf;
+    sp20.size = COMMON_BUF_SIZE;
+    result = RequestSIFunction(&sp10, (void *)&_ReadEeprom, &sp20, 1);
+    if (result == 0) {
+        bcopy(commonBuf, arg0, COMMON_BUF_SIZE);
+        return 0;
+    }
+    return result;
+}
+
+s32 func_8000C9C8_main(s8 saveFileIndex) {
+    u8 sp10[8];
+
+    memset(sp10, 0, 8);
+    return (WriteEeprom(&D_800CE1A0_main, ((saveFileIndex * SAVE_FILE_SIZE) + SAVE_FILE_HEADER_SIZE) >> 3, sp10,
+                        8) != 0) *
+           2;
+}
 
 void ClearBoxBuf(void) {
     memset(D_800D0E50_main, 0, SAVE_FILE_SIZE);

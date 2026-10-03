@@ -178,7 +178,23 @@ f32 func_80018D68_main(f32 mtx[3][3]) {
            mtx[0][2] * (m10 * m21 - m11 * m20);
 }
 
-INCLUDE_ASM("asm/nonmatchings/14EA0", func_80018DD8_main);
+void func_80018DD8_main(f32 arg0[4][4], s32 arg1, s32 arg2, f32 arg3[3][3]) {
+    s32 i, j, k, l;
+
+    k = 0;
+    for (i = 0; i < 4; i++) {
+        if (i != arg1) {
+            l = 0;
+            for (j = 0; j < 4; j++) {
+                if (j != arg2) {
+                    arg3[k][l] = arg0[i][j];
+                    l++;
+                }
+            }
+            k++;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/14EA0", func_80018E50_main);
 

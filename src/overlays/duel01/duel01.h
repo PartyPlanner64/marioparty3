@@ -86,4 +86,5 @@ s16 MBDGetCurrentPlayerIndex(void);
 void func_800F38DC_name_81(s32, s32, s32);
 void func_8010E1B4_duel01(void);
 void func_8010E7C0_duel01(void);
+void func_8010EAD4_duel01(s32);
 void func_80110068_duel01(s32);

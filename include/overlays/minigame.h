@@ -105,6 +105,7 @@ void func_800E1BA8_minigame(omObjData *, u32, s32, u16, s32, s32);
 void func_800E4E30_minigame(omObjData *);
 void func_800E5638_minigame(func_800E5638_minigame_UnkD8_ObjData *, u16, u16, u16, s16);
 void func_800E5690_minigame(omObjData *, u16);
+void func_800E5978_minigame(omObjData *, u16, s32, u16, u16);
 void func_800E5A00_minigame(omObjData *, u16, s32, s32, u16);
 void func_800E5EA0_minigame(D_80111B50_vine_with_me_Struct *);
 u8 func_800E6E8C_minigame(void);

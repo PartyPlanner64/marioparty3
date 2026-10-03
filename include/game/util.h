@@ -7,6 +7,7 @@
 #define rand16() ((rand8() << 8) | rand8())
 
 u16 func_8000B108_main(s32 arg0, s32 arg1);
+u16 SprModelRead(s32 arg0, s32 arg1, s32 arg2);
 s16 func_8000B13C_main(s32 arg0);
 u8 rand8(void);
 void ScissorSet(u8 camIndex, f32 arg1, f32 arg2, f32 arg3, f32 arg4);

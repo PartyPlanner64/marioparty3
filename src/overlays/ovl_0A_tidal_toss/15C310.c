@@ -120,7 +120,7 @@ void func_80105C80_tidal_toss(HuMtx4F, HuMtx4F);
 s16 func_8010A90C_tidal_toss(s32);
 s16 func_8010A954_tidal_toss(s16, s16);
 void func_800E149C_minigame(omObjData *, s32, s32);
-void func_800E5978_minigame(omObjData *, u16, s32, s32, u16);
+void func_800E5978_minigame(omObjData *, u16, s32, u16, u16);
 void func_8010961C_tidal_toss(omObjData *);
 void func_80109180_tidal_toss(omObjData *);
 

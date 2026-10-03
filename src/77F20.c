@@ -34,7 +34,21 @@ void func_80077BCC_main(ALCSeq *seq, ALCSeqMarker *marker) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/77F20", func_80077C40_main);
+void func_80077C40_main(ALCSeq *seq, ALCSeqMarker *marker) {
+    s32 i;
+
+    marker->validTracks = seq->validTracks;
+    marker->lastTicks = seq->lastTicks;
+    marker->lastDeltaTicks = seq->lastDeltaTicks;
+
+    for (i = 0; i < AL_MAX_CHANNELS; i++) {
+        marker->curLoc[i] = seq->curLoc[i];
+        marker->curBUPtr[i] = seq->curBUPtr[i];
+        marker->curBULen[i] = seq->curBULen[i];
+        marker->lastStatus[i] = seq->lastStatus[i];
+        marker->evtDeltaTicks[i] = seq->evtDeltaTicks[i];
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/77F20", func_80077CB4_main);
 

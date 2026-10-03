@@ -24,6 +24,7 @@ extern s16 D_80112368_mstory4[];
 extern u16 D_80112376_mstory4;
 extern UnkModel D_801122A0_mstory4;
 extern UnkSeEntry D_801122AC_mstory4[3];
+extern UnkSeEntry D_801121CC_mstory4[];
 
 void func_80106134_mstory4(void);
 void func_80109B5C_mstory4(omObjData *object);
@@ -253,7 +254,16 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010AA88_mstory4);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010ABD0_mstory4);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010AC84_mstory4);
+void func_8010AC84_mstory4(s32 index) {
+    if (D_801121CC_mstory4[index].unk_00 == 1) {
+        D_801121CC_mstory4[index].unk_00 = 0;
+        switch (index) {
+            case 0:
+            case 2:
+                HuAudFXStop(D_801121CC_mstory4[index].stopSeNo);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010ACF4_mstory4);
 

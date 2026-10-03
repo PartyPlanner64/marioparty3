@@ -3,6 +3,7 @@
 typedef struct Unk70C30_Tone {
     char unk_00[0xC];
     u8 unk_C;
+    u8 unk_D;
 } Unk70C30_Tone;
 
 typedef struct Unk70C30_Instrument {
@@ -28,7 +29,10 @@ typedef struct Unk70C30_Node {
     struct Unk70C30_Node *unk_00;
     char unk_04[0x10];
     struct Unk70C30_Node *unk_14;
-    char unk_18[0x19];
+    char unk_18[0x8];
+    Unk70C30_Tone *unk_20;
+    char unk_24[0xC];
+    u8 unk_30;
     u8 unk_31;
     u8 unk_32;
     u8 unk_33;
@@ -53,7 +57,9 @@ typedef struct D_80070030_main_Struct {
 } D_80070030_main_Struct;
 
 typedef struct D_800713F4_main_Struct {
-    char unk_00[0x60];
+    char unk_00[0x32];
+    s16 unk_32;
+    char unk_34[0x2C];
     Unk70C30_Channel *unk_60;
 } D_800713F4_main_Struct;
 
@@ -148,7 +154,11 @@ Unk70C30_Node *func_80071240_main(D_80070030_main_Struct *arg0, u8 arg1, u8 arg2
 
 INCLUDE_ASM("asm/nonmatchings/70C30", func_80071294_main);
 
-INCLUDE_ASM("asm/nonmatchings/70C30", func_80071368_main);
+s32 func_80071368_main(Unk70C30_Node *arg0, D_800713F4_main_Struct *arg1) {
+    s32 vol = arg0->unk_36 * arg0->unk_33 * arg0->unk_30;
+    s32 gain = arg0->unk_20->unk_D * arg1->unk_32 * arg1->unk_60[arg0->unk_31].unk_09;
+    return ((vol >> 6) * (gain >> 14) * 2) >> 16;
+}
 
 INCLUDE_ASM("asm/nonmatchings/70C30", func_800713D8_main);
 

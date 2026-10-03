@@ -493,7 +493,15 @@ void func_8001C624_main(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     temp_a0->unk54 = 0.0f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/hmfman", func_8001C6A8_main);
+void func_8001C6A8_main(s16 arg0, f32 arg1) {
+    HmfModel *model = &HmfModelData[arg0];
+
+    if (D_800CCF58_main[model->unk02].unk02 < arg1) {
+        model->unk40 = D_800CCF58_main[model->unk02].unk02;
+    } else {
+        model->unk40 = arg1;
+    }
+}
 
 f32 func_8001C718_main(s16 arg0) {
     if (HmfModelData[arg0].unk58 < 0.0f) {

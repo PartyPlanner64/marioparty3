@@ -38,8 +38,23 @@ typedef struct {
 } PlayerView; // Size 0xF4
 
 typedef struct {
+    /* 0x00 */ f32 x;
+    /* 0x04 */ f32 y;
+    /* 0x08 */ f32 z;
+    /* 0x0C */ f32 pitch;
+    /* 0x10 */ f32 yaw;
+    /* 0x14 */ f32 unk14;
+    /* 0x18 */ f32 segLen;
+    /* 0x1C */ f32 invSegLen;
+    /* 0x20 */ f32 cumDist;
+} PathPoint; // Size 0x24
+
+typedef struct {
     /* 0x000 */ PlayerView *views;
-    /* 0x004 */ char unk04[0x1A0];
+    /* 0x004 */ char unk04[8];
+    /* 0x00C */ s16 pathPointCount;
+    /* 0x00E */ s16 unk0E;
+    /* 0x010 */ char unk10[0x194];
     /* 0x1A4 */ u8 unk1A4[0x30]; // mtx?
 } MinigameData;                  // Size 0x1D4
 
@@ -75,7 +90,7 @@ void func_8010D0AC_motor_rooter(f32 *, s16, f32);
 void func_8010D2E4_motor_rooter(s32);
 
 // BSS
-extern f32 *D_801137C0_motor_rooter;
+extern PathPoint *D_801137C0_motor_rooter;
 extern MinigameData *m254_minigame; // D_801137C4_motor_rooter
 extern D_801137C8_motor_rooter_Struct *D_801137C8_motor_rooter;
 extern s16 D_801137CC_motor_rooter;
@@ -242,12 +257,12 @@ void m254_InitCamera(FuncContext *ctx) {
 
     for (i = 0; i < 2; i++) {
         CZoomM[i] = 100.0f;
-        CenterM[i].x = D_801137C0_motor_rooter[0];
-        CenterM[i].y = D_801137C0_motor_rooter[1];
-        CenterM[i].z = D_801137C0_motor_rooter[2];
-        CRotM[i].x = D_801137C0_motor_rooter[3] - 180.0f;
-        CRotM[i].y = D_801137C0_motor_rooter[4];
-        CRotM[i].z = D_801137C0_motor_rooter[5];
+        CenterM[i].x = D_801137C0_motor_rooter[0].x;
+        CenterM[i].y = D_801137C0_motor_rooter[0].y;
+        CenterM[i].z = D_801137C0_motor_rooter[0].z;
+        CRotM[i].x = D_801137C0_motor_rooter[0].pitch - 180.0f;
+        CRotM[i].y = D_801137C0_motor_rooter[0].yaw;
+        CRotM[i].z = D_801137C0_motor_rooter[0].unk14;
     }
     m254_ResetFunc(FGRP_CAMERA, ctx);
     m254_SetFunc(FGRP_CAMERA, 0, -1, NULL, func_801082E0_motor_rooter, 0, FALSE);
@@ -343,7 +358,18 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010CB2C_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010CD84_motor_rooter);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010D03C_motor_rooter);
+s16 func_8010D03C_motor_rooter(f32 dist) {
+    s16 i;
+    PathPoint *point;
+
+    point = &D_801137C0_motor_rooter[m254_minigame->pathPointCount - 1];
+    for (i = m254_minigame->pathPointCount; i > 0; i--, point--) {
+        if (point->cumDist <= dist) {
+            break;
+        }
+    }
+    return i - 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010D0AC_motor_rooter);
 

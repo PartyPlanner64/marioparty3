@@ -11,6 +11,7 @@ typedef struct {
     void *unk28;
 } HmfPalData;
 
+void func_80032950_main(void);
 INCLUDE_ASM("asm/nonmatchings/32160", func_80031560_main);
 
 INCLUDE_ASM("asm/nonmatchings/32160", func_80031630_main);
@@ -41,7 +42,15 @@ INCLUDE_ASM("asm/nonmatchings/32160", func_800321B8_main);
 
 INCLUDE_ASM("asm/nonmatchings/32160", func_800322AC_main);
 
-INCLUDE_ASM("asm/nonmatchings/32160", func_8003235C_main);
+void func_8003235C_main(void) {
+    s16 i;
+
+    D_800D1714_main = HuMemAlloc(0x600);
+    for (i = 0; i < 0x80; i++) {
+        D_800D1714_main[i].animIdx = -1;
+    }
+    func_80032950_main();
+}
 
 INCLUDE_ASM("asm/nonmatchings/32160", HmfAnimCreate);
 

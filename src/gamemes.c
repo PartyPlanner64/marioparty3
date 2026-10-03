@@ -74,11 +74,12 @@ s32 func_800448C0_main(GAMEMES *gMes, Gfx **);
 s32 func_800452C4_main(void);
 s32 func_80045314_main(void);
 
+extern u16 D_800D530C_main;
 extern s8 D_800B1A50_main;
 extern u8 gMesCloseF;
 extern u8 D_800B1A52_main;
 extern s8 gMesTimerId;
-extern s16 D_800B1A54_main;
+extern u16 D_800B1A54_main;
 extern s16 D_800B1A58_main[];
 extern s16 D_800B1A70_main[];
 extern s16 D_800B1A88_main[];
@@ -415,7 +416,26 @@ void GMesClose(void) {
     D_800B1A52_main = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/gamemes", func_800371DC_main);
+s32 func_800371DC_main(void) {
+    s32 stat;
+    s16 countdown;
+
+    if (HmfPauseF != 0) {
+        return TRUE;
+    }
+    if (D_800D530C_main != 0) {
+        return TRUE;
+    }
+    stat = GMesStatGet();
+    if (stat == GMES_STAT_NONE || (stat & 2) != 0) {
+        countdown = D_800B1A54_main - 1;
+        D_800B1A54_main = countdown;
+        if (countdown < 0) {
+            return FALSE;
+        }
+    }
+    return TRUE;
+}
 
 INCLUDE_ASM("asm/nonmatchings/gamemes", func_8003724C_main);
 

@@ -157,7 +157,15 @@ s16 func_8004AC98_main(s16 arg0, s16 arg1) {
     return func_8004AC5C_main(arg0, arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/audio", func_8004ACE0_main);
+s16 func_8004ACE0_main(s16 seId, s16 playerIdx) {
+    if (D_800A1902_main == 0) {
+        return 0;
+    }
+    if (seId == 0) {
+        return 0;
+    }
+    return func_8004AC5C_main(seId + GwPlayer[playerIdx].chr + 1, playerIdx);
+}
 
 void HuAudFXStop(s32 seNo) {
     func_80007DD8_main(seNo);

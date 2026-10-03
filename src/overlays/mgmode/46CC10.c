@@ -1,5 +1,10 @@
 #include "common.h"
 
+extern u8 D_80118EB1_mgmode;
+extern u16 D_80118EB4_mgmode;
+
+void func_8010BD98_mgmode(omObjData *arg0);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_801059A0_mgmode);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mgmode/46CC10", D_8011A400_mgmode);
@@ -72,6 +77,14 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_8010AFEC_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_8010B574_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_8010BD28_mgmode);
+void func_8010BD28_mgmode(omObjData *arg0) {
+    if ((D_80118EB1_mgmode != 0) || (D_800D530C_main != 0)) {
+        if ((D_80118EB4_mgmode & 0x80) == 0) {
+            WipeCreateOut(0xB, 8);
+            HuAudSeqFadeOut(0x3C);
+        }
+        arg0->func = func_8010BD98_mgmode;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_8010BD98_mgmode);

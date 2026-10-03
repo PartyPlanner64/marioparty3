@@ -510,7 +510,12 @@ f32 func_8001C718_main(s16 arg0) {
     return HmfModelData[arg0].unk58;
 }
 
-INCLUDE_ASM("asm/nonmatchings/hmfman", func_8001C760_main);
+f32 func_8001C760_main(s16 arg0) {
+    if (HmfModelData[arg0].unk58 < 0.0f) {
+        return 0.0f;
+    }
+    return D_800CCF58_main[HmfModelData[arg0].unk06].unk02;
+}
 
 f32 func_8001C7D0_main(s16 idx) {
     if (HmfModelData[idx].unk04 == 0xFF) {
@@ -693,7 +698,10 @@ INCLUDE_ASM("asm/nonmatchings/hmfman", func_8001F734_main);
 
 INCLUDE_ASM("asm/nonmatchings/hmfman", func_8001F95C_main);
 
-INCLUDE_ASM("asm/nonmatchings/hmfman", func_8001F974_main);
+void func_8001F974_main(s16 arg0, s16 arg1) {
+    func_8001C5B4_main(arg0, arg1);
+    HmfModelData[arg0].unk08 = HmfModelData[arg1].unk08;
+}
 
 INCLUDE_ASM("asm/nonmatchings/hmfman", func_8001F9E4_main);
 

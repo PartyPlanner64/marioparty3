@@ -25,6 +25,7 @@ extern u16 D_80112376_mstory4;
 extern UnkModel D_801122A0_mstory4;
 extern UnkSeEntry D_801122AC_mstory4[3];
 extern UnkSeEntry D_801121CC_mstory4[];
+extern s32 D_801122B4_mstory4;
 
 void func_80106134_mstory4(void);
 void func_80109B5C_mstory4(omObjData *object);
@@ -599,7 +600,15 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80111430_mstory4);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80111740_mstory4);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_801118F8_mstory4);
+void func_801118F8_mstory4(s32 index, s32 seNo) {
+    if (D_801122AC_mstory4[index].unk_00 == 0) {
+        D_801122AC_mstory4[index].unk_00 = 1;
+        D_801122AC_mstory4[index].unk_04 = seNo;
+        if (index == 0) {
+            D_801122B4_mstory4 = CharFXPlay(seNo, GwStory.unk1);
+        }
+    }
+}
 
 void func_8011196C_mstory4(s32 index) {
     if (D_801122AC_mstory4[index].unk_00 == 1) {

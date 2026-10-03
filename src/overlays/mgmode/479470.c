@@ -1,8 +1,12 @@
 #include "common.h"
+#include "overlays/mgmode.h"
 
 extern s16 D_8011B830_mgmode[16];
 extern s16 D_8011B850_mgmode[16];
 extern u8 *D_8011B610_mgmode[3];
+extern MgmodeEsprite *D_801194C0_mgmode;
+
+void func_801169C8_mgmode(MgmodeEsprite *arg0, s16 index);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80112200_mgmode);
 
@@ -48,7 +52,16 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80115A9C_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80115BB8_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80115BE8_mgmode);
+void func_80115BE8_mgmode(void) {
+    s16 i;
+
+    func_801169C8_mgmode(D_801194C0_mgmode, 0xF);
+    func_801169C8_mgmode(D_801194C0_mgmode, 0x10);
+
+    for (i = 0; i < 4; i++) {
+        func_801169C8_mgmode(D_801194C0_mgmode, i + 0x11);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80115C5C_mgmode);
 

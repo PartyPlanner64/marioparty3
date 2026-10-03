@@ -567,7 +567,19 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80110528_mstory4);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80110724_mstory4);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80110888_mstory4);
+void func_80110888_mstory4(s16 modelId, s32 x, s32 y, f32 z) {
+    HmfData *hmf = HmfModelData[modelId].hmf;
+    HmfModelData_UnkBC_Struct *unkBC = HmfModelData[modelId].unkBC;
+    HmfModelData_UnkBC_Unk58_Struct *entry = unkBC->unk58;
+    s16 i;
+
+    unkBC->unk08.i = x;
+    unkBC->unk0C.i = y;
+    for (i = 0; i < hmf->unk1A; i++) {
+        entry->unk1C = -z;
+        entry++;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_801108FC_mstory4);
 

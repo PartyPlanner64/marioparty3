@@ -82,7 +82,9 @@ typedef struct {
     /* 0x10 */ s16 unk10;
     /* 0x12 */ s16 unk12; // Changed from char[2] since it's used as s16
     /* 0x14 */ s16 unk14;
-    /* 0x16 */ char unk16[0xA];
+    /* 0x16 */ char unk16[4];
+    /* 0x1A */ s16 unk1A;
+    /* 0x1C */ char unk1C[4];
     /* 0x20 */ s16 unk20;
     /* 0x22 */ char unk22[0x16];
     /* 0x38 */ s32 unk38;
@@ -116,11 +118,32 @@ typedef struct {
 } HmfData;
 
 typedef struct {
+    /* 0x00 */ u8 unk00[4];
+    /* 0x04 */ f32 unk04;
+    /* 0x08 */ f32 unk08;
+    /* 0x0C */ f32 unk0C;
+    /* 0x10 */ f32 unk10;
+    /* 0x14 */ f32 unk14;
+    /* 0x18 */ f32 unk18;
+    /* 0x1C */ f32 unk1C;
+    /* 0x20 */ f32 unk20;
+    /* 0x24 */ f32 unk24;
+    /* 0x28 */ f32 unk28;
+    /* 0x2C */ f32 unk2C;
+} HmfModelData_UnkBC_Unk58_Struct; // Size 0x30
+
+typedef struct {
     /* 0x00 */ s16 unk00;
     /* 0x02 */ s16 unk02;
     /* 0x04 */ u16 unk04;
-    /* 0x08 */ f32 unk08;
-    /* 0x0C */ f32 unk0C;
+    /* 0x08 */ union {
+        f32 f;
+        s32 i;
+    } unk08;
+    /* 0x0C */ union {
+        f32 f;
+        s32 i;
+    } unk0C;
     /* 0x10 */ union {
         f32 f;
         s32 i;
@@ -139,7 +162,9 @@ typedef struct {
         f32 f;
         s32 i;
     } unk24;
-} HmfModelData_UnkBC_Struct; // Size 0x28
+    /* 0x28 */ char unk28[0x30];
+    /* 0x58 */ HmfModelData_UnkBC_Unk58_Struct *unk58;
+} HmfModelData_UnkBC_Struct; // Size 0x5C
 
 typedef struct HmfModel {
     /* 0x00 */ s8 unk00;

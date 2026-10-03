@@ -14,7 +14,17 @@ extern f32 D_80105708_name_81;
 
 void func_800DC0EC_name_81(void);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C1D60", func_800D9F90_name_81);
+void func_800D9F90_name_81(s32 playerIndex) {
+    UnkDiceRelated *dice = &D_800CDBD0_main[playerIndex];
+
+    if (dice->unk28 == -1 && dice->dice->unk_4C == 1) {
+        if (dice->unk_0A == 1) {
+            dice->unk28 = HuAudFXPlay(0x1D5);
+        } else {
+            dice->unk28 = HuAudFXPlay(0x100);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C1D60", func_800DA00C_name_81);
 

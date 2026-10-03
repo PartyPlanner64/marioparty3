@@ -2,6 +2,7 @@
 #include "ovl_81.h"
 
 extern void *D_80101060_name_81;
+extern u16 D_801050A0_name_81;
 extern SpaceData *D_801050A4_name_81;
 extern LinkData *D_801050A8_name_81;
 extern void *D_801050B0_name_81[19];
@@ -78,7 +79,16 @@ s16 MBDMasuLinkNumGet(u16 linkIdx) {
     return D_801050A8_name_81[linkIdx].chainIndicies;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800E9ECC_name_81);
+s16 func_800E9ECC_name_81(s16 spaceIdx, u16 linkIdx) {
+    s32 i;
+
+    for (i = 0; i < MBDMasuLinkNumGet(linkIdx); i++) {
+        if (MBDMasuLinkMasuIdGet(linkIdx, i) == spaceIdx) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800E9F4C_name_81);
 
@@ -188,6 +198,14 @@ s32 func_800EA940_name_81(s32 playerIndex) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800EA97C_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800EAA7C_name_81);
+s32 func_800EAA7C_name_81(s32 spaceType) {
+    s32 count = 0;
+    s32 i;
+
+    for (i = 0; i < D_801050A0_name_81; i++) {
+        count += (MBDMasuGet(i)->space_type == spaceType);
+    }
+    return count;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800EAAF8_name_81);

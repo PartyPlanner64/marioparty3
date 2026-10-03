@@ -15,6 +15,11 @@ typedef struct UnkNameProcData {
     /* 0x0C */ s32 unk_0C;
 } UnkNameProcData; // sizeof 0x10
 
+typedef struct UnkD5B20PrcData {
+    /* 0x00 */ s32 *unk_00;
+    /* 0x04 */ u16 unk_04;
+} UnkD5B20PrcData; // sizeof 0x8
+
 typedef struct UnkNameVecEntry {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s16 unk_04; // max index
@@ -23,7 +28,15 @@ typedef struct UnkNameVecEntry {
     /* 0x0C */ Vec *unk_0C; // array of at least unk_04 Vecs
 } UnkNameVecEntry;          // sizeof 0x10
 
+typedef struct UnkNameWobbleData {
+    /* 0x00 */ Object *obj;
+    /* 0x04 */ f32 unk_04;
+    /* 0x08 */ f32 unk_08;
+    /* 0x0C */ f32 unk_0C;
+} UnkNameWobbleData; // sizeof 0x10
+
 extern UnkD5B20 D_80105560_name_81[];
+extern s32 D_8010124C_name_81;
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800EDD50_name_81);
 
@@ -31,7 +44,17 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800EDDBC_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800EDE1C_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800EDEC4_name_81);
+Process *func_800EDEC4_name_81(Object *obj, f32 arg1, f32 arg2) {
+    Process *prc = omAddPrcObj(func_800EDE1C_name_81, 0xA, 0, 0x40);
+    UnkNameWobbleData *data = HuMemMemoryAlloc(prc->heap, sizeof(UnkNameWobbleData));
+
+    prc->user_data = data;
+    data->obj = obj;
+    data->unk_04 = arg1;
+    data->unk_08 = arg2;
+    data->unk_0C = obj->velocity.x;
+    return prc;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800EDF48_name_81);
 
@@ -234,7 +257,16 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800F0EA8_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800F0FE8_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800F1340_name_81);
+Process *func_800F1340_name_81(s32 *arg0, s32 arg1, s16 arg2) {
+    Process *prc = omAddPrcObj(func_800F0FE8_name_81, 0x1005, 0, 0x40);
+    UnkD5B20PrcData *data = HuMemMemoryAlloc(prc->heap, sizeof(UnkD5B20PrcData));
+
+    prc->user_data = data;
+    data->unk_00 = arg0;
+    data->unk_04 = arg2;
+    D_8010124C_name_81 = arg1;
+    return prc;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800F13C0_name_81);
 

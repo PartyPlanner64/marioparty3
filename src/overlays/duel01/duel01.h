@@ -65,7 +65,7 @@ void func_800E9B10_name_81(s32, s32);
 void func_800E9D9C_name_81(void);
 void func_800E9F4C_name_81(s32, s8 *, s8 *);
 void func_800EA760_name_81(void);
-void func_800ECD0C_name_81(s32, s8, s8);
+void func_800ECD0C_name_81(s16, s16, s16);
 void func_800EB708_name_81(s32, s32, unkStruct01 *);
 unkStruct03 *func_80047EA0_main(void *, s32, s32, s32);
 void func_80105CC0_duel01(void); // probably takes object as arg

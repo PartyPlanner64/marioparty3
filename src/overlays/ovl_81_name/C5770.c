@@ -26,6 +26,9 @@ extern s16 D_80102BB0_name_81;
 extern s16 D_80102BB2_name_81;
 extern s16 D_80102BB4_name_81;
 extern s16 D_80102BB6_name_81;
+extern s16 D_80102BC0_name_81[2];
+extern s16 D_80102BC4_name_81[2][2];
+extern omObjData *D_80102BCC_name_81[2];
 
 void func_800DD9A0_name_81(void) {
     if (D_800D2094_main >= (D_80100F38_name_81 + 4)) {
@@ -102,7 +105,18 @@ void func_800E0924_name_81(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C5770", func_800E0950_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C5770", func_800E0CEC_name_81);
+void func_800E0CEC_name_81(void) {
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < 2; i++) {
+        D_80102BC0_name_81[i] = -1;
+        D_80102BCC_name_81[i] = NULL;
+        for (j = 0; j < 2; j++) {
+            D_80102BC4_name_81[i][j] = -1;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C5770", func_800E0D64_name_81);
 

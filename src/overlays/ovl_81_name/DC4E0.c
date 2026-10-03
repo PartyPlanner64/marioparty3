@@ -55,13 +55,35 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F55FC_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F56C0_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F57B0_name_81);
+void func_800F57B0_name_81(s32 playerIndex) {
+    NamePlayerData *player;
+    s32 i;
+
+    if (MBDGetPlayerStruct(playerIndex)->stats.partners.frontID == PARTNER_NONE) {
+        player = &D_80105630_name_81[playerIndex];
+
+        for (i = 0; i < 11; i++) {
+            HuSprAttrSet(player->spriteGroup, i + 7, 0x8000);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F5834_name_81);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F5BB4_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F5E2C_name_81);
+void func_800F5E2C_name_81(s32 playerIndex) {
+    NamePlayerData *player;
+    s32 i;
+
+    if (MBDGetPlayerStruct(playerIndex)->stats.partners.backID == PARTNER_NONE) {
+        player = &D_80105630_name_81[playerIndex];
+
+        for (i = 0; i < 11; i++) {
+            HuSprAttrSet(player->spriteGroup, i + 0x12, 0x8000);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F5EB0_name_81);
 

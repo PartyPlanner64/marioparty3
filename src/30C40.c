@@ -17,7 +17,15 @@ void func_80030178_main(s32 arg0) {
     D_800D59F8_main[arg0 * 5 + 2] = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/30C40", func_80030198_main);
+void func_80030198_main(void) {
+    s16 i;
+
+    for (i = 0; i < 0x10; i++) {
+        if (D_800D59F8_main[i * 5 + 2] != 0) {
+            func_80030178_main(i);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/30C40", func_80030208_main);
 

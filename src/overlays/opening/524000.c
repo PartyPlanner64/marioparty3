@@ -501,7 +501,10 @@ void func_801110AC_opening(f32 *posX, f32 *posY, f32 *posZ, f32 *atX, f32 *atY, 
     *atZ = D_80117350_opening.at.z;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_801110F0_opening);
+void func_801110F0_opening(f32 posX, f32 posY, f32 posZ, f32 atX, f32 atY, f32 atZ) {
+    HuVecCopyXYZ(&D_80117350_opening.pos, posX, posY, posZ);
+    HuVecCopyXYZ(&D_80117350_opening.at, atX, atY, atZ);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80111164_opening);
 

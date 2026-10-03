@@ -169,7 +169,14 @@ INCLUDE_ASM("asm/nonmatchings/14EA0", func_80018978_main);
 
 INCLUDE_ASM("asm/nonmatchings/14EA0", func_80018ACC_main);
 
-INCLUDE_ASM("asm/nonmatchings/14EA0", func_80018D68_main);
+f32 func_80018D68_main(f32 mtx[3][3]) {
+    f32 m10 = mtx[1][0], m11 = mtx[1][1], m12 = mtx[1][2];
+    f32 m20 = mtx[2][0], m21 = mtx[2][1], m22 = mtx[2][2];
+
+    return mtx[0][0] * (m11 * m22 - m12 * m21) +
+           mtx[0][1] * (m12 * m20 - m10 * m22) +
+           mtx[0][2] * (m10 * m21 - m11 * m20);
+}
 
 INCLUDE_ASM("asm/nonmatchings/14EA0", func_80018DD8_main);
 

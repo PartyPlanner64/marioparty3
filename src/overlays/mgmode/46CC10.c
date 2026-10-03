@@ -2,6 +2,8 @@
 
 extern u8 D_80118EB1_mgmode;
 extern u16 D_80118EB4_mgmode;
+extern s16 D_8011B884_mgmode;
+extern Gfx D_80119290_mgmode[];
 
 void func_8010BD98_mgmode(omObjData *arg0);
 
@@ -71,7 +73,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_8010A824_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_8010A8E4_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_8010AF78_mgmode);
+void func_8010AF78_mgmode(Gfx **arg0, s32 arg1, s32 arg2) {
+    if (D_8011B884_mgmode != 0) {
+        gDPSetDepthImage((*arg0)++, 0x3D0800);
+        gDPSetColorImage((*arg0)++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 320, 0x3D0800);
+        gSPDisplayList((*arg0)++, D_80119290_mgmode);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_8010AFEC_mgmode);
 

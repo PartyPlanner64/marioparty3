@@ -25,7 +25,19 @@ extern void func_80108194_pipe_cleaners(omObjData *obj);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_801059A0_pipe_cleaners);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_801059BC_pipe_cleaners);
+f32 func_801059BC_pipe_cleaners(f32 arg0, f32 arg1) {
+    f32 angle = arg0 + arg1;
+
+    while (angle >= 360.0f) {
+        angle -= 360.0f;
+    }
+
+    while (angle < 0.0f) {
+        angle += 360.0f;
+    }
+
+    return angle;
+}
 
 u8 func_80105A3C_pipe_cleaners(s32 arg0) {
     u32 ret = (rand8() & 0xFF) * arg0;
@@ -34,7 +46,12 @@ u8 func_80105A3C_pipe_cleaners(s32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80105A74_pipe_cleaners);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80105B3C_pipe_cleaners);
+void func_80105B3C_pipe_cleaners(s32 playerIndex) {
+    D_800CDA7C_main[GwPlayer[playerIndex].pad] = 0;
+    D_800D5558_main[GwPlayer[playerIndex].pad] = 0;
+    D_800CBB6E_main[GwPlayer[playerIndex].pad] = 0;
+    D_800D20A1_main[GwPlayer[playerIndex].pad] = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80105BB4_pipe_cleaners);
 

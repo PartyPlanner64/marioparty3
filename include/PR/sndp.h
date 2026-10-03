@@ -80,7 +80,8 @@ typedef struct PVoice_s {
  */
 typedef struct AudioManager_s {
     /* 0x00 */ ALPlayer *head;
-    /* 0x04 */ char unk_04[0x08];
+    /* 0x04 */ ALPlayer *unk_04;
+    /* 0x08 */ ALPlayer *unk_08;
     /* 0x0C */ ALSndPlayer *sndp;
     /* 0x10 */ ALLink pFreeList;
     /* 0x18 */ ALLink unk_18;

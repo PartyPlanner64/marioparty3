@@ -14,7 +14,7 @@ extern s16 D_800BDA68_main;
 extern s8 D_800CD2A4_main;
 extern void *D_800CE2C4_main;
 extern Process *D_800D040C_main;
-extern s8 D_800D1F34_main;
+extern u8 D_800D1F34_main;
 extern void *D_800D1FE4_main;
 extern void *D_800D4084_main;
 extern u8 D_800D5206_main[5];
@@ -334,7 +334,14 @@ INCLUDE_ASM("asm/nonmatchings/window", func_8005F698_main);
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005F744_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005F784_main);
+void func_8005F784_main(s16 up, s16 down, s16 left, s16 right, s16 frames) {
+    D_800CDA88_main[D_800D1F34_main].up = up;
+    D_800CDA88_main[D_800D1F34_main].down = down;
+    D_800CDA88_main[D_800D1F34_main].left = left;
+    D_800CDA88_main[D_800D1F34_main].right = right;
+    D_800CDA88_main[D_800D1F34_main].frames = frames;
+    D_800D1F34_main = (D_800D1F34_main + 1) & 0x1F;
+}
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005F7F4_main);
 
@@ -430,7 +437,12 @@ void func_80060174_main(u8 *str, u8 *buffer) {
     *buffer = *str;
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_800601BC_main);
+void func_800601BC_main(s16 winId, u32 arg1, s8 arg2) {
+    TextWindow *window = &D_800CC69C_main[winId];
+
+    func_8005B6BC_main(winId, arg1, arg2);
+    func_80060174_main(window->unk_B8[arg2], window->unk_B8[arg2]);
+}
 
 // Called to indicate that `str` should be the replacement at a
 // "replacement index" location in the main string.

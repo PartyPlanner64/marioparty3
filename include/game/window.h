@@ -5,6 +5,7 @@
 
 #define WINDOWS_MAX 16
 #define TEXT_WINDOW_SPRITES_MAX 0x18
+#define WINDOW_INPUT_RECORDS_MAX 32
 
 #define MAKE_MESSID(bank, mess) (((bank) << 16)+(mess))
 #define MAKE_MESSID_PTR(ptr) ((u32)(ptr))
@@ -18,6 +19,14 @@ typedef struct TextWindowSprite {
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ char padA[6];
 } TextWindowSprite;                                 /* size = 0x10 */
+
+typedef struct WindowInputRecord {
+    /* 0x00 */ s16 up;
+    /* 0x02 */ s16 down;
+    /* 0x04 */ s16 left;
+    /* 0x06 */ s16 right;
+    /* 0x08 */ s16 frames;
+} WindowInputRecord;                                 /* size = 0xA */
 
 typedef struct TextWindow {
     /* 0x000 */ u8 unk_00;
@@ -100,6 +109,7 @@ void func_8005D294_main(s16);
 void func_8005E1A8_main(s16, s16);
 void func_8005F364_main(s16);
 void func_8005F524_main(void);
+void func_8005F784_main(s16, s16, s16, s16, s16);
 void func_8005FBF8_main(s16, s32, s32, s32);
 void func_8005FE90_main(s16);
 void func_8005FFA8_main(s16);
@@ -107,6 +117,7 @@ void func_8006022C_main(u32 mesg, s16);
 void func_80060394_main(s32, s16*, s32);
 void func_80061388_main(s16);
 void func_80060144_main(s16 obj);
+void func_800601BC_main(s16, u32, s8);
 void *func_800364DC_main(void *arg0);
 void func_800365E8_main(void *ptr);
 s16 func_8005B7B8_main(s16 win_id, u32 spriteMainFsPair, s16 arg2, s16 arg3, u16 arg4);
@@ -118,5 +129,6 @@ void func_8005F904_main(void);
 void func_800605A4_main(u32);
 
 extern TextWindow* D_800CC69C_main;
+extern WindowInputRecord D_800CDA88_main[WINDOW_INPUT_RECORDS_MAX];
 
 #endif

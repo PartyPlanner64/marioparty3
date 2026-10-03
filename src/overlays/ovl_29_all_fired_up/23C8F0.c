@@ -1,5 +1,14 @@
 #include "common.h"
 
+// Per-object data allocated for each entry of D_80109B00_all_fired_up, stored at omObjData->data
+typedef struct {
+    /* 0x00 */ char unk00[0x20];
+    /* 0x20 */ Vec pos;
+} AllFiredUpWork;
+
+extern u8 D_801099C9_all_fired_up;
+extern omObjData *D_80109B00_all_fired_up[];
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_29_all_fired_up/23C8F0", func_801059A0_all_fired_up);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_29_all_fired_up/23C8F0", func_80105C54_all_fired_up);
@@ -20,7 +29,17 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_29_all_fired_up/23C8F0", func_801068F
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_29_all_fired_up/23C8F0", func_80106B7C_all_fired_up);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_29_all_fired_up/23C8F0", func_80106C68_all_fired_up);
+void func_80106C68_all_fired_up(void) {
+    AllFiredUpWork *work;
+    s32 i;
+
+    for (i = 0; i < (s8)D_801099C9_all_fired_up; i++) {
+        work = D_80109B00_all_fired_up[i]->data;
+        work->pos.x = D_80109B00_all_fired_up[i]->trans.x;
+        work->pos.y = D_80109B00_all_fired_up[i]->trans.y;
+        work->pos.z = D_80109B00_all_fired_up[i]->trans.z;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_29_all_fired_up/23C8F0", func_80106CDC_all_fired_up);
 

@@ -265,6 +265,29 @@ typedef struct {
 } OSContRamIo;
 
 /*
+ * 6 byte request format, used when talking to a single channel
+ */
+
+typedef struct {
+	u8	txsize;
+	u8	rxsize;
+	u8	cmd;
+	u8	typeh;
+	u8	typel;
+	u8	status;
+} __OSContRequesFormatShort;
+
+/*
+ * Structure for the joybus (PIF) RAM, shared by the controller,
+ * eeprom and pfs drivers
+ */
+
+typedef struct {
+	u8	ramarray[60];
+	u32	pifstatus;
+} OSPifRam;
+
+/*
  * Structure for file system
  */
 

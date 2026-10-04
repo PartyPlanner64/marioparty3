@@ -38,6 +38,7 @@ void func_8004CEA4_main();
 void func_80047D4C_main(omObjData *obj);
 extern u8 D_800A16B0_main[][2];
 extern u8 D_800A1740_main[][2];
+extern s16 D_800A1754_main;
 extern u16 D_800A1756_main;
 extern s32 omprevovl;
 extern u16 omovlstat;
@@ -750,6 +751,7 @@ void func_8004AD70_main(void);
 s32 func_80000DF0_main(void);
 void func_8004B2C8_main(void);
 void func_8000B7A0_main(void);
+void func_8000B1A0_main(s32, u8);
 void func_8001766C_main(void);
 void func_8004A49C_main(void);
 void OvlLoad(s32 overlayIndex);
@@ -1069,4 +1071,22 @@ void func_8004A468_main(u16 arg0, u16 arg1, u16 arg2) {
     D_800D0A3A_main = 4;
 }
 
-INCLUDE_ASM("asm/nonmatchings/objmain", func_8004A49C_main);
+void func_8004A49C_main(void) {
+    s16 ovlIndex;
+
+    if (omovlstat & 0x5) {
+        ovlIndex = 2;
+    } else if (omovlstat & 2) {
+        ovlIndex = 0;
+    } else if (omovlstat & 0x4000) {
+        ovlIndex = 1;
+    } else {
+        return;
+    }
+    if (ovlIndex == D_800A1754_main) {
+        func_8000B1A0_main(ovlIndex, 6);
+    } else {
+        func_8000B1A0_main(ovlIndex, 7);
+    }
+    D_800A1754_main = ovlIndex;
+}

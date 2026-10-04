@@ -31,4 +31,38 @@ u16 __osContAddressCrc(u16 address) {
     return crc & 0x1F;
 }
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/io/crc", __osContDataCrc);
+u8 __osContDataCrc(u8 *dataptr, u32 size) {
+    u32 crc;
+    u32 bitmask;
+    u32 count;
+    u32 byte;
+
+    crc = 0;
+    for (count = 0x20; count != 0; count--) {
+        bitmask = 0x80;
+        byte = *dataptr;
+        do {
+            crc <<= 1;
+            if (byte & bitmask) {
+                if (crc & 0x100) {
+                    crc ^= 0x84;
+                } else {
+                    crc += 1;
+                }
+            } else if (crc & 0x100) {
+                crc ^= 0x85;
+            }
+        } while (bitmask >>= 1);
+        dataptr++;
+    }
+
+    do {
+        crc <<= 1;
+        if (crc & 0x100) {
+            crc ^= 0x85;
+        }
+        count++;
+    } while (count < 8);
+
+    return crc & 0xFF;
+}

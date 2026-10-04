@@ -92,11 +92,21 @@ u8 func_800330D4_main(s16 animIdx) {
 
 INCLUDE_ASM("asm/nonmatchings/32160", func_80033128_main);
 
-INCLUDE_ASM("asm/nonmatchings/32160", func_800332D4_main);
+void func_800332D4_main(s16 animIdx, f32 alpha) {
+    D_800D1714_main[animIdx].alpha = (u8)(alpha * 16.0f);
+}
 
 INCLUDE_ASM("asm/nonmatchings/32160", func_80033354_main);
 
-INCLUDE_ASM("asm/nonmatchings/32160", func_800333B0_main);
+void func_800333B0_main(s16 animIdx) {
+    if (D_800D408C_main[animIdx].unk0C != NULL) {
+        D_800D408C_main[animIdx].refCount--;
+        if (D_800D408C_main[animIdx].refCount == 0) {
+            func_80019C68_main(animIdx + 0x4E20);
+            D_800D408C_main[animIdx].unk0C = NULL;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/32160", func_80033430_main);
 

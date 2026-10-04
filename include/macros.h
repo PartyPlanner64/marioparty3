@@ -18,6 +18,8 @@
 
 #define ALIGN_16(size) (((size) + 0x1F) & ~0xF)
 
+#define offsetof(type, field) ((u32) & (((type *)0)->field))
+
 #define PACK_FILL_COLOR(r, g, b, a) (GPACK_RGBA5551(r, g, b, a) << 0x10) | GPACK_RGBA5551(r, g, b, a)
 
 #define GET_SPACE_FROM_LINK(link, idx) MBMasuGet(MBMasuLinkMasuIdGet(link, idx))

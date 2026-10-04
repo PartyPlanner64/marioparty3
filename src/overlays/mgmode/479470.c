@@ -1,6 +1,7 @@
 #include "common.h"
 #include "overlays/mgmode.h"
 
+extern s16 D_8011B818_mgmode[28];
 extern s16 D_8011B830_mgmode[16];
 extern s16 D_8011B850_mgmode[16];
 extern u8 *D_8011B610_mgmode[3];
@@ -83,9 +84,28 @@ void func_80115E4C_mgmode(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80115E9C_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80116024_mgmode);
+void func_80116024_mgmode(void) {
+    s16 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_801160A0_mgmode);
+    if (D_8011B830_mgmode[0] != GMES_ID_NONE) {
+        GMesSprKill((GAMEMES *)((u8 *)D_8011B830_mgmode - offsetof(GAMEMES, strGId)));
+        for (i = 0; i < 16; i++) {
+            D_8011B850_mgmode[i] = D_8011B830_mgmode[i] = GMES_ID_NONE;
+        }
+    }
+}
+
+void func_801160A0_mgmode(s16 arg0) {
+    int i;
+
+    i = 0;
+    if (D_8011B818_mgmode[0] > 0) {
+        do {
+            i++;
+            func_80055458_main(D_8011B818_mgmode[12], (s16)i, arg0);
+        } while ((s16)i < D_8011B818_mgmode[0]);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_8011611C_mgmode);
 

@@ -9,6 +9,30 @@
 
 #define GMES_STRMAX 16
 
+typedef struct {
+    /* 0x00 */ u8 mesNo;
+    /* 0x01 */ u8 stat;
+    /* 0x02 */ s8 unk02;
+    /* 0x03 */ u8 unk03;
+    /* 0x04 */ s16 unk04;
+    /* 0x06 */ s16 unk06;
+    /* 0x08 */ s16 unk08;
+    /* 0x0A */ s16 unk0A;
+    /* 0x0C */ s16 unk0C;
+    /* 0x0E */ s16 unk0E;
+    /* 0x10 */ f32 unk10;
+    /* 0x14 */ f32 unk14;
+    /* 0x18 */ char unk18[4];
+    /* 0x1C */ s32 unk1C;
+    /* 0x20 */ s16 strGId[GMES_STRMAX];
+    /* 0x40 */ s16 strSprId[GMES_STRMAX];
+    /* 0x60 */ f32 unk60;
+    /* 0x64 */ f32 unk64;
+    /* 0x68 */ f32 unk68;
+    /* 0x6C */ f32 unk6C;
+    /* 0x70 */ s32 unk70;
+} GAMEMES; // Size 0x74
+
 #define GMES_MES_0 0 // START (ALT?)
 #define GMES_MES_1 1 // START (ALT?)
 #define GMES_MES_2 2 // START (ALT?)
@@ -53,6 +77,7 @@
 #define GMES_STAT_KILL (1 << 2)
 
 s16 GMesCreate(s16 mesNo, ...);
+void GMesSprKill(GAMEMES *gMes);
 s32 GMesStatGet(void);
 void GMesClose(void);
 void func_80037258_main(void);

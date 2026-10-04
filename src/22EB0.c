@@ -208,7 +208,17 @@ INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002F60C_main);
 
 INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002FB08_main);
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002FB98_main);
+void func_8002FB98_main(HmfData *arg0, f32 arg1) {
+    arg0->unkA0 = arg1 * D_800D2120_main + arg0->unkA0;
+
+    if (arg0->unkA0 >= arg0->unk8C->unk02) {
+        if (D_800A1160_main != 0) {
+            arg0->unkA0 = 0;
+        } else {
+            arg0->unkA0 = arg0->unk8C->unk02;
+        }
+    }
+}
 
 void func_8002FC14_main(HmfData *arg0, f32 arg1) {
     arg0->unkA0 = arg0->unkA0 - arg1 * D_800D2120_main;

@@ -4,11 +4,41 @@ INCLUDE_ASM("asm/nonmatchings/77F20", func_80077320_main);
 
 INCLUDE_ASM("asm/nonmatchings/77F20", func_8007742C_main);
 
-INCLUDE_ASM("asm/nonmatchings/77F20", func_80077520_main);
+s32 func_80077520_main(ALCSeq *seq, s32 *pDeltaTicks) {
+    s32 minTicks;
+    u32 i;
+    u32 lastDeltaTicks;
+
+    lastDeltaTicks = seq->lastDeltaTicks;
+
+    if (seq->validTracks == 0) {
+        return 0;
+    }
+
+    minTicks = -1;
+
+    for (i = 0; i < AL_MAX_CHANNELS; i++) {
+        if ((seq->validTracks >> i) & 1) {
+            if (seq->deltaFlag) {
+                seq->evtDeltaTicks[i] -= lastDeltaTicks;
+            }
+            if (minTicks > seq->evtDeltaTicks[i]) {
+                minTicks = seq->evtDeltaTicks[i];
+            }
+        }
+    }
+
+    seq->deltaFlag = 0;
+    *pDeltaTicks = minTicks;
+
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/77F20", func_800775A0_main);
 
-INCLUDE_ASM("asm/nonmatchings/77F20", func_80077810_main);
+f32 func_80077810_main(ALCSeq *seq, s32 ticks, u32 tempo) {
+    return (f32)ticks * tempo / ((f32)seq->base->division * 1000000.0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/77F20", func_8007788C_main);
 

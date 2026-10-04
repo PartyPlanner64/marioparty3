@@ -198,6 +198,7 @@ build/src/2.0L/rmon/rmonbrk.c.o: OPTFLAGS = -O2
 build/src/2.0L/rmon/rmonmem.c.o: OPTFLAGS = -O2
 build/src/6C9F0.c.o: OPTFLAGS = -O2
 build/src/6E840.c.o: OPTFLAGS = -O2
+build/src/6E960.c.o: OPTFLAGS = -O2
 build/src/70C30.c.o: OPTFLAGS = -O2
 build/src/88CF0.c.o: OPTFLAGS = -O2
 build/src/88CF0.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align

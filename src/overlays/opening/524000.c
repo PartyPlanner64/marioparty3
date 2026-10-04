@@ -79,6 +79,8 @@ void opMotionSet(s32 modelId, s32 motionId, s16 arg2);
 void func_80110B90_opening(void);
 void func_80110C04_opening(omObjData *);
 void func_80110F48_opening(void);
+void func_80111028_opening(void);
+void func_80111090_opening(omObjData *);
 void func_80112944_opening(void);
 void opContErrorCreate(void);
 void MBCameraOffsetSet(s16 arg0, s16 arg1);
@@ -481,7 +483,12 @@ void func_80110F48_opening(void) {
     HuVecCopyXYZ(&D_80117350_opening.up, 0.0f, 1.0f, 0.0f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80110FB0_opening);
+void func_80110FB0_opening(Vec *pos, Vec *at) {
+    func_80111028_opening();
+    HuVecCopy3F(&D_80117350_opening.pos, pos);
+    HuVecCopy3F(&D_80117350_opening.at, at);
+    D_80117350_opening.obj = omAddObj(6, 0, 0, -1, func_80111090_opening);
+}
 
 void func_80111028_opening(void) {
     if (D_80117350_opening.obj != NULL) {

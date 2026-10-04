@@ -306,7 +306,16 @@ INCLUDE_ASM("asm/nonmatchings/window", func_8005D83C_main);
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005DAA4_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005DC94_main);
+void func_8005DC94_main(s16 winId) {
+    TextWindow *window = &D_800CC69C_main[winId];
+
+    func_80054FF8_main(window->unk_6C, 1, window->unk_24);
+    window->unk_24++;
+    if (window->unk_24 >= 3) {
+        window->unk_24 = 0;
+    }
+    window->unk_38 &= ~0x100;
+}
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005DD14_main);
 
@@ -546,7 +555,16 @@ INCLUDE_ASM("asm/nonmatchings/window", func_80060DEC_main);
 
 INCLUDE_ASM("asm/nonmatchings/window", func_80060EA8_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8006105C_main);
+void func_8006105C_main(s32 winId, s32 alpha) {
+    TextWindow *window = &D_800CC69C_main[winId];
+
+    HuSprAttrSet(window->unk_6C, window->unk274, 0x1000);
+    alpha &= 0xFF;
+    func_80055458_main(window->unk_6C, window->unk274, alpha);
+    if (window->unk276 != 0) {
+        func_80055458_main(window->unk_6C, window->unk276, alpha);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/window", func_800610E0_main);
 

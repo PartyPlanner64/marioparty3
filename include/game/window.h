@@ -43,7 +43,7 @@ typedef struct TextWindow {
     /* 0x021 */ u8 unk21;                           /* low nibble: enabled inputs */
     /* 0x022 */ s8 unk_22;
     /* 0x023 */ s8 unk_23;
-    /* 0x024 */ char pad24[1];                      /* maybe part of unk20[9]? */
+    /* 0x024 */ u8 unk_24;                          /* maybe part of unk20[9]? */
     /* 0x025 */ s8 unk_25;
     /* 0x026 */ s8 unk_26;
     /* 0x027 */ char pad27[1];                      /* maybe part of unk20[9]? */

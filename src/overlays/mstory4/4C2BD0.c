@@ -6,6 +6,13 @@ typedef struct UnkModel {
     /* 0x18 */ omObjData *obj2;
 } UnkModel; // sizeof 0x14
 
+typedef struct UnkStoryObj {
+    /* 0x00 */ omObjData *obj;
+    /* 0x04 */ void (*func)(omObjData *);
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ s32 unk_0C;
+} UnkStoryObj; // sizeof 0x10
+
 typedef struct UnkSeEntry {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
@@ -26,9 +33,11 @@ extern UnkModel D_801122A0_mstory4;
 extern UnkSeEntry D_801122AC_mstory4[3];
 extern UnkSeEntry D_801121CC_mstory4[];
 extern s32 D_801122B4_mstory4;
+extern UnkStoryObj D_801122E8_mstory4;
 
 void func_80106134_mstory4(void);
 void func_80109B5C_mstory4(omObjData *object);
+void func_8010D1A0_mstory4(omObjData *object);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_801059A0_mstory4);
 
@@ -330,7 +339,19 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010CE90_mstory4);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010CFE0_mstory4);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010D128_mstory4);
+void func_8010D128_mstory4(void) {
+    omObjData *obj = omAddObj(0x14, 0, 0, -1, NULL);
+
+    D_801122E8_mstory4.obj = obj;
+    D_801122E8_mstory4.unk_08 = 0;
+    D_801122E8_mstory4.unk_0C = 0;
+    D_801122E8_mstory4.func = func_8010D1A0_mstory4;
+
+    for (;;) {
+        D_801122E8_mstory4.func(obj);
+        HuPrcVSleep();
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mstory4/4C2BD0", D_80111F98_mstory4);
 

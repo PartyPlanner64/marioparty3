@@ -1,5 +1,8 @@
 #include "common.h"
 
+extern f32 D_8010B1B4_treadmill_grill[4];
+extern f32 D_8010B1C4_treadmill_grill[4];
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_801059A0_treadmill_grill);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_80106008_treadmill_grill);
@@ -46,7 +49,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_8010
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_80109108_treadmill_grill);
 
-void func_801093E0_treadmill_grill(void) {
+void func_801093E0_treadmill_grill(s32 arg0, s32 arg1) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_801093E8_treadmill_grill);
@@ -61,7 +64,14 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_8010
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_8010A754_treadmill_grill);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_8010A9AC_treadmill_grill);
+void func_8010A9AC_treadmill_grill(s32 arg0) {
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        func_801093E0_treadmill_grill(arg0, i);
+        D_8010B1B4_treadmill_grill[i] += D_8010B1C4_treadmill_grill[i];
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_8010AA2C_treadmill_grill);
 

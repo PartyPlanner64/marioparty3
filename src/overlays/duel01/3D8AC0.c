@@ -1,6 +1,9 @@
 #include "common.h"
 #include "duel01.h"
 
+void *memcpy(void *, const void *, unsigned int);
+extern s16 D_80118F48_duel01[];
+
 void func_801059D0_duel01(void) {
     mbCameraBtnF = 1;
     mbItemBtnF = 0;
@@ -289,7 +292,12 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010EB88_duel01);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010EC78_duel01);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010ED20_duel01);
+s16 func_8010ED20_duel01(s32 index) {
+    s16 shakeAngles[12];
+
+    memcpy(shakeAngles, D_80118F48_duel01, sizeof(shakeAngles));
+    return shakeAngles[index];
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010EDA0_duel01);
 

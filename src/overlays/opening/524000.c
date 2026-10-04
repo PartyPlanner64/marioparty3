@@ -641,7 +641,15 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_801149A4_opening);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opSleep);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opContErrorCreate);
+void opContErrorCreate(void) {
+    if (GWContErrorGet() == 0) {
+        D_80117750_opening.animId = func_8000B838_main(0x100005);
+        D_80117750_opening.espriteSlot = InitEspriteSlot(D_80117750_opening.animId, 0, 1);
+        func_8000BBD4_main(D_80117750_opening.espriteSlot, 0xA0, 0xA8);
+        func_8000BCC8_main(D_80117750_opening.espriteSlot, 0);
+        func_8000BB94_main(D_80117750_opening.espriteSlot);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opContErrorDispOn);
 

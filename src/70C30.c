@@ -179,7 +179,16 @@ INCLUDE_ASM("asm/nonmatchings/70C30", func_80071438_main);
 
 INCLUDE_ASM("asm/nonmatchings/70C30", func_800714E4_main);
 
-INCLUDE_ASM("asm/nonmatchings/70C30", func_80071548_main);
+void func_80071548_main(D_800713F4_main_Struct *arg0, s32 arg1) {
+    arg0->unk_60[arg1].unk_06 = 0;
+    arg0->unk_60[arg1].unk_0A[0] = 0;
+    arg0->unk_60[arg1].unk_07 = 0x40;
+    arg0->unk_60[arg1].unk_09 = 0x7F;
+    arg0->unk_60[arg1].unk_08 = 5;
+    arg0->unk_60[arg1].unk_0A[1] = 0;
+    arg0->unk_60[arg1].unk_04 = 0xC8;
+    arg0->unk_60[arg1].unk_0C = 1.0f;
+}
 
 void func_800715C8_main(D_800713F4_main_Struct *arg0, Unk70C30_Instrument *arg1, s32 arg2) {
     arg0->unk_60[arg2].unk_00 = arg1;

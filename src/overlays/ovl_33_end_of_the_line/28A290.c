@@ -18,11 +18,43 @@ typedef struct EndOfTheLineData {
 
 extern omObjData *D_8010C738_end_of_the_line;
 
+extern s32 D_8010C730_end_of_the_line;
+extern s32 D_8010C734_end_of_the_line;
+extern s16 D_8010C758_end_of_the_line;
+extern s16 D_8010C75A_end_of_the_line;
+extern s16 D_8010C75C_end_of_the_line;
+extern s16 D_8010C75E_end_of_the_line[2];
+extern s16 D_8010C762_end_of_the_line;
+extern s16 D_8010C764_end_of_the_line;
+extern s16 D_8010C766_end_of_the_line;
+extern s16 D_8010C782_end_of_the_line[3];
+extern s16 D_8010C7D0_end_of_the_line;
+
 void func_8000BBFC_main(u16 spriteId, s16 alpha);
+void func_80105E88_end_of_the_line(omObjData *obj);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_801059A0_end_of_the_line);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_80105E0C_end_of_the_line);
+void func_80105E0C_end_of_the_line(omObjData *obj) {
+    int i;
+
+    D_8010C734_end_of_the_line = 0;
+    D_8010C730_end_of_the_line = 0;
+    D_8010C7D0_end_of_the_line = -1;
+    D_8010C75A_end_of_the_line = 0;
+    D_8010C75C_end_of_the_line = 0;
+    D_8010C758_end_of_the_line = 0;
+    D_8010C766_end_of_the_line = 0;
+    for (i = 0; i < 2; i++) {
+        D_8010C75E_end_of_the_line[i] = 0;
+    }
+    D_8010C762_end_of_the_line = -1;
+    D_8010C764_end_of_the_line = -1;
+    for (i = 0; i < 2; i++) {
+        D_8010C782_end_of_the_line[i] = -1;
+    }
+    obj->func = func_80105E88_end_of_the_line;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_80105E88_end_of_the_line);
 

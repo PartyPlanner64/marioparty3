@@ -94,7 +94,28 @@ u8 GWPlayNumGet(s16 arg0) {
     return *GWBoardRecordGet(arg0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/save", GWPlayNumInc);
+void GWPlayNumInc(s16 arg0) {
+    s16 idx = arg0;
+    u8 *record = GWBoardRecordGet(arg0);
+
+    if (arg0 < 0) {
+        idx = GwSystem.current_board_index;
+    }
+
+    if (idx < 8) {
+        s16 num = *record + 1;
+        u32 inc = num;
+        u32 offset = 0;
+
+        if (inc > 999) {
+            num = 999;
+        }
+
+        // offset cancels out, but its zero init survives as the dead move that
+        // fills the clamp branch's delay slot.
+        *record = num + offset - offset;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/save", GWCharPlayNumInc);
 

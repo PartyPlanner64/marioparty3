@@ -1,8 +1,31 @@
 #include "common.h"
+#include "overlays/minigame.h"
+
+extern s16 D_800EB932_minigame;
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_801059A0_hyper_hydrants);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80105CB4_hyper_hydrants);
+void func_80105CB4_hyper_hydrants(D_80111B50_vine_with_me_Struct *arg0) {
+    s32 i;
+
+    D_800EB932_minigame = 10;
+    arg0->unk00 = 0;
+    arg0->unk01 = 1;
+    arg0->unk02 = 1;
+    arg0->unk03 = 2;
+    arg0->unk04 = 0;
+    arg0->unk05 = 0;
+    arg0->unk06 = 9;
+    arg0->unk1C = 80;
+    arg0->unk1E = 900;
+    arg0->unk20 = -1;
+    arg0->unk22 = 75;
+    arg0->unk24 = 150;
+    for (i = 0; i < 4; i++) {
+        arg0->unk08[i] = 0;
+        arg0->unk18[i] = 0xFF;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80105D44_hyper_hydrants);
 

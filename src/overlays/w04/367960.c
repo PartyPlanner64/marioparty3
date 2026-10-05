@@ -26,6 +26,7 @@ extern s16 D_8011B80C_w04[][2];
 extern s16 D_8011B814_w04[][2];
 extern s16 D_8011B9B4_w04[];
 extern s16 D_8011B9B8_w04[];
+extern s16 D_8011B9C4_w04[];
 extern s32 D_8011B948_w04[];
 extern s32 D_8011B96C_w04[];
 extern s8 D_8011C550_w04[][5][7];
@@ -38,6 +39,7 @@ extern Unk3 *D_8011E048_w04;
 extern Unk3 *D_8011E04C_w04;
 extern Unk3 *D_8011E050_w04;
 extern s32 D_8011E090_w04;
+extern Object *D_8011E09C_w04[3];
 extern s32 D_8011E0A8_w04;
 extern s32 D_8011E0AC_w04;
 extern u8 *D_8011E0B0_w04;
@@ -199,7 +201,19 @@ void func_801086C4_w04(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_8010873C_w04);
+void func_8010873C_w04(void) {
+    s32 i;
+
+    for (i = 0; i < 3; i++) {
+        if (GwSystem.boardData.halfWordBytes[D_8011B9C4_w04[i]] == 0) {
+            D_8011E09C_w04[i]->rot.x = 0.0f;
+            D_8011E09C_w04[i]->rot.z = -1.0f;
+        } else {
+            D_8011E09C_w04[i]->rot.x = 0.0f;
+            D_8011E09C_w04[i]->rot.z = 1.0f;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_801087CC_w04);
 

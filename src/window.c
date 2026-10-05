@@ -319,7 +319,24 @@ void func_8005DC94_main(s16 winId) {
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005DD14_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005DD54_main);
+void func_8005DD54_main(TextWindow *window) {
+    u8 prevBuf;
+
+    if (window->unk_24 == 0) {
+        prevBuf = 2;
+    } else {
+        prevBuf = window->unk_24 - 1;
+    }
+
+    if (window->unk_38 & 0x100) {
+        return;
+    }
+    window->unk_38 |= 0x100;
+
+    if (window->unk_E0[0] != NULL) {
+        bcopy(window->unk_E0[prevBuf], window->unk_E0[window->unk_24], (window->unk44 * window->unk46) / 2);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005DDDC_main);
 

@@ -62,7 +62,9 @@ typedef struct TextWindow {
     /* 0x038 */ u32 unk_38;
     /* 0x03C */ u16 unk3C;
     /* 0x03E */ u16 unk3E;
-    /* 0x040 */ char pad40[8];                      /* maybe part of unk3E[5]? */
+    /* 0x040 */ char pad40[4];                      /* maybe part of unk3E[5]? */
+    /* 0x044 */ s16 unk44;
+    /* 0x046 */ s16 unk46;
     /* 0x048 */ u16 unk48;
     /* 0x04A */ u16 unk4A;
     /* 0x04C */ u16 unk4C;
@@ -87,7 +89,9 @@ typedef struct TextWindow {
     /* 0x0AD */ s8 usingStringIDBool[5];
     /* 0x0B2 */ s8 unk_B2[6];
     /* 0x0B8 */ void *unk_B8[4];
-    /* 0x0C8 */ char padC8[0x2C];
+    /* 0x0C8 */ char padC8[0x18];
+    /* 0x0E0 */ void *unk_E0[3];
+    /* 0x0EC */ char padEC[8];
     /* 0x0F4 */ TextWindowSprite unk_F4[TEXT_WINDOW_SPRITES_MAX];
     /* 0x274 */ s16 unk274;
     /* 0x276 */ s16 unk276;
@@ -106,6 +110,7 @@ void func_8005C060_main(s16, s32, s32, s32, s32);
 s32 func_8005CCF0_main(TextWindow *window);
 s32 func_8005CD38_main(TextWindow *window);
 void func_8005D294_main(s16);
+void func_8005DD54_main(TextWindow *window);
 void func_8005E1A8_main(s16, s16);
 void func_8005F364_main(s16);
 void func_8005F524_main(void);

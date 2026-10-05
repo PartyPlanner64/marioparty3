@@ -32,7 +32,23 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/306F70", func_80
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/306F70", func_8010C97C_game_guys_lucky_7);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/306F70", func_8010CAE0_game_guys_lucky_7);
+void func_8010CAE0_game_guys_lucky_7(void) {
+    s32 i, j;
+    u8 *ptr;
+
+    for (i = 0; i < 3; i++) {
+        ptr = D_8010D8E8_game_guys_lucky_7.unk_04[i];
+        for (j = 0; j <= 0x95FF; j++) {
+            *ptr++ = 0;
+        }
+    }
+    for (i = 0; i < 3; i++) {
+        ptr = D_8010D8D0_game_guys_lucky_7.unk_04[i];
+        for (j = 0; j <= 0x95FF; j++) {
+            *ptr++ = 0;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/306F70", func_8010CB70_game_guys_lucky_7);
 

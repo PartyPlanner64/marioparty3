@@ -32,7 +32,23 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/3151F0", 
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/3151F0", func_8010C39C_game_guys_sweet_surprise);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/3151F0", func_8010C500_game_guys_sweet_surprise);
+void func_8010C500_game_guys_sweet_surprise(void) {
+    s32 i, j;
+    u8 *ptr;
+
+    for (i = 0; i < 3; i++) {
+        ptr = D_8010D0E8_game_guys_sweet_surprise.unk_04[i];
+        for (j = 0; j <= 0x95FF; j++) {
+            *ptr++ = 0;
+        }
+    }
+    for (i = 0; i < 3; i++) {
+        ptr = D_8010D0D0_game_guys_sweet_surprise.unk_04[i];
+        for (j = 0; j <= 0x95FF; j++) {
+            *ptr++ = 0;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/3151F0", func_8010C590_game_guys_sweet_surprise);
 

@@ -30,7 +30,23 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/30DC30", fun
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/30DC30", func_8010BA0C_game_guys_magic_boxes);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/30DC30", func_8010BB70_game_guys_magic_boxes);
+void func_8010BB70_game_guys_magic_boxes(void) {
+    s32 i, j;
+    u8 *ptr;
+
+    for (i = 0; i < 3; i++) {
+        ptr = D_8010CAF8_game_guys_magic_boxes.unk_04[i];
+        for (j = 0; j <= 0x95FF; j++) {
+            *ptr++ = 0;
+        }
+    }
+    for (i = 0; i < 3; i++) {
+        ptr = D_8010CAE0_game_guys_magic_boxes.unk_04[i];
+        for (j = 0; j <= 0x95FF; j++) {
+            *ptr++ = 0;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/30DC30", func_8010BC00_game_guys_magic_boxes);
 

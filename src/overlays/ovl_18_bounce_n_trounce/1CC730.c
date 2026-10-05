@@ -18,6 +18,7 @@ extern s16 D_8010AECC_bounce_n_trounce;
 extern omObjData **D_8010AEDC_bounce_n_trounce;
 
 void func_80105CBC_bounce_n_trounce(omObjData *);
+void func_80108CA8_bounce_n_trounce(omObjData *);
 void func_80108D28_bounce_n_trounce(omObjData *);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_18_bounce_n_trounce/1CC730", func_801059A0_bounce_n_trounce);
@@ -91,7 +92,15 @@ void func_80108940_bounce_n_trounce(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_18_bounce_n_trounce/1CC730", func_80108994_bounce_n_trounce);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_18_bounce_n_trounce/1CC730", func_80108C18_bounce_n_trounce);
+void func_80108C18_bounce_n_trounce(omObjData *object) {
+    BounceNTrounceWork *work = OM_GET_DATA_PTR(object, BounceNTrounceWork);
+
+    work->state = 4;
+    func_8001C258_main(object->model[0], 4, 4);
+    func_8001C624_main(object->model[1], HmfModelData[object->motion[3]].unk02, 0, 6, 0);
+    object->work[0] = 8;
+    object->func = func_80108CA8_bounce_n_trounce;
+}
 
 void func_80108CA8_bounce_n_trounce(omObjData *object) {
     if (object->work[0] != 0) {

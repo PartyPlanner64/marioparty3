@@ -1,5 +1,9 @@
 #include "common.h"
 
+extern f32 D_8010D75C_game_guys_lucky_7;
+extern f32 D_8010D760_game_guys_lucky_7;
+extern f32 D_8010D764_game_guys_lucky_7;
+extern u16 D_8010D76C_game_guys_lucky_7;
 extern s16 D_8010D772_game_guys_lucky_7;
 extern s16 D_8010D774_game_guys_lucky_7;
 extern s16 D_8010D776_game_guys_lucky_7;
@@ -130,7 +134,14 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", func_80
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", func_80109FA4_game_guys_lucky_7);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", func_8010A04C_game_guys_lucky_7);
+void func_8010A04C_game_guys_lucky_7(omObjData *object) {
+    if (D_8010D76C_game_guys_lucky_7 == 1) {
+        func_8001C5B4_main(object->model[0], object->motion[0]);
+        D_8010D76C_game_guys_lucky_7 = 0;
+    }
+    omSetTra(object, D_8010D75C_game_guys_lucky_7, D_8010D760_game_guys_lucky_7 - 50.0f,
+             D_8010D764_game_guys_lucky_7 + 120.0f);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", func_8010A0DC_game_guys_lucky_7);
 

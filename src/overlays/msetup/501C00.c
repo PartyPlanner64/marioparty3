@@ -179,7 +179,25 @@ INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801086C8_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801087F4_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801088A8_msetup);
+s16 func_801088A8_msetup(s16 stateIndex) {
+    D_8011A882_msetup = 5;
+    do {
+        HuPrcVSleep();
+    } while (D_8011A882_msetup != 0);
+
+    if (D_8011A886_msetup == -1) {
+        func_8010F2F4_msetup((UnkMsetup *)D_80119420_msetup, 3);
+    } else {
+        func_8010F2F4_msetup((UnkMsetup *)D_80119420_msetup, 4);
+    }
+
+    if (D_8011A886_msetup < 0) {
+        stateIndex--;
+    } else {
+        stateIndex++;
+    }
+    return stateIndex;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80108938_msetup);
 

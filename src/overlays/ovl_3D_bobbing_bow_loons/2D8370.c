@@ -13,9 +13,25 @@ typedef struct BobbingBowLoonsWork {
     /* 0x78 */ f32 rise;
 } BobbingBowLoonsWork; // Size 0x7C
 
+// Per-loon positions tracked for the five chained bow loons of the player object
+// held in D_80109B60_bobbing_bow_loons. Each axis is a parallel array of five.
+typedef struct BobbingBowLoonsLoon {
+    /* 0x00 */ f32 x[5];
+    /* 0x14 */ f32 y[5];
+    /* 0x28 */ f32 z[5];
+} BobbingBowLoonsLoon; // Size 0x3C
+
+// Only the player's tracked position is needed from the player object data.
+typedef struct BobbingBowLoonsPlayer {
+    /* 0x00 */ char unk_00[4];
+    /* 0x04 */ Vec pos;
+} BobbingBowLoonsPlayer;
+
+extern s16 D_80109B18_bobbing_bow_loons;
+extern omObjData *D_80109B1C_bobbing_bow_loons;
 extern omObjData *D_80109B2C_bobbing_bow_loons;
 extern omObjData *D_80109B58_bobbing_bow_loons;
-extern s16 D_80109B18_bobbing_bow_loons;
+extern omObjData *D_80109B60_bobbing_bow_loons;
 
 s32 func_8000B638_main(void);
 
@@ -185,7 +201,16 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3D_bobbing_bow_loons/2D8370", func_80
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3D_bobbing_bow_loons/2D8370", func_801091FC_bobbing_bow_loons);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3D_bobbing_bow_loons/2D8370", func_8010934C_bobbing_bow_loons);
+void func_8010934C_bobbing_bow_loons(void) {
+    BobbingBowLoonsLoon *loons = OM_GET_DATA_PTR(D_80109B60_bobbing_bow_loons, BobbingBowLoonsLoon);
+    BobbingBowLoonsPlayer *player = OM_GET_DATA_PTR(D_80109B1C_bobbing_bow_loons, BobbingBowLoonsPlayer);
+
+    loons->x[0] = player->pos.x;
+    loons->y[0] = player->pos.y + 50.0f;
+    loons->z[0] = player->pos.z + 2.0f;
+    func_8001C258_main(D_80109B60_bobbing_bow_loons->model[0], 4, 0);
+    func_8001C6A8_main(D_80109B60_bobbing_bow_loons->model[0], 0.0f);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3D_bobbing_bow_loons/2D8370", func_801093DC_bobbing_bow_loons);
 

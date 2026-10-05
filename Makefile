@@ -183,6 +183,7 @@ build/src/2.0L/io/visetevent.c.o: OPTFLAGS = -O2
 build/src/2.0L/io/visetmode.c.o: OPTFLAGS = -O2
 build/src/2.0L/io/visetyscale.c.o: OPTFLAGS = -O2
 build/src/2.0L/io/viswapbuf.c.o: OPTFLAGS = -O2
+build/src/2.0L/libc/ldiv.c.o: OPTFLAGS = -O1 -fschedule-insns2
 build/src/2.0L/libc/sprintf.c.o: OPTFLAGS = -O2
 build/src/2.0L/libc/syncprintf.c.o: OPTFLAGS = -O2
 build/src/2.0L/libc/string.c.o: OPTFLAGS = -O2

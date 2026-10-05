@@ -190,6 +190,7 @@ build/src/2.0L/libc/sprintf.c.o: OPTFLAGS = -O2
 build/src/2.0L/libc/syncprintf.c.o: OPTFLAGS = -O2
 build/src/2.0L/libc/string.c.o: OPTFLAGS = -O2
 build/src/2.0L/libc/xprintf.c.o: OPTFLAGS = -O2
+build/src/2.0L/os/gettime.c.o: OPTFLAGS = -O2
 build/src/2.0L/os/initrdb.c.o: OPTFLAGS = -O2
 build/src/2.0L/os/jammesg.c.o: OPTFLAGS = -O2
 build/src/2.0L/os/recvmesg.c.o: OPTFLAGS = -O2

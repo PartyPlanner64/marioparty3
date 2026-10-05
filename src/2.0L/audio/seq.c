@@ -24,7 +24,9 @@ f32 func_80076E68_main(ALSeq *seq, s32 ticks, u32 usecs) {
     return (f32)ticks * usecs / ((f32)seq->division * 1000000.0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/audio/seq", func_80076ED0_main);
+u32 func_80076ED0_main(ALSeq *seq, f32 secs, u32 ticks) {
+    return (u32)(secs * 1000000.0 * seq->division / ticks);
+}
 
 INCLUDE_ASM("asm/nonmatchings/2.0L/audio/seq", func_80076F60_main);
 

@@ -1,5 +1,6 @@
 #include "common.h"
 
+extern f32 D_8010B9A8_crazy_cogs;
 extern s8 D_8010B9E3_crazy_cogs[13];
 extern omObjData *D_8010B9F0_crazy_cogs;
 extern omObjData *D_8010BA74_crazy_cogs;
@@ -7,6 +8,8 @@ extern omObjData *D_8010BAF8_crazy_cogs;
 extern omObjData *D_8010BB7C_crazy_cogs;
 extern omObjData *D_8010C5CC_crazy_cogs;
 extern omObjData *D_8010C650_crazy_cogs;
+extern f32 D_8010DE14_crazy_cogs;
+extern s8 D_8010DE60_crazy_cogs;
 
 void func_80106270_crazy_cogs(omObjData *);
 void func_80106688_crazy_cogs(omObjData *);
@@ -98,7 +101,20 @@ void func_80106770_crazy_cogs(void) {
     D_8010BA74_crazy_cogs = omAddObj(0x3E8, 2, 0, -1, func_80106688_crazy_cogs);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_801067AC_crazy_cogs);
+void func_801067AC_crazy_cogs(omObjData *arg0) {
+    switch (D_8010DE60_crazy_cogs) {
+        case 0:
+            break;
+        case 1:
+            arg0->rot.y = func_801059BC_crazy_cogs(arg0->rot.y, D_8010B9A8_crazy_cogs);
+            break;
+        case 2:
+            arg0->rot.y = func_801059BC_crazy_cogs(arg0->rot.y, -D_8010B9A8_crazy_cogs);
+            break;
+    }
+
+    Hu3DModelRotSet(arg0->model[1], arg0->rot.x, arg0->rot.y, arg0->rot.z);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_8010683C_crazy_cogs);
 
@@ -106,7 +122,20 @@ void func_80106910_crazy_cogs(void) {
     D_8010BAF8_crazy_cogs = omAddObj(0x44C, 2, 0, -1, func_8010683C_crazy_cogs);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_8010694C_crazy_cogs);
+void func_8010694C_crazy_cogs(omObjData *arg0) {
+    switch (D_8010DE60_crazy_cogs) {
+        case 0:
+            break;
+        case 1:
+            arg0->rot.y = func_801059BC_crazy_cogs(arg0->rot.y, -D_8010DE14_crazy_cogs);
+            break;
+        case 2:
+            arg0->rot.y = func_801059BC_crazy_cogs(arg0->rot.y, D_8010DE14_crazy_cogs);
+            break;
+    }
+
+    Hu3DModelRotSet(arg0->model[1], arg0->rot.x, arg0->rot.y, arg0->rot.z);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_801069DC_crazy_cogs);
 

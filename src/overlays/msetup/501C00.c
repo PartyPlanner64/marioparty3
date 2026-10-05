@@ -2,6 +2,11 @@
 
 typedef s16 Array2D[2][18];
 
+typedef struct UnkMsetup {
+    char unk_00[0x8C];
+    s16 *unk8C;
+} UnkMsetup;
+
 void func_8000BBFC_main(u16, s16);
 void func_8000BC48_main(u16, s32);
 void func_8000BCC8_main(u16, s32);
@@ -22,6 +27,7 @@ void func_8010E4BC_msetup(Array2D *, s32, s32);
 void func_8010E4D8_msetup(Array2D *, s32);
 void func_8010E8C8_msetup(Array2D *, s32, s32, f32, f32, f32, f32, s32);
 void func_8010F320_msetup(s32, s32, s16, s16);
+s16 func_8010F2F4_msetup(UnkMsetup *, s16);
 extern s32 D_80119420_msetup;
 extern s32 D_80119E94_msetup[];
 extern s32 D_80119EAC_msetup[];
@@ -99,7 +105,25 @@ INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80107A58_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80107B8C_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80107CF4_msetup);
+s16 func_80107CF4_msetup(s16 stateIndex) {
+    D_8011A882_msetup = 5;
+    do {
+        HuPrcVSleep();
+    } while (D_8011A882_msetup != 0);
+
+    if (D_8011A886_msetup == -1) {
+        func_8010F2F4_msetup((UnkMsetup *)D_80119420_msetup, 3);
+    } else {
+        func_8010F2F4_msetup((UnkMsetup *)D_80119420_msetup, 4);
+    }
+
+    if (D_8011A886_msetup < 0) {
+        stateIndex--;
+    } else {
+        stateIndex++;
+    }
+    return stateIndex;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80107D84_msetup);
 

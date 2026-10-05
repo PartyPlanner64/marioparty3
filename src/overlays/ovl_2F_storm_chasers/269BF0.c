@@ -288,7 +288,16 @@ void func_8010BF3C_storm_chasers(omObjData *object) {
     object->func = func_8010BE8C_storm_chasers;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2F_storm_chasers/269BF0", func_8010BF84_storm_chasers);
+void func_8010BF84_storm_chasers(omObjData *object) {
+    if (D_8010CCAC_storm_chasers != 0) {
+        D_8010CCAC_storm_chasers--;
+        func_8003F578_main((D_8010CCAC_storm_chasers + 0x1D) / 30);
+    } else {
+        func_8003F5C0_main();
+        object->func = func_8010BF3C_storm_chasers;
+        D_8010CCA4_storm_chasers = 1;
+    }
+}
 
 void func_8010C014_storm_chasers(omObjData *object) {
     GMesCreate(0x1A, 0x1E, 0xA0, 0x1C);

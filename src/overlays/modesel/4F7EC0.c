@@ -112,6 +112,7 @@ void func_80108F8C_modesel(Vec *, Vec *, Vec *);
 void func_80109290_modesel(omObjData *);
 void func_8010A420_modesel(omObjData *);
 void func_8010A674_modesel(omObjData *);
+void func_8010A84C_modesel(omObjData *);
 void func_8010AAC0_modesel(omObjData *);
 void func_8010ADC8_modesel(omObjData *);
 
@@ -547,7 +548,16 @@ INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010A674_modesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010A84C_modesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010A9B8_modesel);
+omObjData *func_8010A9B8_modesel(s32 arg0) {
+    omObjData *obj = omAddObj(6, 0, 0, -1, func_8010A84C_modesel);
+
+    obj->work[0] = arg0;
+    obj->work[1] = 0;
+    func_80106618_modesel(arg0, &D_80110CB0_modesel[0], &D_80110CB0_modesel[1], &D_80110CB0_modesel[2]);
+    HuVecCopyXYZ(&D_80110CBC_modesel, 0.0f, 25.0f, 300.0f);
+    D_80110CD4_modesel = 0.0f;
+    return obj;
+}
 
 omObjData *func_8010AA48_modesel(s32 arg0) {
     omObjData *obj = omAddObj(6, 0, 0, -1, func_8010A674_modesel);

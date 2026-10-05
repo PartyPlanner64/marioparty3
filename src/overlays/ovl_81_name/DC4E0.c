@@ -41,7 +41,19 @@ extern NamePlayerData D_80105630_name_81[];
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F4710_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F4E90_name_81);
+void func_800F4E90_name_81(void) {
+    NamePlayerData *player;
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < 2; i++) {
+        player = &D_80105630_name_81[i];
+
+        for (j = 0; j < 0x1D; j++) {
+            HuSprAttrSet(player->spriteGroup, j, 0x8000);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F4F20_name_81);
 

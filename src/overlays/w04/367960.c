@@ -40,6 +40,7 @@ extern Unk3 *D_8011E050_w04;
 extern s32 D_8011E090_w04;
 extern s32 D_8011E0A8_w04;
 extern s32 D_8011E0AC_w04;
+extern u8 *D_8011E0B0_w04;
 extern Object *D_8011E0F0_w04[4];
 extern omObjData *D_8011E100_w04[4];
 extern DecisionTreeNonLeafNode *D_8011DDBC_w04[];
@@ -425,7 +426,16 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_8010A054_w04);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_8010A400_w04);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_8010AF34_w04);
+s32 func_8010AF34_w04(s32 arg0) {
+    s32 i;
+
+    for (i = 0; i < 7; i++) {
+        if (D_8011E0B0_w04[i] != 0 && D_8011C550_w04[D_8011E0A8_w04][D_8011E0AC_w04][i] == arg0) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 s32 func_8010AFBC_w04(void) {
     s32 i;

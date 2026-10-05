@@ -40,6 +40,7 @@ extern Object *D_8011ECD8_w02[4];
 extern omObjData *D_8011ECE8_w02[4];
 extern s32 D_8011EC90_w02;
 extern s32 D_8011EC94_w02;
+extern u8 *D_8011EC98_w02;
 extern s16 D_8011C680_w02[]; // mb2ev_StarFlag
 extern s16 D_8011C690_w02[];
 extern s16 D_8011C6A0_w02[]; // mb2ev_StarGuideMasu
@@ -541,7 +542,16 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_8010A018_w02);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_8010A3C4_w02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_8010AF00_w02);
+s32 func_8010AF00_w02(s32 arg0) {
+    s32 i;
+
+    for (i = 0; i < 7; i++) {
+        if (D_8011EC98_w02[i] != 0 && D_8011D45C_w02[D_8011EC90_w02][D_8011EC94_w02][i] == arg0) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 s32 func_8010AF88_w02(void) {
     s32 i;

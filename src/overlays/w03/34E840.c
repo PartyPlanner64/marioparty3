@@ -41,6 +41,7 @@ extern Unk3 *D_8011EB20_w03;
 extern s32 D_8011EB88_w03;
 extern s32 D_8011EB94_w03;
 extern s32 D_8011EB98_w03;
+extern u8 *D_8011EB9C_w03;
 extern Object *D_8011EBE0_w03[4];
 extern omObjData *D_8011EBF0_w03[4];
 extern s32 D_8011D0D0_w03;
@@ -507,7 +508,16 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_8010A2C4_w03);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_8010A930_w03);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_8010B46C_w03);
+s32 func_8010B46C_w03(s32 arg0) {
+    s32 i;
+
+    for (i = 0; i < 7; i++) {
+        if (D_8011EB9C_w03[i] != 0 && D_8011CF98_w03[D_8011EB94_w03][D_8011EB98_w03][i] == arg0) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 s32 func_8010B4F4_w03(void) {
     s32 i;

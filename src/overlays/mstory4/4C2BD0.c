@@ -1,5 +1,12 @@
 #include "common.h"
 
+extern f32 D_800CB890_main;
+extern f32 D_800CE17C_main[];
+extern f32 D_800D5210_main;
+extern Vec D_80111AD0_mstory4;
+extern Vec D_80111ADC_mstory4;
+extern Vec D_80111AE8_mstory4;
+
 typedef struct UnkModel {
     /* 0x00 */ omObjData *obj;
     /* 0x04 */ char unk_04[0x14];
@@ -65,7 +72,16 @@ void func_80106034_mstory4(void) {
     func_8000BB54_main(D_80112128_mstory4);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80106068_mstory4);
+void func_80106068_mstory4(void) {
+    D_800CE17C_main[0] = D_80111AD0_mstory4.x;
+    D_800CE17C_main[1] = D_80111AD0_mstory4.z;
+    D_800CE17C_main[-1] = 0.0f;
+    D_800CE17C_main[2] = 35.0f;
+    D_800CE17C_main[3] = D_800D5210_main;
+    D_800CE17C_main[4] = D_800CB890_main;
+    Hu3DCamSetPositionOrientation(0, &D_80111AD0_mstory4, &D_80111ADC_mstory4, &D_80111AE8_mstory4);
+    Hu3DCamUpdateMtx(0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_801060E8_mstory4);
 
@@ -451,8 +467,6 @@ void func_8011196C_mstory4(s32);                             /* extern */
 extern Addr D_128CC60;
 
 extern s32 D_80111AC4_mstory4;
-extern Vec D_80111AD0_mstory4;
-extern Vec D_80111ADC_mstory4;
 extern s32 D_80111B8C_mstory4;
 
 typedef struct Unk {

@@ -20,6 +20,7 @@ void func_80105DB0_w03(void);
 void func_801061A0_w03(UnkMBGuideData *);
 void func_801066CC_w03(void);
 void func_80108734_w03(void);
+extern s16 D_8011C130_w03[];
 extern s16 D_8011C140_w03[];
 extern s16 D_8011C150_w03[];
 extern s16 D_8011C1A8_w03[][2];
@@ -28,6 +29,7 @@ extern s32 D_8011C2E4_w03[];
 extern s32 D_8011C308_w03[];
 extern s16 D_8011C350_w03[];
 extern s16 D_8011C354_w03[];
+extern s16 D_8011C358_w03[];
 extern s8 D_8011CF98_w03[][5][7];
 extern Object *D_8011EAC8_w03[];
 extern Process *D_8011EAE8_w03[8];
@@ -58,7 +60,24 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80105B44_w03);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80105C50_w03);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80105D20_w03);
+s16 func_80105D20_w03(s16 arg0) {
+    s32 i;
+    GW_SYSTEM *system = &GwSystem;
+
+    for (i = 0; i < STAR_POSITIONS_TOTAL; i++) {
+        if (arg0 == D_8011C140_w03[i]) {
+            if (i == system->star_spawn_indices[system->current_star_spawn]) {
+                system->unk_0E = D_8011C130_w03[i];
+                return 1;
+            }
+            if (i == GwSystem.boardData.halfWordBytes[0]) {
+                return 2;
+            }
+            break;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80105DB0_w03);
 
@@ -311,7 +330,23 @@ void func_801088A0_w03(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80108918_w03);
+s32 func_80108918_w03(s16 *arg0) {
+    s16 *ptr = arg0;
+    s32 i = 0;
+    s32 ret = 0;
+
+    for (; i < 8; i++) {
+        if (*ptr == GwSystem.boardData.halfWordBytes[0]) {
+            ret = 1;
+            break;
+        }
+        if (GWBoardFlagCheck(D_8011C358_w03[*ptr]) == 0) {
+            break;
+        }
+        ptr++;
+    }
+    return ret;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/w03/34E840", D_8011E910_w03);
 

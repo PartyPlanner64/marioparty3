@@ -326,7 +326,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opMotionTimeSet);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opMotionEndWait);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opMotionEndCheck);
+s32 opMotionEndCheck(s32 arg0) {
+    s16 modelId = D_80115630_opening[arg0].modelId;
+
+    return HmfModelData[modelId].unk40 == D_800CCF58_main[HmfModelData[modelId].unk02].unk02;
+}
 
 void opMotionSet(s32 modelId, s32 motionId, s16 arg2) {
     s16 model = opModelIdGet(modelId);

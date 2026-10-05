@@ -212,6 +212,7 @@ build/src/6C3C0.c.o: OPTFLAGS = -O2
 build/src/6DFD0.c.o: OPTFLAGS = -O2
 build/src/70470.c.o: OPTFLAGS = -O2
 build/src/77F20.c.o: OPTFLAGS = -O2
+build/src/70B20.c.o: OPTFLAGS = -O2
 build/src/70BB0.c.o: OPTFLAGS = -O2
 
 # Files that have scommon

@@ -1,5 +1,7 @@
 #include "game/wipe.h"
 #include "include_asm.h"
+#include "common.h"
+#include "malloc.h"
 
 extern u8 D_800A26D0_main;
 extern u16 *D_800A26D4_main;
@@ -9,12 +11,29 @@ extern u8 D_800BDA78_main;
 extern Gfx *D_800BDA7C_main;
 extern u8 D_800CC0BA_main;
 extern u8 D_800CCF84_main;
+extern u8 D_800CDA74_main;
 extern f32 D_800D0A3C_main;
+extern u8 D_800D0598_main;
+extern u8 *D_800D1F80_main[8];
 extern f32 D_800D51F4_main;
 extern u8 D_800D5304_main;
+extern u8 D_800D212E_main;
 extern u16 *D_800D5550_main;
 
-INCLUDE_ASM("asm/nonmatchings/wipe", WipeInit);
+void WipeInit(void) {
+    s16 i;
+
+    D_800CCF84_main = 0;
+    D_800CC0BA_main = 0;
+    D_800D212E_main = 0;
+    D_800D0598_main = 0;
+    D_800CDA74_main = 0;
+    D_800D5304_main = 0;
+    for (i = 0; i < 8; i++) {
+        D_800D1F80_main[i] = NULL;
+    }
+    func_8003661C_main();
+}
 
 INCLUDE_ASM("asm/nonmatchings/wipe", WipeExecAlways);
 
@@ -46,7 +65,20 @@ INCLUDE_ASM("asm/nonmatchings/wipe", WipeStatGet);
 
 INCLUDE_ASM("asm/nonmatchings/wipe", WipeColorSet);
 
-INCLUDE_ASM("asm/nonmatchings/wipe", WipeMalloc);
+u8 *WipeMalloc(u32 size) {
+    s16 i;
+
+    for (i = 0; i < 8; i++) {
+        if (D_800D1F80_main[i] == NULL) {
+            break;
+        }
+    }
+    if (i == 8) {
+        return NULL;
+    }
+    D_800D1F80_main[i] = HuMemMemoryAllocPerm(size);
+    return D_800D1F80_main[i];
+}
 
 INCLUDE_ASM("asm/nonmatchings/wipe", func_80062168_main);
 

@@ -76,6 +76,7 @@ typedef struct {
 #define GMES_STAT_EXIST (1 << 0)
 #define GMES_STAT_KILL (1 << 2)
 
+void func_8003661C_main(void);
 s16 GMesCreate(s16 mesNo, ...);
 void GMesSprKill(GAMEMES *gMes);
 s32 GMesStatGet(void);

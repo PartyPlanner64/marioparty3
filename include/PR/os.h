@@ -65,6 +65,12 @@ typedef struct {
 	__OSfp	fp16, fp18, fp20, fp22, fp24, fp26, fp28, fp30;
 } __OSThreadContext;
 
+typedef struct {
+	u32	flag;
+	u32	count;
+	u64	time;
+} __OSThreadprofile_s;
+
 typedef struct OSThread_s {
 	struct OSThread_s	*next;		/* run/mesg queue link */
 	OSPri			priority;	/* run/mesg queue priority */
@@ -74,6 +80,7 @@ typedef struct OSThread_s {
 	u16			flags;		/* flags for rmon */
 	OSId			id;		/* id for debugging */
 	int			fp;		/* thread has used fp unit */
+	__OSThreadprofile_s	*thprof;	/* thread profile data */
 	__OSThreadContext	context;	/* register/interrupt mask */
 } OSThread;
 

@@ -235,6 +235,7 @@ build/src/overlays/ovl_80_shared_board/ECA50.c.o: CFLAGS = -G0 -mips3 -mgp32 -mf
 NOP_OBJECTS := \
 	build/src/libhmath/gurotate.c.o \
 	build/src/6B050.c.o \
+	build/src/22EB0.c.o \
 	build/src/hmfload.c.o \
 	build/src/overlays/ovl_80_shared_board/EC3B0.c.o \
 	build/src/overlays/ovl_80_shared_board/ECA50.c.o \

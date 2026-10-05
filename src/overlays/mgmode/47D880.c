@@ -1,4 +1,5 @@
 #include "common.h"
+#include "mallocblock.h"
 #include "overlays/mgmode.h"
 
 void func_8000BC48_main(u16, u16);
@@ -15,7 +16,20 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47D880", func_8011667C_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47D880", func_80116794_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47D880", func_801168E0_mgmode);
+void func_801168E0_mgmode(MgmodeEsprite *arg0) {
+    MgmodeEsprite *sprite = arg0;
+    s16 i;
+
+    for (i = 0; i < 0x40; i++) {
+        if (sprite->spriteGroup == -1) {
+            break;
+        }
+        func_8000C184_main(sprite->espriteSlot);
+        HuSprKill(sprite->spriteGroup);
+        sprite++;
+    }
+    HuMemFree(arg0);
+}
 
 void func_80116968_mgmode(MgmodeEsprite *arg0, s16 index, s16 arg2, s16 arg3) {
     func_8000BBD4_main(arg0[index].espriteSlot, arg2, arg3);

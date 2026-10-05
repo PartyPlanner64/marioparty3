@@ -50,7 +50,18 @@ f32 func_800202A8_main(f32 angle) {
     return angle;
 }
 
-INCLUDE_ASM("asm/nonmatchings/20A20", func_800202FC_main);
+s32 func_800202FC_main(Vec *vec) {
+    f32 x = vec->x, y = vec->y, z = vec->z;
+    f32 length = HuSqrtf(x * x + y * y + z * z);
+
+    if (length == 0.0f) {
+        return FALSE;
+    }
+    vec->x /= length;
+    vec->y /= length;
+    vec->z /= length;
+    return TRUE;
+}
 
 INCLUDE_ASM("asm/nonmatchings/20A20", func_8002038C_main);
 

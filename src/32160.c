@@ -11,7 +11,11 @@ typedef struct {
     void *unk28;
 } HmfPalData;
 
+extern HmfPalData *D_800CD2F8_main;
+
+void func_80032194_main(HmfPalData *pal);
 void func_80032950_main(void);
+
 INCLUDE_ASM("asm/nonmatchings/32160", func_80031560_main);
 
 INCLUDE_ASM("asm/nonmatchings/32160", func_80031630_main);
@@ -30,7 +34,15 @@ INCLUDE_ASM("asm/nonmatchings/32160", func_80031DF4_main);
 
 INCLUDE_ASM("asm/nonmatchings/32160", func_80032038_main);
 
-INCLUDE_ASM("asm/nonmatchings/32160", func_80032104_main);
+void func_80032104_main(void *unk) {
+    s16 i;
+
+    for (i = 0; i < 0x80; i++) {
+        if (D_800CD2F8_main[i].unk20 != 0 && D_800CD2F8_main[i].unk24 == unk) {
+            func_80032194_main(&D_800CD2F8_main[i]);
+        }
+    }
+}
 
 void func_80032194_main(HmfPalData *pal) {
     pal->unk20 = 0;

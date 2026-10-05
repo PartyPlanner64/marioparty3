@@ -25,11 +25,41 @@ typedef struct GameSound_s {
 
 typedef struct {
     /* 0x00 */ ALSeqPlayer *seqp;
-    /* 0x04 */ char unk_04[0x18];
+    /* 0x04 */ u8 *seqData; // raw sequence data, DMA'd in per track
+    /* 0x08 */ ALBank **bankTable;
+    /* 0x0C */ ALSeq *seq;
+    /* 0x10 */ s32 seqDataSize;
+    /* 0x14 */ s32 flags;    // 0x1 stopped, 0x2/0x8 queued, 0x4/0x20 no fade, 0x10 play, 0x40 fading
+    /* 0x18 */ s16 curTrack; // track whose data is loaded
+    /* 0x1A */ s16 newTrack; // track requested by the latest event
     /* 0x1C */ s32 cspState;
     /* 0x20 */ s32 state;
-} SeqPlayer;
+    /* 0x24 */ s32 fadeStep; // 0x7F000000 / fadeTime
+    /* 0x28 */ s32 fadeTime; // frames left, negative while fading in
+    /* 0x2C */ s8 fadeVol;   // current fade level, 0 to 0x7F
+    /* 0x2D */ s8 unk_2D;
+    /* 0x2E */ s8 trackVol; // volume of the current track
+    /* 0x2F */ s8 evtVol;   // volume of the latest event
+    /* 0x30 */ s8 unk_30;   // index of a linked player
+    /* 0x31 */ s8 unk_31;   // fade time of the current track, in frames
+    /* 0x32 */ s8 unk_32;
+    /* 0x33 */ s8 unk_33;
+} SeqPlayer; // size: 0x34
 
+typedef struct {
+    /* 0x00 */ SeqPlayer *players;
+    /* 0x04 */ char unk_04[0x10]; // 0x10-byte track descriptor table
+    /* 0x14 */ s16 unk_14;
+    /* 0x16 */ s16 unk_16;
+    /* 0x18 */ s8 playerCount;
+    /* 0x19 */ s8 playingCount;
+    /* 0x1A */ s8 masterVol; // overall volume, set by volume events
+    /* 0x1B */ s8 configVol; // overall volume, taken from the audio config
+    /* 0x1C */ s16 trackCount;
+    /* 0x1E */ s16 eventCount;
+} AudioManager; // size: 0x220
+
+extern AudioManager *D_800A97B8_main;
 extern UnkAudio *D_800A97BC_main;
 extern ALHeap D_800A9730_main;
 
@@ -95,7 +125,9 @@ INCLUDE_ASM("asm/nonmatchings/1140", func_80001160_main);
 
 INCLUDE_ASM("asm/nonmatchings/1140", func_8000124C_main);
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_800012C4_main);
+s32 func_800012C4_main(SeqPlayer *seqPlayer) {
+    return D_800A97B8_main->configVol * seqPlayer->evtVol * seqPlayer->trackVol * seqPlayer->fadeVol / 127 / 127 / 127 * D_800A97B8_main->masterVol / 127;
+}
 
 INCLUDE_ASM("asm/nonmatchings/1140", func_80001348_main);
 

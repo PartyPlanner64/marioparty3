@@ -703,11 +703,33 @@ void func_8001F974_main(s16 arg0, s16 arg1) {
     HmfModelData[arg0].unk08 = HmfModelData[arg1].unk08;
 }
 
-INCLUDE_ASM("asm/nonmatchings/hmfman", func_8001F9E4_main);
+void func_8001F9E4_main(s16 arg0, u8 arg1) {
+    HmfData *hmf = HmfModelData[arg0].hmf;
+    s16 i;
+
+    for (i = 0; i < hmf->unk10; i++) {
+        hmf->unk60[i].unk20 = arg1;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/hmfman", func_8001FA68_main);
 
-INCLUDE_ASM("asm/nonmatchings/hmfman", func_8001FB34_main);
+void func_8001FB34_main(s16 arg0, s8 arg1) {
+    HmfModel *model = &HmfModelData[arg0];
+    HmfModel *sub;
+
+    if (model->unkB4 == NULL) {
+        sub = HuMemAllocTag(0x38, D_800CDD6A_main);
+        model->unkB4 = sub;
+        sub->unk03 = arg1;
+        sub->unk02 = 0x40;
+        sub->unk01 = 0x40;
+        sub->unk00 = 0x40;
+        sub->unk06 = 0x64;
+        sub->unk05 = 0x64;
+        sub->unk04 = 0x64;
+    }
+}
 
 void func_8001FBBC_main(s16 arg0, s8 arg1, s8 arg2, s8 arg3) {
     HmfModel *other;

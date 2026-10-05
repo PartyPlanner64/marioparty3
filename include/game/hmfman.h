@@ -19,7 +19,8 @@ typedef struct {
 } HmfModelData_Unk64_Unk60_Unk54_Struct;
 
 typedef struct {
-    char unk00[0x22];
+    char unk00[0x20];
+    s16 unk20;
     s16 unk22;
     char unk24[4];
     s16 unk28;

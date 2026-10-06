@@ -43,7 +43,7 @@ typedef struct UnkFileSelect4 {
     f32 unk_0C;
     f32 unk_10;
     f32 unk_14;
-    s8 unk_18;
+    u8 unk_18;
     u8 unk_19[3];
 } UnkFileSelect4; // sizeof 0x1C
 
@@ -91,7 +91,8 @@ extern u8 D_80114490_filesel[0x20];
 extern UnkFileSelect2 D_80114158_filesel[0x20]; // sizeof 0xC
 extern UnkFileSelect3 D_80113650_filesel[0x40];
 extern UnkFileSelect4 D_80112ED0_filesel[0x40];
-extern s16 D_801135D0_filesel[0x40];
+// the one-column second dimension keeps these indexed stores addressing the array base symbolically
+extern s16 D_801135D0_filesel[0x40][1];
 extern Process *D_80114504_filesel;
 extern UnkFileSelect6 D_80114508_filesel[9];
 extern UnkFileSelect5 D_80114598_filesel[3];
@@ -108,25 +109,43 @@ INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105BC0_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105BF0_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105C1C_filesel);
+void func_80105C1C_filesel(void) {
+    UnkFileSelect4 *p;
+    f32 zero;
+    s32 i;
+
+    for (i = 0; i < ARRAY_COUNT(D_80112ED0_filesel); i++) {
+        D_801135D0_filesel[i][0] = -1;
+        D_80112ED0_filesel[i].unk_00 = -1;
+        // only these two of the seven field stores go through the pointer, the rest stay symbolic
+        p = &D_80112ED0_filesel[i];
+        p->unk_08 = 0;
+        D_80112ED0_filesel[i].unk_04 = 0;
+        zero = 0.0f;
+        p->unk_10 = zero;
+        D_80112ED0_filesel[i].unk_0C = zero;
+        D_80112ED0_filesel[i].unk_14 = zero;
+        D_80112ED0_filesel[i].unk_18 = 0xFF;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105CB0_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105CC4_filesel);
 
 void func_80105CE0_filesel(s32 arg0, s32 arg1) {
-    D_801135D0_filesel[arg0] = func_8000B838_main(arg1);
+    D_801135D0_filesel[arg0][0] = func_8000B838_main(arg1);
 }
 
 void func_80105D18_filesel(s32 arg0) {
-    if (D_801135D0_filesel[arg0] != -1) {
-        HuSprKill(D_801135D0_filesel[arg0]);
+    if (D_801135D0_filesel[arg0][0] != -1) {
+        HuSprKill(D_801135D0_filesel[arg0][0]);
     }
-    D_801135D0_filesel[arg0] = -1;
+    D_801135D0_filesel[arg0][0] = -1;
 }
 
 void func_80105D70_filesel(s32 arg0, s16 arg1) {
-    D_80112ED0_filesel[arg0].unk_00 = InitEspriteSlot(D_801135D0_filesel[arg1], 0, 0);
+    D_80112ED0_filesel[arg0].unk_00 = InitEspriteSlot(D_801135D0_filesel[arg1][0], 0, 0);
     func_80105FBC_filesel(arg0, 0xA0, 0x78);
 }
 

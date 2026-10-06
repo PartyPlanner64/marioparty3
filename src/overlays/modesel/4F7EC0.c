@@ -77,7 +77,8 @@ extern s32 D_80110B28_modesel[][7];
 extern f32 D_80110B2C_modesel[][7];
 extern UnkModeSelAngle D_80110B30_modesel[][7];
 extern u8 D_8010F2A0_modesel[];
-extern s16 D_8010FE10_modesel[0x40];
+// the one-column second dimension keeps these indexed stores addressing the array base symbolically
+extern s16 D_8010FE10_modesel[0x40][1];
 extern UnkModeSel D_8010FE90_modesel[0x40];
 extern UnkModeSel4 D_8010FEA0_modesel[0x40];
 extern UnkModeSel2 D_8010F710_modesel[0x40];
@@ -126,25 +127,43 @@ INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80105C20_modesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80105C50_modesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80105C7C_modesel);
+void func_80105C7C_modesel(void) {
+    UnkModeSel2 *p;
+    f32 zero;
+    s32 i;
+
+    for (i = 0; i < ARRAY_COUNT(D_8010F710_modesel); i++) {
+        D_8010FE10_modesel[i][0] = -1;
+        D_8010F710_modesel[i].unk_00 = -1;
+        // only these two of the seven field stores go through the pointer, the rest stay symbolic
+        p = &D_8010F710_modesel[i];
+        p->unk_08 = 0;
+        D_8010F710_modesel[i].unk_04 = 0;
+        zero = 0.0f;
+        p->unk_10 = zero;
+        D_8010F710_modesel[i].unk_0C = zero;
+        D_8010F710_modesel[i].unk_14 = zero;
+        D_8010F710_modesel[i].unk_18 = 0xFF;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80105D10_modesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80105D24_modesel);
 
 void func_80105D40_modesel(s32 arg0, s32 arg1) {
-    D_8010FE10_modesel[arg0] = func_8000B838_main(arg1);
+    D_8010FE10_modesel[arg0][0] = func_8000B838_main(arg1);
 }
 
 void func_80105D78_modesel(s32 arg0) {
-    if (D_8010FE10_modesel[arg0] != -1) {
-        HuSprKill(D_8010FE10_modesel[arg0]);
+    if (D_8010FE10_modesel[arg0][0] != -1) {
+        HuSprKill(D_8010FE10_modesel[arg0][0]);
     }
-    D_8010FE10_modesel[arg0] = -1;
+    D_8010FE10_modesel[arg0][0] = -1;
 }
 
 void func_80105DD0_modesel(s32 arg0, s16 arg1) {
-    D_8010F710_modesel[arg0].unk_00 = InitEspriteSlot(D_8010FE10_modesel[arg1], 0, 0);
+    D_8010F710_modesel[arg0].unk_00 = InitEspriteSlot(D_8010FE10_modesel[arg1][0], 0, 0);
     func_8010601C_modesel(arg0, 0xA0, 0x78);
 }
 

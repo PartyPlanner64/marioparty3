@@ -1,8 +1,18 @@
 #include "common.h"
 
+typedef struct GameGuysSweetSurpriseState { // 0x4 bytes
+    /* 0x00 */ s16 frameCounter;
+    /* 0x02 */ s16 state;
+} GameGuysSweetSurpriseState;
+
+extern GameGuysSweetSurpriseState D_8010CBA4_game_guys_sweet_surprise;
+extern s16 D_8010CFE2_game_guys_sweet_surprise;
 extern s16 D_8010CFE8_game_guys_sweet_surprise;
 extern s16 D_8010CFEA_game_guys_sweet_surprise;
+extern s16 D_8010CFF0_game_guys_sweet_surprise;
+extern s16 D_8010CFFC_game_guys_sweet_surprise;
 
+void func_801063F0_game_guys_sweet_surprise(omObjData *object);
 void func_801072B4_game_guys_sweet_surprise(omObjData *object);
 void func_8010AB3C_game_guys_sweet_surprise(omObjData *object);
 void func_8010ABD8_game_guys_sweet_surprise(omObjData *object);
@@ -60,7 +70,28 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", 
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_80106C0C_game_guys_sweet_surprise);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_80106CB4_game_guys_sweet_surprise);
+void func_80106CB4_game_guys_sweet_surprise(omObjData *object) {
+    GameGuysSweetSurpriseState *loc;
+
+    switch (D_8010CBA4_game_guys_sweet_surprise.state) {
+        case 0:
+            D_8010CFF0_game_guys_sweet_surprise = 1;
+            D_8010CFFC_game_guys_sweet_surprise = 1;
+            loc = &D_8010CBA4_game_guys_sweet_surprise;
+            loc->state++;
+            break;
+        case 1:
+            if (D_8010CFF0_game_guys_sweet_surprise == 0) {
+                D_8010CFE2_game_guys_sweet_surprise = 1;
+                loc = &D_8010CBA4_game_guys_sweet_surprise;
+                loc->state++;
+            }
+            break;
+        case 2:
+            object->func = func_801063F0_game_guys_sweet_surprise;
+            break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_80106D48_game_guys_sweet_surprise);
 

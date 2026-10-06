@@ -157,4 +157,5 @@ void func_8001C92C_main(s16 model, f32 arg1);
 void func_8001C6A8_main(s16 model, f32 arg1);
 s32 func_800037C4_main(s16);
 u16 func_8000B0A0_main(s32 arg0, s32 arg1);
+s32 func_800202FC_main(Vec *vec);
 #endif

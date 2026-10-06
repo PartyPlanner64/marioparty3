@@ -40,7 +40,19 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_23_water_whirled/211AB0", func_80107D
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_23_water_whirled/211AB0", func_80107F08_water_whirled);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_23_water_whirled/211AB0", func_8010860C_water_whirled);
+void func_8010860C_water_whirled(Vec *origin, Vec *p, Vec *q, Vec *out) {
+    f32 ax = p->x - origin->x;
+    f32 ay = p->y - origin->y;
+    f32 az = p->z - origin->z;
+    f32 bx = q->x - origin->x;
+    f32 by = q->y - origin->y;
+    f32 bz = q->z - origin->z;
+
+    out->x = ay * bz - az * by;
+    out->y = az * bx - ax * bz;
+    out->z = ax * by - ay * bx;
+    func_800202FC_main(out);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_23_water_whirled/211AB0", func_801086A0_water_whirled);
 

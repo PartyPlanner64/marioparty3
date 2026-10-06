@@ -291,7 +291,7 @@ void func_8001AC34_main(s16 arg0, s32 arg1) {
     }
 }
 
-s16 func_8001AC8C_main(s32 arg0, void (*arg1)(Gfx **, s32, s32), u8 arg2) {
+s32 func_8001AC8C_main(s32 arg0, void (*arg1)(Gfx **, s32, s32), u8 arg2) {
     s16 idx = func_8001A894_main(arg0, NULL, arg2);
     HmfModel *var_v1 = &HmfModelData[idx];
 

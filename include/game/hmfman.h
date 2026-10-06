@@ -271,7 +271,7 @@ void func_8001A070_main(void *arg0, void *arg1, u16 arg2, u16 arg3, u16 arg4, u8
 s16 Hu3DModelCreate(u8 *, u32);
 s32 Hu3DModelLink(s16 linkMdlId);
 s32 func_8001A894_main(s32, void *, s32); // unsure about second arg. Gfx*?
-s16 func_8001AC8C_main(s32 arg0, void (*arg1)(Gfx **, s32, s32), u8 arg2);
+s32 func_8001AC8C_main(s32 arg0, void (*arg1)(Gfx **, s32, s32), u8 arg2);
 void func_8001ACDC_main(s16);
 void func_8001B0B4_main(void **arg0, u32 arg1);
 void func_8001BF90_main(u32 arg0, u32 arg1);

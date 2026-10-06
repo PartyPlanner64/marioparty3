@@ -65,9 +65,16 @@ extern StormChaserEntry D_8010CF38_storm_chasers[4];
 extern u16 D_8010CF0A_storm_chasers;
 extern f32 D_8010CF0C_storm_chasers;
 extern f32 D_8010CF10_storm_chasers;
+extern s32 D_8010CF68_storm_chasers;
+extern s32 D_8010CF6C_storm_chasers;
+extern s16 D_8010CF6E_storm_chasers;
+extern s32 D_8010CF70_storm_chasers;
+extern s16 D_8010CF72_storm_chasers;
+extern HuSprite_Unk84_Struct *D_8010CF74_storm_chasers;
 extern s32 fontcolor;
 
 void func_80106218_storm_chasers(omObjData *);
+void func_801063B0_storm_chasers(Gfx **, s32, s32);
 void func_8010662C_storm_chasers(omObjData *);
 void func_801068C8_storm_chasers(omObjData *);
 void func_8010746C_storm_chasers(omObjData *);
@@ -119,10 +126,18 @@ void func_8010637C_storm_chasers(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2F_storm_chasers/269BF0", func_801063B0_storm_chasers);
 
-void func_80106624_storm_chasers(void) {
+void func_80106624_storm_chasers(omObjData *object) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2F_storm_chasers/269BF0", func_8010662C_storm_chasers);
+void func_8010662C_storm_chasers(omObjData *object) {
+    D_8010CF6C_storm_chasers = func_8000B838_main(0x500001);
+    D_8010CF74_storm_chasers = func_80055194_main(D_8010CF6E_storm_chasers);
+    D_8010CF70_storm_chasers =
+        func_8001AC8C_main(0, func_801063B0_storm_chasers, 2);
+    func_8001C8A8_main(D_8010CF72_storm_chasers, 1);
+    object->func = func_80106624_storm_chasers;
+    D_8010CF68_storm_chasers = 0;
+}
 
 void func_801066BC_storm_chasers(void) {
     omObjData *object = omAddObj(0xA0, 1, 0, -1, func_8010662C_storm_chasers);

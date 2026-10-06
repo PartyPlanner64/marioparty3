@@ -1,5 +1,8 @@
 #include "common.h"
 
+extern s16 D_8010CFE8_game_guys_sweet_surprise;
+extern s16 D_8010CFEA_game_guys_sweet_surprise;
+
 void func_801072B4_game_guys_sweet_surprise(omObjData *object);
 void func_8010AB3C_game_guys_sweet_surprise(omObjData *object);
 void func_8010ABD8_game_guys_sweet_surprise(omObjData *object);
@@ -145,9 +148,29 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", 
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_8010ABD8_game_guys_sweet_surprise);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_8010AC74_game_guys_sweet_surprise);
+void func_8010AC74_game_guys_sweet_surprise(omObjData *object) {
+    if (D_8010CFEA_game_guys_sweet_surprise == 1) {
+        if (func_801059BC_game_guys_sweet_surprise(3.0f) == 0) {
+            object->scale.x = object->scale.y = object->scale.z = 1.5f;
+        } else {
+            object->scale.x = object->scale.y = object->scale.z = 1.0f;
+        }
+        func_8001C5B4_main(object->model[0], object->motion[0]);
+        D_8010CFEA_game_guys_sweet_surprise = 0;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_8010AD04_game_guys_sweet_surprise);
+void func_8010AD04_game_guys_sweet_surprise(omObjData *object) {
+    if (D_8010CFE8_game_guys_sweet_surprise == 1) {
+        if (func_801059BC_game_guys_sweet_surprise(3.0f) == 0) {
+            object->scale.x = object->scale.y = object->scale.z = 1.25f;
+        } else {
+            object->scale.x = object->scale.y = object->scale.z = 1.0f;
+        }
+        func_8001C5B4_main(object->model[0], object->motion[0]);
+        D_8010CFE8_game_guys_sweet_surprise = 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_8010AD94_game_guys_sweet_surprise);
 

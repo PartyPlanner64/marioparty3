@@ -34,7 +34,19 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", func_80108
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", func_801085F4_dizzy_dinghies);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", func_80108E30_dizzy_dinghies);
+void func_80108E30_dizzy_dinghies(Vec *origin, Vec *p, Vec *q, Vec *out) {
+    f32 ax = p->x - origin->x;
+    f32 ay = p->y - origin->y;
+    f32 az = p->z - origin->z;
+    f32 bx = q->x - origin->x;
+    f32 by = q->y - origin->y;
+    f32 bz = q->z - origin->z;
+
+    out->x = ay * bz - az * by;
+    out->y = az * bx - ax * bz;
+    out->z = ax * by - ay * bx;
+    func_800202FC_main(out);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", func_80108EC4_dizzy_dinghies);
 

@@ -1,20 +1,35 @@
 #include "common.h"
 
+typedef struct UnkCrazyCogsCog { // 0x84 bytes, one entry per cog slot
+    /* 0x00 */ omObjData *obj;
+    /* 0x04 */ u16 timer;
+    /* 0x06 */ u8 unk_06[0x7E];
+} UnkCrazyCogsCog;
+
+extern s8 D_8010B990_crazy_cogs;
+extern s16 D_8010B994_crazy_cogs;
+extern s16 D_8010B99E_crazy_cogs;
 extern f32 D_8010B9A8_crazy_cogs;
+extern s8 D_8010B9B0_crazy_cogs[50];
+extern s8 D_8010B9E2_crazy_cogs;
 extern s8 D_8010B9E3_crazy_cogs[13];
 extern omObjData *D_8010B9F0_crazy_cogs;
 extern omObjData *D_8010BA74_crazy_cogs;
 extern omObjData *D_8010BAF8_crazy_cogs;
 extern omObjData *D_8010BB7C_crazy_cogs;
+extern UnkCrazyCogsCog D_8010C8E4_crazy_cogs[];
 extern omObjData *D_8010C5CC_crazy_cogs;
 extern omObjData *D_8010C650_crazy_cogs;
 extern f32 D_8010DE14_crazy_cogs;
+extern s16 D_8010DE22_crazy_cogs;
 extern s8 D_8010DE60_crazy_cogs;
+extern s8 D_8010DE6A_crazy_cogs[4];
 
 void func_80106270_crazy_cogs(omObjData *);
 void func_80106688_crazy_cogs(omObjData *);
 void func_8010683C_crazy_cogs(omObjData *);
 void func_801069DC_crazy_cogs(omObjData *);
+void func_8010A67C_crazy_cogs(omObjData *);
 void func_8010AA10_crazy_cogs(omObjData *);
 void func_8010AE08_crazy_cogs(omObjData *);
 
@@ -87,7 +102,25 @@ void func_801063DC_crazy_cogs(void) {
     D_8010B9F0_crazy_cogs = omAddObj(0x1F4, 1, 0, -1, func_80106270_crazy_cogs);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80106418_crazy_cogs);
+void func_80106418_crazy_cogs(omObjData *arg0) {
+    s8 cogIdx = ((s8 *)arg0->work)[3];
+    UnkCrazyCogsCog *cog = &D_8010C8E4_crazy_cogs[cogIdx];
+
+    if (D_8010DE6A_crazy_cogs[cogIdx] != 0) {
+        if (cog->timer & 1) {
+            arg0->trans.y = 10.0f;
+        } else {
+            arg0->trans.y = 0.0f;
+        }
+
+        cog->timer++;
+
+        if ((s16)cog->timer >= 0x14) {
+            cog->timer = 0;
+            D_8010DE6A_crazy_cogs[cogIdx] = 0;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_801064AC_crazy_cogs);
 
@@ -216,7 +249,24 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_8010A548_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_8010A67C_crazy_cogs);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_8010AA10_crazy_cogs);
+void func_8010AA10_crazy_cogs(omObjData *arg0) {
+    s16 i;
+
+    D_8010B99E_crazy_cogs = 0;
+    D_8010B994_crazy_cogs = 5;
+
+    for (i = 0; i < 0x32; i++) {
+        D_8010B9B0_crazy_cogs[i] = -1;
+    }
+
+    D_8010B9B0_crazy_cogs[i] = -1;
+    D_8010B9E2_crazy_cogs = 0;
+    D_8010B990_crazy_cogs = 0;
+    D_8010DE22_crazy_cogs = 0;
+
+    arg0->model[0] = -1;
+    arg0->func = func_8010A67C_crazy_cogs;
+}
 
 void func_8010AAA4_crazy_cogs(void) {
     D_8010C5CC_crazy_cogs = omAddObj(0x514, 1, 1, -1, func_8010AA10_crazy_cogs);

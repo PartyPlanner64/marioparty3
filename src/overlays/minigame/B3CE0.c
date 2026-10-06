@@ -396,7 +396,15 @@ void func_800E2B58_minigame(HuMtx4F mtx, Vec *arg1) {
     arg1->z = x * mtx[0][2] + y * mtx[1][2] + z * mtx[2][2];
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E2BD4_minigame);
+void func_800E2BD4_minigame(HuMtx4F mtx, Vec *arg1) {
+    f32 x = arg1->x;
+    f32 y = arg1->y;
+    f32 z = arg1->z;
+
+    arg1->x = x * mtx[0][0] + y * mtx[1][0] + z * mtx[2][0] + mtx[3][0];
+    arg1->y = x * mtx[0][1] + y * mtx[1][1] + z * mtx[2][1] + mtx[3][1];
+    arg1->z = x * mtx[0][2] + y * mtx[1][2] + z * mtx[2][2] + mtx[3][2];
+}
 
 void func_800E2C68_minigame(HuMtx4F mtx, Vec *arg1) {
     f32 x = arg1->x;

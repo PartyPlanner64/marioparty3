@@ -8,6 +8,7 @@ typedef struct MgResultBattleGroupSprites {
 
 extern u16 D_80108F30_mgresultbattle[];
 extern MgResultBattleGroupSprites D_80108F38_mgresultbattle[];
+extern omObjData *D_80108F7C_mgresultbattle;
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F5AF0", func_80107D10_mgresultbattle);
 
@@ -16,7 +17,16 @@ void func_80107F94_mgresultbattle(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F5AF0", func_80107F9C_mgresultbattle);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F5AF0", func_801080A0_mgresultbattle);
+void func_801080A0_mgresultbattle(void) {
+    omObjData *obj = D_80108F7C_mgresultbattle;
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        func_8001C258_main(obj->model[i + 1], 4, 0);
+        func_8001C814_main(obj->model[i + 1], 1, 0);
+        func_8001C6A8_main(obj->model[i + 1], 0.0f);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F5AF0", func_80108130_mgresultbattle);
 

@@ -13,14 +13,17 @@ typedef struct AceHighPlayer {
 extern omObjData *D_8010DE5C_aces_high;
 extern omObjData *D_8010DE60_aces_high;
 extern omObjData **D_8010DE68_aces_high;
+extern omObjData *D_8010DE80_aces_high;
 extern s16 D_8010DE8C_aces_high;
 extern s16 D_8010DE8E_aces_high;
 extern s16 D_8010DE90_aces_high;
 extern Vec D_8010DEA8_aces_high;
 extern Vec D_8010DEB4_aces_high;
 extern Vec D_8010DEC0_aces_high;
+extern s16 D_8010DF20_aces_high;
 
 void func_80105E84_aces_high(omObjData *object);
+void func_8010CA6C_aces_high(omObjData *object);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_801059A0_aces_high);
 
@@ -136,7 +139,15 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_8010BF3C_a
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_8010C288_aces_high);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_8010C9DC_aces_high);
+void func_8010C9DC_aces_high(void) {
+    omObjData *obj = omAddObj(0x1E, 0, 0, -1, func_8010CA6C_aces_high);
+
+    D_8010DE80_aces_high = obj;
+    obj->work[0] = 1;
+    D_8010DF20_aces_high = InitEspriteSlot(func_8000B838_main(0x38001C), 0, 0);
+    func_8000BBD4_main(D_8010DF20_aces_high, 0xA0, 0x78);
+    func_8000BCC8_main(D_8010DF20_aces_high, 0x8064);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_8010CA6C_aces_high);
 

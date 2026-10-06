@@ -33,6 +33,7 @@ extern s16 D_80112122_mstory4;
 extern u16 D_80112128_mstory4;
 extern s32 D_801121B4_mstory4;
 extern void (*D_801121DC_mstory4)(omObjData *);
+extern s16 D_80112358_mstory4[];
 extern s16 D_80112366_mstory4;
 extern s16 D_80112368_mstory4[];
 extern u16 D_80112376_mstory4;
@@ -401,9 +402,27 @@ void func_8010EF28_mstory4(s32 index) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010EF50_mstory4);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010EF80_mstory4);
+void func_8010EF80_mstory4(void) {
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010F010_mstory4);
+    for (i = 0; i < 8; i++) {
+        func_8000BB94_main(D_80112368_mstory4[i]);
+        func_8000C184_main(D_80112368_mstory4[i]);
+        HuSprKill(D_80112358_mstory4[i]);
+    }
+    HuPrcSleep(3);
+}
+
+void func_8010F010_mstory4(void) {
+    s32 i;
+
+    for (i = 0; i < 7; i++) {
+        func_8000BB94_main(D_80112368_mstory4[i]);
+        func_8000C184_main(D_80112368_mstory4[i]);
+        HuSprKill(D_80112358_mstory4[i]);
+        HuPrcSleep(3);
+    }
+}
 
 void func_8010F0A0_mstory4(void) {
     u16 *espriteSlot = &D_80112376_mstory4;

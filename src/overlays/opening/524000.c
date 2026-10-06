@@ -40,7 +40,7 @@ typedef struct {
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ f32 unk_14;
-    /* 0x18 */ s8 unk_18;
+    /* 0x18 */ u8 unk_18;
     /* 0x19 */ u8 unk_19[3];
 } OpSpr; // sizeof 0x1C
 
@@ -63,6 +63,10 @@ typedef struct {
     /* 0x00 */ s16 animId;
     /* 0x02 */ u16 espriteSlot;
 } OpContError; // sizeof 0x4
+
+typedef struct {
+    /* 0x00 */ s16 animId;
+} OpAnimSlot; // sizeof 0x2
 
 typedef struct {
     /* 0x00 */ s16 espriteSlot;
@@ -102,7 +106,7 @@ extern s16 D_801171B0_opening;
 extern u16 D_801171B2_opening;
 extern OpSlot D_801171B8_opening[0x20];
 extern OpSpr D_80114EB0_opening[0x40];
-extern s16 D_801155B0_opening[0x40];
+extern OpAnimSlot D_801155B0_opening[0x40];
 extern OpContError D_80117750_opening;
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opObjectInit);
@@ -154,25 +158,36 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoEndGet);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_801061F0_opening);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_8010621C_opening);
+void func_8010621C_opening(void) {
+    s32 i;
+
+    for (i = 0; i < ARRAY_COUNT(D_80114EB0_opening); i++) {
+        D_801155B0_opening[i].animId = -1;
+        D_80114EB0_opening[i].espriteSlot = -1;
+        D_80114EB0_opening[i].unk_04 = D_80114EB0_opening[i].unk_08 = 0;
+        D_80114EB0_opening[i].unk_0C = D_80114EB0_opening[i].unk_10 = 0.0f;
+        D_80114EB0_opening[i].unk_14 = D_80114EB0_opening[i].unk_0C;
+        D_80114EB0_opening[i].unk_18 = 0xFF;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opAnimIdGet);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opEspIdGet);
 
 void opAnimCreate(s32 arg0, s32 arg1) {
-    D_801155B0_opening[arg0] = func_8000B838_main(arg1);
+    D_801155B0_opening[arg0].animId = func_8000B838_main(arg1);
 }
 
 void opAnimKill(s32 arg0) {
-    if (D_801155B0_opening[arg0] != -1) {
-        HuSprKill(D_801155B0_opening[arg0]);
+    if (D_801155B0_opening[arg0].animId != -1) {
+        HuSprKill(D_801155B0_opening[arg0].animId);
     }
-    D_801155B0_opening[arg0] = -1;
+    D_801155B0_opening[arg0].animId = -1;
 }
 
 void opEspCreate(s32 slot, s16 animId) {
-    D_80114EB0_opening[slot].espriteSlot = InitEspriteSlot(D_801155B0_opening[animId], 0, 0);
+    D_80114EB0_opening[slot].espriteSlot = InitEspriteSlot(D_801155B0_opening[animId].animId, 0, 0);
     opSprPosSet(slot, 0xA0, 0x78);
 }
 

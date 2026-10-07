@@ -1,25 +1,92 @@
 #include "common.h"
 #include "mallocblock.h"
+#include "gcc/string.h"
 
-void func_80018544_main(s32, s32);
-void func_80019C00_main(void *data);
-void func_80022660_main(HmfData *);
+typedef struct {
+    u8 next;
+    u8 unk01;
+    s16 unk02;
+    f32 depth;
+} HmfDrawEntry;
+
+extern HmfDrawEntry *D_800D2070_main[8];
+extern s16 D_800D6AC8_main[8];
+extern s16 D_800D5564_main;
+
+extern s16 D_800A0A78_main;
 extern s16 D_800A1160_main;
 extern s16 D_800CDD6A_main;
 extern f32 D_800D2120_main;
 extern u16 D_800D5204_main;
 
+s16 func_80011460_main(u8 *);
+void func_80018544_main(s32, s32);
+void func_80019C00_main(void *data);
+void func_80022660_main(HmfData *);
+void func_80030030_main(f32);
+void func_8002FE08_main(s16, s16, char *, s16, s16, s16);
+
 INCLUDE_ASM("asm/nonmatchings/22EB0", func_800222B0_main);
 
 INCLUDE_ASM("asm/nonmatchings/22EB0", func_800224BC_main);
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_800225D4_main);
+void func_800225D4_main(void) {
+    s16 i;
+
+    for (i = 0; i < ARRAY_COUNT(D_800D2070_main); i++) {
+        D_800D6AC8_main[i] = 2;
+        D_800D2070_main[i][0].next = 1;
+        D_800D2070_main[i][1].unk01 = 0;
+        D_800D2070_main[i][1].next = 0;
+        D_800D2070_main[i][1].depth = 200000.0f;
+    }
+    D_800D5564_main = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/22EB0", func_80022660_main);
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_80022F08_main);
+void func_80022F08_main(HmfData *arg0) {
+    s16 needed;
+    s16 i;
+    u16 count;
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_80022FF4_main);
+    needed = 0;
+    for (i = 0, count = 0; i < arg0->unk10; i++) {
+        if (arg0->unk60[i].unk50 & 0x20000) {
+            needed = 1;
+        }
+        count += (u16)arg0->unk60[i].unk22;
+    }
+    if (needed && arg0->unkB0 == NULL) {
+        arg0->unkB0 = HuMemAllocTag(count * sizeof(*arg0->unkB0), D_800CDD6A_main);
+    }
+}
+
+void func_80022FF4_main(HmfData *arg0) {
+    HmfVertexGroup *group;
+    s16 *indices;
+    s16 i, j;
+    u16 count;
+    f32 x, y, z;
+
+    if (arg0->unkB0 == NULL) {
+        return;
+    }
+    group = arg0->unkB0;
+    for (i = 0; i < arg0->unk1A; i++, group++) {
+        indices = group->indices;
+        count = group->count;
+        x = y = z = 0.0f;
+        for (j = 0; j < count; j++, indices++) {
+            x += arg0->unk40[*indices].v.ob[0];
+            y += arg0->unk40[*indices].v.ob[1];
+            z += arg0->unk40[*indices].v.ob[2];
+        }
+        group->center.x = x / count;
+        group->center.y = y / count;
+        group->center.z = z / count;
+    }
+}
 
 void func_800230F8_main(HmfData *arg0) {
     s16 textureIndex;
@@ -172,7 +239,22 @@ INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002C520_main);
 
 INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002C5B8_main);
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002C834_main);
+s32 func_8002C834_main(HmfData *arg0, char *name) {
+    s16 hash;
+    s16 i;
+
+    hash = func_80011460_main((u8 *)name);
+    for (i = 0; i < arg0->unk10; i++) {
+        if (arg0->unk60[i].unk26 == hash && strcmp(arg0->unk60[i].unk00, name) == 0) {
+            break;
+        }
+    }
+    if (i == arg0->unk10) {
+        osSyncPrintf("Can't find ObjName %s\n", name);
+        return -1;
+    }
+    return i;
+}
 
 INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002C914_main);
 
@@ -186,7 +268,15 @@ INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002CDF4_main);
 
 INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002D094_main);
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002D260_main);
+void func_8002D260_main(void) {
+    s16 i;
+
+    func_80030030_main(1.0f);
+    D_800CCF58_main = HuMemAlloc(HU3D_MODEL_MAX * sizeof(*D_800CCF58_main));
+    for (i = 0; i < HU3D_MODEL_MAX; i++) {
+        D_800CCF58_main[i].unk02 = -1;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002D2D8_main);
 
@@ -203,7 +293,16 @@ void func_8002D4B8_main(s32 arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002D514_main);
+void func_8002D514_main(void) {
+    s16 i;
+
+    for (i = 0; i < HU3D_MODEL_MAX; i++) {
+        if (D_800CCF58_main[i].unk02 != -1) {
+            HuMemFreeAllWithTag(i + 0x2874);
+            D_800CCF58_main[i].unk02 = -1;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002D5B0_main);
 
@@ -265,7 +364,31 @@ void func_8002FC14_main(HmfData *arg0, f32 arg1) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002FC7C_main);
+f32 func_8002FC7C_main(HmfModelData_Unk64_Unk8C_Struct *arg0, u16 flags, f32 frame, f32 start, f32 speed) {
+    speed *= D_800A0A78_main * D_800D2120_main;
+    if (!(flags & 9)) {
+        if (!(flags & 4)) {
+            frame += speed;
+            if (frame >= arg0->unk02) {
+                if (flags & 2) {
+                    return start;
+                } else {
+                    return arg0->unk02;
+                }
+            }
+        } else {
+            frame -= speed;
+            if (frame < start) {
+                if (flags & 2) {
+                    return arg0->unk02 - speed;
+                } else {
+                    return start;
+                }
+            }
+        }
+    }
+    return frame;
+}
 
 void func_8002FD48_main(HmfData *arg0) {
     arg0->unkA0 = 0;
@@ -275,12 +398,20 @@ void func_8002FD50_main(HmfData *arg0) {
     arg0->unkA0 = arg0->unk8C->unk02 - 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002FD70_main);
+s16 func_8002FD70_main(HmfData *arg0) {
+    return arg0->unkA0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002FD8C_main);
+void func_8002FD8C_main(s16 arg0, s16 arg1, char *arg2, s16 arg3, s16 arg4) {
+    func_8002FE08_main(arg0, arg1, arg2, arg3, arg4, 0x8000);
+}
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002FDCC_main);
+void func_8002FDCC_main(s16 arg0, s16 arg1, char *arg2, s16 arg3, s16 arg4) {
+    func_8002FE08_main(arg0, arg1, arg2, arg3, arg4, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002FE08_main);
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_80030030_main);
+void func_80030030_main(f32 arg0) {
+    D_800D2120_main = arg0;
+}

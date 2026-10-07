@@ -22,7 +22,8 @@ typedef struct {
     char unk00[0x20];
     s16 unk20;
     s16 unk22;
-    char unk24[4];
+    char unk24[2];
+    s16 unk26;
     s16 unk28;
     s16 unk2A;
     char unk2C[0x24];
@@ -74,6 +75,13 @@ typedef struct {
 } HmfData_UnkD0;               // Size unknown
 
 typedef struct {
+    /* 0x00 */ u8 count;
+    /* 0x01 */ char unk01[3];
+    /* 0x04 */ s16 indices[4];
+    /* 0x0C */ Vec center;
+} HmfVertexGroup; // Size 0x18
+
+typedef struct {
     /* 0x00 */ u8 unk00;
     /* 0x01 */ s8 unk01;
     /* 0x02 */ char unk02[8];
@@ -91,7 +99,7 @@ typedef struct {
     /* 0x22 */ char unk22[0x16];
     /* 0x38 */ s32 unk38;
     /* 0x3C */ HmfModelData_Unk64_Unk3C_Struct *unk3C;
-    /* 0x40 */ void *unk40;
+    /* 0x40 */ Vtx *unk40;
     /* 0x44 */ Vtx *unk44[3];
     /* 0x50 */ void *unk50;
     /* 0x54 */ char unk54[0xC];
@@ -108,7 +116,7 @@ typedef struct {
     /* 0xA4 */ f32 unkA4;
     /* 0xA8 */ f32 unkA8;
     /* 0xAC */ f32 unkAC;
-    /* 0xB0 */ char unkB0[4];
+    /* 0xB0 */ HmfVertexGroup *unkB0;
     /* 0xB4 */ s32 unkB4;
     /* 0xB8 */ char unkB8[8];
     /* 0xC0 */ void *unkC0; // light data only?

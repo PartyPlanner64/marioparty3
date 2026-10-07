@@ -4,6 +4,7 @@
 #include "ultra64.h"
 #include "types.h"
 #include "math.h"
+#include "types.h"
 
 #define HU3D_MODEL_MAX 128
 
@@ -15,27 +16,51 @@ typedef struct {
 
 typedef struct {
     u8 unk00;
-    char unk01[0x33];
+    s8 unk01[3];
+    s16 unk04[4];
+    f32 unk0C[4];
+    f32 unk1C[4];
+    u8 unk2C[4];
+    s16 unk30;
+    s16 unk32;
 } HmfModelData_Unk64_Unk60_Unk54_Struct;
 
+struct HmfData;
+
 typedef struct {
-    char unk00[0x20];
+    char unk00[0x1C];
+    u8 unk1C;
+    u8 unk1D;
+    s16 unk1E;
     s16 unk20;
     s16 unk22;
-    char unk24[2];
+    s16 unk24;
     s16 unk26;
     s16 unk28;
     s16 unk2A;
-    char unk2C[0x24];
+    s16 unk2C;
+    s16 unk2E;
+    char unk30[0x20];
     s32 unk50;
     HmfModelData_Unk64_Unk60_Unk54_Struct *unk54;
-    char unk58[0x10];
+    struct HmfData *unk58;
+    Gfx *unk5C;
+    Gfx *unk60;
+    Gfx *unk64;
 } HmfModelData_Unk64_Unk60_Struct;
 
+struct HmfModelEntry;
+
 typedef struct {
-    char unk00[2];
+    s16 unk00;
     s16 unk02;
-    char unk04[0x14];
+    s16 unk04;
+    s16 unk06;
+    s16 unk08;
+    s16 unk0A;
+    struct HmfModelEntry *unk0C;
+    s16 *unk10;
+    f32 *unk14;
 } HmfModelData_Unk64_Unk8C_Struct;
 
 typedef struct {
@@ -47,7 +72,12 @@ typedef struct {
 } HmfModelData_Unk64_Unk98_Struct;
 
 typedef struct {
-    char unk_00[0x30];
+    char unk_00[0x1F];
+    u8 unk1F;
+    char unk20[4];
+    s16 unk24;
+    s16 unk26;
+    char unk28[8];
     s32 unk_30;
 } HmfData_Unk84_Entry2;
 
@@ -82,6 +112,59 @@ typedef struct {
 } HmfVertexGroup; // Size 0x18
 
 typedef struct {
+    s16 unk00;
+    s16 unk02;
+    s16 unk04;
+    char unk06[2];
+    Vec unk08;
+    Vec unk14;
+    Vec scale;
+    Vec pos;
+    Vec rot;
+    u8 unk44;
+    u8 unk45;
+    char unk46[2];
+    struct HmfData *unk48;
+    HuMtx4F unk4C;
+} HmfSkeletonNode;
+
+typedef struct {
+    s16 unk00;
+    char unk02[2];
+    Vec basePos;
+    Vec baseRot;
+    Vec baseScale;
+    Vec pos;
+    Vec rot;
+    Vec scale;
+    u8 unk4C;
+    u8 unk4D;
+    u8 unk4E;
+    char unk4F[1];
+    s16 *unk50;
+    struct HmfData *unk54;
+    HuMtx4F unk58;
+} HmfMotionNode;
+
+typedef struct {
+    u8 unk00;
+    u8 unk01;
+    u8 unk02;
+    u8 unk03;
+    u8 unk04;
+    u8 unk05;
+    u8 unk06;
+    u8 unk07;
+    u8 unk08;
+    u8 unk09;
+    u8 unk0A;
+} HmfMaterialData;
+
+typedef struct {
+    Gfx **unk00;
+} HmfDisplayLists;
+
+typedef struct HmfData {
     /* 0x00 */ u8 unk00;
     /* 0x01 */ s8 unk01;
     /* 0x02 */ char unk02[8];
@@ -92,26 +175,36 @@ typedef struct {
     /* 0x10 */ s16 unk10;
     /* 0x12 */ s16 unk12; // Changed from char[2] since it's used as s16
     /* 0x14 */ s16 unk14;
-    /* 0x16 */ char unk16[4];
+    /* 0x16 */ s16 unk16;
+    /* 0x18 */ s16 unk18;
     /* 0x1A */ s16 unk1A;
-    /* 0x1C */ char unk1C[4];
+    /* 0x1C */ s16 unk1C;
+    /* 0x1E */ s16 unk1E;
     /* 0x20 */ s16 unk20;
-    /* 0x22 */ char unk22[0x16];
+    /* 0x22 */ char unk22[6];
+    /* 0x28 */ s16 unk28;
+    /* 0x2A */ char unk2A[0xE];
     /* 0x38 */ s32 unk38;
     /* 0x3C */ HmfModelData_Unk64_Unk3C_Struct *unk3C;
     /* 0x40 */ Vtx *unk40;
     /* 0x44 */ Vtx *unk44[3];
-    /* 0x50 */ void *unk50;
-    /* 0x54 */ char unk54[0xC];
+    /* 0x50 */ s16 (*unk50)[3];
+    /* 0x54 */ s8 (*unk54)[3];
+    /* 0x58 */ char unk58[4];
+    /* 0x5C */ s16 *unk5C;
     /* 0x60 */ HmfModelData_Unk64_Unk60_Struct *unk60;
-    /* 0x64 */ char unk64[0x20];
+    /* 0x64 */ s16 unk64;
+    /* 0x66 */ char unk66[2];
+    /* 0x68 */ HmfSkeletonNode *unk68;
+    /* 0x6C */ char unk6C[0x14];
+    /* 0x80 */ HmfMotionNode *unk80;
     /* 0x84 */ HmfData_Unk84_Entry *unk84; // Array of entries
-    /* 0x88 */ char unk88[4];
+    /* 0x88 */ HmfMaterialData *unk88;
     /* 0x8C */ HmfModelData_Unk64_Unk8C_Struct *unk8C;
     /* 0x90 */ HmfModelData_Unk64_Unk8C_Struct *unk90;
     /* 0x94 */ HmfModelData_Unk64_Unk8C_Struct *unk94;
     /* 0x98 */ HmfModelData_Unk64_Unk98_Struct *unk98;
-    /* 0x9C */ char unk9C[4];
+    /* 0x9C */ HmfData_Unk84_Entry2 *unk9C;
     /* 0xA0 */ f32 unkA0;
     /* 0xA4 */ f32 unkA4;
     /* 0xA8 */ f32 unkA8;
@@ -122,9 +215,10 @@ typedef struct {
     /* 0xC0 */ void *unkC0; // light data only?
     /* 0xC4 */ char unkC4[4];
     /* 0xC8 */ s32 unkC8;
-    /* 0xCC */ char unkCC[4];
+    /* 0xCC */ HmfDisplayLists *unkCC;
     /* 0xD0 */ s32 unkD0;
-    /* 0xD4 */ char unkD4[8];
+    /* 0xD4 */ void (*unkD4)(HuMtx4F, f32, f32, f32);
+    /* 0xD8 */ void (*unkD8)(HuMtx4F, f32, f32, f32);
 } HmfData;
 
 typedef struct {

@@ -1217,7 +1217,14 @@ Gfx *func_800250D4_main(s16 arg0, Gfx *arg1, Gfx *arg2) {
 }
 
 #ifdef NON_MATCHING
-/* Remaining differences are in storage of the vertex limit and local pointers. */
+/* All instructions match except vertexLimit's storage: the target spills it to an
+ * s16 frame slot (sh/lhu at sp+0x26, slotted between faceCount and previousMaterial)
+ * right at its definition, while GCC keeps it in v1 here and reload word-spills it
+ * after the loop guard, shifting the previousMaterial/previousTexture/objectIndex
+ * slots down by 8. That requires global alloc to deny vertexLimit a register, which
+ * only happens when its live range crosses a call (restricting it to callee-saved
+ * regs); the load/store pair sits after the func_80029FB4_main call, so no source
+ * placement of the assignment reproduces both the instruction order and the spill. */
 void func_800257BC_main(HmfData *hmf, s16 objectIndex) {
     s16 i;
     s16 j;

@@ -63,7 +63,18 @@ s32 func_800202FC_main(Vec *vec) {
     return TRUE;
 }
 
-INCLUDE_ASM("asm/nonmatchings/20A20", func_8002038C_main);
+s32 func_8002038C_main(Hu3DPoint *p0, Hu3DPoint *p1, Hu3DPoint *p2, Vec *out) {
+    f32 d1x = (f32)p1->x - (f32)p0->x;
+    f32 d1y = (f32)p1->y - (f32)p0->y;
+    f32 d1z = (f32)p1->z - (f32)p0->z;
+    f32 d2x = (f32)p2->x - (f32)p0->x;
+    f32 d2y = (f32)p2->y - (f32)p0->y;
+    f32 d2z = (f32)p2->z - (f32)p0->z;
+    out->x = d1y * d2z - d1z * d2y;
+    out->y = d1z * d2x - d1x * d2z;
+    out->z = d1x * d2y - d1y * d2x;
+    return func_800202FC_main(out);
+}
 
 f32 func_8002048C_main(f32 x, f32 z, Hu3DPoint *p, Hu3DPoint *q) {
     f32 px = p->x - x;

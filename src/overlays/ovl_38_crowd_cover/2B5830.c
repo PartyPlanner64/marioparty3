@@ -1,9 +1,17 @@
 #include "common.h"
 #include "overlays/minigame.h"
 
+typedef struct {
+    /* 0x00 */ char unk_00[0xC];
+    /* 0x0C */ u8 unk_0C;
+    /* 0x0D */ u8 unk_0D;
+    /* 0x0E */ u8 unk_0E;
+    /* 0x0F */ u8 unk_0F;
+} CrowdCoverEntry; // Size 0x10
+
 typedef struct UnkCrowdCover {
     /* 0x00 */ Gfx *displayList;
-    /* 0x04 */ s32 *entries;
+    /* 0x04 */ CrowdCoverEntry *entries;
     /* 0x08 */ HuSprite_Unk84_Struct *sprite;
     /* 0x0C */ struct UnkCrowdCover *prev;
     /* 0x10 */ struct UnkCrowdCover *next;
@@ -399,7 +407,7 @@ UnkCrowdCover *func_8010B0BC_crowd_cover(s16 index) {
     return crowd;
 }
 
-s32 *func_8010B0FC_crowd_cover(s16 index) {
+CrowdCoverEntry *func_8010B0FC_crowd_cover(s16 index) {
     UnkCrowdCover *crowd;
     s32 i = index;
 
@@ -426,7 +434,27 @@ void func_8010B1DC_crowd_cover(s16 index, s8 value1, s8 value2, s8 value3, s16 v
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_8010B228_crowd_cover);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_8010B308_crowd_cover);
+void func_8010B308_crowd_cover(s32 index, s32 flag) {
+    UnkCrowdCover *crowd = &D_8010D8EC_crowd_cover[index];
+    s32 i;
+
+    if (flag != 0) {
+        crowd->unk_28 |= 0x10000;
+        for (i = 0; i < crowd->unk_18; i++) {
+            crowd->entries[i].unk_0C = 0;
+            crowd->entries[i].unk_0D = 0;
+            crowd->entries[i].unk_0E = 0x80;
+        }
+        return;
+    }
+    crowd->unk_28 &= ~0x10000;
+    for (i = 0; i < crowd->unk_18; i++) {
+        crowd->entries[i].unk_0C = 0xFF;
+        crowd->entries[i].unk_0D = 0xFF;
+        crowd->entries[i].unk_0E = 0xFF;
+        crowd->entries[i].unk_0F = 0xFF;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_8010B408_crowd_cover);
 

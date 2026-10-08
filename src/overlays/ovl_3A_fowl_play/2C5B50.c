@@ -1,8 +1,16 @@
 #include "common.h"
 
+typedef struct FowlEntry {
+    /* 0x00 */ char unk_00[0xC];
+    /* 0x0C */ u8 unk_0C;
+    /* 0x0D */ u8 unk_0D;
+    /* 0x0E */ u8 unk_0E;
+    /* 0x0F */ u8 unk_0F;
+} FowlEntry; // Size 0x10
+
 typedef struct Fowl {
     /* 0x00 */ void *unk_00;
-    /* 0x04 */ void *unk_04;
+    /* 0x04 */ FowlEntry *unk_04;
     /* 0x08 */ HuSprite_Unk84_Struct *sprite;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;
@@ -302,7 +310,27 @@ void func_8010D2A4_fowl_play(s16 arg0, s8 arg1, s8 arg2, s8 arg3, s16 arg4) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3A_fowl_play/2C5B50", func_8010D2F0_fowl_play);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3A_fowl_play/2C5B50", func_8010D3D0_fowl_play);
+void func_8010D3D0_fowl_play(s32 index, s32 flag) {
+    Fowl *fowl = D_8010F32C_fowl_play + index;
+    s32 i;
+
+    if (flag != 0) {
+        fowl->unk_28 |= 0x10000;
+        for (i = 0; i < fowl->unk_18; i++) {
+            fowl->unk_04[i].unk_0C = 0;
+            fowl->unk_04[i].unk_0D = 0;
+            fowl->unk_04[i].unk_0E = 0x80;
+        }
+        return;
+    }
+    fowl->unk_28 &= ~0x10000;
+    for (i = 0; i < fowl->unk_18; i++) {
+        fowl->unk_04[i].unk_0C = 0xFF;
+        fowl->unk_04[i].unk_0D = 0xFF;
+        fowl->unk_04[i].unk_0E = 0xFF;
+        fowl->unk_04[i].unk_0F = 0xFF;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3A_fowl_play/2C5B50", func_8010D4D0_fowl_play);
 

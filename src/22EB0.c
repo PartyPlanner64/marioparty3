@@ -4,9 +4,18 @@
 #include "mallocblock.h"
 #include "gcc/string.h"
 
-#define HMF_TEXTURE_MASK(size) ((size) <= 2 ? 1 : (size) <= 4 ? 2 : \
-    (size) <= 8 ? 3 : (size) <= 16 ? 4 : (size) <= 32 ? 5 : \
-    (size) <= 64 ? 6 : (size) <= 128 ? 7 : (size) <= 256 ? 8 : 9)
+#define HMF_HILITE_RENDER_MODE (Z_CMP | IM_RD | CVG_DST_SAVE | FORCE_BL |                \
+                                GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA) | \
+                                GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA))
+
+#define HMF_TEXTURE_MASK(size) ((size) <= 2 ? 1 : (size) <= 4 ? 2 \
+                                              : (size) <= 8   ? 3 \
+                                              : (size) <= 16  ? 4 \
+                                              : (size) <= 32  ? 5 \
+                                              : (size) <= 64  ? 6 \
+                                              : (size) <= 128 ? 7 \
+                                              : (size) <= 256 ? 8 \
+                                                              : 9)
 #define HMF_TEXTURE_SIZE texture->unk1D
 #define HMF_TEXTURE_SIZE_LOAD_BLOCK D_800CCF88_main
 #define HMF_TEXTURE_SIZE_INCR D_800CD2FC_main
@@ -33,7 +42,10 @@ typedef struct {
 } HmfDrawObject;
 
 typedef struct {
-    Mtx mtx;
+    union {
+        Mtx mtx;
+        Hilite hilite;
+    } data;
     LookAt lookAt;
 } HmfLookAtData;
 
@@ -76,6 +88,8 @@ extern u32 D_800CD2FC_main;
 extern u32 D_800D6A20_main;
 extern u32 D_800C952C_main;
 extern u32 D_800D1FFC_main;
+extern u16 D_800B1A00_main;
+extern u16 D_800B1A02_main;
 extern s16 D_800CE2B4_main;
 extern HuCamera *D_800D10F4_main;
 extern HmfLookAtData D_800D1408_main[];
@@ -157,6 +171,9 @@ extern s16 D_800A1160_main;
 extern s16 D_800CDD6A_main;
 extern f32 D_800D2120_main;
 extern u16 D_800D5204_main;
+extern s16 D_800CC0B4_main;
+extern Gfx D_800A1118_main[];
+extern u8 *D_800A114C_main[];
 
 void func_8007AB68_main(HuMtx4F, LookAt *, f32, f32, f32, f32, f32, f32, f32, f32, f32);
 void func_8002B2AC_main(HmfData_Unk84_Entry2 *, s16, s16);
@@ -173,7 +190,7 @@ void func_80029FB4_main(HmfData *, s16);
 s32 func_8002DF2C_main(D_800CCF58_main_Struct *, HmfMotionFile *);
 s32 func_8002D5B0_main(D_800CCF58_main_Struct *, HmfData *);
 s32 func_8002D3D0_main(HmfData *, HmfMotionFile *, s32);
-s32 func_8002D2D8_main(HmfMotionFile *, HmfData *);
+s16 func_8002D2D8_main(HmfMotionFile *, HmfData *);
 f32 HuSqrtf(f32);
 u8 func_8000EF64_main(void *, u16, s32, void *, s32);
 void func_8002AC5C_main(u16);
@@ -213,6 +230,15 @@ void func_80019C00_main(void *data);
 void func_80022660_main(HmfData *);
 void func_80030030_main(f32);
 void func_8002FE08_main(s16, s16, char *, s16, s16, s16);
+
+s32 func_8002DA98_main(D_800CCF58_main_Struct *, s16, u8 *);
+s32 func_8002DD4C_main(HmfData *, s16, u8 *);
+void *func_80010A38_main(s32, void *, void *);
+void *func_80010AC8_main(void *);
+s16 func_8000FDAC_main(HmfData *, s16);
+
+f32 func_8002E78C_main(HmfModelData_Unk64_Unk8C_Struct *, HmfMotionChannel *, f32);
+f32 func_8002E8E8_main(HmfModelData_Unk64_Unk8C_Struct *, HmfMotionChannel *, f32);
 
 void func_800222B0_main(HuAllocFunc alloc, HuFreeFunc free, u16 vertexCount, u16 matrixCount, u16 gfxCount, u8 bufferCount) {
     s16 i;
@@ -1190,7 +1216,179 @@ Gfx *func_800250D4_main(s16 arg0, Gfx *arg1, Gfx *arg2) {
     return start;
 }
 
+#ifdef NON_MATCHING
+/* Remaining differences are in storage of the vertex limit and local pointers. */
+void func_800257BC_main(HmfData *hmf, s16 objectIndex) {
+    s16 i;
+    s16 j;
+    s16 faceCount;
+    s16 unlit;
+    s16 textureWidth;
+    s16 textureHeight;
+    s16 vertexLimit;
+    s16 previousUnlit;
+    HmfModelData_Unk64_Unk60_Unk54_Struct *source;
+    HmfMaterialData *previousMaterial;
+    HmfMaterialData *material;
+    HmfData_Unk84_Entry *previousTexture;
+    HmfData_Unk84_Entry *texture;
+    s32 flags;
+    s16 groupVertices;
+    s16 animated;
+    HmfDrawFace *face;
+    s16 *position;
+    s8 *color;
+    Vtx *vertex;
+    s16 sourceIndex;
+    s16 vertexIndex;
+    s16 s;
+    s16 t;
+    s16 count;
+
+    D_800B19F0_main = &hmf->unk60[objectIndex];
+    faceCount = D_800B19F0_main->unk22;
+    D_800D0A44_main = 0;
+    D_800B19F4_main = -1;
+    D_800CDD66_main = D_800CE1CE_main;
+    source = D_800B19F0_main->unk54;
+    previousMaterial = &hmf->unk88[source->unk30];
+    flags = D_800B19F0_main->unk50 &= ~0x40000;
+    groupVertices = (flags & 0x6020000) == 0x20000;
+    if ((D_800C9940_main & 0x2001) == 0x2001) {
+        func_80029FB4_main(hmf, objectIndex);
+    }
+    unlit = source->unk00 & 0x80;
+    previousUnlit = unlit;
+    if (unlit) {
+        gSPClearGeometryMode(gMainGfxPos++, G_LIGHTING);
+    } else {
+        gSPSetGeometryMode(gMainGfxPos++, G_LIGHTING);
+    }
+    if (source->unk32 >= 0) {
+        previousTexture = &hmf->unk84[source->unk32];
+    } else {
+        previousTexture = (HmfData_Unk84_Entry *)-1;
+    }
+    vertexLimit = D_800A0AD8_main[(u32)(D_800C9940_main & 0x1C00) >> 10];
+    for (i = 0, animated = 0; i < faceCount; i++) {
+        source = &hmf->unk60[objectIndex].unk54[i];
+        if (source->unk00 >= 3) {
+            material = &hmf->unk88[source->unk30];
+            if (source->unk32 >= 0) {
+                texture = &hmf->unk84[source->unk32];
+            } else {
+                texture = (HmfData_Unk84_Entry *)-1;
+            }
+            unlit = source->unk00 & 0x80;
+            if ((vertexLimit < D_800CE1CE_main - D_800CDD66_main) | (previousMaterial != material) ||
+                previousTexture != texture || (D_800D0A44_main >= 48) | (unlit != previousUnlit) || animated) {
+                previousMaterial = material;
+                previousTexture = texture;
+                func_800260F0_main(hmf, &D_800B19F0_main->unk50);
+                if (unlit != previousUnlit) {
+                    if (unlit) {
+                        gSPClearGeometryMode(gMainGfxPos++, G_LIGHTING);
+                    } else {
+                        gSPSetGeometryMode(gMainGfxPos++, G_LIGHTING);
+                    }
+                    previousUnlit = unlit;
+                }
+                D_800D0A44_main = 0;
+                animated = 0;
+            }
+            face = &D_800CD6B0_main[D_800D0A44_main];
+            count = face->count = source->unk00 & 0x7F;
+            if (count != 2) {
+                face->material = material;
+                face->texture = texture;
+                if (texture != (HmfData_Unk84_Entry *)-1) {
+                    textureWidth = texture->unkC->unk24 << 5;
+                    textureHeight = texture->unkC->unk26 << 5;
+                    if (texture->unkC->unk1F & 1) {
+                        animated = 1;
+                    }
+                } else {
+                    textureWidth = textureHeight = 0;
+                }
+                if (groupVertices) {
+                    hmf->unkB0[D_800D5562_main].count = count;
+                    hmf->unkB0[D_800D5562_main].unk01[0] = source->unk01[0];
+                    hmf->unkB0[D_800D5562_main].unk01[1] = source->unk01[1];
+                    hmf->unkB0[D_800D5562_main].unk01[2] = source->unk01[2];
+                }
+                for (j = 0; j < count; j++) {
+                    sourceIndex = source->unk04[j];
+                    position = hmf->unk50[sourceIndex];
+                    if (unlit) {
+                        color = (s8 *)&hmf->unk88[source->unk2C[j]].unk05;
+                    } else {
+                        color = hmf->unk54[sourceIndex];
+                    }
+                    s = source->unk0C[j] * textureWidth;
+                    t = source->unk1C[j] * textureHeight;
+                    vertex = &D_800D5308_main[D_800CE1CE_main - 1];
+                    if (flags & 0x20000) {
+                        if (groupVertices) {
+                            hmf->unkB0[D_800D5562_main].indices[j] = D_800CE1CE_main;
+                        }
+                        vertexIndex = D_800CDD66_main;
+                    } else {
+                        for (vertexIndex = D_800CE1CE_main - 1; vertexIndex >= D_800CDD66_main; vertexIndex--, vertex--) {
+                            if (vertex->v.ob[0] == position[0] && vertex->v.ob[1] == position[1] && vertex->v.ob[2] == position[2] &&
+                                (s8)vertex->v.cn[0] == color[0] && (s8)vertex->v.cn[1] == color[1] && (s8)vertex->v.cn[2] == color[2] &&
+                                vertex->v.tc[0] == s && vertex->v.tc[1] == t) {
+                                break;
+                            }
+                        }
+                    }
+                    if (vertexIndex <= D_800CDD66_main) {
+                        vertex = &D_800D5308_main[D_800CE1CE_main];
+                        vertex->v.ob[0] = position[0];
+                        vertex->v.ob[1] = position[1];
+                        vertex->v.ob[2] = position[2];
+                        vertex->v.cn[0] = color[0];
+                        vertex->v.cn[1] = color[1];
+                        vertex->v.cn[2] = color[2];
+                        vertex->v.tc[0] = s;
+                        vertex->v.tc[1] = t;
+                        vertex->v.cn[3] = 0xFF;
+                        face->indices[j] = D_800CE1CE_main - D_800CDD66_main;
+                        face->flags = unlit;
+                        if (hmf->unk5C != NULL) {
+                            hmf->unk5C[sourceIndex] = D_800CE1CE_main;
+                        }
+                        D_800CE1CE_main++;
+                    } else {
+                        face->indices[j] = vertexIndex - D_800CDD66_main;
+                        if (hmf->unk5C != NULL) {
+                            hmf->unk5C[sourceIndex] = vertexIndex;
+                        }
+                    }
+                }
+                if (groupVertices) {
+                    D_800D5562_main++;
+                }
+                D_800D0A44_main++;
+            }
+        }
+    }
+    if (D_800CE1CE_main != D_800CDD66_main) {
+        if (unlit != previousUnlit) {
+            if (unlit) {
+                gSPClearGeometryMode(gMainGfxPos++, G_LIGHTING);
+            } else {
+                gSPSetGeometryMode(gMainGfxPos++, G_LIGHTING);
+            }
+        }
+        func_800260F0_main(hmf, &D_800B19F0_main->unk50);
+        if (unlit) {
+            gSPSetGeometryMode(gMainGfxPos++, G_LIGHTING);
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/22EB0", func_800257BC_main);
+#endif
 
 void func_800260F0_main(HmfData *hmf, s32 *flags) {
     HmfData_Unk84_Entry2 *texture;
@@ -1532,9 +1730,368 @@ void func_800260F0_main(HmfData *hmf, s32 *flags) {
     D_800CDD66_main = D_800CE1CE_main;
 }
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_80029FB4_main);
+void func_80029FB4_main(HmfData *hmf, s16 objectIndex) {
+    s16 *position;
 
+    gSPClearGeometryMode(gMainGfxPos++, G_LIGHTING);
+    position = D_800D5308_main[D_800CE1CE_main++].v.ob;
+    *position++ = hmf->unk60[objectIndex].boundsMin[0];
+    position[0] = hmf->unk60[objectIndex].boundsMin[1];
+    position[1] = hmf->unk60[objectIndex].boundsMin[2];
+    position = D_800D5308_main[D_800CE1CE_main++].v.ob;
+    *position++ = hmf->unk60[objectIndex].boundsMin[0];
+    position[0] = hmf->unk60[objectIndex].boundsMax[1];
+    position[1] = hmf->unk60[objectIndex].boundsMin[2];
+    position = D_800D5308_main[D_800CE1CE_main++].v.ob;
+    *position++ = hmf->unk60[objectIndex].boundsMax[0];
+    position[0] = hmf->unk60[objectIndex].boundsMax[1];
+    position[1] = hmf->unk60[objectIndex].boundsMin[2];
+    position = D_800D5308_main[D_800CE1CE_main++].v.ob;
+    *position++ = hmf->unk60[objectIndex].boundsMax[0];
+    position[0] = hmf->unk60[objectIndex].boundsMin[1];
+    position[1] = hmf->unk60[objectIndex].boundsMin[2];
+    position = D_800D5308_main[D_800CE1CE_main++].v.ob;
+    *position++ = hmf->unk60[objectIndex].boundsMin[0];
+    position[0] = hmf->unk60[objectIndex].boundsMin[1];
+    position[1] = hmf->unk60[objectIndex].boundsMax[2];
+    position = D_800D5308_main[D_800CE1CE_main++].v.ob;
+    *position++ = hmf->unk60[objectIndex].boundsMin[0];
+    position[0] = hmf->unk60[objectIndex].boundsMax[1];
+    position[1] = hmf->unk60[objectIndex].boundsMax[2];
+    position = D_800D5308_main[D_800CE1CE_main++].v.ob;
+    *position++ = hmf->unk60[objectIndex].boundsMax[0];
+    position[0] = hmf->unk60[objectIndex].boundsMax[1];
+    position[1] = hmf->unk60[objectIndex].boundsMax[2];
+    position = D_800D5308_main[D_800CE1CE_main++].v.ob;
+    *position++ = hmf->unk60[objectIndex].boundsMax[0];
+    position[0] = hmf->unk60[objectIndex].boundsMin[1];
+    position[1] = hmf->unk60[objectIndex].boundsMax[2];
+    gSPVertex(gMainGfxPos++, (Vtx *)(0x1000000 + D_800CDD66_main * sizeof(Vtx)), D_800CE1CE_main - D_800CDD66_main, 0);
+    D_800CDD66_main = D_800CE1CE_main;
+    gSPCullDisplayList(gMainGfxPos++, 0, 7);
+}
+
+#ifdef NON_MATCHING
+/* Matches except for the operand order of two OR instructions. */
+void func_8002A358_main(HmfMaterialData *material, HmfData_Unk84_Entry *texture, u32 flags) {
+    u8 materialFlags;
+    s32 antialias;
+    u64 combine;
+    u64 renderMode;
+    s16 depthMode;
+    s32 mask;
+
+    materialFlags = material->unk09;
+    if ((D_800C9940_main & 0x180) == 0x100) {
+        antialias = ((flags >> 24) ^ 1) & 1;
+    } else {
+        antialias = D_800C9940_main & 0x180;
+    }
+    if (flags & 0x80000) {
+        return;
+    }
+    if (D_800C9940_main & 0x80000) {
+        combine = 0xFCFFFFFF;
+        combine <<= 32;
+        combine |= 0xFFFFFFFF;
+    } else if (D_800C9940_main & 0x10000) {
+        combine = 0xFC127E24;
+        combine <<= 32;
+        combine |= 0x55FDF2F9;
+    } else if (flags & 0x200000) {
+        combine = 0xFCFFFFFF;
+        combine <<= 32;
+        combine |= 0xFFFE793C;
+    } else if (texture == (HmfData_Unk84_Entry *)-1) {
+        if (material->unk09 & 1) {
+            combine = 0xFC327E64;
+            combine <<= 32;
+            combine |= 0xFFFFF7FB;
+        } else {
+            if (!(materialFlags & 4)) {
+                gDPSetPrimColor(gMainGfxPos++, 0, 0, material->unk05, material->unk06, material->unk07, 1);
+            }
+            if (D_800CE1C6_main == 0) {
+                combine = 0xFC327E64;
+                combine <<= 32;
+                combine |= 0xFFFFFDFE;
+            } else {
+                combine = 0xFC327FFF;
+                combine <<= 32;
+                combine |= 0xFFFFFC38;
+            }
+        }
+    } else if (texture->unkC->unk1C == 3) {
+        if (D_800CE1C6_main == 0) {
+            combine = 0xFC119623;
+            combine <<= 32;
+            combine |= 0xFF2FFFFF;
+        } else {
+            combine = 0xFC1197FF;
+            combine <<= 32;
+            combine |= 0xFFFFFE38;
+        }
+        materialFlags |= 1;
+    } else if (texture->unkC->unk1C == 4) {
+        if (D_800CE1C6_main == 0) {
+            combine = 0xFCFF97FF;
+            combine <<= 32;
+            combine |= 0xFF2DFEFF;
+        } else {
+            combine = 0xFCFF97FF;
+            combine <<= 32;
+            combine |= 0xFFFDFE38;
+        }
+        materialFlags |= 1;
+    } else if (texture->unkC->unk1D == 3) {
+        if (D_800CE1C6_main == 0) {
+            combine = 0xFC121624;
+            combine <<= 32;
+            combine |= 0xFF2FFFFF;
+        } else {
+            combine = 0xFC1217FF;
+            combine <<= 32;
+            combine |= 0xFFFFFE38;
+        }
+        materialFlags |= 1;
+    } else if (materialFlags & 1) {
+        if (D_800CE1C6_main == 0) {
+            combine = 0xFC121624;
+            combine <<= 32;
+            combine |= 0xFF2FFFFF;
+        } else {
+            combine = 0xFC1217FF;
+            combine <<= 32;
+            combine |= 0xFFFFFE38;
+        }
+    } else {
+        if (D_800CE1C6_main == 0) {
+            combine = 0xFC127E24;
+            combine <<= 32;
+            combine |= 0xFFFFF3F9;
+        } else {
+            combine = 0xFC127FFF;
+            combine <<= 32;
+            combine |= 0xFFFFF238;
+        }
+    }
+    mask = D_800C9940_main & 0x60;
+    if (mask == 0x20) {
+        depthMode = 0x48;
+    } else {
+        depthMode = (mask == 0x40) * 8;
+    }
+    if (D_800C9940_main & 0x80000) {
+        renderMode = 0x5553F0;
+    } else if (flags & 0x8000) {
+        gDPSetBlendColor(gMainGfxPos++, 0, 0, 0, 1);
+        gDPSetAlphaCompare(gMainGfxPos++, G_AC_THRESHOLD);
+        if (!(materialFlags & 4)) {
+            gDPSetPrimColor(gMainGfxPos++, 0, 0, material->unk05, material->unk06, material->unk07, material->unk0A);
+        }
+        {
+            u64 texturedMask;
+            renderMode = 0x50307B;
+            texturedMask = -(u64)(texture != (HmfData_Unk84_Entry *)-1);
+            texturedMask &= renderMode;
+            renderMode = texturedMask | 0x50007B;
+        }
+        D_800CE2F0_main = 0;
+    } else if (flags & 0x200000) {
+        renderMode = 0x507858;
+    } else if ((s32)flags < 0) {
+        if (materialFlags & 1) {
+            gDPSetBlendColor(gMainGfxPos++, 0, 0, 0, 1);
+            gDPSetAlphaCompare(gMainGfxPos++, G_AC_THRESHOLD);
+            if (!(materialFlags & 4)) {
+                gDPSetPrimColor(gMainGfxPos++, 0, 0, material->unk05, material->unk06, material->unk07, material->unk0A);
+            }
+            renderMode = D_800CE1C6_main == 0 ? 0x504DD8ULL : 0xFFFFFFFFC8104DD8ULL;
+        } else {
+            gDPSetAlphaCompare(gMainGfxPos++, G_AC_NONE);
+            if (D_800CE1C6_main == 0) {
+                {
+                    s32 renderFlags = depthMode;
+                    u32 mode = 0x553D18;
+                    mode = renderFlags | mode;
+                    renderMode = (s32)mode;
+                }
+            } else {
+                {
+                    s32 renderFlags = depthMode;
+                    renderFlags |= (s32)0xC8113D18;
+                    renderMode = renderFlags;
+                }
+            }
+        }
+        D_800B19F0_main->unk1E = material->unk00;
+    } else if (materialFlags & 1) {
+        gDPSetBlendColor(gMainGfxPos++, 0, 0, 0, 1);
+        gDPSetAlphaCompare(gMainGfxPos++, G_AC_THRESHOLD);
+        if (!(materialFlags & 4)) {
+            gDPSetPrimColor(gMainGfxPos++, 0, 0, material->unk05, material->unk06, material->unk07, material->unk0A);
+        }
+        if (depthMode != 0) {
+            depthMode |= 0x180;
+        } else {
+            depthMode |= 0x200;
+        }
+        if (antialias) {
+            if (D_800CE1C6_main == 0) {
+                {
+                    s32 renderFlags = depthMode;
+                    u32 mode = 0x504850;
+                    mode = renderFlags | mode;
+                    renderMode = (s32)mode;
+                }
+            } else {
+                {
+                    s32 renderFlags = depthMode;
+                    renderFlags |= (s32)0xC8104850;
+                    renderMode = renderFlags;
+                }
+            }
+        } else {
+            if (D_800CE1C6_main == 0) {
+                {
+                    s32 renderFlags = depthMode;
+                    u32 mode = 0x504040;
+                    mode = renderFlags | mode;
+                    renderMode = (s32)mode;
+                }
+            } else {
+                {
+                    s32 renderFlags = depthMode;
+                    renderFlags |= (s32)0xC8104040;
+                    renderMode = renderFlags;
+                }
+            }
+        }
+        D_800B19F0_main->unk1E = material->unk00;
+    } else {
+        gDPSetAlphaCompare(gMainGfxPos++, G_AC_NONE);
+        if (texture == (HmfData_Unk84_Entry *)-1) {
+            if (depthMode == 0) {
+                depthMode |= 0x200;
+            }
+            if (antialias) {
+                if (D_800CE1C6_main == 0) {
+                    {
+                        s32 renderFlags = depthMode;
+                        u32 mode = 0x552030;
+                        mode = renderFlags | mode;
+                        renderMode = (s32)mode;
+                    }
+                } else {
+                    {
+                        s32 renderFlags = depthMode;
+                        renderFlags |= (s32)0xC8112030;
+                        renderMode = renderFlags;
+                    }
+                }
+            } else {
+                if (D_800CE1C6_main == 0) {
+                    {
+                        s32 renderFlags = depthMode;
+                        u32 mode = 0x552000;
+                        mode = renderFlags | mode;
+                        renderMode = (s32)mode;
+                    }
+                } else {
+                    {
+                        s32 renderFlags = depthMode;
+                        renderFlags |= (s32)0xC8112000;
+                        renderMode = renderFlags;
+                    }
+                }
+            }
+        } else if (D_800C9940_main & 0x20000) {
+            if (depthMode == 0) {
+                depthMode |= 0x200;
+            }
+            if (antialias) {
+                if (D_800CE1C6_main == 0) {
+                    {
+                        s32 renderFlags = depthMode;
+                        u32 mode = 0x552030;
+                        mode = renderFlags | mode;
+                        renderMode = (s32)mode;
+                    }
+                } else {
+                    {
+                        s32 renderFlags = depthMode;
+                        renderFlags |= (s32)0xC8112030;
+                        renderMode = renderFlags;
+                    }
+                }
+            } else {
+                if (D_800CE1C6_main == 0) {
+                    {
+                        s32 renderFlags = depthMode;
+                        u32 mode = 0x552000;
+                        mode = renderFlags | mode;
+                        renderMode = (s32)mode;
+                    }
+                } else {
+                    {
+                        s32 renderFlags = depthMode;
+                        renderFlags |= (s32)0xC8112000;
+                        renderMode = renderFlags;
+                    }
+                }
+            }
+        } else {
+            if (antialias) {
+                if (D_800CE1C6_main == 0) {
+                    {
+                        s32 renderFlags = depthMode;
+                        u32 mode = 0x553038;
+                        mode = renderFlags | mode;
+                        renderMode = (s32)mode;
+                    }
+                } else {
+                    {
+                        s32 renderFlags = depthMode;
+                        renderFlags |= (s32)0xC8113038;
+                        renderMode = renderFlags;
+                    }
+                }
+            } else {
+                if (D_800CE1C6_main == 0) {
+                    {
+                        s32 renderFlags = depthMode;
+                        u32 mode = 0xF0A7008;
+                        mode = renderFlags | mode;
+                        renderMode = (s32)mode;
+                    }
+                } else {
+                    {
+                        s32 renderFlags = depthMode;
+                        renderFlags |= (s32)0xCB027008;
+                        renderMode = renderFlags;
+                    }
+                }
+            }
+        }
+    }
+    if (D_800D1FD0_main != combine || D_800CE2F0_main != renderMode) {
+        gDPPipeSync(gMainGfxPos++);
+        if (D_800D1FD0_main != combine) {
+            Gfx *gfx;
+            D_800D1FD0_main = combine;
+            gfx = gMainGfxPos++;
+            gfx->words.w0 = combine >> 32;
+            gfx->words.w1 = combine;
+        }
+        if (D_800CE2F0_main != renderMode) {
+            gDPSetRenderMode(gMainGfxPos++, renderMode, 0);
+            D_800CE2F0_main = renderMode;
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002A358_main);
+#endif
 
 void func_8002AC5C_main(u16 flags) {
     u8 mode;
@@ -1576,7 +2133,12 @@ void func_8002AC5C_main(u16 flags) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002AF40_main);
+void func_8002AF40_main(void) {
+    gMoveWd(gMainGfxPos++, G_MW_CLIP, G_MWO_CLIP_RNX, *D_800A0AE8_main[D_800CC0A8_main]);
+    gMoveWd(gMainGfxPos++, G_MW_CLIP, G_MWO_CLIP_RNY, *D_800A0AE8_main[D_800CC0A8_main]);
+    gMoveWd(gMainGfxPos++, G_MW_CLIP, G_MWO_CLIP_RPX, *(D_800A0AE8_main[D_800CC0A8_main] + 1));
+    gMoveWd(gMainGfxPos++, G_MW_CLIP, G_MWO_CLIP_RPY, *(D_800A0AE8_main[D_800CC0A8_main] + 1));
+}
 
 void func_8002AFEC_main(HmfData *hmf, s32 flags, s16 objectIndex) {
     if (D_800D1F74_main != flags || (flags & 0xE000000)) {
@@ -1620,9 +2182,89 @@ void func_8002B104_main(HmfData *hmf, s16 objectIndex) {
     gSPSetGeometryMode(gMainGfxPos++, G_TEXTURE_GEN | G_LIGHTING);
 }
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002B2AC_main);
+void func_8002B2AC_main(HmfData_Unk84_Entry2 *texture, s16 wrapS, s16 wrapT) {
+    if (texture->unk1C != G_IM_FMT_CI) {
+        gDPSetTextureLUT(gMainGfxPos++, G_TT_NONE);
+        switch (texture->unk1D) {
+            case G_IM_SIZ_16b:
+                D_800CCF88_main = G_IM_SIZ_16b;
+                D_800CD2FC_main = 0;
+                D_800D6A20_main = 2;
+                D_800C952C_main = 2;
+                D_800D1FFC_main = 0;
+                break;
+            case G_IM_SIZ_8b:
+                D_800CCF88_main = G_IM_SIZ_16b;
+                D_800CD2FC_main = 1;
+                D_800D6A20_main = 1;
+                D_800C952C_main = 1;
+                D_800D1FFC_main = 1;
+                break;
+            case G_IM_SIZ_4b:
+                D_800CCF88_main = G_IM_SIZ_16b;
+                D_800CD2FC_main = 3;
+                D_800D6A20_main = 0;
+                D_800C952C_main = 0;
+                D_800D1FFC_main = 2;
+                break;
+            default:
+                D_800CCF88_main = G_IM_SIZ_32b;
+                D_800CD2FC_main = 0;
+                D_800D6A20_main = 4;
+                D_800C952C_main = 2;
+                D_800D1FFC_main = 0;
+                break;
+        }
+        gDPLoadTextureBlock(gMainGfxPos++, texture->unk28, texture->unk1C, HMF_TEXTURE_SIZE,
+                            texture->unk24, texture->unk26, 0, wrapS, wrapT,
+                            HMF_TEXTURE_MASK(texture->unk24), HMF_TEXTURE_MASK(texture->unk26), 0, 0);
+    } else {
+        gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
+        if (texture->unk_30->colorCount <= 16) {
+            gDPLoadTLUT_pal16(gMainGfxPos++, 0, texture->unk_30->data);
+            gDPLoadTextureBlock_4b(gMainGfxPos++, texture->unk28, texture->unk1C,
+                                   texture->unk24, texture->unk26, 0, wrapS, wrapT,
+                                   HMF_TEXTURE_MASK(texture->unk24), HMF_TEXTURE_MASK(texture->unk26), 0, 0);
+        } else {
+            gDPLoadTLUT_pal256(gMainGfxPos++, texture->unk_30->data);
+            gDPLoadTextureBlock(gMainGfxPos++, texture->unk28, texture->unk1C, G_IM_SIZ_8b,
+                                texture->unk24, texture->unk26, 0, wrapS, wrapT,
+                                HMF_TEXTURE_MASK(texture->unk24), HMF_TEXTURE_MASK(texture->unk26), 0, 0);
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002C0EC_main);
+void func_8002C0EC_main(HmfData *hmf, s16 objectIndex) {
+    Mtx mtx;
+    Light *light;
+    u8 *texture;
+    s32 objectOffset;
+
+    gSPDisplayList(gMainGfxPos++, D_800A1118_main);
+    light = &D_800CB8A8_main[D_800CC0B4_main];
+    guLookAtHilite(&mtx, &D_800CE20C_main->lookAt, &D_800CE20C_main->data.hilite,
+                   D_800D10F4_main->pos.x, D_800D10F4_main->pos.y, D_800D10F4_main->pos.z,
+                   D_800D10F4_main->at.x, D_800D10F4_main->at.y, D_800D10F4_main->at.z,
+                   D_800D10F4_main->up.x, D_800D10F4_main->up.y, D_800D10F4_main->up.z,
+                   light->l.dir[0], light->l.dir[1], light->l.dir[2],
+                   0.0f, 0.0f, 115.0f, 32, 32);
+    gSPLookAt(gMainGfxPos++, &D_800CE20C_main->lookAt);
+    objectOffset = objectIndex * sizeof(*hmf->unk60);
+    gDPSetPrimColor(gMainGfxPos++, 0, 0, light->l.col[0], light->l.col[1], light->l.col[2], 255);
+    gDPSetEnvColor(gMainGfxPos++, 64, 64, 64, 128);
+    texture = D_800A114C_main[((u32)((HmfModelData_Unk64_Unk60_Struct *)(objectOffset + (u32)hmf->unk60))->unk50 >> 25) & 3];
+    gDPLoadTextureBlock_4b(gMainGfxPos++, texture,
+                           G_IM_FMT_I, 32, 32, 0, G_TX_WRAP, G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
+    gDPSetHilite1Tile(gMainGfxPos++, G_TX_RENDERTILE, &D_800CE20C_main->data.hilite, 32, 32);
+    if (((HmfModelData_Unk64_Unk60_Struct *)(objectOffset + (u32)hmf->unk60))->unk50 & 0x10000) {
+        gDPSetRenderMode(gMainGfxPos++, HMF_HILITE_RENDER_MODE, ZMODE_XLU);
+    } else {
+        gDPSetRenderMode(gMainGfxPos++, HMF_HILITE_RENDER_MODE, ZMODE_DEC);
+    }
+    D_800D0440_main = NULL;
+    D_800CE2F0_main = 0xFFFFFFFF;
+    D_800D1FD0_main = 0xFFFFFFFF;
+}
 
 s32 func_8002C4C0_main(HmfData *arg0, s16 arg1, HuMtx4F arg2, HuMtx4F arg3) {
     if (!(arg0->unk60[arg1].unk50 & 0x70000000)) {
@@ -1840,7 +2482,35 @@ void func_8002CDF4_main(HmfData *hmf, s16 nodeIndex) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002D094_main);
+void func_8002D094_main(Gfx **arg0, s16 arg1, s32 color) {
+    switch (arg1) {
+        case 0:
+        case 1:
+            gSPLightColor((*arg0)++, LIGHT_1, color);
+            break;
+        case 2:
+            gSPLightColor((*arg0)++, LIGHT_2, color);
+            break;
+        case 3:
+            gSPLightColor((*arg0)++, LIGHT_3, color);
+            break;
+        case 4:
+            gSPLightColor((*arg0)++, LIGHT_4, color);
+            break;
+        case 5:
+            gSPLightColor((*arg0)++, LIGHT_5, color);
+            break;
+        case 6:
+            gSPLightColor((*arg0)++, LIGHT_6, color);
+            break;
+        case 7:
+            gSPLightColor((*arg0)++, LIGHT_7, color);
+            break;
+        default:
+            gSPLightColor((*arg0)++, LIGHT_8, color);
+            break;
+    }
+}
 
 void func_8002D260_main(void) {
     s16 i;
@@ -1852,10 +2522,29 @@ void func_8002D260_main(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002D2D8_main);
+s16 func_8002D2D8_main(HmfMotionFile *file, HmfData *hmf) {
+    s16 i;
+
+    for (i = 0; i < HU3D_MODEL_MAX; i++) {
+        if (D_800CCF58_main[i].unk02 == -1) {
+            break;
+        }
+    }
+    if (i == HU3D_MODEL_MAX) {
+        return -1;
+    }
+    if ((s16)func_8002D3D0_main(hmf, file, i) != 0) {
+        if (hmf == NULL) {
+            return i;
+        }
+        hmf->unkA0 = 0;
+        return i;
+    }
+    return -1;
+}
 
 s32 func_8002D3AC_main(HmfMotionFile *file) {
-    return (s16)func_8002D2D8_main(file, NULL);
+    return func_8002D2D8_main(file, NULL);
 }
 
 s32 func_8002D3D0_main(HmfData *hmf, HmfMotionFile *file, s32 arg2) {
@@ -1898,23 +2587,802 @@ void func_8002D514_main(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002D5B0_main);
+s32 func_8002D5B0_main(D_800CCF58_main_Struct *motion, HmfData *hmf) {
+    u8 *data;
+    u8 *record;
+    HmfMotionChannel *channels;
+    s16 channelCapacity;
+    s16 blockIndex;
+    s16 objectIndex;
+    s16 blockCount;
+    s16 duration;
+    s16 channelIndex;
+    s16 materialIndex;
+    s16 i;
+    s16 channelCount;
+    s16 type;
+    f32 *values;
+    s16 *times;
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002DA98_main);
+    data = hmf->unk34;
+    channelCapacity = 0;
+    blockCount = 0;
+    while (1) {
+        data = func_80010A38_main(0x4D544E31, data, hmf->unk30);
+        if (data == NULL) {
+            break;
+        }
+        type = data[2];
+        if (type == 0x4E || type == 0x0D || type == 8) {
+            channelCapacity += data[10];
+        }
+        blockCount++;
+        data = func_80010AC8_main(data + 4);
+    }
+    if (channelCapacity == 0) {
+        return 0;
+    }
+    motion->unk08 = HuMemAllocTag(channelCapacity * sizeof(HmfMotionChannel *), D_800CE2B4_main);
+    motion->unk0C = HuMemAllocTag(channelCapacity, D_800CE2B4_main);
+    times = motion->unk10 = HuMemAllocTag(0x2000, D_800CE2B4_main);
+    values = motion->unk14 = HuMemAllocTag(0x4000, D_800CE2B4_main);
+    D_800B1A02_main = 0;
+    D_800B1A00_main = 0;
+    duration = 0;
+    data = hmf->unk34;
+    blockIndex = 0;
+    channelIndex = 0;
+    materialIndex = 0;
+    for (; blockIndex < blockCount; blockIndex++) {
+        data = func_80010A38_main(0x4D544E31, data, hmf->unk30);
+        record = data;
+        objectIndex = func_8000FDAC_main(hmf, (data[8] << 8) + data[9]);
+        channelCount = data[10];
+        if (channelCount != 0) {
+            if ((data[11] << 8) + data[12] > duration) {
+                duration = (data[11] << 8) + data[12];
+            }
+            record += 13;
+            channels = HuMemAllocTag(channelCount * sizeof(HmfMotionChannel), D_800CE2B4_main);
+            for (i = 0; i < channelCount; i++) {
+                type = record[2];
+                motion->unk0C[channelIndex] = type;
+                motion->unk08[channelIndex] = &channels[i];
+                switch (type) {
+                    case 0x4E:
+                        if (func_8002DA98_main(motion, channelIndex, record + 2)) {
+                            channelIndex++;
+                        }
+                        break;
+                    case 0x0D:
+                        if (func_8002DA98_main(motion, channelIndex, record + 2)) {
+                            motion->unk08[channelIndex]->targetIndex = objectIndex;
+                            if (objectIndex == -1) {
+                                motion->unk0C[channelIndex] = 0x4E;
+                            }
+                            channelIndex++;
+                        }
+                        break;
+                    case 8:
+                        if (materialIndex == 0) {
+                            hmf->unk98 = HuMemAllocTag(sizeof(*hmf->unk98), (s16)(hmf->unk0E + 1));
+                        }
+                        if (func_8002DD4C_main(hmf, materialIndex, record + 4)) {
+                            materialIndex++;
+                        }
+                        break;
+                }
+                record += (record[0] << 8) + record[1] + 2;
+            }
+            data = func_80010AC8_main(data + 4);
+        }
+    }
+    if (materialIndex != 0) {
+        hmf->unk98->unk00 = materialIndex;
+        hmf->unk98->unk08 = 0;
+        for (i = 0, blockIndex = 0; i < materialIndex; i++) {
+            if ((hmf->unk98->tracks + i)->duration > blockIndex) {
+                blockIndex = (hmf->unk98->tracks + i)->duration;
+            }
+        }
+        hmf->unk98->unk04 = blockIndex;
+        hmf->unk98->unk02 = 0;
+    }
+    motion->unk10 = HuMemAllocTag(D_800B1A00_main * sizeof(s16), D_800CE2B4_main);
+    bcopy(times, motion->unk10, D_800B1A00_main * sizeof(s16));
+    HuMemFree(times);
+    motion->unk14 = HuMemAllocTag(D_800B1A02_main * sizeof(f32), D_800CE2B4_main);
+    bcopy(values, motion->unk14, D_800B1A02_main * sizeof(f32));
+    HuMemFree(values);
+    motion->unk02 = duration;
+    motion->unk00 = channelIndex;
+    return 1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002DD4C_main);
+s32 func_8002DA98_main(D_800CCF58_main_Struct *motion, s16 channelIndex, u8 *data) {
+    HmfMotionChannel *channel;
+    s16 i;
+    u16 type;
+    union {
+        u32 bits;
+        f32 value;
+    } decoded;
+    HmfHermiteKey *key;
+    u8 *bytes;
+    f32 scale;
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002DF2C_main);
+    channel = motion->unk08[channelIndex];
+    type = *data;
+    data++;
+    channel->target = data[0];
+    scale = 1.0f;
+    channel->objectIndex = (data[1] << 8) + data[2];
+    channel->nodeIndex = (data[3] << 8) + data[4];
+    channel->component = data[5];
+    switch ((s16)type) {
+        case 0x4E:
+            channel->targetIndex = data[6];
+            data++;
+            break;
+    }
+    channel->interpolation = data[6];
+    data += 7;
+    if (channel->interpolation == 'I') {
+        channel->flags = data[0];
+        channel->keyCount = data[1];
+        data += 2;
+        channel->timeIndex = D_800B1A00_main;
+        channel->valueIndex = D_800B1A02_main;
+        for (i = 0; i < channel->keyCount; i++, data += 6) {
+            type = D_800B1A00_main++;
+            motion->unk10[type] = (data[0] << 8) + data[1];
+            decoded.bits = (data[2] << 24) + (data[3] << 16) + (data[4] << 8) + data[5];
+            motion->unk14[D_800B1A02_main++] = scale * decoded.value;
+        }
+    } else if (channel->interpolation == '#') {
+        data++;
+        channel->keyCount = *data++;
+        channel->timeIndex = D_800B1A00_main;
+        channel->valueIndex = D_800B1A02_main;
+        key = (HmfHermiteKey *)&motion->unk14[D_800B1A02_main];
+        for (i = 0; i < channel->keyCount; i++, data += 14) {
+            type = D_800B1A00_main++;
+            motion->unk10[type] = (data[0] << 8) + data[1];
+            bytes = (u8 *)key;
+            bytes[0] = data[2];
+            bytes[1] = data[3];
+            bytes[2] = data[4];
+            bytes[3] = data[5];
+            bytes[4] = data[6];
+            bytes[5] = data[7];
+            bytes[6] = data[8];
+            bytes[7] = data[9];
+            bytes[8] = data[10];
+            bytes[9] = data[11];
+            bytes[10] = data[12];
+            bytes[11] = data[13];
+            key->value = scale * key->value;
+            key++;
+            D_800B1A02_main += 3;
+        }
+    }
+    return 1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002DFF8_main);
+s32 func_8002DD4C_main(HmfData *hmf, s16 trackIndex, u8 *data) {
+    HmfMaterialAnimTrack *track;
+    s16 count;
+    s16 i;
+    s16 duration;
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002E78C_main);
+    track = &hmf->unk98->tracks[trackIndex];
+    track->flags = (data[0] << 8) + data[1];
+    track->materialIndex = (data[2] << 8) + data[3];
+    hmf->unk88[track->materialIndex].unk09 |= 5;
+    count = track->keyCount = (data[6] << 8) + data[7];
+    track->times = HuMemAllocTag(count * sizeof(u16), (s16)(hmf->unk0E + 1));
+    track->colors = HuMemAllocTag(count * sizeof(HmfAnimColor), (s16)(hmf->unk0E + 1));
+    data += 8;
+    for (i = 0, duration = 0; i < count; i++, data += 6) {
+        track->colors[i].components[0] = data[0];
+        track->colors[i].components[1] = data[1];
+        track->colors[i].components[2] = data[2];
+        track->colors[i].components[3] = data[3];
+        track->times[i] = (data[4] << 8) + data[5];
+        duration = track->times[i] + duration;
+    }
+    track->times[i - 1]++;
+    track->duration = duration + 1;
+    return 1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002E8E8_main);
+s32 func_8002DF2C_main(D_800CCF58_main_Struct *motion, HmfMotionFile *file) {
+    s16 count;
+    s16 i;
+    u32 *offsets;
+    HmfMotionChannel **channels;
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002EAC0_main);
+    count = motion->unk00 = file->objectCount;
+    motion->unk02 = file->duration;
+    motion->unk0C = ((u8 *)file + file->channelOffset);
+    motion->unk10 = (s16 *)((u8 *)file + file->timeOffset);
+    motion->unk14 = (f32 *)((u8 *)file + file->valueOffset);
+    motion->unk08 = HuMemAllocTag(count * sizeof(HmfMotionChannel *), D_800CE2B4_main);
+    offsets = file->objectOffsets;
+    channels = motion->unk08;
+    for (i = 0; i < count; i++) {
+        *channels++ = (HmfMotionChannel *)((u8 *)file + *offsets);
+        offsets++;
+    }
+    return 1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002F60C_main);
+void func_8002DFF8_main(HmfData *hmf, f32 frame, HmfModelData_Unk64_Unk8C_Struct *motion, s32 reset) {
+    HmfData_UnkBC *environment;
+    HmfSkeletonNode *skeleton;
+    HmfSkeletonNode *object;
+    HmfMotionNode *node;
+    HmfMotionChannel *channel;
+    f32 *value;
+    s32 count;
+    s32 i;
+    s32 index;
+    s32 environmentPresent;
+    u32 cameraChannel;
+
+    environment = NULL;
+    if (reset != 0) {
+        if (hmf->unk80 == (HmfMotionNode *)-1) {
+            index = hmf->unk64;
+            skeleton = hmf->unk68;
+            for (i = 0; i < index; i++, skeleton++) {
+                if (skeleton->unk44 != 0) {
+                    skeleton->pos = skeleton->unk08;
+                }
+                if (skeleton->unk45 != 0) {
+                    skeleton->rot = skeleton->unk14;
+                }
+                skeleton->unk44 = 0;
+                skeleton->unk45 = 0;
+            }
+        } else {
+            node = hmf->unk80;
+            count = hmf->unk16;
+            for (i = 0; i < count; i++, node++) {
+                if (node->unk4C != 0) {
+                    node->pos = node->basePos;
+                }
+                if (node->unk4D != 0) {
+                    node->rot = node->baseRot;
+                }
+                if (node->unk4E != 0) {
+                    node->scale = node->baseScale;
+                }
+                node->unk4E = 0;
+                node->unk4D = 0;
+                node->unk4C = 0;
+            }
+        }
+        if (hmf->unkC4 != NULL) {
+            environment = hmf->unkBC;
+            environment->unk08 = *(f32 *)&hmf->unkC4[environment->unk00].unk20;
+            environment->unk0C = *(f32 *)&hmf->unkC4[environment->unk00].unk24;
+            environment->unk10 = *(f32 *)&hmf->unkC4[environment->unk00].unk28;
+            environment->unk14 = *(f32 *)&hmf->unkC4[environment->unk02].unk20;
+            environment->unk18 = *(f32 *)&hmf->unkC4[environment->unk02].unk24;
+            environment->unk1C = *(f32 *)&hmf->unkC4[environment->unk02].unk28;
+            environment->unk20 = *(f32 *)&hmf->unkC4[environment->unk04].unk20;
+            environment->unk24 = *(f32 *)&hmf->unkC4[environment->unk04].unk24;
+            environment->unk28 = *(f32 *)&hmf->unkC4[environment->unk04].unk28;
+        }
+    }
+    if (motion != (HmfModelData_Unk64_Unk8C_Struct *)-1) {
+        count = motion->unk00;
+        for (i = 0; i < count; i++) {
+            channel = motion->unk08[i];
+            if (channel->objectIndex & 0x8000) {
+                continue;
+            }
+            index = channel->targetIndex & 0x7FFF;
+            index = -(index != 0x7FFF) & index;
+            cameraChannel = (u32)index >> 14;
+            environmentPresent = environment != NULL;
+            if (cameraChannel & environmentPresent) {
+                index &= 0x3FFF;
+                value = &environment->unk08;
+                if (environment->unk00 != index) {
+                    if (environment->unk02 == index) {
+                        value = &environment->unk14;
+                    } else {
+                        value = &environment->unk20;
+                    }
+                }
+                if (channel->component == 'E') {
+                } else if (channel->component == 'F') {
+                    value++;
+                } else {
+                    value += 2;
+                }
+                if (channel->interpolation == 'I') {
+                    *value = func_8002E78C_main(motion, channel, frame);
+                } else {
+                    *value = func_8002E8E8_main(motion, channel, frame);
+                }
+                continue;
+            }
+            if (frame < motion->unk10[channel->timeIndex]) {
+                continue;
+            }
+            switch (motion->unk0C[i]) {
+                case 0x4E:
+                    switch (channel->target) {
+                        case 0x4C:
+                            object = &hmf->unk68[index];
+                            value = &object->rot.x;
+                            switch (channel->component) {
+                                case 'E':
+                                    break;
+                                case 'F':
+                                    value = &object->rot.y;
+                                    break;
+                                default:
+                                    value += 2;
+                                    break;
+                            }
+                            if (channel->interpolation == 'I') {
+                                *value = func_8002E78C_main(motion, channel, frame);
+                            } else {
+                                *value = func_8002E8E8_main(motion, channel, frame);
+                            }
+                            hmf->unk68[index].unk45 = 0x80;
+                            break;
+                        case 0x4F:
+                            value = &hmf->unk68[index].pos.x;
+                            if (channel->component == 'E') {
+                            } else if (channel->component == 'F') {
+                                value++;
+                            } else {
+                                value += 2;
+                            }
+                            if (channel->interpolation == 'I') {
+                                *value = func_8002E78C_main(motion, channel, frame);
+                            } else {
+                                *value = func_8002E8E8_main(motion, channel, frame);
+                            }
+                            hmf->unk68[index].unk44 = 0x80;
+                            break;
+                        case 0x17:
+                            value = &hmf->unk68[index].pos.x;
+                            if (channel->component == 'E') {
+                            } else if (channel->component == 'F') {
+                                value++;
+                            } else {
+                                value += 2;
+                            }
+                            if (channel->interpolation == 'I') {
+                                *value = func_8002E78C_main(motion, channel, frame);
+                            } else {
+                                *value = func_8002E8E8_main(motion, channel, frame);
+                            }
+                            hmf->unk68[index].unk44 = 0x80;
+                            break;
+                    }
+                    break;
+                case 0x0D:
+                    node = &hmf->unk80[index];
+                    switch (channel->target) {
+                        case 0x17:
+                            value = &node->pos.x;
+                            if (channel->component == 'F') {
+                                value = &node->pos.y;
+                            } else if (channel->component == 'G') {
+                                value += 2;
+                            }
+                            if (channel->interpolation == 'I') {
+                                *value = func_8002E78C_main(motion, channel, frame);
+                            } else {
+                                *value = func_8002E8E8_main(motion, channel, frame);
+                            }
+                            node->unk4C = 0x80;
+                            break;
+                        case 0x4C:
+                            value = &node->rot.x;
+                            if (channel->component == 'F') {
+                                value = &node->rot.y;
+                            } else if (channel->component == 'G') {
+                                value += 2;
+                            }
+                            if (channel->interpolation == 'I') {
+                                *value = func_8002E78C_main(motion, channel, frame);
+                            } else {
+                                *value = func_8002E8E8_main(motion, channel, frame);
+                            }
+                            node->unk4D = 0x80;
+                            break;
+                        case 0x1B:
+                            value = &node->scale.x;
+                            if (channel->component == 'F') {
+                                value = &node->scale.y;
+                            } else if (channel->component == 'G') {
+                                value += 2;
+                            }
+                            if (channel->interpolation == 'I') {
+                                *value = func_8002E78C_main(motion, channel, frame);
+                            } else {
+                                *value = func_8002E8E8_main(motion, channel, frame);
+                            }
+                            node->unk4E = 0x80;
+                            break;
+                    }
+                    break;
+            }
+        }
+    }
+}
+
+f32 func_8002E78C_main(HmfModelData_Unk64_Unk8C_Struct *motion, HmfMotionChannel *channel, f32 frame) {
+    f32 *values;
+    s16 *times;
+    s16 i;
+    s16 interval;
+    s16 previousTime;
+    s32 next;
+
+    values = &motion->unk14[channel->valueIndex];
+    if (frame == 0.0f || channel->keyCount == 1) {
+        return values[0];
+    }
+    times = &motion->unk10[channel->timeIndex];
+    for (i = 0; i < channel->keyCount; i++) {
+        if (frame < times[i]) {
+            break;
+        }
+    }
+    if (i == channel->keyCount) {
+        return values[channel->keyCount - 1];
+    } else {
+        next = i;
+        i--;
+        interval = times[next] - times[i];
+        previousTime = times[i];
+        return (values[next] - values[i]) / interval * (frame - previousTime) + values[i];
+    }
+}
+
+const u32 D_800A6CC8_main[2] = { 0, 0 };
+const f64 D_800A6CD0_main = 1.0;
+const f64 D_800A6CD8_main = 3.0;
+
+f32 func_8002E8E8_main(HmfModelData_Unk64_Unk8C_Struct *motion, HmfMotionChannel *channel, f32 frame) {
+    HmfHermiteKey *values;
+    HmfHermiteKey *previous;
+    HmfHermiteKey *next;
+    s16 *times;
+    s32 i;
+    s32 count;
+    s32 nextTime;
+    s16 *cursor;
+    f32 elapsed;
+    f32 inverse;
+    f32 inverseSquared;
+    f32 elapsedSquared;
+    f32 quadratic;
+    f32 cubic;
+    f32 twiceCubic;
+    f32 thriceQuadratic;
+
+    values = (HmfHermiteKey *)&motion->unk14[channel->valueIndex];
+    if (frame == 0.0f || channel->keyCount == 1) {
+        return values[0].value;
+    }
+    times = &motion->unk10[channel->timeIndex];
+    count = channel->keyCount;
+    for (i = 0, cursor = times; i < count; i++) {
+        if (frame < *cursor++) {
+            break;
+        }
+    }
+    if (i == count) {
+        return values[channel->keyCount - 1].value;
+    } else {
+        next = &values[i];
+        nextTime = times[i];
+        i--;
+        previous = &values[i];
+        elapsed = frame - times[i];
+        inverse = D_800A6CD0_main / (nextTime - times[i]);
+        inverseSquared = inverse * inverse;
+        elapsedSquared = elapsed * elapsed;
+        quadratic = elapsedSquared * inverse;
+        cubic = elapsedSquared * elapsed * inverseSquared;
+        twiceCubic = 2.0 * cubic * inverse;
+        thriceQuadratic = D_800A6CD8_main * elapsedSquared * inverseSquared;
+        return (twiceCubic - thriceQuadratic + 1.0f) * previous->value +
+               (-twiceCubic + thriceQuadratic) * next->value +
+               (cubic - quadratic - quadratic + elapsed) * previous->inTangent +
+               (cubic - quadratic) * previous->outTangent;
+    }
+}
+
+void func_8002EAC0_main(HmfData *hmf, f32 frame, f32 weight) {
+    HmfModelData_Unk64_Unk8C_Struct *motion;
+    HmfMotionChannel *channel;
+    HmfSkeletonNode *skeleton;
+    HmfMotionNode *node;
+    f32 *value;
+    f32 result;
+    f32 threshold;
+    f32 inverseWeight;
+    s16 i;
+    s16 index;
+    s32 component;
+    u8 flags;
+
+    motion = hmf->unk90;
+    inverseWeight = 1.0f - weight;
+    for (i = 0; i < motion->unk00; i++) {
+        channel = motion->unk08[i];
+        if (channel->objectIndex & 0x8000) {
+            continue;
+        }
+        index = channel->targetIndex & 0x7FFF;
+        if (index == 0x7FFF) {
+            index = 0;
+        }
+        if (index & 0x4000) {
+            continue;
+        }
+        if (frame < motion->unk10[channel->timeIndex]) {
+            continue;
+        }
+        if (channel->component != 'E') {
+            component = 2;
+            if (channel->component == 'F') {
+                component = 1;
+            }
+        } else {
+            component = 0;
+        }
+        switch (motion->unk0C[i]) {
+            case 0x4E:
+                switch (channel->target) {
+                    case 0x4C:
+                        value = &hmf->unk68[index].rot.x + component;
+                        if (channel->interpolation == 'I') {
+                            result = func_8002E78C_main(motion, channel, frame);
+                        } else {
+                            result = func_8002E8E8_main(motion, channel, frame);
+                        }
+                        if (result < -180.0f) {
+                            result += 360.0f;
+                        }
+                        threshold = -180.0f;
+                        if (*value < threshold) {
+                            *value += 360.0f;
+                        }
+                        if (result > 180.0f) {
+                            result -= 360.0f;
+                        }
+                        if (*value > 180.0f) {
+                            *value -= 360.0f;
+                        }
+                        *value = inverseWeight * *value + result * weight;
+                        hmf->unk68[index].unk45 |= (1 << component) | 0x40;
+                        break;
+                    case 0x4F:
+                        value = &hmf->unk68[index].pos.x + component;
+                        if (channel->interpolation == 'I') {
+                            result = func_8002E78C_main(motion, channel, frame);
+                        } else {
+                            result = func_8002E8E8_main(motion, channel, frame);
+                        }
+                        *value = inverseWeight * *value + result * weight;
+                        hmf->unk68[index].unk44 |= (1 << component) | 0x40;
+                        break;
+                }
+                break;
+            case 0x0D:
+                switch (channel->target) {
+                    case 0x17:
+                        value = &hmf->unk80[index].pos.x + component;
+                        if (channel->interpolation == 'I') {
+                            result = func_8002E78C_main(motion, channel, frame);
+                        } else {
+                            result = func_8002E8E8_main(motion, channel, frame);
+                        }
+                        *value = inverseWeight * *value + result * weight;
+                        hmf->unk80[index].unk4C |= (1 << component) | 0x40;
+                        break;
+                    case 0x4C:
+                        value = &hmf->unk80[index].rot.x + component;
+                        if (channel->interpolation == 'I') {
+                            result = func_8002E78C_main(motion, channel, frame);
+                        } else {
+                            result = func_8002E8E8_main(motion, channel, frame);
+                        }
+                        if (result < 0.0f) {
+                            result += 360.0f;
+                        }
+                        if (*value < 0.0f) {
+                            *value += 360.0f;
+                        }
+                        if (result < 180.0f) {
+                            if (result + 180.0f < *value) {
+                                *value -= 360.0f;
+                            }
+                        } else {
+                            if (*value < result - 180.0f) {
+                                result -= 360.0f;
+                            }
+                        }
+                        *value = inverseWeight * *value + result * weight;
+                        hmf->unk80[index].unk4D |= (1 << component) | 0x40;
+                        break;
+                    case 0x1B:
+                        value = &hmf->unk80[index].scale.x + component;
+                        if (channel->interpolation == 'I') {
+                            result = func_8002E78C_main(motion, channel, frame);
+                        } else {
+                            result = func_8002E8E8_main(motion, channel, frame);
+                        }
+                        *value = inverseWeight * *value + result * weight;
+                        hmf->unk80[index].unk4E |= (1 << component) | 0x40;
+                        break;
+                }
+                break;
+        }
+    }
+    if (hmf->unk80 == (HmfMotionNode *)-1) {
+        skeleton = hmf->unk68;
+        index = hmf->unk64;
+        for (i = 0; i < index; i++, skeleton++) {
+            if (skeleton->unk44 != 0) {
+                flags = skeleton->unk44;
+                value = &skeleton->pos.x;
+                if (!(flags & 0x40)) {
+                    skeleton->pos.x = inverseWeight * skeleton->pos.x + weight * skeleton->unk08.x;
+                    skeleton->pos.y = inverseWeight * skeleton->pos.y + weight * skeleton->unk08.y;
+                    skeleton->pos.z = inverseWeight * skeleton->pos.z + weight * skeleton->unk08.z;
+                } else {
+                    if (!(flags & 1)) {
+                        value[0] = inverseWeight * value[0] + weight * skeleton->unk08.x;
+                    }
+                    if (!(flags & 2)) {
+                        value[1] = inverseWeight * value[1] + weight * skeleton->unk08.y;
+                    }
+                    if (!(flags & 4)) {
+                        value[2] = inverseWeight * value[2] + weight * skeleton->unk08.z;
+                    }
+                }
+            }
+            if (skeleton->unk45 != 0) {
+                flags = skeleton->unk45;
+                value = &skeleton->rot.x;
+                if (!(flags & 0x40)) {
+                    skeleton->rot.x = inverseWeight * skeleton->rot.x + weight * skeleton->unk14.x;
+                    skeleton->rot.y = inverseWeight * skeleton->rot.y + weight * skeleton->unk14.y;
+                    skeleton->rot.z = inverseWeight * skeleton->rot.z + weight * skeleton->unk14.z;
+                } else {
+                    if (!(flags & 1)) {
+                        value[0] = inverseWeight * value[0] + weight * skeleton->unk14.x;
+                    }
+                    if (!(flags & 2)) {
+                        value[1] = inverseWeight * value[1] + weight * skeleton->unk14.y;
+                    }
+                    if (!(flags & 4)) {
+                        value[2] = inverseWeight * value[2] + weight * skeleton->unk14.z;
+                    }
+                }
+            }
+        }
+    } else {
+        for (i = 0; i < hmf->unk16; i++) {
+            node = &hmf->unk80[i];
+            if (node->unk4C != 0) {
+                flags = node->unk4C;
+                value = &node->pos.x;
+                if (!(flags & 0x40)) {
+                    node->pos.x = inverseWeight * node->pos.x + weight * node->basePos.x;
+                    node->pos.y = inverseWeight * node->pos.y + weight * node->basePos.y;
+                    node->pos.z = inverseWeight * node->pos.z + weight * node->basePos.z;
+                } else {
+                    if (!(flags & 1)) {
+                        value[0] = inverseWeight * value[0] + weight * node->basePos.x;
+                    }
+                    if (!(flags & 2)) {
+                        value[1] = inverseWeight * value[1] + weight * node->basePos.y;
+                    }
+                    if (!(flags & 4)) {
+                        value[2] = inverseWeight * value[2] + weight * node->basePos.z;
+                    }
+                }
+            }
+            if (node->unk4D != 0) {
+                flags = node->unk4D;
+                value = &node->rot.x;
+                if (!(flags & 0x40)) {
+                    node->rot.x = inverseWeight * node->rot.x + weight * node->baseRot.x;
+                    node->rot.y = inverseWeight * node->rot.y + weight * node->baseRot.y;
+                    node->rot.z = inverseWeight * node->rot.z + weight * node->baseRot.z;
+                } else {
+                    if (!(flags & 1)) {
+                        value[0] = inverseWeight * value[0] + weight * node->baseRot.x;
+                    }
+                    if (!(flags & 2)) {
+                        value[1] = inverseWeight * value[1] + weight * node->baseRot.y;
+                    }
+                    if (!(flags & 4)) {
+                        value[2] = inverseWeight * value[2] + weight * node->baseRot.z;
+                    }
+                }
+            }
+            if (node->unk4E != 0) {
+                flags = node->unk4E;
+                value = &node->scale.x;
+                if (!(flags & 0x40)) {
+                    node->scale.x = inverseWeight * node->scale.x + weight * node->baseScale.x;
+                    node->scale.y = inverseWeight * node->scale.y + weight * node->baseScale.y;
+                    node->scale.z = inverseWeight * node->scale.z + weight * node->baseScale.z;
+                } else {
+                    if (!(flags & 1)) {
+                        value[0] = inverseWeight * value[0] + weight * node->baseScale.x;
+                    }
+                    if (!(flags & 2)) {
+                        value[1] = inverseWeight * value[1] + weight * node->baseScale.y;
+                    }
+                    if (!(flags & 4)) {
+                        value[2] = inverseWeight * value[2] + weight * node->baseScale.z;
+                    }
+                }
+            }
+        }
+    }
+}
+
+s32 func_8002F60C_main(HmfData *hmf) {
+    HmfMaterialAnimTrack *track;
+    s16 i;
+    s16 j;
+    s16 k;
+    s16 frame;
+    s16 elapsed;
+    s16 duration;
+    f32 alpha;
+
+    for (i = 0; i < hmf->unk98->unk00; i++) {
+        track = &hmf->unk98->tracks[i];
+        frame = hmf->unk98->unk08;
+        duration = 0;
+        for (j = 0; j < track->keyCount; j++) {
+            duration += track->times[j];
+            if (duration >= frame) {
+                break;
+            }
+        }
+        if (j < track->keyCount - 1) {
+            elapsed = frame - (duration - track->times[j]);
+            alpha = track->colors[j + 1].components[0] - track->colors[j].components[0];
+            hmf->unk88[track->materialIndex].unk05 = track->colors[j].components[0] + alpha / (s16)track->times[j] * elapsed;
+            alpha = track->colors[j + 1].components[1] - track->colors[j].components[1];
+            hmf->unk88[track->materialIndex].unk06 = track->colors[j].components[1] + alpha / (s16)track->times[j] * elapsed;
+            alpha = track->colors[j + 1].components[2] - track->colors[j].components[2];
+            hmf->unk88[track->materialIndex].unk07 = track->colors[j].components[2] + alpha / (s16)track->times[j] * elapsed;
+            alpha = track->colors[j + 1].components[3] - track->colors[j].components[3];
+            alpha = track->colors[j].components[3] + alpha / (s16)track->times[j] * elapsed;
+        } else {
+            hmf->unk88[track->materialIndex].unk05 = track->colors[j].components[0];
+            hmf->unk88[track->materialIndex].unk06 = track->colors[j].components[1];
+            hmf->unk88[track->materialIndex].unk07 = track->colors[j].components[2];
+            alpha = track->colors[j].components[3];
+        }
+        for (k = 0; k < hmf->unk10; k++) {
+            if (hmf->unk60[k].unk1E == track->materialIndex) {
+                hmf->unk60[k].unk20 = alpha;
+            }
+        }
+    }
+    return 1;
+}
 
 void func_8002FB08_main(HmfData *arg0, f32 arg1) {
     if (arg0->unk98->unk02 & 1) {
@@ -2004,7 +3472,35 @@ void func_8002FDCC_main(s16 arg0, s16 arg1, char *arg2, s16 arg3, s16 arg4) {
     func_8002FE08_main(arg0, arg1, arg2, arg3, arg4, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002FE08_main);
+void func_8002FE08_main(s16 modelIndex, s16 motionIndex, char *name, s16 target, s16 component, s16 flags) {
+    D_800CCF58_main_Struct *motion;
+    HmfData *hmf;
+    s16 objectIndex;
+    s16 i;
+    s16 j;
+    HmfMotionChannel *channel;
+
+    motion = &D_800CCF58_main[motionIndex];
+    hmf = HmfModelData[modelIndex].hmf;
+    objectIndex = func_8002C834_main(hmf, name);
+    for (i = 0; i < hmf->unk16; i++) {
+        for (j = 0; j < hmf->unk80[i].unk00; j++) {
+            if (hmf->unk80[i].unk50[j] == objectIndex) {
+                break;
+            }
+        }
+        if (j != hmf->unk80[i].unk00) {
+            break;
+        }
+    }
+    for (j = 0; j < motion->unk00; j++) {
+        channel = motion->unk08[j];
+        if ((channel->targetIndex & 0x7FFF) == i && channel->target == target && channel->component == component) {
+            channel->objectIndex = (channel->objectIndex & 0x7FFF) | flags;
+            break;
+        }
+    }
+}
 
 void func_80030030_main(f32 arg0) {
     D_800D2120_main = arg0;

@@ -41,7 +41,10 @@ typedef struct {
     s16 unk2A;
     s16 unk2C;
     s16 unk2E;
-    char unk30[0x20];
+    char unk30[0x12];
+    s16 boundsMin[3];
+    s16 boundsMax[3];
+    char unk4E[2];
     s32 unk50;
     HmfModelData_Unk64_Unk60_Unk54_Struct *unk54;
     struct HmfData *unk58;
@@ -53,23 +56,49 @@ typedef struct {
 struct HmfModelEntry;
 
 typedef struct {
-    s16 unk00;
+    u8 target;
+    u8 component;
+    u8 interpolation;
+    u8 flags;
+    s16 objectIndex;
+    s16 nodeIndex;
+    s16 targetIndex;
+    s16 timeIndex;
+    s16 valueIndex;
+    s16 keyCount;
+} HmfMotionChannel;
+
+typedef struct {
+    u8 unk00;
+    u8 unk01;
     s16 unk02;
-    s16 unk04;
-    s16 unk06;
-    s16 unk08;
-    s16 unk0A;
-    struct HmfModelEntry *unk0C;
+    char unk04[4];
+    HmfMotionChannel **unk08;
+    u8 *unk0C;
     s16 *unk10;
     f32 *unk14;
 } HmfModelData_Unk64_Unk8C_Struct;
 
 typedef struct {
-    char unk00[2];
+    u8 components[4];
+} HmfAnimColor;
+
+typedef struct {
+    s16 materialIndex;
+    s16 keyCount;
+    s16 flags;
+    s16 duration;
+    u16 *times;
+    HmfAnimColor *colors;
+} HmfMaterialAnimTrack;
+
+typedef struct {
+    s16 unk00;
     s16 unk02;
     s16 unk04;
     char unk06[2];
     f32 unk08;
+    HmfMaterialAnimTrack tracks[16];
 } HmfModelData_Unk64_Unk98_Struct;
 
 typedef struct {
@@ -176,6 +205,32 @@ typedef struct {
     Gfx **unk00;
 } HmfDisplayLists;
 
+typedef struct {
+    char unk00[0x1C];
+    s16 unk1C;
+    char unk1E[2];
+    s32 unk20;
+    s32 unk24;
+    s32 unk28;
+} HmfMapData;
+
+typedef struct {
+    s16 unk00;
+    s16 unk02;
+    s16 unk04;
+    char unk06[2];
+    f32 unk08;
+    f32 unk0C;
+    f32 unk10;
+    f32 unk14;
+    f32 unk18;
+    f32 unk1C;
+    f32 unk20;
+    f32 unk24;
+    f32 unk28;
+    f32 unk2C;
+} HmfData_UnkBC;
+
 typedef struct HmfData {
     /* 0x00 */ u8 unk00;
     /* 0x01 */ s8 unk01;
@@ -195,7 +250,9 @@ typedef struct HmfData {
     /* 0x20 */ s16 unk20;
     /* 0x22 */ char unk22[6];
     /* 0x28 */ s16 unk28;
-    /* 0x2A */ char unk2A[0xE];
+    /* 0x2A */ char unk2A[6];
+    /* 0x30 */ u8 *unk30;
+    /* 0x34 */ u8 *unk34;
     /* 0x38 */ s32 unk38;
     /* 0x3C */ HmfModelData_Unk64_Unk3C_Struct *unk3C;
     /* 0x40 */ Vtx *unk40;
@@ -223,9 +280,10 @@ typedef struct HmfData {
     /* 0xAC */ f32 unkAC;
     /* 0xB0 */ HmfVertexGroup *unkB0;
     /* 0xB4 */ s32 unkB4;
-    /* 0xB8 */ char unkB8[8];
+    /* 0xB8 */ char unkB8[4];
+    /* 0xBC */ HmfData_UnkBC *unkBC;
     /* 0xC0 */ void *unkC0; // light data only?
-    /* 0xC4 */ char unkC4[4];
+    /* 0xC4 */ HmfMapData *unkC4;
     /* 0xC8 */ s32 unkC8;
     /* 0xCC */ HmfDisplayLists *unkCC;
     /* 0xD0 */ s32 unkD0;

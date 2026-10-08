@@ -176,8 +176,8 @@ typedef struct {
     /* 0x02 */ s16 unk02;
     /* 0x04 */ s16 unk04;
     /* 0x06 */ char unk06[2];
-    /* 0x08 */ char **unk08;
-    /* 0x0C */ HmfModelEntry *unk0C;
+    /* 0x08 */ HmfMotionChannel **unk08;
+    /* 0x0C */ u8 *unk0C;
     /* 0x10 */ s16 *unk10;
     /* 0x14 */ f32 *unk14;
 } D_800CCF58_main_Struct; // Size 0x18

@@ -85,14 +85,7 @@ typedef struct {
     char unk58[0x40];
 } HmfMotionData;
 
-typedef struct {
-    char unk00[0x1C];
-    s16 unk1C;
-    char unk1E[2];
-    s32 unk20;
-    s32 unk24;
-    s32 unk28;
-} HmfMapData;
+
 
 typedef struct {
     char unk00[0x1C];
@@ -112,22 +105,7 @@ typedef struct {
     s16 *unk04;
 } HmfMtnData;
 
-typedef struct {
-    s16 unk00;
-    s16 unk02;
-    s16 unk04;
-    char unk06[2];
-    f32 unk08;
-    f32 unk0C;
-    f32 unk10;
-    f32 unk14;
-    f32 unk18;
-    f32 unk1C;
-    f32 unk20;
-    f32 unk24;
-    f32 unk28;
-    f32 unk2C;
-} HmfData_UnkBC;
+
 
 typedef struct {
     u8 unk00;

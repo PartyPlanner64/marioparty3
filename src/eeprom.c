@@ -127,7 +127,31 @@ s32 _WriteEeprom(EepData *arg0) {
     return (WriteEeprom(&D_800CE1A0_main, alignedOffset, alignedEepBuffer, alignedSize) != 0) * 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/eeprom", WriteEepromBox2);
+s32 WriteEepromBox2(s8 saveFileIndex, u16 offset, u8 *src, u16 size) {
+    unkMesg sp10;
+    EepData sp20;
+    s16 i;
+    s32 result;
+
+    D_800AC7F0_main = 0;
+    if (offset < 8) {
+        return 2;
+    }
+    for (i = 0; i < size; i++) {
+        if (offset + i >= 0x800) {
+            break;
+        }
+        D_800D0E50_main[offset + i] = src[i];
+    }
+    sp20.eepFileOffset = offset + (saveFileIndex * SAVE_FILE_SIZE) + SAVE_FILE_HEADER_SIZE;
+    sp20.eepromBuffer = D_800D0E50_main + offset;
+    sp20.size = size;
+    result = RequestSIFunction(&sp10, (void *)&_WriteEeprom, &sp20, 1);
+    if (result == 0) {
+        D_800AC7F1_main = saveFileIndex;
+    }
+    return result;
+}
 
 void WriteEepromBox(s8 saveFileIndex) {
     unkMesg sp10;

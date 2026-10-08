@@ -26,6 +26,7 @@ typedef struct {
 } HmfModelData_Unk64_Unk60_Unk54_Struct;
 
 struct HmfData;
+struct HmfData_Unk84_Entry;
 
 typedef struct {
     char unk00[0x1C];
@@ -44,8 +45,8 @@ typedef struct {
     s32 unk50;
     HmfModelData_Unk64_Unk60_Unk54_Struct *unk54;
     struct HmfData *unk58;
-    Gfx *unk5C;
-    Gfx *unk60;
+    struct HmfData_Unk84_Entry *unk5C;
+    struct HmfData_Unk84_Entry *unk60;
     Gfx *unk64;
 } HmfModelData_Unk64_Unk60_Struct;
 
@@ -72,17 +73,28 @@ typedef struct {
 } HmfModelData_Unk64_Unk98_Struct;
 
 typedef struct {
-    char unk_00[0x1F];
+    char unk00[0x1E];
+    s16 colorCount;
+    char unk20[8];
+    u8 *data;
+} HmfPaletteData;
+
+typedef struct {
+    char unk_00[0x1C];
+    u8 unk1C;
+    u8 unk1D;
+    u8 unk1E;
     u8 unk1F;
     char unk20[4];
-    s16 unk24;
-    s16 unk26;
-    char unk28[8];
-    s32 unk_30;
+    u16 unk24;
+    u16 unk26;
+    u8 *unk28;
+    char unk2C[4];
+    HmfPaletteData *unk_30;
 } HmfData_Unk84_Entry2;
 
 // New struct for the array at unk84 (0x10 bytes per entry)
-typedef struct {
+typedef struct HmfData_Unk84_Entry {
     u8 unk0[3];
     s8 unk3;
     u8 unk4;

@@ -4,6 +4,16 @@
 #include "mallocblock.h"
 #include "gcc/string.h"
 
+#define HMF_TEXTURE_MASK(size) ((size) <= 2 ? 1 : (size) <= 4 ? 2 : \
+    (size) <= 8 ? 3 : (size) <= 16 ? 4 : (size) <= 32 ? 5 : \
+    (size) <= 64 ? 6 : (size) <= 128 ? 7 : (size) <= 256 ? 8 : 9)
+#define HMF_TEXTURE_SIZE texture->unk1D
+#define HMF_TEXTURE_SIZE_LOAD_BLOCK D_800CCF88_main
+#define HMF_TEXTURE_SIZE_INCR D_800CD2FC_main
+#define HMF_TEXTURE_SIZE_SHIFT D_800D1FFC_main
+#define HMF_TEXTURE_SIZE_BYTES D_800D6A20_main
+#define HMF_TEXTURE_SIZE_LINE_BYTES D_800C952C_main
+
 typedef struct {
     u8 next;
     u8 prev;
@@ -61,6 +71,11 @@ typedef struct {
     u32 objectOffsets[1];
 } HmfMotionFile;
 
+extern u32 D_800CCF88_main;
+extern u32 D_800CD2FC_main;
+extern u32 D_800D6A20_main;
+extern u32 D_800C952C_main;
+extern u32 D_800D1FFC_main;
 extern s16 D_800CE2B4_main;
 extern HuCamera *D_800D10F4_main;
 extern HmfLookAtData D_800D1408_main[];
@@ -113,8 +128,8 @@ extern u64 D_800CE2F0_main;
 extern s32 D_800CE2F4_main;
 extern u64 D_800D1FD0_main;
 extern s32 D_800D1FD4_main;
-extern Gfx *D_800D0440_main;
-extern Gfx *D_800CC0AC_main;
+extern HmfData_Unk84_Entry *D_800D0440_main;
+extern HmfData_Unk84_Entry *D_800CC0AC_main;
 extern Light *D_800CB8A8_main;
 extern s16 D_800D1F78_main;
 extern s16 D_800D1FE2_main;
@@ -153,6 +168,7 @@ void func_8002C0EC_main(HmfData *, s16);
 void func_8002B104_main(HmfData *, s16);
 extern Gfx D_800A0A80_main[];
 void func_800260F0_main(HmfData *, s32 *);
+void func_8002A358_main(HmfMaterialData *, HmfData_Unk84_Entry *, u32);
 void func_80029FB4_main(HmfData *, s16);
 s32 func_8002DF2C_main(D_800CCF58_main_Struct *, HmfMotionFile *);
 s32 func_8002D5B0_main(D_800CCF58_main_Struct *, HmfData *);
@@ -958,7 +974,7 @@ void func_80024814_main(HmfData *arg0, s16 arg1, HmfDrawObject *arg2) {
             func_8002AFEC_main(arg0, object->unk50 & ~0x6000000, arg1);
             gSPSegment(gMainGfxPos++, 1, osVirtualToPhysical(arg0->unk44[D_800D2008_main]));
             if (object->unk5C != NULL) {
-                if (D_800D0440_main != object->unk5C && object->unk5C != (Gfx *)-1) {
+                if (D_800D0440_main != object->unk5C && object->unk5C != (HmfData_Unk84_Entry *)-1) {
                     gSPDisplayList(gMainGfxPos++, object->unk64);
                 }
                 D_800D0440_main = object->unk60;
@@ -990,7 +1006,7 @@ void func_80024814_main(HmfData *arg0, s16 arg1, HmfDrawObject *arg2) {
             return;
         }
         if (object->unk5C != NULL) {
-            if (D_800D0440_main != object->unk5C && object->unk5C != (Gfx *)-1) {
+            if (D_800D0440_main != object->unk5C && object->unk5C != (HmfData_Unk84_Entry *)-1) {
                 gSPDisplayList(gMainGfxPos++, object->unk64);
             }
             D_800D0440_main = object->unk60;
@@ -1176,7 +1192,345 @@ Gfx *func_800250D4_main(s16 arg0, Gfx *arg1, Gfx *arg2) {
 
 INCLUDE_ASM("asm/nonmatchings/22EB0", func_800257BC_main);
 
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_800260F0_main);
+void func_800260F0_main(HmfData *hmf, s32 *flags) {
+    HmfData_Unk84_Entry2 *texture;
+    HmfMaterialData *material;
+    HmfData_Unk84_Entry *textureEntry;
+    s16 changed;
+    s16 minS, maxS, minT, maxT;
+    u16 r, g, b;
+    Vtx *vertex;
+    s16 i;
+    s16 t;
+    s16 coordS;
+    s8 segment;
+    u8 *image;
+    u8 *palette;
+    Gfx **gfx;
+    HmfDrawFace *face;
+
+    if (D_800D0A44_main == 0) {
+        return;
+    }
+    material = D_800CD6B0_main[0].material;
+    textureEntry = D_800CD6B0_main[0].texture;
+    if (!(*flags & 0x6000000)) {
+        func_8002A358_main(material, textureEntry, *flags);
+        r = g = b = 0;
+        if (textureEntry == (HmfData_Unk84_Entry *)-1) {
+            changed = 0;
+            if (D_800C9940_main & 0x200) {
+                r = material->unk01 * D_800D5410_main;
+                if (r > 255)
+                    r = 255;
+                g = material->unk02 * D_800D5410_main;
+                if (g > 255)
+                    g = 255;
+                b = material->unk03 * D_800D5410_main;
+                if (b > 255)
+                    b = 255;
+                if ((u16)D_800D1F78_main != r || (u16)D_800D1FE2_main != g || (u16)D_800CDA76_main != b) {
+                    D_800D1F78_main = r;
+                    D_800D1FE2_main = g;
+                    D_800CDA76_main = b;
+                    func_8002D094_main(&gMainGfxPos, D_800CE1D4_main->unk00 + 1,
+                                       ((u16)D_800D1F78_main << 24) + ((u16)D_800D1FE2_main << 16) + ((u16)D_800CDA76_main << 8));
+                    changed = 1;
+                }
+            }
+            r = material->unk05 * D_800D51FC_main;
+            if (r > 255)
+                r = 255;
+            g = material->unk06 * D_800D51FC_main;
+            if (g > 255)
+                g = 255;
+            b = material->unk07 * D_800D51FC_main;
+            if (b > 255)
+                b = 255;
+            if ((u16)D_800CDD5A_main != r || (u16)D_800CE170_main != g || (u16)D_800CDA86_main != b) {
+                D_800CDD5A_main = r;
+                D_800CE170_main = g;
+                D_800CDA86_main = b;
+                func_8002D094_main(&gMainGfxPos, 1,
+                                   ((u16)D_800CDD5A_main << 24) + ((u16)D_800CE170_main << 16) + ((u16)D_800CDA86_main << 8));
+                changed = 1;
+            }
+            if (changed) {
+                gDPPipeSync(gMainGfxPos++);
+            }
+        } else {
+            texture = textureEntry->unkC;
+            minT = 32000;
+            if (texture->unk1F & 1) {
+                minS = 32000;
+                maxS = maxT = -32000;
+                vertex = &D_800D5308_main[D_800CDD66_main];
+                for (i = 0; i < D_800CE1CE_main - D_800CDD66_main; i++, vertex++) {
+                    t = vertex->v.tc[1];
+                    coordS = vertex->v.tc[0];
+                    if (minS > coordS)
+                        minS = coordS;
+                    if (maxS < coordS)
+                        maxS = coordS;
+                    if (minT > t)
+                        minT = t;
+                    if (maxT < t)
+                        maxT = t;
+                }
+                minS >>= 5;
+                minT >>= 5;
+                maxS >>= 5;
+                maxT >>= 5;
+                changed = 1;
+            } else {
+                maxS = minS = maxT = minT = 0;
+                changed = 0;
+            }
+            switch ((s8)textureEntry->unk0[0]) {
+                case 0x2A:
+                case 0x2B:
+                    r = material->unk01 * D_800D5410_main;
+                    if (r > 255)
+                        r = 255;
+                    g = material->unk02 * D_800D5410_main;
+                    if (g > 255)
+                        g = 255;
+                    b = material->unk03 * D_800D5410_main;
+                    if (b > 255)
+                        b = 255;
+                    break;
+                case 0x29:
+                    r = D_800D5410_main * 255;
+                    if (r > 255)
+                        r = 255;
+                    g = b = r;
+                    break;
+            }
+            if ((D_800C9940_main & 0x200) && ((u16)D_800D1F78_main != r || (u16)D_800D1FE2_main != g || (u16)D_800CDA76_main != b)) {
+                D_800D1F78_main = r;
+                D_800D1FE2_main = g;
+                D_800CDA76_main = b;
+                func_8002D094_main(&gMainGfxPos, D_800CE1D4_main->unk00 + 1,
+                                   ((u16)D_800D1F78_main << 24) + ((u16)D_800D1FE2_main << 16) + ((u16)D_800CDA76_main << 8));
+            }
+            switch ((s8)textureEntry->unk0[0]) {
+                case 0x2B:
+                    r = textureEntry->unk5[0] * D_800D51FC_main;
+                    if (r > 255)
+                        r = 255;
+                    g = textureEntry->unk5[1] * D_800D51FC_main;
+                    if (g > 255)
+                        g = 255;
+                    b = textureEntry->unk5[2] * D_800D51FC_main;
+                    if (b > 255)
+                        b = 255;
+                    break;
+                case 0x29:
+                    r = D_800D51FC_main * 255;
+                    if (r > 255)
+                        r = 255;
+                    g = b = r;
+                    break;
+                default:
+                    r = material->unk05 * D_800D51FC_main;
+                    if (r > 255)
+                        r = 255;
+                    g = material->unk06 * D_800D51FC_main;
+                    if (g > 255)
+                        g = 255;
+                    b = material->unk07 * D_800D51FC_main;
+                    if (b > 255)
+                        b = 255;
+                    break;
+            }
+            if ((u16)D_800CDD5A_main != r || (u16)D_800CE170_main != g || (u16)D_800CDA86_main != b) {
+                D_800CDD5A_main = r;
+                D_800CE170_main = g;
+                D_800CDA86_main = b;
+                func_8002D094_main(&gMainGfxPos, 1,
+                                   ((u16)D_800CDD5A_main << 24) + ((u16)D_800CE170_main << 16) + ((u16)D_800CDA86_main << 8));
+            }
+            if (changed || (textureEntry != D_800D0440_main && !(*flags & 0x8000000))) {
+                D_800D0440_main = textureEntry;
+                segment = textureEntry->unk3;
+                if (segment != -1) {
+                    image = (u8 *)(segment << 24);
+                    *flags |= 0x40000;
+                    gfx = &gMainGfxPos;
+                    D_800D5544_main = 1;
+                } else {
+                    image = texture->unk28;
+                    if (D_800D5544_main == 0 && (((((u32)D_800C9940_main >> 13) ^ 1) & 1) && (changed ^ 1))) {
+                        gfx = &D_800D6A88_main;
+                        D_800CC0AC_main = D_800D0440_main;
+                    } else {
+                        gfx = &gMainGfxPos;
+                    }
+                }
+                if (texture->unk1C != G_IM_FMT_CI) {
+                    if (D_800B19F4_main != 0) {
+                        D_800B19F4_main = 0;
+                        gDPSetTextureLUT(gMainGfxPos++, G_TT_NONE);
+                    }
+                    if (texture->unk1D != G_IM_SIZ_4b) {
+                        if (texture->unk1F & 1) {
+                            gDPSetTextureImage((*gfx)++, texture->unk1C, texture->unk1D, texture->unk24, image);
+                            switch (texture->unk1D) {
+                                case G_IM_SIZ_16b:
+                                    D_800CD2FC_main = 2;
+                                    D_800D6A20_main = 2;
+                                    break;
+                                case G_IM_SIZ_8b:
+                                    D_800CD2FC_main = 1;
+                                    D_800D6A20_main = 1;
+                                    break;
+                                case G_IM_SIZ_4b:
+                                    D_800CD2FC_main = 0;
+                                    D_800D6A20_main = 0;
+                                    break;
+                                default:
+                                    D_800CD2FC_main = 2;
+                                    D_800D6A20_main = 2;
+                                    break;
+                            }
+                            gDPSetTile((*gfx)++, texture->unk1C, texture->unk1D, (((maxS - minS + 1) * D_800CD2FC_main + 7) >> 3), 0, G_TX_LOADTILE, 0, textureEntry->unk0[2], HMF_TEXTURE_MASK(texture->unk26), 0, textureEntry->unk0[1], HMF_TEXTURE_MASK(texture->unk24), 0);
+                            gDPLoadSync((*gfx)++);
+                            gDPLoadTile((*gfx)++, G_TX_LOADTILE, minS << 2, minT << 2, maxS << 2, maxT << 2);
+                            gDPPipeSync((*gfx)++);
+                            gDPSetTile((*gfx)++, texture->unk1C, texture->unk1D, (((maxS - minS + 1) * D_800D6A20_main + 7) >> 3), 0, G_TX_RENDERTILE, 0, textureEntry->unk0[2], HMF_TEXTURE_MASK(texture->unk26), 0, textureEntry->unk0[1], HMF_TEXTURE_MASK(texture->unk24), 0);
+                            gDPSetTileSize((*gfx)++, G_TX_RENDERTILE, minS << 2, minT << 2, maxS << 2, maxT << 2);
+                        } else {
+                            switch (texture->unk1D) {
+                                case G_IM_SIZ_16b:
+                                    D_800CCF88_main = G_IM_SIZ_16b;
+                                    D_800CD2FC_main = 0;
+                                    D_800D6A20_main = 2;
+                                    D_800C952C_main = 2;
+                                    D_800D1FFC_main = 0;
+                                    break;
+                                case G_IM_SIZ_8b:
+                                    D_800CCF88_main = G_IM_SIZ_16b;
+                                    D_800CD2FC_main = 1;
+                                    D_800D6A20_main = 1;
+                                    D_800C952C_main = 1;
+                                    D_800D1FFC_main = 1;
+                                    break;
+                                case G_IM_SIZ_4b:
+                                    D_800CCF88_main = G_IM_SIZ_16b;
+                                    D_800CD2FC_main = 3;
+                                    D_800D6A20_main = 0;
+                                    D_800C952C_main = 0;
+                                    D_800D1FFC_main = 2;
+                                    break;
+                                default:
+                                    D_800CCF88_main = G_IM_SIZ_32b;
+                                    D_800CD2FC_main = 0;
+                                    D_800D6A20_main = 4;
+                                    D_800C952C_main = 2;
+                                    D_800D1FFC_main = 0;
+                                    break;
+                            }
+                            gDPLoadTextureBlock((*gfx)++, image, texture->unk1C, HMF_TEXTURE_SIZE,
+                                                texture->unk24, texture->unk26, 0, textureEntry->unk0[1], textureEntry->unk0[2],
+                                                HMF_TEXTURE_MASK(texture->unk24), HMF_TEXTURE_MASK(texture->unk26), 0, 0);
+                        }
+                    } else {
+                        if (texture->unk24 < 16) {
+                            gDPSetTextureImage((*gfx)++, texture->unk1C, G_IM_SIZ_8b, texture->unk24 >> 1, image);
+                            gDPSetTile((*gfx)++, texture->unk1C, G_IM_SIZ_8b, ((((texture->unk24 + 1) >> 1) + 7) >> 3), 0, G_TX_LOADTILE, 0, textureEntry->unk0[2], HMF_TEXTURE_MASK(texture->unk26), 0, textureEntry->unk0[1], HMF_TEXTURE_MASK(texture->unk24), 0);
+                            gDPLoadSync((*gfx)++);
+                            gDPLoadTile((*gfx)++, G_TX_LOADTILE, 0, 0, texture->unk24 << 1, texture->unk26 << 2);
+                            gDPPipeSync((*gfx)++);
+                            gDPSetTile((*gfx)++, texture->unk1C, G_IM_SIZ_4b, ((((texture->unk24 + 1) >> 1) + 7) >> 3), 0, G_TX_RENDERTILE, 0, textureEntry->unk0[2], HMF_TEXTURE_MASK(texture->unk26), 0, textureEntry->unk0[1], HMF_TEXTURE_MASK(texture->unk24), 0);
+                            gDPSetTileSize((*gfx)++, G_TX_RENDERTILE, 0, 0, texture->unk24 << 2, texture->unk26 << 2);
+                        } else if (texture->unk1F & 1) {
+                            gDPLoadTextureTile_4b((*gfx)++, image, texture->unk1C, texture->unk24, texture->unk26, minS, minT, maxS + 1, maxT + 1, 0, textureEntry->unk0[1], textureEntry->unk0[2], HMF_TEXTURE_MASK(texture->unk24), HMF_TEXTURE_MASK(texture->unk26), 0, 0);
+                        } else {
+                            gDPLoadTextureBlock_4b((*gfx)++, image, texture->unk1C, texture->unk24, texture->unk26, 0, textureEntry->unk0[1], textureEntry->unk0[2], HMF_TEXTURE_MASK(texture->unk24), HMF_TEXTURE_MASK(texture->unk26), 0, 0);
+                        }
+                    }
+                } else {
+                    segment = textureEntry->unk4;
+                    if (segment != -1) {
+                        palette = (u8 *)(segment << 24);
+                        *flags |= 0x40000;
+                        gfx = &gMainGfxPos;
+                        D_800D5544_main = 1;
+                    } else {
+                        palette = texture->unk_30->data;
+                        if (D_800D5544_main == 0 && (((((u32)D_800C9940_main >> 13) ^ 1) & 1) && (changed ^ 1))) {
+                            gfx = &D_800D6A88_main;
+                            D_800CC0AC_main = D_800D0440_main;
+                        } else {
+                            gfx = &gMainGfxPos;
+                        }
+                    }
+                    if (D_800B19F4_main != G_TT_RGBA16) {
+                        D_800B19F4_main = G_TT_RGBA16;
+                        gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
+                    }
+                    if (texture->unk_30->colorCount <= 16) {
+                        gDPLoadTLUT_pal16((*gfx)++, 0, palette);
+                        if (texture->unk24 < 16) {
+                            gDPSetTextureImage((*gfx)++, texture->unk1C, G_IM_SIZ_8b, texture->unk24 >> 1, image);
+                            gDPSetTile((*gfx)++, texture->unk1C, G_IM_SIZ_8b, ((((texture->unk24 + 1) >> 1) + 7) >> 3), 0, G_TX_LOADTILE, 0, textureEntry->unk0[2], HMF_TEXTURE_MASK(texture->unk26), 0, textureEntry->unk0[1], HMF_TEXTURE_MASK(texture->unk24), 0);
+                            gDPLoadSync((*gfx)++);
+                            gDPLoadTile((*gfx)++, G_TX_LOADTILE, 0, 0, texture->unk24 << 1, texture->unk26 << 2);
+                            gDPPipeSync((*gfx)++);
+                            gDPSetTile((*gfx)++, texture->unk1C, G_IM_SIZ_4b, ((((texture->unk24 + 1) >> 1) + 7) >> 3), 0, G_TX_RENDERTILE, 0, textureEntry->unk0[2], HMF_TEXTURE_MASK(texture->unk26), 0, textureEntry->unk0[1], HMF_TEXTURE_MASK(texture->unk24), 0);
+                            gDPSetTileSize((*gfx)++, G_TX_RENDERTILE, 0, 0, texture->unk24 << 2, texture->unk26 << 2);
+                        } else if (texture->unk1F & 1) {
+                            gDPLoadTextureTile_4b((*gfx)++, image, texture->unk1C, texture->unk24, texture->unk26, minS, minT, maxS + 1, maxT + 1, 0, textureEntry->unk0[1], textureEntry->unk0[2], HMF_TEXTURE_MASK(texture->unk24), HMF_TEXTURE_MASK(texture->unk26), 0, 0);
+                        } else {
+                            gDPLoadTextureBlock_4b((*gfx)++, image, texture->unk1C, texture->unk24, texture->unk26, 0, textureEntry->unk0[1], textureEntry->unk0[2], HMF_TEXTURE_MASK(texture->unk24), HMF_TEXTURE_MASK(texture->unk26), 0, 0);
+                        }
+                    } else {
+                        gDPLoadTLUT_pal256((*gfx)++, palette);
+                        if (texture->unk24 < 8) {
+                            gfx = &gMainGfxPos;
+                            gDPSetTextureImage((*gfx)++, texture->unk1C, G_IM_SIZ_8b, texture->unk24, image);
+                            gDPSetTile((*gfx)++, texture->unk1C, G_IM_SIZ_8b, ((texture->unk24 + 8) >> 3), 0, G_TX_LOADTILE, 0, textureEntry->unk0[2], HMF_TEXTURE_MASK(texture->unk26), 0, textureEntry->unk0[1], HMF_TEXTURE_MASK(texture->unk24), 0);
+                            gDPLoadSync((*gfx)++);
+                            gDPLoadTile((*gfx)++, G_TX_LOADTILE, 0, 0, texture->unk24 << 2, texture->unk26 << 2);
+                            gDPPipeSync((*gfx)++);
+                            gDPSetTile((*gfx)++, texture->unk1C, G_IM_SIZ_8b, ((texture->unk24 + 8) >> 3), 0, G_TX_RENDERTILE, 0, textureEntry->unk0[2], HMF_TEXTURE_MASK(texture->unk26), 0, textureEntry->unk0[1], HMF_TEXTURE_MASK(texture->unk24), 0);
+                            gDPSetTileSize((*gfx)++, G_TX_RENDERTILE, 0, 0, texture->unk24 << 2, texture->unk26 << 2);
+                        } else if (texture->unk1F & 1) {
+                            gDPLoadTextureTile((*gfx)++, image, texture->unk1C, G_IM_SIZ_8b, texture->unk24, texture->unk26, minS, minT, maxS, maxT, 0, textureEntry->unk0[1], textureEntry->unk0[2], HMF_TEXTURE_MASK(texture->unk24), HMF_TEXTURE_MASK(texture->unk26), 0, 0);
+                        } else {
+                            gDPLoadTextureBlock((*gfx)++, image, texture->unk1C, G_IM_SIZ_8b, texture->unk24, texture->unk26, 0, textureEntry->unk0[1], textureEntry->unk0[2], HMF_TEXTURE_MASK(texture->unk24), HMF_TEXTURE_MASK(texture->unk26), 0, 0);
+                        }
+                    }
+                }
+                D_800D5544_main = 1;
+            }
+        }
+    }
+    if (D_800CE1CE_main - D_800CDD66_main > 32) {
+        gSPVertex(gMainGfxPos++, (Vtx *)(0x1000000 + D_800CDD66_main * sizeof(Vtx)), 32, 0);
+        gSPVertex(gMainGfxPos++, (Vtx *)(0x1000000 + (D_800CDD66_main + 32) * sizeof(Vtx)), D_800CE1CE_main - D_800CDD66_main - 32, 32);
+    } else {
+        gSPVertex(gMainGfxPos++, (Vtx *)(0x1000000 + D_800CDD66_main * sizeof(Vtx)), D_800CE1CE_main - D_800CDD66_main, 0);
+    }
+    face = D_800CD6B0_main;
+    for (i = 0; i < D_800D0A44_main; i++) {
+        if (face->count == 3) {
+            if (i + 1 < D_800D0A44_main && face[1].count == 3) {
+                gSP2Triangles(gMainGfxPos++, face->indices[0], face->indices[1], face->indices[2], 0,
+                              face[1].indices[0], face[1].indices[1], face[1].indices[2], 0);
+                i++;
+                face += 2;
+            } else {
+                gSP1Triangle(gMainGfxPos++, face->indices[0], face->indices[1], face->indices[2], 0);
+                face++;
+            }
+        } else {
+            gSP1Quadrangle(gMainGfxPos++, face->indices[0], face->indices[1], face->indices[2], face->indices[3], 0);
+            face++;
+        }
+    }
+    D_800CDD66_main = D_800CE1CE_main;
+}
 
 INCLUDE_ASM("asm/nonmatchings/22EB0", func_80029FB4_main);
 

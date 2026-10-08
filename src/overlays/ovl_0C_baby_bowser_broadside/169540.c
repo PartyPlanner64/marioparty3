@@ -14,7 +14,7 @@ typedef struct BabyBowserBroadsideWork { // 0x24 bytes, 0x8 entries
     /* 0x14 */ f32 *unk_14;
     /* 0x18 */ f32 *unk_18;
     /* 0x1C */ f32 *unk_1C;
-    /* 0x20 */ u32 unk_20;
+    /* 0x20 */ u8 unk_20[4];
 } BabyBowserBroadsideWork; // Size 0x24
 
 typedef struct BabyBowserBroadsideSprite { // 0x8 bytes, 0xE entries
@@ -137,7 +137,23 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", fun
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010AFF4_baby_bowser_broadside);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010B098_baby_bowser_broadside);
+void func_8010B098_baby_bowser_broadside(s16 arg0, f32 arg1, f32 arg2, f32 arg3, u8 *arg4) {
+    HmfModel *model;
+
+    if (arg0 >= 8) {
+        return;
+    }
+    model = &HmfModelData[D_80110010_baby_bowser_broadside[arg0].unk_0C];
+    model->pos.x = arg1;
+    model->pos.y = arg2;
+    model->pos.z = arg3;
+    func_8001C258_main(D_80110010_baby_bowser_broadside[arg0].unk_0C, 4, 0);
+    D_80110010_baby_bowser_broadside[arg0].unk_20[0] = arg4[0];
+    D_80110010_baby_bowser_broadside[arg0].unk_20[1] = arg4[1];
+    D_80110010_baby_bowser_broadside[arg0].unk_20[2] = arg4[2];
+    D_80110010_baby_bowser_broadside[arg0].unk_20[3] = arg4[3];
+    D_80110010_baby_bowser_broadside[arg0].unk_04 &= ~0x18;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010B198_baby_bowser_broadside);
 

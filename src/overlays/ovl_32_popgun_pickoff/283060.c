@@ -1,13 +1,21 @@
 #include "common.h"
 
 typedef struct {
+    char unk_00[0xC];
+    u8 unk_0C;
+    u8 unk_0D;
+    u8 unk_0E;
+    u8 unk_0F;
+} PopgunPickoffEntry; // Size 0x10
+
+typedef struct {
     void *unk_00;
-    void *unk_04;
+    PopgunPickoffEntry *unk_04;
     void *unk_08;
     void *unk_0C;
     void *unk_10;
     s32 unk_14;
-    s8 unk_18;
+    u8 unk_18;
     s8 unk_19;
     s8 unk_1A;
     s8 unk_1B;
@@ -305,7 +313,27 @@ void func_8010B0D4_popgun_pickoff(s16 playerId, s8 value1, s8 value2, s8 value3,
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_32_popgun_pickoff/283060", func_8010B120_popgun_pickoff);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_32_popgun_pickoff/283060", func_8010B200_popgun_pickoff);
+void func_8010B200_popgun_pickoff(s32 playerId, s32 flag) {
+    PopgunPickoffPlayer *player = D_8010DDD8_popgun_pickoff + playerId;
+    s32 i;
+
+    if (flag != 0) {
+        player->unk_28 |= 0x10000;
+        for (i = 0; i < player->unk_18; i++) {
+            player->unk_04[i].unk_0C = 0;
+            player->unk_04[i].unk_0D = 0;
+            player->unk_04[i].unk_0E = 0x80;
+        }
+        return;
+    }
+    player->unk_28 &= ~0x10000;
+    for (i = 0; i < player->unk_18; i++) {
+        player->unk_04[i].unk_0C = 0xFF;
+        player->unk_04[i].unk_0D = 0xFF;
+        player->unk_04[i].unk_0E = 0xFF;
+        player->unk_04[i].unk_0F = 0xFF;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_32_popgun_pickoff/283060", func_8010B300_popgun_pickoff);
 

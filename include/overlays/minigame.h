@@ -39,7 +39,8 @@ typedef struct {
     /* 0x057 */ s8 unk57;
     /* 0x058 */ char unk58[1];
     /* 0x059 */ s8 unk59;
-    /* 0x05A */ char unk5A[6];
+    /* 0x05A */ char unk5A[2];
+    /* 0x05C */ s32 unk5C;
     /* 0x060 */ s32 unk60;
     /* 0x064 */ f32 unk64;
     /* 0x068 */ f32 unk68;
@@ -112,7 +113,7 @@ u8 func_800E6E8C_minigame(void);
 u16 func_800E6E9C_minigame(void);
 void func_800E6F1C_minigame(void);
 void func_800E6F34_minigame(s32);
-void func_800E6F40_minigame(void);
+u8 func_800E6F40_minigame();
 
 extern u16 D_800EBE28_minigame;
 extern u16 D_800EB910_minigame;

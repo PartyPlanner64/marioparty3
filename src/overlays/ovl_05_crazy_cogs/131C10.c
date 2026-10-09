@@ -1259,7 +1259,47 @@ void func_80108B0C_crazy_cogs(omObjData *arg0) {
     arg0->func = func_801087B8_crazy_cogs;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80108EE8_crazy_cogs);
+void func_80108EE8_crazy_cogs(void) {
+    omObjData *obj;
+    s16 count;
+    u16 playerIndex;
+    s32 cogIndex;
+    s16 i;
+    UnkCrazyCogsCog *cog;
+
+    count = 0;
+    playerIndex = 0;
+    cogIndex = 0;
+    for (i = 0; i < 4; i++) {
+        if (GwPlayer[i].group != 0) {
+            switch (i) {
+                case 0:
+                    playerIndex = 0;
+                    break;
+                case 1:
+                    playerIndex = 1;
+                    break;
+                case 2:
+                    playerIndex = 2;
+                    break;
+                case 3:
+                    playerIndex = 3;
+                    break;
+            }
+            cog = &(&D_8010B9F0_crazy_cogs[5])[cogIndex];
+            obj = omAddObj(0x384, 9, 60, -1, func_80108B0C_crazy_cogs);
+            obj->work[0] = playerIndex;
+            cog->obj = obj;
+            obj->work[1] = cogIndex;
+            cogIndex++;
+            D_800EC598_minigame[D_800EC280_minigame] = obj;
+            D_800EC280_minigame++;
+            D_8010B991_crazy_cogs[count] = GwPlayer[obj->work[0]].chr;
+            D_8010DE10_crazy_cogs[count] = obj->work[0];
+            count++;
+        }
+    }
+}
 
 void func_80109084_crazy_cogs(omObjData *arg0) {
 }

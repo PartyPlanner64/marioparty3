@@ -1767,8 +1767,6 @@ void func_80029FB4_main(HmfData *hmf, s16 objectIndex) {
     gSPCullDisplayList(gMainGfxPos++, 0, 7);
 }
 
-#ifdef NON_MATCHING
-/* Matches except for the operand order of two OR instructions. */
 void func_8002A358_main(HmfMaterialData *material, HmfData_Unk84_Entry *texture, u32 flags) {
     u8 materialFlags;
     s32 antialias;
@@ -1776,6 +1774,8 @@ void func_8002A358_main(HmfMaterialData *material, HmfData_Unk84_Entry *texture,
     u64 renderMode;
     s16 depthMode;
     s32 mask;
+    s32 materialDepthFlags;
+    u32 materialRenderMode;
 
     materialFlags = material->unk09;
     if ((D_800C9940_main & 0x180) == 0x100) {
@@ -1907,10 +1907,9 @@ void func_8002A358_main(HmfMaterialData *material, HmfData_Unk84_Entry *texture,
             gDPSetAlphaCompare(gMainGfxPos++, G_AC_NONE);
             if (D_800CE1C6_main == 0) {
                 {
-                    s32 renderFlags = depthMode;
-                    u32 mode = 0x553D18;
-                    mode = renderFlags | mode;
-                    renderMode = (s32)mode;
+                    materialDepthFlags = depthMode;
+                    materialRenderMode = 0x553D18;
+                    goto applyMaterialRenderMode;
                 }
             } else {
                 {
@@ -1935,10 +1934,9 @@ void func_8002A358_main(HmfMaterialData *material, HmfData_Unk84_Entry *texture,
         if (antialias) {
             if (D_800CE1C6_main == 0) {
                 {
-                    s32 renderFlags = depthMode;
-                    u32 mode = 0x504850;
-                    mode = renderFlags | mode;
-                    renderMode = (s32)mode;
+                    materialDepthFlags = depthMode;
+                    materialRenderMode = 0x504850;
+                    goto applyMaterialRenderMode;
                 }
             } else {
                 {
@@ -1950,10 +1948,11 @@ void func_8002A358_main(HmfMaterialData *material, HmfData_Unk84_Entry *texture,
         } else {
             if (D_800CE1C6_main == 0) {
                 {
-                    s32 renderFlags = depthMode;
-                    u32 mode = 0x504040;
-                    mode = renderFlags | mode;
-                    renderMode = (s32)mode;
+                    materialDepthFlags = depthMode;
+                    materialRenderMode = 0x504040;
+                applyMaterialRenderMode:
+                    materialRenderMode |= materialDepthFlags;
+                    renderMode = (s32)materialRenderMode;
                 }
             } else {
                 {
@@ -2057,8 +2056,8 @@ void func_8002A358_main(HmfMaterialData *material, HmfData_Unk84_Entry *texture,
                     {
                         s32 renderFlags = depthMode;
                         u32 mode = 0xF0A7008;
-                        mode = renderFlags | mode;
-                        renderMode = (s32)mode;
+                        /* De Morgan's form preserves the original OR operand order. */
+                        renderMode = (s32) ~(~mode & ~renderFlags);
                     }
                 } else {
                     {
@@ -2085,9 +2084,6 @@ void func_8002A358_main(HmfMaterialData *material, HmfData_Unk84_Entry *texture,
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/22EB0", func_8002A358_main);
-#endif
 
 void func_8002AC5C_main(u16 flags) {
     u8 mode;

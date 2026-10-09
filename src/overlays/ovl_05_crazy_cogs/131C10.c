@@ -878,7 +878,60 @@ void func_80107884_crazy_cogs(omObjData *arg0) {
     arg0->func = func_8010787C_crazy_cogs;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80107AB8_crazy_cogs);
+void func_80107AB8_crazy_cogs(void) {
+    omObjData *obj;
+    s8 positions[3];
+    s8 available[3];
+    s8 i;
+    s8 j;
+    s8 count;
+    s8 position;
+    s32 cogIndex;
+    u16 playerIndex;
+    UnkCrazyCogsCog *cog;
+
+    for (i = 0; i < 3; i++) {
+        positions[i] = i;
+        available[i] = 1;
+    }
+    playerIndex = 0;
+    cogIndex = 0;
+    for (i = 0; i < 4; i++) {
+        if (GwPlayer[i].group != 0) {
+            switch (i) {
+                case 0:
+                    playerIndex = 0;
+                    break;
+                case 1:
+                    playerIndex = 1;
+                    break;
+                case 2:
+                    playerIndex = 2;
+                    break;
+                case 3:
+                    playerIndex = 3;
+                    break;
+            }
+            cog = &(&D_8010B9F0_crazy_cogs[25])[cogIndex];
+            obj = omAddObj(0x320, 3, 3, -1, func_80107884_crazy_cogs);
+            obj->work[0] = playerIndex;
+            cog->obj = obj;
+            obj->work[1] = cogIndex;
+            position = func_80105B7C_crazy_cogs(3 - cogIndex);
+            cog->timer = positions[position];
+            available[positions[position]] = 0;
+            j = 0;
+            count = 0;
+            for (; j < 3; j++) {
+                if (available[j] != 0) {
+                    positions[count] = j;
+                    count++;
+                }
+            }
+            cogIndex++;
+        }
+    }
+}
 
 void func_80107CA8_crazy_cogs(f32 *x, f32 *z, f32 angle) {
     f32 radius = sqrtf(*x * *x + *z * *z);

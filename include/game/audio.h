@@ -5,7 +5,7 @@
 
 s16 HuAudSeqPlay(s16 musId);
 s16 func_80003310_main(s16 arg0);
-s16 func_8004A5C4_main(s32);
+s16 func_8004A5C4_main(s16);
 void HuAudSeqFadeOut(s16 speed);
 s16 HuAudFXPlay(s16 seId);
 void func_8004AAD0_main(s16, s8);

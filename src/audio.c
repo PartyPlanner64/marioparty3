@@ -1,5 +1,6 @@
 #include "game/audio.h"
 #include "game/vibrator.h"
+#include "pad.h"
 #include "common.h" // TODO: remove.
 
 typedef struct {
@@ -10,11 +11,11 @@ typedef struct {
 } UnkAudStruct; // Size unknown (min: 0x29, max: 0x30)
 
 typedef struct {
-    s32 unk00;
-    s32 unk04;
-    s32 unk08;
-    s32 unk0C;
-    s32 unk10;
+    f32 *unk00;
+    f32 *unk04;
+    f32 *unk08;
+    f32 *unk0C;
+    u8 *unk10;
     s16 unk14;
     s16 unk16;
     s16 unk18;
@@ -28,14 +29,14 @@ typedef struct {
     s16 unk34;
 } UnkAudioObjData;
 
-void func_8000086C_main(str800D5298 *);
-s16 func_80003310_main(s16);
-s32 func_80007064_main(s32);
-s32 func_80007080_main(s16, UnkAudStruct *);
-void func_80007BD4_main(s16, s16);
-void func_80007C80_main(s16, s16);
-void func_80007DD8_main(s16);
-
+extern s16 D_800B23D0_main[6];
+extern s8 D_800D6A4C_main[4];
+extern s8 D_800D123C_main[4];
+extern s16 D_800CCF7C_main[4];
+extern u16 D_800CDD5C_main[4];
+extern s16 D_800CB9A4_main[4];
+extern s16 D_800CE218_main[];
+extern s16 D_800D037E_main;
 extern u8 D_800D09A8_main;
 extern str800D5298 D_800D5298_main;
 extern s32 D_800D52C0_main;
@@ -49,7 +50,23 @@ s16 D_800A1908_main = 0;
 s16 D_800A190A_main = 0;
 s16 D_800A190C_main = 1;
 s16 D_800A190E_main = 1;
-s16 D_800A1910_main[8] = { 0x0040 }; // single s16 + padding?
+s16 D_800A1910_main = 0x40;
+
+void func_8000086C_main(str800D5298 *);
+s16 func_80003310_main(s16);
+s32 func_80007064_main(s32);
+s32 func_80007080_main(s16, UnkAudStruct *);
+void func_80007BD4_main(s16, s16);
+void func_80007C80_main(s16, s16);
+void func_80007DD8_main(s16);
+s32 func_800034D8_main(s16);
+void func_80003810_main(s8);
+void func_80003848_main(s16, s16);
+s32 func_800038EC_main(s16);
+void func_80007AF0_main(s8);
+void func_80007B28_main(s32, s32);
+s32 func_8000793C_main(s16);
+s32 func_800078F8_main(s16);
 
 s16 HuAudSeqPlay(s16 musId) {
     if (D_800A1900_main == 0) {
@@ -69,7 +86,21 @@ s16 HuAudSeqPlay(s16 musId) {
     return D_800CDBC8_main;
 }
 
-INCLUDE_ASM("asm/nonmatchings/audio", func_8004A5C4_main);
+s16 func_8004A5C4_main(s16 musId) {
+    if (musId == 0) {
+        return -1;
+    }
+    if (D_800A1900_main == 0) {
+        return 0;
+    }
+    D_800A1906_main |= 0x20;
+    D_800A1906_main &= ~(0x10 | 0x80);
+    D_800D037E_main = func_80003310_main(musId);
+    if (D_800D6A40_main != NULL) {
+        OM_GET_DATA_PTR(D_800D6A40_main, UnkAudioObjData)->unk34 = -1;
+    }
+    return D_800D037E_main;
+}
 
 void func_8004A650_main(s32 arg0) {
     if (D_800D6A40_main != NULL) {
@@ -77,15 +108,93 @@ void func_8004A650_main(s32 arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/audio", func_8004A670_main);
+void func_8004A670_main(s16 duration) {
+    UnkAudioObjData *data;
+    s16 frames = duration;
+    f32 volume;
 
-INCLUDE_ASM("asm/nonmatchings/audio", func_8004A72C_main);
+    if (D_800D6A40_main != NULL) {
+        data = OM_GET_DATA_PTR(D_800D6A40_main, UnkAudioObjData);
+        volume = func_800037C4_main(D_800CDBC8_main);
+        data->unk24 = data->unk2C = volume;
+        data->unk18 = frames;
+        if (duration == 0) {
+            data->unk1C = -volume;
+            data->unk2C = 0;
+            func_800036E8_main(D_800CDBC8_main, 0);
+        } else {
+            data->unk1C = -volume / frames;
+            data->unk14 = 1;
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/audio", func_8004A7C4_main);
+void func_8004A72C_main(s16 duration) {
+    UnkAudioObjData *data;
+    s16 frames = duration;
 
-INCLUDE_ASM("asm/nonmatchings/audio", func_8004A880_main);
+    if (D_800D6A40_main != NULL) {
+        data = OM_GET_DATA_PTR(D_800D6A40_main, UnkAudioObjData);
+        if (duration == 0) {
+            data->unk2C = data->unk24;
+            func_800036E8_main(D_800CDBC8_main, data->unk24);
+        } else {
+            if (frames < 0) {
+                data->unk1C = -data->unk1C;
+            } else {
+                data->unk1C = data->unk24 / frames;
+            }
+            data->unk14 = 1;
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/audio", func_8004A918_main);
+void func_8004A7C4_main(s16 duration) {
+    UnkAudioObjData *data;
+    s16 frames = duration;
+    f32 volume;
+
+    if (D_800D6A40_main != NULL) {
+        data = OM_GET_DATA_PTR(D_800D6A40_main, UnkAudioObjData);
+        volume = func_800037C4_main(D_800D037E_main);
+        data->unk28 = data->unk30 = volume;
+        data->unk1A = frames;
+        if (duration == 0) {
+            data->unk20 = -volume;
+            data->unk30 = 0;
+            func_800036E8_main(D_800D037E_main, 0);
+        } else {
+            data->unk20 = -volume / frames;
+            data->unk16 = 1;
+        }
+    }
+}
+
+void func_8004A880_main(s16 duration) {
+    UnkAudioObjData *data;
+    s16 frames = duration;
+
+    if (D_800D6A40_main != NULL) {
+        data = OM_GET_DATA_PTR(D_800D6A40_main, UnkAudioObjData);
+        if (duration == 0) {
+            data->unk30 = data->unk28;
+            func_800036E8_main(D_800D037E_main, data->unk28);
+        } else {
+            if (frames < 0) {
+                data->unk20 = -data->unk20;
+            } else {
+                data->unk20 = data->unk28 / frames;
+            }
+            data->unk16 = 1;
+        }
+    }
+}
+
+void func_8004A918_main(s16 musId) {
+    func_8004A5C4_main(musId);
+    func_800036E8_main(D_800D037E_main, 127);
+    func_8004A7C4_main(0);
+}
 
 // HuAudSeqStop?
 void func_8004A950_main(void) {
@@ -101,13 +210,22 @@ void HuAudSeqFadeOut(s16 speed) {
     D_800A1906_main |= 8;
 }
 
-INCLUDE_ASM("asm/nonmatchings/audio", func_8004A9DC_main);
+void func_8004A9DC_main(s8 volume) {
+    func_800036E8_main(D_800CDBC8_main, volume);
+}
 
-INCLUDE_ASM("asm/nonmatchings/audio", func_8004AA04_main);
+void func_8004AA04_main(s8 volume) {
+    func_80003810_main(volume);
+    D_800A1906_main &= ~8;
+}
 
-INCLUDE_ASM("asm/nonmatchings/audio", func_8004AA38_main);
+void func_8004AA38_main(s16 arg0) {
+    func_80003848_main(D_800CDBC8_main, arg0);
+}
 
-INCLUDE_ASM("asm/nonmatchings/audio", func_8004AA60_main);
+s16 func_8004AA60_main(void) {
+    return func_800038EC_main(D_800CDBC8_main);
+}
 
 s16 HuAudFXPlay(s16 seId) {
     if (D_800A1902_main == 0) {
@@ -119,11 +237,29 @@ s16 HuAudFXPlay(s16 seId) {
     return func_80007064_main(seId);
 }
 
-INCLUDE_ASM("asm/nonmatchings/audio", func_8004AAD0_main);
+void func_8004AAD0_main(s16 seNo, s8 volume) {
+    D_800CE218_main[seNo] = volume;
+    func_80007B28_main(seNo, volume);
+}
 
-INCLUDE_ASM("asm/nonmatchings/audio", func_8004AB0C_main);
+void func_8004AB0C_main(s32 arg0) {
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/audio", func_8004AB7C_main);
+    if (D_800D6A40_main != NULL) {
+        for (i = 0; i < D_800A1910_main; i++) {
+            func_8004AEF0_main(i, (s16)arg0);
+        }
+    }
+}
+
+void func_8004AB7C_main(s8 volume) {
+    s32 i;
+
+    for (i = 0; i < D_800A1910_main; i++) {
+        D_800CE218_main[i] = volume;
+    }
+    func_80007AF0_main(volume);
+}
 
 void HuAudFXPitchSet(s32 seNo, s32 pitch) {
     func_80007BD4_main(seNo, pitch);
@@ -175,7 +311,15 @@ void func_8004AD70_main() {
     func_80007DD8_main(-1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/audio", func_8004AD8C_main);
+s16 func_8004AD8C_main(s16 seId) {
+    s16 seNo;
+
+    seNo = func_8000793C_main(seId);
+    if (seNo != -1) {
+        func_80007DD8_main(seNo);
+    }
+    return seNo;
+}
 
 void func_8004ADDC_main(s16 arg0) {
     func_80007C80_main(-1, arg0);
@@ -185,15 +329,94 @@ void func_8004AE00_main(s16 arg0, s16 arg1) {
     func_80007C80_main(arg0, arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/audio", func_8004AE28_main);
+void func_8004AE28_main(void) {
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/audio", func_8004AEF0_main);
+    for (i = 0; i < 6; i++) {
+        D_800B23D0_main[i] = -1;
+    }
+    switch (func_800034D8_main(D_800CDBC8_main)) {
+        case 0:
+            D_800A1906_main |= 1;
+            D_800A1906_main &= ~2;
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+    }
+    switch (func_800034D8_main(D_800D037E_main)) {
+        case 0:
+            D_800A1906_main |= 0x10;
+            D_800A1906_main &= ~(0x20 | 0x80);
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/audio", func_8004AFBC_main);
+void func_8004AEF0_main(s16 seNo, s32 duration) {
+    UnkAudioObjData *data;
 
-INCLUDE_ASM("asm/nonmatchings/audio", func_8004B0D4_main);
+    if (D_800D6A40_main != NULL && func_800078F8_main(seNo) != 0) {
+        data = OM_GET_DATA_PTR(D_800D6A40_main, UnkAudioObjData);
+        data->unk10[seNo] |= 1;
+        data->unk00[seNo] = D_800CE218_main[seNo];
+        data->unk04[seNo] = (f32)D_800CE218_main[seNo] / (s16)duration;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/audio", func_8004B1AC_main);
+void func_8004AFBC_main(s16 duration) {
+    UnkAudioObjData *data;
+    s32 i;
+
+    if (D_800D6A40_main != NULL) {
+        data = OM_GET_DATA_PTR(D_800D6A40_main, UnkAudioObjData);
+        for (i = 0; i < D_800A1910_main; i++) {
+            data->unk10[i] |= 6;
+            if (data->unk10[i] & 1) {
+                data->unk08[i] = data->unk00[i];
+                data->unk0C[i] = data->unk00[i] / duration;
+            } else {
+                data->unk08[i] = D_800CE218_main[i];
+                data->unk0C[i] = (f32)D_800CE218_main[i] / duration;
+            }
+        }
+    }
+}
+
+void func_8004B0D4_main(void) {
+    UnkAudioObjData *data;
+    s32 i;
+    s16 volume;
+
+    if (D_800D6A40_main != NULL) {
+        data = OM_GET_DATA_PTR(D_800D6A40_main, UnkAudioObjData);
+        for (i = 0; i < D_800A1910_main; i++) {
+            data->unk10[i] &= ~6;
+            if (data->unk10[i] & 1) {
+                volume = (s32)data->unk00[i];
+            } else {
+                volume = D_800CE218_main[i];
+            }
+            func_80007B28_main(i, volume);
+        }
+    }
+}
+
+void func_8004B1AC_main(void) {
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        D_800D6A4C_main[i] = D_800CBB6E_main[i];
+        D_800D123C_main[i] = D_800D20A1_main[i];
+        D_800CCF7C_main[i] = D_800CDA7C_main[i];
+        D_800CDD5C_main[i] = D_800D5558_main[i];
+        D_800CB9A4_main[i] = D_800D1244_main[i];
+    }
+}
 
 // Doesn't seem to be audio related? Maybe part of the next file.
 void omVibrate(s16 player, s16 duration, s16 off, s16 on) {

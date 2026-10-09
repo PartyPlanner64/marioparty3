@@ -87,6 +87,7 @@ extern f32 D_8010BA38_crazy_cogs;
 
 extern s32 D_800A178C_main[][6];
 extern s32 D_800A1790_main[][6];
+extern s32 D_800EBE24_minigame;
 extern s16 D_8010B86E_crazy_cogs[8][2];
 extern f32 D_8010B88C_crazy_cogs[3];
 extern s8 D_8010B9A1_crazy_cogs;
@@ -95,6 +96,7 @@ extern s8 D_8010B99C_crazy_cogs;
 extern s8 D_8010B9A0_crazy_cogs;
 extern s8 D_8010B9A2_crazy_cogs;
 extern s8 D_8010B9A6_crazy_cogs;
+extern s16 D_8010DE08_crazy_cogs[3];
 extern s16 D_8010DE0E_crazy_cogs;
 extern u8 D_8010DE64_crazy_cogs;
 extern u8 D_8010DE69_crazy_cogs;
@@ -166,6 +168,8 @@ void func_801069DC_crazy_cogs(omObjData *);
 void func_8010A67C_crazy_cogs(omObjData *);
 void func_8010AA10_crazy_cogs(omObjData *);
 void func_8010AE08_crazy_cogs(omObjData *);
+void func_80108B0C_crazy_cogs(omObjData *);
+void func_800DDD94_minigame(omObjData *);
 
 void func_801059A0_crazy_cogs(void) {
     func_8010B6E0_crazy_cogs();
@@ -954,7 +958,49 @@ void func_80107E00_crazy_cogs(omObjData *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80108190_crazy_cogs);
+void func_80108190_crazy_cogs(omObjData *arg0) {
+    UnkCrazyCogsCog *cog = &(&D_8010B9F0_crazy_cogs[5])[arg0->work[1]];
+
+    switch (cog->unk_12) {
+        case 0:
+            if (cog->unk_10 != 0) {
+                cog->unk_44.x = arg0->trans.x + 650.0f;
+                cog->unk_1C = -5.0f;
+                cog->unk_20 = 180.0f;
+            } else {
+                cog->unk_44.x = arg0->trans.x - 650.0f;
+                cog->unk_1C = 5.0f;
+                cog->unk_20 = 0;
+            }
+            cog->unk_44.y = arg0->trans.y;
+            cog->unk_12++;
+            func_800E5690_minigame(arg0, 0x12);
+            HmfModelData[arg0->model[0]].unk40 = 0;
+            HmfModelData[arg0->model[0]].unk44 = 0;
+            func_80105B04_crazy_cogs(arg0->work[1]);
+            func_800DDD94_minigame(arg0);
+            HuAudFXStop((s16)(arg0->work[3] * 2 + 2));
+            func_8004AC98_main(0x325, ((s16 *)arg0->work)[1]);
+            func_8004ACE0_main(0x286, ((s16 *)arg0->work)[1]);
+            D_8010DE08_crazy_cogs[arg0->work[1]] = 0;
+        case 1:
+            cog->unk_20 = func_801059BC_crazy_cogs(cog->unk_20, cog->unk_1C);
+            arg0->trans.x = cosdf(cog->unk_20) * 650.0f + cog->unk_44.x;
+            arg0->trans.y = sindf(cog->unk_20) * 590.0f + cog->unk_44.y;
+            arg0->rot.y = func_801059BC_crazy_cogs(arg0->rot.y, 33.0f);
+            arg0->rot.x = func_801059BC_crazy_cogs(arg0->rot.x, 33.0f);
+            D_8010DE08_crazy_cogs[arg0->work[1]]++;
+            if (arg0->trans.y < 0.0f) {
+                cog->unk_12++;
+            }
+            break;
+        case 2:
+            return;
+    }
+    Hu3DModelPosSet(arg0->model[0], arg0->trans.x, arg0->trans.y, arg0->trans.z);
+    Hu3DModelRotSet(arg0->model[0], arg0->rot.x, arg0->rot.y, arg0->rot.z);
+    Hu3DModelPosSet(arg0->model[1], arg0->trans.x, func_80105BD0_crazy_cogs(arg0), arg0->trans.z);
+}
 
 void func_80108464_crazy_cogs(omObjData *arg0) {
     CrazyCogsCpuMovement *movement = &D_8010DE70_crazy_cogs[arg0->work[1]];
@@ -1014,9 +1060,118 @@ void func_80108464_crazy_cogs(omObjData *arg0) {
     D_800D20A1_main[arg0->work[3]] = movement->zStick;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_801087B8_crazy_cogs);
+void func_801087B8_crazy_cogs(omObjData *arg0) {
+    UnkCrazyCogsCog *cog = &(&D_8010B9F0_crazy_cogs[5])[arg0->work[1]];
+    func_800E1BA8_minigame_ObjData *work = arg0->data;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80108B0C_crazy_cogs);
+    if (cog->unk_0E != 0) {
+        func_80108190_crazy_cogs(arg0);
+        return;
+    }
+    if (D_8010B9E3_crazy_cogs[arg0->work[0]] != 0) {
+        if (!(GwPlayer[arg0->work[0]].stat & 1)) {
+            omVibrate(((s16 *)arg0->work)[1], 10, 0, 10);
+        }
+        D_8010B9E3_crazy_cogs[arg0->work[0]] = 0;
+    }
+    if (D_8010B99C_crazy_cogs != 2) {
+        func_80105B04_crazy_cogs(arg0->work[0]);
+        if (D_8010B99C_crazy_cogs == 0) {
+            func_80107E00_crazy_cogs(arg0);
+        }
+        if (D_8010B99C_crazy_cogs == 3) {
+            work->unk3C = 0;
+            work->unk40 = 0;
+        }
+        if (D_8010B9A0_crazy_cogs > 0) {
+            func_800E5690_minigame(arg0, 0xD);
+            func_80045ED0_main((D_8010B810_crazy_cogs[GwPlayer[arg0->work[0]].chr] << 16) | 0x30);
+        }
+    } else {
+        if (GwPlayer[arg0->work[0]].stat & 1) {
+            func_80108464_crazy_cogs(arg0);
+        }
+        switch (D_8010DE60_crazy_cogs) {
+            case 0:
+                break;
+            case 1:
+                func_80107CA8_crazy_cogs(&arg0->trans.x, &arg0->trans.z, -3.3f);
+                if (((D_800CBB6E_main[arg0->work[3]] < 0) ? -D_800CBB6E_main[arg0->work[3]] : D_800CBB6E_main[arg0->work[3]]) < 20 &&
+                    ((D_800D20A1_main[arg0->work[3]] < 0) ? -D_800D20A1_main[arg0->work[3]] : D_800D20A1_main[arg0->work[3]]) < 20) {
+                    work->unk3C = func_801059BC_crazy_cogs(work->unk3C, -3.3f);
+                }
+                break;
+            case 2:
+                func_80107CA8_crazy_cogs(&arg0->trans.x, &arg0->trans.z, 3.3f);
+                if (((D_800CBB6E_main[arg0->work[3]] < 0) ? -D_800CBB6E_main[arg0->work[3]] : D_800CBB6E_main[arg0->work[3]]) < 20 &&
+                    ((D_800D20A1_main[arg0->work[3]] < 0) ? -D_800D20A1_main[arg0->work[3]] : D_800D20A1_main[arg0->work[3]]) < 20) {
+                    work->unk3C = func_801059BC_crazy_cogs(work->unk3C, 3.3f);
+                }
+                break;
+        }
+    }
+    func_800DDD94_minigame(arg0);
+    Hu3DModelPosSet(arg0->model[1], arg0->trans.x, arg0->trans.y, arg0->trans.z);
+}
+
+void func_80108B0C_crazy_cogs(omObjData *arg0) {
+    CrazyCogsCpuMovement *movement = &D_8010DE70_crazy_cogs[arg0->work[1]];
+    UnkCrazyCogsCog *cog = &(&D_8010B9F0_crazy_cogs[5])[arg0->work[1]];
+    u16 character = GwPlayer[arg0->work[0]].chr;
+    s32 modelFile = D_800A178C_main[character][0];
+    s32 motionFile = D_800A1790_main[character][0];
+    func_800E1BA8_minigame_ObjData *work;
+
+    func_800E18D8_minigame();
+    func_800E1BA8_minigame(arg0, modelFile, motionFile, ((u16 *)arg0->work)[1], 0x299, 0x289);
+    work = arg0->data;
+    work->unkEC = 0;
+    func_8001C2FC_main(arg0->model[1], 0x80000000, 0);
+    func_8001C258_main(arg0->model[1], 0x60, 0x20);
+    func_8001C448_main(arg0->model[1]);
+    func_8001C514_main(arg0->model[1]);
+    arg0->model[3] = func_8000B108_main(3, 0x2BD);
+    arg0->model[4] = func_8000B108_main(4, 0x2BD);
+    func_800E5A00_minigame(arg0, 0, func_80017BB8_main(character, 0), 1, 0);
+    func_800E5A00_minigame(arg0, 1, func_80017BB8_main(character, 1), 1, 0);
+    func_800E5A00_minigame(arg0, 2, func_80017BB8_main(character, 2), 1, 0);
+    func_800E5A00_minigame(arg0, 0x12, func_80017BB8_main(character, 0xF), 2, 0);
+    func_800E5978_minigame(arg0, 3, func_80017BB8_main(character, 0x1D), 1, 0);
+    func_800E5978_minigame(arg0, 4, func_80017BB8_main(character, 0x1E), 1, 0);
+    func_800E5A00_minigame(arg0, 0xD, func_80017BB8_main(character, 0x30), 1, 120);
+    func_800E5690_minigame(arg0, 0);
+    D_800EBE24_minigame = 1;
+    func_8001C8A8_main(arg0->model[0], 1);
+    func_8001C8A8_main(arg0->model[1], 1);
+    func_8001C8A8_main(arg0->model[3], 1);
+    func_8001C8A8_main(arg0->model[4], 1);
+    func_8001C258_main(arg0->model[0], 4, 4);
+    func_8001C258_main(arg0->model[1], 4, 4);
+    arg0->trans.x = 700.0f;
+    arg0->trans.y = 28.0f;
+    arg0->trans.z = 700.0f;
+    Hu3DModelPosSet(arg0->model[0], arg0->trans.x, arg0->trans.y, arg0->trans.z);
+    Hu3DModelPosSet(arg0->model[1], arg0->trans.x, arg0->trans.y, arg0->trans.z);
+    movement->xTimer = movement->xDuration = movement->xStick = 0;
+    movement->zTimer = movement->zDuration = movement->zStick = 0;
+    switch (GwPlayer[arg0->work[0]].cpu_difficulty) {
+        case 0:
+            cog->unk_14 = 0;
+            break;
+        case 1:
+            cog->unk_14 = 33;
+            break;
+        case 2:
+            cog->unk_14 = 66;
+            break;
+        case 3:
+            cog->unk_14 = 100;
+            break;
+    }
+    arg0->work[3] = GwPlayer[arg0->work[0]].pad;
+    arg0->work[2] = 0;
+    arg0->func = func_801087B8_crazy_cogs;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80108EE8_crazy_cogs);
 

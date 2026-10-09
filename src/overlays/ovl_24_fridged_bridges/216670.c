@@ -6,6 +6,7 @@ extern s32 D_8010D360_fridged_bridges;
 extern s16 D_8010DA60_fridged_bridges;
 extern s16 D_8010DA68_fridged_bridges;
 extern omObjData **D_8010DA64_fridged_bridges;
+extern omObjData *D_8010DA70_fridged_bridges;
 
 void func_80105F34_fridged_bridges(omObjData *arg0);
 void func_80108FBC_fridged_bridges(omObjData *arg0);
@@ -95,7 +96,26 @@ void func_80108BEC_fridged_bridges(omObjData *arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_80108C60_fridged_bridges);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_80108EBC_fridged_bridges);
+// Shrinking phase of a player's bridge-sink object (created with func_80108C60).
+// Sinks the player model 10 units per frame while scaling it away; when the
+// scale runs out, stops the animation and deletes the object.
+void func_80108EBC_fridged_bridges(omObjData *arg0) {
+    FridgedBridgesPlayer *player = OM_GET_DATA_PTR((omObjData *)arg0->work[0], FridgedBridgesPlayer);
+    s16 playerId = player->playerId;
+    u16 modelId = D_8010DA70_fridged_bridges->model[playerId * 5];
+    f32 *scale;
+
+    arg0->trans.y -= 10.0f;
+    Hu3DModelPosSet(modelId, arg0->trans.x, arg0->trans.y, arg0->trans.z);
+    scale = (f32 *)&arg0->work[2];
+    *scale -= 0.04f;
+    if (*scale <= 0.0f) {
+        func_8001C258_main(modelId, 4, 4);
+        omDelObj(arg0);
+    } else {
+        Hu3DModelScaleSet(modelId, *scale, *scale, *scale);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_80108FBC_fridged_bridges);
 

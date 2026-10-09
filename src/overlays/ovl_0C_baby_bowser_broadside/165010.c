@@ -104,6 +104,11 @@ void func_8010F6F8_baby_bowser_broadside(f32 *start, f32 *end);
 
 extern u8 D_800D6A90_main;
 extern s16 D_8010FD60_baby_bowser_broadside;
+extern s16 D_8010FD76_baby_bowser_broadside;
+extern s16 D_8010FD74_baby_bowser_broadside;
+extern s16 D_8010FD70_baby_bowser_broadside;
+extern s16 D_8010FD72_baby_bowser_broadside;
+extern s16 D_8011000C_baby_bowser_broadside;
 extern f32 D_8010FD64_baby_bowser_broadside;
 extern f32 D_8010FD68_baby_bowser_broadside;
 extern f32 D_8010FD6C_baby_bowser_broadside;
@@ -129,9 +134,13 @@ void func_80107140_baby_bowser_broadside(omObjData *object);
 void func_80107630_baby_bowser_broadside(void);
 void func_801076AC_baby_bowser_broadside();
 void func_80107A00_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler);
-void func_80107C64_baby_bowser_broadside();
-void func_80107FE0_baby_bowser_broadside();
-void func_80107A80_baby_bowser_broadside();
+void func_80107C64_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler);
+void func_80109BD8_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler);
+void func_80107FE0_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler);
+void func_801081A4_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler);
+void func_80109D2C_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler);
+void func_80107A80_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler);
+void func_80108860_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler);
 BabyBowserBroadsideGroup *func_80109F64_baby_bowser_broadside(omObjData *object, s8 group, s16 count, s16 handlers);
 s16 func_8010A0B4_baby_bowser_broadside(s8 group, s32 flags, s32 arg2, void (*callback)(), s32 arg4);
 
@@ -460,11 +469,135 @@ void func_80107A00_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBows
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/165010", func_80107A80_baby_bowser_broadside);
+void func_80107A80_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler) {
+    s16 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/165010", func_80107C64_baby_bowser_broadside);
+    if ((s8)handler->unk_04 == 0) {
+        D_8011000C_baby_bowser_broadside = HuAudFXPlay(0x35C);
+        func_8004AAD0_main(D_8011000C_baby_bowser_broadside, 64);
+        handler->unk_1C = 0;
+        handler->unk_04 = 1;
+    }
+    switch (++handler->unk_1C) {
+        case 20:
+            GMesCreate(5);
+            HuAudFXPlay(14);
+            break;
+        case 40:
+            D_8010FD70_baby_bowser_broadside = 1;
+            break;
+        default:
+            if (D_8010FD70_baby_bowser_broadside == 1 && GMesStatGet() == 2) {
+                for (i = 0; i < 4; i++) {
+                    if (GwPlayer[i].stat & PLAYER_IS_CPU) {
+                        func_8010A0B4_baby_bowser_broadside((s8)(i + 3), 0, (s32)&D_80110004_baby_bowser_broadside[i], func_80108860_baby_bowser_broadside, 0);
+                    }
+                }
+                func_8010A0B4_baby_bowser_broadside((s8)slot->unk_00->work[1], 0xF, 0, func_80107854_baby_bowser_broadside, 0);
+                D_80110008_baby_bowser_broadside->unk_38 = 0.5f;
+                D_80110008_baby_bowser_broadside->unk_00 = 2;
+                func_8010A158_baby_bowser_broadside((s8)slot->unk_00->work[1], handler);
+            }
+            break;
+    }
+    if (D_8010FD72_baby_bowser_broadside == 0 && GMesStatGet() != 0) {
+        HuAudSeqPlay(48);
+        D_8010FD72_baby_bowser_broadside = 1;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/165010", func_80107FE0_baby_bowser_broadside);
+void func_80107C64_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler) {
+    s16 i;
+    s16 character1, character2;
+    s16 player;
+
+    if ((s8)handler->unk_04 == 0) {
+        if (++handler->unk_1C > 40) {
+            handler->unk_1C = 0;
+            if (D_80110000_baby_bowser_broadside[0].unk_10 > D_80110000_baby_bowser_broadside[1].unk_10) {
+                handler->unk_0C = 0;
+            } else {
+                handler->unk_0C = 1;
+            }
+            handler->unk_0D = !handler->unk_0C;
+            for (i = 0; i < 2; i++) {
+                player = D_80110000_baby_bowser_broadside[handler->unk_0C].players[i];
+                func_8010A0B4_baby_bowser_broadside((s8)(player + 3), 0xDFFF,
+                                                    (s32)&D_80110004_baby_bowser_broadside[player], func_80109BD8_baby_bowser_broadside, 0);
+                player = D_80110000_baby_bowser_broadside[handler->unk_0D].players[i];
+                func_8010A0B4_baby_bowser_broadside((s8)(player + 3), 0xDFFF,
+                                                    (s32)&D_80110004_baby_bowser_broadside[player], func_80109D2C_baby_bowser_broadside, 0);
+            }
+            handler->unk_04 = 1;
+        }
+    } else if (D_8010FD74_baby_bowser_broadside == 0) {
+        if (GMesStatGet() == 0) {
+            D_8010FD74_baby_bowser_broadside = 1;
+        }
+    } else if (D_8010FD74_baby_bowser_broadside >= 2) {
+        if (GMesStatGet() == 0) {
+            D_8010FD74_baby_bowser_broadside = 3;
+        }
+        if (D_8010FD74_baby_bowser_broadside == 3) {
+            if (++handler->unk_1C >= 15) {
+                func_8010A0B4_baby_bowser_broadside((s8)slot->unk_00->work[1], 0, 0, func_801081A4_baby_bowser_broadside, 0);
+                func_8010A158_baby_bowser_broadside((s8)slot->unk_00->work[1], handler);
+            }
+        }
+    } else {
+        if (++handler->unk_1C == 15) {
+            character1 = D_80110004_baby_bowser_broadside[D_80110000_baby_bowser_broadside[handler->unk_0C].players[0]].unk_02;
+            character2 = D_80110004_baby_bowser_broadside[D_80110000_baby_bowser_broadside[handler->unk_0C].players[1]].unk_02;
+            HuAudSeqPlay(102);
+            GMesCreate(30, character1, character2);
+            GwPlayer[D_80110000_baby_bowser_broadside[handler->unk_0C].players[0]].bonusCoin += 10;
+            GwPlayer[D_80110000_baby_bowser_broadside[handler->unk_0C].players[1]].bonusCoin += 10;
+            D_8010FD60_baby_bowser_broadside = 1;
+        }
+        if (GMesStatGet() != 0) {
+            handler->unk_1C = 0;
+            D_8010FD74_baby_bowser_broadside = 2;
+        }
+    }
+}
+
+void func_80107FE0_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler) {
+    s16 i;
+
+    if ((s8)handler->unk_04 == 0) {
+        if (++handler->unk_1C > 40) {
+            handler->unk_1C = 0;
+            for (i = 0; i < 4; i++) {
+                func_8010A0B4_baby_bowser_broadside((s8)(i + 3), 0xDFFF, (s32)&D_80110004_baby_bowser_broadside[i], func_80109D2C_baby_bowser_broadside, 0);
+            }
+            handler->unk_04 = 1;
+        }
+    } else if (D_8010FD76_baby_bowser_broadside == 0) {
+        if (GMesStatGet() == 0) {
+            D_8010FD76_baby_bowser_broadside = 1;
+        }
+    } else if (D_8010FD76_baby_bowser_broadside >= 2) {
+        if (GMesStatGet() == 0) {
+            D_8010FD76_baby_bowser_broadside = 3;
+        }
+        if (D_8010FD76_baby_bowser_broadside == 3) {
+            if (++handler->unk_1C >= 15) {
+                func_8010A0B4_baby_bowser_broadside((s8)slot->unk_00->work[1], 0, 0, func_801081A4_baby_bowser_broadside, 0);
+                func_8010A158_baby_bowser_broadside((s8)slot->unk_00->work[1], handler);
+            }
+        }
+    } else {
+        if (++handler->unk_1C == 15) {
+            GMesCreate(32);
+            HuAudSeqPlay(108);
+            D_8010FD60_baby_bowser_broadside = 1;
+        }
+        if (GMesStatGet() != 0) {
+            handler->unk_1C = 0;
+            D_8010FD76_baby_bowser_broadside = 2;
+        }
+    }
+}
 
 void func_801081A4_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler) {
     switch ((s8)handler->unk_04) {

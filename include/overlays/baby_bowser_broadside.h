@@ -39,7 +39,9 @@ typedef struct BabyBowserBroadsideHandler { // 0x44 bytes
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ char unk_06[2];
     /* 0x08 */ s32 unk_08;
-    /* 0x0C */ char unk_0C[4];
+    /* 0x0C */ s8 unk_0C;
+    /* 0x0D */ s8 unk_0D;
+    /* 0x0E */ char unk_0E[2];
     /* 0x10 */ s8 unk_10;
     /* 0x11 */ char unk_11[0xB];
     /* 0x1C */ s16 unk_1C;

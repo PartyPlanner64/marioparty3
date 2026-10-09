@@ -2,10 +2,12 @@
 #include "ovl_81.h"
 
 extern void *D_80101060_name_81;
+extern u8 *D_80101064_name_81;
 extern u16 D_801050A0_name_81;
 extern SpaceData *D_801050A4_name_81;
 extern LinkData *D_801050A8_name_81;
 extern void *D_801050B0_name_81[19];
+extern u8 D_80105100_name_81[19];
 extern f32 D_80105128_name_81[8];
 extern s32 D_80105148_name_81;
 extern s16 D_80105150_name_81[255];
@@ -196,7 +198,28 @@ s32 func_800EA940_name_81(s32 playerIndex) {
     return count;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D1190", func_800EA97C_name_81);
+void func_800EA97C_name_81(void) {
+    s32 i;
+    s32 j;
+    s32 n;
+
+    if (D_80101064_name_81 != NULL) {
+        HuMemMemoryFreeTemp(D_80101064_name_81);
+    }
+    D_80101064_name_81 = HuMemMemoryAllocTemp(0x980);
+
+    for (i = 0; i < 0x13; i++) {
+        n = 0;
+        for (j = 0; j < D_801050A0_name_81; j++) {
+            if (MBDMasuGet(j)->space_type == i) {
+                *(i * 128 + D_80101064_name_81 + n) = j;
+                n++;
+            }
+        }
+        *(i * 128 + D_80101064_name_81 + n) = 0xFF;
+        D_80105100_name_81[i] = n;
+    }
+}
 
 s32 func_800EAA7C_name_81(s32 spaceType) {
     s32 count = 0;

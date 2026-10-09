@@ -104,7 +104,7 @@ extern s8 D_8010DE68_crazy_cogs;
 extern s8 D_8010DEB4_crazy_cogs;
 extern s8 D_8010B996_crazy_cogs;
 extern D_80111B50_vine_with_me_Struct D_8010B830_crazy_cogs;
-extern s16 D_8010B97C_crazy_cogs[];
+extern const s16 D_8010B97C_crazy_cogs[];
 extern s8 D_8010B997_crazy_cogs;
 extern s16 D_8010DE62_crazy_cogs;
 extern s16 D_8010DE66_crazy_cogs;
@@ -134,12 +134,6 @@ extern s8 D_8010B991_crazy_cogs[3];
 extern s8 D_8010DE10_crazy_cogs[3];
 extern s8 D_8010DE60_crazy_cogs;
 extern s8 D_8010DE6A_crazy_cogs[4];
-
-extern char D_8010B8F0_crazy_cogs[];
-extern char D_8010B8F8_crazy_cogs[];
-extern char D_8010B904_crazy_cogs[];
-extern char D_8010B90C_crazy_cogs[];
-extern char D_8010B918_crazy_cogs[];
 
 void func_800E6F0C_minigame(s32);
 void func_80107778_crazy_cogs(void);
@@ -352,32 +346,22 @@ f32 func_8010611C_crazy_cogs(f32 angle) {
     return angle;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", D_8010B8F0_crazy_cogs);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", D_8010B8F8_crazy_cogs);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", D_8010B904_crazy_cogs);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", D_8010B90C_crazy_cogs);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", D_8010B918_crazy_cogs);
-
 void func_801061CC_crazy_cogs(s16 channel, s16 state) {
     switch (state) {
         case 0:
-            osSyncPrintf(D_8010B8F0_crazy_cogs);
+            osSyncPrintf("\x8E\x95\x8E\xD4\t"); // Cog (Shift-JIS)
             break;
         case 1:
-            osSyncPrintf(D_8010B8F8_crazy_cogs);
+            osSyncPrintf("\x83\x58\x83\x43\x83\x62\x83\x60\t"); // Switch (Shift-JIS)
             break;
         case 2:
-            osSyncPrintf(D_8010B904_crazy_cogs);
+            osSyncPrintf("\x91\xAB\x89\xB9\t"); // Footsteps (Shift-JIS)
             break;
         case 3:
-            osSyncPrintf(D_8010B90C_crazy_cogs);
+            osSyncPrintf("\x83\x4C\x83\x89\x81\x5B\x97\x8E\x89\xBA\t"); // Bullet Bill falling (Shift-JIS)
             break;
         case 4:
-            osSyncPrintf(D_8010B918_crazy_cogs);
+            osSyncPrintf("\x94\x9A\x94\xAD\t"); // Explosion (Shift-JIS)
             break;
     }
     osSyncPrintf("ch=%d\n", channel);
@@ -2109,4 +2093,5 @@ void func_8010B6E0_crazy_cogs(void) {
     func_800E5EA0_minigame(&D_8010B830_crazy_cogs);
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", D_8010B97C_crazy_cogs);
+// Keep this table after the functions to preserve the original rodata order.
+const s16 D_8010B97C_crazy_cogs[] = { 0x8260, 0x8261, 0x8262, 0 };

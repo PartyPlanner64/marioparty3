@@ -30,8 +30,12 @@ extern s16 D_8010C766_end_of_the_line;
 extern s16 D_8010C782_end_of_the_line[3];
 extern s16 D_8010C7D0_end_of_the_line;
 
+extern f32 D_8010C5CC_end_of_the_line;
+extern f32 D_8010C5D0_end_of_the_line[2];
+
 void func_8000BBFC_main(u16 spriteId, s16 alpha);
 void func_80105E88_end_of_the_line(omObjData *obj);
+void func_8010AA1C_end_of_the_line(omObjData *obj);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_801059A0_end_of_the_line);
 
@@ -90,7 +94,24 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_8010
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_8010A8B4_end_of_the_line);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_8010A91C_end_of_the_line);
+void func_8010A91C_end_of_the_line(omObjData *obj, s32 arg1) {
+    EndOfTheLinePlayer *player = OM_GET_DATA_PTR(obj, EndOfTheLinePlayer);
+    EndOfTheLineData *data;
+
+    if (player->obj != NULL) {
+        return;
+    }
+    player->obj = omAddObj(0x28, 0, 0, -1, func_8010AA1C_end_of_the_line);
+    player->obj->work[0] = player->playerIdx;
+    player->obj->work[1] = 1;
+    player->obj->work[2] = 0;
+    player->obj->work[3] = arg1;
+    data = OM_GET_DATA_PTR(D_8010C738_end_of_the_line, EndOfTheLineData);
+    func_8000BB54_main(data->esprites[player->playerIdx + 2]);
+    func_8000BBFC_main(data->esprites[player->playerIdx + 2], OM_GET_WORK_PTR(player->obj, s16)[5]);
+    func_8000BBD4_main(data->esprites[player->playerIdx + 2],
+                       D_8010C5D0_end_of_the_line[player->playerIdx] + D_8010C5CC_end_of_the_line, 0x78);
+}
 
 void func_8010AA1C_end_of_the_line(omObjData *obj) {
     EndOfTheLineData *data = OM_GET_DATA_PTR(D_8010C738_end_of_the_line, EndOfTheLineData);

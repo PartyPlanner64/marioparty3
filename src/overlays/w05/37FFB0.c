@@ -506,7 +506,40 @@ void func_80115CA0_w05(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80115D04_w05);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80115EB0_w05);
+void func_80115EB0_w05(s32 playerNo, s32 type) {
+    GW_PLAYER *player;
+    Object *obj;
+    s32 modelId;
+
+    player = MBPlayerGet(playerNo);
+
+    if (D_80120870_w05[playerNo] == NULL) {
+        switch (type) {
+            case 0:
+                modelId = 0x3F;
+                break;
+            case 1:
+                modelId = 0x40;
+                break;
+            case 2:
+                modelId = 0x41;
+                break;
+            default:
+                modelId = 0x42;
+                break;
+        }
+
+        obj = MBModelCreate(modelId, NULL);
+        MBModelTempAllocFree(obj);
+        D_80120870_w05[playerNo] = obj;
+        obj->flags |= 2;
+        HuVecCopy3F(&obj->coords, &player->player_obj->coords);
+        obj->velocity.x = 20.0f;
+        MBVecForwardSet(&obj->rot);
+    } else {
+        func_800D9A40_shared_board(D_80120870_w05[playerNo]);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80115FB0_w05);
 

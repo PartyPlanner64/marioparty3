@@ -815,7 +815,40 @@ void func_801074A0_crazy_cogs(omObjData *arg0) {
     arg0->func = func_8010728C_crazy_cogs;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80107778_crazy_cogs);
+void func_80107778_crazy_cogs(void) {
+    omObjData *obj;
+    UnkCrazyCogsCog *cog = &D_8010B9F0_crazy_cogs[4];
+    s16 i;
+    u16 playerIndex;
+
+    for (i = 0; i < 4; i++) {
+        if (GwPlayer[i].group == 0) {
+            break;
+        }
+    }
+    switch (i) {
+        case 0:
+            playerIndex = 0;
+            break;
+        case 1:
+            playerIndex = 1;
+            break;
+        case 2:
+            playerIndex = 2;
+            break;
+        case 3:
+            playerIndex = 3;
+            break;
+        default:
+            playerIndex = 0;
+            break;
+    }
+    obj = omAddObj(0x2BC, 3, 4, -1, func_801074A0_crazy_cogs);
+    obj->work[0] = playerIndex;
+    cog->obj = obj;
+    D_8010DE64_crazy_cogs = obj->work[0];
+    D_8010DE69_crazy_cogs = GwPlayer[obj->work[0]].chr;
+}
 
 void func_8010787C_crazy_cogs(omObjData *arg0) {
 }

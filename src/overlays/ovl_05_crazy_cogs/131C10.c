@@ -125,6 +125,7 @@ extern UnkCrazyCogsCog D_8010C8E4_crazy_cogs[];
 extern omObjData *D_8010C5CC_crazy_cogs;
 extern omObjData *D_8010C650_crazy_cogs;
 extern f32 D_8010DE14_crazy_cogs;
+extern s32 D_8010DE18_crazy_cogs[2];
 extern s16 D_8010DE22_crazy_cogs;
 extern s16 D_8010DE20_crazy_cogs;
 extern s8 D_8010B991_crazy_cogs[3];
@@ -1237,7 +1238,7 @@ s8 func_80109A44_crazy_cogs(omObjData *arg0) {
     return result;
 }
 
-void func_80109B88_crazy_cogs(omObjData *arg0) {
+void func_80109B88_crazy_cogs(omObjData *arg0, s32 arg1) {
     CrazyCogsMovement *movement;
 
     if (arg0->work[0] < 7) {
@@ -1285,9 +1286,146 @@ void func_80109D24_crazy_cogs(void) {
     D_8010B9E3_crazy_cogs[3] = 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80109D44_crazy_cogs);
+void func_80109D44_crazy_cogs(omObjData *arg0) {
+    UnkCrazyCogsCog *cog = &(&D_8010B9F0_crazy_cogs[8])[arg0->work[0]];
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80109F64_crazy_cogs);
+    func_801097EC_crazy_cogs(arg0);
+    if ((s16)cog->timer == 0) {
+        return;
+    }
+    switch (D_8010B99C_crazy_cogs) {
+        case 0:
+        case 1:
+            break;
+        case 2:
+            if (arg0->trans.y > 25.0f) {
+                arg0->trans.x -= cog->unk_18;
+                arg0->trans.y -= cog->unk_1C;
+                D_8010DE88_crazy_cogs[arg0->work[0]] += cog->unk_20;
+            } else {
+                func_80109298_crazy_cogs(arg0);
+                func_80109388_crazy_cogs(arg0);
+                func_80109D24_crazy_cogs();
+            }
+            if (arg0->work[0] == 9) {
+                if (arg0->trans.z < 600.0f) {
+                    arg0->trans.z += 35.0f;
+                } else {
+                    func_80109388_crazy_cogs(arg0);
+                    func_80109D24_crazy_cogs();
+                }
+            }
+            func_80109B88_crazy_cogs(arg0, 0);
+            break;
+        default:
+            if ((s16)cog->timer != 0) {
+                func_80109298_crazy_cogs(arg0);
+                func_8001C258_main(arg0->model[0], 4, 4);
+                func_8001C258_main(arg0->model[1], 4, 4);
+                cog->timer = 0;
+            }
+            break;
+    }
+    Hu3DModelPosSet(arg0->model[1], arg0->trans.x, func_80105BD0_crazy_cogs(arg0), arg0->trans.z);
+    if (D_8010DE88_crazy_cogs[arg0->work[0]] > 1.0f) {
+        D_8010DE88_crazy_cogs[arg0->work[0]] = 1.0f;
+    }
+    Hu3DModelScaleSet(arg0->model[1], D_8010DE88_crazy_cogs[arg0->work[0]], 1.0f,
+                      D_8010DE88_crazy_cogs[arg0->work[0]]);
+}
+
+void func_80109F64_crazy_cogs(omObjData *arg0) {
+    UnkCrazyCogsCog *cog = &(&D_8010B9F0_crazy_cogs[8])[arg0->work[0]];
+    f32 xSpeed;
+    f32 angle;
+    u32 cogIndex;
+
+    if (arg0->work[0] == 0) {
+        arg0->model[0] = func_8000B0A0_main(0xA0062, 0x89);
+        func_8001C448_main(arg0->model[0]);
+        func_8001C514_main(arg0->model[0]);
+        arg0->model[1] = func_8000B0A0_main(0, 0x14C9);
+        func_8001C2FC_main(arg0->model[1], 0x80000000, 0);
+        func_8001C448_main(arg0->model[1]);
+        func_8001C514_main(arg0->model[1]);
+        func_80088800_main(HmfModelData[arg0->model[1]].mtx, 0.0f, 0.0f, 0.0f);
+        D_8010DE18_crazy_cogs[0] = arg0->model[0];
+        D_8010DE18_crazy_cogs[1] = arg0->model[1];
+    } else {
+        arg0->model[0] = Hu3DModelLink((s16)D_8010DE18_crazy_cogs[0]);
+        arg0->model[1] = Hu3DModelLink((s16)D_8010DE18_crazy_cogs[1]);
+    }
+    if (arg0->work[0] < 4) {
+        angle = 60.0f;
+        xSpeed = cosdf(0.0f) * cosdf(angle) * 36.0f;
+        cog->unk_1C = sindf(angle) * 36.0f;
+        cogIndex = arg0->work[0];
+        if (cogIndex < 2) {
+            cog->unk_18 = 0.0f - xSpeed;
+            cog->unk_44.x = 0.0f - cosdf(0.0f) * cosdf(angle) * 2900.0f;
+            cog->unk_50.y = 90.0f;
+            cog->unk_50.z = 300.0f;
+        } else if (cogIndex < 4) {
+            cog->unk_18 = xSpeed;
+            cog->unk_44.x = cosdf(0.0f) * cosdf(angle) * 2900.0f;
+            cog->unk_50.y = 270.0f;
+            cog->unk_50.z = angle;
+        }
+        cog->unk_44.y = sindf(angle) * 2900.0f;
+    } else if (arg0->work[0] < 7) {
+        cog->unk_18 = 0;
+        cog->unk_1C = 36.0f;
+        cog->unk_44.x = 0;
+        cog->unk_44.y = 2900.0f;
+        cog->unk_50.x = 90.0f;
+    }
+    if (arg0->work[0] == 7) {
+        cog->unk_18 = 45.0f;
+        cog->unk_1C = 45.0f;
+        cog->unk_44.x = 1400.0f;
+        cog->unk_44.y = 2000.0f;
+        cog->unk_44.z = 0;
+        cog->unk_50.y = 270.0f;
+        cog->unk_50.z = 45.0f;
+    }
+    if (arg0->work[0] == 8) {
+        cog->unk_18 = -45.0f;
+        cog->unk_1C = 45.0f;
+        cog->unk_44.x = -1400.0f;
+        cog->unk_44.y = 2000.0f;
+        cog->unk_44.z = 0;
+        cog->unk_50.y = 90.0f;
+        cog->unk_50.z = 315.0f;
+    }
+    if (arg0->work[0] == 9) {
+        cog->unk_18 = 5.0f;
+        cog->unk_1C = 30.0f;
+        cog->unk_44.x = 0;
+        cog->unk_44.y = 1800.0f;
+        cog->unk_44.z = 0;
+        cog->unk_50.y = 0;
+        cog->unk_50.x = 30.0f;
+    }
+    arg0->trans.x = cog->unk_44.x;
+    arg0->trans.y = cog->unk_44.y;
+    arg0->trans.z = cog->unk_44.z;
+    arg0->rot.x = cog->unk_50.x;
+    arg0->rot.y = cog->unk_50.y;
+    arg0->rot.z = cog->unk_50.z;
+    arg0->scale.x = arg0->scale.y = arg0->scale.z = 1.0f;
+    Hu3DModelPosSet(arg0->model[0], arg0->trans.x, arg0->trans.y, arg0->trans.z);
+    Hu3DModelRotSet(arg0->model[0], arg0->rot.x, arg0->rot.y, arg0->rot.z);
+    Hu3DModelScaleSet(arg0->model[0], arg0->scale.x, arg0->scale.y, arg0->scale.z);
+    cog->unk_20 = 0.9f / 80.0f;
+    Hu3DModelScaleSet(arg0->model[1], 0.1f, 1.0f, 0.1f);
+    Hu3DModelPosSet(arg0->model[1], arg0->trans.x, arg0->trans.y, arg0->trans.z);
+    func_8001C258_main(arg0->model[0], 4, 4);
+    func_8001C258_main(arg0->model[1], 4, 4);
+    func_8001C8A8_main(arg0->model[0], 1);
+    func_8001C8A8_main(arg0->model[1], 1);
+    func_80109388_crazy_cogs(arg0);
+    arg0->func = func_80109D44_crazy_cogs;
+}
 
 void func_8010A4A4_crazy_cogs(void) {
     s16 i;

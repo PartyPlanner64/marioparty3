@@ -1,6 +1,7 @@
 #include "common.h"
 #include "overlays/minigame.h"
 #include "mallocblock.h"
+#include "game/pause.h"
 #include "overlays/baby_bowser_broadside.h"
 
 typedef struct BabyBowserBroadsideEntry {
@@ -88,7 +89,7 @@ extern BabyBowserBroadsidePortraits D_8010FFB4_baby_bowser_broadside;
 
 void func_80106E40_baby_bowser_broadside(omObjData *object);
 void func_80106EC4_baby_bowser_broadside(omObjData *object);
-void func_80108210_baby_bowser_broadside();
+void func_80108210_baby_bowser_broadside(BabyBowserBroadsideSlot *slot);
 void func_80108350_baby_bowser_broadside();
 void func_80108614_baby_bowser_broadside();
 s16 func_8010A598_baby_bowser_broadside(s32 priority, s32 directory, s32 file, s32 bank, s32 attr);
@@ -99,6 +100,7 @@ void func_8010DAE8_baby_bowser_broadside(s32 arg0, BabyBowserBroadsideHandler *h
 s16 func_8010DB38_baby_bowser_broadside(s16 model, Vec *positions, s16 count, f32 arg3, f32 arg4, s32 flags);
 s16 func_8010DC88_baby_bowser_broadside(s16 boat, s32 flags);
 void func_8010F250_baby_bowser_broadside(omObjData *object);
+void func_8010F6F8_baby_bowser_broadside(f32 *start, f32 *end);
 
 extern u8 D_800D6A90_main;
 extern s16 D_8010FD60_baby_bowser_broadside;
@@ -116,7 +118,7 @@ void func_80107600_baby_bowser_broadside(omObjData *object);
 void func_8010913C_baby_bowser_broadside();
 void func_80109434_baby_bowser_broadside();
 void func_801096E8_baby_bowser_broadside();
-void func_80109D94_baby_bowser_broadside();
+void func_80109D94_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler);
 void func_80109EB0_baby_bowser_broadside(unk_80109EBC *player, s16 motion, s8 arg2);
 void func_8010E018_baby_bowser_broadside(BabyBowserBroadsideShip *ship, s16 count, f32 speed, s16 model);
 s32 func_8000B638_main(void);
@@ -478,7 +480,25 @@ void func_801081A4_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBows
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/165010", func_80108210_baby_bowser_broadside);
+void func_80108210_baby_bowser_broadside(BabyBowserBroadsideSlot *slot) {
+    HmfModel *model = &HmfModelData[(s16)slot->unk_04[0]];
+
+    if (D_80110008_baby_bowser_broadside->unk_04 < 600.0f) {
+        model->rot.y -= D_80110008_baby_bowser_broadside->unk_38;
+        if (model->rot.y < 0.0f) {
+            model->rot.y += 360.0f;
+        } else if (model->rot.y >= 360.0f) {
+            model->rot.y -= 360.0f;
+        }
+    }
+    model = &HmfModelData[(s16)slot->unk_04[2]];
+    model->rot.y += D_80110008_baby_bowser_broadside->unk_38;
+    if (model->rot.y < 0.0f) {
+        model->rot.y += 360.0f;
+    } else if (model->rot.y >= 360.0f) {
+        model->rot.y -= 360.0f;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/165010", func_80108350_baby_bowser_broadside);
 
@@ -531,7 +551,35 @@ s16 func_80109970_baby_bowser_broadside(unk_80109EBC *arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/165010", func_801099D4_baby_bowser_broadside);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/165010", func_80109BD8_baby_bowser_broadside);
+void func_80109BD8_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler) {
+    unk_80109EBC *player = (unk_80109EBC *)handler->unk_3C;
+    omObjData *object = slot->unk_00;
+    f32 progress;
+
+    if ((s8)handler->unk_04 == 0) {
+        handler->unk_1C = 0;
+        handler->unk_2C = object->rot.y;
+        handler->unk_30 = 0.0f;
+        func_8010F6F8_baby_bowser_broadside(&handler->unk_2C, &handler->unk_30);
+        func_80109EB0_baby_bowser_broadside(player, 2, 1);
+        player->unk_0C = -1;
+        handler->unk_04 = 1;
+    }
+    progress = handler->unk_1C / 20.0f;
+    if (progress > 1.0f) {
+        progress = 1.0f;
+    }
+    object->rot.y = (handler->unk_30 - handler->unk_2C) * progress + handler->unk_2C;
+    if (++handler->unk_1C > 20.0f) {
+        func_80109EB0_baby_bowser_broadside(player, 0, 1);
+        object->rot.y = 0.0f;
+        handler->unk_1C = 20;
+        if (D_8010FD60_baby_bowser_broadside != 0) {
+            func_80109EB0_baby_bowser_broadside(player, 13, 1);
+            func_8010A158_baby_bowser_broadside((s8)object->work[1], handler);
+        }
+    }
+}
 
 void func_80109D2C_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler) {
     unk_80109EBC *player = (unk_80109EBC *)handler->unk_3C;
@@ -544,7 +592,26 @@ void func_80109D2C_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBows
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/165010", func_80109D94_baby_bowser_broadside);
+void func_80109D94_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler) {
+    unk_80109EBC *player = (unk_80109EBC *)handler->unk_3C;
+    omObjData *object = slot->unk_00;
+    HmfModel *model = &HmfModelData[object->model[0]];
+
+    if (model->unk40 >= D_800CCF58_main[model->unk02].unk02 - 1) {
+        player->unk_08 = 1;
+    }
+    if (player->unk_08 != 0) {
+        func_800E5690_minigame(object, player->unk_0A);
+        if (player->unk_0A == 13) {
+            func_80045ED0_main(D_800A178C_main[GwPlayer[object->work[0]].chr][0] | 0x2F);
+        }
+        player->unk_08 = 0;
+        if (player->unk_0C != -1) {
+            player->unk_0A = player->unk_0C;
+            player->unk_0C = -1;
+        }
+    }
+}
 
 void func_80109EB0_baby_bowser_broadside(unk_80109EBC *player, s16 motion, s8 arg2) {
     player->unk_08 = arg2;

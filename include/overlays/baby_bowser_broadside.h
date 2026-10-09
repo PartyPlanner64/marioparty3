@@ -44,7 +44,10 @@ typedef struct BabyBowserBroadsideHandler { // 0x44 bytes
     /* 0x11 */ char unk_11[0xB];
     /* 0x1C */ s16 unk_1C;
     /* 0x1E */ s16 unk_1E;
-    /* 0x20 */ char unk_20[0x1C];
+    /* 0x20 */ char unk_20[0xC];
+    /* 0x2C */ f32 unk_2C;
+    /* 0x30 */ f32 unk_30;
+    /* 0x34 */ char unk_34[8];
     /* 0x3C */ s32 unk_3C;
     /* 0x40 */ void (*unk_40)();
 } BabyBowserBroadsideHandler; // Size 0x44

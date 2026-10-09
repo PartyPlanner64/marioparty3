@@ -5,6 +5,7 @@
 #include "types.h"
 #include "math.h"
 #include "types.h"
+#include "game/hmfvertex.h"
 
 #define HU3D_MODEL_MAX 128
 
@@ -231,6 +232,15 @@ typedef struct {
     f32 unk2C;
 } HmfData_UnkBC;
 
+typedef struct {
+    s16 vertexCount;
+    s16 frames[2];
+    s16 currentBuffer;
+    s16 (*positions[2])[3];
+    s8 (*normals[2])[3];
+    u8 *visited;
+} HmfVertexAnimCache;
+
 typedef struct HmfData {
     /* 0x00 */ u8 unk00;
     /* 0x01 */ s8 unk01;
@@ -248,7 +258,9 @@ typedef struct HmfData {
     /* 0x1C */ s16 unk1C;
     /* 0x1E */ s16 unk1E;
     /* 0x20 */ s16 unk20;
-    /* 0x22 */ char unk22[6];
+    /* 0x22 */ char unk22[2];
+    /* 0x24 */ s16 unk24;
+    /* 0x26 */ char unk26[2];
     /* 0x28 */ s16 unk28;
     /* 0x2A */ char unk2A[6];
     /* 0x30 */ u8 *unk30;
@@ -259,7 +271,7 @@ typedef struct HmfData {
     /* 0x44 */ Vtx *unk44[3];
     /* 0x50 */ s16 (*unk50)[3];
     /* 0x54 */ s8 (*unk54)[3];
-    /* 0x58 */ char unk58[4];
+    /* 0x58 */ HmfVertexAnimCache *unk58;
     /* 0x5C */ s16 *unk5C;
     /* 0x60 */ HmfModelData_Unk64_Unk60_Struct *unk60;
     /* 0x64 */ s16 unk64;
@@ -279,8 +291,8 @@ typedef struct HmfData {
     /* 0xA8 */ f32 unkA8;
     /* 0xAC */ f32 unkAC;
     /* 0xB0 */ HmfVertexGroup *unkB0;
-    /* 0xB4 */ s32 unkB4;
-    /* 0xB8 */ char unkB8[4];
+    /* 0xB4 */ HmfDispData *unkB4;
+    /* 0xB8 */ HmfMtnData *unkB8;
     /* 0xBC */ HmfData_UnkBC *unkBC;
     /* 0xC0 */ void *unkC0; // light data only?
     /* 0xC4 */ HmfMapData *unkC4;

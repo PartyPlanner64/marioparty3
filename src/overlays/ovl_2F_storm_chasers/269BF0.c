@@ -1,4 +1,5 @@
 #include "common.h"
+#include "overlays/minigame.h"
 
 typedef struct StormChaserData {
     /* 0x00 */ s32 state;
@@ -81,6 +82,7 @@ void func_8010746C_storm_chasers(omObjData *);
 void func_801077A0_storm_chasers(omObjData *);
 void func_80107F70_storm_chasers(omObjData *);
 void func_80108C64_storm_chasers(omObjData *);
+void func_8010B1B0_storm_chasers(omObjData *);
 void func_8010B87C_storm_chasers(omObjData *);
 void func_8010BE8C_storm_chasers(omObjData *);
 void func_8010BF84_storm_chasers(omObjData *);
@@ -243,7 +245,36 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2F_storm_chasers/269BF0", func_8010AF
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2F_storm_chasers/269BF0", func_8010B1B0_storm_chasers);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2F_storm_chasers/269BF0", func_8010B738_storm_chasers);
+void func_8010B738_storm_chasers(void) {
+    s16 i;
+    omObjData *obj;
+    s32 value;
+    u8 unused_stack[8];
+
+    for (i = 0; i < 4; i++) {
+        switch (i) {
+            case 0:
+                value = 0;
+                break;
+            case 1:
+                value = 1;
+                break;
+            case 2:
+                value = 2;
+                break;
+            case 3:
+                value = 3;
+                break;
+            default:
+                value = 0;
+                break;
+        }
+        obj = omAddObj(0xC8, 9, 0x3C, -1, func_8010B1B0_storm_chasers);
+        obj->work[0] = value;
+        D_800EC598_minigame[D_800EC280_minigame] = obj;
+        D_800EC280_minigame++;
+    }
+}
 
 void func_8010B838_storm_chasers(omObjData *arg0) {
 }

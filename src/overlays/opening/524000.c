@@ -68,6 +68,15 @@ typedef struct {
     /* 0x00 */ s16 animId;
 } OpAnimSlot; // sizeof 0x2
 
+// View of an OpObj slot from offset 0x0C, as used by the demo model objects.
+// The word at 0x0C doubles as OpObj's color for the wipe effects.
+typedef struct {
+    /* 0x00 */ s32 modelId;
+    /* 0x04 */ Vec pos;
+    /* 0x10 */ Vec unk_1C;
+    /* 0x1C */ char unk_38[0x20];
+} OpWork; // sizeof 0x3C
+
 typedef struct {
     /* 0x00 */ s16 espriteSlot;
     /* 0x04 */ void *event;
@@ -94,6 +103,7 @@ void func_8000BC88_main(u16 arg0, u16 arg1);
 void func_8000BE5C_main(u16 arg0, f32 arg1, f32 arg2);
 void func_8000BBD4_main(u16 arg0, s16 arg1, s16 arg2);
 void func_8000BD94_main(u16 arg0, s32 arg1, s32 arg2);
+void func_80113E8C_opening(omObjData *);
 
 extern Vec D_80114BB8_opening;
 extern Vec D_80114BC4_opening;
@@ -108,6 +118,12 @@ extern OpSlot D_801171B8_opening[0x20];
 extern OpSpr D_80114EB0_opening[0x40];
 extern OpAnimSlot D_801155B0_opening[0x40];
 extern OpContError D_80117750_opening;
+extern s32 D_8011738C_opening[0x10][15];
+extern s32 D_80117390_opening[0x10][15];
+extern OpWork D_80117394_opening[0x10];
+extern s32 D_801173B0_opening[0x10][15];
+extern s32 D_801173B4_opening[0x10][15];
+extern s32 D_801173B8_opening[0x10][15];
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opObjectInit);
 
@@ -629,7 +645,21 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80113AE8_opening);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80113E8C_opening);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80114150_opening);
+void func_80114150_opening(s32 index, f32 x, f32 y, f32 z, s32 arg4) {
+    Vec pos;
+    OpWork *slot;
+
+    opModelPosGet(D_80117394_opening[index].modelId, &pos.x, &pos.y, &pos.z);
+    slot = &D_80117394_opening[index];
+    HuVecCopy3F(&slot->pos, &pos);
+    HuVecCopyXYZ(&slot->unk_1C, x, y, z);
+    D_801173B0_opening[index][0] = 0;
+    D_801173B4_opening[index][0] = 0;
+    D_801173B8_opening[index][0] = 0;
+    D_80117388_opening[index].obj->func = func_80113E8C_opening;
+    D_8011738C_opening[index][0] = 0;
+    D_80117390_opening[index][0] = arg4;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80114250_opening);
 

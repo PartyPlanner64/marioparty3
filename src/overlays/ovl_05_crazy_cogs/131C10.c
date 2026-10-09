@@ -1063,9 +1063,145 @@ void func_80109298_crazy_cogs(omObjData *arg0) {
     D_8010B996_crazy_cogs = (D_8010B996_crazy_cogs + 1) % 5;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_80109388_crazy_cogs);
+void func_80109388_crazy_cogs(omObjData *arg0) {
+    UnkCrazyCogsCog *cog = &(&D_8010B9F0_crazy_cogs[8])[arg0->work[0]];
+    s32 offset;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_801097EC_crazy_cogs);
+    if (arg0->work[0] < 7) {
+        if (arg0->trans.x > 0.0f) {
+            if (arg0->trans.z > -50.0f) {
+                D_8010DE6A_crazy_cogs[3] = 1;
+            } else {
+                D_8010DE6A_crazy_cogs[1] = 1;
+            }
+        } else {
+            if (arg0->trans.z > -50.0f) {
+                D_8010DE6A_crazy_cogs[2] = 1;
+            } else {
+                D_8010DE6A_crazy_cogs[0] = 1;
+            }
+        }
+    }
+    arg0->trans.x = cog->unk_44.x;
+    arg0->trans.y = cog->unk_44.y;
+    if (arg0->work[0] == 9) {
+        cog->unk_18 = func_80105B7C_crazy_cogs(5);
+        if (func_80105B7C_crazy_cogs(2) != 0) {
+            cog->unk_18 = 0.0f - cog->unk_18;
+        }
+        arg0->trans.z = -1300.0f;
+    } else {
+        arg0->trans.x = cog->unk_44.x;
+        arg0->trans.z = 0;
+    }
+    D_8010DE88_crazy_cogs[arg0->work[0]] = 0.1f;
+    cog->timer = 0;
+    func_8001C258_main(arg0->model[0], 4, 4);
+    func_8001C258_main(arg0->model[1], 4, 4);
+    if (arg0->work[0] < 4) {
+        offset = func_80105B7C_crazy_cogs(54);
+        offset = offset * 10 + func_80105B7C_crazy_cogs(100);
+        if (func_80105B7C_crazy_cogs(2) != 0) {
+            arg0->trans.x = offset + arg0->trans.x;
+        } else {
+            arg0->trans.x -= offset;
+        }
+    } else if ((arg0->work[0] < 3) & (arg0->work[0] < 7)) {
+        offset = func_80105B7C_crazy_cogs(20);
+        offset = offset * 10 + func_80105B7C_crazy_cogs(100);
+        if (func_80105B7C_crazy_cogs(2) != 0) {
+            arg0->trans.x = offset + arg0->trans.x;
+        } else {
+            arg0->trans.x -= offset;
+        }
+        offset = func_80105B7C_crazy_cogs(20);
+        offset = offset * 10 + func_80105B7C_crazy_cogs(100);
+        if (func_80105B7C_crazy_cogs(2) != 0) {
+            arg0->trans.z = offset + arg0->trans.z;
+        } else {
+            arg0->trans.z -= offset;
+        }
+    } else if ((arg0->work[0] == 7) & (arg0->work[0] == 8)) {
+        offset = func_80105B7C_crazy_cogs(20);
+        offset = offset * 10 + func_80105B7C_crazy_cogs(100);
+        if (arg0->work[0] == 7) {
+            arg0->trans.x -= offset;
+        } else {
+            arg0->trans.x = offset + arg0->trans.x;
+        }
+        offset = func_80105B7C_crazy_cogs(30) * 10;
+        if (func_80105B7C_crazy_cogs(3) != 0) {
+            arg0->trans.z = offset + (f32)func_80105B7C_crazy_cogs(200) + arg0->trans.z;
+        } else {
+            arg0->trans.z -= offset;
+        }
+    } else if (arg0->work[0] == 9) {
+        offset = func_80105B7C_crazy_cogs(150);
+        if (func_80105B7C_crazy_cogs(2) != 0) {
+            arg0->trans.x -= offset;
+        } else {
+            arg0->trans.x = offset + arg0->trans.x;
+        }
+        offset = func_80105B7C_crazy_cogs(150);
+        if (func_80105B7C_crazy_cogs(2) != 0) {
+            arg0->trans.z = offset + arg0->trans.z;
+        } else {
+            arg0->trans.z -= offset;
+        }
+    }
+}
+
+void func_801097EC_crazy_cogs(omObjData *arg0) {
+    s16 candidates[3];
+    UnkCrazyCogsCog *cog;
+    func_800E1BA8_minigame_ObjData *work;
+    s16 count;
+    s16 i;
+    f32 x;
+    f32 z;
+    f32 distance;
+    u32 obstacleIndex;
+
+    if (D_8010B99C_crazy_cogs != 2) {
+        return;
+    }
+    count = 0;
+    for (i = 0; i < 3; i++) {
+        cog = &(&D_8010B9F0_crazy_cogs[5])[i];
+        work = cog->obj->data;
+        if (cog->unk_0E == 0 && arg0->trans.y <= work->unk34) {
+            x = arg0->trans.x - cog->obj->trans.x;
+            z = arg0->trans.z - cog->obj->trans.z;
+            distance = sqrtf(x * x + z * z);
+            if (distance < work->unk48 + 40.0f) {
+                candidates[count] = ((s16 *)cog->obj->work)[3];
+                count++;
+            }
+        }
+    }
+    if (count != 0) {
+        cog = &(&D_8010B9F0_crazy_cogs[5])[candidates[(s16)func_80105B7C_crazy_cogs(count)]];
+        func_80109298_crazy_cogs(arg0);
+        if (!(GwPlayer[cog->obj->work[0]].stat & 1)) {
+            omVibrate(((s16 *)cog->obj->work)[1], 20, 0, 20);
+        }
+        func_80109388_crazy_cogs(arg0);
+        cog->unk_0E = 1;
+        D_8010B997_crazy_cogs++;
+        obstacleIndex = arg0->work[0];
+        if (obstacleIndex < 2) {
+            cog->unk_10 = 1;
+        } else if (obstacleIndex < 4) {
+            cog->unk_10 = 0;
+        } else {
+            if (arg0->trans.x > cog->obj->trans.x) {
+                cog->unk_10 = 0;
+            } else {
+                cog->unk_10 = 1;
+            }
+        }
+    }
+}
 
 s8 func_80109A44_crazy_cogs(omObjData *arg0) {
     s8 result;
@@ -1189,7 +1325,69 @@ void func_8010A548_crazy_cogs(UnkCrazyCogsCog *cog) {
     D_8010B9E2_crazy_cogs++;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_05_crazy_cogs/131C10", func_8010A67C_crazy_cogs);
+void func_8010A67C_crazy_cogs(omObjData *arg0) {
+    UnkCrazyCogsCog *cog;
+    s16 cogIndex;
+    s16 i;
+
+    if (D_8010B99C_crazy_cogs != 2) {
+        return;
+    }
+    if (D_8010B99E_crazy_cogs >= D_8010B994_crazy_cogs) {
+        D_8010B99E_crazy_cogs = 0;
+        D_8010B994_crazy_cogs = func_80105B7C_crazy_cogs(2) == 0 ? 30 : func_80105B7C_crazy_cogs(10) + 30;
+        cogIndex = func_80105B7C_crazy_cogs(7);
+        cog = &(&D_8010B9F0_crazy_cogs[8])[cogIndex];
+        if ((s16)cog->timer == 0) {
+            cog->timer = 1;
+            func_8010A548_crazy_cogs(cog);
+            func_8001C258_main(cog->obj->model[0], 4, 0);
+            func_8001C258_main(cog->obj->model[1], 4, 0);
+        } else {
+            cogIndex++;
+            for (i = 0; i < 6; cogIndex = (cogIndex + 1) % 7, i++) {
+                if (cogIndex == 7) {
+                    cogIndex--;
+                    i--;
+                } else {
+                    cog = &(&D_8010B9F0_crazy_cogs[8])[cogIndex];
+                    if ((s16)cog->timer == 0) {
+                        cog->timer = 1;
+                        func_8010A548_crazy_cogs(cog);
+                        func_8001C258_main(cog->obj->model[0], 4, 0);
+                        func_8001C258_main(cog->obj->model[1], 4, 0);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    if ((s16)(D_8010B99E_crazy_cogs % 27) == 0 && func_80105B7C_crazy_cogs(5) == 0) {
+        cog = &D_8010B9F0_crazy_cogs[15];
+        if ((s16)cog->timer == 0) {
+            cog->timer = 1;
+            func_8001C258_main(cog->obj->model[0], 4, 0);
+            func_8001C258_main(cog->obj->model[1], 4, 0);
+        }
+    }
+    if ((D_8010B99E_crazy_cogs + 15) % 27 == 0 && func_80105B7C_crazy_cogs(5) == 0) {
+        cog = &D_8010B9F0_crazy_cogs[16];
+        if ((s16)cog->timer == 0) {
+            cog->timer = 1;
+            func_8001C258_main(cog->obj->model[0], 4, 0);
+            func_8001C258_main(cog->obj->model[1], 4, 0);
+        }
+    }
+    if ((s16)(D_8010B99E_crazy_cogs % 15) == 0 && func_80105B7C_crazy_cogs(5) == 0) {
+        cog = &D_8010B9F0_crazy_cogs[17];
+        if ((s16)cog->timer == 0) {
+            cog->timer = 1;
+            func_8001C258_main(cog->obj->model[0], 4, 0);
+            func_8001C258_main(cog->obj->model[1], 4, 0);
+        }
+    }
+    D_8010B99E_crazy_cogs++;
+}
 
 void func_8010AA10_crazy_cogs(omObjData *arg0) {
     s16 i;

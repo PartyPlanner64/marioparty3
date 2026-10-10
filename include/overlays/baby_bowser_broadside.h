@@ -59,11 +59,34 @@ typedef struct BabyBowserBroadsideHandler { // 0x44 bytes
     /* 0x40 */ void (*unk_40)();
 } BabyBowserBroadsideHandler; // Size 0x44
 
+typedef struct BabyBowserBroadsidePlane {
+    Vec normal;
+    f32 constant;
+    s8 axis;
+    char padding[3];
+} BabyBowserBroadsidePlane;
+
 // 0xC entries allocated by func_8010DAE8_baby_bowser_broadside
 typedef struct BabyBowserBroadsideBoat { // 0xE4 bytes
     /* 0x00 */ s32 unk_00;               // flags
     /* 0x04 */ s8 unk_04;
-    /* 0x05 */ char unk_05[0xDF];
+    /* 0x05 */ char unk_05[3];
+    /* 0x08 */ f32 *x;
+    /* 0x0C */ f32 *y;
+    /* 0x10 */ f32 *z;
+    /* 0x14 */ f32 *rx;
+    /* 0x18 */ f32 *ry;
+    /* 0x1C */ f32 *rz;
+    /* 0x20 */ HuMtx4F matrix;
+    /* 0x60 */ Vec vertices[4];
+    /* 0x90 */ Vec transformed[4];
+    /* 0xC0 */ s16 vertexCount;
+    /* 0xC2 */ char unk_C2[2];
+    /* 0xC4 */ f32 unk_C4;
+    /* 0xC8 */ BabyBowserBroadsidePlane plane;
+    /* 0xDC */ f32 unk_DC;
+    /* 0xE0 */ s16 source;
+    /* 0xE2 */ char unk_E2[2];
 } BabyBowserBroadsideBoat; // Size 0xE4
 
 // Allocated as a single 0xC block by func_80109F64_baby_bowser_broadside
@@ -73,13 +96,38 @@ typedef struct BabyBowserBroadsideSlot { // 0xC bytes
     /* 0x08 */ s16 unk_08;
 } BabyBowserBroadsideSlot; // Size 0xC
 
+typedef struct BabyBowserBroadsideOrder {
+    /* 0x00 */ u32 priority;
+    /* 0x04 */ union {
+        s16 index;
+        s8 bytes[2];
+    } next;
+    /* 0x06 */ s16 previous;
+    /* 0x08 */ s16 handler;
+    /* 0x0A */ char unk_0A[2];
+} BabyBowserBroadsideOrder; // Size 0xC
+
+typedef struct BabyBowserBroadsideModel {
+    /* 0x00 */ s8 unk_00;
+    /* 0x01 */ char unk_01[3];
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s8 unk_08;
+    /* 0x09 */ char unk_09;
+    /* 0x0A */ s16 unk_0A;
+    /* 0x0C */ s16 unk_0C;
+    /* 0x0E */ char unk_0E[2];
+    /* 0x10 */ f32 unk_10;
+    /* 0x14 */ f32 unk_14;
+    /* 0x18 */ f32 unk_18;
+} BabyBowserBroadsideModel; // Size 0x1C
+
 // 0x7 entries allocated by func_80109ED0_baby_bowser_broadside
 typedef struct BabyBowserBroadsideGroup { // 0x14 bytes, 0x7 entries
     /* 0x00 */ BabyBowserBroadsideSlot *unk_00;
     /* 0x04 */ BabyBowserBroadsideHandler *unk_04; // array of unk_08 live handlers
     /* 0x08 */ s16 unk_08;                         // live handler count
     /* 0x0A */ char unk_0A[2];
-    /* 0x0C */ s32 unk_0C; // byte size of the unk_04 allocation
+    /* 0x0C */ BabyBowserBroadsideOrder *unk_0C; // handler order
     /* 0x10 */ s8 unk_10;  // active flag
     /* 0x11 */ char unk_11[3];
 } BabyBowserBroadsideGroup; // Size 0x14
@@ -105,6 +153,7 @@ typedef struct BabyBowserBroadsideShip { // 0x34 bytes
 extern BabyBowserBroadsideWork *D_80110010_baby_bowser_broadside;
 extern BabyBowserBroadsideGroup *D_80110014_baby_bowser_broadside;
 extern BabyBowserBroadsideSprite *D_80110018_baby_bowser_broadside;
+extern BabyBowserBroadsideModel *D_8011001C_baby_bowser_broadside;
 extern BabyBowserBroadsideBoat *D_80110020_baby_bowser_broadside;
 
 #endif

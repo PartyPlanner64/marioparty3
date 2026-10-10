@@ -1,22 +1,111 @@
 #include "common.h"
 #include "mallocblock.h"
+#include "gcc/memory.h"
 
 #include "overlays/baby_bowser_broadside.h"
 
+typedef struct BabyBowserBroadsideColor {
+    u8 rgba[4];
+} BabyBowserBroadsideColor;
+
+extern s16 D_800CDD6A_main;
+extern u8 D_800D2008_main;
+
+extern Gfx D_8010FE80_baby_bowser_broadside[];
+
+extern BabyBowserBroadsideColor D_8010FFE0_baby_bowser_broadside;
+extern const f64 D_8010FFE8_baby_bowser_broadside;
+extern const f64 D_8010FFF0_baby_bowser_broadside;
+
+s16 func_8010B54C_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, f32 scale);
+s16 func_8010C8D4_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, u8 *color);
+
+void func_8010F878_baby_bowser_broadside(f32 *matrix);
+void func_80017D24_main(f32 *matrix, f32 x, f32 y, f32 z);
+void func_8010D590_baby_bowser_broadside(u16 model, HuSprite_Unk84_Struct *sprite, u16 frame, u8 *color);
+
+s16 func_8010D6C4_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, HmfData *data, f32 scale, s16 arg3, s16 arg4);
+
+void func_8010A3C8_baby_bowser_broadside(BabyBowserBroadsideGroup *group);
+
+void func_8010A7CC_baby_bowser_broadside(s16 arg0);
+
 void func_8010DE70_baby_bowser_broadside(void);
+void func_8010F3C4_baby_bowser_broadside(Vec *vertices, BabyBowserBroadsidePlane *plane);
+void func_8010FB74_baby_bowser_broadside(f32 x, f32 y, f32 z, f32 rx, f32 ry, f32 rz, f32 *matrix);
+void func_8010FC2C_baby_bowser_broadside(Vec *vertices, s16 count, f32 *matrix, Vec *output);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_80109ED0_baby_bowser_broadside);
+void func_80109ED0_baby_bowser_broadside(void) {
+    D_80110018_baby_bowser_broadside = HuMemAllocTag(14 * sizeof(BabyBowserBroadsideSprite), 0x7918);
+    memset(D_80110018_baby_bowser_broadside, 0, 14 * sizeof(BabyBowserBroadsideSprite));
+    D_8011001C_baby_bowser_broadside = HuMemAllocTag(16 * sizeof(BabyBowserBroadsideModel), 0x7918);
+    memset(D_8011001C_baby_bowser_broadside, 0, 16 * sizeof(BabyBowserBroadsideModel));
+    D_80110010_baby_bowser_broadside = HuMemAllocTag(8 * sizeof(BabyBowserBroadsideWork), 0x7918);
+    memset(D_80110010_baby_bowser_broadside, 0, 8 * sizeof(BabyBowserBroadsideWork));
+    D_80110014_baby_bowser_broadside = HuMemAllocTag(7 * sizeof(BabyBowserBroadsideGroup), 0x7918);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_80109F64_baby_bowser_broadside);
+BabyBowserBroadsideGroup *func_80109F64_baby_bowser_broadside(omObjData *object, s8 index, s16 count, s16 handlers) {
+    BabyBowserBroadsideGroup *group;
+    if (index >= 7) {
+        return NULL;
+    }
+    group = &D_80110014_baby_bowser_broadside[index];
+    if (handlers != 0) {
+        group->unk_04 = HuMemAllocTag(handlers * sizeof(BabyBowserBroadsideHandler), 0x7918);
+        memset(group->unk_04, 0, handlers * sizeof(BabyBowserBroadsideHandler));
+        group->unk_0C = HuMemAllocTag((handlers + 1) * sizeof(BabyBowserBroadsideOrder), 0x7918);
+    }
+    group->unk_08 = handlers;
+    group->unk_00 = HuMemAllocTag(sizeof(BabyBowserBroadsideSlot), 0x7918);
+    if (count != 0) {
+        group->unk_00->unk_04 = HuMemAllocTag(count * sizeof(u16), 0x7918);
+        memset(group->unk_00->unk_04, 0, count * sizeof(u16));
+    }
+    group->unk_00->unk_08 = count;
+    group->unk_10 = 1;
+    group->unk_00->unk_00 = object;
+    return group;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010A0B4_baby_bowser_broadside);
+s16 func_8010A0B4_baby_bowser_broadside(s8 index, s32 flags, s32 arg2, void (*callback)(), u8 arg4) {
+    BabyBowserBroadsideGroup *group = &D_80110014_baby_bowser_broadside[index];
+    BabyBowserBroadsideHandler *handler = group->unk_04;
+    s16 i;
+    s16 count = group->unk_08;
+
+    for (i = 0; i < count; i++, handler++) {
+        if (handler->unk_00 == 0) {
+            handler->unk_00 = 1;
+            handler->unk_08 = flags;
+            handler->unk_02 = i;
+            handler->unk_05 = arg4;
+            handler->unk_04 = 0;
+            handler->unk_3C = arg2;
+            handler->unk_40 = callback;
+            break;
+        }
+    }
+    group->unk_10 = 1;
+    return i;
+}
 
 void func_8010A158_baby_bowser_broadside(s8 arg0, BabyBowserBroadsideHandler *arg1) {
     memset(arg1, 0, sizeof(BabyBowserBroadsideHandler));
     D_80110014_baby_bowser_broadside[arg0].unk_10 = 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010A1B0_baby_bowser_broadside);
+void func_8010A1B0_baby_bowser_broadside(s8 index, s8 tag) {
+    BabyBowserBroadsideGroup *group = &D_80110014_baby_bowser_broadside[index];
+    BabyBowserBroadsideHandler *handler = group->unk_04;
+    s16 i;
+
+    for (i = 0; i < group->unk_08; i++, handler++) {
+        if ((s8)handler->unk_05 == tag) {
+            func_8010A158_baby_bowser_broadside(index, handler);
+        }
+    }
+}
 
 void func_8010A264_baby_bowser_broadside(s8 arg0) {
     BabyBowserBroadsideGroup *group = &D_80110014_baby_bowser_broadside[arg0];
@@ -25,13 +114,114 @@ void func_8010A264_baby_bowser_broadside(s8 arg0) {
     group->unk_10 = 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010A2C4_baby_bowser_broadside);
+void func_8010A2C4_baby_bowser_broadside(s8 index) {
+    BabyBowserBroadsideGroup *group = &D_80110014_baby_bowser_broadside[index];
+    BabyBowserBroadsideOrder *order;
+    BabyBowserBroadsideHandler *handler;
+    s8 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010A3C8_baby_bowser_broadside);
+    if (group->unk_10 != 0) {
+        func_8010A3C8_baby_bowser_broadside(group);
+    }
+    for (i = 0; group->unk_0C[i].next.index != -1;) {
+        order = group->unk_0C;
+        i = order[i].next.bytes[1];
+        handler = &group->unk_04[order[i].handler];
+        if (handler->unk_00 != 0) {
+            handler->unk_40(group->unk_00, handler);
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010A598_baby_bowser_broadside);
+void func_8010A3C8_baby_bowser_broadside(BabyBowserBroadsideGroup *group) {
+    BabyBowserBroadsideOrder *order = group->unk_0C;
+    BabyBowserBroadsideHandler *handler = group->unk_04;
+    s16 entry;
+    s16 tail;
+    s16 i;
+    s16 insert;
+    s16 current;
+    s16 found;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010A738_baby_bowser_broadside);
+    order[0].next.index = -1;
+    entry = 1;
+    tail = 0;
+    for (i = 0; i < group->unk_08; i++, handler++) {
+        if (handler->unk_00 != 0) {
+            insert = tail;
+            found = 0;
+            current = 0;
+            while (order[current].next.index != -1) {
+                current = order[current].next.index;
+                if ((u32)handler->unk_08 < order[current].priority) {
+                    insert = current;
+                    found = 1;
+                    break;
+                }
+            }
+            order[entry].handler = i;
+            order[entry].priority = handler->unk_08;
+            if (found != 0) {
+                order[entry].next.index = order[order[insert].previous].next.index;
+                order[entry].previous = order[insert].previous;
+                order[order[insert].previous].next.index = entry;
+                order[order[entry].next.index].previous = entry;
+            } else {
+                order[entry].next.index = order[insert].next.index;
+                order[entry].previous = insert;
+                order[insert].next.index = entry;
+                tail = entry;
+            }
+            entry++;
+        }
+    }
+    group->unk_10 = 0;
+}
+
+s16 func_8010A598_baby_bowser_broadside(s16 priority, s32 directory, s32 file, s32 bank, s32 attr) {
+    BabyBowserBroadsideSprite *sprite = D_80110018_baby_bowser_broadside;
+    HuSprite *data;
+    s16 i;
+    u16 animation = bank;
+
+    for (i = 0; i < 14; i++, sprite++) {
+        if (sprite->unk_00 == 0) {
+            sprite->unk_02 = func_8000B838_main((directory << 16) | file);
+            sprite->unk_01 = HuSprGrpCreate(1, 0);
+            sprite->unk_06 = 255;
+            HuSprAttrReset(sprite->unk_01, 0, -1);
+            func_80055024_main(sprite->unk_01, 0, sprite->unk_02, 0);
+            HuSprAttrSet(sprite->unk_01, 0, attr);
+            func_800550F4_main(sprite->unk_01, 0, animation);
+            HuSprPriSet(sprite->unk_01, 0, (u16)priority);
+            func_80054FF8_main(sprite->unk_01, 0, 0);
+            func_800550B4_main(sprite->unk_01, 0, 1.0f);
+            HuSprScaleSet(sprite->unk_01, 0, 1.0f, 1.0f);
+            func_80054904_main(sprite->unk_01, 0, 100, 100);
+            data = HuSprGet(sprite->unk_01, 0);
+            if (animation == 0) {
+                sprite->unk_04 = 99;
+            } else {
+                sprite->unk_04 = data->unk_84->unk10;
+            }
+            sprite->unk_00 = 2;
+            func_8010A7CC_baby_bowser_broadside(i);
+            break;
+        }
+    }
+    return i;
+}
+
+void func_8010A738_baby_bowser_broadside(s16 index, s16 x, s16 y) {
+    BabyBowserBroadsideSprite *sprite = &D_80110018_baby_bowser_broadside[index];
+
+    if (sprite->unk_00 != 0) {
+        func_80054FF8_main(sprite->unk_01, 0, 0);
+        HuSprAttrReset(sprite->unk_01, 0, 0x8000);
+        func_80054904_main(sprite->unk_01, 0, x, y);
+        sprite->unk_00 = 2;
+    }
+}
 
 void func_8010A7CC_baby_bowser_broadside(s16 arg0) {
     BabyBowserBroadsideSprite *sprite = &D_80110018_baby_bowser_broadside[arg0];
@@ -42,21 +232,207 @@ void func_8010A7CC_baby_bowser_broadside(s16 arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010A81C_baby_bowser_broadside);
+void func_8010A81C_baby_bowser_broadside(void) {
+    BabyBowserBroadsideSprite *sprite = D_80110018_baby_bowser_broadside;
+    s16 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010A8C4_baby_bowser_broadside);
+    for (i = 0; i < 14; i++, sprite++) {
+        if (sprite->unk_00 == 2) {
+            if (HuSprGet(sprite->unk_01, 0)->unk_90 + 1 >= (u16)sprite->unk_04) {
+                HuSprAttrSet(sprite->unk_01, 0, 0x8000);
+                func_80054FF8_main(sprite->unk_01, 0, 0);
+            }
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010A9D4_baby_bowser_broadside);
+s16 func_8010A8C4_baby_bowser_broadside(s32 directory, s32 file, f32 scale, s16 type, s32 arg4, s32 flags) {
+    BabyBowserBroadsideModel *work = D_8011001C_baby_bowser_broadside;
+    HmfModel *model;
+    s16 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010AADC_baby_bowser_broadside);
+    for (i = 0; i < 16; i++, work++) {
+        if (work->unk_00 == 0) {
+            work->unk_0C = func_8000B108_main((directory << 16) | file, flags);
+            func_8001C258_main(work->unk_0C, 4, 4);
+            model = &HmfModelData[work->unk_0C];
+            model->unk40 = 0;
+            model->unk44 = 0;
+            if (model->hmf->unk98 != NULL) {
+                model->hmf->unk98->unk08 = 0;
+            }
+            work->unk_0A = type;
+            work->unk_04 = arg4;
+            work->unk_10 = scale;
+            work->unk_08 = -1;
+            work->unk_00 = 1;
+            break;
+        }
+    }
+    return i;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010AB80_baby_bowser_broadside);
+s16 func_8010A9D4_baby_bowser_broadside(s16 source, f32 scale, s16 type, s32 arg4) {
+    BabyBowserBroadsideModel *work = D_8011001C_baby_bowser_broadside;
+    HmfModel *model;
+    s16 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010ACF8_baby_bowser_broadside);
+    for (i = 0; i < 16; i++, work++) {
+        if (work->unk_00 == 0) {
+            work->unk_0C = Hu3DModelLink(source);
+            func_8001C258_main(work->unk_0C, 4, 4);
+            model = &HmfModelData[work->unk_0C];
+            model->unk40 = 0;
+            model->unk44 = 0;
+            if (model->hmf->unk98 != NULL) {
+                model->hmf->unk98->unk08 = 0;
+            }
+            work->unk_0A = type;
+            work->unk_04 = arg4;
+            work->unk_10 = scale;
+            work->unk_08 = -1;
+            work->unk_00 = 1;
+            break;
+        }
+    }
+    return i;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010AE60_baby_bowser_broadside);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010AFF4_baby_bowser_broadside);
+s16 func_8010AADC_baby_bowser_broadside(s16 type) {
+    BabyBowserBroadsideModel *work = D_8011001C_baby_bowser_broadside;
+    HmfModel *model;
+    s16 i;
+
+    for (i = 0; i < 16; i++, work++) {
+        if (work->unk_00 != 0 && work->unk_0A == type) {
+            model = &HmfModelData[work->unk_0C];
+            if ((model->unk18 & 4) != 0 && work->unk_08 == -1) {
+                break;
+            }
+        }
+    }
+    if (i == 16) {
+        return -1;
+    }
+    return i;
+}
+
+s32 func_8010AB80_baby_bowser_broadside(s16 index, f32 x, f32 y, f32 z, f32 rx, f32 ry, f32 rz, f32 scale, f32 delay) {
+    BabyBowserBroadsideModel *work;
+    HmfModel *model;
+
+    if (index >= 16) {
+        return 0;
+    }
+    if (D_8011001C_baby_bowser_broadside[index].unk_00 == 0) {
+        return 0;
+    }
+    {
+        work = &D_8011001C_baby_bowser_broadside[index];
+        model = &HmfModelData[work->unk_0C];
+        if ((model->unk18 & 4) != 0 && work->unk_08 == -1) {
+            Hu3DModelPosSet(work->unk_0C, x, y, z);
+            Hu3DModelRotSet(work->unk_0C, rx, ry, rz);
+            Hu3DModelScaleSet(work->unk_0C, scale, scale, scale);
+            if (delay == 0.0f) {
+                func_8001C258_main(work->unk_0C, 4, 0);
+                work->unk_08 = 1;
+                work->unk_18 = 0.0f;
+                work->unk_14 = 0.0f;
+                model->unk44 = work->unk_10;
+            } else {
+                work->unk_08 = 0;
+                work->unk_18 = delay;
+                work->unk_14 = 0;
+            }
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void func_8010ACF8_baby_bowser_broadside(void) {
+    BabyBowserBroadsideModel *work = D_8011001C_baby_bowser_broadside;
+    HmfModel *model;
+    s16 i;
+
+    for (i = 0; i < 16; i++, work++) {
+        if (work->unk_00 != 0 && work->unk_08 != -1) {
+            model = &HmfModelData[work->unk_0C];
+            if (work->unk_08 != 0) {
+                if (model->unk40 >= D_800CCF58_main[model->unk02].unk02) {
+                    model->unk40 = 0;
+                    if (model->hmf->unk98 != NULL) {
+                        model->hmf->unk98->unk08 = 0;
+                    }
+                    if (!(work->unk_04 & 1)) {
+                        func_8001C258_main(work->unk_0C, 4, 4);
+                        work->unk_08 = -1;
+                        model->unk44 = 0;
+                    }
+                }
+            } else {
+                if (work->unk_14++ >= work->unk_18) {
+                    func_8001C258_main(work->unk_0C, 4, 0);
+                    work->unk_08 = 1;
+                    model->unk44 = work->unk_10;
+                }
+            }
+        }
+    }
+}
+
+s16 func_8010AE60_baby_bowser_broadside(s32 directory, s32 file, s16 type, s32 flags) {
+    BabyBowserBroadsideWork *work = D_80110010_baby_bowser_broadside;
+    BabyBowserBroadsideColor color = D_8010FFE0_baby_bowser_broadside;
+    s16 frame;
+    s16 i;
+
+    for (i = 0; i < 8; i++, work++) {
+        if (work->unk_00 == 0) {
+            frame = func_8000B838_main((directory << 16) | file);
+            work->unk_0A = frame;
+            if (flags & 1) {
+                work->unk_0C = func_8010C8D4_baby_bowser_broadside(func_80055194_main(frame), color.rgba);
+            } else {
+                work->unk_0C = func_8010B54C_baby_bowser_broadside(func_80055194_main(frame), 1.0f);
+            }
+            if (flags & 8) {
+                func_8001C258_main(work->unk_0C, 4, 4);
+            }
+            work->unk_14 = &HmfModelData[work->unk_0C].pos.x;
+            work->unk_18 = &HmfModelData[work->unk_0C].pos.y;
+            work->unk_1C = &HmfModelData[work->unk_0C].pos.z;
+            work->unk_08 = type;
+            work->unk_04 = flags;
+            work->unk_0E = func_80055194_main(frame)->unk10;
+            work->unk_10 = 0;
+            work->unk_00 = 1;
+            break;
+        }
+    }
+    return i;
+}
+
+s16 func_8010AFF4_baby_bowser_broadside(s16 type) {
+    BabyBowserBroadsideWork *work = D_80110010_baby_bowser_broadside;
+    HmfModel *model;
+    s16 i;
+
+    for (i = 0; i < 8; i++, work++) {
+        if (work->unk_00 != 0 && work->unk_08 == type) {
+            model = &HmfModelData[work->unk_0C];
+            if ((model->unk18 & 4) != 0 && (work->unk_04 & 8) != 0) {
+                break;
+            }
+        }
+    }
+    if (i == 8) {
+        return -1;
+    }
+    return i;
+}
 
 void func_8010B098_baby_bowser_broadside(s16 arg0, f32 arg1, f32 arg2, f32 arg3, u8 *arg4) {
     HmfModel *model;
@@ -76,7 +452,31 @@ void func_8010B098_baby_bowser_broadside(s16 arg0, f32 arg1, f32 arg2, f32 arg3,
     D_80110010_baby_bowser_broadside[arg0].unk_04 &= ~0x18;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010B198_baby_bowser_broadside);
+void func_8010B198_baby_bowser_broadside(s16 index, f32 *x, f32 *y, f32 *z) {
+    HmfModel *model;
+
+    if (index >= 8) {
+        return;
+    }
+    model = &HmfModelData[D_80110010_baby_bowser_broadside[index].unk_0C];
+    if (x != NULL) {
+        D_80110010_baby_bowser_broadside[index].unk_14 = x;
+    } else {
+        D_80110010_baby_bowser_broadside[index].unk_14 = &model->pos.x;
+    }
+    if (y != NULL) {
+        D_80110010_baby_bowser_broadside[index].unk_18 = y;
+    } else {
+        D_80110010_baby_bowser_broadside[index].unk_18 = &model->pos.y;
+    }
+    if (z != NULL) {
+        D_80110010_baby_bowser_broadside[index].unk_1C = z;
+    } else {
+        D_80110010_baby_bowser_broadside[index].unk_1C = &model->pos.z;
+    }
+    func_8001C258_main(D_80110010_baby_bowser_broadside[index].unk_0C, 4, 0);
+    D_80110010_baby_bowser_broadside[index].unk_04 = (D_80110010_baby_bowser_broadside[index].unk_04 & ~0x18) | 0x10;
+}
 
 BabyBowserBroadsideWork *func_8010B328_baby_bowser_broadside(s16 arg0) {
     if (arg0 >= 8) {
@@ -96,19 +496,423 @@ HmfModel *func_8010B360_baby_bowser_broadside(s16 arg0) {
     return model;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010B3B4_baby_bowser_broadside);
+void func_8010B3B4_baby_bowser_broadside(void) {
+    BabyBowserBroadsideWork *work = D_80110010_baby_bowser_broadside;
+    HmfModel *model;
+    s16 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010B54C_baby_bowser_broadside);
+    for (i = 0; i < 8; i++, work++) {
+        if (work->unk_00 != 0 && !(work->unk_04 & 8)) {
+            model = &HmfModelData[work->unk_0C];
+            if (work->unk_04 & 0x10) {
+                model->pos.x = *work->unk_14;
+                model->pos.y = *work->unk_18;
+                model->pos.z = *work->unk_1C;
+            }
+            model->rot.x = CRot.x;
+            model->rot.y = CRot.y;
+            func_8010F878_baby_bowser_broadside(model->mtx[0]);
+            func_80017D24_main(model->mtx[0], 0.0f, 0.0f, CRot.z);
+            if (work->unk_04 & 1) {
+                if (work->unk_04 & 2) {
+                    func_8010D590_baby_bowser_broadside((u16)work->unk_0C, func_80055194_main(work->unk_0A), (u16)work->unk_10, work->unk_20);
+                    work->unk_10++;
+                    if (work->unk_10 >= work->unk_0E) {
+                        if (work->unk_04 & 4) {
+                            work->unk_10 = 0;
+                        } else {
+                            work->unk_10 = 0;
+                            work->unk_04 |= 8;
+                            func_8001C258_main(work->unk_0C, 4, 4);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010BCBC_baby_bowser_broadside);
+s16 func_8010B54C_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, f32 alpha) {
+    Gfx *buffer;
+    Gfx *gfx;
+    HmfData *data;
+    u32 count;
+    s16 i;
+    s16 model;
+    s32 stride;
+    s32 size;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010C8D4_baby_bowser_broadside);
+    buffer = HuMemAlloc(0x10000);
+    model = func_8001A894_main(0x4C1, buffer, 4);
+    data = HmfModelData[model].hmf;
+    data->unk60->unk50 |= 0x1010000;
+    count = func_8010D6C4_baby_bowser_broadside(sprite, data, 1.0f, 0, 100);
+    gfx = buffer;
+    gSPDisplayList(gfx++, osVirtualToPhysical(D_8010FE80_baby_bowser_broadside));
+    gDPPipeSync(gfx++);
+    gDPSetCycleType(gfx++, G_CYC_1CYCLE);
+    gDPPipeSync(gfx++);
+    gSPClearGeometryMode(gfx++, G_CULL_BOTH | G_LIGHTING);
+    gSPSetGeometryMode(gfx++, G_ZBUFFER | G_SHADE | G_CULL_FRONT | G_SHADING_SMOOTH | G_TEXTURE_GEN_LINEAR);
+    gDPSetColorDither(gfx++, G_CD_NOISE);
+    gDPSetTexturePersp(gfx++, G_TP_NONE);
+    gDPSetTextureFilter(gfx++, G_TF_BILERP);
+    gDPSetTextureConvert(gfx++, G_TC_FILT);
+    gDPSetAlphaDither(gfx++, G_AD_PATTERN);
+    gDPSetAlphaCompare(gfx++, G_AC_NONE);
+    gDPSetBlendColor(gfx++, 1, 1, 1, 1);
+    gDPPipeSync(gfx++);
+    gDPSetRenderMode(gfx++, G_RM_ZB_XLU_SURF, G_RM_NOOP2);
+    gDPSetCombineLERP(gfx++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
+    gDPSetPrimColor(gfx++, 0, 0, 255, 255, 255, (u32)(alpha * 255.0f));
+    gDPPipeSync(gfx++);
+    gSPTexture(gfx++, 0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON);
+    gDPSetTexturePersp(gfx++, G_TP_PERSP);
+    if (sprite->unk1A >= 2) {
+        gDPSetTextureLUT(gfx++, G_TT_RGBA16);
+        stride = 0x800;
+        if (sprite->unk18 == 4) {
+            gDPLoadTLUT_pal16(gfx++, 0, sprite->unk0C);
+        } else {
+            gDPLoadTLUT_pal256(gfx++, sprite->unk0C);
+        }
+    } else {
+        gDPSetTextureLUT(gfx++, G_TT_NONE);
+        stride = 0x1000;
+    }
+    gDPPipeSync(gfx++);
+    for (i = 0; i < count; i++) {
+        gSPSegment(gfx++, 2, osVirtualToPhysical((u8 *)sprite->unk08 + stride * i));
+        gDPLoadTextureBlock(gfx++, 0x02000000, G_IM_FMT_CI, G_IM_SIZ_8b, sprite->unk00->unk04, sprite->unk00->unk06 / count, 0,
+                             G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+        gDPPipeSync(gfx++);
+        gSPSegment(gfx++, 1, osVirtualToPhysical(&data->unk44[0][i * 4]));
+        gSPVertex(gfx++, 0x01000000, 4, 0);
+        gSP2Triangles(gfx++, 0, 1, 2, 0, 1, 3, 2, 0);
+    }
+    gSPClearGeometryMode(gfx++, -1);
+    gSPSetGeometryMode(gfx++, G_ZBUFFER | G_SHADE | G_CULL_BACK | G_TEXTURE_GEN_LINEAR);
+    gDPPipeSync(gfx++);
+    gSPEndDisplayList(gfx++);
+    size = (u8 *)gfx - (u8 *)buffer;
+    data->unk3C->unk00[0] = HuMemAllocTag(size, data->unk0E);
+    bcopy(buffer, data->unk3C->unk00[0], size);
+    HuMemFree(buffer);
+    return model;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010D4C0_baby_bowser_broadside);
+s16 func_8010BCBC_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, f32 alpha) {
+    u8 *buffer;
+    Gfx *gfx;
+    Gfx *header;
+    HmfData *data;
+    u16 format;
+    s16 i;
+    s16 model;
+    s32 size;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010D590_baby_bowser_broadside);
+    gfx = HuMemAlloc(0x10000);
+    header = gfx;
+    buffer = (u8 *)gfx;
+    model = func_8001A894_main(0x4C1, gfx, 4);
+    data = HmfModelData[model].hmf;
+    data->unk60->unk50 |= 0x1010000;
+    gfx++;
+    HuMemFree(data->unk3C);
+    data->unk3C = HuMemAllocTag(0x14, D_800CDD6A_main);
+    func_8010D6C4_baby_bowser_broadside(sprite, data, 1.0f, 0, 30);
+    gSPDisplayList(header, osVirtualToPhysical(D_8010FE80_baby_bowser_broadside));
+    gDPPipeSync(gfx++);
+    gDPSetCycleType(gfx++, G_CYC_1CYCLE);
+    gDPPipeSync(gfx++);
+    gSPClearGeometryMode(gfx++, G_CULL_BOTH | G_LIGHTING);
+    gSPSetGeometryMode(gfx++, G_ZBUFFER | G_CULL_FRONT | G_TEXTURE_GEN_LINEAR);
+    gDPSetColorDither(gfx++, G_CD_NOISE);
+    gDPSetTexturePersp(gfx++, G_TP_NONE);
+    gDPSetTextureFilter(gfx++, G_TF_BILERP);
+    gDPSetTextureConvert(gfx++, G_TC_FILT);
+    gDPSetAlphaDither(gfx++, G_AD_PATTERN);
+    gDPSetAlphaCompare(gfx++, G_AC_NONE);
+    gDPSetBlendColor(gfx++, 1, 1, 1, 1);
+    gDPPipeSync(gfx++);
+    gDPSetRenderMode(gfx++, G_RM_ZB_XLU_SURF, G_RM_NOOP2);
+    if (sprite->unk1A >= 2) {
+    gDPSetCombineLERP(gfx++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
+    gDPSetPrimColor(gfx++, 0, 0, 255, 255, 255, (u32)(alpha * 255.0f));
+    } else {
+        if (sprite->unk18 & 0x8000) {
+            gDPSetCombineLERP(gfx++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0);
+        } else {
+            gDPSetCombineLERP(gfx++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
+        }
+        gDPSetPrimColor(gfx++, 0, 0, 255, 255, 255, (u32)(alpha * 255.0f));
+    }
+    gDPPipeSync(gfx++);
+    gSPTexture(gfx++, 0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON);
+    gDPSetTexturePersp(gfx++, G_TP_PERSP);
+    if (sprite->unk1A >= 2) {
+        gDPSetTextureLUT(gfx++, G_TT_RGBA16);
+        if (sprite->unk18 == 4) {
+            gDPLoadTLUT_pal16(gfx++, 0, sprite->unk0C);
+        } else {
+            gDPLoadTLUT_pal256(gfx++, sprite->unk0C);
+        }
+        gDPPipeSync(gfx++);
+        format = G_IM_FMT_CI;
+    } else {
+        gDPSetTextureLUT(gfx++, G_TT_NONE);
+        gDPPipeSync(gfx++);
+        format = ((u32)sprite->unk18 >> 15) * 4;
+    }
+    switch (sprite->unk18 & 0xFFF) {
+        case 4:
+            gDPLoadTextureBlock_4b(gfx++, 0x02000000, format, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+                                 G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+            break;
+        case 8:
+            gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_8b, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+                               G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+            break;
+        case 16:
+            gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_16b, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+                               G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+            break;
+    }
+    gDPPipeSync(gfx++);
+    gSPSegment(gfx++, 1, osVirtualToPhysical(data->unk44[0]));
+    gSPVertex(gfx++, 0x01000000, 4, 0);
+    gSP2Triangles(gfx++, 0, 1, 2, 0, 1, 3, 2, 0);
+    gSPClearGeometryMode(gfx++, -1);
+    gSPSetGeometryMode(gfx++, G_ZBUFFER | G_SHADE | G_CULL_BACK | G_TEXTURE_GEN_LINEAR);
+    gDPPipeSync(gfx++);
+    gSPEndDisplayList(gfx++);
+    size = (u8 *)gfx - buffer;
+    data->unk3C->unk00[0] = data->unk3C->unk10 = HuMemAllocTag(size, data->unk0E);
+    bcopy(buffer, data->unk3C->unk00[0], size);
+    HuMemFree(buffer);
+    for (i = 0; i < D_800D1FF0_main; i++) {
+        gfx = (data->unk3C->unk00 + 1)[i] = HuMemAllocTag(0x100, data->unk0E);
+        gDPPipeSync(gfx++);
+        gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->unk00->unk00));
+        gSPDisplayList(gfx++, osVirtualToPhysical(data->unk3C->unk10));
+        gSPEndDisplayList(gfx++);
+    }
+    data->unk3C->unk00[0] = data->unk3C->unk00[D_800D2008_main + 1];
+    return model;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010D6C4_baby_bowser_broadside);
+
+s16 func_8010C8D4_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, u8 *color) {
+    u8 *buffer;
+    Gfx *gfx;
+    Gfx *header;
+    HmfData *data;
+    u16 format;
+    s32 i;
+    s32 model;
+    s32 size;
+
+    gfx = HuMemAlloc(0x10000);
+    header = gfx;
+    buffer = (u8 *)gfx;
+    model = func_8001A894_main(0x8C1, gfx, 4);
+    data = HmfModelData[model].hmf;
+    data->unk60->unk50 |= 0x1010000;
+    gfx++;
+    HuMemFree(data->unk3C);
+    data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), D_800CDD6A_main);
+    func_8010D6C4_baby_bowser_broadside(sprite, data, 1.0f, 0, 0);
+    gSPDisplayList(header, osVirtualToPhysical(D_8010FE80_baby_bowser_broadside));
+    gDPPipeSync(gfx++);
+    gDPSetCycleType(gfx++, G_CYC_1CYCLE);
+    gDPPipeSync(gfx++);
+    gSPClearGeometryMode(gfx++, G_CULL_BOTH | G_LIGHTING);
+    gSPSetGeometryMode(gfx++, G_ZBUFFER | G_CULL_FRONT | G_TEXTURE_GEN_LINEAR);
+    gDPSetColorDither(gfx++, G_CD_NOISE);
+    gDPSetTexturePersp(gfx++, G_TP_NONE);
+    gDPSetTextureFilter(gfx++, G_TF_BILERP);
+    gDPSetTextureConvert(gfx++, G_TC_FILT);
+    gDPSetAlphaDither(gfx++, G_AD_PATTERN);
+    gDPSetAlphaCompare(gfx++, G_AC_NONE);
+    gDPSetBlendColor(gfx++, 1, 1, 1, 1);
+    gDPPipeSync(gfx++);
+    gDPSetRenderMode(gfx++, G_RM_ZB_XLU_SURF, G_RM_NOOP2);
+    if (sprite->unk18 & 0x8000) {
+        gDPSetCombineLERP(gfx++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0);
+    } else {
+        gDPSetCombineLERP(gfx++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
+    }
+    gDPPipeSync(gfx++);
+    gSPEndDisplayList(gfx++);
+    size = (u8 *)gfx - buffer;
+    data->unk3C->unk10 = HuMemAllocTag(size, data->unk0E);
+    bcopy(buffer, data->unk3C->unk10, size);
+    HuMemFree(buffer);
+    gfx = HuMemAlloc(0x10000);
+    {
+        Gfx *textureHeader = gfx;
+        buffer = (u8 *)gfx;
+        gfx++;
+        gSPTexture(textureHeader, 0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON);
+    }
+    gDPSetTexturePersp(gfx++, G_TP_PERSP);
+    if (sprite->unk1A >= 2) {
+        gDPSetTextureLUT(gfx++, G_TT_RGBA16);
+        if (sprite->unk18 == 4) {
+            gDPLoadTLUT_pal16(gfx++, 0, sprite->unk0C);
+        } else {
+            gDPLoadTLUT_pal256(gfx++, sprite->unk0C);
+        }
+        gDPPipeSync(gfx++);
+        format = G_IM_FMT_CI;
+    } else {
+        gDPSetTextureLUT(gfx++, G_TT_NONE);
+        gDPPipeSync(gfx++);
+        format = sprite->unk18;
+        format = ((u32)format / 0x8000) * 4;
+    }
+    switch (sprite->unk18 & 0xFFF) {
+        case 4:
+            gDPLoadTextureBlock_4b(gfx++, 0x02000000, format, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+                                 G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+            break;
+        case 8:
+            gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_8b, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+                               G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+            break;
+        case 16:
+            gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_16b, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+                               G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+            break;
+    }
+    gDPPipeSync(gfx++);
+    gSPSegment(gfx++, 1, osVirtualToPhysical(data->unk44[0]));
+    gSPVertex(gfx++, 0x01000000, 4, 0);
+    gSP2Triangles(gfx++, 0, 1, 2, 0, 1, 3, 2, 0);
+    gSPClearGeometryMode(gfx++, -1);
+    gSPSetGeometryMode(gfx++, G_ZBUFFER | G_SHADE | G_CULL_BACK | G_TEXTURE_GEN_LINEAR);
+    gDPPipeSync(gfx++);
+    gSPEndDisplayList(gfx++);
+    size = (u8 *)gfx - buffer;
+    data->unk3C->unk14 = HuMemAllocTag(size, data->unk0E);
+    bcopy(buffer, data->unk3C->unk14, size);
+    HuMemFree(buffer);
+    for (i = 0; i < D_800D1FF0_main; i++) {
+        gfx = (data->unk3C->unk00 + 1)[i] = HuMemAllocTag(0x100, data->unk0E);
+        gDPPipeSync(gfx++);
+        gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->unk00->unk00));
+        gSPDisplayList(gfx++, osVirtualToPhysical(data->unk3C->unk10));
+        gDPSetPrimColor(gfx++, 0, 0, color[0], color[1], color[2], color[3]);
+        gDPPipeSync(gfx++);
+        gSPDisplayList(gfx++, osVirtualToPhysical(data->unk3C->unk14));
+        gDPPipeSync(gfx++);
+        gSPEndDisplayList(gfx++);
+    }
+    data->unk3C->unk00[0] = data->unk3C->unk00[D_800D2008_main + 1];
+    return model;
+}
+
+
+
+void func_8010D4C0_baby_bowser_broadside(u16 model, HuSprite_Unk84_Struct *sprite, u16 frame) {
+    HmfModel *modelData = HmfModelData + (u16)model;
+    HmfData *data = modelData->hmf;
+    Gfx *gfx = data->unk3C->unk00[D_800D2008_main + 1];
+
+    data->unk3C->unk00[0] = gfx;
+    gDPPipeSync(gfx);
+    gSPSegment(gfx + 1, 2, osVirtualToPhysical(sprite->unk00[frame].unk00));
+    gSPDisplayList(gfx + 2, osVirtualToPhysical(data->unk3C->unk10));
+    gDPPipeSync(gfx + 3);
+    gSPEndDisplayList(gfx + 4);
+}
+
+void func_8010D590_baby_bowser_broadside(u16 model, HuSprite_Unk84_Struct *sprite, u16 frame, u8 *color) {
+    HmfModel *modelData = HmfModelData + model;
+    HmfData *data = modelData->hmf;
+    Gfx *gfx = data->unk3C->unk00[D_800D2008_main + 1];
+
+    data->unk3C->unk00[0] = gfx;
+    gDPPipeSync(gfx);
+    gSPSegment(gfx + 1, 2, osVirtualToPhysical(sprite->unk00[frame].unk00));
+    gSPDisplayList(gfx + 2, osVirtualToPhysical(data->unk3C->unk10));
+    gDPSetPrimColor(gfx + 3, 0, 0, color[0], color[1], color[2], color[3]);
+    gDPPipeSync(gfx + 4);
+    gSPDisplayList(gfx + 5, osVirtualToPhysical(data->unk3C->unk14));
+    gDPPipeSync(gfx + 6);
+    gSPEndDisplayList(gfx + 7);
+}
+
+s16 func_8010D6C4_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset) {
+    s32 capacity = 0x1000;
+    s32 width, height, scaledWidth, scaledHeight;
+    s32 size, slices, textureHeight, sliceHeight, vertexCount;
+    s32 i, j;
+    Vtx_t *vertices, *start;
+
+    if (sprite->unk1A >= 2) {
+        capacity = 0x800;
+    }
+    width = sprite->unk00->unk04;
+    height = sprite->unk00->unk06;
+    scaledWidth = width * 100 * (f64)scale / D_8010FFE8_baby_bowser_broadside;
+    scaledHeight = height * 100 * (f64)scale / D_8010FFE8_baby_bowser_broadside;
+    if ((sprite->unk18 & 0xFFF) == 4) {
+        size = ((width + 1) & 0xFFFE) * height * 4;
+    } else {
+        size = width * height * sprite->unk18;
+    }
+    size /= 8;
+    slices = size / capacity;
+    if (slices <= 0) {
+        slices = 1;
+    }
+    textureHeight = height / slices;
+    sliceHeight = scaledHeight / slices;
+    vertexCount = slices * 4;
+    size = slices * 4 * sizeof(Vtx_t);
+    start = vertices = HuMemAllocTag(size, data->unk0E);
+    memset(start, 0, size);
+    for (i = 0; i < slices; i++, vertices += 4) {
+        vertices[0].ob[0] = scaledWidth * D_8010FFF0_baby_bowser_broadside;
+        vertices[0].ob[1] = scaledHeight * D_8010FFF0_baby_bowser_broadside - sliceHeight * i;
+        vertices[0].tc[0] = (width - 1) << 6;
+        vertices[0].tc[1] = 0;
+        vertices[1].ob[0] = scaledWidth * D_8010FFF0_baby_bowser_broadside;
+        vertices[1].ob[1] = scaledHeight * D_8010FFF0_baby_bowser_broadside - sliceHeight * (i + 1);
+        vertices[1].tc[0] = (width - 1) << 6;
+        vertices[1].tc[1] = (textureHeight - 1) << 6;
+        vertices[2].ob[0] = -(scaledWidth * D_8010FFF0_baby_bowser_broadside);
+        vertices[2].ob[1] = scaledHeight * D_8010FFF0_baby_bowser_broadside - sliceHeight * i;
+        vertices[2].tc[0] = 0;
+        vertices[2].tc[1] = 0;
+        vertices[3].ob[0] = -(scaledWidth * D_8010FFF0_baby_bowser_broadside);
+        vertices[3].ob[1] = scaledHeight * D_8010FFF0_baby_bowser_broadside - sliceHeight * (i + 1);
+        vertices[3].tc[0] = 0;
+        vertices[3].tc[1] = (textureHeight - 1) << 6;
+        for (j = 0; j < 4; j++) {
+            vertices[j].ob[0] += xOffset;
+            vertices[j].ob[1] += yOffset;
+            vertices[j].ob[2] = 0;
+            vertices[j].flag = 0;
+            vertices[j].cn[3] = 255;
+            vertices[j].cn[0] = vertices[j].cn[1] = vertices[j].cn[2] = 0;
+        }
+    }
+    vertices = start;
+    for (i = 0; i < D_800D1FF0_main; i++) {
+        Vtx_t *destination;
+        Vtx_t *source;
+        data->unk44[i] = HuMemAllocTag(vertexCount * sizeof(Vtx_t), data->unk0E);
+        destination = (Vtx_t *)data->unk44[i];
+        source = vertices;
+        for (j = 0; j < vertexCount; j++) {
+            *destination++ = *source++;
+        }
+    }
+    HuMemFree(start);
+    return slices;
+}
 
 void func_8010DAE8_baby_bowser_broadside(s32 arg0, BabyBowserBroadsideHandler *arg1) {
     D_80110020_baby_bowser_broadside = HuMemAllocTag(0xAB0, 0x7918);
@@ -116,15 +920,82 @@ void func_8010DAE8_baby_bowser_broadside(s32 arg0, BabyBowserBroadsideHandler *a
     arg1->unk_40 = func_8010DE70_baby_bowser_broadside;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010DB38_baby_bowser_broadside);
+s16 func_8010DB38_baby_bowser_broadside(s16 model, Vec *vertices, s16 count, f32 arg3, f32 arg4, s32 flags) {
+    BabyBowserBroadsideBoat *boat = D_80110020_baby_bowser_broadside;
+    s16 i;
+    for (i = 0; i < 12; i++, boat++) {
+        if (boat->unk_04 == 0) {
+            if (model != -1) {
+                boat->x = &HmfModelData[model].pos.x;
+                boat->y = &HmfModelData[model].pos.y;
+                boat->z = &HmfModelData[model].pos.z;
+                boat->rx = &HmfModelData[model].rot.x;
+                boat->ry = &HmfModelData[model].rot.y;
+                boat->rz = &HmfModelData[model].rot.z;
+            }
+            memcpy(boat->vertices, vertices, count * sizeof(Vec));
+            boat->unk_DC = arg3;
+            boat->unk_C4 = arg4;
+            boat->vertexCount = count;
+            if ((u32)(flags & 0x700) <= 0x100) {
+                func_8010F3C4_baby_bowser_broadside(boat->vertices, &boat->plane);
+                boat->unk_00 = flags;
+            } else {
+                flags &= ~4;
+                boat->unk_00 = flags;
+            }
+            boat->unk_04 = 1;
+            break;
+        }
+    }
+    return i;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010DC88_baby_bowser_broadside);
+s16 func_8010DC88_baby_bowser_broadside(s16 index, s32 flags) {
+    BabyBowserBroadsideBoat *boat = D_80110020_baby_bowser_broadside;
+    BabyBowserBroadsideBoat *source = &D_80110020_baby_bowser_broadside[index];
+    s16 i;
+    for (i = 0; i < 12; i++, boat++) {
+        if (boat->unk_04 == 0) {
+            boat->source = index;
+            boat->x = source->x;
+            boat->y = source->y;
+            boat->z = source->z;
+            boat->rx = source->rx;
+            boat->ry = source->ry;
+            boat->rz = source->rz;
+            memcpy(boat->vertices, source->vertices, source->vertexCount * sizeof(Vec));
+            boat->unk_DC = source->unk_DC;
+            boat->unk_C4 = source->unk_C4;
+            boat->vertexCount = source->vertexCount;
+            if ((u32)(flags & 0x700) <= 0x100) {
+                boat->plane.normal = source->plane.normal;
+            } else {
+                flags &= ~4;
+            }
+            boat->unk_00 = flags | 0x40;
+            boat->unk_04 = 1;
+            break;
+        }
+    }
+    return i;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010DDDC_baby_bowser_broadside);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010DE70_baby_bowser_broadside);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010E018_baby_bowser_broadside);
+void func_8010E018_baby_bowser_broadside(BabyBowserBroadsideShip *ship, s16 count, f32 speed, s16 model) {
+    if (ship != NULL) {
+        ship->unk_08 = count + 1;
+        ship->unk_04 = HuMemAllocTag(ship->unk_08 * sizeof(s16), 0x7918);
+        memset(ship->unk_04, -1, ship->unk_08 * sizeof(s16));
+        ship->pos.x = ship->pos.y = ship->pos.z = 0.0f;
+        ship->facing.x = ship->facing.y = ship->facing.z = 0.0f;
+        ship->unk_24 = speed;
+        ship->unk_28 = model;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010E0B0_baby_bowser_broadside);
 
@@ -200,11 +1071,28 @@ void func_8010F878_baby_bowser_broadside(f32 *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010F900_baby_bowser_broadside);
+void func_8010F900_baby_bowser_broadside(f32 *matrix, f32 x, f32 y, f32 z) {
+    func_8010F878_baby_bowser_broadside(matrix);
+    matrix[12] = x;
+    matrix[13] = y;
+    matrix[14] = z;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010F958_baby_bowser_broadside);
+void func_8010F958_baby_bowser_broadside(f32 *matrix, f32 angle) {
+    func_8010F878_baby_bowser_broadside(matrix);
+    matrix[5] = cosdf(angle);
+    matrix[6] = sindf(angle);
+    matrix[9] = -sindf(angle);
+    matrix[10] = cosdf(angle);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010F9C0_baby_bowser_broadside);
+void func_8010F9C0_baby_bowser_broadside(f32 *matrix, f32 angle) {
+    func_8010F878_baby_bowser_broadside(matrix);
+    matrix[0] = cosdf(angle);
+    matrix[2] = -sindf(angle);
+    matrix[8] = sindf(angle);
+    matrix[10] = cosdf(angle);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010FA28_baby_bowser_broadside);
 

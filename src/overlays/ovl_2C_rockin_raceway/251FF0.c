@@ -282,7 +282,25 @@ s32 func_8010E344_rockin_raceway(s16 soundId, s16 frames, s16 unk04, s16 playerI
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2C_rockin_raceway/251FF0", func_8010E39C_rockin_raceway);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2C_rockin_raceway/251FF0", func_8010E504_rockin_raceway);
+f32 func_8010E504_rockin_raceway(f32 arg0, f32 arg1) {
+    if (arg0 >= 360.0f) {
+        arg0 -= 360.0f;
+    } else if (arg0 < 0.0f) {
+        arg0 += 360.0f;
+    }
+    if (arg1 >= 360.0f) {
+        arg1 -= 360.0f;
+    } else if (arg1 < 0.0f) {
+        arg1 += 360.0f;
+    }
+    arg0 = arg0 - arg1;
+    if (arg0 <= -180.0f) {
+        arg0 += 360.0f;
+    } else if (arg0 >= 180.0f) {
+        arg0 -= 360.0f;
+    }
+    return arg0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2C_rockin_raceway/251FF0", func_8010E608_rockin_raceway);
 

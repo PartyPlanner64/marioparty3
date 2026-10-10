@@ -4,7 +4,22 @@
 #include "malloc.h"
 #include "mallocblock.h"
 #include "game/hmfman.h"
+#include "game/data.h"
 
+typedef struct {
+    s16 width;
+    s16 height;
+    u8 *pixels;
+} WipeTexture;
+
+typedef struct {
+    u8 unk00[2];
+    u8 offset[2];
+    u8 width[2];
+    u8 height[2];
+} WipeTextureHeader;
+
+extern WipeTexture D_800D1F5C_main;
 extern u8 D_800A26D0_main;
 extern u16 *D_800A26D4_main;
 extern u16 *D_800BDA70_main;
@@ -40,6 +55,21 @@ void func_800651F0_main(Gfx **gfx, f32 progress);
 void func_8006619C_main(Gfx **gfx, s32 arg1, s32 arg2);
 void func_800661D4_main(Gfx **gfx, s32 arg1, s32 arg2);
 
+void GMesExec(Gfx **gfx);
+void func_80062844_main(Gfx **gfx);
+s32 func_80062168_main(Gfx **gfx);
+s32 func_80062244_main(Gfx **gfx);
+s32 func_800623F0_main(Gfx **gfx);
+s32 func_80062584_main(Gfx **gfx);
+s32 func_80063454_main(Gfx **gfx);
+s32 func_80063510_main(Gfx **gfx);
+s32 func_800640EC_main(Gfx **gfx);
+s32 func_80065094_main(Gfx **gfx);
+s32 func_8006515C_main(Gfx **gfx);
+s32 func_80065D80_main(Gfx **gfx);
+s32 func_80065E88_main(Gfx **gfx);
+s32 func_80065C9C_main(Gfx **gfx, s32 file);
+
 void WipeInit(void) {
     s16 i;
 
@@ -55,7 +85,140 @@ void WipeInit(void) {
     func_8003661C_main();
 }
 
-INCLUDE_ASM("asm/nonmatchings/wipe", WipeExecAlways);
+void WipeExecAlways(Gfx **gfx) {
+    s16 i;
+
+    if (D_800CC0BA_main == 3) {
+        switch (D_800A26D0_main) {
+            case 0xFE:
+                func_80062844_main(gfx);
+                break;
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+                func_800651F0_main(gfx, 1.0f);
+                break;
+            default:
+                func_8006231C_main(gfx, 255, D_800A2728_main);
+                break;
+        }
+        return;
+    }
+    GMesExec(gfx);
+    if (D_800CC0BA_main == 0) {
+        return;
+    }
+    switch (D_800CC0BA_main) {
+        case 1:
+            switch (D_800A26D0_main) {
+                case 11:
+                    D_800CCF84_main = func_80062168_main(gfx);
+                    break;
+                case 0xFE:
+                    D_800CCF84_main = func_800623F0_main(gfx);
+                    break;
+                case 1:
+                    D_800CCF84_main = func_80063454_main(gfx);
+                    break;
+                case 2:
+                    D_800CCF84_main = func_800640EC_main(gfx);
+                    break;
+                case 12:
+                    D_800CCF84_main = func_80065D80_main(gfx);
+                    break;
+                case 0:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                case 7:
+                case 8:
+                case 9:
+                case 10:
+                    D_800CCF84_main = func_8006515C_main(gfx);
+                    break;
+            }
+            D_800D51F4_main += 1.0f;
+            if (D_800CCF84_main == 0) {
+                WipeColorSet(0, 0, 0);
+                if (D_800A26D4_main != NULL) {
+                    if (D_800D5304_main == 0) {
+                        HuMemMemoryFreePerm(D_800A26D4_main);
+                    }
+                    D_800A26D4_main = NULL;
+                }
+                for (i = 0; i < 8; i++) {
+                    if (D_800D1F80_main[i] != NULL) {
+                        HuMemMemoryFreePerm(D_800D1F80_main[i]);
+                    }
+                    D_800D1F80_main[i] = NULL;
+                }
+                D_800D1F60_main = NULL;
+                func_80019C68_main(0x6D60);
+            }
+            break;
+        case 2:
+            switch (D_800A26D0_main) {
+                case 0:
+                    D_800CCF84_main = func_80065C9C_main(gfx, 0);
+                    break;
+                case 11:
+                    D_800CCF84_main = func_80062244_main(gfx);
+                    break;
+                case 0xFE:
+                    D_800CCF84_main = func_80062584_main(gfx);
+                    break;
+                case 1:
+                    D_800CCF84_main = func_80063510_main(gfx);
+                    break;
+                case 2:
+                    D_800CCF84_main = func_80065094_main(gfx);
+                    break;
+                case 12:
+                    D_800CCF84_main = func_80065E88_main(gfx);
+                    break;
+                case 3:
+                    D_800CCF84_main = func_80065C9C_main(gfx, 18);
+                    break;
+                case 4:
+                    D_800CCF84_main = func_80065C9C_main(gfx, 19);
+                    break;
+                case 5:
+                    D_800CCF84_main = func_80065C9C_main(gfx, 20);
+                    break;
+                case 6:
+                    D_800CCF84_main = func_80065C9C_main(gfx, 21);
+                    break;
+                case 7:
+                    D_800CCF84_main = func_80065C9C_main(gfx, 22);
+                    break;
+                case 8:
+                    D_800CCF84_main = func_80065C9C_main(gfx, 17);
+                    break;
+                case 9:
+                    D_800CCF84_main = func_80065C9C_main(gfx, 16);
+                    break;
+                case 10:
+                    D_800CCF84_main = func_80065C9C_main(gfx, 15);
+                    break;
+            }
+            D_800D51F4_main += 1.0f;
+            break;
+    }
+    if (D_800CCF84_main == 0) {
+        if (D_800CC0BA_main == 2) {
+            D_800CC0BA_main = 3;
+        } else {
+            D_800CC0BA_main = 0;
+        }
+        D_800D51F4_main = 0.0f;
+    }
+}
 
 void WipeCreateIn(s16 arg0, s16 arg1) {
     if (D_800CCF84_main == 0) {
@@ -247,7 +410,20 @@ s32 func_80063510_main(Gfx **gfx) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/wipe", func_800635F4_main);
+u8 *func_800635F4_main(s32 file) {
+    u8 *data;
+    WipeTextureHeader *header;
+
+    data = DataRead(file);
+    header = (WipeTextureHeader *)(data + (data[2] << 8) + data[3]);
+    D_800D1F5C_main.width = (header->width[0] << 8) + header->width[1];
+    D_800D1F5C_main.height = (header->height[0] << 8) + header->height[1];
+    header = (WipeTextureHeader *)(data + (header->offset[0] << 8) + header->offset[1]);
+    D_800D1F5C_main.pixels = WipeMalloc(D_800D1F5C_main.width * D_800D1F5C_main.height);
+    bcopy(header, D_800D1F5C_main.pixels, D_800D1F5C_main.width * D_800D1F5C_main.height);
+    DataClose(data);
+    return data;
+}
 
 INCLUDE_ASM("asm/nonmatchings/wipe", func_800636D8_main);
 

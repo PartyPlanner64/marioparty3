@@ -246,7 +246,25 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_13_log_jam/1A3D80", func_8010BE94_log
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_13_log_jam/1A3D80", func_8010C084_log_jam);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_13_log_jam/1A3D80", func_8010C1D8_log_jam);
+f32 func_8010C1D8_log_jam(f32 arg0, f32 arg1) {
+    if (arg0 >= 360.0f) {
+        arg0 -= 360.0f;
+    } else if (arg0 < 0.0f) {
+        arg0 += 360.0f;
+    }
+    if (arg1 >= 360.0f) {
+        arg1 -= 360.0f;
+    } else if (arg1 < 0.0f) {
+        arg1 += 360.0f;
+    }
+    arg0 = arg0 - arg1;
+    if (arg0 <= -180.0f) {
+        arg0 += 360.0f;
+    } else if (arg0 >= 180.0f) {
+        arg0 -= 360.0f;
+    }
+    return arg0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_13_log_jam/1A3D80", func_8010C2DC_log_jam);
 

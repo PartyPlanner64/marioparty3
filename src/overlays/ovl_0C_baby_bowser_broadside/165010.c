@@ -326,9 +326,8 @@ void func_80106288_baby_bowser_broadside(omObjData *object) {
     func_8010B3B4_baby_bowser_broadside();
 }
 
-#ifdef NON_MATCHING
-// The HUD loops still differ in the constant Y coordinate's sign extension.
 void func_801062C4_baby_bowser_broadside(omObjData *object) {
+    s16 hudY = 32;
     s32 flags = 0x99;
     s32 attr = 0x1000;
     Vec center = D_8010FEE8_baby_bowser_broadside;
@@ -411,24 +410,16 @@ void func_801062C4_baby_bowser_broadside(omObjData *object) {
     sprite = func_8010A598_baby_bowser_broadside(255, 0x2D, 14, 0, attr);
     func_80055458_main(D_80110018_baby_bowser_broadside[sprite].unk_01, 0, 190);
     func_8010A738_baby_bowser_broadside(sprite, 250, 32);
-    {
-        s16 y = 32;
-
-        for (i = 0; i < 2; i++) {
-            for (j = 0; j < 2; j++) {
-                func_8010A738_baby_bowser_broadside(func_8010A598_baby_bowser_broadside(239, 33, portraits.files[GwPlayer[D_80110000_baby_bowser_broadside[i].players[j]].chr], 0, 0), i * 180 + (s16)(j * 18 + 40), y);
-            }
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < 2; j++) {
+            func_8010A738_baby_bowser_broadside(func_8010A598_baby_bowser_broadside(239, 33, portraits.files[GwPlayer[D_80110000_baby_bowser_broadside[i].players[j]].chr], 0, 0), i * 180 + (s16)(j * 18 + 40), hudY);
         }
     }
-    {
-        s16 y = 32;
-
-        for (i = 0; i < 2; i++) {
-            D_80110000_baby_bowser_broadside[i].unk_12 = model = func_8010A598_baby_bowser_broadside(239, 0, 45, 0, 0);
-            func_8010A738_baby_bowser_broadside(model, (s16)(i * 180 + 84), y);
-            D_80110000_baby_bowser_broadside[i].unk_14 = model = func_8010A598_baby_bowser_broadside(239, 0, 45, 0, 0);
-            func_8010A738_baby_bowser_broadside(model, (s16)(i * 180 + 100), y);
-        }
+    for (i = 0; i < 2; i++) {
+        D_80110000_baby_bowser_broadside[i].unk_12 = model = func_8010A598_baby_bowser_broadside(239, 0, 45, 0, 0);
+        func_8010A738_baby_bowser_broadside(model, (s16)(i * 180 + 84), hudY);
+        D_80110000_baby_bowser_broadside[i].unk_14 = model = func_8010A598_baby_bowser_broadside(239, 0, 45, 0, 0);
+        func_8010A738_baby_bowser_broadside(model, (s16)(i * 180 + 100), hudY);
     }
     index = func_8010A0B4_baby_bowser_broadside((s8)object->work[1], 0xFFFF, 0, func_8010DAE8_baby_bowser_broadside, (s8)object->work[1]);
     handler = &D_80110014_baby_bowser_broadside[object->work[1]].unk_04[index];
@@ -450,10 +441,6 @@ void func_801062C4_baby_bowser_broadside(omObjData *object) {
     func_8010F250_baby_bowser_broadside(object);
     object->func = func_80106E40_baby_bowser_broadside;
 }
-
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/165010", func_801062C4_baby_bowser_broadside);
-#endif
 
 void func_80106E40_baby_bowser_broadside(omObjData *object) {
     func_8010A2C4_baby_bowser_broadside(2);

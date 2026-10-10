@@ -267,7 +267,25 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_8010AEF0_baby_bowser_bonkers);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_8010B044_baby_bowser_bonkers);
+f32 func_8010B044_baby_bowser_bonkers(f32 arg0, f32 arg1) {
+    if (arg0 >= 360.0f) {
+        arg0 -= 360.0f;
+    } else if (arg0 < 0.0f) {
+        arg0 += 360.0f;
+    }
+    if (arg1 >= 360.0f) {
+        arg1 -= 360.0f;
+    } else if (arg1 < 0.0f) {
+        arg1 += 360.0f;
+    }
+    arg0 = arg0 - arg1;
+    if (arg0 <= -180.0f) {
+        arg0 += 360.0f;
+    } else if (arg0 >= 180.0f) {
+        arg0 -= 360.0f;
+    }
+    return arg0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_8010B148_baby_bowser_bonkers);
 

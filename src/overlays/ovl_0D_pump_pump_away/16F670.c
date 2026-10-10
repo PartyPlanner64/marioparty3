@@ -150,6 +150,13 @@ typedef struct PumpPumpAwayCamera {
     f32 fov;
 } PumpPumpAwayCamera; // sizeof 0x2C
 
+typedef struct PumpPumpAwayRecordMarker {
+    /* 0x00 */ s32 state;
+    /* 0x04 */ u16 record;
+    /* 0x06 */ s16 unk_06;
+    /* 0x08 */ s32 hidden;
+} PumpPumpAwayRecordMarker; // sizeof 0xC
+
 extern s32 D_800A178C_main[][6];
 extern Vec D_80110E70_pump_pump_away[4];
 extern s32 D_80111118_pump_pump_away;
@@ -204,7 +211,7 @@ extern s32 D_80113544_pump_pump_away;
 extern UnkPumpPumpAway D_80113570_pump_pump_away[2];
 extern UnkPumpPumpAwayRecord D_801135B0_pump_pump_away;
 extern u16 D_801135CC_pump_pump_away;
-extern s32 D_801135D8_pump_pump_away;
+extern PumpPumpAwayRecordMarker D_801135D8_pump_pump_away;
 extern u16 D_801135DC_pump_pump_away;
 extern s32 D_801135E0_pump_pump_away;
 extern UnkPumpPumpAwayHose D_801135E8_pump_pump_away[4];
@@ -604,7 +611,30 @@ void func_80107E5C_pump_pump_away(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80107EB8_pump_pump_away);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010811C_pump_pump_away);
+void func_8010811C_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwayHose *hose = &D_801117C0_pump_pump_away[obj->work[0]];
+    f32 frame;
+
+    if (hose->unk_04 == 2) {
+        if (HmfModelData[obj->model[0]].unk40 >= D_800CCF58_main[HmfModelData[obj->model[0]].unk02].unk02 - 2) {
+            func_8001C258_main(obj->model[0], 4, 4);
+            hose->unk_04 = 3;
+        }
+    } else if (hose->unk_04 != 3) {
+        frame = HmfModelData[obj->model[0]].unk40;
+        if (frame != 0.0f) {
+            if (frame >= D_800CCF58_main[HmfModelData[obj->model[0]].unk02].unk02 - 2) {
+                func_8001C5B4_main(obj->model[0], obj->motion[1]);
+            } else {
+                return;
+            }
+        } else {
+            func_8001C5B4_main(obj->model[0], obj->motion[1]);
+        }
+        func_8001C814_main(obj->model[0], 2, 0);
+        hose->unk_04 = 2;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_801082AC_pump_pump_away);
 
@@ -1098,7 +1128,32 @@ void func_8010D458_pump_pump_away(void) {
     omAddObj(0x2FD, 1, 0, -1, func_8010D1B8_pump_pump_away);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010D48C_pump_pump_away);
+void func_8010D48C_pump_pump_away(omObjData *obj) {
+    PumpPumpAwayRecordMarker *marker = &D_801135D8_pump_pump_away;
+    UnkPumpPumpAwayPlayer *first = &D_80111978_pump_pump_away[0];
+    UnkPumpPumpAwayPlayer *player = D_80111978_pump_pump_away;
+    UnkPumpPumpAwayPlayer *other = &player[1];
+    f64 height;
+
+    if (marker->state == -1) {
+        return;
+    }
+    if (D_801135E0_pump_pump_away == 0) {
+        height = (first->unk_18 > other->unk_18) ? first->unk_18 : other->unk_18;
+        if (marker->record * 10 - height * 0.1 + 400.0 < 2000.0) {
+            func_8001C258_main(obj->model[0], 4, 0);
+            obj->trans.y = marker->record * 10 - height * 0.1 + 350.0;
+            if (obj->trans.y < -1000.0f) {
+                func_8001C258_main(obj->model[0], 4, 4);
+                marker->hidden = 1;
+            }
+        }
+    }
+    if (D_80113530_pump_pump_away.state >= 2 && marker->state < 10) {
+        func_8001C258_main(obj->model[0], 4, 4);
+        marker->state = 10;
+    }
+}
 
 void func_8010D620_pump_pump_away(omObjData *obj) {
     obj->model[0] = func_8000B108_main(0x2E001F, 0x1689);
@@ -1107,7 +1162,7 @@ void func_8010D620_pump_pump_away(omObjData *obj) {
     obj->trans.y = 1000.0f;
     obj->trans.z = 550.0f;
     obj->func = func_8010D48C_pump_pump_away;
-    D_801135D8_pump_pump_away = 0;
+    D_801135D8_pump_pump_away.state = 0;
     D_801135DC_pump_pump_away = D_801135CC_pump_pump_away;
     D_801135E0_pump_pump_away = 0;
 }
@@ -1643,7 +1698,7 @@ void func_80110824_pump_pump_away(void) {
 }
 
 void func_80110868_pump_pump_away(void) {
-    D_801135D8_pump_pump_away = -1;
+    D_801135D8_pump_pump_away.state = -1;
     D_801135DC_pump_pump_away = 0;
     D_801135E0_pump_pump_away = 0;
 }

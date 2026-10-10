@@ -32,6 +32,7 @@ void func_8010A3C8_baby_bowser_broadside(BabyBowserBroadsideGroup *group);
 
 void func_8010A7CC_baby_bowser_broadside(s16 arg0);
 
+f32 func_8010F004_baby_bowser_broadside(BabyBowserBroadsideShip *ship, Vec *first, Vec *second);
 void func_8010DE70_baby_bowser_broadside(void);
 void func_8010F3C4_baby_bowser_broadside(Vec *vertices, BabyBowserBroadsidePlane *plane);
 void func_8010FB74_baby_bowser_broadside(f32 x, f32 y, f32 z, f32 rx, f32 ry, f32 rz, f32 *matrix);
@@ -1014,7 +1015,52 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", fun
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010E348_baby_bowser_broadside);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010E538_baby_bowser_broadside);
+s32 func_8010E538_baby_bowser_broadside(BabyBowserBroadsideBoat *boat, BabyBowserBroadsideShip *ship) {
+    Vec position;
+    Vec movement;
+    Vec next;
+    Vec difference;
+    f32 distance;
+
+    position.x = ship->pos.x;
+    position.y = ship->pos.y;
+    position.z = ship->pos.z;
+    movement.x = ship->facing.x;
+    movement.y = ship->facing.y;
+    movement.z = ship->facing.z;
+    next.x = position.x + movement.x;
+    next.y = position.y + movement.y;
+    next.z = position.z + movement.z;
+    difference.x = boat->transformed[0].x - next.x;
+    difference.y = boat->transformed[0].y - next.y;
+    difference.z = boat->transformed[0].z - next.z;
+    distance = HuSqrtf(difference.x * difference.x + difference.y * difference.y + difference.z * difference.z);
+    if (distance <= ship->unk_24 + boat->unk_DC) {
+        if (boat->unk_00 & 0x10) {
+            return 1;
+        }
+        if (distance != 0.0f) {
+            difference.x /= distance;
+            difference.x *= ship->unk_24 + boat->unk_DC;
+            difference.y /= distance;
+            difference.y *= ship->unk_24 + boat->unk_DC;
+            difference.z /= distance;
+            difference.z *= ship->unk_24 + boat->unk_DC;
+        }
+        next.x = boat->transformed[0].x - difference.x;
+        next.y = boat->transformed[0].y - difference.y;
+        next.z = boat->transformed[0].z - difference.z;
+    } else {
+        return 0;
+    }
+    movement.x = next.x - position.x;
+    movement.y = next.y - position.y;
+    movement.z = next.z - position.z;
+    ship->facing.x = movement.x;
+    ship->facing.y = movement.y;
+    ship->facing.z = movement.z;
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010E710_baby_bowser_broadside);
 
@@ -1034,7 +1080,46 @@ f32 func_8010ED1C_baby_bowser_broadside(BabyBowserBroadsideBoat *boat, Vec *poin
     return (x * normal.x + y * normal.y + z * normal.z - boat->plane.constant) / length;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010EDC0_baby_bowser_broadside);
+s32 func_8010EDC0_baby_bowser_broadside(BabyBowserBroadsideBoat *boat, BabyBowserBroadsideShip *ship) {
+    f32 side;
+    f32 edge;
+    s16 i;
+    s16 next;
+
+    if (!(boat->unk_00 & 2) && ship->pos.y > boat->unk_C4) {
+        return 0;
+    }
+    side = func_8010F004_baby_bowser_broadside(ship, &boat->transformed[0], &boat->transformed[1]);
+    if (side == 0.0f) {
+        return 0;
+    }
+    if (side > 0.0f) {
+        for (i = 1; i < boat->vertexCount; i++) {
+            next = i + 1;
+            next = next != boat->vertexCount ? next : 0;
+            edge = func_8010F004_baby_bowser_broadside(ship, &boat->transformed[i], &boat->transformed[next]);
+            if (edge == 0.0f) {
+                return 1;
+            }
+            if (edge < 0.0f) {
+                return 0;
+            }
+        }
+    } else {
+        for (i = 1; i < boat->vertexCount; i++) {
+            next = i + 1;
+            next = next != boat->vertexCount ? next : 0;
+            edge = func_8010F004_baby_bowser_broadside(ship, &boat->transformed[i], &boat->transformed[next]);
+            if (edge == 0.0f) {
+                return 1;
+            }
+            if (edge > 0.0f) {
+                return 0;
+            }
+        }
+    }
+    return 1;
+}
 
 f32 func_8010F004_baby_bowser_broadside(BabyBowserBroadsideShip *arg0, Vec *arg1, Vec *arg2) {
     Vec shipPos;

@@ -1,5 +1,7 @@
 #include "common.h"
 
+extern f32 D_8010AF8C_treadmill_grill[4];
+extern f32 D_8010AF9C_treadmill_grill[4];
 extern f32 D_8010B1B4_treadmill_grill[4];
 extern f32 D_8010B1C4_treadmill_grill[4];
 
@@ -79,4 +81,24 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_8010
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_8010ACBC_treadmill_grill);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_8010AE6C_treadmill_grill);
+void func_8010AE6C_treadmill_grill(omObjData *arg0) {
+    HmfData *hmf;
+    HmfVertexGroup *group;
+    Vtx *vtx;
+    s32 i;
+    s32 j;
+    s32 k;
+    f32 scale;
+
+    for (i = 0; i < 4; i++) {
+        hmf = HmfModelData[arg0->model[i]].hmf;
+        scale = D_8010AF8C_treadmill_grill[i] / D_8010AF9C_treadmill_grill[i];
+        for (j = 0; j < hmf->unk1A; j++) {
+            group = &hmf->unkB0[j];
+            for (k = 0; k < group->count; k++) {
+                vtx = &hmf->unk40[group->indices[k]];
+                vtx->v.tc[0] = (s16)(vtx->v.tc[0] * scale);
+            }
+        }
+    }
+}

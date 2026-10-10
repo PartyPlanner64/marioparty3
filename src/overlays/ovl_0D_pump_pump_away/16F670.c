@@ -125,6 +125,21 @@ typedef struct PumpPumpAwayFade {
     /* 0x14 */ s32 timer;
 } PumpPumpAwayFade; // sizeof 0x18
 
+typedef struct UnkPumpPumpAwayRecord {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ s32 unk_0C;
+    /* 0x10 */ s32 unk_10;
+    /* 0x14 */ s32 unk_14;
+    /* 0x18 */ s32 unk_18;
+    /* 0x1C */ u16 record;
+    /* 0x1E */ s16 unk_1E;
+    /* 0x20 */ s32 unk_20;
+    /* 0x24 */ s32 unk_24;
+} UnkPumpPumpAwayRecord; // sizeof 0x28
+
+extern s32 D_800A178C_main[][6];
 extern s32 D_80111118_pump_pump_away;
 extern s16 D_801116EA_pump_pump_away;
 extern s16 D_801116EC_pump_pump_away;
@@ -161,6 +176,7 @@ extern HuSprite_Unk84_Struct *D_8011353C_pump_pump_away;
 extern s32 D_80113540_pump_pump_away;
 extern s32 D_80113544_pump_pump_away;
 extern UnkPumpPumpAway D_80113570_pump_pump_away[2];
+extern UnkPumpPumpAwayRecord D_801135B0_pump_pump_away;
 extern u16 D_801135CC_pump_pump_away;
 extern s32 D_801135D8_pump_pump_away;
 extern u16 D_801135DC_pump_pump_away;
@@ -168,6 +184,7 @@ extern s32 D_801135E0_pump_pump_away;
 extern UnkPumpPumpAwayHose D_801135E8_pump_pump_away[4];
 extern s32 fontcolor;
 
+omObjData *func_80045EF4_main(u32 arg0, s16 arg1);
 void func_8010654C_pump_pump_away(omObjData *obj);
 void func_80106724_pump_pump_away(omObjData *obj);
 void func_8010682C_pump_pump_away(omObjData *obj);
@@ -183,6 +200,7 @@ void func_80109280_pump_pump_away(omObjData *obj);
 void func_80109A50_pump_pump_away(omObjData *obj);
 void func_80109D74_pump_pump_away(omObjData *obj);
 void func_8010B370_pump_pump_away(omObjData *obj);
+void func_8010C6E4_pump_pump_away(omObjData *obj);
 void func_8010D1B8_pump_pump_away(omObjData *obj);
 void func_8010D48C_pump_pump_away(omObjData *obj);
 void func_8010D620_pump_pump_away(omObjData *obj);
@@ -553,7 +571,14 @@ void func_8010A390_pump_pump_away(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010A3F0_pump_pump_away);
+void func_8010A3F0_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[obj->work[0]];
+
+    if (player->unk_18 - player->unk_1C > 300.0f) {
+        func_80109B80_pump_pump_away(obj);
+        player->unk_1C = player->unk_18;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010A468_pump_pump_away);
 
@@ -621,13 +646,56 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010C
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010C1C8_pump_pump_away);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010C3E0_pump_pump_away);
+void func_8010C3E0_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwayJet *jet = &D_80113438_pump_pump_away[obj->work[0]];
+    s32 modelFile = D_800A178C_main[GwPlayer[obj->work[0]].chr][0];
+
+    if (jet->unk_08 == 0) {
+        func_8001C5B4_main(obj->model[0], obj->motion[5]);
+        func_8001C6A8_main(obj->model[0], 0.0f);
+        func_8001C814_main(obj->model[0], 1, 0);
+        func_8001C814_main(obj->model[0], 2, 0);
+        jet->unk_08 = 5;
+        if (obj->work[0] != 0) {
+            func_80045EF4_main(modelFile | 0x2F, 0x60);
+        } else {
+            func_80045EF4_main(modelFile | 0x2F, 0x20);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010C4D0_pump_pump_away);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010C6E4_pump_pump_away);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010CBF0_pump_pump_away);
+void func_8010CBF0_pump_pump_away(void) {
+    s32 i;
+    s32 playerIndex;
+    omObjData *obj;
+
+    for (i = 0; i < 4; i++) {
+        obj = omAddObj(0x12C, 9, 60, -1, func_8010C6E4_pump_pump_away);
+        switch (i) {
+            case 0:
+                playerIndex = 0;
+                break;
+            case 1:
+                playerIndex = 1;
+                break;
+            case 2:
+                playerIndex = 2;
+                break;
+            case 3:
+                playerIndex = 3;
+                break;
+            default:
+                playerIndex = 0;
+                break;
+        }
+        obj->work[0] = playerIndex;
+        obj->work[1] = GwPlayer[playerIndex].group;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010CCBC_pump_pump_away);
 
@@ -744,7 +812,19 @@ void func_8010FA64_pump_pump_away(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010FAA8_pump_pump_away);
+s32 func_8010FAA8_pump_pump_away(void) {
+    UnkPumpPumpAwayPlayer *player = D_80111978_pump_pump_away;
+    UnkPumpPumpAwayPlayer *other = &D_80111978_pump_pump_away[1];
+    UnkPumpPumpAwayRecord *record = &D_801135B0_pump_pump_away;
+    u32 distance;
+
+    if (player->unk_18 > other->unk_18) {
+        distance = (u16)(player->unk_18 * 0.01);
+    } else {
+        distance = (u16)(other->unk_18 * 0.01);
+    }
+    return distance > record->record;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010FB70_pump_pump_away);
 

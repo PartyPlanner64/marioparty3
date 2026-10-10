@@ -551,6 +551,8 @@ segments:
       - { start: 0xA96F0, type: bss, vram: 0x800BDA50, name: main_after_vibrator }
       - { start: 0xA96F0, type: .bss, vram: 0x800BDA90, name: lib/hvq }
       - { start: 0xA96F0, type: bss, vram: 0x800C1560, name: main_after_hvq }
+      - { start: 0xA96F0, type: .bss, vram: 0x800C3950, name: 2.0L/io/sptask }
+      - { start: 0xA96F0, type: bss, vram: 0x800C3990, name: main_after_sptask }
       - { start: 0xA96F0, type: .bss, vram: 0x800C94E0, name: libm/tables }
       - { start: 0xA96F0, type: .bss, vram: 0x800C94F0, name: libm/sind }
       - { start: 0xA96F0, type: .bss, vram: 0x800C9500, name: libm/sindf }

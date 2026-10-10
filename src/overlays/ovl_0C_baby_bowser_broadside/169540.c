@@ -298,7 +298,6 @@ s16 func_8010A9D4_baby_bowser_broadside(s16 source, f32 scale, s16 type, s32 arg
     return i;
 }
 
-
 s16 func_8010AADC_baby_bowser_broadside(s16 type) {
     BabyBowserBroadsideModel *work = D_8011001C_baby_bowser_broadside;
     HmfModel *model;
@@ -584,7 +583,7 @@ s16 func_8010B54C_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, f32 alpha
     for (i = 0; i < count; i++) {
         gSPSegment(gfx++, 2, osVirtualToPhysical((u8 *)sprite->unk08 + stride * i));
         gDPLoadTextureBlock(gfx++, 0x02000000, G_IM_FMT_CI, G_IM_SIZ_8b, sprite->unk00->unk04, sprite->unk00->unk06 / count, 0,
-                             G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+                            G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
         gDPPipeSync(gfx++);
         gSPSegment(gfx++, 1, osVirtualToPhysical(&data->unk44[0][i * 4]));
         gSPVertex(gfx++, 0x01000000, 4, 0);
@@ -637,8 +636,8 @@ s16 func_8010BCBC_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, f32 alpha
     gDPPipeSync(gfx++);
     gDPSetRenderMode(gfx++, G_RM_ZB_XLU_SURF, G_RM_NOOP2);
     if (sprite->unk1A >= 2) {
-    gDPSetCombineLERP(gfx++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
-    gDPSetPrimColor(gfx++, 0, 0, 255, 255, 255, (u32)(alpha * 255.0f));
+        gDPSetCombineLERP(gfx++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
+        gDPSetPrimColor(gfx++, 0, 0, 255, 255, 255, (u32)(alpha * 255.0f));
     } else {
         if (sprite->unk18 & 0x8000) {
             gDPSetCombineLERP(gfx++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0);
@@ -667,15 +666,15 @@ s16 func_8010BCBC_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, f32 alpha
     switch (sprite->unk18 & 0xFFF) {
         case 4:
             gDPLoadTextureBlock_4b(gfx++, 0x02000000, format, sprite->unk00->unk04, sprite->unk00->unk06, 0,
-                                 G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+                                   G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
             break;
         case 8:
             gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_8b, sprite->unk00->unk04, sprite->unk00->unk06, 0,
-                               G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+                                G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
             break;
         case 16:
             gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_16b, sprite->unk00->unk04, sprite->unk00->unk06, 0,
-                               G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+                                G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
             break;
     }
     gDPPipeSync(gfx++);
@@ -700,7 +699,6 @@ s16 func_8010BCBC_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, f32 alpha
     data->unk3C->unk00[0] = data->unk3C->unk00[D_800D2008_main + 1];
     return model;
 }
-
 
 s16 func_8010C8D4_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, u8 *color) {
     u8 *buffer;
@@ -774,15 +772,15 @@ s16 func_8010C8D4_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, u8 *color
     switch (sprite->unk18 & 0xFFF) {
         case 4:
             gDPLoadTextureBlock_4b(gfx++, 0x02000000, format, sprite->unk00->unk04, sprite->unk00->unk06, 0,
-                                 G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+                                   G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
             break;
         case 8:
             gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_8b, sprite->unk00->unk04, sprite->unk00->unk06, 0,
-                               G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+                                G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
             break;
         case 16:
             gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_16b, sprite->unk00->unk04, sprite->unk00->unk06, 0,
-                               G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+                                G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
             break;
     }
     gDPPipeSync(gfx++);
@@ -812,10 +810,8 @@ s16 func_8010C8D4_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, u8 *color
     return model;
 }
 
-
-
 void func_8010D4C0_baby_bowser_broadside(u16 model, HuSprite_Unk84_Struct *sprite, u16 frame) {
-    HmfModel *modelData = HmfModelData + (u16)model;
+    HmfModel *modelData = HmfModelData + model;
     HmfData *data = modelData->hmf;
     Gfx *gfx = data->unk3C->unk00[D_800D2008_main + 1];
 
@@ -1007,7 +1003,19 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", fun
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010E9FC_baby_bowser_broadside);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010ED1C_baby_bowser_broadside);
+f32 func_8010ED1C_baby_bowser_broadside(BabyBowserBroadsideBoat *boat, Vec *point) {
+    f32 x = point->x;
+    f32 y = point->y;
+    f32 z = point->z;
+    Vec normal;
+    f32 length;
+
+    normal.x = boat->plane.normal.x;
+    normal.y = boat->plane.normal.y;
+    normal.z = boat->plane.normal.z;
+    length = HuSqrtf(normal.x * normal.x + normal.y * normal.y + normal.z * normal.z);
+    return (x * normal.x + y * normal.y + z * normal.z - boat->plane.constant) / length;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010EDC0_baby_bowser_broadside);
 
@@ -1050,7 +1058,23 @@ f32 func_8010F0D8_baby_bowser_broadside(f32 arg0, f32 arg1, f32 arg2, f32 arg3) 
     return d * d * arg1 + (d + d) * arg0 * arg2 + arg0 * arg0 * arg3;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010F144_baby_bowser_broadside);
+void func_8010F144_baby_bowser_broadside(u16 *order, s16 count) {
+    s16 i;
+    s16 index;
+    s32 random;
+    u16 temp;
+
+    for (i = 0; i < count; i++) {
+        order[i] = i;
+    }
+    for (i = count - 1; i >= 0; i--) {
+        random = rand16();
+        index = random % (i + 1);
+        temp = order[i];
+        order[i] = order[index];
+        order[index] = temp;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010F250_baby_bowser_broadside);
 
@@ -1094,10 +1118,48 @@ void func_8010F9C0_baby_bowser_broadside(f32 *matrix, f32 angle) {
     matrix[10] = cosdf(angle);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010FA28_baby_bowser_broadside);
+void func_8010FA28_baby_bowser_broadside(f32 *left, f32 *right, f32 *output) {
+    s16 i, j;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010FADC_baby_bowser_broadside);
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 4; j++) {
+            output[i * 4 + j] = left[i * 4] * right[j] + left[i * 4 + 1] * right[4 + j] +
+                                left[i * 4 + 2] * right[8 + j] + left[i * 4 + 3] * right[12 + j];
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010FB74_baby_bowser_broadside);
+void func_8010FADC_baby_bowser_broadside(f32 *matrix, f32 *output) {
+    *output++ = matrix[12] * matrix[0] + matrix[13] * matrix[4] + matrix[14] * matrix[8];
+    *output++ = matrix[12] * matrix[1] + matrix[13] * matrix[5] + matrix[14] * matrix[9];
+    *output = matrix[12] * matrix[2] + matrix[13] * matrix[6] + matrix[14] * matrix[10];
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010FC2C_baby_bowser_broadside);
+void func_8010FB74_baby_bowser_broadside(f32 x, f32 y, f32 z, f32 rx, f32 ry, f32 rz, f32 *matrix) {
+    f32 translation[16];
+    f32 rotationX[16];
+    f32 rotationY[16];
+    f32 rotation[16];
+
+    func_8010F900_baby_bowser_broadside(translation, x, y, z);
+    func_8010F958_baby_bowser_broadside(rotationX, rx);
+    func_8010F9C0_baby_bowser_broadside(rotationY, ry);
+    func_8010FA28_baby_bowser_broadside(rotationX, rotationY, rotation);
+    func_8010FA28_baby_bowser_broadside(rotation, translation, matrix);
+}
+
+void func_8010FC2C_baby_bowser_broadside(Vec *vertices, s16 count, f32 *matrix, Vec *output) {
+    s16 i;
+
+    for (i = 0; i < count; i++) {
+        output[i].x = (matrix[12] + vertices[i].x) * matrix[0] +
+                      (matrix[13] + vertices[i].y) * matrix[4] +
+                      (matrix[14] + vertices[i].z) * matrix[8];
+        output[i].y = (matrix[12] + vertices[i].x) * matrix[1] +
+                      (matrix[13] + vertices[i].y) * matrix[5] +
+                      (matrix[14] + vertices[i].z) * matrix[9];
+        output[i].z = (matrix[12] + vertices[i].x) * matrix[2] +
+                      (matrix[13] + vertices[i].y) * matrix[6] +
+                      (matrix[14] + vertices[i].z) * matrix[10];
+    }
+}

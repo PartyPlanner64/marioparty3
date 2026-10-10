@@ -53,12 +53,12 @@ typedef struct BabyBowserBonkersActor { // 0x30 bytes, 0xE entries
     s16 unk_10;
     s16 unk_12;
     s32 unk_14;
-    s32 unk_18; // timer, zeroed here
+    f32 unk_18; // timer
     f32 unk_1C;
     f32 unk_20;
     f32 unk_24;
-    void *unk_28; // callback
-    void *unk_2C; // callback
+    void *unk_28;                                    // callback
+    void (*unk_2C)(struct BabyBowserBonkersActor *); // callback
 } BabyBowserBonkersActor;
 
 typedef union BabyBowserBonkersBytes { // packs the top byte of each work word
@@ -76,6 +76,7 @@ extern BabyBowserBonkersActor *D_8010BC60_baby_bowser_bonkers;
 
 BabyBowserBonkersPlayer *func_8010B3AC_baby_bowser_bonkers(omObjData *, f32, f32);
 void func_80109E98_baby_bowser_bonkers(s32, s16);
+void func_80108F9C_baby_bowser_bonkers(BabyBowserBonkersActor *);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_801059A0_baby_bowser_bonkers);
 
@@ -174,7 +175,26 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_80108D6C_baby_bowser_bonkers);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_80108E90_baby_bowser_bonkers);
+void func_80108E90_baby_bowser_bonkers(BabyBowserBonkersActor *actor) {
+    HmfModel *model = HmfModelData + actor->unk_02;
+    f32 scale;
+
+    actor->unk_06 = 4;
+    actor->unk_04 = 0;
+    actor->unk_18 = 110.0f;
+    scale = 1.0f - (f32)actor->unk_0A / 5.0f;
+    if (scale <= 0.0f) {
+        scale = 0.0f;
+    }
+    model->scale.x = 1.0f;
+    model->scale.z = 1.0f;
+    model->scale.y = 0.4f - scale * 0.35f;
+    model->unk44 = 0.0f;
+    if (15.0f <= (f32)actor->unk_0A) {
+        actor->unk_0A = 0;
+        actor->unk_2C = func_80108F9C_baby_bowser_bonkers;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_80108F9C_baby_bowser_bonkers);
 

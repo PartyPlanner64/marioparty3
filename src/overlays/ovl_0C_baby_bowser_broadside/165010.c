@@ -149,6 +149,7 @@ void func_80107FE0_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBows
 void func_801081A4_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler);
 void func_80109D2C_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler);
 void func_80107A80_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler);
+s32 func_80109058_baby_bowser_broadside(omObjData *object, unk_80109EBC *player);
 void func_80108860_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler);
 BabyBowserBroadsideGroup *func_80109F64_baby_bowser_broadside(omObjData *object, s8 group, s16 count, s16 handlers);
 s16 func_8010A0B4_baby_bowser_broadside(s8 group, s32 flags, s32 arg2, void (*callback)(), s32 arg4);
@@ -325,7 +326,134 @@ void func_80106288_baby_bowser_broadside(omObjData *object) {
     func_8010B3B4_baby_bowser_broadside();
 }
 
+#ifdef NON_MATCHING
+// The HUD loops still differ in the constant Y coordinate's sign extension.
+void func_801062C4_baby_bowser_broadside(omObjData *object) {
+    s32 flags = 0x99;
+    s32 attr = 0x1000;
+    Vec center = D_8010FEE8_baby_bowser_broadside;
+    Vec bowserCenter = D_8010FEE8_baby_bowser_broadside;
+    BabyBowserBroadsidePositions positions = D_8010FEF4_baby_bowser_broadside;
+    BabyBowserBroadsidePortraits portraits = D_8010FFB4_baby_bowser_broadside;
+    BabyBowserBroadsideSlot *slot;
+    BabyBowserBroadsideHandler *handler;
+    BabyBowserBroadsideEntry *entry;
+    s16 i, j;
+    s16 model;
+    s16 sprite;
+    s16 index;
+
+    object->work[1] = 2;
+    slot = func_80109F64_baby_bowser_broadside(object, (s8)object->work[1], 6, 4)->unk_00;
+    slot->unk_04[0] = func_8000B108_main(0x2D0002, flags);
+    slot->unk_04[1] = func_8000B108_main(0x2D0000, flags);
+    slot->unk_04[2] = func_8000B108_main(0x2D0001, flags);
+    slot->unk_04[3] = D_80110008_baby_bowser_broadside->unk_50 = func_8000B108_main(0x2D0008, flags);
+    slot->unk_04[4] = func_8000B108_main(0x2D0009, flags);
+    slot->unk_04[5] = func_8000B108_main(9, flags);
+    D_80110004_baby_bowser_broadside[D_80110000_baby_bowser_broadside[0].players[0]].unk_48 = model = func_8000B108_main(0x2D0004, flags);
+    D_80110004_baby_bowser_broadside[D_80110000_baby_bowser_broadside[0].players[1]].unk_48 = Hu3DModelLink(model);
+    D_80110004_baby_bowser_broadside[D_80110000_baby_bowser_broadside[1].players[0]].unk_48 = model = func_8000B108_main(0x2D0005, flags);
+    D_80110004_baby_bowser_broadside[D_80110000_baby_bowser_broadside[1].players[1]].unk_48 = Hu3DModelLink(model);
+    entry = D_80110004_baby_bowser_broadside[D_80110000_baby_bowser_broadside[0].players[0]].unk_54;
+    model = entry->unk_02 = func_8000B108_main(0x2D0006, flags);
+    for (i = 0; i < 2; i++) {
+        entry = D_80110004_baby_bowser_broadside[D_80110000_baby_bowser_broadside[0].players[i]].unk_54;
+        for (j = 0; j < 3; j++, entry++) {
+            if ((i == 0) & (j == 0)) {
+                // The first projectile already uses the original model.
+            } else {
+                entry->unk_02 = Hu3DModelLink(model);
+            }
+        }
+    }
+    entry = D_80110004_baby_bowser_broadside[D_80110000_baby_bowser_broadside[1].players[0]].unk_54;
+    model = entry->unk_02 = func_8000B108_main(0x2D0007, flags);
+    for (i = 0; i < 2; i++) {
+        entry = D_80110004_baby_bowser_broadside[D_80110000_baby_bowser_broadside[1].players[i]].unk_54;
+        for (j = 0; j < 3; j++, entry++) {
+            if ((i == 0) & (j == 0)) {
+                // The first projectile already uses the original model.
+            } else {
+                entry->unk_02 = Hu3DModelLink(model);
+            }
+        }
+    }
+    Hu3DModelScaleSet((s16)slot->unk_04[5], 2.0f, 2.0f, 2.0f);
+    Hu3DModelPosSet((s16)slot->unk_04[2], 0.0f, 350.0f, 0.0f);
+    Hu3DModelPosSet((s16)slot->unk_04[3], 0.0f, 455.00003f, 0.0f);
+    Hu3DModelPosSet((s16)slot->unk_04[4], 0.0f, 455.00003f, 0.0f);
+    Hu3DModelPosSet((s16)slot->unk_04[5], 0.0f, 450.0f, 0.0f);
+    HmfModelData[(s16)slot->unk_04[3]].unk44 = 0.0f;
+    for (i = 0; i < 4; i++) {
+        HmfModelData[D_80110004_baby_bowser_broadside[i].unk_48].unk44 = 0.0f;
+    }
+    flags |= 0x400;
+    for (i = 0; i < 4; i++) {
+        func_8010A8C4_baby_bowser_broadside(0x2D, 12, 2.0f, 0, 0, flags);
+    }
+    for (i = 0; i < 4; i++) {
+        func_8010A8C4_baby_bowser_broadside(0x2D, 13, 2.0f, 1, 0, flags);
+    }
+    for (i = 0; i < 4; i++) {
+        func_8010A8C4_baby_bowser_broadside(0x2D, 10, 1.0f, 2, 0, flags);
+    }
+    for (i = 0; i < 4; i++) {
+        func_8010A8C4_baby_bowser_broadside(0x2D, 11, 1.0f, 3, 0, flags);
+    }
+    for (i = 0; i < 8; i++) {
+        index = func_8010AE60_baby_bowser_broadside(0x2D, 15, 0, 11);
+        Hu3DModelScaleSet(D_80110010_baby_bowser_broadside[index].unk_0C, 2.0f, 2.0f, 1.0f);
+    }
+    sprite = func_8010A598_baby_bowser_broadside(255, 0x2D, 14, 0, attr);
+    func_80055458_main(D_80110018_baby_bowser_broadside[sprite].unk_01, 0, 190);
+    func_8010A738_baby_bowser_broadside(sprite, 70, 32);
+    sprite = func_8010A598_baby_bowser_broadside(255, 0x2D, 14, 0, attr);
+    func_80055458_main(D_80110018_baby_bowser_broadside[sprite].unk_01, 0, 190);
+    func_8010A738_baby_bowser_broadside(sprite, 250, 32);
+    {
+        s16 y = 32;
+
+        for (i = 0; i < 2; i++) {
+            for (j = 0; j < 2; j++) {
+                func_8010A738_baby_bowser_broadside(func_8010A598_baby_bowser_broadside(239, 33, portraits.files[GwPlayer[D_80110000_baby_bowser_broadside[i].players[j]].chr], 0, 0), i * 180 + (s16)(j * 18 + 40), y);
+            }
+        }
+    }
+    {
+        s16 y = 32;
+
+        for (i = 0; i < 2; i++) {
+            D_80110000_baby_bowser_broadside[i].unk_12 = model = func_8010A598_baby_bowser_broadside(239, 0, 45, 0, 0);
+            func_8010A738_baby_bowser_broadside(model, (s16)(i * 180 + 84), y);
+            D_80110000_baby_bowser_broadside[i].unk_14 = model = func_8010A598_baby_bowser_broadside(239, 0, 45, 0, 0);
+            func_8010A738_baby_bowser_broadside(model, (s16)(i * 180 + 100), y);
+        }
+    }
+    index = func_8010A0B4_baby_bowser_broadside((s8)object->work[1], 0xFFFF, 0, func_8010DAE8_baby_bowser_broadside, (s8)object->work[1]);
+    handler = &D_80110014_baby_bowser_broadside[object->work[1]].unk_04[index];
+    handler->unk_40(0, handler);
+    D_80110008_baby_bowser_broadside->unk_3C = func_8010DB38_baby_bowser_broadside(-1, &center, 1, 400.0f, 1000.0f, 0x490);
+    D_80110008_baby_bowser_broadside->unk_46 = func_8010DB38_baby_bowser_broadside((s16)slot->unk_04[4], &bowserCenter, 1, 10.0f, 150.0f, 0x40C);
+    for (i = 0; i < 4; i++) {
+        D_80110008_baby_bowser_broadside->unk_3E[i] = func_8010DB38_baby_bowser_broadside((s16)slot->unk_04[2], positions.points[i], 4, 0.0f, 0.0f, 0x13E);
+    }
+    for (i = 0; i < 4; i++) {
+        D_80110008_baby_bowser_broadside->unk_48[i] = func_8010DC88_baby_bowser_broadside(D_80110008_baby_bowser_broadside->unk_3E[i], 0x116);
+    }
+    D_80110008_baby_bowser_broadside->unk_60 = 0;
+    D_80110008_baby_bowser_broadside->unk_61 = (s32)rand16() % 4 + 1;
+    func_8010A0B4_baby_bowser_broadside((s8)object->work[1], 0, 0, func_80108210_baby_bowser_broadside, 0);
+    func_8010A0B4_baby_bowser_broadside((s8)object->work[1], 14, 0, func_80108350_baby_bowser_broadside, 0);
+    func_8010A0B4_baby_bowser_broadside((s8)object->work[1], 15, 0, func_80108614_baby_bowser_broadside, 0);
+    object->model[0] = slot->unk_04[0];
+    func_8010F250_baby_bowser_broadside(object);
+    object->func = func_80106E40_baby_bowser_broadside;
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/165010", func_801062C4_baby_bowser_broadside);
+#endif
 
 void func_80106E40_baby_bowser_broadside(omObjData *object) {
     func_8010A2C4_baby_bowser_broadside(2);
@@ -738,7 +866,137 @@ void func_80108804_baby_bowser_broadside(f32 angle) {
     D_80110008_baby_bowser_broadside->unk_28 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/165010", func_80108860_baby_bowser_broadside);
+void func_80108860_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler) {
+    unk_80109EBC *player = (unk_80109EBC *)handler->unk_3C;
+    omObjData *object = slot->unk_00;
+    HmfModel *model = &HmfModelData[D_80110008_baby_bowser_broadside->unk_50];
+    f32 angle, currentAngle, targetAngle;
+    f32 tolerance;
+    f32 x, z;
+    s32 random;
+
+    if ((s8)handler->unk_04 == 0) {
+        switch (GwPlayer[object->work[0]].cpu_difficulty) {
+            case 0:
+                handler->unk_0D = 3;
+                handler->unk_0E = 10;
+                handler->unk_0F = 4;
+                handler->unk_10 = 15;
+                handler->unk_11 = 5;
+                handler->unk_12 = 3;
+                handler->unk_13 = 3;
+                handler->unk_14 = 5;
+                break;
+            case 1:
+                handler->unk_0D = 5;
+                handler->unk_0E = 15;
+                handler->unk_0F = 6;
+                handler->unk_10 = 10;
+                handler->unk_11 = 3;
+                handler->unk_12 = 6;
+                handler->unk_13 = 6;
+                handler->unk_14 = 8;
+                break;
+            case 2:
+                handler->unk_0D = 10;
+                handler->unk_0E = 20;
+                handler->unk_0F = 8;
+                handler->unk_10 = 5;
+                handler->unk_11 = 1;
+                handler->unk_12 = 9;
+                handler->unk_13 = 9;
+                handler->unk_14 = 13;
+                break;
+            case 3:
+                handler->unk_0D = 15;
+                handler->unk_0E = 25;
+                handler->unk_0F = 10;
+                handler->unk_10 = 3;
+                handler->unk_11 = 0;
+                handler->unk_12 = 99;
+                handler->unk_13 = 99;
+                handler->unk_14 = 99;
+                break;
+        }
+        handler->unk_1C = 0;
+        handler->unk_1E = 30;
+        handler->unk_04 = 1;
+    }
+    D_800CBB6E_main[player->unk_00] = 0;
+    D_800D20A1_main[player->unk_00] = 0;
+    D_800CDA7C_main[player->unk_00] = 0;
+    player->unk_10 = 0;
+    x = model->pos.x - object->trans.x;
+    z = model->pos.z - object->trans.z;
+    angle = atan2df(-z, x) + 90.0f;
+    if (angle >= 360.0f) {
+        angle -= 360.0f;
+    }
+    currentAngle = player->unk_4C;
+    targetAngle = angle;
+    func_8010F6F8_baby_bowser_broadside(&currentAngle, &targetAngle);
+    switch (handler->unk_0C) {
+        case 0:
+            tolerance = (s32)rand16() % 4 + 2;
+            if ((currentAngle - targetAngle > 0.0f ? currentAngle - targetAngle : -(currentAngle - targetAngle)) < tolerance) {
+                if ((s16)func_80109058_baby_bowser_broadside(object, player) != 0) {
+                    random = (s32)rand16() % 6;
+                    handler->unk_1C = (s8)(u8)handler->unk_0F + random;
+                    handler->unk_0C = 1;
+                    handler->unk_2C = D_80110008_baby_bowser_broadside->unk_38 > 0.0f ? 2.0f : -2.0f;
+                    if ((s32)rand16() % (handler->unk_12 + 1) == 0) {
+                        handler->unk_2C = -handler->unk_2C;
+                    }
+                } else {
+                    handler->unk_1C = (s32)rand16() % (handler->unk_0E - handler->unk_0D + 1) + handler->unk_0D;
+                    handler->unk_0C = 2;
+                }
+            } else if ((s32)rand16() % (handler->unk_13 + 1) != 0) {
+                if (currentAngle - targetAngle > 0.0f) {
+                    player->unk_4C -= 2.0f;
+                } else if (currentAngle - targetAngle < 0.0f) {
+                    player->unk_4C += 2.0f;
+                }
+            }
+            break;
+        case 1:
+            if (--handler->unk_1C > 0) {
+                player->unk_4C -= handler->unk_2C;
+            } else {
+                handler->unk_0C = 0;
+            }
+            if ((s32)rand16() % (handler->unk_11 + 1) == 0) {
+                if ((s16)func_80109058_baby_bowser_broadside(object, player) == 0) {
+                    ((u16 *)D_800CDA7C_main)[player->unk_00] = 0x8000;
+                }
+            }
+            break;
+        case 2:
+            if (--handler->unk_1E < 0) {
+                handler->unk_1E = (s32)rand16() % (handler->unk_10 + 1);
+                if (currentAngle - targetAngle > 0.0f) {
+                    player->unk_4C -= 2.0f;
+                } else if (currentAngle - targetAngle < 0.0f) {
+                    player->unk_4C += 2.0f;
+                }
+            }
+            if ((s16)func_80109058_baby_bowser_broadside(object, player) == 0) {
+                if (--handler->unk_1C <= 0) {
+                    handler->unk_0C = 0;
+                } else if ((s32)rand16() % (handler->unk_11 + 1) == 0) {
+                    ((u16 *)D_800CDA7C_main)[player->unk_00] = 0x8000;
+                }
+            }
+            break;
+        case 3:
+            if (--handler->unk_1C < 0) {
+                player->unk_4C += handler->unk_2C;
+            } else {
+                handler->unk_0C = 0;
+            }
+            break;
+    }
+}
 
 s32 func_80109058_baby_bowser_broadside(omObjData *object, unk_80109EBC *player) {
     player->unk_5C->pos.x = object->trans.x;

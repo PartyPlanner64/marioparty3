@@ -15,12 +15,16 @@ typedef struct { // 0x84 bytes, four entries (one per player)
 } HideAndSneakPlayerWork;
 
 extern omObjData *D_8010C7A0_hide_and_sneak;
+extern omObjData *D_8010C824_hide_and_sneak;
 extern HideAndSneakPlayerWork D_8010CA34_hide_and_sneak[4];
 extern HideAndSneakWork D_8010CE54_hide_and_sneak;
 extern s8 D_8010E182_hide_and_sneak[4];
+extern u8 D_8010E186_hide_and_sneak;
 extern s8 D_8010E188_hide_and_sneak[4][4];
+extern u8 D_8010E1A8_hide_and_sneak;
 
 void func_80106738_hide_and_sneak(omObjData *);
+void func_80107638_hide_and_sneak(omObjData *);
 void func_8010AFA0_hide_and_sneak(omObjData *);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_06_hide_and_sneak/137C00", func_801059A0_hide_and_sneak);
@@ -92,7 +96,39 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_06_hide_and_sneak/137C00", func_80106
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_06_hide_and_sneak/137C00", func_80107638_hide_and_sneak);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_06_hide_and_sneak/137C00", func_801078E4_hide_and_sneak);
+void func_801078E4_hide_and_sneak(void) {
+    omObjData *obj;
+    s16 i;
+    u16 playerIndex;
+
+    for (i = 0; i < 4; i++) {
+        if (GwPlayer[i].group == 0) {
+            break;
+        }
+    }
+    switch (i) {
+        case 0:
+            playerIndex = 0;
+            break;
+        case 1:
+            playerIndex = 1;
+            break;
+        case 2:
+            playerIndex = 2;
+            break;
+        case 3:
+            playerIndex = 3;
+            break;
+        default:
+            playerIndex = 0;
+            break;
+    }
+    obj = omAddObj(0x2BC, 3, 0xA, -1, func_80107638_hide_and_sneak);
+    obj->work[0] = playerIndex;
+    D_8010C824_hide_and_sneak = obj;
+    D_8010E1A8_hide_and_sneak = obj->work[0];
+    D_8010E186_hide_and_sneak = GwPlayer[obj->work[0]].chr;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_06_hide_and_sneak/137C00", func_801079E8_hide_and_sneak);
 

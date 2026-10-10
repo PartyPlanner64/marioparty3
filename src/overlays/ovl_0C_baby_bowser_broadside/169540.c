@@ -17,6 +17,8 @@ extern BabyBowserBroadsideColor D_8010FFE0_baby_bowser_broadside;
 extern const f64 D_8010FFE8_baby_bowser_broadside;
 extern const f64 D_8010FFF0_baby_bowser_broadside;
 
+f32 atan2df(f32 y, f32 x);
+
 s16 func_8010B54C_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, f32 scale);
 s16 func_8010C8D4_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, u8 *color);
 
@@ -977,7 +979,22 @@ s16 func_8010DC88_baby_bowser_broadside(s16 index, s32 flags) {
     return i;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010DDDC_baby_bowser_broadside);
+void func_8010DDDC_baby_bowser_broadside(s16 index, Vec *vertices, f32 arg2) {
+    BabyBowserBroadsideBoat *boat;
+    Vec *destination;
+
+    if (index >= 12) {
+        return;
+    }
+    if (D_80110020_baby_bowser_broadside[index].unk_04 == 0) {
+        return;
+    }
+    boat = &D_80110020_baby_bowser_broadside[index];
+    destination = boat->vertices;
+    memcpy(destination, vertices, boat->vertexCount * sizeof(Vec));
+    boat->unk_C4 = arg2;
+    func_8010F3C4_baby_bowser_broadside(destination, &boat->plane);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010DE70_baby_bowser_broadside);
 
@@ -1076,13 +1093,125 @@ void func_8010F144_baby_bowser_broadside(u16 *order, s16 count) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010F250_baby_bowser_broadside);
+void func_8010F250_baby_bowser_broadside(omObjData *object) {
+    HmfModel *model = &HmfModelData[object->model[0]];
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010F3C4_baby_bowser_broadside);
+    object->scale.x = model->scale.x;
+    object->scale.y = model->scale.y;
+    object->scale.z = model->scale.z;
+    object->trans.x = model->pos.x;
+    object->trans.y = model->pos.y;
+    object->trans.z = model->pos.z;
+    if (model->rot.x >= 360.0f) {
+        model->rot.x -= 360.0f;
+    }
+    if (model->rot.x < 0.0f) {
+        model->rot.x += 360.0f;
+    }
+    if (model->rot.y >= 360.0f) {
+        model->rot.y -= 360.0f;
+    }
+    if (model->rot.y < 0.0f) {
+        model->rot.y += 360.0f;
+    }
+    if (model->rot.z >= 360.0f) {
+        model->rot.z -= 360.0f;
+    }
+    if (model->rot.z < 0.0f) {
+        model->rot.z += 360.0f;
+    }
+    object->rot.x = model->rot.x;
+    object->rot.y = model->rot.y;
+    object->rot.z = model->rot.z;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010F5C8_baby_bowser_broadside);
+void func_8010F3C4_baby_bowser_broadside(Vec *vertices, BabyBowserBroadsidePlane *plane) {
+    f32 firstX, firstY, firstZ, secondX, secondY, secondZ;
+    f32 normal[3];
+    f32 length;
+    f32 magnitude;
+    s16 axis, i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010F6F8_baby_bowser_broadside);
+    firstX = vertices[1].x - vertices[0].x;
+    firstY = vertices[1].y - vertices[0].y;
+    firstZ = vertices[1].z - vertices[0].z;
+    secondX = vertices[2].x - vertices[0].x;
+    secondY = vertices[2].y - vertices[0].y;
+    secondZ = vertices[2].z - vertices[0].z;
+    normal[0] = firstY * secondZ - firstZ * secondY;
+    normal[1] = firstZ * secondX - firstX * secondZ;
+    normal[2] = firstX * secondY - firstY * secondX;
+    length = HuSqrtf(normal[0] * normal[0] + normal[1] * normal[1] + normal[2] * normal[2]);
+    if (length != 0.0f) {
+        normal[0] /= length;
+        normal[1] /= length;
+        normal[2] /= length;
+    }
+    plane->constant = normal[0] * vertices[0].x + normal[1] * vertices[0].y + normal[2] * vertices[0].z;
+    axis = 0;
+    for (i = 1; i < 3; i++) {
+        magnitude = normal[axis] > 0.0f ? normal[axis] : -normal[axis];
+        if (normal[i] > 0.0f ? magnitude < normal[i] : magnitude < -normal[i]) {
+            axis = i;
+        }
+    }
+    plane->normal.x = normal[0];
+    plane->normal.y = normal[1];
+    plane->normal.z = normal[2];
+    plane->axis = axis;
+}
+
+void func_8010F5C8_baby_bowser_broadside(Vec from, Vec to, f32 *angles) {
+    Vec difference;
+    f32 angle;
+    f32 fullRotation = 360.0f;
+
+    difference.x = to.x - from.x;
+    difference.y = to.y - from.y;
+    difference.z = to.z - from.z;
+    angle = atan2df(difference.y, sqrtf(difference.x * difference.x + difference.z * difference.z));
+    if (angle < 0.0f) {
+        angle += fullRotation;
+    } else if (angle >= fullRotation) {
+        angle -= fullRotation;
+    }
+    *angles++ = angle;
+    angle = atan2df(difference.x, difference.z);
+    if (angle < 0.0f) {
+        angle += fullRotation;
+    } else if (angle >= fullRotation) {
+        angle -= fullRotation;
+    }
+    *angles = angle;
+}
+
+void func_8010F6F8_baby_bowser_broadside(f32 *angle, f32 *target) {
+    f32 difference;
+
+    while (*target < 0.0f) {
+        *target += 360.0f;
+    }
+    while (*target >= 360.0f) {
+        *target -= 360.0f;
+    }
+    while (*angle < 0.0f) {
+        *angle += 360.0f;
+    }
+    while (*angle >= 360.0f) {
+        *angle -= 360.0f;
+    }
+    difference = *target - *angle;
+    if (!(difference > 0.0f)) {
+        difference = -difference;
+    }
+    if (difference > 180.0f) {
+        if (*angle < *target) {
+            *target -= 360.0f;
+        } else {
+            *angle -= 360.0f;
+        }
+    }
+}
 
 void func_8010F878_baby_bowser_broadside(f32 *arg0) {
     s16 i, j;

@@ -540,7 +540,25 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_8011
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_801119D4_stardust_battle);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80111B28_stardust_battle);
+f32 func_80111B28_stardust_battle(f32 arg0, f32 arg1) {
+    if (arg0 >= 360.0f) {
+        arg0 -= 360.0f;
+    } else if (arg0 < 0.0f) {
+        arg0 += 360.0f;
+    }
+    if (arg1 >= 360.0f) {
+        arg1 -= 360.0f;
+    } else if (arg1 < 0.0f) {
+        arg1 += 360.0f;
+    }
+    arg0 = arg0 - arg1;
+    if (arg0 <= -180.0f) {
+        arg0 += 360.0f;
+    } else if (arg0 >= 180.0f) {
+        arg0 -= 360.0f;
+    }
+    return arg0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80111C2C_stardust_battle);
 

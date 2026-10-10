@@ -1,8 +1,10 @@
 #include "common.h"
 
 extern omObjData *D_8010EE90_river_raiders;
+extern omObjData *D_8010DE94_river_raiders;
 
 void func_80106300_river_raiders(omObjData *);
+void func_80108188_river_raiders(omObjData *);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_09_river_raiders/1542E0", func_801059A0_river_raiders);
 
@@ -74,7 +76,34 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_09_river_raiders/1542E0", func_80107B
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_09_river_raiders/1542E0", func_80108188_river_raiders);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_09_river_raiders/1542E0", func_80108574_river_raiders);
+void func_80108574_river_raiders(void) {
+    omObjData *obj;
+    s16 i;
+    u16 playerIndex = 0;
+
+    for (i = 0; i < 4; i++) {
+        if (GwPlayer[i].group != 0) {
+            continue;
+        }
+        switch (i) {
+            case 0:
+                playerIndex = 0;
+                break;
+            case 1:
+                playerIndex = 1;
+                break;
+            case 2:
+                playerIndex = 2;
+                break;
+            case 3:
+                playerIndex = 3;
+                break;
+        }
+        obj = omAddObj(0x2BC, 9, 0x3C, -1, func_80108188_river_raiders);
+        obj->work[0] = playerIndex;
+        D_8010DE94_river_raiders = obj;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_09_river_raiders/1542E0", func_80108678_river_raiders);
 

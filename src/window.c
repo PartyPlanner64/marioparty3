@@ -216,7 +216,22 @@ INCLUDE_ASM("asm/nonmatchings/window", func_8005BB18_main);
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005BBC0_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005BCA4_main);
+void func_8005BCA4_main(s16 arg0, s16 arg1, s16 arg2) {
+    TextWindow *window = &D_800CC69C_main[arg0];
+    HuSprite *spr;
+    s16 i;
+
+    window->unk48 = arg1;
+    window->unk4A = arg2;
+    spr = HuSprGet(window->unk_6C, 0);
+    spr->unk_84->unk00->unk08 = arg1;
+    spr->unk_84->unk00->unk0A = arg2;
+    spr = HuSprGet(window->unk_6C, 1);
+    for (i = 0; i < spr->unk_84->unk12; i++) {
+        spr->unk_84->unk00[i].unk08 = arg1;
+        spr->unk_84->unk00[i].unk0A = arg2;
+    }
+}
 
 void func_8005BDA8_main(s16 winId, f32 arg1) {
     TextWindow *window;

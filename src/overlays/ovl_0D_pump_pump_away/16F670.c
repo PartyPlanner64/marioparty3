@@ -212,6 +212,7 @@ void func_8010DD24_pump_pump_away(omObjData *obj);
 void func_8010E45C_pump_pump_away(omObjData *obj);
 void func_8010E98C_pump_pump_away(omObjData *obj);
 void func_8010F688_pump_pump_away(omObjData *obj);
+void func_8010F900_pump_pump_away(omObjData *obj);
 void func_8010FC64_pump_pump_away(omObjData *obj);
 void func_8010FD94_pump_pump_away(omObjData *obj);
 void func_8010FE6C_pump_pump_away(omObjData *obj);
@@ -331,7 +332,37 @@ void func_80105D1C_pump_pump_away(s32 playerIndex) {
     D_800D20A1_main[GwPlayer[playerIndex].pad] = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80105D94_pump_pump_away);
+f32 func_80105D94_pump_pump_away(f32 value) {
+    s32 range;
+    s32 i;
+    f32 fraction;
+
+    if (value > 1.0f) {
+        range = 1;
+        value = 1.0f / value;
+    } else if (value < -1.0f) {
+        range = -1;
+        value = 1.0f / value;
+    } else {
+        range = 0;
+    }
+
+    fraction = 0.0f;
+    for (i = 6; i > 0; i--) {
+        fraction = (i * i * value * value) / (2 * i + 1 + fraction);
+    }
+
+    if (fraction != -1.0f) {
+        if (range > 0) {
+            return 1.5707963267948966 - value / (fraction + 1.0f);
+        } else if (range < 0) {
+            return -1.5707963267948966 - value / (fraction + 1.0f);
+        } else {
+            return value / (fraction + 1.0f);
+        }
+    }
+    return 0.0f;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80105EE4_pump_pump_away);
 
@@ -998,7 +1029,7 @@ s32 func_8010FAA8_pump_pump_away(void) {
     return distance > record->record;
 }
 
-void func_8010FB70_pump_pump_away(void) {
+void func_8010FB70_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[0];
     UnkPumpPumpAwayPlayer *other = &D_80111978_pump_pump_away[1];
     s32 winningTeam;
@@ -1028,7 +1059,23 @@ void func_8010FB70_pump_pump_away(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010FC64_pump_pump_away);
+void func_8010FC64_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwayPlayer *player = D_80111978_pump_pump_away;
+    UnkPumpPumpAwayPlayer *other = &player[1];
+
+    if (D_801116FC_pump_pump_away > 0) {
+        D_801116FC_pump_pump_away--;
+    } else {
+        if (player->unk_18 == other->unk_18) {
+            GMesCreate(GMES_MES_MG_DRAW);
+            HuAudSeqPlay(0x6C);
+            D_801116FC_pump_pump_away = 144;
+        } else {
+            func_8010FB70_pump_pump_away(obj);
+        }
+        obj->func = func_8010FA64_pump_pump_away;
+    }
+}
 
 void func_8010FCF8_pump_pump_away(omObjData *obj) {
     if (D_801116FC_pump_pump_away > 0) {
@@ -1474,7 +1521,13 @@ void func_80110A78_pump_pump_away(void) {
     func_801078B4_pump_pump_away();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80110B34_pump_pump_away);
+void func_80110B34_pump_pump_away(omObjData *obj) {
+    func_80110A78_pump_pump_away();
+    WipeCreateIn(0xFF, 0x10);
+    obj->func = func_80110574_pump_pump_away;
+    omAddObj(0x32, 0, 0, -1, func_8010F900_pump_pump_away);
+    omAddObj(0x320, 0, 0, -1, func_80110458_pump_pump_away);
+}
 
 void func_80110BB0_pump_pump_away(void) {
 }

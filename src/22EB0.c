@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game/hmflight.h"
+#include "game/hmfman.h"
 #include "game/camera.h"
 #include "mallocblock.h"
 #include "gcc/string.h"
@@ -8,14 +9,6 @@
                                 GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA) | \
                                 GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA))
 
-#define HMF_TEXTURE_MASK(size) ((size) <= 2 ? 1 : (size) <= 4 ? 2 \
-                                              : (size) <= 8   ? 3 \
-                                              : (size) <= 16  ? 4 \
-                                              : (size) <= 32  ? 5 \
-                                              : (size) <= 64  ? 6 \
-                                              : (size) <= 128 ? 7 \
-                                              : (size) <= 256 ? 8 \
-                                                              : 9)
 #define HMF_TEXTURE_SIZE texture->unk1D
 #define HMF_TEXTURE_SIZE_LOAD_BLOCK D_800CCF88_main
 #define HMF_TEXTURE_SIZE_INCR D_800CD2FC_main

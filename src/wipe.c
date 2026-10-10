@@ -425,7 +425,58 @@ u8 *func_800635F4_main(s32 file) {
     return data;
 }
 
-INCLUDE_ASM("asm/nonmatchings/wipe", func_800636D8_main);
+void func_800636D8_main(Gfx **gfx, f32 scale, f32 alpha) {
+    s16 left;
+    s16 top;
+    s16 right;
+    s16 bottom;
+    f32 radius;
+
+    if (scale == 0.0f) {
+        func_8006231C_main(gfx, 255, D_800A2728_main);
+        return;
+    }
+    gSPDisplayList((*gfx)++, D_800A26D8_main);
+    gDPSetAlphaCompare((*gfx)++, G_AC_THRESHOLD);
+    gDPSetBlendColor((*gfx)++, 0, 0, 0, 1);
+    gDPSetScissor((*gfx)++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
+    gDPSetTextureFilter((*gfx)++, G_TF_BILERP);
+    gDPSetRenderMode((*gfx)++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
+    gDPSetCombineLERP((*gfx)++, 0, 0, 0, PRIMITIVE, PRIMITIVE, 0, TEXEL0, 0,
+                      0, 0, 0, PRIMITIVE, PRIMITIVE, 0, TEXEL0, 0);
+    gDPLoadTextureBlock((*gfx)++, D_800D1F5C_main.pixels, G_IM_FMT_I, G_IM_SIZ_8b,
+                        D_800D1F5C_main.width, D_800D1F5C_main.height,
+                        0, G_TX_CLAMP, G_TX_CLAMP, 0, 0, 0, 0);
+    gDPSetPrimColor((*gfx)++, 0, 0, D_800CDA74_main, D_800D0598_main, D_800D212E_main, alpha * 255.0f);
+    radius = scale * 160.0f;
+    left = 160.0f - radius;
+    top = 120.0f - radius;
+    right = radius + 160.0f;
+    bottom = radius + 120.0f;
+    scale = ((f32)right - (f32)left) / D_800D1F5C_main.width;
+    gSPScisTextureRectangle((*gfx)++, left * 4, top * 4, right * 4, bottom * 4,
+                            G_TX_RENDERTILE, 0, 0, (1.0f / scale) * 1024,
+                            (1.0f / scale) * 1024);
+    gDPSetRenderMode((*gfx)++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
+    gDPSetCombineMode((*gfx)++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
+    gDPSetPrimColor((*gfx)++, 0, 0, D_800CDA74_main, D_800D0598_main, D_800D212E_main, alpha * 255.0f);
+    if (top > 0) {
+        gDPScisFillRectangle((*gfx)++, 0, 0, 320, top);
+    } else {
+        top = 0;
+    }
+    if (bottom < 240) {
+        gDPScisFillRectangle((*gfx)++, 0, bottom, 320, 240);
+    } else {
+        bottom = 240;
+    }
+    if (left > 0) {
+        gDPScisFillRectangle((*gfx)++, 0, top, left, bottom);
+    }
+    if (right < 320) {
+        gDPScisFillRectangle((*gfx)++, right, top, 320, bottom);
+    }
+}
 
 s32 func_800640EC_main(Gfx **gfx) {
     if (D_800D0A3C_main == 0.0f) {
@@ -468,7 +519,60 @@ s32 func_8006515C_main(Gfx **gfx) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/wipe", func_800651F0_main);
+void func_800651F0_main(Gfx **gfx, f32 progress) {
+    s16 i;
+    s16 center;
+    s16 row;
+    f32 alpha;
+    f32 halfHeight;
+    f32 stripeHeight;
+    s32 textureTop;
+
+    if (progress == 0.0f) {
+        return;
+    }
+    gSPDisplayList((*gfx)++, D_800A26D8_main);
+    gDPSetAlphaCompare((*gfx)++, G_AC_THRESHOLD);
+    gDPSetBlendColor((*gfx)++, 0, 0, 0, 1);
+    alpha = (progress + 0.2f) * 255.0f;
+    if (alpha > 255.0f) {
+        alpha = 255.0f;
+    }
+    for (i = 0; i < 10; i++) {
+        stripeHeight = 24.0f;
+        halfHeight = progress * stripeHeight / 2.0f;
+        center = i * stripeHeight + 12.0f;
+        gDPPipeSync((*gfx)++);
+        if (alpha == 255.0f) {
+            gDPSetRenderMode((*gfx)++, G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2);
+        } else {
+            gDPSetRenderMode((*gfx)++, G_RM_CLD_SURF, G_RM_CLD_SURF2);
+        }
+        gDPSetCombineMode((*gfx)++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
+        gDPSetPrimColor((*gfx)++, 0, 0, 0, 0, 0, alpha);
+        gDPFillRectangle((*gfx)++, 0, center - halfHeight, 320, center + halfHeight);
+        if (D_800D1F5C_main.pixels != NULL) {
+            textureTop = (240 - D_800D1F5C_main.height) / 2;
+            if (textureTop > i * stripeHeight || i * stripeHeight >= D_800D1F5C_main.height + textureTop) {
+                continue;
+            }
+            row = i * stripeHeight - textureTop;
+            gDPPipeSync((*gfx)++);
+            gDPSetRenderMode((*gfx)++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
+            gDPSetCombineLERP((*gfx)++, 0, 0, 0, PRIMITIVE, PRIMITIVE, 0, TEXEL0, 0,
+                              0, 0, 0, PRIMITIVE, PRIMITIVE, 0, TEXEL0, 0);
+            gDPSetPrimColor((*gfx)++, 0, 0, 255, 255, 255, alpha);
+            gDPLoadTextureTile_4b((*gfx)++, &D_800D1F5C_main.pixels[(u32)(row * D_800D1F5C_main.width) / 2],
+                                  G_IM_FMT_I, D_800D1F5C_main.width, D_800D1F5C_main.height,
+                                  0, 0, D_800D1F5C_main.width, 24, 0, G_TX_CLAMP, G_TX_CLAMP,
+                                  HMF_TEXTURE_MASK(D_800D1F5C_main.width), HMF_TEXTURE_MASK(D_800D1F5C_main.height), 0, 0);
+            gSPScisTextureRectangle((*gfx)++, (160 - D_800D1F5C_main.width / 2) * 4,
+                                    (center - halfHeight) * 4.0f, (D_800D1F5C_main.width / 2 + 160) * 4,
+                                    (center + halfHeight) * 4.0f, G_TX_RENDERTILE, 0, 0,
+                                    1024, (1.0f / progress) * 1024.0f);
+        }
+    }
+}
 
 s32 func_80065C9C_main(Gfx **gfx, s32 file) {
     if (D_800D0A3C_main == 0.0f) {

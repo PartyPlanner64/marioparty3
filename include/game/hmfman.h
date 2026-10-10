@@ -9,6 +9,15 @@
 
 #define HU3D_MODEL_MAX 128
 
+#define HMF_TEXTURE_MASK(size) ((size) <= 2 ? 1 : (size) <= 4 ? 2 \
+                                              : (size) <= 8   ? 3 \
+                                              : (size) <= 16  ? 4 \
+                                              : (size) <= 32  ? 5 \
+                                              : (size) <= 64  ? 6 \
+                                              : (size) <= 128 ? 7 \
+                                              : (size) <= 256 ? 8 \
+                                                              : 9)
+
 typedef struct {
     Gfx *unk00[4];
     void *unk10;

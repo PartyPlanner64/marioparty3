@@ -1638,3 +1638,7 @@ D_80117394_opening = 0x80117394; //rom:0x5359C4 size:0x1 segment:opening
 D_801173B0_opening = 0x801173B0; //rom:0x5359E0 size:0x4 segment:opening
 D_801173B4_opening = 0x801173B4; //rom:0x5359E4 size:0x4 segment:opening
 D_801173B8_opening = 0x801173B8; //rom:0x5359E8 size:0x4 segment:opening
+
+sSchedulerEventStack = 0x800BBD20;
+sSchedulerAudioStack = 0x800BC2D0;
+sSchedulerGraphicsStack = 0x800BC880;

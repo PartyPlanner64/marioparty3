@@ -44,7 +44,7 @@ void func_8000EA10_main(void **arg1, s32 arg2, s32 arg3, u64 **arg4, s32 *arg5) 
     func_8000F088_main(arg5);
     func_8000F094_main(0);
 
-    swapChainTask.mesgQueue.mtqueue = (OSThread *)&gMesgQueue;
+    swapChainTask.completionQueue = &gMesgQueue;
     swapChainTask.task.t.type = 1;
     swapChainTask.task.t.flags = 2;
     swapChainTask.task.t.ucode_boot = (u64 *)rspbootTextStart;
@@ -147,7 +147,7 @@ void func_8000EBEC_main(void *arg0) {
                     Gfx *dl = gTaskDataPointers;
                     gSPSegment(dl++, frameBufferSegmentID, pAvailableFrameBuffer);
                     gSPBranchList(dl++, recvdMesg->unk00);
-                    pSwapChain->mesgQueue.fullqueue = (void *)recvdMesg->unk08;
+                    pSwapChain->completionMsg = (OSMesg)recvdMesg->unk08;
                     pTask->t.dram_stack = gThread3Stack;
                     pTask->t.output_buff = gThreadOutStack;
                     pTask->t.output_buff_size = gThreadOutStackSize;

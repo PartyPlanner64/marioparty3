@@ -11,6 +11,10 @@ typedef struct GameGuysMagicBoxesCamera { // 0x20 bytes
     f32 unk_1C;                           // Center z
 } GameGuysMagicBoxesCamera;
 
+typedef struct GameGuysMagicBoxesBonus { // 0x6 bytes
+    s16 amount[3];
+} GameGuysMagicBoxesBonus;
+
 typedef struct GameGuysMagicBoxesSprite { // 0x1C bytes
     /* 0x00 */ s16 unk_00;                // esprite slot, written by func_80109C98
     /* 0x02 */ s16 priority;              // lower 8 bits given to HuSprPriSet
@@ -26,6 +30,11 @@ typedef struct GameGuysMagicBoxesSprite { // 0x1C bytes
 
 extern u8 D_8010C1FA_game_guys_magic_boxes;
 extern u8 D_8010C1FB_game_guys_magic_boxes;
+extern u8 D_8010C750_game_guys_magic_boxes;
+extern u8 D_8010C9E2_game_guys_magic_boxes;
+extern u8 D_8010C9E7_game_guys_magic_boxes;
+extern u16 D_8010CA0A_game_guys_magic_boxes;
+extern GameGuysMagicBoxesBonus D_8010C5A0_game_guys_magic_boxes;
 extern Vec D_8010C9B0_game_guys_magic_boxes;
 extern Vec D_8010C9BC_game_guys_magic_boxes;
 extern u8 D_8010C9E8_game_guys_magic_boxes;
@@ -35,6 +44,7 @@ extern s16 D_8010CA0C_game_guys_magic_boxes;
 
 void func_8000BC48_main(u16, u16);
 void func_80109884_game_guys_magic_boxes(omObjData *object);
+void func_80109984_game_guys_magic_boxes(omObjData *object);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", func_801059A0_game_guys_magic_boxes);
 
@@ -154,7 +164,23 @@ void func_8010982C_game_guys_magic_boxes(omObjData *object) {
                     D_8010C9BC_game_guys_magic_boxes.y, D_8010C9BC_game_guys_magic_boxes.z);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", func_80109884_game_guys_magic_boxes);
+void func_80109884_game_guys_magic_boxes(omObjData *object) {
+    GameGuysMagicBoxesBonus bonus;
+    u8 *playerIdx;
+
+    bonus = D_8010C5A0_game_guys_magic_boxes;
+    playerIdx = &D_8010C750_game_guys_magic_boxes;
+    GwPlayer[*playerIdx].gameCoin = D_8010CA0A_game_guys_magic_boxes;
+    if (D_8010C9E2_game_guys_magic_boxes == 1) {
+        GwPlayer[*playerIdx].bonusCoin = bonus.amount[D_8010C9E7_game_guys_magic_boxes];
+    } else {
+        GwPlayer[D_8010C750_game_guys_magic_boxes].bonusCoin = 0;
+    }
+    WipeCreateOut(0, 20);
+    HuAudSeqFadeOut(30);
+    func_8004AB0C_main(30);
+    object->func = func_80109984_game_guys_magic_boxes;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", func_80109984_game_guys_magic_boxes);
 

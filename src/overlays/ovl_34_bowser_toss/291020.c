@@ -242,7 +242,25 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010D250
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010D43C_bowser_toss);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010D5DC_bowser_toss);
+f32 func_8010D5DC_bowser_toss(f32 arg0, f32 arg1) {
+    if (arg0 >= 360.0f) {
+        arg0 -= 360.0f;
+    } else if (arg0 < 0.0f) {
+        arg0 += 360.0f;
+    }
+    if (arg1 >= 360.0f) {
+        arg1 -= 360.0f;
+    } else if (arg1 < 0.0f) {
+        arg1 += 360.0f;
+    }
+    arg0 = arg0 - arg1;
+    if (arg0 <= -180.0f) {
+        arg0 += 360.0f;
+    } else if (arg0 >= 180.0f) {
+        arg0 -= 360.0f;
+    }
+    return arg0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010D6E0_bowser_toss);
 

@@ -1003,7 +1003,36 @@ void func_8010DDDC_baby_bowser_broadside(s16 index, Vec *vertices, f32 arg2) {
     func_8010F3C4_baby_bowser_broadside(destination, &boat->plane);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010DE70_baby_bowser_broadside);
+void func_8010DE70_baby_bowser_broadside(void) {
+    BabyBowserBroadsideBoat *boat = D_80110020_baby_bowser_broadside;
+    s16 i;
+
+    if (boat != NULL) {
+        for (i = 0; i < 12; i++, boat++) {
+            if (boat->unk_04 != 0 && !(boat->unk_00 & 1)) {
+                if (!(boat->unk_00 & 0x40)) {
+                    if (boat->unk_00 & 8) {
+                        func_8010FB74_baby_bowser_broadside(*boat->x, *boat->y, *boat->z,
+                                                            *boat->rx, *boat->ry, *boat->rz, boat->matrix[0]);
+                        func_8010FC2C_baby_bowser_broadside(boat->vertices, boat->vertexCount, boat->matrix[0], boat->transformed);
+                    } else {
+                        func_8010F878_baby_bowser_broadside(boat->matrix[0]);
+                        func_8010FC2C_baby_bowser_broadside(boat->vertices, boat->vertexCount, boat->matrix[0], boat->transformed);
+                    }
+                    if (boat->unk_00 & 4) {
+                        func_8010F3C4_baby_bowser_broadside(boat->transformed, &boat->plane);
+                    }
+                } else {
+                    memcpy(&boat->transformed[0], D_80110020_baby_bowser_broadside[boat->source].transformed,
+                           boat->vertexCount * sizeof(Vec));
+                    if (boat->unk_00 & 4) {
+                        boat->plane = D_80110020_baby_bowser_broadside[boat->source].plane;
+                    }
+                }
+            }
+        }
+    }
+}
 
 void func_8010E018_baby_bowser_broadside(BabyBowserBroadsideShip *ship, s16 count, f32 speed, s16 model) {
     if (ship != NULL) {
@@ -1080,7 +1109,56 @@ void func_8010E0B0_baby_bowser_broadside(BabyBowserBroadsideShip *ship) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0C_baby_bowser_broadside/169540", func_8010E348_baby_bowser_broadside);
+s32 func_8010E348_baby_bowser_broadside(BabyBowserBroadsideBoat *boat, BabyBowserBroadsideShip *ship) {
+    f32 bounds[2];
+    Vec position;
+    Vec movement;
+    Vec next;
+    Vec difference;
+    f32 distance;
+    f32 radius;
+
+    position.x = ship->pos.x;
+    position.y = ship->pos.y;
+    position.z = ship->pos.z;
+    movement.x = ship->facing.x;
+    movement.y = ship->facing.y;
+    movement.z = ship->facing.z;
+    next.x = position.x + movement.x;
+    next.y = position.y + movement.y;
+    next.z = position.z + movement.z;
+    radius = ship->unk_24;
+    bounds[0] = boat->transformed[0].y - radius * 0.5f;
+    bounds[1] = boat->transformed[0].y + boat->unk_C4 + radius * 0.5f;
+    if (next.y < bounds[0] || next.y > bounds[1]) {
+        return 0;
+    } else {
+        difference.x = boat->transformed[0].x - next.x;
+        difference.z = boat->transformed[0].z - next.z;
+        distance = HuSqrtf(difference.x * difference.x + difference.z * difference.z);
+        if (distance <= ship->unk_24 + boat->unk_DC) {
+            if (boat->unk_00 & 0x10) {
+                return 1;
+            }
+            if (distance != 0.0f) {
+                difference.x /= distance;
+                difference.x = (ship->unk_24 + boat->unk_DC) * difference.x;
+                difference.z /= distance;
+                difference.z = (ship->unk_24 + boat->unk_DC) * difference.z;
+            }
+            next.x = boat->transformed[0].x - difference.x;
+            next.z = boat->transformed[0].z - difference.z;
+        } else {
+            return 0;
+        }
+    }
+    movement.x = next.x - position.x;
+    movement.z = next.z - position.z;
+    ship->facing.x = movement.x;
+    ship->facing.y = movement.y;
+    ship->facing.z = movement.z;
+    return 1;
+}
 
 s32 func_8010E538_baby_bowser_broadside(BabyBowserBroadsideBoat *boat, BabyBowserBroadsideShip *ship) {
     Vec position;

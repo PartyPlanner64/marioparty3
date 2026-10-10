@@ -154,6 +154,18 @@ extern s32 D_80111704_pump_pump_away;
 extern s32 D_80111708_pump_pump_away;
 extern UnkPumpPumpAwaySpray D_80111710_pump_pump_away[6];
 extern UnkPumpPumpAwayNode D_80111758_pump_pump_away[2];
+extern s32 D_8011175C_pump_pump_away;
+extern s16 D_8011175E_pump_pump_away;
+extern s32 D_80111760_pump_pump_away;
+extern s16 D_80111762_pump_pump_away;
+extern HuSprite_Unk84_Struct *D_80111764_pump_pump_away;
+extern s32 D_80111788_pump_pump_away;
+extern s32 D_80111790_pump_pump_away;
+extern s16 D_80111792_pump_pump_away;
+extern s32 D_80111794_pump_pump_away;
+extern s16 D_80111796_pump_pump_away;
+extern HuSprite_Unk84_Struct *D_80111798_pump_pump_away;
+extern s32 D_801117BC_pump_pump_away;
 extern UnkPumpPumpAwayHose D_801117C0_pump_pump_away[2];
 extern UnkPumpPumpAwayParticle D_801117E0_pump_pump_away[20];
 extern UnkPumpPumpAwayNozzle D_80111920_pump_pump_away[4];
@@ -197,6 +209,9 @@ void func_8010749C_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2);
 void func_8010780C_pump_pump_away(omObjData *obj);
 void func_80107B40_pump_pump_away(omObjData *obj);
 void func_80108358_pump_pump_away(omObjData *obj);
+void func_80108560_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2);
+void func_80108810_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2);
+void func_80108CFC_pump_pump_away(omObjData *obj);
 void func_80108E74_pump_pump_away(omObjData *obj);
 void func_80109280_pump_pump_away(omObjData *obj);
 void func_801094CC_pump_pump_away(omObjData *obj);
@@ -595,7 +610,28 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80108
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80108CFC_pump_pump_away);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80108E74_pump_pump_away);
+void func_80108E74_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwayNode *entry = D_80111758_pump_pump_away;
+    s32 i;
+
+    D_8011175C_pump_pump_away = func_8000B838_main(0x2E0015);
+    D_80111764_pump_pump_away = func_80055194_main(D_8011175E_pump_pump_away);
+    D_80111760_pump_pump_away = func_8001AC8C_main(0, func_80108560_pump_pump_away, 2);
+    func_8001C8A8_main(D_80111762_pump_pump_away, 1);
+    D_80111788_pump_pump_away = 0;
+    entry->unk_00 = 0;
+    entry++;
+    D_80111790_pump_pump_away = func_8000B838_main(0x2E0016);
+    D_80111798_pump_pump_away = func_80055194_main(D_80111792_pump_pump_away);
+    D_80111794_pump_pump_away = func_8001AC8C_main(0, func_80108810_pump_pump_away, 2);
+    func_8001C8A8_main(D_80111796_pump_pump_away, 1);
+    D_801117BC_pump_pump_away = 0;
+    entry->unk_00 = 0;
+    obj->func = func_80108CFC_pump_pump_away;
+    for (i = 0; i < 8; i++) {
+        entry->unk_10[i] = 100;
+    }
+}
 
 void func_80108FA8_pump_pump_away(void) {
     omObjData *obj = omAddObj(0x384, 2, 0, -1, func_80108E74_pump_pump_away);
@@ -700,9 +736,54 @@ void func_80109B80_pump_pump_away(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80109C30_pump_pump_away);
+void func_80109C30_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwayParticle *entry = &D_801117E0_pump_pump_away[obj->work[0]];
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80109D74_pump_pump_away);
+    if (entry->unk_00 == -1) {
+        return;
+    }
+    switch (entry->unk_00) {
+        case 0:
+            break;
+        case 1:
+            func_8001C258_main(obj->model[0], 4, 0);
+            entry->unk_00 = 2;
+            break;
+        case 2:
+            entry->unk_04 -= 25;
+            if (entry->unk_04 > 0) {
+                func_8001F9E4_main(obj->model[0], (u8)entry->unk_04);
+                obj->trans.y -= entry->unk_08 * entry->unk_08;
+                obj->scale.x += 0.1;
+                obj->scale.y += 0.1;
+                obj->scale.z += 0.1;
+            } else {
+                func_8001C258_main(obj->model[0], 4, 4);
+                entry->unk_04 = 255;
+                entry->unk_08 = 0;
+                entry->unk_00 = 0;
+                obj->scale.x = obj->scale.y = obj->scale.z = 1.0f;
+            }
+            break;
+    }
+}
+
+void func_80109D74_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwayParticle *entry;
+
+    obj->model[0] = func_8000B108_main(0x2E0013, 0x289);
+    func_8001FA68_main(obj->model[0]);
+    func_8001F9E4_main(obj->model[0], 255);
+    func_8001C258_main(obj->model[0], 4, 4);
+    obj->trans.x = obj->trans.y = obj->trans.z = 0.0f;
+    obj->scale.x = obj->scale.y = obj->scale.z = 1.0f;
+    obj->func = func_80109C30_pump_pump_away;
+    entry = &D_801117E0_pump_pump_away[obj->work[0]];
+    entry->unk_00 = 0;
+    entry->unk_04 = 255;
+    entry->unk_08 = 0;
+    entry->unk_0C = obj;
+}
 
 void func_80109E3C_pump_pump_away(void) {
     s32 i;

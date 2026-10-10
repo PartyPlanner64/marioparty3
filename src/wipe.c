@@ -136,7 +136,31 @@ void func_8006231C_main(Gfx **gfx, u8 alpha, Gfx *displayList) {
     gDPFillRectangle((*gfx)++, 0, 0, 320, 240);
 }
 
-INCLUDE_ASM("asm/nonmatchings/wipe", func_800623F0_main);
+s32 func_800623F0_main(Gfx **gfx) {
+    u8 alpha;
+
+    if (D_800A26D4_main == NULL) {
+        return 0;
+    }
+    if (D_800D0A3C_main == 0.0f) {
+        goto cleanup;
+    }
+    alpha = 255.0f - (D_800D51F4_main / D_800D0A3C_main) * 255.0f;
+    gSPDisplayList((*gfx)++, D_800A26D8_main);
+    gDPSetCombineMode((*gfx)++, G_CC_MODULATEI_PRIM, G_CC_MODULATEI_PRIM);
+    gDPSetRenderMode((*gfx)++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
+    gDPSetPrimColor((*gfx)++, 0, 0, 255, 255, 255, alpha);
+    func_80062884_main(gfx, D_800D5550_main);
+    if (D_800D51F4_main >= D_800D0A3C_main) {
+    cleanup:
+        if (D_800D5304_main == 0) {
+            HuMemMemoryFreePerm(D_800A26D4_main);
+        }
+        D_800A26D4_main = NULL;
+        return 0;
+    }
+    return 1;
+}
 
 s32 func_80062584_main(Gfx **gfx) {
     gSPDisplayList((*gfx)++, D_800A26D8_main);
@@ -204,7 +228,24 @@ s32 func_80063454_main(Gfx **gfx) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/wipe", func_80063510_main);
+s32 func_80063510_main(Gfx **gfx) {
+    f32 scale;
+
+    if (D_800D0A3C_main == 0.0f) {
+        return 0;
+    }
+    if (D_800D51F4_main == 0.0f) {
+        func_800635F4_main(13);
+    }
+    scale = D_800D51F4_main / D_800D0A3C_main;
+    scale = 1.0f - scale;
+    scale *= 1.1f;
+    func_800636D8_main(gfx, scale, 1.0f);
+    if (D_800D51F4_main >= D_800D0A3C_main) {
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/wipe", func_800635F4_main);
 
@@ -271,9 +312,51 @@ s32 func_80065C9C_main(Gfx **gfx, s32 file) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/wipe", func_80065D80_main);
+s32 func_80065D80_main(Gfx **gfx) {
+    f32 scale;
+    f32 alpha;
 
-INCLUDE_ASM("asm/nonmatchings/wipe", func_80065E88_main);
+    if (D_800D0A3C_main == 0.0f) {
+        return 0;
+    }
+    if (D_800D51F4_main == 0.0f) {
+        func_800635F4_main(24);
+    }
+    scale = (D_800D51F4_main / D_800D0A3C_main) * 2.0f;
+    if (D_800D51F4_main > D_800D0A3C_main * 0.5f) {
+        alpha = 1.0f - (D_800D51F4_main - D_800D0A3C_main * 0.5f) / (D_800D0A3C_main * 0.5f);
+    } else {
+        alpha = 1.0f;
+    }
+    func_800636D8_main(gfx, scale, alpha);
+    if (D_800D51F4_main >= D_800D0A3C_main) {
+        return 0;
+    }
+    return 1;
+}
+
+s32 func_80065E88_main(Gfx **gfx) {
+    f32 scale;
+    f32 alpha;
+
+    if (D_800D0A3C_main == 0.0f) {
+        return 0;
+    }
+    if (D_800D51F4_main == 0.0f) {
+        func_800635F4_main(24);
+    }
+    scale = (1.0f - D_800D51F4_main / D_800D0A3C_main) * 2.0f;
+    if (D_800D51F4_main < D_800D0A3C_main * 0.5f) {
+        alpha = D_800D51F4_main / (D_800D0A3C_main * 0.5f);
+    } else {
+        alpha = 1.0f;
+    }
+    func_800636D8_main(gfx, scale, alpha);
+    if (D_800D51F4_main >= D_800D0A3C_main) {
+        return 0;
+    }
+    return 1;
+}
 
 void func_80065F8C_main(void) {
     Gfx *gfx;

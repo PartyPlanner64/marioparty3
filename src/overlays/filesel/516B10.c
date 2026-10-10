@@ -102,6 +102,8 @@ extern u8 *D_8011288C_filesel[];
 extern s16 D_80114150_filesel;
 extern u16 D_80114152_filesel;
 extern s32 D_801146D8_filesel;
+extern s32 D_801129A0_filesel;
+extern s32 D_801146D4_filesel;
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801059D0_filesel);
 
@@ -993,7 +995,47 @@ INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80111944_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801119F4_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80111A08_filesel);
+// converts one pad's analog stick position into a 8-way direction button mask,
+// latching on the same direction repeating for a while
+s32 func_80111A08_filesel(s32 arg0) {
+    s32 stickX;
+    s32 stickY;
+    s32 absX;
+    s32 absY;
+    s32 direction;
+
+    stickX = D_800CBB6E_main[arg0];
+    stickY = D_800D20A1_main[arg0];
+
+    if (((stickX != 0) | (stickY != 0)) == 0) {
+        return 0;
+    }
+
+    absX = __builtin_abs(stickX);
+    absY = __builtin_abs(stickY);
+    if (absY < absX) {
+        if (absX > absY * 2) {
+            direction = (stickX < 0) ? 0x200 : 0x100;
+        } else if (stickY > 0) {
+            direction = (stickX < 0) ? 0xA00 : 0x900;
+        } else {
+            direction = (stickX < 0) ? 0x600 : 0x500;
+        }
+    } else if (absY > absX * 2) {
+        direction = (stickY < 0) ? 0x400 : 0x800;
+    } else if (stickY > 0) {
+        direction = (stickX < 0) ? 0xA00 : 0x900;
+    } else {
+        direction = (stickX < 0) ? 0x600 : 0x500;
+    }
+
+    if (D_801129A0_filesel == direction && ++D_801146D4_filesel < 9) {
+        return 0;
+    }
+    D_801129A0_filesel = direction;
+    D_801146D4_filesel = 0;
+    return direction;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80111B14_filesel);
 

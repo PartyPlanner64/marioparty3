@@ -1,5 +1,39 @@
 #include "common.h"
 
+typedef struct UnkPumpPumpAwayEntry {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s16 unk_04;
+    /* 0x06 */ s16 unk_06;
+    /* 0x08 */ s16 unk_08;
+    /* 0x0A */ s16 unk_0A;
+    /* 0x0C */ s16 unk_0C;
+    /* 0x0E */ s16 unk_0E;
+    /* 0x10 */ s16 unk_10;
+    /* 0x12 */ s16 unk_12;
+    /* 0x14 */ s16 unk_14;
+    /* 0x16 */ s16 unk_16;
+    /* 0x18 */ s32 unk_18;
+    /* 0x1C */ s32 unk_1C;
+    /* 0x20 */ s32 unk_20;
+    /* 0x24 */ s32 unk_24;
+    /* 0x28 */ s32 unk_28;
+    /* 0x2C */ s32 unk_2C;
+    /* 0x30 */ s32 unk_30;
+    /* 0x34 */ s32 unk_34;
+    /* 0x38 */ s32 unk_38;
+    /* 0x3C */ s32 unk_3C;
+    /* 0x40 */ s16 unk_40;
+    /* 0x42 */ s16 unk_42;
+    /* 0x44 */ Vec unk_44;
+    /* 0x50 */ Vec unk_50;
+    /* 0x5C */ Vec unk_5C;
+    /* 0x68 */ f32 unk_68;
+    /* 0x6C */ f32 unk_6C;
+    /* 0x70 */ f32 unk_70;
+    /* 0x74 */ f32 unk_74;
+    /* 0x78 */ Vec unk_78;
+} UnkPumpPumpAwayEntry; // sizeof 0x84
+
 typedef struct UnkPumpPumpAway {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
@@ -18,6 +52,13 @@ typedef struct UnkPumpPumpAwayHose {
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ omObjData *unk_0C;
 } UnkPumpPumpAwayHose; // sizeof 0x10
+
+typedef struct UnkPumpPumpAwayParticle {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ f32 unk_08;
+    /* 0x0C */ omObjData *unk_0C;
+} UnkPumpPumpAwayParticle; // sizeof 0x10
 
 typedef struct UnkPumpPumpAwayNozzle {
     /* 0x00 */ s32 unk_00;
@@ -99,11 +140,12 @@ extern s32 D_80111708_pump_pump_away;
 extern UnkPumpPumpAwaySpray D_80111710_pump_pump_away[6];
 extern UnkPumpPumpAwayNode D_80111758_pump_pump_away[2];
 extern UnkPumpPumpAwayHose D_801117C0_pump_pump_away[2];
-extern UnkPumpPumpAwayHose D_801117E0_pump_pump_away[20];
+extern UnkPumpPumpAwayParticle D_801117E0_pump_pump_away[20];
 extern UnkPumpPumpAwayNozzle D_80111920_pump_pump_away[4];
 extern UnkPumpPumpAwayPlayer D_80111978_pump_pump_away[2];
 extern s32 D_801119E4_pump_pump_away;
 extern UnkPumpPumpAwaySpray D_801119E8_pump_pump_away[6];
+extern UnkPumpPumpAwayEntry D_80111A30_pump_pump_away[50];
 extern UnkPumpPumpAwayState D_80113400_pump_pump_away[3];
 extern UnkPumpPumpAwayHose D_80113418_pump_pump_away[2];
 extern UnkPumpPumpAwayJet D_80113438_pump_pump_away[4];
@@ -221,7 +263,44 @@ u8 func_80105C1C_pump_pump_away(u32 arg0) {
     return (rand8() * arg0) >> 8;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80105C54_pump_pump_away);
+void func_80105C54_pump_pump_away(void) {
+    u32 i;
+    UnkPumpPumpAwayEntry *entry;
+
+    for (i = 0, entry = D_80111A30_pump_pump_away; i < 50; i++, entry++) {
+        entry->unk_00 = 0;
+        entry->unk_04 = 0;
+        entry->unk_06 = 0;
+        entry->unk_08 = 0;
+        entry->unk_0A = 0;
+        entry->unk_0C = 0;
+        entry->unk_0E = 0;
+        entry->unk_10 = 0;
+        entry->unk_12 = 0;
+        entry->unk_14 = 0;
+        entry->unk_16 = 0;
+        entry->unk_18 = 0;
+        entry->unk_1C = 0;
+        entry->unk_20 = 0;
+        entry->unk_24 = 0;
+        entry->unk_28 = 0;
+        entry->unk_2C = 0;
+        entry->unk_30 = 0;
+        entry->unk_34 = 0;
+        entry->unk_38 = 0;
+        entry->unk_3C = 0;
+        entry->unk_40 = -1;
+        entry->unk_42 = -1;
+        entry->unk_44.x = entry->unk_44.y = entry->unk_44.z = 0.0f;
+        entry->unk_50.x = entry->unk_50.y = entry->unk_50.z = 0.0f;
+        entry->unk_5C.x = entry->unk_5C.y = entry->unk_5C.z = 0.0f;
+        entry->unk_68 = 0.0f;
+        entry->unk_6C = 0.0f;
+        entry->unk_70 = 0.0f;
+        entry->unk_74 = 0.0f;
+        entry->unk_78.x = entry->unk_78.y = entry->unk_78.z = 0.0f;
+    }
+}
 
 void func_80105D1C_pump_pump_away(s32 playerIndex) {
     D_800CDA7C_main[GwPlayer[playerIndex].pad] = 0;
@@ -340,7 +419,7 @@ void func_801078B4_pump_pump_away(void) {
 
 void func_801078EC_pump_pump_away(omObjData *obj) {
     s32 i;
-    UnkPumpPumpAwayHose *entry;
+    UnkPumpPumpAwayParticle *entry;
 
     for (i = 0; i < 20; i++) {
         entry = &D_801117E0_pump_pump_away[i];
@@ -427,7 +506,24 @@ void func_80109B48_pump_pump_away(void) {
     obj->work[0] = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80109B80_pump_pump_away);
+void func_80109B80_pump_pump_away(omObjData *obj) {
+    s32 i;
+    UnkPumpPumpAwayParticle *entry;
+    UnkPumpPumpAwayPlayer *player;
+
+    for (i = 0; i < 20; i++) {
+        entry = &D_801117E0_pump_pump_away[i];
+        if (entry->unk_00 == 0) {
+            player = &D_80111978_pump_pump_away[obj->work[0]];
+            entry->unk_00 = 1;
+            entry->unk_0C->trans.x = obj->trans.x;
+            entry->unk_0C->trans.y = obj->trans.y - 200.0f;
+            entry->unk_0C->trans.z = obj->trans.z;
+            entry->unk_08 = player->unk_20 * 0.6;
+            break;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80109C30_pump_pump_away);
 
@@ -733,7 +829,22 @@ void func_8010FF70_pump_pump_away(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80110034_pump_pump_away);
+void func_80110034_pump_pump_away(omObjData *obj) {
+    s32 i;
+    UnkPumpPumpAwayJet *jet;
+
+    D_801116FC_pump_pump_away = 45;
+    D_801116F8_pump_pump_away = 1;
+    obj->func = func_8010FF70_pump_pump_away;
+    if (D_801119E4_pump_pump_away != 0) {
+        for (i = 0; i < 4; i++) {
+            jet = &D_80113438_pump_pump_away[i];
+            if (jet->unk_00 != -1 && jet->unk_20 == 0) {
+                omVibrate((s16)jet->unk_04->work[0], 2, 2, 20);
+            }
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_801100F0_pump_pump_away);
 
@@ -942,7 +1053,7 @@ void func_801107C4_pump_pump_away(void) {
 
 void func_801107E4_pump_pump_away(void) {
     s32 i;
-    UnkPumpPumpAwayHose *entry;
+    UnkPumpPumpAwayParticle *entry;
 
     for (i = 0, entry = D_801117E0_pump_pump_away; i < 20; i++) {
         entry[i].unk_00 = -1;

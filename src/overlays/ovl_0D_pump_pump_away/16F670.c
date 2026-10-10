@@ -84,12 +84,16 @@ extern s16 D_801116F2_pump_pump_away;
 extern s32 D_801116F4_pump_pump_away;
 extern s32 D_801116F8_pump_pump_away;
 extern s32 D_801116FC_pump_pump_away;
+extern s32 D_80111700_pump_pump_away;
+extern s32 D_80111704_pump_pump_away;
+extern s32 D_80111708_pump_pump_away;
 extern UnkPumpPumpAwaySpray D_80111710_pump_pump_away[6];
 extern UnkPumpPumpAwayNode D_80111758_pump_pump_away[2];
 extern UnkPumpPumpAwayHose D_801117C0_pump_pump_away[2];
 extern UnkPumpPumpAwayHose D_801117E0_pump_pump_away[20];
 extern UnkPumpPumpAwayNozzle D_80111920_pump_pump_away[4];
 extern UnkPumpPumpAwayPlayer D_80111978_pump_pump_away[2];
+extern s32 D_801119E4_pump_pump_away;
 extern UnkPumpPumpAwaySpray D_801119E8_pump_pump_away[6];
 extern UnkPumpPumpAwayState D_80113400_pump_pump_away[3];
 extern UnkPumpPumpAwayHose D_80113418_pump_pump_away[2];
@@ -130,17 +134,55 @@ void func_8010FD94_pump_pump_away(omObjData *obj);
 void func_8010FE6C_pump_pump_away(omObjData *obj);
 void func_8010FEF8_pump_pump_away(omObjData *obj);
 void func_8010F024_pump_pump_away(omObjData *obj);
+void func_80110034_pump_pump_away(omObjData *obj);
+void func_801100F0_pump_pump_away(void);
 void func_801102E4_pump_pump_away(omObjData *obj);
 void func_801103D8_pump_pump_away(omObjData *obj);
 void func_801104BC_pump_pump_away(omObjData *obj);
+void func_80110D28_pump_pump_away(void);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_801059A0_pump_pump_away);
+void func_801059A0_pump_pump_away(void) {
+    func_80110D28_pump_pump_away();
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_801059BC_pump_pump_away);
+Gfx **func_801059BC_pump_pump_away(Gfx **gfxPos) {
+    u32 geometryMode = G_SHADE | G_CULL_BACK | G_SHADING_SMOOTH;
+    Gfx *gfx = *gfxPos;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80105AA0_pump_pump_away);
+    gDPPipeSync(gfx++);
+    gDPSetCycleType(gfx++, G_CYC_1CYCLE);
+    gSPClearGeometryMode(gfx++, G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH);
+    gSPSetGeometryMode(gfx++, geometryMode);
+    gDPSetCombineMode(gfx++, G_CC_DECALRGBA, G_CC_DECALRGBA);
+    gDPSetTexturePersp(gfx++, G_TP_NONE);
+    gDPSetPrimColor(gfx++, 0, 0, 0, 0, 0, 255);
+    gDPSetRenderMode(gfx++, G_RM_AA_TEX_EDGE, G_RM_AA_TEX_EDGE2);
+    *gfxPos = gfx;
+    return gfxPos;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80105B6C_pump_pump_away);
+Gfx **func_80105AA0_pump_pump_away(Gfx **gfxPos) {
+    u32 geometryMode = G_SHADE | G_CULL_BACK | G_SHADING_SMOOTH;
+    Gfx *gfx = *gfxPos;
+
+    gDPPipeSync(gfx++);
+    gDPSetCycleType(gfx++, G_CYC_1CYCLE);
+    gSPClearGeometryMode(gfx++, G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH);
+    gSPSetGeometryMode(gfx++, geometryMode);
+    gDPSetCombineMode(gfx++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+    gDPSetTexturePersp(gfx++, G_TP_NONE);
+    gDPSetRenderMode(gfx++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
+    *gfxPos = gfx;
+    return gfxPos;
+}
+
+Gfx **func_80105B6C_pump_pump_away(Gfx **gfxPos, s32 alpha) {
+    Gfx *gfx = *gfxPos;
+
+    gDPSetPrimColor(gfx++, 0, 0, 255, 255, 255, alpha);
+    *gfxPos = gfx;
+    return gfxPos;
+}
 
 f32 func_80105B9C_pump_pump_away(f32 arg0, f32 arg1) {
     f32 angle = arg0 + arg1;
@@ -359,11 +401,37 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010A
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010AD24_pump_pump_away);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010ADA0_pump_pump_away);
+void func_8010ADA0_pump_pump_away(omObjData *obj) {
+    u32 playerIndex = obj->work[0];
+    UnkPumpPumpAwayPlayer *players = D_80111978_pump_pump_away;
+    UnkPumpPumpAwayPlayer *player = &players[playerIndex ^ 1];
+
+    if (D_801116F4_pump_pump_away < 6) {
+        obj->trans.y -= player->unk_20;
+        if (obj->trans.y < -2800.0f) {
+            obj->trans.y = -2800.0f;
+        }
+    } else if (D_80113530_pump_pump_away >= 2) {
+        obj->trans.y = 200.0f;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010AE40_pump_pump_away);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010AED4_pump_pump_away);
+void func_8010AED4_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[obj->work[0]];
+
+    if (player->unk_00 == 99) {
+        obj->trans.y = 200.0f;
+    } else if (player->unk_04 == 2) {
+        obj->trans.y = 950.0f;
+        player->unk_08 = 20;
+    } else if (player->unk_04 == 10) {
+        obj->trans.y = 1000.0f;
+        obj->rot.z = 0.0f;
+        player->unk_08 = 10;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010AF70_pump_pump_away);
 
@@ -557,7 +625,12 @@ void func_8010FEB4_pump_pump_away(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010FEF8_pump_pump_away);
+void func_8010FEF8_pump_pump_away(omObjData *obj) {
+    if (D_80113530_pump_pump_away == -1) {
+        D_801116F8_pump_pump_away = 1;
+        obj->func = func_8010FEB4_pump_pump_away;
+    }
+}
 
 void func_8010FF28_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAwayPlayer *player = D_80111978_pump_pump_away;
@@ -575,11 +648,36 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80110
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_801100F0_pump_pump_away);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80110260_pump_pump_away);
+void func_80110260_pump_pump_away(omObjData *obj) {
+    if (D_801116FC_pump_pump_away != 0) {
+        D_801116FC_pump_pump_away--;
+    } else {
+        obj->func = func_80110034_pump_pump_away;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80110290_pump_pump_away);
+void func_80110290_pump_pump_away(omObjData *obj) {
+    if (D_801116FC_pump_pump_away != 0) {
+        D_801116FC_pump_pump_away--;
+    } else {
+        D_801116FC_pump_pump_away = 0;
+        func_801100F0_pump_pump_away();
+        obj->func = func_80110260_pump_pump_away;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_801102E4_pump_pump_away);
+void func_801102E4_pump_pump_away(omObjData *obj) {
+    if (D_801116FC_pump_pump_away != 0) {
+        D_801116FC_pump_pump_away--;
+        func_8003F578_main((D_801116FC_pump_pump_away + 29) / 30);
+    } else {
+        func_8003F5C0_main();
+        D_801116FC_pump_pump_away = 90;
+        obj->func = func_80110290_pump_pump_away;
+        D_801116F8_pump_pump_away = 1;
+        D_800D6A58_main = 1;
+    }
+}
 
 void func_8011038C_pump_pump_away(omObjData *obj) {
     GMesCreate(GMES_MES_TIMER, 0xA, 0xA0, 0x1C);
@@ -603,11 +701,25 @@ void func_80110458_pump_pump_away(omObjData *obj) {
     D_801116F8_pump_pump_away = 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80110498_pump_pump_away);
+void func_80110498_pump_pump_away(omObjData *obj) {
+    osViBlack(0);
+    omOvlReturnEx(1);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_801104BC_pump_pump_away);
+void func_801104BC_pump_pump_away(omObjData *obj) {
+    if (WipeStatGet() == 0) {
+        obj->func = func_80110498_pump_pump_away;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_801104F4_pump_pump_away);
+void func_801104F4_pump_pump_away(omObjData *obj) {
+    if (D_800D530C_main == 1) {
+        WipeCreateOut(0, 0x14);
+        obj->func = func_801104BC_pump_pump_away;
+        HuAudSeqFadeOut(0x1E);
+        func_8004AB0C_main(0x1E);
+    }
+}
 
 void func_8011054C_pump_pump_away(void) {
     D_801116F4_pump_pump_away += D_801116F8_pump_pump_away;
@@ -821,7 +933,29 @@ void func_8011096C_pump_pump_away(void) {
     D_801116F2_pump_pump_away = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_801109BC_pump_pump_away);
+void func_801109BC_pump_pump_away(void) {
+    D_801116F4_pump_pump_away = 0;
+    D_801116F8_pump_pump_away = 0;
+    D_801116FC_pump_pump_away = 0;
+    D_80111700_pump_pump_away = 0;
+    D_80111704_pump_pump_away = 0;
+    D_80111708_pump_pump_away = 30;
+    D_801119E4_pump_pump_away = 0;
+    func_801105D8_pump_pump_away();
+    func_80110638_pump_pump_away();
+    func_8011066C_pump_pump_away();
+    func_801106AC_pump_pump_away();
+    func_80110718_pump_pump_away();
+    func_8011078C_pump_pump_away();
+    func_801107C4_pump_pump_away();
+    func_801107E4_pump_pump_away();
+    func_80110824_pump_pump_away();
+    func_80110868_pump_pump_away();
+    func_80110888_pump_pump_away();
+    func_801108D8_pump_pump_away();
+    func_8011091C_pump_pump_away();
+    func_8011096C_pump_pump_away();
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80110A78_pump_pump_away);
 

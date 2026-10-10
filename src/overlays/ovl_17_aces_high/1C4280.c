@@ -3,6 +3,8 @@
 typedef struct AceHighCamData {
     /* 0x00 */ char unk_00[2];
     /* 0x02 */ u16 camIdx;
+    /* 0x04 */ char unk_04[0x88];
+    /* 0x8C */ f32 unk_8C;
 } AceHighCamData;
 
 typedef struct AceHighPlayer {
@@ -95,7 +97,19 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_8010A51C_a
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_8010A884_aces_high);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_8010A9D4_aces_high);
+void func_8010A9D4_aces_high(omObjData *object) {
+    omObjData *camObj = (omObjData *)object->work[1];
+    AceHighCamData *camData = (AceHighCamData *)camObj->data;
+    f32 rotX = (camObj->trans.y - -250.0f) * 0.08f;
+
+    CRotM[camData->camIdx].x = rotX;
+    CRotM[camData->camIdx].z = 0.0f;
+    CRotM[camData->camIdx].y = camData->unk_8C;
+    CenterM[camData->camIdx].x = camObj->trans.x;
+    CenterM[camData->camIdx].y = 0.0f;
+    CenterM[camData->camIdx].z = camObj->trans.z;
+    CZoomM[camData->camIdx] = 650.0f;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", D_8010DDA8_aces_high);
 

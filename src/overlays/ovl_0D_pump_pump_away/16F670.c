@@ -1,4 +1,5 @@
 #include "common.h"
+#include "overlays/minigame.h"
 
 typedef struct UnkPumpPumpAwayEntry {
     /* 0x00 */ s32 unk_00;
@@ -139,9 +140,20 @@ typedef struct UnkPumpPumpAwayRecord {
     /* 0x24 */ s32 unk_24;
 } UnkPumpPumpAwayRecord; // sizeof 0x28
 
+typedef struct PumpPumpAwayCamera {
+    f32 scissorX;
+    f32 scissorY;
+    f32 scissorWidth;
+    f32 scissorHeight;
+    Vec viewportScale;
+    Vec viewportTranslate;
+    f32 fov;
+} PumpPumpAwayCamera; // sizeof 0x2C
+
 extern s32 D_800A178C_main[][6];
 extern Vec D_80110E70_pump_pump_away[4];
 extern s32 D_80111118_pump_pump_away;
+extern PumpPumpAwayCamera D_8011111C_pump_pump_away[];
 extern s16 D_801116EA_pump_pump_away;
 extern s16 D_801116EC_pump_pump_away;
 extern u16 D_801116EE_pump_pump_away;
@@ -197,7 +209,9 @@ extern u16 D_801135DC_pump_pump_away;
 extern s32 D_801135E0_pump_pump_away;
 extern UnkPumpPumpAwayHose D_801135E8_pump_pump_away[4];
 extern s32 fontcolor;
+extern const s16 D_801116D8_pump_pump_away[];
 
+void func_8000B710_main(s32 arg0);
 omObjData *func_80045EF4_main(u32 arg0, s16 arg1);
 u16 GWMgRecordGet(s16 arg0);
 void func_8004AE00_main(s16 arg0, s16 arg1);
@@ -1358,7 +1372,47 @@ void func_80110034_pump_pump_away(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_801100F0_pump_pump_away);
+void func_801100F0_pump_pump_away(void) {
+    s32 i;
+    UnkPumpPumpAwayJet *jet;
+    UnkPumpPumpAwayPlayer *player;
+    UnkPumpPumpAwayPlayer *other;
+    UnkPumpPumpAwayPlayer *first;
+    UnkPumpPumpAwayPlayer *team;
+
+    for (i = 0; i < 4; i++) {
+        jet = &D_80113438_pump_pump_away[i];
+        team = &D_80111978_pump_pump_away[jet->unk_04->work[1]];
+        team->unk_14 += jet->unk_10;
+    }
+
+    first = &D_80111978_pump_pump_away[0];
+    player = D_80111978_pump_pump_away;
+    other = &player[1];
+    if (first->unk_14 == other->unk_14) {
+        if (first->unk_14 != 0) {
+            if (rand8() & 1) {
+                first->unk_14 += 40;
+            } else {
+                other->unk_14 += 40;
+            }
+        } else {
+            other->unk_14 = 0;
+            player->unk_14 = 0;
+        }
+    } else {
+        if (((player->unk_14 - other->unk_14 >= 0) ? player->unk_14 - other->unk_14 : other->unk_14 - player->unk_14) < 40) {
+            if (player->unk_14 > other->unk_14) {
+                player->unk_14 = other->unk_14 + 40;
+            } else {
+                other->unk_14 = player->unk_14 + 40;
+            }
+        }
+    }
+    if (player->unk_14 != 0 && other->unk_14 != 0) {
+        D_801119E4_pump_pump_away = 1;
+    }
+}
 
 void func_80110260_pump_pump_away(omObjData *obj) {
     if (D_801116FC_pump_pump_away != 0) {
@@ -1704,8 +1758,47 @@ void func_80110B34_pump_pump_away(omObjData *obj) {
 void func_80110BB0_pump_pump_away(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80110BB8_pump_pump_away);
+void func_80110BB8_pump_pump_away(void) {
+    omObjData *obj;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80110D28_pump_pump_away);
+    obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
+    obj->work[0] = 1;
+    omSetStatBit(obj, 0xA0);
+    func_8000B5F0_main(1);
+    func_8000B710_main(1);
+    for (i = 0; i < 1; i++) {
+        ScissorSet(i, D_8011111C_pump_pump_away[i].scissorX, D_8011111C_pump_pump_away[i].scissorY,
+                   D_8011111C_pump_pump_away[i].scissorWidth, D_8011111C_pump_pump_away[i].scissorHeight);
+        ViewportSet(i, D_8011111C_pump_pump_away[i].viewportScale.x, D_8011111C_pump_pump_away[i].viewportScale.y,
+                    D_8011111C_pump_pump_away[i].viewportScale.z, D_8011111C_pump_pump_away[i].viewportTranslate.x,
+                    D_8011111C_pump_pump_away[i].viewportTranslate.y, D_8011111C_pump_pump_away[i].viewportTranslate.z);
+        Hu3DCamSetPerspective(i, D_8011111C_pump_pump_away[i].fov, 80.0f, 8000.0f);
+    }
+}
+
+void func_80110D28_pump_pump_away(void) {
+    Hu3DAnimInit(50);
+    func_800142A0_main(100);
+    omInitObjMan(100, 0);
+    func_8004A208_main();
+    func_80110BB8_pump_pump_away();
+    HmfLightMaxSet(1);
+    HmfLightMaxSet(2);
+    HmfLightColorSet(0, 144, 144, 144);
+    HmfLightDirSet(0, 0.0f, 90.0f, 560.0f);
+    HmfLightColorSet(1, 255, 255, 255);
+    HmfLightDirSet(1, 0.0f, 90.0f, 560.0f);
+    HmfLightColorSet(2, 255, 255, 255);
+    HmfLightDirSet(2, 0.0f, 90.0f, 560.0f);
+    D_800EC1B8_minigame = 0;
+    D_800EC280_minigame = 0;
+    D_800EBE28_minigame = 0;
+    func_80045010_main(D_801116D8_pump_pump_away, 0);
+    func_80045010_main(D_801116D8_pump_pump_away, 1);
+    omAddObj(1000, 0, 0, -1, func_80110B34_pump_pump_away);
+    omAddObj(1000, 0, 0, -1, func_801104F4_pump_pump_away);
+    func_80105C54_pump_pump_away();
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", D_801116D8_pump_pump_away);

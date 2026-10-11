@@ -166,6 +166,7 @@ typedef struct PumpPumpAwayRecordMarker {
 
 extern s32 D_800A178C_main[][6];
 extern Vec D_80110E70_pump_pump_away[4];
+extern f32 D_80110F9C_pump_pump_away[];
 extern s32 D_80111118_pump_pump_away;
 extern PumpPumpAwayCamera D_8011111C_pump_pump_away[];
 extern s16 D_801116EA_pump_pump_away;
@@ -995,7 +996,36 @@ void func_80109E3C_pump_pump_away(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80109E98_pump_pump_away);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010A150_pump_pump_away);
+void func_8010A150_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[obj->work[0]];
+
+    switch (player->unk_0C) {
+        case 2:
+            if (HmfModelData[obj->model[0]].unk40 >= D_800CCF58_main[HmfModelData[obj->model[0]].unk02].unk02 - 2) {
+                func_8001C5B4_main(obj->model[0], obj->motion[0]);
+                func_8001C6A8_main(obj->model[0], D_800CCF58_main[HmfModelData[obj->model[0]].unk02].unk02 - 2);
+                func_8001C92C_main(obj->model[0], D_80110F9C_pump_pump_away[player->unk_10]);
+                func_8001C814_main(obj->model[0], 4, 4);
+                player->unk_0C = 3;
+            }
+            break;
+        case 3:
+            if (HmfModelData[obj->model[0]].unk40 <= 2.0f) {
+                func_8001C5B4_main(obj->model[0], obj->motion[0]);
+                func_8001C6A8_main(obj->model[0], 0);
+                func_8001C814_main(obj->model[0], 4, 0);
+                func_8001C814_main(obj->model[0], 1, 1);
+                player->unk_0C = 0;
+            }
+            break;
+        default:
+            func_8001C5B4_main(obj->model[0], obj->motion[0]);
+            func_8001C6A8_main(obj->model[0], 0);
+            func_8001C814_main(obj->model[0], 1, 1);
+            player->unk_0C = 3;
+            break;
+    }
+}
 
 void func_8010A390_pump_pump_away(omObjData *obj) {
     s32 i = obj->work[0];

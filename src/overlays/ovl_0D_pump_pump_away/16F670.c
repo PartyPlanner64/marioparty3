@@ -662,7 +662,37 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80108
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80108810_pump_pump_away);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80108B0C_pump_pump_away);
+void func_80108B0C_pump_pump_away(void) {
+    s32 digits[4];
+    s32 i = 0;
+    s32 j;
+    s32 distance;
+    UnkPumpPumpAwayNode *node = &D_80111758_pump_pump_away[1];
+    UnkPumpPumpAwayPlayer *players = D_80111978_pump_pump_away;
+
+    for (; i < 2; i++) {
+        distance = players[i].unk_18 / 10.0f;
+        digits[0] = distance / 10000;
+        distance -= digits[0] * 10000;
+        digits[1] = distance / 1000;
+        distance -= digits[1] * 1000;
+        digits[2] = distance / 100;
+        distance -= digits[2] * 100;
+        digits[3] = distance / 10;
+        distance -= digits[3] * 10;
+        for (j = 0; j < 4; j++) {
+            node->unk_10[i * 4 + j] = 100 - digits[j] * 10;
+            if (j == 3) {
+                node->unk_10[i * 4 + j] -= distance;
+            }
+        }
+        for (j = 3; j > 0; j--) {
+            if (node->unk_10[i * 4 + j] < 11) {
+                node->unk_10[i * 4 + j - 1] -= 10 - node->unk_10[i * 4 + j];
+            }
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80108CFC_pump_pump_away);
 

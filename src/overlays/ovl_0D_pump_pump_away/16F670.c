@@ -135,12 +135,11 @@ typedef struct PumpPumpAwayFade {
 
 typedef struct UnkPumpPumpAwayRecord {
     /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s32 unk_04;
-    /* 0x08 */ s32 unk_08;
-    /* 0x0C */ s32 unk_0C;
-    /* 0x10 */ s32 unk_10;
-    /* 0x14 */ s32 unk_14;
-    /* 0x18 */ s32 unk_18;
+    /* 0x04 */ s16 spriteData;
+    /* 0x06 */ s16 espriteData;
+    /* 0x08 */ s16 group;
+    /* 0x0A */ s16 esprite;
+    /* 0x0C */ s32 digits[4];
     /* 0x1C */ u16 record;
     /* 0x1E */ s16 unk_1E;
     /* 0x20 */ s32 unk_20;
@@ -219,6 +218,9 @@ extern s32 D_80113540_pump_pump_away;
 extern s32 D_80113544_pump_pump_away;
 extern UnkPumpPumpAway D_80113570_pump_pump_away[2];
 extern UnkPumpPumpAwayRecord D_801135B0_pump_pump_away;
+extern s16 D_801135B4_pump_pump_away;
+extern s16 D_801135B8_pump_pump_away;
+extern s16 D_801135BE_pump_pump_away;
 extern u16 D_801135CC_pump_pump_away;
 extern PumpPumpAwayRecordMarker D_801135D8_pump_pump_away;
 extern u16 D_801135DC_pump_pump_away;
@@ -228,6 +230,7 @@ extern s32 fontcolor;
 extern const s16 D_801116D8_pump_pump_away[];
 
 void func_8000B710_main(s32 arg0);
+void func_8000BC48_main(u16 arg0, u16 arg1);
 omObjData *func_80045EF4_main(u32 arg0, s16 arg1);
 u16 GWMgRecordGet(s16 arg0);
 void func_8004AE00_main(s16 arg0, s16 arg1);
@@ -253,6 +256,7 @@ void func_80109D74_pump_pump_away(omObjData *obj);
 void func_8010A570_pump_pump_away(omObjData *obj);
 void func_8010B370_pump_pump_away(omObjData *obj);
 void func_8010C6E4_pump_pump_away(omObjData *obj);
+void func_8010CEE8_pump_pump_away(omObjData *obj);
 void func_8010D1B8_pump_pump_away(omObjData *obj);
 void func_8010D48C_pump_pump_away(omObjData *obj);
 void func_8010D620_pump_pump_away(omObjData *obj);
@@ -1401,23 +1405,64 @@ void func_8010CDF4_pump_pump_away(omObjData *obj) {
     } else {
         value = GWMgRecordGet(0);
     }
-    record->unk_0C = value / 100;
+    record->digits[0] = value / 100;
     value %= 100;
-    if (record->unk_0C == 0) {
-        record->unk_0C = -1;
+    if (record->digits[0] == 0) {
+        record->digits[0] = -1;
     }
-    record->unk_10 = value / 10;
+    record->digits[1] = value / 10;
     value %= 10;
-    if (record->unk_10 == 0 && record->unk_0C == -1) {
-        record->unk_10 = -1;
+    if (record->digits[1] == 0 && record->digits[0] == -1) {
+        record->digits[1] = -1;
     }
-    record->unk_14 = value;
-    record->unk_18 = 12;
+    record->digits[2] = value;
+    record->digits[3] = 12;
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010CEE8_pump_pump_away);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010D1B8_pump_pump_away);
+void func_8010D1B8_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwayRecord *record;
+    s32 i;
+
+    func_8010CDF4_pump_pump_away(obj);
+    record = &D_801135B0_pump_pump_away;
+    D_801135B4_pump_pump_away = func_8000B838_main(0x32);
+    D_801135B8_pump_pump_away = HuSprGrpCreate(4, 5);
+    func_80054904_main(D_801135B8_pump_pump_away, 0, 32, 22);
+    func_80055024_main(D_801135B8_pump_pump_away, 0, D_801135B4_pump_pump_away, 0);
+    func_800550F4_main(D_801135B8_pump_pump_away, 0, 0);
+    func_80054FF8_main(D_801135B8_pump_pump_away, 0, D_801135BE_pump_pump_away);
+    HuSprAttrSet(D_801135B8_pump_pump_away, 0, 0x1000);
+    HuSprAttrSet(D_801135B8_pump_pump_away, 0, 0);
+    for (i = 1; i < 3; i++) {
+        func_800554C4_main(record->group, i, 0);
+        func_80055024_main(record->group, i, record->spriteData, 0);
+        if (record->digits[i] != -1) {
+            func_80054904_main(record->group, i, i * 12, 0);
+            func_80055024_main(record->group, i, record->spriteData, 0);
+            func_800550F4_main(record->group, i, 0);
+            func_80054FF8_main(record->group, i, (s16)record->digits[i]);
+            HuSprAttrSet(record->group, i, 0x1000);
+            HuSprAttrSet(record->group, i, 0);
+        } else {
+            func_80054904_main(record->group, i, i * 12, 0);
+            func_80055024_main(record->group, i, record->spriteData, 0);
+            func_800550F4_main(record->group, i, 0);
+            func_80054FF8_main(record->group, i, 0);
+            HuSprAttrSet(record->group, i, 0x1000);
+            HuSprAttrSet(record->group, i, 0x8000);
+        }
+    }
+    record->espriteData = func_8000B838_main(0x2E0023);
+    record->esprite = InitEspriteSlot(record->espriteData, 0, 0);
+    func_8000BC48_main(record->esprite, 0x1000);
+    func_8000BBD4_main(record->esprite, 78, 22);
+    func_8000BB54_main(record->esprite);
+    record->unk_20 = 0;
+    record->unk_24 = 0;
+    obj->func = func_8010CEE8_pump_pump_away;
+}
 
 void func_8010D458_pump_pump_away(void) {
     omAddObj(0x2FD, 1, 0, -1, func_8010D1B8_pump_pump_away);

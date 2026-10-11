@@ -167,6 +167,7 @@ extern s32 D_800A178C_main[][6];
 extern Vec D_80110E70_pump_pump_away[4];
 extern f32 D_80110F9C_pump_pump_away[];
 extern f32 D_8011102C_pump_pump_away[];
+extern u16 D_80111114_pump_pump_away;
 extern s32 D_80111118_pump_pump_away;
 extern PumpPumpAwayCamera D_8011111C_pump_pump_away[];
 extern s16 D_801116EA_pump_pump_away;
@@ -234,6 +235,7 @@ void func_8000BC48_main(u16 arg0, u16 arg1);
 omObjData *func_80045EF4_main(u32 arg0, s16 arg1);
 u16 GWMgRecordGet(s16 arg0);
 void func_8004AE00_main(s16 arg0, s16 arg1);
+void func_80105EE4_pump_pump_away(Vec *position, Vec *target, Vec *result);
 void func_8010654C_pump_pump_away(omObjData *obj);
 void func_80106724_pump_pump_away(omObjData *obj);
 void func_8010682C_pump_pump_away(omObjData *obj);
@@ -1707,7 +1709,32 @@ void func_8010F8A4_pump_pump_away(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010F900_pump_pump_away);
+void func_8010F900_pump_pump_away(omObjData *obj) {
+    Vec position;
+    Vec target;
+    Vec result;
+    u32 i;
+
+    if (D_80111114_pump_pump_away == 0) {
+        D_80111114_pump_pump_away = 1;
+        target.x = 650.0f;
+        target.y = 0.0f;
+        target.z = 2600.0f;
+        position.x = 65.0f;
+        position.y = 0.0f;
+        position.z = -500.0f;
+        func_80105EE4_pump_pump_away(&position, &target, &result);
+        for (i = 0; i < 1; i++) {
+            CZoomM[i] = result.x;
+            CRotM[i].x = 360.0f - result.z;
+            CRotM[i].y = 0.0f;
+            CRotM[i].z = 0.0f;
+            CenterM[i].x = 0.0f;
+            CenterM[i].y = position.x;
+            CenterM[i].z = position.z;
+        }
+    }
+}
 
 void func_8010FA20_pump_pump_away(omObjData *obj) {
 }

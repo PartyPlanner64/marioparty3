@@ -165,6 +165,7 @@ typedef struct PumpPumpAwayRecordMarker {
 
 extern s32 D_800A178C_main[][6];
 extern Vec D_80110E70_pump_pump_away[4];
+extern Vec D_80110EA0_pump_pump_away[2];
 extern f32 D_80110F9C_pump_pump_away[];
 extern f32 D_8011102C_pump_pump_away[];
 extern u16 D_80111114_pump_pump_away;
@@ -238,6 +239,8 @@ u16 GWMgRecordGet(s16 arg0);
 void func_8004AE00_main(s16 arg0, s16 arg1);
 void func_80034048_main(s16 arg0, s16 arg1);
 void func_80105EE4_pump_pump_away(Vec *position, Vec *target, Vec *result);
+void func_80088800_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
+void func_8010628C_pump_pump_away(omObjData *obj);
 void func_8010654C_pump_pump_away(omObjData *obj);
 void func_80106724_pump_pump_away(omObjData *obj);
 void func_8010682C_pump_pump_away(omObjData *obj);
@@ -438,7 +441,23 @@ void func_80106260_pump_pump_away(u16 arg0, u16 arg1, char *arg2, u16 arg3) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010628C_pump_pump_away);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010654C_pump_pump_away);
+void func_8010654C_pump_pump_away(omObjData *obj) {
+    s32 i;
+
+    obj->model[0] = func_8000B108_main(0x2E0000, 0x289);
+    obj->trans.x = obj->trans.y = obj->trans.z = 0.0f;
+    for (i = 1; i < 3; i++) {
+        obj->model[i] = func_8000B0A0_main(0, 0xC9);
+        func_8001C2FC_main(obj->model[i], 0x80000000, 0);
+        func_8001C448_main(obj->model[i]);
+        func_8001C514_main(obj->model[i]);
+        func_80088800_main(HmfModelData[obj->model[i]].mtx, 0.0f, 1.0f, 0.0f);
+        Hu3DModelScaleSet(obj->model[i], 3.0f, 3.0f, 3.0f);
+        Hu3DModelPosSet(obj->model[i], D_80110EA0_pump_pump_away[i - 1].x,
+                        obj->trans.y + 1.0, D_80110EA0_pump_pump_away[i - 1].z + 0.0f);
+    }
+    obj->func = func_8010628C_pump_pump_away;
+}
 
 void func_801066F0_pump_pump_away(void) {
     omAddObj(0xC8, 3, 0, -1, func_8010654C_pump_pump_away);

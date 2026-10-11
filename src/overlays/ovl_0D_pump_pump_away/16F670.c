@@ -42,6 +42,13 @@ typedef struct UnkPumpPumpAway {
     /* 0x0C */ s32 unk_0C; // 0x0A is also read as an s16 elsewhere
 } UnkPumpPumpAway;         // sizeof 0x10
 
+typedef struct PumpPumpAwayMilestone {
+    s32 unk_00;
+    s32 unk_04;
+    f32 unk_08;
+    s32 unk_0C;
+} PumpPumpAwayMilestone; // sizeof 0x10
+
 typedef struct UnkPumpPumpAwayState {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04; // 0x07 is also read as a u8 elsewhere
@@ -213,7 +220,7 @@ extern s32 D_801119E4_pump_pump_away;
 extern UnkPumpPumpAwaySpray D_801119E8_pump_pump_away[6];
 extern UnkPumpPumpAwayEntry D_80111A30_pump_pump_away[50];
 extern UnkPumpPumpAwayState D_80113400_pump_pump_away[3];
-extern UnkPumpPumpAway D_80113418_pump_pump_away[2];
+extern PumpPumpAwayMilestone D_80113418_pump_pump_away[2];
 extern UnkPumpPumpAwayJet D_80113438_pump_pump_away[4];
 extern PumpPumpAwayAngleState D_80113518_pump_pump_away;
 extern s32 D_8011351C_pump_pump_away;
@@ -1407,7 +1414,7 @@ void func_8010A3F0_pump_pump_away(omObjData *obj) {
 
 void func_8010A468_pump_pump_away(void) {
     s32 i;
-    UnkPumpPumpAway *entry;
+    PumpPumpAwayMilestone *entry;
     UnkPumpPumpAwayNozzle *nozzle;
     PumpPumpAwayMovingEffect *hose;
     UnkPumpPumpAwaySpray *spray;
@@ -2150,12 +2157,52 @@ void func_8010D6C0_pump_pump_away(void) {
     omAddObj(0x302, 1, 0, -1, func_8010D620_pump_pump_away);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010D6F4_pump_pump_away);
+void func_8010D6F4_pump_pump_away(omObjData *obj) {
+    PumpPumpAwayMilestone *entry = &D_80113418_pump_pump_away[obj->work[0]];
+    UnkPumpPumpAwayPlayer *first = &D_80111978_pump_pump_away[0];
+    UnkPumpPumpAwayPlayer *player = D_80111978_pump_pump_away;
+    UnkPumpPumpAwayPlayer *other = &player[1];
+    f32 height;
+    f32 angle;
+    s32 hundreds;
+
+    if (entry->unk_0C == 0) {
+        height = first->unk_18 > other->unk_18 ? first->unk_18 : other->unk_18;
+        hundreds = height * 0.01;
+        switch (entry->unk_00) {
+            case 0:
+                entry->unk_04 = hundreds * 0.01 + 1.0;
+                obj->trans.y = entry->unk_04 * 1000 - height * 0.1 + 480.0;
+                entry->unk_00 = 1;
+                break;
+            case 1:
+                obj->trans.y = entry->unk_04 * 1000 - height * 0.1 + 480.0;
+                if (obj->trans.y < -1000.0f) {
+                    entry->unk_00 = 0;
+                }
+                break;
+        }
+    }
+    func_80034048_main(obj->work[1], (s16)entry->unk_04);
+    func_80034048_main(obj->work[2], 0);
+    func_80034048_main(obj->work[3], 0);
+    if (entry->unk_08 + 6.0f >= 360.0f) {
+        angle = entry->unk_08 + 6.0f - 360.0f;
+    } else {
+        angle = entry->unk_08 + 6.0f;
+        if (angle < 0.0f) {
+            angle += 360.0f;
+        }
+    }
+    entry->unk_08 = angle;
+    obj->trans.y += (f64)sindf(angle);
+    Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010D95C_pump_pump_away);
 
 void func_8010DC68_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAway *entry = &D_80113418_pump_pump_away[obj->work[0]];
+    PumpPumpAwayMilestone *entry = &D_80113418_pump_pump_away[obj->work[0]];
 
     if (entry->unk_00 == -1) {
         return;
@@ -2838,7 +2885,7 @@ void func_801107E4_pump_pump_away(void) {
 
 void func_80110824_pump_pump_away(void) {
     s32 i;
-    UnkPumpPumpAway *entry;
+    PumpPumpAwayMilestone *entry;
 
     for (i = 0, entry = D_80113418_pump_pump_away; i < 2; i++) {
         entry[i].unk_00 = -1;

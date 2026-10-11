@@ -255,7 +255,20 @@ void func_80107700_snowball_summit(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010775C_snowball_summit);
+void func_8010775C_snowball_summit(omObjData *this) {
+    s16 *model = &D_80110030_snowball_summit;
+    f32 x;
+    f32 z;
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        do {
+            x = (rand8() - 128) * 12;
+            z = i * 720 - 700;
+        } while (!(x * x + z * z < 1.0e8f));
+        func_8000CD74_main(*model, x, i * 180 + 1000, z);
+    }
+}
 
 void func_80107860_snowball_summit(omObjData *this) {
     s16 *model = &D_80110030_snowball_summit;

@@ -459,7 +459,59 @@ f32 func_80105D94_pump_pump_away(f32 value) {
     return 0.0f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80105EE4_pump_pump_away);
+void func_80105EE4_pump_pump_away(Vec *position, Vec *target, Vec *result) {
+    Vec difference;
+    Vec positionCopy;
+    Vec targetCopy;
+    f32 yaw;
+    f32 horizontalDistance;
+    f32 pitch;
+    f32 distance;
+
+    positionCopy.x = position->x;
+    positionCopy.y = position->y;
+    positionCopy.z = position->z;
+    targetCopy.x = target->x;
+    targetCopy.y = target->y;
+    targetCopy.z = target->z;
+    difference.x = targetCopy.x - positionCopy.x;
+    difference.y = targetCopy.y - positionCopy.y;
+    difference.z = targetCopy.z - positionCopy.z;
+    horizontalDistance = HuSqrtf(difference.x * difference.x + difference.z * difference.z);
+
+    if ((horizontalDistance <= 0.002f) & (horizontalDistance >= -0.002f)) {
+        horizontalDistance = 0.0f;
+        pitch = (difference.y > 0.0001f || !(difference.y < 0.0001f)) ? 180.0f : horizontalDistance;
+        yaw = horizontalDistance;
+    } else {
+        if (difference.x != 0.0f && difference.z != 0.0f) {
+            yaw = func_80105D94_pump_pump_away(difference.x / difference.z) * 57.2957795130823229;
+        } else if (difference.z == 0.0f) {
+            yaw = difference.x >= 0.0f ? 90.0f : 270.0f;
+        } else {
+            yaw = 0.0f;
+        }
+        if (difference.z < 0.0f) {
+            yaw -= 180.0f;
+        }
+        if (horizontalDistance != 0.0f && difference.y != 0.0f) {
+            pitch = func_80105D94_pump_pump_away(difference.y / horizontalDistance) * 57.2957795130823229;
+        } else {
+            pitch = 0.0f;
+        }
+        yaw = yaw >= 360.0f ? yaw - 360.0f : yaw < 0.0f ? yaw + 360.0f
+                                                        : yaw;
+        pitch = pitch + 90.0f >= 360.0f ? pitch + 90.0f - 360.0f
+                : pitch + 90.0f < 0.0f  ? pitch + 90.0f + 360.0f
+                                        : pitch + 90.0f;
+    }
+    if ((pitch <= 0.002f) & (pitch >= -0.002f)) {
+        pitch = 0.0f;
+    }
+    distance = HuSqrtf(difference.y * difference.y + horizontalDistance * horizontalDistance);
+    result->z = yaw;
+    result->x = distance;
+}
 
 void func_80106260_pump_pump_away(u16 arg0, u16 arg1, char *arg2, u16 arg3) {
     fontcolor = arg3;

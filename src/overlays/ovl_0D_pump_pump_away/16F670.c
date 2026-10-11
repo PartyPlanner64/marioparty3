@@ -194,6 +194,8 @@ extern f32 D_8011109C_pump_pump_away[];
 extern s32 D_801133F8_pump_pump_away;
 extern u16 D_80111114_pump_pump_away;
 extern s32 D_80111118_pump_pump_away;
+extern s16 D_80111108_pump_pump_away;
+extern s16 D_8011110A_pump_pump_away;
 extern PumpPumpAwayCamera D_8011111C_pump_pump_away[];
 extern u8 D_801116E8_pump_pump_away;
 extern s16 D_801116EA_pump_pump_away;
@@ -1329,7 +1331,76 @@ void func_80109470_pump_pump_away(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_801094CC_pump_pump_away);
+void func_801094CC_pump_pump_away(omObjData *obj) {
+    PumpPumpAwayAngleState *state = &D_80113518_pump_pump_away;
+    UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[D_8011351C_pump_pump_away];
+    s16 sound;
+
+    switch (state->state) {
+        case 0:
+            break;
+        case 1:
+            func_8001C5B4_main(obj->model[0], obj->motion[0]);
+            func_8001C6A8_main(obj->model[0], 0);
+            func_8001C814_main(obj->model[0], 1, 0);
+            func_8001C258_main(obj->model[0], 4, 0);
+            obj->trans.x = player->unk_28->trans.x;
+            obj->trans.y = player->unk_28->trans.y + 200.0f;
+            obj->trans.z = player->unk_28->trans.z;
+            state->state = 3;
+            break;
+        case 2:
+            func_8001C5B4_main(obj->model[0], obj->motion[1]);
+            func_8001C6A8_main(obj->model[0], 0);
+            func_8001C814_main(obj->model[0], 1, 0);
+            func_8001C258_main(obj->model[0], 4, 0);
+            obj->trans.x = player->unk_28->trans.x;
+            obj->trans.y = player->unk_28->trans.y + 200.0f;
+            obj->trans.z = player->unk_28->trans.z;
+            state->state = 3;
+            break;
+        case 3:
+            if (HmfModelData[obj->model[0]].unk40 >= 16.0f && D_8011110A_pump_pump_away == 0) {
+                sound = HuAudFXPlay(0x363);
+                if (player->unk_28->work[0] != 0) {
+                    func_8004AE00_main(sound, 0x60);
+                } else {
+                    func_8004AE00_main(sound, 0x20);
+                }
+                D_8011110A_pump_pump_away = 1;
+            }
+            obj->trans.y = player->unk_28->trans.y + 200.0f;
+            if (player->unk_24 == 2) {
+                state->state = 4;
+                break;
+            }
+            if (D_80111108_pump_pump_away != 0) {
+                if (state->angle <= 175.0f) {
+                    state->angle = 175.0f;
+                    D_80111108_pump_pump_away ^= 1;
+                } else {
+                    state->angle = state->angle - 0.5 >= 360.0 ? state->angle - 0.5 - 360.0
+                                   : state->angle - 0.5 < 0.0  ? state->angle - 0.5 + 360.0
+                                                               : state->angle - 0.5;
+                }
+            } else {
+                if (state->angle >= 185.0f) {
+                    state->angle = 185.0f;
+                    D_80111108_pump_pump_away ^= 1;
+                } else {
+                    state->angle = state->angle + 0.5 >= 360.0 ? state->angle + 0.5 - 360.0
+                                   : state->angle + 0.5 < 0.0  ? state->angle + 0.5 + 360.0
+                                                               : state->angle + 0.5;
+                }
+            }
+            obj->rot.z = state->angle + 180.0f >= 360.0f ? state->angle + 180.0f - 360.0f
+                         : state->angle + 180.0f < 0.0f  ? state->angle + 180.0f + 360.0f
+                                                         : state->angle + 180.0f;
+            player->unk_28->trans.x = obj->trans.x - sindf(state->angle) * 200.0f;
+            player->unk_28->trans.y = obj->trans.y + cosdf(state->angle) * 200.0f;
+            break;
+    }
+}
 
 void func_801098E0_pump_pump_away(omObjData *obj) {
     s32 *state = &D_80113518_pump_pump_away.state;

@@ -2199,7 +2199,52 @@ void func_8010D6F4_pump_pump_away(omObjData *obj) {
     Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010D95C_pump_pump_away);
+void func_8010D95C_pump_pump_away(omObjData *obj) {
+    PumpPumpAwayMilestone *entry = &D_80113418_pump_pump_away[obj->work[0]];
+    UnkPumpPumpAwayPlayer *first = &D_80111978_pump_pump_away[0];
+    UnkPumpPumpAwayPlayer *player = D_80111978_pump_pump_away;
+    UnkPumpPumpAwayPlayer *other = &player[1];
+    f32 height;
+    f32 angle;
+    s32 hundreds;
+
+    if (entry->unk_0C == 0) {
+        height = first->unk_18 > other->unk_18 ? first->unk_18 : other->unk_18;
+        hundreds = height * 0.01;
+        switch (entry->unk_00) {
+            case 0:
+                entry->unk_04 = hundreds * 0.01 + 2.0;
+                obj->trans.y = entry->unk_04 * 1000 - height * 0.1 + 480.0;
+                entry->unk_00 = 2;
+                break;
+            case 1:
+                entry->unk_04 = hundreds * 0.01 + 1.0;
+                obj->trans.y = entry->unk_04 * 1000 - height * 0.1 + 480.0;
+                entry->unk_00 = 2;
+                break;
+            case 2:
+                obj->trans.y = entry->unk_04 * 1000 - height * 0.1 + 480.0;
+                if (obj->trans.y < -1000.0f) {
+                    entry->unk_00 = 1;
+                }
+                break;
+        }
+    }
+    func_80034048_main(obj->work[1], (s16)entry->unk_04);
+    func_80034048_main(obj->work[2], 0);
+    func_80034048_main(obj->work[3], 0);
+    if (entry->unk_08 + 6.0f >= 360.0f) {
+        angle = entry->unk_08 + 6.0f - 360.0f;
+    } else {
+        angle = entry->unk_08 + 6.0f;
+        if (angle < 0.0f) {
+            angle += 360.0f;
+        }
+    }
+    entry->unk_08 = angle;
+    obj->trans.y += (f64)sindf(angle);
+    Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
+}
 
 void func_8010DC68_pump_pump_away(omObjData *obj) {
     PumpPumpAwayMilestone *entry = &D_80113418_pump_pump_away[obj->work[0]];

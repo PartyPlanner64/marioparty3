@@ -232,6 +232,7 @@ extern const s16 D_801116D8_pump_pump_away[];
 
 void func_8000B710_main(s32 arg0);
 void func_8000BC48_main(u16 arg0, u16 arg1);
+void func_8000BE5C_main(u16 spriteId, f32 x, f32 y);
 omObjData *func_80045EF4_main(u32 arg0, s16 arg1);
 u16 GWMgRecordGet(s16 arg0);
 void func_8004AE00_main(s16 arg0, s16 arg1);
@@ -1442,7 +1443,41 @@ void func_8010CDF4_pump_pump_away(omObjData *obj) {
     record->digits[3] = 12;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010CEE8_pump_pump_away);
+void func_8010CEE8_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwayRecord *record = &D_801135B0_pump_pump_away;
+    s32 i;
+
+    if (D_801116F4_pump_pump_away == 9 && func_8010CCBC_pump_pump_away()) {
+        func_8010CDF4_pump_pump_away(obj);
+        if (record->unk_24 == 0) {
+            if (record->unk_20 >= 13) {
+                record->unk_24 = 1;
+            } else {
+                record->unk_20 += 2;
+            }
+        } else if (record->unk_20 > 0) {
+            record->unk_20 -= 2;
+        }
+        HuSprScaleSet(record->group, 0, record->unk_20 / 12.0f + 1.0f, record->unk_20 / 12.0f + 1.0f);
+        func_80054904_main(record->group, 0, record->unk_20 / 4 + 32, record->unk_20 / 4 + 22);
+        func_80055024_main(record->group, 0, record->spriteData, 0);
+        func_800550F4_main(record->group, 0, 0);
+        func_80054FF8_main(record->group, 0, (s16)record->digits[0]);
+        HuSprAttrSet(record->group, 0, 0x1000);
+        HuSprAttrSet(record->group, 0, 0);
+        for (i = 1; i < 3; i++) {
+            HuSprScaleSet(record->group, i, record->unk_20 / 12.0f + 1.0f, record->unk_20 / 12.0f + 1.0f);
+            func_80054904_main(record->group, i, i * 12, 0);
+            func_80055024_main(record->group, i, record->spriteData, 0);
+            func_800550F4_main(record->group, i, 0);
+            func_80054FF8_main(record->group, i, (s16)record->digits[i]);
+            HuSprAttrSet(record->group, i, 0x1000);
+            HuSprAttrSet(record->group, i, 0);
+        }
+        func_8000BE5C_main(record->esprite, record->unk_20 / 12.0f + 1.0f, record->unk_20 / 12.0f + 1.0f);
+        func_8000BBD4_main(record->esprite, record->unk_20 * 4 + 78, record->unk_20 / 4 + 22);
+    }
+}
 
 void func_8010D1B8_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAwayRecord *record;

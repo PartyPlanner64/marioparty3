@@ -1128,7 +1128,35 @@ void func_8010C060_pump_pump_away(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010C1C8_pump_pump_away);
+void func_8010C1C8_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwayJet *jet = &D_80113438_pump_pump_away[obj->work[0]];
+    f32 angle;
+
+    obj->trans.y = D_80110E70_pump_pump_away[0].y;
+    switch (jet->unk_08) {
+        case 0:
+            if (jet->unk_0C == 9) {
+                break;
+            }
+            func_8001C5B4_main(obj->model[0], obj->motion[3]);
+            func_8001C6A8_main(obj->model[0], 0);
+            func_8001C814_main(obj->model[0], 2, 2);
+            jet->unk_08 = 3;
+            break;
+        case 3:
+            obj->rot.y = obj->rot.y + 10.0f >= 360.0f ? obj->rot.y + 10.0f - 360.0f : obj->rot.y + 10.0f < 0.0f ? obj->rot.y + 10.0f + 360.0f
+                                                                                                                : obj->rot.y + 10.0f;
+            angle = obj->rot.y + 180.0f >= 360.0f ? obj->rot.y + 180.0f - 360.0f : obj->rot.y + 180.0f < 0.0f ? obj->rot.y + 180.0f + 360.0f
+                                                                                                              : obj->rot.y + 180.0f;
+            if (angle >= 180.0f) {
+                obj->rot.y = 0;
+                func_8001C624_main(obj->model[0], HmfModelData[obj->motion[0]].unk02, 0, 20, 2);
+                jet->unk_08 = 0;
+                jet->unk_0C = 9;
+            }
+            break;
+    }
+}
 
 void func_8010C3E0_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAwayJet *jet = &D_80113438_pump_pump_away[obj->work[0]];

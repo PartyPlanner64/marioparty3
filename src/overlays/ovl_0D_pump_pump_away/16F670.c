@@ -1124,7 +1124,35 @@ void func_8010B5D4_pump_pump_away(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010B630_pump_pump_away);
+void func_8010B630_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwayJet *jet = &D_80113438_pump_pump_away[obj->work[0]];
+    s32 press = 0;
+    s32 interval;
+
+    if (jet->unk_34 > 0) {
+        jet->unk_34--;
+    } else {
+        press = 1;
+        jet->unk_34 = rand8() % jet->unk_30 + 5;
+    }
+    if (press) {
+        if (jet->unk_18 != 0) {
+            D_800D5558_main[GwPlayer[obj->work[0]].pad] |= 0x8000;
+        } else {
+            D_800D5558_main[GwPlayer[obj->work[0]].pad] |= 0x4000;
+        }
+    } else {
+        interval = jet->unk_30 * 0.5;
+        if (rand8() % interval == 0 && jet->unk_14 == 0.0f) {
+            if (jet->unk_18 != 0) {
+                D_800D5558_main[GwPlayer[obj->work[0]].pad] |= 0x8000;
+            } else {
+                D_800D5558_main[GwPlayer[obj->work[0]].pad] |= 0x4000;
+            }
+            jet->unk_34 = rand8() % jet->unk_30 + 5;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010B898_pump_pump_away);
 

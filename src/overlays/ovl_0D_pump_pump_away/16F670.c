@@ -180,6 +180,9 @@ extern s32 D_800A178C_main[][6];
 extern Vec D_80110E70_pump_pump_away[4];
 extern Vec D_80110EA0_pump_pump_away[2];
 extern f32 D_80110F9C_pump_pump_away[];
+extern Vec D_80110F6C_pump_pump_away[4];
+extern s32 D_80113528_pump_pump_away;
+extern s32 D_8011352C_pump_pump_away;
 extern Vec D_80110FC4_pump_pump_away[];
 extern u16 D_80110FDC_pump_pump_away[2][2];
 extern Vec D_80111004_pump_pump_away[];
@@ -192,6 +195,7 @@ extern s32 D_801133F8_pump_pump_away;
 extern u16 D_80111114_pump_pump_away;
 extern s32 D_80111118_pump_pump_away;
 extern PumpPumpAwayCamera D_8011111C_pump_pump_away[];
+extern u8 D_801116E8_pump_pump_away;
 extern s16 D_801116EA_pump_pump_away;
 extern s16 D_801116EC_pump_pump_away;
 extern s16 D_801116EE_pump_pump_away;
@@ -874,7 +878,58 @@ void func_80107A8C_pump_pump_away(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80107B40_pump_pump_away);
+void func_80107B40_pump_pump_away(omObjData *obj) {
+    void *data;
+    UnkPumpPumpAway *entry;
+    s32 i;
+    UnkPumpPumpAwayJet *jets;
+
+    obj->model[0] = func_8000B108_main(0x2E0005, 0x2A9);
+    func_8000B460_main(obj, 0, 0x2E0006);
+    switch (obj->work[0]) {
+        case 0:
+        case 1:
+            if (obj->work[0] == 0) {
+                data = DataRead(0x2E0007);
+                D_8011352C_pump_pump_away = (s16)HmfAnimCreate(HmfModelData[obj->model[0]].hmf, data, 0, "m213_p1_DEF");
+                obj->work[1] = D_8011352C_pump_pump_away;
+                HuMemMemoryFreePerm(data);
+            } else {
+                obj->work[1] = func_80032694_main(HmfModelData[obj->model[0]].hmf, (u16)D_8011352C_pump_pump_away, 0, "m213_p1_DEF");
+            }
+        case 2:
+        case 3:
+            if (obj->work[0] == 2) {
+                data = DataRead(0x2E0008);
+                D_80113528_pump_pump_away = (s16)HmfAnimCreate(HmfModelData[obj->model[0]].hmf, data, 0, "m213_p1_DEF");
+                obj->work[1] = D_80113528_pump_pump_away;
+                HuMemMemoryFreePerm(data);
+            } else {
+                obj->work[1] = func_80032694_main(HmfModelData[obj->model[0]].hmf, (u16)D_80113528_pump_pump_away, 0, "m213_p1_DEF");
+            }
+            break;
+    }
+    func_80034048_main((s16)obj->work[1], 0);
+    func_80032FC0_main((s16)obj->work[1], 1, 1);
+    func_8001C448_main(obj->model[0]);
+    func_8001C514_main(obj->model[0]);
+    func_8001C5B4_main(obj->model[0], obj->motion[0]);
+    func_8001C814_main(obj->model[0], 1, 1);
+    obj->trans.x = D_80110F6C_pump_pump_away[obj->work[0]].x;
+    obj->trans.y = D_80110F6C_pump_pump_away[obj->work[0]].y;
+    obj->trans.z = D_80110F6C_pump_pump_away[obj->work[0]].z;
+    obj->func = func_80107A8C_pump_pump_away;
+    entry = &D_80113570_pump_pump_away[obj->work[0]];
+    entry->unk_00 = 0;
+    entry->unk_04 = 0;
+    entry->unk_08 = 0;
+    for (i = 0, jets = D_80113438_pump_pump_away; i < 4; i++) {
+        if (jets[i].unk_04->work[3] == obj->work[0]) {
+            break;
+        }
+    }
+    entry->unk_0C = i;
+}
 
 void func_80107E5C_pump_pump_away(void) {
     s32 i;
@@ -2439,7 +2494,46 @@ void func_8010DC68_pump_pump_away(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010DD24_pump_pump_away);
+void func_8010DD24_pump_pump_away(omObjData *obj) {
+    void *data;
+    s32 i;
+    PumpPumpAwayMilestone *entry;
+
+    if (obj->work[0] == 0) {
+        D_801116EA_pump_pump_away = obj->model[0] = func_8000B108_main(0xA0089, 0x289);
+        obj->model[1] = func_8000B108_main(0x2E0020, 0x289);
+        data = DataRead(0x2E0021);
+        obj->work[1] = D_801116E8_pump_pump_away = HmfAnimCreate(HmfModelData[obj->model[1]].hmf, data, 0, "m213_plart2_DEF");
+        obj->work[2] = func_80032694_main(HmfModelData[obj->model[1]].hmf, D_801116E8_pump_pump_away, 0, "m213_plart1_DEF");
+        obj->work[3] = func_80032694_main(HmfModelData[obj->model[1]].hmf, D_801116E8_pump_pump_away, 0, "m213_plart0_DEF");
+        HuMemMemoryFreePerm(data);
+    } else {
+        obj->model[0] = Hu3DModelLink(D_801116EA_pump_pump_away);
+        obj->model[1] = func_8000B108_main(0x2E0020, 0x289);
+        obj->work[1] = func_80032694_main(HmfModelData[obj->model[1]].hmf, D_801116E8_pump_pump_away, 0, "m213_plart2_DEF");
+        obj->work[2] = func_80032694_main(HmfModelData[obj->model[1]].hmf, D_801116E8_pump_pump_away, 0, "m213_plart1_DEF");
+        obj->work[3] = func_80032694_main(HmfModelData[obj->model[1]].hmf, D_801116E8_pump_pump_away, 0, "m213_plart0_DEF");
+    }
+    func_8001C448_main(obj->model[1]);
+    func_8001C514_main(obj->model[1]);
+    for (i = 1; i < 4; i++) {
+        func_80034048_main((s16)obj->work[i], 0);
+        func_80032FC0_main((s16)obj->work[i], 1, 1);
+    }
+    func_8001C814_main(obj->model[0], 2, 2);
+    obj->trans.x = 43.5f;
+    obj->trans.y = 1000.0f;
+    obj->trans.z = -17.5f;
+    obj->rot.y = 345.0f;
+    Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
+    Hu3DModelRotSet(obj->model[1], 0.0f, obj->rot.y, 0.0f);
+    obj->func = func_8010DC68_pump_pump_away;
+    entry = &D_80113418_pump_pump_away[obj->work[0]];
+    entry->unk_00 = 0;
+    entry->unk_04 = 0;
+    entry->unk_08 = 0;
+    entry->unk_0C = 0;
+}
 
 void func_8010E098_pump_pump_away(void) {
     s32 i;

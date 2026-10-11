@@ -174,6 +174,7 @@ extern Vec D_80110E70_pump_pump_away[4];
 extern Vec D_80110EA0_pump_pump_away[2];
 extern f32 D_80110F9C_pump_pump_away[];
 extern Vec D_80110FC4_pump_pump_away[];
+extern u16 D_80110FDC_pump_pump_away[2][2];
 extern Vec D_80111004_pump_pump_away[];
 extern f32 D_8011102C_pump_pump_away[];
 extern u16 D_80111114_pump_pump_away;
@@ -838,7 +839,54 @@ void func_80108504_pump_pump_away(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80108560_pump_pump_away);
+void func_80108560_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2) {
+    UnkPumpPumpAwayNode *node = &D_80111758_pump_pump_away[0];
+    Gfx *gfx;
+    Gfx *command;
+    u32 word;
+    s32 i;
+    s32 x;
+    s32 y;
+    s32 right;
+    s32 bottom;
+
+    if (node->unk_00 == -1) {
+        return;
+    }
+    if (D_80111788_pump_pump_away < 255) {
+        gfxPos = func_80105AA0_pump_pump_away(gfxPos);
+        gfxPos = func_80105B6C_pump_pump_away(gfxPos, (u8)D_80111788_pump_pump_away);
+    } else {
+        gfxPos = func_801059BC_pump_pump_away(gfxPos);
+    }
+    gfx = *gfxPos;
+    gDPSetTextureLUT(gfx++, G_TT_RGBA16);
+    gDPLoadTLUT_pal16(gfx++, 0, ((HuSprite_Unk84_Struct *)node->unk_0C)->unk0C);
+    for (i = 0; i < 2; i++) {
+        gDPLoadTextureTile_4b(gfx++, ((HuSprite_Unk84_Struct *)node->unk_0C)->unk08, G_IM_FMT_CI, 64, 16,
+                              0, 0, 64, 16, 0, G_TX_WRAP, G_TX_WRAP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+        gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 64 << 2, 16 << 2);
+        x = D_80110FDC_pump_pump_away[i][0];
+        y = D_80110FDC_pump_pump_away[i][1];
+        right = x + 64;
+        bottom = y + 16;
+        {
+            Gfx *rectangle = gfx++;
+            rectangle->words.w0 = _SHIFTL(G_TEXRECT, 24, 8) | _SHIFTL((right * 4) & 0xFFC, 12, 12) | _SHIFTL((bottom * 4) & 0xFFC, 0, 12);
+            rectangle->words.w1 = _SHIFTL((x * 4) & 0xFFC, 12, 12) | _SHIFTL((y * 4) & 0xFFC, 0, 12);
+        }
+        command = gfx++;
+        word = _SHIFTL(G_RDPHALF_1, 24, 8);
+        command->words.w0 = word;
+        command->words.w1 = 0;
+        command = gfx++;
+        word = _SHIFTL(G_RDPHALF_2, 24, 8);
+        command->words.w0 = word;
+        word = _SHIFTL(1024, 16, 16) | _SHIFTL(1024, 0, 16);
+        command->words.w1 = word;
+    }
+    *gfxPos = gfx;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80108810_pump_pump_away);
 

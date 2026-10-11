@@ -46,7 +46,27 @@ typedef union RockinRacewayWorkBytes { // packs the top byte of each work word
     } bytes;
 } RockinRacewayWorkBytes;
 
+// Pool of 8 of these allocated in func_80108578_rockin_raceway, stored in D_80111B48_rockin_raceway.
+// func_80108760_rockin_raceway claims a free entry for a pair of blinking marker models, and
+// func_80108864_rockin_raceway animates the entries each frame, alternating the visible model every
+// duration frames and drifting position by the velocity vector.
+typedef struct {
+    /* 0x00 */ u16 active; // 0 marks a free entry
+    /* 0x02 */ s16 modelA;
+    /* 0x04 */ s16 modelB;
+    /* 0x06 */ u16 timer;
+    /* 0x08 */ u16 duration;
+    /* 0x0A */ u16 flag;
+    /* 0x0C */ f32 posX;
+    /* 0x10 */ f32 posY;
+    /* 0x14 */ f32 posZ;
+    /* 0x18 */ f32 velX;
+    /* 0x1C */ f32 velY;
+    /* 0x20 */ f32 velZ;
+} RockinRacewayFx; // Size 0x24
+
 extern Track *D_80111B40_rockin_raceway;
+extern RockinRacewayFx *D_80111B48_rockin_raceway;
 extern RockinRacewaySfx *D_80111BD0_rockin_raceway;
 extern omObjData *D_80111C30_rockin_raceway;
 extern s16 D_80111C34_rockin_raceway;
@@ -101,7 +121,38 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2C_rockin_raceway/251FF0", func_80108
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2C_rockin_raceway/251FF0", func_80108578_rockin_raceway);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2C_rockin_raceway/251FF0", func_80108760_rockin_raceway);
+// Claims a free blink-marker entry, initializes it with the duration and base position, positions
+// both models there, and returns the entry index, or -1 if the pool is full.
+s32 func_80108760_rockin_raceway(Vec *arg0, s32 arg1, u16 arg2) {
+    RockinRacewayFx *entry;
+    s32 i;
+
+    for (i = 0, entry = D_80111B48_rockin_raceway; i < 8 && entry->active != 0; i++, entry++) {
+    }
+    if (i >= 8) {
+        return -1;
+    }
+    entry->active = 1;
+    entry->duration = arg2;
+    entry->flag = 0;
+    if (arg0 != NULL) {
+        entry->posX = arg0->x;
+        entry->posY = arg0->y;
+        entry->posZ = arg0->z;
+    } else {
+        entry->posX = entry->posY = entry->posZ = 0.0f;
+    }
+    if (arg1 != 0) {
+        entry->velX = arg0->x;
+        entry->velY = arg0->y;
+        entry->velZ = arg0->z;
+    } else {
+        entry->velX = entry->velY = entry->velZ = 0.0f;
+    }
+    Hu3DModelPosSet(entry->modelA, entry->posX, entry->posY, entry->posZ);
+    Hu3DModelPosSet(entry->modelB, entry->posX, entry->posY, entry->posZ);
+    return i;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2C_rockin_raceway/251FF0", func_80108864_rockin_raceway);
 

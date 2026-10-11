@@ -249,6 +249,7 @@ void func_801094CC_pump_pump_away(omObjData *obj);
 void func_801099D4_pump_pump_away(omObjData *obj);
 void func_80109A50_pump_pump_away(omObjData *obj);
 void func_80109D74_pump_pump_away(omObjData *obj);
+void func_8010A570_pump_pump_away(omObjData *obj);
 void func_8010B370_pump_pump_away(omObjData *obj);
 void func_8010C6E4_pump_pump_away(omObjData *obj);
 void func_8010D1B8_pump_pump_away(omObjData *obj);
@@ -1076,7 +1077,16 @@ void func_8010A468_pump_pump_away(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010A570_pump_pump_away);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010AD24_pump_pump_away);
+void func_8010AD24_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[obj->work[0]];
+
+    if (player->unk_14 == 0 && player->unk_18 == 0.0f) {
+        player->unk_00 = 99;
+        player->unk_24 = 2;
+    } else {
+        func_8010A570_pump_pump_away(obj);
+    }
+}
 
 void func_8010ADA0_pump_pump_away(omObjData *obj) {
     u32 playerIndex = obj->work[0];

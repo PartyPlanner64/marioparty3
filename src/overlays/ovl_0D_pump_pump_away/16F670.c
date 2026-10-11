@@ -124,6 +124,12 @@ typedef struct UnkPumpPumpAwayPlayer {
     /* 0x30 */ s32 unk_30;
 } UnkPumpPumpAwayPlayer; // sizeof 0x34
 
+typedef struct PumpPumpAwayAngleState {
+    s32 state;
+    s32 player;
+    f32 angle;
+} PumpPumpAwayAngleState; // sizeof 0xC
+
 typedef struct PumpPumpAwayFade {
     /* 0x00 */ s32 state;
     /* 0x04 */ s32 spriteId; // 0x06 is also read as an s16
@@ -207,7 +213,7 @@ extern UnkPumpPumpAwayEntry D_80111A30_pump_pump_away[50];
 extern UnkPumpPumpAwayState D_80113400_pump_pump_away[3];
 extern UnkPumpPumpAway D_80113418_pump_pump_away[2];
 extern UnkPumpPumpAwayJet D_80113438_pump_pump_away[4];
-extern s32 D_80113518_pump_pump_away;
+extern PumpPumpAwayAngleState D_80113518_pump_pump_away;
 extern s32 D_8011351C_pump_pump_away;
 extern f32 D_80113520_pump_pump_away;
 extern omObjData *D_80113524_pump_pump_away;
@@ -978,7 +984,7 @@ void func_80109470_pump_pump_away(void) {
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_801094CC_pump_pump_away);
 
 void func_801098E0_pump_pump_away(omObjData *obj) {
-    s32 *state = &D_80113518_pump_pump_away;
+    s32 *state = &D_80113518_pump_pump_away.state;
     UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[D_8011351C_pump_pump_away];
 
     if (*state == 4) {
@@ -994,7 +1000,7 @@ void func_801098E0_pump_pump_away(omObjData *obj) {
 }
 
 void func_801099D4_pump_pump_away(omObjData *obj) {
-    s32 *state = &D_80113518_pump_pump_away;
+    s32 *state = &D_80113518_pump_pump_away.state;
 
     if (*state == -1) {
         return;
@@ -1029,7 +1035,7 @@ void func_80109A50_pump_pump_away(omObjData *obj) {
     func_8001C258_main(obj->model[0], 4, 4);
     obj->trans.x = obj->trans.y = obj->trans.z = 0.0f;
     obj->func = func_801099D4_pump_pump_away;
-    D_80113518_pump_pump_away = 0;
+    D_80113518_pump_pump_away.state = 0;
     D_8011351C_pump_pump_away = -1;
     D_80113520_pump_pump_away = 180.0f;
     D_80113524_pump_pump_away = obj;
@@ -1293,7 +1299,77 @@ void func_8010AED4_pump_pump_away(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010AF70_pump_pump_away);
+void func_8010AF70_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[obj->work[0]];
+    PumpPumpAwayAngleState *angleState;
+    f32 angle;
+    s16 sound;
+    s32 i;
+    UnkPumpPumpAwayJet *jet;
+
+    switch (player->unk_08) {
+        case 10:
+            obj->trans.y = 1010.0f;
+            player->unk_08 = 11;
+            break;
+        case 11:
+            angleState = &D_80113518_pump_pump_away;
+            if (D_80113520_pump_pump_away + 180.0f >= 360.0f) {
+                angle = D_80113520_pump_pump_away + 180.0f - 360.0f;
+            } else {
+                angle = angleState->angle + 180.0f;
+                if (angle < 0.0f) {
+                    angle += 360.0f;
+                }
+            }
+            obj->rot.z = angle;
+            obj->trans.y -= 10.0f;
+            if (obj->trans.y <= 200.0f) {
+                obj->trans.y = 200.0f;
+                player->unk_24 = 2;
+                player->unk_08 = 12;
+            }
+            break;
+        case 20:
+            obj->trans.y = 1000.0f;
+            obj->rot.z = 180.0f;
+            player->unk_08 = 21;
+            break;
+        case 21:
+            obj->trans.y -= 50.0f;
+            if (obj->trans.y <= 250.0f) {
+                D_80113400_pump_pump_away[obj->work[0]].unk_00 = 2;
+                player->unk_08 = 22;
+                sound = HuAudFXPlay(0x361);
+                if (obj->work[0] != 0) {
+                    func_8004AE00_main(sound, 96);
+                } else {
+                    func_8004AE00_main(sound, 32);
+                }
+                for (i = 0; i < 4; i++) {
+                    jet = &D_80113438_pump_pump_away[i];
+                    if (jet->unk_00 != -1) {
+                        if (jet->unk_04->work[1] == obj->work[0]) {
+                            if (jet->unk_20 == 0) {
+                                omVibrate((s16)jet->unk_04->work[0], 2, 2, 20);
+                            }
+                        } else if (jet->unk_20 == 0) {
+                            omVibrate((s16)jet->unk_04->work[0], 10, 0, 10);
+                        }
+                    }
+                }
+            }
+            break;
+        case 22:
+            obj->trans.y -= 50.0f;
+            if (obj->trans.y <= 100.0f) {
+                obj->trans.y = 100.0f;
+                player->unk_24 = 2;
+                player->unk_08 = 23;
+            }
+            break;
+    }
+}
 
 void func_8010B274_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[obj->work[0]];
@@ -2399,7 +2475,7 @@ void func_8011078C_pump_pump_away(void) {
 }
 
 void func_801107C4_pump_pump_away(void) {
-    D_80113518_pump_pump_away = -1;
+    D_80113518_pump_pump_away.state = -1;
     D_8011351C_pump_pump_away = -1;
     D_80113520_pump_pump_away = 0.0f;
 }

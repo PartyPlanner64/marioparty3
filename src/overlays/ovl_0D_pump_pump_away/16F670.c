@@ -244,6 +244,8 @@ extern s32 D_801135E4_pump_pump_away;
 extern s32 fontcolor;
 extern const s16 D_801116D8_pump_pump_away[];
 
+s16 func_8000B5BC_main(s32 arg0);
+void func_8001F974_main(s16 arg0, s16 arg1);
 void func_800335BC_main(char *name, u16 *result);
 void func_80106A6C_pump_pump_away(omObjData *obj);
 void func_8000B710_main(s32 arg0);
@@ -1593,7 +1595,47 @@ void func_8010B274_pump_pump_away(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010B370_pump_pump_away);
+void func_8010B370_pump_pump_away(omObjData *obj) {
+    void *data;
+    UnkPumpPumpAwayPlayer *player;
+
+    obj->model[0] = func_8000B108_main(0x2E000D, 0x4022A9);
+    obj->motion[0] = func_8000B5BC_main(0x2E000E);
+    func_8001C954_main(obj->model[0]);
+    func_8001F974_main(obj->model[0], obj->motion[0]);
+    func_8001C514_main(obj->motion[0]);
+    if (obj->work[0] != 0) {
+        data = DataRead(0x2E000F);
+        obj->work[1] = (s16)HmfAnimCreate(HmfModelData[obj->model[0]].hmf, data, 0, "m213_roket_r00_DEF");
+        func_80032FC0_main(obj->work[1], 1, 1);
+        HuMemMemoryFreePerm(data);
+        data = DataRead(0x2E0010);
+        obj->work[2] = (s16)HmfAnimCreate(HmfModelData[obj->model[0]].hmf, data, 0, "m213_roket_r01_DEF");
+        func_80032FC0_main(obj->work[2], 1, 1);
+        HuMemMemoryFreePerm(data);
+        func_8001C448_main(obj->model[0]);
+        func_8001C514_main(obj->model[0]);
+    }
+    func_8001C5B4_main(obj->model[0], obj->motion[0]);
+    func_8001C814_main(obj->model[0], 2, 0);
+    obj->trans.x = D_80110EA0_pump_pump_away[obj->work[0]].x;
+    obj->trans.y = D_80110EA0_pump_pump_away[obj->work[0]].y;
+    obj->trans.z = D_80110EA0_pump_pump_away[obj->work[0]].z;
+    obj->func = func_8010B274_pump_pump_away;
+    player = &D_80111978_pump_pump_away[obj->work[0]];
+    player->unk_00 = 0;
+    player->unk_04 = 0;
+    player->unk_08 = 0;
+    player->unk_0C = 0;
+    player->unk_10 = 0;
+    player->unk_14 = 0;
+    player->unk_18 = 0;
+    player->unk_1C = 0;
+    player->unk_20 = 0;
+    player->unk_24 = 0;
+    player->unk_2C = 0;
+    player->unk_28 = obj;
+}
 
 void func_8010B5D4_pump_pump_away(void) {
     s32 i;

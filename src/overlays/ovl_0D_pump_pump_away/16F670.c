@@ -764,7 +764,64 @@ void func_80108FA8_pump_pump_away(void) {
     obj->work[0] = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80108FE0_pump_pump_away);
+void func_80108FE0_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwayState *state = &D_80113400_pump_pump_away[obj->work[0]];
+
+    UnkPumpPumpAwayPlayer *players;
+    UnkPumpPumpAwayPlayer *secondPlayer;
+
+    switch (state->unk_00) {
+        case 0:
+            break;
+        case 1:
+            func_8001C5B4_main(obj->model[0], obj->motion[0]);
+            func_8001C6A8_main(obj->model[0], 0);
+            func_8001C814_main(obj->model[0], 1, 0);
+            func_8001C258_main(obj->model[0], 4, 0);
+            state->unk_00 = 3;
+            break;
+        case 2:
+            func_8001C5B4_main(obj->model[1], obj->motion[1]);
+            func_8001C6A8_main(obj->model[1], 0);
+            func_8001C92C_main(obj->model[1], 0.5f);
+            func_8001C814_main(obj->model[1], 1, 0);
+            func_8001C258_main(obj->model[1], 4, 0);
+            state->unk_00 = 4;
+            break;
+        case 3:
+            players = D_80111978_pump_pump_away;
+            secondPlayer = players + 1;
+            if (players->unk_18 - secondPlayer->unk_18 > 0.0f) {
+                obj->trans.y -= players->unk_20;
+            } else {
+                obj->trans.y -= secondPlayer->unk_20;
+            }
+            if (obj->trans.y < -3000.0f) {
+                obj->trans.y = -3000.0f;
+            }
+            state->unk_04 -= 8;
+            if (state->unk_04 > 0) {
+                func_8001F9E4_main(obj->model[0], (u8)state->unk_04);
+            } else {
+                func_8001C814_main(obj->model[0], 1, 1);
+                func_8001C258_main(obj->model[0], 4, 4);
+                state->unk_04 = 255;
+                state->unk_00 = 0;
+            }
+            break;
+        case 4:
+            state->unk_04 -= 5;
+            if (state->unk_04 > 0) {
+                func_8001F9E4_main(obj->model[1], (u8)state->unk_04);
+            } else {
+                func_8001C814_main(obj->model[1], 1, 1);
+                func_8001C258_main(obj->model[1], 4, 4);
+                state->unk_04 = 255;
+                state->unk_00 = 0;
+            }
+            break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010921C_pump_pump_away);
 

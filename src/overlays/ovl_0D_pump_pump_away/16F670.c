@@ -265,6 +265,8 @@ void func_8010CEE8_pump_pump_away(omObjData *obj);
 void func_8010D1B8_pump_pump_away(omObjData *obj);
 void func_8010D48C_pump_pump_away(omObjData *obj);
 void func_8010D620_pump_pump_away(omObjData *obj);
+void func_8010D6F4_pump_pump_away(omObjData *obj);
+void func_8010D95C_pump_pump_away(omObjData *obj);
 void func_8010DD24_pump_pump_away(omObjData *obj);
 void func_8010E0F4_pump_pump_away(omObjData *obj);
 void func_8010E45C_pump_pump_away(omObjData *obj);
@@ -1597,7 +1599,23 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010D
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010D95C_pump_pump_away);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010DC68_pump_pump_away);
+void func_8010DC68_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAway *entry = &D_80113418_pump_pump_away[obj->work[0]];
+
+    if (entry->unk_00 == -1) {
+        return;
+    }
+    if (obj->work[0] == 0) {
+        func_8010D6F4_pump_pump_away(obj);
+    } else {
+        func_8010D95C_pump_pump_away(obj);
+    }
+    if (D_80113530_pump_pump_away.state >= 2 && entry->unk_00 < 10) {
+        func_8001C258_main(obj->model[0], 4, 4);
+        func_8001C258_main(obj->model[1], 4, 4);
+        entry->unk_00 = 10;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010DD24_pump_pump_away);
 

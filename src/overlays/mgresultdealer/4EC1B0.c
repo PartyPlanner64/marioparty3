@@ -38,7 +38,32 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80106CC8_mgr
 void func_80106D94_mgresultdealer(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80106D9C_mgresultdealer);
+extern u8 D_801098E0_mgresultdealer;
+extern u8 D_801098E1_mgresultdealer;
+extern u8 D_801098E2_mgresultdealer;
+extern Vec D_801098E4_mgresultdealer;
+extern Vec D_801098F0_mgresultdealer;
+extern s32 D_80109A60_mgresultdealer;
+extern omObjData *D_8010A250_mgresultdealer;
+
+void func_80106D9C_mgresultdealer(void) {
+    omObjData *obj = D_8010A250_mgresultdealer;
+
+    D_801098E0_mgresultdealer = 1;
+    D_801098E1_mgresultdealer = 0;
+    D_801098E2_mgresultdealer = 0;
+    D_801098E4_mgresultdealer.x = 0.0f;
+    D_801098E4_mgresultdealer.y = 400.0f;
+    D_801098E4_mgresultdealer.z = -55.0f;
+    D_801098F0_mgresultdealer.x = 160.0f;
+    D_801098F0_mgresultdealer.y = 20.0f;
+    D_801098F0_mgresultdealer.z = 0.0f;
+    D_80109A60_mgresultdealer = 0;
+    Hu3DModelPosSet(obj->model[2], D_801098E4_mgresultdealer.x, 400.0f, -55.0f);
+    Hu3DModelRotSet(obj->model[2], D_801098F0_mgresultdealer.x, D_801098F0_mgresultdealer.y, D_801098F0_mgresultdealer.z);
+    func_8001C258_main(obj->model[1], 4, 4);
+    func_8001C258_main(obj->model[2], 4, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80106EA0_mgresultdealer);
 

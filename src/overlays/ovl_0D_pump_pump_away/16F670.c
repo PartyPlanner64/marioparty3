@@ -236,6 +236,7 @@ void func_8000BE5C_main(u16 spriteId, f32 x, f32 y);
 omObjData *func_80045EF4_main(u32 arg0, s16 arg1);
 u16 GWMgRecordGet(s16 arg0);
 void func_8004AE00_main(s16 arg0, s16 arg1);
+void func_80034048_main(s16 arg0, s16 arg1);
 void func_80105EE4_pump_pump_away(Vec *position, Vec *target, Vec *result);
 void func_8010654C_pump_pump_away(omObjData *obj);
 void func_80106724_pump_pump_away(omObjData *obj);
@@ -620,7 +621,24 @@ void func_801078EC_pump_pump_away(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80107964_pump_pump_away);
+void func_80107964_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAway *entry = &D_80113570_pump_pump_away[obj->work[0]];
+    UnkPumpPumpAwayJet *jet = &D_80113438_pump_pump_away[entry->unk_0C];
+
+    func_8001C6A8_main(obj->model[0], HmfModelData[jet->unk_04->model[0]].unk40);
+    if (jet->unk_18 != 0 && HmfModelData[obj->model[0]].unk40 <= 6.0f) {
+        if (entry->unk_04 != 0) {
+            entry->unk_04--;
+        } else {
+            entry->unk_08 ^= 1;
+            entry->unk_04 = 1;
+            func_80034048_main(obj->work[1], (s16)entry->unk_08);
+        }
+    } else {
+        entry->unk_04 = 0;
+        func_80034048_main(obj->work[1], 0);
+    }
+}
 
 void func_80107A8C_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAway *entry = &D_80113570_pump_pump_away[obj->work[0]];

@@ -185,6 +185,8 @@ extern u16 D_80110FDC_pump_pump_away[2][2];
 extern Vec D_80111004_pump_pump_away[];
 extern f32 D_8011101C_pump_pump_away[];
 extern f32 D_8011102C_pump_pump_away[];
+extern f32 D_8011109C_pump_pump_away[];
+extern s32 D_801133F8_pump_pump_away;
 extern u16 D_80111114_pump_pump_away;
 extern s32 D_80111118_pump_pump_away;
 extern PumpPumpAwayCamera D_8011111C_pump_pump_away[];
@@ -2469,7 +2471,62 @@ void func_8010F20C_pump_pump_away(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010F268_pump_pump_away);
+void func_8010F268_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwaySpray *spray = &D_801119E8_pump_pump_away[obj->work[0]];
+    UnkPumpPumpAwayPlayer *player = D_80111978_pump_pump_away;
+    UnkPumpPumpAwayPlayer *other = &player[1];
+    f32 distance;
+    s32 progress;
+    f32 *positions;
+    f32 angle;
+
+    if (spray->unk_00 != -1) {
+        distance = (player->unk_18 > other->unk_18) ? player->unk_18 : other->unk_18;
+        progress = distance * 0.01;
+        if (spray->unk_04 == 0) {
+            switch (spray->unk_00) {
+                case 0:
+                    positions = D_8011109C_pump_pump_away;
+                    if (D_8011109C_pump_pump_away[D_801133F8_pump_pump_away] - distance * 0.1 + 400.0 < 1000.0) {
+                        func_8001C258_main(obj->model[0], 4, 0);
+                        obj->trans.y = positions[obj->work[0]] + distance * 0.1 + 400.0;
+                        spray->unk_00 = 1;
+                        obj->work[1] = D_801133F8_pump_pump_away;
+                        D_801133F8_pump_pump_away++;
+                    }
+                    break;
+                case 1:
+                    obj->trans.y = D_8011109C_pump_pump_away[obj->work[1]] - distance * 0.1 + 400.0;
+                    if (obj->trans.y < -1000.0f) {
+                        func_8001C258_main(obj->model[0], 4, 4);
+                        if (obj->work[0] & 1) {
+                            obj->trans.x = rand16() % 301 + 100;
+                        } else {
+                            obj->trans.x = -(rand16() % 301) - 100;
+                        }
+                        obj->trans.z = (rand8() & 1) ? -500.0f : 500.0f;
+                        spray->unk_00 = 0;
+                    }
+                    break;
+            }
+        }
+        if (spray->unk_08 + 6.0f >= 360.0f) {
+            angle = (spray->unk_08 + 6.0f) - 360.0f;
+        } else {
+            angle = spray->unk_08 + 6.0f;
+            if (angle < 0.0f) {
+                angle += 360.0f;
+            }
+        }
+        spray->unk_08 = angle;
+        obj->scale.y = obj->scale.z = obj->scale.x = sindf(angle) * 0.03 + 0.5;
+        if ((D_80113530_pump_pump_away.state >= 2 && spray->unk_00 < 10) || (progress >= 351 && spray->unk_00 == 0)) {
+            func_8001C258_main(obj->model[0], 4, 4);
+            spray->unk_00 = 10;
+            spray->unk_04 = 1;
+        }
+    }
+}
 
 void func_8010F688_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAwaySpray *spray;

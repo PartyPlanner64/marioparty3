@@ -662,7 +662,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80108
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80108810_pump_pump_away);
 
-void func_80108B0C_pump_pump_away(void) {
+void func_80108B0C_pump_pump_away(omObjData *obj) {
     s32 digits[4];
     s32 i = 0;
     s32 j;
@@ -694,7 +694,46 @@ void func_80108B0C_pump_pump_away(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80108CFC_pump_pump_away);
+void func_80108CFC_pump_pump_away(omObjData *obj) {
+    s32 i;
+    UnkPumpPumpAwayNode *node;
+
+    for (i = 0; i < 2; i++) {
+        node = &D_80111758_pump_pump_away[i];
+        if (node->unk_00 == -1) {
+            return;
+        }
+    }
+    func_80108B0C_pump_pump_away(obj);
+    switch (obj->work[0]) {
+        case 0:
+            if (D_801116F4_pump_pump_away < 4) {
+                for (i = 0; i < 2; i++) {
+                    node = &D_80111758_pump_pump_away[i];
+                    node->unk_30 = 0;
+                }
+            } else {
+                obj->work[0] = 1;
+            }
+            break;
+        case 1:
+            for (i = 0; i < 2; i++) {
+                node = &D_80111758_pump_pump_away[i];
+                node->unk_30 += 25;
+                if (node->unk_30 >= 255) {
+                    node->unk_30 = 255;
+                    obj->work[0] = 2;
+                }
+            }
+            break;
+        case 2:
+            for (i = 0; i < 2; i++) {
+                node = &D_80111758_pump_pump_away[i];
+                node->unk_30 = 255;
+            }
+            break;
+    }
+}
 
 void func_80108E74_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAwayNode *entry = D_80111758_pump_pump_away;

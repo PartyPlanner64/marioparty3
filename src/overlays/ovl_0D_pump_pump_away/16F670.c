@@ -882,7 +882,45 @@ void func_80107E5C_pump_pump_away(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80107EB8_pump_pump_away);
+void func_80107EB8_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwayHose *hose = &D_801117C0_pump_pump_away[obj->work[0]];
+    UnkPumpPumpAwayJet *jets[2];
+    s32 i;
+    s32 count;
+    s32 speed;
+    UnkPumpPumpAwayPlayer *player;
+
+    for (i = 0, count = 0; (i < 4) & (count < 2); i++) {
+        jets[count] = &D_80113438_pump_pump_away[i];
+        count += GwPlayer[jets[count]->unk_04->work[0]].group == obj->work[0];
+    }
+
+    switch (hose->unk_04) {
+        case 0:
+            if (hose->unk_0C < jets[0]->unk_10 + jets[1]->unk_10) {
+                func_8001C5B4_main(obj->model[0], obj->motion[0]);
+                speed = (jets[0]->unk_10 + jets[1]->unk_10 - hose->unk_0C) / 3;
+                hose->unk_0C = jets[0]->unk_10 + jets[1]->unk_10;
+                hose->unk_08 = speed < 10 ? speed : 9;
+                func_8001C92C_main(obj->model[0], D_80110F9C_pump_pump_away[hose->unk_08]);
+                func_8001C814_main(obj->model[0], 1, 0);
+                hose->unk_04 = 1;
+            } else {
+                func_8001C6A8_main(obj->model[0], 0);
+            }
+            break;
+        case 1:
+            if (HmfModelData[obj->model[0]].unk40 >= D_800CCF58_main[HmfModelData[obj->model[0]].unk02].unk02 - 2) {
+                func_8001C5B4_main(obj->model[0], obj->motion[0]);
+                func_8001C6A8_main(obj->model[0], 0);
+                hose->unk_04 = 0;
+                player = &D_80111978_pump_pump_away[obj->work[0]];
+                player->unk_0C = 1;
+                player->unk_10 = hose->unk_08;
+            }
+            break;
+    }
+}
 
 void func_8010811C_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAwayHose *hose = &D_801117C0_pump_pump_away[obj->work[0]];

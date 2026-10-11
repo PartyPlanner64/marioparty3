@@ -54,6 +54,13 @@ typedef struct UnkPumpPumpAwayHose {
     /* 0x0C */ omObjData *unk_0C;
 } UnkPumpPumpAwayHose; // sizeof 0x10
 
+typedef struct PumpPumpAwayMovingEffect {
+    /* 0x00 */ s32 state;
+    /* 0x04 */ s32 hidden;
+    /* 0x08 */ s32 direction;
+    /* 0x0C */ f32 speed;
+} PumpPumpAwayMovingEffect; // sizeof 0x10
+
 typedef struct UnkPumpPumpAwayParticle {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
@@ -163,7 +170,7 @@ extern s32 D_80111118_pump_pump_away;
 extern PumpPumpAwayCamera D_8011111C_pump_pump_away[];
 extern s16 D_801116EA_pump_pump_away;
 extern s16 D_801116EC_pump_pump_away;
-extern u16 D_801116EE_pump_pump_away;
+extern s16 D_801116EE_pump_pump_away;
 extern s16 D_801116F0_pump_pump_away;
 extern s16 D_801116F2_pump_pump_away;
 extern s32 D_801116F4_pump_pump_away;
@@ -214,7 +221,7 @@ extern u16 D_801135CC_pump_pump_away;
 extern PumpPumpAwayRecordMarker D_801135D8_pump_pump_away;
 extern u16 D_801135DC_pump_pump_away;
 extern s32 D_801135E0_pump_pump_away;
-extern UnkPumpPumpAwayHose D_801135E8_pump_pump_away[4];
+extern PumpPumpAwayMovingEffect D_801135E8_pump_pump_away[4];
 extern s32 fontcolor;
 extern const s16 D_801116D8_pump_pump_away[];
 
@@ -247,7 +254,9 @@ void func_8010D1B8_pump_pump_away(omObjData *obj);
 void func_8010D48C_pump_pump_away(omObjData *obj);
 void func_8010D620_pump_pump_away(omObjData *obj);
 void func_8010DD24_pump_pump_away(omObjData *obj);
+void func_8010E0F4_pump_pump_away(omObjData *obj);
 void func_8010E45C_pump_pump_away(omObjData *obj);
+void func_8010E6B8_pump_pump_away(omObjData *obj);
 void func_8010E98C_pump_pump_away(omObjData *obj);
 void func_8010F688_pump_pump_away(omObjData *obj);
 void func_8010F900_pump_pump_away(omObjData *obj);
@@ -255,6 +264,7 @@ void func_8010FC64_pump_pump_away(omObjData *obj);
 void func_8010FD94_pump_pump_away(omObjData *obj);
 void func_8010FE6C_pump_pump_away(omObjData *obj);
 void func_8010FEF8_pump_pump_away(omObjData *obj);
+void func_8010EBC4_pump_pump_away(omObjData *obj);
 void func_8010F024_pump_pump_away(omObjData *obj);
 void func_80110034_pump_pump_away(omObjData *obj);
 void func_801100F0_pump_pump_away(void);
@@ -868,7 +878,7 @@ void func_8010A468_pump_pump_away(void) {
     s32 i;
     UnkPumpPumpAway *entry;
     UnkPumpPumpAwayNozzle *nozzle;
-    UnkPumpPumpAwayHose *hose;
+    PumpPumpAwayMovingEffect *hose;
     UnkPumpPumpAwaySpray *spray;
     UnkPumpPumpAwaySpray *otherSpray;
 
@@ -880,7 +890,7 @@ void func_8010A468_pump_pump_away(void) {
         nozzle[i].unk_04 = 1;
     }
     for (i = 0, hose = D_801135E8_pump_pump_away; i < 4; i++) {
-        hose[i].unk_04 = 1;
+        hose[i].hidden = 1;
     }
     for (i = 0, spray = D_80111710_pump_pump_away; i < 6; i++) {
         spray[i].unk_04 = 1;
@@ -964,7 +974,37 @@ void func_8010BC14_pump_pump_away(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010BD80_pump_pump_away);
+void func_8010BD80_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwayJet *jet = &D_80113438_pump_pump_away[obj->work[0]];
+
+    switch (jet->unk_08) {
+        case 0:
+            if (obj->rot.y >= 180.0f) {
+                break;
+            }
+            if (obj->work[0] == 0 && D_80111708_pump_pump_away != 0) {
+                D_80111708_pump_pump_away--;
+            }
+            if (D_80111708_pump_pump_away == 0) {
+                func_8001C5B4_main(obj->model[0], obj->motion[3]);
+                func_8001C6A8_main(obj->model[0], 0.0f);
+                func_8001C814_main(obj->model[0], 2, 2);
+                jet->unk_08 = 3;
+            }
+            break;
+        case 3:
+            obj->rot.y += 10.0f;
+            if (!(obj->rot.y >= 180.0f)) {
+                break;
+            }
+            obj->rot.y = 180.0f;
+        case 1:
+            func_8001C624_main(obj->model[0], HmfModelData[obj->motion[0]].unk02, 0, 20, 2);
+            jet->unk_08 = 0;
+            jet->unk_0C = 0;
+            break;
+    }
+}
 
 void func_8010BF14_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAwayJet *jet = &D_80113438_pump_pump_away[obj->work[0]];
@@ -1189,7 +1229,31 @@ void func_8010E098_pump_pump_away(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010E0F4_pump_pump_away);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010E45C_pump_pump_away);
+void func_8010E45C_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwayNozzle *nozzle;
+
+    if (D_801116EC_pump_pump_away == 0) {
+        D_801116EC_pump_pump_away = obj->model[0] = func_8000B108_main(0x2E0011, 0x299);
+    } else {
+        obj->model[0] = Hu3DModelLink(D_801116EC_pump_pump_away);
+    }
+    func_8001C814_main(obj->model[0], 2, 2);
+    func_8001C258_main(obj->model[0], 4, 4);
+    if (rand8() & 1) {
+        obj->trans.x = (u8)(rand8() % 10) * 50;
+    } else {
+        obj->trans.x = (u8)(rand8() % 10) * -50;
+    }
+    obj->trans.y = 1000.0f;
+    obj->trans.z = -150.0f;
+    obj->func = func_8010E0F4_pump_pump_away;
+    nozzle = &D_80111920_pump_pump_away[obj->work[0]];
+    nozzle->unk_00 = 0;
+    nozzle->unk_04 = 0;
+    nozzle->unk_08 = rand8() & 1;
+    nozzle->unk_0C = (u8)(rand8() % 6) + 4;
+    nozzle->unk_10 = rand8();
+}
 
 void func_8010E65C_pump_pump_away(void) {
     s32 i;
@@ -1201,7 +1265,30 @@ void func_8010E65C_pump_pump_away(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010E6B8_pump_pump_away);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010E98C_pump_pump_away);
+void func_8010E98C_pump_pump_away(omObjData *obj) {
+    PumpPumpAwayMovingEffect *effect;
+
+    if (D_801116EE_pump_pump_away == 0) {
+        D_801116EE_pump_pump_away = obj->model[0] = func_8000B108_main(0xA0062, 0x299);
+    } else {
+        obj->model[0] = Hu3DModelLink(D_801116EE_pump_pump_away);
+    }
+    func_8001C814_main(obj->model[0], 1, 1);
+    func_8001C258_main(obj->model[0], 4, 4);
+    if (rand8() & 1) {
+        obj->trans.x = (u8)(rand8() % 10) * 50;
+    } else {
+        obj->trans.x = (u8)(rand8() % 10) * -50;
+    }
+    obj->trans.y = 1000.0f;
+    obj->trans.z = -150.0f;
+    obj->func = func_8010E6B8_pump_pump_away;
+    effect = &D_801135E8_pump_pump_away[obj->work[0]];
+    effect->state = 0;
+    effect->hidden = 0;
+    effect->direction = rand8() & 1;
+    effect->speed = (u8)(rand8() % 5) + 10;
+}
 
 void func_8010EB68_pump_pump_away(void) {
     s32 i;
@@ -1213,7 +1300,29 @@ void func_8010EB68_pump_pump_away(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010EBC4_pump_pump_away);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010F024_pump_pump_away);
+void func_8010F024_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwaySpray *spray;
+
+    if (D_801116F0_pump_pump_away == 0) {
+        D_801116F0_pump_pump_away = obj->model[0] = func_8000B108_main(0x2E0022, 0x289);
+    } else {
+        obj->model[0] = Hu3DModelLink(D_801116F0_pump_pump_away);
+    }
+    func_8001C814_main(obj->model[0], 1, 1);
+    func_8001C258_main(obj->model[0], 4, 4);
+    if (obj->work[0] & 1) {
+        obj->trans.x = rand16() % 501 + 100;
+    } else {
+        obj->trans.x = -(rand16() % 501) - 100;
+    }
+    obj->trans.y = 1000.0f;
+    obj->trans.z = -150.0f;
+    obj->func = func_8010EBC4_pump_pump_away;
+    spray = &D_80111710_pump_pump_away[obj->work[0]];
+    spray->unk_00 = 0;
+    spray->unk_04 = 0;
+    spray->unk_08 = rand8();
+}
 
 void func_8010F20C_pump_pump_away(void) {
     s32 i;
@@ -1719,13 +1828,13 @@ void func_80110888_pump_pump_away(void) {
 
 void func_801108D8_pump_pump_away(void) {
     s32 i;
-    UnkPumpPumpAwayHose *entry;
+    PumpPumpAwayMovingEffect *entry;
 
     for (i = 0, entry = D_801135E8_pump_pump_away; i < 4; i++) {
-        entry[i].unk_00 = -1;
-        entry[i].unk_04 = 0;
-        entry[i].unk_08 = 0;
-        entry[i].unk_0C = 0;
+        entry[i].state = -1;
+        entry[i].hidden = 0;
+        entry[i].direction = 0;
+        entry[i].speed = 0.0f;
     }
     D_801116EE_pump_pump_away = 0;
 }

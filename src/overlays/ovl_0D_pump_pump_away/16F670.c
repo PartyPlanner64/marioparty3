@@ -823,7 +823,24 @@ void func_80108FE0_pump_pump_away(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010921C_pump_pump_away);
+void func_8010921C_pump_pump_away(omObjData *obj) {
+    if (D_80113400_pump_pump_away[obj->work[0]].unk_00 != -1) {
+        switch (D_801116F4_pump_pump_away) {
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+                break;
+            case 4:
+            case 7:
+                func_80108FE0_pump_pump_away(obj);
+                break;
+            case 5:
+            case 6:
+                break;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80109280_pump_pump_away);
 

@@ -127,8 +127,8 @@ typedef struct UnkPumpPumpAwayPlayer {
     /* 0x20 */ f32 unk_20;
     /* 0x24 */ s32 unk_24;
     /* 0x28 */ omObjData *unk_28;
-    /* 0x2C */ s32 unk_2C;
-    /* 0x30 */ s32 unk_30;
+    /* 0x2C */ f32 unk_2C;
+    /* 0x30 */ f32 unk_30;
 } UnkPumpPumpAwayPlayer; // sizeof 0x34
 
 typedef struct PumpPumpAwayAngleState {
@@ -176,6 +176,15 @@ typedef struct PumpPumpAwayRecordMarker {
     /* 0x08 */ s32 hidden;
 } PumpPumpAwayRecordMarker; // sizeof 0xC
 
+typedef struct PumpPumpAwaySkyColor {
+    s32 red;
+    s32 green;
+    s32 blue;
+} PumpPumpAwaySkyColor;
+
+extern u8 D_800D2008_main;
+extern u8 D_800D6A90_main;
+extern PumpPumpAwaySkyColor D_80110EB8_pump_pump_away[];
 extern s32 D_800A178C_main[][6];
 extern Vec D_80110E70_pump_pump_away[4];
 extern Vec D_80110EA0_pump_pump_away[2];
@@ -185,6 +194,7 @@ extern s32 D_80113528_pump_pump_away;
 extern s32 D_8011352C_pump_pump_away;
 extern Vec D_80110FC4_pump_pump_away[];
 extern u16 D_80110FDC_pump_pump_away[2][2];
+extern u16 D_80110FE4_pump_pump_away[8][2];
 extern Vec D_80111004_pump_pump_away[];
 extern f32 D_8011101C_pump_pump_away[];
 extern f32 D_8011102C_pump_pump_away[];
@@ -196,6 +206,9 @@ extern u16 D_80111114_pump_pump_away;
 extern s32 D_80111118_pump_pump_away;
 extern s16 D_80111108_pump_pump_away;
 extern s16 D_8011110A_pump_pump_away;
+extern s16 D_8011110C_pump_pump_away;
+extern s16 D_8011110E_pump_pump_away;
+extern s32 D_80111110_pump_pump_away;
 extern PumpPumpAwayCamera D_8011111C_pump_pump_away[];
 extern u8 D_801116E8_pump_pump_away;
 extern s16 D_801116EA_pump_pump_away;
@@ -228,6 +241,7 @@ extern UnkPumpPumpAwayParticle D_801117E0_pump_pump_away[20];
 extern UnkPumpPumpAwayNozzle D_80111920_pump_pump_away[4];
 extern UnkPumpPumpAwayPlayer D_80111978_pump_pump_away[2];
 extern s32 D_801119E4_pump_pump_away;
+extern f32 D_80111990_pump_pump_away;
 extern UnkPumpPumpAwaySpray D_801119E8_pump_pump_away[6];
 extern UnkPumpPumpAwayEntry D_80111A30_pump_pump_away[50];
 extern UnkPumpPumpAwayState D_80113400_pump_pump_away[3];
@@ -262,6 +276,7 @@ extern s32 D_801135E4_pump_pump_away;
 extern s32 fontcolor;
 extern const s16 D_801116D8_pump_pump_away[];
 
+void func_8001E888_main(s16 model, f32 x, f32 y, u16 arg3, u16 arg4, char *name, s32 arg6);
 s16 func_8000B5BC_main(s32 arg0);
 void func_8001F974_main(s16 arg0, s16 arg1);
 void func_800335BC_main(char *name, u16 *result);
@@ -696,7 +711,104 @@ void func_80106A38_pump_pump_away(void) {
     omAddObj(0x104, 1, 0, -1, func_801069D0_pump_pump_away);
 }
 
+// TODO: match the object and model pointer register allocation.
+#ifdef NON_MATCHING
+void func_80106A6C_pump_pump_away(omObjData *obj) {
+    HmfData *model = HmfModelData[obj->model[0]].hmf;
+    Vtx *vertex = model->unk44[D_800D2008_main];
+    UnkPumpPumpAwayPlayer *players;
+    UnkPumpPumpAwayPlayer *other;
+    f32 distance;
+    f32 difference;
+    f32 fraction;
+    s32 meters;
+    u32 i;
+
+    switch (D_801116F4_pump_pump_away) {
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+            for (i = 0; i < model->unk18; i++, vertex++) {
+                if (i == 1 || i == 2) {
+                    vertex->v.cn[0] = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 1].red;
+                    vertex->v.cn[1] = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 1].green;
+                    vertex->v.cn[2] = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 1].blue;
+                } else {
+                    vertex->v.cn[0] = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away].red;
+                    vertex->v.cn[1] = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away].green;
+                    vertex->v.cn[2] = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away].blue;
+                }
+            }
+            break;
+        case 4:
+            func_8001C258_main(obj->model[0], 4, 0);
+            func_8001C258_main(obj->model[1], 4, 4);
+            players = D_80111978_pump_pump_away;
+            other = &players[1];
+            if (D_80111990_pump_pump_away > other->unk_18) {
+                distance = D_80111990_pump_pump_away;
+            } else {
+                distance = other->unk_18;
+            }
+            meters = distance * 0.01;
+            D_801135E4_pump_pump_away = meters * 0.01;
+            if (func_80049F98_main() + D_800D6A90_main == 0) {
+                if (players->unk_18 - other->unk_18 > 0.0f) {
+                    D_801116E0_pump_pump_away = players->unk_18 * 0.0000125;
+                    D_801116E4_pump_pump_away -= players->unk_20 * 0.08;
+                } else {
+                    D_801116E0_pump_pump_away = other->unk_18 * 0.0000125;
+                    D_801116E4_pump_pump_away -= other->unk_20 * 0.08;
+                }
+            }
+            for (i = 0; i < model->unk18; i++, vertex++) {
+                if (i == 1 || i == 2) {
+                    difference = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 1].red - D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away].red;
+                    fraction = (D_801135E4_pump_pump_away + 1) * 100 - meters;
+                    difference *= fraction * 0.01;
+                    vertex->v.cn[0] = (u32)(D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 1].red - difference);
+                    difference = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 1].green - D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away].green;
+                    fraction = (D_801135E4_pump_pump_away + 1) * 100 - meters;
+                    difference *= fraction * 0.01;
+                    vertex->v.cn[1] = (u32)(D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 1].green - difference);
+                    difference = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 1].blue - D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away].blue;
+                    fraction = (D_801135E4_pump_pump_away + 1) * 100 - meters;
+                    difference *= fraction * 0.01;
+                    vertex->v.cn[2] = (u32)(D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 1].blue - difference);
+                } else {
+                    difference = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 2].red - D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 1].red;
+                    fraction = (D_801135E4_pump_pump_away + 2) * 100 - (distance + 10000.0f) * 0.01;
+                    difference *= fraction * 0.01;
+                    vertex->v.cn[0] = (u32)(D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 2].red - difference);
+                    difference = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 2].green - D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 1].green;
+                    fraction = (D_801135E4_pump_pump_away + 2) * 100 - (distance + 10000.0f) * 0.01;
+                    difference *= fraction * 0.01;
+                    vertex->v.cn[1] = (u32)(D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 2].green - difference);
+                    difference = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 2].blue - D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 1].blue;
+                    fraction = (D_801135E4_pump_pump_away + 2) * 100 - (distance + 10000.0f) * 0.01;
+                    difference *= fraction * 0.01;
+                    vertex->v.cn[2] = (u32)(D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 2].blue - difference);
+                }
+            }
+        case 5:
+            func_8001E888_main(obj->model[0], D_801116E4_pump_pump_away, D_801116E4_pump_pump_away,
+                               D_80113548_pump_pump_away[0], D_80113548_pump_pump_away[1], "dammy_0-sky_b_2", 0);
+            break;
+        case 6:
+            if (D_80113530_pump_pump_away.state < 2) {
+                break;
+            }
+        case 7:
+            func_8001C258_main(obj->model[0], 4, 4);
+            func_8001C258_main(obj->model[1], 4, 0);
+            break;
+    }
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80106A6C_pump_pump_away);
+#endif
 
 void func_80107338_pump_pump_away(omObjData *obj) {
     obj->model[0] = func_8000B108_main(0x2E0001, 0x289);
@@ -1113,7 +1225,61 @@ void func_80108560_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2) {
     *gfxPos = gfx;
 }
 
+// TODO: match display-list command hoisting and register allocation.
+#ifdef NON_MATCHING
+void func_80108810_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2) {
+    UnkPumpPumpAwayNode *node = &D_80111758_pump_pump_away[1];
+    Gfx *gfx;
+    Gfx *command;
+    u32 word;
+    s32 i;
+    s32 x;
+    s32 y;
+    s32 right;
+    s32 bottom;
+
+    if (node->unk_00 == -1) {
+        return;
+    }
+    if (D_801117BC_pump_pump_away < 255) {
+        gfxPos = func_80105AA0_pump_pump_away(gfxPos);
+        gfxPos = func_80105B6C_pump_pump_away(gfxPos, (u8)D_801117BC_pump_pump_away);
+    } else {
+        gfxPos = func_801059BC_pump_pump_away(gfxPos);
+    }
+    gfx = *gfxPos;
+    gDPSetTextureLUT(gfx++, G_TT_RGBA16);
+    gDPLoadTLUT_pal16(gfx++, 0, ((HuSprite_Unk84_Struct *)node->unk_0C)->unk0C);
+    for (i = 0; i < 8; i++) {
+        if ((i != 0) & (i != 4)) {
+            gDPLoadTextureTile_4b(gfx++, ((HuSprite_Unk84_Struct *)node->unk_0C)->unk08, G_IM_FMT_CI, 8, 10,
+                                  0, node->unk_10[i], 8, node->unk_10[i] + 10, 0, G_TX_WRAP, G_TX_WRAP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+            gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 8 << 2, 10 << 2);
+            x = D_80110FE4_pump_pump_away[i][0];
+            y = D_80110FE4_pump_pump_away[i][1];
+            right = x + 8;
+            bottom = y + 10;
+            {
+                Gfx *rectangle = gfx++;
+                rectangle->words.w0 = _SHIFTL(G_TEXRECT, 24, 8) | _SHIFTL((right * 4) & 0xFFC, 12, 12) | _SHIFTL((bottom * 4) & 0xFFC, 0, 12);
+                rectangle->words.w1 = _SHIFTL((x * 4) & 0xFFC, 12, 12) | _SHIFTL((y * 4) & 0xFFC, 0, 12);
+            }
+            command = gfx++;
+            word = _SHIFTL(G_RDPHALF_1, 24, 8);
+            command->words.w0 = word;
+            command->words.w1 = 0;
+            command = gfx++;
+            word = _SHIFTL(G_RDPHALF_2, 24, 8);
+            command->words.w0 = word;
+            word = _SHIFTL(1024, 16, 16) | _SHIFTL(1024, 0, 16);
+            command->words.w1 = word;
+        }
+    }
+    *gfxPos = gfx;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80108810_pump_pump_away);
+#endif
 
 void func_80108B0C_pump_pump_away(omObjData *obj) {
     s32 digits[4];
@@ -1659,7 +1825,130 @@ void func_8010A468_pump_pump_away(void) {
     }
 }
 
+// TODO: match the random-angle conversion registers.
+#ifdef NON_MATCHING
+void func_8010A570_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[obj->work[0]];
+    s16 sound;
+    f32 angle;
+    s32 randomAngle;
+    PumpPumpAwayAngleState *state;
+
+    switch (player->unk_04) {
+        case 0:
+            if (player->unk_18 < 2000.0f) {
+                player->unk_20 += 0.2;
+                player->unk_18 += player->unk_20 * player->unk_20;
+            } else {
+                player->unk_18 += player->unk_20 * player->unk_20;
+                player->unk_04 = 1;
+                player->unk_2C = (u8)(rand8() % 7) * 15;
+            }
+            func_8010A3F0_pump_pump_away(obj);
+            break;
+        case 1:
+            player->unk_20 = 10.6f;
+            player->unk_18 += player->unk_20 * player->unk_20;
+            if (--player->unk_14 <= 0) {
+                player->unk_14 = 0;
+                if (D_80111978_pump_pump_away[obj->work[0] ^ 1].unk_14 == 0) {
+                    player->unk_04 = 3;
+                } else {
+                    player->unk_04 = 2;
+                }
+            } else if (player->unk_14 < 20) {
+                obj->trans.y -= player->unk_30;
+            } else {
+                if ((u8)(rand8() % 10) + player->unk_2C >= 360.0f) {
+                    randomAngle = (u8)(rand8() % 10);
+                    angle = randomAngle + player->unk_2C - 360.0f;
+                } else if ((u8)(rand8() % 10) + player->unk_2C < 0.0f) {
+                    randomAngle = (u8)(rand8() % 10);
+                    angle = randomAngle + player->unk_2C + 360.0f;
+                } else {
+                    randomAngle = (u8)(rand8() % 10);
+                    angle = randomAngle + player->unk_2C;
+                }
+                player->unk_2C = angle;
+                obj->trans.y += sindf(angle) * 3.0;
+                player->unk_30 = (obj->trans.y - 200.0f) * 0.05;
+            }
+            func_8010A3F0_pump_pump_away(obj);
+            break;
+        case 2:
+            if (player->unk_20 > 0.0f) {
+                player->unk_20 -= 0.4;
+                player->unk_18 += player->unk_20 * player->unk_20;
+                if (player->unk_20 <= 0.0f) {
+                    player->unk_18 += 101 - (s32)player->unk_18 % 100;
+                }
+                func_8010A3F0_pump_pump_away(obj);
+            } else {
+                if (D_80111110_pump_pump_away == 0 && player->unk_20 < -1.2) {
+                    sound = HuAudFXPlay(0x360);
+                    if (obj->work[0] != 0) {
+                        func_8004AE00_main(sound, 0x60);
+                    } else {
+                        func_8004AE00_main(sound, 0x20);
+                    }
+                    D_80111110_pump_pump_away = 1;
+                }
+                if (obj->trans.y < -200.0f) {
+                    player->unk_24 = 1;
+                }
+                if (obj->trans.y <= -3000.0f) {
+                    obj->trans.y = -3000.0f;
+                } else {
+                    obj->trans.y -= player->unk_20 * player->unk_20;
+                    player->unk_20 -= 0.2;
+                }
+            }
+            break;
+        case 3:
+            if (player->unk_20 > 0.0f) {
+                player->unk_20 -= 0.3;
+                player->unk_18 += player->unk_20 * player->unk_20;
+                if (player->unk_20 <= 0.0f) {
+                    player->unk_18 += 101 - (s32)player->unk_18 % 100;
+                    func_8010A468_pump_pump_away();
+                }
+                func_8010A3F0_pump_pump_away(obj);
+            } else {
+                player->unk_04 = 10;
+            }
+            break;
+        case 10:
+            if (obj->trans.y < 0.0f) {
+                player->unk_24 = 1;
+            }
+            if (D_8011110C_pump_pump_away <= 0) {
+                if (D_8011110E_pump_pump_away == 0) {
+                    D_80113518_pump_pump_away.state = 1;
+                    D_8011351C_pump_pump_away = obj->work[0];
+                    obj->trans.y -= player->unk_20 * player->unk_20;
+                    player->unk_20 = -2.0f;
+                    D_8011110E_pump_pump_away = 1;
+                } else {
+                    obj->trans.y -= player->unk_20 * player->unk_20;
+                    state = &D_80113518_pump_pump_away;
+                    obj->rot.z = D_80113520_pump_pump_away + 180.0f >= 360.0f ? D_80113520_pump_pump_away + 180.0f - 360.0f
+                                 : state->angle + 180.0f < 0.0f               ? state->angle + 180.0f + 360.0f
+                                                                              : state->angle + 180.0f;
+                }
+            } else {
+                D_8011110C_pump_pump_away--;
+                obj->trans.y -= player->unk_20 * player->unk_20;
+                player->unk_20 -= 0.2;
+            }
+            break;
+    }
+    if (D_80113530_pump_pump_away.state >= 2) {
+        obj->trans.y = 2000.0f;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010A570_pump_pump_away);
+#endif
 
 void func_8010AD24_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[obj->work[0]];

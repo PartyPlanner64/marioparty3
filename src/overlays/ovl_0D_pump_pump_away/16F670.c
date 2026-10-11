@@ -167,6 +167,7 @@ typedef struct PumpPumpAwayRecordMarker {
 extern s32 D_800A178C_main[][6];
 extern Vec D_80110E70_pump_pump_away[4];
 extern f32 D_80110F9C_pump_pump_away[];
+extern f32 D_8011102C_pump_pump_away[];
 extern s32 D_80111118_pump_pump_away;
 extern PumpPumpAwayCamera D_8011111C_pump_pump_away[];
 extern s16 D_801116EA_pump_pump_away;
@@ -1517,7 +1518,47 @@ void func_8010E65C_pump_pump_away(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010E6B8_pump_pump_away);
+void func_8010E6B8_pump_pump_away(omObjData *obj) {
+    PumpPumpAwayMovingEffect *effect = &D_801135E8_pump_pump_away[obj->work[0]];
+    UnkPumpPumpAwayPlayer *player = D_80111978_pump_pump_away;
+    UnkPumpPumpAwayPlayer *other = &player[1];
+    f64 distance;
+    f32 *positions;
+
+    if (effect->state != -1) {
+        if (effect->hidden == 0) {
+            distance = (player->unk_18 > other->unk_18) ? player->unk_18 : other->unk_18;
+            positions = D_8011102C_pump_pump_away;
+            if (D_8011102C_pump_pump_away[obj->work[0]] - distance * 0.1 + 400.0 < 1000.0) {
+                func_8001C258_main(obj->model[0], 4, 0);
+                obj->trans.y = positions[obj->work[0]] - distance * 0.1 + 400.0;
+                if (obj->trans.y < -1000.0f) {
+                    func_8001C258_main(obj->model[0], 4, 4);
+                    effect->hidden = 1;
+                }
+            }
+        }
+        obj->rot.y = effect->direction * 180 + 90;
+        if (effect->direction == 0) {
+            obj->trans.x += effect->speed;
+        } else {
+            obj->trans.x -= effect->speed;
+        }
+        if (((obj->trans.x < 0.0f) ? -obj->trans.x : obj->trans.x) >= 700.0f) {
+            if (effect->direction == 0) {
+                obj->trans.x = 700.0f;
+            } else {
+                obj->trans.x = -700.0f;
+            }
+            effect->speed = (u8)(rand8() % 10) + 10;
+            effect->direction ^= 1;
+        }
+        if (D_80113530_pump_pump_away.state >= 2 && effect->state < 10) {
+            func_8001C258_main(obj->model[0], 4, 4);
+            effect->state = 10;
+        }
+    }
+}
 
 void func_8010E98C_pump_pump_away(omObjData *obj) {
     PumpPumpAwayMovingEffect *effect;

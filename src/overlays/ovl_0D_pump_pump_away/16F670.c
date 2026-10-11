@@ -94,7 +94,7 @@ typedef struct UnkPumpPumpAwayJet {
     /* 0x20 */ s32 unk_20;
     /* 0x24 */ s32 unk_24;
     /* 0x28 */ s32 unk_28;
-    /* 0x2C */ s32 unk_2C;
+    /* 0x2C */ f32 unk_2C;
     /* 0x30 */ s32 unk_30;
     /* 0x34 */ s32 unk_34;
 } UnkPumpPumpAwayJet; // sizeof 0x38
@@ -1521,7 +1521,62 @@ void func_8010B630_pump_pump_away(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010B898_pump_pump_away);
+void func_8010B898_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwayJet *jet = &D_80113438_pump_pump_away[obj->work[0]];
+    f32 frame = HmfModelData[obj->model[0]].unk40;
+    s16 sound;
+
+    if (jet->unk_18 != 0) {
+        if (frame <= 2.0f) {
+            if (jet->unk_10 >= 6) {
+                jet->unk_10 *= 0.97;
+            }
+            jet->unk_14 = 0.0f;
+        }
+        jet->unk_10 += (s32)jet->unk_14;
+        if (D_800D5558_main[GwPlayer[obj->work[0]].pad] & 0x8000) {
+            sound = func_8004AC98_main(0x35D, obj->work[0]);
+            if (obj->work[1] != 0) {
+                func_8004AE00_main(sound, 0x60);
+            } else {
+                func_8004AE00_main(sound, 0x20);
+            }
+            if (frame < 2.0f) {
+                jet->unk_14 = (jet->unk_2C - frame) * 0.17;
+            } else {
+                jet->unk_14 = (jet->unk_2C - frame) * 0.01;
+            }
+            jet->unk_18 = 0;
+            jet->unk_28 = 1;
+            jet->unk_2C = frame;
+        }
+    } else {
+        if (frame >= D_800CCF58_main[HmfModelData[obj->model[0]].unk02].unk02 - 2) {
+            if (jet->unk_10 >= 6) {
+                jet->unk_10 *= 0.97;
+            }
+            jet->unk_14 = 0.0f;
+        }
+        jet->unk_10 += (s32)jet->unk_14;
+        if ((D_800D5558_main[GwPlayer[obj->work[0]].pad] & 0x4000) ||
+            (D_800D5558_main[GwPlayer[obj->work[0]].pad] & 0x2000)) {
+            sound = func_8004AC98_main(0x35E, obj->work[0]);
+            if (obj->work[1] != 0) {
+                func_8004AE00_main(sound, 0x60);
+            } else {
+                func_8004AE00_main(sound, 0x20);
+            }
+            if (frame >= D_800CCF58_main[HmfModelData[obj->model[0]].unk02].unk02) {
+                jet->unk_14 = (frame - jet->unk_2C) * 0.17;
+            } else {
+                jet->unk_14 = (frame - jet->unk_2C) * 0.01;
+            }
+            jet->unk_18 = 1;
+            jet->unk_28 = 1;
+            jet->unk_2C = frame;
+        }
+    }
+}
 
 void func_8010BC14_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAwayJet *jet = &D_80113438_pump_pump_away[obj->work[0]];

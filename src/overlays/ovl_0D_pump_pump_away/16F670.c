@@ -167,6 +167,7 @@ extern s32 D_800A178C_main[][6];
 extern Vec D_80110E70_pump_pump_away[4];
 extern Vec D_80110EA0_pump_pump_away[2];
 extern f32 D_80110F9C_pump_pump_away[];
+extern Vec D_80111004_pump_pump_away[];
 extern f32 D_8011102C_pump_pump_away[];
 extern u16 D_80111114_pump_pump_away;
 extern s32 D_80111118_pump_pump_away;
@@ -937,7 +938,34 @@ void func_8010921C_pump_pump_away(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80109280_pump_pump_away);
+void func_80109280_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwayState *state;
+
+    obj->model[0] = func_8000B108_main(0x2E0017, 0x289);
+    obj->model[1] = func_8000B108_main(0x2E0019, 0x289);
+    func_8000B460_main(obj, 0, 0x2E0018);
+    func_8000B460_main(obj, 1, 0x2E001A);
+    func_8001FA68_main(obj->model[0]);
+    func_8001F9E4_main(obj->model[0], 255);
+    func_8001C5B4_main(obj->model[0], obj->motion[0]);
+    func_8001C6A8_main(obj->model[0], 0);
+    func_8001C814_main(obj->model[0], 1, 1);
+    func_8001C258_main(obj->model[0], 4, 4);
+    func_8001FA68_main(obj->model[1]);
+    func_8001F9E4_main(obj->model[1], 255);
+    func_8001C5B4_main(obj->model[1], obj->motion[1]);
+    func_8001C6A8_main(obj->model[1], 0);
+    func_8001C814_main(obj->model[1], 1, 1);
+    func_8001C258_main(obj->model[1], 4, 4);
+    obj->trans.x = D_80111004_pump_pump_away[obj->work[0]].x;
+    obj->trans.y = D_80111004_pump_pump_away[obj->work[0]].y;
+    obj->trans.z = D_80111004_pump_pump_away[obj->work[0]].z;
+    Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
+    obj->func = func_8010921C_pump_pump_away;
+    state = &D_80113400_pump_pump_away[obj->work[0]];
+    state->unk_00 = 0;
+    state->unk_04 = 255;
+}
 
 void func_80109470_pump_pump_away(void) {
     s32 i;

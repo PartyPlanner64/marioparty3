@@ -258,6 +258,7 @@ void func_8010E0F4_pump_pump_away(omObjData *obj);
 void func_8010E45C_pump_pump_away(omObjData *obj);
 void func_8010E6B8_pump_pump_away(omObjData *obj);
 void func_8010E98C_pump_pump_away(omObjData *obj);
+void func_8010F268_pump_pump_away(omObjData *obj);
 void func_8010F688_pump_pump_away(omObjData *obj);
 void func_8010F900_pump_pump_away(omObjData *obj);
 void func_8010FC64_pump_pump_away(omObjData *obj);
@@ -1431,7 +1432,30 @@ void func_8010F20C_pump_pump_away(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010F268_pump_pump_away);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010F688_pump_pump_away);
+void func_8010F688_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwaySpray *spray;
+
+    if (D_801116F2_pump_pump_away == 0) {
+        D_801116F2_pump_pump_away = obj->model[0] = func_8000B108_main(0x230005, 0x299);
+    } else {
+        obj->model[0] = Hu3DModelLink(D_801116F2_pump_pump_away);
+    }
+    func_8001C814_main(obj->model[0], 1, 1);
+    func_8001C258_main(obj->model[0], 4, 4);
+    if (obj->work[0] & 1) {
+        obj->trans.x = rand16() % 301 + 100;
+    } else {
+        obj->trans.x = -(rand16() % 301) - 100;
+    }
+    obj->trans.y = 1000.0f;
+    obj->trans.z = (rand8() & 1) ? -500.0f : 500.0f;
+    obj->scale.x = obj->scale.y = obj->scale.z = 0.5f;
+    obj->func = func_8010F268_pump_pump_away;
+    spray = &D_801119E8_pump_pump_away[obj->work[0]];
+    spray->unk_00 = 0;
+    spray->unk_04 = 0;
+    spray->unk_08 = rand8();
+}
 
 void func_8010F8A4_pump_pump_away(void) {
     s32 i;

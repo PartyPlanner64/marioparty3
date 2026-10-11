@@ -1103,7 +1103,21 @@ void func_8010ADA0_pump_pump_away(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010AE40_pump_pump_away);
+void func_8010AE40_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[obj->work[0]];
+
+    switch (player->unk_00) {
+        case 0:
+            func_8010A390_pump_pump_away(obj);
+            break;
+        case 1:
+            func_8010AD24_pump_pump_away(obj);
+            break;
+        case 99:
+            func_8010ADA0_pump_pump_away(obj);
+            break;
+    }
+}
 
 void func_8010AED4_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[obj->work[0]];

@@ -51,7 +51,7 @@ typedef struct UnkPumpPumpAwayHose {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ s32 unk_08;
-    /* 0x0C */ omObjData *unk_0C;
+    /* 0x0C */ s32 unk_0C;
 } UnkPumpPumpAwayHose; // sizeof 0x10
 
 typedef struct PumpPumpAwayMovingEffect {
@@ -173,6 +173,7 @@ extern s32 D_800A178C_main[][6];
 extern Vec D_80110E70_pump_pump_away[4];
 extern Vec D_80110EA0_pump_pump_away[2];
 extern f32 D_80110F9C_pump_pump_away[];
+extern Vec D_80110FC4_pump_pump_away[];
 extern Vec D_80111004_pump_pump_away[];
 extern f32 D_8011102C_pump_pump_away[];
 extern u16 D_80111114_pump_pump_away;
@@ -446,7 +447,57 @@ void func_80106260_pump_pump_away(u16 arg0, u16 arg1, char *arg2, u16 arg3) {
     print8(arg0, arg1, arg2);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010628C_pump_pump_away);
+void func_8010628C_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwayPlayer *players;
+    UnkPumpPumpAwayPlayer *other;
+    s32 i;
+    f32 scale;
+
+    switch (D_801116F4_pump_pump_away) {
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        case 5:
+            break;
+        case 4:
+            players = D_80111978_pump_pump_away;
+            other = players + 1;
+            if (players->unk_18 - other->unk_18 > 0.0f) {
+                obj->trans.y -= players->unk_20;
+            } else {
+                obj->trans.y -= other->unk_20;
+            }
+            if (obj->trans.y < -3000.0f) {
+                obj->trans.y = -3000.0f;
+            }
+            break;
+        case 6:
+            if (D_80113530_pump_pump_away.state < 2) {
+                break;
+            }
+        case 7:
+            obj->trans.x = obj->trans.y = obj->trans.z = 0.0f;
+            break;
+    }
+
+    for (i = 1; i < 3; i++) {
+        players = &D_80111978_pump_pump_away[i];
+        scale = players[-1].unk_28->trans.y - obj->trans.y - 200.0f;
+        if ((scale > 1000.0f) | (scale < -100.0f)) {
+            func_8001C258_main(obj->model[i], 4, 4);
+        } else {
+            func_8001C258_main(obj->model[i], 4, 0);
+            scale = 3.0 - scale * 0.003;
+            if (scale >= 3.0) {
+                scale = 3.0f;
+            }
+        }
+        Hu3DModelPosSet(obj->model[i], D_80110EA0_pump_pump_away[i - 1].x,
+                        obj->trans.y + 1.0, D_80110EA0_pump_pump_away[i - 1].z + 0.0f);
+        Hu3DModelScaleSet(obj->model[i], scale, scale, scale);
+    }
+}
 
 void func_8010654C_pump_pump_away(omObjData *obj) {
     s32 i;
@@ -751,7 +802,33 @@ void func_801082AC_pump_pump_away(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80108358_pump_pump_away);
+void func_80108358_pump_pump_away(omObjData *obj) {
+    void *data;
+    UnkPumpPumpAwayHose *hose;
+
+    obj->model[0] = func_8000B108_main(0x2E0009, 0x289);
+    func_8000B460_main(obj, 0, 0x2E000A);
+    func_8000B460_main(obj, 1, 0x2E000B);
+    if (obj->work[0] != 0) {
+        data = DataRead(0x2E000C);
+        obj->work[1] = (s16)HmfAnimCreate(HmfModelData[obj->model[0]].hmf, data, 0, "m213_hose_r_DEF");
+        func_80032FC0_main(obj->work[1], 1, 1);
+        HuMemMemoryFreePerm(data);
+        func_8001C448_main(obj->model[0]);
+        func_8001C514_main(obj->model[0]);
+    }
+    func_8001C5B4_main(obj->model[0], obj->motion[0]);
+    func_8001C814_main(obj->model[0], 2, 2);
+    obj->trans.x = D_80110FC4_pump_pump_away[obj->work[0]].x;
+    obj->trans.y = D_80110FC4_pump_pump_away[obj->work[0]].y;
+    obj->trans.z = D_80110FC4_pump_pump_away[obj->work[0]].z;
+    obj->func = func_801082AC_pump_pump_away;
+    hose = &D_801117C0_pump_pump_away[obj->work[0]];
+    hose->unk_00 = 0;
+    hose->unk_04 = 0;
+    hose->unk_08 = 0;
+    hose->unk_0C = 0;
+}
 
 void func_80108504_pump_pump_away(void) {
     s32 i;

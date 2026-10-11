@@ -183,6 +183,7 @@ extern f32 D_80110F9C_pump_pump_away[];
 extern Vec D_80110FC4_pump_pump_away[];
 extern u16 D_80110FDC_pump_pump_away[2][2];
 extern Vec D_80111004_pump_pump_away[];
+extern f32 D_8011101C_pump_pump_away[];
 extern f32 D_8011102C_pump_pump_away[];
 extern u16 D_80111114_pump_pump_away;
 extern s32 D_80111118_pump_pump_away;
@@ -2274,7 +2275,56 @@ void func_8010E098_pump_pump_away(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010E0F4_pump_pump_away);
+void func_8010E0F4_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwayNozzle *nozzle = &D_80111920_pump_pump_away[obj->work[0]];
+    UnkPumpPumpAwayPlayer *player = D_80111978_pump_pump_away;
+    UnkPumpPumpAwayPlayer *other = &player[1];
+    f64 distance;
+    f32 *positions;
+    f32 angle;
+
+    if (nozzle->unk_04 == 0) {
+        distance = player->unk_18 > other->unk_18 ? player->unk_18 : other->unk_18;
+        positions = D_8011101C_pump_pump_away;
+        if (D_8011101C_pump_pump_away[obj->work[0]] - distance * 0.1 + 400.0 < 1000.0) {
+            func_8001C258_main(obj->model[0], 4, 0);
+            obj->trans.y = positions[obj->work[0]] - distance * 0.1 + 400.0;
+            if (obj->trans.y < -1000.0f) {
+                func_8001C258_main(obj->model[0], 4, 4);
+                nozzle->unk_04 = 1;
+            }
+        }
+    }
+    obj->rot.y = nozzle->unk_08 * 180 + 90;
+    if (nozzle->unk_08 == 0) {
+        obj->trans.x += nozzle->unk_0C;
+    } else {
+        obj->trans.x -= nozzle->unk_0C;
+    }
+    if ((obj->trans.x < 0.0f ? -obj->trans.x : obj->trans.x) >= 700.0f) {
+        if (nozzle->unk_08 == 0) {
+            obj->trans.x = 700.0f;
+        } else {
+            obj->trans.x = -700.0f;
+        }
+        nozzle->unk_08 ^= 1;
+        nozzle->unk_0C = (u8)(rand8() % 6) + 4;
+    }
+    if (nozzle->unk_10 + 6.0f >= 360.0f) {
+        angle = nozzle->unk_10 + 6.0f - 360.0f;
+    } else {
+        angle = nozzle->unk_10 + 6.0f;
+        if (angle < 0.0f) {
+            angle += 360.0f;
+        }
+    }
+    nozzle->unk_10 = angle;
+    obj->trans.y += sindf(angle) * 2.0;
+    if (D_80113530_pump_pump_away.state >= 2 && nozzle->unk_00 < 10) {
+        func_8001C258_main(obj->model[0], 4, 4);
+        nozzle->unk_00 = 10;
+    }
+}
 
 void func_8010E45C_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAwayNozzle *nozzle;

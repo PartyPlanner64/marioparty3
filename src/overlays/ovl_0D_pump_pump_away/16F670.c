@@ -627,7 +627,49 @@ void func_8010745C_pump_pump_away(void) {
     omSetStatBit(obj, 0xA0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010749C_pump_pump_away);
+void func_8010749C_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2) {
+    PumpPumpAwayFade *fade = &D_80113530_pump_pump_away;
+    Gfx *gfx;
+    Gfx *command;
+    u32 word;
+    s32 x;
+    s32 y;
+
+    if (fade->state == -1) {
+        return;
+    }
+    if (D_80113540_pump_pump_away < 255) {
+        gfxPos = func_80105AA0_pump_pump_away(gfxPos);
+        gfxPos = func_80105B6C_pump_pump_away(gfxPos, (u8)D_80113540_pump_pump_away);
+    } else {
+        gfxPos = func_801059BC_pump_pump_away(gfxPos);
+    }
+    gfx = *gfxPos;
+    gDPSetTextureLUT(gfx++, G_TT_RGBA16);
+    gDPLoadTLUT_pal16(gfx++, 0, fade->sprite->unk0C);
+    for (x = 0; x < 5; x++) {
+        for (y = 0; y < 5; y++) {
+            gDPLoadTextureTile_4b(gfx++, fade->sprite->unk08, G_IM_FMT_CI, 64, 16,
+                                  0, 0, 64, 48, 0, G_TX_WRAP, G_TX_WRAP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+            gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 64 << 2, 48 << 2);
+            {
+                Gfx *rectangle = gfx++;
+                rectangle->words.w0 = _SHIFTL(G_TEXRECT, 24, 8) | _SHIFTL(((x + 1) * 64 * 4) & 0xFFF, 12, 12) | _SHIFTL(((y + 1) * 48 * 4) & 0xFFF, 0, 12);
+                rectangle->words.w1 = _SHIFTL((x * 64 * 4) & 0xFFF, 12, 12) | _SHIFTL((y * 48 * 4) & 0xFFF, 0, 12);
+            }
+            command = gfx++;
+            word = _SHIFTL(G_RDPHALF_1, 24, 8);
+            command->words.w0 = word;
+            command->words.w1 = 0;
+            command = gfx++;
+            word = _SHIFTL(G_RDPHALF_2, 24, 8);
+            command->words.w0 = word;
+            word = _SHIFTL(1024, 16, 16) | _SHIFTL(1024, 0, 16);
+            command->words.w1 = word;
+        }
+    }
+    *gfxPos = gfx;
+}
 
 void func_8010775C_pump_pump_away(omObjData *obj) {
     PumpPumpAwayFade *fade = &D_80113530_pump_pump_away;
@@ -1779,7 +1821,65 @@ void func_8010C3E0_pump_pump_away(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010C4D0_pump_pump_away);
+void func_8010C4D0_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwayJet *jet = &D_80113438_pump_pump_away[obj->work[0]];
+
+    if (jet->unk_00 == -1) {
+        return;
+    }
+    switch (D_801116F4_pump_pump_away) {
+        case 0:
+        case 1:
+            func_80105D1C_pump_pump_away(obj->work[0]);
+            if (jet->unk_0C == 0) {
+                func_8001C5B4_main(obj->model[0], obj->motion[1]);
+                func_8001C6A8_main(obj->model[0], 0.0f);
+                func_8001C814_main(obj->model[0], 1, 1);
+                jet->unk_08 = 1;
+                jet->unk_0C = 0;
+            }
+            break;
+        case 2:
+            if (jet->unk_20 != 0) {
+                func_80105D1C_pump_pump_away(obj->work[0]);
+                func_8010B630_pump_pump_away(obj);
+            }
+            func_8010B898_pump_pump_away(obj);
+            func_8010BC14_pump_pump_away(obj);
+            break;
+        case 3:
+            func_80105D1C_pump_pump_away(obj->work[0]);
+            func_8010BD80_pump_pump_away(obj);
+            if (GwPlayer[obj->work[0]].chr == 4) {
+                obj->rot.x = 0;
+            }
+            break;
+        case 4:
+        case 5:
+            func_80105D1C_pump_pump_away(obj->work[0]);
+            func_8010BF14_pump_pump_away(obj);
+            break;
+        case 6:
+            if (D_80113530_pump_pump_away.state < 2) {
+                break;
+            }
+        case 7:
+            func_8010C060_pump_pump_away(obj);
+            break;
+        case 8:
+        case 9:
+            func_8010C1C8_pump_pump_away(obj);
+            break;
+        case 10:
+            func_8010C3E0_pump_pump_away(obj);
+            break;
+    }
+    if (obj->work[2] != 0) {
+        Hu3DModelPosSet(obj->model[1], obj->trans.x, 12.0f, obj->trans.z + 30.0f);
+    } else {
+        Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y + 2.0, obj->trans.z + 30.0f);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010C6E4_pump_pump_away);
 

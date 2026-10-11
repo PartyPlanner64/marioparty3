@@ -185,6 +185,8 @@ extern u16 D_80110FDC_pump_pump_away[2][2];
 extern Vec D_80111004_pump_pump_away[];
 extern f32 D_8011101C_pump_pump_away[];
 extern f32 D_8011102C_pump_pump_away[];
+extern f32 D_8011103C_pump_pump_away[];
+extern s32 D_80111970_pump_pump_away;
 extern f32 D_8011109C_pump_pump_away[];
 extern s32 D_801133F8_pump_pump_away;
 extern u16 D_80111114_pump_pump_away;
@@ -2045,7 +2047,87 @@ void func_8010C4D0_pump_pump_away(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010C6E4_pump_pump_away);
+void func_8010C6E4_pump_pump_away(omObjData *obj) {
+    u16 character = GwPlayer[obj->work[0]].chr;
+    UnkPumpPumpAwayJet *jet;
+
+    obj->model[0] = func_8000B108_main(D_800A178C_main[character][0] | D_800A178C_main[character][1], 0x2B9);
+    func_8000B460_main(obj, 0, func_80017BB8_main(character, 0));
+    func_8000B460_main(obj, 1, func_80017BB8_main(character, 0x14));
+    func_8000B460_main(obj, 3, func_80017BB8_main(character, 1));
+    func_8000B460_main(obj, 4, func_80017BB8_main(character, 0x13));
+    func_8000B460_main(obj, 5, func_80017BB8_main(character, 0x2F));
+    func_8000B460_main(obj, 6, func_80017BB8_main(character, 0x37));
+    func_8001C5B4_main(obj->model[0], obj->motion[1]);
+    func_8001C814_main(obj->model[0], 2, 2);
+    obj->model[1] = func_8000B0A0_main(0, 0xC9);
+    func_8001C2FC_main(obj->model[1], 0x80000000, 0);
+    func_8001C448_main(obj->model[1]);
+    func_8001C514_main(obj->model[1]);
+    func_80088800_main(HmfModelData[obj->model[1]].mtx, 0.0f, 5.0f, 0.0f);
+    if (obj->work[1] == 0) {
+        obj->trans.x = D_80110E70_pump_pump_away[obj->work[1] + D_80111700_pump_pump_away].x;
+        obj->trans.y = D_80110E70_pump_pump_away[obj->work[1] + D_80111700_pump_pump_away].y;
+        obj->trans.z = D_80110E70_pump_pump_away[obj->work[1] + D_80111700_pump_pump_away].z;
+        obj->work[3] = obj->work[1] + D_80111700_pump_pump_away;
+        D_80111700_pump_pump_away++;
+    } else {
+        obj->trans.x = D_80110E70_pump_pump_away[obj->work[1] + D_80111704_pump_pump_away + 1].x;
+        obj->trans.y = D_80110E70_pump_pump_away[obj->work[1] + D_80111704_pump_pump_away + 1].y;
+        obj->trans.z = D_80110E70_pump_pump_away[obj->work[1] + D_80111704_pump_pump_away + 1].z;
+        obj->work[3] = obj->work[1] + D_80111704_pump_pump_away + 1;
+        D_80111704_pump_pump_away++;
+    }
+    obj->rot.x = obj->rot.y = obj->rot.z = 0.0f;
+    Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y + 2.0, obj->trans.z + 30.0f);
+    switch (character) {
+        case 0:
+            obj->trans.z -= 10.0f;
+        case 2:
+        case 7:
+            obj->trans.z -= 20.0f;
+            break;
+        case 3:
+            obj->trans.z -= 10.0f;
+            break;
+        case 4:
+            obj->trans.z -= 20.0f;
+            obj->rot.x = 350.0f;
+            break;
+        case 5:
+            obj->trans.z -= 45.0f;
+            break;
+    }
+    obj->func = func_8010C4D0_pump_pump_away;
+    jet = &D_80113438_pump_pump_away[obj->work[0]];
+    jet->unk_00 = 0;
+    jet->unk_04 = obj;
+    jet->unk_08 = 1;
+    jet->unk_0C = 0;
+    jet->unk_18 = 1;
+    jet->unk_10 = 0;
+    jet->unk_14 = 0;
+    jet->unk_1C = 0;
+    jet->unk_20 = GwPlayer[obj->work[0]].stat & 1;
+    jet->unk_24 = GwPlayer[obj->work[0]].cpu_difficulty;
+    jet->unk_28 = 0;
+    jet->unk_2C = 0;
+    jet->unk_34 = (u8)(rand8() % 5);
+    switch (jet->unk_24) {
+        case 0:
+            jet->unk_30 = 20;
+            break;
+        case 1:
+            jet->unk_30 = 15;
+            break;
+        case 2:
+            jet->unk_30 = 10;
+            break;
+        default:
+            jet->unk_30 = 5;
+            break;
+    }
+}
 
 void func_8010CBF0_pump_pump_away(void) {
     s32 i;
@@ -2527,7 +2609,66 @@ void func_8010EB68_pump_pump_away(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010EBC4_pump_pump_away);
+void func_8010EBC4_pump_pump_away(omObjData *obj) {
+    UnkPumpPumpAwaySpray *spray = &D_80111710_pump_pump_away[obj->work[0]];
+    UnkPumpPumpAwayPlayer *player = D_80111978_pump_pump_away;
+    UnkPumpPumpAwayPlayer *other = &player[1];
+    f32 distance;
+    f32 *positions;
+    f32 angle;
+    f32 rotation;
+
+    if (spray->unk_00 != -1) {
+        if (spray->unk_04 == 0) {
+            distance = (player->unk_18 > other->unk_18) ? player->unk_18 : other->unk_18;
+            switch (spray->unk_00) {
+                case 0:
+                    positions = D_8011103C_pump_pump_away;
+                    if (D_8011103C_pump_pump_away[D_80111970_pump_pump_away] - distance * 0.1 + 400.0 < 1000.0) {
+                        func_8001C258_main(obj->model[0], 4, 0);
+                        obj->trans.y = positions[obj->work[0]] + distance * 0.1 + 400.0;
+                        spray->unk_00 = 1;
+                        obj->work[1] = D_80111970_pump_pump_away;
+                        D_80111970_pump_pump_away++;
+                    }
+                    break;
+                case 1:
+                    obj->trans.y = D_8011103C_pump_pump_away[obj->work[1]] - distance * 0.1 + 400.0;
+                    if (obj->trans.y < -500.0f) {
+                        func_8001C258_main(obj->model[0], 4, 4);
+                        if (obj->work[0] & 1) {
+                            obj->trans.x = rand16() % 501 + 100;
+                        } else {
+                            obj->trans.x = -(rand16() % 501) - 100;
+                        }
+                        spray->unk_00 = 0;
+                    }
+                    break;
+            }
+        }
+        if (spray->unk_08 + 3.0f >= 360.0f) {
+            angle = (spray->unk_08 + 3.0f) - 360.0f;
+        } else {
+            angle = spray->unk_08 + 3.0f;
+            if (angle < 0.0f) {
+                angle += 360.0f;
+            }
+        }
+        spray->unk_08 = angle;
+        if (sindf(spray->unk_08) * 15.0f + 0.0f >= 360.0f) {
+            rotation = sindf(spray->unk_08) * 15.0f + 0.0f - 360.0f;
+        } else if (sindf(spray->unk_08) * 15.0f + 0.0f < 0.0f) {
+            rotation = sindf(spray->unk_08) * 15.0f + 0.0f + 360.0f;
+        } else {
+            rotation = sindf(spray->unk_08) * 15.0f + 0.0f;
+        }
+        obj->rot.z = rotation;
+        if (D_80113530_pump_pump_away.state >= 2 && spray->unk_00 < 10) {
+            func_8001C258_main(obj->model[0], 4, 4);
+            spray->unk_00 = 10;
+        }
+    }
+}
 
 void func_8010F024_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAwaySpray *spray;

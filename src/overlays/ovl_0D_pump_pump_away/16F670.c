@@ -237,9 +237,15 @@ extern PumpPumpAwayRecordMarker D_801135D8_pump_pump_away;
 extern u16 D_801135DC_pump_pump_away;
 extern s32 D_801135E0_pump_pump_away;
 extern PumpPumpAwayMovingEffect D_801135E8_pump_pump_away[4];
+extern u16 D_80113548_pump_pump_away[2];
+extern f32 D_801116E0_pump_pump_away;
+extern f32 D_801116E4_pump_pump_away;
+extern s32 D_801135E4_pump_pump_away;
 extern s32 fontcolor;
 extern const s16 D_801116D8_pump_pump_away[];
 
+void func_800335BC_main(char *name, u16 *result);
+void func_80106A6C_pump_pump_away(omObjData *obj);
 void func_8000B710_main(s32 arg0);
 void func_8000BC48_main(u16 arg0, u16 arg1);
 void func_8000BE5C_main(u16 spriteId, f32 x, f32 y);
@@ -620,7 +626,23 @@ void func_80106A38_pump_pump_away(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80106A6C_pump_pump_away);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80107338_pump_pump_away);
+void func_80107338_pump_pump_away(omObjData *obj) {
+    obj->model[0] = func_8000B108_main(0x2E0001, 0x289);
+    obj->model[1] = func_8000B108_main(0x2E0002, 0x289);
+    func_8001C2FC_main(obj->model[0], 0x20000, 0x20000);
+    func_8001C448_main(obj->model[0]);
+    func_8001C954_main(obj->model[0]);
+    func_8001C258_main(obj->model[0], 4, 4);
+    func_8001C258_main(obj->model[1], 4, 0);
+    func_800335BC_main("m213_back_DEF", D_80113548_pump_pump_away);
+    obj->trans.x = obj->trans.y = 0.0f;
+    obj->trans.z = -1300.0f;
+    Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
+    D_801116E0_pump_pump_away = 0.0f;
+    D_801116E4_pump_pump_away = 0.0f;
+    D_801135E4_pump_pump_away = 0;
+    obj->func = func_80106A6C_pump_pump_away;
+}
 
 void func_8010745C_pump_pump_away(void) {
     omObjData *obj = omAddObj(0x64, 2, 0, -1, func_80107338_pump_pump_away);

@@ -58,8 +58,10 @@ extern s32 D_8010E030_log_jam[9];
 extern UnkLogJamSprites *D_8010E5D0_log_jam;
 extern LogJamPlayerWork *D_8010E5C4_log_jam;
 extern LogJamLogWork *D_8010E5B8_log_jam;
+extern omObjData *D_8010E5C0_log_jam;
 extern s16 *D_8010E5C8_log_jam;
 
+void func_80108E54_log_jam(omObjData *object);
 void func_80109B8C_log_jam(omObjData *object);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_13_log_jam/1A3D80", func_801059A0_log_jam);
@@ -125,7 +127,32 @@ s16 func_80108D1C_log_jam(f32 arg0, f32 arg1) {
     return frames;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_13_log_jam/1A3D80", func_80108D50_log_jam);
+void func_80108D50_log_jam(void) {
+    s32 i;
+    LogJamPlayerWork *work;
+
+    D_8010E5C4_log_jam = HuMemAllocTag(0xF00, 0x7918);
+    work = D_8010E5C4_log_jam;
+    for (i = 0; i < 0x20; i++) {
+        work->unk_00 = i;
+        work->unk_02 = -1;
+        work->unk_04 = -1;
+        work->unk_06 = -1;
+        work->unk_08 = 0;
+        work->unk_0A = 0;
+        work->unk_0C = 0;
+        work->unk_0E = 0;
+        work->unk_10 = work->unk_14 = work->unk_18 = 0.0f;
+        work->unk_1C = work->unk_20 = work->unk_24 = 0.0f;
+        work->unk_28 = work->unk_2C = work->unk_30 = 0.0f;
+        memset(&work->unk_34, 0, 0x20);
+        memset(&work->unk_54, 0, 0x20);
+        work->unk_74 = NULL;
+        work++;
+    }
+    D_8010E5C0_log_jam = omAddObj(0x18, 0, 0, -1, func_80108E54_log_jam);
+    omSetStatBit(D_8010E5C0_log_jam, 0xA0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_13_log_jam/1A3D80", func_80108E54_log_jam);
 

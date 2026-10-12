@@ -17,6 +17,8 @@
 void func_801064DC_w05(void);
 void func_801085B4_w05(void);
 void func_8010D298_w05(void);
+extern s16 D_8011D040_w05[];
+extern s16 D_8011D050_w05[];
 extern s16 D_8011D060_w05[];
 extern s16 D_8011D070_w05[];
 extern s16 D_8011D080_w05[];
@@ -48,7 +50,38 @@ s16 func_801059D0_w05(void) {
     return D_8011D080_w05[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_801059F8_w05);
+void func_801059F8_w05(void) {
+    s32 i;
+    s32 idx1;
+    s32 idx2;
+    GW_SYSTEM *loc = &GwSystem;
+
+    for (i = 0; i < 0x3C; i++) {
+        idx1 = rand8() & 7;
+        idx2 = rand8() & 7;
+
+        if (idx1 != idx2) {
+            if (idx1 < D_8011D050_w05[idx2]) {
+                continue;
+            }
+            if (idx2 < D_8011D050_w05[idx1]) {
+                continue;
+            }
+            {
+                s32 temp = D_8011D040_w05[idx1];
+                D_8011D040_w05[idx1] = D_8011D040_w05[idx2];
+                D_8011D040_w05[idx2] = temp;
+                temp = D_8011D050_w05[idx1];
+                D_8011D050_w05[idx1] = D_8011D050_w05[idx2];
+                D_8011D050_w05[idx2] = temp;
+            }
+        }
+    }
+
+    for (i = 0; i < 8; i++) {
+        loc->star_spawn_indices[i] = D_8011D040_w05[i];
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80105B00_w05);
 

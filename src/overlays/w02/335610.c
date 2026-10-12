@@ -41,6 +41,8 @@ extern omObjData *D_8011ECE8_w02[4];
 extern s32 D_8011EC90_w02;
 extern s32 D_8011EC94_w02;
 extern u8 *D_8011EC98_w02;
+extern s16 D_8011C660_w02[];
+extern s16 D_8011C670_w02[];
 extern s16 D_8011C680_w02[]; // mb2ev_StarFlag
 extern s16 D_8011C690_w02[];
 extern s16 D_8011C6A0_w02[]; // mb2ev_StarGuideMasu
@@ -57,7 +59,38 @@ s16 func_801059D0_w02(void) {
     return D_8011C6A0_w02[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_801059F8_w02);
+void func_801059F8_w02(void) {
+    s32 i;
+    s32 idx1;
+    s32 idx2;
+    GW_SYSTEM *loc = &GwSystem;
+
+    for (i = 0; i < 0x3C; i++) {
+        idx1 = rand8() & 7;
+        idx2 = rand8() & 7;
+
+        if (idx1 != idx2) {
+            if (idx1 < D_8011C670_w02[idx2]) {
+                continue;
+            }
+            if (idx2 < D_8011C670_w02[idx1]) {
+                continue;
+            }
+            {
+                s32 temp = D_8011C660_w02[idx1];
+                D_8011C660_w02[idx1] = D_8011C660_w02[idx2];
+                D_8011C660_w02[idx2] = temp;
+                temp = D_8011C670_w02[idx1];
+                D_8011C670_w02[idx1] = D_8011C670_w02[idx2];
+                D_8011C670_w02[idx2] = temp;
+            }
+        }
+    }
+
+    for (i = 0; i < 8; i++) {
+        loc->star_spawn_indices[i] = D_8011C660_w02[i];
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80105B00_w02);
 

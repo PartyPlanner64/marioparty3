@@ -1,5 +1,6 @@
 #include "common.h"
 
+extern u16 D_8010D6DC_game_guys_lucky_7[7];
 extern f32 D_8010D75C_game_guys_lucky_7;
 extern f32 D_8010D760_game_guys_lucky_7;
 extern f32 D_8010D764_game_guys_lucky_7;
@@ -7,11 +8,12 @@ extern u16 D_8010D76C_game_guys_lucky_7;
 extern u16 D_8010D770_game_guys_lucky_7;
 extern s16 D_8010D772_game_guys_lucky_7;
 extern s16 D_8010D774_game_guys_lucky_7;
-extern s16 D_8010D776_game_guys_lucky_7;
+extern u16 D_8010D776_game_guys_lucky_7;
 extern s16 D_8010D778_game_guys_lucky_7;
-extern s16 D_8010D77A_game_guys_lucky_7;
+extern u16 D_8010D77A_game_guys_lucky_7;
 
 void func_80107DE4_game_guys_lucky_7(omObjData *object);
+void func_80107EEC_game_guys_lucky_7(omObjData *object);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", func_801059A0_game_guys_lucky_7);
 
@@ -81,7 +83,22 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", func_80
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", func_80107AC4_game_guys_lucky_7);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", func_80107DE4_game_guys_lucky_7);
+void func_80107DE4_game_guys_lucky_7(omObjData *object) {
+    GwPlayer[D_8010D6DC_game_guys_lucky_7[0]].gameCoin = D_8010D6DC_game_guys_lucky_7[6];
+    if (D_8010D77A_game_guys_lucky_7 == 0) {
+        GwPlayer[D_8010D6DC_game_guys_lucky_7[0]].bonusCoin = 0;
+    } else if (D_8010D77A_game_guys_lucky_7 == 1) {
+        if (D_8010D776_game_guys_lucky_7 == 7) {
+            GwPlayer[D_8010D6DC_game_guys_lucky_7[0]].bonusCoin = 10;
+        } else {
+            GwPlayer[D_8010D6DC_game_guys_lucky_7[0]].bonusCoin = 2;
+        }
+    }
+    WipeCreateOut(0, 20);
+    HuAudSeqFadeOut(30);
+    func_8004AB0C_main(30);
+    object->func = func_80107EEC_game_guys_lucky_7;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", func_80107EEC_game_guys_lucky_7);
 

@@ -562,7 +562,39 @@ void func_8010961C_motor_rooter(FuncContext *ctx) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010972C_motor_rooter);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80109C94_motor_rooter);
+void func_80109C94_motor_rooter(PlayerView *view, s16 slot) {
+    s16 i;
+
+    switch (view->obstacleTypes[view->obstacleSlots[slot]]) {
+        case 0:
+            view->obstacleSafeDirections[slot][0] = view->obstacleSafeDirections[slot][1] =
+                view->obstacleSafeDirections[slot][2] = view->obstacleDirections[view->obstacleSlots[slot]] + 4;
+            break;
+        case 1:
+            view->obstacleSafeDirections[slot][0] = view->obstacleDirections[view->obstacleSlots[slot]] + 4;
+            view->obstacleSafeDirections[slot][1] = view->obstacleDirections[view->obstacleSlots[slot]] + 5;
+            view->obstacleSafeDirections[slot][2] = view->obstacleDirections[view->obstacleSlots[slot]] + 3;
+            break;
+        case 2:
+            view->obstacleSafeDirections[slot][0] = view->obstacleDirections[view->obstacleSlots[slot]] + 4;
+            view->obstacleSafeDirections[slot][1] = view->obstacleDirections[view->obstacleSlots[slot]] + 4;
+            view->obstacleSafeDirections[slot][2] = view->obstacleDirections[view->obstacleSlots[slot]] + 3;
+            break;
+        case 3:
+            view->obstacleSafeDirections[slot][0] = view->obstacleDirections[view->obstacleSlots[slot]] + 4;
+            view->obstacleSafeDirections[slot][1] = view->obstacleDirections[view->obstacleSlots[slot]] + 4;
+            view->obstacleSafeDirections[slot][2] = view->obstacleDirections[view->obstacleSlots[slot]] + 5;
+            break;
+    }
+    for (i = 0; i < 3; i++) {
+        if (view->obstacleSafeDirections[slot][i] >= 8) {
+            view->obstacleSafeDirections[slot][i] -= 8;
+        }
+        if (view->obstacleSafeDirections[slot][i] < 0) {
+            view->obstacleSafeDirections[slot][i] += 8;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80109EFC_motor_rooter);
 

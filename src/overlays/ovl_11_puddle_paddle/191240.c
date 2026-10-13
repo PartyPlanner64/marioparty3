@@ -31,6 +31,21 @@ typedef struct UnkPuddlePaddleObj { // size = 0x14, eight entries
     /* 0x11 */ char pad11[3];
 } UnkPuddlePaddleObj;
 
+typedef struct UnkPuddlePaddleModel { // size = 0x28, sixteen entries
+    /* 0x00 */ s8 unk_00;
+    /* 0x01 */ char pad01[3];
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s8 unk_08;
+    /* 0x09 */ char pad09[1];
+    /* 0x0A */ s16 unk_0A;
+    /* 0x0C */ s16 unk_0C;
+    /* 0x0E */ char pad0E[2];
+    /* 0x10 */ f32 unk_10;
+    /* 0x14 */ f32 unk_14;
+    /* 0x18 */ f32 unk_18;
+    /* 0x1C */ char pad1C[0xC];
+} UnkPuddlePaddleModel; // size = 0x28
+
 typedef struct UnkPuddlePaddleSpr { // size = 0x8, twenty entries
     /* 0x00 */ s8 unk_00;
     /* 0x01 */ u8 unk_01;
@@ -41,6 +56,7 @@ typedef struct UnkPuddlePaddleSpr { // size = 0x8, twenty entries
 } UnkPuddlePaddleSpr;
 
 extern UnkPuddlePaddleEntry *D_80111668_puddle_paddle;
+extern UnkPuddlePaddleModel *D_80111660_puddle_paddle;
 extern UnkPuddlePaddleSpr *D_80111664_puddle_paddle;
 extern UnkPuddlePaddleObj *D_8011166C_puddle_paddle;
 
@@ -185,7 +201,31 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_11_puddle_paddle/191240", func_8010C1
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_11_puddle_paddle/191240", func_8010C214_puddle_paddle);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_11_puddle_paddle/191240", func_8010C324_puddle_paddle);
+s16 func_8010C324_puddle_paddle(s16 arg0, f32 arg1, s16 arg2, s32 arg3) {
+    UnkPuddlePaddleModel *work = D_80111660_puddle_paddle;
+    HmfModel *model;
+    s16 i;
+
+    for (i = 0; i < 16; i++, work++) {
+        if (work->unk_00 == 0) {
+            work->unk_0C = Hu3DModelLink(arg0);
+            func_8001C258_main(work->unk_0C, 4, 4);
+            model = &HmfModelData[work->unk_0C];
+            model->unk40 = 0;
+            model->unk44 = 0;
+            if (model->hmf->unk98 != NULL) {
+                model->hmf->unk98->unk08 = 0;
+            }
+            work->unk_0A = arg2;
+            work->unk_04 = arg3;
+            work->unk_10 = arg1;
+            work->unk_08 = -1;
+            work->unk_00 = 1;
+            break;
+        }
+    }
+    return i;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_11_puddle_paddle/191240", func_8010C42C_puddle_paddle);
 

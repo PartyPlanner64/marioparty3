@@ -25,6 +25,7 @@ s32 func_8000B710_main(s32 arg0);
 
 // 14EA0
 void func_800142A0_main(s32);
+void func_80017D24_main(f32 *, f32, f32, f32);
 
 // 20A20
 void Hu3DAnimInit(s32);
@@ -863,7 +864,73 @@ void func_80109134_motor_rooter(FuncContext *ctx) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_801091A0_motor_rooter);
+void func_801091A0_motor_rooter(FuncContext *ctx) {
+    PlayerView *view = ctx->data;
+    omObjData *object = view->unk00;
+    s16 direction = 0;
+    f32 rotX[16];
+    f32 rotY[16];
+    f32 transform[16];
+    Vec offset;
+    f32 position[3];
+    s16 directions0[] = { 0, 1, 2, 3, -1, -2, -3 };
+    s16 directions2[] = { 0, 1, 99, 2, -1, -2, -3 };
+    s16 directions3[] = { 0, 1, 2, 3, -1, 99, -2 };
+    s16 directions1[] = { 0, 1, 99, 2, -1, 99, -2 };
+    s16 i;
+    s16 obstacle;
+    HmfModel *model;
+    PathPoint *point;
+    f32 angle;
+    f32 pitch;
+
+    obstacle = view->obstacleSlots[ctx->work.s16[0]];
+    for (i = 0; i < 7; i++) {
+        model = &HmfModelData[object->model[ctx->work.s16[0] * 7 + i]];
+        switch (view->obstacleTypes[obstacle]) {
+            case 0:
+                direction = view->obstacleDirections[obstacle] + directions0[i];
+                break;
+            case 1:
+                direction = view->obstacleDirections[obstacle] + directions1[i];
+                break;
+            case 2:
+                direction = view->obstacleDirections[obstacle] + directions2[i];
+                break;
+            case 3:
+                direction = view->obstacleDirections[obstacle] + directions3[i];
+                break;
+        }
+        if (direction >= 51) {
+            Hu3DModelPosSet(object->model[ctx->work.s16[0] * 7 + i], 0.0f, 200.0f, 0.0f);
+            func_8001C258_main(object->model[ctx->work.s16[0] * 7 + i], 4, 4);
+            continue;
+        }
+        if (direction >= 8) {
+            direction -= 8;
+        }
+        if (direction < 0) {
+            direction += 8;
+        }
+        angle = direction * 45.0f;
+        offset.x = sindf(angle) * 55.9999990463256836;
+        offset.y = -cosdf(angle) * 55.9999990463256836;
+        offset.z = 0.0f;
+        point = &D_801137C0_motor_rooter[view->obstaclePoints[obstacle]];
+        pitch = point->pitch - 180.0f;
+        m254_MakeRotXMtx(rotX, pitch);
+        m254_MakeRotYMtx(rotY, point->yaw);
+        m254_MultiplyMtx(rotX, rotY, transform);
+        func_801114B0_motor_rooter(transform, &offset, position);
+        model->pos.x = point->x + position[0];
+        model->pos.y = point->y + position[1];
+        model->pos.z = point->z + position[2];
+        model->rot.x = pitch;
+        model->rot.y = point->yaw;
+        m254_MakeIdentityMtx(model->mtx[0]);
+        func_80017D24_main(model->mtx[0], 0.0f, 0.0f, angle);
+    }
+}
 
 void func_8010961C_motor_rooter(FuncContext *ctx) {
     PlayerView *view;

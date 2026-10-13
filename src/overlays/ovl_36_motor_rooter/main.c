@@ -65,7 +65,10 @@ typedef struct {
     /* 0x0C */ f32 unk0C;
     /* 0x10 */ char unk10[0xC];
     /* 0x1C */ s16 unk1C;
-    /* 0x1E */ char unk1E[0x6E];
+    /* 0x1E */ char unk1E[0x14];
+    /* 0x32 */ s8 animChange;
+    /* 0x34 */ s16 nextAnim;
+    /* 0x36 */ char unk36[0x56];
 } D_801137C8_motor_rooter_Struct; // Size 0x8C
 
 void m254_InitEnvironment(void);
@@ -344,7 +347,10 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010BB78_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010BCD0_motor_rooter);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010BDE4_motor_rooter);
+void func_8010BDE4_motor_rooter(D_801137C8_motor_rooter_Struct *player, s16 anim, s8 change) {
+    player->animChange = change;
+    player->nextAnim = anim;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010BDF0_motor_rooter);
 

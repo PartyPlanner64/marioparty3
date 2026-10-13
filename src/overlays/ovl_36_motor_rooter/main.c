@@ -57,7 +57,9 @@ typedef struct {
     /* 0x004 */ char unk04[8];
     /* 0x00C */ s16 pathPointCount;
     /* 0x00E */ s16 unk0E;
-    /* 0x010 */ char unk10[0x194];
+    /* 0x010 */ char unk10[4];
+    /* 0x014 */ s16 itemPoints[100];
+    /* 0x0DC */ s16 itemDirections[100];
     /* 0x1A4 */ u8 unk1A4[0x30]; // mtx?
 } MinigameData;                  // Size 0x1D4
 
@@ -101,6 +103,7 @@ extern MinigameData *m254_minigame; // D_801137C4_motor_rooter
 extern D_801137C8_motor_rooter_Struct *D_801137C8_motor_rooter;
 extern s16 D_801137CC_motor_rooter;
 extern s16 D_801137CE_motor_rooter;
+extern s16 D_801137D0_motor_rooter;
 extern s16 m254_playerId[]; // D_801137D4_motor_rooter
 
 extern s32 D_80111550_motor_rooter;
@@ -407,7 +410,23 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010D1A8_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010D2E4_motor_rooter);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010DC3C_motor_rooter);
+void func_8010DC3C_motor_rooter(s16 point, s16 direction) {
+    if (point >= D_801137CC_motor_rooter || D_801137D0_motor_rooter >= 100) {
+        return;
+    }
+    if (D_801137D0_motor_rooter >= 16 &&
+        point - m254_minigame->itemPoints[D_801137D0_motor_rooter - 15] < m254_minigame->unk0E) {
+        return;
+    }
+    while (direction < 0) {
+        direction += 8;
+    }
+    while (direction >= 8) {
+        direction -= 8;
+    }
+    m254_minigame->itemPoints[D_801137D0_motor_rooter] = point;
+    m254_minigame->itemDirections[D_801137D0_motor_rooter++] = direction;
+}
 
 void func_8010DD10_motor_rooter(FuncContext *ctx) {
     ctx->work.s8[0]++;

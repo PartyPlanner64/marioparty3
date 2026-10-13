@@ -37,6 +37,10 @@ enum {
 };
 
 typedef struct {
+    s32 fileIds[2][2];
+} CourseModels;
+
+typedef struct {
     /* 0x00 */ omObjData *unk00;
     /* 0x04 */ s16 obstacleSprites[21];
     /* 0x2E */ s16 obstacleSlots[3];
@@ -112,6 +116,7 @@ void m254_ExitOverlay(omObjData *object);
 void func_80106044_motor_rooter(omObjData *object);
 void func_80106298_motor_rooter(omObjData *object);
 void func_801062BC_motor_rooter(omObjData *object);
+void func_801064EC_motor_rooter(omObjData *object);
 void func_80106508_motor_rooter(omObjData *object);
 void func_80106998_motor_rooter(omObjData *object);
 void func_80106B7C_motor_rooter(omObjData *object);
@@ -151,6 +156,7 @@ extern s16 D_801135FC_motor_rooter[];
 extern s16 D_80113458_motor_rooter;
 extern s16 D_80113498_motor_rooter;
 extern s16 D_80113496_motor_rooter;
+extern CourseModels D_80113608_motor_rooter;
 
 void m254_OverlayMain(void) {
     m254_InitEnvironment();
@@ -295,7 +301,30 @@ void func_80106298_motor_rooter(omObjData *object) {
     func_80105F04_motor_rooter();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_801062BC_motor_rooter);
+void func_801062BC_motor_rooter(omObjData *object) {
+    s32 modelFlags = 0x99;
+    CourseModels courseModels = D_80113608_motor_rooter;
+    s16 modelCounts[2] = { 2, 2 };
+    s16 i;
+    s16 cameraMask;
+
+    object->work[0] = m254_minigame->unk1A4[0];
+    for (i = 0; i < modelCounts[D_801137CE_motor_rooter]; i++) {
+        if (object->work[0] == 0) {
+            object->model[i] = func_8000B108_main(courseModels.fileIds[D_801137CE_motor_rooter][i] | 0x570000, modelFlags);
+        } else {
+            object->model[i] = Hu3DModelLink(D_800EC1C0_minigame[0]->model[i]);
+        }
+        Hu3DModelPosSet(object->model[i], 0.0f, 0.0f, 0.0f);
+    }
+    m254_SyncWithModel(object);
+    cameraMask = object->work[0] == 0 ? 1 : 2;
+    for (i = 0; i < modelCounts[D_801137CE_motor_rooter]; i++) {
+        func_8001C8A8_main(object->model[i], cameraMask);
+    }
+    m254_minigame->unk1A4[0]++;
+    object->func = func_801064EC_motor_rooter;
+}
 
 void func_801064EC_motor_rooter(omObjData *object) {
     m254_SyncWithModel(object);

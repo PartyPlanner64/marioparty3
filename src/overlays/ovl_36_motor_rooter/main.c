@@ -53,6 +53,16 @@ typedef struct {
 } PathPoint; // Size 0x24
 
 typedef struct {
+    /* 0x00 */ s32 unk00;
+    /* 0x04 */ f32 x;
+    /* 0x08 */ f32 y;
+    /* 0x0C */ f32 z;
+    /* 0x10 */ f32 pitch;
+    /* 0x14 */ f32 yaw;
+    /* 0x18 */ f32 roll;
+} PathPosition; // Size 0x1C
+
+typedef struct {
     /* 0x000 */ PlayerView *views;
     /* 0x004 */ char unk04[8];
     /* 0x00C */ s16 pathPointCount;
@@ -94,7 +104,7 @@ void func_801082E0_motor_rooter(FuncContext *ctx);
 void func_80108BF0_motor_rooter(FuncContext *ctx);
 void func_8010CD84_motor_rooter(void *, s32);
 s16 func_8010D03C_motor_rooter(f32);
-void func_8010D0AC_motor_rooter(f32 *, s16, f32);
+PathPosition func_8010D0AC_motor_rooter(s16, f32);
 void func_8010D2E4_motor_rooter(s32);
 
 // BSS
@@ -308,7 +318,7 @@ void m254_InitCamera(FuncContext *ctx) {
 void func_801082E0_motor_rooter(FuncContext *ctx) {
     PlayerView *view;
     D_801137C8_motor_rooter_Struct *var_s1;
-    f32 sp10[7];
+    PathPosition position;
     s16 temp_v0;
     s16 i;
 
@@ -319,13 +329,13 @@ void func_801082E0_motor_rooter(FuncContext *ctx) {
             continue;
         }
         temp_v0 = func_8010D03C_motor_rooter(var_s1->unk0C);
-        func_8010D0AC_motor_rooter(sp10, temp_v0, var_s1->unk0C);
-        CenterM[i].x = sp10[1];
-        CenterM[i].y = sp10[2];
-        CenterM[i].z = sp10[3];
-        CRotM[i].x = sp10[4] - 180.0f;
-        CRotM[i].y = sp10[5];
-        CRotM[i].z = sp10[6];
+        position = func_8010D0AC_motor_rooter(temp_v0, var_s1->unk0C);
+        CenterM[i].x = position.x;
+        CenterM[i].y = position.y;
+        CenterM[i].z = position.z;
+        CRotM[i].x = position.pitch - 180.0f;
+        CRotM[i].y = position.yaw;
+        CRotM[i].z = position.roll;
         if (CRotM[i].x > 360.0f) {
             CRotM[i].x -= 360.0f;
         } else if (CRotM[i].x < 0.0f) {
@@ -423,7 +433,34 @@ s16 func_8010D03C_motor_rooter(f32 dist) {
     return i - 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010D0AC_motor_rooter);
+PathPosition func_8010D0AC_motor_rooter(s16 index, f32 dist) {
+    PathPosition position;
+    PathPoint *point;
+    f32 fraction;
+    f32 start;
+    f32 end;
+
+    point = &D_801137C0_motor_rooter[index];
+    fraction = dist - point->cumDist;
+    fraction *= point->invSegLen;
+    end = point[1].x;
+    start = point->x;
+    position.x = (end - start) * fraction + start;
+    end = point[1].y;
+    start = point->y;
+    position.y = (end - start) * fraction + start;
+    end = point[1].z;
+    start = point->z;
+    position.z = (end - start) * fraction + start;
+    end = point[1].pitch;
+    start = point->pitch;
+    position.pitch = (end - start) * fraction + start;
+    end = point[1].yaw;
+    start = point->yaw;
+    position.yaw = (end - start) * fraction + start;
+    position.roll = 0;
+    return position;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010D1A8_motor_rooter);
 

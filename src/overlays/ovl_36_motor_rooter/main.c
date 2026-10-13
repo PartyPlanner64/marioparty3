@@ -106,7 +106,7 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ omObjData *unk00;
-    /* 0x04 */ char unk04[2];
+    /* 0x04 */ s16 controllerPort;
     /* 0x06 */ s16 isCpu;
     /* 0x08 */ s32 unk08;
     /* 0x0C */ f32 unk0C;
@@ -149,6 +149,7 @@ void func_801087C0_motor_rooter(FuncContext *ctx);
 void func_801089B8_motor_rooter(FuncContext *ctx);
 void func_8010A440_motor_rooter(FuncContext *ctx);
 void func_8010BDF0_motor_rooter(FuncContext *ctx);
+void func_8010B970_motor_rooter(FuncContext *ctx);
 void func_80109134_motor_rooter(FuncContext *ctx);
 void func_801107FC_motor_rooter(u16 modelId, HuSprite_Unk84_Struct *sprite, u16 frame);
 void func_8010CD84_motor_rooter(Vec *, s16);
@@ -699,7 +700,89 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010A174_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010A440_motor_rooter);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010ABC4_motor_rooter);
+void func_8010ABC4_motor_rooter(FuncContext *ctx) {
+    D_801137C8_motor_rooter_Struct *player = ctx->data;
+    omObjData *object = player->unk00;
+
+    if (player->unk08 & 0x13) {
+        return;
+    }
+    switch (D_80113458_motor_rooter) {
+        case 0:
+        case 1:
+            if (D_800CBB6E_main[player->controllerPort] > 10) {
+                if (!ctx->work.s8[0]) {
+                    if (D_80113458_motor_rooter == 0) {
+                        ctx->work.s8[0] = 1;
+                    }
+                    ctx->work.s8[1] = 0;
+                    if (!(player->unk08 & 0xC)) {
+                        player->unk08 |= 4;
+                        m254_SetFunc((u8)object->work[0] + 4, 4, -1, player, func_8010B970_motor_rooter, 0, 0);
+                    } else {
+                        ctx->work.s8[2] = 4;
+                    }
+                }
+            } else if (D_800CBB6E_main[player->controllerPort] < -10) {
+                if (!ctx->work.s8[1]) {
+                    ctx->work.s8[0] = 0;
+                    if (D_80113458_motor_rooter == 0) {
+                        ctx->work.s8[1] = 1;
+                    }
+                    if (!(player->unk08 & 0xC)) {
+                        player->unk08 |= 8;
+                        m254_SetFunc((u8)object->work[0] + 4, 4, -1, player, func_8010B970_motor_rooter, 0, 1);
+                    } else {
+                        ctx->work.s8[2] = 8;
+                    }
+                }
+            } else {
+                ctx->work.s8[0] = ctx->work.s8[1] = 0;
+            }
+            break;
+        case 2:
+            if ((u16)D_800CDA7C_main[player->controllerPort] & 0x8000) {
+                if (!ctx->work.s8[0]) {
+                    ctx->work.s8[0] = 1;
+                    ctx->work.s8[1] = 0;
+                    if (!(player->unk08 & 0xC)) {
+                        player->unk08 |= 4;
+                        m254_SetFunc((u8)object->work[0] + 4, 4, -1, player, func_8010B970_motor_rooter, 0, 0);
+                    } else {
+                        ctx->work.s8[2] = 4;
+                    }
+                }
+            } else if (D_800CDA7C_main[player->controllerPort] & 0x4000) {
+                if (!ctx->work.s8[1]) {
+                    ctx->work.s8[0] = 0;
+                    ctx->work.s8[1] = 1;
+                    if (!(player->unk08 & 0xC)) {
+                        player->unk08 |= 8;
+                        m254_SetFunc((u8)object->work[0] + 4, 4, -1, player, func_8010B970_motor_rooter, 0, 1);
+                    } else {
+                        ctx->work.s8[2] = 8;
+                    }
+                }
+            } else {
+                ctx->work.s8[0] = ctx->work.s8[1] = 0;
+            }
+            break;
+    }
+    if (D_80113458_motor_rooter != 1 && !(GwPlayer[m254_playerId[object->work[0]]].stat & PLAYER_IS_CPU) &&
+        !(player->unk08 & 0xC)) {
+        switch (ctx->work.s8[2]) {
+            case 4:
+                player->unk08 |= 4;
+                m254_SetFunc((u8)object->work[0] + 4, 4, -1, player, func_8010B970_motor_rooter, 0, 0);
+                break;
+            case 8:
+                player->unk08 |= 8;
+                m254_SetFunc((u8)object->work[0] + 4, 4, -1, player, func_8010B970_motor_rooter, 0, 1);
+                break;
+        }
+        ctx->work.s8[2] = 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010AF0C_motor_rooter);
 

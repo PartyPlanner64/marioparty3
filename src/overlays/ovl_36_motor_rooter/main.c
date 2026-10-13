@@ -213,7 +213,23 @@ void m254_ExitOverlay(omObjData *object) {
     omOvlReturnEx(1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80105F04_motor_rooter);
+void func_80105F04_motor_rooter(void) {
+    s16 i;
+
+    for (i = 0; i < 2; i++) {
+        if (CRotM[i].x > 360.0f) {
+            CRotM[i].x -= 360.0f;
+        } else if (CRotM[i].x < 0.0f) {
+            CRotM[i].x += 360.0f;
+        }
+        if (CRotM[i].y > 360.0f) {
+            CRotM[i].y -= 360.0f;
+        } else if (CRotM[i].y < 0.0f) {
+            CRotM[i].y += 360.0f;
+        }
+    }
+    m254_UpdateFuncGroup(FGRP_CAMERA);
+}
 
 void func_80106044_motor_rooter(omObjData *object) {
     s16 i;

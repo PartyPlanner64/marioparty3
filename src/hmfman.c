@@ -67,6 +67,7 @@ extern s32 D_800CC3D8_main[];
 extern u16 D_800CD2F6_main;
 extern s8 D_800CDA84_main;
 extern s16 D_800CDD6A_main;
+extern HmfData D_800CB8C0_main;
 extern u8 D_800CE19A_main;
 extern s8 D_800CE1C6_main;
 extern u8 D_800CD280_main;
@@ -626,7 +627,26 @@ INCLUDE_ASM("asm/nonmatchings/hmfman", func_8001F038_main);
 
 INCLUDE_ASM("asm/nonmatchings/hmfman", func_8001F154_main);
 
-INCLUDE_ASM("asm/nonmatchings/hmfman", func_8001F1FC_main);
+s32 func_8001F1FC_main(void *arg0, s32 arg1) {
+    u8 *data = arg0;
+    s16 ret;
+
+    if (data[0] != 'M' || data[1] != 'T' || data[2] != 'N' || data[3] != 'X') {
+        D_800D5204_main = 0x2810;
+        D_800CDD6A_main = 0x2811;
+        D_800CB8C0_main.unk0E = 0x2810;
+        Hmfload(&D_800CB8C0_main, data, (s16)arg1);
+        ret = func_8002D2D8_main(data, &D_800CB8C0_main);
+        HuMemFreeAllWithTag(D_800D5204_main);
+        HuMemFreeAllWithTag(D_800CDD6A_main);
+    } else {
+        ret = func_8002D3AC_main(data);
+    }
+    if (arg1 & 8) {
+        gFreeFunc(data);
+    }
+    return ret;
+}
 
 void func_8001F304_main(s16 arg0, s16 arg1) {
     HmfModel *temp_v0;

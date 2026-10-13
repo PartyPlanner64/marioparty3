@@ -1195,6 +1195,7 @@ kakusiMasuCoinHisIdx = 0x800D1FEC; //type:s16
 
 D_800CB8B0_main = 0x800CB8B0; //type:u8
 D_800CB8B1_main = 0x800CB8B1; //type:u8
+D_800CB8C0_main = 0x800CB8C0; //type:u8 size:0xDC
 
 D_800D123C_main = 0x800D123C; //type:s32 size:0x4
 mbGameMode = 0x800D1240; //type:s32 size:0x4

@@ -27,11 +27,21 @@ typedef struct func_context {
 } FuncContext; // Size 0x44
 
 typedef struct {
+    /* 0x00 */ s8 state;
+    /* 0x01 */ u8 groupId;
+    /* 0x02 */ u8 unk02;
+    /* 0x04 */ u16 unk04;
+    /* 0x06 */ s16 unk06;
+} SpriteData; // Size 8
+
+typedef struct {
     u8 r;
     u8 g;
     u8 b;
     u8 a;
 } RGBA;
+
+extern SpriteData *m254_sprites;
 
 void m254_CreateSystem(void);
 

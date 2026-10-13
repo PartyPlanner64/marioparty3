@@ -42,6 +42,10 @@ typedef struct {
 } CourseModels;
 
 typedef struct {
+    s32 fileIds[8];
+} CharacterSprites;
+
+typedef struct {
     /* 0x00 */ omObjData *unk00;
     /* 0x04 */ s16 obstacleSprites[21];
     /* 0x2E */ s16 obstacleSlots[3];
@@ -116,11 +120,12 @@ typedef struct {
     /* 0x16 */ s16 direction;
     /* 0x18 */ f32 turnAngle;
     /* 0x1C */ s16 unk1C;
-    /* 0x1E */ char unk1E[0xA];
+    /* 0x1E */ s16 meterSprites[5];
     /* 0x28 */ s16 unk28[5];
     /* 0x32 */ s8 animChange;
     /* 0x34 */ s16 nextAnim;
-    /* 0x36 */ char unk36[0x16];
+    /* 0x36 */ char unk36[0x14];
+    /* 0x4A */ s16 progressSprite;
     /* 0x4C */ s16 unk4C;
     /* 0x4E */ char unk4E[0x3E];
 } D_801137C8_motor_rooter_Struct; // Size 0x8C
@@ -140,6 +145,7 @@ void func_80106B7C_motor_rooter(omObjData *object);
 void func_8010A174_motor_rooter(FuncContext *ctx);
 void func_80106BAC_motor_rooter(omObjData *object);
 void func_80107210_motor_rooter(omObjData *object);
+void func_801076AC_motor_rooter(omObjData *object);
 void func_801079E8_motor_rooter(omObjData *object);
 void func_80107D50_motor_rooter(omObjData *object);
 void m254_InitCamera(FuncContext *ctx);
@@ -181,6 +187,7 @@ extern s16 D_80113498_motor_rooter;
 extern s16 D_80113494_motor_rooter;
 extern s16 D_80113496_motor_rooter;
 extern CourseModels D_80113608_motor_rooter;
+extern CharacterSprites D_80113634_motor_rooter;
 extern RGBA D_80113470_motor_rooter;
 
 void m254_OverlayMain(void) {
@@ -419,7 +426,48 @@ void func_801070CC_motor_rooter(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80107210_motor_rooter);
+void func_80107210_motor_rooter(omObjData *object) {
+    CharacterSprites characters = D_80113634_motor_rooter;
+    s16 sprite;
+    s16 i;
+    f32 y;
+
+    object->work[0] = m254_minigame->runtime.viewCounters[2];
+    object->work[1] = m254_playerId[object->work[0]];
+    m254_SetSpriteDispOn(m254_SetSprite(0xFFFF, 0x57, 7, 0, 0), 160, 120);
+    for (i = 0; i < 5; i++) {
+        sprite = m254_SetSprite(0xFFFF, 0x21, 0x18, 0, 0);
+        if (object->work[0] == 0) {
+            m254_SetSpriteDispOn(sprite, (s16)(35 + i * 10), 25);
+        } else {
+            m254_SetSpriteDispOn(sprite, (s16)(285 - i * 10), 25);
+        }
+    }
+    for (i = 0; i < 5; i++) {
+        sprite = D_801137C8_motor_rooter[object->work[0]].meterSprites[i] = m254_SetSprite(0xFFF, 0x21, 0x19, 0, 0x1000);
+        if (object->work[0] == 0) {
+            m254_SetSpriteDispOn(sprite, (s16)(35 + i * 10), 25);
+        } else {
+            m254_SetSpriteDispOn(sprite, (s16)(285 - (4 - i) * 10), 25);
+        }
+        if (i == 0) {
+            m254_sprites[sprite].unk06 = 255;
+        } else {
+            m254_sprites[sprite].unk06 = 0;
+        }
+        func_80055458_main(m254_sprites[sprite].groupId, 0, (u8)m254_sprites[sprite].unk06);
+        D_801137C8_motor_rooter[object->work[0]].unk28[i] = 0;
+    }
+    D_801137C8_motor_rooter[object->work[0]].progressSprite = sprite = m254_SetSprite(0xFFF, 0x21, characters.fileIds[GwPlayer[m254_playerId[object->work[0]]].chr], 0, 0);
+    m254_SetSpriteDispOn(sprite, (s16)(152 + object->work[0] * 16), 220);
+    for (i = 0; i < D_801137D2_motor_rooter; i++) {
+        y = 220 - (s16)(D_801137C0_motor_rooter[m254_minigame->views[object->work[0]].obstaclePoints[i]].cumDist / m254_minigame->finishDistance * 180.0f);
+        sprite = m254_SetSprite(0xEFFF, 0x57, 0x11, 0, 0);
+        m254_SetSpriteDispOn(sprite, (s16)(152 + object->work[0] * 16), (s16)y);
+    }
+    m254_minigame->runtime.viewCounters[2]++;
+    object->func = func_801076AC_motor_rooter;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_801076AC_motor_rooter);
 

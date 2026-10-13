@@ -313,7 +313,28 @@ void func_80106B7C_motor_rooter(omObjData *object) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80106BAC_motor_rooter);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_801070CC_motor_rooter);
+void func_801070CC_motor_rooter(omObjData *object) {
+    m254_UpdateFuncGroup((u8)object->work[0] + 4);
+    func_800E4E30_minigame(object);
+    if (object->rot.x >= 360.0f) {
+        object->rot.x -= 360.0f;
+    }
+    if (object->rot.x < 0.0f) {
+        object->rot.x += 360.0f;
+    }
+    if (object->rot.y >= 360.0f) {
+        object->rot.y -= 360.0f;
+    }
+    if (object->rot.y < 0.0f) {
+        object->rot.y += 360.0f;
+    }
+    if (object->rot.z >= 360.0f) {
+        object->rot.z -= 360.0f;
+    }
+    if (object->rot.z < 0.0f) {
+        object->rot.z += 360.0f;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80107210_motor_rooter);
 

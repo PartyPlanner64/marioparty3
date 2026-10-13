@@ -1,6 +1,7 @@
 #include "overlays/ovl_36.h"
 #include "overlays/minigame.h"
 #include "gcc/memory.h"
+#include "game/audio.h"
 #include "game/camera.h"
 #include "game/gamemes.h"
 #include "game/gamework_data.h"
@@ -86,12 +87,17 @@ typedef struct {
     /* 0x04 */ char unk04[4];
     /* 0x08 */ s32 unk08;
     /* 0x0C */ f32 unk0C;
-    /* 0x10 */ char unk10[0xC];
+    /* 0x10 */ f32 unk10;
+    /* 0x14 */ s8 unk14;
+    /* 0x15 */ char unk15[7];
     /* 0x1C */ s16 unk1C;
-    /* 0x1E */ char unk1E[0x14];
+    /* 0x1E */ char unk1E[0xA];
+    /* 0x28 */ s16 unk28[5];
     /* 0x32 */ s8 animChange;
     /* 0x34 */ s16 nextAnim;
-    /* 0x36 */ char unk36[0x56];
+    /* 0x36 */ char unk36[0x16];
+    /* 0x4C */ s16 unk4C;
+    /* 0x4E */ char unk4E[0x3E];
 } D_801137C8_motor_rooter_Struct; // Size 0x8C
 
 void m254_InitEnvironment(void);
@@ -125,6 +131,9 @@ extern s16 D_801137CE_motor_rooter;
 extern s16 D_801137D0_motor_rooter;
 extern s16 D_801137D2_motor_rooter;
 extern s16 m254_playerId[]; // D_801137D4_motor_rooter
+extern s16 D_801137D8_motor_rooter;
+extern s16 D_8011345A_motor_rooter[];
+extern s16 D_8011349E_motor_rooter[];
 
 extern s32 D_80111550_motor_rooter;
 extern s32 D_8011245C_motor_rooter;
@@ -425,7 +434,36 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010B394_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010B970_motor_rooter);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010BB78_motor_rooter);
+void func_8010BB78_motor_rooter(FuncContext *ctx) {
+    D_801137C8_motor_rooter_Struct *player = ctx->data;
+
+    if (player->unk08 & 0x11) {
+        return;
+    }
+    if (player->unk08 & 0x100) {
+        if (player->unk10 < 20.0f) {
+            player->unk10 *= 2.0f;
+            if (player->unk10 > 20.0f) {
+                player->unk10 = 20.0f;
+            }
+        } else {
+            HuAudFXPitchSet(D_801137D8_motor_rooter, D_8011345A_motor_rooter[player->unk14]);
+            player->unk08 &= ~0x100;
+        }
+    } else {
+        player->unk4C++;
+        if (player->unk4C > D_8011349E_motor_rooter[player->unk14]) {
+            player->unk4C = 0;
+            if (player->unk14 - 1 > 0) {
+                player->unk14--;
+                player->unk28[player->unk14] = 2;
+                player->unk10 -= 4.0f;
+            }
+            func_8004AAD0_main(D_801137D8_motor_rooter, 64);
+            HuAudFXPitchSet(D_801137D8_motor_rooter, D_8011345A_motor_rooter[player->unk14]);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010BCD0_motor_rooter);
 

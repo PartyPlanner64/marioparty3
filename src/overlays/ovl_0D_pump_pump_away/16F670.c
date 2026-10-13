@@ -1225,8 +1225,6 @@ void func_80108560_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2) {
     *gfxPos = gfx;
 }
 
-// TODO: match display-list command hoisting and register allocation.
-#ifdef NON_MATCHING
 void func_80108810_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2) {
     UnkPumpPumpAwayNode *node = &D_80111758_pump_pump_away[1];
     Gfx *gfx;
@@ -1252,17 +1250,42 @@ void func_80108810_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2) {
     gDPLoadTLUT_pal16(gfx++, 0, ((HuSprite_Unk84_Struct *)node->unk_0C)->unk0C);
     for (i = 0; i < 8; i++) {
         if ((i != 0) & (i != 4)) {
-            gDPLoadTextureTile_4b(gfx++, ((HuSprite_Unk84_Struct *)node->unk_0C)->unk08, G_IM_FMT_CI, 8, 10,
-                                  0, node->unk_10[i], 8, node->unk_10[i] + 10, 0, G_TX_WRAP, G_TX_WRAP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+            // Explicit command words and staged coordinate packing preserve GCC 2.7.2's loop hoisting.
+            gDPSetTextureImage(gfx++, G_IM_FMT_CI, G_IM_SIZ_8b, 4, ((HuSprite_Unk84_Struct *)node->unk_0C)->unk08);
+            gDPSetTile(gfx++, G_IM_FMT_CI, G_IM_SIZ_8b, 1, 0, G_TX_LOADTILE, 0, G_TX_WRAP, 0, G_TX_NOLOD, G_TX_WRAP, 0, G_TX_NOLOD);
+            gDPLoadSync(gfx++);
+            gDPLoadTile(gfx++, G_TX_LOADTILE, 0, node->unk_10[i] << 2, 8 << 1, (node->unk_10[i] + 10) << 2);
+            command = gfx++;
+            word = _SHIFTL(G_RDPPIPESYNC, 24, 8);
+            command->words.w0 = word;
+            word = 0;
+            command->words.w1 = word;
+            command = gfx++;
+            word = _SHIFTL(G_SETTILE, 24, 8) | _SHIFTL(G_IM_FMT_CI, 21, 3) | _SHIFTL(1, 9, 9);
+            command->words.w0 = word;
+            word = 0;
+            command->words.w1 = word;
+            gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, node->unk_10[i] << 2, 8 << 2, (node->unk_10[i] + 10) << 2);
             gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 8 << 2, 10 << 2);
             x = D_80110FE4_pump_pump_away[i][0];
             y = D_80110FE4_pump_pump_away[i][1];
-            right = x + 8;
-            bottom = y + 10;
+            right = x;
+            right += 8;
+            bottom = y;
+            bottom += 10;
             {
                 Gfx *rectangle = gfx++;
-                rectangle->words.w0 = _SHIFTL(G_TEXRECT, 24, 8) | _SHIFTL((right * 4) & 0xFFC, 12, 12) | _SHIFTL((bottom * 4) & 0xFFC, 0, 12);
-                rectangle->words.w1 = _SHIFTL((x * 4) & 0xFFC, 12, 12) | _SHIFTL((y * 4) & 0xFFC, 0, 12);
+                u32 packedRight;
+                u32 packedX;
+
+                right *= 4;
+                packedRight = _SHIFTL(right & 0xFFC, 12, 12);
+                bottom *= 4;
+                rectangle->words.w0 = _SHIFTL(G_TEXRECT, 24, 8) | packedRight | _SHIFTL(bottom & 0xFFC, 0, 12);
+                x *= 4;
+                packedX = _SHIFTL(x & 0xFFC, 12, 12);
+                y *= 4;
+                rectangle->words.w1 = packedX | _SHIFTL(y & 0xFFC, 0, 12);
             }
             command = gfx++;
             word = _SHIFTL(G_RDPHALF_1, 24, 8);
@@ -1277,9 +1300,6 @@ void func_80108810_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2) {
     }
     *gfxPos = gfx;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80108810_pump_pump_away);
-#endif
 
 void func_80108B0C_pump_pump_away(omObjData *obj) {
     s32 digits[4];

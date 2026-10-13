@@ -48,7 +48,9 @@ typedef struct {
     /* 0x88 */ char unk88[2];
     /* 0x8A */ s16 unk8A;
     /* 0x8C */ omObjData *unk8C;
-    /* 0x90 */ char unk90[0x64];
+    /* 0x90 */ s16 itemSlots[15];
+    /* 0xAE */ s16 nextItemSlot;
+    /* 0xB0 */ char unkB0[0x44];
 } PlayerView; // Size 0xF4
 
 typedef struct {
@@ -81,8 +83,8 @@ typedef struct {
     /* 0x010 */ char unk10[4];
     /* 0x014 */ s16 itemPoints[100];
     /* 0x0DC */ s16 itemDirections[100];
-    /* 0x1A4 */ u8 unk1A4[0x30]; // mtx?
-} MinigameData;                  // Size 0x1D4
+    /* 0x1A4 */ s8 unk1A4[0x30];
+} MinigameData; // Size 0x1D4
 
 typedef struct {
     /* 0x00 */ omObjData *unk00;
@@ -112,6 +114,8 @@ void func_80106298_motor_rooter(omObjData *object);
 void func_801062BC_motor_rooter(omObjData *object);
 void func_80106508_motor_rooter(omObjData *object);
 void func_80106998_motor_rooter(omObjData *object);
+void func_80106B7C_motor_rooter(omObjData *object);
+void func_8010A174_motor_rooter(FuncContext *ctx);
 void func_80106BAC_motor_rooter(omObjData *object);
 void func_80107210_motor_rooter(omObjData *object);
 void func_801079E8_motor_rooter(omObjData *object);
@@ -304,7 +308,32 @@ void func_80106968_motor_rooter(omObjData *object) {
     m254_SyncWithModel(object);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80106998_motor_rooter);
+void func_80106998_motor_rooter(omObjData *object) {
+    PlayerView *view;
+    s16 i;
+    s16 cameraMask;
+    s32 modelFlags = 0x99;
+
+    object->work[0] = m254_minigame->unk1A4[3];
+    view = &m254_minigame->views[object->work[0]];
+    for (i = 0; i < 15; i++) {
+        if (object->work[0] == 0) {
+            object->model[i] = func_8000B108_main(0x570002, modelFlags);
+        } else {
+            object->model[i] = Hu3DModelLink(m254_minigame->views[0].unk8C->model[i]);
+        }
+        view->itemSlots[i] = view->nextItemSlot++;
+        Hu3DModelScaleSet(object->model[i], 0.7f, 0.7f, 0.7f);
+    }
+    m254_SyncWithModel(object);
+    cameraMask = object->work[0] == 0 ? 1 : 2;
+    for (i = 0; i < 15; i++) {
+        func_8001C8A8_main(object->model[i], cameraMask);
+    }
+    m254_minigame->unk1A4[3]++;
+    m254_SetFunc(3, 5, -1, object, func_8010A174_motor_rooter, 0, FALSE);
+    object->func = func_80106B7C_motor_rooter;
+}
 
 void func_80106B7C_motor_rooter(omObjData *object) {
     m254_UpdateFuncGroup(3);

@@ -55,7 +55,13 @@ typedef struct {
     /* 0x8C */ omObjData *unk8C;
     /* 0x90 */ s16 itemSlots[15];
     /* 0xAE */ s16 nextItemSlot;
-    /* 0xB0 */ char unkB0[0x44];
+    /* 0xB0 */ s16 itemSprites[5];
+    /* 0xBA */ s16 itemFrames[5];
+    /* 0xC4 */ s8 itemDelays[4];
+    /* 0xC8 */ s8 itemStates[4];
+    /* 0xCC */ char unkCC[8];
+    /* 0xD4 */ s16 itemTimer;
+    /* 0xD6 */ char unkD6[0x1E];
 } PlayerView; // Size 0xF4
 
 typedef struct {
@@ -81,6 +87,12 @@ typedef struct {
 } PathPosition; // Size 0x1C
 
 typedef struct {
+    /* 0x00 */ s8 viewCounters[6];
+    /* 0x06 */ s8 itemViewCount;
+    /* 0x07 */ char unk07[0x29];
+} MinigameRuntime; // Size 0x30
+
+typedef struct {
     /* 0x000 */ PlayerView *views;
     /* 0x004 */ f32 totalDistance;
     /* 0x008 */ f32 finishDistance;
@@ -89,7 +101,7 @@ typedef struct {
     /* 0x010 */ char unk10[4];
     /* 0x014 */ s16 itemPoints[100];
     /* 0x0DC */ s16 itemDirections[100];
-    /* 0x1A4 */ s8 unk1A4[0x30];
+    /* 0x1A4 */ MinigameRuntime runtime;
 } MinigameData; // Size 0x1D4
 
 typedef struct {
@@ -129,6 +141,7 @@ void func_8010A174_motor_rooter(FuncContext *ctx);
 void func_80106BAC_motor_rooter(omObjData *object);
 void func_80107210_motor_rooter(omObjData *object);
 void func_801079E8_motor_rooter(omObjData *object);
+void func_80107D50_motor_rooter(omObjData *object);
 void m254_InitCamera(FuncContext *ctx);
 void func_801082E0_motor_rooter(FuncContext *ctx);
 void func_80108BF0_motor_rooter(FuncContext *ctx);
@@ -167,6 +180,7 @@ extern s16 D_80113498_motor_rooter;
 extern s16 D_80113494_motor_rooter;
 extern s16 D_80113496_motor_rooter;
 extern CourseModels D_80113608_motor_rooter;
+extern RGBA D_80113470_motor_rooter;
 
 void m254_OverlayMain(void) {
     m254_InitEnvironment();
@@ -299,7 +313,7 @@ void func_80106044_motor_rooter(omObjData *object) {
         omAddObj(800, 5, 0, -1, func_801079E8_motor_rooter);
         D_800EC598_minigame[i] = D_801137C8_motor_rooter[i].unk00 = omAddObj(300, 11, 40, -1, func_80106BAC_motor_rooter);
     }
-    memset(m254_minigame->unk1A4, 0, sizeof(m254_minigame->unk1A4));
+    memset(&m254_minigame->runtime, 0, sizeof(m254_minigame->runtime));
     m254_SetFunc(FGRP_CAMERA, 0, -1, NULL, m254_InitCamera, 0, FALSE);
     m254_SetFunc(1, 0, -1, NULL, func_80108BF0_motor_rooter, 0, FALSE);
     WipeCreateIn(0xFF, 0x10);
@@ -318,7 +332,7 @@ void func_801062BC_motor_rooter(omObjData *object) {
     s16 i;
     s16 cameraMask;
 
-    object->work[0] = m254_minigame->unk1A4[0];
+    object->work[0] = m254_minigame->runtime.viewCounters[0];
     for (i = 0; i < modelCounts[D_801137CE_motor_rooter]; i++) {
         if (object->work[0] == 0) {
             object->model[i] = func_8000B108_main(courseModels.fileIds[D_801137CE_motor_rooter][i] | 0x570000, modelFlags);
@@ -332,7 +346,7 @@ void func_801062BC_motor_rooter(omObjData *object) {
     for (i = 0; i < modelCounts[D_801137CE_motor_rooter]; i++) {
         func_8001C8A8_main(object->model[i], cameraMask);
     }
-    m254_minigame->unk1A4[0]++;
+    m254_minigame->runtime.viewCounters[0]++;
     object->func = func_801064EC_motor_rooter;
 }
 
@@ -353,7 +367,7 @@ void func_80106998_motor_rooter(omObjData *object) {
     s16 cameraMask;
     s32 modelFlags = 0x99;
 
-    object->work[0] = m254_minigame->unk1A4[3];
+    object->work[0] = m254_minigame->runtime.viewCounters[3];
     view = &m254_minigame->views[object->work[0]];
     for (i = 0; i < 15; i++) {
         if (object->work[0] == 0) {
@@ -369,7 +383,7 @@ void func_80106998_motor_rooter(omObjData *object) {
     for (i = 0; i < 15; i++) {
         func_8001C8A8_main(object->model[i], cameraMask);
     }
-    m254_minigame->unk1A4[3]++;
+    m254_minigame->runtime.viewCounters[3]++;
     m254_SetFunc(3, 5, -1, object, func_8010A174_motor_rooter, 0, FALSE);
     object->func = func_80106B7C_motor_rooter;
 }
@@ -408,7 +422,38 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80107210_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_801076AC_motor_rooter);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_801079E8_motor_rooter);
+void func_801079E8_motor_rooter(omObjData *object) {
+    s16 i;
+    s16 cameraMask;
+    s16 spriteId;
+    HuSprite_Unk84_Struct *sprite;
+
+    object->work[0] = m254_minigame->runtime.itemViewCount;
+    for (i = 0; i < 4; i++) {
+        m254_minigame->views[object->work[0]].itemSprites[i] = spriteId = func_8000B838_main(0x570010);
+        sprite = func_80055194_main(spriteId);
+        object->model[i] = func_8010FC10_motor_rooter(sprite, &D_80113470_motor_rooter);
+        Hu3DModelScaleSet(object->model[i], 2.0f, 2.0f, 1.0f);
+        func_8001C258_main(object->model[i], 4, 4);
+        m254_minigame->views[object->work[0]].itemFrames[i] = 0;
+        m254_minigame->views[object->work[0]].itemDelays[i] = rand16() % 11;
+        m254_minigame->views[object->work[0]].itemStates[i] = 0;
+    }
+    m254_minigame->views[object->work[0]].itemTimer = 0;
+    m254_minigame->views[object->work[0]].itemSprites[i] = spriteId = func_8000B838_main(0x57000F);
+    sprite = func_80055194_main(spriteId);
+    object->model[i] = func_8010EFF8_motor_rooter(sprite, 1.0f);
+    Hu3DModelScaleSet(object->model[i], 1.5f, 1.5f, 1.0f);
+    func_8001C258_main(object->model[i], 4, 4);
+    m254_minigame->views[object->work[0]].itemFrames[i] = 0;
+    m254_SyncWithModel(object);
+    cameraMask = object->work[0] == 0 ? 1 : 2;
+    for (i = 0; i < 5; i++) {
+        func_8001C8A8_main(object->model[i], cameraMask);
+    }
+    m254_minigame->runtime.itemViewCount++;
+    object->func = func_80107D50_motor_rooter;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80107D50_motor_rooter);
 

@@ -104,7 +104,7 @@ typedef struct {
     /* 0x008 */ f32 finishDistance;
     /* 0x00C */ s16 pathPointCount;
     /* 0x00E */ s16 unk0E;
-    /* 0x010 */ char unk10[4];
+    /* 0x010 */ f32 timer;
     /* 0x014 */ s16 itemPoints[100];
     /* 0x0DC */ s16 itemDirections[100];
     /* 0x1A4 */ MinigameRuntime runtime;
@@ -161,6 +161,7 @@ void func_8010AF0C_motor_rooter(FuncContext *ctx);
 void func_8010B394_motor_rooter(FuncContext *ctx);
 void func_8010B970_motor_rooter(FuncContext *ctx);
 void func_80109134_motor_rooter(FuncContext *ctx);
+void func_80108FDC_motor_rooter(FuncContext *ctx);
 void func_801107FC_motor_rooter(u16 modelId, HuSprite_Unk84_Struct *sprite, u16 frame);
 void func_8010CD84_motor_rooter(Vec *, s16);
 s16 func_8010D03C_motor_rooter(f32);
@@ -669,7 +670,37 @@ void func_801087C0_motor_rooter(FuncContext *ctx) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_801089B8_motor_rooter);
+void func_801089B8_motor_rooter(FuncContext *ctx) {
+    s16 i;
+    f32 fps;
+
+    switch (ctx->state) {
+        case 0:
+            m254_minigame->timer = 1800.0f;
+            fps = 30.0f;
+            GMesCreate(0x1A, 60.0, 160, 28);
+            func_8003F578_main((m254_minigame->timer + 29.0f) / fps);
+            ctx->state = 1;
+            break;
+        case 1:
+            if (m254_minigame->runtime.unk20 == 99.0f) {
+                break;
+            }
+            m254_minigame->timer -= 1.0f;
+            func_8003F578_main((m254_minigame->timer + 29.0f) * (1.0f / 30.0f));
+            if (m254_minigame->timer < 0.0f) {
+                func_8003F5C0_main();
+                m254_ResetFunc(1, ctx);
+                m254_SetFunc(1, 0, -1, NULL, func_80108FDC_motor_rooter, 0, FALSE);
+                for (i = 0; i < 2; i++) {
+                    D_801137C8_motor_rooter[i].unk08 |= 0x41;
+                    m254_SetFunc((u8)D_801137C8_motor_rooter[i].unk00->work[0] + 4, 5, -1,
+                                 &D_801137C8_motor_rooter[i], func_8010C824_motor_rooter, 0, FALSE);
+                }
+            }
+            break;
+    }
+}
 
 void func_80108BF0_motor_rooter(FuncContext *ctx) {
     D_801137C8_motor_rooter_Struct *player;

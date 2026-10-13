@@ -1643,3 +1643,9 @@ D_801173B8_opening = 0x801173B8; //rom:0x5359E8 size:0x4 segment:opening
 sSchedulerEventStack = 0x800BBD20;
 sSchedulerAudioStack = 0x800BC2D0;
 sSchedulerGraphicsStack = 0x800BC880;
+
+D_80113668_motor_rooter = 0x80113668; //rom:0x2AF0F8 type:f64 size:0x8 segment:motor_rooter
+D_80113670_motor_rooter = 0x80113670; //rom:0x2AF100 type:s16 size:0x10 force_migration:True segment:motor_rooter
+D_80113680_motor_rooter = 0x80113680; //rom:0x2AF110 type:s16 size:0x10 force_migration:True segment:motor_rooter
+D_80113690_motor_rooter = 0x80113690; //rom:0x2AF120 type:s16 size:0x10 force_migration:True segment:motor_rooter
+D_801136A0_motor_rooter = 0x801136A0; //rom:0x2AF130 type:s16 size:0x10 force_migration:True segment:motor_rooter

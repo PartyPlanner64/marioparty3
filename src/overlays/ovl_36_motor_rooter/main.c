@@ -34,7 +34,11 @@ enum {
 
 typedef struct {
     /* 0x00 */ omObjData *unk00;
-    /* 0x04 */ char unk04[0x86];
+    /* 0x04 */ char unk04[0x48];
+    /* 0x4C */ s16 obstaclePoints[10];
+    /* 0x60 */ s16 obstacleDirections[10];
+    /* 0x74 */ s16 obstacleTypes[10];
+    /* 0x88 */ char unk88[2];
     /* 0x8A */ s16 unk8A;
     /* 0x8C */ omObjData *unk8C;
     /* 0x90 */ char unk90[0x64];
@@ -114,6 +118,7 @@ extern D_801137C8_motor_rooter_Struct *D_801137C8_motor_rooter;
 extern s16 D_801137CC_motor_rooter;
 extern s16 D_801137CE_motor_rooter;
 extern s16 D_801137D0_motor_rooter;
+extern s16 D_801137D2_motor_rooter;
 extern s16 m254_playerId[]; // D_801137D4_motor_rooter
 
 extern s32 D_80111550_motor_rooter;
@@ -462,7 +467,27 @@ PathPosition func_8010D0AC_motor_rooter(s16 index, f32 dist) {
     return position;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010D1A8_motor_rooter);
+void func_8010D1A8_motor_rooter(s16 point, s16 direction) {
+    s16 index = D_801137D2_motor_rooter;
+
+    if (point >= D_801137CC_motor_rooter) {
+        return;
+    }
+    if (index >= 10) {
+        return;
+    }
+    m254_minigame->views[0].obstaclePoints[index] = m254_minigame->views[1].obstaclePoints[index] = point;
+    direction += 4;
+    while (direction < 0) {
+        direction += 8;
+    }
+    while (direction >= 8) {
+        direction -= 8;
+    }
+    m254_minigame->views[0].obstacleDirections[index] = m254_minigame->views[1].obstacleDirections[index] = direction;
+    m254_minigame->views[0].obstacleTypes[index] = m254_minigame->views[1].obstacleTypes[index] = (rand16() % 3) + 1;
+    D_801137D2_motor_rooter++;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010D2E4_motor_rooter);
 

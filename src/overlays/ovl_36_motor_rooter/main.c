@@ -6,6 +6,7 @@
 #include "game/gamework_data.h"
 #include "game/hmflight.h"
 #include "game/hmfman.h"
+#include "game/sprite.h"
 #include "game/wipe.h"
 #include "mallocblock.h"
 #include "include_asm.h"
@@ -34,7 +35,10 @@ enum {
 
 typedef struct {
     /* 0x00 */ omObjData *unk00;
-    /* 0x04 */ char unk04[0x48];
+    /* 0x04 */ s16 obstacleSprites[21];
+    /* 0x2E */ s16 obstacleSlots[3];
+    /* 0x34 */ s16 obstacleSafeDirections[3][3];
+    /* 0x46 */ s16 obstacleFrames[3];
     /* 0x4C */ s16 obstaclePoints[10];
     /* 0x60 */ s16 obstacleDirections[10];
     /* 0x74 */ s16 obstacleTypes[10];
@@ -106,6 +110,7 @@ void func_801079E8_motor_rooter(omObjData *object);
 void m254_InitCamera(FuncContext *ctx);
 void func_801082E0_motor_rooter(FuncContext *ctx);
 void func_80108BF0_motor_rooter(FuncContext *ctx);
+void func_801107FC_motor_rooter(u16 modelId, HuSprite_Unk84_Struct *sprite, u16 frame);
 void func_8010CD84_motor_rooter(void *, s32);
 s16 func_8010D03C_motor_rooter(f32);
 PathPosition func_8010D0AC_motor_rooter(s16, f32);
@@ -384,7 +389,23 @@ void func_80109134_motor_rooter(FuncContext *ctx) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_801091A0_motor_rooter);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010961C_motor_rooter);
+void func_8010961C_motor_rooter(FuncContext *ctx) {
+    PlayerView *view;
+    omObjData *object;
+    s16 i;
+    s16 j;
+
+    view = ctx->data;
+    object = view->unk00;
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 7; j++) {
+            func_801107FC_motor_rooter(object->model[i * 7 + j],
+                                       func_80055194_main(view->obstacleSprites[i * 7 + j]),
+                                       view->obstacleFrames[i]);
+        }
+        view->obstacleFrames[i] = view->obstacleFrames[i] + 1 < 5 ? view->obstacleFrames[i] + 1 : 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010972C_motor_rooter);
 

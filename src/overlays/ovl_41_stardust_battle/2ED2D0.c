@@ -195,7 +195,33 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_8010
 void func_801089B4_stardust_battle(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_801089BC_stardust_battle);
+void func_801089BC_stardust_battle(omObjData *object) {
+    HmfModel *model;
+    HmfModel *shadow;
+    func_800E1BA8_minigame_ObjData *data;
+
+    if (object->model[10] == -1) {
+        return;
+    }
+
+    func_80111FEC_stardust_battle(object);
+    data = object->data;
+    model = &HmfModelData[object->model[0]];
+    shadow = &HmfModelData[object->model[10]];
+    Hu3DModelPosSet(object->model[10], object->trans.x, -object->trans.y, object->trans.z);
+    Hu3DModelRotSet(object->model[10], object->rot.x, data->unk3C, object->rot.z);
+    shadow->unk02 = model->unk02;
+    shadow->unk40 = model->unk40;
+    shadow->unk44 = 0;
+    shadow->unk04 = model->unk04;
+    shadow->unk4C = model->unk4C;
+    shadow->unk50 = 0;
+    shadow->unk06 = model->unk06;
+    shadow->unk58 = model->unk58;
+    shadow->unk5C = 0;
+    shadow->unk0C = model->unk0C;
+    shadow->unk0E = model->unk0E;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80108AC4_stardust_battle);
 

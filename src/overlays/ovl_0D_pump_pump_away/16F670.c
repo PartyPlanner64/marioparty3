@@ -711,8 +711,6 @@ void func_80106A38_pump_pump_away(void) {
     omAddObj(0x104, 1, 0, -1, func_801069D0_pump_pump_away);
 }
 
-// TODO: match the object and model pointer register allocation.
-#ifdef NON_MATCHING
 void func_80106A6C_pump_pump_away(omObjData *obj) {
     HmfData *model = HmfModelData[obj->model[0]].hmf;
     Vtx *vertex = model->unk44[D_800D2008_main];
@@ -729,7 +727,10 @@ void func_80106A6C_pump_pump_away(omObjData *obj) {
         case 1:
         case 2:
         case 3:
-            for (i = 0; i < model->unk18; i++, vertex++) {
+            i = 0;
+            if (i < model->unk18) {
+                // A structured loop swaps the object and model pointer registers.
+            colorVertex:
                 if (i == 1 || i == 2) {
                     vertex->v.cn[0] = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 1].red;
                     vertex->v.cn[1] = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 1].green;
@@ -738,6 +739,10 @@ void func_80106A6C_pump_pump_away(omObjData *obj) {
                     vertex->v.cn[0] = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away].red;
                     vertex->v.cn[1] = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away].green;
                     vertex->v.cn[2] = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away].blue;
+                }
+                vertex++;
+                if (++i < model->unk18) {
+                    goto colorVertex;
                 }
             }
             break;
@@ -805,10 +810,6 @@ void func_80106A6C_pump_pump_away(omObjData *obj) {
             break;
     }
 }
-
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_80106A6C_pump_pump_away);
-#endif
 
 void func_80107338_pump_pump_away(omObjData *obj) {
     obj->model[0] = func_8000B108_main(0x2E0001, 0x289);

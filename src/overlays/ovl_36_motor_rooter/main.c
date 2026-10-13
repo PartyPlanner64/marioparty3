@@ -100,7 +100,9 @@ typedef struct {
     /* 0x0C */ f32 unk0C;
     /* 0x10 */ f32 unk10;
     /* 0x14 */ s8 unk14;
-    /* 0x15 */ char unk15[7];
+    /* 0x15 */ char unk15;
+    /* 0x16 */ s16 direction;
+    /* 0x18 */ f32 turnAngle;
     /* 0x1C */ s16 unk1C;
     /* 0x1E */ char unk1E[0xA];
     /* 0x28 */ s16 unk28[5];
@@ -658,7 +660,42 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010AF0C_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010B394_motor_rooter);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010B970_motor_rooter);
+void func_8010B970_motor_rooter(FuncContext *ctx) {
+    D_801137C8_motor_rooter_Struct *player = ctx->data;
+    omObjData *object = player->unk00;
+
+    if (player->unk08 & 2) {
+        return;
+    }
+    switch (ctx->state) {
+        case 0:
+            ctx->work.s8[0] = 0;
+            if (player->unk08 & 4) {
+                ctx->work.f32[0] = player->turnAngle;
+                ctx->work.f32[1] = player->turnAngle + 45.0f;
+                player->direction = player->direction + 1 < 8 ? player->direction + 1 : 0;
+            } else {
+                player->direction = player->direction - 1 >= 0 ? player->direction - 1 : 7;
+                ctx->work.f32[0] = player->turnAngle;
+                ctx->work.f32[1] = player->turnAngle - 45.0f;
+            }
+            ctx->state = 1;
+            break;
+        case 1:
+            player->turnAngle = (ctx->work.f32[1] - ctx->work.f32[0]) * sindf(ctx->work.s8[0] / 4.0f * 90.0f) + ctx->work.f32[0];
+            if (player->turnAngle > 360.0f) {
+                player->turnAngle -= 360.0f;
+            }
+            if (player->turnAngle < 0.0f) {
+                player->turnAngle += 360.0f;
+            }
+            if (++ctx->work.s8[0] > 4.0f) {
+                player->unk08 &= ~0xC;
+                m254_ResetFunc((u8)object->work[0] + 4, ctx);
+            }
+            break;
+    }
+}
 
 void func_8010BB78_motor_rooter(FuncContext *ctx) {
     D_801137C8_motor_rooter_Struct *player = ctx->data;

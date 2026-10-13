@@ -94,7 +94,8 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ omObjData *unk00;
-    /* 0x04 */ char unk04[4];
+    /* 0x04 */ char unk04[2];
+    /* 0x06 */ s16 isCpu;
     /* 0x08 */ s32 unk08;
     /* 0x0C */ f32 unk0C;
     /* 0x10 */ f32 unk10;
@@ -129,6 +130,10 @@ void func_801079E8_motor_rooter(omObjData *object);
 void m254_InitCamera(FuncContext *ctx);
 void func_801082E0_motor_rooter(FuncContext *ctx);
 void func_80108BF0_motor_rooter(FuncContext *ctx);
+void func_801087C0_motor_rooter(FuncContext *ctx);
+void func_801089B8_motor_rooter(FuncContext *ctx);
+void func_8010A440_motor_rooter(FuncContext *ctx);
+void func_8010BDF0_motor_rooter(FuncContext *ctx);
 void func_80109134_motor_rooter(FuncContext *ctx);
 void func_801107FC_motor_rooter(u16 modelId, HuSprite_Unk84_Struct *sprite, u16 frame);
 void func_8010CD84_motor_rooter(Vec *, s16);
@@ -157,6 +162,7 @@ extern s16 D_801135EC_motor_rooter[];
 extern s16 D_801135FC_motor_rooter[];
 extern s16 D_80113458_motor_rooter;
 extern s16 D_80113498_motor_rooter;
+extern s16 D_80113494_motor_rooter;
 extern s16 D_80113496_motor_rooter;
 extern CourseModels D_80113608_motor_rooter;
 
@@ -462,7 +468,49 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_801087C0_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_801089B8_motor_rooter);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80108BF0_motor_rooter);
+void func_80108BF0_motor_rooter(FuncContext *ctx) {
+    D_801137C8_motor_rooter_Struct *player;
+    s16 i;
+
+    player = D_801137C8_motor_rooter;
+    if (ctx->state == 0) {
+        ctx->work.s16[0] = 0;
+        ctx->state = 1;
+    }
+    switch (++ctx->work.s16[0]) {
+        case 10:
+            for (i = 0; i < 2; i++, player++) {
+                m254_SetFunc(i + 4, 0, -1, player, func_8010BDF0_motor_rooter, 0, FALSE);
+            }
+            break;
+        case 110:
+            GMesCreate(6);
+            HuAudFXPlay(14);
+            HuAudSeqPlay(0x37);
+            break;
+        case 130:
+            D_80113494_motor_rooter = 1;
+            break;
+        default:
+            if (D_80113494_motor_rooter && GMesStatGet() == 2) {
+                m254_SetFunc(1, 0, -1, NULL, func_801089B8_motor_rooter, 0, FALSE);
+                for (i = 0; i < 2; i++, player++) {
+                    player->unk08 = (player->unk08 & ~1) | 0x120;
+                    player->unk10 = 1.0f;
+                    player->unk4C = 0;
+                    if (GwPlayer[m254_playerId[i]].stat & PLAYER_IS_CPU) {
+                        player->isCpu = TRUE;
+                        m254_SetFunc(i + 4, 0, -1, player, func_8010A440_motor_rooter, 0, FALSE);
+                    } else {
+                        player->isCpu = FALSE;
+                    }
+                }
+                m254_ResetFunc(1, ctx);
+                m254_SetFunc(1, 1, -1, NULL, func_801087C0_motor_rooter, 0, FALSE);
+            }
+            break;
+    }
+}
 
 void func_80108E6C_motor_rooter(FuncContext *ctx) {
     D_801137C8_motor_rooter_Struct *player = ctx->data;

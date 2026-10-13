@@ -93,7 +93,9 @@ typedef struct {
 typedef struct {
     /* 0x00 */ s8 viewCounters[6];
     /* 0x06 */ s8 itemViewCount;
-    /* 0x07 */ char unk07[0x29];
+    /* 0x07 */ char unk07[0x19];
+    /* 0x20 */ f32 unk20;
+    /* 0x24 */ char unk24[0xC];
 } MinigameRuntime; // Size 0x30
 
 typedef struct {
@@ -169,6 +171,8 @@ void func_8010ABC4_motor_rooter(FuncContext *ctx);
 void func_8010BCD0_motor_rooter(FuncContext *ctx);
 void func_8010BB78_motor_rooter(FuncContext *ctx);
 void func_8010BDE4_motor_rooter(D_801137C8_motor_rooter_Struct *player, s16 anim, s8 change);
+void func_8010C084_motor_rooter(FuncContext *ctx);
+void func_8010C824_motor_rooter(FuncContext *ctx);
 
 // BSS
 extern PathPoint *D_801137C0_motor_rooter;
@@ -627,7 +631,43 @@ void func_801082E0_motor_rooter(FuncContext *ctx) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80108514_motor_rooter);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_801087C0_motor_rooter);
+void func_801087C0_motor_rooter(FuncContext *ctx) {
+    D_801137C8_motor_rooter_Struct *player = D_801137C8_motor_rooter;
+    s16 count = 0;
+    s16 finishers[2];
+    s16 i;
+    s32 loser;
+    D_801137C8_motor_rooter_Struct *winnerPlayer;
+    D_801137C8_motor_rooter_Struct *loserPlayer;
+
+    finishers[0] = -1;
+    finishers[1] = -1;
+    for (i = 0; i < PLAYERS_TOTAL; i++, player++) {
+        if (!(player->unk08 & 0x40) && player->unk1C == D_801137CC_motor_rooter) {
+            finishers[count] = i;
+            count++;
+        }
+    }
+    if (count != 0) {
+        if (count == 2) {
+            i = rand16() % 2;
+        } else {
+            i = finishers[0];
+        }
+        D_801137C8_motor_rooter[i].unk08 |= 0x50;
+        loser = !i;
+        D_801137C8_motor_rooter[loser].unk08 |= 0x41;
+        HuAudSeqFadeOut(120);
+        GMesCreate(0x11);
+        func_8003F5C0_main();
+        m254_minigame->runtime.unk20 = 99.0f;
+        winnerPlayer = &D_801137C8_motor_rooter[i];
+        m254_SetFunc((u8)winnerPlayer->unk00->work[0] + 4, 5, -1, winnerPlayer, func_8010C084_motor_rooter, 0, 0);
+        loserPlayer = &D_801137C8_motor_rooter[loser];
+        m254_SetFunc((u8)loserPlayer->unk00->work[0] + 4, 5, -1, loserPlayer, func_8010C824_motor_rooter, 0, 0);
+        m254_ResetFunc(1, ctx);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_801089B8_motor_rooter);
 

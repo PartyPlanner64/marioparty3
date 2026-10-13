@@ -246,7 +246,10 @@ void func_80106968_motor_rooter(omObjData *object) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80106998_motor_rooter);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80106B7C_motor_rooter);
+void func_80106B7C_motor_rooter(omObjData *object) {
+    m254_UpdateFuncGroup(3);
+    m254_SyncWithModel(object);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80106BAC_motor_rooter);
 

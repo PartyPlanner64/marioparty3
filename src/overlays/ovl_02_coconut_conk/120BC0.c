@@ -14,12 +14,15 @@ extern omObjData *D_8010B274_coconut_conk;
 extern omObjData *D_8010B37C_coconut_conk;
 extern omObjData *D_8010B400_coconut_conk;
 extern omObjData *D_8010B484_coconut_conk;
+extern f32 D_8010B4A0_coconut_conk;
+extern f32 D_8010B4A4_coconut_conk;
 extern CoconutConkData D_8010BCC4_coconut_conk;
 
 void func_80105C60_coconut_conk(omObjData *);
 void func_801060C8_coconut_conk(omObjData *);
 void func_801061F4_coconut_conk(omObjData *);
 void func_80106394_coconut_conk(omObjData *);
+void func_80106468_coconut_conk(omObjData *);
 void func_8010659C_coconut_conk(omObjData *);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_801059A0_coconut_conk);
@@ -101,7 +104,20 @@ void func_8010641C_coconut_conk(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_80106468_coconut_conk);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_8010659C_coconut_conk);
+void func_8010659C_coconut_conk(omObjData *arg0) {
+    arg0->model[0] = func_8000B108_main(0x230005, 0x289);
+    arg0->model[1] = func_8000B108_main(0x230005, 0x289);
+    arg0->trans.x = -400.0f;
+    arg0->trans.y = 700.0f;
+    arg0->trans.z = -1000.0f;
+    Hu3DModelPosSet(arg0->model[0], arg0->trans.x, arg0->trans.y, -1000.0f);
+    Hu3DModelPosSet(arg0->model[1], 450.0f, 750.0f, -1000.0f);
+    D_8010B4A0_coconut_conk = 1.0f;
+    D_8010B4A4_coconut_conk = 1.0f;
+    func_8001C8A8_main(arg0->model[0], 2);
+    func_8001C8A8_main(arg0->model[1], 2);
+    arg0->func = func_80106468_coconut_conk;
+}
 
 void func_801066A4_coconut_conk(void) {
     omObjData *obj = omAddObj(0x366, 5, 0xA, -1, func_8010659C_coconut_conk);

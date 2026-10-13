@@ -146,6 +146,7 @@ extern s16 D_801135EC_motor_rooter[];
 extern s16 D_801135FC_motor_rooter[];
 extern s16 D_80113458_motor_rooter;
 extern s16 D_80113498_motor_rooter;
+extern s16 D_80113496_motor_rooter;
 
 void m254_OverlayMain(void) {
     m254_InitEnvironment();
@@ -382,7 +383,34 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_801089B8_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80108BF0_motor_rooter);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80108E6C_motor_rooter);
+void func_80108E6C_motor_rooter(FuncContext *ctx) {
+    D_801137C8_motor_rooter_Struct *player = ctx->data;
+    omObjData *object = player->unk00;
+    s16 timer;
+
+    if (D_80113496_motor_rooter >= 2) {
+        if (GMesStatGet() == 0) {
+            D_80113496_motor_rooter = 3;
+        }
+        if (D_80113496_motor_rooter == 3) {
+            if (++ctx->work.s16[0] >= 15) {
+                m254_ResetFunc(1, ctx);
+                m254_SetFunc(1, 0, -1, NULL, func_80109134_motor_rooter, 0, TRUE);
+            }
+        }
+    } else {
+        timer = ctx->work.s16[0]++;
+        if (timer == 0) {
+            HuAudSeqPlay(0x67);
+            GMesCreate(0x16, GwPlayer[m254_playerId[object->work[0]]].chr);
+            GwPlayer[m254_playerId[object->work[0]]].bonusCoin += 10;
+        }
+        if (GMesStatGet() != 0) {
+            ctx->work.s16[0] = 0;
+            D_80113496_motor_rooter = 2;
+        }
+    }
+}
 
 void func_80108FDC_motor_rooter(FuncContext *ctx) {
     s16 timer;

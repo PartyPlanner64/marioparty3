@@ -11,6 +11,7 @@
 #include "game/sprite.h"
 #include "game/wipe.h"
 #include "mallocblock.h"
+#include "math.h"
 #include "include_asm.h"
 #include "input.h"
 #include "variables.h"
@@ -81,7 +82,8 @@ typedef struct {
 
 typedef struct {
     /* 0x000 */ PlayerView *views;
-    /* 0x004 */ char unk04[8];
+    /* 0x004 */ f32 totalDistance;
+    /* 0x008 */ f32 finishDistance;
     /* 0x00C */ s16 pathPointCount;
     /* 0x00E */ s16 unk0E;
     /* 0x010 */ char unk10[4];
@@ -129,7 +131,7 @@ void func_801082E0_motor_rooter(FuncContext *ctx);
 void func_80108BF0_motor_rooter(FuncContext *ctx);
 void func_80109134_motor_rooter(FuncContext *ctx);
 void func_801107FC_motor_rooter(u16 modelId, HuSprite_Unk84_Struct *sprite, u16 frame);
-void func_8010CD84_motor_rooter(void *, s32);
+void func_8010CD84_motor_rooter(Vec *, s16);
 s16 func_8010D03C_motor_rooter(f32);
 PathPosition func_8010D0AC_motor_rooter(s16, f32);
 void func_8010D2E4_motor_rooter(s32);
@@ -147,8 +149,8 @@ extern s16 D_801137D8_motor_rooter;
 extern s16 D_8011345A_motor_rooter[];
 extern s16 D_8011349E_motor_rooter[];
 
-extern s32 D_80111550_motor_rooter;
-extern s32 D_8011245C_motor_rooter;
+extern Vec D_80111550_motor_rooter[];
+extern Vec D_8011245C_motor_rooter[];
 
 extern s16 D_801135E0_motor_rooter[];
 extern s16 D_801135EC_motor_rooter[];
@@ -222,15 +224,15 @@ void m254_CreateMinigame(void) {
     switch (D_801137CE_motor_rooter) {
         case 0:
             D_801137CC_motor_rooter = 280;
-            func_8010CD84_motor_rooter(&D_80111550_motor_rooter, 321);
+            func_8010CD84_motor_rooter(D_80111550_motor_rooter, 321);
             break;
         case 1:
             D_801137CC_motor_rooter = 300;
-            func_8010CD84_motor_rooter(&D_8011245C_motor_rooter, 341);
+            func_8010CD84_motor_rooter(D_8011245C_motor_rooter, 341);
             break;
         default:
             D_801137CC_motor_rooter = 280;
-            func_8010CD84_motor_rooter(&D_80111550_motor_rooter, 321);
+            func_8010CD84_motor_rooter(D_80111550_motor_rooter, 321);
             D_801137CE_motor_rooter = 0;
             break;
     }
@@ -676,7 +678,53 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010C824_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010CB2C_motor_rooter);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010CD84_motor_rooter);
+void func_8010CD84_motor_rooter(Vec *positions, s16 count) {
+    PathPoint *point;
+    f32 angles[3];
+    f32 distance;
+    f32 finishDistance;
+    f32 dx, dy, dz;
+    s16 i;
+
+    D_801137C0_motor_rooter = HuMemAllocTag(count * sizeof(PathPoint), 31000);
+    point = D_801137C0_motor_rooter;
+    finishDistance = distance = 0.0f;
+    for (i = 0; i < count - 1; i++, point++) {
+        dx = positions[i + 1].x - positions[i].x;
+        dy = positions[i + 1].y - positions[i].y;
+        dz = positions[i + 1].z - positions[i].z;
+        point->segLen = point->invSegLen = sqrtf(dx * dx + dy * dy + dz * dz);
+        point->cumDist = distance;
+        distance += point->segLen;
+        if (i <= D_801137CC_motor_rooter) {
+            finishDistance += point->segLen;
+        }
+        if (point->invSegLen != 0.0f) {
+            point->invSegLen = 1.0f / point->invSegLen;
+        } else {
+            point->invSegLen = 0.0f;
+        }
+        point->x = positions[i].x;
+        point->y = positions[i].y;
+        point->z = positions[i].z;
+        m254_CalcPitchAndYaw(positions[i], positions[i + 1], angles);
+        point->pitch = angles[0] + 180.0f;
+        point->yaw = angles[1] - 180.0f;
+        point->unk14 = 0.0f;
+        while (point->pitch >= 360.0f) {
+            point->pitch -= 360.0f;
+        }
+    }
+    point->segLen = -1.0f;
+    point->cumDist = distance;
+    point->x = positions[i].x;
+    point->y = positions[i].y;
+    point->z = positions[i].z;
+    m254_minigame->totalDistance = distance;
+    m254_minigame->finishDistance = finishDistance;
+    m254_minigame->pathPointCount = count;
+    m254_minigame->unk0E = 60;
+}
 
 s16 func_8010D03C_motor_rooter(f32 dist) {
     s16 i;

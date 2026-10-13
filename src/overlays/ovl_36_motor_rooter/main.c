@@ -327,7 +327,19 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80108E6C_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80108FDC_motor_rooter);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80109134_motor_rooter);
+void func_80109134_motor_rooter(FuncContext *ctx) {
+    switch (ctx->state) {
+        case 0:
+            WipeCreateOut(0, 20);
+            ctx->state = 1;
+            break;
+        case 1:
+            if (WipeStatGet() == 0) {
+                omOvlReturnEx(1);
+            }
+            break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_801091A0_motor_rooter);
 

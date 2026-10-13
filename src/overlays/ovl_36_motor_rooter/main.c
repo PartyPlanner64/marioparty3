@@ -9,6 +9,9 @@
 #include "game/wipe.h"
 #include "mallocblock.h"
 #include "include_asm.h"
+#include "input.h"
+#include "variables.h"
+#include "functions.us.h"
 
 #define PLAYERS_TOTAL 2
 
@@ -106,6 +109,7 @@ extern s32 D_8011245C_motor_rooter;
 extern s16 D_801135E0_motor_rooter[];
 extern s16 D_801135EC_motor_rooter[];
 extern s16 D_801135FC_motor_rooter[];
+extern s16 D_80113458_motor_rooter;
 
 void m254_OverlayMain(void) {
     m254_InitEnvironment();
@@ -405,4 +409,14 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010D2E4_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010DC3C_motor_rooter);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010DD10_motor_rooter);
+void func_8010DD10_motor_rooter(FuncContext *ctx) {
+    ctx->work.s8[0]++;
+    if (ctx->work.s8[0] >= 6) {
+        ctx->work.s8[0] = 0;
+        if (D_800CDA7C_main[0] & 0x2000) {
+            D_80113458_motor_rooter = D_80113458_motor_rooter + 1 < 3 ? D_80113458_motor_rooter + 1 : 0;
+        }
+    }
+    sprintf(D_800D5218_main, "CONT TYPE %d", D_80113458_motor_rooter);
+    print8(16, 80, D_800D5218_main);
+}

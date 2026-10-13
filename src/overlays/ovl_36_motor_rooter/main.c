@@ -164,6 +164,11 @@ void func_8010CD84_motor_rooter(Vec *, s16);
 s16 func_8010D03C_motor_rooter(f32);
 PathPosition func_8010D0AC_motor_rooter(s16, f32);
 void func_8010D2E4_motor_rooter(s32);
+void func_801070CC_motor_rooter(omObjData *object);
+void func_8010ABC4_motor_rooter(FuncContext *ctx);
+void func_8010BCD0_motor_rooter(FuncContext *ctx);
+void func_8010BB78_motor_rooter(FuncContext *ctx);
+void func_8010BDE4_motor_rooter(D_801137C8_motor_rooter_Struct *player, s16 anim, s8 change);
 
 // BSS
 extern PathPoint *D_801137C0_motor_rooter;
@@ -403,7 +408,67 @@ void func_80106B7C_motor_rooter(omObjData *object) {
     m254_SyncWithModel(object);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80106BAC_motor_rooter);
+void func_80106BAC_motor_rooter(omObjData *object) {
+    s32 modelFiles[2] = { 0, 1 };
+    func_800E1BA8_minigame_ObjData *data;
+    s16 character;
+    s32 modelFlags = 0x289;
+    s32 characterIndex;
+    s32 characterModel;
+    s32 characterMotion;
+    s32 motion;
+    s16 cameraMask;
+    s16 i;
+
+    object->work[0] = D_800EC280_minigame;
+    object->work[1] = m254_playerId[object->work[0]];
+    character = GwPlayer[object->work[1]].chr;
+    characterIndex = GwPlayer[object->work[1]].chr;
+    characterModel = D_800A178C_main[characterIndex][0];
+    characterMotion = D_800A178C_main[characterIndex][2];
+    func_800E1BA8_minigame(object, characterModel, characterMotion, object->work[1], modelFlags, 0x299);
+    func_8001C258_main(object->model[1], 4, 4);
+    Hu3DModelScaleSet(object->model[1], 0.2f, 0.2f, 0.2f);
+    object->model[9] = func_8000B108_main(modelFiles[object->work[0]] | 0x570000, 0x299);
+    func_8001C258_main(object->model[9], 4, 0);
+    object->model[10] = func_8000B108_main(9, 0x99);
+    Hu3DModelScaleSet(object->model[10], 0.4f, 0.4f, 0.4f);
+    motion = func_80017BB8_main(character, 0);
+    func_800E5A00_minigame(object, 0, motion, 1, 0);
+    motion = func_80017BB8_main(character, 4);
+    func_800E5A00_minigame(object, 6, motion, 1, 19);
+    motion = func_80017BB8_main(character, 47);
+    func_800E5A00_minigame(object, 13, motion, 1, 999);
+    motion = func_80017BB8_main(character, 31);
+    func_800E5A00_minigame(object, 21, motion, 1, 999);
+    motion = func_80017BB8_main(character, 39);
+    func_800E5A00_minigame(object, 38, motion, 1, 0);
+    motion = func_80017BB8_main(character, 40);
+    func_800E5A00_minigame(object, 39, motion, 1, 99);
+    object->trans.x = 0.0f;
+    object->trans.y = -56.0f;
+    object->trans.z = 100.0f;
+    object->rot.y = 180.0f;
+    object->scale.x = object->scale.y = object->scale.z = 0.2f;
+    Hu3DModelPosSet(object->model[9], 0.0f, 0.0f, 200.0f);
+    Hu3DModelRotSet(object->model[9], 0.0f, 180.0f, 0.0f);
+    func_8001C258_main(object->model[10], 4, 4);
+    func_8010BDE4_motor_rooter(&D_801137C8_motor_rooter[object->work[0]], 38, 1);
+    D_800EC280_minigame++;
+    data = object->data;
+    D_801137C8_motor_rooter[object->work[0]].unk08 = 1;
+    D_801137C8_motor_rooter[object->work[0]].controllerPort = data->unk57;
+    D_801137C8_motor_rooter[object->work[0]].direction = 0;
+    D_801137C8_motor_rooter[object->work[0]].unk14 = 1;
+    cameraMask = object->work[0] == 0 ? 1 : 2;
+    for (i = 0; i < 11; i++) {
+        func_8001C8A8_main(object->model[i], cameraMask);
+    }
+    m254_SetFunc((u8)object->work[0] + 4, 5, -1, &D_801137C8_motor_rooter[object->work[0]], func_8010ABC4_motor_rooter, 0, 0);
+    m254_SetFunc((u8)object->work[0] + 4, 9, -1, &D_801137C8_motor_rooter[object->work[0]], func_8010BCD0_motor_rooter, 0, 0);
+    m254_SetFunc((u8)object->work[0] + 4, 4, -1, &D_801137C8_motor_rooter[object->work[0]], func_8010BB78_motor_rooter, 0, 0);
+    object->func = func_801070CC_motor_rooter;
+}
 
 void func_801070CC_motor_rooter(omObjData *object) {
     m254_UpdateFuncGroup((u8)object->work[0] + 4);

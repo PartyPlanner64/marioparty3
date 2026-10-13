@@ -56,8 +56,8 @@ typedef struct UnkFileSelect6 {
     omObjData *unk_00;
     s32 unk_04;
     s32 unk_08;
-    f32 unk_0C[3];
-    f32 unk_18[3];
+    Vec unk_0C;
+    Vec unk_18;
 } UnkFileSelect6; // sizeof 0x24
 
 void func_80105FBC_filesel(s32, s32, s32);
@@ -71,6 +71,7 @@ void func_8010F8A4_filesel(omObjData *object);
 void func_8010FC58_filesel(omObjData *object);
 void func_8010FFA0_filesel(omObjData *object);
 void func_801103A0_filesel(omObjData *object);
+void func_801107AC_filesel(omObjData *object);
 void func_80110FB0_filesel(u32);
 void func_801110F0_filesel(u32);
 void func_8011139C_filesel(s32);
@@ -949,7 +950,22 @@ INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801107AC_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80110B4C_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80110B7C_filesel);
+omObjData *func_80110B7C_filesel(s32 arg0, f32 arg1, f32 arg2, f32 arg3, s32 arg4) {
+    omObjData *obj = omAddObj(6, 0, 0, -1, func_801107AC_filesel);
+    f32 x;
+    f32 y;
+    f32 z;
+
+    obj->work[0] = arg0;
+    D_80114508_filesel[arg0].unk_00 = obj;
+    D_80114508_filesel[arg0].unk_08 = arg4;
+    D_80114508_filesel[arg0].unk_04 = 0;
+
+    func_801065B8_filesel(arg0, &x, &y, &z);
+    HuVecCopyXYZ(&D_80114508_filesel[arg0].unk_0C, x, y, z);
+    HuVecCopyXYZ(&D_80114508_filesel[arg0].unk_18, arg1, arg2, arg3);
+    return obj;
+}
 
 void func_80110C84_filesel(void) {
     s32 i;

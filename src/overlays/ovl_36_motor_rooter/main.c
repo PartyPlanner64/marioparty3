@@ -7,6 +7,7 @@
 #include "game/gamework_data.h"
 #include "game/hmflight.h"
 #include "game/hmfman.h"
+#include "game/pause.h"
 #include "game/sprite.h"
 #include "game/wipe.h"
 #include "mallocblock.h"
@@ -29,6 +30,7 @@ void Hu3DAnimInit(s32);
 
 // unknown
 extern u16 D_800D530C_main;
+extern s32 D_800A178C_main[][6];
 
 enum {
     FGRP_CAMERA
@@ -465,7 +467,25 @@ void func_8010BB78_motor_rooter(FuncContext *ctx) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010BCD0_motor_rooter);
+void func_8010BCD0_motor_rooter(FuncContext *ctx) {
+    D_801137C8_motor_rooter_Struct *player;
+    omObjData *object;
+    HmfModel *model;
+
+    player = ctx->data;
+    object = player->unk00;
+    model = &HmfModelData[object->model[0]];
+    if (model->unk40 >= D_800CCF58_main[model->unk02].unk02 - 1) {
+        player->animChange = 1;
+    }
+    if (player->animChange) {
+        func_800E5690_minigame(object, player->nextAnim);
+        player->animChange = 0;
+        if (player->nextAnim == 13) {
+            func_80045F1C_main(D_800A178C_main[GwPlayer[m254_playerId[object->work[0]]].chr][0] | 0x2F, -1, 0);
+        }
+    }
+}
 
 void func_8010BDE4_motor_rooter(D_801137C8_motor_rooter_Struct *player, s16 anim, s8 change) {
     player->animChange = change;

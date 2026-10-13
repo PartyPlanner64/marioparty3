@@ -55,7 +55,7 @@ typedef struct {
     /* 0x4C */ s16 obstaclePoints[10];
     /* 0x60 */ s16 obstacleDirections[10];
     /* 0x74 */ s16 obstacleTypes[10];
-    /* 0x88 */ char unk88[2];
+    /* 0x88 */ s16 nextObstacleSlot;
     /* 0x8A */ s16 unk8A;
     /* 0x8C */ omObjData *unk8C;
     /* 0x90 */ s16 itemSlots[15];
@@ -132,7 +132,11 @@ typedef struct {
     /* 0x4C */ s16 unk4C;
     /* 0x4E */ char unk4E[0xA];
     /* 0x58 */ Vec cameraStart;
-    /* 0x64 */ char unk64[0x28];
+    /* 0x64 */ char unk64[0x14];
+    /* 0x78 */ u16 unk78;
+    /* 0x7A */ char unk7A[0xE];
+    /* 0x88 */ s16 obstacleSoundStarted;
+    /* 0x8A */ s16 obstacleSound;
 } D_801137C8_motor_rooter_Struct; // Size 0x8C
 
 void m254_InitEnvironment(void);
@@ -179,6 +183,7 @@ void func_8010BB78_motor_rooter(FuncContext *ctx);
 void func_8010BDE4_motor_rooter(D_801137C8_motor_rooter_Struct *player, s16 anim, s8 change);
 void func_8010C084_motor_rooter(FuncContext *ctx);
 void func_8010C824_motor_rooter(FuncContext *ctx);
+void func_80109C94_motor_rooter(PlayerView *view, s16 slot);
 
 // BSS
 extern PathPoint *D_801137C0_motor_rooter;
@@ -950,7 +955,86 @@ void func_8010961C_motor_rooter(FuncContext *ctx) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010972C_motor_rooter);
+void func_8010972C_motor_rooter(FuncContext *ctx) {
+    D_801137C8_motor_rooter_Struct *player;
+    PlayerView *view;
+    omObjData *object;
+    s16 distance;
+    s16 slot;
+    s16 obstacle;
+    s16 i;
+
+    player = &D_801137C8_motor_rooter[ctx->tag];
+    view = ctx->data;
+    object = view->unk00;
+    distance = 9999;
+    for (slot = 0; slot < 3; slot++) {
+        obstacle = view->obstacleSlots[slot];
+        if (obstacle == -1) {
+            continue;
+        }
+        if (view->obstaclePoints[obstacle] - player->unk1C < m254_minigame->unk0E) {
+            for (i = slot * 7; i < slot * 7 + 7; i++) {
+                func_8001C258_main(object->model[i], 4, 0);
+            }
+        } else {
+            for (i = slot * 7; i < slot * 7 + 7; i++) {
+                func_8001C258_main(object->model[i], 4, 4);
+            }
+        }
+        if (distance > view->obstaclePoints[obstacle] - player->unk1C) {
+            distance = view->obstaclePoints[obstacle] - player->unk1C;
+        }
+        ctx->work.s16[0] = slot;
+        if (!(player->unk08 & 0x42) && player->unk1C == view->obstaclePoints[obstacle] &&
+            player->direction != view->obstacleSafeDirections[slot][0] &&
+            player->direction != view->obstacleSafeDirections[slot][1] &&
+            player->direction != view->obstacleSafeDirections[slot][2]) {
+            for (i = 0; i < 3; i++) {
+                if (player->unk14 - 1 > 0) {
+                    player->unk14--;
+                    player->unk28[player->unk14] = 2;
+                    player->unk10 -= 4.0f;
+                }
+            }
+            func_8004AC98_main(0x4B0, player->unk00->work[0]);
+            HuAudFXPitchSet(D_801137D8_motor_rooter, D_8011345A_motor_rooter[player->unk14]);
+            player->unk08 |= 2;
+            player->unk78 |= 2;
+            func_8010BDE4_motor_rooter(player, 0x27, 1);
+            if (!player->isCpu) {
+                omVibrate(m254_playerId[ctx->tag], 2, 2, 20);
+            }
+        }
+        if (view->unk8A > view->obstaclePoints[obstacle] + 2) {
+            view->obstacleSlots[slot] = view->nextObstacleSlot++;
+            if (view->nextObstacleSlot > D_801137D2_motor_rooter) {
+                for (i = slot * 7; i < slot * 7 + 7; i++) {
+                    func_8001C258_main(object->model[i], 4, 4);
+                }
+                view->obstacleSlots[slot] = -1;
+            } else {
+                for (i = slot * 7; i < slot * 7 + 7; i++) {
+                    func_8001C258_main(object->model[i], 4, 4);
+                }
+                func_80109C94_motor_rooter(view, slot);
+                func_801091A0_motor_rooter(ctx);
+            }
+        }
+    }
+    if (!player->obstacleSoundStarted) {
+        player->obstacleSoundStarted = 1;
+        player->obstacleSound = func_8004AC5C_main(0x4B2, ctx->tag);
+        func_8004AAD0_main(player->obstacleSound, 0);
+    }
+    distance += 3;
+    if (distance < 26) {
+        distance = distance < 0 ? 0 : distance;
+        func_8004AAD0_main(player->obstacleSound, 127 - distance * 3);
+    } else {
+        func_8004AAD0_main(player->obstacleSound, 0);
+    }
+}
 
 void func_80109C94_motor_rooter(PlayerView *view, s16 slot) {
     s16 i;

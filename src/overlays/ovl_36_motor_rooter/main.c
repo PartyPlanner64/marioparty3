@@ -118,6 +118,7 @@ void func_801079E8_motor_rooter(omObjData *object);
 void m254_InitCamera(FuncContext *ctx);
 void func_801082E0_motor_rooter(FuncContext *ctx);
 void func_80108BF0_motor_rooter(FuncContext *ctx);
+void func_80109134_motor_rooter(FuncContext *ctx);
 void func_801107FC_motor_rooter(u16 modelId, HuSprite_Unk84_Struct *sprite, u16 frame);
 void func_8010CD84_motor_rooter(void *, s32);
 s16 func_8010D03C_motor_rooter(f32);
@@ -144,6 +145,7 @@ extern s16 D_801135E0_motor_rooter[];
 extern s16 D_801135EC_motor_rooter[];
 extern s16 D_801135FC_motor_rooter[];
 extern s16 D_80113458_motor_rooter;
+extern s16 D_80113498_motor_rooter;
 
 void m254_OverlayMain(void) {
     m254_InitEnvironment();
@@ -382,7 +384,40 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80108BF0_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80108E6C_motor_rooter);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80108FDC_motor_rooter);
+void func_80108FDC_motor_rooter(FuncContext *ctx) {
+    s16 timer;
+
+    if (D_80113498_motor_rooter >= 2) {
+        if (GMesStatGet() == 0) {
+            D_80113498_motor_rooter = 3;
+        }
+        if (D_80113498_motor_rooter == 3) {
+            if (++ctx->work.s16[0] >= 15) {
+                m254_ResetFunc(1, ctx);
+                m254_SetFunc(1, 0, -1, NULL, func_80109134_motor_rooter, 0, TRUE);
+            }
+        }
+    } else if (D_80113498_motor_rooter == 1) {
+        timer = ctx->work.s16[0]++;
+        if (timer == 15) {
+            GMesCreate(0x20);
+            HuAudSeqPlay(0x6C);
+        }
+        if (GMesStatGet() != 0) {
+            ctx->work.s16[0] = 0;
+            D_80113498_motor_rooter = 2;
+        }
+    } else {
+        timer = ctx->work.s16[0]++;
+        if (timer == 0) {
+            HuAudSeqFadeOut(120);
+            GMesCreate(0x11);
+        } else if (GMesStatGet() == 0) {
+            ctx->work.s16[0] = 0;
+            D_80113498_motor_rooter = 1;
+        }
+    }
+}
 
 void func_80109134_motor_rooter(FuncContext *ctx) {
     switch (ctx->state) {

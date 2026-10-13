@@ -129,7 +129,9 @@ typedef struct {
     /* 0x36 */ char unk36[0x14];
     /* 0x4A */ s16 progressSprite;
     /* 0x4C */ s16 unk4C;
-    /* 0x4E */ char unk4E[0x3E];
+    /* 0x4E */ char unk4E[0xA];
+    /* 0x58 */ Vec cameraStart;
+    /* 0x64 */ char unk64[0x28];
 } D_801137C8_motor_rooter_Struct; // Size 0x8C
 
 void m254_InitEnvironment(void);
@@ -152,6 +154,8 @@ void func_801079E8_motor_rooter(omObjData *object);
 void func_80107D50_motor_rooter(omObjData *object);
 void m254_InitCamera(FuncContext *ctx);
 void func_801082E0_motor_rooter(FuncContext *ctx);
+void func_80108514_motor_rooter(FuncContext *ctx);
+void func_80108E6C_motor_rooter(FuncContext *ctx);
 void func_80108BF0_motor_rooter(FuncContext *ctx);
 void func_801087C0_motor_rooter(FuncContext *ctx);
 void func_801089B8_motor_rooter(FuncContext *ctx);
@@ -201,6 +205,8 @@ extern s16 D_80113496_motor_rooter;
 extern CourseModels D_80113608_motor_rooter;
 extern CharacterSprites D_80113634_motor_rooter;
 extern RGBA D_80113470_motor_rooter;
+extern s32 D_80113474_motor_rooter[];
+extern const f64 D_80113658_motor_rooter;
 
 void m254_OverlayMain(void) {
     m254_InitEnvironment();
@@ -630,7 +636,40 @@ void func_801082E0_motor_rooter(FuncContext *ctx) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80108514_motor_rooter);
+void func_80108514_motor_rooter(FuncContext *ctx) {
+    D_801137C8_motor_rooter_Struct *player = ctx->data;
+    omObjData *object = player->unk00;
+    s16 camera = object->work[0];
+    PathPosition position;
+    f32 t;
+    s32 fileId;
+
+    if (ctx->state == 0) {
+        position = func_8010D0AC_motor_rooter(func_8010D03C_motor_rooter(player->unk0C + D_80113658_motor_rooter),
+                                              player->unk0C + D_80113658_motor_rooter);
+        ctx->work.f32[0] = position.x;
+        ctx->work.f32[1] = position.y - 30.0;
+        ctx->work.f32[2] = position.z;
+        player->cameraStart.x = CenterM[camera].x;
+        player->cameraStart.y = CenterM[camera].y;
+        player->cameraStart.z = CenterM[camera].z;
+        ctx->work.s8[0] = ctx->work.s8[1] = ctx->work.s8[2] = 0;
+        ctx->state = 1;
+    }
+    t = ctx->work.s8[0] / 30.0f;
+    t = sindf(t * 90.0f);
+    t = t > 1.0f ? 1.0f : t;
+    CenterM[camera].x = (ctx->work.f32[0] - player->cameraStart.x) * t + player->cameraStart.x;
+    CenterM[camera].y = (ctx->work.f32[1] - player->cameraStart.y) * t + player->cameraStart.y;
+    CenterM[camera].z = (ctx->work.f32[2] - player->cameraStart.z) * t + player->cameraStart.z;
+    if (++ctx->work.s8[0] >= 31) {
+        fileId = D_80113474_motor_rooter[GwPlayer[m254_playerId[object->work[0]]].chr];
+        func_80017790_main(object->model[0], 2, GwPlayer[m254_playerId[object->work[0]]].chr, fileId);
+        func_8010BDE4_motor_rooter(player, 0xD, 1);
+        m254_ResetFunc(FGRP_CAMERA, ctx);
+        m254_SetFunc(1, 0, -1, player, func_80108E6C_motor_rooter, 0, FALSE);
+    }
+}
 
 void func_801087C0_motor_rooter(FuncContext *ctx) {
     D_801137C8_motor_rooter_Struct *player = D_801137C8_motor_rooter;

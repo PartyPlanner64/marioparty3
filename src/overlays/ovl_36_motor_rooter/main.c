@@ -150,10 +150,11 @@ typedef struct {
     /* 0x4E */ char unk4E[0xA];
     /* 0x58 */ Vec cameraStart;
     /* 0x64 */ f32 rotationStart;
-    /* 0x68 */ char unk68[0xC];
+    /* 0x68 */ Vec motion;
     /* 0x74 */ f32 unk74;
     /* 0x78 */ u16 unk78;
-    /* 0x7A */ char unk7A[0xE];
+    /* 0x7A */ char unk7A[2];
+    /* 0x7C */ Vec motionCopy;
     /* 0x88 */ s16 obstacleSoundStarted;
     /* 0x8A */ s16 obstacleSound;
 } D_801137C8_motor_rooter_Struct; // Size 0x8C
@@ -224,6 +225,7 @@ extern s16 m254_playerId[]; // D_801137D4_motor_rooter
 extern s16 D_801137D8_motor_rooter;
 extern s16 D_8011345A_motor_rooter[];
 extern s16 D_8011349E_motor_rooter[];
+extern s8 D_8011349C_motor_rooter[];
 extern s8 D_80113468_motor_rooter[];
 extern s8 D_8011346C_motor_rooter[];
 
@@ -1460,7 +1462,79 @@ void func_8010ABC4_motor_rooter(FuncContext *ctx) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010AF0C_motor_rooter);
+void func_8010AF0C_motor_rooter(FuncContext *ctx) {
+    D_801137C8_motor_rooter_Struct *player = ctx->data;
+    omObjData *object = player->unk00;
+    f32 bounce = 0.0f;
+    s16 camera = object->work[0];
+    f32 rotX[16];
+    f32 rotY[16];
+    f32 transform[16];
+    Vec offset;
+    f32 position[3];
+    f32 angle;
+
+    if (player->unk08 & 0x80) {
+        m254_ResetFunc((u8)object->work[0] + 4, ctx);
+        return;
+    }
+    if (player->unk08 == 0) {
+        ctx->work.s16[1] = 1;
+        ctx->state = 1;
+    }
+    player->unk0C += player->unk10;
+    ctx->work.s16[0] = ctx->work.s16[0] + 2 < 361 ? ctx->work.s16[0] + 2 : 0;
+    ctx->work.f32[0] = sindf(ctx->work.s16[0]) * 20.0 * 0.05;
+    if (player->unk08 & 2) {
+        f32 jitter = D_8011349C_motor_rooter[ctx->work.s8[0]];
+        angle = jitter + player->turnAngle;
+        ctx->work.s8[0]++;
+        if (ctx->work.s8[0] >= 4) {
+            func_8010BDE4_motor_rooter(player, 38, 0);
+            ctx->work.s8[0] = 0;
+            player->unk08 &= ~2;
+        }
+    } else {
+        angle = player->turnAngle;
+    }
+    if (player->unk08 & 0x20) {
+        bounce = sindf(player->unk48) * 30.0;
+        player->unk48 += 10;
+        if (player->unk48 >= 181) {
+            player->unk48 = 0;
+            player->unk08 &= ~0x20;
+        }
+    }
+    player->motion.x = ctx->work.f32[0];
+    player->motion.y = angle;
+    player->motion.z = bounce;
+    player->motionCopy.x = ctx->work.f32[0];
+    player->motionCopy.y = angle;
+    player->motionCopy.z = bounce;
+    offset.x = sindf(angle) * (ctx->work.f32[0] + 55.9999990463256836);
+    offset.y = -cosdf(angle) * (ctx->work.f32[0] + 55.9999990463256836);
+    offset.z = -120.0 - bounce;
+    m254_MakeRotXMtx(rotX, CRotM[camera].x);
+    m254_MakeRotYMtx(rotY, CRotM[camera].y);
+    m254_MultiplyMtx(rotX, rotY, transform);
+    func_801114B0_motor_rooter(transform, &offset, position);
+    object->trans.x = CenterM[camera].x + position[0];
+    object->trans.y = CenterM[camera].y + position[1];
+    object->trans.z = CenterM[camera].z + position[2];
+    if (player->unk08 & 0x400) {
+        object->rot.x = CRotM[camera].x;
+        m254_MakeIdentityMtx(HmfModelData[object->model[0]].mtx);
+        func_80017D24_main(HmfModelData[object->model[0]].mtx, 0.0f, player->unk74, 0.0f);
+        object->rot.y = 0.0f;
+    } else {
+        object->rot.x = 360.0f - CRotM[camera].x;
+        if (!(player->unk08 & 1)) {
+            object->rot.y = CRotM[camera].y + 180.0f;
+        }
+        m254_MakeIdentityMtx(HmfModelData[object->model[0]].mtx);
+        func_80017D24_main(HmfModelData[object->model[0]].mtx, 0.0f, 0.0f, 360.0f - angle);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010B394_motor_rooter);
 

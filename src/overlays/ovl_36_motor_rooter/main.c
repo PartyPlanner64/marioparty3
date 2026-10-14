@@ -127,7 +127,8 @@ typedef struct {
     /* 0x28 */ s16 unk28[5];
     /* 0x32 */ s8 animChange;
     /* 0x34 */ s16 nextAnim;
-    /* 0x36 */ char unk36[0x14];
+    /* 0x36 */ char unk36[0x12];
+    /* 0x48 */ s16 unk48;
     /* 0x4A */ s16 progressSprite;
     /* 0x4C */ s16 unk4C;
     /* 0x4E */ char unk4E[0xA];
@@ -184,6 +185,7 @@ void func_8010BDE4_motor_rooter(D_801137C8_motor_rooter_Struct *player, s16 anim
 void func_8010C084_motor_rooter(FuncContext *ctx);
 void func_8010C824_motor_rooter(FuncContext *ctx);
 void func_80109C94_motor_rooter(PlayerView *view, s16 slot);
+void func_80109EFC_motor_rooter(FuncContext *ctx);
 
 // BSS
 extern PathPoint *D_801137C0_motor_rooter;
@@ -1141,7 +1143,61 @@ void func_80109C94_motor_rooter(PlayerView *view, s16 slot) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80109EFC_motor_rooter);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010A174_motor_rooter);
+void func_8010A174_motor_rooter(FuncContext *ctx) {
+    omObjData *object;
+    PlayerView *view;
+    D_801137C8_motor_rooter_Struct *player;
+    s16 slot;
+
+    object = ctx->data;
+    view = &m254_minigame->views[object->work[0]];
+    player = &D_801137C8_motor_rooter[object->work[0]];
+    if (ctx->work.s16[1] != player->unk1C) {
+        for (slot = 0; slot < 15; slot++) {
+
+            if (view->itemSlots[slot] >= D_801137D0_motor_rooter) {
+                func_8001C258_main(object->model[slot], 4, 4);
+                continue;
+            }
+            ctx->work.s16[0] = slot;
+            func_80109EFC_motor_rooter(ctx);
+            if (player->unk1C == m254_minigame->itemPoints[view->itemSlots[slot]] &&
+                player->direction == m254_minigame->itemDirections[view->itemSlots[slot]]) {
+                if (player->unk14 + 1 < 6) {
+                    if (player->unk48 > 90) {
+                        player->unk48 = 180 - player->unk48;
+                    }
+                    player->unk4C = 0;
+                    player->unk28[player->unk14++] = 1;
+                    player->unk10 += 4.0f;
+                    player->unk08 |= 0x20;
+                    player->unk78 |= 1;
+                    ctx->work.s16[1] = player->unk1C;
+                    HuAudFXPitchSet(D_801137D8_motor_rooter, D_8011345A_motor_rooter[player->unk14]);
+                    func_8004AC5C_main(0x4B1, player->unk00->work[0]);
+                    if (!player->isCpu) {
+                        omVibrate(m254_playerId[object->work[0]], 10, 0, 10);
+                    }
+                } else {
+                    if (player->unk48 > 90) {
+                        player->unk48 = 180 - player->unk48;
+                    }
+                    player->unk08 |= 0x20;
+                    player->unk78 |= 1;
+                    ctx->work.s16[1] = player->unk1C;
+                    player->unk4C = 0;
+                    func_8004AC5C_main(0x4B1, player->unk00->work[0]);
+                    if (!player->isCpu) {
+                        omVibrate(m254_playerId[object->work[0]], 10, 0, 10);
+                    }
+                }
+            }
+            if (view->unk8A > m254_minigame->itemPoints[view->itemSlots[slot]]) {
+                view->itemSlots[slot] = view->nextItemSlot++;
+            }
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010A440_motor_rooter);
 

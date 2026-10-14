@@ -1204,7 +1204,39 @@ void func_80109C94_motor_rooter(PlayerView *view, s16 slot) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80109EFC_motor_rooter);
+void func_80109EFC_motor_rooter(FuncContext *ctx) {
+    omObjData *object = ctx->data;
+    PlayerView *view = &m254_minigame->views[object->work[0]];
+    f32 rotX[16];
+    f32 rotY[16];
+    f32 transform[16];
+    Vec offset;
+    f32 position[3];
+    HmfModel *model;
+    PathPoint *point;
+    f32 angle;
+    s16 slot = ctx->work.s16[0];
+    f32 pitch;
+
+    model = &HmfModelData[object->model[slot]];
+    angle = m254_minigame->itemDirections[view->itemSlots[slot]] * 45.0f;
+    offset.x = sindf(angle) * 64.0000009536743164;
+    offset.y = -cosdf(angle) * 64.0000009536743164;
+    offset.z = -30.0f;
+    point = &D_801137C0_motor_rooter[m254_minigame->itemPoints[view->itemSlots[slot]]];
+    pitch = point->pitch - 180.0f;
+    m254_MakeRotXMtx(rotX, pitch);
+    m254_MakeRotYMtx(rotY, point->yaw);
+    m254_MultiplyMtx(rotX, rotY, transform);
+    func_801114B0_motor_rooter(transform, &offset, position);
+    model->pos.x = D_801137C0_motor_rooter[m254_minigame->itemPoints[view->itemSlots[slot]]].x + position[0];
+    model->pos.y = D_801137C0_motor_rooter[m254_minigame->itemPoints[view->itemSlots[slot]]].y + position[1];
+    model->pos.z = D_801137C0_motor_rooter[m254_minigame->itemPoints[view->itemSlots[slot]]].z + position[2];
+    model->rot.x = pitch;
+    model->rot.y = point->yaw;
+    m254_MakeIdentityMtx(model->mtx[0]);
+    func_80017D24_main(model->mtx[0], 0.0f, 0.0f, angle);
+}
 
 void func_8010A174_motor_rooter(FuncContext *ctx) {
     omObjData *object;

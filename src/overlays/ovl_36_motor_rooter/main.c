@@ -149,7 +149,8 @@ typedef struct {
     /* 0x4C */ s16 unk4C;
     /* 0x4E */ char unk4E[0xA];
     /* 0x58 */ Vec cameraStart;
-    /* 0x64 */ char unk64[0x10];
+    /* 0x64 */ f32 rotationStart;
+    /* 0x68 */ char unk68[0xC];
     /* 0x74 */ f32 unk74;
     /* 0x78 */ u16 unk78;
     /* 0x7A */ char unk7A[0xE];
@@ -202,6 +203,7 @@ void func_8010BCD0_motor_rooter(FuncContext *ctx);
 void func_8010BB78_motor_rooter(FuncContext *ctx);
 void func_8010BDE4_motor_rooter(D_801137C8_motor_rooter_Struct *player, s16 anim, s8 change);
 void func_8010C084_motor_rooter(FuncContext *ctx);
+void func_8010C44C_motor_rooter(FuncContext *ctx);
 void func_8010C824_motor_rooter(FuncContext *ctx);
 void func_80109C94_motor_rooter(PlayerView *view, s16 slot);
 void func_80109EFC_motor_rooter(FuncContext *ctx);
@@ -1587,7 +1589,75 @@ void func_8010BDF0_motor_rooter(FuncContext *ctx) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010C084_motor_rooter);
+void func_8010C084_motor_rooter(FuncContext *ctx) {
+    D_801137C8_motor_rooter_Struct *player = ctx->data;
+    omObjData *object = player->unk00;
+    s16 camera = object->work[0];
+    s16 i;
+    f32 t;
+
+    if (player->unk08 & 0xC) {
+        return;
+    }
+    switch (ctx->state) {
+        case 0:
+            ctx->work.s8[2] = 0;
+            ctx->work.s16[0] = 1;
+            ctx->work.f32[3] = object->rot.y;
+            player->rotationStart = CRotM[camera].y + 90.0f;
+            if (ctx->work.f32[3] > 360.0f) {
+                ctx->work.f32[3] -= 360.0f;
+            }
+            if (ctx->work.f32[3] < 0.0f) {
+                ctx->work.f32[3] += 360.0f;
+            }
+            if (player->rotationStart - ctx->work.f32[3] > 180.0f) {
+                player->rotationStart -= 360.0f;
+            }
+            ctx->work.f32[2] = player->turnAngle;
+            if (player->turnAngle > 180.0f) {
+                ctx->work.f32[1] = 360.0f;
+            } else {
+                ctx->work.f32[1] = 0;
+            }
+            ctx->work.f32[0] = player->unk10 / 40.0f;
+            ctx->state = 1;
+            player->unk08 |= 1;
+            break;
+        case 1:
+            t = ctx->work.s8[2] / 15.0f;
+            player->turnAngle = (ctx->work.f32[1] - ctx->work.f32[2]) * t + ctx->work.f32[2];
+            if (++ctx->work.s8[2] > 15) {
+                func_8004AB0C_main(120);
+                ctx->state = 2;
+                player->unk78 |= 4;
+                for (i = 0; i < 4; i++) {
+                    m254_minigame->runtime.counters.gameplay.playerCounters[camera * 4 + i] = 0;
+                }
+            }
+            break;
+        case 2:
+            object->rot.y = (player->rotationStart - ctx->work.f32[3]) * sindf(ctx->work.s16[0]) + ctx->work.f32[3];
+            if ((ctx->work.s16[0] *= 2.0f) > 90) {
+                ctx->work.s16[0] = 90;
+            }
+            player->unk10 -= ctx->work.f32[0];
+            if (++ctx->work.s16[5] > 6) {
+                ctx->work.s16[5] = 0;
+                if (player->unk14 - 1 >= 0) {
+                    player->unk14--;
+                    player->unk28[player->unk14] = 2;
+                }
+            }
+            if (player->unk10 < 0.0f) {
+                player->unk10 = 0;
+                player->unk08 |= 0x80;
+                m254_SetFunc((u8)object->work[0] + 4, 5, -1, player, func_8010C44C_motor_rooter, 0, 0);
+                m254_ResetFunc((u8)object->work[0] + 4, ctx);
+            }
+            break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010C44C_motor_rooter);
 

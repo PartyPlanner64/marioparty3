@@ -1543,7 +1543,39 @@ void func_8010C824_motor_rooter(FuncContext *ctx) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010CB2C_motor_rooter);
+void func_8010CB2C_motor_rooter(omObjData *object, s16 item, s16 modelIndex) {
+    D_801137C8_motor_rooter_Struct *player = &D_801137C8_motor_rooter[object->work[0]];
+    f32 jitter = 0.0f;
+    s16 camera = object->work[0];
+    s16 modelId = object->model[modelIndex];
+    f32 rotX[16];
+    f32 rotY[16];
+    f32 transform[16];
+    Vec offset;
+    f32 position[3];
+    HmfModel *model;
+    f32 angle;
+
+    if (item == 4) {
+        jitter = rand16() % 31 - 15;
+    }
+    model = &HmfModelData[modelId];
+    angle = jitter + player->turnAngle;
+    offset.x = sindf(angle) * 55.9999990463256836;
+    offset.y = -cosdf(angle) * 55.9999990463256836;
+    offset.z = -100.0f;
+    m254_MakeRotXMtx(rotX, CRotM[camera].x);
+    m254_MakeRotYMtx(rotY, CRotM[camera].y);
+    m254_MultiplyMtx(rotX, rotY, transform);
+    func_801114B0_motor_rooter(transform, &offset, position);
+    model->pos.x = CenterM[camera].x + position[0];
+    model->pos.y = CenterM[camera].y + position[1];
+    model->pos.z = CenterM[camera].z + position[2];
+    model->rot.x = CRotM[camera].x;
+    model->rot.y = CRotM[camera].y;
+    m254_MakeIdentityMtx(model->mtx[0]);
+    func_80017D24_main(model->mtx[0], 0.0f, 0.0f, angle);
+}
 
 void func_8010CD84_motor_rooter(Vec *positions, s16 count) {
     PathPoint *point;

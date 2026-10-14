@@ -101,7 +101,12 @@ typedef union {
         /* 0x06 */ s8 itemViewCount;
         /* 0x07 */ char unk07[0x19];
     } initialization;
-    s8 playerCounters[PLAYERS_TOTAL * 4];
+    struct {
+        /* 0x00 */ s8 playerCounters[PLAYERS_TOTAL * 4];
+        /* 0x08 */ char unk08[8];
+        /* 0x10 */ s16 impactFrameCounters[PLAYERS_TOTAL];
+        /* 0x14 */ char unk14[0xC];
+    } gameplay;
 } MinigameCounters; // Size 0x20
 
 typedef struct {
@@ -185,6 +190,8 @@ void func_8010B970_motor_rooter(FuncContext *ctx);
 void func_80109134_motor_rooter(FuncContext *ctx);
 void func_80108FDC_motor_rooter(FuncContext *ctx);
 void func_801107FC_motor_rooter(u16 modelId, HuSprite_Unk84_Struct *sprite, u16 frame);
+void func_801108CC_motor_rooter(u16 modelId, HuSprite_Unk84_Struct *sprite, u16 frame, RGBA *color);
+void func_8010CB2C_motor_rooter(omObjData *object, s16 item, s16 modelIndex);
 void func_8010CD84_motor_rooter(Vec *, s16);
 s16 func_8010D03C_motor_rooter(f32);
 PathPosition func_8010D0AC_motor_rooter(s16, f32);
@@ -722,7 +729,78 @@ void func_801079E8_motor_rooter(omObjData *object) {
     object->func = func_80107D50_motor_rooter;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80107D50_motor_rooter);
+void func_80107D50_motor_rooter(omObjData *object) {
+    PlayerView *view;
+    D_801137C8_motor_rooter_Struct *player;
+    s16 camera;
+    s16 i;
+    s16 j;
+
+    camera = object->work[0];
+    view = &m254_minigame->views[camera];
+    player = &D_801137C8_motor_rooter[camera];
+    i = 0;
+    if (player->unk10 == 0.0f) {
+        for (i = 0; i < 5; i++) {
+            func_8001C258_main(object->model[i], 4, 4);
+        }
+        return;
+    }
+    if (player->unk78 & 4) {
+        for (i = 0; i < 4; i++) {
+            if (view->itemDelays[i] != 99) {
+                if (++m254_minigame->runtime.counters.gameplay.playerCounters[camera * 4 + i] > view->itemDelays[i]) {
+                    func_8001C258_main(object->model[i], 4, 0);
+                    func_8010CB2C_motor_rooter(object, 4, i);
+                    func_801108CC_motor_rooter(object->model[i], func_80055194_main(view->itemSprites[i]),
+                                               view->itemFrames[i], &D_80113470_motor_rooter);
+                    if (++view->itemFrames[i] >= 15) {
+                        if (view->itemStates[i] == 0) {
+                            view->itemStates[i] = 1;
+                            view->itemFrames[i] = 0;
+                        } else {
+                            func_8001C258_main(object->model[i], 4, 4);
+                            m254_minigame->runtime.counters.gameplay.playerCounters[camera * 4 + i] = 0;
+                            view->itemDelays[i] = 99;
+                            view->itemFrames[i] = 0;
+                            if (++view->itemTimer >= 4) {
+                                for (j = 0; j < 4; j++) {
+                                    view->itemStates[j] = 0;
+                                    view->itemDelays[j] = rand16() % 11;
+                                }
+                                player->unk78 &= ~4;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } else if (player->unk78 & 1) {
+        func_8001C258_main(object->model[0], 4, 0);
+        func_8010CB2C_motor_rooter(object, 1, 0);
+        func_801108CC_motor_rooter(object->model[0], func_80055194_main(view->itemSprites[0]),
+                                   view->itemFrames[0], &D_80113470_motor_rooter);
+        if (++view->itemFrames[0] >= 15) {
+            func_8001C258_main(object->model[0], 4, 4);
+            player->unk78 &= ~1;
+            view->itemFrames[0] = 0;
+        }
+    }
+    if (player->unk78 & 2) {
+        func_8001C258_main(object->model[4], 4, 0);
+        func_8010CB2C_motor_rooter(object, 2, 4);
+        func_801107FC_motor_rooter(object->model[4], func_80055194_main(view->itemSprites[4]), view->itemFrames[4]);
+        if (++m254_minigame->runtime.counters.gameplay.impactFrameCounters[object->work[0]] >= 2) {
+            m254_minigame->runtime.counters.gameplay.impactFrameCounters[object->work[0]] = 0;
+            if (++view->itemFrames[4] >= 5) {
+                func_8001C258_main(object->model[4], 4, 4);
+                player->unk78 &= ~2;
+                view->itemFrames[4] = 0;
+            }
+        }
+    }
+    m254_SyncWithModel(object);
+}
 
 void m254_InitCamera(FuncContext *ctx) {
     s16 i;
@@ -1546,7 +1624,7 @@ void func_8010C824_motor_rooter(FuncContext *ctx) {
                 ctx->state = 2;
                 player->unk78 |= 4;
                 for (i = 0; i < 4; i++) {
-                    m254_minigame->runtime.counters.playerCounters[object->work[0] * 4 + i] = 0;
+                    m254_minigame->runtime.counters.gameplay.playerCounters[object->work[0] * 4 + i] = 0;
                 }
             }
             break;

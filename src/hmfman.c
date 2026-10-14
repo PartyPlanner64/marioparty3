@@ -762,7 +762,24 @@ void func_8001FBBC_main(s16 arg0, s8 arg1, s8 arg2, s8 arg3) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/hmfman", func_8001FBFC_main);
+void func_8001FBFC_main(s16 arg0, f32 arg1, f32 arg2, f32 arg3) {
+    HmfModel *sub;
+    f32 len;
+
+    if (HmfModelData[arg0].unkB4 != NULL) {
+        sub = HmfModelData[arg0].unkB4;
+        len = HuSqrtf(arg1 * arg1 + arg2 * arg2 + arg3 * arg3);
+        if (len != 0.0f) {
+            sub->unk04 = (s8)((arg1 / len) * 120.0f);
+            sub->unk05 = (s8)((arg2 / len) * 120.0f);
+            sub->unk06 = (s8)((arg3 / len) * 120.0f);
+        } else {
+            sub->unk04 = 0;
+            sub->unk05 = 120;
+            sub->unk06 = 0;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/hmfman", func_8001FD08_main);
 

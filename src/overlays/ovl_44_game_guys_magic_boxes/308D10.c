@@ -30,7 +30,12 @@ typedef struct GameGuysMagicBoxesSprite { // 0x1C bytes
 
 extern u8 D_8010C1FA_game_guys_magic_boxes;
 extern u8 D_8010C1FB_game_guys_magic_boxes;
+extern u8 D_8010C21C_game_guys_magic_boxes;  // state
+extern u16 D_8010C21E_game_guys_magic_boxes; // sprite alpha timer
 extern u8 D_8010C750_game_guys_magic_boxes;
+extern s16 D_8010C756_game_guys_magic_boxes;
+extern u8 D_8010C9D9_game_guys_magic_boxes;
+extern u8 D_8010C9E1_game_guys_magic_boxes;
 extern u8 D_8010C9E2_game_guys_magic_boxes;
 extern u8 D_8010C9E7_game_guys_magic_boxes;
 extern u16 D_8010CA0A_game_guys_magic_boxes;
@@ -39,6 +44,7 @@ extern Vec D_8010C9B0_game_guys_magic_boxes;
 extern Vec D_8010C9BC_game_guys_magic_boxes;
 extern u8 D_8010C9E8_game_guys_magic_boxes;
 extern HuSprite *D_8010C9EC_game_guys_magic_boxes;
+extern s16 D_8010C9F0_game_guys_magic_boxes;
 extern void *D_8010C9F4_game_guys_magic_boxes[3];
 extern s16 D_8010CA0C_game_guys_magic_boxes;
 
@@ -118,7 +124,33 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", fun
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", func_80108914_game_guys_magic_boxes);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", func_80108AF8_game_guys_magic_boxes);
+void func_80108AF8_game_guys_magic_boxes(void) {
+    s16 *coins;
+
+    switch (D_8010C21C_game_guys_magic_boxes) {
+        case 0:
+            D_8010C9E7_game_guys_magic_boxes++;
+            coins = &D_8010C756_game_guys_magic_boxes;
+            *coins = *coins * 2;
+            D_8010C9E1_game_guys_magic_boxes = 0;
+            D_8010C21C_game_guys_magic_boxes++;
+            break;
+        case 1:
+            if (D_8010C21E_game_guys_magic_boxes == 0) {
+                D_8010C21C_game_guys_magic_boxes = 2;
+            } else {
+                D_8010C21E_game_guys_magic_boxes -= 8;
+            }
+            func_80055458_main(D_8010C9F0_game_guys_magic_boxes, 0, D_8010C21E_game_guys_magic_boxes);
+            break;
+        case 2:
+            D_8010C9D9_game_guys_magic_boxes = 0;
+            D_8010C9E8_game_guys_magic_boxes = 3;
+            D_8010C21C_game_guys_magic_boxes = 0;
+            D_8010C21E_game_guys_magic_boxes = 0x80;
+            break;
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", D_8010C514_game_guys_magic_boxes);
 

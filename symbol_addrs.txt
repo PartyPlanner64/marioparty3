@@ -1649,3 +1649,5 @@ D_80113670_motor_rooter = 0x80113670; //rom:0x2AF100 type:s16 size:0x10 force_mi
 D_80113680_motor_rooter = 0x80113680; //rom:0x2AF110 type:s16 size:0x10 force_migration:True segment:motor_rooter
 D_80113690_motor_rooter = 0x80113690; //rom:0x2AF120 type:s16 size:0x10 force_migration:True segment:motor_rooter
 D_801136A0_motor_rooter = 0x801136A0; //rom:0x2AF130 type:s16 size:0x10 force_migration:True segment:motor_rooter
+
+D_8010C21E_game_guys_magic_boxes = 0x8010C21E; //rom:0x30F58E type:u16 size:0x2 segment:game_guys_magic_boxes

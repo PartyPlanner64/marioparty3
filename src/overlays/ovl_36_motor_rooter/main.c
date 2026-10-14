@@ -47,6 +47,10 @@ typedef struct {
 } CharacterSprites;
 
 typedef struct {
+    s32 fileIds[7];
+} ObstacleSprites;
+
+typedef struct {
     /* 0x00 */ omObjData *unk00;
     /* 0x04 */ s16 obstacleSprites[21];
     /* 0x2E */ s16 obstacleSlots[3];
@@ -186,6 +190,10 @@ void func_8010C084_motor_rooter(FuncContext *ctx);
 void func_8010C824_motor_rooter(FuncContext *ctx);
 void func_80109C94_motor_rooter(PlayerView *view, s16 slot);
 void func_80109EFC_motor_rooter(FuncContext *ctx);
+void func_8010961C_motor_rooter(FuncContext *ctx);
+void func_8010972C_motor_rooter(FuncContext *ctx);
+void func_801091A0_motor_rooter(FuncContext *ctx);
+void func_80106968_motor_rooter(omObjData *object);
 
 // BSS
 extern PathPoint *D_801137C0_motor_rooter;
@@ -214,6 +222,7 @@ extern s16 D_80113494_motor_rooter;
 extern s16 D_80113496_motor_rooter;
 extern CourseModels D_80113608_motor_rooter;
 extern CharacterSprites D_80113634_motor_rooter;
+extern ObstacleSprites D_80113618_motor_rooter;
 extern RGBA D_80113470_motor_rooter;
 extern s32 D_80113474_motor_rooter[];
 extern const f64 D_80113658_motor_rooter;
@@ -390,7 +399,53 @@ void func_801064EC_motor_rooter(omObjData *object) {
     m254_SyncWithModel(object);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_80106508_motor_rooter);
+void func_80106508_motor_rooter(omObjData *object) {
+    ObstacleSprites sprites = D_80113618_motor_rooter;
+    s32 *fileIds;
+    PlayerView *view;
+    FuncContext *ctx;
+    s16 i;
+    s16 j;
+    s16 cameraMask;
+    s16 spriteId;
+    s16 k;
+
+    object->work[0] = m254_minigame->runtime.viewCounters[1];
+    view = &m254_minigame->views[object->work[0]];
+    for (i = 0, fileIds = sprites.fileIds; i < 3; i++) {
+        for (j = 0; j < 7; j++) {
+            spriteId = func_8000B838_main(fileIds[j] | 0x570000);
+            m254_minigame->views[object->work[0]].obstacleSprites[i * 7 + j] = spriteId;
+            object->model[i * 7 + j] = func_8010EFF8_motor_rooter(func_80055194_main(spriteId), 1.0f);
+            Hu3DModelScaleSet(object->model[i * 7 + j], 2.0f, 2.0f, 2.0f);
+        }
+        view->obstacleSlots[i] = view->nextObstacleSlot++;
+        if (view->nextObstacleSlot > D_801137D2_motor_rooter) {
+            for (j = i * 7; j < i * 7 + 7; j++) {
+                func_8001C258_main(object->model[j], 4, 4);
+            }
+            view->obstacleSlots[i] = -1;
+        } else {
+            func_80109C94_motor_rooter(view, i);
+        }
+        view->obstacleFrames[i] = rand16() % 3;
+    }
+    cameraMask = object->work[0] == 0 ? 1 : 2;
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 7; j++) {
+            func_8001C8A8_main(object->model[i * 7 + j], cameraMask);
+        }
+    }
+    m254_minigame->runtime.viewCounters[1]++;
+    m254_SetFunc(2, 6, -1, &m254_minigame->views[object->work[0]], func_8010961C_motor_rooter, object->work[0], FALSE);
+    ctx = m254_SetFunc(2, 7, -1, &m254_minigame->views[object->work[0]], func_8010972C_motor_rooter, object->work[0], FALSE);
+    for (k = 0; k < 3; k++) {
+        ctx->work.s16[0] = k;
+        func_801091A0_motor_rooter(ctx);
+    }
+    m254_SyncWithModel(object);
+    object->func = func_80106968_motor_rooter;
+}
 
 void func_80106968_motor_rooter(omObjData *object) {
     m254_UpdateFuncGroup(2);

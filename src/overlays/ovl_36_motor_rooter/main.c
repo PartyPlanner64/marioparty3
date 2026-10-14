@@ -198,6 +198,7 @@ void func_8010CD84_motor_rooter(Vec *, s16);
 s16 func_8010D03C_motor_rooter(f32);
 PathPosition func_8010D0AC_motor_rooter(s16, f32);
 void func_8010D2E4_motor_rooter(s32);
+void func_8010DC3C_motor_rooter(s16 point, s16 direction);
 void func_801070CC_motor_rooter(omObjData *object);
 void func_8010ABC4_motor_rooter(FuncContext *ctx);
 void func_8010BCD0_motor_rooter(FuncContext *ctx);
@@ -2064,7 +2065,139 @@ void func_8010D1A8_motor_rooter(s16 point, s16 direction) {
     D_801137D2_motor_rooter++;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010D2E4_motor_rooter);
+void func_8010D2E4_motor_rooter(s32 arg0) {
+    s16 directions[8];
+    s16 obstacleSections[10];
+    s16 j, k;
+    s16 point, direction, count, sectionLength, section, preferredDirection, step, chance;
+
+    for (step = 0; step < 10; step++) {
+        obstacleSections[step] = 0;
+    }
+    sectionLength = (D_801137CC_motor_rooter - 10) / 10;
+    direction = 0;
+    point = 5;
+    while (1) {
+        if (point >= D_801137CC_motor_rooter || D_801137D0_motor_rooter >= 100) {
+            break;
+        }
+        preferredDirection = -1;
+        switch ((s16)(rand16() % 14)) {
+            case 0:
+            case 1:
+                direction = rand16() % 8;
+                count = rand16() % 2 + 2;
+                for (j = 0; j < count; j++, point += 2) {
+                    func_8010DC3C_motor_rooter(point, direction);
+                }
+                preferredDirection = direction + 4;
+                chance = 70;
+                break;
+            case 2:
+            case 3:
+            case 4:
+                direction = rand16() % 8;
+                count = rand16() % 2 + 3;
+                for (j = 0; j < count; j++, point += 6) {
+                    func_8010DC3C_motor_rooter(point, direction);
+                    direction += rand16() % 2 ? -1 : 1;
+                }
+                chance = 25;
+                break;
+            case 5:
+                count = rand16() % 2 + 2;
+                for (j = 0; j < count; j++, point += 8) {
+                    direction = rand16() % 8;
+                    for (k = 0; k < 2; k++) {
+                        func_8010DC3C_motor_rooter(point, direction + k * 4);
+                    }
+                }
+                preferredDirection = direction;
+                chance = 25;
+                break;
+            case 6:
+            case 7:
+                direction = rand16() % 8;
+                step = rand16() % 2 ? -1 : 1;
+                count = rand16() % 2 + 2;
+                for (j = 0; j < count; j++, point += 7) {
+                    for (k = 0; k < 2; k++) {
+                        func_8010DC3C_motor_rooter(point, direction + k * 4);
+                    }
+                    direction += step;
+                }
+                preferredDirection = direction;
+                chance = 25;
+                break;
+            case 8:
+                count = rand16() % 2 + 1;
+                for (j = 0; j < count; j++, point += 9) {
+                    m254_MakeRandPermutation(directions, 8);
+                    for (k = 0; k < 3; k++) {
+                        func_8010DC3C_motor_rooter(point, directions[k]);
+                    }
+                }
+                chance = 50;
+                break;
+            case 9:
+                count = rand16() % 2 + 2;
+                for (j = 0; j < count; j++, point += 7) {
+                    direction = rand16() % 8;
+                    for (k = 0; k < 3; k++, direction += 3) {
+                        func_8010DC3C_motor_rooter(point, direction);
+                    }
+                }
+                chance = 50;
+                break;
+            case 10:
+                direction = rand16() % 8;
+                count = rand16() % 2 + 1;
+                func_8010DC3C_motor_rooter(point, direction);
+                point += 2;
+                for (j = 0; j < count; j++, point += 2) {
+                    for (k = 0; k < 2; k++) {
+                        func_8010DC3C_motor_rooter(point, direction + k * 4);
+                    }
+                }
+                preferredDirection = direction + 4;
+                chance = 100;
+                break;
+            default:
+                count = rand16() % 2 + 2;
+                for (j = 0; j < count; j++, point += 9) {
+                    direction = rand16() % 8;
+                    func_8010DC3C_motor_rooter(point, direction);
+                }
+                chance = 50;
+                break;
+        }
+        obstacleSections[0] = 1;
+        section = (point - 10) / sectionLength;
+        if (rand16() % 101 < chance && obstacleSections[section] == 0) {
+            if (preferredDirection == -1) {
+                direction = rand16() % 8;
+            } else {
+                direction = preferredDirection;
+            }
+            obstacleSections[section]++;
+            step = 0;
+            if (D_801137D2_motor_rooter > 0 &&
+                point - m254_minigame->views[0].obstaclePoints[D_801137D2_motor_rooter - 1] < 5) {
+                func_8010D1A8_motor_rooter(point,
+                                           m254_minigame->views[0].obstacleDirections[D_801137D2_motor_rooter - 1] + 2);
+            } else {
+                func_8010D1A8_motor_rooter(point - step, direction);
+            }
+            for (j = 0; j < section; j++) {
+                if (obstacleSections[j] == 0) {
+                    obstacleSections[section] = 0;
+                    obstacleSections[j]++;
+                }
+            }
+            point += 4 + rand16() % 5;
+        }
+    }
+}
 
 void func_8010DC3C_motor_rooter(s16 point, s16 direction) {
     if (point >= D_801137CC_motor_rooter || D_801137D0_motor_rooter >= 100) {

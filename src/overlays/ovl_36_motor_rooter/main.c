@@ -1659,7 +1659,62 @@ void func_8010C084_motor_rooter(FuncContext *ctx) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010C44C_motor_rooter);
+void func_8010C44C_motor_rooter(FuncContext *ctx) {
+    D_801137C8_motor_rooter_Struct *player = ctx->data;
+    omObjData *object = player->unk00;
+    PathPosition position;
+    f32 t;
+
+    if (ctx->state == 0) {
+        position = func_8010D0AC_motor_rooter(func_8010D03C_motor_rooter(player->unk0C + 60.0),
+                                              player->unk0C + 60.0);
+        ctx->work.f32[0] = position.x;
+        ctx->work.f32[1] = position.y;
+        ctx->work.f32[2] = position.z;
+        ctx->work.f32[3] = CRotM[object->work[0]].y;
+        if (ctx->work.f32[3] <= -360.0f) {
+            ctx->work.f32[3] += 360.0f;
+        }
+        player->cameraStart.x = object->trans.x;
+        player->cameraStart.y = object->trans.y;
+        player->cameraStart.z = object->trans.z;
+        player->rotationStart = object->rot.y;
+        ctx->work.s8[0] = ctx->work.s8[1] = ctx->work.s8[2] = 0;
+        func_8010BDE4_motor_rooter(player, 6, 1);
+        CharFXPlay(0x3A, GwPlayer[m254_playerId[object->work[0]]].chr);
+        func_8001C258_main(object->model[1], 4, 0);
+        ctx->state = 1;
+    }
+    t = ctx->work.s8[0] / 30.0f;
+    t = sindf(t) * 90.0f;
+    t = t > 1.0f ? 1.0f : t;
+    object->trans.x = (ctx->work.f32[0] - player->cameraStart.x) * t + player->cameraStart.x;
+    object->trans.z = (ctx->work.f32[2] - player->cameraStart.z) * t + player->cameraStart.z;
+    object->trans.y = m254_CalcQuadraticBezier(t, player->cameraStart.y,
+                                               player->cameraStart.y + 60.0, player->cameraStart.y);
+    Hu3DModelPosSet(object->model[1], object->trans.x, player->cameraStart.y, object->trans.z);
+    t = ctx->work.s8[1] / 10.0f;
+    t = sindf(t) * 90.0f;
+    t = t > 1.0f ? 1.0f : t;
+    object->rot.y = (ctx->work.f32[3] - player->rotationStart) * t + player->rotationStart;
+    if (++ctx->work.s8[0] > 30) {
+        m254_SetFunc(FGRP_CAMERA, 0, -1, player, func_80108514_motor_rooter, 0, 0);
+        m254_ResetFunc((u8)object->work[0] + 4, ctx);
+    }
+    if (++ctx->work.s8[1] > 10) {
+        ctx->work.s8[1] = 10;
+    }
+    if (ctx->work.s8[0] > 20) {
+        if (ctx->work.s8[2] == 0) {
+            ctx->work.s8[2] = 1;
+            func_8010BDE4_motor_rooter(player, 21, 1);
+            CharFXPlay(0x31, GwPlayer[m254_playerId[object->work[0]]].chr);
+        } else if (ctx->work.s8[2] == 1) {
+            ctx->work.s8[2] = 2;
+            func_8010BDE4_motor_rooter(player, 0, 0);
+        }
+    }
+}
 
 void func_8010C824_motor_rooter(FuncContext *ctx) {
     D_801137C8_motor_rooter_Struct *player = ctx->data;

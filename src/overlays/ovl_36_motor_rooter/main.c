@@ -1523,20 +1523,86 @@ void func_8010AF0C_motor_rooter(FuncContext *ctx) {
     object->trans.z = CenterM[camera].z + position[2];
     if (player->unk08 & 0x400) {
         object->rot.x = CRotM[camera].x;
-        m254_MakeIdentityMtx(HmfModelData[object->model[0]].mtx);
-        func_80017D24_main(HmfModelData[object->model[0]].mtx, 0.0f, player->unk74, 0.0f);
+        m254_MakeIdentityMtx(HmfModelData[object->model[0]].mtx[0]);
+        func_80017D24_main(HmfModelData[object->model[0]].mtx[0], 0.0f, player->unk74, 0.0f);
         object->rot.y = 0.0f;
     } else {
         object->rot.x = 360.0f - CRotM[camera].x;
         if (!(player->unk08 & 1)) {
             object->rot.y = CRotM[camera].y + 180.0f;
         }
-        m254_MakeIdentityMtx(HmfModelData[object->model[0]].mtx);
-        func_80017D24_main(HmfModelData[object->model[0]].mtx, 0.0f, 0.0f, 360.0f - angle);
+        m254_MakeIdentityMtx(HmfModelData[object->model[0]].mtx[0]);
+        func_80017D24_main(HmfModelData[object->model[0]].mtx[0], 0.0f, 0.0f, 360.0f - angle);
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010B394_motor_rooter);
+void func_8010B394_motor_rooter(FuncContext *ctx) {
+    D_801137C8_motor_rooter_Struct *player = ctx->data;
+    omObjData *object = player->unk00;
+    HmfModel *model = &HmfModelData[object->model[9]];
+    s16 camera = object->work[0];
+    f32 rotX[16];
+    f32 rotY[16];
+    f32 transform[16];
+    Vec offset;
+    f32 position[3];
+    f32 angle;
+    f32 bounce;
+
+    if (player->unk08 & 0x80) {
+        m254_ResetFunc((u8)object->work[0] + 4, ctx);
+        return;
+    }
+    if (!(player->unk08 & 0x200)) {
+        offset.x = sindf(player->motionCopy.y) * (player->motionCopy.x + 55.9999990463256836);
+        offset.y = -cosdf(player->motionCopy.y) * (player->motionCopy.x + 55.9999990463256836);
+        offset.z = -120.0 - player->motionCopy.z;
+        m254_MakeRotXMtx(rotX, CRotM[camera].x);
+        m254_MakeRotYMtx(rotY, CRotM[camera].y);
+        m254_MultiplyMtx(rotX, rotY, transform);
+        func_801114B0_motor_rooter(transform, &offset, position);
+        HmfModelData[object->model[9]].pos.x = CenterM[camera].x + position[0];
+        HmfModelData[object->model[9]].pos.y = CenterM[camera].y + position[1];
+        HmfModelData[object->model[9]].pos.z = CenterM[camera].z + position[2];
+    } else {
+        Hu3DModelPosSet(object->model[9], object->trans.x, object->trans.y + 0.0, object->trans.z);
+    }
+    Hu3DModelRotSet(object->model[9], object->rot.x, object->rot.y, object->rot.z);
+    if (player->unk08 & 0x400) {
+        m254_MakeIdentityMtx(model->mtx[0]);
+        func_80017D24_main(model->mtx[0], 0.0f, player->unk74, 0.0f);
+        model->rot.y = model->rot.z = 0.0f;
+    } else {
+        m254_MakeIdentityMtx(model->mtx[0]);
+        func_80017D24_main(model->mtx[0], 0.0f, 0.0f, 360.0f - player->turnAngle);
+    }
+    if (!(player->unk08 & 0x200)) {
+        angle = player->motion.y;
+        bounce = player->motion.z;
+        offset.x = sindf(angle) * (player->motion.x + 65.9999990463256836);
+        offset.y = -cosdf(angle) * (player->motion.x + 65.9999990463256836);
+        offset.z = -120.0 - bounce;
+        m254_MakeRotXMtx(rotX, CRotM[camera].x);
+        m254_MakeRotYMtx(rotY, CRotM[camera].y);
+        m254_MultiplyMtx(rotX, rotY, transform);
+        func_801114B0_motor_rooter(transform, &offset, position);
+        HmfModelData[object->model[10]].pos.x = CenterM[camera].x + position[0];
+        HmfModelData[object->model[10]].pos.y = CenterM[camera].y + position[1];
+        HmfModelData[object->model[10]].pos.z = CenterM[camera].z + position[2];
+    } else {
+        func_8001C258_main(object->model[10], 4, 0);
+        Hu3DModelPosSet(object->model[10], object->trans.x, object->trans.y - 10.0 + 0.0, object->trans.z);
+    }
+    if (player->unk08 & 0x400) {
+        Hu3DModelRotSet(object->model[10], object->rot.x, object->rot.y, 0.0f);
+        m254_MakeIdentityMtx(HmfModelData[object->model[10]].mtx[0]);
+        func_80017D24_main(HmfModelData[object->model[10]].mtx[0], 0.0f, player->unk74, 0.0f);
+    } else {
+        Hu3DModelRotSet(object->model[10], object->rot.x, object->rot.y, object->rot.z);
+        m254_MakeIdentityMtx(HmfModelData[object->model[10]].mtx[0]);
+        func_80017D24_main(HmfModelData[object->model[10]].mtx[0], 0.0f, 0.0f, 360.0f - player->turnAngle);
+    }
+}
 
 void func_8010B970_motor_rooter(FuncContext *ctx) {
     D_801137C8_motor_rooter_Struct *player = ctx->data;

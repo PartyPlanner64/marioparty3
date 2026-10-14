@@ -197,6 +197,8 @@ extern s16 m254_playerId[]; // D_801137D4_motor_rooter
 extern s16 D_801137D8_motor_rooter;
 extern s16 D_8011345A_motor_rooter[];
 extern s16 D_8011349E_motor_rooter[];
+extern s8 D_80113468_motor_rooter[];
+extern s8 D_8011346C_motor_rooter[];
 
 extern Vec D_80111550_motor_rooter[];
 extern Vec D_8011245C_motor_rooter[];
@@ -553,7 +555,74 @@ void func_80107210_motor_rooter(omObjData *object) {
     object->func = func_801076AC_motor_rooter;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_801076AC_motor_rooter);
+void func_801076AC_motor_rooter(omObjData *object) {
+    D_801137C8_motor_rooter_Struct *player = D_801137C8_motor_rooter;
+    SpriteData *sprite;
+    s16 fading;
+    s16 i;
+    s16 j;
+    s16 y;
+    s16 alpha;
+
+    for (i = 0; i < PLAYERS_TOTAL; i++, player++) {
+        fading = 0;
+        for (j = 0; j < 5; j++) {
+            if (player->unk28[j] != 0) {
+                fading = 1;
+            }
+        }
+        if (!fading && player->unk14 == 5) {
+            if (D_80113468_motor_rooter[i] == 0) {
+                for (j = 0; j < 5; j++) {
+                    sprite = &m254_sprites[player->meterSprites[j]];
+                    func_80055458_main(sprite->groupId, 0, 0);
+                }
+                if (++D_8011346C_motor_rooter[i] >= 3) {
+                    D_8011346C_motor_rooter[i] = 0;
+                    D_80113468_motor_rooter[i] = 1;
+                }
+            } else {
+                for (j = 0; j < 5; j++) {
+                    sprite = &m254_sprites[player->meterSprites[j]];
+                    func_80055458_main(sprite->groupId, 0, 255);
+                }
+                if (++D_8011346C_motor_rooter[i] >= 3) {
+                    D_8011346C_motor_rooter[i] = 0;
+                    D_80113468_motor_rooter[i] = 0;
+                }
+            }
+        } else {
+            for (j = 0; j < 5; j++) {
+                sprite = &m254_sprites[player->meterSprites[j]];
+                if (player->unk28[j] == 0) {
+                    func_80055458_main(sprite->groupId, 0, (u8)sprite->unk06);
+                } else {
+                    if (player->unk28[j] == 1) {
+                        alpha = sprite->unk06 + 10;
+                        sprite->unk06 = alpha;
+                        if (alpha >= 255) {
+                            alpha = 255;
+                            sprite->unk06 = alpha;
+                            player->unk28[j] = 0;
+                        }
+                    } else {
+                        alpha = sprite->unk06 - 10;
+                        sprite->unk06 = alpha;
+                        if (alpha <= 0) {
+                            sprite->unk06 = 0;
+                            player->unk28[j] = 0;
+                        }
+                    }
+                    func_80055458_main(sprite->groupId, 0, (u8)sprite->unk06);
+                }
+            }
+        }
+        if (!(player->unk08 & 0x40)) {
+            y = 220 - (s32)(player->unk0C / m254_minigame->finishDistance * 180.0f);
+            m254_SetSpriteDispOn(player->progressSprite, (s16)(152 + i * 16), y);
+        }
+    }
+}
 
 void func_801079E8_motor_rooter(omObjData *object) {
     s16 i;

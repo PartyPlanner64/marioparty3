@@ -508,7 +508,28 @@ s16 func_80107E48_msetup(s16 stateIndex) {
     return stateIndex;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80107ECC_msetup);
+s16 func_80107ECC_msetup(s16 stateIndex) {
+    D_8011A882_msetup.result = 0;
+    func_8010B82C_msetup(0x152D);
+    if (func_8010B858_msetup() == 0) {
+        func_8010B82C_msetup(0x152F);
+        stateIndex = -2;
+        func_8010B858_msetup();
+        HuAudFXPlay(0x2A6);
+    } else {
+        func_8010B82C_msetup(0x152E);
+        if (func_8010B858_msetup() == 0) {
+            func_8010F2F4_msetup(D_80119420_msetup, 9);
+            HuAudFXPlay(0x2E4);
+            stateIndex = 0;
+            func_8010BE8C_msetup(D_8011A880_msetup);
+        } else {
+            D_8011A882_msetup.result = -1;
+            stateIndex--;
+        }
+    }
+    return stateIndex;
+}
 
 void func_80107F88_msetup(s16 countdown, s16 pointIndex, s16 frame) {
     if (frame == 0x31) {

@@ -7,6 +7,16 @@ typedef struct UnkStarLift {
     s16 unk4;
 } UnkStarLift;
 
+typedef struct MsetupModelEntry {
+    s32 dataId;
+    s32 flags;
+    s16 unk08;
+    s16 motion;
+    u32 positionMode;
+    Vec pos;
+    Vec rot;
+} MsetupModelEntry;
+
 extern Process *D_80119420_msetup;
 extern s32 D_80119E94_msetup[];
 extern s32 D_80119EAC_msetup[];
@@ -53,7 +63,20 @@ INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80105DB4_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80105E90_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80105F7C_msetup);
+void func_80105F7C_msetup(MsetupModelEntry *entry, s16 model) {
+    switch (entry->positionMode) {
+        case 0:
+            break;
+        case 1:
+            Hu3DModelPosSet(model, entry->pos.x, entry->pos.y, entry->pos.z);
+            Hu3DModelRotSet(model, entry->rot.x, entry->rot.y, entry->rot.z);
+            break;
+        case 2:
+            Hu3DModelPosSet(model, entry->pos.x * 5.0f, entry->pos.y * 5.0f, entry->pos.z * 5.0f);
+            Hu3DModelRotSet(model, entry->rot.x, entry->rot.y, entry->rot.z);
+            break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80106030_msetup);
 

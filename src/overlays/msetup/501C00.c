@@ -28,6 +28,7 @@ extern s16 D_8011A938_msetup;
 extern s16 D_8011A948_msetup;
 extern u8 D_8011AA43_msetup;
 extern u8 D_8011AA45_msetup; // board index chosen
+extern u8 D_8011AA47_msetup;
 
 void func_8000BBFC_main(u16, s16);
 void func_8000BC48_main(u16, s32);
@@ -142,7 +143,34 @@ s16 func_80107CF4_msetup(s16 stateIndex) {
     return stateIndex;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80107D84_msetup);
+s16 func_80107D84_msetup(s16 stateIndex) {
+    s32 i;
+
+    D_8011A882_msetup = 13;
+    do {
+        HuPrcVSleep();
+    } while (D_8011A882_msetup != 0);
+
+    if (D_8011A886_msetup == 0) {
+        D_8011AA47_msetup = 0;
+    } else {
+        D_8011AA47_msetup = 1;
+    }
+
+    if (D_8011A886_msetup == -1) {
+        func_8010F2F4_msetup(D_80119420_msetup, 6);
+        for (i = 7; i != 0; i--) {
+            HuPrcVSleep();
+        }
+    }
+
+    if (D_8011A886_msetup < 0) {
+        stateIndex--;
+    } else {
+        stateIndex++;
+    }
+    return stateIndex;
+}
 
 s16 func_80107E48_msetup(s16 stateIndex) {
     D_8011A882_msetup = 7;
@@ -194,7 +222,30 @@ INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801085D4_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801086C8_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801087F4_msetup);
+s16 func_801087F4_msetup(s16 stateIndex) {
+    s32 i;
+
+    D_8011A882_msetup = 8;
+    do {
+        HuPrcVSleep();
+    } while (D_8011A882_msetup != 0);
+
+    if (D_8011A886_msetup < 0) {
+        func_8010F2F4_msetup(D_80119420_msetup, 0xFF);
+    } else {
+        func_8010F2F4_msetup(D_80119420_msetup, 1);
+        for (i = 7; i != 0; i--) {
+            HuPrcVSleep();
+        }
+    }
+
+    if (D_8011A886_msetup < 0) {
+        stateIndex--;
+    } else {
+        stateIndex++;
+    }
+    return stateIndex;
+}
 
 s16 func_801088A8_msetup(s16 stateIndex) {
     D_8011A882_msetup = 5;
@@ -216,7 +267,34 @@ s16 func_801088A8_msetup(s16 stateIndex) {
     return stateIndex;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80108938_msetup);
+s16 func_80108938_msetup(s16 stateIndex) {
+    s32 i;
+
+    D_8011A882_msetup = 13;
+    do {
+        HuPrcVSleep();
+    } while (D_8011A882_msetup != 0);
+
+    if (D_8011A886_msetup == 0) {
+        D_8011AA47_msetup = 0;
+    } else {
+        D_8011AA47_msetup = 1;
+    }
+
+    if (D_8011A886_msetup == -1) {
+        func_8010F2F4_msetup(D_80119420_msetup, 6);
+        for (i = 7; i != 0; i--) {
+            HuPrcVSleep();
+        }
+    }
+
+    if (D_8011A886_msetup < 0) {
+        stateIndex--;
+    } else {
+        stateIndex++;
+    }
+    return stateIndex;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801089FC_msetup);
 

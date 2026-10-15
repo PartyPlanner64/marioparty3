@@ -9,6 +9,21 @@ typedef struct UnkStarLift {
     s16 unk4;
 } UnkStarLift;
 
+typedef struct MsetupPlayerConfig {
+    u8 controllerPorts[4];
+    u8 characters[4];
+    u8 cpuDifficulty[4];
+    u8 stars[4];
+    u8 unk10;
+    u8 playerCount;
+    u8 totalTurns;
+    u8 unk13;
+    u8 connectedCount;
+    u8 boardIndex;
+    u8 unk16;
+    u8 unk17;
+} MsetupPlayerConfig;
+
 typedef struct MsetupModelEntry {
     s32 dataId;
     s32 flags;
@@ -34,7 +49,7 @@ typedef struct MsetupCameraPreset {
 extern u16 D_80119410_msetup;
 extern s16 D_80119412_msetup;
 extern u8 D_80119419_msetup;
-extern u8 D_8011AA30_msetup[];
+extern MsetupPlayerConfig D_8011AA30_msetup;
 extern u8 D_8011AA40_msetup;
 extern u8 D_8011AA41_msetup;
 extern s16 D_8011AA48_msetup;
@@ -105,7 +120,7 @@ void func_80105C4C_msetup(omObjData *object) {
         D_80119419_msetup--;
         if (D_80119419_msetup == 0) {
             for (i = 0; i < D_8011AA40_msetup; i++) {
-                RepeatVibrator(D_8011AA30_msetup[i], 5, 0, 5);
+                RepeatVibrator(D_8011AA30_msetup.controllerPorts[i], 5, 0, 5);
             }
             D_80119419_msetup = 10;
         }
@@ -228,7 +243,49 @@ INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80106320_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801068F4_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80106DF8_msetup);
+void func_80106DF8_msetup(void) {
+    s16 i;
+    s16 connectedCount;
+    s16 port;
+    s16 j;
+
+    for (i = 0; i < 4; i++) {
+        D_8011AA30_msetup.controllerPorts[i] = 0xFF;
+        D_8011AA30_msetup.characters[i] = i;
+        D_8011AA30_msetup.cpuDifficulty[i] = 0xFF;
+        D_8011AA30_msetup.stars[i] = 0;
+    }
+    for (i = 0, connectedCount = 0; i < 4; i++) {
+        if (CheckControllerRead(i)) {
+            D_8011AA30_msetup.controllerPorts[connectedCount] = i;
+            connectedCount++;
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        if (D_8011AA30_msetup.controllerPorts[i] == 0xFF) {
+            for (port = 0; port < 4; port++) {
+                for (j = 0; j < 4; j++) {
+                    if (D_8011AA30_msetup.controllerPorts[j] == port) {
+                        break;
+                    }
+                }
+                if (j == 4) {
+                    break;
+                }
+            }
+            D_8011AA30_msetup.controllerPorts[i] = port;
+        }
+    }
+    D_8011AA30_msetup.totalTurns = 0;
+    D_8011AA30_msetup.unk16 = 0;
+    D_8011AA30_msetup.unk13 = 0;
+    D_8011AA30_msetup.connectedCount = connectedCount;
+    D_8011AA30_msetup.unk10 = 0;
+    D_8011AA30_msetup.playerCount = 4;
+    D_8011AA30_msetup.boardIndex = 0;
+    D_8011AA30_msetup.unk17 = 0;
+    D_8011A948_msetup = D_8011AA30_msetup.controllerPorts[0];
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80106FC0_msetup);
 

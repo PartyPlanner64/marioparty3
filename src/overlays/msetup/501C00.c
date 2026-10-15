@@ -1,4 +1,5 @@
 #include "common.h"
+#include "overlays/msetup.h"
 
 typedef s16 Array2D[2][18];
 
@@ -39,8 +40,10 @@ extern s32 D_80119E94_msetup[];
 extern s32 D_80119EAC_msetup[];
 extern s32 D_80119EC4_msetup[];
 extern s32 D_80119EE0_msetup[];
-extern s16 D_8011A882_msetup;
-extern s16 D_8011A886_msetup;
+extern s16 D_8011A880_msetup;
+extern UnkMsetupEntry D_8011A9F2_msetup[];
+extern u8 D_8011AA3C_msetup[];
+extern MsetupMenuState D_8011A882_msetup;
 extern s16 D_8011A938_msetup;
 extern s16 D_8011A948_msetup;
 extern s16 D_8011A950_msetup[];
@@ -180,12 +183,12 @@ INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801070FC_msetup);
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80107428_msetup);
 
 s16 func_801077E0_msetup(s16 stateIndex) {
-    D_8011A882_msetup = 1;
+    D_8011A882_msetup.state = 1;
     do {
         HuPrcVSleep();
-    } while (D_8011A882_msetup != 0);
+    } while (D_8011A882_msetup.state != 0);
 
-    if (D_8011A886_msetup < 0) {
+    if (D_8011A882_msetup.result < 0) {
         stateIndex--;
     } else {
         stateIndex++;
@@ -202,18 +205,18 @@ INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80107A58_msetup);
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80107B8C_msetup);
 
 s16 func_80107CF4_msetup(s16 stateIndex) {
-    D_8011A882_msetup = 5;
+    D_8011A882_msetup.state = 5;
     do {
         HuPrcVSleep();
-    } while (D_8011A882_msetup != 0);
+    } while (D_8011A882_msetup.state != 0);
 
-    if (D_8011A886_msetup == -1) {
+    if (D_8011A882_msetup.result == -1) {
         func_8010F2F4_msetup(D_80119420_msetup, 3);
     } else {
         func_8010F2F4_msetup(D_80119420_msetup, 4);
     }
 
-    if (D_8011A886_msetup < 0) {
+    if (D_8011A882_msetup.result < 0) {
         stateIndex--;
     } else {
         stateIndex++;
@@ -224,25 +227,25 @@ s16 func_80107CF4_msetup(s16 stateIndex) {
 s16 func_80107D84_msetup(s16 stateIndex) {
     s32 i;
 
-    D_8011A882_msetup = 13;
+    D_8011A882_msetup.state = 13;
     do {
         HuPrcVSleep();
-    } while (D_8011A882_msetup != 0);
+    } while (D_8011A882_msetup.state != 0);
 
-    if (D_8011A886_msetup == 0) {
+    if (D_8011A882_msetup.result == 0) {
         D_8011AA47_msetup = 0;
     } else {
         D_8011AA47_msetup = 1;
     }
 
-    if (D_8011A886_msetup == -1) {
+    if (D_8011A882_msetup.result == -1) {
         func_8010F2F4_msetup(D_80119420_msetup, 6);
         for (i = 7; i != 0; i--) {
             HuPrcVSleep();
         }
     }
 
-    if (D_8011A886_msetup < 0) {
+    if (D_8011A882_msetup.result < 0) {
         stateIndex--;
     } else {
         stateIndex++;
@@ -251,18 +254,18 @@ s16 func_80107D84_msetup(s16 stateIndex) {
 }
 
 s16 func_80107E48_msetup(s16 stateIndex) {
-    D_8011A882_msetup = 7;
+    D_8011A882_msetup.state = 7;
     do {
         HuPrcVSleep();
-    } while (D_8011A882_msetup != 0);
+    } while (D_8011A882_msetup.state != 0);
 
-    if (D_8011A886_msetup == 0) {
+    if (D_8011A882_msetup.result == 0) {
         D_8011AA43_msetup = 1;
     } else {
         D_8011AA43_msetup = 0;
     }
 
-    if (D_8011A886_msetup < 0) {
+    if (D_8011A882_msetup.result < 0) {
         stateIndex--;
     } else {
         stateIndex++;
@@ -281,12 +284,12 @@ void func_80107F88_msetup(s16 countdown, s16 pointIndex, s16 frame) {
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80107FB4_msetup);
 
 s16 func_80108464_msetup(s16 stateIndex) {
-    D_8011A882_msetup = 9;
+    D_8011A882_msetup.state = 9;
     do {
         HuPrcVSleep();
-    } while (D_8011A882_msetup != 0);
+    } while (D_8011A882_msetup.state != 0);
 
-    if (D_8011A886_msetup < 0) {
+    if (D_8011A882_msetup.result < 0) {
         stateIndex--;
     } else {
         stateIndex++;
@@ -298,17 +301,47 @@ INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801084C4_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801085D4_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801086C8_msetup);
+s16 func_801086C8_msetup(s16 stateIndex) {
+    s32 i;
+
+    for (i = 0; i < D_8011A880_msetup; i++) {
+        D_8011A9F2_msetup[i].value = 14;
+    }
+    D_8011A882_msetup.state = 11;
+    do {
+        HuPrcVSleep();
+    } while (D_8011A882_msetup.state != 0);
+
+    if (D_8011A882_msetup.result == 0) {
+        D_8011A882_msetup.state = 10;
+        do {
+            HuPrcVSleep();
+        } while (D_8011A882_msetup.state != 0);
+        if (D_8011A882_msetup.result >= 0) {
+            stateIndex++;
+        }
+    } else {
+        for (i = 0; i < D_8011A880_msetup; i++) {
+            D_8011AA3C_msetup[i] = 5;
+        }
+        if (D_8011A882_msetup.result < 0) {
+            stateIndex--;
+        } else {
+            stateIndex++;
+        }
+    }
+    return stateIndex;
+}
 
 s16 func_801087F4_msetup(s16 stateIndex) {
     s32 i;
 
-    D_8011A882_msetup = 8;
+    D_8011A882_msetup.state = 8;
     do {
         HuPrcVSleep();
-    } while (D_8011A882_msetup != 0);
+    } while (D_8011A882_msetup.state != 0);
 
-    if (D_8011A886_msetup < 0) {
+    if (D_8011A882_msetup.result < 0) {
         func_8010F2F4_msetup(D_80119420_msetup, 0xFF);
     } else {
         func_8010F2F4_msetup(D_80119420_msetup, 1);
@@ -317,7 +350,7 @@ s16 func_801087F4_msetup(s16 stateIndex) {
         }
     }
 
-    if (D_8011A886_msetup < 0) {
+    if (D_8011A882_msetup.result < 0) {
         stateIndex--;
     } else {
         stateIndex++;
@@ -326,18 +359,18 @@ s16 func_801087F4_msetup(s16 stateIndex) {
 }
 
 s16 func_801088A8_msetup(s16 stateIndex) {
-    D_8011A882_msetup = 5;
+    D_8011A882_msetup.state = 5;
     do {
         HuPrcVSleep();
-    } while (D_8011A882_msetup != 0);
+    } while (D_8011A882_msetup.state != 0);
 
-    if (D_8011A886_msetup == -1) {
+    if (D_8011A882_msetup.result == -1) {
         func_8010F2F4_msetup(D_80119420_msetup, 3);
     } else {
         func_8010F2F4_msetup(D_80119420_msetup, 4);
     }
 
-    if (D_8011A886_msetup < 0) {
+    if (D_8011A882_msetup.result < 0) {
         stateIndex--;
     } else {
         stateIndex++;
@@ -348,25 +381,25 @@ s16 func_801088A8_msetup(s16 stateIndex) {
 s16 func_80108938_msetup(s16 stateIndex) {
     s32 i;
 
-    D_8011A882_msetup = 13;
+    D_8011A882_msetup.state = 13;
     do {
         HuPrcVSleep();
-    } while (D_8011A882_msetup != 0);
+    } while (D_8011A882_msetup.state != 0);
 
-    if (D_8011A886_msetup == 0) {
+    if (D_8011A882_msetup.result == 0) {
         D_8011AA47_msetup = 0;
     } else {
         D_8011AA47_msetup = 1;
     }
 
-    if (D_8011A886_msetup == -1) {
+    if (D_8011A882_msetup.result == -1) {
         func_8010F2F4_msetup(D_80119420_msetup, 6);
         for (i = 7; i != 0; i--) {
             HuPrcVSleep();
         }
     }
 
-    if (D_8011A886_msetup < 0) {
+    if (D_8011A882_msetup.result < 0) {
         stateIndex--;
     } else {
         stateIndex++;

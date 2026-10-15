@@ -1,4 +1,5 @@
 #include "common.h"
+#include "overlays/msetup.h"
 #include "game/camera.h"
 #include "game/sprite.h"
 #include "input.h"
@@ -23,11 +24,6 @@ typedef struct MsetupBoardAnim {
     /* 0x30 */ s16 unk30[5];
     /* 0x3A */ s16 count;
 } MsetupBoardAnim;
-
-typedef struct UnkMsetupEntry {
-    /* 0x00 */ s16 value;
-    /* 0x02 */ char unk_02[0x12];
-} UnkMsetupEntry; // sizeof 0x14
 
 extern s16 D_800D418E_main;
 extern Process *D_80119420_msetup;

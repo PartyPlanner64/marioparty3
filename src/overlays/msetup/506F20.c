@@ -82,7 +82,7 @@ void func_80033970_main(HmfData *);
 void func_8010B82C_msetup(s32);
 void func_8010BEF8_msetup(void);
 s32 func_8010B858_msetup(void);
-void func_8010B998_msetup();
+void func_8010B998_msetup(void);
 s32 func_8010D684_msetup(s16, s16 *);
 void func_8010DAC4_msetup(omObjData *);
 void func_8010DDD8_msetup(omObjData *);
@@ -149,7 +149,9 @@ void func_8010B968_msetup(u32 arg0, s8 arg1) {
     func_8005B6BC_main(D_8011A890_msetup, arg0, arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010B998_msetup);
+void func_8010B998_msetup(void) {
+    func_8005D294_main(D_8011A890_msetup);
+}
 
 void func_8010B9B8_msetup(s32 arg0, s32 arg1) {
     // wait for the given status bits of the menu window to be set

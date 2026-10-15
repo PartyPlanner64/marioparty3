@@ -95,7 +95,7 @@ void HuSprKill(s16);
 void func_8010B82C_msetup(s32);
 s32 func_8010B858_msetup(void);
 void func_8010B968_msetup(u32, s8);
-void func_8010B998_msetup();
+void func_8010B998_msetup(void);
 void func_8010BBF4_msetup(s16);
 void func_8010BE8C_msetup(s16);
 void func_8010BA6C_msetup(s16, s16);

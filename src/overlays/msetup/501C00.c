@@ -75,6 +75,7 @@ void HuSprKill(s16);
 void func_8010B82C_msetup(s32);
 void func_8010B858_msetup();
 void func_8010B998_msetup();
+void func_8010BBF4_msetup(s16);
 void func_8010B9B8_msetup(s32, s32);
 s32 func_8010D684_msetup(s16, s16 *);
 void func_8010DDD8_msetup(void *);
@@ -245,7 +246,38 @@ s16 func_801077E0_msetup(s16 stateIndex) {
     return stateIndex;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80107840_msetup);
+s16 func_80107840_msetup(s16 stateIndex) {
+    s32 i;
+
+    D_8011A882_msetup.state = 2;
+    do {
+        HuPrcVSleep();
+    } while (D_8011A882_msetup.state != 0);
+
+    if (D_8011A882_msetup.result != -1) {
+        D_8011A990_msetup = 0;
+        for (i = 7; i != 0; i--) {
+            HuPrcVSleep();
+        }
+        func_8010BBF4_msetup(D_8011A880_msetup);
+        for (i = 4; i != 0; i--) {
+            HuPrcVSleep();
+        }
+        HuAudFXPlay(0x2DB);
+        for (i = 0; i < D_8011A880_msetup; i++) {
+            D_8011A9F2_msetup[i].value = 1;
+        }
+        while (D_8011A9F2_msetup[3].value != 0) {
+            HuPrcVSleep();
+        }
+    }
+    if (D_8011A882_msetup.result < 0) {
+        stateIndex--;
+    } else {
+        stateIndex++;
+    }
+    return stateIndex;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80107964_msetup);
 
@@ -410,7 +442,35 @@ s16 func_80108464_msetup(s16 stateIndex) {
     return stateIndex;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801084C4_msetup);
+s16 func_801084C4_msetup(s16 stateIndex) {
+    s32 i;
+
+    D_8011A882_msetup.state = 2;
+    do {
+        HuPrcVSleep();
+    } while (D_8011A882_msetup.state != 0);
+
+    if (D_8011A882_msetup.result != -1) {
+        D_8011A990_msetup = 0;
+        for (i = 7; i != 0; i--) {
+            HuPrcVSleep();
+        }
+        func_8010BBF4_msetup(D_8011A880_msetup);
+        HuAudFXPlay(0x2DB);
+        for (i = 0; i < D_8011A880_msetup; i++) {
+            D_8011A9F2_msetup[i].value = 1;
+        }
+        while (D_8011A9F2_msetup[1].value != 0) {
+            HuPrcVSleep();
+        }
+    }
+    if (D_8011A882_msetup.result < 0) {
+        stateIndex--;
+    } else {
+        stateIndex++;
+    }
+    return stateIndex;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801085D4_msetup);
 

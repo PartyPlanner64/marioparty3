@@ -93,7 +93,7 @@ void Hu3DModelScaleSet(s16, f32, f32, f32);
 void func_8001C258_main(s16, s32, s32);
 void HuSprKill(s16);
 void func_8010B82C_msetup(s32);
-void func_8010B858_msetup();
+s32 func_8010B858_msetup(void);
 void func_8010B968_msetup(u32, s8);
 void func_8010B998_msetup();
 void func_8010BBF4_msetup(s16);
@@ -694,7 +694,28 @@ s16 func_80108938_msetup(s16 stateIndex) {
     return stateIndex;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801089FC_msetup);
+s16 func_801089FC_msetup(s16 stateIndex) {
+    D_8011A882_msetup.result = 0;
+    func_8010B82C_msetup(0x241B);
+    if (func_8010B858_msetup() == 0) {
+        func_8010B82C_msetup(0x241D);
+        stateIndex = -2;
+        func_8010B858_msetup();
+        HuAudFXPlay(0x2A6);
+    } else {
+        func_8010B82C_msetup(0x241C);
+        if (func_8010B858_msetup() == 0) {
+            func_8010F2F4_msetup(D_80119420_msetup, 9);
+            HuAudFXPlay(0x2E4);
+            stateIndex = 0;
+            func_8010BE8C_msetup(D_8011A880_msetup);
+        } else {
+            D_8011A882_msetup.result = -1;
+            stateIndex--;
+        }
+    }
+    return stateIndex;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80108AB8_msetup);
 

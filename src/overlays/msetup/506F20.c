@@ -81,7 +81,7 @@ void func_80033910_main(HmfData *);
 void func_80033970_main(HmfData *);
 void func_8010B82C_msetup(s32);
 void func_8010BEF8_msetup(void);
-void func_8010B858_msetup();
+s32 func_8010B858_msetup(void);
 void func_8010B998_msetup();
 s32 func_8010D684_msetup(s16, s16 *);
 void func_8010DAC4_msetup(omObjData *);

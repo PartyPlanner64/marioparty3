@@ -10,25 +10,6 @@ typedef struct {
     /* 0x0C */ char unk0C[0x1D];
 } UnkAudStruct; // Size unknown (min: 0x29, max: 0x30)
 
-typedef struct {
-    f32 *unk00;
-    f32 *unk04;
-    f32 *unk08;
-    f32 *unk0C;
-    u8 *unk10;
-    s16 unk14;
-    s16 unk16;
-    s16 unk18;
-    s16 unk1A;
-    f32 unk1C;
-    f32 unk20;
-    f32 unk24;
-    f32 unk28;
-    f32 unk2C;
-    f32 unk30;
-    s16 unk34;
-} UnkAudioObjData;
-
 extern s16 D_800B23D0_main[6];
 extern s8 D_800D6A4C_main[4];
 extern s8 D_800D123C_main[4];

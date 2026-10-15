@@ -19,11 +19,6 @@
 
 #define DICE_TOTAL 3
 
-typedef struct Vec2f {
-/* 0x00 */ f32 x;
-/* 0x04 */ f32 y;
-} Vec2f;
-
 typedef struct objectIndirect3t {
 /* 0x00 */ struct objectt *unk0;
 /* 0x04 */ f32 unk4;

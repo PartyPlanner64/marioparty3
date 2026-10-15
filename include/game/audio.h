@@ -3,6 +3,25 @@
 
 #include "ultra64.h"
 
+typedef struct {
+    f32 *unk00;
+    f32 *unk04;
+    f32 *unk08;
+    f32 *unk0C;
+    u8 *unk10;
+    s16 unk14;
+    s16 unk16;
+    s16 unk18;
+    s16 unk1A;
+    f32 unk1C;
+    f32 unk20;
+    f32 unk24;
+    f32 unk28;
+    f32 unk2C;
+    f32 unk30;
+    s16 unk34;
+} UnkAudioObjData;
+
 s16 HuAudSeqPlay(s16 musId);
 s16 func_80003310_main(s16 arg0);
 s16 func_8004A5C4_main(s16);

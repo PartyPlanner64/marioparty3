@@ -40,6 +40,13 @@ typedef struct {
     f32 scale;
 } PerspectiveParams;
 
+typedef struct Vec2f {
+    /* 0x00 */ f32 x;
+    /* 0x04 */ f32 y;
+} Vec2f;
+
+f64 fabs(f64 x);
+
 /* Application-owned default tolerance used by libhmath's epsilon helpers. */
 extern f32 D_800A12A4_main;
 

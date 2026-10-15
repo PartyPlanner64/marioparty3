@@ -4,14 +4,7 @@
 #include "macros.h"
 #include "types.h"
 
-typedef struct Vec2f {
-/* 0x00 */ f32 x;
-/* 0x04 */ f32 y;
-} Vec2f;
-
 // EXTERN
-f32 cosdf(f32);
-f32 sindf(f32);
 void func_8008A0D0_main(Mtx *);
 
 extern HuCamera *gCameraList;

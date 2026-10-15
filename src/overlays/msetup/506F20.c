@@ -61,6 +61,9 @@ extern s16 D_8011A8B0_msetup[];
 extern s16 D_8011A890_msetup;
 extern u8 D_8011AA45_msetup; // board index chosen
 extern UnkMsetupEntry D_8011A9F2_msetup[];
+extern f32 D_80119AF4_msetup;
+extern f32 D_80119AF8_msetup;
+extern f32 D_80119AFC_msetup;
 
 s16 func_80011460_main(u8 *);
 f32 func_80054B1C_main(s16, s16, s16, f32, f32, f32);
@@ -417,7 +420,35 @@ void func_8010E044_msetup(omObjData *arg0, s16 arg1, s16 arg2, f32 arg3, f32 arg
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010E09C_msetup);
+void func_8010E09C_msetup(omObjData *object) {
+    s16 model = object->model[0];
+    s32 modelIndex = model;
+    MsetupBoardAnim *anim;
+    s32 i;
+    s32 range;
+    f32 x;
+    f32 z;
+    f32 *pos;
+
+    if (object->work[1] != object->work[2]) {
+        func_8000CD00_main(modelIndex, D_80119AF4_msetup, D_80119AF8_msetup, D_80119AFC_msetup);
+        object->work[2] = object->work[1];
+    }
+    anim = object->data;
+    switch (object->work[0]) {
+        case 0:
+            break;
+        case 1:
+            for (i = 0; i < anim->count; i++) {
+                range = anim->unk30[i];
+                pos = anim->pos[i];
+                x = (rand8() * range) / 256 - range / 2;
+                z = (rand8() * range) / 256 - range / 2;
+                func_8000CD74_main(model, x + pos[0], pos[1], z + pos[2]);
+            }
+            break;
+    }
+}
 
 omObjData *func_8010E21C_msetup(void) {
     MsetupBoardAnim *anim;

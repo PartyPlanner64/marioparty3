@@ -1,4 +1,6 @@
 #include "common.h"
+#include "game/camera.h"
+#include "game/sprite.h"
 #include "input.h"
 #include "mallocblock.h"
 
@@ -27,6 +29,7 @@ typedef struct UnkMsetupEntry {
     /* 0x02 */ char unk_02[0x12];
 } UnkMsetupEntry; // sizeof 0x14
 
+extern s16 D_800D418E_main;
 extern Process *D_80119420_msetup;
 extern omObjData *D_80119AF0_msetup;
 extern s32 D_80119E94_msetup[];
@@ -40,6 +43,7 @@ extern s16 D_8011A890_msetup;
 extern u8 D_8011AA45_msetup; // board index chosen
 extern UnkMsetupEntry D_8011A9F2_msetup[];
 
+f32 func_80054B1C_main(s16, s16, s16, f32, f32, f32);
 void func_8000BBFC_main(u16, s16);
 void func_8000BC48_main(u16, s32);
 void func_8000BCC8_main(u16, s32);
@@ -638,7 +642,19 @@ s32 func_80117818_msetup(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_80117820_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_80117910_msetup);
+void func_80117910_msetup(s16 group, s16 member, s16 camera, f32 x, f32 y, f32 z, f32 scale) {
+    HuSprite *sprite;
+    HuCamera *cam;
+    f32 depth;
+
+    sprite = HuSprGrpData[group]->members[member];
+    cam = &gCameraList[camera];
+    depth = func_80054B1C_main(group, member, camera, x, y, z);
+    if (depth != 0.0) {
+        sprite->unk_60 = (cam->viewports[D_800D418E_main].vp.vscale[0] * scale) / 4.0 / depth / (f64)(4.0f / 3.0f);
+        sprite->unk_64 = (cam->viewports[D_800D418E_main].vp.vscale[1] * scale) / 4.0 / depth;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_80117A3C_msetup);
 

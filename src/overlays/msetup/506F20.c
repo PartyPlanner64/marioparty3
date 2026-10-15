@@ -21,6 +21,17 @@ typedef struct MsetupPairSpriteAnim {
     s16 pos[2][2];
 } MsetupPairSpriteAnim;
 
+typedef struct MsetupCursorState {
+    s16 x;
+    s16 y;
+    s16 (*positions)[2];
+    s32 dataId;
+    s16 selection;
+    s16 state;
+    s16 flags;
+    s16 priority;
+} MsetupCursorState;
+
 typedef struct MsetupEntryAnim {
     Vec pos;
     f32 value;
@@ -48,6 +59,7 @@ extern Vec D_80119A3C_msetup[];
 extern f32 D_80119A54_msetup[];
 extern f32 D_80119A64_msetup[];
 extern s16 D_80119A6C_msetup[];
+extern s32 D_80119E18_msetup[];
 extern Process *D_8011A898_msetup[];
 extern MsetupEntryAnim D_8011A9E0_msetup[];
 extern omObjData *D_80119AF0_msetup;
@@ -634,7 +646,47 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/msetup/506F20", D_8011A7AC_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_80112804_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_80112E08_msetup);
+s16 func_80112E08_msetup(s16 selection, s16 *previousButtons, MsetupCursorState *cursor) {
+    s32 buttons;
+    s16 previousSelection;
+
+    func_8010B82C_msetup(0x1514);
+    previousSelection = -1;
+    func_8010B858_msetup();
+    cursor->selection = selection;
+    HuPrcVSleep();
+    cursor->flags = 4;
+    cursor->state = 1;
+    func_8010D684_msetup(D_8011A948_msetup, previousButtons);
+    while (1) {
+        if (previousSelection != selection) {
+            previousSelection = selection;
+            func_8010B82C_msetup(D_80119E18_msetup[selection]);
+        }
+        buttons = func_8010D684_msetup(D_8011A948_msetup, previousButtons);
+        if (buttons & (U_JPAD | R_JPAD)) {
+            selection = 0;
+        } else if (buttons & (D_JPAD | L_JPAD)) {
+            selection = 1;
+        }
+        if (selection != cursor->selection) {
+            HuAudFXPlay(1);
+            cursor->selection = selection;
+        }
+        if (buttons & B_BUTTON) {
+            HuAudFXPlay(4);
+            selection = -1;
+            break;
+        }
+        if (buttons & A_BUTTON) {
+            HuAudFXPlay(2);
+            break;
+        }
+        HuPrcVSleep();
+    }
+    cursor->state = 2;
+    return selection;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_80112F5C_msetup);
 

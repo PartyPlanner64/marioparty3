@@ -340,7 +340,58 @@ s16 func_8010D0C8_msetup(s16 model, char *name) {
     return i;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010D234_msetup);
+s16 func_8010D234_msetup(s16 positions[][2], u8 *disabled, s16 count, s16 selection, s16 directionX, s16 directionY) {
+    s16 i;
+    s16 closest;
+    f32 x;
+    f32 y;
+    f32 length;
+    f32 normX;
+    f32 normY;
+    f32 distance;
+    f32 closestDistance;
+    f32 deltaX;
+    f32 deltaY;
+    f32 candidateX;
+    f32 candidateY;
+
+    x = positions[selection][0];
+    y = positions[selection][1];
+    length = HuSqrtf(directionX * directionX + directionY * directionY);
+    if (length == 0.0f) {
+        return selection;
+    }
+    normX = directionX / length;
+    normY = directionY / length;
+    closestDistance = 100000.0f;
+    closest = -1;
+    for (i = 0; i < count; i++) {
+        if (i == selection || disabled[i]) {
+            continue;
+        }
+        deltaX = x - positions[i][0];
+        deltaY = y - positions[i][1];
+        distance = HuSqrtf(deltaX * deltaX + deltaY * deltaY);
+        if (distance != 0.0f) {
+            candidateX = deltaX / distance;
+            candidateY = deltaY / distance;
+        } else {
+            candidateY = 0.0f;
+            candidateX = 0.0f;
+        }
+        deltaX = normX - candidateX;
+        deltaY = normY - candidateY;
+        length = deltaX * deltaX + deltaY * deltaY;
+        if (length > 0.25f) {
+            continue;
+        }
+        if (distance < closestDistance) {
+            closestDistance = distance;
+            closest = i;
+        }
+    }
+    return closest;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010D4DC_msetup);
 

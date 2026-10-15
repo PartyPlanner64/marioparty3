@@ -102,7 +102,7 @@ void func_8010DDD8_msetup(omObjData *);
 omObjData *func_8010DE38_msetup(s32, s32, s32);
 void func_8010E4BC_msetup(Array2D *, s32, f32);
 void func_8010E4D8_msetup(MsetupLinkedModel *, s32);
-void func_8010E8C8_msetup(Array2D *, s32, s32, f32, f32, f32, f32, s32);
+void func_8010E8C8_msetup(Array2D *, s16, s16, f32, f32, f32, f32, s16);
 void func_8010EB94_msetup(void);
 void func_8010E09C_msetup(omObjData *);
 void func_8010F320_msetup(Process *, s16, s16, s16);
@@ -634,7 +634,69 @@ void func_8010E4D8_msetup(MsetupLinkedModel *entry, s32 count) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010E52C_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010E8C8_msetup);
+void func_8010E8C8_msetup(Array2D *models, s16 count, s16 frames, f32 rotation, f32 height, f32 scale, f32 endScale,
+                          s16 animateBoard) {
+    s16 boardCount;
+    s32 i;
+    s16 model;
+    MsetupLinkedModel *entry;
+    MsetupLinkedModel *current;
+    Vec *rot;
+    f32 rotationStep;
+    f32 heightStep;
+    f32 scaleStep;
+
+    if ((D_80119AF0_msetup != NULL) & (animateBoard != 0)) {
+        D_80119AF0_msetup->work[0] = 1;
+        D_80119AF0_msetup->work[1] = 1;
+        boardCount = func_8010E00C_msetup(D_80119AF0_msetup, animateBoard);
+    } else {
+        boardCount = 0;
+    }
+    rotationStep = rotation / frames;
+    heightStep = height / frames;
+    scaleStep = (endScale - scale) / frames;
+    while (frames != 0) {
+        entry = *models;
+        for (i = 0; i < count; i++) {
+            if (entry->flags & 1) {
+                continue;
+            }
+            model = entry->model;
+            current = entry;
+            rot = &entry->rot;
+            entry->rot.y = rotationStep + entry->rot.y;
+            if (entry->rot.y >= 360.0f) {
+                entry->rot.y -= 360.0f;
+            }
+            if (rot->y < 0.0f) {
+                rot->y += 360.0f;
+            }
+            current->pos.y = heightStep + current->pos.y;
+            Hu3DModelRotSet(model, rot->x, rot->y, rot->z);
+            Hu3DModelPosSet(model, current->pos.x, current->pos.y, current->pos.z);
+            Hu3DModelScaleSet(model, scale, scale, scale);
+            if (i < boardCount) {
+                func_8010E044_msetup(D_80119AF0_msetup, i, 120, current->pos.x, current->pos.y, current->pos.z);
+            }
+            entry++;
+        }
+        scale += scaleStep;
+        HuPrcVSleep();
+        frames--;
+    }
+    entry = *models;
+    for (i = 0; i < count; i++) {
+        if (entry->flags & 1) {
+            continue;
+        }
+        Hu3DModelScaleSet(entry->model, endScale, endScale, endScale);
+        entry++;
+    }
+    if (boardCount != 0) {
+        D_80119AF0_msetup->work[0] = 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010EB94_msetup);
 

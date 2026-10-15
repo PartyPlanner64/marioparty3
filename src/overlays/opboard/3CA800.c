@@ -1,49 +1,979 @@
 #include "common.h"
+#include "malloc.h"
+#include "mallocblock.h"
+#include "../ovl_80_shared_board/106A50.h"
+#include "../ovl_80_shared_board/EE660.h"
+#include "../ovl_80_shared_board/F5B90.h"
+#include "../ovl_80_shared_board/FFB10.h"
+#include "../ovl_80_shared_board/113520.h"
+#include "../ovl_80_shared_board/1006F0.h"
 #include "../ovl_80_shared_board/FA250.h"
 #include "../ovl_80_shared_board/ECA50.h"
 #include "../ovl_80_shared_board/105D50.h"
 #include "../ovl_80_shared_board/101840.h"
 #include "../ovl_80_shared_board/106640.h"
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opboard/3CA800", func_801059A0_opboard);
+typedef struct OpBoardPath {
+    s16 count;
+    u16 flags;
+    s32 unk04;
+    Vec *points;
+    f32 (*intervals)[2];
+} OpBoardPath;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opboard/3CA800", func_80105AE0_opboard);
+extern s32 D_80100D90_shared_board;
+extern s32 D_80108D70_opboard;
+extern Vec D_80108D74_opboard;
+extern Vec D_80108DA4_opboard[];
+extern Vec D_80108D98_opboard;
+extern Vec D_80108DD4_opboard[];
+extern Vec D_80108E04_opboard[];
+extern u32 D_80108F14_opboard[];
+extern Object *D_80108F20_opboard;
+extern Vec D_80108F44_opboard[];
+extern omObjData *D_80108F3C_opboard;
+extern s32 D_80108F40_opboard;
+extern u32 D_80108E34_opboard[];
+extern u32 *D_80108EF4_opboard[];
+extern u8 D_80109060_opboard;
+extern Object *D_80108F1C_opboard;
+extern Object *D_80108F24_opboard;
+extern omObjData *D_80108F28_opboard;
+extern s16 D_80108F2C_opboard;
+extern Process *D_80108F30_opboard;
+extern UnkBoard8 *D_80108F34_opboard;
+extern UnkBoard8 *D_80108F38_opboard;
+extern GW_PLAYER *D_80109068_opboard[4];
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opboard/3CA800", func_80105C60_opboard);
+f32 func_80018ACC_main(f32 *values, f32 *times, f32 time);
+void func_800DCCE0_shared_board(void);
+void func_80007EC0_main(s32 frames);
+void func_800138EC_main(s16 model, s32 arg1, s32 arg2);
+void func_80013390_main(s16 model, s32 arg1, s32 arg2, void (*callback)(s16));
+void func_80105DC4_opboard(s16 model);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opboard/3CA800", func_80105DC4_opboard);
+void func_801066F0_opboard(void);
+void func_80107E58_opboard(void);
+void func_80108B3C_opboard(void);
+void func_80108C0C_opboard(omObjData *obj);
+void func_80108C58_opboard(void);
+void func_80108CC0_opboard(void);
+void func_80108BB0_opboard(omObjData *obj);
+void func_80108D44_opboard(void);
+void func_80108C8C_opboard(void);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opboard/3CA800", func_80105F8C_opboard);
+void func_801059A0_opboard(void) {
+    s32 i;
+    u32 j;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opboard/3CA800", func_80106014_opboard);
+    D_80109060_opboard = GwSystem.current_board_index;
+    omInitObjMan(50, 50);
+    func_80108CC0_opboard();
+    func_80108C58_opboard();
+    func_800D95C4_shared_board(1000.0f);
+    func_8005A6B0_main();
+    omAddPrcObj(func_80108B3C_opboard, 0x300, 0x2000, 0);
+    omAddObj(0x1000, 0, 0, -1, func_80108C0C_opboard);
+    for (i = 1; i < 8; i++) {
+        for (j = 0; j < D_80108E34_opboard[0]; j++) {
+            D_80108EF4_opboard[i][j + 1] = func_80017BB8_main(i, D_80108E34_opboard[j + 1]);
+        }
+    }
+    func_8004A208_main();
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opboard/3CA800", func_801060A8_opboard);
+s16 func_80105AE0_opboard(s32 file, s32 flags) {
+    s16 model;
+    HmfData *hmf;
+    HmfModelData_UnkBC_Struct *effect;
+    HmfModelData_UnkBC_Unk58_Struct *particle;
+    f32 initialRadius;
+    f32 speed;
+    f32 rotationSpeed;
+    s16 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opboard/3CA800", func_801061FC_opboard);
+    model = func_8000B108_main(file, flags);
+    Hu3DModelPosSet(model, 0, 0, 0);
+    func_8001C2FC_main(model, 0x20000, 0x20000);
+    func_8001C448_main(model);
+    func_8001C954_main(model);
+    func_8001C514_main(model);
+    func_80013390_main(model, -1, 0, func_80105DC4_opboard);
+    hmf = HmfModelData[model].hmf;
+    effect = HmfModelData[model].unkBC;
+    particle = effect->unk58;
+    effect->unk08.f = 30.0f;
+    effect->unk0C.f = 720.0f;
+    effect->unk10.f = 80.0f;
+    effect->unk14 = 5.0f;
+    initialRadius = effect->unk10.f / 10.0f;
+    speed = (effect->unk10.f - initialRadius) / effect->unk08.f;
+    rotationSpeed = effect->unk0C.f / effect->unk08.f;
+    for (i = 0; i < hmf->unk1A; i++, particle++) {
+        particle->unk0C = particle->unk10 = particle->unk14 = 0.0f;
+        particle->unk18 = 0.0f;
+        particle->unk20 = initialRadius;
+        particle->unk1C = speed;
+        particle->unk24 = rotationSpeed;
+        particle->unk28 = 0.0f;
+        particle->unk2C = 0.0f;
+        particle->unk08 = 0.0f;
+        particle->unk04 = 180.0f;
+    }
+    return model;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opboard/3CA800", func_801062CC_opboard);
+s32 func_80105C60_opboard(s16 model, f32 x, f32 y, f32 z) {
+    HmfData *hmf = HmfModelData[model].hmf;
+    HmfModelData_UnkBC_Struct *effect = HmfModelData[model].unkBC;
+    HmfModelData_UnkBC_Unk58_Struct *particle = effect->unk58;
+    s16 i;
+    f32 angle;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opboard/3CA800", func_80106388_opboard);
+    effect->unk1C.f = x;
+    effect->unk20.f = y;
+    effect->unk24.f = z;
+    for (i = 0; i < hmf->unk1A; i++, particle++) {
+        if (particle->unk04 >= 180.0f) {
+            particle->unk18 = MBRand(360.0f);
+            particle->unk20 = effect->unk10.f / 10.0f;
+            angle = MBRand(150.0f);
+            angle -= 75.0f;
+            if (angle < 0.0f) {
+                angle += 360.0f;
+            }
+            particle->unk28 = sindf(angle);
+            particle->unk2C = cosdf(angle);
+            particle->unk08 = 0;
+            particle->unk04 = 0;
+            return 1;
+        }
+    }
+    return 0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opboard/3CA800", func_801066F0_opboard);
+void func_80105DC4_opboard(s16 model) {
+    HmfData *hmf = HmfModelData[model].hmf;
+    HmfModelData_UnkBC_Struct *effect = HmfModelData[model].unkBC;
+    HmfModelData_UnkBC_Unk58_Struct *particle = effect->unk58;
+    s16 i;
+    s16 count = hmf->unk1A;
+    f32 radius;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opboard/3CA800", func_80106CFC_opboard);
+    for (i = 0; i < count; i++, particle++) {
+        if (particle->unk04 < 180.0f) {
+            particle->unk18 += particle->unk24;
+            if (particle->unk18 < 0.0f) {
+                particle->unk18 += 360.0f;
+            } else if (particle->unk18 >= 360.0f) {
+                particle->unk18 -= 360.0f;
+            }
+            radius = particle->unk20;
+            radius += particle->unk1C;
+            particle->unk20 = radius;
+            radius *= particle->unk2C;
+            particle->unk0C = radius * sindf(particle->unk18) + effect->unk1C.f;
+            radius *= cosdf(particle->unk18);
+            radius += effect->unk24.f;
+            particle->unk14 = radius;
+            particle->unk10 = particle->unk20 * particle->unk28 + effect->unk20.f;
+            particle->unk04 += effect->unk14;
+            if (particle->unk04 > 180.0f) {
+                particle->unk04 = 180.0f;
+            }
+            particle->unk08 = sindf(particle->unk04) * effect->unk14;
+        }
+    }
+    effect->unk02++;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opboard/3CA800", func_801071F4_opboard);
+void func_80105F8C_opboard(s32 player1, s32 player2) {
+    GW_PLAYER *first = MBPlayerGet(player1);
+    GW_PLAYER *second = MBPlayerGet(player2);
+    GW_PLAYER *temp = HuMemMemoryAllocPerm(sizeof(GW_PLAYER));
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opboard/3CA800", func_8010727C_opboard);
+    bcopy(first, temp, sizeof(GW_PLAYER));
+    bcopy(second, first, sizeof(GW_PLAYER));
+    bcopy(temp, second, sizeof(GW_PLAYER));
+    HuMemMemoryFreePerm(temp);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opboard/3CA800", func_80107580_opboard);
+void func_80106014_opboard(void) {
+    s32 i;
+    s32 j;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opboard/3CA800", func_80107E28_opboard);
+    for (i = 3; i > 0; i--) {
+        for (j = 0; j < i; j++) {
+            if (GwPlayer[j].turn > GwPlayer[j + 1].turn) {
+                func_80105F8C_opboard(j, j + 1);
+            }
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opboard/3CA800", func_80107E58_opboard);
+void func_801060A8_opboard(omObjData *obj) {
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opboard/3CA800", func_80108B3C_opboard);
+    if (WipeStatGet() != 0) {
+        return;
+    }
+    if (D_80108F2C_opboard != -1) {
+        func_8000D044_main(D_80108F2C_opboard);
+        D_80108F2C_opboard = -1;
+    }
+    if (D_80108F1C_opboard != NULL) {
+        MBModelKill(D_80108F1C_opboard);
+        D_80108F1C_opboard = NULL;
+    }
+    if (D_80108F24_opboard != NULL) {
+        MBModelKill(D_80108F24_opboard);
+        D_80108F24_opboard = NULL;
+    }
+    if (D_80108F28_opboard != NULL) {
+        omDelObj(D_80108F28_opboard);
+        D_80108F28_opboard = NULL;
+    }
+    if (D_80108F30_opboard != NULL) {
+        omDelPrcObj(D_80108F30_opboard);
+        D_80108F30_opboard = NULL;
+    }
+    if (D_80108F34_opboard != NULL) {
+        func_800F2CA4_shared_board(D_80108F34_opboard);
+        D_80108F34_opboard = NULL;
+    }
+    if (D_80108F38_opboard != NULL) {
+        func_800F2CA4_shared_board(D_80108F38_opboard);
+        D_80108F38_opboard = NULL;
+    }
+    for (i = 0; i < 4; i++) {
+        MBModelDispOff(D_80109068_opboard[i]->player_obj);
+    }
+    omDelObj(obj);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opboard/3CA800", func_80108BB0_opboard);
+void func_801061FC_opboard(omObjData *obj) {
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opboard/3CA800", func_80108C0C_opboard);
+    for (i = 0; i < 4; i++) {
+        if (!(GwPlayer[i].stat & PLAYER_IS_CPU)) {
+            if (D_800C9520_main[GwPlayer[i].pad] & START_BUTTON) {
+                break;
+            }
+        }
+    }
+    if (i != 4) {
+        D_80108F40_opboard = 1;
+        WipeColorSet(255, 255, 255);
+        WipeCreateOut(11, 16);
+        HuAudSeqFadeOut(32);
+        func_80007EC0_main(32);
+        obj->func = func_801060A8_opboard;
+    }
+}
+
+void func_801062CC_opboard(omObjData *obj) {
+    s32 i;
+
+    D_80108F1C_opboard->coords.y = sindf(obj->rot.x) * 5.0f + obj->rot.z;
+    for (i = 0; i < 4; i++) {
+        D_80109068_opboard[i]->player_obj->coords.y = D_80108F1C_opboard->coords.y;
+    }
+    obj->rot.x += obj->rot.y;
+    if (obj->rot.x >= 360.0f) {
+        obj->rot.x -= 360.0f;
+    }
+}
+
+void func_80106388_opboard(void) {
+    s32 titleFiles[] = { 0x130016, 0x130017, 0x130018, 0x130019, 0x13001A, 0x13001B };
+    s32 subtitleFiles[] = { 0x13001C, 0x13001D, 0x13001E, 0x13001F, 0x130020, 0x130021 };
+    void *data;
+    f32 amplitude;
+    f32 angle;
+
+    HuPrcSleep(10);
+    D_80108F34_opboard = func_800F2C48_shared_board(1, 0);
+    data = DataRead(titleFiles[GwSystem.current_board_index]);
+    D_80108F34_opboard->model[0] = func_80055810_main(data);
+    DataClose(data);
+    func_80055024_main(D_80108F34_opboard->spriteGroup, 0, D_80108F34_opboard->model[0], 0);
+    HuSprPriSet(D_80108F34_opboard->spriteGroup, 0, 10);
+    HuSprAttrSet(D_80108F34_opboard->spriteGroup, 0, 0);
+    func_80054904_main(D_80108F34_opboard->spriteGroup, 0, 160, 100);
+    HuSprScaleSet(D_80108F34_opboard->spriteGroup, 0, 0.0f, 0.0f);
+    for (amplitude = 0.5f, angle = 0.0f; angle <= 720.0f; angle += 45.0f) {
+        HuSprScaleSet(D_80108F34_opboard->spriteGroup, 0,
+                      sindf(angle) * amplitude + 1.0f, sindf(angle) * amplitude + 1.0f);
+        amplitude -= 0.03125f;
+        if (amplitude < 0.0f) {
+            amplitude = 0.0f;
+        }
+        HuPrcVSleep();
+    }
+    HuPrcSleep(20);
+    HuSprScaleSet(D_80108F34_opboard->spriteGroup, 0, 1.0f, 1.0f);
+    D_80108F38_opboard = func_800F2C48_shared_board(1, 0);
+    data = DataRead(subtitleFiles[GwSystem.current_board_index]);
+    D_80108F38_opboard->model[0] = func_80055810_main(data);
+    DataClose(data);
+    func_80055024_main(D_80108F38_opboard->spriteGroup, 0, D_80108F38_opboard->model[0], 0);
+    HuSprPriSet(D_80108F38_opboard->spriteGroup, 0, 9);
+    HuSprAttrSet(D_80108F38_opboard->spriteGroup, 0, 0);
+    func_80054904_main(D_80108F38_opboard->spriteGroup, 0, 160, 70);
+    HuPrcSleep(75);
+    func_800F2CA4_shared_board(D_80108F38_opboard);
+    func_800F2CA4_shared_board(D_80108F34_opboard);
+    D_80108F38_opboard = NULL;
+    D_80108F34_opboard = NULL;
+}
+
+void func_801066F0_opboard(void) {
+    s32 i;
+    f32 scale;
+
+    for (i = 0; i < 4; i++) {
+        D_80109068_opboard[i] = MBPlayerGet(i);
+        MBPlayerModelCreate(i, D_80108EF4_opboard[GwPlayer[i].chr], 2);
+        HuVecCopy3F(&D_80109068_opboard[i]->player_obj->coords, &D_80108DA4_opboard[i]);
+        MBModelTempAllocFree(D_80109068_opboard[i]->player_obj);
+        D_80109068_opboard[i]->stat |= PLAYER_UNK_04;
+    }
+    D_80108F1C_opboard = MBModelFileCreate(0x1301FE, -1, 1.0f, 0, NULL);
+    D_80108F24_opboard = MBModelFileCreate(0x1301FD, -1, 1.0f, 0, NULL);
+    HuVecCopy3F(&D_80108F1C_opboard->coords, &D_80108D74_opboard);
+    HuVecCopy3F(&D_80108F24_opboard->coords, &D_80108D74_opboard);
+    D_80108F24_opboard->coords.y = 0;
+    HuVecCopyXYZ(&D_80108F24_opboard->scale, D_80108F24_opboard->coords.y, D_80108F24_opboard->coords.y, D_80108F24_opboard->coords.y);
+    D_80108F2C_opboard = func_8000CED8_main(0xB0004, 0x6A9);
+    func_8000CD00_main(D_80108F2C_opboard, 2.0f, 20.0f, 1.0f);
+    func_8000D018_main(D_80108F2C_opboard, 40.0f);
+    func_800138EC_main(D_80108F2C_opboard, 1, 0);
+    MBBackTPLvlSet(128);
+    WipeCreateIn(2, 16);
+    HuPrcSleep(17);
+    D_80108F3C_opboard = omAddObj(0x1000, 0, 0, -1, func_801061FC_opboard);
+    HuAudSeqPlay(110);
+    func_80106388_opboard();
+    for (i = 128; i < 256; i += 8) {
+        MBBackTPLvlSet(i);
+        HuPrcVSleep();
+    }
+    MBBackTPLvlSet(255);
+    HuAudFXPlay(0x2ED);
+    while (D_80108F1C_opboard->coords.y >= 10.0f) {
+        D_80108F1C_opboard->coords.y -= 3.0f;
+        for (i = 0; i < 4; i++) {
+            D_80109068_opboard[i]->player_obj->coords.y -= 3.0f;
+        }
+        HuVecCopyXYZ(&D_80108F24_opboard->scale,
+                     1.0f - D_80108F1C_opboard->coords.y / 250.0f,
+                     1.0f - D_80108F1C_opboard->coords.y / 250.0f,
+                     1.0f - D_80108F1C_opboard->coords.y / 250.0f);
+        HuPrcVSleep();
+    }
+    D_80108F28_opboard = omAddObj(0x1000, 0, 0, -1, func_801062CC_opboard);
+    D_80108F28_opboard->rot.x = 180.0f;
+    D_80108F28_opboard->rot.y = 5.0f;
+    D_80108F28_opboard->rot.z = D_80108F1C_opboard->coords.y;
+    HuPrcSleep(30);
+    func_8000CFA4_main(D_80108F2C_opboard, D_80108F1C_opboard->coords.x,
+                       D_80108F1C_opboard->coords.y + 40.0f, D_80108F1C_opboard->coords.z);
+    func_800138EC_main(D_80108F2C_opboard, 0, 1);
+    HuAudFXPlay(0x2E4);
+    HuPrcSleep(30);
+    for (scale = 1.0f; scale >= 0.0f; scale -= 0.1f) {
+        for (i = 0; i < 4; i++) {
+            HuVecCopyXYZ(&D_80109068_opboard[i]->player_obj->scale, scale, 1.0f, scale);
+        }
+        HuPrcVSleep();
+    }
+    for (i = 0; i < 4; i++) {
+        MBModelDispOff(D_80109068_opboard[i]->player_obj);
+    }
+    func_800138EC_main(D_80108F2C_opboard, 1, 0);
+    HuPrcSleep(20);
+    if (D_80108F40_opboard != 0) {
+        HuPrcSleep(-1);
+    } else {
+        omDelObj(D_80108F3C_opboard);
+        D_80108F3C_opboard = NULL;
+    }
+    for (i = 0, scale = 1.0f; scale < 10.0f; i++, scale += 0.5f) {
+        HuVecCopyXYZ(&D_80108F1C_opboard->scale, scale, scale, scale);
+        HuPrcVSleep();
+        if (i == 5) {
+            WipeColorSet(255, 255, 255);
+            WipeCreateOut(11, 16);
+        }
+    }
+    while (WipeStatGet() != 0) {
+        HuPrcVSleep();
+    }
+    func_8000D044_main(D_80108F2C_opboard);
+    D_80108F2C_opboard = -1;
+    MBModelKill(D_80108F1C_opboard);
+    D_80108F1C_opboard = NULL;
+    MBModelKill(D_80108F24_opboard);
+    D_80108F24_opboard = NULL;
+    omDelObj(D_80108F28_opboard);
+    D_80108F28_opboard = NULL;
+    omDelPrcObj(NULL);
+}
+
+void func_80106CFC_opboard(void) {
+    s32 state[4];
+    s32 frames[4];
+    s32 delay[4];
+    s32 order[4];
+    s32 i;
+    s32 j;
+    s32 temp;
+    Unk3 *help;
+
+    func_800DB5DC_shared_board();
+    func_800DB56C_shared_board();
+    for (i = 0; i < 4; i++) {
+        if (i != 0) {
+            D_80100D90_shared_board = 0;
+        }
+        func_800DC128_shared_board(i);
+        func_800DB6A8_shared_board(i);
+    }
+    func_800DCCE0_shared_board();
+    HuPrcSleep(20);
+    help = func_800E210C_shared_board(2, 190, 1);
+    for (i = 0; i < 4; i++) {
+        state[i] = 1;
+        frames[i] = 0;
+        delay[i] = (u8)(rand8() % 30) + 5;
+    }
+    while (1) {
+        for (i = 0; i < 4; i++) {
+            delay[i]--;
+            if (state[i] == 1) {
+                if ((GwPlayer[i].stat & PLAYER_IS_CPU) ? delay[i] <= 0 : (D_800C9520_main[GwPlayer[i].pad] & A_BUTTON)) {
+                    state[i] = 2;
+                    MBMotionSet(D_80109068_opboard[i]->player_obj, 2, 0);
+                    func_800EE884_shared_board(D_80109068_opboard[i]->player_obj, -1, 2);
+                }
+            } else if (state[i] == 2) {
+                if (++frames[i] == 5) {
+                    func_800DCBCC_shared_board(i);
+                    state[i] = 0;
+                }
+            }
+        }
+        for (i = 0; i < 4; i++) {
+            if (state[i] != 0) {
+                break;
+            }
+        }
+        if (i == 4) {
+            break;
+        }
+        HuPrcVSleep();
+    }
+    MBHelpWinKill(help);
+    HuPrcSleep(20);
+    for (i = 0; i < 4; i++) {
+        state[i] = func_800DCD9C_shared_board(i);
+        order[i] = i;
+    }
+    for (i = 0; i < 4; i++) {
+        for (j = i; j < 4; j++) {
+            if (state[i] < state[j]) {
+                temp = state[i];
+                state[i] = state[j];
+                state[j] = temp;
+                temp = order[i];
+                order[i] = order[j];
+                order[j] = temp;
+            }
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        GwPlayer[order[i]].turn = i;
+        func_800DBE6C_shared_board(i);
+    }
+    func_80106014_opboard();
+    func_800F453C_shared_board();
+    D_80108D70_opboard = 1;
+    for (i = 0; i < 4; i++) {
+        MBStatusDispSideSet(i, 1);
+    }
+    HuPrcSleep(5);
+    for (i = 0; i < 4; i++) {
+        s32 messages[4] = { 0x1812, 0x1813, 0x1814, 0x1815 };
+
+        MBMotionShiftSet(D_80108F1C_opboard, 0, 0, 5, 2);
+        func_800EC92C_shared_board(-1, messages[i], mbCharNameMesTbl[GwPlayer[i].chr], 0, 0, 0, 0);
+        MBDlgWinClose();
+        MBDlgWinKill();
+        MBMotionShiftSet(D_80108F1C_opboard, -1, 0, 5, 2);
+        func_8004ACE0_main(0x274, i);
+        func_800EE94C_shared_board(D_80109068_opboard[i]->player_obj, 3, 0);
+        func_800EE884_shared_board(D_80109068_opboard[i]->player_obj, -1, 2);
+        func_800DBEC0_shared_board(order[i]);
+        MBStatusDispMoveSet(i + 10);
+        while (func_800F5278_shared_board() != 0) {
+            HuPrcVSleep();
+        }
+        MBPlayerVibrate(i, 3);
+        HuPrcSleep(20);
+    }
+}
+
+void func_801071F4_opboard(omObjData *obj) {
+    D_80108F1C_opboard->velocity.x = sindf(obj->rot.x) * 20.0f + obj->rot.y;
+    obj->rot.x += 5.0f;
+    if (obj->rot.x >= 360.0f) {
+        obj->rot.x -= 360.0f;
+    }
+}
+
+OpBoardPath *func_8010727C_opboard(Vec *points, s32 flags) {
+    OpBoardPath *path;
+    Vec *current;
+    Vec *next;
+    f32(*interval)[2];
+    f32 totalLength;
+    f32 length;
+    f32 dx;
+    f32 dy;
+    f32 dz;
+    s16 count;
+    s16 i;
+
+    path = HuMemAllocTag(sizeof(OpBoardPath), 0x7918);
+    path->flags = flags;
+    path->points = points;
+    current = points;
+    next = current + 1;
+    totalLength = 0.0f;
+    for (count = 0; next->x != 9999.0f || next->y != 9999.0f || next->z != 9999.0f; count++, next++, current++) {
+        dx = next->x - current->x;
+        dy = next->y - current->y;
+        dz = next->z - current->z;
+        totalLength += HuSqrtf(dx * dx + dy * dy + dz * dz);
+    }
+    if (flags & 1) {
+        dx = points->x - current->x;
+        dy = points->y - current->y;
+        dz = points->z - current->z;
+        totalLength += HuSqrtf(dx * dx + dy * dy + dz * dz);
+    }
+    count++;
+    path->count = count;
+    interval = HuMemAllocTag(count * sizeof(*interval), 0x7918);
+    path->intervals = interval;
+    current = points;
+    next = current + 1;
+    length = 0.0f;
+    for (i = 0; i < count; i++, current++, next++, interval++) {
+        dx = next->x - current->x;
+        dy = next->y - current->y;
+        dz = next->z - current->z;
+        if (flags & 1) {
+            if (i == count - 1) {
+                dx = points->x - current->x;
+                dy = points->y - current->y;
+                dz = points->z - current->z;
+            }
+        }
+        dz = HuSqrtf(dx * dx + dy * dy + dz * dz);
+        (*interval)[0] = length / totalLength;
+        (*interval)[1] = (length + dz) / totalLength;
+        if ((*interval)[1] > 1.0f) {
+            (*interval)[1] = 1.0001f;
+        }
+        length += dz;
+    }
+    return path;
+}
+
+void func_80107580_opboard(OpBoardPath *path, f32 time, Vec *result) {
+    f32 values[4];
+    f32 times[4];
+    Vec *points;
+    f32(*interval)[2];
+    s16 i;
+
+    if (time >= 1.0f) {
+        result->x = path->points[path->count - 1].x;
+        result->y = path->points[path->count - 1].y;
+        result->z = path->points[path->count - 1].z;
+        return;
+    }
+    interval = path->intervals;
+    for (i = 0; i < path->count; i++, interval++) {
+        if (time <= (*interval)[0]) {
+            break;
+        }
+    }
+    i--;
+    if (i < 0) {
+        i = 0;
+    }
+    if (i >= path->count - 1) {
+        i--;
+    }
+    interval = path->intervals;
+    if (path->flags & 1) {
+        times[0] = i == 0 ? -(1.0f - interval[path->count - 1][0]) : interval[i - 1][0];
+        times[1] = interval[i][0];
+        times[2] = i >= path->count - 1 ? interval[path->count - 1][1] : interval[i + 1][0];
+        times[3] = i + 1 >= path->count - 1 ? interval[path->count - 1][1] : interval[i + 2][0];
+        points = path->points;
+        if (i == 0) {
+            values[0] = points[path->count - 1].x;
+        } else {
+            values[0] = points[i - 1].x;
+        }
+        values[1] = points[i].x;
+        if (i >= path->count - 1) {
+            values[2] = points[0].x;
+        } else {
+            values[2] = points[i + 1].x;
+        }
+        if (i + 1 >= path->count - 1) {
+            values[3] = points[0].x;
+        } else {
+            values[3] = points[i + 2].x;
+        }
+        result->x = func_80018ACC_main(values, times, time);
+        if (i == 0) {
+            values[0] = points[path->count - 1].y;
+        } else {
+            values[0] = points[i - 1].y;
+        }
+        values[1] = points[i].y;
+        if (i >= path->count - 1) {
+            values[2] = points[0].y;
+        } else {
+            values[2] = points[i + 1].y;
+        }
+        if (i + 1 >= path->count - 1) {
+            values[3] = points[0].y;
+        } else {
+            values[3] = points[i + 2].y;
+        }
+        result->y = func_80018ACC_main(values, times, time);
+        if (i == 0) {
+            values[0] = points[path->count - 1].z;
+        } else {
+            values[0] = points[i - 1].z;
+        }
+        values[1] = points[i].z;
+        if (i >= path->count - 1) {
+            values[2] = points[0].z;
+        } else {
+            values[2] = points[i + 1].z;
+        }
+        if (i + 1 >= path->count - 1) {
+            values[3] = points[0].z;
+        } else {
+            values[3] = points[i + 2].z;
+        }
+        result->z = func_80018ACC_main(values, times, time);
+    } else {
+        if (i == 0) {
+            times[0] = -1.0f;
+        } else {
+            times[0] = interval[i - 1][0];
+        }
+        times[1] = interval[i][0];
+        times[2] = i >= path->count - 1 ? interval[path->count - 1][1] : interval[i + 1][0];
+        times[3] = i + 1 >= path->count - 1 ? interval[path->count - 1][1] : interval[i + 2][0];
+        points = path->points;
+        if (i == 0) {
+            values[0] = points[0].x;
+        } else {
+            values[0] = points[i - 1].x;
+        }
+        values[1] = points[i].x;
+        if (i >= path->count - 1) {
+            values[2] = points[path->count - 1].x;
+        } else {
+            values[2] = points[i + 1].x;
+        }
+        if (i + 1 >= path->count - 1) {
+            values[3] = points[path->count - 1].x;
+        } else {
+            values[3] = points[i + 2].x;
+        }
+        result->x = func_80018ACC_main(values, times, time);
+        if (i == 0) {
+            values[0] = points[0].y;
+        } else {
+            values[0] = points[i - 1].y;
+        }
+        values[1] = points[i].y;
+        if (i >= path->count - 1) {
+            values[2] = points[path->count - 1].y;
+        } else {
+            values[2] = points[i + 1].y;
+        }
+        if (i + 1 >= path->count - 1) {
+            values[3] = points[path->count - 1].y;
+        } else {
+            values[3] = points[i + 2].y;
+        }
+        result->y = func_80018ACC_main(values, times, time);
+        if (i == 0) {
+            values[0] = points[0].z;
+        } else {
+            values[0] = points[i - 1].z;
+        }
+        values[1] = points[i].z;
+        if (i >= path->count - 1) {
+            values[2] = points[path->count - 1].z;
+        } else {
+            values[2] = points[i + 1].z;
+        }
+        if (i + 1 >= path->count - 1) {
+            values[3] = points[path->count - 1].z;
+        } else {
+            values[3] = points[i + 2].z;
+        }
+        result->z = func_80018ACC_main(values, times, time);
+    }
+}
+
+void func_80107E28_opboard(OpBoardPath *path) {
+    HuMemFree(path->intervals);
+    HuMemFree(path);
+}
+
+void func_80107E58_opboard(void) {
+    s32 backgrounds[] = { 4, 7, 10, 13, 16, 19 };
+    Vec directions[4];
+    s16 effects[4];
+    omObjData *obj;
+    s32 i;
+    s32 j;
+    f32 scale;
+
+    MBBackKill();
+    MBBackLoad(backgrounds[GwSystem.current_board_index]);
+    func_800E9344_shared_board(1000.0f, 10000.0f);
+    D_80108F1C_opboard = MBModelCreate(58, D_80108F14_opboard);
+    func_800461B4_main(D_80108F1C_opboard->omObj1->model[0]);
+    HuVecCopy3F(&D_80108F1C_opboard->coords, &D_80108D98_opboard);
+    D_80108F1C_opboard->velocity.x = 1000.0f;
+    D_80108F2C_opboard = func_8000CED8_main(0xB0004, 0x6A9);
+    func_8000CD00_main(D_80108F2C_opboard, 10.0f, 20.0f, 10.0f);
+    func_8000D018_main(D_80108F2C_opboard, 300.0f);
+    func_800138EC_main(D_80108F2C_opboard, 1, 0);
+    for (j = 0; j < 4; j++) {
+        HuVecCopy3F(&D_80109068_opboard[j]->player_obj->coords, &D_80108DD4_opboard[j]);
+        effects[j] = func_80105AE0_opboard(0xB0004, 0x689);
+    }
+    WipeColorSet(255, 255, 255);
+    WipeCreateIn(11, 16);
+    while (WipeStatGet() != 0) {
+        HuPrcVSleep();
+    }
+    HuAudFXPlay(0x2DB);
+    for (i = 0; i < 20; i++) {
+        for (j = 0; j < 4; j++) {
+            func_80105C60_opboard(effects[j], D_80109068_opboard[j]->player_obj->coords.x,
+                                  D_80109068_opboard[j]->player_obj->coords.y + 50.0f,
+                                  D_80109068_opboard[j]->player_obj->coords.z);
+            if (i == 0) {
+                MBPlayerVibrate(j, 1);
+            }
+        }
+        HuPrcVSleep();
+    }
+    for (scale = 0.0f; scale <= 1.0f; scale += 0.1f) {
+        for (j = 0; j < 4; j++) {
+            MBModelDispOn(D_80109068_opboard[j]->player_obj);
+            HuVecCopyXYZ(&D_80109068_opboard[j]->player_obj->scale, scale, 1.0f, scale);
+        }
+        HuPrcVSleep();
+    }
+    for (j = 0; j < 4; j++) {
+        HuVecCopyXYZ(&D_80109068_opboard[j]->player_obj->scale, 1.0f, 1.0f, 1.0f);
+    }
+    func_800138EC_main(D_80108F2C_opboard, 1, 0);
+    HuPrcSleep(20);
+    func_8000CD00_main(D_80108F2C_opboard, 10.0f, 20.0f, 15.0f);
+    func_8000D018_main(D_80108F2C_opboard, 300.0f);
+    func_800138EC_main(D_80108F2C_opboard, 0, 1);
+    HuAudFXPlay(0x157);
+    i = 0;
+    while (D_80108F1C_opboard->velocity.x >= 400.0f) {
+        D_80108F1C_opboard->velocity.x -= 10.0f;
+        func_8000CFA4_main(D_80108F2C_opboard, D_80108F1C_opboard->coords.x,
+                           D_80108F1C_opboard->velocity.x - 100.0f, D_80108F1C_opboard->coords.z);
+        i++;
+        if (i == 20) {
+            for (j = 0; j < 4; j++) {
+                MBVecDirGet(&D_80109068_opboard[j]->player_obj->coords, &D_80108E04_opboard[j],
+                            &D_80109068_opboard[j]->player_obj->rot);
+                MBPlayerPosMoveCreate(&D_80109068_opboard[j]->player_obj->coords, &D_80108E04_opboard[j],
+                                      &D_80109068_opboard[j]->player_obj->coords, 20);
+                MBMotionSet(D_80109068_opboard[j]->player_obj, 1, 2);
+            }
+        }
+        if (i == 40) {
+            for (j = 0; j < 4; j++) {
+                MBVecDirGet(&D_80109068_opboard[j]->player_obj->coords, &D_80108F1C_opboard->coords, &directions[j]);
+                func_800ED128_shared_board(&D_80109068_opboard[j]->player_obj->rot, &directions[j],
+                                           &D_80109068_opboard[j]->player_obj->rot, 10);
+                MBMotionShiftSet(D_80109068_opboard[j]->player_obj, -1, 0, 5, 2);
+            }
+        }
+        HuPrcVSleep();
+    }
+    obj = omAddObj(0x1000, 0, 0, -1, func_801071F4_opboard);
+    obj->rot.y = D_80108F1C_opboard->velocity.x;
+    obj->rot.x = 180.0f;
+    HuAudSeqPlay(13);
+    HuAudFXPlay(0x159);
+    if (GwSystem.playMode & 4) {
+        s32 messages[] = { 0x1800, 0x1802, 0x1804, 0x1806, 0x1808, 0x180A };
+
+        MBMotionShiftSet(D_80108F1C_opboard, 0, 0, 5, 2);
+        func_800EC92C_shared_board(-1, messages[GwSystem.current_board_index], mbCharNameMesTbl[GwStory.unk1], 0, 0, 0, 0);
+        func_800ECA38_shared_board();
+        func_800ECA38_shared_board();
+        if (GwSystem.current_board_index == 5) {
+            func_800ECA38_shared_board();
+        }
+        MBDlgWinClose();
+        MBDlgWinKill();
+        MBMotionShiftSet(D_80108F1C_opboard, -1, 0, 5, 2);
+        {
+            s32 files[] = { 0x1D0003, 0x1D0004, 0x1D0005, 0x1D0006, 0x1D0007, 0x1D0008 };
+
+            if (GwSystem.current_board_index != 5) {
+                Vec pos;
+                OpBoardPath *path;
+                s16 effect;
+                f32 time;
+                s32 k;
+
+                D_80108F20_opboard = MBModelFileCreate(files[GwSystem.current_board_index], -1, 1.0f, 0, NULL);
+                path = func_8010727C_opboard(D_80108F44_opboard, 0);
+                effect = func_8000CED8_main(0xB0004, 0x6A9);
+                func_8000CD00_main(effect, 4.0f, 20.0f, 4.0f);
+                func_8000D018_main(effect, 60.0f);
+                func_800138EC_main(effect, 1, 1);
+                func_8001C258_main(effect, 4, 0);
+                HuAudFXPlay(0x215);
+                for (k = 0; k < 50; k++) {
+                    time = k * 0.02f;
+                    func_80107580_opboard(path, time * time, &pos);
+                    HuVecCopy3F(&D_80108F20_opboard->coords, &pos);
+                    func_8000CFA4_main(effect, pos.x, pos.y - 50.0f, pos.z);
+                    HuPrcVSleep();
+                }
+                func_80107E28_opboard(path);
+            }
+        }
+        {
+            {
+                s32 messages[] = { 0x1801, 0x1803, 0x1805, 0x1807, 0x1809, 0x180B };
+
+                if (GwSystem.current_board_index != 5) {
+                    MBMotionShiftSet(D_80108F1C_opboard, 0, 0, 5, 2);
+                    func_800EC92C_shared_board(-1, messages[GwSystem.current_board_index], 0, 0, 0, 0, 0);
+                    func_800ECA38_shared_board();
+                    MBDlgWinClose();
+                    MBDlgWinKill();
+                    MBMotionShiftSet(D_80108F1C_opboard, -1, 0, 5, 2);
+                }
+            }
+        }
+    } else {
+        {
+            s32 messages[] = { 0x180C, 0x180D, 0x180E, 0x180F, 0x1810, 0x1811 };
+
+            MBMotionShiftSet(D_80108F1C_opboard, 0, 0, 5, 2);
+            func_800EC92C_shared_board(-1, messages[GwSystem.current_board_index], 0, 0, 0, 0, 0);
+            func_800ECA38_shared_board();
+            func_800ECA38_shared_board();
+            MBDlgWinClose();
+            MBDlgWinKill();
+            MBMotionShiftSet(D_80108F1C_opboard, -1, 0, 5, 2);
+        }
+    }
+    for (j = 0; j < 4; j++) {
+        MBVecDirGet(&D_80109068_opboard[j]->player_obj->coords, &D_80108DD4_opboard[j],
+                    &D_80109068_opboard[j]->player_obj->rot);
+        HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&D_80109068_opboard[j]->player_obj->coords,
+                                                                &D_80108DD4_opboard[j], &D_80109068_opboard[j]->player_obj->coords, 20));
+        MBMotionSet(D_80109068_opboard[j]->player_obj, 1, 2);
+    }
+    HuPrcChildWait();
+    for (j = 0; j < 4; j++) {
+        f32 angles[] = { 5.0f, 0.0f, 0.0f, -5.0f };
+
+        directions[j].x = sindf(angles[j]);
+        directions[j].z = cosdf(angles[j]);
+        directions[j].y = 0;
+        HuPrcChildLink(HuPrcCurrentGet(), func_800ED128_shared_board(&D_80109068_opboard[j]->player_obj->rot,
+                                                                     &directions[j], &D_80109068_opboard[j]->player_obj->rot, 10));
+        MBMotionShiftSet(D_80109068_opboard[j]->player_obj, -1, 0, 5, 2);
+    }
+    HuPrcChildWait();
+    func_80106CFC_opboard();
+    MBMotionShiftSet(D_80108F1C_opboard, 0, 0, 5, 2);
+    func_800EC92C_shared_board(-1, 0x1816, 0, 0, 0, 0, 0);
+    MBDlgWinClose();
+    MBDlgWinKill();
+    MBMotionShiftSet(D_80108F1C_opboard, -1, 0, 5, 2);
+    for (j = 0; j < 4; j++) {
+        if (j == 0) {
+            MBCoinTakeCreate(0, 10);
+        } else {
+            MBCoinTakeCreateSound(j, 10, 0);
+        }
+        func_800EE94C_shared_board(D_80109068_opboard[j]->player_obj, 4, 0);
+    }
+    HuPrcSleep(60);
+    for (j = 0; j < 4; j++) {
+        func_800EE94C_shared_board(D_80109068_opboard[j]->player_obj, -1, 2);
+    }
+    MBMotionShiftSet(D_80108F1C_opboard, 0, 0, 5, 2);
+    func_800EC92C_shared_board(-1, 0x1817, 0, 0, 0, 0, 0);
+    MBDlgWinClose();
+    MBDlgWinKill();
+    MBMotionShiftSet(D_80108F1C_opboard, -1, 0, 5, 2);
+    func_8000D044_main(D_80108F2C_opboard);
+}
+
+void func_80108B3C_opboard(void) {
+    D_80108F30_opboard = omAddPrcObj(func_801066F0_opboard, 0x300, 0x2000, 0);
+    HuPrcChildLink(HuPrcCurrentGet(), D_80108F30_opboard);
+    HuPrcChildWait();
+    func_80107E58_opboard();
+    D_800D530C_main = 1;
+    while (1) {
+        HuPrcVSleep();
+    }
+}
+
+void func_80108BB0_opboard(omObjData *obj) {
+    if (WipeStatGet() == 0) {
+        func_80108D44_opboard();
+        func_80108C8C_opboard();
+        func_8005F524_main();
+        if (D_80108D70_opboard != 0) {
+            func_800F4730_shared_board();
+        }
+        omOvlReturnEx(1);
+    }
+}
+
+void func_80108C0C_opboard(omObjData *obj) {
+    if (D_800D530C_main != 0) {
+        WipeCreateOut(2, 20);
+        HuAudSeqFadeOut(60);
+        obj->func = func_80108BB0_opboard;
+    }
+}
 
 void func_80108C58_opboard(void) {
     MBModelInit();
@@ -58,24 +988,6 @@ void func_80108C8C_opboard(void) {
     func_800F27C4_shared_board();
     MBModelClose();
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/opboard/3CA800", D_80108F80_opboard);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/opboard/3CA800", D_80108F98_opboard);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/opboard/3CA800", D_80108FB0_opboard);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/opboard/3CA800", D_80108FC0_opboard);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/opboard/3CA800", D_80108FD8_opboard);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/opboard/3CA800", D_80108FF0_opboard);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/opboard/3CA800", D_80109008_opboard);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/opboard/3CA800", D_80109020_opboard);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/opboard/3CA800", D_80109038_opboard);
 
 void func_80108CC0_opboard(void) {
     s32 sp10[] = { 3, 6, 9, 0xC, 0xF, 0x12 };

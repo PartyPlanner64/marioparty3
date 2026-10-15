@@ -53,6 +53,8 @@ typedef struct MsetupBoardAnim {
 extern s32 D_80119E58_msetup[];
 extern s32 D_80119E64_msetup[];
 extern s32 D_80119E70_msetup[];
+extern s32 D_80119E7C_msetup[];
+extern s32 D_80119E88_msetup[];
 extern Vec D_80119B20_msetup;
 extern HmfData_Unk84_Entry2 *D_800D1FCC_main;
 extern s16 D_800D418E_main;
@@ -940,7 +942,14 @@ s16 func_80113E54_msetup(MsetupMenuState *state) {
     return func_801138F8_msetup(state, 0x140021, D_80119E70_msetup, 1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_80113E88_msetup);
+s16 func_80113E88_msetup(MsetupMenuState *state) {
+    s32 *messages = D_80119E88_msetup;
+
+    if (D_8011A938_msetup == 1) {
+        messages = D_80119E7C_msetup;
+    }
+    return func_801138F8_msetup(state, 0x140050, messages, 0);
+}
 
 s32 func_80113ED4_msetup(UnkStarLift *arg0) {
 #define MODE_PARTY 0

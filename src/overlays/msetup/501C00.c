@@ -2,10 +2,22 @@
 
 typedef s16 Array2D[2][18];
 
-typedef struct UnkMsetup {
-    char unk_00[0x8C];
-    s16 *unk8C;
-} UnkMsetup;
+typedef struct UnkStarLift {
+    char unk_00[0x04];
+    s16 unk4;
+} UnkStarLift;
+
+extern Process *D_80119420_msetup;
+extern s32 D_80119E94_msetup[];
+extern s32 D_80119EAC_msetup[];
+extern s32 D_80119EC4_msetup[];
+extern s32 D_80119EE0_msetup[];
+extern s16 D_8011A882_msetup;
+extern s16 D_8011A886_msetup;
+extern s16 D_8011A938_msetup;
+extern s16 D_8011A948_msetup;
+extern u8 D_8011AA43_msetup;
+extern u8 D_8011AA45_msetup; // board index chosen
 
 void func_8000BBFC_main(u16, s16);
 void func_8000BC48_main(u16, s32);
@@ -26,29 +38,11 @@ omObjData *func_8010DE38_msetup(s32, s32, s32);
 void func_8010E4BC_msetup(Array2D *, s32, s32);
 void func_8010E4D8_msetup(Array2D *, s32);
 void func_8010E8C8_msetup(Array2D *, s32, s32, f32, f32, f32, f32, s32);
-void func_8010F320_msetup(s32, s32, s16, s16);
-s16 func_8010F2F4_msetup(UnkMsetup *, s16);
-extern s32 D_80119420_msetup;
-extern s32 D_80119E94_msetup[];
-extern s32 D_80119EAC_msetup[];
-extern s32 D_80119EC4_msetup[];
-extern s32 D_80119EE0_msetup[];
-extern s16 D_8011A882_msetup;
-extern s16 D_8011A886_msetup;
-extern s16 D_8011A938_msetup;
-extern s16 D_8011A948_msetup;
-extern u8 D_8011AA43_msetup;
-extern u8 D_8011AA45_msetup; // board index chosen
-typedef struct UnkStarLift {
-    char unk_00[0x04];
-    s16 unk4;
-} UnkStarLift;
-
+void func_8010F320_msetup(Process *, s16, s16, s16);
+s16 func_8010F2F4_msetup(Process *, s16);
 s32 _CheckFlag(s32);            /* extern */
 s16 func_80055810_main(void *); /* extern */
-
 s32 func_80113ED4_msetup(UnkStarLift *arg0);
-
 void func_80107F88_msetup(s16, s16, s16);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801059A0_msetup);
@@ -112,9 +106,9 @@ s16 func_80107CF4_msetup(s16 stateIndex) {
     } while (D_8011A882_msetup != 0);
 
     if (D_8011A886_msetup == -1) {
-        func_8010F2F4_msetup((UnkMsetup *)D_80119420_msetup, 3);
+        func_8010F2F4_msetup(D_80119420_msetup, 3);
     } else {
-        func_8010F2F4_msetup((UnkMsetup *)D_80119420_msetup, 4);
+        func_8010F2F4_msetup(D_80119420_msetup, 4);
     }
 
     if (D_8011A886_msetup < 0) {
@@ -186,9 +180,9 @@ s16 func_801088A8_msetup(s16 stateIndex) {
     } while (D_8011A882_msetup != 0);
 
     if (D_8011A886_msetup == -1) {
-        func_8010F2F4_msetup((UnkMsetup *)D_80119420_msetup, 3);
+        func_8010F2F4_msetup(D_80119420_msetup, 3);
     } else {
-        func_8010F2F4_msetup((UnkMsetup *)D_80119420_msetup, 4);
+        func_8010F2F4_msetup(D_80119420_msetup, 4);
     }
 
     if (D_8011A886_msetup < 0) {

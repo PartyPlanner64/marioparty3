@@ -1,7 +1,43 @@
 #include "common.h"
+#include "input.h"
 #include "mallocblock.h"
 
 typedef s16 Array2D[2][18];
+
+typedef struct MsetupSpriteState {
+    s16 state;
+    s16 unk02;
+    s16 spriteSlots[8];
+    s16 values[8];
+} MsetupSpriteState;
+
+typedef struct UnkStarLift {
+    char unk_00[0x04];
+    s16 unk4;
+} UnkStarLift;
+
+typedef struct MsetupBoardAnim {
+    /* 0x00 */ f32 pos[4][3];
+    /* 0x30 */ s16 unk30[5];
+    /* 0x3A */ s16 count;
+} MsetupBoardAnim;
+
+typedef struct UnkMsetupEntry {
+    /* 0x00 */ s16 value;
+    /* 0x02 */ char unk_02[0x12];
+} UnkMsetupEntry; // sizeof 0x14
+
+extern Process *D_80119420_msetup;
+extern s32 D_80119E94_msetup[];
+extern s32 D_80119EAC_msetup[];
+extern s32 D_80119EC4_msetup[];
+extern s32 D_80119EE0_msetup[];
+extern s16 D_8011A938_msetup;
+extern s16 D_8011A948_msetup;
+extern s16 D_8011A8B0_msetup[];
+extern s16 D_8011A890_msetup;
+extern u8 D_8011AA45_msetup; // board index chosen
+extern UnkMsetupEntry D_8011A9F2_msetup[];
 
 void func_8000BBFC_main(u16, s16);
 void func_8000BC48_main(u16, s32);
@@ -23,43 +59,9 @@ void func_8010E4BC_msetup(Array2D *, s32, s32);
 void func_8010E4D8_msetup(Array2D *, s32);
 void func_8010E8C8_msetup(Array2D *, s32, s32, f32, f32, f32, f32, s32);
 void func_8010EB94_msetup(void);
-void func_8010F320_msetup(s32, s32, s16, s16);
-extern s32 D_80119420_msetup;
-extern s32 D_80119E94_msetup[];
-extern s32 D_80119EAC_msetup[];
-extern s32 D_80119EC4_msetup[];
-extern s32 D_80119EE0_msetup[];
-extern s16 D_8011A938_msetup;
-extern s16 D_8011A948_msetup;
-extern s16 D_8011A8B0_msetup[];
-extern s16 D_8011A890_msetup;
-extern u8 D_8011AA45_msetup; // board index chosen
-typedef struct UnkStarLift {
-    char unk_00[0x04];
-    s16 unk4;
-} UnkStarLift;
-
-typedef struct UnkMsetup {
-    char unk_00[0x8C];
-    s16 *unk8C;
-} UnkMsetup;
-
-typedef struct MsetupBoardAnim {
-    /* 0x00 */ f32 pos[4][3];
-    /* 0x30 */ s16 unk30[5];
-    /* 0x3A */ s16 count;
-} MsetupBoardAnim;
-
-typedef struct UnkMsetupEntry {
-    /* 0x00 */ s16 value;
-    /* 0x02 */ char unk_02[0x12];
-} UnkMsetupEntry; // sizeof 0x14
-
-extern UnkMsetupEntry D_8011A9F2_msetup[];
-
+void func_8010F320_msetup(Process *, s16, s16, s16);
 s32 _CheckFlag(s32);            /* extern */
 s16 func_80055810_main(void *); /* extern */
-
 s32 func_80113ED4_msetup(UnkStarLift *arg0);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010ACC0_msetup);
@@ -150,9 +152,33 @@ INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010D234_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010D4DC_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010D5EC_msetup);
+s16 func_8010D5EC_msetup(s16 controller) {
+    s16 buttons = D_800CDA7C_main[controller];
+    s8 stickX = D_800CBB6E_main[controller];
+    s8 stickY = D_800D20A1_main[controller];
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010D684_msetup);
+    if (stickX > 30) {
+        buttons |= 0x100;
+    } else if (stickX < -30) {
+        buttons |= 0x200;
+    }
+    if (stickY > 30) {
+        buttons |= 0x800;
+    } else if (stickY < -30) {
+        buttons |= 0x400;
+    }
+    return buttons;
+}
+
+s32 func_8010D684_msetup(s16 controller, s16 *previousButtons) {
+    s16 oldButtons = *previousButtons;
+    s16 buttons = func_8010D5EC_msetup(controller);
+
+    oldButtons &= buttons;
+    oldButtons ^= buttons;
+    *previousButtons = buttons;
+    return oldButtons;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010D6D0_msetup);
 
@@ -222,8 +248,8 @@ void func_8010F2BC_msetup(void) {
     omAddPrcObj(func_8010EB94_msetup, 0x3F00, 0x600, 0)->user_data = &D_8011A8B0_msetup;
 }
 
-s16 func_8010F2F4_msetup(UnkMsetup *arg0, s16 arg1) {
-    s16 *ptr = arg0->unk8C;
+s16 func_8010F2F4_msetup(Process *arg0, s16 arg1) {
+    s16 *ptr = arg0->user_data;
     s32 value = arg1;
 
     if (value != 0) {
@@ -234,7 +260,12 @@ s16 func_8010F2F4_msetup(UnkMsetup *arg0, s16 arg1) {
     return value;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010F320_msetup);
+void func_8010F320_msetup(Process *process, s16 index, s16 spriteSlot, s16 value) {
+    MsetupSpriteState *data = process->user_data;
+
+    data->spriteSlots[index] = spriteSlot;
+    data->values[index] = value;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010F33C_msetup);
 

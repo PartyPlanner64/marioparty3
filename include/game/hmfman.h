@@ -119,12 +119,13 @@ typedef struct {
 } HmfPaletteData;
 
 typedef struct {
-    char unk_00[0x1C];
+    char name[0x1C];
     u8 unk1C;
     u8 unk1D;
     u8 unk1E;
     u8 unk1F;
-    char unk20[4];
+    u16 unk20;
+    u16 nameHash;
     u16 unk24;
     u16 unk26;
     u8 *unk28;

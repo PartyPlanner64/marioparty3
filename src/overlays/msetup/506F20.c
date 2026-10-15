@@ -4,6 +4,7 @@
 #include "game/sprite.h"
 #include "input.h"
 #include "mallocblock.h"
+#include "gcc/string.h"
 
 typedef s16 Array2D[2][18];
 
@@ -25,6 +26,7 @@ typedef struct MsetupBoardAnim {
     /* 0x3A */ s16 count;
 } MsetupBoardAnim;
 
+extern HmfData_Unk84_Entry2 *D_800D1FCC_main;
 extern s16 D_800D418E_main;
 extern Process *D_80119420_msetup;
 extern omObjData *D_80119AF0_msetup;
@@ -39,6 +41,7 @@ extern s16 D_8011A890_msetup;
 extern u8 D_8011AA45_msetup; // board index chosen
 extern UnkMsetupEntry D_8011A9F2_msetup[];
 
+s16 func_80011460_main(u8 *);
 f32 func_80054B1C_main(s16, s16, s16, f32, f32, f32);
 void func_8000BBFC_main(u16, s16);
 void func_8000BC48_main(u16, s32);
@@ -184,7 +187,33 @@ void func_8010D094_msetup(HmfData *arg0, s16 arg1) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010D0C8_msetup);
+s16 func_8010D0C8_msetup(s16 model, char *name) {
+    HmfData *hmf = HmfModelData[model].hmf;
+    HmfData_Unk84_Entry2 *texture;
+    s16 hash = func_80011460_main((u8 *)name);
+    s32 i;
+
+    texture = NULL;
+    for (i = 0; i < 128; i++) {
+        if (D_800D1FCC_main[i].nameHash == hash && strcmp(D_800D1FCC_main[i].name, name) == 0) {
+            texture = &D_800D1FCC_main[i];
+            break;
+        }
+    }
+    if (i == 128 || texture == NULL) {
+        osSyncPrintf("Can't Find TextureName! mSetupGetMpAttrIdx\n");
+        return -1;
+    }
+    for (i = 0; i < hmf->unk12; i++) {
+        if (hmf->unk84[i].unkC == texture) {
+            break;
+        }
+    }
+    if (i >= hmf->unk12) {
+        i = -1;
+    }
+    return i;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010D234_msetup);
 

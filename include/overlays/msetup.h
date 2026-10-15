@@ -4,6 +4,21 @@
 #include "ultra64.h"
 #include "math.h"
 
+typedef struct MsetupPlayerConfig {
+    u8 controllerPorts[4];
+    u8 characters[4];
+    u8 cpuDifficulty[4];
+    u8 stars[4];
+    u8 humanCount;
+    u8 cpuCount;
+    u8 totalTurns;
+    u8 unk13;
+    u8 connectedCount;
+    u8 boardIndex;
+    u8 unk16;
+    u8 unk17;
+} MsetupPlayerConfig;
+
 typedef struct UnkMsetupEntry {
     /* 0x00 */ s16 value;
     /* 0x02 */ char unk_02[0x12];

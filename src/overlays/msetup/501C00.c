@@ -9,21 +9,6 @@ typedef struct UnkStarLift {
     s16 unk4;
 } UnkStarLift;
 
-typedef struct MsetupPlayerConfig {
-    u8 controllerPorts[4];
-    u8 characters[4];
-    u8 cpuDifficulty[4];
-    u8 stars[4];
-    u8 unk10;
-    u8 playerCount;
-    u8 totalTurns;
-    u8 unk13;
-    u8 connectedCount;
-    u8 boardIndex;
-    u8 unk16;
-    u8 unk17;
-} MsetupPlayerConfig;
-
 typedef struct MsetupModelEntry {
     s32 dataId;
     s32 flags;
@@ -285,8 +270,8 @@ void func_80106DF8_msetup(void) {
     D_8011AA30_msetup.unk16 = 0;
     D_8011AA30_msetup.unk13 = 0;
     D_8011AA30_msetup.connectedCount = connectedCount;
-    D_8011AA30_msetup.unk10 = 0;
-    D_8011AA30_msetup.playerCount = 4;
+    D_8011AA30_msetup.humanCount = 0;
+    D_8011AA30_msetup.cpuCount = 4;
     D_8011AA30_msetup.boardIndex = 0;
     D_8011AA30_msetup.unk17 = 0;
     D_8011A948_msetup = D_8011AA30_msetup.controllerPorts[0];

@@ -71,6 +71,7 @@ extern s16 D_8011A938_msetup;
 extern s16 D_8011A948_msetup;
 extern s16 D_8011A8B0_msetup[];
 extern s16 D_8011A890_msetup;
+extern MsetupPlayerConfig D_8011AA30_msetup;
 extern u8 D_8011AA45_msetup; // board index chosen
 extern UnkMsetupEntry D_8011A9F2_msetup[];
 extern f32 D_80119AF4_msetup;
@@ -827,7 +828,97 @@ s16 func_80112E08_msetup(s16 selection, s16 *previousButtons, MsetupCursorState 
     return selection;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_80112F5C_msetup);
+s16 func_80112F5C_msetup(s16 individual, s16 count, s16 *previousButtons, MsetupCursorState *cursor) {
+    s16 players[4];
+    s16 player;
+    s16 cpuCount;
+    s16 selection;
+    s16 previousPlayer;
+    s16 i;
+    s32 buttons;
+    s32 j;
+    s32 currentPlayer;
+
+    player = D_8011AA30_msetup.humanCount;
+    cpuCount = D_8011AA30_msetup.cpuCount;
+    for (i = 0; player < 4; i++, player++) {
+        players[i] = player;
+    }
+    i = 0;
+    previousPlayer = -1;
+    cursor->flags = 0;
+    selection = D_8011AA30_msetup.cpuDifficulty[players[0]];
+    cursor->selection = selection;
+    HuPrcVSleep();
+    HuPrcVSleep();
+    cursor->flags = 4;
+    cursor->state = 1;
+    func_8010D684_msetup(D_8011A948_msetup, previousButtons);
+    while (1) {
+        if (previousPlayer != i) {
+            if (individual != 0) {
+                func_8010B968_msetup(D_8011AA30_msetup.characters[players[i]] + 0x1C00, 0);
+                func_8010B82C_msetup(0x1518);
+            } else {
+                func_8010B82C_msetup(0x1517);
+            }
+            previousPlayer = i;
+            selection = D_8011AA30_msetup.cpuDifficulty[players[i]];
+        }
+        buttons = func_8010D684_msetup(D_8011A948_msetup, previousButtons);
+        if (buttons & (U_JPAD | R_JPAD)) {
+            selection++;
+            if (selection >= count) {
+                selection = count - 1;
+            }
+        } else if (buttons & (D_JPAD | L_JPAD)) {
+            selection--;
+            if (selection < 0) {
+                selection = 0;
+            }
+        }
+        if (selection != cursor->selection) {
+            HuAudFXPlay(1);
+            cursor->selection = selection;
+        }
+        if (buttons & B_BUTTON) {
+            HuAudFXPlay(4);
+            if (individual != 0) {
+                i--;
+                if (i < 0) {
+                    selection = -1;
+                    break;
+                }
+            } else {
+                selection = -1;
+                break;
+            }
+            D_8011A9F2_msetup[players[i]].value = 6;
+        }
+        if (buttons & A_BUTTON) {
+            HuAudFXPlay(2);
+            if (individual != 0) {
+                currentPlayer = players[i];
+                D_8011AA30_msetup.cpuDifficulty[currentPlayer] = selection;
+                D_8011A9F2_msetup[currentPlayer].value = 5;
+                i++;
+                if (i >= cpuCount) {
+                    break;
+                }
+            } else {
+                for (j = 0; j < cpuCount; j++) {
+                    currentPlayer = players[j];
+                    D_8011AA30_msetup.cpuDifficulty[currentPlayer] = selection;
+                    D_8011A9F2_msetup[currentPlayer].value = 5;
+                }
+                break;
+            }
+        }
+        HuPrcVSleep();
+    }
+    cursor->state = 2;
+    return selection;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_801132C4_msetup);
 

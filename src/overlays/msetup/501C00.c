@@ -46,6 +46,10 @@ typedef struct MsetupCameraPreset {
     f32 fov;
 } MsetupCameraPreset;
 
+extern u8 D_80119478_msetup[];
+extern u8 D_80119488_msetup[];
+extern u8 D_80119498_msetup[];
+extern u8 D_8011A949_msetup;
 extern u16 D_80119410_msetup;
 extern s16 D_80119412_msetup;
 extern u8 D_80119419_msetup;
@@ -693,7 +697,84 @@ INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801089FC_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80108AB8_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80108F74_msetup);
+void func_80108F74_msetup(void) {
+    u8 characters[4];
+    s32 i;
+    s32 player;
+    s16 mode;
+    u8 opponent;
+    u8 character;
+    u8 stars;
+    u32 random;
+    u32 first;
+    u32 second;
+
+    GwSystem.current_board_index = D_80119478_msetup[GwStory.unk0];
+    GwSystem.current_game_length = 0;
+    mode = D_80119488_msetup[GwStory.unk0];
+    stars = 0;
+    if (mode == 1) {
+        GwSystem.total_turns = 20;
+        stars = 5;
+    } else {
+        GwSystem.total_turns = 15;
+    }
+    GwPlayer[0].chr = GwStory.unk1;
+    GwPlayer[0].star = stars;
+    GwPlayer[0].pad = D_8011A949_msetup;
+    GwPlayer[0].cpu_difficulty = 1;
+    GwPlayer[0].stat = 0;
+    GwPlayer[0].coin = 0;
+    opponent = D_80119498_msetup[GwStory.unk0];
+    if (opponent == GwStory.unk1) {
+        opponent = 1;
+    }
+    i = 0;
+    if (mode == 1) {
+        GwPlayer[1].chr = opponent;
+        GwPlayer[1].star = stars;
+        GwPlayer[1].pad = D_8011AA30_msetup.controllerPorts[1];
+        GwPlayer[1].cpu_difficulty = GwStory.unk2;
+        GwPlayer[1].stat = 1;
+        GwPlayer[1].coin = 0;
+    } else {
+        character = 0;
+        do {
+            if (character != GwStory.unk1) {
+                if (character != opponent) {
+                    characters[i++] = character;
+                }
+            }
+            character++;
+        } while (i < 4);
+        for (i = 96; i != 0; i--) {
+            random = func_801061E0_msetup();
+            first = random & 3;
+            second = (random >> 2) & 3;
+            character = characters[first];
+            characters[first] = characters[second];
+            characters[second] = character;
+        }
+        player = 1;
+        if (GwStory.unk0 >= 11) {
+            GwPlayer[player].chr = opponent;
+            GwPlayer[player].star = stars;
+            GwPlayer[player].pad = D_8011AA30_msetup.controllerPorts[1];
+            GwPlayer[player].cpu_difficulty = GwStory.unk2;
+            GwPlayer[player].stat = 1;
+            GwPlayer[player].coin = 0;
+            player = 2;
+        }
+        for (i = 0; player < 4; player++, i++) {
+            GwPlayer[player].chr = characters[i];
+            GwPlayer[player].star = stars;
+            GwPlayer[player].pad = D_8011AA30_msetup.controllerPorts[player];
+            GwPlayer[player].cpu_difficulty = GwStory.unk2;
+            GwPlayer[player].stat = 1;
+            GwPlayer[player].coin = 0;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80109218_msetup);
 

@@ -94,6 +94,7 @@ void func_8001C258_main(s16, s32, s32);
 void HuSprKill(s16);
 void func_8010B82C_msetup(s32);
 void func_8010B858_msetup();
+void func_8010B968_msetup(u32, s8);
 void func_8010B998_msetup();
 void func_8010BBF4_msetup(s16);
 void func_8010BE8C_msetup(s16);
@@ -795,7 +796,21 @@ s16 func_80109EA0_msetup(s16 stateIndex) {
     return nextState;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80109F04_msetup);
+s16 func_80109F04_msetup(s16 stateIndex) {
+    s16 nextState;
+
+    if (D_8011A882_msetup.result >= 0) {
+        func_8010B968_msetup(D_8011AA30_msetup.characters[0] + 0x1C00, 0);
+        func_8010B82C_msetup(0x4A00);
+        func_8010B858_msetup();
+        func_8010B82C_msetup(0x4A02);
+        func_8010B858_msetup();
+        nextState = stateIndex + 1;
+    } else {
+        nextState = stateIndex - 1;
+    }
+    return nextState;
+}
 
 s16 func_80109F7C_msetup(s16 step) {
     s32 i;

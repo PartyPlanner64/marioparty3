@@ -15,6 +15,13 @@ typedef struct MsetupSpriteState {
     s16 values[8];
 } MsetupSpriteState;
 
+typedef struct MsetupEntryAnim {
+    Vec pos;
+    f32 value;
+    s16 index;
+    s16 state;
+} MsetupEntryAnim;
+
 typedef struct UnkStarLift {
     char unk_00[0x04];
     s16 unk4;
@@ -29,6 +36,13 @@ typedef struct MsetupBoardAnim {
 extern HmfData_Unk84_Entry2 *D_800D1FCC_main;
 extern s16 D_800D418E_main;
 extern Process *D_80119420_msetup;
+extern Vec D_80119A0C_msetup[];
+extern Vec D_80119A3C_msetup[];
+extern f32 D_80119A54_msetup[];
+extern f32 D_80119A64_msetup[];
+extern s16 D_80119A6C_msetup[];
+extern Process *D_8011A898_msetup[];
+extern MsetupEntryAnim D_8011A9E0_msetup[];
 extern omObjData *D_80119AF0_msetup;
 extern s32 D_80119E94_msetup[];
 extern s32 D_80119EAC_msetup[];
@@ -56,6 +70,7 @@ void HuSprKill(s16);
 void func_80033910_main(HmfData *);
 void func_80033970_main(HmfData *);
 void func_8010B82C_msetup(s32);
+void func_8010BEF8_msetup(void);
 void func_8010B858_msetup();
 void func_8010B998_msetup();
 s32 func_8010D684_msetup(s16, s16 *);
@@ -128,9 +143,38 @@ s16 func_8010BA3C_msetup(void) {
     return (s16)D_800CC69C_main[D_8011A890_msetup].input;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010BA6C_msetup);
+void func_8010BA6C_msetup(s16 start, s16 end) {
+    Vec *positions;
+    f32 *values;
+    s16 delay;
+    s32 i;
+    MsetupEntryAnim *entry;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010BBF4_msetup);
+    if (end != 2) {
+        positions = D_80119A0C_msetup;
+        values = D_80119A54_msetup;
+    } else {
+        positions = D_80119A3C_msetup;
+        values = D_80119A64_msetup;
+    }
+    delay = D_80119A6C_msetup[D_8011A938_msetup];
+    for (i = start; i < end; i++) {
+        D_8011A9E0_msetup[i].state = 0;
+        D_8011A9E0_msetup[i].index = i;
+        D_8011A9E0_msetup[i].pos = positions[i];
+        entry = &D_8011A9E0_msetup[i];
+        D_8011A9E0_msetup[i].value = values[i];
+        D_8011A898_msetup[i] = omAddPrcObj(func_8010BEF8_msetup, 0x4000, 0xC00, 0);
+        D_8011A898_msetup[i]->user_data = entry;
+        if (delay != 0) {
+            HuPrcSleep(delay);
+        }
+    }
+}
+
+void func_8010BBF4_msetup(s16 end) {
+    func_8010BA6C_msetup(0, end);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010BC18_msetup);
 

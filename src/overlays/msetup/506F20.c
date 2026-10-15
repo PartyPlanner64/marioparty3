@@ -77,6 +77,7 @@ void Hu3DModelRotSet(s16, f32, f32, f32);
 void Hu3DModelScaleSet(s16, f32, f32, f32);
 void func_8001C258_main(s16, s32, s32);
 void HuSprKill(s16);
+s32 func_800329B4_main(void *);
 void func_80033910_main(HmfData *);
 void func_80033970_main(HmfData *);
 void func_8010B82C_msetup(s32);
@@ -123,7 +124,15 @@ void func_8010B4B8_msetup(s16 model, s16 *animSlot, s16 anim) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010B588_msetup);
+s16 func_8010B588_msetup(s32 dataId) {
+    void *data;
+    s32 anim;
+
+    data = DataRead(dataId);
+    anim = func_800329B4_main(data);
+    DataClose(data);
+    return anim;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010B5D0_msetup);
 

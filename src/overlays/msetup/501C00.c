@@ -1,4 +1,5 @@
 #include "common.h"
+#include "game/vibrator.h"
 #include "overlays/msetup.h"
 
 typedef s16 Array2D[2][18];
@@ -30,6 +31,14 @@ typedef struct MsetupCameraPreset {
     f32 fov;
 } MsetupCameraPreset;
 
+extern u16 D_80119410_msetup;
+extern s16 D_80119412_msetup;
+extern u8 D_80119419_msetup;
+extern u8 D_8011AA30_msetup[];
+extern u8 D_8011AA40_msetup;
+extern s16 D_8011AA48_msetup;
+extern s16 D_8011A93A_msetup;
+extern s16 D_8011A944_msetup;
 extern f32 D_80119414_msetup;
 extern u32 D_8011941C_msetup;
 extern f32 D_8011A93C_msetup;
@@ -80,10 +89,48 @@ s16 func_80055810_main(void *); /* extern */
 s32 func_80113ED4_msetup(UnkStarLift *arg0);
 void func_80107F88_msetup(s16, s16, s16);
 void func_80105F7C_msetup(MsetupModelEntry *, s16);
+void func_80105DB4_msetup(omObjData *);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801059A0_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80105C4C_msetup);
+void func_80105C4C_msetup(omObjData *object) {
+    s32 i;
+
+    if (D_80119412_msetup != 0) {
+        D_80119419_msetup--;
+        if (D_80119419_msetup == 0) {
+            for (i = 0; i < D_8011AA40_msetup; i++) {
+                RepeatVibrator(D_8011AA30_msetup[i], 5, 0, 5);
+            }
+            D_80119419_msetup = 10;
+        }
+    }
+    if (D_80119410_msetup == 0) {
+        if (D_800D530C_main != 0) {
+            goto createWipe;
+        }
+    } else if (D_80119410_msetup == 1) {
+        goto createWipe;
+    } else {
+        D_80119410_msetup--;
+    }
+    return;
+
+createWipe:
+    if (D_8011A938_msetup == 4) {
+        WipeColorSet(255, 255, 255);
+        D_8011AA48_msetup = 11;
+    } else {
+        D_8011AA48_msetup = 2;
+    }
+    if (D_8011AA48_msetup >= 0) {
+        WipeCreateOut(D_8011AA48_msetup, D_8011A93A_msetup);
+    }
+    if (D_8011A944_msetup == 0) {
+        HuAudSeqFadeOut(15);
+    }
+    object->func = func_80105DB4_msetup;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80105DB4_msetup);
 

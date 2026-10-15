@@ -918,7 +918,27 @@ s16 func_8010A204_msetup(s16 step) {
     return step;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_8010A2B0_msetup);
+s16 func_8010A2B0_msetup(s16 step) {
+    D_8011A882_msetup.result = 0;
+    func_8010B82C_msetup(0x4919);
+    if (func_8010B858_msetup() == 0) {
+        func_8010B82C_msetup(0x491B);
+        step = -2;
+        func_8010B858_msetup();
+        HuAudFXPlay(0x2A6);
+    } else {
+        func_8010B82C_msetup(0x491A);
+        if (func_8010B858_msetup() == 0) {
+            HuAudFXPlay(0x2E4);
+            func_8010BC18_msetup(1, D_8011A880_msetup);
+            step = 1;
+        } else {
+            D_8011A882_msetup.result = -1;
+            step--;
+        }
+    }
+    return step;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_8010A35C_msetup);
 

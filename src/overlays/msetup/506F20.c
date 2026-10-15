@@ -393,7 +393,33 @@ s16 func_8010D234_msetup(s16 positions[][2], u8 *disabled, s16 count, s16 select
     return closest;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010D4DC_msetup);
+s16 func_8010D4DC_msetup(s16 positions[][2], u8 *disabled, s16 count, s16 selection, s16 controller, s16 buttons) {
+    s16 directionX;
+    s16 directionY;
+
+    directionX = D_800CBB6E_main[controller];
+    directionX = -directionX;
+    directionY = D_800D20A1_main[controller];
+    if (buttons & L_JPAD) {
+        if (directionX < 30) {
+            directionX = 100;
+        }
+    } else if (buttons & R_JPAD) {
+        if (directionX > -30) {
+            directionX = -100;
+        }
+    }
+    if (buttons & U_JPAD) {
+        if (directionY < 30) {
+            directionY = 100;
+        }
+    } else if (buttons & D_JPAD) {
+        if (directionY > -30) {
+            directionY = -100;
+        }
+    }
+    return func_8010D234_msetup(positions, disabled, count, selection, directionX, directionY);
+}
 
 s16 func_8010D5EC_msetup(s16 controller) {
     s16 buttons = D_800CDA7C_main[controller];

@@ -780,7 +780,20 @@ INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80109218_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80109868_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80109EA0_msetup);
+s16 func_80109EA0_msetup(s16 stateIndex) {
+    s16 nextState;
+
+    if (D_8011A882_msetup.result >= 0) {
+        func_8010B82C_msetup(0x4900);
+        func_8010B858_msetup();
+        func_8010B82C_msetup(0x4902);
+        func_8010B858_msetup();
+        nextState = stateIndex + 1;
+    } else {
+        nextState = stateIndex - 1;
+    }
+    return nextState;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80109F04_msetup);
 

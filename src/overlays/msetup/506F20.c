@@ -6,7 +6,7 @@
 #include "mallocblock.h"
 #include "gcc/string.h"
 
-typedef s16 Array2D[2][18];
+typedef MsetupLinkedModel Array2D[2];
 
 typedef struct MsetupSpriteState {
     s16 state;
@@ -33,6 +33,7 @@ typedef struct MsetupBoardAnim {
     /* 0x3A */ s16 count;
 } MsetupBoardAnim;
 
+extern Vec D_80119B20_msetup;
 extern HmfData_Unk84_Entry2 *D_800D1FCC_main;
 extern s16 D_800D418E_main;
 extern Process *D_80119420_msetup;
@@ -76,8 +77,8 @@ void func_8010B998_msetup();
 s32 func_8010D684_msetup(s16, s16 *);
 void func_8010DDD8_msetup(omObjData *);
 omObjData *func_8010DE38_msetup(s32, s32, s32);
-void func_8010E4BC_msetup(Array2D *, s32, s32);
-void func_8010E4D8_msetup(Array2D *, s32);
+void func_8010E4BC_msetup(Array2D *, s32, f32);
+void func_8010E4D8_msetup(MsetupLinkedModel *, s32);
 void func_8010E8C8_msetup(Array2D *, s32, s32, f32, f32, f32, f32, s32);
 void func_8010EB94_msetup(void);
 void func_8010E09C_msetup(omObjData *);
@@ -364,15 +365,48 @@ omObjData *func_8010E21C_msetup(void) {
     return object;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010E32C_msetup);
+void func_8010E32C_msetup(Array2D *arg0, s32 count, f32 rotation, s32 link) {
+    s32 i;
+    s16 sourceModel = -1;
+    s16 model;
+    MsetupLinkedModel *entry;
+    Vec *rot;
 
-void func_8010E32C_msetup(Array2D *, s32, s32, s32);
+    for (i = 0; i < count; i++) {
+        if (sourceModel < 0 || !link) {
+            model = sourceModel = func_8000B108_main(0x140003, 0x2A9);
+        } else {
+            model = Hu3DModelLink(sourceModel);
+        }
+        (*arg0)[i].model = model;
+        (*arg0)[i].flags = 0;
+        entry = &(*arg0)[i];
+        rot = &entry->rot;
+        entry->rot.x = entry->rot.z = 0.0f;
+        if (i != 0) {
+            entry->rot.y = rotation + 180.0f;
+        } else {
+            rot->y = rotation;
+        }
+        Hu3DModelRotSet(model, rot->x, rot->y, rot->z);
+        entry->pos = D_80119B20_msetup;
+        Hu3DModelPosSet(model, entry->pos.x, entry->pos.y, entry->pos.z);
+        Hu3DModelScaleSet(model, 0.1f, 0.1f, 0.1f);
+        HuPrcVSleep();
+    }
+}
 
-void func_8010E4BC_msetup(Array2D *arg0, s32 arg1, s32 arg2) {
+void func_8010E4BC_msetup(Array2D *arg0, s32 arg1, f32 arg2) {
     func_8010E32C_msetup(arg0, arg1, arg2, 1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010E4D8_msetup);
+void func_8010E4D8_msetup(MsetupLinkedModel *entry, s32 count) {
+    s32 i;
+
+    for (i = 0; i < count; i++, entry++) {
+        func_8001C514_main(entry->model);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010E52C_msetup);
 
@@ -539,14 +573,14 @@ s32 func_80113ED4_msetup(UnkStarLift *arg0) {
 
     func_8010B998_msetup();
     func_8010E4BC_msetup(&sp20, 2, 0);
-    func_8010E4D8_msetup(&sp20, 2);
-    temp = sp20[0][12];
+    func_8010E4D8_msetup(sp20, 2);
+    temp = sp20[0].model;
     temp_s5 = func_8010DE38_msetup(0x40, 0x100, 0x48);
     func_8010B82C_msetup(boardDescriptionId[6]);
     func_8010B858_msetup();
     HuAudFXPlay(0x2D9);
     func_8010E8C8_msetup(&sp20, 2, 0xF, 720.0f, 565.0f, 0.1f, 1.0f, 1);
-    func_8001C258_main(sp20[1][12], 4, 4);
+    func_8001C258_main(sp20[1].model, 4, 4);
 
     for (var_f20 = 0.0f; var_f20 < 180.0f; var_f20 += (180.0f / 7.0f)) {
         Hu3DModelRotSet(temp, 0, var_f20, 0);
@@ -648,17 +682,17 @@ s32 func_80113ED4_msetup(UnkStarLift *arg0) {
     }
 
     Hu3DModelRotSet(temp, 0, 0.0f, 0);
-    func_8001C258_main(sp20[1][12], 4, 0);
+    func_8001C258_main(sp20[1].model, 4, 0);
     HuAudFXPlay(0x2DA);
     func_8010E8C8_msetup(&sp20, 2, 7, 360.0f, 400.0f, 1.0f, 0.1f, 1);
 
     if (curBoardIndex >= 0) {
-        func_8010F320_msetup(D_80119420_msetup, 0, sp20[0][12], -1);
+        func_8010F320_msetup(D_80119420_msetup, 0, sp20[0].model, -1);
         func_8010F320_msetup(D_80119420_msetup, 2, backgroundEspriteSlot, var_s6);
-        func_8001ACDC_main(sp20[1][12]);
+        func_8001ACDC_main(sp20[1].model);
     } else {
         for (i = 0; i < 2; i++) {
-            func_8001ACDC_main(sp20[i][12]);
+            func_8001ACDC_main(sp20[i].model);
         }
         func_8000C184_main(backgroundEspriteSlot);
         HuSprKill(var_s6);

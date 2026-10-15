@@ -2,7 +2,7 @@
 #include "game/vibrator.h"
 #include "overlays/msetup.h"
 
-typedef s16 Array2D[2][18];
+typedef MsetupLinkedModel Array2D[2];
 
 typedef struct UnkStarLift {
     char unk_00[0x04];
@@ -81,8 +81,8 @@ void func_8010B9B8_msetup(s32, s32);
 s32 func_8010D684_msetup(s16, s16 *);
 void func_8010DDD8_msetup(void *);
 omObjData *func_8010DE38_msetup(s32, s32, s32);
-void func_8010E4BC_msetup(Array2D *, s32, s32);
-void func_8010E4D8_msetup(Array2D *, s32);
+void func_8010E4BC_msetup(Array2D *, s32, f32);
+void func_8010E4D8_msetup(MsetupLinkedModel *, s32);
 void func_8010E8C8_msetup(Array2D *, s32, s32, f32, f32, f32, f32, s32);
 void func_8010F320_msetup(Process *, s16, s16, s16);
 s16 func_8010F2F4_msetup(Process *, s16);

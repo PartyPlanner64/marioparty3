@@ -76,6 +76,7 @@ void func_8010B82C_msetup(s32);
 void func_8010B858_msetup();
 void func_8010B998_msetup();
 void func_8010BBF4_msetup(s16);
+void func_8010BA6C_msetup(s16, s16);
 void func_8010B9B8_msetup(s32, s32);
 s32 func_8010D684_msetup(s16, s16 *);
 void func_8010DDD8_msetup(void *);
@@ -594,7 +595,42 @@ INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80109EA0_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80109F04_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80109F7C_msetup);
+s16 func_80109F7C_msetup(s16 step) {
+    s32 i;
+
+    D_8011A882_msetup.state = 2;
+    do {
+        HuPrcVSleep();
+    } while (D_8011A882_msetup.state != 0);
+
+    if (D_8011A882_msetup.result != -1) {
+        D_8011A990_msetup = 0;
+        for (i = 7; i != 0; i--) {
+            HuPrcVSleep();
+        }
+        func_8010BA6C_msetup(1, D_8011A880_msetup);
+        for (i = 4; i != 0; i--) {
+            HuPrcVSleep();
+        }
+        HuAudFXPlay(0x2DB);
+        for (i = 1; i < D_8011A880_msetup; i++) {
+            D_8011A9F2_msetup[i].value = 1;
+        }
+        for (i = 7; i != 0; i--) {
+            HuPrcVSleep();
+        }
+        D_8011A9F2_msetup[0].value = 17;
+        while (D_8011A9F2_msetup[D_8011A880_msetup - 1].value != 0) {
+            HuPrcVSleep();
+        }
+    }
+    if (D_8011A882_msetup.result < 0) {
+        step--;
+    } else {
+        step++;
+    }
+    return step;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_8010A10C_msetup);
 

@@ -126,7 +126,25 @@ INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010BEF8_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010CAF0_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010CC70_msetup);
+void func_8010CC70_msetup(s16 model, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
+    HmfData *hmf = HmfModelData[model].hmf;
+    HmfModelData_UnkBC_Struct *data = HmfModelData[model].unkBC;
+    HmfModelData_UnkBC_Unk58_Struct *entry = data->unk58;
+    s16 i;
+    f32 value1;
+    f32 value2;
+
+    data->unk08.f = arg1;
+    data->unk0C.f = arg2;
+    data->unk10.f = arg3;
+    data->unk14 = arg4;
+    value1 = (arg3 - arg3 / 10.0f) / arg1;
+    value2 = arg2 / arg1;
+    for (i = 0; i < hmf->unk1A; i++, entry++) {
+        entry->unk1C = value1;
+        entry->unk24 = value2;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010CD14_msetup);
 

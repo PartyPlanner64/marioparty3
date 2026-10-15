@@ -50,6 +50,7 @@ typedef struct MsetupBoardAnim {
     /* 0x3A */ s16 count;
 } MsetupBoardAnim;
 
+extern s32 D_80119E58_msetup[];
 extern Vec D_80119B20_msetup;
 extern HmfData_Unk84_Entry2 *D_800D1FCC_main;
 extern s16 D_800D418E_main;
@@ -109,6 +110,7 @@ void func_8010E09C_msetup(omObjData *);
 void func_8010F320_msetup(Process *, s16, s16, s16);
 s32 _CheckFlag(s32);            /* extern */
 s16 func_80055810_main(void *); /* extern */
+s32 func_801138F8_msetup(MsetupMenuState *, s32, s32 *, s32);
 s32 func_80113ED4_msetup(UnkStarLift *arg0);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010ACC0_msetup);
@@ -924,7 +926,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_801132C4_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_801138F8_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_80113DEC_msetup);
+s16 func_80113DEC_msetup(MsetupMenuState *state) {
+    return func_801138F8_msetup(state, 0x140021, D_80119E58_msetup, 1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_80113E20_msetup);
 

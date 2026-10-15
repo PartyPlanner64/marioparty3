@@ -43,6 +43,8 @@ extern s16 D_8011A882_msetup;
 extern s16 D_8011A886_msetup;
 extern s16 D_8011A938_msetup;
 extern s16 D_8011A948_msetup;
+extern s16 D_8011A950_msetup[];
+extern s16 D_8011A9A0_msetup[];
 extern u8 D_8011AA43_msetup;
 extern u8 D_8011AA45_msetup; // board index chosen
 extern u8 D_8011AA47_msetup;
@@ -72,6 +74,7 @@ s32 _CheckFlag(s32);            /* extern */
 s16 func_80055810_main(void *); /* extern */
 s32 func_80113ED4_msetup(UnkStarLift *arg0);
 void func_80107F88_msetup(s16, s16, s16);
+void func_80105F7C_msetup(MsetupModelEntry *, s16);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801059A0_msetup);
 
@@ -79,7 +82,20 @@ INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80105C4C_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80105DB4_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80105E90_msetup);
+void func_80105E90_msetup(MsetupModelEntry *entry) {
+    s32 i;
+    s16 model;
+    s32 motion;
+
+    for (i = 0; entry->dataId != -1; entry++, i++) {
+        model = D_8011A950_msetup[(s16)i] = func_8000B108_main(entry->dataId, entry->flags);
+        func_80105F7C_msetup(entry, model);
+        motion = D_8011A9A0_msetup[(s16)i] = HmfModelData[model].unk02;
+        if (motion != -1) {
+            func_8001C814_main(model, -1, entry->motion);
+        }
+    }
+}
 
 void func_80105F7C_msetup(MsetupModelEntry *entry, s16 model) {
     switch (entry->positionMode) {

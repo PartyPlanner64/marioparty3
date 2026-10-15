@@ -28,6 +28,7 @@ typedef struct UnkMsetupEntry {
 } UnkMsetupEntry; // sizeof 0x14
 
 extern Process *D_80119420_msetup;
+extern omObjData *D_80119AF0_msetup;
 extern s32 D_80119E94_msetup[];
 extern s32 D_80119EAC_msetup[];
 extern s32 D_80119EC4_msetup[];
@@ -49,6 +50,8 @@ void Hu3DModelRotSet(s16, f32, f32, f32);
 void Hu3DModelScaleSet(s16, f32, f32, f32);
 void func_8001C258_main(s16, s32, s32);
 void HuSprKill(s16);
+void func_80033910_main(HmfData *);
+void func_80033970_main(HmfData *);
 void func_8010B82C_msetup(s32);
 void func_8010B858_msetup();
 void func_8010B998_msetup();
@@ -59,6 +62,7 @@ void func_8010E4BC_msetup(Array2D *, s32, s32);
 void func_8010E4D8_msetup(Array2D *, s32);
 void func_8010E8C8_msetup(Array2D *, s32, s32, f32, f32, f32, f32, s32);
 void func_8010EB94_msetup(void);
+void func_8010E09C_msetup(omObjData *);
 void func_8010F320_msetup(Process *, s16, s16, s16);
 s32 _CheckFlag(s32);            /* extern */
 s16 func_80055810_main(void *); /* extern */
@@ -72,7 +76,23 @@ INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010B1F4_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010B388_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010B4B8_msetup);
+void func_8010B4B8_msetup(s16 model, s16 *animSlot, s16 anim) {
+    HmfAnim *entry;
+
+    if (*animSlot >= 0) {
+        if (anim == -1) {
+            func_80033910_main(HmfModelData[model].hmf);
+        } else {
+            func_80033970_main(HmfModelData[model].hmf);
+            entry = &D_800D1714_main[*animSlot];
+            entry->animIdx = anim;
+            entry->rot = 0;
+            entry->flags = 0;
+            entry->interp = 0;
+            entry->frame = 0;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010B588_msetup);
 
@@ -244,7 +264,32 @@ void func_8010E044_msetup(omObjData *arg0, s16 arg1, s16 arg2, f32 arg3, f32 arg
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010E09C_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010E21C_msetup);
+omObjData *func_8010E21C_msetup(void) {
+    MsetupBoardAnim *anim;
+    omObjData *object;
+    HmfModelData_UnkBC_Struct *data;
+    s16 model;
+
+    object = omAddObj(0x17D0, 1, 0, -1, func_8010E09C_msetup);
+    D_80119AF0_msetup = object;
+    if (object == NULL) {
+        return NULL;
+    }
+    omSetStatBit(object, 0x100);
+    anim = HuMemAllocTag(sizeof(MsetupBoardAnim), 0x7918);
+    memset(anim, 0, sizeof(MsetupBoardAnim));
+    object->data = anim;
+    model = object->model[0] = func_8000CBA0_main(0x110012, 0x289);
+    data = HmfModelData[model].unkBC;
+    data->unk1C.f = data->unk20.f = data->unk24.f = 0.0f;
+    data->unk10.f = 100.0f;
+    object->trans.x = object->trans.y = object->trans.z = 0.0f;
+    object->work[0] = 0;
+    object->work[1] = 0;
+    object->work[2] = 0xFF;
+    object->work[3] = 0;
+    return object;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010E32C_msetup);
 

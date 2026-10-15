@@ -15,6 +15,12 @@ typedef struct MsetupSpriteState {
     s16 values[8];
 } MsetupSpriteState;
 
+typedef struct MsetupPairSpriteAnim {
+    f32 angle;
+    f32 speed;
+    s16 pos[2][2];
+} MsetupPairSpriteAnim;
+
 typedef struct MsetupEntryAnim {
     Vec pos;
     f32 value;
@@ -75,6 +81,7 @@ void func_8010BEF8_msetup(void);
 void func_8010B858_msetup();
 void func_8010B998_msetup();
 s32 func_8010D684_msetup(s16, s16 *);
+void func_8010DAC4_msetup(omObjData *);
 void func_8010DDD8_msetup(omObjData *);
 omObjData *func_8010DE38_msetup(s32, s32, s32);
 void func_8010E4BC_msetup(Array2D *, s32, f32);
@@ -305,7 +312,46 @@ void func_8010DDD8_msetup(omObjData *object) {
     omDelObj(object);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010DE38_msetup);
+omObjData *func_8010DE38_msetup(s32 leftX, s32 rightX, s32 y) {
+    s16 i;
+    MsetupPairSpriteAnim *anim;
+    omObjData *object;
+    s16 sprite;
+
+    object = omAddObj(0x17D0, 4, 0, -1, func_8010DAC4_msetup);
+    if (object == NULL) {
+        return NULL;
+    }
+    omSetStatBit(object, 0x100);
+    anim = HuMemAllocTag(sizeof(MsetupPairSpriteAnim), 0x7918);
+    memset(anim, 0, sizeof(MsetupPairSpriteAnim));
+    object->data = anim;
+
+    sprite = func_8000B838_main(0x140012);
+    i = InitEspriteSlot(sprite, 0, 1);
+    object->model[0] = i;
+    object->model[2] = sprite;
+    func_8000BCC8_main(i, 0x4800);
+    func_8000BBD4_main(i, leftX, y);
+    func_8000BB94_main(i);
+    anim->pos[0][0] = leftX;
+    anim->pos[0][1] = y;
+
+    sprite = func_8000B838_main(0x140013);
+    i = InitEspriteSlot(sprite, 0, 1);
+    object->model[1] = i;
+    object->model[3] = sprite;
+    func_8000BCC8_main(i, 0x4800);
+    func_8000BBD4_main(i, rightX, y);
+    func_8000BB94_main(i);
+    anim->pos[1][0] = rightX;
+    anim->pos[1][1] = y;
+
+    for (i = 0; i < 4; i++) {
+        object->work[i] = 0;
+    }
+    return object;
+}
 
 s16 func_8010E00C_msetup(omObjData *arg0, s16 arg1) {
     MsetupBoardAnim *anim;

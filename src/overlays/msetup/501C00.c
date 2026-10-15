@@ -17,6 +17,23 @@ typedef struct MsetupModelEntry {
     Vec rot;
 } MsetupModelEntry;
 
+typedef struct MsetupModelHandle {
+    s16 model;
+    s16 motion;
+} MsetupModelHandle;
+
+typedef struct MsetupCameraPreset {
+    Vec rot;
+    Vec center;
+    f32 zoom;
+    f32 fov;
+} MsetupCameraPreset;
+
+extern f32 D_80119414_msetup;
+extern u32 D_8011941C_msetup;
+extern f32 D_8011A93C_msetup;
+extern f32 D_8011A940_msetup;
+extern Vec D_8011A994_msetup;
 extern Process *D_80119420_msetup;
 extern s32 D_80119E94_msetup[];
 extern s32 D_80119EAC_msetup[];
@@ -79,15 +96,60 @@ void func_80105F7C_msetup(MsetupModelEntry *entry, s16 model) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80106030_msetup);
+void func_80106030_msetup(MsetupModelEntry *entry, MsetupModelHandle *handle, s32 count) {
+    s16 i;
+    s16 model;
+    s32 motion;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_8010610C_msetup);
+    if (entry == NULL || handle == NULL) {
+        return;
+    }
+    for (i = 0; i < count; entry++, i++, handle++) {
+        model = handle->model = func_8000B108_main(entry->dataId, entry->flags);
+        func_80105F7C_msetup(entry, model);
+        motion = handle->motion = HmfModelData[model].unk02;
+        if (motion >= 0) {
+            func_8001C814_main(model, -1, entry->motion);
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801061E0_msetup);
+u32 func_8010610C_msetup(u32 seed) {
+    u32 quotient;
+    u32 remainder;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80106208_msetup);
+    if (seed == 0) {
+        seed = rand8();
+        seed ^= osGetCount();
+        seed ^= 0xD826BC89;
+    }
+    quotient = seed / 127773;
+    remainder = seed % 127773;
+    seed = quotient * 2836;
+    return seed - remainder * 16807;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80106260_msetup);
+u32 func_801061E0_msetup(void) {
+    return D_8011941C_msetup = func_8010610C_msetup(D_8011941C_msetup);
+}
+
+u32 func_80106208_msetup(u32 limit) {
+    u32 random;
+
+    random = D_8011941C_msetup = func_8010610C_msetup(D_8011941C_msetup);
+    return (random & 0x7FFFFFFF) % limit;
+}
+
+void func_80106260_msetup(MsetupCameraPreset *preset) {
+    CRot = preset->rot;
+    D_8011A994_msetup = CRot;
+    Center = preset->center;
+    CZoom = preset->zoom;
+    if (preset->fov != D_80119414_msetup) {
+        D_80119414_msetup = preset->fov;
+        Hu3DCamSetPerspective(0, D_80119414_msetup, D_8011A940_msetup, D_8011A93C_msetup);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80106320_msetup);
 

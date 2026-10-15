@@ -219,7 +219,9 @@ void func_8010BC18_msetup(s16 start, s16 end) {
     HuPrcVSleep();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010BE8C_msetup);
+void func_8010BE8C_msetup(s16 end) {
+    func_8010BC18_msetup(0, end);
+}
 
 s16 func_8010BEB0_msetup(s16 arg0, s16 arg1) {
     s16 prevValue = D_8011A9F2_msetup[arg0].value;

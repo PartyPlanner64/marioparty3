@@ -80,15 +80,15 @@ typedef struct HuSprAnmDesc {
 typedef struct HuSprite {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s32 unk_04;
-    /* 0x08 */ s32 unk_08;
+    /* 0x04 */ f32 unk_04;
+    /* 0x08 */ f32 unk_08;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ u16 prio;
     /* 0x18 */ f32 unk_18;
     /* 0x1C */ f32 unk_1C;
-    /* 0x20 */ s32 unk_20;
+    /* 0x20 */ f32 unk_20;
     /* 0x24 */ s32 unk_24;
     /* 0x28 */ u8 unk_28[4];
     /* 0x2C */ u16 unk_2C;
@@ -135,16 +135,16 @@ typedef struct HuSprite {
     } unk_FC;
     /* 0x100 */ s16 unk_100;
     /* 0x102 */ char unk_102_pad[0x2];
-    /* 0x104 */ s32 unk_104;
+    /* 0x104 */ u16 *unk_104;
     /* 0x108 */ void *unk_108[3];
     /* 0x114 */ s16 unk_114;
     /* 0x116 */ s16 unk_116;
     /* 0x118 */ struct HuSprite *unk_118; // next sprite in the priority-sorted draw list
     /* 0x11C */ struct HuSprite *unk_11C; // previous sprite in the priority-sorted draw list
-    /* 0x120 */ void *unk_120;
-    /* 0x124 */ void *unk_124;
-    /* 0x128 */ void *unk_128[3];
-    /* 0x134 */ void *unk_134[3];
+    /* 0x120 */ s32 unk_120;
+    /* 0x124 */ Gfx *unk_124;
+    /* 0x128 */ Gfx *unk_128[3];
+    /* 0x134 */ Vtx *unk_134[3];
     /* 0x140 */ Mtx unk_140[3];
     /* 0x200 */ char unk_200_pad[0x4];
     /* 0x204 */ u16 unk_204;

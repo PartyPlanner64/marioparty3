@@ -4,7 +4,6 @@
 #include "include_asm.h"
 #include "macros.h"
 
-#define offsetof(st, m) ((u32) & (((st *)0)->m))
 #define HUSPR_READ16(p) (((p)[0] << 8) + (p)[1])
 #define HUSPR_READ32(p) (((p)[0] << 24) + ((p)[1] << 16) + ((p)[2] << 8) + (p)[3])
 
@@ -413,7 +412,7 @@ void func_80052E68_main(HuSprGrp *group, u16 count) {
         func_8008A0D0_main(&sprite->unk_140[0]);
         func_8008A0D0_main(&sprite->unk_140[1]);
         func_8008A0D0_main(&sprite->unk_140[2]);
-        sprite->unk_120 = NULL;
+        sprite->unk_120 = 0;
         sprite->unk_124 = NULL;
         sprite->unk_204 = sprite->unk_206 = 0;
         sprite->unk_208 = 0x140;

@@ -1103,8 +1103,11 @@ void func_8010E8C8_msetup(Array2D *models, s16 count, s16 frames, f32 rotation, 
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010EB94_msetup);
 
-void func_8010F2BC_msetup(void) {
-    omAddPrcObj(func_8010EB94_msetup, 0x3F00, 0x600, 0)->user_data = &D_8011A8B0_msetup;
+Process *func_8010F2BC_msetup(void) {
+    Process *process = omAddPrcObj(func_8010EB94_msetup, 0x3F00, 0x600, 0);
+
+    process->user_data = &D_8011A8B0_msetup;
+    return process;
 }
 
 s16 func_8010F2F4_msetup(Process *arg0, s16 arg1) {

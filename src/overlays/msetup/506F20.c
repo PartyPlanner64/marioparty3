@@ -81,6 +81,8 @@ extern s16 D_8011A938_msetup;
 extern s16 D_8011A948_msetup;
 extern s16 D_8011A8B0_msetup[];
 extern s16 D_8011A890_msetup;
+extern s16 D_8011A892_msetup[2];
+extern s16 D_8011A990_msetup;
 extern MsetupPlayerConfig D_8011AA30_msetup;
 extern u8 D_8011AA45_msetup; // board index chosen
 extern UnkMsetupEntry D_8011A9F2_msetup[];
@@ -99,6 +101,7 @@ void func_80017D24_main(HuMtx4F, f32, f32, f32);
 void func_80017CD0_main(HuMtx4F, f32, f32, f32);
 void func_80018044_main(HuMtx4F, HuMtx4F, HuMtx4F);
 f32 func_80054B1C_main(s16, s16, s16, f32, f32, f32);
+void func_8006105C_main(s16, s32);
 void func_8000BBFC_main(u16, s16);
 void func_8000BC48_main(u16, s32);
 void func_8000BCC8_main(u16, s32);
@@ -296,7 +299,56 @@ s16 func_8010B588_msetup(s32 dataId) {
     return anim;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010B5D0_msetup);
+void func_8010B5D0_msetup(void) {
+    s16 window;
+    s16 state;
+
+    window = func_80060880_main(250, 204, 8);
+    func_8005FE54_main(window, 1 << D_8011A948_msetup);
+    func_8006105C_main(window, 224);
+    func_8005C060_main(window, 2, 255, 64, 64);
+    func_8005C060_main(window, 4, 96, 255, 64);
+    func_8005C060_main(window, 6, 255, 255, 64);
+    D_8011A890_msetup = D_8011A892_msetup[0] = window;
+    window = func_80060880_main(250, 204, 18);
+    func_8005FE54_main(window, 1 << D_8011A948_msetup);
+    func_8006105C_main(window, 224);
+    func_8005C060_main(window, 2, 255, 64, 64);
+    func_8005C060_main(window, 4, 96, 255, 64);
+    func_8005C060_main(window, 6, 255, 255, 64);
+    D_8011A892_msetup[1] = window;
+    D_8011A990_msetup = 0;
+    state = 0;
+    while (1) {
+        if (state != D_8011A990_msetup) {
+            switch (D_8011A990_msetup) {
+                case 0:
+                    func_80060EA8_main(D_8011A890_msetup, 1);
+                    break;
+                case 1:
+                    window = D_8011A890_msetup;
+                    D_8011A890_msetup = D_8011A892_msetup[0];
+                    if (state != 0) {
+                        func_80060EA8_main(window, 1);
+                    }
+                    func_8005D294_main(D_8011A890_msetup);
+                    func_80060C14_main(D_8011A890_msetup, 1);
+                    break;
+                case 2:
+                    window = D_8011A890_msetup;
+                    D_8011A890_msetup = D_8011A892_msetup[1];
+                    if (state != 0) {
+                        func_80060EA8_main(window, 1);
+                    }
+                    func_8005D294_main(D_8011A890_msetup);
+                    func_80060C14_main(D_8011A890_msetup, 1);
+                    break;
+            }
+            state = D_8011A990_msetup;
+        }
+        HuPrcVSleep();
+    }
+}
 
 void func_8010B82C_msetup(s32 message) {
     func_8005B43C_main(D_8011A890_msetup, message, -1, -1);

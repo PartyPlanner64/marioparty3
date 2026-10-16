@@ -33,6 +33,7 @@ typedef struct MsetupCameraPreset {
 
 extern u8 D_80119478_msetup[];
 extern s16 (*D_80119510_msetup[])(s16);
+extern s16 (*D_80119524_msetup[])(s16);
 extern u8 D_80119488_msetup[];
 extern u8 D_80119498_msetup[];
 extern u8 D_8011A949_msetup;
@@ -955,7 +956,13 @@ void func_8010A780_msetup(void) {
     func_8010A35C_msetup(D_80119510_msetup);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_8010A7A0_msetup);
+void func_8010A7A0_msetup(void) {
+    D_8011AA30_msetup.humanCount = 1;
+    D_8011AA30_msetup.cpuCount = 3;
+    D_8011AA30_msetup.characters[0] = GwStory.unk1;
+    D_8011AA30_msetup.cpuDifficulty[0] = 0xFF;
+    func_8010A35C_msetup(D_80119524_msetup);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_8010A7EC_msetup);
 

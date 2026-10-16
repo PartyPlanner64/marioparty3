@@ -100,6 +100,7 @@ s32 func_80113ED4_msetup(UnkStarLift *arg0);
 void func_80107F88_msetup(s16, s16, s16);
 void func_80105F7C_msetup(MsetupModelEntry *, s16);
 void func_80105DB4_msetup(omObjData *);
+void func_8010A7EC_msetup(s16);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801059A0_msetup);
 
@@ -954,7 +955,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_8010A7A0_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_8010A7EC_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_8010AC78_msetup);
+void func_8010AC78_msetup(void) {
+    func_8010A7EC_msetup(0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_8010AC94_msetup);
 

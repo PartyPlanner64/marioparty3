@@ -33,6 +33,7 @@ extern s16 D_8011A93A_msetup;
 extern s16 D_8011A944_msetup;
 extern s16 D_8011A946_msetup;
 extern s16 D_8011AA4C_msetup;
+extern s16 D_8011AA4A_msetup;
 extern f32 D_80119414_msetup;
 extern u32 D_8011941C_msetup;
 extern f32 D_8011A93C_msetup;
@@ -295,7 +296,24 @@ void func_80106DF8_msetup(void) {
     D_8011A948_msetup = D_8011AA30_msetup.controllerPorts[0];
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80106FC0_msetup);
+f32 func_80106FC0_msetup(Vec *pos, u32 mask, f32 radius) {
+    u32 random;
+    f32 angle;
+
+    random = func_801061E0_msetup() & mask;
+    pos->y -= (f32)random;
+    random = func_801061E0_msetup() & 0x7FFFFFFF;
+    if (D_8011AA4A_msetup != 0) {
+        random %= 120;
+        random += 120;
+    } else {
+        random %= 360;
+    }
+    angle = random;
+    pos->x = radius * sindf(angle);
+    pos->z = radius * cosdf(angle);
+    return angle;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801070FC_msetup);
 

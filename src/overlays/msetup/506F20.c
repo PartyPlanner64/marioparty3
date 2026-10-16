@@ -1209,7 +1209,30 @@ INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_801145D0_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_80114AA0_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_801150A0_msetup);
+s32 func_801150A0_msetup(s16 controller) {
+    u8 stickX = D_800CBB6E_main[controller];
+    u8 stickY = D_800D20A1_main[controller];
+    s32 quadrant = 0;
+    f32 angle;
+
+    if ((u8)(stickX + 30) <= 60 && (u8)(stickY + 30) <= 60) {
+        return -1;
+    }
+    angle = atan2df((s8)stickX, (s8)stickY);
+    if (angle < 0.0f) {
+        angle += 360.0f;
+    }
+    if ((angle >= 0.0f) & (angle < 90.0f)) {
+        quadrant = 0;
+    } else if ((angle >= 90.0f) & (angle < 180.0f)) {
+        quadrant = 1;
+    } else if ((angle >= 180.0f) & (angle < 270.0f)) {
+        quadrant = 2;
+    } else if ((angle >= 270.0f) & (angle < 360.0f)) {
+        quadrant = 3;
+    }
+    return quadrant;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_801152C4_msetup);
 

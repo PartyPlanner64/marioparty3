@@ -46,6 +46,8 @@ extern u8 D_8011AA41_msetup;
 extern s16 D_8011AA48_msetup;
 extern s16 D_8011A93A_msetup;
 extern s16 D_8011A944_msetup;
+extern s16 D_8011A946_msetup;
+extern s16 D_8011AA4C_msetup;
 extern f32 D_80119414_msetup;
 extern u32 D_8011941C_msetup;
 extern f32 D_8011A93C_msetup;
@@ -103,6 +105,7 @@ void func_80107F88_msetup(s16, s16, s16);
 void func_80105F7C_msetup(MsetupModelEntry *, s16);
 void func_80105DB4_msetup(omObjData *);
 void func_8010A7EC_msetup(s16);
+void func_8010ACB0_msetup(void);
 void func_8010A35C_msetup(s16 (**)(s16));
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801059A0_msetup);
@@ -146,7 +149,33 @@ createWipe:
     object->func = func_80105DB4_msetup;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80105DB4_msetup);
+void func_80105DB4_msetup(omObjData *object) {
+    u16 flags;
+
+    if (WipeStatGet() == 0) {
+        func_8005F524_main();
+        func_8010ACB0_msetup();
+        flags = 0x14;
+        switch (D_8011A944_msetup) {
+            case 0:
+            default:
+                omOvlReturnEx(1);
+                break;
+            case 2:
+                omOvlCallEx(D_8011AA4C_msetup, D_8011A946_msetup, flags);
+                break;
+            case 1:
+                omOvlGotoEx(D_8011AA4C_msetup, D_8011A946_msetup, flags);
+                break;
+            case 3:
+                omOvlGotoEx(D_8011AA4C_msetup, D_8011A946_msetup, 0x4090);
+                break;
+            case 4:
+                omOvlGotoEx(D_8011AA4C_msetup, D_8011A946_msetup, 0x92);
+                break;
+        }
+    }
+}
 
 void func_80105E90_msetup(MsetupModelEntry *entry) {
     s32 i;

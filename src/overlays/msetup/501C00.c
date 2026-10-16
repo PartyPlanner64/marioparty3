@@ -1,6 +1,8 @@
 #include "common.h"
 #include "game/vibrator.h"
 #include "overlays/msetup.h"
+#include "mallocblock.h"
+#include "gcc/string.h"
 
 typedef MsetupLinkedModel Array2D[2];
 
@@ -24,6 +26,7 @@ typedef struct MsetupCameraPreset {
     f32 fov;
 } MsetupCameraPreset;
 
+extern omObjData *D_80119430_msetup;
 extern u8 D_80119478_msetup[];
 extern s16 (*D_80119510_msetup[])(s16);
 extern s16 (*D_80119524_msetup[])(s16);
@@ -376,7 +379,87 @@ void func_801070FC_msetup(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80107428_msetup);
+omObjData *func_80107428_msetup(void) {
+    MsetupSceneryState *state;
+    omObjData *object;
+    Vec *pos;
+    s32 i;
+    s16 model;
+    s16 source;
+    f32 height;
+
+    D_8011AA4A_msetup = 0;
+    object = omAddObj(0x17D0, 16, 0, -1, func_801070FC_msetup);
+    D_80119430_msetup = object;
+    if (object == NULL) {
+        return NULL;
+    }
+    object->model[0] = -1;
+    state = HuMemAllocTag(sizeof(MsetupSceneryState), 0x7918);
+    memset(state, 0, sizeof(MsetupSceneryState));
+    object->data = state;
+    height = 0.0f;
+    source = -1;
+    for (i = 0; i < 3; i++) {
+        if (source < 0) {
+            model = func_8000B108_main(0x140000, 0x2B9);
+            source = model;
+        } else {
+            model = Hu3DModelLink(source);
+        }
+        object->model[i + 4] = model;
+        Hu3DModelPosSet(model, 0.0f, height, 0.0f);
+        Hu3DModelScaleSet(model, 1.2f, 2.0f, 1.2f);
+        state->upperHeights[i] = height;
+        height -= 4000.0f;
+    }
+    state->rotation = 0.0f;
+    height = state->rotation;
+    source = -1;
+    for (i = 0; i < 3; i++) {
+        if (source < 0) {
+            model = func_8000B108_main(0x140004, 0x299);
+            source = model;
+        } else {
+            model = Hu3DModelLink(source);
+        }
+        object->model[i + 1] = model;
+        Hu3DModelPosSet(model, 0.0f, height, 0.0f);
+        Hu3DModelScaleSet(model, 1.2f, 2.0f, 1.2f);
+        state->lowerHeights[i] = height;
+        height -= 4000.0f;
+    }
+    source = -1;
+    for (i = 0; i < 3; i++) {
+        if (source < 0) {
+            model = func_8000B108_main(0x140002, 0x299);
+            source = model;
+        } else {
+            model = Hu3DModelLink(source);
+        }
+        object->model[i + 7] = model;
+        pos = &state->innerPositions[i];
+        pos->y = 0.0f;
+        func_80106FC0_msetup(pos, 0x1FFF, 900.00006103515625f);
+        Hu3DModelPosSet(model, pos->x, pos->y, pos->z);
+    }
+    source = -1;
+    for (i = 0; i < 6; i++) {
+        if (source < 0) {
+            model = func_8000B108_main(0x140005, 0x299);
+            source = model;
+        } else {
+            model = Hu3DModelLink(source);
+        }
+        object->model[i + 10] = model;
+        pos = &state->outerPositions[i];
+        pos->y = 0.0f;
+        height = func_80106FC0_msetup(pos, 0x1FFF, 906.00006103515625f);
+        Hu3DModelPosSet(model, pos->x, pos->y, pos->z);
+        Hu3DModelRotSet(model, 0.0f, height - 180.0f, 0.0f);
+    }
+    return object;
+}
 
 s16 func_801077E0_msetup(s16 stateIndex) {
     D_8011A882_msetup.state = 1;

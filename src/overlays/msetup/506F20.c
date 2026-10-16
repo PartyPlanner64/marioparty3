@@ -27,8 +27,7 @@ typedef struct MsetupPairSpriteAnim {
 } MsetupPairSpriteAnim;
 
 typedef struct MsetupCursorState {
-    s16 x;
-    s16 y;
+    s16 pos[2];
     s16 (*positions)[2];
     s32 dataId;
     s16 selection;
@@ -634,7 +633,123 @@ s32 func_8010D684_msetup(s16 controller, s16 *previousButtons) {
     return oldButtons;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010D6D0_msetup);
+void func_8010D6D0_msetup(void) {
+    s16 sprite;
+    s16 slot;
+    s16 previousState;
+    s16 visible;
+    s16 startX;
+    s16 startY;
+    s16 deltaX;
+    s16 deltaY;
+    s16 previousSelection;
+    s16 targetX;
+    s16 targetY;
+    s16 x;
+    s16 y;
+    s16 alpha;
+    s16 alphaDelta;
+    s16 frames;
+    f32 weight;
+    MsetupCursorState *cursor;
+    s16 *position;
+
+    cursor = HuPrcCurrentGet()->user_data;
+    position = cursor->pos;
+    sprite = func_8000B838_main(cursor->dataId);
+    slot = InitEspriteSlot(sprite, cursor->priority, 1);
+    func_8000BCC8_main(slot, 1);
+    x = targetX = cursor->pos[0];
+    y = targetY = cursor->pos[1];
+    func_8000BBD4_main(slot, x, y);
+    func_8000BB94_main(slot);
+    visible = 0;
+    alpha = 0;
+    alphaDelta = 0;
+    previousSelection = cursor->selection;
+    frames = 0;
+    previousState = cursor->state;
+    startX = x;
+    startY = y;
+    deltaX = deltaY = 0;
+    while (1) {
+        if (previousState != cursor->state) {
+            switch (cursor->state) {
+                case 0:
+                    break;
+                case 1:
+                    alphaDelta = 64;
+                    if (visible == 0) {
+                        alpha = 0;
+                        func_8000BBFC_main(slot, 0);
+                        func_8000BB54_main(slot);
+                        visible = 1;
+                    }
+                    break;
+                case 2:
+                    if (visible != 0) {
+                        alphaDelta = -64;
+                    }
+                    break;
+                case -1:
+                    func_8000C184_main(slot);
+                    HuSprKill(sprite);
+                    cursor->state = 100;
+                    while (1) {
+                        HuPrcVSleep();
+                    }
+                    break;
+            }
+            previousState = cursor->state;
+        }
+        if (previousSelection != cursor->selection) {
+            s16 selection = cursor->selection;
+
+            previousSelection = selection;
+            if (cursor->positions != NULL) {
+                position[0] = cursor->positions[selection][0];
+                position[1] = cursor->positions[selection][1];
+            }
+        }
+        if (targetX != position[0] || targetY != position[1]) {
+            targetX = position[0];
+            targetY = position[1];
+            frames = cursor->flags;
+            if (frames != 0) {
+                startX = x;
+                startY = y;
+                deltaX = targetX - x;
+                deltaY = targetY - y;
+            }
+        }
+        if (alphaDelta != 0) {
+            alpha += alphaDelta;
+            if (alpha >= 256) {
+                alpha = 255;
+                alphaDelta = 0;
+            } else if (alpha < 0) {
+                alpha = 0;
+                alphaDelta = 0;
+                func_8000BB94_main(slot);
+                visible = 0;
+            }
+            func_8000BBFC_main(slot, alpha);
+        }
+        if ((x != targetX) | (y != targetY)) {
+            if (frames == 0) {
+                x = targetX;
+                y = targetY;
+            } else {
+                frames--;
+                weight = sindf((90.0f / cursor->flags) * (cursor->flags - frames));
+                x = startX + deltaX * weight;
+                y = startY + deltaY * weight;
+            }
+            func_8000BBD4_main(slot, x, y);
+        }
+        HuPrcVSleep();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010DAC4_msetup);
 

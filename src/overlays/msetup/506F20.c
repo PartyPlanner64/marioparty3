@@ -212,7 +212,26 @@ void func_8010B1F4_msetup(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010B388_msetup);
+s16 func_8010B388_msetup(s16 model, s16 *animSlot, s32 dataId, char *name) {
+    void *data;
+    s32 anim;
+    s16 length;
+
+    if (animSlot[0] >= 0) {
+        func_80033354_main(animSlot[0]);
+        func_80033354_main(animSlot[1]);
+    }
+    data = DataRead(dataId);
+    anim = HmfAnimCreate(HmfModelData[model].hmf, data, 0, name);
+    animSlot[1] = anim;
+    func_80032FC0_main(anim, 1, 1);
+    DataClose(data);
+    length = D_800D1714_main[(s16)anim].animIdx;
+    animSlot[2] = length;
+    animSlot[0] = func_80032694_main(HmfModelData[model].hmf, anim, 0, name);
+    func_8001C448_main(model);
+    return length;
+}
 
 void func_8010B4B8_msetup(s16 model, s16 *animSlot, s16 anim) {
     HmfAnim *entry;

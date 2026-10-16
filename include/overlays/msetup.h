@@ -28,7 +28,9 @@ typedef struct MsetupLinkedModel {
     Vec pos;
     Vec rot;
     s16 model;
-    char unk1A[6];
+    s16 unk1A;
+    s16 targetPosition;
+    s16 currentPosition;
     u16 flags;
     s16 unk22;
 } MsetupLinkedModel;

@@ -82,6 +82,9 @@ extern UnkMsetupEntry D_8011A9F2_msetup[];
 extern f32 D_80119AF4_msetup;
 extern f32 D_80119AF8_msetup;
 extern f32 D_80119AFC_msetup;
+extern Vec D_8011A028_msetup[];
+extern s16 D_8011A058_msetup[4][4];
+extern s16 D_8011A078_msetup[4][4];
 
 s16 func_80011460_main(u8 *);
 void func_80088800_main(HuMtx4F, f32, f32, f32);
@@ -750,7 +753,56 @@ void func_8010F33C_msetup(s16 model, Vec *worldPos, HuMtx4F nodeTransform) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010F43C_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010F4E0_msetup);
+void func_8010F4E0_msetup(MsetupLinkedModel *models, s16 count, s16 layout) {
+    Vec pos;
+    s16 *positions[4];
+    s32 i;
+    s32 frame;
+    f32 progress;
+    Vec *start;
+
+    if (count == 3) {
+        for (i = 0; i < 4; i++) {
+            positions[i] = D_8011A078_msetup[i];
+        }
+    } else {
+        for (i = 0; i < 4; i++) {
+            positions[i] = D_8011A058_msetup[i];
+        }
+    }
+    for (i = 0; i < count; i++) {
+        models[i].targetPosition = positions[layout][i];
+    }
+    for (frame = 0; frame < 15; frame++) {
+        progress = sindf(frame * (90.0f / 14.0f));
+        for (i = 0; i < count; i++) {
+            start = &D_8011A028_msetup[models[i].currentPosition];
+            pos = D_8011A028_msetup[models[i].targetPosition];
+            pos.x -= start->x;
+            pos.y -= start->y;
+            pos.z -= start->z;
+            pos.x *= progress;
+            pos.y *= progress;
+            pos.z *= progress;
+            pos.x += start->x;
+            pos.y += start->y;
+            pos.z += start->z;
+            Hu3DModelPosSet(models[i].model, pos.x, pos.y, pos.z);
+            if (models[i].targetPosition == 0) {
+                Hu3DModelRotSet(models[i].model, 0, sindf(frame * (90.0f / 14.0f)) * 180.0f, 0);
+            } else if (models[i].currentPosition == 0) {
+                Hu3DModelRotSet(models[i].model, 0, 180.0f - sindf(frame * (90.0f / 14.0f)) * 180.0f, 0);
+            }
+        }
+        HuPrcVSleep();
+    }
+    for (i = 0; i < count; i++) {
+        start = &D_8011A028_msetup[models[i].targetPosition];
+        Hu3DModelPosSet(models[i].model, start->x, start->y, start->z);
+        models[i].pos = *start;
+        models[i].currentPosition = models[i].targetPosition;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010F87C_msetup);
 

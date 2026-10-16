@@ -55,6 +55,7 @@ typedef struct MsetupBoardAnim {
     /* 0x3A */ s16 count;
 } MsetupBoardAnim;
 
+extern MsetupModelEntry D_801198C4_msetup[];
 extern s32 D_80119E58_msetup[];
 extern s32 D_80119E64_msetup[];
 extern s32 D_80119E70_msetup[];
@@ -132,6 +133,9 @@ u32 func_80106208_msetup(u32);
 void func_8010ACC0_msetup(s16, s16);
 s16 func_8010E00C_msetup(omObjData *, s16);
 void func_8010B4B8_msetup(s16, s16 *, s16);
+void func_80106030_msetup(MsetupModelEntry *, MsetupModelHandle *, s32);
+void func_8010B5D0_msetup(void);
+s16 func_8010B388_msetup(s16, s16 *, s32, char *);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010ACC0_msetup);
 
@@ -166,7 +170,47 @@ void func_8010AF40_msetup(MsetupModelHandle *models, s16 *animSlot, s16 *anim) {
     func_8001C814_main(model, 2, 2);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010B1F4_msetup);
+void func_8010B1F4_msetup(void) {
+    MsetupModelHandle models[4];
+    s16 animSlot[3];
+    s16 anim;
+    s16 model;
+    s16 linkedModel;
+    s16 state;
+    s16 *requestedState;
+
+    requestedState = HuPrcCurrentGet()->user_data;
+    omAddPrcObj(func_8010B5D0_msetup, 0x3F00, 0x800, 0);
+    func_80106030_msetup(D_801198C4_msetup, models, 4);
+    model = models[0].model;
+    linkedModel = models[3].model;
+    Hu3DModelScaleSet(linkedModel, 0.6f, 1.0f, 0.6f);
+    func_8001F304_main(model, models[1].motion);
+    func_8001C814_main(model, 2, 2);
+    animSlot[0] = -1;
+    anim = func_8010B388_msetup(model, animSlot, 0xA007E, "c204n_0_DEF");
+    func_8010B4B8_msetup(model, animSlot, -1);
+    state = 0;
+    while (1) {
+        if (state != *requestedState) {
+            state = *requestedState;
+        }
+        switch (state) {
+            case 0:
+                break;
+            case 1:
+                func_8010AF40_msetup(models, animSlot, &anim);
+                *requestedState = 0;
+                break;
+            case 2:
+                func_8001C258_main(model, 4, 4);
+                func_8001C258_main(linkedModel, 4, 4);
+                *requestedState = 0;
+                break;
+        }
+        HuPrcVSleep();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010B388_msetup);
 

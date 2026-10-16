@@ -9,16 +9,6 @@ typedef struct UnkStarLift {
     s16 unk4;
 } UnkStarLift;
 
-typedef struct MsetupModelEntry {
-    s32 dataId;
-    s32 flags;
-    s16 unk08;
-    s16 motion;
-    u32 positionMode;
-    Vec pos;
-    Vec rot;
-} MsetupModelEntry;
-
 typedef struct MsetupCameraPreset {
     Vec rot;
     Vec center;

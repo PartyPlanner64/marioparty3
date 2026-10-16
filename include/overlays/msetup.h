@@ -35,6 +35,16 @@ typedef struct MsetupLinkedModel {
     s16 unk22;
 } MsetupLinkedModel;
 
+typedef struct MsetupModelEntry {
+    s32 dataId;
+    s32 flags;
+    s16 unk08;
+    s16 motion;
+    u32 positionMode;
+    Vec pos;
+    Vec rot;
+} MsetupModelEntry;
+
 typedef struct MsetupModelHandle {
     s16 model;
     s16 motion;

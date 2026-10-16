@@ -959,7 +959,9 @@ void func_8010AC78_msetup(void) {
     func_8010A7EC_msetup(0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_8010AC94_msetup);
+void func_8010AC94_msetup(void) {
+    func_8010A7EC_msetup(1);
+}
 
 void func_8010ACB0_msetup(void) {
 }

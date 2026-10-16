@@ -8,6 +8,11 @@
 
 typedef MsetupLinkedModel Array2D[2];
 
+typedef struct MsetupModelTarget {
+    Vec pos;
+    f32 rotation;
+} MsetupModelTarget;
+
 typedef struct MsetupSpriteState {
     s16 state;
     s16 unk02;
@@ -676,7 +681,76 @@ void func_8010E4D8_msetup(MsetupLinkedModel *entry, s32 count) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010E52C_msetup);
+void func_8010E52C_msetup(MsetupLinkedModel *models, MsetupModelTarget *targets, s16 count, s16 frames,
+                          s16 *scaleModels, s16 scaleCount, f32 startScale, f32 endScale) {
+    Vec pos;
+    MsetupLinkedModel *entry;
+    Vec *rot;
+    MsetupModelTarget *target;
+    s16 model;
+    s32 i;
+    s32 frame;
+    s32 j;
+    f32 progress;
+    f32 rotation;
+    f32 yRot;
+    f32 scaleRange;
+
+    scaleRange = endScale - startScale;
+    for (frame = 0; frame < frames; frame++) {
+        progress = (f32)frame / frames;
+        for (i = 0; i < count; i++) {
+            if (models[i].flags & 1) {
+                continue;
+            }
+            model = models[i].model;
+            entry = &models[i];
+            target = &targets[i];
+            pos.x = (target->pos.x - entry->pos.x) * progress;
+            pos.y = (target->pos.y - entry->pos.y) * progress;
+            pos.z = (target->pos.z - entry->pos.z) * progress;
+            pos.x += entry->pos.x;
+            pos.y += entry->pos.y;
+            pos.z += entry->pos.z;
+            rot = &entry->rot;
+            if (entry->rot.y > 180.0f) {
+                rotation = entry->rot.y - 360.0f;
+                yRot = (targets[i].rotation - rotation) * progress + rotation;
+            } else {
+                yRot = (targets[i].rotation - rot->y) * progress + rot->y;
+            }
+            Hu3DModelRotSet(model, rot->x, yRot, rot->z);
+            Hu3DModelPosSet(model, pos.x, pos.y, pos.z);
+        }
+        rotation = startScale + progress * scaleRange;
+        if (scaleModels != NULL) {
+            for (j = 0; j < scaleCount; j++) {
+                if (scaleModels[j] >= 0) {
+                    Hu3DModelScaleSet(scaleModels[j], rotation, rotation, rotation);
+                }
+            }
+        }
+        HuPrcVSleep();
+    }
+    for (i = 0; i < count; i++) {
+        if (models[i].flags & 1) {
+            continue;
+        }
+        model = models[i].model;
+        entry = &models[i];
+        entry->pos = targets[i].pos;
+        entry->rot.y = targets[i].rotation;
+        Hu3DModelPosSet(model, entry->pos.x, entry->pos.y, entry->pos.z);
+        Hu3DModelRotSet(model, entry->rot.x, entry->rot.y, entry->rot.z);
+    }
+    if (scaleModels != NULL) {
+        for (j = 0; j < scaleCount; j++) {
+            if (scaleModels[j] >= 0) {
+                Hu3DModelScaleSet(scaleModels[j], endScale, endScale, endScale);
+            }
+        }
+    }
+}
 
 void func_8010E8C8_msetup(Array2D *models, s16 count, s16 frames, f32 rotation, f32 height, f32 scale, f32 endScale,
                           s16 animateBoard) {

@@ -123,6 +123,7 @@ s32 _CheckFlag(s32);            /* extern */
 s16 func_80055810_main(void *); /* extern */
 s32 func_801138F8_msetup(MsetupMenuState *, s32, s32 *, s32);
 s32 func_80113ED4_msetup(UnkStarLift *arg0);
+u32 func_80106208_msetup(u32);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010ACC0_msetup);
 
@@ -308,7 +309,36 @@ void func_8010CC70_msetup(s16 model, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010CD14_msetup);
+s32 func_8010CD14_msetup(s16 model, f32 x, f32 y, f32 z) {
+    HmfData *hmf = HmfModelData[model].hmf;
+    HmfModelData_UnkBC_Struct *data = HmfModelData[model].unkBC;
+    HmfModelData_UnkBC_Unk58_Struct *entry = data->unk58;
+    s16 i;
+    f32 angle;
+
+    data->unk1C.f = x;
+    data->unk20.f = y;
+    data->unk24.f = z;
+    for (i = 0; i < hmf->unk1A; i++, entry++) {
+        if (entry->unk04 >= 180.0f) {
+            entry->unk18 = func_80106208_msetup(360);
+            entry->unk20 = data->unk10.f / 10.0f;
+            angle = func_80106208_msetup(150);
+            angle -= 75.0f;
+            if (angle < 0.0f) {
+                angle += 360.0f;
+            }
+            entry->unk28 = sindf(angle);
+            entry->unk2C = cosdf(angle);
+            entry->unk08 = 0.0f;
+            entry->unk04 = 0.0f;
+            return 1;
+        }
+    }
+    return 0;
+}
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/msetup/506F20", D_8011A688_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010CE8C_msetup);
 

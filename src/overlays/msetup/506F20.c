@@ -93,6 +93,8 @@ extern s16 D_8011A058_msetup[4][4];
 extern s16 D_8011A078_msetup[4][4];
 
 s16 func_80011460_main(u8 *);
+void func_80013390_main(s16, s32, s32, void (*)(s16));
+void func_8010CE8C_msetup(s16);
 void func_80088800_main(HuMtx4F, f32, f32, f32);
 void func_80017D24_main(HuMtx4F, f32, f32, f32);
 void func_80017CD0_main(HuMtx4F, f32, f32, f32);
@@ -387,7 +389,46 @@ s16 func_8010BEB0_msetup(s16 arg0, s16 arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010BEF8_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010CAF0_msetup);
+s16 func_8010CAF0_msetup(s32 dataId, s32 flags) {
+    s16 model;
+    HmfData *hmf;
+    HmfModelData_UnkBC_Struct *data;
+    HmfModelData_UnkBC_Unk58_Struct *entry;
+    f32 radius;
+    f32 step;
+    f32 angleStep;
+    s16 i;
+
+    model = func_8000B108_main(dataId, flags);
+    Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
+    func_8001C2FC_main(model, 0x20000, 0x20000);
+    func_8001C448_main(model);
+    func_8001C954_main(model);
+    func_8001C514_main(model);
+    func_80013390_main(model, -1, 0, func_8010CE8C_msetup);
+    hmf = HmfModelData[model].hmf;
+    data = HmfModelData[model].unkBC;
+    entry = data->unk58;
+    data->unk08.f = 30.0f;
+    data->unk0C.f = 720.0f;
+    data->unk10.f = 80.0f;
+    data->unk14 = 5.0f;
+    radius = data->unk10.f / 10.0f;
+    step = (data->unk10.f - radius) / data->unk08.f;
+    angleStep = data->unk0C.f / data->unk08.f;
+    for (i = 0; i < hmf->unk1A; i++, entry++) {
+        entry->unk0C = entry->unk10 = entry->unk14 = 0.0f;
+        entry->unk18 = 0.0f;
+        entry->unk20 = radius;
+        entry->unk1C = step;
+        entry->unk24 = angleStep;
+        entry->unk28 = 0.0f;
+        entry->unk2C = 0.0f;
+        entry->unk08 = 0.0f;
+        entry->unk04 = 180.0f;
+    }
+    return model;
+}
 
 void func_8010CC70_msetup(s16 model, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
     HmfData *hmf = HmfModelData[model].hmf;

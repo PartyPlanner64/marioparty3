@@ -26,6 +26,8 @@ typedef struct MsetupCameraPreset {
     f32 fov;
 } MsetupCameraPreset;
 
+extern s16 D_801198C0_msetup;
+extern void (*D_8011955C_msetup[])(void);
 extern omObjData *D_80119430_msetup;
 extern s16 (*D_80119434_msetup[])(s16);
 extern s16 (*D_80119458_msetup[])(s16);
@@ -116,12 +118,88 @@ void func_80105DB4_msetup(omObjData *);
 void func_8010A7EC_msetup(s16);
 void func_8010ACB0_msetup(void);
 void func_8010A35C_msetup(s16 (**)(s16));
+void func_801059A0_msetup(void);
+void func_80105C4C_msetup(omObjData *);
+void func_80106320_msetup(void);
+void func_80106DF8_msetup(void);
 void func_80117820_msetup(void);
 void func_8010B1F4_msetup(void);
 Process *func_8010F2BC_msetup(void);
 void func_801068F4_msetup(MsetupCameraPreset *, f32, void (*)(s16, s16, s16));
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801059A0_msetup);
+void func_801059A0_msetup(void) {
+    Hu3DCamInit(1);
+    Hu3DAnimInit(1);
+    func_800142A0_main(25);
+    omInitObjMan(51, 25);
+    func_8005A6B0_main();
+    func_8004A208_main();
+    D_800CD280_main = 1;
+    D_8011A940_msetup = 80.0f;
+    D_8011A93C_msetup = 6000.0f;
+    D_80119414_msetup = 58.0f;
+    Hu3DCamSetPerspective(0, D_80119414_msetup, D_8011A940_msetup, D_8011A93C_msetup);
+    D_8011A994_msetup.x = 0;
+    D_8011A994_msetup.y = 0;
+    D_8011A994_msetup.z = 0;
+    CRot.x = 0;
+    CRot.y = 0;
+    CRot.z = 0;
+    D_801198C0_msetup = -1;
+    omAddObj(10000, 0, 0, -1, func_80105C4C_msetup);
+    HmfLightMaxSet(3);
+    HmfLightColorSet(2, 0, 0, 0);
+    HmfLightDirSet(2, 0.0f, 0.0f, 100.0f);
+    HmfLightColorSet(3, 240, 240, 240);
+    HmfLightDirSet(3, 0.0f, 100.0f, 0.0f);
+    HmfLightColorSet(1, 255, 255, 255);
+    func_8001F38C_main(16, 16, 240);
+    omPrcSetStatBit(omAddPrcObj(func_80106320_msetup, 0x1100, 0x400, 0), 0xA0);
+    D_8011A944_msetup = 0;
+    func_80106DF8_msetup();
+    D_8011A938_msetup = -1;
+    switch (omovlevtno) {
+        case 0:
+            D_8011A938_msetup = 0;
+            break;
+        case 1:
+            D_8011A938_msetup = 1;
+            break;
+        case 2:
+            D_8011A938_msetup = 2;
+            break;
+        case 3:
+            D_8011A938_msetup = 3;
+            break;
+        case 4:
+            D_8011A938_msetup = 4;
+            break;
+        case 5:
+            D_8011A938_msetup = 5;
+            break;
+        case 6:
+            D_8011A938_msetup = 6;
+            break;
+        case 7:
+            D_8011A938_msetup = 7;
+            break;
+        case 8:
+            D_8011A938_msetup = 8;
+            break;
+    }
+    if (D_8011A938_msetup < 0) {
+        D_80119410_msetup = 1;
+    } else {
+        omAddPrcObj(D_8011955C_msetup[D_8011A938_msetup], 0x3F00, 0x1000, 0);
+    }
+    if (D_8011A938_msetup == 4) {
+        WipeColorSet(255, 255, 255);
+    } else {
+        WipeColorSet(0, 0, 0);
+    }
+    D_8011AA48_msetup = 11;
+    D_8011A93A_msetup = 20;
+}
 
 void func_80105C4C_msetup(omObjData *object) {
     s32 i;

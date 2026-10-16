@@ -84,6 +84,10 @@ extern f32 D_80119AF8_msetup;
 extern f32 D_80119AFC_msetup;
 
 s16 func_80011460_main(u8 *);
+void func_80088800_main(HuMtx4F, f32, f32, f32);
+void func_80017D24_main(HuMtx4F, f32, f32, f32);
+void func_80017CD0_main(HuMtx4F, f32, f32, f32);
+void func_80018044_main(HuMtx4F, HuMtx4F, HuMtx4F);
 f32 func_80054B1C_main(s16, s16, s16, f32, f32, f32);
 void func_8000BBFC_main(u16, s16);
 void func_8000BC48_main(u16, s32);
@@ -730,7 +734,19 @@ void func_8010F320_msetup(Process *process, s16 index, s16 spriteSlot, s16 value
     data->values[index] = value;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010F33C_msetup);
+void func_8010F33C_msetup(s16 model, Vec *worldPos, HuMtx4F nodeTransform) {
+    HuMtx4F transform;
+    HuMtx4F combined;
+    HmfModel *entry = &HmfModelData[model];
+
+    func_80088800_main(transform, entry->pos.x, entry->pos.y, entry->pos.z);
+    func_80017D24_main(transform, entry->rot.x, entry->rot.y, entry->rot.z);
+    func_80017CD0_main(transform, entry->scale.x, entry->scale.y, entry->scale.z);
+    func_80018044_main(nodeTransform, transform, combined);
+    worldPos->x = combined[0][0] + combined[1][0] + combined[2][0] + combined[3][0];
+    worldPos->y = combined[0][1] + combined[1][1] + combined[2][1] + combined[3][1];
+    worldPos->z = combined[0][2] + combined[1][2] + combined[2][2] + combined[3][2];
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010F43C_msetup);
 

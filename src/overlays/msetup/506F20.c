@@ -136,9 +136,43 @@ s16 func_8010E00C_msetup(omObjData *, s16);
 void func_8010B4B8_msetup(s16, s16 *, s16);
 void func_80106030_msetup(MsetupModelEntry *, MsetupModelHandle *, s32);
 void func_8010B5D0_msetup(void);
+void func_8010E044_msetup(omObjData *, s16, s16, f32, f32, f32);
 s16 func_8010B388_msetup(s16, s16 *, s32, char *);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010ACC0_msetup);
+void func_8010ACC0_msetup(s16 model, s16 linkedModel) {
+    f32 angle = 330.0f;
+    f32 angleStep = -4.0f;
+    f32 phase = 0.0f;
+    f32 phaseStep = 90.0f / 16.0f;
+    f32 y = 260.0f;
+    f32 yStep = -260.0f / 14.0f;
+    f32 x = -86.0f;
+    f32 z = 617.0f;
+    f32 temp;
+    s32 i;
+
+    for (i = 0; i < 15; i++) {
+        Hu3DModelPosSet(model, x, y, z);
+        Hu3DModelPosSet(linkedModel, x, 0.0f, z);
+        temp = y + 100.0f;
+        func_8010E044_msetup(D_80119AF0_msetup, 0, 100, x, temp, z);
+        func_8010E044_msetup(D_80119AF0_msetup, 1, 100, x, temp, z);
+        temp = (1.0 - y * 0.009) * 0.6;
+        if (temp < 0.0f) {
+            temp = 0.0f;
+        }
+        Hu3DModelScaleSet(linkedModel, temp, 1.0f, temp);
+        angle += angleStep;
+        y += yStep;
+        phase += phaseStep;
+        temp = 500.0f - sindf(phase) * 500.0f;
+        x = temp * sindf(angle) + 194.0f;
+        z = temp * cosdf(angle) + 197.0f;
+        HuPrcVSleep();
+    }
+    Hu3DModelPosSet(model, 194.0f, 0.0f, 197.0f);
+    Hu3DModelPosSet(linkedModel, 194.0f, 0.0f, 197.0f);
+}
 
 void func_8010AF40_msetup(MsetupModelHandle *models, s16 *animSlot, s16 *anim) {
     s16 model;

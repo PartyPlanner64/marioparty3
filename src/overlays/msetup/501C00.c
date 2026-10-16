@@ -9,6 +9,14 @@ typedef struct UnkStarLift {
     s16 unk4;
 } UnkStarLift;
 
+typedef struct MsetupSceneryState {
+    f32 upperHeights[3];
+    f32 lowerHeights[3];
+    f32 rotation;
+    Vec innerPositions[3];
+    Vec outerPositions[6];
+} MsetupSceneryState;
+
 typedef struct MsetupCameraPreset {
     Vec rot;
     Vec center;
@@ -315,7 +323,58 @@ f32 func_80106FC0_msetup(Vec *pos, u32 mask, f32 radius) {
     return angle;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801070FC_msetup);
+void func_801070FC_msetup(omObjData *object) {
+    MsetupSceneryState *state;
+    Vec *pos;
+    s32 i;
+    u16 model;
+    f32 height;
+
+    state = object->data;
+    for (i = 0; i < 3; i++) {
+        model = object->model[i + 4];
+        height = state->upperHeights[i];
+        height += 100.0f;
+        if (height >= 4000.0f) {
+            height -= 12000.0f;
+        }
+        Hu3DModelPosSet(model, 0.0f, height, 0.0f);
+        Hu3DModelRotSet(model, 0.0f, state->rotation, 0.0f);
+        state->upperHeights[i] = height;
+    }
+    state->rotation += 2.0f;
+    for (i = 0; i < 3; i++) {
+        model = object->model[i + 1];
+        height = state->lowerHeights[i];
+        height += 60.0f;
+        if (height >= 4000.0f) {
+            height -= 12000.0f;
+        }
+        Hu3DModelPosSet(model, 0.0f, height, 0.0f);
+        state->lowerHeights[i] = height;
+    }
+    for (i = 0; i < 3; i++) {
+        model = object->model[i + 7];
+        pos = &state->innerPositions[i];
+        pos->y += 40.0f;
+        if (pos->y > 1000.0f) {
+            pos->y -= 12000.0f;
+            func_80106FC0_msetup(pos, 0xFFF, 900.00006103515625f);
+        }
+        Hu3DModelPosSet(model, pos->x, pos->y, pos->z);
+    }
+    for (i = 0; i < 6; i++) {
+        model = object->model[i + 10];
+        pos = &state->outerPositions[i];
+        pos->y += 75.0f;
+        if (pos->y > 1000.0f) {
+            pos->y -= 12000.0f;
+            height = func_80106FC0_msetup(pos, 0xFFF, 906.00006103515625f);
+            Hu3DModelRotSet(model, 0.0f, height - 180.0f, 0.0f);
+        }
+        Hu3DModelPosSet(model, pos->x, pos->y, pos->z);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80107428_msetup);
 

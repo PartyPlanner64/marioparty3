@@ -129,10 +129,42 @@ s16 func_80055810_main(void *); /* extern */
 s32 func_801138F8_msetup(MsetupMenuState *, s32, s32 *, s32);
 s32 func_80113ED4_msetup(UnkStarLift *arg0);
 u32 func_80106208_msetup(u32);
+void func_8010ACC0_msetup(s16, s16);
+s16 func_8010E00C_msetup(omObjData *, s16);
+void func_8010B4B8_msetup(s16, s16 *, s16);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010ACC0_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010AF40_msetup);
+void func_8010AF40_msetup(MsetupModelHandle *models, s16 *animSlot, s16 *anim) {
+    s16 model;
+    s16 linkedModel;
+
+    model = models[0].model;
+    linkedModel = models[3].model;
+    D_80119AF0_msetup->work[0] = 1;
+    D_80119AF0_msetup->work[1] = 1;
+    func_8010E00C_msetup(D_80119AF0_msetup, 2);
+    func_8001C258_main(model, 4, 0);
+    func_8001C258_main(linkedModel, 4, 0);
+    func_8010ACC0_msetup(model, linkedModel);
+    D_80119AF0_msetup->work[0] = 0;
+    HuAudFXPlay(0x135);
+    func_8001C814_main(model, 2, 0);
+    while (HmfModelData[model].unk40 < 40.0) {
+        HuPrcVSleep();
+    }
+    func_8001C5B4_main(model, models[2].model);
+    while (HmfModelData[model].unk40 < 45.0) {
+        HuPrcVSleep();
+    }
+    HuAudFXPlay(0x2A8);
+    func_8010B4B8_msetup(model, animSlot, *anim);
+    while (HmfModelData[model].unk40 < 80.0) {
+        HuPrcVSleep();
+    }
+    func_8001F304_main(model, models[0].motion);
+    func_8001C814_main(model, 2, 2);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010B1F4_msetup);
 

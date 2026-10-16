@@ -35,6 +35,11 @@ typedef struct MsetupLinkedModel {
     s16 unk22;
 } MsetupLinkedModel;
 
+typedef struct MsetupModelHandle {
+    s16 model;
+    s16 motion;
+} MsetupModelHandle;
+
 typedef struct MsetupMenuState {
     s16 state;
     s16 unk02;

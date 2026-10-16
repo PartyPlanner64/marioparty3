@@ -19,11 +19,6 @@ typedef struct MsetupModelEntry {
     Vec rot;
 } MsetupModelEntry;
 
-typedef struct MsetupModelHandle {
-    s16 model;
-    s16 motion;
-} MsetupModelHandle;
-
 typedef struct MsetupCameraPreset {
     Vec rot;
     Vec center;

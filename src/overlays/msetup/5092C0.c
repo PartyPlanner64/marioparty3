@@ -10,6 +10,20 @@ typedef struct MsetupSpriteState {
     s16 values[8];
 } MsetupSpriteState;
 
+typedef struct MsetupModelSpriteAnim {
+    f32 scale[2];
+    f32 speed[2];
+    /* The eight cleanup flags share storage with the sprite fade parameters. */
+    union {
+        s16 destroy[8];
+        struct {
+            s16 reserved[4];
+            s16 delta[1];
+            s16 alpha[1];
+        } sprite;
+    } fade;
+} MsetupModelSpriteAnim;
+
 typedef struct MsetupPairSpriteAnim {
     f32 angle;
     f32 speed;
@@ -23,6 +37,8 @@ typedef struct MsetupBoardAnim {
 } MsetupBoardAnim;
 
 extern Vec D_80119B20_msetup;
+extern f32 D_80119B0C_msetup[];
+extern s16 D_8011A938_msetup;
 extern HmfData_Unk84_Entry2 *D_800D1FCC_main;
 extern omObjData *D_80119AF0_msetup;
 extern s16 D_8011A8B0_msetup[];
@@ -30,6 +46,7 @@ extern f32 D_80119AF4_msetup;
 extern f32 D_80119AF8_msetup;
 extern f32 D_80119AFC_msetup;
 
+void func_8000BE5C_main(u16, f32, f32);
 s16 func_80011460_main(u8 *);
 void func_80088800_main(HuMtx4F, f32, f32, f32);
 void func_80017D24_main(HuMtx4F, f32, f32, f32);
@@ -732,7 +749,216 @@ void func_8010E8C8_msetup(Array2D *models, s16 count, s16 frames, f32 rotation, 
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/5092C0", func_8010EB94_msetup);
+void func_8010EB94_msetup(void) {
+    MsetupModelSpriteAnim anim;
+    s16 previousState;
+    s16 index;
+    s16 handle;
+    s32 i;
+    MsetupSpriteState *data;
+    s16 *slots;
+    s16 *values;
+
+    data = HuPrcCurrentGet()->user_data;
+    slots = data->spriteSlots;
+    values = data->values;
+    for (i = 0; i < 8; i++) {
+        slots[i] = -1;
+        values[i] = -1;
+        anim.fade.destroy[i] = 0;
+    }
+    for (i = 0; i < 2; i++) {
+        anim.speed[i] = 0;
+    }
+    for (i = 0; i < 1; i++) {
+        anim.fade.sprite.delta[i] = 0;
+    }
+    data->state = 0;
+    previousState = 0;
+    while (1) {
+        if (previousState != data->state) {
+            switch (data->state) {
+                case 0:
+                    break;
+                case 1:
+                    if (slots[0] < 0 || slots[2] < 0) {
+                        data->state = 0;
+                        break;
+                    }
+                    anim.scale[0] = 0;
+                    anim.speed[0] = 1.0f / 7.0f;
+                    handle = slots[0];
+                    func_8001C258_main(handle, 4, 0);
+                    Hu3DModelPosSet(handle, 260.0f, 345.0f, -40.0f);
+                    Hu3DModelRotSet(handle, 0, 180.0f, 0);
+                    anim.fade.sprite.alpha[0] = 0;
+                    anim.fade.sprite.delta[0] = 25;
+                    handle = slots[2];
+                    switch (D_8011A938_msetup) {
+                        case 0:
+                            func_8000BE5C_main((u16)handle, 0.8f, 0.8f);
+                            break;
+                        case 1:
+                            func_8000BE5C_main((u16)handle, 0.8f, 0.8f);
+                            break;
+                    }
+                    func_8000BBD4_main((u16)handle, 263, 48);
+                    func_8000BB54_main((u16)handle);
+                    anim.fade.destroy[0] = 0;
+                    anim.fade.destroy[2] = 0;
+                    data->state = 0;
+                    break;
+                case 3:
+                    anim.fade.destroy[0] = 1;
+                    anim.fade.destroy[2] = 1;
+                case 2:
+                    if (slots[0] < 0 || slots[2] < 0) {
+                        data->state = 0;
+                        break;
+                    }
+                    anim.speed[0] = -1.0f / 7.0f;
+                    anim.fade.sprite.alpha[0] = 255;
+                    anim.fade.sprite.delta[0] = -36;
+                    data->state = 0;
+                    break;
+                case 4:
+                    if (slots[1] < 0) {
+                        data->state = 0;
+                        break;
+                    }
+                    anim.scale[1] = 0;
+                    anim.speed[1] = 1.0f / 7.0f;
+                    handle = slots[1];
+                    func_8001C258_main(handle, 4, 0);
+                    Hu3DModelPosSet(handle, 260.0f, 175.0f, -80.0f);
+                    Hu3DModelRotSet(handle, 0, 180.0f, 0);
+                    anim.fade.destroy[1] = 0;
+                    data->state = 0;
+                    break;
+                case 6:
+                    anim.fade.destroy[1] = 1;
+                case 5:
+                    if (slots[1] < 0) {
+                        data->state = 0;
+                        break;
+                    }
+                    anim.speed[1] = -1.0f / 7.0f;
+                    data->state = 0;
+                    break;
+                case 9:
+                    for (i = 0; i < 8; i++) {
+                        if (slots[i] >= 0) {
+                            anim.fade.destroy[i] = 1;
+                        }
+                    }
+                case 8:
+                    handle = 0;
+                    for (i = 0; i < 2; i++, handle++) {
+                        if (slots[handle] >= 0) {
+                            anim.speed[i] = -1.0f / 7.0f;
+                        }
+                    }
+                    handle = 2;
+                    for (i = 0; i < 1; i++, handle++) {
+                        if (slots[handle] >= 0) {
+                            anim.fade.sprite.delta[i] = -36;
+                        }
+                    }
+                    break;
+                case 255:
+                    handle = 0;
+                    for (i = 0; i < 2; i++, handle++) {
+                        if (values[handle] >= 0) {
+                            func_80033430_main(values[handle]);
+                        }
+                        if (slots[handle] >= 0) {
+                            func_8001ACDC_main(slots[handle]);
+                        }
+                    }
+                    handle = 2;
+                    for (i = 0; i < 1; i++) {
+                        if (slots[handle] >= 0) {
+                            func_8000C184_main((u16)slots[handle]);
+                        }
+                        if (values[handle] >= 0) {
+                            HuSprKill(values[handle]);
+                        }
+                    }
+                    for (i = 0; i < 2; i++) {
+                        anim.speed[i] = 0;
+                    }
+                    for (i = 0; i < 1; i++) {
+                        anim.fade.sprite.delta[i] = 0;
+                    }
+                    data->state = 0;
+                    break;
+            }
+            previousState = data->state;
+        }
+        for (i = 0; i < 2; i++) {
+            if (anim.speed[i] == 0) {
+                continue;
+            }
+            index = i;
+            handle = slots[index];
+            if (handle >= 0) {
+                anim.scale[i] += anim.speed[i];
+                if (anim.scale[i] >= D_80119B0C_msetup[index]) {
+                    anim.scale[i] = D_80119B0C_msetup[index];
+                    anim.speed[i] = 0;
+                } else if (anim.scale[i] <= 0) {
+                    anim.scale[i] = 0;
+                    anim.speed[i] = 0;
+                    func_8001C258_main(handle, 4, 4);
+                    if (anim.fade.destroy[index] != 0) {
+                        if (values[index] >= 0) {
+                            func_80033430_main(values[index]);
+                            values[index] = -1;
+                        }
+                        func_8001ACDC_main(handle);
+                        anim.fade.destroy[index] = 0;
+                        slots[index] = -1;
+                        handle = -1;
+                    }
+                }
+                if (handle >= 0) {
+                    Hu3DModelScaleSet(handle, anim.scale[i], anim.scale[i], anim.scale[i]);
+                }
+            }
+        }
+        for (i = 0; i < 1; i++) {
+            if (anim.fade.sprite.delta[i] != 0) {
+                index = i + 2;
+                handle = slots[index];
+                if (handle >= 0) {
+                    anim.fade.sprite.alpha[i] += anim.fade.sprite.delta[i];
+                    if (anim.fade.sprite.alpha[i] >= 256) {
+                        anim.fade.sprite.alpha[i] = 255;
+                        anim.fade.sprite.delta[i] = 0;
+                    } else if (anim.fade.sprite.alpha[i] < 0) {
+                        anim.fade.sprite.alpha[i] = 0;
+                        anim.fade.sprite.delta[i] = 0;
+                        func_8000BB94_main((u16)handle);
+                        if (anim.fade.destroy[index] != 0) {
+                            func_8000C184_main((u16)handle);
+                            if (values[index] >= 0) {
+                                HuSprKill(values[index]);
+                                values[index] = -1;
+                            }
+                            anim.fade.destroy[index] = 0;
+                            slots[index] = -1;
+                            handle = -1;
+                        }
+                    }
+                    if (handle >= 0) {
+                        func_8000BBFC_main((u16)handle, anim.fade.sprite.alpha[i]);
+                    }
+                }
+            }
+        }
+        HuPrcVSleep();
+    }
+}
 
 Process *func_8010F2BC_msetup(void) {
     Process *process = omAddPrcObj(func_8010EB94_msetup, 0x3F00, 0x600, 0);

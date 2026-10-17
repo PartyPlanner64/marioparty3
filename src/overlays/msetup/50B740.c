@@ -1,4 +1,5 @@
 #include "common.h"
+#include "game/window.h"
 #include "overlays/msetup_internal.h"
 
 typedef struct UnkStarLift {
@@ -14,6 +15,21 @@ typedef struct MsetupDifficultySprites {
     s16 active[4];
     s16 delay[4];
 } MsetupDifficultySprites;
+
+typedef struct MsetupPlayerSprites {
+    s16 sprites[8];
+    s16 unused[8];
+    s16 portraits[8];
+    s16 windows[2];
+} MsetupPlayerSprites;
+
+extern s32 D_80119B44_msetup[];
+extern s16 D_80119B60_msetup[][2];
+extern s16 D_80119B90_msetup[][4];
+extern s32 D_80119BA0_msetup[];
+extern s32 D_80119BD0_msetup[];
+extern s32 D_80119BF0_msetup[];
+extern u8 D_80119C10_msetup[][3];
 
 extern char *D_80119E20_msetup[];
 extern s32 D_80119E38_msetup[];
@@ -138,7 +154,143 @@ void func_8010F4E0_msetup(MsetupLinkedModel *models, s16 count, s16 layout) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/50B740", func_8010F87C_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/50B740", func_8011035C_msetup);
+void func_8011035C_msetup(void) {
+    s16 previousSelection;
+    MsetupPlayerSprites sprites;
+    s16 group;
+    s16 unusedGroup = -1;
+    s16 sprite;
+    MsetupMenuState *state;
+    s32 i;
+    s16 member;
+    s16 currentState;
+    s16 active;
+    s16 window;
+    s16 initialSelection;
+    s16 selection;
+
+    i = 0;
+    state = HuPrcCurrentGet()->user_data;
+    for (; i < 8; i++) {
+        sprites.unused[i] = -1;
+        sprites.sprites[i] = -1;
+    }
+    for (i = 0; i < 2; i++) {
+        sprites.windows[i] = -1;
+    }
+    for (i = 0; i < 8; i++) {
+        sprites.portraits[i] = func_8000B838_main(D_80119BA0_msetup[i]);
+        if (i & 1) {
+            HuPrcVSleep();
+        }
+    }
+    group = HuSprGrpCreate(8, 0);
+    for (member = 0; member < 8; member++) {
+        if (member == 7) {
+            sprite = sprites.portraits[state->unk02];
+        } else {
+            sprite = func_8000B838_main(D_80119B44_msetup[member]);
+            sprites.sprites[member] = sprite;
+        }
+        func_80055458_main(group, member, 256);
+        HuSprAttrReset(group, member, 0xFFFF);
+        HuSprAttrSet(group, member, 0x9000);
+        HuSprScaleSet(group, member, 1.0f, 1.0f);
+        func_800550F4_main(group, member, 1);
+        func_80055024_main(group, member, sprite, 0);
+        HuSprPriSet(group, member, 15000);
+        func_80054904_main(group, member, D_80119B60_msetup[member][0], D_80119B60_msetup[member][1]);
+        HuPrcVSleep();
+    }
+    i = 0;
+    member = 4;
+    initialSelection = state->unk02;
+    for (; i < 2; i++, member++) {
+        func_80054FF8_main(group, member, D_80119C10_msetup[initialSelection][i]);
+    }
+    for (i = 0; i < 2; i++) {
+        window = func_8005A968_main(D_80119B90_msetup[i][0], D_80119B90_msetup[i][1],
+                                    D_80119B90_msetup[i][2], D_80119B90_msetup[i][3], 0, 12);
+        sprites.windows[i] = window;
+        func_8005BDFC_main(window, 0);
+        func_8005BEE0_main(window, 0);
+        func_8005FBF8_main(window, 255, 255, 255);
+        func_8005D294_main(window);
+        func_8005FE90_main(window);
+        HuPrcVSleep();
+    }
+    func_8005F904_main();
+    active = 0;
+    previousSelection = state->unk02;
+    currentState = 0;
+    do {
+        if (currentState != state->state) {
+            switch (state->state) {
+                case 0:
+                    break;
+                case 1:
+                    for (i = 0; i < 8; i++) {
+                        HuSprAttrReset(group, i, 0x8000);
+                    }
+                    func_8005FFA8_main(sprites.windows[0]);
+                    previousSelection = -1;
+                    func_8005FFA8_main(sprites.windows[1]);
+                    active = 1;
+                    break;
+                case 2:
+                    for (i = 0; i < 8; i++) {
+                        HuSprAttrSet(group, i, 0x8000);
+                    }
+                    active = 0;
+                    func_8005FE90_main(sprites.windows[0]);
+                    func_8005FE90_main(sprites.windows[1]);
+                    break;
+            }
+            currentState = state->state;
+        }
+        if (active != 0) {
+            if (previousSelection != state->unk02) {
+                selection = state->unk02;
+                func_80055024_main(group, 7, sprites.portraits[state->unk02], 0);
+                i = 0;
+                member = 4;
+                for (; i < 3; i++, member++) {
+                    func_80054FF8_main(group, member, D_80119C10_msetup[selection][i]);
+                }
+                func_8005B43C_main(sprites.windows[0], D_80119BD0_msetup[selection], -1, -1);
+                func_8005D294_main(sprites.windows[1]);
+                func_8005B43C_main(sprites.windows[1], D_80119BF0_msetup[selection], -2, -1);
+                previousSelection = state->unk02;
+            }
+        }
+        HuPrcVSleep();
+    } while (currentState != 3);
+    for (i = 0; i < 8; i++) {
+        if (sprites.portraits[i] >= 0) {
+            HuSprKill(sprites.portraits[i]);
+        }
+    }
+    for (i = 0; i < 8; i++) {
+        if (sprites.sprites[i] >= 0) {
+            HuSprKill(sprites.sprites[i]);
+        }
+    }
+    if (group >= 0) {
+        HuSprGrpKill(group);
+    }
+    if (unusedGroup >= 0) {
+        HuSprGrpKill(unusedGroup);
+    }
+    for (i = 0; i < 2; i++) {
+        if (sprites.windows[i] >= 0) {
+            func_8005F364_main(sprites.windows[i]);
+        }
+    }
+    state->state = 0;
+    while (1) {
+        HuPrcVSleep();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/50B740", func_80110954_msetup);
 

@@ -28,10 +28,10 @@ extern UnkMsetupEntry D_8011A9F2_msetup[];
 extern Vec D_8011A028_msetup[];
 extern s16 D_8011A058_msetup[4][4];
 extern s16 D_8011A078_msetup[4][4];
-
-#ifdef NON_MATCHING
 extern s16 D_8011A8E0_msetup[4][4];
 extern s32 (*D_80119FF0_msetup[])(MsetupMenuState *);
+
+#ifdef NON_MATCHING
 extern char D_8011A6D8_msetup[];
 extern char D_8011A7D8_msetup[];
 extern char D_8011A7F8_msetup[];
@@ -1076,8 +1076,6 @@ s32 func_80117818_msetup(void) {
     return 0;
 }
 
-#ifdef NON_MATCHING
-// Function instructions match, but the trailing alignment nop is missing.
 void func_80117820_msetup(void) {
     MsetupMenuState *state;
     s16 currentState;
@@ -1099,6 +1097,3 @@ void func_80117820_msetup(void) {
         HuPrcVSleep();
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/50B740", func_80117820_msetup);
-#endif

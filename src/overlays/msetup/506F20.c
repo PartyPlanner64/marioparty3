@@ -77,6 +77,8 @@ extern s32 D_80119E94_msetup[];
 extern s32 D_80119EAC_msetup[];
 extern s32 D_80119EC4_msetup[];
 extern s32 D_80119EE0_msetup[];
+extern s32 D_80119EFC_msetup[];
+extern s32 D_80119F14_msetup[];
 extern s16 D_8011A938_msetup;
 extern s16 D_8011A948_msetup;
 extern s16 D_8011A8B0_msetup[];
@@ -1648,7 +1650,93 @@ s32 func_80113ED4_msetup(UnkStarLift *arg0) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_801145D0_msetup);
+s32 func_801145D0_msetup(UnkStarLift *state) {
+    Array2D models;
+    s32 *messages = NULL;
+    s32 *backgrounds = NULL;
+    s16 board = D_8011AA45_msetup;
+    s32 y;
+    f32 scale;
+    s16 model;
+    void *data;
+    s16 sprite;
+    s16 slot;
+    s32 i;
+    f32 value;
+
+    state->unk4 = 0;
+    scale = 1.0f;
+    y = 70;
+    switch (D_8011A938_msetup) {
+        case 2:
+            messages = D_80119EFC_msetup;
+            backgrounds = D_80119E94_msetup;
+            scale = 1.0f;
+            y = 74;
+            break;
+        case 3:
+            messages = D_80119F14_msetup;
+            backgrounds = D_80119EAC_msetup;
+            scale = 1.0f;
+            y = 74;
+            break;
+    }
+    func_8010B998_msetup();
+    func_8010E4BC_msetup(&models, 2, 0);
+    func_8010E4D8_msetup(models, 2);
+    model = models[0].model;
+    HuAudFXPlay(0x2D9);
+    func_8010E8C8_msetup(&models, 2, 15, 720.0f, 565.0f, 0.1f, 1.0f, 1);
+    func_8001C258_main(models[1].model, 4, 4);
+    for (value = 0.0f; value < 180.0f; value += 180.0f / 7.0f) {
+        Hu3DModelRotSet(model, 0, value, 0);
+        HuPrcVSleep();
+    }
+    Hu3DModelRotSet(model, 0, 180.0f, 0);
+    for (value = 1.0f; value < 2.5f; value += 3.0f / 14.0f) {
+        Hu3DModelScaleSet(model, value, value, value);
+        HuPrcVSleep();
+    }
+    Hu3DModelScaleSet(model, 2.5f, 2.5f, 2.5f);
+    data = DataReadTemp(backgrounds[board]);
+    sprite = func_80055810_main(data);
+    DataCloseTemp(data);
+    slot = InitEspriteSlot(sprite, 0, 1);
+    func_8000BC48_main(slot, 0x1000);
+    func_8000BCC8_main(slot, 1);
+    func_8000BBD4_main(slot, 160, y);
+    func_8000BE5C_main(slot, scale, scale);
+    for (i = 0; i < 255; i += 255 / 7) {
+        func_8000BBFC_main(slot, i);
+        HuPrcVSleep();
+    }
+    func_8000BBFC_main(slot, 255);
+    func_8010B82C_msetup(messages[board]);
+    func_8010B858_msetup();
+    for (i = 255; i > 0; i -= 255 / 7) {
+        func_8000BBFC_main(slot, i);
+        HuPrcVSleep();
+    }
+    for (value = 2.5f; value > 1.0f; value += -(3.0f / 14.0f)) {
+        Hu3DModelScaleSet(model, value, value, value);
+        HuPrcVSleep();
+    }
+    Hu3DModelScaleSet(model, 1.0f, 1.0f, 1.0f);
+    for (value = 180.0f; value < 360.0f; value += 180.0f / 7.0f) {
+        Hu3DModelRotSet(model, 0, value, 0);
+        HuPrcVSleep();
+    }
+    Hu3DModelRotSet(model, 0, 0, 0);
+    func_8001C258_main(models[1].model, 4, 0);
+    HuAudFXPlay(0x2DA);
+    func_8010E8C8_msetup(&models, 2, 7, 360.0f, 400.0f, 1.0f, 0.1f, 1);
+    for (i = 0; i < 2; i++) {
+        func_8001ACDC_main(models[i].model);
+    }
+    func_8000C184_main(slot);
+    HuSprKill(sprite);
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_80114AA0_msetup);
 

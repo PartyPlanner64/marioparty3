@@ -316,8 +316,6 @@ void func_8010D6D0_msetup(void) {
     }
 }
 
-#ifdef NON_MATCHING
-// Jump-table padding shifts subsequent rodata by four bytes.
 void func_8010DAC4_msetup(omObjData *object) {
     MsetupPairSpriteAnim *anim;
     s16 slot;
@@ -419,9 +417,6 @@ void func_8010DAC4_msetup(omObjData *object) {
             break;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/5092C0", func_8010DAC4_msetup);
-#endif
 
 void func_8010DDD8_msetup(omObjData *object) {
     func_8000C184_main(object->model[0]);

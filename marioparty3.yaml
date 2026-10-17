@@ -2391,9 +2391,17 @@ segments:
     subsegments:
       - [0x501C00, c]
       - [0x506F20, c]
+      - [0x508D50, c]
+      - [0x5092C0, c]
+      - [0x50B740, c]
+      - [0x513B70, c]
       - [0x515670, data, 501C00] #80119410
       - [0x5167E0, .rodata, 501C00] #8011A580
       - [0x516830, .rodata, 506F20] #8011A5D0
+      - [0x5168E0, .rodata, 508D50] #8011A680
+      - [0x5168F0, .rodata, 5092C0] #8011A690
+      - [0x516938, .rodata, 50B740] #8011A6D8
+      - [0x516A90, .rodata, 513B70] #8011A830
       - {0x516AE0, type: bss, vram: 0x8011A880, name: msetup_bss}
 
   - type: code

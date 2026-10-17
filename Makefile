@@ -237,6 +237,10 @@ build/src/overlays/ovl_80_shared_board/ECA50.c.o: CFLAGS = -G0 -mips3 -mgp32 -mf
 NOP_OBJECTS := \
 	build/src/libhmath/gurotate.c.o \
 	build/src/overlays/msetup/506F20.c.o \
+	build/src/overlays/msetup/508D50.c.o \
+	build/src/overlays/msetup/5092C0.c.o \
+	build/src/overlays/msetup/50B740.c.o \
+	build/src/overlays/msetup/513B70.c.o \
 	build/src/overlays/msetup/501C00.c.o \
 	build/src/sprput.c.o \
 	build/src/wipe.c.o \

@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game/vibrator.h"
+#include "game/camera.h"
 #include "overlays/msetup.h"
 #include "mallocblock.h"
 #include "gcc/string.h"
@@ -25,6 +26,16 @@ typedef struct MsetupCameraPreset {
     f32 zoom;
     f32 fov;
 } MsetupCameraPreset;
+
+typedef union MsetupCameraValues {
+    MsetupCameraPreset preset;
+    f32 components[8];
+} MsetupCameraValues;
+
+typedef struct MsetupCameraKeyframe {
+    MsetupCameraValues values;
+    f32 time;
+} MsetupCameraKeyframe;
 
 extern s16 D_801198C0_msetup;
 extern void (*D_8011955C_msetup[])(void);
@@ -76,9 +87,9 @@ extern s32 D_80119424_msetup[];
 extern s32 D_80119534_msetup[];
 extern s32 D_80119548_msetup[];
 extern MsetupCameraPreset D_80119580_msetup;
-extern MsetupCameraPreset D_801195A0_msetup;
-extern MsetupCameraPreset D_801197BC_msetup;
-extern MsetupCameraPreset D_801196C0_msetup;
+extern MsetupCameraKeyframe D_801195A0_msetup;
+extern MsetupCameraKeyframe D_801197BC_msetup;
+extern MsetupCameraKeyframe D_801196C0_msetup;
 
 void func_8000BBFC_main(u16, s16);
 void func_8000BC48_main(u16, s32);
@@ -125,7 +136,8 @@ void func_80106DF8_msetup(void);
 void func_80117820_msetup(void);
 void func_8010B1F4_msetup(void);
 Process *func_8010F2BC_msetup(void);
-void func_801068F4_msetup(MsetupCameraPreset *, f32, void (*)(s16, s16, s16));
+f32 func_80018ACC_main(f32 *, f32 *, f32);
+void func_801068F4_msetup(MsetupCameraKeyframe *, f32, void (*)(s16, s16, s16));
 
 void func_801059A0_msetup(void) {
     Hu3DCamInit(1);
@@ -355,7 +367,104 @@ void func_80106260_msetup(MsetupCameraPreset *preset) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80106320_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_801068F4_msetup);
+void func_801068F4_msetup(MsetupCameraKeyframe *keys, f32 speed, void (*callback)(s16, s16, s16)) {
+    MsetupCameraKeyframe interpolated;
+    f32 values[4];
+    f32 times[4];
+    MsetupCameraKeyframe *key;
+    f32 *p0;
+    f32 *p1;
+    f32 *p2;
+    f32 *p3;
+    f32 *out;
+    f32 oldX;
+    f32 oldY;
+    f32 oldZ;
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 duration;
+    f32 distance;
+    f32 dx;
+    f32 dy;
+    f32 dz;
+    s16 i;
+    s16 component;
+    s16 segment;
+    void (*onFrame)(s16, s16, s16) = callback;
+
+    duration = oldX = oldY = oldZ = 0.0f;
+    for (i = 0, key = keys; key->values.preset.zoom != 0.0f; i++, key = &keys[i]) {
+        if (speed != 0.0f) {
+            x = sindf(key->values.preset.rot.y) * cosdf(key->values.preset.rot.x) * key->values.preset.zoom + key->values.preset.center.x;
+            y = -sindf(key->values.preset.rot.x) * key->values.preset.zoom + key->values.preset.center.y;
+            z = cosdf(key->values.preset.rot.y) * cosdf(key->values.preset.rot.x) * key->values.preset.zoom + key->values.preset.center.z;
+            if (i > 0) {
+                dx = oldX - x;
+                dy = oldY - y;
+                dz = oldZ - z;
+                dx = dx * dx + dy * dy;
+                dz *= dz;
+                distance = dx + dz;
+                distance = HuSqrtf(distance);
+                if (distance == 0.0f) {
+                    distance = speed * 10.0f;
+                }
+                duration += distance / speed;
+                key->time = duration;
+            }
+            oldX = x;
+            oldY = y;
+            oldZ = z;
+        } else {
+            duration = key->time;
+        }
+    }
+    duration -= 10.0f;
+    for (i = 10, segment = 1; i < duration; i++) {
+        if (i > keys[segment + 1].time) {
+            segment++;
+        }
+        times[0] = keys[segment - 1].time;
+        times[1] = keys[segment].time;
+        times[2] = keys[segment + 1].time;
+        times[3] = keys[segment + 2].time;
+        p0 = keys[segment - 1].values.components;
+        p1 = keys[segment].values.components;
+        p2 = keys[segment + 1].values.components;
+        p3 = keys[segment + 2].values.components;
+        out = interpolated.values.components;
+        for (component = 0; component < 8; component++) {
+            values[0] = *p0++;
+            values[1] = *p1++;
+            values[2] = *p2++;
+            values[3] = *p3++;
+            *out++ = func_80018ACC_main(values, times, i);
+        }
+        Center.x = interpolated.values.preset.center.x;
+        Center.y = interpolated.values.preset.center.y;
+        Center.z = interpolated.values.preset.center.z;
+        D_8011A994_msetup.x = CRot.x = interpolated.values.preset.rot.x;
+        D_8011A994_msetup.y = CRot.y = interpolated.values.preset.rot.y;
+        D_8011A994_msetup.z = CRot.z = interpolated.values.preset.rot.z;
+        CZoom = interpolated.values.preset.zoom;
+        gCameraList->fov[0] = D_80119414_msetup = interpolated.values.preset.fov;
+        if (callback != NULL) {
+            onFrame((s16)duration, segment, i);
+        }
+        HuPrcVSleep();
+    }
+    segment++;
+    D_8011A994_msetup.x = CRot.x = keys[segment].values.preset.rot.x;
+    D_8011A994_msetup.y = CRot.y = keys[segment].values.preset.rot.y;
+    D_8011A994_msetup.z = CRot.z = keys[segment].values.preset.rot.z;
+    CZoom = keys[segment].values.preset.zoom;
+    Center.x = keys[segment].values.preset.center.x;
+    Center.y = keys[segment].values.preset.center.y;
+    Center.z = keys[segment].values.preset.center.z;
+    gCameraList->fov[0] = D_80119414_msetup = keys[segment].values.preset.fov;
+    D_800CB99C_main = 0;
+}
 
 void func_80106DF8_msetup(void) {
     s16 i;

@@ -9,6 +9,22 @@ typedef struct MsetupEntryAnim {
     s16 state;
 } MsetupEntryAnim;
 
+extern s16 D_801198C0_msetup;
+extern s32 D_80119964_msetup[];
+extern u8 D_80119984_msetup[];
+extern s32 D_8011998C_msetup[];
+extern s32 D_801199AC_msetup[];
+extern s32 D_801199EC_msetup[];
+extern s32 D_80119A7C_msetup[];
+extern s32 D_80119A8C_msetup[];
+extern s32 D_80119AB4_msetup[];
+extern u8 D_80119AC8_msetup[];
+extern u16 D_80119ACC_msetup;
+extern u8 D_8011AA34_msetup[];
+extern u8 D_8011AA38_msetup[];
+extern u8 D_8011AA3C_msetup[];
+extern u8 D_800D20B8_main[16][3];
+extern u8 D_800D5570_main[16][3];
 extern MsetupModelEntry D_801198C4_msetup[];
 extern Vec D_80119A0C_msetup[];
 extern Vec D_80119A3C_msetup[];
@@ -25,6 +41,10 @@ extern s16 D_8011A892_msetup[2];
 extern s16 D_8011A990_msetup;
 extern UnkMsetupEntry D_8011A9F2_msetup[];
 
+void func_8000BBFC_main(u16, s16);
+void func_80012B14_main(s16, Vec *, Vec2f *);
+s16 func_8010CAF0_msetup(s32, s32);
+s32 func_8010CD14_msetup(s16, f32, f32, f32);
 void func_8006105C_main(s16, s32);
 void Hu3DModelScaleSet(s16, f32, f32, f32);
 void func_8001C258_main(s16, s32, s32);
@@ -368,4 +388,305 @@ s16 func_8010BEB0_msetup(s16 arg0, s16 arg1) {
     return prevValue;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_8010BEF8_msetup);
+void func_8010BEF8_msetup(void) {
+    s16 offset[2];
+    Vec2f projected;
+    s16 sprites[4];
+    s16 slots[4];
+    s16 alpha[4];
+    s16 alphaStep[4];
+    s16 alphaTarget[4];
+    s16 kill[4];
+    s16 motions[4];
+    s16 model;
+    s16 shadow;
+    s16 effect;
+    s16 character;
+    s16 specialMotion;
+    s16 playing;
+    s32 i;
+    s32 dataId;
+    MsetupEntryAnim *entry;
+    Vec *pos;
+    s16 state;
+    s16 setupCharacter;
+    s16 index;
+    f32 scale;
+    f32 scaleStep;
+
+    i = 0;
+    entry = HuPrcCurrentGet()->user_data;
+    for (; i < 4; i++) {
+        slots[i] = -1;
+        sprites[i] = -1;
+        alphaStep[i] = 0;
+        alphaTarget[i] = 0;
+        alpha[i] = 0;
+        kill[i] = 0;
+    }
+    motions[0] = -1;
+    motions[1] = -1;
+    character = D_8011AA34_msetup[entry->index];
+    setupCharacter = character;
+    model = func_8000B108_main(D_80119964_msetup[setupCharacter], 0x2A9);
+    index = model;
+    func_8001C814_main(index, 2, 2);
+    func_8001C258_main(index, 4, 4);
+    pos = &entry->pos;
+    Hu3DModelPosSet(index, entry->pos.x, entry->pos.y, entry->pos.z);
+    Hu3DModelRotSet(index, 0.0f, entry->value, 0.0f);
+    motions[3] = HmfModelData[index].unk02;
+    HuPrcVSleep();
+    if (D_80119984_msetup[setupCharacter] != 0) {
+        func_80017790_main(index, 1, setupCharacter, func_80017BB8_main(setupCharacter, 0xA4));
+    } else {
+        func_80017790_main(index, 0, character, func_80017BB8_main(character, 0xA3));
+    }
+    func_8001C514_main(index);
+    HuPrcVSleep();
+    if (D_801198C0_msetup < 0) {
+        index = D_801198C0_msetup = func_8000B108_main(9, 0x299);
+    } else {
+        index = Hu3DModelLink(D_801198C0_msetup);
+    }
+    shadow = index;
+    func_8001C258_main(shadow, 4, 4);
+    Hu3DModelPosSet(shadow, pos->x, 0.0f, pos->z);
+    HuPrcVSleep();
+    specialMotion = 0;
+    if ((D_80119ACC_msetup >> D_8011A938_msetup) & 1) {
+        specialMotion = 1;
+        motions[0] = func_8000B13C_main(D_801199AC_msetup[character]);
+    } else {
+        motions[0] = func_8000B13C_main(D_8011998C_msetup[character]);
+    }
+    state = 0;
+    HuPrcVSleep();
+    motions[1] = func_8000B13C_main(D_801199EC_msetup[character]);
+    HuPrcVSleep();
+    effect = func_8010CAF0_msetup(0x110012, 0x289);
+    scale = 0.0f;
+    scaleStep = 0.0f;
+    playing = 0;
+    do {
+        HuPrcVSleep();
+        if (state != entry->state) {
+            state = entry->state;
+        }
+        switch (state) {
+            case 0:
+                break;
+            case 1:
+                for (i = 15; i != 0; i--) {
+                    func_8010CD14_msetup(effect, pos->x, pos->y + 50.0f, pos->z);
+                    HuPrcVSleep();
+                }
+                entry->state = 3;
+                break;
+            case 3:
+                func_8001C258_main(model, 4, 0);
+                func_8001C258_main(shadow, 4, 0);
+                if (motions[0] >= 0 && (!specialMotion || entry->index != 0)) {
+                    func_8001C5B4_main(model, motions[0]);
+                    playing = 1;
+                }
+                scale = 0.0f;
+                scaleStep = 1.0f / 15.0f;
+                for (i = 15; i != 0; i--) {
+                    scale += scaleStep;
+                    Hu3DModelScaleSet(model, scale, 1.0f, scale);
+                    Hu3DModelScaleSet(shadow, scale, 1.0f, scale);
+                    HuPrcVSleep();
+                }
+                entry->state = 0;
+                break;
+            case 2:
+                scale = 1.0f;
+                scaleStep = 1.0f / 7.0f;
+                entry->state = 4;
+                break;
+            case 4:
+                scale -= scaleStep;
+                if (scale <= 0.0f) {
+                    scale = 0.0f;
+                    func_8001C258_main(model, 4, 4);
+                    func_8001C258_main(shadow, 4, 4);
+                    entry->state = 0;
+                }
+                Hu3DModelScaleSet(model, scale, 1.0f, scale);
+                Hu3DModelScaleSet(shadow, scale, 1.0f, scale);
+                func_8010CD14_msetup(effect, pos->x, pos->y + 50.0f, pos->z);
+                break;
+            case 11:
+                for (i = 0; i < 4; i++) {
+                    if (slots[i] >= 0) {
+                        func_8000BB54_main(slots[i]);
+                        alphaTarget[i] = D_80119AC8_msetup[i];
+                        alphaStep[i] = (u8)(D_80119AC8_msetup[i] / 5U);
+                    }
+                }
+                entry->state = 0;
+                break;
+            case 12:
+                for (i = 0; i < 4; i++) {
+                    alphaTarget[i] = 0;
+                    alphaStep[i] = -alpha[i] / 5;
+                }
+                entry->state = 0;
+                break;
+            case 13:
+                index = D_8011AA3C_msetup[entry->index];
+                index--;
+                if (index < 0) {
+                    break;
+                }
+                dataId = D_80119AB4_msetup[index];
+                i = 2;
+                offset[0] = 28;
+                offset[1] = -48;
+                goto createSprite;
+            case 15:
+                kill[2] = 1;
+            case 14:
+                i = 2;
+                goto hideSprite;
+            case 5:
+                dataId = D_80119A7C_msetup[D_8011AA38_msetup[entry->index]];
+                i = 0;
+                offset[0] = 8;
+                offset[1] = -6;
+                goto createSprite;
+            case 7:
+                kill[0] = 1;
+            case 6:
+                i = 0;
+                goto hideSprite;
+            case 8:
+                dataId = D_80119A8C_msetup[D_8011AA3C_msetup[entry->index]];
+                i = 1;
+                offset[0] = 16;
+                offset[1] = -30;
+            createSprite:
+                if (slots[(s16)i] >= 0) {
+                    func_8000C184_main(slots[(s16)i]);
+                }
+                if (sprites[(s16)i] >= 0) {
+                    HuSprKill(sprites[(s16)i]);
+                }
+                index = i;
+                kill[index] = 0;
+                sprites[index] = func_8000B838_main(dataId);
+                slots[index] = InitEspriteSlot(sprites[index], 0, 1);
+                func_8000BCC8_main(slots[index], 1);
+                func_80012B14_main(0, pos, &projected);
+                func_8000BBD4_main(slots[index], (s16)(offset[0] + projected.x), (s16)(offset[1] + projected.y));
+                func_8000BBFC_main(slots[index], 0);
+                func_8000BB54_main(slots[index]);
+                alphaTarget[index] = D_80119AC8_msetup[index];
+                alphaStep[index] = (u8)(D_80119AC8_msetup[index] / 7U);
+                entry->state = 0;
+                break;
+            case 10:
+                kill[1] = 1;
+            case 9:
+                i = 1;
+            hideSprite:
+                alphaTarget[(s16)i] = 0;
+                alphaStep[(s16)i] = -alpha[(s16)i] / 7;
+                entry->state = 0;
+                if (alpha[(s16)i] == 0 && kill[(s16)i] != 0) {
+                    kill[(s16)i] = 0;
+                    if (slots[(s16)i] >= 0) {
+                        func_8000C184_main(slots[(s16)i]);
+                        slots[(s16)i] = -1;
+                    }
+                    if (sprites[(s16)i] >= 0) {
+                        HuSprKill(sprites[(s16)i]);
+                        sprites[(s16)i] = -1;
+                    }
+                }
+                break;
+            case 16:
+                if (motions[1] >= 0) {
+                    func_8001C5B4_main(model, motions[1]);
+                }
+                entry->state = 0;
+                break;
+            case 17:
+                if (motions[0] >= 0) {
+                    func_8001C624_main(model, HmfModelData[motions[0]].unk02, 0, 6, 0);
+                }
+                entry->state = 0;
+                playing = 1;
+                break;
+            case 18:
+                state = -1;
+                break;
+        }
+        if (playing && D_800CCF58_main[HmfModelData[model].unk02].unk02 <= HmfModelData[model].unk40) {
+            func_8001C624_main(model, motions[3], 0, 30, 2);
+            playing = 0;
+        }
+        for (i = 0; i < 4; i++) {
+            if (slots[i] >= 0) {
+                if (alphaStep[i] != 0) {
+                    alpha[i] += alphaStep[i];
+                    if (alphaStep[i] < 0) {
+                        if (alpha[i] <= alphaTarget[i]) {
+                            alpha[i] = alphaTarget[i];
+                            alphaStep[i] = 0;
+                        }
+                    } else {
+                        if (alpha[i] >= alphaTarget[i]) {
+                            alpha[i] = alphaTarget[i];
+                            alphaStep[i] = 0;
+                        }
+                    }
+                    func_8000BBFC_main(slots[i], alpha[i]);
+                    if (alpha[i] == 0) {
+                        func_8000BB94_main(slots[i]);
+                        if (kill[i] != 0) {
+                            kill[i] = 0;
+                            if (slots[i] >= 0) {
+                                func_8000C184_main(slots[i]);
+                                slots[i] = -1;
+                            }
+                            if (sprites[i] >= 0) {
+                                HuSprKill(sprites[i]);
+                                sprites[i] = -1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } while (state >= 0);
+    for (i = 0; i < 4; i++) {
+        if (slots[i] >= 0) {
+            func_8000C184_main(slots[i]);
+        }
+        if (sprites[i] >= 0) {
+            HuSprKill(sprites[i]);
+        }
+    }
+    if (D_800D20B8_main[character][1] != 0xFF) {
+        func_80033354_main(D_800D20B8_main[character][1]);
+        func_80033354_main(D_800D5570_main[character][1]);
+        D_800D20B8_main[character][1] = 0xFF;
+    }
+    func_8001ACDC_main(model);
+    func_8001ACDC_main(shadow);
+    if (D_801198C0_msetup == shadow) {
+        D_801198C0_msetup = -1;
+    }
+    for (i = 0; i < 2; i++) {
+        if (motions[i] >= 0) {
+            func_8001ACDC_main(motions[i]);
+        }
+    }
+    func_8001ACDC_main(effect);
+    entry->state = 0;
+    while (1) {
+        HuPrcVSleep();
+    }
+}

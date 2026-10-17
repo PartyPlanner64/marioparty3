@@ -93,6 +93,12 @@ extern MsetupCameraPreset D_80119580_msetup;
 extern MsetupCameraKeyframe D_801195A0_msetup;
 extern MsetupCameraKeyframe D_801197BC_msetup;
 extern MsetupCameraKeyframe D_801196C0_msetup;
+extern s8 D_80119418_msetup;
+extern Vec D_8011A920_msetup;
+extern Vec D_8011A92C_msetup;
+extern f32 D_800CE17C_main[];
+extern f32 D_800D5210_main;
+extern f32 D_800CB890_main;
 
 void func_8000BBFC_main(u16, s16);
 void func_8000BC48_main(u16, s32);
@@ -368,7 +374,61 @@ void func_80106260_msetup(MsetupCameraPreset *preset) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/501C00", func_80106320_msetup);
+void func_80106320_msetup(void) {
+    Vec pos, at, up;
+    f32 rotX, rotY, rotZ;
+    f32 upX, upY, upZ;
+    f32 dx, dy, dz;
+    f32 length;
+
+    while (1) {
+        if (D_80119418_msetup == 0) {
+            rotX = CRot.x;
+            rotY = CRot.y;
+            rotZ = CRot.z;
+            pos.x = sindf(rotY) * cosdf(rotX) * CZoom + Center.x;
+            pos.y = -sindf(rotX) * CZoom + Center.y;
+            pos.z = cosdf(rotY) * cosdf(rotX) * CZoom + Center.z;
+            at.x = Center.x;
+            at.y = Center.y;
+            at.z = Center.z;
+            upX = sindf(rotY) * sindf(rotX);
+            upY = cosdf(rotX);
+            upZ = cosdf(rotY) * sindf(rotX);
+            dx = at.x - pos.x;
+            dy = at.y - pos.y;
+            dz = at.z - pos.z;
+            length = HuSqrtf(dx * dx + dy * dy + dz * dz);
+            dx /= length;
+            dy /= length;
+            dz /= length;
+            up.x = upX * (dx * dx + (1.0f - dx * dx) * cosdf(rotZ)) +
+                   upY * (dx * dy * (1.0f - cosdf(rotZ)) - dz * sindf(rotZ)) +
+                   upZ * (dx * dz * (1.0f - cosdf(rotZ)) + dy * sindf(rotZ));
+            up.y = upX * (dx * dy * (1.0f - cosdf(rotZ)) + dz * sindf(rotZ)) +
+                   upY * (dy * dy + (1.0f - dy * dy) * cosdf(rotZ)) +
+                   upZ * (dy * dz * (1.0f - cosdf(rotZ)) - dx * sindf(rotZ));
+            up.z = upX * (dx * dz * (1.0f - cosdf(rotZ)) - dy * sindf(rotZ)) +
+                   upY * (dy * dz * (1.0f - cosdf(rotZ)) + dx * sindf(rotZ)) +
+                   upZ * (dz * dz + (1.0f - dz * dz) * cosdf(rotZ));
+        } else {
+            pos = D_8011A92C_msetup;
+            at = D_8011A920_msetup;
+            up.x = 0.0f;
+            up.y = 1.0f;
+            up.z = 0.0f;
+        }
+        D_800CE17C_main[0] = pos.x;
+        D_800CE17C_main[1] = pos.z;
+        D_800CE17C_main[-1] = CRot.y;
+        D_800CE17C_main[2] = gCameraList->fov[0];
+        D_800CE17C_main[3] = D_800D5210_main;
+        D_800CE17C_main[4] = D_800CB890_main;
+        Hu3DCamSetPositionOrientation(0, &pos, &at, &up);
+        Hu3DCamUpdateMtx(0);
+        HuPrcVSleep();
+    }
+}
 
 void func_801068F4_msetup(MsetupCameraKeyframe *keys, f32 speed, void (*callback)(s16, s16, s16)) {
     MsetupCameraKeyframe interpolated;

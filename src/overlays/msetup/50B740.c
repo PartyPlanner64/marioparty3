@@ -6,6 +6,20 @@ typedef struct UnkStarLift {
     s16 unk4;
 } UnkStarLift;
 
+typedef struct MsetupDifficultySprites {
+    s16 sprites[8];
+    Vec2f position;
+    s16 alpha[4];
+    s16 alphaStep[4];
+    s16 active[4];
+    s16 delay[4];
+} MsetupDifficultySprites;
+
+extern char *D_80119E20_msetup[];
+extern s32 D_80119E38_msetup[];
+extern s16 D_80119E50_msetup[];
+extern s16 D_80119E54_msetup[];
+
 extern s32 D_80119E58_msetup[];
 extern s32 D_80119E64_msetup[];
 extern s32 D_80119E70_msetup[];
@@ -46,6 +60,7 @@ extern MsetupModelTarget D_80119DC8_msetup[];
 extern MsetupModelTarget D_80119C48_msetup[];
 #endif
 
+void func_8010F43C_msetup(s16 model, char *node, Vec2f *screenPos);
 void func_80017D24_main(HuMtx4F, f32, f32, f32);
 void func_80017CD0_main(HuMtx4F, f32, f32, f32);
 void func_8000BBFC_main(u16, s16);
@@ -175,7 +190,161 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/msetup/50B740", D_8011A7A4_msetup);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/msetup/50B740", D_8011A7AC_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/50B740", func_80112804_msetup);
+void func_80112804_msetup(void) {
+    MsetupDifficultySprites sprites;
+    s16 group;
+    s16 model;
+    MsetupMenuState *state;
+    s32 i;
+    s16 currentState;
+    s16 index;
+    s32 side;
+    s16 first;
+    s16 last;
+
+    i = 0;
+    state = HuPrcCurrentGet()->user_data;
+    model = state->unk02;
+    group = HuSprGrpCreate(6, 0);
+    for (; i < 6; i++) {
+        index = func_8000B838_main(D_80119E38_msetup[i]);
+        sprites.sprites[i] = index;
+        func_80055458_main(group, i, 0);
+        HuSprAttrReset(group, i, 0xFFFF);
+        HuSprAttrSet(group, i, 0x9000);
+        HuSprScaleSet(group, i, 1.0f, 1.0f);
+        func_800550F4_main(group, i, 0);
+        func_80055024_main(group, i, index, 0);
+        HuSprPriSet(group, i, 600);
+    }
+    for (i = 0; i < 2; i++) {
+        sprites.alpha[i] = 0;
+        sprites.alphaStep[i] = 0;
+        sprites.active[i] = 0;
+        sprites.delay[i] = 0;
+    }
+    currentState = 0;
+    do {
+        if (currentState != state->state) {
+            switch (state->state) {
+                case 0:
+                    break;
+                case 1:
+                    index = 0;
+                    goto show;
+                case 3:
+                    index = 1;
+                show:
+                    if (sprites.active[index] == 0) {
+                        sprites.alpha[index] = 0;
+                        sprites.alphaStep[index] = 36;
+                        sprites.active[index] = 1;
+                        sprites.delay[index] = 3;
+                    }
+                    state->state = 0;
+                    break;
+                case 2:
+                    index = 0;
+                    goto hide;
+                case 4:
+                    index = 1;
+                hide:
+                    if (sprites.active[index] != 0) {
+                        sprites.alpha[index] = 256;
+                        sprites.alphaStep[index] = -36;
+                        sprites.delay[index] = 0;
+                    }
+                    state->state = 0;
+                    break;
+                case 5:
+                    index = 0;
+                    side = 0;
+                    if (sprites.active[0] != 0 && sprites.active[1] == 0) {
+                        index = 0;
+                        side = 1;
+                    } else if (sprites.active[1] != 0 && sprites.active[0] == 0) {
+                        index = 1;
+                        side = 0;
+                    }
+                    if ((index != 0) | (side != 0)) {
+                        sprites.alpha[index] = 256;
+                        sprites.alphaStep[index] = -85;
+                        sprites.delay[index] = 0;
+                        sprites.alpha[side] = 0;
+                        sprites.alphaStep[side] = 85;
+                        sprites.active[side] = 1;
+                        sprites.delay[side] = 4;
+                    }
+                    state->state = 0;
+                    break;
+                case 6:
+                    for (index = 0; index < 2; index++) {
+                        if (sprites.active[index] != 0) {
+                            sprites.alpha[index] = 256;
+                            sprites.alphaStep[index] = -36;
+                            sprites.delay[index] = 0;
+                        }
+                    }
+                    state->state = 0;
+                    break;
+                case 7:
+                    state->state = -1;
+                    break;
+            }
+            currentState = state->state;
+        }
+        for (side = 0; side < 2; side++) {
+            if (sprites.active[side] != 0) {
+                if (sprites.delay[side] != 0) {
+                    sprites.delay[side]--;
+                } else {
+                    first = D_80119E50_msetup[side];
+                    last = D_80119E54_msetup[side];
+                    if (side == 1 && state->result == 3) {
+                        last--;
+                    }
+                    for (i = first; i <= last; i++) {
+                        func_8010F43C_msetup(model, D_80119E20_msetup[i], &sprites.position);
+                        func_80054904_main(group, i, sprites.position.x, sprites.position.y);
+                    }
+                    if (sprites.alphaStep[side] != 0) {
+                        index = sprites.alpha[side];
+                        sprites.alpha[side] += sprites.alphaStep[side];
+                        if (sprites.alpha[side] <= 0) {
+                            sprites.alpha[side] = 0;
+                            sprites.alphaStep[side] = 0;
+                            sprites.active[side] = 0;
+                            for (i = first; i <= last; i++) {
+                                HuSprAttrSet(group, i, 0x8000);
+                            }
+                        } else if (sprites.alpha[side] >= 256) {
+                            sprites.alpha[side] = 256;
+                            sprites.alphaStep[side] = 0;
+                        } else if (index == 0) {
+                            for (i = first; i <= last; i++) {
+                                HuSprAttrReset(group, i, 0x8000);
+                            }
+                        }
+                        for (i = first; i <= last; i++) {
+                            func_80055458_main(group, i, sprites.alpha[side]);
+                        }
+                    }
+                }
+            }
+        }
+        HuPrcVSleep();
+    } while (currentState >= 0);
+    HuSprGrpKill(group);
+    for (i = 0; i < 6; i++) {
+        if (sprites.sprites[i] >= 0) {
+            HuSprKill(sprites.sprites[i]);
+        }
+    }
+    state->state = 0;
+    while (1) {
+        HuPrcVSleep();
+    }
+}
 
 s16 func_80112E08_msetup(s16 selection, s16 *previousButtons, MsetupCursorState *cursor) {
     s16 buttons;

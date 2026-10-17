@@ -121,7 +121,6 @@ void func_8010BE8C_msetup(s16);
 void func_8010BA6C_msetup(s16, s16);
 void func_8010BC18_msetup(s16, s16);
 void func_8010B9B8_msetup(s32, s32);
-s32 func_8010D684_msetup(s16, s16 *);
 void func_8010DDD8_msetup(void *);
 omObjData *func_8010DE38_msetup(s32, s32, s32);
 void func_8010E4BC_msetup(Array2D *, s32, f32);

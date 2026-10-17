@@ -56,4 +56,6 @@ typedef struct MsetupMenuState {
     s16 result;
 } MsetupMenuState;
 
+s16 func_8010D684_msetup(s16 controller, s16 *previousButtons);
+
 #endif

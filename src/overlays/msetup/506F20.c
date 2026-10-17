@@ -119,7 +119,6 @@ void func_8010B82C_msetup(s32);
 void func_8010BEF8_msetup(void);
 s32 func_8010B858_msetup(void);
 void func_8010B998_msetup(void);
-s32 func_8010D684_msetup(s16, s16 *);
 void func_8010DAC4_msetup(omObjData *);
 void func_8010DDD8_msetup(omObjData *);
 omObjData *func_8010DE38_msetup(s32, s32, s32);
@@ -709,7 +708,7 @@ s16 func_8010D5EC_msetup(s16 controller) {
     return buttons;
 }
 
-s32 func_8010D684_msetup(s16 controller, s16 *previousButtons) {
+s16 func_8010D684_msetup(s16 controller, s16 *previousButtons) {
     s16 oldButtons = *previousButtons;
     s16 buttons = func_8010D5EC_msetup(controller);
 
@@ -1305,7 +1304,7 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/msetup/506F20", D_8011A7AC_msetup);
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_80112804_msetup);
 
 s16 func_80112E08_msetup(s16 selection, s16 *previousButtons, MsetupCursorState *cursor) {
-    s32 buttons;
+    s16 buttons;
     s16 previousSelection;
 
     func_8010B82C_msetup(0x1514);
@@ -1353,7 +1352,7 @@ s16 func_80112F5C_msetup(s16 individual, s16 count, s16 *previousButtons, Msetup
     s16 selection;
     s16 previousPlayer;
     s16 i;
-    s32 buttons;
+    s16 buttons;
     s32 j;
     s32 currentPlayer;
 
@@ -1478,7 +1477,7 @@ s32 func_80113ED4_msetup(UnkStarLift *arg0) {
     s16 prevBoardIndex;
     s16 backgroundEspriteSlot;
     s16 var_s6;
-    s32 pad;
+    s16 pad;
     s32 var_fp;
     s32 boardCountMax;
     s32 *boardDescriptionId;
@@ -1680,7 +1679,68 @@ s32 func_801150A0_msetup(s16 controller) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_801152C4_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_801157B8_msetup);
+s16 func_801157B8_msetup(s16 model, s16 anim, s16 *controller, s16 selection, MsetupLinkedModel *linked, omObjData *obj) {
+    f32 angle;
+    s16 oldSelection;
+    s16 linkedModel;
+    s16 buttons;
+
+    func_80032FF8_main(anim, selection);
+    for (angle = 0.0f; angle <= 180.0f; angle += 180.0f / 7.0f) {
+        Hu3DModelRotSet(model, 0.0f, angle, 0.0f);
+        HuPrcVSleep();
+    }
+    func_8010B82C_msetup(0x1529);
+    oldSelection = -1;
+    while (1) {
+        buttons = func_8010D684_msetup(D_8011A948_msetup, controller);
+        if (buttons & 0x4000) {
+            HuAudFXPlay(4);
+            selection = -1;
+            break;
+        }
+        if (buttons & 0x8000) {
+            HuAudFXPlay(0x139);
+            break;
+        }
+        if (buttons & 0x900) {
+            selection++;
+            if (selection >= 9) {
+                selection = 0;
+            }
+            HuAudFXPlay(1);
+            obj->work[0] = 4;
+        } else if (buttons & 0x600) {
+            selection--;
+            if (selection < 0) {
+                selection = 8;
+            }
+            HuAudFXPlay(1);
+            obj->work[0] = 3;
+        }
+        if (oldSelection != selection) {
+            func_80032FF8_main(anim, selection);
+            oldSelection = selection;
+        }
+        HuPrcVSleep();
+    }
+    if (selection >= 0) {
+        linkedModel = linked->model;
+        func_8001C258_main(linkedModel, 4, 0);
+        Hu3DModelRotSet(linkedModel, 0.0f, 180.0f, 0.0f);
+        for (angle = 180.0f; angle < 360.0f; angle += 180.0f / 7.0f) {
+            Hu3DModelRotSet(model, 0.0f, angle, 0.0f);
+            Hu3DModelRotSet(linkedModel, 0.0f, angle, 0.0f);
+            HuPrcVSleep();
+        }
+    } else {
+        for (angle = 180.0f; angle >= 0.0f; angle -= 180.0f / 7.0f) {
+            Hu3DModelRotSet(model, 0.0f, angle, 0.0f);
+            HuPrcVSleep();
+        }
+    }
+    return selection;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/506F20", func_80115A9C_msetup);
 

@@ -45,9 +45,7 @@ void func_8010DAC4_msetup(omObjData *);
 void func_8010EB94_msetup(void);
 void func_8010E09C_msetup(omObjData *);
 
-#ifdef NON_MATCHING
 void func_80016B00_main(s16, s16, char *, HuMtx4F);
-#endif
 
 void func_8010D060_msetup(HmfData *arg0, s16 arg1) {
     // 0x80 in unk9 marks the entry's texture as used, but only if a texture is assigned
@@ -781,8 +779,6 @@ void func_8010F33C_msetup(s16 model, Vec *worldPos, HuMtx4F nodeTransform) {
     worldPos->z = combined[0][2] + combined[1][2] + combined[2][2] + combined[3][2];
 }
 
-#ifdef NON_MATCHING
-// Function instructions match, but the trailing alignment nop is missing.
 void func_8010F43C_msetup(s16 model, char *node, Vec2f *screenPos) {
     HuMtx4F transform;
     Vec worldPos;
@@ -791,6 +787,3 @@ void func_8010F43C_msetup(s16 model, char *node, Vec2f *screenPos) {
     func_8010F33C_msetup(model, &worldPos, transform);
     Hu3DCam3DToScreen(0, &worldPos, screenPos);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/5092C0", func_8010F43C_msetup);
-#endif

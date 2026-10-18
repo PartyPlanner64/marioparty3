@@ -97,4 +97,33 @@ s32 func_8010CD14_msetup(s16 model, f32 x, f32 y, f32 z) {
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/msetup/508D50", D_8011A688_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/508D50", func_8010CE8C_msetup);
+void func_8010CE8C_msetup(s16 model) {
+    HmfData *hmf = HmfModelData[model].hmf;
+    HmfModelData_UnkBC_Struct *data = HmfModelData[model].unkBC;
+    HmfModelData_UnkBC_Unk58_Struct *entry = data->unk58;
+    s16 i;
+    s16 count = hmf->unk1A;
+    f32 radius;
+
+    for (i = 0; i < count; i++, entry++) {
+        if (entry->unk04 < 180.0f) {
+            entry->unk18 += entry->unk24;
+            if (entry->unk18 < 0.0f) {
+                entry->unk18 += 360.0f;
+            } else if (entry->unk18 >= 360.0f) {
+                entry->unk18 -= 360.0f;
+            }
+            entry->unk20 += entry->unk1C;
+            radius = entry->unk20 * entry->unk2C;
+            entry->unk0C = radius * sindf(entry->unk18) + data->unk1C.f;
+            entry->unk14 = radius * cosdf(entry->unk18) + data->unk24.f;
+            entry->unk10 = entry->unk20 * entry->unk28 + data->unk20.f;
+            entry->unk04 += data->unk14;
+            if (entry->unk04 > 180.0f) {
+                entry->unk04 = 180.0f;
+            }
+            entry->unk08 = sindf(entry->unk04) * data->unk14;
+        }
+    }
+    data->unk02++;
+}

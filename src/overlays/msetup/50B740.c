@@ -24,6 +24,8 @@ typedef struct MsetupPlayerSprites {
     s16 windows[2];
 } MsetupPlayerSprites;
 
+extern s16 D_80119FE4_msetup[];
+extern Vec D_80119B20_msetup;
 extern s32 D_80119B44_msetup[];
 extern s16 D_80119B60_msetup[][2];
 extern s16 D_80119B90_msetup[][4];
@@ -1823,7 +1825,165 @@ s32 func_801167B8_msetup(UnkStarLift *state) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/50B740", func_80116FE0_msetup);
+s32 func_80116FE0_msetup(MsetupMenuState *state) {
+    static const char nodeName[0x1C] = "sitagocoro_DEF";
+    Array2D models;
+    s16 previousButtons;
+    s32 i;
+    s16 selection;
+    s16 player;
+    omObjData *cursor;
+    s16 oldSelection;
+    s16 model;
+    s16 motion;
+    s16 oldPlayer;
+    u16 buttons;
+    f32 angle;
+    f32 step;
+    s16 reverse;
+    s16 *starCounts;
+
+    state->result = 0;
+    selection = 0;
+    starCounts = D_80119FE4_msetup;
+    for (; selection < 5; selection++) {
+        if (D_8011AA30_msetup.stars[0] == starCounts[selection]) {
+            break;
+        }
+    }
+    selection = selection >= 5 ? 0 : selection;
+    player = 0;
+    func_8010B998_msetup();
+    func_8010E4BC_msetup(&models, 2, 0);
+    func_8010E4D8_msetup(models, 2);
+    model = func_8000B108_main(0x14000A, 0x2A9);
+    motion = HmfAnimRead(HmfModelData[model].hmf, 0x140034, (char *)nodeName);
+    func_8001C448_main(model);
+    func_8001C514_main(model);
+    func_80032FC0_main(motion, 1, 1);
+    func_80032FF8_main(motion, selection);
+    func_8001C258_main(model, 4, 4);
+    cursor = func_8010DE38_msetup(96, 224, 72);
+    HuAudFXPlay(0x2D9);
+    func_8010E8C8_msetup(&models, 2, 15, 720.0f, 565.0f, 0.1f, 1.0f, 1);
+    cursor->work[0] = 1;
+    cursor->work[1] = 36;
+    func_8001C258_main(models[1].model, 4, 4);
+    Hu3DModelPosSet(model, D_80119B20_msetup.x, D_80119B20_msetup.y + 565.0f, D_80119B20_msetup.z + 0.5f);
+    Hu3DModelRotSet(model, 0, 180.0f, 0);
+    func_8001C258_main(model, 4, 0);
+    for (angle = 0; angle < 180.0f; angle += 180.0f / 7.0f) {
+        Hu3DModelRotSet(models[0].model, 0, angle, 0);
+        Hu3DModelRotSet(model, 0, angle + 180.0f, 0);
+        HuPrcVSleep();
+    }
+    Hu3DModelRotSet(model, 0, 0, 0);
+    Hu3DModelRotSet(models[0].model, 0, 180.0f, 0);
+    oldSelection = selection;
+    oldPlayer = -1;
+    func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+    while (1) {
+        if (oldPlayer != player) {
+            func_8010B968_msetup(D_8011AA30_msetup.characters[player] + 0x1C00, 0);
+            func_8010B82C_msetup(0x2413);
+            oldPlayer = player;
+        }
+        buttons = func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+        if (buttons & A_BUTTON) {
+            HuAudFXPlay(2);
+            D_8011AA30_msetup.stars[player] = D_80119FE4_msetup[selection];
+            D_8011A9F2_msetup[player].value = 13;
+            player++;
+            if (player >= 2) {
+                state->result = 0;
+                break;
+            }
+            i = D_8011AA30_msetup.stars[player];
+            for (selection = 0; selection < 5; selection++) {
+                if (i == D_80119FE4_msetup[selection]) {
+                    break;
+                }
+            }
+            selection = selection >= 5 ? 0 : selection;
+        } else if (buttons & B_BUTTON) {
+            HuAudFXPlay(4);
+            player--;
+            if (player < 0) {
+                state->result = -1;
+                break;
+            }
+            D_8011A9F2_msetup[player].value = 14;
+            i = D_8011AA30_msetup.stars[player];
+            for (selection = 0; selection < 5; selection++) {
+                if (i == D_80119FE4_msetup[selection]) {
+                    break;
+                }
+            }
+            selection = selection >= 5 ? 0 : selection;
+        }
+        reverse = 0;
+        if (buttons & 0x900) {
+            selection++;
+            selection = selection >= 5 ? 0 : selection;
+            cursor->work[0] = 4;
+        } else if (buttons & 0x600) {
+            selection--;
+            if (selection < 0) {
+                selection = 4;
+            }
+            cursor->work[0] = 3;
+            reverse = 1;
+        }
+        if (oldSelection != selection) {
+            HuAudFXPlay(1);
+            step = reverse ? -45.0f : 45.0f;
+            for (i = 4, angle = 0; i != 0; i--) {
+                angle += step;
+                if (angle < 0) {
+                    angle += 360.0f;
+                }
+                Hu3DModelRotSet(model, 0, angle, 0);
+                Hu3DModelRotSet(models[0].model, 0, angle + 180.0f, 0);
+                HuPrcVSleep();
+            }
+            func_80032FF8_main(motion, selection);
+            for (i = 4, angle = 180.0f; i != 0; i--) {
+                angle += step;
+                if (angle >= 360.0f) {
+                    angle -= 360.0f;
+                }
+                Hu3DModelRotSet(model, 0, angle, 0);
+                Hu3DModelRotSet(models[0].model, 0, angle + 180.0f, 0);
+                HuPrcVSleep();
+            }
+            oldSelection = selection;
+        }
+        HuPrcVSleep();
+    }
+    cursor->work[0] = 2;
+    cursor->work[1] = 17;
+    for (angle = 0; angle < 180.0f; angle += 180.0f / 7.0f) {
+        Hu3DModelRotSet(model, 0, angle, 0);
+        Hu3DModelRotSet(models[0].model, 0, angle + 180.0f, 0);
+        HuPrcVSleep();
+    }
+    func_8001C258_main(models[1].model, 4, 0);
+    Hu3DModelRotSet(models[1].model, 0, 0, 0);
+    func_8001C258_main(model, 4, 4);
+    HuAudFXPlay(0x2DA);
+    func_8010E8C8_msetup(&models, 2, 7, 360.0f, 400.0f, 1.0f, 0.1f, 2);
+    func_8010DDD8_msetup(cursor);
+    if (motion >= 0) {
+        func_80033430_main(motion);
+    }
+    if (model >= 0) {
+        func_8001ACDC_main(model);
+    }
+    for (i = 0; i < 2; i++) {
+        func_8001ACDC_main(models[i].model);
+    }
+    return 0;
+}
 
 s32 func_80117818_msetup(void) {
     return 0;

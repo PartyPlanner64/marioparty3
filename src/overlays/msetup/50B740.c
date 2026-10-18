@@ -1181,7 +1181,135 @@ s32 func_801145D0_msetup(UnkStarLift *state) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/50B740", func_80114AA0_msetup);
+s32 func_80114AA0_msetup(UnkStarLift *state) {
+    Array2D models;
+    s16 previousButtons;
+    s16 selection;
+    s16 player;
+    s16 oldSelection;
+    s16 oldPlayer;
+    s16 model;
+    s16 anim;
+    omObjData *cursor;
+    u16 buttons;
+    s16 reverse;
+    s32 i;
+    s32 direction;
+    f32 angle;
+    f32 step;
+
+    state->unk4 = 0;
+    selection = D_8011AA30_msetup.stars[0];
+    player = 0;
+    func_8010B998_msetup();
+    func_8010E4BC_msetup(&models, 2, 0);
+    model = models[0].model;
+    anim = HmfAnimRead(HmfModelData[model].hmf, 0x140023, D_8011A6D8_msetup);
+    func_8001C448_main(model);
+    func_80032FC0_main(anim, 1, 1);
+    func_8010E4D8_msetup(models, 2);
+    func_80032FF8_main(anim, selection);
+    cursor = func_8010DE38_msetup(96, 224, 72);
+    HuAudFXPlay(0x2D9);
+    func_8010E8C8_msetup(&models, 2, 15, 720.0f, 565.0f, 0.1f, 1.4f, 1);
+    cursor->work[0] = 1;
+    cursor->work[1] = 36;
+    func_8001C258_main(models[1].model, 4, 4);
+    for (angle = 0.0f; angle < 180.0f; angle += 180.0f / 7.0f) {
+        Hu3DModelRotSet(model, 0, angle, 0);
+        HuPrcVSleep();
+    }
+    Hu3DModelRotSet(model, 0, 180.0f, 0);
+    oldSelection = selection;
+    oldPlayer = -1;
+    func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+    while (1) {
+        if (oldPlayer != player) {
+            func_8010B968_msetup(D_8011AA30_msetup.characters[player] + 0x1C00, 0);
+            func_8010B82C_msetup(0x151C);
+            oldPlayer = player;
+        }
+        buttons = func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+        if (buttons & A_BUTTON) {
+            HuAudFXPlay(2);
+            D_8011AA30_msetup.stars[player] = selection;
+            if (selection != 0) {
+                D_8011A9F2_msetup[player].value = 8;
+            } else {
+                D_8011A9F2_msetup[player].value = 10;
+            }
+            player++;
+            if (player >= 4) {
+                state->unk4 = 0;
+                break;
+            }
+            selection = D_8011AA30_msetup.stars[player];
+        } else if (buttons & B_BUTTON) {
+            HuAudFXPlay(4);
+            player--;
+            if (player < 0) {
+                state->unk4 = -1;
+                break;
+            }
+            D_8011A9F2_msetup[player].value = 9;
+            selection = D_8011AA30_msetup.stars[player];
+        }
+        reverse = 0;
+        if (buttons & (U_JPAD | R_JPAD)) {
+            selection++;
+            selection = selection >= 10 ? 0 : selection;
+            cursor->work[0] = 4;
+        } else if (buttons & (D_JPAD | L_JPAD)) {
+            selection--;
+            if (selection < 0) {
+                selection = 9;
+            }
+            cursor->work[0] = 3;
+            reverse = 1;
+        }
+        if (oldSelection != selection) {
+            HuAudFXPlay(1);
+            direction = reverse;
+            step = 45.0f;
+            if (direction) {
+                step = -45.0f;
+            }
+            i = 4;
+            for (angle = 180.0f; i != 0; i--) {
+                angle += step;
+                Hu3DModelRotSet(model, 0, angle, 0);
+                HuPrcVSleep();
+            }
+            func_80032FF8_main(anim, selection);
+            i = 4;
+            for (angle = 0.0f; i != 0; i--) {
+                angle += step;
+                Hu3DModelRotSet(model, 0, angle, 0);
+                HuPrcVSleep();
+            }
+            oldSelection = selection;
+        }
+        HuPrcVSleep();
+    }
+    cursor->work[0] = 2;
+    cursor->work[1] = 17;
+    for (angle = 180.0f; angle < 360.0f; angle += 180.0f / 7.0f) {
+        Hu3DModelRotSet(model, 0, angle, 0);
+        HuPrcVSleep();
+    }
+    Hu3DModelRotSet(model, 0, 0, 0);
+    func_8001C258_main(models[1].model, 4, 0);
+    HuAudFXPlay(0x2DA);
+    func_8010E8C8_msetup(&models, 2, 7, 360.0f, 400.0f, 1.4f, 0.1f, 1);
+    func_8010DDD8_msetup(cursor);
+    if (anim >= 0) {
+        func_80033430_main(anim);
+    }
+    for (i = 0; i < 2; i++) {
+        func_8001ACDC_main(models[i].model);
+    }
+    return 0;
+}
 
 s32 func_801150A0_msetup(s16 controller) {
     u8 stickX = D_800CBB6E_main[controller];

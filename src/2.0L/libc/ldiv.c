@@ -1,18 +1,26 @@
 #include "common.h"
 #include "stdlib.h"
 
-ldiv_t ldiv(long num, long denom) {
-    ldiv_t res;
+ldiv_t ldiv(long num, long den) {
+    ldiv_t rval;
 
-    res.quot = num / denom;
-    res.rem = num - res.quot * denom;
-
-    if (res.quot < 0 && res.rem > 0) {
-        res.quot += 1;
-        res.rem -= denom;
+    rval.quot = num / den;
+    rval.rem = num - den * rval.quot;
+    if (rval.quot < 0 && rval.rem > 0) {
+        rval.quot++;
+        rval.rem -= den;
     }
-
-    return res;
+    return rval;
 }
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/libc/ldiv", lldiv);
+lldiv_t lldiv(long long num, long long den) {
+    lldiv_t rval;
+
+    rval.quot = num / den;
+    rval.rem = num - den * rval.quot;
+    if (rval.quot < 0 && rval.rem > 0) {
+        rval.quot++;
+        rval.rem -= den;
+    }
+    return rval;
+}

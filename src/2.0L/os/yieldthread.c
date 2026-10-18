@@ -5,13 +5,13 @@ extern void __osRestoreInt(u32);
 extern void __osEnqueueAndYield(OSThread **);
 
 extern OSThread *__osRunningThread;
-extern OSThread *D_800A2DB8_main;
+extern OSThread *__osRunQueue;
 
 void osYieldThread(void) {
     register u32 int_disabled;
 
     int_disabled = __osDisableInt();
     __osRunningThread->state = OS_STATE_RUNNABLE;
-    __osEnqueueAndYield(&D_800A2DB8_main);
+    __osEnqueueAndYield(&__osRunQueue);
     __osRestoreInt(int_disabled);
 }

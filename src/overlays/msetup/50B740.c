@@ -77,10 +77,13 @@ extern char D_8011A7F0_msetup[];
 extern char D_8011A7F8_msetup[];
 extern f32 D_8011A908_msetup;
 extern f32 D_80119F4C_msetup[];
+extern s16 D_80119F6C_msetup[];
+extern s16 D_80119F78_msetup[];
+extern u8 D_8011AA42_msetup;
+extern char D_8011A800_msetup[];
 extern s32 D_80119F3C_msetup[];
 
 #ifdef NON_MATCHING
-extern char D_8011A800_msetup[];
 extern f32 D_80119F60_msetup[];
 extern s32 D_80119F8C_msetup[];
 extern s16 D_80119DFC_msetup[][2];
@@ -90,6 +93,7 @@ extern MsetupModelTarget D_80119DC8_msetup[];
 extern MsetupModelTarget D_80119C48_msetup[];
 #endif
 
+s16 func_80115A9C_msetup(s16, s16, HuMtx4F, s16 *, s16);
 void func_8010E32C_msetup(Array2D *, s32, f32, s32);
 void func_800332D4_main(s16, f32);
 
@@ -1644,7 +1648,191 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/msetup/50B740", D_8011A7F8_msetup);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/msetup/50B740", D_8011A800_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/50B740", func_80115EE0_msetup);
+s32 func_80115EE0_msetup(UnkStarLift *state) {
+    Array2D models;
+    Vec pos;
+    Vec rot;
+    HuMtx4F matrix;
+    s16 previousButtons;
+    s16 anim;
+    s16 selection;
+    s16 phase;
+    s16 model;
+    s16 linkedModel;
+    s16 backModel;
+    Vec *linkedRot;
+    omObjData *cursor;
+    s32 message;
+    s32 i;
+    f32 angle;
+    f32 step;
+
+    state->unk4 = 0;
+    func_8010B998_msetup();
+    func_8010E4BC_msetup(&models, 2, 0);
+    func_8010E4D8_msetup(models, 2);
+    model = func_8000B108_main(0x140008, 0x2A9);
+    linkedModel = model;
+    anim = HmfAnimRead(HmfModelData[linkedModel].hmf, 0x140024, "uramen_CIDX");
+    func_8001C448_main(linkedModel);
+    rot.x = rot.y = rot.z = 0;
+    Hu3DModelRotSet(linkedModel, 0, 0, 0);
+    pos = D_80119B20_msetup;
+    Hu3DModelPosSet(linkedModel, pos.x, pos.y, pos.z);
+    Hu3DModelScaleSet(linkedModel, 0.1f, 0.1f, 0.1f);
+    func_8002367C_main(matrix, func_8001D33C_main(linkedModel, D_8011A7F8_msetup)->unk58);
+    message = 0;
+    switch (D_8011A938_msetup) {
+        case 0:
+            func_80017CD0_main(func_8001D33C_main(linkedModel, D_8011A800_msetup)->unk58, 0, 0, 0);
+            message = 0x1524;
+            break;
+        case 1:
+            func_80017CD0_main(func_8001D33C_main(linkedModel, D_8011A7E0_msetup)->unk58, 0, 0, 0);
+            func_80017CD0_main(func_8001D33C_main(linkedModel, D_8011A7E8_msetup)->unk58, 0, 0, 0);
+            func_80017CD0_main(func_8001D33C_main(linkedModel, D_8011A7F0_msetup)->unk58, 0, 0, 0);
+            message = 0x242E;
+            break;
+    }
+    cursor = func_8010DE38_msetup(96, 224, 72);
+    func_8010B82C_msetup(message);
+    i = 0;
+    func_8010B858_msetup();
+    HuAudFXPlay(0x2D9);
+    func_8010E8C8_msetup(&models, 2, 15, 720.0f, 565.0f, 0.1f, 1.5f, 1);
+    models[0].pos.z -= 1.5f;
+    models[1].pos.z -= 1.5f;
+    backModel = models[1].model;
+    Hu3DModelPosSet(backModel, models[1].pos.x, models[1].pos.y, models[1].pos.z);
+    func_8001C258_main(backModel, 4, 4);
+    linkedModel = models[0].model;
+    Hu3DModelPosSet(linkedModel, models[0].pos.x, models[0].pos.y, models[0].pos.z);
+    pos.y += 565.0f;
+    Hu3DModelPosSet(model, pos.x, pos.y, pos.z);
+    rot.y = 180.0f;
+    Hu3DModelScaleSet(model, 1.5f, 1.5f, 1.5f);
+    linkedRot = &models[0].rot;
+    step = 180.0f / 7.0f;
+    for (; i < 7; i++) {
+        rot.y = step + rot.y;
+        if (360.0f < rot.y) {
+            rot.y -= 360.0f;
+        }
+        Hu3DModelRotSet(model, rot.x, rot.y, rot.z);
+        linkedRot->y = step + linkedRot->y;
+        if (360.0f < linkedRot->y) {
+            linkedRot->y -= 360.0f;
+        }
+        Hu3DModelRotSet(linkedModel, linkedRot->x, linkedRot->y, linkedRot->z);
+        HuPrcVSleep();
+    }
+    rot.y = 0;
+    Hu3DModelRotSet(model, rot.x, rot.y, rot.z);
+    func_8001C258_main(linkedModel, 4, 4);
+    phase = 0;
+    switch (D_8011A938_msetup) {
+        case 0:
+            phase = 0;
+            break;
+        case 1:
+            phase = 2;
+            break;
+    }
+    selection = 0;
+    D_8011A908_msetup = 0;
+    func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+    do {
+        func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+        switch (phase) {
+            case 0:
+                selection = func_801152C4_msetup(model, anim, matrix, &previousButtons, selection);
+                if (selection < 0) {
+                    state->unk4 = -1;
+                } else if (selection < 3) {
+                    D_8011AA30_msetup.totalTurns = D_80119F6C_msetup[selection];
+                    D_8011AA30_msetup.unk16 = selection;
+                    selection = -1;
+                } else {
+                    selection = 0;
+                    phase++;
+                }
+                break;
+            case 1:
+                cursor->work[0] = 1;
+                cursor->work[1] = 36;
+                selection = func_801157B8_msetup(model, anim, &previousButtons, selection, models, cursor);
+                if (selection < 0) {
+                    selection = 3;
+                    phase--;
+                } else {
+                    D_8011AA30_msetup.totalTurns = D_80119F78_msetup[selection];
+                    D_8011AA30_msetup.unk16 = 3;
+                    selection = -1;
+                }
+                cursor->work[0] = 2;
+                cursor->work[1] = 36;
+                break;
+            case 2:
+                selection = func_80115A9C_msetup(model, anim, matrix, &previousButtons, selection);
+                if (selection < 0) {
+                    state->unk4 = -1;
+                } else if (selection < 2) {
+                    D_8011AA42_msetup = selection == 0 ? 20 : 255;
+                    selection = -1;
+                } else {
+                    state->unk4 = -1;
+                    selection = -1;
+                }
+                break;
+        }
+        HuPrcVSleep();
+    } while (selection >= 0);
+    func_8010B998_msetup();
+    linkedModel = models[1].model;
+    func_8001C258_main(linkedModel, 4, 0);
+    Hu3DModelRotSet(linkedModel, 0, 180.0f, 0);
+    for (angle = 0; angle < 180.0f; angle += 180.0f / 7.0f) {
+        Hu3DModelRotSet(model, 0, angle, 0);
+        Hu3DModelRotSet(models[0].model, 0, angle, 0);
+        Hu3DModelRotSet(linkedModel, 0, angle + 180.0f, 0);
+        HuPrcVSleep();
+    }
+    func_8001C258_main(models[0].model, 4, 0);
+    func_8001C258_main(model, 4, 4);
+    models[0].rot.y = 0;
+    models[1].rot.y = 180.0f;
+    models[0].pos.z += 1.5f;
+    models[1].pos.z += 1.5f;
+    HuAudFXPlay(0x2DA);
+    func_8010E8C8_msetup(&models, 2, 7, 360.0f, 400.0f, 1.5f, 0.1f, 2);
+    func_8010DDD8_msetup(cursor);
+    for (i = 0; i < 2; i++) {
+        func_8001ACDC_main(models[i].model);
+    }
+    if (state->unk4 >= 0) {
+        switch (D_8011A938_msetup) {
+            case 0:
+                for (i = 0; i < 9; i++) {
+                    if (D_8011AA30_msetup.totalTurns == D_80119F78_msetup[i]) {
+                        break;
+                    }
+                }
+                i = i < 9 ? i : 0;
+                break;
+            case 1:
+                i = D_8011AA30_msetup.totalTurns == 255 ? 9 : 2;
+                break;
+        }
+        func_80032FF8_main(anim, i);
+        func_8010F320_msetup(D_80119420_msetup, 1, model, anim);
+    } else {
+        if (anim >= 0) {
+            func_80033430_main(anim);
+        }
+        func_8001ACDC_main(model);
+    }
+    return 0;
+}
 
 s32 func_801167B8_msetup(UnkStarLift *state) {
     Array2D models;

@@ -61,8 +61,9 @@ extern s16 D_8011A078_msetup[4][4];
 extern s16 D_8011A8E0_msetup[4][4];
 extern s32 (*D_80119FF0_msetup[])(MsetupMenuState *);
 
-#ifdef NON_MATCHING
 extern char D_8011A6D8_msetup[];
+
+#ifdef NON_MATCHING
 extern char D_8011A7D8_msetup[];
 extern char D_8011A7F8_msetup[];
 extern char D_8011A800_msetup[];
@@ -94,10 +95,11 @@ s16 func_80055810_main(void *); /* extern */
 s32 func_801138F8_msetup(MsetupMenuState *, s32, s32 *, s32);
 s32 func_80113ED4_msetup(UnkStarLift *arg0);
 
+s16 HmfAnimRead(HmfData *, s32, char *);
+
 #ifdef NON_MATCHING
 HmfMotionNode *func_8001D33C_main(s16, char *);
 void func_8002367C_main(HuMtx4F, HuMtx4F);
-s16 HmfAnimRead(HmfData *, s32, char *);
 void func_80112804_msetup(void);
 #endif
 
@@ -770,8 +772,6 @@ s32 func_801132C4_msetup(MsetupMenuState *state) {
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/50B740", func_801132C4_msetup);
 #endif
 
-#ifdef NON_MATCHING
-// State and animation handle use swapped saved registers.
 s32 func_801138F8_msetup(MsetupMenuState *state, s32 dataId, s32 *messages, s32 selectionArg) {
     Array2D models;
     s16 previousButtons;
@@ -823,8 +823,7 @@ s32 func_801138F8_msetup(MsetupMenuState *state, s32 dataId, s32 *messages, s32 
         buttons = func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
         if (buttons & A_BUTTON) {
             HuAudFXPlay(2);
-            state->result = selection;
-            goto selectionComplete;
+            break;
         }
         if (buttons & B_BUTTON) {
             HuAudFXPlay(4);
@@ -862,7 +861,6 @@ s32 func_801138F8_msetup(MsetupMenuState *state, s32 dataId, s32 *messages, s32 
         HuPrcVSleep();
     }
     state->result = selection;
-selectionComplete:
     arrows->work[0] = 2;
     arrows->work[1] = 17;
     for (rotation = 180.0f; rotation < 360.0f; rotation += 180.0f / 7.0f) {
@@ -882,9 +880,6 @@ selectionComplete:
     }
     return 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/50B740", func_801138F8_msetup);
-#endif
 
 s16 func_80113DEC_msetup(MsetupMenuState *state) {
     return func_801138F8_msetup(state, 0x140021, D_80119E58_msetup, 1);

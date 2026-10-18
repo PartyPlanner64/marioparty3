@@ -1,18 +1,16 @@
 #ifndef _OSINT_H
 #define _OSINT_H
 #include "os_internal.h"
-typedef struct __OSEventState
-{
+typedef struct __OSEventState {
     OSMesgQueue *messageQueue;
     OSMesg message;
 } __OSEventState;
-extern struct __osThreadTail
-{
+extern struct __osThreadTail {
     OSThread *next;
     OSPri priority;
 } __osThreadTail;
 
-//maybe should be in exceptasm.h?
+// maybe should be in exceptasm.h?
 extern void __osEnqueueAndYield(OSThread **);
 extern void __osDequeueThread(OSThread **, OSThread *);
 extern void __osEnqueueThread(OSThread **, OSThread *);
@@ -23,9 +21,8 @@ extern void __osSetTimerIntr(OSTime);
 extern OSTime __osInsertTimer(OSTimer *);
 extern void __osTimerInterrupt(void);
 extern u32 __osProbeTLB(void *);
-extern int     __osSpDeviceBusy(void);
+extern int __osSpDeviceBusy(void);
 
-extern OSThread *D_800A2DB0_main;
 extern OSThread *__osRunningThread;
 extern OSThread *__osActiveQueue;
 extern OSThread *__osFaultedThread;
@@ -40,8 +37,7 @@ extern u32 __osTimerCounter;
 
 extern __OSEventState __osEventStateTab[OS_NUM_EVENTS];
 
-
-//not sure if this should be here
+// not sure if this should be here
 extern s32 osViClock;
 extern void __osTimerServicesInit(void);
 extern s32 __osAiDeviceBusy(void);

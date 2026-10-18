@@ -363,7 +363,7 @@ segments:
       - [0x87700, c, 2.0L/io/sprawwrite]
       - [0x87750, c, 2.0L/io/si]
       - [0x87770, hasm, 2.0L/os/stopthread]
-      - [0x87830, c]
+      - [0x87830, c, 2.0L/os/getactivequeue]
       - [0x87840, c, 2.0L/libc/ldiv]
       - [0x87A00, hasm, 2.0L/rmon/rmonrcp]
       - [0x87AA0, c, 2.0L/rmon/rmonbrk]

@@ -24,6 +24,35 @@ typedef struct MsetupPlayerSprites {
     s16 windows[2];
 } MsetupPlayerSprites;
 
+typedef struct MsetupSelectionEntry {
+    s16 group;
+    s16 normal;
+    s16 selected;
+    s16 flags;
+} MsetupSelectionEntry;
+
+typedef struct MsetupSelectionCursor {
+    MsetupSelectionEntry *entries;
+    s16 pos[2];
+    s16 (*positions)[2];
+    s16 selection;
+    s16 state;
+    s16 frames;
+    s16 controller;
+    s16 priority;
+    s16 count;
+    s16 result;
+} MsetupSelectionCursor;
+
+typedef struct MsetupSelectionData {
+    s16 selectionIds[4];
+    s16 selections[4];
+    s16 sprites[4];
+    s16 slots[4];
+    u8 disabled[8];
+    s16 previousButtons;
+} MsetupSelectionData;
+
 extern s16 D_80119FE4_msetup[];
 extern Vec D_80119B20_msetup;
 extern s32 D_80119B44_msetup[];
@@ -92,6 +121,14 @@ extern s32 D_80119B2C_msetup[];
 extern MsetupModelTarget D_80119DC8_msetup[];
 extern MsetupModelTarget D_80119C48_msetup[];
 #endif
+
+extern s32 D_80119CC0_msetup[];
+extern s32 D_80119CE0_msetup[];
+extern s32 D_80119D00_msetup[];
+extern s32 D_80119D20_msetup[];
+extern s32 D_80119AD0_msetup[];
+extern s16 D_80119CB0_msetup[];
+extern s16 D_8011A906_msetup;
 
 s16 func_80115A9C_msetup(s16, s16, HuMtx4F, s16 *, s16);
 void func_8010E32C_msetup(Array2D *, s32, f32, s32);
@@ -314,7 +351,319 @@ void func_8011035C_msetup(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/50B740", func_80110954_msetup);
+void func_80110954_msetup(void) {
+    MsetupSelectionData data;
+    MsetupSelectionCursor *cursor;
+    s16 *position;
+    s32 *messages;
+    s16 sprite;
+    s16 slot;
+    s16 previousState;
+    s16 visible;
+    s16 alpha;
+    s16 alphaDelta;
+    s16 x;
+    s16 y;
+    s16 startX;
+    s16 startY;
+    s16 targetX;
+    s16 targetY;
+    s16 deltaX;
+    s16 deltaY;
+    s16 offsetX;
+    s16 offsetY;
+    s16 previousSelection;
+    s16 frames;
+    s16 updateGlobal;
+    s16 selection;
+    s16 selectedCount;
+    s16 refresh;
+    s16 enabled;
+    s32 i;
+    s16 nextSelection;
+    s16 buttons;
+    f32 weight;
+
+    cursor = HuPrcCurrentGet()->user_data;
+    updateGlobal = 0;
+    switch (D_8011A938_msetup) {
+        case 0:
+        default:
+            messages = D_80119CC0_msetup;
+            break;
+        case 1:
+            messages = D_80119CE0_msetup;
+            updateGlobal = 1;
+            break;
+        case 5:
+            messages = D_80119D00_msetup;
+            break;
+        case 6:
+            messages = D_80119D20_msetup;
+            break;
+    }
+    if (cursor->priority < 0) {
+        sprite = func_8000B838_main(0x11000E);
+        slot = InitEspriteSlot(sprite, 0, 1);
+    } else {
+        sprite = func_8000B838_main(0x140042);
+        slot = InitEspriteSlot(sprite, cursor->priority, 1);
+    }
+    func_8000BCC8_main(slot, 1);
+    position = cursor->pos;
+    offsetX = (cursor->priority & 1) ? 1 : -1;
+    offsetY = (cursor->priority & 2) ? 1 : -1;
+    if (cursor->positions != NULL && cursor->selection >= 0) {
+        cursor->pos[0] = offsetX + cursor->positions[cursor->selection][0];
+        cursor->pos[1] = offsetY + cursor->positions[cursor->selection][1];
+    }
+    x = targetX = position[0];
+    y = targetY = position[1];
+    func_8000BBD4_main(slot, x, y);
+    func_8000BB94_main(slot);
+    visible = 0;
+    alpha = 0;
+    alphaDelta = 0;
+    previousSelection = cursor->selection;
+    frames = 0;
+    previousState = cursor->state;
+    startX = x;
+    startY = y;
+    deltaX = deltaY = 0;
+    selection = previousSelection;
+    cursor->result = 0;
+    selectedCount = 0;
+    enabled = 0;
+    for (i = 0; i < cursor->count; i++) {
+        data.selectionIds[i] = cursor->priority + (s16)(i + 1);
+    }
+    i = 0;
+    HuPrcVSleep();
+    for (; i < 4; i++) {
+        data.sprites[i] = data.slots[i] = -1;
+    }
+    for (i = 0; i < cursor->count; i++) {
+        data.sprites[i] = func_8000B838_main(D_80119AD0_msetup[cursor->priority]);
+        data.slots[i] = InitEspriteSlot(data.sprites[i], 0, 1);
+        func_8000BCC8_main(data.slots[i], 2);
+        func_8000BE5C_main(data.slots[i], 0.75f, 0.75f);
+        func_8000BBFC_main(data.slots[i], 256);
+        func_8000BB94_main(data.slots[i]);
+    }
+    refresh = 0;
+    HuPrcVSleep();
+    if (updateGlobal) {
+        D_8011A906_msetup = selection;
+    }
+    while (1) {
+        if (previousState != cursor->state) {
+            switch (cursor->state) {
+                case 0:
+                    break;
+                case 1:
+                    alphaDelta = 64;
+                    if (!visible) {
+                        if (cursor->result == 1) {
+                            selectedCount--;
+                            i = data.selections[selectedCount];
+                            if (data.selectionIds[selectedCount] == cursor->entries[i].flags) {
+                                cursor->entries[i].flags = 0;
+                                HuSprAttrSet(cursor->entries[i].group, cursor->entries[i].selected, 0x8000);
+                                HuSprAttrReset(cursor->entries[i].group, cursor->entries[i].normal, 0x8000);
+                                func_8000BB94_main(data.slots[selectedCount]);
+                            }
+                        }
+                        cursor->result = 0;
+                        alpha = 0;
+                        func_8000BBFC_main(slot, 0);
+                        func_8000BB54_main(slot);
+                        func_8010D684_msetup(cursor->controller, &data.previousButtons);
+                        func_8010D684_msetup(cursor->controller, &data.previousButtons);
+                        visible = 1;
+                        refresh = 1;
+                        selection = previousSelection;
+                        enabled = 1;
+                        if (!(cursor->entries[selection].flags & 0xFFEF)) {
+                            cursor->entries[selection].flags = 0x10;
+                        }
+                    }
+                    break;
+                case 2:
+                    if (visible) {
+                        alphaDelta = -64;
+                        visible = 0;
+                        enabled = 0;
+                        if (!(cursor->entries[selection].flags & 0xFFEF)) {
+                            cursor->entries[selection].flags = 0;
+                        }
+                        HuSprAttrSet(cursor->entries[selection].group, cursor->entries[selection].selected, 0x8000);
+                        HuSprAttrReset(cursor->entries[selection].group, cursor->entries[selection].normal, 0x8000);
+                    }
+                    break;
+                case -1:
+                    func_8000C184_main(slot);
+                    HuSprKill(sprite);
+                    for (i = 0; i < 4; i++) {
+                        if (data.slots[i] >= 0) {
+                            func_8000C184_main(data.slots[i]);
+                        }
+                        if (data.sprites[i] >= 0) {
+                            HuSprKill(data.sprites[i]);
+                        }
+                    }
+                    cursor->state = 100;
+                    while (1) {
+                        HuPrcVSleep();
+                    }
+                    break;
+            }
+            previousState = cursor->state;
+        }
+        if (visible) {
+            if (refresh) {
+                if (cursor->priority == 4) {
+                    func_8010B82C_msetup(messages[selection]);
+                }
+                if (updateGlobal) {
+                    D_8011A906_msetup = selection;
+                }
+                HuSprAttrSet(cursor->entries[selection].group, cursor->entries[selection].normal, 0x8000);
+                HuSprAttrReset(cursor->entries[selection].group, cursor->entries[selection].selected, 0x8000);
+                refresh = 0;
+            }
+            buttons = func_8010D684_msetup(cursor->controller, &data.previousButtons);
+            if (buttons & B_BUTTON) {
+                HuAudFXPlay(4);
+                if (selectedCount) {
+                    selectedCount--;
+                    i = data.selections[selectedCount];
+                    if (data.selectionIds[selectedCount] == cursor->entries[i].flags) {
+                        cursor->entries[i].flags = 0;
+                        if (i == selection) {
+                            cursor->entries[i].flags = 0x10;
+                        } else {
+                            HuSprAttrSet(cursor->entries[i].group, cursor->entries[i].selected, 0x8000);
+                            HuSprAttrReset(cursor->entries[i].group, cursor->entries[i].normal, 0x8000);
+                        }
+                        func_8000BB94_main(data.slots[selectedCount]);
+                    }
+                    cursor->result = 0;
+                    enabled = 1;
+                } else {
+                    cursor->result = -1;
+                }
+            } else if (enabled) {
+                if ((buttons & A_BUTTON) && !(cursor->entries[selection].flags & 0xFFEF)) {
+                    if (cursor->priority != 4) {
+                        func_8004AC5C_main(D_80119CB0_msetup[selection], cursor->controller);
+                        RepeatVibrator(cursor->controller, 5, 0, 5);
+                    } else {
+                        HuAudFXPlay(D_80119CB0_msetup[selection]);
+                    }
+                    cursor->entries[selection].flags = data.selectionIds[selectedCount];
+                    HuSprAttrSet(cursor->entries[selection].group, cursor->entries[selection].normal, 0x8000);
+                    HuSprAttrReset(cursor->entries[selection].group, cursor->entries[selection].selected, 0x8000);
+                    data.selections[selectedCount] = selection;
+                    func_8000BBD4_main(data.slots[selectedCount], targetX, targetY + 13);
+                    func_8000BB54_main(data.slots[selectedCount]);
+                    selectedCount++;
+                    if (selectedCount >= cursor->count) {
+                        cursor->result = 1;
+                        enabled = 0;
+                    } else {
+                        for (i = selection + 1; i < 8; i++) {
+                            if (cursor->entries[i].flags == 0) {
+                                break;
+                            }
+                        }
+                        if (i < 8) {
+                            selection = i;
+                        } else {
+                            for (i = 0; i < selection; i++) {
+                                if (cursor->entries[i].flags == 0) {
+                                    break;
+                                }
+                            }
+                            if (i >= 8) {
+                                i = 0;
+                            }
+                            selection = i;
+                        }
+                        cursor->selection = selection;
+                        cursor->entries[(s16)i].flags = 0x10;
+                        refresh = 1;
+                    }
+                }
+            }
+            if (enabled && (buttons & (U_JPAD | D_JPAD | L_JPAD | R_JPAD))) {
+                for (i = 0; i < 8; i++) {
+                    data.disabled[i] = cursor->entries[i].flags;
+                }
+                nextSelection = func_8010D4DC_msetup(cursor->positions, data.disabled, 8, selection, cursor->controller, buttons);
+                if (nextSelection >= 0) {
+                    HuAudFXPlay(1);
+                    if (!(cursor->entries[selection].flags & 0xFFEF)) {
+                        cursor->entries[selection].flags = 0;
+                    }
+                    HuSprAttrSet(cursor->entries[selection].group, cursor->entries[selection].selected, 0x8000);
+                    HuSprAttrReset(cursor->entries[selection].group, cursor->entries[selection].normal, 0x8000);
+                    selection = nextSelection;
+                    cursor->selection = selection;
+                    cursor->entries[selection].flags = 0x10;
+                    refresh = 1;
+                }
+            }
+        }
+        if (previousSelection != cursor->selection) {
+            s16 current = cursor->selection;
+            previousSelection = current;
+            if (cursor->positions != NULL) {
+                position[0] = offsetX + cursor->positions[current][0];
+                position[1] = offsetY + cursor->positions[current][1];
+            }
+            selection = previousSelection;
+        }
+        if (targetX != position[0] || targetY != position[1]) {
+            targetX = position[0];
+            targetY = position[1];
+            frames = cursor->frames;
+            if (frames) {
+                startX = x;
+                startY = y;
+                deltaX = targetX - x;
+                deltaY = targetY - y;
+            }
+        }
+        if (alphaDelta) {
+            alpha += alphaDelta;
+            if (alpha >= 256) {
+                alpha = 255;
+                alphaDelta = 0;
+                cursor->state = 0;
+            } else if (alpha < 0) {
+                alpha = 0;
+                alphaDelta = 0;
+                func_8000BB94_main(slot);
+                visible = 0;
+                cursor->state = 0;
+            }
+            func_8000BBFC_main(slot, alpha);
+        }
+        if ((x != targetX) | (y != targetY)) {
+            if (!frames) {
+                x = targetX;
+                y = targetY;
+            } else {
+                frames--;
+                weight = sindf((90.0f / cursor->frames) * (cursor->frames - frames));
+                x = startX + deltaX * weight;
+                y = startY + deltaY * weight;
+            }
+            func_8000BBD4_main(slot, x, y);
+        }
+        HuPrcVSleep();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/50B740", func_80111650_msetup);
 

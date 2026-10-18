@@ -25,6 +25,7 @@ void func_8010B82C_msetup(s32 message);
 s32 func_8010B858_msetup(void);
 void func_8010B968_msetup(u32 arg0, s8 arg1);
 void func_8010B998_msetup(void);
+s16 func_8010D4DC_msetup(s16 positions[][2], u8 *disabled, s16 count, s16 selection, s16 controller, s16 buttons);
 void func_8010D6D0_msetup(void);
 void func_8010DDD8_msetup(omObjData *object);
 omObjData *func_8010DE38_msetup(s32 leftX, s32 rightX, s32 y);

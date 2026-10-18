@@ -119,7 +119,6 @@ extern s16 D_80119DFC_msetup[][2];
 extern s16 (*D_80119E0C_msetup[])[2];
 extern s32 D_80119B2C_msetup[];
 extern MsetupModelTarget D_80119DC8_msetup[];
-extern MsetupModelTarget D_80119C48_msetup[];
 #endif
 
 extern s32 D_80119CC0_msetup[];
@@ -129,6 +128,17 @@ extern s32 D_80119D20_msetup[];
 extern s32 D_80119AD0_msetup[];
 extern s16 D_80119CB0_msetup[];
 extern s16 D_8011A906_msetup;
+
+extern MsetupModelTarget D_80119C48_msetup[];
+extern MsetupModelTarget D_80119C28_msetup[];
+extern u8 D_80119C68_msetup[];
+extern s32 D_80119C70_msetup[];
+extern char *D_80119D68_msetup[];
+extern s32 D_80119D88_msetup[];
+extern s32 D_80119DA8_msetup[];
+extern s32 D_80119DB8_msetup[];
+extern Process *D_8011A900_msetup;
+extern MsetupMenuState D_8011A904_msetup;
 
 s16 func_80115A9C_msetup(s16, s16, HuMtx4F, s16 *, s16);
 void func_8010E32C_msetup(Array2D *, s32, f32, s32);
@@ -665,7 +675,409 @@ void func_80110954_msetup(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/50B740", func_80111650_msetup);
+s32 func_80111650_msetup(MsetupMenuState *state) {
+    MsetupLinkedModel models[2];
+    MsetupSelectionEntry entries[8];
+    MsetupSelectionCursor cursors[4];
+    Process *processes[4];
+    s16 sprites[16];
+    Vec2f position;
+    s16 positions[8][2];
+    s32 spriteIds[2];
+    s8 selections[4];
+    s16 model;
+    s32 *messages;
+    s16 group;
+    s16 cpuCount;
+    s16 humanCount;
+    s16 initialState;
+    s16 slot;
+    s16 sprite;
+    s32 j;
+    s16 index;
+    s16 menuState;
+    s32 member;
+    s16 spriteIndex;
+    s32 i;
+    s16 flags;
+    s16 alpha;
+    s16 count;
+    s16 firstCpuIndex;
+    s16 characterSprite;
+    MsetupSelectionCursor *cursor;
+
+    func_8010B998_msetup();
+    state->result = 0;
+    D_8011A900_msetup = NULL;
+    slot = sprite = -1;
+    switch (D_8011A938_msetup) {
+        default:
+        case 0:
+            messages = D_80119DA8_msetup;
+            break;
+        case 1:
+            messages = D_80119DB8_msetup;
+            D_8011A904_msetup.state = 0;
+            D_8011A904_msetup.unk02 = 0;
+            D_8011A900_msetup = omAddPrcObj(func_8011035C_msetup, 0x3F00, 0x600, 0);
+            D_8011A900_msetup->user_data = &D_8011A904_msetup;
+            break;
+    }
+    func_8010E4BC_msetup(&models, 2, 90.0f);
+    func_8010E4D8_msetup(models, 2);
+    model = func_8000B108_main(0x140007, 0x289);
+    func_8001C448_main(model);
+    func_8001C258_main(model, 4, 4);
+    Hu3DModelScaleSet(model, 1.2f, 1.2f, 1.2f);
+    Hu3DModelPosSet(model, 0, 300, -280);
+    func_8001C814_main(model, 1, 1);
+    group = HuSprGrpCreate(16, 0);
+    for (i = 0; i < 8; i++) {
+        func_8010F43C_msetup(model, D_80119D68_msetup[i], &position);
+        spriteIds[0] = D_80119D88_msetup[i];
+        spriteIds[1] = D_80119C70_msetup[i];
+        spriteIndex = 0;
+        if (i == 3) {
+            spriteIndex = -(_CheckFlag(0x2E) == 0);
+        } else if (i == 7) {
+            if (!_CheckFlag(0x2F)) {
+                spriteIndex = -1;
+            }
+        }
+        if (spriteIndex == -1) {
+            spriteIds[0] = 0x14001C;
+            spriteIds[1] = 0x14001C;
+        }
+        entries[i].group = group;
+        entries[i].normal = i;
+        entries[i].selected = i + 8;
+        entries[i].flags = spriteIndex;
+        positions[i][0] = position.x + 6;
+        positions[i][1] = position.y - 2;
+        for (j = 0, member = i; j < 2; j++, member += 8) {
+            characterSprite = func_8000B838_main(spriteIds[j]);
+            sprites[member] = characterSprite;
+            func_80055458_main(group, member, 0x100);
+            HuSprAttrReset(group, member, 0xFFFF);
+            HuSprAttrSet(group, member, 0x9000);
+            HuSprScaleSet(group, member, 1.0f, 1.0f);
+            func_800550F4_main(group, member, 0);
+            func_80055024_main(group, member, characterSprite, 0);
+            HuSprPriSet(group, member, 600);
+            func_80054904_main(group, member, position.x, position.y);
+        }
+        HuPrcVSleep();
+    }
+    for (i = 0; i < 4; i++) {
+        processes[i] = NULL;
+        selections[i] = -1;
+    }
+    humanCount = D_8011AA30_msetup.humanCount;
+    cpuCount = D_8011AA30_msetup.cpuCount;
+    count = humanCount;
+    firstCpuIndex = humanCount;
+    if (cpuCount) {
+        count = firstCpuIndex + 1;
+    }
+    for (i = 0; i < humanCount; i++) {
+        if (entries[i].flags == 0) {
+            selections[i] = i;
+        } else {
+            for (index = i + 1; index < 8; index++) {
+                if (entries[index].flags == 0) {
+                    break;
+                }
+            }
+            if (index >= 8) {
+                index = i;
+            }
+            selections[i] = index;
+        }
+    }
+    for (i = 0; i < count; i++) {
+        processes[i] = omAddPrcObj(func_80110954_msetup, 0x3F00, 0x800, 0);
+        cursor = &cursors[i];
+        processes[i]->user_data = cursor;
+        cursor->entries = entries;
+        cursor->positions = positions;
+        cursor->state = 0;
+        if (i < humanCount) {
+            cursor->priority = i;
+            cursor->controller = D_8011AA30_msetup.controllerPorts[i];
+            cursor->selection = selections[i];
+            cursor->frames = 4;
+            cursor->count = 1;
+        } else {
+            cursor->priority = 4;
+            cursor->controller = D_8011A948_msetup;
+            cursor->selection = 0;
+            cursor->frames = 0;
+            cursor->count = cpuCount;
+        }
+        cursor->result = 0;
+    }
+    HuAudFXPlay(0x2D9);
+    func_8010E8C8_msetup(&models, 2, 15, 720, 565, 0.1f, 1.0f, 1);
+    Hu3DModelPosSet(model, 0, 300, -280);
+    func_8001C258_main(model, 4, 0);
+    func_8010E52C_msetup(models, D_80119C28_msetup, 2, 7, &model, 1, 0.1f, 1.2f);
+    for (i = 0; i < 8; i++) {
+        HuSprAttrReset(group, i, 0x8000);
+    }
+    for (alpha = 0; alpha < 256; alpha += 36) {
+        for (i = 0; i < 8; i++) {
+            func_80055458_main(group, i, alpha);
+        }
+        HuPrcVSleep();
+    }
+    for (i = 0; i < 8; i++) {
+        func_80055458_main(group, i, 256);
+    }
+    switch (D_8011A938_msetup) {
+        default:
+        case 0:
+            initialState = 0;
+            menuState = 0;
+            break;
+        case 1:
+            initialState = 2;
+            menuState = 2;
+            D_8011A904_msetup.unk02 = 0;
+            D_8011A904_msetup.state = 1;
+            break;
+        case 6:
+            initialState = 3;
+            menuState = 3;
+            i = D_8011AA30_msetup.characters[0];
+            for (index = 0; index < 8; index++) {
+                if (D_80119C68_msetup[index] == i) {
+                    break;
+                }
+            }
+            index = index < 8 ? index : 0;
+            entries[index].flags = 1;
+            sprite = func_8000B838_main(D_80119AD0_msetup[0]);
+            slot = InitEspriteSlot(sprite, 0, 1);
+            func_8000BCC8_main(slot, 2);
+            func_8000BE5C_main(slot, 0.75f, 0.75f);
+            func_8000BBFC_main(slot, 256);
+            func_8000BBD4_main(slot, positions[index][0], positions[index][1] + 12);
+            HuSprAttrSet(group, entries[index].normal, 0x8000);
+            HuSprAttrReset(group, entries[index].selected, 0x8000);
+            break;
+    }
+    do {
+        switch (menuState) {
+            case 0:
+                func_8010B82C_msetup(messages[0]);
+                func_8010B858_msetup();
+                for (i = 0; i < humanCount; i++) {
+                    cursors[i].state = 1;
+                }
+                do {
+                    HuPrcVSleep();
+                    index = 0;
+                    flags = 1;
+                    for (i = 0; i < humanCount; i++) {
+                        if (cursors[i].result > 0) {
+                            index++;
+                        }
+                    }
+                    flags = cursors[0].result < 0 ? 0 : flags;
+                } while ((flags != 0) & (index < humanCount));
+                for (i = 0; i < humanCount; i++) {
+                    cursors[i].state = 2;
+                    spriteIndex = cursors[i].priority + 1;
+                    for (index = 0; index < 8; index++) {
+                        if (spriteIndex == entries[index].flags) {
+                            break;
+                        }
+                    }
+                    D_8011AA30_msetup.characters[i] = D_80119C68_msetup[index];
+                    D_8011AA30_msetup.cpuDifficulty[i] = 0xFF;
+                }
+                menuState = cpuCount ? 1 : -1;
+                if (!flags) {
+                    menuState = -1;
+                    state->result = menuState;
+                }
+                break;
+            case 1:
+                func_8010B82C_msetup(messages[cpuCount]);
+                func_8010B858_msetup();
+                cursor = &cursors[firstCpuIndex];
+                for (i = 0; i < 8; i++) {
+                    if (entries[i].flags == 0) {
+                        break;
+                    }
+                }
+                i = i < 8 ? i : 0;
+                cursor->frames = 0;
+                cursor->selection = i;
+                HuPrcVSleep();
+                cursor->frames = 4;
+                cursor->state = 1;
+                do {
+                    HuPrcVSleep();
+                } while (cursor->result == 0);
+                cursor->state = 2;
+                if (cursor->result < 0) {
+                    menuState = initialState;
+                } else {
+                    for (index = 0; index < 8; index++) {
+                        if (cursor->priority < entries[index].flags) {
+                            i = firstCpuIndex + (s16)(entries[index].flags - cursor->priority - 1);
+                            if (i < 4) {
+                                D_8011AA30_msetup.characters[i] = D_80119C68_msetup[index];
+                                D_8011AA30_msetup.cpuDifficulty[i] = 1;
+                            }
+                        }
+                    }
+                    menuState = -1;
+                }
+                break;
+            case 2:
+                func_8010B82C_msetup(messages[0]);
+                func_8010B858_msetup();
+                menuState = cpuCount ? 1 : -1;
+                for (index = 0; index < humanCount; index++) {
+                    cursor = &cursors[index];
+                    spriteIndex = cursor->priority + 1;
+                    for (i = 0; i < 8; i++) {
+                        if (spriteIndex == entries[i].flags) {
+                            break;
+                        }
+                    }
+                    if (i >= 8) {
+                        for (i = 0; i < 8; i++) {
+                            if (entries[i].flags == 0) {
+                                break;
+                            }
+                        }
+                        i = i < 8 ? i : 0;
+                    }
+                    cursor->frames = 0;
+                    cursor->selection = i;
+                    HuPrcVSleep();
+                    cursor->frames = 4;
+                    cursor->state = 1;
+                    do {
+                        HuPrcVSleep();
+                    } while (cursor->result == 0);
+                    cursor->state = 2;
+                    if (cursor->result < 0) {
+                        index--;
+                        if (index < 0) {
+                            menuState = -1;
+                            state->result = menuState;
+                            break;
+                        }
+                        index--;
+                    } else {
+                        spriteIndex = cursors[index].priority + 1;
+                        for (i = 0; i < 8; i++) {
+                            if (spriteIndex == entries[i].flags) {
+                                break;
+                            }
+                        }
+                        D_8011AA30_msetup.characters[index] = D_80119C68_msetup[i];
+                        D_8011AA30_msetup.cpuDifficulty[index] = 0xFF;
+                    }
+                }
+                break;
+            case 3:
+                func_8010B82C_msetup(messages[cpuCount]);
+                func_8010B858_msetup();
+                cursor = &cursors[firstCpuIndex];
+                for (i = 0; i < 8; i++) {
+                    if (entries[i].flags == 0) {
+                        break;
+                    }
+                }
+                i = i < 8 ? i : 0;
+                cursor->frames = 0;
+                cursor->selection = i;
+                HuPrcVSleep();
+                cursor->frames = 4;
+                cursor->state = 1;
+                do {
+                    HuPrcVSleep();
+                } while (cursor->result == 0);
+                cursor->state = 2;
+                if (cursor->result < 0) {
+                    func_8010B82C_msetup(0x1501);
+                    if (func_8010B858_msetup() != 0) {
+                        menuState = 3;
+                        break;
+                    }
+                    state->result = -1;
+                    goto finish_cpu;
+                } else {
+                    for (index = 0; index < 8; index++) {
+                        if (cursor->priority < entries[index].flags) {
+                            i = firstCpuIndex + (s16)(entries[index].flags - cursor->priority - 1);
+                            if (i < 4) {
+                                D_8011AA30_msetup.characters[i] = D_80119C68_msetup[index];
+                                D_8011AA30_msetup.cpuDifficulty[i] = 1;
+                            }
+                        }
+                    }
+                }
+            finish_cpu:
+                menuState = -1;
+                func_8000BB94_main(slot);
+                break;
+        }
+        HuPrcVSleep();
+    } while (menuState >= 0);
+    func_8010B998_msetup();
+    if (D_8011A900_msetup != NULL) {
+        D_8011A904_msetup.state = 2;
+    }
+    for (i = 0; i < 4; i++) {
+        if (processes[i] != NULL) {
+            cursors[i].state = -1;
+        }
+    }
+    for (alpha = 256; alpha > 0; alpha -= 36) {
+        for (i = 0; i < 16; i++) {
+            func_80055458_main(group, i, alpha);
+        }
+        HuPrcVSleep();
+    }
+    for (i = 0; i < 16; i++) {
+        HuSprAttrSet(group, i, 0x8000);
+    }
+    func_8010E52C_msetup(models, D_80119C48_msetup, 2, 7, &model, 1, 1.2f, 0.0f);
+    if (D_8011A900_msetup != NULL) {
+        D_8011A904_msetup.state = 3;
+    }
+    HuAudFXPlay(0x2DA);
+    func_8010E8C8_msetup(&models, 2, 7, 360, 400, 1.0f, 0.1f, 1);
+    if (D_8011A900_msetup != NULL) {
+        omDelPrcObj(D_8011A900_msetup);
+    }
+    for (i = 0; i < 4; i++) {
+        if (processes[i] != NULL) {
+            omDelPrcObj(processes[i]);
+        }
+    }
+    for (i = 0; i < 2; i++) {
+        func_8001ACDC_main(models[i].model);
+    }
+    HuSprGrpKill(group);
+    for (i = 0; i < 16; i++) {
+        HuSprKill(sprites[i]);
+    }
+    func_8001ACDC_main(model);
+    if (slot >= 0) {
+        func_8000C184_main(slot);
+    }
+    if (sprite >= 0) {
+        HuSprKill(sprite);
+    }
+    return 0;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/msetup/50B740", D_8011A6D8_msetup);
 

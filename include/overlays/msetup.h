@@ -4,6 +4,13 @@
 #include "ultra64.h"
 #include "math.h"
 
+typedef struct MsetupCameraPreset {
+    Vec rot;
+    Vec center;
+    f32 zoom;
+    f32 fov;
+} MsetupCameraPreset;
+
 typedef struct MsetupPlayerConfig {
     u8 controllerPorts[4];
     u8 characters[4];

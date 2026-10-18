@@ -20,13 +20,6 @@ typedef struct MsetupSceneryState {
     Vec outerPositions[6];
 } MsetupSceneryState;
 
-typedef struct MsetupCameraPreset {
-    Vec rot;
-    Vec center;
-    f32 zoom;
-    f32 fov;
-} MsetupCameraPreset;
-
 typedef union MsetupCameraValues {
     MsetupCameraPreset preset;
     f32 components[8];

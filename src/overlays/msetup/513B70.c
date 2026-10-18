@@ -1,4 +1,29 @@
 #include "common.h"
+#include "overlays/msetup_internal.h"
+
+typedef struct MsetupStoryMenu {
+    Vec pos;
+    s16 state;
+    s16 type;
+    s16 result;
+    s16 unk12;
+} MsetupStoryMenu;
+
+extern MsetupCameraPreset D_8011A554_msetup;
+extern s16 D_8011A910_msetup;
+extern s16 D_8011A948_msetup;
+extern s16 D_8011AA48_msetup;
+extern s16 D_8011A944_msetup;
+extern s16 D_8011A946_msetup;
+extern s16 D_8011AA4C_msetup;
+extern s16 D_80119410_msetup;
+extern u8 D_800CE20A_main;
+extern u8 D_8011A3B0_msetup[];
+
+void func_80106260_msetup(MsetupCameraPreset *);
+void func_80117A3C_msetup(void);
+void func_8000BC48_main(u16, s32);
+void func_8006105C_main(s16, s32);
 
 extern s16 D_800D418E_main;
 
@@ -20,4 +45,205 @@ void func_80117910_msetup(s16 group, s16 member, s16 camera, f32 x, f32 y, f32 z
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/513B70", func_80117A3C_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/513B70", func_80118D48_msetup);
+void func_80118D48_msetup(void) {
+    MsetupStoryMenu first;
+    MsetupStoryMenu second;
+    MsetupStoryMenu third;
+    s16 unused[8];
+    s16 unused2[8];
+    s32 i;
+    u16 sprite;
+    u16 selection;
+    s16 previous;
+    s32 step;
+
+    D_800CD280_main = 1;
+    func_80106260_msetup(&D_8011A554_msetup);
+    for (i = 0; i < 6; i++) {
+        unused2[6] = -1;
+        unused[6] = -1;
+    }
+    // Preserve the original scratch initialization and stack layout.
+    (void)unused;
+    (void)unused2;
+    memset(&first, 0, sizeof(first));
+    omAddPrcObj(func_80117A3C_msetup, 0x3F00, 0x800, 0)->user_data = &first;
+    first.type = 0;
+    first.pos.x = 0;
+    first.pos.y = 0;
+    first.pos.z = 0;
+    memset(&second, 0, sizeof(second));
+    omAddPrcObj(func_80117A3C_msetup, 0x3F00, 0x800, 0)->user_data = &second;
+    second.type = 1;
+    second.pos.x = 0;
+    second.pos.y = 0;
+    second.pos.z = 0;
+    memset(&third, 0, sizeof(third));
+    omAddPrcObj(func_80117A3C_msetup, 0x3F00, 0x800, 0)->user_data = &third;
+    third.type = 2;
+    third.pos.x = 0;
+    third.pos.y = 0;
+    third.pos.z = 0;
+    sprite = InitEspriteSlot(func_8000B838_main(0x140067), 0, 0);
+    func_8000BC48_main(sprite, 0x4000);
+    func_8000BBD4_main(sprite, 160, 120);
+    D_8011A910_msetup = func_80060880_main(160, 204, 19);
+    func_8005FE54_main(D_8011A910_msetup, 1 << D_8011A948_msetup);
+    func_8006105C_main(D_8011A910_msetup, 0xE0);
+    func_8005C060_main(D_8011A910_msetup, 2, 255, 64, 64);
+    func_8005C060_main(D_8011A910_msetup, 4, 96, 255, 64);
+    func_8005C060_main(D_8011A910_msetup, 6, 255, 255, 64);
+    func_80060C14_main(D_8011A910_msetup, 0);
+    HuAudSeqPlay(10);
+    WipeColorSet(255, 255, 255);
+    WipeCreateIn(D_8011AA48_msetup, 16);
+    while (WipeStatGet()) {
+        HuPrcVSleep();
+    }
+    step = 0;
+    D_800CD280_main = 0;
+    do {
+        switch (step) {
+            case 0:
+                func_8005B43C_main(D_8011A910_msetup, 0x6000, -1, -1);
+                while (func_8005E0C0_main(D_8011A910_msetup)) {
+                    HuPrcVSleep();
+                }
+                step++;
+                break;
+            case 1:
+                HuAudFXPlay(0x213);
+                first.state = 2;
+                do {
+                    HuPrcVSleep();
+                } while (first.state);
+                func_8005B43C_main(D_8011A910_msetup, 0x6001, -1, -1);
+                first.state = 5;
+                do {
+                    HuPrcVSleep();
+                } while (first.state);
+                func_8005D294_main(D_8011A910_msetup);
+                if (first.result >= 0) {
+                    first.state = 3;
+                    step++;
+                }
+                break;
+            case 2:
+                HuAudFXPlay(0x213);
+                second.state = 2;
+                do {
+                    HuPrcVSleep();
+                } while (second.state);
+                func_8005B43C_main(D_8011A910_msetup, 0x6002, -1, -1);
+                second.state = 5;
+                do {
+                    HuPrcVSleep();
+                } while (second.state);
+                func_8005D294_main(D_8011A910_msetup);
+                if (second.result < 0) {
+                    second.state = 3;
+                    step--;
+                } else {
+                    first.state = 4;
+                    second.state = 4;
+                    step++;
+                }
+                break;
+            case 3:
+                HuAudFXPlay(0x213);
+                third.state = 2;
+                do {
+                    HuPrcVSleep();
+                } while (third.state);
+                func_8005B43C_main(D_8011A910_msetup, 0x6004, -1, -1);
+                while (func_8005E0C0_main(D_8011A910_msetup)) {
+                    HuPrcVSleep();
+                }
+                previous = -1;
+                third.state = 5;
+                do {
+                    if (previous != third.result) {
+                        previous = third.result;
+                        if (third.result != 0) {
+                            func_8005B43C_main(D_8011A910_msetup, 0x6006, -1, -1);
+                        } else {
+                            func_8005B43C_main(D_8011A910_msetup, 0x6005, -1, -1);
+                        }
+                    }
+                    HuPrcVSleep();
+                } while (third.state);
+                func_8005D294_main(D_8011A910_msetup);
+                if (third.result < 0) {
+                    third.state = 3;
+                    first.state = 3;
+                    step--;
+                } else {
+                    third.state = 7;
+                    step++;
+                }
+                break;
+            case 4:
+                HuAudFXPlay(0x213);
+                first.state = 7;
+                second.state = 7;
+                do {
+                    HuPrcVSleep();
+                } while (second.state);
+                func_8005B43C_main(D_8011A910_msetup, 0x6003, -1, -1);
+                while (func_8005E0C0_main(D_8011A910_msetup)) {
+                    HuPrcVSleep();
+                }
+                if (func_8005E1D8_main(D_8011A910_msetup, 0, 0) != 0) {
+                    first.state = 4;
+                    second.state = 4;
+                    step--;
+                } else {
+                    step = -2;
+                    selection = first.result;
+                    if (selection < 6) {
+                        GwStory.unk1 = D_8011A3B0_msetup[(s16)selection];
+                        GwStory.unk2 = second.result;
+                        GwStory.unk0 = 0;
+                        GwStory.unkF = 0;
+                        for (i = 0; i < 12; i++) {
+                            GwStory.unk3[i] = 0;
+                        }
+                        GwSystem.playMode = 5;
+                        if (third.result == 1) {
+                            _SetFlag(0x29);
+                        } else {
+                            _ClearFlag(0x29);
+                        }
+                        _ClearFlag(0x18);
+                        _ClearFlag(0x28);
+                        _ClearFlag(0);
+                        GwStory.unk65 = GwStory.unk1;
+                        GwStory.unk64 = 0;
+                        GwStory.unk73 = 0;
+                        GwStory.unk66 = GwStory.unk2;
+                        for (i = 0; i < 12; i++) {
+                            GwStory.unk67[i] = 0;
+                        }
+                        func_8005035C_main(1);
+                    }
+                    HuAudFXPlay(0x214);
+                    first.state = 6;
+                    second.state = 6;
+                    third.state = 6;
+                }
+                func_8005D294_main(D_8011A910_msetup);
+                break;
+        }
+        HuPrcVSleep();
+    } while (step >= 0);
+    if (step < -1) {
+        D_8011A944_msetup = 1;
+        D_8011AA4C_msetup = 0x75;
+        D_8011A946_msetup = 0;
+        D_800CE20A_main = 1;
+    }
+    D_80119410_msetup = 1;
+    while (1) {
+        HuPrcVSleep();
+    }
+}

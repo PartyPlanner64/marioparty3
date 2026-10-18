@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game/window.h"
+#include "game/vibrator.h"
 #include "overlays/msetup_internal.h"
 
 typedef struct UnkStarLift {
@@ -60,6 +61,11 @@ extern s16 D_8011A058_msetup[4][4];
 extern s16 D_8011A078_msetup[4][4];
 extern s16 D_8011A8E0_msetup[4][4];
 extern s32 (*D_80119FF0_msetup[])(MsetupMenuState *);
+extern f32 D_8011A0B8_msetup[];
+extern s32 D_80119FDC_msetup[];
+extern s32 D_80119FD4_msetup[];
+extern MsetupModelTarget D_80119F94_msetup[];
+extern MsetupModelTarget D_80119FB4_msetup[];
 
 extern char D_8011A6D8_msetup[];
 extern char D_8011A7D8_msetup[];
@@ -81,6 +87,9 @@ extern s32 D_80119B2C_msetup[];
 extern MsetupModelTarget D_80119DC8_msetup[];
 extern MsetupModelTarget D_80119C48_msetup[];
 #endif
+
+void func_8010E32C_msetup(Array2D *, s32, f32, s32);
+void func_800332D4_main(s16, f32);
 
 void func_8010F43C_msetup(s16 model, char *node, Vec2f *screenPos);
 void func_80017D24_main(HuMtx4F, f32, f32, f32);
@@ -1635,7 +1644,184 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/msetup/50B740", D_8011A800_msetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/50B740", func_80115EE0_msetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/50B740", func_801167B8_msetup);
+s32 func_801167B8_msetup(UnkStarLift *state) {
+    Array2D models;
+    s16 previousButtons;
+    s32 i;
+    s16 selection;
+    s16 oldSelection;
+    s16 model;
+    s16 connected;
+    omObjData *cursor;
+    s16 refresh;
+    u16 buttons;
+    f32 angle;
+    f32 scale;
+    f32 oldScale;
+    s32 count;
+
+    connected = D_8011AA30_msetup.connectedCount;
+    cursor = NULL;
+    if (state->unk4 < 0) {
+        i = D_8011AA30_msetup.humanCount;
+        for (selection = 0; selection < 2; selection++) {
+            if (i == D_8011A0B8_msetup[selection]) {
+                break;
+            }
+        }
+        selection = selection >= 2 ? 0 : selection;
+        state->unk4 = selection;
+    } else {
+        if (state->unk4 >= 2) {
+            state->unk4 = 0;
+        }
+        selection = state->unk4;
+    }
+    count = connected;
+    if (count < D_8011A0B8_msetup[selection]) {
+        for (selection = 0; selection < 2; selection++) {
+            if (count == D_8011A0B8_msetup[selection]) {
+                break;
+            }
+        }
+        selection = selection >= 2 ? 0 : selection;
+        state->unk4 = selection;
+    }
+    func_8010B998_msetup();
+    angle = connected >= 2 ? 90.0f : 0.0f;
+    func_8010E32C_msetup(&models, 2, angle, 0);
+    for (i = 0; i < 2; i++) {
+        model = models[i].model;
+        models[i].unk1A = HmfAnimRead(HmfModelData[model].hmf, D_80119FDC_msetup[i], D_8011A6D8_msetup);
+        func_8001C448_main(model);
+        func_800332D4_main(models[i].unk1A, 0.75f);
+    }
+    func_8010E4D8_msetup(models, 2);
+    if (connected >= 2) {
+        cursor = func_8010DE38_msetup(64, 256, 72);
+    }
+    func_8010B82C_msetup(0x2403);
+    func_8010B858_msetup();
+    HuAudFXPlay(0x2D9);
+    func_8010E8C8_msetup(&models, 2, 15, 720.0f, 565.0f, 0.1f, 1.0f, 1);
+    if (connected >= 2) {
+        cursor->work[0] = 1;
+        cursor->work[1] = 36;
+        func_8010E52C_msetup(models, D_80119F94_msetup, 2, 7, NULL, 0, 0.0f, 1.0f);
+        i = 4;
+        for (scale = 1.0f; i != 0; i--) {
+            scale += 0.1f;
+            Hu3DModelScaleSet(models[selection].model, scale, scale, scale);
+            HuPrcVSleep();
+        }
+    } else {
+        func_8001C258_main(models[1].model, 4, 4);
+        angle = models[0].rot.y;
+        oldScale = 180.0f / 7.0f;
+        model = models[0].model;
+        for (i = 0; i < 7; i++) {
+            angle += oldScale;
+            if (angle > 360.0f) {
+                angle -= 360.0f;
+            }
+            Hu3DModelRotSet(model, 0, angle, 0);
+            HuPrcVSleep();
+        }
+        models[0].rot.y = angle;
+    }
+    oldSelection = selection;
+    refresh = 1;
+    func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+    while (1) {
+        if (refresh) {
+            func_8010B82C_msetup(D_80119FD4_msetup[selection]);
+            refresh = 0;
+        }
+        buttons = func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+        if (buttons & A_BUTTON) {
+            HuAudFXPlay(2);
+            state->unk4 = selection;
+            break;
+        }
+        if (buttons & B_BUTTON) {
+            HuAudFXPlay(4);
+            func_8010B82C_msetup(0x2401);
+            if (func_8010B858_msetup() == 0) {
+                state->unk4 = -1;
+                break;
+            }
+            refresh = 1;
+            func_8010B82C_msetup(0x2403);
+            func_8010B858_msetup();
+            buttons = func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+        }
+        if (connected >= 2) {
+            if (buttons & 0x900) {
+                selection++;
+                selection = selection >= 2 ? 0 : selection;
+                cursor->work[0] = 4;
+            } else if (buttons & 0x600) {
+                selection--;
+                if (selection < 0) {
+                    selection = 1;
+                }
+                cursor->work[0] = 3;
+            }
+        }
+        if (oldSelection != selection) {
+            HuAudFXPlay(1);
+            scale = 1.0f;
+            oldScale = 1.4f;
+            for (i = 4; i != 0; i--) {
+                scale += 0.1f;
+                oldScale += -0.1f;
+                Hu3DModelScaleSet(models[selection].model, scale, scale, scale);
+                Hu3DModelScaleSet(models[oldSelection].model, oldScale, oldScale, oldScale);
+                HuPrcVSleep();
+            }
+            oldSelection = selection;
+            refresh = 1;
+        }
+        HuPrcVSleep();
+    }
+    if (state->unk4 >= 0) {
+        i = D_8011A0B8_msetup[state->unk4];
+        D_8011AA30_msetup.humanCount = i;
+        D_8011AA30_msetup.cpuCount = 2 - i;
+        for (i = 0; i < D_8011AA30_msetup.humanCount; i++) {
+            RepeatVibrator(D_8011AA30_msetup.controllerPorts[i], 10, 0, 10);
+        }
+    }
+    if (connected >= 2) {
+        cursor->work[0] = 2;
+        cursor->work[1] = 17;
+        func_8010E52C_msetup(models, D_80119FB4_msetup, 2, 7, NULL, 0, 0.0f, 1.0f);
+    } else {
+        angle = models[0].rot.y;
+        oldScale = 180.0f / 7.0f;
+        model = models[0].model;
+        for (i = 0; i < 7; i++) {
+            angle += oldScale;
+            if (angle > 360.0f) {
+                angle -= 360.0f;
+            }
+            Hu3DModelRotSet(model, 0, angle, 0);
+            HuPrcVSleep();
+        }
+        models[0].rot.y = angle;
+        func_8001C258_main(models[1].model, 4, 0);
+    }
+    HuAudFXPlay(0x2DA);
+    func_8010E8C8_msetup(&models, 2, 7, 360.0f, 400.0f, 1.0f, 0.1f, 2);
+    if (connected >= 2) {
+        func_8010DDD8_msetup(cursor);
+    }
+    for (i = 0; i < 2; i++) {
+        func_80033430_main(models[i].unk1A);
+        func_8001ACDC_main(models[i].model);
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/msetup/50B740", func_80116FE0_msetup);
 

@@ -62,12 +62,17 @@ extern s16 D_8011A8E0_msetup[4][4];
 extern s32 (*D_80119FF0_msetup[])(MsetupMenuState *);
 
 extern char D_8011A6D8_msetup[];
+extern char D_8011A7D8_msetup[];
+extern char D_8011A7E0_msetup[];
+extern char D_8011A7E8_msetup[];
+extern char D_8011A7F0_msetup[];
+extern char D_8011A7F8_msetup[];
+extern f32 D_8011A908_msetup;
+extern f32 D_80119F4C_msetup[];
+extern s32 D_80119F3C_msetup[];
 
 #ifdef NON_MATCHING
-extern char D_8011A7D8_msetup[];
-extern char D_8011A7F8_msetup[];
 extern char D_8011A800_msetup[];
-extern f32 D_8011A908_msetup;
 extern f32 D_80119F60_msetup[];
 extern s32 D_80119F8C_msetup[];
 extern s16 D_80119DFC_msetup[][2];
@@ -96,10 +101,10 @@ s32 func_801138F8_msetup(MsetupMenuState *, s32, s32 *, s32);
 s32 func_80113ED4_msetup(UnkStarLift *arg0);
 
 s16 HmfAnimRead(HmfData *, s32, char *);
-
-#ifdef NON_MATCHING
 HmfMotionNode *func_8001D33C_main(s16, char *);
 void func_8002367C_main(HuMtx4F, HuMtx4F);
+
+#ifdef NON_MATCHING
 void func_80112804_msetup(void);
 #endif
 
@@ -1203,7 +1208,125 @@ s32 func_801150A0_msetup(s16 controller) {
     return quadrant;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/50B740", func_801152C4_msetup);
+s16 func_801152C4_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButtons, s16 selection) {
+    HmfMotionNode *nodes[4];
+    s8 unused[4];
+    HuMtx4F matrices[4];
+    HuMtx4F *nodeMatrix;
+    f32 phase;
+    f32 angle;
+    f32 targetAngle;
+    f32 delta;
+    f32 scale;
+    s16 oldSelection;
+    u16 buttons;
+    s32 direction;
+    s16 i;
+
+    nodes[0] = func_8001D33C_main(model, D_8011A7D8_msetup);
+    func_8002367C_main(matrices[0], nodes[0]->unk58);
+    nodes[1] = func_8001D33C_main(model, D_8011A7E0_msetup);
+    func_8002367C_main(matrices[1], nodes[1]->unk58);
+    nodes[2] = func_8001D33C_main(model, D_8011A7E8_msetup);
+    func_8002367C_main(matrices[2], nodes[2]->unk58);
+    nodes[3] = func_8001D33C_main(model, D_8011A7F0_msetup);
+    func_8002367C_main(matrices[3], nodes[3]->unk58);
+    phase = 0.0f;
+    for (i = 0; i < 4; i++) {
+        unused[i] = 0;
+    }
+    // Preserve the original scratch initialization and stack layout.
+    (void)unused;
+    angle = D_8011A908_msetup;
+    targetAngle = D_80119F4C_msetup[selection];
+    oldSelection = -1;
+    while (1) {
+        buttons = func_8010D684_msetup(D_8011A948_msetup, previousButtons);
+        if (buttons & 0x4000) {
+            HuAudFXPlay(4);
+            selection = -1;
+            break;
+        }
+        if (buttons & 0x8000) {
+            if (selection < 3) {
+                HuAudFXPlay(0x139);
+            } else {
+                HuAudFXPlay(2);
+            }
+            break;
+        }
+        direction = buttons >> 8;
+        direction &= 0xF;
+        if (direction) {
+            if (D_800CDA7C_main[D_8011A948_msetup] & 0x300) {
+                if (D_800CDA7C_main[D_8011A948_msetup] & 0x100) {
+                    selection++;
+                    if (selection >= 4) {
+                        selection = 0;
+                    }
+                    HuAudFXPlay(1);
+                } else if (D_800CDA7C_main[D_8011A948_msetup] & 0x200) {
+                    selection--;
+                    if (selection < 0) {
+                        selection = 3;
+                    }
+                    HuAudFXPlay(1);
+                }
+            } else {
+                direction = (s16)func_801150A0_msetup(D_8011A948_msetup);
+                if (direction >= 0 && selection != direction) {
+                    HuAudFXPlay(1);
+                    selection = direction;
+                }
+            }
+        }
+        if (oldSelection != selection) {
+            func_8010B82C_msetup(D_80119F3C_msetup[selection]);
+            targetAngle = D_80119F4C_msetup[selection];
+            D_8011A908_msetup = targetAngle;
+            if (oldSelection >= 0) {
+                nodeMatrix = &nodes[oldSelection]->unk58;
+                func_8002367C_main(*nodeMatrix, matrices[oldSelection]);
+                func_80017CD0_main(*nodeMatrix, 1, 1, 1);
+            }
+            oldSelection = selection;
+        }
+        if (targetAngle != angle) {
+            delta = targetAngle - angle;
+            scale = __builtin_fabsf(delta);
+            if (180.0f < scale) {
+                delta = -delta;
+            }
+            if (delta < 0.0f) {
+                delta = -24.0f;
+            } else {
+                delta = 24.0f;
+            }
+            angle += delta;
+            if (360.0f < angle) {
+                angle -= 360.0f;
+            } else if (angle < 0.0f) {
+                angle += 360.0f;
+            }
+            nodeMatrix = &func_8001D33C_main(model, D_8011A7F8_msetup)->unk58;
+            func_8002367C_main(*nodeMatrix, matrix);
+            func_80017D24_main(*nodeMatrix, 0.0f, 0.0f, angle);
+        }
+        phase += 12.0f;
+        if (180.0f <= phase) {
+            phase -= 180.0f;
+        }
+        scale = sindf(phase) * 0.5f + 1.0f;
+        nodeMatrix = &nodes[selection]->unk58;
+        func_8002367C_main(*nodeMatrix, matrices[selection]);
+        func_80017CD0_main(*nodeMatrix, scale, scale, scale);
+        HuPrcVSleep();
+    }
+    nodeMatrix = &nodes[oldSelection]->unk58;
+    func_8002367C_main(*nodeMatrix, matrices[oldSelection]);
+    func_80017CD0_main(*nodeMatrix, 1, 1, 1);
+    return selection;
+}
 
 s16 func_801157B8_msetup(s16 model, s16 anim, s16 *controller, s16 selection, MsetupLinkedModel *linked, omObjData *obj) {
     f32 angle;

@@ -1,26 +1,29 @@
 #include "common.h"
 
-extern u16 D_80106DB0_mchar2;
-extern Vec D_80107048_mchar2;
-extern u8 D_80106DB2_mchar2;
-extern s16 D_80106DB4_mchar2[];
-extern char *D_80106DD4_mchar2[];
-extern s16 D_80106DEE_mchar2;
-extern u8 D_80106DF4_mchar2;
-extern u8 D_80106DF5_mchar2;
-extern char D_80106F48_mchar2[];
+u16 D_80106DB0_mchar2 = 0;
+u8 D_80106DB2_mchar2 = 1;
+s16 D_80106DB4_mchar2[] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+u16 D_80106DC4_mchar2[] = { 0, 1, 2, 3, 0x802F, 0x8036, 0xFFFF };
+char *D_80106DD4_mchar2[] = {
+    "C000_000", "C000_001", "C000_003", "C000_004", "C000_400", "C000_407"
+};
+s16 D_80106DEC_mchar2 = 0;
+s16 D_80106DEE_mchar2 = 0;
+s16 D_80106DF0_mchar2 = 1;
+s16 D_80106DF2_mchar2 = 0;
+u8 D_80106DF4_mchar2 = 0;
+u8 D_80106DF5_mchar2 = 0;
+s32 D_80106DF8_mchar2[] = { 0x800A2, 0x800A0, 0x90003, 0x90000 };
+
+static u8 D_80106EC0_mchar2;
+static s32 D_80106EC8_mchar2[8][2];
+static s32 D_80106F08_mchar2[8][2];
+static char D_80106F48_mchar2[0x100];
+static Vec D_80107048_mchar2;
+
 extern s32 fontcolor;
 extern u16 omdispinfo;
 extern s16 D_800A1786_main;
-extern u16 D_80106DC4_mchar2[];
-extern u8 D_80106EC0_mchar2;
-extern s16 D_80106DEC_mchar2;
-extern s16 D_80106DF0_mchar2;
-extern s16 D_80106DF2_mchar2;
-extern s32 D_80106EC8_mchar2[8][2];
-extern s32 D_80106F08_mchar2[8][2];
-extern s32 D_80106DF8_mchar2[];
-extern s32 D_80106DFC_mchar2[];
 
 void func_800142A0_main(s32);
 void func_8004DEC8_main(s16);
@@ -82,18 +85,6 @@ void func_80105B7C_mchar2(omObjData *arg0) {
     func_8001C814_main((s16)D_80106EC8_mchar2[D_80106DEC_mchar2][D_80106DF0_mchar2], 2, 2);
     arg0->func = func_80105C90_mchar2;
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mchar2/3D5C30", D_80106E10_mchar2);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mchar2/3D5C30", D_80106E1C_mchar2);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mchar2/3D5C30", D_80106E28_mchar2);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mchar2/3D5C30", D_80106E34_mchar2);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mchar2/3D5C30", D_80106E40_mchar2);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mchar2/3D5C30", D_80106E4C_mchar2);
 
 void func_80105C90_mchar2(omObjData *arg0) {
     HmfModel *model;
@@ -191,7 +182,7 @@ void func_80106428_mchar2(s32 arg0) {
     flags = 0x2AC;
     for (; i < 2; i++) {
         D_80106EC8_mchar2[i][0] = func_8000B108_main(files0[i * 2], flags);
-        files1 = D_80106DFC_mchar2;
+        files1 = &D_80106DF8_mchar2[1];
         func_80017790_main((s16)D_80106EC8_mchar2[i][0], 0, i + 6, func_80017BB8_main(i + 6, 0xA3));
         func_8001C514_main((s16)D_80106EC8_mchar2[i][0]);
         D_80106EC8_mchar2[i][1] = func_8000B108_main(files1[i * 2], flags);

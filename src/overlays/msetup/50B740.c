@@ -92,7 +92,10 @@ extern s16 D_8011A058_msetup[4][4];
 extern s16 D_8011A078_msetup[4][4];
 extern s16 D_8011A8E0_msetup[4][4];
 extern s32 (*D_80119FF0_msetup[])(MsetupMenuState *);
+extern s32 D_8011A098_msetup[];
+extern f32 D_8011A0A8_msetup[];
 extern f32 D_8011A0B8_msetup[];
+extern s32 D_80119B34_msetup[];
 extern s32 D_80119FDC_msetup[];
 extern s32 D_80119FD4_msetup[];
 extern MsetupModelTarget D_80119F94_msetup[];
@@ -221,7 +224,228 @@ void func_8010F4E0_msetup(MsetupLinkedModel *models, s16 count, s16 layout) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/50B740", func_8010F87C_msetup);
+s32 func_8010F87C_msetup(MsetupMenuState *state) {
+    MsetupLinkedModel models[4];
+    Vec pos;
+    s16 *positions[4];
+    s16 previousButtons;
+    s16 model;
+    s16 selection;
+    s16 modelCount;
+    s16 frame;
+    s32 i;
+    omObjData *cursor = NULL;
+    s16 refresh;
+    u16 buttons;
+    s16 connected;
+    s32 count;
+    Vec *rot;
+    MsetupLinkedModel *entry;
+    s16 position;
+    f32 angle;
+    f32 progress;
+    Vec *target;
+
+    connected = D_8011AA30_msetup.connectedCount;
+    if (state->result < 0) {
+        i = D_8011AA30_msetup.humanCount;
+        for (selection = 0; selection < 4; selection++) {
+            if (i == D_8011A0B8_msetup[selection]) {
+                break;
+            }
+        }
+        selection = selection < 4 ? selection : 0;
+        state->result = selection;
+    } else {
+        if (state->result >= 4) {
+            state->result = 0;
+        }
+        selection = state->result;
+    }
+    count = connected;
+    if (count < D_8011A0B8_msetup[selection]) {
+        for (selection = 0; selection < 4; selection++) {
+            if (count == D_8011A0B8_msetup[selection]) {
+                break;
+            }
+        }
+        selection = selection < 4 ? selection : 0;
+        state->result = selection;
+    }
+    func_8010B998_msetup();
+    modelCount = connected;
+    if (modelCount < 2) {
+        modelCount = 2;
+    }
+    for (i = 0; i < modelCount; i++) {
+        model = func_8000B108_main(0x140003, 0x2A9);
+        models[i].model = model;
+        models[i].unk1A = HmfAnimRead(HmfModelData[model].hmf, D_8011A098_msetup[i], D_8011A6D8_msetup);
+        func_800332D4_main(models[i].unk1A, 0.75f);
+        func_8001C448_main(model);
+        func_8001C514_main(model);
+        entry = &models[i];
+        entry->flags = 0;
+        rot = &entry->rot;
+        rot->x = rot->y = rot->z = 0;
+        if (i & 1) {
+            entry->rot.y = 180.0f;
+        }
+        Hu3DModelRotSet(model, rot->x, rot->y, rot->z);
+        target = &entry->pos;
+        *target = D_80119B20_msetup;
+        Hu3DModelPosSet(model, target->x, target->y, target->z);
+        Hu3DModelScaleSet(model, 0.1, 0.1, 0.1);
+        HuPrcVSleep();
+    }
+    if (modelCount == 3) {
+        for (i = 0; i < 4; i++) {
+            positions[i] = D_8011A078_msetup[i];
+        }
+    } else {
+        for (i = 0; i < 4; i++) {
+            positions[i] = D_8011A058_msetup[i];
+        }
+    }
+    if (connected >= 2) {
+        cursor = func_8010DE38_msetup(64, 256, 64);
+    }
+    func_8010B82C_msetup(0x1503);
+    refresh = 1;
+    func_8010B858_msetup();
+    HuAudFXPlay(0x2D9);
+    func_8010E8C8_msetup((Array2D *)models, modelCount, 15, 720.0f, 565.0f, 0.1f, 1.0f, 1);
+    if (connected >= 2) {
+        cursor->work[0] = 1;
+        cursor->work[1] = 36;
+        for (frame = 0; frame < 7; frame++) {
+            progress = frame / 7.0f;
+            for (i = 0; i < modelCount; i++) {
+                position = positions[selection][i];
+                entry = &models[i];
+                target = &D_8011A028_msetup[position];
+                pos.x = (target->x - entry->pos.x) * progress;
+                pos.y = (target->y - entry->pos.y) * progress;
+                pos.z = (target->z - entry->pos.z) * progress;
+                pos.x += entry->pos.x;
+                pos.y += entry->pos.y;
+                pos.z += entry->pos.z;
+                angle = (D_8011A0A8_msetup[position] - entry->rot.y) * progress;
+                model = entry->model;
+                Hu3DModelRotSet(model, entry->rot.x, angle + entry->rot.y, entry->rot.z);
+                Hu3DModelPosSet(model, pos.x, pos.y, pos.z);
+            }
+            HuPrcVSleep();
+        }
+        for (i = 0; i < modelCount; i++) {
+            position = positions[selection][i];
+            entry = &models[i];
+            entry->pos = D_8011A028_msetup[position];
+            entry->rot.y = D_8011A0A8_msetup[position];
+            model = entry->model;
+            Hu3DModelPosSet(model, entry->pos.x, entry->pos.y, entry->pos.z);
+            Hu3DModelRotSet(model, entry->rot.x, entry->rot.y, entry->rot.z);
+        }
+    } else {
+        func_8001C258_main(models[1].model, 4, 4);
+        angle = models[0].rot.y;
+        progress = 180.0f / 7.0f;
+        model = models[0].model;
+        for (frame = 0; frame < 7; frame++) {
+            angle += progress;
+            if (angle > 360.0f) {
+                angle -= 360.0f;
+            }
+            Hu3DModelRotSet(model, 0, angle, 0);
+            HuPrcVSleep();
+        }
+        models[0].rot.y = angle;
+    }
+    for (i = 0; i < modelCount; i++) {
+        models[i].targetPosition = models[i].currentPosition = positions[selection][i];
+    }
+    refresh = 1;
+    func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+    while (1) {
+        if (refresh) {
+            func_8010B82C_msetup(D_80119B34_msetup[state->result]);
+            refresh = 0;
+        }
+        buttons = func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+        if (buttons & B_BUTTON) {
+            HuAudFXPlay(4);
+            func_8010B82C_msetup(0x1501);
+            if (func_8010B858_msetup() == 0) {
+                state->result = -1;
+                break;
+            }
+            func_8010B82C_msetup(0x1503);
+            refresh = 1;
+            func_8010B858_msetup();
+            buttons = func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+        } else if (buttons & A_BUTTON) {
+            HuAudFXPlay(2);
+            i = D_8011A0B8_msetup[state->result];
+            D_8011AA30_msetup.humanCount = i;
+            D_8011AA30_msetup.cpuCount = 4 - i;
+            for (i = 0; i < D_8011AA30_msetup.humanCount; i++) {
+                RepeatVibrator(D_8011AA30_msetup.controllerPorts[i], 10, 0, 10);
+            }
+            break;
+        }
+        if (connected >= 2) {
+            if (buttons & 0x900) {
+                state->result++;
+                if (state->result >= connected) {
+                    state->result = 0;
+                }
+                cursor->work[0] = 4;
+            } else if (buttons & 0x600) {
+                state->result--;
+                if (state->result < 0) {
+                    state->result = connected - 1;
+                }
+                cursor->work[0] = 3;
+            }
+        }
+        if (selection != state->result) {
+            HuAudFXPlay(1);
+            func_8010F4E0_msetup(models, modelCount, state->result);
+            refresh = 1;
+            selection = state->result;
+        }
+        HuPrcVSleep();
+    }
+    if (connected >= 2) {
+        cursor->work[0] = 2;
+        cursor->work[1] = 17;
+    } else {
+        angle = models[0].rot.y;
+        progress = 180.0f / 7.0f;
+        model = models[0].model;
+        for (frame = 0; frame < 7; frame++) {
+            angle += progress;
+            if (angle > 360.0f) {
+                angle -= 360.0f;
+            }
+            Hu3DModelRotSet(model, 0, angle, 0);
+            HuPrcVSleep();
+        }
+        models[0].rot.y = angle;
+        func_8001C258_main(models[1].model, 4, 0);
+    }
+    func_8010B998_msetup();
+    HuAudFXPlay(0x2DA);
+    func_8010E8C8_msetup((Array2D *)models, modelCount, 7, 360.0f, 400.0f, 1.0f, 0.1f, 4);
+    if (connected >= 2) {
+        func_8010DDD8_msetup(cursor);
+    }
+    for (i = 0; i < modelCount; i++) {
+        func_80033430_main(models[i].unk1A);
+        func_8001ACDC_main(models[i].model);
+    }
+    return 0;
+}
 
 void func_8011035C_msetup(void) {
     s16 previousSelection;

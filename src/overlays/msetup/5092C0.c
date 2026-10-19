@@ -3,13 +3,6 @@
 #include "mallocblock.h"
 #include "gcc/string.h"
 
-typedef struct MsetupSpriteState {
-    s16 state;
-    s16 unk02;
-    s16 spriteSlots[8];
-    s16 values[8];
-} MsetupSpriteState;
-
 typedef struct MsetupModelSpriteAnim {
     f32 scale[2];
     f32 speed[2];
@@ -41,7 +34,7 @@ extern f32 D_80119B0C_msetup[];
 extern s16 D_8011A938_msetup;
 extern HmfData_Unk84_Entry2 *D_800D1FCC_main;
 extern omObjData *D_80119AF0_msetup;
-extern s16 D_8011A8B0_msetup[];
+extern MsetupSpriteState D_8011A8B0_msetup;
 extern f32 D_80119AF4_msetup;
 extern f32 D_80119AF8_msetup;
 extern f32 D_80119AFC_msetup;

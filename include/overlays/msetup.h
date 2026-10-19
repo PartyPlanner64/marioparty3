@@ -26,11 +26,6 @@ typedef struct MsetupPlayerConfig {
     u8 unk17;
 } MsetupPlayerConfig;
 
-typedef struct UnkMsetupEntry {
-    /* 0x00 */ s16 value;
-    /* 0x02 */ char unk_02[0x12];
-} UnkMsetupEntry; // sizeof 0x14
-
 typedef struct MsetupLinkedModel {
     Vec pos;
     Vec rot;
@@ -62,6 +57,33 @@ typedef struct MsetupMenuState {
     s16 unk02;
     s16 result;
 } MsetupMenuState;
+
+typedef union MsetupCameraValues {
+    MsetupCameraPreset preset;
+    f32 components[8];
+} MsetupCameraValues;
+
+typedef struct MsetupCameraKeyframe {
+    MsetupCameraValues values;
+    f32 time;
+} MsetupCameraKeyframe;
+
+typedef struct MsetupStorySprite {
+    s32 dataId;
+    Vec pos;
+} MsetupStorySprite;
+
+typedef struct MsetupEntryAnim {
+    Vec pos;
+    f32 value;
+    s16 index;
+    s16 state;
+} MsetupEntryAnim;
+
+typedef struct MsetupPortraitState {
+    s16 state;
+    s16 unk02;
+} MsetupPortraitState;
 
 s16 func_8010D684_msetup(s16 controller, s16 *previousButtons);
 

@@ -95,7 +95,8 @@ s32 func_8010CD14_msetup(s16 model, f32 x, f32 y, f32 z) {
     return 0;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/msetup/508D50", D_8011A688_msetup);
+/* Preserve the trailing double after the compiler-generated conversion constant. */
+const f64 D_8011A688_msetup = 0.0;
 
 void func_8010CE8C_msetup(s16 model) {
     HmfData *hmf = HmfModelData[model].hmf;

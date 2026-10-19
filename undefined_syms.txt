@@ -20,3 +20,11 @@ D_8010BF80_silly_screws = 0x8010BF80;
 D_8010BF84_silly_screws = 0x8010BF84;
 
 D_800EC1BC_minigame = 0x800EC1BC;
+
+/* msetup field aliases: MsetupMenuContext, MsetupMessageWindows, MsetupPlayerConfig. */
+D_8011A880_msetup = msetupMenuContext;          /* playerCount */
+D_8011A882_msetup = msetupMenuContext + 0x2;    /* menu */
+D_8011A890_msetup = msetupMessageWindows;      /* current */
+D_8011A892_msetup = msetupMessageWindows + 0x2; /* windows */
+D_8011A949_msetup = D_8011A948_msetup + 0x1; /* controller low byte */
+D_8011AA42_msetup = D_8011AA30_msetup + 0x12;   /* totalTurns */

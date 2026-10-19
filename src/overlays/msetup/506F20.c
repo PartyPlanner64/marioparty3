@@ -2,13 +2,7 @@
 #include "overlays/msetup_internal.h"
 #include "mallocblock.h"
 
-typedef struct MsetupEntryAnim {
-    Vec pos;
-    f32 value;
-    s16 index;
-    s16 state;
-} MsetupEntryAnim;
-
+extern MsetupPlayerConfig D_8011AA30_msetup;
 extern s16 D_801198C0_msetup;
 extern s32 D_80119964_msetup[];
 extern u8 D_80119984_msetup[];
@@ -20,9 +14,6 @@ extern s32 D_80119A8C_msetup[];
 extern s32 D_80119AB4_msetup[];
 extern u8 D_80119AC8_msetup[];
 extern u16 D_80119ACC_msetup;
-extern u8 D_8011AA34_msetup[];
-extern u8 D_8011AA38_msetup[];
-extern u8 D_8011AA3C_msetup[];
 extern u8 D_800D20B8_main[16][3];
 extern u8 D_800D5570_main[16][3];
 extern MsetupModelEntry D_801198C4_msetup[];
@@ -39,7 +30,6 @@ extern s16 D_8011A948_msetup;
 extern s16 D_8011A890_msetup;
 extern s16 D_8011A892_msetup[2];
 extern s16 D_8011A990_msetup;
-extern UnkMsetupEntry D_8011A9F2_msetup[];
 
 void func_8000BBFC_main(u16, s16);
 void func_80012B14_main(s16, Vec *, Vec2f *);
@@ -345,25 +335,25 @@ void func_8010BC18_msetup(s16 start, s16 end) {
     s32 last = end - 1;
 
     for (i = start; i < end; i++) {
-        D_8011A9F2_msetup[i].value = 12;
+        D_8011A9E0_msetup[i].state = 12;
     }
-    while (D_8011A9F2_msetup[last].value != 0) {
+    while (D_8011A9E0_msetup[last].state != 0) {
         HuPrcVSleep();
     }
     for (i = start; i < end; i++) {
-        D_8011A9F2_msetup[i].value = 2;
+        D_8011A9E0_msetup[i].state = 2;
     }
-    while (D_8011A9F2_msetup[last].value != 0) {
+    while (D_8011A9E0_msetup[last].state != 0) {
         HuPrcVSleep();
     }
     for (i = 30; i != 0; i--) {
         HuPrcVSleep();
     }
     for (i = start; i < end; i++) {
-        D_8011A9F2_msetup[i].value = 18;
+        D_8011A9E0_msetup[i].state = 18;
     }
     HuPrcVSleep();
-    while (D_8011A9F2_msetup[last].value != 0) {
+    while (D_8011A9E0_msetup[last].state != 0) {
         HuPrcVSleep();
     }
     HuPrcVSleep();
@@ -380,10 +370,10 @@ void func_8010BE8C_msetup(s16 end) {
 }
 
 s16 func_8010BEB0_msetup(s16 arg0, s16 arg1) {
-    s16 prevValue = D_8011A9F2_msetup[arg0].value;
+    s16 prevValue = D_8011A9E0_msetup[arg0].state;
 
     if (arg1 >= 0) {
-        D_8011A9F2_msetup[arg0].value = arg1;
+        D_8011A9E0_msetup[arg0].state = arg1;
     }
     return prevValue;
 }
@@ -426,7 +416,7 @@ void func_8010BEF8_msetup(void) {
     }
     motions[0] = -1;
     motions[1] = -1;
-    character = D_8011AA34_msetup[entry->index];
+    character = D_8011AA30_msetup.characters[entry->index];
     setupCharacter = character;
     model = func_8000B108_main(D_80119964_msetup[setupCharacter], 0x2A9);
     index = model;
@@ -535,7 +525,7 @@ void func_8010BEF8_msetup(void) {
                 entry->state = 0;
                 break;
             case 13:
-                index = D_8011AA3C_msetup[entry->index];
+                index = D_8011AA30_msetup.stars[entry->index];
                 index--;
                 if (index < 0) {
                     break;
@@ -551,7 +541,7 @@ void func_8010BEF8_msetup(void) {
                 i = 2;
                 goto hideSprite;
             case 5:
-                dataId = D_80119A7C_msetup[D_8011AA38_msetup[entry->index]];
+                dataId = D_80119A7C_msetup[D_8011AA30_msetup.cpuDifficulty[entry->index]];
                 i = 0;
                 offset[0] = 8;
                 offset[1] = -6;
@@ -562,7 +552,7 @@ void func_8010BEF8_msetup(void) {
                 i = 0;
                 goto hideSprite;
             case 8:
-                dataId = D_80119A8C_msetup[D_8011AA3C_msetup[entry->index]];
+                dataId = D_80119A8C_msetup[D_8011AA30_msetup.stars[entry->index]];
                 i = 1;
                 offset[0] = 16;
                 offset[1] = -30;

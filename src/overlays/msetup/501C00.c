@@ -7,11 +7,6 @@
 
 typedef MsetupLinkedModel Array2D[2];
 
-typedef struct UnkStarLift {
-    char unk_00[0x04];
-    s16 unk4;
-} UnkStarLift;
-
 typedef struct MsetupSceneryState {
     f32 upperHeights[3];
     f32 lowerHeights[3];
@@ -20,16 +15,7 @@ typedef struct MsetupSceneryState {
     Vec outerPositions[6];
 } MsetupSceneryState;
 
-typedef union MsetupCameraValues {
-    MsetupCameraPreset preset;
-    f32 components[8];
-} MsetupCameraValues;
-
-typedef struct MsetupCameraKeyframe {
-    MsetupCameraValues values;
-    f32 time;
-} MsetupCameraKeyframe;
-
+extern MsetupEntryAnim D_8011A9E0_msetup[];
 extern s16 D_801198C0_msetup;
 extern void (*D_8011955C_msetup[])(void);
 extern omObjData *D_80119430_msetup;
@@ -44,13 +30,10 @@ extern s32 D_801194A8_msetup[];
 extern s32 D_801194C0_msetup[];
 extern s32 D_801194D8_msetup[];
 extern s32 D_801194F8_msetup[];
-extern u8 D_8011A949_msetup;
 extern u16 D_80119410_msetup;
 extern s16 D_80119412_msetup;
 extern u8 D_80119419_msetup;
 extern MsetupPlayerConfig D_8011AA30_msetup;
-extern u8 D_8011AA40_msetup;
-extern u8 D_8011AA41_msetup;
 extern s16 D_8011AA48_msetup;
 extern s16 D_8011A93A_msetup;
 extern s16 D_8011A944_msetup;
@@ -68,24 +51,20 @@ extern s32 D_80119EAC_msetup[];
 extern s32 D_80119EC4_msetup[];
 extern s32 D_80119EE0_msetup[];
 extern s16 D_8011A880_msetup;
-extern UnkMsetupEntry D_8011A9F2_msetup[];
-extern u8 D_8011AA3C_msetup[];
 extern MsetupMenuState D_8011A882_msetup;
 extern s16 D_8011A990_msetup;
 extern s16 D_8011A938_msetup;
 extern s16 D_8011A948_msetup;
+extern u8 D_8011A949_msetup;
 extern s16 D_8011A950_msetup[];
 extern s16 D_8011A9A0_msetup[];
-extern u8 D_8011AA43_msetup;
-extern u8 D_8011AA45_msetup; // board index chosen
-extern u8 D_8011AA47_msetup;
 extern s32 D_80119424_msetup[];
 extern s32 D_80119534_msetup[];
 extern s32 D_80119548_msetup[];
 extern MsetupCameraPreset D_80119580_msetup;
-extern MsetupCameraKeyframe D_801195A0_msetup;
-extern MsetupCameraKeyframe D_801197BC_msetup;
-extern MsetupCameraKeyframe D_801196C0_msetup;
+extern MsetupCameraKeyframe D_801195A0_msetup[];
+extern MsetupCameraKeyframe D_801197BC_msetup[];
+extern MsetupCameraKeyframe D_801196C0_msetup[];
 extern s8 D_80119418_msetup;
 extern Vec D_8011A920_msetup;
 extern Vec D_8011A92C_msetup;
@@ -123,7 +102,7 @@ void func_8010F320_msetup(Process *, s16, s16, s16);
 s16 func_8010F2F4_msetup(Process *, s16);
 s32 _CheckFlag(s32);            /* extern */
 s16 func_80055810_main(void *); /* extern */
-s32 func_80113ED4_msetup(UnkStarLift *arg0);
+s16 func_80113ED4_msetup(MsetupMenuState *arg0);
 void func_80107F88_msetup(s16, s16, s16);
 void func_80105F7C_msetup(MsetupModelEntry *, s16);
 void func_80105DB4_msetup(omObjData *);
@@ -220,7 +199,7 @@ void func_80105C4C_msetup(omObjData *object) {
     if (D_80119412_msetup != 0) {
         D_80119419_msetup--;
         if (D_80119419_msetup == 0) {
-            for (i = 0; i < D_8011AA40_msetup; i++) {
+            for (i = 0; i < D_8011AA30_msetup.humanCount; i++) {
                 RepeatVibrator(D_8011AA30_msetup.controllerPorts[i], 5, 0, 5);
             }
             D_80119419_msetup = 10;
@@ -752,9 +731,9 @@ s16 func_80107840_msetup(s16 stateIndex) {
         }
         HuAudFXPlay(0x2DB);
         for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011A9F2_msetup[i].value = 1;
+            D_8011A9E0_msetup[i].state = 1;
         }
-        while (D_8011A9F2_msetup[3].value != 0) {
+        while (D_8011A9E0_msetup[3].state != 0) {
             HuPrcVSleep();
         }
     }
@@ -769,9 +748,9 @@ s16 func_80107840_msetup(s16 stateIndex) {
 s16 func_80107964_msetup(s16 stateIndex) {
     s32 i;
 
-    if (D_8011AA41_msetup != 0) {
+    if (D_8011AA30_msetup.cpuCount != 0) {
         for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011A9F2_msetup[i].value = 7;
+            D_8011A9E0_msetup[i].state = 7;
         }
         D_8011A882_msetup.state = 3;
         do {
@@ -797,7 +776,7 @@ s16 func_80107A58_msetup(s16 stateIndex) {
 
     if (D_8011A882_msetup.result < 0) {
         for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011A9F2_msetup[i].value = 10;
+            D_8011A9E0_msetup[i].state = 10;
         }
     }
     D_8011A882_msetup.state = 6;
@@ -815,7 +794,7 @@ s16 func_80107A58_msetup(s16 stateIndex) {
         }
     } else {
         for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011AA3C_msetup[i] = 0;
+            D_8011AA30_msetup.stars[i] = 0;
         }
         if (D_8011A882_msetup.result < 0) {
             stateIndex--;
@@ -830,7 +809,7 @@ s16 func_80107B8C_msetup(s16 stateIndex) {
     s32 i;
 
     for (i = 0; i < D_8011A880_msetup; i++) {
-        D_8011A9F2_msetup[i].value = 12;
+        D_8011A9E0_msetup[i].state = 12;
     }
     D_8011A990_msetup = 2;
     HuPrcVSleep();
@@ -849,7 +828,7 @@ s16 func_80107B8C_msetup(s16 stateIndex) {
     HuPrcVSleep();
     func_8010B9B8_msetup(0x4000, 0x4000);
     for (i = 0; i < D_8011A880_msetup; i++) {
-        D_8011A9F2_msetup[i].value = 11;
+        D_8011A9E0_msetup[i].state = 11;
     }
     HuPrcVSleep();
     if (D_8011A882_msetup.result < 0) {
@@ -889,9 +868,9 @@ s16 func_80107D84_msetup(s16 stateIndex) {
     } while (D_8011A882_msetup.state != 0);
 
     if (D_8011A882_msetup.result == 0) {
-        D_8011AA47_msetup = 0;
+        D_8011AA30_msetup.unk17 = 0;
     } else {
-        D_8011AA47_msetup = 1;
+        D_8011AA30_msetup.unk17 = 1;
     }
 
     if (D_8011A882_msetup.result == -1) {
@@ -916,9 +895,9 @@ s16 func_80107E48_msetup(s16 stateIndex) {
     } while (D_8011A882_msetup.state != 0);
 
     if (D_8011A882_msetup.result == 0) {
-        D_8011AA43_msetup = 1;
+        D_8011AA30_msetup.unk13 = 1;
     } else {
-        D_8011AA43_msetup = 0;
+        D_8011AA30_msetup.unk13 = 0;
     }
 
     if (D_8011A882_msetup.result < 0) {
@@ -980,7 +959,7 @@ void func_80107FB4_msetup(void) {
     HuPrcVSleep();
     WipeCreateIn(D_8011AA48_msetup, 16);
     HuAudFXPlay(0x2D8);
-    func_801068F4_msetup(&D_801195A0_msetup, 22.0f, func_80107F88_msetup);
+    func_801068F4_msetup(D_801195A0_msetup, 22.0f, func_80107F88_msetup);
     D_8011AA4A_msetup = 1;
     state[0] = 1;
     do {
@@ -1003,16 +982,16 @@ void func_80107FB4_msetup(void) {
     D_8011A990_msetup = 0;
     if (step < -1) {
         for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011A9F2_msetup[i].value = 12;
+            D_8011A9E0_msetup[i].state = 12;
         }
         HuPrcVSleep();
         for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011A9F2_msetup[i].value = 16;
+            D_8011A9E0_msetup[i].state = 16;
         }
         HuAudSeqFadeOut(390);
         D_80119412_msetup = 1;
         HuAudFXPlay(0x2DF);
-        func_801068F4_msetup(&D_801197BC_msetup, 22.0f, NULL);
+        func_801068F4_msetup(D_801197BC_msetup, 22.0f, NULL);
         GwSystem.current_board_index = D_8011AA30_msetup.boardIndex;
         GwSystem.total_turns = D_8011AA30_msetup.totalTurns;
         GwSystem.current_game_length = D_8011AA30_msetup.unk16;
@@ -1045,7 +1024,7 @@ void func_80107FB4_msetup(void) {
     } else {
         D_80119410_msetup = 75;
         HuAudFXPlay(0x2EC);
-        func_801068F4_msetup(&D_801196C0_msetup, 25.0f, NULL);
+        func_801068F4_msetup(D_801196C0_msetup, 25.0f, NULL);
     }
     func_8010F2F4_msetup(D_80119420_msetup, 0xFF);
     D_80119410_msetup = 1;
@@ -1084,9 +1063,9 @@ s16 func_801084C4_msetup(s16 stateIndex) {
         func_8010BBF4_msetup(D_8011A880_msetup);
         HuAudFXPlay(0x2DB);
         for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011A9F2_msetup[i].value = 1;
+            D_8011A9E0_msetup[i].state = 1;
         }
-        while (D_8011A9F2_msetup[1].value != 0) {
+        while (D_8011A9E0_msetup[1].state != 0) {
             HuPrcVSleep();
         }
     }
@@ -1101,9 +1080,9 @@ s16 func_801084C4_msetup(s16 stateIndex) {
 s16 func_801085D4_msetup(s16 stateIndex) {
     s32 i;
 
-    if (D_8011AA41_msetup != 0) {
+    if (D_8011AA30_msetup.cpuCount != 0) {
         for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011A9F2_msetup[i].value = 6;
+            D_8011A9E0_msetup[i].state = 6;
         }
         D_8011A882_msetup.state = 3;
         do {
@@ -1128,7 +1107,7 @@ s16 func_801086C8_msetup(s16 stateIndex) {
     s32 i;
 
     for (i = 0; i < D_8011A880_msetup; i++) {
-        D_8011A9F2_msetup[i].value = 14;
+        D_8011A9E0_msetup[i].state = 14;
     }
     D_8011A882_msetup.state = 11;
     do {
@@ -1145,7 +1124,7 @@ s16 func_801086C8_msetup(s16 stateIndex) {
         }
     } else {
         for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011AA3C_msetup[i] = 5;
+            D_8011AA30_msetup.stars[i] = 5;
         }
         if (D_8011A882_msetup.result < 0) {
             stateIndex--;
@@ -1210,9 +1189,9 @@ s16 func_80108938_msetup(s16 stateIndex) {
     } while (D_8011A882_msetup.state != 0);
 
     if (D_8011A882_msetup.result == 0) {
-        D_8011AA47_msetup = 0;
+        D_8011AA30_msetup.unk17 = 0;
     } else {
-        D_8011AA47_msetup = 1;
+        D_8011AA30_msetup.unk17 = 1;
     }
 
     if (D_8011A882_msetup.result == -1) {
@@ -1274,11 +1253,11 @@ void func_80108AB8_msetup(void) {
     func_80106260_msetup(&D_80119580_msetup);
     HuPrcVSleep();
     for (i = 0; i < D_8011A880_msetup; i++) {
-        D_8011AA3C_msetup[i] = 5;
+        D_8011AA30_msetup.stars[i] = 5;
     }
     WipeCreateIn(D_8011AA48_msetup, 16);
     HuAudFXPlay(0x2D8);
-    func_801068F4_msetup(&D_801195A0_msetup, 22.0f, func_80107F88_msetup);
+    func_801068F4_msetup(D_801195A0_msetup, 22.0f, func_80107F88_msetup);
     D_8011AA4A_msetup = 1;
     state[0] = 1;
     do {
@@ -1301,16 +1280,16 @@ void func_80108AB8_msetup(void) {
     D_8011A990_msetup = 0;
     if (step < -1) {
         for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011A9F2_msetup[i].value = 12;
+            D_8011A9E0_msetup[i].state = 12;
         }
         HuPrcVSleep();
         for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011A9F2_msetup[i].value = 16;
+            D_8011A9E0_msetup[i].state = 16;
         }
         HuAudSeqFadeOut(390);
         D_80119412_msetup = 1;
         HuAudFXPlay(0x2DF);
-        func_801068F4_msetup(&D_801197BC_msetup, 22.0f, NULL);
+        func_801068F4_msetup(D_801197BC_msetup, 22.0f, NULL);
         GwSystem.current_board_index = D_8011AA30_msetup.boardIndex;
         GwSystem.total_turns = D_8011AA30_msetup.totalTurns;
         for (i = 0; i < D_8011A880_msetup; i++) {
@@ -1337,7 +1316,7 @@ void func_80108AB8_msetup(void) {
     } else {
         D_80119410_msetup = 75;
         HuAudFXPlay(0x2EC);
-        func_801068F4_msetup(&D_801196C0_msetup, 25.0f, NULL);
+        func_801068F4_msetup(D_801196C0_msetup, 25.0f, NULL);
     }
     func_8010F2F4_msetup(D_80119420_msetup, 0xFF);
     D_80119410_msetup = 1;
@@ -1461,11 +1440,11 @@ void func_80109218_msetup(void) {
     HuPrcVSleep();
     WipeCreateIn(D_8011AA48_msetup, 16);
     HuAudFXPlay(0x2D8);
-    func_801068F4_msetup(&D_801195A0_msetup, 22.0f, func_80107F88_msetup);
+    func_801068F4_msetup(D_801195A0_msetup, 22.0f, func_80107F88_msetup);
     D_8011AA4A_msetup = 1;
     state[0] = 1;
     HuAudFXPlay(0x2DB);
-    D_8011A9F2_msetup[0].value = 1;
+    D_8011A9E0_msetup[0].state = 1;
     while (state[0] == 1) {
         HuPrcVSleep();
     }
@@ -1493,13 +1472,13 @@ void func_80109218_msetup(void) {
     D_8011A990_msetup = 0;
     HuAudFXPlay(0x2DB);
     for (i = 1; i < D_8011A880_msetup; i++) {
-        D_8011A9F2_msetup[i].value = 1;
+        D_8011A9E0_msetup[i].state = 1;
     }
     for (i = 7; i != 0; i--) {
         HuPrcVSleep();
     }
-    D_8011A9F2_msetup[0].value = 17;
-    while (D_8011A9F2_msetup[D_8011A880_msetup - 1].value != 0) {
+    D_8011A9E0_msetup[0].state = 17;
+    while (D_8011A9E0_msetup[D_8011A880_msetup - 1].state != 0) {
         HuPrcVSleep();
     }
     D_8011A990_msetup = 1;
@@ -1509,7 +1488,7 @@ void func_80109218_msetup(void) {
     func_8010B858_msetup();
     func_8010B82C_msetup(0x1A0B);
     func_8010B858_msetup();
-    if (D_8011AA47_msetup != 0) {
+    if (D_8011AA30_msetup.unk17 != 0) {
         func_8010B82C_msetup(0x1A10);
     } else {
         func_8010B82C_msetup(0x1A0F);
@@ -1526,16 +1505,16 @@ void func_80109218_msetup(void) {
             HuAudFXPlay(0x2A6);
             D_8011A990_msetup = 0;
             for (i = 0; i < D_8011A880_msetup; i++) {
-                D_8011A9F2_msetup[i].value = 16;
+                D_8011A9E0_msetup[i].state = 16;
             }
             HuAudSeqFadeOut(390);
             D_80119412_msetup = 1;
             HuAudFXPlay(0x2DF);
-            func_801068F4_msetup(&D_801197BC_msetup, 22.0f, NULL);
+            func_801068F4_msetup(D_801197BC_msetup, 22.0f, NULL);
             _ClearFlag(0);
             _ClearFlag(0x28);
             _SetFlag(0x1B);
-            if (D_8011AA47_msetup != 0) {
+            if (D_8011AA30_msetup.unk17 != 0) {
                 _SetFlag(0x20);
             } else {
                 _ClearFlag(0x20);
@@ -1554,7 +1533,7 @@ void func_80109218_msetup(void) {
                 D_8011A990_msetup = 0;
                 D_80119410_msetup = 75;
                 HuAudFXPlay(0x2EC);
-                func_801068F4_msetup(&D_801196C0_msetup, 25.0f, NULL);
+                func_801068F4_msetup(D_801196C0_msetup, 25.0f, NULL);
             }
         }
     } while (i != 0);
@@ -1600,11 +1579,11 @@ void func_80109868_msetup(void) {
     HuPrcVSleep();
     WipeCreateIn(D_8011AA48_msetup, 16);
     HuAudFXPlay(0x2D8);
-    func_801068F4_msetup(&D_801195A0_msetup, 22.0f, func_80107F88_msetup);
+    func_801068F4_msetup(D_801195A0_msetup, 22.0f, func_80107F88_msetup);
     D_8011AA4A_msetup = 1;
     state[0] = 1;
     HuAudFXPlay(0x2DB);
-    D_8011A9F2_msetup[0].value = 1;
+    D_8011A9E0_msetup[0].state = 1;
     while (state[0] == 1) {
         HuPrcVSleep();
     }
@@ -1625,13 +1604,13 @@ void func_80109868_msetup(void) {
     func_8010B858_msetup();
     HuAudFXPlay(0x2DB);
     for (i = 1; i < D_8011A880_msetup; i++) {
-        D_8011A9F2_msetup[i].value = 1;
+        D_8011A9E0_msetup[i].state = 1;
     }
     for (i = 7; i != 0; i--) {
         HuPrcVSleep();
     }
-    D_8011A9F2_msetup[0].value = 17;
-    while (D_8011A9F2_msetup[D_8011A880_msetup - 1].value != 0) {
+    D_8011A9E0_msetup[0].state = 17;
+    while (D_8011A9E0_msetup[D_8011A880_msetup - 1].state != 0) {
         HuPrcVSleep();
     }
     if (D_8011AA30_msetup.characters[1] != 1) {
@@ -1646,7 +1625,7 @@ void func_80109868_msetup(void) {
     func_8010B858_msetup();
     func_8010B82C_msetup(0x2916);
     func_8010B858_msetup();
-    if (D_8011AA47_msetup != 0) {
+    if (D_8011AA30_msetup.unk17 != 0) {
         func_8010B82C_msetup(0x291A);
     } else {
         func_8010B82C_msetup(0x2919);
@@ -1661,15 +1640,15 @@ void func_80109868_msetup(void) {
             HuAudFXPlay(0x2A6);
             D_8011A990_msetup = 0;
             for (i = 0; i < D_8011A880_msetup; i++) {
-                D_8011A9F2_msetup[i].value = 16;
+                D_8011A9E0_msetup[i].state = 16;
             }
             HuAudSeqFadeOut(390);
             D_80119412_msetup = 1;
             HuAudFXPlay(0x2DF);
-            func_801068F4_msetup(&D_801197BC_msetup, 22.0f, NULL);
+            func_801068F4_msetup(D_801197BC_msetup, 22.0f, NULL);
             _ClearFlag(0);
             _ClearFlag(0x28);
-            if (D_8011AA47_msetup != 0) {
+            if (D_8011AA30_msetup.unk17 != 0) {
                 _SetFlag(0x20);
             } else {
                 _ClearFlag(0x20);
@@ -1688,7 +1667,7 @@ void func_80109868_msetup(void) {
                 D_8011A990_msetup = 0;
                 D_80119410_msetup = 75;
                 HuAudFXPlay(0x2EC);
-                func_801068F4_msetup(&D_801196C0_msetup, 25.0f, NULL);
+                func_801068F4_msetup(D_801196C0_msetup, 25.0f, NULL);
             }
         }
     } while (i != 0);
@@ -1748,13 +1727,13 @@ s16 func_80109F7C_msetup(s16 step) {
         }
         HuAudFXPlay(0x2DB);
         for (i = 1; i < D_8011A880_msetup; i++) {
-            D_8011A9F2_msetup[i].value = 1;
+            D_8011A9E0_msetup[i].state = 1;
         }
         for (i = 7; i != 0; i--) {
             HuPrcVSleep();
         }
-        D_8011A9F2_msetup[0].value = 17;
-        while (D_8011A9F2_msetup[D_8011A880_msetup - 1].value != 0) {
+        D_8011A9E0_msetup[0].state = 17;
+        while (D_8011A9E0_msetup[D_8011A880_msetup - 1].state != 0) {
             HuPrcVSleep();
         }
     }
@@ -1769,9 +1748,9 @@ s16 func_80109F7C_msetup(s16 step) {
 s16 func_8010A10C_msetup(s16 step) {
     s32 i;
 
-    if (D_8011AA41_msetup != 0) {
+    if (D_8011AA30_msetup.cpuCount != 0) {
         for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011A9F2_msetup[i].value = 7;
+            D_8011A9E0_msetup[i].state = 7;
         }
         D_8011A882_msetup.state = 3;
         do {
@@ -1860,11 +1839,11 @@ void func_8010A35C_msetup(s16 (**steps)(s16)) {
     WipeCreateIn(D_8011AA48_msetup, 16);
     D_8011A882_msetup.result = 0;
     HuAudFXPlay(0x2D8);
-    func_801068F4_msetup(&D_801195A0_msetup, 22.0f, func_80107F88_msetup);
+    func_801068F4_msetup(D_801195A0_msetup, 22.0f, func_80107F88_msetup);
     D_8011AA4A_msetup = 1;
     if (D_8011A938_msetup == 6) {
         HuAudFXPlay(0x2DB);
-        D_8011A9F2_msetup[0].value = 1;
+        D_8011A9E0_msetup[0].state = 1;
     }
     state[0] = 1;
     do {
@@ -1879,16 +1858,16 @@ void func_8010A35C_msetup(s16 (**steps)(s16)) {
     D_8011A990_msetup = 0;
     if (step < -1) {
         for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011A9F2_msetup[i].value = 12;
+            D_8011A9E0_msetup[i].state = 12;
         }
         HuPrcVSleep();
         for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011A9F2_msetup[i].value = 16;
+            D_8011A9E0_msetup[i].state = 16;
         }
         HuAudSeqFadeOut(390);
         D_80119412_msetup = 1;
         HuAudFXPlay(0x2DF);
-        func_801068F4_msetup(&D_801197BC_msetup, 22.0f, NULL);
+        func_801068F4_msetup(D_801197BC_msetup, 22.0f, NULL);
         for (i = 0; i < D_8011A880_msetup; i++) {
             GwPlayer[i].chr = D_8011AA30_msetup.characters[i];
             GwPlayer[i].star = D_8011AA30_msetup.stars[i];
@@ -1908,7 +1887,7 @@ void func_8010A35C_msetup(s16 (**steps)(s16)) {
     } else {
         D_80119410_msetup = 75;
         HuAudFXPlay(0x2EC);
-        func_801068F4_msetup(&D_801196C0_msetup, 25.0f, NULL);
+        func_801068F4_msetup(D_801196C0_msetup, 25.0f, NULL);
     }
     D_80119410_msetup = 1;
     while (1) {
@@ -1971,12 +1950,12 @@ void func_8010A7EC_msetup(s16 mode) {
     HuPrcVSleep();
     WipeCreateIn(D_8011AA48_msetup, 16);
     HuAudFXPlay(0x2D8);
-    func_801068F4_msetup(&D_801195A0_msetup, 22.0f, func_80107F88_msetup);
+    func_801068F4_msetup(D_801195A0_msetup, 22.0f, func_80107F88_msetup);
     D_8011AA4A_msetup = 1;
     state[0] = 1;
     HuAudFXPlay(0x2DB);
     for (; i < D_8011A880_msetup; i++) {
-        D_8011A9F2_msetup[i].value = 1;
+        D_8011A9E0_msetup[i].state = 1;
     }
     while (state[0] == 1) {
         HuPrcVSleep();
@@ -1998,17 +1977,17 @@ void func_8010A7EC_msetup(s16 mode) {
         D_8011A990_msetup = 0;
         D_80119410_msetup = 75;
         HuAudFXPlay(0x2EC);
-        func_801068F4_msetup(&D_801196C0_msetup, 25.0f, NULL);
+        func_801068F4_msetup(D_801196C0_msetup, 25.0f, NULL);
     } else {
         HuAudFXPlay(0x2A6);
         D_8011A990_msetup = 0;
         for (i = 0; i < D_8011A880_msetup; i++) {
-            D_8011A9F2_msetup[i].value = 16;
+            D_8011A9E0_msetup[i].state = 16;
         }
         HuAudSeqFadeOut(390);
         D_80119412_msetup = 1;
         HuAudFXPlay(0x2DF);
-        func_801068F4_msetup(&D_801197BC_msetup, 22.0f, NULL);
+        func_801068F4_msetup(D_801197BC_msetup, 22.0f, NULL);
         _ClearFlag(0);
         GwSystem.current_board_index = 6;
         GwSystem.total_turns = 20;

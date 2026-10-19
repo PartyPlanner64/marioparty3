@@ -10,11 +10,6 @@ typedef struct MsetupStoryMenu {
     s16 unk12;
 } MsetupStoryMenu;
 
-typedef struct MsetupStorySprite {
-    s32 dataId;
-    Vec pos;
-} MsetupStorySprite;
-
 extern Vec *D_8011A16C_msetup[];
 extern MsetupStorySprite D_8011A178_msetup[];
 extern MsetupStorySprite D_8011A218_msetup[];
@@ -38,7 +33,7 @@ extern s16 D_8011AA48_msetup;
 extern s16 D_8011A944_msetup;
 extern s16 D_8011A946_msetup;
 extern s16 D_8011AA4C_msetup;
-extern s16 D_80119410_msetup;
+extern u16 D_80119410_msetup;
 extern u8 D_800CE20A_main;
 extern u8 D_8011A3B0_msetup[];
 extern s16 D_800D418E_main;

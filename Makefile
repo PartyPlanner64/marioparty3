@@ -263,7 +263,8 @@ NOP_OBJECTS := \
 	build/src/overlays/ovl_48_ChillyWaters/31B9F0.c.o \
 	build/src/overlays/w06/39AD50.c.o \
 	build/src/overlays/last5/3C6310.c.o \
-	build/src/overlays/opboard/3CA800.c.o
+	build/src/overlays/opboard/3CA800.c.o \
+	build/src/overlays/mchar2/3D5C30.c.o
 
 NOP_ASM := $(NOP_OBJECTS:.o=.s)
 

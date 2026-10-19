@@ -114,10 +114,10 @@ extern s16 D_80119F78_msetup[];
 extern u8 D_8011AA42_msetup;
 extern char D_8011A800_msetup[];
 extern s32 D_80119F3C_msetup[];
-
-#ifdef NON_MATCHING
 extern f32 D_80119F60_msetup[];
 extern s32 D_80119F8C_msetup[];
+
+#ifdef NON_MATCHING
 extern s16 D_80119DFC_msetup[][2];
 extern s16 (*D_80119E0C_msetup[])[2];
 extern s32 D_80119B2C_msetup[];
@@ -2519,8 +2519,6 @@ s16 func_801157B8_msetup(s16 model, s16 anim, s16 *controller, s16 selection, Ms
     return selection;
 }
 
-#ifdef NON_MATCHING
-// Floating-point constant allocation changes saved registers and stack frame.
 s16 func_80115A9C_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButtons, s16 selection) {
     HmfMotionNode *nodes[2];
     HuMtx4F matrices[2];
@@ -2568,7 +2566,8 @@ s16 func_80115A9C_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButto
             targetAngle = D_80119F60_msetup[selection];
             D_8011A908_msetup = targetAngle;
             if (oldSelection >= 0) {
-                nodeMatrix = &nodes[oldSelection]->unk58;
+                HmfMotionNode *node = nodes[oldSelection];
+                nodeMatrix = &node->unk58;
                 func_8002367C_main(*nodeMatrix, matrices[oldSelection]);
                 func_80017CD0_main(*nodeMatrix, 1, 1, 1);
             }
@@ -2609,9 +2608,6 @@ s16 func_80115A9C_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButto
     func_80017CD0_main(*nodeMatrix, 1, 1, 1);
     return selection;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/50B740", func_80115A9C_msetup);
-#endif
 
 void func_80115E78_msetup(s16 idx, f32 x, f32 y, f32 z) {
     if (idx >= 0 && HmfModelData[idx].hmf != NULL) {

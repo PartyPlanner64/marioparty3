@@ -117,12 +117,10 @@ extern s32 D_80119F3C_msetup[];
 extern f32 D_80119F60_msetup[];
 extern s32 D_80119F8C_msetup[];
 
-#ifdef NON_MATCHING
 extern s16 D_80119DFC_msetup[][2];
 extern s16 (*D_80119E0C_msetup[])[2];
 extern s32 D_80119B2C_msetup[];
 extern MsetupModelTarget D_80119DC8_msetup[];
-#endif
 
 extern s32 D_80119CC0_msetup[];
 extern s32 D_80119CE0_msetup[];
@@ -169,9 +167,7 @@ s16 HmfAnimRead(HmfData *, s32, char *);
 HmfMotionNode *func_8001D33C_main(s16, char *);
 void func_8002367C_main(HuMtx4F, HuMtx4F);
 
-#ifdef NON_MATCHING
 void func_80112804_msetup(void);
-#endif
 
 void func_8010F4E0_msetup(MsetupLinkedModel *models, s16 count, s16 layout) {
     Vec pos;
@@ -1639,8 +1635,6 @@ s16 func_80112F5C_msetup(s16 individual, s16 count, s16 *previousButtons, Msetup
     return selection;
 }
 
-#ifdef NON_MATCHING
-// Shared cancellation block placement differs.
 s32 func_801132C4_msetup(MsetupMenuState *state) {
     Process *cursorProcesses[2];
     MsetupCursorState cursors[2];
@@ -1736,7 +1730,11 @@ s32 func_801132C4_msetup(MsetupMenuState *state) {
                 step = -1;
                 if (result < 0) {
                     step = 1;
-                    if (D_8011AA30_msetup.cpuCount != 1) {
+                    if (D_8011AA30_msetup.cpuCount == 1) {
+                        state->result = -1;
+                        step = -1;
+                        break;
+                    } else {
                         rotation = 180.0f;
                         spriteState.state = 5;
                         for (i = 0; i < 7; i++) {
@@ -1744,9 +1742,6 @@ s32 func_801132C4_msetup(MsetupMenuState *state) {
                             Hu3DModelRotSet(model, rotation, 0.0f, 0.0f);
                             HuPrcVSleep();
                         }
-                    } else {
-                        state->result = -1;
-                        goto finishSelection;
                     }
                 }
                 break;
@@ -1773,9 +1768,6 @@ s32 func_801132C4_msetup(MsetupMenuState *state) {
     func_8001ACDC_main(model);
     return 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/50B740", func_801132C4_msetup);
-#endif
 
 s32 func_801138F8_msetup(MsetupMenuState *state, s32 dataId, s32 *messages, s32 selectionArg) {
     Array2D models;

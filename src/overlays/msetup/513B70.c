@@ -1,4 +1,5 @@
 #include "common.h"
+#include "game/vibrator.h"
 #include "overlays/msetup_internal.h"
 
 typedef struct MsetupStoryMenu {
@@ -8,6 +9,27 @@ typedef struct MsetupStoryMenu {
     s16 result;
     s16 unk12;
 } MsetupStoryMenu;
+
+typedef struct MsetupStorySprite {
+    s32 dataId;
+    Vec pos;
+} MsetupStorySprite;
+
+extern Vec *D_8011A16C_msetup[];
+extern MsetupStorySprite D_8011A178_msetup[];
+extern MsetupStorySprite D_8011A218_msetup[];
+extern MsetupStorySprite D_8011A2B8_msetup[];
+extern Vec D_8011A368_msetup[];
+extern Vec D_8011A38C_msetup[];
+extern MsetupStorySprite D_8011A3B8_msetup[];
+extern MsetupStorySprite D_8011A428_msetup[];
+extern MsetupStorySprite D_8011A478_msetup[];
+extern MsetupStorySprite D_8011A4C8_msetup[];
+extern s32 D_8011A508_msetup[];
+extern s16 D_8011A514_msetup[][2];
+extern s16 (*D_8011A544_msetup[])[2];
+extern u8 D_8011A550_msetup[];
+extern s16 D_8011A0D0_msetup[];
 
 extern MsetupCameraPreset D_8011A554_msetup;
 extern s16 D_8011A910_msetup;
@@ -19,13 +41,12 @@ extern s16 D_8011AA4C_msetup;
 extern s16 D_80119410_msetup;
 extern u8 D_800CE20A_main;
 extern u8 D_8011A3B0_msetup[];
+extern s16 D_800D418E_main;
 
 void func_80106260_msetup(MsetupCameraPreset *);
 void func_80117A3C_msetup(void);
 void func_8000BC48_main(u16, s32);
 void func_8006105C_main(s16, s32);
-
-extern s16 D_800D418E_main;
 
 f32 func_80054B1C_main(s16, s16, s16, f32, f32, f32);
 
@@ -43,7 +64,405 @@ void func_80117910_msetup(s16 group, s16 member, s16 camera, f32 x, f32 y, f32 z
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/msetup/513B70", func_80117A3C_msetup);
+void func_80117A3C_msetup(void) {
+    MsetupCursorState cursor;
+    Vec positions[16];
+    Vec position;
+    Vec previousPosition;
+    Vec startPosition;
+    Vec delta;
+    s16 sprites[16];
+    s16 optionSprites[8];
+    s16 angles[16];
+    u8 disabled[8];
+    s16 previousButtons;
+    MsetupStoryMenu *menu;
+    MsetupStorySprite *backgrounds;
+    MsetupStorySprite *options;
+    Vec *modelOffset;
+    Vec *presets;
+    Vec *pos;
+    s16 backgroundGroup;
+    s16 shadowGroup;
+    s16 backgroundCount;
+    s16 optionCount;
+    s16 model;
+    s16 decoration;
+    s16 state;
+    s16 difficultyCount;
+    s32 i;
+    Vec *target;
+    s16 preset;
+    s16 selection;
+    u16 buttons;
+    s16 group;
+    s16 sprite;
+    f32 frame;
+    f32 duration;
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 angleStep;
+
+    menu = HuPrcCurrentGet()->user_data;
+    pos = &menu->pos;
+    switch (menu->type) {
+        case 0:
+        default:
+            backgrounds = D_8011A178_msetup;
+            backgroundCount = 10;
+            options = D_8011A3B8_msetup;
+            optionCount = 7;
+            break;
+        case 1:
+            backgrounds = D_8011A218_msetup;
+            backgroundCount = 10;
+            if (_CheckFlag(0x2D)) {
+                options = D_8011A428_msetup;
+                optionCount = 5;
+                difficultyCount = 4;
+            } else {
+                options = D_8011A478_msetup;
+                optionCount = 5;
+                difficultyCount = 3;
+            }
+            break;
+        case 2:
+            backgrounds = D_8011A2B8_msetup;
+            backgroundCount = 11;
+            options = D_8011A4C8_msetup;
+            optionCount = 4;
+            break;
+    }
+    presets = D_8011A16C_msetup[menu->type];
+    for (i = 0; i < backgroundCount; i++) {
+        sprites[i] = -1;
+    }
+    for (i = 0; i < optionCount; i++) {
+        optionSprites[i] = -1;
+    }
+    shadowGroup = -1;
+    *pos = presets[0];
+    backgroundGroup = HuSprGrpCreate(backgroundCount, 0);
+    for (i = 0; i < backgroundCount; i++) {
+        sprites[i] = func_8000B838_main(backgrounds[i].dataId);
+        func_80055458_main(backgroundGroup, i, 0x100);
+        HuSprAttrReset(backgroundGroup, i, 0xFFFF);
+        HuSprAttrSet(backgroundGroup, i, 0x1000);
+        HuSprScaleSet(backgroundGroup, i, 1.0f, 1.0f);
+        func_800550F4_main(backgroundGroup, i, 0);
+        func_80055024_main(backgroundGroup, i, sprites[i], 0);
+        HuSprPriSet(backgroundGroup, i, 600);
+        func_80055420_main(backgroundGroup, i, 255, 255, 255);
+        target = &positions[i];
+        *target = backgrounds[i].pos;
+        angles[i] = (i * 90 + i * 5) % 360;
+    }
+    if (menu->type == 2) {
+        HuSprScaleSet(backgroundGroup, 0, 4.0f, 2.0f);
+    }
+    group = HuSprGrpCreate(optionCount, 0);
+    for (i = 0; i < optionCount; i++) {
+        optionSprites[i] = func_8000B838_main(options[i].dataId);
+        HuSprAttrReset(group, i, 0xFFFF);
+        HuSprAttrSet(group, i, 0x1000);
+        func_800550F4_main(group, i, 0);
+        func_80055024_main(group, i, optionSprites[i], 0);
+        func_80055458_main(group, i, 0x100);
+        if (i != 0) {
+            HuSprPriSet(group, i, 400);
+            switch (menu->type) {
+                case 0:
+                    HuSprAttrSet(group, i, 0x9000);
+                    break;
+                case 1:
+                    func_80055458_main(group, i, 0x40);
+                    break;
+                case 2:
+                    break;
+            }
+        } else {
+            HuSprPriSet(group, i, 500);
+        }
+    }
+    if (menu->type == 0) {
+        shadowGroup = HuSprGrpCreate(optionCount, 0);
+        sprite = func_8000B838_main(0x140064);
+        for (i = 0; i < optionCount; i++) {
+            HuSprAttrReset(shadowGroup, i, 0xFFFF);
+            HuSprAttrSet(shadowGroup, i, 0x9000);
+            func_800550F4_main(shadowGroup, i, 0);
+            func_80055024_main(shadowGroup, i, sprite, 0);
+            func_80055458_main(shadowGroup, i, 0x80);
+            HuSprPriSet(shadowGroup, i, 450);
+            func_80055420_main(shadowGroup, i, 0, 0, 0);
+        }
+    } else if (menu->type == 2) {
+        HuSprPriSet(group, 1, 500);
+        func_80055458_main(group, 0, 0x40);
+        func_80055458_main(group, 1, 0x40);
+    }
+    model = func_8000B108_main(0xA0089, 0x29D);
+    decoration = func_8000B108_main(0x140068, 0x29D);
+    func_8001C814_main(model, 2, 2);
+    func_8001C258_main(model, 4, 0);
+    func_8001C258_main(decoration, 4, 0);
+    Hu3DModelScaleSet(model, 0.8f, 0.8f, 0.8f);
+    Hu3DModelScaleSet(decoration, 0.8f, 0.8f, 0.8f);
+    target = &D_8011A38C_msetup[menu->type];
+    Hu3DModelRotSet(model, target->x, target->y, target->z);
+    Hu3DModelRotSet(decoration, target->x, target->y, target->z);
+    modelOffset = &D_8011A368_msetup[menu->type];
+    position.x = pos->x + modelOffset->x;
+    position.y = pos->y + modelOffset->y;
+    position.z = pos->z + modelOffset->z;
+    Hu3DModelPosSet(model, position.x, position.y, position.z);
+    Hu3DModelPosSet(decoration, position.x, position.y, position.z);
+    omAddPrcObj(func_8010D6D0_msetup, 0x3F00, 0x800, 0)->user_data = &cursor;
+    cursor.pos[0] = 160;
+    cursor.pos[1] = 120;
+    cursor.positions = D_8011A544_msetup[menu->type];
+    cursor.dataId = D_8011A508_msetup[menu->type];
+    cursor.selection = -1;
+    cursor.state = 0;
+    cursor.flags = 0;
+    cursor.priority = 0;
+    HuPrcVSleep();
+    for (i = 0; i < 6U; i++) {
+        disabled[i] = 0;
+    }
+    previousPosition.x = previousPosition.y = previousPosition.z = 0;
+    preset = 0;
+    frame = 0;
+    duration = 0;
+    state = 0;
+    selection = D_8011A550_msetup[menu->type];
+    cursor.selection = selection;
+    cursor.flags = 4;
+    func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+    angleStep = 90.0f / 30.0f;
+    while (1) {
+        if (state != menu->state) {
+            switch (menu->state) {
+                case 0:
+                default:
+                    break;
+                case 6:
+                    cursor.state = 2;
+                    startPosition = presets[preset];
+                    position = presets[preset];
+                    position.y += 800.0f;
+                    target = &position;
+                    preset = 0;
+                    goto move;
+                case 4:
+                    cursor.state = 2;
+                    startPosition = presets[preset];
+                    target = &presets[0];
+                    preset = 0;
+                    goto move;
+                case 3:
+                    cursor.state = 2;
+                    startPosition = presets[preset];
+                    target = &presets[2];
+                    preset = 2;
+                    goto move;
+                case 7:
+                    cursor.state = 2;
+                    startPosition = presets[preset];
+                    target = &presets[3];
+                    preset = 3;
+                    goto move;
+                case 2:
+                    switch (menu->type) {
+                        case 0:
+                            for (i = 0; i < optionCount; i++) {
+                                HuSprAttrSet(shadowGroup, i, 0x8000);
+                            }
+                            break;
+                        case 1:
+                            func_80055458_main(group, selection + 1, 0x40);
+                            break;
+                    }
+                case 1:
+                    startPosition = presets[preset];
+                    target = &presets[1];
+                    preset = 1;
+                move:
+                    delta.x = target->x - startPosition.x;
+                    delta.y = target->y - startPosition.y;
+                    delta.z = target->z - startPosition.z;
+                    if (delta.x == 0.0f && delta.y == 0.0f && delta.z == 0.0f) {
+                        frame = 0;
+                        duration = frame;
+                        menu->state = 0;
+                    } else {
+                        duration = 30;
+                        frame = 0;
+                    }
+                    break;
+                case 5:
+                    func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+                    cursor.state = 1;
+                    switch (menu->type) {
+                        case 0:
+                            HuSprAttrReset(group, selection + 1, 0x8000);
+                            break;
+                        case 1:
+                            func_80055458_main(group, selection + 1, 0x100);
+                            break;
+                        case 2:
+                            func_80055458_main(group, selection, 0x100);
+                            break;
+                    }
+                    break;
+            }
+            state = menu->state;
+        }
+        if (duration != 0.0f) {
+            frame += 1.0f;
+            x = sindf(angleStep * frame);
+            pos->x = x * delta.x + startPosition.x;
+            pos->y = x * delta.y + startPosition.y;
+            pos->z = x * delta.z + startPosition.z;
+            if (frame >= duration) {
+                frame = 0;
+                duration = frame;
+                menu->state = 0;
+            }
+        }
+        for (i = 0; i < backgroundCount; i++) {
+            target = &positions[i];
+            x = pos->x + target->x + sindf(angles[i]);
+            y = pos->y + target->y + cosdf(angles[i] * 2);
+            z = pos->z + target->z;
+            angles[i] += 4;
+            if (angles[i] > 360) {
+                angles[i] -= 360;
+            }
+            func_80117910_msetup(backgroundGroup, i, 0, x, y, z, 2.5f);
+        }
+        for (i = 0; i < optionCount; i++) {
+            target = &options[i].pos;
+            x = pos->x + target->x;
+            y = pos->y + target->y;
+            z = pos->z + target->z;
+            func_80117910_msetup(group, i, 0, x, y, z, 2.5f);
+            if (menu->type == 0) {
+                func_80117910_msetup(shadowGroup, i, 0, x, y, z, 2.5f);
+            }
+        }
+        position.x = pos->x + modelOffset->x;
+        position.y = pos->y + modelOffset->y;
+        position.z = pos->z + modelOffset->z;
+        Hu3DModelPosSet(model, position.x, position.y, position.z);
+        Hu3DModelPosSet(decoration, position.x, position.y, position.z);
+        if (preset == 1 && previousPosition.x == pos->x && previousPosition.y == pos->y && previousPosition.z == pos->z) {
+            for (i = 0; i < optionCount; i++) {
+                HuSprScaleSet(group, i, 1.0f, 1.0f);
+            }
+        }
+        previousPosition.x = pos->x;
+        previousPosition.y = pos->y;
+        previousPosition.z = pos->z;
+        buttons = func_8010D684_msetup(D_8011A948_msetup, &previousButtons);
+        if (state == 5) {
+            switch (menu->type) {
+                case 0:
+                    if (buttons & 0xF00) {
+                        i = func_8010D4DC_msetup(D_8011A514_msetup, disabled, 6, selection, D_8011A948_msetup, buttons);
+                        if ((i >= 0) & (i < 6U)) {
+                            selection = i;
+                        }
+                        if (cursor.selection != selection) {
+                            HuAudFXPlay(1);
+                            HuSprAttrSet(group, cursor.selection + 1, 0x8000);
+                            HuSprAttrReset(group, selection + 1, 0x8000);
+                            cursor.selection = selection;
+                        }
+                    }
+                    if (buttons & A_BUTTON) {
+                        menu->state = 0;
+                        menu->result = selection;
+                        HuSprAttrReset(group, selection + 1, 0x8000);
+                        HuAudFXPlay(D_8011A0D0_msetup[selection]);
+                        RepeatVibrator(D_8011A948_msetup, 5, 0, 5);
+                        for (i = 1; i < optionCount; i++) {
+                            if (i != selection + 1) {
+                                HuSprAttrReset(shadowGroup, i, 0x8000);
+                            }
+                        }
+                    } else if (buttons & B_BUTTON) {
+                        switch (menu->type) {
+                            case 0:
+                                HuAudFXPlay(5);
+                                break;
+                            case 1:
+                                HuAudFXPlay(4);
+                                menu->state = 0;
+                                menu->result = -1;
+                                break;
+                        }
+                    }
+                    break;
+                case 1:
+                    if (buttons & 0x600) {
+                        selection++;
+                        if (selection >= difficultyCount) {
+                            selection = difficultyCount - 1;
+                        }
+                    } else if (buttons & 0x900) {
+                        selection--;
+                        if (selection < 0) {
+                            selection = 0;
+                        }
+                    }
+                    if (cursor.selection != selection) {
+                        HuAudFXPlay(1);
+                        func_80055458_main(group, cursor.selection + 1, 0x40);
+                        func_80055458_main(group, selection + 1, 0x100);
+                        cursor.selection = selection;
+                    }
+                    if (buttons & A_BUTTON) {
+                        HuAudFXPlay(2);
+                        menu->state = 0;
+                        menu->result = selection;
+                    } else if (buttons & B_BUTTON) {
+                        HuAudFXPlay(4);
+                        menu->state = 0;
+                        menu->result = -1;
+                        func_80055458_main(group, cursor.selection + 1, 0x40);
+                    }
+                    break;
+                case 2:
+                    if (buttons & 0x600) {
+                        selection = 0;
+                    } else if (buttons & 0x900) {
+                        selection = 1;
+                    }
+                    if (cursor.selection != selection) {
+                        HuAudFXPlay(1);
+                        func_80055458_main(group, cursor.selection, 0x40);
+                        func_80055458_main(group, selection, 0x100);
+                        cursor.selection = selection;
+                        menu->result = selection;
+                    }
+                    if (buttons & A_BUTTON) {
+                        HuAudFXPlay(2);
+                        menu->state = 0;
+                        menu->result = selection;
+                    } else if (buttons & B_BUTTON) {
+                        HuAudFXPlay(4);
+                        menu->state = 0;
+                        menu->result = -1;
+                        func_80055458_main(group, cursor.selection, 0x40);
+                    }
+                    break;
+            }
+        }
+        HuPrcVSleep();
+    }
+}
 
 void func_80118D48_msetup(void) {
     MsetupStoryMenu first;

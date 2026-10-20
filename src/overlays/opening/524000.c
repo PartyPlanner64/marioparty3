@@ -79,6 +79,7 @@ typedef struct {
 } OpWork; // sizeof 0x3C
 
 typedef union {
+    s16 effectId;
     Vec pos;
     s32 motion[3];
 } OpObjPos;
@@ -89,6 +90,9 @@ typedef struct {
     /* 0x08 */ s32 unk_08;
 } OpSlot; // sizeof 0xC
 
+s16 func_801117D4_opening(s32 arg0, s32 arg1);
+void opDemoOutEffMain(omObjData *obj);
+void opDemoGuideInEffMain(omObjData *obj);
 void opDemoEndReset(void);
 void func_80107140_opening(s32 slot, u32 event, s32 x, s32 y, s16 arg4, s16 arg5, s16 arg6);
 void opObjectInit(void);
@@ -154,7 +158,7 @@ extern s32 D_8011738C_opening[0x10][15];
 extern s32 D_80117390_opening[0x10][15];
 extern OpWork D_80117394_opening[0x10];
 extern OpObjPos D_80117398_opening[0x10][5];
-extern s32 D_8011739C_opening[0x10][15];
+extern OpObjPos D_8011739C_opening[0x10][5];
 extern f32 D_801173A4_opening[0x10][15];
 extern s32 D_801173A8_opening[0x10][15];
 extern s32 D_801173B0_opening[0x10][15];
@@ -1033,7 +1037,7 @@ void func_80112A74_opening(omObjData *obj) {
 
     if (D_8011738C_opening[index][0] < 0) {
         if (opMotionEndCheck(modelId)) {
-            opMotionShiftSet(modelId, D_8011739C_opening[index][0], 4, 4, 2);
+            opMotionShiftSet(modelId, D_8011739C_opening[index][0].motion[0], 4, 4, 2);
             D_8011738C_opening[index][0] = 0;
         }
     } else if (D_8011738C_opening[index][0] >= D_80117390_opening[index][0]) {
@@ -1048,7 +1052,7 @@ void func_80112BA0_opening(s32 index, s32 modelId, s32 motion1, s32 motion2, s32
     opDemoObjCreate(index, func_80112A74_opening);
     D_80117394_opening[index].modelId = modelId;
     D_80117398_opening[index][0].motion[0] = motion1;
-    D_8011739C_opening[index][0] = motion2;
+    D_8011739C_opening[index][0].motion[0] = motion2;
     D_80117390_opening[index][0] = frames;
     D_8011738C_opening[index][0] = startTime;
     if (startTime >= 0) {
@@ -1087,11 +1091,37 @@ void func_80112D30_opening(s32 index, s32 modelId, s32 startTime, s32 endTime) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoOutEffMain);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoOutEffCreate);
+void opDemoOutEffCreate(s32 index, s32 modelId) {
+    Vec pos;
+    s16 effectId;
+
+    opDemoObjCreate(index, opDemoOutEffMain);
+    effectId = func_801117D4_opening(0x110012, 0x689);
+    D_80117394_opening[index].modelId = modelId;
+    D_80117398_opening[index][0].effectId = effectId;
+    opModelPosGet(modelId, &pos.x, &pos.y, &pos.z);
+    pos.y += 60.0f;
+    HuVecCopy3F(&D_8011739C_opening[index][0].pos, &pos);
+    D_80117394_opening[index].unk_1C.y = 1.0f;
+    D_8011738C_opening[index][0] = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoGuideInEffMain);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoGuideInEffCreate);
+void opDemoGuideInEffCreate(s32 index, s32 modelId) {
+    Vec pos;
+    s16 effectId;
+
+    opDemoObjCreate(index, opDemoGuideInEffMain);
+    effectId = func_801117D4_opening(0x110012, 0x689);
+    D_80117394_opening[index].modelId = modelId;
+    D_80117398_opening[index][0].effectId = effectId;
+    opModelPosGet(modelId, &pos.x, &pos.y, &pos.z);
+    pos.y += 60.0f;
+    HuVecCopy3F(&D_8011739C_opening[index][0].pos, &pos);
+    D_80117394_opening[index].unk_1C.y = 1.0f;
+    D_8011738C_opening[index][0] = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoStarWaitMain);
 

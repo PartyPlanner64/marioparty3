@@ -482,7 +482,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoEvent);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoEventKill);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80110B90_opening);
+void func_80110B90_opening(void) {
+    D_80117338_opening.obj = NULL;
+}
 
 void func_80110B9C_opening(void) {
     if (D_80117338_opening.obj != NULL) {

@@ -2423,6 +2423,7 @@ segments:
     vram: 0x801059A0
     dir: overlays/opening
     name: opening
+    subalign: 16
     exclusive_ram_id: minigame # ovl_7A
     bss_size: 0x28C0
     subsegments:
@@ -2431,6 +2432,7 @@ segments:
       - [0x5242B0, c]
       - [0x524820, c]
       - [0x533180, data, 524000] #80114B50
+      - [0x533270, .rodata, 524000] #80114C40
       - [0x5332A0, .rodata, 524820] #80114C70
       - {0x5334D0, type: bss, vram: 0x80114EA0, name: opening_bss}
 

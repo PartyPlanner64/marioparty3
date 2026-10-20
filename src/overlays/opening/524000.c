@@ -161,7 +161,7 @@ extern OpWork D_80117394_opening[0x10];
 extern OpObjPos D_80117398_opening[0x10][5];
 extern OpObjPos D_8011739C_opening[0x10][5];
 extern f32 D_801173A4_opening[0x10][15];
-extern s32 D_801173A8_opening[0x10][15];
+extern f32 D_801173A8_opening[0x10][15];
 extern s32 D_801173B0_opening[0x10][15];
 extern s32 D_801173B4_opening[0x10][15];
 extern s32 D_801173B8_opening[0x10][15];
@@ -1205,7 +1205,22 @@ void opDemoGuideInEffCreate(s32 index, s32 modelId) {
     D_8011738C_opening[index][0] = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoStarWaitMain);
+void opDemoStarWaitMain(omObjData *obj) {
+    Vec pos;
+    s8 index = obj->work[0];
+    s32 modelId = D_80117394_opening[index].modelId;
+    f32 step = 1.0f / D_80117390_opening[index][0];
+    f32 angle = step * 360.0f + D_801173A8_opening[index][0];
+    f32 height;
+
+    if (angle > 360.0f) {
+        angle -= 360.0f;
+    }
+    D_801173A8_opening[index][0] = angle;
+    height = sindf(angle) * D_801173A4_opening[index][0];
+    HuVecCopy3F(&pos, &D_80117398_opening[index][0].pos);
+    opModelPosSet(modelId, pos.x, height + pos.y, pos.z);
+}
 
 void opDemoStarWaitCreate(s32 index, s32 modelId, f32 x, f32 y, f32 z, f32 arg5, s32 frames) {
     opDemoObjCreate(index, opDemoStarWaitMain);

@@ -547,7 +547,91 @@ void func_80106764_mchar(s16 arg0) {
                        (s16)D_80107AA0_mchar[D_80107114_mchar][0], 0, 10, 2);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mchar/3D3C80", func_80106898_mchar);
+void func_80106898_mchar(omObjData *arg0) {
+    f32 dz;
+    f32 zoom;
+    f32 speed;
+
+    f32 x, y;
+    f32 length;
+    s8 stick;
+
+    if (D_800CDA7C_main[0] & 0x1000) {
+        func_80106D7C_mchar();
+    }
+    if (D_800CDA7C_main[0] & 0x20) {
+        if (D_800CDA7C_main[0] & 0x2000) {
+            zoom = CZoom;
+            zoom += 30.0f;
+            CZoom = zoom;
+        } else {
+            zoom = CZoom;
+            zoom += 10.0f;
+            CZoom = zoom;
+        }
+    }
+    if ((D_800CDA7C_main[0] & 0x10) && (CZoom - 10.0f != 0.0f)) {
+        if (D_800CDA7C_main[0] & 0x2000) {
+            CZoom -= 30.0f;
+        } else {
+            zoom = CZoom;
+            CZoom = zoom - 10.0f;
+        }
+    }
+    x = D_80107A50_mchar.x;
+    y = D_80107A50_mchar.y;
+    if (D_800CDA7C_main[0] & 0x2000) {
+        speed = 5.0f;
+    } else {
+        speed = 2.0f;
+    }
+    y += (-D_800CBB6E_main[0] / 30) * speed;
+    if (y >= 360.0f) {
+        y -= 360.0f;
+    } else if (y < 0.0f) {
+        y += 360.0f;
+    }
+    D_80107A50_mchar.y = y;
+    stick = D_800D20A1_main[0];
+    stick /= 30;
+    x += stick * speed;
+    if (x >= 360.0f) {
+        x -= 360.0f;
+    } else if (x < 0.0f) {
+        x += 360.0f;
+    }
+    D_80107A50_mchar.x = x;
+    CRot.x = (s16)x;
+    CRot.y = (s16)D_80107A50_mchar.y;
+    if (D_800CDA7C_main[0] & 0x2000) {
+        speed = 10.0f;
+    } else {
+        speed = 2.0f;
+    }
+    if (D_800CDA7C_main[0] & 0x800) {
+        Center.x += sindf(y) * sindf(x) * -speed;
+        Center.y += cosdf(x) * -speed;
+        Center.z += cosdf(y) * sindf(x) * -speed;
+    } else if (D_800CDA7C_main[0] & 0x400) {
+        Center.x += sindf(y) * sindf(x) * speed;
+        Center.y += cosdf(x) * speed;
+        Center.z += cosdf(y) * sindf(x) * speed;
+    } else if (D_800CDA7C_main[0] & 0x200) {
+        x = gCameraList->pos.z - Center.z;
+        dz = -(gCameraList->pos.x - Center.x);
+        length = 1.0f / HuSqrtf(x * x + dz * dz);
+        Center.x += x * length * speed;
+        Center.y += 0.0f;
+        Center.z += dz * length * speed;
+    } else if (D_800CDA7C_main[0] & 0x100) {
+        x = -(gCameraList->pos.z - Center.z);
+        dz = gCameraList->pos.x - Center.x;
+        length = 1.0f / HuSqrtf(x * x + dz * dz);
+        Center.x += x * length * speed;
+        Center.y += 0.0f;
+        Center.z += dz * length * speed;
+    }
+}
 
 void func_80106D7C_mchar(void) {
     D_80107A50_mchar.x = D_80107A50_mchar.y = D_80107A50_mchar.z = 0.0f;

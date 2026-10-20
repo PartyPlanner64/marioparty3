@@ -1180,7 +1180,37 @@ void func_8011361C_opening(omObjData *obj) {
     func_801134FC_opening(index, &pos, &shadow, 1.0f, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524820", func_8011373C_opening);
+void func_8011373C_opening(omObjData *obj) {
+    Vec start;
+    Vec end;
+    Vec pos;
+    Vec modelPos;
+    Vec shadow;
+    s8 index = obj->work[0];
+    s32 modelId = D_80117394_opening[index].modelId;
+    OpWork *slot = &D_80117394_opening[index];
+    f32 time;
+
+    HuVecCopy3F(&start, &slot->unk_1C);
+    HuVecCopy3F(&end, &slot->unk_28);
+    time = 1.0f / D_80117390_opening[index][0];
+    time *= D_8011738C_opening[index][0];
+    HuVecCopyXYZ(&pos, time * (end.x - start.x) + start.x,
+                 time * (end.y - start.y) + start.y + (0.25 - (time - 0.5f) * (time - 0.5f)) * 4.0 * 5.0 * 20.0,
+                 time * (end.z - start.z) + start.z);
+    HuVecCopy3F(&start, &slot->unk_1C);
+    opModelPosSet(modelId, 0, 0, 0);
+    HuVecCopyXYZ(&modelPos, pos.x, pos.y, pos.z);
+    HuVecCopyXYZ(&shadow, pos.x, 0, pos.z);
+    time = time * 0.8 + 0.2f;
+    func_801134FC_opening(index, &modelPos, &shadow, time, 0);
+    if (D_8011738C_opening[index][0] >= D_80117390_opening[index][0]) {
+        D_8011738C_opening[index][0] = 0;
+        obj->func = func_8011361C_opening;
+    } else {
+        D_8011738C_opening[index][0]++;
+    }
+}
 
 void func_801139B0_opening(s32 index, s32 modelId, Vec *pos1, Vec *pos2, char *node1, char *node2) {
     s16 model;

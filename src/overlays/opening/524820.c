@@ -1231,7 +1231,34 @@ void func_801139B0_opening(s32 index, s32 modelId, Vec *pos1, Vec *pos2, char *n
     func_8011373C_opening(D_80117388_opening[index].obj);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524820", func_80113AE8_opening);
+void func_80113AE8_opening(omObjData *obj) {
+    Vec oldPos;
+    Vec pos;
+    s8 index = obj->work[0];
+    s32 modelId = D_80117394_opening[index].modelId;
+    s32 frame = D_8011738C_opening[index][0];
+    f32 xAngle = D_801173B0_opening[index][0].pos.x;
+    f32 yAngle = D_801173B4_opening[index][0];
+    f32 zAngle = D_801173B8_opening[index][0];
+
+    oldPos.x = sindf(xAngle) * 65.0f + D_80117398_opening[index][0].pos.x;
+    oldPos.y = (sindf(yAngle) + 1.0f) * 20.0f + D_8011739C_opening[index][0].pos.x;
+    oldPos.z = cosdf(zAngle) * 11.0f + D_80117398_opening[index][0].pos.z;
+    xAngle = xAngle + 1.45f < 360.0f ? xAngle + 1.45f : xAngle - 360.0f + 1.45f;
+    yAngle = yAngle + 13.99f < 360.0f ? yAngle + 13.99f : yAngle - 360.0f + 13.99f;
+    zAngle = zAngle + 0.8f < 360.0f ? zAngle + 0.8f : zAngle - 360.0f + 0.8f;
+    pos.x = D_80117398_opening[index][0].pos.x + sindf(xAngle) * 65.0f;
+    pos.y = (sindf(yAngle) + 1.0f) * 20.0f + D_8011739C_opening[index][0].pos.x;
+    pos.z = cosdf(zAngle) * 11.0f + D_80117398_opening[index][0].pos.z;
+    opModelPosSet(modelId, pos.x, pos.y, pos.z);
+    opModelRotSet(modelId, 0, func_80111164_opening(oldPos.x, oldPos.z, pos.x, pos.z), 0);
+    frame++;
+    frame = frame <= 256 ? frame : 0;
+    D_8011738C_opening[index][0] = frame;
+    D_801173B0_opening[index][0].pos.x = xAngle + (rand8() & 7) * 0.3f;
+    D_801173B4_opening[index][0] = yAngle + (rand8() & 3) * 0.3f;
+    D_801173B8_opening[index][0] = zAngle;
+}
 
 void func_80113E8C_opening(omObjData *obj) {
     Vec start;

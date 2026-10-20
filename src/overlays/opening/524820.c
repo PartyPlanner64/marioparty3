@@ -1233,7 +1233,43 @@ void func_801139B0_opening(s32 index, s32 modelId, Vec *pos1, Vec *pos2, char *n
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524820", func_80113AE8_opening);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524820", func_80113E8C_opening);
+void func_80113E8C_opening(omObjData *obj) {
+    Vec start;
+    Vec end;
+    Vec pos;
+    s8 index = obj->work[0];
+    s32 modelId = D_80117394_opening[index].modelId;
+    s32 frame = D_8011738C_opening[index][0];
+    f32 time = 1.0f / D_80117390_opening[index][0];
+    f32 xAngle;
+    f32 yAngle;
+    f32 zAngle;
+
+    time *= D_8011738C_opening[index][0];
+    frame++;
+    if (time < 1.0f) {
+        HuVecCopyXYZ(&start, D_80117398_opening[index][0].pos.x, D_8011739C_opening[index][0].pos.x,
+                     D_80117398_opening[index][0].pos.z);
+        HuVecCopyXYZ(&end, D_801173A4_opening[index][0], D_801173A8_opening[index][0], D_80117394_opening[index].unk_1C.z);
+        xAngle = D_801173B0_opening[index][0].pos.x;
+        yAngle = D_801173B4_opening[index][0];
+        zAngle = D_801173B8_opening[index][0];
+        pos.x = (end.x - start.x) * time + start.x;
+        pos.y = (end.y - start.y) * time + start.y;
+        pos.z = (end.z - start.z) * time + start.z;
+        yAngle = yAngle + 13.99f < 360.0f ? yAngle + 13.99f : yAngle - 360.0f + 13.99f;
+        pos.y = (sindf(yAngle) + 1.0f) * 20.0f + pos.y;
+        opModelPosSet(modelId, pos.x, pos.y, pos.z);
+        opModelRotSet(modelId, 0, func_80111164_opening(pos.x, pos.z, end.x, end.z), 0);
+        D_8011738C_opening[index][0] = frame;
+        D_801173B0_opening[index][0].pos.x = xAngle;
+        D_801173B4_opening[index][0] = yAngle;
+        D_801173B8_opening[index][0] = zAngle;
+    } else {
+        opDemoObjKill(index);
+    }
+    D_8011738C_opening[index][0] = frame;
+}
 
 void func_80114150_opening(s32 index, f32 x, f32 y, f32 z, s32 arg4) {
     Vec pos;

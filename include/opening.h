@@ -124,7 +124,7 @@ extern f32 D_801173A4_opening[0x10][15];
 extern f32 D_801173A8_opening[0x10][15];
 extern OpObjPos D_801173B0_opening[0x10][5];
 extern f32 D_801173B4_opening[0x10][15];
-extern s32 D_801173B8_opening[0x10][15];
+extern f32 D_801173B8_opening[0x10][15];
 
 extern HmfMotionNode *D_801173BC_opening[0x10][15];
 extern HmfMotionNode *D_801173C0_opening[0x10][15];

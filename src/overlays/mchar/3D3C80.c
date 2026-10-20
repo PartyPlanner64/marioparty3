@@ -354,4 +354,8 @@ void func_80106DF8_mchar(omObjData *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mchar/3D3C80", func_80106E54_mchar);
+void func_80106E54_mchar(omObjData *arg0) {
+    if (WipeStatGet() == 0) {
+        omOvlReturnEx(1);
+    }
+}

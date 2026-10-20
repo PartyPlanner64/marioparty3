@@ -76,7 +76,8 @@ typedef struct {
     /* 0x00 */ s32 modelId;
     /* 0x04 */ Vec pos;
     /* 0x10 */ Vec unk_1C;
-    /* 0x1C */ char unk_38[0x20];
+    /* 0x1C */ Vec unk_28;
+    /* 0x28 */ char unk_34[0x14];
 } OpWork; // sizeof 0x3C
 
 typedef union {
@@ -168,6 +169,7 @@ void func_8000BE5C_main(u16 arg0, f32 arg1, f32 arg2);
 void func_8000BBD4_main(u16 arg0, s16 arg1, s16 arg2);
 void func_8000BD94_main(u16 arg0, s32 arg1, s32 arg2);
 void func_80113E8C_opening(omObjData *);
+void func_8011373C_opening(omObjData *);
 void opDemoObjKill(s32 index);
 void opDemoObjKillAll(void);
 void opContErrorKill(void);

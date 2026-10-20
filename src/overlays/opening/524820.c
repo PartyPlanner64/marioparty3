@@ -5,6 +5,7 @@
 
 void func_80088800_main(HuMtx4F, f32, f32, f32);
 void func_80017CD0_main(HuMtx4F, f32, f32, f32);
+HmfMotionNode *func_8001D33C_main(s16 model, char *name);
 
 void func_801061F0_opening(void) {
     func_8010621C_opening();
@@ -1181,7 +1182,24 @@ void func_8011361C_opening(omObjData *obj) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524820", func_8011373C_opening);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524820", func_801139B0_opening);
+void func_801139B0_opening(s32 index, s32 modelId, Vec *pos1, Vec *pos2, char *node1, char *node2) {
+    s16 model;
+    OpWork *slot;
+
+    opDemoObjCreate(index, func_8011373C_opening);
+    D_80117394_opening[index].modelId = modelId;
+    slot = &D_80117394_opening[index];
+    HuVecCopy3F(&slot->unk_1C, pos1);
+    HuVecCopy3F(&slot->unk_28, pos2);
+    D_8011739C_opening[index][0].pos.y = 12.0f;
+    D_8011739C_opening[index][0].pos.x = 0;
+    D_8011738C_opening[index][0] = 0;
+    D_80117390_opening[index][0] = 20;
+    model = opModelIdGet(modelId);
+    D_801173BC_opening[index][0] = func_8001D33C_main(model, node1);
+    D_801173C0_opening[index][0] = func_8001D33C_main(model, node2);
+    func_8011373C_opening(D_80117388_opening[index].obj);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524820", func_80113AE8_opening);
 

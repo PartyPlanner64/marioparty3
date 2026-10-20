@@ -2,6 +2,10 @@
 
 extern u16 D_80106E80_mchar;
 extern Vec D_80107A50_mchar;
+extern s16 D_80107114_mchar;
+extern s16 D_80107118_mchar;
+extern s32 D_80107A60_mchar[8][2];
+extern s32 D_80107AA0_mchar[8][2];
 
 void func_80106E54_mchar(omObjData *arg0);
 
@@ -333,7 +337,22 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mchar/3D3C80", func_80105C4C_mchar);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mchar/3D3C80", func_8010654C_mchar);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mchar/3D3C80", func_80106764_mchar);
+void func_80106764_mchar(s16 arg0) {
+    s16 i;
+    void *data;
+
+    for (i = 0; i < 8; i++) {
+        if (D_80107AA0_mchar[i][1] != -1) {
+            func_8002D4B8_main((s16)D_80107AA0_mchar[i][1]);
+        }
+        D_80107AA0_mchar[i][1] = D_80107AA0_mchar[i][0];
+        data = DataReadTemp(func_80017BB8_main(i, arg0));
+        D_80107AA0_mchar[i][0] = func_8001F1FC_main(data, 0);
+        DataCloseTemp(data);
+    }
+    func_8001C624_main((s16)D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar],
+                       (s16)D_80107AA0_mchar[D_80107114_mchar][0], 0, 10, 2);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mchar/3D3C80", func_80106898_mchar);
 

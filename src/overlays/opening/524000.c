@@ -91,6 +91,8 @@ typedef struct {
 } OpSlot; // sizeof 0xC
 
 s16 func_801117D4_opening(s32 arg0, s32 arg1);
+s32 func_80111984_opening(s32 resourceId, s32 arg1);
+s32 func_80111DDC_opening(s16 modelId, f32 x, f32 y, f32 z, f32 size);
 void opDemoOutEffMain(omObjData *obj);
 void opDemoGuideInEffMain(omObjData *obj);
 void opDemoEndReset(void);
@@ -925,7 +927,41 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_8011124C_opening);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80111490_opening);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80111580_opening);
+void func_80111580_opening(void) {
+    s32 model1;
+    s32 model2;
+    Vec pos;
+    s32 i;
+    f32 t;
+    f32 angle;
+    f32 size;
+    f32 remaining;
+
+    model1 = func_80111984_opening(0x110012, 0x689);
+    model2 = func_80111984_opening(0x110012, 0x689);
+    HuVecCopyXYZ(&pos, 0.0f, 0.0f, 0.0f);
+    for (i = 0, remaining = 1.0f; i < 120; i++) {
+        if (i == 90) {
+            func_80107CA0_opening(0);
+        }
+        t = i * (1.0f / 120.0f);
+        HuSqrtf(t);
+        angle = t * 360.0f;
+        t = remaining - t;
+        size = t * 8.0f;
+        pos.x = t * 100.0f * sindf(angle);
+        pos.y = 40.0f - pos.x * 0.2f - t * 120.0f * cosdf(angle);
+        pos.z = t * 800.0f * cosdf(angle) + -200.0f;
+        func_80111DDC_opening(model1, pos.x, pos.y, pos.z, size);
+        func_80111DDC_opening(model1, pos.x, pos.y, pos.z, size);
+        func_80111DDC_opening(model2, pos.x, pos.y, pos.z, size);
+        func_80111DDC_opening(model2, pos.x, pos.y, pos.z, size);
+        HuPrcVSleep();
+    }
+    HuPrcSleep(30);
+    func_8001ACDC_main(model1);
+    func_8001ACDC_main(model2);
+}
 
 s16 func_801117D4_opening(s32 resourceId, s32 arg1) {
     s16 modelId;
@@ -970,7 +1006,7 @@ s16 func_801117D4_opening(s32 resourceId, s32 arg1) {
     return modelId;
 }
 
-s16 func_80111984_opening(s32 resourceId, s32 arg1) {
+s32 func_80111984_opening(s32 resourceId, s32 arg1) {
     s16 modelId;
     HmfData *data;
     HmfModelData_UnkBC_Struct *work;

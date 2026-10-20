@@ -29,7 +29,8 @@ typedef struct {
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ RGBA color;
-    /* 0x10 */ char unk_10[0x2C];
+    /* 0x10 */ s16 effectId;
+    /* 0x12 */ char unk_12[0x2A];
 } OpObj; // sizeof 0x3C
 
 typedef struct {
@@ -113,7 +114,10 @@ void func_80113E8C_opening(omObjData *);
 void opDemoObjKill(s32 index);
 void opDemoObjKillAll(void);
 void opContErrorKill(void);
+void opWipeKill(s32 index);
 
+extern Gfx D_80114BE8_opening[];
+extern u32 D_80114BE0_opening;
 extern Vec D_80114BB8_opening;
 extern Vec D_80114BC4_opening;
 extern RectF D_80114BD0_opening;
@@ -698,11 +702,33 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_801117D4_opening);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80111984_opening);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80111B34_opening);
+u32 func_80111B34_opening(u32 seed) {
+    u32 quotient;
+    u32 remainder;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80111C08_opening);
+    if (seed == 0) {
+        seed = rand8();
+        seed ^= osGetCount();
+        seed ^= 0xD826BC89;
+    }
+    quotient = seed / 127773;
+    remainder = seed - quotient * 127773;
+    seed = quotient * 2836;
+    return seed - remainder * 16807;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80111C30_opening);
+u32 func_80111C08_opening(void) {
+    D_80114BE0_opening = func_80111B34_opening(D_80114BE0_opening);
+    return D_80114BE0_opening;
+}
+
+u32 func_80111C30_opening(u32 max) {
+    u32 value;
+
+    value = func_80111B34_opening(D_80114BE0_opening);
+    D_80114BE0_opening = value;
+    return (value & 0x7FFFFFFF) % max;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80111C88_opening);
 
@@ -832,7 +858,16 @@ void func_80114150_opening(s32 index, f32 x, f32 y, f32 z, s32 arg4) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80114250_opening);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opWipeDraw);
+void opWipeDraw(Gfx **gfx, s32 arg1, s32 arg2) {
+    if (D_80117388_opening[15].color.a != 0) {
+        gSPDisplayList((*gfx)++, D_80114BE8_opening);
+        gDPSetRenderMode((*gfx)++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
+        gDPSetCombineMode((*gfx)++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
+        gDPSetPrimColor((*gfx)++, 0, 0, D_80117388_opening[15].color.r, D_80117388_opening[15].color.g,
+                        D_80117388_opening[15].color.b, D_80117388_opening[15].color.a);
+        gDPFillRectangle((*gfx)++, 0, 0, 320, 240);
+    }
+}
 
 void opWipeColorSet(s32 arg0, u8 red, u8 green, u8 blue, u8 alpha) {
     D_80117388_opening[arg0].color.r = red;
@@ -841,19 +876,77 @@ void opWipeColorSet(s32 arg0, u8 red, u8 green, u8 blue, u8 alpha) {
     D_80117388_opening[arg0].color.a = alpha;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opWipeInMain);
+void opWipeInMain(omObjData *obj) {
+    s8 index = obj->work[0];
+    s32 frame = D_8011738C_opening[index][0];
+    s32 totalFrames = D_80117390_opening[index][0];
+    u8 red = D_80117388_opening[index].color.r;
+    u8 blue = D_80117388_opening[index].color.b;
+    u8 green = D_80117388_opening[index].color.g;
+    f32 alpha;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opWipeOutMain);
+    if (frame >= totalFrames) {
+        alpha = 0.0f;
+        opWipeKill(index);
+    } else {
+        alpha = (1.0f / totalFrames) * (totalFrames - frame);
+        D_8011738C_opening[index][0]++;
+    }
+    opWipeColorSet(index, red, blue, green, (u8)(alpha * 255.0f));
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opWipeKill);
+void opWipeOutMain(omObjData *obj) {
+    s8 index = obj->work[0];
+    s32 frame = D_8011738C_opening[index][0];
+    s32 totalFrames = D_80117390_opening[index][0];
+    u8 red = D_80117388_opening[index].color.r;
+    u8 blue = D_80117388_opening[index].color.b;
+    u8 green = D_80117388_opening[index].color.g;
+    f32 alpha;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opWipeInCreate);
+    if (frame >= totalFrames) {
+        alpha = 1.0f;
+    } else {
+        alpha = (1.0f / totalFrames) * frame;
+        D_8011738C_opening[index][0]++;
+    }
+    opWipeColorSet(index, red, blue, green, (u8)(alpha * 255.0f));
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opWipeOutCreate);
+void opWipeKill(s32 index) {
+    if (D_80117388_opening[index].obj != NULL) {
+        func_8001ACDC_main(D_80117388_opening[index].effectId);
+        opDemoObjKill(index);
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opWipeWhiteInCreate);
+void opWipeInCreate(s32 index, s32 totalFrames) {
+    opWipeKill(index);
+    opDemoObjCreate(index, opWipeInMain);
+    D_80117388_opening[index].effectId = func_8001AC8C_main(0, opWipeDraw, 6);
+    opWipeColorSet(index, 0, 0, 0, 255);
+    D_8011738C_opening[index][0] = 0;
+    D_80117390_opening[index][0] = totalFrames;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opWipeWhiteOutCreate);
+void opWipeOutCreate(s32 index, s32 totalFrames) {
+    opWipeKill(index);
+    opDemoObjCreate(index, opWipeOutMain);
+    D_80117388_opening[index].effectId = func_8001AC8C_main(0, opWipeDraw, 6);
+    opWipeColorSet(index, 0, 0, 0, 255);
+    D_8011738C_opening[index][0] = 0;
+    D_80117390_opening[index][0] = totalFrames;
+}
+
+void opWipeWhiteInCreate(s32 index, s32 totalFrames) {
+    opWipeInCreate(index, totalFrames);
+    opWipeColorSet(index, 255, 255, 255, 255);
+}
+
+void opWipeWhiteOutCreate(s32 index, s32 totalFrames) {
+    opWipeOutCreate(index, totalFrames);
+    opWipeColorSet(index, 255, 255, 255, 255);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_801149A4_opening);
 

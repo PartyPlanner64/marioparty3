@@ -1090,7 +1090,37 @@ void func_80112D30_opening(s32 index, s32 modelId, s32 startTime, s32 endTime) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524820", opDemoOutEffMain);
+void opDemoOutEffMain(omObjData *obj) {
+    Vec pos;
+    s8 index = obj->work[0];
+    s32 modelId = D_80117394_opening[index].modelId;
+    s32 otherModelId = modelId + 32;
+    s16 effectId = D_80117398_opening[index][0].effectId;
+    f32 scale = D_801173A8_opening[index][0];
+
+    HuVecCopy3F(&pos, &D_8011739C_opening[index][0].pos);
+    if (D_8011738C_opening[index][0] >= 40) {
+        func_8001ACDC_main(effectId);
+        D_8011738C_opening[index][0] = 0;
+        opDemoObjKill(index);
+    } else if (D_8011738C_opening[index][0] >= 20) {
+        opModelScaleSet(modelId, 1.0f, 1.0f, 1.0f);
+        opModelScaleSet(otherModelId, 3.0f, 1.0f, 3.0f);
+        opModelDispOff(modelId);
+        opModelDispOff(otherModelId);
+        D_8011738C_opening[index][0]++;
+    } else {
+        scale -= 1.0f / 7.0f;
+        if (scale <= 0.0f) {
+            scale = 0.0f;
+        }
+        func_80111C88_opening(effectId, pos.x, pos.y, pos.z);
+        opModelScaleSet(modelId, scale, 1.0f, scale);
+        opModelScaleSet(otherModelId, scale, 1.0f, scale);
+        D_801173A8_opening[index][0] = scale;
+        D_8011738C_opening[index][0]++;
+    }
+}
 
 void opDemoOutEffCreate(s32 index, s32 modelId) {
     Vec pos;
@@ -1107,7 +1137,29 @@ void opDemoOutEffCreate(s32 index, s32 modelId) {
     D_8011738C_opening[index][0] = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524820", opDemoGuideInEffMain);
+void opDemoGuideInEffMain(omObjData *obj) {
+    Vec pos;
+    s8 index = obj->work[0];
+    s16 effectId = D_80117398_opening[index][0].effectId;
+    f32 scale = D_801173A8_opening[index][0];
+
+    HuVecCopy3F(&pos, &D_8011739C_opening[index][0].pos);
+    if (D_8011738C_opening[index][0] >= 80) {
+        func_8001ACDC_main(effectId);
+        D_8011738C_opening[index][0] = 0;
+        opDemoObjKill(index);
+    } else if (D_8011738C_opening[index][0] >= 50) {
+        D_8011738C_opening[index][0]++;
+    } else {
+        scale -= 1.0f / 7.0f;
+        if (scale <= 0.0f) {
+            scale = 0.0f;
+        }
+        func_80111C88_opening(effectId, pos.x, pos.y + 25.0f, pos.z);
+        D_801173A8_opening[index][0] = scale;
+        D_8011738C_opening[index][0]++;
+    }
+}
 
 void opDemoGuideInEffCreate(s32 index, s32 modelId) {
     Vec pos;

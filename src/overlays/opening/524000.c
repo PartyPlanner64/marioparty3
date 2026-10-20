@@ -83,6 +83,7 @@ typedef struct {
     /* 0x08 */ s32 unk_08;
 } OpSlot; // sizeof 0xC
 
+void opDemoEndReset(void);
 void opTitleSprMain(void);
 void opDemoEvent(void);
 void func_801061F0_opening(void);
@@ -138,7 +139,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80105C2C_opening);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoObjectSetup);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opEventInit);
+void opEventInit(void) {
+    opDemoEndReset();
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opTitleCreate);
 
@@ -317,13 +320,45 @@ void func_801067D4_opening(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opModelCreate);
+void opModelCreate(s32 slot, s32 resourceId, s32 arg2) {
+    s16 modelId;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opMotionCreate);
+    modelId = func_8000B108_main(resourceId, arg2);
+    D_80115630_opening[slot].modelId = modelId;
+    Hu3DModelPosSet(modelId, 0.0f, 0.0f, 0.0f);
+    Hu3DModelRotSet(modelId, 0.0f, 0.0f, 0.0f);
+    Hu3DModelScaleSet(modelId, 1.0f, 1.0f, 1.0f);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opModelKill);
+void opMotionCreate(s32 slot, s32 resourceId, s32 arg2) {
+    void *data;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opModelKillAll);
+    if (arg2 == -1) {
+        arg2 = 0x6AD;
+    }
+    data = DataRead(resourceId);
+    D_80115630_opening[slot].motionId = func_8001F1FC_main(data, (s16)arg2);
+    DataClose(data);
+}
+
+void opModelKill(s32 slot) {
+    if (D_80115630_opening[slot].modelId != -1) {
+        func_8001ACDC_main(D_80115630_opening[slot].modelId);
+        D_80115630_opening[slot].modelId = -1;
+    }
+    if (D_80115630_opening[slot].motionId != -1) {
+        func_8002D4B8_main(D_80115630_opening[slot].motionId);
+        D_80115630_opening[slot].motionId = -1;
+    }
+}
+
+void opModelKillAll(void) {
+    s32 i;
+
+    for (i = 0; i < ARRAY_COUNT(D_80115630_opening); i++) {
+        opModelKill(i);
+    }
+}
 
 s16 opModelIdGet(s32 modelId) {
     return D_80115630_opening[modelId].modelId;
@@ -396,9 +431,16 @@ void opMotionSpeedSet(s32 modelId, f32 speed) {
     func_8001C92C_main(D_80115630_opening[modelId].modelId, speed);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opMotionTimeSet);
+void opMotionTimeSet(s32 slot, u32 time) {
+    func_8001C6A8_main(D_80115630_opening[slot].modelId, time);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opMotionEndWait);
+void opMotionEndWait(s32 slot) {
+    while (HmfModelData[D_80115630_opening[slot].modelId].unk40 !=
+           D_800CCF58_main[HmfModelData[D_80115630_opening[slot].modelId].unk02].unk02) {
+        HuPrcVSleep();
+    }
+}
 
 s32 opMotionEndCheck(s32 arg0) {
     s16 modelId = D_80115630_opening[arg0].modelId;
@@ -468,21 +510,31 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107A90_opening);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107B74_opening);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107BD8_opening);
+void func_80107BD8_opening(s32 slot, f32 x, f32 y) {
+    func_8005BB18_main(D_801171B8_opening[slot].espriteSlot, x, y);
+}
 
 void func_80107C08_opening(s32 arg0, f32 arg1, f32 arg2) {
     func_8005BA90_main(D_801171B8_opening[arg0].espriteSlot, arg1, arg2);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107C70_opening);
+void func_80107C70_opening(s32 slot) {
+    func_8005FFA8_main(D_801171B8_opening[slot].espriteSlot);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107CA0_opening);
+void func_80107CA0_opening(s32 slot) {
+    func_8005FE90_main(D_801171B8_opening[slot].espriteSlot);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107CD0_opening);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107D9C_opening);
+void func_80107D9C_opening(s32 slot, s8 arg1, s32 arg2) {
+    func_800601BC_main(D_801171B8_opening[slot].espriteSlot, arg2, arg1);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107DD8_opening);
+s32 func_80107DD8_opening(s32 slot, s16 arg1, s32 arg2) {
+    return func_8005E1D8_main(D_801171B8_opening[slot].espriteSlot, arg1, arg2);
+}
 
 s16 func_80107E10_opening(s32 slot) {
     return D_801171B8_opening[slot].espriteSlot;
@@ -496,7 +548,9 @@ void func_80107E80_opening(s32 arg0) {
     } while (!(arg0 & D_800D5558_main[0]));
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107EBC_opening);
+void func_80107EBC_opening(s32 slot, s16 arg1) {
+    func_8005BE30_main(D_801171B8_opening[slot].espriteSlot, arg1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107EF4_opening);
 
@@ -554,9 +608,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoCharCreate);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoShadowCreate);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoModelKill);
+void opDemoModelKill(void) {
+    opModelKillAll();
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoSprKill);
+void opDemoSprKill(void) {
+    opSprKillAll();
+}
 
 void func_80110F48_opening(void) {
     D_80117350_opening.obj = NULL;

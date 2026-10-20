@@ -5,6 +5,8 @@ extern Vec D_80107A50_mchar;
 extern s16 D_80107114_mchar;
 extern s16 D_80107118_mchar;
 extern s16 D_8010711A_mchar;
+extern s32 D_80107120_mchar[];
+extern s32 D_80107124_mchar[];
 extern s32 D_80107A60_mchar[8][2];
 extern s32 D_80107AA0_mchar[8][2];
 
@@ -351,7 +353,39 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mchar/3D3C80", D_801078D4_mchar);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mchar/3D3C80", func_80105C4C_mchar);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mchar/3D3C80", func_8010654C_mchar);
+void func_8010654C_mchar(s16 arg0) {
+    s16 i;
+    void *data;
+    s16 flags;
+    s32 *files0;
+    s32 *files1;
+    s32 offset;
+
+    i = 0;
+    offset = arg0;
+    files0 = D_80107120_mchar;
+    flags = 0x2AC;
+    for (; i < 8; i++) {
+        D_80107A60_mchar[i][0] = func_8000B108_main(files0[(i + offset) * 2], flags);
+        files1 = D_80107124_mchar;
+        func_80017790_main((s16)D_80107A60_mchar[i][0], 0, i, func_80017BB8_main(i, 0xA3));
+        func_8001C514_main((s16)D_80107A60_mchar[i][0]);
+        D_80107A60_mchar[i][1] = func_8000B108_main(files1[(i + offset) * 2], flags);
+        func_80017790_main((s16)D_80107A60_mchar[i][1], 1, i, func_80017BB8_main(i, 0xA4));
+        func_8001C514_main((s16)D_80107A60_mchar[i][1]);
+        if (D_80107AA0_mchar[i][0] != -1) {
+            func_8002D4B8_main((s16)D_80107AA0_mchar[i][0]);
+        }
+        if (D_80107AA0_mchar[i][1] != -1) {
+            func_8002D4B8_main((s16)D_80107AA0_mchar[i][1]);
+        }
+        data = DataReadTemp(func_80017BB8_main(i, 0));
+        D_80107AA0_mchar[i][0] = func_8001F1FC_main(data, 0);
+        DataCloseTemp(data);
+        D_80107AA0_mchar[i][1] = -1;
+        func_8001F304_main((s16)D_80107A60_mchar[i][0], (s16)D_80107AA0_mchar[i][0]);
+    }
+}
 
 void func_80106764_mchar(s16 arg0) {
     s16 i;

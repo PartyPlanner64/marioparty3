@@ -25,7 +25,63 @@ Process *opDemoEventCreate(void) {
     return eventPrc;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/5242B0", opDemoMain);
+void opDemoMain(void) {
+    Process *parentPrc;
+    Process *eventPrc;
+
+    func_8001F38C_main(0, 0, 0);
+    opDemoEventSetup();
+    parentPrc = HuPrcCurrentGet();
+    eventPrc = opDemoEventCreate();
+    WipeCreateIn(11, 16);
+    HuPrcSleep(16);
+    while (1) {
+        HuPrcVSleep();
+        if (omovlevtno == 1) {
+            if (opBtnStartCheck() && _CheckFlag(50)) {
+                WipeColorSet(255, 255, 255);
+                WipeCreateOut(11, 20);
+                HuAudSeqFadeOut(20);
+                break;
+            }
+        } else if (opBtnStartCheck()) {
+            WipeColorSet(255, 255, 255);
+            WipeCreateOut(11, 20);
+            HuAudSeqFadeOut(20);
+            break;
+        }
+        if (!HuPrcChildGet(parentPrc) || opDemoEndGet()) {
+            WipeColorSet(255, 255, 255);
+            WipeCreateOut(11, 20);
+            HuAudSeqFadeOut(50);
+            break;
+        }
+    }
+    do {
+        HuPrcVSleep();
+    } while (WipeStatGet());
+    if (HuPrcChildGet(parentPrc)) {
+        omDelPrcObj(eventPrc);
+    }
+    opDemoEventKill();
+    func_8005F524_main();
+    omOvlKill();
+    if (omovlevtno == 0) {
+        omOvlGotoEx(122, 0, 0x82);
+    } else if (omovlevtno == 1) {
+        if (!_CheckFlag(50)) {
+            _SetFlag(50);
+            func_80050064_main(1);
+        }
+        omOvlReturnEx(1);
+    } else {
+        omOvlGotoEx(122, 0, 0x82);
+    }
+    omDelPrcObj(NULL);
+    while (1) {
+        HuPrcVSleep();
+    }
+}
 
 Process *func_80105F68_opening(void) {
     Process *parentPrc = HuPrcCurrentGet();

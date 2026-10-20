@@ -139,6 +139,7 @@ extern u8 D_800D20B8_main[16][3];
 extern u8 D_800D5570_main[16][3];
 extern Gfx D_80114BE8_opening[];
 extern u32 D_80114BE0_opening;
+extern Vec D_80117378_opening;
 extern Vec D_80114BB8_opening;
 extern Vec D_80114BC4_opening;
 extern RectF D_80114BD0_opening;
@@ -954,11 +955,92 @@ u32 func_80111C30_opening(u32 max) {
     return (value & 0x7FFFFFFF) % max;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80111C88_opening);
+s32 func_80111C88_opening(s16 modelId, f32 x, f32 y, f32 z) {
+    HmfData *data = HmfModelData[modelId].hmf;
+    HmfModelData_UnkBC_Struct *work = HmfModelData[modelId].unkBC;
+    HmfModelData_UnkBC_Unk58_Struct *particle = work->unk58;
+    s16 i;
+    f32 angle;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80111DDC_opening);
+    work->unk1C.f = x;
+    work->unk20.f = y;
+    work->unk24.f = z;
+    for (i = 0; i < data->unk1A; i++, particle++) {
+        if (particle->unk04 >= 180.0f) {
+            particle->unk18 = func_80111C30_opening(360);
+            particle->unk20 = work->unk10.f / 10.0f;
+            angle = (f32)func_80111C30_opening(150) - 75.0f;
+            particle->unk28 = sindf(angle);
+            particle->unk2C = cosdf(angle);
+            particle->unk08 = 0.0f;
+            particle->unk04 = 0.0f;
+            return 1;
+        }
+    }
+    return 0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80111F58_opening);
+s32 func_80111DDC_opening(s16 modelId, f32 x, f32 y, f32 z, f32 size) {
+    HmfData *data = HmfModelData[modelId].hmf;
+    HmfModelData_UnkBC_Struct *work;
+    HmfModelData_UnkBC_Unk58_Struct *particle;
+    s16 i;
+
+    D_80117378_opening.x = x;
+    D_80117378_opening.y = x;
+    D_80117378_opening.z = x;
+    work = HmfModelData[modelId].unkBC;
+    particle = work->unk58;
+    work->unk1C.f = x;
+    work->unk20.f = y;
+    work->unk24.f = z;
+    for (i = 0; i < data->unk1A; i++, particle++) {
+        if (particle->unk04 >= 180.0f) {
+            particle->unk04 = 0.0f;
+            particle->unk24 = sindf(func_80111C30_opening(360));
+            particle->unk28 = sindf(func_80111C30_opening(360));
+            particle->unk2C = sindf(func_80111C30_opening(360));
+            particle->unk0C = work->unk1C.f;
+            particle->unk14 = work->unk24.f;
+            particle->unk10 = work->unk20.f;
+            particle->unk08 = size;
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void func_80111F58_opening(s16 modelId) {
+    HmfData *data = HmfModelData[modelId].hmf;
+    HmfModelData_UnkBC_Struct *work = HmfModelData[modelId].unkBC;
+    HmfModelData_UnkBC_Unk58_Struct *particle = work->unk58;
+    s16 i;
+    s16 count = data->unk1A;
+    f32 radius;
+
+    for (i = 0; i < count; i++, particle++) {
+        if (particle->unk04 < 180.0f) {
+            particle->unk18 += particle->unk24;
+            if (particle->unk18 < 0.0f) {
+                particle->unk18 += 360.0f;
+            } else if (particle->unk18 >= 360.0f) {
+                particle->unk18 -= 360.0f;
+            }
+            radius = particle->unk20 + particle->unk1C;
+            particle->unk20 = radius;
+            radius *= particle->unk2C;
+            particle->unk0C = radius * sindf(particle->unk18) + work->unk1C.f;
+            particle->unk14 = radius * cosdf(particle->unk18) + work->unk24.f;
+            particle->unk10 = particle->unk20 * particle->unk28 + work->unk20.f;
+            particle->unk04 += work->unk14;
+            if (particle->unk04 > 180.0f) {
+                particle->unk04 = 180.0f;
+            }
+            particle->unk08 = sindf(particle->unk04) * work->unk14;
+        }
+    }
+    work->unk02++;
+}
 
 void func_80112120_opening(s16 modelId) {
     HmfData *data = HmfModelData[modelId].hmf;

@@ -2428,8 +2428,9 @@ segments:
     subsegments:
       - [0x523FD0, c]
       - [0x524000, c]
+      - [0x524820, c]
       - [0x533180, data, 524000] #80114B50
-      - [0x5332A0, .rodata, 524000] #80114C70
+      - [0x5332A0, .rodata, 524820] #80114C70
       - {0x5334D0, type: bss, vram: 0x80114EA0, name: opening_bss}
 
   - type: code

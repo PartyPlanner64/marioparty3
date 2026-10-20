@@ -1,6 +1,15 @@
 #include "common.h"
+#include "game/pause.h"
 
 extern u16 D_80106E80_mchar;
+extern u8 D_80106E82_mchar;
+extern s16 D_80106E84_mchar[];
+extern char *D_80106E94_mchar[];
+extern s16 D_80107116_mchar;
+extern u8 D_8010711C_mchar;
+extern u8 D_8010711D_mchar;
+extern char D_80107950_mchar[];
+extern s32 fontcolor;
 extern Vec D_80107A50_mchar;
 extern s16 D_80107114_mchar;
 extern s16 D_80107118_mchar;
@@ -10,6 +19,8 @@ extern s32 D_80107124_mchar[];
 extern s32 D_80107A60_mchar[8][2];
 extern s32 D_80107AA0_mchar[8][2];
 
+f32 func_8002FC7C_main(D_800CCF58_main_Struct *, u16, f32, f32, f32);
+void func_80106764_mchar(s16 arg0);
 void func_80106E54_mchar(omObjData *arg0);
 void func_8010654C_mchar(s16 arg0);
 void func_80105C4C_mchar(omObjData *arg0);
@@ -351,7 +362,106 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mchar/3D3C80", D_801078C8_mchar);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mchar/3D3C80", D_801078D4_mchar);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mchar/3D3C80", func_80105C4C_mchar);
+void func_80105C4C_mchar(omObjData *arg0) {
+    HmfModel *model;
+    HmfModel *newModel;
+
+    if (D_8010711D_mchar != 0) {
+        D_8010711D_mchar--;
+        if (D_8010711D_mchar == 0) {
+            func_8010654C_mchar(D_8010711A_mchar);
+            func_8001C258_main((s16)D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar], 4, 0);
+            func_8001C814_main((s16)D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar], 2, 2);
+        }
+    }
+    if ((u16)D_800D0590_main[0] & 0x8000) {
+        D_80107116_mchar++;
+        if (D_80107116_mchar >= 160) {
+            D_80107116_mchar = 0;
+        }
+        func_80106764_mchar(D_80107116_mchar);
+        func_80045ED0_main((D_80106E84_mchar[D_80107114_mchar] << 16) | D_80107116_mchar);
+    }
+    if (D_800D0590_main[0] & 0x4000) {
+        D_80107116_mchar--;
+        if (D_80107116_mchar < 0) {
+            D_80107116_mchar = 159;
+        }
+        func_80106764_mchar(D_80107116_mchar);
+        func_80045ED0_main((D_80106E84_mchar[D_80107114_mchar] << 16) | D_80107116_mchar);
+    }
+    if (D_800D5558_main[0] & 0x1000) {
+        D_8010711C_mchar++;
+    }
+    if (D_800D5558_main[0] & 4) {
+        func_8001C258_main((s16)D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar], 4, 4);
+        model = &HmfModelData[D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar]];
+        D_80107118_mchar++;
+        if (D_80107118_mchar >= 2) {
+            D_80107118_mchar = 0;
+        }
+        func_8001C258_main((s16)D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar], 4, 0);
+        newModel = &HmfModelData[D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar]];
+        newModel->unk02 = model->unk02;
+        newModel->unk40 = model->unk40;
+        newModel->unk03 = model->unk03;
+        newModel->unk4C = model->unk4C;
+        newModel->unk05 = model->unk05;
+        newModel->unk04 = model->unk04;
+    }
+    if (D_800D5558_main[0] & 2) {
+        func_8001C258_main((s16)D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar], 4, 4);
+        D_80107114_mchar++;
+        if (D_80107114_mchar >= 8) {
+            D_80107114_mchar = 0;
+        }
+        func_8001C258_main((s16)D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar], 4, 0);
+        func_8001F304_main((s16)D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar], (s16)D_80107AA0_mchar[D_80107114_mchar][0]);
+        func_8001C814_main((s16)D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar], 2, 2);
+        func_80045ED0_main((D_80106E84_mchar[D_80107114_mchar] << 16) | D_80107116_mchar);
+    }
+    if (D_800D5558_main[0] & 1) {
+        func_8001C258_main((s16)D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar], 4, 4);
+        D_80107114_mchar--;
+        if (D_80107114_mchar < 0) {
+            D_80107114_mchar = 7;
+        }
+        func_8001C258_main((s16)D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar], 4, 0);
+        func_8001F304_main((s16)D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar], (s16)D_80107AA0_mchar[D_80107114_mchar][0]);
+        func_8001C814_main((s16)D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar], 2, 2);
+        func_80045ED0_main((D_80106E84_mchar[D_80107114_mchar] << 16) | D_80107116_mchar);
+    }
+    if ((u16)D_800D0590_main[1] & 0xC000) {
+        model = &HmfModelData[D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar]];
+        if ((u16)D_800D0590_main[1] & 0x4000) {
+            model->unk03 |= 4;
+        }
+        model->unk03 &= 0xFE;
+        model->unk40 = func_8002FC7C_main(&D_800CCF58_main[model->unk02], model->unk03, model->unk40, model->unk48, model->unk44 + model->unk44);
+        model->unk4C = func_8002FC7C_main(&D_800CCF58_main[model->unk04], model->unk05, model->unk4C, model->unk54, model->unk50 + model->unk50);
+        model->unk03 = (model->unk03 & 0xFB) | 1;
+    }
+    if ((D_800CDA7C_main[0] & 0x30) == 0x30) {
+        D_80106E80_mchar = 1;
+    }
+    if (D_800D5558_main[1] & 0x1000) {
+        D_80106E82_mchar = !D_80106E82_mchar;
+    }
+    if (D_80106E82_mchar != 0) {
+        model = &HmfModelData[D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar]];
+        fontcolor = 9;
+        sprintf(D_80107950_mchar, "MOTIONNO.%3d <%s>", D_80107116_mchar, D_80106E94_mchar[D_80107116_mchar]);
+        print8(24, 182, D_80107950_mchar);
+        sprintf(D_80107950_mchar, "CENTER:%3.3f,%3.3f,%3.3f", Center.x, Center.y, Center.z);
+        print8(24, 190, D_80107950_mchar);
+        sprintf(D_80107950_mchar, "ROTATE:%3.3f,%3.3f,%3.3f", CRot.x, CRot.y, CRot.z);
+        print8(24, 198, D_80107950_mchar);
+        sprintf(D_80107950_mchar, "ZOOM:  %3.3f", CZoom);
+        print8(24, 206, D_80107950_mchar);
+        sprintf(D_80107950_mchar, "M_TIME:%d", (u16)model->unk40);
+        print8(24, 214, D_80107950_mchar);
+    }
+}
 
 void func_8010654C_mchar(s16 arg0) {
     s16 i;

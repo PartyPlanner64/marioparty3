@@ -31,7 +31,9 @@ typedef struct {
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ RGBA color;
     /* 0x10 */ s16 effectId;
-    /* 0x12 */ char unk_12[0x2A];
+    /* 0x12 */ char unk_12[0x1A];
+    /* 0x2C */ Vec unk_2C;
+    /* 0x38 */ s32 unk_38;
 } OpObj; // sizeof 0x3C
 
 typedef struct {
@@ -121,7 +123,7 @@ extern OpObjPos D_8011739C_opening[0x10][5];
 extern f32 D_801173A4_opening[0x10][15];
 extern f32 D_801173A8_opening[0x10][15];
 extern OpObjPos D_801173B0_opening[0x10][5];
-extern s32 D_801173B4_opening[0x10][15];
+extern f32 D_801173B4_opening[0x10][15];
 extern s32 D_801173B8_opening[0x10][15];
 
 extern HmfMotionNode *D_801173BC_opening[0x10][15];
@@ -169,6 +171,7 @@ void func_8000BE5C_main(u16 arg0, f32 arg1, f32 arg2);
 void func_8000BBD4_main(u16 arg0, s16 arg1, s16 arg2);
 void func_8000BD94_main(u16 arg0, s32 arg1, s32 arg2);
 void func_80113E8C_opening(omObjData *);
+void func_80113AE8_opening(omObjData *);
 void func_8011373C_opening(omObjData *);
 void opDemoObjKill(s32 index);
 void opDemoObjKillAll(void);

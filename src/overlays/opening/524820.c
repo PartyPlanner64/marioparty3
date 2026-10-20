@@ -1251,7 +1251,23 @@ void func_80114150_opening(s32 index, f32 x, f32 y, f32 z, s32 arg4) {
     D_80117390_opening[index][0] = arg4;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524820", func_80114250_opening);
+void func_80114250_opening(s32 index, s32 modelId, f32 x, f32 y, f32 z) {
+    OpObj *slot;
+
+    opDemoObjCreate(index, func_80113AE8_opening);
+    D_8011738C_opening[index][0] = 0;
+    D_80117390_opening[index][0] = 20;
+    D_80117394_opening[index].modelId = modelId;
+    slot = &D_80117388_opening[index];
+    slot->unk_2C.x = slot->unk_2C.y = 0;
+    D_801173B0_opening[index][0].pos.x = 0;
+    D_801173B0_opening[index][0].pos.x = rand8();
+    D_801173B4_opening[index][0] = rand8();
+    D_80117398_opening[index][0].pos.x = x;
+    D_8011739C_opening[index][0].pos.x = y;
+    D_80117398_opening[index][0].pos.z = z;
+    func_80113AE8_opening(D_80117388_opening[index].obj);
+}
 
 void opWipeDraw(Gfx **gfx, s32 arg1, s32 arg2) {
     if (D_80117388_opening[15].color.a != 0) {

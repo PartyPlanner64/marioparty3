@@ -35,7 +35,62 @@ Process *func_80105F68_opening(void) {
     return sprPrc;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/5242B0", opTitleMain);
+void opTitleMain(void) {
+    s32 frame;
+    Process *parentPrc;
+    Process *sprPrc;
+
+    func_8001F38C_main(0, 64, 64);
+    frame = 0;
+    opTitleSetup();
+    parentPrc = HuPrcCurrentGet();
+    sprPrc = func_80105F68_opening();
+    WipeColorSet(255, 255, 255);
+    WipeCreateIn(11, 16);
+    HuPrcSleep(16);
+    HuPrcSleep(60);
+    while (1) {
+        HuPrcVSleep();
+        if (opBtnStartCheck()) {
+            WipeCreateOut(11, 20);
+            HuAudSeqFadeOut(20);
+            do {
+                HuPrcVSleep();
+            } while (WipeStatGet());
+            if (HuPrcChildGet(parentPrc)) {
+                omDelPrcObj(sprPrc);
+            }
+            opTitleKill();
+            func_8005F524_main();
+            omOvlKill();
+            omOvlGotoEx(121, 0, 0x91);
+            omDelPrcObj(NULL);
+            while (1) {
+                HuPrcVSleep();
+            }
+        }
+        if (HuPrcChildGet(parentPrc) && !opDemoEndGet() && frame < 5401) {
+            frame++;
+        } else {
+            WipeCreateOut(11, 20);
+            HuAudSeqFadeOut(20);
+            do {
+                HuPrcVSleep();
+            } while (WipeStatGet());
+            if (HuPrcChildGet(parentPrc)) {
+                omDelPrcObj(sprPrc);
+            }
+            opTitleKill();
+            func_8005F524_main();
+            omOvlKill();
+            omOvlGotoEx(88, 1, 0x90);
+            omDelPrcObj(NULL);
+            while (1) {
+                HuPrcVSleep();
+            }
+        }
+    }
+}
 
 s32 opBtnStartCheck(void) {
     if (GWContErrorGet() == 1) {

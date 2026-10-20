@@ -145,6 +145,11 @@ void opDemoSprKill(void);
 void func_80107A90_opening(s32 index);
 void func_80112A74_opening(omObjData *obj);
 void opDemoStarWaitMain(omObjData *obj);
+void opTitleSetup(void);
+void opTitleKill(void);
+s32 opBtnStartCheck(void);
+s32 opDemoEndGet(void);
+
 void opTitleMain(void);
 void opDemoMain(void);
 void opTitleSprMain(void);

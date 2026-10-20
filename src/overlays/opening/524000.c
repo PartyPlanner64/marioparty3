@@ -779,7 +779,32 @@ void func_80110B9C_opening(void) {
     D_80117338_opening.obj = NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80110C04_opening);
+void func_80110C04_opening(omObjData *obj) {
+    Vec at;
+    f32 random;
+    f32 offset;
+
+    D_80117338_opening.active = ~D_80117338_opening.active;
+    if (D_80117338_opening.active) {
+        random = rand8();
+    } else {
+        random = -(f32)rand8();
+    }
+    random *= 1.0f / 255.0f;
+    random *= (1.0f - D_80117338_opening.frame * 0.125f) * 0.8f + 0.2f;
+    offset = random * D_80117338_opening.magnitude;
+    HuVecCopy3F(&at, &D_80114BC4_opening);
+    at.y = offset + offset + at.y;
+    CameraViewportSet(0, &D_80114BB8_opening, &at);
+    offset = -offset;
+    MBCameraOffsetSet(0, offset);
+    D_80117338_opening.frame++;
+    if (D_80117338_opening.totalFrames < D_80117338_opening.frame) {
+        CameraViewportSet(0, &D_80114BB8_opening, &D_80114BC4_opening);
+        MBCameraOffsetSet(0, 0);
+        func_80110B9C_opening();
+    }
+}
 
 void func_80110D8C_opening(s32 totalFrames, f32 magnitude) {
     D_80117338_opening.frame = 0;

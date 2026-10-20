@@ -176,6 +176,8 @@ void func_8011373C_opening(omObjData *);
 void opDemoObjKill(s32 index);
 void opDemoObjKillAll(void);
 void opContErrorKill(void);
+void opContErrorDispOn(void);
+void opContErrorDispOff(void);
 void opWipeKill(s32 index);
 void func_80111F58_opening(s16 modelId);
 void func_80112120_opening(s16 modelId);

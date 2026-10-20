@@ -1033,7 +1033,84 @@ void opTitleSetup(void) {
     func_8000BCC8_main(sprite, 9);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524820", opTitleSprMain);
+void opTitleSprMain(void) {
+    s32 frame;
+    f32 alpha;
+    f32 time;
+    f32 speed;
+    f32 velocity;
+    f32 scale;
+
+    opSprBGDispOff(2);
+    opSprBGDispOff(3);
+    opSprBGDispOff(4);
+    opSprBGDispOff(5);
+    HuAudFXPlay(0x240);
+    HuPrcSleep(16);
+    for (frame = 0; frame < 40; frame++) {
+        HuPrcVSleep();
+        alpha = 1.0f - frame * (1.0f / 60.0f);
+        alpha = alpha < 0.0f ? 0.0f : alpha;
+        opSprAlphaSet(0, (u8)(alpha * 255.0f));
+    }
+    opSprBGDispOn(2);
+    opSprScaleSet(2, 0.0f, 0.0f);
+    opSprScaleSet(3, 0.0f, 0.0f);
+    speed = -2.0f;
+    velocity = 0.0f;
+    HuAudSeqPlay(2);
+    for (frame = 40; frame < 61; frame++) {
+        HuPrcVSleep();
+        time = frame;
+        alpha = 1.0f / 60.0f;
+        alpha = 1.0f - alpha * time;
+        if (alpha < 0.0f) {
+            alpha = 0.0f;
+        }
+        opSprAlphaSet(0, (u8)(alpha * 255.0f));
+        alpha = 1.0f - (frame - 40) * 0.05f;
+        if (alpha < 0.0f) {
+            alpha = 0.0f;
+        }
+        velocity += speed * -0.8f;
+        speed += velocity;
+        speed *= 0.7f;
+        scale = speed * alpha + 1.0f;
+        if (scale < 0.0f) {
+            scale = 0.0f;
+        }
+        opSprScaleSet(2, scale, scale);
+        opSprScaleSet(3, scale, scale);
+    }
+    HuPrcVSleep();
+    opSprScaleSet(2, 1.0f, 1.0f);
+    opSprScaleSet(3, 1.0f, 1.0f);
+    opSprAlphaSet(0, 0);
+    opSprBGDispOn(4);
+    opSprBGDispOn(5);
+    func_80106768_opening(4, 0, 0);
+    func_80106768_opening(5, 0, 0);
+    opSprAlphaSet(4, 0);
+    opSprAlphaSet(5, 0);
+    func_8000BDDC_main(D_80114EB0_opening[4].espriteSlot, 0);
+    func_8000BDDC_main(D_80114EB0_opening[5].espriteSlot, 0);
+    for (frame = 0; frame < 9; frame++) {
+        HuPrcVSleep();
+        opSprAlphaSet(4, frame * 32);
+        opSprAlphaSet(5, frame * 32);
+    }
+    opSprAlphaSet(4, 256);
+    opSprAlphaSet(5, 256);
+    func_8000BDDC_main(D_80114EB0_opening[4].espriteSlot, 1);
+    func_8000BDDC_main(D_80114EB0_opening[5].espriteSlot, 1);
+    opContErrorDispOn();
+    HuPrcSleep(780);
+    opContErrorDispOff();
+    omDelPrcObj(NULL);
+    while (1) {
+        HuPrcVSleep();
+    }
+}
 
 void opTitleKill(void) {
     opSprKill(5);

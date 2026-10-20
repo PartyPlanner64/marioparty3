@@ -10,6 +10,8 @@ extern u8 D_8010711C_mchar;
 extern u8 D_8010711D_mchar;
 extern char D_80107950_mchar[];
 extern s32 fontcolor;
+extern u16 omdispinfo;
+extern s16 D_800A1786_main;
 extern Vec D_80107A50_mchar;
 extern s16 D_80107114_mchar;
 extern s16 D_80107118_mchar;
@@ -20,12 +22,43 @@ extern s32 D_80107A60_mchar[8][2];
 extern s32 D_80107AA0_mchar[8][2];
 
 f32 func_8002FC7C_main(D_800CCF58_main_Struct *, u16, f32, f32, f32);
+void func_8004DEC8_main(s16);
+void func_80045C2C_main(void);
+void func_80106DF8_mchar(omObjData *arg0);
+void func_80106D7C_mchar(void);
+void func_80105B38_mchar(omObjData *arg0);
+void func_80106898_mchar(omObjData *arg0);
 void func_80106764_mchar(s16 arg0);
 void func_80106E54_mchar(omObjData *arg0);
 void func_8010654C_mchar(s16 arg0);
 void func_80105C4C_mchar(omObjData *arg0);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mchar/3D3C80", func_801059A0_mchar);
+void func_801059A0_mchar(void) {
+    Hu3DCamInit(1);
+    Hu3DAnimInit(1);
+    func_800142A0_main(0x19);
+    omInitObjMan(0x33, 0);
+    omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), 0xA0);
+    if (omdispinfo != 0) {
+        omdispinfo = 0;
+        func_8004DEC8_main(D_800A1786_main);
+        D_800A1786_main = -1;
+    }
+    omAddObj(0x2710, 0, 0, -1, func_80106DF8_mchar);
+    HmfLightMaxSet(3);
+    HmfLightColorSet(0, 0x78, 0x78, 0x78);
+    HmfLightColorSet(1, 0x40, 0x40, 0x60);
+    HmfLightDirSet(1, -100.0f, 100.0f, 100.0f);
+    HmfLightColorSet(2, 0, 0, 0);
+    HmfLightColorSet(3, 0, 0, 0);
+    func_80106D7C_mchar();
+    omAddObj(0x7D0, 10, 10, -1, func_80105B38_mchar);
+    omAddObj(0x7D0, 0, 0, -1, func_80106898_mchar);
+    WipeCreateIn(0, 16);
+    D_800CD280_main = 1;
+    func_8001F38C_main(0xC0, 0xE0, 0xFF);
+    func_80045C2C_main();
+}
 
 void func_80105B38_mchar(omObjData *arg0) {
     s16 i;

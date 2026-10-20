@@ -906,7 +906,27 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80111DDC_opening);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80111F58_opening);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80112120_opening);
+void func_80112120_opening(s16 modelId) {
+    HmfData *data = HmfModelData[modelId].hmf;
+    HmfModelData_UnkBC_Struct *work = HmfModelData[modelId].unkBC;
+    HmfModelData_UnkBC_Unk58_Struct *particle = work->unk58;
+    s16 i;
+    s16 count = data->unk1A;
+
+    for (i = 0; i < count; i++, particle++) {
+        if (particle->unk04 < 180.0f) {
+            particle->unk0C = particle->unk24 * 3.0f + particle->unk0C;
+            particle->unk10 = particle->unk28 * 3.0f + particle->unk10 - 1.0f;
+            particle->unk14 = particle->unk2C * 3.0f + particle->unk14;
+            particle->unk08 = particle->unk08 - 0.2f > 0.0f ? particle->unk08 - 0.4f : 0.0f;
+            if (particle->unk08 <= 0.0f) {
+                particle->unk08 = 0.0f;
+                particle->unk04 = 180.0f;
+            }
+        }
+    }
+    work->unk02++;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opTitleSetup);
 

@@ -705,7 +705,20 @@ f32 func_801111AC_opening(f32 current, f32 target, f32 step) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524820", func_8011124C_opening);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524820", func_80111490_opening);
+f32 func_80111490_opening(f32 current, f32 x, f32 z, f32 weight) {
+    f32 angle = func_80111164_opening(0.0f, 0.0f, x, z);
+    f32 difference;
+
+    if (angle < 0.0f) {
+        angle += 360.0f;
+    }
+    difference = angle - current;
+    difference = difference < 0.0f ? difference + 360.0f : difference;
+    if (difference > 180.0f) {
+        return -(360.0f - difference) * weight + current;
+    }
+    return difference * weight + current;
+}
 
 void func_80111580_opening(void) {
     s32 model1;

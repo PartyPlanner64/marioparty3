@@ -86,6 +86,9 @@ typedef struct {
 void opTitleSprMain(void);
 void opDemoEvent(void);
 void func_801061F0_opening(void);
+void func_8010621C_opening(void);
+void func_801067D4_opening(void);
+void func_80107A4C_opening(void);
 void opSprPosSet(s32 slot, s32 x, s32 y);
 void opModelRotSet(s32 arg0, f32 arg1, f32 arg2, f32 arg3);
 void opMotionSet(s32 modelId, s32 motionId, s16 arg2);
@@ -104,10 +107,12 @@ void func_8000BE5C_main(u16 arg0, f32 arg1, f32 arg2);
 void func_8000BBD4_main(u16 arg0, s16 arg1, s16 arg2);
 void func_8000BD94_main(u16 arg0, s32 arg1, s32 arg2);
 void func_80113E8C_opening(omObjData *);
+void opDemoObjKill(s32 index);
 
 extern Vec D_80114BB8_opening;
 extern Vec D_80114BC4_opening;
 extern RectF D_80114BD0_opening;
+extern s32 D_80114EA4_opening;
 extern OpModel D_80115630_opening[0xA0];
 extern OpCamVecs D_80117350_opening;
 extern OpShake D_80117338_opening;
@@ -166,13 +171,21 @@ s32 opBtnStartCheck(void) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoEndReset);
+void opDemoEndReset(void) {
+    D_80114EA4_opening = 0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoEndSet);
+void opDemoEndSet(s32 value) {
+    D_80114EA4_opening = value;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoEndGet);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_801061F0_opening);
+void func_801061F0_opening(void) {
+    func_8010621C_opening();
+    func_801067D4_opening();
+    func_80107A4C_opening();
+}
 
 void func_8010621C_opening(void) {
     s32 i;
@@ -187,9 +200,13 @@ void func_8010621C_opening(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opAnimIdGet);
+s16 opAnimIdGet(s32 slot) {
+    return D_801155B0_opening[slot].animId;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opEspIdGet);
+s16 opEspIdGet(s32 slot) {
+    return D_80114EB0_opening[slot].espriteSlot;
+}
 
 void opAnimCreate(s32 arg0, s32 arg1) {
     D_801155B0_opening[arg0].animId = func_8000B838_main(arg1);
@@ -214,21 +231,44 @@ void opEspKill(s32 slot) {
     D_80114EB0_opening[slot].espriteSlot = -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opSprCreate);
+void opSprCreate(s32 slot, s32 resourceId) {
+    opAnimCreate(slot, resourceId);
+    opEspCreate(slot, slot);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opSprBGCreate);
+void opSprBGCreate(s32 slot, s32 resourceId) {
+    opSprCreate(slot, resourceId);
+    func_8000BC48_main(D_80114EB0_opening[slot].espriteSlot, 0x4000);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opSprKill);
+void opSprKill(s32 slot) {
+    opEspKill(slot);
+    opAnimKill(slot);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opSprKillAll);
+void opSprKillAll(void) {
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opSprDispOn);
+    for (i = 0; i < ARRAY_COUNT(D_80114EB0_opening); i++) {
+        opSprKill(i);
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opSprDispOff);
+void opSprDispOn(s32 slot) {
+    func_8000BB54_main(D_80114EB0_opening[slot].espriteSlot);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opSprBGDispOn);
+void opSprDispOff(s32 slot) {
+    func_8000BB94_main(D_80114EB0_opening[slot].espriteSlot);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opSprBGDispOff);
+void opSprBGDispOn(s32 slot) {
+    opSprDispOn(slot);
+}
+
+void opSprBGDispOff(s32 slot) {
+    opSprDispOff(slot);
+}
 
 void opSprPosSet(s32 arg0, s32 arg1, s32 arg2) {
     D_80114EB0_opening[arg0].unk_04 = arg1;
@@ -236,7 +276,10 @@ void opSprPosSet(s32 arg0, s32 arg1, s32 arg2) {
     func_8000BBD4_main(D_80114EB0_opening[arg0].espriteSlot, arg1, arg2);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opSprPosGet);
+void opSprPosGet(s32 slot, s32 *x, s32 *y) {
+    *x = D_80114EB0_opening[slot].unk_04;
+    *y = D_80114EB0_opening[slot].unk_08;
+}
 
 void opSprScaleSet(s32 arg0, f32 arg1, f32 arg2) {
     D_80114EB0_opening[arg0].unk_0C = arg1;
@@ -441,7 +484,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107D9C_opening);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107DD8_opening);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107E10_opening);
+s16 func_80107E10_opening(s32 slot) {
+    return D_801171B8_opening[slot].espriteSlot;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107E2C_opening);
 
@@ -539,7 +584,9 @@ void func_8011105C_opening(void) {
     Hu3DCamUpdateMtx(0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80111090_opening);
+void func_80111090_opening(omObjData *obj) {
+    func_8011105C_opening();
+}
 
 void func_801110AC_opening(f32 *posX, f32 *posY, f32 *posZ, f32 *atX, f32 *atY, f32 *atZ) {
     *posX = D_80117350_opening.pos.x;
@@ -597,7 +644,13 @@ void func_80112944_opening(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoObjKillAll);
+void opDemoObjKillAll(void) {
+    s32 i;
+
+    for (i = 0; i < ARRAY_COUNT(D_80117388_opening); i++) {
+        opDemoObjKill(i);
+    }
+}
 
 void opDemoObjKill(s32 index) {
     if (D_80117388_opening[index].obj != NULL) {
@@ -690,7 +743,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opWipeWhiteOutCreate);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_801149A4_opening);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opSleep);
+void opSleep(s32 frames) {
+    HuPrcSleep(frames);
+}
 
 void opContErrorCreate(void) {
     if (GWContErrorGet() == 0) {
@@ -702,9 +757,17 @@ void opContErrorCreate(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opContErrorDispOn);
+void opContErrorDispOn(void) {
+    if (GWContErrorGet() == 0) {
+        func_8000BB54_main(D_80117750_opening.espriteSlot);
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opContErrorDispOff);
+void opContErrorDispOff(void) {
+    if (GWContErrorGet() == 0) {
+        func_8000BB94_main(D_80117750_opening.espriteSlot);
+    }
+}
 
 void opContErrorKill(void) {
     if (GWContErrorGet() == 0) {

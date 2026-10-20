@@ -78,6 +78,11 @@ typedef struct {
     /* 0x1C */ char unk_38[0x20];
 } OpWork; // sizeof 0x3C
 
+typedef union {
+    Vec pos;
+    s32 motion[3];
+} OpObjPos;
+
 typedef struct {
     /* 0x00 */ s16 espriteSlot;
     /* 0x04 */ void *event;
@@ -85,6 +90,9 @@ typedef struct {
 } OpSlot; // sizeof 0xC
 
 void opDemoEndReset(void);
+void func_80107A90_opening(s32 index);
+void func_80112A74_opening(omObjData *obj);
+void opDemoStarWaitMain(omObjData *obj);
 void opTitleMain(void);
 void opDemoMain(void);
 void opTitleSprMain(void);
@@ -136,6 +144,10 @@ extern OpContError D_80117750_opening;
 extern s32 D_8011738C_opening[0x10][15];
 extern s32 D_80117390_opening[0x10][15];
 extern OpWork D_80117394_opening[0x10];
+extern OpObjPos D_80117398_opening[0x10][5];
+extern s32 D_8011739C_opening[0x10][15];
+extern f32 D_801173A4_opening[0x10][15];
+extern s32 D_801173A8_opening[0x10][15];
 extern s32 D_801173B0_opening[0x10][15];
 extern s32 D_801173B4_opening[0x10][15];
 extern s32 D_801173B8_opening[0x10][15];
@@ -523,7 +535,15 @@ void func_80107A4C_opening(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107A90_opening);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107B74_opening);
+void func_80107B74_opening(void) {
+    s32 i;
+
+    for (i = 0; i < ARRAY_COUNT(D_801171B8_opening); i++) {
+        if (D_801171B8_opening[i].espriteSlot != -1) {
+            func_80107A90_opening(i);
+        }
+    }
+}
 
 void func_80107BD8_opening(s32 slot, f32 x, f32 y) {
     func_8005BB18_main(D_801171B8_opening[slot].espriteSlot, x, y);
@@ -555,7 +575,11 @@ s16 func_80107E10_opening(s32 slot) {
     return D_801171B8_opening[slot].espriteSlot;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107E2C_opening);
+void func_80107E2C_opening(s32 index) {
+    while (func_8005E0C0_main(D_801171B8_opening[index].espriteSlot) != 0) {
+        HuPrcVSleep();
+    }
+}
 
 void func_80107E80_opening(s32 arg0) {
     do {
@@ -787,9 +811,38 @@ void opDemoObjCreate(s32 index, omObjFunc func) {
     obj->work[0] = index;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80112A74_opening);
+void func_80112A74_opening(omObjData *obj) {
+    s8 index = obj->work[0];
+    s32 modelId = D_80117394_opening[index].modelId;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80112BA0_opening);
+    if (D_8011738C_opening[index][0] < 0) {
+        if (opMotionEndCheck(modelId)) {
+            opMotionShiftSet(modelId, D_8011739C_opening[index][0], 4, 4, 2);
+            D_8011738C_opening[index][0] = 0;
+        }
+    } else if (D_8011738C_opening[index][0] >= D_80117390_opening[index][0]) {
+        opMotionShiftSet(modelId, D_80117398_opening[index][0].motion[0], 4, 4, 0);
+        D_8011738C_opening[index][0] = -1;
+    } else {
+        D_8011738C_opening[index][0]++;
+    }
+}
+
+void func_80112BA0_opening(s32 index, s32 modelId, s32 motion1, s32 motion2, s32 startTime, s32 frames) {
+    opDemoObjCreate(index, func_80112A74_opening);
+    D_80117394_opening[index].modelId = modelId;
+    D_80117398_opening[index][0].motion[0] = motion1;
+    D_8011739C_opening[index][0] = motion2;
+    D_80117390_opening[index][0] = frames;
+    D_8011738C_opening[index][0] = startTime;
+    if (startTime >= 0) {
+        opMotionSet(modelId, motion1, 0);
+        opMotionTimeSet(modelId, startTime);
+    } else {
+        opMotionSet(modelId, motion2, 2);
+        opMotionTimeSet(modelId, 0);
+    }
+}
 
 void func_80112C8C_opening(omObjData *obj) {
     s8 index = obj->work[0];
@@ -826,7 +879,15 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoGuideInEffCreate);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoStarWaitMain);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoStarWaitCreate);
+void opDemoStarWaitCreate(s32 index, s32 modelId, f32 x, f32 y, f32 z, f32 arg5, s32 frames) {
+    opDemoObjCreate(index, opDemoStarWaitMain);
+    D_80117394_opening[index].modelId = modelId;
+    HuVecCopyXYZ(&D_80117398_opening[index][0].pos, x, y, z);
+    D_801173A4_opening[index][0] = arg5;
+    D_801173A8_opening[index][0] = 0;
+    D_8011738C_opening[index][0] = 0;
+    D_80117390_opening[index][0] = frames;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_801134FC_opening);
 

@@ -131,6 +131,8 @@ void opDemoObjKillAll(void);
 void opContErrorKill(void);
 void opWipeKill(s32 index);
 
+extern u8 D_800D20B8_main[16][3];
+extern u8 D_800D5570_main[16][3];
 extern Gfx D_80114BE8_opening[];
 extern u32 D_80114BE0_opening;
 extern Vec D_80114BB8_opening;
@@ -525,17 +527,111 @@ u32 func_801070D8_opening(u32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107140_opening);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_8010738C_opening);
+s16 func_8010738C_opening(u32 event, s16 x, s16 y, s16 width, s16 height, s16 style) {
+    s16 slot;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_801074D8_opening);
+    slot = func_8005A968_main(x, y, width, height, 0, 8);
+    func_8005B63C_main(slot, -1, 17);
+    func_8005BDFC_main(slot, 0);
+    func_8005BEE0_main(slot, 255);
+    func_80060144_main(slot);
+    func_8005BE30_main(slot, 1);
+    func_8005FE54_main(slot, 1);
+    func_8005C154_main(slot, 192, 192, 192);
+    func_8005FBF8_main(slot, 0, 64, 64);
+    func_8005C02C_main(slot, 7);
+    func_8005C060_main(slot, 2, 255, 64, 64);
+    func_8005C060_main(slot, 4, 96, 255, 64);
+    func_8005C060_main(slot, 6, 255, 255, 64);
+    func_8005D294_main(slot);
+    func_8005B43C_main(slot, event, -1, -1);
+    return slot;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107640_opening);
+s16 func_801074D8_opening(u32 event, s16 x, s16 y, s16 width, s16 height, s16 style) {
+    s16 slot;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_801077E8_opening);
+    slot = func_8005A968_main(x, y, width, height, 0, 4);
+    func_8005B63C_main(slot, -1, 17);
+    func_8005BDFC_main(slot, 0);
+    func_8005BEE0_main(slot, 255);
+    func_80060144_main(slot);
+    func_8005BE30_main(slot, 1);
+    func_8005FE54_main(slot, 1);
+    func_8005C060_main(slot, 5, 0, 176, 192);
+    func_8005C060_main(slot, 2, 255, 64, 64);
+    func_8005C060_main(slot, 4, 96, 255, 64);
+    func_8005C060_main(slot, 6, 255, 255, 64);
+    func_8005C154_main(slot, 192, 192, 192);
+    func_8005FBF8_main(slot, 255, 255, 255);
+    func_8005C02C_main(slot, 1);
+    func_8005D294_main(slot);
+    func_8005B43C_main(slot, event, -1, -1);
+    return slot;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_801078B4_opening);
+s16 func_80107640_opening(u32 event, s16 x, s16 y, s16 width, s16 height, s16 style) {
+    s16 slot;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107980_opening);
+    slot = func_8005A968_main(x, y, width, height, 0, 8);
+    func_8005B63C_main(slot, -1, 17);
+    func_8005BDFC_main(slot, 0);
+    func_80060144_main(slot);
+    func_8005BE30_main(slot, 1);
+    func_8005FE54_main(slot, 1);
+    func_8005C060_main(slot, 5, 0, 176, 192);
+    func_8005C060_main(slot, 7, 255, 255, 255);
+    func_8005C060_main(slot, 0, 0, 0, 0);
+    func_8005C060_main(slot, 3, 0, 0, 0);
+    func_8005C060_main(slot, 2, 255, 64, 64);
+    func_8005C060_main(slot, 4, 96, 255, 64);
+    func_8005C060_main(slot, 6, 255, 255, 64);
+    func_8005C154_main(slot, 192, 192, 0);
+    func_8005FBF8_main(slot, 255, 255, 255);
+    func_8005C02C_main(slot, 6);
+    func_8005D294_main(slot);
+    func_8005B43C_main(slot, event, -1, -1);
+    return slot;
+}
+
+s16 func_801077E8_opening(u32 event, s16 x, s16 y, s16 style) {
+    s16 slot;
+
+    slot = func_80060880_main(x, y, 19);
+    func_8005C060_main(slot, 2, 255, 64, 64);
+    func_8005C060_main(slot, 4, 96, 255, 64);
+    func_8005C060_main(slot, 6, 255, 255, 64);
+    func_80060C14_main(slot, 1);
+    func_8005FE54_main(slot, 1);
+    func_8005B43C_main(slot, event, -1, -1);
+    return slot;
+}
+
+s16 func_801078B4_opening(u32 event, s16 x, s16 y, s16 style) {
+    s16 slot;
+
+    slot = func_80060880_main(x, y, 20);
+    func_8005C060_main(slot, 2, 255, 64, 64);
+    func_8005C060_main(slot, 4, 96, 255, 64);
+    func_8005C060_main(slot, 6, 255, 255, 64);
+    func_80060C14_main(slot, 0);
+    func_8005FE54_main(slot, 1);
+    func_8005B43C_main(slot, event, -1, -1);
+    return slot;
+}
+
+s16 func_80107980_opening(u32 event, s16 x, s16 y, s16 style) {
+    s16 slot;
+
+    slot = func_80060880_main(x, y, 19);
+    func_8005C060_main(slot, 2, 255, 64, 64);
+    func_8005C060_main(slot, 4, 96, 255, 64);
+    func_8005C060_main(slot, 6, 255, 255, 64);
+    func_8005FE54_main(slot, 1);
+    func_80060C14_main(slot, 0);
+    func_8005B43C_main(slot, event, -1, -1);
+    return slot;
+}
 
 void func_80107A4C_opening(void) {
     s32 i;
@@ -546,7 +642,20 @@ void func_80107A4C_opening(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107A90_opening);
+void func_80107A90_opening(s32 index) {
+    if (D_801171B8_opening[index].unk_08 == 3) {
+        func_80060EA8_main(D_801171B8_opening[index].espriteSlot, 1);
+        func_800610E0_main(D_801171B8_opening[index].espriteSlot);
+    } else {
+        func_8005FE90_main(D_801171B8_opening[index].espriteSlot);
+        func_8005F364_main(D_801171B8_opening[index].espriteSlot);
+        D_801171B8_opening[index].espriteSlot = -1;
+    }
+    if (D_801171B8_opening[index].event != NULL) {
+        func_80019C00_main(D_801171B8_opening[index].event);
+        D_801171B8_opening[index].event = NULL;
+    }
+}
 
 void func_80107B74_opening(void) {
     s32 i;
@@ -574,7 +683,20 @@ void func_80107CA0_opening(s32 slot) {
     func_8005FE90_main(D_801171B8_opening[slot].espriteSlot);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107CD0_opening);
+void func_80107CD0_opening(s32 slot, u32 event) {
+    u32 newEvent;
+
+    func_8005D294_main(D_801171B8_opening[slot].espriteSlot);
+    if (D_801171B8_opening[slot].event != NULL) {
+        func_80019C00_main(D_801171B8_opening[slot].event);
+        D_801171B8_opening[slot].event = NULL;
+    }
+    newEvent = func_801070D8_opening(event);
+    if (0x80000000U < newEvent) {
+        D_801171B8_opening[slot].event = (void *)newEvent;
+    }
+    func_8005B43C_main(D_801171B8_opening[slot].espriteSlot, newEvent, -1, -1);
+}
 
 void func_80107D9C_opening(s32 slot, s8 arg1, s32 arg2) {
     func_800601BC_main(D_801171B8_opening[slot].espriteSlot, arg2, arg1);
@@ -1033,7 +1155,13 @@ void opWipeWhiteOutCreate(s32 index, s32 totalFrames) {
     opWipeColorSet(index, 255, 255, 255, 255);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_801149A4_opening);
+void func_801149A4_opening(s32 character) {
+    if (D_800D20B8_main[character][2] != 0xFF) {
+        func_80033354_main(D_800D20B8_main[character][2]);
+        func_80033354_main(D_800D5570_main[character][2]);
+        D_800D20B8_main[character][2] = 0xFF;
+    }
+}
 
 void opSleep(s32 frames) {
     HuPrcSleep(frames);

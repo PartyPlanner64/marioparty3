@@ -726,7 +726,32 @@ void func_80107EBC_opening(s32 slot, s16 arg1) {
     func_8005BE30_main(D_801171B8_opening[slot].espriteSlot, arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80107EF4_opening);
+u16 func_80107EF4_opening(s32 value) {
+    char text[0x100];
+    HmfData_UnkBC *camera;
+
+    HuPrcSleep(3);
+    while (1) {
+        if (D_800D5558_main[0] & 0xD010) {
+            sprintf(text, "\n%d\n", value);
+            break;
+        }
+        if (D_800D5558_main[0] & 0x2000) {
+            camera = HmfModelData[gCameraList[0].unk4].hmf->unkBC;
+            sprintf(text, "POS:%4.2f,%4.2f,%4.2f", camera->unk08, camera->unk0C, camera->unk10);
+            print8(16, 180, text);
+            sprintf(text, "A T:%4.2f,%4.2f,%4.2f", camera->unk14, camera->unk18, camera->unk1C);
+            print8(16, 190, text);
+            sprintf(text, "U P:%4.2f,%4.2f,%4.2f", camera->unk20, camera->unk24, camera->unk28);
+            print8(16, 200, text);
+        } else {
+            sprintf(text, "%d", value);
+            print8(16, 220, text);
+        }
+        HuPrcVSleep();
+    }
+    return D_800D5558_main[0];
+}
 
 void opDemoEventSetup(void) {
     func_801061F0_opening();

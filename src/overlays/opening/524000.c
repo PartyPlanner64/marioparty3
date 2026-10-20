@@ -90,6 +90,13 @@ typedef struct {
 } OpSlot; // sizeof 0xC
 
 void opDemoEndReset(void);
+void func_80107140_opening(s32 slot, u32 event, s32 x, s32 y, s16 arg4, s16 arg5, s16 arg6);
+void opObjectInit(void);
+void opTitleCreate(void);
+void opDemoCreate(void);
+void func_80110B9C_opening(void);
+void opDemoModelKill(void);
+void opDemoSprKill(void);
 void func_80107A90_opening(s32 index);
 void func_80112A74_opening(omObjData *obj);
 void opDemoStarWaitMain(omObjData *obj);
@@ -154,9 +161,15 @@ extern s32 D_801173B8_opening[0x10][15];
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opObjectInit);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opTitleObjectSetup);
+void opTitleObjectSetup(void) {
+    opObjectInit();
+    opTitleCreate();
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80105C2C_opening);
+void func_80105C2C_opening(void) {
+    opObjectInit();
+    opDemoCreate();
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoObjectSetup);
 
@@ -604,7 +617,9 @@ void opDemoEventSetup(void) {
     opContErrorCreate();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80108118_opening);
+void func_80108118_opening(s32 slot, u32 event) {
+    func_80107140_opening(slot, event, 160, 194, 0, 0, 4);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/opening/524000", D_80114CE4_opening);
 
@@ -618,7 +633,16 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/opening/524000", D_80114DA8_opening);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoEvent);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoEventKill);
+void opDemoEventKill(void) {
+    func_80107B74_opening();
+    opContErrorKill();
+    func_80110B9C_opening();
+    opWipeKill(15);
+    opDemoObjKillAll();
+    opDemoModelKill();
+    opDemoSprKill();
+    MBBackKill();
+}
 
 void func_80110B90_opening(void) {
     D_80117338_opening.obj = NULL;

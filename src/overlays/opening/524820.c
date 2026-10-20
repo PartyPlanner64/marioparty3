@@ -3,6 +3,10 @@
 #include "mallocblock.h"
 #include "opening.h"
 
+extern const Vec D_80114D84_opening;
+extern const Vec D_80114D90_opening;
+
+void func_8000BEAC_main(u16 spriteId, s32 arg1, s32 arg2, s32 arg3);
 void func_80088800_main(HuMtx4F, f32, f32, f32);
 void func_80017CD0_main(HuMtx4F, f32, f32, f32);
 HmfMotionNode *func_8001D33C_main(s16 model, char *name);
@@ -983,7 +987,51 @@ void func_80112120_opening(s16 modelId) {
     work->unk02++;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524820", opTitleSetup);
+void opTitleSetup(void) {
+    u16 sprite;
+
+    func_801061F0_opening();
+    func_80110F48_opening();
+    opContErrorCreate();
+    func_80112944_opening();
+    {
+        Vec initPos = D_80114D84_opening;
+        Vec initAt = D_80114D90_opening;
+        func_80110FB0_opening(&initPos, &initAt);
+    }
+    opSprBGCreate(0, 0x100000);
+    opSprPosSet(0, 160, 120);
+    func_8000BCC8_main((u16)opEspIdGet(0), 9);
+    opSprBGDispOn(0);
+    opSprBGCreate(1, 0x100001);
+    opSprPosSet(1, 160, 120);
+    func_8000BCC8_main((u16)opEspIdGet(1), 11);
+    opSprBGDispOn(1);
+    opSprBGCreate(2, 0x100002);
+    opSprPosSet(2, 160, 71);
+    opSprAttrSet(2, 8);
+    opSprAlphaSet(2, 255);
+    func_8000BCC8_main((u16)opEspIdGet(2), 8);
+    opSprBGCreate(3, 0x100005);
+    opSprPosSet(3, 160, 71);
+    opSprAttrSet(3, 8);
+    opSprAlphaSet(3, 255);
+    sprite = opEspIdGet(3);
+    func_8000BEAC_main(sprite, 255, 255, 255);
+    func_8000BCC8_main(sprite, 9);
+    opSprBGCreate(4, 0x100003);
+    opSprPosSet(4, 158, 197);
+    opSprAttrSet(4, 8);
+    opSprAlphaSet(4, 255);
+    func_8000BCC8_main((u16)opEspIdGet(4), 8);
+    opSprBGCreate(5, 0x100004);
+    opSprPosSet(5, 158, 197);
+    opSprAttrSet(5, 0x1008);
+    opSprAlphaSet(5, 255);
+    sprite = opEspIdGet(5);
+    func_8000BEAC_main(sprite, 0, 6, 115);
+    func_8000BCC8_main(sprite, 9);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524820", opTitleSprMain);
 

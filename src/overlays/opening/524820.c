@@ -1153,13 +1153,31 @@ void opDemoStarWaitCreate(s32 index, s32 modelId, f32 x, f32 y, f32 z, f32 arg5,
 void func_801134FC_opening(s32 index, Vec *pos1, Vec *pos2, f32 scale, f32 angle) {
     func_80088800_main(D_801173BC_opening[index][0]->unk58, pos1->x, pos1->y, pos1->z);
     func_80017CD0_main(D_801173BC_opening[index][0]->unk58, scale, 1.0f, scale);
-    func_800185A4_main((Mtx *)D_801173BC_opening[index][0]->unk58, angle);
+    func_800185A4_main(D_801173BC_opening[index][0]->unk58, angle);
     func_80088800_main(D_801173C0_opening[index][0]->unk58, pos2->x, pos2->y + 4.0f, pos2->z);
     func_80017CD0_main(D_801173C0_opening[index][0]->unk58, scale, 1.0f, scale);
-    func_800185A4_main((Mtx *)D_801173C0_opening[index][0]->unk58, angle);
+    func_800185A4_main(D_801173C0_opening[index][0]->unk58, angle);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524820", func_8011361C_opening);
+void func_8011361C_opening(omObjData *obj) {
+    Vec pos;
+    Vec shadow;
+    s8 index = obj->work[0];
+    f32 step = 1.0f / D_80117390_opening[index][0];
+    f32 angle = step * 360.0f + D_8011739C_opening[index][0].pos.x;
+    f32 height;
+
+    if (angle > 360.0f) {
+        angle -= 360.0f;
+    }
+    D_8011739C_opening[index][0].pos.x = angle;
+    height = sindf(angle) * D_8011739C_opening[index][0].pos.y;
+    HuVecCopy3F(&pos, &D_801173B0_opening[index][0].pos);
+    pos.y = height + pos.y;
+    HuVecCopy3F(&shadow, &D_801173B0_opening[index][0].pos);
+    shadow.y = 0;
+    func_801134FC_opening(index, &pos, &shadow, 1.0f, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524820", func_8011373C_opening);
 
@@ -1177,7 +1195,7 @@ void func_80114150_opening(s32 index, f32 x, f32 y, f32 z, s32 arg4) {
     slot = &D_80117394_opening[index];
     HuVecCopy3F(&slot->pos, &pos);
     HuVecCopyXYZ(&slot->unk_1C, x, y, z);
-    D_801173B0_opening[index][0] = 0;
+    D_801173B0_opening[index][0].motion[0] = 0;
     D_801173B4_opening[index][0] = 0;
     D_801173B8_opening[index][0] = 0;
     D_80117388_opening[index].obj->func = func_80113E8C_opening;

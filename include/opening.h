@@ -119,7 +119,7 @@ extern OpObjPos D_80117398_opening[0x10][5];
 extern OpObjPos D_8011739C_opening[0x10][5];
 extern f32 D_801173A4_opening[0x10][15];
 extern f32 D_801173A8_opening[0x10][15];
-extern s32 D_801173B0_opening[0x10][15];
+extern OpObjPos D_801173B0_opening[0x10][5];
 extern s32 D_801173B4_opening[0x10][15];
 extern s32 D_801173B8_opening[0x10][15];
 

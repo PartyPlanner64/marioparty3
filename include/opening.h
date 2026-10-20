@@ -123,6 +123,9 @@ extern s32 D_801173B0_opening[0x10][15];
 extern s32 D_801173B4_opening[0x10][15];
 extern s32 D_801173B8_opening[0x10][15];
 
+extern HmfMotionNode *D_801173BC_opening[0x10][15];
+extern HmfMotionNode *D_801173C0_opening[0x10][15];
+
 s16 func_801117D4_opening(s32 arg0, s32 arg1);
 s32 func_80111984_opening(s32 resourceId, s32 arg1);
 s32 func_80111DDC_opening(s16 modelId, f32 x, f32 y, f32 z, f32 size);

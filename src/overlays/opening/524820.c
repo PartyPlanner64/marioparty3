@@ -3,6 +3,9 @@
 #include "mallocblock.h"
 #include "opening.h"
 
+void func_80088800_main(HuMtx4F, f32, f32, f32);
+void func_80017CD0_main(HuMtx4F, f32, f32, f32);
+
 void func_801061F0_opening(void) {
     func_8010621C_opening();
     func_801067D4_opening();
@@ -1147,7 +1150,14 @@ void opDemoStarWaitCreate(s32 index, s32 modelId, f32 x, f32 y, f32 z, f32 arg5,
     D_80117390_opening[index][0] = frames;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524820", func_801134FC_opening);
+void func_801134FC_opening(s32 index, Vec *pos1, Vec *pos2, f32 scale, f32 angle) {
+    func_80088800_main(D_801173BC_opening[index][0]->unk58, pos1->x, pos1->y, pos1->z);
+    func_80017CD0_main(D_801173BC_opening[index][0]->unk58, scale, 1.0f, scale);
+    func_800185A4_main((Mtx *)D_801173BC_opening[index][0]->unk58, angle);
+    func_80088800_main(D_801173C0_opening[index][0]->unk58, pos2->x, pos2->y + 4.0f, pos2->z);
+    func_80017CD0_main(D_801173C0_opening[index][0]->unk58, scale, 1.0f, scale);
+    func_800185A4_main((Mtx *)D_801173C0_opening[index][0]->unk58, angle);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524820", func_8011361C_opening);
 

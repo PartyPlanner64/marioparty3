@@ -134,12 +134,16 @@ void opDemoObjKill(s32 index);
 void opDemoObjKillAll(void);
 void opContErrorKill(void);
 void opWipeKill(s32 index);
+void func_80111F58_opening(s16 modelId);
+void func_80112120_opening(s16 modelId);
+void func_80013390_main(s16 model, s32 arg1, s32 arg2, void (*callback)(s16));
 
 extern u8 D_800D20B8_main[16][3];
 extern u8 D_800D5570_main[16][3];
 extern Gfx D_80114BE8_opening[];
 extern u32 D_80114BE0_opening;
 extern Vec D_80117378_opening;
+extern s32 D_80117384_opening;
 extern Vec D_80114BB8_opening;
 extern Vec D_80114BC4_opening;
 extern RectF D_80114BD0_opening;
@@ -923,9 +927,91 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80111490_opening);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80111580_opening);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_801117D4_opening);
+s16 func_801117D4_opening(s32 resourceId, s32 arg1) {
+    s16 modelId;
+    HmfData *data;
+    HmfModelData_UnkBC_Struct *work;
+    HmfModelData_UnkBC_Unk58_Struct *particle;
+    f32 startRadius;
+    f32 radiusStep;
+    f32 angleStep;
+    s16 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80111984_opening);
+    HuVecCopyXYZ(&D_80117378_opening, 0.0f, 0.0f, 0.0f);
+    D_80117384_opening = 0;
+    modelId = func_8000B108_main(resourceId, arg1);
+    Hu3DModelPosSet(modelId, 0.0f, 0.0f, 0.0f);
+    func_8001C2FC_main(modelId, 0x20000, 0x20000);
+    func_8001C448_main(modelId);
+    func_8001C954_main(modelId);
+    func_8001C514_main(modelId);
+    func_80013390_main(modelId, -1, 0, func_80111F58_opening);
+    data = HmfModelData[modelId].hmf;
+    work = HmfModelData[modelId].unkBC;
+    particle = work->unk58;
+    work->unk08.f = 30.0f;
+    work->unk0C.f = 720.0f;
+    work->unk10.f = 80.0f;
+    work->unk14 = 5.0f;
+    startRadius = work->unk10.f / 10.0f;
+    radiusStep = (work->unk10.f - startRadius) / work->unk08.f;
+    angleStep = work->unk0C.f / work->unk08.f;
+    for (i = 0; i < data->unk1A; i++, particle++) {
+        particle->unk0C = particle->unk10 = particle->unk14 = 0.0f;
+        particle->unk18 = 0.0f;
+        particle->unk20 = startRadius;
+        particle->unk1C = radiusStep;
+        particle->unk24 = angleStep;
+        particle->unk28 = 0.0f;
+        particle->unk2C = 0.0f;
+        particle->unk08 = 0.0f;
+        particle->unk04 = 180.0f;
+    }
+    return modelId;
+}
+
+s16 func_80111984_opening(s32 resourceId, s32 arg1) {
+    s16 modelId;
+    HmfData *data;
+    HmfModelData_UnkBC_Struct *work;
+    HmfModelData_UnkBC_Unk58_Struct *particle;
+    f32 startRadius;
+    f32 radiusStep;
+    f32 angleStep;
+    s16 i;
+
+    HuVecCopyXYZ(&D_80117378_opening, 0.0f, 0.0f, 0.0f);
+    D_80117384_opening = 0;
+    modelId = func_8000B108_main(resourceId, arg1);
+    Hu3DModelPosSet(modelId, 0.0f, 0.0f, 0.0f);
+    func_8001C2FC_main(modelId, 0x20000, 0x20000);
+    func_8001C448_main(modelId);
+    func_8001C954_main(modelId);
+    func_8001C514_main(modelId);
+    func_80013390_main(modelId, -1, 0, func_80112120_opening);
+    data = HmfModelData[modelId].hmf;
+    work = HmfModelData[modelId].unkBC;
+    particle = work->unk58;
+    work->unk08.f = 30.0f;
+    work->unk0C.f = 720.0f;
+    work->unk10.f = 80.0f;
+    work->unk14 = 5.0f;
+    startRadius = work->unk10.f / 10.0f;
+    radiusStep = (work->unk10.f - startRadius) / work->unk08.f;
+    angleStep = work->unk0C.f / work->unk08.f;
+    for (i = 0; i < data->unk1A; i++, particle++) {
+        particle->unk0C = particle->unk10 = particle->unk14 = 0.0f;
+        particle->unk18 = 0.0f;
+        particle->unk20 = startRadius;
+        particle->unk1C = radiusStep;
+        particle->unk24 = angleStep;
+        particle->unk28 = 0.0f;
+        particle->unk2C = 0.0f;
+        particle->unk08 = 0.0f;
+        particle->unk04 = 180.0f;
+    }
+    return modelId;
+}
 
 u32 func_80111B34_opening(u32 seed) {
     u32 quotient;

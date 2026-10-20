@@ -84,6 +84,8 @@ typedef struct {
 } OpSlot; // sizeof 0xC
 
 void opDemoEndReset(void);
+void opTitleMain(void);
+void opDemoMain(void);
 void opTitleSprMain(void);
 void opDemoEvent(void);
 void func_801061F0_opening(void);
@@ -109,10 +111,13 @@ void func_8000BBD4_main(u16 arg0, s16 arg1, s16 arg2);
 void func_8000BD94_main(u16 arg0, s32 arg1, s32 arg2);
 void func_80113E8C_opening(omObjData *);
 void opDemoObjKill(s32 index);
+void opDemoObjKillAll(void);
+void opContErrorKill(void);
 
 extern Vec D_80114BB8_opening;
 extern Vec D_80114BC4_opening;
 extern RectF D_80114BD0_opening;
+extern Process *D_80114EA0_opening;
 extern s32 D_80114EA4_opening;
 extern OpModel D_80115630_opening[0xA0];
 extern OpCamVecs D_80117350_opening;
@@ -143,9 +148,15 @@ void opEventInit(void) {
     opDemoEndReset();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opTitleCreate);
+void opTitleCreate(void) {
+    opEventInit();
+    D_80114EA0_opening = omAddPrcObj(opTitleMain, 0x5000, 0x800, 0);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoCreate);
+void opDemoCreate(void) {
+    opEventInit();
+    D_80114EA0_opening = omAddPrcObj(opDemoMain, 0x5000, 0x800, 0);
+}
 
 Process *opDemoEventCreate(void) {
     Process *parentPrc = HuPrcCurrentGet();
@@ -604,9 +615,20 @@ void func_80110D8C_opening(s32 totalFrames, f32 magnitude) {
     D_80117338_opening.obj = omAddObj(6, 0, 0, -1, func_80110C04_opening);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoCharCreate);
+void opDemoCharCreate(s32 slot, s32 resourceId, f32 x, f32 y, f32 z) {
+    opModelCreate(slot, resourceId, 0x6A9);
+    opModelPosSet(slot, x, y, z);
+    opModelRotSet(slot, 0.0f, 0.0f, 0.0f);
+    opModelScaleSet(slot, 1.0f, 1.0f, 1.0f);
+    opMotionFlagSet(slot, 2);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoShadowCreate);
+void opDemoShadowCreate(s32 slot, f32 x, f32 y, f32 z) {
+    opModelCreate(slot, 9, 0x229);
+    opModelPosSet(slot, x, y, z);
+    opModelRotSet(slot, 0.0f, 0.0f, 0.0f);
+    opModelScaleSet(slot, 1.0f, 1.0f, 1.0f);
+}
 
 void opDemoModelKill(void) {
     opModelKillAll();
@@ -660,7 +682,9 @@ void func_801110F0_opening(f32 posX, f32 posY, f32 posZ, f32 atX, f32 atY, f32 a
     HuVecCopyXYZ(&D_80117350_opening.at, atX, atY, atZ);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80111164_opening);
+f32 func_80111164_opening(f32 x1, f32 z1, f32 x2, f32 z2) {
+    return -(atan2df(z2 - z1, x2 - x1) - 90.0f);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_801111AC_opening);
 
@@ -692,7 +716,18 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opTitleSetup);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opTitleSprMain);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opTitleKill);
+void opTitleKill(void) {
+    opSprKill(5);
+    opSprKill(4);
+    opSprKill(3);
+    opSprKill(2);
+    opSprKill(1);
+    opSprKill(0);
+    opContErrorKill();
+    opDemoObjKillAll();
+    opDemoModelKill();
+    opDemoSprKill();
+}
 
 void func_80112944_opening(void) {
     s32 i;
@@ -730,9 +765,30 @@ INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80112A74_opening);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80112BA0_opening);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80112C8C_opening);
+void func_80112C8C_opening(omObjData *obj) {
+    s8 index = obj->work[0];
+    s32 modelId = D_80117394_opening[index].modelId;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", func_80112D30_opening);
+    if (D_8011738C_opening[index][0] >= D_80117390_opening[index][0]) {
+        opMotionTimeSet(modelId, 0);
+        D_8011738C_opening[index][0] = 0;
+    } else {
+        D_8011738C_opening[index][0]++;
+    }
+}
+
+void func_80112D30_opening(s32 index, s32 modelId, s32 startTime, s32 endTime) {
+    opDemoObjCreate(index, func_80112C8C_opening);
+    D_80117394_opening[index].modelId = modelId;
+    D_8011738C_opening[index][0] = startTime;
+    D_80117390_opening[index][0] = endTime;
+    func_80106DD0_opening(modelId, 3);
+    if (startTime > 0) {
+        opMotionTimeSet(modelId, startTime);
+    } else {
+        opMotionTimeSet(modelId, 0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opening/524000", opDemoOutEffMain);
 

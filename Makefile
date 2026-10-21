@@ -236,6 +236,7 @@ build/src/overlays/ovl_80_shared_board/ECA50.c.o: CFLAGS = -G0 -mips3 -mgp32 -mf
 # by stripping the blank newline, this will cause functions with nop issues to match
 NOP_OBJECTS := \
 	build/src/libhmath/gurotate.c.o \
+	build/src/overlays/opening/524820.c.o \
 	build/src/overlays/msetup/506F20.c.o \
 	build/src/overlays/msetup/508D50.c.o \
 	build/src/overlays/msetup/5092C0.c.o \

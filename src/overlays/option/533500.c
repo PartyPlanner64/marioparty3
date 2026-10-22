@@ -69,6 +69,7 @@ typedef struct {
 
 extern s32 D_80114778_option[4];
 extern OptCam D_801146F0_option;
+extern Process *D_80114770_option;
 extern OptCursor D_80114788_option[2];
 extern OptSeObj D_801147E0_option;
 extern s32 D_801147E8_option;
@@ -90,6 +91,13 @@ void func_80013350_main(s16);
 void func_80012E54_main(s16);
 void func_80033910_main(HmfData *);
 void func_801059D0_option(void);
+void func_80108B34_option(void);
+void func_80108B58_option(void);
+void func_8010A66C_option(void);
+void func_8010C224_option(void);
+void func_8010F94C_option(void);
+void func_8010FDF4_option(void);
+void func_80112060_option(void);
 void func_80108A68_option(void);
 void func_80108AAC_option(void);
 void func_80108AF0_option(void);
@@ -238,13 +246,28 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_80113A20_option);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80107F50_option);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80108A68_option);
+void func_80108A68_option(void) {
+    func_80108B34_option();
+    func_80112060_option();
+    D_80114770_option = omAddPrcObj(func_80108B58_option, 0x5000, 0x2000, 0);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80108AAC_option);
+void func_80108AAC_option(void) {
+    func_80108B34_option();
+    func_80112060_option();
+    D_80114770_option = omAddPrcObj(func_8010A66C_option, 0x5000, 0x2000, 0);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80108AF0_option);
+void func_80108AF0_option(void) {
+    func_80108B34_option();
+    func_80112060_option();
+    D_80114770_option = omAddPrcObj(func_8010C224_option, 0x5000, 0x2000, 0);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80108B34_option);
+void func_80108B34_option(void) {
+    func_8010F94C_option();
+    func_8010FDF4_option();
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_80113A4C_option);
 
@@ -439,7 +462,16 @@ f32 func_8010F914_option(f32 x, f32 y) {
     return -(atan2df(y, x) - 90.0f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010F94C_option);
+void func_8010F94C_option(void) {
+    s32 i;
+
+    for (i = 0; i < ARRAY_COUNT(D_80114788_option); i++) {
+        HuVecCopyXYZ(&D_80114788_option[i].unk_00, 0.0f, 0.0f, 0.0f);
+        HuVecCopyXYZ(&D_80114788_option[i].unk_0C, 0.0f, 0.0f, 0.0f);
+        HuVecCopyXYZ(&D_80114788_option[i].unk_18, 0.0f, 0.0f, 0.0f);
+        D_80114788_option[i].obj = NULL;
+    }
+}
 
 void func_8010FA28_option(void) {
     s32 i;

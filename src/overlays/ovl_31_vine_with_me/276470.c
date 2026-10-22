@@ -16,12 +16,6 @@
 
 // EXTERN
 
-typedef struct {
-    /* 0x00 */ char unk00[4];
-    /* 0x04 */ s16 unk04;
-    /* 0x06 */ char unk06[0x1E];
-} D_800CD1DC_main_Struct; // Size 0x24
-
 // C1F0
 void func_8000B5F0_main(u8 arg0);
 void func_8000B710_main(s32);
@@ -44,9 +38,6 @@ f32 cosdf(f32);
 
 // 8FB20
 f32 sindf(f32);
-
-// esprite
-extern D_800CD1DC_main_Struct *D_800CD1DC_main;
 
 // pad
 extern u16 D_800D5558_main[];

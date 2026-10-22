@@ -2,30 +2,11 @@
 #include "malloc.h"
 #include "mallocblock.h"
 
-typedef struct {
-    /* 0x00 */ s16 unk00;
-    /* 0x02 */ s16 unk02;
-    /* 0x04 */ s16 unk04; // gid?
-    /* 0x06 */ s16 unk06;
-    /* 0x08 */ s16 unk8;
-    /* 0x0A */ s16 unkA; // x center
-    /* 0x0C */ s16 unkC; // y center
-    /* 0x0E */ s16 unkE;
-    /* 0x10 */ f32 unk10;
-    /* 0x14 */ f32 unk14;
-    /* 0x18 */ char unk18[4];
-    /* 0x1C */ s16 unk1C;
-    /* 0x1E */ s16 unk1E;
-    /* 0x20 */ s16 unk20;
-    /* 0x22 */ char unk22[2];
-} D_800CD1DC_main_Struct; // Size 0x24
-
 typedef struct MgmodeSpaceCoord {
     /* 0x00 */ s16 x;
     /* 0x02 */ s16 y;
 } MgmodeSpaceCoord;
 
-extern D_800CD1DC_main_Struct* D_800CD1DC_main;
 extern u8 D_8011B630_mgmode[0x20];
 extern s16 D_8011B650_mgmode;
 extern s16 D_8011B652_mgmode;

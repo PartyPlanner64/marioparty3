@@ -405,7 +405,25 @@ void func_8010998C_option(Vec *camPos, Vec *camAt, Vec *camUp, f32 x, f32 y, f32
     *screenY = py;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80109A0C_option);
+void func_80109A0C_option(s32 slot, Vec *start, Vec *end, s32 duration) {
+    f32 startPos[2], endPos[2];
+    s32 x, y;
+    s32 i;
+    f32 t;
+
+    for (i = 0; i <= duration; i++) {
+        func_80109908_option(start->x, start->y, start->z, &x, &y);
+        startPos[0] = x;
+        startPos[1] = y;
+        func_80109908_option(end->x, end->y, end->z, &x, &y);
+        endPos[0] = x;
+        endPos[1] = y;
+        t = (1.0f / duration) * i;
+        func_80112028_option(slot, t * (endPos[0] - startPos[0]) + startPos[0], t * (endPos[1] - startPos[1]) + startPos[1]);
+        HuPrcVSleep();
+    }
+    func_80112028_option(slot, endPos[0], endPos[1]);
+}
 
 void func_80109B7C_option(s32 index, s32 startX, s32 startY, s32 endX, s32 endY, s32 duration) {
     s32 i;
@@ -1063,17 +1081,111 @@ u32 func_80111058_option(u32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_801110C0_option);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8011130C_option);
+s32 func_8011130C_option(s32 message, s16 x, s16 y, s16 width, s16 height) {
+    s16 winID;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80111458_option);
+    winID = func_8005A968_main(x, y, width, height, 0, 8);
+    func_8005B63C_main(winID, -1, 17);
+    func_8005BDFC_main(winID, 0);
+    func_8005BEE0_main(winID, 255);
+    func_80060144_main(winID);
+    func_8005BE30_main(winID, 1);
+    func_8005FE54_main(winID, 1);
+    func_8005C154_main(winID, 192, 192, 192);
+    func_8005FBF8_main(winID, 0, 64, 64);
+    func_8005C02C_main(winID, 7);
+    func_8005C060_main(winID, 2, 255, 64, 64);
+    func_8005C060_main(winID, 4, 96, 255, 64);
+    func_8005C060_main(winID, 6, 255, 255, 64);
+    func_8005D294_main(winID);
+    func_8005B43C_main(winID, message, -1, -1);
+    return winID;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_801115C0_option);
+s32 func_80111458_option(s32 message, s16 x, s16 y, s16 width, s16 height) {
+    s16 winID;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80111768_option);
+    winID = func_8005A968_main(x, y, width, height, 0, 4);
+    func_8005B63C_main(winID, -1, 17);
+    func_8005BDFC_main(winID, 0);
+    func_8005BEE0_main(winID, 255);
+    func_80060144_main(winID);
+    func_8005BE30_main(winID, 1);
+    func_8005FE54_main(winID, 1);
+    func_8005C060_main(winID, 5, 0, 176, 192);
+    func_8005C060_main(winID, 2, 255, 64, 64);
+    func_8005C060_main(winID, 4, 96, 255, 64);
+    func_8005C060_main(winID, 6, 255, 255, 64);
+    func_8005C154_main(winID, 192, 192, 192);
+    func_8005FBF8_main(winID, 255, 255, 255);
+    func_8005C02C_main(winID, 1);
+    func_8005D294_main(winID);
+    func_8005B43C_main(winID, message, -1, -1);
+    return winID;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80111834_option);
+s32 func_801115C0_option(s32 message, s16 x, s16 y, s16 width, s16 height) {
+    s16 winID;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80111900_option);
+    winID = func_8005A968_main(x, y, width, height, 0, 8);
+    func_8005B63C_main(winID, -1, 17);
+    func_8005BDFC_main(winID, 0);
+    func_80060144_main(winID);
+    func_8005BE30_main(winID, 1);
+    func_8005FE54_main(winID, 1);
+    func_8005C060_main(winID, 5, 0, 176, 192);
+    func_8005C060_main(winID, 7, 255, 255, 255);
+    func_8005C060_main(winID, 0, 0, 0, 0);
+    func_8005C060_main(winID, 3, 0, 0, 0);
+    func_8005C060_main(winID, 2, 255, 64, 64);
+    func_8005C060_main(winID, 4, 96, 255, 64);
+    func_8005C060_main(winID, 6, 255, 255, 64);
+    func_8005C154_main(winID, 192, 192, 0);
+    func_8005FBF8_main(winID, 255, 255, 255);
+    func_8005C02C_main(winID, 6);
+    func_8005D294_main(winID);
+    func_8005B43C_main(winID, message, -1, -1);
+    return winID;
+}
+
+s32 func_80111768_option(s32 message, s16 x, s16 y) {
+    s16 winID;
+
+    winID = func_80060880_main(x, y, 19);
+    func_8005C060_main(winID, 2, 255, 64, 64);
+    func_8005C060_main(winID, 4, 96, 255, 64);
+    func_8005C060_main(winID, 6, 255, 255, 64);
+    func_80060C14_main(winID, 1);
+    func_8005FE54_main(winID, 1);
+    func_8005B43C_main(winID, message, -1, -1);
+    return winID;
+}
+
+s32 func_80111834_option(s32 message, s16 x, s16 y) {
+    s16 winID;
+
+    winID = func_80060880_main(x, y, 20);
+    func_8005C060_main(winID, 2, 255, 64, 64);
+    func_8005C060_main(winID, 4, 96, 255, 64);
+    func_8005C060_main(winID, 6, 255, 255, 64);
+    func_80060C14_main(winID, 0);
+    func_8005FE54_main(winID, 1);
+    func_8005B43C_main(winID, message, -1, -1);
+    return winID;
+}
+
+s32 func_80111900_option(s32 message, s16 x, s16 y) {
+    s16 winID;
+
+    winID = func_80060880_main(x, y, 19);
+    func_8005C060_main(winID, 2, 255, 64, 64);
+    func_8005C060_main(winID, 4, 96, 255, 64);
+    func_8005C060_main(winID, 6, 255, 255, 64);
+    func_8005FE54_main(winID, 1);
+    func_80060C14_main(winID, 0);
+    func_8005B43C_main(winID, message, -1, -1);
+    return winID;
+}
 
 void func_801119CC_option(void) {
     s32 i;

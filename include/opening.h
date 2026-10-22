@@ -135,7 +135,7 @@ s32 func_80111DDC_opening(s16 modelId, f32 x, f32 y, f32 z, f32 size);
 void opDemoOutEffMain(omObjData *obj);
 void opDemoGuideInEffMain(omObjData *obj);
 void opDemoEndReset(void);
-void func_80107140_opening(s32 slot, u32 event, s32 x, s32 y, s16 arg4, s16 arg5, s16 arg6);
+void func_80107140_opening(s32 slot, u32 event, s16 x, s16 y, s16 width, s16 height, s16 style);
 void opObjectInit(void);
 void opTitleCreate(void);
 void opDemoCreate(void);

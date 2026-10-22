@@ -478,7 +478,45 @@ u32 func_801070D8_opening(u32 arg0) {
     return arg0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524820", func_80107140_opening);
+void func_80107140_opening(s32 slot, u32 event, s16 x, s16 y, s16 width, s16 height, s16 style) {
+    s16 window;
+    u32 newEvent;
+
+    switch (style) {
+        case 1:
+            newEvent = func_801070D8_opening(event);
+            window = func_801074D8_opening(newEvent, x, y, width, height, style);
+            break;
+        case 2:
+            newEvent = func_801070D8_opening(event);
+            window = func_80107640_opening(newEvent, x, y, width, height, style);
+            break;
+        case 3:
+            newEvent = func_801070D8_opening(event);
+            window = func_801077E8_opening(newEvent, x, y, style);
+            break;
+        case 4:
+            newEvent = func_801070D8_opening(event);
+            window = func_801078B4_opening(newEvent, x, y, style);
+            break;
+        case 5:
+            newEvent = func_801070D8_opening(event);
+            window = func_80107980_opening(newEvent, x, y, style);
+            break;
+        case 0:
+            newEvent = func_801070D8_opening(event);
+            window = func_8010738C_opening(newEvent, x, y, width, height, style);
+            break;
+        default:
+            newEvent = func_801070D8_opening(event);
+            window = func_8010738C_opening(newEvent, x, y, width, height, style);
+            break;
+    }
+    if (0x80000000U < newEvent) {
+        D_801171B8_opening[slot].event = (void *)newEvent;
+    }
+    D_801171B8_opening[slot].espriteSlot = window;
+}
 
 s16 func_8010738C_opening(u32 event, s16 x, s16 y, s16 width, s16 height, s16 style) {
     s16 slot;

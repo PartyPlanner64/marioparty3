@@ -807,7 +807,29 @@ void func_801096E4_option(s32 arg0) {
     func_80112028_option(arg0, D_80114778_option[0], D_80114778_option[1]);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80109730_option);
+void func_80109730_option(Vec *pos, Vec *at, Vec *up, f32 fov, Vec *point, f32 *screenX, f32 *screenY) {
+    f32 mtx[4][4];
+    f32 dx, dy, dz;
+    f32 x, y, z;
+
+    guLookAtF(mtx, pos->x, pos->y, pos->z, at->x, at->y, at->z, up->x, up->y, up->z);
+    dx = point->x;
+    dy = point->y;
+    dz = point->z;
+    dx -= pos->x;
+    dy -= pos->y;
+    dz -= pos->z;
+    x = dx * mtx[0][0] + dy * mtx[1][0] + dz * mtx[2][0];
+    y = dx * mtx[0][1] + dy * mtx[1][1] + dz * mtx[2][1];
+    z = dx * mtx[0][2] + dy * mtx[1][2] + dz * mtx[2][2];
+    fov /= 2.0f;
+    dx = sindf(fov) / cosdf(fov) * z * (4.0f / 3.0f);
+    dy = sindf(fov) / cosdf(fov) * z;
+    x = x * (160.0f / -dx) + 160.0f;
+    *screenX = x;
+    y = y * (120.0f / dy) + 120.0f;
+    *screenY = y;
+}
 
 void func_80109908_option(f32 x, f32 y, f32 z, s32 *screenX, s32 *screenY) {
     Vec pos;

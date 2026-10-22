@@ -58,7 +58,13 @@ typedef struct {
     /* 0x30 */ f32 farPlane;
     /* 0x34 */ s16 camId;
     /* 0x38 */ omObjData *obj;
-} OptCam; // sizeof 0x3C
+    /* 0x3C */ Vec startPos;
+    /* 0x48 */ Vec startAt;
+    /* 0x54 */ Vec endPos;
+    /* 0x60 */ Vec endAt;
+    /* 0x6C */ s32 frame;
+    /* 0x70 */ s32 duration;
+} OptCam; // sizeof 0x74
 
 // Object that keeps an attached 3d model sound playing for a fixed duration.
 typedef struct {
@@ -125,6 +131,8 @@ void func_80113274_option(s32, f32 *, f32 *, f32 *);
 void func_80113290_option(s32, f32, f32, f32);
 omObjData *func_80106F88_option(Vec *, Vec *, s32);
 void func_8010744C_option(omObjData *);
+void func_80106C7C_option(omObjData *);
+void func_80107058_option(omObjData *);
 void func_801077BC_option(omObjData *);
 void func_80105E40_option(void);
 void func_80108B34_option(void);
@@ -275,7 +283,36 @@ INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80105FF8_option);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80106508_option);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80106998_option);
+void func_80106998_option(omObjData *obj) {
+    Vec pos, at, up, start, end;
+    f32 t, clamped;
+
+    t = (f32)D_801146F0_option.frame / D_801146F0_option.duration;
+    if (t < 0.0f) {
+        t = 0.0f;
+    }
+    if (t > 1.0f) {
+        clamped = 1.0f;
+    } else {
+        clamped = t;
+    }
+    HuVecCopy3F(&start, &D_801146F0_option.startPos);
+    HuVecCopy3F(&end, &D_801146F0_option.endPos);
+    HuVecCopyXYZ(&pos, (end.x - start.x) * clamped + start.x, (end.y - start.y) * clamped + start.y,
+                 (end.z - start.z) * clamped + start.z);
+    HuVecCopy3F(&start, &D_801146F0_option.startAt);
+    HuVecCopy3F(&end, &D_801146F0_option.endAt);
+    HuVecCopyXYZ(&at, (end.x - start.x) * clamped + start.x, (end.y - start.y) * clamped + start.y,
+                 (end.z - start.z) * clamped + start.z);
+    if (D_801146F0_option.frame > D_801146F0_option.duration) {
+        omDelObj(obj);
+        func_80106508_option(&D_801146F0_option.endPos, &D_801146F0_option.endAt, &up);
+        D_801146F0_option.obj = NULL;
+    } else {
+        D_801146F0_option.frame++;
+        func_80106508_option(&pos, &at, &up);
+    }
+}
 
 void func_80106B78_option(void) {
     if (D_801146F0_option.obj != NULL) {
@@ -284,15 +321,60 @@ void func_80106B78_option(void) {
     D_801146F0_option.obj = NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80106BAC_option);
+omObjData *func_80106BAC_option(Vec *pos, Vec *at, s32 duration) {
+    omObjData *obj;
+
+    func_80106B78_option();
+    obj = omAddObj(6, 0, 0, -1, func_80106998_option);
+    obj->work[0] = 0;
+    obj->work[1] = 0;
+    D_801146F0_option.obj = obj;
+    D_801146F0_option.frame = 0;
+    D_801146F0_option.duration = duration;
+    HuVecCopy3F(&D_801146F0_option.startAt, &D_801146F0_option.at);
+    HuVecCopy3F(&D_801146F0_option.startPos, &D_801146F0_option.pos);
+    HuVecCopyXYZ(&D_801146F0_option.endAt, at->x, at->y, at->z);
+    HuVecCopyXYZ(&D_801146F0_option.endPos, pos->x, pos->y, pos->z);
+    return obj;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80106C7C_option);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80106F88_option);
+omObjData *func_80106F88_option(Vec *pos, Vec *at, s32 duration) {
+    omObjData *obj;
+
+    func_80106B78_option();
+    obj = omAddObj(6, 0, 0, -1, func_80106C7C_option);
+    obj->work[0] = 0;
+    obj->work[1] = 0;
+    D_801146F0_option.obj = obj;
+    D_801146F0_option.frame = 0;
+    D_801146F0_option.duration = duration;
+    HuVecCopy3F(&D_801146F0_option.startAt, &D_801146F0_option.at);
+    HuVecCopy3F(&D_801146F0_option.startPos, &D_801146F0_option.pos);
+    HuVecCopyXYZ(&D_801146F0_option.endAt, at->x, at->y, at->z);
+    HuVecCopyXYZ(&D_801146F0_option.endPos, pos->x, pos->y, pos->z);
+    return obj;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80107058_option);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010737C_option);
+omObjData *func_8010737C_option(Vec *pos, Vec *at, s32 duration) {
+    omObjData *obj;
+
+    func_80106B78_option();
+    obj = omAddObj(6, 0, 0, -1, func_80107058_option);
+    obj->work[0] = 0;
+    obj->work[1] = 0;
+    D_801146F0_option.obj = obj;
+    D_801146F0_option.frame = 0;
+    D_801146F0_option.duration = duration;
+    HuVecCopy3F(&D_801146F0_option.startAt, &D_801146F0_option.at);
+    HuVecCopy3F(&D_801146F0_option.startPos, &D_801146F0_option.pos);
+    HuVecCopyXYZ(&D_801146F0_option.endAt, at->x, at->y, at->z);
+    HuVecCopyXYZ(&D_801146F0_option.endPos, pos->x, pos->y, pos->z);
+    return obj;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010744C_option);
 

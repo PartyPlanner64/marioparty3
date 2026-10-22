@@ -66,6 +66,11 @@ typedef struct {
     /* 0x04 */ s32 seNo;
 } OptSeObj; // sizeof 0x8
 
+extern char D_80113A4C_option[];
+extern Vec D_8011376C_option[];
+extern Vec D_8011388C_option;
+extern Vec D_80113898_option;
+extern Vec D_801138A4_option;
 extern s32 D_80114778_option[4];
 extern OptCam D_801146F0_option;
 extern s32 D_80114764_option;
@@ -458,7 +463,27 @@ INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80109D04_option);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80109EF4_option);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010A3E8_option);
+void func_8010A3E8_option(s32 selection) {
+    s32 index = 0;
+    s32 x, y;
+
+    switch (selection) {
+        case 0:
+            index = 0;
+            break;
+        case 1:
+            index = 1;
+            break;
+        case 2:
+            index = 2;
+            break;
+        case 3:
+            index = 3;
+            break;
+    }
+    func_80109908_option(D_8011376C_option[index].x, D_8011376C_option[index].y, D_8011376C_option[index].z, &x, &y);
+    func_80112028_option(0, x, y);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010A498_option);
 
@@ -527,7 +552,26 @@ INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010B68C_option);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010BACC_option);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010BFA4_option);
+void func_8010BFA4_option(s32 selection) {
+    s32 x = 160;
+    s32 y = 120;
+
+    switch (selection) {
+        case 0:
+            break;
+        case 1:
+            func_80109908_option(D_8011388C_option.x, D_8011388C_option.y, D_8011388C_option.z, &x, &y);
+            break;
+        case 2:
+            func_80109908_option(D_80113898_option.x, D_80113898_option.y, D_80113898_option.z, &x, &y);
+            break;
+        case 3:
+            func_80109908_option(D_801138A4_option.x, D_801138A4_option.y, D_801138A4_option.z, &x, &y);
+            break;
+    }
+    func_801096B8_option(0, x, y);
+    func_801096E4_option(0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010C04C_option);
 
@@ -624,7 +668,32 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_80113DA8_option);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_8011421C_option);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010FC40_option);
+u16 func_8010FC40_option(s32 value) {
+    char text[256];
+    HmfData_UnkBC *cam;
+
+    HuPrcSleep(3);
+    while (1) {
+        if (D_800D5558_main[0] & 0xD010) {
+            sprintf(text, "\n%d\n", value);
+            break;
+        }
+        if (D_800D5558_main[0] & 0x2000) {
+            cam = HmfModelData[gCameraList->unk4].hmf->unkBC;
+            sprintf(text, "POS:%4.2f,%4.2f,%4.2f", cam->unk08, cam->unk0C, cam->unk10);
+            print8(16, 180, text);
+            sprintf(text, "A T:%4.2f,%4.2f,%4.2f", cam->unk14, cam->unk18, cam->unk1C);
+            print8(16, 190, text);
+            sprintf(text, "U P:%4.2f,%4.2f,%4.2f", cam->unk20, cam->unk24, cam->unk28);
+            print8(16, 200, text);
+        } else {
+            sprintf(text, D_80113A4C_option, value);
+            print8(16, 220, text);
+        }
+        HuPrcVSleep();
+    }
+    return D_800D5558_main[0];
+}
 
 void func_8010FDF4_option(void) {
     D_801147E0_option.obj = NULL;
@@ -1099,7 +1168,37 @@ void func_80111E3C_option(s32 arg0, s16 arg1) {
     func_8005BE30_main(D_80115A78_option[arg0].winID, arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80111E74_option);
+u16 func_80111E74_option(s32 value) {
+    static const char exitFormat[] = "\n%d\n";
+    static const char posFormat[] = "POS:%4.2f,%4.2f,%4.2f";
+    static const char atFormat[] = "A T:%4.2f,%4.2f,%4.2f";
+    static const char upFormat[] = "U P:%4.2f,%4.2f,%4.2f";
+    static const char valueFormat[] = "%d";
+    char text[256];
+    HmfData_UnkBC *cam;
+
+    HuPrcSleep(3);
+    while (1) {
+        if (D_800D5558_main[0] & 0xD010) {
+            sprintf(text, exitFormat, value);
+            break;
+        }
+        if (D_800D5558_main[0] & 0x2000) {
+            cam = HmfModelData[gCameraList->unk4].hmf->unkBC;
+            sprintf(text, posFormat, cam->unk08, cam->unk0C, cam->unk10);
+            print8(16, 180, text);
+            sprintf(text, atFormat, cam->unk14, cam->unk18, cam->unk1C);
+            print8(16, 190, text);
+            sprintf(text, upFormat, cam->unk20, cam->unk24, cam->unk28);
+            print8(16, 200, text);
+        } else {
+            sprintf(text, valueFormat, value);
+            print8(16, 220, text);
+        }
+        HuPrcVSleep();
+    }
+    return D_800D5558_main[0];
+}
 
 void func_80112028_option(s32 arg0, s32 arg1, s32 arg2) {
     func_8011053C_option(arg0, arg1, arg2);

@@ -92,6 +92,9 @@ void func_80013350_main(s16);
 void func_80012E54_main(s16);
 void func_80033910_main(HmfData *);
 void func_801059D0_option(void);
+void func_80105FF8_option(Vec *, Vec *, Vec *);
+void func_80113274_option(s32, f32 *, f32 *, f32 *);
+void func_80113290_option(s32, f32, f32, f32);
 omObjData *func_80106F88_option(Vec *, Vec *, s32);
 void func_8010744C_option(omObjData *);
 void func_801077BC_option(omObjData *);
@@ -479,7 +482,13 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_80113CD0_option);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010AF54_option);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010B654_option);
+void func_8010B654_option(s32 selection) {
+    s32 x, y;
+
+    func_8010A8DC_option(selection, &x, &y);
+    func_801096B8_option(0, x, y);
+    func_801096E4_option(0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010B68C_option);
 
@@ -497,7 +506,24 @@ INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010D5B0_option);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010E77C_option);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010E7FC_option);
+void func_8010E7FC_option(s32 startX, s32 startY, s32 endX, s32 endY, s32 duration) {
+    s32 i;
+    s32 dx;
+    s32 dy;
+    f32 t;
+
+    i = 0;
+    dx = endX - startX;
+    dy = endY - startY;
+    for (;; i++) {
+        HuPrcVSleep();
+        t = (f32)i / duration;
+        func_80112028_option(1, dx * t + startX, dy * t + startY);
+        if (i == duration) {
+            break;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010E8E0_option);
 
@@ -526,9 +552,34 @@ void func_8010FA28_option(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010FA7C_option);
+void func_8010FA7C_option(omObjData *obj) {
+    Vec pos;
+    Vec at;
+    Vec up;
+    Vec modelPos;
+    Vec direction;
+    s32 model;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010FB40_option);
+    model = D_80114788_option[obj->work[0]].unk_24;
+    func_80105FF8_option(&pos, &at, &up);
+    func_80113274_option(model, &modelPos.x, &modelPos.y, &modelPos.z);
+    HuVecCopyXYZ(&direction, pos.x - modelPos.x, pos.y - modelPos.y, pos.z - modelPos.z);
+    func_80113290_option(model, 0.0f, func_8010F914_option(direction.x, direction.z), 0.0f);
+}
+
+void func_8010FB40_option(s32 index, s32 model) {
+    f32 x, y, z;
+
+    if (D_80114788_option[index].obj != NULL) {
+        omDelObj(D_80114788_option[index].obj);
+    }
+    func_80113274_option(model, &x, &y, &z);
+    HuVecCopyXYZ(&D_80114788_option[index].unk_0C, 0.0f, 0.0f, 0.0f);
+    HuVecCopyXYZ(&D_80114788_option[index].unk_18, x, y, z);
+    D_80114788_option[index].unk_24 = model;
+    D_80114788_option[index].obj = omAddObj(6, 0, 0, -1, func_8010FA7C_option);
+    D_80114788_option[index].obj->work[0] = index;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_80113D78_option);
 

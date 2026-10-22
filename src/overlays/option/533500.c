@@ -91,6 +91,7 @@ void func_8000BE5C_main(u16, f32, f32);
 void func_80013350_main(s16);
 void func_80012E54_main(s16);
 void func_80033910_main(HmfData *);
+void func_80109730_option(Vec *, Vec *, Vec *, f32, Vec *, f32 *, f32 *);
 void func_801059D0_option(void);
 void func_80105FF8_option(Vec *, Vec *, Vec *);
 void func_80113274_option(s32, f32 *, f32 *, f32 *);
@@ -373,13 +374,45 @@ void func_801096E4_option(s32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80109730_option);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80109908_option);
+void func_80109908_option(f32 x, f32 y, f32 z, s32 *screenX, s32 *screenY) {
+    Vec pos;
+    f32 px, py;
+    HuCamera *camera;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010998C_option);
+    camera = gCameraList;
+    pos.x = x;
+    pos.y = y;
+    pos.z = z;
+    func_80109730_option(&camera->pos, &camera->at, &camera->up, camera->fov[0], &pos, &px, &py);
+    *screenX = px;
+    *screenY = py;
+}
+
+void func_8010998C_option(Vec *camPos, Vec *camAt, Vec *camUp, f32 x, f32 y, f32 z, s32 *screenX, s32 *screenY) {
+    Vec pos;
+    f32 px, py;
+
+    pos.x = x;
+    pos.y = y;
+    pos.z = z;
+    func_80109730_option(camPos, camAt, camUp, gCameraList->fov[0], &pos, &px, &py);
+    *screenX = px;
+    *screenY = py;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80109A0C_option);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80109B7C_option);
+void func_80109B7C_option(s32 index, s32 startX, s32 startY, s32 endX, s32 endY, s32 duration) {
+    s32 i;
+    f32 t;
+
+    for (i = 0; i <= duration; i++) {
+        t = (1.0f / duration) * i;
+        func_80112028_option(index, startX + t * (endX - startX), startY + t * (endY - startY));
+        HuPrcVSleep();
+    }
+    func_80112028_option(index, endX, endY);
+}
 
 void func_80109CB0_option(s32 arg0, s32 *arg1, s32 *arg2) {
     s32 val1 = 0xA0;
@@ -504,7 +537,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010C3E4_option);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010D5B0_option);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010E77C_option);
+void func_8010E77C_option(s32 x, s32 y, s32 frame) {
+    func_80112028_option(1, (s32)(x + sindf(frame * 18) * 4.0f) - 2, y);
+}
 
 void func_8010E7FC_option(s32 startX, s32 startY, s32 endX, s32 endY, s32 duration) {
     s32 i;

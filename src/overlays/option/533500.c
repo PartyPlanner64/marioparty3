@@ -89,6 +89,8 @@ void func_80013350_main(s16);
 void func_80033910_main(HmfData *);
 void func_801059D0_option(void);
 void func_80108A68_option(void);
+void func_80108AAC_option(void);
+void func_80108AF0_option(void);
 void func_8011053C_option(s32, s32, s32);
 s32 func_80113218_option(s32);
 
@@ -109,13 +111,25 @@ void func_80105C5C_option(void) {
     func_80108A68_option();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80105C80_option);
+void func_80105C80_option(void) {
+    func_801059D0_option();
+    func_80108A68_option();
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80105CA4_option);
+void func_80105CA4_option(void) {
+    func_801059D0_option();
+    func_80108AAC_option();
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80105CC8_option);
+void func_80105CC8_option(void) {
+    func_801059D0_option();
+    func_80108AAC_option();
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80105CEC_option);
+void func_80105CEC_option(void) {
+    func_801059D0_option();
+    func_80108AF0_option();
+}
 
 void func_80105D10_option(void) {
     D_801146F0_option.prcObj = NULL;

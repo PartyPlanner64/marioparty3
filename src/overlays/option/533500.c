@@ -66,6 +66,10 @@ typedef struct {
     /* 0x04 */ s32 seNo;
 } OptSeObj; // sizeof 0x8
 
+extern Vec D_801146D4_option;
+extern Vec D_801146E0_option;
+extern Vec D_80114674_option;
+extern Vec D_80114680_option;
 extern Vec D_80113B90_option;
 extern Vec D_80113B9C_option;
 extern Vec D_80113BA8_option;
@@ -103,6 +107,11 @@ void func_80013350_main(s16);
 void func_80012E54_main(s16);
 void func_80033910_main(HmfData *);
 void func_80109730_option(Vec *, Vec *, Vec *, f32, Vec *, f32 *, f32 *);
+void func_80112EB8_option(s32, s32, f32, f32, f32);
+void func_80112FF4_option(s32, s32, f32, f32, f32);
+void func_80112FD8_option(s32, s32, s32);
+void func_80106508_option(Vec *, Vec *, Vec *);
+void func_80113088_option(void);
 void func_801059D0_option(void);
 void func_80105FF8_option(Vec *, Vec *, Vec *);
 void func_80113274_option(s32, f32 *, f32 *, f32 *);
@@ -236,7 +245,24 @@ void func_80105EB8_option(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80105F08_option);
+void func_80105F08_option(f32 fov) {
+    Vec pos, at, up;
+
+    D_801146F0_option.fov = fov;
+    if (D_801146F0_option.camId != -1) {
+        func_80105FF8_option(&pos, &at, &up);
+        HuVecCopy3F(&D_801146F0_option.pos, &pos);
+        HuVecCopy3F(&D_801146F0_option.at, &at);
+        HuVecCopy3F(&D_801146F0_option.up, &up);
+    }
+    if (D_801146F0_option.prcObj != NULL) {
+        func_80105E40_option();
+    }
+    Hu3DCamSetPositionOrientation(0, &D_801146F0_option.pos, &D_801146F0_option.at, &D_801146F0_option.up);
+    Hu3DCamUpdateMtx(0);
+    Hu3DCamSetPerspective(0, D_801146F0_option.fov, D_801146F0_option.nearPlane, D_801146F0_option.farPlane);
+    D_801146F0_option.prcObj = omAddPrcObj(func_80105EB8_option, 0x5000, 0x2000, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80105FF8_option);
 
@@ -1390,7 +1416,43 @@ void func_80112060_option(void) {
     func_80105D10_option();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80112084_option);
+void func_80112084_option(void) {
+    Vec pos, at, cameraPos, cameraAt, up;
+    s16 model;
+
+    func_80112FF4_option(0, 0xE0004, 0.0f, 0.0f, 0.0f);
+    func_80112EB8_option(1, 0xE0007, 0.0f, 0.0f, 0.0f);
+    func_80112EB8_option(3, 0xE0009, 0.0f, 0.0f, 0.0f);
+    func_80112EB8_option(4, 0xE000A, 0.0f, 0.0f, 0.0f);
+    func_80110C9C_option(4, 2);
+    func_80112FD8_option(6, 0xE0005, 1);
+    func_80112FD8_option(7, 0xE0006, 1);
+    func_80112EB8_option(9, 0xA0000, -385.0f, -6.25f, -500.0f);
+    func_80110AD0_option(9, 0.75f, 0.75f, 0.75f);
+    func_80110C9C_option(9, 2);
+    func_80112EB8_option(10, 0xA0000, 385.0f, -6.25f, -500.0f);
+    func_80110AD0_option(10, 0.75f, 0.75f, 0.75f);
+    func_80110C9C_option(10, 2);
+    func_80017790_main(func_80113218_option(9), 0, 10, 0xA002A);
+    model = func_80113218_option(10);
+    func_80017790_main(model, 0, 10, 0xA002A);
+    func_80017A84_main(model, 0, 10, 1, 0);
+    func_80112FD8_option(11, 0xA001D, 1);
+    func_80112FD8_option(12, 0xA001E, 1);
+    func_80112FD8_option(13, 0xA001D, 1);
+    func_80112FD8_option(14, 0xA001E, 1);
+    func_80112FD8_option(15, 0xA0001, 1);
+    func_80112EB8_option(20, 9, -385.0f, 0.049999997f, -500.0f);
+    func_80112EB8_option(21, 9, 385.0f, 0.049999997f, -500.0f);
+    func_80105DA0_option((s16)func_80113218_option(0), 68.0f);
+    func_80105D5C_option(68.0f, 45.0f, 3200.0f);
+    func_80105F08_option(68.0f);
+    pos = D_80114674_option;
+    at = D_80114680_option;
+    func_80105FF8_option(&cameraPos, &cameraAt, &up);
+    func_80106508_option(&pos, &at, &up);
+    func_80113088_option();
+}
 
 void func_8011239C_option(void) {
     func_801130CC_option();
@@ -1431,7 +1493,42 @@ void func_80112A44_option(void) {
     func_80111AF4_option();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80112B08_option);
+void func_80112B08_option(void) {
+    Vec pos, at, cameraPos, cameraAt, up;
+    s16 model;
+
+    func_80112EB8_option(0, 0xE0025, 0.0f, 0.0f, 0.0f);
+    func_80112EB8_option(1, 0xE0026, 0.0f, 0.0f, 0.0f);
+    func_80112EB8_option(2, 0xE0027, 0.0f, 0.0f, 0.0f);
+    func_80112EB8_option(3, 0xE0028, 0.0f, 0.0f, 0.0f);
+    func_80112EB8_option(4, 0xE0029, 0.0f, 0.0f, 0.0f);
+    func_80112EB8_option(5, 0xE002A, 0.0f, 0.0f, 0.0f);
+    func_80112FF4_option(6, 0xE002B, 0.0f, 0.0f, 0.0f);
+    func_80110C1C_option(6);
+    func_80112FF4_option(7, 0xE002C, 0.0f, 0.0f, 0.0f);
+    func_80110C1C_option(7);
+    func_80112EB8_option(8, 0xA008E, -74.973503f, 56.406998f, -735.0f);
+    func_80110C9C_option(8, 2);
+    func_80017790_main(func_80113218_option(8), 0, 9, 0xA00A3);
+    func_80112EB8_option(9, 0xA00A2, 64.973503f, 60.8265f, -720.0f);
+    func_80110C9C_option(9, 2);
+    model = func_80113218_option(9);
+    func_80017790_main(model, 0, 8, 0xA00A3);
+    func_80017A84_main(model, 0, 8, 1, 0);
+    func_80112FD8_option(10, 0xA009E, 1);
+    func_80110F58_option(8, 10, 2);
+    func_80112FD8_option(11, 0xA009F, 1);
+    func_80110F58_option(9, 11, 2);
+    func_80112FD8_option(12, 0xA008F, 1);
+    func_80105DA0_option((s16)func_80113218_option(6), 55.0f);
+    func_80105D5C_option(50.0f, 12.0f, 4800.0f);
+    func_80105F08_option(50.0f);
+    pos = D_801146D4_option;
+    at = D_801146E0_option;
+    func_80105FF8_option(&cameraPos, &cameraAt, &up);
+    func_80106508_option(&pos, &at, &up);
+    func_80113088_option();
+}
 
 void func_80112E14_option(void) {
     func_801130CC_option();

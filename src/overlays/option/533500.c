@@ -123,6 +123,7 @@ extern s16 D_80115A70_option;
 extern u16 D_80115A72_option;
 extern OptWinEntry D_80115A78_option[0x20];
 extern u8 D_800D09A8_main;
+extern s32 D_801139D0_option;
 
 void func_80030030_main(f32);
 s32 func_8010BACC_option(s32, s32);
@@ -2478,7 +2479,40 @@ void func_801130CC_option(void) {
     func_80110440_option(0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_801130E8_option);
+s32 func_801130E8_option(s32 pad) {
+    s32 x, y;
+    s32 absX, absY;
+
+    x = D_800CBB6E_main[pad];
+    y = D_800D20A1_main[pad];
+
+    if (D_801139D0_option != 0) {
+        if ((x == 0) & (y == 0)) {
+            D_801139D0_option = 0;
+        }
+        return 0;
+    }
+    if ((x != 0) | (y != 0)) {
+        absX = __builtin_abs(x);
+        absY = __builtin_abs(y);
+        if (absY < absX) {
+            if (absY * 2 < absX) {
+                D_801139D0_option = x < 0 ? 0x200 : 0x100;
+            } else if (y > 0) {
+                D_801139D0_option = x < 0 ? 0xA00 : 0x900;
+            } else {
+                D_801139D0_option = x < 0 ? 0x600 : 0x500;
+            }
+        } else if (absX * 2 < absY) {
+            D_801139D0_option = y < 0 ? 0x400 : 0x800;
+        } else if (y > 0) {
+            D_801139D0_option = x < 0 ? 0xA00 : 0x900;
+        } else {
+            D_801139D0_option = x < 0 ? 0x600 : 0x500;
+        }
+    }
+    return D_801139D0_option;
+}
 
 u16 func_80113204_option(s32 arg0) {
     return (u16)D_800D0590_main[arg0];

@@ -63,8 +63,7 @@ typedef struct {
 // Object that keeps an attached 3d model sound playing for a fixed duration.
 typedef struct {
     /* 0x00 */ omObjData *obj;
-    /* 0x04 */ s16 playSeNo;
-    /* 0x06 */ s16 stopSeNo;
+    /* 0x04 */ s32 seNo;
 } OptSeObj; // sizeof 0x8
 
 extern s32 D_80114778_option[4];
@@ -81,6 +80,7 @@ extern u16 D_80115A72_option;
 extern OptWinEntry D_80115A78_option[0x20];
 extern u8 D_800D09A8_main;
 
+s32 func_800078F8_main(s32);
 void func_8000BBFC_main(u16, s16);
 void func_8000BD94_main(u16, s32, s32);
 void func_8000BDDC_main(u16, s32);
@@ -91,6 +91,7 @@ void func_80013350_main(s16);
 void func_80012E54_main(s16);
 void func_80033910_main(HmfData *);
 void func_801059D0_option(void);
+void func_80105E40_option(void);
 void func_80108B34_option(void);
 void func_80108B58_option(void);
 void func_8010A66C_option(void);
@@ -172,7 +173,17 @@ void func_80105D74_option(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80105DA0_option);
+void func_80105DA0_option(s32 camId, f32 fov) {
+    if (D_801146F0_option.prcObj != NULL) {
+        func_80105E40_option();
+    }
+    func_80013320_main(camId, 0);
+    D_801146F0_option.camId = camId;
+    D_801146F0_option.fov = fov;
+    Hu3DCamSetPerspective(0, fov, D_801146F0_option.nearPlane, D_801146F0_option.farPlane);
+    func_80012E54_main(0);
+    D_801146F0_option.prcObj = omAddPrcObj(func_80105D74_option, 0x5000, 0x2000, 0);
+}
 
 void func_80105E40_option(void) {
     if (D_801146F0_option.prcObj != NULL) {
@@ -509,15 +520,33 @@ void func_8010FE10_option(void) {
     if (D_801147E0_option.obj != NULL) {
         modelId = func_80113218_option(2);
         func_80033910_main(HmfModelData[modelId].hmf);
-        HuAudFXStop(D_801147E0_option.stopSeNo);
+        HuAudFXStop((s16)D_801147E0_option.seNo);
         omDelObj(D_801147E0_option.obj);
         D_801147E0_option.obj = NULL;
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010FE84_option);
+void func_8010FE84_option(omObjData *obj) {
+    s16 modelId;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010FF0C_option);
+    if (func_800078F8_main(D_801147E0_option.seNo) == 0) {
+        modelId = func_80113218_option(2);
+        func_80033910_main(HmfModelData[modelId].hmf);
+        HuAudFXStop((s16)D_801147E0_option.seNo);
+        omDelObj(obj);
+        D_801147E0_option.obj = NULL;
+    }
+}
+
+omObjData *func_8010FF0C_option(s32 seNo) {
+    if (D_801147E0_option.obj != NULL) {
+        omDelObj(D_801147E0_option.obj);
+    }
+    D_801147E0_option.obj = omAddObj(6, 0, 0, -1, func_8010FE84_option);
+    D_801147E0_option.seNo = seNo;
+    func_800078F8_main(seNo);
+    return D_801147E0_option.obj;
+}
 
 void func_8010FF88_option(omObjData *obj) {
     s32 *counter;

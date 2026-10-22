@@ -131,6 +131,8 @@ void func_80113274_option(s32, f32 *, f32 *, f32 *);
 void func_80113290_option(s32, f32, f32, f32);
 omObjData *func_80106F88_option(Vec *, Vec *, s32);
 void func_8010744C_option(omObjData *);
+void func_80107B80_option(Vec *, Vec *, f32, Vec *);
+void func_80107D64_option(Vec *, Vec *, f32, Vec *);
 void func_80106C7C_option(omObjData *);
 void func_80107058_option(omObjData *);
 void func_801077BC_option(omObjData *);
@@ -338,7 +340,48 @@ omObjData *func_80106BAC_option(Vec *pos, Vec *at, s32 duration) {
     return obj;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80106C7C_option);
+void func_80106C7C_option(omObjData *obj) {
+    Vec pos, at, up, startPos, endPos, direction, startAt, endAt, startDir, endDir;
+    f32 t, clamped, startLength, length;
+
+    t = (f32)D_801146F0_option.frame / D_801146F0_option.duration;
+    if (t < 0.0f) {
+        t = 0.0f;
+    }
+    if (t > 1.0f) {
+        clamped = 1.0f;
+    } else {
+        clamped = t;
+    }
+    HuVecCopy3F(&startPos, &D_801146F0_option.startPos);
+    HuVecCopy3F(&endPos, &D_801146F0_option.endPos);
+    HuVecCopyXYZ(&pos, (endPos.x - startPos.x) * clamped + startPos.x,
+                 (endPos.y - startPos.y) * clamped + startPos.y,
+                 (endPos.z - startPos.z) * clamped + startPos.z);
+    HuVecCopy3F(&startAt, &D_801146F0_option.startAt);
+    HuVecCopy3F(&endAt, &D_801146F0_option.endAt);
+    HuVecCopyXYZ(&at, (endAt.x - startAt.x) * clamped + startAt.x,
+                 (endAt.y - startAt.y) * clamped + startAt.y,
+                 (endAt.z - startAt.z) * clamped + startAt.z);
+    HuVecCopyXYZ(&startDir, startAt.x - startPos.x, 0.0f, startAt.z - startPos.z);
+    HuVecCopyXYZ(&endDir, endAt.x - endPos.x, 0.0f, endAt.z - endPos.z);
+    startLength = HuVecGetLength3F(&startDir);
+    t = HuVecGetLength3F(&endDir);
+    HuVecCopyXYZ(&direction, at.x - pos.x, 0.0f, at.z - pos.z);
+    length = HuVecGetLength3F(&direction);
+    t = ((t - startLength) * clamped + startLength) / length;
+    HuVecCopyXYZ(&at, t * direction.x + pos.x,
+                 (endAt.y - startAt.y) * clamped + startAt.y,
+                 t * direction.z + pos.z);
+    if (D_801146F0_option.frame > D_801146F0_option.duration) {
+        omDelObj(obj);
+        func_80106508_option(&D_801146F0_option.endPos, &D_801146F0_option.endAt, &up);
+        D_801146F0_option.obj = NULL;
+    } else {
+        D_801146F0_option.frame++;
+        func_80106508_option(&pos, &at, &up);
+    }
+}
 
 omObjData *func_80106F88_option(Vec *pos, Vec *at, s32 duration) {
     omObjData *obj;
@@ -357,7 +400,49 @@ omObjData *func_80106F88_option(Vec *pos, Vec *at, s32 duration) {
     return obj;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80107058_option);
+void func_80107058_option(omObjData *obj) {
+    Vec pos, at, up, startPos, endPos, direction, startAt, endAt, startDir, endDir;
+    f32 t, clamped, startLength, length;
+
+    t = (f32)D_801146F0_option.frame / D_801146F0_option.duration;
+    if (t < 0.0f) {
+        t = 0.0f;
+    }
+    if (t > 1.0f) {
+        clamped = 1.0f;
+    } else {
+        clamped = t;
+    }
+    clamped = sindf(clamped * 90.0f);
+    HuVecCopy3F(&startPos, &D_801146F0_option.startPos);
+    HuVecCopy3F(&endPos, &D_801146F0_option.endPos);
+    HuVecCopyXYZ(&pos, (endPos.x - startPos.x) * clamped + startPos.x,
+                 (endPos.y - startPos.y) * clamped + startPos.y,
+                 (endPos.z - startPos.z) * clamped + startPos.z);
+    HuVecCopy3F(&startAt, &D_801146F0_option.startAt);
+    HuVecCopy3F(&endAt, &D_801146F0_option.endAt);
+    HuVecCopyXYZ(&at, (endAt.x - startAt.x) * clamped + startAt.x,
+                 (endAt.y - startAt.y) * clamped + startAt.y,
+                 (endAt.z - startAt.z) * clamped + startAt.z);
+    HuVecCopyXYZ(&startDir, startAt.x - startPos.x, 0.0f, startAt.z - startPos.z);
+    HuVecCopyXYZ(&endDir, endAt.x - endPos.x, 0.0f, endAt.z - endPos.z);
+    startLength = HuVecGetLength3F(&startDir);
+    t = HuVecGetLength3F(&endDir);
+    HuVecCopyXYZ(&direction, at.x - pos.x, 0.0f, at.z - pos.z);
+    length = HuVecGetLength3F(&direction);
+    t = ((t - startLength) * clamped + startLength) / length;
+    HuVecCopyXYZ(&at, t * direction.x + pos.x,
+                 (endAt.y - startAt.y) * clamped + startAt.y,
+                 t * direction.z + pos.z);
+    if (D_801146F0_option.frame > D_801146F0_option.duration) {
+        omDelObj(obj);
+        func_80106508_option(&D_801146F0_option.endPos, &D_801146F0_option.endAt, &up);
+        D_801146F0_option.obj = NULL;
+    } else {
+        D_801146F0_option.frame++;
+        func_80106508_option(&pos, &at, &up);
+    }
+}
 
 omObjData *func_8010737C_option(Vec *pos, Vec *at, s32 duration) {
     omObjData *obj;
@@ -376,7 +461,51 @@ omObjData *func_8010737C_option(Vec *pos, Vec *at, s32 duration) {
     return obj;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010744C_option);
+void func_8010744C_option(omObjData *obj) {
+    Vec pos, at, up, startPos, endPos, direction, startAt, endAt, startDir, endDir;
+    f32 t, clamped, startLength, angleT;
+
+    t = (f32)D_801146F0_option.frame / D_801146F0_option.duration;
+    if (t < 0.0f) {
+        t = 0.0f;
+    }
+    if (t > 1.0f) {
+        clamped = 1.0f;
+    } else {
+        clamped = t;
+    }
+    HuVecCopy3F(&startPos, &D_801146F0_option.startPos);
+    HuVecCopy3F(&endPos, &D_801146F0_option.endPos);
+    HuVecCopyXYZ(&pos, (endPos.x - startPos.x) * clamped + startPos.x,
+                 (endPos.y - startPos.y) * clamped + startPos.y,
+                 (endPos.z - startPos.z) * clamped + startPos.z);
+    HuVecCopy3F(&startAt, &D_801146F0_option.startAt);
+    HuVecCopy3F(&endAt, &D_801146F0_option.endAt);
+    HuVecCopyXYZ(&at, (endAt.x - startAt.x) * clamped + startAt.x,
+                 (endAt.y - startAt.y) * clamped + startAt.y,
+                 (endAt.z - startAt.z) * clamped + startAt.z);
+    HuVecCopyXYZ(&startDir, startAt.x - startPos.x, 0.0f, startAt.z - startPos.z);
+    HuVecCopyXYZ(&endDir, endAt.x - endPos.x, 0.0f, endAt.z - endPos.z);
+    angleT = sindf(clamped * 90.0f);
+    if (D_80114764_option != 0) {
+        func_80107B80_option(&startDir, &endDir, angleT, &direction);
+    } else {
+        func_80107D64_option(&startDir, &endDir, angleT, &direction);
+    }
+    startLength = HuVecGetLength3F(&startDir);
+    t = (HuVecGetLength3F(&endDir) - startLength) * clamped + startLength;
+    HuVecCopyXYZ(&at, t * direction.x + pos.x,
+                 (endAt.y - startAt.y) * clamped + startAt.y,
+                 t * direction.z + pos.z);
+    if (D_801146F0_option.frame > D_801146F0_option.duration) {
+        omDelObj(obj);
+        func_80106508_option(&D_801146F0_option.endPos, &D_801146F0_option.endAt, &up);
+        D_801146F0_option.obj = NULL;
+    } else {
+        D_801146F0_option.frame++;
+        func_80106508_option(&pos, &at, &up);
+    }
+}
 
 omObjData *func_80107758_option(Vec *pos, Vec *at, s32 duration) {
     omObjData *obj;
@@ -396,7 +525,51 @@ omObjData *func_8010778C_option(Vec *pos, Vec *at, s32 duration) {
     return obj;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_801077BC_option);
+void func_801077BC_option(omObjData *obj) {
+    Vec pos, at, up, startPos, endPos, direction, startAt, endAt, startDir, endDir;
+    f32 t, clamped, startLength, angleT;
+
+    t = (f32)D_801146F0_option.frame / D_801146F0_option.duration;
+    if (t < 0.0f) {
+        t = 0.0f;
+    }
+    if (t > 1.0f) {
+        clamped = 1.0f;
+    } else {
+        clamped = t;
+    }
+    HuVecCopy3F(&startPos, &D_801146F0_option.startPos);
+    HuVecCopy3F(&endPos, &D_801146F0_option.endPos);
+    HuVecCopyXYZ(&pos, (endPos.x - startPos.x) * clamped + startPos.x,
+                 (endPos.y - startPos.y) * clamped + startPos.y,
+                 (endPos.z - startPos.z) * clamped + startPos.z);
+    HuVecCopy3F(&startAt, &D_801146F0_option.startAt);
+    HuVecCopy3F(&endAt, &D_801146F0_option.endAt);
+    HuVecCopyXYZ(&at, (endAt.x - startAt.x) * clamped + startAt.x,
+                 (endAt.y - startAt.y) * clamped + startAt.y,
+                 (endAt.z - startAt.z) * clamped + startAt.z);
+    HuVecCopyXYZ(&startDir, startAt.x - startPos.x, 0.0f, startAt.z - startPos.z);
+    HuVecCopyXYZ(&endDir, endAt.x - endPos.x, 0.0f, endAt.z - endPos.z);
+    angleT = sindf(clamped * 90.0f);
+    if (D_80114764_option != 0) {
+        func_80107B80_option(&startDir, &endDir, angleT, &direction);
+    } else {
+        func_80107D64_option(&startDir, &endDir, angleT, &direction);
+    }
+    startLength = HuVecGetLength3F(&startDir);
+    t = (HuVecGetLength3F(&endDir) - startLength) * angleT + startLength;
+    HuVecCopyXYZ(&at, t * direction.x + pos.x,
+                 (endAt.y - startAt.y) * clamped + startAt.y,
+                 t * direction.z + pos.z);
+    if (D_801146F0_option.frame > D_801146F0_option.duration) {
+        omDelObj(obj);
+        func_80106508_option(&D_801146F0_option.endPos, &D_801146F0_option.endAt, &up);
+        D_801146F0_option.obj = NULL;
+    } else {
+        D_801146F0_option.frame++;
+        func_80106508_option(&pos, &at, &up);
+    }
+}
 
 omObjData *func_80107AD4_option(Vec *pos, Vec *at, s32 duration) {
     omObjData *obj;

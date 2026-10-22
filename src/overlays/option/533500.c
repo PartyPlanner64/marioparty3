@@ -73,6 +73,7 @@ typedef struct {
 } OptSeObj; // sizeof 0x8
 
 extern Vec D_80113A98_option;
+extern Vec D_80113580_option[6][2];
 extern Vec D_801135E0_option[2];
 extern Vec D_801135F8_option[2];
 extern Vec D_801137FC_option;
@@ -1298,7 +1299,160 @@ void func_8010A8DC_option(s32 arg0, s32 *arg1, s32 *arg2) {
     *arg2 = val2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010A940_option);
+s32 func_8010A940_option(s32 selection, s32 buttons) {
+    Vec pos, at;
+    Vec(*camera)[2];
+    s32 x, y, endX, endY;
+    switch (selection) {
+        case 0:
+            if (buttons & 0x200) {
+                selection = 2;
+                camera = D_80113580_option;
+                HuVecCopy3F(&pos, &camera[2][0]);
+                HuVecCopy3F(&at, &camera[2][1]);
+                func_80107758_option(&pos, &at, 8);
+                func_80113258_option(6);
+                func_80113258_option(7);
+                func_80113368_option(0, &x, &y);
+                func_8010A8DC_option(2, &endX, &endY);
+                func_80109B7C_option(0, x, y, endX, endY, 8);
+                func_80113408_option(0, 0x4E0A);
+            } else if (buttons & 0x100) {
+                selection = 3;
+                camera = D_80113580_option;
+                HuVecCopy3F(&pos, &camera[3][0]);
+                HuVecCopy3F(&at, &camera[3][1]);
+                func_80107758_option(&pos, &at, 8);
+                func_80113258_option(6);
+                func_80113258_option(7);
+                func_80113368_option(0, &x, &y);
+                func_8010A8DC_option(3, &endX, &endY);
+                func_80109B7C_option(0, x, y, endX, endY, 8);
+                func_80113408_option(0, 0x4E09);
+            }
+            break;
+        case 2:
+            if (buttons & 0x200) {
+                selection = 4;
+                camera = D_80113580_option;
+                HuVecCopy3F(&pos, &camera[4][0]);
+                HuVecCopy3F(&at, &camera[4][1]);
+                func_80107758_option(&pos, &at, 20);
+                func_801133A0_option(0);
+                func_80113440_option(0);
+                func_80113368_option(0, &x, &y);
+                func_8010A8DC_option(4, &endX, &endY);
+                func_80109B7C_option(0, x, y, endX, endY, 20);
+                HuPrcSleep(12);
+                func_80113384_option(0);
+                func_80113424_option(0);
+                func_80113408_option(0, 0x4E0B);
+            } else if (buttons & 0x100) {
+                selection = 0;
+                camera = D_80113580_option;
+                HuVecCopy3F(&pos, &camera[0][0]);
+                HuVecCopy3F(&at, &camera[0][1]);
+                func_80107758_option(&pos, &at, 8);
+                func_80113368_option(0, &x, &y);
+                func_8010A8DC_option(0, &endX, &endY);
+                func_80109B7C_option(0, x, y, endX, endY, 8);
+                func_80113408_option(0, 0x4E06);
+                func_8011323C_option(6);
+                func_8011323C_option(7);
+            }
+            break;
+        case 3:
+            if (buttons & 0x200) {
+                selection = 0;
+                camera = D_80113580_option;
+                HuVecCopy3F(&pos, &camera[0][0]);
+                HuVecCopy3F(&at, &camera[0][1]);
+                func_80107758_option(&pos, &at, 8);
+                func_80113368_option(0, &x, &y);
+                func_8010A8DC_option(0, &endX, &endY);
+                func_80109B7C_option(0, x, y, endX, endY, 8);
+                func_80113408_option(0, 0x4E06);
+                func_8011323C_option(6);
+                func_8011323C_option(7);
+            } else if (buttons & 0x100) {
+                selection = 5;
+                camera = D_80113580_option;
+                HuVecCopy3F(&pos, &camera[5][0]);
+                HuVecCopy3F(&at, &camera[5][1]);
+                func_80107758_option(&pos, &at, 20);
+                func_801133A0_option(0);
+                func_80113440_option(0);
+                func_80113368_option(0, &x, &y);
+                func_8010A8DC_option(5, &endX, &endY);
+                func_80109B7C_option(0, x, y, endX, endY, 20);
+                HuPrcSleep(12);
+                func_80113384_option(0);
+                func_80113424_option(0);
+                func_80113408_option(0, 0x4E0B);
+            }
+            break;
+        case 4:
+            if (buttons & 0x200) {
+                selection = 5;
+                camera = D_80113580_option;
+                HuVecCopy3F(&pos, &camera[5][0]);
+                HuVecCopy3F(&at, &camera[5][1]);
+                func_80107758_option(&pos, &at, 8);
+                func_80113368_option(0, &x, &y);
+                func_8010A8DC_option(5, &endX, &endY);
+                func_80109B7C_option(0, x, y, endX, endY, 8);
+                func_80113408_option(0, 0x4E0B);
+            } else if (buttons & 0x100) {
+                selection = 2;
+                camera = D_80113580_option;
+                HuVecCopy3F(&pos, &camera[2][0]);
+                HuVecCopy3F(&at, &camera[2][1]);
+                func_80107758_option(&pos, &at, 20);
+                func_801133A0_option(0);
+                func_80113440_option(0);
+                func_80113368_option(0, &x, &y);
+                func_8010A8DC_option(2, &endX, &endY);
+                func_80109B7C_option(0, x, y, endX, endY, 20);
+                HuPrcSleep(12);
+                func_80113384_option(0);
+                func_80113424_option(0);
+                func_80113408_option(0, 0x4E0A);
+            }
+            break;
+        case 5:
+            if (buttons & 0x200) {
+                selection = 3;
+                camera = D_80113580_option;
+                HuVecCopy3F(&pos, &camera[3][0]);
+                HuVecCopy3F(&at, &camera[3][1]);
+                func_80107758_option(&pos, &at, 20);
+                func_801133A0_option(0);
+                func_80113440_option(0);
+                func_80113368_option(0, &x, &y);
+                func_8010A8DC_option(3, &endX, &endY);
+                func_80109B7C_option(0, x, y, endX, endY, 20);
+                HuPrcSleep(12);
+                func_80113384_option(0);
+                func_80113424_option(0);
+                func_80113408_option(0, 0x4E09);
+            } else if (buttons & 0x100) {
+                selection = 4;
+                camera = D_80113580_option;
+                HuVecCopy3F(&pos, &camera[4][0]);
+                HuVecCopy3F(&at, &camera[4][1]);
+                func_80107758_option(&pos, &at, 8);
+                func_80113368_option(0, &x, &y);
+                func_8010A8DC_option(4, &endX, &endY);
+                func_80109B7C_option(0, x, y, endX, endY, 8);
+                func_80113408_option(0, 0x4E0B);
+            }
+            break;
+        case 1:
+        default:
+            break;
+    }
+    return selection;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_80113CB8_option);
 

@@ -68,6 +68,7 @@ typedef struct {
 
 extern s32 D_80114778_option[4];
 extern OptCam D_801146F0_option;
+extern s32 D_80114764_option;
 extern Process *D_80114770_option;
 extern OptCursor D_80114788_option[2];
 extern OptSeObj D_801147E0_option;
@@ -91,6 +92,9 @@ void func_80013350_main(s16);
 void func_80012E54_main(s16);
 void func_80033910_main(HmfData *);
 void func_801059D0_option(void);
+omObjData *func_80106F88_option(Vec *, Vec *, s32);
+void func_8010744C_option(omObjData *);
+void func_801077BC_option(omObjData *);
 void func_80105E40_option(void);
 void func_80108B34_option(void);
 void func_80108B58_option(void);
@@ -237,17 +241,47 @@ INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010737C_option);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010744C_option);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80107758_option);
+omObjData *func_80107758_option(Vec *pos, Vec *at, s32 duration) {
+    omObjData *obj;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010778C_option);
+    obj = func_80106F88_option(pos, at, duration);
+    obj->func = func_8010744C_option;
+    D_80114764_option = 1;
+    return obj;
+}
+
+omObjData *func_8010778C_option(Vec *pos, Vec *at, s32 duration) {
+    omObjData *obj;
+
+    obj = func_80106F88_option(pos, at, duration);
+    obj->func = func_8010744C_option;
+    D_80114764_option = 0;
+    return obj;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_801077BC_option);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80107AD4_option);
+omObjData *func_80107AD4_option(Vec *pos, Vec *at, s32 duration) {
+    omObjData *obj;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80107B08_option);
+    obj = func_80106F88_option(pos, at, duration);
+    obj->func = func_801077BC_option;
+    D_80114764_option = 1;
+    return obj;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80107B38_option);
+omObjData *func_80107B08_option(Vec *pos, Vec *at, s32 duration) {
+    omObjData *obj;
+
+    obj = func_80106F88_option(pos, at, duration);
+    obj->func = func_801077BC_option;
+    D_80114764_option = 0;
+    return obj;
+}
+
+f32 func_80107B38_option(f32 x1, f32 y1, f32 x2, f32 y2) {
+    return -(atan2df(y2 - y1, x2 - x1) - 90.0f);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80107B80_option);
 

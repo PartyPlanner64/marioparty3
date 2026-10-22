@@ -87,12 +87,17 @@ void func_8000BC88_main(u16, u16);
 void func_8000BE5C_main(u16, f32, f32);
 void func_80013350_main(s16);
 void func_80033910_main(HmfData *);
+void func_801059D0_option(void);
+void func_80108A68_option(void);
 void func_8011053C_option(s32, s32, s32);
 s32 func_80113218_option(s32);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_801059D0_option);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80105C14_option);
+void func_80105C14_option(void) {
+    func_801059D0_option();
+    func_80108A68_option();
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80105C38_option);
 

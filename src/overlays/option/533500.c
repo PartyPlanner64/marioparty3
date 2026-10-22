@@ -104,7 +104,10 @@ void func_80105C38_option(void) {
     func_80108A68_option();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80105C5C_option);
+void func_80105C5C_option(void) {
+    func_801059D0_option();
+    func_80108A68_option();
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80105C80_option);
 

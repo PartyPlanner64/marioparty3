@@ -73,6 +73,12 @@ typedef struct {
 } OptSeObj; // sizeof 0x8
 
 extern Vec D_80113A98_option;
+extern Vec D_801135E0_option[2];
+extern Vec D_801135F8_option[2];
+extern Vec D_801137FC_option;
+extern Vec D_80113808_option;
+extern Vec D_80113814_option;
+extern Vec D_80113820_option;
 extern Vec D_801139E0_option;
 extern Vec D_801139EC_option;
 extern Vec D_801139F8_option;
@@ -195,7 +201,14 @@ void func_80113384_option(s32);
 void func_801133A0_option(s32);
 void func_80113408_option(s32, u32);
 void func_80113440_option(s32);
+s32 func_8010AF54_option(s32, s32);
+s32 func_8010A940_option(s32, s32);
+void func_8010B654_option(s32, s32);
 s32 func_8011345C_option(s32);
+void func_801123D8_option(void);
+void func_80113300_option(s32);
+void func_80112A44_option(void);
+void func_8010FFDC_option(void);
 
 void func_801059D0_option(void) {
     omInitObjMan(0x40, 0x20);
@@ -1072,9 +1085,152 @@ void func_8010A3E8_option(s32 selection, s32 arg1) {
     func_80112028_option(0, x, y);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010A498_option);
+s32 func_8010A498_option(void) {
+    Vec pos, at;
+    s32 selection = 0;
+    s32 buttons;
+    s32 result;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010A66C_option);
+    func_80105F08_option(41.539f);
+    func_801133BC_option(0, 0x4E05);
+    func_80113490_option(0);
+    func_80113408_option(0, 0x4E06);
+    func_80113384_option(0);
+    func_8010B654_option(0, 0);
+    while (1) {
+        buttons = D_800D5558_main[0];
+        buttons |= func_801130E8_option(0);
+        if (buttons & 0x8000) {
+            result = func_8010AF54_option(selection, buttons);
+            if (result != -1) {
+                selection = result;
+                break;
+            }
+        } else if (buttons & 0xF00) {
+            selection = func_8010A940_option(selection, buttons);
+        } else if (buttons & 0x4000) {
+            func_801133A0_option(0);
+            func_80113440_option(0);
+            switch (selection) {
+                case 0:
+                case 1:
+                case 2:
+                    selection = 4;
+                    HuVecCopy3F(&pos, &D_801135E0_option[0]);
+                    HuVecCopy3F(&at, &D_801135E0_option[1]);
+                    func_80107758_option(&pos, &at, 20);
+                    HuPrcSleep(20);
+                    break;
+                case 3:
+                    selection = 5;
+                    HuVecCopy3F(&pos, &D_801135F8_option[0]);
+                    HuVecCopy3F(&at, &D_801135F8_option[1]);
+                    func_80107758_option(&pos, &at, 20);
+                    HuPrcSleep(20);
+                    break;
+                case 4:
+                case 5:
+                default:
+                    break;
+            }
+            func_80113424_option(0);
+            func_80113408_option(0, 0x4E0B);
+            func_80113384_option(0);
+        }
+        func_8010B654_option(selection, buttons);
+        HuPrcVSleep();
+    }
+    func_801133EC_option(0);
+    return selection;
+}
+
+void func_8010A66C_option(void) {
+    Vec pos, at;
+    s32 selection;
+    s32 result;
+
+    func_8001F38C_main(0, 64, 64);
+    func_801123D8_option();
+    HuAudSeqPlay(0x4A);
+    WipeCreateIn(0xB, 16);
+    HuPrcSleep(16);
+    selection = func_8010A498_option();
+    func_801133A0_option(0);
+    switch (selection) {
+        case 4:
+            HuVecCopy3F(&pos, &D_801137FC_option);
+            HuVecCopy3F(&at, &D_80113808_option);
+            pos.z -= 200.0f;
+            func_80106F88_option(&pos, &at, 20);
+            HuPrcSleep(20);
+            HuAudFXPlay(0x2EB);
+            func_801132AC_option(1, 0);
+            func_801132E4_option(1, 0);
+            func_80113300_option(1);
+            pos.z += 200.0f;
+            func_80106F88_option(&pos, &at, 20);
+            goto fadeOut;
+        case 5:
+            HuVecCopy3F(&pos, &D_80113814_option);
+            HuVecCopy3F(&at, &D_80113820_option);
+            pos.z -= 200.0f;
+            func_80106F88_option(&pos, &at, 20);
+            HuPrcSleep(20);
+            HuAudFXPlay(0x2EB);
+            func_801132AC_option(1, 0);
+            func_8011331C_option(1, 12, 0);
+            func_801132E4_option(1, 0);
+            func_80113300_option(1);
+            pos.z += 200.0f;
+            func_80106F88_option(&pos, &at, 20);
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        fadeOut:
+            result = selection;
+            func_8010FFDC_option();
+            WipeColorSet(255, 255, 255);
+            WipeCreateOut(0xB, 20);
+            HuAudSeqFadeOut(20);
+            HuPrcSleep(20);
+            break;
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        default:
+            selection = 9;
+            break;
+    }
+    result = selection;
+    func_80112A44_option();
+    func_8005F524_main();
+    omOvlKill();
+    switch (result) {
+        case 4:
+            omOvlGotoEx(0x7B, 1, 0x91);
+            break;
+        case 5:
+            omOvlGotoEx(0x7B, 2, 0x91);
+            break;
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        default:
+            omOvlReturnEx(1);
+            break;
+    }
+    omDelPrcObj(D_80114770_option);
+    while (1) {
+        HuPrcVSleep();
+    }
+}
 
 void func_8010A8DC_option(s32 arg0, s32 *arg1, s32 *arg2) {
     s32 val1 = 0xA0;
@@ -1127,7 +1283,7 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_80113CD0_option);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010AF54_option);
 
-void func_8010B654_option(s32 selection) {
+void func_8010B654_option(s32 selection, s32 buttons) {
     s32 x, y;
 
     func_8010A8DC_option(selection, &x, &y);

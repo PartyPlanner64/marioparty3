@@ -34,7 +34,7 @@ void func_8002367C_main(HuMtx4F, HuMtx4F);
 void func_80046030_main(s16, s16);
 void func_80088700_main(HuMtx4F, f32, f32, f32);
 void opDemoEndSet(s32);
-f32 func_8011124C_opening(f32, f32, f32, f32, f32);
+f32 func_8011124C_opening(f32 x1, f32 z1, f32 x2, f32 z2, f32 weight);
 
 void func_801061F0_opening(void);
 void func_8010621C_opening(void);
@@ -3177,7 +3177,42 @@ f32 func_801111AC_opening(f32 current, f32 target, f32 step) {
     return current + step;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opening/524820", func_8011124C_opening);
+f32 func_8011124C_opening(f32 x1, f32 z1, f32 x2, f32 z2, f32 weight) {
+    f32 current;
+    f32 target;
+    f32 forwardTarget;
+    f32 backwardTarget;
+    f32 angle;
+    f32 cross;
+
+    current = func_80111164_opening(0.0f, 0.0f, x1, z1);
+    if (current < 0.0f) {
+        current += 360.0f;
+    }
+    target = func_80111164_opening(0.0f, 0.0f, x2, z2);
+    if (target < 0.0f) {
+        target += 360.0f;
+    }
+    if ((target - current < 0.0f ? -(target - current) : target - current) < 5.0f) {
+        return target;
+    }
+    cross = -z1 * x2 + x1 * z2;
+    if (cross > 0.0f) {
+        backwardTarget = target - current < 0.0f ? target : target - 360.0f;
+        angle = (backwardTarget - current) * weight + current;
+        if (angle < 0.0f) {
+            angle += 360.0f;
+        }
+    } else {
+        forwardTarget = target;
+        forwardTarget = forwardTarget - current > 0.0f ? forwardTarget : forwardTarget + 360.0f;
+        angle = (forwardTarget - current) * weight + current;
+        if (angle > 360.0f) {
+            angle -= 360.0f;
+        }
+    }
+    return angle;
+}
 
 f32 func_80111490_opening(f32 current, f32 x, f32 z, f32 weight) {
     f32 angle = func_80111164_opening(0.0f, 0.0f, x, z);

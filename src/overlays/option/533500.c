@@ -72,6 +72,7 @@ typedef struct {
     /* 0x04 */ s32 seNo;
 } OptSeObj; // sizeof 0x8
 
+extern Vec D_80113508_option[2];
 extern Vec D_801146BC_option;
 extern Vec D_801146C8_option;
 extern Vec D_801146D4_option;
@@ -104,6 +105,18 @@ extern u16 D_80115A72_option;
 extern OptWinEntry D_80115A78_option[0x20];
 extern u8 D_800D09A8_main;
 
+s32 func_800465E8_main(void);
+void func_800465F4_main(s32);
+void func_801133BC_option(s32, u32);
+void func_80113490_option(s32);
+void func_80113424_option(s32);
+s32 func_801130E8_option(s32);
+s32 func_80109D04_option(s32, s32);
+s32 func_80109EF4_option(s32, s32);
+void func_8010A3E8_option(s32, s32);
+void func_80109908_option(f32, f32, f32, s32 *, s32 *);
+omObjData *func_80107758_option(Vec *, Vec *, s32);
+void func_801133EC_option(s32);
 s32 func_800078F8_main(s32);
 void func_8000BBFC_main(u16, s16);
 void func_8000BD94_main(u16, s32, s32);
@@ -662,7 +675,65 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_80113B1C_option);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80108B58_option);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80109504_option);
+s32 func_80109504_option(void) {
+    s32 selection = 0;
+    s32 buttons;
+    s32 result;
+    Vec at;
+    s32 x, y;
+
+    if (func_800465E8_main()) {
+        func_800465F4_main(1);
+        func_801133BC_option(0, 0x4E00);
+        func_80113490_option(0);
+        func_80113408_option(0, 0x4E02);
+    } else {
+        func_801133BC_option(0, 0x4E02);
+    }
+    func_80113384_option(0);
+    func_8010A3E8_option(selection, 0);
+    while (1) {
+        buttons = D_800D5558_main[0];
+        buttons |= func_801130E8_option(0);
+        if (buttons & 0x8000) {
+            result = func_80109D04_option(selection, buttons);
+            if (result != -1) {
+                selection = result;
+                break;
+            }
+        } else if (buttons & 0xF00) {
+            selection = func_80109EF4_option(selection, buttons);
+        } else if (buttons & 0x4000) {
+            func_801133A0_option(0);
+            func_80113440_option(0);
+            switch (selection) {
+                case 0:
+                case 1:
+                    HuVecCopy3F(&at, &D_80113508_option[1]);
+                    func_80107758_option(&D_80113508_option[0], &at, 30);
+                    HuPrcSleep(30);
+                    break;
+                case 2:
+                    HuVecCopy3F(&at, &D_80113508_option[1]);
+                    func_80107758_option(&D_80113508_option[0], &at, 30);
+                    HuPrcSleep(30);
+                    break;
+                case 9:
+                default:
+                    break;
+            }
+            selection = 3;
+            func_80109908_option(0.0f, 100.0f, 1275.0f, &x, &y);
+            func_80112028_option(0, x, y);
+            func_80113424_option(0);
+            func_80113408_option(0, 0x4E03);
+            func_80113384_option(0);
+        }
+        HuPrcVSleep();
+    }
+    func_801133EC_option(0);
+    return selection;
+}
 
 void func_801096B8_option(s32 arg0, s32 arg1, s32 arg2) {
     D_80114778_option[0] = arg1;
@@ -778,7 +849,7 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_80113BC0_option);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_80113BCC_option);
 
-s32 func_80109D04_option(s32 selection) {
+s32 func_80109D04_option(s32 selection, s32 buttons) {
     switch (selection) {
         case 0: {
             Vec pos;
@@ -834,7 +905,7 @@ s32 func_80109D04_option(s32 selection) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80109EF4_option);
 
-void func_8010A3E8_option(s32 selection) {
+void func_8010A3E8_option(s32 selection, s32 arg1) {
     s32 index = 0;
     s32 x, y;
 

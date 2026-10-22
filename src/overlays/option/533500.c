@@ -73,6 +73,10 @@ typedef struct {
 } OptSeObj; // sizeof 0x8
 
 extern Vec D_80113A98_option;
+extern Vec D_801139E0_option;
+extern Vec D_801139EC_option;
+extern Vec D_801139F8_option;
+extern s8 D_800D2132_main;
 extern Vec D_80113508_option[2];
 extern Vec D_801146BC_option;
 extern Vec D_801146C8_option;
@@ -91,6 +95,7 @@ extern Vec D_8011376C_option[];
 extern Vec D_8011367C_option[2];
 extern Vec D_80113694_option[2];
 extern Vec D_801136B8_option;
+extern Vec D_801136AC_option[2];
 extern Vec D_8011379C_option[2];
 extern Vec D_801137B4_option[2];
 extern Vec D_801137CC_option[2];
@@ -113,6 +118,8 @@ extern u16 D_80115A72_option;
 extern OptWinEntry D_80115A78_option[0x20];
 extern u8 D_800D09A8_main;
 
+void func_80030030_main(f32);
+s32 func_8010BACC_option(s32, s32);
 s32 func_800465E8_main(void);
 void func_800465F4_main(s32);
 void func_801133BC_option(s32, u32);
@@ -190,7 +197,34 @@ void func_80113408_option(s32, u32);
 void func_80113440_option(s32);
 s32 func_8011345C_option(s32);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_801059D0_option);
+void func_801059D0_option(void) {
+    omInitObjMan(0x40, 0x20);
+    func_800142A0_main(0x20);
+    func_8004A208_main();
+    func_8000B5F0_main(1);
+    ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
+    ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
+    {
+        Vec pos = D_801139E0_option;
+        Vec at = D_801139EC_option;
+        Vec up = D_801139F8_option;
+
+        ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
+        ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
+        Hu3DCamSetPerspective(0, 41.0f, 80.0f, 8000.0f);
+        Hu3DCamSetPositionOrientation(0, &pos, &at, &up);
+    }
+    func_80030030_main(1.0f);
+    pfInit();
+    func_8005A6B0_main();
+    HmfLightMaxSet(3);
+    HmfLightColorSet(0, 128, 128, 128);
+    HmfLightColorSet(1, 64, 64, 96);
+    HmfLightColorSet(2, 0, 0, 0);
+    HmfLightColorSet(3, 0, 0, 0);
+    HmfLightDirSet(1, 0.0f, 64.0f, 192.0f);
+    D_800D2132_main = 0;
+}
 
 void func_80105C14_option(void) {
     func_801059D0_option();
@@ -1194,7 +1228,7 @@ s32 func_8010B68C_option(s32 selection, s32 buttons) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010BACC_option);
 
-void func_8010BFA4_option(s32 selection) {
+void func_8010BFA4_option(s32 selection, s32 buttons) {
     s32 x = 160;
     s32 y = 120;
 
@@ -1215,7 +1249,64 @@ void func_8010BFA4_option(s32 selection) {
     func_801096E4_option(0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010C04C_option);
+s32 func_8010C04C_option(void) {
+    s32 x, y;
+    s32 buttons;
+    s32 selection;
+    s32 next;
+
+    func_801133BC_option(0, 0x4E0D);
+    func_80113490_option(0);
+    func_80113408_option(0, 0x4E10);
+    selection = 1;
+    func_80107758_option(&D_8011367C_option[0], &D_8011367C_option[1], 20);
+    HuPrcSleep(20);
+    func_80109908_option(D_8011388C_option.x, D_8011388C_option.y, D_8011388C_option.z, &x, &y);
+    func_80112028_option(0, x, y);
+    func_80113384_option(0);
+    func_8010BFA4_option(1, 0);
+    {
+        Vec pos, at;
+        while (1) {
+            buttons = D_800D5558_main[0];
+            buttons |= func_801130E8_option(0);
+            if (buttons & 0x8000) {
+                next = func_8010BACC_option(selection, buttons);
+                if (next != -1) {
+                    selection = next;
+                    break;
+                }
+            } else if (buttons & 0xF00) {
+                selection = func_8010B68C_option(selection, buttons);
+            } else if (buttons & 0x4000) {
+                func_801133A0_option(0);
+                func_80113440_option(0);
+                switch (selection) {
+                    case 0:
+                    case 1:
+                    case 2:
+                        selection = 3;
+                        HuVecCopy3F(&pos, &D_801136AC_option[0]);
+                        HuVecCopy3F(&at, &D_801136AC_option[1]);
+                        func_80107758_option(&pos, &at, 20);
+                        HuPrcSleep(20);
+                        break;
+                    case 3:
+                    default:
+                        selection = 3;
+                        break;
+                }
+                func_80113424_option(0);
+                func_80113408_option(0, 0x4E12);
+                func_80113384_option(0);
+            }
+            func_8010BFA4_option(selection, buttons);
+            HuPrcVSleep();
+        }
+    }
+    func_801133EC_option(0);
+    return selection;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010C224_option);
 

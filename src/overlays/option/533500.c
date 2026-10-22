@@ -35,7 +35,7 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ s16 winID;
-    /* 0x04 */ s32 unk_04;
+    /* 0x04 */ void *unk_04;
     /* 0x08 */ s32 unk_08;
 } OptWinEntry; // sizeof 0xC
 
@@ -628,13 +628,45 @@ void func_80110754_option(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_801107A0_option);
+void func_801107A0_option(s32 arg0, s32 arg1, s32 arg2) {
+    s16 model;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8011083C_option);
+    model = func_8000B108_main(arg1, arg2);
+    D_80114F70_option[arg0].unk_00 = model;
+    Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
+    Hu3DModelRotSet(model, 0.0f, 0.0f, 0.0f);
+    Hu3DModelScaleSet(model, 1.0f, 1.0f, 1.0f);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_801108C4_option);
+void func_8011083C_option(s32 arg0, s32 resourceId, s32 arg2) {
+    void *data;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80110974_option);
+    if (arg2 == -1) {
+        arg2 = 0x6AD;
+    }
+    data = DataRead(resourceId);
+    D_80114F70_option[arg0].unk_02 = func_8001F1FC_main(data, (s16)arg2);
+    DataClose(data);
+}
+
+void func_801108C4_option(s32 arg0) {
+    if (D_80114F70_option[arg0].unk_00 != -1) {
+        func_8001ACDC_main(D_80114F70_option[arg0].unk_00);
+        D_80114F70_option[arg0].unk_00 = -1;
+    }
+    if (D_80114F70_option[arg0].unk_02 != -1) {
+        func_8002D4B8_main(D_80114F70_option[arg0].unk_02);
+        D_80114F70_option[arg0].unk_02 = -1;
+    }
+}
+
+void func_80110974_option(void) {
+    s32 i;
+
+    for (i = 0; i < ARRAY_COUNT(D_80114F70_option); i++) {
+        func_801108C4_option(i);
+    }
+}
 
 s16 func_801109AC_option(s32 arg0) {
     return D_80114F70_option[arg0].unk_00;
@@ -784,11 +816,34 @@ void func_801119CC_option(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80111A10_option);
+void func_80111A10_option(s32 arg0) {
+    if (D_80115A78_option[arg0].unk_08 == 3) {
+        func_80060EA8_main(D_80115A78_option[arg0].winID, 1);
+        func_800610E0_main(D_80115A78_option[arg0].winID);
+    } else {
+        func_8005FE90_main(D_80115A78_option[arg0].winID);
+        func_8005F364_main(D_80115A78_option[arg0].winID);
+        D_80115A78_option[arg0].winID = -1;
+    }
+    if (D_80115A78_option[arg0].unk_04 != NULL) {
+        func_80019C00_main(D_80115A78_option[arg0].unk_04);
+        D_80115A78_option[arg0].unk_04 = NULL;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80111AF4_option);
+void func_80111AF4_option(void) {
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80111B58_option);
+    for (i = 0; i < ARRAY_COUNT(D_80115A78_option); i++) {
+        if (D_80115A78_option[i].winID != -1) {
+            func_80111A10_option(i);
+        }
+    }
+}
+
+void func_80111B58_option(s32 arg0, f32 arg1, f32 arg2) {
+    func_8005BB18_main(D_80115A78_option[arg0].winID, arg1, arg2);
+}
 
 void func_80111B88_option(s32 arg0, f32 arg1, f32 arg2) {
     func_8005BA90_main(D_80115A78_option[arg0].winID, arg1, arg2);
@@ -802,7 +857,20 @@ void func_80111C20_option(s32 arg0) {
     func_8005FE90_main(D_80115A78_option[arg0].winID);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80111C50_option);
+void func_80111C50_option(s32 arg0, u32 arg1) {
+    u32 message;
+
+    func_8005D294_main(D_80115A78_option[arg0].winID);
+    if (D_80115A78_option[arg0].unk_04 != NULL) {
+        func_80019C00_main(D_80115A78_option[arg0].unk_04);
+        D_80115A78_option[arg0].unk_04 = NULL;
+    }
+    message = func_80111058_option(arg1);
+    if (message > 0x80000000U) {
+        D_80115A78_option[arg0].unk_04 = (void *)message;
+    }
+    func_8005B43C_main(D_80115A78_option[arg0].winID, message, -1, -1);
+}
 
 void func_80111D1C_option(s32 arg0, s8 arg1, u32 arg2) {
     func_800601BC_main(D_80115A78_option[arg0].winID, arg2, arg1);

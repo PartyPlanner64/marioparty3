@@ -66,6 +66,12 @@ typedef struct {
     /* 0x04 */ s32 seNo;
 } OptSeObj; // sizeof 0x8
 
+extern Vec D_80113B90_option;
+extern Vec D_80113B9C_option;
+extern Vec D_80113BA8_option;
+extern Vec D_80113BB4_option;
+extern Vec D_80113BC0_option;
+extern Vec D_80113BCC_option;
 extern char D_80113A4C_option[];
 extern Vec D_8011376C_option[];
 extern Vec D_8011388C_option;
@@ -126,6 +132,13 @@ void func_80111C50_option(s32, u32);
 void func_80112028_option(s32, s32, s32);
 void func_801130CC_option(void);
 s32 func_80113218_option(s32);
+omObjData *func_8010737C_option(Vec *, Vec *, s32);
+void func_80113338_option(s32, s32, s16, s16, u16);
+void func_80113384_option(s32);
+void func_801133A0_option(s32);
+void func_80113408_option(s32, u32);
+void func_80113440_option(s32);
+s32 func_8011345C_option(s32);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_801059D0_option);
 
@@ -477,7 +490,59 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_80113BC0_option);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_80113BCC_option);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80109D04_option);
+s32 func_80109D04_option(s32 selection) {
+    switch (selection) {
+        case 0: {
+            Vec pos;
+            Vec at;
+            func_801133A0_option(0);
+            func_80113440_option(0);
+            pos = D_80113B90_option;
+            at = D_80113B9C_option;
+            func_8010737C_option(&pos, &at, 30);
+            func_80113338_option(9, 11, 0, 8, 0);
+            func_80113338_option(10, 12, 0, 8, 0);
+            HuPrcSleep(30);
+            break;
+        }
+        case 1: {
+            Vec pos;
+            Vec at;
+            func_801133A0_option(0);
+            func_80113440_option(0);
+            pos = D_80113BA8_option;
+            at = D_80113BB4_option;
+            func_8010737C_option(&pos, &at, 20);
+            HuPrcSleep(20);
+            break;
+        }
+        case 2: {
+            Vec pos;
+            Vec at;
+            func_801133A0_option(0);
+            func_80113440_option(0);
+            pos = D_80113BC0_option;
+            at = D_80113BCC_option;
+            func_8010737C_option(&pos, &at, 20);
+            HuPrcSleep(20);
+            break;
+        }
+        case 3:
+            func_801133A0_option(0);
+            func_80113408_option(0, 0x4E04);
+            if (func_8011345C_option(0)) {
+                func_80113408_option(0, 0x4E03);
+                func_80113384_option(0);
+                return -1;
+            }
+            selection = 3;
+            break;
+        case 9:
+        default:
+            break;
+    }
+    return selection;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80109EF4_option);
 
@@ -1256,8 +1321,8 @@ void func_80111D1C_option(s32 arg0, s8 arg1, u32 arg2) {
     func_800601BC_main(D_80115A78_option[arg0].winID, arg2, arg1);
 }
 
-void func_80111D58_option(s32 arg0, s16 arg1, s32 arg2) {
-    func_8005E1D8_main(D_80115A78_option[arg0].winID, arg1, arg2);
+s32 func_80111D58_option(s32 arg0, s16 arg1, s32 arg2) {
+    return func_8005E1D8_main(D_80115A78_option[arg0].winID, arg1, arg2);
 }
 
 s16 func_80111D90_option(s32 arg0) {
@@ -1510,9 +1575,9 @@ void func_80113440_option(s32 arg0) {
     func_80111C20_option(arg0);
 }
 
-void func_8011345C_option(s32 arg0) {
+s32 func_8011345C_option(s32 arg0) {
     func_80111DAC_option(arg0);
-    func_80111D58_option(arg0, 0, 0);
+    return func_80111D58_option(arg0, 0, 0);
 }
 
 void func_80113490_option(s32 arg0) {

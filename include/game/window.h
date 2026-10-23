@@ -130,7 +130,7 @@ void func_80060144_main(s16 obj);
 void func_800601BC_main(s16, u32, s8);
 void *func_800364DC_main(void *arg0);
 void func_800365E8_main(void *ptr);
-s16 func_8005B7B8_main(s16 win_id, u32 spriteMainFsPair, s16 arg2, s16 arg3, u16 arg4);
+s16 func_8005B7B8_main(s16 win_id, u32 spriteMainFsPair, s16 arg2, s16 arg3, s16 arg4);
 TextWindow *func_8005BA28_main(s16 win_id);
 void func_8005BA90_main(s16, s16, s16);
 void func_8005BCA4_main(s16, s16, s16);

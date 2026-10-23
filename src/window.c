@@ -171,7 +171,7 @@ void func_8005B6BC_main(s16 win_id, u32 arg1, s8 arg2) {
     textWindow->unk_B2[arg2] = -1;
 }
 
-s16 func_8005B7B8_main(s16 win_id, u32 spriteMainFsPair, s16 arg2, s16 arg3, u16 arg4) {
+s16 func_8005B7B8_main(s16 win_id, u32 spriteMainFsPair, s16 arg2, s16 arg3, s16 arg4) {
     TextWindow *window = &D_800CC69C_main[win_id];
     s16 spriteId;
     void *spriteBytes;
@@ -202,7 +202,21 @@ void func_8005B8F8_main(s16 arg0, s16 arg1) {
     D_800CC69C_main[arg0].unk_6E[arg1] = -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005B974_main);
+s16 func_8005B974_main(s16 winId, u32 spriteMainFsPair, s16 x, s16 y, s16 arg4) {
+    TextWindow *window = &D_800CC69C_main[winId];
+    TextWindowSprite *sprite;
+    s16 spriteId;
+
+    spriteId = func_8005B7B8_main(winId, spriteMainFsPair, x, y, arg4);
+    sprite = &window->unk_F4[window->unk_30];
+    sprite->unk_02 = x;
+    sprite->unk_04 = y;
+    sprite->unk_06 = 0;
+    sprite->unk_08 = 0;
+    sprite->unk_00 = 1;
+    window->unk_30++;
+    return spriteId;
+}
 
 TextWindow *func_8005BA28_main(s16 win_id) {
     return &D_800CC69C_main[win_id];

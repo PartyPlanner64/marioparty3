@@ -58,7 +58,12 @@ typedef struct {
     OptSoundPage pages[15];
 } OptSoundMenu;
 
+typedef struct {
+    OptSoundPage pages[12];
+} OptMusicMenu;
+
 extern OptSoundMenu D_80113DA8_option;
+extern OptMusicMenu D_8011421C_option;
 
 extern OptMinigameEntry D_800A6D40_main[];
 extern Vec D_80113A98_option;
@@ -121,6 +126,7 @@ s16 func_800E905C_minigame(s32);
 void func_80033970_main(HmfData *);
 s32 func_80113204_option(s32);
 s32 func_8010FE00_option(void);
+s32 func_80110018_option(void);
 void func_8010FE10_option(void);
 omObjData *func_8010FF0C_option(s32);
 
@@ -2104,7 +2110,171 @@ void func_8010E8E0_option(void) {
     func_801133A0_option(2);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010F138_option);
+void func_8010F138_option(void) {
+    s16 windows[16];
+    OptMusicMenu menu = D_8011421C_option;
+    s16 titleWindow;
+    s32 i;
+    s32 page;
+    s32 selected;
+    s32 frame;
+    s32 buttons;
+    s32 previous;
+    s16 model;
+
+    func_801132E4_option(3, 0);
+    func_8011331C_option(3, 14, 0);
+    func_801132C8_option(3, 7);
+    selected = 0;
+    page = 0;
+    func_80112028_option(2, 230, 116);
+    func_80113384_option(2);
+    func_80112028_option(1, 170, 40);
+    func_80113384_option(1);
+    titleWindow = func_80061188_main(-1, 164, 28, 120, 20, 0);
+    func_8005BEE0_main(titleWindow, 0);
+    func_8005C154_main(titleWindow, 192, 192, 192);
+    func_8005FBF8_main(titleWindow, 255, 255, 255);
+    func_8005C060_main(titleWindow, 0, 0, 0, 0);
+    func_8005C02C_main(titleWindow, 0);
+    func_8005B43C_main(titleWindow, 0x5D01, -1, -1);
+    func_8005FFA8_main(titleWindow);
+    if (func_80110018_option()) {
+        menu.pages[2].entries[1].message = 0x5D15;
+        menu.pages[2].entries[1].sound = 0x4C;
+    }
+    if (_CheckFlag(0x1D)) {
+        menu.pages[2].entries[2].message = 0x5D16;
+        menu.pages[2].entries[2].sound = 0x4D;
+    }
+    if (_CheckFlag(0x31)) {
+        menu.pages[3].entries[5].message = 0x5D1C;
+        menu.pages[3].entries[5].sound = 0x1D;
+    }
+    if (_CheckFlag(0x30)) {
+        menu.pages[4].entries[2].message = 0x5D1F;
+        menu.pages[4].entries[2].sound = 0x20;
+    }
+    if (_CheckFlag(0x1E)) {
+        menu.pages[8].entries[7].message = 0x5D3C;
+        menu.pages[8].entries[7].sound = 0x41;
+        menu.pages[10].entries[0].message = 0x5D44;
+        menu.pages[10].entries[0].sound = 0x28;
+        menu.pages[10].entries[1].message = 0x5D45;
+        menu.pages[10].entries[1].sound = 0x29;
+        menu.pages[10].entries[2].message = 0x5D46;
+        menu.pages[10].entries[2].sound = 0x2A;
+        menu.pages[10].entries[3].message = 0x5D47;
+        menu.pages[10].entries[3].sound = 0x6;
+    }
+    for (i = 0; i < 9; i++) {
+        windows[i] = func_80061188_main(-1, 180, (i + 1) * 14 + 28, 118, 20, 0);
+        func_8005BEE0_main(windows[i], 0);
+        func_8005C154_main(windows[i], 192, 192, 192);
+        func_8005FBF8_main(windows[i], 255, 255, 255);
+        func_8005C060_main(windows[i], 0, 0, 0, 0);
+        func_8005C02C_main(windows[i], 0);
+        if (menu.pages[page].entries[i].message != -1) {
+            func_8005B43C_main(windows[i], menu.pages[page].entries[i].message, -1, -1);
+        } else {
+            func_8005D294_main(windows[i]);
+        }
+        func_8005FFA8_main(windows[i]);
+    }
+    windows[10] = func_80061188_main(-1, 176, 190, 120, 44, 0);
+    func_8005BEE0_main(windows[10], 0);
+    func_8005C154_main(windows[10], 192, 192, 192);
+    func_8005FBF8_main(windows[10], 255, 255, 255);
+    func_8005C060_main(windows[10], 0, 0, 0, 0);
+    func_8005C02C_main(windows[10], 0);
+    func_8005B43C_main(windows[10], 0x5D00, -1, -1);
+    func_8005FFA8_main(windows[10]);
+    frame = 0;
+    while (1) {
+        HuPrcVSleep();
+        buttons = (u16)D_800D1244_main[0];
+        buttons |= func_80113204_option(0);
+        buttons = (buttons & ~0xC000) | (D_800D5558_main[0] & 0xC000);
+        if (buttons & 0x4000) {
+            model = func_80113218_option(3);
+            func_80033910_main(HmfModelData[model].hmf);
+            break;
+        } else if (buttons & 0x8000) {
+            func_8004A950_main();
+            if (menu.pages[page].entries[selected].sound != -1) {
+                HuAudSeqPlay(menu.pages[page].entries[selected].sound);
+            }
+            model = func_80113218_option(3);
+            func_80033970_main(HmfModelData[model].hmf);
+        } else if (buttons & 0x300) {
+            if (buttons & 0x200) {
+                page--;
+            } else {
+                page++;
+            }
+            page = page < 12 ? page : 0;
+            if (page < 0) {
+                page = 11;
+            }
+            if (page == 10) {
+                if (!_CheckFlag(0x1E)) {
+                    page = buttons & 0x200 ? 9 : 11;
+                }
+            }
+            func_8005B43C_main(titleWindow, menu.pages[page].title, -1, -1);
+            for (i = 0; i < 9; i++) {
+                if (menu.pages[page].entries[i].message != -1) {
+                    func_8005B43C_main(windows[i], menu.pages[page].entries[i].message, -1, -1);
+                } else {
+                    func_8005D294_main(windows[i]);
+                }
+            }
+            for (;;) {
+                if (menu.pages[page].entries[selected].sound != -1) {
+                    goto update_cursor;
+                }
+                selected--;
+                selected = selected < 9 ? selected : 0;
+                if (selected < 0) {
+                    selected = 8;
+                }
+            }
+        } else if (buttons & 0xC00) {
+            previous = selected;
+            do {
+                if (buttons & 0x800) {
+                    selected--;
+                } else {
+                    selected++;
+                }
+                selected = selected < 9 ? selected : 0;
+                if (selected < 0) {
+                    selected = 8;
+                }
+            } while (menu.pages[page].entries[selected].sound == -1);
+            func_8010E7FC_option(170, (previous + 1) * 14 + 40, 170, (selected + 1) * 14 + 40, 4);
+        }
+    update_cursor:
+        frame = frame < 11 ? frame + 1 : 0;
+        func_8010E77C_option(170, (selected + 1) * 14 + 40, frame);
+    }
+    func_8005FE90_main(titleWindow);
+    func_8005F364_main(titleWindow);
+    for (i = 0; i < 9; i++) {
+        func_8005FE90_main(windows[i]);
+    }
+    for (i = 0; i < 9; i++) {
+        func_8005F364_main(windows[i]);
+    }
+    func_8005FE90_main(windows[10]);
+    func_8005F364_main(windows[10]);
+    HuAudFXPlay(0x2F9);
+    func_8011331C_option(3, 16, 1);
+    func_801132E4_option(3, 40);
+    HuPrcSleep(3);
+    func_801133A0_option(1);
+    func_801133A0_option(2);
+}
 
 f32 func_8010F914_option(f32 x, f32 y) {
     return -(atan2df(y, x) - 90.0f);

@@ -483,7 +483,18 @@ void func_8005DD54_main(TextWindow *window) {
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005DDDC_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005E0C0_main);
+s16 func_8005E0C0_main(s16 winId) {
+    s16 status = 0;
+    s16 i;
+
+    if (winId != -1) {
+        return (u8)D_800CC69C_main[winId].unk20;
+    }
+    for (i = D_800CC69C_main[0].unk64; D_800CC69C_main[i].unk64 != -1; i = D_800CC69C_main[i].unk64) {
+        status |= (u8)D_800CC69C_main[i].unk20;
+    }
+    return status;
+}
 
 void func_8005E1A8_main(s16 winId, s16 arg1) {
     D_800CC69C_main[winId].unk_35 = arg1;

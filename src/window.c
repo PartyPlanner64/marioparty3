@@ -175,13 +175,13 @@ s16 func_8005B7B8_main(s16 win_id, u32 spriteMainFsPair, s16 arg2, s16 arg3, u16
     void *spriteBytes;
     s16 i;
 
-    for (i = 4; i < ARRAY_COUNT(window->unk_6E); i++) {
+    for (i = 4; i < 12; i++) {
         if (window->unk_6E[i] != -1) {
             continue;
         }
         break;
     }
-    if (i >= ARRAY_COUNT(window->unk_6E)) {
+    if (i >= 12) {
         return -1;
     }
 
@@ -292,7 +292,17 @@ void func_8005BEE0_main(s16 winId, s16 arg1) {
     func_80055458_main(window->unk_6C, 0, arg1 & 0xFFFF);
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005BF70_main);
+void func_8005BF70_main(s16 winId, s32 arg1) {
+    TextWindow *window = &D_800CC69C_main[winId];
+    s16 i;
+
+    func_80055458_main(window->unk_6C, 1, arg1 & 0xFFFF);
+    for (i = 12; i < 22; i++) {
+        if (window->unk_6E[i] != -1) {
+            func_80055458_main(window->unk_6C, i, arg1 & 0xFFFF);
+        }
+    }
+}
 
 void func_8005C02C_main(s16 winId, s32 arg1) {
     TextWindow *window;
@@ -346,7 +356,20 @@ s32 func_8005CD38_main(TextWindow *window) {
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005CD84_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005CE10_main);
+void func_8005CE10_main(TextWindow *window) {
+    s16 i;
+
+    window->unk54 = window->unk4C;
+    window->unk56 = window->unk4E;
+    window->unk_30 = 0;
+    window->unk_9A = 0;
+    for (i = 12; i < 22; i++) {
+        if (window->unk_6E[i] != -1) {
+            HuSprAttrSet(window->unk_6C, i, 0x8000);
+            window->unk_6E[i] = -1;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005CEB0_main);
 

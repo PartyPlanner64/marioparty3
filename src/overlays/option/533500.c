@@ -141,7 +141,7 @@ void func_80112FD8_option(s32, s32, s32);
 void func_80106508_option(Vec *, Vec *, Vec *);
 void func_80113088_option(void);
 void func_801059D0_option(void);
-void func_80105FF8_option(Vec *, Vec *, Vec *);
+s32 func_80105FF8_option(Vec *, Vec *, Vec *);
 void func_80113274_option(s32, f32 *, f32 *, f32 *);
 void func_80113290_option(s32, f32, f32, f32);
 omObjData *func_80106F88_option(Vec *, Vec *, s32);
@@ -332,7 +332,56 @@ void func_80105F08_option(f32 fov) {
     D_801146F0_option.prcObj = omAddPrcObj(func_80105EB8_option, 0x5000, 0x2000, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80105FF8_option);
+s32 func_80105FF8_option(Vec *pos, Vec *at, Vec *up) {
+    HmfData *hmf;
+    HmfData_UnkBC *cam;
+    f32 angle;
+    f32 dx, dy, dz;
+    f32 upX, upY, upZ;
+    f32 length;
+
+    if (D_801146F0_option.camId == -1) {
+        HuVecCopy3F(pos, &D_801146F0_option.pos);
+        HuVecCopy3F(at, &D_801146F0_option.at);
+        HuVecCopy3F(up, &D_801146F0_option.up);
+        return 0;
+    }
+    hmf = HmfModelData[gCameraList->unk4].hmf;
+    if (hmf == NULL || hmf->unkBC == NULL) {
+        while (1) {
+            HuPrcVSleep();
+        }
+    }
+    cam = hmf->unkBC;
+    pos->x = cam->unk08;
+    pos->y = cam->unk0C;
+    pos->z = cam->unk10;
+    at->x = cam->unk14;
+    at->y = cam->unk18;
+    at->z = cam->unk1C;
+    angle = -90.0f;
+    dx = at->x - pos->x;
+    dy = at->y - pos->y;
+    dz = at->z - pos->z;
+    length = dx * dx + dy * dy + dz * dz;
+    length = HuSqrtf(length);
+    dx /= length;
+    dy /= length;
+    dz /= length;
+    upX = dy * dz - dz * (dy + 1.0f);
+    upY = dz * dx - dz * dx;
+    upZ = dx * (dy + 1.0f) - dy * dx;
+    up->x = upX * (dx * dx + (1.0f - dx * dx) * cosdf(angle)) +
+            upY * (dx * dy * (1.0f - cosdf(angle)) - dz * sindf(angle)) +
+            upZ * (dx * dz * (1.0f - cosdf(angle)) + dy * sindf(angle));
+    up->y = upX * (dx * dy * (1.0f - cosdf(angle)) + dz * sindf(angle)) +
+            upY * (dy * dy + (1.0f - dy * dy) * cosdf(angle)) +
+            upZ * (dy * dz * (1.0f - cosdf(angle)) - dx * sindf(angle));
+    up->z = upX * (dx * dz * (1.0f - cosdf(angle)) - dy * sindf(angle)) +
+            upY * (dy * dz * (1.0f - cosdf(angle)) + dx * sindf(angle)) +
+            upZ * (dz * dz + (1.0f - dz * dz) * cosdf(angle));
+    return 1;
+}
 
 void func_80106508_option(Vec *pos, Vec *at, Vec *up) {
     f32 angle;

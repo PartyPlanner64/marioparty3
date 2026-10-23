@@ -42,7 +42,7 @@ void func_80112FF4_option(s32, s32, f32, f32, f32);
 void func_80112FD8_option(s32, s32, s32);
 void func_80106508_option(Vec *, Vec *, Vec *);
 void func_80113088_option(void);
-void func_80105FF8_option(Vec *, Vec *, Vec *);
+s32 func_80105FF8_option(Vec *, Vec *, Vec *);
 void func_80113274_option(s32, f32 *, f32 *, f32 *);
 void func_80113290_option(s32, f32, f32, f32);
 void func_80105E40_option(void);

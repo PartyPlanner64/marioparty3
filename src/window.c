@@ -396,7 +396,18 @@ void func_8005CE10_main(TextWindow *window) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005CEB0_main);
+void func_8005CEB0_main(s16 winId) {
+    TextWindow *window = &D_800CC69C_main[winId];
+
+    func_80055024_main(window->unk_6C, 3, D_800BDA68_main, 0);
+    HuSprAttrReset(window->unk_6C, 3, 0xFFFF);
+    HuSprAttrSet(window->unk_6C, 3, 0x1000000);
+    HuSprPriSet(window->unk_6C, 3, window->unk60 - 1);
+    func_80054904_main(window->unk_6C, 3, window->unk58 - window->unk48, window->unk5A - window->unk4A);
+    if (window->unk_38 & 8) {
+        HuSprAttrSet(window->unk_6C, 3, 0x8000);
+    }
+}
 
 void func_8005CF94_main(s16 winId) {
     TextWindow *window = &D_800CC69C_main[winId];

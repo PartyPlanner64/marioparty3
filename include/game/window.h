@@ -73,7 +73,9 @@ typedef struct TextWindow {
     /* 0x052 */ s16 unk52;
     /* 0x054 */ u16 unk54;
     /* 0x056 */ u16 unk56;
-    /* 0x058 */ char pad58[6]; /* maybe part of unk56[5]? */
+    /* 0x058 */ u16 unk58;
+    /* 0x05A */ u16 unk5A;
+    /* 0x05C */ char pad5C[2];
     /* 0x05E */ s16 unk5E;
     /* 0x060 */ s16 unk60;
     /* 0x062 */ s16 unk62;

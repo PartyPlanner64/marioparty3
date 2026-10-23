@@ -66,6 +66,27 @@ extern OptSoundMenu D_80113DA8_option;
 extern OptMusicMenu D_8011421C_option;
 
 extern OptMinigameEntry D_800A6D40_main[];
+extern Vec D_80113A80_option;
+extern Vec D_80113A8C_option;
+extern Vec D_80113AA4_option;
+extern Vec D_80113AB0_option;
+extern Vec D_80113ABC_option;
+extern Vec D_80113AC8_option;
+extern Vec D_80113AD4_option;
+extern Vec D_80113AE0_option;
+extern Vec D_80113AEC_option;
+extern Vec D_80113AF8_option;
+extern Vec D_80113B04_option;
+extern Vec D_80113B10_option;
+extern Vec D_80113B1C_option;
+extern Vec D_801136F4_option;
+extern Vec D_80113700_option;
+extern Vec D_8011370C_option;
+extern Vec D_80113718_option;
+extern Vec D_80113724_option;
+extern Vec D_80113730_option;
+extern Vec D_8011373C_option;
+extern Vec D_80113748_option;
 extern Vec D_80113A98_option;
 extern Vec D_80113580_option[6][2];
 extern Vec D_801135E0_option[2];
@@ -185,6 +206,11 @@ void func_801077BC_option(omObjData *);
 void func_80105E40_option(void);
 void func_80108B34_option(void);
 void func_80108B58_option(void);
+s32 func_80109504_option(void);
+void func_80112084_option(void);
+void func_8010FB40_option(s32, s32);
+void func_8010FA28_option(void);
+void func_8011239C_option(void);
 void func_8010A66C_option(void);
 void func_8010C224_option(void);
 void func_8010F94C_option(void);
@@ -821,7 +847,229 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_80113B10_option);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_80113B1C_option);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80108B58_option);
+void func_80108B58_option(void) {
+    s32 selection;
+    s32 active = 1;
+    Vec pos, at;
+
+    func_8001F38C_main(0, 0x40, 0x40);
+    func_80112084_option();
+    func_8010FB40_option(0, 9);
+    func_8010FB40_option(1, 10);
+    switch (omovlevtno) {
+        case 0:
+            func_8004A5C4_main(7);
+            WipeCreateIn(11, 16);
+            pos = D_80113A80_option;
+            at = D_80113A8C_option;
+            {
+                Vec up = D_80113A98_option;
+                func_80106508_option(&pos, &at, &up);
+            }
+            {
+                Vec pos = D_80113AA4_option;
+                Vec at = D_80113A8C_option;
+                func_8010737C_option(&pos, &at, 45);
+            }
+            HuPrcSleep(45);
+            break;
+        case 1:
+            func_8004A5C4_main(7);
+            WipeColorSet(255, 255, 255);
+            WipeCreateIn(11, 16);
+            {
+                Vec pos = D_80113AB0_option;
+                Vec at = D_80113ABC_option;
+                Vec up = D_80113A98_option;
+                func_80106508_option(&pos, &at, &up);
+            }
+            {
+                Vec pos = D_80113AC8_option;
+                Vec at = D_80113AD4_option;
+                func_80107AD4_option(&pos, &at, 46);
+            }
+            HuPrcSleep(46);
+            {
+                Vec pos = D_80113AA4_option;
+                Vec at = D_80113A8C_option;
+                func_80107758_option(&pos, &at, 45);
+            }
+            HuPrcSleep(45);
+            break;
+        case 2:
+            func_8004A5C4_main(7);
+            WipeColorSet(255, 255, 255);
+            WipeCreateIn(11, 16);
+            {
+                Vec pos = D_80113AE0_option;
+                Vec at = D_80113ABC_option;
+                Vec up = D_80113A98_option;
+                func_80106508_option(&pos, &at, &up);
+            }
+            {
+                Vec pos = D_80113AEC_option;
+                Vec at = D_80113AF8_option;
+                func_80107AD4_option(&pos, &at, 46);
+            }
+            HuPrcSleep(46);
+            {
+                Vec pos = D_80113AA4_option;
+                Vec at = D_80113A8C_option;
+                func_80107758_option(&pos, &at, 45);
+            }
+            HuPrcSleep(45);
+            break;
+        case 3:
+            WipeColorSet(255, 255, 255);
+            WipeCreateIn(11, 16);
+            {
+                Vec pos = D_80113B04_option;
+                Vec at = D_80113ABC_option;
+                Vec up = D_80113A98_option;
+                func_80106508_option(&pos, &at, &up);
+            }
+            {
+                Vec pos = D_80113B10_option;
+                Vec at = D_80113ABC_option;
+                func_80106F88_option(&pos, &at, 50);
+            }
+            HuPrcSleep(50);
+            {
+                Vec pos = D_80113ABC_option;
+                Vec at = D_80113B1C_option;
+                func_8010737C_option(&pos, &at, 25);
+            }
+            HuPrcSleep(25);
+            {
+                Vec pos = D_80113ABC_option;
+                Vec at = D_80113A8C_option;
+                func_80107758_option(&pos, &at, 35);
+            }
+            HuPrcSleep(35);
+            break;
+        default:
+            func_8004A5C4_main(7);
+            WipeCreateIn(11, 16);
+            {
+                Vec pos = D_80113A80_option;
+                Vec at = D_80113A8C_option;
+                func_80107758_option(&pos, &at, 45);
+            }
+            HuPrcSleep(16);
+            break;
+    }
+    selection = func_80109504_option();
+    func_801133A0_option(0);
+    switch (selection) {
+        case 0:
+            HuVecCopy3F(&pos, &D_801136F4_option);
+            pos.y += 20.0f;
+            HuVecCopy3F(&at, &D_80113700_option);
+            at.y += 20.0f;
+            HuAudFXPlay(0x2EB);
+            func_801132AC_option(0, 0);
+            func_801132E4_option(0, 0);
+            func_80113300_option(0);
+            func_80106F88_option(&pos, &at, 20);
+            func_8010FFDC_option();
+            WipeCreateOut(11, 20);
+            HuPrcSleep(20);
+            break;
+        case 1:
+            HuVecCopy3F(&pos, &D_8011370C_option);
+            pos.z += 200.0f;
+            HuVecCopy3F(&at, &D_80113718_option);
+            func_80113338_option(9, 12, 0, 8, 0);
+            HuAudFXPlay(0x2EB);
+            func_8011331C_option(0, 6, 0);
+            func_80113300_option(0);
+            pos.z -= 200.0f;
+            at.z -= 200.0f;
+            func_80106F88_option(&pos, &at, 20);
+            func_8010FFDC_option();
+            WipeCreateOut(11, 20);
+            HuAudSeqFadeOut(20);
+            HuPrcSleep(20);
+            break;
+        case 2:
+            HuVecCopy3F(&pos, &D_80113724_option);
+            pos.z += 200.0f;
+            HuVecCopy3F(&at, &D_80113730_option);
+            func_80113338_option(10, 11, 0, 8, 0);
+            HuAudFXPlay(0x2EB);
+            func_8011331C_option(0, 7, 0);
+            func_801132E4_option(0, 0);
+            func_80113300_option(0);
+            pos.z -= 200.0f;
+            at.z -= 200.0f;
+            func_80106F88_option(&pos, &at, 20);
+            func_8010FFDC_option();
+            WipeCreateOut(11, 20);
+            HuAudSeqFadeOut(20);
+            HuPrcSleep(20);
+            break;
+        case 3:
+        case 4:
+            HuVecCopy3F(&pos, &D_8011373C_option);
+            HuVecCopy3F(&at, &D_80113748_option);
+            func_80106F88_option(&pos, &at, 30);
+            HuPrcSleep(20);
+            func_80106B78_option();
+            HuAudFXPlay(0x2E1);
+            func_801132AC_option(1, 0);
+            func_801132E4_option(1, 0);
+            func_80113300_option(1);
+            func_80106F88_option(&pos, &at, 20);
+            func_8010FFDC_option();
+            WipeColorSet(255, 255, 255);
+            WipeCreateOut(11, 20);
+            HuAudSeqFadeOut(20);
+            HuPrcSleep(20);
+            break;
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        default:
+            selection = 9;
+            break;
+    }
+    active = selection;
+    func_8010FA28_option();
+    func_8011239C_option();
+    func_8005F524_main();
+    omOvlKill();
+    switch (active) {
+        case 0:
+            omOvlHisChg(0, 0x7B, 3, 0x91);
+            omOvlCallEx(0x7B, 6, 0x91);
+            break;
+        case 1:
+            omOvlGotoEx(0x7B, 4, 0x91);
+            break;
+        case 2:
+            omOvlGotoEx(0x7B, 5, 0x91);
+            break;
+        case 3:
+            omOvlReturnEx(1);
+            omOvlHisChg(0, 0x77, 3, 0x91);
+            break;
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        default:
+            omOvlReturnEx(1);
+            break;
+    }
+    omDelPrcObj(D_80114770_option);
+    while (1) {
+        HuPrcVSleep();
+    }
+}
 
 s32 func_80109504_option(void) {
     s32 selection = 0;

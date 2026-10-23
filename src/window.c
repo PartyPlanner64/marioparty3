@@ -384,7 +384,9 @@ INCLUDE_ASM("asm/nonmatchings/window", func_8005F524_main);
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005F698_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005F744_main);
+void func_8005F744_main(s16 up, s16 down, s16 left, s16 right) {
+    func_8005F784_main(up, down, left, right, 1);
+}
 
 void func_8005F784_main(s16 up, s16 down, s16 left, s16 right, s16 frames) {
     D_800CDA88_main[D_800D1F34_main].up = up;

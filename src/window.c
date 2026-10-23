@@ -341,7 +341,9 @@ void func_8005DC94_main(s16 winId) {
     window->unk_38 &= ~0x100;
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005DD14_main);
+void func_8005DD14_main(s16 winId) {
+    func_8005DD54_main(&D_800CC69C_main[winId]);
+}
 
 void func_8005DD54_main(TextWindow *window) {
     u8 prevBuf;

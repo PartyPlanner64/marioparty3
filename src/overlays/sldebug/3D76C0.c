@@ -10,6 +10,7 @@ void func_801068D4_sldebug(omObjData *); /* extern */
 void func_80106930_sldebug(omObjData *); /* extern */
 extern s32 fontcolor;
 extern u16 D_80106960_sldebug;
+extern s16 D_8010698C_sldebug;
 extern s32 D_80106978_sldebug;
 extern s32 D_80106980_sldebug;
 extern s32 D_80106964_sldebug;
@@ -208,7 +209,105 @@ s32 func_8010612C_sldebug(void) {
     return 0;
 }
 
+#ifdef NON_MATCHING
+// Remaining differences: speed/pitch register allocation and two movement scheduling nops.
+void func_80106254_sldebug(omObjData *arg0) {
+    char text[256];
+    f32 speed;
+    f32 zoom;
+    f32 xRot;
+    f32 yRot;
+    f32 z;
+    f32 scale;
+    s8 stick;
+
+    if (D_800D5558_main[0] & 0x10) {
+        D_8010698C_sldebug ^= 1;
+    }
+    if (D_800CDA7C_main[0] & 0x1000) {
+        func_80106850_sldebug();
+    }
+    if (D_800CDA7C_main[0] & 8) {
+        if (D_800CDA7C_main[0] & 0x2000) {
+            zoom = CZoom + 30.0f;
+        } else {
+            zoom = CZoom + 10.0f;
+        }
+        CZoom = zoom;
+    }
+    if ((D_800CDA7C_main[0] & 4) && CZoom - 10.0f != 0.0f) {
+        if (D_800CDA7C_main[0] & 0x2000) {
+            CZoom = CZoom - 30.0f;
+        } else {
+            zoom = CZoom;
+            CZoom = zoom - 10.0f;
+        }
+    }
+    xRot = D_80106C20_sldebug.x;
+    yRot = D_80106C20_sldebug.y;
+    if (D_800CDA7C_main[0] & 0x2000) {
+        speed = 5.0f;
+    } else {
+        speed = 2.0f;
+    }
+    yRot += (-D_800CBB6E_main[0] / 30) * speed;
+    if (yRot >= 360.0f) {
+        yRot -= 360.0f;
+    } else if (yRot < 0.0f) {
+        yRot += 360.0f;
+    }
+    D_80106C20_sldebug.y = yRot;
+    stick = D_800D20A1_main[0] / 30;
+    xRot += stick * speed;
+    if (xRot >= 360.0f) {
+        xRot -= 360.0f;
+    } else if (xRot < 0.0f) {
+        xRot += 360.0f;
+    }
+    D_80106C20_sldebug.x = xRot;
+    CRot.x = (s16)D_80106C20_sldebug.x;
+    CRot.y = (s16)D_80106C20_sldebug.y;
+    if (D_800CDA7C_main[0] & 0x2000) {
+        speed = 10.0f;
+    } else {
+        speed = 2.0f;
+    }
+    if (D_800CDA7C_main[0] & 0x800) {
+        Center.x += sindf(yRot) * sindf(xRot) * (speed = -speed);
+        Center.y = cosdf(xRot) * speed + Center.y;
+        Center.z = cosdf(yRot) * sindf(xRot) * speed + Center.z;
+    } else if (D_800CDA7C_main[0] & 0x400) {
+        Center.x += sindf(yRot) * sindf(xRot) * speed;
+        Center.y = cosdf(xRot) * speed + Center.y;
+        Center.z = cosdf(yRot) * sindf(xRot) * speed + Center.z;
+    } else if (D_800CDA7C_main[0] & 0x200) {
+        xRot = gCameraList->pos.z - Center.z;
+        z = -(gCameraList->pos.x - Center.x);
+        scale = 1.0f / HuSqrtf(xRot * xRot + z * z);
+        Center.x += xRot * scale * speed;
+        Center.y += 0.0f;
+        Center.z += z * scale * speed;
+    } else if (D_800CDA7C_main[0] & 0x100) {
+        xRot = -(gCameraList->pos.z - Center.z);
+        z = gCameraList->pos.x - Center.x;
+        scale = 1.0f / HuSqrtf(xRot * xRot + z * z);
+        Center.x += xRot * scale * speed;
+        Center.y += 0.0f;
+        Center.z += z * scale * speed;
+    }
+    if (D_8010698C_sldebug != 0) {
+        sprintf(text, "CROT %4.1f,%4.1f,%4.1f", CRot.x, CRot.y, CRot.z);
+        print8(32, 180, text);
+        sprintf(text, "INT %4.1f,%4.1f,%4.1f", Center.x, Center.y, Center.z);
+        print8(32, 190, text);
+        sprintf(text, "CZOOM %4.1f", CZoom);
+        print8(32, 200, text);
+    }
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/sldebug/3D76C0", func_80106254_sldebug);
+#endif
 
 void func_80106850_sldebug(void) {
     CRot = D_80106C10_sldebug;

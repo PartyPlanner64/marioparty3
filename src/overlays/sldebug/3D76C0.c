@@ -209,8 +209,6 @@ s32 func_8010612C_sldebug(void) {
     return 0;
 }
 
-#ifdef NON_MATCHING
-// Remaining differences: speed/pitch register allocation and two movement scheduling nops.
 void func_80106254_sldebug(omObjData *arg0) {
     char text[256];
     f32 speed;
@@ -219,6 +217,7 @@ void func_80106254_sldebug(omObjData *arg0) {
     f32 yRot;
     f32 z;
     f32 scale;
+    f32 backSpeed;
     s8 stick;
 
     if (D_800D5558_main[0] & 0x10) {
@@ -273,9 +272,9 @@ void func_80106254_sldebug(omObjData *arg0) {
         speed = 2.0f;
     }
     if (D_800CDA7C_main[0] & 0x800) {
-        Center.x += sindf(yRot) * sindf(xRot) * (speed = -speed);
-        Center.y = cosdf(xRot) * speed + Center.y;
-        Center.z = cosdf(yRot) * sindf(xRot) * speed + Center.z;
+        Center.x += sindf(yRot) * sindf(xRot) * (backSpeed = -speed);
+        Center.y = cosdf(xRot) * backSpeed + Center.y;
+        Center.z = cosdf(yRot) * sindf(xRot) * backSpeed + Center.z;
     } else if (D_800CDA7C_main[0] & 0x400) {
         Center.x += sindf(yRot) * sindf(xRot) * speed;
         Center.y = cosdf(xRot) * speed + Center.y;
@@ -304,10 +303,6 @@ void func_80106254_sldebug(omObjData *arg0) {
         print8(32, 200, text);
     }
 }
-
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/sldebug/3D76C0", func_80106254_sldebug);
-#endif
 
 void func_80106850_sldebug(void) {
     CRot = D_80106C10_sldebug;

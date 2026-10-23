@@ -780,7 +780,45 @@ f32 func_80107B38_option(f32 x1, f32 y1, f32 x2, f32 y2) {
     return -(atan2df(y2 - y1, x2 - x1) - 90.0f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80107B80_option);
+void func_80107B80_option(Vec *start, Vec *end, f32 weight, Vec *out) {
+    f32 startAngle;
+    f32 endAngle;
+    f32 angle;
+    f32 backwardTarget;
+
+    startAngle = func_80107B38_option(0.0f, 0.0f, start->x, start->z);
+    if (startAngle < 0.0f) {
+        startAngle += 360.0f;
+    }
+    endAngle = func_80107B38_option(0.0f, 0.0f, end->x, end->z);
+    if (endAngle < 0.0f) {
+        endAngle += 360.0f;
+    }
+    if (-start->z * end->x + start->x * end->z > 0.0f) {
+        backwardTarget = endAngle - startAngle < 0.0f ? endAngle : endAngle - 360.0f;
+        angle = (backwardTarget - startAngle) * weight + startAngle;
+        if (angle < 0.0f) {
+            angle += 360.0f;
+        }
+    } else {
+        f32 difference = endAngle - startAngle;
+        // Keep this initialization for the original register allocation.
+        f32 forwardTarget = endAngle;
+
+        if (difference > 0.0f) {
+            forwardTarget = endAngle;
+        } else {
+            forwardTarget = endAngle + 360.0f;
+        }
+        angle = (forwardTarget - startAngle) * weight + startAngle;
+        if (angle > 360.0f) {
+            angle -= 360.0f;
+        }
+    }
+    out->x = sindf(angle);
+    out->y = 0;
+    out->z = cosdf(angle);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80107D64_option);
 

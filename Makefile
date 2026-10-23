@@ -239,6 +239,7 @@ NOP_OBJECTS := \
 	build/src/overlays/sldebug/3D76C0.c.o \
 	build/src/overlays/mgenter/46BB50.c.o \
 	build/src/overlays/opening/524820.c.o \
+	build/src/overlays/options/533500.c.o \
 	build/src/overlays/msetup/506F20.c.o \
 	build/src/overlays/msetup/508D50.c.o \
 	build/src/overlays/msetup/5092C0.c.o \

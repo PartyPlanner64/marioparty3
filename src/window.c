@@ -487,7 +487,10 @@ INCLUDE_ASM("asm/nonmatchings/window", func_8005F364_main);
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005F524_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005F698_main);
+void func_8005F698_main(s16 up, s16 down, s16 left, s16 right, u8 frames) {
+    func_8005F784_main(-(up == -1), -(down == -1), -(left == -1), -(right == -1), frames);
+    func_8005F784_main(up, down, left, right, 1);
+}
 
 void func_8005F744_main(s16 up, s16 down, s16 left, s16 right) {
     func_8005F784_main(up, down, left, right, 1);
@@ -704,7 +707,18 @@ INCLUDE_ASM("asm/nonmatchings/window", func_80060880_main);
 
 INCLUDE_ASM("asm/nonmatchings/window", func_80060C14_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_80060DEC_main);
+void func_80060DEC_main(s32 win_id) {
+    TextWindow *window = &D_800CC69C_main[win_id];
+
+    func_800600C0_main(win_id, 1);
+    HuSprScaleSet(window->unk_6C, window->unk274, 1.0f, 1.0f);
+    if (window->unk276 != 0) {
+        HuSprScaleSet(window->unk_6C, window->unk276, 1.0f, 1.0f);
+    }
+    func_8005BB18_main(win_id, 1.0f, 1.0f);
+    func_800600C0_main(win_id, 0);
+    func_8005B63C_main(win_id, 0x4000, 0x4000);
+}
 
 INCLUDE_ASM("asm/nonmatchings/window", func_80060EA8_main);
 
@@ -723,7 +737,15 @@ void func_800610E0_main(s16 win_id) {
     func_8005F364_main(win_id);
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_80061100_main);
+void func_80061100_main(s16 win_id, s32 priority) {
+    TextWindow *window = &D_800CC69C_main[win_id];
+
+    func_8005BE30_main(win_id, (s16)priority);
+    HuSprPriSet(window->unk_6C, window->unk274, priority + 1);
+    if (window->unk276 != 0) {
+        HuSprPriSet(window->unk_6C, window->unk276, priority + 2);
+    }
+}
 
 // Obtains a window handle
 s32 func_80061188_main(s16 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u16 arg5) {

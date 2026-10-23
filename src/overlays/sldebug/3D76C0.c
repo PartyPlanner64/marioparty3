@@ -115,4 +115,8 @@ void func_801068D4_sldebug(omObjData *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/sldebug/3D76C0", func_80106930_sldebug);
+void func_80106930_sldebug(omObjData *arg0) {
+    if (WipeStatGet() == 0) {
+        omOvlGotoEx(0x58, 0, 0x81);
+    }
+}

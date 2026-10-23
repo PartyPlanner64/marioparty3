@@ -2,6 +2,7 @@
 #include "game/sprite.h"
 #include "common.h"
 #include "malloc.h"
+#include "stdarg.h"
 
 extern TextWindow *D_800CC69C_main;
 extern s32 D_800D209C_main;
@@ -679,7 +680,28 @@ void func_8006022C_main(u32 str, s16 index) {
     D_800D5206_main[index] = D_800BDA6D_main;
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_80060290_main);
+void func_80060290_main(u32 str, s16 index) {
+    u8 *text;
+    u8 allocated;
+
+    D_800BDA6A_main = 1;
+    D_800BDA6E_main = 0;
+    D_800BDA6C_main = 0;
+    if (str > 0x80000000) {
+        allocated = 0;
+        text = (u8 *)str;
+    } else {
+        allocated = 1;
+        text = func_800364DC_main((void *)str);
+    }
+    func_80060174_main(text, text);
+    func_800605A4_main((u32)text);
+    D_800CD2A4_main = 0;
+    if (allocated) {
+        func_800365E8_main(text);
+    }
+    D_800D5206_main[index] = D_800BDA6D_main;
+}
 
 void func_8006034C_main(s16 winId, s16 arg1, u8 arg2) {
     D_800CC69C_main[winId].unk_B2[arg1] = arg2;
@@ -689,7 +711,25 @@ void func_80060388_main(s8 arg0) {
     D_800D5540_main = arg0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_80060394_main);
+void func_80060394_main(s16 count, s16 *size, ...) {
+    va_list args;
+    s16 i;
+
+    D_800BDA6A_main = 0;
+    va_start(args, size);
+    D_800BDA6E_main = 0;
+    D_800BDA6C_main = 0;
+    for (i = 0; i < count; i++) {
+        func_800605A4_main(va_arg(args, u32));
+    }
+    va_end(args);
+    for (i = 0; i < ARRAY_COUNT(D_800D5206_main); i++) {
+        D_800D5206_main[i] = 0;
+    }
+    D_800D5540_main = 0xC;
+    size[0] = D_800BDA6C_main + 10;
+    size[1] = D_800BDA6E_main + 6;
+}
 
 void func_800604A8_main(s16 *arg0, s16 arg1, s16 arg2) {
     u32 i;

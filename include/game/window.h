@@ -126,7 +126,7 @@ void func_8005FBF8_main(s16, s32, s32, s32);
 void func_8005FE90_main(s16);
 void func_8005FFA8_main(s16);
 void func_8006022C_main(u32 mesg, s16);
-void func_80060394_main(s32, s16 *, s32);
+void func_80060394_main(s16 count, s16 *size, ...);
 void func_80061388_main(s16);
 void func_80060144_main(s16 obj);
 void func_800601BC_main(s16, u32, s8);

@@ -334,7 +334,37 @@ void func_80105F08_option(f32 fov) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80105FF8_option);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80106508_option);
+void func_80106508_option(Vec *pos, Vec *at, Vec *up) {
+    f32 angle;
+    f32 dx, dy, dz;
+    f32 upX, upY, upZ;
+    f32 length;
+
+    angle = -90.0f;
+    dx = at->x - pos->x;
+    dy = at->y - pos->y;
+    dz = at->z - pos->z;
+    length = dx * dx + dy * dy + dz * dz;
+    length = HuSqrtf(length);
+    dx /= length;
+    dy /= length;
+    dz /= length;
+    upX = dy * dz - dz * (dy + 1.0f);
+    upY = dz * dx - dz * dx;
+    upZ = dx * (dy + 1.0f) - dy * dx;
+    up->x = upX * (dx * dx + (1.0f - dx * dx) * cosdf(angle)) +
+            upY * (dx * dy * (1.0f - cosdf(angle)) - dz * sindf(angle)) +
+            upZ * (dx * dz * (1.0f - cosdf(angle)) + dy * sindf(angle));
+    up->y = upX * (dx * dy * (1.0f - cosdf(angle)) + dz * sindf(angle)) +
+            upY * (dy * dy + (1.0f - dy * dy) * cosdf(angle)) +
+            upZ * (dy * dz * (1.0f - cosdf(angle)) - dx * sindf(angle));
+    up->z = upX * (dx * dz * (1.0f - cosdf(angle)) - dy * sindf(angle)) +
+            upY * (dy * dz * (1.0f - cosdf(angle)) + dx * sindf(angle)) +
+            upZ * (dz * dz + (1.0f - dz * dz) * cosdf(angle));
+    HuVecCopy3F(&D_801146F0_option.pos, pos);
+    HuVecCopy3F(&D_801146F0_option.at, at);
+    HuVecCopy3F(&D_801146F0_option.up, up);
+}
 
 void func_80106998_option(omObjData *obj) {
     Vec pos, at, up, start, end;

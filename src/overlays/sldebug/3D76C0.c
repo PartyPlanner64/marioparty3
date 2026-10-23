@@ -6,6 +6,8 @@ void func_80106850_sldebug(void);        /* extern */
 void func_801068D4_sldebug(omObjData *); /* extern */
 void func_80106930_sldebug(omObjData *); /* extern */
 extern u16 D_80106960_sldebug;
+extern s32 D_80106978_sldebug;
+extern s32 D_80106980_sldebug;
 extern Vec D_80106C10_sldebug;
 extern f32 D_80106C1C_sldebug;
 extern Vec D_80106C20_sldebug;
@@ -96,7 +98,43 @@ INCLUDE_ASM("asm/nonmatchings/overlays/sldebug/3D76C0", func_80105B64_sldebug);
 void func_80106124_sldebug(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/sldebug/3D76C0", func_8010612C_sldebug);
+s32 func_8010612C_sldebug(void) {
+    s16 i;
+
+    HuAudFXPlay(2);
+    switch (D_80106978_sldebug) {
+        case 0:
+            _SetFlag(0x1D);
+            if ((u16)D_800CDA7C_main[0] & 0x8000) {
+                for (i = 0; i < 0x48; i++) {
+                    GWMgUnlockSet(i);
+                }
+            } else {
+                for (i = 0; i < 0x48; i += 3) {
+                    GWMgUnlockSet(i);
+                }
+            }
+            _SetFlag(0x1E);
+            _SetFlag(0x1F);
+            break;
+        case 1:
+            _SetFlag(0x2E);
+            _SetFlag(0x2F);
+            break;
+        case 2:
+        case 3:
+        case 4:
+            D_80106980_sldebug = 1;
+            break;
+        case 5:
+            _SetFlag(0x30);
+            _SetFlag(0x31);
+            break;
+        case 6:
+            return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/sldebug/3D76C0", func_80106254_sldebug);
 

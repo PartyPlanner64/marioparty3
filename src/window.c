@@ -4,6 +4,8 @@
 #include "malloc.h"
 
 extern TextWindow *D_800CC69C_main;
+extern s32 D_800D209C_main;
+extern u8 D_800A2194_main[];
 extern u8 D_800A2150_main;
 extern u8 gLanguageIndex;
 extern u8 D_800A232C_main[];
@@ -31,6 +33,8 @@ extern s8 D_800D5540_main;
 s16 func_8005BA54_main(s16, s16);
 void func_8005BB18_main(s16, f32, f32);
 void func_800615B8_main(s16, s32);
+s32 func_8005CC3C_main(TextWindow *, s16);
+void func_8005CD84_main(TextWindow *);
 
 void func_8005A6B0_main(void) {
     Process *temp_v0_4;
@@ -262,7 +266,18 @@ void func_8005BDFC_main(s16 winId, s32 arg1) {
     window->unk_26 = arg1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005BE30_main);
+void func_8005BE30_main(s16 winId, s32 priority) {
+    TextWindow *window = &D_800CC69C_main[winId];
+    s16 i;
+
+    window->unk60 = priority;
+    for (i = 0; i < 22; i++) {
+        HuSprPriSet(window->unk_6C, i, priority);
+    }
+    if (window->unk6A != -1) {
+        HuSprPriSet(window->unk_6C, 2, priority - 1);
+    }
+}
 
 void func_8005BEE0_main(s16 winId, s16 arg1) {
     TextWindow *window;
@@ -289,13 +304,33 @@ void func_8005C02C_main(s16 winId, s32 arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005C060_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005C154_main);
+void func_8005C154_main(s16 winId, s32 red, s32 green, s32 blue) {
+    func_8005C060_main(winId, 0, red & 0xFF, green & 0xFF, blue & 0xFF);
+}
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005C190_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005CC18_main);
+s32 func_8005CC18_main(TextWindow *window) {
+    return func_8005CC3C_main(window, window->unk_34 + (u8)window->unk_29);
+}
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005CC3C_main);
+s32 func_8005CC3C_main(TextWindow *window, s16 advance) {
+    s32 width;
+
+    D_800D209C_main = advance;
+    window->unk54 += advance;
+    if (gLanguageIndex == LANGUAGE_JAPANESE) {
+        width = window->unk_27;
+    } else if (window->unk_38 & 0x80000) {
+        width = 10;
+    } else {
+        width = D_800A2194_main[*window->unk_CC];
+    }
+    if (width + (s16)window->unk54 > (s16)window->unk4C + window->unk50 && *window->unk_CC >= 0x20) {
+        return func_8005CCF0_main(window);
+    }
+    return 1;
+}
 
 s32 func_8005CCF0_main(TextWindow *window) {
     window->unk54 = window->unk4C;
@@ -323,7 +358,9 @@ void func_8005CF94_main(s16 winId) {
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005CFE0_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005D294_main);
+void func_8005D294_main(s16 winId) {
+    func_8005CD84_main(&D_800CC69C_main[winId]);
+}
 
 void func_8005D2D4_main(s16 win_id) {
     func_8005B63C_main(win_id, 0x40000, 0x40000);

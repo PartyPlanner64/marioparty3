@@ -46,8 +46,8 @@ typedef struct TextWindow {
     /* 0x024 */ u8 unk_24; /* maybe part of unk20[9]? */
     /* 0x025 */ s8 unk_25;
     /* 0x026 */ s8 unk_26;
-    /* 0x027 */ char pad27[1]; /* maybe part of unk20[9]? */
-    /* 0x028 */ u8 unk_28;     /* maybe part of unk20[9]? */
+    /* 0x027 */ u8 unk_27;
+    /* 0x028 */ u8 unk_28; /* maybe part of unk20[9]? */
     /* 0x029 */ s8 unk_29;
     /* 0x02A */ u8 unk_2A;
     /* 0x02B */ char pad2B[1];
@@ -75,10 +75,11 @@ typedef struct TextWindow {
     /* 0x056 */ u16 unk56;
     /* 0x058 */ char pad58[6]; /* maybe part of unk56[5]? */
     /* 0x05E */ s16 unk5E;
-    /* 0x060 */ char pad60[2];
+    /* 0x060 */ s16 unk60;
     /* 0x062 */ s16 unk62;
     /* 0x064 */ s16 unk64;
-    /* 0x066 */ char pad66[6]; /* maybe part of unk64[4]? */
+    /* 0x066 */ char pad66[4];
+    /* 0x06A */ s16 unk6A;
     /* 0x06C */ s16 unk_6C;
     /* 0x06E */ s16 unk_6E[0xC];
     /* 0x086 */ char pad86[0x20]; /* maybe part of unk_6E[2]? */
@@ -89,7 +90,9 @@ typedef struct TextWindow {
     /* 0x0AD */ s8 usingStringIDBool[5];
     /* 0x0B2 */ s8 unk_B2[6];
     /* 0x0B8 */ void *unk_B8[4];
-    /* 0x0C8 */ char padC8[0x18];
+    /* 0x0C8 */ char padC8[4];
+    /* 0x0CC */ u8 *unk_CC;
+    /* 0x0D0 */ char padD0[0x10];
     /* 0x0E0 */ void *unk_E0[3];
     /* 0x0EC */ f32 scaleX;
     /* 0x0F0 */ f32 scaleY;

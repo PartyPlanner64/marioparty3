@@ -139,8 +139,8 @@ void func_80106134_storydebug(void) {
         HuPrcVSleep();
         func_801062A0_storydebug();
         if (D_800D5558_main[0] & 0x8000) {
-            for (j = 0; j < ARRAY_COUNT(GwStory.unk3); j++) {
-                GwStory.unk3[j] = 0;
+            for (j = 0; j < ARRAY_COUNT(GwStory.progress.fields.unk3); j++) {
+                GwStory.progress.fields.unk3[j] = 0;
             }
             for (i = 0; i < ARRAY_COUNT_2D_ROWS(GwStory.unk10); i++) {
                 for (j = 0; j < ARRAY_COUNT_2D_COLS(GwStory.unk10); j++) {
@@ -164,22 +164,22 @@ void func_801062A0_storydebug(void) {
     s16 i, j;
 
     fontcolor = 15;
-    sprintf(sp18, "INDEX:%2X,CHR:%2X,DIF:%2X,LAST:%2X", GwStory.unk0, GwStory.unk1, GwStory.unk2, GwStory.unkF);
+    sprintf(sp18, "INDEX:%2X,CHR:%2X,DIF:%2X,LAST:%2X", GwStory.unk0, GwStory.unk1, GwStory.unk2, GwStory.progress.fields.unkF);
     print8(DEFAULT_X_POS, TextYPos, sp18);
     INCREMENT_TEXT_Y_POSITION();
 
     print8(DEFAULT_X_POS, TextYPos, "SC:");
     // iterate over first half of the array
-    for (j = 0; j < ARRAY_COUNT(GwStory.unk3) / 2; j++) {
-        sprintf(sp18, "%2X", GwStory.unk3[j]);
+    for (j = 0; j < ARRAY_COUNT(GwStory.progress.fields.unk3) / 2; j++) {
+        sprintf(sp18, "%2X", GwStory.progress.fields.unk3[j]);
         print8(GET_TEXT_X_POSITION(j), TextYPos, sp18);
     }
 
     INCREMENT_TEXT_Y_POSITION();
 
     // iterate over last half of the array
-    for (j = 0; j < ARRAY_COUNT(GwStory.unk3) / 2; j++) {
-        sprintf(sp18, "%2X", GwStory.unk3[j + 6]);
+    for (j = 0; j < ARRAY_COUNT(GwStory.progress.fields.unk3) / 2; j++) {
+        sprintf(sp18, "%2X", GwStory.progress.fields.unk3[j + 6]);
         print8(GET_TEXT_X_POSITION(j), TextYPos, sp18);
     }
 

@@ -27,8 +27,13 @@ typedef struct GW_STORY {
     /* 0x00 */ u8 unk0;
     /* 0x01 */ u8 unk1;
     /* 0x02 */ u8 unk2;
-    /* 0x03 */ u8 unk3[12];
-    /* 0x0F */ u8 unkF;
+    /* 0x03 */ union {
+        struct {
+            u8 unk3[12];
+            u8 unkF;
+        } fields;
+        u8 storyProgress[13];
+    } progress;
     /* 0x10 */ u8 unk10[6][12];
     /* 0x58 */ u8 unk58[6];
     /* 0x5E */ u8 unk5E[6];

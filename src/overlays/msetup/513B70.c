@@ -618,9 +618,9 @@ void func_80118D48_msetup(void) {
                         GwStory.unk1 = D_8011A3B0_msetup[(s16)selection];
                         GwStory.unk2 = second.result;
                         GwStory.unk0 = 0;
-                        GwStory.unkF = 0;
+                        GwStory.progress.fields.unkF = 0;
                         for (i = 0; i < 12; i++) {
-                            GwStory.unk3[i] = 0;
+                            GwStory.progress.fields.unk3[i] = 0;
                         }
                         GwSystem.playMode = 5;
                         if (third.result == 1) {

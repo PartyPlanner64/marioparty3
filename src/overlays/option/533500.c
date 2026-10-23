@@ -51,6 +51,8 @@ extern Vec D_801137FC_option;
 extern Vec D_80113808_option;
 extern Vec D_80113814_option;
 extern Vec D_80113820_option;
+extern Vec D_801138B0_option;
+extern Vec D_801138BC_option;
 extern Vec D_801139E0_option;
 extern Vec D_801139EC_option;
 extern Vec D_801139F8_option;
@@ -184,6 +186,8 @@ s32 func_8011345C_option(s32);
 void func_801123D8_option(void);
 void func_80113300_option(s32);
 void func_80112A44_option(void);
+void func_80112B08_option(void);
+void func_80112E14_option(void);
 void func_8010FFDC_option(void);
 
 void func_801059D0_option(void) {
@@ -1725,7 +1729,69 @@ s32 func_8010C04C_option(void) {
     return selection;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010C224_option);
+void func_8010C224_option(void) {
+    Vec pos, at;
+    s32 selection;
+    s32 result;
+
+    func_8001F38C_main(0, 64, 64);
+    func_80112B08_option();
+    func_8004A9DC_main(0x60);
+    WipeCreateIn(0xB, 16);
+    HuPrcSleep(16);
+    selection = func_8010C04C_option();
+    func_801133A0_option(0);
+    switch (selection) {
+        case 3:
+            HuVecCopy3F(&pos, &D_801138B0_option);
+            pos.z -= 200.0f;
+            pos.y -= 40.0f;
+            HuVecCopy3F(&at, &D_801138BC_option);
+            at.y -= 40.0f;
+            HuAudFXPlay(0x2EB);
+            func_801132E4_option(1, 0);
+            func_801132C8_option(1, 7);
+            func_80113300_option(1);
+            pos.z += 200.0f;
+            func_80106F88_option(&pos, &at, 20);
+            result = selection;
+            func_8010FFDC_option();
+            WipeColorSet(255, 255, 255);
+            WipeCreateOut(0xB, 20);
+            func_8004A9DC_main(0x7F);
+            HuPrcSleep(20);
+            break;
+        case 0:
+        case 1:
+        case 2:
+        case 4:
+            break;
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        default:
+            selection = 9;
+            break;
+    }
+    result = selection;
+    func_80112E14_option();
+    func_8005F524_main();
+    omOvlKill();
+    switch (result) {
+        case 3:
+            omOvlReturnEx(1);
+            break;
+        default:
+            omOvlReturnEx(1);
+            break;
+    }
+    omDelPrcObj(D_80114770_option);
+    while (1) {
+        HuPrcVSleep();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010C3E4_option);
 

@@ -126,7 +126,12 @@ s16 func_8005B5EC_main(u8 *str) {
     return len;
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005B614_main);
+s16 func_8005B614_main(s32 arg0) {
+    s16 value;
+
+    func_80060394_main(1, &value, arg0);
+    return value;
+}
 
 void func_8005B63C_main(s16 winId, s32 arg1, s32 arg2) {
     TextWindow *window = &D_800CC69C_main[winId];
@@ -311,9 +316,13 @@ INCLUDE_ASM("asm/nonmatchings/window", func_8005CFE0_main);
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005D294_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005D2D4_main);
+void func_8005D2D4_main(s16 win_id) {
+    func_8005B63C_main(win_id, 0x40000, 0x40000);
+}
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005D2FC_main);
+void func_8005D2FC_main(void) {
+    D_800CD2A4_main = 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005D30C_main);
 
@@ -386,7 +395,10 @@ void func_8005F784_main(s16 up, s16 down, s16 left, s16 right, s16 frames) {
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005F7F4_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005F904_main);
+void func_8005F904_main(void) {
+    D_800D1F34_main = 0;
+    D_800D6A26_main = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005F918_main);
 
@@ -598,7 +610,9 @@ void func_8006105C_main(s32 winId, s32 alpha) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_800610E0_main);
+void func_800610E0_main(s16 win_id) {
+    func_8005F364_main(win_id);
+}
 
 INCLUDE_ASM("asm/nonmatchings/window", func_80061100_main);
 

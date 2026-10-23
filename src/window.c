@@ -35,6 +35,8 @@ void func_8005BB18_main(s16, f32, f32);
 void func_800615B8_main(s16, s32);
 s32 func_8005CC3C_main(TextWindow *, s16);
 void func_8005CD84_main(TextWindow *);
+void func_8005CE10_main(TextWindow *);
+void *func_8005DAA4_main(s16);
 
 void func_8005A6B0_main(void) {
     Process *temp_v0_4;
@@ -354,7 +356,16 @@ s32 func_8005CD38_main(TextWindow *window) {
     return ((s16)window->unk56 + window->unk_28) <= (window->unk4E + window->unk52);
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005CD84_main);
+void func_8005CD84_main(TextWindow *window) {
+    void *pixels;
+
+    func_8005DD54_main(window);
+    pixels = func_8005DAA4_main(((u32)window - (u32)D_800CC69C_main) / sizeof(TextWindow));
+    if (window->unk_E0[0] != NULL) {
+        memset(pixels, 0, (window->unk44 * window->unk46) / 2);
+    }
+    func_8005CE10_main(window);
+}
 
 void func_8005CE10_main(TextWindow *window) {
     s16 i;

@@ -217,7 +217,16 @@ void func_8005BA90_main(s16 winId, s16 arg1, s16 arg2) {
     window->unk3E = arg2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005BB18_main);
+void func_8005BB18_main(s16 winId, f32 scaleX, f32 scaleY) {
+    TextWindow *window = &D_800CC69C_main[winId];
+    s16 i;
+
+    window->scaleX = scaleX;
+    window->scaleY = scaleY;
+    for (i = 0; i < 22; i++) {
+        HuSprScaleSet(window->unk_6C, i, scaleX, scaleY);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005BBC0_main);
 

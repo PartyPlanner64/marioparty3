@@ -554,9 +554,45 @@ void func_8005FE54_main(s16 winId, s16 arg1) {
     window->unk21 = (window->unk21 & 0xF0) | arg1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005FE90_main);
+void func_8005FE90_main(s16 winId) {
+    TextWindow *window = &D_800CC69C_main[winId];
+    s16 i;
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005FFA8_main);
+    HuSprAttrSet(window->unk_6C, 0, 0x8000);
+    HuSprAttrSet(window->unk_6C, 1, 0x8000);
+    for (i = 4; i < 22; i++) {
+        if (window->unk_6E[i] != -1) {
+            HuSprAttrSet(window->unk_6C, i, 0x8000);
+        }
+    }
+    if (window->unk6A != -1) {
+        HuSprAttrSet(window->unk_6C, 2, 0x8000);
+    }
+    if (window->unk20 & 2) {
+        HuSprAttrSet(window->unk_6C, 3, 0x8000);
+    }
+    func_8005B63C_main(winId, 0x4008, 8);
+}
+
+void func_8005FFA8_main(s16 winId) {
+    TextWindow *window = &D_800CC69C_main[winId];
+    s16 i;
+
+    HuSprAttrReset(window->unk_6C, 0, 0x8000);
+    HuSprAttrReset(window->unk_6C, 1, 0x8000);
+    for (i = 4; i < 22; i++) {
+        if (window->unk_6E[i] != -1) {
+            HuSprAttrReset(window->unk_6C, i, 0x8000);
+        }
+    }
+    if (window->unk6A != -1) {
+        HuSprAttrReset(window->unk_6C, 2, 0x8000);
+    }
+    if (window->unk20 & 2) {
+        HuSprAttrReset(window->unk_6C, 3, 0x8000);
+    }
+    func_8005B63C_main(winId, 0x4008, 0x4000);
+}
 
 void func_800600C0_main(s16 winId, s32 arg1) {
     TextWindow *window;

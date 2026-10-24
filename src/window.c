@@ -2,6 +2,7 @@
 #include "game/sprite.h"
 #include "common.h"
 #include "malloc.h"
+#include "input.h"
 #include "stdarg.h"
 
 extern TextWindow *D_800CC69C_main;
@@ -38,6 +39,7 @@ s32 func_8005CC3C_main(TextWindow *, s16);
 void func_8005CD84_main(TextWindow *);
 void func_8005CE10_main(TextWindow *);
 void *func_8005DAA4_main(s16);
+void func_8005F7F4_main(s16 *);
 
 void func_8005A6B0_main(void) {
     Process *temp_v0_4;
@@ -547,7 +549,43 @@ void func_8005F904_main(void) {
     D_800D6A26_main = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005F918_main);
+s16 func_8005F918_main(TextWindow *window) {
+    s16 queuedInputs[4];
+    s16 input = 0;
+
+    if (window->unk_38 & 2) {
+        func_8005F7F4_main(queuedInputs);
+    }
+    if (window->unk21 & 1) {
+        if (window->unk_38 & 2) {
+            input = queuedInputs[0] | input;
+        } else {
+            input |= (D_800D0590_main[0] & 0x3FFF) | (D_800C9520_main[0] & 0xC000);
+        }
+    }
+    if (window->unk21 & 2) {
+        if (window->unk_38 & 2) {
+            input = queuedInputs[1] | input;
+        } else {
+            input |= (D_800D0590_main[1] & 0x3FFF) | (D_800C9520_main[1] & 0xC000);
+        }
+    }
+    if (window->unk21 & 4) {
+        if (window->unk_38 & 2) {
+            input = queuedInputs[2] | input;
+        } else {
+            input |= (D_800D0590_main[2] & 0x3FFF) | (D_800C9520_main[2] & 0xC000);
+        }
+    }
+    if (window->unk21 & 8) {
+        if (window->unk_38 & 2) {
+            input = queuedInputs[3] | input;
+        } else {
+            input |= (D_800D0590_main[3] & 0x3FFF) | (D_800C9520_main[3] & 0xC000);
+        }
+    }
+    return input;
+}
 
 u8 func_8005FA90_main(u8 *arg0) {
     s16 i, j;

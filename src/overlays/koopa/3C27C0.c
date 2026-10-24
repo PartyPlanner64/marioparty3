@@ -657,7 +657,43 @@ void func_801087F0_koopa(void) {
     omDelPrcObj(NULL);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_80108A2C_koopa);
+s32 func_80108A2C_koopa(void) {
+    s32 total = 0;
+    s32 i;
+    s32 result;
+
+    for (i = 0; i < MB_MAX_PLAYERS; i++) {
+        total += GwPlayer[i].coin;
+    }
+    if (total >= MB_MAX_PLAYERS) {
+        MBWinOpen(0x421F);
+        func_800EC3C0_shared_board(D_801094F4_koopa);
+        func_800EC3E4_shared_board();
+        MBStatusDispMoveSet(0);
+        HuPrcSleep(20);
+        HuPrcChildLink(HuPrcCurrentGet(), omAddPrcObj(func_801087F0_koopa, 0x300, 0x2000, 0));
+        func_80108360_koopa(0xB0039);
+        HuPrcChildWait();
+        MBWinOpen(0x4221);
+        func_800EC3C0_shared_board(D_801094F4_koopa);
+        func_800EC3E4_shared_board();
+        MBWinOpen(0x420F);
+        func_800EC3C0_shared_board(D_801094F4_koopa);
+        func_800EC3E4_shared_board();
+        result = 0;
+    } else {
+        MBWinOpen(0x4220);
+        func_800EC3C0_shared_board(D_801094F4_koopa);
+        func_800EC3E4_shared_board();
+        HuAudFXPlay(0x29E);
+        MBMotionShiftSet(D_801094F8_koopa, 4, 0, 20, 0);
+        MBModelMotionWait(D_801094F8_koopa);
+        MBMotionShiftSet(D_801094F8_koopa, 7, 0, 5, 2);
+        HuPrcSleep(10);
+        result = 1;
+    }
+    return result;
+}
 
 s32 func_80108BB0_koopa(void) {
     Vec direction;

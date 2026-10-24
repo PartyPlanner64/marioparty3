@@ -53,7 +53,8 @@ typedef struct TextWindow {
     /* 0x038 */ u32 unk_38;
     /* 0x03C */ u16 unk3C;
     /* 0x03E */ u16 unk3E;
-    /* 0x040 */ char pad40[4]; /* maybe part of unk3E[5]? */
+    /* 0x040 */ s16 unk40;
+    /* 0x042 */ char pad42[2];
     /* 0x044 */ s16 unk44;
     /* 0x046 */ s16 unk46;
     /* 0x048 */ u16 unk48;

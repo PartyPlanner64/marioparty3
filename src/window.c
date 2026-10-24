@@ -928,7 +928,39 @@ void func_80060858_main(s32 winId, s16 arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/window", func_80060880_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_80060C14_main);
+void func_80060C14_main(s32 winId, s32 playSound) {
+    TextWindow *window = &D_800CC69C_main[winId];
+    s16 i;
+    f32 scale;
+
+    if (!(window->unk_38 & 0x4000)) {
+        func_800600C0_main(winId, 1);
+        if (playSound) {
+            if (window->unk_38 & 0x20) {
+                HuAudFXPlay(0);
+            } else {
+                HuAudFXPlay(0x11D);
+            }
+        }
+        for (i = 0; i < 10; i++) {
+            scale = sindf(i * 10.0f) * ((f32)(window->unk40 + 4) / window->unk40);
+            HuSprScaleSet(window->unk_6C, window->unk274, scale, scale);
+            func_8005BB18_main(winId, scale, scale);
+            if (window->unk276 != 0) {
+                HuSprScaleSet(window->unk_6C, window->unk276, scale, scale);
+            }
+            HuPrcVSleep();
+        }
+        HuSprScaleSet(window->unk_6C, window->unk274, 1.0f, 1.0f);
+        if (window->unk276 != 0) {
+            HuSprScaleSet(window->unk_6C, window->unk276, 1.0f, 1.0f);
+        }
+        func_8005BB18_main(winId, 1.0f, 1.0f);
+        func_800600C0_main(winId, 0);
+        func_8005B63C_main(winId, 0x4000, 0x4000);
+        HuPrcVSleep();
+    }
+}
 
 void func_80060DEC_main(s32 win_id) {
     TextWindow *window = &D_800CC69C_main[win_id];

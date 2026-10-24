@@ -53,6 +53,7 @@ extern omObjData *D_8010DDD8_inst;
 extern void (*D_8010DDDC_inst)(omObjData *);
 extern void (*D_8010DDEC_inst)(omObjData *);
 extern s32 D_8010D658_inst[];
+extern s32 D_8010D510_inst;
 extern s32 D_8010D520_inst;
 extern s32 D_8010D530_inst;
 extern void (*D_8010DDE4_inst)(omObjData *);
@@ -379,7 +380,18 @@ void func_80107EE0_inst(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80107F18_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80107F98_inst);
+void func_80107F98_inst(omObjData *obj) {
+    f32 duration = D_800CCF58_main[HmfModelData[obj->model[3]].unk02].unk02 - 25.0f;
+    f32 angle = D_8010D414_inst - ((f32)D_8010D510_inst / duration) * D_8010D414_inst;
+
+    HmfModelData[obj->model[1]].rot.x = angle - 90.0f;
+    HmfModelData[obj->model[2]].rot.x = angle;
+    D_8010D510_inst++;
+    if ((f32)D_8010D510_inst == duration) {
+        D_8010DDDC_inst = func_80107BF8_inst;
+        D_8010D510_inst = 0;
+    }
+}
 
 s32 func_801080A8_inst(void) {
     f32 unk40 = HmfModelData[D_8010DDD8_inst->model[0]].unk40;

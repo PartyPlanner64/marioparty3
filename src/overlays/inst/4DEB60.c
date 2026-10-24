@@ -14,12 +14,14 @@ void func_80107470_inst(void);         /* extern */
 void func_80107A24_inst(omObjData *);  /* extern */
 void func_80107BF8_inst(omObjData *);  /* extern */
 void func_80108350_inst(void);         /* extern */
-void func_801094B0_inst(void);         /* extern */
-void func_8010986C_inst(omObjData *);  /* extern */
-void func_80109A90_inst(void);         /* extern */
-void func_8010A1D0_inst(void);         /* extern */
-void func_8010B990_inst(void);         /* extern */
-void func_8000BC48_main(u16, u16);     /* extern */
+void func_80108870_inst(omObjData *);
+void func_8010C8D0_inst(void);
+void func_801094B0_inst(void);        /* extern */
+void func_8010986C_inst(omObjData *); /* extern */
+void func_80109A90_inst(void);        /* extern */
+void func_8010A1D0_inst(void);        /* extern */
+void func_8010B990_inst(void);        /* extern */
+void func_8000BC48_main(u16, u16);    /* extern */
 
 extern f32 D_800CB890_main;
 extern f32 D_800CE17C_main[];
@@ -46,6 +48,8 @@ extern omObjData *D_8010DDD8_inst;
 extern void (*D_8010DDDC_inst)(omObjData *);
 extern void (*D_8010DDEC_inst)(omObjData *);
 extern s32 D_8010D658_inst[];
+extern s32 D_8010D520_inst;
+extern void (*D_8010DDE4_inst)(omObjData *);
 
 void func_801059A0_inst(void) {
     void (*procFunc)(void) = NULL;
@@ -371,7 +375,16 @@ INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80108350_inst);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_8010872C_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80108808_inst);
+void func_80108808_inst(omObjData *object) {
+    D_8010D520_inst++;
+    if (D_8010D520_inst >= 100) {
+        func_8001C258_main(object->model[0], 4, 0);
+        HuAudFXPlay(0x135);
+        D_8010DDE4_inst = func_80108870_inst;
+        D_8010D520_inst = 0;
+        func_8010C8D0_inst();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80108870_inst);
 

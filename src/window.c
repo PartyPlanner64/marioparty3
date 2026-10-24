@@ -18,6 +18,7 @@ extern WindowIconDefinition D_800A2294_main[];
 extern TextWindow *D_800CC69C_main;
 extern s32 D_800D209C_main;
 extern u8 D_800A2194_main[];
+extern u16 D_800A2186_main[];
 extern u8 D_800A2150_main;
 extern u8 gLanguageIndex;
 extern u8 D_800A2324_main[];
@@ -905,7 +906,42 @@ void func_8005FBA4_main(u8 *buffer, s32 message) {
     *buffer = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005FBF8_main);
+void func_8005FBF8_main(s16 winId, s32 red, s32 green, s32 blue) {
+    TextWindow *window = &D_800CC69C_main[winId];
+    HuSprite *sprite;
+    u16 *palette;
+    s16 i;
+    s16 r;
+    s16 g;
+    s16 b;
+    u16 color;
+
+    window->backgroundRed = red;
+    window->backgroundGreen = green;
+    window->backgroundBlue = blue;
+    func_80055420_main(window->unk_6C, 0, red, green, blue);
+    sprite = HuSprGet(window->unk_6C, 1);
+    for (i = 0; i < 7; i++) {
+        color = D_800A2186_main[i];
+        r = ((color >> 8) & 0xF8) * 0.3f + (u8)red * 0.7f;
+        if (r >= 256) {
+            r = 255;
+        }
+        g = ((color >> 3) & 0xF8) * 0.3f + (u8)green * 0.7f;
+        if (g >= 256) {
+            g = 255;
+        }
+        b = ((color << 2) & 0xF8) * 0.3f + (u8)blue * 0.7f;
+        if (b >= 256) {
+            b = 255;
+        }
+        window->palette[i + 9] = ((r << 8) & 0xF800) | ((g << 3) & 0x7C0) | ((b >> 2) & 0x3E) | 1;
+    }
+    palette = HuMemAlloc(sizeof(window->palette));
+    bcopy(window, palette, sizeof(window->palette));
+    func_80019C00_main(sprite->unk_84->unk0C);
+    sprite->unk_84->unk0C = palette;
+}
 
 void func_8005FE54_main(s16 winId, s16 arg1) {
     TextWindow *window = &D_800CC69C_main[winId];

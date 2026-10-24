@@ -18,6 +18,7 @@ void func_80107A24_inst(omObjData *); /* extern */
 void func_80107BF8_inst(omObjData *); /* extern */
 void func_80108350_inst(void);        /* extern */
 void func_80108870_inst(omObjData *);
+void func_80108954_inst(omObjData *);
 void func_80108A10_inst(omObjData *);
 void func_8010C848_inst(void);
 void func_8010C8D0_inst(void);
@@ -58,6 +59,7 @@ extern void (*D_8010DDEC_inst)(omObjData *);
 extern s32 D_8010D658_inst[];
 extern s32 D_8010D510_inst;
 extern s32 D_8010D520_inst;
+extern s32 D_8010D524_inst;
 extern s32 D_8010D530_inst;
 extern void (*D_8010DDE4_inst)(omObjData *);
 
@@ -426,7 +428,19 @@ void func_80108808_inst(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80108870_inst);
+void func_80108870_inst(omObjData *object) {
+    D_8010D524_inst++;
+    object->trans.y = sindf(D_8010D524_inst * 5) * 200.0f + -148.0f;
+    if (D_8010D524_inst >= 17) {
+        object->trans.y = 52.0f;
+        D_8010D524_inst = 0;
+        func_8001C5B4_main(object->model[0], object->motion[2]);
+        func_8001C814_main(object->model[0], 2, 0);
+        HuPrcSleep(10);
+        HuAudFXPlay(0x2A7);
+        D_8010DDE4_inst = func_80108954_inst;
+    }
+}
 
 void func_80108954_inst(omObjData *object) {
     s16 model = object->model[0];

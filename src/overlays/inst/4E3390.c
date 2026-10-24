@@ -15,7 +15,7 @@ typedef struct {
 } UnkInstWin;      /* sizeof 0x0E */
 
 void func_8010AC30_inst(omObjData *); /* extern */
-void func_8010BE78_inst(s32 arg0);        /* extern */
+void func_8010BE78_inst(s32 arg0);    /* extern */
 
 extern s8 D_8010D408_inst;
 extern s8 D_8010D550_inst;
@@ -75,7 +75,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010B040_inst);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010B0FC_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010B10C_inst);
+s32 func_8010B10C_inst(void) {
+    return D_8010D550_inst;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010B118_inst);
 

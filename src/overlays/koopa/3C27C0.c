@@ -574,7 +574,40 @@ s32 func_80108664_koopa(void) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_801086E4_koopa);
+s32 func_801086E4_koopa(void) {
+    s32 player1;
+    s32 player2;
+    s32 other1;
+    s32 other2;
+    s32 i;
+
+    MBWinOpen(0x421D);
+    func_800EC3C0_shared_board(D_801094F4_koopa);
+    player1 = 0;
+    func_800EC3E4_shared_board();
+    func_80108360_koopa(0xB0038);
+    player2 = MBRand(3.0f) + 1;
+    MBPlayerMasuSwap(player1, player2);
+    other2 = -1;
+    other1 = -1;
+    for (i = 0; i < MB_MAX_PLAYERS; i++) {
+        if ((i != player1) & (i != player2)) {
+            if (other1 == -1) {
+                other1 = i;
+            } else {
+                other2 = i;
+            }
+        }
+    }
+    MBPlayerMasuSwap(other1, other2);
+    MBWinOpen(0x421E);
+    func_800EC3C0_shared_board(D_801094F4_koopa);
+    func_800EC3E4_shared_board();
+    MBWinOpen(0x420F);
+    func_800EC3C0_shared_board(D_801094F4_koopa);
+    func_800EC3E4_shared_board();
+    return 0;
+}
 
 void func_801087F0_koopa(void) {
     s32 playSound;

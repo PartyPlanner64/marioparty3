@@ -1,4 +1,5 @@
 #include "common.h"
+#include "../ovl_80_shared_board/1006F0.h"
 #include "../ovl_80_shared_board/ECA50.h"
 #include "../ovl_80_shared_board/106A50.h"
 #include "../ovl_80_shared_board/FA250.h"
@@ -511,7 +512,31 @@ INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_801087F0_koopa);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_80108A2C_koopa);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_80108BB0_koopa);
+s32 func_80108BB0_koopa(void) {
+    Vec direction;
+    s32 i;
+    f32 scale;
+    Object *object;
+
+    HuPrcSleep(15);
+    MBMotionSet(D_801094F8_koopa, 6, 2);
+    func_8001C92C_main(D_801094F8_koopa->omObj1->model[0], 2.0f);
+    MBVecDirGet(&D_801094F8_koopa->coords, &D_801093BC_koopa, &direction);
+    HuPrcChildLink(HuPrcCurrentGet(), func_800ED128_shared_board(&D_801094F8_koopa->rot, &direction, &D_801094F8_koopa->rot, 10));
+    HuPrcChildWait();
+    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&D_801094F8_koopa->coords, &D_801093BC_koopa, &D_801094F8_koopa->coords, 30));
+    for (i = 0; i < 30; i++) {
+        object = D_801094F8_koopa;
+        scale = 2.0f - i / 15.0f;
+        HuVecCopyXYZ(&object->scale, scale, scale, scale);
+        HuPrcVSleep();
+    }
+    MBModelDispOff(D_801094F8_koopa);
+    MBWinOpen(0x4222);
+    func_800EC3C0_shared_board(D_801094F4_koopa);
+    func_800EC3E4_shared_board();
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_80108D2C_koopa);
 

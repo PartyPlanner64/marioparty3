@@ -130,7 +130,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010C848_inst);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010C890_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010C8B4_inst);
+void func_8010C8B4_inst(void) {
+    GMesClose();
+}
 
 void func_8010C8D0_inst(void) {
     D_8010D5B0_inst = 1;

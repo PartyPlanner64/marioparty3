@@ -341,7 +341,18 @@ void func_8005C02C_main(s16 winId, s32 arg1) {
     window->unk_23 = arg1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005C060_main);
+void func_8005C060_main(s16 winId, u8 index, u8 red, u8 green, u8 blue) {
+    TextWindow *window = &D_800CC69C_main[winId];
+    HuSprite *sprite;
+    u16 *palette;
+
+    sprite = HuSprGet(window->unk_6C, 1);
+    window->palette[index + 1] = ((red << 8) & 0xF800) | ((green << 3) & 0x7C0) | (u8)((blue >> 2) & 0x3E) | 1;
+    palette = HuMemAlloc(sizeof(window->palette));
+    bcopy(window, palette, sizeof(window->palette));
+    func_80019C00_main(sprite->unk_84->unk0C);
+    sprite->unk_84->unk0C = palette;
+}
 
 void func_8005C154_main(s16 winId, s32 red, s32 green, s32 blue) {
     func_8005C060_main(winId, 0, red & 0xFF, green & 0xFF, blue & 0xFF);

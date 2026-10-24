@@ -29,18 +29,9 @@ typedef struct WindowInputRecord {
 } WindowInputRecord; /* size = 0xA */
 
 typedef struct TextWindow {
-    /* 0x000 */ u8 unk_00;
-    /* 0x001 */ char pad1[3]; /* maybe part of unk_00[4]? */
-    /* 0x004 */ s8 unk_04;
-    /* 0x005 */ u8 unk_05;
-    /* 0x006 */ char pad6[0xA]; /* maybe part of unk_05[0xB]? */
-    /* 0x010 */ u8 unk_10;
-    /* 0x011 */ char pad11[7]; /* maybe part of unk_10[8]? */
-    /* 0x018 */ s16 unk_18;
-    /* 0x01A */ s16 unk_1A;
-    /* 0x01C */ char pad1C[4]; /* maybe part of unk_1A[3]? */
-    /* 0x020 */ s8 unk20;      /* inferred */
-    /* 0x021 */ u8 unk21;      /* low nibble: enabled inputs */
+    /* 0x000 */ u16 palette[16];
+    /* 0x020 */ s8 unk20; /* inferred */
+    /* 0x021 */ u8 unk21; /* low nibble: enabled inputs */
     /* 0x022 */ s8 unk_22;
     /* 0x023 */ s8 unk_23;
     /* 0x024 */ u8 unk_24; /* maybe part of unk20[9]? */
@@ -113,7 +104,7 @@ void func_8005BDFC_main(s16, s32);
 void func_8005BE30_main(s16, s32);
 void func_8005BEE0_main(s16, s16);
 void func_8005C02C_main(s16, s32);
-void func_8005C060_main(s16, s32, s32, s32, s32);
+void func_8005C060_main(s16, u8, u8, u8, u8);
 s32 func_8005CCF0_main(TextWindow *window);
 s32 func_8005CD38_main(TextWindow *window);
 void func_8005D294_main(s16);

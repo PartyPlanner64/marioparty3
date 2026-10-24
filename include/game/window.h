@@ -96,7 +96,9 @@ typedef struct TextWindow {
     /* 0x0CC */ u8 *unk_CC;
     /* 0x0D0 */ void *unk_D0;
     /* 0x0D4 */ u8 unk_D4;
-    /* 0x0D5 */ char padD5[0xB];
+    /* 0x0D5 */ char padD5[3];
+    /* 0x0D8 */ u8 *unk_D8;
+    /* 0x0DC */ u8 *pixels;
     /* 0x0E0 */ void *unk_E0[3];
     /* 0x0EC */ f32 scaleX;
     /* 0x0F0 */ f32 scaleY;

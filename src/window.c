@@ -30,6 +30,8 @@ typedef struct WindowFrameDefinition {
     u8 pad1A[2];
 } WindowFrameDefinition;
 
+extern u8 D_800A2154_main[];
+extern u16 D_800A2174_main[];
 extern WindowFrameDefinition D_800A2384_main[];
 extern WindowIconDefinition D_800A2294_main[];
 extern TextWindow *D_800CC69C_main;
@@ -64,6 +66,8 @@ extern u16 D_800BDA6E_main;
 extern u8 D_800D5206_main[5];
 extern s8 D_800D5540_main;
 
+void func_8005B040_main(u8 *, s16, s16);
+void func_8005B238_main(u8 *, s16, s16);
 s16 func_8005BA54_main(s16, s16);
 void func_8005BB18_main(s16, f32, f32);
 void func_800615B8_main(s16, s32);
@@ -157,7 +161,146 @@ void func_8005A6B0_main(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005A968_main);
+s16 func_8005A968_main(s16 x, s16 y, s16 width, s16 height, s32 arg4, s16 flags) {
+    s16 winId;
+    s16 i;
+    s16 group;
+    TextWindow *window;
+    HuSprite *sprite;
+    s32 size;
+    s32 pixelHeight;
+    s32 pixelWidth;
+
+    for (winId = 2; winId < WINDOWS_MAX; winId++) {
+        if (D_800CC69C_main[winId].unk5E == -1) {
+            break;
+        }
+    }
+    if (winId == WINDOWS_MAX) {
+        return -1;
+    }
+    if (width & 1) {
+        width++;
+    }
+    window = &D_800CC69C_main[winId];
+    window->unk64 = 1;
+    window->unk62 = D_800CC69C_main[1].unk62;
+    window->unk5E = 0x7D00;
+    D_800CC69C_main[D_800CC69C_main[1].unk62].unk64 = winId;
+    D_800CC69C_main[1].unk62 = winId;
+    window->unk40 = width;
+    window->unk42 = height;
+    if (flags & 2) {
+        window->unk3C = (320 - width) / 2;
+        window->unk3E = (240 - height) / 2;
+    } else if (!(flags & 4)) {
+        if (x + width > 296) {
+            window->unk3C = 296 - width;
+        } else {
+            window->unk3C = x;
+        }
+        if (y + height > 224) {
+            window->unk3E = 224 - height;
+        } else {
+            window->unk3E = y;
+        }
+    } else {
+        window->unk3C = x;
+        window->unk3E = y;
+    }
+    window->unk44 = (width + 15) & 0xFFF0;
+    window->unk46 = height + 16;
+    window->scaleX = window->scaleY = 1.0f;
+    window->unk4C = window->unk4E = window->unk54 = window->unk56 = 4;
+    window->unk50 = width - 8;
+    window->unk52 = height - 8;
+    window->unk20 = 0;
+    window->unk_22 = 7;
+    window->unk_23 = 7;
+    window->unk_33 = 0;
+    window->unk_25 = window->unk_26 = 1;
+    window->unk_27 = 10;
+    window->unk_28 = 12;
+    window->unk_29 = 0;
+    window->unk_2A = 2;
+    window->unk58 = window->unk40 - window->unk_27 - 4;
+    window->unk5A = window->unk42 - window->unk_28;
+    window->unk48 = window->unk4A = 0;
+    window->backgroundRed = D_800A2154_main[0];
+    window->backgroundGreen = D_800A2154_main[1];
+    window->backgroundBlue = D_800A2154_main[2];
+    window->unk21 = 15;
+    window->unk_31 = window->unk_32 = 0;
+    window->unk_38 = 0;
+    window->unk_D0 = NULL;
+    window->unk_A6 = 0;
+    window->padAC[0] = -1;
+    window->unk_35 = 12;
+    for (i = 0; i < 5; i++) {
+        window->unk_B8[i] = NULL;
+        window->unk_B2[i] = -1;
+    }
+    window->unk_E0[0] = NULL;
+    window->unk6A = -1;
+    window->unk_24 = 0;
+    for (i = 0; i < 22; i++) {
+        window->unk_6E[i] = i >= 3 ? -1 : 0;
+    }
+    window->unk_9A = 0;
+    window->unk66 = func_80055810_main(D_800D4084_main);
+    window->unk68 = func_80055810_main(D_800CE2C4_main);
+    group = HuSprGrpCreate(22, 5);
+    window->unk_6C = group;
+    func_80055458_main(group, 0, 0x100);
+    HuSprAttrReset(group, 0, 0xFFFF);
+    HuSprAttrSet(group, 0, 0x1009000);
+    func_80055024_main(group, 0, window->unk66, 0);
+    func_800550F4_main(group, 0, 0);
+    func_800554C4_main(group, 0, -1);
+    func_80054904_main(group, 0, window->unk3C, window->unk3E);
+    func_80055420_main(window->unk_6C, 0, 64, 32, 176);
+    sprite = HuSprGet(group, 0);
+    if (!(flags & 8)) {
+        sprite->unk_84->unk00->unk04 = width;
+        sprite->unk_84->unk00->unk06 = height;
+        HuMemFree(sprite->unk_84->unk00->unk00);
+        pixelWidth = width;
+        pixelHeight = height;
+        size = pixelWidth * pixelHeight / 2;
+        sprite->unk_84->unk00->unk00 = window->pixels = HuMemAlloc(size);
+        memset(window->pixels, 0xFF, size);
+        if (!(flags & 1)) {
+            if (flags & 16) {
+                func_8005B238_main(window->pixels, pixelWidth, pixelHeight);
+            } else {
+                func_8005B040_main(window->pixels, width, height);
+            }
+        }
+        func_80055458_main(group, 0, 100);
+        HuSprAttrReset(group, 0, 0x8000);
+        func_800550F4_main(group, 0, 0);
+    } else {
+        func_80055458_main(group, 0, 0);
+        HuSprAttrSet(group, 0, 0x8000);
+        func_800550F4_main(group, 0, 0);
+    }
+    func_80055458_main(group, 1, 0x100);
+    HuSprAttrReset(group, 1, 0xFFFF);
+    HuSprAttrSet(group, 1, 0x1009000);
+    func_80055024_main(group, 1, window->unk68, 0);
+    func_800550F4_main(group, 1, 0);
+    func_80054904_main(group, 1, 0, 0);
+    func_800554C4_main(group, 1, 0);
+    bcopy(D_800A2174_main, window, 32);
+    for (i = 0; i < 22; i++) {
+        HuSprPriSet(group, i, D_800D6B62_main);
+    }
+    HuSprPriSet(group, 2, D_800D6B62_main - 1);
+    window->unk60 = D_800D6B62_main;
+    D_800D6B62_main -= 32;
+    window->unk_AA = 312;
+    return winId;
+}
 
 void func_8005B040_main(u8 *pixels, s16 width, s16 height) {
     s16 stride = width / 2;

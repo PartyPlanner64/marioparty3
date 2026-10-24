@@ -31,6 +31,7 @@ extern s8 D_8010D408_inst;
 extern s8 D_8010D40A_inst;
 extern s8 D_8010D40B_inst;
 extern s8 D_8010D411_inst;
+extern f32 D_8010D414_inst;
 extern Vec D_8010D418_inst;
 extern Vec D_8010D424_inst;
 extern Vec D_8010D430_inst;
@@ -191,7 +192,9 @@ void func_801067CC_inst(void) {
     D_8010D430_inst.z = -0.000001f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80106850_inst);
+void func_80106850_inst(Vec *arg0, Vec *arg1) {
+    D_8010D414_inst = 90.0f - atan2df(arg0->y - arg1->y, arg0->z - arg1->z);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80106898_inst);
 

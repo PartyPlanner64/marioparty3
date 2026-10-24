@@ -20,6 +20,7 @@ extern s32 D_800D209C_main;
 extern u8 D_800A2194_main[];
 extern u16 D_800A2186_main[];
 extern u8 D_800A2150_main;
+extern u8 D_800D6A90_main;
 extern u8 gLanguageIndex;
 extern u8 D_800A2324_main[];
 extern u8 D_800A2325_main[];
@@ -57,6 +58,10 @@ s16 func_8005B614_main(s32);
 void func_8005CF94_main(s16);
 void func_80060848_main(void);
 void func_8005DD14_main(s16);
+void func_8005C190_main(s16);
+s32 func_8005E348_main(s16);
+void func_8005EEE4_main(TextWindow *, TextWindowSprite *);
+s32 func_8005F918_main(TextWindow *);
 
 void func_8005A6B0_main(void) {
     Process *temp_v0_4;
@@ -707,7 +712,62 @@ void func_8005DD54_main(TextWindow *window) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005DDDC_main);
+void func_8005DDDC_main(void) {
+    TextWindow *window;
+    s32 input;
+    s16 winId;
+
+    while (1) {
+        HuPrcVSleep();
+        winId = D_800CC69C_main[0].unk64;
+        while (D_800CC69C_main[winId].unk64 != -1) {
+            window = &D_800CC69C_main[winId];
+            if ((window->unk_38 & 0x400) ||
+                ((!D_800CB99C_main || (window->unk_38 & 0x40)) &&
+                 (func_80049F98_main() + D_800D6A90_main != 0))) {
+                if (window->unk_38 & 0x100) {
+                    func_8005DC94_main(winId);
+                }
+                winId = D_800CC69C_main[winId].unk64;
+                continue;
+            }
+            window->unk_38 &= ~0x200;
+            switch ((u8)window->unk20) {
+                case 1:
+                    func_8005C190_main(winId);
+                    break;
+                case 2:
+                case 6:
+                    if (!(window->unk_38 & 0x10) || (u8)window->unk20 == 6) {
+                        input = func_8005F918_main(window);
+                        if ((input & 0xC000) || (input & (u16)window->unk_A6)) {
+                            if (window->unk_AA != -1) {
+                                HuAudFXPlay(window->unk_AA);
+                            }
+                            if ((u8)window->unk20 == 6) {
+                                func_8005D294_main(winId);
+                            }
+                            window->unk20 = 1;
+                            window->unk_38 |= 0x200;
+                            window->input = input;
+                            func_8005CF94_main(winId);
+                        }
+                    }
+                    break;
+                case 5:
+                    if (func_8005E348_main(winId) == 0) {
+                        window->unk20 = 0;
+                    }
+                    break;
+            }
+            if (window->unk_38 & 0x100) {
+                func_8005DC94_main(winId);
+            }
+            func_8005EEE4_main(window, &window->unk_F4[window->unk_31]);
+            winId = D_800CC69C_main[winId].unk64;
+        }
+    }
+}
 
 s16 func_8005E0C0_main(s16 winId) {
     s16 status = 0;
@@ -836,7 +896,7 @@ void func_8005F904_main(void) {
     D_800D6A26_main = 0;
 }
 
-s16 func_8005F918_main(TextWindow *window) {
+s32 func_8005F918_main(TextWindow *window) {
     s16 queuedInputs[4];
     s16 input = 0;
 

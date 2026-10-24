@@ -12,6 +12,7 @@ void func_80106EB4_inst(void);         /* extern */
 void func_80107308_inst(void);         /* extern */
 void func_80107470_inst(void);         /* extern */
 void func_80107A24_inst(omObjData *);  /* extern */
+void func_80107BF8_inst(omObjData *);  /* extern */
 void func_80108350_inst(void);         /* extern */
 void func_801094B0_inst(void);         /* extern */
 void func_8010986C_inst(omObjData *);  /* extern */
@@ -219,7 +220,9 @@ void func_801079CC_inst(omObjData *obj) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80107A24_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80107BE4_inst);
+void func_80107BE4_inst(void) {
+    D_8010DDDC_inst = func_80107BF8_inst;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4DEB60", D_8010D770_inst);
 

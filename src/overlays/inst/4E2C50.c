@@ -5,6 +5,7 @@ extern s32 D_8010D540_inst;
 extern s32 D_8010D544_inst;
 extern void (*D_8010DDD4_inst)(omObjData *);
 
+void func_80109F50_inst(omObjData *);
 void func_8010A000_inst(omObjData *);
 void func_8010A0E8_inst(omObjData *);
 void func_8010A1BC_inst(omObjData *object);
@@ -13,7 +14,14 @@ void func_8010C8D0_inst(void);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E2C50", func_80109A90_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E2C50", func_80109E94_inst);
+void func_80109E94_inst(omObjData *object) {
+    object->trans.x = D_8010D40A_inst == 3 ? -86.0f : -91.0f;
+    object->trans.y = D_8010D40A_inst == 3 ? -150.0f : -164.0f;
+    object->trans.z = 210.0f;
+    object->rot.x = -20.0f;
+    Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
+    D_8010DDD4_inst = func_80109F50_inst;
+}
 
 void func_80109F50_inst(omObjData *object) {
     D_8010D540_inst++;

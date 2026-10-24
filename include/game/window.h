@@ -85,7 +85,7 @@ typedef struct TextWindow {
     /* 0x0A6 */ s16 unk_A6;
     /* 0x0A8 */ u16 input;
     /* 0x0AA */ s16 unk_AA;
-    /* 0x0AC */ char padAC[1];
+    /* 0x0AC */ s8 insertionIndex;
     /* 0x0AD */ s8 usingStringIDBool[5];
     /* 0x0B2 */ s8 unk_B2[6];
     /* 0x0B8 */ void *unk_B8[5];

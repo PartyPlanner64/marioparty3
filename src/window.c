@@ -86,7 +86,11 @@ s16 func_8005B614_main(s32);
 void func_8005CF94_main(s16);
 void func_80060848_main(void);
 void func_8005DD14_main(s16);
-void func_8005C190_main(s16);
+s32 func_8005C190_main(s16);
+s32 func_8005CC18_main(TextWindow *);
+void func_8005CEB0_main(s16);
+s32 func_8005CFE0_main(s16, s16);
+void func_8005D30C_main(s16, u8, u8, s16, s16);
 s32 func_8005E348_main(s16);
 void func_8005EEE4_main(TextWindow *, TextWindowSprite *);
 s32 func_8005F918_main(TextWindow *);
@@ -240,7 +244,7 @@ s16 func_8005A968_main(s16 x, s16 y, s16 width, s16 height, s32 arg4, s16 flags)
     window->unk_38 = 0;
     window->unk_D0 = NULL;
     window->unk_A6 = 0;
-    window->padAC[0] = -1;
+    window->insertionIndex = -1;
     window->unk_35 = 12;
     for (i = 0; i < 5; i++) {
         window->unk_B8[i] = NULL;
@@ -640,7 +644,221 @@ void func_8005C154_main(s16 winId, s32 red, s32 green, s32 blue) {
     func_8005C060_main(winId, 0, red & 0xFF, green & 0xFF, blue & 0xFF);
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005C190_main);
+s32 func_8005C190_main(s16 winId) {
+    TextWindow *window = &D_800CC69C_main[winId];
+    TextWindowSprite *sprite;
+    s16 colorSkip = 0;
+    s16 tab;
+    s16 width;
+    s32 code;
+
+    if ((u8)window->unk_25 == 0xFF) {
+        return 1;
+    }
+    while (window->unk5C >= (u8)window->unk_26) {
+        while (*window->unk_CC <= 0x20) {
+            if (*window->unk_CC == 0) {
+                if (window->insertionIndex >= 0) {
+                    if (window->unk_B2[window->insertionIndex] != -1) {
+                        window->unk_22 = window->unk_B2[5];
+                    }
+                    window->insertionIndex = -1;
+                    window->unk_CC = window->unk_D8;
+                    continue;
+                }
+                if (window->unk_D4 != 0) {
+                    func_800365E8_main(window->unk_D0);
+                }
+                window->unk_D0 = NULL;
+                window->unk20 = 0;
+                return 0;
+            }
+            if (*window->unk_CC < 9) {
+                if ((window->insertionIndex == -1) & (colorSkip != 0)) {
+                    colorSkip--;
+                } else {
+                    window->unk_22 = *window->unk_CC - 1;
+                    colorSkip = 0;
+                    if (window->insertionIndex != -1) {
+                        colorSkip = (window->unk_CC[1] == 0) * 2;
+                    }
+                }
+            }
+            code = *window->unk_CC - 0x11;
+            if ((u8)code < 5) {
+                window->insertionIndex = code;
+                if (window->unk_B8[window->insertionIndex] != NULL) {
+                    window->unk_CC++;
+                    window->unk_D8 = window->unk_CC;
+                    window->unk_CC = window->unk_B8[window->insertionIndex];
+                    if (window->unk_B2[window->insertionIndex] != -1) {
+                        window->unk_B2[5] = window->unk_22;
+                        window->unk_22 = window->unk_B2[window->insertionIndex];
+                    }
+                    continue;
+                }
+                window->insertionIndex = -1;
+            }
+            if (window->unk_38 & 4) {
+                if (((*window->unk_CC == 0x10) | (*window->unk_CC == 0x20)) || *window->unk_CC == 0x1A) {
+                    if (*window->unk_CC == 0x1A) {
+                        *window->unk_CC = 0x60;
+                    } else {
+                        *window->unk_CC = 0x40;
+                    }
+                    break;
+                }
+            }
+            switch (*window->unk_CC) {
+                case 0x10:
+                case 0x1A:
+                case 0x20:
+                    if (gLanguageIndex == LANGUAGE_JAPANESE) {
+                        window->unk_34 = 10;
+                    } else if (*window->unk_CC == 0x1A || (window->unk_38 & 0x80000)) {
+                        window->unk_34 = 10;
+                    } else {
+                        window->unk_34 = 4;
+                    }
+                    window->unk_CC++;
+                    if (!func_8005CC18_main(window)) {
+                        window->unk20 = 6;
+                        func_8005CEB0_main(winId);
+                        return 1;
+                    }
+                    continue;
+                case 0xA:
+                    if (!(window->unk_38 & 0x40000) && !func_8005CCF0_main(window) && window->unk_CC[1] != 0) {
+                        window->unk20 = 6;
+                        func_8005CEB0_main(winId);
+                        window->unk_CC++;
+                        return 1;
+                    }
+                    break;
+                case 0x17:
+                    if (!(window->unk_38 & 0x40000) && !func_8005CD38_main(window)) {
+                        window->unk_CC++;
+                        return 1;
+                    }
+                    break;
+                case 0xB:
+                    if (window->unk_38 & 4) {
+                        func_8005CE10_main(window);
+                    } else if (window->insertionIndex < 0 && !(window->unk_38 & 0x1800)) {
+                        func_8005CD84_main(window);
+                    }
+                    break;
+                case 0xC:
+                    sprite = &window->unk_F4[window->unk_30];
+                    sprite->unk_02 = window->unk54 - window->unk48;
+                    sprite->unk_04 = window->unk56 - window->unk4A;
+                    window->unk_26 = 0;
+                    window->unk5C = 0;
+                    break;
+                case 0xD:
+                    sprite = &window->unk_F4[window->unk_30];
+                    sprite->unk_06 = window->unk54 - (u16)sprite->unk_02;
+                    sprite->unk_08 = window->unk56 - (u16)sprite->unk_04 + window->unk_28;
+                    sprite->unk_00 = 0;
+                    window->unk_26 = window->unk_25;
+                    window->unk_30++;
+                    if (window->unk_30 >= TEXT_WINDOW_SPRITES_MAX) {
+                        osSyncPrintf("Select Max Over!\n");
+                        window->unk_30--;
+                    }
+                    break;
+                case 0xE:
+                    tab = ((s16)(window->unk54 - window->unk4C) + window->unk_35) / window->unk_35 * window->unk_35;
+                    if (tab < window->unk50) {
+                        window->unk54 = tab + window->unk4C;
+                    }
+                    break;
+                case 0xF:
+                    window->unk_38 |= 0x20000;
+                    break;
+                case 0x16:
+                    window->unk_38 &= ~0x20000;
+                    break;
+                case 0x18:
+                    window->unk_CC++;
+                    break;
+                case 0x19:
+                    if ((window->insertionIndex == -1) & (colorSkip != 0)) {
+                        colorSkip--;
+                    } else {
+                        window->unk_22 = window->unk_23;
+                    }
+                    break;
+            }
+            window->unk_CC++;
+        }
+        if ((u32)(*window->unk_CC - 0x21) < 0xF) {
+            width = func_8005CFE0_main(winId, *window->unk_CC - 0x21) + (u8)window->unk_29;
+            window->unk_CC++;
+            if (!func_8005CC3C_main(window, width)) {
+                window->unk20 = 6;
+                func_8005CEB0_main(winId);
+                return 1;
+            }
+            continue;
+        }
+        if (*window->unk_CC == 0xFF) {
+            window->unk20 = 2;
+            func_8005CEB0_main(winId);
+            window->unk_CC++;
+            return 1;
+        }
+        window->unk5C -= (u8)window->unk_26;
+        if ((s16)window->unk56 + window->unk_28 > window->unk4E + window->unk52) {
+            window->unk20 = 6;
+            func_8005CEB0_main(winId);
+            return 1;
+        }
+        if (*window->unk_CC >= 0x30) {
+            if (window->unk_38 & 0x10000) {
+                if ((u8)(*window->unk_CC - 0x30) < 10) {
+                    *window->unk_CC += 0x70;
+                }
+            }
+            if (window->unk_38 & 0x80) {
+                if ((u8)window->unk_22 != 0) {
+                    func_8005D30C_main(winId, *window->unk_CC, 0, window->unk54 + 2, window->unk56 + 1);
+                }
+                func_8005D30C_main(winId, *window->unk_CC, window->unk_22, window->unk54, window->unk56);
+                func_8005D30C_main(winId, *window->unk_CC, window->unk_22, window->unk54 + 1, window->unk56);
+            } else if (window->unk_38 & 0x20000) {
+                func_8005D30C_main(winId, *window->unk_CC, window->unk_33, window->unk54, window->unk56 - 1);
+                func_8005D30C_main(winId, *window->unk_CC, window->unk_33, window->unk54, window->unk56 + 1);
+                func_8005D30C_main(winId, *window->unk_CC, window->unk_33, window->unk54 + 1, window->unk56);
+                func_8005D30C_main(winId, *window->unk_CC, window->unk_33, window->unk54 - 1, window->unk56);
+                func_8005D30C_main(winId, *window->unk_CC, window->unk_22, window->unk54, window->unk56);
+            } else {
+                if ((u8)window->unk_22 != 0) {
+                    func_8005D30C_main(winId, *window->unk_CC, 0, window->unk54 + 1, window->unk56 + 1);
+                }
+                func_8005D30C_main(winId, *window->unk_CC, window->unk_22, window->unk54, window->unk56);
+            }
+        }
+        window->unk_CC++;
+        if ((u8)(*window->unk_CC + 0x80) < 2) {
+            if (window->unk_38 & 0x20000) {
+                func_8005D30C_main(winId, *window->unk_CC, window->unk_33, window->unk_27 + window->unk54 - 3, window->unk56 - 2);
+                func_8005D30C_main(winId, *window->unk_CC, window->unk_33, window->unk_27 + window->unk54 - 3, window->unk56);
+                func_8005D30C_main(winId, *window->unk_CC, window->unk_33, window->unk_27 + window->unk54 - 4, window->unk56 - 1);
+                func_8005D30C_main(winId, *window->unk_CC, window->unk_33, window->unk_27 + window->unk54 - 2, window->unk56 - 1);
+            } else if ((u8)window->unk_22 != 0) {
+                func_8005D30C_main(winId, *window->unk_CC, 0, window->unk_27 + window->unk54 - 2, window->unk56);
+            }
+            func_8005D30C_main(winId, *window->unk_CC, window->unk_22, window->unk_27 + window->unk54 - 3, window->unk56 - 1);
+            window->unk_CC++;
+        }
+        if (!func_8005CC18_main(window)) {
+            return 1;
+        }
+    }
+    window->unk5C++;
+    return 1;
+}
 
 s32 func_8005CC18_main(TextWindow *window) {
     return func_8005CC3C_main(window, window->unk_34 + (u8)window->unk_29);

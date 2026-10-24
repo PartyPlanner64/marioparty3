@@ -514,7 +514,35 @@ void func_8005E1A8_main(s16 winId, s16 arg1) {
     D_800CC69C_main[winId].unk_35 = arg1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005E1D8_main);
+s32 func_8005E1D8_main(s16 winId, s16 arg1, s32 arg2) {
+    TextWindow *window = &D_800CC69C_main[winId];
+    void *data;
+
+    if (window->unk_30 == 0) {
+        return -1;
+    }
+    if (window->unk6A == -1) {
+        data = DataRead(0x00000030);
+        window->unk6A = func_80055810_main(data);
+        HuMemMemoryFreePerm(data);
+        func_80055024_main(window->unk_6C, 2, window->unk6A, 0);
+        func_80055458_main(window->unk_6C, 2, 0x100);
+        HuSprAttrReset(window->unk_6C, 2, 0xFFFF);
+        HuSprAttrSet(window->unk_6C, 2, 0x1009000);
+        HuSprPriSet(window->unk_6C, 2, window->unk60 - 1);
+    }
+    if (arg2 != 0) {
+        window->unk_38 |= 1;
+    }
+    window->unk_31 = arg1;
+    window->unk20 = 5;
+    window->unk_9A = 1;
+    window->unk_A4 = 0;
+    while (func_8005E0C0_main(winId) == 5) {
+        HuPrcVSleep();
+    }
+    return window->unk_31;
+}
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005E348_main);
 

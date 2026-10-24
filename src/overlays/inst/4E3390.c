@@ -18,6 +18,7 @@ void func_8010AC30_inst(omObjData *); /* extern */
 void func_8010BE78_inst(s32 arg0);    /* extern */
 
 extern s8 D_8010D408_inst;
+extern s32 D_8010D440_inst;
 extern s8 D_8010D550_inst;
 extern s8 D_8010D551_inst;
 extern s8 D_8010D5B0_inst;
@@ -126,7 +127,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010C55C_inst);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010C5C4_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010C848_inst);
+void func_8010C848_inst(void) {
+    if (D_8010D408_inst == 0) {
+        HuAudFXPlay(0x11D);
+        func_80060C14_main(D_8010DCA8_inst.curGroup, 0);
+        D_8010D440_inst = 1;
+    }
+}
 
 void func_8010C890_inst(void) {
     func_80060EA8_main(D_8010DCA8_inst.curGroup, 1);

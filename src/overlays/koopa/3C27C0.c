@@ -505,7 +505,44 @@ INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_80107A9C_koopa);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_80107DDC_koopa);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_80108360_koopa);
+void func_80108360_koopa(s32 modelFile) {
+    Object *object;
+    f32 angle;
+    f32 scale;
+    s32 i;
+
+    MBMotionShiftSet(D_801094F8_koopa, 5, 0, 5, 0);
+    object = MBModelFileCreate(modelFile, -1, 1.0f, NULL, NULL);
+    func_8001C258_main(object->omObj1->model[0], 0x180, 0);
+    func_8001C8E4_main(object->omObj1->model[0], 0);
+    HuVecCopy3F(&object->coords, &D_801094F8_koopa->coords);
+    object->coords.y += 200.0f;
+    angle = 0.0f;
+    scale = 1.0f;
+    for (i = 0; scale < 12.0f; scale += 0.25) {
+        HuVecCopyXYZ(&object->scale, scale, scale, scale);
+        func_8008A430_main(HmfModelData[object->omObj1->model[0]].mtx, angle);
+        angle += 20.0f;
+        if (i == 5) {
+            HuAudFXPlay(0x12D);
+        }
+        i++;
+        HuPrcVSleep();
+    }
+    for (i = 0; scale >= 1.0f; scale -= 0.25) {
+        HuVecCopyXYZ(&object->scale, scale, scale, scale);
+        func_8008A430_main(HmfModelData[object->omObj1->model[0]].mtx, angle);
+        angle += 20.0f;
+        if (i == 32) {
+            HuAudFXPlay(0x13E);
+        }
+        i++;
+        HuPrcVSleep();
+    }
+    MBModelKill(object);
+    MBModelMotionWait(D_801094F8_koopa);
+    MBMotionShiftSet(D_801094F8_koopa, -1, 0, 5, 2);
+}
 
 s32 func_801085E4_koopa(void) {
     MBWinOpen(0x4217);

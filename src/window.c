@@ -549,7 +549,27 @@ void func_8005F364_main(s16 winId) {
     D_800D6B62_main += 0x20;
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005F524_main);
+void func_8005F524_main(void) {
+    s16 i;
+
+    if (D_800A2150_main != 0) {
+        for (i = D_800CC69C_main[0].unk64; D_800CC69C_main[i].unk64 != -1; i = D_800CC69C_main[i].unk64) {
+            func_8005F364_main(i);
+        }
+        DataCloseTemp(D_800D1FE4_main);
+        DataCloseTemp(D_800D4084_main);
+        DataCloseTemp(D_800CE2C4_main);
+        HuMemMemoryFreeTemp(D_800CC69C_main);
+        omDelPrcObj(D_800D040C_main);
+        D_800A2150_main = 0;
+        for (i = 0; i < ARRAY_COUNT(D_800BDA50_main); i++) {
+            if (D_800BDA50_main[i] != -1) {
+                HuSprKill(D_800BDA50_main[i]);
+            }
+        }
+        HuSprKill(D_800BDA68_main);
+    }
+}
 
 void func_8005F698_main(s16 up, s16 down, s16 left, s16 right, u8 frames) {
     func_8005F784_main(-(up == -1), -(down == -1), -(left == -1), -(right == -1), frames);

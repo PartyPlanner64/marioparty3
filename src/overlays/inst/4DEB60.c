@@ -24,6 +24,7 @@ void func_8010C848_inst(void);
 void func_8010C8D0_inst(void);
 void func_801094B0_inst(void); /* extern */
 void func_801098D8_inst(omObjData *);
+void func_801099C0_inst(omObjData *);
 void func_80109A84_inst(omObjData *);
 void func_8010986C_inst(omObjData *); /* extern */
 void func_80109A90_inst(void);        /* extern */
@@ -61,6 +62,7 @@ extern s32 D_8010D510_inst;
 extern s32 D_8010D520_inst;
 extern s32 D_8010D524_inst;
 extern s32 D_8010D530_inst;
+extern s32 D_8010D534_inst;
 extern void (*D_8010DDE4_inst)(omObjData *);
 
 void func_801059A0_inst(void) {
@@ -484,7 +486,19 @@ void func_8010986C_inst(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_801098D8_inst);
+void func_801098D8_inst(omObjData *object) {
+    D_8010D534_inst++;
+    object->trans.y = sindf(D_8010D534_inst * 5) * 200.0f + -171.0f;
+    if (D_8010D534_inst == 13) {
+        func_8001C5B4_main(object->model[0], object->motion[4]);
+        func_8001C814_main(object->model[0], 2, 0);
+    }
+    if (D_8010D534_inst >= 17) {
+        object->trans.y = 29.0f;
+        D_8010D534_inst = 0;
+        D_8010DDEC_inst = func_801099C0_inst;
+    }
+}
 
 void func_801099C0_inst(omObjData *object) {
     s16 model = object->model[0];

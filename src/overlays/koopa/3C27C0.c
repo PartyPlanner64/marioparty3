@@ -31,6 +31,8 @@ typedef struct UnkBowser2 {
 } UnkBowser2; // sizeof 0x24
 
 void func_8005A6B0_main(void);
+void func_800F5828_shared_board(s32);
+void func_800F591C_shared_board(s32);
 void func_80108D2C_koopa(void);
 void func_80109220_koopa(omObjData *);
 void func_8010926C_koopa(void);
@@ -508,7 +510,53 @@ INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_80108664_koopa);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_801086E4_koopa);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_801087F0_koopa);
+void func_801087F0_koopa(void) {
+    s32 playSound;
+    s32 i;
+    s32 average = 0;
+    s32 soundPlayer;
+    s32 maxGain;
+    s32 gain;
+
+    for (i = 0; i < MB_MAX_PLAYERS; i++) {
+        average += GwPlayer[i].coin;
+    }
+    HuAudFXPlay(0x152);
+    average /= MB_MAX_PLAYERS;
+    maxGain = 0;
+    soundPlayer = 0;
+    for (i = 0; i < MB_MAX_PLAYERS; i++) {
+        func_800F5828_shared_board(i);
+        gain = average - GwPlayer[i].coin;
+        if (maxGain < gain) {
+            maxGain = gain;
+            soundPlayer = i;
+        }
+    }
+    for (i = 0; i < 60; i++) {
+        MBStatusColorSet(0, i % 5);
+        MBStatusColorSet(1, i % 5);
+        MBStatusColorSet(2, i % 5);
+        MBStatusColorSet(3, i % 5);
+        HuPrcVSleep();
+    }
+    for (i = 0; i < MB_MAX_PLAYERS; i++) {
+        playSound = i == soundPlayer;
+        MBCoinTakeCreateSound(i, average - GwPlayer[i].coin, playSound);
+    }
+    for (i = 0; i < 30; i++) {
+        MBStatusColorSet(0, i % 5);
+        MBStatusColorSet(1, i % 5);
+        MBStatusColorSet(2, i % 5);
+        MBStatusColorSet(3, i % 5);
+        HuPrcVSleep();
+    }
+    for (i = 0; i < MB_MAX_PLAYERS; i++) {
+        MBStatusColorSet(i, GwPlayer[i].color);
+        func_800F591C_shared_board(i);
+    }
+    omDelPrcObj(NULL);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_80108A2C_koopa);
 

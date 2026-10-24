@@ -1,5 +1,11 @@
 #include "common.h"
 
+typedef struct {
+    s32 overlay;
+    u8 minigameType;
+    u8 unk05[15];
+} InstMinigameEntry;
+
 void func_80105D9C_inst(omObjData *); /* extern */
 void func_801061EC_inst(void);        /* extern */
 void func_80106310_inst(omObjData *); /* extern */
@@ -32,6 +38,8 @@ void func_8010A1D0_inst(void);        /* extern */
 void func_8010B990_inst(void);        /* extern */
 void func_8000BC48_main(u16, u16);    /* extern */
 
+extern InstMinigameEntry D_800A6D40_main[];
+extern s8 D_8010D5B1_inst;
 extern f32 D_800CB890_main;
 extern f32 D_800CE17C_main[];
 extern f32 D_800D5210_main;
@@ -166,7 +174,43 @@ void func_801059A0_inst(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80105D9C_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_801061EC_inst);
+void func_801061EC_inst(void) {
+    s32 unused[6]; // Retain the original stack frame.
+
+    omOvlCallEx(D_800A6D40_main[D_8010D40B_inst].overlay, 0, 0x14);
+    if (D_8010D5B1_inst == 1) {
+        _SetFlag(0xF);
+        return;
+    }
+    if (_CheckFlag(0xD) != 0) {
+        goto pop_history;
+    }
+    switch (D_8010D40A_inst) {
+        case 6:
+            omOvlHisChg(1, 0x72, 0, 0x14);
+            return;
+        case 4:
+            if (GwSystem.playMode & 2) {
+                omOvlHisChg(1, 0x73, 0, 0x4010);
+                return;
+            }
+            goto pop_history;
+        case 3:
+            omOvlHisChg(1, 0x74, 0, 0x12);
+            return;
+        case 5:
+        case 7:
+        case 8:
+        pop_history:
+            if (omovlhisidx > 0) {
+                omovlhisidx--;
+            }
+            return;
+        default:
+            omOvlHisChg(1, 0x71, 0, 0x12);
+            return;
+    }
+}
 
 void func_80106310_inst(omObjData *object) {
     if (D_800D530C_main == 1) {

@@ -74,7 +74,9 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E3390", D_8010DAC8_inst);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010B040_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010B0FC_inst);
+void func_8010B0FC_inst(void) {
+    D_8010D550_inst = 1;
+}
 
 s32 func_8010B10C_inst(void) {
     return D_8010D550_inst;

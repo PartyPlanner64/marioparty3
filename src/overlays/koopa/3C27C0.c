@@ -31,6 +31,8 @@ typedef struct UnkBowser2 {
 } UnkBowser2; // sizeof 0x24
 
 void func_8005A6B0_main(void);
+void func_800E4A94_shared_board(void);
+void func_80108360_koopa(s32);
 void func_800F5828_shared_board(s32);
 void func_800F591C_shared_board(s32);
 void func_80108D2C_koopa(void);
@@ -504,7 +506,20 @@ INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_80107DDC_koopa);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_80108360_koopa);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_801085E4_koopa);
+s32 func_801085E4_koopa(void) {
+    MBWinOpen(0x4217);
+    func_800EC3C0_shared_board(D_801094F4_koopa);
+    func_800EC3E4_shared_board();
+    func_80108360_koopa(0xB0036);
+    MBWinOpen(0x4218);
+    func_800EC3C0_shared_board(D_801094F4_koopa);
+    func_800EC3E4_shared_board();
+    MBWinOpen(0x420F);
+    func_800EC3C0_shared_board(D_801094F4_koopa);
+    func_800EC3E4_shared_board();
+    func_800E4A94_shared_board();
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_80108664_koopa);
 

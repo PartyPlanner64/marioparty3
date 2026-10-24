@@ -6,6 +6,7 @@
 #define WINDOWS_MAX 16
 #define TEXT_WINDOW_SPRITES_MAX 0x18
 #define WINDOW_INPUT_RECORDS_MAX 32
+#define WINDOW_INPUT_RECORD_FRAMES MAXCONTROLLERS
 
 #define MAKE_MESSID(bank, mess) (((bank) << 16) + (mess))
 #define MAKE_MESSID_PTR(ptr) ((u32)(ptr))
@@ -20,13 +21,8 @@ typedef struct TextWindowSprite {
     /* 0x0A */ char padA[6];
 } TextWindowSprite; /* size = 0x10 */
 
-typedef struct WindowInputRecord {
-    /* 0x00 */ s16 up;
-    /* 0x02 */ s16 down;
-    /* 0x04 */ s16 left;
-    /* 0x06 */ s16 right;
-    /* 0x08 */ s16 frames;
-} WindowInputRecord; /* size = 0xA */
+/* One input per controller, followed by the number of frames to repeat them. */
+typedef s16 WindowInputRecord[MAXCONTROLLERS + 1];
 
 typedef struct TextWindow {
     /* 0x000 */ u16 palette[16];

@@ -1133,15 +1133,32 @@ void func_8005F744_main(s16 up, s16 down, s16 left, s16 right) {
 }
 
 void func_8005F784_main(s16 up, s16 down, s16 left, s16 right, s16 frames) {
-    D_800CDA88_main[D_800D1F34_main].up = up;
-    D_800CDA88_main[D_800D1F34_main].down = down;
-    D_800CDA88_main[D_800D1F34_main].left = left;
-    D_800CDA88_main[D_800D1F34_main].right = right;
-    D_800CDA88_main[D_800D1F34_main].frames = frames;
+    D_800CDA88_main[D_800D1F34_main][0] = up;
+    D_800CDA88_main[D_800D1F34_main][1] = down;
+    D_800CDA88_main[D_800D1F34_main][2] = left;
+    D_800CDA88_main[D_800D1F34_main][3] = right;
+    D_800CDA88_main[D_800D1F34_main][WINDOW_INPUT_RECORD_FRAMES] = frames;
     D_800D1F34_main = (D_800D1F34_main + 1) & 0x1F;
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005F7F4_main);
+void func_8005F7F4_main(s16 *inputs) {
+    s16 i;
+
+    if ((u8)D_800D6A26_main == D_800D1F34_main) {
+        inputs[0] = inputs[1] = inputs[2] = inputs[3] = 0;
+        return;
+    }
+    for (i = 0; i < MAXCONTROLLERS; i++) {
+        inputs[i] = D_800CDA88_main[(u8)D_800D6A26_main][i];
+        if (inputs[i] == -1) {
+            inputs[i] = D_800D0590_main[i];
+        }
+    }
+    D_800CDA88_main[(u8)D_800D6A26_main][WINDOW_INPUT_RECORD_FRAMES]--;
+    if (D_800CDA88_main[(u8)D_800D6A26_main][WINDOW_INPUT_RECORD_FRAMES] == 0) {
+        D_800D6A26_main = (D_800D6A26_main + 1) & 0x1F;
+    }
+}
 
 void func_8005F904_main(void) {
     D_800D1F34_main = 0;

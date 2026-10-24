@@ -45,6 +45,7 @@ void func_801091C4_koopa(omObjData *);
 void func_80109320_koopa(void);
 void func_801092A0_koopa(void);
 void func_80107724_koopa(void);
+void func_80107190_koopa(void);
 s32 func_80107A9C_koopa(void);
 s32 func_80107DDC_koopa(void);
 s32 func_801085E4_koopa(void);
@@ -61,6 +62,7 @@ extern char D_80109508_koopa[];
 
 extern u8 D_801094F0_koopa;
 extern s32 D_801094F4_koopa;
+extern s32 D_801094FC_koopa;
 extern u32 D_800D2094_main;
 extern s32 D_8010956C_koopa;
 extern omObjData *D_80109550_koopa;
@@ -117,7 +119,7 @@ UnkBowser2 D_801093C8_koopa = {
     0x000A0040, 0x000A0043, 0x000A0041, 0x000A0042, 0x000A0044
 };
 
-void *D_801093EC_koopa[] = {
+s32 (*D_801093EC_koopa[])(void) = {
     func_8010778C_koopa,
     func_801078CC_koopa,
     func_80107A9C_koopa,
@@ -401,7 +403,7 @@ s32 func_80107658_koopa(s32 arg0, s32 arg1) {
     return D_80109434_koopa[arg0][temp_s0][playerRank];
 }
 
-u16 func_801076CC_koopa(s32 playerIndex, s32 arg1) {
+s32 func_801076CC_koopa(s32 playerIndex) {
     s32 temp_s0;
     s32 playerRank;
 
@@ -771,7 +773,82 @@ s32 func_80108BB0_koopa(void) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_80108D2C_koopa);
+void func_80108D2C_koopa(void) {
+    s32 result = 0;
+
+    func_8001EF24_main(0x3CA, 1000, 0, 0, 0);
+    D_801094F8_koopa = MBModelFileCreate(0xA002F, 9, 0.7f, 1.4f, (u32 *)&D_801093C8_koopa);
+    HuVecCopy3F(&D_801094F8_koopa->coords, &D_801093B0_koopa);
+    HuVecCopyXYZ(&D_801094F8_koopa->scale, 2.0f, 2.0f, 2.0f);
+    if (MBRand(5.0f) == 0) {
+        MBMotionSet(D_801094F8_koopa, 7, 2);
+        D_801094FC_koopa = 1;
+    } else {
+        MBMotionSet(D_801094F8_koopa, 1, 2);
+        D_801094FC_koopa = 0;
+    }
+    func_8010699C_koopa();
+    func_80107190_koopa();
+    HuAudSeqPlay(0x24);
+    WipeCreateIn(3, 16);
+    while (WipeStatGet() != 0) {
+        HuPrcVSleep();
+    }
+    if (D_801094FC_koopa == 0) {
+        HuPrcSleep(20);
+        MBMotionShiftSet(D_801094F8_koopa, -1, 0, 10, 2);
+    } else {
+        HuPrcSleep(20);
+        MBMotionSet(D_801094F8_koopa, 4, 4);
+        func_8001C6A8_main(D_801094F8_koopa->omObj1->model[0], 1024.0f);
+        while (func_800D9E80_shared_board(D_801094F8_koopa) == 0) {
+            HuPrcVSleep();
+        }
+        MBMotionShiftSet(D_801094F8_koopa, -1, 0, 10, 2);
+        HuPrcSleep(10);
+        MBMotionShiftSet(D_801094F8_koopa, 1, 0, 5, 2);
+        HuPrcSleep(36);
+        MBMotionShiftSet(D_801094F8_koopa, -1, 0, 10, 2);
+    }
+    HuPrcSleep(10);
+    HuAudFXPlay(0x29D);
+    if (GwPlayer[D_801094F4_koopa].coin == 0) {
+        sprintf(D_80109508_koopa, D_801094C0_koopa, func_801076CC_koopa(D_801094F4_koopa));
+        MBWinInsertOpen(0x420B, (char *)mbCharNameMesTbl[GwPlayer[D_801094F4_koopa].chr], (u32)D_80109508_koopa, 0, 0, 0);
+        func_800EC3C0_shared_board(D_801094F4_koopa);
+        func_800EC3E4_shared_board();
+        func_80107724_koopa();
+        MBMotionShiftSet(D_801094F8_koopa, 2, 0, 5, 0);
+        func_800EE884_shared_board(D_801094F8_koopa, -1, 2);
+        HuPrcSleep(14);
+        MBCoinTakeCreate(D_801094F4_koopa, func_801076CC_koopa(D_801094F4_koopa));
+        HuPrcSleep(30);
+        MBWinOpen(0x420C);
+        func_800EC3C0_shared_board(D_801094F4_koopa);
+        func_800EC3E4_shared_board();
+    } else {
+        MBWinInsertOpen(0x420A, (char *)mbCharNameMesTbl[GwPlayer[D_801094F4_koopa].chr], 0, 0, 0, 0);
+        func_800EC3C0_shared_board(D_801094F4_koopa);
+        func_800EC3E4_shared_board();
+        MBMotionShiftSet(D_801094F8_koopa, 2, 0, 5, 0);
+        func_800EE884_shared_board(D_801094F8_koopa, -1, 2);
+        HuPrcSleep(14);
+        func_80107648_koopa();
+        while (D_80109550_koopa != NULL) {
+            HuPrcVSleep();
+        }
+        result = D_801093EC_koopa[D_80109568_koopa]();
+    }
+    if (result == 0) {
+        HuAudFXPlay(0x29C);
+        MBMotionShiftSet(D_801094F8_koopa, 3, 0, 5, 2);
+    }
+    HuPrcSleep(20);
+    D_800D530C_main = 1;
+    while (1) {
+        HuPrcVSleep();
+    }
+}
 
 void func_801091C4_koopa(omObjData *obj) {
     if (WipeStatGet() == 0) {

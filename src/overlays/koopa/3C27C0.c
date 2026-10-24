@@ -34,6 +34,7 @@ void func_80108D2C_koopa(void);
 void func_80109220_koopa(omObjData *);
 void func_8010926C_koopa(void);
 void func_801092D4_koopa(void);
+void func_801091C4_koopa(omObjData *);
 void func_80107724_koopa(void);
 s32 func_80107A9C_koopa(void);
 s32 func_80107DDC_koopa(void);
@@ -514,7 +515,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_80108D2C_koopa);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_801091C4_koopa);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_80109220_koopa);
+void func_80109220_koopa(omObjData *obj) {
+    if (D_800D530C_main != 0) {
+        WipeCreateOut(3, 20);
+        HuAudSeqFadeOut(60);
+        obj->func = func_801091C4_koopa;
+    }
+}
 
 void func_8010926C_koopa(void) {
     MBModelInit();

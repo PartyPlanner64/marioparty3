@@ -11,6 +11,7 @@
 #include "../ovl_80_shared_board/113520.h"
 #include "../ovl_80_shared_board/106640.h"
 #include "../ovl_80_shared_board/F5E80.h"
+#include "../ovl_80_shared_board/F2910.h"
 
 typedef struct UnkBowser {
     s16 unk_00;
@@ -46,6 +47,8 @@ void func_80109320_koopa(void);
 void func_801092A0_koopa(void);
 void func_80107724_koopa(void);
 void func_80107190_koopa(void);
+void func_80105AD8_koopa(omObjData *);
+s32 func_80107658_koopa(s32, s32);
 s32 func_80107A9C_koopa(void);
 s32 func_80107DDC_koopa(void);
 s32 func_801085E4_koopa(void);
@@ -79,6 +82,7 @@ extern s32 D_80109568_koopa;
 extern s32 D_80109500_koopa;
 extern s32 D_80109504_koopa;
 extern s16 D_8010951A_koopa[];
+extern u8 D_8010954A_koopa[5];
 
 //.data
 void *D_80109350_koopa = 0;
@@ -388,7 +392,106 @@ s32 func_80107090_koopa(void) {
 const char D_801094C0_koopa[] = "%d";
 const char D_801094C4_koopa[] = "";
 
-INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_80107190_koopa);
+void func_80107190_koopa(void) {
+    u8 order[5];
+    u8 events[5];
+    s32 i;
+    s32 randVal;
+    s16 *window;
+    UnkBowser *positions = D_8010937C_koopa;
+
+    i = MBRand(256.0f);
+    if (i < 70) {
+        D_80109500_koopa = 0;
+    } else if (i < 115) {
+        D_80109500_koopa = 1;
+    } else if (i < 160) {
+        D_80109500_koopa = 2;
+    } else if (i < 185) {
+        D_80109500_koopa = 3;
+    } else if (i < 200) {
+        D_80109500_koopa = 4;
+    } else if (i < 225) {
+        D_80109500_koopa = -1;
+    } else if (i < 240) {
+        D_80109500_koopa = -2;
+    } else {
+        D_80109500_koopa = -3;
+    }
+    if (MBRand(70.0f) == 0) {
+        D_80109504_koopa = 1;
+    } else {
+        D_80109504_koopa = 0;
+    }
+    for (i = 0; i < 5; i++) {
+        window = D_80109518_koopa[i];
+        window[1] = positions[i].unk_00;
+        window[2] = positions[i].unk_02;
+        window[3] = positions[i].unk_04;
+        window[4] = positions[i].unk_06;
+        window[0] = func_8005A968_main(window[1] + window[3] / 2, window[2] + window[4] / 2, window[3], window[4], 0, 4);
+        func_80060144_main(window[0]);
+        func_8005BCA4_main(window[0], window[3] / 2, window[4] / 2);
+        func_8005BEE0_main(window[0], 0);
+        switch (i) {
+            case 0:
+            case 1:
+                events[i] = 0;
+                break;
+            case 2:
+                events[i] = MBRand(2.0f) + 8;
+                break;
+            case 3:
+            case 4:
+            retry:
+                randVal = MBRand(100.0f);
+                if (randVal < 20) {
+                    if (i == 4 && events[3] == 1) {
+                        goto retry;
+                    }
+                    events[i] = 1;
+                } else if (randVal < 60) {
+                    if (i == 4 && (events[3] == 2 || events[3] == 3)) {
+                        goto retry;
+                    }
+                    events[i] = MBRand(2.0f) + 2;
+                } else if (randVal < 90) {
+                    if (i == 4 && (events[3] == 4 || events[3] == 5)) {
+                        goto retry;
+                    }
+                    events[i] = MBRand(2.0f) + 4;
+                } else {
+                    if (i == 4 && (events[3] == 6 || events[3] == 7)) {
+                        goto retry;
+                    }
+                    events[i] = MBRand(2.0f) + 6;
+                    if (events[i] == 6 && func_80107090_koopa()) {
+                        goto retry;
+                    }
+                }
+                break;
+        }
+    }
+    MBArrayShuffle(order, 4);
+    for (i = 0; i < 5; i++) {
+        D_8010954A_koopa[i] = events[order[i]];
+    }
+    for (i = 0; i < 5; i++) {
+        window = D_80109518_koopa[i];
+        if (D_8010954A_koopa[i] == 0) {
+            sprintf(D_80109508_koopa, D_801094C0_koopa, func_80107658_koopa(0, D_801094F4_koopa));
+            func_8005B6BC_main(window[0], (u32)D_80109508_koopa, 0);
+            func_8006022C_main((u32)D_80109508_koopa, 0);
+        }
+        func_8005B43C_main(window[0], D_80109354_koopa[D_8010954A_koopa[i]], -2, 4);
+        func_8005BDFC_main(window[0], 0);
+    }
+    D_80109550_koopa = omAddObj(0x8000, 0, 0, -1, func_80105AD8_koopa);
+    D_80109550_koopa->work[0] = 3;
+    D_80109550_koopa->trans.y = 0;
+    D_80109550_koopa->rot.z = 0;
+    func_80106C78_koopa();
+}
 
 void func_80107648_koopa(void) {
     D_80109550_koopa->work[0] = 0;

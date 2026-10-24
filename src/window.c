@@ -520,7 +520,34 @@ INCLUDE_ASM("asm/nonmatchings/window", func_8005E348_main);
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005EEE4_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005F364_main);
+void func_8005F364_main(s16 winId) {
+    TextWindow *window = &D_800CC69C_main[winId];
+    s16 i;
+
+    if (window->unk_D0 != NULL && window->unk_D4 != 0) {
+        func_800365E8_main(window->unk_D0);
+    }
+    for (i = 0; i < 5; i++) {
+        if (window->unk_B8[i] != NULL && window->usingStringIDBool[i] != 0) {
+            func_800365E8_main(window->unk_B8[i]);
+        }
+    }
+    HuSprGrpKill(window->unk_6C);
+    HuSprKill(window->unk66);
+    HuSprKill(window->unk68);
+    for (i = 4; i < 12; i++) {
+        if (window->unk_6E[i] != -1) {
+            HuSprKill(func_8005BA54_main(winId, i));
+        }
+    }
+    if (window->unk6A != -1) {
+        HuSprKill(window->unk6A);
+    }
+    window->unk5E = -1;
+    D_800CC69C_main[window->unk64].unk62 = window->unk62;
+    D_800CC69C_main[window->unk62].unk64 = window->unk64;
+    D_800D6B62_main += 0x20;
+}
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005F524_main);
 

@@ -71,7 +71,8 @@ typedef struct TextWindow {
     /* 0x060 */ s16 unk60;
     /* 0x062 */ s16 unk62;
     /* 0x064 */ s16 unk64;
-    /* 0x066 */ char pad66[4];
+    /* 0x066 */ s16 unk66;
+    /* 0x068 */ s16 unk68;
     /* 0x06A */ s16 unk6A;
     /* 0x06C */ s16 unk_6C;
     /* 0x06E */ s16 unk_6E[22];
@@ -83,10 +84,11 @@ typedef struct TextWindow {
     /* 0x0AC */ char padAC[1];
     /* 0x0AD */ s8 usingStringIDBool[5];
     /* 0x0B2 */ s8 unk_B2[6];
-    /* 0x0B8 */ void *unk_B8[4];
-    /* 0x0C8 */ char padC8[4];
+    /* 0x0B8 */ void *unk_B8[5];
     /* 0x0CC */ u8 *unk_CC;
-    /* 0x0D0 */ char padD0[0x10];
+    /* 0x0D0 */ void *unk_D0;
+    /* 0x0D4 */ u8 unk_D4;
+    /* 0x0D5 */ char padD5[0xB];
     /* 0x0E0 */ void *unk_E0[3];
     /* 0x0EC */ f32 scaleX;
     /* 0x0F0 */ f32 scaleY;

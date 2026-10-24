@@ -2,6 +2,7 @@
 #include "game/sprite.h"
 #include "common.h"
 #include "malloc.h"
+#include "mallocblock.h"
 #include "input.h"
 #include "stdarg.h"
 
@@ -534,7 +535,36 @@ INCLUDE_ASM("asm/nonmatchings/window", func_8005D30C_main);
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005D83C_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005DAA4_main);
+void *func_8005DAA4_main(s16 winId) {
+    TextWindow *window = &D_800CC69C_main[winId];
+    s16 group = window->unk_6C;
+    s16 width;
+    s16 height;
+    s16 i;
+    HuSprite *sprite;
+
+    if (window->unk_E0[0] != NULL) {
+        return HuSprGet(group, 1)->unk_84->unk00[window->unk_24].unk00;
+    } else {
+        width = window->unk44;
+        height = window->unk46;
+        sprite = HuSprGet(group, 1);
+        for (i = 0; i < 3; i++) {
+            HuMemFree(sprite->unk_84->unk00[i].unk00);
+            sprite->unk_84->unk00[i].unk04 = width;
+            sprite->unk_84->unk00[i].unk06 = window->unk42;
+            sprite->unk_84->unk00[i].unk00 = window->unk_E0[i] = HuMemAlloc(width * height / 2);
+            memset(window->unk_E0[i], 0, width * height / 2);
+        }
+        HuMemFree(sprite->unk_84->unk0C);
+        sprite->unk_84->unk0C = HuMemAlloc(0x20);
+        bcopy(window, sprite->unk_84->unk0C, 0x20);
+        if (!(window->unk_38 & 8)) {
+            HuSprAttrReset(group, 1, 0x8000);
+        }
+    }
+    return sprite->unk_84->unk00[window->unk_24].unk00;
+}
 
 void func_8005DC94_main(s16 winId) {
     TextWindow *window = &D_800CC69C_main[winId];

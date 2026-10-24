@@ -94,7 +94,7 @@ void func_8000D018_main(s16, f32);
 void func_8000D044_main(s16);
 void func_8008A2A0_main(HuMtx4F, f32);
 void func_80060C14_main(s16, s32);
-void func_80060EA8_main(s16, s32);
+void func_80060EA8_main(s32, s32);
 void func_80061100_main(s16, s32);
 s32 func_8005B68C_main(s16);
 s16 func_8005E0C0_main(s16);

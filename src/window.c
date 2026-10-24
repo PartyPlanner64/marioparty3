@@ -33,6 +33,7 @@ extern s8 D_800CD2A4_main;
 extern void *D_800CE2C4_main;
 extern Process *D_800D040C_main;
 extern u8 D_800D1F34_main;
+extern u8 D_800D2008_main;
 extern void *D_800D1FE4_main;
 extern void *D_800D4084_main;
 extern u8 D_800D5206_main[5];
@@ -1399,7 +1400,70 @@ void func_80061388_main(s16 winId) {
     func_800600C0_main(winId, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_800615B8_main);
+void func_800615B8_main(s16 winId, s32 opening) {
+    u8 *buffers[3];
+    TextWindow *window = &D_800CC69C_main[winId];
+    HuSprite *sprite;
+    u8 *original;
+    u8 *source;
+    u8 transparent;
+    u8 *dest;
+    s16 i;
+    s16 x;
+    s16 y;
+    s16 dx;
+    s16 dy;
+    s16 frames;
+    f32 radius;
+
+    sprite = HuSprGet(window->unk_6C, window->unk274);
+    original = sprite->unk_84->unk00->unk00;
+    for (i = 0; i < 3; i++) {
+        buffers[i] = HuMemAllocTag(0x640, 0x7918);
+        memset(buffers[i], 0, 0x640);
+    }
+    source = sprite->unk_84->unk0C;
+    source++;
+    for (transparent = 0; transparent < sprite->unk_84->unk1A; transparent++, source += 2) {
+        if (!(*source & 1)) {
+            break;
+        }
+    }
+    frames = opening ? 6 : 3;
+    for (i = 1; i <= frames; i++) {
+        source = original;
+        dest = buffers[D_800D2008_main];
+        radius = HuSqrtf(1800.0f);
+        radius *= 1.0f - cosdf((90.0f / frames) * i);
+        for (y = 0; y < 40; y++) {
+            for (x = 0; x < 40; x++, dest++) {
+                if (opening) {
+                    dx = x - 10;
+                    dy = y - 10;
+                    if (dx * dx + dy * dy < radius * radius) {
+                        *dest = (source + y * 40)[x];
+                    } else {
+                        *dest = transparent;
+                    }
+                } else {
+                    dx = x - 30;
+                    dy = y - 30;
+                    if (dx * dx + dy * dy < radius * radius) {
+                        *dest = transparent;
+                    } else {
+                        *dest = (source + y * 40)[x];
+                    }
+                }
+            }
+        }
+        sprite->unk_84->unk00->unk00 = buffers[D_800D2008_main];
+        HuPrcVSleep();
+    }
+    for (i = 0; i < 3; i++) {
+        func_80019C00_main(buffers[i]);
+    }
+    sprite->unk_84->unk00->unk00 = original;
+}
 
 void func_80061934_main(s16 winId, s16 arg1) {
     s16 temp_v0;

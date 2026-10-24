@@ -1292,7 +1292,250 @@ s32 func_8005E1D8_main(s16 winId, s16 arg1, s32 arg2) {
     return window->unk_31;
 }
 
+#ifdef NON_MATCHING
+/* The cursor target index reuses its sign extension, leaving this attempt one instruction short. */
+s32 func_8005E348_main(s16 winId) {
+    TextWindow *window = &D_800CC69C_main[winId];
+    TextWindowSprite *sprite;
+    s16 current = window->unk_31;
+    s16 selected = current;
+    s16 direction = -1;
+    s16 input;
+    s16 x;
+    s16 y;
+    s16 count;
+    s16 i;
+    s16 edge;
+    s16 delta;
+    s16 square;
+    f32 bestX;
+    f32 bestY;
+    s16 cancel;
+
+    if (window->unk_9A != 3) {
+        input = func_8005F918_main(window);
+    } else {
+        input = 0;
+    }
+    if (input & 0x200) {
+        direction = 0;
+    }
+    if (input & 0x100) {
+        direction = 2;
+    }
+    if (input & 0x800) {
+        direction = 1;
+    }
+    if (input & 0x400) {
+        direction = 3;
+    }
+    x = window->unk_F4[current].unk_02;
+    y = window->unk_F4[current].unk_04;
+    bestX = bestY = 100000.0f;
+    count = window->unk_30;
+    switch (direction) {
+        case 0:
+            for (i = 0; i < count; i++) {
+                if (i != current && window->unk_F4[i].unk_04 == y && window->unk_F4[i].unk_02 < x) {
+                    break;
+                }
+            }
+            if (i != count) {
+                for (i = 0; i < count; i++) {
+                    if (i != current && window->unk_F4[i].unk_04 == y && window->unk_F4[i].unk_02 < x) {
+                        if (x - window->unk_F4[i].unk_02 < bestY) {
+                            bestY = x - window->unk_F4[i].unk_02;
+                            selected = i;
+                        }
+                    }
+                }
+            } else {
+                edge = -1000;
+                for (i = 0; i < count; i++) {
+                    if (i != current && window->unk_F4[i].unk_04 == y && window->unk_F4[i].unk_02 > edge) {
+                        edge = window->unk_F4[i].unk_02;
+                        selected = i;
+                    }
+                }
+            }
+            break;
+        case 1:
+            for (i = 0; i < count; i++) {
+                if (i != current && window->unk_F4[i].unk_04 < y) {
+                    break;
+                }
+            }
+            if (i != count) {
+                for (i = 0; i < count; i++) {
+                    if (i != current && window->unk_F4[i].unk_04 < y) {
+                        delta = y - window->unk_F4[i].unk_04;
+                        if (delta <= bestY) {
+                            if (delta < bestY) {
+                                bestX = 100000.0f;
+                            }
+                            square = x - window->unk_F4[i].unk_02;
+                            square *= square;
+                            if (square < bestX) {
+                                bestY = delta;
+                                bestX = square;
+                                selected = i;
+                            }
+                        }
+                    }
+                }
+            } else {
+                edge = -1000;
+                for (i = 0; i < count; i++) {
+                    if (i != current && window->unk_F4[i].unk_04 > edge) {
+                        edge = window->unk_F4[i].unk_04;
+                    }
+                }
+                bestX = 100000.0f;
+                for (i = 0; i < count; i++) {
+                    if (i != current && window->unk_F4[i].unk_04 == edge) {
+                        square = x - window->unk_F4[i].unk_02;
+                        square *= square;
+                        if (square < bestX) {
+                            bestX = square;
+                            selected = i;
+                        }
+                    }
+                }
+            }
+            break;
+        case 2:
+            for (i = 0; i < count; i++) {
+                if (i != current && window->unk_F4[i].unk_04 == y && window->unk_F4[i].unk_02 > x) {
+                    break;
+                }
+            }
+            if (i != count) {
+                for (i = 0; i < count; i++) {
+                    if (i != current && window->unk_F4[i].unk_04 == y && window->unk_F4[i].unk_02 > x) {
+                        if (window->unk_F4[i].unk_02 - x < bestY) {
+                            bestY = window->unk_F4[i].unk_02 - x;
+                            selected = i;
+                        }
+                    }
+                }
+            } else {
+                edge = 1000;
+                for (i = 0; i < count; i++) {
+                    if (i != current && window->unk_F4[i].unk_04 == y && window->unk_F4[i].unk_02 < edge) {
+                        edge = window->unk_F4[i].unk_02;
+                        selected = i;
+                    }
+                }
+            }
+            break;
+        case 3:
+            for (i = 0; i < count; i++) {
+                if (i != current && window->unk_F4[i].unk_04 > y) {
+                    break;
+                }
+            }
+            if (i != count) {
+                for (i = 0; i < count; i++) {
+                    if (i != current && window->unk_F4[i].unk_04 > y) {
+                        delta = window->unk_F4[i].unk_04 - y;
+                        if (delta <= bestY) {
+                            if (delta < bestY) {
+                                bestX = 100000.0f;
+                            }
+                            square = x - window->unk_F4[i].unk_02;
+                            square *= square;
+                            if (square < bestX) {
+                                bestY = delta;
+                                bestX = square;
+                                selected = i;
+                            }
+                        }
+                    }
+                }
+            } else {
+                edge = 1000;
+                for (i = 0; i < count; i++) {
+                    if (i != current && window->unk_F4[i].unk_04 < edge) {
+                        edge = window->unk_F4[i].unk_04;
+                    }
+                }
+                bestX = 100000.0f;
+                for (i = 0; i < count; i++) {
+                    if (i != current && window->unk_F4[i].unk_04 == edge) {
+                        square = x - window->unk_F4[i].unk_02;
+                        square *= square;
+                        if (square < bestX) {
+                            bestX = square;
+                            selected = i;
+                        }
+                    }
+                }
+            }
+            break;
+    }
+    if (window->unk_31 != selected) {
+        sprite = &window->unk_F4[window->unk_31];
+        window->unk_31 = window->unk_32 = selected;
+        window->unk_9A = 3;
+        window->cursorStartX = sprite->unk_02 - 12;
+        window->cursorStartY = sprite->unk_04 + 8;
+        sprite = &window->unk_F4[selected];
+        window->cursorTargetX = sprite->unk_02 - 12;
+        window->cursorTargetY = sprite->unk_04 + 8;
+        window->unk_A4 = 0;
+        if (window->unk_38 & 0x20) {
+            HuAudFXPlay(0);
+        } else {
+            HuAudFXPlay(1);
+        }
+    }
+    cancel = window->unk_38 & 1 ? 0 : 0x4000;
+    if (input & 0x8000) {
+        if (window->unk_F4[window->unk_31].unk_00 == 2) {
+            if (window->unk_AA != -1) {
+                if (window->unk_38 & 0x20) {
+                    HuAudFXPlay(0);
+                } else {
+                    HuAudFXPlay(5);
+                }
+            }
+            return 1;
+        }
+        window->unk_9A = 4;
+        window->unk_A4 = 0;
+        if (window->unk_AA != -1) {
+            if (window->unk_38 & 0x20) {
+                HuAudFXPlay(0);
+            } else {
+                HuAudFXPlay(3);
+            }
+        }
+        window->unk_38 |= 0x200;
+        window->input = input;
+        return 0;
+    }
+    if ((input & cancel) || (input & window->unk_A6)) {
+        window->unk_9A = 0;
+        window->unk_A4 = 0;
+        window->unk_31 = -1;
+        if (input & cancel) {
+            if (window->unk_AA != -1) {
+                if (window->unk_38 & 0x20) {
+                    HuAudFXPlay(0);
+                } else {
+                    HuAudFXPlay(4);
+                }
+            }
+        }
+        window->unk_38 |= 0x200;
+        window->input = input;
+        return 0;
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/window", func_8005E348_main);
+#endif
 
 void func_8005EEE4_main(TextWindow *window, TextWindowSprite *sprite) {
     f32 dx;

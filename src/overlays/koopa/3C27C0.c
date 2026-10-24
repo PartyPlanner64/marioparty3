@@ -48,6 +48,9 @@ void func_801092A0_koopa(void);
 void func_80107724_koopa(void);
 void func_80107190_koopa(void);
 void func_80105AD8_koopa(omObjData *);
+void func_80106FC8_koopa(void);
+void func_80106A54_koopa(void);
+void func_80106AB8_koopa(void);
 s32 func_80107658_koopa(s32, s32);
 s32 func_80107A9C_koopa(void);
 s32 func_80107DDC_koopa(void);
@@ -109,12 +112,7 @@ UnkBowser D_8010937C_koopa[] = {
 };
 
 u8 D_801093A4_koopa = 94;
-u8 D_801093A8_koopa[][2] = {
-    { 1, 0 },
-    { 9, 15 },
-    { 11, 8 },
-    { 13, 0 }
-};
+s8 D_801093A8_koopa[] = { 1, 0, 9, 15, 11, 8, 13, 0 };
 Vec D_801093B0_koopa = { 0.0f, 0.0f, 2250.0f };
 Vec D_801093BC_koopa = { 0.0f, 0.0f, -1000.0f };
 
@@ -187,7 +185,256 @@ void func_80105A8C_koopa(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_80105AD8_koopa);
+void func_80105AD8_koopa(omObjData *obj) {
+    s16 *window;
+    s32 i;
+    s32 index = 0;
+    u16 buttons;
+
+    switch (obj->work[0]) {
+        case 0:
+            obj->trans.y += 16.0f;
+            for (i = 0; i < 5; i++) {
+                window = D_80109518_koopa[i];
+                func_8005BA90_main(window[0], window[1] + window[3] / 2, (window[2] + window[4] / 2) + (s16)obj->trans.y);
+            }
+            if (D_8010955E_koopa != -1) {
+                func_80054904_main(D_8010955E_koopa, 0, D_8010951A_koopa[0] + 100, (s32)obj->trans.y + D_8010951A_koopa[1] + 50);
+            }
+            if (D_8010955A_koopa != -1) {
+                func_80054904_main(D_8010955A_koopa, 0, D_8010951A_koopa[0] + 100, (s32)obj->trans.y + D_8010951A_koopa[1] - 30);
+            }
+            for (i = 0; i < 2; i++) {
+                if (D_80109554_koopa[i] != -1) {
+                    func_80054904_main(D_80109554_koopa[i], 0, D_8010951A_koopa[0] + i * 200, (s32)obj->trans.y + D_8010951A_koopa[1] - 40);
+                }
+            }
+            if (obj->trans.y >= 288.0f) {
+                func_80105A8C_koopa();
+                D_80109350_koopa = func_800E210C_shared_board(23, 200, 1);
+                obj->work[0] = 1;
+                obj->scale.x = 0.5f;
+                obj->scale.z = -1.0f;
+                obj->scale.y = 0;
+                obj->work[1] = 0;
+                obj->work[3] = 0;
+                obj->trans.z = 0;
+                obj->rot.y = D_80109500_koopa;
+                if (D_80109504_koopa != 0) {
+                    for (i = 0; i < 5; i++) {
+                        if (D_8010954A_koopa[i] >= 8) {
+                            index = i - (s32)obj->rot.y;
+                            break;
+                        }
+                    }
+                    if (index < 0) {
+                        index += 5;
+                    } else {
+                        index %= 5;
+                    }
+                    obj->work[2] = index;
+                } else {
+                    obj->work[2] = 0;
+                }
+                i = MBRand(100.0f);
+                if (i < 60) {
+                    obj->mdlcnt = 20;
+                } else if (i < 90) {
+                    obj->mdlcnt = 14;
+                } else {
+                    obj->mdlcnt = 8;
+                }
+                obj->mtncnt = 0;
+                func_80106FC8_koopa();
+            }
+            break;
+        case 1:
+            if (obj->trans.z == 0) {
+                if (GwPlayer[D_801094F4_koopa].stat & 1) {
+                    obj->trans.z = 1.0f;
+                } else {
+                    buttons = D_800C9520_main[GwPlayer[D_801094F4_koopa].pad];
+                    if (buttons & 0x8000) {
+                        obj->trans.z = 1.0f;
+                    }
+                }
+                if (obj->trans.z == 1.0f && D_80109350_koopa != 0) {
+                    MBHelpWinKill(D_80109350_koopa);
+                    D_80109350_koopa = 0;
+                }
+                if (D_80109504_koopa == 0) {
+                    for (i = 0;; i++) {
+                        index = i + obj->work[1];
+                        if (index < 0) {
+                            index += 5;
+                        } else {
+                            index %= 5;
+                        }
+                        if (D_8010954A_koopa[index] < 8) {
+                            index -= (s32)obj->rot.y;
+                            if (index < 0) {
+                                index += 5;
+                                break;
+                            }
+                            index %= 5;
+                            break;
+                        }
+                    }
+                    obj->work[2] = index;
+                }
+            }
+            if (obj->mtncnt != 0) {
+                obj->scale.x = obj->mdlcnt / 100.0f;
+            }
+            obj->scale.z += obj->scale.x;
+            if (obj->scale.z >= 1.0f) {
+                if (obj->work[3] != 0 && obj->scale.x <= 0.08f) {
+                    obj->work[3]--;
+                }
+                obj->scale.z -= 1.0f;
+                if (obj->scale.y == 0) {
+                    obj->work[1] = (obj->work[1] + 1) % 5;
+                } else {
+                    obj->work[1]--;
+                    if (obj->work[1] >= 128) {
+                        obj->work[1] = 4;
+                    }
+                }
+                func_80105A8C_koopa();
+            }
+            for (i = 0; i < 5; i++) {
+                window = D_80109518_koopa[i];
+                if (i == obj->work[1]) {
+                    func_8005FBF8_main(window[0], 0, 200, 0);
+                    func_8005BEE0_main(window[0], 256);
+                    func_8005BE30_main(window[0], 9000);
+                } else {
+                    func_8005FBF8_main(window[0], 64, 64, 128);
+                    func_8005BEE0_main(window[0], 0);
+                    func_8005BE30_main(window[0], 10000);
+                }
+            }
+            if (obj->trans.z != 0 && (obj->work[1] == obj->work[2] || obj->scale.x < 1.0f)) {
+                if (obj->mtncnt == 0) {
+                    obj->scale.x -= 0.01f;
+                }
+            }
+            if (obj->scale.x <= 0.08f || obj->mtncnt != 0) {
+                if (obj->mtncnt == 0) {
+                    obj->scale.x = 0.08f;
+                }
+                if (obj->work[1] == obj->work[2] && obj->work[3] == 0 && obj->scale.z + obj->scale.x >= 1.0f) {
+                    if ((obj->rot.y > 0 ? obj->rot.y : 0.0f - obj->rot.y) <= 0.5f) {
+                        HuAudFXPlay(0x105);
+                        switch (D_8010954A_koopa[obj->work[2]]) {
+                            case 0:
+                            case 2:
+                            case 3:
+                            case 8:
+                            case 9:
+                                MBPlayerVibrate(D_801094F6_koopa, 2);
+                                break;
+                            case 1:
+                                MBPlayerVibrate(0, 2);
+                                MBPlayerVibrate(1, 2);
+                                MBPlayerVibrate(2, 2);
+                                MBPlayerVibrate(3, 2);
+                                break;
+                            case 4:
+                            case 5:
+                                MBPlayerVibrate(0, 3);
+                                MBPlayerVibrate(1, 3);
+                                MBPlayerVibrate(2, 3);
+                                MBPlayerVibrate(3, 3);
+                                break;
+                            case 6:
+                                MBPlayerVibrate(0, 4);
+                                MBPlayerVibrate(1, 4);
+                                MBPlayerVibrate(2, 4);
+                                MBPlayerVibrate(3, 4);
+                                break;
+                            case 7:
+                                MBPlayerVibrate(0, 5);
+                                MBPlayerVibrate(1, 5);
+                                MBPlayerVibrate(2, 5);
+                                MBPlayerVibrate(3, 5);
+                                break;
+                        }
+                        obj->work[0] = 2;
+                        obj->work[3] = 60;
+                        func_8005D294_main(D_80109518_koopa[obj->work[1]][0]);
+                        if (D_8010954A_koopa[obj->work[1]] == 0) {
+                            func_8005B6BC_main(D_80109518_koopa[obj->work[1]][0], (u32)D_80109508_koopa, 0);
+                            func_8006022C_main((u32)D_80109508_koopa, 0);
+                        }
+                        func_8005B43C_main(D_80109518_koopa[obj->work[1]][0], D_80109354_koopa[D_8010954A_koopa[obj->work[1]]], -2, 4);
+                        func_8005C02C_main(D_80109518_koopa[obj->work[1]][0], 1);
+                        func_8005C154_main(D_80109518_koopa[obj->work[1]][0], 160, 160, 160);
+                        func_8005FBF8_main(D_80109518_koopa[obj->work[1]][0], 254, 255, 208);
+                        func_8005BDFC_main(D_80109518_koopa[obj->work[1]][0], 0);
+                    } else {
+                        obj->mtncnt = 1;
+                        if (obj->rot.y >= 0.5f) {
+                            obj->rot.y -= 1.0f;
+                            obj->work[2] = (obj->work[2] + 1) % 5;
+                        } else {
+                            obj->rot.y += 1.0f;
+                            obj->scale.y = 1.0f;
+                            obj->work[2]--;
+                            if (obj->work[2] >= 128) {
+                                obj->work[2] = 4;
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        case 2:
+            if (obj->work[3] == 0) {
+                obj->work[0] = 4;
+                func_80106A54_koopa();
+            } else {
+                obj->work[3]--;
+                obj->rot.z += 1.0f;
+                if (obj->rot.z >= 13.0f) {
+                    obj->rot.z -= 13.0f;
+                }
+            }
+            break;
+        case 3:
+            break;
+        case 4:
+            obj->trans.y -= 32.0f;
+            for (i = 0; i < 5; i++) {
+                window = D_80109518_koopa[i];
+                func_8005BA90_main(window[0], window[1] + window[3] / 2, (window[2] + window[4] / 2) + (s16)obj->trans.y);
+            }
+            if (D_8010955E_koopa != -1) {
+                func_80054904_main(D_8010955E_koopa, 0, D_8010951A_koopa[0] + 100, (s32)obj->trans.y + D_8010951A_koopa[1] + 50);
+            }
+            if (D_8010955A_koopa != -1) {
+                func_80054904_main(D_8010955A_koopa, 0, D_8010951A_koopa[0] + 100, (s32)obj->trans.y + D_8010951A_koopa[1] - 30);
+            }
+            for (i = 0; i < 2; i++) {
+                if (D_80109554_koopa[i] != -1) {
+                    func_80054904_main(D_80109554_koopa[i], 0, D_8010951A_koopa[0] + i * 200, (s32)obj->trans.y + D_8010951A_koopa[1] - 40);
+                }
+            }
+            if (obj->trans.y <= 0) {
+                D_80109568_koopa = D_8010954A_koopa[obj->work[2]];
+                func_80106AB8_koopa();
+            }
+            break;
+    }
+    if (D_80109562_koopa != -1) {
+        for (i = 0;; i++) {
+            if (obj->rot.z < D_801093A8_koopa[i * 2]) {
+                break;
+            }
+        }
+        func_80054904_main(D_80109562_koopa, 0, D_801093A8_koopa[i * 2 + 1] + 50, D_801093A4_koopa + obj->work[1] * 20);
+    }
+}
 
 s32 func_80106968_koopa(void) {
     return D_80109568_koopa;

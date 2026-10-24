@@ -12,9 +12,11 @@ void func_80106898_inst(void);         /* extern */
 void func_80106EB4_inst(void);         /* extern */
 void func_80107308_inst(void);         /* extern */
 void func_80107470_inst(void);         /* extern */
-void func_80107A24_inst(omObjData *);  /* extern */
-void func_80107BF8_inst(omObjData *);  /* extern */
-void func_80108350_inst(void);         /* extern */
+void func_801079CC_inst(omObjData *);
+s32 func_8010B10C_inst(void);
+void func_80107A24_inst(omObjData *); /* extern */
+void func_80107BF8_inst(omObjData *); /* extern */
+void func_80108350_inst(void);        /* extern */
 void func_80108870_inst(omObjData *);
 void func_8010C8D0_inst(void);
 void func_801094B0_inst(void); /* extern */
@@ -235,7 +237,15 @@ INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80107308_inst);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80107470_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80107938_inst);
+void func_80107938_inst(omObjData *obj) {
+    if ((s8)func_8010B10C_inst() == 1) {
+        func_8001C814_main(obj->model[1], 1, 0);
+        func_8001C814_main(obj->model[2], 1, 0);
+        func_8001C258_main(obj->model[1], 4, 0);
+        func_8001C258_main(obj->model[2], 4, 0);
+        D_8010DDDC_inst = func_801079CC_inst;
+    }
+}
 
 void func_801079CC_inst(omObjData *obj) {
     func_8001C814_main(obj->model[3], 1, 0);

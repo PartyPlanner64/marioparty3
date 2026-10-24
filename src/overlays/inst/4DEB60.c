@@ -159,7 +159,10 @@ void func_80106388_inst(void) {
     func_8000BC48_main(espriteSlot, 0x4000);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_801063F4_inst);
+void func_801063F4_inst(void) {
+    func_80037258_main();
+    func_8005F524_main();
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4DEB60", D_8010D658_inst);
 

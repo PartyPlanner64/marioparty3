@@ -40,6 +40,9 @@ void func_8005CD84_main(TextWindow *);
 void func_8005CE10_main(TextWindow *);
 void *func_8005DAA4_main(s16);
 void func_8005F7F4_main(s16 *);
+s16 func_8005B614_main(s32);
+void func_8005CF94_main(s16);
+void func_80060848_main(void);
 
 void func_8005A6B0_main(void) {
     Process *temp_v0_4;
@@ -123,7 +126,45 @@ INCLUDE_ASM("asm/nonmatchings/window", func_8005B040_main);
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005B238_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005B43C_main);
+void func_8005B43C_main(s16 winId, u32 message, s16 x, s16 y) {
+    TextWindow *window = &D_800CC69C_main[winId];
+    s16 width;
+
+    if (window->unk_D0 != NULL && window->unk_D4 != 0) {
+        func_800365E8_main(window->unk_D0);
+    }
+    if ((u8)window->unk20 == 2) {
+        func_8005CF94_main(winId);
+    }
+    window->unk5C = 1;
+    if (0x80000000 < message) {
+        window->unk_D4 = 0;
+        window->unk_CC = (u8 *)message;
+    } else {
+        window->unk_D4 = 1;
+        window->unk_D0 = func_800364DC_main((void *)message);
+        window->unk_CC = window->unk_D0;
+    }
+    if (x >= 0) {
+        window->unk54 = x;
+    } else if (x == -2) {
+        if (window->unk_38 & 0x40000) {
+            func_80060848_main();
+        }
+        width = func_8005B614_main((s32)window->unk_CC);
+        D_800CD2A4_main = 0;
+        window->unk54 = (window->unk40 - width) / 2;
+        window->unk_38 |= 0x800;
+    }
+    if (y >= 0) {
+        window->unk56 = y;
+    } else if (y == -2) {
+        window->unk56 = (window->unk42 - 12) / 2;
+        window->unk_38 |= 0x1000;
+    }
+    window->unk20 = 1;
+    window->unk_30 = 0;
+}
 
 s16 func_8005B5EC_main(u8 *str) {
     s16 len = 0;

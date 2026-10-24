@@ -54,7 +54,7 @@ typedef struct TextWindow {
     /* 0x03C */ u16 unk3C;
     /* 0x03E */ u16 unk3E;
     /* 0x040 */ s16 unk40;
-    /* 0x042 */ char pad42[2];
+    /* 0x042 */ s16 unk42;
     /* 0x044 */ s16 unk44;
     /* 0x046 */ s16 unk46;
     /* 0x048 */ u16 unk48;
@@ -67,7 +67,7 @@ typedef struct TextWindow {
     /* 0x056 */ u16 unk56;
     /* 0x058 */ u16 unk58;
     /* 0x05A */ u16 unk5A;
-    /* 0x05C */ char pad5C[2];
+    /* 0x05C */ s16 unk5C;
     /* 0x05E */ s16 unk5E;
     /* 0x060 */ s16 unk60;
     /* 0x062 */ s16 unk62;
@@ -102,7 +102,7 @@ typedef struct TextWindow {
 
 void func_8005A6B0_main(void);
 s16 func_8005A968_main(s16, s16, s16, s16, s32, s16);
-void func_8005B43C_main(s16, s32, s32, s32);
+void func_8005B43C_main(s16, u32, s16, s16);
 void func_8005B6BC_main(s16 win_id, u32 arg1, s8 arg2);
 void func_8005BDFC_main(s16, s32);
 void func_8005BE30_main(s16, s32);

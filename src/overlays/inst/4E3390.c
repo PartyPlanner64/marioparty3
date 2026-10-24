@@ -19,6 +19,7 @@ void func_8010BE78_inst(s32 arg0);    /* extern */
 
 extern s8 D_8010D408_inst;
 extern s8 D_8010D550_inst;
+extern s8 D_8010D551_inst;
 extern s8 D_8010D5B0_inst;
 extern void (*D_8010DC94_inst)(omObjData *);
 extern void (*D_8010DCA4_inst)(s32);
@@ -79,7 +80,9 @@ s32 func_8010B10C_inst(void) {
     return D_8010D550_inst;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010B118_inst);
+s32 func_8010B118_inst(void) {
+    return D_8010D551_inst;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010B124_inst);
 

@@ -46,6 +46,7 @@ void func_8005F7F4_main(s16 *);
 s16 func_8005B614_main(s32);
 void func_8005CF94_main(s16);
 void func_80060848_main(void);
+void func_8005DD14_main(s16);
 
 void func_8005A6B0_main(void) {
     Process *temp_v0_4;
@@ -554,7 +555,40 @@ void func_8005D2FC_main(void) {
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005D30C_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005D83C_main);
+void func_8005D83C_main(s16 winId, s16 x, s16 y, s16 width, s16 height) {
+    TextWindow *window = &D_800CC69C_main[winId];
+    u8 *pixels;
+    s16 i;
+    s16 j;
+
+    func_8005DD14_main(winId);
+    if (y < 0) {
+        y = 0;
+    }
+    if (x < 0) {
+        x = 0;
+    }
+    if (window->unk_E0[0] != NULL) {
+        pixels = func_8005DAA4_main(winId);
+        pixels += (x + y * window->unk44) / 2;
+        if (x & 1) {
+            for (i = 0; i < height; i++) {
+                for (j = 0; j < width / 2; j++) {
+                    pixels[j] &= 0xF0;
+                    pixels[j + 1] &= 0x0F;
+                }
+                pixels += window->unk44 / 2;
+            }
+        } else {
+            for (i = 0; i < height; i++) {
+                for (j = 0; j < width / 2; j++) {
+                    pixels[j] = 0;
+                }
+                pixels += window->unk44 / 2;
+            }
+        }
+    }
+}
 
 void *func_8005DAA4_main(s16 winId) {
     TextWindow *window = &D_800CC69C_main[winId];

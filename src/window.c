@@ -159,7 +159,28 @@ void func_8005B040_main(u8 *pixels, s16 width, s16 height) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005B238_main);
+void func_8005B238_main(u8 *pixels, s16 width, s16 height) {
+    s16 radius;
+    s16 x;
+    s16 y;
+    s16 right;
+
+    if (width > height) {
+        radius = height / 2;
+    } else {
+        radius = width / 2;
+    }
+    width /= 2;
+    for (y = 0; y < radius; y++) {
+        for (x = 0; x < radius - y; x++) {
+            (pixels + y * width)[x / 2] &= (x & 1) ? 0xF0 : 0x0F;
+            (pixels + (height - y - 1) * width)[x / 2] &= (x & 1) ? 0xF0 : 0x0F;
+            right = width * 2 - x - 1;
+            (pixels + y * width)[right / 2] &= (right & 1) ? 0xF0 : 0x0F;
+            (pixels + (height - y - 1) * width)[right / 2] &= (right & 1) ? 0xF0 : 0x0F;
+        }
+    }
+}
 
 void func_8005B43C_main(s16 winId, u32 message, s16 x, s16 y) {
     TextWindow *window = &D_800CC69C_main[winId];

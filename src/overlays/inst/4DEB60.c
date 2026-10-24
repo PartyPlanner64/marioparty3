@@ -337,7 +337,10 @@ s32 func_80107E20_inst(void) {
     return D_800CCF58_main[HmfModelData[modelId].unk02].unk02 <= unk40;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80107E98_inst);
+void func_80107E98_inst(void) {
+    func_8001C6A8_main(D_8010DDD8_inst->model[0], 0);
+    func_8001C814_main(D_8010DDD8_inst->model[0], 1, 0);
+}
 
 void func_80107EE0_inst(void) {
     DataClose(D_8010DC18_inst);

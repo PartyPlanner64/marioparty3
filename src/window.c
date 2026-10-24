@@ -14,6 +14,23 @@ typedef struct WindowIconDefinition {
     u8 padA[2];
 } WindowIconDefinition;
 
+typedef struct WindowFrameDefinition {
+    u32 file;
+    u32 shadowFile;
+    s16 width;
+    s16 height;
+    u16 textX;
+    u16 textY;
+    u16 textWidth;
+    u16 textHeight;
+    u16 spriteWidth;
+    u16 spriteHeight;
+    u8 speed;
+    u8 attributes;
+    u8 pad1A[2];
+} WindowFrameDefinition;
+
+extern WindowFrameDefinition D_800A2384_main[];
 extern WindowIconDefinition D_800A2294_main[];
 extern TextWindow *D_800CC69C_main;
 extern s32 D_800D209C_main;
@@ -1234,7 +1251,65 @@ void func_80060858_main(s32 winId, s16 arg1) {
     window->unk_A6 = arg1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_80060880_main);
+s32 func_80060880_main(s32 x, s32 y, s32 frameIndex) {
+    s32 winId;
+    s32 member;
+    TextWindow *window;
+    WindowFrameDefinition *frame;
+    HuSprite *sprite;
+
+    frame = &D_800A2384_main[frameIndex];
+    winId = func_8005A968_main(x, y, frame->width, frame->height, 0, 12);
+    func_8005BDFC_main(winId, 0);
+    func_8005C060_main(winId, 2, 255, 0, 0);
+    func_8005C060_main(winId, 4, 70, 224, 70);
+    func_8005C060_main(winId, 5, 0, 176, 192);
+    func_8005C060_main(winId, 6, 255, 173, 0);
+    window = &D_800CC69C_main[winId];
+    window->unk54 = window->unk4C = frame->textX;
+    window->unk56 = window->unk4E = frame->textY;
+    window->unk50 = frame->textWidth;
+    window->unk52 = frame->textHeight;
+    func_8005BCA4_main(winId, frame->spriteWidth, frame->spriteHeight);
+    window->unk58 = window->unk54 + frame->textWidth - window->unk_27;
+    window->unk5A = window->unk56 + frame->textHeight - window->unk_28;
+    window->unk_33 = 7;
+    func_8005C060_main(winId, 7, 64, 64, 64);
+    if (frameIndex == 5) {
+        window->unk_29 = 0;
+    }
+    member = func_8005B7B8_main(winId, frame->file, 0, 0, 0);
+    window->unk274 = member;
+    HuSprPriSet(window->unk_6C, member, 15000);
+    func_80054904_main(window->unk_6C, member, 0, 0);
+    HuSprScaleSet(window->unk_6C, member, 0, 0);
+    HuSprAttrSet(window->unk_6C, member, frame->attributes);
+    sprite = HuSprGet(window->unk_6C, member);
+    sprite->unk_84->unk00->unk08 = frame->spriteWidth;
+    sprite->unk_84->unk00->unk0A = frame->spriteHeight;
+    if (frame->shadowFile != 0) {
+        member = func_8005B7B8_main(winId, frame->shadowFile, 0, 0, 0);
+        window->unk276 = member;
+        func_80055458_main(window->unk_6C, member, 255);
+        HuSprPriSet(window->unk_6C, member, 15001);
+        func_80054904_main(window->unk_6C, member, 0, 0);
+        HuSprScaleSet(window->unk_6C, member, 0, 0);
+        func_80055420_main(window->unk_6C, member, 27, 27, 255);
+        HuSprAttrSet(window->unk_6C, member, frame->attributes | 0x1000);
+        sprite = HuSprGet(window->unk_6C, member);
+        sprite->unk_84->unk00->unk08 = frame->spriteWidth;
+        sprite->unk_84->unk00->unk0A = frame->spriteHeight;
+    } else {
+        window->unk276 = 0;
+    }
+    window->unk_38 |= 0x2000;
+    func_8005BEE0_main(winId, 0);
+    func_8005C154_main(winId, 192, 192, 192);
+    func_8005C02C_main(winId, frame->speed);
+    func_8005FBF8_main(winId, 255, 255, 255);
+    func_8005BB18_main(winId, 0, 0);
+    return winId;
+}
 
 void func_80060C14_main(s32 winId, s32 playSound) {
     TextWindow *window = &D_800CC69C_main[winId];

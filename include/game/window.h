@@ -48,7 +48,8 @@ typedef struct TextWindow {
     /* 0x02F */ u8 backgroundBlue;
     /* 0x030 */ s8 unk_30;
     /* 0x031 */ s8 unk_31;
-    /* 0x032 */ s16 unk_32;
+    /* 0x032 */ u8 unk_32;
+    /* 0x033 */ u8 unk_33;
     /* 0x034 */ u8 unk_34;
     /* 0x035 */ u8 unk_35;
     /* 0x036 */ char pad36[2]; /* maybe part of unk_35[3]? */

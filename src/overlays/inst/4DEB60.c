@@ -18,6 +18,8 @@ void func_80107A24_inst(omObjData *); /* extern */
 void func_80107BF8_inst(omObjData *); /* extern */
 void func_80108350_inst(void);        /* extern */
 void func_80108870_inst(omObjData *);
+void func_80108A10_inst(omObjData *);
+void func_8010C848_inst(void);
 void func_8010C8D0_inst(void);
 void func_801094B0_inst(void); /* extern */
 void func_801098D8_inst(omObjData *);
@@ -425,9 +427,19 @@ void func_80108808_inst(omObjData *object) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80108870_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80108954_inst);
+void func_80108954_inst(omObjData *object) {
+    s16 model = object->model[0];
+    f32 time = HmfModelData[model].unk40;
 
-void func_80108A10_inst(void) {
+    if (D_800CCF58_main[HmfModelData[model].unk02].unk02 <= time) {
+        func_8001C5B4_main(model, object->motion[3]);
+        func_8001C814_main(object->model[0], 2, 2);
+        func_8010C848_inst();
+        D_8010DDE4_inst = func_80108A10_inst;
+    }
+}
+
+void func_80108A10_inst(omObjData *object) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80108A18_inst);

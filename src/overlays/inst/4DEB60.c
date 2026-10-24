@@ -1,8 +1,9 @@
 #include "common.h"
 
-void func_80105D9C_inst(omObjData *);  /* extern */
-void func_801061EC_inst(void);         /* extern */
-void func_80106310_inst(omObjData *);  /* extern */
+void func_80105D9C_inst(omObjData *); /* extern */
+void func_801061EC_inst(void);        /* extern */
+void func_80106310_inst(omObjData *); /* extern */
+void func_801063F4_inst(void);
 void func_80106388_inst(void);         /* extern */
 void func_8010674C_inst(omObjData *);  /* extern */
 void func_801067CC_inst(void);         /* extern */
@@ -34,6 +35,7 @@ extern s8 D_8010D408_inst;
 extern s8 D_8010D40A_inst;
 extern s8 D_8010D40B_inst;
 extern s8 D_8010D411_inst;
+extern s8 D_8010D4A8_inst;
 extern f32 D_8010D414_inst;
 extern Vec D_8010D418_inst;
 extern Vec D_8010D424_inst;
@@ -156,7 +158,18 @@ INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80105D9C_inst);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_801061EC_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80106310_inst);
+void func_80106310_inst(omObjData *object) {
+    if (D_800D530C_main == 1) {
+        if (D_8010D4A8_inst == 0) {
+            WipeCreateOut(0, 20);
+            D_8010D4A8_inst = 1;
+        } else if (WipeStatGet() == 0) {
+            HuAudSeqFadeOut(30);
+            func_801063F4_inst();
+            omOvlReturnEx(1);
+        }
+    }
+}
 
 void func_80106388_inst(void) {
     u16 espriteSlot;

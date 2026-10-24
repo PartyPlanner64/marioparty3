@@ -14,6 +14,11 @@ typedef struct WindowIconDefinition {
     u8 padA[2];
 } WindowIconDefinition;
 
+typedef struct WindowFont {
+    u32 unk00[2];
+    u32 glyphOffset;
+} WindowFont;
+
 typedef struct WindowFrameDefinition {
     u32 file;
     u32 shadowFile;
@@ -53,7 +58,7 @@ extern void *D_800CE2C4_main;
 extern Process *D_800D040C_main;
 extern u8 D_800D1F34_main;
 extern u8 D_800D2008_main;
-extern void *D_800D1FE4_main;
+extern WindowFont *D_800D1FE4_main;
 extern void *D_800D4084_main;
 extern u8 D_800D5206_main[5];
 extern s8 D_800D5540_main;
@@ -75,6 +80,7 @@ s32 func_8005CC3C_main(TextWindow *, s16);
 void func_8005CD84_main(TextWindow *);
 void func_8005CE10_main(TextWindow *);
 void *func_8005DAA4_main(s16);
+void func_8005D83C_main(s16, s16, s16, s16, s16);
 void func_8005F7F4_main(s16 *);
 s16 func_8005B614_main(s32);
 void func_8005CF94_main(s16);
@@ -771,7 +777,98 @@ void func_8005D2FC_main(void) {
     D_800CD2A4_main = 1;
 }
 
+#ifdef NON_MATCHING
+/* Seven register uses differ: the saved buffer/window ID and glyph character index. */
+void func_8005D30C_main(s16 winId, u8 character, u8 color, s16 x, s16 y) {
+    TextWindow *window = &D_800CC69C_main[winId];
+    u8 *pixels;
+    u8 *pixelData;
+    u8 *glyph;
+    s16 width;
+    s16 stride;
+    u16 height = 12;
+    s16 glyphStride = 5;
+    s16 i;
+    s16 j;
+    u8 background;
+    u8 backgroundHigh;
+
+    func_8005DD14_main(winId);
+    if (y < 0) {
+        y = 0;
+    }
+    if (x < 0) {
+        x = 0;
+    }
+    pixelData = func_8005DAA4_main(winId);
+    glyph = (u8 *)D_800D1FE4_main + D_800D1FE4_main->glyphOffset;
+    glyph += (character - 0x30) * 60;
+    width = 10;
+    if (gLanguageIndex != LANGUAGE_JAPANESE && !(window->unk_38 & 0x80000)) {
+        width = D_800A2194_main[character];
+    }
+    window->unk_34 = width;
+    if (((window->unk_38 >> 2) & 1) & (character != 0x80)) {
+        if ((character != 0x81) & (color == 0)) {
+            func_8005D83C_main(winId, x - 1, y - 2, width + ((u8)window->unk_29 + 3), 14);
+        }
+    }
+    pixels = pixelData;
+    pixels += (x + y * window->unk44) / 2;
+    stride = window->unk44 / 2;
+    background = window->unk_33 + 1;
+    backgroundHigh = background << 4;
+    color++;
+    if (x & 1) {
+        for (i = 0; i < height; i++) {
+            for (j = 0; j < width / 2; j++, glyph++) {
+                if ((*glyph & 0xF0) == 0xF0) {
+                    pixels[j] = (pixels[j] & 0xF0) | color;
+                } else if ((pixels[j] & 0xF) != 1 && (pixels[j] & 0xF) != background) {
+                    if (((*glyph & 0xF0) != 0) & (color != 1)) {
+                        pixels[j] = (pixels[j] & 0xF0) | (color + 7);
+                    }
+                }
+                if ((*glyph & 0xF) == 0xF) {
+                    (pixels + j)[1] = ((pixels + j)[1] & 0xF) | (color << 4);
+                } else if (((pixels + j)[1] & 0xF0) != 0x10 && ((pixels + j)[1] & 0xF0) != backgroundHigh) {
+                    if (((*glyph & 0xF) != 0) & (color != 1)) {
+                        (pixels + j)[1] = ((pixels + j)[1] & 0xF) | ((color + 7) << 4);
+                    }
+                }
+            }
+            glyph += glyphStride - j;
+            pixels += stride;
+        }
+    } else {
+        width >>= 1;
+        for (i = 0; i < height; i++) {
+            for (j = 0; j < width; j++) {
+                if ((*glyph & 0xF0) == 0xF0) {
+                    *pixels = (*pixels & 0xF) | (color << 4);
+                } else if ((*pixels & 0xF0) != 0x10 && (*pixels & 0xF0) != backgroundHigh) {
+                    if (((*glyph & 0xF0) != 0) & (color != 1)) {
+                        *pixels = (*pixels & 0xF) | ((color + 7) << 4);
+                    }
+                }
+                if ((*glyph & 0xF) == 0xF) {
+                    *pixels = (*pixels & 0xF0) | color;
+                } else if ((*pixels & 0xF) != 1 && (*pixels & 0xF) != background) {
+                    if (((*glyph & 0xF) != 0) & (color != 1)) {
+                        *pixels = (*pixels & 0xF0) | (color + 7);
+                    }
+                }
+                glyph++;
+                pixels++;
+            }
+            glyph += glyphStride - j;
+            pixels += stride - j;
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/window", func_8005D30C_main);
+#endif
 
 void func_8005D83C_main(s16 winId, s16 x, s16 y, s16 width, s16 height) {
     TextWindow *window = &D_800CC69C_main[winId];

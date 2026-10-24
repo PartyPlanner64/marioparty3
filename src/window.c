@@ -836,7 +836,98 @@ s32 func_8005E1D8_main(s16 winId, s16 arg1, s32 arg2) {
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005E348_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005EEE4_main);
+void func_8005EEE4_main(TextWindow *window, TextWindowSprite *sprite) {
+    f32 dx;
+    f32 dy;
+    f32 scaleY;
+    f32 x;
+    f32 y;
+    f32 scaleX;
+    f32 distance;
+    f32 stepX;
+    f32 stepY;
+    f32 spriteScaleX;
+    f32 spriteScaleY;
+
+    scaleX = scaleY = 1.0f;
+    x = sprite->unk_02 - 12;
+    y = sprite->unk_04 + 8;
+    switch (window->unk_9A) {
+        case 0:
+            if (window->unk6A != -1) {
+                HuSprAttrSet(window->unk_6C, 2, 0x8000);
+            }
+            return;
+        case 1:
+            if (window->unk_38 & 0x8000) {
+                window->unk_A4 = 0;
+                window->unk_9A = 2;
+            } else {
+                scaleX = scaleY = window->unk_A4 / 8.0f;
+                if (++window->unk_A4 >= 8) {
+                    window->unk_A4 = 0;
+                    window->unk_9A = 2;
+                }
+            }
+            break;
+        case 3:
+            window->unk_A4++;
+            dx = window->cursorTargetX - window->cursorStartX;
+            dy = window->cursorTargetY - window->cursorStartY;
+            distance = HuSqrtf(dx * dx + dy * dy);
+            stepX = dx / distance * 10.0f * window->unk_A4;
+            stepY = dy / distance * 10.0f * window->unk_A4;
+            dx = window->cursorStartX + stepX - window->cursorTargetX;
+            dy = window->cursorStartY + stepY - window->cursorTargetY;
+            if (dx * dx + dy * dy < 100.0f) {
+                x = window->cursorTargetX;
+                y = window->cursorTargetY;
+                window->unk_A4 = 0;
+                window->unk_9A = 2;
+            } else {
+                x = window->cursorStartX + stepX;
+                y = window->cursorStartY + stepY;
+            }
+            break;
+        case 2:
+            window->unk_A4 += 10.0f;
+            if (window->unk_A4 > 180) {
+                window->unk_A4 = 0;
+            }
+            x += sindf(window->unk_A4) * 4.0f;
+            break;
+        case 4:
+            if (window->unk_38 & 0x8000) {
+                scaleX = scaleY = 0.0f;
+            } else if (window->unk_A4 >= 11) {
+                scaleX = scaleY = 1.3333334f;
+            } else {
+                window->unk_A4++;
+                scaleX = scaleY = window->unk_A4 / 30.0f + 1.0f;
+            }
+            break;
+        case 5:
+            if (--window->unk_A4 == 0) {
+                window->unk_A4 = 0;
+                window->unk_9A = 2;
+            }
+            break;
+    }
+    if ((scaleX == 0.0f) | (scaleY == 0.0f)) {
+        HuSprAttrSet(window->unk_6C, 2, 0x8000);
+    } else {
+        dy = 0.8f;
+        dx = scaleX * dy;
+        spriteScaleX = window->scaleX;
+        dy = scaleY * dy;
+        spriteScaleY = window->scaleY;
+        HuSprScaleSet(window->unk_6C, 2, dx * spriteScaleX, dy * spriteScaleY);
+        func_80054904_main(window->unk_6C, 2, dx = x / dx * window->scaleX, dy = y / dy * window->scaleY);
+        if (!(window->unk_38 & 8)) {
+            HuSprAttrReset(window->unk_6C, 2, 0x8000);
+        }
+    }
+}
 
 void func_8005F364_main(s16 winId) {
     TextWindow *window = &D_800CC69C_main[winId];

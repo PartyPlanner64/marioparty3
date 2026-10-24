@@ -81,7 +81,10 @@ typedef struct TextWindow {
     /* 0x06C */ s16 unk_6C;
     /* 0x06E */ s16 unk_6E[22];
     /* 0x09A */ s16 unk_9A;
-    /* 0x09C */ char pad9C[8];
+    /* 0x09C */ s16 cursorStartX;
+    /* 0x09E */ s16 cursorStartY;
+    /* 0x0A0 */ s16 cursorTargetX;
+    /* 0x0A2 */ s16 cursorTargetY;
     /* 0x0A4 */ s16 unk_A4;
     /* 0x0A6 */ s16 unk_A6;
     /* 0x0A8 */ u16 input;

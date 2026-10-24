@@ -35,6 +35,8 @@ void func_80109220_koopa(omObjData *);
 void func_8010926C_koopa(void);
 void func_801092D4_koopa(void);
 void func_801091C4_koopa(omObjData *);
+void func_80109320_koopa(void);
+void func_801092A0_koopa(void);
 void func_80107724_koopa(void);
 s32 func_80107A9C_koopa(void);
 s32 func_80107DDC_koopa(void);
@@ -513,7 +515,17 @@ INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_80108BB0_koopa);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_80108D2C_koopa);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_801091C4_koopa);
+void func_801091C4_koopa(omObjData *obj) {
+    if (WipeStatGet() == 0) {
+        func_80109320_koopa();
+        func_801092A0_koopa();
+        func_800F4730_shared_board();
+        func_8005F524_main();
+        func_800EB09C_shared_board();
+        func_800EA694_shared_board();
+        omOvlReturnEx(1);
+    }
+}
 
 void func_80109220_koopa(omObjData *obj) {
     if (D_800D530C_main != 0) {

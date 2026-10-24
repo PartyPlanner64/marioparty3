@@ -10,6 +10,8 @@ extern s32 D_800D209C_main;
 extern u8 D_800A2194_main[];
 extern u8 D_800A2150_main;
 extern u8 gLanguageIndex;
+extern u8 D_800A2324_main[];
+extern u8 D_800A2325_main[];
 extern u8 D_800A232C_main[];
 extern u8 *D_800A2344_main[];
 extern s16 D_800BDA50_main[12];
@@ -122,7 +124,39 @@ void func_8005A6B0_main(void) {
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005A968_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005B040_main);
+void func_8005B040_main(u8 *pixels, s16 width, s16 height) {
+    s16 stride = width / 2;
+    s16 x;
+    s16 y;
+    u8 left;
+    u8 right;
+    u8 *row;
+
+    for (x = 0; x < stride; x++) {
+        pixels[x] = 0x44;
+        (pixels + stride)[x] = 0x77;
+        (pixels + (height - 2) * stride)[x] = 0x77;
+        (pixels + (height - 1) * stride)[x] = 0x44;
+    }
+    for (y = 0; y < height; y++) {
+        row = pixels + stride * y;
+        row[0] = 0x47;
+        row += stride;
+        row[-1] = 0x74;
+    }
+    for (y = 0; y < 4; y++) {
+        pixels[y * stride] = D_800A2324_main[(s16)(y * 2)];
+        pixels[y * stride + 1] = D_800A2325_main[(s16)(y * 2)];
+        pixels[(height - y - 1) * stride] = D_800A2324_main[(s16)(y * 2)];
+        pixels[(height - y - 1) * stride + 1] = D_800A2325_main[(s16)(y * 2)];
+        left = (D_800A2324_main[(s16)(y * 2)] >> 4) | (D_800A2324_main[(s16)(y * 2)] << 4);
+        right = (D_800A2325_main[(s16)(y * 2)] >> 4) | (D_800A2325_main[(s16)(y * 2)] << 4);
+        pixels[y * stride + stride - 2] = right;
+        pixels[y * stride + stride - 1] = left;
+        pixels[(height - y - 1) * stride + stride - 2] = right;
+        pixels[(height - y - 1) * stride + stride - 1] = left;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/window", func_8005B238_main);
 

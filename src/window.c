@@ -6,6 +6,15 @@
 #include "input.h"
 #include "stdarg.h"
 
+typedef struct WindowIconDefinition {
+    u32 highlightedFile;
+    u32 file;
+    u8 bank;
+    u8 width;
+    u8 padA[2];
+} WindowIconDefinition;
+
+extern WindowIconDefinition D_800A2294_main[];
 extern TextWindow *D_800CC69C_main;
 extern s32 D_800D209C_main;
 extern u8 D_800A2194_main[];
@@ -539,7 +548,49 @@ void func_8005CF94_main(s16 winId) {
     HuSprAttrSet(window->unk_6C, 3, 0x8000);
 }
 
-INCLUDE_ASM("asm/nonmatchings/window", func_8005CFE0_main);
+s32 func_8005CFE0_main(s16 winId, s16 icon) {
+    TextWindow *window = &D_800CC69C_main[winId];
+    s16 sprite;
+    s16 graphic;
+    void *data;
+
+    graphic = D_800BDA50_main[icon];
+    if (graphic == -1) {
+        if (window->unk_38 & 0x2000) {
+            data = DataRead(D_800A2294_main[icon].highlightedFile);
+        } else {
+            data = DataRead(D_800A2294_main[icon].file);
+        }
+        D_800BDA50_main[icon] = graphic = func_80055810_main(data);
+        HuMemMemoryFreePerm(data);
+    }
+    for (sprite = 12; sprite < 22; sprite++) {
+        if (window->unk_6E[sprite] == -1) {
+            break;
+        }
+    }
+    if (sprite >= 22) {
+        return 0;
+    }
+    window->unk_6E[sprite] = graphic;
+    HuSprAttrSet(window->unk_6C, sprite, 0x1000);
+    func_80055024_main(window->unk_6C, sprite, graphic, D_800A2294_main[icon].bank);
+    func_80054904_main(window->unk_6C, sprite, window->unk54 - window->unk48, window->unk56 - window->unk4A);
+    func_800554C4_main(window->unk_6C, sprite, 0);
+    if ((u8)window->unk_22 == 0) {
+        func_80055420_main(window->unk_6C, sprite, 0, 0, 0);
+    } else if (window->unk_38 & 0x2000) {
+        func_80055420_main(window->unk_6C, sprite, 0x61, 0x61, 0xF8);
+    } else {
+        func_80055420_main(window->unk_6C, sprite, 0x38, 0xF8, 0x25);
+    }
+    if (window->unk_38 & 8) {
+        HuSprAttrSet(window->unk_6C, sprite, 0x8000);
+    } else {
+        HuSprAttrReset(window->unk_6C, sprite, 0x8000);
+    }
+    return D_800A2294_main[icon].width;
+}
 
 void func_8005D294_main(s16 winId) {
     func_8005CD84_main(&D_800CC69C_main[winId]);

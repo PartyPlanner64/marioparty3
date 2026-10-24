@@ -10,6 +10,7 @@
 #include "../ovl_80_shared_board/FFB10.h"
 #include "../ovl_80_shared_board/113520.h"
 #include "../ovl_80_shared_board/106640.h"
+#include "../ovl_80_shared_board/F5E80.h"
 
 typedef struct UnkBowser {
     s16 unk_00;
@@ -501,7 +502,56 @@ s32 func_801078CC_koopa(void) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_80107A9C_koopa);
+s32 func_80107A9C_koopa(void) {
+    UnkBoard8 *sprite;
+    void *data;
+    s32 i;
+
+    MBWinOpen(0x4212);
+    func_800EC3C0_shared_board(D_801094F4_koopa);
+    func_800EC3E4_shared_board();
+    if (MBItemFindEmpty(D_801094F4_koopa) == -1) {
+        func_80107724_koopa();
+        MBWinOpen(0x4213);
+        func_800EC3C0_shared_board(D_801094F4_koopa);
+        func_800EC3E4_shared_board();
+        HuAudFXPlay(0x29E);
+        MBMotionShiftSet(D_801094F8_koopa, 4, 0, 20, 0);
+        MBModelMotionWait(D_801094F8_koopa);
+        MBMotionShiftSet(D_801094F8_koopa, 7, 0, 5, 2);
+        HuPrcSleep(10);
+        return 1;
+    }
+    sprite = func_800F2C48_shared_board(1, 0);
+    data = DataRead(0x21003A);
+    sprite->model[0] = func_80055810_main(data);
+    DataClose(data);
+    func_80055024_main(sprite->spriteGroup, 0, sprite->model[0], 0);
+    HuSprAttrReset(sprite->spriteGroup, 0, 0xFFFF);
+    HuSprAttrSet(sprite->spriteGroup, 0, 0x1000);
+    HuSprPriSet(sprite->spriteGroup, 0, 0x1000);
+    func_80054904_main(sprite->spriteGroup, 0, 160, -32);
+    func_8010775C_koopa();
+    for (i = 0; i <= 120; i += 4) {
+        func_80054904_main(sprite->spriteGroup, 0, 160, i - 32);
+        HuPrcVSleep();
+    }
+    HuPrcSleep(15);
+    for (i = 0; i < 70; i += 5) {
+        func_80054904_main(sprite->spriteGroup, 0, sindf(i) * 90.0f + 160.0f, sindf(i + 90) * 50.0f + 38.0f);
+        func_80055458_main(sprite->spriteGroup, 0, 256 - i * 2);
+        HuSprScaleSet(sprite->spriteGroup, 0, 1.0f - i / 140.0f, 1.0f - i / 140.0f);
+        HuPrcVSleep();
+    }
+    func_800F2CA4_shared_board(sprite);
+    HuAudFXPlay(0x10);
+    GwPlayer[D_801094F4_koopa].itemNo[MBItemFindEmpty(D_801094F4_koopa)] = ITEM_BOWSER_SUIT;
+    MBStatusItemIconSprReinit(D_801094F4_koopa);
+    MBWinOpen(0x420F);
+    func_800EC3C0_shared_board(D_801094F4_koopa);
+    func_800EC3E4_shared_board();
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/koopa/3C27C0", func_80107DDC_koopa);
 

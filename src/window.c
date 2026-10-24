@@ -48,7 +48,7 @@ extern u8 *D_800A2344_main[];
 extern s16 D_800BDA50_main[12];
 extern s8 D_800BDA6D_main;
 extern s16 D_800BDA68_main;
-extern s8 D_800CD2A4_main;
+extern u8 D_800CD2A4_main;
 extern void *D_800CE2C4_main;
 extern Process *D_800D040C_main;
 extern u8 D_800D1F34_main;
@@ -60,7 +60,7 @@ extern s8 D_800D5540_main;
 extern s8 D_800D6A26_main;
 extern s16 D_800D6B62_main;
 extern s32 D_800A25D0_main[];
-extern s8 D_800BDA6A_main;
+extern u8 D_800BDA6A_main;
 extern u16 D_800BDA6C_main;
 extern u16 D_800BDA6E_main;
 extern u8 D_800D5206_main[5];
@@ -1489,7 +1489,111 @@ INCLUDE_RODATA("asm/nonmatchings/window", D_800A7EA8_main);
 
 INCLUDE_RODATA("asm/nonmatchings/window", D_800A7ECC_main);
 
-INCLUDE_ASM("asm/nonmatchings/window", func_800605A4_main);
+// Measures a message or string, accounting for layout and replacement control codes.
+void func_800605A4_main(u32 str) {
+    u8 *text;
+    u8 *allocatedText = NULL;
+    u8 allocated;
+    s16 width;
+    s16 height;
+    s16 advance;
+    s16 heightAdvance;
+
+    if (str > 0x80000000) {
+        allocated = 0;
+        text = (u8 *)str;
+    } else {
+        allocated = 1;
+        allocatedText = func_800364DC_main((void *)str);
+        text = allocatedText;
+    }
+    height = 14;
+    width = 0;
+    for (; *text != 0; text++) {
+        heightAdvance = 0;
+        if (gLanguageIndex == LANGUAGE_JAPANESE) {
+            advance = (*text == 0x80 || *text == 0x81) ? 0 : 10;
+        } else {
+            advance = D_800A2194_main[*text];
+        }
+        if ((*text > 0) && (*text < 9)) {
+            advance = 0;
+        }
+        switch (*text) {
+            case 0x10:
+            case 0x1A:
+            case 0x20:
+                advance = 10;
+                if (gLanguageIndex != LANGUAGE_JAPANESE) {
+                    advance = *text == 0x1A ? 10 : 4;
+                }
+                break;
+            case 0x0A:
+                if (D_800CD2A4_main != 0) {
+                    advance = 0;
+                } else {
+                    if ((s16)D_800BDA6C_main < width) {
+                        D_800BDA6C_main = width;
+                    }
+                    advance = 0;
+                    width = 0;
+                    if (text[1] != 0) {
+                        heightAdvance = 14;
+                    }
+                }
+                break;
+            case 0x17:
+                heightAdvance = 5;
+                advance = 0;
+                break;
+            case 0x0C:
+            case 0x0D:
+            case 0x0F:
+            case 0x16:
+            case 0x19:
+                advance = 0;
+                break;
+            case 0x0B:
+                if (D_800BDA6A_main == 0) {
+                    if ((s16)D_800BDA6C_main < width) {
+                        D_800BDA6C_main = width;
+                    }
+                    if ((s16)D_800BDA6E_main < height) {
+                        D_800BDA6E_main = height;
+                    }
+                    height = 14;
+                    heightAdvance = 0;
+                    advance = 0;
+                    width = 0;
+                }
+                break;
+            case 0x0E:
+                advance = ((width + (u8)D_800D5540_main) / (u8)D_800D5540_main) * (u8)D_800D5540_main - width;
+                break;
+            case 0x18:
+                text++;
+                break;
+            case 0x11:
+            case 0x12:
+            case 0x13:
+            case 0x14:
+            case 0x15:
+                advance = D_800D5206_main[*text - 0x11];
+                break;
+        }
+        width += advance;
+        height += heightAdvance;
+    }
+    if ((s16)D_800BDA6C_main < width) {
+        D_800BDA6C_main = width;
+    }
+    if ((s16)D_800BDA6E_main < height) {
+        D_800BDA6E_main = height;
+    }
+    if (allocated) {
+        func_800365E8_main(allocatedText);
+    }
+}
 
 void func_80060848_main() {
     D_800CD2A4_main = 1;

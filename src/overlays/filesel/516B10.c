@@ -15,7 +15,8 @@ typedef struct UnkFileSelect {
     u8 unk_01[0xB];
     char unk_0C[0x2C];
     s32 unk_38;
-    char unk_3C[0x48];
+    char unk_3C[0x44];
+    s32 unk_80;
 } UnkFileSelect; // sizeof 0x84
 
 typedef struct UnkFileName {
@@ -78,6 +79,10 @@ typedef struct FileSelectCameraState {
     FileSelectCameraTransition transition;
 } FileSelectCameraState;
 
+void func_801059D0_filesel(void);
+void func_80107C84_filesel(void);
+void func_80112184_filesel(s32);
+void func_801122B0_filesel(s32);
 void func_80111790_filesel(omObjData *);
 void func_80107CF8_filesel(void);
 void func_801119F4_filesel(void);
@@ -123,6 +128,7 @@ void func_8000BCC8_main(u16, s32);
 void func_8000BD94_main(u16, s32, s32);
 void func_8000BE5C_main(u16, f32, f32);
 
+extern s32 D_80112E90_filesel;
 extern u16 D_800D1244_main;
 extern UnkFileSelect D_801142DC_filesel[3];
 extern u8 D_80114490_filesel[0x20];
@@ -161,7 +167,16 @@ extern Vec D_801144EC_filesel;
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801059D0_filesel);
 
+#ifdef NON_MATCHING
+// The C body matches, but the original has eight bytes of trailing padding.
+void func_80105BC0_filesel(void) {
+    D_80112E90_filesel = 0;
+    func_801059D0_filesel();
+    func_80107C84_filesel();
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105BC0_filesel);
+#endif
 
 void func_80105BF0_filesel(void) {
     func_80105C1C_filesel();
@@ -751,9 +766,49 @@ INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801088DC_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80108A94_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80108C34_filesel);
+void func_80108C34_filesel(void) {
+    Vec start;
+    Vec end;
+    Vec position;
+    s32 i;
+    f32 progress;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80108D74_filesel);
+    func_80107670_filesel(4);
+    for (i = 0; i <= 10; i++) {
+        progress = i * 0.1f;
+        if (progress > 1.0f) {
+            progress = 1.0f;
+        }
+        HuVecCopyXYZ(&start, 160.0f, 288.0f, 0.0f);
+        HuVecCopyXYZ(&end, 160.0f, 192.0f, 0.0f);
+        position.x = (end.x - start.x) * progress + start.x;
+        position.y = (end.y - start.y) * progress + start.y;
+        func_80107608_filesel(4, 160.0f, (96.0f - progress * 96.0f) + 208.0f);
+        HuPrcVSleep();
+    }
+}
+
+void func_80108D74_filesel(void) {
+    Vec start;
+    Vec end;
+    Vec position;
+    s32 i;
+    f32 progress;
+
+    for (i = 0; i <= 10; i++) {
+        progress = 1.0f - i * 0.1f;
+        if (progress < 0.0f) {
+            progress = 0.0f;
+        }
+        HuVecCopyXYZ(&start, 160.0f, 288.0f, 0.0f);
+        HuVecCopyXYZ(&end, 160.0f, 192.0f, 0.0f);
+        position.x = (end.x - start.x) * progress + start.x;
+        position.y = (end.y - start.y) * progress + start.y;
+        func_80107608_filesel(4, 160.0f, (96.0f - progress * 96.0f) + 208.0f);
+        HuPrcVSleep();
+    }
+    func_801076A0_filesel(4);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80108EB8_filesel);
 
@@ -1843,7 +1898,20 @@ s32 func_80111B14_filesel(s32 arg0) {
     return D_801129A0_filesel;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80111C30_filesel);
+void func_80111C30_filesel(void) {
+    s32 i;
+
+    D_801142DC_filesel[2].unk_80 = 0;
+    for (i = 0; i < 3; i++) {
+        SLCurBoxNoSet(i);
+        func_80050800_main();
+        if (GwCommon.unk_00 == UNK_VALUE && D_800D09A9_main == i) {
+            D_801142DC_filesel[2].unk_80 = i;
+        }
+        func_801122B0_filesel(i);
+        func_80112184_filesel(i);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80111CBC_filesel);
 

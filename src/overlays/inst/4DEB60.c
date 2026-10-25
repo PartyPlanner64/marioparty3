@@ -17,6 +17,7 @@ extern InstMinigameEntry D_800A6D40_main[];
 extern s8 D_8010D5B1_inst;
 extern u8 D_800CE20A_main;
 extern s32 D_8010D4A4_inst;
+extern u32 D_8010D4AC_inst;
 extern s16 D_8010DC28_inst;
 extern s16 D_8010DC22_inst;
 extern f32 D_800CB890_main;
@@ -259,7 +260,26 @@ void func_801063F4_inst(void) {
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4DEB60", D_8010D658_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80106418_inst);
+s32 func_80106418_inst(Vec *startPosition, Vec *endPosition, Vec *startTarget, Vec *endTarget, s32 duration) {
+    s32 done;
+
+    D_8010D418_inst.x = (endPosition->x - startPosition->x) * sindf(D_8010D4AC_inst * (90.0f / duration)) + startPosition->x;
+    D_8010D418_inst.y = (endPosition->y - startPosition->y) * sindf(D_8010D4AC_inst * (90.0f / duration)) + startPosition->y;
+    D_8010D418_inst.z = (endPosition->z - startPosition->z) * sindf(D_8010D4AC_inst * (90.0f / duration)) + startPosition->z;
+    D_8010D424_inst.x = (endTarget->x - startTarget->x) * sindf(D_8010D4AC_inst * (90.0f / duration)) + startTarget->x;
+    D_8010D424_inst.y = (endTarget->y - startTarget->y) * sindf(D_8010D4AC_inst * (90.0f / duration)) + startTarget->y;
+    D_8010D424_inst.z = (endTarget->z - startTarget->z) * sindf(D_8010D4AC_inst * (90.0f / duration)) + startTarget->z;
+    D_8010D430_inst.x = 0.0f;
+    D_8010D430_inst.y = 1.0f;
+    D_8010D430_inst.z = -0.000001f;
+    D_8010D4AC_inst++;
+    done = 0;
+    if (D_8010D4AC_inst > duration) {
+        D_8010D4AC_inst = 0;
+        done = 1;
+    }
+    return done;
+}
 
 void func_8010674C_inst(omObjData *object) {
     D_800CE17C_main[0] = D_8010D418_inst.x;

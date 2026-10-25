@@ -26,7 +26,18 @@ typedef struct {
     s16 finalMessage;
 } InstMessageInfo;
 
+typedef struct {
+    s16 unk_00;
+    s16 x;
+} InstSpritePos;
+
 extern u8 D_800CB8B1_main[];
+extern s32 D_8010D5B4_inst;
+extern s32 D_8010D5B8_inst;
+extern s16 D_8010D5BA_inst;
+extern u16 D_8010DCC0_inst[2];
+extern u16 D_8010DCC4_inst[3];
+extern InstSpritePos D_8010DAF8_inst[3];
 extern s8 D_8010D411_inst;
 extern s8 D_8010D40B_inst;
 extern s16 D_8010DB04_inst[];
@@ -70,6 +81,8 @@ void func_8010B2A4_inst(omObjData *);
 void func_8010C124_inst(s32);
 u16 func_8010C8E0_inst(s32);
 void func_8010D044_inst(void);
+void func_8010CED0_inst(s32, s32);
+void func_80060DEC_main(s16);
 void func_8010BE78_inst(s32 arg0); /* extern */
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010A1D0_inst);
@@ -218,7 +231,56 @@ void func_8010BE28_inst(void) {
 void func_8010BE70_inst(s32 arg0) {
 }
 
+#ifdef NON_MATCHING
+/* Near match: the final window-state assignment uses v0 instead of v1. */
+void func_8010BE78_inst(s32 arg0) {
+    s32 i;
+    s16 *y;
+    u16 *sprites;
+    InstSpritePos *positions;
+
+    if (D_8010D408_inst == 0) {
+        func_8000BBD4_main(D_8010DCC0_inst[0], 160, *(y = &D_8010D5BA_inst));
+        func_8010CED0_inst(160, *y);
+        if (D_8010D40A_inst == 3) {
+            func_8000BBD4_main(D_8010DCC0_inst[1], 160, *y + 22);
+            for (i = 0, sprites = D_8010DCC4_inst, positions = D_8010DAF8_inst; i < 3; i++) {
+                func_8000BBD4_main(sprites[i], positions[i].x, D_8010D5BA_inst + 22);
+            }
+        }
+        D_8010D5B4_inst++;
+        D_8010D5B8_inst = sindf(D_8010D5B4_inst * 6) * 96.0f + -64.0f;
+        if (D_8010D5B4_inst < 15) {
+            return;
+        }
+        D_8010D5B4_inst = 0;
+        D_8010D5B8_inst = -64;
+        func_8000BBD4_main(D_8010DCC0_inst[0], 160, 32);
+        func_8010CED0_inst(160, 32);
+        if (D_8010D40A_inst == 3) {
+            func_8000BBD4_main(D_8010DCC0_inst[1], 160, 54);
+            for (i = 0, sprites = D_8010DCC4_inst, positions = D_8010DAF8_inst; i < 3; i++) {
+                func_8000BBD4_main(sprites[i], positions[i].x, 54);
+            }
+        }
+    } else {
+        func_8000BBD4_main(D_8010DCC0_inst[0], 160, 32);
+        func_8010CED0_inst(160, 32);
+        if (D_8010D40A_inst == 3) {
+            func_8000BBD4_main(D_8010DCC0_inst[1], 160, 54);
+            for (i = 0, sprites = D_8010DCC4_inst, positions = D_8010DAF8_inst; i < 3; i++) {
+                func_8000BBD4_main(sprites[i], positions[i].x, 54);
+            }
+        }
+        func_80060DEC_main(D_8010DCA8_inst.curGroup);
+        D_8010D440_inst = 1;
+    }
+    func_8010D044_inst();
+    D_8010DCA4_inst = func_8010C124_inst;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010BE78_inst);
+#endif
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E3390", D_8010DAF8_inst);
 

@@ -7,7 +7,7 @@
 typedef struct UnkFileSelect2 {
     s16 unk_00;
     u32 unk_04; // can be messageID or message pointer
-    void *unk_08;
+    s32 unk_08;
 } UnkFileSelect2;
 
 typedef struct UnkFileSelect {
@@ -64,6 +64,10 @@ typedef struct UnkFileSelect6 {
     Vec unk_18;
 } UnkFileSelect6; // sizeof 0x24
 
+void func_80107CF8_filesel(void);
+void func_801119F4_filesel(void);
+void func_80111C30_filesel(void);
+s32 func_8010B5D4_filesel(s32, s32, s32, s16 *, s16 *);
 void func_8010E740_filesel(s32);
 void func_8010E864_filesel(void);
 void func_80105C1C_filesel(void);
@@ -121,6 +125,9 @@ extern s32 D_801146D8_filesel;
 extern s32 D_801129A0_filesel;
 extern u8 D_801129A4_filesel[];
 extern s32 D_801146D4_filesel;
+extern Process *D_80114468_filesel;
+extern omObjData *D_8011446C_filesel;
+extern s32 D_8011447C_filesel[4];
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801059D0_filesel);
 
@@ -457,7 +464,20 @@ void func_8010744C_filesel(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80107490_filesel);
+void func_80107490_filesel(s32 arg0) {
+    if (D_80114158_filesel[arg0].unk_08 == 3) {
+        func_80060EA8_main(D_80114158_filesel[arg0].unk_00, 1);
+        func_800610E0_main(D_80114158_filesel[arg0].unk_00);
+    } else {
+        func_8005FE90_main(D_80114158_filesel[arg0].unk_00);
+        func_8005F364_main(D_80114158_filesel[arg0].unk_00);
+        D_80114158_filesel[arg0].unk_00 = -1;
+    }
+    if (D_80114158_filesel[arg0].unk_04 != 0) {
+        func_80019C00_main((void *)D_80114158_filesel[arg0].unk_04);
+        D_80114158_filesel[arg0].unk_04 = 0;
+    }
+}
 
 void func_80107574_filesel(void) {
     s32 i;
@@ -540,13 +560,19 @@ INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801078F4_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80107AA8_filesel);
 
-void func_80107C50_filesel(void) {
+void func_80107C50_filesel(omObjData *object) {
     if (D_800D5558_main[0] & B_BUTTON) {
         func_8001F38C_main(0xFF, 0, 0);
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80107C84_filesel);
+void func_80107C84_filesel(void) {
+    func_80105BF0_filesel();
+    func_801119F4_filesel();
+    func_80111C30_filesel();
+    D_80114468_filesel = omAddPrcObj(func_80107CF8_filesel, 0x5000, 0x2000, 0);
+    D_8011446C_filesel = omAddObj(6, 0, 0, -1, func_80107C50_filesel);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80107CF8_filesel);
 
@@ -897,7 +923,43 @@ void func_8010B598_filesel(u8 *arg0) {
     bcopy(D_80114490_filesel, arg0, 0x20);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010B5D4_filesel);
+s32 func_8010B5D4_filesel(s32 arg0, s32 arg1, s32 arg2, s16 *arg3, s16 *arg4) {
+    s32 x = 47;
+    s32 y = 103;
+
+    switch (arg0) {
+        case 4:
+        case 5:
+            x += 5;
+            y += 12;
+            if (arg1 >= 10) {
+                x += 5;
+            }
+            if (arg1 >= 11) {
+                if (arg1 < 15) {
+                    x += (arg1 - 10) * 2;
+                } else {
+                    x += 10;
+                }
+            }
+            x += arg1 * 12;
+            y += arg2 * 13;
+            break;
+        case 6:
+            x += 42;
+            y += 12;
+            x += arg1 * 12;
+            y += arg2 * 13;
+            break;
+        default:
+            x = 0;
+            y = 0;
+            break;
+    }
+    *arg3 = x;
+    *arg4 = y;
+    return 0;
+}
 
 void func_8010B684_filesel(s32 arg0) {
     if (arg0 != -1) {
@@ -1002,7 +1064,14 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/filesel/516B10", D_80112D38_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010B998_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010BDC4_filesel);
+void func_8010BDC4_filesel(void) {
+    s16 x;
+    s16 y;
+
+    func_8010B5D4_filesel(D_8011447C_filesel[0], D_8011447C_filesel[2], D_8011447C_filesel[3], &x, &y);
+    func_80105FBC_filesel(0x11, x, y);
+    func_80105F24_filesel(0x11);
+}
 
 void func_8010BE14_filesel(void) {
     func_80105F54_filesel(0x11);
@@ -1346,7 +1415,67 @@ s32 func_80111A08_filesel(s32 arg0) {
     return direction;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80111B14_filesel);
+s32 func_80111B14_filesel(s32 arg0) {
+    s32 stickX;
+    s32 stickY;
+    s32 absX;
+    s32 absY;
+
+    stickX = D_800CBB6E_main[arg0];
+    stickY = D_800D20A1_main[arg0];
+    if (D_801129A0_filesel != 0) {
+        if ((stickX == 0) & (stickY == 0)) {
+            D_801129A0_filesel = 0;
+        }
+        return 0;
+    }
+    if ((stickX != 0) | (stickY != 0)) {
+        absX = __builtin_abs(stickX);
+        absY = __builtin_abs(stickY);
+        if (absY < absX) {
+            if (absX > absY * 2) {
+                if (stickX < 0) {
+                    D_801129A0_filesel = 0x200;
+                } else {
+                    D_801129A0_filesel = 0x100;
+                }
+            } else if (stickY > 0) {
+                if (stickX < 0) {
+                    D_801129A0_filesel = 0xA00;
+                } else {
+                    D_801129A0_filesel = 0x900;
+                }
+            } else {
+                if (stickX < 0) {
+                    D_801129A0_filesel = 0x600;
+                } else {
+                    D_801129A0_filesel = 0x500;
+                }
+            }
+        } else {
+            if (absY > absX * 2) {
+                if (stickY < 0) {
+                    D_801129A0_filesel = 0x400;
+                } else {
+                    D_801129A0_filesel = 0x800;
+                }
+            } else if (stickY > 0) {
+                if (stickX < 0) {
+                    D_801129A0_filesel = 0xA00;
+                } else {
+                    D_801129A0_filesel = 0x900;
+                }
+            } else {
+                if (stickX < 0) {
+                    D_801129A0_filesel = 0x600;
+                } else {
+                    D_801129A0_filesel = 0x500;
+                }
+            }
+        }
+    }
+    return D_801129A0_filesel;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80111C30_filesel);
 

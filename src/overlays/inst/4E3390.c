@@ -9,12 +9,27 @@ typedef struct {
 } UnkInst;              /* unknown size */
 
 typedef struct {
-    s16 curGroup;  /* 0x00 */
-    s16 pad_02[5]; /* 0x02 */
-    s16 member;    /* 0x0C */
-} UnkInstWin;      /* sizeof 0x0E */
+    s16 curGroup;       /* 0x00 */
+    s16 mainMembers[3]; /* 0x02 */
+    s16 helpMembers[2]; /* 0x08 */
+    s16 member;         /* 0x0C */
+} UnkInstWin;           /* sizeof 0x0E */
+
+typedef struct {
+    s32 overlay;
+    u8 minigameType;
+    u8 unk05;
+    u16 flags;
+    s16 message;
+    s16 unk_0A[5];
+} InstMessageInfo;
 
 extern u8 D_800CB8B1_main[];
+extern s8 D_8010D411_inst;
+extern s8 D_8010D5B1_inst;
+extern s8 D_8010DCD4_inst;
+extern s32 D_8010DCCC_inst;
+extern InstMessageInfo *D_8010DCD0_inst;
 extern s8 D_8010D400_inst[7];
 extern s8 D_8010D408_inst;
 extern s8 D_8010D409_inst;
@@ -316,7 +331,42 @@ void func_8010CBB8_inst(s32 arg0) {
     func_80055024_main(window->unk_6C, member, window->unk_6E[member], arg0 & 0xFF);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010CC14_inst);
+void func_8010CC14_inst(void) {
+    s8 i;
+    s32 pads;
+
+    for (i = 0; i < 4; i++) {
+        func_8005B6BC_main(D_8010DCA8_inst.curGroup, GwPlayer[D_8010D400_inst[i]].chr + 0x1C00, i);
+    }
+    pads = 0;
+    switch (D_8010D40A_inst) {
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+            pads |= 1 << GwPlayer[D_8010D400_inst[0]].pad;
+            break;
+        case 4:
+            for (i = 0; i < 2; i++) {
+                if (!(GwPlayer[D_8010D400_inst[i]].stat & 1)) {
+                    pads |= 1 << GwPlayer[D_8010D400_inst[i]].pad;
+                }
+            }
+            break;
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        default:
+            for (i = 0; i < 4; i++) {
+                if (!(GwPlayer[D_8010D400_inst[i]].stat & 1)) {
+                    pads |= 1 << GwPlayer[D_8010D400_inst[i]].pad;
+                }
+            }
+            break;
+    }
+    func_8005FE54_main(D_8010DCA8_inst.curGroup, pads);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010CDE4_inst);
 
@@ -338,6 +388,30 @@ void func_8010CFF4_inst(void) {
     func_80054904_main(D_8010DD58_inst.spriteGroup[D_8010DD58_inst.curGroup], 0, 0x200, 0x200);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010D044_inst);
+void func_8010D044_inst(void) {
+    TextWindow *window = &D_800CC69C_main[D_8010DCA8_inst.curGroup];
+    s8 i;
+
+    if (D_8010D409_inst != 1) {
+        func_8010CFF4_inst();
+        HuSprAttrReset(window->unk_6C, D_8010DCA8_inst.member, 0x8000);
+        for (i = 0; i < 3; i++) {
+            if (i != 1) {
+                HuSprAttrReset(window->unk_6C, D_8010DCA8_inst.mainMembers[i], 0x8000);
+            }
+        }
+        for (i = 0; i < 2; i++) {
+            HuSprAttrSet(window->unk_6C, D_8010DCA8_inst.helpMembers[i], 0x8000);
+        }
+        D_8010DCCC_inst = D_8010DCD0_inst->message;
+        if ((D_8010D40A_inst == 4) && (D_8010D411_inst != 2)) {
+            D_8010DCCC_inst++;
+        }
+        func_8005B43C_main(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
+        func_8010CBB8_inst(0);
+        D_8010DCD4_inst = 0;
+        D_8010D5B1_inst = 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010D1D4_inst);

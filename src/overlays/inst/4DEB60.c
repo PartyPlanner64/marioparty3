@@ -44,6 +44,8 @@ extern void *D_8010DC18_inst;
 extern InstObjectState D_8010DDD8_inst;
 extern void (*D_8010DDEC_inst)(omObjData *);
 extern s32 D_8010D658_inst[];
+extern s32 D_8010D508_inst;
+extern f32 D_8010D50C_inst;
 extern s32 D_8010D510_inst;
 extern s32 D_8010D520_inst;
 extern s32 D_8010D524_inst;
@@ -65,6 +67,7 @@ void func_80107308_inst(void);         /* extern */
 void func_80107470_inst(void);         /* extern */
 void func_801079CC_inst(omObjData *);
 s32 func_8010B10C_inst(void);
+void func_80107E18_inst(omObjData *);
 void func_80107F98_inst(omObjData *);
 void func_8010B124_inst(void);
 void func_80107A24_inst(omObjData *); /* extern */
@@ -360,7 +363,25 @@ void func_801079CC_inst(omObjData *obj) {
     D_8010DDD8_inst.update = func_80107A24_inst;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80107A24_inst);
+void func_80107A24_inst(omObjData *object) {
+    f32 duration = D_800CCF58_main[HmfModelData[object->model[3]].unk02].unk02 - 25.0f;
+    f32 angle = ((f32)D_8010D508_inst / duration) * D_8010D414_inst;
+    s32 i;
+
+    HmfModelData[object->model[1]].rot.x = angle - 90.0f;
+    HmfModelData[object->model[2]].rot.x = angle;
+    D_8010D50C_inst = (0.15f / duration) * D_8010D508_inst;
+    for (i = 0; i < 3; i++) {
+        Hu3DModelScaleSet(object->model[i + 1], D_8010D50C_inst + 0.45f, D_8010D50C_inst + 0.45f,
+                          D_8010D50C_inst + 0.45f);
+    }
+    D_8010D508_inst++;
+    if ((f32)D_8010D508_inst == duration) {
+        D_8010DDD8_inst.update = func_80107E18_inst;
+        D_8010D50C_inst = 0;
+        D_8010D508_inst = 0;
+    }
+}
 
 void func_80107BE4_inst(void) {
     D_8010DDD8_inst.update = func_80107BF8_inst;
@@ -464,7 +485,7 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4DEB60", D_8010D980_inst);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80107BF8_inst);
 
-void func_80107E18_inst(void) {
+void func_80107E18_inst(omObjData *object) {
 }
 
 s32 func_80107E20_inst(void) {

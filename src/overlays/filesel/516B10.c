@@ -64,12 +64,20 @@ typedef struct UnkFileSelect6 {
     Vec unk_18;
 } UnkFileSelect6; // sizeof 0x24
 
+typedef struct FileSelectCameraTransition {
+    f32 distance;
+    s32 frame;
+    s32 duration;
+} FileSelectCameraTransition;
+
+void func_80111790_filesel(omObjData *);
 void func_80107CF8_filesel(void);
 void func_801119F4_filesel(void);
 void func_80111C30_filesel(void);
 s32 func_8010B5D4_filesel(s32, s32, s32, s16 *, s16 *);
 void func_8010E740_filesel(s32);
 void func_8010E864_filesel(void);
+void func_8010F65C_filesel(void);
 void func_80105C1C_filesel(void);
 void func_801061D4_filesel(void);
 void func_8010744C_filesel(void);
@@ -128,6 +136,9 @@ extern s32 D_801146D4_filesel;
 extern Process *D_80114468_filesel;
 extern omObjData *D_8011446C_filesel;
 extern s32 D_8011447C_filesel[4];
+extern Vec D_801146B0_filesel;
+extern Vec D_801146BC_filesel;
+extern FileSelectCameraTransition D_801146C8_filesel;
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801059D0_filesel);
 
@@ -449,11 +460,41 @@ INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80106ED8_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80107040_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801071E8_filesel);
+s16 func_801071E8_filesel(u32 message, s16 x, s16 y) {
+    s16 window = func_80060880_main(x, y, 19);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801072B4_filesel);
+    func_8005C060_main(window, 2, 255, 64, 64);
+    func_8005C060_main(window, 4, 96, 255, 64);
+    func_8005C060_main(window, 6, 255, 255, 64);
+    func_80060C14_main(window, 1);
+    func_8005FE54_main(window, 1);
+    func_8005B43C_main(window, message, -1, -1);
+    return window;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80107380_filesel);
+s16 func_801072B4_filesel(u32 message, s16 x, s16 y) {
+    s16 window = func_80060880_main(x, y, 20);
+
+    func_8005C060_main(window, 2, 255, 64, 64);
+    func_8005C060_main(window, 4, 96, 255, 64);
+    func_8005C060_main(window, 6, 255, 255, 64);
+    func_80060C14_main(window, 0);
+    func_8005FE54_main(window, 1);
+    func_8005B43C_main(window, message, -1, -1);
+    return window;
+}
+
+s16 func_80107380_filesel(u32 message, s16 x, s16 y) {
+    s16 window = func_80060880_main(x, y, 19);
+
+    func_8005C060_main(window, 2, 255, 64, 64);
+    func_8005C060_main(window, 4, 96, 255, 64);
+    func_8005C060_main(window, 6, 255, 255, 64);
+    func_8005FE54_main(window, 1);
+    func_80060C14_main(window, 0);
+    func_8005B43C_main(window, message, -1, -1);
+    return window;
+}
 
 void func_8010744C_filesel(void) {
     s32 i;
@@ -1192,7 +1233,24 @@ void func_8010F12C_filesel(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010F168_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010F5C8_filesel);
+void func_8010F5C8_filesel(void) {
+    func_80106344_filesel(0);
+    func_80106344_filesel(1);
+    func_80106344_filesel(2);
+    func_80106344_filesel(3);
+    func_80106344_filesel(4);
+    func_80106344_filesel(5);
+    func_80107490_filesel(1);
+    func_80107490_filesel(2);
+    func_80107490_filesel(3);
+    func_80105EC0_filesel(13);
+    func_80105EC0_filesel(14);
+    func_80105EC0_filesel(15);
+    func_80105EC0_filesel(18);
+    func_80107490_filesel(0);
+    func_8010F65C_filesel();
+    func_80107490_filesel(4);
+}
 
 void func_8010F65C_filesel(void) {
     func_80105EC0_filesel(0xC);
@@ -1366,7 +1424,26 @@ INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80111660_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80111790_filesel);
 
+#ifdef NON_MATCHING
+// The final state stores still use separate symbolic addresses instead of one base register.
+omObjData *func_80111944_filesel(s32 duration) {
+    omObjData *obj = omAddObj(6, 0, 0, -1, func_80111790_filesel);
+    FileSelectCameraTransition *transition;
+
+    obj->work[0] = 0;
+    obj->work[1] = duration;
+    obj->work[2] = 0;
+    HuVecCopyXYZ(&D_801146B0_filesel, 0.0f, 200.0f, 0.0f);
+    HuVecCopyXYZ(&D_801146BC_filesel, 0.0f, 0.0f, 0.0f);
+    transition = &D_801146C8_filesel;
+    transition->distance = 3000.0f;
+    transition->duration = duration;
+    transition->frame = 0;
+    return obj;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80111944_filesel);
+#endif
 
 void func_801119F4_filesel(void) {
     D_801129A0_filesel = 0;

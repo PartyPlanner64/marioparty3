@@ -14,6 +14,16 @@ typedef struct {
 } InstObjectState;
 
 extern InstMinigameEntry D_800A6D40_main[];
+extern s32 D_8010D43C_inst;
+extern s32 D_8010D440_inst;
+extern s32 D_8010DC00_inst;
+extern s16 D_8010DC02_inst;
+extern s8 D_8010D404_inst;
+extern s8 D_8010D405_inst;
+extern s8 D_8010D406_inst;
+extern s8 D_8010D409_inst;
+extern Vec D_8010D444_inst[4];
+extern Vec D_8010D474_inst[4];
 extern s8 D_8010D5B1_inst;
 extern u8 D_800CE20A_main;
 extern s32 D_8010D4A4_inst;
@@ -24,7 +34,7 @@ extern f32 D_800CB890_main;
 extern f32 D_800CE17C_main[];
 extern f32 D_800D5210_main;
 
-extern s8 D_8010D400_inst[7];
+extern s8 D_8010D400_inst[4];
 extern s8 D_8010D407_inst;
 extern s8 D_8010D408_inst;
 extern s8 D_8010D40A_inst;
@@ -35,10 +45,6 @@ extern f32 D_8010D414_inst;
 extern Vec D_8010D418_inst;
 extern Vec D_8010D424_inst;
 extern Vec D_8010D430_inst;
-extern Vec D_8010D450_inst;
-extern Vec D_8010D45C_inst;
-extern Vec D_8010D480_inst;
-extern Vec D_8010D48C_inst;
 extern void *D_8010DC10_inst;
 extern void *D_8010DC14_inst;
 extern void *D_8010DC18_inst;
@@ -54,6 +60,14 @@ extern s32 D_8010D530_inst;
 extern s32 D_8010D534_inst;
 extern void (*D_8010DDE4_inst)(omObjData *);
 
+s32 func_80106418_inst(Vec *, Vec *, Vec *, Vec *, s32);
+void func_80107E98_inst(void);
+s32 func_80107E20_inst(void);
+void func_8010B0FC_inst(void);
+s32 func_8010B118_inst(void);
+void func_80107BE4_inst(void);
+u16 func_8010CA74_inst(u16, s16);
+void func_8010CFF4_inst(void);
 void func_80105D9C_inst(omObjData *); /* extern */
 void func_801061EC_inst(void);        /* extern */
 void func_80106310_inst(omObjData *); /* extern */
@@ -187,12 +201,130 @@ void func_801059A0_inst(void) {
     omAddObj(0, 0, 0, -1, func_80105D9C_inst);
     omAddObj(0, 0, 0, -1, func_80106310_inst);
     func_80106388_inst();
-    func_80106850_inst(&D_8010D45C_inst, &D_8010D48C_inst);
+    func_80106850_inst(&D_8010D444_inst[2], &D_8010D474_inst[2]);
     func_801067CC_inst();
     WipeCreateIn(0xFF, 0x10);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80105D9C_inst);
+void func_80105D9C_inst(omObjData *object) {
+    s32 i;
+
+    switch (D_8010D43C_inst) {
+        case 0:
+            HuAudSeqPlay(0x10);
+            func_801067CC_inst();
+            D_8010DC00_inst = 0;
+            D_8010D405_inst = 0;
+            if (D_8010D408_inst == 0) {
+                D_8010D43C_inst++;
+            } else {
+                D_8010D418_inst.x = D_8010D444_inst[2].x;
+                D_8010D418_inst.y = D_8010D444_inst[2].y;
+                D_8010D418_inst.z = D_8010D444_inst[2].z;
+                D_8010D424_inst.x = D_8010D474_inst[2].x;
+                D_8010D424_inst.y = D_8010D474_inst[2].y;
+                D_8010D424_inst.z = D_8010D474_inst[2].z;
+                D_8010D430_inst.x = 0.0f;
+                D_8010D430_inst.y = 1.0f;
+                D_8010D430_inst.z = -0.000001f;
+                D_8010D43C_inst = 6;
+            }
+            break;
+        case 1:
+            D_8010DC00_inst++;
+            if (D_8010DC00_inst >= 21) {
+                func_80107E98_inst();
+                D_8010D43C_inst += 2;
+            }
+            break;
+        case 2:
+            if (func_80106418_inst(&D_8010D444_inst[0], &D_8010D444_inst[1], &D_8010D474_inst[0], &D_8010D474_inst[1], 5)) {
+                func_80107E98_inst();
+                D_8010D43C_inst++;
+            }
+            break;
+        case 3:
+            if (func_80107E20_inst()) {
+                func_8010B0FC_inst();
+                D_8010D43C_inst++;
+            }
+            break;
+        case 4:
+            if ((s8)func_8010B118_inst()) {
+                D_8010D43C_inst++;
+            }
+            break;
+        case 5:
+            if (func_80106418_inst(&D_8010D444_inst[1], &D_8010D444_inst[2], &D_8010D474_inst[1], &D_8010D474_inst[2], 7)) {
+                func_80107BE4_inst();
+                D_8010D43C_inst++;
+            }
+            break;
+        case 6:
+            D_8010DC00_inst = 60;
+            D_8010D43C_inst++;
+            break;
+        case 7:
+            if (D_8010D440_inst == 1) {
+                D_8010DC00_inst--;
+                if (func_8010CA74_inst(0x1000, D_8010DC02_inst) || D_8010D406_inst == 1) {
+                    D_8010DC00_inst = 0;
+                    switch (D_8010D40A_inst) {
+                        case 5:
+                        case 6:
+                        case 7:
+                        case 8:
+                            if (!(GwPlayer[D_8010D400_inst[0]].stat & 1)) {
+                                omVibrate(D_8010D400_inst[0], 10, 0, 10);
+                            }
+                            break;
+                        case 4:
+                            for (i = 0; i < 2; i++) {
+                                if (!(GwPlayer[D_8010D400_inst[i]].stat & 1)) {
+                                    omVibrate(D_8010D400_inst[i], 10, 0, 10);
+                                }
+                            }
+                            break;
+                        case 0:
+                        case 1:
+                        case 2:
+                        case 3:
+                        default:
+                            for (i = 0; i < 4; i++) {
+                                if (!(GwPlayer[D_8010D400_inst[i]].stat & 1)) {
+                                    omVibrate(D_8010D400_inst[i], 10, 0, 10);
+                                }
+                            }
+                            break;
+                    }
+                    func_8010CFF4_inst();
+                    D_8010D409_inst = 1;
+                    D_8010D43C_inst++;
+                }
+            }
+            break;
+        case 8:
+            D_8010DC00_inst++;
+            if (D_8010DC00_inst >= 15) {
+                D_8010D404_inst = 1;
+                D_8010D43C_inst++;
+            }
+            break;
+        case 9:
+            WipeColorSet(255, 255, 255);
+            WipeCreateOut(11, 20);
+            HuAudSeqFadeOut(30);
+            HuAudFXPlay(0x154);
+            D_8010D43C_inst++;
+            break;
+        case 10:
+            if (func_80106418_inst(&D_8010D444_inst[2], &D_8010D444_inst[3], &D_8010D474_inst[2], &D_8010D474_inst[3], 25) && !WipeStatGet()) {
+                func_801063F4_inst();
+                func_801061EC_inst();
+            }
+            break;
+    }
+}
 
 void func_801061EC_inst(void) {
     s32 unused[6]; // Retain the original stack frame.
@@ -293,12 +425,12 @@ void func_8010674C_inst(omObjData *object) {
 }
 
 void func_801067CC_inst(void) {
-    D_8010D418_inst.x = D_8010D450_inst.x;
-    D_8010D418_inst.y = D_8010D450_inst.y;
-    D_8010D418_inst.z = D_8010D450_inst.z;
-    D_8010D424_inst.x = D_8010D480_inst.x;
-    D_8010D424_inst.y = D_8010D480_inst.y;
-    D_8010D424_inst.z = D_8010D480_inst.z;
+    D_8010D418_inst.x = D_8010D444_inst[1].x;
+    D_8010D418_inst.y = D_8010D444_inst[1].y;
+    D_8010D418_inst.z = D_8010D444_inst[1].z;
+    D_8010D424_inst.x = D_8010D474_inst[1].x;
+    D_8010D424_inst.y = D_8010D474_inst[1].y;
+    D_8010D424_inst.z = D_8010D474_inst[1].z;
     D_8010D430_inst.x = 0.0f;
     D_8010D430_inst.y = 1.0f;
     D_8010D430_inst.z = -0.000001f;

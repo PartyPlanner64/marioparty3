@@ -849,7 +849,45 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4DEB60", D_8010D978_inst);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4DEB60", D_8010D980_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80107BF8_inst);
+void func_80107BF8_inst(omObjData *object) {
+    HmfSkeletonNode *nodes[2];
+    s32 i;
+    s32 j;
+    f32 scale;
+
+    nodes[0] = func_8001D33C_main(object->model[1], D_8010D978_inst);
+    nodes[1] = func_8001D33C_main(object->model[2], D_8010D980_inst);
+    if (nodes[0] == (HmfSkeletonNode *)-1 || nodes[1] == (HmfSkeletonNode *)-1) {
+        osSyncPrintf("ERROR\n");
+    }
+    for (i = 0; i < 5; i++) {
+        scale = sindf(i * 18.0f) * 0.5f;
+        for (j = 0; j < 2; j++) {
+            nodes[j]->unk4C[0][0] = scale + 1.0f;
+            nodes[j]->unk4C[1][1] = scale + 1.0f;
+            nodes[j]->unk4C[2][2] = scale + 1.0f;
+        }
+        HuPrcVSleep();
+    }
+    for (i = 0; i < 5; i++) {
+        scale = cosdf(i * 18.0f) * 0.5f;
+        if (scale < 0.3f) {
+            scale = 0.3f;
+        }
+        for (j = 0; j < 2; j++) {
+            nodes[j]->unk4C[0][0] = scale + 1.0f;
+            nodes[j]->unk4C[1][1] = scale + 1.0f;
+            nodes[j]->unk4C[2][2] = scale + 1.0f;
+        }
+        HuPrcVSleep();
+    }
+    for (j = 0; j < 2; j++) {
+        nodes[j]->unk4C[0][0] = 1.3f;
+        nodes[j]->unk4C[1][1] = 1.3f;
+        nodes[j]->unk4C[2][2] = 1.3f;
+    }
+    D_8010DDD8_inst.update = func_80107E18_inst;
+}
 
 void func_80107E18_inst(omObjData *object) {
 }

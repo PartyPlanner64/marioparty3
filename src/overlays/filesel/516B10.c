@@ -129,6 +129,7 @@ extern u8 *D_80112844_filesel[];
 extern u8 *D_8011288C_filesel[];
 extern s16 D_80114150_filesel;
 extern u16 D_80114152_filesel;
+extern s32 D_8011448C_filesel;
 extern s32 D_801146D8_filesel;
 extern s32 D_801129A0_filesel;
 extern u8 D_801129A4_filesel[];
@@ -136,6 +137,7 @@ extern s32 D_801146D4_filesel;
 extern Process *D_80114468_filesel;
 extern omObjData *D_8011446C_filesel;
 extern s32 D_8011447C_filesel[4];
+extern Vec D_801128A4_filesel[];
 extern Vec D_801146B0_filesel;
 extern Vec D_801146BC_filesel;
 extern FileSelectCameraTransition D_801146C8_filesel;
@@ -1017,7 +1019,42 @@ void func_8010B684_filesel(s32 arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010B6F4_filesel);
+void func_8010B6F4_filesel(s32 arg0) {
+    if (arg0 != -1) {
+        func_80105F24_filesel(arg0);
+    }
+    if (arg0 != 7) {
+        func_80105F54_filesel(7);
+        func_80105F54_filesel(0x30);
+    } else {
+        func_80105F24_filesel(0x30);
+    }
+    if (arg0 != 8) {
+        func_80105F54_filesel(8);
+        func_80105F54_filesel(0x31);
+    } else {
+        func_80105F24_filesel(0x31);
+    }
+    if (arg0 != 9) {
+        func_80105F54_filesel(9);
+        func_80105F54_filesel(0x32);
+    } else {
+        func_80105F24_filesel(0x32);
+    }
+    if (arg0 != 10) {
+        func_80105F54_filesel(10);
+        func_80105F54_filesel(0x33);
+    } else {
+        func_80105F24_filesel(0x33);
+    }
+    if (arg0 != 11) {
+        func_80105F54_filesel(11);
+        func_80105F54_filesel(0x34);
+    } else {
+        func_80105F24_filesel(0x34);
+    }
+    D_8011448C_filesel = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010B80C_filesel);
 
@@ -1260,9 +1297,67 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/filesel/516B10", D_80112DF8_filesel);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/filesel/516B10", D_80112E08_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010F678_filesel);
+void func_8010F678_filesel(s32 arg0) {
+    s32 image;
+    s32 x;
+    s32 y;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010F760_filesel);
+    switch (arg0) {
+        case 0:
+            image = 0x1F001C;
+            x = 0x5B;
+            y = 0x21;
+            break;
+        case 1:
+            image = 0x1F001D;
+            x = 0x5E;
+            y = 0x21;
+            break;
+        case 2:
+            image = 0x1F001E;
+            x = 0x36;
+            y = 0x21;
+            break;
+        case 3:
+            image = 0x1F001F;
+            x = 0x3F;
+            y = 0x21;
+            break;
+        case 4:
+            image = 0x1F0022;
+            x = 0x79;
+            y = 0x1E;
+            break;
+        default:
+            image = 0;
+            y = 0;
+            x = 0;
+            break;
+    }
+    func_80105E7C_filesel(0xC, image);
+    func_80106044_filesel(0xC, 1.0f, 1.0f);
+    func_80106094_filesel(0xC, 0x100);
+    func_80105FBC_filesel(0xC, x, y);
+}
+
+void func_8010F760_filesel(s32 arg0, s32 arg1) {
+    Vec position;
+    Vec2f screen;
+    s32 x;
+    s32 image;
+
+    image = arg1 ? 0x1F0020 : 0x1F0021;
+    position.x = D_801128A4_filesel[arg0].x;
+    position.y = D_801128A4_filesel[arg0].y;
+    position.z = D_801128A4_filesel[arg0].z;
+    Hu3DCam3DToScreen(0, &position, &screen);
+    x = screen.x;
+    arg0 += 0xD;
+    func_80105E48_filesel(arg0, image);
+    func_80106044_filesel(arg0, 1.0f, 1.0f);
+    func_80106094_filesel(arg0, 0x100);
+    func_80105FBC_filesel(arg0, x, 0xB1);
+}
 
 void func_8010F844_filesel(s32 arg0) {
     func_80105F84_filesel(arg0 + 0xD);
@@ -1395,7 +1490,26 @@ void func_80110FB0_filesel(u32 arg0) {
     func_80106550_filesel(arg0 + 3, 0.8f, 0.8f, 0.8f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80111004_filesel);
+void func_80111004_filesel(omObjData *object) {
+    s32 index;
+    s32 angle;
+    f32 wave;
+    f32 x;
+    f32 y;
+
+    index = object->work[0];
+    angle = D_80114598_filesel[index].unk_50;
+    angle += 27;
+    if (angle > 360) {
+        angle -= 360;
+    }
+    D_80114598_filesel[index].unk_50 = angle;
+    wave = sindf(angle) * 0.1f;
+    x = wave + 0.8f;
+    y = 0.8f - wave;
+    func_80106550_filesel(index, x, y, x);
+    func_80106550_filesel(index + 3, x, y, x);
+}
 
 void func_801110F0_filesel(u32 arg0) {
     func_80110E70_filesel(arg0, func_80111004_filesel);

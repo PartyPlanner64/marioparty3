@@ -6,38 +6,6 @@ typedef struct {
     u8 unk05[15];
 } InstMinigameEntry;
 
-void func_80105D9C_inst(omObjData *); /* extern */
-void func_801061EC_inst(void);        /* extern */
-void func_80106310_inst(omObjData *); /* extern */
-void func_801063F4_inst(void);
-void func_80106388_inst(void);         /* extern */
-void func_8010674C_inst(omObjData *);  /* extern */
-void func_801067CC_inst(void);         /* extern */
-void func_80106850_inst(Vec *, Vec *); /* extern */
-void func_80106898_inst(void);         /* extern */
-void func_80106EB4_inst(void);         /* extern */
-void func_80107308_inst(void);         /* extern */
-void func_80107470_inst(void);         /* extern */
-void func_801079CC_inst(omObjData *);
-s32 func_8010B10C_inst(void);
-void func_80107A24_inst(omObjData *); /* extern */
-void func_80107BF8_inst(omObjData *); /* extern */
-void func_80108350_inst(void);        /* extern */
-void func_80108870_inst(omObjData *);
-void func_80108954_inst(omObjData *);
-void func_80108A10_inst(omObjData *);
-void func_8010C848_inst(void);
-void func_8010C8D0_inst(void);
-void func_801094B0_inst(void); /* extern */
-void func_801098D8_inst(omObjData *);
-void func_801099C0_inst(omObjData *);
-void func_80109A84_inst(omObjData *);
-void func_8010986C_inst(omObjData *); /* extern */
-void func_80109A90_inst(void);        /* extern */
-void func_8010A1D0_inst(void);        /* extern */
-void func_8010B990_inst(void);        /* extern */
-void func_8000BC48_main(u16, u16);    /* extern */
-
 extern InstMinigameEntry D_800A6D40_main[];
 extern s8 D_8010D5B1_inst;
 extern f32 D_800CB890_main;
@@ -72,6 +40,40 @@ extern s32 D_8010D524_inst;
 extern s32 D_8010D530_inst;
 extern s32 D_8010D534_inst;
 extern void (*D_8010DDE4_inst)(omObjData *);
+
+void func_80105D9C_inst(omObjData *); /* extern */
+void func_801061EC_inst(void);        /* extern */
+void func_80106310_inst(omObjData *); /* extern */
+void func_801063F4_inst(void);
+void func_80106388_inst(void);         /* extern */
+void func_8010674C_inst(omObjData *);  /* extern */
+void func_801067CC_inst(void);         /* extern */
+void func_80106850_inst(Vec *, Vec *); /* extern */
+void func_80106898_inst(void);         /* extern */
+void func_80106EB4_inst(void);         /* extern */
+void func_80107308_inst(void);         /* extern */
+void func_80107470_inst(void);         /* extern */
+void func_801079CC_inst(omObjData *);
+s32 func_8010B10C_inst(void);
+void func_80107A24_inst(omObjData *); /* extern */
+void func_80107BF8_inst(omObjData *); /* extern */
+void func_80108350_inst(void);        /* extern */
+void func_80108870_inst(omObjData *);
+void func_80108954_inst(omObjData *);
+void func_80108A10_inst(omObjData *);
+void func_8010C848_inst(void);
+void func_8010C8D0_inst(void);
+void func_801094B0_inst(void); /* extern */
+void func_801098D8_inst(omObjData *);
+void func_801099C0_inst(omObjData *);
+void func_80109A84_inst(omObjData *);
+void func_8010986C_inst(omObjData *); /* extern */
+void func_80109A90_inst(void);        /* extern */
+void func_8010A1D0_inst(void);        /* extern */
+void func_8010B990_inst(void);        /* extern */
+void func_80033910_main(HmfData *);
+void func_80033970_main(HmfData *);
+void func_8000BC48_main(u16, u16); /* extern */
 
 void func_801059A0_inst(void) {
     void (*procFunc)(void) = NULL;
@@ -503,7 +505,23 @@ void func_80108954_inst(omObjData *object) {
 void func_80108A10_inst(omObjData *object) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80108A18_inst);
+void func_80108A18_inst(s16 model, s16 animSlot, s16 anim) {
+    HmfAnim *entry;
+
+    if (animSlot >= 0) {
+        if (anim == -1) {
+            func_80033910_main(HmfModelData[model].hmf);
+        } else {
+            func_80033970_main(HmfModelData[model].hmf);
+            entry = &D_800D1714_main[animSlot];
+            entry->animIdx = anim;
+            entry->rot = 0;
+            entry->flags = 0;
+            entry->interp = 0;
+            entry->frame = 0;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80108AF0_inst);
 

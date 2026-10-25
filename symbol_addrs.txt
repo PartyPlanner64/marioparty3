@@ -1661,3 +1661,7 @@ D_8011A688_msetup = 0x8011A688; //rom:0x5168E8 type:f64 size:0x8 segment:msetup
 D_80119F6C_msetup = 0x80119F6C; //rom:0x5161CC type:s16 size:0xC segment:msetup
 
 D_80113508_option = 0x80113508; //rom:0x541038 size:0x18 segment:option
+
+// Preserve alignment at boundaries between compiled C and extracted assembly.
+func_80108AF0_inst = 0x80108AF0; //rom:0x4E1CB0 type:func align:8 segment:inst
+D_8010DAF8_inst = 0x8010DAF8; //rom:0x4E6CB8 align:8 segment:inst

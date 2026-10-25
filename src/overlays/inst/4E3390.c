@@ -14,11 +14,13 @@ typedef struct {
     s16 member;    /* 0x0C */
 } UnkInstWin;      /* sizeof 0x0E */
 
-void func_8010AC30_inst(omObjData *); /* extern */
-void func_8010BE78_inst(s32 arg0);    /* extern */
-
+extern u8 D_800CB8B1_main[];
+extern s8 D_8010D400_inst[7];
 extern s8 D_8010D408_inst;
+extern s8 D_8010D40A_inst;
+extern s8 D_8010D554_inst[4];
 extern s32 D_8010D440_inst;
+extern s16 *D_8010D4C0_inst[][2];
 extern s8 D_8010D550_inst;
 extern s8 D_8010D551_inst;
 extern s8 D_8010D5B0_inst;
@@ -27,6 +29,10 @@ extern void (*D_8010DCA4_inst)(s32);
 extern UnkInstWin D_8010DCA8_inst;
 extern UnkInst D_8010DCE0_inst;
 extern UnkInst D_8010DD58_inst;
+
+void func_8010AC30_inst(omObjData *); /* extern */
+void func_8010AD78_inst(omObjData *);
+void func_8010BE78_inst(s32 arg0); /* extern */
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010A1D0_inst);
 
@@ -38,7 +44,24 @@ void func_8010AC04_inst(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010AC30_inst);
+void func_8010AC30_inst(omObjData *object) {
+    s32 i;
+    s16 *models;
+
+    models = D_8010D4C0_inst[D_8010D40A_inst][0];
+    for (i = 0; i < models[0]; i++) {
+        func_8001C258_main(object->model[i + 5], 4, 0);
+        func_8001C6A8_main(object->model[i + 5], 0);
+        func_8001C814_main(object->model[i + 5], 1, 0);
+    }
+    models = D_8010D4C0_inst[D_8010D40A_inst][1];
+    for (i = 0; i < models[0]; i++) {
+        func_8001C258_main(object->model[i + 15], 4, 0);
+        func_8001C6A8_main(object->model[i + 15], 0);
+        func_8001C814_main(object->model[i + 15], 1, 0);
+    }
+    D_8010DC94_inst = func_8010AD78_inst;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010AD78_inst);
 
@@ -73,7 +96,38 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E3390", D_8010DABC_inst);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E3390", D_8010DAC8_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010B040_inst);
+void func_8010B040_inst(void) {
+    s32 i;
+
+    switch (D_8010D40A_inst) {
+        case 0:
+        case 1:
+        case 2:
+            for (i = 0; i < 4; i++) {
+                if (D_800CB8B1_main[D_8010D400_inst[i]] == 0) {
+                    D_8010D554_inst[i] = 0;
+                } else {
+                    D_8010D554_inst[i] = 1;
+                }
+            }
+            break;
+        case 3:
+        case 4:
+        case 5:
+        case 7:
+            D_8010D554_inst[0] = 2;
+            D_8010D554_inst[1] = 2;
+            D_8010D554_inst[2] = 2;
+            D_8010D554_inst[3] = 2;
+            break;
+        case 8:
+            D_8010D554_inst[0] = 3;
+            D_8010D554_inst[1] = 3;
+            D_8010D554_inst[2] = 3;
+            D_8010D554_inst[3] = 3;
+            break;
+    }
+}
 
 void func_8010B0FC_inst(void) {
     D_8010D550_inst = 1;

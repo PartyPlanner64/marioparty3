@@ -62,7 +62,24 @@ extern s32 D_8010D520_inst;
 extern s32 D_8010D524_inst;
 extern s32 D_8010D530_inst;
 extern s32 D_8010D534_inst;
+extern s8 D_8010D40C_inst[5];
+extern u8 D_8010D4B0_inst[8];
+extern u8 D_8010D4B8_inst[8];
+extern u8 D_8010D6B0_inst[8][5];
+extern s8 D_8010D6D8_inst[4][3];
+extern u8 D_8010D6E4_inst[8][5];
+extern s8 D_8010D70C_inst[4][3];
+extern s8 D_8010D718_inst[5];
+extern s8 D_8010D71D_inst[4];
+extern s8 D_8010D721_inst[1];
+extern s8 D_8010D724_inst[8];
+extern u16 D_800A11D0_main[5];
+extern u16 D_800A11DC_main[5];
+
 extern void (*D_8010DDE4_inst)(omObjData *);
+
+s32 BoardGetTurnTier(s32);
+s32 BoardPlayerRankCalc(s32);
 
 s32 func_80106418_inst(Vec *, Vec *, Vec *, Vec *, s32);
 void func_80107E98_inst(void);
@@ -445,7 +462,103 @@ void func_80106850_inst(Vec *arg0, Vec *arg1) {
     D_8010D414_inst = 90.0f - atan2df(arg0->y - arg1->y, arg0->z - arg1->z);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80106898_inst);
+void func_80106898_inst(void) {
+    u8 weights[8];
+    s8 selected[8];
+    s8 i;
+    s8 j;
+    s8 tier;
+    s8 rank;
+    s8 total;
+    s8 sum;
+    s8 found;
+    u8 random;
+    u16 start;
+    u8 *choices;
+    s8 column;
+
+    if (D_8010D40A_inst == 5) {
+        if (_CheckFlag(0x1C)) {
+            start = (u8)(rand8() & 3);
+            if (rand8() & 1) {
+                for (i = 0; i < 5; i++) {
+                    D_8010D40C_inst[i] = D_8010D4B0_inst[i + start];
+                }
+            } else {
+                for (i = 0; i < 5; i++) {
+                    D_8010D40C_inst[i] = D_8010D4B8_inst[i + start];
+                }
+            }
+            for (i = 0; i < 5; i++) {
+                D_800A11D0_main[i] = D_8010D40C_inst[i];
+            }
+        } else if (D_8010D407_inst == 0) {
+            for (i = 0; i < 8; i++) {
+                selected[i] = 0;
+            }
+            tier = BoardGetTurnTier(-1);
+            rank = BoardPlayerRankCalc(D_8010D400_inst[0]);
+            if ((u8)(rand8() % 3) == 0) {
+                choices = D_8010D4B0_inst;
+                column = D_8010D6D8_inst[rank][tier];
+                for (i = 0; i < 8; i++) {
+                    weights[i] = D_8010D6B0_inst[i][column];
+                }
+            } else {
+                choices = D_8010D4B8_inst;
+                column = D_8010D70C_inst[rank][tier];
+                for (i = 0; i < 8; i++) {
+                    weights[i] = D_8010D6E4_inst[i][column];
+                }
+            }
+            total = 100;
+            for (j = 0; j < 5; j++) {
+                random = rand8() % (total + 1);
+                sum = 0;
+                for (i = 0; i < 8; i++) {
+                    if (selected[i] == 0) {
+                        sum += weights[i];
+                        if (sum >= random) {
+                            selected[i] = 1;
+                            total -= weights[i];
+                            D_8010D40C_inst[j] = choices[i];
+                            break;
+                        }
+                    }
+                }
+            }
+            for (i = 0; i < 5; i++) {
+                D_800A11D0_main[i] = D_8010D40C_inst[i];
+            }
+            column = D_8010D724_inst[GwPlayer[D_8010D400_inst[0]].chr];
+            found = -1;
+            for (i = 0; i < 5; i++) {
+                if (column == D_800A11D0_main[i]) {
+                    found = i;
+                    break;
+                }
+            }
+            if (found >= 0) {
+                for (i = 0, j = 0; i < 5; i++) {
+                    if (i == found) {
+                        D_800A11DC_main[i] = D_8010D721_inst[0];
+                    } else {
+                        D_800A11DC_main[i] = D_8010D71D_inst[j];
+                        j++;
+                    }
+                }
+            } else {
+                for (i = 0; i < 5; i++) {
+                    D_800A11DC_main[i] = D_8010D718_inst[i];
+                }
+            }
+        } else {
+            for (i = 0; i < 5; i++) {
+                D_8010D40C_inst[i] = D_800A11D0_main[i];
+            }
+        }
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4DEB60", D_8010D6B0_inst);
 

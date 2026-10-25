@@ -13,8 +13,8 @@ typedef struct GwCommon_s {
 /* 0x12 */ char unk_12[4];
 /* 0x16 */ u8 mgUnlock[7]; //is this still 7 in length like mp1?
 /* 0x1D */ char unk_1D[0x6E];
-/* 0x8B */ u8 flag[0xC];
-/* 0x97 */ char pad97[7];
+/* 0x8B */ u8 flag[9];
+/* 0x94 */ u8 fileName[10];
 /* 0x9E */ s8 unk9E;
 /* 0x9F */ s8 unk9F;
 /* 0xA0 */ s8 unkA0;

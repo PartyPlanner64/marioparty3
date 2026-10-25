@@ -12,25 +12,30 @@ typedef struct UnkFileSelect2 {
 } UnkFileSelect2;
 
 typedef struct UnkFileSelect {
-    u8 unk_00;
-    u8 unk_01[0xB];
-    char unk_0C[0x1C];
-    u8 unk_28;
-    s32 unk_2C;
+    s32 empty;
+    u8 unk_04;
+    u8 name[0x20];
+    u8 unk_25[7];
+    u8 unk_2C;
     s32 unk_30;
     s32 unk_34;
     s32 unk_38;
     s32 unk_3C;
     s32 unk_40;
     s32 unk_44;
-    char unk_48[0x14];
-    s32 unk_5C;
+    s32 unk_48;
+    char unk_4C[0x14];
     s32 unk_60;
-    char unk_64[0x14];
-    s32 unk_78;
-    char unk_7C[4];
-    s32 unk_80;
+    s32 unk_64;
+    char unk_68[0x14];
+    s32 unk_7C;
+    char unk_80[4];
 } UnkFileSelect; // sizeof 0x84
+
+typedef struct FileSelectData {
+    UnkFileSelect files[3];
+    s32 selected;
+} FileSelectData;
 
 typedef struct UnkFileName {
     u8 unk_00[0xB];
@@ -153,7 +158,8 @@ void func_8000BE5C_main(u16, f32, f32);
 
 extern s32 D_80112E90_filesel;
 extern u16 D_800D1244_main;
-extern UnkFileSelect D_801142DC_filesel[3];
+extern FileSelectData D_801142D8_filesel;
+extern u8 D_800D20EC_main;
 extern u8 D_80114490_filesel[0x20];
 extern UnkFileSelect2 D_80114158_filesel[0x20]; // sizeof 0xC
 extern UnkFileSelect3 D_80113650_filesel[0x40];
@@ -859,8 +865,8 @@ s32 func_80108834_filesel(void) {
     s32 i;
     s32 total;
 
-    for (i = 0, total = 0; i < ARRAY_COUNT(D_801142DC_filesel); i++) {
-        if (D_801142DC_filesel[i].unk_00 == UNK_VALUE) {
+    for (i = 0, total = 0; i < ARRAY_COUNT(D_801142D8_filesel.files); i++) {
+        if (D_801142D8_filesel.files[i].unk_04 == UNK_VALUE) {
             total++;
         }
     }
@@ -1086,7 +1092,7 @@ u32 func_80109570_filesel(s32 arg0) {
                         }
                         func_80110FB0_filesel(selectedOption);
                     } else {
-                        if (D_801142DC_filesel[cursorIndex].unk_00 == unkValue) {
+                        if (D_801142D8_filesel.files[cursorIndex].unk_04 == unkValue) {
                             cursorIndex = selectedOption + OPTION_FILES_NAME_BEGIN;
                             func_80110FB0_filesel(selectedOption);
                         }
@@ -1134,7 +1140,7 @@ u32 func_80109570_filesel(s32 arg0) {
                         if (cursorIndex < OPTION_FILES_NAME_BEGIN) {
                             cursorIndex = 7;
                         }
-                    } while (D_801142DC_filesel[cursorIndex - OPTION_FILES_NAME_BEGIN].unk_00 != unkValue);
+                    } while (D_801142D8_filesel.files[cursorIndex - OPTION_FILES_NAME_BEGIN].unk_04 != unkValue);
                 } else {
                     if (pressedInput & R_JPAD) {
                         cursorIndex = selectedOption;
@@ -1143,7 +1149,7 @@ u32 func_80109570_filesel(s32 arg0) {
                             if (++cursorIndex > OPTION_MAX) {
                                 cursorIndex = OPTION_FILE0_NAME;
                             }
-                        } while (D_801142DC_filesel[cursorIndex - OPTION_FILES_NAME_BEGIN].unk_00 != unkValue);
+                        } while (D_801142D8_filesel.files[cursorIndex - OPTION_FILES_NAME_BEGIN].unk_04 != unkValue);
                     }
                 }
                 if (pressedInput & U_JPAD) {
@@ -1259,7 +1265,7 @@ void func_8010A680_filesel(s32 fileIndex, f32 x, f32 y, f32 z) {
     s32 modelIndex = fileIndex;
     s32 nameIndex = fileIndex + 3;
 
-    if (D_801142DC_filesel[fileIndex].unk_00 != UNK_VALUE) {
+    if (D_801142D8_filesel.files[fileIndex].unk_04 != UNK_VALUE) {
         func_80106220_filesel(modelIndex, 0x1F0029, 0x6A9);
     } else {
         func_80106220_filesel(modelIndex, 0x1F002A, 0x6A9);
@@ -1688,7 +1694,7 @@ void func_8010DDC0_filesel(s32 fileIndex) {
             func_80105F84_filesel(0x1C);
             func_80105F84_filesel(0x1D);
             func_80105F84_filesel(0x1A);
-            if (D_801142DC_filesel[fileIndex].unk_38 / 10) {
+            if (D_801142D8_filesel.files[fileIndex].unk_3C / 10) {
                 func_80105F84_filesel(0x1B);
             }
         }
@@ -1748,7 +1754,7 @@ void func_8010DFF4_filesel(s32 fileIndex) {
         func_80105F84_filesel(0x25);
         func_80105F84_filesel(0x26);
         func_80105F84_filesel(0x23);
-        if (D_801142DC_filesel[fileIndex].unk_78 / 10) {
+        if (D_801142D8_filesel.files[fileIndex].unk_7C / 10) {
             func_80105F84_filesel(0x24);
         }
     }
@@ -1760,12 +1766,12 @@ void func_8010DFF4_filesel(s32 fileIndex) {
     } else {
         func_80105F84_filesel(0x29);
         func_80105F84_filesel(0x2F);
-        if (D_801142DC_filesel[fileIndex].unk_60 == 20) {
+        if (D_801142D8_filesel.files[fileIndex].unk_64 == 20) {
             func_80105F84_filesel(0x2D);
             func_80105F84_filesel(0x2E);
             func_80105F84_filesel(0x2B);
             func_80105F84_filesel(0x2A);
-            if (D_801142DC_filesel[fileIndex].unk_5C / 10) {
+            if (D_801142D8_filesel.files[fileIndex].unk_60 / 10) {
                 func_80105F84_filesel(0x2C);
             }
         }
@@ -2339,12 +2345,12 @@ s32 func_80111B14_filesel(s32 arg0) {
 void func_80111C30_filesel(void) {
     s32 i;
 
-    D_801142DC_filesel[2].unk_80 = 0;
+    D_801142D8_filesel.selected = 0;
     for (i = 0; i < 3; i++) {
         SLCurBoxNoSet(i);
         func_80050800_main();
         if (GwCommon.unk_00 == UNK_VALUE && D_800D09A9_main == i) {
-            D_801142DC_filesel[2].unk_80 = i;
+            D_801142D8_filesel.selected = i;
         }
         func_801122B0_filesel(i);
         func_80112184_filesel(i);
@@ -2355,25 +2361,25 @@ void func_80111CBC_filesel(s32 fileIndex) {
     u8 first;
     u8 second;
 
-    D_801142DC_filesel[fileIndex].unk_28 = 0;
-    D_801142DC_filesel[fileIndex].unk_2C = 0;
-    D_801142DC_filesel[fileIndex].unk_30 = 0;
-    D_801142DC_filesel[fileIndex].unk_34 = 0;
-    D_801142DC_filesel[fileIndex].unk_38 = 99;
-    D_801142DC_filesel[fileIndex].unk_3C = 99;
-    D_801142DC_filesel[fileIndex].unk_40 = 0;
-    D_801142DC_filesel[fileIndex].unk_44 = 0;
+    D_801142D8_filesel.files[fileIndex].unk_2C = 0;
+    D_801142D8_filesel.files[fileIndex].unk_30 = 0;
+    D_801142D8_filesel.files[fileIndex].unk_34 = 0;
+    D_801142D8_filesel.files[fileIndex].unk_38 = 0;
+    D_801142D8_filesel.files[fileIndex].unk_3C = 99;
+    D_801142D8_filesel.files[fileIndex].unk_40 = 99;
+    D_801142D8_filesel.files[fileIndex].unk_44 = 0;
+    D_801142D8_filesel.files[fileIndex].unk_48 = 0;
     if (_CheckFlag(0x18)) {
         func_80112758_filesel();
-        D_801142DC_filesel[fileIndex].unk_28 = GwStory.unk1;
-        D_801142DC_filesel[fileIndex].unk_44 = GwStory.unk0;
+        D_801142D8_filesel.files[fileIndex].unk_2C = GwStory.unk1;
+        D_801142D8_filesel.files[fileIndex].unk_48 = GwStory.unk0;
         func_801126C0_filesel(GwStory.unk0, &first, &second);
-        D_801142DC_filesel[fileIndex].unk_2C = second;
-        D_801142DC_filesel[fileIndex].unk_30 = first;
-        D_801142DC_filesel[fileIndex].unk_34 = GwSystem.current_turn < 4 ? GwSystem.current_game_length : 3;
-        D_801142DC_filesel[fileIndex].unk_38 = GwSystem.current_turn >= 100 ? 99 : (s32)GwSystem.current_turn;
-        D_801142DC_filesel[fileIndex].unk_3C = GwSystem.total_turns >= 100 ? 99 : (s32)GwSystem.total_turns;
-        D_801142DC_filesel[fileIndex].unk_40 = GwStory.unk2;
+        D_801142D8_filesel.files[fileIndex].unk_30 = second;
+        D_801142D8_filesel.files[fileIndex].unk_34 = first;
+        D_801142D8_filesel.files[fileIndex].unk_38 = GwSystem.current_turn < 4 ? GwSystem.current_game_length : 3;
+        D_801142D8_filesel.files[fileIndex].unk_3C = GwSystem.current_turn >= 100 ? 99 : (s32)GwSystem.current_turn;
+        D_801142D8_filesel.files[fileIndex].unk_40 = GwSystem.total_turns >= 100 ? 99 : (s32)GwSystem.total_turns;
+        D_801142D8_filesel.files[fileIndex].unk_44 = GwStory.unk2;
     }
 }
 
@@ -2383,18 +2389,57 @@ INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80111FFC_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80112184_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801122B0_filesel);
+void func_801122B0_filesel(s32 fileIndex) {
+    s32 i;
+    s32 mask;
+
+    for (i = 0; i < 16; i++) {
+        D_801142D8_filesel.files[fileIndex].name[i] = 0;
+    }
+    switch (fileIndex) {
+        case 0:
+            mask = 1;
+            break;
+        case 1:
+            mask = 2;
+            break;
+        case 2:
+            mask = 4;
+            break;
+        default:
+            mask = 7;
+            break;
+    }
+    D_801142D8_filesel.files[fileIndex].empty = (D_800D20EC_main & mask) != 0;
+    if (D_801142D8_filesel.files[fileIndex].empty != 0) {
+        for (i = 0; i < 10; i++) {
+            D_801142D8_filesel.files[fileIndex].name[i] = 0;
+        }
+    } else {
+        for (i = 0; i < 10; i += 2) {
+            if ((u16)((GwCommon.fileName[i] << 8) | GwCommon.fileName[i + 1]) == 0) {
+                break;
+            }
+            D_801142D8_filesel.files[fileIndex].name[i] = GwCommon.fileName[i];
+            D_801142D8_filesel.files[fileIndex].name[i + 1] = GwCommon.fileName[i + 1];
+        }
+        D_801142D8_filesel.files[fileIndex].name[i] = D_801142D8_filesel.files[fileIndex].name[i + 1] = 0;
+    }
+    if ((u16)((D_801142D8_filesel.files[fileIndex].name[0] << 8) | D_801142D8_filesel.files[fileIndex].name[1]) == 0) {
+        bzero(D_801142D8_filesel.files[fileIndex].name, 32);
+    }
+}
 
 s32 func_80112494_filesel(s32 arg0, u8 *arg1) {
     s32 i;
 
     for (i = 0; i < 10; i++) {
-        D_801142DC_filesel[arg0].unk_01[i] = arg1[i];
+        D_801142D8_filesel.files[arg0].name[i] = arg1[i];
     }
 
     // terminate string
-    D_801142DC_filesel[arg0].unk_01[i] = '\0';
-    D_801142DC_filesel[arg0].unk_01[i + 1] = '\0';
+    D_801142D8_filesel.files[arg0].name[i] = '\0';
+    D_801142D8_filesel.files[arg0].name[i + 1] = '\0';
     return i;
 }
 
@@ -2402,11 +2447,11 @@ s32 func_80112508_filesel(s32 arg0, u8 *arg1) {
     s32 i;
 
     for (i = 0; i < 10; i += 2) {
-        if ((u16)((D_801142DC_filesel[arg0].unk_01[i] << 8) | D_801142DC_filesel[arg0].unk_01[i + 1]) == 0) {
+        if ((u16)((D_801142D8_filesel.files[arg0].name[i] << 8) | D_801142D8_filesel.files[arg0].name[i + 1]) == 0) {
             break;
         }
-        arg1[i] = D_801142DC_filesel[arg0].unk_01[i];
-        arg1[i + 1] = D_801142DC_filesel[arg0].unk_01[i + 1];
+        arg1[i] = D_801142D8_filesel.files[arg0].name[i];
+        arg1[i + 1] = D_801142D8_filesel.files[arg0].name[i + 1];
     }
 
     arg1[i] = '\0';
@@ -2417,7 +2462,7 @@ s32 func_80112508_filesel(s32 arg0, u8 *arg1) {
 void func_80112584_filesel(s32 arg0) {
     SLCurBoxNoSet(arg0);
     func_80050800_main();
-    bcopy(D_801142DC_filesel[arg0].unk_01, &GwCommon.flag[9], 10);
+    bcopy(D_801142D8_filesel.files[arg0].name, GwCommon.fileName, 10);
     D_800D09A9_main = arg0;
     func_80050064_main(1);
 }

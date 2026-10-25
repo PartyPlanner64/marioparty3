@@ -1,4 +1,5 @@
 #include "common.h"
+#include "inst.h"
 
 typedef struct {
     s32 overlay;
@@ -7,11 +8,6 @@ typedef struct {
     u16 flags;
     u8 unk08[12];
 } InstMinigameEntry;
-
-typedef struct {
-    omObjData *object;
-    void (*update)(omObjData *);
-} InstObjectState;
 
 extern InstMinigameEntry D_800A6D40_main[];
 extern char D_8010D978_inst[];

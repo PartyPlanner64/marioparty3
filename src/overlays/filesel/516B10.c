@@ -70,11 +70,18 @@ typedef struct FileSelectCameraTransition {
     s32 duration;
 } FileSelectCameraTransition;
 
+typedef struct FileSelectCameraState {
+    Vec center;
+    Vec rotation;
+    FileSelectCameraTransition transition;
+} FileSelectCameraState;
+
 void func_80111790_filesel(omObjData *);
 void func_80107CF8_filesel(void);
 void func_801119F4_filesel(void);
 void func_80111C30_filesel(void);
 s32 func_8010B5D4_filesel(s32, s32, s32, s16 *, s16 *);
+void func_8010E250_filesel(Vec *, Vec *, f32, Vec *, Vec *, Vec *);
 void func_8010E740_filesel(s32);
 void func_8010E864_filesel(void);
 void func_8010F65C_filesel(void);
@@ -106,6 +113,7 @@ s32 func_80111B14_filesel(s32);
 u32 func_80106AD8_filesel(u32);
 s32 func_8010AC58_filesel(s32);
 s32 func_80112494_filesel(s32, u8 *);
+void func_80050064_main(s32);
 void func_8000BBFC_main(u16, s16);
 void func_8000BC48_main(u16, u16);
 void func_8000BC88_main(u16, u16);
@@ -138,9 +146,15 @@ extern Process *D_80114468_filesel;
 extern omObjData *D_8011446C_filesel;
 extern s32 D_8011447C_filesel[4];
 extern Vec D_801128A4_filesel[];
-extern Vec D_801146B0_filesel;
-extern Vec D_801146BC_filesel;
-extern FileSelectCameraTransition D_801146C8_filesel;
+extern FileSelectCameraState D_801146B0_filesel;
+extern u8 D_800D09A9_main;
+extern s32 D_80114500_filesel;
+extern f32 D_801144F8_filesel;
+extern f32 D_801144FC_filesel;
+extern f32 D_801128A0_filesel;
+extern Vec D_801144D4_filesel;
+extern Vec D_801144E0_filesel;
+extern Vec D_801144EC_filesel;
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801059D0_filesel);
 
@@ -1255,7 +1269,25 @@ void func_8010E1B4_filesel(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010E250_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010E740_filesel);
+void func_8010E740_filesel(s32 arg0) {
+    D_80114500_filesel = arg0;
+    CRot.x = 0;
+    CRot.y = 0;
+    CRot.z = 0;
+    Center.x = 0;
+    Center.y = 200.0f;
+    Center.z = 0;
+    CZoom = 3000.0f;
+    D_801144F8_filesel = 80.0f;
+    D_801144FC_filesel = 8000.0f;
+    D_801128A0_filesel = 20.0f;
+    HuVecCopyXYZ(&D_801144D4_filesel, 10.0f, CRot.x, CRot.x);
+    HuVecCopyXYZ(&D_801144E0_filesel, 0.0f, 0.0f, 0.0f);
+    HuVecCopyXYZ(&D_801144EC_filesel, 0.0f, 1.0f, 0.0f);
+    Hu3DCamSetPerspective(0, D_801128A0_filesel, D_801144F8_filesel, D_801144FC_filesel);
+    Hu3DCamSetPositionOrientation(0, &D_801144D4_filesel, &D_801144E0_filesel, &D_801144EC_filesel);
+    Hu3DCamUpdateMtx(0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010E864_filesel);
 
@@ -1536,7 +1568,40 @@ INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801113E8_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80111660_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80111790_filesel);
+void func_80111790_filesel(omObjData *object) {
+    Vec center;
+    Vec rotation;
+    Vec position;
+    Vec target;
+    Vec up;
+    f32 duration;
+    f32 frame;
+    f32 progress;
+    f32 distance;
+
+    duration = D_801146B0_filesel.transition.duration;
+    frame = D_801146B0_filesel.transition.frame;
+    HuVecCopy3F(&center, &D_801146B0_filesel.center);
+    HuVecCopy3F(&rotation, &D_801146B0_filesel.rotation);
+    progress = frame / duration;
+    if (progress > 1.0f) {
+        progress = 1.0f;
+    }
+    rotation.x = progress * -88.0f;
+    distance = ((1.0f - progress) * 0.75f + 0.25f) * 3000.0f;
+    HuVecCopy3F(&D_801146B0_filesel.center, &center);
+    HuVecCopy3F(&D_801146B0_filesel.rotation, &rotation);
+    D_801146B0_filesel.transition.distance = distance;
+    func_8010E250_filesel(&center, &rotation, distance, &position, &target, &up);
+    Hu3DCamSetPositionOrientation(0, &position, &target, &up);
+    Hu3DCamUpdateMtx(0);
+    if (frame == duration) {
+        omDelObj(object);
+    } else {
+        frame += 1.0f;
+        D_801146B0_filesel.transition.frame = frame;
+    }
+}
 
 #ifdef NON_MATCHING
 // The final state stores still use separate symbolic addresses instead of one base register.
@@ -1547,9 +1612,9 @@ omObjData *func_80111944_filesel(s32 duration) {
     obj->work[0] = 0;
     obj->work[1] = duration;
     obj->work[2] = 0;
-    HuVecCopyXYZ(&D_801146B0_filesel, 0.0f, 200.0f, 0.0f);
-    HuVecCopyXYZ(&D_801146BC_filesel, 0.0f, 0.0f, 0.0f);
-    transition = &D_801146C8_filesel;
+    HuVecCopyXYZ(&D_801146B0_filesel.center, 0.0f, 200.0f, 0.0f);
+    HuVecCopyXYZ(&D_801146B0_filesel.rotation, 0.0f, 0.0f, 0.0f);
+    transition = &D_801146B0_filesel.transition;
     transition->distance = 3000.0f;
     transition->duration = duration;
     transition->frame = 0;
@@ -1709,7 +1774,13 @@ s32 func_80112508_filesel(s32 arg0, u8 *arg1) {
     return i;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80112584_filesel);
+void func_80112584_filesel(s32 arg0) {
+    SLCurBoxNoSet(arg0);
+    func_80050800_main();
+    bcopy(D_801142DC_filesel[arg0].unk_01, &GwCommon.flag[9], 10);
+    D_800D09A9_main = arg0;
+    func_80050064_main(1);
+}
 
 s32 func_801125E8_filesel(UnkFileName *arg0) {
     s32 i;

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "game/gamemes.h"
 
 typedef struct {
     s16 curGroup;       /* 0x00 */
@@ -56,8 +57,12 @@ extern s8 D_8010D5B0_inst;
 extern void (*D_8010DC94_inst)(omObjData *);
 extern void (*D_8010DCA4_inst)(s32);
 extern UnkInstWin D_8010DCA8_inst;
+extern GAMEMES D_8010DCD8_inst;
+extern GAMEMES D_8010DD50_inst;
 extern UnkInst D_8010DCE0_inst;
 extern UnkInst D_8010DD58_inst;
+
+s32 func_8003A37C_main(GAMEMES *, const char *, s32, s32, s32);
 
 void func_8010AC30_inst(omObjData *); /* extern */
 void func_8010AD78_inst(omObjData *);
@@ -448,13 +453,28 @@ void func_8010CC14_inst(void) {
     func_8005FE54_main(D_8010DCA8_inst.curGroup, pads);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010CDE4_inst);
+void func_8010CDE4_inst(const char *message, s32 x, s32 y) {
+    char *text = func_800364DC_main((char *)message);
+
+    D_8010DCD8_inst.unk08 = -1;
+    D_8010DCD8_inst.unk08 = func_8003A37C_main(&D_8010DCD8_inst, text + 1, 0, -1, -1);
+    D_8010DCD8_inst.unk60 = (s16)x;
+    D_8010DCD8_inst.unk64 = (s16)y;
+    func_80054904_main(D_8010DCD8_inst.strGId[D_8010DCD8_inst.unk08], 0, D_8010DCD8_inst.unk60,
+                       D_8010DCD8_inst.unk64);
+    func_800365E8_main(text);
+}
 
 void func_8010CED0_inst(s32 x, s32 y) {
     func_80054904_main(D_8010DCE0_inst.spriteGroup[D_8010DCE0_inst.curGroup], 0, x, y);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010CF14_inst);
+void func_8010CF14_inst(void) {
+    D_8010DD50_inst.unk08 = func_8003A37C_main(&D_8010DD50_inst, "PRACTICE", 0, -1, -1);
+    D_8010DD50_inst.unk60 = 216.0f;
+    D_8010DD50_inst.unk64 = 90.0f;
+    func_80054904_main(D_8010DD50_inst.strGId[D_8010DD50_inst.unk08], 0, 216, 90);
+}
 
 void func_8010CF98_inst(void) {
     D_8010DD58_inst.pos.x = 216.0f;

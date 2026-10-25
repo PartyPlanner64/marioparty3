@@ -20,6 +20,8 @@ extern s8 D_8010D408_inst;
 extern s8 D_8010D40A_inst;
 extern s8 D_8010D554_inst[4];
 extern s32 D_8010D440_inst;
+extern s32 D_8010D558_inst;
+extern omObjData *D_8010DC90_inst;
 extern s16 *D_8010D4C0_inst[][2];
 extern s8 D_8010D550_inst;
 extern s8 D_8010D551_inst;
@@ -32,6 +34,7 @@ extern UnkInst D_8010DD58_inst;
 
 void func_8010AC30_inst(omObjData *); /* extern */
 void func_8010AD78_inst(omObjData *);
+void func_8010B2A4_inst(omObjData *);
 void func_8010BE78_inst(s32 arg0); /* extern */
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010A1D0_inst);
@@ -141,7 +144,26 @@ s32 func_8010B118_inst(void) {
     return D_8010D551_inst;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010B124_inst);
+void func_8010B124_inst(void) {
+    s8 i;
+    omObjData *object = D_8010DC90_inst;
+    s16 *models;
+
+    D_8010D558_inst = 1;
+    models = D_8010D4C0_inst[D_8010D40A_inst][0];
+    for (i = 0; i < models[0]; i++) {
+        func_8001C814_main(object->model[i + 5], 1, 0);
+        func_8001C814_main(object->model[i + 5], 4, 4);
+        func_8001C258_main(object->model[i + 5], 4, 0);
+    }
+    models = D_8010D4C0_inst[D_8010D40A_inst][1];
+    for (i = 0; i < models[0]; i++) {
+        func_8001C814_main(object->model[i + 15], 1, 0);
+        func_8001C814_main(object->model[i + 15], 4, 4);
+        func_8001C258_main(object->model[i + 15], 4, 0);
+    }
+    D_8010DC94_inst = func_8010B2A4_inst;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010B2A4_inst);
 
@@ -201,7 +223,46 @@ void func_8010C8D0_inst(void) {
     D_8010D5B0_inst = 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010C8E0_inst);
+u16 func_8010C8E0_inst(s32 buttons) {
+    u16 pressed = 0;
+    s8 i;
+
+    switch (D_8010D40A_inst) {
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+            if (!(GwPlayer[D_8010D400_inst[0]].stat & 1)) {
+                pressed = D_800D5558_main[GwPlayer[D_8010D400_inst[0]].pad] & buttons;
+            }
+            break;
+        case 4:
+            for (i = 0; i < 2; i++) {
+                if (!(GwPlayer[D_8010D400_inst[i]].stat & 1)) {
+                    pressed = D_800D5558_main[GwPlayer[D_8010D400_inst[i]].pad] & buttons;
+                    if (pressed != 0) {
+                        break;
+                    }
+                }
+            }
+            break;
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        default:
+            for (i = 0; i < 4; i++) {
+                if (!(GwPlayer[D_8010D400_inst[i]].stat & 1)) {
+                    pressed = D_800D5558_main[GwPlayer[D_8010D400_inst[i]].pad] & buttons;
+                    if (pressed != 0) {
+                        break;
+                    }
+                }
+            }
+            break;
+    }
+    return pressed;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010CA74_inst);
 

@@ -3,11 +3,17 @@
 typedef struct {
     s32 overlay;
     u8 minigameType;
-    u8 unk05[15];
+    u8 unk05;
+    u16 flags;
+    u8 unk08[12];
 } InstMinigameEntry;
 
 extern InstMinigameEntry D_800A6D40_main[];
 extern s8 D_8010D5B1_inst;
+extern u8 D_800CE20A_main;
+extern s32 D_8010D4A4_inst;
+extern s16 D_8010DC28_inst;
+extern s16 D_8010DC22_inst;
 extern f32 D_800CB890_main;
 extern f32 D_800CE17C_main[];
 extern f32 D_800D5210_main;
@@ -58,6 +64,8 @@ s32 func_8010B10C_inst(void);
 void func_80107A24_inst(omObjData *); /* extern */
 void func_80107BF8_inst(omObjData *); /* extern */
 void func_80108350_inst(void);        /* extern */
+void func_80108808_inst(omObjData *);
+void func_80108A18_inst(s16, s16, s16);
 void func_80108870_inst(omObjData *);
 void func_80108954_inst(omObjData *);
 void func_80108A10_inst(omObjData *);
@@ -287,7 +295,46 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4DEB60", D_8010D724_inst);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80106EB4_inst);
 
+#ifdef NON_MATCHING
+// Remaining difference: register allocation for the randomly chosen variant.
+void func_80107308_inst(void) {
+    u32 flags;
+    s32 message = 0;
+    s32 choose = 1;
+
+    if (D_8010D407_inst == 1) {
+        if ((D_8010D40B_inst == 29) | (D_8010D40B_inst == 55)) {
+            message = D_800A6D40_main[D_8010D40B_inst].flags & 0x7FF;
+            message += D_800CE20A_main * 2;
+            choose = 0;
+        }
+    }
+    if (choose == 1) {
+        flags = D_800A6D40_main[D_8010D40B_inst].flags;
+        message = flags & 0x7FF;
+        if (flags & 0x4000) {
+            if (D_8010D40B_inst != 70) {
+                flags = (flags & 0x3800) >> 11;
+                choose = rand8() % flags;
+                D_800CE20A_main = choose;
+            } else {
+                choose = D_800CE20A_main;
+            }
+            message += choose * 2;
+        } else if (D_8010D40B_inst == 71) {
+            D_800CE20A_main = 2;
+        } else if ((D_8010D40B_inst == 30) && (_CheckFlag(0x1C) != 0)) {
+            D_800CE20A_main = 1;
+        } else {
+            D_800CE20A_main = 0;
+        }
+    }
+    D_8010D4A4_inst = message;
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80107308_inst);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80107470_inst);
 
@@ -463,7 +510,18 @@ INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_8010815C_inst);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80108350_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_8010872C_inst);
+void func_8010872C_inst(omObjData *object) {
+    object->trans.x = -86.0f;
+    object->trans.y = -148.0f;
+    object->trans.z = 253.0f;
+    object->rot.x = -20.0f;
+    object->rot.y = 15.0f;
+    Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
+    func_8001C5B4_main(object->model[0], object->motion[1]);
+    func_8001C814_main(object->model[0], 2, 2);
+    func_80108A18_inst(object->model[0], D_8010DC28_inst, D_8010DC22_inst);
+    D_8010DDE4_inst = func_80108808_inst;
+}
 
 void func_80108808_inst(omObjData *object) {
     D_8010D520_inst++;

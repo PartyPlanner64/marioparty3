@@ -14,9 +14,21 @@ typedef struct UnkFileSelect2 {
 typedef struct UnkFileSelect {
     u8 unk_00;
     u8 unk_01[0xB];
-    char unk_0C[0x2C];
+    char unk_0C[0x1C];
+    u8 unk_28;
+    s32 unk_2C;
+    s32 unk_30;
+    s32 unk_34;
     s32 unk_38;
-    char unk_3C[0x44];
+    s32 unk_3C;
+    s32 unk_40;
+    s32 unk_44;
+    char unk_48[0x14];
+    s32 unk_5C;
+    s32 unk_60;
+    char unk_64[0x14];
+    s32 unk_78;
+    char unk_7C[4];
     s32 unk_80;
 } UnkFileSelect; // sizeof 0x84
 
@@ -82,6 +94,8 @@ typedef struct FileSelectCameraState {
 } FileSelectCameraState;
 
 void func_801059D0_filesel(void);
+void func_801126C0_filesel(s32, u8 *, u8 *);
+void func_80112758_filesel(void);
 void func_80107C84_filesel(void);
 void func_80112184_filesel(s32);
 void func_801122B0_filesel(s32);
@@ -1668,7 +1682,48 @@ void func_8010DF58_filesel(void) {
     func_80105EC0_filesel(0x2B);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010DFF4_filesel);
+void func_8010DFF4_filesel(s32 fileIndex) {
+    func_80105F84_filesel(0x1F);
+    func_80105F84_filesel(0x28);
+    func_80105F84_filesel(0x20);
+    if (!_CheckFlag(0x16)) {
+        func_80105FA0_filesel(0x21);
+        func_80105F84_filesel(0x22);
+        func_80105FA0_filesel(0x27);
+        func_80105FA0_filesel(0x26);
+        func_80105FA0_filesel(0x25);
+        func_80105FA0_filesel(0x24);
+        func_80105FA0_filesel(0x23);
+    } else {
+        func_80105F84_filesel(0x21);
+        func_80105F84_filesel(0x22);
+        func_80105F84_filesel(0x27);
+        func_80105F84_filesel(0x25);
+        func_80105F84_filesel(0x26);
+        func_80105F84_filesel(0x23);
+        if (D_801142DC_filesel[fileIndex].unk_78 / 10) {
+            func_80105F84_filesel(0x24);
+        }
+    }
+    if (!_CheckFlag(0x17)) {
+        func_80105FA0_filesel(0x29);
+        func_80105F84_filesel(0x2A);
+        func_80105FA0_filesel(0x2C);
+        func_80105FA0_filesel(0x2B);
+    } else {
+        func_80105F84_filesel(0x29);
+        func_80105F84_filesel(0x2F);
+        if (D_801142DC_filesel[fileIndex].unk_60 == 20) {
+            func_80105F84_filesel(0x2D);
+            func_80105F84_filesel(0x2E);
+            func_80105F84_filesel(0x2B);
+            func_80105F84_filesel(0x2A);
+            if (D_801142DC_filesel[fileIndex].unk_5C / 10) {
+                func_80105F84_filesel(0x2C);
+            }
+        }
+    }
+}
 
 void func_8010E1B4_filesel(void) {
     func_80105FA0_filesel(0x1F);
@@ -2206,7 +2261,31 @@ void func_80111C30_filesel(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80111CBC_filesel);
+void func_80111CBC_filesel(s32 fileIndex) {
+    u8 first;
+    u8 second;
+
+    D_801142DC_filesel[fileIndex].unk_28 = 0;
+    D_801142DC_filesel[fileIndex].unk_2C = 0;
+    D_801142DC_filesel[fileIndex].unk_30 = 0;
+    D_801142DC_filesel[fileIndex].unk_34 = 0;
+    D_801142DC_filesel[fileIndex].unk_38 = 99;
+    D_801142DC_filesel[fileIndex].unk_3C = 99;
+    D_801142DC_filesel[fileIndex].unk_40 = 0;
+    D_801142DC_filesel[fileIndex].unk_44 = 0;
+    if (_CheckFlag(0x18)) {
+        func_80112758_filesel();
+        D_801142DC_filesel[fileIndex].unk_28 = GwStory.unk1;
+        D_801142DC_filesel[fileIndex].unk_44 = GwStory.unk0;
+        func_801126C0_filesel(GwStory.unk0, &first, &second);
+        D_801142DC_filesel[fileIndex].unk_2C = second;
+        D_801142DC_filesel[fileIndex].unk_30 = first;
+        D_801142DC_filesel[fileIndex].unk_34 = GwSystem.current_turn < 4 ? GwSystem.current_game_length : 3;
+        D_801142DC_filesel[fileIndex].unk_38 = GwSystem.current_turn >= 100 ? 99 : (s32)GwSystem.current_turn;
+        D_801142DC_filesel[fileIndex].unk_3C = GwSystem.total_turns >= 100 ? 99 : (s32)GwSystem.total_turns;
+        D_801142DC_filesel[fileIndex].unk_40 = GwStory.unk2;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80111E78_filesel);
 

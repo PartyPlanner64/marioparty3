@@ -657,11 +657,12 @@ void func_80106EB4_inst(void) {
 }
 
 #ifdef NON_MATCHING
-// Remaining difference: register allocation for the randomly chosen variant.
+// Remaining difference: variant uses v1 instead of v0 in the random-selection path.
 void func_80107308_inst(void) {
     u32 flags;
     s32 message = 0;
     s32 choose = 1;
+    s32 variant;
 
     if (D_8010D407_inst == 1) {
         if ((D_8010D40B_inst == 29) | (D_8010D40B_inst == 55)) {
@@ -676,12 +677,12 @@ void func_80107308_inst(void) {
         if (flags & 0x4000) {
             if (D_8010D40B_inst != 70) {
                 flags = (flags & 0x3800) >> 11;
-                choose = rand8() % flags;
-                D_800CE20A_main = choose;
+                variant = rand8() % flags;
+                D_800CE20A_main = variant;
             } else {
-                choose = D_800CE20A_main;
+                variant = D_800CE20A_main;
             }
-            message += choose * 2;
+            message += variant * 2;
         } else if (D_8010D40B_inst == 71) {
             D_800CE20A_main = 2;
         } else if ((D_8010D40B_inst == 30) && (_CheckFlag(0x1C) != 0)) {

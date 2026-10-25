@@ -1085,7 +1085,52 @@ s32 func_80109968_filesel(s32 arg0) {
     return temp_s0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801099A8_filesel);
+s32 func_801099A8_filesel(s32 selection, s32 option0, s32 option1, s32 option2) {
+    s32 options[3];
+    s32 timer = 0;
+    s32 input;
+    s32 extraInput;
+
+    options[0] = option0;
+    options[1] = option1;
+    options[2] = option2;
+    func_8010AB60_filesel(18, selection);
+    while (1) {
+        HuPrcVSleep();
+        func_8010AB1C_filesel(18, selection);
+        func_8010AB58_filesel(18, -(timer / 8));
+        timer = timer < 20 ? timer + 1 : 0;
+        input = D_800D1244_main;
+        extraInput = func_80111B14_filesel(0);
+        if (extraInput != -1) {
+            input |= extraInput;
+        }
+        if (D_800D5558_main[0] & B_BUTTON) {
+            return -1;
+        }
+        if (D_800D5558_main[0] & A_BUTTON) {
+            HuAudFXPlay(3);
+            if (options[selection] == 1) {
+                break;
+            }
+        } else if (input & L_JPAD) {
+            do {
+                selection--;
+                if (selection < 0) {
+                    selection = 2;
+                }
+            } while (options[selection] != 1);
+            func_8010AB60_filesel(18, selection);
+        } else if (input & R_JPAD) {
+            do {
+                selection++;
+                selection = selection < 3 ? selection : 0;
+            } while (options[selection] != 1);
+            func_8010AB60_filesel(18, selection);
+        }
+    }
+    return selection;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80109B2C_filesel);
 

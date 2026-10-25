@@ -6,6 +6,9 @@ extern s32 D_8010DC20_inst[2];
 extern s16 D_8010DC22_inst;
 extern s16 D_8010DC28_inst;
 extern InstObjectState D_8010DDE0_inst;
+extern InstObjectState D_8010DDE8_inst;
+extern s32 D_8010DC30_inst;
+extern s16 D_8010DC32_inst;
 extern void (*D_8010DDE4_inst)(omObjData *);
 extern void (*D_8010DDEC_inst)(omObjData *);
 extern s32 D_8010D520_inst;
@@ -22,6 +25,7 @@ void func_80108870_inst(omObjData *);
 void func_80108954_inst(omObjData *);
 void func_80108A10_inst(omObjData *);
 void func_80108A18_inst(s16, s16, s16);
+void func_801097DC_inst(omObjData *);
 void func_8010986C_inst(omObjData *);
 void func_801098D8_inst(omObjData *);
 void func_801099C0_inst(omObjData *);
@@ -157,7 +161,55 @@ void func_80108A18_inst(s16 model, s16 animSlot, s16 anim) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E1510", func_80108AF0_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E1510", func_801094B0_inst);
+void func_801094B0_inst(void) {
+    omObjData *object;
+    void *data;
+
+    object = omAddObj(25, 5, 8, -1, NULL);
+    D_8010DDE8_inst.object = object;
+    object->model[0] = func_8000B108_main(0xA0000, 0x16A9);
+    func_8000B460_main(object, 0, 0xA0001);
+    func_8000B460_main(object, 1, 0xA0002);
+    func_8000B460_main(object, 2, 0xA0006);
+    func_8000B460_main(object, 3, 0xA0023);
+    func_8000B460_main(object, 4, 0xA0018);
+    func_8001C5B4_main(object->model[0], object->motion[1]);
+    func_8001C814_main(object->model[0], 2, 2);
+    data = DataRead(0xA002A);
+    D_8010DC30_inst = (s16)HmfAnimCreate(HmfModelData[object->model[0]].hmf, data, 0, "c160n_0_DEF");
+    HuMemMemoryFreePerm(data);
+    func_8001C448_main(object->model[0]);
+    func_8001C514_main(object->model[0]);
+    func_80032FC0_main(D_8010DC32_inst, 1, 0);
+    func_80032FF8_main(D_8010DC32_inst, 0);
+    object->trans.x = -91.0f;
+    object->trans.y = -171.0f;
+    object->trans.z = 210.0f;
+    object->rot.x = -20.0f;
+    object->rot.y = 15.0f;
+    object->scale.x = object->scale.y = object->scale.z = 0.5f;
+    Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
+    object->scale.x = object->scale.y = object->scale.z = 0.4f;
+    Hu3DModelScaleSet(object->model[0], 0.4f, 0.4f, 0.4f);
+    func_8001C258_main(object->model[0], 4, 4);
+    if (D_8010D408_inst == 1) {
+        func_8001C5B4_main(object->model[0], object->motion[3]);
+        func_8001C814_main(object->model[0], 2, 2);
+        func_8001C258_main(object->model[0], 4, 0);
+        object->trans.x = -91.0f;
+        object->trans.y = 29.0f;
+        object->trans.z = 210.0f;
+        object->rot.x = -20.0f;
+        object->rot.y = 15.0f;
+        D_8010DDE8_inst.update = func_80109A84_inst;
+    } else {
+        D_8010DDEC_inst = func_801097DC_inst;
+    }
+    while (1) {
+        D_8010DDEC_inst(object);
+        HuPrcVSleep();
+    }
+}
 
 void func_801097DC_inst(omObjData *object) {
     object->trans.x = -91.0f;

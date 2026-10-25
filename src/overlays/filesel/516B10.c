@@ -144,6 +144,8 @@ extern UnkFileSelect6 D_80114508_filesel[9];
 extern UnkFileSelect5 D_80114598_filesel[3];
 extern u8 *D_801127FC_filesel[];
 extern s32 D_801127B0_filesel[];
+extern s32 D_801127BC_filesel[][2];
+extern s32 D_801127C0_filesel[][2];
 extern u8 *D_80112844_filesel[];
 extern u8 *D_8011288C_filesel[];
 extern s16 D_80114150_filesel;
@@ -1073,7 +1075,47 @@ void func_8010A978_filesel(s32 arg0) {
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/filesel/516B10", D_80112AF0_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010A9B4_filesel);
+void func_8010A9B4_filesel(s32 arg0, u32 arg1, s32 *arg2, s32 *arg3) {
+    Vec pos;
+    Vec2f screen;
+    s32 x;
+    s32 y;
+
+    x = D_801127BC_filesel[arg1][0];
+    y = D_801127C0_filesel[arg1][0];
+    switch (arg1) {
+        case 0:
+        case 1:
+        case 2:
+            func_801065B8_filesel(arg1, &pos.x, &pos.y, &pos.z);
+            pos.x += 30.0f;
+            pos.y += 300.0f;
+            Hu3DCam3DToScreen(0, &pos, &screen);
+            x = screen.x;
+            y = screen.y;
+            break;
+        case 3:
+        case 4:
+            x = D_801127BC_filesel[arg1][0];
+            y = D_801127C0_filesel[arg1][0];
+            break;
+        case 5:
+            HuVecCopyXYZ(&pos, -400.0f, 0.0f, 0.0f);
+            goto project;
+        case 6:
+            HuVecCopyXYZ(&pos, 0.0f, 0.0f, 0.0f);
+            goto project;
+        case 7:
+            HuVecCopyXYZ(&pos, 400.0f, 0.0f, 0.0f);
+        project:
+            Hu3DCam3DToScreen(0, &pos, &screen);
+            x = screen.x + 31.0f;
+            y = 168;
+            break;
+    }
+    *arg2 = x;
+    *arg3 = y;
+}
 
 void func_8010AB1C_filesel(s32 arg0, u32 arg1) {
     s32 x;
@@ -1208,7 +1250,52 @@ void func_8010B6F4_filesel(s32 arg0) {
     D_8011448C_filesel = 0;
 }
 
+#ifdef NON_MATCHING
+// GCC folds the first alpha conversion; the original keeps the floating-point operations.
+void func_8010B80C_filesel(s32 arg0) {
+    s32 frame;
+    s32 direction;
+    f32 alpha;
+    u32 opacity;
+
+    frame = D_8011448C_filesel;
+    if (frame < 0) {
+        frame = -frame;
+    }
+    direction = D_8011448C_filesel >= 0;
+    alpha = 1.0f;
+    frame++;
+    if (direction != 0) {
+        opacity = alpha * 255.0f;
+    } else {
+        opacity = (1.0f - alpha) * 255.0f;
+    }
+    D_8011448C_filesel = frame;
+    if (direction < 0) {
+        D_8011448C_filesel = -D_8011448C_filesel;
+    }
+    if (arg0 != -1) {
+        func_80106094_filesel(arg0, (u8)opacity);
+    }
+    if (arg0 != 7) {
+        func_80106094_filesel(7, (u8)opacity);
+    }
+    if (arg0 != 8) {
+        func_80106094_filesel(8, (u8)opacity);
+    }
+    if (arg0 != 9) {
+        func_80106094_filesel(9, (u8)opacity);
+    }
+    if (arg0 != 10) {
+        func_80106094_filesel(10, (u8)opacity);
+    }
+    if (arg0 != 11) {
+        func_80106094_filesel(11, (u8)opacity);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010B80C_filesel);
+#endif
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/filesel/516B10", D_80112B18_filesel);
 

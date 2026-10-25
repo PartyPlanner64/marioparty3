@@ -8,6 +8,11 @@ typedef struct {
     u8 unk08[12];
 } InstMinigameEntry;
 
+typedef struct {
+    omObjData *object;
+    void (*update)(omObjData *);
+} InstObjectState;
+
 extern InstMinigameEntry D_800A6D40_main[];
 extern s8 D_8010D5B1_inst;
 extern u8 D_800CE20A_main;
@@ -36,8 +41,7 @@ extern Vec D_8010D48C_inst;
 extern void *D_8010DC10_inst;
 extern void *D_8010DC14_inst;
 extern void *D_8010DC18_inst;
-extern omObjData *D_8010DDD8_inst;
-extern void (*D_8010DDDC_inst)(omObjData *);
+extern InstObjectState D_8010DDD8_inst;
 extern void (*D_8010DDEC_inst)(omObjData *);
 extern s32 D_8010D658_inst[];
 extern s32 D_8010D510_inst;
@@ -61,6 +65,8 @@ void func_80107308_inst(void);         /* extern */
 void func_80107470_inst(void);         /* extern */
 void func_801079CC_inst(omObjData *);
 s32 func_8010B10C_inst(void);
+void func_80107F98_inst(omObjData *);
+void func_8010B124_inst(void);
 void func_80107A24_inst(omObjData *); /* extern */
 void func_80107BF8_inst(omObjData *); /* extern */
 void func_80108350_inst(void);        /* extern */
@@ -344,20 +350,20 @@ void func_80107938_inst(omObjData *obj) {
         func_8001C814_main(obj->model[2], 1, 0);
         func_8001C258_main(obj->model[1], 4, 0);
         func_8001C258_main(obj->model[2], 4, 0);
-        D_8010DDDC_inst = func_801079CC_inst;
+        D_8010DDD8_inst.update = func_801079CC_inst;
     }
 }
 
 void func_801079CC_inst(omObjData *obj) {
     func_8001C814_main(obj->model[3], 1, 0);
     func_8001C258_main(obj->model[3], 4, 0);
-    D_8010DDDC_inst = func_80107A24_inst;
+    D_8010DDD8_inst.update = func_80107A24_inst;
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80107A24_inst);
 
 void func_80107BE4_inst(void) {
-    D_8010DDDC_inst = func_80107BF8_inst;
+    D_8010DDD8_inst.update = func_80107BF8_inst;
 }
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4DEB60", D_8010D770_inst);
@@ -462,14 +468,14 @@ void func_80107E18_inst(void) {
 }
 
 s32 func_80107E20_inst(void) {
-    s16 modelId = D_8010DDD8_inst->model[0];
+    s16 modelId = D_8010DDD8_inst.object->model[0];
     f32 unk40 = HmfModelData[modelId].unk40;
     return D_800CCF58_main[HmfModelData[modelId].unk02].unk02 <= unk40;
 }
 
 void func_80107E98_inst(void) {
-    func_8001C6A8_main(D_8010DDD8_inst->model[0], 0);
-    func_8001C814_main(D_8010DDD8_inst->model[0], 1, 0);
+    func_8001C6A8_main(D_8010DDD8_inst.object->model[0], 0);
+    func_8001C814_main(D_8010DDD8_inst.object->model[0], 1, 0);
 }
 
 void func_80107EE0_inst(void) {
@@ -478,7 +484,15 @@ void func_80107EE0_inst(void) {
     DataClose(D_8010DC14_inst);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80107F18_inst);
+void func_80107F18_inst(void) {
+    omObjData *object = D_8010DDD8_inst.object;
+
+    func_8001C814_main(object->model[3], 1, 0);
+    func_8001C814_main(object->model[3], 4, 4);
+    func_8001C258_main(object->model[3], 4, 0);
+    func_8010B124_inst();
+    D_8010DDD8_inst.update = func_80107F98_inst;
+}
 
 void func_80107F98_inst(omObjData *obj) {
     f32 duration = D_800CCF58_main[HmfModelData[obj->model[3]].unk02].unk02 - 25.0f;
@@ -488,18 +502,18 @@ void func_80107F98_inst(omObjData *obj) {
     HmfModelData[obj->model[2]].rot.x = angle;
     D_8010D510_inst++;
     if ((f32)D_8010D510_inst == duration) {
-        D_8010DDDC_inst = func_80107BF8_inst;
+        D_8010DDD8_inst.update = func_80107BF8_inst;
         D_8010D510_inst = 0;
     }
 }
 
 s32 func_801080A8_inst(void) {
-    f32 unk40 = HmfModelData[D_8010DDD8_inst->model[0]].unk40;
+    f32 unk40 = HmfModelData[D_8010DDD8_inst.object->model[0]].unk40;
     return unk40 == 0.0f;
 }
 
 void func_801080FC_inst(void) {
-    omObjData *obj = D_8010DDD8_inst;
+    omObjData *obj = D_8010DDD8_inst.object;
 
     func_8001C814_main(obj->model[0], 1, 0);
     func_8001C258_main(obj->model[0], 4, 0);

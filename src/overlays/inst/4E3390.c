@@ -17,6 +17,7 @@ typedef struct {
 extern u8 D_800CB8B1_main[];
 extern s8 D_8010D400_inst[7];
 extern s8 D_8010D408_inst;
+extern s8 D_8010D409_inst;
 extern s8 D_8010D40A_inst;
 extern s8 D_8010D554_inst[4];
 extern s32 D_8010D440_inst;
@@ -35,6 +36,9 @@ extern UnkInst D_8010DD58_inst;
 void func_8010AC30_inst(omObjData *); /* extern */
 void func_8010AD78_inst(omObjData *);
 void func_8010B2A4_inst(omObjData *);
+void func_8010C124_inst(s32);
+u16 func_8010C8E0_inst(s32);
+void func_8010D044_inst(void);
 void func_8010BE78_inst(s32 arg0); /* extern */
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010A1D0_inst);
@@ -199,7 +203,17 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E3390", D_8010DB30_inst);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010C124_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010C55C_inst);
+s32 func_8010C55C_inst(void) {
+    s32 changed = 0;
+
+    if ((func_8010C8E0_inst(0x10) != 0) && (D_8010D409_inst != 1)) {
+        changed = 1;
+        func_8010D044_inst();
+        D_8010DCA4_inst = func_8010C124_inst;
+    }
+    HuPrcVSleep();
+    return changed;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010C5C4_inst);
 
@@ -264,7 +278,36 @@ u16 func_8010C8E0_inst(s32 buttons) {
     return pressed;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010CA74_inst);
+u16 func_8010CA74_inst(u16 buttons, s16 wait) {
+    s32 cpu = 0;
+    u16 pressed = 0;
+    s8 i;
+
+    switch (D_8010D40A_inst) {
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+            cpu = GwPlayer[D_8010D400_inst[0]].stat & 1;
+            break;
+        case 4:
+            if ((GwPlayer[D_8010D400_inst[0]].stat & 1) && (GwPlayer[D_8010D400_inst[1]].stat & 1)) {
+                cpu = 1;
+            }
+            break;
+    }
+    for (i = 0; i < 4; i++) {
+        if (!(GwPlayer[i].stat & 1)) {
+            break;
+        }
+    }
+    if ((i < 4) & (cpu != 1)) {
+        pressed = func_8010C8E0_inst(buttons);
+    } else if (wait == 0) {
+        pressed = 1;
+    }
+    return pressed;
+}
 
 void func_8010CBB8_inst(s32 arg0) {
     TextWindow *window = &D_800CC69C_main[D_8010DCA8_inst.curGroup];

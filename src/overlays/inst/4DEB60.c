@@ -14,6 +14,8 @@ typedef struct {
 } InstObjectState;
 
 extern InstMinigameEntry D_800A6D40_main[];
+extern char D_8010D978_inst[];
+extern char D_8010D980_inst[];
 extern s32 D_8010D43C_inst;
 extern s32 D_8010D440_inst;
 extern s32 D_8010DC00_inst;
@@ -105,6 +107,7 @@ void func_8010986C_inst(omObjData *); /* extern */
 void func_80109A90_inst(void);        /* extern */
 void func_8010A1D0_inst(void);        /* extern */
 void func_8010B990_inst(void);        /* extern */
+HmfSkeletonNode *func_8001D33C_main(s16, char *);
 void func_80033910_main(HmfData *);
 void func_80033970_main(HmfData *);
 void func_8000BC48_main(u16, u16); /* extern */
@@ -791,7 +794,29 @@ void func_801080FC_inst(void) {
     func_8001C814_main(obj->model[0], 4, 4);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_8010815C_inst);
+void func_8010815C_inst(omObjData *obj) {
+    HmfSkeletonNode *nodes[2];
+    s32 i;
+    f32 duration = D_800CCF58_main[HmfModelData[obj->model[0]].unk02].unk02;
+
+    func_8001C814_main(obj->model[0], 1, 0);
+    func_8001C258_main(obj->model[0], 4, 0);
+    func_8001C6A8_main(obj->model[0], duration);
+    HmfModelData[obj->model[1]].rot.x = D_8010D414_inst - 90.0f;
+    HmfModelData[obj->model[2]].rot.x = D_8010D414_inst;
+    for (i = 0; i < 3; i++) {
+        Hu3DModelScaleSet(obj->model[i + 1], 0.6f, 0.6f, 0.6f);
+        func_8001C258_main(obj->model[i + 1], 4, 0);
+    }
+    nodes[0] = func_8001D33C_main(obj->model[1], D_8010D978_inst);
+    nodes[1] = func_8001D33C_main(obj->model[2], D_8010D980_inst);
+    for (i = 0; i < 2; i++) {
+        nodes[i]->unk4C[0][0] = 1.3f;
+        nodes[i]->unk4C[1][1] = 1.3f;
+        nodes[i]->unk4C[2][2] = 1.3f;
+    }
+    D_8010DDD8_inst.update = func_80107E18_inst;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80108350_inst);
 

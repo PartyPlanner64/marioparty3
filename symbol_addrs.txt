@@ -1669,3 +1669,5 @@ D_8010DAF8_inst = 0x8010DAF8; //rom:0x4E6CB8 align:8 segment:inst
 D_8010DCD8_inst = 0x8010DCD8; //segment:inst
 
 D_8010D770_inst = 0x8010D770; //rom:0x4E6930 align:16 segment:inst
+
+func_80108350_inst = 0x80108350; //rom:0x4E1510 type:func align:8 segment:inst

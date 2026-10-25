@@ -26,6 +26,15 @@ typedef struct {
 
 extern u8 D_800CB8B1_main[];
 extern s8 D_8010D411_inst;
+extern s8 D_8010D40B_inst;
+extern s16 D_8010DB04_inst[];
+extern s16 D_8010DB0A_inst[];
+extern s16 D_8010DB10_inst[];
+extern s16 D_8010DB16_inst[];
+extern s16 D_8010DB1C_inst[];
+extern s16 D_8010DB24_inst[];
+extern s16 D_8010DB2A_inst[];
+extern s16 D_8010DB30_inst[];
 extern s8 D_8010D5B1_inst;
 extern s8 D_8010DCD4_inst;
 extern s32 D_8010DCCC_inst;
@@ -414,4 +423,61 @@ void func_8010D044_inst(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010D1D4_inst);
+void func_8010D1D4_inst(void) {
+    TextWindow *window = &D_800CC69C_main[D_8010DCA8_inst.curGroup];
+    s8 i;
+    s32 message;
+
+    if (D_8010D409_inst != 1) {
+        func_8010CF98_inst();
+        for (i = 0; i < 2; i++) {
+            HuSprAttrReset(window->unk_6C, D_8010DCA8_inst.helpMembers[i], 0x8000);
+        }
+        HuSprAttrSet(window->unk_6C, D_8010DCA8_inst.member, 0x8000);
+        for (i = 0; i < 3; i++) {
+            if (i != 1) {
+                HuSprAttrSet(window->unk_6C, D_8010DCA8_inst.mainMembers[i], 0x8000);
+            }
+        }
+        switch (D_8010D40B_inst) {
+            case 8:
+            case 16:
+            case 27:
+                message = D_8010DB1C_inst[0];
+                break;
+            default:
+                switch (D_8010D40A_inst) {
+                    case 5:
+                        message = D_8010DB0A_inst[0];
+                        break;
+                    case 4:
+                        message = D_8010DB10_inst[0];
+                        message += D_8010D411_inst != 2;
+                        break;
+                    case 3:
+                        message = D_8010DB16_inst[0];
+                        break;
+                    case 7:
+                        if (D_8010D40B_inst == 70) {
+                            message = D_8010DB2A_inst[0];
+                        } else {
+                            message = D_8010DB30_inst[0];
+                        }
+                        break;
+                    case 8:
+                        message = D_8010DB24_inst[0];
+                        break;
+                    case 0:
+                    case 1:
+                    case 2:
+                    case 6:
+                    default:
+                        message = D_8010DB04_inst[0];
+                        break;
+                }
+                break;
+        }
+        func_8005B43C_main(D_8010DCA8_inst.curGroup, message, -1, -1);
+        D_8010D5B1_inst = 1;
+    }
+}

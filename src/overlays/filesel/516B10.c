@@ -93,6 +93,12 @@ typedef struct FileSelectCameraState {
     FileSelectCameraTransition transition;
 } FileSelectCameraState;
 
+s32 func_80106D8C_filesel(u32, s16, s16, s16, s16, s16);
+s32 func_80106ED8_filesel(u32, s16, s16, s16, s16, s16);
+s32 func_80107040_filesel(u32, s16, s16, s16, s16, s16);
+s32 func_801071E8_filesel(u32, s16, s16, s16);
+s32 func_801072B4_filesel(u32, s16, s16, s16);
+s32 func_80107380_filesel(u32, s16, s16, s16);
 void func_801059D0_filesel(void);
 void func_801126C0_filesel(s32, u8 *, u8 *);
 void func_80112758_filesel(void);
@@ -505,9 +511,50 @@ u32 func_80106AD8_filesel(u32 arg0) {
     return arg0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80106B40_filesel);
+// Remaining differences are saved-register allocation for the message and window parameters.
+#ifdef NON_MATCHING
+void func_80106B40_filesel(s32 index, u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
+    u32 copiedMessage;
+    s16 window;
 
-s16 func_80106D8C_filesel(u32 message, s16 x, s16 y, s16 width, s16 height) {
+    switch (style) {
+        case 1:
+            copiedMessage = func_80106AD8_filesel(message);
+            window = func_80106ED8_filesel(copiedMessage, x, y, width, height, style);
+            break;
+        case 2:
+            copiedMessage = func_80106AD8_filesel(message);
+            window = func_80107040_filesel(copiedMessage, x, y, width, height, style);
+            break;
+        case 3:
+            copiedMessage = func_80106AD8_filesel(message);
+            window = func_801071E8_filesel(copiedMessage, x, y, style);
+            break;
+        case 4:
+            copiedMessage = func_80106AD8_filesel(message);
+            window = func_801072B4_filesel(copiedMessage, x, y, style);
+            break;
+        case 5:
+            copiedMessage = func_80106AD8_filesel(message);
+            window = func_80107380_filesel(copiedMessage, x, y, style);
+            break;
+        case 0:
+        default:
+            copiedMessage = func_80106AD8_filesel(message);
+            window = func_80106D8C_filesel(copiedMessage, x, y, width, height, style);
+            break;
+    }
+    if (copiedMessage > 0x80000000U) {
+        D_80114158_filesel[index].unk_04 = copiedMessage;
+    }
+    D_80114158_filesel[index].unk_00 = window;
+}
+
+#else
+INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80106B40_filesel);
+#endif
+
+s32 func_80106D8C_filesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
     s16 window = func_8005A968_main(x, y, width, height, 0, 8);
 
     func_8005B63C_main(window, -1, 0x11);
@@ -527,7 +574,7 @@ s16 func_80106D8C_filesel(u32 message, s16 x, s16 y, s16 width, s16 height) {
     return window;
 }
 
-s16 func_80106ED8_filesel(u32 message, s16 x, s16 y, s16 width, s16 height) {
+s32 func_80106ED8_filesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
     s16 window = func_8005A968_main(x, y, width, height, 0, 4);
 
     func_8005B63C_main(window, -1, 0x11);
@@ -548,7 +595,7 @@ s16 func_80106ED8_filesel(u32 message, s16 x, s16 y, s16 width, s16 height) {
     return window;
 }
 
-s16 func_80107040_filesel(u32 message, s16 x, s16 y, s16 width, s16 height) {
+s32 func_80107040_filesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
     s16 window = func_8005A968_main(x, y, width, height, 0, 8);
 
     func_8005B63C_main(window, -1, 0x11);
@@ -571,7 +618,7 @@ s16 func_80107040_filesel(u32 message, s16 x, s16 y, s16 width, s16 height) {
     return window;
 }
 
-s16 func_801071E8_filesel(u32 message, s16 x, s16 y) {
+s32 func_801071E8_filesel(u32 message, s16 x, s16 y, s16 style) {
     s16 window = func_80060880_main(x, y, 19);
 
     func_8005C060_main(window, 2, 255, 64, 64);
@@ -583,7 +630,7 @@ s16 func_801071E8_filesel(u32 message, s16 x, s16 y) {
     return window;
 }
 
-s16 func_801072B4_filesel(u32 message, s16 x, s16 y) {
+s32 func_801072B4_filesel(u32 message, s16 x, s16 y, s16 style) {
     s16 window = func_80060880_main(x, y, 20);
 
     func_8005C060_main(window, 2, 255, 64, 64);
@@ -595,7 +642,7 @@ s16 func_801072B4_filesel(u32 message, s16 x, s16 y) {
     return window;
 }
 
-s16 func_80107380_filesel(u32 message, s16 x, s16 y) {
+s32 func_80107380_filesel(u32 message, s16 x, s16 y, s16 style) {
     s16 window = func_80060880_main(x, y, 19);
 
     func_8005C060_main(window, 2, 255, 64, 64);
@@ -2048,7 +2095,50 @@ void func_801110F0_filesel(u32 arg0) {
     func_8010642C_filesel(arg0);
 }
 
+// Remaining differences are floating-point register allocation for progress and scale.
+#ifdef NON_MATCHING
+void func_80111144_filesel(omObjData *object) {
+    s32 index;
+    s32 angle;
+    s32 frame;
+    s32 duration;
+    u32 slot;
+    f32 x;
+    f32 y;
+    f32 progress;
+    f32 fraction;
+
+    index = object->work[0];
+    slot = index;
+    angle = D_80114598_filesel[index].unk_54;
+    frame = D_80114598_filesel[index].unk_50;
+    duration = D_80114598_filesel[index].unk_58;
+    fraction = 1.0f - frame * (1.0f / 45.0f);
+    progress = fraction < 0.0f ? 0.0f : fraction;
+    angle += 27;
+    if (angle > 360.0f) {
+        angle -= 360.0f;
+    }
+    x = 0.0f;
+    y = 0.0f;
+    if (frame >= duration) {
+        func_80110FB0_filesel(slot);
+    } else {
+        x = sindf(angle) * 0.3f * progress;
+        y = 1.0f / (x + 1.0f) - 1.0f;
+    }
+    D_80114598_filesel[index].unk_54 = angle;
+    D_80114598_filesel[index].unk_50 = frame + 1;
+    progress = 0.8f;
+    x += progress;
+    progress = y + progress;
+    func_80106550_filesel(index, x, progress, x);
+    func_80106550_filesel(index + 3, x, progress, x);
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80111144_filesel);
+#endif
 
 void func_8011132C_filesel(s32 arg0) {
     func_80110E70_filesel(arg0, func_80111144_filesel);

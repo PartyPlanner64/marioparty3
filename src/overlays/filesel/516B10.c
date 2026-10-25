@@ -13,7 +13,9 @@ typedef struct UnkFileSelect2 {
 typedef struct UnkFileSelect {
     u8 unk_00;
     u8 unk_01[0xB];
-    char unk_0C[0x78];
+    char unk_0C[0x2C];
+    s32 unk_38;
+    char unk_3C[0x48];
 } UnkFileSelect; // sizeof 0x84
 
 typedef struct UnkFileName {
@@ -133,6 +135,7 @@ extern Process *D_80114504_filesel;
 extern UnkFileSelect6 D_80114508_filesel[9];
 extern UnkFileSelect5 D_80114598_filesel[3];
 extern u8 *D_801127FC_filesel[];
+extern s32 D_801127B0_filesel[];
 extern u8 *D_80112844_filesel[];
 extern u8 *D_8011288C_filesel[];
 extern s16 D_80114150_filesel;
@@ -470,11 +473,69 @@ u32 func_80106AD8_filesel(u32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80106B40_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80106D8C_filesel);
+s16 func_80106D8C_filesel(u32 message, s16 x, s16 y, s16 width, s16 height) {
+    s16 window = func_8005A968_main(x, y, width, height, 0, 8);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80106ED8_filesel);
+    func_8005B63C_main(window, -1, 0x11);
+    func_8005BDFC_main(window, 0);
+    func_8005BEE0_main(window, 255);
+    func_80060144_main(window);
+    func_8005BE30_main(window, 1);
+    func_8005FE54_main(window, 1);
+    func_8005C154_main(window, 192, 192, 192);
+    func_8005FBF8_main(window, 0, 64, 64);
+    func_8005C02C_main(window, 7);
+    func_8005C060_main(window, 2, 255, 64, 64);
+    func_8005C060_main(window, 4, 96, 255, 64);
+    func_8005C060_main(window, 6, 255, 255, 64);
+    func_8005D294_main(window);
+    func_8005B43C_main(window, message, -1, -1);
+    return window;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80107040_filesel);
+s16 func_80106ED8_filesel(u32 message, s16 x, s16 y, s16 width, s16 height) {
+    s16 window = func_8005A968_main(x, y, width, height, 0, 4);
+
+    func_8005B63C_main(window, -1, 0x11);
+    func_8005BDFC_main(window, 0);
+    func_8005BEE0_main(window, 255);
+    func_80060144_main(window);
+    func_8005BE30_main(window, 1);
+    func_8005FE54_main(window, 1);
+    func_8005C060_main(window, 5, 0, 176, 192);
+    func_8005C060_main(window, 2, 255, 64, 64);
+    func_8005C060_main(window, 4, 96, 255, 64);
+    func_8005C060_main(window, 6, 255, 255, 64);
+    func_8005C154_main(window, 192, 192, 192);
+    func_8005FBF8_main(window, 255, 255, 255);
+    func_8005C02C_main(window, 1);
+    func_8005D294_main(window);
+    func_8005B43C_main(window, message, -1, -1);
+    return window;
+}
+
+s16 func_80107040_filesel(u32 message, s16 x, s16 y, s16 width, s16 height) {
+    s16 window = func_8005A968_main(x, y, width, height, 0, 8);
+
+    func_8005B63C_main(window, -1, 0x11);
+    func_8005BDFC_main(window, 0);
+    func_80060144_main(window);
+    func_8005BE30_main(window, 1);
+    func_8005FE54_main(window, 1);
+    func_8005C060_main(window, 5, 0, 176, 192);
+    func_8005C060_main(window, 7, 255, 255, 255);
+    func_8005C060_main(window, 0, 0, 0, 0);
+    func_8005C060_main(window, 3, 0, 0, 0);
+    func_8005C060_main(window, 2, 255, 64, 64);
+    func_8005C060_main(window, 4, 96, 255, 64);
+    func_8005C060_main(window, 6, 255, 255, 64);
+    func_8005C154_main(window, 192, 192, 0);
+    func_8005FBF8_main(window, 255, 255, 255);
+    func_8005C02C_main(window, 6);
+    func_8005D294_main(window);
+    func_8005B43C_main(window, message, -1, -1);
+    return window;
+}
 
 s16 func_801071E8_filesel(u32 message, s16 x, s16 y) {
     s16 window = func_80060880_main(x, y, 19);
@@ -922,7 +983,27 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/filesel/516B10", D_80112AE8_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010A028_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010A680_filesel);
+void func_8010A680_filesel(s32 fileIndex, f32 x, f32 y, f32 z) {
+    s32 modelIndex = fileIndex;
+    s32 nameIndex = fileIndex + 3;
+
+    if (D_801142DC_filesel[fileIndex].unk_00 != UNK_VALUE) {
+        func_80106220_filesel(modelIndex, 0x1F0029, 0x6A9);
+    } else {
+        func_80106220_filesel(modelIndex, 0x1F002A, 0x6A9);
+    }
+    func_801064DC_filesel(modelIndex, x, y, z);
+    func_80106550_filesel(modelIndex, 0.8f, 0.8f, 0.8f);
+    func_8010684C_filesel(modelIndex, 0);
+    func_8010671C_filesel(modelIndex, 1);
+    func_8010669C_filesel(modelIndex);
+    func_80106220_filesel(nameIndex, D_801127B0_filesel[fileIndex], 0x6A9);
+    func_801064DC_filesel(nameIndex, x, y, z);
+    func_80106550_filesel(nameIndex, 0.8f, 0.8f, 0.8f);
+    func_8010684C_filesel(nameIndex, 0);
+    func_8010671C_filesel(nameIndex, 1);
+    func_8010669C_filesel(nameIndex);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010A7D8_filesel);
 
@@ -1209,7 +1290,36 @@ void func_8010DD54_filesel(void) {
     func_80105EC0_filesel(0x1A);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010DDC0_filesel);
+void func_8010DDC0_filesel(s32 fileIndex) {
+    func_80105F84_filesel(0x14);
+    if (!_CheckFlag(0x18)) {
+        func_80105FA0_filesel(0x15);
+        func_80105FA0_filesel(0x16);
+        func_80105FA0_filesel(0x17);
+        func_80105FA0_filesel(0x18);
+        func_80105F84_filesel(0x19);
+        func_80105FA0_filesel(0x1A);
+        func_80105FA0_filesel(0x1B);
+        func_80105FA0_filesel(0x1C);
+        func_80105FA0_filesel(0x1D);
+        func_80105FA0_filesel(0x1E);
+    } else {
+        func_80105F84_filesel(0x15);
+        func_80105F84_filesel(0x16);
+        func_80105F84_filesel(0x17);
+        func_80105F84_filesel(0x18);
+        func_80105F84_filesel(0x19);
+        if (_CheckFlag(0x28)) {
+            func_80105F84_filesel(0x1E);
+            func_80105F84_filesel(0x1C);
+            func_80105F84_filesel(0x1D);
+            func_80105F84_filesel(0x1A);
+            if (D_801142DC_filesel[fileIndex].unk_38 / 10) {
+                func_80105F84_filesel(0x1B);
+            }
+        }
+    }
+}
 
 void func_8010DEEC_filesel(void) {
     func_80105FA0_filesel(0x14);

@@ -694,7 +694,32 @@ void func_801078BC_filesel(s32 arg0, s16 arg1) {
     func_8005BE30_main(D_80114158_filesel[arg0].unk_00, arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801078F4_filesel);
+u16 func_801078F4_filesel(s32 value) {
+    char text[0x100];
+    HmfData_UnkBC *camera;
+
+    HuPrcSleep(3);
+    while (1) {
+        if (D_800D5558_main[0] & 0xD010) {
+            sprintf(text, "\n%d\n", value);
+            break;
+        }
+        if (D_800D5558_main[0] & 0x2000) {
+            camera = HmfModelData[gCameraList[0].unk4].hmf->unkBC;
+            sprintf(text, "POS:%4.2f,%4.2f,%4.2f", camera->unk08, camera->unk0C, camera->unk10);
+            print8(16, 180, text);
+            sprintf(text, "A T:%4.2f,%4.2f,%4.2f", camera->unk14, camera->unk18, camera->unk1C);
+            print8(16, 190, text);
+            sprintf(text, "U P:%4.2f,%4.2f,%4.2f", camera->unk20, camera->unk24, camera->unk28);
+            print8(16, 200, text);
+        } else {
+            sprintf(text, "%d", value);
+            print8(16, 220, text);
+        }
+        HuPrcVSleep();
+    }
+    return D_800D5558_main[0];
+}
 
 void func_80107AA8_filesel(void) {
     s16 i;
@@ -797,7 +822,34 @@ void func_80108878_filesel(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801088DC_filesel);
+void func_801088DC_filesel(void) {
+    Vec start;
+    Vec end;
+    Vec position;
+    s32 i;
+    f32 progress;
+
+    for (i = 0; i < 3; i++) {
+    }
+    func_80105F24_filesel(1);
+    func_80105F24_filesel(2);
+    func_80105F24_filesel(3);
+    func_80108878_filesel();
+    for (i = 0; i <= 10; i++) {
+        progress = i * 0.1f;
+        if (progress > 1.0f) {
+            progress = 1.0f;
+        }
+        HuVecCopyXYZ(&start, 352.0f, 40.0f, 0.0f);
+        HuVecCopyXYZ(&end, 224.0f, 40.0f, 0.0f);
+        position.x = (end.x - start.x) * progress + start.x;
+        position.y = (end.y - start.y) * progress + start.y;
+        func_80105FBC_filesel(1, position.x, position.y);
+        func_80105FBC_filesel(2, position.x - 22.0f, position.y);
+        func_80105FBC_filesel(3, position.x + 26.0f, position.y);
+        HuPrcVSleep();
+    }
+}
 
 void func_80108A94_filesel(void) {
     Vec start;

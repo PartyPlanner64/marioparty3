@@ -21,7 +21,8 @@ typedef struct {
     u8 unk05;
     u16 flags;
     s16 message;
-    s16 unk_0A[5];
+    s16 unk_0A[4];
+    s16 finalMessage;
 } InstMessageInfo;
 
 extern u8 D_800CB8B1_main[];
@@ -40,6 +41,7 @@ extern s8 D_8010DCD4_inst;
 extern s32 D_8010DCCC_inst;
 extern InstMessageInfo *D_8010DCD0_inst;
 extern s8 D_8010D400_inst[7];
+extern s8 D_8010D406_inst;
 extern s8 D_8010D408_inst;
 extern s8 D_8010D409_inst;
 extern s8 D_8010D40A_inst;
@@ -208,7 +210,7 @@ void func_8010BE28_inst(void) {
     }
 }
 
-void func_8010BE70_inst(void) {
+void func_8010BE70_inst(s32 arg0) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010BE78_inst);
@@ -239,7 +241,76 @@ s32 func_8010C55C_inst(void) {
     return changed;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010C5C4_inst);
+void func_8010C5C4_inst(void) {
+    s8 i;
+    s32 message;
+
+    if (D_8010D409_inst != 1) {
+        for (i = 0; i < 3; i++) {
+            switch (D_8010D40B_inst) {
+                case 8:
+                case 16:
+                case 27:
+                    message = D_8010DB1C_inst[i];
+                    break;
+                default:
+                    switch (D_8010D40A_inst) {
+                        case 5:
+                            message = D_8010DB0A_inst[i];
+                            break;
+                        case 4:
+                            message = D_8010DB10_inst[i];
+                            message += D_8010D411_inst != 2;
+                            break;
+                        case 3:
+                            message = D_8010DB16_inst[i];
+                            break;
+                        case 7:
+                            if (D_8010D40B_inst == 70) {
+                                message = D_8010DB2A_inst[i];
+                            } else {
+                                message = D_8010DB30_inst[i];
+                            }
+                            break;
+                        case 8:
+                            message = D_8010DB24_inst[i];
+                            break;
+                        case 0:
+                        case 1:
+                        case 2:
+                        case 6:
+                        default:
+                            message = D_8010DB04_inst[i];
+                            break;
+                    }
+                    break;
+            }
+            func_8005B43C_main(D_8010DCA8_inst.curGroup, message, -1, -1);
+            while (func_8005E0C0_main(D_8010DCA8_inst.curGroup) != 0) {
+                if (func_8010C55C_inst() != 0) {
+                    return;
+                }
+            }
+        }
+        message = D_8010DCD0_inst->finalMessage;
+        if (D_8010D40A_inst == 4) {
+            message += D_8010D411_inst != 2;
+        }
+        func_8005B43C_main(D_8010DCA8_inst.curGroup, message, -1, -1);
+        while (func_8005E0C0_main(D_8010DCA8_inst.curGroup) != 0) {
+            if (func_8010C55C_inst() != 0) {
+                return;
+            }
+        }
+        while (func_8010C8E0_inst(0x8000) == 0) {
+            if (func_8010C55C_inst() != 0) {
+                return;
+            }
+        }
+        D_8010D406_inst = 1;
+        D_8010DCA4_inst = func_8010BE70_inst;
+    }
+}
 
 void func_8010C848_inst(void) {
     if (D_8010D408_inst == 0) {

@@ -35,6 +35,8 @@ extern f32 D_800CE17C_main[];
 extern f32 D_800D5210_main;
 
 extern s8 D_8010D400_inst[4];
+extern s8 D_8010D401_inst[3];
+extern s8 D_8010D402_inst[2];
 extern s8 D_8010D407_inst;
 extern s8 D_8010D408_inst;
 extern s8 D_8010D40A_inst;
@@ -454,7 +456,103 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4DEB60", D_8010D718_inst);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4DEB60", D_8010D724_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80106EB4_inst);
+void func_80106EB4_inst(void) {
+    s32 i;
+    s32 first;
+    s32 second;
+    s32 humans;
+    s32 temp;
+
+    if (D_8010D407_inst == 1) {
+        return;
+    }
+    switch ((s8)(D_8010D40B_inst - 6)) {
+        case 12:
+            if (rand8() & 1) {
+                temp = D_8010D400_inst[0];
+                D_8010D400_inst[0] = D_8010D400_inst[1];
+                D_8010D400_inst[1] = temp;
+            }
+            if (rand8() & 1) {
+                temp = D_8010D402_inst[0];
+                D_8010D402_inst[0] = D_8010D402_inst[1];
+                D_8010D402_inst[1] = temp;
+            }
+            for (i = 0; i < 4; i++) {
+                GwPlayer[D_8010D400_inst[i]].group = i;
+            }
+            break;
+        case 8:
+            if (rand8() & 1) {
+                temp = D_8010D400_inst[0];
+                D_8010D400_inst[0] = D_8010D400_inst[1];
+                D_8010D400_inst[1] = temp;
+            }
+            if (rand8() & 1) {
+                temp = D_8010D402_inst[0];
+                D_8010D402_inst[0] = D_8010D402_inst[1];
+                D_8010D402_inst[1] = temp;
+            }
+            for (i = 0; i < 4; i++) {
+                GwPlayer[D_8010D400_inst[i]].group = i;
+            }
+            break;
+        case 7:
+            for (i = 0, humans = 0; i < 2; i++) {
+                if (!(GwPlayer[D_8010D400_inst[i]].stat & 1)) {
+                    humans++;
+                }
+            }
+            if (humans == 1) {
+                if (GwPlayer[D_8010D400_inst[0]].stat & 1) {
+                    temp = D_8010D400_inst[0];
+                    D_8010D400_inst[0] = D_8010D400_inst[1];
+                    D_8010D400_inst[1] = temp;
+                }
+            } else if (rand8() & 1) {
+                temp = D_8010D400_inst[0];
+                D_8010D400_inst[0] = D_8010D400_inst[1];
+                D_8010D400_inst[1] = temp;
+            }
+            for (i = 0, humans = 0; i < 2; i++) {
+                if (!(GwPlayer[D_8010D402_inst[i]].stat & 1)) {
+                    humans++;
+                }
+            }
+            if (humans == 1) {
+                if (GwPlayer[D_8010D402_inst[0]].stat & 1) {
+                    temp = D_8010D402_inst[0];
+                    D_8010D402_inst[0] = D_8010D402_inst[1];
+                    D_8010D402_inst[1] = temp;
+                }
+            } else if (rand8() & 1) {
+                temp = D_8010D402_inst[0];
+                D_8010D402_inst[0] = D_8010D402_inst[1];
+                D_8010D402_inst[1] = temp;
+            }
+            for (i = 0; i < 4; i++) {
+                GwPlayer[D_8010D400_inst[i]].group = i;
+            }
+            break;
+        case 0:
+        case 1:
+            for (i = 0; i < 5; i++) {
+                first = (u8)(rand8() % 3);
+                second = (u8)(rand8() % 3);
+                if (second == first) {
+                    second++;
+                    second %= 3;
+                }
+                temp = D_8010D401_inst[first];
+                D_8010D401_inst[first] = D_8010D401_inst[second];
+                D_8010D401_inst[second] = temp;
+            }
+            for (i = 0; i < 4; i++) {
+                GwPlayer[D_8010D400_inst[i]].group = i;
+            }
+            break;
+    }
+}
 
 #ifdef NON_MATCHING
 // Remaining difference: register allocation for the randomly chosen variant.

@@ -60,6 +60,9 @@ typedef struct UnkFileSelect6 {
     Vec unk_18;
 } UnkFileSelect6; // sizeof 0x24
 
+void func_80105C1C_filesel(void);
+void func_801061D4_filesel(void);
+void func_8010744C_filesel(void);
 void func_80105FBC_filesel(s32, s32, s32);
 void func_801069D8_filesel(s32, s32, s16);
 void func_801076D0_filesel(s32, u32);
@@ -110,7 +113,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801059D0_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105BC0_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105BF0_filesel);
+void func_80105BF0_filesel(void) {
+    func_80105C1C_filesel();
+    func_801061D4_filesel();
+    func_8010744C_filesel();
+}
 
 void func_80105C1C_filesel(void) {
     UnkFileSelect4 *p;
@@ -132,9 +139,13 @@ void func_80105C1C_filesel(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105CB0_filesel);
+s16 func_80105CB0_filesel(s32 arg0) {
+    return D_801135D0_filesel[arg0][0];
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105CC4_filesel);
+s16 func_80105CC4_filesel(s32 arg0) {
+    return D_80112ED0_filesel[arg0].unk_00;
+}
 
 void func_80105CE0_filesel(s32 arg0, s32 arg1) {
     D_801135D0_filesel[arg0][0] = func_8000B838_main(arg1);
@@ -159,21 +170,35 @@ void func_80105DD8_filesel(s32 arg0) {
     D_80112ED0_filesel[arg0].unk_00 = -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105E48_filesel);
+void func_80105E48_filesel(s32 arg0, s32 arg1) {
+    func_80105CE0_filesel(arg0, arg1);
+    func_80105D70_filesel(arg0, arg0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105E7C_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105EC0_filesel);
+void func_80105EC0_filesel(s32 arg0) {
+    func_80105DD8_filesel(arg0);
+    func_80105D18_filesel(arg0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105EEC_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105F24_filesel);
+void func_80105F24_filesel(s32 arg0) {
+    func_8000BB54_main(D_80112ED0_filesel[arg0].unk_00);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105F54_filesel);
+void func_80105F54_filesel(s32 arg0) {
+    func_8000BB94_main(D_80112ED0_filesel[arg0].unk_00);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105F84_filesel);
+void func_80105F84_filesel(s32 arg0) {
+    func_80105F24_filesel(arg0);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80105FA0_filesel);
+void func_80105FA0_filesel(s32 arg0) {
+    func_80105F54_filesel(arg0);
+}
 
 void func_80105FBC_filesel(s32 arg0, s32 arg1, s32 arg2) {
     D_80112ED0_filesel[arg0].unk_04 = arg1;
@@ -181,7 +206,10 @@ void func_80105FBC_filesel(s32 arg0, s32 arg1, s32 arg2) {
     func_8000BBD4_main(D_80112ED0_filesel[arg0].unk_00, arg1, arg2);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80106014_filesel);
+void func_80106014_filesel(s32 arg0, s32 *arg1, s32 *arg2) {
+    *arg1 = D_80112ED0_filesel[arg0].unk_04;
+    *arg2 = D_80112ED0_filesel[arg0].unk_08;
+}
 
 void func_80106044_filesel(s32 arg0, f32 arg1, f32 arg2) {
     D_80112ED0_filesel[arg0].unk_0C = arg1;
@@ -373,15 +401,24 @@ INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80107490_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80107574_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801075D8_filesel);
+void func_801075D8_filesel(s32 arg0) {
+    // The original call omits the position arguments.
+    void (*setWindowPosition)() = (void (*)())func_8005BB18_main;
+
+    setWindowPosition(D_80114158_filesel[arg0].unk_00);
+}
 
 void func_80107608_filesel(s32 arg0, f32 arg1, f32 arg2) {
     func_8005BA90_main(D_80114158_filesel[arg0].unk_00, arg1, arg2);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80107670_filesel);
+void func_80107670_filesel(s32 arg0) {
+    func_8005FFA8_main(D_80114158_filesel[arg0].unk_00);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801076A0_filesel);
+void func_801076A0_filesel(s32 arg0) {
+    func_8005FE90_main(D_80114158_filesel[arg0].unk_00);
+}
 
 void func_801076D0_filesel(s32 arg0, u32 arg1) {
     u32 temp_v0;
@@ -400,11 +437,15 @@ void func_801076D0_filesel(s32 arg0, u32 arg1) {
     func_8005B43C_main(D_80114158_filesel[arg0].unk_00, temp_v0, -1, -1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010779C_filesel);
+void func_8010779C_filesel(s32 arg0, s8 arg1, u32 arg2) {
+    func_800601BC_main(D_80114158_filesel[arg0].unk_00, arg2, arg1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801077D8_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80107810_filesel);
+s16 func_80107810_filesel(s32 arg0) {
+    return D_80114158_filesel[arg0].unk_00;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010782C_filesel);
 
@@ -414,7 +455,9 @@ void func_80107880_filesel(s32 arg0) {
     } while (!(arg0 & D_800D5558_main[0]));
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801078BC_filesel);
+void func_801078BC_filesel(s32 arg0, s16 arg1) {
+    func_8005BE30_main(D_80114158_filesel[arg0].unk_00, arg1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801078F4_filesel);
 
@@ -691,7 +734,12 @@ INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010A680_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010A7D8_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010A978_filesel);
+void func_8010A978_filesel(s32 arg0) {
+    if (arg0 >= 6) {
+        arg0 = 5;
+    }
+    func_80105FBC_filesel(19, arg0 * 10 + 104, 61);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/filesel/516B10", D_80112AF0_filesel);
 
@@ -921,7 +969,9 @@ void func_8010FF48_filesel(s32 arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010FFA0_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801102F0_filesel);
+void func_801102F0_filesel(s32 arg0) {
+    omDelObj(D_80114508_filesel[arg0].unk_00);
+}
 
 omObjData *func_80110320_filesel(s32 arg0, s32 arg1) {
     omObjData *obj = omAddObj(6, 0, 0, -1, func_8010FFA0_filesel);
@@ -935,7 +985,9 @@ omObjData *func_80110320_filesel(s32 arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801103A0_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801106FC_filesel);
+void func_801106FC_filesel(s32 arg0) {
+    omDelObj(D_80114508_filesel[arg0].unk_00);
+}
 
 void func_8011072C_filesel(s32 arg0, s32 arg1) {
     omObjData *obj = omAddObj(6, 0, 0, -1, func_801103A0_filesel);
@@ -948,7 +1000,9 @@ void func_8011072C_filesel(s32 arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801107AC_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80110B4C_filesel);
+void func_80110B4C_filesel(s32 arg0) {
+    omDelObj(D_80114508_filesel[arg0].unk_00);
+}
 
 omObjData *func_80110B7C_filesel(s32 arg0, f32 arg1, f32 arg2, f32 arg3, s32 arg4) {
     omObjData *obj = omAddObj(6, 0, 0, -1, func_801107AC_filesel);
@@ -1009,7 +1063,10 @@ INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80111790_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80111944_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801119F4_filesel);
+void func_801119F4_filesel(void) {
+    D_801129A0_filesel = 0;
+    D_801146D4_filesel = 0;
+}
 
 // converts one pad's analog stick position into a 8-way direction button mask,
 // latching on the same direction repeating for a while

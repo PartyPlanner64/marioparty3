@@ -53,7 +53,8 @@ typedef struct UnkFileSelect4 {
 typedef struct UnkFileSelect5 {
     omObjData *unk_00;
     Vec unk_04;
-    char unk_10[0x40];
+    Vec unk_10;
+    char unk_1C[0x34];
     s32 unk_50;
     s32 unk_54;
     s32 unk_58;
@@ -115,6 +116,7 @@ void func_80111004_filesel(omObjData *);
 void func_80111144_filesel(omObjData *);
 void func_80110D0C_filesel(omObjData *);
 void func_8011139C_filesel(s32);
+void func_801113E8_filesel(omObjData *);
 void func_80112630_filesel(omObjData *object);
 s32 func_80111B14_filesel(s32);
 u32 func_80106AD8_filesel(u32);
@@ -1657,7 +1659,28 @@ void func_80110CC0_filesel(s32 arg0) {
     D_80114598_filesel[arg0].unk_00 = NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80110D0C_filesel);
+void func_80110D0C_filesel(omObjData *object) {
+    Vec start;
+    Vec end;
+    Vec position;
+    s32 index;
+    u32 slot;
+    f32 fraction;
+    f32 progress;
+
+    index = object->work[0];
+    slot = index;
+    fraction = (f32)D_80114598_filesel[index].unk_50 / (f32)D_80114598_filesel[index].unk_58;
+    progress = fraction > 1.0f ? 1.0f : fraction;
+    HuVecCopy3F(&start, &D_80114598_filesel[index].unk_04);
+    HuVecCopy3F(&end, &D_80114598_filesel[index].unk_10);
+    HuVecCopyXYZ(&position, (end.x - start.x) * progress + start.x,
+                 (end.y - start.y) * progress + start.y, (end.z - start.z) * progress + start.z);
+    func_801064DC_filesel(slot, position.x, position.y, position.z);
+    if (progress > 1.0f) {
+        func_80110CC0_filesel(index);
+    }
+}
 
 void func_80110E70_filesel(s32 arg0, omObjFunc arg1) {
     omObjData *obj;
@@ -1731,7 +1754,21 @@ void func_8011139C_filesel(s32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801113E8_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80111660_filesel);
+void func_80111660_filesel(s32 arg0, s32 arg1, s32 arg2) {
+    Vec positions[3] = {
+        { -400.0f, 0.0f, 0.0f },
+        { 0.0f, 0.0f, 0.0f },
+        { 400.0f, 0.0f, 0.0f }
+    };
+
+    func_80110E70_filesel(arg1, func_801113E8_filesel);
+    func_8010642C_filesel(arg1);
+    HuVecCopy3F(&D_80114598_filesel[arg1].unk_04, &positions[arg0]);
+    D_80114598_filesel[arg1].unk_04.y += 100.0f;
+    HuVecCopy3F(&D_80114598_filesel[arg1].unk_10, &positions[arg1]);
+    D_80114598_filesel[arg1].unk_50 = 0;
+    D_80114598_filesel[arg1].unk_58 = arg2;
+}
 
 void func_80111790_filesel(omObjData *object) {
     Vec center;
@@ -2025,5 +2062,3 @@ void func_80112758_filesel(void) {
         _SetFlag(0x28);
     }
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/filesel/516B10", D_80112E68_filesel);

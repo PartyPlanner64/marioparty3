@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game/vibrator.h"
+#include "game/gamework_data.h"
 #include "mallocblock.h"
 
 #define UNK_VALUE 0x91
@@ -695,7 +696,37 @@ void func_801078BC_filesel(s32 arg0, s16 arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801078F4_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80107AA8_filesel);
+void func_80107AA8_filesel(void) {
+    s16 i;
+    s16 count;
+    s16 pad;
+    s16 player;
+
+    for (i = 0; i < 4; i++) {
+        GwPlayer[i].pad = 0xFF;
+    }
+    for (i = 0, count = 0; i < 4; i++) {
+        if (CheckControllerRead(i)) {
+            GwPlayer[count].pad = i;
+            count++;
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        if (GwPlayer[i].pad == 0xFF) {
+            for (pad = 0; pad < 4; pad++) {
+                for (player = 0; player < 4; player++) {
+                    if (GwPlayer[player].pad == pad) {
+                        break;
+                    }
+                }
+                if (player == 4) {
+                    break;
+                }
+            }
+            GwPlayer[i].pad = pad;
+        }
+    }
+}
 
 void func_80107C50_filesel(omObjData *object) {
     if (D_800D5558_main[0] & B_BUTTON) {
@@ -768,7 +799,31 @@ void func_80108878_filesel(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801088DC_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80108A94_filesel);
+void func_80108A94_filesel(void) {
+    Vec start;
+    Vec end;
+    Vec position;
+    s32 i;
+    f32 progress;
+
+    for (i = 0; i <= 10; i++) {
+        progress = 1.0f - i * 0.1f;
+        if (progress < 0.0f) {
+            progress = 0.0f;
+        }
+        HuVecCopyXYZ(&start, 352.0f, 40.0f, 0.0f);
+        HuVecCopyXYZ(&end, 224.0f, 40.0f, 0.0f);
+        position.x = (end.x - start.x) * progress + start.x;
+        position.y = (end.y - start.y) * progress + start.y;
+        func_80105FBC_filesel(1, position.x, position.y);
+        func_80105FBC_filesel(2, position.x - 22.0f, position.y);
+        func_80105FBC_filesel(3, position.x + 26.0f, position.y);
+        HuPrcVSleep();
+    }
+    func_80105F54_filesel(1);
+    func_80105F54_filesel(2);
+    func_80105F54_filesel(3);
+}
 
 void func_80108C34_filesel(void) {
     Vec start;
@@ -1128,7 +1183,24 @@ void func_8010AB1C_filesel(s32 arg0, u32 arg1) {
 void func_8010AB58_filesel(s32 arg0, u32 arg1) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010AB60_filesel);
+void func_8010AB60_filesel(s32 arg0, u32 arg1) {
+    s32 targetX;
+    s32 targetY;
+    s32 startX;
+    s32 startY;
+    s32 i;
+    f32 progress;
+
+    func_8010A9B4_filesel(arg0, arg1, &targetX, &targetY);
+    func_80106014_filesel(arg0, &startX, &startY);
+    for (i = 0; i < 5; i++) {
+        progress = i * 0.25f;
+        func_80105FBC_filesel(arg0, startX + progress * (targetX - startX),
+                              startY + progress * (targetY - startY));
+        HuPrcVSleep();
+    }
+    func_80105FBC_filesel(arg0, targetX, targetY);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010AC58_filesel);
 

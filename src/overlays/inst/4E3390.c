@@ -32,6 +32,9 @@ typedef struct {
 } InstSpritePos;
 
 extern u8 D_800CB8B1_main[];
+extern InstMessageInfo D_800A6D40_main[];
+extern u16 D_800CC698_main;
+extern omObjData *D_8010DCA0_inst;
 extern s32 D_8010D5B4_inst;
 extern s32 D_8010D5B8_inst;
 extern s16 D_8010D5BA_inst;
@@ -74,6 +77,16 @@ extern UnkInst D_8010DCE0_inst;
 extern UnkInst D_8010DD58_inst;
 
 s32 func_8003A37C_main(GAMEMES *, const char *, s32, s32, s32);
+
+void func_8000BC48_main(u16, u16);
+void func_8000BBFC_main(u16, s16);
+void func_8000BD94_main(u16, s32, s32);
+void func_8010CDE4_inst(const char *, s32, s32);
+void func_8010CF14_inst(void);
+void func_8010CFF4_inst(void);
+void func_8010CC14_inst(void);
+void func_8010C8B4_inst(void);
+void func_8010BE28_inst(void);
 
 void func_8010AC30_inst(omObjData *); /* extern */
 void func_8010AD78_inst(omObjData *);
@@ -220,7 +233,75 @@ INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010B2A4_inst);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010B628_inst);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010B990_inst);
+void func_8010B990_inst(void) {
+    s32 digits[3];
+    s32 i;
+    s32 score;
+    s32 sprite;
+    s16 slot;
+    omObjData *object;
+    InstSpritePos *positions;
+    u16 *sprites;
+
+    object = omAddObj(20, 5, 0, -1, NULL);
+    D_8010DCA0_inst = object;
+    D_8010DCD0_inst = &D_800A6D40_main[D_8010D40B_inst];
+    D_8010DCC0_inst[0] = InitEspriteSlot(func_8000B838_main(0x170008), 0, 1);
+    func_8000BC48_main(D_8010DCC0_inst[0], 0x1000);
+    func_8000BBFC_main(D_8010DCC0_inst[0], 255);
+    func_8000BBD4_main(D_8010DCC0_inst[0], 160, -100);
+    func_8010CDE4_inst((const char *)(D_8010D40B_inst + 0x4700), 160, -100);
+    func_8010CF14_inst();
+    func_8010CFF4_inst();
+    if (D_8010D40A_inst == 3) {
+        D_8010DCC0_inst[1] = InitEspriteSlot(func_8000B838_main(0x17000E), 0, 1);
+        func_8000BC48_main(D_8010DCC0_inst[1], 0x1000);
+        func_8000BBFC_main(D_8010DCC0_inst[1], 255);
+        func_8000BBD4_main(D_8010DCC0_inst[1], 160, -78);
+        score = D_800CC698_main;
+        sprite = func_8000B838_main(0x1300CF);
+        if (score >= 1000) {
+            score = 999;
+        } else if (score < 0) {
+            score = 0;
+        }
+        digits[0] = score / 100 % 10;
+        digits[1] = score / 10 - score / 100 * 10;
+        digits[2] = score % 10;
+        for (i = 0; i < 3; i++) {
+            slot = InitEspriteSlot(sprite, 0, 0);
+            sprites = D_8010DCC4_inst;
+            sprites[i] = slot;
+            positions = D_8010DAF8_inst;
+            func_8000BBD4_main(sprites[i], positions[i].x, -78);
+            func_8000BD94_main(sprites[i], (u16)digits[i], 0);
+        }
+    }
+    D_8010DCA8_inst.curGroup = func_80060880_main(72, 188, 7);
+    func_8005C060_main(D_8010DCA8_inst.curGroup, 2, 0, 255, 255);
+    func_8005C060_main(D_8010DCA8_inst.curGroup, 4, 96, 255, 64);
+    func_8005C060_main(D_8010DCA8_inst.curGroup, 6, 255, 255, 64);
+    func_8005BA28_main(D_8010DCA8_inst.curGroup)->unk_29 = 1;
+    func_8010CC14_inst();
+    D_8010DCA8_inst.mainMembers[0] = func_8005B7B8_main(D_8010DCA8_inst.curGroup, 0x17000B, 60, -33, 0);
+    D_8010DCA8_inst.mainMembers[1] = func_8005B7B8_main(D_8010DCA8_inst.curGroup, 0x170009, 148, -33, 0);
+    D_8010DCA8_inst.mainMembers[2] = func_8005B7B8_main(D_8010DCA8_inst.curGroup, 0x17000A, 200, -33, 0);
+    D_8010DCA8_inst.helpMembers[0] = func_8005B7B8_main(D_8010DCA8_inst.curGroup, 0x17000D, 60, -33, 0);
+    D_8010DCA8_inst.helpMembers[1] = func_8005B7B8_main(D_8010DCA8_inst.curGroup, 0x17000F, 200, -33, 0);
+    D_8010DCA8_inst.member = func_8005B7B8_main(D_8010DCA8_inst.curGroup, 0x17000C, 38, -33, 0);
+    D_8010DCD4_inst = 0;
+    D_8010DCCC_inst = D_8010DCD0_inst->message;
+    if (D_8010D40A_inst == 4 && D_8010D411_inst != 2) {
+        D_8010DCCC_inst++;
+    }
+    func_8005B43C_main(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
+    omPrcSetDestructor(NULL, func_8010C8B4_inst);
+    D_8010DCA4_inst = (void (*)(s32))func_8010BE28_inst;
+    while (1) {
+        D_8010DCA4_inst((s32)object);
+        HuPrcVSleep();
+    }
+}
 
 void func_8010BE28_inst(void) {
     if (D_8010D408_inst == 1) {

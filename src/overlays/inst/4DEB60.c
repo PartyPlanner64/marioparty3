@@ -31,8 +31,6 @@ extern s8 D_8010D5B1_inst;
 extern u8 D_800CE20A_main;
 extern s32 D_8010D4A4_inst;
 extern u32 D_8010D4AC_inst;
-extern s16 D_8010DC28_inst;
-extern s16 D_8010DC22_inst;
 extern f32 D_800CB890_main;
 extern f32 D_800CE17C_main[];
 extern f32 D_800D5210_main;
@@ -54,15 +52,10 @@ extern void *D_8010DC10_inst;
 extern void *D_8010DC14_inst;
 extern void *D_8010DC18_inst;
 extern InstObjectState D_8010DDD8_inst;
-extern void (*D_8010DDEC_inst)(omObjData *);
 extern s32 D_8010D658_inst[];
 extern s32 D_8010D508_inst;
 extern f32 D_8010D50C_inst;
 extern s32 D_8010D510_inst;
-extern s32 D_8010D520_inst;
-extern s32 D_8010D524_inst;
-extern s32 D_8010D530_inst;
-extern s32 D_8010D534_inst;
 extern s8 D_8010D40C_inst[5];
 extern u8 D_8010D4B0_inst[8];
 extern u8 D_8010D4B8_inst[8];
@@ -76,8 +69,6 @@ extern s8 D_8010D721_inst[1];
 extern s8 D_8010D724_inst[8];
 extern u16 D_800A11D0_main[5];
 extern u16 D_800A11DC_main[5];
-
-extern void (*D_8010DDE4_inst)(omObjData *);
 
 s16 func_8000B0D4_main(s32, u16);
 
@@ -116,24 +107,12 @@ void func_8010B124_inst(void);
 void func_80107A24_inst(omObjData *); /* extern */
 void func_80107BF8_inst(omObjData *); /* extern */
 void func_80108350_inst(void);        /* extern */
-void func_80108808_inst(omObjData *);
-void func_80108A18_inst(s16, s16, s16);
-void func_80108870_inst(omObjData *);
-void func_80108954_inst(omObjData *);
-void func_80108A10_inst(omObjData *);
-void func_8010C848_inst(void);
-void func_8010C8D0_inst(void);
-void func_801094B0_inst(void); /* extern */
-void func_801098D8_inst(omObjData *);
-void func_801099C0_inst(omObjData *);
-void func_80109A84_inst(omObjData *);
+void func_801094B0_inst(void);        /* extern */
 void func_8010986C_inst(omObjData *); /* extern */
 void func_80109A90_inst(void);        /* extern */
 void func_8010A1D0_inst(void);        /* extern */
 void func_8010B990_inst(void);        /* extern */
 HmfSkeletonNode *func_8001D33C_main(s16, char *);
-void func_80033910_main(HmfData *);
-void func_80033970_main(HmfData *);
 void func_8000BC48_main(u16, u16); /* extern */
 
 void func_801059A0_inst(void) {
@@ -1043,129 +1022,4 @@ void func_8010815C_inst(omObjData *obj) {
         nodes[i]->unk4C[2][2] = 1.3f;
     }
     D_8010DDD8_inst.update = func_80107E18_inst;
-}
-
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80108350_inst);
-
-void func_8010872C_inst(omObjData *object) {
-    object->trans.x = -86.0f;
-    object->trans.y = -148.0f;
-    object->trans.z = 253.0f;
-    object->rot.x = -20.0f;
-    object->rot.y = 15.0f;
-    Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
-    func_8001C5B4_main(object->model[0], object->motion[1]);
-    func_8001C814_main(object->model[0], 2, 2);
-    func_80108A18_inst(object->model[0], D_8010DC28_inst, D_8010DC22_inst);
-    D_8010DDE4_inst = func_80108808_inst;
-}
-
-void func_80108808_inst(omObjData *object) {
-    D_8010D520_inst++;
-    if (D_8010D520_inst >= 100) {
-        func_8001C258_main(object->model[0], 4, 0);
-        HuAudFXPlay(0x135);
-        D_8010DDE4_inst = func_80108870_inst;
-        D_8010D520_inst = 0;
-        func_8010C8D0_inst();
-    }
-}
-
-void func_80108870_inst(omObjData *object) {
-    D_8010D524_inst++;
-    object->trans.y = sindf(D_8010D524_inst * 5) * 200.0f + -148.0f;
-    if (D_8010D524_inst >= 17) {
-        object->trans.y = 52.0f;
-        D_8010D524_inst = 0;
-        func_8001C5B4_main(object->model[0], object->motion[2]);
-        func_8001C814_main(object->model[0], 2, 0);
-        HuPrcSleep(10);
-        HuAudFXPlay(0x2A7);
-        D_8010DDE4_inst = func_80108954_inst;
-    }
-}
-
-void func_80108954_inst(omObjData *object) {
-    s16 model = object->model[0];
-    f32 time = HmfModelData[model].unk40;
-
-    if (D_800CCF58_main[HmfModelData[model].unk02].unk02 <= time) {
-        func_8001C5B4_main(model, object->motion[3]);
-        func_8001C814_main(object->model[0], 2, 2);
-        func_8010C848_inst();
-        D_8010DDE4_inst = func_80108A10_inst;
-    }
-}
-
-void func_80108A10_inst(omObjData *object) {
-}
-
-void func_80108A18_inst(s16 model, s16 animSlot, s16 anim) {
-    HmfAnim *entry;
-
-    if (animSlot >= 0) {
-        if (anim == -1) {
-            func_80033910_main(HmfModelData[model].hmf);
-        } else {
-            func_80033970_main(HmfModelData[model].hmf);
-            entry = &D_800D1714_main[animSlot];
-            entry->animIdx = anim;
-            entry->rot = 0;
-            entry->flags = 0;
-            entry->interp = 0;
-            entry->frame = 0;
-        }
-    }
-}
-
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80108AF0_inst);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_801094B0_inst);
-
-void func_801097DC_inst(omObjData *object) {
-    object->trans.x = -91.0f;
-    object->trans.y = -171.0f;
-    object->trans.z = 210.0f;
-    object->rot.x = -20.0f;
-    object->rot.y = 15.0f;
-    Hu3DModelPosSet(*object->model, object->trans.x, object->trans.y, object->trans.z);
-    D_8010DDEC_inst = func_8010986C_inst;
-}
-
-void func_8010986C_inst(omObjData *object) {
-    D_8010D530_inst++;
-    if (D_8010D530_inst >= 100) {
-        D_8010DDEC_inst = func_801098D8_inst;
-        D_8010D530_inst = 0;
-        func_8001C258_main(object->model[0], 4, 0);
-        HuAudFXPlay(0x298);
-        func_8010C8D0_inst();
-    }
-}
-
-void func_801098D8_inst(omObjData *object) {
-    D_8010D534_inst++;
-    object->trans.y = sindf(D_8010D534_inst * 5) * 200.0f + -171.0f;
-    if (D_8010D534_inst == 13) {
-        func_8001C5B4_main(object->model[0], object->motion[4]);
-        func_8001C814_main(object->model[0], 2, 0);
-    }
-    if (D_8010D534_inst >= 17) {
-        object->trans.y = 29.0f;
-        D_8010D534_inst = 0;
-        D_8010DDEC_inst = func_801099C0_inst;
-    }
-}
-
-void func_801099C0_inst(omObjData *object) {
-    s16 model = object->model[0];
-
-    if (D_800CCF58_main[HmfModelData[model].unk02].unk02 <= HmfModelData[model].unk40) {
-        func_8001C624_main(model, HmfModelData[object->motion[3]].unk02, 0, 30, 2);
-        func_8010C848_inst();
-        D_8010DDEC_inst = func_80109A84_inst;
-    }
-}
-
-void func_80109A84_inst(omObjData *object) {
 }

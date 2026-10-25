@@ -9,7 +9,12 @@ typedef struct {
 extern u8 D_800CB8B1_main[];
 extern s8 D_8010D400_inst[7];
 extern s8 D_8010D40A_inst;
-extern s8 D_8010D554_inst[4];
+extern u8 D_8010D554_inst[4];
+extern s8 D_8010D40C_inst[5];
+extern char *D_8010D55C_inst[8];
+extern s32 D_8010D57C_inst[4];
+extern char *D_8010D58C_inst[4];
+extern s16 D_8010DC98_inst[4];
 extern s32 D_8010D558_inst;
 extern s32 D_8010D59C_inst;
 extern s32 D_8010D5A0_inst;
@@ -24,6 +29,9 @@ extern s8 D_8010D551_inst;
 extern void (*D_8010DC94_inst)(omObjData *);
 
 s32 func_80107E20_inst(void);
+void func_8010B040_inst(void);
+void func_80017358_main(s16, char *, s16, char *);
+s16 func_8000B0D4_main(s32, u16);
 void func_801080FC_inst(void);
 void func_8010AC04_inst(omObjData *object);
 void func_8010B628_inst(omObjData *);
@@ -37,7 +45,73 @@ void func_8002367C_main(HuMtx4F, HuMtx4F);
 void func_80018044_main(HuMtx4F, HuMtx4F, HuMtx4F);
 void func_8010B2A4_inst(omObjData *);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010A1D0_inst);
+void func_8010A1D0_inst(void) {
+    static const s32 D_8010D9C8_inst[] = { 0x17002E, 0x17002F, 0x170030, 0x170031, 0x170032, 0x170033, 0x170034, 0x170035 };
+    static const s32 D_8010D9E8_inst[] = { 0x170038, 0x170039, 0x17003A, 0x17003B, 0x17003C, 0x17003D, 0x17003E, 0x17003F, 0x170040, 0x170041, 0x170042, 0x170045, 0x170044, 0x170043, 0x170046 };
+    omObjData *object;
+    InstModelHooks *models;
+    s32 i;
+    s32 player;
+
+    object = omAddObj(21, 30, 1, -1, NULL);
+    D_8010DC90_inst = object;
+    func_8010B040_inst();
+    models = D_8010D4C0_inst[D_8010D40A_inst][0];
+    for (i = 0; i < models->count; i++) {
+        object->model[i + 1] = func_8000B0D4_main(D_8010D57C_inst[D_8010D554_inst[i]], 0x1AB9);
+    }
+    object->model[5] = func_8000B0D4_main(0x170036, 0x16B9);
+    for (i = 1; i < models->count; i++) {
+        object->model[i + 5] = Hu3DModelLink(object->model[5]);
+    }
+    for (i = 0; i < models->count; i++) {
+        player = D_8010D400_inst[i];
+        D_8010DC98_inst[i] = func_8000B0D4_main(D_8010D9C8_inst[GwPlayer[player].chr], 0x1AB9);
+        func_80017358_main(D_8010DC98_inst[i], D_8010D55C_inst[GwPlayer[player].chr],
+                           object->model[i + 1], D_8010D58C_inst[D_8010D554_inst[i]]);
+        func_8001C258_main(D_8010DC98_inst[i], 4, 4);
+        func_8001C6A8_main(object->model[i + 1], 0);
+        func_8001C814_main(object->model[i + 1], 2, 0);
+    }
+    object->trans.x = 0;
+    object->trans.y = 0;
+    object->trans.z = 0;
+    for (i = 0; i < models->count; i++) {
+        Hu3DModelPosSet(object->model[i + 1], 0, 0, 0);
+        Hu3DModelScaleSet(object->model[i + 1], 0.5f, 0.5f, 0.5f);
+        func_8001C258_main(object->model[i + 1], 4, 0);
+        func_8001C814_main(object->model[i + 1], 1, 1);
+        Hu3DModelPosSet(object->model[i + 5], 0, 0, 0);
+        Hu3DModelScaleSet(object->model[i + 5], 0.5f, 0.5f, 0.5f);
+        func_8001C258_main(object->model[i + 5], 4, 4);
+        func_8001C814_main(object->model[i + 5], 1, 1);
+    }
+    models = D_8010D4C0_inst[D_8010D40A_inst][1];
+    for (i = 0; i < models->count; i++) {
+        object->model[i + 10] = func_8000B0D4_main(D_8010D9E8_inst[D_8010D40C_inst[i]], 0x1AB9);
+    }
+    if (models->count > 0) {
+        object->model[15] = func_8000B0D4_main(0x170037, 0x16B9);
+        for (i = 1; i < models->count; i++) {
+            object->model[i + 15] = Hu3DModelLink(object->model[15]);
+        }
+    }
+    for (i = 0; i < models->count; i++) {
+        Hu3DModelPosSet(object->model[i + 10], 0, 0, 0);
+        Hu3DModelScaleSet(object->model[i + 10], 0.5f, 0.5f, 0.5f);
+        func_8001C258_main(object->model[i + 10], 4, 0);
+        func_8001C814_main(object->model[i + 10], 1, 1);
+        Hu3DModelPosSet(object->model[i + 15], 0, 0, 0);
+        Hu3DModelScaleSet(object->model[i + 15], 0.5f, 0.5f, 0.5f);
+        func_8001C258_main(object->model[i + 15], 4, 4);
+        func_8001C814_main(object->model[i + 15], 1, 1);
+    }
+    D_8010DC94_inst = func_8010A750_inst;
+    while (1) {
+        D_8010DC94_inst(object);
+        HuPrcVSleep();
+    }
+}
 
 void func_8010A750_inst(omObjData *object) {
     omObjData *source;
@@ -146,10 +220,6 @@ void func_8010AD78_inst(omObjData *object) {
 
 void func_8010B038_inst(omObjData *object) {
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E3390", D_8010D9C8_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E3390", D_8010D9E8_inst);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E3390", D_8010DA24_inst);
 

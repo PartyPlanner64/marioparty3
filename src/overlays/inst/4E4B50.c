@@ -172,10 +172,9 @@ void func_8010BE28_inst(void) {
 void func_8010BE70_inst(s32 arg0) {
 }
 
-#ifdef NON_MATCHING
-/* Near match: the final window-state assignment uses v0 instead of v1. */
 void func_8010BE78_inst(s32 arg0) {
     s32 i;
+    s32 value;
     s16 *y;
     u16 *sprites;
     InstSpritePos *positions;
@@ -183,7 +182,8 @@ void func_8010BE78_inst(s32 arg0) {
     if (D_8010D408_inst == 0) {
         func_8000BBD4_main(D_8010DCC0_inst[0], 160, *(y = &D_8010D5BA_inst));
         func_8010CED0_inst(160, *y);
-        if (D_8010D40A_inst == 3) {
+        value = D_8010D40A_inst;
+        if (value == 3) {
             func_8000BBD4_main(D_8010DCC0_inst[1], 160, *y + 22);
             for (i = 0, sprites = D_8010DCC4_inst, positions = D_8010DAF8_inst; i < 3; i++) {
                 func_8000BBD4_main(sprites[i], positions[i].x, D_8010D5BA_inst + 22);
@@ -198,7 +198,8 @@ void func_8010BE78_inst(s32 arg0) {
         D_8010D5B8_inst = -64;
         func_8000BBD4_main(D_8010DCC0_inst[0], 160, 32);
         func_8010CED0_inst(160, 32);
-        if (D_8010D40A_inst == 3) {
+        value = D_8010D40A_inst;
+        if (value == 3) {
             func_8000BBD4_main(D_8010DCC0_inst[1], 160, 54);
             for (i = 0, sprites = D_8010DCC4_inst, positions = D_8010DAF8_inst; i < 3; i++) {
                 func_8000BBD4_main(sprites[i], positions[i].x, 54);
@@ -207,21 +208,20 @@ void func_8010BE78_inst(s32 arg0) {
     } else {
         func_8000BBD4_main(D_8010DCC0_inst[0], 160, 32);
         func_8010CED0_inst(160, 32);
-        if (D_8010D40A_inst == 3) {
+        value = D_8010D40A_inst;
+        if (value == 3) {
             func_8000BBD4_main(D_8010DCC0_inst[1], 160, 54);
             for (i = 0, sprites = D_8010DCC4_inst, positions = D_8010DAF8_inst; i < 3; i++) {
                 func_8000BBD4_main(sprites[i], positions[i].x, 54);
             }
         }
         func_80060DEC_main(D_8010DCA8_inst.curGroup);
-        D_8010D440_inst = 1;
+        value = 1;
+        D_8010D440_inst = value;
     }
     func_8010D044_inst();
     D_8010DCA4_inst = func_8010C124_inst;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E4B50", func_8010BE78_inst);
-#endif
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E4B50", D_8010DAF8_inst);
 

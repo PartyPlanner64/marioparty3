@@ -63,6 +63,8 @@ extern s8 D_8010D40A_inst;
 extern s8 D_8010D554_inst[4];
 extern s32 D_8010D440_inst;
 extern s32 D_8010D558_inst;
+extern s32 D_8010D59C_inst;
+extern f32 D_8010D414_inst;
 extern omObjData *D_8010DC90_inst;
 extern s16 *D_8010D4C0_inst[][2];
 extern s8 D_8010D550_inst;
@@ -90,6 +92,10 @@ void func_8010BE28_inst(void);
 
 void func_8010AC30_inst(omObjData *); /* extern */
 void func_8010AD78_inst(omObjData *);
+void func_8010B038_inst(omObjData *object);
+void func_8008A120_main(HuMtx4F, f32);
+void func_8002367C_main(HuMtx4F, HuMtx4F);
+void func_80018044_main(HuMtx4F, HuMtx4F, HuMtx4F);
 void func_8010B2A4_inst(omObjData *);
 void func_8010C124_inst(s32);
 void func_8010C5C4_inst(s32 arg0);
@@ -130,9 +136,35 @@ void func_8010AC30_inst(omObjData *object) {
     D_8010DC94_inst = func_8010AD78_inst;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4E3390", func_8010AD78_inst);
+void func_8010AD78_inst(omObjData *object) {
+    HuMtx4F rotation;
+    HuMtx4F matrix;
+    f32 duration;
+    s16 *models;
+    s8 i;
 
-void func_8010B038_inst(void) {
+    duration = D_800CCF58_main[HmfModelData[object->model[5]].unk02].unk02 - 20.0f;
+    models = D_8010D4C0_inst[D_8010D40A_inst][0];
+    for (i = 0; i < models[0]; i++) {
+        func_8008A120_main(rotation, (1.0f / duration) * D_8010D414_inst);
+        func_8002367C_main(matrix, HmfModelData[object->model[i + 1]].mtx);
+        func_80018044_main(rotation, matrix, HmfModelData[object->model[i + 1]].mtx);
+    }
+    models = D_8010D4C0_inst[D_8010D40A_inst][1];
+    for (i = 0; i < models[0]; i++) {
+        func_8008A120_main(rotation, (1.0f / duration) * D_8010D414_inst);
+        func_8002367C_main(matrix, HmfModelData[object->model[i + 10]].mtx);
+        func_80018044_main(rotation, matrix, HmfModelData[object->model[i + 10]].mtx);
+    }
+    D_8010D59C_inst++;
+    if (D_8010D59C_inst >= duration) {
+        D_8010DC94_inst = func_8010B038_inst;
+        D_8010D551_inst = 1;
+        D_8010D59C_inst = 0;
+    }
+}
+
+void func_8010B038_inst(omObjData *object) {
 }
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E3390", D_8010D9C8_inst);

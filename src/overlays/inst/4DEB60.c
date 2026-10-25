@@ -9,6 +9,11 @@ typedef struct {
     u8 unk08[12];
 } InstMinigameEntry;
 
+extern InstModelHooks *D_8010D4C0_inst[][2];
+extern s32 D_8010D90C_inst[][2];
+extern s32 D_8010D910_inst[][2];
+extern s32 D_8010D954_inst[];
+
 extern InstMinigameEntry D_800A6D40_main[];
 extern char D_8010D978_inst[];
 extern char D_8010D980_inst[];
@@ -74,6 +79,8 @@ extern u16 D_800A11DC_main[5];
 
 extern void (*D_8010DDE4_inst)(omObjData *);
 
+s16 func_8000B0D4_main(s32, u16);
+
 s32 BoardGetTurnTier(s32);
 s32 BoardPlayerRankCalc(s32);
 
@@ -96,7 +103,11 @@ void func_80106850_inst(Vec *, Vec *); /* extern */
 void func_80106898_inst(void);         /* extern */
 void func_80106EB4_inst(void);         /* extern */
 void func_80107308_inst(void);         /* extern */
-void func_80107470_inst(void);         /* extern */
+void func_80107938_inst(omObjData *);
+void func_8010815C_inst(omObjData *);
+void func_80107EE0_inst(void);
+void func_80108AF0_inst(s16, void *, void *, void *);
+void func_80107470_inst(void); /* extern */
 void func_801079CC_inst(omObjData *);
 s32 func_8010B10C_inst(void);
 void func_80107E18_inst(omObjData *);
@@ -707,7 +718,76 @@ void func_80107308_inst(void) {
 INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80107308_inst);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/inst/4DEB60", func_80107470_inst);
+void func_80107470_inst(void) {
+    s32 i;
+    s32 j;
+    omObjData *object;
+    InstModelHooks *hooks;
+    s32 group;
+    HmfMotionNode *node;
+    HmfData *data;
+    HmfModelData_Unk64_Unk60_Struct *material;
+
+    object = omAddObj(20, 10, 5, -1, NULL);
+    D_8010DDD8_inst.object = object;
+    object->model[0] = func_8000B0D4_main(D_8010D90C_inst[D_8010D40A_inst][0] | 0x170000, 0x16B9);
+    object->model[1] = func_8000B0D4_main(0x170029, 0x1E89);
+    object->model[2] = func_8000B0D4_main(D_8010D954_inst[D_8010D40A_inst], 0x1AB9);
+    object->model[3] = func_8000B0D4_main(0x170028, 0x2B9);
+    object->model[4] = func_8000B0D4_main(D_8010D910_inst[D_8010D40A_inst][0] | 0x170000, 0x239);
+    func_8001C814_main(object->model[0], 2, 0);
+    func_8001C814_main(object->model[1], 2, 0);
+    func_8001C814_main(object->model[2], 2, 0);
+    func_8001C814_main(object->model[3], 2, 0);
+    func_8001C814_main(object->model[0], 1, 1);
+    func_8001C814_main(object->model[1], 1, 1);
+    func_8001C814_main(object->model[2], 1, 1);
+    func_8001C814_main(object->model[3], 1, 1);
+    func_8001C258_main(object->model[3], 4, 4);
+    object->trans.x = 0;
+    object->trans.y = 0;
+    object->trans.z = 0;
+    Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
+    Hu3DModelPosSet(object->model[1], 56.0f, 0.0f, 61.5f);
+    Hu3DModelPosSet(object->model[2], 56.0f, 0.0f, 61.5f);
+    Hu3DModelPosSet(object->model[3], 56.0f, 0.0f, 61.5f);
+    Hu3DModelPosSet(object->model[4], object->trans.x, object->trans.y, object->trans.z);
+    object->scale.x = object->scale.y = object->scale.z = 0.5f;
+    for (i = 0; i < 5; i++) {
+        Hu3DModelScaleSet(object->model[i], 0.5f, 0.5f, 0.5f);
+    }
+    for (i = 0; i < 3; i++) {
+        Hu3DModelScaleSet(object->model[i + 1], 0.45f, 0.45f, 0.45f);
+    }
+    for (group = 0; group < 2; group++) {
+        hooks = D_8010D4C0_inst[D_8010D40A_inst][group];
+        for (j = 0; j < hooks->count; j++) {
+            node = (HmfMotionNode *)func_8001D33C_main(object->model[0], hooks->nodes[j]);
+            data = node->unk54;
+            for (i = 0; i < node->unk00; i++) {
+                if (node->unk50[i] >= 0) {
+                    material = &data->unk60[node->unk50[i]];
+                    material->unk24 = 1;
+                }
+            }
+        }
+    }
+    D_8010DC10_inst = DataRead(D_8010D4A4_inst | 0x170000);
+    D_8010DC18_inst = DataRead((D_8010D4A4_inst + 1) | 0x170000);
+    D_8010DC14_inst = DataRead(0x170007);
+    func_80108AF0_inst(object->model[1], D_8010DC18_inst, D_8010DC10_inst, D_8010DC14_inst);
+    HmfModelData[object->model[1]].rot.x = -90.0f;
+    omPrcSetDestructor(NULL, func_80107EE0_inst);
+    if (D_8010D408_inst == 0) {
+        D_8010DDD8_inst.update = func_80107938_inst;
+    } else {
+        D_8010DDD8_inst.update = func_8010815C_inst;
+    }
+    while (1) {
+        D_8010DDD8_inst.update(object);
+        HuPrcVSleep();
+    }
+}
 
 void func_80107938_inst(omObjData *obj) {
     if ((s8)func_8010B10C_inst() == 1) {

@@ -1,11 +1,6 @@
 #include "common.h"
 #include "inst.h"
 
-typedef struct {
-    s16 count;
-    char *nodes[1];
-} InstModelHooks;
-
 extern u8 D_800CB8B1_main[];
 extern s8 D_8010D400_inst[7];
 extern s8 D_8010D40A_inst;

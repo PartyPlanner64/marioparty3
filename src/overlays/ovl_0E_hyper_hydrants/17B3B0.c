@@ -122,6 +122,9 @@ void func_8010A2D4_hyper_hydrants(omObjData *object);
 void func_80107A90_hyper_hydrants(omObjData *object);
 void func_80108788_hyper_hydrants(s16 model);
 void func_801091B0_hyper_hydrants(omObjData *object);
+void func_80109B30_hyper_hydrants(omObjData *object);
+void func_80109E44_hyper_hydrants(omObjData *object);
+void func_8010A458_hyper_hydrants(omObjData *object);
 void func_80109484_hyper_hydrants(omObjData *object);
 void func_80012B14_main(s16 camera, Vec *position, Vec2f *screen);
 s16 HmfAnimRead(HmfData *hmf, s32 file, char *name);
@@ -501,7 +504,45 @@ void func_80109484_hyper_hydrants(omObjData *object) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80109588_hyper_hydrants);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_801099A0_hyper_hydrants);
+void func_801099A0_hyper_hydrants(omObjData *object) {
+    HyperHydrantsPlayerData *data = object->data;
+
+    switch (func_800E6E8C_minigame()) {
+        case 0:
+            func_80109B30_hyper_hydrants(object);
+            break;
+        case 1:
+            object->trans.y = 0;
+            break;
+        case 2:
+            func_80109E44_hyper_hydrants(object);
+            if (data->unk04 == 1) {
+                func_8010A458_hyper_hydrants(object);
+            }
+            if (data->unk1A == 1) {
+                if (data->unk1E >= 2) {
+                    data->unk1E = 0;
+                    data->unk1A = 0;
+                } else {
+                    if (data->unk1E == 0) {
+                        data->unk1C = func_8010BC80_hyper_hydrants(0x365, data->unk02, 0, 0);
+                    }
+                    data->unk1E++;
+                }
+            }
+            break;
+        case 3:
+            object->scale.x -= 0.1f;
+            if (object->scale.x < 0.0f) {
+                object->scale.x = 0.0f;
+            }
+            object->scale.y = object->scale.z = object->scale.x;
+            data->unk0C = object->scale.x / 2.0f;
+            break;
+    }
+    Hu3DModelPosSet(object->model[1], object->trans.x, 0, object->trans.z);
+    Hu3DModelScaleSet(object->model[1], data->unk0C, data->unk0C, data->unk0C);
+}
 
 void func_80109B30_hyper_hydrants(omObjData *object) {
     HyperHydrantsPlayerData *data = object->data;

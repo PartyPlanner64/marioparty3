@@ -1150,7 +1150,58 @@ void func_8010A68C_hyper_hydrants(omObjData *object) {
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_8010A68C_hyper_hydrants);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_8010AB34_hyper_hydrants);
+void func_8010AB34_hyper_hydrants(omObjData *object) {
+    omObjData *player;
+    func_800E1BA8_minigame_ObjData *playerData;
+    HyperHydrantsCharacterData *characterData;
+    Vec step;
+    f32 x;
+    f32 z;
+    s32 side;
+    s32 i;
+    s32 playerIndex;
+
+    switch (func_800E6E8C_minigame()) {
+        case 0:
+        case 1:
+            break;
+        case 2:
+            if (object->work[0] == 0) {
+                playerIndex = D_8010BFAA_hyper_hydrants;
+                side = 0;
+            } else {
+                playerIndex = D_8010BFAB_hyper_hydrants;
+                side = 1;
+            }
+            player = D_800EC598_minigame[playerIndex];
+            playerData = player->data;
+            characterData = playerData->unk158;
+            x = player->trans.x + characterData->unk08 * 60.0f;
+            z = player->trans.z + characterData->unk0C * 60.0f;
+            step.x = ((D_8010C028_hyper_hydrants[side].x - x > 0.0f) ? D_8010C028_hyper_hydrants[side].x - x : 0.0f - (D_8010C028_hyper_hydrants[side].x - x)) / 5.0f;
+            step.y = -8.5f;
+            step.z = ((D_8010C028_hyper_hydrants[side].z - z > 0.0f) ? D_8010C028_hyper_hydrants[side].z - z : 0.0f - (D_8010C028_hyper_hydrants[side].z - z)) / 5.0f;
+            for (i = 0; i < 6; i++) {
+                D_8010BFB0_hyper_hydrants[side][i]->position.x = x + i * step.x;
+                D_8010BFB0_hyper_hydrants[side][i]->position.y = i * step.y + 80.0f;
+                D_8010BFB0_hyper_hydrants[side][i]->position.z = z + i * step.z;
+                if (i == 0) {
+                    object->trans.x = D_8010BFB0_hyper_hydrants[side][i]->position.x;
+                    object->trans.y = D_8010BFB0_hyper_hydrants[side][i]->position.y;
+                    object->trans.z = D_8010BFB0_hyper_hydrants[side][i]->position.z;
+                }
+                Hu3DModelPosSet(object->model[i], D_8010BFB0_hyper_hydrants[side][i]->position.x, D_8010BFB0_hyper_hydrants[side][i]->position.y, D_8010BFB0_hyper_hydrants[side][i]->position.z);
+            }
+            break;
+        case 3:
+        case 4:
+        case 5:
+            for (i = 0; i < 6; i++) {
+                func_8001C258_main(object->model[i], 4, 4);
+            }
+            break;
+    }
+}
 
 void func_8010AE08_hyper_hydrants(omObjData *object) {
     HuSprite *sprites[2];

@@ -2159,7 +2159,37 @@ void func_8011139C_filesel(s32 arg0) {
     D_80114598_filesel[arg0].unk_00 = NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801113E8_filesel);
+void func_801113E8_filesel(omObjData *object) {
+    Vec start;
+    Vec end;
+    Vec position;
+    s32 index;
+    s32 frame;
+    f32 fraction;
+    f32 progress;
+    f32 height;
+    f32 scale;
+
+    index = object->work[0];
+    frame = D_80114598_filesel[index].unk_50;
+    fraction = (f32)frame / (f32)D_80114598_filesel[index].unk_58;
+    progress = fraction > 1.0f ? 1.0f : fraction;
+    height = (progress - 0.2f) * (-5.0f / 3.0f) * (progress - 0.2f) + 1.0666666f - (-progress + 1.0f);
+    HuVecCopy3F(&start, &D_80114598_filesel[index].unk_04);
+    HuVecCopy3F(&end, &D_80114598_filesel[index].unk_10);
+    HuVecCopyXYZ(&position, (end.x - start.x) * progress + start.x,
+                 (end.y - start.y) * progress + height * 400.0f + start.y,
+                 (end.z - start.z) * progress + start.z);
+    func_801064DC_filesel(index, position.x, position.y, position.z);
+    func_801064DC_filesel(index + 3, position.x, position.y, position.z);
+    scale = (progress * 0.7f + 0.3f) * 0.8f;
+    func_80106550_filesel(index, scale, scale, scale);
+    func_80106550_filesel(index + 3, scale, scale, scale);
+    D_80114598_filesel[index].unk_50 = ++frame;
+    if (fraction > 1.0f) {
+        func_8011139C_filesel(index);
+    }
+}
 
 void func_80111660_filesel(s32 arg0, s32 arg1, s32 arg2) {
     Vec positions[3] = {

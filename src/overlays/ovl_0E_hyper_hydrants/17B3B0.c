@@ -23,6 +23,12 @@ typedef struct {
     s16 unk1E;
 } HyperHydrantsPlayerData;
 
+extern s8 D_8010BE24_hyper_hydrants;
+extern s8 D_8010BE25_hyper_hydrants;
+extern s8 D_8010BFA8_hyper_hydrants;
+extern s8 D_8010BFA9_hyper_hydrants;
+extern s8 D_8010BFAA_hyper_hydrants;
+extern s8 D_8010BFAB_hyper_hydrants;
 extern s16 D_800EB932_minigame;
 extern f32 D_8010BE28_hyper_hydrants;
 extern f32 D_8010BE2C_hyper_hydrants;
@@ -31,6 +37,7 @@ extern s8 D_8010BE38_hyper_hydrants[][16];
 extern omObjData *D_8010BFE0_hyper_hydrants[];
 extern s8 D_8010C010_hyper_hydrants;
 
+s16 func_8010BC80_hyper_hydrants(s16 soundId, s16 side, s8 playerSound, s16 player);
 void func_8004AE00_main(s16 arg0, s16 arg1);
 void func_8000B710_main(s32 arg0);
 void func_80105EB0_hyper_hydrants(s8 camera);
@@ -215,7 +222,60 @@ void func_8010A2D4_hyper_hydrants(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_8010A458_hyper_hydrants);
+void func_8010A458_hyper_hydrants(omObjData *object) {
+    HyperHydrantsPlayerData *data = object->data;
+
+    switch (data->unk01) {
+        case 3:
+            if (object->scale.x <= 1.25f) {
+                data->unk0C = 1.25f;
+                object->scale.x = object->scale.y = object->scale.z = 1.25f;
+                data->unk04 = 0;
+                data->unk01--;
+            } else {
+                object->scale.x -= 0.05f;
+                object->scale.y = object->scale.z = data->unk0C = object->scale.x;
+            }
+            break;
+        case 2:
+            if (object->scale.x <= 1.0f) {
+                data->unk0C = 1.0f;
+                object->scale.x = object->scale.y = object->scale.z = 1.0f;
+                data->unk04 = 0;
+                data->unk01--;
+            } else {
+                object->scale.x -= 0.05f;
+                object->scale.y = object->scale.z = data->unk0C = object->scale.x;
+            }
+            break;
+        case 1:
+            if (object->scale.x <= 0.0f) {
+                object->trans.z = D_8010BFE0_hyper_hydrants[data->unk02]->trans.z;
+                data->unk0C = data->unk10 = 0.0f;
+                object->scale.x = object->scale.y = object->scale.z = 0.0f;
+                data->unk04 = 0;
+                data->unk01--;
+                if (data->unk02 == 0) {
+                    D_8010BE24_hyper_hydrants++;
+                    func_8010BC80_hyper_hydrants(0x364, data->unk02, 1, D_8010BFAA_hyper_hydrants);
+                } else {
+                    D_8010BE25_hyper_hydrants++;
+                    func_8010BC80_hyper_hydrants(0x364, data->unk02, 1, D_8010BFAB_hyper_hydrants);
+                }
+                if (data->unk02 == 0) {
+                    omVibrate(D_8010BFA8_hyper_hydrants, 2, 3, 10);
+                    omVibrate(D_8010BFAA_hyper_hydrants, 2, 3, 10);
+                } else {
+                    omVibrate(D_8010BFA9_hyper_hydrants, 2, 3, 10);
+                    omVibrate(D_8010BFAB_hyper_hydrants, 2, 3, 10);
+                }
+            } else {
+                object->scale.x -= 0.1f;
+                object->scale.y = object->scale.z = data->unk0C = object->scale.x;
+            }
+            break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_8010A68C_hyper_hydrants);
 

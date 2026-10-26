@@ -1,4 +1,7 @@
 #include "common.h"
+#include "gcc/memory.h"
+#include "mallocblock.h"
+#include "opening.h"
 #include "overlays/minigame.h"
 
 typedef struct {
@@ -23,6 +26,12 @@ typedef struct {
     s16 unk1E;
 } HyperHydrantsPlayerData;
 
+typedef struct {
+    s16 spread;
+    f32 angle;
+    f32 speed;
+} HyperHydrantsSprayData;
+
 extern u8 D_800D6A90_main;
 extern u16 D_800A1906_main;
 extern s16 D_800EB930_minigame;
@@ -41,6 +50,7 @@ extern s8 D_8010BE10_hyper_hydrants[];
 extern s8 D_8010BE38_hyper_hydrants[][16];
 extern omObjData *D_8010BFE0_hyper_hydrants[];
 extern s8 D_8010BE6A_hyper_hydrants;
+extern s8 D_8010BF46_hyper_hydrants;
 extern s16 D_8010BF8E_hyper_hydrants;
 extern s16 D_8010BF90_hyper_hydrants;
 extern u8 *D_8010BF94_hyper_hydrants[2];
@@ -62,6 +72,8 @@ void func_8000B710_main(s32 arg0);
 void func_80105EB0_hyper_hydrants(s8 camera);
 void func_8010B8B0_hyper_hydrants(omObjData *object);
 void func_8010B38C_hyper_hydrants(void);
+void func_80107A90_hyper_hydrants(omObjData *object);
+void func_80108788_hyper_hydrants(s16 model);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_801059A0_hyper_hydrants);
 
@@ -202,11 +214,105 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80106
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80107238_hyper_hydrants);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_801078B8_hyper_hydrants);
+void func_801078B8_hyper_hydrants(omObjData *object) {
+    HyperHydrantsSprayData *data;
+    omObjData *player;
+
+    object->work[0] = D_8010BF46_hyper_hydrants;
+    object->func = func_80107A90_hyper_hydrants;
+    object->model[0] = func_8000B108_main(0x2F000B, 0x689);
+    if (D_8010BF46_hyper_hydrants == 0) {
+        player = D_800EC598_minigame[D_8010BFAA_hyper_hydrants];
+        func_8001C8A8_main(object->model[0], 1);
+    } else {
+        player = D_800EC598_minigame[D_8010BFAB_hyper_hydrants];
+        func_8001C8A8_main(object->model[0], 2);
+    }
+    object->trans.x = player->trans.x;
+    object->trans.z = player->trans.z;
+    object->trans.y = 40.0f;
+    Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
+    func_8001C2FC_main(object->model[0], 0x20000, 0x20000);
+    func_8001C448_main(object->model[0]);
+    func_8001C954_main(object->model[0]);
+    func_8001C514_main(object->model[0]);
+    func_80013390_main(object->model[0], -1, 0, func_80108788_hyper_hydrants);
+    data = HuMemAllocTag(sizeof(HyperHydrantsSprayData), 0x7918);
+    object->data = data;
+    memset(data, 0, sizeof(HyperHydrantsSprayData));
+    data->spread = 5;
+    data->angle = 180.0f;
+    data->speed = 50.0f;
+    HmfModelData[object->model[0]].unkBC->unk08.f = D_8010BF46_hyper_hydrants;
+    D_8010BF46_hyper_hydrants++;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80107A90_hyper_hydrants);
 
+#ifdef NON_MATCHING
+void func_801083A8_hyper_hydrants(s16 model, Vec *position, HyperHydrantsSprayData *data, s8 count) {
+    HmfData *hmf;
+    HmfModelData_UnkBC_Struct *modelData;
+    HmfModelData_UnkBC_Unk58_Struct *particle;
+    s16 particleCount;
+    s16 halfSpread;
+    s16 i;
+    f32 angle;
+    f32 speed;
+    f32 offset;
+    f32 random;
+    Vec velocity;
+
+    hmf = HmfModelData[model].hmf;
+    modelData = HmfModelData[model].unkBC;
+    particleCount = hmf->unk1A;
+    halfSpread = data->spread / 2;
+    angle = data->angle - halfSpread;
+    random = ((rand8() * 10) >> 8) * 0.1f;
+    speed = random + data->speed;
+    random = (rand8() * data->spread) >> 8;
+    random = sindf(angle + random);
+    velocity.x = random * speed;
+    random = (rand8() * data->spread) >> 8;
+    random = sindf(-halfSpread + random);
+    velocity.y = random * speed;
+    random = (rand8() * data->spread) >> 8;
+    random = cosdf(angle + random);
+    velocity.z = random * speed;
+    particle = modelData->unk58;
+    for (i = 0; i < particleCount; i++, particle++) {
+        if (particle->unk10 <= 0.0f) {
+            memcpy(&particle->unk24, &velocity, sizeof(velocity));
+            offset = ((rand8() * 10) >> 8) * 0.1f;
+            particle->unk0C = offset * velocity.x + position->x;
+            particle->unk10 = offset * velocity.y + position->y;
+            particle->unk14 = offset * velocity.z + position->z;
+            if (data->spread >= 21) {
+                particle->unk08 = (rand8() % 8) + 2;
+            } else {
+                particle->unk08 = (rand8() % 3) + 2;
+            }
+            if (--count == 0) {
+                break;
+            }
+            random = ((rand8() * 10) >> 8) * 0.1f;
+            speed = random + data->speed;
+            random = (rand8() * data->spread) >> 8;
+            random = sindf(angle + random);
+            velocity.x = random * speed;
+            random = (rand8() * data->spread) >> 8;
+            random = sindf(-halfSpread + random);
+            velocity.y = random * speed;
+            random = (rand8() * data->spread) >> 8;
+            random = cosdf(angle + random);
+            velocity.z = random * speed;
+        }
+    }
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_801083A8_hyper_hydrants);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80108788_hyper_hydrants);
 

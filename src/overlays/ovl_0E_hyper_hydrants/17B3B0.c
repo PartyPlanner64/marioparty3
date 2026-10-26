@@ -35,12 +35,19 @@ extern f32 D_8010BE2C_hyper_hydrants;
 extern s8 D_8010BE10_hyper_hydrants[];
 extern s8 D_8010BE38_hyper_hydrants[][16];
 extern omObjData *D_8010BFE0_hyper_hydrants[];
+extern s32 D_8010BF9C_hyper_hydrants;
 extern s8 D_8010C010_hyper_hydrants;
+extern s16 D_8010C012_hyper_hydrants[2];
+extern s16 D_8010C016_hyper_hydrants[2];
+extern s16 D_8010C01A_hyper_hydrants[2][2];
+extern s16 D_8010BE14_hyper_hydrants[2][2][2];
 
 s16 func_8010BC80_hyper_hydrants(s16 soundId, s16 side, s8 playerSound, s16 player);
 void func_8004AE00_main(s16 arg0, s16 arg1);
 void func_8000B710_main(s32 arg0);
 void func_80105EB0_hyper_hydrants(s8 camera);
+void func_8010B8B0_hyper_hydrants(omObjData *object);
+void func_8010B38C_hyper_hydrants(void);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_801059A0_hyper_hydrants);
 
@@ -283,11 +290,49 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_8010A
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_8010AE08_hyper_hydrants);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_8010B2FC_hyper_hydrants);
+void func_8010B2FC_hyper_hydrants(void) {
+    if (func_800E6E8C_minigame() == 0) {
+        if (D_8010BFE0_hyper_hydrants[0]->trans.y > 0.0f) {
+            func_8010B38C_hyper_hydrants();
+        } else if (D_8010BF9C_hyper_hydrants < 240) {
+            D_8010BF9C_hyper_hydrants += 3;
+            func_8010B38C_hyper_hydrants();
+        } else {
+            D_8010BF9C_hyper_hydrants = 240;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_8010B38C_hyper_hydrants);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_8010B658_hyper_hydrants);
+void func_8010B658_hyper_hydrants(omObjData *object) {
+    s16 positions[2][2] = { { 35, 32 }, { 252, 32 } };
+    s16 sprite;
+    s16 i;
+    s16 j;
+
+    sprite = func_8000B838_main(0x2F000A);
+    for (i = 0; i < 2; i++) {
+        D_8010C012_hyper_hydrants[i] = InitEspriteSlot(sprite, 0, 1);
+        func_8000BBD4_main(D_8010C012_hyper_hydrants[i], positions[i][0], positions[i][1]);
+        func_8000BB94_main(D_8010C012_hyper_hydrants[i]);
+    }
+    sprite = func_8000B838_main(0x21001B);
+    for (i = 0; i < 2; i++) {
+        D_8010C016_hyper_hydrants[i] = InitEspriteSlot(sprite, 0, 1);
+        func_8000BBD4_main(D_8010C016_hyper_hydrants[i], positions[i][0] + 12, positions[i][1]);
+        func_8000BB94_main(D_8010C016_hyper_hydrants[i]);
+    }
+    sprite = func_8000B838_main(0x31);
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < 2; j++) {
+            D_8010C01A_hyper_hydrants[i][j] = InitEspriteSlot(sprite, 0, 1);
+            func_8000BBD4_main(D_8010C01A_hyper_hydrants[i][j], D_8010BE14_hyper_hydrants[i][j][0], D_8010BE14_hyper_hydrants[i][j][1]);
+            func_8000BB94_main(D_8010C01A_hyper_hydrants[i][j]);
+        }
+    }
+    object->func = func_8010B8B0_hyper_hydrants;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_8010B8B0_hyper_hydrants);
 
@@ -325,5 +370,3 @@ void func_8010BD14_hyper_hydrants(Vec *arg0, Vec *arg1, Vec *arg2) {
         arg0->x = arg0->y = arg0->z = 0.0f;
     }
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", D_8010BF30_hyper_hydrants);

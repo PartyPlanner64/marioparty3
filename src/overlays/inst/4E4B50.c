@@ -1,35 +1,5 @@
 #include "common.h"
-#include "game/gamemes.h"
-
-typedef struct {
-    s16 curGroup;       /* 0x00 */
-    s16 unk_02[0xB];    /* 0x02 */
-    s16 spriteGroup[4]; /* 0x18, unknown size */
-    s16 unk_20[0x1C];   /* 0x20 */
-    Vec2f pos;          /* 0x58 */
-} UnkInst;              /* unknown size */
-
-typedef struct {
-    s16 curGroup;       /* 0x00 */
-    s16 mainMembers[3]; /* 0x02 */
-    s16 helpMembers[2]; /* 0x08 */
-    s16 member;         /* 0x0C */
-} UnkInstWin;           /* sizeof 0x0E */
-
-typedef struct {
-    s32 overlay;
-    u8 minigameType;
-    u8 unk05;
-    u16 flags;
-    s16 message;
-    s16 unk_0A[4];
-    s16 finalMessage;
-} InstMessageInfo;
-
-typedef struct {
-    s16 unk_00;
-    s16 x;
-} InstSpritePos;
+#include "inst.h"
 
 extern InstMessageInfo D_800A6D40_main[];
 extern u16 D_800CC698_main;
@@ -39,22 +9,13 @@ extern s32 D_8010D5B8_inst;
 extern s16 D_8010D5BA_inst;
 extern u16 D_8010DCC0_inst[2];
 extern u16 D_8010DCC4_inst[3];
-extern InstSpritePos D_8010DAF8_inst[3];
 extern s8 D_8010D411_inst;
 extern s8 D_8010D40B_inst;
-extern s16 D_8010DB04_inst[];
-extern s16 D_8010DB0A_inst[];
-extern s16 D_8010DB10_inst[];
-extern s16 D_8010DB16_inst[];
-extern s16 D_8010DB1C_inst[];
-extern s16 D_8010DB24_inst[];
-extern s16 D_8010DB2A_inst[];
-extern s16 D_8010DB30_inst[];
 extern s8 D_8010D5B1_inst;
 extern s8 D_8010DCD4_inst;
 extern s32 D_8010DCCC_inst;
 extern InstMessageInfo *D_8010DCD0_inst;
-extern s8 D_8010D400_inst[7];
+extern s8 D_8010D400_inst[4];
 extern s8 D_8010D406_inst;
 extern s8 D_8010D408_inst;
 extern s8 D_8010D409_inst;
@@ -65,8 +26,22 @@ extern void (*D_8010DCA4_inst)(s32);
 extern UnkInstWin D_8010DCA8_inst;
 extern GAMEMES D_8010DCD8_inst;
 extern GAMEMES D_8010DD50_inst;
-extern UnkInst D_8010DCE0_inst;
-extern UnkInst D_8010DD58_inst;
+
+const InstSpritePos D_8010DAF8_inst[3] = {{0, 95}, {0, 105}, {0, 115}};
+const s16 D_8010DB04_inst[2][3] = {
+    {0x3900, 0x3901, 0x3902},
+    {0x3908, 0x3909, 0x390A},
+};
+const s16 D_8010DB10_inst[2][3] = {
+    {0x3910, 0x3912, 0x3914},
+    {0x390C, 0x390D, 0x390E},
+};
+const s16 D_8010DB1C_inst[] = {0x3904, 0x3905, 0x3906, 0x0000};
+const s16 D_8010DB24_inst[2][3] = {
+    {0x3803, 0x3804, 0x3805},
+    {0x380A, 0x380B, 0x380C},
+};
+const s16 D_8010DB30_inst[] = {0x3811, 0x3812, 0x3813, 0x0000};
 
 s32 func_8003A37C_main(GAMEMES *, const char *, s32, s32, s32);
 
@@ -97,7 +72,7 @@ void func_8010B990_inst(void) {
     s32 sprite;
     s16 slot;
     omObjData *object;
-    InstSpritePos *positions;
+    const InstSpritePos *positions;
     u16 *sprites;
 
     object = omAddObj(20, 5, 0, -1, NULL);
@@ -177,7 +152,7 @@ void func_8010BE78_inst(s32 arg0) {
     s32 value;
     s16 *y;
     u16 *sprites;
-    InstSpritePos *positions;
+    const InstSpritePos *positions;
 
     if (D_8010D408_inst == 0) {
         func_8000BBD4_main(D_8010DCC0_inst[0], 160, *(y = &D_8010D5BA_inst));
@@ -222,18 +197,6 @@ void func_8010BE78_inst(s32 arg0) {
     func_8010D044_inst();
     D_8010DCA4_inst = func_8010C124_inst;
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E4B50", D_8010DAF8_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E4B50", D_8010DB04_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E4B50", D_8010DB10_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E4B50", D_8010DB1C_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E4B50", D_8010DB24_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E4B50", D_8010DB30_inst);
 
 void func_8010C124_inst(s32 arg0) {
     if (D_8010D409_inst == 1) {
@@ -372,31 +335,31 @@ void func_8010C5C4_inst(s32 arg0) {
                 default:
                     switch (D_8010D40A_inst) {
                         case 5:
-                            message = D_8010DB0A_inst[i];
+                            message = D_8010DB04_inst[1][i];
                             break;
                         case 4:
-                            message = D_8010DB10_inst[i];
+                            message = D_8010DB10_inst[0][i];
                             message += D_8010D411_inst != 2;
                             break;
                         case 3:
-                            message = D_8010DB16_inst[i];
+                            message = D_8010DB10_inst[1][i];
                             break;
                         case 7:
                             if (D_8010D40B_inst == 70) {
-                                message = D_8010DB2A_inst[i];
+                                message = D_8010DB24_inst[1][i];
                             } else {
                                 message = D_8010DB30_inst[i];
                             }
                             break;
                         case 8:
-                            message = D_8010DB24_inst[i];
+                            message = D_8010DB24_inst[0][i];
                             break;
                         case 0:
                         case 1:
                         case 2:
                         case 6:
                         default:
-                            message = D_8010DB04_inst[i];
+                            message = D_8010DB04_inst[0][i];
                             break;
                     }
                     break;
@@ -577,7 +540,7 @@ void func_8010CDE4_inst(const char *message, s32 x, s32 y) {
 }
 
 void func_8010CED0_inst(s32 x, s32 y) {
-    func_80054904_main(D_8010DCE0_inst.spriteGroup[D_8010DCE0_inst.curGroup], 0, x, y);
+    func_80054904_main(D_8010DCD8_inst.strGId[D_8010DCD8_inst.unk08], 0, x, y);
 }
 
 void func_8010CF14_inst(void) {
@@ -588,15 +551,15 @@ void func_8010CF14_inst(void) {
 }
 
 void func_8010CF98_inst(void) {
-    D_8010DD58_inst.pos.x = 216.0f;
-    D_8010DD58_inst.pos.y = 90.0f;
-    func_80054904_main(D_8010DD58_inst.spriteGroup[D_8010DD58_inst.curGroup], 0, 0xD8, 0x5A);
+    D_8010DD50_inst.unk60 = 216.0f;
+    D_8010DD50_inst.unk64 = 90.0f;
+    func_80054904_main(D_8010DD50_inst.strGId[D_8010DD50_inst.unk08], 0, 0xD8, 0x5A);
 }
 
 void func_8010CFF4_inst(void) {
-    D_8010DD58_inst.pos.x = 512.0f;
-    D_8010DD58_inst.pos.y = 512.0f;
-    func_80054904_main(D_8010DD58_inst.spriteGroup[D_8010DD58_inst.curGroup], 0, 0x200, 0x200);
+    D_8010DD50_inst.unk60 = 512.0f;
+    D_8010DD50_inst.unk64 = 512.0f;
+    func_80054904_main(D_8010DD50_inst.strGId[D_8010DD50_inst.unk08], 0, 0x200, 0x200);
 }
 
 void func_8010D044_inst(void) {
@@ -650,31 +613,31 @@ void func_8010D1D4_inst(void) {
             default:
                 switch (D_8010D40A_inst) {
                     case 5:
-                        message = D_8010DB0A_inst[0];
+                        message = D_8010DB04_inst[1][0];
                         break;
                     case 4:
-                        message = D_8010DB10_inst[0];
+                        message = D_8010DB10_inst[0][0];
                         message += D_8010D411_inst != 2;
                         break;
                     case 3:
-                        message = D_8010DB16_inst[0];
+                        message = D_8010DB10_inst[1][0];
                         break;
                     case 7:
                         if (D_8010D40B_inst == 70) {
-                            message = D_8010DB2A_inst[0];
+                            message = D_8010DB24_inst[1][0];
                         } else {
                             message = D_8010DB30_inst[0];
                         }
                         break;
                     case 8:
-                        message = D_8010DB24_inst[0];
+                        message = D_8010DB24_inst[0][0];
                         break;
                     case 0:
                     case 1:
                     case 2:
                     case 6:
                     default:
-                        message = D_8010DB04_inst[0];
+                        message = D_8010DB04_inst[0][0];
                         break;
                 }
                 break;

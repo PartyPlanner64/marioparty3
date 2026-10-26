@@ -28,3 +28,15 @@ D_8011A890_msetup = msetupMessageWindows;      /* current */
 D_8011A892_msetup = msetupMessageWindows + 0x2; /* windows */
 D_8011A949_msetup = D_8011A948_msetup + 0x1; /* controller low byte */
 D_8011AA42_msetup = D_8011AA30_msetup + 0x12;   /* totalTurns */
+
+/* inst array elements, low halfwords of word state, and object callbacks. */
+D_8010D401_inst = D_8010D400_inst + 0x1;
+D_8010D402_inst = D_8010D400_inst + 0x2;
+D_8010D5BA_inst = D_8010D5B8_inst + 0x2;
+D_8010D910_inst = D_8010D90C_inst + 0x4; /* motion column */
+D_8010DC02_inst = D_8010DC00_inst + 0x2;
+D_8010DC22_inst = D_8010DC20_inst + 0x2;
+D_8010DC32_inst = D_8010DC30_inst + 0x2;
+D_8010DC42_inst = D_8010DC40_inst + 0x2;
+D_8010DDE4_inst = D_8010DDE0_inst + 0x4; /* update */
+D_8010DDEC_inst = D_8010DDE8_inst + 0x4; /* update */

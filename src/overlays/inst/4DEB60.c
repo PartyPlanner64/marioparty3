@@ -10,13 +10,13 @@ typedef struct {
 } InstMinigameEntry;
 
 extern InstModelHooks *D_8010D4C0_inst[][2];
-extern s32 D_8010D90C_inst[][2];
-extern s32 D_8010D910_inst[][2];
-extern s32 D_8010D954_inst[];
+extern const s32 D_8010D90C_inst[][2];
+extern const s32 D_8010D910_inst[][2];
+extern const s32 D_8010D954_inst[];
 
 extern InstMinigameEntry D_800A6D40_main[];
-extern char D_8010D978_inst[];
-extern char D_8010D980_inst[];
+extern const char D_8010D978_inst[];
+extern const char D_8010D980_inst[];
 extern s32 D_8010D43C_inst;
 extern s32 D_8010D440_inst;
 extern s32 D_8010DC00_inst;
@@ -52,21 +52,12 @@ extern void *D_8010DC10_inst;
 extern void *D_8010DC14_inst;
 extern void *D_8010DC18_inst;
 extern InstObjectState D_8010DDD8_inst;
-extern s32 D_8010D658_inst[];
 extern s32 D_8010D508_inst;
 extern f32 D_8010D50C_inst;
 extern s32 D_8010D510_inst;
 extern s8 D_8010D40C_inst[5];
 extern u8 D_8010D4B0_inst[8];
 extern u8 D_8010D4B8_inst[8];
-extern u8 D_8010D6B0_inst[8][5];
-extern s8 D_8010D6D8_inst[4][3];
-extern u8 D_8010D6E4_inst[8][5];
-extern s8 D_8010D70C_inst[4][3];
-extern s8 D_8010D718_inst[5];
-extern s8 D_8010D71D_inst[4];
-extern s8 D_8010D721_inst[1];
-extern s8 D_8010D724_inst[8];
 extern u16 D_800A11D0_main[5];
 extern u16 D_800A11DC_main[5];
 
@@ -112,7 +103,7 @@ void func_8010986C_inst(omObjData *); /* extern */
 void func_80109A90_inst(void);        /* extern */
 void func_8010A1D0_inst(void);        /* extern */
 void func_8010B990_inst(void);        /* extern */
-HmfSkeletonNode *func_8001D33C_main(s16, char *);
+HmfSkeletonNode *func_8001D33C_main(s16, const char *);
 void func_8000BC48_main(u16, u16); /* extern */
 
 void func_801059A0_inst(void) {
@@ -386,6 +377,10 @@ void func_80106310_inst(omObjData *object) {
 }
 
 void func_80106388_inst(void) {
+    static const s32 D_8010D658_inst[] = {
+        0x170000, 0x170001, 0x170002, 0x170003, 0x170004,
+        0x170005, 0x170005, 0x170006, 0x140067, 0,
+    };
     u16 espriteSlot;
 
     espriteSlot = InitEspriteSlot(func_8000B838_main(D_8010D658_inst[D_8010D40A_inst]), 0, 0);
@@ -397,8 +392,6 @@ void func_801063F4_inst(void) {
     func_80037258_main();
     func_8005F524_main();
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4DEB60", D_8010D658_inst);
 
 s32 func_80106418_inst(Vec *startPosition, Vec *endPosition, Vec *startTarget, Vec *endTarget, s32 duration) {
     s32 done;
@@ -449,6 +442,44 @@ void func_80106850_inst(Vec *arg0, Vec *arg1) {
 }
 
 void func_80106898_inst(void) {
+    static const u8 D_8010D6B0_inst[8][5] = {
+        {40, 40, 30, 20, 20},
+        {20, 20, 10, 10, 10},
+        {10, 10, 10, 5, 5},
+        {10, 10, 12, 15, 5},
+        {2, 2, 5, 10, 10},
+        {10, 10, 20, 20, 20},
+        {3, 5, 10, 10, 10},
+        {5, 3, 3, 10, 20},
+    };
+    static const s8 D_8010D6D8_inst[4][3] = {
+        {0, 1, 2},
+        {0, 0, 3},
+        {0, 0, 4},
+        {0, 0, 4},
+    };
+    static const u8 D_8010D6E4_inst[8][5] = {
+        {30, 30, 30, 20, 20},
+        {20, 20, 10, 10, 10},
+        {10, 10, 15, 10, 15},
+        {10, 10, 5, 15, 15},
+        {10, 10, 10, 5, 5},
+        {7, 10, 15, 20, 20},
+        {5, 5, 12, 10, 5},
+        {8, 5, 3, 10, 20},
+    };
+    static const s8 D_8010D70C_inst[4][3] = {
+        {0, 1, 2},
+        {0, 0, 3},
+        {0, 0, 4},
+        {0, 0, 4},
+    };
+    static const struct {
+        s8 normal[5];
+        s8 replacement[4];
+        s8 preferred;
+    } D_8010D718_inst = {{20, 10, 20, 30, 20}, {20, 10, 10, 20}, 40};
+    static const s8 D_8010D724_inst[12] = {10, 1, 6, 5, 8, 3, 4, 2, 0, 0, 0, 0};
     u8 weights[8];
     s8 selected[8];
     s8 i;
@@ -527,15 +558,15 @@ void func_80106898_inst(void) {
             if (found >= 0) {
                 for (i = 0, j = 0; i < 5; i++) {
                     if (i == found) {
-                        D_800A11DC_main[i] = D_8010D721_inst[0];
+                        D_800A11DC_main[i] = D_8010D718_inst.preferred;
                     } else {
-                        D_800A11DC_main[i] = D_8010D71D_inst[j];
+                        D_800A11DC_main[i] = D_8010D718_inst.replacement[j];
                         j++;
                     }
                 }
             } else {
                 for (i = 0; i < 5; i++) {
-                    D_800A11DC_main[i] = D_8010D718_inst[i];
+                    D_800A11DC_main[i] = D_8010D718_inst.normal[i];
                 }
             }
         } else {
@@ -545,18 +576,6 @@ void func_80106898_inst(void) {
         }
     }
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4DEB60", D_8010D6B0_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4DEB60", D_8010D6D8_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4DEB60", D_8010D6E4_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4DEB60", D_8010D70C_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4DEB60", D_8010D718_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4DEB60", D_8010D724_inst);
 
 void func_80106EB4_inst(void) {
     s32 i;

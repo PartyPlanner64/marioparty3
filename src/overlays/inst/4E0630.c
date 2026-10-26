@@ -2,11 +2,7 @@
 #include "inst.h"
 
 extern InstModelHooks *D_8010D4C0_inst[][2];
-extern s32 D_8010D90C_inst[][2];
-extern s32 D_8010D910_inst[][2];
-extern s32 D_8010D954_inst[];
-extern char D_8010D978_inst[];
-extern char D_8010D980_inst[];
+extern const s32 D_8010D910_inst[][2];
 extern s32 D_8010D4A4_inst;
 extern s8 D_8010D408_inst;
 extern s8 D_8010D40A_inst;
@@ -18,6 +14,137 @@ extern InstObjectState D_8010DDD8_inst;
 extern s32 D_8010D508_inst;
 extern f32 D_8010D50C_inst;
 extern s32 D_8010D510_inst;
+
+extern const char D_8010D784_inst[];
+extern const char D_8010D78C_inst[];
+extern const char D_8010D794_inst[];
+extern const char D_8010D79C_inst[];
+extern const char D_8010D7AC_inst[];
+extern const char D_8010D7C4_inst[];
+extern const char D_8010D7CC_inst[];
+extern const char D_8010D7D4_inst[];
+extern const char D_8010D7DC_inst[];
+extern const char D_8010D800_inst[];
+extern const char D_8010D808_inst[];
+extern const char D_8010D810_inst[];
+extern const char D_8010D818_inst[];
+extern const char D_8010D83C_inst[];
+extern const char D_8010D844_inst[];
+extern const char D_8010D84C_inst[];
+extern const char D_8010D854_inst[];
+extern const char D_8010D870_inst[];
+extern const char D_8010D878_inst[];
+extern const char D_8010D890_inst[];
+extern const char D_8010D8B4_inst[];
+extern const char D_8010D8BC_inst[];
+extern const char D_8010D8C4_inst[];
+extern const char D_8010D8CC_inst[];
+extern const char D_8010D8D4_inst[];
+extern const char D_8010D8E4_inst[];
+extern const char D_8010D8FC_inst[];
+extern const char D_8010D978_inst[];
+extern const char D_8010D980_inst[];
+
+const InstModelHooks4 D_8010D770_inst = {4, {D_8010D79C_inst, D_8010D794_inst, D_8010D78C_inst, D_8010D784_inst}};
+
+const char D_8010D784_inst[] = "4p_4";
+
+const char D_8010D78C_inst[] = "4p_3";
+
+const char D_8010D794_inst[] = "4p_2";
+
+const char D_8010D79C_inst[] = "4p_1";
+
+const InstModelHooks D_8010D7A4_inst = {0, {D_8010D7AC_inst}};
+
+const char D_8010D7AC_inst[4] = "";
+
+const InstModelHooks4 D_8010D7B0_inst = {4, {D_8010D7DC_inst, D_8010D7D4_inst, D_8010D7CC_inst, D_8010D7C4_inst}};
+
+const char D_8010D7C4_inst[] = "2vs2_4";
+
+const char D_8010D7CC_inst[] = "2vs2_3";
+
+const char D_8010D7D4_inst[] = "2vs2_2";
+
+const char D_8010D7DC_inst[] = "2vs2_1";
+
+const InstModelHooks D_8010D7E4_inst = {0, {D_8010D7AC_inst}};
+
+const InstModelHooks4 D_8010D7EC_inst = {4, {D_8010D818_inst, D_8010D810_inst, D_8010D808_inst, D_8010D800_inst}};
+
+const char D_8010D800_inst[] = "3vs1_4";
+
+const char D_8010D808_inst[] = "3vs1_3";
+
+const char D_8010D810_inst[] = "3vs1_2";
+
+const char D_8010D818_inst[] = "3vs1_1";
+
+const InstModelHooks D_8010D820_inst = {0, {D_8010D7AC_inst}};
+
+const InstModelHooks4 D_8010D828_inst = {4, {D_8010D854_inst, D_8010D84C_inst, D_8010D844_inst, D_8010D83C_inst}};
+
+const char D_8010D83C_inst[] = "battle4";
+
+const char D_8010D844_inst[] = "battle3";
+
+const char D_8010D84C_inst[] = "battle2";
+
+const char D_8010D854_inst[] = "battle1";
+
+const InstModelHooks D_8010D85C_inst = {0, {D_8010D7AC_inst}};
+
+const InstModelHooks2 D_8010D864_inst = {2, {D_8010D878_inst, D_8010D870_inst}};
+
+const char D_8010D870_inst[] = "duel2";
+
+const char D_8010D878_inst[] = "duel1";
+
+const InstModelHooks D_8010D880_inst = {0, {D_8010D7AC_inst}};
+
+const InstModelHooks D_8010D888_inst = {1, {D_8010D890_inst}};
+
+const char D_8010D890_inst[] = "item_chara";
+
+const InstModelHooks5 D_8010D89C_inst = {5, {D_8010D8D4_inst, D_8010D8CC_inst, D_8010D8C4_inst, D_8010D8BC_inst, D_8010D8B4_inst}};
+
+const char D_8010D8B4_inst[] = "item5";
+
+const char D_8010D8BC_inst[] = "item4";
+
+const char D_8010D8C4_inst[] = "item3";
+
+const char D_8010D8CC_inst[] = "item2";
+
+const char D_8010D8D4_inst[] = "item1";
+
+const InstModelHooks D_8010D8DC_inst = {1, {D_8010D8E4_inst}};
+
+const char D_8010D8E4_inst[] = "omake1";
+
+const InstModelHooks D_8010D8EC_inst = {0, {D_8010D7AC_inst}};
+
+const InstModelHooks D_8010D8F4_inst = {1, {D_8010D8FC_inst}};
+
+const char D_8010D8FC_inst[] = "last1";
+
+const InstModelHooks D_8010D904_inst = {0, {D_8010D7AC_inst}};
+
+const s32 D_8010D90C_inst[][2] = {
+    {0x10, 0x18}, {0x11, 0x19}, {0x12, 0x1A},
+    {0x13, 0x1B}, {0x14, 0x1C}, {0x15, 0x1D},
+    {0x15, 0x1D}, {0x17, 0x1F}, {0x16, 0x1E},
+};
+
+const s32 D_8010D954_inst[] = {
+    0x170020, 0x170021, 0x170022, 0x170023, 0x170024,
+    0x170025, 0x170025, 0x170027, 0x170026,
+};
+
+const char D_8010D978_inst[] = "gamen";
+
+const char D_8010D980_inst[] = "frame";
 
 s16 func_8000B0D4_main(s32, u16);
 void func_80107E98_inst(void);
@@ -35,7 +162,7 @@ void func_80107F98_inst(omObjData *);
 void func_8010B124_inst(void);
 void func_80107A24_inst(omObjData *); /* extern */
 void func_80107BF8_inst(omObjData *); /* extern */
-HmfSkeletonNode *func_8001D33C_main(s16, char *);
+HmfSkeletonNode *func_8001D33C_main(s16, const char *);
 
 void func_80107470_inst(void) {
     s32 i;
@@ -147,102 +274,6 @@ void func_80107A24_inst(omObjData *object) {
 void func_80107BE4_inst(void) {
     D_8010DDD8_inst.update = func_80107BF8_inst;
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D770_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D784_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D78C_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D794_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D79C_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D7A4_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D7AC_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D7B0_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D7C4_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D7CC_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D7D4_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D7DC_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D7E4_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D7EC_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D800_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D808_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D810_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D818_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D820_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D828_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D83C_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D844_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D84C_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D854_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D85C_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D864_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D870_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D878_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D880_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D888_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D890_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D89C_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D8B4_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D8BC_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D8C4_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D8CC_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D8D4_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D8DC_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D8E4_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D8EC_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D8F4_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D8FC_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D904_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D90C_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D910_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D954_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D978_inst);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/inst/4E0630", D_8010D980_inst);
 
 void func_80107BF8_inst(omObjData *object) {
     HmfSkeletonNode *nodes[2];

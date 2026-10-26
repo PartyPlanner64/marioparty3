@@ -1671,3 +1671,16 @@ D_8010DCD8_inst = 0x8010DCD8; //segment:inst
 D_8010D770_inst = 0x8010D770; //rom:0x4E6930 align:16 segment:inst
 
 func_80108350_inst = 0x80108350; //rom:0x4E1510 type:func align:8 segment:inst
+
+D_8010D401_inst = 0x8010D401; //rom:0x4E65C1 defined:True segment:inst
+D_8010D402_inst = 0x8010D402; //rom:0x4E65C2 defined:True segment:inst
+D_8010D405_inst = 0x8010D405; //rom:0x4E65C5 type:s8 size:0x1 defined:True segment:inst
+D_8010D406_inst = 0x8010D406; //rom:0x4E65C6 type:s8 size:0x1 defined:True segment:inst
+D_8010D407_inst = 0x8010D407; //rom:0x4E65C7 type:s8 size:0x1 defined:True segment:inst
+D_8010D409_inst = 0x8010D409; //rom:0x4E65C9 type:s8 size:0x1 defined:True segment:inst
+D_8010D40A_inst = 0x8010D40A; //rom:0x4E65CA type:s8 size:0x1 defined:True segment:inst
+D_8010D40B_inst = 0x8010D40B; //rom:0x4E65CB type:s8 size:0x1 defined:True segment:inst
+D_8010D411_inst = 0x8010D411; //rom:0x4E65D1 type:s8 size:0x1 defined:True segment:inst
+D_8010D551_inst = 0x8010D551; //rom:0x4E6711 type:s8 size:0x1 defined:True segment:inst
+D_8010D5B1_inst = 0x8010D5B1; //rom:0x4E6771 type:s8 size:0x1 defined:True segment:inst
+D_8010D5BA_inst = 0x8010D5BA; //rom:0x4E677A type:s16 size:0x2 defined:True segment:inst

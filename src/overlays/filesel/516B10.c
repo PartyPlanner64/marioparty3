@@ -179,6 +179,7 @@ void func_801110F0_filesel(u32);
 u32 func_80109570_filesel(s32);
 s32 func_80109968_filesel(s32);
 void func_80109B2C_filesel(void);
+void func_80111660_filesel(s32, s32, s32);
 void func_8010A028_filesel(void);
 void func_8010A7D8_filesel(s32);
 void func_8011132C_filesel(s32);
@@ -203,6 +204,7 @@ u32 func_80106AD8_filesel(u32);
 s32 func_8010AC58_filesel(s32);
 s32 func_80112494_filesel(s32, u8 *);
 void func_80050064_main(s32);
+void func_80050DDC_main(s16, s16);
 void func_8000BEAC_main(u16, u8, u8, u8);
 void func_8000BBFC_main(u16, s16);
 void func_8000BC48_main(u16, u16);
@@ -1481,7 +1483,139 @@ s32 func_801099A8_filesel(s32 selection, s32 option0, s32 option1, s32 option2) 
     return selection;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80109B2C_filesel);
+void func_80109B2C_filesel(void) {
+    Vec sourcePosition;
+    Vec destinationPosition;
+    u8 name[0x20];
+    s32 error = 0;
+    s32 alpha;
+    s32 i;
+    s32 destination;
+    s32 source;
+    s32 model;
+    s32 count;
+
+    count = func_80108834_filesel();
+    if (count <= 0) {
+        func_801076D0_filesel(4, 0x2A03);
+        error = 1;
+    } else if (count >= 3) {
+        func_801076D0_filesel(4, 0x2A04);
+        error = 1;
+    }
+    if (error != 0) {
+        func_80108878_filesel();
+    } else {
+        func_80106168_filesel(2, 2, 0);
+        func_8010F65C_filesel();
+        func_8010F678_filesel(2);
+        for (i = 0; i < 3; i++) {
+            if (D_801142D8_filesel.files[i].unk_04 == UNK_VALUE) {
+                break;
+            }
+        }
+        source = i;
+        func_801076D0_filesel(4, 0x2A02);
+        source = func_801099A8_filesel(source,
+                                       D_801142D8_filesel.files[0].unk_04 == UNK_VALUE,
+                                       D_801142D8_filesel.files[1].unk_04 == UNK_VALUE,
+                                       D_801142D8_filesel.files[2].unk_04 == UNK_VALUE);
+        if (source < 0) {
+            goto cancel;
+        }
+        switch (source) {
+            case 0:
+                func_8010779C_filesel(4, 0, (u32)D_80112AE0_filesel);
+                break;
+            case 1:
+                func_8010779C_filesel(4, 0, (u32)D_80112AE4_filesel);
+                break;
+            case 2:
+                func_8010779C_filesel(4, 0, (u32)D_80112AE8_filesel);
+                break;
+        }
+        for (i = 0; i < 3; i++) {
+            if (D_801142D8_filesel.files[i].unk_04 != UNK_VALUE) {
+                break;
+            }
+        }
+        func_801076D0_filesel(4, 0x2A05);
+        destination = func_801099A8_filesel(i,
+                                            source != 0 && D_801142D8_filesel.files[0].unk_04 != UNK_VALUE,
+                                            source != 1 && D_801142D8_filesel.files[1].unk_04 != UNK_VALUE,
+                                            source != 2 && D_801142D8_filesel.files[2].unk_04 != UNK_VALUE);
+        if (destination < 0) {
+            goto cancel;
+        }
+        func_80107670_filesel(4);
+        func_80107608_filesel(4, 160.0f, 208.0f);
+        func_801076D0_filesel(4, 0x2A16);
+        HuPrcSleep(3);
+        func_80050DDC_main(source, destination);
+        SLCurBoxNoSet(destination);
+        func_80050800_main();
+        func_80112184_filesel(destination);
+        HuPrcSleep(3);
+        func_8010F874_filesel(destination);
+        HuPrcSleep(3);
+        func_8010671C_filesel(source, 0);
+        func_8010684C_filesel(source, 0);
+        HuAudFXPlay(0x2F6);
+        func_801068B0_filesel(source);
+        func_801065B8_filesel(source, &sourcePosition.x, &sourcePosition.y, &sourcePosition.z);
+        func_801065B8_filesel(destination, &destinationPosition.x, &destinationPosition.y, &destinationPosition.z);
+        func_80106220_filesel(6, 0x1F002B, 0x6A9);
+        func_801064DC_filesel(6, destinationPosition.x, destinationPosition.y, destinationPosition.z);
+        func_80106550_filesel(6, 0.8f, 0.8f, 0.8f);
+        func_801066DC_filesel(6);
+        func_80106344_filesel(destination);
+        func_8010669C_filesel(destination + 3);
+        func_80106220_filesel(destination, 0x1F002A, 0x6A9);
+        func_801064DC_filesel(destination, sourcePosition.x, sourcePosition.y, sourcePosition.z);
+        func_80106550_filesel(destination, 0.8f, 0.8f, 0.8f);
+        func_8010684C_filesel(destination, 0);
+        func_8010671C_filesel(destination, 1);
+        func_8010669C_filesel(destination);
+        model = func_8010642C_filesel(6);
+        func_8001FA68_main(model);
+        for (i = 0, alpha = 255; i < 16; i++) {
+            func_8001F9E4_main(model, alpha);
+            alpha -= 16;
+            HuPrcVSleep();
+        }
+        func_8010669C_filesel(6);
+        func_80106344_filesel(6);
+        func_801066DC_filesel(destination);
+        func_801066DC_filesel(destination + 3);
+        func_80111660_filesel(source, destination, 16);
+        HuPrcSleep(16);
+        func_8010671C_filesel(source, 4);
+        HuAudFXPlay(0x2F7);
+        func_801068B0_filesel(source);
+        HuPrcSleep(3);
+        func_80112508_filesel(destination, name);
+        func_80105EC0_filesel(destination + 13);
+        func_8010F760_filesel(destination, 1);
+        func_801076D0_filesel(destination + 1, (u32)name);
+        func_8010F844_filesel(destination);
+        func_80108878_filesel();
+        func_801076D0_filesel(4, 0x2A06);
+    }
+    func_8010F65C_filesel();
+    func_8010F678_filesel(0);
+    return;
+
+cancel:
+    func_8010AB60_filesel(18, 3);
+    func_80108878_filesel();
+    func_8010F65C_filesel();
+    func_8010F678_filesel(0);
+    if ((u32)(func_80108834_filesel() - 1) < 3) {
+        func_801076D0_filesel(4, 0x2A01);
+    } else {
+        func_801076D0_filesel(4, 0x2A03);
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/filesel/516B10", D_80112AE0_filesel);
 

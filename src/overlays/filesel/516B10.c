@@ -24,12 +24,18 @@ typedef struct UnkFileSelect {
     s32 unk_40;
     s32 unk_44;
     s32 unk_48;
-    char unk_4C[0x14];
+    s16 unk_4C[4];
+    s32 unk_54;
+    s32 unk_58;
+    s32 unk_5C;
     s32 unk_60;
     s32 unk_64;
-    char unk_68[0x14];
+    s16 unk_68[4];
+    s32 unk_70;
+    s32 unk_74;
+    s32 unk_78;
     s32 unk_7C;
-    char unk_80[4];
+    s32 unk_80;
 } UnkFileSelect; // sizeof 0x84
 
 typedef struct FileSelectData {
@@ -109,6 +115,9 @@ typedef struct FileSelectCameraState {
     Vec rotation;
     FileSelectCameraTransition transition;
 } FileSelectCameraState;
+
+void func_8005086C_main(void);
+void func_80050974_main(void);
 
 void func_80106B40_filesel(s32, u32, s16, s16, s16, s16, s16);
 void func_8010F678_filesel(s32);
@@ -1777,7 +1786,129 @@ s32 func_8010BE30_filesel(u32 buttons) {
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010BE30_filesel);
 #endif
 
+#ifdef NON_MATCHING
+// GCC reloads the input-state address at selectOptions, adding two instructions.
+s32 func_8010C25C_filesel(u32 buttons) {
+    if (buttons & 0x1000) {
+        D_80114478_filesel.mode = 1;
+        D_80114478_filesel.option = 11;
+        func_8010BE14_filesel();
+        func_8010B6F4_filesel(D_80114478_filesel.option);
+        return 0;
+    }
+    if (buttons & 0xF00) {
+        func_8010BDC4_filesel();
+        if (buttons & 0x800) {
+            if (--D_80114478_filesel.row < 0) {
+                D_80114478_filesel.row = 0;
+                goto selectOptions;
+            }
+        } else if (buttons & 0x400) {
+            if (++D_80114478_filesel.row >= 5) {
+                D_80114478_filesel.row = 4;
+            selectOptions:
+                D_80114478_filesel.mode = 1;
+                D_80114478_filesel.option = 8;
+                func_8010B6F4_filesel(8);
+                func_8010BE14_filesel();
+                return 0;
+            }
+        } else if (buttons & 0x200) {
+            if (--D_80114478_filesel.column < 0) {
+                D_80114478_filesel.column = 17;
+            }
+        } else if (buttons & 0x100) {
+            if (++D_80114478_filesel.column >= 18) {
+                D_80114478_filesel.column = 0;
+            }
+        } else {
+            return 0;
+        }
+        func_8010BDC4_filesel();
+        return 0;
+    }
+    if (D_800D5558_main[0] & 0x8000) {
+        if (D_80114478_filesel.length < 5) {
+            HuAudFXPlay(0x2EE);
+            D_80114478_filesel.name[D_80114478_filesel.length] = func_8010B4FC_filesel(D_80114478_filesel.column, D_80114478_filesel.row);
+            D_80114478_filesel.length++;
+            D_80114470_filesel = 1;
+        }
+        D_80114478_filesel.name[D_80114478_filesel.length] = 0;
+        func_801076D0_filesel(10, (u32)D_80114478_filesel.name);
+        func_8010A978_filesel(D_80114478_filesel.length + 1);
+        if (D_80114478_filesel.length >= 5) {
+            D_80114478_filesel.mode = 1;
+            D_80114478_filesel.option = 11;
+            func_8010B6F4_filesel(11);
+            func_8010B684_filesel(D_80114478_filesel.keyboard);
+            func_8010BE14_filesel();
+        }
+        return 0;
+    }
+    if (D_800D5558_main[0] & 0x4000) {
+        D_80114478_filesel.name[D_80114478_filesel.length] = 0;
+        if (D_80114478_filesel.length > 0) {
+            HuAudFXPlay(0x2EF);
+            D_80114478_filesel.length--;
+            D_80114478_filesel.name[D_80114478_filesel.length] = 0;
+            func_801076D0_filesel(10, (u32)D_80114478_filesel.name);
+            func_8010A978_filesel(D_80114478_filesel.length + 1);
+            D_80114470_filesel = 1;
+        } else {
+            HuAudFXPlay(1);
+            D_80114478_filesel.mode = 1;
+            D_80114478_filesel.option = 11;
+            func_8010B6F4_filesel(11);
+            func_8010B684_filesel(D_80114478_filesel.keyboard);
+            func_8010BE14_filesel();
+        }
+        return 0;
+    }
+    if (buttons & 0x2000) {
+        HuAudFXPlay(1);
+        switch (D_80114478_filesel.keyboard) {
+            case 4:
+                D_80114478_filesel.keyboard = 6;
+                if (D_80114478_filesel.column >= 13) {
+                    D_80114478_filesel.column = 12;
+                }
+                func_8010BDC4_filesel();
+                break;
+            case 5:
+                D_80114478_filesel.keyboard = 4;
+                break;
+            case 6:
+                D_80114478_filesel.keyboard = 5;
+                break;
+        }
+        func_8010B684_filesel(D_80114478_filesel.keyboard);
+    } else if (buttons & 0x10) {
+        HuAudFXPlay(1);
+        switch (D_80114478_filesel.keyboard) {
+            case 4:
+                D_80114478_filesel.keyboard = 5;
+                break;
+            case 5:
+                D_80114478_filesel.keyboard = 6;
+                if (D_80114478_filesel.column >= 13) {
+                    D_80114478_filesel.column = 12;
+                }
+                func_8010BDC4_filesel();
+                break;
+            case 6:
+                D_80114478_filesel.keyboard = 4;
+                break;
+        }
+        func_8010BDC4_filesel();
+        func_8010B684_filesel(D_80114478_filesel.keyboard);
+    }
+    return 0;
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010C25C_filesel);
+#endif
 
 #ifdef NON_MATCHING
 // GCC reloads the input-state address at selectOptions, adding two instructions.
@@ -2976,11 +3107,66 @@ void func_80111CBC_filesel(s32 fileIndex) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80111E78_filesel);
+void func_80111E78_filesel(s32 fileIndex) {
+    D_801142D8_filesel.files[fileIndex].unk_70 = 0;
+    D_801142D8_filesel.files[fileIndex].unk_74 = 0;
+    D_801142D8_filesel.files[fileIndex].unk_78 = 0;
+    D_801142D8_filesel.files[fileIndex].unk_7C = 0;
+    D_801142D8_filesel.files[fileIndex].unk_80 = 99;
+    if (_CheckFlag(0x16)) {
+        func_8005086C_main();
+        D_801142D8_filesel.files[fileIndex].unk_68[0] = 0;
+        D_801142D8_filesel.files[fileIndex].unk_68[1] = 1;
+        D_801142D8_filesel.files[fileIndex].unk_68[2] = 2;
+        D_801142D8_filesel.files[fileIndex].unk_68[3] = 3;
+        D_801142D8_filesel.files[fileIndex].unk_70 = (GwSystem.playMode ^ 1) & 1;
+        D_801142D8_filesel.files[fileIndex].unk_74 = GwSystem.current_board_index;
+        D_801142D8_filesel.files[fileIndex].unk_78 = GwSystem.current_turn < 4 ? GwSystem.current_game_length : 3;
+        D_801142D8_filesel.files[fileIndex].unk_7C = GwSystem.current_turn >= 100 ? 99 : (s32)GwSystem.current_turn;
+        D_801142D8_filesel.files[fileIndex].unk_80 = GwSystem.total_turns >= 100 ? 99 : (s32)GwSystem.total_turns;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80111FFC_filesel);
+void func_80111FFC_filesel(s32 fileIndex) {
+    D_801142D8_filesel.files[fileIndex].unk_54 = 0;
+    D_801142D8_filesel.files[fileIndex].unk_58 = 0;
+    D_801142D8_filesel.files[fileIndex].unk_5C = 0;
+    D_801142D8_filesel.files[fileIndex].unk_60 = 0;
+    D_801142D8_filesel.files[fileIndex].unk_64 = 99;
+    if (_CheckFlag(0x17)) {
+        func_80050974_main();
+        D_801142D8_filesel.files[fileIndex].unk_4C[0] = 0;
+        D_801142D8_filesel.files[fileIndex].unk_4C[1] = 1;
+        D_801142D8_filesel.files[fileIndex].unk_4C[2] = 2;
+        D_801142D8_filesel.files[fileIndex].unk_4C[3] = 3;
+        D_801142D8_filesel.files[fileIndex].unk_54 = (((u8)GwSystem.playMode >> 1) ^ 1) & 1;
+        D_801142D8_filesel.files[fileIndex].unk_58 = GwSystem.current_board_index;
+        D_801142D8_filesel.files[fileIndex].unk_5C = GwSystem.current_turn < 4 ? GwSystem.current_game_length : 3;
+        D_801142D8_filesel.files[fileIndex].unk_60 = GwSystem.current_turn >= 100 ? 99 : (s32)GwSystem.current_turn;
+        D_801142D8_filesel.files[fileIndex].unk_64 = GwSystem.total_turns >= 100 ? 99 : (s32)GwSystem.total_turns;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80112184_filesel);
+void func_80112184_filesel(s32 fileIndex) {
+    s32 i;
+
+    D_801142D8_filesel.files[fileIndex].unk_04 = GwCommon.unk_00;
+    if (D_801142D8_filesel.files[fileIndex].unk_04 == UNK_VALUE) {
+        for (i = 0; i < 10; i += 2) {
+            D_801142D8_filesel.files[fileIndex].name[i] = GwCommon.fileName[i];
+            D_801142D8_filesel.files[fileIndex].name[i + 1] = GwCommon.fileName[i + 1];
+        }
+        if ((D_801142D8_filesel.files[fileIndex].name[0] | D_801142D8_filesel.files[fileIndex].name[1]) == 0) {
+            D_801142D8_filesel.files[fileIndex].unk_04 = 0;
+        }
+    } else {
+        D_801142D8_filesel.files[fileIndex].name[1] = 0;
+        D_801142D8_filesel.files[fileIndex].name[0] = 0;
+    }
+    func_80111CBC_filesel(fileIndex);
+    func_80111E78_filesel(fileIndex);
+    func_80111FFC_filesel(fileIndex);
+}
 
 void func_801122B0_filesel(s32 fileIndex) {
     s32 i;

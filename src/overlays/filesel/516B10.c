@@ -238,6 +238,7 @@ extern Vec D_801128C8_filesel[][2];
 extern FileSelectCameraState D_801146B0_filesel;
 extern u8 D_800D09A9_main;
 extern s32 D_80114500_filesel;
+extern f32 D_800A0A7C_main;
 extern f32 D_801144F8_filesel;
 extern f32 D_801144FC_filesel;
 extern f32 D_801128A0_filesel;
@@ -1371,7 +1372,37 @@ void func_8010A680_filesel(s32 fileIndex, f32 x, f32 y, f32 z) {
     func_8010669C_filesel(nameIndex);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010A7D8_filesel);
+void func_8010A7D8_filesel(s32 arg0) {
+    s16 model = arg0;
+    f32 angle;
+    f32 progress;
+    f32 scale;
+
+    func_8001C2FC_main(model, 0x22000, 0x20000);
+    func_8001C448_main(model);
+    func_8001C954_main(model);
+    HuPrcVSleep();
+    progress = 0.0f;
+    angle = 0.0f;
+    scale = 1.0f;
+    while (1) {
+        if (progress > 1.0f) {
+            break;
+        }
+        D_800A0A7C_main = angle;
+        func_8001D558_main(model, progress, scale, 2);
+        angle += 46.0f;
+        if (angle > 360.0f) {
+            angle -= 360.0f;
+        }
+        progress += 0.1f;
+        scale += ((10.0f - scale) / 67.0f) * 4.0f;
+        HuPrcVSleep();
+    }
+    func_8001C258_main(model, 4, 4);
+    func_8001ACDC_main(model);
+    HuPrcSleep(3);
+}
 
 void func_8010A978_filesel(s32 arg0) {
     if (arg0 >= 6) {

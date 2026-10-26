@@ -116,6 +116,7 @@ typedef struct FileSelectCameraState {
     FileSelectCameraTransition transition;
 } FileSelectCameraState;
 
+void func_80030030_main(f32);
 void func_8005086C_main(void);
 void func_80050974_main(void);
 
@@ -251,7 +252,39 @@ extern u8 D_80112D9C_filesel[];
 extern u8 D_80112DAC_filesel[];
 extern u8 D_80112DBC_filesel[];
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801059D0_filesel);
+extern Vec D_801129C0_filesel;
+extern Vec D_801129CC_filesel;
+extern Vec D_801129D8_filesel;
+extern u8 D_800D2132_main;
+
+void func_801059D0_filesel(void) {
+    Vec position;
+    Vec target;
+    Vec up;
+
+    omInitObjMan(0x40, 0x20);
+    func_800142A0_main(0x20);
+    func_8004A208_main();
+    func_8000B5F0_main(1);
+    position = D_801129C0_filesel;
+    target = D_801129CC_filesel;
+    up = D_801129D8_filesel;
+    ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
+    ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
+    Hu3DCamSetPerspective(0, 41.0f, 80.0f, 8000.0f);
+    Hu3DCamSetPositionOrientation(0, &position, &target, &up);
+    func_80030030_main(1.0f);
+    func_8004A950_main();
+    pfInit();
+    func_8005A6B0_main();
+    HmfLightMaxSet(3);
+    HmfLightColorSet(0, 0x80, 0x80, 0x80);
+    HmfLightColorSet(1, 0x40, 0x40, 0x60);
+    HmfLightColorSet(2, 0, 0, 0);
+    HmfLightColorSet(3, 0, 0, 0);
+    HmfLightDirSet(1, 0.0f, 64.0f, 192.0f);
+    D_800D2132_main = 0;
+}
 
 #ifdef NON_MATCHING
 // The C body matches, but the original has eight bytes of trailing padding.

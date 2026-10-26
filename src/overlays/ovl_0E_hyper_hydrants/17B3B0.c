@@ -50,6 +50,7 @@ extern s8 D_8010BE10_hyper_hydrants[];
 extern s8 D_8010BE38_hyper_hydrants[][16];
 extern omObjData *D_8010BFE0_hyper_hydrants[];
 extern s8 D_8010BE6A_hyper_hydrants;
+extern s8 D_8010BE68_hyper_hydrants[2];
 extern s8 D_8010BF46_hyper_hydrants;
 extern s16 D_8010BF8E_hyper_hydrants;
 extern s16 D_8010BF90_hyper_hydrants;
@@ -72,6 +73,7 @@ void func_8000B710_main(s32 arg0);
 void func_80105EB0_hyper_hydrants(s8 camera);
 void func_8010B8B0_hyper_hydrants(omObjData *object);
 void func_8010B38C_hyper_hydrants(void);
+void func_8010A2D4_hyper_hydrants(omObjData *object);
 void func_80107A90_hyper_hydrants(omObjData *object);
 void func_80108788_hyper_hydrants(s16 model);
 
@@ -413,7 +415,106 @@ void func_80109B30_hyper_hydrants(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80109E44_hyper_hydrants);
+void func_80109E44_hyper_hydrants(omObjData *object) {
+    HyperHydrantsPlayerData *data = object->data;
+    Vec position;
+    Vec2f screen;
+
+    if (data->unk01 == 0) {
+        if ((u16)(func_800E6E9C_minigame() % 60) == 0) {
+            if (D_8010BE68_hyper_hydrants[data->unk02] != 0) {
+                return;
+            }
+            func_8010A2D4_hyper_hydrants(object);
+            func_8010BC80_hyper_hydrants(0x365, data->unk02, 0, 0);
+            D_8010BE68_hyper_hydrants[data->unk02] = 1;
+            ((HyperHydrantsPlayerData *)D_8010BFE0_hyper_hydrants[data->unk02]->data)->unk03 = 1;
+        } else {
+            D_8010BE68_hyper_hydrants[data->unk02] = 0;
+            return;
+        }
+    } else if (data->unk05 == 1) {
+        object->scale.x += 0.05f;
+        switch (data->unk01) {
+            case 1:
+                if (object->scale.x > 1.0f) {
+                    object->scale.x = 1.0f;
+                    data->unk05 = 0;
+                }
+                break;
+            case 2:
+                if (object->scale.x > 1.25f) {
+                    object->scale.x = 1.25f;
+                    data->unk05 = 0;
+                }
+                break;
+            case 3:
+                if (object->scale.x > 1.5f) {
+                    object->scale.x = 1.5f;
+                    data->unk05 = 0;
+                }
+                break;
+        }
+        object->scale.y = object->scale.z = object->scale.x;
+        data->unk0C = object->scale.x / 2.0f;
+    }
+    if (data->unk06 == 2) {
+        object->trans.z += 2.0f;
+        if (object->trans.z > -500.0f) {
+            data->unk06 = 0;
+        }
+    } else if (data->unk0A == 0) {
+        data->unk0A = (rand8() >> 5) * 15;
+        if ((rand8() >> 7) == 0) {
+            data->unk06 ^= 1;
+        }
+    } else {
+        data->unk0A--;
+        if (data->unk06 == 0) {
+            if (object->trans.z > -200.0f) {
+                data->unk06 ^= 1;
+            }
+        } else if (data->unk06 == 1) {
+            if (object->trans.z < -500.0f) {
+                data->unk06 ^= 1;
+            }
+        }
+    }
+    if (data->unk06 == 0) {
+        object->trans.z += 3.0f;
+    } else if (data->unk06 == 1) {
+        object->trans.z -= 3.0f;
+    }
+    if (data->unk08 == 0) {
+        data->unk03 ^= 1;
+        data->unk08 = (rand8() >> 5) * 15;
+    } else {
+        data->unk08--;
+        position.x = object->trans.x;
+        position.y = object->trans.y;
+        position.z = object->trans.z;
+        if (data->unk02 == 0) {
+            Hu3DCam3DToScreen(0, &position, &screen);
+            if (data->unk03 == 0 && screen.x < 119.0f) {
+                data->unk03 ^= 1;
+            } else if (data->unk03 == 1 && screen.x > 225.0f) {
+                data->unk03 ^= 1;
+            }
+        } else {
+            Hu3DCam3DToScreen(1, &position, &screen);
+            if (data->unk03 == 0 && screen.x < 95.0f) {
+                data->unk03 ^= 1;
+            } else if (data->unk03 == 1 && screen.x > 201.0f) {
+                data->unk03 ^= 1;
+            }
+        }
+    }
+    if (data->unk03 != 0) {
+        object->trans.x += 4.0f;
+    } else {
+        object->trans.x -= 4.0f;
+    }
+}
 
 void func_8010A2D4_hyper_hydrants(omObjData *object) {
     HyperHydrantsPlayerData *data = object->data;

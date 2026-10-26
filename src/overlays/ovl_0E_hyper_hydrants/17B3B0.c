@@ -72,7 +72,16 @@ extern s16 D_8010BF58_hyper_hydrants;
 extern s16 D_8010BF88_hyper_hydrants;
 extern s16 D_8010BF8A_hyper_hydrants[2];
 extern s8 D_8010BF50_hyper_hydrants;
-extern u16 D_800A178C_main[][12];
+extern u32 D_800A178C_main[][6];
+extern s32 D_800A1790_main[][6];
+extern s8 D_8010BE35_hyper_hydrants;
+extern s8 D_8010BF40_hyper_hydrants;
+extern Vec D_8010BDE0_hyper_hydrants;
+extern Vec D_8010BDEC_hyper_hydrants;
+extern Vec D_8010BDF8_hyper_hydrants;
+extern Vec D_8010BE04_hyper_hydrants;
+extern s16 D_8010C022_hyper_hydrants;
+extern s16 D_8010C024_hyper_hydrants;
 extern Vec D_8010C028_hyper_hydrants[2];
 extern HyperHydrantsChainPoint *D_8010BFB0_hyper_hydrants[2][6];
 
@@ -125,6 +134,7 @@ void func_8010B2FC_hyper_hydrants(omObjData *object);
 void func_8010AB34_hyper_hydrants(omObjData *object);
 void func_8010A2D4_hyper_hydrants(omObjData *object);
 void func_80107A90_hyper_hydrants(omObjData *object);
+void func_80106A50_hyper_hydrants(omObjData *object);
 void func_80108788_hyper_hydrants(s16 model);
 void func_801091B0_hyper_hydrants(omObjData *object);
 void func_80109B30_hyper_hydrants(omObjData *object);
@@ -269,7 +279,125 @@ void func_801060F8_hyper_hydrants(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80106238_hyper_hydrants);
+void func_80106238_hyper_hydrants(omObjData *object) {
+    s32 character;
+    u32 model;
+    s32 motion;
+    func_800E1BA8_minigame_ObjData *playerData;
+    HyperHydrantsCharacterData *data;
+
+    character = (s8)GwPlayer[D_8010BE35_hyper_hydrants].chr;
+    model = D_800A178C_main[character][0];
+    motion = D_800A1790_main[character][0];
+    func_800E19F0_minigame(1);
+    func_800E1BA8_minigame(object, model, motion, D_8010BE35_hyper_hydrants, 0xAC9, 0xAD9);
+    playerData = object->data;
+    object->rot.x = object->rot.z = 0.0f;
+    object->scale.x = object->scale.y = object->scale.z = 1.0f;
+    playerData->unk158 = HuMemAllocTag(sizeof(HyperHydrantsCharacterData), 0x7918);
+    memset(object->data, 0, sizeof(HyperHydrantsCharacterData));
+    data = playerData->unk158;
+    data->charge.value = 0;
+    data->unk1A = 0;
+    data->unk10 = 0;
+    data->unk12 = 0x4000;
+    data->unk1E = 0;
+    data->unk1C = 0;
+    func_8000B460_main(object, 0, func_80017BB8_main(character, 0));
+    func_8000B460_main(object, 1, func_80017BB8_main(character, 0x14));
+    func_8000B460_main(object, 2, func_80017BB8_main(character, 0x7B));
+    func_8000B460_main(object, 3, func_80017BB8_main(character, 0x2F));
+    func_8000B460_main(object, 4, func_80017BB8_main(character, 0x36));
+    if (D_8010BE35_hyper_hydrants == 0) {
+        D_8010BF40_hyper_hydrants = (rand8() * 5U) >> 7;
+    }
+    switch (GwPlayer[playerData->unk59].group) {
+        case 0:
+            object->trans.x = D_8010BDE0_hyper_hydrants.x;
+            object->trans.y = D_8010BDE0_hyper_hydrants.y;
+            object->trans.z = D_8010BDE0_hyper_hydrants.z;
+            D_8010BFAA_hyper_hydrants = playerData->unk59;
+            object->rot.y = 180.0f;
+            object->model[2] = func_8000B108_main(0x2F0004, 0xA99);
+            Hu3DModelRotSet(object->model[2], object->rot.x, object->rot.y, object->rot.z);
+            func_8001C624_main(object->model[0], HmfModelData[object->motion[2]].unk02, 0, 1, 2);
+            Hu3DModelPosSet(object->model[2], object->trans.x, 0, object->trans.z);
+            func_8001C8A8_main(object->model[0], 1);
+            func_8001C8A8_main(object->model[1], 1);
+            func_8001C8A8_main(object->model[2], 1);
+            D_8010C022_hyper_hydrants = func_8010BC80_hyper_hydrants(0x369, 0, 1, playerData->unk59);
+            func_8004AAD0_main(D_8010C022_hyper_hydrants, 0);
+            break;
+        case 1:
+            object->trans.x = D_8010BDEC_hyper_hydrants.x;
+            object->trans.y = D_8010BDEC_hyper_hydrants.y;
+            object->trans.z = D_8010BDEC_hyper_hydrants.z;
+            D_8010BFA8_hyper_hydrants = playerData->unk59;
+            object->rot.y = 0;
+            object->model[2] = func_8000B108_main(0x2F0005, 0xA89);
+            func_8001C258_main(object->model[2], 0x10000, 0x10000);
+            func_8001F6BC_main(object->model[2], 0, 0, 0, 0);
+            func_8001F6F8_main(object->model[2], 16, 16, 16, 0);
+            func_8001C624_main(object->model[0], HmfModelData[object->motion[1]].unk02, 0, 1, 2);
+            if ((model >> 16) == 6) {
+                object->trans.z -= 48.7f;
+                Hu3DModelPosSet(object->model[2], object->trans.x, 0, object->trans.z + 48.7f);
+            } else {
+                Hu3DModelPosSet(object->model[2], object->trans.x, 0, object->trans.z);
+            }
+            func_8001C8A8_main(object->model[0], 1);
+            func_8001C8A8_main(object->model[1], 1);
+            func_8001C8A8_main(object->model[2], 1);
+            break;
+        case 2:
+            object->trans.x = D_8010BDF8_hyper_hydrants.x;
+            object->trans.y = D_8010BDF8_hyper_hydrants.y;
+            object->trans.z = D_8010BDF8_hyper_hydrants.z;
+            D_8010BFAB_hyper_hydrants = playerData->unk59;
+            object->rot.y = 180.0f;
+            object->model[2] = func_8000B108_main(0x2F0006, 0xA99);
+            Hu3DModelRotSet(object->model[2], object->rot.x, object->rot.y, object->rot.z);
+            func_8001C624_main(object->model[0], HmfModelData[object->motion[2]].unk02, 0, 1, 2);
+            Hu3DModelPosSet(object->model[2], object->trans.x, 0, object->trans.z);
+            func_8001C8A8_main(object->model[0], 2);
+            func_8001C8A8_main(object->model[1], 2);
+            func_8001C8A8_main(object->model[2], 2);
+            D_8010C024_hyper_hydrants = func_8010BC80_hyper_hydrants(0x369, 1, 1, playerData->unk59);
+            func_8004AAD0_main(D_8010C024_hyper_hydrants, 0);
+            break;
+        case 3:
+            object->trans.x = D_8010BE04_hyper_hydrants.x;
+            object->trans.y = D_8010BE04_hyper_hydrants.y;
+            object->trans.z = D_8010BE04_hyper_hydrants.z;
+            D_8010BFA9_hyper_hydrants = playerData->unk59;
+            object->rot.y = 0;
+            object->model[2] = func_8000B108_main(0x2F0007, 0xA89);
+            func_8001C258_main(object->model[2], 0x10000, 0x10000);
+            func_8001F6BC_main(object->model[2], 0, 0, 0, 0);
+            func_8001F6F8_main(object->model[2], 16, 16, 16, 0);
+            func_8001C624_main(object->model[0], HmfModelData[object->motion[1]].unk02, 0, 1, 2);
+            if ((model >> 16) == 6) {
+                object->trans.z -= 48.7f;
+                Hu3DModelPosSet(object->model[2], object->trans.x, 0, object->trans.z + 48.7f);
+            } else {
+                Hu3DModelPosSet(object->model[2], object->trans.x, 0, object->trans.z);
+            }
+            func_8001C8A8_main(object->model[0], 2);
+            func_8001C8A8_main(object->model[1], 2);
+            func_8001C8A8_main(object->model[2], 2);
+            break;
+    }
+    data->unk00 = sindf(object->rot.y - 40.0f);
+    data->unk04 = cosdf(object->rot.y - 40.0f);
+    data->unk08 = sindf(object->rot.y - 140.0f);
+    data->unk0C = cosdf(object->rot.y - 140.0f);
+    func_8001C814_main(object->model[0], 1, 1);
+    func_8001C6A8_main(object->model[2], 0);
+    object->func = func_80106A50_hyper_hydrants;
+    Hu3DModelPosSet(object->model[1], object->trans.x, 0, object->trans.z);
+    Hu3DModelScaleSet(object->model[1], object->scale.x, object->scale.y, object->scale.z);
+    D_8010BE35_hyper_hydrants++;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80106A50_hyper_hydrants);
 
@@ -978,7 +1106,7 @@ void func_8010A68C_hyper_hydrants(omObjData *object) {
     D_8010C028_hyper_hydrants[side].x = player->trans.x - 25.0f - 18.75f;
     D_8010C028_hyper_hydrants[side].y = 37.5f;
     playerData = player->data;
-    if (D_800A178C_main[GwPlayer[playerData->unk59].chr][0] == 6) {
+    if ((D_800A178C_main[GwPlayer[playerData->unk59].chr][0] >> 16) == 6) {
         D_8010C028_hyper_hydrants[side].z = player->trans.z + 50.0f + 18.75f + 48.7f;
     } else {
         D_8010C028_hyper_hydrants[side].z = player->trans.z + 50.0f + 18.75f;

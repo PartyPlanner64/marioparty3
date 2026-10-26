@@ -1080,7 +1080,6 @@ void func_8010A458_hyper_hydrants(omObjData *object) {
     }
 }
 
-#ifdef NON_MATCHING
 void func_8010A68C_hyper_hydrants(omObjData *object) {
     omObjData *player;
     func_800E1BA8_minigame_ObjData *playerData;
@@ -1119,8 +1118,8 @@ void func_8010A68C_hyper_hydrants(omObjData *object) {
     }
     playerData = player->data;
     characterData = playerData->unk158;
-    x = characterData->unk08 * 60.0f + player->trans.x;
-    z = characterData->unk0C * 60.0f + player->trans.z;
+    x = player->trans.x + characterData->unk08 * 60.0f;
+    z = player->trans.z + characterData->unk0C * 60.0f;
     step.x = ((D_8010C028_hyper_hydrants[side].x - x > 0.0f) ? D_8010C028_hyper_hydrants[side].x - x : 0.0f - (D_8010C028_hyper_hydrants[side].x - x)) / 5.0f;
     step.y = -8.5f;
     step.z = ((D_8010C028_hyper_hydrants[side].z - z > 0.0f) ? D_8010C028_hyper_hydrants[side].z - z : 0.0f - (D_8010C028_hyper_hydrants[side].z - z)) / 5.0f;
@@ -1145,10 +1144,6 @@ void func_8010A68C_hyper_hydrants(omObjData *object) {
     }
     D_8010BF50_hyper_hydrants++;
 }
-
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_8010A68C_hyper_hydrants);
-#endif
 
 void func_8010AB34_hyper_hydrants(omObjData *object) {
     omObjData *player;

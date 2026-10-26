@@ -186,6 +186,7 @@ extern Process *D_80114468_filesel;
 extern omObjData *D_8011446C_filesel;
 extern s32 D_8011447C_filesel[4];
 extern Vec D_801128A4_filesel[];
+extern Vec D_80112910_filesel[][2];
 extern FileSelectCameraState D_801146B0_filesel;
 extern u8 D_800D09A9_main;
 extern s32 D_80114500_filesel;
@@ -1946,7 +1947,59 @@ omObjData *func_8010FBE0_filesel(s32 arg0, s32 arg1) {
     return obj;
 }
 
+#ifdef NON_MATCHING
+// One extra nop remains after the second scale call; all other instructions match.
+void func_8010FC58_filesel(omObjData *object) {
+    Vec position;
+    Vec rotation;
+    Vec *start;
+    Vec *end;
+    s32 index;
+    f32 duration;
+    f32 frame;
+    f32 progress;
+    f32 scale;
+    f32 interpolation;
+    f32 angle;
+
+    index = object->work[0];
+    start = &D_80112910_filesel[index][0];
+    end = &D_80112910_filesel[index][1];
+    duration = object->work[1];
+    frame = object->work[2];
+    progress = frame / duration;
+    progress = 1.0f - progress;
+    if (progress < 0.0f) {
+        progress = 0.0f;
+    }
+    interpolation = progress * 0.9f;
+    interpolation += 0.1f;
+    scale = interpolation * 0.8f;
+    func_80106550_filesel(index, scale, scale, scale);
+    func_80106550_filesel(index + 3, scale, scale, scale);
+    interpolation = progress * 0.9f;
+    interpolation += 0.1f;
+    position.x = (end->x - start->x) * interpolation + start->x;
+    position.y = (end->y - start->y) * interpolation + start->y;
+    position.z = (end->z - start->z) * interpolation + start->z;
+    func_801064DC_filesel(index, position.x, position.y, position.z);
+    func_801064DC_filesel(index + 3, position.x, position.y, position.z);
+    rotation.x = rotation.y = rotation.z = 0.0f;
+    angle = progress * 3.0f;
+    rotation.y = (angle - (s32)angle) * 360.0f;
+    func_80106474_filesel(index, rotation.x, rotation.y, rotation.z);
+    if (frame == duration) {
+        omDelObj(object);
+        func_8010669C_filesel(index);
+        func_8010669C_filesel(index + 3);
+    } else {
+        frame += 1.0f;
+        object->work[2] = frame;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010FC58_filesel);
+#endif
 
 void func_8010FF48_filesel(s32 arg0, s32 arg1) {
     omObjData *obj = omAddObj(6, 0, 0, -1, func_8010FC58_filesel);

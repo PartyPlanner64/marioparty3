@@ -46,9 +46,12 @@ typedef struct {
     f32 unk08;
     f32 unk0C;
     s8 unk10;
-    s16 unk12;
+    u16 unk12;
     s32 unk14;
-    s16 unk18;
+    union {
+        s16 value;
+        u8 bytes[2];
+    } charge;
     s16 unk1A;
     s8 unk1C;
     s16 unk1E;
@@ -60,6 +63,8 @@ typedef struct {
     f32 unk18;
 } HyperHydrantsChainPoint;
 
+extern s8 D_8010BFAC_hyper_hydrants[2];
+extern s16 D_8010BF42_hyper_hydrants[2];
 extern s16 D_8010BF52_hyper_hydrants;
 extern s16 D_8010BF54_hyper_hydrants;
 extern s16 D_8010BF56_hyper_hydrants;
@@ -127,6 +132,8 @@ void func_80109E44_hyper_hydrants(omObjData *object);
 void func_8010A458_hyper_hydrants(omObjData *object);
 void func_80109484_hyper_hydrants(omObjData *object);
 void func_80012B14_main(s16 camera, Vec *position, Vec2f *screen);
+void func_8001F6BC_main(s16 model, u8 r, u8 g, u8 b, u8 a);
+void func_8001F6F8_main(s16 model, u8 r, u8 g, u8 b, u8 a);
 s16 HmfAnimRead(HmfData *hmf, s32 file, char *name);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_801059A0_hyper_hydrants);
@@ -266,7 +273,147 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80106
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80106A50_hyper_hydrants);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80107238_hyper_hydrants);
+void func_80107238_hyper_hydrants(omObjData *object) {
+    func_800E1BA8_minigame_ObjData *playerData;
+    HyperHydrantsCharacterData *data;
+    u16 pressA = 0;
+    u16 pressB = 0;
+    s8 side;
+    s16 press;
+    s8 random;
+    f32 time;
+    f32 end;
+
+    playerData = object->data;
+    data = playerData->unk158;
+    time = HmfModelData[object->model[0]].unk40;
+    end = D_800CCF58_main[HmfModelData[object->model[0]].unk02].unk02;
+    side = GwPlayer[playerData->unk59].group >= 2;
+    if (GwPlayer[playerData->unk59].stat & 1) {
+        if ((time == end) | (time == 0.0f)) {
+            random = (rand8() * 100) >> 8;
+            switch (GwPlayer[playerData->unk59].cpu_difficulty) {
+                case 3:
+                    press = 1;
+                    break;
+                case 2:
+                    press = random < 90;
+                    break;
+                case 1:
+                default:
+                    press = random < 40;
+                    break;
+                case 0:
+                    press = random < 30;
+                    break;
+            }
+            if (D_8010BFAC_hyper_hydrants[side] == 0) {
+                D_8010BFAC_hyper_hydrants[side] = 1;
+                press = 1;
+            }
+        } else {
+            press = 0;
+        }
+        if (press) {
+            if (time == end) {
+                pressB = 1;
+            } else if (time == 0.0f) {
+                pressA = 1;
+            }
+        }
+    } else {
+        pressA = (D_800D5558_main[playerData->unk57] & 0x8000) != 0;
+        pressB = (D_800D5558_main[playerData->unk57] & 0x6000) != 0;
+    }
+    if ((pressA != 0) & (pressB != 0)) {
+        if (data->unk12 == 0x8000) {
+            pressA = 0;
+        } else {
+            pressB &= data->unk12 != 0x4000 ? 0xFFFF : 0;
+        }
+    } else if (pressA) {
+        pressA &= data->unk12 != 0x8000 ? 0xFFFF : 0;
+    } else if (pressB) {
+        pressB &= data->unk12 != 0x4000 ? 0xFFFF : 0;
+    }
+    if (pressA) {
+        func_8001C624_main(object->model[0], HmfModelData[object->motion[1]].unk02, (s16)time, 1, 2);
+        data->unk10 = 1;
+        func_8010BC80_hyper_hydrants(0x368, side, 1, playerData->unk59);
+        data->unk12 = 0x8000;
+    } else if (pressB) {
+        func_8001C624_main(object->model[0], HmfModelData[object->motion[1]].unk02, (s16)time, 1, 4);
+        data->unk10 = 2;
+        func_8010BC80_hyper_hydrants(0x367, side, 1, playerData->unk59);
+        data->unk12 = 0x4000;
+    }
+    if (data->unk10 == 1) {
+        if (data->charge.value < 9) {
+            data->charge.value++;
+        }
+        if (time >= end - 2.0f) {
+            func_8001C814_main(object->model[0], 1, 1);
+            func_8001C814_main(object->model[2], 1, 1);
+            time = end;
+            data->unk10 = 0;
+        }
+        D_8010BF42_hyper_hydrants[side] = 0;
+    } else if (data->unk10 == 2) {
+        end = 0.0f;
+        if (time == end) {
+            func_8001C814_main(object->model[0], 1, 1);
+            func_8001C814_main(object->model[2], 1, 1);
+            time = end;
+            data->unk10 = 0;
+        } else {
+            data->unk1C = 0;
+        }
+        D_8010BF42_hyper_hydrants[side] = 0;
+    } else {
+        if (data->charge.value == 0) {
+            D_8010BFAC_hyper_hydrants[side] = 0;
+        } else if (data->charge.value < 2) {
+            D_8010BFAC_hyper_hydrants[side] = 1;
+        } else if (data->charge.value < 3) {
+            D_8010BFAC_hyper_hydrants[side] = 2;
+        } else if (data->charge.value < 4) {
+            D_8010BFAC_hyper_hydrants[side] = 3;
+        } else if (data->charge.value < 6) {
+            D_8010BFAC_hyper_hydrants[side] = 4;
+        } else if (data->charge.value < 8) {
+            D_8010BFAC_hyper_hydrants[side] = 5;
+        } else {
+            D_8010BFAC_hyper_hydrants[side] = 6;
+        }
+        if (D_8010BF42_hyper_hydrants[side] >= 2) {
+            if (data->charge.value > 0) {
+                data->charge.value--;
+            }
+        }
+        D_8010BF42_hyper_hydrants[side]++;
+    }
+    func_8001C6A8_main(object->model[0], time);
+    func_8001C6A8_main(object->model[2], time);
+    if (time == 0.0f) {
+        data->unk1C ^= 1;
+    } else {
+        data->unk1C = 0;
+    }
+    if (data->unk1C) {
+        func_8001F6BC_main(object->model[2], 64, 64, 64, 0);
+        func_8001F6F8_main(object->model[2], 0, 0, 0, 0);
+    } else {
+        func_8001F6BC_main(object->model[2], 0, 0, 0, 0);
+        func_8001F6F8_main(object->model[2], 16, 16, 16, 0);
+    }
+    if (data->unk1A >= 31) {
+        D_8010BFAC_hyper_hydrants[side] = data->charge.bytes[1];
+        data->unk1A = 0;
+        data->charge.value = 0;
+    } else {
+        data->unk1A++;
+    }
+}
 
 void func_801078B8_hyper_hydrants(omObjData *object) {
     HyperHydrantsSprayData *data;

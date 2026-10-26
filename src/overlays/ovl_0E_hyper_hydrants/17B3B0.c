@@ -3,6 +3,8 @@
 
 extern s16 D_800EB932_minigame;
 
+void func_8004AE00_main(s16 arg0, s16 arg1);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_801059A0_hyper_hydrants);
 
 void func_80105CB4_hyper_hydrants(D_80111B50_vine_with_me_Struct *arg0) {
@@ -85,8 +87,39 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_8010B
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_8010B8B0_hyper_hydrants);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_8010BC80_hyper_hydrants);
+s16 func_8010BC80_hyper_hydrants(s16 soundId, s16 side, s8 playerSound, s16 player) {
+    s16 sound;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_8010BD14_hyper_hydrants);
+    if (playerSound) {
+        sound = func_8004AC98_main(soundId, player);
+    } else {
+        sound = HuAudFXPlay(soundId);
+    }
+    if (side == 0) {
+        func_8004AE00_main(sound, 0x20);
+    } else {
+        func_8004AE00_main(sound, 0x60);
+    }
+    return sound;
+}
+
+void func_8010BD14_hyper_hydrants(Vec *arg0, Vec *arg1, Vec *arg2) {
+    f32 length;
+
+    arg0->x = arg2->x - arg1->x;
+    arg0->y = arg2->y - arg1->y;
+    arg0->z = arg2->z - arg1->z;
+    length = arg0->x * arg0->x;
+    length += arg0->y * arg0->y;
+    length += arg0->z * arg0->z;
+    length = HuSqrtf(length);
+    if (length != 0.0f) {
+        arg0->x /= length;
+        arg0->y /= length;
+        arg0->z /= length;
+    } else {
+        arg0->x = arg0->y = arg0->z = 0.0f;
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", D_8010BF30_hyper_hydrants);

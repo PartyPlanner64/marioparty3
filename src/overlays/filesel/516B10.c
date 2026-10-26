@@ -176,6 +176,20 @@ void func_801103A0_filesel(omObjData *object);
 void func_801107AC_filesel(omObjData *object);
 void func_80110FB0_filesel(u32);
 void func_801110F0_filesel(u32);
+u32 func_80109570_filesel(s32);
+s32 func_80109968_filesel(s32);
+void func_80109B2C_filesel(void);
+void func_8010A028_filesel(void);
+void func_80108D74_filesel(void);
+void func_80108A94_filesel(void);
+void func_801088DC_filesel(void);
+void func_80108C34_filesel(void);
+omObjData *func_80110320_filesel(s32, s32);
+omObjData *func_8010FBE0_filesel(s32, s32);
+void func_8010FF48_filesel(s32, s32);
+void func_8011072C_filesel(s32, s32);
+void func_8010F844_filesel(s32);
+void func_80112584_filesel(s32);
 void func_80111004_filesel(omObjData *);
 void func_80111144_filesel(omObjData *);
 void func_80110D0C_filesel(omObjData *);
@@ -948,7 +962,129 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/filesel/516B10", D_80112A64_filesel);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/filesel/516B10", D_80112A68_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010846C_filesel);
+s32 func_8010846C_filesel(void) {
+    s32 i;
+    s32 fileIndex;
+    s32 selection;
+    s32 noSelection;
+
+    selection = D_801142D8_filesel.selected;
+    if (selection >= 3) {
+        selection = 2;
+    }
+    if (D_801142D8_filesel.files[D_801142D8_filesel.selected].unk_04 != UNK_VALUE) {
+        for (i = 0; i < 3; i++) {
+            if (D_801142D8_filesel.files[i].unk_04 == UNK_VALUE) {
+                selection = i;
+                break;
+            }
+        }
+    }
+    func_80105F24_filesel(18);
+    func_8010AB1C_filesel(18, selection);
+    for (i = 0; i < 8; i++) {
+        func_80106044_filesel(18, 1.0f, i * 0.125f);
+        HuPrcVSleep();
+    }
+    func_80106044_filesel(18, 1.0f, 1.0f);
+    func_801110F0_filesel(selection);
+    noSelection = -1;
+    while (1) {
+        selection = func_80109570_filesel(selection);
+        if (selection == noSelection) {
+            HuPrcVSleep();
+        } else {
+            switch (selection) {
+                case 0:
+                case 1:
+                case 2:
+                    HuAudFXPlay(2);
+                    func_80105F54_filesel(18);
+                    return selection;
+                case 3:
+                    HuAudFXPlay(2);
+                    func_80109B2C_filesel();
+                    break;
+                case 4:
+                    HuAudFXPlay(2);
+                    func_8010A028_filesel();
+                    break;
+                case 5:
+                case 6:
+                case 7:
+                    HuAudFXPlay(2);
+                    fileIndex = selection - 5;
+                    func_80105FA0_filesel(18);
+                    i = 0;
+                    func_80108D74_filesel();
+                    func_80108A94_filesel();
+                    func_80105FA0_filesel(12);
+                    func_8010F874_filesel(0);
+                    func_8010F874_filesel(1);
+                    func_8010F874_filesel(2);
+                    for (; i < 3; i++) {
+                        if (fileIndex != i) {
+                            func_8010F874_filesel(i);
+                            func_8010FF48_filesel(i, 16);
+                        }
+                    }
+                    HuAudFXPlay(0x2F2);
+                    func_80110320_filesel(fileIndex, 32);
+                    HuAudFXPlay(0x2F0);
+                    HuPrcSleep(16);
+                    for (i = 0; i < 3; i++) {
+                        if (fileIndex != i) {
+                            func_8010669C_filesel(i);
+                            func_8010669C_filesel(i + 3);
+                        }
+                    }
+                    HuPrcSleep(16);
+                    func_80107670_filesel(0);
+                    func_8010F65C_filesel();
+                    func_8010F678_filesel(4);
+                    if (func_80109968_filesel(fileIndex)) {
+                        func_80107670_filesel(4);
+                        func_80107608_filesel(4, 160.0f, 208.0f);
+                        func_801076D0_filesel(4, 0x2A15);
+                        HuPrcSleep(3);
+                        SLCurBoxNoSet(fileIndex);
+                        func_80112584_filesel(fileIndex);
+                        func_80112184_filesel(fileIndex);
+                        func_801076A0_filesel(4);
+                        HuPrcSleep(3);
+                    }
+                    func_801076A0_filesel(0);
+                    i = 0;
+                    func_8010F65C_filesel();
+                    func_8011072C_filesel(fileIndex, 32);
+                    HuAudFXPlay(0x2F1);
+                    HuPrcSleep(16);
+                    for (; i < 3; i++) {
+                        if (fileIndex != i) {
+                            func_8010FBE0_filesel(i, 16);
+                        }
+                    }
+                    for (i = 0; i < 3; i++) {
+                        if (fileIndex != i) {
+                            func_801066DC_filesel(i);
+                            func_801066DC_filesel(i + 3);
+                        }
+                    }
+                    HuPrcSleep(16);
+                    for (i = 0; i < 3; i++) {
+                        func_8010F844_filesel(i);
+                    }
+                    func_8010F678_filesel(0);
+                    func_801088DC_filesel();
+                    func_80108C34_filesel();
+                    func_80105F84_filesel(18);
+                    break;
+            }
+            func_8010AB1C_filesel(18, selection);
+            HuPrcVSleep();
+        }
+    }
+}
 
 s32 func_80108834_filesel(void) {
     s32 i;

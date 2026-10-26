@@ -23,6 +23,11 @@ typedef struct {
     s16 unk1E;
 } HyperHydrantsPlayerData;
 
+extern u8 D_800D6A90_main;
+extern u16 D_800A1906_main;
+extern s16 D_800EB930_minigame;
+extern s32 D_8010BE30_hyper_hydrants;
+extern s8 D_8010BE34_hyper_hydrants;
 extern s8 D_8010BE24_hyper_hydrants;
 extern s8 D_8010BE25_hyper_hydrants;
 extern s8 D_8010BFA8_hyper_hydrants;
@@ -35,7 +40,13 @@ extern f32 D_8010BE2C_hyper_hydrants;
 extern s8 D_8010BE10_hyper_hydrants[];
 extern s8 D_8010BE38_hyper_hydrants[][16];
 extern omObjData *D_8010BFE0_hyper_hydrants[];
+extern s8 D_8010BE6A_hyper_hydrants;
+extern s16 D_8010BF8E_hyper_hydrants;
+extern s16 D_8010BF90_hyper_hydrants;
+extern u8 *D_8010BF94_hyper_hydrants[2];
 extern s32 D_8010BF9C_hyper_hydrants;
+extern s32 D_8010BFA0_hyper_hydrants;
+extern s32 D_8010BFA4_hyper_hydrants;
 extern s8 D_8010C010_hyper_hydrants;
 extern s16 D_8010C012_hyper_hydrants[2];
 extern s16 D_8010C016_hyper_hydrants[2];
@@ -43,6 +54,9 @@ extern s16 D_8010C01A_hyper_hydrants[2][2];
 extern s16 D_8010BE14_hyper_hydrants[2][2][2];
 
 s16 func_8010BC80_hyper_hydrants(s16 soundId, s16 side, s8 playerSound, s16 player);
+void func_800E6F0C_minigame(s32 state);
+void func_800E1840_minigame(void);
+void func_8004AD70_main(void);
 void func_8004AE00_main(s16 arg0, s16 arg1);
 void func_8000B710_main(s32 arg0);
 void func_80105EB0_hyper_hydrants(s8 camera);
@@ -145,7 +159,42 @@ void func_80105FC8_hyper_hydrants(void) {
     Hu3DCamSetPerspective(1, 35.883f, 80.0f, 8000.0f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_801060F8_hyper_hydrants);
+void func_801060F8_hyper_hydrants(void) {
+    if (func_80049F98_main() + D_800D6A90_main == 0) {
+        if (D_8010BE34_hyper_hydrants == 0 && D_800D530C_main == 1) {
+            func_8004AD70_main();
+            if (!(D_800A1906_main & 4)) {
+                HuAudSeqFadeOut(30);
+            } else {
+                func_8004A950_main();
+            }
+            func_800E6F0C_minigame(5);
+            D_8010BE34_hyper_hydrants = 1;
+        }
+        func_800E1840_minigame();
+        switch (func_800E6F40_minigame()) {
+            case 0:
+                D_800EB930_minigame = 52;
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                if (D_8010BE30_hyper_hydrants == 0) {
+                    WipeCreateOut(0, 20);
+                } else if (WipeStatGet() == 0 && !(D_800A1906_main & 4)) {
+                    omOvlReturnEx(1);
+                }
+                D_8010BE30_hyper_hydrants++;
+                break;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80106238_hyper_hydrants);
 
@@ -303,7 +352,64 @@ void func_8010B2FC_hyper_hydrants(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_8010B38C_hyper_hydrants);
+void func_8010B38C_hyper_hydrants(void) {
+    HyperHydrantsPlayerData *data;
+    f32 innerRadius;
+    f32 step;
+    s32 endRow;
+    u8 *first;
+    u8 *second;
+    s32 row;
+    s32 column;
+    f32 x;
+    f32 y;
+    f32 distance;
+    u8 alpha;
+
+    data = D_8010BFE0_hyper_hydrants[0]->data;
+    if (data->unk03 == 2) {
+        D_8010BE6A_hyper_hydrants = 1;
+    }
+    innerRadius = D_8010BF9C_hyper_hydrants * 0.8f;
+    step = D_8010BF9C_hyper_hydrants * 0.2f / 255.0f;
+    endRow = D_8010BFA4_hyper_hydrants + D_8010BF9C_hyper_hydrants;
+    first = D_8010BF94_hyper_hydrants[0];
+    second = D_8010BF94_hyper_hydrants[1];
+    for (row = 0; row < D_8010BF90_hyper_hydrants; row++) {
+        if (data->unk03 == 1) {
+            if (row > D_8010BF90_hyper_hydrants / 2) {
+                break;
+            }
+        } else if (row > endRow) {
+            break;
+        }
+        for (column = 0; column < D_8010BF8E_hyper_hydrants; column++, first++, second++) {
+            if (D_8010BE6A_hyper_hydrants && *first == 0) {
+                continue;
+            }
+            x = column - D_8010BFA0_hyper_hydrants;
+            y = row - D_8010BFA4_hyper_hydrants;
+            distance = HuSqrtf(x * x + y * y);
+            if (distance <= innerRadius) {
+                if (*first != 0) {
+                    *second = 0;
+                    *first = 0;
+                }
+            } else if (distance > D_8010BF9C_hyper_hydrants) {
+                if ((~*first & 0xFF) != 0) {
+                    *second = 255;
+                    *first = 255;
+                }
+            } else {
+                alpha = (u32)((distance - innerRadius) / step);
+                if (alpha != *first) {
+                    *second = alpha;
+                    *first = alpha;
+                }
+            }
+        }
+    }
+}
 
 void func_8010B658_hyper_hydrants(omObjData *object) {
     s16 positions[2][2] = { { 35, 32 }, { 252, 32 } };

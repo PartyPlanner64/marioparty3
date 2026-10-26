@@ -1947,8 +1947,6 @@ omObjData *func_8010FBE0_filesel(s32 arg0, s32 arg1) {
     return obj;
 }
 
-#ifdef NON_MATCHING
-// One extra nop remains after the second scale call; all other instructions match.
 void func_8010FC58_filesel(omObjData *object) {
     Vec position;
     Vec rotation;
@@ -1997,9 +1995,6 @@ void func_8010FC58_filesel(omObjData *object) {
         object->work[2] = frame;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010FC58_filesel);
-#endif
 
 void func_8010FF48_filesel(s32 arg0, s32 arg1) {
     omObjData *obj = omAddObj(6, 0, 0, -1, func_8010FC58_filesel);

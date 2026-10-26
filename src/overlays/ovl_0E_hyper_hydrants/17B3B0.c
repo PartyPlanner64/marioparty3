@@ -35,6 +35,9 @@ typedef struct {
 extern u8 D_800D6A90_main;
 extern u16 D_800A1906_main;
 extern s16 D_800EB930_minigame;
+extern s8 D_8010BF4B_hyper_hydrants;
+extern s32 D_8010BF48_hyper_hydrants;
+extern char D_8010BEF0_hyper_hydrants[];
 extern s32 D_8010BE30_hyper_hydrants;
 extern s8 D_8010BE34_hyper_hydrants;
 extern s8 D_8010BE24_hyper_hydrants;
@@ -76,6 +79,10 @@ void func_8010B38C_hyper_hydrants(void);
 void func_8010A2D4_hyper_hydrants(omObjData *object);
 void func_80107A90_hyper_hydrants(omObjData *object);
 void func_80108788_hyper_hydrants(s16 model);
+void func_801091B0_hyper_hydrants(omObjData *object);
+void func_80109484_hyper_hydrants(omObjData *object);
+void func_80012B14_main(s16 camera, Vec *position, Vec2f *screen);
+s16 HmfAnimRead(HmfData *hmf, s32 file, char *name);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_801059A0_hyper_hydrants);
 
@@ -318,11 +325,119 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80108
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80108788_hyper_hydrants);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80108F34_hyper_hydrants);
+void func_80108F34_hyper_hydrants(omObjData *object) {
+    Vec position;
+    Vec2f screen;
+    s16 model;
+    HyperHydrantsPlayerData *data;
+
+    object->func = func_801091B0_hyper_hydrants;
+    object->data = HuMemAllocTag(sizeof(HyperHydrantsPlayerData), 0x7918);
+    data = object->data;
+    memset(data, 0, sizeof(HyperHydrantsPlayerData));
+    data->unk00 = D_8010BF4B_hyper_hydrants;
+    data->unk03 = 0;
+    data->unk14 = 0;
+    if (data->unk00 == 0) {
+        object->trans.x = -800.0f;
+    } else {
+        object->trans.x = 800.0f;
+    }
+    object->trans.y = 800.0f;
+    object->trans.z = -700.0f;
+    object->scale.x = object->scale.y = object->scale.z = 3.0f;
+    position.x = object->trans.x;
+    position.y = object->trans.y + 200.0f;
+    position.z = object->trans.z;
+    if (data->unk00 == 0) {
+        func_80012B14_main(0, &position, &screen);
+    } else {
+        func_80012B14_main(1, &position, &screen);
+    }
+    D_8010BFA0_hyper_hydrants = screen.x;
+    D_8010BFA4_hyper_hydrants = screen.y;
+    model = object->model[0] = func_8000B108_main(0xA008A, 0x289);
+    if (data->unk00 == 0) {
+        HmfAnimRead(HmfModelData[model].hmf, 0xA008C, D_8010BEF0_hyper_hydrants);
+        func_8001C8A8_main(object->model[0], 1);
+    } else {
+        func_80032694_main(HmfModelData[model].hmf, 0, 0, D_8010BEF0_hyper_hydrants);
+        func_8001C8A8_main(object->model[0], 2);
+    }
+    func_8001C448_main(model);
+    func_8001C514_main(model);
+    object->model[1] = func_8000B108_main(0x2F0003, 0x99);
+    Hu3DModelPosSet(object->model[1], object->trans.x, 0, object->trans.z);
+    data->unk0C = 0.1f;
+    Hu3DModelScaleSet(object->model[1], data->unk0C, data->unk0C, data->unk0C);
+    D_8010BF48_hyper_hydrants++;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", D_8010BEF0_hyper_hydrants);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_801091B0_hyper_hydrants);
+void func_801091B0_hyper_hydrants(omObjData *object) {
+    Vec position;
+    Vec2f screen;
+    HyperHydrantsPlayerData *data = object->data;
+    HyperHydrantsPlayerData *otherData;
+
+    switch (func_800E6E8C_minigame()) {
+        case 0:
+            if (data->unk00 == 0) {
+                position.x = object->trans.x + 50.0f;
+                position.y = object->trans.y + 120.0f;
+                position.z = object->trans.z;
+                func_80012B14_main(0, &position, &screen);
+                D_8010BFA0_hyper_hydrants = screen.x;
+                D_8010BFA4_hyper_hydrants = screen.y;
+                if (data->unk03 == 0) {
+                    object->trans.y -= 40.0f;
+                    if (object->trans.y < 0.0f) {
+                        func_8010BC80_hyper_hydrants(0x366, 0, 1, 0);
+                        data->unk03 = 1;
+                        omVibrate(0, 10, 0, 10);
+                        omVibrate(1, 10, 0, 10);
+                        omVibrate(2, 10, 0, 10);
+                        omVibrate(3, 10, 0, 10);
+                    }
+                } else if (data->unk03 == 1) {
+                    func_80109484_hyper_hydrants(object);
+                }
+                data->unk0C += 0.5f;
+                if (data->unk0C > object->scale.x / 2.0f) {
+                    data->unk0C = object->scale.x / 2.0f;
+                }
+            } else {
+                otherData = D_8010BFE0_hyper_hydrants[0]->data;
+                object->trans.y = D_8010BFE0_hyper_hydrants[0]->trans.y;
+                data->unk0C = otherData->unk0C;
+                data->unk03 = otherData->unk03;
+                if (data->unk03 == 0 && object->trans.y < 0.0f) {
+                    func_8010BC80_hyper_hydrants(0x366, 1, 1, 1);
+                }
+            }
+            Hu3DModelScaleSet(object->model[1], data->unk0C, data->unk0C, data->unk0C);
+            break;
+        case 1:
+            object->trans.y = 0;
+            data->unk03 = 0;
+            break;
+        case 2:
+            func_80109484_hyper_hydrants(object);
+            break;
+        case 3:
+        case 4:
+        case 5:
+            object->scale.x -= 0.4f;
+            if (object->scale.x < 0.0f) {
+                object->scale.x = 0.0f;
+            }
+            object->scale.y = object->scale.z = object->scale.x;
+            data->unk0C = object->scale.x / 2.0f;
+            Hu3DModelScaleSet(object->model[1], data->unk0C, data->unk0C, data->unk0C);
+            break;
+    }
+}
 
 void func_80109484_hyper_hydrants(omObjData *object) {
     HyperHydrantsPlayerData *data = object->data;

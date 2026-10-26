@@ -131,6 +131,9 @@ s32 func_801072B4_filesel(u32, s16, s16, s16);
 s32 func_80107380_filesel(u32, s16, s16, s16);
 void func_801059D0_filesel(void);
 void func_801126C0_filesel(s32, u8 *, u8 *);
+void func_8010BDC4_filesel(void);
+void func_8010BE14_filesel(void);
+s32 func_801125E8_filesel(UnkFileName *);
 void func_80112758_filesel(void);
 void func_80107C84_filesel(void);
 void func_80112184_filesel(s32);
@@ -1647,7 +1650,137 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/filesel/516B10", D_80112D1C_filesel);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/filesel/516B10", D_80112D38_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010B998_filesel);
+s32 func_8010B998_filesel(u32 buttons) {
+    s32 length;
+    if (buttons & 0x1000) {
+        D_80114478_filesel.mode = 1;
+        D_80114478_filesel.option = 11;
+        func_8010BE14_filesel();
+        func_8010B6F4_filesel(D_80114478_filesel.option);
+        return 0;
+    }
+    if (D_800D5558_main[0] & 0x8000) {
+        switch (D_80114478_filesel.option) {
+            case 7:
+            case 8:
+                HuAudFXPlay(1);
+                D_80114478_filesel.keyboard = 6;
+                break;
+            case 9:
+                HuAudFXPlay(1);
+                D_80114478_filesel.keyboard = 6;
+                if (D_80114478_filesel.column >= 13) {
+                    D_80114478_filesel.column = 12;
+                }
+                break;
+            case 10:
+                D_80114478_filesel.name[D_80114478_filesel.length] = 0;
+                if (D_80114478_filesel.length > 0) {
+                    HuAudFXPlay(0x2EF);
+                    D_80114478_filesel.length--;
+                } else {
+                    HuAudFXPlay(5);
+                }
+                D_80114478_filesel.name[D_80114478_filesel.length] = 0;
+                func_801076D0_filesel(10, (u32)D_80114478_filesel.name);
+                func_8010A978_filesel(D_80114478_filesel.length + 1);
+                break;
+            case 11:
+                HuAudFXPlay(2);
+                if ((u16)((D_80114478_filesel.name[0] << 8) | D_80114478_filesel.name[1]) != 0) {
+                    return 11;
+                }
+                bcopy(D_80114478_filesel.encodedName, D_80114478_filesel.name, 0x20);
+                func_801076D0_filesel(10, (u32)D_80114478_filesel.name);
+                length = func_801125E8_filesel((UnkFileName *)D_80114478_filesel.name);
+                D_80114478_filesel.name[length] = 0;
+                D_80114478_filesel.length = length;
+                func_8010A978_filesel(D_80114478_filesel.length + 1);
+                break;
+        }
+        func_8010B6F4_filesel(D_80114478_filesel.option);
+        func_8010B684_filesel(D_80114478_filesel.keyboard);
+    } else if (D_800D5558_main[0] & 0x4000) {
+        D_80114478_filesel.name[D_80114478_filesel.length] = 0;
+        if (D_80114478_filesel.length > 0) {
+            HuAudFXPlay(0x2EF);
+            D_80114478_filesel.length--;
+            D_80114478_filesel.name[D_80114478_filesel.length] = 0;
+            func_801076D0_filesel(10, (u32)D_80114478_filesel.name);
+            func_8010A978_filesel(D_80114478_filesel.length + 1);
+        } else {
+            if (D_80114478_filesel.option == 11) {
+                return -1;
+            }
+            HuAudFXPlay(1);
+            D_80114478_filesel.option = 11;
+            func_8010BE14_filesel();
+            func_8010B6F4_filesel(D_80114478_filesel.option);
+        }
+        func_8010B684_filesel(D_80114478_filesel.keyboard);
+    } else if (buttons & 0x800) {
+        D_80114478_filesel.mode = 0;
+        func_8010B6F4_filesel(-1);
+        D_80114478_filesel.row = 4;
+        func_8010BDC4_filesel();
+    } else if (buttons & 0x400) {
+        D_80114478_filesel.mode = 0;
+        func_8010B6F4_filesel(-1);
+        D_80114478_filesel.row = 0;
+        func_8010BDC4_filesel();
+    } else if (buttons & 0x200) {
+        HuAudFXPlay(1);
+        switch (D_80114478_filesel.option) {
+            case 10:
+                D_80114478_filesel.option = 11;
+                break;
+            case 11:
+                D_80114478_filesel.option = 10;
+                break;
+        }
+        func_8010B6F4_filesel(D_80114478_filesel.option);
+    } else if (buttons & 0x100) {
+        HuAudFXPlay(1);
+        switch (D_80114478_filesel.option) {
+            case 10:
+                D_80114478_filesel.option = 11;
+                break;
+            case 11:
+                D_80114478_filesel.option = 10;
+                break;
+        }
+        func_8010B6F4_filesel(D_80114478_filesel.option);
+    } else if (buttons & 0x2000) {
+        HuAudFXPlay(1);
+        switch (D_80114478_filesel.keyboard) {
+            case 4:
+                D_80114478_filesel.keyboard = 6;
+                break;
+            case 5:
+                D_80114478_filesel.keyboard = 6;
+                break;
+            case 6:
+                D_80114478_filesel.keyboard = 6;
+                break;
+        }
+        func_8010B684_filesel(D_80114478_filesel.keyboard);
+    } else if (buttons & 0x10) {
+        HuAudFXPlay(1);
+        switch (D_80114478_filesel.keyboard) {
+            case 4:
+                D_80114478_filesel.keyboard = 6;
+                break;
+            case 5:
+                D_80114478_filesel.keyboard = 6;
+                break;
+            case 6:
+                D_80114478_filesel.keyboard = 6;
+                break;
+        }
+        func_8010B684_filesel(D_80114478_filesel.keyboard);
+    }
+    return 0;
+}
 
 void func_8010BDC4_filesel(void) {
     s16 x;

@@ -2299,7 +2299,60 @@ void func_8011072C_filesel(s32 arg0, s32 arg1) {
     D_80114508_filesel[arg0].unk_08 = arg1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801107AC_filesel);
+void func_801107AC_filesel(omObjData *object) {
+    Vec start;
+    Vec end;
+    Vec position;
+    Vec rotation;
+    s32 index;
+    f32 duration;
+    f32 frame;
+    f32 progress;
+    f32 scale;
+    f32 height;
+    f32 angle;
+
+    index = object->work[0];
+    duration = D_80114508_filesel[index].unk_08;
+    frame = D_80114508_filesel[index].unk_04;
+    HuVecCopy3F(&start, &D_80114508_filesel[index].unk_0C);
+    HuVecCopy3F(&end, &D_80114508_filesel[index].unk_18);
+    progress = frame / duration;
+    if (progress > 1.0f) {
+        progress = 1.0f;
+    }
+    if (end.y - start.y < 0.0f) {
+        scale = progress * (0.8f - 0.48) + 0.48;
+        func_80106550_filesel(index, scale, scale, scale);
+        func_80106550_filesel(index + 3, scale, scale, scale);
+    }
+    if (end.y - start.y < 0.0f) {
+        height = (0.2f - progress) * -1.6666666f * (0.2f - progress) + 1.0666666f;
+        height = -height + 1.0f;
+    } else {
+        height = (progress - 0.8f) * -1.6666666f * (progress - 0.8f) + 1.0666666f;
+    }
+    position.x = (end.x - start.x) * progress + start.x;
+    position.y = (end.y - start.y) * height + start.y;
+    position.z = (end.z - start.z) * progress + start.z;
+    func_801064DC_filesel(index, position.x, position.y, position.z);
+    func_801064DC_filesel(index + 3, position.x, position.y, position.z);
+    rotation.x = rotation.y = rotation.z = 0.0f;
+    angle = progress * 3.0f;
+    rotation.y = (angle - (s32)angle) * 360.0f;
+    func_80106474_filesel(index, rotation.x, rotation.y, rotation.z);
+    func_80106474_filesel(index + 3, rotation.x, rotation.y, rotation.z);
+    if (frame >= duration) {
+        func_801064DC_filesel(index, end.x, end.y, end.z);
+        func_801064DC_filesel(index + 3, end.x, end.y, end.z);
+        func_80106474_filesel(index, 0.0f, 0.0f, 0.0f);
+        func_80106474_filesel(index + 3, 0.0f, 0.0f, 0.0f);
+        omDelObj(object);
+    } else {
+        frame += 1.0f;
+        D_80114508_filesel[index].unk_04 = frame;
+    }
+}
 
 void func_80110B4C_filesel(s32 arg0) {
     omDelObj(D_80114508_filesel[arg0].unk_00);

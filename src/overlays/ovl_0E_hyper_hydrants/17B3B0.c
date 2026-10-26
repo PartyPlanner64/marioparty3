@@ -32,6 +32,31 @@ typedef struct {
     f32 speed;
 } HyperHydrantsSprayData;
 
+typedef struct {
+    f32 unk00;
+    f32 unk04;
+    f32 unk08;
+    f32 unk0C;
+    s8 unk10;
+    s16 unk12;
+    s32 unk14;
+    s16 unk18;
+    s16 unk1A;
+    s8 unk1C;
+    s16 unk1E;
+} HyperHydrantsCharacterData;
+
+typedef struct {
+    Vec position;
+    Vec unk0C;
+    f32 unk18;
+} HyperHydrantsChainPoint;
+
+extern s8 D_8010BF50_hyper_hydrants;
+extern u16 D_800A178C_main[][12];
+extern Vec D_8010C028_hyper_hydrants[2];
+extern HyperHydrantsChainPoint *D_8010BFB0_hyper_hydrants[2][6];
+
 extern u8 D_800D6A90_main;
 extern u16 D_800A1906_main;
 extern s16 D_800EB930_minigame;
@@ -76,6 +101,7 @@ void func_8000B710_main(s32 arg0);
 void func_80105EB0_hyper_hydrants(s8 camera);
 void func_8010B8B0_hyper_hydrants(omObjData *object);
 void func_8010B38C_hyper_hydrants(void);
+void func_8010AB34_hyper_hydrants(omObjData *object);
 void func_8010A2D4_hyper_hydrants(omObjData *object);
 void func_80107A90_hyper_hydrants(omObjData *object);
 void func_80108788_hyper_hydrants(s16 model);
@@ -722,7 +748,75 @@ void func_8010A458_hyper_hydrants(omObjData *object) {
     }
 }
 
+#ifdef NON_MATCHING
+void func_8010A68C_hyper_hydrants(omObjData *object) {
+    omObjData *player;
+    func_800E1BA8_minigame_ObjData *playerData;
+    HyperHydrantsCharacterData *characterData;
+    Vec step;
+    f32 x;
+    f32 z;
+    s32 side;
+    s32 i;
+    s32 playerIndex;
+
+    side = 1;
+    object->func = func_8010AB34_hyper_hydrants;
+    if (D_8010BF50_hyper_hydrants == 0) {
+        object->work[0] = 0;
+        playerIndex = D_8010BFA8_hyper_hydrants;
+        side = 0;
+    } else {
+        object->work[0] = side;
+        playerIndex = D_8010BFA9_hyper_hydrants;
+    }
+    player = D_800EC598_minigame[playerIndex];
+    D_8010C028_hyper_hydrants[side].x = player->trans.x - 25.0f - 18.75f;
+    D_8010C028_hyper_hydrants[side].y = 37.5f;
+    playerData = player->data;
+    if (D_800A178C_main[GwPlayer[playerData->unk59].chr][0] == 6) {
+        D_8010C028_hyper_hydrants[side].z = player->trans.z + 50.0f + 18.75f + 48.7f;
+    } else {
+        D_8010C028_hyper_hydrants[side].z = player->trans.z + 50.0f + 18.75f;
+    }
+    object->scale.x = object->scale.y = object->scale.z = 1.6f;
+    if (object->work[0] == 0) {
+        player = D_800EC598_minigame[D_8010BFAA_hyper_hydrants];
+    } else {
+        player = D_800EC598_minigame[D_8010BFAB_hyper_hydrants];
+    }
+    playerData = player->data;
+    characterData = playerData->unk158;
+    x = characterData->unk08 * 60.0f + player->trans.x;
+    z = characterData->unk0C * 60.0f + player->trans.z;
+    step.x = ((D_8010C028_hyper_hydrants[side].x - x > 0.0f) ? D_8010C028_hyper_hydrants[side].x - x : 0.0f - (D_8010C028_hyper_hydrants[side].x - x)) / 5.0f;
+    step.y = -8.5f;
+    step.z = ((D_8010C028_hyper_hydrants[side].z - z > 0.0f) ? D_8010C028_hyper_hydrants[side].z - z : 0.0f - (D_8010C028_hyper_hydrants[side].z - z)) / 5.0f;
+    for (i = 0; i < 6; i++) {
+        object->model[i] = func_8000B108_main(0x2F0008, 0x899);
+        Hu3DModelScaleSet(object->model[i], object->scale.x, object->scale.y, object->scale.z);
+        D_8010BFB0_hyper_hydrants[side][i] = HuMemAllocTag(sizeof(HyperHydrantsChainPoint), 0x7918);
+        if (side == 0) {
+            func_8001C8A8_main(object->model[i], 1);
+        } else {
+            func_8001C8A8_main(object->model[i], 2);
+        }
+        D_8010BFB0_hyper_hydrants[side][i]->position.x = x + i * step.x;
+        D_8010BFB0_hyper_hydrants[side][i]->position.y = i * step.y + 80.0f;
+        D_8010BFB0_hyper_hydrants[side][i]->position.z = z + i * step.z;
+        if (i == 0) {
+            object->trans.x = D_8010BFB0_hyper_hydrants[side][i]->position.x;
+            object->trans.y = D_8010BFB0_hyper_hydrants[side][i]->position.y;
+            object->trans.z = D_8010BFB0_hyper_hydrants[side][i]->position.z;
+        }
+        Hu3DModelPosSet(object->model[i], D_8010BFB0_hyper_hydrants[side][i]->position.x, D_8010BFB0_hyper_hydrants[side][i]->position.y, D_8010BFB0_hyper_hydrants[side][i]->position.z);
+    }
+    D_8010BF50_hyper_hydrants++;
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_8010A68C_hyper_hydrants);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_8010AB34_hyper_hydrants);
 

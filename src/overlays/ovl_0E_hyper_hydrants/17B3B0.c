@@ -1,11 +1,38 @@
 #include "common.h"
 #include "overlays/minigame.h"
 
+typedef struct {
+    s8 unk00;
+    s8 unk01;
+    s8 unk02;
+    s8 unk03;
+    s8 unk04;
+    s8 unk05;
+    s8 unk06;
+    s8 unk07;
+    s16 unk08;
+    s16 unk0A;
+    f32 unk0C;
+    f32 unk10;
+    f32 unk14;
+    s8 unk18;
+    s8 unk19;
+    s8 unk1A;
+    s8 unk1B;
+    s16 unk1C;
+    s16 unk1E;
+} HyperHydrantsPlayerData;
+
 extern s16 D_800EB932_minigame;
 extern f32 D_8010BE28_hyper_hydrants;
 extern f32 D_8010BE2C_hyper_hydrants;
+extern s8 D_8010BE10_hyper_hydrants[];
+extern s8 D_8010BE38_hyper_hydrants[][16];
+extern omObjData *D_8010BFE0_hyper_hydrants[];
+extern s8 D_8010C010_hyper_hydrants;
 
 void func_8004AE00_main(s16 arg0, s16 arg1);
+void func_8000B710_main(s32 arg0);
 void func_80105EB0_hyper_hydrants(s8 camera);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_801059A0_hyper_hydrants);
@@ -93,7 +120,16 @@ void func_80105EB0_hyper_hydrants(s8 camera) {
     Hu3DCamUpdateMtx(camera);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80105FC8_hyper_hydrants);
+void func_80105FC8_hyper_hydrants(void) {
+    func_8000B5F0_main(2);
+    func_8000B710_main(2);
+    ScissorSet(0, 0.0f, 0.0f, 160.0f, 240.0f);
+    ViewportSet(0, 640.0f, 480.0f, 511.0f, 320.0f, 480.0f, 511.0f);
+    Hu3DCamSetPerspective(0, 35.883f, 80.0f, 8000.0f);
+    ScissorSet(1, 160.0f, 0.0f, 320.0f, 240.0f);
+    ViewportSet(1, 640.0f, 480.0f, 511.0f, 960.0f, 480.0f, 511.0f);
+    Hu3DCamSetPerspective(1, 35.883f, 80.0f, 8000.0f);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_801060F8_hyper_hydrants);
 
@@ -117,7 +153,23 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", D_8010B
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_801091B0_hyper_hydrants);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80109484_hyper_hydrants);
+void func_80109484_hyper_hydrants(omObjData *object) {
+    HyperHydrantsPlayerData *data = object->data;
+
+    if (data->unk03 == 1) {
+        if (data->unk14 < 1080.0f) {
+            object->trans.y = sindf(data->unk14) * 50.0f + 0.0f;
+            data->unk14 += 45.0f;
+            if ((s32)data->unk14 % 180 == 0) {
+                data->unk14 += 180.0f;
+            }
+        } else {
+            object->trans.y = 0.0f;
+            data->unk14 = 0.0f;
+            data->unk03 = 2;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80109588_hyper_hydrants);
 
@@ -127,7 +179,41 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80109
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80109E44_hyper_hydrants);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_8010A2D4_hyper_hydrants);
+void func_8010A2D4_hyper_hydrants(omObjData *object) {
+    HyperHydrantsPlayerData *data = object->data;
+    s8 index;
+    s8 type;
+
+    index = D_8010BE10_hyper_hydrants[data->unk02]++;
+    if (index >= 16) {
+        index %= 16;
+    }
+    type = D_8010BE38_hyper_hydrants[D_8010C010_hyper_hydrants][index];
+    data->unk10 = 50.0f;
+    data->unk18 = 0;
+    data->unk1A = 0;
+    data->unk05 = 1;
+    data->unk06 = 2;
+    object->trans.x = D_8010BFE0_hyper_hydrants[data->unk02]->trans.x;
+    object->trans.z = D_8010BFE0_hyper_hydrants[data->unk02]->trans.z;
+    object->trans.y = 0.0f;
+    object->scale.x = object->scale.y = object->scale.z = 0.1f;
+    switch (type) {
+        case 0:
+            data->unk0C = object->scale.x / 2.0f;
+            data->unk01 = 1;
+            break;
+        case 1:
+            data->unk0C = object->scale.x / 2.0f;
+            data->unk01 = 2;
+            break;
+        case 2:
+        default:
+            data->unk0C = object->scale.x / 2.0f;
+            data->unk01 = 3;
+            break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_8010A458_hyper_hydrants);
 

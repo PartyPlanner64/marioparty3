@@ -2,8 +2,11 @@
 #include "overlays/minigame.h"
 
 extern s16 D_800EB932_minigame;
+extern f32 D_8010BE28_hyper_hydrants;
+extern f32 D_8010BE2C_hyper_hydrants;
 
 void func_8004AE00_main(s16 arg0, s16 arg1);
+void func_80105EB0_hyper_hydrants(s8 camera);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_801059A0_hyper_hydrants);
 
@@ -29,11 +32,66 @@ void func_80105CB4_hyper_hydrants(D_80111B50_vine_with_me_Struct *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80105D44_hyper_hydrants);
+void func_80105D44_hyper_hydrants(void) {
+    func_80105EB0_hyper_hydrants(0);
+    func_80105EB0_hyper_hydrants(1);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80105D68_hyper_hydrants);
+void func_80105D68_hyper_hydrants(s8 camera) {
+    Vec pos;
+    Vec at;
+    Vec up;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80105EB0_hyper_hydrants);
+    if (camera == 0) {
+        pos.x = -850.0f;
+    } else {
+        pos.x = 850.0f;
+    }
+    pos.y = 1046.895f;
+    pos.z = D_8010BE28_hyper_hydrants;
+    if (camera == 0) {
+        at.x = -850.0f;
+    } else {
+        at.x = 850.0f;
+    }
+    at.y = 0;
+    D_8010BE2C_hyper_hydrants += 2.0f;
+    if (D_8010BE2C_hyper_hydrants > at.y) {
+        D_8010BE2C_hyper_hydrants = at.y;
+    }
+    at.z = D_8010BE2C_hyper_hydrants;
+    up.x = 0;
+    up.y = 1050.25f;
+    up.z = 566.575f;
+    Hu3DCamSetPositionOrientation(camera, &pos, &at, &up);
+    Hu3DCamUpdateMtx(camera);
+}
+
+void func_80105EB0_hyper_hydrants(s8 camera) {
+    Vec pos;
+    Vec at;
+    Vec up;
+
+    if (camera == 0) {
+        pos.x = -850.0f;
+    } else {
+        pos.x = 850.0f;
+    }
+    pos.y = 1046.895f;
+    pos.z = 570.285f;
+    if (camera == 0) {
+        at.x = -850.0f;
+    } else {
+        at.x = 850.0f;
+    }
+    at.y = 0;
+    at.z = -375.0f;
+    up.x = 0;
+    up.y = 1050.25f;
+    up.z = 566.575f;
+    Hu3DCamSetPositionOrientation(camera, &pos, &at, &up);
+    Hu3DCamUpdateMtx(camera);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80105FC8_hyper_hydrants);
 

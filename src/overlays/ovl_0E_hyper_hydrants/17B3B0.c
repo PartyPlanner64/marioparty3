@@ -238,7 +238,74 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80109
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_801099A0_hyper_hydrants);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80109B30_hyper_hydrants);
+void func_80109B30_hyper_hydrants(omObjData *object) {
+    HyperHydrantsPlayerData *data = object->data;
+    s32 angle = 0;
+
+    if (D_8010BFE0_hyper_hydrants[data->unk02]->trans.y > 0.0f) {
+        return;
+    }
+    if (data->unk14 == 0.0f) {
+        func_8001C258_main(object->model[0], 4, 0);
+        func_8001C258_main(object->model[1], 4, 0);
+    } else if (data->unk14 < 720.0f) {
+        angle = (s32)data->unk14 % 360;
+        object->trans.y = sindf(data->unk14) * 200.0f;
+    } else {
+        object->trans.y = 0.0f;
+    }
+    switch (data->unk00) {
+        case 0:
+            object->trans.z += 6.0f;
+            if (data->unk14 < 720.0f) {
+                data->unk14 += 8.0f;
+                if (angle >= 180) {
+                    data->unk14 += 180.0f;
+                }
+            }
+            break;
+        case 1:
+            object->trans.x -= 1.5f;
+            object->trans.z += 8.0f;
+            if (data->unk14 < 720.0f) {
+                data->unk14 += 10.0f;
+                if (angle >= 180) {
+                    data->unk14 += 180.0f;
+                }
+            }
+            break;
+        case 2:
+            object->trans.x += 1.5f;
+            object->trans.z += 8.0f;
+            if (data->unk14 < 720.0f) {
+                data->unk14 += 10.0f;
+                if (angle >= 180) {
+                    data->unk14 += 180.0f;
+                }
+            }
+            break;
+        case 3:
+            object->trans.x -= 1.5f;
+            object->trans.z += 5.0f;
+            if (data->unk14 < 720.0f) {
+                data->unk14 += 6.0f;
+                if (angle >= 180) {
+                    data->unk14 += 180.0f;
+                }
+            }
+            break;
+        default:
+            object->trans.x += 1.5f;
+            object->trans.z += 5.0f;
+            if (data->unk14 < 720.0f) {
+                data->unk14 += 6.0f;
+                if (angle >= 180) {
+                    data->unk14 += 180.0f;
+                }
+            }
+            break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80109E44_hyper_hydrants);
 

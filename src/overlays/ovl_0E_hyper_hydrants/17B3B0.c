@@ -63,6 +63,10 @@ typedef struct {
     f32 unk18;
 } HyperHydrantsChainPoint;
 
+extern void *D_800EBEB0_minigame;
+extern D_80111B50_vine_with_me_Struct D_8010BF60_hyper_hydrants;
+extern omObjData *D_8010BFE8_hyper_hydrants[2][5];
+
 extern s8 D_8010BFAC_hyper_hydrants[2];
 extern s16 D_8010BF42_hyper_hydrants[2];
 extern s16 D_8010BF52_hyper_hydrants;
@@ -120,6 +124,19 @@ extern s16 D_8010C016_hyper_hydrants[2];
 extern s16 D_8010C01A_hyper_hydrants[2][2];
 extern s16 D_8010BE14_hyper_hydrants[2][2][2];
 
+void func_80021BE0_main(void *arg0, u16 arg1);
+void func_800E1804_minigame(void);
+void func_80105CB4_hyper_hydrants(D_80111B50_vine_with_me_Struct *arg0);
+void func_80105FC8_hyper_hydrants(void);
+void func_80105D44_hyper_hydrants(omObjData *object);
+void func_801060F8_hyper_hydrants(omObjData *object);
+void func_80108F34_hyper_hydrants(omObjData *object);
+void func_80109588_hyper_hydrants(omObjData *object);
+void func_801078B8_hyper_hydrants(omObjData *object);
+void func_8010AE08_hyper_hydrants(omObjData *object);
+void func_80106238_hyper_hydrants(omObjData *object);
+void func_8010A68C_hyper_hydrants(omObjData *object);
+void func_8010B658_hyper_hydrants(omObjData *object);
 s16 func_8010BC80_hyper_hydrants(s16 soundId, s16 side, s8 playerSound, s16 player);
 void func_800E6F0C_minigame(s32 state);
 void func_800E1840_minigame(void);
@@ -146,7 +163,52 @@ void func_8001F6BC_main(s16 model, u8 r, u8 g, u8 b, u8 a);
 void func_8001F6F8_main(s16 model, u8 r, u8 g, u8 b, u8 a);
 s16 HmfAnimRead(HmfData *hmf, s32 file, char *name);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_801059A0_hyper_hydrants);
+void func_801059A0_hyper_hydrants(void) {
+    omObjData *object;
+    s32 i;
+    s32 j;
+
+    Hu3DAnimInit(0x20);
+    func_80021BE0_main(&D_800EBEB0_minigame, 0x40);
+    func_800142A0_main(0x40);
+    omInitObjMan(0x20, 0);
+    func_8004A208_main();
+    D_800EC1B8_minigame = 0;
+    D_800EC280_minigame = 0;
+    D_800EBE28_minigame = 0;
+    func_800E1804_minigame();
+    func_80105FC8_hyper_hydrants();
+    func_80105CB4_hyper_hydrants(&D_8010BF60_hyper_hydrants);
+    func_800E5EA0_minigame(&D_8010BF60_hyper_hydrants);
+    HmfLightColorSet(1, 0x40, 0x40, 0x40);
+    HmfLightDirSet(1, 0.0f, 0.0f, 100.0f);
+    object = omAddObj(0x7FDA, 0, 0, -1, func_80105D44_hyper_hydrants);
+    omSetStatBit(object, 0xA0);
+    func_80105D44_hyper_hydrants(object);
+    object = omAddObj(0, 0, 0, -1, func_801060F8_hyper_hydrants);
+    omSetStatBit(object, 0xA0);
+    for (i = 0; i < 2; i++) {
+        D_8010BFE0_hyper_hydrants[i] = omAddObj(0, 2, 0, -1, func_80108F34_hyper_hydrants);
+    }
+    D_8010C010_hyper_hydrants = (rand8() * 3) >> 8;
+    for (j = 0; j < 2; j++) {
+        for (i = 0; i < 5; i++) {
+            D_8010BFE8_hyper_hydrants[j][i] = omAddObj(0, 3, 0, -1, func_80109588_hyper_hydrants);
+        }
+    }
+    for (i = 0; i < 2; i++) {
+        omAddObj(1, 10, 0, -1, func_801078B8_hyper_hydrants);
+    }
+    omAddObj(1, 0, 0, -1, func_8010AE08_hyper_hydrants);
+    for (i = 0; i < 4; i++) {
+        D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(2, 3, 5, -1, func_80106238_hyper_hydrants);
+    }
+    for (i = 0; i < 2; i++) {
+        omAddObj(3, 6, 0, -1, func_8010A68C_hyper_hydrants);
+    }
+    omAddObj(3, 0, 0, -1, func_8010B658_hyper_hydrants);
+    WipeCreateIn(0xFF, 0x10);
+}
 
 void func_80105CB4_hyper_hydrants(D_80111B50_vine_with_me_Struct *arg0) {
     s32 i;
@@ -170,7 +232,7 @@ void func_80105CB4_hyper_hydrants(D_80111B50_vine_with_me_Struct *arg0) {
     }
 }
 
-void func_80105D44_hyper_hydrants(void) {
+void func_80105D44_hyper_hydrants(omObjData *object) {
     func_80105EB0_hyper_hydrants(0);
     func_80105EB0_hyper_hydrants(1);
 }
@@ -242,7 +304,7 @@ void func_80105FC8_hyper_hydrants(void) {
     Hu3DCamSetPerspective(1, 35.883f, 80.0f, 8000.0f);
 }
 
-void func_801060F8_hyper_hydrants(void) {
+void func_801060F8_hyper_hydrants(omObjData *object) {
     if (func_80049F98_main() + D_800D6A90_main == 0) {
         if (D_8010BE34_hyper_hydrants == 0 && D_800D530C_main == 1) {
             func_8004AD70_main();

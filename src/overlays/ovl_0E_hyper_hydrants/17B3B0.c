@@ -27,6 +27,14 @@ typedef struct {
 } HyperHydrantsPlayerData;
 
 typedef struct {
+    s8 unk00[3];
+    s8 unk03;
+    s8 unk04;
+    f32 unk08;
+    u8 unk0C[0xA8];
+} HyperHydrantsMaskData;
+
+typedef struct {
     s16 spread;
     f32 angle;
     f32 speed;
@@ -52,6 +60,12 @@ typedef struct {
     f32 unk18;
 } HyperHydrantsChainPoint;
 
+extern s16 D_8010BF52_hyper_hydrants;
+extern s16 D_8010BF54_hyper_hydrants;
+extern s16 D_8010BF56_hyper_hydrants;
+extern s16 D_8010BF58_hyper_hydrants;
+extern s16 D_8010BF88_hyper_hydrants;
+extern s16 D_8010BF8A_hyper_hydrants[2];
 extern s8 D_8010BF50_hyper_hydrants;
 extern u16 D_800A178C_main[][12];
 extern Vec D_8010C028_hyper_hydrants[2];
@@ -95,12 +109,14 @@ extern s16 D_8010BE14_hyper_hydrants[2][2][2];
 s16 func_8010BC80_hyper_hydrants(s16 soundId, s16 side, s8 playerSound, s16 player);
 void func_800E6F0C_minigame(s32 state);
 void func_800E1840_minigame(void);
+void func_800E1370_minigame(omObjData *object, s32 arg1, f32 arg2);
 void func_8004AD70_main(void);
 void func_8004AE00_main(s16 arg0, s16 arg1);
 void func_8000B710_main(s32 arg0);
 void func_80105EB0_hyper_hydrants(s8 camera);
 void func_8010B8B0_hyper_hydrants(omObjData *object);
 void func_8010B38C_hyper_hydrants(void);
+void func_8010B2FC_hyper_hydrants(omObjData *object);
 void func_8010AB34_hyper_hydrants(omObjData *object);
 void func_8010A2D4_hyper_hydrants(omObjData *object);
 void func_80107A90_hyper_hydrants(omObjData *object);
@@ -820,9 +836,86 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_8010A
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_8010AB34_hyper_hydrants);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_8010AE08_hyper_hydrants);
+void func_8010AE08_hyper_hydrants(omObjData *object) {
+    HuSprite *sprites[2];
+    HyperHydrantsMaskData *data;
+    s32 i;
+    u8 *first;
+    u8 *second;
+    f32 x;
+    f32 y;
+    f32 dx;
+    f32 dy;
+    f32 distance;
+    f32 step;
 
-void func_8010B2FC_hyper_hydrants(void) {
+    object->func = func_8010B2FC_hyper_hydrants;
+    object->trans.x = object->trans.y = object->trans.z = 0.0f;
+    D_8010BF56_hyper_hydrants = func_8000B838_main(0x2F0009);
+    D_8010BF58_hyper_hydrants = HuSprGrpCreate(1, 0);
+    func_80055024_main(D_8010BF58_hyper_hydrants, 0, D_8010BF56_hyper_hydrants, 0);
+    HuSprPriSet(D_8010BF58_hyper_hydrants, 0, 0x10);
+    HuSprAttrReset(D_8010BF58_hyper_hydrants, 0, 0xFFFF);
+    HuSprAttrSet(D_8010BF58_hyper_hydrants, 0, 0x1000);
+    func_80054904_main(D_8010BF58_hyper_hydrants, 0, 160, 120);
+    for (i = 0; i < 2; i++) {
+        D_8010BF52_hyper_hydrants = func_8000B838_main(0x2F0000);
+        D_8010BF88_hyper_hydrants = HuSprGrpCreate(1, 0);
+        func_80055024_main(D_8010BF88_hyper_hydrants, 0, D_8010BF52_hyper_hydrants, 0);
+        HuSprAttrReset(D_8010BF88_hyper_hydrants, 0, 0xFFFF);
+        if (i == 0) {
+            HuSprAttrSet(D_8010BF88_hyper_hydrants, 0, 0x5000);
+            func_80054904_main(D_8010BF88_hyper_hydrants, 0, 80, 120);
+        } else {
+            HuSprAttrSet(D_8010BF88_hyper_hydrants, 0, 0x5001);
+            func_80054904_main(D_8010BF88_hyper_hydrants, 0, 240, 120);
+        }
+    }
+    data = object->data = HuMemAllocTag(sizeof(HyperHydrantsMaskData), 0x7918);
+    memset(data, 0, sizeof(HyperHydrantsMaskData));
+    data->unk03 = 1;
+    data->unk04 = 0;
+    data->unk08 = 0.5f;
+    func_800E1370_minigame(object, 2, 0.0f);
+    for (i = 0; i < 2; i++) {
+        D_8010BF54_hyper_hydrants = func_8000B838_main(0x2F0001);
+        D_8010BF8A_hyper_hydrants[i] = HuSprGrpCreate(1, 0);
+        func_80055024_main(D_8010BF8A_hyper_hydrants[i], 0, D_8010BF54_hyper_hydrants, 0);
+        HuSprPriSet(D_8010BF58_hyper_hydrants, 0, 0x20);
+        HuSprAttrReset(D_8010BF8A_hyper_hydrants[i], 0, 0xFFFF);
+        if (i == 0) {
+            HuSprAttrSet(D_8010BF8A_hyper_hydrants[0], 0, 0x1000);
+            func_80054904_main(D_8010BF8A_hyper_hydrants[0], 0, 80, 120);
+        } else {
+            HuSprAttrSet(D_8010BF8A_hyper_hydrants[i], 0, 0x1001);
+            func_80054904_main(D_8010BF8A_hyper_hydrants[i], 0, 240, 120);
+        }
+        sprites[i] = HuSprGet(D_8010BF8A_hyper_hydrants[i], 0);
+        D_8010BF94_hyper_hydrants[i] = sprites[i]->unk_84->unk00->unk00;
+    }
+    D_8010BF8E_hyper_hydrants = sprites[0]->unk_84->unk14;
+    D_8010BF90_hyper_hydrants = sprites[0]->unk_84->unk16;
+    D_8010BF9C_hyper_hydrants = 35;
+    step = 35.0f / 255.0f;
+    first = D_8010BF94_hyper_hydrants[0];
+    second = D_8010BF94_hyper_hydrants[1];
+    for (y = 0.0f; y < D_8010BF90_hyper_hydrants; y++) {
+        for (x = 0.0f; x < D_8010BF8E_hyper_hydrants; x++, first++, second++) {
+            dx = x - D_8010BFA0_hyper_hydrants;
+            dy = y - D_8010BFA4_hyper_hydrants;
+            distance = HuSqrtf(dx * dx + dy * dy);
+            if (distance > D_8010BF9C_hyper_hydrants) {
+                *first = *second = 255;
+            } else {
+                *first = *second = (u32)(distance / step);
+            }
+        }
+    }
+    func_80055458_main(D_8010BF8A_hyper_hydrants[0], 0, 240);
+    func_80055458_main(D_8010BF8A_hyper_hydrants[1], 0, 240);
+}
+
+void func_8010B2FC_hyper_hydrants(omObjData *object) {
     if (func_800E6E8C_minigame() == 0) {
         if (D_8010BFE0_hyper_hydrants[0]->trans.y > 0.0f) {
             func_8010B38C_hyper_hydrants();

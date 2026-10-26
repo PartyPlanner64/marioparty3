@@ -132,6 +132,10 @@ s32 func_80107380_filesel(u32, s16, s16, s16);
 void func_801059D0_filesel(void);
 void func_801126C0_filesel(s32, u8 *, u8 *);
 void func_8010B80C_filesel(s32);
+void func_8010B554_filesel(u8 *);
+void func_8010B598_filesel(u8 *);
+s32 func_8010C9B4_filesel(s32);
+s32 func_80112508_filesel(s32, u8 *);
 s32 func_8010C688_filesel(u32);
 s32 func_80111A08_filesel(s32);
 void func_8010BDC4_filesel(void);
@@ -742,7 +746,7 @@ void func_80107574_filesel(void) {
     }
 }
 
-void func_801075D8_filesel(s32 arg0) {
+void func_801075D8_filesel(s32 arg0, f32 arg1, f32 arg2) {
     // The original call omits the position arguments.
     void (*setWindowPosition)() = (void (*)())func_8005BB18_main;
 
@@ -1414,7 +1418,138 @@ void func_8010AB60_filesel(s32 arg0, u32 arg1) {
     func_80105FBC_filesel(arg0, targetX, targetY);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010AC58_filesel);
+s32 func_8010AC58_filesel(s32 fileIndex) {
+    f32 origin[2];
+    u8 name[0x20];
+    s16 window;
+    s32 result;
+
+    origin[0] = 39.0f;
+    origin[1] = 95.0f;
+    func_80105E48_filesel(4, 0x1F0015);
+    func_80106134_filesel(4, 5);
+    func_80105FBC_filesel(4, 160, 152);
+    func_80105F24_filesel(4);
+    func_80105E48_filesel(5, 0x1F0016);
+    func_80106134_filesel(5, 5);
+    func_80105FBC_filesel(5, 160, 152);
+    func_80105F54_filesel(5);
+    func_80105E48_filesel(6, 0x1F0017);
+    func_80106134_filesel(6, 5);
+    func_80105FBC_filesel(6, 160, 152);
+    func_80105F54_filesel(6);
+    func_80105E48_filesel(7, 0x1F0010);
+    func_80106134_filesel(7, 4);
+    func_80105FBC_filesel(7, origin[0] + 14.0f + 16.0f, origin[1] + 89.0f + 7.0f);
+    func_80105F54_filesel(7);
+    func_80105E48_filesel(8, 0x1F0011);
+    func_80106134_filesel(8, 4);
+    func_80105FBC_filesel(8, origin[0] + 56.0f + 16.0f, origin[1] + 89.0f + 7.0f);
+    func_80105F54_filesel(8);
+    func_80105E48_filesel(9, 0x1F0012);
+    func_80106134_filesel(9, 4);
+    func_80105FBC_filesel(9, origin[0] + 98.0f + 25.0f, origin[1] + 89.0f + 7.0f);
+    func_80105F54_filesel(9);
+    func_80105E48_filesel(10, 0x1F0013);
+    func_80106134_filesel(10, 4);
+    func_80105FBC_filesel(10, origin[0] + 168.0f + 7.0f, origin[1] + 89.0f + 7.0f);
+    func_80105F54_filesel(10);
+    func_80105E48_filesel(11, 0x1F0014);
+    func_80106134_filesel(11, 4);
+    func_80105FBC_filesel(11, origin[0] + 202.0f + 13.0f, origin[1] + 89.0f + 7.0f);
+    func_80105F54_filesel(11);
+    func_80105E48_filesel(17, 0x1F001A);
+    func_80106134_filesel(17, 5);
+    func_80105FBC_filesel(17, 160, 113);
+    func_80105F54_filesel(17);
+    func_80105E48_filesel(19, 0x1F001B);
+    func_80106134_filesel(19, 0);
+    func_80106044_filesel(19, 1.0f, 1.0f);
+    func_80105FBC_filesel(19, 160, 113);
+    func_80105F54_filesel(19);
+    func_80105E48_filesel(48, 0x1F0023);
+    func_80106134_filesel(48, 4);
+    func_80105FBC_filesel(48, origin[0] + 14.0f + 20.0f - 4.0f, origin[1] + 89.0f + 10.0f - 3.0f);
+    func_80105F54_filesel(48);
+    func_80105E48_filesel(49, 0x1F0023);
+    func_80106134_filesel(49, 4);
+    func_80105FBC_filesel(49, origin[0] + 56.0f + 20.0f - 4.0f, origin[1] + 89.0f + 10.0f - 3.0f);
+    func_80105F54_filesel(49);
+    func_80105E48_filesel(50, 0x1F0024);
+    func_80106134_filesel(50, 4);
+    func_80105FBC_filesel(50, origin[0] + 98.0f + 28.0f - 3.0f, origin[1] + 89.0f + 10.0f - 3.0f);
+    func_80105F54_filesel(50);
+    func_80105E48_filesel(51, 0x1F0025);
+    func_80106134_filesel(51, 4);
+    func_80105FBC_filesel(51, origin[0] + 168.0f + 10.0f - 3.0f, origin[1] + 89.0f + 10.0f - 3.0f);
+    func_80105F54_filesel(51);
+    func_80105E48_filesel(52, 0x1F0026);
+    func_80106134_filesel(52, 4);
+    func_80105FBC_filesel(52, origin[0] + 202.0f + 16.0f - 3.0f, origin[1] + 89.0f + 10.0f - 3.0f);
+    func_80105F54_filesel(52);
+    D_80114470_filesel = 0;
+    bzero(name, sizeof(name));
+    func_80112508_filesel(fileIndex, name);
+    func_80106B40_filesel(10, (u32)name, 104, 46, 62, 20, 2);
+    window = func_80107810_filesel(10);
+    func_8005B63C_main(window, 0x80000, 0x80000);
+    func_8005FBF8_main(window, 128, 128, 128);
+    func_8005C02C_main(window, 7);
+    func_80105E48_filesel(16, 0x1F0020);
+    func_80106044_filesel(16, 1.0f, 1.0f);
+    func_80106094_filesel(16, 256);
+    func_80105FBC_filesel(16, 135, 56);
+    func_801076D0_filesel(10, (u32)name);
+    func_801075D8_filesel(10, 1.0f, 1.0f);
+    func_8010B554_filesel(name);
+    result = func_8010C9B4_filesel(fileIndex);
+    if (result != 0) {
+        func_8010B598_filesel(name);
+        if (name[0] == 0 && name[1] == 0) {
+            result = 0;
+        } else {
+            func_80112494_filesel(fileIndex, name);
+            func_801076D0_filesel(fileIndex + 1, (u32)name);
+        }
+    }
+    func_80105FA0_filesel(19);
+    func_801076A0_filesel(10);
+    func_80105FA0_filesel(4);
+    func_80105FA0_filesel(5);
+    func_80105FA0_filesel(6);
+    func_80105FA0_filesel(7);
+    func_80105FA0_filesel(48);
+    func_80105FA0_filesel(8);
+    func_80105FA0_filesel(9);
+    func_80105FA0_filesel(10);
+    func_80105FA0_filesel(11);
+    func_80105FA0_filesel(17);
+    func_80105FA0_filesel(19);
+    func_80105FA0_filesel(48);
+    func_80105FA0_filesel(49);
+    func_80105FA0_filesel(50);
+    func_80105FA0_filesel(51);
+    func_80105FA0_filesel(52);
+    func_80107490_filesel(10);
+    func_80105EC0_filesel(16);
+    HuPrcSleep(3);
+    func_80105EC0_filesel(4);
+    func_80105EC0_filesel(5);
+    func_80105EC0_filesel(6);
+    func_80105EC0_filesel(7);
+    func_80105EC0_filesel(8);
+    func_80105EC0_filesel(9);
+    func_80105EC0_filesel(10);
+    func_80105EC0_filesel(11);
+    func_80105EC0_filesel(17);
+    func_80105EC0_filesel(19);
+    func_80105EC0_filesel(48);
+    func_80105EC0_filesel(49);
+    func_80105EC0_filesel(50);
+    func_80105EC0_filesel(51);
+    func_80105EC0_filesel(52);
+    return result;
+}
 
 u16 func_8010B4D0_filesel(s32 arg0, s32 arg1) {
     u8 *str = D_801127FC_filesel[arg0];

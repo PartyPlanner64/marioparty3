@@ -2459,7 +2459,123 @@ void func_8010D13C_filesel(s32 fileIndex) {
     func_80105F54_filesel(30);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010D660_filesel);
+void func_8010D660_filesel(s32 fileIndex) {
+    s32 x = 240;
+    s32 y = 104;
+    s32 number;
+    s32 row;
+
+    func_80105E48_filesel(31, 0x1F0002);
+    func_80105FBC_filesel(31, x, y);
+    func_80105F54_filesel(31);
+    func_80105E48_filesel(32, 0x1F000C);
+    func_80106134_filesel(32, 5);
+    func_80105FBC_filesel(32, x, y - 21);
+    func_80106168_filesel(32, 0, 0);
+    func_80105F54_filesel(32);
+    func_8000BEAC_main(func_80105CC4_filesel(32), 0, 255, 255);
+    func_80105D70_filesel(40, 32);
+    func_80106134_filesel(40, 5);
+    func_80105FBC_filesel(40, x, y + 22);
+    func_80106168_filesel(40, 1, 0);
+    func_80105F54_filesel(40);
+    func_8000BEAC_main(func_80105CC4_filesel(40), 255, 64, 64);
+    func_80105E48_filesel(33, 0x1F000B);
+    func_80106134_filesel(33, 5);
+    func_80105FBC_filesel(33, x, y - 11);
+    func_80106168_filesel(33, D_801142D8_filesel.files[fileIndex].unk_74, 0);
+    func_80105F54_filesel(33);
+    func_80105E48_filesel(41, 0x1F000A);
+    func_80106134_filesel(41, 5);
+    func_80105FBC_filesel(41, x, y + 32);
+    func_80106168_filesel(41, D_801142D8_filesel.files[fileIndex].unk_58, 0);
+    func_80105F54_filesel(41);
+    if (!_CheckFlag(0x16)) {
+        func_80105E48_filesel(34, 0x1F0009);
+        func_80106134_filesel(34, 5);
+        func_80105FBC_filesel(34, x, y - 1);
+    } else {
+        func_80105E48_filesel(34, 0x1F0006);
+        func_80106134_filesel(34, 5);
+        func_80105FBC_filesel(34, x - 20, y + 5);
+    }
+    func_80105F54_filesel(34);
+    row = y + 5;
+    func_80105E48_filesel(35, 0x1F0007);
+    func_80106134_filesel(35, 5);
+    func_80105FBC_filesel(35, x + 8, row);
+    number = D_801142D8_filesel.files[fileIndex].unk_7C % 10;
+    func_80106168_filesel(35, number, 0);
+    func_80105F54_filesel(35);
+    func_80105D70_filesel(36, 35);
+    func_80106134_filesel(36, 5);
+    func_80105FBC_filesel(36, x, row);
+    number = D_801142D8_filesel.files[fileIndex].unk_7C / 10;
+    func_80106168_filesel(36, number, 0);
+    func_80105F54_filesel(36);
+    func_80105D70_filesel(37, 35);
+    func_80106134_filesel(37, 5);
+    func_80105FBC_filesel(37, x + 32, row);
+    number = D_801142D8_filesel.files[fileIndex].unk_80 % 10;
+    func_80106168_filesel(37, number, 0);
+    func_80105F54_filesel(37);
+    func_80105D70_filesel(38, 35);
+    func_80106134_filesel(38, 5);
+    func_80105FBC_filesel(38, x + 24, row);
+    number = D_801142D8_filesel.files[fileIndex].unk_80 / 10;
+    func_80106168_filesel(38, number, 0);
+    func_80105F54_filesel(38);
+    func_80105E48_filesel(39, 0x1F0028);
+    func_80105FBC_filesel(39, x + 16, row);
+    func_8000BEAC_main(func_80105CC4_filesel(39), 0, 255, 0);
+    func_80106134_filesel(39, 5);
+    func_80105F54_filesel(39);
+    if (!_CheckFlag(0x17)) {
+        func_80105E48_filesel(42, 0x1F0009);
+        func_80106134_filesel(42, 5);
+        func_80105FBC_filesel(42, x, y + 42);
+    } else {
+        func_80105E48_filesel(42, 0x1F0006);
+        func_80106134_filesel(42, 5);
+        func_80105FBC_filesel(42, x - 16, y + 48);
+    }
+    row = y + 48;
+    func_80105F54_filesel(42);
+    func_80105E48_filesel(43, 0x1F0007);
+    func_80106134_filesel(43, 5);
+    func_80105FBC_filesel(43, x + 8, row);
+    number = D_801142D8_filesel.files[fileIndex].unk_60 % 10;
+    func_80106168_filesel(43, number, 0);
+    func_80105F54_filesel(43);
+    func_80105D70_filesel(44, 43);
+    func_80106134_filesel(44, 5);
+    func_80105FBC_filesel(44, x, row);
+    number = D_801142D8_filesel.files[fileIndex].unk_60 / 10;
+    func_80106168_filesel(44, number, 0);
+    func_80105F54_filesel(44);
+    func_80105D70_filesel(45, 43);
+    func_80106134_filesel(45, 5);
+    func_80105FBC_filesel(45, x + 32, row);
+    number = D_801142D8_filesel.files[fileIndex].unk_64 % 10;
+    func_80106168_filesel(45, number, 0);
+    func_80105F54_filesel(45);
+    func_80105D70_filesel(46, 43);
+    func_80106134_filesel(46, 5);
+    func_80105FBC_filesel(46, x + 24, row);
+    number = D_801142D8_filesel.files[fileIndex].unk_64 / 10;
+    func_80106168_filesel(46, number, 0);
+    func_80105F54_filesel(46);
+    if (D_801142D8_filesel.files[fileIndex].unk_64 != 20) {
+        func_80105E48_filesel(47, 0x1F0027);
+        func_80105FBC_filesel(47, x, y + 44);
+    } else {
+        func_80105E48_filesel(47, 0x1F0028);
+        func_80105FBC_filesel(47, x + 16, y + 48);
+    }
+    func_8000BEAC_main(func_80105CC4_filesel(47), 0, 255, 0);
+    func_80106134_filesel(47, 5);
+    func_80105F54_filesel(47);
+}
 
 void func_8010DD54_filesel(void) {
     func_80105EC0_filesel(0x14);

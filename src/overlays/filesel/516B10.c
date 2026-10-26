@@ -86,6 +86,18 @@ typedef struct UnkFileSelect6 {
     Vec unk_18;
 } UnkFileSelect6; // sizeof 0x24
 
+typedef struct FileSelectInputState {
+    s32 mode;
+    s32 keyboard;
+    s32 option;
+    s32 column;
+    s32 row;
+    s32 frame;
+    u16 name[0x10];
+    u8 encodedName[0x20];
+    s32 length;
+} FileSelectInputState;
+
 typedef struct FileSelectCameraTransition {
     f32 distance;
     s32 frame;
@@ -178,6 +190,8 @@ extern u8 *D_8011288C_filesel[];
 extern s16 D_80114150_filesel;
 extern u16 D_80114152_filesel;
 extern s32 D_8011448C_filesel;
+extern s32 D_80114470_filesel;
+extern FileSelectInputState D_80114478_filesel;
 extern s32 D_801146D8_filesel;
 extern s32 D_801129A0_filesel;
 extern u8 D_801129A4_filesel[];
@@ -187,6 +201,7 @@ extern omObjData *D_8011446C_filesel;
 extern s32 D_8011447C_filesel[4];
 extern Vec D_801128A4_filesel[];
 extern Vec D_80112910_filesel[][2];
+extern Vec D_801128C8_filesel[][2];
 extern FileSelectCameraState D_801146B0_filesel;
 extern u8 D_800D09A9_main;
 extern s32 D_80114500_filesel;
@@ -1635,7 +1650,99 @@ INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010BE30_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010C25C_filesel);
 
+#ifdef NON_MATCHING
+// GCC reloads the input-state address at selectOptions, adding two instructions.
+s32 func_8010C688_filesel(u32 buttons) {
+    if (buttons & 0x1000) {
+        D_80114478_filesel.mode = 1;
+        D_80114478_filesel.option = 11;
+        func_8010BE14_filesel();
+        func_8010B6F4_filesel(D_80114478_filesel.option);
+        return 0;
+    }
+    if (buttons & 0xF00) {
+        func_8010BDC4_filesel();
+        if (buttons & 0x800) {
+            if (--D_80114478_filesel.row < 0) {
+                D_80114478_filesel.row = 0;
+                goto selectOptions;
+            }
+        } else if (buttons & 0x400) {
+            if (++D_80114478_filesel.row >= 5) {
+                D_80114478_filesel.row = 4;
+            selectOptions:
+                D_80114478_filesel.mode = 1;
+                D_80114478_filesel.option = 10;
+                func_8010B6F4_filesel(10);
+                func_8010BE14_filesel();
+                return 0;
+            }
+        } else if (buttons & 0x200) {
+            if (--D_80114478_filesel.column < 0) {
+                D_80114478_filesel.column = 12;
+            }
+        } else if (buttons & 0x100) {
+            if (++D_80114478_filesel.column >= 13) {
+                D_80114478_filesel.column = 0;
+            }
+        } else {
+            return 0;
+        }
+        func_8010BDC4_filesel();
+        return 0;
+    }
+    if (D_800D5558_main[0] & 0x8000) {
+        if (D_80114478_filesel.length < 5) {
+            HuAudFXPlay(0x2EE);
+            D_80114478_filesel.name[D_80114478_filesel.length] = func_8010B528_filesel(D_80114478_filesel.column, D_80114478_filesel.row);
+            D_80114478_filesel.length++;
+            D_80114470_filesel = 1;
+        }
+        D_80114478_filesel.name[D_80114478_filesel.length] = 0;
+        func_801076D0_filesel(10, (u32)D_80114478_filesel.name);
+        func_8010A978_filesel(D_80114478_filesel.length + 1);
+        if (D_80114478_filesel.length >= 5) {
+            D_80114478_filesel.mode = 1;
+            D_80114478_filesel.option = 11;
+            func_8010B6F4_filesel(11);
+            func_8010B684_filesel(D_80114478_filesel.keyboard);
+            func_8010BE14_filesel();
+        }
+        return 0;
+    }
+    if (D_800D5558_main[0] & 0x4000) {
+        D_80114478_filesel.name[D_80114478_filesel.length] = 0;
+        if (D_80114478_filesel.length > 0) {
+            HuAudFXPlay(0x2EF);
+            D_80114478_filesel.length--;
+            D_80114478_filesel.name[D_80114478_filesel.length] = 0;
+            func_801076D0_filesel(10, (u32)D_80114478_filesel.name);
+            func_8010A978_filesel(D_80114478_filesel.length + 1);
+            D_80114470_filesel = 1;
+        } else {
+            HuAudFXPlay(1);
+            D_80114478_filesel.mode = 1;
+            D_80114478_filesel.option = 11;
+            func_8010B6F4_filesel(11);
+            func_8010B684_filesel(D_80114478_filesel.keyboard);
+            func_8010BE14_filesel();
+        }
+        return 0;
+    }
+    if (buttons & 0x2000) {
+        goto changeKeyboard;
+    }
+    if (buttons & 0x10) {
+    changeKeyboard:
+        func_8010BDC4_filesel();
+        func_8010B684_filesel(D_80114478_filesel.keyboard);
+    }
+    return 0;
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010C688_filesel);
+#endif
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/filesel/516B10", D_80112D6C_filesel);
 
@@ -1933,7 +2040,56 @@ void func_8010F874_filesel(s32 arg0) {
     func_801076A0_filesel(arg0 + 1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010F8A4_filesel);
+void func_8010F8A4_filesel(omObjData *object) {
+    Vec position;
+    Vec rotation;
+    Vec *start;
+    Vec *end;
+    s32 index;
+    u32 slot;
+    f32 duration;
+    f32 frame;
+    f32 progress;
+    f32 scale;
+    f32 interpolation;
+    f32 angle;
+
+    slot = object->work[0];
+    duration = object->work[1];
+    frame = object->work[2];
+    index = slot;
+    start = &D_801128C8_filesel[index][0];
+    end = &D_801128C8_filesel[index][1];
+    progress = frame / duration;
+    if (progress > 1.0f) {
+        progress = 1.0f;
+    }
+    interpolation = progress * 0.9f;
+    interpolation += 0.1f;
+    scale = interpolation * 0.8f;
+    func_80106550_filesel(index, scale, scale, scale);
+    func_80106550_filesel(index + 3, scale, scale, scale);
+    position.x = (end->x - start->x) * interpolation + start->x;
+    position.y = (end->y - start->y) * interpolation + start->y;
+    position.z = (end->z - start->z) * interpolation + start->z;
+    func_801064DC_filesel(index, position.x, position.y, position.z);
+    func_801064DC_filesel(index + 3, position.x, position.y, position.z);
+    rotation.x = rotation.y = rotation.z = 0.0f;
+    angle = progress * 3.0f;
+    rotation.y = (angle - (s32)angle) * 360.0f;
+    func_80106474_filesel(index, rotation.x, rotation.y, rotation.z);
+    func_80106474_filesel(index + 3, rotation.x, rotation.y, rotation.z);
+    if (frame >= duration) {
+        func_801064DC_filesel(index, end->x, end->y, end->z);
+        func_801064DC_filesel(index + 3, end->x, end->y, end->z);
+        func_80106550_filesel(index, 0.8f, 0.8f, 0.8f);
+        func_80106550_filesel(index + 3, 0.8f, 0.8f, 0.8f);
+        omDelObj(object);
+    } else {
+        frame += 1.0f;
+        object->work[2] = frame;
+    }
+}
 
 omObjData *func_8010FBE0_filesel(s32 arg0, s32 arg1) {
     omObjData *obj = omAddObj(6, 0, 0, -1, func_8010F8A4_filesel);

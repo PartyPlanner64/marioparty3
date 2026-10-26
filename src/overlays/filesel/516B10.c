@@ -2603,7 +2603,39 @@ void func_8010E1B4_filesel(void) {
     func_80105FA0_filesel(0x2B);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010E250_filesel);
+void func_8010E250_filesel(Vec *center, Vec *rotation, f32 distance, Vec *eye, Vec *target, Vec *up) {
+    f32 pitch = rotation->x;
+    f32 yaw = rotation->y;
+    f32 roll = rotation->z;
+    f32 upX;
+    f32 upY;
+    f32 upZ;
+    f32 dx;
+    f32 dy;
+    f32 dz;
+    f32 length;
+
+    eye->x = sindf(yaw) * cosdf(pitch) * distance + center->x;
+    eye->y = -sindf(pitch) * distance + center->y;
+    eye->z = cosdf(yaw) * cosdf(pitch) * distance + center->z;
+    target->x = center->x;
+    target->y = center->y;
+    target->z = center->z;
+    upX = sindf(yaw) * sindf(pitch);
+    upY = cosdf(pitch);
+    upZ = cosdf(yaw) * sindf(pitch);
+    dx = target->x - eye->x;
+    dy = target->y - eye->y;
+    dz = target->z - eye->z;
+    length = dx * dx + dy * dy + dz * dz;
+    length = HuSqrtf(length);
+    dx /= length;
+    dy /= length;
+    dz /= length;
+    up->x = upX * (dx * dx + (1.0f - dx * dx) * cosdf(roll)) + upY * (dx * dy * (1.0f - cosdf(roll)) - dz * sindf(roll)) + upZ * (dx * dz * (1.0f - cosdf(roll)) + dy * sindf(roll));
+    up->y = upX * (dx * dy * (1.0f - cosdf(roll)) + dz * sindf(roll)) + upY * (dy * dy + (1.0f - dy * dy) * cosdf(roll)) + upZ * (dy * dz * (1.0f - cosdf(roll)) - dx * sindf(roll));
+    up->z = upX * (dx * dz * (1.0f - cosdf(roll)) - dy * sindf(roll)) + upY * (dy * dz * (1.0f - cosdf(roll)) + dx * sindf(roll)) + upZ * (dz * dz + (1.0f - dz * dz) * cosdf(roll));
+}
 
 void func_8010E740_filesel(s32 arg0) {
     D_80114500_filesel = arg0;

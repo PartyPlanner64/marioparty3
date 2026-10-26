@@ -1440,7 +1440,55 @@ void func_8010B658_hyper_hydrants(omObjData *object) {
     object->func = func_8010B8B0_hyper_hydrants;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_8010B8B0_hyper_hydrants);
+void func_8010B8B0_hyper_hydrants(omObjData *object) {
+    s32 i;
+    s32 j;
+
+    switch (func_800E6E8C_minigame()) {
+        case 2:
+        case 3:
+            if (D_8010BE24_hyper_hydrants < 10) {
+                func_8000BB54_main(D_8010C01A_hyper_hydrants[0][0]);
+                func_8000BD50_main(D_8010C01A_hyper_hydrants[0][0], (s8)(D_8010BE24_hyper_hydrants % 10));
+                func_8000BBD4_main(D_8010C01A_hyper_hydrants[0][0], D_8010BE14_hyper_hydrants[0][0][0], D_8010BE14_hyper_hydrants[0][0][1]);
+                func_8000BB94_main(D_8010C01A_hyper_hydrants[0][1]);
+            } else {
+                func_8000BB54_main(D_8010C01A_hyper_hydrants[0][0]);
+                func_8000BD50_main(D_8010C01A_hyper_hydrants[0][0], (s8)(D_8010BE24_hyper_hydrants / 10));
+                func_8000BBD4_main(D_8010C01A_hyper_hydrants[0][0], D_8010BE14_hyper_hydrants[0][0][0], D_8010BE14_hyper_hydrants[0][0][1]);
+                func_8000BB54_main(D_8010C01A_hyper_hydrants[0][1]);
+                func_8000BD50_main(D_8010C01A_hyper_hydrants[0][1], (s8)(D_8010BE24_hyper_hydrants % 10));
+                func_8000BBD4_main(D_8010C01A_hyper_hydrants[0][1], D_8010BE14_hyper_hydrants[0][1][0], D_8010BE14_hyper_hydrants[0][1][1]);
+            }
+            if (D_8010BE25_hyper_hydrants < 10) {
+                func_8000BB54_main(D_8010C01A_hyper_hydrants[1][0]);
+                func_8000BD50_main(D_8010C01A_hyper_hydrants[1][0], (s8)(D_8010BE25_hyper_hydrants % 10));
+                func_8000BBD4_main(D_8010C01A_hyper_hydrants[1][0], D_8010BE14_hyper_hydrants[1][0][0], D_8010BE14_hyper_hydrants[1][0][1]);
+                func_8000BB94_main(D_8010C01A_hyper_hydrants[1][1]);
+            } else {
+                func_8000BB54_main(D_8010C01A_hyper_hydrants[1][0]);
+                func_8000BD50_main(D_8010C01A_hyper_hydrants[1][0], (s8)(D_8010BE25_hyper_hydrants / 10));
+                func_8000BBD4_main(D_8010C01A_hyper_hydrants[1][0], D_8010BE14_hyper_hydrants[1][0][0], D_8010BE14_hyper_hydrants[1][0][1]);
+                func_8000BB54_main(D_8010C01A_hyper_hydrants[1][1]);
+                func_8000BD50_main(D_8010C01A_hyper_hydrants[1][1], (s8)(D_8010BE25_hyper_hydrants % 10));
+                func_8000BBD4_main(D_8010C01A_hyper_hydrants[1][1], D_8010BE14_hyper_hydrants[1][1][0], D_8010BE14_hyper_hydrants[1][1][1]);
+            }
+            for (i = 0; i < 2; i++) {
+                func_8000BB54_main(D_8010C012_hyper_hydrants[i]);
+                func_8000BB54_main(D_8010C016_hyper_hydrants[i]);
+            }
+            break;
+        default:
+            for (i = 0; i < 2; i++) {
+                func_8000BB94_main(D_8010C012_hyper_hydrants[i]);
+                func_8000BB94_main(D_8010C016_hyper_hydrants[i]);
+                for (j = 0; j < 2; j++) {
+                    func_8000BB94_main(D_8010C01A_hyper_hydrants[i][j]);
+                }
+            }
+            break;
+    }
+}
 
 s16 func_8010BC80_hyper_hydrants(s16 soundId, s16 side, s8 playerSound, s16 player) {
     s16 sound;

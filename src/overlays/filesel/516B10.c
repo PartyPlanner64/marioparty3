@@ -194,6 +194,9 @@ void func_8000BCC8_main(u16, s32);
 void func_8000BD94_main(u16, s32, s32);
 void func_8000BE5C_main(u16, f32, f32);
 
+extern Vec D_80112EA0_filesel;
+extern Vec D_80112EAC_filesel;
+extern Vec D_80112EB8_filesel;
 extern u8 D_80112AF0_filesel[];
 extern s32 D_80112E90_filesel;
 extern u16 D_800D1244_main;
@@ -2908,7 +2911,90 @@ void func_8010E740_filesel(s32 arg0) {
     Hu3DCamUpdateMtx(0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010E864_filesel);
+void func_8010E864_filesel(void) {
+    f32 pitch;
+    f32 yaw;
+    f32 roll;
+    f32 upX;
+    f32 upY;
+    f32 upZ;
+    f32 dx;
+    f32 dy;
+    f32 dz;
+    f32 length;
+
+    while (1) {
+        if (D_80114500_filesel == -1 || D_80114500_filesel == 0) {
+            if (D_80114500_filesel == 0) {
+                if (D_800CDA7C_main[0] & 0x2000) {
+                    CZoom += D_800D20A1_main[0];
+                    if (CZoom < 100.0f) {
+                        CZoom = 100.0f;
+                    } else if (CZoom > 8000.0f) {
+                        CZoom = 8000.0f;
+                    }
+                } else {
+                    CRot.x += D_800D20A1_main[0] * 0.1f;
+                    if (CRot.x < 0.0f) {
+                        CRot.x += 360.0f;
+                    } else if (CRot.x >= 360.0f) {
+                        CRot.x -= 360.0f;
+                    }
+                    CRot.y += D_800CBB6E_main[0] * 0.1f;
+                    if (CRot.y < 0.0f) {
+                        CRot.y += 360.0f;
+                    } else if (CRot.y >= 360.0f) {
+                        CRot.y -= 360.0f;
+                    }
+                }
+            }
+            pitch = CRot.x;
+            yaw = CRot.y;
+            roll = CRot.z;
+            D_80112EA0_filesel.x = sindf(yaw) * cosdf(pitch) * CZoom + Center.x;
+            D_80112EA0_filesel.y = -sindf(pitch) * CZoom + Center.y;
+            D_80112EA0_filesel.z = cosdf(yaw) * cosdf(pitch) * CZoom + Center.z;
+            D_80112EAC_filesel.x = Center.x;
+            D_80112EAC_filesel.y = Center.y;
+            D_80112EAC_filesel.z = Center.z;
+            upX = sindf(yaw) * sindf(pitch);
+            upY = cosdf(pitch);
+            upZ = cosdf(yaw) * sindf(pitch);
+            dx = D_80112EAC_filesel.x - D_80112EA0_filesel.x;
+            dy = D_80112EAC_filesel.y - D_80112EA0_filesel.y;
+            dz = D_80112EAC_filesel.z - D_80112EA0_filesel.z;
+            length = dx * dx + dy * dy + dz * dz;
+            length = HuSqrtf(length);
+            dx /= length;
+            dy /= length;
+            dz /= length;
+            D_80112EB8_filesel.x = upX * (dx * dx + (1.0f - dx * dx) * cosdf(roll)) + upY * (dx * dy * (1.0f - cosdf(roll)) - dz * sindf(roll)) + upZ * (dx * dz * (1.0f - cosdf(roll)) + dy * sindf(roll));
+            D_80112EB8_filesel.y = upX * (dx * dy * (1.0f - cosdf(roll)) + dz * sindf(roll)) + upY * (dy * dy + (1.0f - dy * dy) * cosdf(roll)) + upZ * (dy * dz * (1.0f - cosdf(roll)) - dx * sindf(roll));
+            D_80112EB8_filesel.z = upX * (dx * dz * (1.0f - cosdf(roll)) - dy * sindf(roll)) + upY * (dy * dz * (1.0f - cosdf(roll)) + dx * sindf(roll)) + upZ * (dz * dz + (1.0f - dz * dz) * cosdf(roll));
+        } else {
+            if (D_80114500_filesel != 1) {
+                D_801144D4_filesel.y += D_800D20A1_main[0];
+                if (D_801144D4_filesel.z < -2000.0f) {
+                    D_801144D4_filesel.z = -2000.0f;
+                } else if (D_801144D4_filesel.z > 2000.0f) {
+                    D_801144D4_filesel.z = 2000.0f;
+                }
+                D_801144D4_filesel.x += D_800CBB6E_main[0];
+                if (D_801144D4_filesel.x < -2000.0f) {
+                    D_801144D4_filesel.x = -2000.0f;
+                } else if (D_801144D4_filesel.x > 2000.0f) {
+                    D_801144D4_filesel.x = 2000.0f;
+                }
+            }
+            HuVecCopy3F(&D_80112EA0_filesel, &D_801144D4_filesel);
+            HuVecCopy3F(&D_80112EAC_filesel, &D_801144E0_filesel);
+            HuVecCopy3F(&D_80112EB8_filesel, &D_801144EC_filesel);
+        }
+        Hu3DCamSetPositionOrientation(0, &D_80112EA0_filesel, &D_80112EAC_filesel, &D_80112EB8_filesel);
+        Hu3DCamUpdateMtx(0);
+        HuPrcVSleep();
+    }
+}
 
 void func_8010F10C_filesel(void) {
     omDelPrcObj(D_80114504_filesel);

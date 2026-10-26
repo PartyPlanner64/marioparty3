@@ -143,6 +143,8 @@ void func_80107CF8_filesel(void);
 void func_801119F4_filesel(void);
 void func_80111C30_filesel(void);
 s32 func_8010B5D4_filesel(s32, s32, s32, s16 *, s16 *);
+void func_8010DEEC_filesel(void);
+void func_8010E1B4_filesel(void);
 void func_8010E250_filesel(Vec *, Vec *, f32, Vec *, Vec *, Vec *);
 void func_8010E740_filesel(s32);
 void func_8010E864_filesel(void);
@@ -230,6 +232,8 @@ extern f32 D_801128A0_filesel;
 extern Vec D_801144D4_filesel;
 extern Vec D_801144E0_filesel;
 extern Vec D_801144EC_filesel;
+extern u8 D_80112A64_filesel[];
+
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_801059D0_filesel);
 
@@ -769,11 +773,11 @@ void func_8010779C_filesel(s32 arg0, s8 arg1, u32 arg2) {
     func_800601BC_main(D_80114158_filesel[arg0].unk_00, arg2, arg1);
 }
 
-void func_801077D8_filesel(s32 arg0, s16 arg1) {
+s32 func_801077D8_filesel(s32 arg0, s16 arg1, s32 arg2) {
     // The original call omits the final argument.
     s32 (*setWindowStyle)() = (s32 (*)())func_8005E1D8_main;
 
-    setWindowStyle(D_80114158_filesel[arg0].unk_00, arg1);
+    return setWindowStyle(D_80114158_filesel[arg0].unk_00, arg1);
 }
 
 s16 func_80107810_filesel(s32 arg0) {
@@ -2151,7 +2155,108 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/filesel/516B10", D_80112DBC_filesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010C9B4_filesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010CCA8_filesel);
+s32 func_8010CCA8_filesel(void) {
+    s32 frame = 0;
+    f32 positions[2][2] = { { 80.0f, 48.0f }, { 240.0f, 48.0f } };
+    s32 startX;
+    s32 startY;
+    s32 input;
+    s32 targetX;
+    s32 targetY;
+    s32 selected = 1;
+    s32 stick;
+    f32 progress;
+
+    func_80105FBC_filesel(18, positions[1][0], positions[1][1]);
+    func_80105F24_filesel(18);
+    func_801076D0_filesel(4, 0x2A0E);
+    while (1) {
+        HuPrcVSleep();
+        input = D_800D1244_main;
+        stick = func_80111B14_filesel(0);
+        if (stick != -1) {
+            input |= stick;
+        }
+        if (D_800D5558_main[0] & 0x4000) {
+            input = -1;
+            break;
+        }
+        if (D_800D5558_main[0] & 0x8000) {
+            func_80105FA0_filesel(18);
+            if (selected == 0) {
+                HuAudFXPlay(3);
+                if (_CheckFlag(0x18)) {
+                    func_801076D0_filesel(4, 0x2A0F);
+                    func_8010782C_filesel(4);
+                    stick = func_801077D8_filesel(4, 0, 0);
+                    if (stick == 0) {
+                        input = 1;
+                        break;
+                    }
+                    if (stick == 1) {
+                        func_801076D0_filesel(4, 0x2A10);
+                        func_8010782C_filesel(4);
+                        if (func_801077D8_filesel(4, 0, 0) == 0) {
+                            func_801076D0_filesel(4, (u32)D_80112A64_filesel);
+                            HuPrcVSleep();
+                            func_8005B63C_main(D_80114158_filesel[4].unk_00, 0x11, 0);
+                            func_801076D0_filesel(4, 0x2A18);
+                            func_8010782C_filesel(4);
+                            func_801076D0_filesel(4, 0x2A19);
+                            func_8010782C_filesel(4);
+                            input = func_801077D8_filesel(4, 1, 0) == 0 ? 2 : -1;
+                            func_8005B63C_main(D_80114158_filesel[4].unk_00, -1, 0x11);
+                            break;
+                        }
+                    }
+                } else {
+                    input = 2;
+                    break;
+                }
+                func_801076D0_filesel(4, 0x2A0D);
+                func_80105F84_filesel(18);
+            } else {
+                HuAudFXPlay(3);
+                input = 0;
+                break;
+            }
+        } else if (input & 0x300) {
+            selected = (((u32)input >> 9) ^ 1) & 1;
+            if (selected == 0) {
+                func_80106014_filesel(18, &startX, &startY);
+                targetX = positions[0][0];
+                targetY = positions[0][1];
+                for (input = 0; input < 5; input++) {
+                    progress = input * 0.25f;
+                    func_80105FBC_filesel(18, startX + progress * (targetX - startX),
+                                          startY + progress * (targetY - startY));
+                    HuPrcVSleep();
+                }
+                func_80105FBC_filesel(18, positions[0][0], positions[0][1]);
+                func_801076D0_filesel(4, 0x2A0D);
+            } else {
+                func_80106014_filesel(18, &startX, &startY);
+                targetX = positions[1][0];
+                targetY = positions[1][1];
+                for (input = 0; input < 5; input++) {
+                    progress = input * 0.25f;
+                    func_80105FBC_filesel(18, startX + progress * (targetX - startX),
+                                          startY + progress * (targetY - startY));
+                    HuPrcVSleep();
+                }
+                func_80105FBC_filesel(18, positions[1][0], positions[1][1]);
+                func_801076D0_filesel(4, 0x2A0E);
+            }
+        }
+        func_8010AB58_filesel(18, -(frame / 8));
+        frame = frame < 20 ? frame + 1 : 0;
+    }
+    func_80105F54_filesel(18);
+    func_80108D74_filesel();
+    func_8010DEEC_filesel();
+    func_8010E1B4_filesel();
+    return input;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010D13C_filesel);
 
@@ -2427,8 +2532,6 @@ void func_8010F5C8_filesel(void) {
 void func_8010F65C_filesel(void) {
     func_80105EC0_filesel(0xC);
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/filesel/516B10", D_80112DF8_filesel);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/filesel/516B10", D_80112E08_filesel);
 

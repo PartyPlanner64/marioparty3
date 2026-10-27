@@ -15,6 +15,12 @@ typedef struct HandLineSinkerObjWork {
     /* 0x1CE */ char unk1CE[0x1D4 - 0x1CE];
 } HandLineSinkerObjWork; // sizeof 0x1D4
 
+typedef struct HandLineSinkerFollowWork {
+    /* 0x00 */ omObjData *parent;
+    /* 0x04 */ Vec offset;
+    /* 0x10 */ Vec unk10;
+} HandLineSinkerFollowWork; // sizeof 0x1C
+
 extern s16 D_8010C0EC_hand_line_sinker;
 extern s16 D_8010C0F0_hand_line_sinker;
 extern omObjData *D_8010C0F4_hand_line_sinker;
@@ -194,9 +200,33 @@ void func_8010A5F0_hand_line_sinker(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_8010A6D0_hand_line_sinker);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_8010A904_hand_line_sinker);
+void func_8010A904_hand_line_sinker(omObjData *obj) {
+    HandLineSinkerFollowWork *work = obj->data;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_8010A9F8_hand_line_sinker);
+    if (work->parent != NULL) {
+        omSetTra(obj, work->parent->trans.x + work->offset.x, work->parent->trans.y + work->offset.y,
+                 work->parent->trans.z + work->offset.z);
+    }
+    if (D_800CCF58_main[HmfModelData[obj->model[0]].unk02].unk02 <= HmfModelData[obj->model[0]].unk40) {
+        func_8001C258_main(obj->model[0], 4, 4);
+        D_8010C160_hand_line_sinker[obj->work[0]] = 0;
+        omDelObj(obj);
+    }
+}
+
+void func_8010A9F8_hand_line_sinker(omObjData *obj) {
+    HandLineSinkerFollowWork *work = obj->data;
+
+    if (work->parent != NULL) {
+        omSetTra(obj, work->parent->trans.x + work->offset.x, work->parent->trans.y + work->offset.y,
+                 work->parent->trans.z + work->offset.z);
+    }
+    if (D_800CCF58_main[HmfModelData[obj->model[0]].unk02].unk02 <= HmfModelData[obj->model[0]].unk40) {
+        func_8001C258_main(obj->model[0], 4, 4);
+        D_8010C160_hand_line_sinker[obj->work[0]] = 0;
+        omDelObj(obj);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_8010AAEC_hand_line_sinker);
 

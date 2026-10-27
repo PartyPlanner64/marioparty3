@@ -38,12 +38,17 @@ extern char *D_8010AF98_coconut_conk[];
 extern u8 D_800D6A90_main;
 extern char D_8010B0D0_coconut_conk[];
 extern char D_8010B0E4_coconut_conk[];
+extern HuSprite_Unk84_Struct *D_8010B1C4_coconut_conk;
 extern u8 D_8010B1C8_coconut_conk;
 extern void *D_8010B1D0_coconut_conk[3];
 extern s16 D_8010B1DC_coconut_conk;
 extern u16 D_8010B1E2_coconut_conk[2];
 extern CoconutConkData D_8010B1F0_coconut_conk[50];
 extern omObjData *D_8010B274_coconut_conk;
+extern s16 D_8010B2B4_coconut_conk;
+extern u16 D_8010B2B6_coconut_conk;
+extern f32 D_8010B2B8_coconut_conk;
+extern f32 D_8010B2BC_coconut_conk;
 extern omObjData *D_8010B37C_coconut_conk;
 extern s16 D_8010B3BC_coconut_conk;
 extern u16 D_8010B3BE_coconut_conk;
@@ -59,6 +64,8 @@ extern CoconutConkData D_8010B820_coconut_conk[9];
 extern CoconutConkData D_8010BCC4_coconut_conk;
 
 void func_80105C60_coconut_conk(omObjData *);
+void func_80105D98_coconut_conk(Gfx **, s32, s32);
+void func_801060C0_coconut_conk(omObjData *);
 void func_801060C8_coconut_conk(omObjData *);
 void func_801062D4_coconut_conk(omObjData *);
 void func_801061F4_coconut_conk(omObjData *);
@@ -172,10 +179,20 @@ void func_80105D58_coconut_conk(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_80105D98_coconut_conk);
 
-void func_801060C0_coconut_conk(void) {
+void func_801060C0_coconut_conk(omObjData *arg0) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_801060C8_coconut_conk);
+void func_801060C8_coconut_conk(omObjData *arg0) {
+    D_8010B2B4_coconut_conk = func_8000B838_main(0x23000D);
+    D_8010B2B6_coconut_conk = InitEspriteSlot(D_8010B2B4_coconut_conk, 0, 0);
+    func_8000BC48_main(D_8010B2B6_coconut_conk, 0x4000);
+    D_8010B2B8_coconut_conk = 160.0f;
+    D_8010B2BC_coconut_conk = 67.0f;
+    func_8000BBD4_main(D_8010B2B6_coconut_conk, 160, 67);
+    D_8010B1C4_coconut_conk = func_80055194_main(func_8000B838_main(0x23000E));
+    func_8001C8A8_main(func_8001AC8C_main(0, func_80105D98_coconut_conk, 2), 1);
+    arg0->func = func_801060C0_coconut_conk;
+}
 
 void func_801061AC_coconut_conk(void) {
     omObjData *obj = omAddObj(0x384, 1, 0xA, -1, func_801060C8_coconut_conk);
@@ -232,7 +249,29 @@ void func_8010641C_coconut_conk(void) {
     omSetStatBit(obj, 0xA0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_80106468_coconut_conk);
+void func_80106468_coconut_conk(omObjData *arg0) {
+    CoconutConkData *data = &D_8010B1F0_coconut_conk[5];
+
+    switch (data->unk04) {
+        case 0:
+            data->unk1C += 0.005f;
+            data->unk20 -= 0.005f;
+            if (data->unk1C > 1.1f) {
+                data->unk04 = 1;
+            }
+            break;
+        case 1:
+            data->unk1C -= 0.005f;
+            data->unk20 += 0.005f;
+            if (data->unk1C < 1.0f) {
+                data->unk04 = 0;
+            }
+            break;
+    }
+    arg0->scale.x = arg0->scale.y = arg0->scale.z = data->unk1C;
+    Hu3DModelScaleSet(arg0->model[0], arg0->scale.x, arg0->scale.y, arg0->scale.z);
+    Hu3DModelScaleSet(arg0->model[1], data->unk20, data->unk20, data->unk20);
+}
 
 void func_8010659C_coconut_conk(omObjData *arg0) {
     arg0->model[0] = func_8000B108_main(0x230005, 0x289);
@@ -255,7 +294,22 @@ void func_801066A4_coconut_conk(void) {
     D_8010B484_coconut_conk = obj;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_801066E4_coconut_conk);
+void func_801066E4_coconut_conk(omObjData *arg0) {
+    CoconutConkData *data = &D_8010B508_coconut_conk[arg0->work[0]];
+
+    switch (data->unk04) {
+        case 0:
+            func_8001C6A8_main(arg0->model[0], 0.0f);
+            func_8001C92C_main(arg0->model[0], 0.0f);
+            break;
+        case 1:
+            func_8001C92C_main(arg0->model[0], 1.0f);
+            if (D_800CCF58_main[HmfModelData[arg0->model[0]].unk02].unk02 == HmfModelData[arg0->model[0]].unk40) {
+                data->unk04 = 0;
+            }
+            break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_801067E0_coconut_conk);
 

@@ -16,6 +16,8 @@ typedef struct PickingPanicPlayer {
 } PickingPanicPlayer; // sizeof 0x10
 
 extern D_80111B50_vine_with_me_Struct D_8010E5B0_picking_panic;
+extern Gfx *gMainGfxPos;
+extern Gfx D_8010E5E0_picking_panic[];
 extern const s16 D_8010E720_picking_panic[];
 extern PickingPanicPlayer D_8010EEA0_picking_panic[4];
 extern PickingPanicPlayer *D_8010EEE0_picking_panic[4];
@@ -24,7 +26,7 @@ extern u8 D_8010EEF0_picking_panic[2];
 extern f32 D_8010EEF4_picking_panic[2];
 extern omObjData *D_8010EEFC_picking_panic;
 extern omObjData *D_8010EF00_picking_panic[4];
-extern s16 D_8010EF10_picking_panic[2];
+extern u16 D_8010EF10_picking_panic[2];
 extern s8 D_8010EF14_picking_panic;
 extern u8 D_8010EF15_picking_panic[2];
 extern s16 *D_8010EF18_picking_panic[2][4][3];
@@ -45,7 +47,7 @@ extern s8 D_8010EFBC_picking_panic[2];
 extern u16 D_8010EFBE_picking_panic;
 extern u8 D_8010EFC0_picking_panic[4];
 extern f32 D_8010EFC4_picking_panic[2];
-extern u16 D_8010EFD0_picking_panic[10];
+extern s16 D_8010EFD0_picking_panic[10];
 extern f32 D_8010EFE4_picking_panic[2];
 extern f32 D_8010EFEC_picking_panic[2];
 extern s16 D_8010EFF8_picking_panic[10];
@@ -61,6 +63,7 @@ void func_8010B1F4_picking_panic(omObjData *object);
 void func_80106E84_picking_panic(omObjData *object);
 void func_80107A48_picking_panic(void);
 void func_80109C00_picking_panic(Gfx **, s32, s32);
+void func_8010B11C_picking_panic(s16 arg0, s16 arg1);
 void func_8010B220_picking_panic(omObjData *object, s8 arg1);
 void func_8010B8D0_picking_panic(omObjData *object);
 void func_8010B8EC_picking_panic(omObjData *object);
@@ -508,7 +511,189 @@ void func_80106E84_picking_panic(omObjData *object) {
     ViewportSet(1, scaleX[1] * 640.0f, scaleY[1] * 480.0f, 511.0f, 640.0f, offsetY[1] * 4.0f * 240.0f, 511.0f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", func_80107A48_picking_panic);
+void func_80107A48_picking_panic(void) {
+    f32 progress[2];
+    HuSprite_Unk84_Unk00_Struct *frame;
+    HuSprite *sprite;
+    f32 scissorBottom;
+    f32 scissorTop;
+    f32 iconX;
+    f32 iconY;
+    f32 scale;
+    s32 i;
+    s32 j;
+    s32 k;
+    s32 view;
+    s32 w;
+    s32 h;
+    s32 offset;
+
+    scissorBottom =
+        (D_8010EF78_picking_panic * 240.0f - 1.0f < 0.0f) ? 0.0f : D_8010EF78_picking_panic * 240.0f - 1.0f;
+    scissorTop =
+        (D_8010EF78_picking_panic * 240.0f + 1.0f > 240.0f) ? 240.0f : D_8010EF78_picking_panic * 240.0f + 1.0f;
+
+    gSPDisplayList(gMainGfxPos++, D_8010E5E0_picking_panic);
+    gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
+    for (i = 0; i < 2; i++) {
+        sprite = HuSprGet(D_800CD1DC_main[D_8010EFD0_picking_panic[(i == 0) ? 0 : 1]].unk04, 0);
+        frame = &sprite->unk_84->unk00[sprite->unk_90];
+        gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->unk0C);
+        for (j = 0; j < 4; j++) {
+            for (k = 0; k < 3; k++) {
+                w = (i == 1 && j == 3) ? 40 : 41;
+                h = (k == 2) ? 40 : 41;
+                gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, G_IM_SIZ_8b, (i == 0) ? 161 : 160, 0,
+                                   j * 40, k * 40, j * 40 + w, k * 40 + h, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                                   G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                for (view = 0; view < 2; view++) {
+                    if (view == 0) {
+                        gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, 320, scissorBottom);
+                    } else {
+                        gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, scissorTop, 320, 240);
+                    }
+                    gSPScisTextureRectangle(gMainGfxPos++,
+                                            (s32)(((j * 40 + i * 160) * 4) * D_8010EEF4_picking_panic[view] +
+                                                  D_8010EF9C_picking_panic[view]),
+                                            (s32)(((k * 40 + view * 120) * 4) * D_8010EFC4_picking_panic[view] +
+                                                  D_8010EFAC_picking_panic[view]),
+                                            (s32)(((j * 40 + i * 160 + w) * 4) * D_8010EEF4_picking_panic[view] +
+                                                  D_8010EF9C_picking_panic[view]),
+                                            (s32)(((k * 40 + view * 120 + h) * 4) * D_8010EFC4_picking_panic[view] +
+                                                  D_8010EFAC_picking_panic[view]),
+                                            G_TX_RENDERTILE, (j * 40) << 5, (k * 40) << 5,
+                                            (s32)(D_8010EFEC_picking_panic[view] * 1024.0f),
+                                            (s32)(D_8010EF8C_picking_panic[view] * 1024.0f));
+                }
+            }
+        }
+    }
+
+    gDPSetRenderMode(gMainGfxPos++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
+    gDPSetAlphaCompare(gMainGfxPos++, G_AC_THRESHOLD);
+    gDPSetBlendColor(gMainGfxPos++, 0x00, 0x00, 0x00, 0xD0);
+    iconX = 51.0f;
+    iconY = 64.0f;
+    scale = 0.2875f;
+    for (view = 0; view < 2; view++) {
+        progress[view] = (D_8010EF10_picking_panic[view] < 26)   ? 0.0f
+                         : (D_8010EF10_picking_panic[view] < 30) ? (D_8010EF10_picking_panic[view] - 26) / 4.0
+                         : (D_8010EF10_picking_panic[view] < 37) ? 1.0f
+                         : (D_8010EF10_picking_panic[view] < 45) ? (D_8010EF10_picking_panic[view] - 37) / 7.0
+                                                                 : 0.0f;
+        if (D_8010EF10_picking_panic[view] >= 37 && D_8010EF10_picking_panic[view] < 45) {
+            progress[view] = (1.0f - progress[view] * progress[view]) * 0.75 + (1.0f - progress[view]) * 0.25;
+        }
+        if (D_8010EF10_picking_panic[view] == 26) {
+            func_8001C258_main(D_8010EEFC_picking_panic->model[10 + view], 4, 0);
+            func_8001C6A8_main(D_8010EEFC_picking_panic->model[10 + view], 0);
+            func_8001C814_main(D_8010EEFC_picking_panic->model[10 + view], 3, 0);
+            func_8010B11C_picking_panic(D_8010EEFC_picking_panic->model[10 + view], 0);
+        }
+        if (D_8010EF10_picking_panic[view] == 27) {
+            func_8001C258_main(
+                *D_8010EF18_picking_panic[view][D_8010EEF0_picking_panic[view]][D_8010EF98_picking_panic[view]], 4, 0);
+            func_8001C6A8_main(*D_8010EF18_picking_panic[view][D_8010EEF0_picking_panic[view]][D_8010EF98_picking_panic[view]],
+                               0);
+            func_8001C814_main(*D_8010EF18_picking_panic[view][D_8010EEF0_picking_panic[view]][D_8010EF98_picking_panic[view]],
+                               1, 1);
+        }
+        if (D_8010EF10_picking_panic[view] >= 26 && D_8010EF10_picking_panic[view] < 31) {
+            Hu3DModelPosSet(*D_8010EF18_picking_panic[view][D_8010EEF0_picking_panic[view]][D_8010EF98_picking_panic[view]],
+                            -855.0f, (1.0f - progress[view]) * 175.0f + -25.0f, 0.0f);
+        }
+        if (D_8010EF10_picking_panic[view] == 30) {
+            func_8001C6A8_main(*D_8010EF18_picking_panic[view][D_8010EEF0_picking_panic[view]][D_8010EF98_picking_panic[view]],
+                               0);
+            func_8001C814_main(*D_8010EF18_picking_panic[view][D_8010EEF0_picking_panic[view]][D_8010EF98_picking_panic[view]],
+                               1, 0);
+        }
+        if (D_8010EF10_picking_panic[view] >= 10 && D_8010EF10_picking_panic[view] < 21) {
+            D_8010EF84_picking_panic[view] = sindf((D_8010EF10_picking_panic[view] - 10) / 15.0 * 1440.0) * 0.625;
+        }
+    }
+
+    if (progress[0] != 0.0f || progress[1] != 0.0f) {
+        sprite = HuSprGet(D_800CD1DC_main[D_8010EFD0_picking_panic[4]].unk04, 0);
+        frame = &sprite->unk_84->unk00[sprite->unk_90];
+        gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->unk0C);
+        for (k = 0; k < 4; k++) {
+            gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, G_IM_SIZ_8b, 64, 0, 0, k * 24, 64,
+                               k * 24 + 24 + (k < 3), 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                               G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            view = 0;
+            do {
+                if (progress[view] != 0.0f) {
+                    if (view == 0) {
+                        gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, 320, scissorBottom);
+                    } else {
+                        gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, scissorTop, 320, 240);
+                    }
+                    gSPScisTextureRectangle(
+                        gMainGfxPos++,
+                        (s32)((iconX - scale * 32.0f) * 4.0 * D_8010EEF4_picking_panic[view] +
+                              D_8010EF9C_picking_panic[view]),
+                        (s32)((iconY + progress[view] * 21.0f - 48.0f + k * 24 * scale + view * 120) * 4.0 *
+                                  D_8010EFC4_picking_panic[view] +
+                              D_8010EFAC_picking_panic[view]),
+                        (s32)((iconX + scale * 32.0f) * 4.0 * D_8010EEF4_picking_panic[view] +
+                              D_8010EF9C_picking_panic[view]),
+                        (s32)((iconY + progress[view] * 21.0f - 48.0f +
+                               (k * 24 + 23 + ((k < 3) ? 2 : 0)) * scale + view * 120) *
+                                  4.0 * D_8010EFC4_picking_panic[view] +
+                              D_8010EFAC_picking_panic[view]),
+                        G_TX_RENDERTILE, 0, (k * 24) << 5, (s32)(1024.0f / scale * D_8010EFEC_picking_panic[view]),
+                        (s32)(1024.0f / scale * D_8010EF8C_picking_panic[view]));
+                }
+                view++;
+            } while (view < 2);
+        }
+    }
+
+    for (i = 0; i < 2; i++) {
+        sprite = HuSprGet(D_800CD1DC_main[D_8010EFD0_picking_panic[(i == 0) ? 2 : 3]].unk04, 0);
+        frame = &sprite->unk_84->unk00[sprite->unk_90];
+        if (i == 0) {
+            gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->unk0C);
+        }
+        for (j = 0; j < 3; j++) {
+            w = (i == 1 && j == 2) ? 32 : 39;
+            if (i == 0) {
+                gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, G_IM_SIZ_8b, (i == 0) ? 115 : 108, 0,
+                                   j * 38, 0, j * 38 + w, 48, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                                   G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            } else {
+                gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_RGBA, G_IM_SIZ_16b, (i == 0) ? 115 : 108, 0,
+                                   j * 38, 0, j * 38 + w, 48, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                                   G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            }
+            for (view = 0; view < 2; view++) {
+                offset = 0;
+                if (i == 0) {
+                    offset = D_8010EF84_picking_panic[view] * 4.0;
+                }
+                if (view == 0) {
+                    gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, 320, scissorBottom);
+                } else {
+                    gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, scissorTop, 320, 240);
+                }
+                gSPScisTextureRectangle(gMainGfxPos++,
+                                        (s32)(((j * 38 + i * 212) * 4 + offset) * D_8010EEF4_picking_panic[view] +
+                                              D_8010EF9C_picking_panic[view]),
+                                        (s32)((view * 120 * 4) * D_8010EFC4_picking_panic[view] +
+                                              D_8010EFAC_picking_panic[view]),
+                                        (s32)(((j * 38 + i * 212 + w) * 4 + offset) * D_8010EEF4_picking_panic[view] +
+                                              D_8010EF9C_picking_panic[view]),
+                                        (s32)(((view * 120 + 48) * 4) * D_8010EFC4_picking_panic[view] +
+                                              D_8010EFAC_picking_panic[view]),
+                                        G_TX_RENDERTILE, (j * 38) << 5, 0,
+                                        (s32)(D_8010EFEC_picking_panic[view] * 1024.0f),
+                                        (s32)(D_8010EF8C_picking_panic[view] * 1024.0f));
+            }
+        }
+        gDPSetTextureLUT(gMainGfxPos++, G_TT_NONE);
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010E990_picking_panic);
 

@@ -29,7 +29,8 @@ extern s16 D_8010C10C_hand_line_sinker;
 extern omObjData **D_8010C100_hand_line_sinker;
 extern s32 D_8010BFA0_hand_line_sinker[];
 extern s16 D_8010C148_hand_line_sinker[2][6];
-extern s32 D_8010C160_hand_line_sinker[];
+extern omObjData *D_8010C160_hand_line_sinker[];
+extern omObjFunc D_8010BFA8_hand_line_sinker[];
 extern u16 D_8010C104_hand_line_sinker[2];
 extern f32 D_8010C108_hand_line_sinker;
 extern u8 D_800D6A90_main;
@@ -44,6 +45,7 @@ void func_80105FA4_hand_line_sinker(omObjData *obj);
 void func_8001E888_main(s16 model, f32 x, f32 y, u16 arg3, u16 arg4, char *name, s32 arg6);
 void func_800335BC_main(char *name, u16 *result);
 void func_80106100_hand_line_sinker(omObjData *obj, u16 playerNo);
+f32 func_8010ABD4_hand_line_sinker(f32 a);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_801059A0_hand_line_sinker);
 
@@ -203,7 +205,40 @@ void func_8010A5F0_hand_line_sinker(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_8010A6D0_hand_line_sinker);
+void func_8010A6D0_hand_line_sinker(omObjData *parent, u16 type, Vec *offset, Vec *rot) {
+    HandLineSinkerFollowWork *work;
+    s32 i;
+
+    for (i = 0; i < 6; i++) {
+        if (D_8010C160_hand_line_sinker[i] == NULL) {
+            break;
+        }
+    }
+    if (i == 6) {
+        return;
+    }
+    D_8010C160_hand_line_sinker[i] = omAddObj(0x28, 1, 0, -1, D_8010BFA8_hand_line_sinker[type]);
+    D_8010C160_hand_line_sinker[i]->data = HuMemAllocTag(sizeof(HandLineSinkerFollowWork), 0x7918);
+    work = D_8010C160_hand_line_sinker[i]->data;
+    D_8010C160_hand_line_sinker[i]->work[0] = i;
+    func_8001C258_main(D_8010C148_hand_line_sinker[type][i], 4, 0);
+    D_8010C160_hand_line_sinker[i]->model[0] = D_8010C148_hand_line_sinker[type][i];
+    func_8001C6A8_main(D_8010C160_hand_line_sinker[i]->model[0], 0);
+    work->parent = parent;
+    work->offset = *offset;
+    work->unk10 = *rot;
+    if (parent == NULL) {
+        omSetTra(D_8010C160_hand_line_sinker[i], offset->x, offset->y, offset->z);
+    } else {
+        omSetTra(D_8010C160_hand_line_sinker[i], parent->trans.x + offset->x, parent->trans.y + offset->y,
+                 parent->trans.z + offset->z);
+    }
+    omSetRot(D_8010C160_hand_line_sinker[i], rot->x, rot->y, rot->z);
+    Hu3DModelPosSet(D_8010C160_hand_line_sinker[i]->model[0], D_8010C160_hand_line_sinker[i]->trans.x,
+                    D_8010C160_hand_line_sinker[i]->trans.y, D_8010C160_hand_line_sinker[i]->trans.z);
+    Hu3DModelRotSet(D_8010C160_hand_line_sinker[i]->model[0], D_8010C160_hand_line_sinker[i]->rot.x,
+                    D_8010C160_hand_line_sinker[i]->rot.y, D_8010C160_hand_line_sinker[i]->rot.z);
+}
 
 void func_8010A904_hand_line_sinker(omObjData *obj) {
     HandLineSinkerFollowWork *work = obj->data;
@@ -233,7 +268,29 @@ void func_8010A9F8_hand_line_sinker(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_8010AAEC_hand_line_sinker);
+f32 func_8010AAEC_hand_line_sinker(f32 x) {
+    f32 fx;
+    f32 slope;
+    f32 prev;
+    s32 i;
+
+    for (i = 0; i < 64; i++) {
+        fx = func_8010ABD4_hand_line_sinker(x);
+        if (fx == 0.0f) {
+            break;
+        }
+        slope = (func_8010ABD4_hand_line_sinker(x + fx) - fx) / fx;
+        if (slope < 1e-10f) {
+            break;
+        }
+        prev = x;
+        x -= fx / slope;
+        if (fabs((x - prev) / x) < 1e-6f) {
+            break;
+        }
+    }
+    return x;
+}
 
 #ifdef NON_MATCHING
 /* Only difference: the target has an extra nop between the second logf call's delay slot and the

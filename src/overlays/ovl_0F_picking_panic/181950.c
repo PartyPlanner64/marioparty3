@@ -22,6 +22,7 @@ extern const s16 D_8010E720_picking_panic[];
 extern PickingPanicPlayer D_8010EEA0_picking_panic[4];
 extern PickingPanicPlayer *D_8010EEE0_picking_panic[4];
 extern s32 D_8010E5D8_picking_panic;
+extern u8 D_8010E628_picking_panic;
 extern u8 D_8010EEF0_picking_panic[2];
 extern f32 D_8010EEF4_picking_panic[2];
 extern omObjData *D_8010EEFC_picking_panic;
@@ -695,9 +696,156 @@ void func_80107A48_picking_panic(void) {
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010E990_picking_panic);
+void func_80109C00_picking_panic(Gfx **arg0, s32 arg1, s32 arg2) {
+    s32 alpha = 255;
+    s32 rects[2][7] = {
+        { 23, 39, 25, 36, 20, 42, 1024 },
+        { 129, 145, 131, 142, 126, 148, 1024 },
+    };
+    HuSprite_Unk84_Unk00_Struct *frame;
+    HuSprite *sprite;
+    f32 scissorBottom;
+    f32 scissorTop;
+    f32 divider;
+    f32 t;
+    s32 view;
+    s32 cur;
+    s32 other;
+    s32 i;
+    s32 size;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", func_80109C00_picking_panic);
+    scissorBottom =
+        (D_8010EF78_picking_panic * 240.0f - 1.0f < 0.0f) ? 0.0f : D_8010EF78_picking_panic * 240.0f - 1.0f;
+    scissorTop =
+        (D_8010EF78_picking_panic * 240.0f + 1.0f > 240.0f) ? 240.0f : D_8010EF78_picking_panic * 240.0f + 1.0f;
+    divider = D_8010EF78_picking_panic * 240.0f;
+
+    D_8010E628_picking_panic = !D_8010E628_picking_panic;
+    if (D_8010E628_picking_panic) {
+        return;
+    }
+
+    if (D_8010EF14_picking_panic < 2 && D_8010EFA4_picking_panic < 255) {
+        cur = D_8010EF14_picking_panic;
+        other = 1 - cur;
+        t = 1.0 - D_8010EFA4_picking_panic / 46.0;
+        t = (t < 0.0f) ? 0.0f : (t > 1.0f) ? 1.0f
+                                           : t;
+        for (view = 0; view < 6; view++) {
+            rects[cur][view] -= cur * t * 101.0f;
+            rects[other][view] = rects[other][view] * (1.0f - t) + other * t * 240.0f;
+        }
+        rects[other][6] = (1.0f - t <= 0.0625) ? 0x3FFF : (s32)(1024.0f / (1.0f - t));
+        alpha = (1.0f - t) * 255.0f;
+    }
+
+    gSPDisplayList(gMainGfxPos++, D_8010E5E0_picking_panic);
+    gDPSetRenderMode(gMainGfxPos++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
+    gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 218, alpha * 212 / 255);
+    gDPSetCombineLERP(gMainGfxPos++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0,
+                      PRIMITIVE, 0);
+    sprite = HuSprGet(D_800CD1DC_main[D_8010EFD0_picking_panic[9]].unk04, 0);
+    frame = &sprite->unk_84->unk00[sprite->unk_90];
+    for (view = 0; view < 2; view++) {
+        if (view == 0) {
+            gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, 320, scissorBottom);
+        } else {
+            gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, scissorTop, 320, 240);
+        }
+        gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_I, G_IM_SIZ_8b, 60, 0, 0, 0, 60, 22, 0,
+                           G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
+                           G_TX_NOLOD, G_TX_NOLOD);
+        gSPScisTextureRectangle(gMainGfxPos++, 239 * 4, (rects[view][4] << 2), 299 * 4, (rects[view][5] << 2),
+                                G_TX_RENDERTILE, 0, 0, 1024, rects[view][6]);
+    }
+
+    gDPPipeSync(gMainGfxPos++);
+    gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
+    gDPSetRenderMode(gMainGfxPos++, G_RM_AA_TEX_EDGE, G_RM_AA_TEX_EDGE2);
+    gDPSetAlphaCompare(gMainGfxPos++, G_AC_THRESHOLD);
+    gDPSetBlendColor(gMainGfxPos++, 0x00, 0x00, 0x00, 0xD0);
+    gDPSetCombineMode(gMainGfxPos++, G_CC_DECALRGBA, G_CC_DECALRGBA);
+    gDPSetRenderMode(gMainGfxPos++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
+    gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 255, 255, alpha);
+    gDPSetAlphaCompare(gMainGfxPos++, G_AC_NONE);
+    gDPSetCombineLERP(gMainGfxPos++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0,
+                      PRIMITIVE, 0);
+    gDPPipeSync(gMainGfxPos++);
+
+    for (i = 0; i < 4; i++) {
+        sprite = HuSprGet(D_800CD1DC_main[D_8010EFD0_picking_panic[(i == 0) ? 7 : (i == 1) ? 6
+                                                                                           : 5]]
+                              .unk04,
+                          0);
+        frame = &sprite->unk_84->unk00[sprite->unk_90];
+        if (i < 2) {
+            gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->unk0C);
+        } else {
+            gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->unk0C);
+        }
+        for (view = 0; view < 2; view++) {
+            if (view == 0) {
+                gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, 320, scissorBottom);
+            } else {
+                gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, scissorTop, 320, 240);
+            }
+            if (i == 3 && D_8010EF15_picking_panic[view] < 10) {
+                continue;
+            }
+            if (i >= 2) {
+                if (i == 2) {
+                    if (D_8010EF15_picking_panic[view] < 10) {
+                        size = D_8010EF15_picking_panic[view];
+                    } else {
+                        size = D_8010EF15_picking_panic[view] / 10;
+                    }
+                } else {
+                    size = D_8010EF15_picking_panic[view] % 10;
+                }
+                frame = &sprite->unk_84->unk00[size];
+            } else {
+                size = (i == 0) ? 16 : 12;
+            }
+            if (i < 2) {
+                gDPLoadTextureTile_4b(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, size, 0, 0, 0, size, size, 0,
+                                      G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK,
+                                      G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            } else {
+                gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, G_IM_SIZ_8b, 12, 0, 0, 0, 12, 12, 0,
+                                   G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
+                                   G_TX_NOLOD, G_TX_NOLOD);
+            }
+            if (i == 0) {
+                gSPScisTextureRectangle(gMainGfxPos++, (i * 12 + 243) * 4, (rects[view][0] << 2), (i * 12 + 258) * 4, (rects[view][1] << 2),
+                                        G_TX_RENDERTILE, 0, 0, 1024, rects[view][6]);
+            } else {
+                gSPScisTextureRectangle(gMainGfxPos++, (i * 12 + 249) * 4, (rects[view][2] << 2), (i * 12 + 260) * 4,
+                                        (rects[view][3] << 2), G_TX_RENDERTILE, 0, 0, 1024, rects[view][6]);
+            }
+        }
+    }
+
+    gDPPipeSync(gMainGfxPos++);
+    gDPSetRenderMode(gMainGfxPos++, G_RM_AA_TEX_EDGE, G_RM_AA_TEX_EDGE2);
+    gDPSetAlphaCompare(gMainGfxPos++, G_AC_THRESHOLD);
+    gDPSetBlendColor(gMainGfxPos++, 0x00, 0x00, 0x00, 0xD0);
+    gDPSetCombineMode(gMainGfxPos++, G_CC_DECALRGBA, G_CC_DECALRGBA);
+    sprite = HuSprGet(D_800CD1DC_main[D_8010EFD0_picking_panic[8]].unk04, 0);
+    frame = &sprite->unk_84->unk00[sprite->unk_90];
+    gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
+    gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->unk0C);
+    gDPPipeSync(gMainGfxPos++);
+    gDPLoadTextureTile_4b(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, 320, 0, 0, 0, 320, 6, 0,
+                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
+                          G_TX_NOLOD, G_TX_NOLOD);
+    if (D_8010EF78_picking_panic > 0.0f) {
+        gSPScisTextureRectangle(gMainGfxPos++, 0, (s32)(divider - 3.0f) * 4, 320 * 4, (s32)(divider + 3.0f) * 4,
+                                G_TX_RENDERTILE, 0, 0, 1024, 1024);
+    }
+    gDPPipeSync(gMainGfxPos++);
+    gDPSetBlendColor(gMainGfxPos++, 0xFF, 0xFF, 0xFF, 0x00);
+    gDPPipeSync(gMainGfxPos++);
+}
 
 void func_8010B11C_picking_panic(s16 arg0, s16 arg1) {
     HmfModel *hmfModel = &HmfModelData[arg0];

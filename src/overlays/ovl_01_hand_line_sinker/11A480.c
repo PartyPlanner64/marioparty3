@@ -4,6 +4,7 @@
 #include "game/util.h"
 #include "mallocblock.h"
 #include "overlays/minigame.h"
+#include "hand_line_sinker.h"
 
 typedef struct HandLineSinkerObjWork {
     /* 0x000 */ f32 unk0;
@@ -48,6 +49,12 @@ extern f32 D_8010C134_hand_line_sinker;
 extern f32 D_8010C138_hand_line_sinker;
 extern f32 D_8010C13C_hand_line_sinker;
 extern f32 D_8010C140_hand_line_sinker;
+extern omObjData *D_8010C0E0_hand_line_sinker;
+extern u16 D_8010C0EE_hand_line_sinker;
+extern omObjData *D_8010C0FC_hand_line_sinker;
+extern CameraPreset D_8010C110_hand_line_sinker;
+extern omObjData *D_8010C190_hand_line_sinker;
+extern CameraPreset D_8010BF28_hand_line_sinker;
 
 void func_80105D28_hand_line_sinker(omObjData *);
 void func_80105FA4_hand_line_sinker(omObjData *obj);
@@ -57,6 +64,8 @@ void func_80106100_hand_line_sinker(omObjData *obj, u16 playerNo);
 f32 func_8010ABD4_hand_line_sinker(f32 a);
 void func_801081D0_hand_line_sinker(omObjData *obj);
 void func_8010A6D0_hand_line_sinker(omObjData *parent, u16 type, Vec *offset, Vec *rot);
+omObjData *func_8010A554_hand_line_sinker(void);
+void func_800E6F0C_minigame(s32);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_801059A0_hand_line_sinker);
 
@@ -327,7 +336,49 @@ f32 func_801092B8_hand_line_sinker(s8 stickX, s8 stickY) {
     return mag;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_801093A4_hand_line_sinker);
+void func_801093A4_hand_line_sinker(void) {
+    HandLineSinkerPlayerWork *work;
+
+    switch (D_8010C0EE_hand_line_sinker) {
+        case 0:
+            WipeCreateIn(0xFF, 0x10);
+            D_8010C0E0_hand_line_sinker = func_8010A554_hand_line_sinker();
+            D_8010C110_hand_line_sinker.center.x = D_8010C0E0_hand_line_sinker->trans.x;
+            D_8010C110_hand_line_sinker.center.y = D_8010C0E0_hand_line_sinker->trans.y;
+            D_8010C110_hand_line_sinker.center.z = D_8010C0E0_hand_line_sinker->trans.z;
+            D_8010C110_hand_line_sinker.rot = D_8010BF28_hand_line_sinker.rot;
+            D_8010C110_hand_line_sinker.rot.x = 328.0f;
+            D_8010C110_hand_line_sinker.zoom = 1250.0f;
+            func_8010B5EC_hand_line_sinker(&D_8010C110_hand_line_sinker, &D_8010BF28_hand_line_sinker, 37);
+            D_8010C0EE_hand_line_sinker = 1;
+            break;
+        case 1:
+            if (WipeStatGet() == 0) {
+                work = D_8010C0E0_hand_line_sinker->data;
+                work->velY = 60.0f;
+                work->splashed = 0;
+                D_8010C0EE_hand_line_sinker = 3;
+                HuAudFXPlay(0x305);
+            }
+            break;
+        case 2:
+            if (D_8010C0E0_hand_line_sinker->work[0] == 0) {
+                D_8010C0EE_hand_line_sinker = 3;
+            }
+            break;
+        case 3:
+            D_8010C190_hand_line_sinker->work[1] = 1;
+            if (D_8010C190_hand_line_sinker->work[0] == 0) {
+                func_8001C624_main(D_8010C0FC_hand_line_sinker->model[0],
+                                   HmfModelData[D_8010C0FC_hand_line_sinker->motion[8]].unk02, 0, 30, 3);
+                omDelObj(D_8010C190_hand_line_sinker);
+                D_8010C190_hand_line_sinker = NULL;
+                omDelObj(D_8010C0F4_hand_line_sinker);
+                func_800E6F0C_minigame(1);
+            }
+            break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_80109584_hand_line_sinker);
 

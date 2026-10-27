@@ -3,12 +3,7 @@
 #include "game/hmfman.h"
 #include "game/object.h"
 #include "mallocblock.h"
-
-typedef struct CameraPreset {
-    /* 0x00 */ Vec center;
-    /* 0x0C */ Vec rot;
-    /* 0x18 */ f32 zoom;
-} CameraPreset;
+#include "hand_line_sinker.h"
 
 typedef struct CameraMotionData {
     /* 0x00 */ CameraPreset *from;

@@ -21,7 +21,9 @@ typedef struct HandLineSinkerPlayerWork {
     /* 0x00 */ s8 playerNo;
     /* 0x01 */ char unk1[0xC - 0x1];
     /* 0x0C */ u16 aiWait;
-    /* 0x0E */ char unkE[0x28 - 0xE];
+    /* 0x0E */ char unkE[0x1C - 0xE];
+    /* 0x1C */ FishingLine *line;
+    /* 0x20 */ char unk20[0x28 - 0x20];
     /* 0x28 */ f32 velY;
     /* 0x2C */ u16 splashed;
     /* 0x2E */ u16 aiState;
@@ -48,7 +50,8 @@ extern s16 D_8010C0EC_hand_line_sinker;
 extern s16 D_8010C0F0_hand_line_sinker;
 extern omObjData *D_8010C0F4_hand_line_sinker;
 extern omObjData *D_8010C0F8_hand_line_sinker;
-extern s16 D_8010C10C_hand_line_sinker;
+extern u16 D_8010C10C_hand_line_sinker;
+extern u16 D_8010BF60_hand_line_sinker;
 extern omObjData **D_8010C100_hand_line_sinker;
 extern s32 D_8010BFA0_hand_line_sinker[];
 extern s16 D_8010C148_hand_line_sinker[2][6];
@@ -79,6 +82,10 @@ void func_801081D0_hand_line_sinker(omObjData *obj);
 void func_8010A6D0_hand_line_sinker(omObjData *parent, u16 type, Vec *offset, Vec *rot);
 omObjData *func_8010A554_hand_line_sinker(void);
 void func_800E6F0C_minigame(s32);
+void func_80109584_hand_line_sinker(omObjData *obj);
+void func_80109B9C_hand_line_sinker(omObjData *obj);
+void func_801093A4_hand_line_sinker(omObjData *obj);
+void func_8010BA64_hand_line_sinker(void);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_801059A0_hand_line_sinker);
 
@@ -93,7 +100,56 @@ void func_80105CF0_hand_line_sinker(omObjData *arg0) {
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", D_8010BFB0_hand_line_sinker);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_80105D28_hand_line_sinker);
+void func_80105D28_hand_line_sinker(omObjData *obj) {
+    HandLineSinkerPlayerWork *work;
+
+    if (D_8010BF60_hand_line_sinker == 0) {
+        switch (func_800E6F40_minigame()) {
+            case 0:
+                if (D_8010C0F4_hand_line_sinker == NULL) {
+                    D_8010C0EE_hand_line_sinker = 0;
+                    D_8010C0F4_hand_line_sinker = omAddObj(4, 0, 0, -1, func_801093A4_hand_line_sinker);
+                    HuAudSeqPlay(0);
+                }
+                break;
+            case 1:
+                break;
+            case 2:
+                if (D_8010C10C_hand_line_sinker == 3) {
+                    func_800E6F0C_minigame(3);
+                }
+                break;
+            case 3:
+                if (D_8010C0F8_hand_line_sinker == NULL) {
+                    if (D_8010C10C_hand_line_sinker == 3) {
+                        D_8010C0F8_hand_line_sinker = omAddObj(4, 0, 0, -1, func_80109584_hand_line_sinker);
+                        D_8010C0F8_hand_line_sinker->work[1] = 0;
+                    } else {
+                        D_8010C0F8_hand_line_sinker = omAddObj(4, 0, 0, -1, func_80109B9C_hand_line_sinker);
+                        D_8010C0F8_hand_line_sinker->work[1] = 0;
+                    }
+                    D_8010C0F8_hand_line_sinker->work[0] = 0;
+                } else if (D_8010C0F8_hand_line_sinker->work[0] == 1) {
+                    omDelObj(D_8010C0F8_hand_line_sinker);
+                    func_800E6F0C_minigame(4);
+                }
+                break;
+            case 4:
+                break;
+            case 5:
+                WipeCreateOut(0, 20);
+                D_8010BF60_hand_line_sinker = 1;
+                break;
+        }
+    } else if (WipeStatGet() == 0) {
+        work = D_8010C0FC_hand_line_sinker->data;
+        func_8010BE6C_hand_line_sinker(work->line);
+        work->line = NULL;
+        HuAudSeqFadeOut(30);
+        func_8004AB0C_main(30);
+        func_8010BA64_hand_line_sinker();
+    }
+}
 
 void func_80105EE8_hand_line_sinker(omObjData *obj) {
     obj->data = HuMemAllocTag(0x24, 0x7918);
@@ -422,7 +478,7 @@ f32 func_801092B8_hand_line_sinker(s8 stickX, s8 stickY) {
     return mag;
 }
 
-void func_801093A4_hand_line_sinker(void) {
+void func_801093A4_hand_line_sinker(omObjData *obj) {
     HandLineSinkerPlayerWork *work;
 
     switch (D_8010C0EE_hand_line_sinker) {

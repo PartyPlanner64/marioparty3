@@ -13,15 +13,6 @@ typedef struct CameraMotionData {
     /* 0x0C */ f32 t;
 } CameraMotionData; // sizeof 0x10
 
-typedef struct FishingLine {
-    /* 0x00 */ s16 model;
-    /* 0x02 */ u8 r;
-    /* 0x03 */ u8 g;
-    /* 0x04 */ u8 b;
-    /* 0x08 */ Vtx *vtx[8];
-    /* 0x28 */ Gfx *gfx[8];
-} FishingLine; // sizeof 0x48
-
 extern omObjData *D_8010C190_hand_line_sinker;
 extern FishingLine *D_8010C180_hand_line_sinker;
 extern Gfx *D_8010C184_hand_line_sinker;

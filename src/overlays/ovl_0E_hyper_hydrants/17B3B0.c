@@ -1,4 +1,5 @@
 #include "common.h"
+#include "input.h"
 #include "gcc/memory.h"
 #include "mallocblock.h"
 #include "opening.h"
@@ -85,8 +86,8 @@ extern Vec D_8010BDE0_hyper_hydrants;
 extern Vec D_8010BDEC_hyper_hydrants;
 extern Vec D_8010BDF8_hyper_hydrants;
 extern Vec D_8010BE04_hyper_hydrants;
-extern s16 D_8010C022_hyper_hydrants;
-extern s16 D_8010C024_hyper_hydrants;
+extern s16 D_8010C022_hyper_hydrants[2];
+extern s16 D_800EB934_minigame;
 extern Vec D_8010C028_hyper_hydrants[2];
 extern HyperHydrantsChainPoint *D_8010BFB0_hyper_hydrants[2][6];
 
@@ -391,8 +392,8 @@ void func_80106238_hyper_hydrants(omObjData *object) {
             func_8001C8A8_main(object->model[0], 1);
             func_8001C8A8_main(object->model[1], 1);
             func_8001C8A8_main(object->model[2], 1);
-            D_8010C022_hyper_hydrants = func_8010BC80_hyper_hydrants(0x369, 0, 1, playerData->unk59);
-            func_8004AAD0_main(D_8010C022_hyper_hydrants, 0);
+            D_8010C022_hyper_hydrants[0] = func_8010BC80_hyper_hydrants(0x369, 0, 1, playerData->unk59);
+            func_8004AAD0_main(D_8010C022_hyper_hydrants[0], 0);
             break;
         case 1:
             object->trans.x = D_8010BDEC_hyper_hydrants.x;
@@ -428,8 +429,8 @@ void func_80106238_hyper_hydrants(omObjData *object) {
             func_8001C8A8_main(object->model[0], 2);
             func_8001C8A8_main(object->model[1], 2);
             func_8001C8A8_main(object->model[2], 2);
-            D_8010C024_hyper_hydrants = func_8010BC80_hyper_hydrants(0x369, 1, 1, playerData->unk59);
-            func_8004AAD0_main(D_8010C024_hyper_hydrants, 0);
+            D_8010C022_hyper_hydrants[1] = func_8010BC80_hyper_hydrants(0x369, 1, 1, playerData->unk59);
+            func_8004AAD0_main(D_8010C022_hyper_hydrants[1], 0);
             break;
         case 3:
             object->trans.x = D_8010BE04_hyper_hydrants.x;
@@ -465,7 +466,163 @@ void func_80106238_hyper_hydrants(omObjData *object) {
     D_8010BE35_hyper_hydrants++;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80106A50_hyper_hydrants);
+void func_80106A50_hyper_hydrants(omObjData *object) {
+    func_800E1BA8_minigame_ObjData *playerData;
+    HyperHydrantsCharacterData *data;
+    s8 side;
+    s32 character;
+
+    switch (func_800E6E8C_minigame()) {
+        case 0:
+        case 1:
+            func_8001C6A8_main(object->model[2], HmfModelData[object->model[0]].unk40);
+            break;
+        case 2:
+            playerData = object->data;
+            data = playerData->unk158;
+            if (playerData->unk59 == D_8010BFA8_hyper_hydrants || playerData->unk59 == D_8010BFA9_hyper_hydrants) {
+                func_80107238_hyper_hydrants(object);
+                break;
+            }
+            if (!(GwPlayer[playerData->unk59].stat & 1)) {
+                if ((D_800CBB6E_main[playerData->unk57] < 0 ? -D_800CBB6E_main[playerData->unk57] : D_800CBB6E_main[playerData->unk57]) > 0 && object->rot.y > 120.0f && object->rot.y < 240.0f) {
+                    func_8001C814_main(object->model[0], 1, 2);
+                } else {
+                    func_8001C814_main(object->model[0], 1, 1);
+                }
+            }
+            data->unk00 = sindf(object->rot.y - 40.0f);
+            data->unk04 = cosdf(object->rot.y - 40.0f);
+            data->unk08 = sindf(object->rot.y - 140.0f);
+            data->unk0C = cosdf(object->rot.y - 140.0f);
+            side = playerData->unk59 != D_8010BFAA_hyper_hydrants;
+            switch (D_8010BFAC_hyper_hydrants[side]) {
+                case 0:
+                    func_8004AAD0_main(D_8010C022_hyper_hydrants[side], 0);
+                    break;
+                case 1:
+                    func_8004AAD0_main(D_8010C022_hyper_hydrants[side], 84);
+                    HuAudFXPitchSet(D_8010C022_hyper_hydrants[side], -300);
+                    break;
+                case 2:
+                    func_8004AAD0_main(D_8010C022_hyper_hydrants[side], 91);
+                    HuAudFXPitchSet(D_8010C022_hyper_hydrants[side], -200);
+                    break;
+                case 3:
+                    func_8004AAD0_main(D_8010C022_hyper_hydrants[side], 98);
+                    HuAudFXPitchSet(D_8010C022_hyper_hydrants[side], -100);
+                    break;
+                case 4:
+                    func_8004AAD0_main(D_8010C022_hyper_hydrants[side], 112);
+                    HuAudFXPitchSet(D_8010C022_hyper_hydrants[side], 100);
+                    break;
+                case 5:
+                    func_8004AAD0_main(D_8010C022_hyper_hydrants[side], 119);
+                    HuAudFXPitchSet(D_8010C022_hyper_hydrants[side], 200);
+                    break;
+                default:
+                    func_8004AAD0_main(D_8010C022_hyper_hydrants[side], 127);
+                    HuAudFXPitchSet(D_8010C022_hyper_hydrants[side], 300);
+                    break;
+            }
+            break;
+        case 3:
+            playerData = object->data;
+            if (func_800E6E9C_minigame() == 0) {
+                HuAudFXStop(D_8010C022_hyper_hydrants[0]);
+                HuAudFXStop(D_8010C022_hyper_hydrants[1]);
+                HuAudFXPlay(0x36B);
+                func_8001C624_main(object->model[0], HmfModelData[object->motion[0]].unk02, 0, 30, 2);
+                func_8001C258_main(object->model[2], 4, 4);
+                switch (GwPlayer[playerData->unk59].group) {
+                    case 0:
+                    case 1:
+                        if (D_8010BE24_hyper_hydrants > D_8010BE25_hyper_hydrants) {
+                            D_8010BF60_hyper_hydrants.unk06 = 1;
+                            if (D_8010BF60_hyper_hydrants.unk18[0] == 0xFF) {
+                                D_8010BF60_hyper_hydrants.unk18[0] = playerData->unk59;
+                            } else {
+                                D_8010BF60_hyper_hydrants.unk18[1] = playerData->unk59;
+                            }
+                        } else if (D_8010BE24_hyper_hydrants == D_8010BE25_hyper_hydrants) {
+                            D_8010BF60_hyper_hydrants.unk06 = 4;
+                        }
+                        break;
+                    case 2:
+                    case 3:
+                        if (D_8010BE24_hyper_hydrants < D_8010BE25_hyper_hydrants) {
+                            D_8010BF60_hyper_hydrants.unk06 = 1;
+                            if (D_8010BF60_hyper_hydrants.unk18[0] == 0xFF) {
+                                D_8010BF60_hyper_hydrants.unk18[0] = playerData->unk59;
+                            } else {
+                                D_8010BF60_hyper_hydrants.unk18[1] = playerData->unk59;
+                            }
+                        } else if (D_8010BE24_hyper_hydrants == D_8010BE25_hyper_hydrants) {
+                            D_8010BF60_hyper_hydrants.unk06 = 4;
+                        }
+                        break;
+                }
+            }
+            if ((object->rot.y > 0.0f ? object->rot.y : 0.0f - object->rot.y) > 20.0f) {
+                object->rot.y -= 20.0f;
+            } else {
+                object->rot.y = 0.0f;
+            }
+            if ((D_800A178C_main[GwPlayer[playerData->unk59].chr][0] >> 16) == 6 &&
+                (D_8010BFA8_hyper_hydrants == playerData->unk59 || D_8010BFA9_hyper_hydrants == playerData->unk59)) {
+                object->trans.z += 5.0f;
+                if (object->trans.z > 18.7f) {
+                    object->trans.z = 18.7f;
+                }
+                Hu3DModelPosSet(object->model[1], object->trans.x, 0, object->trans.z);
+            }
+            break;
+        case 4:
+            if (D_800EB934_minigame != 0) {
+                playerData = object->data;
+                if (playerData->unk59 == D_8010BF60_hyper_hydrants.unk18[0] ||
+                    playerData->unk59 == D_8010BF60_hyper_hydrants.unk18[1]) {
+                    func_8001C624_main(object->model[0], HmfModelData[object->motion[3]].unk02, 0, 30, 2);
+                    switch (GwPlayer[playerData->unk59].chr) {
+                        case 0:
+                        default:
+                            character = 2;
+                            break;
+                        case 1:
+                            character = 3;
+                            break;
+                        case 2:
+                            character = 7;
+                            break;
+                        case 3:
+                            character = 4;
+                            break;
+                        case 4:
+                            character = 5;
+                            break;
+                        case 5:
+                            character = 6;
+                            break;
+                        case 6:
+                            character = 8;
+                            break;
+                        case 7:
+                            character = 9;
+                            break;
+                    }
+                    func_80045ED0_main((character << 16) | 0x2F);
+                    GwPlayer[playerData->unk59].bonusCoin += 10;
+                } else {
+                    func_8001C624_main(object->model[0], HmfModelData[object->motion[4]].unk02, 0, 30, 2);
+                }
+            } else if (HmfModelData[object->model[0]].unk40 >= 118.0f) {
+                func_8001C814_main(object->model[0], 1, 1);
+            }
+            break;
+        case 5:
+            break;
+    }
+}
 
 void func_80107238_hyper_hydrants(omObjData *object) {
     func_800E1BA8_minigame_ObjData *playerData;

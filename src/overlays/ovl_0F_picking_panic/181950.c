@@ -19,25 +19,35 @@ extern D_80111B50_vine_with_me_Struct D_8010E5B0_picking_panic;
 extern const s16 D_8010E720_picking_panic[];
 extern PickingPanicPlayer D_8010EEA0_picking_panic[4];
 extern PickingPanicPlayer *D_8010EEE0_picking_panic[4];
-extern s8 D_8010EEF0_picking_panic[2];
+extern s32 D_8010E5D8_picking_panic;
+extern u8 D_8010EEF0_picking_panic[2];
+extern f32 D_8010EEF4_picking_panic[2];
 extern omObjData *D_8010EEFC_picking_panic;
 extern omObjData *D_8010EF00_picking_panic[4];
 extern s16 D_8010EF10_picking_panic[2];
 extern s8 D_8010EF14_picking_panic;
 extern u8 D_8010EF15_picking_panic[2];
 extern s16 *D_8010EF18_picking_panic[2][4][3];
+extern f32 D_8010EF78_picking_panic;
 extern s32 D_8010EF7C_picking_panic;
 extern s16 D_8010EF80_picking_panic;
 extern f32 D_8010EF84_picking_panic[2];
+extern f32 D_8010EF8C_picking_panic[2];
 extern f32 D_8010EF94_picking_panic;
 extern s8 D_8010EF98_picking_panic[2];
+extern f32 D_8010EF9C_picking_panic[2];
 extern u8 D_8010EFA4_picking_panic;
 extern u8 D_8010EFA5_picking_panic;
 extern s32 D_8010EFA8_picking_panic;
+extern f32 D_8010EFAC_picking_panic[2];
+extern f32 D_8010EFB4_picking_panic[2];
 extern s8 D_8010EFBC_picking_panic[2];
 extern u16 D_8010EFBE_picking_panic;
 extern u8 D_8010EFC0_picking_panic[4];
+extern f32 D_8010EFC4_picking_panic[2];
 extern u16 D_8010EFD0_picking_panic[10];
+extern f32 D_8010EFE4_picking_panic[2];
+extern f32 D_8010EFEC_picking_panic[2];
 extern s16 D_8010EFF8_picking_panic[10];
 
 void func_8000B710_main(s32 arg0);
@@ -49,6 +59,7 @@ void func_8010B194_picking_panic(omObjData *object);
 void func_8010B1C0_picking_panic(omObjData *object);
 void func_8010B1F4_picking_panic(omObjData *object);
 void func_80106E84_picking_panic(omObjData *object);
+void func_80107A48_picking_panic(void);
 void func_80109C00_picking_panic(Gfx **, s32, s32);
 void func_8010B220_picking_panic(omObjData *object, s8 arg1);
 void func_8010B8D0_picking_panic(omObjData *object);
@@ -391,7 +402,111 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010E7
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", func_8010664C_picking_panic);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", func_80106E84_picking_panic);
+void func_80106E84_picking_panic(omObjData *object) {
+    f32 scaleX[2];
+    f32 scaleY[2];
+    f32 offsetY[2];
+    s32 i;
+    s32 loser;
+    s32 winner;
+    f32 t;
+    f32 u;
+    f32 ty;
+    f32 uy;
+
+    if (D_8010EF14_picking_panic < 2 && D_8010EFA4_picking_panic < 0xFF) {
+        winner = D_8010EF14_picking_panic;
+        loser = 1 - winner;
+        u = t = 1.0 - D_8010EFA4_picking_panic / 46.0;
+        t = (t < 0.0f) ? 0.0f : (t > 1.0f) ? 1.0f
+                                           : t;
+        ty = t * (winner * 2 - 1);
+        u = (u < 0.0f) ? 0.0f : (u > 1.0f) ? 1.0f
+                                           : u;
+        u = (u + (1.0f - (1.0f - u) * (1.0f - u))) / 2.0f;
+        uy = u * (winner * 2 - 1);
+
+        D_8010EF78_picking_panic = 0.5 - ty * 0.5;
+        D_8010EEF4_picking_panic[winner] = D_8010EFC4_picking_panic[winner] = t + t + 1.0f;
+        D_8010EFEC_picking_panic[winner] = 1.0f / D_8010EEF4_picking_panic[winner];
+        D_8010EF8C_picking_panic[winner] = 1.0f / D_8010EFC4_picking_panic[winner];
+        D_8010EFB4_picking_panic[winner] = 0.5f;
+        D_8010EFE4_picking_panic[winner] = winner * 0.5 + 0.25 - ty * 0.25;
+        D_8010EF9C_picking_panic[winner] =
+            (-D_8010EFB4_picking_panic[winner] * D_8010EEF4_picking_panic[winner] + 0.5) * 320.0 * 4.0;
+        D_8010EFAC_picking_panic[winner] = (winner != 0) ? t * -1.5 * 240.0 * 4.0 : 0.0f;
+
+        t = (t >= 0.99) ? 0.99f : t;
+        ty = t * (winner * 2 - 1);
+        D_8010EEF4_picking_panic[loser] = 1.0f;
+        D_8010EFC4_picking_panic[loser] = 1.0f - t;
+        D_8010EFEC_picking_panic[loser] = 1.0f / D_8010EEF4_picking_panic[loser];
+        D_8010EF8C_picking_panic[loser] = 1.0f / D_8010EFC4_picking_panic[loser];
+        D_8010EFB4_picking_panic[loser] = 0.5f;
+        D_8010EFE4_picking_panic[loser] = loser * 0.5 + 0.25 - ty * 0.25;
+        D_8010EF9C_picking_panic[loser] =
+            (-D_8010EFB4_picking_panic[loser] * D_8010EEF4_picking_panic[loser] + 0.5) * 320.0 * 4.0;
+        D_8010EFAC_picking_panic[loser] = (loser != 0) ? t * 240.0 * 4.0 : 0.0f;
+
+        scaleX[winner] = scaleY[winner] = u + u + 1.0f;
+        offsetY[winner] = winner * 0.5 + 0.25 - uy * 0.25;
+        scaleX[loser] = 1.0f;
+        scaleY[loser] = 1.0f - t;
+        offsetY[loser] = loser * 0.5 + 0.25 - ty * 0.25;
+
+        if (D_8010EF98_picking_panic[winner] != -1) {
+            Hu3DModelPosSet(
+                *D_8010EF18_picking_panic[winner][D_8010EEF0_picking_panic[winner]][D_8010EF98_picking_panic[winner]],
+                t * 200.0f + -855.0f, -25.0f - ((winner != 0) ? t * 460.0f : t * 215.0f), 0.0f);
+        }
+        if (D_8010EFA4_picking_panic == 30) {
+            for (i = 0; i < 10; i++) {
+                func_8001C258_main(D_8010EEFC_picking_panic->model[12 + i], 4, 4);
+                func_8001C258_main(D_8010EEFC_picking_panic->model[22 + i], 4, 4);
+            }
+        }
+    } else {
+        for (i = 0; i < 2; i++) {
+            D_8010EEF4_picking_panic[i] = D_8010EFC4_picking_panic[i] =
+                (0.0f < D_8010EF94_picking_panic && D_8010E5D8_picking_panic == 2)
+                    ? sindf(sindf(270.0 - D_8010EF94_picking_panic / 120.0 * 360.0) * 90.0f + 90.0f) * 0.125 + 1.0
+                : (0.0f < D_8010EF94_picking_panic && D_8010E5D8_picking_panic == 1)
+                    ? (D_8010EF94_picking_panic < 52.5 && D_8010EF94_picking_panic >= 37.5)
+                          ? 1.125 - (D_8010EF94_picking_panic - 37.5) / 15.0 * 0.125
+                      : (D_8010EF94_picking_panic < 37.5 && D_8010EF94_picking_panic >= 22.5) ? 1.125f
+                      : (D_8010EF94_picking_panic < 22.5 && D_8010EF94_picking_panic >= 7.5)
+                          ? (D_8010EF94_picking_panic - 7.5) / 15.0 * 0.125 + 1.0
+                          : 1.0f
+                : (D_8010EF80_picking_panic == 0)
+                    ? (D_8010EFA8_picking_panic < 35)   ? 2.5f
+                      : (D_8010EFA8_picking_panic < 66) ? 2.5 - (D_8010EFA8_picking_panic - 35) * 1.5 / 30.0
+                                                        : 1.0f
+                    : 1.0f;
+            D_8010EFEC_picking_panic[i] = 1.0f / D_8010EEF4_picking_panic[i];
+            D_8010EF8C_picking_panic[i] = 1.0f / D_8010EFC4_picking_panic[i];
+            D_8010EFB4_picking_panic[i] = 0.5f;
+            D_8010EFE4_picking_panic[i] = i * 0.5 + 0.25;
+            D_8010EF9C_picking_panic[i] =
+                (-D_8010EFB4_picking_panic[i] * D_8010EEF4_picking_panic[i] + 0.5) * 320.0 * 4.0;
+            D_8010EFAC_picking_panic[i] =
+                (-D_8010EFE4_picking_panic[i] * D_8010EFC4_picking_panic[i] + 0.25 + i * 0.5) * 240.0 * 4.0;
+            D_8010EF78_picking_panic = 0.5f;
+            scaleX[i] = D_8010EEF4_picking_panic[i];
+            scaleY[i] = D_8010EFC4_picking_panic[i];
+            offsetY[i] = D_8010EFE4_picking_panic[i];
+        }
+    }
+
+    D_8010EF84_picking_panic[0] = D_8010EF84_picking_panic[1] = 0.0f;
+    func_80107A48_picking_panic();
+    ScissorSet(0, 0.0f, 0.0f, 320.0f,
+               (D_8010EF78_picking_panic * 240.0f - 1.0f < 0.0f) ? 0.0f : D_8010EF78_picking_panic * 240.0f - 1.0f);
+    ScissorSet(1, 0.0f,
+               (D_8010EF78_picking_panic * 240.0f + 1.0f > 240.0f) ? 240.0f : D_8010EF78_picking_panic * 240.0f + 1.0f,
+               320.0f, 240.0f);
+    ViewportSet(0, scaleX[0] * 640.0f, scaleY[0] * 480.0f, 511.0f, 640.0f, offsetY[0] * 4.0f * 240.0f, 511.0f);
+    ViewportSet(1, scaleX[1] * 640.0f, scaleY[1] * 480.0f, 511.0f, 640.0f, offsetY[1] * 4.0f * 240.0f, 511.0f);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", func_80107A48_picking_panic);
 

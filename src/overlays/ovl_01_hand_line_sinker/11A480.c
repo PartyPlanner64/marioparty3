@@ -5,6 +5,10 @@ extern s16 D_8010C0F0_hand_line_sinker;
 extern omObjData *D_8010C0F4_hand_line_sinker;
 extern omObjData *D_8010C0F8_hand_line_sinker;
 extern s16 D_8010C10C_hand_line_sinker;
+extern omObjData **D_8010C100_hand_line_sinker;
+extern s32 D_8010BFA0_hand_line_sinker[];
+extern s16 D_8010C148_hand_line_sinker[2][6];
+extern s32 D_8010C160_hand_line_sinker[];
 
 void func_80105D28_hand_line_sinker(omObjData *);
 
@@ -45,7 +49,30 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_801
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_80107420_hand_line_sinker);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_80107A3C_hand_line_sinker);
+omObjData *func_80107A3C_hand_line_sinker(void) {
+    omObjData *candidates[3];
+    omObjData *obj;
+    s32 count;
+    s32 i;
+
+    count = 0;
+    for (i = 0; i < 3; i++) {
+        obj = D_8010C100_hand_line_sinker[i];
+        if (obj->work[0] == 2 || obj->work[0] == 4) {
+            continue;
+        }
+        if (obj->work[0] != 3) {
+            candidates[count++] = obj;
+        }
+    }
+    if (count == 0) {
+        return NULL;
+    }
+    if (count == 1) {
+        return candidates[0];
+    }
+    return candidates[rand8() % count];
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_80107B24_hand_line_sinker);
 
@@ -67,9 +94,40 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_801
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_80109B9C_hand_line_sinker);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_8010A554_hand_line_sinker);
+omObjData *func_8010A554_hand_line_sinker(void) {
+    omObjData *closest;
+    omObjData *obj;
+    f32 minDist;
+    f32 dist;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_8010A5F0_hand_line_sinker);
+    minDist = 100000.0f;
+    closest = NULL;
+    for (i = 0; i < 3; i++) {
+        obj = D_8010C100_hand_line_sinker[i];
+        dist = HuSqrtf(obj->trans.x * obj->trans.x + obj->trans.z * obj->trans.z);
+        if (dist < minDist) {
+            minDist = dist;
+            closest = obj;
+        }
+    }
+    return closest;
+}
+
+void func_8010A5F0_hand_line_sinker(void) {
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < 6; j++) {
+            D_8010C148_hand_line_sinker[i][j] = func_8000B108_main(D_8010BFA0_hand_line_sinker[i], 0x1A9D);
+            if (i == 0) {
+                func_8001C2FC_main(D_8010C148_hand_line_sinker[0][j], 0x20000000, 0x20000000);
+            }
+            D_8010C160_hand_line_sinker[j] = 0;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_8010A6D0_hand_line_sinker);
 

@@ -1,4 +1,8 @@
 #include "common.h"
+#include "game/hmfman.h"
+#include "game/object.h"
+#include "game/util.h"
+#include "mallocblock.h"
 
 typedef struct HandLineSinkerObjWork {
     /* 0x000 */ f32 unk0;
@@ -20,8 +24,15 @@ extern omObjData **D_8010C100_hand_line_sinker;
 extern s32 D_8010BFA0_hand_line_sinker[];
 extern s16 D_8010C148_hand_line_sinker[2][6];
 extern s32 D_8010C160_hand_line_sinker[];
+extern u16 D_8010C104_hand_line_sinker[2];
+extern f32 D_8010C108_hand_line_sinker;
+extern u8 D_800D6A90_main;
 
 void func_80105D28_hand_line_sinker(omObjData *);
+void func_80105FA4_hand_line_sinker(omObjData *obj);
+void func_8001E888_main(s16 model, f32 x, f32 y, u16 arg3, u16 arg4, char *name, s32 arg6);
+void func_800335BC_main(char *name, u16 *result);
+void func_80106100_hand_line_sinker(omObjData *obj, u16 playerNo);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_801059A0_hand_line_sinker);
 
@@ -38,17 +49,45 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", D_801
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_80105D28_hand_line_sinker);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_80105EE8_hand_line_sinker);
+void func_80105EE8_hand_line_sinker(omObjData *obj) {
+    obj->data = HuMemAllocTag(0x24, 0x7918);
+    obj->model[0] = func_8000B108_main(0x220000, 0x699);
+    obj->model[1] = func_8000B108_main(0x220001, 0x1A99);
+    obj->model[2] = func_8000B108_main(0x220003, 0x699);
+    func_8001C814_main(obj->model[2], 2, 2);
+    func_800335BC_main("m201_3mizu_DEF", D_8010C104_hand_line_sinker);
+    func_8001C954_main(obj->model[1]);
+    D_8010C108_hand_line_sinker = 0.0f;
+    obj->func = func_80105FA4_hand_line_sinker;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_80105FA4_hand_line_sinker);
+void func_80105FA4_hand_line_sinker(omObjData *obj) {
+    if (func_80049F98_main() + D_800D6A90_main == 0) {
+        D_8010C108_hand_line_sinker += 0.1f;
+    }
+    func_8001E888_main(obj->model[1], D_8010C108_hand_line_sinker, 0.0f, D_8010C104_hand_line_sinker[0],
+                       D_8010C104_hand_line_sinker[1], "m201_00-grid6", 0);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_80106040_hand_line_sinker);
+void func_80106040_hand_line_sinker(omObjData *obj) {
+    obj->trans.z = 5000.0f;
+    func_80106100_hand_line_sinker(obj, 0);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_80106070_hand_line_sinker);
+void func_80106070_hand_line_sinker(omObjData *obj) {
+    obj->trans.z = 5000.0f;
+    func_80106100_hand_line_sinker(obj, 1);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_801060A0_hand_line_sinker);
+void func_801060A0_hand_line_sinker(omObjData *obj) {
+    obj->trans.z = 5000.0f;
+    func_80106100_hand_line_sinker(obj, 2);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_801060D0_hand_line_sinker);
+void func_801060D0_hand_line_sinker(omObjData *obj) {
+    obj->trans.z = 5000.0f;
+    func_80106100_hand_line_sinker(obj, 3);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", D_8010BFF0_hand_line_sinker);
 

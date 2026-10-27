@@ -645,4 +645,56 @@ void func_8010B0FC_hand_line_sinker(omObjData *arg0, f32 arg1) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_8010B1E4_hand_line_sinker);
+void func_8010B1E4_hand_line_sinker(omObjData *obj) {
+    HandLineSinkerObjWork *work;
+    f32 px;
+    f32 pz;
+    f32 x;
+    f32 z;
+    f32 ox;
+    f32 oz;
+    f32 dist;
+    s32 i;
+    s32 j;
+    s32 k;
+
+    work = obj->data;
+    x = obj->trans.x + sindf(obj->rot.y) * work->unk4;
+    z = obj->trans.z + cosdf(obj->rot.y) * work->unk4;
+    for (i = 0; i < 2; i++) {
+        px = x + sindf(i * 180.0f + obj->rot.y) * 67.5f;
+        pz = z + cosdf(i * 180.0f + obj->rot.y) * 67.5f;
+        for (j = 0; j < 3; j++) {
+            if (obj == D_8010C100_hand_line_sinker[j]) {
+                continue;
+            }
+            if (D_8010C100_hand_line_sinker[j]->work[0] == 2 || D_8010C100_hand_line_sinker[j]->work[0] == 3 ||
+                D_8010C100_hand_line_sinker[j]->work[0] == 4) {
+                continue;
+            }
+            for (k = 0; k < 2; k++) {
+                ox = D_8010C100_hand_line_sinker[j]->trans.x +
+                     sindf(D_8010C100_hand_line_sinker[j]->rot.y + k * 180.0f) * 67.5f;
+                oz = D_8010C100_hand_line_sinker[j]->trans.z +
+                     cosdf(D_8010C100_hand_line_sinker[j]->rot.y + k * 180.0f) * 67.5f;
+                dist = HuSqrtf((ox - px) * (ox - px) + (oz - pz) * (oz - pz));
+                if (dist < 135.0f) {
+                    x -= sindf(i * 180.0f + obj->rot.y) * (135.0f - dist);
+                    z -= cosdf(i * 180.0f + obj->rot.y) * (135.0f - dist);
+                    px = x + sindf(i * 180.0f + obj->rot.y) * 67.5f;
+                    pz = z + cosdf(i * 180.0f + obj->rot.y) * 67.5f;
+                    work->unk4 = 0.0f;
+                    break;
+                }
+            }
+        }
+        dist = HuSqrtf(px * px + pz * pz);
+        if (dist > 662.5f) {
+            x -= sindf(i * 180.0f + obj->rot.y) * (dist - 662.5f);
+            z -= cosdf(i * 180.0f + obj->rot.y) * (dist - 662.5f);
+            work->unk4 = 0.0f;
+            break;
+        }
+    }
+    omSetTra(obj, x, obj->trans.y, z);
+}

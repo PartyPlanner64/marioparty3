@@ -1,6 +1,7 @@
 #include "common.h"
 #include "game/hmfman.h"
 #include "game/object.h"
+#include "game/pause.h"
 #include "game/util.h"
 #include "mallocblock.h"
 #include "overlays/minigame.h"
@@ -84,6 +85,10 @@ extern u16 D_8010C0EA_hand_line_sinker;
 extern D_80111B50_vine_with_me_Struct D_8010BF00_hand_line_sinker;
 extern const s16 D_8010BFB0_hand_line_sinker[];
 extern s16 D_800EB930_minigame;
+extern f32 D_8010C0E4_hand_line_sinker;
+extern CameraPreset D_8010BF44_hand_line_sinker;
+extern u8 D_8010BF18_hand_line_sinker;
+extern s32 D_800A178C_main[][6];
 
 void func_80105D28_hand_line_sinker(omObjData *);
 void func_80105CF0_hand_line_sinker(omObjData *arg0);
@@ -118,6 +123,7 @@ omObjData *func_801080F0_hand_line_sinker(omObjData *arg0);
 void func_80047E90_main(omObjData *obj, s32 arg1);
 void func_8010AD7C_hand_line_sinker(omObjData *obj, f32 length, f32 x0, f32 y0, f32 z0, f32 x1, f32 y1, f32 z1);
 void func_8010B0FC_hand_line_sinker(omObjData *arg0, f32 arg1);
+void func_8000CFD8_main(s16 arg0, s32 arg1);
 void func_8010BB58_hand_line_sinker(FishingLine *line, Vec *points, u16 count);
 
 void func_801059A0_hand_line_sinker(void) {
@@ -808,7 +814,93 @@ void func_801093A4_hand_line_sinker(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_80109584_hand_line_sinker);
+void func_80109584_hand_line_sinker(omObjData *obj) {
+    HandLineSinkerPlayerWork *work;
+    Vec pos;
+    f32 dist;
+    s16 effect;
+    s32 i;
+
+    switch (obj->work[1]) {
+        case 0:
+            if (D_8010C0FC_hand_line_sinker->work[0] == 0) {
+                obj->work[1] = 1;
+            }
+            break;
+        case 1:
+            func_8001C258_main(D_8010C0FC_hand_line_sinker->model[1], 0x4000, 0);
+            func_8001C258_main(D_8010C0FC_hand_line_sinker->model[3], 0x4000, 0);
+            func_8001C258_main(D_8010C0FC_hand_line_sinker->model[2], 0x4000, 0);
+            func_8001C258_main(D_8010C0FC_hand_line_sinker->model[1], 4, 4);
+            func_8001C258_main(D_8010C0FC_hand_line_sinker->model[3], 4, 4);
+            for (i = 0; i < 6; i++) {
+                dist = i * 17.0f;
+                pos.y = 240.0f - dist;
+                pos.x = sindf(D_8010C0FC_hand_line_sinker->rot.y - 6.0f + rand8() % 13 - 6.0f) * (140.0f - dist) +
+                        D_8010C0FC_hand_line_sinker->trans.x;
+                pos.z = cosdf(D_8010C0FC_hand_line_sinker->rot.y - 6.0f + rand8() % 13 - 6.0f) * (140.0f - dist) +
+                        D_8010C0FC_hand_line_sinker->trans.z;
+                effect = func_8000CED8_main(0x85, 0x2A9);
+                func_8000CFA4_main(effect, pos.x, pos.y, pos.z);
+                func_8000CFD8_main(effect, 16);
+            }
+            obj->work[1] = 2;
+            func_8001C624_main(D_8010C0FC_hand_line_sinker->model[0],
+                               HmfModelData[D_8010C0FC_hand_line_sinker->motion[10]].unk02, 0, 6, 2);
+            break;
+        case 2:
+            D_8010C0E4_hand_line_sinker = -D_8010C0FC_hand_line_sinker->rot.y;
+            if (D_8010C0E4_hand_line_sinker < 0.0f) {
+                D_8010C0E4_hand_line_sinker += 360.0f;
+            }
+            if (D_8010C0E4_hand_line_sinker < 180.0f) {
+                if (D_8010C0E4_hand_line_sinker > 5.0f) {
+                    D_8010C0FC_hand_line_sinker->rot.y += 5.0f;
+                } else {
+                    D_8010C0FC_hand_line_sinker->rot.y += D_8010C0E4_hand_line_sinker;
+                }
+            } else {
+                if (360.0f - D_8010C0E4_hand_line_sinker > 5.0f) {
+                    D_8010C0FC_hand_line_sinker->rot.y -= 5.0f;
+                } else {
+                    D_8010C0FC_hand_line_sinker->rot.y -= 360.0f - D_8010C0E4_hand_line_sinker;
+                }
+            }
+            if (D_8010C0FC_hand_line_sinker->rot.y >= 360.0f) {
+                D_8010C0FC_hand_line_sinker->rot.y -= 360.0f;
+            }
+            if (D_8010C0FC_hand_line_sinker->rot.y < 0.0f) {
+                D_8010C0FC_hand_line_sinker->rot.y += 360.0f;
+            }
+            if (fabs(D_8010C0FC_hand_line_sinker->rot.y) < 0.0001f) {
+                D_8010C0FC_hand_line_sinker->rot.y = 0.0f;
+                func_8001C624_main(D_8010C0FC_hand_line_sinker->model[0],
+                                   HmfModelData[D_8010C0FC_hand_line_sinker->motion[11]].unk02, 0, 6, 2);
+                obj->work[1] = 3;
+            }
+            break;
+        case 3:
+            func_8010B5EC_hand_line_sinker(&D_8010BF28_hand_line_sinker, &D_8010BF44_hand_line_sinker, 16);
+            D_8010C190_hand_line_sinker->work[1] = 1;
+            D_8010C190_hand_line_sinker->work[2] = 0;
+            obj->work[1] = 4;
+            break;
+        case 4:
+            if (D_8010C190_hand_line_sinker->work[0] == 0) {
+                work = D_8010C0FC_hand_line_sinker->data;
+                func_80017954_main(D_8010C0FC_hand_line_sinker->model[0], 2, GwPlayer[work->playerNo].chr,
+                                   D_8010C0FC_hand_line_sinker->model[5]);
+                func_8001C624_main(D_8010C0FC_hand_line_sinker->model[0],
+                                   HmfModelData[D_8010C0FC_hand_line_sinker->motion[12]].unk02, 0, 8, 0);
+                func_80045ED0_main(D_800A178C_main[GwPlayer[work->playerNo].chr][0] | 0x2F);
+                omDelObj(D_8010C190_hand_line_sinker);
+                D_8010BF18_hand_line_sinker = work->playerNo;
+                obj->work[0] = 1;
+                GwPlayer[work->playerNo].bonusCoin = 10;
+            }
+            break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_80109B9C_hand_line_sinker);
 

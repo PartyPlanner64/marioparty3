@@ -17,6 +17,15 @@ typedef struct CameraMotionData {
     /* 0x0C */ f32 t;
 } CameraMotionData; // sizeof 0x10
 
+typedef struct FishingLine {
+    /* 0x00 */ s16 model;
+    /* 0x02 */ u8 r;
+    /* 0x03 */ u8 g;
+    /* 0x04 */ u8 b;
+    /* 0x08 */ Gfx *gfx[8];
+    /* 0x28 */ Vtx *vtx[8];
+} FishingLine; // sizeof 0x48
+
 extern omObjData *D_8010C190_hand_line_sinker;
 
 s32 func_8000B638_main(void);
@@ -115,8 +124,31 @@ void func_8010BA64_hand_line_sinker(void) {
     omOvlReturnEx(1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/120090", func_8010BA80_hand_line_sinker);
+FishingLine *func_8010BA80_hand_line_sinker(u8 r, u8 g, u8 b) {
+    FishingLine *line;
+    s16 i;
+
+    line = HuMemAlloc(sizeof(FishingLine));
+    line->model = func_8001A894_main(0x1080, NULL, 4);
+    for (i = 0; i < D_800D1FF0_main; i++) {
+        line->gfx[i] = HuMemAlloc(64 * sizeof(Gfx));
+        line->vtx[i] = HuMemAlloc(64 * sizeof(Vtx));
+    }
+    line->r = r;
+    line->g = g;
+    line->b = b;
+    return line;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/120090", func_8010BB58_hand_line_sinker);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/120090", func_8010BE6C_hand_line_sinker);
+void func_8010BE6C_hand_line_sinker(FishingLine *line) {
+    s16 i;
+
+    func_8001ACDC_main(line->model);
+    for (i = 0; i < D_800D1FF0_main; i++) {
+        func_80019C00_main(line->gfx[i]);
+        func_80019C00_main(line->vtx[i]);
+    }
+    func_80019C00_main(line);
+}

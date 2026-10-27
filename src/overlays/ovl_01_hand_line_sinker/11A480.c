@@ -31,6 +31,12 @@ typedef struct HandLineSinkerFollowWork {
     /* 0x10 */ Vec unk10;
 } HandLineSinkerFollowWork; // sizeof 0x1C
 
+typedef struct HandLineSinkerLineWork {
+    /* 0x00 */ char unk0[0x2C];
+    /* 0x2C */ s16 numPoints;
+    /* 0x30 */ Vec points[24];
+} HandLineSinkerLineWork;
+
 extern s16 D_8010C0EC_hand_line_sinker;
 extern s16 D_8010C0F0_hand_line_sinker;
 extern omObjData *D_8010C0F4_hand_line_sinker;
@@ -547,7 +553,75 @@ f32 func_8010ABD4_hand_line_sinker(f32 a) {
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_8010ABD4_hand_line_sinker);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_8010AD7C_hand_line_sinker);
+void func_8010AD7C_hand_line_sinker(omObjData *obj, f32 length, f32 x0, f32 y0, f32 z0, f32 x1, f32 y1, f32 z1) {
+    HandLineSinkerLineWork *work;
+    f32 temp;
+    f32 dx;
+    f32 dz;
+    f32 angle;
+    f32 sin;
+    f32 cos;
+    f32 end;
+    f32 slope;
+    f32 intercept;
+    f32 a;
+    f32 t;
+    s32 i;
+
+    work = obj->data;
+    if (length < HuSqrtf((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0) + (z1 - z0) * (z1 - z0)) * 1.0001f) {
+        work->points[0].x = x0;
+        work->points[0].y = y0;
+        work->points[0].z = z0;
+        work->points[1].x = x1;
+        work->points[1].y = y1;
+        work->points[1].z = z1;
+        work->numPoints = 2;
+        return;
+    }
+    if (z1 < z0) {
+        temp = x0;
+        x0 = x1;
+        x1 = temp;
+        temp = y0;
+        y0 = y1;
+        y1 = temp;
+        temp = z0;
+        z0 = z1;
+        z1 = temp;
+    }
+    dx = x1 - x0;
+    dz = z1 - z0;
+    angle = atan2df(dx, dz);
+    sin = sindf(angle);
+    cos = cosdf(angle);
+    end = dx * sin + dz * cos + z0;
+    slope = (y0 - y1) / (z0 - end);
+    intercept = (z0 * y1 - end * y0) / (z0 - end);
+    D_8010C130_hand_line_sinker = length * 0.00041666668f;
+    D_8010C138_hand_line_sinker = y0 * 0.00041666668f;
+    D_8010C140_hand_line_sinker = y1 * 0.00041666668f;
+    D_8010C134_hand_line_sinker = z0 * 0.00041666668f;
+    D_8010C13C_hand_line_sinker = end * 0.00041666668f;
+    a = func_8010AAEC_hand_line_sinker(20000.0f);
+    if (a < 0.0f) {
+        a = -a;
+    }
+    a *= 0.00041666668f;
+    work->points[0].x = x0;
+    work->points[0].y = y0;
+    work->points[0].z = z0;
+    for (i = 1; i < 23; i++) {
+        work->points[i].x = (x1 - x0) / 24.0f + work->points[i - 1].x;
+        work->points[i].z = (z1 - z0) / 24.0f + work->points[i - 1].z;
+        t = (work->points[i].x - x0) * sin + (work->points[i].z - z0) * cos + z0;
+        work->points[i].y = a * (t - z0) * (t - end) + slope * t + intercept;
+    }
+    work->points[i].x = x1;
+    work->points[i].y = y1;
+    work->points[i].z = z1;
+    work->numPoints = 24;
+}
 
 void func_8010B0FC_hand_line_sinker(omObjData *arg0, f32 arg1) {
     HandLineSinkerObjWork *work;

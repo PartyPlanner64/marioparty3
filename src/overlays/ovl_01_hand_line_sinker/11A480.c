@@ -32,11 +32,17 @@ typedef struct HandLineSinkerObjWork {
 
 typedef struct HandLineSinkerPlayerWork {
     /* 0x00 */ s8 playerNo;
-    /* 0x01 */ char unk1[0xC - 0x1];
+    /* 0x01 */ char unk1[0x4 - 0x1];
+    /* 0x04 */ f32 speed;
+    /* 0x08 */ char unk8[0xC - 0x8];
     /* 0x0C */ u16 aiWait;
-    /* 0x0E */ char unkE[0x1C - 0xE];
+    /* 0x0E */ char unkE[0x12 - 0xE];
+    /* 0x12 */ u16 pressTimer;
+    /* 0x14 */ omObjData *lineObj;
+    /* 0x18 */ char unk18[0x1C - 0x18];
     /* 0x1C */ FishingLine *line;
-    /* 0x20 */ char unk20[0x28 - 0x20];
+    /* 0x20 */ f32 flyRot;
+    /* 0x24 */ f32 flyVelY;
     /* 0x28 */ f32 velY;
     /* 0x2C */ u16 splashed;
     /* 0x2E */ u16 aiState;
@@ -125,6 +131,7 @@ void func_8010AD7C_hand_line_sinker(omObjData *obj, f32 length, f32 x0, f32 y0, 
 void func_8010B0FC_hand_line_sinker(omObjData *arg0, f32 arg1);
 void func_8000CFD8_main(s16 arg0, s32 arg1);
 void func_8010BB58_hand_line_sinker(FishingLine *line, Vec *points, u16 count);
+void func_8010B1E4_hand_line_sinker(omObjData *obj);
 
 void func_801059A0_hand_line_sinker(void) {
     omObjData *players[4];
@@ -539,7 +546,149 @@ omObjData *func_801080F0_hand_line_sinker(omObjData *arg0) {
     return NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_801081D0_hand_line_sinker);
+void func_801081D0_hand_line_sinker(omObjData *obj) {
+    HandLineSinkerPlayerWork *work = obj->data;
+    HandLineSinkerObjWork *lineWork;
+    omObjData *lineObj;
+    Vec offset;
+    Vec rot;
+    s8 stickX;
+    s8 stickY;
+    u16 btn;
+    u16 pad;
+    u32 stat;
+    f32 angle;
+    f32 diff;
+
+    pad = GwPlayer[work->playerNo].pad;
+    if (GwPlayer[work->playerNo].stat & 1) {
+        func_80108880_hand_line_sinker(obj, &stickX, &stickY, &btn);
+    } else {
+        stickX = D_800CBB6E_main[pad];
+        stickY = D_800D20A1_main[pad];
+        btn = D_800D5558_main[pad];
+    }
+    if (func_800E6E8C_minigame() != 2) {
+        stickX = stickY = 0;
+        btn = 0;
+    }
+    stat = obj->unk10;
+    if (stat & 1) {
+        obj->unk10 = stat & ~1;
+        obj->work[0] = 3;
+        work->aiTimer = 0;
+        work->aiBtn = 0;
+        func_8001C5B4_main(obj->model[0], obj->motion[1]);
+        func_8001C814_main(obj->model[0], 2, 2);
+    }
+    switch (obj->work[0]) {
+        case 0:
+            if ((stickX != 0) | (stickY != 0)) {
+                angle = atan2df(stickX, -stickY);
+                if (angle < 0.0f) {
+                    angle += 360.0f;
+                }
+                if (obj->rot.y != angle) {
+                    diff = angle - obj->rot.y;
+                    if (diff < 0.0f) {
+                        diff += 360.0f;
+                    }
+                    if (diff < 180.0f) {
+                        if (diff > 4.0f) {
+                            obj->rot.y += 4.0f;
+                        } else {
+                            obj->rot.y += diff;
+                        }
+                    } else {
+                        if (360.0f - diff > 4.0f) {
+                            obj->rot.y -= 4.0f;
+                        } else {
+                            obj->rot.y -= 360.0f - diff;
+                        }
+                    }
+                    if (obj->rot.y < 0.0f) {
+                        obj->rot.y += 360.0f;
+                    }
+                    if (obj->rot.y >= 360.0f) {
+                        obj->rot.y -= 360.0f;
+                    }
+                }
+            }
+            func_8010B1E4_hand_line_sinker(obj);
+            if (btn & 0x8000) {
+                obj->work[0] = 1;
+                work->speed = 20.0f;
+                angle = obj->rot.y + 180.0f;
+                offset.x = sindf(angle) * 80.0f;
+                offset.y = 0.0f;
+                offset.z = cosdf(angle) * 80.0f;
+                rot.x = rot.z = 0.0f;
+                rot.y = obj->rot.y + 180.0f;
+                func_8010A6D0_hand_line_sinker(obj, 1, &offset, &rot);
+                func_8004ACE0_main(0x306, work->playerNo);
+            }
+            work->pressTimer = 1000;
+            break;
+        case 1:
+            func_8010B1E4_hand_line_sinker(obj);
+            work->speed *= 0.85f;
+            if (work->speed < 2.0f) {
+                obj->work[0] = 0;
+                work->speed = 0.0f;
+            }
+            break;
+        case 2:
+            break;
+        case 3:
+            if (stat & 2) {
+                obj->unk10 &= ~2;
+                obj->work[0] = 4;
+                D_8010C10C_hand_line_sinker++;
+                work->flyRot = atan2df(obj->trans.x - D_8010C0FC_hand_line_sinker->trans.x,
+                                       obj->trans.z - D_8010C0FC_hand_line_sinker->trans.z) +
+                               180.0f;
+                work->flyVelY = 50.0f;
+                HuAudFXPlay(GwPlayer[work->playerNo].chr + 0x287);
+                omVibrate(work->playerNo, 10, 0, 10);
+                break;
+            }
+            lineObj = ((HandLineSinkerPlayerWork *)D_8010C0FC_hand_line_sinker->data)->lineObj;
+            lineWork = lineObj->data;
+            if (lineWork != NULL) {
+                if (btn & 0x8000) {
+                    if (work->pressTimer < 2) {
+                        lineWork->unk1BC = 0.5f;
+                    } else if (work->pressTimer < 3) {
+                        lineWork->unk1BC = 0.3f;
+                    } else if (work->pressTimer < 4) {
+                        lineWork->unk1BC = 0.1f;
+                    }
+                    work->pressTimer = 0;
+                } else {
+                    work->pressTimer++;
+                }
+            }
+            if (lineObj != NULL) {
+                if (lineWork->unk1D0 == 0) {
+                    omSetTra(obj, sindf(lineObj->rot.y) * 40.0f + lineObj->trans.x, lineObj->trans.y - 60.0f,
+                             cosdf(lineObj->rot.y) * 40.0f + lineObj->trans.z);
+                } else {
+                    omSetTra(obj, sindf(lineObj->rot.y) * 40.0f + lineObj->trans.x, lineObj->trans.y - 100.0f,
+                             cosdf(lineObj->rot.y) * 40.0f + lineObj->trans.z);
+                }
+            }
+            break;
+        case 4:
+            obj->trans.x += sindf(work->flyRot) * 35.0f;
+            obj->trans.z += cosdf(work->flyRot) * 35.0f;
+            obj->trans.y += work->flyVelY;
+            work->flyVelY -= 5.0f;
+            if (work->flyVelY < -600.0f) {
+                obj->work[0] = 2;
+            }
+            break;
+    }
+}
 
 void func_80108880_hand_line_sinker(omObjData *obj, s8 *stickX, s8 *stickY, u16 *btn) {
     HandLineSinkerPlayerWork *work;

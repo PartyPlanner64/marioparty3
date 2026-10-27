@@ -22,6 +22,7 @@ typedef struct {
 
 void HmfLightExec(s16);
 void HmfLightMaxSet(s16);
+void HmfLightStatSet(s16, u8, u8);
 void HmfLightColorSet(s16, u8, u8, u8);
 void HmfLightDirSet(s16, f32, f32, f32);
 void func_80019968_main(s16);

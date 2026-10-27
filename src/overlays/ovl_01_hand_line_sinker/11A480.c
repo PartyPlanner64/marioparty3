@@ -73,8 +73,27 @@ extern omObjData *D_8010C0FC_hand_line_sinker;
 extern CameraPreset D_8010C110_hand_line_sinker;
 extern omObjData *D_8010C190_hand_line_sinker;
 extern CameraPreset D_8010BF28_hand_line_sinker;
+extern s16 D_8010C12C_hand_line_sinker;
+extern u16 D_8010C0EA_hand_line_sinker;
+extern D_80111B50_vine_with_me_Struct D_8010BF00_hand_line_sinker;
+extern const s16 D_8010BFB0_hand_line_sinker[];
+extern s16 D_800EB930_minigame;
 
 void func_80105D28_hand_line_sinker(omObjData *);
+void func_80105CF0_hand_line_sinker(omObjData *arg0);
+void func_80105EE8_hand_line_sinker(omObjData *obj);
+void func_80106040_hand_line_sinker(omObjData *obj);
+void func_80106070_hand_line_sinker(omObjData *obj);
+void func_801060A0_hand_line_sinker(omObjData *obj);
+void func_801060D0_hand_line_sinker(omObjData *obj);
+void func_8010B5B0_hand_line_sinker(void);
+void func_8010A5F0_hand_line_sinker(void);
+s32 func_800329B4_main(void *data);
+void func_80045C2C_main(void);
+void func_80047C0C_main(u16 group, u16 max_objs);
+void omAddMember(u16 group, omObjData *obj);
+omObjData **func_80047DBC_main(s16 arg0);
+void func_8001766C_main(void);
 void func_80105FA4_hand_line_sinker(omObjData *obj);
 void func_8001E888_main(s16 model, f32 x, f32 y, u16 arg3, u16 arg4, char *name, s32 arg6);
 void func_800335BC_main(char *name, u16 *result);
@@ -90,7 +109,58 @@ void func_801093A4_hand_line_sinker(omObjData *obj);
 void func_8010BA64_hand_line_sinker(void);
 omObjData *func_80107A3C_hand_line_sinker(void);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_801059A0_hand_line_sinker);
+void func_801059A0_hand_line_sinker(void) {
+    omObjData *players[4];
+    void *data;
+    s32 i;
+
+    omInitObjMan(26, 0);
+    func_8004A208_main();
+    data = DataRead(0x220015);
+    D_8010C12C_hand_line_sinker = func_800329B4_main(data);
+    HuMemMemoryFreePerm(data);
+    func_800142A0_main(9);
+    func_8001F38C_main(0, 40, 120);
+    D_800CD280_main = 1;
+    func_8010B5B0_hand_line_sinker();
+    func_8010A5F0_hand_line_sinker();
+    func_80045C2C_main();
+    ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
+    ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
+    HmfLightMaxSet(3);
+    HmfLightColorSet(0, 0x40, 0x40, 0x60);
+    HmfLightDirSet(0, 92.0f, 79.0f, 22.0f);
+    HmfLightStatSet(0, 1, 1);
+    HmfLightColorSet(2, 0x64, 0xFF, 0xFF);
+    HmfLightDirSet(2, -115.0f, 6.0f, -33.0f);
+    HmfLightStatSet(2, 1, 1);
+    for (i = 0; i < 4; i++) {
+        if (GwPlayer[i].group == 0) {
+            D_8010C0EA_hand_line_sinker = i;
+            break;
+        }
+    }
+    omAddObj(0, 0, 0, -1, func_80105CF0_hand_line_sinker);
+    omAddObj(6, 6, 0, -1, func_80105EE8_hand_line_sinker);
+    omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), 0xA0);
+    players[0] = omAddObj(20, 6, 18, -1, func_80106040_hand_line_sinker);
+    players[1] = omAddObj(20, 6, 18, -1, func_80106070_hand_line_sinker);
+    players[2] = omAddObj(20, 6, 18, -1, func_801060A0_hand_line_sinker);
+    players[3] = omAddObj(20, 6, 18, -1, func_801060D0_hand_line_sinker);
+    func_80047C0C_main(0, 4);
+    for (i = 0; i < 4; i++) {
+        if (i == D_8010C0EA_hand_line_sinker) {
+            D_8010C0FC_hand_line_sinker = players[i];
+        } else {
+            omAddMember(0, players[i]);
+        }
+    }
+    D_8010C100_hand_line_sinker = func_80047DBC_main(0);
+    func_80045010_main(D_8010BFB0_hand_line_sinker, 1);
+    func_800E5EA0_minigame(&D_8010BF00_hand_line_sinker);
+    D_800EB930_minigame = 45;
+    func_8001766C_main();
+}
 
 void func_80105CF0_hand_line_sinker(omObjData *arg0) {
     D_8010C0EC_hand_line_sinker = 0;

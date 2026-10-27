@@ -1,13 +1,18 @@
 #include "common.h"
 #include "overlays/minigame.h"
+#include "game/pause.h"
 
 typedef struct PickingPanicPlayer {
-    /* 0x00 */ u8 unk0;
+    /* 0x00 */ s8 unk0;
     /* 0x01 */ u8 unk1;
-    /* 0x02 */ u8 unk2;
-    /* 0x03 */ u8 unk3;
+    /* 0x02 */ s8 unk2;
+    /* 0x03 */ s8 unk3;
     /* 0x04 */ s8 unk4;
-    /* 0x05 */ char unk5[0xB];
+    /* 0x05 */ char unk5;
+    /* 0x06 */ s16 unk6;
+    /* 0x08 */ s16 unk8;
+    /* 0x0A */ char unkA[2];
+    /* 0x0C */ s32 unkC;
 } PickingPanicPlayer; // sizeof 0x10
 
 extern D_80111B50_vine_with_me_Struct D_8010E5B0_picking_panic;
@@ -18,17 +23,19 @@ extern s8 D_8010EEF0_picking_panic[2];
 extern omObjData *D_8010EEFC_picking_panic;
 extern omObjData *D_8010EF00_picking_panic[4];
 extern s16 D_8010EF10_picking_panic[2];
-extern u8 D_8010EF14_picking_panic;
-extern s8 D_8010EF15_picking_panic[2];
+extern s8 D_8010EF14_picking_panic;
+extern u8 D_8010EF15_picking_panic[2];
+extern s16 *D_8010EF18_picking_panic[2][4][3];
 extern s32 D_8010EF7C_picking_panic;
 extern s16 D_8010EF80_picking_panic;
 extern f32 D_8010EF84_picking_panic[2];
 extern f32 D_8010EF94_picking_panic;
 extern s8 D_8010EF98_picking_panic[2];
 extern u8 D_8010EFA4_picking_panic;
+extern u8 D_8010EFA5_picking_panic;
 extern s32 D_8010EFA8_picking_panic;
 extern s8 D_8010EFBC_picking_panic[2];
-extern s16 D_8010EFBE_picking_panic;
+extern u16 D_8010EFBE_picking_panic;
 extern u8 D_8010EFC0_picking_panic[4];
 extern u16 D_8010EFD0_picking_panic[10];
 extern s16 D_8010EFF8_picking_panic[10];
@@ -43,7 +50,7 @@ void func_8010B1C0_picking_panic(omObjData *object);
 void func_8010B1F4_picking_panic(omObjData *object);
 void func_80106E84_picking_panic(omObjData *object);
 void func_80109C00_picking_panic(Gfx **, s32, s32);
-void func_8010B220_picking_panic(omObjData *object, u8 arg1);
+void func_8010B220_picking_panic(omObjData *object, s8 arg1);
 void func_8010B8D0_picking_panic(omObjData *object);
 void func_8010B8EC_picking_panic(omObjData *object);
 void func_8010B908_picking_panic(omObjData *object, s32 arg1);
@@ -160,9 +167,137 @@ void func_80105D3C_picking_panic(omObjData *object) {
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010E720_picking_panic);
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010E758_picking_panic);
+void func_80106020_picking_panic(omObjData *object) {
+    s32 i;
+    u8 j;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", func_80106020_picking_panic);
+    CenterM[0].x = 0.0f;
+    CenterM[0].y = 0.0f;
+    CenterM[0].z = 0.0f;
+    CenterM[1].x = 0.0f;
+    CenterM[1].y = 0.0f;
+    CenterM[1].z = 0.0f;
+    D_8010EFA8_picking_panic++;
+    D_8010EF7C_picking_panic++;
+    func_800E6F40_minigame();
+    switch (D_8010EF80_picking_panic) {
+        case 0:
+            if (D_8010EFA8_picking_panic == 2) {
+                HuAudFXPlay(0x371);
+            }
+            if (func_800E6E8C_minigame() == 1) {
+                D_8010EF80_picking_panic = 1;
+                D_8010EFA8_picking_panic = 0;
+            }
+            break;
+        case 1:
+            if (D_8010EFA8_picking_panic == 33 && D_8010EFBE_picking_panic == 0 && D_800D530C_main == 0) {
+                HuAudSeqPlay(0x38);
+            }
+            if (func_800E6E8C_minigame() == 2) {
+                D_8010EF80_picking_panic = 2;
+                D_8010EFA8_picking_panic = 0;
+            }
+            break;
+        case 2:
+            if (D_8010EF14_picking_panic == 5 && func_800E6E8C_minigame() == 3) {
+                if (D_8010EF15_picking_panic[0] == D_8010EF15_picking_panic[1]) {
+                    D_8010EF80_picking_panic = 4;
+                    D_8010EF14_picking_panic = 4;
+                } else {
+                    D_8010EF80_picking_panic = 3;
+                    D_8010EF14_picking_panic = D_8010EF15_picking_panic[0] <= D_8010EF15_picking_panic[1];
+                }
+                D_8010EFA8_picking_panic = 0;
+            }
+            if (D_8010EF80_picking_panic != 3) {
+                break;
+            }
+        case 3:
+            if (D_8010EFA8_picking_panic == 0) {
+                if (func_800E6E8C_minigame() != 3) {
+                    func_800E6F1C_minigame();
+                }
+                D_8010E5B0_picking_panic.unk06 = 1;
+                D_8010E5B0_picking_panic.unk18[0] = D_8010EEE0_picking_panic[D_8010EF14_picking_panic * 2]->unk0;
+                D_8010E5B0_picking_panic.unk18[1] = D_8010EEE0_picking_panic[D_8010EF14_picking_panic * 2 + 1]->unk0;
+                GwPlayer[D_8010EEE0_picking_panic[D_8010EF14_picking_panic * 2]->unk0].bonusCoin = 10;
+                GwPlayer[D_8010EEE0_picking_panic[D_8010EF14_picking_panic * 2 + 1]->unk0].bonusCoin = 10;
+            }
+            if (D_8010EFA8_picking_panic == 2) {
+                func_800E6F34_minigame(30);
+            }
+            if (func_800E6E8C_minigame() == 4) {
+                D_8010EF80_picking_panic = 5;
+                D_8010EFA8_picking_panic = 0;
+            }
+            break;
+        case 4:
+            if (D_8010EFA8_picking_panic == 1) {
+                D_8010E5B0_picking_panic.unk06 = 4;
+                D_8010E5B0_picking_panic.unk22 = 75;
+                D_8010E5B0_picking_panic.unk24 = 0x90;
+            }
+            if (func_800E6E8C_minigame() == 4) {
+                D_8010EF80_picking_panic = 6;
+                D_8010EFA8_picking_panic = 0;
+            }
+            break;
+        case 5:
+            if (D_8010EFA8_picking_panic == 31) {
+                for (i = D_8010EF14_picking_panic * 2; i < D_8010EF14_picking_panic * 2 + 2; i++) {
+                    s32 motions[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
+
+                    func_80017954_main(D_8010EF00_picking_panic[i]->model[1], 1,
+                                       motions[D_8010EEE0_picking_panic[i]->unk3],
+                                       D_8010EEE0_picking_panic[i]->unk8);
+                    func_8001C5B4_main(D_8010EF00_picking_panic[i]->model[1], D_8010EF00_picking_panic[i]->motion[4]);
+                    func_80045ED0_main(D_8010EEE0_picking_panic[i]->unkC);
+                }
+            }
+        case 6:
+            if (func_800E6E8C_minigame() == 5) {
+                D_8010EF80_picking_panic = 7;
+                D_8010EFA8_picking_panic = 0;
+            }
+            break;
+        case 7:
+            if (D_8010EFA8_picking_panic == 1) {
+                WipeCreateOut(0, 20);
+            } else if (D_8010EFA8_picking_panic >= 32) {
+                D_8010EFBE_picking_panic = 1;
+            }
+            break;
+    }
+
+    if (_CheckFlag(0xF) && D_800D530C_main == 0 && D_8010EFA5_picking_panic == 0 && (u16)D_8010EF80_picking_panic == 2) {
+        for (j = 0; j < 2; j++) {
+            if (D_8010EEE0_picking_panic[j]->unk4 == -1 &&
+                (D_800D5558_main[D_8010EEE0_picking_panic[j]->unk2] & 0x10)) {
+                D_8010EFA5_picking_panic = 1;
+            }
+        }
+    }
+
+    if (D_8010EFBE_picking_panic != 0 || D_800D530C_main != 0 || D_8010EFA5_picking_panic != 0) {
+        if (D_800D530C_main != 0 && D_8010EFA5_picking_panic == 0) {
+            D_8010EFA5_picking_panic = 1;
+        }
+        if (D_8010EFA5_picking_panic != 0) {
+            if (D_8010EFA5_picking_panic == 1) {
+                WipeCreateOut(0, 20);
+                HuAudSeqFadeOut(20);
+                func_8004AB0C_main(20);
+            }
+            D_8010EFA5_picking_panic++;
+            if (D_8010EFA5_picking_panic < 25) {
+                return;
+            }
+        }
+        HuAudSeqFadeOut(30);
+        omOvlReturnEx(1);
+    }
+}
 
 #ifdef NON_MATCHING
 /* The 0.0f constant in the final loop is not hoisted into $f24 as in the original, shifting one mtc1. */
@@ -290,7 +425,70 @@ void func_8010B1F4_picking_panic(omObjData *object) {
     object->func = NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", func_8010B220_picking_panic);
+void func_8010B220_picking_panic(omObjData *object, s8 arg1) {
+    s32 files[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+    s32 models[8] = { 0xA2, 0xA2, 0xA2, 0xA2, 0xA2, 0xA2, 0xA2, 3 };
+    s32 linkModels[8] = { 0xA1, 0xA1, 0xA1, 0xA1, 0xA1, 0xA1, 0xA1, 1 };
+    s32 motions[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
+    s32 anims[2][8] = {
+        { 0xA4, 0xA4, 0xA4, 0xA4, 0xA4, 0xA4, 0xA4, 0x1B },
+        { 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0x1C },
+    };
+    PickingPanicPlayer *player;
+    u16 chr;
+    u16 i;
+    u16 j;
+    s16 *model;
+
+    chr = D_8010EEE0_picking_panic[arg1]->unk3;
+    object->model[0] = func_8000B108_main((files[chr] << 16) | models[chr], 0x4B9);
+    omSetSca(object, 1.3f, 1.3f, 1.3f);
+    func_8001C2FC_main(object->model[0], 0x600, 0x400);
+    func_8001C8A8_main(object->model[0], (arg1 >= 2) ? 2 : 1);
+    object->model[1] = func_8000B108_main((files[chr] << 16) | linkModels[chr], 0x4AD);
+    Hu3DModelScaleSet(object->model[1], 1.3f, 1.3f, 1.3f);
+    func_8001C2FC_main(object->model[1], 0x600, 0x400);
+    func_8001C8A8_main(object->model[1], (arg1 >= 2) ? 2 : 1);
+    D_8010EEE0_picking_panic[arg1]->unk6 =
+        func_80017790_main(object->model[1], 1, motions[chr], (files[chr] << 16) | anims[0][chr]);
+    D_8010EEE0_picking_panic[arg1]->unk8 = func_80017AD8_main((files[chr] << 16) | anims[1][chr]);
+    func_8001C514_main(object->model[1]);
+    player = D_8010EEE0_picking_panic[arg1];
+    player->unkC = (rand8() & 1) ? 0x2F : 0x30;
+    func_8000B460_main(object, 0, func_80017BB8_main(chr, 0));
+    func_8000B460_main(object, 1, func_80017BB8_main(chr, 0x49));
+    func_8000B460_main(object, 2, func_80017BB8_main(chr, 0x4A));
+    func_8000B460_main(object, 3, func_80017BB8_main(chr, 0x1F));
+    func_8000B460_main(object, 4, func_80017BB8_main(chr, D_8010EEE0_picking_panic[arg1]->unkC));
+    D_8010EEE0_picking_panic[arg1]->unkC |= files[chr] << 16;
+    func_8001C5B4_main(object->model[0], object->motion[1]);
+    func_8001C6A8_main(object->model[0], 12.0f);
+    func_8001C814_main(object->model[0], 1, 1);
+    func_8001C5B4_main(object->model[1], object->motion[1]);
+    func_8001C6A8_main(object->model[1], 12.0f);
+    func_8001C814_main(object->model[1], 1, 1);
+
+    if (arg1 % 2 == 1) {
+        for (i = 0; i < 3; i++) {
+            for (j = 0; j < 4; j++) {
+                model = D_8010EF18_picking_panic[arg1 / 2][j][i] =
+                    &D_8010EF00_picking_panic[(arg1 & 2) + (j % 2)]->model[i + ((j / 2 == 0) ? 2 : 5)];
+                if (arg1 / 2 == 0 && j == 0) {
+                    s32 fileIds[3] = { 2, 3, 4 };
+
+                    *model = func_8000B108_main(fileIds[i] | 0x300000, 0x8BD);
+                } else {
+                    *model = Hu3DModelLink(D_8010EF00_picking_panic[0]->model[2 + i]);
+                }
+                func_8001C8A8_main(*model, (arg1 >= 2) ? 2 : 1);
+                func_8001C2FC_main(*model, 0x20000000, 0x20000000);
+                func_8001C258_main(*model, 4, 4);
+                Hu3DModelScaleSet(*model, 1.3f, 1.3f, 1.3f);
+            }
+        }
+    }
+    D_8010EFBE_picking_panic = 0;
+}
 
 void func_8010B8D0_picking_panic(omObjData *object) {
     func_8010B908_picking_panic(object, 0);
@@ -299,16 +497,6 @@ void func_8010B8D0_picking_panic(omObjData *object) {
 void func_8010B8EC_picking_panic(omObjData *object) {
     func_8010B908_picking_panic(object, 1);
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010E9E0_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EA00_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EA20_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EA40_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EA80_picking_panic);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EA8C_picking_panic);
 

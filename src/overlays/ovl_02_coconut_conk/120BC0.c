@@ -1,4 +1,5 @@
 #include "common.h"
+#include "overlays/minigame.h"
 
 typedef struct {
     /* 0x00 */ omObjData *unk00;
@@ -35,6 +36,7 @@ typedef struct {
 } CoconutConkData; // sizeof 0x84
 
 extern char *D_8010AF98_coconut_conk[];
+extern f32 D_8010AFB8_coconut_conk[];
 extern u8 D_800D6A90_main;
 extern char D_8010B0D0_coconut_conk[];
 extern char D_8010B0E4_coconut_conk[];
@@ -62,6 +64,7 @@ extern f32 D_8010B4A4_coconut_conk;
 extern CoconutConkData D_8010B508_coconut_conk[6];
 extern CoconutConkData D_8010B820_coconut_conk[9];
 extern CoconutConkData D_8010BCC4_coconut_conk;
+extern CoconutConkData D_8010BD48_coconut_conk[];
 
 void func_80105C60_coconut_conk(omObjData *);
 void func_80105D98_coconut_conk(Gfx **, s32, s32);
@@ -76,7 +79,9 @@ void func_801067E0_coconut_conk(omObjData *);
 void func_801069BC_coconut_conk(void);
 void func_80106D5C_coconut_conk(omObjData *);
 void func_80106F18_coconut_conk(void);
+void func_801089DC_coconut_conk(omObjData *);
 void func_801090C4_coconut_conk(void);
+void func_80109DEC_coconut_conk(omObjData *);
 void func_8010A55C_coconut_conk(omObjData *);
 void func_8010AE04_coconut_conk(void);
 void func_800335BC_main(char *name, u16 *result);
@@ -311,7 +316,23 @@ void func_801066E4_coconut_conk(omObjData *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_801067E0_coconut_conk);
+void func_801067E0_coconut_conk(omObjData *arg0) {
+    if (arg0->work[0] % 3 == 0) {
+        arg0->model[0] = func_8000B108_main(0x230001, 0x299);
+    }
+    if (arg0->work[0] % 3 == 1) {
+        arg0->model[0] = func_8000B108_main(0x230003, 0x299);
+    }
+    if (arg0->work[0] % 3 == 2) {
+        arg0->model[0] = func_8000B108_main(0x23000C, 0x299);
+    }
+    arg0->trans.x = D_8010AFB8_coconut_conk[arg0->work[0]];
+    arg0->trans.y = 0.0f;
+    arg0->trans.z = -225.0f;
+    Hu3DModelPosSet(arg0->model[0], arg0->trans.x, arg0->trans.y, -225.0f);
+    func_8001C8A8_main(arg0->model[0], 2);
+    arg0->func = func_801066E4_coconut_conk;
+}
 
 void func_80106924_coconut_conk(void) {
     u8 i;
@@ -327,11 +348,29 @@ void func_80106924_coconut_conk(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_801069BC_coconut_conk);
 
-void func_80106D40_coconut_conk(void) {
+void func_80106D40_coconut_conk(omObjData *arg0) {
     func_801069BC_coconut_conk();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_80106D5C_coconut_conk);
+void func_80106D5C_coconut_conk(omObjData *arg0) {
+    if (arg0->work[0] < 3) {
+        arg0->model[0] = func_8000B108_main(0x23000B, 0x289);
+    }
+    if (arg0->work[0] - 3 < 3) {
+        arg0->model[0] = func_8000B108_main(0x23000A, 0x289);
+    }
+    if (arg0->work[0] >= 6) {
+        arg0->model[0] = func_8000B108_main(0x230002, 0x289);
+    }
+    arg0->trans.x = arg0->trans.y = 0.0f;
+    arg0->trans.z = -200.0f;
+    Hu3DModelPosSet(arg0->model[0], arg0->trans.x, arg0->trans.y, -200.0f);
+    arg0->model[1] = func_8000B108_main(7, 0x2AD);
+    Hu3DModelPosSet(arg0->model[1], arg0->trans.x, arg0->trans.y, arg0->trans.z);
+    func_8001C8A8_main(arg0->model[0], 2);
+    func_8001C8A8_main(arg0->model[1], 2);
+    arg0->func = func_80106D40_coconut_conk;
+}
 
 void func_80106E80_coconut_conk(void) {
     u8 i;
@@ -373,7 +412,35 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_8010815
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_801089DC_coconut_conk);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_80108FA0_coconut_conk);
+void func_80108FA0_coconut_conk(void) {
+    u16 player = 0;
+    s16 i;
+
+    for (i = 0; i < 4; i++) {
+        if (GwPlayer[i].group == 0) {
+            omObjData *obj;
+
+            switch (i) {
+                case 0:
+                    player = 0;
+                    break;
+                case 1:
+                    player = 1;
+                    break;
+                case 2:
+                    player = 2;
+                    break;
+                case 3:
+                    player = 3;
+                    break;
+            }
+            obj = omAddObj(0x2BC, 9, 0x3C, -1, func_801089DC_coconut_conk);
+            obj->work[0] = player;
+            obj->work[3] = GwPlayer[player].pad;
+            D_8010BCC4_coconut_conk.unk00 = obj;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_801090C4_coconut_conk);
 
@@ -390,7 +457,41 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_8010994
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_80109DEC_coconut_conk);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_8010A344_coconut_conk);
+void func_8010A344_coconut_conk(void) {
+    u16 player = 0;
+    s32 count = 0;
+    s16 i;
+
+    for (i = 0; i < 4; i++) {
+        if (GwPlayer[i].group != 0) {
+            CoconutConkData *data;
+            omObjData *obj;
+
+            switch (i) {
+                case 0:
+                    player = 0;
+                    break;
+                case 1:
+                    player = 1;
+                    break;
+                case 2:
+                    player = 2;
+                    break;
+                case 3:
+                    player = 3;
+                    break;
+            }
+            data = &D_8010BD48_coconut_conk[count];
+            obj = omAddObj(0x28A, 9, 0x3C, -1, func_80109DEC_coconut_conk);
+            obj->work[0] = player;
+            obj->work[3] = GwPlayer[player].pad;
+            data->unk00 = obj;
+            obj->work[1] = count++;
+            D_800EC598_minigame[D_800EC280_minigame] = obj;
+            D_800EC280_minigame++;
+        }
+    }
+}
 
 void func_8010A4AC_coconut_conk(void) {
     u32 i;

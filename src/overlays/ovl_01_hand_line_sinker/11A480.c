@@ -19,10 +19,17 @@ typedef struct HandLineSinkerObjWork {
 
 typedef struct HandLineSinkerPlayerWork {
     /* 0x00 */ s8 playerNo;
-    /* 0x01 */ char unk1[0x28 - 0x1];
+    /* 0x01 */ char unk1[0xC - 0x1];
+    /* 0x0C */ u16 aiWait;
+    /* 0x0E */ char unkE[0x28 - 0xE];
     /* 0x28 */ f32 velY;
     /* 0x2C */ u16 splashed;
-    /* 0x2E */ char unk2E[0x48 - 0x2E];
+    /* 0x2E */ u16 aiState;
+    /* 0x30 */ f32 aiTargetRot;
+    /* 0x34 */ f32 aiPrevRot;
+    /* 0x38 */ u16 aiTimer;
+    /* 0x3A */ u16 aiBtn;
+    /* 0x3C */ char unk3C[0x48 - 0x3C];
 } HandLineSinkerPlayerWork; // sizeof 0x48
 
 typedef struct HandLineSinkerFollowWork {
@@ -186,7 +193,80 @@ omObjData *func_801080F0_hand_line_sinker(omObjData *arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_801081D0_hand_line_sinker);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_80108880_hand_line_sinker);
+void func_80108880_hand_line_sinker(omObjData *obj, s8 *stickX, s8 *stickY, u16 *btn) {
+    HandLineSinkerPlayerWork *work;
+    u8 difficulty;
+
+    *stickX = 0;
+    *stickY = 0;
+    *btn = 0;
+    if (obj->work[0] == 1) {
+        return;
+    }
+    work = obj->data;
+    if (obj->work[0] != 3) {
+        switch (work->aiState) {
+            case 0:
+                if (rand8() < 4) {
+                    work->aiState = 1;
+                    work->aiWait = rand8() % 25 + 5;
+                } else {
+                    work->aiState = 2;
+                    if (rand8() % 10 < 7) {
+                        work->aiPrevRot = work->aiTargetRot = rand8() * rand8() % 360;
+                    }
+                }
+                break;
+            case 1:
+                if (work->aiWait == 0) {
+                    work->aiState = 0;
+                } else {
+                    work->aiWait--;
+                }
+                break;
+            case 2:
+                if (obj->rot.y == work->aiTargetRot || obj->rot.y == work->aiPrevRot) {
+                    *btn |= 0x8000;
+                    work->aiState = 0;
+                } else {
+                    *stickX = sindf(work->aiTargetRot) * 60.0f;
+                    *stickY = -cosdf(work->aiTargetRot) * 60.0f;
+                    work->aiPrevRot = obj->rot.y;
+                }
+                break;
+        }
+    } else if (work->aiTimer == 0) {
+        *btn |= work->aiBtn;
+        difficulty = GwPlayer[work->playerNo].cpu_difficulty;
+        work->aiBtn = 0;
+        switch (difficulty) {
+            case 0:
+                work->aiTimer = 3;
+                if (rand8() % 10 < 4) {
+                    work->aiBtn = 0x8000;
+                }
+                break;
+            case 1:
+                work->aiTimer = (rand8() & 1) + 2;
+                if (rand8() % 10 < 8) {
+                    work->aiBtn = 0x8000;
+                }
+                break;
+            case 2:
+                work->aiTimer = (u8)(rand8() & 3);
+                if (rand8() % 10 < 5) {
+                    work->aiBtn = 0x8000;
+                }
+                break;
+            case 3:
+                work->aiTimer = rand8() & 1;
+                if (rand8() % 10 < 8) {
+                    work->aiBtn = 0x8000;
+                }
+                break;
+        }
+    }
+}
 
 void func_80108C5C_hand_line_sinker(omObjData *obj) {
     HandLineSinkerPlayerWork *work = obj->data;

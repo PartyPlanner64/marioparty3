@@ -68,6 +68,7 @@ extern D_80111B50_vine_with_me_Struct D_8010BF60_hyper_hydrants;
 extern omObjData *D_8010BFE8_hyper_hydrants[2][5];
 
 extern s8 D_8010BFAC_hyper_hydrants[2];
+extern s8 D_8010BFAE_hyper_hydrants[2];
 extern s16 D_8010BF42_hyper_hydrants[2];
 extern s16 D_8010BF52_hyper_hydrants;
 extern s16 D_8010BF54_hyper_hydrants;
@@ -164,6 +165,7 @@ void func_80012B14_main(s16 camera, Vec *position, Vec2f *screen);
 void func_8001F6BC_main(s16 model, u8 r, u8 g, u8 b, u8 a);
 void func_8001F6F8_main(s16 model, u8 r, u8 g, u8 b, u8 a);
 s16 HmfAnimRead(HmfData *hmf, s32 file, char *name);
+void func_800E4C88_minigame(omObjData *object, u8 type, f32 x, f32 y, f32 z, f32 arg5, f32 arg6);
 
 void func_801059A0_hyper_hydrants(void) {
     omObjData *object;
@@ -707,7 +709,183 @@ void func_801083A8_hyper_hydrants(s16 model, Vec *position, HyperHydrantsSprayDa
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_801083A8_hyper_hydrants);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80108788_hyper_hydrants);
+void func_80108788_hyper_hydrants(s16 model) {
+    HmfData *hmf;
+    HmfModelData_UnkBC_Struct *modelData;
+    HmfModelData_UnkBC_Unk58_Struct *particle;
+    func_800E1BA8_minigame_ObjData *characterData;
+    omObjData *target;
+    HyperHydrantsPlayerData *data;
+    s16 particleCount;
+    s16 j;
+    s16 i;
+    s32 side;
+    s32 port;
+    s32 hit;
+    s32 hitEnd;
+    f32 limit;
+    f32 oldZ;
+    f32 nextZ;
+    f32 targetZ;
+    f32 distance;
+    s32 threshold;
+
+    hmf = HmfModelData[model].hmf;
+    modelData = HmfModelData[model].unkBC;
+    particleCount = hmf->unk1A;
+    side = modelData->unk08.f;
+    if (modelData->unk02 == 0) {
+        modelData->unk04 &= ~4;
+        for (i = 0, particle = modelData->unk58; i < particleCount; particle++, i++) {
+            particle->unk0C = particle->unk10 = particle->unk14 = 0.0f;
+            particle->unk24 = particle->unk28 = particle->unk2C = 0.0f;
+            particle->unk08 = 0.0f;
+            particle->unk04 = 1.0f;
+        }
+        modelData->unk02++;
+    }
+    particle = modelData->unk58;
+    if (side == 0) {
+        characterData = D_800EC598_minigame[D_8010BFAA_hyper_hydrants]->data;
+    } else {
+        characterData = D_800EC598_minigame[D_8010BFAB_hyper_hydrants]->data;
+    }
+    port = characterData->unk57;
+    limit = ((u16)D_800CDA7C_main[port] & 0x8000) ? -250.0f : -500.0f;
+    for (i = 0; i < particleCount; particle++, i++) {
+        if (particle->unk10 > 0.0f) {
+            if (particle->unk14 < limit) {
+                particle->unk08 = 0.0f;
+                particle->unk10 = 0.0f;
+            } else {
+                oldZ = particle->unk14;
+                nextZ = oldZ + particle->unk2C;
+                for (j = 0; j < 5; j++) {
+                    target = D_8010BFE8_hyper_hydrants[side][j];
+                    data = target->data;
+                    if (data->unk10 == 0.0f) {
+                        continue;
+                    }
+                    targetZ = target->trans.z;
+                    distance = target->trans.x - particle->unk0C > 0.0f ? target->trans.x - particle->unk0C : 0.0f - (target->trans.x - particle->unk0C);
+                    if (nextZ < oldZ) {
+                        hit = nextZ < targetZ;
+                        hitEnd = targetZ < oldZ;
+                    } else {
+                        hit = oldZ < targetZ;
+                        hitEnd = targetZ < nextZ;
+                    }
+                    if ((hit & hitEnd) && distance < data->unk10 * target->scale.x) {
+                        if ((u16)D_800CDA7C_main[port] & 0x8000) {
+                            particle->unk10 = particle->unk08 = 0.0f;
+                        }
+                        // TODO: do-while(0) required to match (raises the hoisted 1's
+                        // register-allocation priority above the loop counter i)
+                        do {
+                            data->unk19 = 1;
+                        } while (0);
+                        break;
+                    }
+                }
+            }
+            particle->unk0C += particle->unk24;
+            particle->unk10 += particle->unk28 - 1.0f;
+            particle->unk14 += particle->unk2C;
+            switch (D_8010BFAC_hyper_hydrants[side]) {
+                case 0:
+                    particle->unk10 = particle->unk08 = 0.0f;
+                    particle->unk24 = particle->unk28 = particle->unk2C = 0.0f;
+                    break;
+                case 1:
+                    particle->unk24 *= 0.6f;
+                    particle->unk28 *= 0.6f;
+                    particle->unk2C *= 0.6f;
+                    if (D_8010BFAE_hyper_hydrants[side] >= 6) {
+                        particle->unk28 -= 75.0f;
+                    } else {
+                        particle->unk28 -= 2.5f;
+                    }
+                    break;
+                case 2:
+                    particle->unk24 *= 0.7f;
+                    particle->unk28 *= 0.7f;
+                    particle->unk2C *= 0.7f;
+                    if (D_8010BFAE_hyper_hydrants[side] >= 6) {
+                        particle->unk28 -= 52.5f;
+                    } else {
+                        particle->unk28 -= 1.75f;
+                    }
+                    break;
+                case 3:
+                    particle->unk24 *= 0.8f;
+                    particle->unk28 *= 0.8f;
+                    particle->unk2C *= 0.8f;
+                    if (D_8010BFAE_hyper_hydrants[side] >= 6) {
+                        particle->unk28 -= 45.0f;
+                    } else {
+                        particle->unk28 -= 1.5f;
+                    }
+                    break;
+                case 4:
+                    particle->unk24 *= 0.8f;
+                    particle->unk28 *= 0.8f;
+                    particle->unk2C *= 0.8f;
+                    if (D_8010BFAE_hyper_hydrants[side] >= 6) {
+                        particle->unk28 -= 30.0f;
+                    } else {
+                        particle->unk28 -= 1.0f;
+                    }
+                    break;
+                case 5:
+                    particle->unk24 *= 0.9f;
+                    particle->unk28 *= 0.9f;
+                    particle->unk2C *= 0.9f;
+                    if (D_8010BFAE_hyper_hydrants[side] >= 6) {
+                        particle->unk28 -= 15.0f;
+                    } else {
+                        particle->unk28 -= 0.5f;
+                    }
+                    break;
+                default:
+                    particle->unk24 *= 0.99f;
+                    particle->unk28 *= 0.99f;
+                    particle->unk2C *= 0.99f;
+                    if (D_8010BFAE_hyper_hydrants[side] >= 6) {
+                        particle->unk28 -= 15.0f;
+                    } else {
+                        particle->unk28 -= 0.5f;
+                    }
+                    break;
+            }
+        } else {
+            particle->unk08 = 0.0f;
+        }
+    }
+    for (j = 0; j < 5; j++) {
+        target = D_8010BFE8_hyper_hydrants[side][j];
+        data = target->data;
+        if (data->unk19 == 1) {
+            if (D_8010BFAC_hyper_hydrants[side] > 0) {
+                func_800E4C88_minigame(target, 2, target->trans.x, 100.0f, target->trans.z + 50.0f, 0.0f, 0.0f);
+                if (data->unk18 == 1) {
+                    data->unk1A = 1;
+                }
+                data->unk18++;
+            }
+            threshold = 15;
+            if ((u16)D_800CDA7C_main[port] & 0x8000) {
+                threshold = 30;
+            }
+            if (data->unk04 == 0 && data->unk18 >= threshold) {
+                data->unk04 = 1;
+                data->unk18 = 0;
+            }
+            data->unk19 = 0;
+        } else {
+            data->unk18 = 0;
+        }
+    }
+}
 
 void func_80108F34_hyper_hydrants(omObjData *object) {
     Vec position;

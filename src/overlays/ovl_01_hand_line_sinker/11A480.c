@@ -15,6 +15,14 @@ typedef struct HandLineSinkerObjWork {
     /* 0x1CE */ char unk1CE[0x1D4 - 0x1CE];
 } HandLineSinkerObjWork; // sizeof 0x1D4
 
+typedef struct HandLineSinkerPlayerWork {
+    /* 0x00 */ s8 playerNo;
+    /* 0x01 */ char unk1[0x28 - 0x1];
+    /* 0x28 */ f32 velY;
+    /* 0x2C */ u16 splashed;
+    /* 0x2E */ char unk2E[0x48 - 0x2E];
+} HandLineSinkerPlayerWork; // sizeof 0x48
+
 typedef struct HandLineSinkerFollowWork {
     /* 0x00 */ omObjData *parent;
     /* 0x04 */ Vec offset;
@@ -46,6 +54,8 @@ void func_8001E888_main(s16 model, f32 x, f32 y, u16 arg3, u16 arg4, char *name,
 void func_800335BC_main(char *name, u16 *result);
 void func_80106100_hand_line_sinker(omObjData *obj, u16 playerNo);
 f32 func_8010ABD4_hand_line_sinker(f32 a);
+void func_801081D0_hand_line_sinker(omObjData *obj);
+void func_8010A6D0_hand_line_sinker(omObjData *parent, u16 type, Vec *offset, Vec *rot);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_801059A0_hand_line_sinker);
 
@@ -145,7 +155,67 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_801
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_80108880_hand_line_sinker);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_80108C5C_hand_line_sinker);
+void func_80108C5C_hand_line_sinker(omObjData *obj) {
+    HandLineSinkerPlayerWork *work = obj->data;
+    Vec pos;
+    Vec rot;
+
+    switch (obj->work[0]) {
+        case 5:
+            obj->rot.x -= 15.0f;
+            if (obj->rot.x == -90.0f) {
+                obj->work[0] = 6;
+            }
+            break;
+        case 6:
+            obj->trans.y += work->velY;
+            work->velY -= 4.2f;
+            if (obj->trans.y >= -50.0f && work->splashed == 0) {
+                pos.x = obj->trans.x;
+                pos.y = -50.0f;
+                pos.z = obj->trans.z;
+                rot.x = rot.y = rot.z = 0.0f;
+                func_8010A6D0_hand_line_sinker(NULL, 0, &pos, &rot);
+                HuAudFXPlay(0x30F);
+                work->splashed = 1;
+            }
+            if (work->velY < 0.0f) {
+                obj->work[0] = 7;
+            }
+            break;
+        case 7:
+            obj->trans.y += work->velY;
+            work->velY -= 4.2f;
+            obj->rot.x += 30.0f;
+            if (obj->rot.x > 90.0f) {
+                obj->rot.x = 90.0f;
+            }
+            if (obj->trans.y <= -50.0f) {
+                obj->work[0] = 8;
+                pos.x = obj->trans.x;
+                pos.y = -50.0f;
+                pos.z = obj->trans.z;
+                rot.x = rot.y = rot.z = 0.0f;
+                func_8010A6D0_hand_line_sinker(NULL, 0, &pos, &rot);
+                HuAudFXPlay(0x30F);
+            }
+            break;
+        case 8:
+            obj->trans.y += work->velY;
+            work->velY -= 4.2f;
+            obj->rot.x -= 20.0f;
+            if (obj->rot.x < 0.0f) {
+                obj->rot.x = 0.0f;
+            }
+            if (obj->trans.y <= -240.0f) {
+                obj->trans.y = -240.0f;
+                obj->work[0] = 0;
+                obj->rot.x = 0.0f;
+                obj->func = func_801081D0_hand_line_sinker;
+            }
+            break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_80108F44_hand_line_sinker);
 

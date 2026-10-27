@@ -353,8 +353,6 @@ void func_80106020_picking_panic(omObjData *object) {
     }
 }
 
-#ifdef NON_MATCHING
-/* The 0.0f constant in the final loop is not hoisted into $f24 as in the original, shifting one mtc1. */
 void func_8010664C_picking_panic(omObjData *object) {
     s32 fileIds[10] = { 0x0030000A, 0x0030000B, 0x0030000C, 0x0030000D, 0x0030000E,
                         0x00000031, 0x002A0012, 0x0030000F, 0x00300011, 0x00300010 };
@@ -421,29 +419,21 @@ void func_8010664C_picking_panic(omObjData *object) {
     {
         f32 xs[10] = { -510.0f, -555.0f, -663.0f, -692.0f, -797.0f, -823.0f, -947.0f, -1012.0f, -1121.0f, -1169.0f };
         f32 zs[10] = { 449.0f, 331.0f, 470.0f, 341.0f, 237.0f, 403.0f, 293.0f, 409.0f, 276.0f, 432.0f };
+        s32 idx;
 
         for (i = 0; i < 10; i++) {
-            for (j = 0; j < 2; j++) {
-                Hu3DModelPosSet(object->model[(j == 0) ? 12 + i : 22 + i], xs[i] / 4687.5 * 5187.5,
-                                zs[i] / 4687.5 * 5187.5, -500.0f);
-                Hu3DModelPosSet(object->model[(j == 0) ? 12 + i : 22 + i], 0.0f, 0.0f, -500.0f);
-                func_8001C814_main(object->model[(j == 0) ? 12 + i : 22 + i], 1, 1);
-                func_8001C8A8_main(object->model[(j == 0) ? 12 + i : 22 + i], (j == 0) ? 1 : 2);
+            for (j = 0, idx = i; j < 2; j++) {
+                Hu3DModelPosSet(object->model[(j == 0) ? 12 + idx : 22 + idx], xs[idx] / 4687.5 * 5187.5,
+                                zs[idx] / 4687.5 * 5187.5, -500.0f);
+                Hu3DModelPosSet(object->model[(j == 0) ? 12 + idx : 22 + idx], 0.0f, 0.0f, -500.0f);
+                func_8001C814_main(object->model[(j == 0) ? 12 + idx : 22 + idx], 1, 1);
+                func_8001C8A8_main(object->model[(j == 0) ? 12 + idx : 22 + idx], (j == 0) ? 1 : 2);
             }
         }
     }
 
     object->func = func_80106E84_picking_panic;
 }
-#else
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010E798_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010E7C0_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010E7E8_picking_panic);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", func_8010664C_picking_panic);
-#endif
 
 void func_80106E84_picking_panic(omObjData *object) {
     f32 scaleX[2];

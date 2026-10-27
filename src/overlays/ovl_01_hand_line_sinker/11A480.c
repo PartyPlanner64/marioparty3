@@ -1,5 +1,16 @@
 #include "common.h"
 
+typedef struct HandLineSinkerObjWork {
+    /* 0x000 */ f32 unk0;
+    /* 0x004 */ f32 unk4;
+    /* 0x008 */ s32 unk8;
+    /* 0x00C */ Vec pos;
+    /* 0x018 */ Vec unk18;
+    /* 0x024 */ char unk24[0x1CC - 0x24];
+    /* 0x1CC */ s16 seNo;
+    /* 0x1CE */ char unk1CE[0x1D4 - 0x1CE];
+} HandLineSinkerObjWork; // sizeof 0x1D4
+
 extern s16 D_8010C0EC_hand_line_sinker;
 extern s16 D_8010C0F0_hand_line_sinker;
 extern omObjData *D_8010C0F4_hand_line_sinker;
@@ -86,7 +97,20 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_801
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_80108F44_hand_line_sinker);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_801092B8_hand_line_sinker);
+f32 func_801092B8_hand_line_sinker(s8 stickX, s8 stickY) {
+    f32 angle;
+    f32 mag;
+
+    if (stickX == 0 && stickY == 0) {
+        return 0.0f;
+    }
+    angle = atan2df(stickY, stickX);
+    mag = fabs(stickX * cosdf(angle)) + fabs(stickY * sindf(angle));
+    if (mag > 70.0f) {
+        mag = 70.0f;
+    }
+    return mag;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_801093A4_hand_line_sinker);
 
@@ -141,6 +165,26 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_801
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_8010AD7C_hand_line_sinker);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_8010B0FC_hand_line_sinker);
+void func_8010B0FC_hand_line_sinker(omObjData *arg0, f32 arg1) {
+    HandLineSinkerObjWork *work;
+    f32 ratio;
+    f32 volume;
+
+    work = arg0->data;
+    ratio = 1.0f - (HuSqrtf((arg0->trans.x - work->pos.x) * (arg0->trans.x - work->pos.x) +
+                            (arg0->trans.z - work->pos.z) * (arg0->trans.z - work->pos.z)) /
+                    730.0f) *
+                       2;
+    if (ratio < 0.0f) {
+        ratio = 0.0f;
+    }
+    volume = arg1 + (127.0f - arg1) * ratio;
+    if (volume > 127.0f) {
+        volume = 127.0f;
+    }
+    if (work->seNo >= 0) {
+        func_8004AAD0_main(work->seNo, volume);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_8010B1E4_hand_line_sinker);

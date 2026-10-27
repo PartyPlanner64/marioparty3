@@ -273,7 +273,8 @@ NOP_OBJECTS := \
 	build/src/overlays/mchar/3D3C80.c.o \
 	build/src/overlays/mchar2/3D5C30.c.o \
 	build/src/overlays/ovl_0E_hyper_hydrants/17B3B0.c.o \
-	build/src/overlays/ovl_0F_picking_panic/181950.c.o
+	build/src/overlays/ovl_0F_picking_panic/181950.c.o \
+	build/src/overlays/ovl_01_hand_line_sinker/11A480.c.o
 
 NOP_ASM := $(NOP_OBJECTS:.o=.s)
 

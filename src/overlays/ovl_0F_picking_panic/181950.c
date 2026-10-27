@@ -15,10 +15,48 @@ typedef struct PickingPanicPlayer {
     /* 0x0C */ s32 unkC;
 } PickingPanicPlayer; // sizeof 0x10
 
+typedef struct PickingPanicCpuState {
+    /* 0x00 */ s16 unk0;
+    /* 0x02 */ s16 unk2;
+    /* 0x04 */ s16 unk4;
+    /* 0x06 */ s16 unk6;
+} PickingPanicCpuState; // sizeof 0x08
+
 extern D_80111B50_vine_with_me_Struct D_8010E5B0_picking_panic;
 extern Gfx *gMainGfxPos;
 extern Gfx D_8010E5E0_picking_panic[];
 extern const s16 D_8010E720_picking_panic[];
+extern s16 D_8010E5CE_picking_panic;
+extern f32 D_8010E62C_picking_panic[3][16];
+extern u32 D_8010E6EC_picking_panic;
+extern s8 D_8010E6F0_picking_panic[2][4];
+extern u8 D_8010E6F8_picking_panic[4];
+extern u8 D_8010E6FC_picking_panic[4];
+extern s8 D_8010E700_picking_panic[4];
+extern PickingPanicCpuState D_8010E704_picking_panic[2];
+extern u8 D_8010E714_picking_panic[4];
+extern u8 D_8010E718_picking_panic[8];
+extern f32 D_8010EC20_picking_panic[3][16];
+extern f32 D_8010ECE0_picking_panic[3][16];
+extern u8 D_8010EDA0_picking_panic[2][4];
+extern u8 D_8010EDA8_picking_panic[2][4];
+extern f32 D_8010EDB0_picking_panic[2][4];
+extern f32 D_8010EDD0_picking_panic[2][4];
+extern f32 D_8010EDF0_picking_panic[2][4];
+extern f32 D_8010EE10_picking_panic[2][4];
+extern f32 D_8010EE30_picking_panic[2][4];
+extern f32 D_8010EE50_picking_panic[2][4];
+extern f32 D_8010EE70_picking_panic;
+extern f32 D_8010EE74_picking_panic;
+extern f32 D_8010EE78_picking_panic;
+extern f32 D_8010EE7C_picking_panic;
+extern f32 D_8010EE80_picking_panic;
+extern f32 D_8010EE84_picking_panic;
+extern f32 D_8010EE88_picking_panic;
+extern f32 D_8010EE8C_picking_panic;
+extern f32 D_8010EE90_picking_panic;
+extern f32 D_8010EE94_picking_panic;
+extern f32 D_8010EE98_picking_panic;
 extern PickingPanicPlayer D_8010EEA0_picking_panic[4];
 extern PickingPanicPlayer *D_8010EEE0_picking_panic[4];
 extern s32 D_8010E5D8_picking_panic;
@@ -68,7 +106,8 @@ void func_8010B11C_picking_panic(s16 arg0, s16 arg1);
 void func_8010B220_picking_panic(omObjData *object, s8 arg1);
 void func_8010B8D0_picking_panic(omObjData *object);
 void func_8010B8EC_picking_panic(omObjData *object);
-void func_8010B908_picking_panic(omObjData *object, s32 arg1);
+void func_8010B908_picking_panic(omObjData *object, s8 arg1);
+void func_8001EF6C_main(s16, s16, char *);
 
 void func_801059A0_picking_panic(void) {
     omObjData *object;
@@ -946,6 +985,484 @@ void func_8010B8EC_picking_panic(omObjData *object) {
     func_8010B908_picking_panic(object, 1);
 }
 
+#ifdef NON_MATCHING
+/* Logic is believed equivalent. Remaining diffs are register allocation (arg1 spill vs. hoisted constants), a
+ * partially dead `% 30` computation in the throw block, reload behavior in the hand animation stepping loop, and
+ * cross-jumping of the wall clamp code in the final loop. */
+void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
+    PickingPanicPlayer *player0 = D_8010EEE0_picking_panic[arg1 * 2];
+    PickingPanicPlayer *player1 = D_8010EEE0_picking_panic[arg1 * 2 + 1];
+    omObjData *hand0 = D_8010EF00_picking_panic[arg1 * 2];
+    omObjData *hand1 = D_8010EF00_picking_panic[arg1 * 2 + 1];
+    u8 idx0 = arg1 * 2;
+    u8 idx1 = arg1 * 2 + 1;
+    u8 cpuTbl[4][8] = {
+        { 0xA0, 0x60, 0x20, 0x08, 0x80, 0x60, 0x40, 0x0A },
+        { 0x09, 0x05, 0x03, 0x02, 0x07, 0x05, 0x03, 0x02 },
+        { 0x10, 0x40, 0x80, 0xC0, 0x40, 0x80, 0xC0, 0xE0 },
+        { 0xC0, 0x40, 0x20, 0x04, 0x80, 0x40, 0x20, 0x01 },
+    };
+    s32 i;
+    s32 j;
+    s32 k;
+    s32 slot;
+    s32 type;
+    s16 model;
+    f32 x;
+    f32 y;
+    f32 rot;
+    f32 dir;
+    f32 base;
+    f32 c;
+    f32 s;
+    f32 t;
+    f32 u;
+    f32 prevY;
+    f32 wallX;
+    f32 dist;
+    f32 dist2;
+    f32 ofs;
+    f32 ofs2;
+    f32 angle;
+    f32 speed;
+    f32 amp;
+    f32 sumX;
+    f32 sumY;
+    f32 dx;
+    f32 dy;
+
+    if (arg1 == 0 && D_8010E6EC_picking_panic == 45) {
+        for (j = 1; j < 6; j++) {
+            D_8010E718_picking_panic[j] = rand8() / 110;
+        }
+    }
+    if (arg1 == 0) {
+        D_8010EF94_picking_panic -= (D_8010EF94_picking_panic > 0.0f) ? 1.0f : 0.0f;
+    }
+    if (arg1 == 0 && D_8010EF94_picking_panic == 0.0f && D_8010EF80_picking_panic == 2 &&
+        D_8010E6EC_picking_panic % 60 == 46) {
+        D_8010EF94_picking_panic = 60.0f;
+    }
+    if (arg1 == 0) {
+        i = D_8010E6EC_picking_panic % 30;
+        i = (i < 16) ? i : 30 - i;
+        if (D_8010E62C_picking_panic[0][i] == 0.0f) {
+            sumY = 0.0f;
+            sumX = 0.0f;
+            amp = sindf(i * 90.0 / 15.0) * 80.0f;
+            for (j = 0; j < 3; j++) {
+                D_8010E62C_picking_panic[j][i] = amp * ((j * 0.125) / 3.0 + 0.875) + 270.0;
+                sumX += cosdf(D_8010E62C_picking_panic[j][i]) * 110.0f;
+                sumY += sindf(D_8010E62C_picking_panic[j][i]) * 110.0f;
+                D_8010EC20_picking_panic[j][i] = sumX;
+                D_8010ECE0_picking_panic[j][i] = sumY;
+            }
+        }
+        for (j = 0; j < 2; j++) {
+            u32 frame;
+
+            dir = (D_8010E6EC_picking_panic % 60 < 30) ? 1.0f : -1.0f;
+            base = (j == 0) ? -500.0f : 500.0f;
+            frame = D_8010E6EC_picking_panic % 30;
+            frame = (frame < 16) ? frame : 30 - frame;
+            if (j != 0) {
+                dir = -dir;
+            }
+            for (k = 0; k < 3; k++) {
+                Hu3DModelPosSet(D_8010EEFC_picking_panic->model[(j == 0) ? k + 32 : k + 35],
+                                base + dir * D_8010EC20_picking_panic[k][frame],
+                                D_8010ECE0_picking_panic[k][frame] + 250.0f, 0.0f);
+                Hu3DModelRotSet(D_8010EEFC_picking_panic->model[(j == 0) ? k + 32 : k + 35], 0.0f, 0.0f,
+                                (D_8010E62C_picking_panic[k][frame] - 270.0f) * dir);
+            }
+            x = base + dir * D_8010EC20_picking_panic[2][frame];
+            y = D_8010ECE0_picking_panic[2][frame] + 250.0f;
+            rot = (D_8010E62C_picking_panic[2][frame] - 270.0f) * dir;
+            Hu3DModelPosSet(D_8010EEFC_picking_panic->model[(j == 0) ? 8 : 9], x, y, 0.0f);
+            Hu3DModelRotSet(D_8010EEFC_picking_panic->model[(j == 0) ? 8 : 9], 0.0f, 0.0f, rot);
+            rot += (j == 0) ? 35.0f : -35.0f;
+            if (D_8010EF80_picking_panic == 0 && D_8010EFA8_picking_panic < 45) {
+                f32 swing = (D_8010EFA8_picking_panic < 30) ? 180.0f : 180.0 - (D_8010EFA8_picking_panic + 30) * 180.0 / 15.0;
+
+                if (j == 0) {
+                    rot -= swing;
+                } else {
+                    rot += swing;
+                }
+            }
+            c = cosdf(rot + 270.0f + ((j == 0) ? -14.0f : 14.0f));
+            s = sindf(rot + 270.0f + ((j == 0) ? -14.0f : 14.0f));
+            if (!(j & 1)) {
+                D_8010EE80_picking_panic = -D_8010EE70_picking_panic;
+                D_8010EE84_picking_panic = -D_8010EE74_picking_panic;
+                D_8010EE70_picking_panic = x + c * 86.0f;
+                D_8010EE74_picking_panic = y + s * 86.0f;
+                D_8010EE80_picking_panic += D_8010EE70_picking_panic;
+                D_8010EE84_picking_panic += D_8010EE74_picking_panic;
+            } else {
+                D_8010EE78_picking_panic = x + c * 86.0f;
+                D_8010EE7C_picking_panic = y + s * 86.0f;
+            }
+            x -= c * 86.0f;
+            y -= s * 86.0f;
+            omSetTra(D_8010EF00_picking_panic[j], x, y, 0.0f);
+            omSetRot(D_8010EF00_picking_panic[j], 0.0f, (j == 0) ? -90.0f : 90.0f, rot + 180.0f);
+            omSetTra(D_8010EF00_picking_panic[j + 2], x, y, 0.0f);
+            omSetRot(D_8010EF00_picking_panic[j + 2], 0.0f, (j == 0) ? -90.0f : 90.0f, rot + 180.0f);
+            if (D_8010EF80_picking_panic >= 3 && D_8010EF14_picking_panic < 2) {
+                s32 flyFrames = 16;
+                s32 throwFrame = 7;
+                s32 velX = 13;
+                s32 velY = 36;
+                s32 winner = D_8010EF14_picking_panic * 2;
+
+                if (j == 0 && D_8010EFA4_picking_panic > 30 && D_8010EFA4_picking_panic < 255) {
+                    D_8010EE88_picking_panic += D_8010EE94_picking_panic;
+                    D_8010EE8C_picking_panic += D_8010EE98_picking_panic;
+                    D_8010EE98_picking_panic -= 6.25;
+                }
+                if (D_8010EFA4_picking_panic == 255 && D_8010E6EC_picking_panic % 60 == throwFrame) {
+                    D_8010EFA4_picking_panic = flyFrames + 30;
+                    D_8010EE88_picking_panic = x;
+                    D_8010EE94_picking_panic = velX;
+                    D_8010EE8C_picking_panic = y;
+                    D_8010EE98_picking_panic = velY;
+                    D_8010EE90_picking_panic = rot;
+                    for (k = 0; k < 2; k++) {
+                        func_8001C258_main(D_8010EF00_picking_panic[winner + k]->model[0], 4, 4);
+                        func_8001C258_main(D_8010EF00_picking_panic[winner + k]->model[1], 4, 0);
+                        func_8001C624_main(D_8010EF00_picking_panic[winner + k]->model[1],
+                                           HmfModelData[D_8010EF00_picking_panic[winner + k]->motion[2]].unk02, 50,
+                                           flyFrames, 0);
+                    }
+                }
+                if (D_8010EFA4_picking_panic > 30 && D_8010EFA4_picking_panic < 255) {
+                    t = (f32)(D_8010EFA4_picking_panic - 30) / flyFrames;
+                    u = t * t * 0.5 + t * 0.5;
+                    Hu3DModelPosSet(D_8010EF00_picking_panic[winner + j]->model[1],
+                                    (j != 0) ? -D_8010EE88_picking_panic : D_8010EE88_picking_panic,
+                                    D_8010EE8C_picking_panic, 50.0f);
+                    Hu3DModelRotSet(D_8010EF00_picking_panic[winner + j]->model[1], 0.0f,
+                                    (j != 0) ? t * 45.0f + 45.0f : -(t * 45.0f + 45.0f),
+                                    (u * D_8010EE90_picking_panic + (1.0f - u) * 180.0f) * ((j != 0) ? -1.0f : 1.0f) +
+                                        180.0f);
+                }
+                if (D_8010EFA4_picking_panic < 31) {
+                    t = (D_8010EFA4_picking_panic - 1) / 10.0;
+                    t = (t > 1.0f) ? 45.0f : (t < 0.0f) ? 0.0f
+                                                        : t * 45.0f;
+                    Hu3DModelPosSet(D_8010EF00_picking_panic[winner + j]->model[1],
+                                    (j != 0) ? -D_8010EE88_picking_panic : D_8010EE88_picking_panic,
+                                    D_8010EE8C_picking_panic, 50.0f);
+                    Hu3DModelRotSet(D_8010EF00_picking_panic[winner + j]->model[1], 0.0f, (j == 0) ? -t : t,
+                                    (j == 0) ? 360.0f : 0.0f);
+                }
+                if (D_8010EFA4_picking_panic == 30) {
+                    func_8004AC98_main(D_8010EEE0_picking_panic[winner + j]->unk3 + 50,
+                                       D_8010EEE0_picking_panic[winner + j]->unk0);
+                    func_8001C5B4_main(D_8010EF00_picking_panic[winner + j]->model[1],
+                                       D_8010EF00_picking_panic[winner + j]->motion[3]);
+                    func_8001C6A8_main(D_8010EF00_picking_panic[winner + j]->model[1], 2.0f);
+                    func_8001C814_main(D_8010EF00_picking_panic[winner + j]->model[1], 3, 0);
+                }
+                if (D_8010EFA4_picking_panic == 26) {
+                    func_8001C624_main(D_8010EF00_picking_panic[winner + j]->model[1],
+                                       HmfModelData[D_8010EF00_picking_panic[winner + j]->motion[0]].unk02, 0, 20, 2);
+                }
+                if (j == 1 && D_8010EFA4_picking_panic < 255) {
+                    if (D_8010EFA4_picking_panic == 1) {
+                        for (k = 0; k < 3; k++) {
+                            func_8001C258_main(D_8010EEFC_picking_panic->model[k + 32], 4, 4);
+                            func_8001C258_main(D_8010EEFC_picking_panic->model[k + 35], 4, 4);
+                        }
+                        func_8001C258_main(D_8010EEFC_picking_panic->model[8], 4, 4);
+                        func_8001C258_main(D_8010EEFC_picking_panic->model[9], 4, 4);
+                    }
+                    D_8010EFA4_picking_panic -= (D_8010EFA4_picking_panic != 0);
+                }
+            }
+        }
+    }
+
+    if (HmfModelData[D_8010EEFC_picking_panic->model[arg1 + 10]].unk40 >= 60.0f) {
+        HmfModelData[D_8010EEFC_picking_panic->model[arg1 + 10]].unk40 = 0.0f;
+        func_8001C258_main(D_8010EEFC_picking_panic->model[arg1 + 10], 4, 4);
+    }
+    D_8010EF10_picking_panic[arg1] =
+        (D_8010EF10_picking_panic[arg1] < 46) ? D_8010EF10_picking_panic[arg1] + (D_8010EF10_picking_panic[arg1] != 0) : 0;
+    if (D_8010EF80_picking_panic == 0 || (D_8010EF80_picking_panic == 1 && D_8010EFA8_picking_panic < 45)) {
+        D_8010EF10_picking_panic[arg1] = 1;
+    }
+    if (D_8010EF10_picking_panic[arg1] == 15) {
+        if (D_8010E6F0_picking_panic[arg1][(D_8010EEF0_picking_panic[arg1] + 1) % 4] == 0) {
+            D_8010EEF0_picking_panic[arg1] = (D_8010EEF0_picking_panic[arg1] + 1) % 4;
+            D_8010E6F0_picking_panic[arg1][D_8010EEF0_picking_panic[arg1]] = 1;
+            D_8010EF98_picking_panic[arg1] =
+                (D_8010E714_picking_panic[arg1] < 6)
+                    ? D_8010E718_picking_panic[D_8010E714_picking_panic[arg1]]
+                    : (u32)(rand8() % ((D_8010EF15_picking_panic[arg1] >= 4 &&
+                                        D_8010EF15_picking_panic[arg1] - D_8010EF15_picking_panic[1 - arg1] >= 4) +
+                                       5)) /
+                          2;
+            if (D_8010EF98_picking_panic[arg1] == 2 && D_8010EF15_picking_panic[arg1] == 0 &&
+                D_8010E5CE_picking_panic < 451) {
+                D_8010EF98_picking_panic[arg1] = 0;
+            }
+            D_8010E714_picking_panic[arg1] += (D_8010E714_picking_panic[arg1] < 6);
+        } else {
+            D_8010EF10_picking_panic[arg1]--;
+        }
+    }
+    if (D_8010E6EC_picking_panic % 60 == 0) {
+        D_8010E704_picking_panic[arg1].unk0 -= (D_8010E704_picking_panic[arg1].unk0 > 0);
+    }
+    if (D_8010E6EC_picking_panic % 60 == 0) {
+        D_8010E704_picking_panic[arg1].unk6 -= (D_8010E704_picking_panic[arg1].unk6 > 0);
+    }
+
+    if (D_8010EF80_picking_panic == 2) {
+        if (D_8010E700_picking_panic[idx0] == -1 &&
+            D_8010E6F0_picking_panic[arg1][D_8010EEF0_picking_panic[arg1]] == 1 &&
+            D_8010EF98_picking_panic[arg1] != -1 &&
+            (D_8010EF10_picking_panic[arg1] == 0 || D_8010EF10_picking_panic[arg1] >= 30) &&
+            ((player0->unk4 == -1 && (D_800D5558_main[player0->unk2] & 0x8000)) ||
+             (player0->unk4 != -1 && D_8010E704_picking_panic[arg1].unk0 == 0))) {
+            dx = D_8010EE70_picking_panic - -855.0f;
+            dy = D_8010EE74_picking_panic - -25.0f;
+            if (dx * dx + dy * dy < 17929.21) {
+                slot = D_8010EEF0_picking_panic[arg1];
+                D_8010E700_picking_panic[idx0] = slot;
+                D_8010E6F0_picking_panic[arg1][slot] = 2;
+                D_8010EDA0_picking_panic[arg1][slot] = D_8010EF98_picking_panic[arg1];
+                D_8010EF98_picking_panic[arg1] = -1;
+                D_8010EF10_picking_panic[arg1] = 1;
+                D_8010E6F8_picking_panic[idx0] = 6;
+                D_8010E6FC_picking_panic[idx0] = 23;
+                func_8001EF6C_main(*D_8010EF18_picking_panic[arg1][slot][D_8010EDA0_picking_panic[arg1][slot]],
+                                   hand0->model[0], "item_hook");
+                func_8001C258_main(*D_8010EF18_picking_panic[arg1][slot][D_8010EDA0_picking_panic[arg1][slot]],
+                                   0x4000, 0x4000);
+                if (player0->unk4 != -1) {
+                    D_8010E704_picking_panic[arg1].unk0 = (cpuTbl[0][player0->unk4] > rand8()) ? 2 : 1;
+                    D_8010E704_picking_panic[arg1].unk2 =
+                        rand8() % (cpuTbl[1][player0->unk4] * 2) - cpuTbl[1][player0->unk4];
+                }
+                if (player1->unk4 != -1) {
+                    D_8010E704_picking_panic[arg1].unk4 = cpuTbl[2][player1->unk4];
+                }
+                func_8004AC98_main((D_8010EDA0_picking_panic[arg1][slot] == 0)   ? 0x36F
+                                   : (D_8010EDA0_picking_panic[arg1][slot] == 1) ? 0x36C
+                                                                                 : 0x370,
+                                   arg1 * 2);
+                omVibrate(player0->unk0, 2, 3, 10);
+            }
+        }
+    }
+    if (D_8010EF80_picking_panic == 2 && D_8010E700_picking_panic[idx1] == -1 &&
+        ((player1->unk4 == -1 && (D_800D5558_main[player1->unk2] & 0x8000)) ||
+         (player1->unk4 != -1 && D_8010E704_picking_panic[arg1].unk4 > rand8()))) {
+        for (i = 0; i < 4; i++) {
+            if (D_8010E6F0_picking_panic[arg1][i] == 3) {
+                dx = D_8010EE78_picking_panic - D_8010EDB0_picking_panic[arg1][i];
+                dy = D_8010EE7C_picking_panic - D_8010EDD0_picking_panic[arg1][i];
+                if (dx * dx + dy * dy < 16900.0) {
+                    D_8010E700_picking_panic[idx1] = i;
+                    D_8010E6F0_picking_panic[arg1][i] = 4;
+                    D_8010E6F8_picking_panic[idx1] = 6;
+                    D_8010E6FC_picking_panic[idx1] = 23;
+                    type = D_8010EDA0_picking_panic[arg1][i];
+                    Hu3DModelPosSet((!(i & 1) ? hand0 : hand1)->model[(i / 2 == 0) ? type + 2 : type + 5], 0.0f, 0.0f,
+                                    0.0f);
+                    func_8001EF6C_main(*D_8010EF18_picking_panic[arg1][i][D_8010EDA0_picking_panic[arg1][i]],
+                                       hand1->model[0], "item_hook");
+                    func_8001C258_main(*D_8010EF18_picking_panic[arg1][i][D_8010EDA0_picking_panic[arg1][i]],
+                                       0x4000, 0x4000);
+                    if (player1->unk4 != -1) {
+                        D_8010E704_picking_panic[arg1].unk6 = cpuTbl[3][player1->unk4] > rand8();
+                    }
+                    func_8004AC98_main((D_8010EDA0_picking_panic[arg1][i] == 0)   ? 0x36F
+                                       : (D_8010EDA0_picking_panic[arg1][i] == 1) ? 0x36C
+                                                                                  : 0x370,
+                                       arg1 * 2 + 1);
+                    omVibrate(player1->unk0, 2, 3, 10);
+                    break;
+                }
+            }
+        }
+    }
+
+    if (D_8010EF80_picking_panic >= 2 && D_8010E700_picking_panic[idx0] != -1 &&
+        D_8010E6F0_picking_panic[arg1][D_8010E700_picking_panic[idx0]] == 2 &&
+        (D_8010EF80_picking_panic != 2 ||
+         ((player0->unk4 == -1) ? !((u16)D_800CDA7C_main[player0->unk2] & 0x8000)
+                                : D_8010E6EC_picking_panic % 60 == (D_8010E704_picking_panic[arg1].unk2 + 68) % 60))) {
+        if (hand0->rot.z > 210.0f) {
+            t = 0.0f;
+        } else if (hand0->rot.z > 160.0f) {
+            t = 1.0f;
+        } else {
+            t = (210.0f - hand0->rot.z) / 50.0f;
+        }
+        slot = D_8010E700_picking_panic[idx0];
+        D_8010E700_picking_panic[idx0] = -1;
+        D_8010E6F0_picking_panic[arg1][slot] = 3;
+        D_8010EDB0_picking_panic[arg1][slot] = D_8010EE70_picking_panic;
+        D_8010EDD0_picking_panic[arg1][slot] = D_8010EE74_picking_panic;
+        D_8010EDF0_picking_panic[arg1][slot] = 0.0f;
+        D_8010EE50_picking_panic[arg1][slot] = 0.0f;
+        if (D_8010EF80_picking_panic == 2) {
+            D_8010EE10_picking_panic[arg1][slot] =
+                ((D_8010EE80_picking_panic * 0.875 - 5.0) * t + (1.0f - t) * 24.25) *
+                (D_8010EDA0_picking_panic[arg1][slot] * 0.15 + 0.85);
+            D_8010EE30_picking_panic[arg1][slot] =
+                ((D_8010EE84_picking_panic * 0.875 + 10.0) * t + (1.0f - t) * 57.5) *
+                (D_8010EDA0_picking_panic[arg1][slot] * 0.15 + 0.85);
+        } else {
+            D_8010EE10_picking_panic[arg1][slot] = D_8010EE30_picking_panic[arg1][slot] = 0.0f;
+        }
+        func_8001C258_main(*D_8010EF18_picking_panic[arg1][slot][D_8010EDA0_picking_panic[arg1][slot]], 0x4000, 0);
+        D_8010E6F8_picking_panic[idx0] = 18;
+        D_8010E6FC_picking_panic[idx0] = 0;
+        func_8004AC98_main(0x36D, arg1 * 2);
+    }
+    if (D_8010EF80_picking_panic >= 2 && D_8010E700_picking_panic[idx1] != -1 &&
+        D_8010E6F0_picking_panic[arg1][D_8010E700_picking_panic[idx1]] == 4 &&
+        (D_8010EF80_picking_panic != 2 ||
+         (player1->unk4 == -1 && !((u16)D_800CDA7C_main[player1->unk2] & 0x8000)) ||
+         (player1->unk4 != -1 && D_8010E704_picking_panic[arg1].unk6 == 0 &&
+          ((D_8010E6EC_picking_panic % 60 >= 43 && D_8010E6EC_picking_panic % 60 < 48 && rand8() % 3 == 0) ||
+           D_8010E6EC_picking_panic % 60 == 48)))) {
+        f32 throwVel[11] = { 30.0f, 30.0f, 26.0f, 25.0f, 24.0f, 26.0f, 23.0f, 23.0f, 25.5f, 26.0f, 30.0f };
+
+        j = (D_8010E6EC_picking_panic + 15) % 60;
+        j = (j - 30 > 0) ? 60 - j : j;
+        slot = D_8010E700_picking_panic[idx1];
+        D_8010E700_picking_panic[idx1] = -1;
+        D_8010E6F0_picking_panic[arg1][slot] = 5;
+        D_8010EDB0_picking_panic[arg1][slot] = D_8010EE78_picking_panic;
+        D_8010EDD0_picking_panic[arg1][slot] = D_8010EE7C_picking_panic;
+        D_8010EDF0_picking_panic[arg1][slot] = 0.0f;
+        D_8010EDA8_picking_panic[arg1][slot] = 0;
+        D_8010EE50_picking_panic[arg1][slot] = 0.0f;
+        D_8010EE10_picking_panic[arg1][slot] =
+            ((j >= 7 && j < 18) ? throwVel[j - 7] : 23.0) *
+            ((j < 5) ? 0.0 : (j < 14) ? (j - 5) / 9.0
+                         : (j < 22)   ? 1.0 - (j - 14) / 8.0
+                                      : 0.0);
+        D_8010EE30_picking_panic[arg1][slot] =
+            ((j < 5) ? 0.0 : (j < 14) ? (j - 5) / 9.0
+                         : (j < 22)   ? 1.0 - (j - 14) / 8.0
+                                      : 0.0) *
+            60.0;
+        func_8001C258_main(*D_8010EF18_picking_panic[arg1][slot][D_8010EDA0_picking_panic[arg1][slot]], 0x4000, 0);
+        D_8010E6F8_picking_panic[idx1] = 18;
+        D_8010E6FC_picking_panic[idx1] = 0;
+        func_8004AC98_main(0x36D, arg1 * 2 + 1);
+    }
+
+    for (j = 0; j < 2; j++) {
+        k = arg1 * 2 + j;
+        if (D_8010E6F8_picking_panic[k] < D_8010E6FC_picking_panic[k]) {
+            D_8010E6F8_picking_panic[k] = (D_8010E6FC_picking_panic[k] < D_8010E6F8_picking_panic[k] + 2)
+                                              ? D_8010E6FC_picking_panic[k]
+                                              : D_8010E6F8_picking_panic[k] + 2;
+        } else if (D_8010E6FC_picking_panic[k] < D_8010E6F8_picking_panic[k]) {
+            D_8010E6F8_picking_panic[k] = (D_8010E6FC_picking_panic[k] > D_8010E6F8_picking_panic[k] - 2)
+                                              ? D_8010E6FC_picking_panic[k]
+                                              : D_8010E6F8_picking_panic[k] - 2;
+        }
+        func_8001C6A8_main(D_8010EF00_picking_panic[k]->model[0], D_8010E6F8_picking_panic[k]);
+    }
+
+    for (i = 0; i < 4; i++) {
+        prevY = D_8010EDD0_picking_panic[arg1][i];
+        switch (D_8010E6F0_picking_panic[arg1][i]) {
+            case 3:
+            case 5:
+                type = D_8010EDA0_picking_panic[arg1][i];
+                j = 2;
+                model = (!(i & 1) ? hand0 : hand1)->model[(i / 2 == 0) ? type + 2 : type + 5];
+                D_8010EE30_picking_panic[arg1][i] -= 6.25;
+                if (D_8010E6F0_picking_panic[arg1][i] == 5) {
+                    x = D_8010EDB0_picking_panic[arg1][i] + D_8010EE10_picking_panic[arg1][i];
+                    y = D_8010EDD0_picking_panic[arg1][i] + D_8010EE30_picking_panic[arg1][i];
+                    for (j = 0; j < 2; j++) {
+                        wallX = (j == 0) ? 827.0f : 953.0f;
+                        if (y - 47.5 < -152.0 && y + 47.5 > -292.0 && x - 47.5 < wallX && wallX < x + 47.5) {
+                            dist = 2256.25 - (wallX - x) * (wallX - x);
+                            ofs = !(dist <= 0.0f) ? HuSqrtf(dist) : 0.0f;
+                            if (y - ofs < -152.0f && y + ofs > -292.0f) {
+                                dist2 = 2256.25 - (wallX - D_8010EDB0_picking_panic[arg1][i]) *
+                                                      (wallX - D_8010EDB0_picking_panic[arg1][i]);
+                                ofs2 = (dist2 <= 0.0f) ? 0.0f : HuSqrtf(dist2);
+                                if (dist2 > 0.0f && D_8010EDD0_picking_panic[arg1][i] - ofs2 < -152.0f &&
+                                    ofs2 + D_8010EDD0_picking_panic[arg1][i] > -292.0f) {
+                                    D_8010EDB0_picking_panic[arg1][i] = (j == 0) ? wallX + 47.5 : wallX - 47.5;
+                                    D_8010EE10_picking_panic[arg1][i] = 0.0f;
+                                } else {
+                                    angle = atan2df(ofs, x - wallX);
+                                    speed = HuSqrtf(D_8010EE10_picking_panic[arg1][i] * D_8010EE10_picking_panic[arg1][i] +
+                                                    D_8010EE30_picking_panic[arg1][i] * D_8010EE30_picking_panic[arg1][i]) *
+                                            0.25;
+                                    angle = (angle < 0.0f) ? angle + 90.0f : angle + 0.0f;
+                                    angle = angle * 2.0f - 90.0f;
+                                    if (D_8010EDA8_picking_panic[arg1][i] == 1 || speed < 7.0f ||
+                                        (angle > 180.0f && ((j == 0) ? x < wallX : wallX < x))) {
+                                        D_8010EDB0_picking_panic[arg1][i] = (j == 0) ? wallX + 47.5 : wallX - 47.5;
+                                        D_8010EE10_picking_panic[arg1][i] = 0.0f;
+                                    } else {
+                                        D_8010EDD0_picking_panic[arg1][i] =
+                                            (D_8010EDD0_picking_panic[arg1][i] >= -222.0f) ? -104.5f : -339.5f;
+                                        D_8010EE10_picking_panic[arg1][i] = cosdf(angle) * speed;
+                                        D_8010EE30_picking_panic[arg1][i] = sindf(angle) * speed;
+                                        D_8010EDB0_picking_panic[arg1][i] += D_8010EE10_picking_panic[arg1][i];
+                                    }
+                                }
+                                D_8010EDD0_picking_panic[arg1][i] += D_8010EE30_picking_panic[arg1][i];
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (j == 2) {
+                    D_8010EDB0_picking_panic[arg1][i] += D_8010EE10_picking_panic[arg1][i];
+                    D_8010EDD0_picking_panic[arg1][i] += D_8010EE30_picking_panic[arg1][i];
+                    D_8010EDA8_picking_panic[arg1][i] = 0;
+                }
+                D_8010EDF0_picking_panic[arg1][i] += D_8010EE50_picking_panic[arg1][i];
+                if (D_8010E6F0_picking_panic[arg1][i] == 5 && D_8010EDB0_picking_panic[arg1][i] - 47.5 >= 827.0 &&
+                    D_8010EDB0_picking_panic[arg1][i] + 47.5 <= 953.0 && D_8010EDD0_picking_panic[arg1][i] - 47.5 <= -257.0 &&
+                    prevY - 47.5 > -257.0) {
+                    if (D_8010EF80_picking_panic < 3) {
+                        D_8010EF15_picking_panic[arg1] += 3 - D_8010EDA0_picking_panic[arg1][i];
+                        D_8010EF15_picking_panic[arg1] = (D_8010EF15_picking_panic[arg1] >= 100) ? 99 : D_8010EF15_picking_panic[arg1];
+                        omVibrate(player0->unk0, 5, 0, 5);
+                        omVibrate(player1->unk0, 5, 0, 5);
+                    }
+                    func_8001C258_main(model, 4, 4);
+                    func_8001C6A8_main(D_8010EEFC_picking_panic->model[arg1 + 2], 0.0f);
+                    func_8001C814_main(D_8010EEFC_picking_panic->model[arg1 + 2], 1, 0);
+                    func_8001C6A8_main(D_8010EEFC_picking_panic->model[arg1], 0.0f);
+                    func_8001C814_main(D_8010EEFC_picking_panic->model[arg1], 1, 0);
+                    func_8004AC98_main(0x36E, arg1);
+                    D_8010E6F0_picking_panic[arg1][i] = 0;
+                } else if (D_8010EDD0_picking_panic[arg1][i] < -500.0f) {
+                    func_8001C258_main(model, 4, 4);
+                    D_8010E6F0_picking_panic[arg1][i] = 0;
+                } else {
+                    Hu3DModelPosSet(*D_8010EF18_picking_panic[arg1][i][D_8010EDA0_picking_panic[arg1][i]],
+                                    D_8010EDB0_picking_panic[arg1][i], D_8010EDD0_picking_panic[arg1][i], 0.0f);
+                    Hu3DModelRotSet(*D_8010EF18_picking_panic[arg1][i][D_8010EDA0_picking_panic[arg1][i]], 0.0f, 0.0f,
+                                    D_8010EDF0_picking_panic[arg1][i]);
+                }
+                break;
+        }
+    }
+    if (arg1 == 1 && (D_8010EF80_picking_panic != 0 || D_8010EFA8_picking_panic >= 7)) {
+        D_8010E6EC_picking_panic++;
+    }
+}
+#else
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EA8C_picking_panic);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", func_8010B908_picking_panic);
@@ -1031,3 +1548,4 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EC
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EC08_picking_panic);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EC10_picking_panic);
+#endif

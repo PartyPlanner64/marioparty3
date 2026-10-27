@@ -33,6 +33,11 @@ extern s32 D_8010C160_hand_line_sinker[];
 extern u16 D_8010C104_hand_line_sinker[2];
 extern f32 D_8010C108_hand_line_sinker;
 extern u8 D_800D6A90_main;
+extern f32 D_8010C130_hand_line_sinker;
+extern f32 D_8010C134_hand_line_sinker;
+extern f32 D_8010C138_hand_line_sinker;
+extern f32 D_8010C13C_hand_line_sinker;
+extern f32 D_8010C140_hand_line_sinker;
 
 void func_80105D28_hand_line_sinker(omObjData *);
 void func_80105FA4_hand_line_sinker(omObjData *obj);
@@ -230,7 +235,46 @@ void func_8010A9F8_hand_line_sinker(omObjData *obj) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_8010AAEC_hand_line_sinker);
 
+#ifdef NON_MATCHING
+/* Only difference: the target has an extra nop between the second logf call's delay slot and the
+ * following mul.s (assembler vr4300 mul fix, likely triggered by a label at that point in the original). */
+f32 func_8010ABD4_hand_line_sinker(f32 a) {
+    f32 b;
+    f32 t;
+    f32 s;
+    f32 start;
+    f32 end;
+
+    b = (D_8010C140_hand_line_sinker - D_8010C138_hand_line_sinker) /
+            (D_8010C13C_hand_line_sinker - D_8010C134_hand_line_sinker) -
+        a * (D_8010C134_hand_line_sinker + D_8010C13C_hand_line_sinker);
+
+    t = 2.0f * a * D_8010C134_hand_line_sinker + b;
+    s = HuSqrtf(t * t + 1.0f);
+    if (t + s > 0.0f) {
+        start = t * s + logf(t + s);
+    } else {
+        start = t * s - 1.0f;
+    }
+
+    t = 2.0f * a * D_8010C13C_hand_line_sinker + b;
+    s = HuSqrtf(t * t + 1.0f);
+    if (t + s > 0.0f) {
+        end = t * s + logf(t + s);
+    } else {
+        end = t * s - 1.0f;
+    }
+
+    if (a != 0.0f) {
+        end = (end - start) / (a * 4.0f) - D_8010C130_hand_line_sinker;
+    } else {
+        end = -D_8010C130_hand_line_sinker;
+    }
+    return end;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_8010ABD4_hand_line_sinker);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_8010AD7C_hand_line_sinker);
 

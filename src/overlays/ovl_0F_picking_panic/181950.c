@@ -1,4 +1,5 @@
 #include "common.h"
+#include "overlays/minigame.h"
 
 typedef struct PickingPanicPlayer {
     /* 0x00 */ u8 unk0;
@@ -9,9 +10,13 @@ typedef struct PickingPanicPlayer {
     /* 0x05 */ char unk5[0xB];
 } PickingPanicPlayer; // sizeof 0x10
 
+extern D_80111B50_vine_with_me_Struct D_8010E5B0_picking_panic;
+extern const s16 D_8010E720_picking_panic[];
 extern PickingPanicPlayer D_8010EEA0_picking_panic[4];
 extern PickingPanicPlayer *D_8010EEE0_picking_panic[4];
 extern s8 D_8010EEF0_picking_panic[2];
+extern omObjData *D_8010EEFC_picking_panic;
+extern omObjData *D_8010EF00_picking_panic[4];
 extern s16 D_8010EF10_picking_panic[2];
 extern u8 D_8010EF14_picking_panic;
 extern s8 D_8010EF15_picking_panic[2];
@@ -28,7 +33,14 @@ extern u8 D_8010EFC0_picking_panic[4];
 extern u16 D_8010EFD0_picking_panic[10];
 extern s16 D_8010EFF8_picking_panic[10];
 
+void func_8000B710_main(s32 arg0);
+void func_80105D3C_picking_panic(omObjData *object);
 void func_80106020_picking_panic(omObjData *object);
+void func_8010664C_picking_panic(omObjData *object);
+void func_8010B160_picking_panic(omObjData *object);
+void func_8010B194_picking_panic(omObjData *object);
+void func_8010B1C0_picking_panic(omObjData *object);
+void func_8010B1F4_picking_panic(omObjData *object);
 void func_80106E84_picking_panic(omObjData *object);
 void func_80109C00_picking_panic(Gfx **, s32, s32);
 void func_8010B220_picking_panic(omObjData *object, u8 arg1);
@@ -36,7 +48,64 @@ void func_8010B8D0_picking_panic(omObjData *object);
 void func_8010B8EC_picking_panic(omObjData *object);
 void func_8010B908_picking_panic(omObjData *object, s32 arg1);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", func_801059A0_picking_panic);
+void func_801059A0_picking_panic(void) {
+    omObjData *object;
+
+    func_800142A0_main(0x20);
+    omInitObjMan(50, 0);
+    func_8004A208_main();
+    D_800CD280_main = 1;
+    func_8000B5F0_main(2);
+    func_8000B710_main(2);
+    ScissorSet(0, 0.0f, 0.0f, 320.0f, 120.0f);
+    ScissorSet(1, 0.0f, 120.0f, 320.0f, 240.0f);
+    ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 240.0f, 511.0f);
+    ViewportSet(1, 640.0f, 480.0f, 511.0f, 640.0f, 720.0f, 511.0f);
+    Hu3DCamSetPerspective(0, 22.619865f, 4000.0f, 10000.0f);
+    Hu3DCamSetPerspective(1, 22.619865f, 4000.0f, 10000.0f);
+    HmfLightMaxSet(1);
+    HmfLightDirSet(0, 0.0f, 0.0f, 90.0f);
+    HmfLightColorSet(0, 0x90, 0x90, 0x90);
+    HmfLightDirSet(1, 0.0f, 65.0f, 90.0f);
+    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    CenterM[0].x = 0.0f;
+    CenterM[0].y = 0.0f;
+    CenterM[0].z = 0.0f;
+    CRotM[0].x = 0.0f;
+    CRotM[0].y = 0.0f;
+    CRotM[0].z = 0.0f;
+    CZoomM[0] = 4687.5f;
+    CenterM[1].x = 0.0f;
+    CenterM[1].y = 0.0f;
+    CenterM[1].z = 0.0f;
+    CRotM[1].x = 0.0f;
+    CRotM[1].y = 0.0f;
+    CRotM[1].z = 0.0f;
+    CZoomM[1] = 4687.5f;
+    omAddObj(0, 0, 0, -1, func_80105D3C_picking_panic);
+    D_8010EEFC_picking_panic = omAddObj(8, 38, 38, -1, func_8010664C_picking_panic);
+    omSetStatBit(D_8010EEFC_picking_panic, 0xA0);
+    D_8010EF00_picking_panic[0] = omAddObj(3, 8, 5, -1, func_8010B160_picking_panic);
+    D_8010EF00_picking_panic[1] = omAddObj(3, 8, 5, -1, func_8010B194_picking_panic);
+    D_8010EF00_picking_panic[2] = omAddObj(3, 8, 5, -1, func_8010B1C0_picking_panic);
+    D_8010EF00_picking_panic[3] = omAddObj(3, 8, 5, -1, func_8010B1F4_picking_panic);
+    object = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
+    object->work[0] = 2;
+    omSetStatBit(object, 0xA0);
+    func_80045010_main(D_8010E720_picking_panic, 1);
+    WipeCreateIn(0xFF, 16);
+    D_8010E5B0_picking_panic.unk01 = 1;
+    D_8010E5B0_picking_panic.unk1C = 60;
+    D_8010E5B0_picking_panic.unk1E = 900;
+    D_8010E5B0_picking_panic.unk03 = 2;
+    D_8010E5B0_picking_panic.unk02 = 1;
+    D_8010E5B0_picking_panic.unk22 = 75;
+    D_8010E5B0_picking_panic.unk24 = 165;
+    D_8010E5B0_picking_panic.unk04 = 0;
+    D_8010E5B0_picking_panic.unk05 = 0;
+    D_8010E5B0_picking_panic.unk20 = -1;
+    func_800E5EA0_minigame(&D_8010E5B0_picking_panic);
+}
 
 void func_80105D3C_picking_panic(omObjData *object) {
     u8 groups[4];

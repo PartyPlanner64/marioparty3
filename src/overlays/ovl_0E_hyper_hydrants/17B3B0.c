@@ -1,9 +1,12 @@
 #include "common.h"
 #include "input.h"
+#include "game/pause.h"
 #include "gcc/memory.h"
 #include "mallocblock.h"
 #include "opening.h"
 #include "overlays/minigame.h"
+
+#define ABS(x) ((x) < 0 ? -(x) : (x))
 
 typedef struct {
     s8 unk00;
@@ -155,8 +158,10 @@ void func_8010B2FC_hyper_hydrants(omObjData *object);
 void func_8010AB34_hyper_hydrants(omObjData *object);
 void func_8010A2D4_hyper_hydrants(omObjData *object);
 void func_80107A90_hyper_hydrants(omObjData *object);
+void func_80107238_hyper_hydrants(omObjData *object);
 void func_80106A50_hyper_hydrants(omObjData *object);
 void func_80108788_hyper_hydrants(s16 model);
+void func_801083A8_hyper_hydrants(s16 model, Vec *position, HyperHydrantsSprayData *data, s8 count);
 void func_801091B0_hyper_hydrants(omObjData *object);
 void func_80109B30_hyper_hydrants(omObjData *object);
 void func_80109E44_hyper_hydrants(omObjData *object);
@@ -799,7 +804,173 @@ void func_801078B8_hyper_hydrants(omObjData *object) {
     D_8010BF46_hyper_hydrants++;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80107A90_hyper_hydrants);
+void func_80107A90_hyper_hydrants(omObjData *object) {
+    HyperHydrantsSprayData *data;
+    HyperHydrantsCharacterData *characterData;
+    omObjData *player;
+    func_800E1BA8_minigame_ObjData *playerData;
+    Vec position;
+    f32 angle;
+    f32 farthest;
+    s16 side;
+    s16 target;
+    s16 count;
+    s16 i;
+    s8 playerIndex;
+    s8 port;
+    s8 particles;
+    s16 maxSpread;
+
+    if (func_800E6E8C_minigame() != 2) {
+        return;
+    }
+    if (object->work[0] == 0) {
+        if (D_8010BFAC_hyper_hydrants[0] == 0) {
+            return;
+        }
+        side = 0;
+        playerIndex = D_8010BFAA_hyper_hydrants;
+    } else {
+        if (D_8010BFAC_hyper_hydrants[1] == 0) {
+            return;
+        }
+        side = 1;
+        playerIndex = D_8010BFAB_hyper_hydrants;
+    }
+    player = D_800EC598_minigame[playerIndex];
+    playerData = player->data;
+    characterData = playerData->unk158;
+    port = playerData->unk57;
+    data = object->data;
+    count = 0;
+    if (GwPlayer[playerIndex].stat & 1) {
+        farthest = -1000.0f;
+        target = 4;
+        for (i = 0; i < 5; i++) {
+            if (D_8010BFE8_hyper_hydrants[side][i]->trans.z > farthest) {
+                farthest = D_8010BFE8_hyper_hydrants[side][i]->trans.z;
+                target = i;
+            }
+            if (D_8010BFE8_hyper_hydrants[side][i]->trans.z >= -250.0f) {
+                count++;
+            }
+        }
+        angle = atan2df(D_8010BFE8_hyper_hydrants[side][target]->trans.x - D_800EC598_minigame[playerIndex]->trans.x,
+                        D_8010BFE8_hyper_hydrants[side][target]->trans.z - D_800EC598_minigame[playerIndex]->trans.z);
+        while (angle >= 360.0f) {
+            angle -= 360.0f;
+        }
+        while (angle < 0.0f) {
+            angle += 360.0f;
+        }
+        if (ABS((s32)angle - data->angle) > 5.0f) {
+            func_8001C814_main(D_800EC598_minigame[playerIndex]->model[0], 1, 2);
+            switch (GwPlayer[playerIndex].cpu_difficulty) {
+                case 3:
+                    if ((s32)angle < data->angle) {
+                        data->angle -= 4.0f;
+                    } else {
+                        data->angle += 4.0f;
+                    }
+                    break;
+                case 2:
+                    if (((rand8() * 2) >> 8) == 0) {
+                        if ((s32)angle < data->angle) {
+                            data->angle -= 4.0f;
+                        } else {
+                            data->angle += 4.0f;
+                        }
+                    }
+                    break;
+                case 1:
+                default:
+                    if (((rand8() * 3) >> 8) == 0) {
+                        if ((s32)angle < data->angle) {
+                            data->angle -= 2.0f;
+                        } else {
+                            data->angle += 2.0f;
+                        }
+                    }
+                    break;
+                case 0:
+                    if (((rand8() * 5) >> 8) == 0) {
+                        if ((s32)angle < data->angle) {
+                            data->angle -= 1.0f;
+                        } else {
+                            data->angle += 1.0f;
+                        }
+                    }
+                    break;
+            }
+        } else {
+            func_8001C814_main(D_800EC598_minigame[playerIndex]->model[0], 1, 1);
+        }
+        if (data->angle > 240.0f) {
+            data->angle = 240.0f;
+        }
+        if (data->angle < 120.0f) {
+            data->angle = 120.0f;
+        }
+        if (count >= 2) {
+            D_800CDA7C_main[port] |= 0x8000;
+        } else {
+            D_800CDA7C_main[port] &= 0x7FFF;
+        }
+    } else if (ABS(D_800CBB6E_main[port]) > 40) {
+        if (D_800CBB6E_main[port] < 0) {
+            data->angle += 5.0f;
+            if (data->angle > 240.0f) {
+                data->angle = 240.0f;
+            }
+        } else if (D_800CBB6E_main[port] > 0) {
+            data->angle -= 5.0f;
+            if (data->angle < 120.0f) {
+                data->angle = 120.0f;
+            }
+        }
+    } else if (ABS(D_800CBB6E_main[port]) > 20) {
+        if (D_800CBB6E_main[port] < 0) {
+            data->angle += 2.0f;
+            if (data->angle > 240.0f) {
+                data->angle = 240.0f;
+            }
+        } else if (D_800CBB6E_main[port] > 0) {
+            data->angle -= 2.0f;
+            if (data->angle < 120.0f) {
+                data->angle = 120.0f;
+            }
+        }
+    }
+    player->rot.y = data->angle;
+    Hu3DModelRotSet(player->model[2], player->rot.x, player->rot.y, player->rot.z);
+    if ((u16)D_800CDA7C_main[port] & 0x8000) {
+        data->spread += 3;
+        maxSpread = D_8010BFAC_hyper_hydrants[side] * 15;
+        if (data->spread > maxSpread) {
+            data->spread = maxSpread;
+        }
+    } else {
+        data->spread -= 3;
+        if (data->spread < 5) {
+            data->spread = 5;
+        }
+    }
+    D_8010BFAE_hyper_hydrants[side] = data->spread;
+    if (data->spread > 50) {
+        position.x = characterData->unk00 * 110.0f + player->trans.x;
+        position.z = characterData->unk04 * 110.0f + player->trans.z;
+    } else {
+        position.x = characterData->unk00 * 55.0f + player->trans.x;
+        position.z = characterData->unk04 * 55.0f + player->trans.z;
+    }
+    position.y = 40.0f;
+    if (data->spread > 20) {
+        particles = 28;
+    } else {
+        particles = 10;
+    }
+    func_801083A8_hyper_hydrants(object->model[0], &position, data, particles);
+}
 
 void func_801083A8_hyper_hydrants(s16 model, Vec *position, HyperHydrantsSprayData *data, s8 count) {
     HmfData *hmf;

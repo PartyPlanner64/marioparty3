@@ -3,6 +3,7 @@
 #include "game/object.h"
 #include "game/util.h"
 #include "mallocblock.h"
+#include "overlays/minigame.h"
 
 typedef struct HandLineSinkerObjWork {
     /* 0x000 */ f32 unk0;
@@ -149,7 +150,24 @@ omObjData *func_80107A3C_hand_line_sinker(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_80107B24_hand_line_sinker);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_801080F0_hand_line_sinker);
+omObjData *func_801080F0_hand_line_sinker(omObjData *arg0) {
+    omObjData *obj;
+    s32 i;
+
+    if (func_800E6E8C_minigame() != 2) {
+        return NULL;
+    }
+    for (i = 0; i < 3; i++) {
+        obj = D_8010C100_hand_line_sinker[i];
+        if (obj->work[0] < 2) {
+            if (HuSqrtf((arg0->trans.x - obj->trans.x) * (arg0->trans.x - obj->trans.x) +
+                        (arg0->trans.z - obj->trans.z) * (arg0->trans.z - obj->trans.z)) < HuSqrtf(8725.0f)) {
+                return obj;
+            }
+        }
+    }
+    return NULL;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_801081D0_hand_line_sinker);
 
@@ -217,7 +235,82 @@ void func_80108C5C_hand_line_sinker(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_80108F44_hand_line_sinker);
+void func_80108F44_hand_line_sinker(omObjData *obj) {
+    omObjData *other;
+    f32 angle;
+    f32 diff;
+    f32 x;
+    f32 z;
+    f32 dist;
+    f32 dx;
+    f32 dz;
+    s32 hit;
+    s32 inRange;
+    s32 i;
+
+    angle = atan2df(-obj->trans.x, -obj->trans.z);
+    if (angle < 0.0f) {
+        angle += 360.0f;
+    }
+    if (angle >= 360.0f) {
+        angle -= 360.0f;
+    }
+    if (angle != obj->rot.y) {
+        if (obj->rot.y != angle) {
+            diff = angle - obj->rot.y;
+            if (diff < 0.0f) {
+                diff += 360.0f;
+            }
+            if (diff < 180.0f) {
+                if (diff > 4.0f) {
+                    obj->rot.y = obj->rot.y + 4.0f;
+                } else {
+                    obj->rot.y = diff + obj->rot.y;
+                }
+            } else {
+                if (360.0f - diff > 4.0f) {
+                    obj->rot.y -= 4.0f;
+                } else {
+                    obj->rot.y -= 360.0f - diff;
+                }
+            }
+            if (obj->rot.y < 0.0f) {
+                obj->rot.y += 360.0f;
+            }
+            if (obj->rot.y >= 360.0f) {
+                obj->rot.y -= 360.0f;
+            }
+        }
+        return;
+    }
+
+    dx = sindf(angle) * 20.0f;
+    dz = cosdf(angle) * 20.0f;
+    x = dx + obj->trans.x;
+    z = dz + obj->trans.z;
+    hit = 0;
+    for (i = 0; i < 3; i++) {
+        other = D_8010C100_hand_line_sinker[i];
+        if (obj == other || obj->work[0] == 2) {
+            continue;
+        }
+        dist = HuSqrtf((other->trans.x - x) * (other->trans.x - x) + (other->trans.z - z) * (other->trans.z - z));
+        if (dist < 270.0f) {
+            x -= sindf(obj->rot.y) * (270.0f - dist);
+            z -= cosdf(obj->rot.y) * (270.0f - dist);
+            if (D_8010C100_hand_line_sinker[i]->work[3] == 1) {
+                hit = 1;
+            }
+            break;
+        }
+    }
+    omSetTra(obj, x, obj->trans.y, z);
+    inRange = HuSqrtf(obj->trans.x * obj->trans.x + obj->trans.z * obj->trans.z) < 300.0f;
+    if (inRange | hit) {
+        obj->func = NULL;
+        obj->work[3] = 1;
+    }
+}
 
 f32 func_801092B8_hand_line_sinker(s8 stickX, s8 stickY) {
     f32 angle;

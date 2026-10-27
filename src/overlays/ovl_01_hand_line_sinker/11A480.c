@@ -31,7 +31,9 @@ typedef struct HandLineSinkerPlayerWork {
     /* 0x34 */ f32 aiPrevRot;
     /* 0x38 */ u16 aiTimer;
     /* 0x3A */ u16 aiBtn;
-    /* 0x3C */ char unk3C[0x48 - 0x3C];
+    /* 0x3C */ u16 aiCastTimer;
+    /* 0x40 */ omObjData *aiTarget;
+    /* 0x44 */ f32 aiAimOffset;
 } HandLineSinkerPlayerWork; // sizeof 0x48
 
 typedef struct HandLineSinkerFollowWork {
@@ -86,6 +88,7 @@ void func_80109584_hand_line_sinker(omObjData *obj);
 void func_80109B9C_hand_line_sinker(omObjData *obj);
 void func_801093A4_hand_line_sinker(omObjData *obj);
 void func_8010BA64_hand_line_sinker(void);
+omObjData *func_80107A3C_hand_line_sinker(void);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_801059A0_hand_line_sinker);
 
@@ -199,7 +202,104 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_801
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_8010689C_hand_line_sinker);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_80107420_hand_line_sinker);
+void func_80107420_hand_line_sinker(omObjData *obj, s8 *stickX, s8 *stickY, u16 *btn) {
+    HandLineSinkerPlayerWork *work;
+    omObjData *target;
+    f32 offset;
+    f32 angle;
+    f32 dist;
+    f32 x;
+    f32 y;
+    u16 castTimer;
+
+    *stickY = 0;
+    *stickX = 0;
+    *btn = 0;
+    work = obj->data;
+    offset = 0.0f;
+    switch (GwPlayer[work->playerNo].cpu_difficulty) {
+        case 0:
+            if (rand8() % 10 < 8) {
+                offset = rand8() % 31 - 15;
+            }
+            castTimer = rand8() % 45 + 20;
+            break;
+        case 1:
+            if (rand8() % 10 < 5) {
+                offset = rand8() % 21 - 10;
+            }
+            castTimer = rand8() % 30 + 15;
+            break;
+        case 2:
+            if (rand8() % 10 < 3) {
+                offset = rand8() % 11 - 5;
+            }
+            castTimer = rand8() % 15 + 10;
+            break;
+        case 3:
+            if (rand8() % 10 == 0) {
+                offset = rand8() % 11 - 5;
+            }
+            castTimer = rand8() % 10 + 10;
+            break;
+    }
+    switch (obj->work[0]) {
+        case 0:
+            target = work->aiTarget;
+            if (target == NULL) {
+                work->aiTarget = func_80107A3C_hand_line_sinker();
+                work->aiAimOffset = offset;
+                break;
+            }
+            angle = atan2df(target->trans.x - obj->trans.x, target->trans.z - obj->trans.z) + work->aiAimOffset;
+            dist = HuSqrtf((target->trans.x - obj->trans.x) * (target->trans.x - obj->trans.x) +
+                           (target->trans.z - obj->trans.z) * (target->trans.z - obj->trans.z)) /
+                   15.0f;
+            x = -sindf(angle) * dist;
+            y = cosdf(angle) * dist;
+            *stickX = x;
+            *stickY = y;
+            work->aiCastTimer = castTimer;
+            break;
+        case 1:
+            target = work->aiTarget;
+            if (target == NULL) {
+                work->aiTarget = func_80107A3C_hand_line_sinker();
+                work->aiAimOffset = offset;
+                break;
+            }
+            angle = atan2df(target->trans.x - obj->trans.x, target->trans.z - obj->trans.z) + work->aiAimOffset;
+            dist = HuSqrtf((target->trans.x - obj->trans.x) * (target->trans.x - obj->trans.x) +
+                           (target->trans.z - obj->trans.z) * (target->trans.z - obj->trans.z)) /
+                   15.0f;
+            x = -sindf(angle) * dist;
+            y = cosdf(angle) * dist;
+            if (--work->aiCastTimer == 0) {
+                *btn |= 0x8000;
+                break;
+            }
+            *stickX = x;
+            *stickY = y;
+            break;
+        case 2:
+            break;
+        case 3:
+            target = work->aiTarget;
+            angle = atan2df(target->trans.x - obj->trans.x, target->trans.z - obj->trans.z);
+            dist = HuSqrtf((target->trans.x - obj->trans.x) * (target->trans.x - obj->trans.x) +
+                           (target->trans.z - obj->trans.z) * (target->trans.z - obj->trans.z)) /
+                   15.0f;
+            x = -sindf(angle) * dist;
+            y = cosdf(angle) * dist;
+            *stickX = x;
+            *stickY = y;
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+    }
+}
 
 omObjData *func_80107A3C_hand_line_sinker(void) {
     omObjData *candidates[3];

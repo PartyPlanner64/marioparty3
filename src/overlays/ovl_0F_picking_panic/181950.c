@@ -1,8 +1,90 @@
 #include "common.h"
 
+typedef struct PickingPanicPlayer {
+    /* 0x00 */ u8 unk0;
+    /* 0x01 */ u8 unk1;
+    /* 0x02 */ u8 unk2;
+    /* 0x03 */ u8 unk3;
+    /* 0x04 */ s8 unk4;
+    /* 0x05 */ char unk5[0xB];
+} PickingPanicPlayer; // sizeof 0x10
+
+extern PickingPanicPlayer D_8010EEA0_picking_panic[4];
+extern PickingPanicPlayer *D_8010EEE0_picking_panic[4];
+extern s8 D_8010EEF0_picking_panic[2];
+extern s16 D_8010EF10_picking_panic[2];
+extern u8 D_8010EF14_picking_panic;
+extern s8 D_8010EF15_picking_panic[2];
+extern s32 D_8010EF7C_picking_panic;
+extern s16 D_8010EF80_picking_panic;
+extern f32 D_8010EF84_picking_panic[2];
+extern f32 D_8010EF94_picking_panic;
+extern s8 D_8010EF98_picking_panic[2];
+extern u8 D_8010EFA4_picking_panic;
+extern s32 D_8010EFA8_picking_panic;
+extern s8 D_8010EFBC_picking_panic[2];
+extern s16 D_8010EFBE_picking_panic;
+extern u8 D_8010EFC0_picking_panic[4];
+
+void func_80106020_picking_panic(omObjData *object);
+void func_80109C00_picking_panic(Gfx **, s32, s32);
+void func_8010B220_picking_panic(omObjData *object, u8 arg1);
+void func_8010B8D0_picking_panic(omObjData *object);
+void func_8010B8EC_picking_panic(omObjData *object);
+void func_8010B908_picking_panic(omObjData *object, s32 arg1);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", func_801059A0_picking_panic);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", func_80105D3C_picking_panic);
+void func_80105D3C_picking_panic(omObjData *object) {
+    u8 groups[4];
+    u8 group;
+    s32 i;
+
+    D_8010EFBE_picking_panic = 0;
+    D_8010EF80_picking_panic = 0;
+    D_8010EFA8_picking_panic = 0;
+    D_8010EF7C_picking_panic = 0;
+    D_8010EF14_picking_panic = 5;
+    D_8010EF10_picking_panic[0] = D_8010EF10_picking_panic[1] = 1;
+    D_8010EF98_picking_panic[0] = D_8010EF98_picking_panic[1] = -1;
+    D_8010EFBC_picking_panic[0] = D_8010EFBC_picking_panic[1] = 0;
+    D_8010EEF0_picking_panic[0] = D_8010EEF0_picking_panic[1] = 0;
+    D_8010EF15_picking_panic[0] = D_8010EF15_picking_panic[1] = 0;
+    D_8010EFA4_picking_panic = 0xFF;
+    D_8010EF94_picking_panic = D_8010EF84_picking_panic[0] = D_8010EF84_picking_panic[1] = 0.0f;
+
+    for (i = 0; i < 4; i++) {
+        D_8010EEE0_picking_panic[i] = &D_8010EEA0_picking_panic[i];
+        bzero(&D_8010EEA0_picking_panic[i], sizeof(PickingPanicPlayer));
+    }
+
+    for (i = 0; i < 4; i++) {
+        group = GwPlayer[i].group;
+        groups[i] = group;
+        D_8010EFC0_picking_panic[groups[i]] = i;
+    }
+
+    for (i = 0; i < 4; i++) {
+        D_8010EEE0_picking_panic[groups[i]]->unk0 = i;
+        D_8010EEE0_picking_panic[i]->unk2 = GwPlayer[D_8010EFC0_picking_panic[i]].pad;
+        D_8010EEE0_picking_panic[i]->unk3 = GwPlayer[D_8010EFC0_picking_panic[i]].chr;
+        D_8010EEE0_picking_panic[i]->unk1 = i;
+        D_8010EEE0_picking_panic[i]->unk4 = (GwPlayer[D_8010EFC0_picking_panic[i]].stat & 1)
+                                                ? GwPlayer[D_8010EFC0_picking_panic[i]].cpu_difficulty
+                                                : -1;
+    }
+
+    for (i = 0; i < 4; i++) {
+        if (D_8010EEE0_picking_panic[i]->unk4 != -1) {
+            if (D_8010EEE0_picking_panic[(i & 1) ? i - 1 : i + 1]->unk4 == -1) {
+                D_8010EEE0_picking_panic[i]->unk4 += 4;
+            }
+        }
+    }
+
+    func_8001AC8C_main(0, func_80109C00_picking_panic, 2);
+    object->func = func_80106020_picking_panic;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010E720_picking_panic);
 
@@ -32,19 +114,35 @@ void func_8010B11C_picking_panic(s16 arg0, s16 arg1) {
     hmfModel->hmf->unk98->unk08 = (f32)arg1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", func_8010B160_picking_panic);
+void func_8010B160_picking_panic(omObjData *object) {
+    func_8010B220_picking_panic(object, 0);
+    object->func = func_8010B8D0_picking_panic;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", func_8010B194_picking_panic);
+void func_8010B194_picking_panic(omObjData *object) {
+    func_8010B220_picking_panic(object, 1);
+    object->func = NULL;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", func_8010B1C0_picking_panic);
+void func_8010B1C0_picking_panic(omObjData *object) {
+    func_8010B220_picking_panic(object, 2);
+    object->func = func_8010B8EC_picking_panic;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", func_8010B1F4_picking_panic);
+void func_8010B1F4_picking_panic(omObjData *object) {
+    func_8010B220_picking_panic(object, 3);
+    object->func = NULL;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", func_8010B220_picking_panic);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", func_8010B8D0_picking_panic);
+void func_8010B8D0_picking_panic(omObjData *object) {
+    func_8010B908_picking_panic(object, 0);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", func_8010B8EC_picking_panic);
+void func_8010B8EC_picking_panic(omObjData *object) {
+    func_8010B908_picking_panic(object, 1);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010E9E0_picking_panic);
 

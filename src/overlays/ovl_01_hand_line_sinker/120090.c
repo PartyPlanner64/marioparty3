@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game/camera.h"
+#include "game/hmfman.h"
 #include "game/object.h"
 #include "mallocblock.h"
 
@@ -22,11 +23,17 @@ typedef struct FishingLine {
     /* 0x02 */ u8 r;
     /* 0x03 */ u8 g;
     /* 0x04 */ u8 b;
-    /* 0x08 */ Gfx *gfx[8];
-    /* 0x28 */ Vtx *vtx[8];
+    /* 0x08 */ Vtx *vtx[8];
+    /* 0x28 */ Gfx *gfx[8];
 } FishingLine; // sizeof 0x48
 
 extern omObjData *D_8010C190_hand_line_sinker;
+extern FishingLine *D_8010C180_hand_line_sinker;
+extern Gfx *D_8010C184_hand_line_sinker;
+extern HmfData **D_8010C188_hand_line_sinker;
+extern HmfModel *D_8010C18C_hand_line_sinker;
+extern u8 D_800D2008_main;
+extern Gfx *gMainGfxPos;
 
 s32 func_8000B638_main(void);
 void func_8010B750_hand_line_sinker(omObjData *obj);
@@ -131,8 +138,8 @@ FishingLine *func_8010BA80_hand_line_sinker(u8 r, u8 g, u8 b) {
     line = HuMemAlloc(sizeof(FishingLine));
     line->model = func_8001A894_main(0x1080, NULL, 4);
     for (i = 0; i < D_800D1FF0_main; i++) {
-        line->gfx[i] = HuMemAlloc(64 * sizeof(Gfx));
-        line->vtx[i] = HuMemAlloc(64 * sizeof(Vtx));
+        line->vtx[i] = HuMemAlloc(32 * sizeof(Vtx));
+        line->gfx[i] = HuMemAlloc(128 * sizeof(Gfx));
     }
     line->r = r;
     line->g = g;
@@ -140,15 +147,64 @@ FishingLine *func_8010BA80_hand_line_sinker(u8 r, u8 g, u8 b) {
     return line;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/120090", func_8010BB58_hand_line_sinker);
+void func_8010BB58_hand_line_sinker(FishingLine *line, Vec *points, u16 count) {
+    Gfx *gfx;
+    Vtx *vtx;
+    s16 i;
+
+    if (line == NULL) {
+        return;
+    }
+    vtx = line->vtx[D_800D2008_main];
+    gfx = line->gfx[D_800D2008_main];
+    if (count < 2) {
+        osSyncPrintf("Line Count err %d\n", count);
+    }
+    D_8010C180_hand_line_sinker = line;
+    D_8010C18C_hand_line_sinker = &HmfModelData[line->model];
+    D_8010C188_hand_line_sinker = &HmfModelData[line->model].hmf;
+    D_8010C184_hand_line_sinker = gfx;
+    HmfModelData[line->model].hmf->unk3C->unk00[0] = gfx;
+    gDPSetScissor(gfx++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
+    gDPSetCombineMode(gfx++, G_CC_SHADE, G_CC_SHADE);
+    gDPSetRenderMode(gfx++, G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2);
+    gSPVertex(gfx++, osVirtualToPhysical(vtx), count + 1, 0);
+    vtx->v.ob[0] = points->x;
+    vtx->v.ob[1] = points->y;
+    vtx->v.ob[2] = points->z;
+    vtx->v.cn[0] = line->r;
+    vtx->v.cn[1] = line->g;
+    vtx->v.cn[2] = line->b;
+    vtx->v.tc[1] = 0;
+    vtx->v.tc[0] = 0;
+    vtx->v.cn[3] = 255;
+    vtx++;
+    points++;
+    for (i = 1; i < count; i++) {
+        gSPLine3D(gfx++, i - 1, i, 0);
+        vtx->v.ob[0] = points->x;
+        vtx->v.ob[1] = points->y;
+        vtx->v.ob[2] = points->z;
+        vtx->v.cn[0] = line->r;
+        vtx->v.cn[1] = line->g;
+        vtx->v.cn[2] = line->b;
+        vtx->v.tc[1] = 0;
+        vtx->v.tc[0] = 0;
+        vtx->v.cn[3] = 255;
+        vtx++;
+        points++;
+    }
+    gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
+    gSPEndDisplayList(gfx++);
+}
 
 void func_8010BE6C_hand_line_sinker(FishingLine *line) {
     s16 i;
 
     func_8001ACDC_main(line->model);
     for (i = 0; i < D_800D1FF0_main; i++) {
-        func_80019C00_main(line->gfx[i]);
         func_80019C00_main(line->vtx[i]);
+        func_80019C00_main(line->gfx[i]);
     }
     func_80019C00_main(line);
 }

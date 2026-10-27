@@ -1,5 +1,6 @@
 #include "common.h"
 #include "overlays/minigame.h"
+#include "mallocblock.h"
 
 typedef struct {
     /* 0x00 */ omObjData *unk00;
@@ -35,6 +36,15 @@ typedef struct {
     /* 0x78 */ Vec unk78;
 } CoconutConkData; // sizeof 0x84
 
+typedef struct {
+    /* 0x00 */ u8 unk00[3];
+    /* 0x03 */ u8 unk03;
+    /* 0x04 */ u8 unk04;
+    /* 0x05 */ u8 unk05;
+    /* 0x06 */ u16 unk06;
+    /* 0x08 */ u8 unk08[0xAC];
+} CoconutConkCameraWork; // sizeof 0xB4
+
 extern char *D_8010AF98_coconut_conk[];
 extern f32 D_8010AFB8_coconut_conk[];
 extern u8 D_800D6A90_main;
@@ -65,7 +75,22 @@ extern CoconutConkData D_8010B508_coconut_conk[6];
 extern CoconutConkData D_8010B820_coconut_conk[9];
 extern CoconutConkData D_8010BCC4_coconut_conk;
 extern CoconutConkData D_8010BD48_coconut_conk[];
+extern f32 D_800EB73C_minigame;
+extern s16 D_8010B1C0_coconut_conk;
+extern s16 D_8010B1C2_coconut_conk;
+extern u8 D_8010B1C9_coconut_conk[3];
+extern u8 D_8010B1CC_coconut_conk;
+extern u8 D_8010B1DE_coconut_conk;
+extern s16 D_8010B1E0_coconut_conk;
+extern s16 D_8010B1E6_coconut_conk;
+extern s16 D_8010CBB8_coconut_conk;
+extern u8 D_8010CBBA_coconut_conk;
+extern u8 D_8010CBBB_coconut_conk;
+extern s16 D_8010CBBC_coconut_conk;
+extern u8 D_8010CBBE_coconut_conk;
+extern s16 D_8010CBC0_coconut_conk;
 
+void func_80105C58_coconut_conk(omObjData *);
 void func_80105C60_coconut_conk(omObjData *);
 void func_80105D98_coconut_conk(Gfx **, s32, s32);
 void func_801060C0_coconut_conk(omObjData *);
@@ -83,7 +108,13 @@ void func_801089DC_coconut_conk(omObjData *);
 void func_801090C4_coconut_conk(void);
 void func_80109DEC_coconut_conk(omObjData *);
 void func_8010A55C_coconut_conk(omObjData *);
+void func_8010A668_coconut_conk(omObjData *);
 void func_8010AE04_coconut_conk(void);
+void func_800E6F0C_minigame(s32);
+void func_800E1304_minigame(omObjData *, f32);
+void func_800E1310_minigame(omObjData *, f32);
+void func_800E131C_minigame(omObjData *, f32);
+void func_800E139C_minigame(omObjData *, f32, f32, f32, f32, f32);
 void func_800335BC_main(char *name, u16 *result);
 void func_8000BC48_main(u16, u16);
 void func_8001E888_main(s16 model, f32 x, f32 y, u16 arg3, u16 arg4, char *name, s32 arg6);
@@ -171,10 +202,25 @@ void func_80105BA4_coconut_conk(omObjData *arg0, u8 arg1) {
                                             D_8010AF98_coconut_conk[character]);
 }
 
-void func_80105C58_coconut_conk(void) {
+void func_80105C58_coconut_conk(omObjData *arg0) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_80105C60_coconut_conk);
+void func_80105C60_coconut_conk(omObjData *arg0) {
+    CoconutConkCameraWork *work;
+
+    D_800EC1C0_minigame[D_800EBE28_minigame++] = arg0;
+    work = HuMemAllocTag(sizeof(CoconutConkCameraWork), 0x7918);
+    arg0->data = work;
+    memset(work, 0, sizeof(CoconutConkCameraWork));
+    work->unk03 = 1;
+    work->unk04 = 0;
+    work->unk06 &= ~0x200;
+    func_800E131C_minigame(arg0, 20.0f);
+    func_800E1304_minigame(arg0, 0.5f);
+    func_800E1310_minigame(arg0, D_800EB73C_minigame);
+    func_800E139C_minigame(D_800EC1C0_minigame[0], 512.0f, -1000.0f, -285.0f, 1000.0f, -165.0f);
+    arg0->func = func_80105C58_coconut_conk;
+}
 
 void func_80105D58_coconut_conk(void) {
     omObjData *obj = omAddObj(0x3E8, 1, 0xA, -1, func_80105C60_coconut_conk);
@@ -536,7 +582,39 @@ void func_8010A610_coconut_conk(omObjData *arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_8010A668_coconut_conk);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_8010AB4C_coconut_conk);
+void func_8010AB4C_coconut_conk(omObjData *arg0) {
+    s16 i;
+
+    func_800E6F0C_minigame(2);
+    WipeCreateIn(0xFF, 16);
+    D_8010B1E0_coconut_conk = 0;
+    D_8010B1C8_coconut_conk = 0;
+    D_8010CBBA_coconut_conk = 100;
+    for (i = 0; i < 3; i++) {
+        D_8010B1C9_coconut_conk[i] = 5;
+    }
+    D_8010CBBE_coconut_conk = 0;
+    D_8010B1C0_coconut_conk = 0;
+    D_8010CBBB_coconut_conk = 0;
+    D_8010CBBC_coconut_conk = 500;
+    D_8010B1CC_coconut_conk = 0;
+    D_8010B1DE_coconut_conk = 0;
+    D_8010CBC0_coconut_conk = -1;
+    D_8010B1E6_coconut_conk = -400;
+    D_8010B1C2_coconut_conk = 0;
+    D_8010CBB8_coconut_conk = 0;
+    func_80105D58_coconut_conk();
+    func_801061AC_coconut_conk();
+    func_80106294_coconut_conk();
+    func_8010641C_coconut_conk();
+    func_801066A4_coconut_conk();
+    func_80108FA0_coconut_conk();
+    func_8010A344_coconut_conk();
+    func_80106E80_coconut_conk();
+    func_80106924_coconut_conk();
+    func_8010A4AC_coconut_conk();
+    arg0->func = func_8010A668_coconut_conk;
+}
 
 void func_8010AC88_coconut_conk(void) {
 }

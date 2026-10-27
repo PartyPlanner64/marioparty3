@@ -5,6 +5,7 @@
 #include "mallocblock.h"
 #include "opening.h"
 #include "overlays/minigame.h"
+#include "hyper_hydrants.h"
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 
@@ -61,11 +62,29 @@ typedef struct {
     s16 unk1E;
 } HyperHydrantsCharacterData;
 
-typedef struct {
-    Vec position;
-    Vec unk0C;
-    f32 unk18;
-} HyperHydrantsChainPoint;
+Vec D_8010BDE0_hyper_hydrants = { -900.0f, 0.0f, -30.0f };
+Vec D_8010BDEC_hyper_hydrants = { -720.0f, 0.0f, -30.0f };
+Vec D_8010BDF8_hyper_hydrants = { 750.0f, 0.0f, -30.0f };
+Vec D_8010BE04_hyper_hydrants = { 930.0f, 0.0f, -30.0f };
+s8 D_8010BE10_hyper_hydrants[] = { 5, 5 };
+s16 D_8010BE14_hyper_hydrants[2][2][2] = {
+    { { 59, 32 }, { 71, 32 } },
+    { { 276, 32 }, { 288, 32 } },
+};
+s8 D_8010BE24_hyper_hydrants = 0;
+s8 D_8010BE25_hyper_hydrants = 0;
+f32 D_8010BE28_hyper_hydrants = 570.285f;
+f32 D_8010BE2C_hyper_hydrants = -375.0f;
+s32 D_8010BE30_hyper_hydrants = 0;
+s8 D_8010BE34_hyper_hydrants = 0;
+s8 D_8010BE35_hyper_hydrants = 0;
+s8 D_8010BE38_hyper_hydrants[][16] = {
+    { 0, 1, 2, 1, 0, 2, 1, 0, 1, 2, 1, 0, 0, 2, 1, 2 },
+    { 2, 0, 1, 2, 1, 1, 0, 1, 2, 0, 2, 1, 2, 0, 0, 1 },
+    { 1, 2, 1, 0, 2, 0, 2, 2, 0, 1, 0, 2, 1, 1, 2, 0 },
+};
+s8 D_8010BE68_hyper_hydrants[2] = { 0, 0 };
+s8 D_8010BE6A_hyper_hydrants = 0;
 
 extern void *D_800EBEB0_minigame;
 extern D_80111B50_vine_with_me_Struct D_8010BF60_hyper_hydrants;
@@ -83,12 +102,7 @@ extern s16 D_8010BF8A_hyper_hydrants[2];
 extern s8 D_8010BF50_hyper_hydrants;
 extern u32 D_800A178C_main[][6];
 extern s32 D_800A1790_main[][6];
-extern s8 D_8010BE35_hyper_hydrants;
 extern s8 D_8010BF40_hyper_hydrants;
-extern Vec D_8010BDE0_hyper_hydrants;
-extern Vec D_8010BDEC_hyper_hydrants;
-extern Vec D_8010BDF8_hyper_hydrants;
-extern Vec D_8010BE04_hyper_hydrants;
 extern s16 D_8010C022_hyper_hydrants[2];
 extern s16 D_800EB934_minigame;
 extern Vec D_8010C028_hyper_hydrants[2];
@@ -97,26 +111,14 @@ extern HyperHydrantsChainPoint *D_8010BFB0_hyper_hydrants[2][6];
 extern u8 D_800D6A90_main;
 extern u16 D_800A1906_main;
 extern s16 D_800EB930_minigame;
-extern s8 D_8010BF4B_hyper_hydrants;
 extern s32 D_8010BF48_hyper_hydrants;
 extern s32 D_8010BF4C_hyper_hydrants;
-extern char D_8010BEF0_hyper_hydrants[];
-extern s32 D_8010BE30_hyper_hydrants;
-extern s8 D_8010BE34_hyper_hydrants;
-extern s8 D_8010BE24_hyper_hydrants;
-extern s8 D_8010BE25_hyper_hydrants;
 extern s8 D_8010BFA8_hyper_hydrants;
 extern s8 D_8010BFA9_hyper_hydrants;
 extern s8 D_8010BFAA_hyper_hydrants;
 extern s8 D_8010BFAB_hyper_hydrants;
 extern s16 D_800EB932_minigame;
-extern f32 D_8010BE28_hyper_hydrants;
-extern f32 D_8010BE2C_hyper_hydrants;
-extern s8 D_8010BE10_hyper_hydrants[];
-extern s8 D_8010BE38_hyper_hydrants[][16];
 extern omObjData *D_8010BFE0_hyper_hydrants[];
-extern s8 D_8010BE6A_hyper_hydrants;
-extern s8 D_8010BE68_hyper_hydrants[2];
 extern s8 D_8010BF46_hyper_hydrants;
 extern s16 D_8010BF8E_hyper_hydrants;
 extern s16 D_8010BF90_hyper_hydrants;
@@ -128,7 +130,6 @@ extern s8 D_8010C010_hyper_hydrants;
 extern s16 D_8010C012_hyper_hydrants[2];
 extern s16 D_8010C016_hyper_hydrants[2];
 extern s16 D_8010C01A_hyper_hydrants[2][2];
-extern s16 D_8010BE14_hyper_hydrants[2][2][2];
 
 void func_80021BE0_main(void *arg0, u16 arg1);
 void func_800E1804_minigame(void);
@@ -1212,7 +1213,7 @@ void func_80108F34_hyper_hydrants(omObjData *object) {
     object->data = HuMemAllocTag(sizeof(HyperHydrantsPlayerData), 0x7918);
     data = object->data;
     memset(data, 0, sizeof(HyperHydrantsPlayerData));
-    data->unk00 = D_8010BF4B_hyper_hydrants;
+    data->unk00 = D_8010BF48_hyper_hydrants;
     data->unk03 = 0;
     data->unk14 = 0;
     if (data->unk00 == 0) {
@@ -1235,10 +1236,10 @@ void func_80108F34_hyper_hydrants(omObjData *object) {
     D_8010BFA4_hyper_hydrants = screen.y;
     model = object->model[0] = func_8000B108_main(0xA008A, 0x289);
     if (data->unk00 == 0) {
-        HmfAnimRead(HmfModelData[model].hmf, 0xA008C, D_8010BEF0_hyper_hydrants);
+        HmfAnimRead(HmfModelData[model].hmf, 0xA008C, "c201n_00_DEF");
         func_8001C8A8_main(object->model[0], 1);
     } else {
-        func_80032694_main(HmfModelData[model].hmf, 0, 0, D_8010BEF0_hyper_hydrants);
+        func_80032694_main(HmfModelData[model].hmf, 0, 0, "c201n_00_DEF");
         func_8001C8A8_main(object->model[0], 2);
     }
     func_8001C448_main(model);
@@ -1249,8 +1250,6 @@ void func_80108F34_hyper_hydrants(omObjData *object) {
     Hu3DModelScaleSet(object->model[1], data->unk0C, data->unk0C, data->unk0C);
     D_8010BF48_hyper_hydrants++;
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", D_8010BEF0_hyper_hydrants);
 
 void func_801091B0_hyper_hydrants(omObjData *object) {
     Vec position;
@@ -1384,9 +1383,9 @@ void func_80109588_hyper_hydrants(omObjData *object) {
     }
     model = object->model[0] = func_8000B108_main(0x2F0002, 9);
     if (D_8010BF4C_hyper_hydrants == 0) {
-        HmfAnimRead(HmfModelData[model].hmf, 0xA008C, D_8010BEF0_hyper_hydrants);
+        HmfAnimRead(HmfModelData[model].hmf, 0xA008C, "c201n_00_DEF");
     } else {
-        func_80032694_main(HmfModelData[model].hmf, 0, 0, D_8010BEF0_hyper_hydrants);
+        func_80032694_main(HmfModelData[model].hmf, 0, 0, "c201n_00_DEF");
     }
     func_8001C448_main(model);
     func_8001C514_main(model);

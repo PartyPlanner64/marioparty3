@@ -29,6 +29,20 @@ D_8011A892_msetup = msetupMessageWindows + 0x2; /* windows */
 D_8011A949_msetup = D_8011A948_msetup + 0x1; /* controller low byte */
 D_8011AA42_msetup = D_8011AA30_msetup + 0x12;   /* totalTurns */
 
+/* hyper_hydrants field aliases: HyperHydrantsBssBF40, HyperHydrantsBssBF88, HyperHydrantsBssBFAC, HyperHydrantsBssC010. */
+D_8010BF40_hyper_hydrants = hyperHydrantsBssBF40;
+D_8010BF42_hyper_hydrants = hyperHydrantsBssBF40 + 0x2;
+D_8010BF46_hyper_hydrants = hyperHydrantsBssBF40 + 0x6;
+D_8010BF88_hyper_hydrants = hyperHydrantsBssBF88;
+D_8010BF8A_hyper_hydrants = hyperHydrantsBssBF88 + 0x2;
+D_8010BFAC_hyper_hydrants = hyperHydrantsBssBFAC;
+D_8010BFAE_hyper_hydrants = hyperHydrantsBssBFAC + 0x2;
+D_8010C010_hyper_hydrants = hyperHydrantsBssC010;
+D_8010C012_hyper_hydrants = hyperHydrantsBssC010 + 0x2;
+D_8010C016_hyper_hydrants = hyperHydrantsBssC010 + 0x6;
+D_8010C01A_hyper_hydrants = hyperHydrantsBssC010 + 0xA;
+D_8010C022_hyper_hydrants = hyperHydrantsBssC010 + 0x12;
+
 /* inst array elements, low halfwords of word state, and object callbacks. */
 D_8010D401_inst = D_8010D400_inst + 0x1;
 D_8010D402_inst = D_8010D400_inst + 0x2;

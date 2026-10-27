@@ -13,7 +13,8 @@ typedef struct HandLineSinkerObjWork {
     /* 0x008 */ f32 unk8;
     /* 0x00C */ Vec pos;
     /* 0x018 */ Vec unk18;
-    /* 0x024 */ char unk24[0x28 - 0x24];
+    /* 0x024 */ s16 unk24;
+    /* 0x026 */ char unk26[0x28 - 0x26];
     /* 0x028 */ FishingLine *line;
     /* 0x02C */ s16 numPoints;
     /* 0x030 */ Vec points[32];
@@ -34,7 +35,7 @@ typedef struct HandLineSinkerPlayerWork {
     /* 0x00 */ s8 playerNo;
     /* 0x01 */ char unk1[0x4 - 0x1];
     /* 0x04 */ f32 speed;
-    /* 0x08 */ s32 unk8;
+    /* 0x08 */ f32 unk8;
     /* 0x0C */ u16 aiWait;
     /* 0x0E */ char unkE[0x10 - 0xE];
     /* 0x10 */ u16 unk10;
@@ -127,6 +128,9 @@ void func_800E6F0C_minigame(s32);
 void func_80109584_hand_line_sinker(omObjData *obj);
 void func_80109B9C_hand_line_sinker(omObjData *obj);
 void func_8010689C_hand_line_sinker(omObjData *obj);
+void func_80107B24_hand_line_sinker(omObjData *obj);
+void func_80107420_hand_line_sinker(omObjData *obj, s8 *stickX, s8 *stickY, u16 *btn);
+f32 func_801092B8_hand_line_sinker(s8 stickX, s8 stickY);
 void func_801093A4_hand_line_sinker(omObjData *obj);
 void func_8010BA64_hand_line_sinker(void);
 omObjData *func_80107A3C_hand_line_sinker(void);
@@ -328,7 +332,7 @@ void func_80106100_hand_line_sinker(omObjData *obj, u16 playerNo) {
         func_8001C514_main(obj->model[0]);
         obj->model[5] = func_80017AD8_main(func_80017B6C_main(chr, 2, 1));
         obj->work[0] = 0;
-        work->unk8 = 0;
+        work->unk8 = 0.0f;
         work->line = func_8010BA80_hand_line_sinker(0xFF, 0xFF, 0xFF);
         work->lineObj = NULL;
         work->aiTarget = NULL;
@@ -397,7 +401,230 @@ void func_80106100_hand_line_sinker(omObjData *obj, u16 playerNo) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_8010689C_hand_line_sinker);
+void func_8010689C_hand_line_sinker(omObjData *obj) {
+    HandLineSinkerPlayerWork *work;
+    HandLineSinkerObjWork *lineWork;
+    Vec pos;
+    s8 stickX;
+    s8 stickY;
+    s8 x;
+    s8 y;
+    u16 btn;
+    u16 pad;
+    u32 stat;
+    f32 angle;
+    f32 rot;
+    f32 dist;
+
+    stat = obj->unk10;
+    work = obj->data;
+    pad = GwPlayer[work->playerNo].pad;
+    if (GwPlayer[work->playerNo].stat & 1) {
+        func_80107420_hand_line_sinker(obj, &stickX, &stickY, &btn);
+    } else {
+        stickX = D_800CBB6E_main[pad];
+        stickY = D_800D20A1_main[pad];
+        btn = D_800D5558_main[pad];
+    }
+    if (func_800E6E8C_minigame() != 2) {
+        stickX = stickY = 0;
+        btn = 0;
+    }
+    y = stickY;
+    x = stickX;
+    angle = atan2df(y, x);
+    switch (obj->work[0]) {
+        case 0:
+            if ((x != 0) | (y != 0)) {
+                obj->rot.y = angle + 270.0f;
+                if (obj->rot.y >= 360.0f) {
+                    obj->rot.y -= 360.0f;
+                }
+                if (obj->rot.y < 135.0f) {
+                    obj->rot.y = 135.0f;
+                }
+                if (obj->rot.y > 225.0f) {
+                    obj->rot.y = 225.0f;
+                }
+                Hu3DModelRotSet(obj->model[2], 0.0f, obj->rot.y, 0.0f);
+                Hu3DModelRotSet(obj->model[3], 0.0f, obj->rot.y, 0.0f);
+                work->unk8 = func_801092B8_hand_line_sinker(x, y);
+                if (func_800E6E8C_minigame() != 2) {
+                    obj->work[0] = 0;
+                } else {
+                    obj->work[0] = 1;
+                }
+            }
+            break;
+        case 1:
+            if ((x != 0) | (y != 0)) {
+                obj->rot.y = angle + 270.0f;
+                if (obj->rot.y >= 360.0f) {
+                    obj->rot.y -= 360.0f;
+                }
+                if (obj->rot.y < 135.0f) {
+                    obj->rot.y = 135.0f;
+                }
+                if (obj->rot.y > 225.0f) {
+                    obj->rot.y = 225.0f;
+                }
+                Hu3DModelRotSet(obj->model[2], 0.0f, obj->rot.y, 0.0f);
+                Hu3DModelRotSet(obj->model[3], 0.0f, obj->rot.y, 0.0f);
+                work->unk8 = func_801092B8_hand_line_sinker(x, y);
+            }
+            if (func_800E6E8C_minigame() != 2) {
+                obj->work[0] = 0;
+                break;
+            }
+            if (btn & 0x8000) {
+                if (func_800E6E8C_minigame() != 2) {
+                    obj->work[0] = 0;
+                    break;
+                }
+                obj->work[0] = 2;
+                func_8001C258_main(obj->model[1], 0x4000, 0);
+                func_8001C258_main(obj->model[1], 4, 4);
+                func_8001C258_main(obj->model[2], 4, 0);
+                func_8001C5B4_main(obj->model[0], obj->motion[3]);
+                func_8001C5B4_main(obj->model[2], obj->motion[14]);
+                work->aiWait = 5;
+            }
+            break;
+        case 2:
+            if (--work->aiWait != 0) {
+                break;
+            }
+            if (func_800E6E8C_minigame() != 2) {
+                obj->work[0] = 0;
+                func_8001C258_main(obj->model[1], 0x4000, 0x4000);
+                func_8001C258_main(obj->model[1], 4, 0);
+                func_8001C258_main(obj->model[2], 4, 4);
+                func_8001C5B4_main(obj->model[0], obj->motion[8]);
+                func_8001C814_main(obj->model[0], 3, 3);
+                break;
+            }
+            obj->work[0] = 4;
+            func_8001C5B4_main(obj->model[0], obj->motion[8]);
+            func_8001C814_main(obj->model[0], 3, 3);
+            func_8001C92C_main(obj->model[0], 1.0f);
+            func_8001C92C_main(obj->model[2], 1.0f);
+            func_8001C258_main(obj->model[3], 0x4000, 0);
+            if (work->lineObj != NULL) {
+                omDelObj(work->lineObj);
+            }
+            work->lineObj = omAddObj(20, 1, 0, -1, func_80107B24_hand_line_sinker);
+            work->lineObj->model[0] = obj->model[3];
+            work->lineObj->data = HuMemAllocTag(sizeof(HandLineSinkerObjWork), 0x7918);
+            lineWork = work->lineObj->data;
+            work->lineObj->work[0] = 0;
+            work->lineObj->work[1] = 0;
+            lineWork->unk1CE = 0;
+            lineWork->unk1B8 = NULL;
+            lineWork->unk1BC = 0.0f;
+            lineWork->unk1C0 = 0;
+            lineWork->unk1C8 = work->playerNo;
+            lineWork->unk0 = -(work->unk8 / 70.0f * 85.0f) - 15.0f;
+            angle = obj->rot.y;
+            if (angle > 180.0f) {
+                angle = fabsf(angle - 360.0f);
+            } else {
+                angle = fabsf(angle);
+            }
+            lineWork->unk0 *= fabs(sindf(angle - 90.0f));
+            lineWork->unk4 = 45.0f;
+            lineWork->unk8 = 0.0f;
+            lineWork->pos.y = 240.0f;
+            lineWork->pos.x = sindf(obj->rot.y - 6.0f) * 140.0f + obj->trans.x;
+            lineWork->pos.z = cosdf(obj->rot.y - 6.0f) * 140.0f + obj->trans.z;
+            lineWork->unk18.x = 75.0f;
+            lineWork->unk18.y = obj->rot.y;
+            lineWork->unk18.z = 0.0f;
+            lineWork->unk24 = 0;
+            lineWork->numPoints = 0;
+            lineWork->line = work->line;
+            lineWork->unk1CA = HuAudFXPlay(0x302);
+            lineWork->seNo = -1;
+            omSetTra(work->lineObj, lineWork->pos.x, lineWork->pos.y, lineWork->pos.z);
+            omSetRot(work->lineObj, lineWork->unk18.x, lineWork->unk18.y, lineWork->unk18.z);
+            Hu3DModelPosSet(work->lineObj->model[0], lineWork->pos.x, lineWork->pos.y, lineWork->pos.z);
+            Hu3DModelRotSet(work->lineObj->model[0], lineWork->unk18.x, lineWork->unk18.y, lineWork->unk18.z);
+            break;
+        case 4:
+            if (stat & 1) {
+                obj->unk10 &= ~1;
+                func_8001C624_main(D_8010C0FC_hand_line_sinker->model[0],
+                                   HmfModelData[D_8010C0FC_hand_line_sinker->motion[5]].unk02, 0, 6, 2);
+                obj->work[0] = 3;
+            }
+            break;
+        case 3:
+            lineWork = work->lineObj->data;
+            if (stat & 2) {
+                obj->unk10 &= ~2;
+                if (work->lineObj->work[1] == 1) {
+                    func_80047E90_main(lineWork->unk1B8, 2);
+                    obj->work[0] = 5;
+                    func_8001C258_main(obj->model[1], 0x4000, 0);
+                    func_8001C258_main(obj->model[1], 4, 4);
+                    func_8001C258_main(obj->model[2], 4, 0);
+                    func_8001C5B4_main(obj->model[0], obj->motion[2]);
+                    func_8001C5B4_main(obj->model[2], obj->motion[17]);
+                    func_8001C258_main(obj->model[3], 0x4000, 0x4000);
+                } else {
+                    obj->work[0] = 0;
+                    func_8001C258_main(obj->model[1], 0x4000, 0x4000);
+                    func_8001C258_main(obj->model[1], 4, 0);
+                    func_8001C258_main(obj->model[2], 4, 4);
+                    func_8001C5B4_main(obj->model[0], obj->motion[8]);
+                    func_8001C814_main(obj->model[0], 3, 3);
+                    func_8001C258_main(obj->model[3], 0x4000, 0x4000);
+                    work->aiTarget = NULL;
+                }
+                omDelObj(work->lineObj);
+                work->lineObj = NULL;
+                break;
+            }
+            if (lineWork->unk1D0 == 0 && ((x != 0) | (y != 0))) {
+                rot = angle + 270.0f;
+                if (rot >= 360.0f) {
+                    rot -= 360.0f;
+                }
+                if (rot < 135.0f) {
+                    rot = 135.0f;
+                }
+                if (rot > 225.0f) {
+                    rot = 225.0f;
+                }
+                if (rot != obj->rot.y) {
+                    obj->rot.y = rot;
+                    pos.y = 240.0f;
+                    pos.x = sindf(obj->rot.y - 6.0f) * 140.0f + obj->trans.x;
+                    pos.z = cosdf(obj->rot.y - 6.0f) * 140.0f + obj->trans.z;
+                    dist = HuSqrtf((pos.x - work->lineObj->trans.x) * (pos.x - work->lineObj->trans.x) +
+                                   (pos.y - work->lineObj->trans.y) * (pos.y - work->lineObj->trans.y) +
+                                   (pos.z - work->lineObj->trans.z) * (pos.z - work->lineObj->trans.z));
+                    lineWork->pos = pos;
+                    Hu3DModelRotSet(obj->model[2], 0.0f, obj->rot.y, 0.0f);
+                    if (dist < lineWork->unk1B0) {
+                        lineWork->unk1B4 += lineWork->unk1B0 - dist;
+                    }
+                    lineWork->unk1B0 = dist;
+                }
+            }
+            break;
+        case 5:
+            if (HmfModelData[obj->model[0]].unk40 >= D_800CCF58_main[HmfModelData[obj->model[0]].unk02].unk02) {
+                obj->work[0] = 0;
+                func_8001C258_main(obj->model[1], 0x4000, 0x4000);
+                func_8001C258_main(obj->model[1], 4, 0);
+                func_8001C258_main(obj->model[2], 4, 4);
+                func_8001C5B4_main(obj->model[0], obj->motion[8]);
+                func_8001C814_main(obj->model[0], 3, 3);
+                work->aiTarget = NULL;
+            }
+            break;
+    }
+}
 
 void func_80107420_hand_line_sinker(omObjData *obj, s8 *stickX, s8 *stickY, u16 *btn) {
     HandLineSinkerPlayerWork *work;

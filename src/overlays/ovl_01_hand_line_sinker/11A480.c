@@ -9,12 +9,24 @@
 typedef struct HandLineSinkerObjWork {
     /* 0x000 */ f32 unk0;
     /* 0x004 */ f32 unk4;
-    /* 0x008 */ s32 unk8;
+    /* 0x008 */ f32 unk8;
     /* 0x00C */ Vec pos;
     /* 0x018 */ Vec unk18;
-    /* 0x024 */ char unk24[0x1CC - 0x24];
+    /* 0x024 */ char unk24[0x28 - 0x24];
+    /* 0x028 */ FishingLine *line;
+    /* 0x02C */ s16 numPoints;
+    /* 0x030 */ Vec points[32];
+    /* 0x1B0 */ f32 unk1B0;
+    /* 0x1B4 */ f32 unk1B4;
+    /* 0x1B8 */ omObjData *unk1B8;
+    /* 0x1BC */ f32 unk1BC;
+    /* 0x1C0 */ u16 unk1C0;
+    /* 0x1C4 */ f32 unk1C4;
+    /* 0x1C8 */ s16 unk1C8;
+    /* 0x1CA */ s16 unk1CA;
     /* 0x1CC */ s16 seNo;
-    /* 0x1CE */ char unk1CE[0x1D4 - 0x1CE];
+    /* 0x1CE */ s16 unk1CE;
+    /* 0x1D0 */ u16 unk1D0;
 } HandLineSinkerObjWork; // sizeof 0x1D4
 
 typedef struct HandLineSinkerPlayerWork {
@@ -41,12 +53,6 @@ typedef struct HandLineSinkerFollowWork {
     /* 0x04 */ Vec offset;
     /* 0x10 */ Vec unk10;
 } HandLineSinkerFollowWork; // sizeof 0x1C
-
-typedef struct HandLineSinkerLineWork {
-    /* 0x00 */ char unk0[0x2C];
-    /* 0x2C */ s16 numPoints;
-    /* 0x30 */ Vec points[24];
-} HandLineSinkerLineWork;
 
 extern s16 D_8010C0EC_hand_line_sinker;
 extern s16 D_8010C0F0_hand_line_sinker;
@@ -108,6 +114,11 @@ void func_80109B9C_hand_line_sinker(omObjData *obj);
 void func_801093A4_hand_line_sinker(omObjData *obj);
 void func_8010BA64_hand_line_sinker(void);
 omObjData *func_80107A3C_hand_line_sinker(void);
+omObjData *func_801080F0_hand_line_sinker(omObjData *arg0);
+void func_80047E90_main(omObjData *obj, s32 arg1);
+void func_8010AD7C_hand_line_sinker(omObjData *obj, f32 length, f32 x0, f32 y0, f32 z0, f32 x1, f32 y1, f32 z1);
+void func_8010B0FC_hand_line_sinker(omObjData *arg0, f32 arg1);
+void func_8010BB58_hand_line_sinker(FishingLine *line, Vec *points, u16 count);
 
 void func_801059A0_hand_line_sinker(void) {
     omObjData *players[4];
@@ -396,7 +407,112 @@ omObjData *func_80107A3C_hand_line_sinker(void) {
     return candidates[rand8() % count];
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_80107B24_hand_line_sinker);
+void func_80107B24_hand_line_sinker(omObjData *obj) {
+    HandLineSinkerObjWork *work;
+    HandLineSinkerPlayerWork *targetWork;
+    omObjData *target;
+    Vec offset;
+    Vec rot;
+    f32 velXZ;
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 dist;
+    f32 angle;
+    f32 dy;
+
+    work = obj->data;
+    switch (obj->work[0]) {
+        case 0:
+            y = sindf(work->unk4) * work->unk0;
+            velXZ = -work->unk0 * cosdf(work->unk4);
+            x = sindf(obj->rot.y) * velXZ;
+            z = cosdf(obj->rot.y) * velXZ;
+            y = y * work->unk8 + work->unk8 * work->unk8 * 4.9f;
+            y = work->pos.y - y;
+            work->unk8 += 1.0f;
+            if (obj->trans.y <= -50.0f && work->unk1C0 == 0) {
+                work->unk1C0 = 1;
+                offset.x = obj->trans.x;
+                offset.y = -50.0f;
+                offset.z = obj->trans.z;
+                rot.x = rot.y = rot.z = 0.0f;
+                func_8010A6D0_hand_line_sinker(NULL, 0, &offset, &rot);
+                work->seNo = func_8004AC98_main(0x300, work->unk1C8);
+                HuAudFXStop(work->unk1CA);
+                omVibrate(work->unk1C8, 2, 3, 10);
+            }
+            if (y <= -210.0f) {
+                y = -210.0f;
+                work->unk1D0 = 0;
+                obj->work[0] = 1;
+                func_80047E90_main(D_8010C0FC_hand_line_sinker, 1);
+                work->unk1C4 = 0.0f;
+                work->unk1CA = HuAudFXPlay(0x303);
+            }
+            omSetTra(obj, x + obj->trans.x, y, z + obj->trans.z);
+            work->unk1B0 = HuSqrtf((work->pos.x - obj->trans.x) * (work->pos.x - obj->trans.x) +
+                                   (work->pos.y - obj->trans.y) * (work->pos.y - obj->trans.y) +
+                                   (work->pos.z - obj->trans.z) * (work->pos.z - obj->trans.z));
+            if (y <= -240.0f) {
+                work->unk1B4 = 5.0f + work->unk1B0;
+            } else {
+                work->unk1B4 = work->unk1B0 + 3.0f;
+            }
+            func_8010AD7C_hand_line_sinker(obj, work->unk1B0, work->pos.x, work->pos.y, work->pos.z, obj->trans.x,
+                                           obj->trans.y, obj->trans.z);
+            func_8010B0FC_hand_line_sinker(obj, 111.0f);
+            break;
+        case 1:
+            work->unk1B4 -= 21.0f - work->unk1BC * 21.0f;
+            if (work->unk1D0 == 0 && (target = func_801080F0_hand_line_sinker(obj)) != NULL && obj->work[1] == 0) {
+                obj->work[1] = 1;
+                func_80047E90_main(target, 1);
+                work->unk1B8 = target;
+                obj->trans.y = -140.0f;
+                targetWork = target->data;
+                work->seNo = func_8004AC98_main(0x301, work->unk1C8);
+                omVibrate(targetWork->playerNo, 2, 2, 20);
+                omVibrate(work->unk1C8, 2, 2, 20);
+            }
+            if (work->unk1B4 < work->unk1B0) {
+                work->unk1B0 -= work->unk1B0 - work->unk1B4;
+                if (work->unk1B0 > fabs(240.0f - obj->trans.y)) {
+                    dy = fabsf(work->pos.y - obj->trans.y);
+                    dist = HuSqrtf(fabsf(work->unk1B0 * work->unk1B0 - dy * dy));
+                    angle = atan2df(obj->trans.x - work->pos.x, -(obj->trans.z - work->pos.z));
+                    omSetTra(obj, sindf(angle) * dist + work->pos.x, obj->trans.y,
+                             work->pos.z - cosdf(angle) * dist);
+                    obj->rot.y = 180.0f - angle;
+                    work->unk1B4 = work->unk1B0;
+                    if (work->unk1C4 < 5.0f) {
+                        work->unk1C4 += 0.5f;
+                    }
+                } else {
+                    work->unk1D0 = 1;
+                    if (work->unk1CE == 0 && work->unk1B8 != NULL) {
+                        work->unk1CE = 1;
+                        func_8004AC98_main(0x304, work->unk1C8);
+                    }
+                    work->unk1C4 = 0.0f;
+                    obj->rot.y = D_8010C0FC_hand_line_sinker->rot.y;
+                    if (work->unk1B0 < 0.0f) {
+                        func_80047E90_main(D_8010C0FC_hand_line_sinker, 2);
+                        omSetTra(obj, work->pos.x, work->pos.y, work->pos.z);
+                        HuAudFXStop(work->unk1CA);
+                    } else {
+                        omSetTra(obj, work->pos.x, 240.0f - work->unk1B0, work->pos.z);
+                        omSetRot(obj, 160.0f, obj->rot.y, 0.0f);
+                    }
+                }
+            }
+            func_8010AD7C_hand_line_sinker(obj, work->unk1B4 + work->unk1C4, work->pos.x, work->pos.y, work->pos.z,
+                                           obj->trans.x, obj->trans.y, obj->trans.z);
+            func_8010B0FC_hand_line_sinker(obj, 104.0f);
+            break;
+    }
+    func_8010BB58_hand_line_sinker(work->line, work->points, work->numPoints);
+}
 
 omObjData *func_801080F0_hand_line_sinker(omObjData *arg0) {
     omObjData *obj;
@@ -860,7 +976,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_01_hand_line_sinker/11A480", func_801
 #endif
 
 void func_8010AD7C_hand_line_sinker(omObjData *obj, f32 length, f32 x0, f32 y0, f32 z0, f32 x1, f32 y1, f32 z1) {
-    HandLineSinkerLineWork *work;
+    HandLineSinkerObjWork *work;
     f32 temp;
     f32 dx;
     f32 dz;

@@ -46,6 +46,7 @@ typedef struct Vec2f {
 } Vec2f;
 
 f64 fabs(f64 x);
+f32 fabsf(f32 x);
 
 /* Application-owned default tolerance used by libhmath's epsilon helpers. */
 extern f32 D_800A12A4_main;

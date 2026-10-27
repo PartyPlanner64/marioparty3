@@ -271,7 +271,8 @@ NOP_OBJECTS := \
 	build/src/overlays/last5/3C6310.c.o \
 	build/src/overlays/opboard/3CA800.c.o \
 	build/src/overlays/mchar/3D3C80.c.o \
-	build/src/overlays/mchar2/3D5C30.c.o
+	build/src/overlays/mchar2/3D5C30.c.o \
+	build/src/overlays/ovl_0E_hyper_hydrants/17B3B0.c.o
 
 NOP_ASM := $(NOP_OBJECTS:.o=.s)
 

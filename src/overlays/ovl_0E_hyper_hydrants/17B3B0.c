@@ -644,7 +644,6 @@ void func_801078B8_hyper_hydrants(omObjData *object) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_80107A90_hyper_hydrants);
 
-#ifdef NON_MATCHING
 void func_801083A8_hyper_hydrants(s16 model, Vec *position, HyperHydrantsSprayData *data, s8 count) {
     HmfData *hmf;
     HmfModelData_UnkBC_Struct *modelData;
@@ -663,17 +662,13 @@ void func_801083A8_hyper_hydrants(s16 model, Vec *position, HyperHydrantsSprayDa
     particleCount = hmf->unk1A;
     halfSpread = data->spread / 2;
     angle = data->angle - halfSpread;
-    random = ((rand8() * 10) >> 8) * 0.1f;
-    speed = random + data->speed;
+    speed = data->speed + ((rand8() * 10) >> 8) * 0.1f;
     random = (rand8() * data->spread) >> 8;
-    random = sindf(angle + random);
-    velocity.x = random * speed;
+    velocity.x = sindf(angle + random) * speed;
     random = (rand8() * data->spread) >> 8;
-    random = sindf(-halfSpread + random);
-    velocity.y = random * speed;
+    velocity.y = sindf(-halfSpread + random) * speed;
     random = (rand8() * data->spread) >> 8;
-    random = cosdf(angle + random);
-    velocity.z = random * speed;
+    velocity.z = cosdf(angle + random) * speed;
     particle = modelData->unk58;
     for (i = 0; i < particleCount; i++, particle++) {
         if (particle->unk10 <= 0.0f) {
@@ -690,24 +685,16 @@ void func_801083A8_hyper_hydrants(s16 model, Vec *position, HyperHydrantsSprayDa
             if (--count == 0) {
                 break;
             }
-            random = ((rand8() * 10) >> 8) * 0.1f;
-            speed = random + data->speed;
+            speed = data->speed + ((rand8() * 10) >> 8) * 0.1f;
             random = (rand8() * data->spread) >> 8;
-            random = sindf(angle + random);
-            velocity.x = random * speed;
+            velocity.x = sindf(angle + random) * speed;
             random = (rand8() * data->spread) >> 8;
-            random = sindf(-halfSpread + random);
-            velocity.y = random * speed;
+            velocity.y = sindf(-halfSpread + random) * speed;
             random = (rand8() * data->spread) >> 8;
-            random = cosdf(angle + random);
-            velocity.z = random * speed;
+            velocity.z = cosdf(angle + random) * speed;
         }
     }
 }
-
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0E_hyper_hydrants/17B3B0", func_801083A8_hyper_hydrants);
-#endif
 
 void func_80108788_hyper_hydrants(s16 model) {
     HmfData *hmf;

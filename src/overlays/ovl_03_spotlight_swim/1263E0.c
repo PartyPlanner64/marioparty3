@@ -471,46 +471,39 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_80109
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_8010A328_spotlight_swim);
 
-#ifdef NON_MATCHING
-// Target has 8 more bytes of stack frame (0x40 vs 0x38) and copies the
-// omAddObj result to $v1 (`move v1,v0`), using $v0 for the sign-extended count.
 void func_8010A670_spotlight_swim(void) {
-    SpotlightSwimData *data;
-    omObjData *obj;
-    s32 playerIndex = 0;
+    u16 playerIndex = 0;
     s32 count = 0;
     s16 i;
 
     for (i = 0; i < 4; i++) {
-        if (GwPlayer[i].group == 0) {
-            continue;
-        }
-        switch (i) {
-            case 0:
-                playerIndex = 0;
-                break;
-            case 1:
-                playerIndex = 1;
-                break;
-            case 2:
-                playerIndex = 2;
-                break;
-            case 3:
-                playerIndex = 3;
-                break;
-        }
+        if (GwPlayer[i].group != 0) {
+            SpotlightSwimData *data;
+            omObjData *obj;
 
-        data = &D_8010D480_spotlight_swim[6 + count];
-        obj = omAddObj(0x384, 8, 7, -1, func_8010A328_spotlight_swim);
-        obj->work[0] = playerIndex;
-        data->obj = obj;
-        obj->work[1] = data->unk04 = count;
-        count++;
+            switch (i) {
+                case 0:
+                    playerIndex = 0;
+                    break;
+                case 1:
+                    playerIndex = 1;
+                    break;
+                case 2:
+                    playerIndex = 2;
+                    break;
+                case 3:
+                    playerIndex = 3;
+                    break;
+            }
+            data = &D_8010D480_spotlight_swim[6 + count];
+            obj = omAddObj(0x384, 8, 7, -1, func_8010A328_spotlight_swim);
+            obj->work[0] = playerIndex;
+            data->obj = obj;
+            obj->work[1] = data->unk04 = count;
+            count++;
+        }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_8010A670_spotlight_swim);
-#endif
 
 void func_8010A7AC_spotlight_swim(omObjData *obj) {
     s8 idx = obj->work[0];

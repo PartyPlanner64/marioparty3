@@ -63,6 +63,7 @@ typedef struct {
 } SpotlightSwimCamera; // sizeof 0x2C
 
 extern s16 D_8010CCF4_spotlight_swim[4];
+extern s8 D_8010CD50_spotlight_swim[][9];
 extern SpotlightSwimCamera D_8010D1D4_spotlight_swim[1];
 extern const s16 D_8010D2E0_spotlight_swim[];
 extern s32 D_8010D2F0_spotlight_swim;
@@ -71,6 +72,7 @@ extern u32 *D_8010D2F8_spotlight_swim[3];
 extern SpotlightSwimUnk308 D_8010D308_spotlight_swim[];
 extern u8 D_8010D320_spotlight_swim[3];
 extern u8 D_8010D329_spotlight_swim[];
+extern s8 D_8010D32C_spotlight_swim;
 extern u8 D_8010D340_spotlight_swim[3];
 extern f32 D_8010D338_spotlight_swim[2];
 extern s8 D_8010D343_spotlight_swim;
@@ -304,7 +306,34 @@ void func_80106790_spotlight_swim(omObjData *obj) {
     obj->work[2] = (obj->work[2] + 1) % 10;
 }
 
+// TODO: only works with -Wa,--vr4300mul-off. The assembler inserts a nop between the sindf call's
+// delay slot and the following mul.s, which the target does not have.
+#ifdef NON_MATCHING
+void func_80106808_spotlight_swim(omObjData *obj) {
+    SpotlightSwimData *data;
+    f32 angle;
+
+    data = &D_8010D480_spotlight_swim[2];
+    func_8001C6A8_main(obj->model[5], 0.0f);
+    if (obj->work[1] != 5) {
+        data->unk44.x = obj->trans.x;
+        data->unk44.z = obj->trans.z + 35.0f;
+    } else {
+        angle = func_801059BC_spotlight_swim(obj->rot.y, -90.0f);
+        data->unk44.x = obj->trans.x - cosdf(angle) * 50.0f;
+        data->unk44.z = sindf(angle) * 50.0f + obj->trans.z + 60.0f;
+    }
+    data->unk44.y = obj->trans.y - D_8010CD50_spotlight_swim[obj->work[1]][D_8010D343_spotlight_swim] - 25.0f;
+    if (D_8010D32C_spotlight_swim == 2 || D_8010EE48_spotlight_swim == 5) {
+        Hu3DModelScaleSet(obj->model[5], 0.6f, 0.5f, 1.0f);
+    } else {
+        Hu3DModelScaleSet(obj->model[5], 0.8f, 0.6f, 1.0f);
+    }
+    Hu3DModelPosSet(obj->model[5], data->unk44.x, -200.0f, data->unk44.z);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_80106808_spotlight_swim);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_801069BC_spotlight_swim);
 

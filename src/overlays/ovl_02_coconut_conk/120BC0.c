@@ -1151,7 +1151,123 @@ void func_8010A610_coconut_conk(omObjData *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_8010A668_coconut_conk);
+void func_8010A668_coconut_conk(omObjData *arg0) {
+    u8 chars[8];
+    CoconutConkData *datas[3];
+    omObjData *objs[3];
+    omObjData *obj = D_8010BCC4_coconut_conk.unk00;
+    s16 i;
+    s16 j;
+
+    for (i = 0; i < 3; i++) {
+        datas[i] = &D_8010BD48_coconut_conk[i];
+        objs[i] = datas[i]->unk00;
+    }
+
+    switch (D_8010B1C8_coconut_conk) {
+        case 0:
+            if (D_8010B1E0_coconut_conk == 13) {
+                HuAudFXPlay(0x314);
+                D_8010B1E0_coconut_conk = 14;
+            } else if (D_8010B1E0_coconut_conk < 13) {
+                D_8010B1E0_coconut_conk++;
+            }
+            if (D_8010CBBA_coconut_conk == 0) {
+                func_80105B7C_coconut_conk(1);
+                D_8010B1E0_coconut_conk = 1;
+                HuAudSeqPlay(0x30);
+            }
+            break;
+        case 1:
+            if (--D_8010B1E0_coconut_conk == 0) {
+                GMesCreate(4);
+            }
+            if (GMesStatGet() == 0) {
+                func_80105B7C_coconut_conk(2);
+                GMesCreate(0x1A, 30, 160, 28);
+                D_8010B1E0_coconut_conk = 901;
+            }
+            break;
+        case 2:
+            if (D_8010B1E0_coconut_conk > 0) {
+                D_8010B1E0_coconut_conk--;
+                func_8003F578_main((D_8010B1E0_coconut_conk + 29) / 30);
+            } else if (D_8010B1CC_coconut_conk == 0) {
+                func_8003F5C0_main();
+                func_80105B7C_coconut_conk(3);
+                GMesCreate(0xF);
+                D_8010B1CC_coconut_conk = 0;
+                D_8010B1E0_coconut_conk = -15;
+                HuAudSeqFadeOut(120);
+                HuAudFXStop(D_8010CBC0_coconut_conk);
+            }
+            if (D_8010B1CC_coconut_conk == 1) {
+                func_8003F5C0_main();
+                func_80105B7C_coconut_conk(3);
+                GMesCreate(0xF);
+                D_8010B1CC_coconut_conk = 1;
+                D_8010B1E0_coconut_conk = -15;
+                HuAudSeqFadeOut(120);
+            }
+            break;
+        case 3:
+            if (GMesStatGet() == 0) {
+                if (D_8010B1E0_coconut_conk >= 0) {
+                    if (D_8010CBBA_coconut_conk == 3) {
+                        func_80105B7C_coconut_conk(4);
+                        D_8010B1E0_coconut_conk = -1;
+                        break;
+                    }
+                }
+                if (D_8010B1E0_coconut_conk < 0) {
+                    D_8010B1E0_coconut_conk++;
+                }
+            }
+            break;
+        case 4:
+            if (D_8010B1E0_coconut_conk == -1) {
+                D_8010B1E0_coconut_conk = 0;
+                j = 0;
+                if (D_8010B1CC_coconut_conk == 0) {
+                    for (i = 0; i < 4; i++) {
+                        if (GwPlayer[i].group == 0) {
+                            chars[0] = GwPlayer[i].chr;
+                        }
+                    }
+                    GMesCreate(0x16, chars[0]);
+                    HuAudSeqPlay(0x65);
+                    GwPlayer[obj->work[0]].bonusCoin = 10;
+                } else {
+                    for (i = 0; i < 4; i++) {
+                        if (GwPlayer[i].group != 0) {
+                            chars[j] = GwPlayer[i].chr;
+                            j++;
+                        }
+                    }
+                    GMesCreate(0x22, chars[0], chars[1], chars[2]);
+                    HuAudSeqPlay(0x66);
+                    for (i = 0; i < 3; i++) {
+                        GwPlayer[objs[i]->work[0]].bonusCoin = 10;
+                    }
+                }
+            }
+            if (GMesStatGet() == 0) {
+                if (D_8010B1E0_coconut_conk >= 15) {
+                    func_80105B7C_coconut_conk(5);
+                    D_8010B1E0_coconut_conk = -1;
+                }
+                D_8010B1E0_coconut_conk++;
+            }
+            break;
+        case 5:
+            if (D_8010B1E0_coconut_conk == 0) {
+                WipeCreateOut(0, 20);
+                arg0->func = func_8010A5D8_coconut_conk;
+                D_8010B1E0_coconut_conk++;
+            }
+            break;
+    }
+}
 
 void func_8010AB4C_coconut_conk(omObjData *arg0) {
     s16 i;

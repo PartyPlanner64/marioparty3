@@ -55,6 +55,7 @@ typedef struct {
     /* 0x28 */ f32 fov;
 } CoconutConkCamera; // sizeof 0x2C
 
+extern u16 D_8010AF68_coconut_conk[][3];
 extern char *D_8010AF98_coconut_conk[];
 extern D_80111B50_vine_with_me_Struct D_8010AFF0_coconut_conk;
 extern CoconutConkCamera D_8010B018_coconut_conk[2];
@@ -123,6 +124,7 @@ void func_801067E0_coconut_conk(omObjData *);
 void func_801069BC_coconut_conk(omObjData *);
 void func_80106D5C_coconut_conk(omObjData *);
 void func_80106F18_coconut_conk(void);
+void func_8010815C_coconut_conk(omObjData *);
 void func_801089DC_coconut_conk(omObjData *);
 void func_801090C4_coconut_conk(omObjData *);
 void func_80109DEC_coconut_conk(omObjData *);
@@ -130,6 +132,7 @@ void func_8010A55C_coconut_conk(omObjData *);
 void func_8010A668_coconut_conk(omObjData *);
 void func_8010AE04_coconut_conk(void);
 void func_8000B710_main(s32);
+void func_8001EF6C_main(s16, s16, char *);
 void func_800E149C_minigame(omObjData *, s32, s32);
 void func_8004AE00_main(s16 arg0, s16 arg1);
 void func_800E4C88_minigame(omObjData *object, u8 type, f32 x, f32 y, f32 z, f32 arg5, f32 arg6);
@@ -675,7 +678,77 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_80107B8
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_8010815C_coconut_conk);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_801089DC_coconut_conk);
+void func_801089DC_coconut_conk(omObjData *obj) {
+    CoconutConkData *data = &D_8010BCC4_coconut_conk;
+    s8 chr = GwPlayer[obj->work[0]].chr;
+    s32 model = D_800A178C_main[chr][0];
+    s16 i;
+
+    obj->model[0] = func_8000B108_main(model | D_800A178C_main[chr][2], 0x2A9);
+    for (i = 0; i < 3; i++) {
+        D_8010B1D0_coconut_conk[i] = DataRead(model | D_8010AF68_coconut_conk[chr][i]);
+    }
+    D_8010B1DC_coconut_conk = HmfAnimCreate(HmfModelData[obj->model[0]].hmf, D_8010B1D0_coconut_conk[0], 0,
+                                            D_8010AF98_coconut_conk[chr]);
+    func_8001C448_main(obj->model[0]);
+    func_8001C514_main(obj->model[0]);
+    func_8000B460_main(obj, 0, func_80017BB8_main(chr, 0x62));
+    func_8000B460_main(obj, 2, func_80017BB8_main(chr, 0x2F));
+    func_8000B460_main(obj, 1, func_80017BB8_main(chr, 4));
+    func_8001C5B4_main(obj->model[0], obj->motion[0]);
+    func_8001C6A8_main(obj->model[0], 0.0f);
+    func_8001C814_main(obj->model[0], 2, 2);
+    obj->trans.x = 400.0f;
+    obj->trans.y = 40.0f;
+    obj->trans.z = -100.0f;
+    Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
+    data->unk18 = -10.0f;
+    obj->rot.x = 0.0f;
+    obj->rot.y = 0.0f;
+    obj->rot.z = 325.0f;
+    Hu3DModelRotSet(obj->model[0], obj->rot.x, obj->rot.y, obj->rot.z);
+    obj->model[1] = func_8000B0A0_main(0, 0x4A9);
+    Hu3DModelPosSet(obj->model[1], obj->trans.x, 0.0f, obj->trans.z);
+    Hu3DModelScaleSet(obj->model[1], obj->scale.x, obj->scale.y, obj->scale.z);
+    func_8001C2FC_main(obj->model[1], 0x80000000, 0);
+    func_8001C448_main(obj->model[1]);
+    func_8001C514_main(obj->model[1]);
+    obj->model[2] = func_8000B108_main(8, 0x2BD);
+    Hu3DModelPosSet(obj->model[2], 0.0f, 0.0f, 0.0f);
+    obj->model[3] = func_8000B108_main(0x230000, 0x299);
+    Hu3DModelPosSet(obj->model[3], 0.0f, 0.0f, 0.0f);
+    func_8001C258_main(obj->model[3], 0x4000, 0x4000);
+    func_8001EF6C_main(obj->model[3], obj->model[0], "item_hook");
+    obj->model[4] = func_8000B108_main(0x230006, 0x28D);
+    Hu3DModelPosSet(obj->model[4], 0.0f, 0.0f, 0.0f);
+    func_8001C6A8_main(obj->model[4], 0.0f);
+    func_8001C92C_main(obj->model[4], 0.0f);
+    func_8001FA68_main(obj->model[4]);
+    data->unk20 = 255.0f;
+    func_8001F9E4_main(obj->model[4], 0xFF);
+    obj->model[5] = func_8000B108_main(0x230007, 0x29D);
+    Hu3DModelPosSet(obj->model[5], 0.0f, 0.0f, 0.0f);
+    func_8001C6A8_main(obj->model[5], 0.0f);
+    func_8001C92C_main(obj->model[5], 0.0f);
+    obj->model[6] = func_8000B108_main(0x230008, 0x29D);
+    Hu3DModelPosSet(obj->model[6], 0.0f, 0.0f, 0.0f);
+    func_8001C6A8_main(obj->model[6], 3.0f);
+    func_8001C92C_main(obj->model[6], 0.0f);
+    Hu3DModelScaleSet(obj->model[6], 1.5f, 1.5f, 1.5f);
+    obj->model[7] = func_8000B108_main(0x230009, 0x29D);
+    Hu3DModelPosSet(obj->model[7], 0.0f, 0.0f, 0.0f);
+    Hu3DModelScaleSet(obj->model[7], 1.5f, 1.5f, 1.5f);
+    func_8001C814_main(obj->model[7], 2, 2);
+    func_8001C8A8_main(obj->model[0], 2);
+    func_8001C8A8_main(obj->model[1], 2);
+    func_8001C8A8_main(obj->model[2], 2);
+    func_8001C8A8_main(obj->model[3], 2);
+    func_8001C8A8_main(obj->model[4], 2);
+    func_8001C8A8_main(obj->model[5], 2);
+    func_8001C8A8_main(obj->model[6], 2);
+    func_8001C8A8_main(obj->model[7], 2);
+    obj->func = func_8010815C_coconut_conk;
+}
 
 void func_80108FA0_coconut_conk(void) {
     u16 player = 0;

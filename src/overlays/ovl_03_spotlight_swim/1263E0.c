@@ -109,15 +109,16 @@ extern s8 D_8010D2F4_spotlight_swim;
 extern u32 *D_8010D2F8_spotlight_swim[3];
 extern s8 D_8010D304_spotlight_swim;
 extern SpotlightSwimUnk308 D_8010D308_spotlight_swim[];
-extern u8 D_8010D320_spotlight_swim[3];
+extern s8 D_8010D320_spotlight_swim[3];
 extern SpotlightSwimState D_8010D328_spotlight_swim;
-extern u8 D_8010D340_spotlight_swim[3];
+extern s8 D_8010D340_spotlight_swim[3];
 extern s8 D_8010D343_spotlight_swim;
 extern f32 D_8010D344_spotlight_swim;
 extern s16 D_8010D364_spotlight_swim;
 extern s8 D_8010D366_spotlight_swim;
 extern s8 D_8010D367_spotlight_swim;
 extern omObjData *D_8010D348_spotlight_swim;
+extern s16 D_8010D34C_spotlight_swim;
 extern s16 D_8010D368_spotlight_swim[4];
 extern f32 D_8010D370_spotlight_swim[2];
 extern s8 D_8010D379_spotlight_swim;
@@ -126,7 +127,7 @@ extern f32 D_8010D38C_spotlight_swim[3];
 extern s8 D_8010D398_spotlight_swim[3];
 extern s8 D_8010D39B_spotlight_swim[3];
 extern s8 D_8010D3CC_spotlight_swim;
-extern u8 D_8010D3CD_spotlight_swim;
+extern s8 D_8010D3CD_spotlight_swim;
 extern s8 D_8010D3AC_spotlight_swim;
 extern f32 D_8010D3A0_spotlight_swim[3];
 extern s8 D_8010D323_spotlight_swim[3];
@@ -136,7 +137,7 @@ extern f32 D_8010D3C0_spotlight_swim[3];
 extern s16 D_8010D3B0_spotlight_swim[8];
 extern SpotlightSwimLight D_8010D3D0_spotlight_swim[6];
 extern u32 D_8010D448_spotlight_swim;
-extern u8 D_8010D44C_spotlight_swim;
+extern s8 D_8010D44C_spotlight_swim;
 extern SpotlightSwimPos2D D_8010D450_spotlight_swim[5];
 extern s8 D_8010D478_spotlight_swim;
 extern u32 D_8010D47C_spotlight_swim;
@@ -1572,7 +1573,80 @@ void func_8010C588_spotlight_swim(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_8010C5E0_spotlight_swim);
+void func_8010C5E0_spotlight_swim(omObjData *obj) {
+    switch (D_8010EE48_spotlight_swim) {
+        case 0:
+            GMesCreate(4);
+            D_8010EE48_spotlight_swim = 1;
+            D_8010D34C_spotlight_swim = 0;
+            break;
+        case 1:
+            if (GMesStatGet() == 0) {
+                D_8010EE48_spotlight_swim = 2;
+                GMesCreate(0x1A, 30, 160, 28);
+                D_8010D364_spotlight_swim = 901;
+            }
+            if (++D_8010D34C_spotlight_swim == 33) {
+                HuAudSeqPlay(0x35);
+            }
+            break;
+        case 2:
+            if (D_8010D364_spotlight_swim > 0) {
+                D_8010D364_spotlight_swim--;
+                func_8003F578_main((D_8010D364_spotlight_swim + 29) / 30);
+                if (D_8010D2F4_spotlight_swim != 7) {
+                    break;
+                }
+                D_8010EE48_spotlight_swim = 3;
+                D_8010D364_spotlight_swim = 0;
+            } else {
+                D_8010EE48_spotlight_swim = 3;
+            }
+            func_8003F5C0_main();
+            GMesCreate(0xF);
+            HuAudSeqFadeOut(120);
+            break;
+        case 3:
+            if (GMesStatGet() == 0) {
+                D_8010EE48_spotlight_swim = 4;
+                D_8010D364_spotlight_swim = 0;
+            }
+            break;
+        case 4:
+            if (++D_8010D364_spotlight_swim >= 15) {
+                if (D_8010D2F4_spotlight_swim == 7) {
+                    D_8010EE48_spotlight_swim = 6;
+                } else {
+                    D_8010EE48_spotlight_swim = 5;
+                }
+            }
+            break;
+        case 6:
+            GMesCreate(0x22, D_8010D340_spotlight_swim[0], D_8010D340_spotlight_swim[1], D_8010D340_spotlight_swim[2]);
+            GwPlayer[D_8010D320_spotlight_swim[0]].bonusCoin = 10;
+            GwPlayer[D_8010D320_spotlight_swim[1]].bonusCoin = 10;
+            GwPlayer[D_8010D320_spotlight_swim[2]].bonusCoin = 10;
+            HuAudSeqPlay(0x66);
+            D_8010D364_spotlight_swim = 15;
+            D_8010EE48_spotlight_swim = 7;
+            break;
+        case 5:
+            GMesCreate(0x16, D_8010D44C_spotlight_swim);
+            GwPlayer[D_8010D3CD_spotlight_swim].bonusCoin = 10;
+            HuAudSeqPlay(0x65);
+            D_8010D364_spotlight_swim = 35;
+            D_8010EE48_spotlight_swim = 7;
+            break;
+        case 7:
+            if (GMesStatGet() == 0) {
+                if (--D_8010D364_spotlight_swim <= 0) {
+                    WipeCreateOut(0, 20);
+                    obj->func = func_8010C550_spotlight_swim;
+                }
+            }
+            break;
+    }
+}
 
 void func_8010C900_spotlight_swim(omObjData *obj) {
     s8 i;

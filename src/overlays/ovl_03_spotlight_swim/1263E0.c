@@ -108,6 +108,10 @@ extern u8 D_8010CDAC_spotlight_swim[4][2];
 extern s8 D_8010CDB4_spotlight_swim;
 extern s16 D_8010CD28_spotlight_swim[];
 extern s16 D_8010CD48_spotlight_swim[];
+extern u8 D_8010CCFC_spotlight_swim[][2];
+extern s16 D_8010CD0C_spotlight_swim[];
+extern s16 D_8010CD2C_spotlight_swim[];
+extern u8 D_8010CD4C_spotlight_swim[];
 extern s16 D_8010CDB8_spotlight_swim[];
 extern s16 D_8010CDC0_spotlight_swim[];
 extern s8 D_8010CD50_spotlight_swim[][9];
@@ -780,7 +784,158 @@ void func_801079FC_spotlight_swim(omObjData *obj) {
     func_801069BC_spotlight_swim(obj);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_80107C10_spotlight_swim);
+void func_80107C10_spotlight_swim(omObjData *obj) {
+    s8 flags;
+    s8 farCount;
+    s8 nearCount;
+    s8 midCount;
+    s16 maxAngle;
+    s16 minAngle;
+    s16 i;
+    s16 r;
+    f32 angle;
+
+    flags = 0;
+    farCount = 0;
+    nearCount = 0;
+    midCount = 0;
+    maxAngle = 0;
+    minAngle = 540;
+    for (i = 0; i < 3; i++) {
+        angle = D_8010D3C0_spotlight_swim[i];
+        if (angle < 180.0f) {
+            angle += 360.0f;
+        }
+        if (angle < minAngle) {
+            minAngle = angle;
+        }
+        if (maxAngle < angle) {
+            maxAngle = angle;
+        }
+        if (D_8010D368_spotlight_swim[i] < 24) {
+            nearCount++;
+        }
+        if (D_8010D368_spotlight_swim[i] < 39) {
+            midCount++;
+        }
+        if (D_8010D368_spotlight_swim[i] >= 107) {
+            farCount++;
+        }
+    }
+
+    if (obj->trans.x <= -350.0f) {
+        flags |= 1;
+    } else if (obj->trans.x >= 350.0f) {
+        flags |= 2;
+    }
+    if (obj->trans.z <= -350.0f) {
+        flags |= 4;
+    } else if (obj->trans.z >= 160.0f) {
+        flags |= 8;
+    }
+
+    if (D_8010D378_spotlight_swim == 0) {
+        if (flags == 5 || flags == 6 || flags == 9 || flags == 10) {
+            D_8010D378_spotlight_swim = 1;
+            r = func_80105C8C_spotlight_swim(2);
+            switch (flags) {
+                case 5:
+                    break;
+                case 6:
+                    r += 4;
+                    break;
+                case 9:
+                    r += 6;
+                    break;
+                case 10:
+                    r += 2;
+                    break;
+            }
+            D_8010D34E_spotlight_swim = D_8010CCFC_spotlight_swim[r][0];
+            D_8010D328_spotlight_swim.unk03 = D_8010CCFC_spotlight_swim[r][1];
+        }
+    }
+
+    if (obj->trans.x >= -150.0f && obj->trans.x <= 150.0f && obj->trans.z >= -200.0f && obj->trans.z <= 10.0f) {
+        if (midCount >= 2 && D_8010D328_spotlight_swim.unk05 != 0) {
+            D_8010D378_spotlight_swim = 0;
+            D_8010D328_spotlight_swim.unk05 = 2;
+        }
+    }
+
+    if (D_8010D328_spotlight_swim.unk04 == 0) {
+        if ((midCount == 3 && nearCount == 2) || (midCount == 3 && D_8010D328_spotlight_swim.unk01 == 3)) {
+            r = func_80105C8C_spotlight_swim(250) + func_80105C8C_spotlight_swim(250);
+            if (D_8010D364_spotlight_swim >= 451) {
+                r >>= 1;
+            }
+            if (r < D_8010CD4C_spotlight_swim[D_8010D328_spotlight_swim.unk00]) {
+                D_8010D328_spotlight_swim.unk04 = 1;
+                func_80106808_spotlight_swim(obj);
+                func_80105C04_spotlight_swim(0, obj->work[0]);
+            }
+        }
+    } else if (D_8010D328_spotlight_swim.unk04 == 1) {
+        if (farCount > 0 && D_8010D328_spotlight_swim.unk00 >= 2) {
+            D_8010D328_spotlight_swim.unk04 = 2;
+            func_80106808_spotlight_swim(obj);
+            D_8010D478_spotlight_swim = 1;
+            func_80105C04_spotlight_swim(2, obj->work[0]);
+        }
+    }
+
+    switch (D_8010D328_spotlight_swim.unk05) {
+        case 0:
+            r = func_80105C8C_spotlight_swim(100);
+            if (r < 10 || D_8010D328_spotlight_swim.unk01 != 0) {
+                D_8010D328_spotlight_swim.unk05 = 1;
+            }
+            break;
+        case 1:
+            if (D_8010D378_spotlight_swim != 0) {
+                if (flags == 0) {
+                    D_8010D378_spotlight_swim = 0;
+                }
+            } else {
+                r = func_80105C8C_spotlight_swim(100);
+                if (r < 5 || D_8010D328_spotlight_swim.unk01 == 1 || D_8010D328_spotlight_swim.unk01 == 2) {
+                    D_8010D34E_spotlight_swim = func_80105C8C_spotlight_swim(15);
+                    D_8010D328_spotlight_swim.unk03 = func_80105C8C_spotlight_swim(2);
+                } else if (r >= 85) {
+                    D_8010D328_spotlight_swim.unk05 = 0;
+                }
+                if (obj->trans.x <= -420.0f || obj->trans.x >= 420.0f) {
+                    D_8010D328_spotlight_swim.unk08 = func_80105C8C_spotlight_swim(2) == 0 ? 180.0f : 0.0f;
+                    D_8010D328_spotlight_swim.unk05 = 0;
+                }
+                if (obj->trans.z <= -420.0f || obj->trans.z >= 230.0f) {
+                    D_8010D328_spotlight_swim.unk08 = func_80105C8C_spotlight_swim(2) ? 90.0f : 270.0f;
+                    D_8010D328_spotlight_swim.unk05 = 0;
+                }
+            }
+            angle = func_801059BC_spotlight_swim(
+                atan2df(D_8010CD0C_spotlight_swim[D_8010D34E_spotlight_swim] - obj->trans.x,
+                        D_8010CD2C_spotlight_swim[D_8010D34E_spotlight_swim] - obj->trans.z),
+                0.0f);
+            if (D_8010D328_spotlight_swim.unk03 != 0) {
+                D_8010D328_spotlight_swim.unk08 = func_801059BC_spotlight_swim(angle, 90.0f);
+            } else {
+                D_8010D328_spotlight_swim.unk08 = func_801059BC_spotlight_swim(angle, 270.0f);
+            }
+            break;
+        case 2:
+            D_8010D328_spotlight_swim.unk08 = ((minAngle + maxAngle + 360) >> 1) % 360;
+            if (obj->trans.x <= -420.0f || obj->trans.x >= 420.0f) {
+                D_8010D328_spotlight_swim.unk08 = func_80105C8C_spotlight_swim(2) == 0 ? 180.0f : 0.0f;
+                D_8010D328_spotlight_swim.unk05 = 0;
+            }
+            if (obj->trans.z <= -420.0f || obj->trans.z >= 230.0f) {
+                D_8010D328_spotlight_swim.unk08 = func_80105C8C_spotlight_swim(2) ? 90.0f : 270.0f;
+                D_8010D328_spotlight_swim.unk05 = 0;
+            }
+            break;
+    }
+}
 
 void func_8010846C_spotlight_swim(omObjData *obj) {
     if (D_8010EE48_spotlight_swim != 2) {

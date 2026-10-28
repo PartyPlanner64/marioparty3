@@ -72,6 +72,7 @@ extern SpotlightSwimUnk308 D_8010D308_spotlight_swim[];
 extern u8 D_8010D320_spotlight_swim[3];
 extern u8 D_8010D329_spotlight_swim[];
 extern u8 D_8010D340_spotlight_swim[3];
+extern f32 D_8010D338_spotlight_swim[2];
 extern s8 D_8010D343_spotlight_swim;
 extern s16 D_8010D364_spotlight_swim;
 extern s8 D_8010D366_spotlight_swim;
@@ -241,7 +242,38 @@ void func_801061A0_spotlight_swim(void) {
     D_8010D480_spotlight_swim[0].obj = omAddObj(0x1F4, 1, 0, -1, func_80106150_spotlight_swim);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_801061DC_spotlight_swim);
+void func_801061DC_spotlight_swim(omObjData *obj) {
+    SpotlightSwimData *data = &D_8010D480_spotlight_swim[1];
+
+    if (++data->unk06 >= 30) {
+        data->unk04++;
+        data->unk06 = 0;
+    }
+
+    switch (data->unk04 & 1) {
+        case 0:
+            obj->trans.y += 0.5f;
+            obj->trans.z -= 0.5f;
+            if (D_8010D343_spotlight_swim != 7) {
+                D_8010D338_spotlight_swim[0] += 0.5f;
+                D_8010D348_spotlight_swim->trans.z -= 0.5f;
+            }
+            break;
+        case 1:
+            obj->trans.y -= 0.5f;
+            obj->trans.z += 0.5f;
+            if (D_8010D343_spotlight_swim != 7) {
+                D_8010D338_spotlight_swim[0] -= 0.5f;
+                D_8010D348_spotlight_swim->trans.z += 0.5f;
+            }
+            break;
+    }
+
+    obj->trans.x -= 4.0f;
+    if (obj->trans.x == -254.0f) {
+        obj->trans.x = 250.0f;
+    }
+}
 
 void func_80106350_spotlight_swim(omObjData *obj) {
     obj->model[0] = func_8000B108_main(0x240001, 0xA9);

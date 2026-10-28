@@ -2,6 +2,7 @@
 #include "overlays/minigame.h"
 #include "game/sprite.h"
 #include "mallocblock.h"
+#include "game/pause.h"
 
 #define PLAYER_WORK(obj) ((LockedOutPlayerWork *)((func_800E1BA8_minigame_ObjData *)(obj)->data)->unk158)
 
@@ -34,10 +35,11 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ Vec pos;
-    /* 0x0C */ u8 unk0C[0x10];
+    /* 0x0C */ Vec unk0C;
+    /* 0x18 */ u16 unk18;
     /* 0x1C */ s32 unk1C;
     /* 0x20 */ u8 unk20;
-    /* 0x21 */ s8 unk21;
+    /* 0x21 */ u8 unk21;
     /* 0x22 */ u8 unk22;
     /* 0x23 */ u8 unk23;
     /* 0x24 */ u8 unk24;
@@ -51,10 +53,12 @@ typedef struct {
     /* 0x2C */ u16 unk2C;
     /* 0x2E */ u16 unk2E;
     /* 0x30 */ u16 unk30;
-    /* 0x32 */ u8 unk32[0xA];
+    /* 0x32 */ u16 unk32;
+    /* 0x34 */ u8 unk34[8];
     /* 0x3C */ s16 unk3C;
     /* 0x3E */ s16 unk3E;
-    /* 0x40 */ u8 unk40[0xC];
+    /* 0x40 */ s16 unk40;
+    /* 0x42 */ u8 unk42[0xA];
 } LockedOutPlayerWork; // Size 0x4C
 
 typedef struct {
@@ -65,6 +69,7 @@ extern u8 D_8010A179_locked_out[][2];
 extern u8 D_8010A180_locked_out;
 extern Vec D_8010A184_locked_out[];
 extern f32 D_8010A1B4_locked_out[];
+extern Vec D_8010A1C4_locked_out[];
 extern u32 D_8010A1E8_locked_out;
 extern s32 D_800A178C_main[][6];
 extern f32 D_8010A680_locked_out[4][4];
@@ -136,6 +141,9 @@ void func_80109E88_locked_out(s16 model, char *hook, s16 time, Vec *pos);
 void func_8001EF6C_main(s16, s16, char *);
 void func_800E6F0C_minigame(s32);
 void func_80109CDC_locked_out(void);
+void func_800DDD94_minigame(omObjData *);
+void func_800E5138_minigame(omObjData *);
+void func_80088910_main(HuMtx4F mtx, f32 r, f32 p, f32 h);
 
 void func_801059A0_locked_out(void) {
     omObjData *obj;
@@ -743,7 +751,318 @@ void func_80107844_locked_out(omObjData *object, s32 arg1, s32 arg2, u16 player,
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80107ABC_locked_out);
+void func_80107ABC_locked_out(omObjData *object) {
+    LockedOutCharMotions motions = D_8010A298_locked_out;
+    func_800E1BA8_minigame_ObjData *data;
+    LockedOutPlayerWork *work;
+    LockedOutBlockWork *blockWork;
+    LockedOutUnkStruct *entry;
+    omObjData *block;
+    Vec pos;
+    u32 status;
+    u16 buttons;
+    u8 pad;
+    s32 canGrab;
+    s32 i;
+    f32 angle;
+    f32 radius;
+    f32 time;
+    s32 temp;
+
+    data = object->data;
+    work = data->unk158;
+    pad = data->unk57;
+    canGrab = FALSE;
+    if (D_8010A674_locked_out != 2) {
+        D_800D20A1_main[pad] = 0;
+        D_800CBB6E_main[pad] = 0;
+        D_800D5558_main[pad] = 0;
+        D_800CDA7C_main[pad] = 0;
+    }
+    switch (D_8010A674_locked_out) {
+        case 0:
+            work->unk3E = 0;
+            work->unk3C = 0;
+            work->unk40 = 0;
+            work->unk32 = 0;
+            work->unk30 = 0;
+            work->unk2E = 0;
+            work->unk2C = 0;
+            work->unk28 = 0;
+            break;
+        case 1:
+            break;
+        case 2:
+            if (work->unk27 != 0 && work->unk3C == 0) {
+                D_800D20A1_main[pad] = 0;
+                D_800CBB6E_main[pad] = 0;
+                D_800D5558_main[pad] = 0;
+                D_800CDA7C_main[pad] = 0;
+                func_80108A90_locked_out(object);
+            }
+            break;
+        case 3:
+            if (work->unk25 != 0) {
+                canGrab = TRUE;
+            }
+            if (work->unk23 == 0) {
+                func_800E5690_minigame(object, 0xF);
+            }
+            D_8010A180_locked_out = 0;
+            break;
+        case 4:
+            if (work->unk23 == 0 && work->unk40 == 0) {
+                func_8004AC5C_main(work->unk21 + 0x287, data->unk59);
+                work->unk40 = 1;
+            }
+            if (WipeStatGet() != 0) {
+                break;
+            }
+            if (work->unk23 == 0) {
+                func_8001C258_main(object->model[0], 4, 4);
+                func_8001C258_main(object->model[1], 4, 4);
+                data->unk50 |= 0x600;
+                work->unk3C = 6;
+                return;
+            }
+            object->trans.x = D_8010A1C4_locked_out[D_8010A180_locked_out].x;
+            object->trans.y = D_8010A1C4_locked_out[D_8010A180_locked_out].y;
+            object->trans.z = D_8010A1C4_locked_out[D_8010A180_locked_out++].z;
+            data->unk3C = 180.0f;
+            data->unk40 = 0.0f;
+            data->unk50 &= ~0x200;
+            work->unk23 = 0;
+            work->unk3E = 0;
+            work->unk3C = 0;
+            work->unk32 = 0;
+            work->unk30 = 0;
+            work->unk2E = 0;
+            work->unk2C = 0;
+            work->unk28 = 0;
+            break;
+        case 5:
+            data->unk3C = 180.0f;
+            break;
+        case 6:
+            if (work->unk23 != 0) {
+                if (work->unk40 == 0) {
+                    work->unk40 = 1;
+                    func_8004AC5C_main(0x3D7, data->unk59);
+                }
+                func_8001C92C_main(D_8010A638_locked_out[work->unk3E].unk0E, 1.0f);
+                D_8010A638_locked_out[work->unk3E].unk0C = 1;
+                data->unk3C = 0.0f;
+                func_8001C92C_main(object->model[0], 1.0f);
+            }
+            if (work->unk3C != 6) {
+                func_8001C258_main(object->model[0], 4, 4);
+                temp = object->model[0];
+                object->model[0] = object->model[9];
+                object->model[9] = temp;
+                func_8001C258_main(object->model[0], 4, 0);
+                func_800E5690_minigame(object, 0);
+            }
+            work->unk3C = 6;
+            break;
+        case 7:
+            if (work->unk23 == 1) {
+                func_80045ED0_main(work->unk1C);
+                GwPlayer[data->unk59].bonusCoin += 10;
+                GwPlayer[data->unk59].bonusCoin = work->unk24;
+                func_800E5690_minigame(object, 0xD);
+                func_80017954_main(object->model[0], 2, motions.values[work->unk21], work->unk29);
+                work->unk23++;
+            } else if (work->unk23 == 0) {
+                GwPlayer[data->unk59].bonusCoin = work->unk24;
+                work->unk23--;
+            }
+            break;
+        case 8:
+            if (data != NULL) {
+                HuMemFree(data->unk158);
+                object->data = NULL;
+                object->func = NULL;
+            }
+            return;
+        case 9:
+            return;
+    }
+
+    buttons = D_800D5558_main[pad];
+    status = func_800E4A90_minigame(object);
+    work->unk0C.x = object->trans.x;
+    work->unk0C.y = object->trans.y;
+    work->unk0C.z = object->trans.z;
+    if (work->unk25 != 0) {
+        D_800D5558_main[pad] &= ~0x4000;
+    } else {
+        HmfModelData[object->model[0]].unk06 = 0xFF;
+    }
+    entry = &D_8010A638_locked_out[work->unk3E];
+    switch (work->unk3C) {
+        case 0:
+            if (status & 0x200000) {
+                D_800D20A1_main[pad] = 0;
+                D_800CBB6E_main[pad] = 0;
+                D_800D5558_main[pad] = 0;
+                D_800CDA7C_main[pad] = 0;
+                data->unk40 = 0.0f;
+                time = HmfModelData[object->model[0]].unk40;
+                if (time >= D_800CCF58_main[HmfModelData[object->model[0]].unk02].unk02) {
+                    work->unk26 = 0;
+                    if (work->unk25 != 0) {
+                        func_8001EED8_main(object->model[0], object->motion[0x26], 0);
+                    }
+                } else if (work->unk25 == 0) {
+                    if (__builtin_fabs(time - 15.0) <= 1.0) {
+                        canGrab = TRUE;
+                    }
+                }
+            } else {
+                work->unk26 = 0;
+            }
+            if (buttons & 0x8000) {
+                if (work->unk25 == 0) {
+                    if (work->unk26 == 0 && func_800E5690_minigame(object, 0x27)) {
+                        func_8001C6A8_main(object->model[0], 0.0f);
+                        work->unk26 = 1;
+                    }
+                } else {
+                    canGrab = TRUE;
+                }
+            }
+            if ((status & 0x8000) && work->unk25 != 0) {
+                canGrab = TRUE;
+            }
+            func_800DDD94_minigame(object);
+            if (work->unk25 != 0) {
+                for (i = 0; i < 3; i++) {
+                    if (D_8010A638_locked_out[i].unk10 == 0) {
+                        continue;
+                    }
+                    block = D_8010A610_locked_out[work->unk25 - 1];
+                    blockWork = block->data;
+                    if (blockWork->unk02 != D_8010A67A_locked_out) {
+                        continue;
+                    }
+                    if (func_80109E34_locked_out(&object->trans, &D_8010A638_locked_out[i].pos) >
+                        data->unk48 + 20.0) {
+                        continue;
+                    }
+                    func_8001C258_main(D_8010A638_locked_out[i].unk0E, 4, 0);
+                    func_8001C258_main(D_8010A638_locked_out[i].unk0D, 4, 4);
+                    Hu3DModelPosSet(D_8010A638_locked_out[i].unk0E, D_8010A638_locked_out[i].pos.x,
+                                    D_8010A638_locked_out[i].pos.y, D_8010A638_locked_out[i].pos.z);
+                    canGrab = TRUE;
+                    func_8001C92C_main(D_8010A638_locked_out[i].unk0F, 1.0f);
+                    func_8001C258_main(D_8010A638_locked_out[i].unk0F, 4, 0);
+                    Hu3DModelPosSet(D_8010A638_locked_out[i].unk0F, D_8010A638_locked_out[i].pos.x,
+                                    D_8010A638_locked_out[i].pos.y + 200.0, D_8010A638_locked_out[i].pos.z);
+                    func_8004AC5C_main(0x3D9, 4);
+                    D_8010A638_locked_out[i].unk10 = 0;
+                    work->unk23 = 1;
+                    work->unk3C = 1;
+                    work->unk3E = i;
+                    data->unk50 |= 0x200;
+                    func_8001C258_main(block->model[0], 4, 4);
+                    blockWork->unk00 = 4;
+                }
+            }
+            func_80109858_locked_out(object, TRUE, canGrab);
+            func_80106FBC_locked_out(object);
+
+            pos.x = -610.5f;
+            pos.y = 0.0f;
+            pos.z = -607.0f;
+            if (func_80109E34_locked_out(&pos, &object->trans) <= data->unk48 + 90.0) {
+                angle = func_80109DBC_locked_out(pos.x - object->trans.x, pos.z - object->trans.z);
+                object->trans.x = pos.x - (data->unk48 + 90.0) * sindf(angle);
+                object->trans.z = pos.z - (data->unk48 + 90.0) * cosdf(angle);
+            }
+
+            pos.x = 610.5f;
+            pos.y = 0.0f;
+            pos.z = -607.0f;
+            if (func_80109E34_locked_out(&pos, &object->trans) <= data->unk48 + 80.0) {
+                angle = func_80109DBC_locked_out(pos.x - object->trans.x, pos.z - object->trans.z);
+                object->trans.x = pos.x - (data->unk48 + 90.0) * sindf(angle);
+                object->trans.z = pos.z - (data->unk48 + 90.0) * cosdf(angle);
+            }
+            break;
+        case 1:
+            func_800E5690_minigame(object, 1);
+            data->unk3C = 180.0f;
+            angle = func_80109DBC_locked_out(object->trans.x - (entry->pos.x + data->unk48 * 1.75),
+                                             object->trans.z - (entry->pos.z + data->unk48 * 1.4));
+            object->trans.x = work->unk0C.x - sindf(angle) * 4.0;
+            object->trans.z = work->unk0C.z - cosdf(angle) * 4.0;
+            pos.x = entry->pos.x + data->unk48 * 1.75;
+            pos.y = entry->pos.y;
+            pos.z = entry->pos.z + data->unk48 * 1.4;
+            if (func_80109E34_locked_out(&object->trans, &pos) < 5.0) {
+                func_8001C92C_main(entry->unk0E, 0.5f);
+                func_8004AC5C_main(0x3D7, data->unk59);
+                entry->unk0C = 1;
+                data->unk3C = 180.0f;
+                work->unk3C++;
+            }
+            break;
+        case 2:
+            if (data->unk3C < 250.0) {
+                data->unk3C += 6.0;
+            } else {
+                func_800E5690_minigame(object, 0);
+            }
+            if (HmfModelData[entry->unk0E].unk40 >= D_800CCF58_main[HmfModelData[entry->unk0E].unk02].unk02) {
+                work->unk3C++;
+                work->unk40 = 30;
+            }
+            break;
+        case 3:
+            func_800E5690_minigame(object, 1);
+            if (data->unk3C > 180.0) {
+                data->unk3C += -3.0;
+            }
+            angle = data->unk3C;
+            if (work->unk21 == 4 || work->unk21 == 5) {
+                radius = 10.2f;
+            } else {
+                radius = 6.8f;
+            }
+            object->trans.x = radius * sindf(angle) + work->unk0C.x;
+            object->trans.z = radius * cosdf(angle) + work->unk0C.z;
+            if (--work->unk40 == 0) {
+                func_8004AC5C_main(0x3D8, data->unk59);
+                work->unk3C++;
+            }
+            break;
+        case 4:
+            func_8001C92C_main(entry->unk0E, 0.0f);
+            func_8001C6A8_main(entry->unk0E, HmfModelData[entry->unk0E].unk40 - 1.5);
+            if (HmfModelData[entry->unk0E].unk40 < 0.0) {
+                func_8001C6A8_main(entry->unk0E, 0.0f);
+                omVibrate(data->unk59, 2, 3, 10);
+                entry->unk0C = 0;
+                work->unk3C++;
+            }
+            break;
+        case 5:
+            return;
+        case 6:
+            if (work->unk23 == 0) {
+                func_80109858_locked_out(object, TRUE, canGrab);
+                func_80106FBC_locked_out(object);
+            }
+            break;
+    }
+    work->unk18 = status;
+    if (work->unk3C != 0) {
+        func_80088910_main(HmfModelData[object->model[0]].mtx, 0.0f, data->unk3C, 0.0f);
+        func_800E4E30_minigame(object);
+        func_800E5138_minigame(object);
+    }
+    Hu3DModelPosSet(object->model[1], object->trans.x, 1.0f, object->trans.z);
+}
 
 void func_801089F8_locked_out(omObjData *object, f32 x, f32 y, f32 z) {
     s32 i;

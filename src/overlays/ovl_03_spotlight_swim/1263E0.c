@@ -664,7 +664,56 @@ s32 func_8010BD5C_spotlight_swim(void) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_8010BDE0_spotlight_swim);
+void func_8010BDE0_spotlight_swim(s32 x, s32 y, u32 r, u32 g, u32 b) {
+    u32 *buf = D_8010D2F8_spotlight_swim[D_8010D2F0_spotlight_swim];
+    s32 col;
+    s32 row;
+    s32 i;
+    s32 j;
+    s32 offset;
+    u8 value;
+    u32 pixel;
+    u32 scale;
+    u32 red;
+    u32 green;
+    u32 blue;
+    u32 addRed;
+    u32 addGreen;
+    u32 addBlue;
+    u32 alpha;
+    s32 xEnd;
+    s32 yEnd;
+
+    x /= 2;
+    y /= 2;
+    xEnd = x + 32;
+    yEnd = y + 32;
+    for (row = y, i = 0; row < yEnd; row++, i++) {
+        offset = row * 160;
+        for (col = x, j = 0; col < xEnd; col++, j++) {
+            value = D_8010CDC8_spotlight_swim[i][j];
+            if (value == 15) {
+                continue;
+            }
+            pixel = *(buf + col + offset);
+            red = pixel >> 24;
+            green = (pixel >> 16) & 0xFF;
+            scale = 256 - (value << 4);
+            addRed = (r * scale) >> 8;
+            addGreen = (g * scale) >> 8;
+            addBlue = (b * scale) >> 8;
+            red = (red + addRed) & 0xFF;
+            green = (green + addGreen) & 0xFF;
+            blue = addBlue & 0xFF;
+            if (red + green + blue == 765) {
+                *(buf + col + offset) = 0;
+                continue;
+            }
+            alpha = (765 - (red + green + blue)) * D_8010D47C_spotlight_swim / 765;
+            *(buf + col + offset) = (red << 24) + (green << 16) + (blue << 8) + alpha;
+        }
+    }
+}
 
 void func_8010BFD0_spotlight_swim(u32 *buf, s32 x, s32 y) {
     s32 col;

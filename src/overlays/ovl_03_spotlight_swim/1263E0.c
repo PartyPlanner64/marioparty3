@@ -128,6 +128,10 @@ extern s8 D_8010D39B_spotlight_swim[3];
 extern s8 D_8010D3CC_spotlight_swim;
 extern u8 D_8010D3CD_spotlight_swim;
 extern s8 D_8010D3AC_spotlight_swim;
+extern f32 D_8010D3A0_spotlight_swim[3];
+extern s8 D_8010D323_spotlight_swim[3];
+extern s32 D_800A178C_main[][6];
+extern s32 D_800A1790_main[][6];
 extern f32 D_8010D3C0_spotlight_swim[3];
 extern s16 D_8010D3B0_spotlight_swim[8];
 extern SpotlightSwimLight D_8010D3D0_spotlight_swim[6];
@@ -168,6 +172,8 @@ s16 func_8002C834_main(HmfData *, char *);
 void func_8010AE9C_spotlight_swim(omObjData *);
 void func_80106BC8_spotlight_swim(omObjData *);
 void func_8010CB78_spotlight_swim(void);
+void func_80088800_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
+void func_80109F60_spotlight_swim(omObjData *);
 
 void func_801059A0_spotlight_swim(void) {
     func_8010CB78_spotlight_swim();
@@ -1096,7 +1102,53 @@ void func_80109E08_spotlight_swim(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_80109F60_spotlight_swim);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_8010A328_spotlight_swim);
+void func_8010A328_spotlight_swim(omObjData *obj) {
+    s32 temp = (s8)obj->work[1];
+    s8 index = temp;
+    u16 chr = GwPlayer[obj->work[0]].chr;
+    f32 unused[2]; // Unused stack space retained from the original function.
+
+    obj->model[0] = func_8000B108_main(D_800A178C_main[chr][0] | D_800A1790_main[chr][0], 0x2B9);
+    func_8000B460_main(obj, 0, func_80017BB8_main(chr, 0x5C));
+    func_8000B460_main(obj, 1, func_80017BB8_main(chr, 0x5B));
+    func_8000B460_main(obj, 2, func_80017BB8_main(chr, 0x5A));
+    func_8000B460_main(obj, 4, func_80017BB8_main(chr, 0x36));
+    func_8000B460_main(obj, 5, func_80017BB8_main(chr, 1));
+    func_8000B460_main(obj, 6, func_80017BB8_main(chr, 0));
+    func_8000B460_main(obj, 3, func_80017BB8_main(chr, 0x2F));
+    func_80105CE0_spotlight_swim(obj, 0, 2);
+    func_8001C92C_main(obj->model[0], 0);
+    obj->model[1] = func_8000B0A0_main(0, 0xC9);
+    func_8001C2FC_main(obj->model[1], 0x80000000, 0);
+    func_8001C448_main(obj->model[1]);
+    func_8001C514_main(obj->model[1]);
+    func_80088800_main(HmfModelData[obj->model[1]].mtx, 0, 0, 0);
+    func_8001C8A8_main(obj->model[0], 1);
+    func_8001C8A8_main(obj->model[1], 1);
+
+    switch (D_8010CCC0_spotlight_swim[D_8010D3AC_spotlight_swim][temp]) {
+        case 0:
+            obj->trans.x = -360.0f;
+            break;
+        case 1:
+            obj->trans.x = 0.0f;
+            break;
+        case 2:
+            obj->trans.x = 360.0f;
+            break;
+    }
+
+    D_8010D3A0_spotlight_swim[index] = obj->trans.x;
+    obj->trans.y = 0.0f;
+    obj->trans.z = 580.0f;
+    Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
+    Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
+    obj->rot.x = obj->rot.z = 0.0f;
+    obj->rot.y = 180.0f;
+    Hu3DModelRotSet(obj->model[0], obj->rot.x, obj->rot.y, obj->rot.z);
+    D_8010D323_spotlight_swim[index] = 0;
+    obj->func = func_80109F60_spotlight_swim;
+}
 
 void func_8010A670_spotlight_swim(void) {
     u16 playerIndex = 0;

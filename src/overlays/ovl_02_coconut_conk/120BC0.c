@@ -100,6 +100,7 @@ extern s16 D_8010B1E0_coconut_conk;
 extern s16 D_8010B1E6_coconut_conk;
 extern s16 D_8010CBB8_coconut_conk;
 extern u8 D_8010CBBA_coconut_conk;
+extern s32 D_8010AFD0_coconut_conk[];
 extern u8 D_8010CBBB_coconut_conk;
 extern s16 D_8010CBBC_coconut_conk;
 extern u8 D_8010CBBE_coconut_conk;
@@ -780,11 +781,14 @@ void func_801090C4_coconut_conk(omObjData *arg0) {
     }
 }
 
+void func_801095C0_coconut_conk(omObjData *);
+void func_801095C8_coconut_conk(omObjData *);
+
 void func_801095A4_coconut_conk(omObjData *arg0) {
     func_801090C4_coconut_conk(arg0);
 }
 
-void func_801095C0_coconut_conk(void) {
+void func_801095C0_coconut_conk(omObjData *arg0) {
 }
 
 #ifdef NON_MATCHING
@@ -875,7 +879,102 @@ void func_801095C8_coconut_conk(omObjData *arg0) {
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_801095C8_coconut_conk);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_80109940_coconut_conk);
+void func_80109940_coconut_conk(omObjData *arg0) {
+    func_800E1BA8_minigame_ObjData *works[3];
+    CoconutConkData *datas[3];
+    omObjData *objs[3];
+    CoconutConkData *data = &D_8010BD48_coconut_conk[arg0->work[1]];
+    func_800E1BA8_minigame_ObjData *work = arg0->data;
+    s16 i;
+
+    if (D_8010B1C8_coconut_conk != 2) {
+        func_80105B04_coconut_conk(arg0->work[0]);
+    }
+    data->unk18 = arg0->trans.x;
+    switch (D_8010B1C8_coconut_conk) {
+        case 2:
+            if (D_8010B1E0_coconut_conk > 0 && D_8010B1CC_coconut_conk == 0) {
+                if (!(GwPlayer[arg0->work[0]].stat & 1)) {
+                    func_801095C0_coconut_conk(arg0);
+                } else {
+                    func_801095A4_coconut_conk(arg0);
+                }
+            }
+            func_801095C8_coconut_conk(arg0);
+            break;
+        case 3:
+            if (arg0->trans.y > 512.0f) {
+                if (++data->unk0C > 30000) {
+                    data->unk0C = 0;
+                }
+                if (data->unk0C < 70) {
+                    D_800CBB6E_main[arg0->work[3]] = -40;
+                } else if (data->unk0C < 140) {
+                    D_800CBB6E_main[arg0->work[3]] = 40;
+                }
+                if (data->unk0C >= 140) {
+                    func_801095A4_coconut_conk(arg0);
+                }
+                func_801095C8_coconut_conk(arg0);
+                break;
+            }
+            if (work->unk3C != 0.0f) {
+                D_800CBB6E_main[arg0->work[3]] = 0;
+                D_800D20A1_main[arg0->work[3]] = -40;
+            }
+            for (i = 0; i < 3; i++) {
+                datas[i] = &D_8010BD48_coconut_conk[i];
+                objs[i] = datas[i]->unk00;
+                works[i] = objs[i]->data;
+            }
+            if (objs[0]->trans.y <= 512.0f && works[0]->unk3C == 0.0f &&
+                (works[0]->unk50 == 0 || works[0]->unk50 == 0x80) && works[0]->unk5C == 2 &&
+                objs[1]->trans.y <= 512.0f && works[1]->unk3C == 0.0f &&
+                (works[1]->unk50 == 0 || works[1]->unk50 == 0x80) && works[1]->unk5C == works[0]->unk5C &&
+                objs[2]->trans.y <= 512.0f && works[2]->unk3C == 0.0f &&
+                (works[2]->unk50 == 0 || works[2]->unk50 == 0x80) && works[2]->unk5C == works[1]->unk5C) {
+                D_8010CBBA_coconut_conk = 3;
+            }
+            func_800DDD94_minigame(arg0);
+            break;
+        case 4:
+            if (data->unk0E == 0) {
+                if (D_8010B1CC_coconut_conk == 0) {
+                    func_800E5690_minigame(arg0, 14);
+                    data->unk0E = 1;
+                } else {
+                    func_800E5690_minigame(arg0, 13);
+                    data->unk0E = 1;
+                    func_80045ED0_main((D_8010AFD0_coconut_conk[GwPlayer[arg0->work[0]].chr] << 16) | 0x2F);
+                }
+            }
+            break;
+        case 0:
+        case 1:
+        case 5:
+            break;
+    }
+    if (D_8010B1C8_coconut_conk != 2 && D_8010B1C8_coconut_conk != 3) {
+        func_800DDD94_minigame(arg0);
+    }
+    if (arg0->trans.x < -450.0f) {
+        arg0->trans.x = -450.0f;
+    }
+    if (arg0->trans.x > 450.0f) {
+        arg0->trans.x = 450.0f;
+    }
+    if (work->unk53[1] != -1) {
+        arg0->trans.x = data->unk18;
+    }
+    func_8001C258_main(arg0->model[1], 4, 4);
+    if (data->unk16 > 0) {
+        data->unk16++;
+    }
+    if (data->unk16 >= 4) {
+        func_8004AC98_main(0x313, arg0->work[0]);
+        data->unk16 = 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_80109DEC_coconut_conk);
 

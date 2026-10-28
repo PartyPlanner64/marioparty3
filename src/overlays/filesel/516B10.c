@@ -1193,6 +1193,7 @@ void func_80108C34_filesel(void) {
         HuVecCopyXYZ(&end, 160.0f, 192.0f, 0.0f);
         position.x = (end.x - start.x) * progress + start.x;
         position.y = (end.y - start.y) * progress + start.y;
+        (void)position;
         func_80107608_filesel(4, 160.0f, (96.0f - progress * 96.0f) + 208.0f);
         HuPrcVSleep();
     }
@@ -1214,6 +1215,7 @@ void func_80108D74_filesel(void) {
         HuVecCopyXYZ(&end, 160.0f, 192.0f, 0.0f);
         position.x = (end.x - start.x) * progress + start.x;
         position.y = (end.y - start.y) * progress + start.y;
+        (void)position;
         func_80107608_filesel(4, 160.0f, (96.0f - progress * 96.0f) + 208.0f);
         HuPrcVSleep();
     }

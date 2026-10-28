@@ -131,6 +131,7 @@ void func_80109B9C_hand_line_sinker(omObjData *obj);
 void func_8010689C_hand_line_sinker(omObjData *obj);
 void func_80107B24_hand_line_sinker(omObjData *obj);
 void func_80107420_hand_line_sinker(omObjData *obj, s8 *stickX, s8 *stickY, u16 *btn);
+void func_80108880_hand_line_sinker(omObjData *obj, s8 *stickX, s8 *stickY, u16 *btn);
 f32 func_801092B8_hand_line_sinker(s8 stickX, s8 stickY);
 void func_801093A4_hand_line_sinker(omObjData *obj);
 void func_8010BA64_hand_line_sinker(void);

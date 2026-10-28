@@ -18,6 +18,7 @@ typedef struct FishingLine {
     /* 0x28 */ Gfx *gfx[8];
 } FishingLine; // sizeof 0x48
 
+FishingLine *func_8010BA80_hand_line_sinker(u8 r, u8 g, u8 b);
 void func_8010BE6C_hand_line_sinker(FishingLine *line);
 void func_8010B5EC_hand_line_sinker(CameraPreset *preset, CameraPreset *to, s16 duration);
 

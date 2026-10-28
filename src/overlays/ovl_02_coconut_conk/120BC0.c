@@ -1,4 +1,5 @@
 #include "common.h"
+#include "game/pause.h"
 #include "overlays/minigame.h"
 #include "mallocblock.h"
 #include "math.h"

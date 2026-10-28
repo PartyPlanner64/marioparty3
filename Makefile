@@ -249,6 +249,7 @@ NOP_OBJECTS := \
 	build/src/overlays/msetup/501C00.c.o \
 	build/src/sprput.c.o \
 	build/src/wipe.c.o \
+	build/src/overlays/ovl_03_spotlight_swim/1263E0.c.o \
 	build/src/overlays/ovl_05_crazy_cogs/131C10.c.o \
 	build/src/overlays/ovl_3E_dorrie_dip/2DC4D0.c.o \
 	build/src/6B050.c.o \

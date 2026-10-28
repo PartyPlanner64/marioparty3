@@ -318,9 +318,6 @@ void func_80106790_spotlight_swim(omObjData *obj) {
     obj->work[2] = (obj->work[2] + 1) % 10;
 }
 
-// TODO: only works with -Wa,--vr4300mul-off. The assembler inserts a nop between the sindf call's
-// delay slot and the following mul.s, which the target does not have.
-#ifdef NON_MATCHING
 void func_80106808_spotlight_swim(omObjData *obj) {
     SpotlightSwimData *data;
     f32 angle;
@@ -343,9 +340,6 @@ void func_80106808_spotlight_swim(omObjData *obj) {
     }
     Hu3DModelPosSet(obj->model[5], data->unk44.x, -200.0f, data->unk44.z);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_80106808_spotlight_swim);
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_801069BC_spotlight_swim);
 

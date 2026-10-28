@@ -2,6 +2,7 @@
 #include "overlays/minigame.h"
 #include "mallocblock.h"
 #include "math.h"
+#include "game/pause.h"
 
 typedef struct {
     /* 0x00 */ omObjData *obj;
@@ -92,6 +93,7 @@ typedef struct {
 } SpotlightSwimState; // sizeof 0x18
 
 extern s8 D_8010CCC0_spotlight_swim[][3];
+extern s32 D_8010CCD4_spotlight_swim[8];
 extern s16 D_8010CCF4_spotlight_swim[4];
 extern u8 D_8010CDA8_spotlight_swim[];
 extern u8 D_8010CDAC_spotlight_swim[4][2];
@@ -466,7 +468,53 @@ void func_801069BC_spotlight_swim(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_80106BC8_spotlight_swim);
+void func_80106BC8_spotlight_swim(omObjData *obj) {
+    if (D_8010D2F4_spotlight_swim == 7) {
+        if (D_8010D343_spotlight_swim != 5) {
+            func_80105D4C_spotlight_swim(obj, 5, 0, 15, 2);
+            func_8001C92C_main(obj->model[0], 1.0f);
+            D_8010D343_spotlight_swim = 5;
+            if (obj->trans.x <= -440.0f) {
+                obj->trans.x += 25.0f;
+            }
+            if (obj->trans.x >= 440.0f) {
+                obj->trans.x -= 20.0f;
+            }
+            if (obj->trans.z <= -440.0f) {
+                obj->trans.z += 50.0f;
+            }
+        }
+        func_80105DC8_spotlight_swim(obj);
+    } else if (D_8010EE48_spotlight_swim >= 3) {
+        if (D_8010D343_spotlight_swim < 5) {
+            func_80105D4C_spotlight_swim(obj, 6, 0, 15, 1);
+            func_8001C92C_main(obj->model[0], 1.0f);
+            D_8010D343_spotlight_swim = 8;
+            if (obj->trans.x <= -440.0f) {
+                obj->trans.x += 25.0f;
+            }
+            if (obj->trans.x >= 440.0f) {
+                obj->trans.x -= 20.0f;
+            }
+            if (obj->trans.z <= -440.0f) {
+                obj->trans.z += 50.0f;
+            }
+            if (D_8010D328_spotlight_swim.unk04 == 1) {
+                D_8010D478_spotlight_swim = 1;
+                func_80106808_spotlight_swim(obj);
+            }
+        }
+        if (D_8010D343_spotlight_swim == 8 && func_80105DC8_spotlight_swim(obj) != 0) {
+            return;
+        }
+        if (D_8010EE48_spotlight_swim == 5 && D_8010D343_spotlight_swim != 6) {
+            func_80105CE0_spotlight_swim(obj, 6, 0);
+            func_80045ED0_main((D_8010CCD4_spotlight_swim[GwPlayer[obj->work[0]].chr] << 16) | 0x2F);
+            func_8001C92C_main(obj->model[0], 1.0f);
+            D_8010D343_spotlight_swim = 6;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_80106EB0_spotlight_swim);
 

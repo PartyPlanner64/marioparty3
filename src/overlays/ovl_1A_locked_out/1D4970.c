@@ -1,12 +1,28 @@
 #include "common.h"
 #include "overlays/minigame.h"
 #include "game/sprite.h"
+#include "mallocblock.h"
+
+typedef struct {
+    u8 unk00[3];
+    u8 unk03;
+    u8 unk04;
+    u8 unk05[0xAF];
+} LockedOutSetupWork;
 
 extern u32 D_8010A1E8_locked_out;
 extern f32 D_8010A680_locked_out[4][4];
 extern f32 D_8010A6B8_locked_out;
 extern f32 D_8010A6C0_locked_out[4][4];
 extern f32 D_8010A700_locked_out;
+extern omObjData *D_8010A610_locked_out[];
+extern s16 D_8010A676_locked_out;
+
+void func_800E1304_minigame(omObjData *, f32);
+void func_800E1310_minigame(omObjData *, f32);
+void func_800E131C_minigame(omObjData *, f32);
+void func_800E139C_minigame(omObjData *, f32, f32, f32, f32, f32);
+void func_800E4C88_minigame(omObjData *, u8, f32, f32, f32, f32, f32);
 
 void func_801071D8_locked_out(omObjData *object);
 
@@ -54,7 +70,20 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80106040_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80106134_locked_out);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80106424_locked_out);
+void func_80106424_locked_out(omObjData *object) {
+    LockedOutSetupWork *work;
+
+    work = HuMemAllocTag(0xB4, 0x7918);
+    object->data = work;
+    memset(work, 0, 0xB4);
+    work->unk03 = 1;
+    work->unk04 = 0;
+    func_800E131C_minigame(object, 20.0f);
+    func_800E1304_minigame(object, 0.5f);
+    func_800E1310_minigame(object, 10.0f);
+    func_800E139C_minigame(object, 0.0f, -600.0f, -615.0f, 600.0f, 665.0f);
+    object->func = NULL;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_801064E0_locked_out);
 
@@ -81,7 +110,16 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80107844_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80107ABC_locked_out);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_801089F8_locked_out);
+void func_801089F8_locked_out(omObjData *object, f32 x, f32 y, f32 z) {
+    s32 i;
+
+    for (i = 9; i < 12; i++) {
+        if (HmfModelData[object->model[i]].unk18 & 4) {
+            func_800E4C88_minigame(object, i, x, y, z, 0.0f, 0.0f);
+            return;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80108A90_locked_out);
 
@@ -100,7 +138,19 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80109444_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80109858_locked_out);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80109CDC_locked_out);
+void func_80109CDC_locked_out(void) {
+    omObjData *object;
+    s32 i;
+
+    for (i = 0; i < D_8010A676_locked_out; i++) {
+        object = D_8010A610_locked_out[i];
+        func_8001ACDC_main(object->model[0]);
+        func_8001ACDC_main(object->model[1]);
+        HuMemFree(object->data);
+        object->data = NULL;
+        omDelObj(object);
+    }
+}
 
 s32 func_80109D70_locked_out(void) {
     D_8010A1E8_locked_out = (D_8010A1E8_locked_out + (rand8() & 0xFF)) * 0x41C64E6D + 0x3039;

@@ -1,5 +1,6 @@
 #include "common.h"
 #include "math.h"
+#include "overlays/minigame.h"
 
 typedef struct {
     /* 0x00 */ omObjData *obj;
@@ -51,18 +52,33 @@ typedef struct {
     /* 0x07 */ s8 unk07;
 } SpotlightSwimUnk308; // sizeof 0x8
 
+typedef struct {
+    /* 0x00 */ f32 scissorX;
+    /* 0x04 */ f32 scissorY;
+    /* 0x08 */ f32 scissorWidth;
+    /* 0x0C */ f32 scissorHeight;
+    /* 0x10 */ Vec viewportScale;
+    /* 0x1C */ Vec viewportTranslate;
+    /* 0x28 */ f32 fov;
+} SpotlightSwimCamera; // sizeof 0x2C
+
 extern s16 D_8010CCF4_spotlight_swim[4];
+extern SpotlightSwimCamera D_8010D1D4_spotlight_swim[1];
+extern const s16 D_8010D2E0_spotlight_swim[];
 extern s32 D_8010D2F0_spotlight_swim;
 extern u8 D_8010CDC8_spotlight_swim[32][32];
 extern u32 *D_8010D2F8_spotlight_swim[3];
 extern SpotlightSwimUnk308 D_8010D308_spotlight_swim[];
 extern u8 D_8010D329_spotlight_swim[];
 extern s8 D_8010D343_spotlight_swim;
+extern s16 D_8010D364_spotlight_swim;
+extern s8 D_8010D366_spotlight_swim;
 extern omObjData *D_8010D348_spotlight_swim;
 extern f32 D_8010D380_spotlight_swim[3];
 extern f32 D_8010D38C_spotlight_swim[3];
 extern s8 D_8010D39B_spotlight_swim[3];
 extern u8 D_8010D3CD_spotlight_swim;
+extern s8 D_8010D3AC_spotlight_swim;
 extern s16 D_8010D3B0_spotlight_swim[8];
 extern u32 D_8010D448_spotlight_swim;
 extern u8 D_8010D44C_spotlight_swim;
@@ -81,8 +97,15 @@ void func_8010AAB8_spotlight_swim(omObjData *);
 void func_8010B828_spotlight_swim(omObjData *);
 void func_8010A328_spotlight_swim(omObjData *);
 void func_8010C25C_spotlight_swim(omObjData *);
+void func_80109E08_spotlight_swim(void);
+void func_8010A670_spotlight_swim(void);
+void func_8010C5E0_spotlight_swim(omObjData *);
+void func_8000B710_main(s32);
+void func_8010CB78_spotlight_swim(void);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_801059A0_spotlight_swim);
+void func_801059A0_spotlight_swim(void) {
+    func_8010CB78_spotlight_swim();
+}
 
 f32 func_801059BC_spotlight_swim(f32 arg0, f32 arg1) {
     f32 angle = arg0 + arg1;
@@ -605,13 +628,77 @@ void func_8010C588_spotlight_swim(omObjData *obj) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_8010C5E0_spotlight_swim);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_8010C900_spotlight_swim);
+void func_8010C900_spotlight_swim(omObjData *obj) {
+    s8 i;
+
+    D_8010EE48_spotlight_swim = 0;
+    D_8010D364_spotlight_swim = 0;
+    for (i = 0; i < 8; i++) {
+        D_8010D3B0_spotlight_swim[i] = -1;
+    }
+    D_8010D366_spotlight_swim = 0;
+    D_8010D3AC_spotlight_swim = func_80105C8C_spotlight_swim(6);
+    D_8010D47C_spotlight_swim = 0x98;
+    D_8010D448_spotlight_swim = 0x2000;
+    func_8010C484_spotlight_swim();
+    func_801061A0_spotlight_swim();
+    func_801063E4_spotlight_swim();
+    func_80109088_spotlight_swim();
+    func_80109E08_spotlight_swim();
+    func_8010A670_spotlight_swim();
+    func_8010ADF8_spotlight_swim();
+    func_8010C444_spotlight_swim();
+    func_8010BA30_spotlight_swim();
+    func_80106754_spotlight_swim();
+    WipeCreateIn(0xFF, 16);
+    obj->func = func_8010C5E0_spotlight_swim;
+}
 
 void func_8010CA00_spotlight_swim(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_8010CA08_spotlight_swim);
+void func_8010CA08_spotlight_swim(void) {
+    omObjData *obj;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_8010CB78_spotlight_swim);
+    obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
+    obj->work[0] = 1;
+    omSetStatBit(obj, 0xA0);
+    func_8000B5F0_main(1);
+    func_8000B710_main(1);
+    for (i = 0; i < 1; i++) {
+        ScissorSet(i, D_8010D1D4_spotlight_swim[i].scissorX, D_8010D1D4_spotlight_swim[i].scissorY,
+                   D_8010D1D4_spotlight_swim[i].scissorWidth, D_8010D1D4_spotlight_swim[i].scissorHeight);
+        ViewportSet(i, D_8010D1D4_spotlight_swim[i].viewportScale.x, D_8010D1D4_spotlight_swim[i].viewportScale.y,
+                    D_8010D1D4_spotlight_swim[i].viewportScale.z, D_8010D1D4_spotlight_swim[i].viewportTranslate.x,
+                    D_8010D1D4_spotlight_swim[i].viewportTranslate.y, D_8010D1D4_spotlight_swim[i].viewportTranslate.z);
+        Hu3DCamSetPerspective(i, D_8010D1D4_spotlight_swim[i].fov, 80.0f, 8000.0f);
+    }
+}
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", D_8010D2E0_spotlight_swim);
+void func_8010CB78_spotlight_swim(void) {
+    Hu3DAnimInit(50);
+    func_800142A0_main(50);
+    omInitObjMan(50, 0);
+    func_8004A208_main();
+    func_8010CA08_spotlight_swim();
+    HmfLightMaxSet(1);
+    HmfLightMaxSet(2);
+    HmfLightColorSet(0, 0x90, 0x90, 0x90);
+    HmfLightDirSet(0, 0.0f, 90.0f, 560.0f);
+    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    HmfLightDirSet(1, 0.0f, 90.0f, 560.0f);
+    HmfLightColorSet(2, 0xFF, 0xFF, 0xFF);
+    HmfLightDirSet(2, 0.0f, 90.0f, 560.0f);
+    D_800EC1B8_minigame = 0;
+    D_800EC280_minigame = 0;
+    D_800EBE28_minigame = 0;
+    func_80045010_main(D_8010D2E0_spotlight_swim, 0);
+    func_80045010_main(D_8010D2E0_spotlight_swim, 1);
+    omAddObj(0x5DC, 0, 0, -1, func_8010C900_spotlight_swim);
+    omAddObj(0x5DC, 0, 0, -1, func_8010C588_spotlight_swim);
+    func_80105A3C_spotlight_swim();
+}
+
+// Keep this table after the functions to preserve the original rodata order.
+const s16 D_8010D2E0_spotlight_swim[] = { 0x8260, 0x8261, 0x8262, 0 };

@@ -1,6 +1,7 @@
 #include "common.h"
-#include "math.h"
 #include "overlays/minigame.h"
+#include "mallocblock.h"
+#include "math.h"
 
 typedef struct {
     /* 0x00 */ omObjData *obj;
@@ -62,11 +63,20 @@ typedef struct {
     /* 0x28 */ f32 fov;
 } SpotlightSwimCamera; // sizeof 0x2C
 
+typedef struct {
+    /* 0x00 */ f32 x;
+    /* 0x04 */ f32 y;
+    /* 0x08 */ u32 r;
+    /* 0x0C */ u32 g;
+    /* 0x10 */ u32 b;
+} SpotlightSwimLight; // sizeof 0x14
+
 extern s16 D_8010CCF4_spotlight_swim[4];
 extern s8 D_8010CD50_spotlight_swim[][9];
 extern SpotlightSwimCamera D_8010D1D4_spotlight_swim[1];
 extern const s16 D_8010D2E0_spotlight_swim[];
-extern s32 D_8010D2F0_spotlight_swim;
+extern s32 D_8010D1C8_spotlight_swim[3];
+extern u32 D_8010D2F0_spotlight_swim;
 extern u8 D_8010CDC8_spotlight_swim[32][32];
 extern u32 *D_8010D2F8_spotlight_swim[3];
 extern SpotlightSwimUnk308 D_8010D308_spotlight_swim[];
@@ -85,6 +95,7 @@ extern s8 D_8010D39B_spotlight_swim[3];
 extern u8 D_8010D3CD_spotlight_swim;
 extern s8 D_8010D3AC_spotlight_swim;
 extern s16 D_8010D3B0_spotlight_swim[8];
+extern SpotlightSwimLight D_8010D3D0_spotlight_swim[6];
 extern u32 D_8010D448_spotlight_swim;
 extern u8 D_8010D44C_spotlight_swim;
 extern u32 D_8010D47C_spotlight_swim;
@@ -101,6 +112,7 @@ void func_80108AD8_spotlight_swim(omObjData *);
 void func_8010AAB8_spotlight_swim(omObjData *);
 void func_8010B828_spotlight_swim(omObjData *);
 void func_8010A328_spotlight_swim(omObjData *);
+void func_8010BA6C_spotlight_swim(Gfx **, s32, s32);
 void func_8010C25C_spotlight_swim(omObjData *);
 void func_80109C1C_spotlight_swim(omObjData *);
 void func_80109E08_spotlight_swim(void);
@@ -675,7 +687,7 @@ void func_8010BD10_spotlight_swim(void) {
     }
 }
 
-s32 func_8010BD5C_spotlight_swim(void) {
+s8 func_8010BD5C_spotlight_swim(void) {
     u32 i;
     u32 *ptr = D_8010D2F8_spotlight_swim[D_8010D2F0_spotlight_swim];
 
@@ -766,9 +778,65 @@ void func_8010BFD0_spotlight_swim(u32 *buf, s32 x, s32 y) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_8010C094_spotlight_swim);
+void func_8010C094_spotlight_swim(omObjData *obj) {
+    SpotlightSwimData *data;
+    SpotlightSwimLight *light;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_8010C25C_spotlight_swim);
+    D_8010D2F0_spotlight_swim = (D_8010D2F0_spotlight_swim + 1) % 3;
+    if (D_8010EE48_spotlight_swim >= 3) {
+        if (func_8010BD5C_spotlight_swim() == 0) {
+            for (i = 0; i < 3; i++) {
+                func_8010BFD0_spotlight_swim(D_8010D2F8_spotlight_swim[D_8010D2F0_spotlight_swim],
+                                             D_8010D1C8_spotlight_swim[i], 0xAA);
+                light = &D_8010D3D0_spotlight_swim[i];
+                func_8010BDE0_spotlight_swim(light->x, light->y, light->r, light->g, light->b);
+            }
+        }
+    } else {
+        func_8010BD10_spotlight_swim();
+        for (i = 0; i < 3; i++) {
+            data = &D_8010D480_spotlight_swim[3 + i];
+            light = &D_8010D3D0_spotlight_swim[i];
+            light->x = data->obj->trans.x - 32.0f;
+            light->y = data->obj->trans.y - 32.0f;
+            func_8010BDE0_spotlight_swim(light->x, light->y, light->r, light->g, light->b);
+        }
+    }
+}
+
+void func_8010C25C_spotlight_swim(omObjData *obj) {
+    s32 i;
+    s32 j;
+
+    D_8010D2F0_spotlight_swim = 0;
+    obj->model[0] = func_8001AC8C_main(0, func_8010BA6C_spotlight_swim, 2);
+    func_8001C8A8_main(obj->model[0], 1);
+    func_8001C258_main(obj->model[0], 4, 0);
+    for (i = 0; i < 3; i++) {
+        D_8010D2F8_spotlight_swim[i] = HuMemAllocTag(0x12C00, 0x7918);
+        for (j = 0; j < 0x4B00; j++) {
+            D_8010D2F8_spotlight_swim[i][j] = D_8010D448_spotlight_swim | 0x98;
+        }
+        for (j = 0; j < 3; j++) {
+            func_8010BFD0_spotlight_swim(D_8010D2F8_spotlight_swim[i], D_8010D1C8_spotlight_swim[j], 0xAA);
+        }
+    }
+    for (i = 0; i < 3; i++) {
+        D_8010D3D0_spotlight_swim[i].r = 0;
+        D_8010D3D0_spotlight_swim[i].g = 0;
+        D_8010D3D0_spotlight_swim[i].b = 0;
+    }
+    for (i = 3; i < 6; i++) {
+        D_8010D3D0_spotlight_swim[i].r = 0xFF;
+        D_8010D3D0_spotlight_swim[i].g = 0xFF;
+        D_8010D3D0_spotlight_swim[i].b = 0xFF;
+    }
+    D_8010D3D0_spotlight_swim[0].r = 0xFF;
+    D_8010D3D0_spotlight_swim[1].g = 0xFF;
+    D_8010D3D0_spotlight_swim[2].b = 0xFF;
+    obj->func = func_8010C094_spotlight_swim;
+}
 
 void func_8010C444_spotlight_swim(void) {
     omObjData *obj = omAddObj(0x44C, 1, 0, -1, func_8010C25C_spotlight_swim);

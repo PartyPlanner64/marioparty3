@@ -1,22 +1,6 @@
 #include "common.h"
 #include "mallocblock.h"
 
-typedef struct Hu3DPoint {
-    /* 0x00 */ s16 x;
-    /* 0x02 */ s16 y;
-    /* 0x04 */ s16 z;
-} Hu3DPoint; // sizeof 0x6
-
-typedef struct Hu3DQuad {
-    /* 0x00 */ s16 vtx[4];
-} Hu3DQuad; // sizeof 0x8
-
-typedef struct Hu3DQuadPool {
-    /* 0x00 */ Hu3DQuad **quads;
-    /* 0x04 */ u16 numQuads;
-    /* 0x06 */ u16 curQuad;
-} Hu3DQuadPool; // sizeof 0x8
-
 typedef struct Hu3DAnimPlayer {
     /* 0x00 */ s32 numFrames;
     /* 0x04 */ s32 numTracks;

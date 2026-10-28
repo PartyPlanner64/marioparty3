@@ -1,4 +1,5 @@
 #include "common.h"
+#include "game/pause.h"
 #include "mallocblock.h"
 #include "overlays/minigame.h"
 
@@ -104,6 +105,18 @@ extern s16 D_800EB930_minigame;
 extern s16 D_800EB932_minigame;
 extern D_80111B50_vine_with_me_Struct D_8010A900_chip_shot_challenge;
 extern s32 D_800A178C_main[][6];
+extern u8 D_800D6A90_main;
+extern s16 D_800EB934_minigame;
+extern f32 D_8010A87C_chip_shot_challenge[5];
+extern f32 D_8010A890_chip_shot_challenge[5];
+extern f32 D_8010A8A4_chip_shot_challenge[5];
+extern f32 D_8010A8B8_chip_shot_challenge[5];
+extern f32 D_8010A8CC_chip_shot_challenge[5];
+extern s32 D_8010A8E0_chip_shot_challenge[4];
+extern s32 D_8010A94C_chip_shot_challenge;
+extern s32 D_8010A950_chip_shot_challenge;
+extern f32 D_8010AA88_chip_shot_challenge;
+extern Vec D_8010AA8C_chip_shot_challenge;
 
 f32 func_800202A8_main(f32 angle);
 u16 func_8000B0D4_main(s32 arg0, s32 arg1);
@@ -234,7 +247,7 @@ s32 func_80105DE0_chip_shot_challenge(s32 playerIndex) {
     return rank;
 }
 
-void func_80105E8C_chip_shot_challenge(void) {
+void func_80105E8C_chip_shot_challenge(omObjData *object) {
     if (WipeStatGet() == 0) {
         omOvlReturnEx(1);
     }
@@ -336,7 +349,136 @@ void func_80105EB8_chip_shot_challenge(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_8010646C_chip_shot_challenge);
+void func_8010646C_chip_shot_challenge(omObjData *object) {
+    omObjData *player;
+    ChipShotChallengeWork *work;
+    f32 best;
+    f32 x;
+    f32 scale;
+    s32 time;
+    s32 chrData;
+    s32 chr;
+    s32 i;
+    s32 j;
+
+    if (func_80049F98_main() + D_800D6A90_main != 0) {
+        return;
+    }
+    time = func_800E6E9C_minigame();
+    switch (func_800E6F40_minigame()) {
+        case 0:
+            func_80105EB8_chip_shot_challenge(object);
+            break;
+        case 1:
+            Hu3DModelRotSet(object->model[5], 0.0f, 0.0f, 0.0f);
+            break;
+        case 2:
+            if (D_8010A844_chip_shot_challenge < 0) {
+                D_8010A844_chip_shot_challenge = 0;
+            }
+            D_8010AA8C_chip_shot_challenge.x = Center.x;
+            D_8010AA8C_chip_shot_challenge.y = Center.y - 200.0f;
+            D_8010AA8C_chip_shot_challenge.z = Center.z;
+            func_800202FC_main(&D_8010AA8C_chip_shot_challenge);
+            D_8010AA88_chip_shot_challenge = HuSqrtf(Center.x * Center.x + Center.y * Center.y + Center.z * Center.z) / 30.0f;
+            break;
+        case 3:
+            if (time == 0) {
+                best = 10000.0f;
+                for (i = 0; i < 4; i++) {
+                    if (D_8010A8F0_chip_shot_challenge[i] < best) {
+                        best = D_8010A8F0_chip_shot_challenge[i];
+                        D_8010A950_chip_shot_challenge = i;
+                    }
+                    if (D_8010A8F0_chip_shot_challenge[i] == 0.0f) {
+                        D_8010A94C_chip_shot_challenge++;
+                        D_8010A8E0_chip_shot_challenge[i] = 0;
+                    }
+                }
+                if (D_8010A94C_chip_shot_challenge != 0) {
+                    D_8010A900_chip_shot_challenge.unk06 = D_8010A94C_chip_shot_challenge - 1;
+                    for (i = 0, j = 0; i < 4; i++) {
+                        if (D_8010A8F0_chip_shot_challenge[i] == 0.0f) {
+                            D_8010A900_chip_shot_challenge.unk18[j++] = i;
+                        }
+                    }
+                } else {
+                    for (i = 0; i < 4; i++) {
+                        if (i != D_8010A950_chip_shot_challenge &&
+                            (s32)best == (s32)D_8010A8F0_chip_shot_challenge[i]) {
+                            D_8010A950_chip_shot_challenge = -1;
+                        }
+                    }
+                    if (D_8010A950_chip_shot_challenge == -1) {
+                        D_8010A900_chip_shot_challenge.unk06 = 4;
+                    } else {
+                        D_8010A900_chip_shot_challenge.unk06 = 0;
+                        D_8010A900_chip_shot_challenge.unk18[0] = D_8010A950_chip_shot_challenge;
+                        D_8010A8E0_chip_shot_challenge[D_8010A950_chip_shot_challenge] = 0;
+                        D_8010A94C_chip_shot_challenge++;
+                    }
+                }
+            }
+            Center.x -= D_8010AA8C_chip_shot_challenge.x * D_8010AA88_chip_shot_challenge;
+            Center.y -= D_8010AA8C_chip_shot_challenge.y * D_8010AA88_chip_shot_challenge;
+            Center.z -= D_8010AA8C_chip_shot_challenge.z * D_8010AA88_chip_shot_challenge;
+            CRot.y *= 0.9f;
+            if (Center.z >= 0.0f) {
+                Center.x = 0.0f;
+                Center.y = 200.0f;
+                Center.z = 0.0f;
+                CRot.y = 0.0f;
+            }
+            break;
+        case 4:
+            if (D_800EB934_minigame == 1) {
+                for (i = 0; i < 4; i++) {
+                    player = D_800EC598_minigame[i];
+                    if (D_8010A8E0_chip_shot_challenge[D_8010A928_chip_shot_challenge[i]] == 0) {
+                        work = player->data;
+                        func_800E5690_minigame(player, 5);
+                        chr = GwPlayer[work->playerIndex].chr;
+                        chrData = D_800A178C_main[chr][0];
+                        func_80017954_main(player->model[0], 2, chr, player->model[4]);
+                        func_80045ED0_main(chrData | 0x2F);
+                        GwPlayer[work->playerIndex].bonusCoin += 10;
+                    } else {
+                        func_800E5690_minigame(player, 6);
+                    }
+                }
+            }
+            break;
+        case 5:
+            WipeCreateOut(0, 20);
+            object->func = func_80105E8C_chip_shot_challenge;
+            break;
+    }
+    func_800E3628_minigame(object->model[4], &D_8010AAB0_chip_shot_challenge);
+    for (i = 0; i < 5; i++) {
+        x = sindf(D_8010A87C_chip_shot_challenge[i]) * D_8010A8A4_chip_shot_challenge[i];
+        Hu3DModelPosSet(object->model[7 + i], x, D_8010A890_chip_shot_challenge[i],
+                        cosdf(D_8010A87C_chip_shot_challenge[i]) * D_8010A8A4_chip_shot_challenge[i] - 1000.0f);
+        Hu3DModelRotSet(object->model[7 + i], 0.0f, CRot.y, 0.0f);
+        scale = sindf(D_8010A8CC_chip_shot_challenge[i]) * 0.25f + 2.5f;
+        Hu3DModelScaleSet(object->model[7 + i], scale, scale, scale);
+        D_8010A8CC_chip_shot_challenge[i] =
+            func_800202A8_main(D_8010A8B8_chip_shot_challenge[i] * 30.0f + D_8010A8CC_chip_shot_challenge[i]);
+        D_8010A87C_chip_shot_challenge[i] =
+            func_800202A8_main(D_8010A87C_chip_shot_challenge[i] + D_8010A8B8_chip_shot_challenge[i]);
+        if (D_8010A87C_chip_shot_challenge[i] > 260.0f) {
+            D_8010A87C_chip_shot_challenge[i] = 100.0f;
+        }
+    }
+    for (i = 0; i < D_800EC280_minigame; i++) {
+        ((ChipShotChallengeWork *)D_800EC598_minigame[i]->data)->unk_60 = CRot.y;
+    }
+    if (D_800D530C_main == 1) {
+        WipeCreateOut(0, 20);
+        HuAudSeqFadeOut(30);
+        func_8004AB0C_main(30);
+        object->func = func_80105E8C_chip_shot_challenge;
+    }
+}
 
 void func_80106B84_chip_shot_challenge(omObjData *object) {
     ChipShotChallengeCourseWork *work;

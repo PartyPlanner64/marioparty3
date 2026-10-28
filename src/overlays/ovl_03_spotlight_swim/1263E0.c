@@ -98,6 +98,8 @@ extern s16 D_8010CCF4_spotlight_swim[4];
 extern u8 D_8010CDA8_spotlight_swim[];
 extern u8 D_8010CDAC_spotlight_swim[4][2];
 extern s8 D_8010CDB4_spotlight_swim;
+extern s16 D_8010CDB8_spotlight_swim[];
+extern s16 D_8010CDC0_spotlight_swim[];
 extern s8 D_8010CD50_spotlight_swim[][9];
 extern s8 D_8010CD98_spotlight_swim[][2];
 extern SpotlightSwimCamera D_8010D1D4_spotlight_swim[1];
@@ -1292,7 +1294,58 @@ void func_8010A7AC_spotlight_swim(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_8010AAB8_spotlight_swim);
+void func_8010AAB8_spotlight_swim(omObjData *obj) {
+    void *file1;
+    void *file2;
+    s8 idx = obj->work[0];
+    SpotlightSwimData *data = &D_8010D480_spotlight_swim[idx + 9];
+
+    switch (D_8010CCC0_spotlight_swim[D_8010D3AC_spotlight_swim][idx]) {
+        case 0:
+            obj->trans.x = -360.0f;
+            data->unk44.x = 80.0f;
+            break;
+        case 1:
+            obj->trans.x = 0.0f;
+            data->unk44.x = 160.0f;
+            break;
+        case 2:
+            obj->trans.x = 360.0f;
+            data->unk44.x = 240.0f;
+            break;
+    }
+
+    obj->trans.y = 0.0f;
+    data->unk44.y = 87.5f;
+    obj->trans.z = 580.0f;
+    data->unk50.x = 35.0f;
+    obj->rot.x = obj->rot.z = 0.0f;
+    data->unk50.y = obj->rot.y = 180.0f;
+
+    obj->model[0] = func_8000B108_main(0x240002, 0xA9);
+    file1 = DataRead(D_8010CDB8_spotlight_swim[idx] | 0x240000);
+    HmfAnimCreate(HmfModelData[obj->model[0]].hmf, file1, 0, "m203_001_DEF");
+    func_8001C448_main(obj->model[0]);
+    func_8001C514_main(obj->model[0]);
+    DataClose(file1);
+
+    obj->model[1] = func_8000B108_main(0x240003, 0x89);
+    file2 = DataRead(D_8010CDC0_spotlight_swim[idx] | 0x240000);
+    HmfAnimCreate(HmfModelData[obj->model[1]].hmf, file2, 0, "light_boddy_DEF");
+    func_8001C448_main(obj->model[1]);
+    func_8001C514_main(obj->model[1]);
+    DataClose(file2);
+
+    Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
+    Hu3DModelRotSet(obj->model[0], obj->rot.x, obj->rot.y, obj->rot.z);
+    Hu3DModelPosSet(obj->model[1], obj->trans.x, data->unk44.y, obj->trans.z);
+    Hu3DModelRotSet(obj->model[1], obj->rot.x, obj->rot.y, data->unk50.z);
+    func_8001C8A8_main(obj->model[0], 1);
+    func_8001C8A8_main(obj->model[1], 1);
+    D_8010EE50_spotlight_swim[idx].unk00 = 0.0f;
+    D_8010EE50_spotlight_swim[idx].unk04 = 0;
+    obj->func = func_8010A7AC_spotlight_swim;
+}
 
 void func_8010ADF8_spotlight_swim(void) {
     s16 i;

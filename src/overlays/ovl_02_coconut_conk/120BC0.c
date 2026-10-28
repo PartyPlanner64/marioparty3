@@ -462,7 +462,42 @@ void func_80107690_coconut_conk(omObjData *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_801076EC_coconut_conk);
+void func_801076EC_coconut_conk(omObjData *arg0) {
+    CoconutConkData *data = &D_8010BCC4_coconut_conk;
+
+    switch (data->unk04) {
+        case 0:
+            if (data->unk18 < 0.0f) {
+                data->unk18 += 0.05;
+            }
+            if (data->unk18 > 0.0f) {
+                data->unk18 -= 0.05;
+            }
+            if ((s16)data->unk18 == 0) {
+                data->unk18 = 0.0f;
+                arg0->trans.x = (s16)arg0->trans.x;
+            }
+            break;
+        case 1:
+            if (data->unk18 > -10.0f) {
+                data->unk18 -= 0.5f;
+                if (data->unk18 < -10.0f) {
+                    data->unk18 = -10.0f;
+                }
+            }
+            break;
+        case 2:
+            if (data->unk18 < 10.0f) {
+                data->unk18 += 0.5f;
+                if (data->unk18 > 10.0f) {
+                    data->unk18 = 10.0f;
+                }
+            }
+            break;
+    }
+    arg0->rot.z = func_801059BC_coconut_conk(arg0->rot.z, -data->unk18);
+    arg0->trans.x += data->unk18;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_801078BC_coconut_conk);
 

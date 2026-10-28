@@ -71,12 +71,33 @@ typedef struct {
     /* 0x10 */ u32 b;
 } SpotlightSwimLight; // sizeof 0x14
 
+typedef struct {
+    /* 0x00 */ f32 x;
+    /* 0x04 */ f32 z;
+} SpotlightSwimPos2D; // sizeof 0x8
+
+typedef struct {
+    /* 0x00 */ s8 unk00;
+    /* 0x01 */ s8 unk01;
+    /* 0x02 */ s8 unk02;
+    /* 0x03 */ s8 unk03;
+    /* 0x04 */ s8 unk04;
+    /* 0x05 */ s8 unk05;
+    /* 0x06 */ s8 unk06;
+    /* 0x07 */ s8 unk07;
+    /* 0x08 */ f32 unk08;
+    /* 0x0C */ f32 unk0C;
+    /* 0x10 */ f32 unk10;
+    /* 0x14 */ f32 unk14;
+} SpotlightSwimState; // sizeof 0x18
+
 extern s8 D_8010CCC0_spotlight_swim[][3];
 extern s16 D_8010CCF4_spotlight_swim[4];
 extern u8 D_8010CDA8_spotlight_swim[];
 extern u8 D_8010CDAC_spotlight_swim[4][2];
 extern s8 D_8010CDB4_spotlight_swim;
 extern s8 D_8010CD50_spotlight_swim[][9];
+extern s8 D_8010CD98_spotlight_swim[][2];
 extern SpotlightSwimCamera D_8010D1D4_spotlight_swim[1];
 extern const s16 D_8010D2E0_spotlight_swim[];
 extern s32 D_8010D1C8_spotlight_swim[3];
@@ -86,10 +107,8 @@ extern s8 D_8010D2F4_spotlight_swim;
 extern u32 *D_8010D2F8_spotlight_swim[3];
 extern SpotlightSwimUnk308 D_8010D308_spotlight_swim[];
 extern u8 D_8010D320_spotlight_swim[3];
-extern u8 D_8010D329_spotlight_swim[];
-extern s8 D_8010D32C_spotlight_swim;
+extern SpotlightSwimState D_8010D328_spotlight_swim;
 extern u8 D_8010D340_spotlight_swim[3];
-extern f32 D_8010D338_spotlight_swim[2];
 extern s8 D_8010D343_spotlight_swim;
 extern f32 D_8010D344_spotlight_swim;
 extern s16 D_8010D364_spotlight_swim;
@@ -110,6 +129,7 @@ extern s16 D_8010D3B0_spotlight_swim[8];
 extern SpotlightSwimLight D_8010D3D0_spotlight_swim[6];
 extern u32 D_8010D448_spotlight_swim;
 extern u8 D_8010D44C_spotlight_swim;
+extern SpotlightSwimPos2D D_8010D450_spotlight_swim[5];
 extern u32 D_8010D47C_spotlight_swim;
 
 extern SpotlightSwimData D_8010D480_spotlight_swim[50];
@@ -127,7 +147,7 @@ void func_80108AD8_spotlight_swim(omObjData *);
 void func_8010AAB8_spotlight_swim(omObjData *);
 void func_8010B828_spotlight_swim(omObjData *);
 void func_8010A328_spotlight_swim(omObjData *);
-void func_8010BA6C_spotlight_swim(Gfx **, s32, s32);
+void func_8010BA6C_spotlight_swim(Gfx **gfx, s32 arg1, s32 arg2);
 void func_8010C25C_spotlight_swim(omObjData *);
 void func_80109C1C_spotlight_swim(omObjData *);
 void func_80109A94_spotlight_swim(omObjData *);
@@ -288,7 +308,7 @@ void func_801061DC_spotlight_swim(omObjData *obj) {
             obj->trans.y += 0.5f;
             obj->trans.z -= 0.5f;
             if (D_8010D343_spotlight_swim != 7) {
-                D_8010D338_spotlight_swim[0] += 0.5f;
+                D_8010D328_spotlight_swim.unk10 += 0.5f;
                 D_8010D348_spotlight_swim->trans.z -= 0.5f;
             }
             break;
@@ -296,7 +316,7 @@ void func_801061DC_spotlight_swim(omObjData *obj) {
             obj->trans.y -= 0.5f;
             obj->trans.z += 0.5f;
             if (D_8010D343_spotlight_swim != 7) {
-                D_8010D338_spotlight_swim[0] -= 0.5f;
+                D_8010D328_spotlight_swim.unk10 -= 0.5f;
                 D_8010D348_spotlight_swim->trans.z += 0.5f;
             }
             break;
@@ -400,7 +420,7 @@ void func_80106808_spotlight_swim(omObjData *obj) {
         data->unk44.z = sindf(angle) * 50.0f + obj->trans.z + 60.0f;
     }
     data->unk44.y = obj->trans.y - D_8010CD50_spotlight_swim[obj->work[1]][D_8010D343_spotlight_swim] - 25.0f;
-    if (D_8010D32C_spotlight_swim == 2 || D_8010EE48_spotlight_swim == 5) {
+    if (D_8010D328_spotlight_swim.unk04 == 2 || D_8010EE48_spotlight_swim == 5) {
         Hu3DModelScaleSet(obj->model[5], 0.6f, 0.5f, 1.0f);
     } else {
         Hu3DModelScaleSet(obj->model[5], 0.8f, 0.6f, 1.0f);
@@ -409,7 +429,7 @@ void func_80106808_spotlight_swim(omObjData *obj) {
 }
 
 void func_801069BC_spotlight_swim(omObjData *obj) {
-    if (D_8010D32C_spotlight_swim == 2) {
+    if (D_8010D328_spotlight_swim.unk04 == 2) {
         if (D_8010D343_spotlight_swim != 2 && D_8010D343_spotlight_swim != 3) {
             func_8001C92C_main(obj->model[0], -1.0f);
             D_8010D343_spotlight_swim = 2;
@@ -423,7 +443,7 @@ void func_801069BC_spotlight_swim(omObjData *obj) {
                 D_8010D343_spotlight_swim = 3;
             }
         }
-    } else if (D_8010D32C_spotlight_swim == 1) {
+    } else if (D_8010D328_spotlight_swim.unk04 == 1) {
         if (D_8010D343_spotlight_swim != 1) {
             func_80105D4C_spotlight_swim(obj, 1, 0, 5, 0);
             func_8001C92C_main(obj->model[0], 1.0f);
@@ -446,7 +466,37 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_80106
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_80106EB0_spotlight_swim);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_801072C4_spotlight_swim);
+void func_801072C4_spotlight_swim(omObjData *obj) {
+    SpotlightSwimData *data = &D_8010D480_spotlight_swim[2];
+    s8 playerIndex;
+    s8 i;
+    f32 angle;
+
+    if (D_8010D328_spotlight_swim.unk04 <= 0) {
+        playerIndex = obj->work[1];
+        if (D_8010D343_spotlight_swim == 0) {
+            if (data->unk04 == 0) {
+                data->unk06 = (data->unk06 + 1) & 3;
+                i = D_8010D328_spotlight_swim.unk01 != 0;
+                angle = func_801059BC_spotlight_swim(obj->rot.y, -90.0f);
+                D_8010D450_spotlight_swim[data->unk06 + 1].x =
+                    obj->trans.x - D_8010CD98_spotlight_swim[playerIndex][i] * cosdf(angle);
+                D_8010D450_spotlight_swim[data->unk06 + 1].z =
+                    D_8010CD98_spotlight_swim[playerIndex][i] * sindf(angle) + obj->trans.z + 15.0f;
+                func_8001C6A8_main(obj->model[data->unk06 + 1], 0);
+                func_80105C04_spotlight_swim(1, obj->work[0]);
+            }
+            data->unk04 = (data->unk04 + 1) % 6;
+        }
+
+        for (i = 1; i < 5; i++) {
+            Hu3DModelPosSet(obj->model[i], D_8010D450_spotlight_swim[i].x,
+                            obj->trans.y - D_8010CD50_spotlight_swim[playerIndex][D_8010D343_spotlight_swim] - 25.0f,
+                            D_8010D450_spotlight_swim[i].z);
+            Hu3DModelScaleSet(obj->model[i], 0.3f, 0.5f, 0.5f);
+        }
+    }
+}
 
 void func_8010755C_spotlight_swim(omObjData *obj) {
     f32 x;
@@ -471,7 +521,7 @@ void func_8010755C_spotlight_swim(omObjData *obj) {
 s8 func_80107674_spotlight_swim(omObjData *obj) {
     if ((D_800CBB6E_main[obj->work[3]] < 3 && obj->trans.x <= -450.0f) ||
         (D_800CBB6E_main[obj->work[3]] >= 4 && obj->trans.x >= 450.0f)) {
-        D_8010D329_spotlight_swim[0] |= 1;
+        D_8010D328_spotlight_swim.unk01 |= 1;
         return 0;
     }
     return 1;
@@ -480,13 +530,50 @@ s8 func_80107674_spotlight_swim(omObjData *obj) {
 s8 func_80107710_spotlight_swim(omObjData *obj) {
     if ((D_800D20A1_main[obj->work[3]] >= 4 && obj->trans.z <= -450.0f) ||
         (D_800D20A1_main[obj->work[3]] < 3 && obj->trans.z >= 260.0f)) {
-        D_8010D329_spotlight_swim[0] |= 2;
+        D_8010D328_spotlight_swim.unk01 |= 2;
         return 0;
     }
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_801077AC_spotlight_swim);
+void func_801077AC_spotlight_swim(omObjData *obj) {
+    s16 idx = obj->work[3];
+    f32 rot = obj->rot.y;
+    s16 quadrant;
+
+    quadrant = 0;
+    if (rot >= 90.0f) {
+        quadrant++;
+    }
+    if (rot >= 180.0f) {
+        quadrant++;
+    }
+    if (rot >= 270.0f) {
+        quadrant++;
+    }
+
+    switch (quadrant) {
+        case 0:
+            D_800CBB6E_main[idx] = rot * D_8010D328_spotlight_swim.unk0C;
+            D_800D20A1_main[idx] = 0.0f - (90.0f - rot) * D_8010D328_spotlight_swim.unk0C;
+            break;
+        case 1:
+            rot -= 90.0f;
+            D_800CBB6E_main[idx] = (90.0f - rot) * D_8010D328_spotlight_swim.unk0C;
+            D_800D20A1_main[idx] = rot * D_8010D328_spotlight_swim.unk0C;
+            break;
+        case 2:
+            rot -= 180.0f;
+            D_800CBB6E_main[idx] = 0.0f - rot * D_8010D328_spotlight_swim.unk0C;
+            D_800D20A1_main[idx] = (90.0f - rot) * D_8010D328_spotlight_swim.unk0C;
+            break;
+        case 3:
+            rot -= 270.0f;
+            D_800CBB6E_main[idx] = 0.0f - (90.0f - rot) * D_8010D328_spotlight_swim.unk0C;
+            D_800D20A1_main[idx] = 0.0f - rot * D_8010D328_spotlight_swim.unk0C;
+            break;
+    }
+}
 
 void func_801079FC_spotlight_swim(omObjData *obj) {
     s8 stickX;
@@ -504,7 +591,7 @@ void func_801079FC_spotlight_swim(omObjData *obj) {
     } else if (stickY < -63) {
         stickY = -63;
     }
-    D_8010D329_spotlight_swim[0] = 0;
+    D_8010D328_spotlight_swim.unk01 = 0;
     if (func_80107674_spotlight_swim(obj)) {
         obj->trans.x += stickX / D_8010D344_spotlight_swim;
     }
@@ -670,10 +757,10 @@ void func_80109690_spotlight_swim(omObjData *obj) {
     if (D_8010D366_spotlight_swim != 0) {
         flags = D_8010D2F4_spotlight_swim;
         mask = flags | (1 << (D_8010D366_spotlight_swim - 1));
-        if (flags == mask && D_8010D32C_spotlight_swim <= 0) {
+        if (flags == mask && D_8010D328_spotlight_swim.unk04 <= 0) {
             goto target;
         }
-    } else if (D_8010D2F4_spotlight_swim != 0 && D_8010D32C_spotlight_swim <= 0 && unk->unk00 == 3) {
+    } else if (D_8010D2F4_spotlight_swim != 0 && D_8010D328_spotlight_swim.unk04 <= 0 && unk->unk00 == 3) {
     target:
         if (obj->work[0] & 1) {
             goto chase;
@@ -681,7 +768,7 @@ void func_80109690_spotlight_swim(omObjData *obj) {
         goto wander;
     }
 
-    if (D_8010D32C_spotlight_swim == 1) {
+    if (D_8010D328_spotlight_swim.unk04 == 1) {
         row = 0;
     } else {
         flags = D_8010D2F4_spotlight_swim;
@@ -691,7 +778,7 @@ void func_80109690_spotlight_swim(omObjData *obj) {
         }
     }
 
-    if (D_8010D32C_spotlight_swim == 2) {
+    if (D_8010D328_spotlight_swim.unk04 == 2) {
         goto chase;
     }
 
@@ -735,7 +822,7 @@ void func_801098A8_spotlight_swim(omObjData *obj) {
     D_8010D3C0_spotlight_swim[index] = func_801059BC_spotlight_swim(
         atan2df(obj->trans.x - D_8010D370_spotlight_swim[0], obj->trans.y - D_8010D370_spotlight_swim[1]), 0.0f);
 
-    if (D_8010D32C_spotlight_swim == 1) {
+    if (D_8010D328_spotlight_swim.unk04 == 1) {
         return;
     }
 
@@ -1016,7 +1103,31 @@ void func_8010BA30_spotlight_swim(void) {
     D_8010D480_spotlight_swim[13].obj = omAddObj(0x514, 5, 5, -1, func_8010B828_spotlight_swim);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_8010BA6C_spotlight_swim);
+void func_8010BA6C_spotlight_swim(Gfx **gfx, s32 arg1, s32 arg2) {
+    Gfx *gdl = *gfx;
+    s32 y;
+    s32 stripHeight;
+
+    gDPPipeSync(gdl++);
+    gDPSetCycleType(gdl++, G_CYC_1CYCLE);
+    gSPClearGeometryMode(gdl++, G_SHADE | G_SHADING_SMOOTH | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
+                                    G_TEXTURE_GEN_LINEAR | G_LOD);
+    gSPSetGeometryMode(gdl++, G_SHADE | G_CULL_BACK | G_SHADING_SMOOTH);
+    gDPSetTexturePersp(gdl++, G_TP_NONE);
+    gDPSetTextureFilter(gdl++, G_TF_BILERP);
+    gDPSetRenderMode(gdl++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
+    gDPSetCombineMode(gdl++, G_CC_DECALRGBA, G_CC_DECALRGBA);
+    gDPSetTextureLUT(gdl++, G_TT_NONE);
+
+    for (y = 0, stripHeight = 4; y < 240; y += stripHeight) {
+        gDPLoadTextureTile(gdl++, D_8010D2F8_spotlight_swim[D_8010D2F0_spotlight_swim], G_IM_FMT_RGBA, G_IM_SIZ_32b, 160,
+                           120, 0, y / 2, 159, (y + stripHeight) / 2 - 1, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                           G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPSetTileSize(gdl++, G_TX_RENDERTILE, 0, 0, 159 << 2, (stripHeight / 2 - 1) << 2);
+        gSPTextureRectangle(gdl++, 0, y << 2, 320 << 2, (y + stripHeight) << 2, G_TX_RENDERTILE, 0, 0, 0x200, 0x200);
+    }
+    *gfx = gdl;
+}
 
 void func_8010BD10_spotlight_swim(void) {
     u32 i;

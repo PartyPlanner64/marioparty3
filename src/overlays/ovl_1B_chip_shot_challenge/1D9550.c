@@ -4,22 +4,32 @@
 
 // Per-object work block, reached via ObjData->data
 typedef struct ChipShotChallengeWork {
-    /* 0x00 */ char pad_00[0x38];
+    /* 0x00 */ char pad_00[0x34];
+    /* 0x34 */ f32 unk_34;
     /* 0x38 */ f32 unk_38;
     /* 0x3C */ f32 unk_3C;
     /* 0x40 */ f32 unk_40;
-    /* 0x44 */ char pad_44[0x15];
+    /* 0x44 */ f32 unk_44;
+    /* 0x48 */ f32 unk_48;
+    /* 0x4C */ char pad_4C[4];
+    /* 0x50 */ s16 unk_50;
+    /* 0x52 */ s8 unk_52;
+    /* 0x53 */ s8 unk_53;
+    /* 0x54 */ s8 unk_54;
+    /* 0x55 */ char pad_55[4];
     /* 0x59 */ s8 playerIndex;
     /* 0x5A */ char pad_5A[2];
     /* 0x5C */ f32 unk_5C;
     /* 0x60 */ f32 unk_60;
     /* 0x64 */ f32 unk_64;
-} ChipShotChallengeWork; // Size 0x68
-
-typedef struct ChipShotChallengeModelEntry {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 model;
-} ChipShotChallengeModelEntry; // Size 0x04
+    /* 0x68 */ char pad_68[0xC];
+    /* 0x74 */ f32 unk_74;
+    /* 0x78 */ s32 unk_78;
+    /* 0x7C */ s32 unk_7C;
+    /* 0x80 */ char pad_80[4];
+    /* 0x84 */ s32 unk_84[9];
+    /* 0xA8 */ char pad_A8[4];
+} ChipShotChallengeWork; // Size 0xAC
 
 typedef struct ChipShotChallengeSphere {
     /* 0x00 */ Vec pos;
@@ -42,12 +52,8 @@ extern s32 D_8010AAC8_chip_shot_challenge;
 extern s32 D_8010AACC_chip_shot_challenge;
 extern f32 D_800D5410_main;
 extern f32 D_800D51FC_main;
-extern s16 D_8010AAC2_chip_shot_challenge[];
-extern s16 D_8010AAC6_chip_shot_challenge[];
-extern s16 D_8010AACA_chip_shot_challenge[];
-extern s16 D_8010AACE_chip_shot_challenge[];
 extern s16 D_8010AAD2_chip_shot_challenge[];
-extern ChipShotChallengeModelEntry D_8010AAD8_chip_shot_challenge[4];
+extern s32 D_8010AAD8_chip_shot_challenge[4];
 extern s16 D_8010AAE8_chip_shot_challenge;
 extern omObjData *D_8010AAF0_chip_shot_challenge;
 extern f32 D_8010A954_chip_shot_challenge;
@@ -62,12 +68,23 @@ extern s32 D_8010A934_chip_shot_challenge;
 extern s32 D_800A178C_main[][6];
 
 f32 func_800202A8_main(f32 angle);
+u16 func_8000B0D4_main(s32 arg0, s32 arg1);
+void func_800E149C_minigame(omObjData *, s32, s32);
+void func_800E3584_minigame(s16);
+void func_800E3628_minigame(s16, Vec *);
+void func_80013390_main(s16 model, s32 arg1, s32 arg2, void (*callback)(s16));
+s16 HmfAnimRead(HmfData *, s32, char *);
 void func_801071A8_chip_shot_challenge(void);
+void func_801073D4_chip_shot_challenge(s16 model);
 void func_80107238_chip_shot_challenge(s16 model);
 void func_801087AC_chip_shot_challenge(omObjData *object);
 void func_801091E8_chip_shot_challenge(omObjData *object);
+void func_801094D8_chip_shot_challenge(omObjData *object);
 void func_80109B24_chip_shot_challenge(omObjData *object, f32 x, f32 y, f32 z);
 f32 func_80109DE0_chip_shot_challenge(omObjData *object, ChipShotChallengeSphere *sphere);
+void func_80109EF0_chip_shot_challenge(omObjData *object, f32 x, f32 y, f32 z, f32 floorY, Vec *normal);
+f32 func_8010A04C_chip_shot_challenge(ChipShotChallengeSphere *sphere, Vec *normal);
+void func_8010A3DC_chip_shot_challenge(omObjData *object, Vec *arg1);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_801059A0_chip_shot_challenge);
 
@@ -99,17 +116,31 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_80106B84_chip_shot_challenge);
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", D_8010A9D8_chip_shot_challenge);
+void func_80107048_chip_shot_challenge(void) {
+    s32 files[4] = { 0xB002B, 0xB002C, 0xB002D, 0xB002E };
+    s16 model;
+    s16 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_80107048_chip_shot_challenge);
+    for (i = 0; i < 4; i++) {
+        model = func_8000B108_main(files[i], 0xAA9);
+        D_8010AAD8_chip_shot_challenge[i] = model;
+        func_8003302C_main(HmfAnimRead(HmfModelData[model].hmf, 0xB0048, "e268p01_I8"), i * 2);
+        Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
+        func_8001C2FC_main(model, 0x20000, 0x20000);
+        func_8001C448_main(model);
+        func_8001C954_main(model);
+        func_8001C514_main(model);
+        func_80013390_main(model, -1, 0, func_801073D4_chip_shot_challenge);
+    }
+}
 
 void func_801071A8_chip_shot_challenge(void) {
-    ChipShotChallengeModelEntry *entries;
+    s32 *entries;
     s16 i;
 
     for (i = 0, entries = D_8010AAD8_chip_shot_challenge; i < 4; i++) {
         if (((D_8010AAE8_chip_shot_challenge + i) & 3) == 0) {
-            func_80107238_chip_shot_challenge(entries[i].model);
+            func_80107238_chip_shot_challenge(entries[i]);
         }
     }
     D_8010AAE8_chip_shot_challenge++;
@@ -238,28 +269,28 @@ void func_80107960_chip_shot_challenge(s16 value) {
     s16 digit;
 
     if ((s16)(value / 1000) != 0) {
-        HuSprAttrReset(D_8010AAC2_chip_shot_challenge[0], 0, 0x8000);
-        func_80055140_main(D_8010AAC2_chip_shot_challenge[0], 0, value / 1000, 0);
-        func_800550F4_main(D_8010AAC2_chip_shot_challenge[0], 0, 1);
+        HuSprAttrReset(D_8010AAC0_chip_shot_challenge, 0, 0x8000);
+        func_80055140_main(D_8010AAC0_chip_shot_challenge, 0, value / 1000, 0);
+        func_800550F4_main(D_8010AAC0_chip_shot_challenge, 0, 1);
     }
     value -= (s16)(value / 1000) * 1000;
-    HuSprAttrReset(D_8010AAC2_chip_shot_challenge[0], 1, 0x8000);
+    HuSprAttrReset(D_8010AAC0_chip_shot_challenge, 1, 0x8000);
     digit = value / 100;
-    func_80055140_main(D_8010AAC2_chip_shot_challenge[0], 1, digit, 0);
-    func_800550F4_main(D_8010AAC2_chip_shot_challenge[0], 1, 1);
+    func_80055140_main(D_8010AAC0_chip_shot_challenge, 1, digit, 0);
+    func_800550F4_main(D_8010AAC0_chip_shot_challenge, 1, 1);
     value -= digit * 100;
-    HuSprAttrReset(D_8010AAC2_chip_shot_challenge[0], 2, 0x8000);
+    HuSprAttrReset(D_8010AAC0_chip_shot_challenge, 2, 0x8000);
     digit = value / 10;
-    func_80055140_main(D_8010AAC2_chip_shot_challenge[0], 2, digit, 0);
-    func_800550F4_main(D_8010AAC2_chip_shot_challenge[0], 2, 1);
+    func_80055140_main(D_8010AAC0_chip_shot_challenge, 2, digit, 0);
+    func_800550F4_main(D_8010AAC0_chip_shot_challenge, 2, 1);
     value -= digit * 10;
-    HuSprAttrReset(D_8010AAC2_chip_shot_challenge[0], 3, 0x8000);
-    func_80055140_main(D_8010AAC2_chip_shot_challenge[0], 3, value, 0);
-    func_800550F4_main(D_8010AAC2_chip_shot_challenge[0], 3, 1);
-    HuSprAttrReset(D_8010AAC6_chip_shot_challenge[0], 0, 0x8000);
-    func_80054FF8_main(D_8010AAC6_chip_shot_challenge[0], 0, 1);
-    HuSprAttrReset(D_8010AAC6_chip_shot_challenge[0], 1, 0x8000);
-    func_80054FF8_main(D_8010AAC6_chip_shot_challenge[0], 1, 0);
+    HuSprAttrReset(D_8010AAC0_chip_shot_challenge, 3, 0x8000);
+    func_80055140_main(D_8010AAC0_chip_shot_challenge, 3, value, 0);
+    func_800550F4_main(D_8010AAC0_chip_shot_challenge, 3, 1);
+    HuSprAttrReset(D_8010AAC4_chip_shot_challenge, 0, 0x8000);
+    func_80054FF8_main(D_8010AAC4_chip_shot_challenge, 0, 1);
+    HuSprAttrReset(D_8010AAC4_chip_shot_challenge, 1, 0x8000);
+    func_80054FF8_main(D_8010AAC4_chip_shot_challenge, 1, 0);
 }
 
 void func_80107BB0_chip_shot_challenge(void) {
@@ -287,22 +318,22 @@ void func_80107BB0_chip_shot_challenge(void) {
     if (D_8010A840_chip_shot_challenge < 101) {
         func_801071A8_chip_shot_challenge();
     }
-    Hu3DModelPosSet(D_8010AAD8_chip_shot_challenge->model, D_8010AAA4_chip_shot_challenge.x,
+    Hu3DModelPosSet(D_8010AAD8_chip_shot_challenge[0], D_8010AAA4_chip_shot_challenge.x,
                     D_8010AAA4_chip_shot_challenge.y, D_8010AAA4_chip_shot_challenge.z);
-    Hu3DModelPosSet(D_8010AAD8_chip_shot_challenge[1].model, D_8010AAA4_chip_shot_challenge.x,
+    Hu3DModelPosSet(D_8010AAD8_chip_shot_challenge[1], D_8010AAA4_chip_shot_challenge.x,
                     D_8010AAA4_chip_shot_challenge.y, D_8010AAA4_chip_shot_challenge.z);
-    Hu3DModelPosSet(D_8010AAD8_chip_shot_challenge[2].model, D_8010AAA4_chip_shot_challenge.x,
+    Hu3DModelPosSet(D_8010AAD8_chip_shot_challenge[2], D_8010AAA4_chip_shot_challenge.x,
                     D_8010AAA4_chip_shot_challenge.y, D_8010AAA4_chip_shot_challenge.z);
-    Hu3DModelPosSet(D_8010AAD8_chip_shot_challenge[3].model, D_8010AAA4_chip_shot_challenge.x,
+    Hu3DModelPosSet(D_8010AAD8_chip_shot_challenge[3], D_8010AAA4_chip_shot_challenge.x,
                     D_8010AAA4_chip_shot_challenge.y, D_8010AAA4_chip_shot_challenge.z);
     if (D_8010AAA4_chip_shot_challenge.y + 400.0f < Center.y) {
         Center.y = D_8010AAA4_chip_shot_challenge.y + 400.0f;
     }
     Hu3DModelPosSet(D_8010AAD2_chip_shot_challenge[0], x, y, z);
-    Hu3DModelPosSet(D_8010AACA_chip_shot_challenge[0], x, y, z);
+    Hu3DModelPosSet(D_8010AAC8_chip_shot_challenge, x, y, z);
     Hu3DModelRotSet(D_8010AAD2_chip_shot_challenge[0], 0.0f, CRot.y, 0.0f);
-    Hu3DModelRotSet(D_8010AACA_chip_shot_challenge[0], 0.0f, CRot.y, 0.0f);
-    func_8001C258_main(D_8010AACA_chip_shot_challenge[0], 4, 0);
+    Hu3DModelRotSet(D_8010AAC8_chip_shot_challenge, 0.0f, CRot.y, 0.0f);
+    func_8001C258_main(D_8010AAC8_chip_shot_challenge, 4, 0);
     func_8001C258_main(D_8010AAD2_chip_shot_challenge[0], 4, 0);
 }
 
@@ -325,28 +356,57 @@ void func_80107E94_chip_shot_challenge(void) {
     x += dir.x * 200.0f;
     z += dir.z * 200.0f;
     Hu3DModelPosSet(D_8010AAD2_chip_shot_challenge[0], x, y, z);
-    Hu3DModelPosSet(D_8010AACE_chip_shot_challenge[0], x, y, z);
+    Hu3DModelPosSet(D_8010AACC_chip_shot_challenge, x, y, z);
     Hu3DModelRotSet(D_8010AAD2_chip_shot_challenge[0], 0.0f, CRot.y, 0.0f);
-    Hu3DModelRotSet(D_8010AACE_chip_shot_challenge[0], 0.0f, CRot.y, 0.0f);
-    func_8001C258_main(D_8010AACE_chip_shot_challenge[0], 4, 0);
+    Hu3DModelRotSet(D_8010AACC_chip_shot_challenge, 0.0f, CRot.y, 0.0f);
+    func_8001C258_main(D_8010AACC_chip_shot_challenge, 4, 0);
     func_8001C258_main(D_8010AAD2_chip_shot_challenge[0], 4, 0);
 }
 
 void func_8010802C_chip_shot_challenge(void) {
-    HuSprAttrSet(D_8010AAC2_chip_shot_challenge[0], 0, 0x8000);
-    HuSprAttrSet(D_8010AAC2_chip_shot_challenge[0], 1, 0x8000);
-    HuSprAttrSet(D_8010AAC2_chip_shot_challenge[0], 2, 0x8000);
-    HuSprAttrSet(D_8010AAC2_chip_shot_challenge[0], 3, 0x8000);
-    HuSprAttrSet(D_8010AAC6_chip_shot_challenge[0], 0, 0x8000);
-    HuSprAttrSet(D_8010AAC6_chip_shot_challenge[0], 1, 0x8000);
-    func_8001C258_main(D_8010AACE_chip_shot_challenge[0], 4, 4);
-    func_8001C258_main(D_8010AACA_chip_shot_challenge[0], 4, 4);
+    HuSprAttrSet(D_8010AAC0_chip_shot_challenge, 0, 0x8000);
+    HuSprAttrSet(D_8010AAC0_chip_shot_challenge, 1, 0x8000);
+    HuSprAttrSet(D_8010AAC0_chip_shot_challenge, 2, 0x8000);
+    HuSprAttrSet(D_8010AAC0_chip_shot_challenge, 3, 0x8000);
+    HuSprAttrSet(D_8010AAC4_chip_shot_challenge, 0, 0x8000);
+    HuSprAttrSet(D_8010AAC4_chip_shot_challenge, 1, 0x8000);
+    func_8001C258_main(D_8010AACC_chip_shot_challenge, 4, 4);
+    func_8001C258_main(D_8010AAC8_chip_shot_challenge, 4, 4);
     if (func_800E6E8C_minigame() >= 2) {
         func_8001C258_main(D_8010AAD2_chip_shot_challenge[0], 4, 4);
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_80108108_chip_shot_challenge);
+void func_80108108_chip_shot_challenge(omObjData *object) {
+    ChipShotChallengeWork *work;
+    s32 i;
+
+    object->data = HuMemAllocTag(sizeof(ChipShotChallengeWork), 0x7918);
+    memset(object->data, 0, sizeof(ChipShotChallengeWork));
+    work = OM_GET_DATA_PTR(object, ChipShotChallengeWork);
+    object->model[0] = func_8000B0A0_main(0x3C0008, 0xAB9);
+    object->model[1] = func_8000B0D4_main(9, 0xAB9);
+    func_800E3584_minigame(object->model[1]);
+    work->unk_44 = 0.3f;
+    work->unk_48 = 60.0f;
+    work->unk_34 = 50.0f;
+    work->unk_3C = 0.0f;
+    work->unk_78 = 0;
+    work->unk_52 = 7;
+    work->unk_7C = 0;
+    work->unk_50 = 0;
+    work->unk_40 = 0.0f;
+    work->unk_38 = 1000.0f;
+    work->unk_74 = 0.5f;
+    work->unk_54 = 1;
+    for (i = 0; i < 9; i++) {
+        work->unk_84[i] = 0;
+    }
+    func_800E149C_minigame(object, 0, 2);
+    object->scale.x = object->scale.y = object->scale.z = 0.5f;
+    Hu3DModelScaleSet(object->model[1], 0.4f, 0.4f, 0.4f);
+    object->func = func_801094D8_chip_shot_challenge;
+}
 
 func_800E1BA8_minigame_ObjData *func_80108274_chip_shot_challenge(omObjData *object, s32 player) {
     func_800E1BA8_minigame_ObjData *data;
@@ -499,11 +559,46 @@ void func_80109AD0_chip_shot_challenge(omObjData *object, f32 x, f32 y, f32 z) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_80109B24_chip_shot_challenge);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_80109DE0_chip_shot_challenge);
+f32 func_80109DE0_chip_shot_challenge(omObjData *object, ChipShotChallengeSphere *sphere) {
+    ChipShotChallengeWork *work = OM_GET_DATA_PTR(object, ChipShotChallengeWork);
+    Vec normal = { 0.0f, 1.0f, 0.0f };
+    f32 y = sphere->pos.y;
+    f32 floorY = func_8010A04C_chip_shot_challenge(sphere, &normal);
+    f32 resultY = floorY;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", D_8010AA2C_chip_shot_challenge);
+    if (floorY < y - work->unk_34 || y + work->unk_34 <= floorY) {
+        if (work->unk_38 == 1000.0f) {
+            work->unk_38 = 0.0f;
+        }
+        resultY = y;
+    }
+    func_8010A3DC_chip_shot_challenge(object, &normal);
+    func_80109EF0_chip_shot_challenge(object, sphere->pos.x, resultY, sphere->pos.z, floorY, &normal);
+    return resultY;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_80109EF0_chip_shot_challenge);
+void func_80109EF0_chip_shot_challenge(omObjData *object, f32 x, f32 y, f32 z, f32 floorY, Vec *normal) {
+    ChipShotChallengeWork *work = OM_GET_DATA_PTR(object, ChipShotChallengeWork);
+    f32 scale = 0.5f;
+    f32 height = y - floorY;
+
+    if (floorY == -65536.0f) {
+        func_8001C258_main(object->model[1], 4, 4);
+        return;
+    }
+    if (height != 0.0f) {
+        if (height > 400.0f) {
+            scale = 0.1f;
+        } else {
+            scale = 0.5 - fabs(height) / 1000.0;
+        }
+        work->unk_53 = -1;
+    }
+    Hu3DModelPosSet(object->model[1], x, floorY + 3.0f, z);
+    Hu3DModelScaleSet(object->model[1], scale, 0.5f, scale);
+    func_800E3628_minigame(object->model[1], normal);
+    func_8001C258_main(object->model[1], 4, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_8010A04C_chip_shot_challenge);
 

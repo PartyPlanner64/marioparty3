@@ -26,17 +26,49 @@ typedef struct {
     u8 unk02;
     u8 unk03;
     f32 unk04;
-    u8 unk08[0xC];
-    s32 unk14;
+    Vec unk08;
+    omObjData *unk14;
 } LockedOutBlockWork;
 
+typedef struct {
+    /* 0x00 */ Vec pos;
+    /* 0x0C */ u8 unk0C[0x10];
+    /* 0x1C */ s32 unk1C;
+    /* 0x20 */ u8 unk20;
+    /* 0x21 */ s8 unk21;
+    /* 0x22 */ u8 unk22;
+    /* 0x23 */ u8 unk23;
+    /* 0x24 */ u8 unk24;
+    /* 0x25 */ u8 unk25;
+    /* 0x26 */ u8 unk26;
+    /* 0x27 */ u8 unk27;
+    /* 0x28 */ u8 unk28;
+    /* 0x29 */ u8 unk29;
+    /* 0x2A */ u8 unk2A;
+    /* 0x2B */ u8 unk2B;
+    /* 0x2C */ u16 unk2C;
+    /* 0x2E */ u16 unk2E;
+    /* 0x30 */ u16 unk30;
+    /* 0x32 */ u8 unk32[0x1A];
+} LockedOutPlayerWork; // Size 0x4C
+
+typedef struct {
+    u8 values[8];
+} LockedOutCharMotions;
+
+extern u8 D_8010A179_locked_out[][2];
+extern u8 D_8010A180_locked_out;
+extern Vec D_8010A184_locked_out[];
+extern f32 D_8010A1B4_locked_out[];
 extern u32 D_8010A1E8_locked_out;
+extern s32 D_800A178C_main[][6];
 extern f32 D_8010A680_locked_out[4][4];
 extern f32 D_8010A6B8_locked_out;
 extern f32 D_8010A6C0_locked_out[4][4];
 extern f32 D_8010A700_locked_out;
 extern u8 D_8010A704_locked_out[];
 extern omObjData *D_8010A610_locked_out[];
+extern Vec D_8010A110_locked_out[][3];
 extern LockedOutUnkStruct D_8010A638_locked_out[3];
 extern s16 D_8010A676_locked_out;
 extern s16 D_8010A678_locked_out;
@@ -78,6 +110,16 @@ void func_80109110_locked_out(void);
 void func_80109264_locked_out(omObjData *object);
 void func_80109444_locked_out(omObjData *object);
 void func_801071D8_locked_out(omObjData *object);
+void func_801064E0_locked_out(omObjData *object);
+void func_80106FBC_locked_out(omObjData *object);
+void func_80107ABC_locked_out(omObjData *object);
+u16 func_80108A90_locked_out(omObjData *object);
+u32 func_800E4A90_minigame(omObjData *);
+void func_800E149C_minigame(omObjData *, s32, s32);
+void func_80109858_locked_out(omObjData *object, u8 isPlayer, u8 canGrab);
+void func_801090FC_locked_out(omObjData *object, func_800E1BA8_minigame_ObjData **data, LockedOutPlayerWork **arg2);
+void func_80109E88_locked_out(s16 model, char *hook, s16 time, Vec *pos);
+void func_8001EF6C_main(s16, s16, char *);
 
 void func_801059A0_locked_out(void) {
     omObjData *obj;
@@ -216,7 +258,46 @@ void func_80106040_locked_out(void) {
     D_8010A674_locked_out = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80106134_locked_out);
+void func_80106134_locked_out(omObjData *object) {
+    LockedOutSetupWork *work;
+    s32 i;
+    s32 tag;
+
+    work = HuMemAllocTag(0xB4, 0x7918);
+    object->data = work;
+    memset(work, 0, 0xB4);
+    work->unk03 = 1;
+    work->unk04 = 0;
+    func_800E131C_minigame(object, 20.0f);
+    func_800E1304_minigame(object, 0.5f);
+    func_800E1310_minigame(object, 10.0f);
+    func_800E139C_minigame(object, 0.0f, -600.0f, -615.0f, 600.0f, 615.0f);
+    tag = 0x2D9;
+    object->model[0] = func_8000B108_main(0x3B0000, tag);
+    object->model[1] = func_8000B108_main(0x3B0003, tag);
+    object->model[6] = func_8000B108_main(0x3B0010, 0x2DD);
+    object->model[7] = func_8000B108_main(0x3B0011, 0x2DD);
+    for (i = 0; i < 3; i++) {
+        D_8010A638_locked_out[i].pos.x = D_8010A110_locked_out[i][0].x;
+        D_8010A638_locked_out[i].pos.y = D_8010A110_locked_out[i][0].y;
+        D_8010A638_locked_out[i].pos.z = D_8010A110_locked_out[i][0].z;
+        D_8010A638_locked_out[i].unk0C = 0;
+        D_8010A638_locked_out[i].unk10 = 1;
+        D_8010A638_locked_out[i].unk0D = object->model[2 + i] =
+            func_8000B108_main((D_8010A67A_locked_out + 4) | 0x3B0000, tag);
+        Hu3DModelPosSet(object->model[2 + i], D_8010A638_locked_out[i].pos.x, D_8010A638_locked_out[i].pos.y,
+                        D_8010A638_locked_out[i].pos.z);
+        func_8001C92C_main(object->model[2 + i], 0.0f);
+        D_8010A638_locked_out[i].unk0F = func_8000B0A0_main(7, 0x2DD);
+        func_8001C92C_main(D_8010A638_locked_out[i].unk0F, 0.0f);
+        Hu3DModelRotSet(D_8010A638_locked_out[i].unk0F, 90.0f, 0.0f, 0.0f);
+        D_8010A638_locked_out[i].unk0E = Hu3DModelLink(object->model[6]);
+        func_8001C258_main(D_8010A638_locked_out[i].unk0E, 4, 4);
+        func_8001C92C_main(D_8010A638_locked_out[i].unk0E, 0.0f);
+    }
+    object->model[5] = func_8000B108_main(0x3B000A, 0x2B9);
+    object->func = func_801064E0_locked_out;
+}
 
 void func_80106424_locked_out(omObjData *object) {
     LockedOutSetupWork *work;
@@ -273,11 +354,109 @@ void func_8010713C_locked_out(void) {
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", D_8010A298_locked_out);
+const LockedOutCharMotions D_8010A298_locked_out = { { 0, 1, 2, 3, 4, 5, 6, 7 } };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", D_8010A2A0_locked_out);
+void func_801071D8_locked_out(omObjData *object) {
+    LockedOutCharMotions motions = D_8010A298_locked_out;
+    s32 anims[3][8] = {
+        { 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0x1C },
+        { 0xA6, 0xA6, 0xA6, 0xA6, 0xA6, 0xA6, 0xA6, 0x1D },
+        { 0xA4, 0xA4, 0xA4, 0xA4, 0xA4, 0xA4, 0xA4, 0x1B },
+    };
+    func_800E1BA8_minigame_ObjData *data;
+    LockedOutPlayerWork *work;
+    u8 player;
+    s8 character;
+    u32 model;
+    s32 motion;
+    s32 linkModel;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_801071D8_locked_out);
+    player = D_8010A179_locked_out[D_8010A180_locked_out][0];
+    character = GwPlayer[player].chr;
+    model = D_800A178C_main[character][0];
+    motion = D_800A178C_main[character][1];
+    linkModel = D_800A178C_main[character][2];
+    func_800E1BA8_minigame(object, model, motion, player, 0x2D9, 0x2D9);
+    object->model[9] = func_8000B108_main(model | linkModel, 0x2ED);
+    data = object->data;
+    data->unk50 &= ~1;
+    data->unkEC = 0;
+    object->trans.x = D_8010A184_locked_out[D_8010A180_locked_out].x;
+    object->trans.y = D_8010A184_locked_out[D_8010A180_locked_out].y;
+    object->trans.z = D_8010A184_locked_out[D_8010A180_locked_out].z;
+    data->unk3C = D_8010A1B4_locked_out[D_8010A180_locked_out];
+    switch (model >> 16) {
+        case 6:
+            data->unk48 *= 1.25f;
+            break;
+        case 4:
+            data->unk48 *= 1.1f;
+            break;
+        case 5:
+            data->unk48 *= 1.2f;
+            break;
+    }
+    object->scale.x = object->scale.y = object->scale.z = 1.0f;
+    object->trans.x = D_8010A184_locked_out[D_8010A180_locked_out].x;
+    object->trans.y = D_8010A184_locked_out[D_8010A180_locked_out].y;
+    object->trans.z = D_8010A184_locked_out[D_8010A180_locked_out].z;
+    Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
+    Hu3DModelRotSet(object->model[0], object->rot.x, object->rot.y, object->rot.z);
+    Hu3DModelScaleSet(object->model[0], object->scale.x, object->scale.y, object->scale.z);
+
+    data->unk158 = HuMemAllocTag(sizeof(LockedOutPlayerWork), 0x7918);
+    memset(data->unk158, 0, sizeof(LockedOutPlayerWork));
+    work = data->unk158;
+    work->unk20 = player;
+    work->unk21 = character;
+    work->unk27 = GwPlayer[player].stat & 1;
+    work->unk22 = GwPlayer[player].cpu_difficulty;
+    work->unk1C = model | 0x2F;
+    work->unk23 = 0;
+    work->unk24 = 0;
+    work->pos.x = object->trans.x;
+    work->pos.y = object->trans.y;
+    work->pos.z = object->trans.z;
+    work->unk25 = 0;
+    work->unk28 = 0;
+    work->unk2B = func_80017790_main(object->model[9], 2, motions.values[character], model | anims[2][character]);
+    work->unk29 = func_80017AD8_main(model | anims[0][character]);
+    work->unk2A = func_80017AD8_main(model | anims[1][character]);
+    func_8001C514_main(object->model[9]);
+    func_800E149C_minigame(object, 0, 2);
+    data->unk50 |= 0x8000;
+    object->func = func_80107ABC_locked_out;
+    object->model[3] = func_8000B108_main(3, 0x2DD);
+    object->model[6] = func_8000B108_main(5, 0x2DD);
+    func_800E5A00_minigame(object, 0, func_80017BB8_main(character, 0), 1, 0);
+    func_800E5A00_minigame(object, 1, func_80017BB8_main(character, 1), 1, 0);
+    func_800E5A00_minigame(object, 2, func_80017BB8_main(character, 2), 1, 0);
+    func_800E5A00_minigame(object, 5, func_80017BB8_main(character, 3), 0, 0);
+    func_800E5A00_minigame(object, 0x11, func_80017BB8_main(character, 0xE), 0, 0);
+    func_800E5A00_minigame(object, 0x20, func_80017BB8_main(character, 0x22), 0, 0);
+    func_800E5A00_minigame(object, 0x1E, func_80017BB8_main(character, 0x20), 2, 0);
+    func_800E5A00_minigame(object, 0x1F, func_80017BB8_main(character, 0x21), 2, 0);
+    func_800E5A00_minigame(object, 0xD, func_80017BB8_main(character, 0x2F), 1, 0x78);
+    func_800E5A00_minigame(object, 0xF, func_80017BB8_main(character, 0x38), 1, 0x64);
+    switch (model >> 16) {
+        case 2:
+        case 5:
+        case 7:
+            func_800E5A00_minigame(object, 0xE, func_80017BB8_main(character, 0x39), 1, 0x3C);
+            break;
+        case 3:
+        case 4:
+        case 6:
+        case 8:
+        case 9:
+            func_800E5A00_minigame(object, 0xE, func_80017BB8_main(character, 0x3A), 1, 0x3C);
+            break;
+    }
+    func_800E5A00_minigame(object, 0x26, func_80017BB8_main(character, 0x8D), 1, 0);
+    func_800E5A00_minigame(object, 0x27, func_80017BB8_main(character, 0x8E), 0, 0);
+    func_800E5690_minigame(object, 0);
+    D_8010A180_locked_out++;
+}
 
 void func_80107844_locked_out(omObjData *object, s32 arg1, s32 arg2, u16 player, u16 tag) {
     func_800E1BA8_minigame_ObjData *data;
@@ -351,9 +530,114 @@ void func_801089F8_locked_out(omObjData *object, f32 x, f32 y, f32 z) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80108A90_locked_out);
+u16 func_80108A90_locked_out(omObjData *object) {
+    HuMtx4F unused; // Unused, but required for the stack layout to match.
+    func_800E1BA8_minigame_ObjData *data;
+    LockedOutPlayerWork *work;
+    LockedOutBlockWork *blockWork;
+    LockedOutUnkStruct *entry;
+    omObjData *block;
+    omObjData *holder;
+    s16 pad;
+    u8 index;
+    s32 i;
+    f32 angle;
+    u16 buttons; // Never assigned; the original returns an uninitialized value.
 
-void func_801090FC_locked_out(omObjData *object, func_800E1BA8_minigame_ObjData **data, void **arg2) {
+    func_801090FC_locked_out(object, &data, &work);
+    pad = data->unk57;
+    func_800E4A90_minigame(object);
+    switch (work->unk28) {
+        case 0:
+            if (work->unk25 != 0) {
+                D_800D5558_main[pad] |= 0x8000;
+            }
+            work->unk2C = 0;
+            work->unk2E = 0;
+            index = (s32)((f32)func_80109D70_locked_out() * 1.52587890625e-05 * D_8010A676_locked_out);
+            block = D_8010A610_locked_out[index];
+            blockWork = block->data;
+            if (blockWork->unk02 != D_8010A67A_locked_out) {
+                if ((s32)((f32)func_80109D70_locked_out() * 1.52587890625e-05 * 100.0) < work->unk22 * 5 + 5) {
+                    break;
+                }
+                work->unk2E = 1;
+            }
+            work->unk2C = index;
+            work->unk28++;
+            break;
+        case 1:
+            block = D_8010A610_locked_out[work->unk2C];
+            blockWork = block->data;
+            if (work->unk25 != 0) {
+                work->unk28 = 2;
+                break;
+            }
+            if (blockWork->unk00 == 1) {
+                holder = blockWork->unk14;
+                angle = func_80109DBC_locked_out(holder->trans.x - object->trans.x, holder->trans.z - object->trans.z);
+                if (func_80109E34_locked_out(&object->trans, &holder->trans) < data->unk48 * 2.2 + data->unk64) {
+                    D_800D5558_main[pad] |= 0x4000;
+                }
+                for (i = 0; i < D_8010A678_locked_out; i++) {
+                    blockWork = D_8010A610_locked_out[i]->data;
+                    if (blockWork->unk02 == D_8010A67A_locked_out && blockWork->unk00 == 0) {
+                        break;
+                    }
+                }
+                if (i < D_8010A678_locked_out) {
+                    if ((s32)((f32)func_80109D70_locked_out() * 1.52587890625e-05 * 100.0) < work->unk22 * 5 + 5) {
+                        work->unk28 = 0;
+                    }
+                }
+            } else if (blockWork->unk00 == 4) {
+                work->unk28 = 0;
+                break;
+            } else {
+                angle = func_80109DBC_locked_out(block->trans.x - object->trans.x, block->trans.z - object->trans.z);
+                if (func_80109E34_locked_out(&object->trans, &block->trans) <= data->unk48 + blockWork->unk04 + 2.0 &&
+                    __builtin_fabs((f64)(angle - data->unk3C)) < 40.0) {
+                    D_800D5558_main[pad] |= 0x8000;
+                }
+            }
+            D_800CBB6E_main[pad] = (work->unk22 * 6.0 + 46.0) * sindf(angle);
+            D_800D20A1_main[pad] = (work->unk22 * 6.0 + 46.0) * -cosdf(angle);
+            break;
+        case 2:
+            if (work->unk25 != work->unk2C + 1) {
+                D_800D5558_main[pad] |= 0x8000;
+                work->unk28 = 1;
+                break;
+            }
+            work->unk30 = (s32)((f32)func_80109D70_locked_out() * 1.52587890625e-05 * (s16)(D_8010A676_locked_out / 3));
+            if (D_8010A638_locked_out[work->unk30].unk10 == 0) {
+                break;
+            }
+            work->unk28++;
+        case 3:
+            if (work->unk25 == 0) {
+                work->unk28 = 1;
+            }
+            entry = &D_8010A638_locked_out[work->unk30];
+            if (entry->unk10 == 0) {
+                work->unk28 = 2;
+            }
+            angle = func_80109DBC_locked_out(entry->pos.x - object->trans.x, entry->pos.z - object->trans.z);
+            D_800CBB6E_main[pad] = (work->unk22 * 6.0 + 46.0) * sindf(angle);
+            D_800D20A1_main[pad] = (work->unk22 * 6.0 + 46.0) * -cosdf(angle);
+            break;
+        case 4:
+            break;
+    }
+    if (work->unk2E != 0) {
+        if ((s32)((f32)func_80109D70_locked_out() * 1.52587890625e-05 * 100.0) < work->unk22 * 5 + 5) {
+            work->unk28 = 0;
+        }
+    }
+    return buttons;
+}
+
+void func_801090FC_locked_out(omObjData *object, func_800E1BA8_minigame_ObjData **data, LockedOutPlayerWork **arg2) {
     *data = object->data;
     *arg2 = (*data)->unk158;
 }
@@ -410,9 +694,160 @@ void func_80109264_locked_out(omObjData *object) {
     D_8010A678_locked_out++;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80109444_locked_out);
+void func_80109444_locked_out(omObjData *object) {
+    LockedOutBlockWork *work;
+    Vec pos;
+    f32 angle;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80109858_locked_out);
+    work = object->data;
+    func_8001C258_main(object->model[1], 4, 0);
+    switch (work->unk00) {
+        case 0:
+            work->unk01 = 1;
+            break;
+        case 2:
+            work->unk01 = 0;
+            work->unk03--;
+            if (work->unk03 == 0) {
+                work->unk00 = 3;
+            }
+        case 3:
+            work->unk01 = 1;
+            work->unk08.y += -2.0f;
+            object->trans.x += work->unk08.x;
+            object->trans.y += work->unk08.y;
+            object->trans.z += work->unk08.z;
+            if (object->trans.y < 50.0) {
+                work->unk00 = 0;
+                object->trans.y = 50.0f;
+                work->unk08.y = 6.0f;
+            }
+            break;
+        case 1:
+        case 4:
+            func_8001C258_main(object->model[1], 4, 4);
+            work->unk01 = 0;
+            break;
+    }
+
+    pos.x = -610.5f;
+    pos.y = 0.0f;
+    pos.z = -607.0f;
+    if (func_80109E34_locked_out(&pos, &object->trans) <= work->unk04 + 90.0) {
+        angle = func_80109DBC_locked_out(pos.x - object->trans.x, pos.z - object->trans.z);
+        object->trans.x = pos.x - (work->unk04 + 90.0) * sindf(angle);
+        object->trans.z = pos.z - (work->unk04 + 90.0) * cosdf(angle);
+    }
+
+    pos.x = 610.5f;
+    pos.y = 0.0f;
+    pos.z = -607.0f;
+    if (func_80109E34_locked_out(&pos, &object->trans) <= work->unk04 + 80.0) {
+        angle = func_80109DBC_locked_out(pos.x - object->trans.x, pos.z - object->trans.z);
+        object->trans.x = pos.x - (work->unk04 + 90.0) * sindf(angle);
+        object->trans.z = pos.z - (work->unk04 + 90.0) * cosdf(angle);
+    }
+
+    if (object->trans.x < -600.0) {
+        object->trans.x = -600.0f;
+    }
+    if (object->trans.x > 600.0) {
+        object->trans.x = 600.0f;
+    }
+    if (object->trans.z < -575.0) {
+        object->trans.z = -575.0f;
+    }
+    if (object->trans.z > 575.0) {
+        object->trans.z = 575.0f;
+    }
+    Hu3DModelPosSet(object->model[1], object->trans.x, 1.0f, object->trans.z);
+    func_80109858_locked_out(object, 0, 0);
+    func_80106FBC_locked_out(object);
+}
+
+void func_80109858_locked_out(omObjData *object, u8 isPlayer, u8 canGrab) {
+    func_800E1BA8_minigame_ObjData *data;
+    LockedOutPlayerWork *playerWork;
+    LockedOutBlockWork *selfWork;
+    LockedOutBlockWork *work;
+    omObjData *block;
+    Vec hookPos;
+    f32 radius;
+    f32 dist;
+    f32 angle;
+    f32 pushAngle;
+    s32 i;
+
+    selfWork = NULL;
+    if (D_8010A678_locked_out == 0) {
+        return;
+    }
+    if (isPlayer) {
+        func_801090FC_locked_out(object, &data, &playerWork);
+        radius = data->unk48;
+    } else {
+        selfWork = object->data;
+        radius = selfWork->unk04;
+        canGrab = FALSE;
+    }
+
+    if (canGrab && playerWork->unk25 != 0) {
+        block = D_8010A610_locked_out[playerWork->unk25 - 1];
+        work = block->data;
+        func_8001C258_main(block->model[0], 0x4000, 0);
+        work->unk08.x = sindf(data->unk3C) * 4.0;
+        work->unk08.y = 15.0f;
+        work->unk08.z = cosdf(data->unk3C) * 4.0;
+        func_80109E88_locked_out(object->model[0], "item_hook", HmfModelData[object->model[0]].unk40, &hookPos);
+        block->trans.x = work->unk08.x * 20.0f + hookPos.x;
+        block->trans.y = hookPos.y + 50.0;
+        block->trans.z = work->unk08.z * 20.0f + hookPos.z;
+        playerWork->unk25 = 0;
+        if (work->unk00 != 4) {
+            work->unk00 = 2;
+        }
+        work->unk01 = 0;
+        work->unk03 = 5;
+        canGrab = FALSE;
+    }
+
+    for (i = 0; i < D_8010A676_locked_out; i++) {
+        block = D_8010A610_locked_out[i];
+        work = block->data;
+        if (work == selfWork) {
+            continue;
+        }
+        dist = func_80109E34_locked_out(&object->trans, &block->trans);
+        if (!(dist < radius + work->unk04 + 24.0)) {
+            continue;
+        }
+        angle = func_80109DBC_locked_out(block->trans.x - object->trans.x, block->trans.z - object->trans.z);
+        if (dist < radius + work->unk04 && (work->unk00 != 1 || work->unk00 != 4)) {
+            pushAngle = func_80109DBC_locked_out(object->trans.x - block->trans.x, object->trans.z - block->trans.z);
+            block->trans.x = object->trans.x - (radius + work->unk04) * sindf(pushAngle);
+            block->trans.z = object->trans.z - (radius + work->unk04) * cosdf(pushAngle);
+        }
+        if (!canGrab || playerWork->unk25 != 0 || work->unk01 == 0) {
+            continue;
+        }
+        angle -= data->unk3C;
+        while (angle < -180.0) {
+            angle += 360.0;
+        }
+        while (angle > 180.0) {
+            angle -= 360.0;
+        }
+        if (__builtin_fabs((f64)angle) < 45.0) {
+            func_8001EF6C_main(block->model[0], object->model[0], "item_hook");
+            func_8001C258_main(block->model[0], 0x4000, 0x4000);
+            func_8004AC5C_main(0x3D6, data->unk59);
+            playerWork->unk25 = i + 1;
+            work->unk00 = 1;
+            work->unk01 = 0;
+            work->unk14 = object;
+        }
+    }
+}
 
 void func_80109CDC_locked_out(void) {
     omObjData *object;

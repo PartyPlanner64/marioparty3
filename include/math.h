@@ -8,7 +8,7 @@
 #define M_PI 3.14159265358979323846
 #define M_PI_2 1.57079632679489661923
 #define M_PI_4 0.78539816339744830962
-#define M_DTOR (3.14159265358979323846/180.0)
+#define M_DTOR (3.14159265358979323846 / 180.0)
 #define M_RTOD 57.2957795130823208768
 
 /* Single-precision constants are rounded independently of the double versions. */
@@ -47,6 +47,7 @@ typedef struct Vec2f {
 
 f64 fabs(f64 x);
 f32 fabsf(f32 x);
+int abs(int x);
 
 /* Application-owned default tolerance used by libhmath's epsilon helpers. */
 extern f32 D_800A12A4_main;

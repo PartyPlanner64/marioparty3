@@ -4,7 +4,11 @@
 typedef struct ChipShotChallengeWork {
     /* 0x00 */ char pad_00[0x38];
     /* 0x38 */ f32 unk_38;
-    /* 0x3C */ char pad_3C[0x20];
+    /* 0x3C */ f32 unk_3C;
+    /* 0x40 */ f32 unk_40;
+    /* 0x44 */ char pad_44[0x15];
+    /* 0x59 */ s8 playerIndex;
+    /* 0x5A */ char pad_5A[2];
     /* 0x5C */ f32 unk_5C;
     /* 0x60 */ f32 unk_60;
     /* 0x64 */ f32 unk_64;
@@ -26,11 +30,16 @@ extern s16 D_8010AACA_chip_shot_challenge[];
 extern s16 D_8010AACE_chip_shot_challenge[];
 extern s16 D_8010AAD2_chip_shot_challenge[];
 extern ChipShotChallengeModelEntry D_8010AAD8_chip_shot_challenge[4];
+extern s16 D_8010AAE8_chip_shot_challenge;
 extern omObjData *D_8010AAF0_chip_shot_challenge;
 extern f32 D_8010A954_chip_shot_challenge;
+extern f32 D_8010A984_chip_shot_challenge[4];
+extern f32 D_8010A994_chip_shot_challenge[4];
+extern f32 D_8010A9A4_chip_shot_challenge[];
 extern s32 D_8010A958_chip_shot_challenge;
 
 void func_801071A8_chip_shot_challenge(void);
+void func_80107238_chip_shot_challenge(s16 model);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_801059A0_chip_shot_challenge);
 
@@ -66,7 +75,17 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", D_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_80107048_chip_shot_challenge);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_801071A8_chip_shot_challenge);
+void func_801071A8_chip_shot_challenge(void) {
+    ChipShotChallengeModelEntry *entries;
+    s16 i;
+
+    for (i = 0, entries = D_8010AAD8_chip_shot_challenge; i < 4; i++) {
+        if (((D_8010AAE8_chip_shot_challenge + i) & 3) == 0) {
+            func_80107238_chip_shot_challenge(entries[i].model);
+        }
+    }
+    D_8010AAE8_chip_shot_challenge++;
+}
 
 void func_80107238_chip_shot_challenge(s16 model) {
     HmfData *hmf = HmfModelData[model].hmf;
@@ -265,4 +284,59 @@ void func_8010A3DC_chip_shot_challenge(omObjData *object, Vec *arg1) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_8010A454_chip_shot_challenge);
+void func_8010A454_chip_shot_challenge(omObjData *object, s32 *stickX, s32 *stickY, s32 *buttons) {
+    ChipShotChallengeWork *work = OM_GET_DATA_PTR(object, ChipShotChallengeWork);
+    f32 x, y, z;
+    f32 angle;
+    f32 dist;
+    s32 playerIndex;
+    s32 difficulty;
+
+    if (GwPlayer[work->playerIndex].stat & 1) {
+        *buttons = 0;
+        *stickY = 0;
+        *stickX = 0;
+        x = D_8010AAA4_chip_shot_challenge.x;
+        y = D_8010AAA4_chip_shot_challenge.y;
+        z = D_8010AAA4_chip_shot_challenge.z;
+        playerIndex = work->playerIndex;
+        difficulty = GwPlayer[playerIndex].cpu_difficulty;
+        if (D_8010A984_chip_shot_challenge[playerIndex] == 1000.0f) {
+            angle = (rand8() - 127.0f) / 128.0f * 5.0f * D_8010A9A4_chip_shot_challenge[difficulty];
+            D_8010A984_chip_shot_challenge[playerIndex] = angle;
+        }
+        if (D_8010A994_chip_shot_challenge[playerIndex] == 1000.0f) {
+            dist = (rand8() - 127.0f) / 128.0f * 10.0f * D_8010A9A4_chip_shot_challenge[difficulty];
+            D_8010A994_chip_shot_challenge[playerIndex] = dist;
+        }
+        dist = HuSqrtf(x * x + y * y + z * z);
+        angle = atan2df(x, z) + D_8010A984_chip_shot_challenge[playerIndex];
+        if (angle < 0.0f) {
+            angle += 180.0f;
+        } else {
+            angle -= 180.0f;
+        }
+        if (fabs(angle - work->unk_3C) > 1.0) {
+            if (work->unk_3C < angle) {
+                *stickX = -30;
+            }
+            if (angle < work->unk_3C) {
+                *stickX = 30;
+            }
+        }
+        dist = (dist - 150.0f) / 10.0f + D_8010A994_chip_shot_challenge[playerIndex];
+        dist *= 1.1f;
+        if (dist < 65.0f) {
+            dist = 65.0f;
+        }
+        if (dist > 100.0f) {
+            dist = 100.0f;
+        }
+        if (fabs(dist - work->unk_40) > 10.0) {
+            *stickY = !(work->unk_40 < dist) ? 30 : -30;
+        }
+        if (*stickX == 0 && *stickY == 0) {
+            *buttons |= 0x8000;
+        }
+    }
+}

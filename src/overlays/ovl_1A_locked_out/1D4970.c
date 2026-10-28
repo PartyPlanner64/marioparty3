@@ -17,18 +17,88 @@ extern f32 D_8010A6C0_locked_out[4][4];
 extern f32 D_8010A700_locked_out;
 extern omObjData *D_8010A610_locked_out[];
 extern s16 D_8010A676_locked_out;
+extern s16 D_8010A678_locked_out;
+extern s16 D_8010A674_locked_out;
+extern s16 D_8010A67A_locked_out;
+extern D_80111B50_vine_with_me_Struct D_8010A588_locked_out;
+extern void *D_800EBEB0_minigame;
 
 void func_800E1304_minigame(omObjData *, f32);
 void func_800E1310_minigame(omObjData *, f32);
 void func_800E131C_minigame(omObjData *, f32);
 void func_800E139C_minigame(omObjData *, f32, f32, f32, f32, f32);
 void func_800E4C88_minigame(omObjData *, u8, f32, f32, f32, f32, f32);
+void func_80021BE0_main(void *arg0, u16 arg1);
+s32 func_8000B638_main(void);
+void func_8002367C_main(HuMtx4F dst, HuMtx4F src);
+void func_80016B00_main(s16, s16, char *, HuMtx4F);
+void func_80088800_main(HuMtx4F, f32, f32, f32);
+void func_80017D24_main(HuMtx4F, f32, f32, f32);
+void func_80017CD0_main(HuMtx4F, f32, f32, f32);
+void func_80018044_main(HuMtx4F, HuMtx4F, HuMtx4F);
 
+void func_80105B38_locked_out(omObjData *object);
+void func_80105CB4_locked_out(HuMtx4F, HuMtx4F);
+void func_80106040_locked_out(void);
+void func_80106134_locked_out(omObjData *object);
+void func_80106424_locked_out(omObjData *object);
+void func_8010713C_locked_out(void);
+s32 func_80109D70_locked_out(void);
+void func_800E1490_minigame(s32 arg0);
+void func_80109110_locked_out(void);
 void func_801071D8_locked_out(omObjData *object);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_801059A0_locked_out);
+void func_801059A0_locked_out(void) {
+    omObjData *obj;
+    u8 camIndex;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80105B38_locked_out);
+    Hu3DAnimInit(2);
+    func_80021BE0_main(&D_800EBEB0_minigame, 0x40);
+    omInitObjMan(0x20, 0);
+    func_8004A208_main();
+    obj = omAddObj(0x7FDA, 0, 0, -1, omOutView);
+    omSetStatBit(obj, 0xA0);
+    func_8000B5F0_main(1);
+    camIndex = func_8000B638_main();
+    ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
+    ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
+    Hu3DCamSetPerspective(0, 45.0f, 80.0f, 8000.0f);
+    func_800E1804_minigame();
+    func_80105B38_locked_out(obj);
+    func_80106040_locked_out();
+    memset(&D_8010A588_locked_out, 0, 0x28);
+    D_8010A588_locked_out.unk01 = 4;
+    func_800E5EA0_minigame(&D_8010A588_locked_out);
+    func_8010713C_locked_out();
+    D_8010A676_locked_out = 9;
+    D_8010A678_locked_out = 0;
+    func_80109110_locked_out();
+    func_8001F38C_main(0, 0, 0);
+    WipeCreateIn(0xFF, 0x10);
+}
+
+void func_80105B38_locked_out(omObjData *object) {
+    HuCamera *camera;
+    f32 sinFov;
+    f32 cosFov;
+
+    CZoom = 1400.0f;
+    CRot.x = -40.0f;
+    CRot.y = 0.0f;
+    CRot.z = 0.0f;
+    Center.x = 0.0f;
+    Center.y = 110.0f;
+    Center.z = 0.0f;
+    omOutView(object);
+
+    camera = gCameraList;
+    sinFov = sindf(camera->fov[0] / 2.0);
+    cosFov = cosdf(camera->fov[0] / 2.0);
+    D_8010A700_locked_out = sinFov / cosFov;
+    guMtxL2F(D_8010A680_locked_out, &camera->mtxs[0].lookAtMtx);
+    guMtxL2F(D_8010A6C0_locked_out, &camera->mtxs[0].lookAtMtx);
+    func_80105CB4_locked_out(D_8010A6C0_locked_out, D_8010A6C0_locked_out);
+}
 
 void func_80105C34_locked_out(HuMtx4F mtx, f32 x, f32 y, f32 z, f32 *dst) {
     dst[0] = ((x * mtx[0][0]) + (y * mtx[1][0])) + (z * mtx[2][0]);
@@ -36,7 +106,47 @@ void func_80105C34_locked_out(HuMtx4F mtx, f32 x, f32 y, f32 z, f32 *dst) {
     dst[2] = ((x * mtx[0][2]) + (y * mtx[1][2])) + (z * mtx[2][2]);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80105CB4_locked_out);
+void func_80105CB4_locked_out(HuMtx4F src, HuMtx4F dst) {
+    f32 mtx[4][4];
+    f32 t0;
+    f32 t1;
+    f32 t2;
+    f32 det;
+    f32 *dstRow3;
+
+    func_8002367C_main(mtx, src);
+
+    t0 = mtx[1][1] * mtx[2][2] - mtx[1][2] * mtx[2][1];
+    t1 = mtx[1][2] * mtx[2][0] - mtx[1][0] * mtx[2][2];
+
+    t2 = mtx[1][0] * mtx[2][1] - mtx[1][1] * mtx[2][0];
+
+    det = t0 * mtx[0][0] + t1 * mtx[0][1] + t2 * mtx[0][2];
+
+    dstRow3 = &dst[3][0];
+    if (det != 0.0f) {
+        det = 1.0f / det;
+
+        dst[0][0] = t0 * det;
+        dst[1][0] = t1 * det;
+        dst[2][0] = t2 * det;
+
+        dst[0][1] = (mtx[0][2] * mtx[2][1] - mtx[0][1] * mtx[2][2]) * det;
+        dst[0][2] = (mtx[0][1] * mtx[1][2] - mtx[0][2] * mtx[1][1]) * det;
+        dst[1][1] = (mtx[0][0] * mtx[2][2] - mtx[0][2] * mtx[2][0]) * det;
+
+        dst[1][2] = (mtx[0][2] * mtx[1][0] - mtx[0][0] * mtx[1][2]) * det;
+        dst[2][1] = (mtx[0][1] * mtx[2][0] - mtx[0][0] * mtx[2][1]) * det;
+        dst[2][2] = (mtx[0][0] * mtx[1][1] - mtx[0][1] * mtx[1][0]) * det;
+
+        dst[2][3] = 0.0f;
+        dst[1][3] = 0.0f;
+        dst[0][3] = 0.0f;
+        dst[3][3] = 1.0f;
+
+        func_80105C34_locked_out(dst, -mtx[3][0], -mtx[3][1], -mtx[3][2], dstRow3);
+    }
+}
 
 void func_80105EA4_locked_out(f32 *pos, f32 *dst) {
     f32 mtx[4][4];
@@ -66,7 +176,14 @@ void func_80105F74_locked_out(f32 x, f32 y, f32 z, f32 *dst) {
     dst[2] = mtx[3][2];
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80106040_locked_out);
+void func_80106040_locked_out(void) {
+    D_800EBE28_minigame = 0;
+    func_800E1490_minigame(0);
+    D_8010A67A_locked_out = (f32)func_80109D70_locked_out() * 1.52587890625e-05 * 3.0;
+    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(5, 8, 0, -1, func_80106134_locked_out);
+    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(5, 1, 0, -1, func_80106424_locked_out);
+    D_8010A674_locked_out = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80106134_locked_out);
 
@@ -174,7 +291,22 @@ f32 func_80109E34_locked_out(Vec *arg0, Vec *arg1) {
                  ((arg0->z - arg1->z) * (arg0->z - arg1->z)));
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80109E88_locked_out);
+void func_80109E88_locked_out(s16 model, char *hook, s16 time, Vec *pos) {
+    HuMtx4F transform;
+    HuMtx4F result;
+    HuMtx4F hookTransform;
+    HmfModel *modelData;
+
+    func_80016B00_main(model, time, hook, hookTransform);
+    modelData = &HmfModelData[model];
+    func_80088800_main(transform, modelData->pos.x, modelData->pos.y, modelData->pos.z);
+    func_80017D24_main(transform, modelData->rot.x, modelData->rot.y, modelData->rot.z);
+    func_80017CD0_main(transform, modelData->scale.x, modelData->scale.y, modelData->scale.z);
+    func_80018044_main(hookTransform, transform, result);
+    pos->x = result[0][0] + result[1][0] + result[2][0] + result[3][0];
+    pos->y = result[0][1] + result[1][1] + result[2][1] + result[3][1];
+    pos->z = result[0][2] + result[1][2] + result[2][2] + result[3][2];
+}
 
 s16 func_80109FAC_locked_out(s32 dataNum) {
     void *data;

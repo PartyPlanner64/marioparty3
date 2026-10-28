@@ -102,6 +102,7 @@ typedef struct {
 
 void func_800E18D8_minigame(void);
 void func_800E19F0_minigame(s8);
+void func_800E1804_minigame(void);
 void func_800E1BA8_minigame(omObjData *, u32, s32, u16, s32, s32);
 void func_800E4E30_minigame(omObjData *);
 void func_800E5638_minigame(func_800E5638_minigame_UnkD8_ObjData *, u16, u16, u16, s16);

@@ -305,7 +305,34 @@ void func_801063E4_spotlight_swim(void) {
     D_8010D480_spotlight_swim[1].obj = omAddObj(0x258, 1, 0, -1, func_80106350_spotlight_swim);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_80106420_spotlight_swim);
+void func_80106420_spotlight_swim(omObjData *obj) {
+    s8 i;
+    f32 *zs;
+
+    for (i = 0; i < 3; i++) {
+        switch (D_8010D39B_spotlight_swim[i]) {
+            case 0:
+                break;
+            case 1:
+                D_8010D398_spotlight_swim[i]++;
+                if (D_8010D398_spotlight_swim[i] >= i * 7) {
+                    D_8010D39B_spotlight_swim[i] = 2;
+                    D_8010D398_spotlight_swim[i] = 0;
+                }
+                break;
+            case 2:
+                D_8010D398_spotlight_swim[i]++;
+                if (D_8010D398_spotlight_swim[i] >= 10) {
+                    D_8010D398_spotlight_swim[i] = 0;
+                    D_8010D39B_spotlight_swim[i] = 0;
+                    D_8010D380_spotlight_swim[i] = 1000.0f;
+                }
+                zs = D_8010D38C_spotlight_swim;
+                Hu3DModelPosSet(obj->model[i + 1], D_8010D380_spotlight_swim[i], -200.0f, zs[i]);
+                break;
+        }
+    }
+}
 
 void func_801065C4_spotlight_swim(omObjData *obj) {
     void *data;

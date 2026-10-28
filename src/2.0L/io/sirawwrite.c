@@ -1,3 +1,12 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/io/sirawwrite", __osSiRawWriteIo);
+extern int __osSiDeviceBusy(void);
+
+s32 __osSiRawWriteIo(u32 devAddr, u32 data) {
+    if (__osSiDeviceBusy()) {
+        return -1;
+    }
+
+    IO_WRITE(devAddr, data);
+    return 0;
+}

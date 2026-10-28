@@ -1,3 +1,12 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/io/sirawread", __osSiRawReadIo);
+extern int __osSiDeviceBusy(void);
+
+s32 __osSiRawReadIo(u32 devAddr, u32 *data) {
+    if (__osSiDeviceBusy()) {
+        return -1;
+    }
+
+    *data = IO_READ(devAddr);
+    return 0;
+}

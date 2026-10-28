@@ -117,6 +117,11 @@ extern s32 D_8010A94C_chip_shot_challenge;
 extern s32 D_8010A950_chip_shot_challenge;
 extern f32 D_8010AA88_chip_shot_challenge;
 extern Vec D_8010AA8C_chip_shot_challenge;
+extern u8 D_8010A96C_chip_shot_challenge;
+extern s32 D_8010AA98_chip_shot_challenge;
+extern s32 D_8010AA9C_chip_shot_challenge;
+extern f32 D_8010A830_chip_shot_challenge;
+extern s32 D_8010A84C_chip_shot_challenge[4][3];
 
 f32 func_800202A8_main(f32 angle);
 u16 func_8000B0D4_main(s32 arg0, s32 arg1);
@@ -174,6 +179,8 @@ f32 func_80109DE0_chip_shot_challenge(omObjData *object, ChipShotChallengeSphere
 void func_80109EF0_chip_shot_challenge(omObjData *object, f32 x, f32 y, f32 z, f32 floorY, Vec *normal);
 f32 func_8010A04C_chip_shot_challenge(ChipShotChallengeSphere *sphere, Vec *normal);
 void func_8010A3DC_chip_shot_challenge(omObjData *object, Vec *arg1);
+void func_8010A454_chip_shot_challenge(omObjData *object, s32 *stickX, s32 *stickY, s32 *buttons);
+void func_800E6F0C_minigame(s32 arg0);
 
 void func_801059A0_chip_shot_challenge(void) {
     u8 camIndex;
@@ -926,9 +933,198 @@ void func_80108730_chip_shot_challenge(omObjData *object) {
     data->unk53[0] = 3;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", D_8010AA00_chip_shot_challenge);
+void func_801087AC_chip_shot_challenge(omObjData *object) {
+    func_800E1BA8_minigame_ObjData *data = OM_GET_DATA_PTR(object, func_800E1BA8_minigame_ObjData);
+    // z is left implicit so GCC doesn't merge this with the identical initializer in func_80109DE0
+    Vec pos = { .x = 0.0f, .y = 1.0f };
+    s32 stickX;
+    s32 stickY;
+    s32 buttons;
+    ChipShotChallengeWork *shot;
+    ChipShotChallengeWork *ball;
+    s32 pad;
+    s32 player;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_801087AC_chip_shot_challenge);
+    pad = data->unk57;
+    player = data->unk59;
+    if (func_800E6E8C_minigame() == 2) {
+        stickX = D_800CBB6E_main[pad];
+        stickY = D_800D20A1_main[pad];
+        buttons = (u16)D_800CDA7C_main[pad];
+        if (stickX > 60) {
+            stickX = 60;
+        }
+        if (stickY > 60) {
+            stickY = 60;
+        }
+        if (stickX < -60) {
+            stickX = -60;
+        }
+        if (stickY < -60) {
+            stickY = -60;
+        }
+    } else {
+        stickX = stickY = buttons = 0;
+    }
+    if (D_8010A844_chip_shot_challenge == data->unk53[0]) {
+        func_8010A454_chip_shot_challenge(object, &stickX, &stickY, &buttons);
+        switch (data->unk50) {
+            case 0:
+                func_800E5690_minigame(object, 1);
+                data->unk50 = 1;
+                break;
+            case 1:
+                object->trans.x += 5.0f;
+                if (object->trans.x > -90.0f) {
+                    func_800E5690_minigame(object, 2);
+                    data->unk50 = 2;
+                    D_8010A824_chip_shot_challenge = 1;
+                    object->trans.x = -90.0f;
+                    GMesCreate(0x1A, 10, 0xA0, 0x18);
+                    D_8010AA9C_chip_shot_challenge = 300;
+                }
+                func_800E3628_minigame(D_8010AAF0_chip_shot_challenge->model[1], &pos);
+                D_8010A96C_chip_shot_challenge -= 5;
+                if (D_8010A96C_chip_shot_challenge < 100) {
+                    D_8010A96C_chip_shot_challenge = 100;
+                }
+                break;
+            case 2:
+                func_8003F578_main(D_8010AA9C_chip_shot_challenge / 30 + 1);
+                if ((buttons & 0x8000) || D_8010AA9C_chip_shot_challenge == 0) {
+                    func_800E5690_minigame(object, 3);
+                    data->unk50 = 3;
+                    D_8010A824_chip_shot_challenge = 0;
+                    D_8010AA98_chip_shot_challenge = 0;
+                    func_8003F5C0_main();
+                }
+                data->unk3C -= stickX / 50.0f;
+                if (data->unk3C > 30.0f) {
+                    data->unk3C = 30.0f;
+                }
+                if (data->unk3C < -30.0f) {
+                    data->unk3C = -30.0f;
+                }
+                data->unk40 -= stickY / 50.0f;
+                if (data->unk40 > 100.0f) {
+                    data->unk40 = 100.0f;
+                }
+                if (data->unk40 < 60.0f) {
+                    data->unk40 = 60.0f;
+                }
+                D_8010A828_chip_shot_challenge = data->unk3C;
+                D_8010A82C_chip_shot_challenge = data->unk40;
+                D_8010A830_chip_shot_challenge = D_8010A82C_chip_shot_challenge / 20.0f;
+                object->trans.x = sindf(data->unk3C + 90.0f) * -90.0f;
+                object->trans.z = cosdf(data->unk3C + 90.0f) * -90.0f + 20.0f;
+                object->rot.y = data->unk3C + 90.0f;
+                CRot.y = data->unk3C / 40.0f;
+                D_8010AA9C_chip_shot_challenge--;
+                break;
+            case 3:
+                if (D_8010AA98_chip_shot_challenge == 38) {
+                    data->unk50 = 4;
+                    shot = OM_GET_DATA_PTR(D_8010AAF0_chip_shot_challenge, ChipShotChallengeWork);
+                    shot->unk_40 = data->unk40 / 5.0f;
+                    shot->unk_3C = data->unk3C + 180.0f;
+                    shot->unk_38 = -1.2f - data->unk40 / 300.0f;
+                    D_8010A820_chip_shot_challenge = 1;
+                    D_8010A83C_chip_shot_challenge = 0;
+                    D_8010A848_chip_shot_challenge = 0;
+                    func_8004AC98_main(0x3DA, player);
+                    omVibrate(player, 5, 0, 5);
+                }
+                D_8010AA98_chip_shot_challenge++;
+                D_8010A96C_chip_shot_challenge += 2;
+                if (D_8010A96C_chip_shot_challenge > 240) {
+                    D_8010A96C_chip_shot_challenge = 240;
+                }
+                break;
+            case 4:
+                if (fabs(CRot.y) < fabs(data->unk3C)) {
+                    CRot.y *= 1.05f;
+                }
+                D_8010A96C_chip_shot_challenge += 2;
+                if (D_8010A96C_chip_shot_challenge > 240) {
+                    D_8010A96C_chip_shot_challenge = 240;
+                }
+                D_8010A828_chip_shot_challenge -= D_8010AABC_chip_shot_challenge;
+                Center.x += sindf(D_8010A828_chip_shot_challenge + 180.0f) * D_8010A838_chip_shot_challenge;
+                Center.z += cosdf(D_8010A828_chip_shot_challenge + 180.0f) * D_8010A838_chip_shot_challenge;
+                if (D_8010A840_chip_shot_challenge < 70) {
+                    break;
+                }
+                ball = OM_GET_DATA_PTR(D_8010AAF0_chip_shot_challenge, ChipShotChallengeWork);
+                if (D_8010A83C_chip_shot_challenge == 1 && D_8010A840_chip_shot_challenge < 151) {
+                    break;
+                }
+                D_8010A844_chip_shot_challenge++;
+                ball->unk_5C = 0.0f;
+                ball->unk_60 = 0.0f;
+                ball->unk_64 = 0.0f;
+                if (D_8010A844_chip_shot_challenge == 4) {
+                    func_800E6F0C_minigame(3);
+                    for (i = 0; i < 4; i++) {
+                        D_800EC598_minigame[i]->trans.x = D_8010A84C_chip_shot_challenge[i][0];
+                        D_800EC598_minigame[i]->trans.y = D_8010A84C_chip_shot_challenge[i][1];
+                        D_800EC598_minigame[i]->trans.z = D_8010A84C_chip_shot_challenge[i][2];
+                        D_800EC598_minigame[i]->rot.y = 0.0f;
+                        Hu3DModelPosSet(D_800EC598_minigame[i]->model[1], D_8010A84C_chip_shot_challenge[i][0],
+                                        D_8010A84C_chip_shot_challenge[i][1], D_8010A84C_chip_shot_challenge[i][2]);
+                        func_8001C258_main(D_800EC598_minigame[i]->model[0], 4, 0);
+                        func_8001C258_main(D_800EC598_minigame[i]->model[1], 4, 0);
+                        func_8001C258_main(D_800EC598_minigame[i]->model[2], 4, 4);
+                        if (D_8010A848_chip_shot_challenge != 1) {
+                            func_8001C258_main(object->model[3], 4, 0);
+                            Hu3DModelPosSet(object->model[3], D_8010AAF0_chip_shot_challenge->trans.x,
+                                            D_8010AAF0_chip_shot_challenge->trans.y - 50.0f,
+                                            D_8010AAF0_chip_shot_challenge->trans.z);
+                        }
+                    }
+                    func_8001C258_main(D_8010AAF0_chip_shot_challenge->model[0], 4, 4);
+                    func_8001C258_main(D_8010AAF0_chip_shot_challenge->model[1], 4, 4);
+                } else {
+                    D_800EC598_minigame[D_8010A844_chip_shot_challenge]->trans.x = -200.0f;
+                    data->unk50 = 5;
+                    Hu3DModelPosSet(D_8010AAF0_chip_shot_challenge->model[1], 0.0f, 3.0f, 0.0f);
+                    func_800E3628_minigame(D_8010AAF0_chip_shot_challenge->model[1], &pos);
+                    func_8001C258_main(D_8010AAF0_chip_shot_challenge->model[1], 4, 0);
+                    if (D_8010A848_chip_shot_challenge != 1) {
+                        func_8001C258_main(object->model[3], 4, 0);
+                        Hu3DModelPosSet(object->model[3], D_8010AAF0_chip_shot_challenge->trans.x,
+                                        D_8010AAF0_chip_shot_challenge->trans.y - 50.0f,
+                                        D_8010AAF0_chip_shot_challenge->trans.z);
+                    }
+                    D_8010A820_chip_shot_challenge = 0;
+                    object->trans.x = -90.0f;
+                    D_8010AAF0_chip_shot_challenge->trans.x = D_8010AAF0_chip_shot_challenge->trans.y =
+                        D_8010AAF0_chip_shot_challenge->trans.z = 0.0f;
+                    ball->unk_3C = ball->unk_40 = 0.0f;
+                    ball->unk_38 = 1000.0f;
+                    func_8001C258_main(object->model[0], 4, 4);
+                    func_8001C258_main(object->model[1], 4, 4);
+                    func_8001C258_main(object->model[2], 4, 4);
+                    Center.x = 0.0f;
+                    Center.y = 200.0f;
+                    Center.z = 0.0f;
+                    CRot.y = 0.0f;
+                }
+                func_800E5690_minigame(object, 0);
+                D_8010A840_chip_shot_challenge = 0;
+                D_8010A828_chip_shot_challenge = D_8010A82C_chip_shot_challenge = 0.0f;
+                break;
+            case 5:
+            case 6:
+                break;
+        }
+        Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, object->trans.z);
+    }
+    func_800E4E30_minigame(object);
+    if (D_8010A840_chip_shot_challenge == 0) {
+        func_8010802C_chip_shot_challenge();
+    }
+}
 
 void func_801091E8_chip_shot_challenge(omObjData *object) {
     Vec delta;

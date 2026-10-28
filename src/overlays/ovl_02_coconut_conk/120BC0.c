@@ -128,6 +128,7 @@ void func_8010AE04_coconut_conk(void);
 void func_8000B710_main(s32);
 void func_8004AE00_main(s16 arg0, s16 arg1);
 void func_800E4C88_minigame(omObjData *object, u8 type, f32 x, f32 y, f32 z, f32 arg5, f32 arg6);
+void func_800DDD94_minigame(omObjData *);
 void func_800E6F0C_minigame(s32);
 void func_800E1304_minigame(omObjData *, f32);
 void func_800E1310_minigame(omObjData *, f32);
@@ -710,7 +711,93 @@ void func_801095A4_coconut_conk(void) {
 void func_801095C0_coconut_conk(void) {
 }
 
+#ifdef NON_MATCHING
+void func_801095C8_coconut_conk(omObjData *arg0) {
+    CoconutConkData *data = &D_8010BD48_coconut_conk[arg0->work[1]];
+    func_800E1BA8_minigame_ObjData *work = arg0->data;
+    CoconutConkData *target;
+    f32 minDist;
+    s16 closest;
+    s16 i;
+
+    if (D_800D20A1_main[arg0->work[3]] >= 5) {
+        D_800D20A1_main[arg0->work[3]] = 0;
+    }
+    if (D_800D20A1_main[arg0->work[3]] < -4) {
+        D_800D20A1_main[arg0->work[3]] = 0;
+    }
+    func_800DDD94_minigame(arg0);
+    if (HmfModelData[arg0->model[7]].unk40 == 0.0f) {
+        func_8001C258_main(arg0->model[7], 4, 4);
+    }
+    if (work->unk5C == 0x200 && work->unk50 == 0x80 && data->unk04 == 0) {
+        data->unk04 = 1;
+        if (D_8010B1DE_coconut_conk < 3) {
+            D_8010B1DE_coconut_conk++;
+            func_800E4C88_minigame(arg0, 7, arg0->trans.x, arg0->trans.y, arg0->trans.z, 0.0f, 0.0f);
+            minDist = 3000.0f;
+            closest = 0;
+            for (i = 0; i < 6; i++) {
+                if (fabs(arg0->trans.x - D_8010AFB8_coconut_conk[i]) < minDist) {
+                    minDist = fabs(arg0->trans.x - D_8010AFB8_coconut_conk[i]);
+                    closest = i;
+                }
+            }
+            target = &D_8010B508_coconut_conk[closest];
+            if (target->unk04 == 0) {
+                target->unk04 = 1;
+                data->unk16 = 1;
+            }
+            switch (closest) {
+                case 0:
+                case 3:
+                    for (i = 0; i < 3; i++) {
+                        CoconutConkData *coconut = &D_8010B820_coconut_conk[i];
+                        omObjData *obj = coconut->unk00;
+
+                        if (coconut->unk04 == 0) {
+                            coconut->unk04 = 1;
+                            obj->trans.x = arg0->trans.x;
+                            break;
+                        }
+                    }
+                    break;
+                case 1:
+                case 4:
+                    for (i = 3; i < 6; i++) {
+                        CoconutConkData *coconut = &D_8010B820_coconut_conk[i];
+                        omObjData *obj = coconut->unk00;
+
+                        if (coconut->unk04 == 0) {
+                            coconut->unk04 = 1;
+                            obj->trans.x = arg0->trans.x;
+                            break;
+                        }
+                    }
+                    break;
+                case 2:
+                case 5:
+                    for (i = 6; i < 9; i++) {
+                        CoconutConkData *coconut = &D_8010B820_coconut_conk[i];
+                        omObjData *obj = coconut->unk00;
+
+                        if (coconut->unk04 == 0) {
+                            coconut->unk04 = 1;
+                            obj->trans.x = arg0->trans.x;
+                            break;
+                        }
+                    }
+                    break;
+            }
+        }
+    }
+    if (work->unk5C != 0x200 && work->unk50 != 0x80 && arg0->trans.y <= 512.0f) {
+        data->unk04 = 0;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_801095C8_coconut_conk);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_80109940_coconut_conk);
 

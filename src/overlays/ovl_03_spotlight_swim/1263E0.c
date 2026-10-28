@@ -106,8 +106,6 @@ extern s16 D_8010CCF4_spotlight_swim[4];
 extern u8 D_8010CDA8_spotlight_swim[];
 extern u8 D_8010CDAC_spotlight_swim[4][2];
 extern s8 D_8010CDB4_spotlight_swim;
-extern s16 D_8010CD28_spotlight_swim[];
-extern s16 D_8010CD48_spotlight_swim[];
 extern u8 D_8010CCFC_spotlight_swim[][2];
 extern s16 D_8010CD0C_spotlight_swim[];
 extern s16 D_8010CD2C_spotlight_swim[];
@@ -955,9 +953,9 @@ void func_8010846C_spotlight_swim(omObjData *obj) {
                 func_80107C10_spotlight_swim(obj);
             } else {
                 D_8010D328_spotlight_swim.unk08 = func_801059BC_spotlight_swim(
-                    atan2df(D_8010CD28_spotlight_swim[0] - obj->trans.x, D_8010CD48_spotlight_swim[0] - obj->trans.z), 0.0f);
-                if (obj->trans.x >= D_8010CD28_spotlight_swim[0] - 10 && obj->trans.x <= D_8010CD28_spotlight_swim[0] + 10 &&
-                    obj->trans.z >= D_8010CD48_spotlight_swim[0] - 10 && obj->trans.z <= D_8010CD48_spotlight_swim[0] + 10) {
+                    atan2df(D_8010CD0C_spotlight_swim[14] - obj->trans.x, D_8010CD2C_spotlight_swim[14] - obj->trans.z), 0.0f);
+                if (obj->trans.x >= D_8010CD0C_spotlight_swim[14] - 10 && obj->trans.x <= D_8010CD0C_spotlight_swim[14] + 10 &&
+                    obj->trans.z >= D_8010CD2C_spotlight_swim[14] - 10 && obj->trans.z <= D_8010CD2C_spotlight_swim[14] + 10) {
                     D_8010D328_spotlight_swim.unk02 = 1;
                 }
                 if (D_8010D379_spotlight_swim >= 30 || D_8010D328_spotlight_swim.unk00 < 2) {

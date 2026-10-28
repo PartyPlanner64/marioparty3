@@ -242,7 +242,34 @@ void func_80105D58_coconut_conk(void) {
     D_8010B1F0_coconut_conk[0].unk00 = obj;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_80105D98_coconut_conk);
+void func_80105D98_coconut_conk(Gfx **arg0, s32 arg1, s32 arg2) {
+    Gfx *gfx = *arg0;
+    s32 x;
+    s32 top;
+    s32 y;
+
+    gDPPipeSync(gfx++);
+    gDPSetCycleType(gfx++, G_CYC_1CYCLE);
+    gSPClearGeometryMode(gfx++, G_SHADE | G_SHADING_SMOOTH | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR |
+                                    G_CULL_BOTH | G_FOG | G_LOD);
+    gSPSetGeometryMode(gfx++, G_SHADE | G_SHADING_SMOOTH | G_CULL_BACK);
+    gDPSetCombineMode(gfx++, G_CC_DECALRGBA, G_CC_DECALRGBA);
+    gDPSetTexturePersp(gfx++, G_TP_NONE);
+    gDPSetPrimColor(gfx++, 0, 0, 0, 0, 0, 255);
+    gDPSetRenderMode(gfx++, G_RM_AA_TEX_EDGE, G_RM_AA_TEX_EDGE2);
+    gDPSetTextureLUT(gfx++, G_TT_RGBA16);
+    gDPLoadTLUT_pal256(gfx++, D_8010B1C4_coconut_conk->unk0C);
+    x = 0;
+    for (y = 0, top = 128; y < 112; y += 4) {
+        gDPLoadTextureTile(gfx++, D_8010B1C4_coconut_conk->unk08, G_IM_FMT_CI, G_IM_SIZ_8b, 320, 0, 0, y, 320, y + 4,
+                           0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                           G_TX_NOLOD, G_TX_NOLOD);
+        gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 320 << 2, 4 << 2);
+        gSPTextureRectangle(gfx++, x << 2, (top + y) << 2, (x + 320) << 2, (top + y + 4) << 2, G_TX_RENDERTILE, 0, 0,
+                            1024, 1024);
+    }
+    *arg0 = gfx;
+}
 
 void func_801060C0_coconut_conk(omObjData *arg0) {
 }
@@ -499,7 +526,55 @@ void func_801076EC_coconut_conk(omObjData *arg0) {
     arg0->trans.x += data->unk18;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_801078BC_coconut_conk);
+void func_801078BC_coconut_conk(omObjData *arg0) {
+    CoconutConkData *data = &D_8010BCC4_coconut_conk;
+    f32 nextX;
+
+    switch (data->unk04) {
+        case 0:
+            if (data->unk18 < 0.0f) {
+                data->unk18 += 0.05;
+            }
+            if (data->unk18 > 0.0f) {
+                data->unk18 -= 0.05;
+            }
+            if ((s16)data->unk18 == 0) {
+                data->unk18 = 0.0f;
+                arg0->trans.x = (s16)arg0->trans.x;
+            }
+            break;
+        case 1:
+            if (data->unk18 > -7.0f) {
+                data->unk18 -= 0.45f;
+                if (data->unk18 < -7.0f) {
+                    data->unk18 = -7.0f;
+                }
+            }
+            break;
+        case 2:
+            if (data->unk18 < 7.0f) {
+                data->unk18 += 0.45f;
+                if (data->unk18 > 7.0f) {
+                    data->unk18 = 7.0f;
+                }
+            }
+            break;
+    }
+    if (data->unk18 >= -3.0f && data->unk18 <= 3.0f) {
+        D_8010B1C0_coconut_conk++;
+        if (D_8010B1C0_coconut_conk > 500) {
+            D_8010B1C0_coconut_conk = 500;
+        }
+    } else {
+        D_8010B1C0_coconut_conk = 0;
+    }
+    nextX = arg0->trans.x + data->unk18;
+    if ((nextX >= 450.0f) | (nextX <= -450.0f)) {
+        data->unk18 = -(data->unk18 * 0.5f);
+    }
+    arg0->rot.z = func_801059BC_coconut_conk(arg0->rot.z, -data->unk18);
+    arg0->trans.x += data->unk18;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_80107B8C_coconut_conk);
 

@@ -1,6 +1,14 @@
 #include "common.h"
+#include "overlays/minigame.h"
+#include "game/sprite.h"
 
 extern u32 D_8010A1E8_locked_out;
+extern f32 D_8010A680_locked_out[4][4];
+extern f32 D_8010A6B8_locked_out;
+extern f32 D_8010A6C0_locked_out[4][4];
+extern f32 D_8010A700_locked_out;
+
+void func_801071D8_locked_out(omObjData *object);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_801059A0_locked_out);
 
@@ -14,9 +22,33 @@ void func_80105C34_locked_out(HuMtx4F mtx, f32 x, f32 y, f32 z, f32 *dst) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80105CB4_locked_out);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80105EA4_locked_out);
+void func_80105EA4_locked_out(f32 *pos, f32 *dst) {
+    f32 mtx[4][4];
+    f32 depth;
+    f32 scale;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80105F74_locked_out);
+    guTranslateF(mtx, pos[0], pos[1], pos[2]);
+    guMtxCatF(mtx, D_8010A680_locked_out, mtx);
+    depth = mtx[3][2] * D_8010A700_locked_out;
+    scale = __builtin_fabsf(depth);
+    if (scale == 0.0) {
+        return;
+    }
+    dst[0] = mtx[3][0] * 160.0f / scale / 1.3333334f;
+    dst[1] = -mtx[3][1] * 120.0f / scale;
+}
+
+void func_80105F74_locked_out(f32 x, f32 y, f32 z, f32 *dst) {
+    f32 depth = z + D_8010A6B8_locked_out;
+    f32 scale = __builtin_fabsf(depth * D_8010A700_locked_out);
+    f32 mtx[4][4];
+
+    guTranslateF(mtx, ((x + x) * scale * 1.3333334f) / 320.0f, -((y + y) * scale / 240.0f), depth);
+    guMtxCatF(mtx, D_8010A6C0_locked_out, mtx);
+    dst[0] = mtx[3][0];
+    dst[1] = mtx[3][1];
+    dst[2] = mtx[3][2];
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80106040_locked_out);
 
@@ -28,7 +60,16 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_801064E0_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80106FBC_locked_out);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_8010713C_locked_out);
+void func_8010713C_locked_out(void) {
+    s32 i;
+
+    func_800E18D8_minigame();
+    func_800E19F0_minigame(1);
+    D_800EC280_minigame = 0;
+    for (i = 0; i < 4; i++) {
+        D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(2, 15, 50, -1, func_801071D8_locked_out);
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", D_8010A298_locked_out);
 
@@ -44,7 +85,10 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_801089F8_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80108A90_locked_out);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_801090FC_locked_out);
+void func_801090FC_locked_out(omObjData *object, func_800E1BA8_minigame_ObjData **data, void **arg2) {
+    *data = object->data;
+    *arg2 = (*data)->unk158;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80109110_locked_out);
 
@@ -63,7 +107,17 @@ s32 func_80109D70_locked_out(void) {
     return D_8010A1E8_locked_out >> 16;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80109DBC_locked_out);
+f32 func_80109DBC_locked_out(f32 y, f32 x) {
+    f32 fullCircle = 360.0f;
+    f32 angle = atan2df(y, x);
+
+    if (angle < -180.0f) {
+        angle += fullCircle;
+    } else if (angle >= 180.0) {
+        angle -= fullCircle;
+    }
+    return angle;
+}
 
 f32 func_80109E34_locked_out(Vec *arg0, Vec *arg1) {
     return sqrtf(((arg0->x - arg1->x) * (arg0->x - arg1->x)) +
@@ -72,9 +126,32 @@ f32 func_80109E34_locked_out(Vec *arg0, Vec *arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80109E88_locked_out);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80109FAC_locked_out);
+s16 func_80109FAC_locked_out(s32 dataNum) {
+    void *data;
+    s16 spriteId;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_80109FF4_locked_out);
+    data = DataRead(dataNum);
+    spriteId = func_80055810_main(data);
+    DataClose(data);
+    return spriteId;
+}
+
+s16 func_80109FF4_locked_out(s16 spriteId, s16 count) {
+    s16 groupId;
+    s32 i;
+
+    if (spriteId == -1) {
+        return -1;
+    }
+    groupId = HuSprGrpCreate(count, 0);
+    if (groupId == -1) {
+        return -1;
+    }
+    for (i = 0; i < count; i++) {
+        func_80055024_main(groupId, i, spriteId, 0);
+    }
+    return groupId;
+}
 
 HuSprite_Unk84_Unk00_Struct *func_8010A0BC_locked_out(s16 groupId, s16 member) {
     return &func_80055194_main(groupId)->unk00[member];

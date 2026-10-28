@@ -95,6 +95,7 @@ extern s16 D_8010B1C2_coconut_conk;
 extern u8 D_8010B1C9_coconut_conk[3];
 extern u8 D_8010B1CC_coconut_conk;
 extern u8 D_8010B1DE_coconut_conk;
+extern s16 D_8010AF60_coconut_conk;
 extern s16 D_8010AF62_coconut_conk;
 extern s16 D_8010AF64_coconut_conk;
 extern s16 D_8010B1E0_coconut_conk;
@@ -674,7 +675,93 @@ void func_801078BC_coconut_conk(omObjData *arg0) {
     arg0->trans.x += data->unk18;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_80107B8C_coconut_conk);
+void func_80107B8C_coconut_conk(omObjData *arg0) {
+    CoconutConkData *data = &D_8010BCC4_coconut_conk;
+    s16 i;
+    s16 sound;
+
+    for (i = 0; i < 9; i++) {
+        CoconutConkData *coconut = &D_8010B820_coconut_conk[i];
+        omObjData *obj = coconut->unk00;
+
+        if (coconut->unk04 == 2 && obj->trans.x + 29.0f >= arg0->trans.x - 40.0f &&
+            obj->trans.x - 29.0f <= arg0->trans.x + 40.0f && obj->trans.y + 84.0f >= arg0->trans.y - 50.0f &&
+            obj->trans.y <= arg0->trans.y + 50.0f) {
+            if (D_8010B1C8_coconut_conk == 2 && D_8010B1E0_coconut_conk > 0) {
+                D_8010B1CC_coconut_conk = 1;
+                func_80105BA4_coconut_conk(arg0, 2);
+                func_8001C92C_main(arg0->model[6], 1.0f);
+                func_8001C258_main(arg0->model[6], 4, 0);
+                Hu3DModelPosSet(arg0->model[6], arg0->trans.x, arg0->trans.y + 50.0f, arg0->trans.z);
+                data->unk0A = 1;
+                if (!(GwPlayer[arg0->work[0]].stat & 1)) {
+                    omVibrate(arg0->work[0], 20, 0, 20);
+                }
+            }
+            coconut->unk04 = 4;
+        }
+    }
+    if (D_800CCF58_main[HmfModelData[arg0->model[6]].unk02].unk02 <= HmfModelData[arg0->model[6]].unk40) {
+        func_8001C258_main(arg0->model[6], 4, 4);
+        func_8001C258_main(arg0->model[7], 4, 0);
+        Hu3DModelPosSet(arg0->model[7], arg0->trans.x, arg0->trans.y + 50.0f, arg0->trans.z + 40.0f);
+        if (data->unk0C == 0) {
+            sound = func_8004ACE0_main(D_8010AF60_coconut_conk, arg0->work[0]);
+            data->unk0C++;
+            HuAudFXPitchSet(sound, 0);
+            func_8004AAD0_main(sound, 127);
+        }
+    }
+    switch (data->unk0A) {
+        case 0:
+            data->unk28 = data->unk24 = 1.0f;
+            break;
+        case 1:
+            func_8001C258_main(arg0->model[3], 0x4000, 0);
+            data->unk24 = 0.5f;
+            data->unk28 = 1.3f;
+            data->unk0A = 2;
+            break;
+        case 2:
+            data->unk24 += 0.1f;
+            data->unk28 -= 0.06f;
+            if (data->unk24 >= 1.5f) {
+                data->unk0A = 3;
+            }
+            break;
+        case 3:
+            data->unk24 -= 0.1f;
+            data->unk28 += 0.06f;
+            if (data->unk24 <= 0.5f) {
+                data->unk0A = 4;
+            }
+            break;
+        case 4:
+            data->unk24 += 0.1f;
+            data->unk28 -= 0.06f;
+            if (data->unk24 >= 1.5f) {
+                data->unk0A = 5;
+            }
+            break;
+        case 5:
+            data->unk24 -= 0.1f;
+            data->unk28 += 0.06f;
+            if (data->unk24 <= 0.5f) {
+                data->unk0A = 6;
+            }
+            break;
+        case 6:
+            data->unk24 += 0.1f;
+            data->unk28 -= 0.06f;
+            if (data->unk24 >= 1.0f) {
+                data->unk0A = 7;
+            }
+            break;
+    }
+    Hu3DModelPosSet(arg0->model[3], arg0->trans.x, 40.0f, arg0->trans.z);
+    Hu3DModelRotSet(arg0->model[3], 90.0f, 0.0f, 0.0f);
+    Hu3DModelScaleSet(arg0->model[3], data->unk28, 1.0f, data->unk24);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_8010815C_coconut_conk);
 

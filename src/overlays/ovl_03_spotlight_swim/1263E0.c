@@ -46,8 +46,11 @@ extern u8 D_8010CDC8_spotlight_swim[32][32];
 extern u32 *D_8010D2F8_spotlight_swim[3];
 extern u8 D_8010D329_spotlight_swim[];
 extern s8 D_8010D343_spotlight_swim;
+extern omObjData *D_8010D348_spotlight_swim;
+extern u8 D_8010D3CD_spotlight_swim;
 extern s16 D_8010D3B0_spotlight_swim[8];
 extern u32 D_8010D448_spotlight_swim;
+extern u8 D_8010D44C_spotlight_swim;
 extern u32 D_8010D47C_spotlight_swim;
 
 extern SpotlightSwimData D_8010D480_spotlight_swim[50];
@@ -58,6 +61,7 @@ void func_80106150_spotlight_swim(omObjData *);
 void func_801061DC_spotlight_swim(omObjData *);
 void func_80106350_spotlight_swim(omObjData *);
 void func_801065C4_spotlight_swim(omObjData *);
+void func_80108AD8_spotlight_swim(omObjData *);
 void func_8010AAB8_spotlight_swim(omObjData *);
 void func_8010B828_spotlight_swim(omObjData *);
 void func_8010C25C_spotlight_swim(omObjData *);
@@ -161,7 +165,24 @@ void func_80105D4C_spotlight_swim(omObjData *arg0, u16 arg1, s16 arg2, s16 arg3,
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_80105DC8_spotlight_swim);
+s8 func_80105DC8_spotlight_swim(omObjData *obj) {
+    if (obj->rot.y != 0.0f) {
+        if (obj->rot.y < 180.0f) {
+            obj->rot.y = func_801059BC_spotlight_swim(obj->rot.y, -7.0f);
+            if (obj->rot.y > 350.0f) {
+                obj->rot.y = 0.0f;
+            }
+        } else {
+            obj->rot.y = func_801059BC_spotlight_swim(obj->rot.y, 7.0f);
+            if (obj->rot.y < 10.0f) {
+                obj->rot.y = 0.0f;
+            }
+        }
+        return 1;
+    }
+
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_80105E9C_spotlight_swim);
 
@@ -251,7 +272,40 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_80108
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_80108AD8_spotlight_swim);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_80109088_spotlight_swim);
+void func_80109088_spotlight_swim(void) {
+    u16 playerIndex;
+    s16 i;
+
+    for (i = 0; i < 4; i++) {
+        if (GwPlayer[i].group == 0) {
+            break;
+        }
+    }
+
+    switch (i) {
+        case 0:
+            playerIndex = 0;
+            break;
+        case 1:
+            playerIndex = 1;
+            break;
+        case 2:
+            playerIndex = 2;
+            break;
+        case 3:
+            playerIndex = 3;
+            break;
+        default:
+            playerIndex = 0;
+            break;
+    }
+
+    D_8010D348_spotlight_swim = omAddObj(0x2BC, 9, 10, -1, func_80108AD8_spotlight_swim);
+    D_8010D348_spotlight_swim->work[0] = playerIndex;
+    D_8010D480_spotlight_swim[2].obj = D_8010D348_spotlight_swim;
+    D_8010D3CD_spotlight_swim = D_8010D348_spotlight_swim->work[0];
+    D_8010D44C_spotlight_swim = GwPlayer[D_8010D348_spotlight_swim->work[0]].chr;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_80109194_spotlight_swim);
 

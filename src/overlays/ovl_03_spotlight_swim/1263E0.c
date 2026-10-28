@@ -399,7 +399,35 @@ void func_80109088_spotlight_swim(void) {
     D_8010D44C_spotlight_swim = GwPlayer[D_8010D348_spotlight_swim->work[0]].chr;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_80109194_spotlight_swim);
+u8 func_80109194_spotlight_swim(omObjData *obj) {
+    u8 flags = 0;
+
+    if (D_800CBB6E_main[obj->work[3]] < -5 && obj->trans.x < 65.0f) {
+        D_800CBB6E_main[obj->work[3]] = 0;
+    } else if (D_800CBB6E_main[obj->work[3]] < -4) {
+        flags |= 4;
+    }
+
+    if (D_800CBB6E_main[obj->work[3]] >= 6 && obj->trans.x > 255.0f) {
+        D_800CBB6E_main[obj->work[3]] = 0;
+    } else if (D_800CBB6E_main[obj->work[3]] >= 5) {
+        flags |= 8;
+    }
+
+    if (D_800D20A1_main[obj->work[3]] >= 6 && obj->trans.y < 60.0f) {
+        D_800D20A1_main[obj->work[3]] = 0;
+    } else if (D_800D20A1_main[obj->work[3]] >= 5) {
+        flags |= 1;
+    }
+
+    if (D_800D20A1_main[obj->work[3]] < -5 && obj->trans.y > 140.0f) {
+        D_800D20A1_main[obj->work[3]] = 0;
+    } else if (D_800D20A1_main[obj->work[3]] < -4) {
+        flags |= 2;
+    }
+
+    return flags;
+}
 
 void func_8010932C_spotlight_swim(omObjData *obj) {
     SpotlightSwimUnk308 *data = &D_8010D308_spotlight_swim[obj->work[1]];

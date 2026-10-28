@@ -138,10 +138,13 @@ extern s8 D_8010D478_spotlight_swim;
 extern u32 D_8010D47C_spotlight_swim;
 
 extern SpotlightSwimData D_8010D480_spotlight_swim[50];
+extern s16 D_800D418E_main;
 extern s8 D_8010EE48_spotlight_swim;
 extern SpotlightSwimUnk8 D_8010EE50_spotlight_swim[];
 
-void func_80105E9C_spotlight_swim(s32, f32, f32, f32, f32 *);
+void func_80105E9C_spotlight_swim(s16, f32, f32, f32, f32 *);
+void func_80088850_main(Mtx *mtx, const f32 x, const f32 y, const f32 z);
+void func_8007E040_main(Mtx *m, Mtx *n, Mtx *res);
 void func_801072C4_spotlight_swim(omObjData *);
 void func_80106150_spotlight_swim(omObjData *);
 void func_801061DC_spotlight_swim(omObjData *);
@@ -286,7 +289,29 @@ s8 func_80105DC8_spotlight_swim(omObjData *obj) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_80105E9C_spotlight_swim);
+void func_80105E9C_spotlight_swim(s16 camIndex, f32 x, f32 y, f32 z, f32 *screenPos) {
+    HuCamera *camera = &gCameraList[camIndex];
+    Mtx *lookAt = &camera->mtxs[D_800D418E_main].lookAtMtx;
+    Mtx mtx;
+    u16(*integer)[4] = (u16(*)[4])mtx.m;
+    u16(*fraction)[4] = (u16(*)[4])mtx.m[2];
+    f32 viewX, viewY, viewZ;
+    f32 depth;
+    s16 vpIndex;
+
+    func_80088850_main(&mtx, x, y, z);
+    func_8007E040_main(&mtx, lookAt, &mtx);
+    viewX = (s32)(((u32)integer[3][0] << 16) | fraction[3][0]) >> 16;
+    viewY = (s32)(((u32)integer[3][1] << 16) | fraction[3][1]) >> 16;
+    viewZ = (s32)(((u32)integer[3][2] << 16) | fraction[3][2]) >> 16;
+    depth = viewZ * sind(gCameraList[camIndex].fov[0] / 2.0) / cosdf(gCameraList[camIndex].fov[0] / 2.0);
+    depth = (depth >= 0.0f) ? depth : 0.0f - depth;
+    if (depth != 0.0) {
+        vpIndex = D_800D418E_main;
+        screenPos[0] = (s16)(camera->viewports[vpIndex].vp.vscale[0] / 4.0 * viewX / depth / (4.0f / 3.0f)) + camera->viewports[vpIndex].vp.vtrans[0] / 4.0;
+        screenPos[1] = (s16)(camera->viewports[vpIndex].vp.vscale[1] / 4.0 * -viewY / depth) + camera->viewports[vpIndex].vp.vtrans[1] / 4.0;
+    }
+}
 
 void func_80106148_spotlight_swim(omObjData *object) {
 }

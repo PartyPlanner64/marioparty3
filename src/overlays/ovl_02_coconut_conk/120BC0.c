@@ -45,7 +45,20 @@ typedef struct {
     /* 0x08 */ u8 unk08[0xAC];
 } CoconutConkCameraWork; // sizeof 0xB4
 
+typedef struct {
+    /* 0x00 */ f32 scissorX;
+    /* 0x04 */ f32 scissorY;
+    /* 0x08 */ f32 scissorWidth;
+    /* 0x0C */ f32 scissorHeight;
+    /* 0x10 */ Vec viewportScale;
+    /* 0x1C */ Vec viewportTranslate;
+    /* 0x28 */ f32 fov;
+} CoconutConkCamera; // sizeof 0x2C
+
 extern char *D_8010AF98_coconut_conk[];
+extern D_80111B50_vine_with_me_Struct D_8010AFF0_coconut_conk;
+extern CoconutConkCamera D_8010B018_coconut_conk[2];
+extern const s16 D_8010B1B8_coconut_conk[];
 extern f32 D_8010AFB8_coconut_conk[];
 extern u8 D_800D6A90_main;
 extern char D_8010B0D0_coconut_conk[];
@@ -110,6 +123,7 @@ void func_80109DEC_coconut_conk(omObjData *);
 void func_8010A55C_coconut_conk(omObjData *);
 void func_8010A668_coconut_conk(omObjData *);
 void func_8010AE04_coconut_conk(void);
+void func_8000B710_main(s32);
 void func_800E6F0C_minigame(s32);
 void func_800E1304_minigame(omObjData *, f32);
 void func_800E1310_minigame(omObjData *, f32);
@@ -619,8 +633,49 @@ void func_8010AB4C_coconut_conk(omObjData *arg0) {
 void func_8010AC88_coconut_conk(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_8010AC90_coconut_conk);
+void func_8010AC90_coconut_conk(void) {
+    omObjData *obj;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_8010AE04_coconut_conk);
+    obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
+    obj->work[0] = 2;
+    omSetStatBit(obj, 0xA0);
+    func_8000B5F0_main(2);
+    func_8000B710_main(2);
+    for (i = 0; i < 2; i++) {
+        ScissorSet(i, D_8010B018_coconut_conk[i].scissorX, D_8010B018_coconut_conk[i].scissorY,
+                   D_8010B018_coconut_conk[i].scissorWidth, D_8010B018_coconut_conk[i].scissorHeight);
+        ViewportSet(i, D_8010B018_coconut_conk[i].viewportScale.x, D_8010B018_coconut_conk[i].viewportScale.y,
+                    D_8010B018_coconut_conk[i].viewportScale.z, D_8010B018_coconut_conk[i].viewportTranslate.x,
+                    D_8010B018_coconut_conk[i].viewportTranslate.y, D_8010B018_coconut_conk[i].viewportTranslate.z);
+        Hu3DCamSetPerspective(i, D_8010B018_coconut_conk[i].fov, 80.0f, 8000.0f);
+    }
+}
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", D_8010B1B8_coconut_conk);
+void func_8010AE04_coconut_conk(void) {
+    Hu3DAnimInit(50);
+    func_800142A0_main(50);
+    omInitObjMan(50, 0);
+    func_8004A208_main();
+    func_8010AC90_coconut_conk();
+    HmfLightMaxSet(1);
+    HmfLightMaxSet(2);
+    HmfLightColorSet(0, 0xFF, 0xFF, 0xFF);
+    HmfLightDirSet(0, -84.0f, 49.0f, 69.0f);
+    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    HmfLightDirSet(1, -84.0f, 49.0f, 69.0f);
+    HmfLightColorSet(2, 0xFF, 0xFF, 0xFF);
+    HmfLightDirSet(2, -84.0f, 49.0f, 69.0f);
+    D_800EC1B8_minigame = 0;
+    D_800EC280_minigame = 0;
+    D_800EBE28_minigame = 0;
+    func_80045010_main(D_8010B1B8_coconut_conk, 0);
+    func_80045010_main(D_8010B1B8_coconut_conk, 1);
+    omAddObj(0x5DC, 0, 0, -1, func_8010AB4C_coconut_conk);
+    omAddObj(0x5DC, 0, 0, -1, func_8010A610_coconut_conk);
+    func_80105A3C_coconut_conk();
+    func_800E5EA0_minigame(&D_8010AFF0_coconut_conk);
+}
+
+// Keep this table after the functions to preserve the original rodata order.
+const s16 D_8010B1B8_coconut_conk[] = { 0x8260, 0x8261, 0x8262, 0 };

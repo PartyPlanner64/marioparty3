@@ -79,6 +79,16 @@ extern HuMtx4F D_800EC240_minigame;
 extern Hu3DQuadPool D_800EBEB0_minigame;
 extern f32 D_800EB77C_minigame;
 extern f32 D_800EB73C_minigame;
+extern f32 D_800EB72C_minigame;
+extern f32 D_8010AA60_chip_shot_challenge;
+extern Vec D_8010AA64_chip_shot_challenge;
+extern Vec D_8010AA70_chip_shot_challenge;
+extern Vec D_8010AA7C_chip_shot_challenge;
+extern f32 D_8010A938_chip_shot_challenge;
+extern f32 D_8010A93C_chip_shot_challenge;
+extern f32 D_8010A940_chip_shot_challenge;
+extern f32 D_8010A944_chip_shot_challenge;
+extern s32 D_8010A948_chip_shot_challenge;
 extern Vec D_8010AAB0_chip_shot_challenge;
 extern s32 D_8010AAD0_chip_shot_challenge;
 extern s16 D_800EB930_minigame;
@@ -214,7 +224,101 @@ void func_80105E8C_chip_shot_challenge(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_80105EB8_chip_shot_challenge);
+void func_80105EB8_chip_shot_challenge(omObjData *object) {
+    s32 time = func_800E6E9C_minigame();
+    f32 velocity;
+    f32 speedSq;
+
+    if (time == 1) {
+        HuAudFXPlay(0x3E0);
+    }
+    if (time < 5) {
+        Center.x = D_8010AAA4_chip_shot_challenge.x;
+        Center.y = D_8010AAA4_chip_shot_challenge.y + 200.0f;
+        Center.z = D_8010AAA4_chip_shot_challenge.z;
+        D_8010AA70_chip_shot_challenge.x = D_8010AAA4_chip_shot_challenge.x + 1000.0f;
+        D_8010AA70_chip_shot_challenge.y = D_8010AAA4_chip_shot_challenge.y + 300.0f;
+        D_8010AA70_chip_shot_challenge.z = D_8010AAA4_chip_shot_challenge.z;
+        Hu3DModelPosSet(object->model[5], D_8010AA70_chip_shot_challenge.x, D_8010AA70_chip_shot_challenge.y,
+                        D_8010AA70_chip_shot_challenge.z);
+    } else if (time < 35) {
+        func_8001C258_main(object->model[6], 4, 0);
+        func_8001C258_main(object->model[4], 4, 0);
+        Hu3DModelPosSet(object->model[6], D_8010AA70_chip_shot_challenge.x, D_8010AA70_chip_shot_challenge.y,
+                        D_8010AA70_chip_shot_challenge.z);
+        Hu3DModelPosSet(object->model[5], D_8010AA70_chip_shot_challenge.x, D_8010AA70_chip_shot_challenge.y,
+                        D_8010AA70_chip_shot_challenge.z);
+        D_8010AA70_chip_shot_challenge.x -= 100.0f / 3.0f;
+        D_8010AA70_chip_shot_challenge.y -= 10.0f / 3.0f;
+        D_8010AA70_chip_shot_challenge.z += 0.0f;
+        if (time < 21) {
+            D_8010A938_chip_shot_challenge = D_8010AA70_chip_shot_challenge.y;
+            D_8010AA7C_chip_shot_challenge.x -= 200.0f / 3.0f;
+            D_8010A940_chip_shot_challenge = 30.0f;
+        } else {
+            D_8010AA7C_chip_shot_challenge.x = D_8010AA70_chip_shot_challenge.x;
+            D_8010AA7C_chip_shot_challenge.y = D_8010AA70_chip_shot_challenge.y;
+            D_8010AA7C_chip_shot_challenge.z = D_8010AA70_chip_shot_challenge.z;
+        }
+    } else if (time < 65) {
+        Hu3DModelPosSet(object->model[6], D_8010AA70_chip_shot_challenge.x, D_8010AA70_chip_shot_challenge.y,
+                        D_8010AA70_chip_shot_challenge.z);
+        D_8010AA64_chip_shot_challenge.x = D_8010AAA4_chip_shot_challenge.x;
+        D_8010AA64_chip_shot_challenge.y = D_8010AAA4_chip_shot_challenge.y;
+        D_8010AA64_chip_shot_challenge.z = D_8010AAA4_chip_shot_challenge.z;
+        func_800202FC_main(&D_8010AA64_chip_shot_challenge);
+        D_8010AA60_chip_shot_challenge =
+            HuSqrtf(D_8010AAA4_chip_shot_challenge.x * D_8010AAA4_chip_shot_challenge.x +
+                    D_8010AAA4_chip_shot_challenge.y * D_8010AAA4_chip_shot_challenge.y +
+                    D_8010AAA4_chip_shot_challenge.z * D_8010AAA4_chip_shot_challenge.z) /
+            30.0f;
+        D_8010AA70_chip_shot_challenge.x -= 100.0f / 3.0f;
+        D_8010AA70_chip_shot_challenge.y += 10.0f / 3.0f;
+        D_8010AA70_chip_shot_challenge.z += 0.0f;
+        D_8010AA7C_chip_shot_challenge.x -= 200.0f / 3.0f;
+        if (D_8010AA7C_chip_shot_challenge.x < D_8010AAA4_chip_shot_challenge.x) {
+            D_8010AA7C_chip_shot_challenge.x = D_8010AAA4_chip_shot_challenge.x;
+            if (D_8010A948_chip_shot_challenge != 0) {
+                func_8004AC98_main(0x3DE, 0);
+                D_8010A948_chip_shot_challenge = 0;
+            }
+        }
+    } else {
+        func_8001C258_main(object->model[6], 4, 4);
+        Center.x -= D_8010AA64_chip_shot_challenge.x * D_8010AA60_chip_shot_challenge;
+        Center.y -= D_8010AA64_chip_shot_challenge.y * D_8010AA60_chip_shot_challenge;
+        Center.z -= D_8010AA64_chip_shot_challenge.z * D_8010AA60_chip_shot_challenge;
+    }
+    if (D_8010A938_chip_shot_challenge > -1000.0f) {
+        velocity = D_8010A944_chip_shot_challenge;
+        speedSq = velocity * velocity;
+        if (velocity >= 0.0f) {
+            D_8010A938_chip_shot_challenge += speedSq * -37.5f;
+        } else {
+            D_8010A938_chip_shot_challenge += speedSq * 37.5f;
+        }
+        D_8010A944_chip_shot_challenge += D_800EB72C_minigame;
+        if (D_8010A944_chip_shot_challenge > 1.2f) {
+            D_8010A944_chip_shot_challenge = 1.2f;
+        }
+        if (D_8010A938_chip_shot_challenge < 0.0f) {
+            D_8010A938_chip_shot_challenge = 0.0f;
+        }
+        if (D_8010A938_chip_shot_challenge == 0.0f) {
+            D_8010A940_chip_shot_challenge *= 0.9f;
+            D_8010A93C_chip_shot_challenge += 50.0f;
+        }
+        D_8010AA7C_chip_shot_challenge.y = D_8010A938_chip_shot_challenge;
+        Hu3DModelRotSet(object->model[5], 0.0f, 0.0f, sindf(D_8010A93C_chip_shot_challenge) * D_8010A940_chip_shot_challenge);
+        Hu3DModelPosSet(object->model[5], D_8010AA7C_chip_shot_challenge.x,
+                        D_8010AAA4_chip_shot_challenge.y + D_8010AA7C_chip_shot_challenge.y,
+                        D_8010AA7C_chip_shot_challenge.z);
+    } else {
+        Hu3DModelPosSet(object->model[6], D_8010AA70_chip_shot_challenge.x, D_8010AA70_chip_shot_challenge.y,
+                        D_8010AA70_chip_shot_challenge.z);
+        Hu3DModelRotSet(object->model[5], 0.0f, 0.0f, 30.0f);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_8010646C_chip_shot_challenge);
 

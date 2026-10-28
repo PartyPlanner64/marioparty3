@@ -94,6 +94,8 @@ extern s16 D_8010B1C2_coconut_conk;
 extern u8 D_8010B1C9_coconut_conk[3];
 extern u8 D_8010B1CC_coconut_conk;
 extern u8 D_8010B1DE_coconut_conk;
+extern s16 D_8010AF62_coconut_conk;
+extern s16 D_8010AF64_coconut_conk;
 extern s16 D_8010B1E0_coconut_conk;
 extern s16 D_8010B1E6_coconut_conk;
 extern s16 D_8010CBB8_coconut_conk;
@@ -114,7 +116,7 @@ void func_80106394_coconut_conk(omObjData *);
 void func_80106468_coconut_conk(omObjData *);
 void func_8010659C_coconut_conk(omObjData *);
 void func_801067E0_coconut_conk(omObjData *);
-void func_801069BC_coconut_conk(void);
+void func_801069BC_coconut_conk(omObjData *);
 void func_80106D5C_coconut_conk(omObjData *);
 void func_80106F18_coconut_conk(void);
 void func_801089DC_coconut_conk(omObjData *);
@@ -124,6 +126,8 @@ void func_8010A55C_coconut_conk(omObjData *);
 void func_8010A668_coconut_conk(omObjData *);
 void func_8010AE04_coconut_conk(void);
 void func_8000B710_main(s32);
+void func_8004AE00_main(s16 arg0, s16 arg1);
+void func_800E4C88_minigame(omObjData *object, u8 type, f32 x, f32 y, f32 z, f32 arg5, f32 arg6);
 void func_800E6F0C_minigame(s32);
 void func_800E1304_minigame(omObjData *, f32);
 void func_800E1310_minigame(omObjData *, f32);
@@ -433,10 +437,95 @@ void func_80106924_coconut_conk(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_801069BC_coconut_conk);
+void func_801069BC_coconut_conk(omObjData *arg0) {
+    CoconutConkData *data = &D_8010B820_coconut_conk[arg0->work[0]];
+    s16 sound;
+    s16 pan;
+
+    switch (data->unk04) {
+        case 0:
+            func_8001C6A8_main(arg0->model[0], 0.0f);
+            func_8001C92C_main(arg0->model[0], 0.0f);
+            func_8001C258_main(arg0->model[0], 4, 4);
+            break;
+        case 1:
+            func_8001C258_main(arg0->model[0], 4, 0);
+            arg0->trans.y = 422.0f - (++data->unk06 & 1) * 10.0f;
+            if (data->unk06 > 0) {
+                data->unk04 = 2;
+                data->unk06 = 0;
+                arg0->trans.y = 422.0f;
+            }
+            break;
+        case 2:
+            arg0->trans.y -= data->unk18;
+            data->unk18 += 1.5f;
+            arg0->trans.z += 4.0f;
+            if (arg0->trans.y < 0.0f) {
+                arg0->trans.y = 0.0f;
+                data->unk04 = 3;
+                data->unk18 = 0.0f;
+                func_800E4C88_minigame(arg0, 1, arg0->trans.x, arg0->trans.y, arg0->trans.z, 0.0f, 0.0f);
+            }
+            break;
+        case 3:
+            if (data->unk06 == 0) {
+                func_8001C92C_main(arg0->model[0], 2.0f);
+                sound = HuAudFXPlay(D_8010AF62_coconut_conk);
+                pan = (arg0->trans.x + 390.0f) * 0.165f;
+                if (pan < 0) {
+                    pan = 0;
+                } else if (pan > 127) {
+                    pan = 127;
+                }
+                func_8004AE00_main(sound, pan);
+            }
+            if ((++data->unk06 & 3) < 3) {
+                func_8001C258_main(arg0->model[0], 4, 0);
+            } else {
+                func_8001C258_main(arg0->model[0], 4, 4);
+            }
+            if (data->unk06 >= 16) {
+                D_8010B1DE_coconut_conk--;
+                data->unk04 = 0;
+                data->unk06 = 0;
+                arg0->trans.z = -200.0f;
+                func_8001C258_main(arg0->model[0], 4, 4);
+                func_8001C6A8_main(arg0->model[0], 0.0f);
+                func_8001C92C_main(arg0->model[0], 0.0f);
+            }
+            break;
+        case 4:
+            if (data->unk06 == 0) {
+                func_8001C92C_main(arg0->model[0], 2.0f);
+                sound = HuAudFXPlay(D_8010AF64_coconut_conk);
+                pan = (arg0->trans.x + 390.0f) * 0.165f;
+                if (pan < 0) {
+                    pan = 0;
+                } else if (pan > 127) {
+                    pan = 127;
+                }
+            }
+            if ((++data->unk06 & 3) < 3) {
+                func_8001C258_main(arg0->model[0], 4, 0);
+            } else {
+                func_8001C258_main(arg0->model[0], 4, 4);
+            }
+            if (data->unk06 >= 16) {
+                D_8010B1DE_coconut_conk--;
+                data->unk04 = 0;
+                data->unk06 = 0;
+                arg0->trans.z = -200.0f;
+                func_8001C258_main(arg0->model[0], 4, 4);
+                func_8001C6A8_main(arg0->model[0], 0.0f);
+                func_8001C92C_main(arg0->model[0], 0.0f);
+            }
+            break;
+    }
+}
 
 void func_80106D40_coconut_conk(omObjData *arg0) {
-    func_801069BC_coconut_conk();
+    func_801069BC_coconut_conk(arg0);
 }
 
 void func_80106D5C_coconut_conk(omObjData *arg0) {

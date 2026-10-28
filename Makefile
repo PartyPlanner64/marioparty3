@@ -229,74 +229,6 @@ build/src/overlays/ovl_37_silly_screws/%.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 
 build/src/overlays/ovl_39_tick_tock_hop/%.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
 build/src/overlays/ovl_80_shared_board/ECA50.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
 
-# after function calls, we emit these instructions in the .s file including the blank new line
-#    .set    macro
-#    .set    reorder
-#
-# by stripping the blank newline, this will cause functions with nop issues to match
-NOP_OBJECTS := \
-	build/src/overlays/filesel/516B10.c.o \
-	build/src/libhmath/gurotate.c.o \
-	build/src/overlays/sldebug/3D76C0.c.o \
-	build/src/overlays/mgenter/46BB50.c.o \
-	build/src/overlays/opening/524820.c.o \
-	build/src/overlays/options/533500.c.o \
-	build/src/overlays/msetup/506F20.c.o \
-	build/src/overlays/msetup/508D50.c.o \
-	build/src/overlays/msetup/5092C0.c.o \
-	build/src/overlays/msetup/50B740.c.o \
-	build/src/overlays/msetup/513B70.c.o \
-	build/src/overlays/msetup/501C00.c.o \
-	build/src/sprput.c.o \
-	build/src/wipe.c.o \
-	build/src/overlays/ovl_03_spotlight_swim/1263E0.c.o \
-	build/src/overlays/ovl_05_crazy_cogs/131C10.c.o \
-	build/src/overlays/ovl_3E_dorrie_dip/2DC4D0.c.o \
-	build/src/6B050.c.o \
-	build/src/22EB0.c.o \
-	build/src/hmfload.c.o \
-	build/src/hmfman.c.o \
-	build/src/overlays/ovl_80_shared_board/EC3B0.c.o \
-	build/src/overlays/ovl_80_shared_board/ECA50.c.o \
-	build/src/overlays/ovl_80_shared_board/EDDB0.c.o \
-	build/src/overlays/ovl_80_shared_board/EE660.c.o \
-	build/src/overlays/mgmode/46CC10.c.o \
-	build/src/4BF40.c.o \
-	build/src/overlays/ovl_80_shared_board/F5E80.c.o \
-	build/src/overlays/ovl_80_shared_board/106A50.c.o \
-	build/src/overlays/ovl_80_shared_board/1006F0.c.o \
-	build/src/overlays/ovl_80_shared_board/10C230.c.o \
-	build/src/overlays/ovl_48_ChillyWaters/31B9F0.c.o \
-	build/src/overlays/w06/39AD50.c.o \
-	build/src/overlays/koopa/3C27C0.c.o \
-	build/src/overlays/last5/3C6310.c.o \
-	build/src/overlays/opboard/3CA800.c.o \
-	build/src/overlays/mchar/3D3C80.c.o \
-	build/src/overlays/mchar2/3D5C30.c.o \
-	build/src/overlays/ovl_0E_hyper_hydrants/17B3B0.c.o \
-	build/src/overlays/ovl_0F_picking_panic/181950.c.o \
-	build/src/overlays/ovl_01_hand_line_sinker/11A480.c.o
-
-NOP_ASM := $(NOP_OBJECTS:.o=.s)
-
-.PRECIOUS: $(NOP_ASM)
--include $(NOP_ASM:=.d)
-
-# .c -> .s  (plus the nop strip)
-$(NOP_ASM): $(BUILD_DIR)/%.c.s: %.c tools/strip_nop.py
-	$(ECHO)$(PRINT)$(YELLOW)Generating asm: $(ENDYELLOW)$(BLUE)$<$(ENDBLUE)$(ENDLINE)
-	@mkdir -p $(dir $@)
-	@$(CC_HOST) $(CFLAGS_CHECK) $(CPPFLAGS) -MMD -MP -MT $@ -MF $@.d $<
-	$(V)export COMPILER_PATH=tools/gcc_2.7.2/$(DETECTED_OS) && $(CC) $(OPTFLAGS) $(CFLAGS) $(CPPFLAGS) -S $< -o $@
-	$(V)$(PYTHON) tools/strip_nop.py $@ $(STRIP_NOP_FLAGS)
-
-# .s -> .o
-$(NOP_OBJECTS): $(BUILD_DIR)/%.c.o: $(BUILD_DIR)/%.c.s
-	$(ECHO)$(PRINT)$(YELLOW)Assembling: $(ENDYELLOW)$(BLUE)$<$(ENDBLUE)$(ENDLINE)
-	@mkdir -p $(dir $@)
-	$(V)export COMPILER_PATH=tools/gcc_2.7.2/$(DETECTED_OS) && $(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-	@$(STRIP) $@ -N dummy-symbol-name
-
 # libm uses IDO 5.3.
 IDO_OBJECTS := $(sort $(filter $(BUILD_DIR)/src/libm/%.c.o,$(OBJECTS)))
 
@@ -307,12 +239,31 @@ $(IDO_OBJECTS): $(BUILD_DIR)/%.c.o: %.c
 	@$(CC_HOST) $(CFLAGS_CHECK) $(CPPFLAGS) -MMD -MP -MT $@ -MF $@.d $<
 	$(V)$(IDO_CC) -O2 -G0 -mips1 -non_shared -Wab,-r4300_mul $(CPPFLAGS) -c -o $@ $<
 
-# Compile .c files with kmc gcc (use strip to fix objects so that they can be linked with modern gnu ld)
-$(BUILD_DIR)/src/%.c.o: src/%.c
+# All other .c files are compiled with kmc gcc in two steps: .c -> .s, then .s -> .o.
+#
+# After function calls, gcc emits these instructions in the .s file including the blank new line
+#    .set    macro
+#    .set    reorder
+#
+# By stripping the blank newline between the steps, functions with nop issues will match.
+GCC_OBJECTS := $(sort $(filter-out $(IDO_OBJECTS),$(filter $(BUILD_DIR)/src/%.c.o,$(OBJECTS))))
+GCC_ASM     := $(GCC_OBJECTS:.o=.s)
+
+.PRECIOUS: $(GCC_ASM)
+-include $(GCC_ASM:=.d)
+
+# .c -> .s  (plus the nop strip)
+$(GCC_ASM): $(BUILD_DIR)/%.c.s: %.c tools/strip_nop.py
 	$(ECHO)$(PRINT)$(GREEN)Compiling C file: $(ENDGREEN)$(BLUE)$<$(ENDBLUE)$(ENDLINE)
-	@mkdir -p $(shell dirname $@)
+	@mkdir -p $(dir $@)
 	@$(CC_HOST) $(CFLAGS_CHECK) $(CPPFLAGS) -MMD -MP -MT $@ -MF $@.d $<
-	$(V)export COMPILER_PATH=tools/gcc_2.7.2/$(DETECTED_OS) && $(CC) $(OPTFLAGS) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+	$(V)export COMPILER_PATH=tools/gcc_2.7.2/$(DETECTED_OS) && $(CC) $(OPTFLAGS) $(CFLAGS) $(CPPFLAGS) -S $< -o $@
+	$(V)$(PYTHON) tools/strip_nop.py $@ $(STRIP_NOP_FLAGS)
+
+# .s -> .o (use strip to fix objects so that they can be linked with modern gnu ld)
+$(GCC_OBJECTS): $(BUILD_DIR)/%.c.o: $(BUILD_DIR)/%.c.s
+	@mkdir -p $(dir $@)
+	$(V)export COMPILER_PATH=tools/gcc_2.7.2/$(DETECTED_OS) && $(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 	@$(STRIP) $@ -N dummy-symbol-name
 
 # Assemble .s files with modern gnu as

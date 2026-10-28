@@ -11,7 +11,7 @@ Nothing else is touched.
 
 Usage: strip_nop.py [--quiet] file.s [file.s ...]
 
-With --quiet, print nothing.
+Files that had lines removed are reported, unless --quiet is given.
 """
 import sys
 
@@ -53,8 +53,8 @@ def main(argv):
         if removed:
             with open(path, "w") as f:
                 f.writelines(out)
-        if not quiet:
-            print("%s: %d blank line(s) removed" % (path, removed))
+            if not quiet:
+                print("%s: %d blank line(s) removed" % (path, removed))
 
 
 if __name__ == "__main__":

@@ -12,12 +12,31 @@ typedef struct ChipShotChallengeWork {
 
 extern s32 D_8010AAA0_chip_shot_challenge;
 extern f32 D_8010A834_chip_shot_challenge;
+extern Vec D_8010AAA4_chip_shot_challenge;
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_801059A0_chip_shot_challenge);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_80105DE0_chip_shot_challenge);
+s32 func_80105DE0_chip_shot_challenge(s32 playerIndex) {
+    s32 scores[4];
+    s32 rank;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_80105E8C_chip_shot_challenge);
+    for (i = 0; i < 4; i++) {
+        scores[i] = GwPlayer[i].star * 1000 + GwPlayer[i].coin;
+    }
+    for (i = 0, rank = 0; i < 4; i++) {
+        if (i != playerIndex) {
+            rank += scores[playerIndex] < scores[i];
+        }
+    }
+    return rank;
+}
+
+void func_80105E8C_chip_shot_challenge(void) {
+    if (WipeStatGet() == 0) {
+        omOvlReturnEx(1);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_80105EB8_chip_shot_challenge);
 
@@ -31,9 +50,54 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_801071A8_chip_shot_challenge);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_80107238_chip_shot_challenge);
+void func_80107238_chip_shot_challenge(s16 model) {
+    HmfData *hmf = HmfModelData[model].hmf;
+    HmfModelData_UnkBC_Struct *effect = HmfModelData[model].unkBC;
+    HmfModelData_UnkBC_Unk58_Struct *particle = effect->unk58;
+    s16 count = hmf->unk1A;
+    s16 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_801073D4_chip_shot_challenge);
+    for (i = 0; i < count; i++, particle++) {
+        if (particle->unk10 <= 0.0f) {
+            particle->unk0C = (rand8() - 127.0f) * 2.0f;
+            particle->unk10 = D_8010AAA4_chip_shot_challenge.y + 700.0f;
+            particle->unk14 = ((rand8() * 125) >> 5) - 500;
+            particle->unk18 = ((s32)((rand8() * 5U) >> 7) - 5) / 2.0f;
+            particle->unk1C = 0.0f;
+            particle->unk20 = ((s32)((rand8() * 5U) >> 7) - 5) / 2.0f;
+            particle->unk08 = 5.0f;
+            break;
+        }
+    }
+}
+
+void func_801073D4_chip_shot_challenge(s16 model) {
+    HmfData *hmf = HmfModelData[model].hmf;
+    HmfModelData_UnkBC_Struct *effect = HmfModelData[model].unkBC;
+    HmfModelData_UnkBC_Unk58_Struct *particle;
+    s16 count = hmf->unk1A;
+    s16 i;
+
+    if (effect->unk02 == 0) {
+        effect->unk04 &= ~4;
+        for (i = 0, particle = effect->unk58; i < count; i++, particle++) {
+            particle->unk0C = particle->unk10 = particle->unk14 = 0.0f;
+            particle->unk24 = particle->unk28 = particle->unk2C = 0.0f;
+            particle->unk08 = 0.0f;
+            particle->unk04 = 1.0f;
+        }
+        effect->unk02++;
+    }
+    for (i = 0, particle = effect->unk58; i < count; i++, particle++) {
+        if (particle->unk10 > 0.0f) {
+            particle->unk0C += particle->unk18;
+            particle->unk10 += particle->unk1C - 15.0f;
+            particle->unk14 += particle->unk20;
+        } else {
+            particle->unk08 = 0.0f;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_80107520_chip_shot_challenge);
 

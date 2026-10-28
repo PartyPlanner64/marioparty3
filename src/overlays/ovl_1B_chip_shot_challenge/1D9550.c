@@ -27,10 +27,21 @@ typedef struct ChipShotChallengeSphere {
 } ChipShotChallengeSphere; // Size 0x10
 
 extern s32 D_8010AAA0_chip_shot_challenge;
+extern s32 D_8010A824_chip_shot_challenge;
+extern f32 D_8010A828_chip_shot_challenge;
+extern f32 D_8010A82C_chip_shot_challenge;
+extern f32 D_8010A970_chip_shot_challenge;
+extern f32 D_8010A974_chip_shot_challenge;
 extern f32 D_8010A834_chip_shot_challenge;
 extern Vec D_8010AAA4_chip_shot_challenge;
 extern s32 D_8010A840_chip_shot_challenge;
 extern s16 D_8010A846_chip_shot_challenge;
+extern s32 D_8010AAC0_chip_shot_challenge;
+extern s32 D_8010AAC4_chip_shot_challenge;
+extern s32 D_8010AAC8_chip_shot_challenge;
+extern s32 D_8010AACC_chip_shot_challenge;
+extern f32 D_800D5410_main;
+extern f32 D_800D51FC_main;
 extern s16 D_8010AAC2_chip_shot_challenge[];
 extern s16 D_8010AAC6_chip_shot_challenge[];
 extern s16 D_8010AACA_chip_shot_challenge[];
@@ -50,9 +61,11 @@ extern s32 D_8010A930_chip_shot_challenge;
 extern s32 D_8010A934_chip_shot_challenge;
 extern s32 D_800A178C_main[][6];
 
+f32 func_800202A8_main(f32 angle);
 void func_801071A8_chip_shot_challenge(void);
 void func_80107238_chip_shot_challenge(s16 model);
 void func_801087AC_chip_shot_challenge(omObjData *object);
+void func_801091E8_chip_shot_challenge(omObjData *object);
 void func_80109B24_chip_shot_challenge(omObjData *object, f32 x, f32 y, f32 z);
 f32 func_80109DE0_chip_shot_challenge(omObjData *object, ChipShotChallengeSphere *sphere);
 
@@ -151,7 +164,75 @@ void func_801073D4_chip_shot_challenge(s16 model) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_80107520_chip_shot_challenge);
+void func_80107520_chip_shot_challenge(omObjData *object) {
+    void *data;
+    s16 image1;
+    s16 image2;
+    s16 group;
+    s16 i;
+    s16 x;
+
+    D_800D51FC_main = D_800D5410_main = 0.0f;
+    object->model[1] = func_8000B0A0_main(0x3C0007, 0xAD9);
+    object->model[2] = func_8000B0A0_main(0x3C0007, 0xAD9);
+    object->model[3] = func_8000B0A0_main(0x3C0007, 0xAD9);
+    object->model[4] = func_8000B0A0_main(0x3C0007, 0xAD9);
+    object->model[5] = func_8000B0A0_main(0x3C0007, 0xAD9);
+    object->model[6] = func_8000B0A0_main(0x3C0007, 0xAD9);
+    object->model[7] = func_8000B0A0_main(0x3C0007, 0xAD9);
+    object->model[8] = func_8000B0A0_main(0x3C0007, 0xAD9);
+    object->model[9] = func_8000B0A0_main(0x3C0007, 0xAD9);
+    object->model[10] = func_8000B0A0_main(0x3C0007, 0xAD9);
+    D_800D5410_main = 1.0f;
+    D_800D51FC_main = 1.0f;
+    object->func = func_801091E8_chip_shot_challenge;
+
+    data = DataRead(0x2D);
+    image1 = func_80055810_main(data);
+    DataClose(data);
+    data = DataRead(0x3C001F);
+    image2 = func_80055810_main(data);
+    DataClose(data);
+
+    group = D_8010AAC0_chip_shot_challenge = HuSprGrpCreate(4, 5);
+    func_80055024_main(group, 0, image1, 0);
+    HuSprAttrReset(group, 0, 0xFFFF);
+    HuSprAttrSet(group, 0, 0x8000);
+    func_80054904_main(group, 0, 0x80, 0x64);
+    HuSprPriSet(group, 0, 1);
+    x = 15;
+    for (i = 1; i < 4; i++) {
+        HuSprPriSet(group, i, 1);
+        func_80055024_main(group, i, image1, 0);
+        func_80054904_main(group, i, x, 0);
+        HuSprAttrReset(group, i, 0xFFFF);
+        HuSprAttrSet(group, i, 0x8000);
+        if (i == 1) {
+            x += 20;
+        } else {
+            x += 15;
+        }
+        func_800554C4_main(group, i, 0);
+    }
+    HuSprAttrReset(group, 2, 0x8000);
+
+    group = D_8010AAC4_chip_shot_challenge = HuSprGrpCreate(2, 5);
+    func_80055024_main(group, 0, image2, 0);
+    HuSprAttrReset(group, 0, 0xFFFF);
+    HuSprAttrSet(group, 0, 0x8000);
+    func_80054904_main(group, 0, 0x9F, 0x64);
+    HuSprPriSet(group, 0, 1);
+    HuSprPriSet(group, 1, 1);
+    func_80055024_main(group, 1, image2, 0);
+    func_80054904_main(group, 1, 0x23, 0);
+    HuSprAttrReset(group, 1, 0xFFFF);
+    HuSprAttrSet(group, 1, 0x8000);
+    func_800554C4_main(group, 1, 0);
+    HuSprAttrReset(group, 2, 0x8000);
+
+    D_8010AACC_chip_shot_challenge = func_8000B0A0_main(0x3C001D, 0xAD9);
+    D_8010AAC8_chip_shot_challenge = func_8000B0A0_main(0x3C001C, 0xAD9);
+}
 
 void func_80107960_chip_shot_challenge(s16 value) {
     s16 digit;
@@ -353,7 +434,54 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", D_
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_801087AC_chip_shot_challenge);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_801091E8_chip_shot_challenge);
+void func_801091E8_chip_shot_challenge(omObjData *object) {
+    Vec delta;
+    f32 rotX;
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 step;
+    f32 baseScale;
+    f32 scaleStep;
+    f32 scale;
+    s32 i;
+
+    if (D_8010A824_chip_shot_challenge == 1) {
+        rotX = 90.0f;
+        x = z = 0.0f;
+        y = 20.0f;
+        step = D_8010A82C_chip_shot_challenge / 3.0f;
+        baseScale = (D_8010A82C_chip_shot_challenge - 60.0f) / 40.0f * 20.0f;
+        scaleStep = D_8010A82C_chip_shot_challenge / 100.0f;
+        for (i = 0; i < 10; i++) {
+            func_8001C258_main(object->model[i + 1], 4, 0);
+            delta.x = x;
+            delta.y = y;
+            delta.z = z;
+            y += step;
+            step -= 0.1f;
+            x += sindf(D_8010A828_chip_shot_challenge + 180.0f) * step;
+            z += cosdf(D_8010A828_chip_shot_challenge + 180.0f) * step;
+            delta.x -= x;
+            delta.y -= y;
+            delta.z -= z;
+            Hu3DModelPosSet(object->model[i + 1], x, y, z);
+            Hu3DModelRotSet(object->model[i + 1], rotX, 0.0f, 0.0f);
+            scale = baseScale + scaleStep * i + sindf(D_8010A974_chip_shot_challenge) * 0.5f;
+            if (scale >= 30.0f) {
+                scale = 30.0f;
+            }
+            func_8001C6A8_main(object->model[i + 1], scale);
+            rotX -= 7.0f;
+        }
+        D_8010A974_chip_shot_challenge += D_8010A82C_chip_shot_challenge / 10.0f;
+        D_8010A970_chip_shot_challenge = func_800202A8_main(D_8010A970_chip_shot_challenge + 10.0f);
+    } else {
+        for (i = 0; i < 20; i++) {
+            func_8001C258_main(object->model[i + 1], 4, 4);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_801094D8_chip_shot_challenge);
 

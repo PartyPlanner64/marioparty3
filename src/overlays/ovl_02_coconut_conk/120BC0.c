@@ -1,6 +1,7 @@
 #include "common.h"
 #include "overlays/minigame.h"
 #include "mallocblock.h"
+#include "math.h"
 
 typedef struct {
     /* 0x00 */ omObjData *unk00;
@@ -124,7 +125,7 @@ void func_8010659C_coconut_conk(omObjData *);
 void func_801067E0_coconut_conk(omObjData *);
 void func_801069BC_coconut_conk(omObjData *);
 void func_80106D5C_coconut_conk(omObjData *);
-void func_80106F18_coconut_conk(void);
+void func_80106F18_coconut_conk(omObjData *);
 void func_8010815C_coconut_conk(omObjData *);
 void func_801089DC_coconut_conk(omObjData *);
 void func_801090C4_coconut_conk(omObjData *);
@@ -570,10 +571,165 @@ void func_80106E80_coconut_conk(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_80106F18_coconut_conk);
+#ifdef NON_MATCHING
+// Matches except for t2/t3 register allocation of mode and middle.
+void func_80106F18_coconut_conk(omObjData *arg0) {
+    CoconutConkData *data = &D_8010BCC4_coconut_conk;
+    u16 player = arg0->work[0];
+    f32 target = 0.0f;
+    f32 gaps[4];
+    f32 pos[3];
+    u8 input;
+    u8 middle;
+    u8 mode;
+    u8 left;
+    u8 right;
+    u8 widest;
+    s16 i;
+    s16 j;
+    omObjData *obj;
+    CoconutConkData *entry;
 
-void func_80107674_coconut_conk(void) {
-    func_80106F18_coconut_conk();
+    input = rand8();
+    mode = 0;
+    if (((GwPlayer[player].cpu_difficulty == 0) & (input < 50)) ||
+        ((GwPlayer[player].cpu_difficulty == 1) & (input < 150)) ||
+        ((GwPlayer[player].cpu_difficulty == 2) & (input < 180)) ||
+        ((GwPlayer[player].cpu_difficulty == 3) & (input < 255))) {
+        for (i = 0; i < 3; i++) {
+            CoconutConkData *e = &D_8010BD48_coconut_conk[i];
+            omObjData *o = e->unk00;
+
+            pos[i] = o->trans.x;
+            if (o->trans.x + 39.0f > arg0->trans.x - 40.0f && o->trans.x - 39.0f < arg0->trans.x + 40.0f) {
+                mode = 1;
+            }
+        }
+        for (i = 0; i < 3; i++) {
+            entry = &D_8010B820_coconut_conk[i];
+            obj = entry->unk00;
+            if (entry->unk04 == 1 || entry->unk04 == 2) {
+                if (obj->trans.x + 29.0f > arg0->trans.x - 40.0f && obj->trans.x - 29.0f < arg0->trans.x + 40.0f) {
+                    mode = 2;
+                }
+            }
+        }
+        if (mode == 1) {
+            left = 0;
+            middle = 0;
+            right = 0;
+            for (i = 0; i < 2; i++) {
+                for (j = 0; j < 3; j++) {
+                    if (pos[left] > pos[j]) {
+                        left = j;
+                    }
+                }
+            }
+            for (i = 0; i < 2; i++) {
+                for (j = 0; j < 3; j++) {
+                    if (pos[right] < pos[j]) {
+                        right = j;
+                    }
+                }
+            }
+            for (i = 0; i < 3; i++) {
+                if (i != left && i != right) {
+                    middle = i;
+                }
+            }
+            gaps[0] = fabsf(-450.0f - pos[left]);
+            gaps[1] = fabsf(pos[left] - pos[middle]);
+            gaps[2] = fabsf(pos[middle] - pos[right]);
+            gaps[3] = fabsf(pos[right] - 450.0f);
+            widest = 0;
+            for (i = 0; i < 3; i++) {
+                if (gaps[i] < gaps[i + 1]) {
+                    widest = i + 1;
+                }
+            }
+            switch (widest) {
+                case 0:
+                    target = (pos[left] + -450.0f) * 0.5f;
+                    break;
+                case 1:
+                    target = (pos[left] + pos[middle]) * 0.5f;
+                    break;
+                case 2:
+                    target = (pos[middle] + pos[right]) * 0.5f;
+                    break;
+                case 3:
+                    target = (pos[right] + 450.0f) * 0.5f;
+                    break;
+            }
+            if (target + 60.0f < arg0->trans.x) {
+                input = 1;
+            } else if (arg0->trans.x < target - 60.0f) {
+                input = 2;
+            }
+        }
+        if (mode == 2) {
+            if (data->unk18 <= 0.0f) {
+                input = 1;
+            } else {
+                input = 2;
+            }
+        }
+        if (mode == 0) {
+            if (0.0f < data->unk18) {
+                input = 1;
+            } else if (data->unk18 < 0.0f) {
+                input = 2;
+            }
+        }
+    }
+    data->unk06--;
+    if (data->unk06 <= 0) {
+        data->unk06 = 0;
+    }
+    if (input == 0) {
+        data->unk04 = 0;
+    }
+    if (input % 5 == 1 && data->unk06 == 0) {
+        data->unk04 = 1;
+        switch (GwPlayer[player].cpu_difficulty) {
+            case 0:
+                data->unk06 = 30;
+                break;
+            case 1:
+                data->unk06 = 10;
+                break;
+            case 2:
+                data->unk06 = 7;
+                break;
+            case 3:
+                data->unk06 = 1;
+                break;
+        }
+    }
+    if (input % 5 == 2 && data->unk06 == 0) {
+        data->unk04 = 2;
+        switch (GwPlayer[player].cpu_difficulty) {
+            case 0:
+                data->unk06 = 30;
+                break;
+            case 1:
+                data->unk06 = 10;
+                break;
+            case 2:
+                data->unk06 = 7;
+                break;
+            case 3:
+                data->unk06 = 1;
+                break;
+        }
+    }
+}
+#else
+INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_80106F18_coconut_conk);
+#endif
+
+void func_80107674_coconut_conk(omObjData *arg0) {
+    func_80106F18_coconut_conk(arg0);
 }
 
 void func_80107690_coconut_conk(omObjData *arg0) {

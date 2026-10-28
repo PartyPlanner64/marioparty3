@@ -42,6 +42,7 @@ typedef struct {
 
 extern s16 D_8010CCF4_spotlight_swim[4];
 extern s32 D_8010D2F0_spotlight_swim;
+extern u8 D_8010CDC8_spotlight_swim[32][32];
 extern u32 *D_8010D2F8_spotlight_swim[3];
 extern u8 D_8010D329_spotlight_swim[];
 extern s8 D_8010D343_spotlight_swim;
@@ -256,7 +257,20 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_80109
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_8010932C_spotlight_swim);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_80109468_spotlight_swim);
+void func_80109468_spotlight_swim(omObjData *obj, f32 targetX, f32 targetY) {
+    if (targetX + 3.0f < obj->trans.x) {
+        D_800CBB6E_main[obj->work[3]] = -10;
+    }
+    if (obj->trans.x < targetX - 3.0f) {
+        D_800CBB6E_main[obj->work[3]] = 10;
+    }
+    if (targetY + 3.0f < obj->trans.y) {
+        D_800D20A1_main[obj->work[3]] = 10;
+    }
+    if (obj->trans.y < targetY - 3.0f) {
+        D_800D20A1_main[obj->work[3]] = -10;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_80109558_spotlight_swim);
 
@@ -377,7 +391,27 @@ s32 func_8010BD5C_spotlight_swim(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_8010BDE0_spotlight_swim);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_8010BFD0_spotlight_swim);
+void func_8010BFD0_spotlight_swim(u32 *buf, s32 x, s32 y) {
+    s32 col;
+    s32 row;
+    s32 i;
+    s32 j;
+    s32 offset;
+    u32 value;
+
+    x /= 2;
+    y /= 2;
+    for (row = y, i = 0; row < y + 32; row++, i++) {
+        offset = row * 160;
+        for (col = x, j = 0; col < x + 32; col++, j++) {
+            value = D_8010CDC8_spotlight_swim[i][j] << 4;
+            if (value > D_8010D47C_spotlight_swim) {
+                value = D_8010D47C_spotlight_swim;
+            }
+            *(buf + col + offset) = value + D_8010D448_spotlight_swim;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_8010C094_spotlight_swim);
 

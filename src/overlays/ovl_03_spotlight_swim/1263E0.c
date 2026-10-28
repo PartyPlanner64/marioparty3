@@ -1272,10 +1272,6 @@ void func_80109558_spotlight_swim(omObjData *obj, f32 targetX, f32 targetY) {
     }
 }
 
-// Remaining diffs: the "unk00 != 3" path is missing a `bnel` that re-sets `row`
-// to 1, and the second flag bit test needs `1 << index` computed before the
-// reload of D_8010D2F4_spotlight_swim (register allocation differs).
-#ifdef NON_MATCHING
 void func_80109690_spotlight_swim(omObjData *obj) {
     u32 index = obj->work[1];
     SpotlightSwimData *data = &D_8010D480_spotlight_swim[index + 3];
@@ -1283,6 +1279,7 @@ void func_80109690_spotlight_swim(omObjData *obj) {
     u16 row;
     s8 flags;
     s32 mask;
+    u8 *limits;
 
     if (data->unk16 == 0) {
         return;
@@ -1297,20 +1294,24 @@ void func_80109690_spotlight_swim(omObjData *obj) {
         if (flags == mask && D_8010D328_spotlight_swim.unk04 <= 0) {
             goto target;
         }
-    } else if (D_8010D2F4_spotlight_swim != 0 && D_8010D328_spotlight_swim.unk04 <= 0 && unk->unk00 == 3) {
-    target:
-        if (obj->work[0] & 1) {
-            goto chase;
+    } else if (D_8010D2F4_spotlight_swim != 0 && D_8010D328_spotlight_swim.unk04 <= 0) {
+        if (unk->unk00 == 3) {
+        target:
+            if (obj->work[0] & 1) {
+                goto chase;
+            }
+            goto wander;
         }
-        goto wander;
+        row = 1;
     }
 
     if (D_8010D328_spotlight_swim.unk04 == 1) {
         row = 0;
     } else {
-        flags = D_8010D2F4_spotlight_swim;
-        mask = flags | (1 << index);
-        if (flags == mask) {
+        s8 curFlags = D_8010D2F4_spotlight_swim;
+
+        mask = curFlags | (1 << index);
+        if (curFlags == mask) {
             goto chase;
         }
     }
@@ -1319,8 +1320,8 @@ void func_80109690_spotlight_swim(omObjData *obj) {
         goto chase;
     }
 
-    if (++unk->unk01 >= D_8010CDAC_spotlight_swim[unk->unk00][row]) {
-        if (unk->unk01 == D_8010CDAC_spotlight_swim[unk->unk00][row]) {
+    if (++unk->unk01 >= (limits = D_8010CDAC_spotlight_swim[unk->unk00])[row]) {
+        if (unk->unk01 == limits[row]) {
             data->unk06 = func_80105C8C_spotlight_swim(2);
         }
 
@@ -1345,9 +1346,6 @@ chase:
 wander:
     func_80109558_spotlight_swim(obj, D_8010D370_spotlight_swim[0], D_8010D370_spotlight_swim[1]);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_80109690_spotlight_swim);
-#endif
 
 void func_801098A8_spotlight_swim(omObjData *obj) {
     s8 index = obj->work[1];

@@ -1755,7 +1755,167 @@ void func_8010ADF8_spotlight_swim(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_03_spotlight_swim/1263E0", func_8010AE9C_spotlight_swim);
+void func_8010AE9C_spotlight_swim(omObjData *obj) {
+    s16 idx = 13;
+    SpotlightSwimData *data = &D_8010D480_spotlight_swim[idx];
+
+    if (D_8010EE48_spotlight_swim == 5) {
+        D_8010D480_spotlight_swim[idx].unk04 = 1;
+    } else if (D_8010D2F4_spotlight_swim == 7) {
+        data->unk04 = 2;
+    }
+
+    if (data->unk04 == 1) {
+        if (obj->trans.y == 920.0f) {
+            func_8001C258_main(obj->model[0], 4, 0);
+            func_8001C258_main(obj->model[1], 4, 0);
+            obj->trans.x = D_8010D348_spotlight_swim->trans.x;
+            obj->trans.z = D_8010D348_spotlight_swim->trans.z;
+            data->unk06 = (obj->trans.x > 0.0f) ? 0 : 1;
+            data->unk18 = 20.0f;
+        }
+        switch (data->unk08) {
+            case 0:
+                if (++data->unk0A >= 30) {
+                    data->unk08 = 1;
+                    data->unk0A = 0;
+                    HuAudFXPlay(0x319);
+                }
+                break;
+            case 1:
+                data->unk0A++;
+                if (obj->trans.y >= 340.0f) {
+                    obj->trans.y -= data->unk18;
+                } else if (obj->trans.y >= 140.0f) {
+                    data->unk18 -= 1.0f;
+                    obj->trans.y -= data->unk18;
+                } else {
+                    obj->trans.y = 140.0f;
+                    data->unk0A = 0;
+                    data->unk08 = 2;
+                    data->unk18 = 0.0f;
+                    if (D_8010D348_spotlight_swim->work[1] == 4 || D_8010D348_spotlight_swim->work[1] == 5) {
+                        func_80105D4C_spotlight_swim(D_8010D348_spotlight_swim, 7, 15, 15, 1);
+                    } else {
+                        func_80105D4C_spotlight_swim(D_8010D348_spotlight_swim, 7, 0, 15, 0);
+                    }
+                    D_8010D343_spotlight_swim = 7;
+                }
+                break;
+            case 2:
+                if (++data->unk0A >= 10) {
+                    data->unk08 = 3;
+                }
+                break;
+            case 3:
+                obj->trans.y += data->unk18;
+                D_8010D328_spotlight_swim.unk10 += data->unk18;
+                if (data->unk06 != 0) {
+                    obj->rot.y = func_801059BC_spotlight_swim(obj->rot.y, 1.0f);
+                    D_8010D348_spotlight_swim->rot.y = func_801059BC_spotlight_swim(D_8010D348_spotlight_swim->rot.y, 1.0f);
+                } else {
+                    obj->rot.y = func_801059BC_spotlight_swim(obj->rot.y, -1.0f);
+                    D_8010D348_spotlight_swim->rot.y = func_801059BC_spotlight_swim(D_8010D348_spotlight_swim->rot.y, -1.0f);
+                }
+                if (obj->trans.y <= 245.0f) {
+                    data->unk18 += 2.0f;
+                } else if (obj->trans.y >= 355.0f) {
+                    data->unk18 -= 2.0f;
+                }
+                if (obj->trans.y >= 460.0f) {
+                    data->unk08 = 4;
+                    data->unk18 = 0.0f;
+                    data->unk0A = 0;
+                }
+                break;
+            case 4:
+                if (data->unk06 != 0) {
+                    obj->trans.x += data->unk1C;
+                    D_8010D348_spotlight_swim->trans.x += data->unk1C;
+                } else {
+                    obj->trans.x -= data->unk1C;
+                    D_8010D348_spotlight_swim->trans.x -= data->unk1C;
+                }
+                obj->trans.z += data->unk20;
+                D_8010D348_spotlight_swim->trans.z += data->unk20;
+                obj->trans.y += data->unk18;
+                D_8010D328_spotlight_swim.unk10 += data->unk18;
+                data->unk18 += 0.2;
+                if (++data->unk0A < 31) {
+                    data->unk1C += 0.5f;
+                    data->unk20 += 1.8f;
+                }
+                if (obj->trans.z > 1400.0f) {
+                    data->unk08 = 5;
+                }
+                break;
+        }
+        Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
+        Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
+        Hu3DModelRotSet(obj->model[1], obj->rot.x, obj->rot.y, obj->rot.z);
+    }
+
+    if (data->unk04 == 2) {
+        switch (data->unk08) {
+            case 0:
+                func_8001C258_main(obj->model[2], 4, 0);
+                data->unk44.x = D_8010D348_spotlight_swim->trans.x;
+                data->unk44.z = D_8010D348_spotlight_swim->trans.z;
+                D_8010D450_spotlight_swim[0].x = data->unk44.x;
+                D_8010D450_spotlight_swim[0].z = data->unk44.z + 95.0f;
+                D_8010D450_spotlight_swim[1].x = data->unk44.x + 85.0f;
+                D_8010D450_spotlight_swim[1].z = data->unk44.z + 55.0f;
+                D_8010D450_spotlight_swim[2].x = data->unk44.x - 85.0f;
+                D_8010D450_spotlight_swim[2].z = data->unk44.z + 55.0f;
+                data->unk08 = 1;
+                break;
+            case 1:
+                CRotM[0].x += 0.6f;
+                if (++data->unk0A >= 20) {
+                    data->unk08 = 2;
+                    data->unk0A = 0;
+                }
+                break;
+            case 2:
+                data->unk44.y -= data->unk18;
+                data->unk18 += 3.5f;
+                if (data->unk44.y < -260.0f) {
+                    data->unk44.y = -260.0f;
+                    data->unk08 = 3;
+                    func_8001C6A8_main(D_8010D348_spotlight_swim->model[1], 0);
+                    Hu3DModelScaleSet(D_8010D348_spotlight_swim->model[1], 0.8f, 1.2f, 1.0f);
+                    Hu3DModelRotSet(D_8010D348_spotlight_swim->model[1], 0.0f, 0.0f, 0.0f);
+                    func_8001C6A8_main(D_8010D348_spotlight_swim->model[2], 0);
+                    Hu3DModelScaleSet(D_8010D348_spotlight_swim->model[2], 0.8f, 1.2f, 1.0f);
+                    Hu3DModelRotSet(D_8010D348_spotlight_swim->model[2], 0.0f, 50.0f, 0.0f);
+                    func_8001C6A8_main(D_8010D348_spotlight_swim->model[3], 0);
+                    Hu3DModelScaleSet(D_8010D348_spotlight_swim->model[3], 0.8f, 1.2f, 1.0f);
+                    Hu3DModelRotSet(D_8010D348_spotlight_swim->model[3], 0.0f, 310.0f, 0.0f);
+                    HuAudFXPlay(0x315);
+                    D_8010D478_spotlight_swim = 1;
+                    if (!(GwPlayer[D_8010D348_spotlight_swim->work[0]].stat & 1)) {
+                        omVibrate(D_8010D348_spotlight_swim->work[0], 2, 2, 20);
+                    }
+                }
+                break;
+            case 3:
+                data->unk44.y += 1.0f;
+                if (data->unk44.y >= -220.0f) {
+                    data->unk44.y = -220.0f;
+                    data->unk08 = 5;
+                }
+                break;
+        }
+        Hu3DModelPosSet(D_8010D348_spotlight_swim->model[1], D_8010D450_spotlight_swim[0].x, -230.0f, D_8010D450_spotlight_swim[0].z);
+        Hu3DModelPosSet(D_8010D348_spotlight_swim->model[2], D_8010D450_spotlight_swim[1].x, -230.0f, D_8010D450_spotlight_swim[1].z);
+        Hu3DModelPosSet(D_8010D348_spotlight_swim->model[3], D_8010D450_spotlight_swim[2].x, -230.0f, D_8010D450_spotlight_swim[2].z);
+        Hu3DModelPosSet(obj->model[2], data->unk44.x, data->unk44.y, data->unk44.z);
+    }
+
+    D_8010D348_spotlight_swim->trans.y = D_8010D328_spotlight_swim.unk10 + -200.0f +
+                                         D_8010CD50_spotlight_swim[D_8010D348_spotlight_swim->work[1]][D_8010D343_spotlight_swim];
+    func_80106EB0_spotlight_swim(D_8010D348_spotlight_swim);
+}
 
 void func_8010B828_spotlight_swim(omObjData *obj) {
     SpotlightSwimData *data;

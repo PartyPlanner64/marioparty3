@@ -10,9 +10,27 @@ typedef struct ChipShotChallengeWork {
     /* 0x64 */ f32 unk_64;
 } ChipShotChallengeWork; // Size 0x68
 
+typedef struct ChipShotChallengeModelEntry {
+    /* 0x00 */ s16 unk_00;
+    /* 0x02 */ s16 model;
+} ChipShotChallengeModelEntry; // Size 0x04
+
 extern s32 D_8010AAA0_chip_shot_challenge;
 extern f32 D_8010A834_chip_shot_challenge;
 extern Vec D_8010AAA4_chip_shot_challenge;
+extern s32 D_8010A840_chip_shot_challenge;
+extern s16 D_8010A846_chip_shot_challenge;
+extern s16 D_8010AAC2_chip_shot_challenge[];
+extern s16 D_8010AAC6_chip_shot_challenge[];
+extern s16 D_8010AACA_chip_shot_challenge[];
+extern s16 D_8010AACE_chip_shot_challenge[];
+extern s16 D_8010AAD2_chip_shot_challenge[];
+extern ChipShotChallengeModelEntry D_8010AAD8_chip_shot_challenge[4];
+extern omObjData *D_8010AAF0_chip_shot_challenge;
+extern f32 D_8010A954_chip_shot_challenge;
+extern s32 D_8010A958_chip_shot_challenge;
+
+void func_801071A8_chip_shot_challenge(void);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_801059A0_chip_shot_challenge);
 
@@ -101,11 +119,103 @@ void func_801073D4_chip_shot_challenge(s16 model) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_80107520_chip_shot_challenge);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_80107960_chip_shot_challenge);
+void func_80107960_chip_shot_challenge(s16 value) {
+    s16 digit;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_80107BB0_chip_shot_challenge);
+    if ((s16)(value / 1000) != 0) {
+        HuSprAttrReset(D_8010AAC2_chip_shot_challenge[0], 0, 0x8000);
+        func_80055140_main(D_8010AAC2_chip_shot_challenge[0], 0, value / 1000, 0);
+        func_800550F4_main(D_8010AAC2_chip_shot_challenge[0], 0, 1);
+    }
+    value -= (s16)(value / 1000) * 1000;
+    HuSprAttrReset(D_8010AAC2_chip_shot_challenge[0], 1, 0x8000);
+    digit = value / 100;
+    func_80055140_main(D_8010AAC2_chip_shot_challenge[0], 1, digit, 0);
+    func_800550F4_main(D_8010AAC2_chip_shot_challenge[0], 1, 1);
+    value -= digit * 100;
+    HuSprAttrReset(D_8010AAC2_chip_shot_challenge[0], 2, 0x8000);
+    digit = value / 10;
+    func_80055140_main(D_8010AAC2_chip_shot_challenge[0], 2, digit, 0);
+    func_800550F4_main(D_8010AAC2_chip_shot_challenge[0], 2, 1);
+    value -= digit * 10;
+    HuSprAttrReset(D_8010AAC2_chip_shot_challenge[0], 3, 0x8000);
+    func_80055140_main(D_8010AAC2_chip_shot_challenge[0], 3, value, 0);
+    func_800550F4_main(D_8010AAC2_chip_shot_challenge[0], 3, 1);
+    HuSprAttrReset(D_8010AAC6_chip_shot_challenge[0], 0, 0x8000);
+    func_80054FF8_main(D_8010AAC6_chip_shot_challenge[0], 0, 1);
+    HuSprAttrReset(D_8010AAC6_chip_shot_challenge[0], 1, 0x8000);
+    func_80054FF8_main(D_8010AAC6_chip_shot_challenge[0], 1, 0);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_80107E94_chip_shot_challenge);
+void func_80107BB0_chip_shot_challenge(void) {
+    Vec dir;
+    f32 x, y, z;
+
+    x = dir.x = D_8010AAF0_chip_shot_challenge->trans.x;
+    dir.y = D_8010AAF0_chip_shot_challenge->trans.y;
+    z = dir.z = D_8010AAF0_chip_shot_challenge->trans.z;
+    func_800202FC_main(&dir);
+    if (D_8010A840_chip_shot_challenge < 31) {
+        y = D_8010AAA4_chip_shot_challenge.y + 700.0f - D_8010A840_chip_shot_challenge * 10.0f;
+        Center.y *= 1.02f;
+        D_8010A954_chip_shot_challenge = -9.0f;
+        if (D_8010A958_chip_shot_challenge != 0) {
+            HuAudFXPlay(0x3DF);
+            D_8010A958_chip_shot_challenge = 0;
+        }
+    } else {
+        y = D_8010AAA4_chip_shot_challenge.y + 400.0f + sindf(D_8010A954_chip_shot_challenge) * 100.0f;
+        D_8010A954_chip_shot_challenge -= 9.0f;
+        Center.y *= 1.02f;
+        D_8010A958_chip_shot_challenge = -1;
+    }
+    if (D_8010A840_chip_shot_challenge < 101) {
+        func_801071A8_chip_shot_challenge();
+    }
+    Hu3DModelPosSet(D_8010AAD8_chip_shot_challenge->model, D_8010AAA4_chip_shot_challenge.x,
+                    D_8010AAA4_chip_shot_challenge.y, D_8010AAA4_chip_shot_challenge.z);
+    Hu3DModelPosSet(D_8010AAD8_chip_shot_challenge[1].model, D_8010AAA4_chip_shot_challenge.x,
+                    D_8010AAA4_chip_shot_challenge.y, D_8010AAA4_chip_shot_challenge.z);
+    Hu3DModelPosSet(D_8010AAD8_chip_shot_challenge[2].model, D_8010AAA4_chip_shot_challenge.x,
+                    D_8010AAA4_chip_shot_challenge.y, D_8010AAA4_chip_shot_challenge.z);
+    Hu3DModelPosSet(D_8010AAD8_chip_shot_challenge[3].model, D_8010AAA4_chip_shot_challenge.x,
+                    D_8010AAA4_chip_shot_challenge.y, D_8010AAA4_chip_shot_challenge.z);
+    if (D_8010AAA4_chip_shot_challenge.y + 400.0f < Center.y) {
+        Center.y = D_8010AAA4_chip_shot_challenge.y + 400.0f;
+    }
+    Hu3DModelPosSet(D_8010AAD2_chip_shot_challenge[0], x, y, z);
+    Hu3DModelPosSet(D_8010AACA_chip_shot_challenge[0], x, y, z);
+    Hu3DModelRotSet(D_8010AAD2_chip_shot_challenge[0], 0.0f, CRot.y, 0.0f);
+    Hu3DModelRotSet(D_8010AACA_chip_shot_challenge[0], 0.0f, CRot.y, 0.0f);
+    func_8001C258_main(D_8010AACA_chip_shot_challenge[0], 4, 0);
+    func_8001C258_main(D_8010AAD2_chip_shot_challenge[0], 4, 0);
+}
+
+void func_80107E94_chip_shot_challenge(void) {
+    Vec dir;
+    f32 x, y, z;
+
+    x = dir.x = D_8010AAF0_chip_shot_challenge->trans.x;
+    dir.y = D_8010AAF0_chip_shot_challenge->trans.y;
+    z = dir.z = D_8010AAF0_chip_shot_challenge->trans.z;
+    func_800202FC_main(&dir);
+    if (D_8010A840_chip_shot_challenge == 1) {
+        func_8004AC98_main(0x3DC, D_8010A846_chip_shot_challenge);
+    }
+    if (D_8010A840_chip_shot_challenge < 31) {
+        y = D_8010A840_chip_shot_challenge * 10.0f + -200.0f;
+    } else {
+        y = 100.0f;
+    }
+    x += dir.x * 200.0f;
+    z += dir.z * 200.0f;
+    Hu3DModelPosSet(D_8010AAD2_chip_shot_challenge[0], x, y, z);
+    Hu3DModelPosSet(D_8010AACE_chip_shot_challenge[0], x, y, z);
+    Hu3DModelRotSet(D_8010AAD2_chip_shot_challenge[0], 0.0f, CRot.y, 0.0f);
+    Hu3DModelRotSet(D_8010AACE_chip_shot_challenge[0], 0.0f, CRot.y, 0.0f);
+    func_8001C258_main(D_8010AACE_chip_shot_challenge[0], 4, 0);
+    func_8001C258_main(D_8010AAD2_chip_shot_challenge[0], 4, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1B_chip_shot_challenge/1D9550", func_8010802C_chip_shot_challenge);
 

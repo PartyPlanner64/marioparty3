@@ -3,6 +3,8 @@
 #include "game/sprite.h"
 #include "mallocblock.h"
 
+#define PLAYER_WORK(obj) ((LockedOutPlayerWork *)((func_800E1BA8_minigame_ObjData *)(obj)->data)->unk158)
+
 typedef struct {
     u8 unk00[3];
     u8 unk03;
@@ -49,7 +51,10 @@ typedef struct {
     /* 0x2C */ u16 unk2C;
     /* 0x2E */ u16 unk2E;
     /* 0x30 */ u16 unk30;
-    /* 0x32 */ u8 unk32[0x1A];
+    /* 0x32 */ u8 unk32[0xA];
+    /* 0x3C */ s16 unk3C;
+    /* 0x3E */ s16 unk3E;
+    /* 0x40 */ u8 unk40[0xC];
 } LockedOutPlayerWork; // Size 0x4C
 
 typedef struct {
@@ -68,7 +73,7 @@ extern f32 D_8010A6C0_locked_out[4][4];
 extern f32 D_8010A700_locked_out;
 extern u8 D_8010A704_locked_out[];
 extern omObjData *D_8010A610_locked_out[];
-extern Vec D_8010A110_locked_out[][3];
+extern Vec D_8010A110_locked_out[];
 extern LockedOutUnkStruct D_8010A638_locked_out[3];
 extern s16 D_8010A676_locked_out;
 extern s16 D_8010A678_locked_out;
@@ -76,6 +81,15 @@ extern s16 D_8010A674_locked_out;
 extern s16 D_8010A67A_locked_out;
 extern D_80111B50_vine_with_me_Struct D_8010A588_locked_out;
 extern void *D_800EBEB0_minigame;
+extern s32 D_8010A164_locked_out;
+extern u16 D_8010A168_locked_out;
+extern s32 D_8010A16C_locked_out;
+extern s16 D_8010A170_locked_out;
+extern s8 D_8010A172_locked_out;
+extern s8 D_8010A173_locked_out;
+extern u8 D_8010A174_locked_out;
+extern s32 D_8010A580_locked_out;
+extern s16 D_8010A584_locked_out;
 
 void func_800E12EC_minigame(omObjData *, f32);
 void func_800E1304_minigame(omObjData *, f32);
@@ -120,6 +134,8 @@ void func_80109858_locked_out(omObjData *object, u8 isPlayer, u8 canGrab);
 void func_801090FC_locked_out(omObjData *object, func_800E1BA8_minigame_ObjData **data, LockedOutPlayerWork **arg2);
 void func_80109E88_locked_out(s16 model, char *hook, s16 time, Vec *pos);
 void func_8001EF6C_main(s16, s16, char *);
+void func_800E6F0C_minigame(s32);
+void func_80109CDC_locked_out(void);
 
 void func_801059A0_locked_out(void) {
     omObjData *obj;
@@ -278,9 +294,9 @@ void func_80106134_locked_out(omObjData *object) {
     object->model[6] = func_8000B108_main(0x3B0010, 0x2DD);
     object->model[7] = func_8000B108_main(0x3B0011, 0x2DD);
     for (i = 0; i < 3; i++) {
-        D_8010A638_locked_out[i].pos.x = D_8010A110_locked_out[i][0].x;
-        D_8010A638_locked_out[i].pos.y = D_8010A110_locked_out[i][0].y;
-        D_8010A638_locked_out[i].pos.z = D_8010A110_locked_out[i][0].z;
+        D_8010A638_locked_out[i].pos.x = D_8010A110_locked_out[i * 3].x;
+        D_8010A638_locked_out[i].pos.y = D_8010A110_locked_out[i * 3].y;
+        D_8010A638_locked_out[i].pos.z = D_8010A110_locked_out[i * 3].z;
         D_8010A638_locked_out[i].unk0C = 0;
         D_8010A638_locked_out[i].unk10 = 1;
         D_8010A638_locked_out[i].unk0D = object->model[2 + i] =
@@ -314,7 +330,217 @@ void func_80106424_locked_out(omObjData *object) {
     object->func = NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1A_locked_out/1D4970", func_801064E0_locked_out);
+void func_801064E0_locked_out(omObjData *object) {
+    LockedOutPlayerWork *work;
+    s32 i;
+    s32 j;
+    s32 count;
+    s32 rank = 0;
+    s32 found;
+    u16 tag;
+    f32 s;
+    f32 c;
+
+    switch (D_8010A674_locked_out) {
+        case 0:
+            GMesCreate(7);
+            D_8010A168_locked_out = 300;
+            D_8010A674_locked_out++;
+            D_8010A584_locked_out = 20;
+        case 1:
+            if (--D_8010A584_locked_out == 0) {
+                HuAudSeqPlay(0x35);
+            }
+            if (GMesStatGet() == 0) {
+                func_800E6F0C_minigame(2);
+                D_8010A674_locked_out++;
+                GMesCreate(0x1A, (D_8010A168_locked_out + 29) / 30, 0xA0, 0x20);
+                HuAudFXPlay(0xE);
+                HuAudSeqPlay(0x35);
+            }
+            break;
+        case 2:
+            count = 0;
+            for (i = 0; i < D_8010A173_locked_out; i++) {
+                count += (D_8010A638_locked_out[i].unk10 == 0);
+            }
+            if (count >= D_8010A172_locked_out - 1) {
+                D_8010A674_locked_out = 3;
+            }
+            D_8010A168_locked_out--;
+            func_8003F578_main((D_8010A168_locked_out + 29) / 30);
+            if (D_8010A168_locked_out == 0) {
+                D_8010A674_locked_out = 3;
+            }
+            break;
+        case 3:
+            D_8010A172_locked_out = 0;
+            D_8010A16C_locked_out = -1;
+            for (i = 0; i < 4; i++) {
+                if (PLAYER_WORK(D_800EC598_minigame[i])->unk23 != 0) {
+                    D_8010A172_locked_out++;
+                    rank++;
+                    D_8010A16C_locked_out = i;
+                }
+                if (PLAYER_WORK(D_800EC598_minigame[i])->unk3C != 0 && PLAYER_WORK(D_800EC598_minigame[i])->unk3C < 5) {
+                    break;
+                }
+            }
+            if (i < 4) {
+                break;
+            }
+            for (i = 0; i < 4; i++) {
+                work = PLAYER_WORK(D_800EC598_minigame[i]);
+                if (work->unk23 == 0 && work->unk24 == 0) {
+                    work->unk24 = rank;
+                }
+            }
+            if (D_8010A172_locked_out >= 2) {
+                WipeCreateOut(0xC, 0x1E);
+                D_8010A674_locked_out = 4;
+                D_8010A174_locked_out = 0;
+            } else {
+                func_8003F5C0_main();
+                GMesCreate(0x12);
+                HuAudSeqFadeOut(0x78);
+                D_8010A674_locked_out = 6;
+            }
+            break;
+        case 4:
+            if (WipeStatGet() != 0) {
+                break;
+            }
+            tag = 0x2B9;
+            func_8001ACDC_main(object->model[1]);
+            object->model[1] = func_8000B108_main(0x3B0002, tag);
+            D_8010A67A_locked_out = (f32)func_80109D70_locked_out() * 1.52587890625e-05 * 3.0;
+            D_8010A173_locked_out = 2;
+            for (i = 0; i < 3; i++) {
+                if (object->model[2 + i] != 0) {
+                    func_8001ACDC_main(object->model[2 + i]);
+                    func_8001ACDC_main(D_8010A638_locked_out[i].unk0E);
+                    object->model[2 + i] = 0;
+                    D_8010A638_locked_out[i].unk10 = 0;
+                }
+                if (i < 2) {
+                    D_8010A638_locked_out[i].pos.x = D_8010A110_locked_out[i * 3 + 1].x;
+                    D_8010A638_locked_out[i].pos.y = D_8010A110_locked_out[i * 3 + 1].y;
+                    D_8010A638_locked_out[i].pos.z = D_8010A110_locked_out[i * 3 + 1].z;
+                    D_8010A638_locked_out[i].unk0C = 0;
+                    D_8010A638_locked_out[i].unk10 = 1;
+                    if (D_8010A172_locked_out == 2) {
+                        D_8010A638_locked_out[i].unk0D = object->model[2 + i] =
+                            func_8000B108_main((D_8010A67A_locked_out + 13) | 0x3B0000, tag);
+                    } else {
+                        D_8010A638_locked_out[i].unk0D = object->model[2 + i] =
+                            func_8000B108_main((D_8010A67A_locked_out + 4) | 0x3B0000, tag);
+                    }
+                    if (D_8010A172_locked_out == 2) {
+                        D_8010A638_locked_out[i].unk0E = Hu3DModelLink(object->model[7]);
+                    } else {
+                        D_8010A638_locked_out[i].unk0E = Hu3DModelLink(object->model[6]);
+                    }
+                    func_8001C92C_main(D_8010A638_locked_out[i].unk0E, 0.0f);
+                    func_8001C92C_main(D_8010A638_locked_out[i].unk0F, 0.0f);
+                    func_8001C6A8_main(D_8010A638_locked_out[i].unk0F, 0.0f);
+                    func_8001C258_main(D_8010A638_locked_out[i].unk0F, 4, 4);
+                    Hu3DModelPosSet(object->model[2 + i], D_8010A638_locked_out[i].pos.x,
+                                    D_8010A638_locked_out[i].pos.y, D_8010A638_locked_out[i].pos.z);
+                    func_8001C92C_main(object->model[2 + i], 0.0f);
+                }
+            }
+            func_8001ACDC_main(object->model[5]);
+            object->model[5] = func_8000B108_main((14 - D_8010A172_locked_out) | 0x3B0000, tag);
+            func_80109CDC_locked_out();
+            D_8010A676_locked_out = (D_8010A172_locked_out - 1) * 3;
+            D_8010A678_locked_out = 0;
+            func_80109110_locked_out();
+            func_8003F578_main(10);
+            WipeCreateIn(0xC, 0x1E);
+            D_8010A674_locked_out++;
+            break;
+        case 5:
+            if (WipeStatGet() == 0) {
+                D_8010A168_locked_out = 300;
+                D_8010A674_locked_out = 2;
+            }
+            break;
+        case 6:
+            if (D_8010A16C_locked_out != -1) {
+                if (D_8010A170_locked_out != 0) {
+                    s = sindf(D_8010A170_locked_out * 0.5);
+                    c = cosdf(D_8010A170_locked_out * 0.5);
+                    CZoom = (s * 47.0 + 23.0) * 20.0;
+                    CRot.x = -(s * 22.0 + 18.0);
+                    Center.x = c * D_8010A638_locked_out[PLAYER_WORK(D_800EC598_minigame[D_8010A16C_locked_out])->unk3E].pos.x;
+                    Center.y = (s * 1.5 + 4.0) * 20.0;
+                    Center.z = c * D_8010A638_locked_out[PLAYER_WORK(D_800EC598_minigame[D_8010A16C_locked_out])->unk3E].pos.z;
+                    D_8010A170_locked_out -= 6;
+                }
+            }
+            if (D_8010A16C_locked_out == -1 && D_8010A174_locked_out != 0) {
+                for (i = 0; i < 4; i++) {
+                    PLAYER_WORK(D_800EC598_minigame[i])->unk24 = 3;
+                }
+            } else {
+                rank = 0;
+                for (j = 0; j < 4; j++) {
+                    found = 0;
+                    for (i = 0; i < 4; i++) {
+                        work = PLAYER_WORK(D_800EC598_minigame[i]);
+                        if (work->unk24 == j) {
+                            work->unk24 = rank;
+                            found = 1;
+                        }
+                    }
+                    rank += found;
+                }
+            }
+            if (GMesStatGet() == 0) {
+                if (D_8010A16C_locked_out == -1) {
+                    D_8010A164_locked_out = 0x9F;
+                } else {
+                    D_8010A164_locked_out = 0x71;
+                }
+                D_8010A580_locked_out = 15;
+                D_8010A674_locked_out++;
+                func_800E6F0C_minigame(4);
+            }
+            break;
+        case 7:
+            if (--D_8010A164_locked_out == 0) {
+                D_8010A674_locked_out++;
+            }
+            if (--D_8010A580_locked_out == 0) {
+                if (D_8010A16C_locked_out == -1) {
+                    HuAudSeqPlay(0x6C);
+                } else {
+                    HuAudSeqPlay(0x65);
+                }
+            }
+            break;
+        case 8:
+            if (D_8010A164_locked_out != 0) {
+                if (--D_8010A164_locked_out == 0) {
+                    D_8010A674_locked_out++;
+                }
+            } else {
+                func_800E6F0C_minigame(5);
+                D_8010A164_locked_out = 16;
+                WipeCreateOut(0, D_8010A164_locked_out);
+                HuAudSeqFadeOut(D_8010A164_locked_out);
+                func_8004AB0C_main((s16)D_8010A164_locked_out);
+            }
+            break;
+        case 9:
+            func_8004A950_main();
+            omOvlReturnEx(1);
+            break;
+    }
+    if (D_800D530C_main == 1 && WipeStatGet() == 0) {
+        D_8010A674_locked_out = 8;
+    }
+}
 
 void func_80106FBC_locked_out(omObjData *object) {
     LockedOutUnkStruct *entry;

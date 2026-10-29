@@ -1,18 +1,4 @@
-alCSPGetChlVol = 0x8006CFF0;
-alCSPGetChlFXMix = 0x8006D010;
-alCSPGetChlPan = 0x8006D030;
-alCSPGetChlProgram = 0x8006D050;
-alCSPGetState = 0x8006D0D0;
-alCSPGetTempo = 0x8006D0E0;
-alEvtqPostEvent = 0x8006DE74;
-alSeqpPlay = 0x8006D110;
-alSeqpSetBank = 0x8006D140;
-alSeqpSetSeq = 0x8006D170;
-alSeqpSetTempo = 0x8006D1A0;
-alSeqpSetVol = 0x8006D1F0;
-alSeqpStop = 0x8006D220;
 alSeqGetTicks = 0x80077074;
-alCSeqGetTicks = 0x8007792C;
 alInit = 0x800771A0;
 alClose = 0x800771CC;
 alLink = 0x800771FC;
@@ -1017,10 +1003,227 @@ omovlevtno = 0x800A1764; //rom:0xA2364
 omdispinfo = 0x800A1760; //rom:0xA2360 type:u16
 D_80101E04_shared_board = 0x80101E04; //rom:0x115A24 size:0xF type:u8 segment:shared_board
 
+//n_audio (libn_audio)
+n_alGlobals = 0x800A2880; //rom:0xA3480
+n_syn = 0x800A2884; //rom:0xA3484
+
+//n_env.c
+n_alEnvmixerPull = 0x8006A450; //rom:0x6B050
+n_alEnvmixerParam = 0x8006A9C8; //rom:0x6B5C8
+__n_pullSubFrame = 0x8006AA6C; //rom:0x6B66C
+__n_getRate = 0x8006AC8C; //rom:0x6B88C
+__n_getVol = 0x8006ADCC; //rom:0x6B9CC
+
+//n_load.c
+n_alAdpcmPull = 0x8006AE20; //rom:0x6BA20
+n_alLoadParam = 0x8006B268; //rom:0x6BE68
+_n_decodeChunk = 0x8006B3F4; //rom:0x6BFF4
+
+//n_resample.c
+n_alResamplePull = 0x8006B540; //rom:0x6C140
+n_alResampleParam = 0x8006B6FC; //rom:0x6C2FC
+
+//n_sl.c
+n_alInit = 0x8006B720; //rom:0x6C320
+n_alClose = 0x8006B764; //rom:0x6C364
+
+//n_syndelete.c
+n_alSynDelete = 0x8006B7A0; //rom:0x6C3A0
+
+//n_synthesizer.c
+n_alSynNew = 0x8006B7C0; //rom:0x6C3C0
+n_alAudioFrame = 0x8006BA3C; //rom:0x6C63C
+__n_allocParam = 0x8006BBBC; //rom:0x6C7BC
+__n_freeParam = 0x8006BBE8; //rom:0x6C7E8
+_n_collectPVoices = 0x8006BC00; //rom:0x6C800
+_n_freePVoice = 0x8006BC60; //rom:0x6C860
+_n_timeToSamplesNoRound = 0x8006BC98; //rom:0x6C898
+_n_timeToSamples = 0x8006BCE8; //rom:0x6C8E8
+__n_nextSampleTime = 0x8006BD3C; //rom:0x6C93C
+
+//n_csplayer.c
+n_alCSPNew = 0x8006BDF0; //rom:0x6C9F0
+__n_CSPVoiceHandler = 0x8006BF60; //rom:0x6CB60
+__n_CSPHandleNextSeqEvent = 0x8006C408; //rom:0x6D008
+__n_CSPHandleMIDIMsg = 0x8006C4C8; //rom:0x6D0C8
+__n_CSPHandleMetaMsg = 0x8006CD00; //rom:0x6D900
+__n_CSPRepostEvent = 0x8006CE90; //rom:0x6DA90
+__n_setUsptFromTempo = 0x8006CF20; //rom:0x6DB20
+__n_CSPPostNextSeqEvent = 0x8006CF54; //rom:0x6DB54
+
+//n_cspdelete.c
+n_alCSPDelete = 0x8006CFD0; //rom:0x6DBD0
+
+//n_cspgetchlvol.c
+n_alCSPGetChlVol = 0x8006CFF0; //rom:0x6DBF0
+
+//n_cspgetfxmix.c
+n_alCSPGetChlFXMix = 0x8006D010; //rom:0x6DC10
+
+//n_cspgetpan.c
+n_alCSPGetChlPan = 0x8006D030; //rom:0x6DC30
+
+//n_cspgetprogram.c
+n_alCSPGetChlProgram = 0x8006D050; //rom:0x6DC50
+
+//n_cspgetstate.c
+n_alCSPGetState = 0x8006D0D0; //rom:0x6DCD0
+
+//n_cspgettempo.c
+n_alCSPGetTempo = 0x8006D0E0; //rom:0x6DCE0
+
+//n_cspplay.c
+n_alCSPPlay = 0x8006D110; //rom:0x6DD10
+
+//n_cspsetbank.c
+n_alCSPSetBank = 0x8006D140; //rom:0x6DD40
+
+//n_cspsetseq.c
+n_alCSPSetSeq = 0x8006D170; //rom:0x6DD70
+
+//n_cspsettempo.c
+n_alCSPSetTempo = 0x8006D1A0; //rom:0x6DDA0
+
+//n_cspsetvol.c
+n_alCSPSetVol = 0x8006D1F0; //rom:0x6DDF0
+
+//n_cspstop.c
+n_alCSPStop = 0x8006D220; //rom:0x6DE20
+
+//n_sndpallocate.c
+n_alSndpAllocate = 0x8006D250; //rom:0x6DE50
+
+//n_sndpdeallocate.c
+n_alSndpDeallocate = 0x8006D320; //rom:0x6DF20
+
+//n_sndpdelete.c
+n_alSndpDelete = 0x8006D370; //rom:0x6DF70
+
+//n_sndpgetstate.c
+n_alSndpGetState = 0x8006D3A0; //rom:0x6DFA0
+
+//n_sndplayer.c
+n_alSndpNew = 0x8006D3D0; //rom:0x6DFD0
+_n_sndpVoiceHandler = 0x8006D4E8; //rom:0x6E0E8
+_n_handleEvent = 0x8006D578; //rom:0x6E178
+_n_removeEvents = 0x8006D9B0; //rom:0x6E5B0
+_n_DivS32ByF32 = 0x8006DA58; //rom:0x6E658
+
+//n_sndpplay.c
+n_alSndpPlay = 0x8006DAB0; //rom:0x6E6B0
+
+//n_sndpsetfxmix.c
+n_alSndpSetFXMix = 0x8006DB20; //rom:0x6E720
+
+//n_sndpsetpan.c
+n_alSndpSetPan = 0x8006DB80; //rom:0x6E780
+
+//n_sndpsetpitch.c
+n_alSndpSetPitch = 0x8006DBE0; //rom:0x6E7E0
+
+//n_sndpsetpriority.c
+n_alSndpSetPriority = 0x8006DC40; //rom:0x6E840
+
+//n_sndpsetvol.c
+n_alSndpSetVol = 0x8006DC80; //rom:0x6E880
+
+//n_sndpstop.c
+n_alSndpStop = 0x8006DCE0; //rom:0x6E8E0
+
+//n_sndpsetsound.c
+n_alSndpSetSound = 0x8006DD40; //rom:0x6E940
+
+//n_event.c
+n_alEvtqNew = 0x8006DD60; //rom:0x6E960
+n_alEvtqNextEvent = 0x8006DDDC; //rom:0x6E9DC
+n_alEvtqPostEvent = 0x8006DE74; //rom:0x6EA74
+n_alEvtqFlushType = 0x8006DF80; //rom:0x6EB80
+
+//n_csq.c
+n_alCSeqNew = 0x8006E030; //rom:0x6EC30
+n_alCSeqNextEvent = 0x8006E13C; //rom:0x6ED3C
+__n_alCSeqGetTrackEvent = 0x8006E230; //rom:0x6EE30
+n_alCSeqNewMarker = 0x8006E4A0; //rom:0x6F0A0
+
+//n_auxbus.c
+n_alAuxBusPull = 0x8006E870; //rom:0x6F470
+
+//n_drvrNew.c
+n_alFxNew = 0x8006E910; //rom:0x6F510
+alN_PVoiceNew = 0x8006ECFC; //rom:0x6F8FC
+
+//n_reverb.c
+n_alFxPull = 0x8006EE30; //rom:0x6FA30
+n_alFxParamHdl = 0x8006F140; //rom:0x6FD40
+_n_loadOutputBuffer = 0x8006F330; //rom:0x6FF30
+_n_loadBuffer = 0x8006F540; //rom:0x70140
+__n_saveBuffer = 0x8006F668; //rom:0x70268
+__n_filterBuffer = 0x8006F780; //rom:0x70380
+
+//n_save.c
+n_alSavePull = 0x8006F820; //rom:0x70420
+
+//n_synaddplayer.c
+n_alSynAddPlayer = 0x8006F870; //rom:0x70470
+n_alSynAddSndPlayer = 0x8006F8BC; //rom:0x704BC
+n_alSynAddSeqPlayer = 0x8006F914; //rom:0x70514
+
+//n_synallocfx.c
+n_alSynAllocFX = 0x8006F980; //rom:0x70580
+
+//n_synallocvoice.c
+n_alSynAllocVoice = 0x8006F9D0; //rom:0x705D0
+_n_allocatePVoice = 0x8006FAE8; //rom:0x706E8
+
+//n_synfreevoice.c
+n_alSynFreeVoice = 0x8006FBB0; //rom:0x707B0
+
+//n_synremoveplayer.c
+n_alSynRemovePlayer = 0x8006FC50; //rom:0x70850
+
+//n_synsetfxmix.c
+n_alSynSetFXMix = 0x8006FD40; //rom:0x70940
+
+//n_synsetpitch.c
+n_alSynSetPitch = 0x8006FDE0; //rom:0x709E0
+
+//n_synsetvol.c
+n_alSynSetVol = 0x8006FE70; //rom:0x70A70
+
+//n_synstartvoice.c
+n_alSynStartVoice = 0x8006FF20; //rom:0x70B20
+
+//n_synstopvoice.c
+n_alSynStopVoice = 0x8006FFB0; //rom:0x70BB0
+
+//n_seq.c
+n_alSeqNextEvent = 0x800717E0; //rom:0x723E0
+n_alSeqNewMarker = 0x80071948; //rom:0x72548
+
+//n_mainbus.c
+n_alMainBusPull = 0x80071AC0; //rom:0x726C0
+
+//n_synsetpriority.c
+n_alSynSetPriority = 0x80071B40; //rom:0x72740
+
+//cseq.c
+alCSeqNew = 0x80077320; //rom:0x77F20
+alCSeqNextEvent = 0x8007742C; //rom:0x7802C
+__alCSeqNextDelta = 0x80077520; //rom:0x78120
+__alCSeqGetTrackEvent = 0x800775A0; //rom:0x781A0
+alCSeqTicksToSec = 0x80077810; //rom:0x78410
+alCSeqSecToTicks = 0x8007788C; //rom:0x7848C
+alCSeqGetTicks = 0x8007792C; //rom:0x7852C
+alCSeqNewMarker = 0x80077934; //rom:0x78534
+alCSeqSetLoc = 0x80077BCC; //rom:0x787CC
+alCSeqGetLoc = 0x80077C40; //rom:0x78840
+__getTrackByte = 0x80077CB4; //rom:0x788B4
+__readVarLen = 0x80077D6C; //rom:0x7896C
+
 //libultra symbols
 //auxbus.c
-n_alAuxBusPull = 0x80074720; //rom:0x75320
-n_alAuxBusParam = 0x800747FC; //rom:0x753FC
+alAuxBusPull = 0x80074720; //rom:0x75320
+alAuxBusParam = 0x800747FC; //rom:0x753FC
 
 //bnkf.c
 alSeqFileNew = 0x80074830; //rom:0x75430
@@ -1033,27 +1236,12 @@ _bnkfPatchWaveTable = 0x80074A9C; //rom:0x7569C
 //cents2ratio.c
 alCents2Ratio = 0x80078B40; //rom:0x79740
 
-//cseq.c
-//something odd here. __alCSeqNextDelta is much later in ram for some reason -
-//but it's in the same TU?
-//alCSeqNew = 0x8006E030; //rom:0x6EC30
-//alCSeqNextEvent = 0x8006E13C; //rom:0x6ED3C
-
 
 //heapinit.c
 alHeapInit = 0x80077250; //rom:0x77E50
 
 //copy.c
 alCopy = 0x800772E0; //rom:0x77EE0
-
-//synremoveplayer.c
-alSynRemovePlayer = 0x8006FC50; //rom:0x70850
-
-//sndpallocate.c
-alSndpAllocate = 0x8006D250; //rom:0x6DE50
-
-//sndpdeallocate.c
-alSndpDeallocate = 0x8006D320; //rom:0x6DF20
 
 __osSiAccessQueue = 0x800D6B48; //size:0x18
 mbovlhisidx = 0x800D6B60; //size:0x2

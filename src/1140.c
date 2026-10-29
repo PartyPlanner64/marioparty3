@@ -1,4 +1,5 @@
 #include "common.h"
+#include "PR/n_libaudio.h"
 
 typedef struct {
     /* 0x00 */ s8 cmdType;   // cmdType
@@ -24,10 +25,10 @@ typedef struct GameSound_s {
 } GameSound;
 
 typedef struct {
-    /* 0x00 */ ALSeqPlayer *seqp;
+    /* 0x00 */ N_ALCSPlayer *seqp;
     /* 0x04 */ u8 *seqData; // raw sequence data, DMA'd in per track
     /* 0x08 */ ALBank **bankTable;
-    /* 0x0C */ ALSeq *seq;
+    /* 0x0C */ ALCSeq *seq;
     /* 0x10 */ s32 seqDataSize;
     /* 0x14 */ s32 flags;    // 0x1 stopped, 0x2/0x8 queued, 0x4/0x20 no fade, 0x10 play, 0x40 fading
     /* 0x18 */ s16 curTrack; // track whose data is loaded
@@ -134,7 +135,7 @@ INCLUDE_ASM("asm/nonmatchings/1140", func_80001348_main);
 INCLUDE_ASM("asm/nonmatchings/1140", func_80001408_main);
 
 void func_80001ADC_main(SeqPlayer *seqPlayer) {
-    s32 state = alCSPGetState((ALCSPlayer *)seqPlayer->seqp);
+    s32 state = n_alCSPGetState(seqPlayer->seqp);
 
     seqPlayer->cspState = state;
     switch (state) {

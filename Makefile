@@ -169,7 +169,9 @@ build/src/lib/hvq.c.o: CFLAGS += -Wa,--force-n64align
 build/src/2.0L/audio/%.c.o: OPTFLAGS = -O2
 build/src/2.0L/audio/%.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_MIPS_SZLONG=32 -D_LANGUAGE_C -DF3DEX_GBI -D__MIPSEB__ -Wa,--force-n64align
 build/src/2.0L/audio/%.c.o: CPPFLAGS = -I include -I include/PR -I include/gcc -I $(BUILD_DIR)/include -I src -DNDEBUG -D_MIPS_SZLONG=32 -DF3DEX_GBI_2
-build/src/709E0.c.o: OPTFLAGS = -O2
+build/src/2.0L/n_audio/%.c.o: OPTFLAGS = -O2
+build/src/2.0L/n_audio/%.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_MIPS_SZLONG=32 -D_LANGUAGE_C -DF3DEX_GBI -D__MIPSEB__ -Wa,--force-n64align
+build/src/2.0L/n_audio/%.c.o: CPPFLAGS = -I include -I include/PR -I include/gcc -I $(BUILD_DIR)/include -I src -DNDEBUG -D_MIPS_SZLONG=32 -DF3DEX_GBI_2
 build/src/8A6B0.c.o: OPTFLAGS = -O2 #Could also be -O3?
 build/src/2.0L/debug/threadprofile.c.o: OPTFLAGS = -O2
 build/src/2.0L/gu/%.c.o: OPTFLAGS = -O2
@@ -244,19 +246,8 @@ build/src/2.0L/os/virtualtophysical.c.o: OPTFLAGS = -O2
 build/src/2.0L/os/yieldthread.c.o: OPTFLAGS = -O2
 build/src/2.0L/rmon/rmonbrk.c.o: OPTFLAGS = -O2
 build/src/2.0L/rmon/rmonmem.c.o: OPTFLAGS = -O2
-build/src/6C9F0.c.o: OPTFLAGS = -O2
-build/src/6E840.c.o: OPTFLAGS = -O2
-build/src/6E960.c.o: OPTFLAGS = -O2
-build/src/70C30.c.o: OPTFLAGS = -O2
 build/src/88CF0.c.o: OPTFLAGS = -O2
 build/src/88CF0.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
-build/src/6B050.c.o: OPTFLAGS = -O2
-build/src/6C3C0.c.o: OPTFLAGS = -O2
-build/src/6DFD0.c.o: OPTFLAGS = -O2
-build/src/70470.c.o: OPTFLAGS = -O2
-build/src/77F20.c.o: OPTFLAGS = -O2
-build/src/70B20.c.o: OPTFLAGS = -O2
-build/src/70BB0.c.o: OPTFLAGS = -O2
 
 # Files that have scommon
 build/src/2.0L/gu/lookathil.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align

@@ -42,7 +42,7 @@ void func_80108350_inst(void) {
     func_8001C514_main(object->model[0]);
     func_80032FC0_main(D_8010DC22_inst, 1, 0);
     func_80032FF8_main(D_8010DC22_inst, 0);
-    D_8010DC28_inst = func_80032694_main(HmfModelData[object->model[0]].hmf, D_8010DC22_inst, 0, "c204n_0_DEF");
+    D_8010DC28_inst = HmfAnimLink(HmfModelData[object->model[0]].hmf, D_8010DC22_inst, 0, "c204n_0_DEF");
     D_8010DC20_inst[0] = D_800D1714_main[D_8010DC20_inst[0]].animIdx;
     data = DataRead(0xA007F);
     D_8010DC20_inst[1] = (s16)func_800329B4_main(data);

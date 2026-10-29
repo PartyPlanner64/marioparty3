@@ -579,11 +579,11 @@ s16 func_800DC128_shared_board(s32 arg0) {
     if (entry->unk_0A != 5) {
         entry->unk_2C = DataRead(D_80100D78_shared_board[entry->unk_0A]);
         entry->unk_1A[0] = HmfAnimCreate(HmfModelData[entry->unk_16].hmf, entry->unk_2C, 0, "tile01_DEF");
-        entry->unk_1A[1] = func_80032694_main(HmfModelData[entry->unk_16].hmf, entry->unk_1A[0], 0, "tile02_DEF");
-        entry->unk_1A[2] = func_80032694_main(HmfModelData[entry->unk_16].hmf, entry->unk_1A[0], 0, "tile03_DEF");
-        entry->unk_1A[3] = func_80032694_main(HmfModelData[entry->unk_16].hmf, entry->unk_1A[0], 0, "tile04_DEF");
-        entry->unk_1A[4] = func_80032694_main(HmfModelData[entry->unk_16].hmf, entry->unk_1A[0], 0, "tile06_DEF");
-        entry->unk_1A[5] = func_80032694_main(HmfModelData[entry->unk_16].hmf, entry->unk_1A[0], 0, "tile10_DEF");
+        entry->unk_1A[1] = HmfAnimLink(HmfModelData[entry->unk_16].hmf, entry->unk_1A[0], 0, "tile02_DEF");
+        entry->unk_1A[2] = HmfAnimLink(HmfModelData[entry->unk_16].hmf, entry->unk_1A[0], 0, "tile03_DEF");
+        entry->unk_1A[3] = HmfAnimLink(HmfModelData[entry->unk_16].hmf, entry->unk_1A[0], 0, "tile04_DEF");
+        entry->unk_1A[4] = HmfAnimLink(HmfModelData[entry->unk_16].hmf, entry->unk_1A[0], 0, "tile06_DEF");
+        entry->unk_1A[5] = HmfAnimLink(HmfModelData[entry->unk_16].hmf, entry->unk_1A[0], 0, "tile10_DEF");
 
         tile = rand8() % 10;
         rot = rand8() & 3;
@@ -703,7 +703,7 @@ static void func_800DC718_shared_board(s32 arg0, s32 arg1, s32 arg2, char *arg3[
                 if (i == 0) {
                     entry->unk_1A[0] = HmfAnimCreate(HmfModelData[entry->unk_16].hmf, entry->unk_2C, 0, arg3[0]);
                 } else {
-                    entry->unk_1A[1] = func_80032694_main(HmfModelData[entry->unk_16].hmf, entry->unk_1A[0], 0, arg3[i]);
+                    entry->unk_1A[1] = HmfAnimLink(HmfModelData[entry->unk_16].hmf, entry->unk_1A[0], 0, arg3[i]);
                 }
             } else {
                 entry->unk_1A[i] = -1;

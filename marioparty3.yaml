@@ -96,7 +96,7 @@ segments:
       - [0x22EB0, c] # hmfdraw?
       - [0x30C40, c]
       - [0x32160, c]
-      - [0x34DC0, asm] # TODO: part of 32160?
+      - [0x34DC0, asm] # Separate file, not part of 32160: 32160 ends with nop padding at 0x34DBC; this is one function (func_800341C0_main, returns 0x70) padded to 0x34DD0. Its rodata is likely the minigame table at 0x800A6D40-0x800A7300 (overlay 0x70 is special-cased by the option overlay).
       - [0x34DD0, c]
       - [0x360A0, c, main]
       - [0x36440, c, mallocperm]

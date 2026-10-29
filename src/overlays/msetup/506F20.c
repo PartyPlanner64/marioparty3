@@ -172,7 +172,7 @@ s16 func_8010B388_msetup(s16 model, s16 *animSlot, s32 dataId, char *name) {
     DataClose(data);
     length = D_800D1714_main[(s16)anim].animIdx;
     animSlot[2] = length;
-    animSlot[0] = func_80032694_main(HmfModelData[model].hmf, anim, 0, name);
+    animSlot[0] = HmfAnimLink(HmfModelData[model].hmf, anim, 0, name);
     func_8001C448_main(model);
     return length;
 }

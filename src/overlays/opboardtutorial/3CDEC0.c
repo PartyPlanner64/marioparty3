@@ -184,7 +184,7 @@ s16 func_80105FA8_opboardtutorial(s16 model, s32 file, char *name) {
     func_80032FC0_main(anim, 1, 1);
     DataClose(data);
     animIdx = D_800D1714_main[(s16)anim].animIdx;
-    D_80107786_opboardtutorial = func_80032694_main(HmfModelData[model].hmf, (u16)anim, 0, name);
+    D_80107786_opboardtutorial = HmfAnimLink(HmfModelData[model].hmf, (u16)anim, 0, name);
     func_8001C448_main(model);
     return animIdx;
 }

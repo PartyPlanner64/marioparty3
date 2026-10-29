@@ -1010,7 +1010,7 @@ void func_80107B40_pump_pump_away(omObjData *obj) {
                 obj->work[1] = D_8011352C_pump_pump_away;
                 HuMemMemoryFreePerm(data);
             } else {
-                obj->work[1] = func_80032694_main(HmfModelData[obj->model[0]].hmf, (u16)D_8011352C_pump_pump_away, 0, "m213_p1_DEF");
+                obj->work[1] = HmfAnimLink(HmfModelData[obj->model[0]].hmf, (u16)D_8011352C_pump_pump_away, 0, "m213_p1_DEF");
             }
         case 2:
         case 3:
@@ -1020,7 +1020,7 @@ void func_80107B40_pump_pump_away(omObjData *obj) {
                 obj->work[1] = D_80113528_pump_pump_away;
                 HuMemMemoryFreePerm(data);
             } else {
-                obj->work[1] = func_80032694_main(HmfModelData[obj->model[0]].hmf, (u16)D_80113528_pump_pump_away, 0, "m213_p1_DEF");
+                obj->work[1] = HmfAnimLink(HmfModelData[obj->model[0]].hmf, (u16)D_80113528_pump_pump_away, 0, "m213_p1_DEF");
             }
             break;
     }
@@ -2885,15 +2885,15 @@ void func_8010DD24_pump_pump_away(omObjData *obj) {
         obj->model[1] = func_8000B108_main(0x2E0020, 0x289);
         data = DataRead(0x2E0021);
         obj->work[1] = D_801116E8_pump_pump_away = HmfAnimCreate(HmfModelData[obj->model[1]].hmf, data, 0, "m213_plart2_DEF");
-        obj->work[2] = func_80032694_main(HmfModelData[obj->model[1]].hmf, D_801116E8_pump_pump_away, 0, "m213_plart1_DEF");
-        obj->work[3] = func_80032694_main(HmfModelData[obj->model[1]].hmf, D_801116E8_pump_pump_away, 0, "m213_plart0_DEF");
+        obj->work[2] = HmfAnimLink(HmfModelData[obj->model[1]].hmf, D_801116E8_pump_pump_away, 0, "m213_plart1_DEF");
+        obj->work[3] = HmfAnimLink(HmfModelData[obj->model[1]].hmf, D_801116E8_pump_pump_away, 0, "m213_plart0_DEF");
         HuMemMemoryFreePerm(data);
     } else {
         obj->model[0] = Hu3DModelLink(D_801116EA_pump_pump_away);
         obj->model[1] = func_8000B108_main(0x2E0020, 0x289);
-        obj->work[1] = func_80032694_main(HmfModelData[obj->model[1]].hmf, D_801116E8_pump_pump_away, 0, "m213_plart2_DEF");
-        obj->work[2] = func_80032694_main(HmfModelData[obj->model[1]].hmf, D_801116E8_pump_pump_away, 0, "m213_plart1_DEF");
-        obj->work[3] = func_80032694_main(HmfModelData[obj->model[1]].hmf, D_801116E8_pump_pump_away, 0, "m213_plart0_DEF");
+        obj->work[1] = HmfAnimLink(HmfModelData[obj->model[1]].hmf, D_801116E8_pump_pump_away, 0, "m213_plart2_DEF");
+        obj->work[2] = HmfAnimLink(HmfModelData[obj->model[1]].hmf, D_801116E8_pump_pump_away, 0, "m213_plart1_DEF");
+        obj->work[3] = HmfAnimLink(HmfModelData[obj->model[1]].hmf, D_801116E8_pump_pump_away, 0, "m213_plart0_DEF");
     }
     func_8001C448_main(obj->model[1]);
     func_8001C514_main(obj->model[1]);

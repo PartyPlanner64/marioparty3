@@ -860,6 +860,8 @@ SprModelRead = 0x8000B4F8; //rom:0xC0F8
 HmfAnimRead = 0x8000B554; //rom:0xC154
 HmfSprModelCreate = 0x8001443C; //rom:0x1503C
 HmfAnimCreate = 0x800323CC; //rom:0x32FCC
+HmfAnimLink = 0x80032694; //rom:0x33294
+HmfAnimExec = 0x80033128; //rom:0x33D28
 
 readBuffer = 0x800ABFF0;
 textBuffer = 0x800AC3F0;

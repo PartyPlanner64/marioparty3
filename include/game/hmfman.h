@@ -112,11 +112,14 @@ typedef struct {
 } HmfModelData_Unk64_Unk98_Struct;
 
 typedef struct {
-    char unk00[0x1E];
-    s16 colorCount;
-    char unk20[8];
-    u8 *data;
-} HmfPaletteData;
+    /* 0x00 */ char name[0x1C];
+    /* 0x1C */ u8 refCount;
+    /* 0x1D */ u8 unk1D;
+    /* 0x1E */ s16 colorCount;
+    /* 0x20 */ s16 nameHash;
+    /* 0x24 */ struct HmfData *owner;
+    /* 0x28 */ u8 *data;
+} HmfPaletteData; // Size 0x2C
 
 typedef struct {
     char name[0x1C];
@@ -129,7 +132,7 @@ typedef struct {
     u16 unk24;
     u16 unk26;
     u8 *unk28;
-    char unk2C[4];
+    struct HmfData *owner;
     HmfPaletteData *unk_30;
 } HmfData_Unk84_Entry2;
 
@@ -272,7 +275,8 @@ typedef struct HmfData {
     /* 0x24 */ s16 unk24;
     /* 0x26 */ char unk26[2];
     /* 0x28 */ s16 unk28;
-    /* 0x2A */ char unk2A[6];
+    /* 0x2A */ s16 unk2A;
+    /* 0x2C */ char unk2C[4];
     /* 0x30 */ u8 *unk30;
     /* 0x34 */ u8 *unk34;
     /* 0x38 */ u8 *unk38; // MAP1 chunk
@@ -306,7 +310,7 @@ typedef struct HmfData {
     /* 0xBC */ HmfData_UnkBC *unkBC;
     /* 0xC0 */ void *unkC0; // light data only?
     /* 0xC4 */ HmfMapData *unkC4;
-    /* 0xC8 */ s32 unkC8;
+    /* 0xC8 */ u8 *unkC8; // animation slots
     /* 0xCC */ HmfDisplayLists *unkCC;
     /* 0xD0 */ s32 unkD0;
     /* 0xD4 */ void (*unkD4)(HuMtx4F, f32, f32, f32);
@@ -409,14 +413,34 @@ typedef struct HmfAnim {
     /* 0x06 */ s16 interp;
     /* 0x08 */ char unk_08[2];
     /* 0x0A */ u8 flags;
-    /* 0x0B */ s8 alpha;
-} HmfAnim; // Size 0xC
+    /* 0x0B */ u8 speed; // 4-bit fixed point (0x10 = 1.0)
+} HmfAnim;               // Size 0xC
+
+typedef struct HmfAnimFrame {
+    /* 0x00 */ s16 unk00; // image index
+    /* 0x02 */ s16 time;
+    /* 0x04 */ u8 unk04;
+    /* 0x05 */ u8 unk05;
+    /* 0x06 */ u8 unk06;
+    /* 0x07 */ char unk07[1];
+} HmfAnimFrame; // Size 0x8
 
 typedef struct HmfAnimRot {
     /* 0x00 */ s16 frameCount;
     /* 0x02 */ s16 totalFrames;
-    /* 0x04 */ void *frames;
+    /* 0x04 */ HmfAnimFrame *frames;
 } HmfAnimRot; // Size 0x8
+
+typedef struct HmfAnimImage {
+    /* 0x00 */ s16 width;
+    /* 0x02 */ s16 height;
+    /* 0x04 */ s16 unk04;
+    /* 0x06 */ s16 unk06;
+    /* 0x08 */ s16 colorCount;
+    /* 0x0A */ char unk0A[2];
+    /* 0x0C */ void *palette;
+    /* 0x10 */ void *data;
+} HmfAnimImage; // Size 0x14
 
 typedef struct HmfAnimSet {
     /* 0x00 */ s16 unk00;
@@ -425,7 +449,7 @@ typedef struct HmfAnimSet {
     /* 0x06 */ s16 interp;
     /* 0x08 */ s16 refCount;
     /* 0x0A */ char unk0A[2];
-    /* 0x0C */ void *unk0C;
+    /* 0x0C */ HmfAnimImage *unk0C;
     /* 0x10 */ HmfAnimRot *rot;
     /* 0x14 */ void *unk14;
 } HmfAnimSet; // Size 0x18

@@ -1239,7 +1239,7 @@ void func_80108F34_hyper_hydrants(omObjData *object) {
         HmfAnimRead(HmfModelData[model].hmf, 0xA008C, "c201n_00_DEF");
         func_8001C8A8_main(object->model[0], 1);
     } else {
-        func_80032694_main(HmfModelData[model].hmf, 0, 0, "c201n_00_DEF");
+        HmfAnimLink(HmfModelData[model].hmf, 0, 0, "c201n_00_DEF");
         func_8001C8A8_main(object->model[0], 2);
     }
     func_8001C448_main(model);
@@ -1385,7 +1385,7 @@ void func_80109588_hyper_hydrants(omObjData *object) {
     if (D_8010BF4C_hyper_hydrants == 0) {
         HmfAnimRead(HmfModelData[model].hmf, 0xA008C, "c201n_00_DEF");
     } else {
-        func_80032694_main(HmfModelData[model].hmf, 0, 0, "c201n_00_DEF");
+        HmfAnimLink(HmfModelData[model].hmf, 0, 0, "c201n_00_DEF");
     }
     func_8001C448_main(model);
     func_8001C514_main(model);

@@ -9,7 +9,7 @@ typedef struct {
         /* 0x0 */ long long ll;
         /* 0x0 */ double ld;
     } v;
-    /* 0x8 */ const char* s;
+    /* 0x8 */ char *s;
     /* 0xC */ int n0;
     /* 0x10 */ int nz0;
     /* 0x14 */ int n1;
@@ -28,10 +28,10 @@ typedef struct {
 #define FLAGS_MINUS 4
 #define FLAGS_HASH 8
 #define FLAGS_ZERO 16
-typedef char *outfun(char*,const char*,unsigned int);
+typedef char *outfun(char *, const char *, unsigned int);
 
 int _Printf(outfun prout, char *arg, const char *fmt, va_list args);
 void _Litob(_Pft *args, char type);
-void _Ldtob(_Pft* args, char type);
+void _Ldtob(_Pft *args, char type);
 
 #endif

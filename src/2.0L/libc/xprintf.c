@@ -159,7 +159,7 @@ static void _Putfld(_Pft *x, va_list *args, char type, char *buff) {
                 buff[x->n0++] = ' ';
             }
 
-            x->s = (const char *)&buff[x->n0];
+            x->s = &buff[x->n0];
 
             _Litob(x, type);
             break;
@@ -189,7 +189,7 @@ static void _Putfld(_Pft *x, va_list *args, char type, char *buff) {
                 }
             }
 
-            x->s =  (const char *)&buff[x->n0];
+            x->s = &buff[x->n0];
             _Litob(x, type);
             break;
         case 'e':
@@ -207,7 +207,7 @@ static void _Putfld(_Pft *x, va_list *args, char type, char *buff) {
             else if (x->flags & FLAGS_SPACE)
                 buff[x->n0++] = ' ';
 
-            x->s =  (const char *)&buff[x->n0];
+            x->s = &buff[x->n0];
             _Ldtob(x, type);
             break;
 
@@ -225,7 +225,7 @@ static void _Putfld(_Pft *x, va_list *args, char type, char *buff) {
             break;
         case 'p':
             x->v.ll = (long)va_arg(*args, void *);
-            x->s =  (const char *)&buff[x->n0];
+            x->s = &buff[x->n0];
             _Litob(x, 'x');
             break;
         case 's':

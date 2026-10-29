@@ -175,6 +175,11 @@ build/src/2.0L/n_audio/%.c.o: CPPFLAGS = -I include -I include/PR -I include/gcc
 build/src/8A6B0.c.o: OPTFLAGS = -O2 #Could also be -O3?
 build/src/2.0L/debug/threadprofile.c.o: OPTFLAGS = -O2
 build/src/2.0L/gu/%.c.o: OPTFLAGS = -O2
+build/src/2.0L/gu/%.c.o: NO_STRIP_NOP = 1
+build/src/2.0L/gu/lookat.c.o: OPTFLAGS = -O3
+build/src/2.0L/gu/perspective.c.o: OPTFLAGS = -O3
+build/src/2.0L/gu/rotate.c.o: OPTFLAGS = -O3
+build/src/2.0L/gu/rotaterpy.c.o: OPTFLAGS = -O3
 build/src/2.0L/io/ai.c.o: OPTFLAGS = -O2
 build/src/2.0L/io/aigetlen.c.o: OPTFLAGS = -O2
 build/src/2.0L/io/aisetfreq.c.o: OPTFLAGS = -O2
@@ -238,6 +243,8 @@ build/src/2.0L/libc/ldiv.c.o: OPTFLAGS = -O2
 build/src/2.0L/libc/sprintf.c.o: OPTFLAGS = -O2
 build/src/2.0L/libc/syncprintf.c.o: OPTFLAGS = -O2
 build/src/2.0L/libc/string.c.o: OPTFLAGS = -O2
+build/src/2.0L/libc/xldtob.c.o: OPTFLAGS = -O2
+build/src/2.0L/libc/xlitob.c.o: OPTFLAGS = -O2
 build/src/2.0L/libc/xprintf.c.o: OPTFLAGS = -O2
 build/src/2.0L/os/afterprenmi.c.o: OPTFLAGS = -O2
 build/src/2.0L/os/createthread.c.o: OPTFLAGS = -O2
@@ -298,6 +305,7 @@ $(IDO_OBJECTS): $(BUILD_DIR)/%.c.o: %.c
 #    .set    reorder
 #
 # By stripping the blank newline between the steps, functions with nop issues will match.
+# Objects that set NO_STRIP_NOP (e.g. libultra, not built with this pipeline originally) skip the strip.
 GCC_OBJECTS := $(sort $(filter-out $(IDO_OBJECTS),$(filter $(BUILD_DIR)/src/%.c.o,$(OBJECTS))))
 GCC_ASM     := $(GCC_OBJECTS:.o=.s)
 
@@ -310,7 +318,7 @@ $(GCC_ASM): $(BUILD_DIR)/%.c.s: %.c tools/strip_nop.py
 	@mkdir -p $(dir $@)
 	@$(CC_HOST) $(CFLAGS_CHECK) $(CPPFLAGS) -MMD -MP -MT $@ -MF $@.d $<
 	$(V)export COMPILER_PATH=tools/gcc_2.7.2/$(DETECTED_OS) && $(CC) $(OPTFLAGS) $(CFLAGS) $(CPPFLAGS) -S $< -o $@
-	$(V)$(PYTHON) tools/strip_nop.py $@ $(STRIP_NOP_FLAGS)
+	$(if $(NO_STRIP_NOP),,$(V)$(PYTHON) tools/strip_nop.py $@ $(STRIP_NOP_FLAGS))
 
 # .s -> .o (use strip to fix objects so that they can be linked with modern gnu ld)
 $(GCC_OBJECTS): $(BUILD_DIR)/%.c.o: $(BUILD_DIR)/%.c.s

@@ -178,7 +178,15 @@ build/src/2.0L/n_audio/n_reverb.c.o: NO_STRIP_NOP = 1
 build/src/2.0L/n_audio/%.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_MIPS_SZLONG=32 -D_LANGUAGE_C -DF3DEX_GBI -D__MIPSEB__ -Wa,--force-n64align
 build/src/2.0L/n_audio/%.c.o: CPPFLAGS = -I include -I include/PR -I include/gcc -I $(BUILD_DIR)/include -I src -DNDEBUG -D_MIPS_SZLONG=32 -DF3DEX_GBI_2
 build/src/8A6B0.c.o: OPTFLAGS = -O2 #Could also be -O3?
+build/src/2.0L/debug/kdebugserver.c.o: OPTFLAGS = -O3
+build/src/2.0L/debug/readhost.c.o: OPTFLAGS = -O2
 build/src/2.0L/debug/threadprofile.c.o: OPTFLAGS = -O2
+build/src/2.0L/rmon/%.c.o: OPTFLAGS = -O2
+build/src/2.0L/rmon/rmonbrk.c.o: OPTFLAGS = -O3
+build/src/2.0L/rmon/rmonmain.c.o: OPTFLAGS = -O3
+build/src/2.0L/rmon/rmonmem.c.o: OPTFLAGS = -O3
+build/src/2.0L/rmon/rmonregs.c.o: OPTFLAGS = -O3
+build/src/2.0L/rmon/rmontask.c.o: OPTFLAGS = -O3
 build/src/2.0L/gu/%.c.o: OPTFLAGS = -O2
 build/src/2.0L/gu/%.c.o: NO_STRIP_NOP = 1
 build/src/2.0L/gu/lookat.c.o: OPTFLAGS = -O3
@@ -276,8 +284,6 @@ build/src/2.0L/os/startthread.c.o: OPTFLAGS = -O2
 build/src/2.0L/os/timerintr.c.o: OPTFLAGS = -O2
 build/src/2.0L/os/virtualtophysical.c.o: OPTFLAGS = -O2
 build/src/2.0L/os/yieldthread.c.o: OPTFLAGS = -O2
-build/src/2.0L/rmon/rmonbrk.c.o: OPTFLAGS = -O2
-build/src/2.0L/rmon/rmonmem.c.o: OPTFLAGS = -O2
 build/src/88CF0.c.o: OPTFLAGS = -O2
 build/src/88CF0.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
 

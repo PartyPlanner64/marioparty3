@@ -1,52 +1,371 @@
 #include "common.h"
+#include "PR/os_internal.h"
+#include "PR/rcp.h"
+#include "rmonint.h"
+
+#define TMP_BP 0
+#define NUM_BREAKPOINTS 16
+#define FAULT_BREAKNUM (NUM_BREAKPOINTS - 1)
 
 typedef struct {
-    /* 0x00 */ s32 size; // 0x4C, also written by __rmonSendReply
-    /* 0x04 */ u8 unk_04;
-    /* 0x06 */ u16 unk_06;
-    /* 0x08 */ s32 unk_08;
-    /* 0x0C */ s32 unk_0C;
-    /* 0x10 */ u16 unk_10;
-    /* 0x12 */ u16 unk_12;
-    /* 0x14 */ s32 unk_14;
-    /* 0x18 */ s32 unk_18;
-    /* 0x1C */ s32 unk_1C;
-    /* 0x20 */ s32 unk_20;
-    /* 0x24 */ u16 unk_24;
-    /* 0x26 */ u16 unk_26;
-    /* 0x28 */ s32 unk_28;
-    /* 0x2C */ s32 unk_2C;
-    /* 0x30 */ s32 unk_30;
-} OSExceptionStatus; // size = 0x34, sent to the host by __rmonSendReply
+    u32 *breakAddress;
+    u32 oldInstruction;
+} BREAKINFO;
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/rmon/rmonbrk", __rmonSetBreak);
+/* first breakpoint is reserved for implementing single-stepping */
+extern BREAKINFO D_800C93D0_main[NUM_BREAKPOINTS]; // breakpoints
+/* breakpoint for alternate branch target */
+extern BREAKINFO D_800C9450_main;                  // altBreak
+extern BREAKINFO D_800C9458_main[NUM_BREAKPOINTS]; // RCPbreakpoints
 
-s32 __rmonListBreak(void *arg) {
+static void SetTempBreakpoint(u32 *addr1, u32 *addr2) {
+    /* Save the word at the target address to be restored later */
+    D_800C93D0_main[TMP_BP].oldInstruction = *addr1;
+    /* Install a break instruction at the target address */
+    *addr1 = MIPS_BREAK(16);
+    osWritebackDCache(addr1, sizeof(*addr1));
+    osInvalICache(addr1, sizeof(*addr1));
+    D_800C93D0_main[TMP_BP].breakAddress = addr1;
+
+    /* Also do so for an alt address if required */
+    if (addr2 != NULL) {
+        D_800C9450_main.oldInstruction = *addr2;
+        *addr2 = MIPS_BREAK(16);
+        osWritebackDCache(addr2, sizeof(*addr2));
+        osInvalICache(addr2, sizeof(*addr2));
+        D_800C9450_main.breakAddress = addr2;
+    }
+}
+
+static void ClearTempBreakpoint(void) {
+    u32 inst;
+
+    if (D_800C93D0_main[TMP_BP].breakAddress != NULL) {
+        inst = *D_800C93D0_main[TMP_BP].breakAddress;
+
+        if ((inst & MIPS_BREAK_MASK) == MIPS_BREAK_OPCODE) {
+            /* After confirming that there is a break instruction with code at the target
+                address, restore the original contents of the word at the target address  */
+            *D_800C93D0_main[TMP_BP].breakAddress = D_800C93D0_main[TMP_BP].oldInstruction;
+            osWritebackDCache(D_800C93D0_main[TMP_BP].breakAddress, sizeof(*D_800C93D0_main[TMP_BP].breakAddress));
+            osInvalICache(D_800C93D0_main[TMP_BP].breakAddress, sizeof(*D_800C93D0_main[TMP_BP].breakAddress));
+        }
+        D_800C93D0_main[TMP_BP].breakAddress = NULL;
+    }
+
+    /* Same as above for the alt breakpoint */
+    if (D_800C9450_main.breakAddress != NULL) {
+        inst = *D_800C9450_main.breakAddress;
+
+        if ((inst & MIPS_BREAK_MASK) == MIPS_BREAK_OPCODE) {
+            *D_800C9450_main.breakAddress = D_800C9450_main.oldInstruction;
+            osWritebackDCache(D_800C9450_main.breakAddress, sizeof(*D_800C9450_main.breakAddress));
+            osInvalICache(D_800C9450_main.breakAddress, sizeof(*D_800C9450_main.breakAddress));
+        }
+        D_800C9450_main.breakAddress = NULL;
+    }
+}
+
+int __rmonSetBreak(KKHeader *req) {
+    KKSetBkptRequest *request = (KKSetBkptRequest *)req;
+    BREAKINFO *breakBase;
+    BREAKINFO *whichBreak;
+    BREAKINFO *lastBreak;
+    KKBkptEvent reply;
+
+    /* Select breakpoint list */
+    if (req->method == RMON_RSP) {
+        breakBase = D_800C9458_main;
+        whichBreak = &D_800C9458_main[1];
+        lastBreak = &D_800C9458_main[NUM_BREAKPOINTS];
+    } else {
+        breakBase = D_800C93D0_main;
+        whichBreak = &D_800C93D0_main[1];
+        lastBreak = &D_800C93D0_main[NUM_BREAKPOINTS];
+    }
+
+    /* Find breakpoint slot */
+    for (; whichBreak < lastBreak; whichBreak++) {
+        if (whichBreak->breakAddress != NULL) {
+            if (whichBreak->breakAddress == (u32 *)request->addr) {
+                /* Breakpoint already set here */
+                break;
+            }
+            continue;
+        } else {
+            /* Empty slot */
+            break;
+        }
+    }
+
+    /* No D_800C93D0_main available */
+    if (whichBreak == lastBreak) {
+        return TV_ERROR_NO_MORE_IDS;
+    }
+
+    /* Set breakpoint if not already set */
+    if (whichBreak->breakAddress == NULL) {
+        if (req->method == RMON_RSP) {
+            whichBreak->oldInstruction = __rmonReadWordAt((u32 *)request->addr);
+            __rmonWriteWordTo((u32 *)request->addr, MIPS_BREAK((whichBreak - breakBase) + NUM_BREAKPOINTS));
+        } else {
+            whichBreak->oldInstruction = *(u32 *)request->addr;
+            *(u32 *)request->addr = MIPS_BREAK((whichBreak - breakBase) + NUM_BREAKPOINTS);
+            osWritebackDCache((void *)request->addr, sizeof(whichBreak->oldInstruction));
+            osInvalICache((void *)request->addr, sizeof(whichBreak->oldInstruction));
+        }
+        whichBreak->breakAddress = (u32 *)request->addr;
+    }
+
+    /* Send reply */
+    reply.header.code = request->header.code;
+    reply.header.error = TV_ERROR_NO_ERROR;
+    reply.object = request->object;
+    reply.bp = whichBreak - breakBase;
+    reply.instruction = whichBreak->oldInstruction;
+    __rmonSendReply(&reply.header, sizeof(reply), KK_TYPE_REPLY);
+    return TV_ERROR_NO_ERROR;
+}
+
+int __rmonListBreak(KKHeader *request) {
+    return TV_ERROR_ILLEGAL_CALL;
+}
+
+int __rmonClearBreak(KKHeader *req) {
+    KKClrBkptRequest *request = (KKClrBkptRequest *)req;
+    BREAKINFO *whichBreak;
+    KKBkptEvent reply;
+    u32 inst;
+
+    /* Check valid breakpoint index */
+    if (request->bp >= NUM_BREAKPOINTS) {
+        return TV_ERROR_INVALID_ID;
+    }
+
+    /* Clear the breakpoint, restore whatever was there before */
+    if (req->method == RMON_RSP) {
+        whichBreak = &D_800C9458_main[request->bp];
+
+        if (whichBreak->breakAddress == NULL) {
+            return TV_ERROR_INVALID_ID;
+        }
+
+        inst = __rmonReadWordAt(whichBreak->breakAddress);
+        if ((inst & MIPS_BREAK_MASK) == MIPS_BREAK_OPCODE) {
+            __rmonWriteWordTo(whichBreak->breakAddress, whichBreak->oldInstruction);
+        }
+    } else {
+        whichBreak = &D_800C93D0_main[request->bp];
+
+        if (whichBreak->breakAddress == NULL) {
+            return TV_ERROR_INVALID_ID;
+        }
+
+        inst = *whichBreak->breakAddress;
+        if ((inst & MIPS_BREAK_MASK) == MIPS_BREAK_OPCODE) {
+            *whichBreak->breakAddress = whichBreak->oldInstruction;
+            osWritebackDCache(whichBreak->breakAddress, sizeof(*whichBreak->breakAddress));
+            osInvalICache(whichBreak->breakAddress, sizeof(*whichBreak->breakAddress));
+        }
+    }
+    whichBreak->breakAddress = NULL;
+
+    /* Send reply */
+    reply.header.code = request->header.code;
+    reply.header.error = TV_ERROR_NO_ERROR;
+    reply.object = request->object;
+    reply.bp = request->bp;
+    __rmonSendReply(&reply.header, sizeof(reply), KK_TYPE_REPLY);
+    return TV_ERROR_NO_ERROR;
+}
+
+u32 __rmonGetBranchTarget(int method, int thread, char *addr) {
+    int inst;
+
+    if (method == RMON_RSP) {
+        inst = __rmonReadWordAt((u32 *)addr);
+    } else {
+        inst = *(u32 *)addr;
+    }
+
+    switch ((inst >> 26) & 0x3F) {
+        case 0: /* SPECIAL */
+            if (((inst >> 5) & 0x7FFF) == 0 && (inst & 0x3F) == 8) {
+                /* JR */
+                return __rmonGetRegisterContents(method, thread, (inst >> 21) & 0x1F);
+            }
+            if (((inst >> 16) & 0x1F) == 0 && (inst & 0x7FF) == 9) {
+                /* JALR */
+                return __rmonGetRegisterContents(method, thread, (inst >> 21) & 0x1F);
+            }
+            break;
+        case 1: /* REGIMM */
+            switch ((inst >> 16) & 0x1F) {
+                case 0:  /* BLTZ */
+                case 1:  /* BGEZ */
+                case 2:  /* BLTZL */
+                case 3:  /* BGEZL */
+                case 16: /* BLTZAL */
+                case 17: /* BGEZAL */
+                case 18: /* BLTZALL */
+                case 19: /* BGEZALL */
+                    return (u32)(((inst << 0x10) >> 0xE) + addr + 4);
+            }
+            break;
+        case 2: /* J */
+        case 3: /* JAL */
+            return (((u32)inst << 6) >> 4) + (((s32)((u32)addr + 4) >> 0x1C) << 0x1C);
+        case 4:  /* BEQ */
+        case 5:  /* BNE */
+        case 20: /* BEQL */
+        case 21: /* BNEL */
+            return (u32)(((inst << 0x10) >> 0xE) + addr + 4);
+        case 6:  /* BLEZ */
+        case 7:  /* BGTZ */
+        case 22: /* BLEZL */
+        case 23: /* BGTZL */
+            if (((inst >> 16) & 0x1F) == 0) {
+                return (u32)(((inst << 0x10) >> 0xE) + addr + 4);
+            }
+            break;
+        case 16: /* COP0 */
+        case 17: /* COP1 */
+        case 18: /* COP2 */
+        case 19: /* COP3 */
+            if (((inst >> 21) & 0x1F) == 8) {
+                switch ((inst >> 16) & 0x1F) {
+                    case 0: /* BCzF  */
+                    case 1: /* BCzT  */
+                    case 2: /* BCzFL */
+                    case 3: /* BCzTL */
+                        return (u32)(((inst << 0x10) >> 0xE) + addr + 4);
+                }
+            }
+            break;
+    }
     return -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/rmon/rmonbrk", __rmonClearBreak);
-
-INCLUDE_ASM("asm/nonmatchings/2.0L/rmon/rmonbrk", __rmonGetBranchTarget);
-
-INCLUDE_ASM("asm/nonmatchings/2.0L/rmon/rmonbrk", __rmonSetSingleStep);
-
-void __rmonGetExceptionStatus(OSExceptionStatus *es) {
-    es->unk_0C = 1;
-    es->unk_10 = 2;
-    es->unk_24 = 2;
-    es->unk_26 = 4;
-    es->unk_04 = 4;
-    es->unk_12 = 0;
-    es->unk_30 = 0;
-    es->unk_06 = 0;
-    es->size = 0x4C;
+static int IsJump(u32 inst) {
+    switch ((inst >> 26) & 0x3F) {
+        case 0: /* SPECIAL */
+            if (((inst >> 5) & 0x7FFF) == 0 && (inst & 0x3F) == 8) {
+                /* JR */
+                return TRUE;
+            }
+            if (((inst >> 16) & 0x1F) == 0 && (inst & 0x7FF) == 9) {
+                /* JALR */
+                return TRUE;
+            }
+            break;
+        case 2: /* J */
+        case 3: /* JAL */
+            return TRUE;
+    }
+    return FALSE;
 }
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/rmon/rmonbrk", __rmonHitBreak);
+int __rmonSetSingleStep(int thread, u32 *instptr) {
+    u32 branchTarget = __rmonGetBranchTarget(RMON_CPU, thread, (void *)instptr);
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/rmon/rmonbrk", __rmonHitSpBreak);
+    if ((branchTarget & 3) != 0) {
+        /* no branch target, set breakpoint at next pc */
+        SetTempBreakpoint(instptr + 1, NULL);
+    } else if (branchTarget == (u32)instptr) {
+        /* branch target is this instruction, can't single step here */
+        return FALSE;
+    } else if (IsJump(*instptr) || branchTarget == (u32)(instptr + 2)) {
+        /* unconditional branch, set at branch target */
+        SetTempBreakpoint((u32 *)branchTarget, NULL);
+    } else {
+        /* set two D_800C93D0_main for handling conditional branches */
+        SetTempBreakpoint((u32 *)branchTarget, instptr + 2);
+    }
+    return TRUE;
+}
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/rmon/rmonbrk", __rmonHitCpuFault);
+void __rmonGetExceptionStatus(KKStatusEvent *reply) {
+    reply->status.flags = OS_STATE_STOPPED;
+    reply->status.why = 2;
+    reply->status.what = 0;
+    reply->status.rv = 0;
+    reply->status.info.major = 2;
+    reply->status.info.minor = 4;
+    reply->header.code = KK_CODE_THREAD_STATUS;
+    reply->header.error = TV_ERROR_NO_ERROR;
+    reply->header.length = sizeof(*reply);
+}
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/rmon/rmonbrk", rmonFindFaultedThreads);
+static void rmonSendBreakMessage(s32 whichThread, int breakNumber) {
+    KKStatusEvent reply;
+
+    /* Build thread exception status */
+    __rmonGetThreadStatus(RMON_CPU, (whichThread != 0) ? whichThread : RMON_TID_NOTHREAD, &reply);
+    __rmonGetExceptionStatus(&reply);
+
+    if (breakNumber == FAULT_BREAKNUM) {
+        /* Hit fault */
+        reply.status.info.major = 1;
+        reply.status.info.minor = 2;
+    }
+    if (breakNumber < NUM_BREAKPOINTS) {
+        breakNumber = 0;
+    } else {
+        breakNumber -= NUM_BREAKPOINTS;
+    }
+    if (breakNumber != 0) {
+        /* Break not set by debugger, or set during single-step */
+        reply.status.instr = MIPS_BREAK_OPCODE;
+    }
+    __rmonSendReply(&reply.header, sizeof(reply), KK_TYPE_EXCEPTION);
+}
+
+void __rmonHitBreak(void) {
+    /* Stop all user threads and report faulted threads */
+    ClearTempBreakpoint();
+    __rmonStopUserThreads(0);
+    rmonFindFaultedThreads();
+}
+
+void __rmonHitSpBreak(void) {
+    KKStatusEvent exceptionReply;
+
+    /* Rewind RSP PC by one instruction to return to the location of the break instruction */
+    __rmonWriteWordTo((u32 *)SP_PC_REG, __rmonReadWordAt((u32 *)SP_PC_REG) - 4);
+
+    /* Report RSP break event */
+    __rmonGetThreadStatus(RMON_RSP, RMON_TID_RSP, &exceptionReply);
+    __rmonGetExceptionStatus(&exceptionReply);
+    __rmonSendReply(&exceptionReply.header, sizeof(exceptionReply), KK_TYPE_EXCEPTION);
+    D_800D6A5C_main = TRUE;
+}
+
+void __rmonHitCpuFault(void) {
+    /* Stop all user threads and report faulted threads */
+    __rmonMaskIdleThreadInts();
+    __rmonStopUserThreads(0);
+    rmonFindFaultedThreads();
+}
+
+void rmonFindFaultedThreads(void) {
+    OSThread *tptr = __osGetActiveQueue();
+
+    while (tptr->priority != -1) {
+        if (tptr->priority > OS_PRIORITY_IDLE && tptr->priority <= OS_PRIORITY_APPMAX) {
+            if (tptr->flags & OS_FLAG_CPU_BREAK) {
+                int inst = *(u32 *)tptr->context.pc;
+
+                if ((inst & MIPS_BREAK_MASK) == MIPS_BREAK_OPCODE) {
+                    rmonSendBreakMessage(tptr->id, inst >> 6);
+                } else {
+                    rmonSendBreakMessage(tptr->id, 0);
+                }
+            }
+            if (tptr->flags & OS_FLAG_FAULT) {
+                __rmonSendFault(tptr);
+                rmonSendBreakMessage(tptr->id, FAULT_BREAKNUM);
+            }
+        }
+        tptr = tptr->tlnext;
+    }
+}

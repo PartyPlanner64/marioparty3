@@ -168,7 +168,6 @@ extern s16 D_800CC0B4_main;
 extern Gfx D_800A1118_main[];
 extern u8 *D_800A114C_main[];
 
-void func_8007AB68_main(HuMtx4F, LookAt *, f32, f32, f32, f32, f32, f32, f32, f32, f32);
 void func_8002B2AC_main(HmfData_Unk84_Entry2 *, s16, s16);
 void func_8002CB6C_main(HmfData *, s16);
 void func_8002CDF4_main(HmfData *, s16);
@@ -2152,7 +2151,7 @@ void func_8002B104_main(HmfData *hmf, s16 objectIndex) {
         return;
     }
     gDPPipeSync(gMainGfxPos++);
-    func_8007AB68_main(mtx, &D_800CE20C_main->lookAt,
+    guLookAtReflect((Mtx *)mtx, &D_800CE20C_main->lookAt,
                        D_800D10F4_main->pos.x, D_800D10F4_main->pos.y, D_800D10F4_main->pos.z,
                        D_800D10F4_main->at.x, D_800D10F4_main->at.y, D_800D10F4_main->at.z,
                        D_800D10F4_main->up.x, D_800D10F4_main->up.y, D_800D10F4_main->up.z);

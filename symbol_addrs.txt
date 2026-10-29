@@ -242,6 +242,13 @@ HuSprGrpNum = 0x800D520C; //
 
 guLookAtHiliteF = 0x80079B90; //rom:0x7A790
 guLookAtHilite = 0x8007A514; //rom:0x7B114
+guLookAtReflectF = 0x8007A5F0; //rom:0x7B1F0
+guLookAtReflect = 0x8007AB68; //rom:0x7B768
+guRotateRPYF = 0x8007B210; //rom:0x7BE10
+guRotateRPY = 0x8007B398; //rom:0x7BF98
+guRotateF = 0x8007E0C0; //rom:0x7ECC0
+guRotate = 0x8007E220; //rom:0x7EE20
+__libm_qnan_f = 0x800A8700; //rom:0xA9300
 
 guMtxIdentF = 0x8007DCC0; //rom:0x7E8C0
 guMtxF2L = 0x8007DD20; //rom:0x7E920

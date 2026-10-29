@@ -1,12 +1,6 @@
 #include "common.h"
 #include "guint.h"
 
-#ifdef NON_MATCHING
-/*
- * The code matches, but P[0] (1.0) sits at 0x800A8520 inside the audio
- * synthesizer rodata symbol D_800A8518_main, so this file's rodata cannot be
- * emitted from C until that symbol is split and the cosf rodata starts there.
- */
 /* coefficients for polynomial approximation of cos on +/- pi/2 */
 static const du P[] = {
     { { 0x3FF00000, 0x00000000 } },
@@ -23,8 +17,6 @@ static const du pihi = { { 0x400921FB, 0x50000000 } };
 static const du pilo = { { 0x3E6110B4, 0x611A6263 } };
 
 static const fu zero = { 0x00000000 };
-
-extern float D_800A8700_main; // __libm_qnan_f
 
 float cosf(float x) {
     float absx;
@@ -63,11 +55,8 @@ float cosf(float x) {
     }
 
     if (x != x) {
-        return D_800A8700_main;
+        return __libm_qnan_f;
     }
 
     return zero.f;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/2.0L/gu/cosf", cosf);
-#endif

@@ -1,17 +1,14 @@
 #include "guint.h"
 #include "math.h"
 
-/* The static `dtor` of guRotateRPYF; the .data of this file is not split out yet. */
-extern float D_800A2D70_main;
-
-/* guRotateRPYF */
-void func_8007B210_main(float mf[4][4], float r, float p, float h) {
+void guRotateRPYF(float mf[4][4], float r, float p, float h) {
     float sinr, sinp, sinh;
     float cosr, cosp, cosh;
+    static float dtor = 3.1415926 / 180.0;
 
-    r *= D_800A2D70_main;
-    p *= D_800A2D70_main;
-    h *= D_800A2D70_main;
+    r *= dtor;
+    p *= dtor;
+    h *= dtor;
     sinr = sinf(r);
     cosr = cosf(r);
     sinp = sinf(p);
@@ -34,11 +31,10 @@ void func_8007B210_main(float mf[4][4], float r, float p, float h) {
     mf[2][2] = cosr * cosp;
 }
 
-/* guRotateRPY */
-void func_8007B398_main(Mtx *m, float r, float p, float h) {
+void guRotateRPY(Mtx *m, float r, float p, float h) {
     Matrix mf;
 
-    func_8007B210_main(mf, r, p, h);
+    guRotateRPYF(mf, r, p, h);
 
     guMtxF2L(mf, m);
 }

@@ -9,13 +9,9 @@
 static const f64 TIME_SCALE;
 static const f64 TIME_ROUNDING;
 
-/*
- * The micros-to-frames conversion below works on its own copy of the scale
- * factor, and adds the 0.5 rounding constant that is still assembled in from
- * the original rodata at the bottom of this file.
- */
+/* The micros-to-frames conversion below works on its own copies of the factors. */
 static const f64 FRAMES_TIME_SCALE;
-extern f64 D_800A8518_main;
+static const f64 FRAMES_TIME_ROUNDING;
 
 INCLUDE_ASM("asm/nonmatchings/2.0L/audio/synthesizer", alSynNew);
 
@@ -66,12 +62,13 @@ static const f64 TIME_ROUNDING = 0.5;
 /* Like the conversion above, but the frames are always played back in groups of
  * 16, so the frame count is rounded down to a multiple of 16. */
 s32 func_8007837C_main(ALSynth *drvr, s32 micros) {
-    f32 frames = (f32)micros * drvr->outputRate / FRAMES_TIME_SCALE + D_800A8518_main;
+    f32 frames = (f32)micros * drvr->outputRate / FRAMES_TIME_SCALE + FRAMES_TIME_ROUNDING;
 
     return (s32)frames & ~0xF;
 }
 
 static const f64 FRAMES_TIME_SCALE = 1000000.0;
+static const f64 FRAMES_TIME_ROUNDING = 0.5;
 
 /* Finds the client whose frame is due soonest, relative to the current sample
  * position, and returns the sample count that client is now scheduled for. */
@@ -89,5 +86,3 @@ s32 func_800783C8_main(ALSynth *drvr, ALPlayer **client) {
 
     return (*client)->samplesLeft;
 }
-
-INCLUDE_RODATA("asm/nonmatchings/2.0L/audio/synthesizer", D_800A8518_main);

@@ -5,9 +5,8 @@
 
 #define BUFF_LEN 0x18
 
-/* ldigs and udigs; the .data of this file is not split out yet. */
-extern char D_800A4210_main[];
-extern char D_800A4224_main[];
+static char ldigs[] = "0123456789abcdef";
+static char udigs[] = "0123456789ABCDEF";
 
 void _Litob(_Pft *args, char type) {
     char buff[BUFF_LEN];
@@ -16,7 +15,7 @@ void _Litob(_Pft *args, char type) {
     int i;
     unsigned long long ullval;
 
-    digs = (type == 'X') ? D_800A4224_main : D_800A4210_main;
+    digs = (type == 'X') ? udigs : ldigs;
 
     base = (type == 'o') ? 8 : ((type != 'x' && type != 'X') ? 10 : 16);
     i = BUFF_LEN;

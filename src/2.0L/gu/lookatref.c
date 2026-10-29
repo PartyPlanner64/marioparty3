@@ -1,7 +1,6 @@
 #include "guint.h"
 
-/* guLookAtReflectF */
-void func_8007A5F0_main(float mf[4][4], LookAt *l, float xEye, float yEye, float zEye, float xAt, float yAt, float zAt,
+void guLookAtReflectF(float mf[4][4], LookAt *l, float xEye, float yEye, float zEye, float xAt, float yAt, float zAt,
                         float xUp, float yUp, float zUp) {
     float len, xLook, yLook, zLook, xRight, yRight, zRight;
 
@@ -80,12 +79,11 @@ void func_8007A5F0_main(float mf[4][4], LookAt *l, float xEye, float yEye, float
     mf[3][3] = 1;
 }
 
-/* guLookAtReflect */
-void func_8007AB68_main(Mtx *m, LookAt *l, float xEye, float yEye, float zEye, float xAt, float yAt, float zAt, float xUp,
+void guLookAtReflect(Mtx *m, LookAt *l, float xEye, float yEye, float zEye, float xAt, float yAt, float zAt, float xUp,
                         float yUp, float zUp) {
     float mf[4][4];
 
-    func_8007A5F0_main(mf, l, xEye, yEye, zEye, xAt, yAt, zAt, xUp, yUp, zUp);
+    guLookAtReflectF(mf, l, xEye, yEye, zEye, xAt, yAt, zAt, xUp, yUp, zUp);
 
     guMtxF2L(mf, m);
 }

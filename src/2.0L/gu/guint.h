@@ -19,6 +19,8 @@ typedef union {
 
 typedef float Matrix[4][4];
 
+extern float __libm_qnan_f;
+
 #define ROUND(d) (int)(((d) >= 0.0) ? ((d) + 0.5) : ((d) - 0.5))
 #define ABS(d) ((d) > 0) ? (d) : -(d)
 

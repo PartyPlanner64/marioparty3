@@ -17,8 +17,6 @@ static const du pilo = { { 0x3E6110B4, 0x611A6263 } };
 
 static const fu zero = { 0x00000000 };
 
-extern float D_800A8700_main; // __libm_qnan_f
-
 float sinf(float x) {
     double dx, xsq, poly;
     double dn;
@@ -64,7 +62,7 @@ float sinf(float x) {
     }
 
     if (x != x) {
-        return D_800A8700_main;
+        return __libm_qnan_f;
     }
 
     return zero.f;

@@ -1,18 +1,15 @@
 #include "guint.h"
 #include "math.h"
 
-/* The static `dtor` of guRotateF; the .data of this file is not split out yet. */
-extern float D_800A3F80_main;
-
-/* guRotateF */
-void func_8007E0C0_main(float mf[4][4], float a, float x, float y, float z) {
+void guRotateF(float mf[4][4], float a, float x, float y, float z) {
     float sine;
     float cosine;
     float ab, bc, ca, t;
     float xs, ys, zs;
+    static float dtor = 3.1415926 / 180.0;
 
     guNormalize(&x, &y, &z);
-    a *= D_800A3F80_main;
+    a *= dtor;
     sine = sinf(a);
     cosine = cosf(a);
     t = (1 - cosine);
@@ -42,11 +39,10 @@ void func_8007E0C0_main(float mf[4][4], float a, float x, float y, float z) {
     mf[0][1] = ab + zs;
 }
 
-/* guRotate */
-void func_8007E220_main(Mtx *m, float a, float x, float y, float z) {
+void guRotate(Mtx *m, float a, float x, float y, float z) {
     Matrix mf;
 
-    func_8007E0C0_main(mf, a, x, y, z);
+    guRotateF(mf, a, x, y, z);
 
     guMtxF2L(mf, m);
 }

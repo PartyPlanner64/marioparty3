@@ -169,6 +169,9 @@ build/src/lib/hvq.c.o: CFLAGS += -Wa,--force-n64align
 build/src/2.0L/audio/%.c.o: OPTFLAGS = -O2
 build/src/2.0L/audio/%.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_MIPS_SZLONG=32 -D_LANGUAGE_C -DF3DEX_GBI -D__MIPSEB__ -Wa,--force-n64align
 build/src/2.0L/audio/%.c.o: CPPFLAGS = -I include -I include/PR -I include/gcc -I $(BUILD_DIR)/include -I src -DNDEBUG -D_MIPS_SZLONG=32 -DF3DEX_GBI_2
+build/src/2.0L/audio/cseq.c.o: OPTFLAGS = -O3
+build/src/2.0L/audio/env.c.o: OPTFLAGS = -O3
+build/src/2.0L/audio/drvrnew.c.o: OPTFLAGS = -O3
 build/src/2.0L/n_audio/%.c.o: OPTFLAGS = -O2
 build/src/2.0L/n_audio/%.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_MIPS_SZLONG=32 -D_LANGUAGE_C -DF3DEX_GBI -D__MIPSEB__ -Wa,--force-n64align
 build/src/2.0L/n_audio/%.c.o: CPPFLAGS = -I include -I include/PR -I include/gcc -I $(BUILD_DIR)/include -I src -DNDEBUG -D_MIPS_SZLONG=32 -DF3DEX_GBI_2

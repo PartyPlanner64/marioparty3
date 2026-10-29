@@ -1,40 +1,41 @@
 #include "common.h"
+#include "PR/synthInternals.h"
 
-/* Filter message id that appends a bus to this bus's chain. alSynNew uses it to
- * attach the synth's aux bus array to the main bus. */
-enum {
-    AL_FILTER_ADD_OUTBUS = 2
-};
+/* alMainBusPull */
+Acmd *func_80075B20_main(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p) {
+    Acmd *ptr = p;
+    ALMainBus *m = (ALMainBus *)filter;
+    ALFilter **sources = m->sources;
+    s32 i;
 
-/* Filter header installed at the front of every filter by func_80075B00_main. */
-typedef struct ALFilter_s {
-    struct ALFilter_s *source;
-    Acmd *(*handler)(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *cmdList);
-    s32 (*setParam)(void *filter, s32 paramID, void *param);
-    /* 0x0C */ s16 inp;
-    /* 0x0E */ s16 outp;
-    /* 0x10 */ s32 type;
-} ALFilter;
+    /*
+     * clear the output buffers here
+     */
+    aClearBuffer(ptr++, AL_MAIN_L_OUT, outCount << 1);
+    aClearBuffer(ptr++, AL_MAIN_R_OUT, outCount << 1);
 
-/* The main bus, set up past its filter header by func_80073B6C_main. Its pull
- * handler walks outBus for the first inBus entries. */
-typedef struct N_ALMainBus_s {
-    /* 0x00 */ ALFilter filter;
-    /* 0x14 */ s32 inBus; /* number of busses in outBus */
-    /* 0x18 */ s32 maxAuxBusses;
-    /* 0x1C */ struct ALFilter_s **outBus;
-} N_ALMainBus;
+    for (i = 0; i < m->sourceCount; i++) {
+        ptr = (sources[i]->handler)(sources[i], outp, outCount, sampleOffset, ptr);
+        aSetBuffer(ptr++, 0, 0, 0, outCount << 1);
+        aMix(ptr++, 0, 0x7FFF, AL_AUX_L_OUT, AL_MAIN_L_OUT);
+        aMix(ptr++, 0, 0x7FFF, AL_AUX_R_OUT, AL_MAIN_R_OUT);
+    }
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/audio/mainbus", func_80075B20_main);
+    return ptr;
+}
 
-s32 func_80075C60_main(N_ALMainBus *mainBus, s32 paramID, struct ALFilter_s *param) {
-    struct ALFilter_s **outBus = mainBus->outBus;
+/* alMainBusParam */
+s32 func_80075C60_main(void *filter, s32 paramID, void *param) {
+    ALMainBus *m = (ALMainBus *)filter;
+    ALFilter **sources = m->sources;
 
-    if (paramID == AL_FILTER_ADD_OUTBUS) {
-        s32 inBus = mainBus->inBus;
+    switch (paramID) {
+        case AL_FILTER_ADD_SOURCE:
+            sources[m->sourceCount++] = (ALFilter *)param;
+            break;
 
-        mainBus->inBus = inBus + 1;
-        outBus[inBus] = param;
+        default:
+            break;
     }
 
     return 0;

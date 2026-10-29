@@ -1,5 +1,10 @@
 #include "common.h"
 
+void _bnkfPatchBank(ALBank *bank, s32 offset, s32 table);
+void _bnkfPatchInst(ALInstrument *inst, s32 offset, s32 table);
+void _bnkfPatchSound(ALSound *s, s32 offset, s32 table);
+void _bnkfPatchWaveTable(ALWaveTable *w, s32 offset, s32 table);
+
 void alSeqFileNew(ALSeqFile *f, u8 *base) {
     int i;
 
@@ -8,28 +13,96 @@ void alSeqFileNew(ALSeqFile *f, u8 *base) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/audio/bnkf", alBnkfNew);
+void alBnkfNew(ALBankFile *file, u8 *table) {
+    s32 offset = (s32)file;
+    s32 woffset = (s32)table;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/audio/bnkf", _bnkfPatchBank);
+    /*
+     * check the file format revision in debug libraries
+     */
+    ALFailIf(file->revision != AL_BANK_VERSION, ERR_ALBNKFNEW);
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/audio/bnkf", _bnkfPatchInst);
+    /*
+     * patch the file so that offsets are pointers
+     */
+    for (i = 0; i < file->bankCount; i++) {
+        file->bankArray[i] = (ALBank *)((u8 *)file->bankArray[i] + offset);
+        if (file->bankArray[i]) {
+            _bnkfPatchBank(file->bankArray[i], offset, woffset);
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/audio/bnkf", _bnkfPatchSound);
+void _bnkfPatchBank(ALBank *bank, s32 offset, s32 table) {
+    s32 i;
 
-void _bnkfPatchWaveTable(ALWaveTable *table, u32 start, u32 end) {
-    if (table->flags == 0) {
-        table->flags = 1;
-        table->base += end;
+    if (bank->flags) {
+        return;
+    }
 
-        if (table->type == AL_ADPCM_WAVE) {
-            table->waveInfo.adpcmWave.book = (ALADPCMBook *)((u8 *)table->waveInfo.adpcmWave.book + start);
-            if (table->waveInfo.adpcmWave.loop != NULL) {
-                table->waveInfo.adpcmWave.loop = (ALADPCMloop *)((u8 *)table->waveInfo.adpcmWave.loop + start);
-            }
-        } else if (table->type == AL_RAW16_WAVE) {
-            if (table->waveInfo.rawWave.loop != NULL) {
-                table->waveInfo.rawWave.loop = (ALRawLoop *)((u8 *)table->waveInfo.rawWave.loop + start);
-            }
+    bank->flags = 1;
+
+    if (bank->percussion) {
+        bank->percussion = (ALInstrument *)((u8 *)bank->percussion + offset);
+        _bnkfPatchInst(bank->percussion, offset, table);
+    }
+
+    for (i = 0; i < bank->instCount; i++) {
+        bank->instArray[i] = (ALInstrument *)((u8 *)bank->instArray[i] + offset);
+        if (bank->instArray[i]) {
+            _bnkfPatchInst(bank->instArray[i], offset, table);
+        }
+    }
+}
+
+void _bnkfPatchInst(ALInstrument *inst, s32 offset, s32 table) {
+    s32 i;
+
+    if (inst->flags) {
+        return;
+    }
+
+    inst->flags = 1;
+
+    for (i = 0; i < inst->soundCount; i++) {
+        inst->soundArray[i] = (ALSound *)((u8 *)inst->soundArray[i] + offset);
+        _bnkfPatchSound(inst->soundArray[i], offset, table);
+    }
+}
+
+void _bnkfPatchSound(ALSound *s, s32 offset, s32 table) {
+    if (s->flags) {
+        return;
+    }
+
+    s->flags = 1;
+
+    s->envelope = (ALEnvelope *)((u8 *)s->envelope + offset);
+    s->keyMap = (ALKeyMap *)((u8 *)s->keyMap + offset);
+
+    s->wavetable = (ALWaveTable *)((u8 *)s->wavetable + offset);
+    _bnkfPatchWaveTable(s->wavetable, offset, table);
+}
+
+void _bnkfPatchWaveTable(ALWaveTable *w, s32 offset, s32 table) {
+    if (w->flags) {
+        return;
+    }
+
+    w->flags = 1;
+
+    w->base += table;
+
+    /* patch wavetable loop info based on type. */
+    if (w->type == AL_ADPCM_WAVE) {
+        w->waveInfo.adpcmWave.book = (ALADPCMBook *)((u8 *)w->waveInfo.adpcmWave.book + offset);
+        if (w->waveInfo.adpcmWave.loop) {
+            w->waveInfo.adpcmWave.loop = (ALADPCMloop *)((u8 *)w->waveInfo.adpcmWave.loop + offset);
+        }
+    } else if (w->type == AL_RAW16_WAVE) {
+        if (w->waveInfo.rawWave.loop) {
+            w->waveInfo.rawWave.loop = (ALRawLoop *)((u8 *)w->waveInfo.rawWave.loop + offset);
         }
     }
 }

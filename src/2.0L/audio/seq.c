@@ -99,7 +99,7 @@ void alSeqNextEvent(ALSeq *seq, ALEvent *event) {
     }
 }
 
-s32 __alSeqNextDelta(ALSeq *seq, s32 *pDeltaTicks) {
+char __alSeqNextDelta(ALSeq *seq, s32 *pDeltaTicks) {
     u8 *savedPtr;
 
     if (seq->curPtr >= seq->base + seq->len) {

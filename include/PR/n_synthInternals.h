@@ -151,8 +151,53 @@ typedef struct N_ALMainBus_s {
     /* 0x00 */ N_ALFilter filter;
 } N_ALMainBus;
 
+typedef struct N_ALResampler_s {
+    /* 0x00 */ N_ALFilter filter;
+    /* 0x14 */ RESAMPLE_STATE *state;
+    /* 0x18 */ f32 ratio;
+    /* 0x1C */ s32 upitch;
+    /* 0x20 */ f32 delta;
+    /* 0x24 */ s32 first;
+    /* 0x28 */ ALParam *ctrlList;
+    /* 0x2C */ ALParam *ctrlTail;
+    /* 0x30 */ s32 motion;
+} N_ALResampler; // size 0x34
+
+typedef struct {
+    /* 0x00 */ s16 fc;
+    /* 0x02 */ s16 fgain;
+    /* 0x08 */ union {
+        s16 fccoef[16];
+        s64 force_aligned;
+    } fcvec;
+    /* 0x28 */ POLEF_STATE *fstate;
+    /* 0x2C */ s32 first;
+} N_ALLowPass; // size 0x30
+
+typedef struct {
+    /* 0x00 */ u32 input;
+    /* 0x04 */ u32 output;
+    /* 0x08 */ s16 ffcoef;
+    /* 0x0A */ s16 fbcoef;
+    /* 0x0C */ s16 gain;
+    /* 0x10 */ f32 rsinc;
+    /* 0x14 */ f32 rsval;
+    /* 0x18 */ s32 rsdelta;
+    /* 0x1C */ f32 rsgain;
+    /* 0x20 */ N_ALLowPass *lp;
+    /* 0x24 */ N_ALResampler *rs;
+} N_ALDelay; // size 0x28
+
 /* Effect (reverb) state. */
-typedef struct N_ALFx_s N_ALFx;
+typedef struct N_ALFx_s {
+    /* 0x00 */ N_ALFilter filter;
+    /* 0x14 */ s16 *base;
+    /* 0x18 */ s16 *input;
+    /* 0x1C */ u32 length;
+    /* 0x20 */ N_ALDelay *delay;
+    /* 0x24 */ u8 section_count;
+    /* 0x28 */ s32 (*paramHdl)(void *, s32, void *);
+} N_ALFx; // size 0x2C
 
 typedef struct N_ALAuxBus_s {
     /* 0x00 */ N_ALFilter filter;
@@ -220,9 +265,10 @@ s32 _n_timeToSamplesNoRound(s32 micros);
 s32 _n_timeToSamples(s32 micros);
 
 /*
- * Pan update routine. MP3 links its own version of n_alSynSetPan outside of
- * the library (src/67000.c).
+ * MP3 links its own versions of n_alSynStartVoiceParams (src/66E70.c) and
+ * n_alSynSetPan (src/67000.c) outside of the library.
  */
+void func_80066270_main(N_ALVoice *v, ALWaveTable *w, f32 pitch, s16 vol, ALPan pan, u8 fxmix, ALMicroTime t);
 void func_80066400_main(N_ALVoice *v, u8 pan);
 
 void n_alLoadParam(N_PVoice *filter, s32 paramID, void *param);
@@ -238,5 +284,8 @@ Acmd *n_alAuxBusPull(s32 sampleOffset, Acmd *p);
 Acmd *n_alFxPull(s32 sampleOffset, Acmd *p);
 void n_alFxNew(N_ALFx **fx_ar, ALSynConfig *c, ALHeap *hp);
 void alN_PVoiceNew(N_PVoice *mv, ALDMANew dmaNew, ALHeap *hp);
+
+/* Shared with the standard library (src/2.0L/audio/drvrnew.c). */
+void init_lpfilter(N_ALLowPass *lp);
 
 #endif

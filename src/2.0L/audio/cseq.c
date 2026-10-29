@@ -61,7 +61,7 @@ void alCSeqNextEvent(ALCSeq *seq, ALEvent *evt) {
     seq->deltaFlag = 1;
 }
 
-s32 __alCSeqNextDelta(ALCSeq *seq, s32 *pDeltaTicks) {
+char __alCSeqNextDelta(ALCSeq *seq, s32 *pDeltaTicks) {
     s32 minTicks;
     u32 i;
     u32 lastDeltaTicks;

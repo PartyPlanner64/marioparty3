@@ -39,7 +39,7 @@ int __rmonReadMem(KKHeader *req) {
     int sent;
     int dataSize;
     KKReadRequest *request = (KKReadRequest *)req;
-    KKBufferEvent *reply = (KKBufferEvent *)D_800D1250_main;
+    KKBufferEvent *reply = (KKBufferEvent *)__rmonUtilityBuffer;
     u8 *blockStart;
 
     reply->header.code = request->header.code;
@@ -158,7 +158,7 @@ int __rmonLoadProgram(KKHeader *request) {
 
 int __rmonGetExeName(KKHeader *req) {
     KKObjectRequest *request = (KKObjectRequest *)req;
-    KKBufferEvent *reply = (KKBufferEvent *)D_800D1250_main;
+    KKBufferEvent *reply = (KKBufferEvent *)__rmonUtilityBuffer;
 
     reply->header.code = request->header.code;
     reply->header.error = TV_ERROR_NO_ERROR;
@@ -191,7 +191,7 @@ int __rmonGetRegionCount(KKHeader *req) {
 
 int __rmonGetRegions(KKHeader *req) {
     KKObjectRequest *request = (KKObjectRequest *)req;
-    KKRegionEvent *reply = (KKRegionEvent *)D_800D1250_main;
+    KKRegionEvent *reply = (KKRegionEvent *)__rmonUtilityBuffer;
     int numRegions;
 
     numRegions = (req->method == RMON_RSP) ? 2 : 6;

@@ -3,8 +3,8 @@
 #include "PR/rdb.h"
 #include "rmonint.h"
 
-extern OSMesgQueue D_800C4D00_main; // IOmq
-extern OSMesg D_800C4D18_main;      // IOmsgs
+static OSMesgQueue IOmq;
+static OSMesg IOmsgs;
 
 void __rmonSendFault(OSThread *thread) {
     volatile float f;
@@ -42,15 +42,15 @@ void __rmonIOhandler(void) {
     int sent;
     char tstr[4];
 
-    osCreateMesgQueue(&D_800C4D00_main, &D_800C4D18_main, 1);
-    osSetEventMesg(OS_EVENT_RDB_DBG_DONE, &D_800C4D00_main, NULL);
-    D_800C9948_main = D_800D1720_main;
+    osCreateMesgQueue(&IOmq, &IOmsgs, 1);
+    osSetEventMesg(OS_EVENT_RDB_DBG_DONE, &IOmq, NULL);
+    __osRdb_DbgRead_Buf = rmonRdbReadBuf;
 
     while (TRUE) {
-        osRecvMesg(&D_800C4D00_main, NULL, OS_MESG_BLOCK);
+        osRecvMesg(&IOmq, NULL, OS_MESG_BLOCK);
 
-        __rmonExecute((KKHeader *)D_800D1720_main);
-        D_800C9948_main = D_800D1720_main;
+        __rmonExecute((KKHeader *)rmonRdbReadBuf);
+        __osRdb_DbgRead_Buf = rmonRdbReadBuf;
 
         sent = 0;
         while (sent <= 0) {

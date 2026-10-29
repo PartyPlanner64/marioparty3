@@ -658,6 +658,41 @@ __rmonHitSpBreak = 0x80087580;
 __rmonHitCpuFault = 0x8008760C;
 rmonFindFaultedThreads = 0x80087638;
 
+// libultra debug/host/rmon data
+numChars = 0x800A4020; // size:0x4
+readHostInitialized = 0x800A4040; // size:0x4
+dispatchTable = 0x800A4240; // size:0xD8
+__rmonActive = 0x800A4320; // size:0x4
+buffer = 0x800C4CC0; // size:0xC
+readHostMesgQueue = 0x800C4CD0; // size:0x18
+readHostMesgBuf = 0x800C4CE8; // size:0x4
+IOmq = 0x800C4D00; // size:0x18
+IOmsgs = 0x800C4D18; // size:0x4
+rmonIOThread = 0x800C4D20; // size:0x1B0
+rmonMsgs = 0x800C4ED0; // size:0x20
+rmonIOStack = 0x800C4EF0; // size:0x4000
+rmonPiMsgs = 0x800C8EF0; // size:0x20
+rmonPiMQ = 0x800C8F10; // size:0x18
+RCPpc = 0x800C8F30; // size:0x4
+oldIMEMvalue = 0x800C8F34; // size:0x4
+DMEMbuffer = 0x800C8F38; // size:0x10
+somethingToDo = 0x800C8F50; // size:0x4
+inbuffer = 0x800C8F60; // size:0x460
+cmdinptr = 0x800C93C0; // size:0x1
+cmdoutptr = 0x800C93C1; // size:0x1
+state = 0x800C93C4; // size:0x4
+inPointer = 0x800C93C8; // size:0x4
+breakpoints = 0x800C93D0; // size:0x80
+altBreak = 0x800C9450; // size:0x8
+RCPbreakpoints = 0x800C9458; // size:0x80
+__osRdb_DbgRead_Buf = 0x800C9948; // size:0x4
+__osRdb_Read_Data_Ct = 0x800CDA78; // size:0x4
+__rmonUtilityBuffer = 0x800D1250; // size:0x100
+rmonRdbReadBuf = 0x800D1720; // size:0x800
+__osRdb_Read_Data_Buf = 0x800D5200; // size:0x4
+__rmonRcpAtBreak = 0x800D6A5C; // size:0x1
+__rmonMQ = 0x800D6A60; // size:0x18
+
 sqrt = 0x80087B10; //rom:0x88710
 kmc_sqrtf = 0x80087B18; //rom:0x88718
 

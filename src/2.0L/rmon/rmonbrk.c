@@ -13,56 +13,56 @@ typedef struct {
 } BREAKINFO;
 
 /* first breakpoint is reserved for implementing single-stepping */
-extern BREAKINFO D_800C93D0_main[NUM_BREAKPOINTS]; // breakpoints
+static BREAKINFO breakpoints[NUM_BREAKPOINTS];
 /* breakpoint for alternate branch target */
-extern BREAKINFO D_800C9450_main;                  // altBreak
-extern BREAKINFO D_800C9458_main[NUM_BREAKPOINTS]; // RCPbreakpoints
+static BREAKINFO altBreak;
+static BREAKINFO RCPbreakpoints[NUM_BREAKPOINTS];
 
 static void SetTempBreakpoint(u32 *addr1, u32 *addr2) {
     /* Save the word at the target address to be restored later */
-    D_800C93D0_main[TMP_BP].oldInstruction = *addr1;
+    breakpoints[TMP_BP].oldInstruction = *addr1;
     /* Install a break instruction at the target address */
     *addr1 = MIPS_BREAK(16);
     osWritebackDCache(addr1, sizeof(*addr1));
     osInvalICache(addr1, sizeof(*addr1));
-    D_800C93D0_main[TMP_BP].breakAddress = addr1;
+    breakpoints[TMP_BP].breakAddress = addr1;
 
     /* Also do so for an alt address if required */
     if (addr2 != NULL) {
-        D_800C9450_main.oldInstruction = *addr2;
+        altBreak.oldInstruction = *addr2;
         *addr2 = MIPS_BREAK(16);
         osWritebackDCache(addr2, sizeof(*addr2));
         osInvalICache(addr2, sizeof(*addr2));
-        D_800C9450_main.breakAddress = addr2;
+        altBreak.breakAddress = addr2;
     }
 }
 
 static void ClearTempBreakpoint(void) {
     u32 inst;
 
-    if (D_800C93D0_main[TMP_BP].breakAddress != NULL) {
-        inst = *D_800C93D0_main[TMP_BP].breakAddress;
+    if (breakpoints[TMP_BP].breakAddress != NULL) {
+        inst = *breakpoints[TMP_BP].breakAddress;
 
         if ((inst & MIPS_BREAK_MASK) == MIPS_BREAK_OPCODE) {
             /* After confirming that there is a break instruction with code at the target
                 address, restore the original contents of the word at the target address  */
-            *D_800C93D0_main[TMP_BP].breakAddress = D_800C93D0_main[TMP_BP].oldInstruction;
-            osWritebackDCache(D_800C93D0_main[TMP_BP].breakAddress, sizeof(*D_800C93D0_main[TMP_BP].breakAddress));
-            osInvalICache(D_800C93D0_main[TMP_BP].breakAddress, sizeof(*D_800C93D0_main[TMP_BP].breakAddress));
+            *breakpoints[TMP_BP].breakAddress = breakpoints[TMP_BP].oldInstruction;
+            osWritebackDCache(breakpoints[TMP_BP].breakAddress, sizeof(*breakpoints[TMP_BP].breakAddress));
+            osInvalICache(breakpoints[TMP_BP].breakAddress, sizeof(*breakpoints[TMP_BP].breakAddress));
         }
-        D_800C93D0_main[TMP_BP].breakAddress = NULL;
+        breakpoints[TMP_BP].breakAddress = NULL;
     }
 
     /* Same as above for the alt breakpoint */
-    if (D_800C9450_main.breakAddress != NULL) {
-        inst = *D_800C9450_main.breakAddress;
+    if (altBreak.breakAddress != NULL) {
+        inst = *altBreak.breakAddress;
 
         if ((inst & MIPS_BREAK_MASK) == MIPS_BREAK_OPCODE) {
-            *D_800C9450_main.breakAddress = D_800C9450_main.oldInstruction;
-            osWritebackDCache(D_800C9450_main.breakAddress, sizeof(*D_800C9450_main.breakAddress));
-            osInvalICache(D_800C9450_main.breakAddress, sizeof(*D_800C9450_main.breakAddress));
+            *altBreak.breakAddress = altBreak.oldInstruction;
+            osWritebackDCache(altBreak.breakAddress, sizeof(*altBreak.breakAddress));
+            osInvalICache(altBreak.breakAddress, sizeof(*altBreak.breakAddress));
         }
-        D_800C9450_main.breakAddress = NULL;
+        altBreak.breakAddress = NULL;
     }
 }
 
@@ -75,13 +75,13 @@ int __rmonSetBreak(KKHeader *req) {
 
     /* Select breakpoint list */
     if (req->method == RMON_RSP) {
-        breakBase = D_800C9458_main;
-        whichBreak = &D_800C9458_main[1];
-        lastBreak = &D_800C9458_main[NUM_BREAKPOINTS];
+        breakBase = RCPbreakpoints;
+        whichBreak = &RCPbreakpoints[1];
+        lastBreak = &RCPbreakpoints[NUM_BREAKPOINTS];
     } else {
-        breakBase = D_800C93D0_main;
-        whichBreak = &D_800C93D0_main[1];
-        lastBreak = &D_800C93D0_main[NUM_BREAKPOINTS];
+        breakBase = breakpoints;
+        whichBreak = &breakpoints[1];
+        lastBreak = &breakpoints[NUM_BREAKPOINTS];
     }
 
     /* Find breakpoint slot */
@@ -98,7 +98,7 @@ int __rmonSetBreak(KKHeader *req) {
         }
     }
 
-    /* No D_800C93D0_main available */
+    /* No breakpoints available */
     if (whichBreak == lastBreak) {
         return TV_ERROR_NO_MORE_IDS;
     }
@@ -144,7 +144,7 @@ int __rmonClearBreak(KKHeader *req) {
 
     /* Clear the breakpoint, restore whatever was there before */
     if (req->method == RMON_RSP) {
-        whichBreak = &D_800C9458_main[request->bp];
+        whichBreak = &RCPbreakpoints[request->bp];
 
         if (whichBreak->breakAddress == NULL) {
             return TV_ERROR_INVALID_ID;
@@ -155,7 +155,7 @@ int __rmonClearBreak(KKHeader *req) {
             __rmonWriteWordTo(whichBreak->breakAddress, whichBreak->oldInstruction);
         }
     } else {
-        whichBreak = &D_800C93D0_main[request->bp];
+        whichBreak = &breakpoints[request->bp];
 
         if (whichBreak->breakAddress == NULL) {
             return TV_ERROR_INVALID_ID;
@@ -278,7 +278,7 @@ int __rmonSetSingleStep(int thread, u32 *instptr) {
         /* unconditional branch, set at branch target */
         SetTempBreakpoint((u32 *)branchTarget, NULL);
     } else {
-        /* set two D_800C93D0_main for handling conditional branches */
+        /* set two breakpoints for handling conditional branches */
         SetTempBreakpoint((u32 *)branchTarget, instptr + 2);
     }
     return TRUE;
@@ -337,7 +337,7 @@ void __rmonHitSpBreak(void) {
     __rmonGetThreadStatus(RMON_RSP, RMON_TID_RSP, &exceptionReply);
     __rmonGetExceptionStatus(&exceptionReply);
     __rmonSendReply(&exceptionReply.header, sizeof(exceptionReply), KK_TYPE_EXCEPTION);
-    D_800D6A5C_main = TRUE;
+    __rmonRcpAtBreak = TRUE;
 }
 
 void __rmonHitCpuFault(void) {

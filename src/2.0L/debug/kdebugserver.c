@@ -5,8 +5,8 @@
 #include "PR/rcp.h"
 #include "PR/rdb.h"
 
-extern u8 D_800C4CC0_main[12]; // buffer
-extern u32 D_800A4020_main;    // numChars
+static u8 buffer[12];
+static u32 numChars = 0;
 
 static u32 string_to_u32(u8 *s) {
     u32 k;
@@ -70,16 +70,16 @@ void kdebugserver(rdbPacket packet) {
     u8 *addr;
 
     for (i = 0; i < 3; i++) {
-        D_800C4CC0_main[D_800A4020_main++] = packet.buf[i];
+        buffer[numChars++] = packet.buf[i];
     }
 
-    if (D_800C4CC0_main[0] == 2) {
+    if (buffer[0] == 2) {
         send((u8 *)&__osRunningThread->context, sizeof(__OSThreadContext));
-        D_800A4020_main = 0;
-    } else if (D_800A4020_main >= 9 && D_800C4CC0_main[0] == 1) {
-        addr = (u8 *)string_to_u32(&D_800C4CC0_main[1]);
-        length = string_to_u32(&D_800C4CC0_main[5]);
+        numChars = 0;
+    } else if (numChars >= 9 && buffer[0] == 1) {
+        addr = (u8 *)string_to_u32(&buffer[1]);
+        length = string_to_u32(&buffer[5]);
         send(addr, length);
-        D_800A4020_main = 0;
+        numChars = 0;
     }
 }

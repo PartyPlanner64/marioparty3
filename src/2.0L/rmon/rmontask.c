@@ -76,7 +76,7 @@ int __rmonStopUserThreads(int whichThread) {
 
 int __rmonListThreads(KKHeader *req) {
     KKObjectRequest *request = (KKObjectRequest *)req;
-    KKObjsEvent *reply = (KKObjsEvent *)D_800D1250_main;
+    KKObjsEvent *reply = (KKObjsEvent *)__rmonUtilityBuffer;
 
     reply->object = (request->object == -1) ? RMON_PID_CPU : request->object;
 
@@ -130,7 +130,7 @@ int __rmonGetThreadStatus(int method, int id, KKStatusEvent *reply) {
             if ((inst & MIPS_BREAK_MASK) == MIPS_BREAK_OPCODE) {
                 inst = MIPS_BREAK_OPCODE;
             }
-            if (D_800D6A5C_main) {
+            if (__rmonRcpAtBreak) {
                 /* Report RSP break */
                 reply->status.why = 2;
                 reply->status.info.major = 2;
@@ -284,9 +284,9 @@ int __rmonRunThread(KKHeader *req) {
                     __rmonStepRCP();
                 }
                 __rmonStepRCP();
-                D_800D6A5C_main = TRUE;
+                __rmonRcpAtBreak = TRUE;
             } else {
-                D_800D6A5C_main = FALSE;
+                __rmonRcpAtBreak = FALSE;
                 __rmonRunRCP();
             }
             reply.header.code = request->header.code;

@@ -76,14 +76,14 @@ void __rmonSendHeader(KKHeader *const block, u32 blockSize, u32 type);
 void __rmonSendReply(KKHeader *const block, u32 blockSize, u32 replyType);
 void __rmonSendData(char *const block, unsigned int blockSize);
 
-extern int D_800A4320_main; // __rmonActive
+extern int __rmonActive;
 
 /* rmonmisc */
 
 void __rmonInit(void);
 void __rmonPanic(void);
 
-extern OSMesgQueue D_800D6A60_main; // __rmonMQ
+extern OSMesgQueue __rmonMQ;
 
 /* rmonmem */
 
@@ -92,7 +92,7 @@ u32 __rmonReadWordAt(u32 *addr);
 void __rmonMemcpy(u8 *dest, u8 *srce, u32 count);
 void __rmonCopyWords(u32 *dest, u32 *srce, u32 count);
 
-extern u8 D_800D1250_main[256]; // __rmonUtilityBuffer
+extern u8 __rmonUtilityBuffer[256];
 
 /* rmonsio */
 
@@ -101,8 +101,8 @@ void __rmonIOflush(void);
 void __rmonIOputw(u32 word);
 void __rmonIOhandler(void);
 
-extern void *D_800C9948_main; // __osRdb_DbgRead_Buf
-extern u8 D_800D1720_main[];  // rmonRdbReadBuf
+extern void *__osRdb_DbgRead_Buf;
+extern u8 rmonRdbReadBuf[2048];
 
 /* rmonrcp */
 
@@ -121,7 +121,7 @@ void __rmonHitSpBreak(void);
 void __rmonHitCpuFault(void);
 void rmonFindFaultedThreads(void);
 
-extern u8 D_800D6A5C_main; // __rmonRcpAtBreak
+extern u8 __rmonRcpAtBreak;
 
 /* rmonregs */
 

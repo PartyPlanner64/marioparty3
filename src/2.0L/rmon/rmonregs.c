@@ -22,9 +22,9 @@ typedef union {
     } vectorop;
 } INSTRUCTION;
 
-extern u32 D_800C8F30_main;    // RCPpc
-extern u32 D_800C8F34_main;    // oldIMEMvalue
-extern u32 D_800C8F38_main[4]; // DMEMbuffer
+static u32 RCPpc;
+static u32 oldIMEMvalue;
+static u32 DMEMbuffer[4];
 
 static void LoadStoreSU(int opcode, int regno) {
     INSTRUCTION inst;
@@ -51,27 +51,27 @@ static void LoadStoreVU(int opcode, int regno) {
 
 static void SetUpForRCPop(int isVector) {
     /* Save RSP data that would be overwritten when reading or writing registers */
-    D_800C8F30_main = __rmonReadWordAt((u32 *)SP_PC_REG);
-    D_800C8F34_main = __rmonReadWordAt((u32 *)SP_IMEM_START);
-    D_800C8F38_main[0] = __rmonReadWordAt((u32 *)SP_DMEM_START);
+    RCPpc = __rmonReadWordAt((u32 *)SP_PC_REG);
+    oldIMEMvalue = __rmonReadWordAt((u32 *)SP_IMEM_START);
+    DMEMbuffer[0] = __rmonReadWordAt((u32 *)SP_DMEM_START);
     if (isVector) {
-        D_800C8F38_main[1] = __rmonReadWordAt((u32 *)(SP_DMEM_START + 0x4));
-        D_800C8F38_main[2] = __rmonReadWordAt((u32 *)(SP_DMEM_START + 0x8));
-        D_800C8F38_main[3] = __rmonReadWordAt((u32 *)(SP_DMEM_START + 0xC));
+        DMEMbuffer[1] = __rmonReadWordAt((u32 *)(SP_DMEM_START + 0x4));
+        DMEMbuffer[2] = __rmonReadWordAt((u32 *)(SP_DMEM_START + 0x8));
+        DMEMbuffer[3] = __rmonReadWordAt((u32 *)(SP_DMEM_START + 0xC));
     }
 }
 
 static void CleanupFromRCPop(int isVector) {
     /* Restore RSP data that was saved to read or write registers */
-    __rmonWriteWordTo((u32 *)SP_DMEM_START, D_800C8F38_main[0]);
+    __rmonWriteWordTo((u32 *)SP_DMEM_START, DMEMbuffer[0]);
     if (isVector) {
-        __rmonWriteWordTo((u32 *)(SP_DMEM_START + 0x4), D_800C8F38_main[1]);
-        __rmonWriteWordTo((u32 *)(SP_DMEM_START + 0x8), D_800C8F38_main[2]);
+        __rmonWriteWordTo((u32 *)(SP_DMEM_START + 0x4), DMEMbuffer[1]);
+        __rmonWriteWordTo((u32 *)(SP_DMEM_START + 0x8), DMEMbuffer[2]);
         /* BUG: the last word is not restored properly */
-        __rmonWriteWordTo((u32 *)(SP_DMEM_START + 0xC), D_800C8F38_main[2]);
+        __rmonWriteWordTo((u32 *)(SP_DMEM_START + 0xC), DMEMbuffer[2]);
     }
-    __rmonWriteWordTo((u32 *)SP_IMEM_START, D_800C8F34_main);
-    __rmonWriteWordTo((u32 *)SP_PC_REG, D_800C8F30_main);
+    __rmonWriteWordTo((u32 *)SP_IMEM_START, oldIMEMvalue);
+    __rmonWriteWordTo((u32 *)SP_PC_REG, RCPpc);
 }
 
 int __rmonGetGRegisters(KKHeader *req) {

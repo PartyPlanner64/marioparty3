@@ -487,10 +487,14 @@ segments:
       - [0xA3980, data]
       - [0xA4B80, .data, 2.0L/gu/rotate]
       - [0xA4B90, data]
+      - [0xA4C20, .data, 2.0L/debug/kdebugserver]
+      - [0xA4C30, data]
+      - [0xA4C40, .data, 2.0L/debug/readhost]
       - [0xA4C50, .data, 2.0L/libc/xprintf]
       - [0xA4CA0, data]
       - [0xA4E10, .data, 2.0L/libc/xlitob]
-      - [0xA4E40, data]
+      - [0xA4E40, .data, 2.0L/rmon/rmoncmds]
+      - [0xA4F20, .data, 2.0L/rmon/rmonmain]
       - [0xA4F30, .data, libm/exp]
       - [0xA4F40, .data, libm/expf]
       - [0xA4F50, .rodata, libm/tables]
@@ -568,6 +572,14 @@ segments:
       - { start: 0xA96F0, type: bss, vram: 0x800C1560, name: main_after_hvq }
       - { start: 0xA96F0, type: .bss, vram: 0x800C3950, name: 2.0L/io/sptask }
       - { start: 0xA96F0, type: bss, vram: 0x800C3990, name: main_after_sptask }
+      - { start: 0xA96F0, type: .bss, vram: 0x800C4CC0, name: 2.0L/debug/kdebugserver }
+      - { start: 0xA96F0, type: .bss, vram: 0x800C4CD0, name: 2.0L/debug/readhost }
+      - { start: 0xA96F0, type: bss, vram: 0x800C4CF0, name: main_after_readhost }
+      - { start: 0xA96F0, type: .bss, vram: 0x800C4D00, name: 2.0L/rmon/rmonsio }
+      - { start: 0xA96F0, type: .bss, vram: 0x800C4D20, name: 2.0L/rmon/rmonmisc }
+      - { start: 0xA96F0, type: .bss, vram: 0x800C8F30, name: 2.0L/rmon/rmonregs }
+      - { start: 0xA96F0, type: .bss, vram: 0x800C8F50, name: 2.0L/rmon/rmonmain }
+      - { start: 0xA96F0, type: .bss, vram: 0x800C93D0, name: 2.0L/rmon/rmonbrk }
       - { start: 0xA96F0, type: .bss, vram: 0x800C94E0, name: libm/tables }
       - { start: 0xA96F0, type: .bss, vram: 0x800C94F0, name: libm/sind }
       - { start: 0xA96F0, type: .bss, vram: 0x800C9500, name: libm/sindf }

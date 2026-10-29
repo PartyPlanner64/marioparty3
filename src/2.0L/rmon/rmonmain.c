@@ -4,12 +4,14 @@
 #include "PR/rdb.h"
 #include "rmonint.h"
 
-extern vu32 D_800C8F50_main;     // somethingToDo
-extern u32 D_800C8F60_main[280]; // inbuffer
-extern u8 D_800C93C0_main;       // cmdinptr
-extern u8 D_800C93C1_main;       // cmdoutptr
-extern int D_800C93C4_main;      // state
-extern char *D_800C93C8_main;    // inPointer
+int __rmonActive = FALSE;
+
+static vu32 somethingToDo;
+static u32 inbuffer[280];
+static u8 cmdinptr;
+static u8 cmdoutptr;
+static int state;
+static char *inPointer;
 
 void __rmonSendHeader(KKHeader *const block, u32 blockSize, u32 type) {
     int sent;
@@ -70,41 +72,41 @@ void __rmonSendData(char *const block, unsigned int blockSize) {
 }
 
 void rmonMain(void *arg) {
-    D_800C8F50_main = 0;
-    D_800C93C1_main = 0;
-    D_800C93C0_main = 0;
+    somethingToDo = 0;
+    cmdoutptr = 0;
+    cmdinptr = 0;
 
     __rmonInit();
-    D_800A4320_main = TRUE;
+    __rmonActive = TRUE;
 
-    D_800C93C4_main = 0;
-    D_800C93C8_main = (char *)D_800C8F60_main;
+    state = 0;
+    inPointer = (char *)inbuffer;
     for (;;) {
         OSMesg work;
 
-        osRecvMesg(&D_800D6A60_main, &work, OS_MESG_BLOCK);
+        osRecvMesg(&__rmonMQ, &work, OS_MESG_BLOCK);
 
-        D_800C8F50_main |= (u32)work;
+        somethingToDo |= (u32)work;
 
-        if (D_800C8F50_main & RMON_MESG_CPU_BREAK) {
-            D_800C8F50_main &= ~RMON_MESG_CPU_BREAK;
+        if (somethingToDo & RMON_MESG_CPU_BREAK) {
+            somethingToDo &= ~RMON_MESG_CPU_BREAK;
             __rmonHitBreak();
         }
-        if (D_800C8F50_main & RMON_MESG_SP_BREAK) {
-            D_800C8F50_main &= ~RMON_MESG_SP_BREAK;
+        if (somethingToDo & RMON_MESG_SP_BREAK) {
+            somethingToDo &= ~RMON_MESG_SP_BREAK;
             __rmonHitSpBreak();
         }
-        if (D_800C8F50_main & RMON_MESG_FAULT) {
-            D_800C8F50_main &= ~RMON_MESG_FAULT;
+        if (somethingToDo & RMON_MESG_FAULT) {
+            somethingToDo &= ~RMON_MESG_FAULT;
             __rmonHitCpuFault();
         }
-        if (D_800C8F50_main & 0x10) {
-            D_800C8F50_main;
-            D_800C8F50_main &= (u8)~0x10;
+        if (somethingToDo & 0x10) {
+            somethingToDo;
+            somethingToDo &= (u8)~0x10;
         }
-        if (D_800C8F50_main & 0x20) {
-            D_800C8F50_main;
-            D_800C8F50_main &= (u8)~0x20;
+        if (somethingToDo & 0x20) {
+            somethingToDo;
+            somethingToDo &= (u8)~0x20;
         }
     }
 }

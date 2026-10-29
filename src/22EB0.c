@@ -17,24 +17,6 @@
 #define HMF_TEXTURE_SIZE_LINE_BYTES D_800C952C_main
 
 typedef struct {
-    u8 next;
-    u8 prev;
-    s16 objectIndex;
-    f32 depth;
-} HmfDrawEntry;
-
-typedef struct {
-    s16 objectIndex;
-    char unk02[2];
-    HuMtx4F mtx;
-    Mtx *fixedMtx;
-    HmfData *hmf;
-    s32 objectFlags;
-    s32 modelFlags;
-    HmfData_UnkD0 *light;
-} HmfDrawObject;
-
-typedef struct {
     union {
         Mtx mtx;
         Hilite hilite;
@@ -634,7 +616,7 @@ void func_80023404_main(HmfData *arg0, HuMtx4F arg1, HuMtx4F arg2) {
         if (arg0->unk16 == 0) {
             return;
         }
-        if (D_800CD6A6_main != 0 && (u8)arg0->unk0B == 1 && (u8)arg0->unk0C != 0) {
+        if (D_800CD6A6_main != 0 && arg0->unk0B == 1 && (u8)arg0->unk0C != 0) {
             func_8002404C_main(arg0, 0);
         } else {
             if (arg0->unk8C != NULL) {
@@ -798,7 +780,7 @@ void func_80023AF8_main(HmfData *arg0, s16 arg1) {
             D_800D138A_main++;
             func_80018044_main(mtx, D_800D59C0_main[D_800D138A_main], D_800D59C0_main[D_800D138A_main + 1]);
         }
-        if (D_800C9932_main != 1 && (u8)arg0->unk0B == 1) {
+        if (D_800C9932_main != 1 && arg0->unk0B == 1) {
             func_8002367C_main(node->unk58, D_800D5A00_main[D_800D138A_main]);
         }
         func_80018044_main(D_800D5A00_main[D_800D138A_main], D_800D5A00_main[0], mtx);
@@ -955,7 +937,7 @@ void func_80024354_main(HmfData *arg0, s16 arg1) {
             D_800D138A_main++;
             func_80018044_main(mtx, D_800D59C0_main[D_800D138A_main], D_800D59C0_main[D_800D138A_main + 1]);
         }
-        if (D_800C9932_main != 1 && (u8)arg0->unk0B == 1) {
+        if (D_800C9932_main != 1 && arg0->unk0B == 1) {
             func_8002367C_main(node->unk58, D_800D5A00_main[D_800D138A_main]);
         }
         func_80018044_main(D_800D5A00_main[D_800D138A_main], D_800D5A00_main[0], mtx);
@@ -1108,7 +1090,7 @@ void func_80024DF0_main(HmfData *arg0, s16 arg1, Mtx *arg2, HuMtx4F arg3) {
     object->objectIndex = arg1;
     object->modelFlags = D_800C9940_main;
     object->objectFlags = arg0->unk60[arg1].unk50;
-    object->light = (HmfData_UnkD0 *)arg0->unkD0;
+    object->light = arg0->unkD0;
 }
 
 Gfx *func_800250D4_main(s16 arg0, Gfx *arg1, Gfx *arg2) {
@@ -1179,7 +1161,7 @@ Gfx *func_800250D4_main(s16 arg0, Gfx *arg1, Gfx *arg2) {
                                ((u16)D_800D1F78_main << 24) + ((u16)D_800D1FE2_main << 16) + ((u16)D_800CDA76_main << 8));
             func_8002D094_main(&gMainGfxPos, 1, 0);
             if (object->light != NULL) {
-                gSPLight(gMainGfxPos++, &((HmfData_UnkD0 *)hmf->unkD0)->unk08[D_800D2008_main], 2);
+                gSPLight(gMainGfxPos++, &hmf->unkD0->unk08[D_800D2008_main], 2);
             }
             if (flags != object->objectFlags) {
                 flags = object->objectFlags;
@@ -1303,9 +1285,9 @@ void func_800257BC_main(HmfData *hmf, s16 objectIndex) {
                 }
                 if (groupVertices) {
                     hmf->unkB0[D_800D5562_main].count = count;
-                    hmf->unkB0[D_800D5562_main].unk01[0] = source->unk01[0];
-                    hmf->unkB0[D_800D5562_main].unk01[1] = source->unk01[1];
-                    hmf->unkB0[D_800D5562_main].unk01[2] = source->unk01[2];
+                    hmf->unkB0[D_800D5562_main].normal[0] = source->unk01[0];
+                    hmf->unkB0[D_800D5562_main].normal[1] = source->unk01[1];
+                    hmf->unkB0[D_800D5562_main].normal[2] = source->unk01[2];
                 }
                 for (j = 0; j < count; j++) {
                     sourceIndex = source->unk04[j];
@@ -2152,9 +2134,9 @@ void func_8002B104_main(HmfData *hmf, s16 objectIndex) {
     }
     gDPPipeSync(gMainGfxPos++);
     guLookAtReflect((Mtx *)mtx, &D_800CE20C_main->lookAt,
-                       D_800D10F4_main->pos.x, D_800D10F4_main->pos.y, D_800D10F4_main->pos.z,
-                       D_800D10F4_main->at.x, D_800D10F4_main->at.y, D_800D10F4_main->at.z,
-                       D_800D10F4_main->up.x, D_800D10F4_main->up.y, D_800D10F4_main->up.z);
+                    D_800D10F4_main->pos.x, D_800D10F4_main->pos.y, D_800D10F4_main->pos.z,
+                    D_800D10F4_main->at.x, D_800D10F4_main->at.y, D_800D10F4_main->at.z,
+                    D_800D10F4_main->up.x, D_800D10F4_main->up.y, D_800D10F4_main->up.z);
     gSPLookAt(gMainGfxPos++, &D_800CE20C_main->lookAt);
     gSPTexture(gMainGfxPos++, 1984, 1984, 0, G_TX_RENDERTILE, G_ON);
     if (hmf->unk9C == NULL) {

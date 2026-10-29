@@ -890,7 +890,7 @@ void func_80108B58_option(void) {
     s32 active = 1;
     Vec pos, at;
 
-    func_8001F38C_main(0, 0x40, 0x40);
+    Hu3DBGColorSet(0, 0x40, 0x40);
     func_80112084_option();
     func_8010FB40_option(0, 9);
     func_8010FB40_option(1, 10);
@@ -1547,7 +1547,7 @@ void func_8010A66C_option(void) {
     s32 selection;
     s32 result;
 
-    func_8001F38C_main(0, 64, 64);
+    Hu3DBGColorSet(0, 64, 64);
     func_801123D8_option();
     HuAudSeqPlay(0x4A);
     WipeCreateIn(0xB, 16);
@@ -2130,7 +2130,7 @@ void func_8010C224_option(void) {
     s32 selection;
     s32 result;
 
-    func_8001F38C_main(0, 64, 64);
+    Hu3DBGColorSet(0, 64, 64);
     func_80112B08_option();
     func_8004A9DC_main(0x60);
     WipeCreateIn(0xB, 16);

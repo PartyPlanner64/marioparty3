@@ -271,7 +271,7 @@ void m254_InitEnvironment(void) {
     ScissorSet(1, 168.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(1, 640.0f, 480.0f, 511.0f, 960.0f, 480.0f, 511.0f);
     Hu3DCamSetPerspective(1, 60.0f, 40.0f, 4000.0f);
-    func_8001F38C_main(0xFF, 0xFF, 0xFF);
+    Hu3DBGColorSet(0xFF, 0xFF, 0xFF);
     D_800EC1B8_minigame = 0;
     D_800EC280_minigame = 0;
     D_800EBE28_minigame = 0;

@@ -165,7 +165,7 @@ void func_801059A0_meschk() {
     omAddPrcObj(func_801063BC_meschk, 0x3F00, 0x800, 0);
     WipeCreateIn(0, 0);
     D_800CD280_main = 1;
-    func_8001F38C_main(0xFF, 0xFF, 0xFF);
+    Hu3DBGColorSet(0xFF, 0xFF, 0xFF);
 }
 
 void func_80105B50_meschk() {

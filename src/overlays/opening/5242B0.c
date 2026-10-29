@@ -29,7 +29,7 @@ void opDemoMain(void) {
     Process *parentPrc;
     Process *eventPrc;
 
-    func_8001F38C_main(0, 0, 0);
+    Hu3DBGColorSet(0, 0, 0);
     opDemoEventSetup();
     parentPrc = HuPrcCurrentGet();
     eventPrc = opDemoEventCreate();
@@ -96,7 +96,7 @@ void opTitleMain(void) {
     Process *parentPrc;
     Process *sprPrc;
 
-    func_8001F38C_main(0, 64, 64);
+    Hu3DBGColorSet(0, 64, 64);
     frame = 0;
     opTitleSetup();
     parentPrc = HuPrcCurrentGet();

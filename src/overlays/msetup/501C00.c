@@ -77,7 +77,7 @@ void func_8000BC48_main(u16, s32);
 void func_8000BCC8_main(u16, s32);
 void func_8000BE5C_main(u16, f32, f32);
 void func_8000C184_main(u16);
-void func_8001ACDC_main(s16);
+void Hu3DModelKill(s16);
 void Hu3DModelRotSet(s16, f32, f32, f32);
 void Hu3DModelScaleSet(s16, f32, f32, f32);
 void func_8001C258_main(s16, s32, s32);
@@ -145,7 +145,7 @@ void func_801059A0_msetup(void) {
     HmfLightColorSet(3, 240, 240, 240);
     HmfLightDirSet(3, 0.0f, 100.0f, 0.0f);
     HmfLightColorSet(1, 255, 255, 255);
-    func_8001F38C_main(16, 16, 240);
+    Hu3DBGColorSet(16, 16, 240);
     omPrcSetStatBit(omAddPrcObj(func_80106320_msetup, 0x1100, 0x400, 0), 0xA0);
     D_8011A944_msetup = 0;
     func_80106DF8_msetup();

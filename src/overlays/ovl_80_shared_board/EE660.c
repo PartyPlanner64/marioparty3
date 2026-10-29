@@ -755,7 +755,7 @@ void func_800DCA64_shared_board(s32 arg0) {
     s32 i;
 
     if (entry->unk_16 != -1) {
-        func_8001ACDC_main(entry->unk_16);
+        Hu3DModelKill(entry->unk_16);
         for (i = 0; i < 6; i++) {
             if (entry->unk_1A[i] != -1) {
                 func_80033430_main(entry->unk_1A[i]);
@@ -770,7 +770,7 @@ void func_800DCA64_shared_board(s32 arg0) {
     }
 
     if (entry->unk_18 != -1) {
-        func_8001ACDC_main(entry->unk_18);
+        Hu3DModelKill(entry->unk_18);
         entry->unk_18 = -1;
         if (entry->unk_38 != NULL) {
             omDelObj(entry->unk_38);

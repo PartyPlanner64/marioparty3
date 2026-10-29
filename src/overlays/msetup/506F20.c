@@ -664,17 +664,17 @@ void func_8010BEF8_msetup(void) {
         func_80033354_main(D_800D5570_main[character][1]);
         D_800D20B8_main[character][1] = 0xFF;
     }
-    func_8001ACDC_main(model);
-    func_8001ACDC_main(shadow);
+    Hu3DModelKill(model);
+    Hu3DModelKill(shadow);
     if (D_801198C0_msetup == shadow) {
         D_801198C0_msetup = -1;
     }
     for (i = 0; i < 2; i++) {
         if (motions[i] >= 0) {
-            func_8001ACDC_main(motions[i]);
+            Hu3DModelKill(motions[i]);
         }
     }
-    func_8001ACDC_main(effect);
+    Hu3DModelKill(effect);
     entry->state = 0;
     while (1) {
         HuPrcVSleep();

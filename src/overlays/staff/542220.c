@@ -360,19 +360,19 @@ void func_8010D1E8_staff(void) {
 
     // TODO: fix typing of temp3 or sp10
     for (temp3 = sp10[0], i = 0; i < 3; i++, temp3 += 2) {
-        func_8001ACDC_main(*temp3); //?
+        Hu3DModelKill(*temp3); //?
     }
     for (temp2 = sp20, i = 0; i < 8; i++, temp2++) {
-        func_8001ACDC_main(temp2->unk_18);
-        func_8001ACDC_main(temp2->unk_1A);
+        Hu3DModelKill(temp2->unk_18);
+        Hu3DModelKill(temp2->unk_1A);
         func_80033354_main(temp2->unk_1C);
         if (temp2->unk_1E >= 0) {
-            func_8001ACDC_main(temp2->unk_1E);
+            Hu3DModelKill(temp2->unk_1E);
         }
     }
 
     for (temp = sp120, i = 0; i < 3; i++, temp++) {
-        func_8001ACDC_main(temp->unk_28);
+        Hu3DModelKill(temp->unk_28);
     }
 
     MBDBackKill();

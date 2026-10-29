@@ -141,7 +141,7 @@ void func_8008D2C0_main(HuMtx4F mtx, u16 *perspNorm, f32 fov, f32 aspect, f32 ne
 void func_8008D450_main(HuMtx4F mtx, Vec *camera, Vec *basis);
 void func_8008D5D0_main(HuMtx4F mtx, u16 *perspNorm, const PerspectiveParams *params);
 void func_8003465C_main(Gfx**, void*, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
-void func_8001F95C_main(s32, void* func);
+void func_8001F95C_main(s16, void *func);
 void func_8004D6E8_main(s16 sampleIdx);
 void func_8003B128_main(char*);
 void func_800610E0_main(s16);

@@ -338,7 +338,7 @@ void opMotionCreate(s32 slot, s32 resourceId, s32 arg2) {
 
 void opModelKill(s32 slot) {
     if (D_80115630_opening[slot].modelId != -1) {
-        func_8001ACDC_main(D_80115630_opening[slot].modelId);
+        Hu3DModelKill(D_80115630_opening[slot].modelId);
         D_80115630_opening[slot].modelId = -1;
     }
     if (D_80115630_opening[slot].motionId != -1) {
@@ -3261,8 +3261,8 @@ void func_80111580_opening(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
         HuPrcVSleep();
     }
     HuPrcSleep(30);
-    func_8001ACDC_main(model1);
-    func_8001ACDC_main(model2);
+    Hu3DModelKill(model1);
+    Hu3DModelKill(model2);
 }
 
 s16 func_801117D4_opening(s32 resourceId, s32 arg1) {
@@ -3726,7 +3726,7 @@ void opDemoOutEffMain(omObjData *obj) {
 
     HuVecCopy3F(&pos, &D_8011739C_opening[index][0].pos);
     if (D_8011738C_opening[index][0] >= 40) {
-        func_8001ACDC_main(effectId);
+        Hu3DModelKill(effectId);
         D_8011738C_opening[index][0] = 0;
         opDemoObjKill(index);
     } else if (D_8011738C_opening[index][0] >= 20) {
@@ -3771,7 +3771,7 @@ void opDemoGuideInEffMain(omObjData *obj) {
 
     HuVecCopy3F(&pos, &D_8011739C_opening[index][0].pos);
     if (D_8011738C_opening[index][0] >= 80) {
-        func_8001ACDC_main(effectId);
+        Hu3DModelKill(effectId);
         D_8011738C_opening[index][0] = 0;
         opDemoObjKill(index);
     } else if (D_8011738C_opening[index][0] >= 50) {
@@ -4067,7 +4067,7 @@ void opWipeOutMain(omObjData *obj) {
 
 void opWipeKill(s32 index) {
     if (D_80117388_opening[index].obj != NULL) {
-        func_8001ACDC_main(D_80117388_opening[index].effectId);
+        Hu3DModelKill(D_80117388_opening[index].effectId);
         opDemoObjKill(index);
     }
 }

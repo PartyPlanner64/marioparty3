@@ -791,7 +791,7 @@ s32 func_80066048_main(void) {
         return 0;
     }
     func_80019C00_main(D_800BDA7C_main);
-    func_8001ACDC_main(D_800BDA80_main);
+    Hu3DModelKill(D_800BDA80_main);
     return 1;
 }
 
@@ -812,7 +812,7 @@ void func_8006608C_main(void) {
 void func_80066164_main(void) {
     func_80019C00_main(D_800BDA7C_main);
     func_80019C00_main(D_800BDA70_main);
-    func_8001ACDC_main(D_800BDA82_main);
+    Hu3DModelKill(D_800BDA82_main);
 }
 
 void func_8006619C_main(Gfx **arg0, s32 arg1, s32 arg2) {
@@ -833,6 +833,6 @@ void func_800661F8_main(void) {
 void func_80066228_main(void) {
     func_80019C00_main(D_800BDA7C_main);
     HuMemMemoryFreePerm(D_800BDA70_main);
-    func_8001ACDC_main(D_800BDA82_main);
+    Hu3DModelKill(D_800BDA82_main);
     D_800D5304_main = 0;
 }

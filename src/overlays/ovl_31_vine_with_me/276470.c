@@ -561,7 +561,7 @@ void func_8010683C_vine_with_me(omObjData *arg0) {
         func_8000B460_main(arg0, var_s3, sp58[var_s3] | 0x520000);
         func_8001C5B4_main(arg0->model[12 + var_s3], arg0->motion[var_s3]);
         D_80115630_vine_with_me[var_s3] = func_80016784_main(arg0->model[12 + var_s3], 2);
-        func_8001ACDC_main(arg0->motion[var_s3]);
+        Hu3DModelKill(arg0->motion[var_s3]);
     }
     for (var_s3 = 0; var_s3 < 8; var_s3++) {
         func_8001C5B4_main(arg0->model[12 + var_s3], arg0->motion[0]);

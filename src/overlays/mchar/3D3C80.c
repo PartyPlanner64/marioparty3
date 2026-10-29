@@ -221,7 +221,7 @@ void func_801059A0_mchar(void) {
     omAddObj(0x7D0, 0, 0, -1, func_80106898_mchar);
     WipeCreateIn(0, 16);
     D_800CD280_main = 1;
-    func_8001F38C_main(0xC0, 0xE0, 0xFF);
+    Hu3DBGColorSet(0xC0, 0xE0, 0xFF);
     func_80045C2C_main();
 }
 

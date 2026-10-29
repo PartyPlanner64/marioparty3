@@ -187,7 +187,7 @@ void func_8010BB58_hand_line_sinker(FishingLine *line, Vec *points, u16 count) {
 void func_8010BE6C_hand_line_sinker(FishingLine *line) {
     s16 i;
 
-    func_8001ACDC_main(line->model);
+    Hu3DModelKill(line->model);
     for (i = 0; i < D_800D1FF0_main; i++) {
         func_80019C00_main(line->vtx[i]);
         func_80019C00_main(line->gfx[i]);

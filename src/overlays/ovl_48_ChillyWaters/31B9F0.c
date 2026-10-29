@@ -5925,7 +5925,7 @@ void func_8011BBA4_ChillyWaters(void) {
         HuPrcVSleep();
     }
 
-    func_8001ACDC_main(model);
+    Hu3DModelKill(model);
     omDelPrcObj(NULL);
 }
 

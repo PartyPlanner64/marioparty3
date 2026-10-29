@@ -158,7 +158,7 @@ void func_801059A0_hand_line_sinker(void) {
     D_8010C12C_hand_line_sinker = func_800329B4_main(data);
     HuMemMemoryFreePerm(data);
     func_800142A0_main(9);
-    func_8001F38C_main(0, 40, 120);
+    Hu3DBGColorSet(0, 40, 120);
     D_800CD280_main = 1;
     func_8010B5B0_hand_line_sinker();
     func_8010A5F0_hand_line_sinker();

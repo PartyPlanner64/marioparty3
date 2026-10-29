@@ -29,7 +29,7 @@ void omDestroyPrcObj(void);
 void func_8000BA00_main(void);
 void func_8000BBFC_main(s32, s16);
 void func_800166D0_main(void);
-void func_8001AFE4_main(void);
+void Hu3DModelAllKill(void);
 void func_80021AF4_main(void);
 void omInsertObj(omObjData *obj);
 void omAddMember(u16 group, omObjData *obj);
@@ -706,7 +706,7 @@ void omOvlKill(void) {
     D_800A1762_main = 4;
     D_800B23C0_main = D_800CD050_main;
     GMesClose();
-    func_8001AFE4_main();
+    Hu3DModelAllKill();
     func_80021AF4_main();
     omDestroyObjMan();
     func_8000BA00_main();
@@ -905,7 +905,7 @@ void omMain(void) {
             HmfLightStatSet(1, 0, 0);
             HmfLightStatSet(2, 0, 0);
             HmfLightStatSet(3, 0, 0);
-            func_8001F38C_main(0, 0, 0);
+            Hu3DBGColorSet(0, 0, 0);
             D_800CD280_main = 1;
             func_8001F6B0_main(1);
             func_80045C2C_main();

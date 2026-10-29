@@ -119,7 +119,7 @@ void func_801059A0_eatsa_pizza(void) {
     func_80105AF4_eatsa_pizza(obj);
     func_801083BC_eatsa_pizza();
     func_80105FF0_eatsa_pizza();
-    func_8001F38C_main(0, 0, 0);
+    Hu3DBGColorSet(0, 0, 0);
     WipeCreateIn(0xFF, 0x10);
 }
 

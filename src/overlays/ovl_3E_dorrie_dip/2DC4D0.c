@@ -196,7 +196,7 @@ void func_801059A0_dorrie_dip(void) {
     omSetStatBit(obj, 0xA0);
     func_80105B44_dorrie_dip(500.0f, 345.0f, 0.0f, 0.0f, 0.0f, 190.0f, 0.0f);
     omOutView(obj);
-    func_8001F38C_main(0, 0, 0);
+    Hu3DBGColorSet(0, 0, 0);
     func_800E5EA0_minigame(&D_8010A040_dorrie_dip);
     D_800EBE28_minigame = 0;
     D_800EC280_minigame = 0;

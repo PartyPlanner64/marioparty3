@@ -236,7 +236,7 @@ void func_8011083C_option(s32 arg0, s32 resourceId, s32 arg2) {
 
 void func_801108C4_option(s32 arg0) {
     if (D_80114F70_option[arg0].unk_00 != -1) {
-        func_8001ACDC_main(D_80114F70_option[arg0].unk_00);
+        Hu3DModelKill(D_80114F70_option[arg0].unk_00);
         D_80114F70_option[arg0].unk_00 = -1;
     }
     if (D_80114F70_option[arg0].unk_02 != -1) {

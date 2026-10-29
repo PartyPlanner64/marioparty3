@@ -865,7 +865,7 @@ void func_8010EB94_msetup(void) {
                             func_80033430_main(values[handle]);
                         }
                         if (slots[handle] >= 0) {
-                            func_8001ACDC_main(slots[handle]);
+                            Hu3DModelKill(slots[handle]);
                         }
                     }
                     handle = 2;
@@ -908,7 +908,7 @@ void func_8010EB94_msetup(void) {
                             func_80033430_main(values[index]);
                             values[index] = -1;
                         }
-                        func_8001ACDC_main(handle);
+                        Hu3DModelKill(handle);
                         anim.fade.destroy[index] = 0;
                         slots[index] = -1;
                         handle = -1;

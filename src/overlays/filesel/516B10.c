@@ -483,7 +483,7 @@ void func_801062BC_filesel(s32 arg0, s32 arg1, s32 arg2) {
 
 void func_80106344_filesel(s32 arg0) {
     if (D_80113650_filesel[arg0].unk_00 != -1) {
-        func_8001ACDC_main(D_80113650_filesel[arg0].unk_00);
+        Hu3DModelKill(D_80113650_filesel[arg0].unk_00);
         D_80113650_filesel[arg0].unk_00 = -1;
     }
     if (D_80113650_filesel[arg0].unk_02 != -1) {
@@ -931,7 +931,7 @@ void func_80107AA8_filesel(void) {
 
 void func_80107C50_filesel(omObjData *object) {
     if (D_800D5558_main[0] & B_BUTTON) {
-        func_8001F38C_main(0xFF, 0, 0);
+        Hu3DBGColorSet(0xFF, 0, 0);
     }
 }
 
@@ -1835,7 +1835,7 @@ void func_8010A7D8_filesel(s32 arg0) {
         HuPrcVSleep();
     }
     func_8001C258_main(model, 4, 4);
-    func_8001ACDC_main(model);
+    Hu3DModelKill(model);
     HuPrcSleep(3);
 }
 

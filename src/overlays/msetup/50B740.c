@@ -146,7 +146,7 @@ void func_8000BC48_main(u16, s32);
 void func_8000BCC8_main(u16, s32);
 void func_8000BE5C_main(u16, f32, f32);
 void func_8000C184_main(u16);
-void func_8001ACDC_main(s16);
+void Hu3DModelKill(s16);
 void Hu3DModelRotSet(s16, f32, f32, f32);
 void Hu3DModelScaleSet(s16, f32, f32, f32);
 void func_8001C258_main(s16, s32, s32);
@@ -431,7 +431,7 @@ s16 func_8010F87C_msetup(MsetupMenuState *state) {
     }
     for (i = 0; i < modelCount; i++) {
         func_80033430_main(models[i].unk1A);
-        func_8001ACDC_main(models[i].model);
+        Hu3DModelKill(models[i].model);
     }
     return 0;
 }
@@ -1276,13 +1276,13 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
         }
     }
     for (i = 0; i < 2; i++) {
-        func_8001ACDC_main(models[i].model);
+        Hu3DModelKill(models[i].model);
     }
     HuSprGrpKill(group);
     for (i = 0; i < 16; i++) {
         HuSprKill(sprites[i]);
     }
-    func_8001ACDC_main(model);
+    Hu3DModelKill(model);
     if (slot >= 0) {
         func_8000C184_main(slot);
     }
@@ -1758,9 +1758,9 @@ s16 func_801132C4_msetup(MsetupMenuState *state) {
     omDelPrcObj(cursorProcesses[0]);
     omDelPrcObj(cursorProcesses[1]);
     for (i = 0; i < 2; i++) {
-        func_8001ACDC_main(models[i].model);
+        Hu3DModelKill(models[i].model);
     }
-    func_8001ACDC_main(model);
+    Hu3DModelKill(model);
     return 0;
 }
 
@@ -1868,7 +1868,7 @@ s32 func_801138F8_msetup(MsetupMenuState *state, s32 dataId, s32 *messages, s32 
         func_80033430_main(anim);
     }
     for (i = 0; i < 2; i++) {
-        func_8001ACDC_main(models[i].model);
+        Hu3DModelKill(models[i].model);
     }
     return 0;
 }
@@ -2068,10 +2068,10 @@ s16 func_80113ED4_msetup(MsetupMenuState *arg0) {
     if (curBoardIndex >= 0) {
         func_8010F320_msetup(D_80119420_msetup, 0, sp20[0].model, -1);
         func_8010F320_msetup(D_80119420_msetup, 2, backgroundEspriteSlot, var_s6);
-        func_8001ACDC_main(sp20[1].model);
+        Hu3DModelKill(sp20[1].model);
     } else {
         for (i = 0; i < 2; i++) {
-            func_8001ACDC_main(sp20[i].model);
+            Hu3DModelKill(sp20[i].model);
         }
         func_8000C184_main(backgroundEspriteSlot);
         HuSprKill(var_s6);
@@ -2161,7 +2161,7 @@ s16 func_801145D0_msetup(MsetupMenuState *state) {
     HuAudFXPlay(0x2DA);
     func_8010E8C8_msetup(&models, 2, 7, 360.0f, 400.0f, 1.0f, 0.1f, 1);
     for (i = 0; i < 2; i++) {
-        func_8001ACDC_main(models[i].model);
+        Hu3DModelKill(models[i].model);
     }
     func_8000C184_main(slot);
     HuSprKill(sprite);
@@ -2293,7 +2293,7 @@ s16 func_80114AA0_msetup(MsetupMenuState *state) {
         func_80033430_main(anim);
     }
     for (i = 0; i < 2; i++) {
-        func_8001ACDC_main(models[i].model);
+        Hu3DModelKill(models[i].model);
     }
     return 0;
 }
@@ -2776,7 +2776,7 @@ s16 func_80115EE0_msetup(MsetupMenuState *state) {
     func_8010E8C8_msetup(&models, 2, 7, 360.0f, 400.0f, 1.5f, 0.1f, 2);
     func_8010DDD8_msetup(cursor);
     for (i = 0; i < 2; i++) {
-        func_8001ACDC_main(models[i].model);
+        Hu3DModelKill(models[i].model);
     }
     if (state->result >= 0) {
         switch (D_8011A938_msetup) {
@@ -2798,7 +2798,7 @@ s16 func_80115EE0_msetup(MsetupMenuState *state) {
         if (anim >= 0) {
             func_80033430_main(anim);
         }
-        func_8001ACDC_main(model);
+        Hu3DModelKill(model);
     }
     return 0;
 }
@@ -2977,7 +2977,7 @@ s16 func_801167B8_msetup(MsetupMenuState *state) {
     }
     for (i = 0; i < 2; i++) {
         func_80033430_main(models[i].unk1A);
-        func_8001ACDC_main(models[i].model);
+        Hu3DModelKill(models[i].model);
     }
     return 0;
 }
@@ -3134,10 +3134,10 @@ s16 func_80116FE0_msetup(MsetupMenuState *state) {
         func_80033430_main(motion);
     }
     if (model >= 0) {
-        func_8001ACDC_main(model);
+        Hu3DModelKill(model);
     }
     for (i = 0; i < 2; i++) {
-        func_8001ACDC_main(models[i].model);
+        Hu3DModelKill(models[i].model);
     }
     return 0;
 }

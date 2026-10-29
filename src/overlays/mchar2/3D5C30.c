@@ -65,7 +65,7 @@ void func_801059A0_mchar2(void) {
     omAddObj(0x7D0, 0, 0, -1, func_801067C4_mchar2);
     WipeCreateIn(0, 16);
     D_800CD280_main = 1;
-    func_8001F38C_main(0xC0, 0xE0, 0xFF);
+    Hu3DBGColorSet(0xC0, 0xE0, 0xFF);
     for (i = 0; D_80106DC4_mchar2[i] != 0xFFFF; i++) {}
     D_80106EC0_mchar2 = i;
     func_80045C2C_main();

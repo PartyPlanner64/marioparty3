@@ -170,7 +170,7 @@ void func_801059A0_locked_out(void) {
     D_8010A676_locked_out = 9;
     D_8010A678_locked_out = 0;
     func_80109110_locked_out();
-    func_8001F38C_main(0, 0, 0);
+    Hu3DBGColorSet(0, 0, 0);
     WipeCreateIn(0xFF, 0x10);
 }
 
@@ -419,14 +419,14 @@ void func_801064E0_locked_out(omObjData *object) {
                 break;
             }
             tag = 0x2B9;
-            func_8001ACDC_main(object->model[1]);
+            Hu3DModelKill(object->model[1]);
             object->model[1] = func_8000B108_main(0x3B0002, tag);
             D_8010A67A_locked_out = (f32)func_80109D70_locked_out() * 1.52587890625e-05 * 3.0;
             D_8010A173_locked_out = 2;
             for (i = 0; i < 3; i++) {
                 if (object->model[2 + i] != 0) {
-                    func_8001ACDC_main(object->model[2 + i]);
-                    func_8001ACDC_main(D_8010A638_locked_out[i].unk0E);
+                    Hu3DModelKill(object->model[2 + i]);
+                    Hu3DModelKill(D_8010A638_locked_out[i].unk0E);
                     object->model[2 + i] = 0;
                     D_8010A638_locked_out[i].unk10 = 0;
                 }
@@ -457,7 +457,7 @@ void func_801064E0_locked_out(omObjData *object) {
                     func_8001C92C_main(object->model[2 + i], 0.0f);
                 }
             }
-            func_8001ACDC_main(object->model[5]);
+            Hu3DModelKill(object->model[5]);
             object->model[5] = func_8000B108_main((14 - D_8010A172_locked_out) | 0x3B0000, tag);
             func_80109CDC_locked_out();
             D_8010A676_locked_out = (D_8010A172_locked_out - 1) * 3;
@@ -1400,8 +1400,8 @@ void func_80109CDC_locked_out(void) {
 
     for (i = 0; i < D_8010A676_locked_out; i++) {
         object = D_8010A610_locked_out[i];
-        func_8001ACDC_main(object->model[0]);
-        func_8001ACDC_main(object->model[1]);
+        Hu3DModelKill(object->model[0]);
+        Hu3DModelKill(object->model[1]);
         HuMemFree(object->data);
         object->data = NULL;
         omDelObj(object);

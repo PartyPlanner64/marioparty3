@@ -286,10 +286,10 @@ void func_80020B48_main(CollisionRect *rect, HmfModel *model) {
     s32 z;
     s32 cell;
 
-    model->hmf->unkD0 = (s32)model->unkB4;
+    model->hmf->unkD0 = model->unkB4;
     extent = &rect->extent;
     if (model->unkB4 != NULL) {
-        func_80019668_main((HmfData_UnkD0 *)model->unkB4);
+        func_80019668_main(model->unkB4);
     }
     gridIndex = model->unk10;
     func_8002087C_main(model, mtx);
@@ -356,10 +356,10 @@ void func_80020E94_main(CollisionFan *fan, HmfModel *model) {
     f32 z0;
     f32 z1;
 
-    model->hmf->unkD0 = (s32)model->unkB4;
+    model->hmf->unkD0 = model->unkB4;
     shape = &fan->shape;
     if (model->unkB4 != NULL) {
-        func_80019668_main((HmfData_UnkD0 *)model->unkB4);
+        func_80019668_main(model->unkB4);
     }
     gridIndex = model->unk10;
     func_8002087C_main(model, mtx);
@@ -465,9 +465,9 @@ void func_800216F8_main(CollisionCircle *circle, HmfModel *model) {
     f32 dz;
     f32 *radius = &circle->radius;
 
-    model->hmf->unkD0 = (s32)model->unkB4;
+    model->hmf->unkD0 = model->unkB4;
     if (model->unkB4 != NULL) {
-        func_80019668_main((HmfData_UnkD0 *)model->unkB4);
+        func_80019668_main(model->unkB4);
     }
     gridIndex = model->unk10;
     func_8002087C_main(model, mtx);

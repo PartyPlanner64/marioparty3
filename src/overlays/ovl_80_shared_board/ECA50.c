@@ -385,9 +385,9 @@ void MBModelKill(Object* arg0) {
             D_80102AB0_shared_board = arg0->prev;
         }
         func_8001F304_main(arg0->omObj1->model[0], -1);
-        func_8001ACDC_main(arg0->omObj1->model[0]);
+        Hu3DModelKill(arg0->omObj1->model[0]);
         if (arg0->omObj2 != NULL) {
-            func_8001ACDC_main(arg0->omObj2->model[0]);
+            Hu3DModelKill(arg0->omObj2->model[0]);
         }
 
         for (i = 0; i < arg0->omObj1->mtncnt; i++) {

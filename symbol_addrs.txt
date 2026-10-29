@@ -143,10 +143,14 @@ D_800CE194_main = 0x800CE194; //segment:main size:0x04
 // hmfman
 Hu3DModelCreate = 0x8001A150; //rom:0x1AD50
 Hu3DModelLink = 0x8001A61C; //rom:0x1B21C
+Hu3DModelKill = 0x8001ACDC; //rom:0x1B8DC
+Hu3DModelAllKill = 0x8001AFE4; //rom:0x1BBE4
+Hu3DExec = 0x8001B0B4; //rom:0x1BCB4
 Hu3DModelPosSet = 0x8001C0C4; //rom:0x1CCC4
 Hu3DModelPosGet = 0x8001C114; //rom:0x1CD14
 Hu3DModelRotSet = 0x8001C150; //rom:0x1CD50
 Hu3DModelScaleSet = 0x8001C1A0; //rom:0x1CDA0
+Hu3DBGColorSet = 0x8001F38C; //rom:0x1FF8C
 
 // gamemes
 GMesExec = 0x800367B0; //rom:0x373B0

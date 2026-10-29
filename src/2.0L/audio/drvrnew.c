@@ -24,17 +24,63 @@
 #define CONVERT 173123.404906676
 #define LENGTH (d->output - d->input)
 
-/* Default parameters for the built in effects. They live in the shared .data
- * block rather than in a .data section of this file. */
-extern s32 D_800A2A90_main[]; /* SMALLROOM_PARAMS */
-extern s32 D_800A2AF8_main[]; /* BIGROOM_PARAMS */
-extern s32 D_800A2B80_main[]; /* ECHO_PARAMS */
-extern s32 D_800A2BA8_main[]; /* CHORUS_PARAMS */
-extern s32 D_800A2BD0_main[]; /* FLANGE_PARAMS */
-extern s32 D_800A2BF8_main[]; /* NULL_PARAMS */
+/*
+ * the following arrays contain default parameters for
+ * a few hopefully useful effects.
+ */
+#define ms *(((s32)((f32)44.1)) & ~0x7)
 
-/* init_lpfilter */
-void func_800733E0_main(ALLowPass *lp) {
+static s32 SMALLROOM_PARAMS[26] = {
+    /* sections     length */
+    3, 100 ms,
+    /*                                     chorus  chorus  filter
+       input  output  fbcoef  ffcoef  gain    rate    depth   coef  */
+    0, 54 ms, 9830, -9830, 0, 0, 0, 0,
+    19 ms, 38 ms, 3276, -3276, 0x3fff, 0, 0, 0,
+    0, 60 ms, 5000, 0, 0, 0, 0, 0x5000
+};
+
+static s32 BIGROOM_PARAMS[34] = {
+    /* sections     length */
+    4, 100 ms,
+    /*                                     chorus  chorus  filter
+       input  output  fbcoef  ffcoef  gain    rate    depth   coef  */
+    0, 66 ms, 9830, -9830, 0, 0, 0, 0,
+    22 ms, 54 ms, 3276, -3276, 0x3fff, 0, 0, 0,
+    66 ms, 91 ms, 3276, -3276, 0x3fff, 0, 0, 0,
+    0, 94 ms, 8000, 0, 0, 0, 0, 0x5000
+};
+
+static s32 ECHO_PARAMS[10] = {
+    /* sections     length */
+    1, 200 ms,
+    /*                                     chorus  chorus  filter
+       input  output  fbcoef  ffcoef  gain    rate    depth   coef  */
+    0, 179 ms, 12000, 0, 0x7fff, 0, 0, 0
+};
+
+static s32 CHORUS_PARAMS[10] = {
+    /* sections     length */
+    1, 20 ms,
+    /*                                     chorus  chorus  filter
+       input  output  fbcoef  ffcoef  gain    rate    depth   coef  */
+    0, 5 ms, 0x4000, 0, 0x7fff, 7600, 700, 0
+};
+
+static s32 FLANGE_PARAMS[10] = {
+    /* sections     length */
+    1, 20 ms,
+    /*                                     chorus  chorus  filter
+       input  output  fbcoef  ffcoef  gain    rate    depth   coef  */
+    0, 5 ms, 0, 0x5fff, 0x7fff, 380, 500, 0
+};
+
+static s32 NULL_PARAMS[10] = {
+    0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0
+};
+
+void init_lpfilter(ALLowPass *lp) {
     s32 i, temp;
     s16 fc;
     f64 ffc, fcoef;
@@ -57,38 +103,37 @@ void func_800733E0_main(ALLowPass *lp) {
     }
 }
 
-/* alFxNew */
-void func_80073484_main(ALFx *r, ALSynConfig *c, ALHeap *hp) {
+void alFxNew(ALFx *r, ALSynConfig *c, ALHeap *hp) {
     u16 i, j, k;
     s32 *param = 0;
     ALFilter *f = (ALFilter *)r;
     ALDelay *d;
 
-    func_80075B00_main(f, 0, func_800762B4_main, AL_FX);
-    f->handler = func_80075F40_main;
-    r->paramHdl = func_800762C8_main;
+    alFilterNew(f, 0, alFxParam, AL_FX);
+    f->handler = alFxPull;
+    r->paramHdl = alFxParamHdl;
 
     switch (c->fxType) {
         case AL_FX_SMALLROOM:
-            param = D_800A2A90_main;
+            param = SMALLROOM_PARAMS;
             break;
         case AL_FX_BIGROOM:
-            param = D_800A2AF8_main;
+            param = BIGROOM_PARAMS;
             break;
         case AL_FX_ECHO:
-            param = D_800A2B80_main;
+            param = ECHO_PARAMS;
             break;
         case AL_FX_CHORUS:
-            param = D_800A2BA8_main;
+            param = CHORUS_PARAMS;
             break;
         case AL_FX_FLANGE:
-            param = D_800A2BD0_main;
+            param = FLANGE_PARAMS;
             break;
         case AL_FX_CUSTOM:
             param = c->params;
             break;
         default:
-            param = D_800A2BF8_main;
+            param = NULL_PARAMS;
             break;
     }
 
@@ -97,8 +142,8 @@ void func_80073484_main(ALFx *r, ALSynConfig *c, ALHeap *hp) {
     r->section_count = param[j++];
     r->length = param[j++];
 
-    r->delay = func_80077290_main(NULL, 0, hp, r->section_count, sizeof(ALDelay));
-    r->base = func_80077290_main(NULL, 0, hp, r->length, sizeof(s16));
+    r->delay = alHeapDBAlloc(NULL, 0, hp, r->section_count, sizeof(ALDelay));
+    r->base = alHeapDBAlloc(NULL, 0, hp, r->length, sizeof(s16));
     r->input = r->base;
 
     for (k = 0; k < r->length; k++) {
@@ -118,8 +163,8 @@ void func_80073484_main(ALFx *r, ALSynConfig *c, ALHeap *hp) {
             d->rsgain = (((f32)param[j++]) / CONVERT) * LENGTH;
             d->rsval = 1.0;
             d->rsdelta = 0.0;
-            d->rs = func_80077290_main(NULL, 0, hp, 1, sizeof(ALResampler));
-            d->rs->state = func_80077290_main(NULL, 0, hp, 1, sizeof(RESAMPLE_STATE));
+            d->rs = alHeapDBAlloc(NULL, 0, hp, 1, sizeof(ALResampler));
+            d->rs->state = alHeapDBAlloc(NULL, 0, hp, 1, sizeof(RESAMPLE_STATE));
             d->rs->delta = 0.0;
             d->rs->first = 1;
         } else {
@@ -129,10 +174,10 @@ void func_80073484_main(ALFx *r, ALSynConfig *c, ALHeap *hp) {
         }
 
         if (param[j]) {
-            d->lp = func_80077290_main(NULL, 0, hp, 1, sizeof(ALLowPass));
-            d->lp->fstate = func_80077290_main(NULL, 0, hp, 1, sizeof(POLEF_STATE));
+            d->lp = alHeapDBAlloc(NULL, 0, hp, 1, sizeof(ALLowPass));
+            d->lp->fstate = alHeapDBAlloc(NULL, 0, hp, 1, sizeof(POLEF_STATE));
             d->lp->fc = param[j++];
-            func_800733E0_main(d->lp);
+            init_lpfilter(d->lp);
         } else {
             d->lp = 0;
             j++;
@@ -140,11 +185,10 @@ void func_80073484_main(ALFx *r, ALSynConfig *c, ALHeap *hp) {
     }
 }
 
-/* alEnvmixerNew */
-void func_8007391C_main(ALEnvMixer *e, ALHeap *hp) {
-    func_80075B00_main((ALFilter *)e, func_80074B00_main, func_80075000_main, AL_ENVMIX);
+void alEnvmixerNew(ALEnvMixer *e, ALHeap *hp) {
+    alFilterNew((ALFilter *)e, alEnvmixerPull, alEnvmixerParam, AL_ENVMIX);
 
-    e->state = func_80077290_main(NULL, 0, hp, 1, sizeof(ENVMIX_STATE));
+    e->state = alHeapDBAlloc(NULL, 0, hp, 1, sizeof(ENVMIX_STATE));
 
     e->first = 1;
     e->motion = AL_STOPPED;
@@ -167,12 +211,11 @@ void func_8007391C_main(ALEnvMixer *e, ALHeap *hp) {
     e->sources = 0;
 }
 
-/* alLoadNew */
-void func_800739D4_main(ALLoadFilter *f, ALDMANew dmaNew, ALHeap *hp) {
-    func_80075B00_main((ALFilter *)f, func_80073C10_main, func_800743F0_main, AL_ADPCM);
+void alLoadNew(ALLoadFilter *f, ALDMANew dmaNew, ALHeap *hp) {
+    alFilterNew((ALFilter *)f, alAdpcmPull, alLoadParam, AL_ADPCM);
 
-    f->state = func_80077290_main(NULL, 0, hp, 1, sizeof(ADPCM_STATE));
-    f->lstate = func_80077290_main(NULL, 0, hp, 1, sizeof(ADPCM_STATE));
+    f->state = alHeapDBAlloc(NULL, 0, hp, 1, sizeof(ADPCM_STATE));
+    f->lstate = alHeapDBAlloc(NULL, 0, hp, 1, sizeof(ADPCM_STATE));
 
     f->dma = dmaNew(&f->dmaState);
 
@@ -181,11 +224,10 @@ void func_800739D4_main(ALLoadFilter *f, ALDMANew dmaNew, ALHeap *hp) {
     f->memin = 0;
 }
 
-/* alResampleNew */
-void func_80073A84_main(ALResampler *r, ALHeap *hp) {
-    func_80075B00_main((ALFilter *)r, func_80075C90_main, func_80075E7C_main, AL_RESAMPLE);
+void alResampleNew(ALResampler *r, ALHeap *hp) {
+    alFilterNew((ALFilter *)r, alResamplePull, alResampleParam, AL_RESAMPLE);
 
-    r->state = func_80077290_main(NULL, 0, hp, 1, sizeof(RESAMPLE_STATE));
+    r->state = alHeapDBAlloc(NULL, 0, hp, 1, sizeof(RESAMPLE_STATE));
     r->delta = 0.0;
     r->first = 1;
     r->motion = AL_STOPPED;
@@ -195,25 +237,22 @@ void func_80073A84_main(ALResampler *r, ALHeap *hp) {
     r->ctrlTail = 0;
 }
 
-/* alAuxBusNew */
-void func_80073B10_main(ALAuxBus *m, void *sources, s32 maxSources) {
-    func_80075B00_main((ALFilter *)m, alAuxBusPull, alAuxBusParam, AL_AUXBUS);
+void alAuxBusNew(ALAuxBus *m, void *sources, s32 maxSources) {
+    alFilterNew((ALFilter *)m, alAuxBusPull, alAuxBusParam, AL_AUXBUS);
     m->sourceCount = 0;
     m->maxSources = maxSources;
     m->sources = (ALFilter **)sources;
 }
 
-/* alMainBusNew */
-void func_80073B6C_main(ALMainBus *m, void *sources, s32 maxSources) {
-    func_80075B00_main((ALFilter *)m, func_80075B20_main, func_80075C60_main, AL_MAINBUS);
+void alMainBusNew(ALMainBus *m, void *sources, s32 maxSources) {
+    alFilterNew((ALFilter *)m, alMainBusPull, alMainBusParam, AL_MAINBUS);
     m->sourceCount = 0;
     m->maxSources = maxSources;
     m->sources = (ALFilter **)sources;
 }
 
-/* alSaveNew */
-void func_80073BC8_main(ALSave *f) {
-    func_80075B00_main((ALFilter *)f, func_80076AE0_main, func_80076B88_main, AL_SAVE);
+void alSaveNew(ALSave *f) {
+    alFilterNew((ALFilter *)f, alSavePull, alSaveParam, AL_SAVE);
 
     f->dramout = 0;
     f->first = 1;

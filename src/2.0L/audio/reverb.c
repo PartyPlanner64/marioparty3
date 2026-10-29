@@ -13,17 +13,16 @@
         in = t;       \
     }
 
-Acmd *func_800764B8_main(ALFx *r, ALDelay *d, s32 buff, s32 incount, Acmd *p);  /* _loadOutputBuffer */
-Acmd *func_800766D0_main(ALFx *r, s16 *curr_ptr, s32 buff, s32 count, Acmd *p); /* _loadBuffer */
-Acmd *func_80076840_main(ALFx *r, s16 *curr_ptr, s32 buff, s32 count, Acmd *p); /* _saveBuffer */
-Acmd *func_800769B0_main(ALLowPass *lp, s32 buff, s32 count, Acmd *p);          /* _filterBuffer */
-f32 func_80076A4C_main(ALDelay *d, s32 count);                                  /* _doModFunc */
+Acmd *_loadOutputBuffer(ALFx *r, ALDelay *d, s32 buff, s32 incount, Acmd *p);
+Acmd *_loadBuffer(ALFx *r, s16 *curr_ptr, s32 buff, s32 count, Acmd *p);
+Acmd *_saveBuffer(ALFx *r, s16 *curr_ptr, s32 buff, s32 count, Acmd *p);
+Acmd *_filterBuffer(ALLowPass *lp, s32 buff, s32 count, Acmd *p);
+f32 _doModFunc(ALDelay *d, s32 count);
 
 /***********************************************************************
  * Reverb filter public interfaces
  ***********************************************************************/
-/* alFxPull */
-Acmd *func_80075F40_main(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p) {
+Acmd *alFxPull(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p) {
     Acmd *ptr = p;
     ALFx *r = (ALFx *)filter;
     ALFilter *source = r->filter.source;
@@ -45,7 +44,7 @@ Acmd *func_80075F40_main(void *filter, s16 *outp, s32 outCount, s32 sampleOffset
     aMix(ptr++, 0, 0xda83, AL_AUX_L_OUT, input); /* .707L = L - .293L */
     aMix(ptr++, 0, 0x5a82, AL_AUX_R_OUT, input); /* mix the AuxL and AuxR into the AuxL */
     /* and write the mixed value to the delay line at r->input */
-    ptr = func_80076840_main(r, r->input, input, outCount, ptr);
+    ptr = _saveBuffer(r, r->input, input, outCount, ptr);
 
     aClearBuffer(ptr++, output, outCount << 1); /* clear the AL_AUX_R_OUT */
 
@@ -57,28 +56,28 @@ Acmd *func_80075F40_main(void *filter, s16 *outp, s32 outCount, s32 sampleOffset
         if (in_ptr == prev_out_ptr) {
             SWAP(buff1, buff2);
         } else { /* load data at in_ptr into buff1 */
-            ptr = func_800766D0_main(r, in_ptr, buff1, outCount, ptr);
+            ptr = _loadBuffer(r, in_ptr, buff1, outCount, ptr);
         }
-        ptr = func_800764B8_main(r, d, buff2, outCount, ptr);
+        ptr = _loadOutputBuffer(r, d, buff2, outCount, ptr);
 
         if (d->ffcoef) {
             aMix(ptr++, 0, (u16)d->ffcoef, buff1, buff2);
             if (!d->rs && !d->lp) {
-                ptr = func_80076840_main(r, out_ptr, buff2, outCount, ptr);
+                ptr = _saveBuffer(r, out_ptr, buff2, outCount, ptr);
             }
         }
 
         if (d->fbcoef) {
             aMix(ptr++, 0, (u16)d->fbcoef, buff2, buff1);
-            ptr = func_80076840_main(r, in_ptr, buff1, outCount, ptr);
+            ptr = _saveBuffer(r, in_ptr, buff1, outCount, ptr);
         }
 
         if (d->lp) {
-            ptr = func_800769B0_main(d->lp, buff2, outCount, ptr);
+            ptr = _filterBuffer(d->lp, buff2, outCount, ptr);
         }
 
         if (!d->rs) {
-            ptr = func_80076840_main(r, out_ptr, buff2, outCount, ptr);
+            ptr = _saveBuffer(r, out_ptr, buff2, outCount, ptr);
         }
 
         if (d->gain) {
@@ -106,8 +105,7 @@ Acmd *func_80075F40_main(void *filter, s16 *outp, s32 outCount, s32 sampleOffset
     return ptr;
 }
 
-/* alFxParam */
-s32 func_800762B4_main(void *filter, s32 paramID, void *param) {
+s32 alFxParam(void *filter, s32 paramID, void *param) {
     if (paramID == AL_FILTER_SET_SOURCE) {
         ALFilter *f = (ALFilter *)filter;
         f->source = (ALFilter *)param;
@@ -120,8 +118,7 @@ s32 func_800762B4_main(void *filter, s32 paramID, void *param) {
  * verify the validity of the paramID or the param value. input and output
  * values must be 8 byte aligned, so round down any param passed.
  */
-/* alFxParamHdl */
-s32 func_800762C8_main(void *filter, s32 paramID, void *param) {
+s32 alFxParamHdl(void *filter, s32 paramID, void *param) {
     ALFx *f = (ALFx *)filter;
     s32 p = (paramID - 2) % 8;
     s32 s = (paramID - 2) / 8;
@@ -179,15 +176,14 @@ s32 func_800762C8_main(void *filter, s32 paramID, void *param) {
         case LPFILT_PARAM:
             if (f->delay[s].lp) {
                 f->delay[s].lp->fc = (s16)val;
-                func_800733E0_main(f->delay[s].lp);
+                init_lpfilter(f->delay[s].lp);
             }
             break;
     }
     return 0;
 }
 
-/* _loadOutputBuffer */
-Acmd *func_800764B8_main(ALFx *r, ALDelay *d, s32 buff, s32 incount, Acmd *p) {
+Acmd *_loadOutputBuffer(ALFx *r, ALDelay *d, s32 buff, s32 incount, Acmd *p) {
     Acmd *ptr = p;
     s32 ratio, count, rbuff = AL_TEMP_2;
     s16 *out_ptr;
@@ -199,7 +195,7 @@ Acmd *func_800764B8_main(ALFx *r, ALDelay *d, s32 buff, s32 incount, Acmd *p) {
      */
     if (d->rs) {
         length = d->output - d->input;
-        delta = func_80076A4C_main(d, incount); /* get the number of samples to modulate by */
+        delta = _doModFunc(d, incount); /* get the number of samples to modulate by */
         /*
          * find ratio of delta to delay length and quantize
          *  to same resolution as resampler
@@ -228,7 +224,7 @@ Acmd *func_800764B8_main(ALFx *r, ALDelay *d, s32 buff, s32 incount, Acmd *p) {
                                                to align the buffer*/
         /* load the rbuff with samples, note that there will be ramalign worth of
          *  samples at the begining which you don't care about. */
-        ptr = func_800766D0_main(r, out_ptr - ramalign, rbuff, count + ramalign, ptr);
+        ptr = _loadBuffer(r, out_ptr - ramalign, rbuff, count + ramalign, ptr);
 
         /* convert fratio to 16 bit fraction for microcode use */
         ratio = (s32)(fratio * UNITY_PITCH);
@@ -240,7 +236,7 @@ Acmd *func_800764B8_main(ALFx *r, ALDelay *d, s32 buff, s32 incount, Acmd *p) {
         d->rsdelta += count - incount; /* add the number of samples to d->rsdelta */
     } else {
         out_ptr = &r->input[-d->output];
-        ptr = func_800766D0_main(r, out_ptr, buff, incount, ptr);
+        ptr = _loadBuffer(r, out_ptr, buff, incount, ptr);
     }
 
     return ptr;
@@ -252,8 +248,7 @@ Acmd *func_800764B8_main(ALFx *r, ALDelay *d, s32 buff, s32 incount, Acmd *p) {
  * Cause count bytes of data at curr_ptr (within the delay line) to be
  * loaded into buff. (Buff is a dmem buffer)
  */
-/* _loadBuffer */
-Acmd *func_800766D0_main(ALFx *r, s16 *curr_ptr, s32 buff, s32 count, Acmd *p) {
+Acmd *_loadBuffer(ALFx *r, s16 *curr_ptr, s32 buff, s32 count, Acmd *p) {
     Acmd *ptr = p;
     s32 after_end, before_end;
     s16 *updated_ptr, *delay_end;
@@ -289,8 +284,7 @@ Acmd *func_800766D0_main(ALFx *r, s16 *curr_ptr, s32 buff, s32 count, Acmd *p) {
  * space. If the write goes past the end of r->base, it will wrap around
  * Cause count bytes of data at buff to be written to delay line, curr_ptr.
  */
-/* _saveBuffer */
-Acmd *func_80076840_main(ALFx *r, s16 *curr_ptr, s32 buff, s32 count, Acmd *p) {
+Acmd *_saveBuffer(ALFx *r, s16 *curr_ptr, s32 buff, s32 count, Acmd *p) {
     Acmd *ptr = p;
     s32 after_end, before_end;
     s16 *updated_ptr, *delay_end;
@@ -318,8 +312,7 @@ Acmd *func_80076840_main(ALFx *r, s16 *curr_ptr, s32 buff, s32 count, Acmd *p) {
     return ptr;
 }
 
-/* _filterBuffer */
-Acmd *func_800769B0_main(ALLowPass *lp, s32 buff, s32 count, Acmd *p) {
+Acmd *_filterBuffer(ALLowPass *lp, s32 buff, s32 count, Acmd *p) {
     Acmd *ptr = p;
 
     aSetBuffer(ptr++, 0, buff, buff, count << 1);
@@ -338,8 +331,7 @@ Acmd *func_800769B0_main(ALLowPass *lp, s32 buff, s32 count, Acmd *p) {
  * should go at it's full chorus. In otherwords, this function returns a number
  * of samples the output pointer should modulate backwards.
  */
-/* _doModFunc */
-f32 func_80076A4C_main(ALDelay *d, s32 count) {
+f32 _doModFunc(ALDelay *d, s32 count) {
     f32 val;
 
     /*

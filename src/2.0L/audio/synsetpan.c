@@ -1,13 +1,12 @@
 #include "common.h"
 #include "PR/synthInternals.h"
 
-/* alSynSetPan */
-void func_80078A10_main(ALSynth *drvr, ALVoice *voice, ALPan pan) {
+void alSynSetPan(ALSynth *drvr, ALVoice *voice, ALPan pan) {
     ALParam *param;
     ALFilter *knob;
 
     if (voice->pvoice != NULL) {
-        param = func_8007825C_main();
+        param = __allocParam();
 
         if (param != NULL) {
             param->delta = drvr->paramSamples + voice->pvoice->offset;

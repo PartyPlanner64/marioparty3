@@ -5,8 +5,7 @@
  * Resampler filter public interfaces
  ***********************************************************************/
 
-/* alResamplePull */
-Acmd *func_80075C90_main(void *filter, s16 *outp, s32 outCnt, s32 sampleOffset, Acmd *p) {
+Acmd *alResamplePull(void *filter, s16 *outp, s32 outCnt, s32 sampleOffset, Acmd *p) {
     ALResampler *f = (ALResampler *)filter;
     Acmd *ptr = p;
     s16 inp;
@@ -66,8 +65,7 @@ Acmd *func_80075C90_main(void *filter, s16 *outp, s32 outCnt, s32 sampleOffset, 
     return ptr;
 }
 
-/* alResampleParam */
-s32 func_80075E7C_main(void *filter, s32 paramID, void *param) {
+s32 alResampleParam(void *filter, s32 paramID, void *param) {
     ALFilter *f = (ALFilter *)filter;
     ALResampler *r = (ALResampler *)filter;
     union {

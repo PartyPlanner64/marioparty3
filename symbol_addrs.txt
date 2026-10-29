@@ -1321,6 +1321,125 @@ alHeapInit = 0x80077250; //rom:0x77E50
 //copy.c
 alCopy = 0x800772E0; //rom:0x77EE0
 
+//drvrnew.c
+SMALLROOM_PARAMS = 0x800A2A90; //size:0x68
+BIGROOM_PARAMS = 0x800A2AF8; //size:0x88
+ECHO_PARAMS = 0x800A2B80; //size:0x28
+CHORUS_PARAMS = 0x800A2BA8; //size:0x28
+FLANGE_PARAMS = 0x800A2BD0; //size:0x28
+NULL_PARAMS = 0x800A2BF8; //size:0x28
+init_lpfilter = 0x800733E0; //rom:0x73FE0
+alFxNew = 0x80073484; //rom:0x74084
+alEnvmixerNew = 0x8007391C; //rom:0x7451C
+alLoadNew = 0x800739D4; //rom:0x745D4
+alResampleNew = 0x80073A84; //rom:0x74684
+alAuxBusNew = 0x80073B10; //rom:0x74710
+alMainBusNew = 0x80073B6C; //rom:0x7476C
+alSaveNew = 0x80073BC8; //rom:0x747C8
+
+//load.c
+alAdpcmPull = 0x80073C10; //rom:0x74810
+alRaw16Pull = 0x80074054; //rom:0x74C54
+alLoadParam = 0x800743F0; //rom:0x74FF0
+_decodeChunk = 0x8007459C; //rom:0x7519C
+
+//env.c
+eqpower = 0x800A2C20; //size:0x100
+alEnvmixerPull = 0x80074B00; //rom:0x75700
+alEnvmixerParam = 0x80075000; //rom:0x75C00
+_pullSubFrame = 0x800750D4; //rom:0x75CD4
+_frexpf = 0x800753A8; //rom:0x75FA8
+_ldexpf = 0x80075488; //rom:0x76088
+_getRate = 0x800754AC; //rom:0x760AC
+_getVol = 0x8007572C; //rom:0x7632C
+
+//event.c
+alEvtqNew = 0x800757B0; //rom:0x763B0
+alEvtqNextEvent = 0x8007582C; //rom:0x7642C
+alEvtqPostEvent = 0x800758C4; //rom:0x764C4
+alEvtqFlush = 0x800759D0; //rom:0x765D0
+alEvtqFlushType = 0x80075A48; //rom:0x76648
+
+//filter.c
+alFilterNew = 0x80075B00; //rom:0x76700
+
+//mainbus.c
+alMainBusPull = 0x80075B20; //rom:0x76720
+alMainBusParam = 0x80075C60; //rom:0x76860
+
+//resample.c
+alResamplePull = 0x80075C90; //rom:0x76890
+alResampleParam = 0x80075E7C; //rom:0x76A7C
+
+//reverb.c
+alFxPull = 0x80075F40; //rom:0x76B40
+alFxParam = 0x800762B4; //rom:0x76EB4
+alFxParamHdl = 0x800762C8; //rom:0x76EC8
+_loadOutputBuffer = 0x800764B8; //rom:0x770B8
+_loadBuffer = 0x800766D0; //rom:0x772D0
+_saveBuffer = 0x80076840; //rom:0x77440
+_filterBuffer = 0x800769B0; //rom:0x775B0
+_doModFunc = 0x80076A4C; //rom:0x7764C
+
+//save.c
+alSavePull = 0x80076AE0; //rom:0x776E0
+alSaveParam = 0x80076B88; //rom:0x77788
+
+//seq.c
+alSeqNew = 0x80076BB0; //rom:0x777B0
+alSeqNextEvent = 0x80076C98; //rom:0x77898
+__alSeqNextDelta = 0x80076E00; //rom:0x77A00
+alSeqTicksToSec = 0x80076E68; //rom:0x77A68
+alSeqSecToTicks = 0x80076ED0; //rom:0x77AD0
+alSeqNewMarker = 0x80076F60; //rom:0x77B60
+alSeqSetLoc = 0x8007707C; //rom:0x77C7C
+alSeqGetLoc = 0x80077098; //rom:0x77C98
+read8 = 0x800770B4; //rom:0x77CB4
+read16 = 0x800770C8; //rom:0x77CC8
+read32 = 0x800770F8; //rom:0x77CF8
+readVarLen = 0x80077148; //rom:0x77D48
+
+//heapalloc.c
+alHeapDBAlloc = 0x80077290; //rom:0x77E90
+
+//synthesizer.c
+alAudioFrame = 0x800780AC; //rom:0x78CAC
+__allocParam = 0x8007825C; //rom:0x78E5C
+__freeParam = 0x80078288; //rom:0x78E88
+_collectPVoices = 0x800782A0; //rom:0x78EA0
+_freePVoice = 0x800782F4; //rom:0x78EF4
+_timeToSamplesNoRound = 0x80078334; //rom:0x78F34
+_timeToSamples = 0x8007837C; //rom:0x78F7C
+__nextSampleTime = 0x800783C8; //rom:0x78FC8
+
+//synfreevoice.c
+alSynFreeVoice = 0x80078480; //rom:0x79080
+
+//synallocvoice.c
+alSynAllocVoice = 0x80078520; //rom:0x79120
+_allocatePVoice = 0x80078648; //rom:0x79248
+
+//synstopvoice.c
+alSynStopVoice = 0x80078700; //rom:0x79300
+
+//synstartvoice.c
+alSynStartVoice = 0x80078780; //rom:0x79380
+
+//synsetpitch.c
+alSynSetPitch = 0x80078820; //rom:0x79420
+
+//synsetvol.c
+alSynSetVol = 0x800788B0; //rom:0x794B0
+
+//synsetfxmix.c
+alSynSetFXMix = 0x80078970; //rom:0x79570
+
+//synsetpan.c
+alSynSetPan = 0x80078A10; //rom:0x79610
+
+//synallocfx.c
+alSynAllocFX = 0x80078AA0; //rom:0x796A0
+
 __osSiAccessQueue = 0x800D6B48; //size:0x18
 mbovlhisidx = 0x800D6B60; //size:0x2
 

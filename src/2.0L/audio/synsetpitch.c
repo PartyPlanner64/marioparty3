@@ -1,13 +1,12 @@
 #include "common.h"
 #include "PR/synthInternals.h"
 
-/* alSynSetPitch */
-void func_80078820_main(ALSynth *drvr, ALVoice *voice, f32 ratio) {
+void alSynSetPitch(ALSynth *drvr, ALVoice *voice, f32 ratio) {
     ALParam *param;
     ALFilter *knob;
 
     if (voice->pvoice != NULL) {
-        param = func_8007825C_main();
+        param = __allocParam();
 
         if (param != NULL) {
             param->delta = drvr->paramSamples + voice->pvoice->offset;

@@ -1,13 +1,12 @@
 #include "common.h"
 #include "PR/synthInternals.h"
 
-/* alSynStopVoice */
-void func_80078700_main(ALSynth *drvr, ALVoice *voice) {
+void alSynStopVoice(ALSynth *drvr, ALVoice *voice) {
     ALParam *param;
     ALFilter *knob;
 
     if (voice->pvoice != NULL) {
-        param = func_8007825C_main();
+        param = __allocParam();
 
         if (param != NULL) {
             param->delta = drvr->paramSamples + voice->pvoice->offset;

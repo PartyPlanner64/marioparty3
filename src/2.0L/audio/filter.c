@@ -1,8 +1,7 @@
 #include "common.h"
 #include "PR/synthInternals.h"
 
-/* alFilterNew */
-void func_80075B00_main(ALFilter *f, ALCmdHandler h, ALSetParam s, s32 type) {
+void alFilterNew(ALFilter *f, ALCmdHandler h, ALSetParam s, s32 type) {
     f->source = 0;
     f->handler = h;
     f->setParam = s;

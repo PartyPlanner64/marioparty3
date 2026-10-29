@@ -1,10 +1,9 @@
 #include "common.h"
 #include "PR/synthInternals.h"
 
-s32 func_80078648_main(ALSynth *drvr, PVoice **pvoice, s16 priority); /* _allocatePVoice */
+s32 _allocatePVoice(ALSynth *drvr, PVoice **pvoice, s16 priority);
 
-/* alSynAllocVoice */
-s32 func_80078520_main(ALSynth *drvr, ALVoice *voice, ALVoiceConfig *vc) {
+s32 alSynAllocVoice(ALSynth *drvr, ALVoice *voice, ALVoiceConfig *vc) {
     PVoice *pvoice = 0;
     ALFilter *f;
     ALParam *update;
@@ -17,7 +16,7 @@ s32 func_80078520_main(ALSynth *drvr, ALVoice *voice, ALVoiceConfig *vc) {
     voice->state = AL_STOPPED;
     voice->pvoice = 0;
 
-    stolen = func_80078648_main(drvr, &pvoice, vc->priority);
+    stolen = _allocatePVoice(drvr, &pvoice, vc->priority);
 
     if (pvoice) { /* if we were able to allocate a voice */
         f = pvoice->channelKnob;
@@ -29,7 +28,7 @@ s32 func_80078520_main(ALSynth *drvr, ALVoice *voice, ALVoiceConfig *vc) {
             /*
              * ramp down stolen voice
              */
-            update = func_8007825C_main();
+            update = __allocParam();
             update->delta = drvr->paramSamples;
             update->type = AL_FILTER_SET_VOLUME;
             update->data.i = 0;
@@ -39,7 +38,7 @@ s32 func_80078520_main(ALSynth *drvr, ALVoice *voice, ALVoiceConfig *vc) {
             /*
              * stop stolen voice
              */
-            update = func_8007825C_main();
+            update = __allocParam();
             if (update) {
                 update->delta = drvr->paramSamples + pvoice->offset;
                 update->type = AL_FILTER_STOP_VOICE;
@@ -57,8 +56,7 @@ s32 func_80078520_main(ALSynth *drvr, ALVoice *voice, ALVoiceConfig *vc) {
     return (pvoice != 0);
 }
 
-/* _allocatePVoice */
-s32 func_80078648_main(ALSynth *drvr, PVoice **pvoice, s16 priority) {
+s32 _allocatePVoice(ALSynth *drvr, PVoice **pvoice, s16 priority) {
     ALLink *dl;
     PVoice *pv;
     s32 stolen = 0;

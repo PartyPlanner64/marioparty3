@@ -3,22 +3,42 @@
 
 #define EQPOWER_LENGTH 128
 
-/* eqpower, the equal power pan table. It lives in the shared .data block
- * rather than in a .data section of this file. */
-extern s16 D_800A2C20_main[EQPOWER_LENGTH];
+static s16 eqpower[EQPOWER_LENGTH] = {
+    32767, 32764, 32757, 32744, 32727, 32704,
+    32677, 32644, 32607, 32564, 32517, 32464,
+    32407, 32344, 32277, 32205, 32127, 32045,
+    31958, 31866, 31770, 31668, 31561, 31450,
+    31334, 31213, 31087, 30957, 30822, 30682,
+    30537, 30388, 30234, 30075, 29912, 29744,
+    29572, 29395, 29214, 29028, 28838, 28643,
+    28444, 28241, 28033, 27821, 27605, 27385,
+    27160, 26931, 26698, 26461, 26220, 25975,
+    25726, 25473, 25216, 24956, 24691, 24423,
+    24151, 23875, 23596, 23313, 23026, 22736,
+    22442, 22145, 21845, 21541, 21234, 20924,
+    20610, 20294, 19974, 19651, 19325, 18997,
+    18665, 18331, 17993, 17653, 17310, 16965,
+    16617, 16266, 15913, 15558, 15200, 14840,
+    14477, 14113, 13746, 13377, 13006, 12633,
+    12258, 11881, 11503, 11122, 10740, 10357,
+    9971, 9584, 9196, 8806, 8415, 8023,
+    7630, 7235, 6839, 6442, 6044, 5646,
+    5246, 4845, 4444, 4042, 3640, 3237,
+    2833, 2429, 2025, 1620, 1216, 810,
+    405, 0
+};
 
 /*
  * prototypes for private enveloper functions
  */
-Acmd *func_800750D4_main(void *filter, s16 *inp, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p); /* _pullSubFrame */
-s16 func_800754AC_main(f64 vol, f64 tgt, s32 count, u16 *ratel);                                      /* _getRate */
-f32 func_8007572C_main(f32 ivol, s32 samples, s16 ratem, u16 ratel);                                  /* _getVol */
+static Acmd *_pullSubFrame(void *filter, s16 *inp, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p);
+static s16 _getRate(f64 vol, f64 tgt, s32 count, u16 *ratel);
+static f32 _getVol(f32 ivol, s32 samples, s16 ratem, u16 ratel);
 
 /***********************************************************************
  * Enveloper filter public interfaces
  ***********************************************************************/
-/* alEnvmixerPull */
-Acmd *func_80074B00_main(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p) {
+Acmd *alEnvmixerPull(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p) {
     Acmd *ptr = p;
     ALEnvMixer *e = (ALEnvMixer *)filter;
     s16 inp;
@@ -66,8 +86,8 @@ Acmd *func_80074B00_main(void *filter, s16 *outp, s32 outCount, s32 sampleOffset
                 tmp = ((s32)param->volume * (s32)param->volume) >> 15;
                 e->volume = (s16)tmp;
                 e->pan = param->pan;
-                e->dryamt = D_800A2C20_main[param->fxMix];
-                e->wetamt = D_800A2C20_main[EQPOWER_LENGTH - param->fxMix - 1];
+                e->dryamt = eqpower[param->fxMix];
+                e->wetamt = eqpower[EQPOWER_LENGTH - param->fxMix - 1];
 
                 if (param->samples) {
                     e->cvolL = 1;
@@ -77,9 +97,9 @@ Acmd *func_80074B00_main(void *filter, s16 *outp, s32 outCount, s32 sampleOffset
                      * Attack time is zero. Simply set the
                      * volume. We don't want an attack segment.
                      */
-                    e->cvolL = (e->volume * D_800A2C20_main[e->pan]) >> 15;
+                    e->cvolL = (e->volume * eqpower[e->pan]) >> 15;
                     e->cvolR = (e->volume *
-                                D_800A2C20_main[EQPOWER_LENGTH - e->pan - 1]) >>
+                                eqpower[EQPOWER_LENGTH - e->pan - 1]) >>
                                15;
                 }
 
@@ -100,16 +120,16 @@ Acmd *func_80074B00_main(void *filter, s16 *outp, s32 outCount, s32 sampleOffset
             case AL_FILTER_SET_FXAMT:
             case AL_FILTER_SET_PAN:
             case AL_FILTER_SET_VOLUME:
-                ptr = func_800750D4_main(e, &inp, &loutp, samples, sampleOffset, ptr);
+                ptr = _pullSubFrame(e, &inp, &loutp, samples, sampleOffset, ptr);
 
                 if (e->delta >= e->segEnd) {
                     /*
                      * We should have reached our target, calculate
                      * target in case e->segEnd was 0
                      */
-                    e->ltgt = (e->volume * D_800A2C20_main[e->pan]) >> 15;
+                    e->ltgt = (e->volume * eqpower[e->pan]) >> 15;
                     e->rtgt = (e->volume *
-                               D_800A2C20_main[EQPOWER_LENGTH - e->pan - 1]) >>
+                               eqpower[EQPOWER_LENGTH - e->pan - 1]) >>
                               15;
                     e->delta = e->segEnd; /* To prevent overflow */
                     e->cvolL = e->ltgt;
@@ -118,8 +138,8 @@ Acmd *func_80074B00_main(void *filter, s16 *outp, s32 outCount, s32 sampleOffset
                     /*
                      * Estimate the current volume
                      */
-                    e->cvolL = func_8007572C_main(e->cvolL, e->delta, e->lratm, e->lratl);
-                    e->cvolR = func_8007572C_main(e->cvolR, e->delta, e->rratm, e->rratl);
+                    e->cvolL = _getVol(e->cvolL, e->delta, e->lratm, e->lratl);
+                    e->cvolR = _getVol(e->cvolR, e->delta, e->rratm, e->rratl);
                 }
 
                 /*
@@ -161,8 +181,8 @@ Acmd *func_80074B00_main(void *filter, s16 *outp, s32 outCount, s32 sampleOffset
                 }
 
                 if (e->ctrlList->type == AL_FILTER_SET_FXAMT) {
-                    e->dryamt = D_800A2C20_main[e->ctrlList->data.i];
-                    e->wetamt = D_800A2C20_main[EQPOWER_LENGTH - e->ctrlList->data.i - 1];
+                    e->dryamt = eqpower[e->ctrlList->data.i];
+                    e->wetamt = eqpower[EQPOWER_LENGTH - e->ctrlList->data.i - 1];
                 }
 
                 /*
@@ -193,7 +213,7 @@ Acmd *func_80074B00_main(void *filter, s16 *outp, s32 outCount, s32 sampleOffset
                 /*
                  * Changing to STOPPED and reset the filter
                  */
-                ptr = func_800750D4_main(e, &inp, &loutp, samples, sampleOffset, ptr);
+                ptr = _pullSubFrame(e, &inp, &loutp, samples, sampleOffset, ptr);
                 (*e->filter.setParam)(&e->filter, AL_FILTER_RESET, 0);
             } break;
 
@@ -201,7 +221,7 @@ Acmd *func_80074B00_main(void *filter, s16 *outp, s32 outCount, s32 sampleOffset
                 ALSynth *drvr = &alGlobals->drvr;
                 ALFreeParam *param = (ALFreeParam *)e->ctrlList;
                 param->pvoice->offset = 0;
-                func_800782F4_main(drvr, (PVoice *)param->pvoice);
+                _freePVoice(drvr, (PVoice *)param->pvoice);
             } break;
 
             default:
@@ -209,7 +229,7 @@ Acmd *func_80074B00_main(void *filter, s16 *outp, s32 outCount, s32 sampleOffset
                  * Pull the reuired number of samples and then pass the message
                  * on down the chain
                  */
-                ptr = func_800750D4_main(e, &inp, &loutp, samples, sampleOffset, ptr);
+                ptr = _pullSubFrame(e, &inp, &loutp, samples, sampleOffset, ptr);
                 (*e->filter.setParam)(&e->filter, e->ctrlList->type,
                                       (void *)e->ctrlList->data.i);
                 break;
@@ -226,10 +246,10 @@ Acmd *func_80074B00_main(void *filter, s16 *outp, s32 outCount, s32 sampleOffset
             e->ctrlTail = 0;
         }
 
-        func_80078288_main(thisParam);
+        __freeParam(thisParam);
     }
 
-    ptr = func_800750D4_main(e, &inp, &loutp, outCount, sampleOffset, ptr);
+    ptr = _pullSubFrame(e, &inp, &loutp, outCount, sampleOffset, ptr);
 
     /*
      * Prevent overflow in e->delta
@@ -241,8 +261,7 @@ Acmd *func_80074B00_main(void *filter, s16 *outp, s32 outCount, s32 sampleOffset
     return ptr;
 }
 
-/* alEnvmixerParam */
-s32 func_80075000_main(void *filter, s32 paramID, void *param) {
+s32 alEnvmixerParam(void *filter, s32 paramID, void *param) {
     ALFilter *f = (ALFilter *)filter;
     ALEnvMixer *e = (ALEnvMixer *)filter;
 
@@ -286,8 +305,7 @@ s32 func_80075000_main(void *filter, s32 paramID, void *param) {
     return 0;
 }
 
-/* _pullSubFrame */
-Acmd *func_800750D4_main(void *filter, s16 *inp, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p) {
+static Acmd *_pullSubFrame(void *filter, s16 *inp, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p) {
     Acmd *ptr = p;
     ALEnvMixer *e = (ALEnvMixer *)filter;
     ALFilter *source = e->filter.source;
@@ -317,13 +335,13 @@ Acmd *func_800750D4_main(void *filter, s16 *inp, s16 *outp, s32 outCount, s32 sa
         /*
          * Calculate derived parameters
          */
-        e->ltgt = (e->volume * D_800A2C20_main[e->pan]) >> 15;
-        e->lratm = func_800754AC_main((f64)e->cvolL, (f64)e->ltgt,
+        e->ltgt = (e->volume * eqpower[e->pan]) >> 15;
+        e->lratm = _getRate((f64)e->cvolL, (f64)e->ltgt,
                                       e->segEnd, &(e->lratl));
         e->rtgt = (e->volume *
-                   D_800A2C20_main[EQPOWER_LENGTH - e->pan - 1]) >>
+                   eqpower[EQPOWER_LENGTH - e->pan - 1]) >>
                   15;
-        e->rratm = func_800754AC_main((f64)e->cvolR, (f64)e->rtgt, e->segEnd,
+        e->rratm = _getRate((f64)e->cvolR, (f64)e->rtgt, e->segEnd,
                                       &(e->rratl));
 
         aSetVolume(ptr++, A_LEFT | A_VOL, e->cvolL, 0, 0);
@@ -349,8 +367,7 @@ Acmd *func_800750D4_main(void *filter, s16 *inp, s16 *outp, s32 outCount, s32 sa
 #define EXP_MASK 0x7f800000
 #define MANT_MASK 0x807fffff
 
-/* _frexpf */
-f64 func_800753A8_main(f64 value, s32 *eptr) {
+f64 _frexpf(f64 value, s32 *eptr) {
     f64 absvalue;
 
     *eptr = 0;
@@ -367,8 +384,7 @@ f64 func_800753A8_main(f64 value, s32 *eptr) {
     return (value > 0.0 ? absvalue : -absvalue);
 }
 
-/* _ldexpf */
-f64 func_80075488_main(f64 in, s32 ex) {
+f64 _ldexpf(f64 in, s32 ex) {
     s32 exp;
 
     if (ex) {
@@ -380,7 +396,7 @@ f64 func_80075488_main(f64 in, s32 ex) {
 }
 
 /*
-    func_800754AC_main()  --  This function determines how to go from the
+    _getRate()  --  This function determines how to go from the
                     current volume level (vol) to the target
                     volume level (tgt) in some number of steps
                     (count).  Two values are returned that are
@@ -390,8 +406,7 @@ f64 func_80075488_main(f64 in, s32 ex) {
                     RWW 28jun95
 */
 
-/* _getRate */
-s16 func_800754AC_main(f64 vol, f64 tgt, s32 count, u16 *ratel) {
+static s16 _getRate(f64 vol, f64 tgt, s32 count, u16 *ratel) {
     s16 s;
 
     f64 invn = 1.0 / count, eps, a, fs, mant;
@@ -453,11 +468,11 @@ s16 func_800754AC_main(f64 vol, f64 tgt, s32 count, u16 *ratel) {
         f64 logtab[] = { -0.912537, -0.752072, -0.607683, -0.476438,
                          -0.356144, -0.245112, -0.142019, -0.045804 };
 
-        i_invn = (s32)func_80075488_main(invn, NFRACBITS);
-        mant = func_800753A8_main(tgt / vol, &ex);
-        indx = (s32)(func_80075488_main(mant, NBITS + 1)); /* NPOS <= indx < 2*NPOS */
+        i_invn = (s32)_ldexpf(invn, NFRACBITS);
+        mant = _frexpf(tgt / vol, &ex);
+        indx = (s32)(_ldexpf(mant, NBITS + 1)); /* NPOS <= indx < 2*NPOS */
         eps = (logtab[indx - NPOS] + ex) * M_LN2;
-        eps /= func_80075488_main(1, NFRACBITS); /* eps / 2^NFRACBITS */
+        eps /= _ldexpf(1, NFRACBITS); /* eps / 2^NFRACBITS */
         fs = (1.0 + eps);
         a = 1.0;
         while (i_invn) {
@@ -479,8 +494,7 @@ s16 func_800754AC_main(f64 vol, f64 tgt, s32 count, u16 *ratel) {
     return (s16)a;
 }
 
-/* _getVol */
-f32 func_8007572C_main(f32 ivol, s32 samples, s16 ratem, u16 ratel) {
+static f32 _getVol(f32 ivol, s32 samples, s16 ratem, u16 ratel) {
     f32 r, a;
     s32 i;
 

@@ -1,13 +1,12 @@
 #include "common.h"
 #include "PR/synthInternals.h"
 
-/* alSynStartVoice */
-void func_80078780_main(ALSynth *drvr, ALVoice *voice, ALWaveTable *wave) {
+void alSynStartVoice(ALSynth *drvr, ALVoice *voice, ALWaveTable *wave) {
     ALFilter *knob;
     ALStartParam *param;
 
     if (voice->pvoice != NULL) {
-        param = (ALStartParam *)func_8007825C_main();
+        param = (ALStartParam *)__allocParam();
 
         if (param != NULL) {
             param->delta = drvr->paramSamples + voice->pvoice->offset;

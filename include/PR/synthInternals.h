@@ -231,65 +231,57 @@ typedef struct PVoice_s {
 } PVoice; // size 0xDC
 
 /*
- * Prototypes for the library's internal functions. Most are still named by
- * address; the libultra name of each is given alongside.
+ * Prototypes for the library's internal functions.
  */
 
-/* heapalloc.c */
-void *func_80077290_main(u8 *file, s32 line, ALHeap *hp, s32 num, s32 size); /* alHeapDBAlloc */
-
 /* filter.c */
-void func_80075B00_main(ALFilter *f, ALCmdHandler h, ALSetParam s, s32 type); /* alFilterNew */
+void alFilterNew(ALFilter *f, ALCmdHandler h, ALSetParam s, s32 type);
 
 /* drvrnew.c */
-void func_800733E0_main(ALLowPass *lp);                               /* init_lpfilter */
-void func_80073484_main(ALFx *r, ALSynConfig *c, ALHeap *hp);         /* alFxNew */
-void func_8007391C_main(ALEnvMixer *e, ALHeap *hp);                   /* alEnvmixerNew */
-void func_800739D4_main(ALLoadFilter *f, ALDMANew dma, ALHeap *hp);   /* alLoadNew */
-void func_80073A84_main(ALResampler *r, ALHeap *hp);                  /* alResampleNew */
-void func_80073B10_main(ALAuxBus *m, void *sources, s32 maxSources);  /* alAuxBusNew */
-void func_80073B6C_main(ALMainBus *m, void *sources, s32 maxSources); /* alMainBusNew */
-void func_80073BC8_main(ALSave *f);                                   /* alSaveNew */
+void init_lpfilter(ALLowPass *lp);
+void alFxNew(ALFx *r, ALSynConfig *c, ALHeap *hp);
+void alEnvmixerNew(ALEnvMixer *e, ALHeap *hp);
+void alLoadNew(ALLoadFilter *f, ALDMANew dma, ALHeap *hp);
+void alResampleNew(ALResampler *r, ALHeap *hp);
+void alAuxBusNew(ALAuxBus *m, void *sources, s32 maxSources);
+void alMainBusNew(ALMainBus *m, void *sources, s32 maxSources);
+void alSaveNew(ALSave *f);
 
 /* load.c */
-Acmd *func_80073C10_main(void *f, s16 *outp, s32 byteCount, s32 sampleOffset, Acmd *p); /* alAdpcmPull */
-Acmd *func_80074054_main(void *f, s16 *outp, s32 byteCount, s32 sampleOffset, Acmd *p); /* alRaw16Pull */
-s32 func_800743F0_main(void *filter, s32 paramID, void *param);                         /* alLoadParam */
+Acmd *alAdpcmPull(void *f, s16 *outp, s32 byteCount, s32 sampleOffset, Acmd *p);
+Acmd *alRaw16Pull(void *f, s16 *outp, s32 byteCount, s32 sampleOffset, Acmd *p);
+s32 alLoadParam(void *filter, s32 paramID, void *param);
 
 /* auxbus.c */
 Acmd *alAuxBusPull(void *f, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p);
 s32 alAuxBusParam(void *filter, s32 paramID, void *param);
 
 /* env.c */
-Acmd *func_80074B00_main(void *f, s16 *outp, s32 out, s32 sampleOffset, Acmd *p); /* alEnvmixerPull */
-s32 func_80075000_main(void *filter, s32 paramID, void *param);                   /* alEnvmixerParam */
+Acmd *alEnvmixerPull(void *f, s16 *outp, s32 out, s32 sampleOffset, Acmd *p);
+s32 alEnvmixerParam(void *filter, s32 paramID, void *param);
 
 /* mainbus.c */
-Acmd *func_80075B20_main(void *f, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p); /* alMainBusPull */
-s32 func_80075C60_main(void *filter, s32 paramID, void *param);                        /* alMainBusParam */
+Acmd *alMainBusPull(void *f, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p);
+s32 alMainBusParam(void *filter, s32 paramID, void *param);
 
 /* resample.c */
-Acmd *func_80075C90_main(void *f, s16 *outp, s32 out, s32 sampleOffset, Acmd *p); /* alResamplePull */
-s32 func_80075E7C_main(void *f, s32 paramID, void *param);                        /* alResampleParam */
+Acmd *alResamplePull(void *f, s16 *outp, s32 out, s32 sampleOffset, Acmd *p);
+s32 alResampleParam(void *f, s32 paramID, void *param);
 
 /* reverb.c */
-Acmd *func_80075F40_main(void *f, s16 *outp, s32 out, s32 sampleOffset, Acmd *p); /* alFxPull */
-s32 func_800762B4_main(void *filter, s32 paramID, void *param);                   /* alFxParam */
-s32 func_800762C8_main(void *filter, s32 paramID, void *param);                   /* alFxParamHdl */
+Acmd *alFxPull(void *f, s16 *outp, s32 out, s32 sampleOffset, Acmd *p);
+s32 alFxParam(void *filter, s32 paramID, void *param);
+s32 alFxParamHdl(void *filter, s32 paramID, void *param);
 
 /* save.c */
-Acmd *func_80076AE0_main(void *f, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p); /* alSavePull */
-s32 func_80076B88_main(void *f, s32 paramID, void *param);                             /* alSaveParam */
+Acmd *alSavePull(void *f, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p);
+s32 alSaveParam(void *f, s32 paramID, void *param);
 
 /* synthesizer.c */
-ALParam *func_8007825C_main(void);                      /* __allocParam */
-void func_80078288_main(ALParam *param);                /* __freeParam */
-void func_800782A0_main(ALSynth *drvr);                 /* _collectPVoices */
-void func_800782F4_main(ALSynth *drvr, PVoice *pvoice); /* _freePVoice */
-s32 func_80078334_main(ALSynth *synth, s32 micros);     /* _timeToSamplesNoRound */
-s32 func_8007837C_main(ALSynth *synth, s32 micros);     /* _timeToSamples */
-
-/* synallocfx.c */
-ALFxRef *func_80078AA0_main(ALSynth *s, s16 bus, ALSynConfig *c, ALHeap *hp); /* alSynAllocFX */
+ALParam *__allocParam(void);
+void __freeParam(ALParam *param);
+void _collectPVoices(ALSynth *drvr);
+void _freePVoice(ALSynth *drvr, PVoice *pvoice);
+s32 _timeToSamples(ALSynth *synth, s32 micros);
 
 #endif

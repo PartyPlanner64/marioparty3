@@ -1,14 +1,13 @@
 #include "common.h"
 #include "PR/synthInternals.h"
 
-/* alSynFreeVoice */
-void func_80078480_main(ALSynth *drvr, ALVoice *voice) {
+void alSynFreeVoice(ALSynth *drvr, ALVoice *voice) {
     ALFilter *f;
     ALFreeParam *update;
 
     if (voice->pvoice) {
         if (voice->pvoice->offset) { /* if voice was stolen */
-            update = (ALFreeParam *)func_8007825C_main();
+            update = (ALFreeParam *)__allocParam();
             ALFailIf(update == 0, ERR_ALSYN_NO_UPDATE);
 
             /*
@@ -21,7 +20,7 @@ void func_80078480_main(ALSynth *drvr, ALVoice *voice) {
             f = voice->pvoice->channelKnob;
             (*f->setParam)(f, AL_FILTER_ADD_UPDATE, update);
         } else {
-            func_800782F4_main(drvr, voice->pvoice);
+            _freePVoice(drvr, voice->pvoice);
         }
 
         voice->pvoice = 0;

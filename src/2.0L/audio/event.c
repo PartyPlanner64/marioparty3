@@ -1,7 +1,6 @@
 #include "common.h"
 
-/* alEvtqNew */
-void func_800757B0_main(ALEventQueue *evtq, ALEventListItem *items, s32 itemCount) {
+void alEvtqNew(ALEventQueue *evtq, ALEventListItem *items, s32 itemCount) {
     s32 i;
 
     evtq->eventCount = 0;
@@ -15,8 +14,7 @@ void func_800757B0_main(ALEventQueue *evtq, ALEventListItem *items, s32 itemCoun
     }
 }
 
-/* alEvtqNextEvent */
-ALMicroTime func_8007582C_main(ALEventQueue *evtq, ALEvent *evt) {
+ALMicroTime alEvtqNextEvent(ALEventQueue *evtq, ALEvent *evt) {
     ALEventListItem *item;
     ALMicroTime delta;
     OSIntMask mask;
@@ -41,8 +39,7 @@ ALMicroTime func_8007582C_main(ALEventQueue *evtq, ALEvent *evt) {
     return delta;
 }
 
-/* alEvtqPostEvent */
-void func_800758C4_main(ALEventQueue *evtq, ALEvent *evt, ALMicroTime delta) {
+void alEvtqPostEvent(ALEventQueue *evtq, ALEvent *evt, ALMicroTime delta) {
     ALEventListItem *item;
     ALEventListItem *nextItem;
     ALLink *node;
@@ -91,8 +88,7 @@ void func_800758C4_main(ALEventQueue *evtq, ALEvent *evt, ALMicroTime delta) {
     osSetIntMask(mask);
 }
 
-/* alEvtqFlush */
-void func_800759D0_main(ALEventQueue *evtq) {
+void alEvtqFlush(ALEventQueue *evtq) {
     ALEventListItem *item;
     ALEventListItem *nextItem;
     OSIntMask mask = osSetIntMask(OS_IM_NONE);
@@ -110,7 +106,7 @@ void func_800759D0_main(ALEventQueue *evtq) {
 }
 
 /* alEvtqFlushType: flushes events according to their type. */
-void func_80075A48_main(ALEventQueue *evtq, s16 type) {
+void alEvtqFlushType(ALEventQueue *evtq, s16 type) {
     ALLink *thisNode;
     ALLink *nextNode;
     ALEventListItem *thisItem, *nextItem;

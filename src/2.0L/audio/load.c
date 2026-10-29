@@ -5,10 +5,9 @@
 #define ADPCMFBYTES 9
 #define LFSAMPLES 4
 
-Acmd *func_8007459C_main(Acmd *ptr, ALLoadFilter *f, s32 tsam, s32 nbytes, s16 outp, s16 inp, u32 flags); /* _decodeChunk */
+static Acmd *_decodeChunk(Acmd *ptr, ALLoadFilter *f, s32 tsam, s32 nbytes, s16 outp, s16 inp, u32 flags);
 
-/* alAdpcmPull */
-Acmd *func_80073C10_main(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p) {
+Acmd *alAdpcmPull(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p) {
     Acmd *ptr = p;
     s16 inp;
     s32 tsam;
@@ -56,7 +55,7 @@ Acmd *func_80073C10_main(void *filter, s16 *outp, s32 outCount, s32 sampleOffset
 
     if (looped) {
 
-        ptr = func_8007459C_main(ptr, f, tsam, nbytes, *outp, inp, f->first);
+        ptr = _decodeChunk(ptr, f, tsam, nbytes, *outp, inp, f->first);
 
         /*
          * Fix up output pointer, which will be used as the input pointer
@@ -110,7 +109,7 @@ Acmd *func_80073C10_main(void *filter, s16 *outp, s32 outCount, s32 sampleOffset
             }
             nframes = (tsam + ADPCMFSIZE - 1) >> LFSAMPLES;
             nbytes = nframes * ADPCMFBYTES;
-            ptr = func_8007459C_main(ptr, f, tsam, nbytes, op, inp, f->first | A_LOOP);
+            ptr = _decodeChunk(ptr, f, tsam, nbytes, op, inp, f->first | A_LOOP);
             /*
              * Merge the two sections in DMEM.
              */
@@ -146,7 +145,7 @@ Acmd *func_80073C10_main(void *filter, s16 *outp, s32 outCount, s32 sampleOffset
 
     if ((nOver - (nOver & 0xf)) < outCount) {
         decoded = 1;
-        ptr = func_8007459C_main(ptr, f, nSam - nOver, nbytes, *outp, inp, f->first);
+        ptr = _decodeChunk(ptr, f, nSam - nOver, nbytes, *outp, inp, f->first);
 
         if (f->lastsam) {
             *outp += (f->lastsam << 1);
@@ -178,8 +177,7 @@ Acmd *func_80073C10_main(void *filter, s16 *outp, s32 outCount, s32 sampleOffset
     return ptr;
 }
 
-/* alRaw16Pull */
-Acmd *func_80074054_main(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p) {
+Acmd *alRaw16Pull(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p) {
     Acmd *ptr = p;
     s32 nbytes;
     s32 dramLoc;
@@ -329,8 +327,7 @@ Acmd *func_80074054_main(void *filter, s16 *outp, s32 outCount, s32 sampleOffset
     return ptr;
 }
 
-/* alLoadParam */
-s32 func_800743F0_main(void *filter, s32 paramID, void *param) {
+s32 alLoadParam(void *filter, s32 paramID, void *param) {
     ALLoadFilter *a = (ALLoadFilter *)filter;
     ALFilter *f = (ALFilter *)filter;
 
@@ -345,7 +342,7 @@ s32 func_800743F0_main(void *filter, s32 paramID, void *param) {
                     /*
                      * Set up the correct handler
                      */
-                    f->handler = func_80073C10_main;
+                    f->handler = alAdpcmPull;
 
                     /*
                      * Make sure the table length is an integer number of
@@ -368,7 +365,7 @@ s32 func_800743F0_main(void *filter, s32 paramID, void *param) {
                     break;
 
                 case AL_RAW16_WAVE:
-                    f->handler = func_80074054_main;
+                    f->handler = alRaw16Pull;
                     if (a->table->waveInfo.rawWave.loop) {
                         a->loop.start = a->table->waveInfo.rawWave.loop->start;
                         a->loop.end = a->table->waveInfo.rawWave.loop->end;
@@ -411,8 +408,7 @@ s32 func_800743F0_main(void *filter, s32 paramID, void *param) {
     /* no return value; callers ignore the result of this handler */
 }
 
-/* _decodeChunk */
-Acmd *func_8007459C_main(Acmd *ptr, ALLoadFilter *f, s32 tsam, s32 nbytes, s16 outp, s16 inp, u32 flags) {
+static Acmd *_decodeChunk(Acmd *ptr, ALLoadFilter *f, s32 tsam, s32 nbytes, s16 outp, s16 inp, u32 flags) {
 
     s32
         dramAlign,

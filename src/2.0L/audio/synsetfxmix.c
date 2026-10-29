@@ -1,13 +1,12 @@
 #include "common.h"
 #include "PR/synthInternals.h"
 
-/* alSynSetFXMix */
-void func_80078970_main(ALSynth *drvr, ALVoice *voice, u8 fxmix) {
+void alSynSetFXMix(ALSynth *drvr, ALVoice *voice, u8 fxmix) {
     ALParam *param;
     ALFilter *knob;
 
     if (voice->pvoice != NULL) {
-        param = func_8007825C_main();
+        param = __allocParam();
 
         if (param != NULL) {
             param->delta = drvr->paramSamples + voice->pvoice->offset;

@@ -1,8 +1,7 @@
 #include "common.h"
 #include "PR/synthInternals.h"
 
-/* alMainBusPull */
-Acmd *func_80075B20_main(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p) {
+Acmd *alMainBusPull(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p) {
     Acmd *ptr = p;
     ALMainBus *m = (ALMainBus *)filter;
     ALFilter **sources = m->sources;
@@ -24,8 +23,7 @@ Acmd *func_80075B20_main(void *filter, s16 *outp, s32 outCount, s32 sampleOffset
     return ptr;
 }
 
-/* alMainBusParam */
-s32 func_80075C60_main(void *filter, s32 paramID, void *param) {
+s32 alMainBusParam(void *filter, s32 paramID, void *param) {
     ALMainBus *m = (ALMainBus *)filter;
     ALFilter **sources = m->sources;
 

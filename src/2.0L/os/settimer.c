@@ -1,9 +1,6 @@
 #include "common.h"
 #include "PR/osint.h"
 
-extern OSTimer *D_800A2DD0_main;
-extern u32 D_800D2000_main;
-
 int osSetTimer(OSTimer *t, OSTime value, OSTime interval, OSMesgQueue *mq, OSMesg msg) {
     OSTime tim;
     OSTimer *spC;
@@ -21,10 +18,10 @@ int osSetTimer(OSTimer *t, OSTime value, OSTime interval, OSMesgQueue *mq, OSMes
     t->msg = msg;
 
     saveMask = __osDisableInt();
-    if (D_800A2DD0_main->next != D_800A2DD0_main) {
-        spC = D_800A2DD0_main->next;
+    if (__osTimerList->next != __osTimerList) {
+        spC = __osTimerList->next;
         count = osGetCount();
-        tim = count - D_800D2000_main;
+        tim = count - __osTimerCounter;
         if (tim < spC->value) {
             spC->value -= tim;
         } else {
@@ -32,7 +29,7 @@ int osSetTimer(OSTimer *t, OSTime value, OSTime interval, OSMesgQueue *mq, OSMes
         }
     }
     __osInsertTimer(t);
-    __osSetTimerIntr(D_800A2DD0_main->next->value);
+    __osSetTimerIntr(__osTimerList->next->value);
     __osRestoreInt(saveMask);
     return 0;
 }

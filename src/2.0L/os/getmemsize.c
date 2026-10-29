@@ -3,7 +3,7 @@
 
 #define STEP 0x100000
 
-u32 func_8007EC20_main(void) {
+u32 osGetMemSize(void) {
     vu32 *ptr;
     u32 size = 0x400000;
     u32 data0;

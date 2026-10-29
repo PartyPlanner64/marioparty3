@@ -3,7 +3,7 @@
 
 #include "PR/os_internal.h"
 
-extern OSPiHandle *D_800A2A50_main[2]; // __osCurrentHandle
+extern OSPiHandle *__osCurrentHandle[2];
 
 void __osPiGetAccess(void);
 void __osPiRelAccess(void);
@@ -25,8 +25,8 @@ s32 __osEPiRawWriteIo(OSPiHandle *pihandle, u32 devAddr, u32 data);
     WAIT_ON_IOBUSY(stat)                                   \
                                                            \
     domain = pihandle->domain;                             \
-    if (D_800A2A50_main[domain]->type != pihandle->type) { \
-        OSPiHandle *cHandle = D_800A2A50_main[domain];     \
+    if (__osCurrentHandle[domain]->type != pihandle->type) { \
+        OSPiHandle *cHandle = __osCurrentHandle[domain];     \
         if (domain == PI_DOMAIN1) {                        \
             UPDATE_REG(PI_BSD_DOM1_LAT_REG, latency);      \
             UPDATE_REG(PI_BSD_DOM1_PGS_REG, pageSize);     \

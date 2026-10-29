@@ -203,7 +203,7 @@ typedef struct UnkData_CD0A0 {
 } UnkData_CD0A0; //sizeof 0x44
 
 extern Unk800CD2A0 D_800CD2A0_main;
-extern omOvlHisData D_800D4190_main;
+extern s16 D_800D4196_main;
 
 extern s16 mbDlgWinId;
 extern s32 mbTurnOnF;

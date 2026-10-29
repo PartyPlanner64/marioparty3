@@ -2,7 +2,6 @@
 #include "PR/os_internal.h"
 #include "PR/rdb.h"
 
-extern u32 D_800A2D80_main;
 extern rdbPacket *D_800D5554_main;
 extern u32 D_800CE174_main;
 extern u32 D_800D6A8C_main;
@@ -20,8 +19,8 @@ u32 __osRdbSend(u8 *buf, u32 size, u32 type) {
 
     mask = __osDisableInt();
 
-    if (D_800A2D80_main) {
-        D_800A2D80_main = 0;
+    if (__osRdbWriteOK) {
+        __osRdbWriteOK = 0;
         packet.type = type;
         count = (size < 4) ? size : 3;
         packet.length = count;

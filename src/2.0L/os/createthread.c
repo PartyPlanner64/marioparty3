@@ -4,8 +4,8 @@
 
 #define THPROF_IDMAX 64
 
-extern void D_80080930_main(void);
-extern __OSThreadprofile_s D_800D55E0_main[THPROF_IDMAX];
+extern void __osCleanupThread(void);
+extern __OSThreadprofile_s thprof[THPROF_IDMAX];
 
 void osCreateThread(OSThread *t, OSId id, void (*entry)(void *), void *arg, void *sp, OSPri p) {
     register u32 saveMask;
@@ -18,7 +18,7 @@ void osCreateThread(OSThread *t, OSId id, void (*entry)(void *), void *arg, void
     t->context.pc = (u32)entry;
     t->context.a0 = (s64)(s32)arg;
     t->context.sp = (s64)(s32)sp - 16;
-    t->context.ra = (s64)(s32)D_80080930_main;
+    t->context.ra = (s64)(s32)__osCleanupThread;
     mask = OS_IM_ALL;
     t->context.sr = SR_IMASK | SR_EXL | SR_IE;
     t->context.rcp = (mask & RCP_IMASK) >> RCP_IMASKSHIFT;
@@ -27,9 +27,9 @@ void osCreateThread(OSThread *t, OSId id, void (*entry)(void *), void *arg, void
     t->state = OS_STATE_STOPPED;
     t->flags = 0;
     if (id < THPROF_IDMAX) {
-        t->thprof = &D_800D55E0_main[id];
+        t->thprof = &thprof[id];
     } else {
-        t->thprof = &D_800D55E0_main[THPROF_IDMAX - 1];
+        t->thprof = &thprof[THPROF_IDMAX - 1];
     }
     saveMask = __osDisableInt();
     t->tlnext = __osActiveQueue;

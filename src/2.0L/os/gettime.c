@@ -1,7 +1,5 @@
 #include "common.h"
-
-extern u32 D_800CB898_main;
-extern OSTime D_800CE2B8_main;
+#include "PR/osint.h"
 
 extern u32 __osDisableInt(void);
 extern void __osRestoreInt(u32);
@@ -14,8 +12,8 @@ OSTime osGetTime(void) {
 
     saveMask = __osDisableInt();
     tmptime = osGetCount();
-    elapseCount = tmptime - D_800CB898_main;
-    currentCount = D_800CE2B8_main;
+    elapseCount = tmptime - __osBaseCounter;
+    currentCount = __osCurrentTime;
     __osRestoreInt(saveMask);
     return currentCount + elapseCount;
 }

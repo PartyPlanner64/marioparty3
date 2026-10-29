@@ -196,6 +196,8 @@ omnumobjs = 0x800CCF8C; // type:s16
 omgroup = 0x800CD1E0; //
 omovl = 0x800CE200; // type:s32
 omovlhis = 0x800D2010; // size:0x60
+D_800D4194_main = 0x800D4194; // type:s16 size:0x2
+D_800D4196_main = 0x800D4196; // type:s16 size:0x2
 omobjfirst = 0x800D5560; // type:s16
 omnextidx = 0x800D6B40; // type:s16
 
@@ -364,6 +366,18 @@ osDestroyThread = 0x8007C910;
 osYieldThread = 0x8007CC40;
 osStopThread = 0x80086B70;
 __osViInit = 0x800829D0;
+__osDequeueThread = 0x8007CC00;
+__osCleanupThread = 0x80080930;
+thprof = 0x800D55E0;
+__osTimerList = 0x800A2DD0;
+__osTimerCounter = 0x800D2000;
+__osCurrentTime = 0x800CE2B8;
+__osBaseCounter = 0x800CB898;
+__osViIntrCount = 0x800CD1D8;
+__osProfTimerQ = 0x800D41A8;
+__osProfileList = 0x800CCF24;
+__osProfileListEnd = 0x800D4190; //size:0x4
+__osProfileOverflowBin = 0x800CC0B0;
 
 osEepromProbe = 0x80072420;
 osEepromLongRead = 0x80072590;
@@ -378,6 +392,10 @@ ramromMain = 0x8007286C;
 __osPiCrateAccessQueue = 0x80073120;
 __osPiGetAccess = 0x80073174;
 __osPiRelAccess = 0x800731E0;
+__osPiDevMgr = 0x800A2A30; //size:0x1C
+__osCurrentHandle = 0x800A2A50;
+hdwrBugFlag = 0x800A2A80;
+osPiGetCmdQueue = 0x80080B30;
 
 __osPiRawReadIo = 0x80083AE0;
 __osPiRawWriteIo = 0x80083B30;
@@ -406,6 +424,11 @@ _osPreNMI = 0x800A3FAC;
 osViSetMode = 0x8007D6F0;
 __osViGetCurrentContext = 0x80082AE0;
 __osViNext = 0x800A4104;
+__osViCurr = 0x800A4100;
+vi = 0x800A40A0;
+osViModeNtscLan1 = 0x800A4110;
+osViModePalLan1 = 0x800A4160;
+osViModeMpalLan1 = 0x800A41B0;
 
 
 osCreateViManager = 0x8007D350;
@@ -468,6 +491,7 @@ bzero = 0x8007BC90;
 bcmp = 0x80083C40;
 
 osInitRdb = 0x8007B8F0;
+__osRdbWriteOK = 0x800A2D80;
 strchr = 0x8007BD30;
 strlen = 0x8007BD70;
 memcpy = 0x8007BD94;
@@ -511,10 +535,17 @@ __osGetCause = 0x80082490;
 
 __createSpeedParam = 0x8007ECC0;
 __osInitialize_common = 0x8007ED78;
+__osAfterPreNMI = 0x8007EC00;
+osGetMemSize = 0x8007EC20;
+osClockRate = 0x800A3FA0;
+osViClock = 0x800A3FA8;
+__Dom1SpeedParam = 0x800D09C0;
+__Dom2SpeedParam = 0x800CCEB0;
 
 kmc_proutSyncPrintf = 0x8007F0D0;
 __osInitialize_kmc = 0x8007F31C;
 __checkHardware_kmc = 0x8007F45C;
+__kmc_pt_mode = 0x800CB9A0;
 
 msp_proutSyncPrintf = 0x8007F4A0;
 __osInitialize_msp = 0x8007F6EC;
@@ -529,6 +560,11 @@ isPrintfInit = 0x80081320;
 is_proutSyncPrintf = 0x80081394;
 __checkHardware_isv = 0x80081580;
 __osInitialize_isv = 0x80081768;
+is_Handle = 0x800C4CF0;
+gISVFlag = 0x800D5568;
+gISVChk = 0x800D6A24;
+gISVDbgPrnAdrs = 0x800CCF90;
+leoComuBuffAdd = 0x800D1F64;
 
 __isExpJP = 0x800818C0;
 __isExp = 0x800818DC;

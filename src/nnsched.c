@@ -36,7 +36,7 @@ void ScExecuteAudio(void *arg);
 void ScExecuteGraphics(void *arg);
 void PRENMICallbackVibrator(void);
 void HuProfRecordAwaitRsp(void);
-void func_8007EC00_main(void);
+s32 __osAfterPreNMI(void);
 s16 func_8004D710_main(u8 red, u8 green, u8 blue);
 void func_8004D788_main(s16 sampleIdx);
 void func_8004D888_main(void);
@@ -137,7 +137,7 @@ void EventHandler(void *arg) {
                 if (D_800CCF2C_main) {
                     D_800CE210_main++;
                     if (D_800CE210_main >= 10U / D_800CE2C8_main) {
-                        func_8007EC00_main();
+                        __osAfterPreNMI();
                     }
                 }
                 break;

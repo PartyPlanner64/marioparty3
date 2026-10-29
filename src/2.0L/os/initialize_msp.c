@@ -8,7 +8,7 @@
 
 extern u32 D_8007FB20_main[];
 
-extern u32 D_800CB9A0_main; // __kmc_pt_mode
+extern u32 __kmc_pt_mode;
 extern u32 D_800A3FD0_main; // stat
 extern u32 D_800A3FD4_main; // wport
 extern u32 D_800A3FDC_main; // column
@@ -85,7 +85,7 @@ void __osInitialize_msp(void) {
     u32 *vecDst;
     int j;
 
-    if (!D_800CB9A0_main) {
+    if (!__kmc_pt_mode) {
         stat = (vu32 *)0xBFF08004;
         mon = (vu32 *)0xBFF00000;
         if (*mon != MSCP_COMPARE) {
@@ -104,7 +104,7 @@ void __osInitialize_msp(void) {
 
         osWritebackDCache((void *)E_VEC, 0x24);
         osInvalICache((void *)E_VEC, 0x24);
-        D_800CB9A0_main = TRUE;
+        __kmc_pt_mode = TRUE;
         if (!(*stat & 0x10)) {
             monadr = *(mon + 1);
             if (monadr != (u32)mon) {

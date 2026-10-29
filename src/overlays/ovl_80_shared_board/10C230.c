@@ -423,7 +423,7 @@ void MBOvlCallInit(void) {
 void MBOvlCallExec(void) {
     omOvlHisData *overlay;
 
-    D_800D4190_main.stat = 1;
+    D_800D4196_main = 1;
     if (mbovlhisidx != 0) {
         mbovlhisidx--;
         overlay = &mbovlhis[mbovlhisidx];
@@ -431,7 +431,7 @@ void MBOvlCallExec(void) {
         return;
     }
     if (D_800CD2A0_main.unk_02 != 0) {
-        D_800D4190_main.stat = 0;
+        D_800D4196_main = 0;
         omOvlCallEx(D_80101B40_shared_board[GwSystem.current_board_index], 2, 0x192);
         return;
     }
@@ -448,7 +448,7 @@ void func_800F884C_shared_board(void) {
 }
 
 s16 func_800F8858_shared_board(void) {
-    return D_800D4190_main.stat;
+    return D_800D4196_main;
 }
 
 static void func_800F8864_shared_board(s16 arg0) {

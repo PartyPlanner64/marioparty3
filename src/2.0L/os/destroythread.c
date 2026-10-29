@@ -1,8 +1,6 @@
 #include "common.h"
 #include "PR/osint.h"
 
-extern void func_8007CC00_main(OSThread **, OSThread *);
-
 void osDestroyThread(OSThread *t) {
     register u32 saveMask;
     register OSThread *pred;
@@ -12,7 +10,7 @@ void osDestroyThread(OSThread *t) {
     if (t == NULL) {
         t = __osRunningThread;
     } else if (t->state != OS_STATE_STOPPED) {
-        func_8007CC00_main(t->queue, t);
+        __osDequeueThread(t->queue, t);
     }
     if (__osActiveQueue == t) {
         __osActiveQueue = __osActiveQueue->tlnext;

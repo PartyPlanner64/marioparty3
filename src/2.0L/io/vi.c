@@ -1,29 +1,25 @@
 #include "common.h"
 #include <PR/viint.h>
 
-extern __OSViContext D_800A40A0_main[2]; // vi
-extern __OSViContext *D_800A4100_main;   // __osViCurr
-extern OSViMode D_800A4110_main;         // osViModeNtscLan1
-extern OSViMode D_800A4160_main;         // osViModePalLan1
-extern OSViMode D_800A41B0_main;         // osViModeMpalLan1
+extern __OSViContext vi[2];
 
 extern void osViSwapContext(void);
 
 void __osViInit(void) {
-    bzero(D_800A40A0_main, sizeof(D_800A40A0_main));
-    D_800A4100_main = &D_800A40A0_main[0];
-    __osViNext = &D_800A40A0_main[1];
+    bzero(vi, sizeof(vi));
+    __osViCurr = &vi[0];
+    __osViNext = &vi[1];
     __osViNext->retraceCount = 1;
-    D_800A4100_main->retraceCount = 1;
+    __osViCurr->retraceCount = 1;
     __osViNext->framep = (void *)K0BASE;
-    D_800A4100_main->framep = (void *)K0BASE;
+    __osViCurr->framep = (void *)K0BASE;
 
     if (osTvType == OS_TV_TYPE_PAL) {
-        __osViNext->modep = &D_800A4160_main;
+        __osViNext->modep = &osViModePalLan1;
     } else if (osTvType == OS_TV_TYPE_MPAL) {
-        __osViNext->modep = &D_800A41B0_main;
+        __osViNext->modep = &osViModeMpalLan1;
     } else {
-        __osViNext->modep = &D_800A4110_main;
+        __osViNext->modep = &osViModeNtscLan1;
     }
 
     __osViNext->state = VI_STATE_BLACK;

@@ -74,7 +74,7 @@ void func_800FBFA4_name_81(void) {
 void func_800FC030_name_81(void) {
     omOvlHisData *overlay;
 
-    D_800D4190_main.stat = 1;
+    D_800D4196_main = 1;
     if (mbovlhisidx != 0) {
         mbovlhisidx--;
         overlay = &mbovlhis[mbovlhisidx];
@@ -82,7 +82,7 @@ void func_800FC030_name_81(void) {
         return;
     }
     if (D_800CD2A0_main.unk_02 != 0) {
-        D_800D4190_main.stat = 0;
+        D_800D4196_main = 0;
         omOvlCallEx(D_80101A54_name_81[GwSystem.current_board_index], 2, 0x4190);
         return;
     }
@@ -99,7 +99,7 @@ void func_800FC108_name_81(void) {
 }
 
 s16 func_800FC114_name_81(void) {
-    return D_800D4190_main.stat;
+    return D_800D4196_main;
 }
 
 void func_800FC120_name_81(s16 arg0) {

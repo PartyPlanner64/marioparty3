@@ -1,6 +1,6 @@
 #include "common.h"
 #include "initialize.h"
-#include "PR/os_internal.h"
+#include "PR/osint.h"
 #include "PR/R4300.h"
 #include "PR/rcp.h"
 
@@ -8,12 +8,8 @@
 
 extern __osExceptionVector __osExceptionPreamble[];
 
-extern u64 D_800A3FA0_main;        // osClockRate
-extern s32 D_800A3FA8_main;        // osViClock
-extern OSPiHandle D_800D09C0_main; // __Dom1SpeedParam
-extern OSPiHandle D_800CCEB0_main; // __Dom2SpeedParam
-extern s32 D_8000030C;             // osResetType
-extern s32 D_8000031C[];           // osAppNMIBuffer
+extern OSPiHandle __Dom1SpeedParam;
+extern OSPiHandle __Dom2SpeedParam;
 
 extern void __osSetWatchLo(u32);
 extern u32 __checkHardware_msp(void);
@@ -25,17 +21,17 @@ extern void __osInitialize_isv(void);
 extern void __osInitialize_emu(void);
 
 inline void __createSpeedParam(void) {
-    D_800D09C0_main.type = DEVICE_TYPE_INIT;
-    D_800D09C0_main.latency = IO_READ(PI_BSD_DOM1_LAT_REG);
-    D_800D09C0_main.pulse = IO_READ(PI_BSD_DOM1_PWD_REG);
-    D_800D09C0_main.pageSize = IO_READ(PI_BSD_DOM1_PGS_REG);
-    D_800D09C0_main.relDuration = IO_READ(PI_BSD_DOM1_RLS_REG);
+    __Dom1SpeedParam.type = DEVICE_TYPE_INIT;
+    __Dom1SpeedParam.latency = IO_READ(PI_BSD_DOM1_LAT_REG);
+    __Dom1SpeedParam.pulse = IO_READ(PI_BSD_DOM1_PWD_REG);
+    __Dom1SpeedParam.pageSize = IO_READ(PI_BSD_DOM1_PGS_REG);
+    __Dom1SpeedParam.relDuration = IO_READ(PI_BSD_DOM1_RLS_REG);
 
-    D_800CCEB0_main.type = DEVICE_TYPE_INIT;
-    D_800CCEB0_main.latency = IO_READ(PI_BSD_DOM2_LAT_REG);
-    D_800CCEB0_main.pulse = IO_READ(PI_BSD_DOM2_PWD_REG);
-    D_800CCEB0_main.pageSize = IO_READ(PI_BSD_DOM2_PGS_REG);
-    D_800CCEB0_main.relDuration = IO_READ(PI_BSD_DOM2_RLS_REG);
+    __Dom2SpeedParam.type = DEVICE_TYPE_INIT;
+    __Dom2SpeedParam.latency = IO_READ(PI_BSD_DOM2_LAT_REG);
+    __Dom2SpeedParam.pulse = IO_READ(PI_BSD_DOM2_PWD_REG);
+    __Dom2SpeedParam.pageSize = IO_READ(PI_BSD_DOM2_PGS_REG);
+    __Dom2SpeedParam.relDuration = IO_READ(PI_BSD_DOM2_RLS_REG);
 }
 
 void __osInitialize_common(void) {
@@ -60,18 +56,18 @@ void __osInitialize_common(void) {
     __createSpeedParam();
     osUnmapTLBAll();
     osMapTLBRdb();
-    D_800A3FA0_main = D_800A3FA0_main * 3 / 4;
+    osClockRate = osClockRate * 3 / 4;
 
-    if (D_8000030C == 0) {
-        bzero(D_8000031C, OS_APP_NMI_BUFSIZE);
+    if (osResetType == 0) {
+        bzero(osAppNMIBuffer, OS_APP_NMI_BUFSIZE);
     }
 
     if (osTvType == OS_TV_PAL) {
-        D_800A3FA8_main = VI_PAL_CLOCK;
+        osViClock = VI_PAL_CLOCK;
     } else if (osTvType == OS_TV_MPAL) {
-        D_800A3FA8_main = VI_MPAL_CLOCK;
+        osViClock = VI_MPAL_CLOCK;
     } else {
-        D_800A3FA8_main = VI_NTSC_CLOCK;
+        osViClock = VI_NTSC_CLOCK;
     }
 
     if (__osGetCause() & CAUSE_IP5) {

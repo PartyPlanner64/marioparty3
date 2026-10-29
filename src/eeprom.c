@@ -1,5 +1,6 @@
 #include "common.h"
 #include "siman.h"
+#include "eeprom.h"
 
 #define SAVE_FILE_HEADER_SIZE 0x20
 #define SAVE_FILE_SIZE 0x2A0
@@ -15,34 +16,19 @@ typedef struct UnkEepStruct {
     char unk_00[0x10];
 } UnkEepStruct;
 
-typedef struct unkfunc_8001AFD8 {
-    s16 unk0;
-    struct unkfunc_8001AFD8 *unk4; // is this correct?
-    s16 unk8;
-} unkfunc_8001AFD8;
-
-typedef struct unkfunc_8007EE0C {
-    void *_InitEepromFunc;  // func pointer
-    unkfunc_8001AFD8 *unk4; // is this correct?
-    s32 unk8;
-    OSMesgQueue *mesgQueue;
-} unkfunc_8007EE0C;
-
 extern u8 D_80097710_main[];
 extern u8 D_800D0450_main[];
 extern u8 D_800AC7F0_main;
 extern u8 D_800AC7F1_main;
 extern u8 D_800D0E50_main[];
+extern u8 curBoxNo;
 
-void ClearBoxBuf(void);
-void ClearCommonBuf(void);
 s32 _WriteEeprom(EepData *arg0);
 s32 _ReadEeprom(EepData *arg0);
 s32 _DestroyEeprom(void);
-s32 func_8000C9C8_main(s8);
 s32 WriteEeprom(OSMesgQueue *arg0, u8 arg1, u8 *arg2, s32 arg3);
 
-s32 _InitEeprom(s8 **arg0) {
+s32 _InitEeprom(u8 **arg0) {
     s16 eepromProbeResult;
     s32 var_s1;
     s16 i;
@@ -112,9 +98,9 @@ s32 _InitEeprom(s8 **arg0) {
     return 0;
 }
 
-s32 InitEeprom(unkfunc_8001AFD8 *arg0) {
+s32 InitEeprom(u8 *formatted) {
     unkMesg sp10;
-    unkfunc_8001AFD8 *sp20 = arg0; //?
+    u8 *sp20 = formatted;
 
     return RequestSIFunction(&sp10, (void *)&_InitEeprom, &sp20, 1);
 }
@@ -153,24 +139,66 @@ s32 WriteEepromBox2(s8 saveFileIndex, u16 offset, u8 *src, u16 size) {
     return result;
 }
 
-void WriteEepromBox(s8 saveFileIndex) {
+s32 WriteEepromBox(s8 saveFileIndex) {
     unkMesg sp10;
     EepData sp20;
+    s32 result;
 
     D_800AC7F0_main = 0;
     sp20.eepFileOffset = (saveFileIndex * SAVE_FILE_SIZE) + SAVE_FILE_HEADER_SIZE;
     sp20.eepromBuffer = D_800D0E50_main;
     sp20.size = SAVE_FILE_SIZE;
-    if (RequestSIFunction(&sp10, &_WriteEeprom, &sp20, 1) == 0) {
+    result = RequestSIFunction(&sp10, &_WriteEeprom, &sp20, 1);
+    if (result == 0) {
         D_800AC7F1_main = saveFileIndex;
+    }
+    return result;
+}
+
+void func_8000C6C0_main(s8 saveFileIndex, u16 offset, u8 *src, u16 size) {
+    s16 i;
+
+    if (saveFileIndex != D_800AC7F1_main) {
+        ReadEepromBox(curBoxNo | 0x80, 0, NULL, SAVE_FILE_SIZE);
+        D_800AC7F1_main = saveFileIndex;
+    }
+    for (i = 0; i < size; i++) {
+        if (offset + i >= 0x800) {
+            break;
+        }
+        D_800D0E50_main[offset + i] = src[i];
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/eeprom", func_8000C6C0_main);
+s32 _ReadEeprom(EepData *arg0) {
+    u16 alignedOffset = (arg0->eepFileOffset >> 3);
+    u16 alignedSize = (arg0->size + (arg0->eepFileOffset & 7) + 7) & ~7;
 
-INCLUDE_ASM("asm/nonmatchings/eeprom", _ReadEeprom);
+    return (osEepromLongRead(&D_800CE1A0_main, alignedOffset, arg0->eepromBuffer, alignedSize) != 0) * 2;
+}
 
-INCLUDE_ASM("asm/nonmatchings/eeprom", ReadEepromBox);
+s32 ReadEepromBox(s8 saveFileIndex, u16 offset, u8 *dst, u16 size) {
+    unkMesg sp10;
+    EepData sp20;
+    s32 result;
+
+    if (saveFileIndex != D_800AC7F1_main || D_800AC7F0_main == 0) {
+        sp20.eepFileOffset = ((saveFileIndex & 0x7F) * SAVE_FILE_SIZE) + SAVE_FILE_HEADER_SIZE;
+        sp20.eepromBuffer = D_800D0E50_main;
+        sp20.size = SAVE_FILE_SIZE;
+        result = RequestSIFunction(&sp10, (void *)&_ReadEeprom, &sp20, 1);
+        if (result != 0) {
+            return result;
+        }
+        D_800AC7F0_main = 1;
+        D_800AC7F1_main = saveFileIndex;
+    }
+    if (saveFileIndex & 0x80) {
+        return 0;
+    }
+    bcopy(D_800D0E50_main + offset, dst, size);
+    return 0;
+}
 
 s32 WriteEepromCommonBuf(u8 *arg0) {
     unkMesg sp10;
@@ -215,7 +243,7 @@ s32 func_8000C9C8_main(s8 saveFileIndex) {
            2;
 }
 
-void ClearBoxBuf(void) {
+void ClearBoxBuf(s8 saveFileIndex) {
     memset(D_800D0E50_main, 0, SAVE_FILE_SIZE);
 }
 
@@ -223,7 +251,9 @@ void ClearCommonBuf(void) {
     memset(D_800D0450_main, 0, COMMON_BUF_SIZE);
 }
 
-INCLUDE_ASM("asm/nonmatchings/eeprom", _DestroyEeprom);
+s32 _DestroyEeprom(void) {
+    return (osEepromWrite(&D_800CE1A0_main, 0, &D_80097710_main[1]) != 0) * 2;
+}
 
 s32 DestroyEeprom(void) {
     unkMesg sp10;

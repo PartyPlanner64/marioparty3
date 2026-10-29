@@ -118,7 +118,6 @@ typedef struct FileSelectCameraState {
 
 void func_80030030_main(f32);
 void func_8005086C_main(void);
-void func_80050974_main(void);
 
 void func_80106B40_filesel(s32, u32, s16, s16, s16, s16, s16);
 void func_8010F678_filesel(s32);

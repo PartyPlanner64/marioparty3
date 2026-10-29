@@ -189,6 +189,7 @@ omprevovl = 0x800A1758; //rom:0xA2358 type:s32
 omovlstat = 0x800A1766; //rom:0xA2366 type:u16
 omovlhisidx = 0x800A1768; //rom:0xA2368 size:0x02 type:s16
 omobjall = 0x800A1770; //rom:0xA2370
+curBoxNo = 0x800A1E81; //rom:0xA2A81 type:u8
 omobjlast = 0x800CC430; //type:s16
 ommaxobjs = 0x800CCF50; // type:s16
 omnumobjs = 0x800CCF8C; // type:s16

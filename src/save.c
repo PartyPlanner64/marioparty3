@@ -117,7 +117,20 @@ void GWPlayNumInc(s16 arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/save", GWCharPlayNumInc);
+void GWCharPlayNumInc(s16 boardNo, s16 charNo) {
+    u8 *record = GWBoardRecordGet(boardNo);
+
+    if (boardNo < 0) {
+        boardNo = GwSystem.current_board_index;
+    }
+
+    if (boardNo < 8) {
+        record += charNo;
+        if (record[1] < 99) {
+            record[1]++;
+        }
+    }
+}
 
 s32 func_80035E3C_main(s16 arg0) {
     // 0x18 of stack is reserved but unused in the original; the array keeps the frame.

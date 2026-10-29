@@ -8,28 +8,28 @@
 #define CONT_BLOCK_DETECT 0x400
 #define CONT_BLOCK_RUMBLE 0x600
 
-extern OSPifRam D_800C4BC0_main[MAXCONTROLLERS]; /* __MotorDataBuf */
+extern OSPifRam __MotorDataBuf[MAXCONTROLLERS];
 
 s32 __osMotorAccess(OSPfs *pfs, s32 flag) {
     s32 i;
     s32 ret;
-    u8 *ptr = (u8 *)&D_800C4BC0_main[pfs->channel];
+    u8 *ptr = (u8 *)&__MotorDataBuf[pfs->channel];
 
     if (!(pfs->status & PFS_MOTOR_INITIALIZED)) {
         return PFS_ERR_INVALID;
     }
 
     __osSiGetAccess();
-    D_800C4BC0_main[pfs->channel].pifstatus = CONT_CMD_EXE;
+    __MotorDataBuf[pfs->channel].pifstatus = CONT_CMD_EXE;
     ptr += pfs->channel;
     for (i = 0; i < BLOCKSIZE; i++) {
         READFORMAT(ptr)->data[i] = flag;
     }
 
-    D_800D1F58_main = CONT_CMD_END;
-    __osSiRawStartDma(OS_WRITE, &D_800C4BC0_main[pfs->channel]);
+    __osContLastCmd = CONT_CMD_END;
+    __osSiRawStartDma(OS_WRITE, &__MotorDataBuf[pfs->channel]);
     osRecvMesg(pfs->queue, NULL, OS_MESG_BLOCK);
-    __osSiRawStartDma(OS_READ, &D_800C4BC0_main[pfs->channel]);
+    __osSiRawStartDma(OS_READ, &__MotorDataBuf[pfs->channel]);
     osRecvMesg(pfs->queue, NULL, OS_MESG_BLOCK);
 
     ret = READFORMAT(ptr)->rxsize & CHNL_ERR_MASK;
@@ -100,7 +100,7 @@ s32 osMotorInit(OSMesgQueue *mq, OSPfs *pfs, int channel) {
     }
 
     if (!(pfs->status & PFS_MOTOR_INITIALIZED)) {
-        ptr = (u8 *)D_800C4BC0_main[channel].ramarray;
+        ptr = (u8 *)__MotorDataBuf[channel].ramarray;
         ramreadformat.dummy = CONT_CMD_NOP;
         ramreadformat.txsize = CONT_CMD_WRITE_MEMPACK_TX;
         ramreadformat.rxsize = CONT_CMD_WRITE_MEMPACK_RX;

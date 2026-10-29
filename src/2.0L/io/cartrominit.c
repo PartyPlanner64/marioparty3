@@ -1,9 +1,8 @@
 #include "common.h"
 #include "piint.h"
 
-extern OSPiHandle D_800D0380_main;  /* __CartRomHandle */
-extern OSPiHandle *D_800A2A4C_main; /* __osPiTable */
-extern s32 D_800A2A60_main;         /* first */
+extern OSPiHandle *__osPiTable;
+extern s32 first; /* static in the original source */
 
 OSPiHandle *osCartRomInit(void) {
     u32 value = 0;
@@ -15,17 +14,17 @@ OSPiHandle *osCartRomInit(void) {
     u32 relDuration;
 
     __osPiGetAccess();
-    if (!D_800A2A60_main) {
+    if (!first) {
         __osPiRelAccess();
-        return &D_800D0380_main;
+        return &__CartRomHandle;
     }
 
-    D_800A2A60_main = FALSE;
-    D_800D0380_main.type = DEVICE_TYPE_CART;
-    D_800D0380_main.baseAddress = PHYS_TO_K1(PI_DOM1_ADDR2);
-    D_800D0380_main.domain = PI_DOMAIN1;
-    D_800D0380_main.speed = 0;
-    bzero(&D_800D0380_main.transferInfo, sizeof(__OSTranxInfo));
+    first = FALSE;
+    __CartRomHandle.type = DEVICE_TYPE_CART;
+    __CartRomHandle.baseAddress = PHYS_TO_K1(PI_DOM1_ADDR2);
+    __CartRomHandle.domain = PI_DOMAIN1;
+    __CartRomHandle.speed = 0;
+    bzero(&__CartRomHandle.transferInfo, sizeof(__OSTranxInfo));
 
     WAIT_ON_IOBUSY(stat);
 
@@ -39,11 +38,11 @@ OSPiHandle *osCartRomInit(void) {
     IO_WRITE(PI_BSD_DOM1_RLS_REG, 3);
     IO_WRITE(PI_BSD_DOM1_PWD_REG, 0xFF);
 
-    value = IO_READ(D_800D0380_main.baseAddress);
-    D_800D0380_main.latency = value & 0xFF;
-    D_800D0380_main.pageSize = (value >> 16) & 0xF;
-    D_800D0380_main.relDuration = (value >> 20) & 0xF;
-    D_800D0380_main.pulse = (value >> 8) & 0xFF;
+    value = IO_READ(__CartRomHandle.baseAddress);
+    __CartRomHandle.latency = value & 0xFF;
+    __CartRomHandle.pageSize = (value >> 16) & 0xF;
+    __CartRomHandle.relDuration = (value >> 20) & 0xF;
+    __CartRomHandle.pulse = (value >> 8) & 0xFF;
 
     IO_WRITE(PI_BSD_DOM1_LAT_REG, latency);
     IO_WRITE(PI_BSD_DOM1_PGS_REG, pageSize);
@@ -51,9 +50,9 @@ OSPiHandle *osCartRomInit(void) {
     IO_WRITE(PI_BSD_DOM1_PWD_REG, pulse);
 
     saveMask = __osDisableInt();
-    D_800D0380_main.next = D_800A2A4C_main;
-    D_800A2A4C_main = &D_800D0380_main;
+    __CartRomHandle.next = __osPiTable;
+    __osPiTable = &__CartRomHandle;
     __osRestoreInt(saveMask);
     __osPiRelAccess();
-    return &D_800D0380_main;
+    return &__CartRomHandle;
 }

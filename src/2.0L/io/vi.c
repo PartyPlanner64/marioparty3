@@ -3,7 +3,6 @@
 
 extern __OSViContext vi[2];
 
-extern void osViSwapContext(void);
 
 void __osViInit(void) {
     bzero(vi, sizeof(vi));
@@ -27,5 +26,5 @@ void __osViInit(void) {
     while (IO_READ(VI_CURRENT_REG) > 10) {
     }
     IO_WRITE(VI_CONTROL_REG, 0);
-    osViSwapContext();
+    __osViSwapContext();
 }

@@ -18,18 +18,18 @@ s32 osPfsIsPlug(OSMesgQueue *queue, u8 *pattern) {
         ret = __osSiRawStartDma(OS_READ, &__osPfsPifRam);
         osRecvMesg(queue, &dummy, OS_MESG_BLOCK);
         __osPfsGetInitData(&bitpattern, data);
-        for (channel = 0; channel < D_800CE204; channel++) {
+        for (channel = 0; channel < __osMaxControllers; channel++) {
             if ((data[channel].status & CONT_ADDR_CRC_ER) == 0) {
                 crc_error_cnt--;
                 break;
             }
         }
-        if (channel == D_800CE204) {
+        if (channel == __osMaxControllers) {
             crc_error_cnt = 0;
         }
     } while (crc_error_cnt > 0);
 
-    for (channel = 0; channel < D_800CE204; channel++) {
+    for (channel = 0; channel < __osMaxControllers; channel++) {
         if (data[channel].errno == 0 && (data[channel].status & CONT_CARD_ON) != 0) {
             bits |= 1 << channel;
         }
@@ -45,7 +45,7 @@ void __osPfsRequestData(u8 cmd) {
     s32 i;
 
     ptr = (u8 *)&__osPfsPifRam;
-    D_800D1F58_main = cmd;
+    __osContLastCmd = cmd;
     __osPfsPifRam.pifstatus = CONT_CMD_EXE;
     requestformat.dummy = CONT_CMD_NOP;
     requestformat.txsize = CONT_CMD_REQUEST_STATUS_TX;
@@ -55,7 +55,7 @@ void __osPfsRequestData(u8 cmd) {
     requestformat.typel = CONT_CMD_NOP;
     requestformat.status = CONT_CMD_NOP;
     requestformat.dummy1 = CONT_CMD_NOP;
-    for (i = 0; i < D_800CE204; i++) {
+    for (i = 0; i < __osMaxControllers; i++) {
         *(__OSContRequesFormat *)ptr = requestformat;
         ptr += sizeof(__OSContRequesFormat);
     }
@@ -70,7 +70,7 @@ void __osPfsGetInitData(u8 *pattern, OSContStatus *data) {
 
     bits = 0;
     ptr = (u8 *)&__osPfsPifRam;
-    for (i = 0; i < D_800CE204; i++, ptr += sizeof(__OSContRequesFormat), data++) {
+    for (i = 0; i < __osMaxControllers; i++, ptr += sizeof(__OSContRequesFormat), data++) {
         requestformat = *(__OSContRequesFormat *)ptr;
         data->errno = CHNL_ERR(requestformat);
         if (data->errno == 0) {

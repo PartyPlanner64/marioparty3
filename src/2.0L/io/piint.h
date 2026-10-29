@@ -20,7 +20,14 @@
 #define LEO_ERROR_4 4
 #define LEO_ERROR_29 29
 
+extern OSDevMgr __osPiDevMgr;
 extern OSPiHandle *__osCurrentHandle[2];
+extern OSPiHandle __CartRomHandle;
+extern OSMesgQueue __osPiAccessQueue;
+extern u32 __osPiAccessQueueEnabled;
+
+void __osDevMgrMain(void *args);
+void __osPiCreateAccessQueue(void);
 
 void __osPiGetAccess(void);
 void __osPiRelAccess(void);

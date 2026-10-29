@@ -1,8 +1,8 @@
 #include "common.h"
 #include "controller.h"
 
-extern s32 D_800A4200_main;       /* __osPfsInodeCacheChannel */
-extern __OSInode D_800D5310_main; /* __osPfsInodeCache */
+extern s32 __osPfsInodeCacheChannel;
+extern __OSInode __osPfsInodeCache;
 
 u16 __osSumcalc(u8 *ptr, s32 length) {
     s32 i;
@@ -253,8 +253,8 @@ s32 __osPfsRWInode(OSPfs *pfs, __OSInode *inode, u8 flag, u8 bank) {
     s32 offset;
     u8 *addr;
 
-    if (flag == PFS_READ && bank == D_800A4204_main && pfs->channel == D_800A4200_main) {
-        bcopy(&D_800D5310_main, inode, sizeof(__OSInode));
+    if (flag == PFS_READ && bank == __osPfsInodeCacheBank && pfs->channel == __osPfsInodeCacheChannel) {
+        bcopy(&__osPfsInodeCache, inode, sizeof(__OSInode));
         return 0;
     }
 
@@ -297,8 +297,8 @@ s32 __osPfsRWInode(OSPfs *pfs, __OSInode *inode, u8 flag, u8 bank) {
         }
     }
 
-    D_800A4204_main = bank;
-    bcopy(inode, &D_800D5310_main, sizeof(__OSInode));
-    D_800A4200_main = pfs->channel;
+    __osPfsInodeCacheBank = bank;
+    bcopy(inode, &__osPfsInodeCache, sizeof(__OSInode));
+    __osPfsInodeCacheChannel = pfs->channel;
     return 0;
 }

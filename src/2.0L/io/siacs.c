@@ -4,7 +4,7 @@ extern OSMesgQueue __osSiAccessQueue;
 extern OSMesg D_800C3990_main[1];
 extern s32 D_800A2DA0_main;
 
-void func_8007C720_main(void) {
+void __osSiCreateAccessQueue(void) {
     OSMesgQueue *queue = &__osSiAccessQueue;
 
     D_800A2DA0_main = 1;

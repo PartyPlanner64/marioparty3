@@ -6,7 +6,7 @@ s32 __osPfsGetStatus(OSMesgQueue *queue, int channel) {
     OSMesg dummy;
     OSContStatus data;
 
-    D_800A4204_main = 250;
+    __osPfsInodeCacheBank = 250;
     __osPfsRequestOneChannel(channel, CONT_CMD_REQUEST_STATUS);
     ret = __osSiRawStartDma(OS_WRITE, &__osPfsPifRam);
     osRecvMesg(queue, &dummy, OS_MESG_BLOCK);
@@ -30,7 +30,7 @@ void __osPfsRequestOneChannel(s32 channel, s32 cmd) {
     __OSContRequesFormatShort requestformat;
     s32 i;
 
-    D_800D1F58_main = CONT_CMD_END;
+    __osContLastCmd = CONT_CMD_END;
     __osPfsPifRam.pifstatus = CONT_CMD_EXE;
     ptr = (u8 *)&__osPfsPifRam;
     requestformat.txsize = CONT_CMD_REQUEST_STATUS_TX;

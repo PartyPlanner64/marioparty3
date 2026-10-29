@@ -28,7 +28,6 @@ extern s32 D_80101A98_name_81;
 extern void (*D_80101A8C_name_81)(void);
 extern s32 D_80101A70_name_81[];
 extern s32 D_80101A54_name_81[];
-extern s16 D_800CE204;
 extern s16 D_800CE206;
 extern s32 D_80105498_name_81;
 extern s16 D_8010549C_name_81;

@@ -12,8 +12,8 @@ s32 osEepromLongWrite(OSMesgQueue *mq, u8 address, u8 *buffer, int length) {
         length -= EEPROM_BLOCK_SIZE;
         address++;
         buffer += EEPROM_BLOCK_SIZE;
-        osSetTimer(&D_800D41C8_main, 562500, 0, &D_800D6A28_main, &D_800D1F6C_main);
-        osRecvMesg(&D_800D6A28_main, NULL, OS_MESG_BLOCK);
+        osSetTimer(&__osEepromTimer, 562500, 0, &__osEepromTimerQ, &__osEepromTimerMsg);
+        osRecvMesg(&__osEepromTimerQ, NULL, OS_MESG_BLOCK);
     }
     return ret;
 }

@@ -24,7 +24,7 @@ s32 osEepromProbe(OSMesgQueue *mq) {
                 break;
         }
     }
-    D_800D2004_main = 0;
+    __osEepromRead16K = 0;
     __osSiRelAccess();
     return ret;
 }

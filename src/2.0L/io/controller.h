@@ -116,7 +116,7 @@ typedef struct {
 #define CONT_CMD_EXE 1    /* set pif ram status byte to this to do a command */
 
 /* siacs.c */
-void func_8007C720_main(void); /* __osSiCreateAccessQueue */
+void __osSiCreateAccessQueue(void);
 void __osSiGetAccess(void);
 void __osSiRelAccess(void);
 
@@ -145,16 +145,16 @@ s32 __osPfsGetStatus(OSMesgQueue *queue, int channel);
 void __osPfsRequestOneChannel(s32 channel, s32 cmd);
 void __osPfsGetOneChannelData(s32 channel, OSContStatus *data);
 
-extern u8 D_800CE204;               /* __osMaxControllers */
-extern u8 D_800D1F58_main;          /* __osContLastCmd */
-extern OSTimer D_800D41C8_main;     /* __osEepromTimer */
-extern OSMesgQueue D_800D6A28_main; /* __osEepromTimerQ */
-extern OSMesg D_800D1F6C_main;      /* __osEepromTimerMsg */
-extern OSPifRam D_800D0470_main;    /* __osEepPifRam */
-extern OSPifRam D_800CC3F0_main;    /* __osContPifRam */
+extern u8 __osMaxControllers;
+extern u8 __osContLastCmd;
+extern OSTimer __osEepromTimer;
+extern OSMesgQueue __osEepromTimerQ;
+extern OSMesg __osEepromTimerMsg;
+extern OSPifRam __osEepPifRam;
+extern OSPifRam __osContPifRam;
 extern OSPifRam __osPfsPifRam;
-extern s32 D_800A3F90_main; /* __osPfsLastChannel */
-extern u8 D_800A4204_main;  /* __osPfsInodeCacheBank */
-extern s32 D_800D2004_main; /* __osEepromRead16K */
+extern s32 __osPfsLastChannel;
+extern u8 __osPfsInodeCacheBank;
+extern s32 __osEepromRead16K;
 
 #endif

@@ -1,7 +1,7 @@
 #include "common.h"
 #include "PR/viint.h"
 
-void func_8007D740_main(u32 func) {
+void osViSetSpecialFeatures(u32 func) {
     u32 saveMask;
 
     saveMask = __osDisableInt();

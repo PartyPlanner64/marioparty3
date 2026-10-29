@@ -6,11 +6,11 @@ s32 osContSetCh(u8 ch) {
 
     __osSiGetAccess();
     if (ch > MAXCONTROLLERS) {
-        D_800CE204 = MAXCONTROLLERS;
+        __osMaxControllers = MAXCONTROLLERS;
     } else {
-        D_800CE204 = ch;
+        __osMaxControllers = ch;
     }
-    D_800D1F58_main = CONT_CMD_END;
+    __osContLastCmd = CONT_CMD_END;
     __osSiRelAccess();
     return ret;
 }

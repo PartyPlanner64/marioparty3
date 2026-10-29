@@ -302,6 +302,7 @@ segments:
       - [0x7F330, c, 2.0L/io/pfsselectbank]
       - [0x7F3A0, c, 2.0L/io/contramread]
       - [0x7F590, c, 2.0L/io/contramwrite]
+      - [0x7F7A0, pad, pad_7F7A0] # zero padding before afterprenmi
       - [0x7F800, c, 2.0L/os/afterprenmi]
       - [0x7F820, c, 2.0L/os/getmemsize]
       - [0x7F8C0, c, 2.0L/os/initialize]

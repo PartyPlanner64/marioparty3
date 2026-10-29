@@ -5,20 +5,15 @@
 extern OSDevMgr __osViDevMgr;
 extern u32 __additional_scanline;
 extern OSThread viThread;
-extern u8 viThreadStack[OS_VIM_STACKSIZE]; /* 0x800C3B60, not yet split from viThread */
+extern u8 viThreadStack[OS_VIM_STACKSIZE];
 extern OSMesgQueue viEventQueue;
 extern OSMesg viEventBuf[5];
 extern OSIoMesg viRetraceMsg;
 extern OSIoMesg viCounterMsg;
-extern u16 D_800C39A0_main; /* retrace */
-
-extern void osViSwapContext(void);
+extern u16 retrace; /* static in the original source */
 
 void viMgrMain(void *arg);
 
-// Matches once viThreadStack gets its own symbol; the original references it
-// separately from viEventQueue, which immediately follows it in bss.
-#ifdef NON_MATCHING
 void osCreateViManager(OSPri pri) {
     u32 savedMask;
     OSPri oldPri;
@@ -59,9 +54,6 @@ void osCreateViManager(OSPri pri) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/2.0L/io/vimgr", osCreateViManager);
-#endif
 
 void viMgrMain(void *arg) {
     __OSViContext *vc;
@@ -71,23 +63,23 @@ void viMgrMain(void *arg) {
     u32 count;
 
     vc = __osViGetCurrentContext();
-    D_800C39A0_main = vc->retraceCount;
-    if (D_800C39A0_main == 0) {
-        D_800C39A0_main = 1;
+    retrace = vc->retraceCount;
+    if (retrace == 0) {
+        retrace = 1;
     }
     dm = (OSDevMgr *)arg;
     while (TRUE) {
         osRecvMesg(dm->evtQueue, (OSMesg *)&mb, OS_MESG_BLOCK);
         switch (mb->hdr.type) {
             case OS_MESG_TYPE_VRETRACE:
-                osViSwapContext();
-                D_800C39A0_main--;
-                if (D_800C39A0_main == 0) {
+                __osViSwapContext();
+                retrace--;
+                if (retrace == 0) {
                     vc = __osViGetCurrentContext();
                     if (vc->msgq != NULL) {
                         osSendMesg(vc->msgq, vc->msg, OS_MESG_NOBLOCK);
                     }
-                    D_800C39A0_main = vc->retraceCount;
+                    retrace = vc->retraceCount;
                 }
                 __osViIntrCount++;
                 if (first) {

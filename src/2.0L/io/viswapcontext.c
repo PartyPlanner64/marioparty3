@@ -3,7 +3,7 @@
 
 extern u32 __additional_scanline;
 
-void osViSwapContext(void) {
+void __osViSwapContext(void) {
     OSViMode *vm;
     __OSViContext *vc;
     u32 origin;

@@ -12,9 +12,9 @@ s32 __osContRamRead(OSMesgQueue *mq, int channel, u16 address, u8 *buffer) {
     __osSiGetAccess();
     do {
         ptr = (u8 *)&__osPfsPifRam;
-        if (D_800D1F58_main != CONT_CMD_READ_MEMPACK || D_800A3F90_main != channel) {
-            D_800D1F58_main = CONT_CMD_READ_MEMPACK;
-            D_800A3F90_main = channel;
+        if (__osContLastCmd != CONT_CMD_READ_MEMPACK || __osPfsLastChannel != channel) {
+            __osContLastCmd = CONT_CMD_READ_MEMPACK;
+            __osPfsLastChannel = channel;
             for (i = 0; i < channel; i++) {
                 *ptr++ = CONT_CMD_REQUEST_STATUS;
             }

@@ -5,7 +5,7 @@ extern void __osRestoreInt(u32);
 
 extern u32 D_800A3FB0_main;
 
-void func_80080A10_main(OSHWIntr mask) {
+void __osResetGlobalIntMask(OSHWIntr mask) {
     u32 int_disabled;
 
     int_disabled = __osDisableInt();

@@ -6,7 +6,7 @@ void __osPackEepWriteData(u8 address, u8 *buffer);
 s32 osEepromWrite(OSMesgQueue *mq, u8 address, u8 *buffer) {
     s32 ret = 0;
     u16 type;
-    u8 *ptr = (u8 *)&D_800D0470_main.ramarray;
+    u8 *ptr = (u8 *)&__osEepPifRam.ramarray;
     __OSContEepromFormat eepromformat;
     OSContStatus sdata;
     u8 temp[EEPROM_BLOCK_SIZE];
@@ -22,8 +22,8 @@ s32 osEepromWrite(OSMesgQueue *mq, u8 address, u8 *buffer) {
                 }
                 break;
             case CONT_EEPROM | CONT_EEP16K:
-                if (D_800D2004_main != 0) {
-                    D_800D2004_main = 0;
+                if (__osEepromRead16K != 0) {
+                    __osEepromRead16K = 0;
                     __osSiRelAccess();
                     osEepromRead(mq, address ^ 1, temp);
                     __osSiGetAccess();
@@ -43,10 +43,10 @@ s32 osEepromWrite(OSMesgQueue *mq, u8 address, u8 *buffer) {
         __osEepStatus(mq, &sdata);
     }
     __osPackEepWriteData(address, buffer);
-    ret = __osSiRawStartDma(OS_WRITE, &D_800D0470_main);
+    ret = __osSiRawStartDma(OS_WRITE, &__osEepPifRam);
     osRecvMesg(mq, NULL, OS_MESG_BLOCK);
-    ret = __osSiRawStartDma(OS_READ, &D_800D0470_main);
-    D_800D1F58_main = CONT_CMD_WRITE_EEPROM;
+    ret = __osSiRawStartDma(OS_READ, &__osEepPifRam);
+    __osContLastCmd = CONT_CMD_WRITE_EEPROM;
     osRecvMesg(mq, NULL, OS_MESG_BLOCK);
     ptr += 4;
     eepromformat = *(__OSContEepromFormat *)ptr;
@@ -56,11 +56,11 @@ s32 osEepromWrite(OSMesgQueue *mq, u8 address, u8 *buffer) {
 }
 
 void __osPackEepWriteData(u8 address, u8 *buffer) {
-    u8 *ptr = (u8 *)&D_800D0470_main.ramarray;
+    u8 *ptr = (u8 *)&__osEepPifRam.ramarray;
     __OSContEepromFormat eepromformat;
     s32 i;
 
-    D_800D0470_main.pifstatus = CONT_CMD_EXE;
+    __osEepPifRam.pifstatus = CONT_CMD_EXE;
     eepromformat.txsize = CONT_CMD_WRITE_EEPROM_TX;
     eepromformat.rxsize = CONT_CMD_WRITE_EEPROM_RX;
     eepromformat.cmd = CONT_CMD_WRITE_EEPROM;
@@ -79,14 +79,14 @@ void __osPackEepWriteData(u8 address, u8 *buffer) {
 s32 __osEepStatus(OSMesgQueue *mq, OSContStatus *data) {
     s32 ret = 0;
     s32 i;
-    u8 *ptr = (u8 *)D_800D0470_main.ramarray;
+    u8 *ptr = (u8 *)__osEepPifRam.ramarray;
     __OSContRequesFormat requestformat;
 
-    for (i = 0; i < ARRLEN(D_800D0470_main.ramarray) + 1; i++) {
-        D_800D0470_main.ramarray[i] = 0;
+    for (i = 0; i < ARRLEN(__osEepPifRam.ramarray) + 1; i++) {
+        __osEepPifRam.ramarray[i] = 0;
     }
-    D_800D0470_main.pifstatus = CONT_CMD_EXE;
-    ptr = (u8 *)D_800D0470_main.ramarray;
+    __osEepPifRam.pifstatus = CONT_CMD_EXE;
+    ptr = (u8 *)__osEepPifRam.ramarray;
     for (i = 0; i < 4; i++) {
         *ptr++ = 0;
     }
@@ -102,16 +102,16 @@ s32 __osEepStatus(OSMesgQueue *mq, OSContStatus *data) {
     ptr += sizeof(__OSContRequesFormat);
     *ptr = CONT_CMD_END;
 
-    ret = __osSiRawStartDma(OS_WRITE, &D_800D0470_main);
+    ret = __osSiRawStartDma(OS_WRITE, &__osEepPifRam);
     osRecvMesg(mq, NULL, OS_MESG_BLOCK);
-    D_800D1F58_main = CONT_CMD_END;
-    ret = __osSiRawStartDma(OS_READ, &D_800D0470_main);
+    __osContLastCmd = CONT_CMD_END;
+    ret = __osSiRawStartDma(OS_READ, &__osEepPifRam);
     osRecvMesg(mq, NULL, OS_MESG_BLOCK);
     if (ret != 0) {
         return ret;
     }
 
-    ptr = (u8 *)&D_800D0470_main;
+    ptr = (u8 *)&__osEepPifRam;
     for (i = 0; i < 4; i++) {
         *ptr++ = 0;
     }

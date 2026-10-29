@@ -2,8 +2,6 @@
 #include "piint.h"
 #include "PR/R4300.h"
 
-void func_800809D0_main(OSHWIntr mask); /* __osSetGlobalIntMask */
-void func_80080A10_main(OSHWIntr mask); /* __osResetGlobalIntMask */
 
 void __osDevMgrMain(void *args) {
     OSIoMesg *mb;
@@ -36,7 +34,7 @@ void __osDevMgrMain(void *args) {
                 messageSend = 0;
             }
             osRecvMesg(dm->acsQueue, &dummy, OS_MESG_BLOCK);
-            func_80080A10_main(OS_IM_PI);
+            __osResetGlobalIntMask(OS_IM_PI);
             __osEPiRawWriteIo(mb->piHandle, LEO_BM_CTL, info->bmCtlShadow | LEO_BM_CTL_START);
         readblock1:
             osRecvMesg(dm->evtQueue, &em, OS_MESG_BLOCK);
@@ -53,7 +51,7 @@ void __osDevMgrMain(void *args) {
                 }
                 blockInfo->errStatus = LEO_ERROR_4;
                 IO_WRITE(PI_STATUS_REG, PI_CLR_INTR);
-                func_800809D0_main(OS_IM_PI | SR_IBIT4);
+                __osSetGlobalIntMask(OS_IM_PI | SR_IBIT4);
             }
             osSendMesg(mb->hdr.retQueue, mb, OS_MESG_NOBLOCK);
             if (messageSend == 1 && mb->piHandle->transferInfo.block[0].errStatus == LEO_ERROR_GOOD) {

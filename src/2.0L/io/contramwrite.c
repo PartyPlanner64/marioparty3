@@ -3,10 +3,6 @@
 
 #define READFORMAT(ptr) ((__OSContRamReadFormat *)(ptr))
 
-// This function's code matches, but the target segment has 0x60 bytes of zero
-// padding after it (before afterprenmi at 0x7F800) that the compiled object
-// lacks, so the asm stays in use until the segment split is resolved.
-#ifdef NON_MATCHING
 s32 __osContRamWrite(OSMesgQueue *mq, int channel, u16 address, u8 *buffer, int force) {
     s32 ret = 0;
     s32 i;
@@ -21,9 +17,9 @@ s32 __osContRamWrite(OSMesgQueue *mq, int channel, u16 address, u8 *buffer, int 
     __osSiGetAccess();
     do {
         ptr = (u8 *)&__osPfsPifRam;
-        if (D_800D1F58_main != CONT_CMD_WRITE_MEMPACK || D_800A3F90_main != channel) {
-            D_800D1F58_main = CONT_CMD_WRITE_MEMPACK;
-            D_800A3F90_main = channel;
+        if (__osContLastCmd != CONT_CMD_WRITE_MEMPACK || __osPfsLastChannel != channel) {
+            __osContLastCmd = CONT_CMD_WRITE_MEMPACK;
+            __osPfsLastChannel = channel;
             for (i = 0; i < channel; i++) {
                 *ptr++ = CONT_CMD_REQUEST_STATUS;
             }
@@ -61,6 +57,3 @@ s32 __osContRamWrite(OSMesgQueue *mq, int channel, u16 address, u8 *buffer, int 
     __osSiRelAccess();
     return ret;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/2.0L/io/contramwrite", __osContRamWrite);
-#endif

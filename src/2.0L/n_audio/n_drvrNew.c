@@ -17,17 +17,61 @@
  */
 #define CONVERT 173123.404906676
 #define LENGTH (d->output - d->input)
+#define ms *(((s32)((f32)44.1)) & ~0x7)
 
 /*
- * Default effect parameters (SMALLROOM, BIGROOM, ECHO, CHORUS, FLANGE, NULL).
- * They live in a data segment that has not been split out yet.
+ * the following arrays contain default parameters for
+ * a few hopefully useful effects.
  */
-extern s32 D_800A2890_main[];
-extern s32 D_800A28F8_main[];
-extern s32 D_800A2980_main[];
-extern s32 D_800A29A8_main[];
-extern s32 D_800A29D0_main[];
-extern s32 D_800A29F8_main[];
+static s32 SMALLROOM_PARAMS[26] = {
+    /* sections     length */
+    3, 100 ms,
+    /*                                     chorus  chorus  filter
+       input  output  fbcoef  ffcoef  gain    rate    depth   coef  */
+    0, 54 ms, 9830, -9830, 0, 0, 0, 0,
+    19 ms, 38 ms, 3276, -3276, 0x3fff, 0, 0, 0,
+    0, 60 ms, 5000, 0, 0, 0, 0, 0x5000
+};
+
+static s32 BIGROOM_PARAMS[34] = {
+    /* sections     length */
+    4, 100 ms,
+    /*                                     chorus  chorus  filter
+       input  output  fbcoef  ffcoef  gain    rate    depth   coef  */
+    0, 66 ms, 9830, -9830, 0, 0, 0, 0,
+    22 ms, 54 ms, 3276, -3276, 0x3fff, 0, 0, 0,
+    66 ms, 91 ms, 3276, -3276, 0x3fff, 0, 0, 0,
+    0, 94 ms, 8000, 0, 0, 0, 0, 0x5000
+};
+
+static s32 ECHO_PARAMS[10] = {
+    /* sections     length */
+    1, 200 ms,
+    /*                                     chorus  chorus  filter
+       input  output  fbcoef  ffcoef  gain    rate    depth   coef  */
+    0, 179 ms, 12000, 0, 0x7fff, 0, 0, 0
+};
+
+static s32 CHORUS_PARAMS[10] = {
+    /* sections     length */
+    1, 20 ms,
+    /*                                     chorus  chorus  filter
+       input  output  fbcoef  ffcoef  gain    rate    depth   coef  */
+    0, 5 ms, 0x4000, 0, 0x7fff, 7600, 700, 0
+};
+
+static s32 FLANGE_PARAMS[10] = {
+    /* sections     length */
+    1, 20 ms,
+    /*                                     chorus  chorus  filter
+       input  output  fbcoef  ffcoef  gain    rate    depth   coef  */
+    0, 5 ms, 0, 0x5fff, 0x7fff, 380, 500, 0
+};
+
+static s32 NULL_PARAMS[10] = {
+    0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0
+};
 
 void n_alFxNew(N_ALFx **fx_ar, ALSynConfig *c, ALHeap *hp) {
     u16 i, j, k;
@@ -39,25 +83,25 @@ void n_alFxNew(N_ALFx **fx_ar, ALSynConfig *c, ALHeap *hp) {
 
     switch (c->fxType) {
         case AL_FX_SMALLROOM:
-            param = D_800A2890_main;
+            param = SMALLROOM_PARAMS;
             break;
         case AL_FX_BIGROOM:
-            param = D_800A28F8_main;
+            param = BIGROOM_PARAMS;
             break;
         case AL_FX_ECHO:
-            param = D_800A2980_main;
+            param = ECHO_PARAMS;
             break;
         case AL_FX_CHORUS:
-            param = D_800A29A8_main;
+            param = CHORUS_PARAMS;
             break;
         case AL_FX_FLANGE:
-            param = D_800A29D0_main;
+            param = FLANGE_PARAMS;
             break;
         case AL_FX_CUSTOM:
             param = c->params;
             break;
         default:
-            param = D_800A29F8_main;
+            param = NULL_PARAMS;
             break;
     }
 

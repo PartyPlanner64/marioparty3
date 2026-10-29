@@ -1126,7 +1126,7 @@ __n_CSPHandleNextSeqEvent = 0x8006C408; //rom:0x6D008
 __n_CSPHandleMIDIMsg = 0x8006C4C8; //rom:0x6D0C8
 __n_CSPHandleMetaMsg = 0x8006CD00; //rom:0x6D900
 __n_CSPRepostEvent = 0x8006CE90; //rom:0x6DA90
-__n_setUsptFromTempo = 0x8006CF20; //rom:0x6DB20
+__n_setUsptFromTempo = 0x8006CF20; //rom:0x6DB20 allow_duplicated:True
 __n_CSPPostNextSeqEvent = 0x8006CF54; //rom:0x6DB54
 
 //n_cspdelete.c
@@ -1222,6 +1222,8 @@ n_alCSeqNew = 0x8006E030; //rom:0x6EC30
 n_alCSeqNextEvent = 0x8006E13C; //rom:0x6ED3C
 __n_alCSeqGetTrackEvent = 0x8006E230; //rom:0x6EE30
 n_alCSeqNewMarker = 0x8006E4A0; //rom:0x6F0A0
+__getTrackByte = 0x8006E738; //rom:0x6F338 allow_duplicated:True
+__readVarLen = 0x8006E7F0; //rom:0x6F3F0 allow_duplicated:True
 
 //n_auxbus.c
 n_alAuxBusPull = 0x8006E870; //rom:0x6F470
@@ -1229,6 +1231,12 @@ n_alAuxBusPull = 0x8006E870; //rom:0x6F470
 //n_drvrNew.c
 n_alFxNew = 0x8006E910; //rom:0x6F510
 alN_PVoiceNew = 0x8006ECFC; //rom:0x6F8FC
+SMALLROOM_PARAMS = 0x800A2890; //rom:0xA3490 size:0x68 allow_duplicated:True
+BIGROOM_PARAMS = 0x800A28F8; //rom:0xA34F8 size:0x88 allow_duplicated:True
+ECHO_PARAMS = 0x800A2980; //rom:0xA3580 size:0x28 allow_duplicated:True
+CHORUS_PARAMS = 0x800A29A8; //rom:0xA35A8 size:0x28 allow_duplicated:True
+FLANGE_PARAMS = 0x800A29D0; //rom:0xA35D0 size:0x28 allow_duplicated:True
+NULL_PARAMS = 0x800A29F8; //rom:0xA35F8 size:0x28 allow_duplicated:True
 
 //n_reverb.c
 n_alFxPull = 0x8006EE30; //rom:0x6FA30
@@ -1274,9 +1282,34 @@ n_alSynStartVoice = 0x8006FF20; //rom:0x70B20
 //n_synstopvoice.c
 n_alSynStopVoice = 0x8006FFB0; //rom:0x70BB0
 
+//n_seqplayer.c
+n_alSeqpNew = 0x80070030; //rom:0x70C30
+__n_seqpVoiceHandler = 0x800701AC; //rom:0x70DAC
+__n_handleNextSeqEvent = 0x80070660; //rom:0x71260
+__n_handleMIDIMsg = 0x8007071C; //rom:0x7131C
+__n_handleMetaMsg = 0x80070F20; //rom:0x71B20
+__n_unmapVoice = 0x80070F8C; //rom:0x71B8C
+__n_seqpReleaseVoice = 0x80070FF0; //rom:0x71BF0
+__n_voiceNeedsNoteKill = 0x8007110C; //rom:0x71D0C
+__n_setUsptFromTempo = 0x800711BC; //rom:0x71DBC allow_duplicated:True
+__n_mapVoice = 0x800711F0; //rom:0x71DF0
+__n_lookupVoice = 0x80071240; //rom:0x71E40
+__n_lookupSoundQuick = 0x80071294; //rom:0x71E94
+__n_vsVol = 0x80071368; //rom:0x71F68
+__n_vsDelta = 0x800713D8; //rom:0x71FD8
+__n_vsPan = 0x800713F4; //rom:0x71FF4
+__n_initFromBank = 0x80071438; //rom:0x72038
+__n_initChanState = 0x800714E4; //rom:0x720E4
+__n_resetPerfChanState = 0x80071548; //rom:0x72148
+__n_setInstChanState = 0x800715C8; //rom:0x721C8
+__n_seqpStopOsc = 0x8007161C; //rom:0x7221C
+__n_postNextSeqEvent = 0x8007170C; //rom:0x7230C
+
 //n_seq.c
 n_alSeqNextEvent = 0x800717E0; //rom:0x723E0
 n_alSeqNewMarker = 0x80071948; //rom:0x72548
+read8 = 0x80071A5C; //rom:0x7265C allow_duplicated:True
+readVarLen = 0x80071A70; //rom:0x72670 allow_duplicated:True
 
 //n_mainbus.c
 n_alMainBusPull = 0x80071AC0; //rom:0x726C0
@@ -1295,8 +1328,8 @@ alCSeqGetTicks = 0x8007792C; //rom:0x7852C
 alCSeqNewMarker = 0x80077934; //rom:0x78534
 alCSeqSetLoc = 0x80077BCC; //rom:0x787CC
 alCSeqGetLoc = 0x80077C40; //rom:0x78840
-__getTrackByte = 0x80077CB4; //rom:0x788B4
-__readVarLen = 0x80077D6C; //rom:0x7896C
+__getTrackByte = 0x80077CB4; //rom:0x788B4 allow_duplicated:True
+__readVarLen = 0x80077D6C; //rom:0x7896C allow_duplicated:True
 
 //libultra symbols
 //auxbus.c
@@ -1322,12 +1355,12 @@ alHeapInit = 0x80077250; //rom:0x77E50
 alCopy = 0x800772E0; //rom:0x77EE0
 
 //drvrnew.c
-SMALLROOM_PARAMS = 0x800A2A90; //size:0x68
-BIGROOM_PARAMS = 0x800A2AF8; //size:0x88
-ECHO_PARAMS = 0x800A2B80; //size:0x28
-CHORUS_PARAMS = 0x800A2BA8; //size:0x28
-FLANGE_PARAMS = 0x800A2BD0; //size:0x28
-NULL_PARAMS = 0x800A2BF8; //size:0x28
+SMALLROOM_PARAMS = 0x800A2A90; //size:0x68 allow_duplicated:True
+BIGROOM_PARAMS = 0x800A2AF8; //size:0x88 allow_duplicated:True
+ECHO_PARAMS = 0x800A2B80; //size:0x28 allow_duplicated:True
+CHORUS_PARAMS = 0x800A2BA8; //size:0x28 allow_duplicated:True
+FLANGE_PARAMS = 0x800A2BD0; //size:0x28 allow_duplicated:True
+NULL_PARAMS = 0x800A2BF8; //size:0x28 allow_duplicated:True
 init_lpfilter = 0x800733E0; //rom:0x73FE0
 alFxNew = 0x80073484; //rom:0x74084
 alEnvmixerNew = 0x8007391C; //rom:0x7451C
@@ -1394,10 +1427,10 @@ alSeqSecToTicks = 0x80076ED0; //rom:0x77AD0
 alSeqNewMarker = 0x80076F60; //rom:0x77B60
 alSeqSetLoc = 0x8007707C; //rom:0x77C7C
 alSeqGetLoc = 0x80077098; //rom:0x77C98
-read8 = 0x800770B4; //rom:0x77CB4
+read8 = 0x800770B4; //rom:0x77CB4 allow_duplicated:True
 read16 = 0x800770C8; //rom:0x77CC8
 read32 = 0x800770F8; //rom:0x77CF8
-readVarLen = 0x80077148; //rom:0x77D48
+readVarLen = 0x80077148; //rom:0x77D48 allow_duplicated:True
 
 //heapalloc.c
 alHeapDBAlloc = 0x80077290; //rom:0x77E90

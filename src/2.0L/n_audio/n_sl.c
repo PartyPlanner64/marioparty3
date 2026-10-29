@@ -1,6 +1,9 @@
 #include "common.h"
 #include "PR/n_libaudio.h"
 
+N_ALGlobals *n_alGlobals = NULL;
+N_ALSynth *n_syn = NULL;
+
 void n_alInit(N_ALGlobals *g, ALSynConfig *c) {
     if (n_alGlobals == NULL) {
         n_alGlobals = g;

@@ -6,7 +6,7 @@ void __n_CSPHandleNextSeqEvent(N_ALCSPlayer *seqp);
 void __n_CSPHandleMIDIMsg(N_ALCSPlayer *seqp, N_ALEvent *event);
 void __n_CSPHandleMetaMsg(N_ALCSPlayer *seqp, N_ALEvent *event);
 void __n_CSPRepostEvent(ALEventQueue *evtq, N_ALEventListItem *item);
-void __n_setUsptFromTempo(N_ALCSPlayer *seqp, f32 tempo);
+static void __n_setUsptFromTempo(N_ALCSPlayer *seqp, f32 tempo);
 void __n_CSPPostNextSeqEvent(N_ALCSPlayer *seqp);
 
 /*
@@ -44,7 +44,7 @@ void n_alCSPNew(N_ALCSPlayer *seqp, ALSeqpConfig *c) {
      */
     seqp->maxChannels = c->maxChannels;
     seqp->chanState = alHeapAlloc(hp, c->maxChannels, sizeof(ALChanState));
-    func_800714E4_main((N_ALSeqPlayer *)seqp);
+    __n_initChanState((N_ALSeqPlayer *)seqp);
 
     /*
      * init the voice state array
@@ -106,9 +106,9 @@ ALMicroTime __n_CSPVoiceHandler(void *node) {
                 n_alSynFreeVoice(voice);
                 vs = (N_ALVoiceState *)voice->clientPrivate;
                 if (vs->flags) {
-                    func_8007161C_main((N_ALSeqPlayer *)seqp, vs);
+                    __n_seqpStopOsc((N_ALSeqPlayer *)seqp, vs);
                 }
-                func_80070F8C_main((N_ALSeqPlayer *)seqp, voice);
+                __n_unmapVoice((N_ALSeqPlayer *)seqp, voice);
                 break;
 
             case AL_SEQP_ENV_EVT:
@@ -122,7 +122,7 @@ ALMicroTime __n_CSPVoiceHandler(void *node) {
                 delta = seqp->nextEvent.msg.vol.delta;
                 vs->envEndTime = seqp->curTime + delta;
                 vs->envGain = seqp->nextEvent.msg.vol.vol;
-                n_alSynSetVol(voice, func_80071368_main(vs, (N_ALSeqPlayer *)seqp), delta);
+                n_alSynSetVol(voice, __n_vsVol(vs, (N_ALSeqPlayer *)seqp), delta);
                 break;
 
             case AL_TREM_OSC_EVT:
@@ -130,8 +130,8 @@ ALMicroTime __n_CSPVoiceHandler(void *node) {
                 oscState = seqp->nextEvent.msg.osc.oscState;
                 delta = (*seqp->updateOsc)(oscState, &oscValue);
                 vs->tremelo = (u8)oscValue;
-                n_alSynSetVol(&vs->voice, func_80071368_main(vs, (N_ALSeqPlayer *)seqp),
-                              func_800713D8_main(vs, seqp->curTime));
+                n_alSynSetVol(&vs->voice, __n_vsVol(vs, (N_ALSeqPlayer *)seqp),
+                              __n_vsDelta(vs, seqp->curTime));
                 evt.type = AL_TREM_OSC_EVT;
                 evt.msg.osc.vs = vs;
                 evt.msg.osc.oscState = oscState;
@@ -164,8 +164,8 @@ ALMicroTime __n_CSPVoiceHandler(void *node) {
             case AL_SEQP_VOL_EVT:
                 seqp->vol = seqp->nextEvent.msg.spvol.vol;
                 for (vs = seqp->vAllocHead; vs != 0; vs = vs->next) {
-                    n_alSynSetVol(&vs->voice, func_80071368_main(vs, (N_ALSeqPlayer *)seqp),
-                                  func_800713D8_main(vs, seqp->curTime));
+                    n_alSynSetVol(&vs->voice, __n_vsVol(vs, (N_ALSeqPlayer *)seqp),
+                                  __n_vsDelta(vs, seqp->curTime));
                 }
                 break;
 
@@ -182,9 +182,9 @@ ALMicroTime __n_CSPVoiceHandler(void *node) {
                         n_alSynStopVoice(&vs->voice);
                         n_alSynFreeVoice(&vs->voice);
                         if (vs->flags) {
-                            func_8007161C_main((N_ALSeqPlayer *)seqp, vs);
+                            __n_seqpStopOsc((N_ALSeqPlayer *)seqp, vs);
                         }
-                        func_80070F8C_main((N_ALSeqPlayer *)seqp, &vs->voice);
+                        __n_unmapVoice((N_ALSeqPlayer *)seqp, &vs->voice);
                     }
                     seqp->state = AL_STOPPED;
                 }
@@ -209,8 +209,8 @@ ALMicroTime __n_CSPVoiceHandler(void *node) {
                      * occurring prior to KILL_TIME.
                      */
                     for (vs = seqp->vAllocHead; vs != 0; vs = vs->next) {
-                        if (func_8007110C_main((N_ALSeqPlayer *)seqp, &vs->voice, KILL_TIME)) {
-                            func_80070FF0_main((N_ALSeqPlayer *)seqp, &vs->voice, KILL_TIME);
+                        if (__n_voiceNeedsNoteKill((N_ALSeqPlayer *)seqp, &vs->voice, KILL_TIME)) {
+                            __n_seqpReleaseVoice((N_ALSeqPlayer *)seqp, &vs->voice, KILL_TIME);
                         }
                     }
 
@@ -229,13 +229,13 @@ ALMicroTime __n_CSPVoiceHandler(void *node) {
                 seqp->target = (ALCSeq *)seqp->nextEvent.msg.spseq.seq;
                 __n_setUsptFromTempo(seqp, 500000.0);
                 if (seqp->bank) {
-                    func_80071438_main((N_ALSeqPlayer *)seqp, seqp->bank);
+                    __n_initFromBank((N_ALSeqPlayer *)seqp, seqp->bank);
                 }
                 break;
 
             case AL_SEQP_BANK_EVT:
                 seqp->bank = seqp->nextEvent.msg.spbank.bank;
-                func_80071438_main((N_ALSeqPlayer *)seqp, seqp->bank);
+                __n_initFromBank((N_ALSeqPlayer *)seqp, seqp->bank);
                 break;
 
             /* these events should now be handled by __n_CSPHandleNextSeqEvent */
@@ -333,14 +333,14 @@ void __n_CSPHandleMIDIMsg(N_ALCSPlayer *seqp, N_ALEvent *event) {
                     break;
                 }
 
-                sound = func_80071294_main((N_ALSeqPlayer *)seqp, key, vel, chan);
+                sound = __n_lookupSoundQuick((N_ALSeqPlayer *)seqp, key, vel, chan);
                 ALFlagFailIf(!sound, seqp->debugFlags & NO_SOUND_ERR_MASK, ERR_ALSEQP_NO_SOUND);
 
                 config.priority = seqp->chanState[chan].priority;
                 config.fxBus = 0;
                 config.unityPitch = 0;
 
-                vstate = func_800711F0_main((N_ALSeqPlayer *)seqp, key, vel, chan);
+                vstate = __n_mapVoice((N_ALSeqPlayer *)seqp, key, vel, chan);
                 ALFlagFailIf(!vstate, seqp->debugFlags & NO_VOICE_ERR_MASK, ERR_ALSEQP_NO_VOICE);
 
                 voice = &vstate->voice;
@@ -413,8 +413,8 @@ void __n_CSPHandleMIDIMsg(N_ALCSPlayer *seqp, N_ALEvent *event) {
                  */
                 pitch = vstate->pitch * seqp->chanState[chan].pitchBend * vstate->vibrato;
                 fxmix = seqp->chanState[chan].fxmix;
-                pan = func_800713F4_main(vstate, (N_ALSeqPlayer *)seqp);
-                vol = func_80071368_main(vstate, (N_ALSeqPlayer *)seqp);
+                pan = __n_vsPan(vstate, (N_ALSeqPlayer *)seqp);
+                vol = __n_vsVol(vstate, (N_ALSeqPlayer *)seqp);
                 deltaTime = sound->envelope->attackTime;
 
                 func_80066270_main(voice, sound->wavetable, pitch, vol, pan, fxmix, deltaTime);
@@ -451,14 +451,14 @@ void __n_CSPHandleMIDIMsg(N_ALCSPlayer *seqp, N_ALEvent *event) {
              */
 
         case AL_MIDI_NoteOff:
-            vstate = func_80071240_main((N_ALSeqPlayer *)seqp, key, chan);
+            vstate = __n_lookupVoice((N_ALSeqPlayer *)seqp, key, chan);
             ALFlagFailIf(!vstate, seqp->debugFlags & NOTE_OFF_ERR_MASK, ERR_ALSEQP_OFF_VOICE);
 
             if (vstate->phase == AL_PHASE_SUSTAIN) {
                 vstate->phase = AL_PHASE_SUSTREL;
             } else {
                 vstate->phase = AL_PHASE_RELEASE;
-                func_80070FF0_main((N_ALSeqPlayer *)seqp, &vstate->voice, vstate->sound->envelope->releaseTime);
+                __n_seqpReleaseVoice((N_ALSeqPlayer *)seqp, &vstate->voice, vstate->sound->envelope->releaseTime);
             }
 
             break;
@@ -469,12 +469,12 @@ void __n_CSPHandleMIDIMsg(N_ALCSPlayer *seqp, N_ALEvent *event) {
              * aftertouch affects only notes that are already
              * sounding.
              */
-            vstate = func_80071240_main((N_ALSeqPlayer *)seqp, key, chan);
+            vstate = __n_lookupVoice((N_ALSeqPlayer *)seqp, key, chan);
             ALFailIf(!vstate, ERR_ALSEQP_POLY_VOICE);
 
             vstate->velocity = byte2;
-            n_alSynSetVol(&vstate->voice, func_80071368_main(vstate, (N_ALSeqPlayer *)seqp),
-                          func_800713D8_main(vstate, seqp->curTime));
+            n_alSynSetVol(&vstate->voice, __n_vsVol(vstate, (N_ALSeqPlayer *)seqp),
+                          __n_vsDelta(vstate, seqp->curTime));
             break;
 
         case AL_MIDI_ChannelPressure:
@@ -486,7 +486,7 @@ void __n_CSPHandleMIDIMsg(N_ALCSPlayer *seqp, N_ALEvent *event) {
             for (vs = seqp->vAllocHead; vs != 0; vs = vs->next) {
                 if (vs->channel == chan) {
                     vs->velocity = byte1;
-                    n_alSynSetVol(&vs->voice, func_80071368_main(vs, (N_ALSeqPlayer *)seqp), func_800713D8_main(vs, seqp->curTime));
+                    n_alSynSetVol(&vs->voice, __n_vsVol(vs, (N_ALSeqPlayer *)seqp), __n_vsDelta(vs, seqp->curTime));
                 }
             }
             break;
@@ -497,7 +497,7 @@ void __n_CSPHandleMIDIMsg(N_ALCSPlayer *seqp, N_ALEvent *event) {
                     seqp->chanState[chan].pan = byte2;
                     for (vs = seqp->vAllocHead; vs != 0; vs = vs->next) {
                         if (vs->channel == chan) {
-                            pan = func_800713F4_main(vs, (N_ALSeqPlayer *)seqp);
+                            pan = __n_vsPan(vs, (N_ALSeqPlayer *)seqp);
                             func_80066400_main(&vs->voice, pan);
                         }
                     }
@@ -507,8 +507,8 @@ void __n_CSPHandleMIDIMsg(N_ALCSPlayer *seqp, N_ALEvent *event) {
                     seqp->chanState[chan].vol = byte2;
                     for (vs = seqp->vAllocHead; vs != 0; vs = vs->next) {
                         if ((vs->channel == chan) && (vs->envPhase != AL_PHASE_RELEASE)) {
-                            vol = func_80071368_main(vs, (N_ALSeqPlayer *)seqp);
-                            n_alSynSetVol(&vs->voice, vol, func_800713D8_main(vs, seqp->curTime));
+                            vol = __n_vsVol(vs, (N_ALSeqPlayer *)seqp);
+                            n_alSynSetVol(&vs->voice, vol, __n_vsDelta(vs, seqp->curTime));
                         }
                     }
                     break;
@@ -537,7 +537,7 @@ void __n_CSPHandleMIDIMsg(N_ALCSPlayer *seqp, N_ALEvent *event) {
                                     vs->phase = AL_PHASE_NOTEON;
                                 } else if (vs->phase == AL_PHASE_SUSTREL) {
                                     vs->phase = AL_PHASE_RELEASE;
-                                    func_80070FF0_main((N_ALSeqPlayer *)seqp, &vs->voice, vs->sound->envelope->releaseTime);
+                                    __n_seqpReleaseVoice((N_ALSeqPlayer *)seqp, &vs->voice, vs->sound->envelope->releaseTime);
                                 }
                             }
                         }
@@ -561,7 +561,7 @@ void __n_CSPHandleMIDIMsg(N_ALCSPlayer *seqp, N_ALEvent *event) {
         case AL_MIDI_ProgramChange:
             if (key < seqp->bank->instCount) {
                 ALInstrument *inst = seqp->bank->instArray[key];
-                func_800715C8_main((N_ALSeqPlayer *)seqp, inst, chan);
+                __n_setInstChanState((N_ALSeqPlayer *)seqp, inst, chan);
             }
             break;
 
@@ -674,7 +674,7 @@ void __n_CSPRepostEvent(ALEventQueue *evtq, N_ALEventListItem *item) {
     osSetIntMask(mask);
 }
 
-void __n_setUsptFromTempo(N_ALCSPlayer *seqp, f32 scale) {
+static void __n_setUsptFromTempo(N_ALCSPlayer *seqp, f32 scale) {
     if (seqp->target != NULL) {
         seqp->uspt = (s32)(scale * seqp->target->qnpt);
     } else {

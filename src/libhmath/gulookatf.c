@@ -19,7 +19,7 @@ static inline void CopyVector(f32 *x, f32 *y, f32 *z, f32 a, f32 b, f32 c) {
 }
 
 // Builds a floating-point look-at matrix from eye, target, and up vectors.
-void guLookAtF(HuMtx4F mf, f32 xEye, f32 yEye, f32 zEye, f32 xAt, f32 yAt, f32 zAt, f32 xUp, f32 yUp, f32 zUp) {
+void HuLookAtF(HuMtx4F mf, f32 xEye, f32 yEye, f32 zEye, f32 xAt, f32 yAt, f32 zAt, f32 xUp, f32 yUp, f32 zUp) {
     f32 xLook, yLook, zLook;
     f32 xRight, yRight, zRight;
 

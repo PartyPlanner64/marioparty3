@@ -240,6 +240,7 @@ HuSprGrpFirst = 0x800CC0A0; //
 HuSprGrpData = 0x800CDD70; //
 HuSprGrpNum = 0x800D520C; //
 
+guLookAtF = 0x80079480; //rom:0x7A080
 guLookAtHiliteF = 0x80079B90; //rom:0x7A790
 guLookAtHilite = 0x8007A514; //rom:0x7B114
 guLookAtReflectF = 0x8007A5F0; //rom:0x7B1F0
@@ -811,7 +812,7 @@ _Genld = 0x80084484;
 guPerspectiveF = 0x8007AE60;
 guPerspective = 0x8007B010;
 guNormalize = 0x80082B00;
-guLookAtF = 0x80088210;
+HuLookAtF = 0x80088210;
 guLookAt = 0x80079800;
 HuSqrt = 0x800880D0;
 HuSqrtf = 0x800880E0;

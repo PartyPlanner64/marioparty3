@@ -1,8 +1,7 @@
 #include "guint.h"
 
-/* guLookAtF */
-void func_80079480_main(float mf[4][4], float xEye, float yEye, float zEye, float xAt, float yAt, float zAt, float xUp,
-                        float yUp, float zUp) {
+void guLookAtF(float mf[4][4], float xEye, float yEye, float zEye, float xAt, float yAt, float zAt, float xUp,
+               float yUp, float zUp) {
     float len, xLook, yLook, zLook, xRight, yRight, zRight;
 
     guMtxIdentF(mf);
@@ -60,7 +59,7 @@ void guLookAt(Mtx *m, float xEye, float yEye, float zEye, float xAt, float yAt, 
               float zUp) {
     Matrix mf;
 
-    func_80079480_main(mf, xEye, yEye, zEye, xAt, yAt, zAt, xUp, yUp, zUp);
+    guLookAtF(mf, xEye, yEye, zEye, xAt, yAt, zAt, xUp, yUp, zUp);
 
     guMtxF2L(mf, m);
 }

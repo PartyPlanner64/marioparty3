@@ -1188,7 +1188,7 @@ void func_80109730_option(Vec *pos, Vec *at, Vec *up, f32 fov, Vec *point, f32 *
     f32 dx, dy, dz;
     f32 x, y, z;
 
-    guLookAtF(mtx, pos->x, pos->y, pos->z, at->x, at->y, at->z, up->x, up->y, up->z);
+    HuLookAtF(mtx, pos->x, pos->y, pos->z, at->x, at->y, at->z, up->x, up->y, up->z);
     dx = point->x;
     dy = point->y;
     dz = point->z;

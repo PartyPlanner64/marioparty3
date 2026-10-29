@@ -141,7 +141,7 @@ void Hu3DCam3DToScreen(s16 camIndex, Vec *worldPos, Vec2f *outPos) {
     HuMtx4F viewMtx;
 
     camera = &gCameraList[camIndex];
-    guLookAtF(
+    HuLookAtF(
         viewMtx,
         camera->pos.x,
         camera->pos.y,
@@ -181,7 +181,7 @@ void func_80012B14_main(s16 camIndex, Vec *worldPos, Vec2f *outPos) {
     f32 f4;
 
     camera = &gCameraList[camIndex];
-    guLookAtF(
+    HuLookAtF(
         viewMtx,
         camera->pos.x,
         camera->pos.y,

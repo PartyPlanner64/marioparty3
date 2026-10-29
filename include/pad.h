@@ -19,8 +19,11 @@ extern u8 D_800ABF8A_main[];
 extern u16 D_800CBB66_main[];
 extern s16 D_800CDA7C_main[];
 extern s16 D_800D056A_main[];
-extern s16 D_800D1244_main[];
+extern u16 D_800D1244_main[];
 extern s16 D_800D1382_main[];
+extern s8 D_800CE2D0_main[][8];
+extern s8 D_800D5418_main[][8];
+extern s16 D_800D5542_main;
 extern s16 gNumOfControllers;
 extern s8 D_800D20A1_main[];
 extern unkMesg D_800ABF00_main[];
@@ -46,5 +49,6 @@ void _AutoReadController(void);
 void SetAutoReadController(void);
 void ResetAutoReadController(void);
 s32 CheckControllerRead(s16 padNum);
+s16 FlushController(void);
 
 #endif

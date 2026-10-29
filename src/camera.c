@@ -210,9 +210,72 @@ void func_80012B14_main(s16 camIndex, Vec *worldPos, Vec2f *outPos) {
     outPos->y = ((projectedY * (f4 / y)) + f4);
 }
 
-INCLUDE_ASM("asm/nonmatchings/camera", func_80012D0C_main);
+void func_80012D0C_main(s16 camIndex, f32 depth, Vec2f *screenPos, Vec2f *outPos) {
+    HuCamera *camera;
+    HuMtx4F viewMtx;
+    f32 x;
+    f32 y;
+    f32 screenX;
+    f32 screenY;
 
-INCLUDE_ASM("asm/nonmatchings/camera", func_80012E54_main);
+    camera = &gCameraList[camIndex];
+    HuLookAtF(
+        viewMtx,
+        camera->pos.x,
+        camera->pos.y,
+        camera->pos.z,
+        camera->at.x,
+        camera->at.y,
+        camera->at.z,
+        camera->up.x,
+        camera->up.y,
+        camera->up.z);
+
+    y = sindf(camera->fov[0] / 2.0f) / cosdf(camera->fov[0] / 2.0f) * depth;
+    x = y * ASPECT_RATIO;
+    screenX = screenPos->x / SCREEN_WIDTH;
+    screenY = (SCREEN_HEIGHT - screenPos->y) / SCREEN_HEIGHT;
+    outPos->x = (x + x) * screenX - x;
+    outPos->y = (y + y) * screenY - y;
+}
+
+// Rotates the camera up vector to be perpendicular to the view direction.
+void func_80012E54_main(s16 camIndex) {
+    HuCamera *camera;
+    HmfData *hmf;
+    HmfData_UnkBC *env;
+    f32 angle;
+    f32 dx, dy, dz;
+    f32 len;
+    f32 ux, uy, uz;
+
+    camera = &gCameraList[camIndex];
+    hmf = HmfModelData[camera->unk4].hmf;
+    if (hmf == NULL) {
+        return;
+    }
+    env = hmf->unkBC;
+    if (env == NULL) {
+        return;
+    }
+    angle = -90.0f;
+    dx = env->unk14 - env->unk08;
+    dy = env->unk18 - env->unk0C;
+    dz = env->unk1C - env->unk10;
+    len = dx * dx + dy * dy + dz * dz;
+    len = HuSqrtf(len);
+    dx /= len;
+    dy /= len;
+    dz /= len;
+    ux = dy * dz - dz * (dy + 1.0f);
+    uy = dz * dx - dx * dz;
+    uz = dx * (dy + 1.0f) - dy * dx;
+    env->unk20 = ux * (dx * dx + (1.0f - dx * dx) * cosdf(angle)) + uy * (dy * dx * (1.0f - cosdf(angle)) - dz * sindf(angle)) + uz * (dz * dx * (1.0f - cosdf(angle)) + dy * sindf(angle));
+    env->unk24 = ux * (dy * dx * (1.0f - cosdf(angle)) + dz * sindf(angle)) + uy * (dy * dy + (1.0f - dy * dy) * cosdf(angle)) + uz * (dy * dz * (1.0f - cosdf(angle)) - dx * sindf(angle));
+    env->unk28 = ux * (dz * dx * (1.0f - cosdf(angle)) - dy * sindf(angle)) + uy * (dy * dz * (1.0f - cosdf(angle)) + dx * sindf(angle)) + uz * (dz * dz + (1.0f - dz * dz) * cosdf(angle));
+    Hu3DCamSetPositionOrientation(camIndex, (Vec *)&env->unk08, (Vec *)&env->unk14, (Vec *)&env->unk20);
+    Hu3DCamUpdateMtx(camIndex);
+}
 
 void func_80013320_main(s16 value, s16 camIndex) {
     gCameraList[camIndex].unk4 = value;

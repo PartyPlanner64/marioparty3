@@ -157,7 +157,41 @@ s16 UpdateController(void) {
     return temp_s0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/pad", FlushController);
+s16 FlushController(void) {
+    u16 held[MAXCONTROLLERS];
+    u16 pressed[MAXCONTROLLERS];
+    s16 count = 0;
+    s16 i;
+
+    if (UpdateController() > 0) {
+        for (i = 0; i < MAXCONTROLLERS; i++) {
+            held[i] = D_800D5558_main[i];
+            pressed[i] = D_800D1244_main[i];
+            D_800D056A_main[i] = D_800CBB6E_main[i];
+            D_800D1382_main[i] = D_800D20A1_main[i];
+            D_800CE2D0_main[i][count] = D_800CBB6E_main[i];
+            D_800D5418_main[i][count] = D_800D20A1_main[i];
+        }
+        count++;
+        while (UpdateController() != 0) {
+            for (i = 0; i < MAXCONTROLLERS; i++) {
+                held[i] |= D_800D5558_main[i];
+                pressed[i] |= D_800D1244_main[i];
+                D_800D056A_main[i] += D_800CBB6E_main[i];
+                D_800D1382_main[i] += D_800D20A1_main[i];
+                D_800CE2D0_main[i][count] = D_800CBB6E_main[i];
+                D_800D5418_main[i][count] = D_800D20A1_main[i];
+            }
+            count++;
+        }
+        for (i = 0; i < MAXCONTROLLERS; i++) {
+            D_800D5558_main[i] = held[i];
+            D_800D1244_main[i] = pressed[i];
+        }
+    }
+    D_800D5542_main = count;
+    return count;
+}
 
 void _AutoReadController(void) {
     _ReadController(0);

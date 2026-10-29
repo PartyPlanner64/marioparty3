@@ -4,9 +4,9 @@
 #include "ultra64.h"
 
 typedef struct {
-    /* 0x00 */ s8 r;
-    /* 0x01 */ s8 g;
-    /* 0x02 */ s8 b;
+    /* 0x00 */ u8 r;
+    /* 0x01 */ u8 g;
+    /* 0x02 */ u8 b;
     /* 0x03 */ u8 stat;
     /* 0x04 */ s8 unk04;
     /* 0x05 */ s8 unk05;

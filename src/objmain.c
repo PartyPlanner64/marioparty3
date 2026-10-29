@@ -1,6 +1,8 @@
 #include "common.h"
 #include "game/object.h"
+#include "game/board.h"
 #include "game/pause.h"
+#include "game/printfunc.h"
 #include "malloc.h"
 #include "mallocblock.h"
 
@@ -744,7 +746,6 @@ u16 func_8004B2C0_main(void);
 void func_8000F024_main(void *, u8, s32);
 void ResetVibrator(s16);
 s32 func_80000F08_main(s32);
-s32 func_8004DE24_main(s32, s32, s32, s32, s32);
 void func_8004B1AC_main(void);
 void func_8004AE28_main(void);
 void func_8004AD70_main(void);
@@ -986,6 +987,36 @@ void omMain(void) {
     D_800CE190_main = 8;
 }
 
+typedef struct DebugMenuItem {
+    /* 0x00 */ u8 disabled;
+    /* 0x01 */ u8 x;
+    /* 0x02 */ u8 y;
+    /* 0x03 */ u8 color;
+    /* 0x04 */ u8 selectedColor;
+    /* 0x08 */ const char *label;
+} DebugMenuItem; // Size 0xC
+
+extern DebugMenuItem D_800A184C_main[6];
+extern u16 D_800A1900_main;
+extern u16 D_800A1902_main;
+extern s16 D_800B23CC_main;
+extern s16 D_800B23CE_main;
+extern u16 D_800CCF7C_main[];
+extern u16 D_800CDD5C_main[];
+extern u8 D_800D2132_main;
+extern u8 D_800A1752_main[2];
+extern s8 D_800A1785_main;
+extern s16 D_800A1894_main[];
+extern u8 D_800A2150_main;
+extern u16 D_800CE214_main;
+s32 func_800034D8_main(s16);
+void func_800453BC_main(void);
+void func_80045A90_main(void);
+void func_8004AFBC_main(s16 duration);
+void func_8004B0D4_main(void);
+void func_80046600_main(void);
+void func_800466D8_main(void);
+
 void func_80048E88_main(void);
 char const D_800A7AE4_main[] = " SE STP";
 char const D_800A7AEC_main[] = " MUSSTP";
@@ -1007,17 +1038,399 @@ void func_80048E88_main(void) {
     temp_v0->work[2] = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/objmain", func_80048EE8_main);
+// Debug pause menu.
+void func_80048EE8_main(omObjData *object) {
+    char *buf;
+    s32 port;
+    s32 i;
+    u8 close = 0;
 
-INCLUDE_ASM("asm/nonmatchings/objmain", func_800499B0_main);
+    if (object->work[0] & 1) {
+        port = OM_GET_WORK_PTR(object, PauseObjWork)->halfwords[3];
+        if (!(object->work[0] & 4)) {
+            sprintf(D_800D5218_main, "- PAUSE -");
+            fontcolor = 4;
+            print8(125, 97, D_800D5218_main);
+            fontcolor = 12;
+            print8(124, 96, D_800D5218_main);
+            buf = D_800D5218_main;
+            for (i = 0; i < 6; i++) {
+                sprintf(buf, D_800A184C_main[i].label);
+                if (i == object->work[2]) {
+                    fontcolor = D_800A184C_main[i].color;
+                    print8(D_800A184C_main[i].x + 1, D_800A184C_main[i].y + 1, buf);
+                    fontcolor = D_800A184C_main[i].selectedColor;
+                    print8(D_800A184C_main[i].x, D_800A184C_main[i].y, buf);
+                } else {
+                    fontcolor = 0;
+                    print8(D_800A184C_main[i].x + 1, D_800A184C_main[i].y + 1, buf);
+                    fontcolor = D_800A184C_main[i].color;
+                    print8(D_800A184C_main[i].x, D_800A184C_main[i].y, buf);
+                }
+            }
+            sprintf(D_800D5218_main, ">");
+            fontcolor = 8;
+            print8(D_800A184C_main[object->work[2]].x + 1, D_800A184C_main[object->work[2]].y + 1, D_800D5218_main);
+            fontcolor = 15;
+            print8(D_800A184C_main[object->work[2]].x, D_800A184C_main[object->work[2]].y, D_800D5218_main);
+
+            if (D_800CDD5C_main[port] & 0x400) {
+                HuAudFXPlay(0);
+                do {
+                    if (++object->work[2] >= 6) {
+                        object->work[2] = 0;
+                    }
+                } while (D_800A184C_main[object->work[2]].disabled == 1);
+            } else if (D_800CDD5C_main[port] & 0x800) {
+                HuAudFXPlay(0);
+                do {
+                    if ((s8)--object->work[2] < 0) {
+                        object->work[2] = 5;
+                    }
+                } while (D_800A184C_main[object->work[2]].disabled == 1);
+            } else if (D_800CDD5C_main[port] & 8) {
+                object->work[0] ^= 8;
+                if (object->work[0] & 8) {
+                    func_8004DF7C_main(1, 1, -1, 0x60, 0x80, 0xFF, 0, 0, 100);
+                } else {
+                    func_8004DFC0_main();
+                    D_800CE1DC_main.unk_00 = D_800CE1DC_main.unk_01 = 0;
+                    D_800CE1DC_main.unk_02 = 0x90;
+                }
+            } else if (D_800CDD5C_main[port] & 4) {
+                object->work[0] ^= 0x20;
+                if (object->work[0] & 0x20) {
+                    D_800CE1DC_main.unk_01 = 0xFF;
+                } else {
+                    D_800CE1DC_main.unk_01 = 0;
+                }
+            } else if (D_800CDD5C_main[port] & 2) {
+                object->work[0] ^= 0x10;
+                if (object->work[0] & 0x10) {
+                    D_800CE1DC_main.unk_00 = 0xFF;
+                } else {
+                    D_800CE1DC_main.unk_00 = 0;
+                }
+            } else if (D_800CDD5C_main[port] & 1) {
+                object->work[0] ^= 0x40;
+                if (object->work[0] & 0x40) {
+                    D_800CE1DC_main.unk_02 = 0xFF;
+                } else {
+                    D_800CE1DC_main.unk_02 = 0;
+                }
+            } else if (D_800CDD5C_main[port] & 0x8000) {
+                D_800CDD5C_main[port] = 0;
+                HuAudFXPlay(0);
+                switch (object->work[2]) {
+                    case 0: // CANCEL
+                        D_800CDD5C_main[port] |= 0x20;
+                        break;
+                    case 1: // RESET
+                        D_800D530C_main = 1;
+                        D_800CDD5C_main[port] |= 0x20;
+                        if (D_800D2118_main->work[0] & 1) {
+                            D_800D2118_main->work[0] &= ~1;
+                            if (D_800CE214_main == 1) {
+                                func_8005F524_main();
+                            }
+                        }
+                        break;
+                    case 2: // LIGHT
+                        func_8004DF10_main();
+                        omdispinfo = 0;
+                        D_800A1786_main = -1;
+                        func_8004DFD8_main();
+                        object->work[0] |= 4;
+                        func_80046600_main();
+                        break;
+                    case 3: // INFO
+                        if ((omdispinfo ^= 1) == 0) {
+                            func_8004DEC8_main(D_800A1786_main);
+                            D_800A1786_main = -1;
+                        }
+                        break;
+                    case 4: // MUSSTP
+                        if ((D_800A1900_main ^= 1) == 0) {
+                            func_8004A950_main();
+                        }
+                        break;
+                    case 5: // SE STP
+                        if ((D_800A1902_main ^= 1) == 0) {
+                            func_8004AD70_main();
+                        }
+                        break;
+                }
+            }
+        }
+
+        if (D_800CDD5C_main[port] & 0x20) {
+            close = 1;
+        }
+        if (D_800A176C_main == 1) {
+            close = 1;
+        }
+        if (close == 1) {
+            object->work[0] &= ~1;
+            if (!(D_800D2118_main->work[0] & 1)) {
+                HmfPauseF = D_800A1752_main[0];
+                for (i = 0; i < ommaxobjs; i++) {
+                    if (!(omobjall[i].stat & 0x21)) {
+                        omResetStatBit(&omobjall[i], 0x10);
+                    }
+                }
+                for (i = 0; i < D_800A1774_main; i++) {
+                    if (!(D_800A177C_main[i].stat & 0x21)) {
+                        omPrcResetStatBit(D_800A177C_main[i].processInstance, 0x10);
+                        if (!(D_800A177C_main[i].stat & 0x40)) {
+                            D_800A177C_main[i].processInstance->stat &= ~1;
+                        }
+                    }
+                }
+                func_80003B70_main(D_800CDBC8_main, 0);
+                if (D_800A1785_main == 1) {
+                    func_80003B70_main(1, 0);
+                    D_800A1785_main = 0;
+                }
+                func_8004B0D4_main();
+                if (D_800A1906_main & 8) {
+                    D_800A1906_main &= ~8;
+                }
+                for (i = 0; i < 4; i++) {
+                    if (CheckControllerRead(i)) {
+                        ResetVibrator(i);
+                    }
+                }
+            }
+            if (!(object->work[0] & 4)) {
+                func_8004DEC8_main(D_800B23CC_main);
+                func_8004DEC8_main(D_800B23CE_main);
+            }
+            object->work[0] &= ~4;
+            func_8004DFD8_main();
+            func_800466D8_main();
+        }
+        return;
+    }
+
+    if (WipeStatGet() == 1 || D_800A176C_main == 1) {
+        return;
+    }
+    for (i = 0; i < 4; i++) {
+        if (!CheckControllerRead(i)) {
+            continue;
+        }
+        if (!(D_800CDD5C_main[i] & 0x20)) {
+            continue;
+        }
+        if ((D_800CCF7C_main[i] | D_800CDD5C_main[i]) & 0x10) {
+            continue;
+        }
+        D_800A1752_main[0] = HmfPauseF;
+        HmfPauseF = 1;
+        object->work[0] = 1;
+        object->work[1] = i;
+        for (i = 0; i < ommaxobjs; i++) {
+            if (!(omobjall[i].stat & 0x21)) {
+                omSetStatBit(&omobjall[i], 0x10);
+            }
+        }
+        for (i = 0; i < D_800A1774_main; i++) {
+            if (!(D_800A177C_main[i].stat & 0x21)) {
+                omPrcSetStatBit(D_800A177C_main[i].processInstance, 0x10);
+                D_800A177C_main[i].processInstance->stat |= 1;
+            }
+        }
+        D_800B23CC_main = func_8004DE24_main(120, 96, 208, 168, 0x40FF);
+        D_800B23CE_main = func_8004DE24_main(116, 92, 204, 164, 0x90FF);
+        func_8004DF4C_main(0, 0, 0x90);
+        func_80003A70_main(D_800CDBC8_main);
+        if (func_800034D8_main(1) == 4) {
+            func_80003A70_main(1);
+            D_800A1785_main = 1;
+        }
+        func_8004AFBC_main(4);
+        for (i = 0; i < 4; i++) {
+            if (CheckControllerRead(i)) {
+                ResetVibrator(i);
+            }
+        }
+        return;
+    }
+}
+
+// Watches for the pause button and pauses/resumes the game.
+void func_800499B0_main(omObjData *object) {
+    s32 i;
+    s32 j;
+    u8 minigameType;
+
+    if (D_800D6A58_main != 0) {
+        return;
+    }
+
+    if (object->work[0] & 1) {
+        if (D_800D2132_main == 0) {
+            return;
+        }
+        if ((D_800CDD5C_main[OM_GET_WORK_PTR(object, PauseObjWork)->halfwords[3]] & 0x1000) ||
+            D_800A176C_main == 1 || D_800A1752_main[1] == 1) {
+            D_800A1752_main[1] = 0;
+            HmfPauseF = 0;
+            object->work[0] &= ~1;
+            for (i = 0; i < ommaxobjs; i++) {
+                if (!(omobjall[i].stat & 0x21)) {
+                    omResetStatBit(&omobjall[i], 0x10);
+                }
+            }
+            for (i = 0; i < D_800A1774_main; i++) {
+                if (!(D_800A177C_main[i].stat & 0x21)) {
+                    omPrcResetStatBit(D_800A177C_main[i].processInstance, 0x10);
+                    if (!(D_800A177C_main[i].stat & 0x40)) {
+                        D_800A177C_main[i].processInstance->stat &= ~1;
+                    }
+                }
+            }
+            if (_CheckFlag(0xF)) {
+                func_8000BB54_main(D_800B23C4_main);
+            }
+            for (i = 0; i < 4; i++) {
+                if (CheckControllerRead(i)) {
+                    ResetVibrator(i);
+                }
+            }
+            if (D_800CE214_main == 1) {
+                func_8005F524_main();
+            }
+            func_80045A90_main();
+            func_80003B70_main(D_800CDBC8_main, 0);
+            if (D_800A1785_main == 1) {
+                func_80003B70_main(1, 0);
+                D_800A1785_main = 0;
+            }
+            func_8004B0D4_main();
+            if (D_800A1906_main & 8) {
+                D_800A1906_main &= ~8;
+            }
+        }
+        return;
+    }
+
+    for (j = 0; j < 4; j++) {
+        if (CheckControllerRead(GwPlayer[j].pad) && _CheckFlag(0xF) && D_800D1100_main == 1 &&
+            (D_800CDD5C_main[GwPlayer[j].pad] & 0x10)) {
+            D_800D530C_main = 1;
+            return;
+        }
+    }
+
+    if (WipeStatGet() == 1 || D_800D530C_main == 1 || D_800A176C_main == 1 || !(omovlstat & 4)) {
+        return;
+    }
+
+    for (j = 0; j < 4; j++) {
+        if (!CheckControllerRead(GwPlayer[j].pad)) {
+            continue;
+        }
+        minigameType = D_800A6D44_main[GwSystem.minigame_index - 1].minigameType;
+        if (minigameType == 7) {
+            if (j != 0) {
+                continue;
+            }
+        } else if (GwPlayer[j].group >= D_800A1894_main[minigameType]) {
+            continue;
+        }
+        if (!(D_800CDD5C_main[GwPlayer[j].pad] & 0x1000)) {
+            continue;
+        }
+        D_800D2132_main = 0;
+        D_800A1752_main[1] = 0;
+        HmfPauseF = 1;
+        object->work[0] = 1;
+        object->work[1] = GwPlayer[j].pad;
+        for (i = 0; i < ommaxobjs; i++) {
+            if (!(omobjall[i].stat & 0x21)) {
+                omSetStatBit(&omobjall[i], 0x10);
+            }
+        }
+        for (i = 0; i < D_800A1774_main; i++) {
+            if (!(D_800A177C_main[i].stat & 0x21)) {
+                omPrcSetStatBit(D_800A177C_main[i].processInstance, 0x10);
+                D_800A177C_main[i].processInstance->stat |= 1;
+            }
+        }
+        if (D_800A2150_main != 1) {
+            func_8005A6B0_main();
+            D_800CE214_main = 1;
+        } else {
+            D_800CE214_main = 0;
+        }
+        func_800453BC_main();
+        if (_CheckFlag(0xF)) {
+            func_8000BB94_main(D_800B23C4_main);
+        }
+        func_80003A70_main(D_800CDBC8_main);
+        if (func_800034D8_main(1) == 4) {
+            func_80003A70_main(1);
+            D_800A1785_main = 1;
+        }
+        func_8004AFBC_main(4);
+        for (i = 0; i < 4; i++) {
+            if (CheckControllerRead(i)) {
+                ResetVibrator(i);
+            }
+        }
+        return;
+    }
+}
 
 u16 func_80049F98_main(void) {
     return D_800D2118_main != NULL ? (OM_GET_WORK_PTR(D_800D2118_main, PauseObjWork)->halfwords[1] & 1) : 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/objmain", func_80049FB8_main);
+// Pauses all objects and processes.
+s32 func_80049FB8_main(void) {
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/objmain", func_8004A0E0_main);
+    if (WipeStatGet() == 1 || D_800A176C_main == 1) {
+        return 0;
+    }
+    D_800D6A90_main = 1;
+    for (i = 0; i < ommaxobjs; i++) {
+        if (!(omobjall[i].stat & 0x81)) {
+            omSetStatBit(&omobjall[i], 0x40);
+        }
+    }
+    for (i = 0; i < D_800A1774_main; i++) {
+        if (!(D_800A177C_main[i].stat & 0x81)) {
+            omPrcSetStatBit(D_800A177C_main[i].processInstance, 0x40);
+            D_800A177C_main[i].processInstance->stat |= 1;
+        }
+    }
+    return 1;
+}
+
+// Resumes all objects and processes.
+void func_8004A0E0_main(void) {
+    s32 i;
+
+    D_800D6A90_main = 0;
+    for (i = 0; i < ommaxobjs; i++) {
+        if (!(omobjall[i].stat & 0x81)) {
+            omResetStatBit(&omobjall[i], 0x40);
+        }
+    }
+    for (i = 0; i < D_800A1774_main; i++) {
+        if (!(D_800A177C_main[i].stat & 0x81)) {
+            omPrcResetStatBit(D_800A177C_main[i].processInstance, 0x40);
+            if (!(D_800A177C_main[i].stat & 0x10)) {
+                D_800A177C_main[i].processInstance->stat &= ~1;
+            }
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        ResetVibrator(i);
+    }
+}
 
 void func_8004A208_main(void) {
     func_80045350_main();

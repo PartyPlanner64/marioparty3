@@ -1,13 +1,14 @@
 #include "common.h"
 #include "malloc.h"
 #include "rom.h"
+#include "decode.h"
 
 // string table parsing code.
 
-extern u32 D_800B1A40_main; // strings ROM pointer
-extern s32 D_800B1A44_main;   // string directory count
-extern u32 *D_800B1A48_main;   // string directory table
-extern s32 D_800B1A4C_main;   // string directory table size
+extern u32 D_800B1A40_main;  // strings ROM pointer
+extern s32 D_800B1A44_main;  // string directory count
+extern u32 *D_800B1A48_main; // string directory table
+extern s32 D_800B1A4C_main;  // string directory table size
 
 void func_80036380_main(u32 stringsRomPtr) {
     s32 stringDirTableSize;
@@ -23,12 +24,12 @@ void func_80036380_main(u32 stringsRomPtr) {
     D_800B1A4C_main = stringDirTableSize;
     stringDirTable = HuMemMemoryAllocPerm(stringDirTableSize);
     D_800B1A48_main = stringDirTable;
-    dmaRead(stringsRomPtr + 4, (u8*)stringDirTable, D_800B1A4C_main);
+    dmaRead(stringsRomPtr + 4, (u8 *)stringDirTable, D_800B1A4C_main);
 }
 
 void func_80036414_main(u32 ptr) {
     D_800B1A40_main = ptr;
-    dmaRead(ptr + 4, (u8*)D_800B1A48_main, D_800B1A4C_main);
+    dmaRead(ptr + 4, (u8 *)D_800B1A48_main, D_800B1A4C_main);
 }
 
 struct str80036448 {
@@ -40,6 +41,11 @@ struct str80036448 {
 struct string_dir_header {
     s32 decompressedSize;
     s32 compressionType;
+};
+
+struct string_entry {
+    s16 length;
+    u8 text[1];
 };
 
 void func_80036448_main(s32 arg0, struct str80036448 *arg1) {
@@ -56,7 +62,40 @@ void func_80036448_main(s32 arg0, struct str80036448 *arg1) {
     HuMemMemoryFreePerm(dirHeader);
 }
 
-INCLUDE_ASM("asm/nonmatchings/36F80", func_800364DC_main);
+// Reads a message by id. The upper bits select the string directory,
+// and the low byte is the index of the message within that directory.
+// TODO: the message id is passed as a pointer to match the existing prototype.
+void *func_800364DC_main(void *arg0) {
+    s32 messageId = (s32)arg0;
+    struct str80036448 dirInfo;
+    u8 *dirData;
+    s32 *offsets;
+    struct string_entry *entry;
+    u8 *text;
+    s16 length;
+    s32 i;
+
+    func_80036448_main(messageId >> 8, &dirInfo);
+    text = NULL;
+    dirData = HuMemMemoryAllocPerm((dirInfo.unk4 + 1) & ~1);
+    if (dirData != NULL) {
+        DecodeData(dirInfo.unk0, dirData, dirInfo.unk4, dirInfo.unk8);
+        entry = (struct string_entry *)(dirData + 4);
+        for (i = 0; i < (messageId & 0xFF); i++) {
+            entry = (struct string_entry *)((s32 *)entry + 1);
+        }
+        entry = (struct string_entry *)(dirData + *(s32 *)entry);
+        length = entry->length;
+        text = HuMemMemoryAllocPerm(length);
+        if (text != NULL) {
+            for (i = 0; i < length; i++) {
+                text[i] = entry->text[i];
+            }
+        }
+        HuMemMemoryFreePerm(dirData);
+    }
+    return text;
+}
 
 void func_800365E8_main(void *ptr) {
     if (ptr != NULL) {

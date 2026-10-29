@@ -1,4 +1,5 @@
 #include "common.h"
+#include "game/printfunc.h"
 
 #define MAX_STRINGS 512
 
@@ -16,39 +17,11 @@ typedef struct strline_data {
     /* 0x08 */ u8 str[64];
 } strline_data;
 
-// filled rect behind debug text
-typedef struct Unk_D_800CC440 {
-    u16 unk_00; // active
-    s32 unk_04; // left
-    s32 unk_08; // top
-    s32 unk_0C; // right
-    s32 unk_10; // bottom
-    u32 unk_14; // color
-} Unk_D_800CC440;
-
-typedef struct Unk_D_800CE1DC {
-    u8 unk_00; // red
-    u8 unk_01; // green
-    u8 unk_02; // blue
-    s8 unk_03; // red speed
-    s8 unk_04; // green speed
-    s8 unk_05; // blue speed
-    u8 unk_06; // red max
-    u8 unk_07; // green max
-    u8 unk_08; // blue max
-    u8 unk_09; // red min
-    u8 unk_0A; // green min
-    u8 unk_0B; // blue min
-} Unk_D_800CE1DC;
-
 extern strline_data strline[MAX_STRINGS];
 extern u16 strlinecnt;
 extern u16 empstrline;
-extern s32 fontcolor;
 extern u16 D_800D6A46_main;
-extern Unk_D_800CC440 D_800CC440_main[4];
-extern u16 D_800CDD4C_main; // screen border enabled
-extern Unk_D_800CE1DC D_800CE1DC_main;
+extern u16 D_800CDD4C_main;         // screen border enabled
 extern u16 D_800A1D64_main;         // palette currently loaded for the font texture
 extern u8 D_8009F730_main[];        // 64x64 CI4 font texture, 8x8 glyphs starting at ' '
 extern u16 D_800A0330_main[16][16]; // font palettes
@@ -162,7 +135,7 @@ void func_8004DF10_main(void) {
     }
 }
 
-void func_8004DF4C_main(s8 arg0, s8 arg1, s8 arg2) {
+void func_8004DF4C_main(u8 arg0, u8 arg1, u8 arg2) {
     D_800CE1DC_main.unk_00 = arg0;
     D_800CE1DC_main.unk_01 = arg1;
     D_800CE1DC_main.unk_02 = arg2;

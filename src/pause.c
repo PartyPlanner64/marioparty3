@@ -277,7 +277,44 @@ s16 func_80045C64_main(u32 arg0, D_800B2350_main_Struct *arg1) {
 
 // https://decomp.me/scratch/TTLIZ
 void func_80045D38_main(omObjData *);
+#ifdef NON_MATCHING
+/* sound id sum loads unk00 with lhu instead of lh, causing register swaps */
+void func_80045D38_main(omObjData *object) {
+    s32 i;
+    s16 seNo;
+    u8 player;
+
+    for (i = 0; i < 8; i++) {
+        if (D_800B2350_main[i].unk00 < 0) {
+            continue;
+        }
+        if (D_800B2350_main[i].unk07 != 0) {
+            D_800B2350_main[i].unk07--;
+            continue;
+        }
+        player = D_800B2350_main[i].unk05;
+        if (player < 4) {
+            seNo = func_8004AC98_main(D_800B2350_main[i].unk00 + D_800B2350_main[i].unk06 + 1, (s8)player);
+        } else {
+            seNo = func_8004AC5C_main(D_800B2350_main[i].unk00 + D_800B2350_main[i].unk06 + 1, object->work[0]);
+            if (++object->work[0] >= 4) {
+                object->work[0] = 0;
+            }
+        }
+        if (seNo >= 0) {
+            if (D_800B2350_main[i].unk02 >= 0) {
+                func_8004AE00_main(seNo, D_800B2350_main[i].unk02);
+            }
+            if (D_800B2350_main[i].unk04 >= 0) {
+                func_8004AAD0_main(seNo, D_800B2350_main[i].unk04);
+            }
+        }
+        D_800B2350_main[i].unk00 = -1;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/pause", func_80045D38_main);
+#endif
 
 omObjData *func_80045ED0_main(u32 arg0) {
     return func_80045F48_main(arg0, -1, -1, -1);

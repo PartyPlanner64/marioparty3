@@ -10,6 +10,7 @@ void HuMemMemoryFreePerm(void *ptr);
 extern u16 D_800C951C_main;
 extern u16 D_800CB8BC_main;
 extern s16 D_800D5438_main;
+extern HuSprite_Unk84_Struct *D_800C9530_main[];
 
 void func_8000B7A0_main(void) {
     u16 var_a0;
@@ -40,7 +41,28 @@ s16 func_8000B838_main(s32 arg0) {
     return temp_s0;
 }
 
+#ifdef NON_MATCHING
+/* register allocation differs for the color channel temporaries */
+void func_8000B880_main(s16 arg0, f32 r, f32 g, f32 b) {
+    HuSprite_Unk84_Struct *tex = D_800C9530_main[arg0];
+    u16 *pal = tex->unk0C;
+    s32 i;
+    u16 red, green, blue, alpha;
+
+    for (i = 0; i < tex->unk1A; i++, pal++) {
+        red = *pal >> 11;
+        green = (*pal >> 6) & 0x1F;
+        blue = (*pal >> 1) & 0x1F;
+        alpha = *pal & 1;
+        red = red * r;
+        green = green * g;
+        blue = blue * b;
+        *pal = (red << 11) | (green << 6) | (blue << 1) | alpha;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/esprite", func_8000B880_main);
+#endif
 
 void func_8000BA00_main() {
     func_80056BAC_main();
@@ -48,7 +70,35 @@ void func_8000BA00_main() {
     D_800CD1DC_main = NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/esprite", func_8000BA30_main);
+void func_8000BA30_main(void) {
+    D_800CD1DC_main_Struct *sprite;
+    s16 gid;
+    s32 i;
+
+    if (D_800CD1DC_main != NULL) {
+        for (i = 0; i < D_800C951C_main; i++) {
+            if (D_800CD1DC_main[i].unk00 & 1) {
+                sprite = &D_800CD1DC_main[i];
+                gid = sprite->unk04;
+                func_80054904_main(gid, 0, sprite->unkA, sprite->unkC);
+                if (sprite->unk00 & 2) {
+                    func_80055458_main(gid, 0, sprite->unk1E);
+                    sprite->unk1E += sprite->unk20;
+                    if (sprite->unk20 > 0) {
+                        if (sprite->unk1E > sprite->unk1C) {
+                            sprite->unk1E = sprite->unk1C;
+                        }
+                    } else if (sprite->unk1E < sprite->unk1C) {
+                        sprite->unk1E = sprite->unk1C;
+                    }
+                    if (sprite->unk1E == sprite->unk1C) {
+                        sprite->unk00 &= ~2;
+                    }
+                }
+            }
+        }
+    }
+}
 
 // espDispOn?
 void func_8000BB54_main(u16 arg0) {

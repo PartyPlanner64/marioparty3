@@ -3,10 +3,33 @@
 
 #include <PR/n_libaudio.h>
 #include <PR/abi.h>
+#include <PR/n_abi.h>
 
 /*
  * Internal definitions for the libultra n_audio library (libn_audio).
  */
+
+#define SAMPLES 184
+#define SAMPLE184(delta) ((((delta) + (SAMPLES / 2)) / SAMPLES) * SAMPLES)
+#define FIXED_SAMPLE SAMPLES
+
+/* DMEM buffer locations used by the n_audio microcode. */
+#define N_AL_DECODER_IN 0
+#define N_AL_RESAMPLER_OUT 0
+#define N_AL_TEMP_0 0
+#define N_AL_DECODER_OUT 368
+#define N_AL_TEMP_1 368
+#define N_AL_TEMP_2 736
+#define N_AL_MAIN_L_OUT 1248
+#define N_AL_MAIN_R_OUT 1616
+#define N_AL_AUX_L_OUT 1984
+#define N_AL_AUX_R_OUT 2352
+
+#define N_AL_DIVIDED 368
+
+#define N_AL_MAX_RSP_SAMPLES 184
+
+#define AL_MAX_AUX_BUS_SOURCES 8
 
 /* Filter message ids handled by the n_audio voice filters. */
 enum {
@@ -113,6 +136,79 @@ typedef struct N_ALSoundState_s {
     /* 0x2F */ u8 fxMix;
 } N_ALSoundState; // size 0x30
 
+typedef Acmd *(*N_ALCmdHandler)(s32, Acmd *);
+
+typedef struct N_ALFilter_s {
+    /* 0x00 */ struct N_ALFilter_s *source;
+    /* 0x04 */ N_ALCmdHandler handler;
+    /* 0x08 */ s32 (*setParam)(void *, s32, void *);
+    /* 0x0C */ s16 inp;
+    /* 0x0E */ s16 outp;
+    /* 0x10 */ s32 type;
+} N_ALFilter; // size 0x14
+
+typedef struct N_ALMainBus_s {
+    /* 0x00 */ N_ALFilter filter;
+} N_ALMainBus;
+
+/* Effect (reverb) state. */
+typedef struct N_ALFx_s N_ALFx;
+
+typedef struct N_ALAuxBus_s {
+    /* 0x00 */ N_ALFilter filter;
+    /* 0x14 */ s32 sourceCount;
+    /* 0x18 */ s32 maxSources;
+    /* 0x1C */ N_PVoice **sources;
+    /* 0x20 */ N_ALFx *fx;
+    /* 0x24 */ N_ALFx *fx_array[AL_MAX_AUX_BUS_SOURCES];
+} N_ALAuxBus;
+
+/* Sound player event types. */
+typedef enum {
+    AL_SNDP_PLAY_EVT,
+    AL_SNDP_STOP_EVT,
+    AL_SNDP_PAN_EVT,
+    AL_SNDP_VOL_EVT,
+    AL_SNDP_PITCH_EVT,
+    AL_SNDP_API_EVT,
+    AL_SNDP_DECAY_EVT,
+    AL_SNDP_END_EVT,
+    AL_SNDP_FX_EVT
+} ALSndpMsgType;
+
+typedef union {
+    N_ALEvent msg;
+
+    struct {
+        s16 type;
+        N_ALSoundState *state;
+    } common;
+
+    struct {
+        s16 type;
+        N_ALSoundState *state;
+        s16 vol;
+    } vol;
+
+    struct {
+        s16 type;
+        N_ALSoundState *state;
+        f32 pitch;
+    } pitch;
+
+    struct {
+        s16 type;
+        N_ALSoundState *state;
+        ALPan pan;
+    } pan;
+
+    struct {
+        s16 type;
+        N_ALSoundState *state;
+        u8 mix;
+    } fx;
+} N_ALSndpEvent;
+
 /*
  * prototypes for private driver functions
  */
@@ -123,9 +219,24 @@ void _n_collectPVoices(void);
 s32 _n_timeToSamplesNoRound(s32 micros);
 s32 _n_timeToSamples(s32 micros);
 
-s32 n_alLoadParam(N_PVoice *filter, s32 paramID, void *param);
+/*
+ * Pan update routine. MP3 links its own version of n_alSynSetPan outside of
+ * the library (src/67000.c).
+ */
+void func_80066400_main(N_ALVoice *v, u8 pan);
+
+void n_alLoadParam(N_PVoice *filter, s32 paramID, void *param);
 Acmd *n_alResamplePull(N_PVoice *filter, s16 *outp, Acmd *p);
 Acmd *n_alEnvmixerPull(N_PVoice *filter, s32 sampleOffset, Acmd *p);
 s32 n_alEnvmixerParam(N_PVoice *filter, s32 paramID, void *param);
+s32 n_alResampleParam(N_PVoice *filter, s32 paramID, void *param);
+Acmd *n_alAdpcmPull(N_PVoice *filter, s16 *outp, s32 byteCount, Acmd *p);
+
+Acmd *n_alSavePull(s32 sampleOffset, Acmd *p);
+Acmd *n_alMainBusPull(s32 sampleOffset, Acmd *p);
+Acmd *n_alAuxBusPull(s32 sampleOffset, Acmd *p);
+Acmd *n_alFxPull(s32 sampleOffset, Acmd *p);
+void n_alFxNew(N_ALFx **fx_ar, ALSynConfig *c, ALHeap *hp);
+void alN_PVoiceNew(N_PVoice *mv, ALDMANew dmaNew, ALHeap *hp);
 
 #endif

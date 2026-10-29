@@ -1,3 +1,8 @@
 #include "common.h"
+#include "PR/n_synthInternals.h"
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/n_audio/n_sndpsetsound", n_alSndpSetSound);
+void n_alSndpSetSound(ALSndId id) {
+    N_ALSndPlayer *sndp = (N_ALSndPlayer *)n_syn->n_sndp;
+
+    sndp->target = id;
+}

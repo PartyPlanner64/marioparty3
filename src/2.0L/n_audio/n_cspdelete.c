@@ -1,3 +1,6 @@
 #include "common.h"
+#include "PR/n_libaudio.h"
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/n_audio/n_cspdelete", n_alCSPDelete);
+void n_alCSPDelete(N_ALCSPlayer *seqp) {
+    n_alSynRemovePlayer(&seqp->node);
+}

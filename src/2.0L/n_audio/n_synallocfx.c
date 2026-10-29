@@ -1,3 +1,7 @@
 #include "common.h"
+#include "PR/n_synthInternals.h"
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/n_audio/n_synallocfx", n_alSynAllocFX);
+ALFxRef n_alSynAllocFX(s16 bus, ALSynConfig *c, ALHeap *hp) {
+    n_alFxNew(&n_syn->auxBus->fx_array[bus], c, hp);
+    return n_syn->auxBus->fx_array[bus];
+}

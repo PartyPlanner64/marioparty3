@@ -1,3 +1,6 @@
 #include "common.h"
+#include "PR/n_libaudio.h"
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/n_audio/n_sndpdelete", n_alSndpDelete);
+void n_alSndpDelete(void) {
+    n_alSynRemovePlayer(n_syn->n_sndp);
+}

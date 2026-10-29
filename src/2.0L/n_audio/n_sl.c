@@ -1,5 +1,20 @@
 #include "common.h"
+#include "PR/n_libaudio.h"
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/n_audio/n_sl", n_alInit);
+void n_alInit(N_ALGlobals *g, ALSynConfig *c) {
+    if (n_alGlobals == NULL) {
+        n_alGlobals = g;
+        if (n_syn == NULL) {
+            n_syn = &g->drvr;
+            n_alSynNew(c);
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/n_audio/n_sl", n_alClose);
+void n_alClose(N_ALGlobals *glob) {
+    if (n_alGlobals != NULL) {
+        n_alSynDelete();
+        n_alGlobals = NULL;
+        n_syn = NULL;
+    }
+}

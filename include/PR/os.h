@@ -290,7 +290,7 @@ typedef struct {
  */
 
 typedef struct {
-	u8	ramarray[60];
+	u32	ramarray[15];
 	u32	pifstatus;
 } OSPifRam;
 

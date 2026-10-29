@@ -1,42 +1,50 @@
 #include "common.h"
+#include "controller.h"
 
-INCLUDE_ASM("asm/nonmatchings/2.0L/io/pfsgetstatus", __osPfsGetStatus);
+s32 __osPfsGetStatus(OSMesgQueue *queue, int channel) {
+    s32 ret = 0;
+    OSMesg dummy;
+    OSContStatus data;
 
-extern u8 D_800D1F58_main;
-extern OSPifRam __osPfsPifRam;
+    D_800A4204_main = 250;
+    __osPfsRequestOneChannel(channel, CONT_CMD_REQUEST_STATUS);
+    ret = __osSiRawStartDma(OS_WRITE, &__osPfsPifRam);
+    osRecvMesg(queue, &dummy, OS_MESG_BLOCK);
+    ret = __osSiRawStartDma(OS_READ, &__osPfsPifRam);
+    osRecvMesg(queue, &dummy, OS_MESG_BLOCK);
+    __osPfsGetOneChannelData(channel, &data);
+    if ((data.status & CONT_CARD_ON) && (data.status & CONT_CARD_PULL)) {
+        return PFS_ERR_NEW_PACK;
+    }
+    if (data.errno != 0 || !(data.status & CONT_CARD_ON)) {
+        return PFS_ERR_NOPACK;
+    }
+    if (data.status & CONT_ADDR_CRC_ER) {
+        return PFS_ERR_CONTRFAIL;
+    }
+    return ret;
+}
 
-void __osPfsRequestOneChannel(s32 cchannel, s32 cchnum) {
-    // The request is staged on the stack; the union keeps it inside the 16-byte
-    // stack frame the original allocated for it.
-    union {
-        __OSContRequesFormatShort req;
-        u8 bytes[0x10];
-    } request;
-    u32 *status = &__osPfsPifRam.pifstatus;
-    u8 *ptr = (u8 *)status - 0x3C;
+void __osPfsRequestOneChannel(s32 channel, s32 cmd) {
+    u8 *ptr;
+    __OSContRequesFormatShort requestformat;
     s32 i;
 
-    D_800D1F58_main = 0xFE;
-    __osPfsPifRam.pifstatus = 1;
-    request.req.txsize = 1;
-    request.req.rxsize = 3;
-    request.req.cmd = cchnum;
-    request.req.typeh = 0xFF;
-    request.req.typel = 0xFF;
-    request.req.status = 0xFF;
-
-    // Spelled as an explicit guard plus a do/while rather than a for loop so
-    // that GCC keeps ptr in $a2 and i in $a3, as in the original.
-    i = 0;
-    if (cchannel > 0) {
-        do {
-            *ptr++ = 0;
-            i++;
-        } while (i < cchannel);
+    D_800D1F58_main = CONT_CMD_END;
+    __osPfsPifRam.pifstatus = CONT_CMD_EXE;
+    ptr = (u8 *)&__osPfsPifRam;
+    requestformat.txsize = CONT_CMD_REQUEST_STATUS_TX;
+    requestformat.rxsize = CONT_CMD_REQUEST_STATUS_RX;
+    requestformat.cmd = cmd;
+    requestformat.typeh = CONT_CMD_NOP;
+    requestformat.typel = CONT_CMD_NOP;
+    requestformat.status = CONT_CMD_NOP;
+    for (i = 0; i < channel; i++) {
+        *ptr++ = 0;
     }
-
-    *(__OSContRequesFormatShort *)ptr = request.req;
-    ptr[6] = 0xFE;
+    *(__OSContRequesFormatShort *)ptr = requestformat;
+    ptr += sizeof(__OSContRequesFormatShort);
+    *ptr = CONT_CMD_END;
 }
 
 void __osPfsGetOneChannelData(s32 chan, OSContStatus *data) {

@@ -35,7 +35,6 @@ s16 func_80017790_main(s16 model, s32 arg1, s32 arg2, s32 arg3);
 s32 func_80017BB8_main(s32, s32);
 
 // 20A20
-void Hu3DAnimInit(s32);
 
 // 8FB20
 f32 sindf(f32);

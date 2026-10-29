@@ -23,7 +23,6 @@ void func_800142A0_main(s32);
 s32 func_80017BB8_main(s32, s32);
 
 // 20A20
-void Hu3DAnimInit(s32);
 
 // 8EFF0
 f32 cosdf(f32);

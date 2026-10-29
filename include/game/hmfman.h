@@ -275,7 +275,7 @@ typedef struct HmfData {
     /* 0x2A */ char unk2A[6];
     /* 0x30 */ u8 *unk30;
     /* 0x34 */ u8 *unk34;
-    /* 0x38 */ s32 unk38;
+    /* 0x38 */ u8 *unk38; // MAP1 chunk
     /* 0x3C */ HmfModelData_Unk64_Unk3C_Struct *unk3C;
     /* 0x40 */ Vtx *unk40;
     /* 0x44 */ Vtx *unk44[3];
@@ -358,7 +358,7 @@ typedef struct {
         f32 f;
         s32 i;
     } unk24;
-    /* 0x28 */ char unk28[0x30];
+    /* 0x28 */ Vec unk28[4];
     /* 0x58 */ HmfModelData_UnkBC_Unk58_Struct *unk58;
 } HmfModelData_UnkBC_Struct; // Size 0x5C
 

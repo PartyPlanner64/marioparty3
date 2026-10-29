@@ -28,7 +28,6 @@ void func_800142A0_main(s32);
 void func_80017D24_main(f32 *, f32, f32, f32);
 
 // 20A20
-void Hu3DAnimInit(s32);
 
 // unknown
 extern u16 D_800D530C_main;

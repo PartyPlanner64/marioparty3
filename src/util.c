@@ -166,11 +166,11 @@ s8 func_8000B4B4_main(void) {
 }
 
 u16 SprModelRead(s32 arg0, s32 arg1, s32 arg2) {
-    s32 temp_s0;
+    u16 temp_s0;
     void *temp_v0;
 
     temp_v0 = DataRead(arg0);
-    temp_s0 = HmfSprModelCreate(temp_v0, arg1, arg2);
+    temp_s0 = HmfSprModelCreate(temp_v0, arg1, (u8)arg2);
     HuMemMemoryFreePerm(temp_v0);
     return temp_s0;
 }

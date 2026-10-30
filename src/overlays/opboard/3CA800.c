@@ -45,7 +45,7 @@ extern UnkBoard8 *D_80108F34_opboard;
 extern UnkBoard8 *D_80108F38_opboard;
 extern GW_PLAYER *D_80109068_opboard[4];
 
-f32 func_80018ACC_main(f32 *values, f32 *times, f32 time);
+f32 InterpolateBMLine(f32 *values, f32 *times, f32 time);
 void func_800DCCE0_shared_board(void);
 void func_80007EC0_main(s32 frames);
 void func_800138EC_main(s16 model, s32 arg1, s32 arg2);
@@ -640,7 +640,7 @@ void func_80107580_opboard(OpBoardPath *path, f32 time, Vec *result) {
         } else {
             values[3] = points[i + 2].x;
         }
-        result->x = func_80018ACC_main(values, times, time);
+        result->x = InterpolateBMLine(values, times, time);
         if (i == 0) {
             values[0] = points[path->count - 1].y;
         } else {
@@ -657,7 +657,7 @@ void func_80107580_opboard(OpBoardPath *path, f32 time, Vec *result) {
         } else {
             values[3] = points[i + 2].y;
         }
-        result->y = func_80018ACC_main(values, times, time);
+        result->y = InterpolateBMLine(values, times, time);
         if (i == 0) {
             values[0] = points[path->count - 1].z;
         } else {
@@ -674,7 +674,7 @@ void func_80107580_opboard(OpBoardPath *path, f32 time, Vec *result) {
         } else {
             values[3] = points[i + 2].z;
         }
-        result->z = func_80018ACC_main(values, times, time);
+        result->z = InterpolateBMLine(values, times, time);
     } else {
         if (i == 0) {
             times[0] = -1.0f;
@@ -701,7 +701,7 @@ void func_80107580_opboard(OpBoardPath *path, f32 time, Vec *result) {
         } else {
             values[3] = points[i + 2].x;
         }
-        result->x = func_80018ACC_main(values, times, time);
+        result->x = InterpolateBMLine(values, times, time);
         if (i == 0) {
             values[0] = points[0].y;
         } else {
@@ -718,7 +718,7 @@ void func_80107580_opboard(OpBoardPath *path, f32 time, Vec *result) {
         } else {
             values[3] = points[i + 2].y;
         }
-        result->y = func_80018ACC_main(values, times, time);
+        result->y = InterpolateBMLine(values, times, time);
         if (i == 0) {
             values[0] = points[0].z;
         } else {
@@ -735,7 +735,7 @@ void func_80107580_opboard(OpBoardPath *path, f32 time, Vec *result) {
         } else {
             values[3] = points[i + 2].z;
         }
-        result->z = func_80018ACC_main(values, times, time);
+        result->z = InterpolateBMLine(values, times, time);
     }
 }
 

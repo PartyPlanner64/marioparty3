@@ -475,8 +475,8 @@ typedef struct HmfAnimSet {
 typedef struct HmfModelSet {
     /* 0x00 */ s16 nodeCount;
     /* 0x02 */ s16 unk_02;
-    /* 0x04 */ void *unk_04;
-    /* 0x08 */ void *unk_08;
+    /* 0x04 */ s16 *unk_04;
+    /* 0x08 */ HuMtx4F *unk_08;
 } HmfModelSet; // Size 0xC
 
 typedef struct HmfModelEntry {

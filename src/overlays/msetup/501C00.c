@@ -116,7 +116,7 @@ void func_80106DF8_msetup(void);
 void func_80117820_msetup(void);
 void func_8010B1F4_msetup(void);
 Process *func_8010F2BC_msetup(void);
-f32 func_80018ACC_main(f32 *, f32 *, f32);
+f32 InterpolateBMLine(f32 *, f32 *, f32);
 void func_801068F4_msetup(MsetupCameraKeyframe *, f32, void (*)(s16, s16, s16));
 
 void func_801059A0_msetup(void) {
@@ -473,7 +473,7 @@ void func_801068F4_msetup(MsetupCameraKeyframe *keys, f32 speed, void (*callback
             values[1] = *p1++;
             values[2] = *p2++;
             values[3] = *p3++;
-            *out++ = func_80018ACC_main(values, times, i);
+            *out++ = InterpolateBMLine(values, times, i);
         }
         Center.x = interpolated.values.preset.center.x;
         Center.y = interpolated.values.preset.center.y;

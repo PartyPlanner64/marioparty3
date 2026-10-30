@@ -60,6 +60,7 @@ D_80114F30_mstory5 = 0x80114F30; //rom:0x4DE8E0 type:f32 size:0x0C
 
 omVibrate = 0x8004B25C; //rom:0x4BE5C
 
+InterpolateBMLine = 0x80018ACC;
 HuMemInit = 0x80019980;
 HuMemAlloc = 0x800199F8;
 HuMemAllocTag = 0x80019A14;

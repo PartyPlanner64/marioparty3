@@ -775,16 +775,17 @@ void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z) {
     mtx[1][2] = m12;
 }
 
-#ifdef NON_MATCHING
-/* Functionally equivalent; register allocation and load scheduling differ, loop counter init is hoisted in target */
 void func_80018044_main(HuMtx4F a, HuMtx4F b, HuMtx4F out) {
-    f32 b00, b01, b02, b03;
-    f32 b10, b11, b12, b13;
-    f32 b20, b21, b22, b23;
-    f32 b30, b31, b32, b33;
     s32 i;
 
     if (a[0][3] != 0.0f || a[1][3] != 0.0f || a[2][3] != 0.0f || a[3][3] != 1.0f) {
+        f32 b00, b01, b02, b03;
+        f32 b10, b11, b12, b13;
+        f32 b20, b21, b22, b23;
+        f32 b30, b31, b32, b33;
+        f32 r0, r1, r2, r3;
+
+        i = 0;
         b00 = b[0][0];
         b10 = b[1][0];
         b20 = b[2][0];
@@ -801,13 +802,20 @@ void func_80018044_main(HuMtx4F a, HuMtx4F b, HuMtx4F out) {
         b13 = b[1][3];
         b23 = b[2][3];
         b33 = b[3][3];
-        for (i = 0; i < 4; i++) {
-            out[i][0] = a[i][0] * b00 + a[i][1] * b10 + a[i][2] * b20 + a[i][3] * b30;
-            out[i][1] = a[i][0] * b01 + a[i][1] * b11 + a[i][2] * b21 + a[i][3] * b31;
-            out[i][2] = a[i][0] * b02 + a[i][1] * b12 + a[i][2] * b22 + a[i][3] * b32;
-            out[i][3] = a[i][0] * b03 + a[i][1] * b13 + a[i][2] * b23 + a[i][3] * b33;
+        for (; i < 4; i++) {
+            out[i][0] = (r0 = a[i][0]) * b00 + (r1 = a[i][1]) * b10 + (r2 = a[i][2]) * b20 + (r3 = a[i][3]) * b30;
+            out[i][1] = r0 * b01 + r1 * b11 + r2 * b21 + r3 * b31;
+            out[i][2] = r0 * b02 + r1 * b12 + r2 * b22 + r3 * b32;
+            out[i][3] = r0 * b03 + r1 * b13 + r2 * b23 + r3 * b33;
         }
     } else {
+        f32 b00, b01, b02, b03;
+        f32 b10, b11, b12, b13;
+        f32 b20, b21, b22, b23;
+        f32 r0, r1, r2;
+        f32 c0, c1, c2;
+
+        i = 0;
         b00 = b[0][0];
         b10 = b[1][0];
         b20 = b[2][0];
@@ -820,21 +828,18 @@ void func_80018044_main(HuMtx4F a, HuMtx4F b, HuMtx4F out) {
         b03 = b[0][3];
         b13 = b[1][3];
         b23 = b[2][3];
-        for (i = 0; i < 3; i++) {
-            out[i][0] = a[i][0] * b00 + a[i][1] * b10 + a[i][2] * b20;
-            out[i][1] = a[i][0] * b01 + a[i][1] * b11 + a[i][2] * b21;
-            out[i][2] = a[i][0] * b02 + a[i][1] * b12 + a[i][2] * b22;
-            out[i][3] = a[i][0] * b03 + a[i][1] * b13 + a[i][2] * b23;
+        for (; i < 3; i++) {
+            out[i][0] = (r0 = a[i][0]) * b00 + (r1 = a[i][1]) * b10 + (r2 = a[i][2]) * b20;
+            out[i][1] = r0 * b01 + r1 * b11 + r2 * b21;
+            out[i][2] = r0 * b02 + r1 * b12 + r2 * b22;
+            out[i][3] = r0 * b03 + r1 * b13 + r2 * b23;
         }
-        out[3][0] = a[3][0] * b[0][0] + a[3][1] * b[1][0] + a[3][2] * b[2][0] + b[3][0];
-        out[3][1] = a[3][0] * b[0][1] + a[3][1] * b[1][1] + a[3][2] * b[2][1] + b[3][1];
-        out[3][2] = a[3][0] * b[0][2] + a[3][1] * b[1][2] + a[3][2] * b[2][2] + b[3][2];
-        out[3][3] = a[3][0] * b[0][3] + a[3][1] * b[1][3] + a[3][2] * b[2][3] + b[3][3];
+        out[3][0] = (c0 = a[3][0]) * b[0][0] + (c1 = a[3][1]) * b[1][0] + (c2 = a[3][2]) * b[2][0] + b[3][0];
+        out[3][1] = c0 * b[0][1] + c1 * b[1][1] + c2 * b[2][1] + b[3][1];
+        out[3][2] = c0 * b[0][2] + c1 * b[1][2] + c2 * b[2][2] + b[3][2];
+        out[3][3] = c0 * b[0][3] + c1 * b[1][3] + c2 * b[2][3] + b[3][3];
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/14EA0", func_80018044_main);
-#endif
 
 s16 func_800183A0_main(HuMtx4F src, HuMtx4F dst) {
     f32 c00 = src[1][1] * src[2][2] - src[1][2] * src[2][1];

@@ -1,7 +1,12 @@
 #include "common.h"
 #include "mallocblock.h"
 
-#define CLAMP_S16(x) ((x) > 0x7FFF ? 0x7FFF : ((x) < -0x8000 ? -0x8000 : (x)))
+#define CLAMP_S16(x)            \
+    if ((x) > 0x7FFF) {         \
+        (x) = 0x7FFF;           \
+    } else if ((x) < -0x8000) { \
+        (x) = -0x8000;          \
+    }
 #define READ16(p) (((p)[0] << 8) | (p)[1])
 #define READ32(p) ((p)[0] << 24 | (p)[1] << 16 | (p)[2] << 8 | (p)[3])
 
@@ -271,8 +276,6 @@ void func_8002087C_main(HmfModel *model, HuMtx4F mtx) {
     guMtxF2L(mtx, &MTXBuf[MTXBufNum]);
 }
 
-#ifdef NON_MATCHING
-/* Loop-invariant grid offset temps are allocated differently (extra spills, frame 0xD0 vs 0xC0) */
 void func_80020B48_main(CollisionRect *rect, HmfModel *model) {
     HuMtx4F mtx;
     HuMtx4F ident;
@@ -285,6 +288,7 @@ void func_80020B48_main(CollisionRect *rect, HmfModel *model) {
     s32 x;
     s32 z;
     s32 cell;
+    s32 object;
 
     model->hmf->unkD0 = model->unkB4;
     extent = &rect->extent;
@@ -321,25 +325,25 @@ void func_80020B48_main(CollisionRect *rect, HmfModel *model) {
     for (z = minZ; z < maxZ; z++) {
         for (x = minX; x < maxX; x++) {
             cell = z * D_800D1104_main[gridIndex].width + x;
-            if (D_800D1104_main[gridIndex].unk_14[cell] != -1) {
-                func_80024DF0_main(model->hmf, D_800D1104_main[gridIndex].unk_14[cell], &MTXBuf[MTXBufNum], mtx);
+            object = D_800D1104_main[gridIndex].unk_14[cell];
+            if (object != -1) {
+                func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
             }
-            if (D_800D1104_main[gridIndex].unk_18[cell] != -1) {
-                func_80024DF0_main(model->hmf, D_800D1104_main[gridIndex].unk_18[cell], &MTXBuf[MTXBufNum], mtx);
+            object = D_800D1104_main[gridIndex].unk_18[cell];
+            if (object != -1) {
+                func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
             }
-            if (D_800D1104_main[gridIndex].unk_1C[cell] != -1) {
-                func_80024DF0_main(model->hmf, D_800D1104_main[gridIndex].unk_1C[cell], &MTXBuf[MTXBufNum], mtx);
+            object = D_800D1104_main[gridIndex].unk_1C[cell];
+            if (object != -1) {
+                func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
             }
         }
     }
     MTXBufNum++;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/20A20", func_80020B48_main);
-#endif
 
 #ifdef NON_MATCHING
-/* Prologue differs (target has dead code around the initial sindf/cosdf calls); register allocation */
+/* Saved-register allocation differs: target gives model s1, fan s2, shape s3, cell s4 */
 void func_80020E94_main(CollisionFan *fan, HmfModel *model) {
     Hu3DPoint tri[3];
     HuMtx4F mtx;
@@ -350,7 +354,7 @@ void func_80020E94_main(CollisionFan *fan, HmfModel *model) {
     s32 x;
     s32 z;
     s32 cell;
-    s16 object;
+    s32 object;
     f32 x0;
     f32 x1;
     f32 z0;
@@ -364,23 +368,32 @@ void func_80020E94_main(CollisionFan *fan, HmfModel *model) {
     gridIndex = model->unk10;
     func_8002087C_main(model, mtx);
     guMtxIdentF(ident);
-    sindf(fan->angle);
-    cosdf(fan->angle);
+    /* Dead stores (only the sindf/cosdf calls survive), but they are needed for matching codegen. */
+    x0 = D_800D1104_main[gridIndex].width * D_800D1104_main[gridIndex].cellWidth / 2.0f + fan->x +
+         sindf(fan->angle) * shape->offset;
+    z0 = D_800D1104_main[gridIndex].depth * D_800D1104_main[gridIndex].cellDepth / 2.0f + fan->z +
+         cosdf(fan->angle) * shape->offset;
     tri[0].y = tri[1].y = tri[2].y = 0;
     value = D_800D1104_main[gridIndex].width * D_800D1104_main[gridIndex].cellWidth / 2.0f + fan->x +
             sindf(fan->angle) * shape->offset;
-    tri[0].x = CLAMP_S16(value);
+    CLAMP_S16(value);
+    tri[0].x = value;
     value = D_800D1104_main[gridIndex].depth * D_800D1104_main[gridIndex].cellDepth / 2.0f + fan->z +
             cosdf(fan->angle) * shape->offset;
-    tri[0].z = CLAMP_S16(value);
+    CLAMP_S16(value);
+    tri[0].z = value;
     value = tri[0].x - sindf(shape->spread / 2.0f + fan->angle) * shape->length;
-    tri[1].x = CLAMP_S16(value);
+    CLAMP_S16(value);
+    tri[1].x = value;
     value = tri[0].z - cosdf(shape->spread / 2.0f + fan->angle) * shape->length;
-    tri[1].z = CLAMP_S16(value);
+    CLAMP_S16(value);
+    tri[1].z = value;
     value = tri[0].x - sindf(fan->angle - shape->spread / 2.0f) * shape->length;
-    tri[2].x = CLAMP_S16(value);
+    CLAMP_S16(value);
+    tri[2].x = value;
     value = tri[0].z - cosdf(fan->angle - shape->spread / 2.0f) * shape->length;
-    tri[2].z = CLAMP_S16(value);
+    CLAMP_S16(value);
+    tri[2].z = value;
     for (z = 0; z < D_800D1104_main[gridIndex].depth; z++) {
         z0 = z * D_800D1104_main[gridIndex].cellDepth + model->pos.z;
         z1 = z0 + D_800D1104_main[gridIndex].cellDepth;
@@ -448,9 +461,8 @@ s32 func_80021550_main(f32 x, f32 z, Hu3DPoint *tri) {
     return TRUE;
 }
 
-#ifdef NON_MATCHING
-/* Loop-invariant grid offset temps are allocated differently (extra spill, frame 0xE8 vs 0xE0) */
 void func_800216F8_main(CollisionCircle *circle, HmfModel *model) {
+    f32 *radius = &circle->radius;
     HuMtx4F mtx;
     HuMtx4F ident;
     s16 gridIndex;
@@ -461,9 +473,9 @@ void func_800216F8_main(CollisionCircle *circle, HmfModel *model) {
     s32 x;
     s32 z;
     s32 cell;
+    s32 object;
     f32 dx;
     f32 dz;
-    f32 *radius = &circle->radius;
 
     model->hmf->unkD0 = model->unkB4;
     if (model->unkB4 != NULL) {
@@ -496,23 +508,23 @@ void func_800216F8_main(CollisionCircle *circle, HmfModel *model) {
                  (D_800D1104_main[gridIndex].width * D_800D1104_main[gridIndex].cellWidth / 2.0f + circle->x);
             if (HuSqrtf(dx * dx + dz * dz) < *radius) {
                 cell = z * D_800D1104_main[gridIndex].width + x;
-                if (D_800D1104_main[gridIndex].unk_14[cell] != -1) {
-                    func_80024DF0_main(model->hmf, D_800D1104_main[gridIndex].unk_14[cell], &MTXBuf[MTXBufNum], mtx);
+                object = D_800D1104_main[gridIndex].unk_14[cell];
+                if (object != -1) {
+                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
                 }
-                if (D_800D1104_main[gridIndex].unk_18[cell] != -1) {
-                    func_80024DF0_main(model->hmf, D_800D1104_main[gridIndex].unk_18[cell], &MTXBuf[MTXBufNum], mtx);
+                object = D_800D1104_main[gridIndex].unk_18[cell];
+                if (object != -1) {
+                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
                 }
-                if (D_800D1104_main[gridIndex].unk_1C[cell] != -1) {
-                    func_80024DF0_main(model->hmf, D_800D1104_main[gridIndex].unk_1C[cell], &MTXBuf[MTXBufNum], mtx);
+                object = D_800D1104_main[gridIndex].unk_1C[cell];
+                if (object != -1) {
+                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
                 }
             }
         }
     }
     MTXBufNum++;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/20A20", func_800216F8_main);
-#endif
 
 void func_80021AF4_main(void) {
     HuMemFreeAllWithTag(0x55F0);

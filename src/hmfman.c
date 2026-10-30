@@ -138,7 +138,7 @@ extern s32 D_800D1F70_main;
 extern s32 D_800D1FE8_main;
 extern u8 D_800D2008_main;
 extern s8 HmfPauseF;
-extern s16 D_800D20EE_main;
+extern u16 D_800D20EE_main;
 extern s8 D_800D41C4_main;
 extern u16 D_800D5204_main;
 extern s16 D_800D6B64_main;
@@ -505,7 +505,7 @@ void Hu3DModelAllKill(void) {
 }
 
 #ifdef NON_MATCHING
-/* Functionally equivalent; differs only in saved-register allocation (gfxStart/count/mask/gfx) */
+/* Saved regs match; loop.c hoists the 0xDF000000 (G_ENDDL) constant out of the camera loop here but not in the target */
 void Hu3DExec(void *arg0, u16 arg1) {
     HuMtx4F mtx;
     HuMtx4F scaleMtx;
@@ -541,10 +541,10 @@ void Hu3DExec(void *arg0, u16 arg1) {
     D_800CE19A_main = 0;
     for (D_800CD6A6_main = 0; D_800CD6A6_main < D_800C9932_main; D_800CD6A6_main++) {
         if (bgDl == NULL) {
-            gfx = func_8001BD24_main(gfxStart, 1, mask);
+            gfxStart = func_8001BD24_main(gfxStart, 1, mask);
             gDPFullSync(gMainGfxPos++);
             gSPEndDisplayList(gMainGfxPos++);
-            func_8000EF64_main(gfx, D_800CE19A_main, 0, NULL, 0);
+            func_8000EF64_main(gfxStart, D_800CE19A_main, 0, NULL, 0);
         }
         func_800225D4_main();
         D_800D10F4_main = &gCameraList[D_800CD6A6_main];
@@ -735,9 +735,9 @@ void Hu3DExec(void *arg0, u16 arg1) {
     if (!HmfPauseF) {
         HmfAnimExec(arg1);
     }
-    gfx = func_8001BD24_main(gfxStart, 1, mask);
+    gfxStart = func_8001BD24_main(gfxStart, 1, mask);
     gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-    gfxStart = func_8001BD24_main(gfx, 3, 0);
+    gfxStart = func_8001BD24_main(gfxStart, 3, 0);
     gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     WipeExecAlways(&gMainGfxPos);
     gMainGfxPos = pfDrawFonts(gMainGfxPos);

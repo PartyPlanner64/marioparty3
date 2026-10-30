@@ -1,4 +1,10 @@
-#include "common.h"
+/* This file does not include common.h: the original source appears to have called rand8() without a
+ * prototype in scope (implicit int return, no 0xFF mask at the call site in func_80013390_main). */
+#include "ultra64.h"
+#include "types.h"
+#include "game/camera.h"
+#include "game/hmfman.h"
+#include "include_asm.h"
 #include "mallocblock.h"
 
 extern u8 D_800CD6A6_main;
@@ -11,7 +17,7 @@ void func_80013D4C_main(s16 model);
 void func_80013FB4_main(s16 model);
 
 #ifdef NON_MATCHING
-/* Target treats rand8() as returning int (no andi 0xFF); also minor temp register swaps */
+/* rand8() mask now matches via implicit declaration; remaining diff is a2/a3 swaps (swap tmp, group/j loop) */
 void func_80013390_main(s16 model, s16 type, char *name, void (*func)(s16)) {
     HmfModel *modelP = &HmfModelData[model];
     HmfData *hmf = modelP->hmf;

@@ -22,7 +22,7 @@ typedef struct {
     /* 0x0E */ s16 unk0E;
     /* 0x10 */ f32 unk10;
     /* 0x14 */ f32 unk14;
-    /* 0x18 */ char unk18[4];
+    /* 0x18 */ f32 unk18;
     /* 0x1C */ s32 unk1C;
     /* 0x20 */ s16 strGId[GMES_STRMAX];
     /* 0x40 */ s16 strSprId[GMES_STRMAX];

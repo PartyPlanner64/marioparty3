@@ -26,6 +26,10 @@
 #define SE_READ16(p) (((p)[0] << 8) | (p)[1])
 #define SE_READ32(p) (((p)[0] << 24) | ((p)[1] << 16) | ((p)[2] << 8) | (p)[3])
 
+#define MAGIC_FXD0 0x46584430 // 'FXD0'
+#define MAGIC_MBF0 0x4D424630 // 'MBF0'
+#define MAGIC_SBF0 0x53424630 // 'SBF0'
+
 typedef struct {
     /* 0x00 */ s8 cmdType;   // cmdType
     /* 0x01 */ s8 voiceSlot; // voiceSlot
@@ -392,7 +396,7 @@ typedef struct {
 
 /* Header at the start of an MBF0/SBF0 sound bank in ROM. */
 typedef struct {
-    /* 0x00 */ s32 magic; // 'MBF0' or 'SBF0'
+    /* 0x00 */ s32 magic; // MAGIC_MBF0 or MAGIC_SBF0
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ char unk_08[8];
     /* 0x10 */ s16 unk_10;
@@ -540,7 +544,7 @@ s32 func_80000650_main(void) {
     sys->cfg.unk4 &= ~3;
     if (sys->cfg.unk10 != NULL) {
         func_80000FE4_main(buf, sys->cfg.unk10, 0x10, 0);
-        if (buf->count == 'FXD0') {
+        if (buf->count == MAGIC_FXD0) {
             sys->fxCount = ((u16 *)buf)[3];
         }
     }
@@ -643,7 +647,7 @@ s32 func_8000086C_main(str800D5298 *cfg) {
     }
     if (sys->cfg.unkC != NULL) {
         func_80000FE4_main(buf, sys->cfg.unkC, sizeof(SndBankHeader), 0);
-        if (buf->magic == 'SBF0') {
+        if (buf->magic == MAGIC_SBF0) {
             if (sys->cfg.unk8 == NULL) {
                 func_80000540_main(buf, sys->cfg.unkC);
             }
@@ -659,7 +663,7 @@ s32 func_8000086C_main(str800D5298 *cfg) {
     }
     if (sys->cfg.unk8 != NULL) {
         func_80000FE4_main(buf, sys->cfg.unk8, sizeof(SndBankHeader), 0);
-        if (buf->magic == 'MBF0') {
+        if (buf->magic == MAGIC_MBF0) {
             func_80000540_main(buf, sys->cfg.unk8);
             if (!(sys->cfg.unk0 & 0x10000)) {
                 sys->cfg.unk4C = buf->unk_10;

@@ -109,7 +109,7 @@ s32 amCreateAudioMgr(str800D5298 *cfg, ALHeap *heap) {
     D_800ABE3C_main = 1;
     if (cfg->unk2C != NULL) {
         c.fxType = AL_FX_CUSTOM;
-        c.params = cfg->unk2C;
+        c.params = (s32 *)cfg->unk2C;
     } else {
         c.fxType = AL_FX_NONE;
         c.params = NULL;

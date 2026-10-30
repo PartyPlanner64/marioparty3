@@ -6,6 +6,7 @@
 #include "game/gamemes.h"
 #include "game/gamework_data.h"
 #include "game/hmflight.h"
+#include "game/hmfman.h"
 #include "game/pause.h"
 #include "game/sprite.h"
 #include "game/wipe.h"

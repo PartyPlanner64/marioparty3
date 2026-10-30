@@ -2964,7 +2964,7 @@ s32 func_8003EBC8_main(GAMEMES *gMes, Gfx **gfx) {
 
     if (gMes->unk04 == 0) {
         str = HuMemMemoryAllocPerm(256);
-        func_80045208_main(str, (void *)gMes->unk1C);
+        func_80045208_main((u8 *)str, (void *)gMes->unk1C);
         func_8003A37C_main(gMes, str, gMes->unk02, -1, -1);
         gMes->unk08 = strlen(str);
         HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
@@ -2996,7 +2996,7 @@ s32 func_8003EE98_main(GAMEMES *gMes, Gfx **gfx) {
 
     if (gMes->unk04 == 0) {
         str = HuMemMemoryAllocPerm(256);
-        func_80045208_main(str, (void *)gMes->unk1C);
+        func_80045208_main((u8 *)str, (void *)gMes->unk1C);
         func_8003A37C_main(gMes, str, gMes->unk02, -1, -1);
         gMes->unk08 = strlen(str);
         HuMemMemoryFreePerm(str);

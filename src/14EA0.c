@@ -1,4 +1,5 @@
 #include "common.h"
+#include "malloc.h"
 #include "mallocblock.h"
 #include "opening.h"
 #include "gcc/string.h"

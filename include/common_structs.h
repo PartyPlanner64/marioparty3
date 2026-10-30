@@ -114,7 +114,7 @@ typedef struct str800D5298 {
     s32 unk20;
     s32 unk24;
     s32 unk28;
-    s32 unk2C;
+    void *unk2C; // fx params
     s32 unk30;
     s32 unk34;
     s32 unk38;

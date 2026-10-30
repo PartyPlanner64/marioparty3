@@ -193,7 +193,7 @@ void _handleEvent(ALSndPlayer *sndp, ALSndpEvent *event) {
 
             evt.common.type = AL_SNDP_DECAY_EVT;
             evt.common.state = state;
-            delta = (ALMicroTime)_DivS32ByF32(snd->envelope->attackTime, state->pitch);
+            delta = _DivS32ByF32(snd->envelope->attackTime, state->pitch);
             alEvtqPostEvent(&sndp->evtq, (ALEvent *)&evt, delta);
             break;
 
@@ -202,7 +202,7 @@ void _handleEvent(ALSndPlayer *sndp, ALSndpEvent *event) {
                 return;
             }
 
-            delta = (ALMicroTime)_DivS32ByF32(snd->envelope->releaseTime, state->pitch);
+            delta = _DivS32ByF32(snd->envelope->releaseTime, state->pitch);
             alSynSetVol(sndp->drvr, &state->voice, 0, delta);
 
             if (delta) {
@@ -263,7 +263,7 @@ void _handleEvent(ALSndPlayer *sndp, ALSndpEvent *event) {
              */
             if (snd->envelope->decayTime != -1) {
                 vtmp = snd->envelope->decayVolume * state->vol / AL_VOL_FULL;
-                delta = (ALMicroTime)_DivS32ByF32(snd->envelope->decayTime, state->pitch);
+                delta = _DivS32ByF32(snd->envelope->decayTime, state->pitch);
                 alSynSetVol(sndp->drvr, &state->voice, (s16)vtmp, delta);
                 evt.common.type = AL_SNDP_STOP_EVT;
                 evt.common.state = state;

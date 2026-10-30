@@ -53,7 +53,6 @@ void HuVecAdd(Vec* out, Vec* a, Vec* b);
 s32 CheckControllerRead(s16 padNum);
 s32 GWContErrorGet(void);
 void GWContErrorSet(void);
-void Hu3DAnimInit(s16);
 s16 GWMgUnlockCheck(s16 arg0);
 s32 _CheckFlag(s32);
 void GWMgUnlockSet(s16 bitPos);

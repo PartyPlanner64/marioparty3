@@ -103,7 +103,7 @@ void func_8003186C_main(HmfData *hmf) {
         }
         for (j = 0; j < 0x80; j++) {
             other = HmfModelData[j].hmf;
-            if (other == NULL || (u8)HmfModelData[j].unk00 != 0 || hmf == other || other->unk84 == NULL) {
+            if (other == NULL || HmfModelData[j].unk00 != 0 || hmf == other || other->unk84 == NULL) {
                 continue;
             }
             for (k = 0; k < other->unk12; k++) {
@@ -403,7 +403,7 @@ s32 HmfAnimCreate(HmfData *hmf, void *data, s16 bank, char *name) {
         }
     } else {
         for (j = 0; j < 0x80; j++) {
-            if (HmfModelData[j].hmf != NULL && (u8)HmfModelData[j].unk00 == 0) {
+            if (HmfModelData[j].hmf != NULL && HmfModelData[j].unk00 == 0) {
                 hmf = HmfModelData[j].hmf;
                 for (i = 0; i < hmf->unk12; i++) {
                     if (hmf->unk84[i].unkC == tex) {
@@ -453,7 +453,7 @@ s16 HmfAnimLink(HmfData *hmf, u16 linkIdx, s16 bank, char *name) {
         }
     } else {
         for (j = 0; j < 0x80; j++) {
-            if (HmfModelData[j].hmf != NULL && (u8)HmfModelData[j].unk00 == 0) {
+            if (HmfModelData[j].hmf != NULL && HmfModelData[j].unk00 == 0) {
                 hmf = HmfModelData[j].hmf;
                 for (i = 0; i < hmf->unk12; i++) {
                     if (hmf->unk84[i].unkC == tex) {

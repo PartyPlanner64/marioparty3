@@ -509,6 +509,7 @@ extern HmfAnimSet *D_800D408C_main;
 extern HmfModelEntry *D_800CBB60_main;
 
 void func_8001A070_main(void *arg0, void *arg1, u16 arg2, u16 arg3, u16 arg4, u8 arg5);
+void Hu3DAnimInit(s16 count);
 s16 Hu3DModelCreate(u8 *, u32);
 s32 Hu3DModelLink(s16 linkMdlId);
 s32 func_8001A894_main(u32 flags, void *dl, s32 mode);

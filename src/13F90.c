@@ -1,11 +1,14 @@
 /* This file does not include common.h: the original source appears to have called rand8() without a
- * prototype in scope (implicit int return, no 0xFF mask at the call site in func_80013390_main). */
+ * prototype in scope (implicit int return, no 0xFF mask at the call site in func_80013390_main).
+ * The int-returning declaration below reproduces that without relying on an implicit declaration. */
 #include "ultra64.h"
 #include "types.h"
 #include "game/camera.h"
 #include "game/hmfman.h"
 #include "include_asm.h"
 #include "mallocblock.h"
+
+s32 rand8(void);
 
 extern u8 D_800CD6A6_main;
 extern u8 D_800D2008_main;

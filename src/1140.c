@@ -411,11 +411,11 @@ typedef struct {
     /* 0x29 */ char unk_29[0x17];
 } SndBankHeader; // size: 0x40
 
-/* Header of an effect table. The count is stored in the low byte of the first
- * word, and is widened in place after loading. */
+/* Header of an effect table. The id is stored in the high halfword of the first
+ * word and the count in its low byte; the count is widened in place after
+ * loading. */
 typedef union {
     s32 count;
-    s16 id;
     u8 bytes[4];
 } SndFxHeader;
 
@@ -526,9 +526,6 @@ void func_80000540_main(SndBankHeader *hdr, void *romAddr) {
 
 /* Loads the effect table, either the one given by the configuration or the
  * selected entry of the FXD0 file. */
-#ifdef NON_MATCHING
-/* sys and buf get swapped callee-saved registers, and some field accesses use
- * the base register where the target addresses the global directly. */
 s32 func_80000650_main(void) {
     SndSys *sys;
     SndFxHeader *buf;
@@ -570,9 +567,9 @@ s32 func_80000650_main(void) {
 load:
     sys->cfg.unk4 = flags;
     func_80000FE4_main(buf, romAddr, 4, 0);
-    D_800A9740_main.fxId = buf->id;
+    D_800A9740_main.fxId = buf->count >> 16;
     buf->count = buf->bytes[3];
-    size = (buf->count << 5) | 8;
+    size = (buf->count * 32) | 8;
     if ((sys->cfg.unk2C = func_800010B8_main(size)) == NULL) {
         return 2;
     }
@@ -581,9 +578,6 @@ load:
     fx->count = fx->bytes[3];
     return 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/1140", func_80000650_main);
-#endif
 
 void func_800007FC_main(str800D5298 *cfg) {
     osCreateMesgQueue(&D_800A9718_main, D_800A9650_main, ARRAY_COUNT(D_800A9650_main));
@@ -2531,7 +2525,9 @@ void func_800049E8_main(GameSound *sound) {
 
 #ifdef NON_MATCHING
 /* Register allocation differs: the mod loop index and its sign-extended copy
- * are swapped, and the volume/pan delta lands in v1 instead of a0. */
+ * are swapped, and the volume/pan delta lands in v1 instead of a0. Reusing the
+ * loop index for the delta puts both in the same register, as in the target,
+ * but the index/copy swap remains. */
 /* Runs the script of a voice until it has to wait. Each command byte is
  * followed by a variable length wait time unless bit 7 is set. */
 void func_80004D4C_main(GameSound *sound) {
@@ -3203,8 +3199,6 @@ void func_800062A8_main(GameSound *sound) {
     func_8000658C_main(sound, start);
 }
 
-#ifdef NON_MATCHING
-/* The two -0x40 pan offsets get folded into one -0x80. */
 /* Applies the changed parameters of a voice to its sound. */
 void func_8000658C_main(GameSound *sound, s32 force) {
     s32 val;
@@ -3232,7 +3226,7 @@ void func_8000658C_main(GameSound *sound, s32 force) {
         val = 0x40;
         if (!(D_800CB8AC_main & 1)) {
             val = sound->panMod + sound->scriptPan;
-            val = sound->unk_B3 + (sound->pan - 0x40) + (val - 0x40);
+            val = sound->unk_B3 - 0x40 + sound->pan - 0x40 + val;
             if (val < 0) {
                 val = 0;
             }
@@ -3263,9 +3257,6 @@ void func_8000658C_main(GameSound *sound, s32 force) {
     }
     sound->flags &= ~0x3E000;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/1140", func_8000658C_main);
-#endif
 
 void func_80006830_main(void) {
     switch (D_800A97BC_main->pauseState) {
@@ -3327,14 +3318,12 @@ void func_800068B8_main(void) {
     }
 }
 
-#ifdef NON_MATCHING
-/* sys and info get swapped callee-saved registers, and the final loop counter
- * lands in a temporary instead of s0. */
+/* Sets up the sound effect manager. The loop counter doubles as the size of
+ * the voice array. */
 s32 func_80006A8C_main(SndSys *sys, ALHeap *heap, s32 seCount, s32 vol) {
     str800D5298 *cfg = &sys->cfg;
     SeBankInfo *info = (SeBankInfo *)sys->buf;
     ALSndpConfig config;
-    s32 size;
     s32 i;
 
     if (seCount == 0) {
@@ -3355,11 +3344,11 @@ s32 func_80006A8C_main(SndSys *sys, ALHeap *heap, s32 seCount, s32 vol) {
     if (func_80003EE4_main(cfg->unkC, info) != 0) {
         return 4;
     }
-    size = cfg->unk54 * sizeof(GameSound);
-    if ((D_800A97BC_main->sounds = func_800010B8_main(size)) == NULL) {
+    i = cfg->unk54 * sizeof(GameSound);
+    if ((D_800A97BC_main->sounds = func_800010B8_main(i)) == NULL) {
         return 5;
     }
-    bzero(D_800A97BC_main->sounds, size);
+    bzero(D_800A97BC_main->sounds, i);
     config.maxSounds = cfg->unk54;
     config.maxEvents = cfg->unk58;
     config.heap = heap;
@@ -3382,9 +3371,6 @@ s32 func_80006A8C_main(SndSys *sys, ALHeap *heap, s32 seCount, s32 vol) {
     }
     return 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/1140", func_80006A8C_main);
-#endif
 
 /* Queues a command for the periodic proc to process. */
 void func_80006CD4_main(s32 voiceSlot, s32 cmdType, s32 cmdArg) {
@@ -3538,7 +3524,9 @@ s32 func_80007080_main(s32 seId, SePlayParam *param) {
 }
 
 #ifdef NON_MATCHING
-/* Register allocation differs throughout, and the target frame is 8 bytes larger. */
+/* The temporaries holding se, entry and mask get different registers (the
+ * target gives them lower allocation priority), and the target frame is 8 bytes
+ * larger, as if there were an extra unused 8-byte local. */
 /* Picks the voice to play the given layer of a sound effect on: the requested
  * slot, a free voice, or the oldest voice of lower priority. Returns -1 if
  * there is none. */
@@ -3552,6 +3540,7 @@ s32 func_800072A4_main(s32 seId, s32 layer, s32 slot, s32 variant) {
     u32 bit;
     s32 count;
     s32 tmp;
+    s32 idx;
     s32 i;
     s32 j;
 
@@ -3560,10 +3549,7 @@ s32 func_800072A4_main(s32 seId, s32 layer, s32 slot, s32 variant) {
             return -1;
         }
         sound = &se->sounds[slot];
-        if (sound->state < 2) {
-            return slot;
-        }
-        if (entry->priority < sound->priority) {
+        if (sound->state >= 2 && entry->priority < sound->priority) {
             return -1;
         }
         return slot;
@@ -3605,27 +3591,27 @@ s32 func_800072A4_main(s32 seId, s32 layer, s32 slot, s32 variant) {
     }
     if (lists[SE_VOICES_OTHER].count != 0) {
         if (lists[SE_VOICES_OTHER].count == 1) {
-            slot = lists[SE_VOICES_OTHER].slots[0];
-            if (!(entry->priority < se->sounds[slot].priority)) {
-                return slot;
+            idx = lists[SE_VOICES_OTHER].slots[0];
+            if (!(entry->priority < se->sounds[idx].priority)) {
+                return idx;
             }
         } else {
             for (i = 0; i < lists[SE_VOICES_OTHER].count - 1; i++) {
                 order = se->sounds[lists[SE_VOICES_OTHER].slots[i]].order;
                 for (j = i + 1; j < lists[SE_VOICES_OTHER].count; j++) {
-                    slot = lists[SE_VOICES_OTHER].slots[j];
-                    if (se->sounds[slot].order < order) {
-                        order = se->sounds[slot].order;
+                    idx = lists[SE_VOICES_OTHER].slots[j];
+                    if (se->sounds[idx].order < order) {
+                        order = se->sounds[idx].order;
                         tmp = lists[SE_VOICES_OTHER].slots[i];
-                        lists[SE_VOICES_OTHER].slots[i] = slot;
+                        lists[SE_VOICES_OTHER].slots[i] = idx;
                         lists[SE_VOICES_OTHER].slots[j] = tmp;
                     }
                 }
             }
             for (j = 0; j < lists[SE_VOICES_OTHER].count; j++) {
-                slot = lists[SE_VOICES_OTHER].slots[j];
-                if (!(entry->priority < se->sounds[slot].priority)) {
-                    return slot;
+                idx = lists[SE_VOICES_OTHER].slots[j];
+                if (!(entry->priority < se->sounds[idx].priority)) {
+                    return idx;
                 }
             }
         }

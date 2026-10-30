@@ -154,9 +154,12 @@ Hu3DModelScaleSet = 0x8001C1A0; //rom:0x1CDA0
 Hu3DBGColorSet = 0x8001F38C; //rom:0x1FF8C
 
 // gamemes
+GMesInit = 0x8003661C; //rom:0x3721C
 GMesExec = 0x800367B0; //rom:0x373B0
 GMesCreate = 0x80036C4C; //rom:0x3784C
 GMesStatGet = 0x80037030; //rom:0x37C30
+GMesPosSet = 0x80037114; //rom:0x37D14
+GMesKill = 0x8003714C; //rom:0x37D4C
 GMesClose = 0x80037190; //rom:0x37D90
 GMesSprKill = 0x800374E0; //rom:0x380E0
 gMesCloseF = 0x800B1A51; //

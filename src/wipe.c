@@ -84,7 +84,7 @@ void WipeInit(void) {
     for (i = 0; i < 8; i++) {
         D_800D1F80_main[i] = NULL;
     }
-    func_8003661C_main();
+    GMesInit();
 }
 
 void WipeExecAlways(Gfx **gfx) {

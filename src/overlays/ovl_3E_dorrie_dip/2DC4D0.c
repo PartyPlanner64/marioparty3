@@ -123,7 +123,7 @@ omObjData *func_80045ED0_main(u32);
 void func_800E1370_minigame(omObjData *, s32, f32);
 void func_80107EE0_dorrie_dip(omObjData *);
 void func_80109F00_dorrie_dip(void);
-void func_80037114_main(s16, f32, f32);
+void GMesPosSet(s16, f32, f32);
 void func_80106BC0_dorrie_dip(void);
 void func_800DDD94_minigame(omObjData *);
 void func_800E6F0C_minigame(u8);
@@ -944,7 +944,7 @@ void func_8010872C_dorrie_dip(void) {
     s32 seconds = 10;
     s32 frames = 30;
 
-    func_80037114_main(GMesCreate(26, 10, 160, 28), 160.0f, 28.0f);
+    GMesPosSet(GMesCreate(26, 10, 160, 28), 160.0f, 28.0f);
     do {
         frames--;
         if (frames == 0) {

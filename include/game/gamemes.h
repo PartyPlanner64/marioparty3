@@ -30,7 +30,7 @@ typedef struct {
     /* 0x64 */ f32 unk64;
     /* 0x68 */ f32 unk68;
     /* 0x6C */ f32 unk6C;
-    /* 0x70 */ s32 unk70;
+    /* 0x70 */ f32 unk70;
 } GAMEMES; // Size 0x74
 
 #define GMES_MES_0 0 // START (ALT?)
@@ -76,15 +76,17 @@ typedef struct {
 #define GMES_STAT_EXIST (1 << 0)
 #define GMES_STAT_KILL (1 << 2)
 
-void func_8003661C_main(void);
+void GMesInit(void);
 s16 GMesCreate(s16 mesNo, ...);
 void GMesSprKill(GAMEMES *gMes);
 s32 GMesStatGet(void);
+void GMesPosSet(s16 mesId, f32 x, f32 y);
+void GMesKill(s16 mesId);
 void GMesClose(void);
 void func_80037258_main(void);
 void func_8003F578_main(s16);
 void func_8003F5C0_main(void);
-void func_80045010_main(const s16*, s32);
+void func_80045010_main(const s16 *, s32);
 s32 func_800452A0_main(void *, void *);
 
 #endif

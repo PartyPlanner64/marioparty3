@@ -18,32 +18,258 @@
 #define PI 3.1415927f
 #define TWO_PI 6.2831855f
 
+/* Added to each pitch modulation term, so any active modulation registers as a
+ * change even when it is zero. */
+#define SE_CENTS_EPSILON 1e-5f
+
+/* Big-endian reads from sound effect scripts. */
+#define SE_READ16(p) (((p)[0] << 8) | (p)[1])
+#define SE_READ32(p) (((p)[0] << 24) | ((p)[1] << 16) | ((p)[2] << 8) | (p)[3])
+
 typedef struct {
     /* 0x00 */ s8 cmdType;   // cmdType
     /* 0x01 */ s8 voiceSlot; // voiceSlot
     /* 0x04 */ s32 cmdArg;   // cmdArg
 } AudioCmd;                  // size: 0x8
 
-/* One entry of the active sound table the audio manager keeps. Only the
- * fields the manager's own functions touch are named so far. */
+/* One playing sound effect voice. A sound effect made of several layers uses
+ * one voice per layer; the first voice links to the others. */
+typedef struct {
+    /* 0x00 */ s32 slot;  // index of the linked voice
+    /* 0x04 */ u32 order; // play order of the linked voice, to detect reuse
+} SeLink;
+
+/* Random variation of a voice's volume or pan. */
+typedef struct {
+    /* 0x00 */ s8 max;
+    /* 0x01 */ s8 min;
+    /* 0x02 */ u8 interval; // frames between new random values
+    /* 0x03 */ u8 timer;
+} SeRandom; // size: 0x4
+
+/* An external modulation source applied to a voice. */
+typedef struct {
+    /* 0x00 */ s16 value;
+    /* 0x02 */ s16 target; // 1 volume, 2 pan, 3 pitch
+} SeMod; // size: 0x4
+
 typedef struct GameSound_s {
-    /* 0x00 */ s32 flags;
+    /* 0x00 */ s32 flags; // 0x4000 vol, 0x8000 pan, 0x10000 fx mix, 0x20000 pitch changed
     /* 0x04 */ s32 state;
-    /* 0x08 */ s32 unk_08;
-    /* 0x0C */ s16 sndId; // ALSndId, -1 when unallocated
-    /* 0x0E */ char unk_0E[0xEE];
+    /* 0x08 */ s32 sndState; // latest n_alSndpGetState()
+    /* 0x0C */ s16 sndId;    // ALSndId, -1 when unallocated
+    /* 0x0E */ s16 seId;
+    /* 0x10 */ u32 order;      // play order, used to steal the oldest voice
+    /* 0x14 */ f32 pitchRatio; // sample rate / output rate
+    /* 0x18 */ s16 pitch;
+    /* 0x1A */ s8 vol;
+    /* 0x1B */ s8 pan;
+    /* 0x1C */ s8 fxMix;
+    /* 0x1D */ u8 priority;
+    /* 0x1E */ s8 layer;
+    /* 0x1F */ s8 linkCount;
+    /* 0x20 */ SeLink links[4]; // first layer: the other layers, others: the first layer
+    /* 0x40 */ u8 *script;
+    /* 0x44 */ char unk_44[4];
+    /* 0x48 */ s16 soundIdx; // index into alSounds, 0x8000 when not yet set up
+    /* 0x4A */ s16 wait;     // frames until the next script command
+    /* 0x4C */ s16 key;      // in cents
+    /* 0x4E */ s16 detune;   // pitch modulation, in cents
+    /* 0x50 */ s8 scriptVol;
+    /* 0x51 */ s8 volMod;
+    /* 0x52 */ s8 scriptPan;
+    /* 0x53 */ s8 panMod;
+    /* 0x54 */ s8 scriptFxMix;
+    /* 0x55 */ char unk_55[3];
+    /* 0x58 */ u16 loopAddr[3];
+    /* 0x5E */ u8 loopCount[3];
+    /* 0x61 */ s8 loopDepth;
+    /* 0x62 */ char unk_62[2];
+    /* 0x64 */ u8 *callStack[2];
+    /* 0x6C */ s8 callDepth;
+    /* 0x6D */ char unk_6D[3];
+    /* 0x70 */ f32 lfoRand;
+    /* 0x74 */ s8 lfoPhase;
+    /* 0x75 */ u8 lfoType;
+    /* 0x76 */ u8 lfoRate;
+    /* 0x77 */ s8 unk_77;
+    /* 0x78 */ s16 lfoDepth;
+    /* 0x7A */ s16 lfoCounter;
+    /* 0x7C */ s16 lfoPeriod;
+    /* 0x7E */ s16 lfoDelay;     // frames left before the LFO starts
+    /* 0x80 */ s16 lfoDelaySave;
+    /* 0x82 */ s8 lfoActive;
+    /* 0x83 */ char unk_83[1];
+    /* 0x84 */ s8 sweepFlags;
+    /* 0x85 */ s8 sweepActive;
+    /* 0x86 */ s16 sweepAmount;
+    /* 0x88 */ s16 sweepCounter;
+    /* 0x8A */ s16 sweepTime;
+    /* 0x8C */ u8 *envScript; // pitch envelope
+    /* 0x90 */ u8 *envPtr;
+    /* 0x94 */ f32 envScale;
+    /* 0x98 */ s16 envDelayInit;
+    /* 0x9A */ s16 envDelay;
+    /* 0x9C */ s16 envStep;
+    /* 0x9E */ s16 envAccum;
+    /* 0xA0 */ s8 envCount;
+    /* 0xA1 */ char unk_A1[3];
+    /* 0xA4 */ f32 unk_A4;
+    /* 0xA8 */ f32 unk_A8;
+    /* 0xAC */ f32 unk_AC;
+    /* 0xB0 */ char unk_B0[2];
+    /* 0xB2 */ s8 unk_B2;
+    /* 0xB3 */ s8 unk_B3;
+    /* 0xB4 */ f32 unk_B4;
+    /* 0xB8 */ s32 randFlags; // 1 volume, 2 pan, 4 pitch
+    /* 0xBC */ SeRandom randVol;
+    /* 0xC0 */ SeRandom randPan;
+    /* 0xC4 */ s16 randPitchMax;
+    /* 0xC6 */ s16 randPitchMin;
+    /* 0xC8 */ u8 randPitchInterval;
+    /* 0xC9 */ u8 randPitchTimer;
+    /* 0xCA */ s16 randPitch;
+    /* 0xCC */ s32 modMask;
+    /* 0xD0 */ SeMod mods[3];
+    /* 0xDC */ ALSound sound; // keyMap holds the sample rate
+    /* 0xEC */ ALEnvelope env;
 } GameSound; // size: 0xFC
 
+/* One layer of a sound effect. */
 typedef struct {
-    /* 0x00 */ char unk_00[0x8];
-    /* 0x08 */ GameSound *sounds;
-    /* 0x0C */ char unk_0C[0x8];
-    /* 0x14 */ s32 soundCount;
+    /* 0x00 */ u8 unk_00;
+    /* 0x01 */ u8 voiceShift; // low nibble: shift of the voice mask per variant
+    /* 0x02 */ u16 voiceMask; // voices this layer may play on
+    /* 0x04 */ u8 *script;
+} SeLayer; // size: 0x8
+
+/* One sound effect, as read from the SBF0 bank. */
+typedef struct {
+    /* 0x00 */ s8 layerCount;
+    /* 0x01 */ u8 priority;
+    /* 0x02 */ u8 unk_02;
+    /* 0x03 */ u8 unk_03;
+    /* 0x04 */ char unk_04[4];
+    /* 0x08 */ SeLayer layers[1];
+} SeEntry;
+
+/* Table of contents of an SBF0 bank, following its header. */
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 soundCount;
+    /* 0x08 */ u8 *ctlAddr; // relative to the bank until loaded
+    /* 0x0C */ s32 ctlSize;
+    /* 0x10 */ s32 unk_10;
+    /* 0x14 */ u8 *tblAddr; // relative to the bank until loaded
     /* 0x18 */ s32 unk_18;
-    /* 0x1C */ char unk_1C[0x1C];
-    /* 0x38 */ s32 unk38;           // write index (wraps at 0x80)
-    /* 0x3C */ AudioCmd cmds[0x80]; // ring buffer of commands
-} UnkAudio;
+    /* 0x1C */ s32 seCount;
+    /* 0x20 */ s32 seOffset;
+    /* 0x24 */ s32 seSize;
+    /* 0x28 */ s32 unk_28;
+    /* 0x2C */ s32 unk_2C;
+    /* 0x30 */ s32 unk_30;
+} SeBankInfo; // size: 0x34
+
+typedef struct {
+    /* 0x00 */ s8 cmdType;
+    /* 0x01 */ s8 voiceSlot;
+    /* 0x04 */ union {
+        s32 i;
+        f32 f;
+    } arg;
+} SeCmd; // size: 0x8
+
+typedef struct {
+    /* 0x000 */ N_ALSndPlayer *sndp;
+    /* 0x004 */ ALSound *alSounds;
+    /* 0x008 */ GameSound *sounds;
+    /* 0x00C */ SeEntry **entries;
+    /* 0x010 */ u8 **envScripts; // pitch envelope scripts
+    /* 0x014 */ s32 soundCount;
+    /* 0x018 */ s32 unk_18; // number of voices in use
+    /* 0x01C */ u32 order;  // play order counter
+    /* 0x020 */ s32 fadeStep;
+    /* 0x024 */ s32 fadeTime; // frames left, negative while fading in
+    /* 0x028 */ s16 seCount;
+    /* 0x02A */ s16 unk_2A;
+    /* 0x02C */ s8 masterVol;
+    /* 0x02D */ s8 pan;
+    /* 0x02E */ s8 unk_2E;
+    /* 0x02F */ s8 vol;
+    /* 0x030 */ s8 configVol;
+    /* 0x031 */ s8 fadeVol;
+    /* 0x032 */ s8 pauseState;
+    /* 0x034 */ union {
+        s32 all;
+        s16 flag[2]; // [0] set by the API functions, [1] by the periodic proc
+    } busy;
+    /* 0x038 */ s32 cmdCount;
+    /* 0x03C */ SeCmd cmds[0x80];
+    /* 0x43C */ f32 minDist;
+    /* 0x440 */ f32 maxDist;
+    /* 0x444 */ f32 unk_444;
+    /* 0x448 */ f32 unk_448;
+    /* 0x44C */ s16 angle;
+    /* 0x44E */ s16 unk_44E;
+    /* 0x450 */ f32 unk_450;
+    /* 0x454 */ f32 unk_454;
+} SeManager; // size: 0x458
+
+/* Voices considered by func_800072A4_main when picking a voice to play on. */
+#define SE_VOICES_FREE 0  // not playing
+#define SE_VOICES_SAME 1  // playing the same sound effect
+#define SE_VOICES_OTHER 2 // playing another sound effect
+
+typedef struct {
+    /* 0x00 */ s32 count;
+    /* 0x04 */ s8 slots[20];
+} SeVoiceList; // size: 0x18
+
+/* Optional parameters for starting a sound effect. */
+typedef struct {
+    /* 0x00 */ s32 flags; // which of the fields below are valid
+    /* 0x04 */ s32 slot;
+    /* 0x08 */ s32 variant;
+    /* 0x0C */ s32 vol;
+    /* 0x10 */ s32 pitch;
+    /* 0x14 */ s32 pan;
+    /* 0x18 */ s32 fxMix;
+    /* 0x1C */ s32 angle;
+    /* 0x20 */ f32 dist;
+    /* 0x24 */ f32 unk_24;
+    /* 0x28 */ f32 unk_28;
+} SePlayParam; // size: 0x2C
+
+/* Positional parameters of a sound effect voice. */
+typedef struct {
+    /* 0x00 */ s32 flags;
+    /* 0x04 */ s32 angle;
+    /* 0x08 */ f32 dist;
+    /* 0x0C */ f32 unk_0C;
+    /* 0x10 */ f32 unk_10;
+} SePosParam;
+
+/* Settings of the sound effect player, see func_80007A10_main. */
+typedef struct {
+    /* 0x00 */ s32 flags;
+    /* 0x04 */ s32 masterVol;
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ s32 pan;
+    /* 0x10 */ s32 unk_10;
+} SeParam;
+
+/* Positional settings of the sound effect player, see func_8000801C_main. */
+typedef struct {
+    /* 0x00 */ s32 flags;
+    /* 0x04 */ s32 angle;
+    /* 0x08 */ f32 minDist;
+    /* 0x0C */ f32 maxDist;
+    /* 0x10 */ f32 unk_10;
+    /* 0x14 */ f32 unk_14;
+    /* 0x18 */ f32 unk_18;
+    /* 0x1C */ f32 unk_1C;
+    /* 0x20 */ s32 unk_20;
+} SePosConfig;
 
 /* One entry of the music track table, read from the MBF0 bank. */
 typedef struct {
@@ -203,14 +429,14 @@ typedef struct {
 } SndSys;
 
 extern AudioManager *D_800A97B8_main;
-extern UnkAudio *D_800A97BC_main;
+extern SeManager *D_800A97BC_main;
 extern ALHeap D_800A9730_main;
 extern OSMesg D_800A9650_main[50];
 extern OSMesgQueue D_800A9718_main;
 extern SndSys D_800A9740_main;
 extern u8 D_800CB8AC_main;
 
-s32 func_80007080_main(s32, s32);
+s32 func_80007080_main(s32 seId, SePlayParam *param);
 s32 func_80001134_main(s32 arg0, s32 arg1);
 s32 func_80000650_main(void);
 s32 func_8000086C_main(str800D5298 *cfg);
@@ -231,9 +457,30 @@ AudioManager *func_800025B4_main(void);
 void func_800025C0_main(void);
 s32 func_80006A8C_main(SndSys *sys, ALHeap *heap, s32 arg2, s32 arg3);
 void func_80006FC4_main(void);
-UnkAudio *func_8000704C_main(void);
+SeManager *func_8000704C_main(void);
 void func_80007058_main(void);
 s32 amCreateAudioMgr(str800D5298 *cfg, ALHeap *heap);
+u32 func_8007B1E0_main(void);
+void func_80003FB4_main(void);
+void func_800048D0_main(GameSound *sound);
+void func_80004928_main(GameSound *sound);
+void func_8000499C_main(GameSound *sound);
+void func_800049E8_main(GameSound *sound);
+void func_80004D4C_main(GameSound *sound);
+s32 func_80005804_main(u8 **cursor);
+f32 func_80005850_main(GameSound *sound);
+void func_80005BAC_main(GameSound *sound, f32 arg1);
+void func_80005FE4_main(GameSound *sound);
+void func_80006148_main(GameSound *sound);
+void func_800062A8_main(GameSound *sound);
+void func_8000658C_main(GameSound *sound, s32 arg1);
+void func_80006830_main(void);
+void func_800068B8_main(void);
+void func_80006CD4_main(s32 voiceSlot, s32 cmdType, s32 cmdArg);
+void func_80006D80_main(s32 voiceSlot, s32 cmdType, f32 cmdArg);
+s32 func_800072A4_main(s32 seId, s32 layer, s32 slot, s32 variant);
+void func_800076B8_main(s32 seId, s32 slot, u8 priority, SePlayParam *param);
+void func_8000810C_main(s32 slot, SePosParam *param);
 void func_80008678_main(str800D5298 *cfg);
 void func_8000870C_main(str800D5298 *cfg);
 
@@ -514,7 +761,7 @@ s32 func_8000086C_main(str800D5298 *cfg) {
 
 s32 func_80000DF0_main(void) {
     AudioManager *mus = func_800025B4_main();
-    UnkAudio *se;
+    SeManager *se;
 
     if (mus != NULL && mus->playingCount != 0) {
         return 1;
@@ -564,7 +811,7 @@ s32 func_80000F10_main(void) {
 }
 
 void func_80000F30_main(u32 mono) {
-    UnkAudio *se;
+    SeManager *se;
     s32 i;
 
     D_800CB8AC_main = mono & 1;
@@ -1839,17 +2086,327 @@ void func_80003BF4_main(s32 playerIdx, s32 chan, MusChlInfo *info) {
 // no nop padding, and func_80003CB8_main is clearly se code (D_800A97BC), so the
 // mus and se code were most likely built as one file. The mus rodata (jump
 // tables 0x800A6300-0x800A6790) does end 16-aligned, but that looks incidental.
-INCLUDE_ASM("asm/nonmatchings/1140", func_80003CB8_main);
+/* Loads the sound effect bank file and resolves the offsets inside it. */
+s32 func_80003CB8_main(u8 *bankAddr, SeBankInfo *info) {
+    ALSound *sound;
+    ALWaveTable *wave;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_80003DF4_main);
+    if ((D_800A97BC_main->alSounds = func_800010B8_main(info->ctlSize)) == NULL) {
+        return 1;
+    }
+    info->ctlAddr = bankAddr + (u32)info->ctlAddr;
+    func_80000FE4_main(D_800A97BC_main->alSounds, info->ctlAddr, info->ctlSize, 0);
+    info->tblAddr = bankAddr + (u32)info->tblAddr;
+    for (i = 0; i < info->soundCount; i++) {
+        sound = &D_800A97BC_main->alSounds[i];
+        if (sound->flags == 0) {
+            sound->flags = 1;
+            sound->envelope = (ALEnvelope *)((u8 *)sound->envelope + (u32)D_800A97BC_main->alSounds);
+            sound->wavetable = wave = (ALWaveTable *)((u8 *)sound->wavetable + (u32)D_800A97BC_main->alSounds);
+            if (wave->flags == 0) {
+                wave->flags = 1;
+                wave->base += (u32)info->tblAddr;
+                wave->waveInfo.adpcmWave.book =
+                    (ALADPCMBook *)((u8 *)wave->waveInfo.adpcmWave.book + (u32)D_800A97BC_main->alSounds);
+                if (wave->waveInfo.adpcmWave.loop != NULL) {
+                    wave->waveInfo.adpcmWave.loop =
+                        (ALADPCMloop *)((u8 *)wave->waveInfo.adpcmWave.loop + (u32)D_800A97BC_main->alSounds);
+                }
+            }
+        }
+    }
+    return 0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_80003EE4_main);
+/* Loads the sound effect table and resolves the offsets inside it. */
+s32 func_80003DF4_main(u8 *bankAddr, SeBankInfo *info) {
+    u8 *romAddr;
+    SeEntry *entry;
+    s32 i;
+    s32 j;
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_80003FB4_main);
+    if ((D_800A97BC_main->entries = func_800010B8_main(info->seSize)) == NULL) {
+        return 1;
+    }
+    romAddr = bankAddr + info->seOffset;
+    func_80000FE4_main(D_800A97BC_main->entries, romAddr, info->seSize, 0);
+    for (i = 0; i < info->seCount; i++) {
+        if (D_800A97BC_main->entries[i] != NULL) {
+            entry = D_800A97BC_main->entries[i] = (SeEntry *)((u8 *)D_800A97BC_main->entries[i] + (u32)D_800A97BC_main->entries);
+            for (j = 0; j < entry->layerCount; j++) {
+                entry->layers[j].script += (u32)D_800A97BC_main->entries;
+            }
+        }
+    }
+    return 0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_800048D0_main);
+s32 func_80003EE4_main(u8 *bankAddr, SeBankInfo *info) {
+    u8 *romAddr;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_80004928_main);
+    if (info->unk_28 == 0) {
+        D_800A97BC_main->envScripts = NULL;
+        return 0;
+    }
+    if ((D_800A97BC_main->envScripts = func_800010B8_main(info->unk_30)) == NULL) {
+        return 1;
+    }
+    romAddr = bankAddr + info->unk_2C;
+    func_80000FE4_main(D_800A97BC_main->envScripts, romAddr, info->unk_30, 0);
+    for (i = 0; i < info->unk_28; i++) {
+        if (D_800A97BC_main->envScripts[i] != NULL) {
+            D_800A97BC_main->envScripts[i] += (u32)D_800A97BC_main->envScripts;
+        }
+    }
+    return 0;
+}
+
+/* Processes the commands queued by the API functions. Changes to a voice that
+ * has not started yet are flagged so they are not overwritten when it starts;
+ * changes to a playing voice also apply to the voices of its other layers. */
+void func_80003FB4_main(void) {
+    SeCmd *cmd;
+    GameSound *sound;
+    GameSound *link;
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < D_800A97BC_main->cmdCount; i++) {
+        cmd = &D_800A97BC_main->cmds[i];
+        sound = &D_800A97BC_main->sounds[cmd->voiceSlot];
+        switch (cmd->cmdType) {
+            case 0:
+                sound->flags = (sound->flags & ~1) | 2;
+                sound->state = 3;
+                break;
+            case 1:
+                sound->flags |= 1;
+                sound->layer = cmd->arg.i & 0xF;
+                sound->linkCount = cmd->arg.i >> 4;
+                break;
+            case 2:
+                sound->vol = cmd->arg.i;
+                if (sound->flags & 3) {
+                    sound->flags |= 0x10;
+                } else {
+                    sound->flags |= 0x4000;
+                    if (sound->linkCount != 0) {
+                        for (j = 0; j < sound->linkCount; j++) {
+                            link = &D_800A97BC_main->sounds[sound->links[j].slot];
+                            if (link->order == sound->links[j].order) {
+                                link->vol = cmd->arg.i;
+                                link->flags |= 0x4000;
+                            }
+                        }
+                    }
+                }
+                break;
+            case 4:
+                for (j = 0; j < D_800A97BC_main->soundCount; j++) {
+                    link = &D_800A97BC_main->sounds[j];
+                    link->vol = cmd->arg.i;
+                    if (link->flags & 3) {
+                        link->flags |= 0x10;
+                    } else {
+                        link->flags |= 0x4000;
+                    }
+                }
+                break;
+            case 3:
+                for (j = 0; j < D_800A97BC_main->soundCount; j++) {
+                    link = &D_800A97BC_main->sounds[j];
+                    if (link->state == 4) {
+                        link->flags |= 0x4000;
+                    }
+                }
+                D_800A97BC_main->vol = cmd->arg.i;
+                D_800A97BC_main->fadeVol = 0x7F;
+                D_800A97BC_main->fadeTime = 0;
+                break;
+            case 5:
+                sound->pitch = cmd->arg.i;
+                if (sound->flags & 3) {
+                    sound->flags |= 0x40;
+                } else {
+                    sound->flags |= 0x20000;
+                    if (sound->linkCount != 0) {
+                        for (j = 0; j < sound->linkCount; j++) {
+                            link = &D_800A97BC_main->sounds[sound->links[j].slot];
+                            if (link->order == sound->links[j].order) {
+                                link->pitch = cmd->arg.i;
+                                link->flags |= 0x20000;
+                            }
+                        }
+                    }
+                }
+                break;
+            case 6:
+                for (j = 0; j < D_800A97BC_main->soundCount; j++) {
+                    link = &D_800A97BC_main->sounds[j];
+                    link->pitch = cmd->arg.i;
+                    if (link->flags & 3) {
+                        link->flags |= 0x40;
+                    } else {
+                        link->flags |= 0x20000;
+                    }
+                }
+                break;
+            case 7:
+                sound->pan = cmd->arg.i;
+                if (sound->flags & 3) {
+                    sound->flags |= 0x20;
+                } else {
+                    sound->flags |= 0x8000;
+                    if (sound->linkCount != 0) {
+                        for (j = 0; j < sound->linkCount; j++) {
+                            link = &D_800A97BC_main->sounds[sound->links[j].slot];
+                            if (link->order == sound->links[j].order) {
+                                link->pan = cmd->arg.i;
+                                link->flags |= 0x8000;
+                            }
+                        }
+                    }
+                }
+                break;
+            case 8:
+                for (j = 0; j < D_800A97BC_main->soundCount; j++) {
+                    link = &D_800A97BC_main->sounds[j];
+                    link->pan = cmd->arg.i;
+                    if (link->flags & 3) {
+                        link->flags |= 0x20;
+                    } else {
+                        link->flags |= 0x8000;
+                    }
+                }
+                break;
+            case 9:
+                sound->fxMix = cmd->arg.i;
+                if (sound->flags & 3) {
+                    sound->flags |= 0x80;
+                } else {
+                    sound->flags |= 0x10000;
+                    if (sound->linkCount != 0) {
+                        for (j = 0; j < sound->linkCount; j++) {
+                            link = &D_800A97BC_main->sounds[sound->links[j].slot];
+                            if (link->order == sound->links[j].order) {
+                                link->fxMix = cmd->arg.i;
+                                link->flags |= 0x10000;
+                            }
+                        }
+                    }
+                }
+                break;
+            case 10:
+                for (j = 0; j < D_800A97BC_main->soundCount; j++) {
+                    link = &D_800A97BC_main->sounds[j];
+                    link->fxMix = cmd->arg.i;
+                    if (link->flags & 3) {
+                        link->flags |= 0x80;
+                    } else {
+                        link->flags |= 0x10000;
+                    }
+                }
+                break;
+            case 11:
+                func_800048D0_main(sound);
+                if (sound->linkCount != 0) {
+                    for (j = 0; j < sound->linkCount; j++) {
+                        link = &D_800A97BC_main->sounds[sound->links[j].slot];
+                        if (link->order == sound->links[j].order) {
+                            func_800048D0_main(link);
+                        }
+                    }
+                }
+                break;
+            case 12:
+                for (j = 0; j < D_800A97BC_main->soundCount; j++) {
+                    func_800048D0_main(&D_800A97BC_main->sounds[j]);
+                }
+                break;
+            case 13:
+                D_800A97BC_main->fadeTime = cmd->arg.i > 0 ? cmd->arg.i : 1;
+                D_800A97BC_main->fadeStep = 0x7F000000 / D_800A97BC_main->fadeTime;
+                D_800A97BC_main->fadeVol = 0x7F;
+                break;
+            case 14:
+                for (j = 0; j < D_800A97BC_main->soundCount; j++) {
+                    link = &D_800A97BC_main->sounds[j];
+                    if (link->state >= 2) {
+                        link->state = 2;
+                    }
+                    if (link->flags & 8) {
+                        func_800048D0_main(link);
+                    }
+                }
+                D_800A97BC_main->pauseState = 0x7E;
+                break;
+            case 15:
+                D_800A97BC_main->pauseState = 0x7F;
+                for (j = 0; j < D_800A97BC_main->soundCount; j++) {
+                    link = &D_800A97BC_main->sounds[j];
+                    if (link->state == 2) {
+                        link->state = 4;
+                        link->flags |= 0x4000;
+                    }
+                }
+                if (cmd->arg.i != 0 && D_800A97BC_main->fadeTime <= 0) {
+                    D_800A97BC_main->fadeTime = -cmd->arg.i;
+                    D_800A97BC_main->fadeStep = 0x7F000000 / cmd->arg.i;
+                    D_800A97BC_main->fadeVol = 0;
+                }
+                break;
+            case 16:
+                if (sound->flags & 3) {
+                    sound->flags |= 0x100;
+                } else {
+                    sound->flags |= 0x4000;
+                }
+                sound->unk_B2 = cmd->arg.i;
+                break;
+            case 17:
+                if (sound->flags & 3) {
+                    sound->flags |= 0x200;
+                } else {
+                    sound->flags |= 0x8000;
+                }
+                sound->unk_B3 = cmd->arg.i;
+                break;
+            case 18:
+                if (sound->flags & 3) {
+                    sound->flags |= 0x400;
+                } else {
+                    sound->flags |= 0x20000;
+                }
+                sound->unk_B4 = cmd->arg.f;
+                break;
+        }
+    }
+    D_800A97BC_main->cmdCount = 0;
+}
+
+void func_800048D0_main(GameSound *sound) {
+    sound->flags = 0;
+    sound->state = 0;
+    if (sound->sndId >= 0) {
+        n_alSndpSetSound(sound->sndId);
+        n_alSndpStop();
+        sound->state = 1;
+        sound->flags |= 0x800;
+    }
+}
+
+void func_80004928_main(GameSound *sound) {
+    if (sound->sndId >= 0) {
+        n_alSndpSetSound(sound->sndId);
+        if ((sound->sndState = n_alSndpGetState()) == AL_STOPPED && (sound->flags & 0x800)) {
+            n_alSndpDeallocate(sound->sndId);
+            sound->sndId = -1;
+            sound->flags &= ~0x800;
+        }
+    }
+}
 
 void func_8000499C_main(GameSound *sound) {
     if (sound->state != 1) {
@@ -1865,9 +2422,440 @@ void func_8000499C_main(GameSound *sound) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_800049E8_main);
+/* Starts the scripts of a sound effect once its previous sound has stopped.
+ * The first layer's voice starts the voices of the other layers too. */
+void func_800049E8_main(GameSound *sound) {
+    SeEntry *entry;
+    SeLink *links;
+    GameSound *link;
+    s32 linkCount;
+    s32 flags;
+    s32 i;
 
+    if (!(sound->flags & 1)) {
+        return;
+    }
+    entry = D_800A97BC_main->entries[sound->seId];
+    if (D_800A97BC_main->pauseState < 0x7F && !(entry->unk_02 & 1)) {
+        return;
+    }
+    sound->state = 3;
+    if (sound->sndState == AL_PLAYING) {
+        sound->env.releaseTime = 184000000 / func_80000E9C_main()->cfg.unk1C;
+        n_alSndpStop();
+        sound->flags |= 0x800;
+        return;
+    }
+    if (sound->sndState == AL_STOPPING) {
+        return;
+    }
+    if (sound->sndId >= 0) {
+        n_alSndpDeallocate(sound->sndId);
+        sound->sndId = -1;
+    }
+    if (sound->layer > 0) {
+        if (D_800A97BC_main->sounds[sound->links[0].slot].order != sound->links[0].order) {
+            sound->state = 0;
+            sound->flags = 0;
+        }
+        return;
+    }
+    linkCount = sound->linkCount;
+    links = sound->links;
+    if (linkCount != 0) {
+        for (i = 0; i < linkCount; i++) {
+            link = &D_800A97BC_main->sounds[links[i].slot];
+            if (link->order == links[i].order && link->sndId >= 0) {
+                return;
+            }
+        }
+    }
+    i = 0;
+    flags = 0;
+    if (entry->unk_02 & 1) {
+        flags |= 4;
+    }
+    if (entry->unk_02 & 2) {
+        flags |= 8;
+    }
+    do {
+        sound->script = entry->layers[sound->layer].script;
+        sound->wait = 0;
+        sound->scriptVol = 0x7F;
+        sound->scriptPan = 0x40;
+        sound->scriptFxMix = 0;
+        sound->lfoType = 0;
+        sound->lfoDepth = 0;
+        sound->envScript = NULL;
+        sound->envScale = 1.0f;
+        sound->sweepFlags = 0;
+        sound->sweepActive = 0;
+        sound->loopDepth = 0;
+        sound->loopCount[0] = 0;
+        sound->callDepth = 0;
+        sound->randFlags = 0;
+        sound->modMask = 0;
+        if (!(sound->flags & 0x10)) {
+            sound->vol = D_800A97BC_main->masterVol;
+        }
+        if (!(sound->flags & 0x20)) {
+            sound->pan = D_800A97BC_main->pan;
+        }
+        if (!(sound->flags & 0x40)) {
+            sound->pitch = D_800A97BC_main->unk_2A;
+        }
+        if (!(sound->flags & 0x80)) {
+            sound->fxMix = D_800A97BC_main->unk_2E;
+        }
+        if (!(sound->flags & 0x100)) {
+            sound->unk_B2 = 0x7F;
+        }
+        if (!(sound->flags & 0x200)) {
+            sound->unk_B3 = 0x40;
+        }
+        if (!(sound->flags & 0x400)) {
+            sound->unk_B4 = 1.0f;
+        }
+        sound->unk_AC = -1.0f;
+        sound->flags = flags;
+        sound->state = 4;
+        for (; i < linkCount; i++) {
+            sound = &D_800A97BC_main->sounds[links[i].slot];
+            if (sound->order == links[i].order) {
+                break;
+            }
+        }
+        i++;
+    } while (i <= linkCount);
+}
+
+#ifdef NON_MATCHING
+/* Register allocation differs: the mod loop index and its sign-extended copy
+ * are swapped, and the volume/pan delta lands in v1 instead of a0. */
+/* Runs the script of a voice until it has to wait. Each command byte is
+ * followed by a variable length wait time unless bit 7 is set. */
+void func_80004D4C_main(GameSound *sound) {
+    u8 *cursor;
+    u8 *op;
+    u8 *count;
+    s8 delta;
+    s8 idx;
+    u16 bit;
+    s8 i;
+
+    if (sound->flags & 0x1000) {
+        return;
+    }
+    if (sound->wait != 0) {
+        sound->wait--;
+        return;
+    }
+    if ((cursor = sound->script) == NULL) {
+        sound->flags |= 0x40000;
+        return;
+    }
+    while (sound->wait == 0) {
+        op = cursor++;
+        if (!(*op & 0x80)) {
+            sound->wait = func_80005804_main(&cursor);
+        }
+        switch (*op & 0x7F) {
+            case 2:
+                count = &sound->loopCount[sound->loopDepth];
+                if (*count != 0) {
+                    if (((u32)cursor & 0xFFFF) != sound->loopAddr[sound->loopDepth]) {
+                        if (sound->loopDepth == 2) {
+                            cursor += 3;
+                            break;
+                        }
+                        sound->loopDepth++;
+                        count = &sound->loopCount[sound->loopDepth];
+                        *count = 0;
+                    } else if (*count == 1) {
+                        (*count)--;
+                        if (sound->loopDepth != 0) {
+                            sound->loopDepth--;
+                        }
+                        cursor += 3;
+                        break;
+                    } else {
+                        (*count)--;
+                    }
+                }
+                if (*count == 0) {
+                    if (*cursor == 0) {
+                        cursor += 3;
+                        break;
+                    }
+                    *count = *cursor;
+                    sound->loopAddr[sound->loopDepth] = (u16)(u32)cursor;
+                }
+                cursor++;
+                cursor = op + (s16)SE_READ16(cursor);
+                break;
+            case 3:
+                cursor = op + SE_READ32(cursor);
+                break;
+            case 4:
+                {
+                    s32 offset = SE_READ32(cursor);
+
+                    cursor += 4;
+                    if (sound->callDepth < ARRAY_COUNT(sound->callStack)) {
+                        sound->callStack[sound->callDepth++] = cursor;
+                        cursor = op + offset;
+                    }
+                }
+                break;
+            case 16:
+                if (sound->soundIdx < 0 && ((sound->flags & 0x1000) || sound->sndState != AL_STOPPED)) {
+                    cursor = op;
+                    sound->wait = 1;
+                    break;
+                }
+                sound->key = SE_READ16(cursor);
+                cursor += 2;
+                sound->flags |= 0x1000;
+                if (sound->sweepFlags & 8) {
+                    sound->sweepFlags &= ~8;
+                } else {
+                    sound->sweepActive = 0;
+                }
+                if (sound->modMask != 0) {
+                    for (i = 0; i < ARRAY_COUNT(sound->mods); i++) {
+                        bit = 1 << i;
+                        if (bit & sound->modMask) {
+                            if (sound->mods[i].target & 8) {
+                                sound->mods[i].target &= ~8;
+                            } else {
+                                sound->modMask &= ~bit;
+                            }
+                        }
+                    }
+                }
+                break;
+            case 17:
+                sound->flags |= 0x2000;
+                break;
+            case 18:
+                sound->soundIdx = SE_READ16(cursor);
+                cursor += 2;
+                sound->flags = (sound->flags & ~0x5F00000) | 0x2000000;
+                break;
+            case 19:
+                sound->soundIdx = SE_READ16(cursor) | 0x8000;
+                cursor += 2;
+                sound->flags = (sound->flags & ~0x5F00000) | 0x2000000;
+                break;
+            case 20:
+                sound->scriptVol = *cursor++ & 0x7F;
+                sound->flags |= 0x4000;
+                break;
+            case 21:
+                delta = *cursor++;
+                sound->scriptVol += delta;
+                if (sound->scriptVol < 0) {
+                    if (delta < 0) {
+                        sound->scriptVol = 0;
+                    } else {
+                        sound->scriptVol = 0x7F;
+                    }
+                }
+                sound->flags |= 0x4000;
+                break;
+            case 22:
+                sound->scriptPan = *cursor++ & 0x7F;
+                sound->flags |= 0x8000;
+                break;
+            case 23:
+                delta = *cursor++;
+                sound->scriptPan += delta;
+                if (sound->scriptPan < 0) {
+                    if (delta < 0) {
+                        sound->scriptPan = 0;
+                    } else {
+                        sound->scriptPan = 0x7F;
+                    }
+                }
+                sound->flags |= 0x8000;
+                break;
+            case 25:
+                sound->key = SE_READ16(cursor);
+                cursor += 2;
+                sound->flags |= 0x20000;
+                break;
+            case 26:
+                sound->key += SE_READ16(cursor);
+                cursor += 2;
+                sound->flags |= 0x20000;
+                break;
+            case 27:
+                sound->scriptFxMix = *cursor++ & 0x7F;
+                sound->flags |= 0x10000;
+                break;
+            case 32:
+                sound->lfoType = cursor[0];
+                sound->lfoRate = cursor[1];
+                sound->lfoDelay = SE_READ16(cursor + 2);
+                sound->lfoDepth = 0;
+                sound->unk_77 = 0;
+                sound->lfoActive = 0;
+                cursor += 4;
+                break;
+            case 33:
+                sound->lfoDepth = SE_READ16(cursor);
+                cursor += 2;
+                break;
+            case 34:
+                sound->sweepActive = cursor[0];
+                sound->sweepAmount = SE_READ16(cursor + 1);
+                sound->sweepTime = SE_READ16(cursor + 3);
+                sound->sweepCounter = 0;
+                sound->sweepFlags |= 8;
+                cursor += 5;
+                break;
+            case 35:
+                if (D_800A97BC_main->envScripts != NULL) {
+                    sound->envScript = D_800A97BC_main->envScripts[cursor[0]];
+                    sound->envDelayInit = SE_READ16(cursor + 1);
+                    sound->envDelay = -1;
+                }
+                cursor += 3;
+                break;
+            case 36:
+                sound->envScale = SE_READ16(cursor) / 100.0f;
+                cursor += 2;
+                break;
+            case 37:
+                sound->envScript = NULL;
+                break;
+            case 48:
+                sound->env.attackVolume = *cursor++ & 0x7F;
+                if (sound->flags & 0x2000000) {
+                    sound->flags |= 0x100000;
+                }
+                break;
+            case 49:
+                sound->env.decayVolume = *cursor++ & 0x7F;
+                if (sound->flags & 0x2000000) {
+                    sound->flags |= 0x200000;
+                }
+                break;
+            case 50:
+                sound->env.attackTime = SE_READ32(cursor);
+                cursor += 4;
+                if (sound->flags & 0x2000000) {
+                    sound->flags |= 0x400000;
+                }
+                break;
+            case 51:
+                sound->env.decayTime = SE_READ32(cursor);
+                cursor += 4;
+                if (sound->flags & 0x2000000) {
+                    sound->flags |= 0x800000;
+                }
+                break;
+            case 52:
+                if (sound->soundIdx < 0) {
+                    sound->env.releaseTime = SE_READ32(cursor);
+                    if (sound->flags & 0x2000000) {
+                        sound->flags |= 0x1000000;
+                    }
+                }
+                cursor += 4;
+                break;
+            case 53:
+                bit = SE_READ16(cursor);
+                cursor += 2;
+                sound->pitchRatio = (f32)bit / func_80000E9C_main()->cfg.unk1C;
+                if (sound->flags & 0x2000000) {
+                    sound->flags |= 0x4000000;
+                }
+                break;
+            case 64:
+                sound->randVol.min = cursor[0];
+                sound->randVol.max = cursor[1];
+                sound->randVol.interval = cursor[2];
+                sound->randFlags |= 1;
+                cursor += 3;
+                break;
+            case 65:
+                sound->randFlags &= ~1;
+                break;
+            case 66:
+                sound->randPan.min = cursor[0];
+                sound->randPan.max = cursor[1];
+                sound->randPan.interval = cursor[2];
+                sound->randFlags |= 2;
+                cursor += 3;
+                break;
+            case 67:
+                sound->randFlags &= ~2;
+                break;
+            case 68:
+                sound->randPitchMin = SE_READ16(cursor);
+                sound->randPitchMax = SE_READ16(cursor + 2);
+                sound->randPitchInterval = cursor[4];
+                sound->randFlags |= 4;
+                cursor += 5;
+                break;
+            case 69:
+                sound->randFlags &= ~4;
+                break;
+            case 80:
+                sound->mods[(s8)*cursor++].value = 0;
+                break;
+            case 81:
+                sound->mods[(s8)cursor[0]].value = SE_READ16(cursor + 1);
+                cursor += 3;
+                break;
+            case 82:
+                sound->mods[(s8)cursor[0]].value += SE_READ16(cursor + 1);
+                cursor += 3;
+                break;
+            case 88:
+                idx = *cursor++;
+                sound->mods[idx].target = 9;
+                sound->modMask |= 1 << idx;
+                break;
+            case 89:
+                idx = *cursor++;
+                sound->mods[idx].target = 10;
+                sound->modMask |= 1 << idx;
+                break;
+            case 90:
+                idx = *cursor++;
+                sound->mods[idx].target = 11;
+                sound->modMask |= 1 << idx;
+                break;
+            case 1:
+                break;
+            case 0:
+                if (sound->callDepth != 0) {
+                    cursor = sound->callStack[--sound->callDepth];
+                    sound->wait = 0;
+                    break;
+                }
+                if (sound->soundIdx < 0 && ((sound->flags & 0x1000) || sound->sndState != AL_STOPPED)) {
+                    cursor = op;
+                    sound->wait = 1;
+                    break;
+                }
+                sound->flags |= 0x40000;
+                sound->wait = 1;
+                break;
+            default:
+                sound->flags |= 0x40000;
+                sound->wait = 1;
+                break;
+        }
+    }
+    sound->script = cursor;
+    sound->wait--;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/1140", func_80004D4C_main);
+#endif
 
 /**
  * Reads a big-endian style variable length quantity: each byte contributes its
@@ -1887,95 +2875,1149 @@ s32 func_80005804_main(u8 **cursor) {
     return value + byte;
 }
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_80005850_main);
+/* Steps the pitch LFO of a voice, returning its current value. */
+f32 func_80005850_main(GameSound *sound) {
+    f32 val;
+    f32 half;
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_80005BAC_main);
+    if (sound->lfoType == 0) {
+        return 0.0f;
+    }
+    if (sound->flags & 0x1000) {
+        switch (sound->lfoType) {
+            case 4:
+                sound->lfoPhase = 1;
+                sound->lfoPeriod = 0x105 - sound->lfoRate;
+                break;
+            case 2:
+                sound->lfoPhase = 0;
+            case 1:
+            case 3:
+                sound->lfoPeriod = 0x105 - sound->lfoRate;
+                break;
+            case 5:
+                sound->lfoPeriod = (0x105 - sound->lfoRate) / 2;
+                sound->lfoRand = 0.0f;
+                break;
+        }
+        sound->lfoCounter = 0;
+        sound->lfoDelaySave = sound->lfoDelay;
+        sound->lfoActive = 1;
+    }
+    if (sound->lfoActive == 0) {
+        return 0.0f;
+    }
+    if (sound->lfoDelay != 0) {
+        sound->lfoDelay--;
+        return 0.0f;
+    }
+    switch (sound->lfoType) {
+        case 1:
+            if (sound->lfoCounter >= sound->lfoPeriod) {
+                sound->lfoCounter = 0;
+            }
+            val = (f32)sound->lfoCounter / sound->lfoPeriod;
+            val = sinf(val * TWO_PI);
+            break;
+        case 2:
+            if (sound->lfoCounter >= sound->lfoPeriod / 4) {
+                if (++sound->lfoPhase >= 4) {
+                    sound->lfoPhase = 0;
+                }
+                sound->lfoCounter = 0;
+            }
+            val = (f32)sound->lfoCounter / (sound->lfoPeriod / 4);
+            switch (sound->lfoPhase) {
+                case 1:
+                    val = 1.0f - val;
+                    break;
+                case 2:
+                    val = -val;
+                    break;
+                case 3:
+                    val = -(1.0f - val);
+                    break;
+            }
+            break;
+        case 3:
+            if (sound->lfoCounter > sound->lfoPeriod) {
+                sound->lfoCounter = 0;
+            }
+            half = sound->lfoPeriod / 2.0f;
+            val = (sound->lfoCounter - half) / half;
+            break;
+        case 4:
+            if (sound->lfoCounter >= sound->lfoPeriod) {
+                sound->lfoCounter = 0;
+                sound->lfoPhase *= -1;
+            }
+            val = sound->lfoPhase;
+            break;
+        case 5:
+            if (sound->lfoCounter >= sound->lfoPeriod) {
+                sound->lfoCounter = 0;
+                sound->lfoRand = (100 - (s32)func_8007B1E0_main() % 201) / 100.0f;
+            }
+            val = sound->lfoRand;
+            break;
+    }
+    sound->lfoCounter += 2;
+    return val;
+}
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_80005FE4_main);
+/* Updates the pitch modulation of a voice: LFO, sweep, pitch envelope, random
+ * pitch and external modulation. */
+void func_80005BAC_main(GameSound *sound, f32 lfo) {
+    f32 detune = 0.0f;
+    s32 i;
+    s32 n;
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_80006148_main);
+    if (sound->flags & 0x1000) {
+        sound->detune = 0;
+    }
+    if (sound->lfoDepth != 0) {
+        detune = sound->lfoDepth * lfo + SE_CENTS_EPSILON;
+    }
+    if (sound->sweepActive == 1) {
+        if (sound->sweepCounter >= sound->sweepTime) {
+            sound->sweepActive = 0;
+            sound->key += sound->sweepAmount;
+            detune += SE_CENTS_EPSILON;
+        } else {
+            detune += (f32)sound->sweepCounter / sound->sweepTime * sound->sweepAmount;
+        }
+        sound->sweepCounter++;
+    }
+    if (sound->envScript != NULL) {
+        if (sound->flags & 0x1000) {
+            sound->envDelay = sound->envDelayInit;
+            sound->envPtr = sound->envScript;
+            sound->envCount = 0;
+            sound->envAccum = 0;
+            sound->envStep = 0;
+        }
+        if (sound->envDelay >= 0) {
+            if (sound->envDelay != 0) {
+                sound->envDelay--;
+            } else {
+                if (sound->envCount == 0) {
+                    if ((sound->envCount = *sound->envPtr++) == 0) {
+                        sound->envPtr = sound->envScript;
+                        sound->envCount = *sound->envPtr++;
+                        sound->envAccum = 0;
+                    }
+                    if (sound->envCount == -0x80) {
+                        if (sound->envStep == sound->envAccum) {
+                            sound->key += sound->envStep;
+                        } else {
+                            sound->key += sound->envAccum;
+                        }
+                        sound->envDelay = -1;
+                        sound->envCount = 0;
+                    } else {
+                        sound->envStep = ((sound->envPtr[0] << 8) | sound->envPtr[1]) * sound->envScale;
+                        sound->envPtr += 2;
+                        if (sound->envCount < 0) {
+                            sound->envAccum += sound->envStep;
+                        }
+                        if (sound->envCount > 0) {
+                            sound->envAccum = sound->envStep;
+                        }
+                        if (sound->envCount == 0) {
+                            sound->envScript = NULL;
+                        }
+                    }
+                }
+                if (sound->envCount > 0) {
+                    sound->envCount--;
+                    detune += sound->envStep;
+                }
+                if (sound->envCount < 0) {
+                    sound->envCount++;
+                    detune += sound->envAccum;
+                }
+                detune += SE_CENTS_EPSILON;
+            }
+        }
+    }
+    if (sound->randFlags & 4) {
+        sound->randPitchTimer--;
+        if ((sound->flags & 0x1000) || (sound->randPitchTimer == 0 && sound->randPitchInterval != 0)) {
+            sound->randPitchTimer = sound->randPitchInterval;
+            n = sound->randPitchMax - sound->randPitchMin + 1;
+            sound->randPitch = (s32)func_8007B1E0_main() % n + sound->randPitchMin;
+        }
+        detune += sound->randPitch + SE_CENTS_EPSILON;
+    }
+    if (sound->modMask != 0) {
+        for (i = 0; i < ARRAY_COUNT(sound->mods); i++) {
+            n = 1 << i;
+            if ((n & sound->modMask) && sound->mods[i].target == 3) {
+                detune += sound->mods[i].value + SE_CENTS_EPSILON;
+            }
+        }
+    }
+    if (detune != 0.0f) {
+        sound->detune = detune;
+        sound->flags |= 0x20000;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_800062A8_main);
+/* Updates the random and modulated pan of a voice. */
+void func_80005FE4_main(GameSound *sound) {
+    s32 mod = 0;
+    s32 modded = FALSE;
+    s32 i;
+    s32 n;
 
+    if (sound->flags & 0x1000) {
+        sound->panMod = 0;
+    }
+    if (sound->randFlags & 2) {
+        sound->randPan.timer--;
+        if ((sound->flags & 0x1000) || (sound->randPan.timer == 0 && sound->randPan.interval != 0)) {
+            sound->randPan.timer = sound->randPan.interval;
+            n = sound->randPan.max - sound->randPan.min + 1;
+            sound->scriptPan = sound->randPan.min + (s32)func_8007B1E0_main() % n;
+            sound->flags |= 0x8000;
+        }
+    }
+    if (sound->modMask != 0) {
+        for (i = 0; i < ARRAY_COUNT(sound->mods); i++) {
+            n = 1 << i;
+            if ((n & sound->modMask) && sound->mods[i].target == 2) {
+                mod += sound->mods[i].value;
+                modded = TRUE;
+            }
+        }
+    }
+    if (modded) {
+        sound->panMod = mod;
+        sound->flags |= 0x8000;
+    }
+}
+
+/* Updates the random and modulated volume of a voice. */
+void func_80006148_main(GameSound *sound) {
+    s32 mod = 0;
+    s32 modded = FALSE;
+    s32 i;
+    s32 n;
+
+    if (sound->flags & 0x1000) {
+        sound->volMod = 0;
+    }
+    if (sound->randFlags & 1) {
+        sound->randVol.timer--;
+        if ((sound->flags & 0x1000) || (sound->randVol.timer == 0 && sound->randVol.interval != 0)) {
+            sound->randVol.timer = sound->randVol.interval;
+            n = sound->randVol.max - sound->randVol.min + 1;
+            sound->scriptVol = sound->randVol.min + (s32)func_8007B1E0_main() % n;
+            sound->flags |= 0x4000;
+        }
+    }
+    if (sound->modMask != 0) {
+        for (i = 0; i < ARRAY_COUNT(sound->mods); i++) {
+            n = 1 << i;
+            if ((n & sound->modMask) && sound->mods[i].target == 1) {
+                mod += sound->mods[i].value;
+                modded = TRUE;
+            }
+        }
+    }
+    if (modded) {
+        sound->volMod = mod;
+        sound->flags |= 0x4000;
+    }
+}
+
+/* Starts, stops and releases the voice's sound as requested by its script. */
+void func_800062A8_main(GameSound *sound) {
+    s32 start;
+    s32 val;
+
+    if (sound->flags & 0x40000) {
+        switch (sound->sndState) {
+            case AL_PLAYING:
+                sound->env.releaseTime = 184000000 / func_80000E9C_main()->cfg.unk1C;
+                n_alSndpStop();
+            case AL_STOPPING:
+                sound->state = 1;
+                break;
+            default:
+                sound->state = 0;
+                break;
+        }
+        sound->flags = 0x800;
+        return;
+    }
+    start = FALSE;
+    if (sound->flags & 0x1000) {
+        if (sound->sndState == AL_STOPPED) {
+            start = TRUE;
+            sound->flags &= ~0x1000;
+        } else if (sound->soundIdx >= 0) {
+            n_alSndpStop();
+            sound->flags |= 0x800;
+        }
+    }
+    if (start) {
+        if (sound->flags & 0x2000000) {
+            val = sound->soundIdx & 0x7FFF;
+            bcopy(&D_800A97BC_main->alSounds[val], &sound->sound, sizeof(ALSound));
+            if (sound->flags & 0x1F00000) {
+                if (!(sound->flags & 0x100000)) {
+                    sound->env.attackVolume = sound->sound.envelope->attackVolume;
+                }
+                if (!(sound->flags & 0x200000)) {
+                    sound->env.decayVolume = sound->sound.envelope->decayVolume;
+                }
+                if (!(sound->flags & 0x400000)) {
+                    sound->env.attackTime = sound->sound.envelope->attackTime;
+                }
+                if (!(sound->flags & 0x800000)) {
+                    sound->env.decayTime = sound->sound.envelope->decayTime;
+                }
+                if (!(sound->flags & 0x1000000)) {
+                    sound->env.releaseTime = sound->sound.envelope->releaseTime;
+                }
+            } else {
+                bcopy(sound->sound.envelope, &sound->env, sizeof(ALEnvelope));
+            }
+            sound->sound.envelope = &sound->env;
+            if (sound->soundIdx >= 0) {
+                sound->env.releaseTime = 184000000 / func_80000E9C_main()->cfg.unk1C;
+            }
+            if (!(sound->flags & 0x4000000)) {
+                val = (s32)sound->sound.keyMap;
+                sound->pitchRatio = (f32)val / func_80000E9C_main()->cfg.unk1C;
+            }
+            sound->sound.keyMap = NULL;
+            sound->flags &= ~0x7F00000;
+        }
+        sound->sndId = n_alSndpAllocate(&sound->sound);
+        if (sound->sndId >= 0) {
+            n_alSndpSetPriority(sound->sndId, 20);
+        }
+    }
+    func_8000658C_main(sound, start);
+}
+
+#ifdef NON_MATCHING
+/* The two -0x40 pan offsets get folded into one -0x80. */
+/* Applies the changed parameters of a voice to its sound. */
+void func_8000658C_main(GameSound *sound, s32 force) {
+    s32 val;
+
+    if (sound->sndId < 0) {
+        return;
+    }
+    n_alSndpSetSound(sound->sndId);
+    if ((sound->flags & 0x4000) || force) {
+        val = sound->volMod + sound->scriptVol;
+        if (val >= 0x80) {
+            val = 0x7F;
+        }
+        if (val < 0) {
+            val = 0;
+        }
+        val = val * D_800A97BC_main->fadeVol * sound->vol * sound->sound.sampleVolume / (127 * 127 * 127);
+        val = val * D_800A97BC_main->vol * D_800A97BC_main->configVol * sound->unk_B2 / (127 * 127 * 127);
+        if (!(sound->flags & 4)) {
+            val = val * D_800A97BC_main->pauseState / 127;
+        }
+        n_alSndpSetVol(func_8000113C_main(val));
+    }
+    if ((sound->flags & 0x8000) || force) {
+        val = 0x40;
+        if (!(D_800CB8AC_main & 1)) {
+            val = sound->panMod + sound->scriptPan;
+            val = sound->unk_B3 + (sound->pan - 0x40) + (val - 0x40);
+            if (val < 0) {
+                val = 0;
+            }
+            if (val >= 0x80) {
+                val = 0x7F;
+            }
+        }
+        n_alSndpSetPan(val);
+    }
+    if ((sound->flags & 0x20000) || force) {
+        val = sound->pitch + sound->detune;
+        n_alSndpSetPitch(alCents2Ratio(val + sound->key) * sound->pitchRatio * sound->unk_B4);
+    }
+    if ((sound->flags & 0x10000) || force) {
+        if (sound->scriptFxMix != 0) {
+            val = sound->scriptFxMix;
+        } else {
+            val = sound->fxMix;
+        }
+        n_alSndpSetFXMix(val);
+    }
+    if (force && sound->sndState == AL_STOPPED) {
+        n_alSndpPlay();
+    }
+    if (sound->flags & 0x2000) {
+        n_alSndpStop();
+        sound->flags |= 0x800;
+    }
+    sound->flags &= ~0x3E000;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/1140", func_8000658C_main);
+#endif
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_80006830_main);
+void func_80006830_main(void) {
+    switch (D_800A97BC_main->pauseState) {
+        case 0x7E:
+            D_800A97BC_main->pauseState = 0x40;
+            break;
+        case 0x40:
+            D_800A97BC_main->pauseState = 10;
+            break;
+        case 10:
+            D_800A97BC_main->pauseState = 0;
+            break;
+        case 0:
+            D_800A97BC_main->pauseState = -1;
+            break;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_800068B8_main);
+/* Steps the fade of all sound effects. The loop counter doubles as the new
+ * fade volume. */
+void func_800068B8_main(void) {
+    GameSound *sound;
+    s32 i;
 
+    if (D_800A97BC_main->fadeTime > 0) {
+        if (--D_800A97BC_main->fadeTime != 0) {
+            i = (D_800A97BC_main->fadeStep * D_800A97BC_main->fadeTime) >> 24;
+            if (i != D_800A97BC_main->fadeVol) {
+                D_800A97BC_main->fadeVol = i;
+                for (i = 0; i < D_800A97BC_main->soundCount; i++) {
+                    sound = &D_800A97BC_main->sounds[i];
+                    if (sound->state == 4) {
+                        sound->flags |= 0x4000;
+                    }
+                }
+            }
+        } else {
+            for (i = 0; i < D_800A97BC_main->soundCount; i++) {
+                func_800048D0_main(&D_800A97BC_main->sounds[i]);
+            }
+            D_800A97BC_main->fadeVol = 0x7F;
+        }
+    }
+    if (D_800A97BC_main->fadeTime < 0) {
+        if (++D_800A97BC_main->fadeTime != 0) {
+            i = 0x7F - ((-D_800A97BC_main->fadeTime * D_800A97BC_main->fadeStep) >> 24);
+        } else {
+            i = 0x7F;
+        }
+        if (i != D_800A97BC_main->fadeVol) {
+            D_800A97BC_main->fadeVol = i;
+            for (i = 0; i < D_800A97BC_main->soundCount; i++) {
+                sound = &D_800A97BC_main->sounds[i];
+                if (sound->state == 4) {
+                    sound->flags |= 0x4000;
+                }
+            }
+        }
+    }
+}
+
+#ifdef NON_MATCHING
+/* sys and info get swapped callee-saved registers, and the final loop counter
+ * lands in a temporary instead of s0. */
+s32 func_80006A8C_main(SndSys *sys, ALHeap *heap, s32 seCount, s32 vol) {
+    str800D5298 *cfg = &sys->cfg;
+    SeBankInfo *info = (SeBankInfo *)sys->buf;
+    ALSndpConfig config;
+    s32 size;
+    s32 i;
+
+    if (seCount == 0) {
+        D_800A97BC_main = NULL;
+        return 0;
+    }
+    if ((D_800A97BC_main = func_800010B8_main(sizeof(SeManager))) == NULL) {
+        return 1;
+    }
+    bzero(D_800A97BC_main, sizeof(SeManager));
+    func_80000FE4_main(info, (u8 *)cfg->unkC + sizeof(SndBankHeader), sizeof(SeBankInfo), 0);
+    if (func_80003CB8_main(cfg->unkC, info) != 0) {
+        return 2;
+    }
+    if (func_80003DF4_main(cfg->unkC, info) != 0) {
+        return 3;
+    }
+    if (func_80003EE4_main(cfg->unkC, info) != 0) {
+        return 4;
+    }
+    size = cfg->unk54 * sizeof(GameSound);
+    if ((D_800A97BC_main->sounds = func_800010B8_main(size)) == NULL) {
+        return 5;
+    }
+    bzero(D_800A97BC_main->sounds, size);
+    config.maxSounds = cfg->unk54;
+    config.maxEvents = cfg->unk58;
+    config.heap = heap;
+    if ((D_800A97BC_main->sndp = func_800010B8_main(sizeof(N_ALSndPlayer))) == NULL) {
+        return 6;
+    }
+    n_alSndpNew(D_800A97BC_main->sndp, &config);
+    D_800A97BC_main->soundCount = cfg->unk54;
+    D_800A97BC_main->seCount = seCount;
+    D_800A97BC_main->configVol = vol;
+    D_800A97BC_main->pan = 0x40;
+    D_800A97BC_main->vol = D_800A97BC_main->fadeVol = D_800A97BC_main->pauseState = D_800A97BC_main->masterVol = 0x7F;
+    D_800A97BC_main->minDist = 50.0f;
+    D_800A97BC_main->maxDist = 500.0f;
+    D_800A97BC_main->unk_44E = 10;
+    D_800A97BC_main->unk_450 = 1224.0f;
+    D_800A97BC_main->unk_454 = 1.0f;
+    for (i = 0; i < D_800A97BC_main->soundCount; i++) {
+        D_800A97BC_main->sounds[i].sndId = -1;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/1140", func_80006A8C_main);
+#endif
 
+/* Queues a command for the periodic proc to process. */
 void func_80006CD4_main(s32 voiceSlot, s32 cmdType, s32 cmdArg) {
-    u32 temp_s3;
-    AudioCmd *cmd;
-    s32 temp_v0_2;
+    u32 mask = osSetIntMask(1);
+    SeCmd *cmd = &D_800A97BC_main->cmds[D_800A97BC_main->cmdCount];
 
-    temp_s3 = osSetIntMask(1);
-    cmd = &D_800A97BC_main->cmds[D_800A97BC_main->unk38];
     cmd->cmdType = cmdType;
     cmd->voiceSlot = voiceSlot;
-    cmd->cmdArg = cmdArg;
-    if (++D_800A97BC_main->unk38 >= 128) {
+    cmd->arg.i = cmdArg;
+    if (++D_800A97BC_main->cmdCount >= ARRAY_COUNT(D_800A97BC_main->cmds)) {
         func_80001134_main(0, 0x200);
-        D_800A97BC_main->unk38 = 0;
+        D_800A97BC_main->cmdCount = 0;
     }
-    osSetIntMask(temp_s3);
+    osSetIntMask(mask);
 }
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_80006D80_main);
+/* Queues a command with a float argument for the periodic proc to process. */
+void func_80006D80_main(s32 voiceSlot, s32 cmdType, f32 cmdArg) {
+    u32 mask = osSetIntMask(1);
+    SeCmd *cmd = &D_800A97BC_main->cmds[D_800A97BC_main->cmdCount];
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_80006E30_main);
-
-INCLUDE_ASM("asm/nonmatchings/1140", func_80006FC4_main);
-
-INCLUDE_ASM("asm/nonmatchings/1140", func_8000704C_main);
-
-INCLUDE_ASM("asm/nonmatchings/1140", func_80007058_main);
-
-s32 func_80007064_main(s32 arg0) {
-    return func_80007080_main(arg0, 0);
+    cmd->cmdType = cmdType;
+    cmd->voiceSlot = voiceSlot;
+    cmd->arg.f = cmdArg;
+    if (++D_800A97BC_main->cmdCount >= ARRAY_COUNT(D_800A97BC_main->cmds)) {
+        func_80001134_main(0, 0x200);
+        D_800A97BC_main->cmdCount = 0;
+    }
+    osSetIntMask(mask);
 }
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_80007080_main);
+void func_80006E30_main(void) {
+    GameSound *sound;
+    s32 i;
 
+    if (D_800A97BC_main != NULL && D_800A97BC_main->busy.all == 0) {
+        D_800A97BC_main->busy.flag[1] = 1;
+        D_800A97BC_main->unk_18 = 0;
+        func_80003FB4_main();
+        func_80006830_main();
+        for (i = 0; i < D_800A97BC_main->soundCount; i++) {
+            sound = &D_800A97BC_main->sounds[i];
+            func_80004928_main(sound);
+            func_800049E8_main(sound);
+            func_8000499C_main(sound);
+            if (sound->state != 4) {
+                if (sound->state == 2 && D_800A97BC_main->pauseState >= 0) {
+                    sound->flags |= 0x4000;
+                    func_8000658C_main(sound, 0);
+                }
+            } else {
+                func_80004D4C_main(sound);
+                func_80005BAC_main(sound, func_80005850_main(sound));
+                func_80005FE4_main(sound);
+                func_80006148_main(sound);
+                func_800062A8_main(sound);
+                if (sound->state < 2) {
+                    D_800A97BC_main->unk_18--;
+                }
+            }
+        }
+        if (D_800A97BC_main->pauseState == 0x7F) {
+            func_800068B8_main();
+        }
+        D_800A97BC_main->busy.flag[1] = 0;
+    }
+}
+
+void func_80006FC4_main(void) {
+    GameSound *sound;
+    s32 i;
+
+    if (D_800A97BC_main != NULL) {
+        for (i = 0; i < D_800A97BC_main->soundCount; i++) {
+            sound = &D_800A97BC_main->sounds[i];
+            if (sound->sndId >= 0) {
+                n_alSndpSetSound(sound->sndId);
+                n_alSndpStop();
+            }
+        }
+        n_alSndpDelete();
+    }
+}
+
+SeManager *func_8000704C_main(void) {
+    return D_800A97BC_main;
+}
+
+void func_80007058_main(void) {
+    D_800A97BC_main = NULL;
+}
+
+s32 func_80007064_main(s32 seId) {
+    return func_80007080_main(seId, NULL);
+}
+
+/* Starts a sound effect, allocating one voice per layer. Returns the slot of
+ * the first layer's voice, or -1 if it could not be played. */
+s32 func_80007080_main(s32 seId, SePlayParam *param) {
+    SeManager *se = func_8000704C_main();
+    s32 slots[4];
+    SeEntry *entry;
+    GameSound *sound;
+    s32 slot;
+    s32 variant;
+    s32 linkCount;
+    s32 i;
+
+    if (se == NULL) {
+        return 0;
+    }
+    if (seId >= se->seCount) {
+        return -1;
+    }
+    if ((entry = se->entries[seId]) == NULL) {
+        return -1;
+    }
+    slot = -1;
+    if (param != NULL && (param->flags & 0x100)) {
+        slot = param->slot;
+    }
+    variant = 0;
+    if (param != NULL && (param->flags & 0x200)) {
+        variant = param->variant;
+    }
+    if ((slots[0] = func_800072A4_main(seId, 0, slot, variant)) < 0) {
+        return -1;
+    }
+    func_800076B8_main(seId, slots[0], 0xFF, param);
+    sound = &se->sounds[slots[0]];
+    linkCount = 0;
+    for (i = entry->layerCount - 1; i > 0; i--) {
+        slot = slots[i] = func_800072A4_main(seId, i, -1, variant);
+        if (slot >= 0) {
+            func_800076B8_main(seId, slot, entry->priority, param);
+            se->sounds[slot].links[0].slot = (s8)slots[0];
+            se->sounds[slot].links[0].order = sound->order;
+            sound->links[linkCount].slot = slot;
+            sound->links[linkCount].order = se->sounds[slot].order;
+            linkCount++;
+        }
+    }
+    sound->priority = entry->priority;
+    for (i = entry->layerCount - 1; i > 0; i--) {
+        if (slots[i] >= 0) {
+            func_80006CD4_main(slots[i], 1, i);
+        }
+    }
+    func_80006CD4_main(slots[0], 1, linkCount << 4);
+    return slots[0];
+}
+
+#ifdef NON_MATCHING
+/* Register allocation differs throughout, and the target frame is 8 bytes larger. */
+/* Picks the voice to play the given layer of a sound effect on: the requested
+ * slot, a free voice, or the oldest voice of lower priority. Returns -1 if
+ * there is none. */
+s32 func_800072A4_main(s32 seId, s32 layer, s32 slot, s32 variant) {
+    SeManager *se = func_8000704C_main();
+    SeEntry *entry = se->entries[seId];
+    u32 mask = entry->layers[layer].voiceMask;
+    SeVoiceList lists[3];
+    GameSound *sound;
+    u32 order;
+    u32 bit;
+    s32 count;
+    s32 tmp;
+    s32 i;
+    s32 j;
+
+    if (slot >= 0) {
+        if (slot >= se->soundCount) {
+            return -1;
+        }
+        sound = &se->sounds[slot];
+        if (sound->state < 2) {
+            return slot;
+        }
+        if (entry->priority < sound->priority) {
+            return -1;
+        }
+        return slot;
+    }
+    if (variant != 0) {
+        mask <<= (variant - 1) * (entry->layers[layer].voiceShift & 0xF);
+    }
+    lists[SE_VOICES_OTHER].count = 0;
+    lists[SE_VOICES_SAME].count = 0;
+    lists[SE_VOICES_FREE].count = 0;
+    count = 0;
+    for (i = (mask & 0x1F) ? 0 : 5; i < se->soundCount && mask != 0; i++) {
+        bit = 1 << i;
+        if (mask & bit) {
+            sound = &se->sounds[i];
+            if (sound->state >= 2) {
+                if (sound->seId == seId) {
+                    lists[SE_VOICES_SAME].slots[lists[SE_VOICES_SAME].count++] = i;
+                } else {
+                    lists[SE_VOICES_OTHER].slots[lists[SE_VOICES_OTHER].count++] = i;
+                }
+            } else {
+                lists[SE_VOICES_FREE].slots[lists[SE_VOICES_FREE].count++] = i;
+            }
+            count++;
+            mask &= ~bit;
+        }
+    }
+    if (count >= 2) {
+        for (j = 0; j < lists[SE_VOICES_SAME].count; j++) {
+            sound = &se->sounds[lists[SE_VOICES_SAME].slots[j]];
+            if (sound->state == 3 && sound->seId == seId) {
+                return -1;
+            }
+        }
+    }
+    if (lists[SE_VOICES_FREE].count != 0) {
+        return lists[SE_VOICES_FREE].slots[0];
+    }
+    if (lists[SE_VOICES_OTHER].count != 0) {
+        if (lists[SE_VOICES_OTHER].count == 1) {
+            slot = lists[SE_VOICES_OTHER].slots[0];
+            if (!(entry->priority < se->sounds[slot].priority)) {
+                return slot;
+            }
+        } else {
+            for (i = 0; i < lists[SE_VOICES_OTHER].count - 1; i++) {
+                order = se->sounds[lists[SE_VOICES_OTHER].slots[i]].order;
+                for (j = i + 1; j < lists[SE_VOICES_OTHER].count; j++) {
+                    slot = lists[SE_VOICES_OTHER].slots[j];
+                    if (se->sounds[slot].order < order) {
+                        order = se->sounds[slot].order;
+                        tmp = lists[SE_VOICES_OTHER].slots[i];
+                        lists[SE_VOICES_OTHER].slots[i] = slot;
+                        lists[SE_VOICES_OTHER].slots[j] = tmp;
+                    }
+                }
+            }
+            for (j = 0; j < lists[SE_VOICES_OTHER].count; j++) {
+                slot = lists[SE_VOICES_OTHER].slots[j];
+                if (!(entry->priority < se->sounds[slot].priority)) {
+                    return slot;
+                }
+            }
+        }
+    }
+    if (lists[SE_VOICES_SAME].count != 0) {
+        order = se->sounds[lists[SE_VOICES_SAME].slots[0]].order;
+        i = 0;
+        for (j = 1; j < lists[SE_VOICES_SAME].count; j++) {
+            sound = &se->sounds[lists[SE_VOICES_SAME].slots[j]];
+            if (sound->order < order) {
+                order = sound->order;
+                i = j;
+            }
+        }
+        return lists[SE_VOICES_SAME].slots[i];
+    }
+    return -1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/1140", func_800072A4_main);
+#endif
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_800076B8_main);
+/* Sets up a voice for a newly started sound effect layer. */
+void func_800076B8_main(s32 seId, s32 slot, u8 priority, SePlayParam *param) {
+    SeManager *se = func_8000704C_main();
+    GameSound *sound;
+    SePosParam pos;
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_800078A4_main);
+    func_80006CD4_main(slot, 0, 0);
+    sound = &se->sounds[slot];
+    sound->state = 3;
+    sound->order = se->order++;
+    sound->priority = priority;
+    sound->linkCount = 0;
+    sound->unk_A4 = sound->unk_A8 = 0.0f;
+    sound->seId = seId;
+    if (param != NULL) {
+        if (param->flags & 1) {
+            sound->vol = param->vol;
+            func_80006CD4_main(slot, 2, param->vol);
+        }
+        if (param->flags & 2) {
+            sound->pan = param->pan;
+            func_80006CD4_main(slot, 7, param->pan);
+        }
+        if (param->flags & 4) {
+            sound->pitch = param->pitch;
+            func_80006CD4_main(slot, 5, param->pitch);
+        }
+        if (param->flags & 8) {
+            sound->fxMix = param->fxMix;
+            func_80006CD4_main(slot, 9, param->fxMix);
+        }
+        pos.flags = 0;
+        if (param->flags & 0x20) {
+            pos.flags = 2;
+            pos.dist = param->dist;
+        }
+        if (param->flags & 0x10) {
+            pos.flags |= 1;
+            pos.angle = param->angle;
+        }
+        if (param->flags & 0x40) {
+            pos.flags |= 0x10;
+            pos.unk_0C = param->unk_24;
+        }
+        if (param->flags & 0x80) {
+            pos.flags |= 0x20;
+            pos.unk_10 = param->unk_28;
+        }
+        if (pos.flags & 0x33) {
+            func_8000810C_main(slot, &pos);
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_800078CC_main);
+s32 func_800078A4_main(void) {
+    SeManager *se = func_8000704C_main();
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_800078F8_main);
+    if (se == NULL) {
+        return 0;
+    }
+    return se->seCount;
+}
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_8000793C_main);
+s32 func_800078CC_main(void) {
+    SeManager *se = func_8000704C_main();
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_800079CC_main);
+    if (se == NULL) {
+        return 0;
+    }
+    return se->unk_18;
+}
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_80007A10_main);
+s32 func_800078F8_main(s32 slot) {
+    SeManager *se = func_8000704C_main();
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_80007A60_main);
+    if (se == NULL) {
+        return 0;
+    }
+    return se->sounds[slot].state;
+}
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_80007AF0_main);
+/* Returns the slot of the first layer of a playing sound effect. */
+s32 func_8000793C_main(s32 seId) {
+    SeManager *se = func_8000704C_main();
+    GameSound *sound;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_80007B28_main);
+    if (se == NULL) {
+        return 0;
+    }
+    for (i = 0; i < se->soundCount; i++) {
+        sound = &se->sounds[i];
+        if (sound->state >= 2 && sound->seId == seId && sound->layer == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_80007BD4_main);
+s32 func_800079CC_main(s32 seId) {
+    SeManager *se = func_8000704C_main();
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_80007C80_main);
+    if (se == NULL) {
+        return 0;
+    }
+    return se->entries[seId]->unk_03;
+}
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_80007D2C_main);
+void func_80007A10_main(SeParam *param) {
+    SeManager *se = func_8000704C_main();
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_80007DD8_main);
+    if (se != NULL) {
+        param->masterVol = se->masterVol;
+        param->unk_08 = se->unk_2A;
+        param->pan = se->pan;
+        param->unk_10 = se->unk_2E;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_80007EC0_main);
+void func_80007A60_main(SeParam *param) {
+    SeManager *se = func_8000704C_main();
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_80007EF8_main);
+    if (se != NULL) {
+        if (param->flags & 1) {
+            se->masterVol = param->masterVol;
+        }
+        if (param->flags & 4) {
+            se->unk_2A = param->unk_08;
+        }
+        if (param->flags & 2) {
+            se->pan = param->pan;
+        }
+        if (param->flags & 8) {
+            se->unk_2E = param->unk_10;
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_80007F24_main);
+void func_80007AF0_main(s32 vol) {
+    if (func_8000704C_main() != NULL) {
+        func_80006CD4_main(0, 3, vol);
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_80007FD4_main);
+/* Sets the volume of the given voice, or of every voice when negative. */
+void func_80007B28_main(s32 slot, s32 vol) {
+    SeManager *se = func_8000704C_main();
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_8000801C_main);
+    if (se != NULL) {
+        if (slot < 0) {
+            for (slot = 0; slot < se->soundCount; slot++) {
+                se->sounds[slot].vol = vol;
+            }
+            func_80006CD4_main(0, 4, vol);
+        } else {
+            se->sounds[slot].vol = vol;
+            func_80006CD4_main(slot, 2, vol);
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/1140", func_8000810C_main);
+/* Sets the pitch of the given voice, or of every voice when negative. */
+void func_80007BD4_main(s32 slot, s32 pitch) {
+    SeManager *se = func_8000704C_main();
+
+    if (se != NULL) {
+        if (slot < 0) {
+            for (slot = 0; slot < se->soundCount; slot++) {
+                se->sounds[slot].pitch = pitch;
+            }
+            func_80006CD4_main(0, 6, pitch);
+        } else {
+            se->sounds[slot].pitch = pitch;
+            func_80006CD4_main(slot, 5, pitch);
+        }
+    }
+}
+
+/* Sets the pan of the given voice, or of every voice when negative. */
+void func_80007C80_main(s32 slot, s32 pan) {
+    SeManager *se = func_8000704C_main();
+
+    if (se != NULL) {
+        if (slot < 0) {
+            for (slot = 0; slot < se->soundCount; slot++) {
+                se->sounds[slot].pan = pan;
+            }
+            func_80006CD4_main(0, 8, pan);
+        } else {
+            se->sounds[slot].pan = pan;
+            func_80006CD4_main(slot, 7, pan);
+        }
+    }
+}
+
+/* Sets the effect mix of the given voice, or of every voice when negative. */
+void func_80007D2C_main(s32 slot, s32 fxMix) {
+    SeManager *se = func_8000704C_main();
+
+    if (se != NULL) {
+        if (slot < 0) {
+            for (slot = 0; slot < se->soundCount; slot++) {
+                se->sounds[slot].fxMix = fxMix;
+            }
+            func_80006CD4_main(0, 10, fxMix);
+        } else {
+            se->sounds[slot].fxMix = fxMix;
+            func_80006CD4_main(slot, 9, fxMix);
+        }
+    }
+}
+
+/* Stops the given voice, or every voice when negative. */
+void func_80007DD8_main(s32 slot) {
+    SeManager *se = func_8000704C_main();
+    GameSound *sound;
+    s32 i;
+
+    if (se == NULL) {
+        return;
+    }
+    se->busy.flag[0] = 1;
+    if (slot < 0) {
+        func_80006CD4_main(0, 12, 0);
+        for (i = 0; i < se->soundCount; i++) {
+            sound = &se->sounds[i];
+            if (sound->state >= 2) {
+                sound->state = 1;
+            }
+        }
+    } else {
+        sound = &se->sounds[slot];
+        if (sound->state >= 2) {
+            func_80006CD4_main(slot, 11, 0);
+            sound->state = 1;
+        }
+    }
+    se->busy.flag[0] = 0;
+}
+
+void func_80007EC0_main(s32 time) {
+    if (func_8000704C_main() != NULL) {
+        func_80006CD4_main(0, 13, time);
+    }
+}
+
+s32 func_80007EF8_main(void) {
+    SeManager *se = func_8000704C_main();
+
+    if (se == NULL) {
+        return 0;
+    }
+    return se->fadeTime;
+}
+
+/* Pauses every playing voice. */
+void func_80007F24_main(void) {
+    SeManager *se = func_8000704C_main();
+    GameSound *sound;
+    s32 i;
+
+    if (se != NULL && se->pauseState >= 0x7F) {
+        func_80006CD4_main(0, 14, 0);
+        se->busy.flag[0] = 1;
+        for (i = 0; i < D_800A97BC_main->soundCount; i++) {
+            sound = &D_800A97BC_main->sounds[i];
+            if (sound->state >= 2) {
+                sound->state = 2;
+            }
+        }
+        se->busy.flag[0] = 0;
+    }
+}
+
+/* Resumes the paused voices. */
+void func_80007FD4_main(s32 time) {
+    SeManager *se = func_8000704C_main();
+
+    if (se != NULL && se->pauseState != 0x7F) {
+        func_80006CD4_main(0, 15, time);
+    }
+}
+
+void func_8000801C_main(SePosConfig *cfg) {
+    SeManager *se = func_8000704C_main();
+
+    if (se != NULL) {
+        if (cfg->flags & 1) {
+            se->angle = cfg->angle;
+        }
+        if (cfg->flags & 2) {
+            se->minDist = cfg->minDist;
+        }
+        if (cfg->flags & 4) {
+            se->maxDist = cfg->maxDist;
+        }
+        if (cfg->flags & 8) {
+            se->unk_444 = cfg->unk_10;
+        }
+        if (cfg->flags & 0x10) {
+            se->unk_448 = cfg->unk_14;
+        }
+        if (cfg->flags & 0x20) {
+            se->unk_450 = cfg->unk_18;
+        }
+        if (cfg->flags & 0x40) {
+            se->unk_454 = cfg->unk_1C;
+        }
+        if (cfg->flags & 0x80) {
+            se->unk_44E = cfg->unk_20;
+        }
+    }
+}
+
+/* Sets the volume and pan of a voice from its distance and angle to the
+ * listener. */
+void func_8000810C_main(s32 slot, SePosParam *param) {
+    SeManager *se = func_8000704C_main();
+    f32 dist;
+    f32 range;
+    s32 val;
+
+    if (se == NULL) {
+        return;
+    }
+    if (param->flags & 2) {
+        dist = param->dist;
+        if (dist < 0.0f) {
+            dist = -dist;
+        }
+        dist -= se->minDist;
+        if (dist < 0.0f) {
+            dist = 0.0f;
+        }
+        range = se->maxDist - se->minDist;
+        val = 0;
+        if (dist <= range) {
+            val = (range - dist) * 128.0f / range;
+            if (val >= 0x80) {
+                val = 0x7F;
+            }
+        }
+        func_80006CD4_main(slot, 16, val);
+    }
+    if (param->flags & 1) {
+        val = se->angle + param->angle;
+        if (val >= 360) {
+            val -= 360;
+        }
+        if (val > 180) {
+            val = 360 - val;
+        }
+        val = val * 128 / 180;
+        if (val >= 0x80) {
+            val = 0x7F;
+        }
+        range = se->unk_448;
+        if (range != 0.0f) {
+            dist = param->dist;
+            if (dist < 0.0f) {
+                dist = -dist;
+            }
+            dist -= se->unk_444;
+            if (dist < 0.0f) {
+                dist = 0.0f;
+            }
+            if (dist < range) {
+                val = 64.0f - (64 - val) * (dist / range);
+            }
+        }
+        func_80006CD4_main(slot, 17, val);
+    }
+}

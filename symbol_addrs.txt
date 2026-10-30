@@ -403,6 +403,11 @@ __osProfileList = 0x800CCF24;
 __osProfileListEnd = 0x800D4190; //size:0x4
 __osProfileOverflowBin = 0x800CC0B0;
 
+LeoBootGame = 0x80071B50;
+__LeoBootGame2 = 0x80071C8C;
+__LeoBootGame3 = 0x80071FD0; //size:0x50
+D_800C2170_main = 0x800C2170; //size:0x4
+
 osEepromProbe = 0x80072420;
 osEepromLongRead = 0x80072590;
 osEepromLongWrite = 0x800724A0;

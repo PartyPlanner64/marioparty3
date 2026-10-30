@@ -303,15 +303,17 @@ build/src/overlays/ovl_37_silly_screws/%.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 
 build/src/overlays/ovl_39_tick_tock_hop/%.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
 build/src/overlays/ovl_80_shared_board/ECA50.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
 
-# libm uses IDO 5.3.
-IDO_OBJECTS := $(sort $(filter $(BUILD_DIR)/src/libm/%.c.o,$(OBJECTS)))
+# libm and libleo use IDO 5.3.
+IDO_OBJECTS := $(sort $(filter $(BUILD_DIR)/src/libm/%.c.o $(BUILD_DIR)/src/libleo/%.c.o,$(OBJECTS)))
+IDO_MIPSISET := -mips1
+$(BUILD_DIR)/src/libleo/%.c.o: IDO_MIPSISET := -mips2
 
 # Compile selected .c files with IDO 5.3.
 $(IDO_OBJECTS): $(BUILD_DIR)/%.c.o: %.c
 	$(ECHO)$(PRINT)$(GREEN)Compiling C file: $(ENDGREEN)$(BLUE)$<$(ENDBLUE)$(ENDLINE)
 	@mkdir -p $(dir $@)
 	@$(CC_HOST) $(CFLAGS_CHECK) $(CPPFLAGS) -MMD -MP -MT $@ -MF $@.d $<
-	$(V)$(IDO_CC) -O2 -G0 -mips1 -non_shared -Wab,-r4300_mul $(CPPFLAGS) -c -o $@ $<
+	$(V)$(IDO_CC) -O2 -G0 $(IDO_MIPSISET) -non_shared -Wab,-r4300_mul $(CPPFLAGS) -c -o $@ $<
 
 # All other .c files are compiled with kmc gcc in two steps: .c -> .s, then .s -> .o.
 #
@@ -362,6 +364,7 @@ $(BUILD_DIR)/$(TARGET).elf: $(OBJECTS)
 $(ROM): $(BUILD_DIR)/$(TARGET).elf
 	$(ECHO)$(PRINT)$(GREEN)Creating z64: $(ENDGREEN)$(BLUE)$@$(ENDBLUE)$(ENDLINE)
 	$(V)$(OBJCOPY) $< $@ -O binary
+	$(V)$(PYTHON) tools/leo_encrypt.py $@ $(LD_MAP)
 	$(V)$(N64CKSUM) $@
 ifeq ($(COMPARE),1)
 	@$(DIFF) $(BASEROM) $(ROM) && printf "OK\n" || (echo 'The build succeeded, but did not match the base ROM. This is expected if you are making changes to the game. To skip this check, use "make COMPARE=0".' && false)

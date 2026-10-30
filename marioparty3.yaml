@@ -183,7 +183,8 @@ segments:
       - [0x723E0, c, 2.0L/n_audio/n_seq]
       - [0x726C0, c, 2.0L/n_audio/n_mainbus]
       - [0x72740, c, 2.0L/n_audio/n_synsetpriority]
-      - [0x72750, c] #libleo stuff. TODO: figure out what is func_80071C8C_main
+      - [0x72750, c, libleo/bootgame]
+      - [0x72BD0, textbin, libleo/bootgame3]
       - [0x72C20, c, 2.0L/io/conteepwrite]
       - [0x73020, c, 2.0L/io/conteepprobe]
       - [0x730A0, c, 2.0L/io/conteeplongwrite]

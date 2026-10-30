@@ -110,16 +110,26 @@ typedef struct str800D5298 {
     void *unk10; // fxd0 rom
     void *unk14; // audio ram location?
     s32 unk18; // audio ram size?
-    s32 unks1C24[3];
+    s32 unk1C;
+    s32 unk20;
+    s32 unk24;
     s32 unk28;
     s32 unk2C;
-    s32 unks3040[5];
+    s32 unk30;
+    s32 unk34;
+    s32 unk38;
+    s32 unk3C;
+    s32 unk40;
     s32 unk44;
-    s32 unks4858[5];
+    s32 unk48;
+    s32 unk4C;
+    s32 unk50;
+    s32 unk54;
+    s32 unk58;
     s32 unk5C;
     s32 unk60;
     s32 unk64;
-    s32 unk68;
+    OSPiHandle *unk68; // PI handle used for audio ROM reads
 } str800D5298;
 
 typedef struct HeapNode {

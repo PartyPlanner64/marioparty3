@@ -12,7 +12,7 @@ extern void *D_800CCF38_main;
 extern u8 D_800CCF78_main[];
 extern f32 CZoomM[];
 extern u16 D_800CD2F4_main;
-extern s32 D_800CDD50_main;
+extern OSPiHandle *D_800CDD50_main;
 extern Process *D_800D0448_main;
 extern u8 D_800D09A8_main;
 extern Process *D_800D170C_main;

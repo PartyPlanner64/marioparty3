@@ -1956,16 +1956,14 @@ void func_80057158_main(void) {
     }
 }
 
-#ifdef NON_MATCHING
-// Register allocation differs (loop index and frame pointer temporaries).
 void func_800571C8_main(HuSprPalAnm *arg0) {
     HuSprAnmDesc *desc;
     HuSprAnmEntry *group;
+    HuSprPalFrame *frame;
     HuSprPalEntry *entry;
     s32 changed;
     s32 i;
     s32 j;
-    s32 duration;
 
     changed = FALSE;
     desc = arg0->unk00;
@@ -1980,15 +1978,15 @@ void func_800571C8_main(HuSprPalAnm *arg0) {
                 arg0->unk04[i]++;
                 if (arg0->unk04[i] >= group->unk02) {
                     arg0->unk04[i] = 0;
-                    duration = group->unk04[0]->duration;
+                    frame = group->unk04[0];
                 } else {
-                    duration = group->unk04[arg0->unk04[i]]->duration;
-                    if (duration <= 0) {
+                    frame = group->unk04[arg0->unk04[i]];
+                    if (frame->duration <= 0) {
                         arg0->unk04[i] = 0;
-                        duration = group->unk04[0]->duration;
+                        frame = group->unk04[0];
                     }
                 }
-                arg0->unk24[i] += duration;
+                arg0->unk24[i] += frame->duration;
                 changed = TRUE;
             }
         } while (arg0->unk24[i] < 0.0f);
@@ -2005,18 +2003,16 @@ void func_800571C8_main(HuSprPalAnm *arg0) {
     if (arg0->unk68 >= 3) {
         arg0->unk68 = 0;
     }
-    for (i = 0; i < desc->unk02; i++) {
-        group = desc->unk04[i];
+    for (j = 0; j < desc->unk02; j++) {
+        group = desc->unk04[j];
         if (group->unk00 == 0) {
             continue;
         }
-        entry = group->unk04[arg0->unk04[i]]->entries;
-        for (j = 0; j < group->unk00; j++) {
+        frame = group->unk04[arg0->unk04[j]];
+        entry = frame->entries;
+        for (i = 0; i < group->unk00; i++) {
             arg0->unk6C[entry->index] = entry->color;
             entry++;
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/sprman", func_800571C8_main);
-#endif

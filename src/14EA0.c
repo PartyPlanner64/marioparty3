@@ -2,8 +2,13 @@
 #include "mallocblock.h"
 #include "opening.h"
 #include "gcc/string.h"
+#include "game/board.h"
+
+#define HMFSPR_CC_PRIM_MODULATEA 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0
+#define HMFSPR_CC_MODULATEA_PRIM TEXEL0, 0, SHADE, 0, TEXEL0, 0, PRIMITIVE, 0
 
 extern u8 D_800A0620_main;
+extern s16 D_800A0624_main[];
 extern u16 D_800CDD4E_main;
 extern s16 D_800CD1B0_main;
 extern s16 *D_800D04B4_main;
@@ -13,10 +18,10 @@ extern HuMtx4F D_800D5A00_main[];
 extern s16 D_800A06FC_main[];
 extern s32 D_800A0728_main[8];
 extern u16 D_800A0748_main[172];
-extern s32 *D_800CC080_main[8];
-extern s32 *D_800CDD54_main;
+extern Vtx *D_800CC080_main[8];
+extern Vtx *D_800CDD54_main;
 extern u8 D_800D2008_main;
-extern s32 *D_800D1F30_main;
+extern Gfx *D_800D1F30_main;
 extern u8 D_800D20B8_main[16][3];
 extern s16 D_800D4090_main[6][3][7];
 extern u8 D_800D6A50_main[6];
@@ -60,7 +65,7 @@ void func_800143F0_main(void) {
         s32 playerIdx = D_800D2008_main;
 
         D_800CDD54_main = D_800CC080_main[playerIdx];
-        D_800D1F30_main = ((s32 *const *)&D_800D1360)[playerIdx];
+        D_800D1F30_main = ((Gfx *const *)&D_800D1360)[playerIdx];
     }
 }
 
@@ -169,7 +174,7 @@ void func_800148A8_main(s16 idx, u8 r0, u8 g0, u8 b0, u8 a0, u8 r1, u8 g1, u8 b1
     }
 }
 
-void func_800149D0_main(s16 arg0, u8 *arg1) {
+void func_800149D0_main(s16 arg0, HmfColorKey *arg1) {
     if (arg0 != -1) {
         func_800146DC_main(arg0, 0x40, 0x40);
         D_800CBB60_main[arg0].unk_20 = arg1;
@@ -178,7 +183,209 @@ void func_800149D0_main(s16 arg0, u8 *arg1) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/14EA0", func_80014A3C_main);
+void func_80014A3C_main(s32 frames) {
+    s16 i;
+    s16 j;
+    HmfModelEntry *entry;
+    HmfData *hmf;
+    HmfAnimSet *animSet;
+    HmfAnimRot *rot;
+    HmfAnimImage *image;
+    s16 width;
+    s16 height;
+    s16 x0;
+    s16 y0;
+    s16 negHeight;
+    HmfColorKey *key;
+    HmfColorKey *prev;
+    s16 end;
+    s16 elapsed;
+    s16 span;
+    f32 t;
+
+    if (!D_800A0620_main) {
+        return;
+    }
+    for (i = 0; i < D_800CDD4E_main; i++) {
+        if (D_800CBB60_main[i].modelId == -1) {
+            continue;
+        }
+        entry = &D_800CBB60_main[i];
+        if ((HmfModelData[entry->modelId].unk18 & 4) || (u16)entry->unk_02 == 0xFFFF) {
+            continue;
+        }
+        if (entry->flags & 0x80) {
+            func_8001C258_main(entry->modelId, 4, 4);
+            entry->flags &= 0xFF7F;
+            continue;
+        }
+        hmf = HmfModelData[entry->modelId].hmf;
+        *hmf->unk3C->unk00 = D_800D1F30_main;
+        animSet = &D_800D408C_main[(u16)entry->unk_02];
+        rot = &animSet->rot[entry->pointIdx];
+        gDPSetCycleType(D_800D1F30_main++, G_CYC_1CYCLE);
+        if (entry->flags & 0x40) {
+            if (entry->unk_20 != NULL) {
+                key = entry->unk_20;
+                for (; key->time != 0xFF; key++) {
+                    if (entry->unk_0A < key->time) {
+                        break;
+                    }
+                }
+                if (key->time == 0xFF) {
+                    end = rot->totalFrames;
+                } else {
+                    end = key->time;
+                }
+                prev = key - 1;
+                elapsed = entry->unk_0A - prev->time;
+                span = end - prev->time;
+                t = (f32)elapsed / (f32)span;
+                entry->colorR = prev->color[0] + (key->color[0] - prev->color[0]) * t;
+                entry->colorG = prev->color[1] + (key->color[1] - prev->color[1]) * t;
+                entry->colorB = prev->color[2] + (key->color[2] - prev->color[2]) * t;
+                entry->unk_12 = prev->color[3] + (key->color[3] - prev->color[3]) * t;
+            } else {
+                t = (f32)entry->unk_0A / (f32)rot->totalFrames;
+                entry->colorR = entry->colorStart[0] + (entry->colorEnd[0] - entry->colorStart[0]) * t;
+                entry->colorG = entry->colorStart[1] + (entry->colorEnd[1] - entry->colorStart[1]) * t;
+                entry->colorB = entry->colorStart[2] + (entry->colorEnd[2] - entry->colorStart[2]) * t;
+                entry->unk_12 = entry->colorStart[3] + (entry->colorEnd[3] - entry->colorStart[3]) * t;
+            }
+        }
+        if (animSet->rotCount == 0) {
+            if (animSet->interp & 0x8000) {
+                gDPSetCombineMode(D_800D1F30_main++, HMFSPR_CC_PRIM_MODULATEA, HMFSPR_CC_PRIM_MODULATEA);
+            } else {
+                gDPSetCombineMode(D_800D1F30_main++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+            }
+            hmf->unk60->unk50 |= 0x10000;
+            if (entry->flags & 0x100) {
+                gDPSetRenderMode(D_800D1F30_main++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
+            } else {
+                gDPSetRenderMode(D_800D1F30_main++, G_RM_AA_ZB_XLU_SURF, G_RM_AA_ZB_XLU_SURF2);
+            }
+            gDPSetAlphaCompare(D_800D1F30_main++, G_AC_THRESHOLD);
+            gDPSetBlendColor(D_800D1F30_main++, 0, 0, 0, 1);
+            gDPSetPrimColor(D_800D1F30_main++, 0, 0, entry->colorR, entry->colorG, entry->colorB, entry->unk_12);
+        } else if (entry->unk_12 == 0xFF) {
+            if (entry->flags & 0x100) {
+                gDPSetRenderMode(D_800D1F30_main++, G_RM_AA_TEX_EDGE, G_RM_AA_TEX_EDGE2);
+            } else {
+                gDPSetRenderMode(D_800D1F30_main++, G_RM_AA_ZB_TEX_EDGE, G_RM_AA_ZB_TEX_EDGE2);
+            }
+            gDPSetCombineMode(D_800D1F30_main++, G_CC_DECALRGBA, G_CC_DECALRGBA);
+        } else {
+            hmf->unk60->unk50 |= 0x10000;
+            gDPSetAlphaCompare(D_800D1F30_main++, G_AC_THRESHOLD);
+            gDPSetBlendColor(D_800D1F30_main++, 0, 0, 0, 1);
+            gDPSetPrimColor(D_800D1F30_main++, 0, 0, 0, 0, 0, entry->unk_12);
+            if (entry->flags & 0x100) {
+                gDPSetRenderMode(D_800D1F30_main++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
+            } else {
+                gDPSetRenderMode(D_800D1F30_main++, G_RM_AA_ZB_XLU_SURF, G_RM_AA_ZB_XLU_SURF2);
+            }
+            gDPSetCombineMode(D_800D1F30_main++, HMFSPR_CC_MODULATEA_PRIM, HMFSPR_CC_MODULATEA_PRIM);
+        }
+        gDPSetTextureFilter(D_800D1F30_main++, D_800A0624_main[(entry->flags & 0x18) >> 3]);
+        gSPClearGeometryMode(D_800D1F30_main++, G_CULL_BACK | G_LIGHTING);
+        gSPSetGeometryMode(D_800D1F30_main++, G_ZBUFFER);
+        image = &animSet->unk0C[rot->frames[entry->nodeIdx].unk00];
+        width = image->width;
+        height = image->height;
+        if (animSet->rotCount == 0) {
+            gDPSetTextureLUT(D_800D1F30_main++, G_TT_NONE);
+            if (animSet->interp & 0x8000) {
+                gDPLoadTextureBlock_4b(D_800D1F30_main++, image->data, G_IM_FMT_I, width, height, 0,
+                                       G_TX_CLAMP, G_TX_CLAMP, HMF_TEXTURE_MASK(image->width),
+                                       HMF_TEXTURE_MASK(image->height), G_TX_NOLOD, G_TX_NOLOD);
+            } else {
+                gDPLoadTextureBlock(D_800D1F30_main++, image->data, G_IM_FMT_IA, G_IM_SIZ_8b, width, height, 0,
+                                    G_TX_CLAMP, G_TX_CLAMP, HMF_TEXTURE_MASK(image->width),
+                                    HMF_TEXTURE_MASK(image->height), G_TX_NOLOD, G_TX_NOLOD);
+            }
+        } else {
+            gDPSetTextureLUT(D_800D1F30_main++, G_TT_RGBA16);
+            if (animSet->rotCount <= 16) {
+                gDPLoadTLUT_pal16(D_800D1F30_main++, 0, animSet->unk14);
+                gDPLoadTextureBlock_4b(D_800D1F30_main++, image->data, G_IM_FMT_CI, width, height, 0,
+                                       G_TX_CLAMP, G_TX_CLAMP, HMF_TEXTURE_MASK(image->width),
+                                       HMF_TEXTURE_MASK(image->height), G_TX_NOLOD, G_TX_NOLOD);
+            } else {
+                gDPLoadTLUT_pal256(D_800D1F30_main++, animSet->unk14);
+                gDPLoadTextureBlock(D_800D1F30_main++, image->data, G_IM_FMT_CI, G_IM_SIZ_8b, width, height, 0,
+                                    G_TX_CLAMP, G_TX_CLAMP, HMF_TEXTURE_MASK(image->width),
+                                    HMF_TEXTURE_MASK(image->height), G_TX_NOLOD, G_TX_NOLOD);
+            }
+        }
+        gSPVertex(D_800D1F30_main++, osVirtualToPhysical(D_800CDD54_main), 4, 0);
+        gSP1Quadrangle(D_800D1F30_main++, 0, 1, 2, 3, 0);
+
+        negHeight = -height;
+        x0 = -image->unk04;
+        y0 = image->unk06;
+        D_800CDD54_main->n.ob[0] = x0;
+        D_800CDD54_main->n.ob[1] = y0;
+        D_800CDD54_main->n.ob[2] = 0;
+        D_800CDD54_main->n.n[0] = D_800CDD54_main->n.n[1] = D_800CDD54_main->n.n[2] = -1;
+        D_800CDD54_main->n.tc[0] = 0;
+        D_800CDD54_main->n.tc[1] = 0;
+        D_800CDD54_main->n.a = 0xFF;
+        D_800CDD54_main++;
+
+        D_800CDD54_main->n.ob[0] = x0;
+        D_800CDD54_main->n.ob[1] = negHeight + y0;
+        D_800CDD54_main->n.ob[2] = 0;
+        D_800CDD54_main->n.n[0] = D_800CDD54_main->n.n[1] = D_800CDD54_main->n.n[2] = -1;
+        D_800CDD54_main->n.tc[0] = 0;
+        D_800CDD54_main->n.tc[1] = (-negHeight - 1) << 5;
+        D_800CDD54_main->n.a = 0xFF;
+        D_800CDD54_main++;
+
+        D_800CDD54_main->n.ob[0] = width + x0;
+        D_800CDD54_main->n.ob[1] = negHeight + y0;
+        D_800CDD54_main->n.ob[2] = 0;
+        D_800CDD54_main->n.n[0] = D_800CDD54_main->n.n[1] = D_800CDD54_main->n.n[2] = -1;
+        D_800CDD54_main->n.tc[0] = (width - 1) << 5;
+        D_800CDD54_main->n.tc[1] = (-negHeight - 1) << 5;
+        D_800CDD54_main->n.a = 0xFF;
+        D_800CDD54_main++;
+
+        D_800CDD54_main->n.ob[0] = width + x0;
+        D_800CDD54_main->n.ob[1] = y0;
+        D_800CDD54_main->n.ob[2] = 0;
+        D_800CDD54_main->n.n[0] = D_800CDD54_main->n.n[1] = D_800CDD54_main->n.n[2] = -1;
+        D_800CDD54_main->n.tc[0] = (width - 1) << 5;
+        D_800CDD54_main->n.tc[1] = 0;
+        D_800CDD54_main->n.a = 0xFF;
+        D_800CDD54_main++;
+
+        gSPEndDisplayList(D_800D1F30_main++);
+
+        if (!(entry->flags & 1) && (HmfPauseF == 0 || (HmfModelData[entry->modelId].unk18 & 0x8000))) {
+            for (j = 0; j < frames; j++) {
+                entry->unk_08++;
+                entry->unk_0A++;
+                if (entry->unk_08 >= rot->frames[entry->nodeIdx].time) {
+                    entry->nodeIdx++;
+                    entry->unk_08 = 0;
+                    if (rot->frameCount <= entry->nodeIdx) {
+                        if (entry->flags & 4) {
+                            entry->flags |= 0x80;
+                        }
+                        if ((entry->flags & 2) || rot->frames[entry->nodeIdx - 1].time != -1) {
+                            entry->nodeIdx--;
+                            entry->unk_0A--;
+                            break;
+                        }
+                        entry->nodeIdx = 0;
+                        entry->unk_0A = 0;
+                    }
+                }
+            }
+        }
+    }
+}
 
 void func_80016638_main(s32 idx) {
     if (D_800A0620_main) {

@@ -25,7 +25,7 @@ void func_800007FC_main(str800D5298* arg0);
 void func_80000EA8_main(str800D5298* arg0);
 void func_80000F30_main(u32 arg0);
 void func_800143F0_main(void);
-void func_80014A3C_main(u32 arg0);
+void func_80014A3C_main(s32 frames);
 void func_800224BC_main(void);
 void GWInit(void); // save.h
 void GWMgRecordSet(s16 arg0, u32 arg1); // save.h

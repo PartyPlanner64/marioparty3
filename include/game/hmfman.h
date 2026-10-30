@@ -479,6 +479,11 @@ typedef struct HmfModelSet {
     /* 0x08 */ HuMtx4F *unk_08;
 } HmfModelSet; // Size 0xC
 
+typedef struct HmfColorKey {
+    /* 0x00 */ u8 time; // 0xFF terminates the list
+    /* 0x01 */ u8 color[4];
+} HmfColorKey; // Size 0x5
+
 typedef struct HmfModelEntry {
     /* 0x00 */ s16 modelId;
     /* 0x02 */ s16 unk_02;
@@ -496,7 +501,7 @@ typedef struct HmfModelEntry {
     /* 0x16 */ u8 colorStart[4];
     /* 0x1A */ u8 colorEnd[4];
     /* 0x1E */ char unk_1E[2];
-    /* 0x20 */ u8 *unk_20;
+    /* 0x20 */ HmfColorKey *unk_20;
 } HmfModelEntry; // Size 0x24
 
 extern HmfAnim *D_800D1714_main;

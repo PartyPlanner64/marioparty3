@@ -41,8 +41,6 @@ s16 func_8000B838_main(s32 arg0) {
     return temp_s0;
 }
 
-#ifdef NON_MATCHING
-/* register allocation differs for the color channel temporaries */
 void func_8000B880_main(s16 arg0, f32 r, f32 g, f32 b) {
     HuSprite_Unk84_Struct *tex = D_800C9530_main[arg0];
     u16 *pal = tex->unk0C;
@@ -57,12 +55,10 @@ void func_8000B880_main(s16 arg0, f32 r, f32 g, f32 b) {
         red = red * r;
         green = green * g;
         blue = blue * b;
-        *pal = (red << 11) | (green << 6) | (blue << 1) | alpha;
+        alpha |= (red << 11) | (green << 6) | (blue << 1);
+        *pal = alpha;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/esprite", func_8000B880_main);
-#endif
 
 void func_8000BA00_main() {
     func_80056BAC_main();

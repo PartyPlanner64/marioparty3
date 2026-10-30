@@ -552,8 +552,6 @@ void func_80021BE0_main(Hu3DQuadPool *pool, u16 numQuads) {
     pool->quads = HuMemAllocTag(numQuads * sizeof(Hu3DQuad *), 0x55F0);
 }
 
-#ifdef NON_MATCHING
-/* Register allocation: pool and maxX are swapped (s7/s8) */
 void func_80021C14_main(s16 model, Hu3DQuadPool *pool, s32 (*callback)(s32, s16 *, Hu3DPoint *, Vec *), Vec *pos) {
     s32 i;
     s32 x;
@@ -578,12 +576,8 @@ void func_80021C14_main(s16 model, Hu3DQuadPool *pool, s32 (*callback)(s32, s16 
     maxX = x + 2;
     minZ = z - 1;
     maxZ = z + 2;
-    if (minX < 0) {
-        minX = 0;
-    }
-    if (minZ < 0) {
-        minZ = 0;
-    }
+    minX = (minX < 0) ? 0 : minX;
+    minZ = (minZ < 0) ? 0 : minZ;
     if (maxX > grid->width) {
         maxX = grid->width;
     }
@@ -607,9 +601,6 @@ void func_80021C14_main(s16 model, Hu3DQuadPool *pool, s32 (*callback)(s32, s16 
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/20A20", func_80021C14_main);
-#endif
 
 s32 func_80021E64_main(u16 count, s16 *vtx, Hu3DPoint *points, Hu3DSphere *sphere) {
     f32 centerX;

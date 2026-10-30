@@ -40,7 +40,7 @@ void func_80007B28_main(s32 seNo, s32 volume);
 void func_80007DD8_main(s16 seNo);
 void func_80012B14_main(s16 camIndex, Vec *worldPos, Vec2f *outPos);
 void func_80000EA8_main(struct str800D5298 *config);
-void func_800036E8_main(s16 musNo, s32 volume);
+void func_800036E8_main(s32 musNo, s32 volume);
 void func_8004A72C_main(s16 arg0);
 void func_8004B7B0_main(s32 priority, s16 spriteGroup, void (*draw)(CameraViewData *), f32 fov, Vec *pos, Vec *at);
 void func_8004B984_main(u8 count, s32 priority, s16 *spriteGroups, void (*draw)(CameraViewData *), f32 fov, Vec *pos, Vec *at);

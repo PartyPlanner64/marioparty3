@@ -1009,7 +1009,7 @@ extern s8 D_800A1785_main;
 extern s16 D_800A1894_main[];
 extern u8 D_800A2150_main;
 extern u16 D_800CE214_main;
-s32 func_800034D8_main(s16);
+s32 func_800034D8_main(s32);
 void func_800453BC_main(void);
 void func_80045A90_main(void);
 void func_8004AFBC_main(s16 duration);

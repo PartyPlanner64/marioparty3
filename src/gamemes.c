@@ -1745,8 +1745,6 @@ s32 func_8003A9C8_main(u8 *str, s32 flags, s32 *idx) {
     return 3;
 }
 
-#ifdef NON_MATCHING
-/* Switch decision tree differs (target roots at 0x84 and treats values above it as default). */
 s32 func_8003AC9C_main(u8 *str, s32 mode, u8 flags, s32 *width) {
     s32 c = str[0];
     u8 next = str[1];
@@ -1807,14 +1805,27 @@ s32 func_8003AC9C_main(u8 *str, s32 mode, u8 flags, s32 *width) {
             break;
         case 0x7D:
             break;
+        case 0x82:
+            break;
         case 0x84:
+            break;
+        case 0x85:
+            break;
+        case 0xC2:
+            break;
+        case 0xC3:
+            break;
+        case 0xC4:
+            break;
+        case 0xC5:
+            break;
+        case 0xC6:
+            break;
+        case 0xC7:
             break;
     }
     return 3;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/gamemes", func_8003AC9C_main);
-#endif
 
 s16 func_8003AE44_main(s16 fileNo) {
     void *data = DataReadTemp(fileNo | 0xC0000);

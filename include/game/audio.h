@@ -34,6 +34,7 @@ s16 CharFXPlay(s16 seId, u8 charNo);
 s32 func_8004AC5C_main(s16 arg0, s16 arg1);
 s16 func_8004AC98_main(s16, s16);
 s16 func_8004ACE0_main(s16 seId, s16 playerIdx);
+void func_8004AE00_main(s16 arg0, s16 arg1);
 void HuAudFXStop(s32 seNo);
 void func_8004AEF0_main(s16, s32);
 void omVibrate(s16 player, s16 duration, s16 off, s16 on);

@@ -75,7 +75,7 @@ void func_80107A64_eatsa_pizza(omObjData *object);
 void func_80106084_eatsa_pizza(omObjData *object);
 void func_8010679C_eatsa_pizza(omObjData *object);
 void func_801083A8_eatsa_pizza(omObjData *arg0, func_800E1BA8_minigame_ObjData **arg1, void **arg2);
-s16 func_80055810_main(void *data);
+s16 HuSprAnimRead(void *data);
 void *func_801090B4_eatsa_pizza(s16 arg0, s16 arg1);
 void func_801087DC_eatsa_pizza(omObjData *object);
 void func_80108C50_eatsa_pizza(omObjData *);
@@ -1006,7 +1006,7 @@ void func_80108470_eatsa_pizza(omObjData *object) {
     // Group pointer must be captured as part of the store so the address is
     // computed after the call, matching the original.
     *(groupP = &D_80109288_eatsa_pizza) = func_80108FEC_eatsa_pizza(data, 1);
-    func_80054904_main(*groupP, 0, 160, 120);
+    HuSprPosSet(*groupP, 0, 160, 120);
     HuSprAttrSet(*groupP, 0, 0x4000);
     object->func = func_801087DC_eatsa_pizza;
 }
@@ -1045,8 +1045,8 @@ void func_801084F8_eatsa_pizza(omObjData *object) {
         }
     }
 
-    func_80054904_main(D_8010928A_eatsa_pizza[0], 0, 0x50, 0x78);
-    func_80054904_main(D_8010928A_eatsa_pizza[1], 0, 0xF0, 0x78);
+    HuSprPosSet(D_8010928A_eatsa_pizza[0], 0, 0x50, 0x78);
+    HuSprPosSet(D_8010928A_eatsa_pizza[1], 0, 0xF0, 0x78);
     D_80109282_eatsa_pizza[0] = func_80108FA4_eatsa_pizza(0x2C0005);
     D_80109282_eatsa_pizza[1] = func_80108FA4_eatsa_pizza(0x2C0006);
     D_8010928A_eatsa_pizza[2] = HuSprGrpCreate(0x10, 0);
@@ -1220,8 +1220,8 @@ s16 func_80108D1C_eatsa_pizza(s16 arg0, s16 arg1, s16 arg2, f32 arg3) {
     group = D_8010928E_eatsa_pizza;
     func_80055024_main(group, i, arg0, 0);
     func_800550F4_main(group, i, 2);
-    func_80054904_main(group, i, arg1, arg2);
-    func_800552DC_main(group, i, arg3);
+    HuSprPosSet(group, i, arg1, arg2);
+    HuSprZRotSet(group, i, arg3);
     HuSprAttrReset(group, i, 0x8000);
     return i;
 }
@@ -1259,7 +1259,7 @@ s16 func_80108FA4_eatsa_pizza(s32 arg0) {
     s16 temp_s0;
 
     temp_v0 = DataRead(arg0);
-    temp_s0 = func_80055810_main(temp_v0);
+    temp_s0 = HuSprAnimRead(temp_v0);
     DataClose(temp_v0);
     return temp_s0;
 }

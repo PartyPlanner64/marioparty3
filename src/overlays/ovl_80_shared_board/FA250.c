@@ -1169,9 +1169,9 @@ static void func_800E9C94_shared_board(void) {
             MBCamera3Dto2D(&obj->pos, pos);
 
             if (obj->unk_01 != 0) {
-                func_80054904_main(obj->unk_02, 0, (D_801049F8_shared_board[0] / (f32)obj->unk_01) + pos[0], (D_801049F8_shared_board[1] / (f32)obj->unk_01) + pos[1]);
+                HuSprPosSet(obj->unk_02, 0, (D_801049F8_shared_board[0] / (f32)obj->unk_01) + pos[0], (D_801049F8_shared_board[1] / (f32)obj->unk_01) + pos[1]);
             } else {
-                func_80054904_main(obj->unk_02, 0, pos[0], pos[1]);
+                HuSprPosSet(obj->unk_02, 0, pos[0], pos[1]);
             }
             
             func_80055458_main(obj->unk_02, 0, obj->unk_06);
@@ -1245,7 +1245,7 @@ s32 func_800E9F24_shared_board(s32 arg0, Vec *arg1) {
         obj->unk_02 = HuSprGrpCreate(1, 0);
     
         data = DataRead(arg0);
-        obj->unk_04 = func_80055810_main(data);
+        obj->unk_04 = HuSprAnimRead(data);
         DataClose(data);
     
         func_80055024_main(obj->unk_02, 0, obj->unk_04, 0);
@@ -1332,7 +1332,7 @@ void func_800EA2D0_shared_board(s32 arg0, s16 arg1) {
 }
 
 void func_800EA2E4_shared_board(s32 arg0, RGB* arg1) {
-    func_80055420_main(D_80104A00_shared_board[arg0].unk_02, 0, arg1->r, arg1->g, arg1->b);
+    HuSprColorSet(D_80104A00_shared_board[arg0].unk_02, 0, arg1->r, arg1->g, arg1->b);
 }
 
 void func_800EA320_shared_board(s32 arg0, Vec* arg1) {

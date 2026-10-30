@@ -33,7 +33,7 @@ static void func_800E1450_shared_board(omObjData *arg0) {
         } else {
             arg0->trans.y += 1.5f;
         }
-        func_80054904_main(D_80102C20_shared_board[arg0->work[3]], 0, sp20[0], (sp20[1] + arg0->trans.y));
+        HuSprPosSet(D_80102C20_shared_board[arg0->work[3]], 0, sp20[0], (sp20[1] + arg0->trans.y));
     } else if (arg0->work[0] >= 0x18U) {
         arg0->scale.x += 0.4f;
         arg0->scale.y -= 0.3f;
@@ -137,7 +137,7 @@ static void func_800E1934_shared_board(s32 arg0, s32 arg1) {
         D_80102C38_shared_board[arg0]->work[1] = 6;
         D_80102C20_shared_board[arg0] = temp_v0_2 = HuSprGrpCreate(6, 5);
         temp_v0_3 = DataRead(0x00130112);
-        D_80102C28_shared_board[arg0][0] = func_80055810_main(temp_v0_3);
+        D_80102C28_shared_board[arg0][0] = HuSprAnimRead(temp_v0_3);
         DataClose(temp_v0_3);
 
         if (var_s3 > 0) {
@@ -146,7 +146,7 @@ static void func_800E1934_shared_board(s32 arg0, s32 arg1) {
             temp_v0_3 = DataRead(0x00130214);
         }
 
-        D_80102C28_shared_board[arg0][1] = func_80055810_main(temp_v0_3);
+        D_80102C28_shared_board[arg0][1] = HuSprAnimRead(temp_v0_3);
         DataClose(temp_v0_3);
         func_80055024_main(temp_v0_2, 1, D_80102C28_shared_board[arg0][0], 0);
         HuSprPriSet(temp_v0_2, 1, 0x2010U);
@@ -200,16 +200,16 @@ static void func_800E1934_shared_board(s32 arg0, s32 arg1) {
             sp18.y = GwPlayer[arg0].player_obj->coords.y + 30.0f;
             sp18.z = GwPlayer[arg0].player_obj->coords.z;
             MBCamera3Dto2D(&sp18, sp28);
-            func_80054904_main(temp_v0_2, 0, sp28[0], sp28[1]);
+            HuSprPosSet(temp_v0_2, 0, sp28[0], sp28[1]);
         } else {
-            func_80054904_main(temp_v0_2, 0, D_80100F00_shared_board[arg0][0], D_80100F00_shared_board[arg0][1]);
+            HuSprPosSet(temp_v0_2, 0, D_80100F00_shared_board[arg0][0], D_80100F00_shared_board[arg0][1]);
         }
 
         var_s1 = (var_s2 - 2);
         var_s1 = -(var_s1 * 8);
 
         for (i = 1; i < var_s2; i++) {
-            func_80054904_main(temp_v0_2, i, var_s1, 0);
+            HuSprPosSet(temp_v0_2, i, var_s1, 0);
             var_s1 += 16;
         }
 

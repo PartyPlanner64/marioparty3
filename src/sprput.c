@@ -202,8 +202,8 @@ void func_800579E4_main(Gfx **gfx, HuSprite *sprite, s32 arg2) {
                 gDPSetTextureLUT(gdl++, G_TT_NONE);
             } else {
                 D_800BD830_main = G_IM_FMT_CI;
-                if (sprite->unk_98 != NULL) {
-                    gDPLoadTLUT_pal16(gdl++, 0, sprite->unk_104);
+                if (sprite->unk_98.unk00 != NULL) {
+                    gDPLoadTLUT_pal16(gdl++, 0, sprite->unk_98.unk6C);
                 } else {
                     gDPLoadTLUT_pal16(gdl++, 0, sprite->unk_84->unk0C);
                 }
@@ -220,8 +220,8 @@ void func_800579E4_main(Gfx **gfx, HuSprite *sprite, s32 arg2) {
                 D_800BD838_main = 2;
             } else {
                 D_800BD830_main = G_IM_FMT_CI;
-                if (sprite->unk_98 != NULL) {
-                    gDPLoadTLUT_pal256(gdl++, sprite->unk_104);
+                if (sprite->unk_98.unk00 != NULL) {
+                    gDPLoadTLUT_pal256(gdl++, sprite->unk_98.unk6C);
                 } else {
                     gDPLoadTLUT_pal256(gdl++, sprite->unk_84->unk0C);
                 }

@@ -36,7 +36,7 @@ s16 func_8000B838_main(s32 arg0) {
     s16 temp_s0;
 
     temp_v0 = DataRead(arg0);
-    temp_s0 = func_80055810_main(temp_v0);
+    temp_s0 = HuSprAnimRead(temp_v0);
     HuMemMemoryFreePerm(temp_v0);
     return temp_s0;
 }
@@ -80,7 +80,7 @@ void func_8000BA30_main(void) {
             if (D_800CD1DC_main[i].unk00 & 1) {
                 sprite = &D_800CD1DC_main[i];
                 gid = sprite->unk04;
-                func_80054904_main(gid, 0, sprite->unkA, sprite->unkC);
+                HuSprPosSet(gid, 0, sprite->unkA, sprite->unkC);
                 if (sprite->unk00 & 2) {
                     func_80055458_main(gid, 0, sprite->unk1E);
                     sprite->unk1E += sprite->unk20;
@@ -153,7 +153,7 @@ void func_8000BD08_main(u16 spriteId, f32 arg1) {
     D_800CD1DC_main_Struct *sprite;
 
     sprite = D_800CD1DC_main + spriteId;
-    func_800550B4_main(sprite->unk04, 0, arg1);
+    HuSprSpeedSet(sprite->unk04, 0, arg1);
 }
 
 void func_8000BD50_main(u16 spriteId, s16 arg1) {
@@ -196,14 +196,14 @@ void func_8000BEAC_main(u16 spriteId, s32 arg1, s32 arg2, s32 arg3) {
     D_800CD1DC_main_Struct *sprite;
 
     sprite = D_800CD1DC_main + spriteId;
-    func_80055420_main(sprite->unk04, 0, arg1, arg2, arg3);
+    HuSprColorSet(sprite->unk04, 0, arg1, arg2, arg3);
 }
 
 void func_8000BF00_main(u16 spriteId, f32 arg1) {
     D_800CD1DC_main_Struct *sprite;
 
     sprite = D_800CD1DC_main + spriteId;
-    func_800552DC_main(sprite->unk04, 0, arg1);
+    HuSprZRotSet(sprite->unk04, 0, arg1);
 }
 
 void func_8000BF48_main(u16 spriteId, s16 arg1, s16 arg2, s16 arg3) {

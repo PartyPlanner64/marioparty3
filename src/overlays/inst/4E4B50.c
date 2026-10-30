@@ -534,32 +534,32 @@ void func_8010CDE4_inst(const char *message, s32 x, s32 y) {
     D_8010DCD8_inst.unk08 = func_8003A37C_main(&D_8010DCD8_inst, text + 1, 0, -1, -1);
     D_8010DCD8_inst.unk60 = (s16)x;
     D_8010DCD8_inst.unk64 = (s16)y;
-    func_80054904_main(D_8010DCD8_inst.strGId[D_8010DCD8_inst.unk08], 0, D_8010DCD8_inst.unk60,
+    HuSprPosSet(D_8010DCD8_inst.strGId[D_8010DCD8_inst.unk08], 0, D_8010DCD8_inst.unk60,
                        D_8010DCD8_inst.unk64);
     func_800365E8_main(text);
 }
 
 void func_8010CED0_inst(s32 x, s32 y) {
-    func_80054904_main(D_8010DCD8_inst.strGId[D_8010DCD8_inst.unk08], 0, x, y);
+    HuSprPosSet(D_8010DCD8_inst.strGId[D_8010DCD8_inst.unk08], 0, x, y);
 }
 
 void func_8010CF14_inst(void) {
     D_8010DD50_inst.unk08 = func_8003A37C_main(&D_8010DD50_inst, "PRACTICE", 0, -1, -1);
     D_8010DD50_inst.unk60 = 216.0f;
     D_8010DD50_inst.unk64 = 90.0f;
-    func_80054904_main(D_8010DD50_inst.strGId[D_8010DD50_inst.unk08], 0, 216, 90);
+    HuSprPosSet(D_8010DD50_inst.strGId[D_8010DD50_inst.unk08], 0, 216, 90);
 }
 
 void func_8010CF98_inst(void) {
     D_8010DD50_inst.unk60 = 216.0f;
     D_8010DD50_inst.unk64 = 90.0f;
-    func_80054904_main(D_8010DD50_inst.strGId[D_8010DD50_inst.unk08], 0, 0xD8, 0x5A);
+    HuSprPosSet(D_8010DD50_inst.strGId[D_8010DD50_inst.unk08], 0, 0xD8, 0x5A);
 }
 
 void func_8010CFF4_inst(void) {
     D_8010DD50_inst.unk60 = 512.0f;
     D_8010DD50_inst.unk64 = 512.0f;
-    func_80054904_main(D_8010DD50_inst.strGId[D_8010DD50_inst.unk08], 0, 0x200, 0x200);
+    HuSprPosSet(D_8010DD50_inst.strGId[D_8010DD50_inst.unk08], 0, 0x200, 0x200);
 }
 
 void func_8010D044_inst(void) {

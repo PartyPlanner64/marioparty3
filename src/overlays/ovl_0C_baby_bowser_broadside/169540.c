@@ -204,9 +204,9 @@ s16 func_8010A598_baby_bowser_broadside(s16 priority, s32 directory, s32 file, s
             func_800550F4_main(sprite->unk_01, 0, animation);
             HuSprPriSet(sprite->unk_01, 0, (u16)priority);
             func_80054FF8_main(sprite->unk_01, 0, 0);
-            func_800550B4_main(sprite->unk_01, 0, 1.0f);
+            HuSprSpeedSet(sprite->unk_01, 0, 1.0f);
             HuSprScaleSet(sprite->unk_01, 0, 1.0f, 1.0f);
-            func_80054904_main(sprite->unk_01, 0, 100, 100);
+            HuSprPosSet(sprite->unk_01, 0, 100, 100);
             data = HuSprGet(sprite->unk_01, 0);
             if (animation == 0) {
                 sprite->unk_04 = 99;
@@ -227,7 +227,7 @@ void func_8010A738_baby_bowser_broadside(s16 index, s16 x, s16 y) {
     if (sprite->unk_00 != 0) {
         func_80054FF8_main(sprite->unk_01, 0, 0);
         HuSprAttrReset(sprite->unk_01, 0, 0x8000);
-        func_80054904_main(sprite->unk_01, 0, x, y);
+        HuSprPosSet(sprite->unk_01, 0, x, y);
         sprite->unk_00 = 2;
     }
 }

@@ -100,7 +100,7 @@ void func_800F4584_name_81(UnkBoard4 *arg0) {
 void func_800F466C_name_81(UnkBoard4 *arg0, s16 arg1, s16 arg2, s16 arg3) {
     arg0->unk_18[arg1] = arg2;
     arg0->unk_1C[arg1] = arg3;
-    func_80054904_main(arg0->unk_0A, arg1, arg2, arg3);
+    HuSprPosSet(arg0->unk_0A, arg1, arg2, arg3);
 }
 
 void func_800F46BC_name_81(UnkBoard4 *arg0, s16 arg1, f32 arg2, f32 arg3) {

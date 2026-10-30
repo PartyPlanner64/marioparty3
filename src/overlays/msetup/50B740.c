@@ -152,7 +152,7 @@ void Hu3DModelScaleSet(s16, f32, f32, f32);
 void func_8001C258_main(s16, s32, s32);
 void HuSprKill(s16);
 s32 _CheckFlag(s32);            /* extern */
-s16 func_80055810_main(void *); /* extern */
+s16 HuSprAnimRead(void *); /* extern */
 s32 func_801138F8_msetup(MsetupMenuState *, s32, s32 *, s32);
 s16 func_80113ED4_msetup(MsetupMenuState *arg0);
 
@@ -481,7 +481,7 @@ void func_8011035C_msetup(void) {
         func_800550F4_main(group, member, 1);
         func_80055024_main(group, member, sprite, 0);
         HuSprPriSet(group, member, 15000);
-        func_80054904_main(group, member, D_80119B60_msetup[member][0], D_80119B60_msetup[member][1]);
+        HuSprPosSet(group, member, D_80119B60_msetup[member][0], D_80119B60_msetup[member][1]);
         HuPrcVSleep();
     }
     i = 0;
@@ -977,7 +977,7 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
             func_800550F4_main(group, member, 0);
             func_80055024_main(group, member, characterSprite, 0);
             HuSprPriSet(group, member, 600);
-            func_80054904_main(group, member, position.x, position.y);
+            HuSprPosSet(group, member, position.x, position.y);
         }
         HuPrcVSleep();
     }
@@ -1455,7 +1455,7 @@ void func_80112804_msetup(void) {
                     }
                     for (i = first; i <= last; i++) {
                         func_8010F43C_msetup(model, (char *)D_80119E20_msetup[i], &sprites.position);
-                        func_80054904_main(group, i, sprites.position.x, sprites.position.y);
+                        HuSprPosSet(group, i, sprites.position.x, sprites.position.y);
                     }
                     if (sprites.alphaStep[side] != 0) {
                         index = sprites.alpha[side];
@@ -2015,7 +2015,7 @@ s16 func_80113ED4_msetup(MsetupMenuState *arg0) {
                 HuSprKill(var_s6);
             }
             temp_v0_4 = DataReadTemp(mainFSArray[curBoardIndex]);
-            var_s6 = func_80055810_main(temp_v0_4);
+            var_s6 = HuSprAnimRead(temp_v0_4);
             DataCloseTemp(temp_v0_4);
             backgroundEspriteSlot = InitEspriteSlot(var_s6, 0, 1);
             func_8000BC48_main(backgroundEspriteSlot, 0x1000);
@@ -2129,7 +2129,7 @@ s16 func_801145D0_msetup(MsetupMenuState *state) {
     }
     Hu3DModelScaleSet(model, 2.5f, 2.5f, 2.5f);
     data = DataReadTemp(backgrounds[board]);
-    sprite = func_80055810_main(data);
+    sprite = HuSprAnimRead(data);
     DataCloseTemp(data);
     slot = InitEspriteSlot(sprite, 0, 1);
     func_8000BC48_main(slot, 0x1000);

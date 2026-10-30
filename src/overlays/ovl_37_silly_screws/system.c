@@ -197,9 +197,9 @@ s16 m255_SetSprite(s32 dir, s32 file, u16 arg2, s32 attr) {
             func_800550F4_main(sprite->groupId, 0, arg2);
             HuSprPriSet(sprite->groupId, 0, 0xFFF0);
             func_80054FF8_main(sprite->groupId, 0, 0);
-            func_800550B4_main(sprite->groupId, 0, 1.0f);
+            HuSprSpeedSet(sprite->groupId, 0, 1.0f);
             HuSprScaleSet(sprite->groupId, 0, 1.0f, 1.0f);
-            func_80054904_main(sprite->groupId, 0, 100, 100);
+            HuSprPosSet(sprite->groupId, 0, 100, 100);
             temp_v0_2 = HuSprGet(sprite->groupId, 0);
             if (arg2 == 0) {
                 sprite->unk04 = 99;
@@ -219,7 +219,7 @@ void m255_SetSpriteDispOn(s16 spriteId, s32 posX, s32 posY) {
     if (sprite->state != SPRITE_STATE_NOTSET) {
         func_80054FF8_main(sprite->groupId, 0, 0);
         HuSprAttrReset(sprite->groupId, 0, 0x8000);
-        func_80054904_main(sprite->groupId, 0, posX, posY);
+        HuSprPosSet(sprite->groupId, 0, posX, posY);
         sprite->state = SPRITE_STATE_VISIBLE;
     }
 }

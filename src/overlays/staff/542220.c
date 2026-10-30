@@ -254,7 +254,7 @@ void func_8010B9BC_staff(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     }
 
     if (rec->unk_06 != 0) {
-        func_80054904_main(rec->unk_00, 0, arg2, arg3);
+        HuSprPosSet(rec->unk_00, 0, arg2, arg3);
     }
 }
 

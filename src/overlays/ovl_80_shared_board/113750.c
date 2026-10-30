@@ -98,7 +98,7 @@ static void func_800FFB30_shared_board(omObjData* arg0) {
                 D_801056C8_shared_board[i][1] = D_80101EB0_shared_board[i][1];
             }
         }
-        func_80054904_main(D_801056C4_shared_board->spriteGroup, i, D_801056C8_shared_board[i][0], D_801056C8_shared_board[i][1]);
+        HuSprPosSet(D_801056C4_shared_board->spriteGroup, i, D_801056C8_shared_board[i][0], D_801056C8_shared_board[i][1]);
     }
 }
 
@@ -112,14 +112,14 @@ static UnkBoard8* func_800FFD0C_shared_board(void) {
     temp_s4 = DataRead(0x1301D4);
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
-        temp_v0->model[i] = func_80055810_main(temp_s4);
+        temp_v0->model[i] = HuSprAnimRead(temp_s4);
         func_80055024_main(temp_v0->spriteGroup, i, temp_v0->model[i], 0);
         HuSprPriSet(temp_v0->spriteGroup, i, 0U);
         HuSprAttrSet(temp_v0->spriteGroup, i, 0x8000);
-        func_80054904_main(temp_v0->spriteGroup, i, D_80101EC0_shared_board[i][0], D_80101EC0_shared_board[i][1]);
+        HuSprPosSet(temp_v0->spriteGroup, i, D_80101EC0_shared_board[i][0], D_80101EC0_shared_board[i][1]);
         D_801056C8_shared_board[i][0] = D_80101EC0_shared_board[i][0];
         D_801056C8_shared_board[i][1] = D_80101EC0_shared_board[i][1];
-        func_800552DC_main(temp_v0->spriteGroup, i, D_80101EE0_shared_board[i]);
+        HuSprZRotSet(temp_v0->spriteGroup, i, D_80101EE0_shared_board[i]);
     }
 
     DataClose(temp_s4);

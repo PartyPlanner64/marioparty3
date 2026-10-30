@@ -90,9 +90,9 @@ void func_80105A64_ChillyWaters(void) {
     grpId = HuSprGrpCreate(1, 0);
     work->unkA = grpId;
     func_80055024_main(grpId, 0, sprId, 0);
-    func_80054904_main(grpId, 0, work->unk0, work->unk4);
+    HuSprPosSet(grpId, 0, work->unk0, work->unk4);
     HuSprAttrSet(grpId, 0, 0x5000);
-    func_80055420_main(grpId, 0, 0x20, 0xA0, 0x90);
+    HuSprColorSet(grpId, 0, 0x20, 0xA0, 0x90);
     func_800555E8_main(grpId, 0, 0x10, 0xC, 0x130, 0xE4);
 
     spr = HuSprGet(grpId, 0);
@@ -147,5 +147,5 @@ void func_80105DB8_ChillyWaters(IceWork* arg0) {
 void func_80105E20_ChillyWaters(IceWork* arg0, f32 x, f32 y) {
     arg0->unk0 = x;
     arg0->unk4 = y;
-    func_80054904_main(arg0->unkA, 0, arg0->unk0, arg0->unk4);
+    HuSprPosSet(arg0->unkA, 0, arg0->unk0, arg0->unk4);
 }

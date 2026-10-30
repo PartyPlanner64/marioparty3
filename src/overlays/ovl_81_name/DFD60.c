@@ -1144,15 +1144,15 @@ void func_800FB160_name_81(void) {
 
     for (i = 0; i < 3; i++) {
         temp_v0_2 = DataRead(sp20[i]);
-        temp_s4->unk_0C[i] = func_80055810_main(temp_v0_2);
+        temp_s4->unk_0C[i] = HuSprAnimRead(temp_v0_2);
         DataClose(temp_v0_2);
         func_80055024_main(temp_s4->unk_0A, i, temp_s4->unk_0C[i], 0);
         HuSprPriSet(temp_s4->unk_0A, i, 1U);
         HuSprAttrSet(temp_s4->unk_0A, i, 0U);
         if (i == 0) {
-            func_80054904_main(temp_s4->unk_0A, 0, 0xA0, 0x7E);
+            HuSprPosSet(temp_s4->unk_0A, 0, 0xA0, 0x7E);
         } else {
-            func_80054904_main(temp_s4->unk_0A, i, 0, i * 0xE);
+            HuSprPosSet(temp_s4->unk_0A, i, 0, i * 0xE);
         }
     }
 

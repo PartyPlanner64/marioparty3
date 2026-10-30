@@ -143,19 +143,19 @@ void func_80105DEC_last5(void) {
 
     D_80107578_last5 = func_800F2C48_shared_board(2, 0);
     data = DataRead(0x1301DE);
-    D_80107578_last5->model[0] = func_80055810_main(data);
+    D_80107578_last5->model[0] = HuSprAnimRead(data);
     DataClose(data);
     func_80055024_main(D_80107578_last5->spriteGroup, 0, D_80107578_last5->model[0], 0);
     HuSprPriSet(D_80107578_last5->spriteGroup, 0, 0x11);
     HuSprAttrSet(D_80107578_last5->spriteGroup, 0, 0x1000);
-    func_80054904_main(D_80107578_last5->spriteGroup, 0, 0xA0, 0x64);
+    HuSprPosSet(D_80107578_last5->spriteGroup, 0, 0xA0, 0x64);
     data = DataRead(0x1301DF);
-    D_80107578_last5->model[1] = func_80055810_main(data);
+    D_80107578_last5->model[1] = HuSprAnimRead(data);
     DataClose(data);
     func_80055024_main(D_80107578_last5->spriteGroup, 1, D_80107578_last5->model[1], 3);
     HuSprPriSet(D_80107578_last5->spriteGroup, 1, 0x10);
     HuSprAttrSet(D_80107578_last5->spriteGroup, 1, 0x1000);
-    func_80054904_main(D_80107578_last5->spriteGroup, 1, 0xA0, 0x64);
+    HuSprPosSet(D_80107578_last5->spriteGroup, 1, 0xA0, 0x64);
     obj = omAddObj(0x1000, 0, 0, -1, func_80105CD4_last5);
     HuPrcSleep(0x1E);
     omDelObj(obj);

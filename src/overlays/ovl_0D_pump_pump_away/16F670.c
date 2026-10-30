@@ -2658,7 +2658,7 @@ void func_8010CEE8_pump_pump_away(omObjData *obj) {
             record->unk_20 -= 2;
         }
         HuSprScaleSet(record->group, 0, record->unk_20 / 12.0f + 1.0f, record->unk_20 / 12.0f + 1.0f);
-        func_80054904_main(record->group, 0, record->unk_20 / 4 + 32, record->unk_20 / 4 + 22);
+        HuSprPosSet(record->group, 0, record->unk_20 / 4 + 32, record->unk_20 / 4 + 22);
         func_80055024_main(record->group, 0, record->spriteData, 0);
         func_800550F4_main(record->group, 0, 0);
         func_80054FF8_main(record->group, 0, (s16)record->digits[0]);
@@ -2666,7 +2666,7 @@ void func_8010CEE8_pump_pump_away(omObjData *obj) {
         HuSprAttrSet(record->group, 0, 0);
         for (i = 1; i < 3; i++) {
             HuSprScaleSet(record->group, i, record->unk_20 / 12.0f + 1.0f, record->unk_20 / 12.0f + 1.0f);
-            func_80054904_main(record->group, i, i * 12, 0);
+            HuSprPosSet(record->group, i, i * 12, 0);
             func_80055024_main(record->group, i, record->spriteData, 0);
             func_800550F4_main(record->group, i, 0);
             func_80054FF8_main(record->group, i, (s16)record->digits[i]);
@@ -2686,7 +2686,7 @@ void func_8010D1B8_pump_pump_away(omObjData *obj) {
     record = &D_801135B0_pump_pump_away;
     D_801135B4_pump_pump_away = func_8000B838_main(0x32);
     D_801135B8_pump_pump_away = HuSprGrpCreate(4, 5);
-    func_80054904_main(D_801135B8_pump_pump_away, 0, 32, 22);
+    HuSprPosSet(D_801135B8_pump_pump_away, 0, 32, 22);
     func_80055024_main(D_801135B8_pump_pump_away, 0, D_801135B4_pump_pump_away, 0);
     func_800550F4_main(D_801135B8_pump_pump_away, 0, 0);
     func_80054FF8_main(D_801135B8_pump_pump_away, 0, D_801135BE_pump_pump_away);
@@ -2696,14 +2696,14 @@ void func_8010D1B8_pump_pump_away(omObjData *obj) {
         func_800554C4_main(record->group, i, 0);
         func_80055024_main(record->group, i, record->spriteData, 0);
         if (record->digits[i] != -1) {
-            func_80054904_main(record->group, i, i * 12, 0);
+            HuSprPosSet(record->group, i, i * 12, 0);
             func_80055024_main(record->group, i, record->spriteData, 0);
             func_800550F4_main(record->group, i, 0);
             func_80054FF8_main(record->group, i, (s16)record->digits[i]);
             HuSprAttrSet(record->group, i, 0x1000);
             HuSprAttrSet(record->group, i, 0);
         } else {
-            func_80054904_main(record->group, i, i * 12, 0);
+            HuSprPosSet(record->group, i, i * 12, 0);
             func_80055024_main(record->group, i, record->spriteData, 0);
             func_800550F4_main(record->group, i, 0);
             func_80054FF8_main(record->group, i, 0);

@@ -3219,14 +3219,14 @@ void func_80108BD0_w06(void) {
     f32 speed;
 
     data = DataRead(0x1300F7);
-    spriteId = func_80055810_main(data);
+    spriteId = HuSprAnimRead(data);
     DataClose(data);
     grp = HuSprGrpCreate(1, 5);
     func_80055024_main(grp, 0, spriteId, 0);
     HuSprAttrReset(grp, 0, 0xFFFF);
     HuSprAttrSet(grp, 0, 0x1008);
     HuSprPriSet(grp, 0, 0x1000);
-    func_80054904_main(grp, 0, 0xA0, 0x5A);
+    HuSprPosSet(grp, 0, 0xA0, 0x5A);
 
     angle = 0.0f;
     speed = 30.0f;
@@ -4897,13 +4897,13 @@ itemSelect:
             grp = HuSprGrpCreate(1, 5);
             i = 0;
             data = DataRead(D_8010197C_shared_board[item]);
-            spriteId = func_80055810_main(data);
+            spriteId = HuSprAnimRead(data);
             DataClose(data);
             func_80055024_main(grp, 0, spriteId, 0);
             HuSprPriSet(grp, 0, 0xA);
             func_800550F4_main(grp, 0, 0);
             HuSprAttrSet(grp, 0, 0x180C);
-            func_80054904_main(grp, 0, 0xA0, 0x5A);
+            HuSprPosSet(grp, 0, 0xA0, 0x5A);
             func_80055458_main(grp, 0, 0);
             MBVecForwardSet(&sp48);
             func_800ED128_shared_board(&player->player_obj->rot, &sp48, &player->player_obj->rot, 0xA);
@@ -4962,13 +4962,13 @@ itemSelect:
                     grp2 = HuSprGrpCreate(1, 5);
                     i = 0;
                     data = DataRead(D_8010197C_shared_board[item]);
-                    spriteId2 = func_80055810_main(data);
+                    spriteId2 = HuSprAnimRead(data);
                     DataClose(data);
                     func_80055024_main(grp2, 0, spriteId2, 0);
                     HuSprPriSet(grp2, 0, 0xB);
                     func_800550F4_main(grp2, 0, 0);
                     HuSprAttrSet(grp2, 0, 0x1000);
-                    func_80054904_main(grp2, 0, 0xA0, 0x5A);
+                    HuSprPosSet(grp2, 0, 0xA0, 0x5A);
                     func_80055458_main(grp2, 0, 0);
                     MBVecForwardSet(&sp48);
                     func_800ED128_shared_board(&player->player_obj->rot, &sp48, &player->player_obj->rot, 0xA);
@@ -4976,7 +4976,7 @@ itemSelect:
                     sprY = 0x5A;
                     scale = 0.0f;
                     do {
-                        func_80054904_main(grp2, 0, 0xA0, sprY);
+                        HuSprPosSet(grp2, 0, 0xA0, sprY);
                         func_80055458_main(grp2, 0, i * 25);
                         HuSprScaleSet(grp2, 0, scale, scale);
                         i++;
@@ -5109,19 +5109,19 @@ s32 func_8010DDE4_w06(s32 playerIndex) {
 
     grp = HuSprGrpCreate(1, 5);
     data = DataRead(0x13020E);
-    spriteId = func_80055810_main(data);
+    spriteId = HuSprAnimRead(data);
     DataClose(data);
     func_80055024_main(grp, 0, spriteId, 0);
     HuSprPriSet(grp, 0, 0xA);
     func_800550F4_main(grp, 0, 0);
     HuSprAttrSet(grp, 0, 0x1000);
-    func_80054904_main(grp, 0, D_8011C8DC_w06[playerIndex].x,
+    HuSprPosSet(grp, 0, D_8011C8DC_w06[playerIndex].x,
                         D_8011C8DC_w06[playerIndex].y);
     func_80055458_main(grp, 0, 0);
     HuAudFXPlay(0x134);
 
     for (i = 0; i < 0x11; i++) {
-        func_80054904_main(grp, 0,
+        HuSprPosSet(grp, 0,
                             (i * D_8011C8FC_w06[playerIndex].x) +
                                 D_8011C8DC_w06[playerIndex].x,
                             (i * D_8011C8FC_w06[playerIndex].y) +
@@ -5145,7 +5145,7 @@ s32 func_8010DDE4_w06(s32 playerIndex) {
 
     duration = hasRareItem ? 0x78 : 0x1E;
     for (i = 0; i < duration; i++) {
-        func_80054904_main(grp, 0,
+        HuSprPosSet(grp, 0,
                             (D_8011C8FC_w06[playerIndex].x * 16.0f) +
                                 D_8011C8DC_w06[playerIndex].x,
                             (D_8011C8FC_w06[playerIndex].y * 16.0f) +
@@ -5155,7 +5155,7 @@ s32 func_8010DDE4_w06(s32 playerIndex) {
     }
 
     for (i = 0x10; i >= 0; i--) {
-        func_80054904_main(grp, 0,
+        HuSprPosSet(grp, 0,
                             (i * D_8011C8FC_w06[playerIndex].x) +
                                 D_8011C8DC_w06[playerIndex].x,
                             (i * D_8011C8FC_w06[playerIndex].y) +
@@ -5192,13 +5192,13 @@ s32 func_8010E250_w06(s32 playerIndex) {
     hasRareItem = 0;
     grp = HuSprGrpCreate(1, 5);
     data = DataRead(0x13020E);
-    spriteId = func_80055810_main(data);
+    spriteId = HuSprAnimRead(data);
     DataClose(data);
     func_80055024_main(grp, 0, spriteId, 0);
     HuSprPriSet(grp, 0, 0xA);
     func_800550F4_main(grp, 0, 0);
     HuSprAttrSet(grp, 0, 0x1000);
-    func_80054904_main(grp, 0, D_8011C8DC_w06[playerIndex].x,
+    HuSprPosSet(grp, 0, D_8011C8DC_w06[playerIndex].x,
                         D_8011C8DC_w06[playerIndex].y);
     func_80055458_main(grp, 0, 0);
 
@@ -5206,7 +5206,7 @@ s32 func_8010E250_w06(s32 playerIndex) {
         playerGrp = HuSprGrpCreate(1, 5);
         playerSpriteVisible = 0;
         data = DataRead(D_80101040_shared_board[GwPlayer[playerIndex].chr]);
-        playerSpriteId = func_80055810_main(data);
+        playerSpriteId = HuSprAnimRead(data);
         DataClose(data);
         func_80055024_main(playerGrp, 0, playerSpriteId, 0);
         HuSprPriSet(playerGrp, 0, 0xA);
@@ -5219,7 +5219,7 @@ s32 func_8010E250_w06(s32 playerIndex) {
         if (MBItemFind(playerIndex, 0xC) != -1) {
             HuSprAttrSet(playerGrp, 0, 0x8000);
         }
-        func_80054904_main(playerGrp, 0,
+        HuSprPosSet(playerGrp, 0,
                             D_8011C8DC_w06[playerIndex].x -
                                 (D_8011C8FC_w06[playerIndex].x * 16.0f) - 8.0f,
                             D_8011C8DC_w06[playerIndex].y +
@@ -5228,7 +5228,7 @@ s32 func_8010E250_w06(s32 playerIndex) {
         HuAudFXPlay(0x133);
 
         for (i = 0; i < 0x11; i++) {
-            func_80054904_main(grp, 0,
+            HuSprPosSet(grp, 0,
                                 (i * D_8011C8FC_w06[playerIndex].x) +
                                     D_8011C8DC_w06[playerIndex].x,
                                 (i * D_8011C8FC_w06[playerIndex].y) +
@@ -5270,20 +5270,20 @@ s32 func_8010E250_w06(s32 playerIndex) {
             }
             state -= !(state < 2);
             if (state == 0) {
-                func_80054904_main(
+                HuSprPosSet(
                     grp, 0,
                     (D_8011C8FC_w06[playerIndex].x * 16.0f) +
                         D_8011C8DC_w06[playerIndex].x,
                     (D_8011C8FC_w06[playerIndex].y * 16.0f) +
                         D_8011C8DC_w06[playerIndex].y + (sindf(i * 90) * 2.0f));
             } else if (state == 9) {
-                func_80054904_main(
+                HuSprPosSet(
                     grp, 0,
                     (D_8011C8FC_w06[playerIndex].x * 16.0f) +
                         D_8011C8DC_w06[playerIndex].x + (sindf(angle * 90) * 2.0f),
                     (D_8011C8FC_w06[playerIndex].y * 16.0f) +
                         D_8011C8DC_w06[playerIndex].y);
-                func_80054904_main(
+                HuSprPosSet(
                     playerGrp, 0,
                     D_8011C8DC_w06[playerIndex].x - 8.0f +
                         (sindf(angle * 90) * 2.0f),
@@ -5321,7 +5321,7 @@ s32 func_8010E250_w06(s32 playerIndex) {
                         func_80055140_main(playerGrp, 0, 1, 0);
                         func_800550F4_main(playerGrp, 0, 1);
                         playerSpriteVisible = 1;
-                        func_80054904_main(
+                        HuSprPosSet(
                             playerGrp, 0, D_8011C8DC_w06[playerIndex].x - 8.0f,
                             (D_8011C8FC_w06[playerIndex].y * 16.0f) +
                                 D_8011C8DC_w06[playerIndex].y);
@@ -5332,7 +5332,7 @@ s32 func_8010E250_w06(s32 playerIndex) {
                 func_80055140_main(playerGrp, 0, 0, 0);
                 func_800550F4_main(playerGrp, 0, 1);
                 playerSpriteVisible = 0;
-                func_80054904_main(
+                HuSprPosSet(
                     playerGrp, 0,
                     D_8011C8DC_w06[playerIndex].x -
                         (D_8011C8FC_w06[playerIndex].x * 16.0f) - 8.0f,
@@ -5350,7 +5350,7 @@ s32 func_8010E250_w06(s32 playerIndex) {
 
     if (attempts == 0) {
         for (i = 0x10; i >= 0; i -= 2) {
-            func_80054904_main(grp, 0,
+            HuSprPosSet(grp, 0,
                                 (i * D_8011C8FC_w06[playerIndex].x) +
                                     D_8011C8DC_w06[playerIndex].x,
                                 (i * D_8011C8FC_w06[playerIndex].y) +
@@ -5361,12 +5361,12 @@ s32 func_8010E250_w06(s32 playerIndex) {
         }
     } else {
         for (i = 0x10; i >= -0x10; i -= 2) {
-            func_80054904_main(grp, 0,
+            HuSprPosSet(grp, 0,
                                 (i * D_8011C8FC_w06[playerIndex].x) +
                                     D_8011C8DC_w06[playerIndex].x,
                                 (i * D_8011C8FC_w06[playerIndex].y) +
                                     D_8011C8DC_w06[playerIndex].y);
-            func_80054904_main(playerGrp, 0,
+            HuSprPosSet(playerGrp, 0,
                                 ((i - 0x10) * D_8011C8FC_w06[playerIndex].x) +
                                     D_8011C8DC_w06[playerIndex].x - 8.0f,
                                 (i * D_8011C8FC_w06[playerIndex].y) +
@@ -6140,7 +6140,7 @@ void func_80110C80_w06(void) {
 
     for (i = 1; i <= work->duration; i++) {
         if (work->spriteGroup != -1) {
-            func_80054904_main(work->spriteGroup, 0,
+            HuSprPosSet(work->spriteGroup, 0,
                                 work->startX + (deltaX * i), work->startY + (deltaY * i));
         }
 
@@ -6150,7 +6150,7 @@ void func_80110C80_w06(void) {
     }
 
     if (work->spriteGroup != -1) {
-        func_80054904_main(work->spriteGroup, 0, work->endX, work->endY);
+        HuSprPosSet(work->spriteGroup, 0, work->endX, work->endY);
     }
 
     MBStatusItemPosSet(GwSystem.current_player_index, MBItemSelNoGet(),
@@ -6507,15 +6507,15 @@ void func_80112198_w06(void) {
     func_800F6848_shared_board(GwSystem.current_player_index, MBItemSelNoGet(), &x, &y);
     x += 20.0f;
     y -= 20.0f;
-    func_80054904_main(group, 0, x, y);
-    func_80055420_main(group, 0, 0xFF, 0xFF, 0);
+    HuSprPosSet(group, 0, x, y);
+    HuSprColorSet(group, 0, 0xFF, 0xFF, 0);
 
     alpha = 0xFF;
     angle = (f32)D_8011CB30_w06[index];
     for (; alpha >= 0; alpha -= 0x14) {
         x += cosdf(angle) * 5.0f;
         y -= sindf(angle) * 5.0f;
-        func_80054904_main(group, 0, x, y);
+        HuSprPosSet(group, 0, x, y);
         func_80055458_main(group, 0, alpha);
         HuPrcVSleep();
     }
@@ -6535,7 +6535,7 @@ void func_801123A8_w06(void) {
 
     loc = &GwSystem;
     data = DataRead(0x001301B8);
-    D_8011E34C_w06 = func_80055810_main(data);
+    D_8011E34C_w06 = HuSprAnimRead(data);
     DataClose(data);
     func_80111870_w06();
 
@@ -6626,7 +6626,7 @@ void func_80112668_w06(void) {
 
     loc = &GwSystem;
     data = DataRead(0x001301B8);
-    D_8011E34C_w06 = func_80055810_main(data);
+    D_8011E34C_w06 = HuSprAnimRead(data);
     DataClose(data);
     func_80111870_w06();
 
@@ -6971,7 +6971,7 @@ void func_80113404_w06(void) {
     player = GwSystem.current_player_index;
     group = HuSprGrpCreate(1, 0);
     sprite = DataRead(D_8010197C_shared_board[1]);
-    spriteCount = func_80055810_main(sprite);
+    spriteCount = HuSprAnimRead(sprite);
     DataClose(sprite);
     func_80055024_main(group, 0, spriteCount, 0);
     HuSprPriSet(group, 0, 0x4780);
@@ -6999,7 +6999,7 @@ void func_80113404_w06(void) {
     GwPlayer[player].itemNo[MBItemSelNoGet()] = -1;
     MBStatusItemTPLvlSet(player, MBItemSelNoGet(), 0);
     func_800F6848_shared_board(player, MBItemSelNoGet(), &position[0], &position[1]);
-    func_80054904_main(group, 0, position[0], position[1]);
+    HuSprPosSet(group, 0, position[0], position[1]);
     HuSprAttrReset(group, 0, 0x8000);
     MBItemRemoveEmpty(player);
     MBStatusShrink(-1);
@@ -7065,10 +7065,10 @@ void func_8011394C_w06(void) {
                  D_8011C8DC_w06[D_8011E350_w06].x);
     yPos = (s32)((D_8011C8FC_w06[D_8011E350_w06].y * 16.0f) +
                  D_8011C8DC_w06[D_8011E350_w06].y);
-    func_80054904_main(
+    HuSprPosSet(
         setupGroup, 0, (f32)xPos + D_8011CB50_w06[playerIndex].x,
         (f32)yPos + D_8011CB50_w06[playerIndex].y);
-    func_80055420_main(group, 0, 0xFF, 0xFF, 0xFF);
+    HuSprColorSet(group, 0, 0xFF, 0xFF, 0xFF);
     func_80055458_main(group, 0, 0xFF);
 
     scale = 0.0f;
@@ -7103,13 +7103,13 @@ void func_80113B68_w06(void) {
 
     playerIndex = (s32)HuPrcCurrentGet()->user_data;
     data = DataRead(0x21002C);
-    itemSpriteId = func_80055810_main(data);
+    itemSpriteId = HuSprAnimRead(data);
     DataClose(data);
     data = DataRead(0x1301BA);
-    auraSpriteId = func_80055810_main(data);
+    auraSpriteId = HuSprAnimRead(data);
     DataClose(data);
     data = DataRead(0x1301B9);
-    D_8011E354_w06 = func_80055810_main(data);
+    D_8011E354_w06 = HuSprAnimRead(data);
     DataClose(data);
 
     group = HuSprGrpCreate(2, 2);
@@ -7122,7 +7122,7 @@ void func_80113B68_w06(void) {
     func_80055024_main(setupGroup, 1, auraSpriteId, 0);
     HuSprPriSet(setupGroup, 1, 9);
     HuSprAttrSet(setupGroup, 1, 0x9000);
-    func_80055420_main(setupGroup, 1, 0xFF, 0xFF, 0xFF);
+    HuSprColorSet(setupGroup, 1, 0xFF, 0xFF, 0xFF);
     func_80055458_main(setupGroup, 1, 0xFF);
     HuSprScaleSet(setupGroup, 1, 2.0f, 2.0f);
     func_800554C4_main(setupGroup, 1, 0);
@@ -7131,10 +7131,10 @@ void func_80113B68_w06(void) {
     if (playerIndex & 1) {
         HuSprAttrSet(setupGroup, 0, 1);
         HuSprAttrSet(setupGroup, 1, 1);
-        func_80054904_main(setupGroup, 1, 0x14, -5);
+        HuSprPosSet(setupGroup, 1, 0x14, -5);
     } else {
         yPos = 0x78;
-        func_80054904_main(group, 1, -0x14, -5);
+        HuSprPosSet(group, 1, -0x14, -5);
     }
 
     xPos = (playerIndex < 2) ? -0x20 : 0x110;
@@ -7155,7 +7155,7 @@ void func_80113B68_w06(void) {
                 break;
             }
         }
-        func_80054904_main(group, 0, yPos, xPos);
+        HuSprPosSet(group, 0, yPos, xPos);
         HuPrcVSleep();
     } while (1);
 
@@ -7278,14 +7278,14 @@ void func_80114338_w06(void) {
 
     mbItemCursorGrpId = HuSprGrpCreate(1, 5);
     data = DataRead(D_80101040_shared_board[GwPlayer[system->current_player_index].chr]);
-    spriteId = func_80055810_main(data);
+    spriteId = HuSprAnimRead(data);
     DataClose(data);
     func_80055024_main(mbItemCursorGrpId, 0, spriteId, 0);
     HuSprPriSet(mbItemCursorGrpId, 0, 10);
     func_800550F4_main(mbItemCursorGrpId, 0, 1);
     HuSprAttrSet(mbItemCursorGrpId, 0, 0x8000);
     MBStatusItemPosGet(-1, 0, &positionX, &positionY);
-    func_80054904_main(mbItemCursorGrpId, 0, positionX, positionY);
+    HuSprPosSet(mbItemCursorGrpId, 0, positionX, positionY);
     MBStatusShrink(-1);
     MBStatusItemDispSetAll(1);
     MBStatusGrow(-1);
@@ -8103,11 +8103,11 @@ void func_8011681C_w06(s32 arg0, s32 arg1, f32 *arg2) {
     while (arg1 != 0) {
         curX += stepX;
         curY += stepY;
-        func_80054904_main(arg0, 0, curX, curY);
+        HuSprPosSet(arg0, 0, curX, curY);
         HuPrcVSleep();
         arg1--;
     }
-    func_80054904_main(arg0, 0, arg2[0], arg2[1]);
+    HuSprPosSet(arg0, 0, arg2[0], arg2[1]);
 }
 
 void func_80116954_w06(void) {
@@ -8120,13 +8120,13 @@ void func_80116954_w06(void) {
 
     switch (idx) {
         case 0:
-            func_80054904_main(D_8011E370_w06[idx], 0, 0xB1, 0x2C);
+            HuSprPosSet(D_8011E370_w06[idx], 0, 0xB1, 0x2C);
             break;
         case 1:
-            func_80054904_main(D_8011E370_w06[idx], 0, 0x7A, 0x39);
+            HuSprPosSet(D_8011E370_w06[idx], 0, 0x7A, 0x39);
             break;
         default:
-            func_80054904_main(D_8011E370_w06[idx], 0, 0xA0, 0x98);
+            HuSprPosSet(D_8011E370_w06[idx], 0, 0xA0, 0x98);
             divisor = 30;
             break;
     }
@@ -8157,13 +8157,13 @@ void func_80116AC4_w06(omObjData *obj) {
         sp28.b = (D_8011CBA8_w06[i + 1].b - sp18.b) / 30;
 
         for (j = 0; j < 30; j++) {
-            func_80055420_main(D_8011E370_w06[3], 0, sp18.r, sp18.g, sp18.b);
+            HuSprColorSet(D_8011E370_w06[3], 0, sp18.r, sp18.g, sp18.b);
             sp18.r += sp28.r;
             sp18.g += sp28.g;
             sp18.b += sp28.b;
             HuPrcVSleep();
         }
-        func_80055420_main(D_8011E370_w06[3], 0, D_8011CBA8_w06[i + 1].r, D_8011CBA8_w06[i + 1].g, D_8011CBA8_w06[i + 1].b);
+        HuSprColorSet(D_8011E370_w06[3], 0, D_8011CBA8_w06[i + 1].r, D_8011CBA8_w06[i + 1].g, D_8011CBA8_w06[i + 1].b);
         HuPrcSleep(0xA);
     }
 
@@ -8245,7 +8245,7 @@ void func_80116F10_w06(void) {
 
     temp_s4 = HuSprGrpCreate(1, 0);
     temp_v0 = DataRead(D_8010197C_shared_board[18]);
-    temp_s7 = func_80055810_main(temp_v0);
+    temp_s7 = HuSprAnimRead(temp_v0);
     DataClose(temp_v0);
     func_80055024_main(temp_s4, 0, temp_s7, 0);
     HuSprPriSet(temp_s4, 0, 0x4776U);
@@ -8253,13 +8253,13 @@ void func_80116F10_w06(void) {
     for (i = 0; i < 4; i++) {
         D_8011E370_w06[i] = HuSprGrpCreate(1, 0);
         temp_v0 = DataRead((i + 0x1BB) | 0x130000);
-        sp18[i] = func_80055810_main(temp_v0);
+        sp18[i] = HuSprAnimRead(temp_v0);
         DataClose(temp_v0);
         func_80055024_main(D_8011E370_w06[i], 0, sp18[i], 0);
         HuSprPriSet(D_8011E370_w06[i], 0, 0x4780U);
         HuSprAttrSet(D_8011E370_w06[i], 0, 0x980CU);
         func_80055458_main(D_8011E370_w06[i], 0, 0U);
-        func_80055420_main(D_8011E370_w06[i], 0, 0xFF, 0xFF, 0);
+        HuSprColorSet(D_8011E370_w06[i], 0, 0xFF, 0xFF, 0);
     }
     temp_v0_3 = MBModelCreate(0x46, NULL);
     D_8011E380_w06 = temp_v0_3;
@@ -8273,7 +8273,7 @@ void func_80116F10_w06(void) {
     HuSprAttrSet(mbItemCursorGrpId, 0, 0x8000U);
     MBStatusItemTPLvlSet(system->current_player_index, MBItemSelNoGet(), 0);
     MBStatusItemPosGet(system->current_player_index, MBItemSelNoGet(), &sp30, &sp34);
-    func_80054904_main(temp_s4, 0, sp30, sp34);
+    HuSprPosSet(temp_s4, 0, sp30, sp34);
     sp28[0] = 160.0f;
     sp28[1] = 76.0f;
     HuAudFXPlay(0x145);
@@ -8306,7 +8306,7 @@ void func_80116F10_w06(void) {
     HuAudFXPlay(0x14E);
     MBStatusSprPosGet(temp_s4, 0, &sp38, &sp3C);
     for (var_f20 = 0.0f, var_s1 = 0; var_f20 < 90.0f; var_f20 += 3.6f) {
-        func_80054904_main(temp_s4, 0, ((cosdf((2.0f * var_f20) + 270.0f) * 80.0f) + sp38), (((1.0f - cosdf(var_f20)) * 90.0f) + sp3C));
+        HuSprPosSet(temp_s4, 0, ((cosdf((2.0f * var_f20) + 270.0f) * 80.0f) + sp38), (((1.0f - cosdf(var_f20)) * 90.0f) + sp3C));
         if (!(var_f20 > 54.0f)) {
             var_v1 = 0;
         } else {
@@ -8323,7 +8323,7 @@ void func_80116F10_w06(void) {
     }
 
     temp_s0_3 = (s16)(s32)((cosdf(450.0f) * 80.0f) + sp38);
-    func_80054904_main(temp_s4, 0, temp_s0_3, (((1.0f - cosdf(90.0f)) * 90.0f) + sp3C));
+    HuSprPosSet(temp_s4, 0, temp_s0_3, (((1.0f - cosdf(90.0f)) * 90.0f) + sp3C));
 
     for (j = 255; j > 0; j -= 0x19, HuPrcVSleep()) {
         func_80055458_main(temp_s4, 0, j);
@@ -8339,7 +8339,7 @@ void func_80116F10_w06(void) {
 
     HuSprAttrReset(D_8011E370_w06[3], 0, 0x8000U);
     func_80055458_main(D_8011E370_w06[3], 0, 0xFFU);
-    func_80054904_main(D_8011E370_w06[3], 0, 0xA0, 0x78);
+    HuSprPosSet(D_8011E370_w06[3], 0, 0xA0, 0x78);
     HuPrcChildLink(HuPrcCurrentGet(), omAddPrcObj(func_80116AC4_w06, 0x4002U, 0, 0));
     sp40 = 0;
     omAddPrcObj(func_80116C8C_w06, 0x4002U, 0, 0)->user_data = &sp40;

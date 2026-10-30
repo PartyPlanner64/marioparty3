@@ -199,14 +199,14 @@ void func_80105AD8_koopa(omObjData *obj) {
                 func_8005BA90_main(window[0], window[1] + window[3] / 2, (window[2] + window[4] / 2) + (s16)obj->trans.y);
             }
             if (D_8010955E_koopa != -1) {
-                func_80054904_main(D_8010955E_koopa, 0, D_8010951A_koopa[0] + 100, (s32)obj->trans.y + D_8010951A_koopa[1] + 50);
+                HuSprPosSet(D_8010955E_koopa, 0, D_8010951A_koopa[0] + 100, (s32)obj->trans.y + D_8010951A_koopa[1] + 50);
             }
             if (D_8010955A_koopa != -1) {
-                func_80054904_main(D_8010955A_koopa, 0, D_8010951A_koopa[0] + 100, (s32)obj->trans.y + D_8010951A_koopa[1] - 30);
+                HuSprPosSet(D_8010955A_koopa, 0, D_8010951A_koopa[0] + 100, (s32)obj->trans.y + D_8010951A_koopa[1] - 30);
             }
             for (i = 0; i < 2; i++) {
                 if (D_80109554_koopa[i] != -1) {
-                    func_80054904_main(D_80109554_koopa[i], 0, D_8010951A_koopa[0] + i * 200, (s32)obj->trans.y + D_8010951A_koopa[1] - 40);
+                    HuSprPosSet(D_80109554_koopa[i], 0, D_8010951A_koopa[0] + i * 200, (s32)obj->trans.y + D_8010951A_koopa[1] - 40);
                 }
             }
             if (obj->trans.y >= 288.0f) {
@@ -410,14 +410,14 @@ void func_80105AD8_koopa(omObjData *obj) {
                 func_8005BA90_main(window[0], window[1] + window[3] / 2, (window[2] + window[4] / 2) + (s16)obj->trans.y);
             }
             if (D_8010955E_koopa != -1) {
-                func_80054904_main(D_8010955E_koopa, 0, D_8010951A_koopa[0] + 100, (s32)obj->trans.y + D_8010951A_koopa[1] + 50);
+                HuSprPosSet(D_8010955E_koopa, 0, D_8010951A_koopa[0] + 100, (s32)obj->trans.y + D_8010951A_koopa[1] + 50);
             }
             if (D_8010955A_koopa != -1) {
-                func_80054904_main(D_8010955A_koopa, 0, D_8010951A_koopa[0] + 100, (s32)obj->trans.y + D_8010951A_koopa[1] - 30);
+                HuSprPosSet(D_8010955A_koopa, 0, D_8010951A_koopa[0] + 100, (s32)obj->trans.y + D_8010951A_koopa[1] - 30);
             }
             for (i = 0; i < 2; i++) {
                 if (D_80109554_koopa[i] != -1) {
-                    func_80054904_main(D_80109554_koopa[i], 0, D_8010951A_koopa[0] + i * 200, (s32)obj->trans.y + D_8010951A_koopa[1] - 40);
+                    HuSprPosSet(D_80109554_koopa[i], 0, D_8010951A_koopa[0] + i * 200, (s32)obj->trans.y + D_8010951A_koopa[1] - 40);
                 }
             }
             if (obj->trans.y <= 0) {
@@ -432,7 +432,7 @@ void func_80105AD8_koopa(omObjData *obj) {
                 break;
             }
         }
-        func_80054904_main(D_80109562_koopa, 0, D_801093A8_koopa[i * 2 + 1] + 50, D_801093A4_koopa + obj->work[1] * 20);
+        HuSprPosSet(D_80109562_koopa, 0, D_801093A8_koopa[i * 2 + 1] + 50, D_801093A4_koopa + obj->work[1] * 20);
     }
 }
 
@@ -551,23 +551,23 @@ void func_80106C78_koopa(void) {
     if (D_8010955E_koopa == -1) {
         D_8010955E_koopa = HuSprGrpCreate(1, 5);
         temp_v0 = DataRead(0x1301EB);
-        D_80109560_koopa = func_80055810_main(temp_v0);
+        D_80109560_koopa = HuSprAnimRead(temp_v0);
         DataClose(temp_v0);
         func_80055024_main(D_8010955E_koopa, 0, D_80109560_koopa, 0);
         HuSprPriSet(D_8010955E_koopa, 0, 0x4770);
         HuSprAttrSet(D_8010955E_koopa, 0, 0x1000);
-        func_80054904_main(D_8010955E_koopa, 0, D_8010951A_koopa[0] + 0x64, D_8010951A_koopa[1] + 0x32);
-        func_80055420_main(D_8010955E_koopa, 0, 0, 0, 0);
+        HuSprPosSet(D_8010955E_koopa, 0, D_8010951A_koopa[0] + 0x64, D_8010951A_koopa[1] + 0x32);
+        HuSprColorSet(D_8010955E_koopa, 0, 0, 0, 0);
         D_8010955A_koopa = HuSprGrpCreate(1, 5);
         temp_v0 = DataRead(0x1301E9);
-        D_8010955C_koopa = func_80055810_main(temp_v0);
+        D_8010955C_koopa = HuSprAnimRead(temp_v0);
         DataClose(temp_v0);
         func_80055024_main(D_8010955A_koopa, 0, D_8010955C_koopa, 0);
         HuSprPriSet(D_8010955A_koopa, 0, 0x4770);
         HuSprAttrSet(D_8010955A_koopa, 0, 0x1000);
-        func_80054904_main(D_8010955A_koopa, 0, D_8010951A_koopa[0] + 0x64, D_8010951A_koopa[1] - 0x1E);
+        HuSprPosSet(D_8010955A_koopa, 0, D_8010951A_koopa[0] + 0x64, D_8010951A_koopa[1] - 0x1E);
         temp_v0 = DataRead(0x130260);
-        D_80109558_koopa = func_80055810_main(temp_v0);
+        D_80109558_koopa = HuSprAnimRead(temp_v0);
         DataClose(temp_v0);
         randVal = MBRand(5.0f);
         for (i = 0; i < ARRAY_COUNT(D_80109554_koopa); i++) {
@@ -575,23 +575,23 @@ void func_80106C78_koopa(void) {
             func_80055024_main(D_80109554_koopa[i], 0, D_80109558_koopa, 1);
             HuSprPriSet(D_80109554_koopa[i], 0, 0x4770);
             HuSprAttrSet(D_80109554_koopa[i], 0, 0x1000);
-            func_80054904_main(D_80109554_koopa[i], 0, D_8010951A_koopa[0] + (i * 0xC8), (D_8010951A_koopa[1] - 0x28));
+            HuSprPosSet(D_80109554_koopa[i], 0, D_8010951A_koopa[0] + (i * 0xC8), (D_8010951A_koopa[1] - 0x28));
             if ((randVal == 0) && (D_80109504_koopa == 0)) {
                 var_v0_2 = D_80109500_koopa;
                 if (var_v0_2 == 0) {
-                    func_80055420_main(D_80109554_koopa[i], 0, 0, 0, 0xFF);
+                    HuSprColorSet(D_80109554_koopa[i], 0, 0, 0, 0xFF);
                 } else {
                     if (var_v0_2 < 0) {
                         var_v0_2 = -var_v0_2;
                     }
                     if (var_v0_2 < 2) {
-                        func_80055420_main(D_80109554_koopa[i], 0, 0xFF, 0xFF, 0);
+                        HuSprColorSet(D_80109554_koopa[i], 0, 0xFF, 0xFF, 0);
                     } else {
-                        func_80055420_main(D_80109554_koopa[i], 0, 0xFF, 0, 0);
+                        HuSprColorSet(D_80109554_koopa[i], 0, 0xFF, 0, 0);
                     }
                 }
             } else {
-                func_80055420_main(D_80109554_koopa[i], 0, 0xFF, 0, 0);
+                HuSprColorSet(D_80109554_koopa[i], 0, 0xFF, 0, 0);
             }
         }
     }
@@ -603,12 +603,12 @@ void func_80106FC8_koopa(void) {
     if (D_80109562_koopa == -1) {
         D_80109562_koopa = HuSprGrpCreate(1, 5);
         temp_v0 = DataRead(0x1301EA);
-        D_80109564_koopa = func_80055810_main(temp_v0);
+        D_80109564_koopa = HuSprAnimRead(temp_v0);
         DataClose(temp_v0);
         func_80055024_main(D_80109562_koopa, 0, D_80109564_koopa, 0);
         HuSprPriSet(D_80109562_koopa, 0, 0x100);
         HuSprAttrSet(D_80109562_koopa, 0, 0x1000);
-        func_80054904_main(D_80109562_koopa, 0, 0x32, D_801093A4_koopa);
+        HuSprPosSet(D_80109562_koopa, 0, 0x32, D_801093A4_koopa);
     }
 }
 
@@ -876,21 +876,21 @@ s32 func_80107A9C_koopa(void) {
     }
     sprite = func_800F2C48_shared_board(1, 0);
     data = DataRead(0x21003A);
-    sprite->model[0] = func_80055810_main(data);
+    sprite->model[0] = HuSprAnimRead(data);
     DataClose(data);
     func_80055024_main(sprite->spriteGroup, 0, sprite->model[0], 0);
     HuSprAttrReset(sprite->spriteGroup, 0, 0xFFFF);
     HuSprAttrSet(sprite->spriteGroup, 0, 0x1000);
     HuSprPriSet(sprite->spriteGroup, 0, 0x1000);
-    func_80054904_main(sprite->spriteGroup, 0, 160, -32);
+    HuSprPosSet(sprite->spriteGroup, 0, 160, -32);
     func_8010775C_koopa();
     for (i = 0; i <= 120; i += 4) {
-        func_80054904_main(sprite->spriteGroup, 0, 160, i - 32);
+        HuSprPosSet(sprite->spriteGroup, 0, 160, i - 32);
         HuPrcVSleep();
     }
     HuPrcSleep(15);
     for (i = 0; i < 70; i += 5) {
-        func_80054904_main(sprite->spriteGroup, 0, sindf(i) * 90.0f + 160.0f, sindf(i + 90) * 50.0f + 38.0f);
+        HuSprPosSet(sprite->spriteGroup, 0, sindf(i) * 90.0f + 160.0f, sindf(i + 90) * 50.0f + 38.0f);
         func_80055458_main(sprite->spriteGroup, 0, 256 - i * 2);
         HuSprScaleSet(sprite->spriteGroup, 0, 1.0f - i / 140.0f, 1.0f - i / 140.0f);
         HuPrcVSleep();
@@ -927,21 +927,21 @@ s32 func_80107DDC_koopa(void) {
     }
     sprite = func_800F2C48_shared_board(1, 0);
     data = DataRead(0x210034);
-    sprite->model[0] = func_80055810_main(data);
+    sprite->model[0] = HuSprAnimRead(data);
     DataClose(data);
     func_80055024_main(sprite->spriteGroup, 0, sprite->model[0], 0);
     HuSprAttrReset(sprite->spriteGroup, 0, 0xFFFF);
     HuSprAttrSet(sprite->spriteGroup, 0, 0x1000);
     HuSprPriSet(sprite->spriteGroup, 0, 0x1000);
-    func_80054904_main(sprite->spriteGroup, 0, 160, -32);
+    HuSprPosSet(sprite->spriteGroup, 0, 160, -32);
     func_8010775C_koopa();
     for (i = 0; i <= 120; i += 4) {
-        func_80054904_main(sprite->spriteGroup, 0, 160, i - 32);
+        HuSprPosSet(sprite->spriteGroup, 0, 160, i - 32);
         HuPrcVSleep();
     }
     HuPrcSleep(15);
     for (i = 0; i < 70; i += 5) {
-        func_80054904_main(sprite->spriteGroup, 0, sindf(i) * 90.0f + 160.0f, sindf(i + 90) * 50.0f + 38.0f);
+        HuSprPosSet(sprite->spriteGroup, 0, sindf(i) * 90.0f + 160.0f, sindf(i + 90) * 50.0f + 38.0f);
         func_80055458_main(sprite->spriteGroup, 0, 256 - i * 2);
         HuSprScaleSet(sprite->spriteGroup, 0, 1.0f - i / 140.0f, 1.0f - i / 140.0f);
         HuPrcVSleep();
@@ -957,13 +957,13 @@ s32 func_80107DDC_koopa(void) {
         HuSprAttrReset(sprite->spriteGroup, 0, 0x8000);
         func_80055458_main(sprite->spriteGroup, 0, 256);
         for (i = 0; i <= 10; i++) {
-            func_80054904_main(sprite->spriteGroup, 0, 160, 88);
+            HuSprPosSet(sprite->spriteGroup, 0, 160, 88);
             HuSprScaleSet(sprite->spriteGroup, 0, i / 10.0f, i / 10.0f);
             HuPrcVSleep();
         }
         HuPrcSleep(15);
         for (i = 0; i < 70; i += 5) {
-            func_80054904_main(sprite->spriteGroup, 0, sindf(i) * 90.0f + 160.0f, sindf(i + 90) * 50.0f + 38.0f);
+            HuSprPosSet(sprite->spriteGroup, 0, sindf(i) * 90.0f + 160.0f, sindf(i + 90) * 50.0f + 38.0f);
             func_80055458_main(sprite->spriteGroup, 0, 256 - i * 2);
             HuSprScaleSet(sprite->spriteGroup, 0, 1.0f - i / 140.0f, 1.0f - i / 140.0f);
             HuPrcVSleep();

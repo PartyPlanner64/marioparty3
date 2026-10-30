@@ -662,23 +662,23 @@ void func_80107520_chip_shot_challenge(omObjData *object) {
     object->func = func_801091E8_chip_shot_challenge;
 
     data = DataRead(0x2D);
-    image1 = func_80055810_main(data);
+    image1 = HuSprAnimRead(data);
     DataClose(data);
     data = DataRead(0x3C001F);
-    image2 = func_80055810_main(data);
+    image2 = HuSprAnimRead(data);
     DataClose(data);
 
     group = D_8010AAC0_chip_shot_challenge = HuSprGrpCreate(4, 5);
     func_80055024_main(group, 0, image1, 0);
     HuSprAttrReset(group, 0, 0xFFFF);
     HuSprAttrSet(group, 0, 0x8000);
-    func_80054904_main(group, 0, 0x80, 0x64);
+    HuSprPosSet(group, 0, 0x80, 0x64);
     HuSprPriSet(group, 0, 1);
     x = 15;
     for (i = 1; i < 4; i++) {
         HuSprPriSet(group, i, 1);
         func_80055024_main(group, i, image1, 0);
-        func_80054904_main(group, i, x, 0);
+        HuSprPosSet(group, i, x, 0);
         HuSprAttrReset(group, i, 0xFFFF);
         HuSprAttrSet(group, i, 0x8000);
         if (i == 1) {
@@ -694,11 +694,11 @@ void func_80107520_chip_shot_challenge(omObjData *object) {
     func_80055024_main(group, 0, image2, 0);
     HuSprAttrReset(group, 0, 0xFFFF);
     HuSprAttrSet(group, 0, 0x8000);
-    func_80054904_main(group, 0, 0x9F, 0x64);
+    HuSprPosSet(group, 0, 0x9F, 0x64);
     HuSprPriSet(group, 0, 1);
     HuSprPriSet(group, 1, 1);
     func_80055024_main(group, 1, image2, 0);
-    func_80054904_main(group, 1, 0x23, 0);
+    HuSprPosSet(group, 1, 0x23, 0);
     HuSprAttrReset(group, 1, 0xFFFF);
     HuSprAttrSet(group, 1, 0x8000);
     func_800554C4_main(group, 1, 0);

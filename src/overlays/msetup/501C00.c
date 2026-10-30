@@ -101,7 +101,7 @@ void func_8010E8C8_msetup(Array2D *, s32, s32, f32, f32, f32, f32, s32);
 void func_8010F320_msetup(Process *, s16, s16, s16);
 s16 func_8010F2F4_msetup(Process *, s16);
 s32 _CheckFlag(s32);            /* extern */
-s16 func_80055810_main(void *); /* extern */
+s16 HuSprAnimRead(void *); /* extern */
 s16 func_80113ED4_msetup(MsetupMenuState *arg0);
 void func_80107F88_msetup(s16, s16, s16);
 void func_80105F7C_msetup(MsetupModelEntry *, s16);

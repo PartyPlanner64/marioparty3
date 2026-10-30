@@ -240,12 +240,17 @@ CRotM = 0x800D6AE0; //
 // sprman
 HuSprGrpKill = 0x800525C8; //rom:0x531C8
 HuSprGrpCreate = 0x8005279C; //rom:0x5339C
+HuSprPosSet = 0x80054904; //rom:0x55504
+HuSprSpeedSet = 0x800550B4; //rom:0x55CB4
 HuSprScaleSet = 0x800551D8; //rom:0x55DD8
 HuSprPriSet = 0x80055294; //rom:0x55E94
+HuSprZRotSet = 0x800552DC; //rom:0x55EDC
 HuSprAttrReset = 0x8005532C; //rom:0x55F2C
 HuSprAttrSet = 0x800553A8; //rom:0x55FA8
+HuSprColorSet = 0x80055420; //rom:0x56020
 HuSprGet = 0x80055520; //rom:0x56120
 HuSprKill = 0x80055670; //rom:0x56270
+HuSprAnimRead = 0x80055810; //rom:0x56410
 HuSprGrpLast = 0x800C9934; //
 HuSprGrpFirst = 0x800CC0A0; //
 HuSprGrpData = 0x800CDD70; //

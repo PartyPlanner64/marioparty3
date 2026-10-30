@@ -188,7 +188,7 @@ static void func_800DAF1C_shared_board(omObjData *arg0) {
     pos.z = GwPlayer[arg0->work[3]].player_obj->coords.z;
     MBCamera3Dto2D(&pos, pos2d);
 
-    func_80054904_main(entry->sprites[arg0->work[1]], 0, pos2d[0], pos2d[1] - 8.0f);
+    HuSprPosSet(entry->sprites[arg0->work[1]], 0, pos2d[0], pos2d[1] - 8.0f);
 
     if ((pos2d[0] >= 0.0f) && (pos2d[0] <= 320.0f) &&
         (pos2d[1] >= 0.0f) && (pos2d[1] <= 240.0f)) {
@@ -232,7 +232,7 @@ static void func_800DB318_shared_board(omObjData *arg0) {
     pos.z = GwPlayer[arg0->work[3]].player_obj->coords.z;
     MBCamera3Dto2D(&pos, pos2d);
 
-    func_80054904_main(entry->sprites[entry->rollValueIdx], 0, pos2d[0], pos2d[1]);
+    HuSprPosSet(entry->sprites[entry->rollValueIdx], 0, pos2d[0], pos2d[1]);
 }
 
 void func_800DB56C_shared_board(void) {
@@ -296,7 +296,7 @@ void func_800DB6A8_shared_board(s32 arg0) {
         D_800CDBD0_main[0].unk_0C++;
     } else if ((entry->rollValueIdx == 0) || (D_8010570E_shared_board == 1)) {
         data = DataRead(0x13020D);
-        entry->unk_14 = func_80055810_main(data);
+        entry->unk_14 = HuSprAnimRead(data);
         entry->unk_0C = 1;
         DataClose(data);
     }
@@ -307,7 +307,7 @@ void func_800DB6A8_shared_board(s32 arg0) {
         func_80055024_main(entry->sprites[entry->rollValueIdx], i, entry->unk_14, 0);
         HuSprPriSet(entry->sprites[entry->rollValueIdx], i, 0x4000);
         HuSprAttrSet(entry->sprites[entry->rollValueIdx], i, 0x9000);
-        func_800550B4_main(entry->sprites[entry->rollValueIdx], i, 0.0f);
+        HuSprSpeedSet(entry->sprites[entry->rollValueIdx], i, 0.0f);
         HuSprScaleSet(entry->sprites[entry->rollValueIdx], i, 0.0f, 0.0f);
         func_80055140_main(entry->sprites[entry->rollValueIdx], i, 0, 0);
         func_800550F4_main(entry->sprites[entry->rollValueIdx], i, 1);
@@ -345,12 +345,12 @@ void func_800DB884_shared_board(s32 arg0) {
             if ((func_800F8858_shared_board() == 0) && (D_8010570F_shared_board == 0)) {
                 func_800DE9B8_shared_board(arg0, entry->rollValueIdx, pos2d[0], pos2d[1] - 8.0f);
             } else {
-                func_80054904_main(entry->sprites[entry->rollValueIdx], 0, pos2d[0], pos2d[1]);
+                HuSprPosSet(entry->sprites[entry->rollValueIdx], 0, pos2d[0], pos2d[1]);
             }
 
             if ((pos2d[0] >= 0.0f) && (pos2d[0] <= 320.0f) &&
                 (pos2d[1] >= 0.0f) && (pos2d[1] <= 240.0f)) {
-                func_80054904_main(entry->sprites[entry->rollValueIdx], 0, 160,
+                HuSprPosSet(entry->sprites[entry->rollValueIdx], 0, 160,
                                     120 - (s32)(MBCameraZoomGet() * 24.0f));
             }
 
@@ -1288,13 +1288,13 @@ static void func_800DDE3C_shared_board(void) {
                 HuAudFXPlay(0x19);
                 grp = HuSprGrpCreate(1, 5);
                 data = DataRead(D_8010197C_shared_board[work->unk_08]);
-                anim = func_80055810_main(data);
+                anim = HuSprAnimRead(data);
                 DataClose(data);
                 func_80055024_main(grp, 0, anim, 0);
                 HuSprPriSet(grp, 0, 0xB);
                 func_800550F4_main(grp, 0, 0);
                 HuSprAttrSet(grp, 0, 0x180C);
-                func_80054904_main(grp, 0, 160, 90);
+                HuSprPosSet(grp, 0, 160, 90);
                 func_80055458_main(grp, 0, 0);
 
                 amp = 1.0f / sindf(20.0f);
@@ -1521,11 +1521,11 @@ static void func_800DE9B8_shared_board(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 
     if (entry->rollValue[arg1] >= 10) {
         HuSprAttrReset(entry->sprites[arg1], 1, 0x8000);
-        func_80054904_main(entry->sprites[arg1], 0, arg2 + 10, arg3);
-        func_80054904_main(entry->sprites[arg1], 1, -0x1C, 0);
+        HuSprPosSet(entry->sprites[arg1], 0, arg2 + 10, arg3);
+        HuSprPosSet(entry->sprites[arg1], 1, -0x1C, 0);
     } else {
         HuSprAttrSet(entry->sprites[arg1], 1, 0x8000);
-        func_80054904_main(entry->sprites[arg1], 0, arg2, arg3);
+        HuSprPosSet(entry->sprites[arg1], 0, arg2, arg3);
     }
 }
 

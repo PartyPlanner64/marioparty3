@@ -399,13 +399,13 @@ void func_80106E74_majinlamp(void) {
 
     D_80108338_majinlamp = HuSprGrpCreate(1, 5);
     temp_v0 = DataRead(0x1301BF);
-    D_8010833A_majinlamp = func_80055810_main(temp_v0);
+    D_8010833A_majinlamp = HuSprAnimRead(temp_v0);
     DataClose(temp_v0);
     func_80055024_main(D_80108338_majinlamp, 0, D_8010833A_majinlamp, 0);
     HuSprPriSet(D_80108338_majinlamp, 0, 0xA);
     func_800550F4_main(D_80108338_majinlamp, 0, 1);
     HuSprAttrSet(D_80108338_majinlamp, 0, 0x5000);
-    func_80054904_main(D_80108338_majinlamp, 0, 0xA0, 0x78);
+    HuSprPosSet(D_80108338_majinlamp, 0, 0xA0, 0x78);
     HuSprScaleSet(D_80108338_majinlamp, 0, 50.0f, 50.0f);
     D_80108334_majinlamp = MBPlayerGet(D_8010833C_majinlamp);
     MBPlayerModelCreate(D_8010833E_majinlamp, D_80101734_shared_board[GwPlayer[D_8010833C_majinlamp].chr], 2);

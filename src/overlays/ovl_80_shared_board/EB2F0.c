@@ -145,14 +145,14 @@ static void MBMapFullLinePosFix(UnkBoard8* arg0, s16 arg1) {
     Vec sp10;
     f32 vecAngle;
 
-    func_80054904_main(arg0->spriteGroup, 0, D_801007F4_shared_board[arg1], D_801007FC_shared_board[arg1]);
-    func_80054904_main(arg0->spriteGroup, 1, D_801007F4_shared_board[arg1], D_801007FC_shared_board[arg1]);
+    HuSprPosSet(arg0->spriteGroup, 0, D_801007F4_shared_board[arg1], D_801007FC_shared_board[arg1]);
+    HuSprPosSet(arg0->spriteGroup, 1, D_801007F4_shared_board[arg1], D_801007FC_shared_board[arg1]);
     sp10.x = D_80102A88_shared_board[arg1] - D_801007F4_shared_board[arg1];
     sp10.y = 0;
     sp10.z = D_80102A90_shared_board[arg1] - D_801007FC_shared_board[arg1];
     vecAngle = MBVecAngleGet(&sp10);
     HuSprScaleSet(arg0->spriteGroup, 0, 0.25f, HuSqrtf((sp10.x * sp10.x) + (sp10.z * sp10.z)) / 32.0f);
-    func_800552DC_main(arg0->spriteGroup, 0, vecAngle);
+    HuSprZRotSet(arg0->spriteGroup, 0, vecAngle);
 }
 
 void MBMapFullLineCreate(void) {
@@ -164,14 +164,14 @@ void MBMapFullLineCreate(void) {
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         temp_s0 = func_800F2C48_shared_board(2, 0);
         temp_v0 = DataRead(0x1301CE);
-        temp_s0->model[0] = func_80055810_main(temp_v0);
+        temp_s0->model[0] = HuSprAnimRead(temp_v0);
         func_80055024_main(temp_s0->spriteGroup, 0, temp_s0->model[0], 0);
         HuSprAttrSet(temp_s0->spriteGroup, 0, 0x01001808);
         HuSprPriSet(temp_s0->spriteGroup, 0, 2);
         func_80055484_main(temp_s0->spriteGroup, 0, 0, 0, 0xFF, 0x80);
         DataClose(temp_v0);
         temp_v0_2 = DataRead(0x1301CD);
-        temp_s0->model[1] = func_80055810_main(temp_v0_2);
+        temp_s0->model[1] = HuSprAnimRead(temp_v0_2);
         func_80055024_main(temp_s0->spriteGroup, 1, temp_s0->model[1], 0);
         HuSprAttrSet(temp_s0->spriteGroup, 1, 0x01001808);
         HuSprPriSet(temp_s0->spriteGroup, 1, 2);
@@ -304,7 +304,7 @@ static void MBMapFullMain(void) {
         entry = &D_80102708_shared_board[j];
         if (entry->unk_00 >= 0) {
             data = DataRead(D_801007A0_shared_board[entry->unk_00]);
-            iconGrp->model[i] = func_80055810_main(data);
+            iconGrp->model[i] = HuSprAnimRead(data);
             func_80055024_main(iconGrp->spriteGroup, i, iconGrp->model[i], 0);
             HuSprAttrSet(iconGrp->spriteGroup, i, 0x01001000);
             if (entry->unk4 != NULL) {
@@ -315,16 +315,16 @@ static void MBMapFullMain(void) {
             
             mid = (s32)sp18[0] + entry->unkC;
             y   = (s32)sp18[1] + entry->unkE;
-            func_80054904_main(iconGrp->spriteGroup, i, mid, y);
+            HuSprPosSet(iconGrp->spriteGroup, i, mid, y);
             HuSprPriSet(iconGrp->spriteGroup, i, ~y);
             DataClose(data);
             if (entry->unk_00 == 0xB) {
                 i++;
                 data = DataRead(0x1301D3);
-                iconGrp->model[i] = func_80055810_main(data);
+                iconGrp->model[i] = HuSprAnimRead(data);
                 func_80055024_main(iconGrp->spriteGroup, i, iconGrp->model[i], 0);
                 HuSprAttrSet(iconGrp->spriteGroup, i, 0x01001808);
-                func_80054904_main(iconGrp->spriteGroup, i, mid, y - 1);
+                HuSprPosSet(iconGrp->spriteGroup, i, mid, y - 1);
                 HuSprPriSet(iconGrp->spriteGroup, i, 0xFFFF);
                 DataClose(data);
                 entry->process = MBMapFullStarGlowCreate(iconGrp->spriteGroup, i);
@@ -339,21 +339,21 @@ static void MBMapFullMain(void) {
     for (i = 0; i < 4; i++) {
         player = MBPlayerGet(i);
         data = DataRead(D_80100804_shared_board[player->chr]);
-        charGrp->model[i] = func_80055810_main(data);
+        charGrp->model[i] = HuSprAnimRead(data);
         func_80055024_main(charGrp->spriteGroup, i, charGrp->model[i], 0);
         HuSprPriSet(charGrp->spriteGroup, i, 1);
         HuSprAttrSet(charGrp->spriteGroup, i, 0x01001000);
-        func_80054904_main(charGrp->spriteGroup, i,
+        HuSprPosSet(charGrp->spriteGroup, i,
                             D_801007F4_shared_board[i] - 0x1E,
                             D_801007FC_shared_board[i]);
         DataClose(data);
 
         data = DataRead(D_80100824_shared_board[player->chr]);
-        charGrp->model[i+4] = func_80055810_main(data);
+        charGrp->model[i+4] = HuSprAnimRead(data);
         func_80055024_main(charGrp->spriteGroup, i + 4, charGrp->model[i + 4], 0);
         HuSprPriSet(charGrp->spriteGroup, i + 4, 1);
         HuSprAttrSet(charGrp->spriteGroup, i + 4, 0x01001000);
-        func_80054904_main(charGrp->spriteGroup, i + 4,
+        HuSprPosSet(charGrp->spriteGroup, i + 4,
                             D_801007F4_shared_board[i] + 8,
                             D_801007FC_shared_board[i]);
         DataClose(data);

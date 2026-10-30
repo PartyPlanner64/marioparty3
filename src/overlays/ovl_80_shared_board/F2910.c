@@ -127,7 +127,7 @@ static void MBMgCallListExec(omObjData *arg0) {
                 }
 
                 new_var = 0xE0;
-                func_80054904_main(D_80102C0E_shared_board, 0, 0xA0, (D_80102BD4_shared_board + (D_80100E84_shared_board[D_80102C0D_shared_board] - new_var)));
+                HuSprPosSet(D_80102C0E_shared_board, 0, 0xA0, (D_80102BD4_shared_board + (D_80100E84_shared_board[D_80102C0D_shared_board] - new_var)));
 
                 HuSprScaleSet(D_80102C0E_shared_board, 0, sindf(arg0->scale.x), arg0->scale.y);
                 if (arg0->scale.y >= 1.0f) {
@@ -157,7 +157,7 @@ static void MBMgCallListExec(omObjData *arg0) {
             }
 
             new_var = 0xE0;
-            func_80054904_main(D_80102C0E_shared_board, 0, 0xA0,
+            HuSprPosSet(D_80102C0E_shared_board, 0, 0xA0,
                                 (D_80102BD4_shared_board + (D_80100E84_shared_board[D_80102C0D_shared_board] - new_var)));
 
             HuSprScaleSet(D_80102C0E_shared_board, 0, sindf(arg0->scale.x), arg0->scale.y);
@@ -269,7 +269,7 @@ static void MBMgCallListExec(omObjData *arg0) {
 
         for (i = 0; !(arg0->rot.z < (f32)*D_80100E94_shared_board[i]); i++) {}
 
-        func_80054904_main(D_80102C12_shared_board, 0,
+        HuSprPosSet(D_80102C12_shared_board, 0,
                             (D_80100E94_shared_board[i][1] + 50),
                             (D_80100E8C_shared_board[D_80102C0D_shared_board] + (arg0->work[1] * 20)));
     }
@@ -345,12 +345,12 @@ static void MBMgCallListBgSprCreate(void) {
     if (D_80102C0E_shared_board == -1) {
         D_80102C0E_shared_board = HuSprGrpCreate(1, 0);
         data = DataRead(0x130116);
-        D_80102C10_shared_board = func_80055810_main(data);
+        D_80102C10_shared_board = HuSprAnimRead(data);
         DataClose(data);
         func_80055024_main(D_80102C0E_shared_board, 0, D_80102C10_shared_board, 0);
         HuSprPriSet(D_80102C0E_shared_board, 0, 0x4770);
         HuSprAttrSet(D_80102C0E_shared_board, 0, 0x1000);
-        func_80054904_main(D_80102C0E_shared_board, 0, 0xA0, D_80100E84_shared_board[D_80102C0D_shared_board] + D_80102BD4_shared_board);
+        HuSprPosSet(D_80102C0E_shared_board, 0, 0xA0, D_80100E84_shared_board[D_80102C0D_shared_board] + D_80102BD4_shared_board);
     }
 }
 
@@ -360,12 +360,12 @@ static void MBMgCallCursorSprCreate(void) {
     if (D_80102C12_shared_board == -1) {
         D_80102C12_shared_board = HuSprGrpCreate(1, 4);
         data = DataRead(0x130210);
-        D_80102C14_shared_board = func_80055810_main(data);
+        D_80102C14_shared_board = HuSprAnimRead(data);
         DataClose(data);
         func_80055024_main(D_80102C12_shared_board, 0, D_80102C14_shared_board, 0);
         HuSprPriSet(D_80102C12_shared_board, 0, 0x100);
         HuSprAttrSet(D_80102C12_shared_board, 0, 0);
-        func_80054904_main(D_80102C12_shared_board, 0, 0x32, D_80100E8C_shared_board[D_80102C0D_shared_board]);
+        HuSprPosSet(D_80102C12_shared_board, 0, 0x32, D_80100E8C_shared_board[D_80102C0D_shared_board]);
     }
 }
 
@@ -508,7 +508,7 @@ void MBMgCallListCreate(s32 arg0) {
     obj->rot.z = 0.0f;
     MBMgCallListBgSprCreate();
 
-    func_80055420_main(D_80102C0E_shared_board, 0,
+    HuSprColorSet(D_80102C0E_shared_board, 0,
                         D_80100E30_shared_board[D_80102C0D_shared_board][0],
                         D_80100E30_shared_board[D_80102C0D_shared_board][1],
                         D_80100E30_shared_board[D_80102C0D_shared_board][2]);

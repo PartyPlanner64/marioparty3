@@ -107,7 +107,7 @@ void func_800F2CA4_shared_board(UnkBoard8* arg0) {
 void func_800F2D8C_shared_board(UnkBoard8* arg0, s16 member, s16 x, s16 y) {
     arg0->xPositions[member] = x;
     arg0->yPositions[member] = y;
-    func_80054904_main(arg0->spriteGroup, member, x, y);
+    HuSprPosSet(arg0->spriteGroup, member, x, y);
 }
 
 //unused

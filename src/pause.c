@@ -106,12 +106,12 @@ void func_800453FC_main(void) {
         var_s4 = 0;
     }
     temp_v0_3 = DataRead(0xC008F);
-    D_800D0A38_main = func_80055810_main(temp_v0_3);
+    D_800D0A38_main = HuSprAnimRead(temp_v0_3);
     D_800D6ADA_main = HuSprGrpCreate(1, 5);
     DataClose(temp_v0_3);
     func_80055024_main(D_800D6ADA_main, 0, D_800D0A38_main, 0);
     HuSprAttrSet(D_800D6ADA_main, 0, 0x01001000);
-    func_80054904_main(D_800D6ADA_main, 0, 0xA0, var_s1 - 20);
+    HuSprPosSet(D_800D6ADA_main, 0, 0xA0, var_s1 - 20);
     HuSprPriSet(D_800D6ADA_main, 0, 1);
     for (var_s2 = 0; var_s2 < ARRAY_COUNT(D_800B2340_main) - 1; var_s2++) {
         D_800B2340_main[var_s2] = func_80045B24_main(0x3C, var_s1 + var_s2 * 0x41);

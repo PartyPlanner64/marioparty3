@@ -1848,7 +1848,7 @@ void func_8010AE08_hyper_hydrants(omObjData *object) {
     HuSprPriSet(D_8010BF58_hyper_hydrants, 0, 0x10);
     HuSprAttrReset(D_8010BF58_hyper_hydrants, 0, 0xFFFF);
     HuSprAttrSet(D_8010BF58_hyper_hydrants, 0, 0x1000);
-    func_80054904_main(D_8010BF58_hyper_hydrants, 0, 160, 120);
+    HuSprPosSet(D_8010BF58_hyper_hydrants, 0, 160, 120);
     for (i = 0; i < 2; i++) {
         D_8010BF52_hyper_hydrants = func_8000B838_main(0x2F0000);
         D_8010BF88_hyper_hydrants = HuSprGrpCreate(1, 0);
@@ -1856,10 +1856,10 @@ void func_8010AE08_hyper_hydrants(omObjData *object) {
         HuSprAttrReset(D_8010BF88_hyper_hydrants, 0, 0xFFFF);
         if (i == 0) {
             HuSprAttrSet(D_8010BF88_hyper_hydrants, 0, 0x5000);
-            func_80054904_main(D_8010BF88_hyper_hydrants, 0, 80, 120);
+            HuSprPosSet(D_8010BF88_hyper_hydrants, 0, 80, 120);
         } else {
             HuSprAttrSet(D_8010BF88_hyper_hydrants, 0, 0x5001);
-            func_80054904_main(D_8010BF88_hyper_hydrants, 0, 240, 120);
+            HuSprPosSet(D_8010BF88_hyper_hydrants, 0, 240, 120);
         }
     }
     data = object->data = HuMemAllocTag(sizeof(HyperHydrantsMaskData), 0x7918);
@@ -1876,10 +1876,10 @@ void func_8010AE08_hyper_hydrants(omObjData *object) {
         HuSprAttrReset(D_8010BF8A_hyper_hydrants[i], 0, 0xFFFF);
         if (i == 0) {
             HuSprAttrSet(D_8010BF8A_hyper_hydrants[0], 0, 0x1000);
-            func_80054904_main(D_8010BF8A_hyper_hydrants[0], 0, 80, 120);
+            HuSprPosSet(D_8010BF8A_hyper_hydrants[0], 0, 80, 120);
         } else {
             HuSprAttrSet(D_8010BF8A_hyper_hydrants[i], 0, 0x1001);
-            func_80054904_main(D_8010BF8A_hyper_hydrants[i], 0, 240, 120);
+            HuSprPosSet(D_8010BF8A_hyper_hydrants[i], 0, 240, 120);
         }
         sprites[i] = HuSprGet(D_8010BF8A_hyper_hydrants[i], 0);
         D_8010BF94_hyper_hydrants[i] = sprites[i]->unk_84->unk00->unk00;

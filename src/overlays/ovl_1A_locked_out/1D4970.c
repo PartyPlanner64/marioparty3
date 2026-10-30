@@ -1452,7 +1452,7 @@ s16 func_80109FAC_locked_out(s32 dataNum) {
     s16 spriteId;
 
     data = DataRead(dataNum);
-    spriteId = func_80055810_main(data);
+    spriteId = HuSprAnimRead(data);
     DataClose(data);
     return spriteId;
 }

@@ -1827,22 +1827,22 @@ static s32 func_800FB624_shared_board(GW_PLAYER* arg0) {
         MBDlgWinKill();
         var_s5 = HuSprGrpCreate(2U, 2U);
         temp_v0_4 = DataRead(0x130113);
-        sp44 = func_80055810_main(temp_v0_4);
+        sp44 = HuSprAnimRead(temp_v0_4);
         DataClose(temp_v0_4);
         func_80055024_main(var_s5, 0, sp44, 0);
         HuSprPriSet(var_s5, 0, 0x14U);
         func_800550F4_main(var_s5, 0, 0);
         HuSprAttrSet(var_s5, 0, 0x1000);
-        func_80054904_main(var_s5, 0, 0xA0, 0x78);
+        HuSprPosSet(var_s5, 0, 0xA0, 0x78);
         func_800554C4_main(var_s5, 0, -1);
         temp_v0_4 = DataRead(0x130114);
-        sp4C = func_80055810_main(temp_v0_4);
+        sp4C = HuSprAnimRead(temp_v0_4);
         DataClose(temp_v0_4);
         func_80055024_main(var_s5, 1, sp4C, 0);
         HuSprPriSet(var_s5, 1, 0xAU);
         func_800550F4_main(var_s5, 1, 1);
         HuSprAttrSet(var_s5, 1, 0x1000);
-        func_80054904_main(var_s5, 1, -0x28, 0x10);
+        HuSprPosSet(var_s5, 1, -0x28, 0x10);
         func_800554C4_main(var_s5, 1, 0);
         
         for (var_f20 = 0.0f; var_f20 < 1.0f; var_f20 += 0.1f) {
@@ -1920,7 +1920,7 @@ static s32 func_800FB624_shared_board(GW_PLAYER* arg0) {
         }
         
         func_800F6A88_shared_board(var_s5, 0);
-        func_80054904_main(var_s5, 1, 0x78, 0x88);
+        HuSprPosSet(var_s5, 1, 0x78, 0x88);
         if (var_s6 == 4) {
             for (var_f22 = 0.0f; var_f22 <= 1080.0f; var_f22 += 50.0f) {
                 var_f20 = (sindf(var_f22) * 0.5f) + 1.0f;
@@ -1948,7 +1948,7 @@ static s32 func_800FB624_shared_board(GW_PLAYER* arg0) {
         }
         HuSprScaleSet(var_s5, 1, 1.0f, 1.0f);
         func_800F6A88_shared_board(var_s5, 2U);
-        func_80054904_main(var_s5, 1, -0x28, 0x10);
+        HuSprPosSet(var_s5, 1, -0x28, 0x10);
         HuPrcSleep(0x1E);
         
         for (var_f20 = 1.0f; var_f20 > 0.0f; var_f20 -= 0.1f) {
@@ -3062,14 +3062,14 @@ static void MBMain(void) {
                                     // Display item sprite with animation
                                     temp_s2_2 = HuSprGrpCreate(1, 5);
                                     temp_v0_21 = DataRead(D_8010197C_shared_board[D_80101C2C_shared_board[temp_s2][i]]);
-                                    temp_s3_3 = func_80055810_main(temp_v0_21);
+                                    temp_s3_3 = HuSprAnimRead(temp_v0_21);
                                     DataClose(temp_v0_21);
 
                                     func_80055024_main(temp_s2_2, 0, temp_s3_3, 0);
                                     HuSprPriSet(temp_s2_2, 0, 0xA);
                                     func_800550F4_main(temp_s2_2, 0, 0);
                                     HuSprAttrSet(temp_s2_2, 0, 0x180C);
-                                    func_80054904_main(temp_s2_2, 0, 0xA0, 0x5A);
+                                    HuSprPosSet(temp_s2_2, 0, 0xA0, 0x5A);
                                     func_80055458_main(temp_s2_2, 0, 0);
                                     HuAudFXPlay(0x10);
 

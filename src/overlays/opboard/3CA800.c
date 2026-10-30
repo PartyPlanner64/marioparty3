@@ -294,12 +294,12 @@ void func_80106388_opboard(void) {
     HuPrcSleep(10);
     D_80108F34_opboard = func_800F2C48_shared_board(1, 0);
     data = DataRead(titleFiles[GwSystem.current_board_index]);
-    D_80108F34_opboard->model[0] = func_80055810_main(data);
+    D_80108F34_opboard->model[0] = HuSprAnimRead(data);
     DataClose(data);
     func_80055024_main(D_80108F34_opboard->spriteGroup, 0, D_80108F34_opboard->model[0], 0);
     HuSprPriSet(D_80108F34_opboard->spriteGroup, 0, 10);
     HuSprAttrSet(D_80108F34_opboard->spriteGroup, 0, 0);
-    func_80054904_main(D_80108F34_opboard->spriteGroup, 0, 160, 100);
+    HuSprPosSet(D_80108F34_opboard->spriteGroup, 0, 160, 100);
     HuSprScaleSet(D_80108F34_opboard->spriteGroup, 0, 0.0f, 0.0f);
     for (amplitude = 0.5f, angle = 0.0f; angle <= 720.0f; angle += 45.0f) {
         HuSprScaleSet(D_80108F34_opboard->spriteGroup, 0,
@@ -314,12 +314,12 @@ void func_80106388_opboard(void) {
     HuSprScaleSet(D_80108F34_opboard->spriteGroup, 0, 1.0f, 1.0f);
     D_80108F38_opboard = func_800F2C48_shared_board(1, 0);
     data = DataRead(subtitleFiles[GwSystem.current_board_index]);
-    D_80108F38_opboard->model[0] = func_80055810_main(data);
+    D_80108F38_opboard->model[0] = HuSprAnimRead(data);
     DataClose(data);
     func_80055024_main(D_80108F38_opboard->spriteGroup, 0, D_80108F38_opboard->model[0], 0);
     HuSprPriSet(D_80108F38_opboard->spriteGroup, 0, 9);
     HuSprAttrSet(D_80108F38_opboard->spriteGroup, 0, 0);
-    func_80054904_main(D_80108F38_opboard->spriteGroup, 0, 160, 70);
+    HuSprPosSet(D_80108F38_opboard->spriteGroup, 0, 160, 70);
     HuPrcSleep(75);
     func_800F2CA4_shared_board(D_80108F38_opboard);
     func_800F2CA4_shared_board(D_80108F34_opboard);

@@ -1106,9 +1106,9 @@ void func_800E8AB0_name_81(void) {
             MBDCamera3Dto2D(&obj->pos, &pos);
 
             if (obj->unk_01 != 0) {
-                func_80054904_main(obj->unk_02, 0, (D_80104848_name_81[0] / (f32)obj->unk_01) + pos.x, (D_80104848_name_81[1] / (f32)obj->unk_01) + pos.y);
+                HuSprPosSet(obj->unk_02, 0, (D_80104848_name_81[0] / (f32)obj->unk_01) + pos.x, (D_80104848_name_81[1] / (f32)obj->unk_01) + pos.y);
             } else {
-                func_80054904_main(obj->unk_02, 0, pos.x, pos.y);
+                HuSprPosSet(obj->unk_02, 0, pos.x, pos.y);
             }
             
             func_80055458_main(obj->unk_02, 0, obj->unk_06);
@@ -1184,7 +1184,7 @@ s32 func_800E8D54_name_81(s32 arg0, Vec *arg1) {
         obj->unk_02 = HuSprGrpCreate(1, 0);
     
         data = DataRead(arg0);
-        obj->unk_04 = func_80055810_main(data);
+        obj->unk_04 = HuSprAnimRead(data);
         DataClose(data);
     
         func_80055024_main(obj->unk_02, 0, obj->unk_04, 0);
@@ -1273,7 +1273,7 @@ void func_800E9108_name_81(s32 arg0, s16 arg1) {
 }
 
 void func_800E911C_name_81(s32 arg0, RGB* arg1) {
-    func_80055420_main(D_80104850_name_81[arg0].unk_02, 0, arg1->r, arg1->g, arg1->b);
+    HuSprColorSet(D_80104850_name_81[arg0].unk_02, 0, arg1->r, arg1->g, arg1->b);
 }
 
 void func_800E9158_name_81(s32 arg0, Vec* arg1) {

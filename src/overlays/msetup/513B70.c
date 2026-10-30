@@ -148,7 +148,7 @@ void func_80117A3C_msetup(void) {
         func_800550F4_main(backgroundGroup, i, 0);
         func_80055024_main(backgroundGroup, i, sprites[i], 0);
         HuSprPriSet(backgroundGroup, i, 600);
-        func_80055420_main(backgroundGroup, i, 255, 255, 255);
+        HuSprColorSet(backgroundGroup, i, 255, 255, 255);
         target = &positions[i];
         *target = backgrounds[i].pos;
         angles[i] = (i * 90 + i * 5) % 360;
@@ -190,7 +190,7 @@ void func_80117A3C_msetup(void) {
             func_80055024_main(shadowGroup, i, sprite, 0);
             func_80055458_main(shadowGroup, i, 0x80);
             HuSprPriSet(shadowGroup, i, 450);
-            func_80055420_main(shadowGroup, i, 0, 0, 0);
+            HuSprColorSet(shadowGroup, i, 0, 0, 0);
         }
     } else if (menu->type == 2) {
         HuSprPriSet(group, 1, 500);

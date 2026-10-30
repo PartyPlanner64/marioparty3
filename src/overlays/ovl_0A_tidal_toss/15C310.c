@@ -282,7 +282,7 @@ void func_80106104_tidal_toss(omObjData *object) {
     setupSpriteId = func_8010A954_tidal_toss(D_8010AED8_tidal_toss, 1);
     setupSpriteGroup = &D_8010AEE8_tidal_toss;
     *setupSpriteGroup = setupSpriteId;
-    func_80054904_main(*setupSpriteGroup, 0, 160, 120);
+    HuSprPosSet(*setupSpriteGroup, 0, 160, 120);
     HuSprAttrSet(*setupSpriteGroup, 0, 0x4000);
 
     model = func_8000B108_main(0x2B0003, 0x4002CD);
@@ -321,7 +321,7 @@ void func_80106104_tidal_toss(omObjData *object) {
         spriteWork->unk20 = (f32)((f64)(f32)func_8010A7F8_tidal_toss() * 1.52587890625e-05 * 1.5 + 1.0);
         spriteGroup = &D_8010AEEC_tidal_toss;
         HuSprAttrSet(*spriteGroup, (s16)i, 0x20005808);
-        func_80054904_main(*spriteGroup, (s16)i, spriteWork->unk00, spriteWork->unk02);
+        HuSprPosSet(*spriteGroup, (s16)i, spriteWork->unk00, spriteWork->unk02);
         spriteWork++;
     }
 
@@ -918,7 +918,7 @@ s16 func_8010A90C_tidal_toss(s32 arg0) {
     s16 temp_s0;
 
     temp_v0 = DataRead(arg0);
-    temp_s0 = func_80055810_main(temp_v0);
+    temp_s0 = HuSprAnimRead(temp_v0);
     DataClose(temp_v0);
     return temp_s0;
 }

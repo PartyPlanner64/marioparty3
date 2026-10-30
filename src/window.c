@@ -159,7 +159,7 @@ void func_8005A6B0_main(void) {
         }
 
         temp_v0_6 = DataRead(0x00000033);
-        D_800BDA68_main = func_80055810_main(temp_v0_6);
+        D_800BDA68_main = HuSprAnimRead(temp_v0_6);
         DataClose(temp_v0_6);
 
         for (i = 0; i < ARRAY_COUNT(D_800D5206_main); i++) {
@@ -257,8 +257,8 @@ s16 func_8005A968_main(s16 x, s16 y, s16 width, s16 height, s32 arg4, s16 flags)
         window->unk_6E[i] = i >= 3 ? -1 : 0;
     }
     window->unk_9A = 0;
-    window->unk66 = func_80055810_main(D_800D4084_main);
-    window->unk68 = func_80055810_main(D_800CE2C4_main);
+    window->unk66 = HuSprAnimRead(D_800D4084_main);
+    window->unk68 = HuSprAnimRead(D_800CE2C4_main);
     group = HuSprGrpCreate(22, 5);
     window->unk_6C = group;
     func_80055458_main(group, 0, 0x100);
@@ -267,8 +267,8 @@ s16 func_8005A968_main(s16 x, s16 y, s16 width, s16 height, s32 arg4, s16 flags)
     func_80055024_main(group, 0, window->unk66, 0);
     func_800550F4_main(group, 0, 0);
     func_800554C4_main(group, 0, -1);
-    func_80054904_main(group, 0, window->unk3C, window->unk3E);
-    func_80055420_main(window->unk_6C, 0, 64, 32, 176);
+    HuSprPosSet(group, 0, window->unk3C, window->unk3E);
+    HuSprColorSet(window->unk_6C, 0, 64, 32, 176);
     sprite = HuSprGet(group, 0);
     if (!(flags & 8)) {
         sprite->unk_84->unk00->unk04 = width;
@@ -299,7 +299,7 @@ s16 func_8005A968_main(s16 x, s16 y, s16 width, s16 height, s32 arg4, s16 flags)
     HuSprAttrSet(group, 1, 0x1009000);
     func_80055024_main(group, 1, window->unk68, 0);
     func_800550F4_main(group, 1, 0);
-    func_80054904_main(group, 1, 0, 0);
+    HuSprPosSet(group, 1, 0, 0);
     func_800554C4_main(group, 1, 0);
     bcopy(D_800A2174_main, window, 32);
     for (i = 0; i < 22; i++) {
@@ -475,11 +475,11 @@ s16 func_8005B7B8_main(s16 win_id, u32 spriteMainFsPair, s16 arg2, s16 arg3, s16
     }
 
     spriteBytes = DataRead(spriteMainFsPair);
-    spriteId = func_80055810_main(spriteBytes);
+    spriteId = HuSprAnimRead(spriteBytes);
     window->unk_6E[i] = spriteId;
     HuMemMemoryFreePerm(spriteBytes);
     func_80055024_main(window->unk_6C, i, spriteId, arg4);
-    func_80054904_main(window->unk_6C, i, arg2, arg3);
+    HuSprPosSet(window->unk_6C, i, arg2, arg3);
     func_800554C4_main(window->unk_6C, i, 0);
     return i;
 }
@@ -519,7 +519,7 @@ void func_8005BA90_main(s16 winId, s16 arg1, s16 arg2) {
 
     window = &D_800CC69C_main[winId];
 
-    func_80054904_main(window->unk_6C, 0, arg1, arg2);
+    HuSprPosSet(window->unk_6C, 0, arg1, arg2);
     window->unk3C = arg1;
     window->unk3E = arg2;
 }
@@ -570,7 +570,7 @@ void func_8005BDA8_main(s16 winId, f32 arg1) {
     TextWindow *window;
 
     window = &D_800CC69C_main[winId];
-    func_800552DC_main(window->unk_6C, 0, arg1);
+    HuSprZRotSet(window->unk_6C, 0, arg1);
 }
 
 void func_8005BDFC_main(s16 winId, s32 arg1) {
@@ -927,7 +927,7 @@ void func_8005CEB0_main(s16 winId) {
     HuSprAttrReset(window->unk_6C, 3, 0xFFFF);
     HuSprAttrSet(window->unk_6C, 3, 0x1000000);
     HuSprPriSet(window->unk_6C, 3, window->unk60 - 1);
-    func_80054904_main(window->unk_6C, 3, window->unk58 - window->unk48, window->unk5A - window->unk4A);
+    HuSprPosSet(window->unk_6C, 3, window->unk58 - window->unk48, window->unk5A - window->unk4A);
     if (window->unk_38 & 8) {
         HuSprAttrSet(window->unk_6C, 3, 0x8000);
     }
@@ -952,7 +952,7 @@ s32 func_8005CFE0_main(s16 winId, s16 icon) {
         } else {
             data = DataRead(D_800A2294_main[icon].file);
         }
-        D_800BDA50_main[icon] = graphic = func_80055810_main(data);
+        D_800BDA50_main[icon] = graphic = HuSprAnimRead(data);
         HuMemMemoryFreePerm(data);
     }
     for (sprite = 12; sprite < 22; sprite++) {
@@ -966,14 +966,14 @@ s32 func_8005CFE0_main(s16 winId, s16 icon) {
     window->unk_6E[sprite] = graphic;
     HuSprAttrSet(window->unk_6C, sprite, 0x1000);
     func_80055024_main(window->unk_6C, sprite, graphic, D_800A2294_main[icon].bank);
-    func_80054904_main(window->unk_6C, sprite, window->unk54 - window->unk48, window->unk56 - window->unk4A);
+    HuSprPosSet(window->unk_6C, sprite, window->unk54 - window->unk48, window->unk56 - window->unk4A);
     func_800554C4_main(window->unk_6C, sprite, 0);
     if ((u8)window->unk_22 == 0) {
-        func_80055420_main(window->unk_6C, sprite, 0, 0, 0);
+        HuSprColorSet(window->unk_6C, sprite, 0, 0, 0);
     } else if (window->unk_38 & 0x2000) {
-        func_80055420_main(window->unk_6C, sprite, 0x61, 0x61, 0xF8);
+        HuSprColorSet(window->unk_6C, sprite, 0x61, 0x61, 0xF8);
     } else {
-        func_80055420_main(window->unk_6C, sprite, 0x38, 0xF8, 0x25);
+        HuSprColorSet(window->unk_6C, sprite, 0x38, 0xF8, 0x25);
     }
     if (window->unk_38 & 8) {
         HuSprAttrSet(window->unk_6C, sprite, 0x8000);
@@ -1271,7 +1271,7 @@ s32 func_8005E1D8_main(s16 winId, s16 arg1, s32 arg2) {
     }
     if (window->unk6A == -1) {
         data = DataRead(0x00000030);
-        window->unk6A = func_80055810_main(data);
+        window->unk6A = HuSprAnimRead(data);
         HuMemMemoryFreePerm(data);
         func_80055024_main(window->unk_6C, 2, window->unk6A, 0);
         func_80055458_main(window->unk_6C, 2, 0x100);
@@ -1623,7 +1623,7 @@ void func_8005EEE4_main(TextWindow *window, TextWindowSprite *sprite) {
         dy = scaleY * dy;
         spriteScaleY = window->scaleY;
         HuSprScaleSet(window->unk_6C, 2, dx * spriteScaleX, dy * spriteScaleY);
-        func_80054904_main(window->unk_6C, 2, dx = x / dx * window->scaleX, dy = y / dy * window->scaleY);
+        HuSprPosSet(window->unk_6C, 2, dx = x / dx * window->scaleX, dy = y / dy * window->scaleY);
         if (!(window->unk_38 & 8)) {
             HuSprAttrReset(window->unk_6C, 2, 0x8000);
         }
@@ -1806,7 +1806,7 @@ void func_8005FBF8_main(s16 winId, s32 red, s32 green, s32 blue) {
     window->backgroundRed = red;
     window->backgroundGreen = green;
     window->backgroundBlue = blue;
-    func_80055420_main(window->unk_6C, 0, red, green, blue);
+    HuSprColorSet(window->unk_6C, 0, red, green, blue);
     sprite = HuSprGet(window->unk_6C, 1);
     for (i = 0; i < 7; i++) {
         color = D_800A2186_main[i];
@@ -2194,7 +2194,7 @@ s32 func_80060880_main(s32 x, s32 y, s32 frameIndex) {
     member = func_8005B7B8_main(winId, frame->file, 0, 0, 0);
     window->unk274 = member;
     HuSprPriSet(window->unk_6C, member, 15000);
-    func_80054904_main(window->unk_6C, member, 0, 0);
+    HuSprPosSet(window->unk_6C, member, 0, 0);
     HuSprScaleSet(window->unk_6C, member, 0, 0);
     HuSprAttrSet(window->unk_6C, member, frame->attributes);
     sprite = HuSprGet(window->unk_6C, member);
@@ -2205,9 +2205,9 @@ s32 func_80060880_main(s32 x, s32 y, s32 frameIndex) {
         window->unk276 = member;
         func_80055458_main(window->unk_6C, member, 255);
         HuSprPriSet(window->unk_6C, member, 15001);
-        func_80054904_main(window->unk_6C, member, 0, 0);
+        HuSprPosSet(window->unk_6C, member, 0, 0);
         HuSprScaleSet(window->unk_6C, member, 0, 0);
-        func_80055420_main(window->unk_6C, member, 27, 27, 255);
+        HuSprColorSet(window->unk_6C, member, 27, 27, 255);
         HuSprAttrSet(window->unk_6C, member, frame->attributes | 0x1000);
         sprite = HuSprGet(window->unk_6C, member);
         sprite->unk_84->unk00->unk08 = frame->spriteWidth;
@@ -2381,7 +2381,7 @@ void func_80061388_main(s16 winId) {
     }
     func_8005BBC0_main(winId, 1.0f, 1.0f);
     if (window->unk276 != -1) {
-        func_80054904_main(window->unk_6C, window->unk274, 0x18 - window->unk48, 0x18 - window->unk4A);
+        HuSprPosSet(window->unk_6C, window->unk274, 0x18 - window->unk48, 0x18 - window->unk4A);
         HuSprScaleSet(window->unk_6C, window->unk274, 1.0f, 1.0f);
         func_800615B8_main(winId, 1);
     }
@@ -2463,7 +2463,7 @@ void func_80061934_main(s16 winId, s16 arg1) {
     func_8005B8F8_main(winId, temp_s0->unk274);
     temp_v0 = func_8005B7B8_main(winId, D_800A25D0_main[arg1], 0x18 - temp_s0->unk48, 0x18 - temp_s0->unk4A, 0);
     temp_s0->unk274 = temp_v0;
-    func_80054904_main(temp_s0->unk_6C, temp_v0, 0x18 - temp_s0->unk48, 0x18 - temp_s0->unk4A);
+    HuSprPosSet(temp_s0->unk_6C, temp_v0, 0x18 - temp_s0->unk48, 0x18 - temp_s0->unk4A);
     HuSprScaleSet(temp_s0->unk_6C, temp_s0->unk274, 1.0f, 1.0f);
     func_800615B8_main(winId, 1);
     func_800600C0_main(winId, 0);

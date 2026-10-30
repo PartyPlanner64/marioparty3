@@ -719,11 +719,12 @@ void func_800335BC_main(char *name, u16 *out) {
 }
 
 #ifdef NON_MATCHING
-/* register allocation and global load scheduling differ for the animation slot lookup */
+/* s1/s2 swapped between tex and the i*16 temp in the static texture fallback path */
 void func_80033694_main(HmfData *hmf) {
     HmfData_Unk84_Entry2 *tex;
     HmfAnimSet *set;
     HmfAnim *anim;
+    HmfAnimRot *rot;
     s16 img;
     s16 slot;
     s16 i;
@@ -733,18 +734,17 @@ void func_80033694_main(HmfData *hmf) {
             continue;
         }
         slot = hmf->unk84[i].unk9;
-        if (!(slot & 0x80)) {
+        if (!(slot & 0x80) && D_800D1714_main[slot].animIdx != -1) {
             anim = &D_800D1714_main[slot];
-            if (anim->animIdx != -1) {
+            rot = &D_800D408C_main[anim->animIdx].rot[anim->rot];
+            img = rot->frames[anim->frame].unk00;
+            if (img != -1) {
                 set = &D_800D408C_main[anim->animIdx];
-                img = set->rot[anim->rot].frames[anim->frame].unk00;
-                if (img != -1) {
-                    gSPSegment(gMainGfxPos++, hmf->unk84[i].unk3, osVirtualToPhysical(set->unk0C[img].data));
-                    if (D_800D408C_main[anim->animIdx].unk14 != NULL) {
-                        gSPSegment(gMainGfxPos++, (s8)hmf->unk84[i].unk4, osVirtualToPhysical(set->unk0C[img].palette));
-                    }
-                    continue;
+                gSPSegment(gMainGfxPos++, hmf->unk84[i].unk3, osVirtualToPhysical(set->unk0C[img].data));
+                if (D_800D408C_main[anim->animIdx].unk14 != NULL) {
+                    gSPSegment(gMainGfxPos++, (s8)hmf->unk84[i].unk4, osVirtualToPhysical(set->unk0C[img].palette));
                 }
+                continue;
             }
         }
         tex = hmf->unk84[i].unkC;

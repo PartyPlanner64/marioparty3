@@ -4,8 +4,10 @@
 #include "PR/ucode.h"
 
 /*
- * Audio manager, adapted from the N64 SDK demo audiomgr.c. Builds an audio
- * command list each retrace and hands it to the Hudson scheduler.
+ * Audio manager, derived from the N64 SDK demo audiomgr.c sample and adapted
+ * by Hudson. It is not part of the libultra archive; it is compiled with the
+ * game's flags as part of the game code. Builds an audio command list each
+ * retrace and hands it to the Hudson scheduler.
  */
 
 #define NUM_ACMD_LISTS 2

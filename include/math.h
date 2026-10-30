@@ -94,6 +94,7 @@ void HuVecCopyXYZ(Vec *out, f32 x, f32 y, f32 z);
 void HuVecCopy3F(Vec *out, Vec *a);
 f32 HuVecGetLengthSqr3F(Vec *vec);
 f32 HuVecGetLength3F(Vec *vec);
+f32 HuVecDot3F(Vec *a, Vec *b);
 
 f32 HuVecDistanceSqr(const Vec *a, const Vec *b);
 f32 HuVecDistance(const Vec *a, const Vec *b);

@@ -460,7 +460,6 @@ void func_80006FC4_main(void);
 SeManager *func_8000704C_main(void);
 void func_80007058_main(void);
 s32 amCreateAudioMgr(str800D5298 *cfg, ALHeap *heap);
-u32 func_8007B1E0_main(void);
 void func_80003FB4_main(void);
 void func_800048D0_main(GameSound *sound);
 void func_80004928_main(GameSound *sound);
@@ -2952,7 +2951,7 @@ f32 func_80005850_main(GameSound *sound) {
         case 5:
             if (sound->lfoCounter >= sound->lfoPeriod) {
                 sound->lfoCounter = 0;
-                sound->lfoRand = (100 - (s32)func_8007B1E0_main() % 201) / 100.0f;
+                sound->lfoRand = (100 - (s32)guRandom() % 201) / 100.0f;
             }
             val = sound->lfoRand;
             break;
@@ -3041,7 +3040,7 @@ void func_80005BAC_main(GameSound *sound, f32 lfo) {
         if ((sound->flags & 0x1000) || (sound->randPitchTimer == 0 && sound->randPitchInterval != 0)) {
             sound->randPitchTimer = sound->randPitchInterval;
             n = sound->randPitchMax - sound->randPitchMin + 1;
-            sound->randPitch = (s32)func_8007B1E0_main() % n + sound->randPitchMin;
+            sound->randPitch = (s32)guRandom() % n + sound->randPitchMin;
         }
         detune += sound->randPitch + SE_CENTS_EPSILON;
     }
@@ -3074,7 +3073,7 @@ void func_80005FE4_main(GameSound *sound) {
         if ((sound->flags & 0x1000) || (sound->randPan.timer == 0 && sound->randPan.interval != 0)) {
             sound->randPan.timer = sound->randPan.interval;
             n = sound->randPan.max - sound->randPan.min + 1;
-            sound->scriptPan = sound->randPan.min + (s32)func_8007B1E0_main() % n;
+            sound->scriptPan = sound->randPan.min + (s32)guRandom() % n;
             sound->flags |= 0x8000;
         }
     }
@@ -3108,7 +3107,7 @@ void func_80006148_main(GameSound *sound) {
         if ((sound->flags & 0x1000) || (sound->randVol.timer == 0 && sound->randVol.interval != 0)) {
             sound->randVol.timer = sound->randVol.interval;
             n = sound->randVol.max - sound->randVol.min + 1;
-            sound->scriptVol = sound->randVol.min + (s32)func_8007B1E0_main() % n;
+            sound->scriptVol = sound->randVol.min + (s32)guRandom() % n;
             sound->flags |= 0x4000;
         }
     }

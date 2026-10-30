@@ -1,6 +1,7 @@
 #include "common.h"
 #include "malloc.h"
 #include "siman.h"
+#include "pad.h"
 
 s32 D_800A12A0_main = 0;
 f32 D_800A12A4_main = 0.0f;
@@ -42,10 +43,8 @@ void InitScheduler(u8, u8);
 void func_8000EA10_main(void **arg1, s32 arg2, s32 arg3, u64 **arg4, s32 *arg5);
 void HuProfInit(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u16 arg4);
 void InitSI(void);
-s16 InitController(s16 ch, s32 arg1);
 void InitVibrator(void);
 void dmaInit(void);
-void FlushController(void);
 void func_8004D814_main(void);
 void func_8000F094_main(u32); // Set unk swap chain state
 void func_8004D7D8_main(void);

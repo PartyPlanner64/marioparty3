@@ -2,7 +2,7 @@
 
 extern u32 D_800A2D60_main;
 
-u32 func_8007B1E0_main(void) {
+int guRandom(void) {
     u32 t0 = D_800A2D60_main * 4;
     u32 t1 = t0 + 2;
     t0 += 3;

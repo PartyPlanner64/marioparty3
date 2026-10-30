@@ -1,7 +1,12 @@
 #include "common.h"
 #include "PR/synthInternals.h"
 
-// Standard (non-n_audio) libultra sound player, linked outside of the library.
+/*
+ * Standard (non-n_audio) libultra sound player, from the libultra sndplayer.c
+ * source. It is compiled with the game's default -O1 flags and linked among
+ * the game objects rather than from the libultra archive. It appears unused,
+ * since the game uses the n_audio sound player (n_sndplayer.c) instead.
+ */
 
 #ifndef MIN
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))

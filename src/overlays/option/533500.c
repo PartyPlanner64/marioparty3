@@ -2307,7 +2307,7 @@ void func_8010E8E0_option(void) {
     frame = 0;
     while (1) {
         HuPrcVSleep();
-        buttons = (u16)D_800D1244_main[0];
+        buttons = D_800D1244_main[0];
         buttons |= func_80113204_option(0);
         buttons = (buttons & ~0xC000) | (D_800D5558_main[0] & 0xC000);
         if (buttons & 0x4000) {
@@ -2478,7 +2478,7 @@ void func_8010F138_option(void) {
     frame = 0;
     while (1) {
         HuPrcVSleep();
-        buttons = (u16)D_800D1244_main[0];
+        buttons = D_800D1244_main[0];
         buttons |= func_80113204_option(0);
         buttons = (buttons & ~0xC000) | (D_800D5558_main[0] & 0xC000);
         if (buttons & 0x4000) {

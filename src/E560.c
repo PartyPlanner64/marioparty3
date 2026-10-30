@@ -1,7 +1,5 @@
 #include "common.h"
 
-f32 HuVecDot3F(Vec *a, Vec *b);
-
 s32 PrecalcPntToTriangle(Vec *origin, Vec *u, Vec *v, Vec *normal, Vec *point, Vec *out);
 
 void func_8000D960_main(HuMtx4F in, HuMtx4F out) {

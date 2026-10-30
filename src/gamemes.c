@@ -1836,9 +1836,9 @@ s16 func_8003AE44_main(s16 fileNo) {
 }
 
 #ifdef NON_MATCHING
-/* Target has an extra andi 0xFF after the lbu from the font table in the search loop. */
+/* Only diff: target has an extra andi 0xFF after the lbu from D_800A13B0_main in the search loop,
+   as if the loaded byte were kept live past the comparison. */
 s16 func_8003AE9C_main(u8 c, u8 flags) {
-    u8 ch = c;
     s16 *animId;
     s32 fileNo;
     s32 idx;
@@ -1880,7 +1880,7 @@ s16 func_8003AE9C_main(u8 c, u8 flags) {
             idx = 4;
             break;
     }
-    if ((u8)(c - 'A') < 26) {
+    if (c >= 'A' && c <= 'Z') {
         if (flags & 1) {
             fileNo = 0xC003F + (c - 'A');
             animId = &D_800B1AF8_main[c - 'A'];
@@ -1888,12 +1888,12 @@ s16 func_8003AE9C_main(u8 c, u8 flags) {
             fileNo = 0xC0000 + (c - 'A');
             animId = &D_800B1AC0_main[c - 'A'];
         }
-    } else if ((u8)(c - 'a') < 26) {
+    } else if (c >= 'a' && c <= 'z') {
         fileNo = 0xC0025 + (c - 'a');
         animId = &D_800B1A88_main[c - 'a'];
-    } else if ((u8)(c - 0x90) < 32 || (u8)(c - 0xD0) < 32) {
+    } else if ((c >= 0x90 && c <= 0xAF) || (c >= 0xD0 && c <= 0xEF)) {
         for (idx = 0; idx < 36; idx++) {
-            if (ch == D_800A13B0_main[idx]) {
+            if (c == D_800A13B0_main[idx]) {
                 break;
             }
         }

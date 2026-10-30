@@ -83,6 +83,9 @@ s32 func_8003A9C8_main(u8 *str, s32 flags, s32 *idx);
 s32 func_8003AC9C_main(u8 *str, s32 mode, u8 flags, s32 *width);
 s16 func_8003AE44_main(s16 fileNo);
 s16 func_8003AE9C_main(u8 c, u8 flags);
+s32 func_80045208_main(void *arg0, void *arg1);
+void *HuMemMemoryAllocPerm(u32 size);
+void HuMemMemoryFreePerm(void *ptr);
 
 extern u16 D_800D530C_main;
 extern u16 D_800D1100_main;
@@ -105,6 +108,7 @@ extern GMesChar D_800B1BC0_main[32];
 extern Vec2f D_800A1380_main[];
 extern Vec2f D_800A13D8_main[];
 extern u8 D_800A13B0_main[];
+extern char *D_800A1410_main[];
 extern u8 D_800A1334_main[];
 extern u8 D_800A136C_main[];
 extern s32 omovl;
@@ -2767,7 +2771,34 @@ s32 func_8003DC88_main(GAMEMES *gMes, Gfx **gfx) {
     return func_8003D890_main(gMes, gfx);
 }
 
-INCLUDE_ASM("asm/nonmatchings/gamemes", func_8003DCA4_main);
+void func_8003DCA4_main(GAMEMES *gMes, s32 fileNo) {
+    void *data;
+    s16 sprId0;
+    s16 sprId1;
+    s16 grp;
+
+    data = DataReadTemp(fileNo);
+    sprId0 = gMes->strSprId[0] = func_80055810_main(data);
+    DataCloseTemp(data);
+    data = DataReadTemp(fileNo + 1);
+    sprId1 = gMes->strSprId[1] = func_80055810_main(data);
+    DataCloseTemp(data);
+    grp = gMes->strGId[0] = HuSprGrpCreate(2, 5);
+    func_80055024_main(grp, 0, sprId0, 0);
+    func_80055458_main(grp, 0, 255);
+    HuSprPriSet(grp, 0, 5);
+    HuSprAttrReset(grp, 0, 0xFFFF);
+    HuSprAttrSet(grp, 0, 0x1008);
+    func_80054904_main(grp, 0, 160, gMes->unk64);
+    func_800554C4_main(grp, 0, -1);
+    func_80055024_main(grp, 1, sprId1, 0);
+    func_80055458_main(grp, 1, 255);
+    HuSprPriSet(grp, 1, 6);
+    HuSprAttrReset(grp, 1, 0xFFFF);
+    HuSprAttrSet(grp, 1, 0x1008);
+    func_80055420_main(grp, 1, 69, 2, 133);
+    func_800554C4_main(grp, 1, 0);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/gamemes", D_800A76F8_main);
 
@@ -2787,15 +2818,192 @@ INCLUDE_RODATA("asm/nonmatchings/gamemes", D_800A7734_main);
 
 INCLUDE_RODATA("asm/nonmatchings/gamemes", D_800A773C_main);
 
-INCLUDE_RODATA("asm/nonmatchings/gamemes", D_800A7744_main);
+s32 func_8003DE60_main(GAMEMES *gMes, Gfx **gfx) {
+    char wonStr[] = "WON\xC4 ";
+    f32 nameLen = strlen(D_800A1410_main[gMes->unk0E]);
+    f32 wonLen = strlen(wonStr);
+    s32 result;
+    f32 total;
+    f32 scale;
+    f32 i;
 
-INCLUDE_ASM("asm/nonmatchings/gamemes", func_8003DE60_main);
+    if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
+        gMes->unk08 = 5;
+    }
+    result = TRUE;
+    switch (gMes->unk08) {
+        case 0:
+            func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->unk0E], 1, -1, -1, 1.0f, 1.0f);
+            func_8003A3C4_main(gMes, (u8 *)wonStr, 1, -1, -1, 1.0f, 1.0f);
+            total = nameLen + wonLen + 1.0f;
+            gMes->unk0A = 160.0f - total * 17.6f / 2.0f + nameLen * 17.6f / 2.0f;
+            gMes->unk60 = gMes->unk0A;
+            gMes->unk68 = gMes->unk6C = 1.0f;
+            func_80054904_main(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+            for (i = 0.0f; i < nameLen; i++) {
+                HuSprScaleSet(gMes->strGId[0], i + 1, 0.8f, gMes->unk6C);
+                func_80055458_main(gMes->strGId[0], i + 1, 255);
+            }
+            gMes->unk0C = 160.0f - total * 17.6f / 2.0f + (nameLen * 17.6f + 17.6f) + wonLen * 17.6f / 2.0f;
+            gMes->unk60 = gMes->unk0C;
+            func_80054904_main(gMes->strGId[1], 0, gMes->unk60, gMes->unk64);
+            for (i = 0.0f; i < wonLen; i++) {
+                HuSprScaleSet(gMes->strGId[1], i + 1, 0.8f, gMes->unk6C);
+                func_80055458_main(gMes->strGId[1], i + 1, 255);
+            }
+            gMes->unk08 = 1;
+            gMes->unk10 = 0.0f;
+            gMes->unk14 = 0.0f;
+            break;
+        case 1:
+            gMes->unk64 += sindf(gMes->unk14);
+            gMes->unk60 = gMes->unk0C + sindf(gMes->unk10);
+            func_80054904_main(gMes->strGId[1], 0, gMes->unk60, gMes->unk64);
+            gMes->unk10 += 90.0f;
+            gMes->unk14 += 45.0f;
+            if (gMes->unk10 >= 360.0f) {
+                gMes->unk10 = 0.0f;
+            }
+            if (gMes->unk14 >= 360.0f) {
+                gMes->unk14 = 0.0f;
+            }
+            if (gMes->unk04 >= gMes->unk06) {
+                gMes->unk08 = 5;
+            }
+            if (gMes->unk04 > gMes->unk06 - 10) {
+                scale = (gMes->unk06 - gMes->unk04) / 10.0f * 0.8f;
+                for (i = 0.0f; i < nameLen; i++) {
+                    HuSprScaleSet(gMes->strGId[0], i + 1, scale, scale);
+                }
+                for (i = 0.0f; i < wonLen; i++) {
+                    HuSprScaleSet(gMes->strGId[1], i + 1, scale, scale);
+                }
+            }
+            break;
+        case 5:
+            GMesSprKill(gMes);
+            result = FALSE;
+            break;
+    }
+    if (gMes->unk04 > gMes->unk06 - 5) {
+        gMes->stat = 2;
+    }
+    return result;
+}
 
-INCLUDE_ASM("asm/nonmatchings/gamemes", func_8003E4A4_main);
+s32 func_8003E4A4_main(GAMEMES *gMes, Gfx **gfx) {
+    char lostStr[] = "LOST";
+    f32 nameLen = strlen(D_800A1410_main[gMes->unk08]);
+    f32 lostLen = strlen(lostStr);
+    f32 x;
+    s16 i;
 
-INCLUDE_ASM("asm/nonmatchings/gamemes", func_8003EBC8_main);
+    if (gMes->unk04 == 0) {
+        func_8003A37C_main(gMes, D_800A1410_main[gMes->unk08], 1, -1, -1);
+        func_8003A37C_main(gMes, lostStr, 1, -1, -1);
+        func_80054904_main(gMes->strGId[0], 0, (320.0f - (nameLen + lostLen + 1.0f) * 24.0f) / 2.0f + nameLen * 24.0f / 2.0f, gMes->unk64 + 40.0f);
+        func_80054904_main(gMes->strGId[1], 0, 320.0f - (320.0f - (nameLen + lostLen + 1.0f) * 24.0f) / 2.0f - lostLen * 24.0f / 2.0f, gMes->unk64 + 40.0f);
+        for (i = 0; i < nameLen; i++) {
+            HuSprAttrSet(gMes->strGId[0], i + 1, 0x8000);
+        }
+        for (i = 0; i < lostLen; i++) {
+            HuSprAttrSet(gMes->strGId[1], i + 1, 0x8000);
+        }
+        gMes->unk0A = 0;
+    }
+    if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
+        GMesSprKill(gMes);
+        return FALSE;
+    }
+    if (gMes->unk04 > 80) {
+        gMes->stat = 2;
+    }
+    if (gMes->unk04 > 50) {
+        if (++gMes->unk0A & 0x40) {
+            x = (u16)gMes->unk0A % 32;
+            x = cosdf(x * 11.612904f) * 55.0f + 200.0f;
+            for (i = 0; i < nameLen; i++) {
+                func_80055458_main(gMes->strGId[0], i + 1, x);
+            }
+            for (i = 0; i < lostLen; i++) {
+                func_80055458_main(gMes->strGId[1], i + 1, x);
+            }
+        }
+        return TRUE;
+    }
+    x = gMes->unk04;
+    if (x <= 30.0f) {
+        for (i = 0; i < nameLen; i++) {
+            HuSprAttrReset(gMes->strGId[0], i + 1, 0x8000);
+            func_80055458_main(gMes->strGId[0], i + 1, x * 8.5f);
+        }
+    }
+    x = gMes->unk04 - 20;
+    if (x <= 30.0f && x > 0.0f) {
+        for (i = 0; i < lostLen; i++) {
+            HuSprAttrReset(gMes->strGId[1], i + 1, 0x8000);
+            func_80055458_main(gMes->strGId[1], i + 1, x * 8.5f);
+        }
+    }
+    return TRUE;
+}
 
-INCLUDE_ASM("asm/nonmatchings/gamemes", func_8003EE98_main);
+s32 func_8003EBC8_main(GAMEMES *gMes, Gfx **gfx) {
+    char *str;
+    f32 scale;
+    f32 i;
+
+    if (gMes->unk04 == 0) {
+        str = HuMemMemoryAllocPerm(256);
+        func_80045208_main(str, (void *)gMes->unk1C);
+        func_8003A37C_main(gMes, str, gMes->unk02, -1, -1);
+        gMes->unk08 = strlen(str);
+        func_80054904_main(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+        HuMemMemoryFreePerm(str);
+    }
+    if (gMes->unk04 > gMes->unk06 || gMesCloseF || gMes->stat == GMES_STAT_KILL) {
+        GMesSprKill(gMes);
+        return FALSE;
+    }
+    if (gMes->unk04 < 14) {
+        scale = sindf(gMes->unk04 * 10.0f) + (1.0f - sindf(130.0f));
+        for (i = 0.0f; i < gMes->unk08; i++) {
+            HuSprScaleSet(gMes->strGId[0], i + 1, gMes->unk68, scale * gMes->unk6C);
+        }
+    }
+    if (gMes->unk04 > gMes->unk06 - 10) {
+        gMes->stat = 2;
+        scale = cosdf((gMes->unk04 - (gMes->unk06 - 10)) * 9.0f);
+        for (i = 0.0f; i < gMes->unk08; i++) {
+            HuSprScaleSet(gMes->strGId[0], i + 1, gMes->unk68, scale * gMes->unk6C);
+        }
+    }
+    return TRUE;
+}
+
+s32 func_8003EE98_main(GAMEMES *gMes, Gfx **gfx) {
+    char *str;
+    f32 i;
+
+    if (gMes->unk04 == 0) {
+        str = HuMemMemoryAllocPerm(256);
+        func_80045208_main(str, (void *)gMes->unk1C);
+        func_8003A37C_main(gMes, str, gMes->unk02, -1, -1);
+        gMes->unk08 = strlen(str);
+        HuMemMemoryFreePerm(str);
+    }
+    if (gMes->unk04 > gMes->unk06 || gMesCloseF || gMes->stat == GMES_STAT_KILL) {
+        GMesSprKill(gMes);
+        return FALSE;
+    }
+    func_80054904_main(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+    func_800552DC_main(gMes->strGId[0], 0, gMes->unk70);
+    for (i = 0.0f; i < gMes->unk08; i++) {
+        HuSprScaleSet(gMes->strGId[0], i + 1, gMes->unk68, gMes->unk6C);
+        func_80055458_main(gMes->strGId[0], i + 1, gMes->unk03);
+    }
+    return TRUE;
+}
 
 s32 GMesTimerExec(GAMEMES *gMes, Gfx **arg1) {
     f32 temp_f22;
@@ -2893,19 +3101,413 @@ void func_8003F5C0_main(void) {
     gMesData[gMesTimerId].unk0C = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/gamemes", func_8003F604_main);
+s32 func_8003F604_main(GAMEMES *gMes, Gfx **gfx) {
+    char *newStr = "NEW";
+    char *recordStr = "RECORD";
+    s32 newLen;
+    s32 recordLen;
+    s32 result;
+    s32 i;
+    f32 x;
 
-INCLUDE_ASM("asm/nonmatchings/gamemes", func_8003FD34_main);
+    if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
+        gMes->unk08 = 4;
+    }
+    result = TRUE;
+    newLen = strlen(newStr);
+    recordLen = strlen(recordStr);
+    switch (gMes->unk08) {
+        case 0:
+            func_8003A37C_main(gMes, newStr, 1, -1, -1);
+            func_8003A37C_main(gMes, recordStr, 1, -1, -1);
+            gMes->unk68 = gMes->unk6C = 0.5f;
+            x = 160.0f - ((newLen + recordLen + 1) * 11 * gMes->unk68 - newLen * 11 * gMes->unk6C);
+            func_80054904_main(gMes->strGId[0], 0, gMes->unk60 - 160.0f + x, gMes->unk64);
+            gMes->unk03 = 0;
+            for (i = 0; i < newLen; i++) {
+                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->unk68, gMes->unk68);
+                func_80055458_main(gMes->strGId[0], i + 1, gMes->unk03);
+            }
+            x = (newLen + recordLen + 1) * 11 * gMes->unk68 - recordLen * 11 * gMes->unk6C + 160.0f;
+            gMes->unk70 = 0.0f;
+            func_80054904_main(gMes->strGId[1], 0, gMes->unk60 - 160.0f + x, gMes->unk64);
+            func_800552DC_main(gMes->strGId[1], 0, gMes->unk70);
+            for (i = 0; i < recordLen; i++) {
+                HuSprScaleSet(gMes->strGId[1], i + 1, gMes->unk6C, gMes->unk6C);
+                func_80055458_main(gMes->strGId[1], i + 1, gMes->unk03);
+            }
+            D_800D6A58_main = 1;
+            D_800D1100_main = 0;
+            gMes->unk08 = 1;
+            gMes->unk10 = 90.0f;
+            break;
+        case 1:
+            gMes->unk10 += 21.0f;
+            gMes->unk68 += 0.016666668f;
+            gMes->unk6C = 1.0f - sindf(gMes->unk10) * 0.5f;
+            x = 160.0f - ((newLen + recordLen + 1) * 11 * gMes->unk68 - newLen * 11 * gMes->unk68);
+            gMes->unk70 += 12.0f;
+            gMes->unk03 += 8;
+            func_80054904_main(gMes->strGId[0], 0, gMes->unk60 - 160.0f + x, gMes->unk64);
+            func_800552DC_main(gMes->strGId[0], 0, gMes->unk70);
+            for (i = 0; i < newLen; i++) {
+                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->unk68, gMes->unk68);
+                func_80055458_main(gMes->strGId[0], i + 1, gMes->unk03);
+            }
+            x = (newLen + recordLen + 1) * 11 * gMes->unk68 - recordLen * 11 * gMes->unk68 + 160.0f;
+            func_80054904_main(gMes->strGId[1], 0, gMes->unk60 - 160.0f + x, gMes->unk64);
+            for (i = 0; i < recordLen; i++) {
+                HuSprScaleSet(gMes->strGId[1], i + 1, gMes->unk6C, gMes->unk6C);
+                func_80055458_main(gMes->strGId[1], i + 1, gMes->unk03);
+            }
+            if (gMes->unk04 >= 30) {
+                gMes->stat = 2;
+                func_800552DC_main(gMes->strGId[0], 0, 0.0f);
+                for (i = 0; i < newLen; i++) {
+                    func_80055458_main(gMes->strGId[0], i + 1, 255);
+                }
+                for (i = 0; i < recordLen; i++) {
+                    func_80055458_main(gMes->strGId[1], i + 1, 255);
+                }
+                gMes->unk0A = 30;
+                gMes->unk08 = 2;
+            }
+            break;
+        case 2:
+            if (--gMes->unk0A == -1) {
+                gMes->unk0A = 255;
+                gMes->unk08 = 3;
+            }
+            break;
+        case 3:
+            gMes->unk0A -= 16;
+            if (gMes->unk0A <= 0) {
+                gMes->unk0A = 0;
+                gMes->unk08 = 4;
+            }
+            for (i = 0; i < newLen; i++) {
+                func_80055458_main(gMes->strGId[0], i + 1, gMes->unk0A);
+            }
+            for (i = 0; i < recordLen; i++) {
+                func_80055458_main(gMes->strGId[1], i + 1, gMes->unk0A);
+            }
+            if (gMes->unk04 > 60) {
+                gMes->unk08 = 4;
+            }
+            break;
+        case 4:
+            GMesSprKill(gMes);
+            result = FALSE;
+            break;
+    }
+    if (gMes->unk04 == 10) {
+        HuAudFXPlay(0x252);
+    }
+    if (gMes->unk04 >= 56) {
+        gMes->stat = 2;
+    }
+    return result;
+}
 
-INCLUDE_ASM("asm/nonmatchings/gamemes", func_8003FFD0_main);
+s32 func_8003FD34_main(GAMEMES *gMes, Gfx **gfx) {
+    s32 result;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/gamemes", func_80040290_main);
+    if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
+        gMes->unk08 = 3;
+    }
+    result = TRUE;
+    switch (gMes->unk08) {
+        case 0:
+            func_8003DCA4_main(gMes, 0xC0092);
+            D_800D6A58_main = 1;
+            D_800D1100_main = 0;
+            gMes->unk60 = 160.0f;
+            gMes->unk64 = 120.0f;
+            gMes->unk68 = 1.0f;
+            gMes->unk6C = 1.0f;
+            gMes->unk03 = 255;
+            func_80054904_main(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+            for (i = 0; i < 2; i++) {
+                HuSprScaleSet(gMes->strGId[0], i, gMes->unk68, gMes->unk6C);
+                func_80055458_main(gMes->strGId[0], i, gMes->unk03);
+            }
+            gMes->unk08 = 1;
+            gMes->unk10 = 0.0f;
+            break;
+        case 1:
+            gMes->unk6C = gMes->unk68 = sindf(gMes->unk10) * 0.2f + 1.0f;
+            gMes->unk10 += 15.0f;
+            for (i = 0; i < 2; i++) {
+                HuSprScaleSet(gMes->strGId[0], i, gMes->unk68, gMes->unk6C);
+            }
+            if (gMes->unk04 > gMes->unk06 - 10) {
+                gMes->stat = 2;
+                gMes->unk03 -= 25;
+                for (i = 0; i < 2; i++) {
+                    func_80055458_main(gMes->strGId[0], i, gMes->unk03);
+                }
+            }
+            if (gMes->unk04 > gMes->unk06) {
+                gMes->unk08 = 3;
+                for (i = 0; i < 2; i++) {
+                    func_80055458_main(gMes->strGId[0], i, 0);
+                }
+            }
+            break;
+        case 3:
+            GMesSprKill(gMes);
+            result = FALSE;
+            break;
+    }
+    return result;
+}
 
-INCLUDE_ASM("asm/nonmatchings/gamemes", func_800407B8_main);
+s32 func_8003FFD0_main(GAMEMES *gMes, Gfx **gfx) {
+    s32 result;
+    s32 i;
 
-INCLUDE_RODATA("asm/nonmatchings/gamemes", D_800A77BC_main);
+    if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
+        gMes->unk08 = 3;
+    }
+    result = TRUE;
+    switch (gMes->unk08) {
+        case 0:
+            func_8003DCA4_main(gMes, 0xC0094);
+            D_800D6A58_main = 1;
+            D_800D1100_main = 0;
+            gMes->unk60 = 160.0f;
+            gMes->unk64 = 120.0f;
+            gMes->unk68 = 1.0f;
+            gMes->unk6C = 1.0f;
+            gMes->unk03 = 255;
+            func_80054904_main(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+            for (i = 0; i < 2; i++) {
+                HuSprScaleSet(gMes->strGId[0], i, gMes->unk68, gMes->unk6C);
+                func_80055458_main(gMes->strGId[0], i, gMes->unk03);
+            }
+            gMes->unk08 = 1;
+            gMes->unk10 = 0.0f;
+            break;
+        case 1:
+            if (gMes->unk04 >= 10) {
+                gMes->unk08 = 2;
+            }
+            break;
+        case 2:
+            gMes->unk6C = gMes->unk68 = sindf(gMes->unk10) * 0.3f + 1.0f;
+            gMes->unk10 += 20.0f;
+            for (i = 0; i < 2; i++) {
+                HuSprScaleSet(gMes->strGId[0], i, gMes->unk68, gMes->unk6C);
+            }
+            if (gMes->unk04 >= 40) {
+                gMes->unk03 -= 51;
+                for (i = 0; i < 2; i++) {
+                    func_80055458_main(gMes->strGId[0], i, gMes->unk03);
+                }
+            }
+            if (gMes->unk04 >= gMes->unk06) {
+                gMes->stat = 2;
+                gMes->unk08 = 3;
+                for (i = 0; i < 2; i++) {
+                    func_80055458_main(gMes->strGId[0], i, 0);
+                }
+            }
+            break;
+        case 3:
+            GMesSprKill(gMes);
+            result = FALSE;
+            break;
+    }
+    return result;
+}
 
-INCLUDE_RODATA("asm/nonmatchings/gamemes", jtbl_800A77C0_main);
+s32 func_80040290_main(GAMEMES *gMes, Gfx **gfx) {
+    s32 result;
+    s32 i;
+    f32 t;
+
+    if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
+        gMes->unk08 = 4;
+    }
+    result = TRUE;
+    switch (gMes->unk08) {
+        case 0:
+            func_8003DCA4_main(gMes, 0xC0098);
+            func_80055420_main(gMes->strGId[0], 1, 69, 2, 133);
+            gMes->unk60 = 160.0f;
+            gMes->unk64 = 120.0f;
+            func_80054904_main(gMes->strGId[0], 0, gMes->unk60, 120);
+            for (i = 0; i < 2; i++) {
+                HuSprScaleSet(gMes->strGId[0], i, 0.0f, 2.0f);
+            }
+            D_800D6A58_main = 1;
+            D_800D1100_main = 0;
+            gMes->unk08 = 1;
+            gMes->unk10 = 0.0f;
+            break;
+        case 1:
+            gMes->unk68 = sindf(gMes->unk10);
+            gMes->unk6C = 2.0f - (1.0f - cosdf(gMes->unk10));
+            gMes->unk10 += 9.0f;
+            for (i = 0; i < 2; i++) {
+                HuSprScaleSet(gMes->strGId[0], i, gMes->unk68, gMes->unk6C);
+            }
+            if (gMes->unk04 < 10) {
+                break;
+            }
+            gMes->unk08 = 2;
+            gMes->unk10 = 90.0f;
+            for (i = 0; i < 2; i++) {
+                HuSprScaleSet(gMes->strGId[0], i, 1.0f, 1.0f);
+            }
+            /* fallthrough */
+        case 2:
+            for (i = 0; i < 2; i++) {
+                HuSprScaleSet(gMes->strGId[0], i, gMes->unk68, gMes->unk6C);
+            }
+            gMes->unk68 = 1.5f - (sindf(gMes->unk10) < 0.0f ? -sindf(gMes->unk10) : sindf(gMes->unk10)) * 0.5f;
+            gMes->unk6C = (sindf(gMes->unk10) < 0.0f ? -sindf(gMes->unk10) : sindf(gMes->unk10)) * 0.7f + 0.3f;
+            gMes->unk10 += 12.0f;
+            if (gMes->unk04 >= 25) {
+                for (i = 0; i < 2; i++) {
+                }
+                gMes->unk08 = 3;
+                gMes->unk10 = 0.0f;
+            }
+            break;
+        case 3:
+            gMes->unk03 = cosdf(gMes->unk10) * 55.0f + 200.0f;
+            gMes->unk10 += 20.0f;
+            if (gMes->unk04 > gMes->unk06 - 10) {
+                t = (gMes->unk06 - gMes->unk04) / 10.0f;
+            } else {
+                t = 1.0f;
+            }
+            for (i = 0; i < 2; i++) {
+                func_80055458_main(gMes->strGId[0], i, gMes->unk03 * t);
+            }
+            if (gMes->unk04 >= gMes->unk06) {
+                gMes->unk08 = 4;
+            }
+            break;
+        case 4:
+            GMesSprKill(gMes);
+            result = FALSE;
+            break;
+    }
+    if (gMes->unk04 == 10) {
+        HuAudFXPlay(0x24F);
+    }
+    if (gMes->unk04 > gMes->unk06 - 5) {
+        gMes->stat = 2;
+    }
+    return result;
+}
+
+s32 func_800407B8_main(GAMEMES *gMes, Gfx **gfx) {
+    char *readyStr = "READY";
+    char *goStr = "GO\xC4";
+    s32 readyLen;
+    s32 goLen;
+    s32 result;
+    s32 i;
+
+    if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
+        gMes->unk08 = 6;
+    }
+    result = TRUE;
+    readyLen = strlen(readyStr);
+    goLen = strlen(goStr);
+    switch (gMes->unk08) {
+        case 0:
+            func_8003A37C_main(gMes, readyStr, 1, -1, -1);
+            func_8003A37C_main(gMes, goStr, 1, -1, -1);
+            gMes->unk68 = 0.5f;
+            gMes->unk03 = 0;
+            for (i = 0; i < readyLen; i++) {
+                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->unk68, gMes->unk68);
+                func_80055458_main(gMes->strGId[0], i + 1, gMes->unk03);
+            }
+            for (i = 0; i < goLen; i++) {
+                HuSprAttrSet(gMes->strGId[1], i + 1, 0x8000);
+            }
+            func_80054904_main(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+            func_80054904_main(gMes->strGId[1], 0, gMes->unk60, gMes->unk64);
+            gMes->unk08 = 1;
+            gMes->unk0C = 0;
+            gMes->unk0A = 0;
+            break;
+        case 1:
+            gMes->unk68 += 0.1f;
+            gMes->unk03 += 25;
+            for (i = 0; i < readyLen; i++) {
+                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->unk68, gMes->unk68);
+                func_80055458_main(gMes->strGId[0], i + 1, gMes->unk03);
+            }
+            if (gMes->unk04 >= 10) {
+                for (i = 0; i < readyLen; i++) {
+                    HuSprScaleSet(gMes->strGId[0], i + 1, 1.5f, 1.5f);
+                    func_80055458_main(gMes->strGId[0], i + 1, 255);
+                }
+                gMes->unk08 = 2;
+            }
+            break;
+        case 2:
+            if (gMes->unk04 >= 35) {
+                gMes->unk08 = 3;
+            }
+            break;
+        case 3:
+            gMes->unk68 += 0.05f;
+            gMes->unk03 -= 51;
+            for (i = 0; i < readyLen; i++) {
+                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->unk68, gMes->unk68);
+                func_80055458_main(gMes->strGId[0], i + 1, gMes->unk03);
+            }
+            if (gMes->unk04 >= 40) {
+                for (i = 0; i < readyLen; i++) {
+                    func_80055458_main(gMes->strGId[0], i + 1, 0);
+                }
+                gMes->unk08 = 4;
+            }
+            break;
+        case 4:
+            gMes->unk68 = gMes->unk6C = sindf(gMes->unk0A * 15) * 3.0f;
+            for (i = 0; i < goLen; i++) {
+                HuSprAttrReset(gMes->strGId[1], i + 1, 0x8000);
+                HuSprScaleSet(gMes->strGId[1], i + 1, gMes->unk68, gMes->unk6C);
+            }
+            gMes->unk0A++;
+            if (gMes->unk04 >= 50) {
+                func_800452BC_main(func_80036610_main());
+                gMes->unk08 = 5;
+                gMes->unk03 = 255;
+            }
+            break;
+        case 5:
+            gMes->stat = 2;
+            gMes->unk03 -= 51;
+            for (i = 0; i < goLen; i++) {
+                func_80055458_main(gMes->strGId[1], i + 1, gMes->unk03);
+            }
+            gMes->unk0C++;
+            if (gMes->unk04 >= 55) {
+                for (i = 0; i < goLen; i++) {
+                    HuSprAttrSet(gMes->strGId[1], i + 1, 0x8000);
+                }
+                gMes->unk08 = 6;
+            }
+            break;
+        case 6:
+            GMesSprKill(gMes);
+            D_800D6A58_main = 0;
+            D_800D1100_main = 1;
+            result = FALSE;
+            break;
+    }
+    return result;
+}
 
 INCLUDE_ASM("asm/nonmatchings/gamemes", func_80040CF4_main);
 
@@ -2931,7 +3533,6 @@ INCLUDE_ASM("asm/nonmatchings/gamemes", func_80045010_main);
 
 INCLUDE_ASM("asm/nonmatchings/gamemes", func_800450B8_main);
 
-s32 func_80045208_main(void *arg0, void *arg1);
 INCLUDE_ASM("asm/nonmatchings/gamemes", func_80045208_main);
 
 s32 func_800452A0_main(void *arg0, void *arg1) {

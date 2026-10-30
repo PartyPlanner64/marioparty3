@@ -829,37 +829,36 @@ s32 func_80000FC4_main(void) {
 }
 
 /* Reads from ROM using PI DMA, in chunks of at most chunkSize bytes. */
-#ifdef NON_MATCHING
-/* Two of the argument register copies in the prologue are scheduled in a different order. */
 void func_80000FE4_main(void *dst, void *romAddr, s32 size, s32 chunkSize) {
     OSIoMesg mesg;
     s32 len;
+    s32 chunk = chunkSize;
+    u32 rom = (u32)romAddr;
+    u8 *ram = dst;
+    s32 remaining = size;
 
-    if (chunkSize == 0) {
-        chunkSize = size;
+    if (chunk == 0) {
+        chunk = remaining;
     }
-    chunkSize += chunkSize & 1;
-    while (size != 0) {
-        len = size;
-        if (chunkSize < size) {
-            len = chunkSize;
+    chunk += chunk & 1;
+    while (remaining != 0) {
+        len = remaining;
+        if (len > chunk) {
+            len = chunk;
         }
         mesg.hdr.pri = OS_MESG_PRI_NORMAL;
         mesg.hdr.retQueue = &D_800A9718_main;
-        mesg.dramAddr = dst;
-        mesg.devAddr = (u32)romAddr;
+        mesg.dramAddr = ram;
+        mesg.devAddr = rom;
         mesg.size = len;
-        osInvalDCache(dst, len);
+        osInvalDCache(ram, len);
         osEPiStartDma(D_800A9740_main.cfg.unk68, &mesg, OS_READ);
         osRecvMesg(&D_800A9718_main, NULL, OS_MESG_BLOCK);
-        romAddr = (u8 *)romAddr + len;
-        size -= len;
-        dst = (u8 *)dst + len;
+        rom += len;
+        remaining -= len;
+        ram += len;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/1140", func_80000FE4_main);
-#endif
 
 /* Allocates a single element of the given size from the audio heap, reporting a
  * fatal error if the allocation fails. This is the non-debug alHeapAlloc(). */

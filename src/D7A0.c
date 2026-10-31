@@ -253,18 +253,14 @@ s16 func_8000D658_main(s32 attr, s16 count) {
     return func_8000D3E0_main(0x85, attr, count, func_8000D694_main);
 }
 
-#ifdef NON_MATCHING
-/* Register swap: count and the constant 5 are allocated to s6/s7 in the opposite order */
 void func_8000D694_main(s16 model) {
     HmfData *hmf = HmfModelData[model].hmf;
     HmfModelData_UnkBC_Struct *bc = HmfModelData[model].unkBC;
+    s16 count = hmf->unk1A;
     HmfModelData_UnkBC_Unk58_Struct *particle;
-    s16 count;
     s16 i;
     f32 angle;
     f32 scale;
-
-    count = hmf->unk1A;
 
     if (bc->unk02 == 0) {
         bc->unk04 &= ~4;
@@ -295,6 +291,3 @@ void func_8000D694_main(s16 model) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/D7A0", func_8000D694_main);
-#endif

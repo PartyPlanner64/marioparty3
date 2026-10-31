@@ -93,7 +93,7 @@ static void MBCoinChangeKill(s32 arg0) {
 
     for (i = 0; i < UNK_SIZE2; i++) {
         if (D_80102C28_shared_board[arg0][i] != -1) {
-            HuSprKill(D_80102C28_shared_board[arg0][i]);
+            HuSprAnimKill(D_80102C28_shared_board[arg0][i]);
             D_80102C28_shared_board[arg0][i] = -1;
         }
     }
@@ -148,12 +148,12 @@ static void func_800E1934_shared_board(s32 arg0, s32 arg1) {
 
         D_80102C28_shared_board[arg0][1] = HuSprAnimRead(temp_v0_3);
         DataClose(temp_v0_3);
-        func_80055024_main(temp_v0_2, 1, D_80102C28_shared_board[arg0][0], 0);
+        HuSprGrpMemberSet(temp_v0_2, 1, D_80102C28_shared_board[arg0][0], 0);
         HuSprPriSet(temp_v0_2, 1, 0x2010U);
         HuSprAttrSet(temp_v0_2, 1, 0x1000);
 
         var_s2 = 2;
-        func_80055024_main(temp_v0_2, 2, D_80102C28_shared_board[arg0][1], 0);
+        HuSprGrpMemberSet(temp_v0_2, 2, D_80102C28_shared_board[arg0][1], 0);
         func_800550F4_main(temp_v0_2, 2, 1);
 
         if (var_s3 > 0) {
@@ -169,7 +169,7 @@ static void func_800E1934_shared_board(s32 arg0, s32 arg1) {
         var_s3 = (var_s3 < 0) ? -var_s3 : var_s3;
 
         if (var_s3 >= 100) {
-            func_80055024_main(temp_v0_2, var_s2, D_80102C28_shared_board[arg0][1], 0);
+            HuSprGrpMemberSet(temp_v0_2, var_s2, D_80102C28_shared_board[arg0][1], 0);
             func_800550F4_main(temp_v0_2, var_s2, 1);
             HuSprBankSet(temp_v0_2, var_s2, (var_s3 / 100), 0);
             HuSprPriSet(temp_v0_2, var_s2, 0x2010);
@@ -178,7 +178,7 @@ static void func_800E1934_shared_board(s32 arg0, s32 arg1) {
         }
 
         if (var_s3 >= 10) {
-            func_80055024_main(temp_v0_2, var_s2, D_80102C28_shared_board[arg0][1], 0);
+            HuSprGrpMemberSet(temp_v0_2, var_s2, D_80102C28_shared_board[arg0][1], 0);
             func_800550F4_main(temp_v0_2, var_s2, 1);
             HuSprBankSet(temp_v0_2, var_s2, ((var_s3 / 10) % 10), 0);
             HuSprPriSet(temp_v0_2, var_s2, 0x2010U);
@@ -188,7 +188,7 @@ static void func_800E1934_shared_board(s32 arg0, s32 arg1) {
 
         var_s3 = var_s3 % 10;
 
-        func_80055024_main(temp_v0_2, var_s2, D_80102C28_shared_board[arg0][1], 0);
+        HuSprGrpMemberSet(temp_v0_2, var_s2, D_80102C28_shared_board[arg0][1], 0);
         func_800550F4_main(temp_v0_2, var_s2, 1);
         HuSprBankSet(temp_v0_2, var_s2, var_s3, 0);
         HuSprPriSet(temp_v0_2, var_s2, 0x2010U);

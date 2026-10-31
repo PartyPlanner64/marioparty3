@@ -199,7 +199,7 @@ s16 func_8010A598_baby_bowser_broadside(s16 priority, s32 directory, s32 file, s
             sprite->unk_01 = HuSprGrpCreate(1, 0);
             sprite->unk_06 = 255;
             HuSprAttrReset(sprite->unk_01, 0, -1);
-            func_80055024_main(sprite->unk_01, 0, sprite->unk_02, 0);
+            HuSprGrpMemberSet(sprite->unk_01, 0, sprite->unk_02, 0);
             HuSprAttrSet(sprite->unk_01, 0, attr);
             func_800550F4_main(sprite->unk_01, 0, animation);
             HuSprPriSet(sprite->unk_01, 0, (u16)priority);

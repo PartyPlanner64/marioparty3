@@ -64,7 +64,7 @@ void func_80116D4C_mgmode(void) {
         HuSprGet(D_800CD1DC_main[D_8011B650_mgmode].unk04, 0)->unk_84->unk00->unk00 =
             D_8011B660_mgmode;
         espKill(D_8011B650_mgmode);
-        HuSprKill(D_8011A3E0_mgmode);
+        HuSprAnimKill(D_8011A3E0_mgmode);
         for (i = 0; i < ARRAY_COUNT(D_8011B654_mgmode); i++) {
             HuMemFree(D_8011B654_mgmode[i]);
         }

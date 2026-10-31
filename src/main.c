@@ -98,7 +98,7 @@ void main() {
 
     DataInit((u32)mainfs_ROM_START);
 
-    HuPrcSysInit();
+    HuPrcInit();
 
     msgTempVar = &intrMesgBuf[4];
     osCreateMesgQueue(&D_800CCF38_main, msgTempVar, INTR_MESG_BUF_SIZE);

@@ -158,7 +158,7 @@ void func_801059A0_inst(void) {
     func_8000B5F0_main(1);
     ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
-    Hu3DCamSetPerspective(0, 15.0f, 500.0f, 8000.0f);
+    Hu3DCameraPerspectiveSet(0, 15.0f, 500.0f, 8000.0f);
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, func_8010674C_inst), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     func_800142A0_main(0x28);
     HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
@@ -421,7 +421,7 @@ void func_8010674C_inst(omObjData *object) {
     D_800CE17C_main[2] = gCameraList->fov;
     D_800CE17C_main[3] = D_800D5210_main;
     D_800CE17C_main[4] = D_800CB890_main;
-    Hu3DCamSetPositionOrientation(0, &D_8010D418_inst, &D_8010D424_inst, &D_8010D430_inst);
+    Hu3DCameraPosSetV(0, &D_8010D418_inst, &D_8010D424_inst, &D_8010D430_inst);
     Hu3DCamUpdateMtx(0);
 }
 

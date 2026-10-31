@@ -601,7 +601,7 @@ void func_8010654C_pump_pump_away(omObjData *obj) {
     for (i = 1; i < 3; i++) {
         obj->model[i] = func_8000B0A0_main(0, 0xC9);
         func_8001C2FC_main(obj->model[i], 0x80000000, 0);
-        func_8001C448_main(obj->model[i]);
+        Hu3DModelRemakeStatic(obj->model[i]);
         func_8001C514_main(obj->model[i]);
         func_80088800_main(HmfModelData[obj->model[i]].mtx, 0.0f, 1.0f, 0.0f);
         Hu3DModelScaleSet(obj->model[i], 3.0f, 3.0f, 3.0f);
@@ -815,7 +815,7 @@ void func_80107338_pump_pump_away(omObjData *obj) {
     obj->model[0] = func_8000B108_main(0x2E0001, 0x289);
     obj->model[1] = func_8000B108_main(0x2E0002, 0x289);
     func_8001C2FC_main(obj->model[0], 0x20000, 0x20000);
-    func_8001C448_main(obj->model[0]);
+    Hu3DModelRemakeStatic(obj->model[0]);
     func_8001C954_main(obj->model[0]);
     func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
@@ -1026,7 +1026,7 @@ void func_80107B40_pump_pump_away(omObjData *obj) {
     }
     func_80034048_main((s16)obj->work[1], 0);
     func_80032FC0_main((s16)obj->work[1], 1, 1);
-    func_8001C448_main(obj->model[0]);
+    Hu3DModelRemakeStatic(obj->model[0]);
     func_8001C514_main(obj->model[0]);
     func_8001C5B4_main(obj->model[0], obj->motion[0]);
     func_8001C814_main(obj->model[0], 1, 1);
@@ -1153,7 +1153,7 @@ void func_80108358_pump_pump_away(omObjData *obj) {
         obj->work[1] = (s16)HmfAnimCreate(HmfModelData[obj->model[0]].hmf, data, 0, "m213_hose_r_DEF");
         func_80032FC0_main(obj->work[1], 1, 1);
         HuMemMemoryFreePerm(data);
-        func_8001C448_main(obj->model[0]);
+        Hu3DModelRemakeStatic(obj->model[0]);
         func_8001C514_main(obj->model[0]);
     }
     func_8001C5B4_main(obj->model[0], obj->motion[0]);
@@ -2151,7 +2151,7 @@ void func_8010B370_pump_pump_away(omObjData *obj) {
         obj->work[2] = (s16)HmfAnimCreate(HmfModelData[obj->model[0]].hmf, data, 0, "m213_roket_r01_DEF");
         func_80032FC0_main(obj->work[2], 1, 1);
         HuMemMemoryFreePerm(data);
-        func_8001C448_main(obj->model[0]);
+        Hu3DModelRemakeStatic(obj->model[0]);
         func_8001C514_main(obj->model[0]);
     }
     func_8001C5B4_main(obj->model[0], obj->motion[0]);
@@ -2498,7 +2498,7 @@ void func_8010C6E4_pump_pump_away(omObjData *obj) {
     func_8001C814_main(obj->model[0], 2, 2);
     obj->model[1] = func_8000B0A0_main(0, 0xC9);
     func_8001C2FC_main(obj->model[1], 0x80000000, 0);
-    func_8001C448_main(obj->model[1]);
+    Hu3DModelRemakeStatic(obj->model[1]);
     func_8001C514_main(obj->model[1]);
     func_80088800_main(HmfModelData[obj->model[1]].mtx, 0.0f, 5.0f, 0.0f);
     if (obj->work[1] == 0) {
@@ -2659,7 +2659,7 @@ void func_8010CEE8_pump_pump_away(omObjData *obj) {
         }
         HuSprScaleSet(record->group, 0, record->unk_20 / 12.0f + 1.0f, record->unk_20 / 12.0f + 1.0f);
         HuSprPosSet(record->group, 0, record->unk_20 / 4 + 32, record->unk_20 / 4 + 22);
-        func_80055024_main(record->group, 0, record->spriteData, 0);
+        HuSprGrpMemberSet(record->group, 0, record->spriteData, 0);
         func_800550F4_main(record->group, 0, 0);
         func_80054FF8_main(record->group, 0, (s16)record->digits[0]);
         HuSprAttrSet(record->group, 0, 0x1000);
@@ -2667,7 +2667,7 @@ void func_8010CEE8_pump_pump_away(omObjData *obj) {
         for (i = 1; i < 3; i++) {
             HuSprScaleSet(record->group, i, record->unk_20 / 12.0f + 1.0f, record->unk_20 / 12.0f + 1.0f);
             HuSprPosSet(record->group, i, i * 12, 0);
-            func_80055024_main(record->group, i, record->spriteData, 0);
+            HuSprGrpMemberSet(record->group, i, record->spriteData, 0);
             func_800550F4_main(record->group, i, 0);
             func_80054FF8_main(record->group, i, (s16)record->digits[i]);
             HuSprAttrSet(record->group, i, 0x1000);
@@ -2687,24 +2687,24 @@ void func_8010D1B8_pump_pump_away(omObjData *obj) {
     D_801135B4_pump_pump_away = func_8000B838_main(0x32);
     D_801135B8_pump_pump_away = HuSprGrpCreate(4, 5);
     HuSprPosSet(D_801135B8_pump_pump_away, 0, 32, 22);
-    func_80055024_main(D_801135B8_pump_pump_away, 0, D_801135B4_pump_pump_away, 0);
+    HuSprGrpMemberSet(D_801135B8_pump_pump_away, 0, D_801135B4_pump_pump_away, 0);
     func_800550F4_main(D_801135B8_pump_pump_away, 0, 0);
     func_80054FF8_main(D_801135B8_pump_pump_away, 0, D_801135BE_pump_pump_away);
     HuSprAttrSet(D_801135B8_pump_pump_away, 0, 0x1000);
     HuSprAttrSet(D_801135B8_pump_pump_away, 0, 0);
     for (i = 1; i < 3; i++) {
         func_800554C4_main(record->group, i, 0);
-        func_80055024_main(record->group, i, record->spriteData, 0);
+        HuSprGrpMemberSet(record->group, i, record->spriteData, 0);
         if (record->digits[i] != -1) {
             HuSprPosSet(record->group, i, i * 12, 0);
-            func_80055024_main(record->group, i, record->spriteData, 0);
+            HuSprGrpMemberSet(record->group, i, record->spriteData, 0);
             func_800550F4_main(record->group, i, 0);
             func_80054FF8_main(record->group, i, (s16)record->digits[i]);
             HuSprAttrSet(record->group, i, 0x1000);
             HuSprAttrSet(record->group, i, 0);
         } else {
             HuSprPosSet(record->group, i, i * 12, 0);
-            func_80055024_main(record->group, i, record->spriteData, 0);
+            HuSprGrpMemberSet(record->group, i, record->spriteData, 0);
             func_800550F4_main(record->group, i, 0);
             func_80054FF8_main(record->group, i, 0);
             HuSprAttrSet(record->group, i, 0x1000);
@@ -2895,7 +2895,7 @@ void func_8010DD24_pump_pump_away(omObjData *obj) {
         obj->work[2] = HmfAnimLink(HmfModelData[obj->model[1]].hmf, D_801116E8_pump_pump_away, 0, "m213_plart1_DEF");
         obj->work[3] = HmfAnimLink(HmfModelData[obj->model[1]].hmf, D_801116E8_pump_pump_away, 0, "m213_plart0_DEF");
     }
-    func_8001C448_main(obj->model[1]);
+    Hu3DModelRemakeStatic(obj->model[1]);
     func_8001C514_main(obj->model[1]);
     for (i = 1; i < 4; i++) {
         func_80034048_main((s16)obj->work[i], 0);
@@ -3885,7 +3885,7 @@ void func_80110BB8_pump_pump_away(void) {
         ViewportSet(i, D_8011111C_pump_pump_away[i].viewportScale.x, D_8011111C_pump_pump_away[i].viewportScale.y,
                     D_8011111C_pump_pump_away[i].viewportScale.z, D_8011111C_pump_pump_away[i].viewportTranslate.x,
                     D_8011111C_pump_pump_away[i].viewportTranslate.y, D_8011111C_pump_pump_away[i].viewportTranslate.z);
-        Hu3DCamSetPerspective(i, D_8011111C_pump_pump_away[i].fov, 80.0f, 8000.0f);
+        Hu3DCameraPerspectiveSet(i, D_8011111C_pump_pump_away[i].fov, 80.0f, 8000.0f);
     }
 }
 

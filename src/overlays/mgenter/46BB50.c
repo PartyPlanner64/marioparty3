@@ -67,7 +67,7 @@ void func_80108A60_mgenter(void) {
     if (D_800CDA7C_main[1] & R_CBUTTONS) {
         D_80109AB0_mgenter -= 1.0f;
     }
-    Hu3DCamSetPerspective(0, D_80109AB0_mgenter, D_80109B64_mgenter, D_80109B78_mgenter);
+    Hu3DCameraPerspectiveSet(0, D_80109AB0_mgenter, D_80109B64_mgenter, D_80109B78_mgenter);
     x = CRot.x;
     y = CRot.y;
     if (D_800CDA7C_main[1] & Z_TRIG) {
@@ -171,7 +171,7 @@ void func_80109020_mgenter(void) {
         D_800CE178_main.fov = gCameraList->fov;
         D_800CE178_main.far = D_800D5210_main;
         D_800CE178_main.near = D_800CB890_main;
-        Hu3DCamSetPositionOrientation(0, &pos, &at, &up);
+        Hu3DCameraPosSetV(0, &pos, &at, &up);
         Hu3DCamUpdateMtx(0);
         HuPrcVSleep();
     }
@@ -221,7 +221,7 @@ void func_80109820_mgenter(void) {
 
     HuSprGet(D_800CD1DC_main[D_80109B42_mgenter].unk04, 0)->unk_84->unk00->unk00 = D_80109B54_mgenter;
     espKill(D_80109B42_mgenter);
-    HuSprKill(D_80109B40_mgenter);
+    HuSprAnimKill(D_80109B40_mgenter);
     for (i = 0; i < ARRAY_COUNT(D_80109B48_mgenter); i++) {
         HuMemFree(D_80109B48_mgenter[i]);
     }

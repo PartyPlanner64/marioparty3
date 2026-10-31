@@ -50,7 +50,7 @@ void espPriSet(u16, s32);
 void espKill(u16);
 void Hu3DModelRotSet(s16, f32, f32, f32);
 void Hu3DModelScaleSet(s16, f32, f32, f32);
-void HuSprKill(s16);
+void HuSprAnimKill(s16);
 void func_8010DAC4_msetup(omObjData *);
 void func_8010EB94_msetup(void);
 void func_8010E09C_msetup(omObjData *);
@@ -268,7 +268,7 @@ void func_8010D6D0_msetup(void) {
                     break;
                 case -1:
                     espKill(slot);
-                    HuSprKill(sprite);
+                    HuSprAnimKill(sprite);
                     cursor->state = 100;
                     while (1) {
                         HuPrcVSleep();
@@ -376,8 +376,8 @@ void func_8010DAC4_msetup(omObjData *object) {
             case 255:
                 espKill(object->model[0]);
                 espKill(object->model[1]);
-                HuSprKill(object->model[2]);
-                HuSprKill(object->model[3]);
+                HuSprAnimKill(object->model[2]);
+                HuSprAnimKill(object->model[3]);
                 object->work[0] = 0;
                 break;
         }
@@ -431,8 +431,8 @@ void func_8010DAC4_msetup(omObjData *object) {
 void func_8010DDD8_msetup(omObjData *object) {
     espKill(object->model[0]);
     espKill(object->model[1]);
-    HuSprKill(object->model[2]);
-    HuSprKill(object->model[3]);
+    HuSprAnimKill(object->model[2]);
+    HuSprAnimKill(object->model[3]);
     HuMemFree(object->data);
     omDelObj(object);
 }
@@ -874,7 +874,7 @@ void func_8010EB94_msetup(void) {
                             espKill((u16)slots[handle]);
                         }
                         if (values[handle] >= 0) {
-                            HuSprKill(values[handle]);
+                            HuSprAnimKill(values[handle]);
                         }
                     }
                     for (i = 0; i < 2; i++) {
@@ -935,7 +935,7 @@ void func_8010EB94_msetup(void) {
                         if (anim.fade.destroy[index] != 0) {
                             espKill((u16)handle);
                             if (values[index] >= 0) {
-                                HuSprKill(values[index]);
+                                HuSprAnimKill(values[index]);
                                 values[index] = -1;
                             }
                             anim.fade.destroy[index] = 0;
@@ -999,5 +999,5 @@ void func_8010F43C_msetup(s16 model, char *node, Vec2f *screenPos) {
 
     func_80016B00_main(model, HmfModelData[model].motTime, node, transform);
     func_8010F33C_msetup(model, &worldPos, transform);
-    Hu3DCam3DToScreen(0, &worldPos, screenPos);
+    Hu3D3Dto2D(0, &worldPos, screenPos);
 }

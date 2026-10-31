@@ -138,7 +138,7 @@ void func_800E149C_minigame(omObjData *, s32, s32);
 void func_80109858_locked_out(omObjData *object, u8 isPlayer, u8 canGrab);
 void func_801090FC_locked_out(omObjData *object, func_800E1BA8_minigame_ObjData **data, LockedOutPlayerWork **arg2);
 void func_80109E88_locked_out(s16 model, char *hook, s16 time, Vec *pos);
-void func_8001EF6C_main(s16, s16, char *);
+void Hu3DModelHookSet(s16, s16, char *);
 void func_800E6F0C_minigame(s32);
 void func_80109CDC_locked_out(void);
 void func_800DDD94_minigame(omObjData *);
@@ -159,7 +159,7 @@ void func_801059A0_locked_out(void) {
     camIndex = func_8000B638_main();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
-    Hu3DCamSetPerspective(0, 45.0f, 80.0f, 8000.0f);
+    Hu3DCameraPerspectiveSet(0, 45.0f, 80.0f, 8000.0f);
     func_800E1804_minigame();
     func_80105B38_locked_out(obj);
     func_80106040_locked_out();
@@ -911,7 +911,7 @@ void func_80107ABC_locked_out(omObjData *object) {
                 if (time >= D_800CCF58_main[HmfModelData[object->model[0]].motId].unk02) {
                     work->unk26 = 0;
                     if (work->unk25 != 0) {
-                        func_8001EED8_main(object->model[0], object->motion[0x26], 0);
+                        Hu3DMotionShapeSet(object->model[0], object->motion[0x26], 0);
                     }
                 } else if (work->unk25 == 0) {
                     if (__builtin_fabs(time - 15.0) <= 1.0) {
@@ -1383,7 +1383,7 @@ void func_80109858_locked_out(omObjData *object, u8 isPlayer, u8 canGrab) {
             angle -= 360.0;
         }
         if (__builtin_fabs((f64)angle) < 45.0) {
-            func_8001EF6C_main(block->model[0], object->model[0], "item_hook");
+            Hu3DModelHookSet(block->model[0], object->model[0], "item_hook");
             func_8001C258_main(block->model[0], 0x4000, 0x4000);
             func_8004AC5C_main(0x3D6, data->unk59);
             playerWork->unk25 = i + 1;
@@ -1469,7 +1469,7 @@ s16 func_80109FF4_locked_out(s16 spriteId, s16 count) {
         return -1;
     }
     for (i = 0; i < count; i++) {
-        func_80055024_main(groupId, i, spriteId, 0);
+        HuSprGrpMemberSet(groupId, i, spriteId, 0);
     }
     return groupId;
 }

@@ -198,7 +198,7 @@ void func_801059A0_chip_shot_challenge(void) {
     camIndex = func_8000B638_main();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
-    Hu3DCamSetPerspective(0, 40.0f, 80.0f, 8000.0f);
+    Hu3DCameraPerspectiveSet(0, 40.0f, 80.0f, 8000.0f);
     HmfLightDirSet(1, 32.0f, 99.0f, 59.0f);
     D_800EC1B8_minigame = 0;
     D_800EC280_minigame = 0;
@@ -570,7 +570,7 @@ void func_80107048_chip_shot_challenge(void) {
         func_8003302C_main(HmfAnimRead(HmfModelData[model].hmf, 0xB0048, "e268p01_I8"), i * 2);
         Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
         func_8001C2FC_main(model, 0x20000, 0x20000);
-        func_8001C448_main(model);
+        Hu3DModelRemakeStatic(model);
         func_8001C954_main(model);
         func_8001C514_main(model);
         func_80013390_main(model, -1, 0, func_801073D4_chip_shot_challenge);
@@ -669,7 +669,7 @@ void func_80107520_chip_shot_challenge(omObjData *object) {
     DataClose(data);
 
     group = D_8010AAC0_chip_shot_challenge = HuSprGrpCreate(4, 5);
-    func_80055024_main(group, 0, image1, 0);
+    HuSprGrpMemberSet(group, 0, image1, 0);
     HuSprAttrReset(group, 0, 0xFFFF);
     HuSprDispOff(group, 0);
     HuSprPosSet(group, 0, 0x80, 0x64);
@@ -677,7 +677,7 @@ void func_80107520_chip_shot_challenge(omObjData *object) {
     x = 15;
     for (i = 1; i < 4; i++) {
         HuSprPriSet(group, i, 1);
-        func_80055024_main(group, i, image1, 0);
+        HuSprGrpMemberSet(group, i, image1, 0);
         HuSprPosSet(group, i, x, 0);
         HuSprAttrReset(group, i, 0xFFFF);
         HuSprDispOff(group, i);
@@ -691,13 +691,13 @@ void func_80107520_chip_shot_challenge(omObjData *object) {
     HuSprDispOn(group, 2);
 
     group = D_8010AAC4_chip_shot_challenge = HuSprGrpCreate(2, 5);
-    func_80055024_main(group, 0, image2, 0);
+    HuSprGrpMemberSet(group, 0, image2, 0);
     HuSprAttrReset(group, 0, 0xFFFF);
     HuSprDispOff(group, 0);
     HuSprPosSet(group, 0, 0x9F, 0x64);
     HuSprPriSet(group, 0, 1);
     HuSprPriSet(group, 1, 1);
-    func_80055024_main(group, 1, image2, 0);
+    HuSprGrpMemberSet(group, 1, image2, 0);
     HuSprPosSet(group, 1, 0x23, 0);
     HuSprAttrReset(group, 1, 0xFFFF);
     HuSprDispOff(group, 1);
@@ -882,7 +882,7 @@ func_800E1BA8_minigame_ObjData *func_80108274_chip_shot_challenge(omObjData *obj
     func_800E5978_minigame(object, 6, func_80017BB8_main(chr, 0x36), 0, 0);
     object->model[2] = func_8000B0A0_main((chr + 10) | 0x3C0000, tag);
     object->model[3] = func_8000B0A0_main((chr + 0x12) | 0x3C0000, 0x4AD);
-    func_8001EF6C_main(object->model[2], object->model[0], "item_hook");
+    Hu3DModelHookSet(object->model[2], object->model[0], "item_hook");
     func_8001C258_main(object->model[2], 0x4000, 0x4000);
     func_8001FA68_main(object->model[3]);
     func_8001F9E4_main(object->model[3], 0x80);

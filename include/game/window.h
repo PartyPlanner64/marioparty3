@@ -176,7 +176,7 @@ void func_800365E8_main(void *ptr);
 s16 HuWinAnimSet(s16 win_id, u32 spriteMainFsPair, s16 arg2, s16 arg3, s16 arg4);
 TextWindow *HuWinGet(s16 win_id);
 void HuWinPosSet(s16, s16, s16);
-void func_8005BCA4_main(s16, s16, s16);
+void HuWinCenterPosSet(s16, s16, s16);
 void HuWinProc(void);
 void HuWinComKeyReset(void);
 void GetMesMaxSizeSub(u32);

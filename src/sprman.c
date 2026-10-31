@@ -245,7 +245,7 @@ s16 HuSprGrpCreate(u16 arg0, u16 arg1) {
     return var_s4;
 }
 
-s32 func_800528EC_main(s16 group, s16 member, u16 count) {
+s32 HuSprGrpMemberKill(s16 group, s16 member, u16 count) {
     HuSprGrp *groupPtr = HuSprGrpData[group];
     HuSprite **mp = &groupPtr->members[member];
     HuSprite *sprite;
@@ -1041,7 +1041,7 @@ void func_80054FF8_main(s16 group, s16 member, s32 arg2) {
     HuSprGrpData[group]->members[member]->unk_90 = arg2;
 }
 
-void func_80055024_main(s16 group, s16 member, s16 arg2, u16 arg3) {
+void HuSprGrpMemberSet(s16 group, s16 member, s16 arg2, u16 arg3) {
     HuSprite *sprite_ptr = HuSprGrpData[group]->members[member];
 
     sprite_ptr->unk_84 = D_800C9530_main[arg2];
@@ -1227,7 +1227,7 @@ void func_80055628_main(void) {
     }
 }
 
-void HuSprKill(s16 arg0) {
+void HuSprAnimKill(s16 arg0) {
     HuSprite_Unk84_Struct *desc = D_800C9530_main[arg0];
     s16 i;
 
@@ -1256,12 +1256,12 @@ void HuSprKill(s16 arg0) {
     D_800CC3E6_main--;
 }
 
-void func_800557A0_main(void) {
+void HuSprAnimAllKill(void) {
     s16 i;
 
     for (i = 0; i < 0x100; i++) {
         if (D_800C9530_main[i] != NULL) {
-            HuSprKill(i);
+            HuSprAnimKill(i);
         }
     }
 }
@@ -1320,7 +1320,7 @@ s16 HuSprAnimRead(void *arg0) {
     if (image != NULL) {
         desc->unk00 = image;
     } else {
-        HuSprKill(slot);
+        HuSprAnimKill(slot);
         return -1;
     }
     for (i = 0; i < desc->unk10; i++) {
@@ -1332,7 +1332,7 @@ s16 HuSprAnimRead(void *arg0) {
         image->unk00 = HuMemAlloc(size);
         if (image->unk00 == NULL) {
             desc->unk10 = i;
-            HuSprKill(slot);
+            HuSprAnimKill(slot);
             return -1;
         }
         for (j = 0; j < size; j++) {
@@ -1349,7 +1349,7 @@ s16 HuSprAnimRead(void *arg0) {
         if (dest != NULL) {
             desc->unk0C = dest;
         } else {
-            HuSprKill(slot);
+            HuSprAnimKill(slot);
             return -1;
         }
         for (i = 0; i < desc->unk1A; i++) {
@@ -1364,12 +1364,12 @@ s16 HuSprAnimRead(void *arg0) {
     if (animations != NULL) {
         desc->unk04 = animations;
     } else {
-        HuSprKill(slot);
+        HuSprAnimKill(slot);
         return -1;
     }
     animation = HuMemAlloc(desc->unk12 * (s32)sizeof(*animation));
     if (animation == NULL) {
-        HuSprKill(slot);
+        HuSprAnimKill(slot);
         return -1;
     }
     for (i = 0; i < desc->unk12; i++) {
@@ -1383,7 +1383,7 @@ s16 HuSprAnimRead(void *arg0) {
         frames[k] = HuMemAlloc(animation->unk00 * sizeof(*frame));
         if (frames[k] == NULL) {
             desc->unk12 = k;
-            HuSprKill(slot);
+            HuSprAnimKill(slot);
             return -1;
         }
         animation->unk04 = frames[k];
@@ -1434,7 +1434,7 @@ s32 func_80055DBC_main(u16 arg0, u16 arg1, u16 arg2, u16 arg3, u16 arg4) {
     if (cel != NULL) {
         desc->unk00 = cel;
     } else {
-        HuSprKill(slot);
+        HuSprAnimKill(slot);
         return -1;
     }
     for (i = 0; i < desc->unk10; i++) {
@@ -1448,7 +1448,7 @@ s32 func_80055DBC_main(u16 arg0, u16 arg1, u16 arg2, u16 arg3, u16 arg4) {
         cel->unk00 = HuMemAlloc(size / 8);
         if (cel->unk00 == NULL) {
             desc->unk10 = i;
-            HuSprKill(slot);
+            HuSprAnimKill(slot);
             return -1;
         }
         if (i == 0) {
@@ -1462,7 +1462,7 @@ s32 func_80055DBC_main(u16 arg0, u16 arg1, u16 arg2, u16 arg3, u16 arg4) {
         if (pal != NULL) {
             desc->unk0C = pal;
         } else {
-            HuSprKill(slot);
+            HuSprAnimKill(slot);
             return -1;
         }
     }
@@ -1790,7 +1790,7 @@ void HuSprClose(void) {
     s16 i;
 
     func_80052700_main();
-    func_800557A0_main();
+    HuSprAnimAllKill();
     func_80057158_main();
     for (i = 0; i < 3; i++) {
         if (D_800CE1B8_main[i] != NULL) {

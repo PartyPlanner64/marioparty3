@@ -304,7 +304,7 @@ void func_800DB6A8_shared_board(s32 arg0) {
     entry->sprites[entry->rollValueIdx] = HuSprGrpCreate(2, 5);
 
     for (i = 0; i < 2; i++) {
-        func_80055024_main(entry->sprites[entry->rollValueIdx], i, entry->unk_14, 0);
+        HuSprGrpMemberSet(entry->sprites[entry->rollValueIdx], i, entry->unk_14, 0);
         HuSprPriSet(entry->sprites[entry->rollValueIdx], i, 0x4000);
         HuSprAttrSet(entry->sprites[entry->rollValueIdx], i, 0x9000);
         HuSprSpeedSet(entry->sprites[entry->rollValueIdx], i, 0.0f);
@@ -462,7 +462,7 @@ s32 func_800DBEC0_shared_board(s32 arg0) {
         if (entry->unk_0C != 0) {
             entry->unk_0C--;
             if (entry->unk_0C == 0) {
-                HuSprKill(entry->unk_14);
+                HuSprAnimKill(entry->unk_14);
                 entry->unk_14 = -1;
             }
         }
@@ -603,7 +603,7 @@ s16 func_800DC128_shared_board(s32 arg0) {
         func_8001C814_main(entry->unk_16, 0, 2);
     }
 
-    func_8001C448_main(entry->unk_16);
+    Hu3DModelRemakeStatic(entry->unk_16);
     func_8001C954_main(entry->unk_16);
 
     dice = omAddObj(-0x8000, 1, 1, -1, func_800DAAAC_shared_board);
@@ -710,7 +710,7 @@ static void func_800DC718_shared_board(s32 arg0, s32 arg1, s32 arg2, char *arg3[
             }
         }
 
-        func_8001C448_main(entry->unk_16);
+        Hu3DModelRemakeStatic(entry->unk_16);
         func_8001C954_main(entry->unk_16);
         D_80105700_shared_board = 0;
 
@@ -1182,7 +1182,7 @@ static void func_800DDBC8_shared_board(void* arg0) {
     temp_v0 = omAddPrcObj(func_800DD724_shared_board, 0x4800U, 0, 0);
     temp_v0->user_data = arg0;
     HuPrcChildLink(HuPrcCurrentGet(), temp_v0);
-    HuPrcChildWait();
+    HuPrcChildWatch();
     mbItemBtnF = 1;
 }
 
@@ -1290,7 +1290,7 @@ static void func_800DDE3C_shared_board(void) {
                 data = DataRead(D_8010197C_shared_board[work->unk_08]);
                 anim = HuSprAnimRead(data);
                 DataClose(data);
-                func_80055024_main(grp, 0, anim, 0);
+                HuSprGrpMemberSet(grp, 0, anim, 0);
                 HuSprPriSet(grp, 0, 0xB);
                 func_800550F4_main(grp, 0, 0);
                 HuSprAttrSet(grp, 0, 0x180C);
@@ -1338,7 +1338,7 @@ static void func_800DDE3C_shared_board(void) {
                     HuSprTPLvlSet(grp, 0, 0);
                 }
 
-                HuSprKill(anim);
+                HuSprAnimKill(anim);
                 HuSprGrpKill(grp);
 
                 if (gotItem != 0) {

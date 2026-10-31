@@ -89,7 +89,7 @@ void func_80105A64_ChillyWaters(void) {
     work->unk8 = sprId;
     grpId = HuSprGrpCreate(1, 0);
     work->unkA = grpId;
-    func_80055024_main(grpId, 0, sprId, 0);
+    HuSprGrpMemberSet(grpId, 0, sprId, 0);
     HuSprPosSet(grpId, 0, work->unk0, work->unk4);
     HuSprAttrSet(grpId, 0, 0x5000);
     HuSprColorSet(grpId, 0, 0x20, 0xA0, 0x90);
@@ -138,7 +138,7 @@ const s32 pad4[] = {0,0};
 void func_80105DB8_ChillyWaters(IceWork* arg0) {
     HuSprGet(arg0->unkA, 0)->unk_84->unk00->unk00 = arg0->unk10;
     HuSprGrpKill(arg0->unkA);
-    HuSprKill(arg0->unk8);
+    HuSprAnimKill(arg0->unk8);
     HuMemFree(arg0->imgData);
     HuMemFree(arg0);
     omDelPrcObj(arg0->unk14);

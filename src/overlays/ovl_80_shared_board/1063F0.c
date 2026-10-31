@@ -9,7 +9,7 @@ void func_800F27D0_shared_board(void) {
     D_80101770_shared_board.y1 = 12.0f;
     D_80101770_shared_board.x2 = 304.0f;
     D_80101770_shared_board.y2 = 228.0f;
-    CameraScissorSet(0, &D_80101770_shared_board);
+    Hu3DCameraScissorSet(0, &D_80101770_shared_board);
 }
 
 void func_800F2834_shared_board(void) {
@@ -17,7 +17,7 @@ void func_800F2834_shared_board(void) {
     D_80101770_shared_board.y1 = 12.0f;
     D_80101770_shared_board.x2 = 16.0f;
     D_80101770_shared_board.y2 = 228.0f;
-    CameraScissorSet(0, &D_80101770_shared_board);
+    Hu3DCameraScissorSet(0, &D_80101770_shared_board);
 }
 
 static void func_800F288C_shared_board(void) {
@@ -29,7 +29,7 @@ static void func_800F288C_shared_board(void) {
     for (i = 0; i < 9; i++) {
         HuPrcVSleep();
         D_80101770_shared_board.x1 += 32.0f;
-        CameraScissorSet(0, &D_80101770_shared_board);
+        Hu3DCameraScissorSet(0, &D_80101770_shared_board);
     }
     omDelPrcObj(NULL);
 }
@@ -47,7 +47,7 @@ static void func_800F2958_shared_board(void) {
     for (i = 0; i < 9; i++) {
         HuPrcVSleep();
         D_80101770_shared_board.x2 += 32.0f;
-        CameraScissorSet(0, &D_80101770_shared_board);
+        Hu3DCameraScissorSet(0, &D_80101770_shared_board);
     }
 
     omDelPrcObj(NULL);

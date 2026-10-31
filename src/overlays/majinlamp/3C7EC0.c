@@ -44,7 +44,7 @@ extern const char D_80108260_majinlamp[];
 extern const char D_80108268_majinlamp[];
 
 void func_8001E888_main(s16, f32, f32, s32, s32, const char *, s32);
-void func_80007DD8_main(s16);
+void msmSeStop(s16);
 void func_8008A120_main(HuMtx4F, f32);
 void MBDlgResultWinExec(s32);
 void MBDlgWinExecY(s16, s32, s32);
@@ -401,7 +401,7 @@ void func_80106E74_majinlamp(void) {
     temp_v0 = DataRead(0x1301BF);
     D_8010833A_majinlamp = HuSprAnimRead(temp_v0);
     DataClose(temp_v0);
-    func_80055024_main(D_80108338_majinlamp, 0, D_8010833A_majinlamp, 0);
+    HuSprGrpMemberSet(D_80108338_majinlamp, 0, D_8010833A_majinlamp, 0);
     HuSprPriSet(D_80108338_majinlamp, 0, 0xA);
     func_800550F4_main(D_80108338_majinlamp, 0, 1);
     HuSprAttrSet(D_80108338_majinlamp, 0, 0x5000);
@@ -569,8 +569,8 @@ void func_8010771C_majinlamp(void) {
     HuVecCopy3F(direction, &D_80108334_majinlamp->player_obj->rot);
     HuPrcChildLink(HuPrcCurrentGet(), func_800ED128_shared_board(&D_80108334_majinlamp->player_obj->rot, offset,
                                                                  &D_80108334_majinlamp->player_obj->rot, 0xA));
-    HuPrcChildWait();
-    func_80007DD8_main(sound);
+    HuPrcChildWatch();
+    msmSeStop(sound);
     PlayerFXPlay(0x2BD, D_8010833E_majinlamp);
     func_80017954_main(D_80108334_majinlamp->player_obj->omObj1->model[0], 2,
                        GwPlayer[D_8010833C_majinlamp].chr, D_80108342_majinlamp);
@@ -581,7 +581,7 @@ void func_8010771C_majinlamp(void) {
                                                                  &D_80108334_majinlamp->player_obj->rot, 0xA));
     HuPrcChildLink(HuPrcCurrentGet(), func_800ED128_shared_board(&D_8010832C_majinlamp->rot, direction,
                                                                  &D_8010832C_majinlamp->rot, 0xA));
-    HuPrcChildWait();
+    HuPrcChildWatch();
     D_801080EA_majinlamp = 1;
     HuPrcSleep(0xA);
     HuAudFXPlay(0x12B);
@@ -593,7 +593,7 @@ void func_8010771C_majinlamp(void) {
     HuPrcSleep(0xA);
     WipeColorSet(0xFF, 0xFF, 0xFF);
     WipeCreateOut(0xB, 0x14);
-    HuPrcChildWait();
+    HuPrcChildWatch();
 }
 
 void func_80107D98_majinlamp(void) {
@@ -626,7 +626,7 @@ void func_80107E40_majinlamp(void) {
 }
 
 void func_80107E64_majinlamp(void) {
-    HuSprKill(D_8010833A_majinlamp);
+    HuSprAnimKill(D_8010833A_majinlamp);
     HuSprGrpKill(D_80108338_majinlamp);
     func_800F27C4_shared_board();
     MBModelClose();
@@ -634,11 +634,11 @@ void func_80107E64_majinlamp(void) {
 
 void func_80107EA0_majinlamp(void) {
     for (;;) {
-        Hu3DCamSetPerspective(0, D_801080D0_majinlamp, D_801080D4_majinlamp, D_801080D8_majinlamp);
-        Hu3DCamSetPositionOrientation(0, &D_801082E4_majinlamp, &D_801082F0_majinlamp, &D_801082FC_majinlamp);
+        Hu3DCameraPerspectiveSet(0, D_801080D0_majinlamp, D_801080D4_majinlamp, D_801080D8_majinlamp);
+        Hu3DCameraPosSetV(0, &D_801082E4_majinlamp, &D_801082F0_majinlamp, &D_801082FC_majinlamp);
         Hu3DCamUpdateMtx(0);
-        Hu3DCamSetPerspective(1, D_801080DC_majinlamp, D_801080E0_majinlamp, D_801080E4_majinlamp);
-        Hu3DCamSetPositionOrientation(1, &D_80108308_majinlamp, &D_80108314_majinlamp, &D_80108320_majinlamp);
+        Hu3DCameraPerspectiveSet(1, D_801080DC_majinlamp, D_801080E0_majinlamp, D_801080E4_majinlamp);
+        Hu3DCameraPosSetV(1, &D_80108308_majinlamp, &D_80108314_majinlamp, &D_80108320_majinlamp);
         Hu3DCamUpdateMtx(1);
         HuPrcVSleep();
     }
@@ -652,15 +652,15 @@ void func_80107F54_majinlamp(void) {
     HuVecCopyXYZ(&D_801082E4_majinlamp, 0.0f, 0.0f, 5000.0f);
     HuVecCopyXYZ(&D_801082F0_majinlamp, 0.0f, 0.0f, 0.0f);
     HuVecCopyXYZ(&D_801082FC_majinlamp, 0.0f, 1.0f, 0.0f);
-    Hu3DCamSetPerspective(0, D_801080D0_majinlamp, D_801080D4_majinlamp, D_801080D8_majinlamp);
-    Hu3DCamSetPositionOrientation(0, &D_801082E4_majinlamp, &D_801082F0_majinlamp, &D_801082FC_majinlamp);
+    Hu3DCameraPerspectiveSet(0, D_801080D0_majinlamp, D_801080D4_majinlamp, D_801080D8_majinlamp);
+    Hu3DCameraPosSetV(0, &D_801082E4_majinlamp, &D_801082F0_majinlamp, &D_801082FC_majinlamp);
     Hu3DCamUpdateMtx(0);
 
     HuVecCopyXYZ(&D_80108308_majinlamp, 0.0f, 0.0f, 5000.0f);
     HuVecCopyXYZ(&D_80108314_majinlamp, 0.0f, 0.0f, 0.0f);
     HuVecCopyXYZ(&D_80108320_majinlamp, 0.0f, 1.0f, 0.0f);
-    Hu3DCamSetPerspective(1, D_801080DC_majinlamp, D_801080E0_majinlamp, D_801080E4_majinlamp);
-    Hu3DCamSetPositionOrientation(1, &D_80108308_majinlamp, &D_80108314_majinlamp, &D_80108320_majinlamp);
+    Hu3DCameraPerspectiveSet(1, D_801080DC_majinlamp, D_801080E0_majinlamp, D_801080E4_majinlamp);
+    Hu3DCameraPosSetV(1, &D_80108308_majinlamp, &D_80108314_majinlamp, &D_80108320_majinlamp);
     Hu3DCamUpdateMtx(1);
 }
 

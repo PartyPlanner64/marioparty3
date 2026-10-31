@@ -440,10 +440,10 @@ extern OSMesgQueue D_800A9718_main;
 extern SndSys D_800A9740_main;
 extern u8 D_800CB8AC_main;
 
-s32 func_80007080_main(s32 seId, SePlayParam *param);
+s32 msmSePlay(s32 seId, SePlayParam *param);
 s32 func_80001134_main(s32 arg0, s32 arg1);
 s32 func_80000650_main(void);
-s32 func_8000086C_main(str800D5298 *cfg);
+s32 msmSysInit(str800D5298 *cfg);
 SndSys *func_80000E9C_main(void);
 void func_80000FE4_main(void *dst, void *romAddr, s32 size, s32 chunkSize);
 void *func_800010B8_main(s32 size);
@@ -454,7 +454,7 @@ void func_80002300_main(s32 player, s32 type, s32 arg);
 ALMicroTime func_800025CC_main(void **oscState, f32 *initVal, u8 oscType, u8 oscRate, u8 oscDepth, u8 oscDelay);
 ALMicroTime func_80002A28_main(void *oscState, f32 *updateVal);
 void func_800032B4_main(void *oscState);
-s32 func_8000332C_main(s32 trackId, MusPlayParam *param);
+s32 msmMusPlay(s32 trackId, MusPlayParam *param);
 f32 func_800032CC_main(s32 arg0);
 void func_80002528_main(void);
 AudioManager *func_800025B4_main(void);
@@ -588,13 +588,13 @@ void func_800007FC_main(str800D5298 *cfg) {
     D_800A9740_main.cfg.unk40 = 1;
     D_800A9740_main.cfg.unk44 = 0x3C;
     D_800CB8AC_main = 0;
-    func_8000086C_main(cfg);
+    msmSysInit(cfg);
 }
 
 /* Initializes the sound system from the given configuration: sets up the audio
  * heap, reads the bank headers, then creates the audio manager, music player
  * and sound effect player. */
-s32 func_8000086C_main(str800D5298 *cfg) {
+s32 msmSysInit(str800D5298 *cfg) {
     SndSys *sys;
     SndBankHeader *buf;
     s32 ret;
@@ -1803,12 +1803,12 @@ f32 func_800032CC_main(s32 arg0) {
     return result;
 }
 
-s32 func_80003310_main(s32 trackId) {
-    return func_8000332C_main(trackId, NULL);
+s32 msmMusPlayDefault(s32 trackId) {
+    return msmMusPlay(trackId, NULL);
 }
 
 /* Starts a music track, returning the index of the player it plays on. */
-s32 func_8000332C_main(s32 trackId, MusPlayParam *param) {
+s32 msmMusPlay(s32 trackId, MusPlayParam *param) {
     AudioManager *mus = func_800025B4_main();
     SeqPlayer *player;
     s32 playerIdx;
@@ -1853,7 +1853,7 @@ s32 func_8000332C_main(s32 trackId, MusPlayParam *param) {
     return playerIdx;
 }
 
-s32 func_800034D8_main(s32 playerIdx) {
+s32 msmMusGetStatus(s32 playerIdx) {
     AudioManager *mus = func_800025B4_main();
 
     if (mus == NULL) {
@@ -1899,7 +1899,7 @@ s32 func_800035C0_main(void) {
 }
 
 /* Stops the given player, or every player when the index is negative. */
-void func_800035E8_main(s32 playerIdx) {
+void msmMusStop(s32 playerIdx) {
     AudioManager *mus = func_800025B4_main();
     SeqPlayer *player;
     s32 i;
@@ -1929,7 +1929,7 @@ void func_800035E8_main(s32 playerIdx) {
 }
 
 /* Sets the volume of the given player, or every player when the index is negative. */
-void func_800036E8_main(s32 playerIdx, s32 vol) {
+void msmMusSetVolume(s32 playerIdx, s32 vol) {
     AudioManager *mus = func_800025B4_main();
     SeqPlayer *player;
     s32 i;
@@ -1959,14 +1959,14 @@ s32 func_800037C4_main(s32 playerIdx) {
     return mus->players[playerIdx].evtVol;
 }
 
-void func_80003810_main(s32 vol) {
+void msmMusSetMasterVolume(s32 vol) {
     if (func_800025B4_main() != NULL) {
         func_80002300_main(0, 4, vol);
     }
 }
 
 /* Sets the tempo of the given player, in beats per minute. */
-void func_80003848_main(s32 playerIdx, s32 bpm) {
+void msmMusSetTempo(s32 playerIdx, s32 bpm) {
     AudioManager *mus = func_800025B4_main();
     f32 tempo;
 
@@ -3457,13 +3457,13 @@ void func_80007058_main(void) {
     D_800A97BC_main = NULL;
 }
 
-s32 func_80007064_main(s32 seId) {
-    return func_80007080_main(seId, NULL);
+s32 msmSePlayDefault(s32 seId) {
+    return msmSePlay(seId, NULL);
 }
 
 /* Starts a sound effect, allocating one voice per layer. Returns the slot of
  * the first layer's voice, or -1 if it could not be played. */
-s32 func_80007080_main(s32 seId, SePlayParam *param) {
+s32 msmSePlay(s32 seId, SePlayParam *param) {
     SeManager *se = func_8000704C_main();
     s32 slots[4];
     SeEntry *entry;
@@ -3692,7 +3692,7 @@ s32 func_800078CC_main(void) {
     return se->unk_18;
 }
 
-s32 func_800078F8_main(s32 slot) {
+s32 msmSeGetStatus(s32 slot) {
     SeManager *se = func_8000704C_main();
 
     if (se == NULL) {
@@ -3758,14 +3758,14 @@ void func_80007A60_main(SeParam *param) {
     }
 }
 
-void func_80007AF0_main(s32 vol) {
+void msmSeSetMasterVolume(s32 vol) {
     if (func_8000704C_main() != NULL) {
         func_80006CD4_main(0, 3, vol);
     }
 }
 
 /* Sets the volume of the given voice, or of every voice when negative. */
-void func_80007B28_main(s32 slot, s32 vol) {
+void msmSeSetVolume(s32 slot, s32 vol) {
     SeManager *se = func_8000704C_main();
 
     if (se != NULL) {
@@ -3782,7 +3782,7 @@ void func_80007B28_main(s32 slot, s32 vol) {
 }
 
 /* Sets the pitch of the given voice, or of every voice when negative. */
-void func_80007BD4_main(s32 slot, s32 pitch) {
+void msmSeSetPitch(s32 slot, s32 pitch) {
     SeManager *se = func_8000704C_main();
 
     if (se != NULL) {
@@ -3799,7 +3799,7 @@ void func_80007BD4_main(s32 slot, s32 pitch) {
 }
 
 /* Sets the pan of the given voice, or of every voice when negative. */
-void func_80007C80_main(s32 slot, s32 pan) {
+void msmSeSetPan(s32 slot, s32 pan) {
     SeManager *se = func_8000704C_main();
 
     if (se != NULL) {
@@ -3833,7 +3833,7 @@ void func_80007D2C_main(s32 slot, s32 fxMix) {
 }
 
 /* Stops the given voice, or every voice when negative. */
-void func_80007DD8_main(s32 slot) {
+void msmSeStop(s32 slot) {
     SeManager *se = func_8000704C_main();
     GameSound *sound;
     s32 i;

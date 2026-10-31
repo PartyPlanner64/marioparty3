@@ -229,8 +229,8 @@ void func_801059A0_vine_with_me(void) {
     ScissorSet(1, 0.0f, 120.0f, 320.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 240.0f, 511.0f);
     ViewportSet(1, 640.0f, 480.0f, 511.0f, 640.0f, 720.0f, 511.0f);
-    Hu3DCamSetPerspective(0, 22.619865f, 1000.0f, 22000.0f);
-    Hu3DCamSetPerspective(1, 22.619865f, 1000.0f, 22000.0f);
+    Hu3DCameraPerspectiveSet(0, 22.619865f, 1000.0f, 22000.0f);
+    Hu3DCameraPerspectiveSet(1, 22.619865f, 1000.0f, 22000.0f);
     HmfLightMaxSet(2);
     HmfLightDirSet(0, 0.0f, 0.0f, 90.0f);
     HmfLightColorSet(0, 0x90, 0x90, 0x90);
@@ -668,8 +668,8 @@ void func_80106F1C_vine_with_me(omObjData *arg0) {
             Hu3DMotionTimeSet(arg0->model[5], 0.0f);
             func_8001C258_main(arg0->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             func_8001C258_main(arg0->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-            func_8001C8E4_main(D_80115584_vine_with_me[0]->model[0], 0x400);
-            func_8001C8E4_main(D_80115584_vine_with_me[1]->model[0], 0x400);
+            Hu3DModelLayerSet(D_80115584_vine_with_me[0]->model[0], 0x400);
+            Hu3DModelLayerSet(D_80115584_vine_with_me[1]->model[0], 0x400);
         }
         if (D_80111B94_vine_with_me != 0 && D_80111B94_vine_with_me < 0xE) {
             temp_f22 = 1.0 - D_80111B94_vine_with_me / 13.0f;
@@ -702,10 +702,10 @@ void func_80106F1C_vine_with_me(omObjData *arg0) {
             Hu3DMotionTimeSet(arg0->model[6], 0.0f);
             func_8001C258_main(arg0->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             func_8001C258_main(arg0->model[7], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-            func_8001C8E4_main(arg0->model[2], 0);
-            func_8001C8E4_main(arg0->model[3], 0);
-            func_8001C8E4_main(arg0->model[10], 0);
-            func_8001C8E4_main(arg0->model[11], 0);
+            Hu3DModelLayerSet(arg0->model[2], 0);
+            Hu3DModelLayerSet(arg0->model[3], 0);
+            Hu3DModelLayerSet(arg0->model[10], 0);
+            Hu3DModelLayerSet(arg0->model[11], 0);
             HuAudFXPlay(0x491);
             omVibrate(D_80115670_vine_with_me[0], 2, 2, 0x14);
             omVibrate(D_80115670_vine_with_me[1], 2, 2, 0x14);
@@ -1500,7 +1500,7 @@ void func_8010D4AC_vine_with_me(omObjData *arg0, s8 arg1, s8 arg2) {
                     func_8001C814_main(arg0->model[0], 3, 0);
                     Hu3DMotionShiftSet(arg0->model[0], HmfModelData[arg0->motion[0]].motId, 0, 0x14, 2);
                     if (D_80111C5C_vine_with_me[arg1] < 8) {
-                        func_8001C8E4_main(arg0->model[0], 0);
+                        Hu3DModelLayerSet(arg0->model[0], 0);
                     }
                     if (D_80111C5C_vine_with_me[arg1] >= 8 && (D_8011563C_vine_with_me == 2 || (D_8011563C_vine_with_me == 3 && D_801155D0_vine_with_me < 30))) {
                         D_801155F8_vine_with_me[arg1] = 1;

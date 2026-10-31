@@ -34,8 +34,8 @@ void *func_800D6B70_name_81(s32 arg0) {
     temp_v0_2 = func_800D8010_name_81(sp10[arg0], 0);
     temp_v0->unk_04 = temp_v0_2;
     func_8001C258_main(temp_v0_2->omObj1->model[0], 0x180, 0);
-    func_8001C8E4_main(temp_v0->unk_04->omObj1->model[0], 0x1400);
-    func_8001C448_main(temp_v0->unk_04->omObj1->model[0]);
+    Hu3DModelLayerSet(temp_v0->unk_04->omObj1->model[0], 0x1400);
+    Hu3DModelRemakeStatic(temp_v0->unk_04->omObj1->model[0]);
     func_800D8944_name_81(temp_v0->unk_04);
     return temp_v0;
 }

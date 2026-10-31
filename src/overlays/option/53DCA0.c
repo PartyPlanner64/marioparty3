@@ -111,7 +111,7 @@ void func_80110260_option(s32 arg0, s32 arg1) {
 
 void func_80110298_option(s32 arg0) {
     if (D_80114EF0_option[arg0].espriteSlot != -1) {
-        HuSprKill(D_80114EF0_option[arg0].espriteSlot);
+        HuSprAnimKill(D_80114EF0_option[arg0].espriteSlot);
     }
     D_80114EF0_option[arg0].espriteSlot = -1;
 }
@@ -361,7 +361,7 @@ void func_80110FC8_option(void) {
 
 void func_8011102C_option(void) {
     espKill(D_80115A72_option);
-    HuSprKill(D_80115A70_option);
+    HuSprAnimKill(D_80115A70_option);
 }
 
 u32 func_80111058_option(u32 arg0) {
@@ -389,7 +389,7 @@ s32 func_8011130C_option(s32 message, s16 x, s16 y, s16 width, s16 height) {
     HuWinBGTPLvlSet(winID, 255);
     func_80060144_main(winID);
     HuWinPriSet(winID, 1);
-    func_8005FE54_main(winID, HUWIN_PLAYER_1);
+    HuWinActivePlayerSet(winID, HUWIN_PLAYER_1);
     func_8005C154_main(winID, 192, 192, 192);
     HuWinBGColSet(winID, 0, 64, 64);
     HuWinMesColSet(winID, 7);
@@ -410,7 +410,7 @@ s32 func_80111458_option(s32 message, s16 x, s16 y, s16 width, s16 height) {
     HuWinBGTPLvlSet(winID, 255);
     func_80060144_main(winID);
     HuWinPriSet(winID, 1);
-    func_8005FE54_main(winID, HUWIN_PLAYER_1);
+    HuWinActivePlayerSet(winID, HUWIN_PLAYER_1);
     HuWinMesPalSet(winID, 5, 0, 176, 192);
     HuWinMesPalSet(winID, 2, 255, 64, 64);
     HuWinMesPalSet(winID, 4, 96, 255, 64);
@@ -431,7 +431,7 @@ s32 func_801115C0_option(s32 message, s16 x, s16 y, s16 width, s16 height) {
     HuWinMesSpeedSet(winID, 0);
     func_80060144_main(winID);
     HuWinPriSet(winID, 1);
-    func_8005FE54_main(winID, HUWIN_PLAYER_1);
+    HuWinActivePlayerSet(winID, HUWIN_PLAYER_1);
     HuWinMesPalSet(winID, 5, 0, 176, 192);
     HuWinMesPalSet(winID, 7, 255, 255, 255);
     HuWinMesPalSet(winID, 0, 0, 0, 0);
@@ -455,7 +455,7 @@ s32 func_80111768_option(s32 message, s16 x, s16 y) {
     HuWinMesPalSet(winID, 4, 96, 255, 64);
     HuWinMesPalSet(winID, 6, 255, 255, 64);
     func_80060C14_main(winID, 1);
-    func_8005FE54_main(winID, HUWIN_PLAYER_1);
+    HuWinActivePlayerSet(winID, HUWIN_PLAYER_1);
     HuWinMesSet(winID, message, -1, -1);
     return winID;
 }
@@ -468,7 +468,7 @@ s32 func_80111834_option(s32 message, s16 x, s16 y) {
     HuWinMesPalSet(winID, 4, 96, 255, 64);
     HuWinMesPalSet(winID, 6, 255, 255, 64);
     func_80060C14_main(winID, 0);
-    func_8005FE54_main(winID, HUWIN_PLAYER_1);
+    HuWinActivePlayerSet(winID, HUWIN_PLAYER_1);
     HuWinMesSet(winID, message, -1, -1);
     return winID;
 }
@@ -480,7 +480,7 @@ s32 func_80111900_option(s32 message, s16 x, s16 y) {
     HuWinMesPalSet(winID, 2, 255, 64, 64);
     HuWinMesPalSet(winID, 4, 96, 255, 64);
     HuWinMesPalSet(winID, 6, 255, 255, 64);
-    func_8005FE54_main(winID, HUWIN_PLAYER_1);
+    HuWinActivePlayerSet(winID, HUWIN_PLAYER_1);
     func_80060C14_main(winID, 0);
     HuWinMesSet(winID, message, -1, -1);
     return winID;
@@ -691,7 +691,7 @@ void func_801123D8_option(void) {
     data = DataRead(0xE0020);
     func_80032FC0_main(HmfAnimCreate(HmfModelData[model].hmf, data, 0, (char *)parrot), 1, 0);
     DataClose(data);
-    func_8001C448_main(model);
+    Hu3DModelRemakeStatic(model);
     func_80033910_main(HmfModelData[model].hmf);
     func_80112F48_option(3, 0xE0013, 250.0f, 0.0f, -401.15002f);
     func_801109F4_option(3, 0.0f, -11.0f, 0.0f);
@@ -705,7 +705,7 @@ void func_801123D8_option(void) {
     data = DataRead(0xE0023);
     func_80032FC0_main(HmfAnimCreate(HmfModelData[model].hmf, data, 0, (char *)cymbal), 1, 0);
     DataClose(data);
-    func_8001C448_main(model);
+    Hu3DModelRemakeStatic(model);
     func_80033910_main(HmfModelData[model].hmf);
     func_80112F48_option(4, 0xE0016, 0.0f, 0.0f, 0.0f);
     func_80112F48_option(5, 0xE0019, 0.0f, 0.0f, 0.0f);

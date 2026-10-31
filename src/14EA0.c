@@ -654,7 +654,7 @@ s16 func_80017790_main(s16 model, s16 slot, s16 chr, s32 dataNum) {
     DataClose(data);
     animIdx = D_800D1714_main[(s16)anim].animIdx;
     D_800D20B8_main[chr][slot] = HmfAnimLink(HmfModelData[model].hmf, anim, 0, D_800A063C_main[chr + slot * 16]);
-    func_8001C448_main(model);
+    Hu3DModelRemakeStatic(model);
     return animIdx;
 }
 

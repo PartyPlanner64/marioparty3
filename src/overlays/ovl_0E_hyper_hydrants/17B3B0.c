@@ -274,7 +274,7 @@ void func_80105D68_hyper_hydrants(s8 camera) {
     up.x = 0;
     up.y = 1050.25f;
     up.z = 566.575f;
-    Hu3DCamSetPositionOrientation(camera, &pos, &at, &up);
+    Hu3DCameraPosSetV(camera, &pos, &at, &up);
     Hu3DCamUpdateMtx(camera);
 }
 
@@ -300,7 +300,7 @@ void func_80105EB0_hyper_hydrants(s8 camera) {
     up.x = 0;
     up.y = 1050.25f;
     up.z = 566.575f;
-    Hu3DCamSetPositionOrientation(camera, &pos, &at, &up);
+    Hu3DCameraPosSetV(camera, &pos, &at, &up);
     Hu3DCamUpdateMtx(camera);
 }
 
@@ -309,10 +309,10 @@ void func_80105FC8_hyper_hydrants(void) {
     func_8000B710_main(2);
     ScissorSet(0, 0.0f, 0.0f, 160.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 320.0f, 480.0f, 511.0f);
-    Hu3DCamSetPerspective(0, 35.883f, 80.0f, 8000.0f);
+    Hu3DCameraPerspectiveSet(0, 35.883f, 80.0f, 8000.0f);
     ScissorSet(1, 160.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(1, 640.0f, 480.0f, 511.0f, 960.0f, 480.0f, 511.0f);
-    Hu3DCamSetPerspective(1, 35.883f, 80.0f, 8000.0f);
+    Hu3DCameraPerspectiveSet(1, 35.883f, 80.0f, 8000.0f);
 }
 
 void func_801060F8_hyper_hydrants(omObjData *object) {
@@ -791,7 +791,7 @@ void func_801078B8_hyper_hydrants(omObjData *object) {
     object->trans.y = 40.0f;
     Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
     func_8001C2FC_main(object->model[0], 0x20000, 0x20000);
-    func_8001C448_main(object->model[0]);
+    Hu3DModelRemakeStatic(object->model[0]);
     func_8001C954_main(object->model[0]);
     func_8001C514_main(object->model[0]);
     func_80013390_main(object->model[0], -1, 0, func_80108788_hyper_hydrants);
@@ -1242,7 +1242,7 @@ void func_80108F34_hyper_hydrants(omObjData *object) {
         HmfAnimLink(HmfModelData[model].hmf, 0, 0, "c201n_00_DEF");
         Hu3DModelCameraSet(object->model[0], HU3D_CAM1);
     }
-    func_8001C448_main(model);
+    Hu3DModelRemakeStatic(model);
     func_8001C514_main(model);
     object->model[1] = func_8000B108_main(0x2F0003, 0x99);
     Hu3DModelPosSet(object->model[1], object->trans.x, 0, object->trans.z);
@@ -1387,7 +1387,7 @@ void func_80109588_hyper_hydrants(omObjData *object) {
     } else {
         HmfAnimLink(HmfModelData[model].hmf, 0, 0, "c201n_00_DEF");
     }
-    func_8001C448_main(model);
+    Hu3DModelRemakeStatic(model);
     func_8001C514_main(model);
     func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     object->model[1] = func_8000B108_main(0x2F0003, 0x99);
@@ -1596,14 +1596,14 @@ void func_80109E44_hyper_hydrants(omObjData *object) {
         position.y = object->trans.y;
         position.z = object->trans.z;
         if (data->unk02 == 0) {
-            Hu3DCam3DToScreen(0, &position, &screen);
+            Hu3D3Dto2D(0, &position, &screen);
             if (data->unk03 == 0 && screen.x < 119.0f) {
                 data->unk03 ^= 1;
             } else if (data->unk03 == 1 && screen.x > 225.0f) {
                 data->unk03 ^= 1;
             }
         } else {
-            Hu3DCam3DToScreen(1, &position, &screen);
+            Hu3D3Dto2D(1, &position, &screen);
             if (data->unk03 == 0 && screen.x < 95.0f) {
                 data->unk03 ^= 1;
             } else if (data->unk03 == 1 && screen.x > 201.0f) {
@@ -1844,7 +1844,7 @@ void func_8010AE08_hyper_hydrants(omObjData *object) {
     object->trans.x = object->trans.y = object->trans.z = 0.0f;
     D_8010BF56_hyper_hydrants = func_8000B838_main(0x2F0009);
     D_8010BF58_hyper_hydrants = HuSprGrpCreate(1, 0);
-    func_80055024_main(D_8010BF58_hyper_hydrants, 0, D_8010BF56_hyper_hydrants, 0);
+    HuSprGrpMemberSet(D_8010BF58_hyper_hydrants, 0, D_8010BF56_hyper_hydrants, 0);
     HuSprPriSet(D_8010BF58_hyper_hydrants, 0, 0x10);
     HuSprAttrReset(D_8010BF58_hyper_hydrants, 0, 0xFFFF);
     HuSprAttrSet(D_8010BF58_hyper_hydrants, 0, 0x1000);
@@ -1852,7 +1852,7 @@ void func_8010AE08_hyper_hydrants(omObjData *object) {
     for (i = 0; i < 2; i++) {
         D_8010BF52_hyper_hydrants = func_8000B838_main(0x2F0000);
         D_8010BF88_hyper_hydrants = HuSprGrpCreate(1, 0);
-        func_80055024_main(D_8010BF88_hyper_hydrants, 0, D_8010BF52_hyper_hydrants, 0);
+        HuSprGrpMemberSet(D_8010BF88_hyper_hydrants, 0, D_8010BF52_hyper_hydrants, 0);
         HuSprAttrReset(D_8010BF88_hyper_hydrants, 0, 0xFFFF);
         if (i == 0) {
             HuSprAttrSet(D_8010BF88_hyper_hydrants, 0, 0x5000);
@@ -1871,7 +1871,7 @@ void func_8010AE08_hyper_hydrants(omObjData *object) {
     for (i = 0; i < 2; i++) {
         D_8010BF54_hyper_hydrants = func_8000B838_main(0x2F0001);
         D_8010BF8A_hyper_hydrants[i] = HuSprGrpCreate(1, 0);
-        func_80055024_main(D_8010BF8A_hyper_hydrants[i], 0, D_8010BF54_hyper_hydrants, 0);
+        HuSprGrpMemberSet(D_8010BF8A_hyper_hydrants[i], 0, D_8010BF54_hyper_hydrants, 0);
         HuSprPriSet(D_8010BF58_hyper_hydrants, 0, 0x20);
         HuSprAttrReset(D_8010BF8A_hyper_hydrants[i], 0, 0xFFFF);
         if (i == 0) {

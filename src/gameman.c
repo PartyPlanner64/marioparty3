@@ -144,7 +144,7 @@ void func_8000E7B8_main(void) {
     while (TRUE) {
         HuPrcVSleep();
         rand8();
-        func_8000BA30_main(); // esprite
+        espMain(); // esprite
         func_80014A3C_main(2);
         Hu3DExec(&D_800CCF38_main, 2); // hmfman
     }

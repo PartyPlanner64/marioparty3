@@ -237,7 +237,7 @@ void omDestroyObjMan(void) {
     for (i = 0; i < D_800A1774_main; i++) {
         prcInfo = &D_800A177C_main[i];
         if (prcInfo->stat != OM_STAT_DELETED) {
-            HuPrcDtor(prcInfo->processInstance, prcInfo->destructor);
+            HuPrcDestructorSet2(prcInfo->processInstance, prcInfo->destructor);
             HuPrcKill(prcInfo->processInstance);
         }
     }
@@ -543,7 +543,7 @@ Process *omAddPrcObj(process_func func, u16 priority, s32 stackSize, s32 extData
 
     temp_s0->processInstance = newPrc;
     newPrc->dtor_idx = prevIdx;
-    HuPrcDtor(temp_s0->processInstance, omDestroyPrcObj);
+    HuPrcDestructorSet2(temp_s0->processInstance, omDestroyPrcObj);
 
     temp_s0->destructor = NULL;
     ++D_800A1776_main;
@@ -564,10 +564,10 @@ Process *func_80047F50_main(process_func func, s32 priority, s32 stack_size, s32
     prcInfo = &D_800A177C_main[D_800A1778_main];
     prcInfo->stat = OM_STAT_ACTIVE;
     D_800A1778_main = prcInfo->unk2;
-    process = HuPrcCreateChild(func, priority, stack_size, extra_data_size, parent);
+    process = HuPrcChildCreate(func, priority, stack_size, extra_data_size, parent);
     prcInfo->processInstance = process;
     process->dtor_idx = prevIdx;
-    HuPrcDtor(prcInfo->processInstance, omDestroyPrcObj);
+    HuPrcDestructorSet2(prcInfo->processInstance, omDestroyPrcObj);
     prcInfo->destructor = NULL;
     D_800A1776_main++;
     return prcInfo->processInstance;
@@ -850,8 +850,8 @@ void omMain(void) {
                         D_800B23CA_main = 0;
                         if ((func_8004B2C0_main()) == 1) {
                             HuAudSeqStop();
-                            func_800035E8_main(0);
-                            func_800035E8_main(1);
+                            msmMusStop(0);
+                            msmMusStop(1);
                             HuAudFXAllStop();
                             if (D_800A1849_main == 0) {
                                 D_800A1848_main = 5;
@@ -1009,7 +1009,7 @@ extern s8 D_800A1785_main;
 extern s16 D_800A1894_main[];
 extern u8 D_800A2150_main;
 extern u16 D_800CE214_main;
-s32 func_800034D8_main(s32);
+s32 msmMusGetStatus(s32);
 void GameMesPauseCreate(void);
 void func_80045A90_main(void);
 void func_8004AFBC_main(s16 duration);
@@ -1244,7 +1244,7 @@ void func_80048EE8_main(omObjData *object) {
         D_800B23CE_main = printWin(116, 92, 204, 164, 0x90FF);
         func_8004DF4C_main(0, 0, 0x90);
         func_80003A70_main(D_800CDBC8_main);
-        if (func_800034D8_main(1) == 4) {
+        if (msmMusGetStatus(1) == 4) {
             func_80003A70_main(1);
             D_800A1785_main = 1;
         }
@@ -1369,7 +1369,7 @@ void omSystemKeyCheck(omObjData *object) {
             espDispOff(D_800B23C4_main);
         }
         func_80003A70_main(D_800CDBC8_main);
-        if (func_800034D8_main(1) == 4) {
+        if (msmMusGetStatus(1) == 4) {
             func_80003A70_main(1);
             D_800A1785_main = 1;
         }
@@ -1410,7 +1410,7 @@ s32 omAllPause(void) {
 }
 
 // Resumes all objects and processes.
-void func_8004A0E0_main(void) {
+void omAllUPause(void) {
     s32 i;
 
     D_800D6A90_main = 0;

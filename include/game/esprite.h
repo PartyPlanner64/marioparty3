@@ -26,7 +26,7 @@ extern ESPRITE *D_800CD1DC_main;
 s16 func_8000B838_main(s32 arg0);
 void espDispOn(u16 arg0);
 void espDispOff(u16 arg0);
-void func_8000BA30_main(void);
+void espMain(void);
 void espPosSet(u16 spriteId, s16 x, s16 y);
 void espPriSet(u16, s32);
 void func_8000BD50_main(u16 spriteId, s16 arg1);

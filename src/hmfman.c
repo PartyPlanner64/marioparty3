@@ -98,7 +98,7 @@ extern Gfx *gMainGfxPos;
 
 void Hmfload(HmfData *, void *, s32);
 void *func_80010AC8_main(void *);
-void func_8001EF60_main(void);
+void Hu3DFogClear(void);
 s32 func_8001FF04_main(s32);
 s32 func_8002D2D8_main(void *, HmfData *);
 
@@ -497,7 +497,7 @@ void Hu3DModelAllKill(void) {
     func_80030198_main();
     func_80021AF4_main();
     func_8002D514_main();
-    func_8001EF60_main();
+    Hu3DFogClear();
     D_800CC3D8_main[0] = D_800CC3D8_main[1] = 0;
     func_80030030_main(1.0f);
     func_80019968_main(1);
@@ -551,7 +551,7 @@ void Hu3DExec(void *arg0, u16 arg1) {
         if (D_800D10F4_main->unk4 != -1) {
             func_80012E54_main(D_800CD6A6_main);
         }
-        func_80012640_main(D_800CD6A6_main, &gMainGfxPos);
+        Hu3DCameraSet(D_800CD6A6_main, &gMainGfxPos);
         func_800127C4_main(D_800CD6A6_main, &gMainGfxPos);
         mask = 1 << (s16)D_800CD6A6_main;
         gSPDisplayList(gMainGfxPos++, D_800A09C8_main);
@@ -581,7 +581,7 @@ void Hu3DExec(void *arg0, u16 arg1) {
             }
             count--;
             if (model->attr & HU3D_ATTR_REMAKESTATIC) {
-                func_8001C448_main(i);
+                Hu3DModelRemakeStatic(i);
             }
             hmf = model->hmf;
             if (D_800CD6A6_main == 0) {
@@ -843,7 +843,7 @@ void func_8001C258_main(s16 idx, s32 arg1, s32 arg2) {
             arg2 |= HU3D_ATTR_REMAKESTATIC;
         }
         if (arg1 & HU3D_ATTR_LAYER_MASK) {
-            func_8001C8E4_main(idx, arg2 & HU3D_ATTR_LAYER_MASK);
+            Hu3DModelLayerSet(idx, arg2 & HU3D_ATTR_LAYER_MASK);
         }
         model->attr &= ~arg1;
         model->attr |= arg2;
@@ -870,7 +870,7 @@ void func_8001C39C_main(s16 idx, char *name, s32 arg2, s32 arg3) {
     }
 }
 
-void func_8001C448_main(s16 arg0) {
+void Hu3DModelRemakeStatic(s16 arg0) {
     func_8001C258_main(arg0, HU3D_ATTR_REMAKESTATIC | HU3D_ATTR_STATIC, HU3D_ATTR_STATIC);
     D_800C9940_main = HmfModelData[arg0].attr;
 
@@ -932,7 +932,7 @@ void Hu3DMotionTimeSet(s16 arg0, f32 arg1) {
     }
 }
 
-f32 func_8001C718_main(s16 arg0) {
+f32 Hu3DMotionShapeTimeGet(s16 arg0) {
     if (HmfModelData[arg0].motShapeTime < 0.0f) {
         return 0.0f;
     }
@@ -974,7 +974,7 @@ void Hu3DModelCameraSet(s16 idx, s16 arg1) {
     }
 }
 
-void func_8001C8E4_main(s16 idx, u32 arg1) {
+void Hu3DModelLayerSet(s16 idx, u32 arg1) {
     HmfModelData[idx].attr &= ~HU3D_ATTR_LAYER_MASK;
     HmfModelData[idx].attr |= arg1;
     HmfModelData[idx].hmf->unk00 = (arg1 >> HU3D_ATTR_LAYER_SHIFT) & 7;
@@ -1528,7 +1528,7 @@ void func_8001ED54_main(s16 idx) {
         }
     }
 }
-void func_8001EED8_main(s16 idx, s16 arg1, s16 arg2) {
+void Hu3DMotionShapeSet(s16 idx, s16 arg1, s16 arg2) {
     HmfModel *model = &HmfModelData[idx];
     f32 zero;
 
@@ -1540,7 +1540,7 @@ void func_8001EED8_main(s16 idx, s16 arg1, s16 arg2) {
     model->motShapeSpeed = 1.0f;
 }
 
-void func_8001EF24_main(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4) {
+void Hu3DFogSet(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4) {
     D_800CE1C6_main = 1;
     D_800D6B64_main = arg0;
     D_800CC0B6_main = arg1;
@@ -1549,11 +1549,11 @@ void func_8001EF24_main(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4) {
     D_800CDA84_main = arg4;
 }
 
-void func_8001EF60_main(void) {
+void Hu3DFogClear(void) {
     D_800CE1C6_main = 0;
 }
 
-void func_8001EF6C_main(s16 idx, s16 parentIdx, char *name) {
+void Hu3DModelHookSet(s16 idx, s16 parentIdx, char *name) {
     HmfData *hmf = HmfModelData[parentIdx].hmf;
     s16 node = func_8002C834_main(hmf, name);
 
@@ -1731,7 +1731,7 @@ void func_8001F734_main(s16 idx, u8 r, u8 g, u8 b, u8 a) {
     func_8001F6BC_main(idx, r, g, b, a);
     func_8001F6F8_main(idx, r * 0.5f, g * 0.5f, b * 0.5f, a * 0.5f);
 }
-void func_8001F95C_main(s16 idx, void *func) {
+void Hu3DLayerHookSet(s16 idx, void *func) {
     D_800CC3D8_main[idx] = func;
 }
 
@@ -1758,10 +1758,10 @@ void func_8001FA68_main(s16 idx) {
         hmf->unk88[i].unk0A = 0xFF;
         hmf->unk88[i].unk09 |= 5;
     }
-    func_8001C448_main(idx);
+    Hu3DModelRemakeStatic(idx);
 }
 
-void func_8001FB34_main(s16 arg0, s8 arg1) {
+void Hu3DLLightCreate(s16 arg0, s8 arg1) {
     HmfModel *model = &HmfModelData[arg0];
     HmfData_UnkD0 *light;
 
@@ -1778,7 +1778,7 @@ void func_8001FB34_main(s16 arg0, s8 arg1) {
     }
 }
 
-void func_8001FBBC_main(s16 arg0, s8 arg1, s8 arg2, s8 arg3) {
+void Hu3DLLightColorSet(s16 arg0, s8 arg1, s8 arg2, s8 arg3) {
     HmfData_UnkD0 *light;
 
     light = HmfModelData[arg0].unkB4;
@@ -1789,7 +1789,7 @@ void func_8001FBBC_main(s16 arg0, s8 arg1, s8 arg2, s8 arg3) {
     }
 }
 
-void func_8001FBFC_main(s16 arg0, f32 arg1, f32 arg2, f32 arg3) {
+void Hu3DLLightInfinitytSet(s16 arg0, f32 arg1, f32 arg2, f32 arg3) {
     HmfData_UnkD0 *light;
     f32 len;
 

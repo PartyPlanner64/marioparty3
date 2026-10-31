@@ -145,7 +145,7 @@ void func_8010BB58_hand_line_sinker(FishingLine *line, Vec *points, u16 count);
 void func_8010B1E4_hand_line_sinker(omObjData *obj);
 u16 func_8000B0D4_main(s32 arg0, s32 arg1);
 s32 func_80017B6C_main(s16 chr, s16 arg1, s16 arg2);
-void func_8001EF6C_main(s16, s16, char *);
+void Hu3DModelHookSet(s16, s16, char *);
 
 void func_801059A0_hand_line_sinker(void) {
     omObjData *players[4];
@@ -342,7 +342,7 @@ void func_80106100_hand_line_sinker(omObjData *obj, u16 playerNo) {
         obj->model[2] = func_8000B108_main(0x220007, 0x20499);
         obj->model[3] = func_8000B108_main(0x22000B, 0x21899);
         obj->model[4] = func_8000B0D4_main(9, 0x689);
-        func_8001EF6C_main(obj->model[1], obj->model[0], "item_hook");
+        Hu3DModelHookSet(obj->model[1], obj->model[0], "item_hook");
         func_8000B460_main(obj, 17, 0x220007);
         func_8000B460_main(obj, 14, 0x220008);
         func_8000B460_main(obj, 15, 0x220009);
@@ -359,7 +359,7 @@ void func_80106100_hand_line_sinker(omObjData *obj, u16 playerNo) {
         func_8001C5B4_main(obj->model[0], obj->motion[4]);
         func_8001C814_main(obj->model[0], 2, 2);
         func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        func_8001EF6C_main(obj->model[3], obj->model[1], D_8010BF88_hand_line_sinker);
+        Hu3DModelHookSet(obj->model[3], obj->model[1], D_8010BF88_hand_line_sinker);
         func_8001C258_main(obj->model[3], 0x4000, 0x4000);
         func_8001C258_main(obj->model[1], 0x4000, 0x4000);
         omSetTra(obj, 0.0f, 100.0f, 900.0f);

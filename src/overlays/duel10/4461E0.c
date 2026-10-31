@@ -154,9 +154,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010DB24_duel10);
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010DB60_duel10);
 
 void func_8010DD5C_duel10(Duel10SprGroup *arg0) {
-    HuSprKill(arg0->sprites[0]);
-    HuSprKill(arg0->sprites[1]);
-    HuSprKill(arg0->sprites[2]);
+    HuSprAnimKill(arg0->sprites[0]);
+    HuSprAnimKill(arg0->sprites[1]);
+    HuSprAnimKill(arg0->sprites[2]);
     HuSprGrpKill(arg0->spriteGroup);
     HuMemMemoryFreePerm(arg0);
 }
@@ -183,7 +183,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010E408_duel10);
 
 void func_8010E494_duel10(void) {
     D_80100E20_name_81 = 0;
-    HuPrcChildWait();
+    HuPrcChildWatch();
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010E4B4_duel10);

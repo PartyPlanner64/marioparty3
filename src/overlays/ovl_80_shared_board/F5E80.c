@@ -31,7 +31,7 @@ typedef struct TelopData {
 // void MBPlayerMasuSwap(s16, s16);
 // void MBCameraFocusModeSet(s32);
 // void MBPlayerPosFixSet(s32, s32);
-// void func_8004A0E0_main(void);
+// void omAllUPause(void);
 // void MBKettouResultExec(void);
 // void MBKettouComResultSet(void);
 // s32 MBKettouExec(GW_PLAYER *);
@@ -280,7 +280,7 @@ void MBItemWarpBlockSwapCreate(void) {
 
     proc = HuPrcCurrentGet();
     HuPrcChildLink(proc, omAddPrcObj(MBItemWarpBlockSwap, 0x1003, 0, 0));
-    HuPrcChildWait();
+    HuPrcChildWatch();
 }
 
 s16 func_800E2954_shared_board(void) {
@@ -393,7 +393,7 @@ s32 MBItemKettouExec(void) {
         if (temp_v0 == 1) {
             func_800FC968_shared_board();
             func_800FC8A4_shared_board();
-            func_8004A0E0_main();
+            omAllUPause();
             HuPrcSleep(-1);
         }
         MBKettouComResultSet();
@@ -641,7 +641,7 @@ static void MBItemSel(void) {
     sp1C = HuSprAnimRead(temp_v0);
     DataClose(temp_v0);
 
-    func_80055024_main(mbItemCursorGrpId, 0, sp1C, 0);
+    HuSprGrpMemberSet(mbItemCursorGrpId, 0, sp1C, 0);
     HuSprPriSet(mbItemCursorGrpId, 0, 0xA);
     func_800550F4_main(mbItemCursorGrpId, 0, 1);
 
@@ -765,7 +765,7 @@ static void MBItemSel(void) {
     func_800E3584_shared_board();
     D_80102CB4_shared_board = -1;
     HuSprGrpKill(mbItemCursorGrpId);
-    HuSprKill(sp1C);
+    HuSprAnimKill(sp1C);
 
     if (MBStatusItemDispGet(0) != 0) {
         MBStatusShrink(-1);
@@ -790,8 +790,8 @@ void MBItemSelExec(s32 playerNo, s32 arg1) {
     temp_v0->user_data = (void*)playerNo;
     omPrcSetStatBit(temp_v0, OM_STAT_NOALLPAUSE);
     HuPrcChildLink(temp_s2, temp_v0);
-    HuPrcChildWait();
-    func_8004A0E0_main();
+    HuPrcChildWatch();
+    omAllUPause();
     D_800CB99C_main = 0;
     func_800DC0E0_shared_board(playerNo);
     func_800FC7C8_shared_board();
@@ -842,8 +842,8 @@ void MBItemViewExec(s32 playerNo) {
     temp_v0->user_data = (void*)playerNo;
     omPrcSetStatBit(temp_v0, OM_STAT_NOALLPAUSE);
     HuPrcChildLink(temp_s1, temp_v0);
-    HuPrcChildWait();
-    func_8004A0E0_main();
+    HuPrcChildWatch();
+    omAllUPause();
     D_800CB99C_main = 0;
 }
 
@@ -917,7 +917,7 @@ void MBItemDescExec(s32 arg0) {
     temp_v0->user_data = (void*)arg0;
     omPrcSetStatBit(temp_v0, OM_STAT_NOALLPAUSE);
     HuPrcChildLink(temp_s2, temp_v0);
-    HuPrcChildWait();
+    HuPrcChildWatch();
 }
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_80_shared_board/F5E80", D_80102188_shared_board);
@@ -1123,8 +1123,8 @@ void MBTelopClose(void) {
     }
     if (D_80102D36_shared_board & 0x10) {
         HuSprGrpKill(D_80102D38_shared_board);
-        HuSprKill(D_80102D3A_shared_board[0]);
-        HuSprKill(D_80102D3A_shared_board[1]);
+        HuSprAnimKill(D_80102D3A_shared_board[0]);
+        HuSprAnimKill(D_80102D3A_shared_board[1]);
     }
     if (D_80102D40_shared_board != NULL) {
         omDelObj(D_80102D40_shared_board);
@@ -1158,7 +1158,7 @@ static void MBTelopLast5Main(omObjData *obj) {
     case 2:
         for (i = 0; i < 2; i++) {
             if (D_80102D4C_shared_board[i] != -1) {
-                HuSprKill(D_80102D4C_shared_board[i]);
+                HuSprAnimKill(D_80102D4C_shared_board[i]);
             }
             if (D_80102D48_shared_board[i] != -1) {
                 HuSprGrpKill(D_80102D48_shared_board[i]);
@@ -1220,13 +1220,13 @@ static void MBTelopPlayerMain(omObjData* arg0) {
         break;
     case 3:
         HuSprGrpKill(D_80102D38_shared_board);
-        HuSprKill(D_80102D3A_shared_board[0]);
+        HuSprAnimKill(D_80102D3A_shared_board[0]);
         D_80102D38_shared_board = -1;
         D_80102D3A_shared_board[0] = -1;
         if (D_80102D44_shared_board != NULL) {
             for (i = 0; i < 2; i++) {
                 if (D_80102D4C_shared_board[i] != -1) {
-                    HuSprKill(D_80102D4C_shared_board[i]);
+                    HuSprAnimKill(D_80102D4C_shared_board[i]);
                 }
                 if (D_80102D48_shared_board[i] != -1) {
                     HuSprGrpKill(D_80102D48_shared_board[i]);
@@ -1296,7 +1296,7 @@ static void MBTelopLast5Create(void) {
         data = DataRead(0x1301E0);
         D_80102D4C_shared_board[0] = HuSprAnimRead(data);
         DataClose(data);
-        func_80055024_main(D_80102D48_shared_board[0], 0,
+        HuSprGrpMemberSet(D_80102D48_shared_board[0], 0,
                             D_80102D4C_shared_board[0], 0);
         HuSprPriSet(D_80102D48_shared_board[0], 0, 0x10);
         HuSprAttrSet(D_80102D48_shared_board[0], 0, 0x1000);
@@ -1311,7 +1311,7 @@ static void MBTelopLast5Create(void) {
     data = DataRead(0x1301DF);
     D_80102D4C_shared_board[0] = HuSprAnimRead(data);
     DataClose(data);
-    func_80055024_main(D_80102D48_shared_board[0], 0,
+    HuSprGrpMemberSet(D_80102D48_shared_board[0], 0,
                         D_80102D4C_shared_board[0],
                         sp18.unk_00[D_80102D50_shared_board]);
     HuSprPriSet(D_80102D48_shared_board[0], 0, 0x10);
@@ -1322,7 +1322,7 @@ static void MBTelopLast5Create(void) {
     data = DataRead(0x1301DE);
     D_80102D4C_shared_board[1] = HuSprAnimRead(data);
     DataClose(data);
-    func_80055024_main(D_80102D48_shared_board[1], 0,
+    HuSprGrpMemberSet(D_80102D48_shared_board[1], 0,
                         D_80102D4C_shared_board[1], 0);
     HuSprPriSet(D_80102D48_shared_board[1], 0, 0x11);
     HuSprAttrSet(D_80102D48_shared_board[1], 0, 0x1000);
@@ -1339,7 +1339,7 @@ static void MBTelopPlayerCreate(s32 arg0) {
     temp_v0 = DataRead(sp18.unk_00[GwPlayer[arg0].chr] | 0x130000);
     D_80102D3A_shared_board[0] = HuSprAnimRead(temp_v0);
     DataClose(temp_v0);
-    func_80055024_main(D_80102D38_shared_board, 0, D_80102D3A_shared_board[0], 0);
+    HuSprGrpMemberSet(D_80102D38_shared_board, 0, D_80102D3A_shared_board[0], 0);
     HuSprPriSet(D_80102D38_shared_board, 0, 0x10);
     HuSprAttrSet(D_80102D38_shared_board, 0, 0x1000);
     HuSprPosSet(D_80102D38_shared_board, 0, 0xA0, 0x78);
@@ -1368,8 +1368,8 @@ s32 MBTelopPlayerCheck(void) {
 
 void MBTelopPlayerKill(void) {
     HuSprGrpKill(D_80102D38_shared_board);
-    HuSprKill(D_80102D3A_shared_board[0]);
-    HuSprKill(D_80102D3A_shared_board[1]);
+    HuSprAnimKill(D_80102D3A_shared_board[0]);
+    HuSprAnimKill(D_80102D3A_shared_board[1]);
     omDelObj(D_80102D40_shared_board);
     D_80102D40_shared_board = 0;
     D_80102D36_shared_board &= ~(0x20 | 0x10 | 0x08 | 0x04);
@@ -1387,8 +1387,8 @@ void MBTelopMgTypeCreate(s32 arg0, u32 arg1) {
         modelObj = MBModelFileCreate(0x130204, -1, 1.8f, 0, 0);
         D_80102D54_shared_board = modelObj;
         func_8001C258_main(modelObj->omObj1->model[0], 0x180, 0);
-        func_8001C8E4_main(D_80102D54_shared_board->omObj1->model[0], 0x1800U);
-        func_8001C448_main(D_80102D54_shared_board->omObj1->model[0]);
+        Hu3DModelLayerSet(D_80102D54_shared_board->omObj1->model[0], 0x1800U);
+        Hu3DModelRemakeStatic(D_80102D54_shared_board->omObj1->model[0]);
         MBModelTempAllocFree(D_80102D54_shared_board);
         HuVecCopy3F(&D_80102D54_shared_board->coords, &D_8010125C_shared_board);
         HuVecCopyXYZ(&D_80102D54_shared_board->scale, 0.0f, 1.0f, 1.0f);
@@ -1484,10 +1484,10 @@ Process* MBTelopCreate(s32 playerNo) {
 }
 
 static void MBGuideCameraCreate(void) {
-    Hu3DCamSetPerspective(1, 40.0f, 80.0f, 8000.0f);
-    Hu3DCamSetPositionOrientation(1, &D_80102D60_shared_board, &D_80102D6C_shared_board, &D_80102D78_shared_board);
+    Hu3DCameraPerspectiveSet(1, 40.0f, 80.0f, 8000.0f);
+    Hu3DCameraPosSetV(1, &D_80102D60_shared_board, &D_80102D6C_shared_board, &D_80102D78_shared_board);
     Hu3DCamUpdateMtx(1);
-    CameraViewportSet(1, &D_80102D84_shared_board, &D_80102D90_shared_board);
+    Hu3DCameraViewportSet(1, &D_80102D84_shared_board, &D_80102D90_shared_board);
 }
 
 static void MBGuideMain(void) {

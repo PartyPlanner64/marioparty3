@@ -220,7 +220,7 @@ Vec2f *func_8010B1F4_game_guys_sweet_surprise(Vec2f *outPos, f32 x, f32 y, f32 z
     pos.x = x;
     pos.y = y;
     pos.z = z;
-    Hu3DCam3DToScreen(0, &pos, &screenPos);
+    Hu3D3Dto2D(0, &pos, &screenPos);
     *outPos = screenPos;
     return outPos;
 }

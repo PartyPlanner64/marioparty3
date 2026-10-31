@@ -136,7 +136,7 @@ void func_8010A55C_coconut_conk(omObjData *);
 void func_8010A668_coconut_conk(omObjData *);
 void func_8010AE04_coconut_conk(void);
 void func_8000B710_main(s32);
-void func_8001EF6C_main(s16, s16, char *);
+void Hu3DModelHookSet(s16, s16, char *);
 void func_800E149C_minigame(omObjData *, s32, s32);
 void HuAudFXPanning(s16 arg0, s16 arg1);
 void func_800E4C88_minigame(omObjData *object, u8 type, f32 x, f32 y, f32 z, f32 arg5, f32 arg6);
@@ -1091,7 +1091,7 @@ void func_801089DC_coconut_conk(omObjData *obj) {
     }
     D_8010B1DC_coconut_conk = HmfAnimCreate(HmfModelData[obj->model[0]].hmf, D_8010B1D0_coconut_conk[0], 0,
                                             D_8010AF98_coconut_conk[chr]);
-    func_8001C448_main(obj->model[0]);
+    Hu3DModelRemakeStatic(obj->model[0]);
     func_8001C514_main(obj->model[0]);
     func_8000B460_main(obj, 0, func_80017BB8_main(chr, 0x62));
     func_8000B460_main(obj, 2, func_80017BB8_main(chr, 0x2F));
@@ -1112,14 +1112,14 @@ void func_801089DC_coconut_conk(omObjData *obj) {
     Hu3DModelPosSet(obj->model[1], obj->trans.x, 0.0f, obj->trans.z);
     Hu3DModelScaleSet(obj->model[1], obj->scale.x, obj->scale.y, obj->scale.z);
     func_8001C2FC_main(obj->model[1], 0x80000000, 0);
-    func_8001C448_main(obj->model[1]);
+    Hu3DModelRemakeStatic(obj->model[1]);
     func_8001C514_main(obj->model[1]);
     obj->model[2] = func_8000B108_main(8, 0x2BD);
     Hu3DModelPosSet(obj->model[2], 0.0f, 0.0f, 0.0f);
     obj->model[3] = func_8000B108_main(0x230000, 0x299);
     Hu3DModelPosSet(obj->model[3], 0.0f, 0.0f, 0.0f);
     func_8001C258_main(obj->model[3], 0x4000, 0x4000);
-    func_8001EF6C_main(obj->model[3], obj->model[0], "item_hook");
+    Hu3DModelHookSet(obj->model[3], obj->model[0], "item_hook");
     obj->model[4] = func_8000B108_main(0x230006, 0x28D);
     Hu3DModelPosSet(obj->model[4], 0.0f, 0.0f, 0.0f);
     Hu3DMotionTimeSet(obj->model[4], 0.0f);
@@ -1495,7 +1495,7 @@ void func_80109DEC_coconut_conk(omObjData *arg0) {
     func_8001C2FC_main(arg0->model[1], 0x80000000, 0);
     func_8001C258_main(arg0->model[1], 0x60, 0x20);
     func_8001C258_main(arg0->model[1], 0x180, 0x80);
-    func_8001C448_main(arg0->model[1]);
+    Hu3DModelRemakeStatic(arg0->model[1]);
     func_8001C514_main(arg0->model[1]);
     arg0->model[7] = func_8000B108_main(8, 0x2BD);
     arg0->model[6] = func_8000B108_main(5, 0x2BD);
@@ -1795,7 +1795,7 @@ void func_8010AC90_coconut_conk(void) {
         ViewportSet(i, D_8010B018_coconut_conk[i].viewportScale.x, D_8010B018_coconut_conk[i].viewportScale.y,
                     D_8010B018_coconut_conk[i].viewportScale.z, D_8010B018_coconut_conk[i].viewportTranslate.x,
                     D_8010B018_coconut_conk[i].viewportTranslate.y, D_8010B018_coconut_conk[i].viewportTranslate.z);
-        Hu3DCamSetPerspective(i, D_8010B018_coconut_conk[i].fov, 80.0f, 8000.0f);
+        Hu3DCameraPerspectiveSet(i, D_8010B018_coconut_conk[i].fov, 80.0f, 8000.0f);
     }
 }
 

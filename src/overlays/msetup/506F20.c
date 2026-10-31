@@ -173,7 +173,7 @@ s16 func_8010B388_msetup(s16 model, s16 *animSlot, s32 dataId, char *name) {
     length = D_800D1714_main[(s16)anim].animIdx;
     animSlot[2] = length;
     animSlot[0] = HmfAnimLink(HmfModelData[model].hmf, anim, 0, name);
-    func_8001C448_main(model);
+    Hu3DModelRemakeStatic(model);
     return length;
 }
 
@@ -210,14 +210,14 @@ void func_8010B5D0_msetup(void) {
     s16 state;
 
     window = func_80060880_main(250, 204, 8);
-    func_8005FE54_main(window, 1 << D_8011A948_msetup);
+    HuWinActivePlayerSet(window, 1 << D_8011A948_msetup);
     func_8006105C_main(window, 224);
     HuWinMesPalSet(window, 2, 255, 64, 64);
     HuWinMesPalSet(window, 4, 96, 255, 64);
     HuWinMesPalSet(window, 6, 255, 255, 64);
     D_8011A890_msetup = D_8011A892_msetup[0] = window;
     window = func_80060880_main(250, 204, 18);
-    func_8005FE54_main(window, 1 << D_8011A948_msetup);
+    HuWinActivePlayerSet(window, 1 << D_8011A948_msetup);
     func_8006105C_main(window, 224);
     HuWinMesPalSet(window, 2, 255, 64, 64);
     HuWinMesPalSet(window, 4, 96, 255, 64);
@@ -561,7 +561,7 @@ void func_8010BEF8_msetup(void) {
                     espKill(slots[(s16)i]);
                 }
                 if (sprites[(s16)i] >= 0) {
-                    HuSprKill(sprites[(s16)i]);
+                    HuSprAnimKill(sprites[(s16)i]);
                 }
                 index = i;
                 kill[index] = 0;
@@ -591,7 +591,7 @@ void func_8010BEF8_msetup(void) {
                         slots[(s16)i] = -1;
                     }
                     if (sprites[(s16)i] >= 0) {
-                        HuSprKill(sprites[(s16)i]);
+                        HuSprAnimKill(sprites[(s16)i]);
                         sprites[(s16)i] = -1;
                     }
                 }
@@ -642,7 +642,7 @@ void func_8010BEF8_msetup(void) {
                                 slots[i] = -1;
                             }
                             if (sprites[i] >= 0) {
-                                HuSprKill(sprites[i]);
+                                HuSprAnimKill(sprites[i]);
                                 sprites[i] = -1;
                             }
                         }
@@ -656,7 +656,7 @@ void func_8010BEF8_msetup(void) {
             espKill(slots[i]);
         }
         if (sprites[i] >= 0) {
-            HuSprKill(sprites[i]);
+            HuSprAnimKill(sprites[i]);
         }
     }
     if (D_800D20B8_main[character][1] != 0xFF) {

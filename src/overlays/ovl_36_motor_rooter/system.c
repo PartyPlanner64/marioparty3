@@ -212,7 +212,7 @@ s16 m254_SetSprite(u16 prio, s32 dir, s32 file, u16 arg3, s32 attr) {
             sprite->groupId = HuSprGrpCreate(1, 0);
             sprite->unk06 = 0xFF;
             HuSprAttrReset(sprite->groupId, 0, -1);
-            func_80055024_main(sprite->groupId, 0, sprite->unk02, 0);
+            HuSprGrpMemberSet(sprite->groupId, 0, sprite->unk02, 0);
             HuSprAttrSet(sprite->groupId, 0, attr);
             func_800550F4_main(sprite->groupId, 0, arg3);
             HuSprPriSet(sprite->groupId, 0, prio);

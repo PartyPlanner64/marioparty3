@@ -292,8 +292,8 @@ void func_801059D0_filesel(void) {
     up = D_801129D8_filesel;
     ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
-    Hu3DCamSetPerspective(0, 41.0f, 80.0f, 8000.0f);
-    Hu3DCamSetPositionOrientation(0, &position, &target, &up);
+    Hu3DCameraPerspectiveSet(0, 41.0f, 80.0f, 8000.0f);
+    Hu3DCameraPosSetV(0, &position, &target, &up);
     func_80030030_main(1.0f);
     HuAudSeqStop();
     pfInit();
@@ -358,7 +358,7 @@ void func_80105CE0_filesel(s32 arg0, s32 arg1) {
 
 void func_80105D18_filesel(s32 arg0) {
     if (D_801135D0_filesel[arg0][0] != -1) {
-        HuSprKill(D_801135D0_filesel[arg0][0]);
+        HuSprAnimKill(D_801135D0_filesel[arg0][0]);
     }
     D_801135D0_filesel[arg0][0] = -1;
 }
@@ -609,7 +609,7 @@ void func_80106A48_filesel(void) {
 
 void func_80106AAC_filesel(void) {
     espKill(D_80114152_filesel);
-    HuSprKill(D_80114150_filesel);
+    HuSprAnimKill(D_80114150_filesel);
 }
 
 u32 func_80106AD8_filesel(u32 arg0) {
@@ -677,7 +677,7 @@ s32 func_80106D8C_filesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 
     HuWinBGTPLvlSet(window, 255);
     func_80060144_main(window);
     HuWinPriSet(window, 1);
-    func_8005FE54_main(window, HUWIN_PLAYER_1);
+    HuWinActivePlayerSet(window, HUWIN_PLAYER_1);
     func_8005C154_main(window, 192, 192, 192);
     HuWinBGColSet(window, 0, 64, 64);
     HuWinMesColSet(window, 7);
@@ -697,7 +697,7 @@ s32 func_80106ED8_filesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 
     HuWinBGTPLvlSet(window, 255);
     func_80060144_main(window);
     HuWinPriSet(window, 1);
-    func_8005FE54_main(window, HUWIN_PLAYER_1);
+    HuWinActivePlayerSet(window, HUWIN_PLAYER_1);
     HuWinMesPalSet(window, 5, 0, 176, 192);
     HuWinMesPalSet(window, 2, 255, 64, 64);
     HuWinMesPalSet(window, 4, 96, 255, 64);
@@ -717,7 +717,7 @@ s32 func_80107040_filesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 
     HuWinMesSpeedSet(window, 0);
     func_80060144_main(window);
     HuWinPriSet(window, 1);
-    func_8005FE54_main(window, HUWIN_PLAYER_1);
+    HuWinActivePlayerSet(window, HUWIN_PLAYER_1);
     HuWinMesPalSet(window, 5, 0, 176, 192);
     HuWinMesPalSet(window, 7, 255, 255, 255);
     HuWinMesPalSet(window, 0, 0, 0, 0);
@@ -740,7 +740,7 @@ s32 func_801071E8_filesel(u32 message, s16 x, s16 y, s16 style) {
     HuWinMesPalSet(window, 4, 96, 255, 64);
     HuWinMesPalSet(window, 6, 255, 255, 64);
     func_80060C14_main(window, 1);
-    func_8005FE54_main(window, HUWIN_PLAYER_1);
+    HuWinActivePlayerSet(window, HUWIN_PLAYER_1);
     HuWinMesSet(window, message, -1, -1);
     return window;
 }
@@ -752,7 +752,7 @@ s32 func_801072B4_filesel(u32 message, s16 x, s16 y, s16 style) {
     HuWinMesPalSet(window, 4, 96, 255, 64);
     HuWinMesPalSet(window, 6, 255, 255, 64);
     func_80060C14_main(window, 0);
-    func_8005FE54_main(window, HUWIN_PLAYER_1);
+    HuWinActivePlayerSet(window, HUWIN_PLAYER_1);
     HuWinMesSet(window, message, -1, -1);
     return window;
 }
@@ -763,7 +763,7 @@ s32 func_80107380_filesel(u32 message, s16 x, s16 y, s16 style) {
     HuWinMesPalSet(window, 2, 255, 64, 64);
     HuWinMesPalSet(window, 4, 96, 255, 64);
     HuWinMesPalSet(window, 6, 255, 255, 64);
-    func_8005FE54_main(window, HUWIN_PLAYER_1);
+    HuWinActivePlayerSet(window, HUWIN_PLAYER_1);
     func_80060C14_main(window, 0);
     HuWinMesSet(window, message, -1, -1);
     return window;
@@ -1677,7 +1677,7 @@ void func_8010A028_filesel(void) {
                 func_8010779C_filesel(4, 2, (u32) "0");
                 func_8010779C_filesel(4, 3, (u32) "0");
                 func_8005B63C_main(D_80114158_filesel[4].unk_00, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK, HUWIN_ATTR_NONE);
-                func_8005FE54_main(D_80114158_filesel[4].unk_00, HUWIN_PLAYER_1);
+                HuWinActivePlayerSet(D_80114158_filesel[4].unk_00, HUWIN_PLAYER_1);
                 func_801076D0_filesel(4, 0x2A09);
                 while (HuWinStatGet(D_80114158_filesel[4].unk_00) != 0) {
                     HuPrcVSleep();
@@ -1814,7 +1814,7 @@ void func_8010A7D8_filesel(s32 arg0) {
     f32 scale;
 
     func_8001C2FC_main(model, 0x22000, 0x20000);
-    func_8001C448_main(model);
+    Hu3DModelRemakeStatic(model);
     func_8001C954_main(model);
     HuPrcVSleep();
     progress = 0.0f;
@@ -1863,7 +1863,7 @@ void func_8010A9B4_filesel(s32 arg0, u32 arg1, s32 *arg2, s32 *arg3) {
             func_801065B8_filesel(arg1, &pos.x, &pos.y, &pos.z);
             pos.x += 30.0f;
             pos.y += 300.0f;
-            Hu3DCam3DToScreen(0, &pos, &screen);
+            Hu3D3Dto2D(0, &pos, &screen);
             x = screen.x;
             y = screen.y;
             break;
@@ -1881,7 +1881,7 @@ void func_8010A9B4_filesel(s32 arg0, u32 arg1, s32 *arg2, s32 *arg3) {
         case 7:
             HuVecCopyXYZ(&pos, 400.0f, 0.0f, 0.0f);
         project:
-            Hu3DCam3DToScreen(0, &pos, &screen);
+            Hu3D3Dto2D(0, &pos, &screen);
             x = screen.x + 31.0f;
             y = 168;
             break;
@@ -3405,8 +3405,8 @@ void func_8010E740_filesel(s32 arg0) {
     HuVecCopyXYZ(&D_801144D4_filesel, 10.0f, CRot.x, CRot.x);
     HuVecCopyXYZ(&D_801144E0_filesel, 0.0f, 0.0f, 0.0f);
     HuVecCopyXYZ(&D_801144EC_filesel, 0.0f, 1.0f, 0.0f);
-    Hu3DCamSetPerspective(0, D_801128A0_filesel, D_801144F8_filesel, D_801144FC_filesel);
-    Hu3DCamSetPositionOrientation(0, &D_801144D4_filesel, &D_801144E0_filesel, &D_801144EC_filesel);
+    Hu3DCameraPerspectiveSet(0, D_801128A0_filesel, D_801144F8_filesel, D_801144FC_filesel);
+    Hu3DCameraPosSetV(0, &D_801144D4_filesel, &D_801144E0_filesel, &D_801144EC_filesel);
     Hu3DCamUpdateMtx(0);
 }
 
@@ -3489,7 +3489,7 @@ void func_8010E864_filesel(void) {
             HuVecCopy3F(&D_80112EAC_filesel, &D_801144E0_filesel);
             HuVecCopy3F(&D_80112EB8_filesel, &D_801144EC_filesel);
         }
-        Hu3DCamSetPositionOrientation(0, &D_80112EA0_filesel, &D_80112EAC_filesel, &D_80112EB8_filesel);
+        Hu3DCameraPosSetV(0, &D_80112EA0_filesel, &D_80112EAC_filesel, &D_80112EB8_filesel);
         Hu3DCamUpdateMtx(0);
         HuPrcVSleep();
     }
@@ -3526,7 +3526,7 @@ void func_8010F168_filesel(void) {
     func_80105F54_filesel(18);
     width = 62;
     HuVecCopyXYZ(&position, -400.0f, 0.0f, 0.0f);
-    Hu3DCam3DToScreen(0, &position, &screen);
+    Hu3D3Dto2D(0, &position, &screen);
     x = 31.0f;
     x = screen.x - x;
     y = 168.0f;
@@ -3543,7 +3543,7 @@ void func_8010F168_filesel(void) {
     }
     func_8010F874_filesel(0);
     HuVecCopyXYZ(&position, 0.0f, 0.0f, 0.0f);
-    Hu3DCam3DToScreen(0, &position, &screen);
+    Hu3D3Dto2D(0, &position, &screen);
     x = screen.x - (s32)(width >> 1);
     func_80106B40_filesel(2, (u32)D_801142D8_filesel.files[1].name, x, y, width, 20, 2);
     window = func_80107810_filesel(2);
@@ -3558,7 +3558,7 @@ void func_8010F168_filesel(void) {
     }
     func_8010F874_filesel(1);
     HuVecCopyXYZ(&position, 400.0f, 0.0f, 0.0f);
-    Hu3DCam3DToScreen(0, &position, &screen);
+    Hu3D3Dto2D(0, &position, &screen);
     x = screen.x - (s32)(width >> 1);
     func_80106B40_filesel(3, (u32)D_801142D8_filesel.files[2].name, x, y, width, 20, 2);
     window = func_80107810_filesel(3);
@@ -3653,7 +3653,7 @@ void func_8010F760_filesel(s32 arg0, s32 arg1) {
     position.x = D_801128A4_filesel[arg0].x;
     position.y = D_801128A4_filesel[arg0].y;
     position.z = D_801128A4_filesel[arg0].z;
-    Hu3DCam3DToScreen(0, &position, &screen);
+    Hu3D3Dto2D(0, &position, &screen);
     x = screen.x;
     arg0 += 0xD;
     func_80105E48_filesel(arg0, image);
@@ -4227,7 +4227,7 @@ void func_80111790_filesel(omObjData *object) {
     HuVecCopy3F(&D_801146B0_filesel.rotation, &rotation);
     D_801146B0_filesel.transition.distance = distance;
     func_8010E250_filesel(&center, &rotation, distance, &position, &target, &up);
-    Hu3DCamSetPositionOrientation(0, &position, &target, &up);
+    Hu3DCameraPosSetV(0, &position, &target, &up);
     Hu3DCamUpdateMtx(0);
     if (frame == duration) {
         omDelObj(object);

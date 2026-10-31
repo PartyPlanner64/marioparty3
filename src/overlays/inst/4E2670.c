@@ -34,7 +34,7 @@ void func_801094B0_inst(void) {
     data = DataRead(0xA002A);
     D_8010DC30_inst = (s16)HmfAnimCreate(HmfModelData[object->model[0]].hmf, data, 0, "c160n_0_DEF");
     HuMemMemoryFreePerm(data);
-    func_8001C448_main(object->model[0]);
+    Hu3DModelRemakeStatic(object->model[0]);
     func_8001C514_main(object->model[0]);
     func_80032FC0_main(D_8010DC32_inst, 1, 0);
     func_80032FF8_main(D_8010DC32_inst, 0);

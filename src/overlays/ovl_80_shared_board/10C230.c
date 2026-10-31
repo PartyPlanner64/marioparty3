@@ -1069,7 +1069,7 @@ s32 func_800F9A68_shared_board(s32 arg0) {
 
 static void func_800F9C68_shared_board(void) {
     HuPrcSleep(30);
-    func_800035E8_main(D_800D037E_main);
+    msmMusStop(D_800D037E_main);
     D_800CE206 = 0;
     omDelPrcObj(NULL);
 }
@@ -1188,7 +1188,7 @@ static s32 func_800FA104_shared_board(u8 *arg0) {
                 var_s2 = func_800F9D1C_shared_board() + 1;
                 sp18[GwPlayer[i].pad] = 0x400;
             } else {
-                func_8005FE54_main(mbDlgWinId, sp20[GwPlayer[i].pad]);
+                HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
                 sp18[GwPlayer[i].pad] = -1;
             }
         } else {
@@ -1660,7 +1660,7 @@ s32 MBKettouExec(GW_PLAYER *arg0, s32 arg1) {
     func_800F7108_shared_board();
     temp_s0_2 = func_800E11C0_shared_board(GwSystem.current_player_index, var_s4);
     HuPrcChildLink(HuPrcCurrentGet(), temp_s0_2);
-    HuPrcChildWait();
+    HuPrcChildWatch();
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         GwPlayer[i].group = 2;
@@ -1828,7 +1828,7 @@ static s32 func_800FB624_shared_board(GW_PLAYER* arg0) {
         temp_v0_4 = DataRead(0x130113);
         sp44 = HuSprAnimRead(temp_v0_4);
         DataClose(temp_v0_4);
-        func_80055024_main(var_s5, 0, sp44, 0);
+        HuSprGrpMemberSet(var_s5, 0, sp44, 0);
         HuSprPriSet(var_s5, 0, 0x14U);
         func_800550F4_main(var_s5, 0, 0);
         HuSprAttrSet(var_s5, 0, 0x1000);
@@ -1837,7 +1837,7 @@ static s32 func_800FB624_shared_board(GW_PLAYER* arg0) {
         temp_v0_4 = DataRead(0x130114);
         sp4C = HuSprAnimRead(temp_v0_4);
         DataClose(temp_v0_4);
-        func_80055024_main(var_s5, 1, sp4C, 0);
+        HuSprGrpMemberSet(var_s5, 1, sp4C, 0);
         HuSprPriSet(var_s5, 1, 0xAU);
         func_800550F4_main(var_s5, 1, 1);
         HuSprAttrSet(var_s5, 1, 0x1000);
@@ -1859,7 +1859,7 @@ static s32 func_800FB624_shared_board(GW_PLAYER* arg0) {
     
         for (;; HuPrcVSleep()) {
             /* Update sprite to current index */
-            func_80055024_main(var_s5, 1, sp4C, i);
+            HuSprGrpMemberSet(var_s5, 1, sp4C, i);
     
             /* Count frames before next tick */
             var_s3++;
@@ -1904,11 +1904,11 @@ static s32 func_800FB624_shared_board(GW_PLAYER* arg0) {
                 }
             }
         }
-        func_80055024_main(var_s5, 1, sp4C, i);
+        HuSprGrpMemberSet(var_s5, 1, sp4C, i);
         HuPrcSleep(0x14);
         if (sp3C != 0) {
             HuAudFXPlay(0x116);
-            func_80055024_main(var_s5, 1, sp4C, var_s6);
+            HuSprGrpMemberSet(var_s5, 1, sp4C, var_s6);
             HuPrcSleep(0xA);
         }
 
@@ -1959,8 +1959,8 @@ static s32 func_800FB624_shared_board(GW_PLAYER* arg0) {
         HuSprScaleSet(var_s5, 0, 0.0f, 0.0f);
         HuSprScaleSet(var_s5, 1, 0.0f, 0.0f);
         HuSprGrpKill(var_s5);
-        HuSprKill(sp44);
-        HuSprKill(sp4C);
+        HuSprAnimKill(sp44);
+        HuSprAnimKill(sp4C);
         HuPrcSleep(3);
 
         if (var_s4 == 0) {
@@ -2439,12 +2439,12 @@ static void MBMain(void) {
                     HuPrcChildLink(telopProc, MBCameraZoomMotStart(1.0f));
                 }
 
-                HuPrcChildWait();
+                HuPrcChildWatch();
             default:
                 HuPrcSleep(4);
                 MBPlayerVibrate(-1, 3);
                 HuPrcChildLink(telopProc, MBTelopCreate(system->current_player_index));
-                HuPrcChildWait();
+                HuPrcChildWatch();
                 MBMasuEventCall(-5, 7);
                 goto label654;
             case 6:
@@ -2463,7 +2463,7 @@ static void MBMain(void) {
                 D_800C9938_main = 1.3f;
                 HuPrcChildLink(telopProc, MBCameraZoomMotStart(1.3f));
                 temp_s1 = func_800DD6C4_shared_board(system->current_player_index);
-                HuPrcChildWait();
+                HuPrcChildWatch();
                 HuPrcSleep(1);
 
                 if (system->current_player_index != 4) {
@@ -2474,7 +2474,7 @@ static void MBMain(void) {
                 }
 
                 HuPrcChildLink(telopProc, temp_s1);
-                HuPrcChildWait();
+                HuPrcChildWatch();
                 func_800FC8A4_shared_board();
 
                 mbCameraBtnF = 0;
@@ -2736,7 +2736,7 @@ static void MBMain(void) {
                     HuWinMesSet(temp_v0_9, 0x3F00, -1, -1);
                     HuWinExAnimIn(temp_v0_9);
                     func_800600C0_main(temp_v0_9, 1);
-                    HuPrcChildWait();
+                    HuPrcChildWatch();
 
                     func_800600C0_main(temp_v0_9, 0);
                     func_800EDC58_shared_board(temp_v0_9, temp_v0_4->turn);
@@ -2760,9 +2760,9 @@ static void MBMain(void) {
                     func_800DE868_shared_board();
 
                     HuPrcChildLink(telopProc, temp_s1);
-                    HuPrcChildWait();
+                    HuPrcChildWatch();
                     HuPrcChildLink(telopProc, MBCameraZoomMotStart(1.3f));
-                    HuPrcChildWait();
+                    HuPrcChildWatch();
                     HuPrcSleep(1);
 
                     // Update star block history
@@ -2783,7 +2783,7 @@ static void MBMain(void) {
                     HuWinMesSet(temp_v0_9, 0x3F00, -1, -1);
                     HuWinExAnimIn(temp_v0_9);
                     func_800600C0_main(temp_v0_9, 1);
-                    HuPrcChildWait();
+                    HuPrcChildWatch();
                     func_800600C0_main(temp_v0_9, 0);
                     func_800EDC58_shared_board(temp_v0_9, temp_v0_4->turn);
                     HuWinExAnimOut(temp_v0_9, 0);
@@ -2795,7 +2795,7 @@ static void MBMain(void) {
                     }
 
                     HuPrcChildLink(telopProc, temp_s1);
-                    HuPrcChildWait();
+                    HuPrcChildWatch();
                     HuWinMesMaxSizeGet(1, sp38, 0x3F02);
                     temp_v0_9 = HuWinExCreate(-1, 0xA0 - (sp38[0] / 2), 0x96, sp38[0], sp38[1], 0);
                     HuWinMesSet(temp_v0_9, 0x3F02, -1, -1);
@@ -2804,7 +2804,7 @@ static void MBMain(void) {
                     HuWinExAnimOut(temp_v0_9, 0);
                     HuWinKill(temp_v0_9);
                     HuPrcChildLink(telopProc, MBCameraZoomMotStart(1.3f));
-                    HuPrcChildWait();
+                    HuPrcChildWatch();
                     HuPrcSleep(1);
                     kakusiMasuCoinHis[kakusiMasuCoinHisIdx++] = kakusiMasuCoin;
                     kakusiMasuCoinHisIdx = kakusiMasuCoinHisIdx % 10;
@@ -2842,7 +2842,7 @@ static void MBMain(void) {
                     HuWinMesSet(temp_v0_9, 0x3F00, -1, -1);
                     HuWinExAnimIn(temp_v0_9);
                     func_800600C0_main(temp_v0_9, 1);
-                    HuPrcChildWait();
+                    HuPrcChildWatch();
 
                     func_800600C0_main(temp_v0_9, 0);
                     func_800EDC58_shared_board(temp_v0_9, temp_v0_4->turn);
@@ -2883,7 +2883,7 @@ static void MBMain(void) {
 
                     HuPrcSleep(0xA);
                     HuPrcChildLink(telopProc, MBCameraZoomMotStart(1.3f));
-                    HuPrcChildWait();
+                    HuPrcChildWatch();
                     HuPrcSleep(1);
 
                     // Update item block history
@@ -2951,7 +2951,7 @@ static void MBMain(void) {
 
                         // Execute board-specific happening event
                         HuPrcChildLink(telopProc, omAddPrcObj(D_80101B6C_shared_board, 0x4800, 0, 0));
-                        HuPrcChildWait();
+                        HuPrcChildWatch();
 
                         // Special handling for board 3
                         if (system->current_board_index == 3 && GwSystem.boardData.halfWordBytes[3] != 0) {
@@ -3064,7 +3064,7 @@ static void MBMain(void) {
                                     temp_s3_3 = HuSprAnimRead(temp_v0_21);
                                     DataClose(temp_v0_21);
 
-                                    func_80055024_main(temp_s2_2, 0, temp_s3_3, 0);
+                                    HuSprGrpMemberSet(temp_s2_2, 0, temp_s3_3, 0);
                                     HuSprPriSet(temp_s2_2, 0, 0xA);
                                     func_800550F4_main(temp_s2_2, 0, 0);
                                     HuSprAttrSet(temp_s2_2, 0, 0x180C);
@@ -3089,7 +3089,7 @@ static void MBMain(void) {
 
                                     // Clean up sprite
                                     HuSprGrpKill(temp_s2_2);
-                                    HuSprKill(temp_s3_3);
+                                    HuSprAnimKill(temp_s3_3);
                                     goto tempCase17;
                                 }
 
@@ -3105,7 +3105,7 @@ static void MBMain(void) {
 
                                 temp_v0_4->group = 0;
                                 HuPrcChildLink(telopProc, func_800E0F84_shared_board());
-                                HuPrcChildWait();
+                                HuPrcChildWatch();
 
                                 mbGameMode = 0x11;
                                 D_80105664_shared_board = 2;
@@ -3128,7 +3128,7 @@ static void MBMain(void) {
                             mbItemBtnF = 0;
                             func_800F7108_shared_board();
                             HuPrcChildLink(telopProc, MBMgCallBattleCreate());
-                            HuPrcChildWait();
+                            HuPrcChildWatch();
                             mbGameMode = 0x12;
                             D_80105664_shared_board = 2;
                             D_80105666_shared_board = 1;
@@ -3333,7 +3333,7 @@ static void MBMain(void) {
                     func_800F7108_shared_board();
 
                     HuPrcChildLink(telopProc, MBMgCallCreate());
-                    HuPrcChildWait();
+                    HuPrcChildWatch();
 
                     if (system->minigame_index >= 0) {
                         mbGameMode = 0;
@@ -3369,7 +3369,7 @@ static void MBMain(void) {
                 HuPrcSleep(4);
 
                 HuPrcChildLink(telopProc, func_800F292C_shared_board());
-                HuPrcChildWait();
+                HuPrcChildWatch();
 
                 MBNextPlayerTurn();
 

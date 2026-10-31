@@ -83,7 +83,7 @@ void func_800F4584_name_81(UnkBoard4 *arg0) {
 
     for (i = 0; i < arg0->unk_08; i++) {
         if (arg0->unk_0C[i] >= 0) {
-            HuSprKill(arg0->unk_0C[i]);
+            HuSprAnimKill(arg0->unk_0C[i]);
         }
     }
 

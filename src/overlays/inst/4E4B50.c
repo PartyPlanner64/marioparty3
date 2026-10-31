@@ -487,7 +487,7 @@ void func_8010CBB8_inst(s32 arg0) {
     TextWindow *window = &winData[D_8010DCA8_inst.curGroup];
     s16 member = D_8010DCA8_inst.member;
 
-    func_80055024_main(window->group, member, window->sprite_id[member], arg0 & 0xFF);
+    HuSprGrpMemberSet(window->group, member, window->sprite_id[member], arg0 & 0xFF);
 }
 
 void func_8010CC14_inst(void) {
@@ -524,7 +524,7 @@ void func_8010CC14_inst(void) {
             }
             break;
     }
-    func_8005FE54_main(D_8010DCA8_inst.curGroup, pads);
+    HuWinActivePlayerSet(D_8010DCA8_inst.curGroup, pads);
 }
 
 void func_8010CDE4_inst(const char *message, s32 x, s32 y) {

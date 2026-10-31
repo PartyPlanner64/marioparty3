@@ -102,7 +102,7 @@ void func_80105C80_ovl_boot(void) {
     }
 
     espKill(temp_v0_2);
-    HuSprKill(temp_v0);
+    HuSprAnimKill(temp_v0);
     HuPrcSleep(9);
     temp_v0_3 = func_8000B838_main(0x00110001);
     temp_v0_4 = espEntry(temp_v0_3, 0, 1);
@@ -123,7 +123,7 @@ void func_80105C80_ovl_boot(void) {
     }
 
     espKill(temp_v0_4);
-    HuSprKill(temp_v0_3);
+    HuSprAnimKill(temp_v0_3);
     HuPrcSleep(9);
     temp_s0_3 = espEntry(func_8000B838_main(0x110002), 0, 1);
     espPosSet(temp_s0_3, 0xA0, 0x78);

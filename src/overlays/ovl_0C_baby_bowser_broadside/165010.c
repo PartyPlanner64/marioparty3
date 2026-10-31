@@ -201,7 +201,7 @@ void func_801059BC_baby_bowser_broadside(void) {
     camera = func_8000B638_main();
     ScissorSet(camera, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camera, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
-    Hu3DCamSetPerspective(0, 30.0f, 80.0f, 6000.0f);
+    Hu3DCameraPerspectiveSet(0, 30.0f, 80.0f, 6000.0f);
     D_800EC1B8_minigame = 0;
     D_800EC280_minigame = 0;
     D_800EBE28_minigame = 0;

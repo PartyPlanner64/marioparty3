@@ -89,7 +89,7 @@ void func_800F2CA4_shared_board(UnkBoard8* arg0) {
     for (i = 0; i < arg0->amount; i++) {
         model = arg0->model[i];
         if (model >= 0) {
-            HuSprKill(model);
+            HuSprAnimKill(model);
         }
     }
 

@@ -95,7 +95,7 @@ s16 func_80105AE0_opboard(s32 file, s32 flags) {
     model = func_8000B108_main(file, flags);
     Hu3DModelPosSet(model, 0, 0, 0);
     func_8001C2FC_main(model, 0x20000, 0x20000);
-    func_8001C448_main(model);
+    Hu3DModelRemakeStatic(model);
     func_8001C954_main(model);
     func_8001C514_main(model);
     func_80013390_main(model, -1, 0, func_80105DC4_opboard);
@@ -296,7 +296,7 @@ void func_80106388_opboard(void) {
     data = DataRead(titleFiles[GwSystem.current_board_index]);
     D_80108F34_opboard->model[0] = HuSprAnimRead(data);
     DataClose(data);
-    func_80055024_main(D_80108F34_opboard->spriteGroup, 0, D_80108F34_opboard->model[0], 0);
+    HuSprGrpMemberSet(D_80108F34_opboard->spriteGroup, 0, D_80108F34_opboard->model[0], 0);
     HuSprPriSet(D_80108F34_opboard->spriteGroup, 0, 10);
     HuSprAttrSet(D_80108F34_opboard->spriteGroup, 0, 0);
     HuSprPosSet(D_80108F34_opboard->spriteGroup, 0, 160, 100);
@@ -316,7 +316,7 @@ void func_80106388_opboard(void) {
     data = DataRead(subtitleFiles[GwSystem.current_board_index]);
     D_80108F38_opboard->model[0] = HuSprAnimRead(data);
     DataClose(data);
-    func_80055024_main(D_80108F38_opboard->spriteGroup, 0, D_80108F38_opboard->model[0], 0);
+    HuSprGrpMemberSet(D_80108F38_opboard->spriteGroup, 0, D_80108F38_opboard->model[0], 0);
     HuSprPriSet(D_80108F38_opboard->spriteGroup, 0, 9);
     HuSprAttrSet(D_80108F38_opboard->spriteGroup, 0, 0);
     HuSprPosSet(D_80108F38_opboard->spriteGroup, 0, 160, 70);
@@ -906,7 +906,7 @@ void func_80107E58_opboard(void) {
                                                                 &D_80108DD4_opboard[j], &D_80109068_opboard[j]->player_obj->coords, 20));
         MBMotionSet(D_80109068_opboard[j]->player_obj, 1, 2);
     }
-    HuPrcChildWait();
+    HuPrcChildWatch();
     for (j = 0; j < 4; j++) {
         f32 angles[] = { 5.0f, 0.0f, 0.0f, -5.0f };
 
@@ -917,7 +917,7 @@ void func_80107E58_opboard(void) {
                                                                      &directions[j], &D_80109068_opboard[j]->player_obj->rot, 10));
         MBMotionShiftSet(D_80109068_opboard[j]->player_obj, -1, 0, 5, 2);
     }
-    HuPrcChildWait();
+    HuPrcChildWatch();
     func_80106CFC_opboard();
     MBMotionShiftSet(D_80108F1C_opboard, 0, 0, 5, 2);
     func_800EC92C_shared_board(-1, 0x1816, 0, 0, 0, 0, 0);
@@ -947,7 +947,7 @@ void func_80107E58_opboard(void) {
 void func_80108B3C_opboard(void) {
     D_80108F30_opboard = omAddPrcObj(func_801066F0_opboard, 0x300, 0x2000, 0);
     HuPrcChildLink(HuPrcCurrentGet(), D_80108F30_opboard);
-    HuPrcChildWait();
+    HuPrcChildWatch();
     func_80107E58_opboard();
     D_800D530C_main = 1;
     while (1) {

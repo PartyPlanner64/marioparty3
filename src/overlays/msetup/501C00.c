@@ -81,7 +81,7 @@ void Hu3DModelKill(s16);
 void Hu3DModelRotSet(s16, f32, f32, f32);
 void Hu3DModelScaleSet(s16, f32, f32, f32);
 void func_8001C258_main(s16, s32, s32);
-void HuSprKill(s16);
+void HuSprAnimKill(s16);
 void func_8010B82C_msetup(s32);
 s32 func_8010B858_msetup(void);
 void func_8010B968_msetup(u32, s8);
@@ -130,7 +130,7 @@ void func_801059A0_msetup(void) {
     D_8011A940_msetup = 80.0f;
     D_8011A93C_msetup = 6000.0f;
     D_80119414_msetup = 58.0f;
-    Hu3DCamSetPerspective(0, D_80119414_msetup, D_8011A940_msetup, D_8011A93C_msetup);
+    Hu3DCameraPerspectiveSet(0, D_80119414_msetup, D_8011A940_msetup, D_8011A93C_msetup);
     D_8011A994_msetup.x = 0;
     D_8011A994_msetup.y = 0;
     D_8011A994_msetup.z = 0;
@@ -341,7 +341,7 @@ void func_80106260_msetup(MsetupCameraPreset *preset) {
     CZoom = preset->zoom;
     if (preset->fov != D_80119414_msetup) {
         D_80119414_msetup = preset->fov;
-        Hu3DCamSetPerspective(0, D_80119414_msetup, D_8011A940_msetup, D_8011A93C_msetup);
+        Hu3DCameraPerspectiveSet(0, D_80119414_msetup, D_8011A940_msetup, D_8011A93C_msetup);
     }
 }
 
@@ -395,7 +395,7 @@ void func_80106320_msetup(void) {
         D_800CE17C_main[2] = gCameraList->fov;
         D_800CE17C_main[3] = D_800D5210_main;
         D_800CE17C_main[4] = D_800CB890_main;
-        Hu3DCamSetPositionOrientation(0, &pos, &at, &up);
+        Hu3DCameraPosSetV(0, &pos, &at, &up);
         Hu3DCamUpdateMtx(0);
         HuPrcVSleep();
     }

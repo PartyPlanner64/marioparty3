@@ -35,12 +35,12 @@ extern f32 D_800D5210_main;
 extern omObjData *D_800CE194_main;
 extern s32 D_800D6AB8_main;
 
-s32 func_800078F8_main(s16 seNo);
-void func_80007B28_main(s32 seNo, s32 volume);
-void func_80007DD8_main(s16 seNo);
+s32 msmSeGetStatus(s16 seNo);
+void msmSeSetVolume(s32 seNo, s32 volume);
+void msmSeStop(s16 seNo);
 void func_80012B14_main(s16 camIndex, Vec *worldPos, Vec2f *outPos);
 void func_80000EA8_main(struct str800D5298 *config);
-void func_800036E8_main(s32 musNo, s32 volume);
+void msmMusSetVolume(s32 musNo, s32 volume);
 void func_8004A72C_main(s16 arg0);
 void func_8004B7B0_main(s32 priority, s16 spriteGroup, void (*draw)(CameraViewData *), f32 fov, Vec *pos, Vec *at);
 void func_8004B984_main(u8 count, s32 priority, s16 *spriteGroups, void (*draw)(CameraViewData *), f32 fov, Vec *pos, Vec *at);
@@ -71,7 +71,7 @@ void omOutView(omObjData *object) {
     D_800CE17C_main[2] = gCameraList->fov;
     D_800CE17C_main[3] = D_800D5210_main;
     D_800CE17C_main[4] = D_800CB890_main;
-    Hu3DCamSetPositionOrientation(0, &pos, &at, &up);
+    Hu3DCameraPosSetV(0, &pos, &at, &up);
     Hu3DCamUpdateMtx(0);
 }
 
@@ -98,7 +98,7 @@ void omOutViewMulti(omObjData *object) {
         D_800D04B8_main[i][3] = gCameraList[i].fov;
         D_800D04B8_main[i][4] = D_800CCF98_main[i];
         D_800D04B8_main[i][5] = D_800D4198_main[i];
-        Hu3DCamSetPositionOrientation(i, &pos, &at, &up);
+        Hu3DCameraPosSetV(i, &pos, &at, &up);
         Hu3DCamUpdateMtx(i);
     }
 }
@@ -124,7 +124,7 @@ void func_8004B7B0_main(s32 priority, s16 spriteGroup, void (*draw)(CameraViewDa
     data->draw = draw;
     data->spriteGroup = spriteGroup;
     func_8004CD04_main(pos, at, &CZoom, &CRot, &Center);
-    Hu3DCamSetPerspective(0, fov, 80.0f, 8000.0f);
+    Hu3DCameraPerspectiveSet(0, fov, 80.0f, 8000.0f);
     camera = gCameraList;
     func_8004CB44_main(&data->origin, &D_800D6A78_main);
     data->zoom = CZoom;
@@ -165,7 +165,7 @@ void func_8004B984_main(u8 count, s32 priority, s16 *spriteGroups, void (*draw)(
     far = 8000.0f;
     object->work[0] = count;
     for (i = 0; i < count; i++, data++) {
-        Hu3DCamSetPerspective(i, fov, near, far);
+        Hu3DCameraPerspectiveSet(i, fov, near, far);
         data->draw = draw;
         data->spriteGroup = spriteGroups[i];
         CZoomM[i] = CZoom;
@@ -270,7 +270,7 @@ void func_8004C4C4_main(omObjData *object) {
     D_800CE17C_main[2] = gCameraList->fov;
     D_800CE17C_main[3] = D_800D5210_main;
     D_800CE17C_main[4] = D_800CB890_main;
-    Hu3DCamSetPositionOrientation(0, &pos, &at, &up);
+    Hu3DCameraPosSetV(0, &pos, &at, &up);
     Hu3DCamUpdateMtx(0);
 
     length = HuSqrtf((Center.x - pos.x) * (Center.x - pos.x) +
@@ -317,7 +317,7 @@ void func_8004C76C_main(omObjData *object) {
         D_800D04B8_main[i][3] = gCameraList[i].fov;
         D_800D04B8_main[i][4] = D_800CCF98_main[i];
         D_800D04B8_main[i][5] = D_800D4198_main[i];
-        Hu3DCamSetPositionOrientation(i, &pos, &at, &up);
+        Hu3DCameraPosSetV(i, &pos, &at, &up);
         Hu3DCamUpdateMtx(i);
 
         length = HuSqrtf((CenterM[i].x - pos.x) * (CenterM[i].x - pos.x) +
@@ -442,7 +442,7 @@ void func_8004D094_main(omObjData *object) {
 
     for (i = 0; i < D_800A1910_main; i++) {
         flags = data->unk10[i];
-        active = func_800078F8_main(i);
+        active = msmSeGetStatus(i);
         if (flags & 2) {
             if (active == 0) {
                 data->unk10[i] &= ~1;
@@ -451,10 +451,10 @@ void func_8004D094_main(omObjData *object) {
                 data->unk08[i] -= data->unk0C[i];
                 if (data->unk08[i] <= 0.0f) {
                     data->unk08[i] = 0.0f;
-                    func_80007B28_main(i, 0);
+                    msmSeSetVolume(i, 0);
                     data->unk10[i] &= ~4;
                 } else {
-                    func_80007B28_main(i, (s16)data->unk08[i]);
+                    msmSeSetVolume(i, (s16)data->unk08[i]);
                 }
             }
         } else if (data->unk10[i] & 1) {
@@ -464,11 +464,11 @@ void func_8004D094_main(omObjData *object) {
                 data->unk00[i] -= data->unk04[i];
                 if (data->unk00[i] <= 0.0f) {
                     data->unk00[i] = 0.0f;
-                    func_80007B28_main(i, 0);
-                    func_80007DD8_main(i);
+                    msmSeSetVolume(i, 0);
+                    msmSeStop(i);
                     data->unk10[i] &= ~1;
                 } else {
-                    func_80007B28_main(i, (s16)data->unk00[i]);
+                    msmSeSetVolume(i, (s16)data->unk00[i]);
                 }
             }
         }
@@ -488,7 +488,7 @@ void func_8004D094_main(omObjData *object) {
             volume = data->unk2C = data->unk24;
             data->unk14 = 0;
         }
-        func_800036E8_main(D_800CDBC8_main, volume);
+        msmMusSetVolume(D_800CDBC8_main, volume);
     }
     if (data->unk16 == 1) {
         volume = data->unk30 += data->unk20;
@@ -501,6 +501,6 @@ void func_8004D094_main(omObjData *object) {
             volume = data->unk30 = data->unk28;
             data->unk16 = 0;
         }
-        func_800036E8_main(D_800D037E_main, volume);
+        msmMusSetVolume(D_800D037E_main, volume);
     }
 }

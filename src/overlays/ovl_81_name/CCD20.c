@@ -148,7 +148,7 @@ void MBDBackCreate(s32 arg0, s32 arg1) {
     D_80102D36_name_81 = D_80100FF8_name_81->unk0 * D_80100FF8_name_81->unk8 / 2;
     D_80102D38_name_81 = D_80100FF8_name_81->unk4 * D_80100FF8_name_81->unkC / 2;
     D_80102D30_name_81 = 1;
-    func_8001F95C_main(0, func_800E77D8_name_81);
+    Hu3DLayerHookSet(0, func_800E77D8_name_81);
     func_800E5BE8_name_81();
     func_800E5954_name_81();
     if (arg1 != 0) {
@@ -172,7 +172,7 @@ void MBDBackKill(void) {
         D_80100FF4_name_81 = NULL;
         HuMemMemoryFreeTemp(D_80100FF8_name_81);
         HuMemMemoryFreeTemp(D_801031C0_name_81);
-        func_8001F95C_main(0, 0);
+        Hu3DLayerHookSet(0, 0);
         func_800E5C20_name_81();
         func_800E8164_name_81();
     }
@@ -854,8 +854,8 @@ static void func_800E7EF8_name_81(void) {
     D_801031C4_name_81 = temp_v0;
     omPrcSetStatBit(temp_v0, OM_STAT_NOALLPAUSE);
     D_801031C8_name_81 = 0;
-    Hu3DCamSetPerspective(0, D_80100FF8_name_81->unk10, 10.0f, 200.0f);
-    Hu3DCamSetPositionOrientation(0, &D_801031D4_name_81, &D_801031E0_name_81, &D_801031EC_name_81);
+    Hu3DCameraPerspectiveSet(0, D_80100FF8_name_81->unk10, 10.0f, 200.0f);
+    Hu3DCameraPosSetV(0, &D_801031D4_name_81, &D_801031E0_name_81, &D_801031EC_name_81);
     Hu3DCamUpdateMtx(0);
 }
 
@@ -900,8 +900,8 @@ void func_800E8194_name_81(void) {
         if (var_f0 < 10.0f) {
             var_f0 = 10.0f;
         }
-        Hu3DCamSetPerspective(0, D_80100FF8_name_81->unk10, var_f0, var_f2);
-        Hu3DCamSetPositionOrientation(0, &D_801031D4_name_81, &D_801031E0_name_81, &D_801031EC_name_81);
+        Hu3DCameraPerspectiveSet(0, D_80100FF8_name_81->unk10, var_f0, var_f2);
+        Hu3DCameraPosSetV(0, &D_801031D4_name_81, &D_801031E0_name_81, &D_801031EC_name_81);
         Hu3DCamUpdateMtx(0);
 
         sp38.x = ((((D_80104840_name_81.x - 160.0f) * D_801031D0_name_81 * -4.0f) + 640.0f) - D_80104848_name_81[0]) / D_801031CC_name_81;
@@ -935,7 +935,7 @@ void func_800E8194_name_81(void) {
         sp28.y = D_801031D0_name_81 * 480.0f * D_80101000_name_81;
         sp28.z = 511.0f;
 
-        CameraViewportSet(0, &sp28, &sp10);
+        Hu3DCameraViewportSet(0, &sp28, &sp10);
         MBDBackOffsetSet(-sp20[0] + 0xA0, -sp20[1] + 0x78);
         HuPrcVSleep();
     }
@@ -957,7 +957,7 @@ u16 MBDCameraPos3DSet(Vec *arg0) {
     Vec2f* temp;
 
     HuVecCopyXYZ(&sp10, arg0->x, arg0->y + 10.0f, arg0->z);
-    Hu3DCam3DToScreen(0, &sp10, &D_80104840_name_81);
+    Hu3D3Dto2D(0, &sp10, &D_80104840_name_81);
 
     temp = &D_80104840_name_81;
 
@@ -998,7 +998,7 @@ void MBDCamera3Dto2D(Vec *arg0, Vec2f *arg1) {
     f32 temp_f2;
     f32 temp_f6;
 
-    Hu3DCam3DToScreen(0, arg0, &sp10.vec);
+    Hu3D3Dto2D(0, arg0, &sp10.vec);
     temp_f6 = 2.0f * D_801031D0_name_81;
     temp_f2 = 320.0f / temp_f6;
     sp10.vec.x = (temp_f2 - (temp_f2 / D_80101000_name_81)) + sp10.vec.x;
@@ -1187,7 +1187,7 @@ s32 func_800E8D54_name_81(s32 arg0, Vec *arg1) {
         obj->unk_04 = HuSprAnimRead(data);
         DataClose(data);
     
-        func_80055024_main(obj->unk_02, 0, obj->unk_04, 0);
+        HuSprGrpMemberSet(obj->unk_02, 0, obj->unk_04, 0);
         func_800550F4_main(obj->unk_02, 0, 1);
         HuSprPriSet(obj->unk_02, 0, 0x8000);
         HuSprAttrSet(obj->unk_02, 0, 0x9000);
@@ -1224,7 +1224,7 @@ s32 func_800E8EE8_name_81(s32 arg0, Vec *arg1) {
 
         unkBoard7->unk_02 = HuSprGrpCreate(1, 0);
 
-        func_80055024_main(unkBoard7->unk_02, 0,
+        HuSprGrpMemberSet(unkBoard7->unk_02, 0,
                             D_80104850_name_81[arg0].unk_04, 0);
         func_800550F4_main(unkBoard7->unk_02, 0, 1);
         HuSprPriSet(unkBoard7->unk_02, 0, 0x8000);
@@ -1242,7 +1242,7 @@ static void func_800E9030_name_81(s32 arg0) {
 
     if (temp_s0->unk_00 & 1) {
         if (!(temp_s0->unk_00 & 2)) {
-            HuSprKill(temp_s0->unk_04);
+            HuSprAnimKill(temp_s0->unk_04);
         }
         HuSprGrpKill(temp_s0->unk_02);
         temp_s0->unk_00 = 0;

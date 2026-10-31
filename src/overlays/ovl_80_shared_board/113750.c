@@ -113,7 +113,7 @@ static UnkBoard8* func_800FFD0C_shared_board(void) {
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         temp_v0->model[i] = HuSprAnimRead(temp_s4);
-        func_80055024_main(temp_v0->spriteGroup, i, temp_v0->model[i], 0);
+        HuSprGrpMemberSet(temp_v0->spriteGroup, i, temp_v0->model[i], 0);
         HuSprPriSet(temp_v0->spriteGroup, i, 0U);
         HuSprDispOff(temp_v0->spriteGroup, i);
         HuSprPosSet(temp_v0->spriteGroup, i, D_80101EC0_shared_board[i][0], D_80101EC0_shared_board[i][1]);
@@ -243,7 +243,7 @@ static void func_8010024C_shared_board(void) {
         var_s7 = func_800DBEC0_shared_board(GwSystem.current_player_index);
         func_800DC024_shared_board(GwSystem.current_player_index);
         if (D_800C9930_main != -1) {
-            func_800036E8_main(D_800C9930_main, 0x60);
+            msmMusSetVolume(D_800C9930_main, 0x60);
         } else {
             func_8004A9DC_main(0x60);
         }
@@ -326,7 +326,7 @@ static void func_8010024C_shared_board(void) {
         func_80100228_shared_board();
         
         if (D_800C9930_main != -1) {
-            func_800036E8_main(D_800C9930_main, 0x7F);
+            msmMusSetVolume(D_800C9930_main, 0x7F);
         } else {
             func_8004A9DC_main(0x7F);
         }
@@ -360,15 +360,15 @@ void MBMapScrollExec(s32 arg0) {
     temp_v0 = omAddPrcObj(func_80100630_shared_board, 0x1005, 0, 0);
     omPrcSetStatBit(temp_v0, OM_STAT_NOPAUSE);
     HuPrcChildLink(HuPrcCurrentGet(), MBCameraZoomMotStart(1.0f));
-    HuPrcChildWait();
+    HuPrcChildWatch();
     omDelPrcObj(temp_v0);
     temp_s0 = HuPrcCurrentGet();
     temp_v0 = omAddPrcObj(func_8010024C_shared_board, 0x1005, 0, 0);
     temp_v0->user_data = (void*)arg0;
     omPrcSetStatBit(temp_v0, OM_STAT_NOALLPAUSE);
     HuPrcChildLink(temp_s0, temp_v0);
-    HuPrcChildWait();
-    func_8004A0E0_main();
+    HuPrcChildWatch();
+    omAllUPause();
     D_800CB99C_main = 0;
     func_800E6FBC_shared_board();
 }

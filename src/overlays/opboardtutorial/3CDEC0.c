@@ -81,7 +81,7 @@ s16 func_80105AFC_opboardtutorial(s32 file, s32 flags) {
     model = func_8000B108_main(file, flags);
     Hu3DModelPosSet(model, 0, 0, 0);
     func_8001C2FC_main(model, 0x20000, 0x20000);
-    func_8001C448_main(model);
+    Hu3DModelRemakeStatic(model);
     func_8001C954_main(model);
     func_8001C514_main(model);
     func_80013390_main(model, -1, 0, func_80105DE0_opboardtutorial);
@@ -185,7 +185,7 @@ s16 func_80105FA8_opboardtutorial(s16 model, s32 file, char *name) {
     DataClose(data);
     animIdx = D_800D1714_main[(s16)anim].animIdx;
     D_80107786_opboardtutorial = HmfAnimLink(HmfModelData[model].hmf, (u16)anim, 0, name);
-    func_8001C448_main(model);
+    Hu3DModelRemakeStatic(model);
     return animIdx;
 }
 

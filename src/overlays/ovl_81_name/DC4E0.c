@@ -105,14 +105,14 @@ void func_800F6220_name_81(void) {
     NameSpriteIds *ids = &D_80105414_name_81;
     s32 i;
 
-    HuSprKill(ids->unk_00);
+    HuSprAnimKill(ids->unk_00);
 
     for (i = 0; i < 2; i++) {
-        HuSprKill(ids->unk_02[i]);
+        HuSprAnimKill(ids->unk_02[i]);
     }
 
-    HuSprKill(ids->unk_06);
-    HuSprKill(ids->unk_0A);
+    HuSprAnimKill(ids->unk_06);
+    HuSprAnimKill(ids->unk_0A);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F628C_name_81);
@@ -162,7 +162,7 @@ void func_800F6F84_name_81(void) {
     }
 
     if (D_80105422_name_81 != -1) {
-        HuSprKill(D_80105422_name_81);
+        HuSprAnimKill(D_80105422_name_81);
         D_80105422_name_81 = -1;
     }
 }

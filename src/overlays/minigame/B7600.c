@@ -30,10 +30,10 @@ void func_800E4D9C_minigame(omObjData *arg0) {
 
     if (data->unkE8[22].unk00 & 4) {
         s16 anim = motion[22] & 0x3FFF;
-        func_8001EED8_main(arg0->model[0], anim, flag);
+        Hu3DMotionShapeSet(arg0->model[0], anim, flag);
     } else {
         s16 anim = HmfModelData[arg0->motion[22] & 0x3FFF].motId;
-        func_8001EED8_main(arg0->model[0], anim, flag);
+        Hu3DMotionShapeSet(arg0->model[0], anim, flag);
     }
 }
 

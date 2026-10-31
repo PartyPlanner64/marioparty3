@@ -221,10 +221,10 @@ void m255_InitEnvironment(void) {
     func_8000B710_main(2);
     ScissorSet(0, 0.0f, 0.0f, 159.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 320.0f, 480.0f, 511.0f);
-    Hu3DCamSetPerspective(0, 60.0f, 80.0f, 4000.0f);
+    Hu3DCameraPerspectiveSet(0, 60.0f, 80.0f, 4000.0f);
     ScissorSet(1, 161.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(1, 640.0f, 480.0f, 511.0f, 960.0f, 480.0f, 511.0f);
-    Hu3DCamSetPerspective(1, 60.0f, 80.0f, 4000.0f);
+    Hu3DCameraPerspectiveSet(1, 60.0f, 80.0f, 4000.0f);
     D_800EC1B8_minigame = 0;
     D_800EC280_minigame = 0;
     D_800EBE28_minigame = 0;

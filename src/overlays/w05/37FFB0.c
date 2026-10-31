@@ -118,7 +118,7 @@ void func_80106A3C_w05(Object *arg) {
     prc = omAddPrcObj(func_801064DC_w05, 0x4800, 0, 0);
     prc->user_data = arg;
     HuPrcChildLink(HuPrcCurrentGet(), prc);
-    HuPrcChildWait();
+    HuPrcChildWatch();
     mbItemBtnF = 1;
 }
 

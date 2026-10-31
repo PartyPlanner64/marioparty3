@@ -65,7 +65,7 @@ void func_801059A0_mgresultboard(void) {
     for (i = 0; i < 2; i++) {
         ScissorSet(i, 0.0f, 0.0f, 320.0f, 240.0f);
         ViewportSet(i, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
-        Hu3DCamSetPerspective(i, 30.0f, 80.0f, 8000.0f);
+        Hu3DCameraPerspectiveSet(i, 30.0f, 80.0f, 8000.0f);
     }
 
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
@@ -517,7 +517,7 @@ void func_80106DE8_mgresultboard(void) {
         CRotM[i] = CRot;
         CenterM[i] = Center;
         CZoomM[i] = CZoom;
-        Hu3DCamSetPerspective(i, fov, 80.0f, 8000.0f);        
+        Hu3DCameraPerspectiveSet(i, fov, 80.0f, 8000.0f);        
     }
 }
 

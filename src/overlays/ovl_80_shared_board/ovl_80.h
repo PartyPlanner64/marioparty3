@@ -9,7 +9,7 @@
 // void func_80055484_main(s16 group, s16 member, u8 arg2, u8 arg3, u8 arg4, u16 arg5);
 // u16 MBCameraPos3DSet(Vec *arg0);
 // Process *MBPlayerPosMoveCreate(Vec *, Vec *, Vec *, s32);
-// void func_800035E8_main(s16);
+// void msmMusStop(s16);
 // void func_800DB56C_shared_board(void);
 // void MBMgCallHisInit(void);
 // void func_800F2484_shared_board(s32);
@@ -143,7 +143,7 @@
 // void func_800F2A34_shared_board(void);
 // void func_800F4730_shared_board(void);
 // void func_800FC8A4_shared_board(void);
-// void func_80012640_main(s16, Gfx**);
+// void Hu3DCameraSet(s16, Gfx**);
 // void func_800127C4_main(s16, Gfx**);
 // void func_80017C10_main(Mtx*, f32, f32, f32);
 // void func_80017CD0_main(Mtx*, f32, f32, f32);

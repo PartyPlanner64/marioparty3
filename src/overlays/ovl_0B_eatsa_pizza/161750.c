@@ -114,7 +114,7 @@ void func_801059A0_eatsa_pizza(void) {
     camIndex = func_8000B638_main();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
-    Hu3DCamSetPerspective(0, 5.0f, 80.0f, 4000.0f);
+    Hu3DCameraPerspectiveSet(0, 5.0f, 80.0f, 4000.0f);
     func_800E1804_minigame();
     func_80105AF4_eatsa_pizza(obj);
     func_801083BC_eatsa_pizza();
@@ -1218,7 +1218,7 @@ s16 func_80108D1C_eatsa_pizza(s16 arg0, s16 arg1, s16 arg2, f32 arg3) {
     }
     D_80109298_eatsa_pizza[i] = 1;
     group = D_8010928E_eatsa_pizza;
-    func_80055024_main(group, i, arg0, 0);
+    HuSprGrpMemberSet(group, i, arg0, 0);
     func_800550F4_main(group, i, 2);
     HuSprPosSet(group, i, arg1, arg2);
     HuSprZRotSet(group, i, arg3);
@@ -1276,7 +1276,7 @@ s16 func_80108FEC_eatsa_pizza(s16 arg0, s16 arg1) {
         return -1;
     }
     for (i = 0; i < arg1; i++) {
-        func_80055024_main(spriteId, i, arg0, 0);
+        HuSprGrpMemberSet(spriteId, i, arg0, 0);
     }
     return spriteId;
 }

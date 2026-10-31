@@ -145,14 +145,14 @@ void func_80105DEC_last5(void) {
     data = DataRead(0x1301DE);
     D_80107578_last5->model[0] = HuSprAnimRead(data);
     DataClose(data);
-    func_80055024_main(D_80107578_last5->spriteGroup, 0, D_80107578_last5->model[0], 0);
+    HuSprGrpMemberSet(D_80107578_last5->spriteGroup, 0, D_80107578_last5->model[0], 0);
     HuSprPriSet(D_80107578_last5->spriteGroup, 0, 0x11);
     HuSprAttrSet(D_80107578_last5->spriteGroup, 0, 0x1000);
     HuSprPosSet(D_80107578_last5->spriteGroup, 0, 0xA0, 0x64);
     data = DataRead(0x1301DF);
     D_80107578_last5->model[1] = HuSprAnimRead(data);
     DataClose(data);
-    func_80055024_main(D_80107578_last5->spriteGroup, 1, D_80107578_last5->model[1], 3);
+    HuSprGrpMemberSet(D_80107578_last5->spriteGroup, 1, D_80107578_last5->model[1], 3);
     HuSprPriSet(D_80107578_last5->spriteGroup, 1, 0x10);
     HuSprAttrSet(D_80107578_last5->spriteGroup, 1, 0x1000);
     HuSprPosSet(D_80107578_last5->spriteGroup, 1, 0xA0, 0x64);
@@ -224,15 +224,15 @@ void func_80106100_last5(void) {
                                          0, 0, 0, 0, 0x8C, 0x6E);
             func_80105C9C_last5(window);
         }
-        HuPrcChildWait();
+        HuPrcChildWatch();
     }
     func_800EC5B4_shared_board(-1, 0x430F);
     MBMotionSet(model, 0, 2);
     HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&model->coords, &D_8010748C_last5, &model->coords, 0x3C));
-    HuPrcChildWait();
+    HuPrcChildWatch();
     MBVecForwardSet(&forward);
     HuPrcChildLink(HuPrcCurrentGet(), func_800ED128_shared_board(&model->rot, &forward, &model->rot, 0xA));
-    HuPrcChildWait();
+    HuPrcChildWatch();
     MBMotionShiftSet(model, -1, 0, 5, 2);
     winner = 0;
     value = MBRand(100.0f);
@@ -283,7 +283,7 @@ void func_80106100_last5(void) {
         step += 2;
         HuPrcVSleep();
     }
-    HuPrcChildWait();
+    HuPrcChildWatch();
     func_800EC5B4_shared_board(-1, 0x4312);
     MBMotionShiftSet(coinModel, 0, 0, 5, 2);
     HuPrcSleep(0x14);
@@ -344,7 +344,7 @@ void func_80106768_last5(void) {
                                          0x6E);
             func_80105C9C_last5(window);
         }
-        HuPrcChildWait();
+        HuPrcChildWatch();
     }
     func_800EC5B4_shared_board(-1, 0x4305);
     winner = 3;
@@ -362,11 +362,11 @@ void func_80106768_last5(void) {
         value = 0x1E;
         HuPrcChildLink(HuPrcCurrentGet(),
                        MBPlayerPosMoveCreate(&model->coords, &D_8010748C_last5, &model->coords, 0x1E));
-        HuPrcChildWait();
+        HuPrcChildWatch();
         step = 0xA;
         MBVecForwardSet(&forward);
         HuPrcChildLink(HuPrcCurrentGet(), func_800ED128_shared_board(&model->rot, &forward, &model->rot, 0xA));
-        HuPrcChildWait();
+        HuPrcChildWatch();
         MBMotionSet(model, -1, 2);
         HuAudFXPlay(0x25D);
         window = func_80105B04_last5(0x4307, 0, 0, 0, 0, 0, 0xA0, 0x50);
@@ -439,7 +439,7 @@ void func_80106768_last5(void) {
             step += 2;
             HuPrcVSleep();
         }
-        HuPrcChildWait();
+        HuPrcChildWatch();
     } else {
         omDelObj(obj);
         value = 0x1E;

@@ -621,7 +621,7 @@ void func_800FD620_name_81(void) {
     func_800F8C68_name_81(GwSystem.current_player_index);
     D_800A12D4_main = 0;
     HuPrcChildLink(temp_s1, func_800E0888_name_81());
-    HuPrcChildWait();
+    HuPrcChildWatch();
     mbGameMode = 10;
     D_80105494_name_81 = 2;
     D_80105496_name_81 = 1;

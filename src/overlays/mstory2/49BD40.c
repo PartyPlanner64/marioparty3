@@ -44,7 +44,7 @@ void func_801059E4_mstory2(void) {
     D_800CE17C_main[2] = 35.0f;
     D_800CE17C_main[3] = D_800D5210_main;
     D_800CE17C_main[4] = D_800CB890_main;
-    Hu3DCamSetPositionOrientation(0, &D_8011B920_mstory2, &D_8011B92C_mstory2, &D_8011B938_mstory2);
+    Hu3DCameraPosSetV(0, &D_8011B920_mstory2, &D_8011B92C_mstory2, &D_8011B938_mstory2);
     Hu3DCamUpdateMtx(0);
 }
 

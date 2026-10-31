@@ -9,7 +9,7 @@ extern s32 D_8010D540_inst;
 extern s32 D_8010D544_inst;
 extern void (*D_8010DDD4_inst)(omObjData *);
 
-void func_8001EF6C_main(s16, s16, char *);
+void Hu3DModelHookSet(s16, s16, char *);
 void func_80109E94_inst(omObjData *);
 void func_80109F50_inst(omObjData *);
 void func_8010A000_inst(omObjData *);
@@ -32,14 +32,14 @@ void func_80109A90_inst(void) {
         func_8001C258_main(object->model[1], 0x4000, 0x4000);
         func_8001C814_main(object->model[1], 2, 2);
         func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        func_8001EF6C_main(object->model[1], object->model[0], "item_hook");
+        Hu3DModelHookSet(object->model[1], object->model[0], "item_hook");
     }
     func_8001C5B4_main(object->model[0], object->motion[0]);
     func_8001C814_main(object->model[0], 2, 2);
     data = DataRead(0xA00B8);
     D_8010DC40_inst = (s16)HmfAnimCreate(HmfModelData[object->model[0]].hmf, data, 0, "c164m_0_DEF");
     HuMemMemoryFreePerm(data);
-    func_8001C448_main(object->model[0]);
+    Hu3DModelRemakeStatic(object->model[0]);
     func_8001C514_main(object->model[0]);
     func_80032FC0_main(D_8010DC42_inst, 1, 0);
     func_80032FF8_main(D_8010DC42_inst, 0);

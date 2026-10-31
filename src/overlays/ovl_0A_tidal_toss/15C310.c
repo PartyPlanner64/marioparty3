@@ -138,7 +138,7 @@ void func_801059A0_tidal_toss(void) {
     camIndex = func_8000B638_main();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
-    Hu3DCamSetPerspective(0, 45.0f, 80.0f, 8000.0f);
+    Hu3DCameraPerspectiveSet(0, 45.0f, 80.0f, 8000.0f);
     func_800E1804_minigame();
     func_80105B04_tidal_toss(obj);
     func_8010600C_tidal_toss();
@@ -935,7 +935,7 @@ s16 func_8010A954_tidal_toss(s16 arg0, s16 arg1) {
         return -1;
     }
     for (i = 0; i < arg1; i++) {
-        func_80055024_main(spriteId, i, arg0, 0);
+        HuSprGrpMemberSet(spriteId, i, arg0, 0);
     }
     return spriteId;
 }

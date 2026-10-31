@@ -66,8 +66,8 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/CA640", func_800E35C4_name_81
 
 void func_800E35D4_name_81(void) {
     HuSprGrpKill(D_80102CA8_name_81);
-    HuSprKill(D_80102CAA_name_81[0]);
-    HuSprKill(D_80102CAA_name_81[1]);
+    HuSprAnimKill(D_80102CAA_name_81[0]);
+    HuSprAnimKill(D_80102CAA_name_81[1]);
     omDelObj(D_80102CB0_name_81);
     D_80102CB0_name_81 = NULL;
     D_80102CA6_name_81 &= 0xC3;
@@ -118,10 +118,10 @@ Process *func_800E4A74_name_81(s32 arg0) {
 }
 
 void func_800E4AD0_name_81(void) {
-    Hu3DCamSetPerspective(1, 40.0f, 80.0f, 8000.0f);
-    Hu3DCamSetPositionOrientation(1, &D_80102CE0_name_81, &D_80102CEC_name_81, &D_80102CF8_name_81);
+    Hu3DCameraPerspectiveSet(1, 40.0f, 80.0f, 8000.0f);
+    Hu3DCameraPosSetV(1, &D_80102CE0_name_81, &D_80102CEC_name_81, &D_80102CF8_name_81);
     Hu3DCamUpdateMtx(1);
-    CameraViewportSet(1, &D_80102D04_name_81, &D_80102D10_name_81);
+    Hu3DCameraViewportSet(1, &D_80102D04_name_81, &D_80102D10_name_81);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/CA640", func_800E4B38_name_81);

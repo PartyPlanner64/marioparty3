@@ -51,7 +51,7 @@ void func_80105AE8_bobbing_bow_loons(void) {
     func_8000B5F0_main(1);
     camIndex = func_8000B638_main();
     D_80109B18_bobbing_bow_loons = camIndex;
-    Hu3DCamSetPerspective(camIndex, 30.0f, 80.0f, 8000.0f);
+    Hu3DCameraPerspectiveSet(camIndex, 30.0f, 80.0f, 8000.0f);
     CZoom = 500.0f;
     CRot.x = 0.0f;
     CRot.y = 0.0f;

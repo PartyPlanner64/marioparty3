@@ -57,9 +57,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80105FA0_w10);
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80105FDC_w10);
 
 void func_801061E8_w10(W10SprGroup *arg0) {
-    HuSprKill(arg0->sprites[0]);
-    HuSprKill(arg0->sprites[1]);
-    HuSprKill(arg0->sprites[2]);
+    HuSprAnimKill(arg0->sprites[0]);
+    HuSprAnimKill(arg0->sprites[1]);
+    HuSprAnimKill(arg0->sprites[2]);
     HuSprGrpKill(arg0->spriteGroup);
     HuMemMemoryFreeTemp(arg0);
 }
@@ -69,7 +69,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80106230_w10);
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80106314_w10);
 
 void func_8010649C_w10(void) {
-    HuSprKill(D_8010BA4E_w10);
+    HuSprAnimKill(D_8010BA4E_w10);
     HuSprGrpKill(D_8010BA4C_w10);
 }
 
@@ -112,7 +112,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_8010681C_w10);
 
 void func_80106838_w10(void) {
     HuPrcChildLink(HuPrcCurrentGet(), MBTelopCreate(GwSystem.current_player_index));
-    HuPrcChildWait();
+    HuPrcChildWatch();
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_8010687C_w10);

@@ -355,7 +355,7 @@ static void MBStatusMain(omObjData *obj) {
                                     continue;
                                 }
 
-                                func_80055024_main(temp_s2->playerIndex, j, D_80105588_shared_board[GwPlayer[i].itemNo[j - 11] + 10], 0);
+                                HuSprGrpMemberSet(temp_s2->playerIndex, j, D_80105588_shared_board[GwPlayer[i].itemNo[j - 11] + 10], 0);
                                 func_800550F4_main(temp_s2->playerIndex, j, 0);
                                 HuSprPriSet(temp_s2->playerIndex, j, (i * 5) + 0x478E);
                                 HuSprAttrSet(temp_s2->playerIndex, j, 0);
@@ -447,7 +447,7 @@ static void MBStatusCharSprCreate(s32 playerIndex) {
     s16 temp_s1;
 
     temp_s1 = mbStatusData[playerIndex].playerIndex;
-    func_80055024_main(temp_s1, 1, D_80105588_shared_board[playerIndex + 1], 0);
+    HuSprGrpMemberSet(temp_s1, 1, D_80105588_shared_board[playerIndex + 1], 0);
     func_800550F4_main(temp_s1, 1, 0);
     HuSprPriSet(temp_s1, 1, ((playerIndex * 5) + 0x4790));
     HuSprAttrSet(temp_s1, 1, 0);
@@ -459,7 +459,7 @@ static void MBStatusIconSprCreate(s32 arg0) {
     s16 temp_s2 = mbStatusData[arg0].playerIndex;
 
     for (i = 0; i < 2; i++) {
-        func_80055024_main(temp_s2, i + 2, D_80105588_shared_board[i + 5], 0);
+        HuSprGrpMemberSet(temp_s2, i + 2, D_80105588_shared_board[i + 5], 0);
         HuSprPriSet(temp_s2, i + 2, ((arg0 * 5) + 0x4790));
         HuSprAttrReset(temp_s2, i + 2, 0xFFFF);
         HuSprAttrSet(temp_s2, i + 2, 0x1000);
@@ -482,7 +482,7 @@ static void MBStatusNumSprCreate(s32 arg0) {
     temp_s4->unk_3A = HuSprAnimRead(temp_v0);
     temp_s2 = temp_s4->playerIndex;
     for (i = 0; i < 5; i++) {
-        func_80055024_main(temp_s2, i + 4, temp_s4->unk_3A, 0);
+        HuSprGrpMemberSet(temp_s2, i + 4, temp_s4->unk_3A, 0);
         func_800550F4_main(temp_s2, i + 4, 1);
         HuSprBankSet(temp_s2, i + 4, 0xA, 0);
         HuSprPriSet(temp_s2, i + 4, ((arg0 * 5) + 0x4790));
@@ -501,7 +501,7 @@ static void MBStatusBackSprCreate(s32 playerNo) {
     s16 temp_v0 = HuSprGrpCreate(0xE, 2);
 
     temp_s0->playerIndex = temp_v0;
-    func_80055024_main(temp_v0, 0, D_80105588_shared_board[0], 0);
+    HuSprGrpMemberSet(temp_v0, 0, D_80105588_shared_board[0], 0);
     HuSprPriSet(temp_v0, 0, ((playerNo * 5) + 0x4790));
     HuSprAttrSet(temp_v0, 0, 0x1000);
     HuSprPosSet(temp_v0, 0, 0, 0);
@@ -513,7 +513,7 @@ static void MBStatusRankSprCreate(s32 playerNo) {
 
     temp_v0->prevRank = -1;
     temp_s0 = temp_v0->playerIndex;
-    func_80055024_main(temp_s0, 0xA, D_80105588_shared_board[8], 0);
+    HuSprGrpMemberSet(temp_s0, 0xA, D_80105588_shared_board[8], 0);
     func_800550F4_main(temp_s0, 0xA, 1);
     HuSprBankSet(temp_s0, 0xA, 0, 0);
     HuSprPriSet(temp_s0, 0xA, ((playerNo * 5) + 0x478F));
@@ -525,7 +525,7 @@ static void MBStatusComSprCreate(s32 playerNo) {
     s16 temp_s2;
 
     temp_s2 = mbStatusData[playerNo].playerIndex;
-    func_80055024_main(temp_s2, 9, D_80105588_shared_board[9], 0);
+    HuSprGrpMemberSet(temp_s2, 9, D_80105588_shared_board[9], 0);
     func_800550F4_main(temp_s2, 9, 0);
     HuSprPriSet(temp_s2, 9, ((playerNo * 5) + 0x478E));
     HuSprAttrSet(temp_s2, 9, 0);
@@ -544,7 +544,7 @@ static void MBStatusItemIconSprCreate(s32 playerNo) {
     for (i = 0; i < ARRAY_COUNT(GwPlayer->itemNo); i++) {
         curItem = GwPlayer[playerNo].itemNo[i];
         curItem = (curItem == -1) ? 0 : curItem;
-        func_80055024_main(temp_s3, i + 0xB, D_80105588_shared_board[curItem + 10], 0);
+        HuSprGrpMemberSet(temp_s3, i + 0xB, D_80105588_shared_board[curItem + 10], 0);
         func_800550F4_main(temp_s3, i + 0xB, 0);
         HuSprPriSet(temp_s3, i + 0xB, ((playerNo * 5) + 0x478E));
         HuSprAttrSet(temp_s3, i + 0xB, 0);
@@ -608,20 +608,20 @@ static void MBStatusAnimKill(void) {
     s32 i;
     s16 *spriteIDs = D_80105588_shared_board;
 
-    HuSprKill(spriteIDs[0]);
+    HuSprAnimKill(spriteIDs[0]);
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
-        HuSprKill(spriteIDs[i + 1]);
+        HuSprAnimKill(spriteIDs[i + 1]);
     }
 
     for (i = 0; i < 2; i++) {
-        HuSprKill(spriteIDs[i + 5]);
+        HuSprAnimKill(spriteIDs[i + 5]);
     }
 
-    HuSprKill(spriteIDs[8]);
-    HuSprKill(spriteIDs[9]);
+    HuSprAnimKill(spriteIDs[8]);
+    HuSprAnimKill(spriteIDs[9]);
 
     for (i = 0; i < ITEMS_END; i++) {
-        HuSprKill(spriteIDs[i + 10]);
+        HuSprAnimKill(spriteIDs[i + 10]);
     }
 }
 
@@ -688,12 +688,12 @@ static void func_800F462C_shared_board(s32 playerNo) {
 
     switch (temp_s2->uiUpdatePaused) {
         case 0:
-            HuSprKill(temp_s2->unk_3A);
+            HuSprAnimKill(temp_s2->unk_3A);
             break;
         case 1:
             for (i = 0; i < 3; i++) {
                 if (temp_s2->unk_40[i] != -1) {
-                    HuSprKill(temp_s2->unk_40[i]);
+                    HuSprAnimKill(temp_s2->unk_40[i]);
                     temp_s2->unk_40[i] = -1;
                 }
             }
@@ -1034,7 +1034,7 @@ void MBVsSprCreate(void) {
         D_801055CC_shared_board.y = 158.0f;
         D_801055C4_shared_board = HuSprAnimRead(temp_s0);
         DataClose(temp_s0);
-        func_80055024_main(D_801055C2_shared_board, 0, D_801055C4_shared_board, 0);
+        HuSprGrpMemberSet(D_801055C2_shared_board, 0, D_801055C4_shared_board, 0);
         HuSprPriSet(D_801055C2_shared_board, 0, 0x4780);
         HuSprAttrSet(D_801055C2_shared_board, 0, 0x1000);
         HuSprPosSet(D_801055C2_shared_board, 0, 0xA0, D_801055CC_shared_board.y);
@@ -1056,7 +1056,7 @@ void MBVsSprCreateY(f32 arg0, f32 arg1) {
         D_801055CC_shared_board.y = arg1;
         D_801055C4_shared_board = HuSprAnimRead(temp_s0);
         DataClose(temp_s0);
-        func_80055024_main(D_801055C2_shared_board, 0, D_801055C4_shared_board, 0);
+        HuSprGrpMemberSet(D_801055C2_shared_board, 0, D_801055C4_shared_board, 0);
         HuSprPriSet(D_801055C2_shared_board, 0, 0x4780);
         HuSprAttrSet(D_801055C2_shared_board, 0, 0x1000);
         HuSprPosSet(D_801055C2_shared_board, 0, 0xA0, D_801055CC_shared_board.y);
@@ -1074,7 +1074,7 @@ void MBVsSprKill(void) {
         D_801055C2_shared_board = -1;
     }
     if (D_801055C4_shared_board != -1) {
-        HuSprKill(D_801055C4_shared_board);
+        HuSprAnimKill(D_801055C4_shared_board);
         D_801055C4_shared_board = -1;
     }
 }
@@ -1302,7 +1302,7 @@ static void MBStatusItemSprCreate(s32 playerNo, s32 arg1) {
         if (var_s2 != NULL) {
             temp_s7->unk_40[i] = HuSprAnimRead(var_s2);
             DataClose(var_s2);
-            func_80055024_main(temp_s5, i + 2, temp_s7->unk_40[i], 0);
+            HuSprGrpMemberSet(temp_s5, i + 2, temp_s7->unk_40[i], 0);
             if (i != 0) {
                 HuSprPriSet(temp_s5, i + 2, (playerNo * 5) + 0x4790);
             } else {
@@ -1375,7 +1375,7 @@ void MBStatusItemSprKill(s32 playerIndex) {
     for (i = 0; i < ARRAY_COUNT(temp_s2->unk_40); i++) {
         if (temp_s2->unk_40[i] != -1) {
             MBStatusSprBmpClear(temp_s2->playerIndex, i + 2);
-            HuSprKill(temp_s2->unk_40[i]);
+            HuSprAnimKill(temp_s2->unk_40[i]);
             temp_s2->unk_40[i] = -1;
         }
     }
@@ -1395,7 +1395,7 @@ void MBStatusItemDispSet(s32 playerNo, s32 arg1) {
                 for (i = 0; i < ARRAY_COUNT(temp_s2->unk_40); i++) {
                     if (temp_s2->unk_40[i] != -1) {
                         HuSprDispOff(temp_s2->playerIndex, i + 2);
-                        HuSprKill(temp_s2->unk_40[i]);
+                        HuSprAnimKill(temp_s2->unk_40[i]);
                         temp_s2->unk_40[i] = -1;
                     }
                 }
@@ -1412,7 +1412,7 @@ void MBStatusItemDispSet(s32 playerNo, s32 arg1) {
                     func_800550F4_main(temp_s2->playerIndex, i + 2, 0);
                 }
 
-                HuSprKill(temp_s2->unk_3A);
+                HuSprAnimKill(temp_s2->unk_3A);
 
                 for (i = 0; i < 5; i++) {
                     HuSprDispOff(temp_s2->playerIndex, i + 4);

@@ -51,7 +51,7 @@ void func_801059A0_mgresultbattle(void) {
     func_8000B690_main(1);
     ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
-    Hu3DCamSetPerspective(0, 30.0f, 80.0f, 8000.0f);
+    Hu3DCameraPerspectiveSet(0, 30.0f, 80.0f, 8000.0f);
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
 

@@ -21,8 +21,8 @@ void opObjectInit(void) {
 
         ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
         ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
-        Hu3DCamSetPerspective(0, 41.0f, 80.0f, 8000.0f);
-        Hu3DCamSetPositionOrientation(0, &pos, &at, &up);
+        Hu3DCameraPerspectiveSet(0, 41.0f, 80.0f, 8000.0f);
+        Hu3DCameraPosSetV(0, &pos, &at, &up);
     }
     func_80030030_main(1.0f);
     HuAudSeqStop();

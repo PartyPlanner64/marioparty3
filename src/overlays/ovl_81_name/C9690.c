@@ -29,7 +29,7 @@ void func_800E1F38_name_81(void) {
     Process *parent = HuPrcCurrentGet();
 
     HuPrcChildLink(parent, omAddPrcObj(func_800E1A24_name_81, 0x1003, 0, 0));
-    HuPrcChildWait();
+    HuPrcChildWatch();
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C9690", func_800E1F88_name_81);

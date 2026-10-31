@@ -34,8 +34,8 @@ void Hu3DCamInit(u32 arg0) {
         gCameraList[var_s3].far = 8000.0f;
         gCameraList[var_s3].unk2 = 0;
         gCameraList[var_s3].unk4 = -1;
-        CameraViewportSet(var_s3, &D_800A0554_main, &D_800A0590_main);
-        CameraScissorSet(var_s3, &D_800A05CC_main);
+        Hu3DCameraViewportSet(var_s3, &D_800A0554_main, &D_800A0590_main);
+        Hu3DCameraScissorSet(var_s3, &D_800A05CC_main);
         gCameraList[var_s3].unkA0 = NULL;
         gCameraList[var_s3].unkA8 = NULL;
         gCameraList[var_s3].unkAC = NULL;
@@ -52,14 +52,14 @@ void func_800123F4_main(void) {
     D_800D418E_main = D_800D2008_main;
 }
 
-void Hu3DCamSetPositionOrientation(s16 camIndex, Vec *pos, Vec *at, Vec *up) {
+void Hu3DCameraPosSetV(s16 camIndex, Vec *pos, Vec *at, Vec *up) {
     HuCamera *camera = &gCameraList[camIndex];
     camera->pos = *pos;
     camera->at = *at;
     camera->up = *up;
 }
 
-void Hu3DCamSetPerspective(s16 camIndex, f32 fov, f32 near, f32 far) {
+void Hu3DCameraPerspectiveSet(s16 camIndex, f32 fov, f32 near, f32 far) {
     HuCamera *camera = &gCameraList[camIndex];
     camera->fov = fov;
     camera->near = near;
@@ -67,7 +67,7 @@ void Hu3DCamSetPerspective(s16 camIndex, f32 fov, f32 near, f32 far) {
     camera->perspNorm = 1;
 }
 
-void CameraScissorSet(s16 camIndex, RectF *arg1) {
+void Hu3DCameraScissorSet(s16 camIndex, RectF *arg1) {
     HuCamera *camera = &gCameraList[camIndex];
     camera->screenLeft = arg1->x1;
     camera->screenTop = arg1->y1;
@@ -75,7 +75,7 @@ void CameraScissorSet(s16 camIndex, RectF *arg1) {
     camera->screenBottom = arg1->y2;
 }
 
-void CameraViewportSet(s16 camIndex, Vec *arg1, Vec *arg2) {
+void Hu3DCameraViewportSet(s16 camIndex, Vec *arg1, Vec *arg2) {
     HuCamera *camera = &gCameraList[camIndex];
     camera->screenScale = *arg1;
     camera->screenPos = *arg2;
@@ -92,7 +92,7 @@ void Hu3DCamUpdateMtx(s16 camIndex) {
     guLookAt(&mtxs->lookAtMtx, camera->pos.x, camera->pos.y, camera->pos.z, camera->at.x, camera->at.y, camera->at.z, camera->up.x, camera->up.y, camera->up.z);
 }
 
-void func_80012640_main(s16 camIndex, Gfx **dispList) {
+void Hu3DCameraSet(s16 camIndex, Gfx **dispList) {
     HuCamMtxs *camMtx;
     HuCamera *camera;
 
@@ -130,7 +130,7 @@ void func_800128EC_main(s16 camIndex, void (*arg1)(s16)) {
     gCameraList[camIndex].unkAC = arg1;
 }
 
-void Hu3DCam3DToScreen(s16 camIndex, Vec *worldPos, Vec2f *outPos) {
+void Hu3D3Dto2D(s16 camIndex, Vec *worldPos, Vec2f *outPos) {
     f32 x;
     f32 y;
     f32 z;
@@ -210,7 +210,7 @@ void func_80012B14_main(s16 camIndex, Vec *worldPos, Vec2f *outPos) {
     outPos->y = ((projectedY * (f4 / y)) + f4);
 }
 
-void func_80012D0C_main(s16 camIndex, f32 depth, Vec2f *screenPos, Vec2f *outPos) {
+void Hu3D2Dto3D(s16 camIndex, f32 depth, Vec2f *screenPos, Vec2f *outPos) {
     HuCamera *camera;
     HuMtx4F viewMtx;
     f32 x;
@@ -273,7 +273,7 @@ void func_80012E54_main(s16 camIndex) {
     env->unk20 = ux * (dx * dx + (1.0f - dx * dx) * cosdf(angle)) + uy * (dy * dx * (1.0f - cosdf(angle)) - dz * sindf(angle)) + uz * (dz * dx * (1.0f - cosdf(angle)) + dy * sindf(angle));
     env->unk24 = ux * (dy * dx * (1.0f - cosdf(angle)) + dz * sindf(angle)) + uy * (dy * dy + (1.0f - dy * dy) * cosdf(angle)) + uz * (dy * dz * (1.0f - cosdf(angle)) - dx * sindf(angle));
     env->unk28 = ux * (dz * dx * (1.0f - cosdf(angle)) - dy * sindf(angle)) + uy * (dy * dz * (1.0f - cosdf(angle)) + dx * sindf(angle)) + uz * (dz * dz + (1.0f - dz * dz) * cosdf(angle));
-    Hu3DCamSetPositionOrientation(camIndex, (Vec *)&env->unk08, (Vec *)&env->unk14, (Vec *)&env->unk20);
+    Hu3DCameraPosSetV(camIndex, (Vec *)&env->unk08, (Vec *)&env->unk14, (Vec *)&env->unk20);
     Hu3DCamUpdateMtx(camIndex);
 }
 

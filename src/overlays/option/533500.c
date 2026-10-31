@@ -171,7 +171,7 @@ void func_8010A3E8_option(s32, s32);
 void func_80109908_option(f32, f32, f32, s32 *, s32 *);
 omObjData *func_80107758_option(Vec *, Vec *, s32);
 void func_801133EC_option(s32);
-s32 func_800078F8_main(s32);
+s32 msmSeGetStatus(s32);
 void espTPLvlSet(u16, s16);
 void espBankSet(u16, s32, s32);
 void func_8000BDDC_main(u16, s32);
@@ -261,8 +261,8 @@ void func_801059D0_option(void) {
 
         ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
         ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
-        Hu3DCamSetPerspective(0, 41.0f, 80.0f, 8000.0f);
-        Hu3DCamSetPositionOrientation(0, &pos, &at, &up);
+        Hu3DCameraPerspectiveSet(0, 41.0f, 80.0f, 8000.0f);
+        Hu3DCameraPosSetV(0, &pos, &at, &up);
     }
     func_80030030_main(1.0f);
     pfInit();
@@ -340,7 +340,7 @@ void func_80105DA0_option(s32 camId, f32 fov) {
     func_80013320_main(camId, 0);
     D_801146F0_option.camId = camId;
     D_801146F0_option.fov = fov;
-    Hu3DCamSetPerspective(0, fov, D_801146F0_option.nearPlane, D_801146F0_option.farPlane);
+    Hu3DCameraPerspectiveSet(0, fov, D_801146F0_option.nearPlane, D_801146F0_option.farPlane);
     func_80012E54_main(0);
     D_801146F0_option.prcObj = omAddPrcObj(func_80105D74_option, 0x5000, 0x2000, 0);
 }
@@ -364,7 +364,7 @@ void func_80105E40_option(void) {
 
 void func_80105EB8_option(void) {
     while (1) {
-        Hu3DCamSetPositionOrientation(0, &D_801146F0_option.pos, &D_801146F0_option.at, &D_801146F0_option.up);
+        Hu3DCameraPosSetV(0, &D_801146F0_option.pos, &D_801146F0_option.at, &D_801146F0_option.up);
         Hu3DCamUpdateMtx(0);
         HuPrcVSleep();
     }
@@ -383,9 +383,9 @@ void func_80105F08_option(f32 fov) {
     if (D_801146F0_option.prcObj != NULL) {
         func_80105E40_option();
     }
-    Hu3DCamSetPositionOrientation(0, &D_801146F0_option.pos, &D_801146F0_option.at, &D_801146F0_option.up);
+    Hu3DCameraPosSetV(0, &D_801146F0_option.pos, &D_801146F0_option.at, &D_801146F0_option.up);
     Hu3DCamUpdateMtx(0);
-    Hu3DCamSetPerspective(0, D_801146F0_option.fov, D_801146F0_option.nearPlane, D_801146F0_option.farPlane);
+    Hu3DCameraPerspectiveSet(0, D_801146F0_option.fov, D_801146F0_option.nearPlane, D_801146F0_option.farPlane);
     D_801146F0_option.prcObj = omAddPrcObj(func_80105EB8_option, 0x5000, 0x2000, 0);
 }
 
@@ -2672,7 +2672,7 @@ void func_8010FE10_option(void) {
 void func_8010FE84_option(omObjData *obj) {
     s16 modelId;
 
-    if (func_800078F8_main(D_801147E0_option.seNo) == 0) {
+    if (msmSeGetStatus(D_801147E0_option.seNo) == 0) {
         modelId = func_80113218_option(2);
         func_80033910_main(HmfModelData[modelId].hmf);
         HuAudFXStop((s16)D_801147E0_option.seNo);
@@ -2687,7 +2687,7 @@ omObjData *func_8010FF0C_option(s32 seNo) {
     }
     D_801147E0_option.obj = omAddObj(6, 0, 0, -1, func_8010FE84_option);
     D_801147E0_option.seNo = seNo;
-    func_800078F8_main(seNo);
+    msmSeGetStatus(seNo);
     return D_801147E0_option.obj;
 }
 

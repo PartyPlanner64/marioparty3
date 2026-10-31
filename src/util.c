@@ -131,7 +131,7 @@ void ScissorSet(u8 camIndex, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
     D_800975F0_main[camIndex].y1 = arg2;
     D_800975F0_main[camIndex].x2 = arg3;
     D_800975F0_main[camIndex].y2 = arg4;
-    CameraScissorSet(camIndex, &D_800975F0_main[camIndex]);
+    Hu3DCameraScissorSet(camIndex, &D_800975F0_main[camIndex]);
 }
 
 void ViewportSet(u8 camIndex, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
@@ -143,7 +143,7 @@ void ViewportSet(u8 camIndex, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, 
     D_800975A8_main[camIndex].y = arg5;
     D_800975A8_main[camIndex].z = arg6;
 
-    CameraViewportSet(camIndex, &D_80097560_main[camIndex], &D_800975A8_main[camIndex]);
+    Hu3DCameraViewportSet(camIndex, &D_80097560_main[camIndex], &D_800975A8_main[camIndex]);
 }
 
 void func_8000B460_main(omObjData *arg0, u16 arg1, s32 arg2) {

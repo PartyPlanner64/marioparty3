@@ -25,7 +25,7 @@ void func_801168E0_mgmode(MgmodeEsprite *arg0) {
             break;
         }
         espKill(sprite->espriteSlot);
-        HuSprKill(sprite->spriteGroup);
+        HuSprAnimKill(sprite->spriteGroup);
         sprite++;
     }
     HuMemFree(arg0);

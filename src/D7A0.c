@@ -55,7 +55,7 @@ s16 func_8000CC98_main(s32 fileId, s32 attr) {
 
     Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
     func_8001C2FC_main(model, 0x20000, 0x20000);
-    func_8001C448_main(model);
+    Hu3DModelRemakeStatic(model);
     func_8001C954_main(model);
     func_8001C514_main(model);
     return model;

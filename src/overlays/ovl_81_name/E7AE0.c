@@ -113,7 +113,7 @@ UnkBoard4 *func_800FFEEC_name_81(void) {
 
     for (i = 0; i < UNK_ARR_SIZE; i++) {
         temp_v0->unk_0C[i] = HuSprAnimRead(temp_s4);
-        func_80055024_main(temp_v0->unk_0A, i, temp_v0->unk_0C[i], 0);
+        HuSprGrpMemberSet(temp_v0->unk_0A, i, temp_v0->unk_0C[i], 0);
         HuSprPriSet(temp_v0->unk_0A, i, 0);
         HuSprDispOff(temp_v0->unk_0A, i);
         HuSprPosSet(temp_v0->unk_0A, i, D_80101B50_name_81[i][0], D_80101B50_name_81[i][1]);
@@ -203,7 +203,7 @@ void *func_80100420_name_81(void) {
         }
 
         temp_s2->unk_0C[i] = HuSprAnimRead(temp_v0);
-        func_80055024_main(temp_s2->unk_0A, i, temp_s2->unk_0C[i], 0);
+        HuSprGrpMemberSet(temp_s2->unk_0A, i, temp_s2->unk_0C[i], 0);
         HuSprPriSet(temp_s2->unk_0A, i, 0);
         if (i == 0) {
             HuSprAttrSet(temp_s2->unk_0A, 0, 0x1000);
@@ -427,15 +427,15 @@ void func_80100CEC_name_81(s32 padIdx) {
     omPrcSetStatBit(procObj, OM_STAT_NOPAUSE);
     proc = HuPrcCurrentGet();
     HuPrcChildLink(proc, MBDCameraZoomMotStart(1.0f));
-    HuPrcChildWait();
+    HuPrcChildWatch();
     omDelPrcObj(procObj);
     proc2 = HuPrcCurrentGet();
     procObj = omAddPrcObj(func_801008E8_name_81, 0x1005, 0, 0);
     procObj->user_data = (void *)padIdx;
     omPrcSetStatBit(procObj, OM_STAT_NOALLPAUSE);
     HuPrcChildLink(proc2, procObj);
-    HuPrcChildWait();
-    func_8004A0E0_main();
+    HuPrcChildWatch();
+    omAllUPause();
     D_800CB99C_main = 0;
     func_800E5954_name_81();
 }

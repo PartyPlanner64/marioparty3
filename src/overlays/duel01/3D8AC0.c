@@ -140,8 +140,8 @@ void *func_80106740_duel01(s32 arg0) {
 
     obj = func_800D8010_name_81(arg0 & 0xFF, 0);
     func_8001C258_main(obj->omObj1->model[0], 0x180, 0);
-    func_8001C8E4_main(obj->omObj1->model[0], 0x1800);
-    func_8001C448_main(obj->omObj1->model[0]);
+    Hu3DModelLayerSet(obj->omObj1->model[0], 0x1800);
+    Hu3DModelRemakeStatic(obj->omObj1->model[0]);
     func_800D8944_name_81(obj);
     func_800D8F0C_name_81(obj);
     func_8001C814_main(obj->omObj1->model[0], 2, 1);

@@ -150,7 +150,7 @@ void Hu3DModelKill(s16);
 void Hu3DModelRotSet(s16, f32, f32, f32);
 void Hu3DModelScaleSet(s16, f32, f32, f32);
 void func_8001C258_main(s16, s32, s32);
-void HuSprKill(s16);
+void HuSprAnimKill(s16);
 s32 _CheckFlag(s32);            /* extern */
 s16 HuSprAnimRead(void *); /* extern */
 s32 func_801138F8_msetup(MsetupMenuState *, s32, s32 *, s32);
@@ -271,7 +271,7 @@ s16 func_8010F87C_msetup(MsetupMenuState *state) {
         models[i].model = model;
         models[i].unk1A = HmfAnimRead(HmfModelData[model].hmf, D_8011A098_msetup[i], (char *)D_8011A6D8_msetup);
         func_800332D4_main(models[i].unk1A, 0.75f);
-        func_8001C448_main(model);
+        Hu3DModelRemakeStatic(model);
         func_8001C514_main(model);
         entry = &models[i];
         entry->flags = 0;
@@ -479,7 +479,7 @@ void func_8011035C_msetup(void) {
         HuSprAttrSet(group, member, 0x9000);
         HuSprScaleSet(group, member, 1.0f, 1.0f);
         func_800550F4_main(group, member, 1);
-        func_80055024_main(group, member, sprite, 0);
+        HuSprGrpMemberSet(group, member, sprite, 0);
         HuSprPriSet(group, member, 15000);
         HuSprPosSet(group, member, D_80119B60_msetup[member][0], D_80119B60_msetup[member][1]);
         HuPrcVSleep();
@@ -533,7 +533,7 @@ void func_8011035C_msetup(void) {
         if (active != 0) {
             if (previousSelection != state->unk02) {
                 selection = state->unk02;
-                func_80055024_main(group, 7, sprites.portraits[state->unk02], 0);
+                HuSprGrpMemberSet(group, 7, sprites.portraits[state->unk02], 0);
                 i = 0;
                 member = 4;
                 for (; i < 3; i++, member++) {
@@ -549,12 +549,12 @@ void func_8011035C_msetup(void) {
     } while (currentState != 3);
     for (i = 0; i < 8; i++) {
         if (sprites.portraits[i] >= 0) {
-            HuSprKill(sprites.portraits[i]);
+            HuSprAnimKill(sprites.portraits[i]);
         }
     }
     for (i = 0; i < 8; i++) {
         if (sprites.sprites[i] >= 0) {
-            HuSprKill(sprites.sprites[i]);
+            HuSprAnimKill(sprites.sprites[i]);
         }
     }
     if (group >= 0) {
@@ -725,13 +725,13 @@ void func_80110954_msetup(void) {
                     break;
                 case -1:
                     espKill(slot);
-                    HuSprKill(sprite);
+                    HuSprAnimKill(sprite);
                     for (i = 0; i < 4; i++) {
                         if (data.slots[i] >= 0) {
                             espKill(data.slots[i]);
                         }
                         if (data.sprites[i] >= 0) {
-                            HuSprKill(data.sprites[i]);
+                            HuSprAnimKill(data.sprites[i]);
                         }
                     }
                     cursor->state = 100;
@@ -939,7 +939,7 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
     func_8010E4BC_msetup(&models, 2, 90.0f);
     func_8010E4D8_msetup(models, 2);
     model = func_8000B108_main(0x140007, 0x289);
-    func_8001C448_main(model);
+    Hu3DModelRemakeStatic(model);
     func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelScaleSet(model, 1.2f, 1.2f, 1.2f);
     Hu3DModelPosSet(model, 0, 300, -280);
@@ -975,7 +975,7 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
             HuSprAttrSet(group, member, 0x9000);
             HuSprScaleSet(group, member, 1.0f, 1.0f);
             func_800550F4_main(group, member, 0);
-            func_80055024_main(group, member, characterSprite, 0);
+            HuSprGrpMemberSet(group, member, characterSprite, 0);
             HuSprPriSet(group, member, 600);
             HuSprPosSet(group, member, position.x, position.y);
         }
@@ -1280,14 +1280,14 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
     }
     HuSprGrpKill(group);
     for (i = 0; i < 16; i++) {
-        HuSprKill(sprites[i]);
+        HuSprAnimKill(sprites[i]);
     }
     Hu3DModelKill(model);
     if (slot >= 0) {
         espKill(slot);
     }
     if (sprite >= 0) {
-        HuSprKill(sprite);
+        HuSprAnimKill(sprite);
     }
     return 0;
 }
@@ -1364,7 +1364,7 @@ void func_80112804_msetup(void) {
         HuSprAttrSet(group, i, 0x9000);
         HuSprScaleSet(group, i, 1.0f, 1.0f);
         func_800550F4_main(group, i, 0);
-        func_80055024_main(group, i, index, 0);
+        HuSprGrpMemberSet(group, i, index, 0);
         HuSprPriSet(group, i, 600);
     }
     for (i = 0; i < 2; i++) {
@@ -1487,7 +1487,7 @@ void func_80112804_msetup(void) {
     HuSprGrpKill(group);
     for (i = 0; i < 6; i++) {
         if (sprites.sprites[i] >= 0) {
-            HuSprKill(sprites.sprites[i]);
+            HuSprAnimKill(sprites.sprites[i]);
         }
     }
     state->state = 0;
@@ -1651,7 +1651,7 @@ s16 func_801132C4_msetup(MsetupMenuState *state) {
     func_8010E4BC_msetup(&models, 2, 90.0f);
     func_8010E4D8_msetup(models, 2);
     model = func_8000B108_main(0x140007, 0x289);
-    func_8001C448_main(model);
+    Hu3DModelRemakeStatic(model);
     func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelScaleSet(model, 1.0f, 1.0f, 1.0f);
     Hu3DModelPosSet(model, 0.0f, -300.0f, -280.0f);
@@ -1784,7 +1784,7 @@ s32 func_801138F8_msetup(MsetupMenuState *state, s32 dataId, s32 *messages, s32 
     func_8010E4BC_msetup(&models, 2, 0.0f);
     model = models[0].model;
     anim = HmfAnimRead(HmfModelData[model].hmf, dataId, (char *)D_8011A6D8_msetup);
-    func_8001C448_main(model);
+    Hu3DModelRemakeStatic(model);
     func_80032FC0_main(anim, 1, 1);
     func_8010E4D8_msetup(models, 2);
     func_80032FF8_main(anim, selection);
@@ -2012,7 +2012,7 @@ s16 func_80113ED4_msetup(MsetupMenuState *arg0) {
                     HuPrcVSleep();
                 }
                 espKill(backgroundEspriteSlot);
-                HuSprKill(var_s6);
+                HuSprAnimKill(var_s6);
             }
             temp_v0_4 = DataReadTemp(mainFSArray[curBoardIndex]);
             var_s6 = HuSprAnimRead(temp_v0_4);
@@ -2074,7 +2074,7 @@ s16 func_80113ED4_msetup(MsetupMenuState *arg0) {
             Hu3DModelKill(sp20[i].model);
         }
         espKill(backgroundEspriteSlot);
-        HuSprKill(var_s6);
+        HuSprAnimKill(var_s6);
     }
     func_8010DDD8_msetup(temp_s5);
     return 0;
@@ -2164,7 +2164,7 @@ s16 func_801145D0_msetup(MsetupMenuState *state) {
         Hu3DModelKill(models[i].model);
     }
     espKill(slot);
-    HuSprKill(sprite);
+    HuSprAnimKill(sprite);
     return 0;
 }
 
@@ -2192,7 +2192,7 @@ s16 func_80114AA0_msetup(MsetupMenuState *state) {
     func_8010E4BC_msetup(&models, 2, 0);
     model = models[0].model;
     anim = HmfAnimRead(HmfModelData[model].hmf, 0x140023, (char *)D_8011A6D8_msetup);
-    func_8001C448_main(model);
+    Hu3DModelRemakeStatic(model);
     func_80032FC0_main(anim, 1, 1);
     func_8010E4D8_msetup(models, 2);
     func_80032FF8_main(anim, selection);
@@ -2643,7 +2643,7 @@ s16 func_80115EE0_msetup(MsetupMenuState *state) {
     model = func_8000B108_main(0x140008, 0x2A9);
     linkedModel = model;
     anim = HmfAnimRead(HmfModelData[linkedModel].hmf, 0x140024, "uramen_CIDX");
-    func_8001C448_main(linkedModel);
+    Hu3DModelRemakeStatic(linkedModel);
     rot.x = rot.y = rot.z = 0;
     Hu3DModelRotSet(linkedModel, 0, 0, 0);
     pos = D_80119B20_msetup;
@@ -2852,7 +2852,7 @@ s16 func_801167B8_msetup(MsetupMenuState *state) {
     for (i = 0; i < 2; i++) {
         model = models[i].model;
         models[i].unk1A = HmfAnimRead(HmfModelData[model].hmf, D_80119FDC_msetup[i], (char *)D_8011A6D8_msetup);
-        func_8001C448_main(model);
+        Hu3DModelRemakeStatic(model);
         func_800332D4_main(models[i].unk1A, 0.75f);
     }
     func_8010E4D8_msetup(models, 2);
@@ -3015,7 +3015,7 @@ s16 func_80116FE0_msetup(MsetupMenuState *state) {
     func_8010E4D8_msetup(models, 2);
     model = func_8000B108_main(0x14000A, 0x2A9);
     motion = HmfAnimRead(HmfModelData[model].hmf, 0x140034, (char *)nodeName);
-    func_8001C448_main(model);
+    Hu3DModelRemakeStatic(model);
     func_8001C514_main(model);
     func_80032FC0_main(motion, 1, 1);
     func_80032FF8_main(motion, selection);

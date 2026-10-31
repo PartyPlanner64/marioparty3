@@ -39,25 +39,25 @@
 //     /*0x8C*/ void *user_data;
 // } Process;
 
-// void HuPrcSysInit();
+// void HuPrcInit();
 // Process* HuPrcCreate(process_func func, u16 priority, s32 stack_size, s32 extra_data_size);
 // void HuPrcChildLink(Process*process, Process*child);
 // void HuPrcChildUnlink(Process*process);
-// Process* HuPrcCreateChild(process_func func, u16 priority, s32 stack_size, s32 extra_data_size, Process* parent);
-// void HuPrcChildWait();
+// Process* HuPrcChildCreate(process_func func, u16 priority, s32 stack_size, s32 extra_data_size, Process* parent);
+// void HuPrcChildWatch();
 // Process* HuPrcCurrentGet();
 // s32 HuPrcChildGet(Process*process);
-// s32 HuPrcStatKill(Process*process);
+// s32 SetKillStatusProcess(Process*process);
 // void HuPrcKill(Process*process);
 // void HuPrcChildKill(Process*process);
 // void HuPrcTerminate(Process*process);
-// void HuPrcExit();
+// void HuPrcEnd();
 // void HuPrcSleep(s32 time);
 // void HuPrcVSleep();
-// void HuPrcAwake(Process*process);
-// void HuPrcDtor(Process*process, process_func destructor);
-// void HuPrcCurrentDtor(process_func destructor);
-// void* HuPrcAllocMem(s32 size);
-// void HuPrcFreeMem(void *ptr);
+// void HuPrcWakeup(Process*process);
+// void HuPrcDestructorSet2(Process*process, process_func destructor);
+// void HuPrcDestructorSet(process_func destructor);
+// void* HuPrcMemAlloc(s32 size);
+// void HuPrcMemFree(void *ptr);
 
 // #endif

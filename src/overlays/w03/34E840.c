@@ -201,7 +201,7 @@ void func_80106C2C_w03(Object *arg) {
     prc = omAddPrcObj(func_801066CC_w03, 0x4800, 0, 0);
     prc->user_data = arg;
     HuPrcChildLink(HuPrcCurrentGet(), prc);
-    HuPrcChildWait();
+    HuPrcChildWatch();
     mbItemBtnF = 1;
 }
 
@@ -826,7 +826,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_8011B1FC_w03);
 // entrypoint 4
 void func_8011B41C_w03() {
     Hu3DCamInit(2);
-    CameraScissorSet(1, &D_8011D598_w03);
+    Hu3DCameraScissorSet(1, &D_8011D598_w03);
     func_80107A04_w03();
     MBStart(2);
     omAddPrcObj(func_8010622C_w03, 0x1005, 0x1000, 0);

@@ -482,37 +482,37 @@ void GameMesStub(void) {
             continue;
         }
         if (D_800B1A58_main[i] != -1) {
-            HuSprKill(D_800B1A58_main[i]);
+            HuSprAnimKill(D_800B1A58_main[i]);
         }
         if (D_800B1A70_main[i] != -1) {
-            HuSprKill(D_800B1A70_main[i]);
+            HuSprAnimKill(D_800B1A70_main[i]);
         }
         D_800B1A58_main[i] = D_800B1A70_main[i] = -1;
     }
     for (i = 0; i < 27; i++) {
         if (D_800B1A88_main[i] != -1) {
-            HuSprKill(D_800B1A88_main[i]);
+            HuSprAnimKill(D_800B1A88_main[i]);
         }
         if (D_800B1AC0_main[i] != -1) {
-            HuSprKill(D_800B1AC0_main[i]);
+            HuSprAnimKill(D_800B1AC0_main[i]);
         }
         if (D_800B1AF8_main[i] != -1) {
-            HuSprKill(D_800B1AF8_main[i]);
+            HuSprAnimKill(D_800B1AF8_main[i]);
         }
         D_800B1A88_main[i] = D_800B1AC0_main[i] = D_800B1AF8_main[i] = -1;
     }
     for (i = 0; i < 16; i++) {
         if (D_800B1B30_main[i] != -1) {
-            HuSprKill(D_800B1B30_main[i]);
+            HuSprAnimKill(D_800B1B30_main[i]);
         }
         if (D_800B1B50_main[i] != -1) {
-            HuSprKill(D_800B1B50_main[i]);
+            HuSprAnimKill(D_800B1B50_main[i]);
         }
         D_800B1B30_main[i] = D_800B1B50_main[i] = -1;
     }
     for (i = 0; i < 37; i++) {
         if (D_800B1B70_main[i] != -1) {
-            HuSprKill(D_800B1B70_main[i]);
+            HuSprAnimKill(D_800B1B70_main[i]);
         }
         D_800B1B70_main[i] = -1;
     }
@@ -526,7 +526,7 @@ void GMesSprKill(GAMEMES *gMes) {
             HuSprGrpKill(gMes->strGId[i]);
         }
         if (gMes->strSprId[i] != -1) {
-            HuSprKill(gMes->strSprId[i]);
+            HuSprAnimKill(gMes->strSprId[i]);
         }
     }
 }
@@ -1548,7 +1548,7 @@ s16 func_8003A3C4_main(GAMEMES *gMes, u8 *str, u8 flags, s16 x, s16 y, f32 scale
     for (member = 1; *str != 0; member++) {
         code = func_8003A81C_main(str, flags);
         animId = code >> 16;
-        func_80055024_main(grp, member, animId, code & 0xFF);
+        HuSprGrpMemberSet(grp, member, animId, code & 0xFF);
         ofsY = 0;
         if (*str >= 0xD0 && *p < 0xF0) {
             ofsY = -2;
@@ -1573,7 +1573,7 @@ s16 func_8003A3C4_main(GAMEMES *gMes, u8 *str, u8 flags, s16 x, s16 y, f32 scale
         }
         str++;
     }
-    func_80055024_main(grp, 0, animId, 0);
+    HuSprGrpMemberSet(grp, 0, animId, 0);
     HuSprDispOff(grp, 0);
     func_800554C4_main(grp, 0, -1);
     return i;
@@ -2805,14 +2805,14 @@ void func_8003DCA4_main(GAMEMES *gMes, s32 fileNo) {
     sprId1 = gMes->strSprId[1] = HuSprAnimRead(data);
     DataCloseTemp(data);
     grp = gMes->strGId[0] = HuSprGrpCreate(2, 5);
-    func_80055024_main(grp, 0, sprId0, 0);
+    HuSprGrpMemberSet(grp, 0, sprId0, 0);
     HuSprTPLvlSet(grp, 0, 255);
     HuSprPriSet(grp, 0, 5);
     HuSprAttrReset(grp, 0, 0xFFFF);
     HuSprAttrSet(grp, 0, 0x1008);
     HuSprPosSet(grp, 0, 160, gMes->pos.y);
     func_800554C4_main(grp, 0, -1);
-    func_80055024_main(grp, 1, sprId1, 0);
+    HuSprGrpMemberSet(grp, 1, sprId1, 0);
     HuSprTPLvlSet(grp, 1, 255);
     HuSprPriSet(grp, 1, 6);
     HuSprAttrReset(grp, 1, 0xFFFF);

@@ -146,7 +146,7 @@ void func_80117A3C_msetup(void) {
         HuSprAttrSet(backgroundGroup, i, 0x1000);
         HuSprScaleSet(backgroundGroup, i, 1.0f, 1.0f);
         func_800550F4_main(backgroundGroup, i, 0);
-        func_80055024_main(backgroundGroup, i, sprites[i], 0);
+        HuSprGrpMemberSet(backgroundGroup, i, sprites[i], 0);
         HuSprPriSet(backgroundGroup, i, 600);
         HuSprColorSet(backgroundGroup, i, 255, 255, 255);
         target = &positions[i];
@@ -162,7 +162,7 @@ void func_80117A3C_msetup(void) {
         HuSprAttrReset(group, i, 0xFFFF);
         HuSprAttrSet(group, i, 0x1000);
         func_800550F4_main(group, i, 0);
-        func_80055024_main(group, i, optionSprites[i], 0);
+        HuSprGrpMemberSet(group, i, optionSprites[i], 0);
         HuSprTPLvlSet(group, i, 0x100);
         if (i != 0) {
             HuSprPriSet(group, i, 400);
@@ -187,7 +187,7 @@ void func_80117A3C_msetup(void) {
             HuSprAttrReset(shadowGroup, i, 0xFFFF);
             HuSprAttrSet(shadowGroup, i, 0x9000);
             func_800550F4_main(shadowGroup, i, 0);
-            func_80055024_main(shadowGroup, i, sprite, 0);
+            HuSprGrpMemberSet(shadowGroup, i, sprite, 0);
             HuSprTPLvlSet(shadowGroup, i, 0x80);
             HuSprPriSet(shadowGroup, i, 450);
             HuSprColorSet(shadowGroup, i, 0, 0, 0);
@@ -502,7 +502,7 @@ void func_80118D48_msetup(void) {
     espAttrSet(sprite, 0x4000);
     espPosSet(sprite, 160, 120);
     D_8011A910_msetup = func_80060880_main(160, 204, 19);
-    func_8005FE54_main(D_8011A910_msetup, 1 << D_8011A948_msetup);
+    HuWinActivePlayerSet(D_8011A910_msetup, 1 << D_8011A948_msetup);
     func_8006105C_main(D_8011A910_msetup, 0xE0);
     HuWinMesPalSet(D_8011A910_msetup, 2, 255, 64, 64);
     HuWinMesPalSet(D_8011A910_msetup, 4, 96, 255, 64);

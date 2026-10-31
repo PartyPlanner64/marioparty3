@@ -54,10 +54,10 @@ void func_800661D4_main(Gfx **gfx, s32 arg1, s32 arg2);
 
 void GMesExec(Gfx **gfx);
 void WipeFrameStill(Gfx **gfx);
-s32 func_80062168_main(Gfx **gfx);
-s32 func_80062244_main(Gfx **gfx);
-s32 func_800623F0_main(Gfx **gfx);
-s32 func_80062584_main(Gfx **gfx);
+s32 WipeFadeIn(Gfx **gfx);
+s32 WipeFadeOut(Gfx **gfx);
+s32 WipeCrossFadeIn(Gfx **gfx);
+s32 WipeCrossFadeOut(Gfx **gfx);
 s32 func_80063454_main(Gfx **gfx);
 s32 func_80063510_main(Gfx **gfx);
 s32 func_800640EC_main(Gfx **gfx);
@@ -65,7 +65,7 @@ s32 func_80065094_main(Gfx **gfx);
 s32 func_8006515C_main(Gfx **gfx);
 s32 func_80065D80_main(Gfx **gfx);
 s32 func_80065E88_main(Gfx **gfx);
-s32 func_80065C9C_main(Gfx **gfx, s32 file);
+s32 WipeImageOut(Gfx **gfx, s32 file);
 
 void WipeInit(void) {
     s16 i;
@@ -114,10 +114,10 @@ void WipeExecAlways(Gfx **gfx) {
         case WIPE_MODE_IN:
             switch (wipeType) {
                 case 11:
-                    wipeStat = func_80062168_main(gfx);
+                    wipeStat = WipeFadeIn(gfx);
                     break;
                 case WIPE_TYPE_CROSS:
-                    wipeStat = func_800623F0_main(gfx);
+                    wipeStat = WipeCrossFadeIn(gfx);
                     break;
                 case 1:
                     wipeStat = func_80063454_main(gfx);
@@ -162,13 +162,13 @@ void WipeExecAlways(Gfx **gfx) {
         case WIPE_MODE_OUT:
             switch (wipeType) {
                 case WIPE_TYPE_NORMAL:
-                    wipeStat = func_80065C9C_main(gfx, 0);
+                    wipeStat = WipeImageOut(gfx, 0);
                     break;
                 case 11:
-                    wipeStat = func_80062244_main(gfx);
+                    wipeStat = WipeFadeOut(gfx);
                     break;
                 case WIPE_TYPE_CROSS:
-                    wipeStat = func_80062584_main(gfx);
+                    wipeStat = WipeCrossFadeOut(gfx);
                     break;
                 case 1:
                     wipeStat = func_80063510_main(gfx);
@@ -180,28 +180,28 @@ void WipeExecAlways(Gfx **gfx) {
                     wipeStat = func_80065E88_main(gfx);
                     break;
                 case 3:
-                    wipeStat = func_80065C9C_main(gfx, 18);
+                    wipeStat = WipeImageOut(gfx, 18);
                     break;
                 case 4:
-                    wipeStat = func_80065C9C_main(gfx, 19);
+                    wipeStat = WipeImageOut(gfx, 19);
                     break;
                 case 5:
-                    wipeStat = func_80065C9C_main(gfx, 20);
+                    wipeStat = WipeImageOut(gfx, 20);
                     break;
                 case 6:
-                    wipeStat = func_80065C9C_main(gfx, 21);
+                    wipeStat = WipeImageOut(gfx, 21);
                     break;
                 case 7:
-                    wipeStat = func_80065C9C_main(gfx, 22);
+                    wipeStat = WipeImageOut(gfx, 22);
                     break;
                 case 8:
-                    wipeStat = func_80065C9C_main(gfx, 17);
+                    wipeStat = WipeImageOut(gfx, 17);
                     break;
                 case 9:
-                    wipeStat = func_80065C9C_main(gfx, 16);
+                    wipeStat = WipeImageOut(gfx, 16);
                     break;
                 case 10:
-                    wipeStat = func_80065C9C_main(gfx, 15);
+                    wipeStat = WipeImageOut(gfx, 15);
                     break;
             }
             wipeTime += 1.0f;
@@ -266,7 +266,7 @@ u8 *WipeMalloc(u32 size) {
     return D_800D1F80_main[i];
 }
 
-s32 func_80062168_main(Gfx **gfx) {
+s32 WipeFadeIn(Gfx **gfx) {
     if (wipeDuration == 0.0f) {
         return 0;
     }
@@ -277,7 +277,7 @@ s32 func_80062168_main(Gfx **gfx) {
     return 1;
 }
 
-s32 func_80062244_main(Gfx **gfx) {
+s32 WipeFadeOut(Gfx **gfx) {
     if (wipeDuration == 0.0f) {
         return 0;
     }
@@ -296,7 +296,7 @@ void WipeColorFill(Gfx **gfx, u8 alpha, Gfx *displayList) {
     gDPFillRectangle((*gfx)++, 0, 0, 320, 240);
 }
 
-s32 func_800623F0_main(Gfx **gfx) {
+s32 WipeCrossFadeIn(Gfx **gfx) {
     u8 alpha;
 
     if (D_800A26D4_main == NULL) {
@@ -322,7 +322,7 @@ s32 func_800623F0_main(Gfx **gfx) {
     return 1;
 }
 
-s32 func_80062584_main(Gfx **gfx) {
+s32 WipeCrossFadeOut(Gfx **gfx) {
     gSPDisplayList((*gfx)++, D_800A26D8_main);
     if (wipeTime == 0.0f) {
         D_800A26D4_main = HuMemMemoryAllocPerm(320 * 240 * sizeof(u16) + 64);
@@ -703,7 +703,7 @@ void func_800651F0_main(Gfx **gfx, f32 progress) {
     }
 }
 
-s32 func_80065C9C_main(Gfx **gfx, s32 file) {
+s32 WipeImageOut(Gfx **gfx, s32 file) {
     if (wipeDuration == 0.0f) {
         return 0;
     }

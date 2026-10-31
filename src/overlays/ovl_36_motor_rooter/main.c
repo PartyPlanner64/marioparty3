@@ -267,10 +267,10 @@ void m254_InitEnvironment(void) {
     func_8000B710_main(2);
     ScissorSet(0, 0.0f, 0.0f, 152.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 320.0f, 480.0f, 511.0f);
-    Hu3DCamSetPerspective(0, 60.0f, 40.0f, 4000.0f);
+    Hu3DCameraPerspectiveSet(0, 60.0f, 40.0f, 4000.0f);
     ScissorSet(1, 168.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(1, 640.0f, 480.0f, 511.0f, 960.0f, 480.0f, 511.0f);
-    Hu3DCamSetPerspective(1, 60.0f, 40.0f, 4000.0f);
+    Hu3DCameraPerspectiveSet(1, 60.0f, 40.0f, 4000.0f);
     Hu3DBGColorSet(0xFF, 0xFF, 0xFF);
     D_800EC1B8_minigame = 0;
     D_800EC280_minigame = 0;
@@ -366,7 +366,7 @@ void func_80105F04_motor_rooter(void) {
 void func_80106044_motor_rooter(omObjData *object) {
     s16 i;
 
-    func_8001EF24_main(0x3CA, 1000, 0xFF, 0xFF, 0xFF);
+    Hu3DFogSet(0x3CA, 1000, 0xFF, 0xFF, 0xFF);
     func_800E18D8_minigame();
     func_800E19F0_minigame(1);
     for (i = 0; i < 2; i++) {

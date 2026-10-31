@@ -49,12 +49,12 @@ typedef struct RectF {
 } RectF; //sizeof 0x10
 
 void Hu3DCamInit(u32 arg0);
-void Hu3DCamSetPositionOrientation(s16 camIndex, Vec* pos, Vec* at, Vec* up);
-void Hu3DCamSetPerspective(s16 camIndex, f32 fov, f32 near, f32 far);
-void CameraScissorSet(s16 camIndex, RectF* arg1);
-void CameraViewportSet(s16 camIndex, Vec* arg1, Vec* arg2);
+void Hu3DCameraPosSetV(s16 camIndex, Vec* pos, Vec* at, Vec* up);
+void Hu3DCameraPerspectiveSet(s16 camIndex, f32 fov, f32 near, f32 far);
+void Hu3DCameraScissorSet(s16 camIndex, RectF* arg1);
+void Hu3DCameraViewportSet(s16 camIndex, Vec* arg1, Vec* arg2);
 void Hu3DCamUpdateMtx(s16 camIndex);
-void func_80012640_main(s16 camIndex, Gfx** dispList);
+void Hu3DCameraSet(s16 camIndex, Gfx** dispList);
 void func_800127C4_main(s16 camIndex, Gfx** dispList);
 void func_80012888_main(s16 camIndex, void (*arg1)(void*, struct HmfModel*), void* arg2);
 void func_80013320_main(s16 value, s16 camIndex);

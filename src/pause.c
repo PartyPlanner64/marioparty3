@@ -109,7 +109,7 @@ void ExecPause(void) {
     D_800D0A38_main = HuSprAnimRead(temp_v0_3);
     D_800D6ADA_main = HuSprGrpCreate(1, 5);
     DataClose(temp_v0_3);
-    func_80055024_main(D_800D6ADA_main, 0, D_800D0A38_main, 0);
+    HuSprGrpMemberSet(D_800D6ADA_main, 0, D_800D0A38_main, 0);
     HuSprAttrSet(D_800D6ADA_main, 0, 0x01001000);
     HuSprPosSet(D_800D6ADA_main, 0, 0xA0, var_s1 - 20);
     HuSprPriSet(D_800D6ADA_main, 0, 1);
@@ -189,7 +189,7 @@ void func_80045A90_main(void) {
     s16 i;
 
     HuSprGrpKill(D_800D6ADA_main);
-    HuSprKill(D_800D0A38_main);
+    HuSprAnimKill(D_800D0A38_main);
     if (D_800CE214_main == 0) {
         for (i = 0; i < ARRAY_COUNT(D_800B2340_main); i++) {
             HuWinKill(D_800B2340_main[i]);
@@ -362,7 +362,7 @@ void func_80046030_main(s16 arg0, s16 arg1) {
     for (var_a1 = 0; var_a1 < temp_v1; var_a1++, var_a0++) {
         var_a0->unk00 |= 0x80;
     }
-    func_8001C448_main(arg0);
+    Hu3DModelRemakeStatic(arg0);
     func_8001C514_main(arg0);
     func_8001C954_main(arg0);
     temp_v0_4 = omAddPrcObj(func_800461D8_main, 0x3F00, 0x1000, 0);

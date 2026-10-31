@@ -66,7 +66,7 @@ void func_8000BA00_main() {
     D_800CD1DC_main = NULL;
 }
 
-void func_8000BA30_main(void) {
+void espMain(void) {
     ESPRITE *sprite;
     s16 gid;
     s32 i;
@@ -244,7 +244,7 @@ s16 espEntry(s16 arg0, s16 arg1, u16 arg2) {
     HuSprAttrSet(temp_v0, 0, 0x1000);
     HuSprScaleSet(temp_v0, 0, 1.0f, 1.0f);
     func_800550F4_main(temp_v0, 0, arg2);
-    func_80055024_main(temp_v0, 0, arg0, arg1);
+    HuSprGrpMemberSet(temp_v0, 0, arg0, arg1);
     HuSprPriSet(temp_v0, 0, 10);
     if (arg2 == 0) {
         func_80054FF8_main(temp_v0, 0, 0);

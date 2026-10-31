@@ -481,7 +481,7 @@ void func_80106A54_koopa(void) {
         D_80109562_koopa = -1;
     }
     if (D_80109564_koopa != -1) {
-        HuSprKill(D_80109564_koopa);
+        HuSprAnimKill(D_80109564_koopa);
         D_80109564_koopa = -1;
     }
 }
@@ -513,7 +513,7 @@ void func_80106AB8_koopa(void) {
     }
 
     if (D_80109560_koopa != -1) {
-        HuSprKill(D_80109560_koopa);
+        HuSprAnimKill(D_80109560_koopa);
         D_80109560_koopa = -1;
     }
 
@@ -523,7 +523,7 @@ void func_80106AB8_koopa(void) {
     }
 
     if (D_8010955C_koopa != -1) {
-        HuSprKill(D_8010955C_koopa);
+        HuSprAnimKill(D_8010955C_koopa);
         D_8010955C_koopa = -1;
     }
 
@@ -535,7 +535,7 @@ void func_80106AB8_koopa(void) {
     }
 
     if (D_80109558_koopa != -1) {
-        HuSprKill(D_80109558_koopa);
+        HuSprAnimKill(D_80109558_koopa);
         D_80109558_koopa = -1;
     }
 
@@ -553,7 +553,7 @@ void func_80106C78_koopa(void) {
         temp_v0 = DataRead(0x1301EB);
         D_80109560_koopa = HuSprAnimRead(temp_v0);
         DataClose(temp_v0);
-        func_80055024_main(D_8010955E_koopa, 0, D_80109560_koopa, 0);
+        HuSprGrpMemberSet(D_8010955E_koopa, 0, D_80109560_koopa, 0);
         HuSprPriSet(D_8010955E_koopa, 0, 0x4770);
         HuSprAttrSet(D_8010955E_koopa, 0, 0x1000);
         HuSprPosSet(D_8010955E_koopa, 0, D_8010951A_koopa[0] + 0x64, D_8010951A_koopa[1] + 0x32);
@@ -562,7 +562,7 @@ void func_80106C78_koopa(void) {
         temp_v0 = DataRead(0x1301E9);
         D_8010955C_koopa = HuSprAnimRead(temp_v0);
         DataClose(temp_v0);
-        func_80055024_main(D_8010955A_koopa, 0, D_8010955C_koopa, 0);
+        HuSprGrpMemberSet(D_8010955A_koopa, 0, D_8010955C_koopa, 0);
         HuSprPriSet(D_8010955A_koopa, 0, 0x4770);
         HuSprAttrSet(D_8010955A_koopa, 0, 0x1000);
         HuSprPosSet(D_8010955A_koopa, 0, D_8010951A_koopa[0] + 0x64, D_8010951A_koopa[1] - 0x1E);
@@ -572,7 +572,7 @@ void func_80106C78_koopa(void) {
         randVal = MBRand(5.0f);
         for (i = 0; i < ARRAY_COUNT(D_80109554_koopa); i++) {
             D_80109554_koopa[i] = HuSprGrpCreate(1, 5);
-            func_80055024_main(D_80109554_koopa[i], 0, D_80109558_koopa, 1);
+            HuSprGrpMemberSet(D_80109554_koopa[i], 0, D_80109558_koopa, 1);
             HuSprPriSet(D_80109554_koopa[i], 0, 0x4770);
             HuSprAttrSet(D_80109554_koopa[i], 0, 0x1000);
             HuSprPosSet(D_80109554_koopa[i], 0, D_8010951A_koopa[0] + (i * 0xC8), (D_8010951A_koopa[1] - 0x28));
@@ -605,7 +605,7 @@ void func_80106FC8_koopa(void) {
         temp_v0 = DataRead(0x1301EA);
         D_80109564_koopa = HuSprAnimRead(temp_v0);
         DataClose(temp_v0);
-        func_80055024_main(D_80109562_koopa, 0, D_80109564_koopa, 0);
+        HuSprGrpMemberSet(D_80109562_koopa, 0, D_80109564_koopa, 0);
         HuSprPriSet(D_80109562_koopa, 0, 0x100);
         HuSprAttrSet(D_80109562_koopa, 0, 0x1000);
         HuSprPosSet(D_80109562_koopa, 0, 0x32, D_801093A4_koopa);
@@ -678,7 +678,7 @@ void func_80107190_koopa(void) {
         window[4] = positions[i].unk_06;
         window[0] = HuWinCreate(window[1] + window[3] / 2, window[2] + window[4] / 2, window[3], window[4], 0, 4);
         func_80060144_main(window[0]);
-        func_8005BCA4_main(window[0], window[3] / 2, window[4] / 2);
+        HuWinCenterPosSet(window[0], window[3] / 2, window[4] / 2);
         HuWinBGTPLvlSet(window[0], 0);
         switch (i) {
             case 0:
@@ -878,7 +878,7 @@ s32 func_80107A9C_koopa(void) {
     data = DataRead(0x21003A);
     sprite->model[0] = HuSprAnimRead(data);
     DataClose(data);
-    func_80055024_main(sprite->spriteGroup, 0, sprite->model[0], 0);
+    HuSprGrpMemberSet(sprite->spriteGroup, 0, sprite->model[0], 0);
     HuSprAttrReset(sprite->spriteGroup, 0, 0xFFFF);
     HuSprAttrSet(sprite->spriteGroup, 0, 0x1000);
     HuSprPriSet(sprite->spriteGroup, 0, 0x1000);
@@ -929,7 +929,7 @@ s32 func_80107DDC_koopa(void) {
     data = DataRead(0x210034);
     sprite->model[0] = HuSprAnimRead(data);
     DataClose(data);
-    func_80055024_main(sprite->spriteGroup, 0, sprite->model[0], 0);
+    HuSprGrpMemberSet(sprite->spriteGroup, 0, sprite->model[0], 0);
     HuSprAttrReset(sprite->spriteGroup, 0, 0xFFFF);
     HuSprAttrSet(sprite->spriteGroup, 0, 0x1000);
     HuSprPriSet(sprite->spriteGroup, 0, 0x1000);
@@ -989,7 +989,7 @@ void func_80108360_koopa(s32 modelFile) {
     MBMotionShiftSet(D_801094F8_koopa, 5, 0, 5, 0);
     object = MBModelFileCreate(modelFile, -1, 1.0f, NULL, NULL);
     func_8001C258_main(object->omObj1->model[0], 0x180, 0);
-    func_8001C8E4_main(object->omObj1->model[0], 0);
+    Hu3DModelLayerSet(object->omObj1->model[0], 0);
     HuVecCopy3F(&object->coords, &D_801094F8_koopa->coords);
     object->coords.y += 200.0f;
     angle = 0.0f;
@@ -1148,7 +1148,7 @@ s32 func_80108A2C_koopa(void) {
         HuPrcSleep(20);
         HuPrcChildLink(HuPrcCurrentGet(), omAddPrcObj(func_801087F0_koopa, 0x300, 0x2000, 0));
         func_80108360_koopa(0xB0039);
-        HuPrcChildWait();
+        HuPrcChildWatch();
         MBWinOpen(0x4221);
         func_800EC3C0_shared_board(D_801094F4_koopa);
         func_800EC3E4_shared_board();
@@ -1181,7 +1181,7 @@ s32 func_80108BB0_koopa(void) {
     Hu3DMotionSpeedSet(D_801094F8_koopa->omObj1->model[0], 2.0f);
     MBVecDirGet(&D_801094F8_koopa->coords, &D_801093BC_koopa, &direction);
     HuPrcChildLink(HuPrcCurrentGet(), func_800ED128_shared_board(&D_801094F8_koopa->rot, &direction, &D_801094F8_koopa->rot, 10));
-    HuPrcChildWait();
+    HuPrcChildWatch();
     HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&D_801094F8_koopa->coords, &D_801093BC_koopa, &D_801094F8_koopa->coords, 30));
     for (i = 0; i < 30; i++) {
         object = D_801094F8_koopa;
@@ -1199,7 +1199,7 @@ s32 func_80108BB0_koopa(void) {
 void func_80108D2C_koopa(void) {
     s32 result = 0;
 
-    func_8001EF24_main(0x3CA, 1000, 0, 0, 0);
+    Hu3DFogSet(0x3CA, 1000, 0, 0, 0);
     D_801094F8_koopa = MBModelFileCreate(0xA002F, 9, 0.7f, 1.4f, (u32 *)&D_801093C8_koopa);
     HuVecCopy3F(&D_801094F8_koopa->coords, &D_801093B0_koopa);
     HuVecCopyXYZ(&D_801094F8_koopa->scale, 2.0f, 2.0f, 2.0f);

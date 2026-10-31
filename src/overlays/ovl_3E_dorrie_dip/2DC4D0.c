@@ -106,7 +106,7 @@ extern omObjData *D_8010A260_dorrie_dip;
 extern DorrieDipCpu D_8010A254_dorrie_dip;
 
 void HuAudFXAllStop(void);
-void func_800557A0_main(void);
+void HuSprAnimAllKill(void);
 s32 func_8000B638_main(void);
 void func_80105FD0_dorrie_dip(omObjData *);
 void func_80106210_dorrie_dip(omObjData *);
@@ -128,7 +128,7 @@ void func_80106BC0_dorrie_dip(void);
 void func_800DDD94_minigame(omObjData *);
 void func_800E6F0C_minigame(u8);
 void func_800E149C_minigame(omObjData *, s32, s32);
-void func_8001EF6C_main(s16, s16, char *);
+void Hu3DModelHookSet(s16, s16, char *);
 void func_8010971C_dorrie_dip(void);
 void func_801064FC_dorrie_dip(void);
 void func_80109E1C_dorrie_dip(s32);
@@ -230,7 +230,7 @@ void func_80105B44_dorrie_dip(f32 zoom, f32 rotX, f32 rotY, f32 rotZ, f32 center
     Center.x = centerX;
     Center.y = centerY;
     Center.z = centerZ;
-    Hu3DCamSetPerspective(D_8010A1F4_dorrie_dip, 41.5f, 80.0f, 8000.0f);
+    Hu3DCameraPerspectiveSet(D_8010A1F4_dorrie_dip, 41.5f, 80.0f, 8000.0f);
 }
 
 void func_80105C7C_dorrie_dip(omObjData *obj) {
@@ -316,7 +316,7 @@ void func_80105FD0_dorrie_dip(omObjData *obj) {
     if (WipeStatGet() == 0) {
         HuWinAllKill();
         GMesClose();
-        func_800557A0_main();
+        HuSprAnimAllKill();
         omOvlReturnEx(1);
     }
 }
@@ -451,7 +451,7 @@ void func_80106668_dorrie_dip(omObjData *obj) {
             }
         }
         if (D_8010A220_dorrie_dip != -1) {
-            func_8001EF6C_main(D_8010A230_dorrie_dip->model[D_8010A220_dorrie_dip], obj->model[0], "item_hook");
+            Hu3DModelHookSet(D_8010A230_dorrie_dip->model[D_8010A220_dorrie_dip], obj->model[0], "item_hook");
             func_8001C258_main(D_8010A230_dorrie_dip->model[D_8010A220_dorrie_dip], 0x4000, 0x4000);
             func_8001C258_main(D_8010A230_dorrie_dip->model[D_8010A220_dorrie_dip + 6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             dips->unk00[D_8010A220_dorrie_dip] &= ~1;

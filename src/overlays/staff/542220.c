@@ -121,7 +121,7 @@ void func_80107A9C_staff(UnkStaff_7 *arg0) {
 
     for (i = 0, ptr = arg0; i < 4; i++, ptr++) {
         HuSprGrpKill(ptr->unk_0C);
-        HuSprKill(ptr->unk_0E);
+        HuSprAnimKill(ptr->unk_0E);
         HuMemFree(ptr->unk_00);
         HuMemFree(ptr->unk_04);
         HuMemFree(ptr->unk_08);
@@ -333,7 +333,7 @@ void func_8010D1E8_staff(void) {
     D_80111534_staff.y = 130.0f;
     D_80111534_staff.z = 450.0f;
     D_80110534_staff = 40.0f;
-    Hu3DCamSetPerspective(0, 40.0f, D_80111564_staff, D_80111560_staff);
+    Hu3DCameraPerspectiveSet(0, 40.0f, D_80111564_staff, D_80111560_staff);
     func_80105E6C_staff(D_80110FF4_staff, &sp10[0][0], 3);
     func_8010CFD4_staff(sp20);
     func_8010CD74_staff(sp120);

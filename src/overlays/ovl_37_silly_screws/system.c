@@ -192,7 +192,7 @@ s16 m255_SetSprite(s32 dir, s32 file, u16 arg2, s32 attr) {
             sprite->unk02 = func_8000B838_main((dir << 16) | file);
             sprite->groupId = HuSprGrpCreate(1, 0);
             HuSprAttrReset(sprite->groupId, 0, -1);
-            func_80055024_main(sprite->groupId, 0, sprite->unk02, 0);
+            HuSprGrpMemberSet(sprite->groupId, 0, sprite->unk02, 0);
             HuSprAttrSet(sprite->groupId, 0, attr);
             func_800550F4_main(sprite->groupId, 0, arg2);
             HuSprPriSet(sprite->groupId, 0, 0xFFF0);

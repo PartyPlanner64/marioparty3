@@ -25,7 +25,7 @@ void func_801059D0_storydebug(void) {
     omInitObjMan(10, 10);
     func_8004A208_main();
     Hu3DCamInit(1);
-    CameraScissorSet(0, &ScissorDimensions);
+    Hu3DCameraScissorSet(0, &ScissorDimensions);
     HmfLightMaxSet(1);
     HmfLightColorSet(0, 120, 120, 120);
     HmfLightColorSet(1, 64, 64, 96);

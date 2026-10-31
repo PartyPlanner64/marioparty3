@@ -130,7 +130,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_8010AE30_a
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_8010B0E8_aces_high);
 
 void func_8010B224_aces_high(omObjData *object) {
-    Hu3DCamSetPositionOrientation(OM_GET_WORK_PTR(object, s16)[1], &D_8010DEA8_aces_high, &D_8010DEB4_aces_high,
+    Hu3DCameraPosSetV(OM_GET_WORK_PTR(object, s16)[1], &D_8010DEA8_aces_high, &D_8010DEB4_aces_high,
                                   &D_8010DEC0_aces_high);
     Hu3DCamUpdateMtx(OM_GET_WORK_PTR(object, s16)[1]);
 }

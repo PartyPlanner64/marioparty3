@@ -287,7 +287,7 @@ void MBPlayerPosMoveSet(s16 playerNo, s32 interpolationFrameTotal) {
     MBVecDirGet(&sp10, &sp20, &player->player_obj->rot);
     temp_s0 = MBPlayerPosMoveCreate(&sp10, &sp20, &player->player_obj->coords, interpolationFrameTotal);
     HuPrcChildLink(HuPrcCurrentGet(), temp_s0);
-    HuPrcChildWait();
+    HuPrcChildWatch();
 }
 
 static void func_800ED518_shared_board(void) {
@@ -370,7 +370,7 @@ void func_800ED810_shared_board(s16 arg0, f32 arg1) {
     MBVecDirGet(&sp10, &sp20, &temp_v0->player_obj->rot);
     temp_s0 = func_800ED5E0_shared_board(&sp10, &sp20, &temp_v0->player_obj->coords, arg1);
     HuPrcChildLink(HuPrcCurrentGet(), temp_s0);
-    HuPrcChildWait();
+    HuPrcChildWatch();
 }
 
 void MBMoveMasuSet(s16 playerNo, s16 link, s16 idx) {

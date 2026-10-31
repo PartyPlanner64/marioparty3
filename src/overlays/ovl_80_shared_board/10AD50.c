@@ -133,7 +133,7 @@ static s32 func_800F7240_shared_board(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
             if (GwPlayer[i].stat & 1) {
                 sp18[GwPlayer[i].pad] = 0x400;
             } else {
-                func_8005FE54_main(mbDlgWinId, sp20[GwPlayer[i].pad]);
+                HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
                 sp18[GwPlayer[i].pad] = -1;
             }
 
@@ -303,8 +303,8 @@ void func_800F76A4_shared_board(s32 arg0) {
             D_80105628_shared_board = MBModelFileCreate(0xB0036, -1, 1.0f, 0, 0);
         }
         func_8001C258_main(D_80105628_shared_board->omObj1->model[0], 0x180, 0);
-        func_8001C8E4_main(D_80105628_shared_board->omObj1->model[0], 0x1800);
-        func_8001C448_main(D_80105628_shared_board->omObj1->model[0]);
+        Hu3DModelLayerSet(D_80105628_shared_board->omObj1->model[0], 0x1800);
+        Hu3DModelRemakeStatic(D_80105628_shared_board->omObj1->model[0]);
         HuVecCopy3F(&D_80105628_shared_board->coords, &player->player_obj->coords);
         D_80105628_shared_board->coords.y += 25.0f;
         MBCamera3Dto2D(&D_80105628_shared_board->coords, sp20);
@@ -325,7 +325,7 @@ void func_800F76A4_shared_board(s32 arg0) {
         temp_v0 = DataRead(D_8010197C_shared_board[temp_s6]);
         temp_s2->model[0] = HuSprAnimRead(temp_v0);
         DataClose(temp_v0);
-        func_80055024_main(temp_s2->spriteGroup, 0, temp_s2->model[0], 0);
+        HuSprGrpMemberSet(temp_s2->spriteGroup, 0, temp_s2->model[0], 0);
         HuSprAttrReset(temp_s2->spriteGroup, 0, 0xFFFF);
         HuSprAttrSet(temp_s2->spriteGroup, 0, 0x1000);
         HuSprPriSet(temp_s2->spriteGroup, 0, 0x1000U);

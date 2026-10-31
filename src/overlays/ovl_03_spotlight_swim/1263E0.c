@@ -438,7 +438,7 @@ void func_801065C4_spotlight_swim(omObjData *obj) {
     for (i = 0, xs = D_8010D380_spotlight_swim, zs = D_8010D38C_spotlight_swim; i < 3; i++) {
         obj->model[i + 1] = func_8000B108_main(0x24000E, 0x289);
         HmfAnimCreate(HmfModelData[obj->model[i + 1]].hmf, data, 0, "s203_004_DEF");
-        func_8001C448_main(obj->model[i + 1]);
+        Hu3DModelRemakeStatic(obj->model[i + 1]);
         func_8001C514_main(obj->model[i + 1]);
         Hu3DModelCameraSet(obj->model[i + 1], HU3D_CAM0);
         xs[i] = 1000.0f;
@@ -1575,7 +1575,7 @@ void func_8010A328_spotlight_swim(omObjData *obj) {
     Hu3DMotionSpeedSet(obj->model[0], 0);
     obj->model[1] = func_8000B0A0_main(0, 0xC9);
     func_8001C2FC_main(obj->model[1], 0x80000000, 0);
-    func_8001C448_main(obj->model[1]);
+    Hu3DModelRemakeStatic(obj->model[1]);
     func_8001C514_main(obj->model[1]);
     func_80088800_main(HmfModelData[obj->model[1]].mtx, 0, 0, 0);
     Hu3DModelCameraSet(obj->model[0], HU3D_CAM0);
@@ -1718,14 +1718,14 @@ void func_8010AAB8_spotlight_swim(omObjData *obj) {
     obj->model[0] = func_8000B108_main(0x240002, 0xA9);
     file1 = DataRead(D_8010CDB8_spotlight_swim[idx] | 0x240000);
     HmfAnimCreate(HmfModelData[obj->model[0]].hmf, file1, 0, "m203_001_DEF");
-    func_8001C448_main(obj->model[0]);
+    Hu3DModelRemakeStatic(obj->model[0]);
     func_8001C514_main(obj->model[0]);
     DataClose(file1);
 
     obj->model[1] = func_8000B108_main(0x240003, 0x89);
     file2 = DataRead(D_8010CDC0_spotlight_swim[idx] | 0x240000);
     HmfAnimCreate(HmfModelData[obj->model[1]].hmf, file2, 0, "light_boddy_DEF");
-    func_8001C448_main(obj->model[1]);
+    Hu3DModelRemakeStatic(obj->model[1]);
     func_8001C514_main(obj->model[1]);
     DataClose(file2);
 
@@ -2298,7 +2298,7 @@ void func_8010CA08_spotlight_swim(void) {
         ViewportSet(i, D_8010D1D4_spotlight_swim[i].viewportScale.x, D_8010D1D4_spotlight_swim[i].viewportScale.y,
                     D_8010D1D4_spotlight_swim[i].viewportScale.z, D_8010D1D4_spotlight_swim[i].viewportTranslate.x,
                     D_8010D1D4_spotlight_swim[i].viewportTranslate.y, D_8010D1D4_spotlight_swim[i].viewportTranslate.z);
-        Hu3DCamSetPerspective(i, D_8010D1D4_spotlight_swim[i].fov, 80.0f, 8000.0f);
+        Hu3DCameraPerspectiveSet(i, D_8010D1D4_spotlight_swim[i].fov, 80.0f, 8000.0f);
     }
 }
 

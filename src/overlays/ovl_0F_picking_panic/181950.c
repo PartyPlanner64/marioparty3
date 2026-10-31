@@ -107,7 +107,7 @@ void func_8010B220_picking_panic(omObjData *object, s8 arg1);
 void func_8010B8D0_picking_panic(omObjData *object);
 void func_8010B8EC_picking_panic(omObjData *object);
 void func_8010B908_picking_panic(omObjData *object, s8 arg1);
-void func_8001EF6C_main(s16, s16, char *);
+void Hu3DModelHookSet(s16, s16, char *);
 
 void func_801059A0_picking_panic(void) {
     omObjData *object;
@@ -122,8 +122,8 @@ void func_801059A0_picking_panic(void) {
     ScissorSet(1, 0.0f, 120.0f, 320.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 240.0f, 511.0f);
     ViewportSet(1, 640.0f, 480.0f, 511.0f, 640.0f, 720.0f, 511.0f);
-    Hu3DCamSetPerspective(0, 22.619865f, 4000.0f, 10000.0f);
-    Hu3DCamSetPerspective(1, 22.619865f, 4000.0f, 10000.0f);
+    Hu3DCameraPerspectiveSet(0, 22.619865f, 4000.0f, 10000.0f);
+    Hu3DCameraPerspectiveSet(1, 22.619865f, 4000.0f, 10000.0f);
     HmfLightMaxSet(1);
     HmfLightDirSet(0, 0.0f, 0.0f, 90.0f);
     HmfLightColorSet(0, 0x90, 0x90, 0x90);
@@ -1228,7 +1228,7 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
                 D_8010EF10_picking_panic[arg1] = 1;
                 D_8010E6F8_picking_panic[idx0] = 6;
                 D_8010E6FC_picking_panic[idx0] = 23;
-                func_8001EF6C_main(*D_8010EF18_picking_panic[arg1][slot][D_8010EDA0_picking_panic[arg1][slot]],
+                Hu3DModelHookSet(*D_8010EF18_picking_panic[arg1][slot][D_8010EDA0_picking_panic[arg1][slot]],
                                    hand0->model[0], "item_hook");
                 func_8001C258_main(*D_8010EF18_picking_panic[arg1][slot][D_8010EDA0_picking_panic[arg1][slot]],
                                    0x4000, 0x4000);
@@ -1263,7 +1263,7 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
                     type = D_8010EDA0_picking_panic[arg1][i];
                     Hu3DModelPosSet((!(i & 1) ? hand0 : hand1)->model[(i / 2 == 0) ? type + 2 : type + 5], 0.0f, 0.0f,
                                     0.0f);
-                    func_8001EF6C_main(*D_8010EF18_picking_panic[arg1][i][D_8010EDA0_picking_panic[arg1][i]],
+                    Hu3DModelHookSet(*D_8010EF18_picking_panic[arg1][i][D_8010EDA0_picking_panic[arg1][i]],
                                        hand1->model[0], "item_hook");
                     func_8001C258_main(*D_8010EF18_picking_panic[arg1][i][D_8010EDA0_picking_panic[arg1][i]],
                                        0x4000, 0x4000);

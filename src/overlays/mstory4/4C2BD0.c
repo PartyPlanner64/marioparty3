@@ -80,7 +80,7 @@ void func_80106068_mstory4(void) {
     D_800CE17C_main[2] = 35.0f;
     D_800CE17C_main[3] = D_800D5210_main;
     D_800CE17C_main[4] = D_800CB890_main;
-    Hu3DCamSetPositionOrientation(0, &D_80111AD0_mstory4, &D_80111ADC_mstory4, &D_80111AE8_mstory4);
+    Hu3DCameraPosSetV(0, &D_80111AD0_mstory4, &D_80111ADC_mstory4, &D_80111AE8_mstory4);
     Hu3DCamUpdateMtx(0);
 }
 
@@ -408,7 +408,7 @@ void func_8010EF80_mstory4(void) {
     for (i = 0; i < 8; i++) {
         espDispOff(D_80112368_mstory4[i]);
         espKill(D_80112368_mstory4[i]);
-        HuSprKill(D_80112358_mstory4[i]);
+        HuSprAnimKill(D_80112358_mstory4[i]);
     }
     HuPrcSleep(3);
 }
@@ -419,7 +419,7 @@ void func_8010F010_mstory4(void) {
     for (i = 0; i < 7; i++) {
         espDispOff(D_80112368_mstory4[i]);
         espKill(D_80112368_mstory4[i]);
-        HuSprKill(D_80112358_mstory4[i]);
+        HuSprAnimKill(D_80112358_mstory4[i]);
         HuPrcSleep(3);
     }
 }
@@ -430,7 +430,7 @@ void func_8010F0A0_mstory4(void) {
 
     espDispOff(*espriteSlot);
     espKill(*espriteSlot);
-    HuSprKill(*sprite);
+    HuSprAnimKill(*sprite);
 }
 
 void func_8010F0E0_mstory4(void) {
@@ -518,7 +518,7 @@ void func_8010FC98_mstory4(void) {
     temp_s5 = D_801122A0_mstory4.obj;
     temp_s7 = D_801122A0_mstory4.obj2;
     temp_fp = temp_s5->model[1];
-    Hu3DCamSetPerspective(0, 40.0f, 80.0f, 8000.0f);
+    Hu3DCameraPerspectiveSet(0, 40.0f, 80.0f, 8000.0f);
 
     D_80111AD0_mstory4.x = 0.0f;
     D_80111AD0_mstory4.y = 190.0f;
@@ -544,7 +544,7 @@ void func_8010FC98_mstory4(void) {
         // }
     }
 
-    HuSprKill(D_801123A4_mstory4);
+    HuSprAnimKill(D_801123A4_mstory4);
     func_8010F12C_mstory4();
     func_8001C5B4_main(temp_s5->model[1], temp_s5->motion[13]);
     func_8001C814_main(temp_s5->model[1], 2, 2);

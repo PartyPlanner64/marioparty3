@@ -157,7 +157,7 @@ void func_80105D40_modesel(s32 arg0, s32 arg1) {
 
 void func_80105D78_modesel(s32 arg0) {
     if (D_8010FE10_modesel[arg0][0] != -1) {
-        HuSprKill(D_8010FE10_modesel[arg0][0]);
+        HuSprAnimKill(D_8010FE10_modesel[arg0][0]);
     }
     D_8010FE10_modesel[arg0][0] = -1;
 }
@@ -344,7 +344,7 @@ void func_80106AA8_modesel(void) {
 
 void func_80106B0C_modesel(void) {
     espKill(D_80110992_modesel);
-    HuSprKill(D_80110990_modesel);
+    HuSprAnimKill(D_80110990_modesel);
 }
 
 u32 func_80106B38_modesel(u32 arg0) {
@@ -456,7 +456,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80108A94_modesel);
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80108AE0_modesel);
 
 void func_80108F8C_modesel(Vec *pos, Vec *at, Vec *up) {
-    Hu3DCamSetPositionOrientation(0, pos, at, up);
+    Hu3DCameraPosSetV(0, pos, at, up);
     Hu3DCamUpdateMtx(0);
 }
 

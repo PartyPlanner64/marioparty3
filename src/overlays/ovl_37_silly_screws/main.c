@@ -25,16 +25,16 @@
 #define GOAL_POS_X 200.0f
 #define JUMP_RANGE_X 25.0f
 
-// C1F0
+// camsetup
 void func_8000B5F0_main(u8 arg0);
 s32 func_8000B710_main(s32 arg0);
 
-// 14EA0
+// hmfspr
 void func_800142A0_main(s32);
 s16 func_80017790_main(s16 model, s32 arg1, s32 arg2, s32 arg3);
 s32 func_80017BB8_main(s32, s32);
 
-// 20A20
+// hmfcoll
 
 // 8FB20
 f32 sindf(f32);

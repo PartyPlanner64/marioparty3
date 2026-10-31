@@ -19,15 +19,15 @@
 
 #define PLAYERS_TOTAL 2
 
-// C1F0
+// camsetup
 void func_8000B5F0_main(u8 arg0);
 s32 func_8000B710_main(s32 arg0);
 
-// 14EA0
+// hmfspr
 void func_800142A0_main(s32);
 void func_80017D24_main(f32 *, f32, f32, f32);
 
-// 20A20
+// hmfcoll
 
 // unknown
 extern u16 D_800D530C_main;

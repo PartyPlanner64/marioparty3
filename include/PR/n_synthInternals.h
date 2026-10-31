@@ -265,8 +265,8 @@ s32 _n_timeToSamplesNoRound(s32 micros);
 s32 _n_timeToSamples(s32 micros);
 
 /*
- * MP3 links its own versions of n_alSynStartVoiceParams (src/66E70.c) and
- * n_alSynSetPan (src/67000.c) outside of the library.
+ * MP3 links its own versions of n_alSynStartVoiceParams (src/n_synstartvoiceparam.c) and
+ * n_alSynSetPan (src/n_synsetpan.c) outside of the library.
  */
 void func_80066270_main(N_ALVoice *v, ALWaveTable *w, f32 pitch, s16 vol, ALPan pan, u8 fxmix, ALMicroTime t);
 void func_80066400_main(N_ALVoice *v, u8 pan);

@@ -180,10 +180,10 @@ build/src/2.0L/n_audio/%.c.o: CPPFLAGS = -I include -I include/PR -I include/gcc
 # libultra rmon touches the FPU through an otherwise-unused volatile float.
 build/src/2.0L/rmon/%.c.o: CFLAGS_CHECK += -Wno-unused-but-set-variable
 build/src/8A6B0.c.o: OPTFLAGS = -O2 #Could also be -O3?
-# 66E70 was built unoptimized; -Wa,-g keeps gas from filling delay slots.
-build/src/66E70.c.o: OPTFLAGS = -O0
-build/src/66E70.c.o: NO_STRIP_NOP = 1
-build/src/66E70.c.o: CFLAGS += -Wa,-g
+# n_synstartvoiceparam was built unoptimized; -Wa,-g keeps gas from filling delay slots.
+build/src/n_synstartvoiceparam.c.o: OPTFLAGS = -O0
+build/src/n_synstartvoiceparam.c.o: NO_STRIP_NOP = 1
+build/src/n_synstartvoiceparam.c.o: CFLAGS += -Wa,-g
 build/src/2.0L/debug/kdebugserver.c.o: OPTFLAGS = -O3
 build/src/2.0L/debug/readhost.c.o: OPTFLAGS = -O2
 build/src/2.0L/debug/threadprofile.c.o: OPTFLAGS = -O2

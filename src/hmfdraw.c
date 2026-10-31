@@ -2478,6 +2478,9 @@ void func_8002D094_main(Gfx **arg0, s16 arg1, s32 color) {
     }
 }
 
+// Possible file boundary: ROM 0x2DE60 (motion code starts here, like MP4 hsfmotion.c; would be
+// hmfmotion.c). Only the code below uses the motion work D_800CCF58_main. Weak evidence: no nop
+// padding before this function.
 void func_8002D260_main(void) {
     s16 i;
 

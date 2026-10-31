@@ -16,11 +16,11 @@
 
 // EXTERN
 
-// C1F0
+// camsetup
 void func_8000B5F0_main(u8 arg0);
 void func_8000B710_main(s32);
 
-// 14EA0
+// hmfspr
 void func_800142A0_main(s32);
 s32 func_80016784_main(s32, s32);
 void func_80016FB4_main(s32, s32, s16);

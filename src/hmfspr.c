@@ -412,6 +412,8 @@ void func_800166D0_main(void) {
     }
 }
 
+// Seems like a good file boundary: ROM 0x17384 (model set / hierarchy helpers start here; the HmfSpr
+// code above does not call into them). Not aligned by 16 though.
 HmfModelSet *func_80016784_main(s16 model, s16 step) {
     HmfData *hmf = HmfModelData[model].hmf;
     D_800CCF58_main_Struct *motion = &D_800CCF58_main[HmfModelData[model].motId];
@@ -622,6 +624,9 @@ void func_80017358_main(s16 srcModel, char *srcName, s16 dstModel, char *dstName
     }
 }
 
+// Reasonable file boundary: ROM 0x1826C (character texture animation slots start here; only the
+// code below uses D_800D20B8_main, D_800D4090_main, D_800D6A50_main and D_800A063C_main).
+// Not aligned by 16 though.
 void func_8001766C_main(void) {
     s16 i, j, k;
 
@@ -1076,50 +1081,50 @@ s32 func_80018F18_main(HuMtx4F src, HuMtx4F dst) {
     return 1;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/14EA0", D_800A6A98_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6A98_main);
 
-INCLUDE_RODATA("asm/nonmatchings/14EA0", D_800A6AA4_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6AA4_main);
 
-INCLUDE_RODATA("asm/nonmatchings/14EA0", D_800A6AB0_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6AB0_main);
 
-INCLUDE_RODATA("asm/nonmatchings/14EA0", D_800A6ABC_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6ABC_main);
 
-INCLUDE_RODATA("asm/nonmatchings/14EA0", D_800A6AC8_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6AC8_main);
 
-INCLUDE_RODATA("asm/nonmatchings/14EA0", D_800A6AD4_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6AD4_main);
 
-INCLUDE_RODATA("asm/nonmatchings/14EA0", D_800A6AE0_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6AE0_main);
 
-INCLUDE_RODATA("asm/nonmatchings/14EA0", D_800A6AEC_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6AEC_main);
 
-INCLUDE_RODATA("asm/nonmatchings/14EA0", D_800A6AF8_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6AF8_main);
 
-INCLUDE_RODATA("asm/nonmatchings/14EA0", D_800A6B04_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6B04_main);
 
-INCLUDE_RODATA("asm/nonmatchings/14EA0", D_800A6B10_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6B10_main);
 
-INCLUDE_RODATA("asm/nonmatchings/14EA0", D_800A6B1C_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6B1C_main);
 
-INCLUDE_RODATA("asm/nonmatchings/14EA0", D_800A6B28_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6B28_main);
 
-INCLUDE_RODATA("asm/nonmatchings/14EA0", D_800A6B34_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6B34_main);
 
-INCLUDE_RODATA("asm/nonmatchings/14EA0", D_800A6B40_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6B40_main);
 
-INCLUDE_RODATA("asm/nonmatchings/14EA0", D_800A6B4C_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6B4C_main);
 
-INCLUDE_RODATA("asm/nonmatchings/14EA0", D_800A6B58_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6B58_main);
 
-INCLUDE_RODATA("asm/nonmatchings/14EA0", D_800A6B64_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6B64_main);
 
-INCLUDE_RODATA("asm/nonmatchings/14EA0", D_800A6B70_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6B70_main);
 
-INCLUDE_RODATA("asm/nonmatchings/14EA0", D_800A6B7C_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6B7C_main);
 
-INCLUDE_RODATA("asm/nonmatchings/14EA0", D_800A6B88_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6B88_main);
 
-INCLUDE_RODATA("asm/nonmatchings/14EA0", D_800A6B94_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6B94_main);
 
-INCLUDE_RODATA("asm/nonmatchings/14EA0", D_800A6BA0_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6BA0_main);
 
-INCLUDE_RODATA("asm/nonmatchings/14EA0", D_800A6BAC_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6BAC_main);

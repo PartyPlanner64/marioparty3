@@ -432,7 +432,7 @@ void func_80020E94_main(CollisionFan *fan, HmfModel *model) {
     MTXBufNum++;
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/20A20", func_80020E94_main);
+INCLUDE_ASM("asm/nonmatchings/hmfcoll", func_80020E94_main);
 #endif
 
 s32 func_80021550_main(f32 x, f32 z, Hu3DPoint *tri) {

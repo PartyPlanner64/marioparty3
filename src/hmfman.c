@@ -18,21 +18,21 @@ u8 func_8000EF64_main(void *arg0, u16 arg1, s32 arg2, void *arg3, s32 arg4);
 void func_8000F978_main(HmfData *);
 s16 func_80011460_main(u8 *);
 
-// 13F90.c
+// hmfparticle.c
 void func_800139AC_main(s16 model, s16 group);
 
-// 14EA0.c
+// hmfspr.c
 void func_80017CD0_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 void func_80018044_main(HuMtx4F a, HuMtx4F b, HuMtx4F out);
 
 // hmflight.c
 void func_80019668_main(HmfData_UnkD0 *light);
 
-// 20A20.c
+// hmfcoll.c
 void func_80021AF4_main(void);
 void func_80021B20_main(s16 index);
 
-// 22EB0.c
+// hmfdraw.c
 void func_800222B0_main(void *arg0, void *arg1, u16 arg2, u16 arg3, u16 arg4, u8 arg5);
 void func_800224BC_main(void);
 void func_80022660_main(HmfData *);
@@ -48,13 +48,13 @@ void func_8002D514_main(void);
 void func_80030030_main(f32);
 f32 func_8002FC7C_main(HmfModelData_Unk64_Unk8C_Struct *arg0, u16 flags, f32 frame, f32 start, f32 speed);
 
-// 30C40.c
+// hmfshape.c
 void func_80030178_main(s32 arg0);
 void func_800303C8_main(HmfModel *model, f32 time);
 void func_80030198_main(void);
 s32 func_800300A4_main(void *, void *);
 
-// 32160.c
+// hmfanim.c
 extern HmfData_Unk84_Entry2 *D_800D1FCC_main;
 void func_8003186C_main(HmfData *hmf);
 HmfData_Unk84_Entry2 *func_80031A44_main(HmfData *hmf, char *name);
@@ -66,7 +66,7 @@ void HmfAnimExec(u16 vcount);
 // 8AC70.c
 void func_8008A070_main(void *);
 
-// 14EA0.c
+// hmfspr.c
 void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 
 // libhmath/gurotaterpy.c

@@ -14,7 +14,7 @@
 #define VECMagXZ(a) sqrtf(((a)->x * (a)->x) + ((a)->z * (a)->z))
 #define M_ID(m, i, j) ((m)[(i) * 4 + (j)])
 
-// 14EA0
+// hmfspr
 void func_80017D24_main(f32 *, f32, f32, f32);
 
 // 8EA10

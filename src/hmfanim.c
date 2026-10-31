@@ -956,11 +956,11 @@ void func_80034048_main(s16 animIdx, s16 count) {
     }
 }
 
-// Possible file boundary: rodata 0x800A6D40 (start of the minigame table, likely belongs with the 0x34DC0 code).
+// Possible file boundary: rodata 0x800A6D40 (start of the minigame table, likely belongs with mgdata.c).
 const s32 D_800A6D40_main = 1;
 
-INCLUDE_RODATA("asm/nonmatchings/32160", D_800A6D44_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfanim", D_800A6D44_main);
 
-INCLUDE_RODATA("asm/nonmatchings/32160", D_800A6D4C_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfanim", D_800A6D4C_main);
 
-INCLUDE_RODATA("asm/nonmatchings/32160", D_800A6D50_main);
+INCLUDE_RODATA("asm/nonmatchings/hmfanim", D_800A6D50_main);

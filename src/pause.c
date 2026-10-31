@@ -11,7 +11,7 @@
 #include "macros.h"
 #include "input.h"
 
-// 22EB0
+// hmfdraw
 s16 func_8002C834_main(HmfData *, const char *);
 
 extern MinigameTable D_800A6D44_main[];

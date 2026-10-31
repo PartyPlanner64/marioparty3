@@ -15,15 +15,15 @@
 #define PLAYERS_TOTAL 2
 #define JUMPS_MAX 99
 
-// C1F0
+// camsetup
 void func_8000B5F0_main(u8 arg0);
 s32 func_8000B638_main(void);
 
-// 14EA0
+// hmfspr
 void func_800142A0_main(s32);
 s32 func_80017BB8_main(s32, s32);
 
-// 20A20
+// hmfcoll
 
 // 8EFF0
 f32 cosdf(f32);

@@ -1390,7 +1390,7 @@ void m255_UpdatePlayerAnimation(FuncContext *ctx) {
                             player->speed -= 0.5f;
                         }
                         func_800E5690_minigame(player->object, PLAYER_ANIM_RUN);
-                        if (HmfModelData[player->object->model[0]].unk40 == 0.0f) {
+                        if (HmfModelData[player->object->model[0]].motTime == 0.0f) {
                             CharFXPlay(0x28, GwPlayer[m255_playerId[player->object->work[0]]].chr);
                         }
                     } else {
@@ -1399,7 +1399,7 @@ void m255_UpdatePlayerAnimation(FuncContext *ctx) {
                             player->speed += 0.5f;
                         }
                         func_800E5690_minigame(player->object, PLAYER_ANIM_RUN);
-                        if (HmfModelData[player->object->model[0]].unk40 == 0.0f) {
+                        if (HmfModelData[player->object->model[0]].motTime == 0.0f) {
                             CharFXPlay(0x28, GwPlayer[m255_playerId[player->object->work[0]]].chr);
                         }
                     }
@@ -1408,13 +1408,13 @@ void m255_UpdatePlayerAnimation(FuncContext *ctx) {
                     func_800E5690_minigame(player->object, PLAYER_ANIM_IDLE);
                     break;
                 case PLAYER_STATE_1:
-                    if (HmfModelData[player->object->model[0]].unk40 == 0.0f) {
+                    if (HmfModelData[player->object->model[0]].motTime == 0.0f) {
                         CharFXPlay(0x1F, GwPlayer[m255_playerId[player->object->work[0]]].chr);
                     }
                     func_800E5690_minigame(player->object, PLAYER_ANIM_WALK);
                     break;
                 case PLAYER_STATE_FINISHED:
-                    if (HmfModelData[player->object->model[0]].unk40 == 0.0f) {
+                    if (HmfModelData[player->object->model[0]].motTime == 0.0f) {
                         CharFXPlay(0x28, GwPlayer[m255_playerId[player->object->work[0]]].chr);
                     }
                     func_800E5690_minigame(player->object, PLAYER_ANIM_WALK);
@@ -1434,7 +1434,7 @@ void m255_UpdatePlayerAnimation(FuncContext *ctx) {
                     }
                     break;
                 default:
-                    if (HmfModelData[player->object->model[0]].unk40 == 0.0f) {
+                    if (HmfModelData[player->object->model[0]].motTime == 0.0f) {
                         CharFXPlay(0x28, GwPlayer[m255_playerId[player->object->work[0]]].chr);
                     }
                     func_800E5690_minigame(player->object, PLAYER_ANIM_RUN);

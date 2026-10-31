@@ -225,10 +225,10 @@ void func_8010A308_slot_synch(s16 arg0, s16 arg1, f32 arg2, f32 arg3) {
     HuSprGrp *grp = HuSprGrpData[arg0];
     HuSprite *spr = HuSprGet(arg0, arg1);
 
-    if (spr->unk_48 != arg2 || spr->unk_4C != arg3) {
-        grp->unk_0C = 1;
-        spr->unk_48 = arg2;
-        spr->unk_4C = arg3;
+    if (spr->pos.x != arg2 || spr->pos.y != arg3) {
+        grp->dirty = 1;
+        spr->pos.x = arg2;
+        spr->pos.y = arg3;
     }
 }
 

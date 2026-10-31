@@ -163,8 +163,8 @@ void func_80105B04_tidal_toss(omObjData *object) {
     omOutView(object);
 
     camera = gCameraList;
-    sinFov = sindf(camera->fov[0] / 2.0);
-    cosFov = cosdf(camera->fov[0] / 2.0);
+    sinFov = sindf(camera->fov / 2.0);
+    cosFov = cosdf(camera->fov / 2.0);
     D_8010B0D8_tidal_toss = sinFov / cosFov;
     guMtxL2F(D_8010B058_tidal_toss, &camera->mtxs[0].lookAtMtx);
     guMtxL2F(D_8010B098_tidal_toss, &camera->mtxs[0].lookAtMtx);
@@ -728,7 +728,7 @@ void func_80109584_tidal_toss(omObjData *arg0, f32 arg1, f32 arg2, f32 arg3) {
     s32 i;
 
     for (i = 9; i < 12; i++) {
-        if (HmfModelData[arg0->model[i]].unk18 & 4) {
+        if (HmfModelData[arg0->model[i]].attr & 4) {
             func_800E4C88_minigame(arg0, i, arg1, arg2, arg3, 0.0f, 0.0f);
             return;
         }

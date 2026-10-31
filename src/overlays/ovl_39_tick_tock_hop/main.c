@@ -1015,7 +1015,7 @@ void m257_ExecPlayerJump(FuncGroupContext *groupCtx, FuncContext *ctx) {
     }
     var_f2 = Hu3DMotionShiftTimeGet(object->model[0]);
     if (var_f2 == -1.0f) {
-        var_f2 = HmfModelData[object->model[0]].unk40;
+        var_f2 = HmfModelData[object->model[0]].motTime;
     }
     if (var_f2 > 5.0f && var_f2 < 7.0f && !(D_800CDA7C_main[player->padId] & A_BUTTON)) {
         player->accelY = -0.294f;
@@ -1229,7 +1229,7 @@ void m257_UpdatePlayerAnimation(FuncGroupContext *groupCtx, FuncContext *ctx) {
     omObjData *object = groupCtx->object;
     HmfModel *model = &HmfModelData[object->model[0]];
 
-    if (D_800CCF58_main[model->unk02].unk02 - 1 <= model->unk40) {
+    if (D_800CCF58_main[model->motId].unk02 - 1 <= model->motTime) {
         player->updateAnimation = TRUE;
     }
     if (player->updateAnimation) {

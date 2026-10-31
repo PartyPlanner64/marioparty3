@@ -321,7 +321,7 @@ void func_800579E4_main(Gfx **gfx, HuSprite *sprite, s32 arg2) {
         switch (((u32)sprite->unk_24 >> 10) & 3) {
             case 0:
                 if (sprite->unk_24 & 0x1000) {
-                    if ((sprite->unk_2C == 256) & (intensity == 0)) {
+                    if ((sprite->tpLvl == 256) & (intensity == 0)) {
                         renderMode |= G_RM_TEX_EDGE;
                     } else {
                         renderMode |= G_RM_XLU_SURF;
@@ -332,7 +332,7 @@ void func_800579E4_main(Gfx **gfx, HuSprite *sprite, s32 arg2) {
                 break;
             case 1:
                 if (sprite->unk_24 & 0x1000) {
-                    if ((sprite->unk_2C == 256) & (intensity == 0)) {
+                    if ((sprite->tpLvl == 256) & (intensity == 0)) {
                         renderMode |= G_RM_AA_TEX_EDGE;
                     } else {
                         renderMode |= G_RM_AA_XLU_SURF;
@@ -343,7 +343,7 @@ void func_800579E4_main(Gfx **gfx, HuSprite *sprite, s32 arg2) {
                 break;
             case 2:
                 if (sprite->unk_24 & 0x1000) {
-                    if ((sprite->unk_2C == 256) & (intensity == 0)) {
+                    if ((sprite->tpLvl == 256) & (intensity == 0)) {
                         renderMode |= G_RM_AA_TEX_EDGE;
                     } else {
                         renderMode |= G_RM_AA_XLU_SURF;
@@ -355,13 +355,13 @@ void func_800579E4_main(Gfx **gfx, HuSprite *sprite, s32 arg2) {
         }
         gDPSetRenderMode(gdl++, renderMode, 0);
         if (intensity) {
-            if (sprite->unk_2C == 256) {
+            if (sprite->tpLvl == 256) {
                 gDPSetCombineMode(gdl++, SPRPUT_CC_PRIM_DECALA, SPRPUT_CC_PRIM_DECALA);
             } else {
                 gDPSetCombineMode(gdl++, SPRPUT_CC_PRIM_MODULATEA, SPRPUT_CC_PRIM_MODULATEA);
             }
         } else {
-            if (sprite->unk_2C == 256) {
+            if (sprite->tpLvl == 256) {
                 if (sprite->unk_24 & 0x2000000) {
                     gDPSetCombineMode(gdl++, SPRPUT_CC_BLEND_DECALA, SPRPUT_CC_BLEND_DECALA);
                 } else {
@@ -375,7 +375,7 @@ void func_800579E4_main(Gfx **gfx, HuSprite *sprite, s32 arg2) {
                 }
             }
         }
-        gDPSetPrimColor(gdl++, 0, 0, sprite->unk_28[0], sprite->unk_28[1], sprite->unk_28[2], (u8)sprite->unk_2C);
+        gDPSetPrimColor(gdl++, 0, 0, sprite->color[0], sprite->color[1], sprite->color[2], (u8)sprite->tpLvl);
         D_800BD83C_main = 1;
     }
     D_800BD850_main = ((u32)sprite->unk_24 >> 30) & 1;
@@ -472,7 +472,7 @@ Gfx *func_800589F4_main(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, 
         gDPSetCombineLERP(gfx++, TEXEL1, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, TEXEL1, TEXEL0, PRIMITIVE, TEXEL0,
                           0, 0, 0, COMBINED, 0, 0, 0, COMBINED);
         gDPSetRenderMode(gfx++, G_RM_PASS, G_RM_AA_XLU_SURF2);
-        gDPSetPrimColor(gfx++, 0, 0, 0, 0, 0, (u8)sprite->unk_2C);
+        gDPSetPrimColor(gfx++, 0, 0, 0, 0, 0, (u8)sprite->tpLvl);
         D_800BD840_main <<= 1;
         D_800BD844_main >>= 1;
     }

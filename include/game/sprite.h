@@ -2,6 +2,7 @@
 #define _GAME_SPRITE_H
 
 #include "ultra64.h"
+#include "math.h"
 
 #define HUSPR_GRP_MAX 256
 
@@ -108,16 +109,16 @@ typedef struct HuSprite {
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ f32 unk_04;
     /* 0x08 */ f32 unk_08;
-    /* 0x0C */ s16 unk_0C;
+    /* 0x0C */ s16 bank;
     /* 0x0E */ s16 unk_0E;
-    /* 0x10 */ f32 unk_10;
+    /* 0x10 */ f32 speed;
     /* 0x14 */ u16 prio;
     /* 0x18 */ f32 unk_18;
     /* 0x1C */ f32 unk_1C;
     /* 0x20 */ f32 unk_20;
     /* 0x24 */ s32 unk_24;
-    /* 0x28 */ u8 unk_28[4];
-    /* 0x2C */ u16 unk_2C;
+    /* 0x28 */ u8 color[4];
+    /* 0x2C */ u16 tpLvl;
     /* 0x2E */ s16 unk_2E;
     /* 0x30 */ union {
         f32 f;
@@ -134,12 +135,10 @@ typedef struct HuSprite {
     /* 0x40 */ u16 unk_40;
     /* 0x42 */ u16 unk_42;
     /* 0x44 */ s32 unk_44;
-    /* 0x48 */ f32 unk_48;
-    /* 0x4C */ f32 unk_4C;
-    /* 0x50 */ f32 unk_50;
-    /* 0x54 */ f32 unk_54;
-    /* 0x58 */ f32 unk_58;
-    /* 0x5C */ s32 unk_5C;
+    /* 0x48 */ Vec2f pos;
+    /* 0x50 */ Vec2f scale;
+    /* 0x58 */ f32 zRot;
+    /* 0x5C */ s32 attr;
     /* 0x60 */ f32 unk_60;
     /* 0x64 */ f32 unk_64;
     /* 0x68 */ HuSprAnm unk_68;
@@ -175,7 +174,7 @@ typedef struct HuSprGrp {
     struct HuSprGrp *prev;
     u16 unk_08; // hierarchy mode
     u16 unk_0A;
-    s32 unk_0C;
+    s32 dirty;
     HuSprite *members[4]; // unknown size
 } HuSprGrp;               // unknown size
 

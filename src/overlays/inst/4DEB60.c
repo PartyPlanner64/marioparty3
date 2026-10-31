@@ -418,7 +418,7 @@ void func_8010674C_inst(omObjData *object) {
     D_800CE17C_main[0] = D_8010D418_inst.x;
     D_800CE17C_main[1] = D_8010D418_inst.z;
     D_800CE17C_main[-1] = 0.0f;
-    D_800CE17C_main[2] = gCameraList->fov[0];
+    D_800CE17C_main[2] = gCameraList->fov;
     D_800CE17C_main[3] = D_800D5210_main;
     D_800CE17C_main[4] = D_800CB890_main;
     Hu3DCamSetPositionOrientation(0, &D_8010D418_inst, &D_8010D424_inst, &D_8010D430_inst);

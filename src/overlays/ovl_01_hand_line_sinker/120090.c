@@ -27,7 +27,7 @@ void func_8010B750_hand_line_sinker(omObjData *obj);
 void func_8010B5B0_hand_line_sinker(void) {
     func_8000B5F0_main(1);
     func_8000B638_main();
-    gCameraList->fov[0] = 40.0f;
+    gCameraList->fov = 40.0f;
 }
 
 void func_8010B5EC_hand_line_sinker(CameraPreset *preset, CameraPreset *to, s16 duration) {

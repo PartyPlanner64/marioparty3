@@ -109,7 +109,7 @@ u16 HmfSprModelCreate(void *data, u32 flags, u16 attr) {
 }
 
 u16 func_80014618_main(s16 idx, u16 attr) {
-    s16 newIdx = HmfSprModelCreate((void *)-1, HmfModelData[D_800CBB60_main[idx].modelId].unk18, attr);
+    s16 newIdx = HmfSprModelCreate((void *)-1, HmfModelData[D_800CBB60_main[idx].modelId].attr, attr);
 
     D_800D408C_main[D_800CBB60_main[newIdx].unk_02 = D_800CBB60_main[idx].unk_02].refCount++;
     return newIdx;
@@ -212,7 +212,7 @@ void func_80014A3C_main(s32 frames) {
             continue;
         }
         entry = &D_800CBB60_main[i];
-        if ((HmfModelData[entry->modelId].unk18 & 4) || (u16)entry->unk_02 == 0xFFFF) {
+        if ((HmfModelData[entry->modelId].attr & 4) || (u16)entry->unk_02 == 0xFFFF) {
             continue;
         }
         if (entry->flags & 0x80) {
@@ -363,7 +363,7 @@ void func_80014A3C_main(s32 frames) {
 
         gSPEndDisplayList(D_800D1F30_main++);
 
-        if (!(entry->flags & 1) && (HmfPauseF == 0 || (HmfModelData[entry->modelId].unk18 & 0x8000))) {
+        if (!(entry->flags & 1) && (HmfPauseF == 0 || (HmfModelData[entry->modelId].attr & 0x8000))) {
             for (j = 0; j < frames; j++) {
                 entry->unk_08++;
                 entry->unk_0A++;
@@ -414,7 +414,7 @@ void func_800166D0_main(void) {
 
 HmfModelSet *func_80016784_main(s16 model, s16 step) {
     HmfData *hmf = HmfModelData[model].hmf;
-    D_800CCF58_main_Struct *motion = &D_800CCF58_main[HmfModelData[model].unk02];
+    D_800CCF58_main_Struct *motion = &D_800CCF58_main[HmfModelData[model].motId];
     HmfModelSet *set = HuMemMemoryAllocPerm(sizeof(HmfModelSet));
 
     set->unk_08 = HuMemMemoryAllocPerm((motion->unk02 + step) / step * (hmf->unk16 << 6));
@@ -427,7 +427,7 @@ HmfModelSet *func_80016784_main(s16 model, s16 step) {
 
 HmfModelSet *func_800168A8_main(s16 model, s16 step, char *name) {
     HmfData *hmf = HmfModelData[model].hmf;
-    D_800CCF58_main_Struct *motion = &D_800CCF58_main[HmfModelData[model].unk02];
+    D_800CCF58_main_Struct *motion = &D_800CCF58_main[HmfModelData[model].motId];
     s16 node = func_8002C834_main(hmf, name);
     HmfModelSet *set = HuMemMemoryAllocPerm(sizeof(HmfModelSet));
 
@@ -441,7 +441,7 @@ HmfModelSet *func_800168A8_main(s16 model, s16 step, char *name) {
 
 void func_800169E0_main(s16 model, s16 step, HmfModelSet *set, s16 target) {
     HmfData *hmf = HmfModelData[model].hmf;
-    D_800CCF58_main_Struct *motion = &D_800CCF58_main[HmfModelData[model].unk02];
+    D_800CCF58_main_Struct *motion = &D_800CCF58_main[HmfModelData[model].motId];
     s16 frame;
 
     D_800D1358_main = set->unk_08;
@@ -459,7 +459,7 @@ void func_80016B00_main(s16 model, s16 frame, char *name, HuMtx4F *out) {
     s16 nodeMap[4];
     HmfData *hmf = HmfModelData[model].hmf;
     s16 node = func_8002C834_main(hmf, name);
-    D_800CCF58_main_Struct *motion = &D_800CCF58_main[HmfModelData[model].unk02];
+    D_800CCF58_main_Struct *motion = &D_800CCF58_main[HmfModelData[model].motId];
 
     D_800D1358_main = out;
     D_800D04B4_main = nodeMap;
@@ -530,7 +530,7 @@ void func_80016FB4_main(s16 model, HmfModelSet *set, s16 frame) {
         frame = 0;
     }
     hmf = HmfModelData[model].hmf;
-    HmfModelData[model].unk02 = 0xFF;
+    HmfModelData[model].motId = 0xFF;
     start = hmf->unk16 * (frame / set->unk_02);
     D_800CD1B0_main = 0;
     D_800D1358_main = &set->unk_08[start];

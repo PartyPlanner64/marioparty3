@@ -113,7 +113,7 @@ void func_8010B990_inst(void) {
     HuWinMesPalSet(D_8010DCA8_inst.curGroup, 2, 0, 255, 255);
     HuWinMesPalSet(D_8010DCA8_inst.curGroup, 4, 96, 255, 64);
     HuWinMesPalSet(D_8010DCA8_inst.curGroup, 6, 255, 255, 64);
-    HuWinGet(D_8010DCA8_inst.curGroup)->unk_29 = 1;
+    HuWinGet(D_8010DCA8_inst.curGroup)->spacing_x = 1;
     func_8010CC14_inst();
     D_8010DCA8_inst.mainMembers[0] = HuWinAnimSet(D_8010DCA8_inst.curGroup, 0x17000B, 60, -33, 0);
     D_8010DCA8_inst.mainMembers[1] = HuWinAnimSet(D_8010DCA8_inst.curGroup, 0x170009, 148, -33, 0);
@@ -487,7 +487,7 @@ void func_8010CBB8_inst(s32 arg0) {
     TextWindow *window = &winData[D_8010DCA8_inst.curGroup];
     s16 member = D_8010DCA8_inst.member;
 
-    func_80055024_main(window->unk_6C, member, window->unk_6E[member], arg0 & 0xFF);
+    func_80055024_main(window->group, member, window->sprite_id[member], arg0 & 0xFF);
 }
 
 void func_8010CC14_inst(void) {
@@ -530,36 +530,36 @@ void func_8010CC14_inst(void) {
 void func_8010CDE4_inst(const char *message, s32 x, s32 y) {
     char *text = func_800364DC_main((char *)message);
 
-    D_8010DCD8_inst.unk08 = -1;
-    D_8010DCD8_inst.unk08 = GameMesStrCreate(&D_8010DCD8_inst, text + 1, 0, -1, -1);
-    D_8010DCD8_inst.unk60 = (s16)x;
-    D_8010DCD8_inst.unk64 = (s16)y;
-    HuSprPosSet(D_8010DCD8_inst.strGId[D_8010DCD8_inst.unk08], 0, D_8010DCD8_inst.unk60,
-                       D_8010DCD8_inst.unk64);
+    D_8010DCD8_inst.subMode = -1;
+    D_8010DCD8_inst.subMode = GameMesStrCreate(&D_8010DCD8_inst, text + 1, 0, -1, -1);
+    D_8010DCD8_inst.pos.x = (s16)x;
+    D_8010DCD8_inst.pos.y = (s16)y;
+    HuSprPosSet(D_8010DCD8_inst.strGId[D_8010DCD8_inst.subMode], 0, D_8010DCD8_inst.pos.x,
+                       D_8010DCD8_inst.pos.y);
     func_800365E8_main(text);
 }
 
 void func_8010CED0_inst(s32 x, s32 y) {
-    HuSprPosSet(D_8010DCD8_inst.strGId[D_8010DCD8_inst.unk08], 0, x, y);
+    HuSprPosSet(D_8010DCD8_inst.strGId[D_8010DCD8_inst.subMode], 0, x, y);
 }
 
 void func_8010CF14_inst(void) {
-    D_8010DD50_inst.unk08 = GameMesStrCreate(&D_8010DD50_inst, "PRACTICE", 0, -1, -1);
-    D_8010DD50_inst.unk60 = 216.0f;
-    D_8010DD50_inst.unk64 = 90.0f;
-    HuSprPosSet(D_8010DD50_inst.strGId[D_8010DD50_inst.unk08], 0, 216, 90);
+    D_8010DD50_inst.subMode = GameMesStrCreate(&D_8010DD50_inst, "PRACTICE", 0, -1, -1);
+    D_8010DD50_inst.pos.x = 216.0f;
+    D_8010DD50_inst.pos.y = 90.0f;
+    HuSprPosSet(D_8010DD50_inst.strGId[D_8010DD50_inst.subMode], 0, 216, 90);
 }
 
 void func_8010CF98_inst(void) {
-    D_8010DD50_inst.unk60 = 216.0f;
-    D_8010DD50_inst.unk64 = 90.0f;
-    HuSprPosSet(D_8010DD50_inst.strGId[D_8010DD50_inst.unk08], 0, 0xD8, 0x5A);
+    D_8010DD50_inst.pos.x = 216.0f;
+    D_8010DD50_inst.pos.y = 90.0f;
+    HuSprPosSet(D_8010DD50_inst.strGId[D_8010DD50_inst.subMode], 0, 0xD8, 0x5A);
 }
 
 void func_8010CFF4_inst(void) {
-    D_8010DD50_inst.unk60 = 512.0f;
-    D_8010DD50_inst.unk64 = 512.0f;
-    HuSprPosSet(D_8010DD50_inst.strGId[D_8010DD50_inst.unk08], 0, 0x200, 0x200);
+    D_8010DD50_inst.pos.x = 512.0f;
+    D_8010DD50_inst.pos.y = 512.0f;
+    HuSprPosSet(D_8010DD50_inst.strGId[D_8010DD50_inst.subMode], 0, 0x200, 0x200);
 }
 
 void func_8010D044_inst(void) {
@@ -568,14 +568,14 @@ void func_8010D044_inst(void) {
 
     if (D_8010D409_inst != 1) {
         func_8010CFF4_inst();
-        HuSprAttrReset(window->unk_6C, D_8010DCA8_inst.member, 0x8000);
+        HuSprAttrReset(window->group, D_8010DCA8_inst.member, 0x8000);
         for (i = 0; i < 3; i++) {
             if (i != 1) {
-                HuSprAttrReset(window->unk_6C, D_8010DCA8_inst.mainMembers[i], 0x8000);
+                HuSprAttrReset(window->group, D_8010DCA8_inst.mainMembers[i], 0x8000);
             }
         }
         for (i = 0; i < 2; i++) {
-            HuSprAttrSet(window->unk_6C, D_8010DCA8_inst.helpMembers[i], 0x8000);
+            HuSprAttrSet(window->group, D_8010DCA8_inst.helpMembers[i], 0x8000);
         }
         D_8010DCCC_inst = D_8010DCD0_inst->message;
         if ((D_8010D40A_inst == 4) && (D_8010D411_inst != 2)) {
@@ -596,12 +596,12 @@ void func_8010D1D4_inst(void) {
     if (D_8010D409_inst != 1) {
         func_8010CF98_inst();
         for (i = 0; i < 2; i++) {
-            HuSprAttrReset(window->unk_6C, D_8010DCA8_inst.helpMembers[i], 0x8000);
+            HuSprAttrReset(window->group, D_8010DCA8_inst.helpMembers[i], 0x8000);
         }
-        HuSprAttrSet(window->unk_6C, D_8010DCA8_inst.member, 0x8000);
+        HuSprAttrSet(window->group, D_8010DCA8_inst.member, 0x8000);
         for (i = 0; i < 3; i++) {
             if (i != 1) {
-                HuSprAttrSet(window->unk_6C, D_8010DCA8_inst.mainMembers[i], 0x8000);
+                HuSprAttrSet(window->group, D_8010DCA8_inst.mainMembers[i], 0x8000);
             }
         }
         switch (D_8010D40B_inst) {

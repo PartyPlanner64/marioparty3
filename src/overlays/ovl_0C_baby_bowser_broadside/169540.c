@@ -265,8 +265,8 @@ s16 func_8010A8C4_baby_bowser_broadside(s32 directory, s32 file, f32 scale, s16 
             work->unk_0C = func_8000B108_main((directory << 16) | file, flags);
             func_8001C258_main(work->unk_0C, 4, 4);
             model = &HmfModelData[work->unk_0C];
-            model->unk40 = 0;
-            model->unk44 = 0;
+            model->motTime = 0;
+            model->motSpeed = 0;
             if (model->hmf->unk98 != NULL) {
                 model->hmf->unk98->unk08 = 0;
             }
@@ -291,8 +291,8 @@ s16 func_8010A9D4_baby_bowser_broadside(s16 source, f32 scale, s16 type, s32 arg
             work->unk_0C = Hu3DModelLink(source);
             func_8001C258_main(work->unk_0C, 4, 4);
             model = &HmfModelData[work->unk_0C];
-            model->unk40 = 0;
-            model->unk44 = 0;
+            model->motTime = 0;
+            model->motSpeed = 0;
             if (model->hmf->unk98 != NULL) {
                 model->hmf->unk98->unk08 = 0;
             }
@@ -315,7 +315,7 @@ s16 func_8010AADC_baby_bowser_broadside(s16 type) {
     for (i = 0; i < 16; i++, work++) {
         if (work->unk_00 != 0 && work->unk_0A == type) {
             model = &HmfModelData[work->unk_0C];
-            if ((model->unk18 & 4) != 0 && work->unk_08 == -1) {
+            if ((model->attr & 4) != 0 && work->unk_08 == -1) {
                 break;
             }
         }
@@ -339,7 +339,7 @@ s32 func_8010AB80_baby_bowser_broadside(s16 index, f32 x, f32 y, f32 z, f32 rx, 
     {
         work = &D_8011001C_baby_bowser_broadside[index];
         model = &HmfModelData[work->unk_0C];
-        if ((model->unk18 & 4) != 0 && work->unk_08 == -1) {
+        if ((model->attr & 4) != 0 && work->unk_08 == -1) {
             Hu3DModelPosSet(work->unk_0C, x, y, z);
             Hu3DModelRotSet(work->unk_0C, rx, ry, rz);
             Hu3DModelScaleSet(work->unk_0C, scale, scale, scale);
@@ -348,7 +348,7 @@ s32 func_8010AB80_baby_bowser_broadside(s16 index, f32 x, f32 y, f32 z, f32 rx, 
                 work->unk_08 = 1;
                 work->unk_18 = 0.0f;
                 work->unk_14 = 0.0f;
-                model->unk44 = work->unk_10;
+                model->motSpeed = work->unk_10;
             } else {
                 work->unk_08 = 0;
                 work->unk_18 = delay;
@@ -369,22 +369,22 @@ void func_8010ACF8_baby_bowser_broadside(void) {
         if (work->unk_00 != 0 && work->unk_08 != -1) {
             model = &HmfModelData[work->unk_0C];
             if (work->unk_08 != 0) {
-                if (model->unk40 >= D_800CCF58_main[model->unk02].unk02) {
-                    model->unk40 = 0;
+                if (model->motTime >= D_800CCF58_main[model->motId].unk02) {
+                    model->motTime = 0;
                     if (model->hmf->unk98 != NULL) {
                         model->hmf->unk98->unk08 = 0;
                     }
                     if (!(work->unk_04 & 1)) {
                         func_8001C258_main(work->unk_0C, 4, 4);
                         work->unk_08 = -1;
-                        model->unk44 = 0;
+                        model->motSpeed = 0;
                     }
                 }
             } else {
                 if (work->unk_14++ >= work->unk_18) {
                     func_8001C258_main(work->unk_0C, 4, 0);
                     work->unk_08 = 1;
-                    model->unk44 = work->unk_10;
+                    model->motSpeed = work->unk_10;
                 }
             }
         }
@@ -431,7 +431,7 @@ s16 func_8010AFF4_baby_bowser_broadside(s16 type) {
     for (i = 0; i < 8; i++, work++) {
         if (work->unk_00 != 0 && work->unk_08 == type) {
             model = &HmfModelData[work->unk_0C];
-            if ((model->unk18 & 4) != 0 && (work->unk_04 & 8) != 0) {
+            if ((model->attr & 4) != 0 && (work->unk_04 & 8) != 0) {
                 break;
             }
         }

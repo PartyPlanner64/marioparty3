@@ -997,7 +997,7 @@ void func_8010F43C_msetup(s16 model, char *node, Vec2f *screenPos) {
     HuMtx4F transform;
     Vec worldPos;
 
-    func_80016B00_main(model, HmfModelData[model].unk40, node, transform);
+    func_80016B00_main(model, HmfModelData[model].motTime, node, transform);
     func_8010F33C_msetup(model, &worldPos, transform);
     Hu3DCam3DToScreen(0, &worldPos, screenPos);
 }

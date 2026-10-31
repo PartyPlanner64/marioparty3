@@ -168,7 +168,7 @@ void func_80109020_mgenter(void) {
         D_800CE178_main.posX = pos.x;
         D_800CE178_main.posZ = pos.z;
         D_800CE178_main.rotY = CRot.y;
-        D_800CE178_main.fov = gCameraList->fov[0];
+        D_800CE178_main.fov = gCameraList->fov;
         D_800CE178_main.far = D_800D5210_main;
         D_800CE178_main.near = D_800CB890_main;
         Hu3DCamSetPositionOrientation(0, &pos, &at, &up);

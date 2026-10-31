@@ -211,8 +211,8 @@ s16 func_8010C324_puddle_paddle(s16 arg0, f32 arg1, s16 arg2, s32 arg3) {
             work->unk_0C = Hu3DModelLink(arg0);
             func_8001C258_main(work->unk_0C, 4, 4);
             model = &HmfModelData[work->unk_0C];
-            model->unk40 = 0;
-            model->unk44 = 0;
+            model->motTime = 0;
+            model->motSpeed = 0;
             if (model->hmf->unk98 != NULL) {
                 model->hmf->unk98->unk08 = 0;
             }

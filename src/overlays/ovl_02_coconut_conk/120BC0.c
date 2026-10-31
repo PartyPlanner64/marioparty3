@@ -413,7 +413,7 @@ void func_801066E4_coconut_conk(omObjData *arg0) {
             break;
         case 1:
             Hu3DMotionSpeedSet(arg0->model[0], 1.0f);
-            if (D_800CCF58_main[HmfModelData[arg0->model[0]].unk02].unk02 == HmfModelData[arg0->model[0]].unk40) {
+            if (D_800CCF58_main[HmfModelData[arg0->model[0]].motId].unk02 == HmfModelData[arg0->model[0]].motTime) {
                 data->unk04 = 0;
             }
             break;
@@ -859,7 +859,7 @@ void func_80107B8C_coconut_conk(omObjData *arg0) {
             coconut->unk04 = 4;
         }
     }
-    if (D_800CCF58_main[HmfModelData[arg0->model[6]].unk02].unk02 <= HmfModelData[arg0->model[6]].unk40) {
+    if (D_800CCF58_main[HmfModelData[arg0->model[6]].motId].unk02 <= HmfModelData[arg0->model[6]].motTime) {
         func_8001C258_main(arg0->model[6], 4, 4);
         func_8001C258_main(arg0->model[7], 4, 0);
         Hu3DModelPosSet(arg0->model[7], arg0->trans.x, arg0->trans.y + 50.0f, arg0->trans.z + 40.0f);
@@ -1000,7 +1000,7 @@ void func_8010815C_coconut_conk(omObjData *arg0) {
                     if (arg0->trans.y <= 0.0f) {
                         arg0->trans.y = 0.0f;
                         data->unk08 = 2;
-                        Hu3DMotionShiftSet(arg0->model[0], HmfModelData[arg0->motion[2]].unk02, 0, 5, 0);
+                        Hu3DMotionShiftSet(arg0->model[0], HmfModelData[arg0->motion[2]].motId, 0, 5, 0);
                         func_80045ED0_main((D_8010AFD0_coconut_conk[GwPlayer[arg0->work[0]].chr] << 16) | 0x2F);
                     }
                     data->unk20 -= 9.0f;
@@ -1008,10 +1008,10 @@ void func_8010815C_coconut_conk(omObjData *arg0) {
                         data->unk20 = 0.0f;
                     }
                     func_8001F9E4_main(arg0->model[4], data->unk20);
-                    if (D_800CCF58_main[HmfModelData[arg0->model[4]].unk02].unk02 <= HmfModelData[arg0->model[4]].unk40) {
+                    if (D_800CCF58_main[HmfModelData[arg0->model[4]].motId].unk02 <= HmfModelData[arg0->model[4]].motTime) {
                         func_8001C258_main(arg0->model[4], 4, 4);
                     }
-                    if (D_800CCF58_main[HmfModelData[arg0->model[5]].unk02].unk02 <= HmfModelData[arg0->model[5]].unk40) {
+                    if (D_800CCF58_main[HmfModelData[arg0->model[5]].motId].unk02 <= HmfModelData[arg0->model[5]].motTime) {
                         func_8001C258_main(arg0->model[5], 4, 4);
                     }
                     break;
@@ -1021,10 +1021,10 @@ void func_8010815C_coconut_conk(omObjData *arg0) {
                         data->unk20 = 0.0f;
                     }
                     func_8001F9E4_main(arg0->model[4], data->unk20);
-                    if (D_800CCF58_main[HmfModelData[arg0->model[4]].unk02].unk02 <= HmfModelData[arg0->model[4]].unk40) {
+                    if (D_800CCF58_main[HmfModelData[arg0->model[4]].motId].unk02 <= HmfModelData[arg0->model[4]].motTime) {
                         func_8001C258_main(arg0->model[4], 4, 4);
                     }
-                    if (D_800CCF58_main[HmfModelData[arg0->model[5]].unk02].unk02 <= HmfModelData[arg0->model[5]].unk40) {
+                    if (D_800CCF58_main[HmfModelData[arg0->model[5]].motId].unk02 <= HmfModelData[arg0->model[5]].motTime) {
                         func_8001C258_main(arg0->model[5], 4, 4);
                     }
                     break;
@@ -1285,7 +1285,7 @@ void func_801095C8_coconut_conk(omObjData *arg0) {
         D_800D20A1_main[arg0->work[3]] = 0;
     }
     func_800DDD94_minigame(arg0);
-    if (HmfModelData[arg0->model[7]].unk40 == 0.0f) {
+    if (HmfModelData[arg0->model[7]].motTime == 0.0f) {
         func_8001C258_main(arg0->model[7], 4, 4);
     }
     if (work->unk5C == 0x200 && work->unk50 == 0x80 && data->unk04 == 0) {

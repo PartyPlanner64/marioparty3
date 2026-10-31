@@ -68,7 +68,7 @@ void omOutView(omObjData *object) {
     D_800CE17C_main[0] = pos.x;
     D_800CE17C_main[1] = pos.z;
     D_800CE17C_main[-1] = CRot.y; // actually D_800CE178_main?
-    D_800CE17C_main[2] = gCameraList->fov[0];
+    D_800CE17C_main[2] = gCameraList->fov;
     D_800CE17C_main[3] = D_800D5210_main;
     D_800CE17C_main[4] = D_800CB890_main;
     Hu3DCamSetPositionOrientation(0, &pos, &at, &up);
@@ -95,7 +95,7 @@ void omOutViewMulti(omObjData *object) {
         D_800D04B8_main[i][1] = pos.x;
         D_800D04B8_main[i][2] = pos.z;
         D_800D04B8_main[i][0] = CRotM[i].y;
-        D_800D04B8_main[i][3] = gCameraList[i].fov[0];
+        D_800D04B8_main[i][3] = gCameraList[i].fov;
         D_800D04B8_main[i][4] = D_800CCF98_main[i];
         D_800D04B8_main[i][5] = D_800D4198_main[i];
         Hu3DCamSetPositionOrientation(i, &pos, &at, &up);
@@ -267,7 +267,7 @@ void func_8004C4C4_main(omObjData *object) {
     D_800CE17C_main[0] = pos.x;
     D_800CE17C_main[1] = pos.z;
     D_800CE17C_main[-1] = CRot.y; // actually D_800CE178_main?
-    D_800CE17C_main[2] = gCameraList->fov[0];
+    D_800CE17C_main[2] = gCameraList->fov;
     D_800CE17C_main[3] = D_800D5210_main;
     D_800CE17C_main[4] = D_800CB890_main;
     Hu3DCamSetPositionOrientation(0, &pos, &at, &up);
@@ -314,7 +314,7 @@ void func_8004C76C_main(omObjData *object) {
         D_800D04B8_main[i][1] = pos.x;
         D_800D04B8_main[i][2] = pos.z;
         D_800D04B8_main[i][0] = CRotM[i].y; // actually D_800CE178_main?
-        D_800D04B8_main[i][3] = gCameraList[i].fov[0];
+        D_800D04B8_main[i][3] = gCameraList[i].fov;
         D_800D04B8_main[i][4] = D_800CCF98_main[i];
         D_800D04B8_main[i][5] = D_800D4198_main[i];
         Hu3DCamSetPositionOrientation(i, &pos, &at, &up);

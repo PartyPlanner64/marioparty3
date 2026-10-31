@@ -337,7 +337,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_13_log_jam/1A3D80", func_8010C714_log
 void func_8010C7D0_log_jam(omObjData *object) {
     HmfModel *model = &HmfModelData[object->model[0]];
 
-    model->unk44 = 0.0f;
+    model->motSpeed = 0.0f;
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_13_log_jam/1A3D80", func_8010C7F8_log_jam);

@@ -166,7 +166,7 @@ void func_801089CC_baby_bowser_bonkers(BabyBowserBonkersActor *actor) {
     actor->unk_04 = 0;
     actor->unk_08 = -1;
     actor->unk_18 = 0;
-    model->unk18 |= 4;
+    model->attr |= 4;
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_80108A0C_baby_bowser_bonkers);
@@ -189,7 +189,7 @@ void func_80108E90_baby_bowser_bonkers(BabyBowserBonkersActor *actor) {
     model->scale.x = 1.0f;
     model->scale.z = 1.0f;
     model->scale.y = 0.4f - scale * 0.35f;
-    model->unk44 = 0.0f;
+    model->motSpeed = 0.0f;
     if (15.0f <= (f32)actor->unk_0A) {
         actor->unk_0A = 0;
         actor->unk_2C = func_80108F9C_baby_bowser_bonkers;

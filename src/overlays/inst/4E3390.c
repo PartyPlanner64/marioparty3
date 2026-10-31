@@ -136,8 +136,8 @@ void func_8010A750_inst(omObjData *object) {
     s8 i;
 
     source = D_8010DDD8_inst.object;
-    duration = D_800CCF58_main[HmfModelData[source->model[0]].unk02].unk02;
-    time = HmfModelData[source->model[0]].unk40;
+    duration = D_800CCF58_main[HmfModelData[source->model[0]].motId].unk02;
+    time = HmfModelData[source->model[0]].motTime;
     models = D_8010D4C0_inst[D_8010D40A_inst][0];
     for (i = 0; i < models->count; i++) {
         model = &HmfModelData[object->model[i + 1]];
@@ -211,7 +211,7 @@ void func_8010AD78_inst(omObjData *object) {
     InstModelHooks *models;
     s8 i;
 
-    duration = D_800CCF58_main[HmfModelData[object->model[5]].unk02].unk02 - 20.0f;
+    duration = D_800CCF58_main[HmfModelData[object->model[5]].motId].unk02 - 20.0f;
     models = D_8010D4C0_inst[D_8010D40A_inst][0];
     for (i = 0; i < models->count; i++) {
         func_8008A120_main(rotation, (1.0f / duration) * D_8010D414_inst);
@@ -308,7 +308,7 @@ void func_8010B2A4_inst(omObjData *object) {
     InstModelHooks *models;
     s8 i;
 
-    duration = D_800CCF58_main[HmfModelData[object->model[5]].unk02].unk02 - 20.0f;
+    duration = D_800CCF58_main[HmfModelData[object->model[5]].motId].unk02 - 20.0f;
     models = D_8010D4C0_inst[D_8010D40A_inst][0];
     for (i = 0; i < models->count; i++) {
         func_8008A120_main(rotation, (1.0f / duration) * D_8010D414_inst);
@@ -344,7 +344,7 @@ void func_8010B628_inst(omObjData *object) {
     InstModelHooks *models;
     s32 i;
 
-    duration = D_800CCF58_main[HmfModelData[object->model[5]].unk02].unk02;
+    duration = D_800CCF58_main[HmfModelData[object->model[5]].motId].unk02;
     models = D_8010D4C0_inst[D_8010D40A_inst][0];
     for (i = 0; i < models->count; i++) {
         func_8001C258_main(object->model[i + 5], 4, 0);
@@ -352,7 +352,7 @@ void func_8010B628_inst(omObjData *object) {
         func_8001C814_main(object->model[i + 5], 1, 0);
     }
     models = D_8010D4C0_inst[D_8010D40A_inst][1];
-    duration = D_800CCF58_main[HmfModelData[object->model[15]].unk02].unk02;
+    duration = D_800CCF58_main[HmfModelData[object->model[15]].motId].unk02;
     for (i = 0; i < models->count; i++) {
         func_8001C258_main(object->model[i + 15], 4, 0);
         Hu3DMotionTimeSet(object->model[i + 15], duration);

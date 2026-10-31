@@ -231,7 +231,7 @@ s16 HuSprGrpCreate(u16 arg0, u16 arg1) {
     }
     HuSprGrpData[var_s4] = temp_v0_2;
     temp_v0_2->unk_0A = 0;
-    temp_v0_2->unk_0C = 1;
+    temp_v0_2->dirty = 1;
     var_s2 = temp_v0_2->members;
     for (i = 0; i < arg0; i++) {
         *(var_s2++) = temp_v0_3 = HuMemAlloc(0x210);
@@ -297,7 +297,7 @@ s32 func_80052A90_main(s16 group, s16 member, u16 count) {
     }
     HuSprGrpData[newSlot] = newGroup;
     newGroup->unk_0A = 0;
-    newGroup->unk_0C = 1;
+    newGroup->dirty = 1;
     mp = newGroup->members;
     for (i = 0; i < count; i++) {
         *(mp++) = sprite = HuMemAlloc(0x210);
@@ -357,9 +357,9 @@ void func_80052E14_main(HuSprite *arg0) {
     arg0->unk_68.unk04 = arg0->unk_88;
     arg0->unk_68.unk06 = arg0->unk_0E;
     arg0->unk_68.unk0A = arg0->unk_8A;
-    arg0->unk_68.unk08 = arg0->unk_0C;
+    arg0->unk_68.unk08 = arg0->bank;
     arg0->unk_68.unk0C = arg0->unk_8C;
-    arg0->unk_68.unk10 = arg0->unk_10;
+    arg0->unk_68.unk10 = arg0->speed;
     arg0->unk_68.unk16 = arg0->unk_92;
     arg0->unk_68.unk14 = arg0->unk_90;
     arg0->unk_68.unk18 = 0;
@@ -379,8 +379,8 @@ void func_80052E68_main(HuSprGrp *group, u16 count) {
         sprite->prio = 0x8000;
         sprite->unk_20 = 0;
         sprite->unk_24 = 0;
-        sprite->unk_28[0] = sprite->unk_28[1] = sprite->unk_28[2] = 0;
-        sprite->unk_2C = 0x100;
+        sprite->color[0] = sprite->color[1] = sprite->color[2] = 0;
+        sprite->tpLvl = 0x100;
         if (i != 0) {
             sprite->unk_2E = 0;
         } else {
@@ -391,19 +391,19 @@ void func_80052E68_main(HuSprGrp *group, u16 count) {
         sprite->unk_3C = sprite->unk_3E = sprite->unk_40 = sprite->unk_42 = 0;
         sprite->unk_44 = 0;
         sprite->unk_116 = sprite->unk_114 = -1;
-        sprite->unk_48 = 0.0f;
-        sprite->unk_4C = 0.0f;
-        sprite->unk_50 = sprite->unk_54 = 1.0f;
-        sprite->unk_58 = 0.0f;
-        sprite->unk_5C = 0;
+        sprite->pos.x = 0.0f;
+        sprite->pos.y = 0.0f;
+        sprite->scale.x = sprite->scale.y = 1.0f;
+        sprite->zRot = 0.0f;
+        sprite->attr = 0;
         sprite->unk_60 = sprite->unk_64 = 1.0f;
         func_80052DD8_main(&sprite->unk_68);
         sprite->unk_84 = sprite->unk_68.unk00;
         sprite->unk_88 = sprite->unk_68.unk04;
         sprite->unk_0E = (u16)sprite->unk_68.unk06;
-        sprite->unk_0C = (u16)sprite->unk_68.unk08;
+        sprite->bank = (u16)sprite->unk_68.unk08;
         sprite->unk_8C = sprite->unk_68.unk0C;
-        sprite->unk_10 = sprite->unk_68.unk10;
+        sprite->speed = sprite->unk_68.unk10;
         sprite->unk_90 = (u16)sprite->unk_68.unk14;
         sprite->unk_92 = sprite->unk_68.unk16;
         sprite->unk_93 = sprite->unk_68.unk17;
@@ -593,16 +593,16 @@ void func_80053558_main(void) {
     f32 angle;
 
     for (group = HuSprGrpLast; group != NULL; group = group->prev) {
-        if (group->unk_0C) {
-            group->unk_0C = 0;
+        if (group->dirty) {
+            group->dirty = 0;
             switch (group->unk_08) {
                 case 0:
                     for (cur = 0; cur < group->unk_0A; cur++) {
                         sprite = group->members[cur];
                         func_80056650_main(sprite);
-                        sprite->unk_04 = sprite->unk_93 + sprite->unk_48;
-                        sprite->unk_08 = sprite->unk_94 + sprite->unk_4C;
-                        sprite->unk_20 = sprite->unk_58;
+                        sprite->unk_04 = sprite->unk_93 + sprite->pos.x;
+                        sprite->unk_08 = sprite->unk_94 + sprite->pos.y;
+                        sprite->unk_20 = sprite->zRot;
                         func_80056758_main(sprite);
                     }
                     break;
@@ -612,14 +612,14 @@ void func_80053558_main(void) {
                         sprite = group->members[cur];
                         func_80056650_main(sprite);
                         if (sprite->unk_2E < 0) {
-                            sprite->unk_04 = sprite->unk_93 + sprite->unk_48;
-                            sprite->unk_08 = sprite->unk_94 + sprite->unk_4C;
-                            sprite->unk_20 = sprite->unk_58;
+                            sprite->unk_04 = sprite->unk_93 + sprite->pos.x;
+                            sprite->unk_08 = sprite->unk_94 + sprite->pos.y;
+                            sprite->unk_20 = sprite->zRot;
                         } else {
                             parent = group->members[sprite->unk_2E];
-                            sprite->unk_04 = sprite->unk_93 + sprite->unk_48;
-                            sprite->unk_08 = sprite->unk_94 + sprite->unk_4C;
-                            sprite->unk_20 = parent->unk_20 + sprite->unk_58;
+                            sprite->unk_04 = sprite->unk_93 + sprite->pos.x;
+                            sprite->unk_08 = sprite->unk_94 + sprite->pos.y;
+                            sprite->unk_20 = parent->unk_20 + sprite->zRot;
                         }
                         func_80056758_main(sprite);
                         if (sprite->unk_116 >= 0) {
@@ -643,14 +643,14 @@ void func_80053558_main(void) {
                         sprite = group->members[cur];
                         func_80056650_main(sprite);
                         if (sprite->unk_2E < 0) {
-                            sprite->unk_04 = sprite->unk_93 + sprite->unk_48;
-                            sprite->unk_08 = sprite->unk_94 + sprite->unk_4C;
+                            sprite->unk_04 = sprite->unk_93 + sprite->pos.x;
+                            sprite->unk_08 = sprite->unk_94 + sprite->pos.y;
                         } else {
                             parent = group->members[sprite->unk_2E];
-                            sprite->unk_04 = (sprite->unk_93 + sprite->unk_48) * sprite->unk_18 + parent->unk_04;
-                            sprite->unk_08 = (sprite->unk_94 + sprite->unk_4C) * sprite->unk_1C + parent->unk_08;
+                            sprite->unk_04 = (sprite->unk_93 + sprite->pos.x) * sprite->unk_18 + parent->unk_04;
+                            sprite->unk_08 = (sprite->unk_94 + sprite->pos.y) * sprite->unk_1C + parent->unk_08;
                         }
-                        sprite->unk_20 = sprite->unk_58;
+                        sprite->unk_20 = sprite->zRot;
                         func_80056758_main(sprite);
                         if (sprite->unk_116 >= 0) {
                             stack[depth++] = cur;
@@ -673,14 +673,14 @@ void func_80053558_main(void) {
                         sprite = group->members[cur];
                         func_80056650_main(sprite);
                         if (sprite->unk_2E < 0) {
-                            sprite->unk_04 = sprite->unk_93 + sprite->unk_48;
-                            sprite->unk_08 = sprite->unk_94 + sprite->unk_4C;
-                            sprite->unk_20 = sprite->unk_58;
+                            sprite->unk_04 = sprite->unk_93 + sprite->pos.x;
+                            sprite->unk_08 = sprite->unk_94 + sprite->pos.y;
+                            sprite->unk_20 = sprite->zRot;
                         } else {
                             parent = group->members[sprite->unk_2E];
-                            sprite->unk_04 = (sprite->unk_93 + sprite->unk_48) * sprite->unk_18 + parent->unk_04;
-                            sprite->unk_08 = (sprite->unk_94 + sprite->unk_4C) * sprite->unk_1C + parent->unk_08;
-                            sprite->unk_20 = parent->unk_20 + sprite->unk_58;
+                            sprite->unk_04 = (sprite->unk_93 + sprite->pos.x) * sprite->unk_18 + parent->unk_04;
+                            sprite->unk_08 = (sprite->unk_94 + sprite->pos.y) * sprite->unk_1C + parent->unk_08;
+                            sprite->unk_20 = parent->unk_20 + sprite->zRot;
                         }
                         func_80056758_main(sprite);
                         if (sprite->unk_116 >= 0) {
@@ -706,21 +706,21 @@ void func_80053558_main(void) {
                         if (sprite->unk_2E < 0) {
                             parentMtx[0][0] = parentMtx[1][1] = 1.0f;
                             parentMtx[0][1] = parentMtx[1][0] = 0.0f;
-                            parentMtx[2][0] = sprite->unk_93 + sprite->unk_48;
-                            parentMtx[2][1] = sprite->unk_94 + sprite->unk_4C;
-                            sprite->unk_04 = sprite->unk_48;
-                            sprite->unk_08 = sprite->unk_4C;
+                            parentMtx[2][0] = sprite->unk_93 + sprite->pos.x;
+                            parentMtx[2][1] = sprite->unk_94 + sprite->pos.y;
+                            sprite->unk_04 = sprite->pos.x;
+                            sprite->unk_08 = sprite->pos.y;
                         } else {
                             localMtx[0][0] = localMtx[1][1] = 1.0f;
                             localMtx[0][1] = localMtx[1][0] = 0.0f;
-                            localMtx[2][0] = (sprite->unk_93 + sprite->unk_48) * sprite->unk_18;
-                            localMtx[2][1] = (sprite->unk_94 + sprite->unk_4C) * sprite->unk_1C;
+                            localMtx[2][0] = (sprite->unk_93 + sprite->pos.x) * sprite->unk_18;
+                            localMtx[2][1] = (sprite->unk_94 + sprite->pos.y) * sprite->unk_1C;
                             func_800534C8_main(localMtx, mtx[sprite->unk_2E], parentMtx);
                             sprite->unk_04 = (s16)parentMtx[2][0];
                             sprite->unk_08 = (s16)parentMtx[2][1];
                         }
-                        sprite->unk_20 = sprite->unk_58;
-                        angle = -sprite->unk_58 * (3.141592654 / 180.0);
+                        sprite->unk_20 = sprite->zRot;
+                        angle = -sprite->zRot * (3.141592654 / 180.0);
                         localMtx[0][0] = localMtx[1][1] = cosf(angle);
                         localMtx[0][1] = sinf(angle);
                         localMtx[1][0] = -localMtx[0][1];
@@ -750,23 +750,23 @@ void func_80053558_main(void) {
                         if (sprite->unk_2E < 0) {
                             parentMtx[0][0] = parentMtx[1][1] = 1.0f;
                             parentMtx[0][1] = parentMtx[1][0] = 0.0f;
-                            parentMtx[2][0] = sprite->unk_93 + sprite->unk_48;
-                            parentMtx[2][1] = sprite->unk_94 + sprite->unk_4C;
-                            sprite->unk_04 = sprite->unk_48;
-                            sprite->unk_08 = sprite->unk_4C;
-                            sprite->unk_20 = sprite->unk_58;
+                            parentMtx[2][0] = sprite->unk_93 + sprite->pos.x;
+                            parentMtx[2][1] = sprite->unk_94 + sprite->pos.y;
+                            sprite->unk_04 = sprite->pos.x;
+                            sprite->unk_08 = sprite->pos.y;
+                            sprite->unk_20 = sprite->zRot;
                         } else {
                             parent = group->members[sprite->unk_2E];
                             localMtx[0][0] = localMtx[1][1] = 1.0f;
                             localMtx[0][1] = localMtx[1][0] = 0.0f;
-                            localMtx[2][0] = (sprite->unk_93 + sprite->unk_48) * sprite->unk_18;
-                            localMtx[2][1] = (sprite->unk_94 + sprite->unk_4C) * sprite->unk_1C;
+                            localMtx[2][0] = (sprite->unk_93 + sprite->pos.x) * sprite->unk_18;
+                            localMtx[2][1] = (sprite->unk_94 + sprite->pos.y) * sprite->unk_1C;
                             func_800534C8_main(localMtx, mtx[sprite->unk_2E], parentMtx);
                             sprite->unk_04 = (s16)parentMtx[2][0];
                             sprite->unk_08 = (s16)parentMtx[2][1];
-                            sprite->unk_20 = parent->unk_20 + sprite->unk_58;
+                            sprite->unk_20 = parent->unk_20 + sprite->zRot;
                         }
-                        angle = -sprite->unk_58 * (3.141592654 / 180.0);
+                        angle = -sprite->zRot * (3.141592654 / 180.0);
                         localMtx[0][0] = localMtx[1][1] = cosf(angle);
                         localMtx[0][1] = sinf(angle);
                         localMtx[1][0] = -localMtx[0][1];
@@ -958,10 +958,10 @@ void HuSprPosSet(s16 group, s16 member, s16 arg2, s16 arg3) {
     HuSprGrp *group_ptr = HuSprGrpData[group];
     HuSprite *sprite_ptr = group_ptr->members[member];
 
-    if ((sprite_ptr->unk_48 != arg2) || (sprite_ptr->unk_4C != arg3)) {
-        group_ptr->unk_0C = 1;
-        sprite_ptr->unk_48 = arg2;
-        sprite_ptr->unk_4C = arg3;
+    if ((sprite_ptr->pos.x != arg2) || (sprite_ptr->pos.y != arg3)) {
+        group_ptr->dirty = 1;
+        sprite_ptr->pos.x = arg2;
+        sprite_ptr->pos.y = arg3;
     }
 }
 
@@ -996,7 +996,7 @@ f32 func_80054B1C_main(s16 group, s16 member, s16 camera, f32 x, f32 y, f32 z) {
     s32 depth;
     f32 scale;
 
-    guPerspective(&perspMtx, &perspNorm, cam->fov[0], 4.0f / 3.0f, cam->fov[1], cam->fov[2], 1.0f);
+    guPerspective(&perspMtx, &perspNorm, cam->fov, 4.0f / 3.0f, cam->near, cam->far, 1.0f);
     guLookAt(&lookAtMtx, cam->pos.x, cam->pos.y, cam->pos.z, cam->at.x, cam->at.y, cam->at.z, cam->up.x, cam->up.y,
              cam->up.z);
     func_800549F4_main(&lookAtMtx, x, y, z, 1.0f, &x1, &y1, &z1, &w1);
@@ -1012,16 +1012,16 @@ f32 func_80054B1C_main(s16 group, s16 member, s16 camera, f32 x, f32 y, f32 z) {
     } else if (depth > 0x7FC0) {
         depth = 0x7FC0;
     }
-    scale = sindf(gCameraList[camera].fov[0] * 0.5) * z1 / cosdf(gCameraList[camera].fov[0] * 0.5);
+    scale = sindf(gCameraList[camera].fov * 0.5) * z1 / cosdf(gCameraList[camera].fov * 0.5);
     D_800BD808_main = scale = fabsf(scale);
     if (scale != 0.0) {
-        sprite->unk_48 = cam->viewports[D_800D418E_main].vp.vscale[0] / 4.0 * x1 / scale / (f64)(4.0f / 3.0f) +
+        sprite->pos.x = cam->viewports[D_800D418E_main].vp.vscale[0] / 4.0 * x1 / scale / (f64)(4.0f / 3.0f) +
                          cam->viewports[D_800D418E_main].vp.vtrans[0] / 4.0;
-        sprite->unk_4C = cam->viewports[D_800D418E_main].vp.vscale[1] / 4.0 * -y1 / scale +
+        sprite->pos.y = cam->viewports[D_800D418E_main].vp.vscale[1] / 4.0 * -y1 / scale +
                          cam->viewports[D_800D418E_main].vp.vtrans[1] / 4.0;
     }
     sprite->unk_44 = depth;
-    group_ptr->unk_0C = 1;
+    group_ptr->dirty = 1;
     return D_800BD808_main;
 }
 
@@ -1048,9 +1048,9 @@ void func_80055024_main(s16 group, s16 member, s16 arg2, u16 arg3) {
     if (D_800C9530_main[arg2]->unk04 != 0) {
         sprite_ptr->unk_0E = 1;
     }
-    sprite_ptr->unk_0C = arg3;
+    sprite_ptr->bank = arg3;
     sprite_ptr->unk_8C = 0.0f;
-    sprite_ptr->unk_10 = 1.0f;
+    sprite_ptr->speed = 1.0f;
     sprite_ptr->unk_8A = 0;
     sprite_ptr->unk_88 = 0;
     sprite_ptr->unk_90 = 0;
@@ -1060,7 +1060,7 @@ void func_80055024_main(s16 group, s16 member, s16 arg2, u16 arg3) {
 void HuSprSpeedSet(s16 group, s16 member, f32 arg2) {
     HuSprite *sprite_ptr = HuSprGrpData[group]->members[member];
 
-    sprite_ptr->unk_10 = arg2;
+    sprite_ptr->speed = arg2;
     func_80052E14_main(sprite_ptr);
 }
 
@@ -1076,7 +1076,7 @@ void HuSprBankSet(s16 group, s16 member, u16 arg2, s32 arg3) {
     HuSprite *sprite = HuSprGrpData[group]->members[member];
 
     sprite->unk_88 &= 0x7F;
-    sprite->unk_0C = arg2;
+    sprite->bank = arg2;
     sprite->unk_8A = arg3;
     sprite->unk_8C = 0;
     func_80052E14_main(sprite);
@@ -1094,10 +1094,10 @@ void HuSprScaleSet(s16 group, s16 member, f32 x, f32 y) {
     HuSprGrp *group_ptr = HuSprGrpData[group];
     HuSprite *sprite_ptr = group_ptr->members[member];
 
-    if (sprite_ptr->unk_50 != x || sprite_ptr->unk_54 != y || sprite_ptr->unk_60 != 1.0f || sprite_ptr->unk_64 != 1.0f) {
-        group_ptr->unk_0C = 1;
-        sprite_ptr->unk_50 = x;
-        sprite_ptr->unk_54 = y;
+    if (sprite_ptr->scale.x != x || sprite_ptr->scale.y != y || sprite_ptr->unk_60 != 1.0f || sprite_ptr->unk_64 != 1.0f) {
+        group_ptr->dirty = 1;
+        sprite_ptr->scale.x = x;
+        sprite_ptr->scale.y = y;
         sprite_ptr->unk_64 = 1.0f;
         sprite_ptr->unk_60 = 1.0f;
     }
@@ -1116,59 +1116,59 @@ void HuSprZRotSet(s16 group, s16 member, f32 arg2) {
     HuSprGrp *group_ptr = HuSprGrpData[group];
     HuSprite *sprite_ptr = group_ptr->members[member];
 
-    if (sprite_ptr->unk_58 != arg2) {
-        group_ptr->unk_0C = 1;
-        sprite_ptr->unk_58 = arg2;
+    if (sprite_ptr->zRot != arg2) {
+        group_ptr->dirty = 1;
+        sprite_ptr->zRot = arg2;
     }
 }
 
 void HuSprAttrReset(s16 group, s16 member, s32 attr) {
     HuSprite *sprite_ptr = HuSprGrpData[group]->members[member];
 
-    if ((sprite_ptr->unk_5C & 0x8000) && (attr & 0x8000)) {
+    if ((sprite_ptr->attr & 0x8000) && (attr & 0x8000)) {
         D_800A1EA0_main = 1;
     }
-    if ((sprite_ptr->unk_5C & 0x4000) && (attr & 0x4000)) {
+    if ((sprite_ptr->attr & 0x4000) && (attr & 0x4000)) {
         D_800A1EA0_main = 1;
     }
-    sprite_ptr->unk_5C &= ~attr;
-    sprite_ptr->unk_24 = sprite_ptr->unk_5C;
+    sprite_ptr->attr &= ~attr;
+    sprite_ptr->unk_24 = sprite_ptr->attr;
 }
 
 void HuSprAttrSet(s16 group, s16 member, s32 attr) {
     HuSprite *sprite_ptr = HuSprGrpData[group]->members[member];
 
-    if (!(sprite_ptr->unk_5C & 0x8000) && (attr & 0x8000)) {
+    if (!(sprite_ptr->attr & 0x8000) && (attr & 0x8000)) {
         D_800A1EA0_main = 1;
     }
-    if (!(sprite_ptr->unk_5C & 0x4000) && (attr & 0x4000)) {
+    if (!(sprite_ptr->attr & 0x4000) && (attr & 0x4000)) {
         D_800A1EA0_main = 1;
     }
-    sprite_ptr->unk_5C |= attr;
-    sprite_ptr->unk_24 = sprite_ptr->unk_5C;
+    sprite_ptr->attr |= attr;
+    sprite_ptr->unk_24 = sprite_ptr->attr;
 }
 
 void HuSprColorSet(s16 group, s16 member, u8 r, u8 g, u8 b) {
     HuSprite *sprite_ptr = HuSprGrpData[group]->members[member];
 
-    sprite_ptr->unk_28[0] = r;
-    sprite_ptr->unk_28[1] = g;
-    sprite_ptr->unk_28[2] = b;
+    sprite_ptr->color[0] = r;
+    sprite_ptr->color[1] = g;
+    sprite_ptr->color[2] = b;
 }
 
 void HuSprTPLvlSet(s16 group, s16 member, u16 arg2) {
     HuSprite *sprite_ptr = HuSprGrpData[group]->members[member];
 
-    sprite_ptr->unk_2C = arg2;
+    sprite_ptr->tpLvl = arg2;
 }
 
 void func_80055484_main(s16 group, s16 member, u8 arg2, u8 arg3, u8 arg4, u16 arg5) {
     HuSprite *sprite_ptr = HuSprGrpData[group]->members[member];
 
-    sprite_ptr->unk_28[0] = arg2;
-    sprite_ptr->unk_28[1] = arg3;
-    sprite_ptr->unk_28[2] = arg4;
-    sprite_ptr->unk_2C = arg5;
+    sprite_ptr->color[0] = arg2;
+    sprite_ptr->color[1] = arg3;
+    sprite_ptr->color[2] = arg4;
+    sprite_ptr->tpLvl = arg5;
 }
 
 void func_800554C4_main(s16 group, s16 member, s16 arg2) {
@@ -1667,9 +1667,9 @@ void func_80056650_main(HuSprite *sprite) {
     sprite->unk_92 = anm->unk16;
     sprite->unk_8A = (u16)anm->unk0A;
     sprite->unk_8C = anm->unk0C;
-    sprite->unk_10 = anm->unk10;
-    sprite->unk_18 = sprite->unk_50 * sprite->unk_60;
-    sprite->unk_1C = sprite->unk_54 * sprite->unk_64;
+    sprite->speed = anm->unk10;
+    sprite->unk_18 = sprite->scale.x * sprite->unk_60;
+    sprite->unk_1C = sprite->scale.y * sprite->unk_64;
     if (sprite->unk_98.unk00 != NULL) {
         func_800571C8_main(&sprite->unk_98);
     }
@@ -1694,7 +1694,7 @@ void func_80056758_main(HuSprite *sprite) {
     u32 tiles;
     s32 changed;
 
-    sprite->unk_24 = sprite->unk_92 ^ sprite->unk_5C;
+    sprite->unk_24 = sprite->unk_92 ^ sprite->attr;
     if (sprite->unk_84 == NULL || (sprite->unk_24 & 0x8000)) {
         return;
     }

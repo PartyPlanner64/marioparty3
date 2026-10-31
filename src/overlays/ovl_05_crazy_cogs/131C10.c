@@ -329,7 +329,7 @@ void func_80106034_crazy_cogs(omObjData *arg0, u16 arg1, s16 arg2) {
 
 void func_801060A0_crazy_cogs(omObjData *arg0, u16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     if (arg1 < 0xA) {
-        Hu3DMotionShiftSet(arg0->model[0], HmfModelData[arg0->motion[arg1]].unk02, arg2, arg3, arg4);
+        Hu3DMotionShiftSet(arg0->model[0], HmfModelData[arg0->motion[arg1]].motId, arg2, arg3, arg4);
     }
 }
 
@@ -1045,8 +1045,8 @@ void func_80108190_crazy_cogs(omObjData *arg0) {
             cog->unk_44.y = arg0->trans.y;
             cog->unk_12++;
             func_800E5690_minigame(arg0, 0x12);
-            HmfModelData[arg0->model[0]].unk40 = 0;
-            HmfModelData[arg0->model[0]].unk44 = 0;
+            HmfModelData[arg0->model[0]].motTime = 0;
+            HmfModelData[arg0->model[0]].motSpeed = 0;
             func_80105B04_crazy_cogs(arg0->work[1]);
             func_800DDD94_minigame(arg0);
             HuAudFXStop((s16)(arg0->work[3] * 2 + 2));

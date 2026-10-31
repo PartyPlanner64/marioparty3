@@ -267,7 +267,7 @@ void func_80105B8C_meschk() {
             while (HuWinStatGet(window) != 0) {
                 HuPrcVSleep();
             }
-            if (winData[window].unk_30 != 0) {
+            if (winData[window].num_choices != 0) {
                 HuWinChoiceGet(window, 0, 0);
             } else if (hasChoice == 0) {
                 while (!(D_800D5558_main[0] & 0xC03F)) {
@@ -354,7 +354,7 @@ void func_801063BC_meschk() {
             break;
         }
         func_80016FB4_main(model, animation, frame);
-        if (frame >= D_800CCF58_main[HmfModelData[motion].unk02].unk02) {
+        if (frame >= D_800CCF58_main[HmfModelData[motion].motId].unk02) {
             frame = 0;
         }
         frame += 2;

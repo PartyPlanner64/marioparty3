@@ -12,8 +12,8 @@ void func_800E4BA4_minigame(s32 arg0) {
     f32 unk40;
 
     if (arg0 & 0xFF) {
-        unk40 = HmfModelData[arg0 & 0xFF].unk40;
-        if (D_800CCF58_main[HmfModelData[arg0 & 0xFF].unk02].unk02 <= unk40) {
+        unk40 = HmfModelData[arg0 & 0xFF].motTime;
+        if (D_800CCF58_main[HmfModelData[arg0 & 0xFF].motId].unk02 <= unk40) {
             func_8001C258_main((u8)arg0, 4, 4);
         }
     }
@@ -32,7 +32,7 @@ void func_800E4D9C_minigame(omObjData *arg0) {
         s16 anim = motion[22] & 0x3FFF;
         func_8001EED8_main(arg0->model[0], anim, flag);
     } else {
-        s16 anim = HmfModelData[arg0->motion[22] & 0x3FFF].unk02;
+        s16 anim = HmfModelData[arg0->motion[22] & 0x3FFF].motId;
         func_8001EED8_main(arg0->model[0], anim, flag);
     }
 }

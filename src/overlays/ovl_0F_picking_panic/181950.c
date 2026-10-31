@@ -1122,7 +1122,7 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
                         func_8001C258_main(D_8010EF00_picking_panic[winner + k]->model[0], 4, 4);
                         func_8001C258_main(D_8010EF00_picking_panic[winner + k]->model[1], 4, 0);
                         Hu3DMotionShiftSet(D_8010EF00_picking_panic[winner + k]->model[1],
-                                           HmfModelData[D_8010EF00_picking_panic[winner + k]->motion[2]].unk02, 50,
+                                           HmfModelData[D_8010EF00_picking_panic[winner + k]->motion[2]].motId, 50,
                                            flyFrames, 0);
                     }
                 }
@@ -1157,7 +1157,7 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
                 }
                 if (D_8010EFA4_picking_panic == 26) {
                     Hu3DMotionShiftSet(D_8010EF00_picking_panic[winner + j]->model[1],
-                                       HmfModelData[D_8010EF00_picking_panic[winner + j]->motion[0]].unk02, 0, 20, 2);
+                                       HmfModelData[D_8010EF00_picking_panic[winner + j]->motion[0]].motId, 0, 20, 2);
                 }
                 if (j == 1 && D_8010EFA4_picking_panic < 255) {
                     if (D_8010EFA4_picking_panic == 1) {
@@ -1174,8 +1174,8 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
         }
     }
 
-    if (HmfModelData[D_8010EEFC_picking_panic->model[arg1 + 10]].unk40 >= 60.0f) {
-        HmfModelData[D_8010EEFC_picking_panic->model[arg1 + 10]].unk40 = 0.0f;
+    if (HmfModelData[D_8010EEFC_picking_panic->model[arg1 + 10]].motTime >= 60.0f) {
+        HmfModelData[D_8010EEFC_picking_panic->model[arg1 + 10]].motTime = 0.0f;
         func_8001C258_main(D_8010EEFC_picking_panic->model[arg1 + 10], 4, 4);
     }
     D_8010EF10_picking_panic[arg1] =

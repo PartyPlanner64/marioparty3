@@ -1216,7 +1216,7 @@ void func_80109908_option(f32 x, f32 y, f32 z, s32 *screenX, s32 *screenY) {
     pos.x = x;
     pos.y = y;
     pos.z = z;
-    func_80109730_option(&camera->pos, &camera->at, &camera->up, camera->fov[0], &pos, &px, &py);
+    func_80109730_option(&camera->pos, &camera->at, &camera->up, camera->fov, &pos, &px, &py);
     *screenX = px;
     *screenY = py;
 }
@@ -1228,7 +1228,7 @@ void func_8010998C_option(Vec *camPos, Vec *camAt, Vec *camUp, f32 x, f32 y, f32
     pos.x = x;
     pos.y = y;
     pos.z = z;
-    func_80109730_option(camPos, camAt, camUp, gCameraList->fov[0], &pos, &px, &py);
+    func_80109730_option(camPos, camAt, camUp, gCameraList->fov, &pos, &px, &py);
     *screenX = px;
     *screenY = py;
 }
@@ -1973,7 +1973,7 @@ s32 func_8010BACC_option(s32 selection, s32 arg1) {
             func_801132AC_option(4, 4);
             HuPrcSleep(30);
             model = func_80113218_option(4);
-            while (HmfModelData[(s16)model].unk40 != 0.0f) {
+            while (HmfModelData[(s16)model].motTime != 0.0f) {
                 HuPrcVSleep();
             }
             func_80113424_option(0);
@@ -2002,7 +2002,7 @@ s32 func_8010BACC_option(s32 selection, s32 arg1) {
             func_801132AC_option(5, 4);
             HuPrcSleep(30);
             model = func_80113218_option(5);
-            while (HmfModelData[(s16)model].unk40 != 0.0f) {
+            while (HmfModelData[(s16)model].motTime != 0.0f) {
                 HuPrcVSleep();
             }
             func_80113424_option(0);

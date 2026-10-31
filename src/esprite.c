@@ -16,11 +16,11 @@ void espInit(void) {
     u16 var_a0;
 
     HuSprInit();
-    D_800CD1DC_main = HuMemAlloc(0x100 * sizeof(D_800CD1DC_main_Struct));
+    D_800CD1DC_main = HuMemAlloc(0x100 * sizeof(ESPRITE));
     D_800C951C_main = 0x100;
     D_800CB8BC_main = 0;
     for (var_a0 = 0; var_a0 < 0x100; var_a0++) {
-        D_800CD1DC_main_Struct *temp_v0 = &D_800CD1DC_main[var_a0];
+        ESPRITE *temp_v0 = &D_800CD1DC_main[var_a0];
 
         temp_v0->unk00 = 0;
         temp_v0->unk02 = var_a0 + 1;
@@ -67,7 +67,7 @@ void func_8000BA00_main() {
 }
 
 void func_8000BA30_main(void) {
-    D_800CD1DC_main_Struct *sprite;
+    ESPRITE *sprite;
     s16 gid;
     s32 i;
 
@@ -105,7 +105,7 @@ void espDispOff(u16 arg0) {
 }
 
 void espPosSet(u16 spriteId, s16 x, s16 y) {
-    D_800CD1DC_main_Struct *sprite;
+    ESPRITE *sprite;
 
     sprite = D_800CD1DC_main + spriteId;
     sprite->unkA = x;
@@ -113,7 +113,7 @@ void espPosSet(u16 spriteId, s16 x, s16 y) {
 }
 
 void espTPLvlSet(u16 spriteId, s16 arg1) {
-    D_800CD1DC_main_Struct *sprite;
+    ESPRITE *sprite;
 
     sprite = D_800CD1DC_main + spriteId;
     sprite->unk1E = arg1;
@@ -122,75 +122,75 @@ void espTPLvlSet(u16 spriteId, s16 arg1) {
 }
 
 void espAttrSet(u16 arg0, u16 arg1) {
-    D_800CD1DC_main_Struct *temp = &D_800CD1DC_main[arg0];
+    ESPRITE *temp = &D_800CD1DC_main[arg0];
 
     HuSprAttrSet(temp->unk04, 0, arg1);
 }
 
 void espAttrReset(u16 arg0, u16 arg1) {
-    D_800CD1DC_main_Struct *temp = &D_800CD1DC_main[arg0];
+    ESPRITE *temp = &D_800CD1DC_main[arg0];
 
     HuSprAttrReset(temp->unk04, 0, arg1);
 }
 
 void espPriSet(u16 spriteId, s32 arg1) {
-    D_800CD1DC_main_Struct *sprite;
+    ESPRITE *sprite;
 
     sprite = D_800CD1DC_main + spriteId;
     HuSprPriSet(sprite->unk04, 0, arg1);
 }
 
 void espSpeedSet(u16 spriteId, f32 arg1) {
-    D_800CD1DC_main_Struct *sprite;
+    ESPRITE *sprite;
 
     sprite = D_800CD1DC_main + spriteId;
     HuSprSpeedSet(sprite->unk04, 0, arg1);
 }
 
 void func_8000BD50_main(u16 spriteId, s16 arg1) {
-    D_800CD1DC_main_Struct *sprite;
+    ESPRITE *sprite;
 
     sprite = D_800CD1DC_main + spriteId;
     func_80054FF8_main(sprite->unk04, 0, arg1);
 }
 
 void espBankSet(u16 spriteId, s32 arg1, s32 arg2) {
-    D_800CD1DC_main_Struct *sprite;
+    ESPRITE *sprite;
 
     sprite = D_800CD1DC_main + spriteId;
     HuSprBankSet(sprite->unk04, 0, arg1, (u16)arg2);
 }
 
 void func_8000BDDC_main(u16 spriteId, s32 arg1) {
-    D_800CD1DC_main_Struct *sprite;
+    ESPRITE *sprite;
 
     sprite = D_800CD1DC_main + spriteId;
     func_800550F4_main(sprite->unk04, 0, (u16)arg1);
 }
 
 u8 func_8000BE1C_main(u16 spriteId) {
-    D_800CD1DC_main_Struct *sprite;
+    ESPRITE *sprite;
 
     sprite = D_800CD1DC_main + spriteId;
     return func_800551AC_main(sprite->unk04, 0);
 }
 
 void espScaleSet(u16 spriteId, f32 x, f32 y) {
-    D_800CD1DC_main_Struct *sprite;
+    ESPRITE *sprite;
 
     sprite = D_800CD1DC_main + spriteId;
     HuSprScaleSet(sprite->unk04, 0, x, y);
 }
 
 void espColorSet(u16 spriteId, s32 arg1, s32 arg2, s32 arg3) {
-    D_800CD1DC_main_Struct *sprite;
+    ESPRITE *sprite;
 
     sprite = D_800CD1DC_main + spriteId;
     HuSprColorSet(sprite->unk04, 0, arg1, arg2, arg3);
 }
 
 void espZRotSet(u16 spriteId, f32 arg1) {
-    D_800CD1DC_main_Struct *sprite;
+    ESPRITE *sprite;
 
     sprite = D_800CD1DC_main + spriteId;
     HuSprZRotSet(sprite->unk04, 0, arg1);
@@ -198,7 +198,7 @@ void espZRotSet(u16 spriteId, f32 arg1) {
 
 void func_8000BF48_main(u16 spriteId, s16 arg1, s16 arg2, s16 arg3) {
     u16 temp_v0;
-    D_800CD1DC_main_Struct *sprite;
+    ESPRITE *sprite;
 
     sprite = D_800CD1DC_main + spriteId;
     sprite->unk00 |= 2;
@@ -211,7 +211,7 @@ void func_8000BF48_main(u16 spriteId, s16 arg1, s16 arg2, s16 arg3) {
 
 void func_8000BF8C_main(u16 spriteId, s16 arg1) {
     u16 temp_v0;
-    D_800CD1DC_main_Struct *sprite;
+    ESPRITE *sprite;
     u16 phi_return;
 
     sprite = D_800CD1DC_main + spriteId;
@@ -224,7 +224,7 @@ void func_8000BF8C_main(u16 spriteId, s16 arg1) {
 }
 
 s16 espEntry(s16 arg0, s16 arg1, u16 arg2) {
-    D_800CD1DC_main_Struct *temp_s0;
+    ESPRITE *temp_s0;
     s16 temp_s3;
     s16 temp_v0;
 
@@ -253,7 +253,7 @@ s16 espEntry(s16 arg0, s16 arg1, u16 arg2) {
 }
 
 void espKill(u16 arg0) {
-    D_800CD1DC_main_Struct *sprite;
+    ESPRITE *sprite;
 
     sprite = D_800CD1DC_main + arg0;
     if ((sprite->unk00 & 1) != 0) {

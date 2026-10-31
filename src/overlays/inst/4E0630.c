@@ -252,7 +252,7 @@ void func_801079CC_inst(omObjData *obj) {
 }
 
 void func_80107A24_inst(omObjData *object) {
-    f32 duration = D_800CCF58_main[HmfModelData[object->model[3]].unk02].unk02 - 25.0f;
+    f32 duration = D_800CCF58_main[HmfModelData[object->model[3]].motId].unk02 - 25.0f;
     f32 angle = ((f32)D_8010D508_inst / duration) * D_8010D414_inst;
     s32 i;
 
@@ -320,8 +320,8 @@ void func_80107E18_inst(omObjData *object) {
 
 s32 func_80107E20_inst(void) {
     s16 modelId = D_8010DDD8_inst.object->model[0];
-    f32 unk40 = HmfModelData[modelId].unk40;
-    return D_800CCF58_main[HmfModelData[modelId].unk02].unk02 <= unk40;
+    f32 unk40 = HmfModelData[modelId].motTime;
+    return D_800CCF58_main[HmfModelData[modelId].motId].unk02 <= unk40;
 }
 
 void func_80107E98_inst(void) {
@@ -346,7 +346,7 @@ void func_80107F18_inst(void) {
 }
 
 void func_80107F98_inst(omObjData *obj) {
-    f32 duration = D_800CCF58_main[HmfModelData[obj->model[3]].unk02].unk02 - 25.0f;
+    f32 duration = D_800CCF58_main[HmfModelData[obj->model[3]].motId].unk02 - 25.0f;
     f32 angle = D_8010D414_inst - ((f32)D_8010D510_inst / duration) * D_8010D414_inst;
 
     HmfModelData[obj->model[1]].rot.x = angle - 90.0f;
@@ -359,7 +359,7 @@ void func_80107F98_inst(omObjData *obj) {
 }
 
 s32 func_801080A8_inst(void) {
-    f32 unk40 = HmfModelData[D_8010DDD8_inst.object->model[0]].unk40;
+    f32 unk40 = HmfModelData[D_8010DDD8_inst.object->model[0]].motTime;
     return unk40 == 0.0f;
 }
 
@@ -374,7 +374,7 @@ void func_801080FC_inst(void) {
 void func_8010815C_inst(omObjData *obj) {
     HmfSkeletonNode *nodes[2];
     s32 i;
-    f32 duration = D_800CCF58_main[HmfModelData[obj->model[0]].unk02].unk02;
+    f32 duration = D_800CCF58_main[HmfModelData[obj->model[0]].motId].unk02;
 
     func_8001C814_main(obj->model[0], 1, 0);
     func_8001C258_main(obj->model[0], 4, 0);

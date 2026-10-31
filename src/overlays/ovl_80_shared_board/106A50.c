@@ -1448,8 +1448,8 @@ s32 MBStatusItemDispGet(s32 playerNo) {
 void MBStatusSprPosGet(s16 arg0, s16 arg1, f32 *arg2, f32 *arg3) {
     HuSprite *sprite = HuSprGrpData[arg0]->members[arg1];
 
-    *arg2 = sprite->unk_48;
-    *arg3 = sprite->unk_4C;
+    *arg2 = sprite->pos.x;
+    *arg3 = sprite->pos.y;
 }
 
 void MBStatusItemOfsApply(s32 playerNo, s32 arg1, f32 arg2, f32 arg3) {

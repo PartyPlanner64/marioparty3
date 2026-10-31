@@ -98,16 +98,16 @@ void func_8010AF40_msetup(MsetupModelHandle *models, s16 *animSlot, s16 *anim) {
     D_80119AF0_msetup->work[0] = 0;
     HuAudFXPlay(0x135);
     func_8001C814_main(model, 2, 0);
-    while (HmfModelData[model].unk40 < 40.0) {
+    while (HmfModelData[model].motTime < 40.0) {
         HuPrcVSleep();
     }
     func_8001C5B4_main(model, models[2].model);
-    while (HmfModelData[model].unk40 < 45.0) {
+    while (HmfModelData[model].motTime < 45.0) {
         HuPrcVSleep();
     }
     HuAudFXPlay(0x2A8);
     func_8010B4B8_msetup(model, animSlot, *anim);
-    while (HmfModelData[model].unk40 < 80.0) {
+    while (HmfModelData[model].motTime < 80.0) {
         HuPrcVSleep();
     }
     Hu3DMotionSet(model, models[0].motion);
@@ -264,14 +264,14 @@ s32 func_8010B858_msetup(void) {
     while (HuWinStatGet(D_8011A890_msetup) != 0) {
         HuPrcVSleep();
     }
-    return winData[D_8011A890_msetup].unk_30 == 0 ? 0 : HuWinChoiceGet(D_8011A890_msetup, 0, 0);
+    return winData[D_8011A890_msetup].num_choices == 0 ? 0 : HuWinChoiceGet(D_8011A890_msetup, 0, 0);
 }
 
 s32 func_8010B8E0_msetup(void) {
     while (HuWinStatGet(D_8011A890_msetup) != 0) {
         HuPrcVSleep();
     }
-    return winData[D_8011A890_msetup].unk_30 == 0 ? 0 : HuWinChoiceGet(D_8011A890_msetup, 1, 0);
+    return winData[D_8011A890_msetup].num_choices == 0 ? 0 : HuWinChoiceGet(D_8011A890_msetup, 1, 0);
 }
 
 void func_8010B968_msetup(u32 arg0, s8 arg1) {
@@ -425,7 +425,7 @@ void func_8010BEF8_msetup(void) {
     pos = &entry->pos;
     Hu3DModelPosSet(index, entry->pos.x, entry->pos.y, entry->pos.z);
     Hu3DModelRotSet(index, 0.0f, entry->value, 0.0f);
-    motions[3] = HmfModelData[index].unk02;
+    motions[3] = HmfModelData[index].motId;
     HuPrcVSleep();
     if (D_80119984_msetup[setupCharacter] != 0) {
         func_80017790_main(index, 1, setupCharacter, func_80017BB8_main(setupCharacter, 0xA4));
@@ -604,7 +604,7 @@ void func_8010BEF8_msetup(void) {
                 break;
             case 17:
                 if (motions[0] >= 0) {
-                    Hu3DMotionShiftSet(model, HmfModelData[motions[0]].unk02, 0, 6, 0);
+                    Hu3DMotionShiftSet(model, HmfModelData[motions[0]].motId, 0, 6, 0);
                 }
                 entry->state = 0;
                 playing = 1;
@@ -613,7 +613,7 @@ void func_8010BEF8_msetup(void) {
                 state = -1;
                 break;
         }
-        if (playing && D_800CCF58_main[HmfModelData[model].unk02].unk02 <= HmfModelData[model].unk40) {
+        if (playing && D_800CCF58_main[HmfModelData[model].motId].unk02 <= HmfModelData[model].motTime) {
             Hu3DMotionShiftSet(model, motions[3], 0, 30, 2);
             playing = 0;
         }

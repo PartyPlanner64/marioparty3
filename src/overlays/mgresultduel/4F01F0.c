@@ -108,22 +108,22 @@ void func_80106B68_mgresultduel(omObjData *arg0) {
 }
 
 void func_80106B70_mgresultduel(omObjData *arg0) {
-    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[arg0->motion[4]].unk02, 0, 0x1E, 2);
+    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[arg0->motion[4]].motId, 0, 0x1E, 2);
     D_80109344_mgresultduel = func_80106B68_mgresultduel;
 }
 
 void func_80106BD8_mgresultduel(omObjData *arg0) {
-    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[arg0->motion[2]].unk02, 0, 0x1E, 0);
+    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[arg0->motion[2]].motId, 0, 0x1E, 0);
     D_80109344_mgresultduel = func_80107654_mgresultduel;
 }
 
 void func_80106C3C_mgresultduel(omObjData *arg0) {
-    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[arg0->motion[3]].unk02, 0, 0x1E, 0);
+    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[arg0->motion[3]].motId, 0, 0x1E, 0);
     D_80109344_mgresultduel = func_80106B68_mgresultduel;
 }
 
 void func_80106CA0_mgresultduel(omObjData *arg0) {
-    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[arg0->motion[3]].unk02, 0, 0x1E, 0);
+    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[arg0->motion[3]].motId, 0, 0x1E, 0);
     D_80109344_mgresultduel = func_80107654_mgresultduel;
 }
 
@@ -138,17 +138,17 @@ void func_80107170_mgresultduel(omObjData *arg0) {
 }
 
 void func_80107178_mgresultduel(omObjData *arg0) {
-    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[arg0->motion[4]].unk02, 0, 0x1E, 2);
+    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[arg0->motion[4]].motId, 0, 0x1E, 2);
     D_80109330_mgresultduel = func_80107170_mgresultduel;
 }
 
 void func_801071E0_mgresultduel(omObjData *arg0) {
-    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[arg0->motion[2]].unk02, 0, 0x1E, 0);
+    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[arg0->motion[2]].motId, 0, 0x1E, 0);
     D_80109330_mgresultduel = func_80107654_mgresultduel;
 }
 
 void func_80107244_mgresultduel(omObjData *arg0) {
-    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[arg0->motion[3]].unk02, 0, 0x1E, 0);
+    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[arg0->motion[3]].motId, 0, 0x1E, 0);
     D_80109330_mgresultduel = func_80107170_mgresultduel;
 }
 

@@ -268,7 +268,7 @@ void func_80105E90_msetup(MsetupModelEntry *entry) {
     for (i = 0; entry->dataId != -1; entry++, i++) {
         model = D_8011A950_msetup[(s16)i] = func_8000B108_main(entry->dataId, entry->flags);
         func_80105F7C_msetup(entry, model);
-        motion = D_8011A9A0_msetup[(s16)i] = HmfModelData[model].unk02;
+        motion = D_8011A9A0_msetup[(s16)i] = HmfModelData[model].motId;
         if (motion != -1) {
             func_8001C814_main(model, -1, entry->motion);
         }
@@ -301,7 +301,7 @@ void func_80106030_msetup(MsetupModelEntry *entry, MsetupModelHandle *handle, s3
     for (i = 0; i < count; entry++, i++, handle++) {
         model = handle->model = func_8000B108_main(entry->dataId, entry->flags);
         func_80105F7C_msetup(entry, model);
-        motion = handle->motion = HmfModelData[model].unk02;
+        motion = handle->motion = HmfModelData[model].motId;
         if (motion >= 0) {
             func_8001C814_main(model, -1, entry->motion);
         }
@@ -392,7 +392,7 @@ void func_80106320_msetup(void) {
         D_800CE17C_main[0] = pos.x;
         D_800CE17C_main[1] = pos.z;
         D_800CE17C_main[-1] = CRot.y;
-        D_800CE17C_main[2] = gCameraList->fov[0];
+        D_800CE17C_main[2] = gCameraList->fov;
         D_800CE17C_main[3] = D_800D5210_main;
         D_800CE17C_main[4] = D_800CB890_main;
         Hu3DCamSetPositionOrientation(0, &pos, &at, &up);
@@ -482,7 +482,7 @@ void func_801068F4_msetup(MsetupCameraKeyframe *keys, f32 speed, void (*callback
         D_8011A994_msetup.y = CRot.y = interpolated.values.preset.rot.y;
         D_8011A994_msetup.z = CRot.z = interpolated.values.preset.rot.z;
         CZoom = interpolated.values.preset.zoom;
-        gCameraList->fov[0] = D_80119414_msetup = interpolated.values.preset.fov;
+        gCameraList->fov = D_80119414_msetup = interpolated.values.preset.fov;
         if (callback != NULL) {
             onFrame((s16)duration, segment, i);
         }
@@ -496,7 +496,7 @@ void func_801068F4_msetup(MsetupCameraKeyframe *keys, f32 speed, void (*callback
     Center.x = keys[segment].values.preset.center.x;
     Center.y = keys[segment].values.preset.center.y;
     Center.z = keys[segment].values.preset.center.z;
-    gCameraList->fov[0] = D_80119414_msetup = keys[segment].values.preset.fov;
+    gCameraList->fov = D_80119414_msetup = keys[segment].values.preset.fov;
     D_800CB99C_main = 0;
 }
 

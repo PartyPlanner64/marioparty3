@@ -1657,7 +1657,7 @@ s16 func_801132C4_msetup(MsetupMenuState *state) {
     Hu3DModelPosSet(model, 0.0f, -300.0f, -280.0f);
     func_8001C814_main(model, 1, 1);
     if (_CheckFlag(0x2D)) {
-        Hu3DMotionTimeSet(model, D_800CCF58_main[HmfModelData[model].unk02].unk02);
+        Hu3DMotionTimeSet(model, D_800CCF58_main[HmfModelData[model].motId].unk02);
         difficultyCount = 4;
     } else {
         Hu3DMotionTimeSet(model, 0.0f);

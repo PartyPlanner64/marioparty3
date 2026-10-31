@@ -117,9 +117,9 @@ void func_80108870_inst(omObjData *object) {
 
 void func_80108954_inst(omObjData *object) {
     s16 model = object->model[0];
-    f32 time = HmfModelData[model].unk40;
+    f32 time = HmfModelData[model].motTime;
 
-    if (D_800CCF58_main[HmfModelData[model].unk02].unk02 <= time) {
+    if (D_800CCF58_main[HmfModelData[model].motId].unk02 <= time) {
         func_8001C5B4_main(model, object->motion[3]);
         func_8001C814_main(object->model[0], 2, 2);
         func_8010C848_inst();

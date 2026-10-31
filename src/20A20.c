@@ -249,7 +249,7 @@ void func_8002087C_main(HmfModel *model, HuMtx4F mtx) {
     HmfSkeletonNode *node;
     HuMtx4F temp;
 
-    D_800C9940_main = model->unk18;
+    D_800C9940_main = model->attr;
     guMtxL2F(mtx, &D_800D10F4_main->mtxs[D_800D418E_main].lookAtMtx);
     if (model->pos.x != 0.0f || model->pos.y != 0.0f || model->pos.z != 0.0f) {
         func_80017C10_main(mtx, model->pos.x, model->pos.y, model->pos.z);

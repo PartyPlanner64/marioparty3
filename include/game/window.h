@@ -12,10 +12,10 @@
 #define MAKE_MESSID_PTR(ptr) ((u32)(ptr))
 
 typedef struct TextWindowSprite {
-    /* 0x00 */ u8 unk_00; /* 0 = free, 1 = active, 2 = disabled */
+    /* 0x00 */ u8 stat; /* 0 = free, 1 = active, 2 = disabled */
     /* 0x01 */ char pad1[1];
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x02 */ s16 x;
+    /* 0x04 */ s16 y;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ char padA[6];
@@ -26,70 +26,70 @@ typedef s16 WindowInputRecord[MAXCONTROLLERS + 1];
 
 typedef struct TextWindow {
     /* 0x000 */ u16 palette[16];
-    /* 0x020 */ s8 unk20; /* inferred */
-    /* 0x021 */ u8 unk21; /* low nibble: enabled inputs */
-    /* 0x022 */ s8 unk_22;
+    /* 0x020 */ s8 stat; /* inferred */
+    /* 0x021 */ u8 active_pad; /* low nibble: enabled inputs */
+    /* 0x022 */ s8 mess_color;
     /* 0x023 */ s8 unk_23;
     /* 0x024 */ u8 unk_24; /* maybe part of unk20[9]? */
-    /* 0x025 */ s8 unk_25;
+    /* 0x025 */ s8 speed;
     /* 0x026 */ s8 unk_26;
     /* 0x027 */ u8 unk_27;
     /* 0x028 */ u8 unk_28; /* maybe part of unk20[9]? */
-    /* 0x029 */ s8 unk_29;
-    /* 0x02A */ u8 unk_2A;
+    /* 0x029 */ s8 spacing_x;
+    /* 0x02A */ u8 spacing_y;
     /* 0x02B */ char pad2B[1];
     /* 0x02C */ u8 unk_2C;
     /* 0x02D */ u8 backgroundRed;
     /* 0x02E */ u8 backgroundGreen;
     /* 0x02F */ u8 backgroundBlue;
-    /* 0x030 */ s8 unk_30;
-    /* 0x031 */ s8 unk_31;
+    /* 0x030 */ s8 num_choices;
+    /* 0x031 */ s8 choice;
     /* 0x032 */ u8 unk_32;
-    /* 0x033 */ u8 unk_33;
+    /* 0x033 */ u8 mess_shadow_color;
     /* 0x034 */ u8 unk_34;
-    /* 0x035 */ u8 unk_35;
+    /* 0x035 */ u8 tab_w;
     /* 0x036 */ char pad36[2]; /* maybe part of unk_35[3]? */
-    /* 0x038 */ u32 unk_38;
-    /* 0x03C */ u16 unk3C;
-    /* 0x03E */ u16 unk3E;
-    /* 0x040 */ s16 unk40;
-    /* 0x042 */ s16 unk42;
+    /* 0x038 */ u32 attr;
+    /* 0x03C */ u16 pos_x;
+    /* 0x03E */ u16 pos_y;
+    /* 0x040 */ s16 w;
+    /* 0x042 */ s16 h;
     /* 0x044 */ s16 unk44;
     /* 0x046 */ s16 unk46;
     /* 0x048 */ u16 unk48;
     /* 0x04A */ u16 unk4A;
-    /* 0x04C */ u16 unk4C;
-    /* 0x04E */ s16 unk4E;
-    /* 0x050 */ s16 unk50;
-    /* 0x052 */ s16 unk52;
-    /* 0x054 */ u16 unk54;
-    /* 0x056 */ u16 unk56;
+    /* 0x04C */ u16 mess_rect_x;
+    /* 0x04E */ s16 mess_rect_y;
+    /* 0x050 */ s16 mess_rect_w;
+    /* 0x052 */ s16 mess_rect_h;
+    /* 0x054 */ u16 mess_x;
+    /* 0x056 */ u16 mess_y;
     /* 0x058 */ u16 unk58;
     /* 0x05A */ u16 unk5A;
-    /* 0x05C */ s16 unk5C;
+    /* 0x05C */ s16 mess_time;
     /* 0x05E */ s16 unk5E;
-    /* 0x060 */ s16 unk60;
+    /* 0x060 */ s16 prio;
     /* 0x062 */ s16 unk62;
     /* 0x064 */ s16 unk64;
     /* 0x066 */ s16 unk66;
     /* 0x068 */ s16 unk68;
-    /* 0x06A */ s16 unk6A;
-    /* 0x06C */ s16 unk_6C;
-    /* 0x06E */ s16 unk_6E[22];
+    /* 0x06A */ s16 cursor_sprite;
+    /* 0x06C */ s16 group;
+    /* 0x06E */ s16 sprite_id[22];
     /* 0x09A */ s16 unk_9A;
     /* 0x09C */ s16 cursorStartX;
     /* 0x09E */ s16 cursorStartY;
     /* 0x0A0 */ s16 cursorTargetX;
     /* 0x0A2 */ s16 cursorTargetY;
     /* 0x0A4 */ s16 unk_A4;
-    /* 0x0A6 */ s16 unk_A6;
+    /* 0x0A6 */ s16 push_key;
     /* 0x0A8 */ u16 input;
     /* 0x0AA */ s16 unk_AA;
     /* 0x0AC */ s8 insertionIndex;
     /* 0x0AD */ s8 usingStringIDBool[5];
     /* 0x0B2 */ s8 unk_B2[6];
-    /* 0x0B8 */ void *unk_B8[5];
-    /* 0x0CC */ u8 *unk_CC;
+    /* 0x0B8 */ void *insert_mess[5];
+    /* 0x0CC */ u8 *mess;
     /* 0x0D0 */ void *unk_D0;
     /* 0x0D4 */ u8 unk_D4;
     /* 0x0D5 */ char padD5[3];
@@ -98,7 +98,7 @@ typedef struct TextWindow {
     /* 0x0E0 */ void *unk_E0[3];
     /* 0x0EC */ f32 scaleX;
     /* 0x0F0 */ f32 scaleY;
-    /* 0x0F4 */ TextWindowSprite unk_F4[TEXT_WINDOW_SPRITES_MAX];
+    /* 0x0F4 */ TextWindowSprite choice_data[TEXT_WINDOW_SPRITES_MAX];
     /* 0x274 */ s16 unk274;
     /* 0x276 */ s16 unk276;
     /* 0x278 */ char pad278[4]; /* maybe part of unk276[3]? */

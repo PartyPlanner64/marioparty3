@@ -92,7 +92,7 @@ u16 func_800D9234_name_81(Object *arg0) {
     u16 ret;
 
     ret = 0;
-    if (HmfModelData[arg0->omObj1->model[0]].unk40 == D_800CCF58_main[HmfModelData[arg0->omObj1->model[0]].unk02].unk02) {
+    if (HmfModelData[arg0->omObj1->model[0]].motTime == D_800CCF58_main[HmfModelData[arg0->omObj1->model[0]].motId].unk02) {
         ret = 1;
     }
     return ret;
@@ -102,7 +102,7 @@ u16 func_800D92A8_name_81(Object *arg0) {
     u16 ret;
 
     ret = 0;
-    if (HmfModelData[arg0->omObj1->model[0]].unk40 == 0.0f) {
+    if (HmfModelData[arg0->omObj1->model[0]].motTime == 0.0f) {
         ret = 1;
     }
     return ret;

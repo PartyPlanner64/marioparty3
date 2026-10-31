@@ -2189,7 +2189,7 @@ void MB1Ev_BankMasu(void) {
     MBMotionSet(bank, -1, 4);
     Hu3DMotionSpeedSet(bank->omObj1->model[0], 1.2f);
     Hu3DMotionTimeSet(bank->omObj1->model[0],
-                        (f32)D_800CCF58_main[HmfModelData[bank->omObj1->model[0]].unk02].unk02);
+                        (f32)D_800CCF58_main[HmfModelData[bank->omObj1->model[0]].motId].unk02);
     while (func_800D9E80_shared_board(bank) == 0) {
         HuPrcVSleep();
     }

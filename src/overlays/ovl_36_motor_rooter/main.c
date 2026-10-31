@@ -1857,7 +1857,7 @@ void func_8010BCD0_motor_rooter(FuncContext *ctx) {
     player = ctx->data;
     object = player->unk00;
     model = &HmfModelData[object->model[0]];
-    if (model->unk40 >= D_800CCF58_main[model->unk02].unk02 - 1) {
+    if (model->motTime >= D_800CCF58_main[model->motId].unk02 - 1) {
         player->animChange = 1;
     }
     if (player->animChange) {

@@ -344,8 +344,8 @@ s32 m257_SetAnimModel(s32 dir, s32 file, f32 freq, s32 attr, s32 arg4) {
             animModel->modelId = func_8000B108_main((dir << 16) | file, arg4);
             func_8001C258_main(animModel->modelId, 4, 4);
             hmfModel = &HmfModelData[animModel->modelId];
-            hmfModel->unk40 = 0.0f;
-            hmfModel->unk44 = 0.0f;
+            hmfModel->motTime = 0.0f;
+            hmfModel->motSpeed = 0.0f;
             if (hmfModel->hmf->unk98 != NULL) {
                 hmfModel->hmf->unk98->unk08 = 0;
             }
@@ -371,7 +371,7 @@ s32 m257_SetAnimModelDispOn(s16 animModelId, f32 posX, f32 posY, f32 posZ, f32 r
     }
     animModel = &m257_animModels[animModelId];
     hmfModel = &HmfModelData[animModel->modelId];
-    if ((hmfModel->unk18 & 4) && animModel->state == ANIMMDL_STATE_INVISIBLE) {
+    if ((hmfModel->attr & 4) && animModel->state == ANIMMDL_STATE_INVISIBLE) {
         Hu3DModelPosSet(animModel->modelId, posX, posY, posZ);
         Hu3DModelRotSet(animModel->modelId, rotX, rotY, rotZ);
         Hu3DModelScaleSet(animModel->modelId, scale, scale, scale);
@@ -380,7 +380,7 @@ s32 m257_SetAnimModelDispOn(s16 animModelId, f32 posX, f32 posY, f32 posZ, f32 r
             animModel->state = ANIMMDL_STATE_ANIM;
             animModel->animStart = 0.0f;
             animModel->animTimer = 0.0f;
-            hmfModel->unk44 = animModel->freq;
+            hmfModel->motSpeed = animModel->freq;
         } else {
             animModel->state = ANIMMDL_STATE_WAIT;
             animModel->animStart = animStart;
@@ -404,15 +404,15 @@ void m257_UpdateAnimModels(void) {
         hmfModel = &HmfModelData[animModel->modelId];
         switch (animModel->state) {
             default:
-                if (D_800CCF58_main[hmfModel->unk02].unk02 <= hmfModel->unk40) {
-                    hmfModel->unk40 = 0.0f;
+                if (D_800CCF58_main[hmfModel->motId].unk02 <= hmfModel->motTime) {
+                    hmfModel->motTime = 0.0f;
                     if (hmfModel->hmf->unk98 != NULL) {
                         hmfModel->hmf->unk98->unk08 = 0;
                     }
                     if (!(animModel->attr & ANIMMDL_ATTR_DISPON)) {
                         func_8001C258_main(animModel->modelId, 4, 4);
                         animModel->state = ANIMMDL_STATE_INVISIBLE;
-                        hmfModel->unk44 = 0.0f;
+                        hmfModel->motSpeed = 0.0f;
                     }
                 }
                 break;
@@ -420,7 +420,7 @@ void m257_UpdateAnimModels(void) {
                 if (animModel->animStart <= animModel->animTimer++) {
                     func_8001C258_main(animModel->modelId, 4, 0);
                     animModel->state = ANIMMDL_STATE_ANIM;
-                    hmfModel->unk44 = animModel->freq;
+                    hmfModel->motSpeed = animModel->freq;
                 }
                 break;
         }

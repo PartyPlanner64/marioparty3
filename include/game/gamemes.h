@@ -2,6 +2,7 @@
 #define _GAME_GAMEMES_H
 
 #include "ultra64.h"
+#include "math.h"
 
 #define GMES_ID_NONE -1
 
@@ -13,11 +14,11 @@ typedef struct {
     /* 0x00 */ u8 mesNo;
     /* 0x01 */ u8 stat;
     /* 0x02 */ s8 unk02;
-    /* 0x03 */ u8 unk03;
-    /* 0x04 */ s16 unk04;
-    /* 0x06 */ s16 unk06;
-    /* 0x08 */ s16 unk08;
-    /* 0x0A */ s16 unk0A;
+    /* 0x03 */ u8 tpLvl;
+    /* 0x04 */ s16 time;
+    /* 0x06 */ s16 timeMax;
+    /* 0x08 */ s16 subMode;
+    /* 0x0A */ s16 work;
     /* 0x0C */ s16 unk0C;
     /* 0x0E */ s16 unk0E;
     /* 0x10 */ f32 unk10;
@@ -26,11 +27,9 @@ typedef struct {
     /* 0x1C */ s32 unk1C;
     /* 0x20 */ s16 strGId[GMES_STRMAX];
     /* 0x40 */ s16 strSprId[GMES_STRMAX];
-    /* 0x60 */ f32 unk60;
-    /* 0x64 */ f32 unk64;
-    /* 0x68 */ f32 unk68;
-    /* 0x6C */ f32 unk6C;
-    /* 0x70 */ f32 unk70;
+    /* 0x60 */ Vec2f pos;
+    /* 0x68 */ Vec2f scale;
+    /* 0x70 */ f32 angle;
 } GAMEMES; // Size 0x74
 
 #define GMES_MES_0 0 // START (ALT?)

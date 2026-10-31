@@ -292,7 +292,7 @@ void func_80105CE0_spotlight_swim(omObjData *arg0, u16 arg1, s16 arg2) {
 
 void func_80105D4C_spotlight_swim(omObjData *arg0, u16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     if (arg1 < 0xA) {
-        Hu3DMotionShiftSet(arg0->model[0], HmfModelData[arg0->motion[arg1]].unk02, arg2, arg3, arg4);
+        Hu3DMotionShiftSet(arg0->model[0], HmfModelData[arg0->motion[arg1]].motId, arg2, arg3, arg4);
     }
 }
 
@@ -330,7 +330,7 @@ void func_80105E9C_spotlight_swim(s16 camIndex, f32 x, f32 y, f32 z, f32 *screen
     viewX = (s32)(((u32)integer[3][0] << 16) | fraction[3][0]) >> 16;
     viewY = (s32)(((u32)integer[3][1] << 16) | fraction[3][1]) >> 16;
     viewZ = (s32)(((u32)integer[3][2] << 16) | fraction[3][2]) >> 16;
-    depth = viewZ * sind(gCameraList[camIndex].fov[0] / 2.0) / cosdf(gCameraList[camIndex].fov[0] / 2.0);
+    depth = viewZ * sind(gCameraList[camIndex].fov / 2.0) / cosdf(gCameraList[camIndex].fov / 2.0);
     depth = (depth >= 0.0f) ? depth : 0.0f - depth;
     if (depth != 0.0) {
         vpIndex = D_800D418E_main;

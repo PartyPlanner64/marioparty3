@@ -19,9 +19,9 @@ typedef struct {
     /* 0x1E */ s16 unk1E;
     /* 0x20 */ s16 unk20;
     /* 0x22 */ char unk22[2];
-} D_800CD1DC_main_Struct; // Size 0x24
+} ESPRITE; // Size 0x24
 
-extern D_800CD1DC_main_Struct *D_800CD1DC_main;
+extern ESPRITE *D_800CD1DC_main;
 
 s16 func_8000B838_main(s32 arg0);
 void espDispOn(u16 arg0);

@@ -280,12 +280,12 @@ void func_80105C4C_mchar(omObjData *arg0) {
         }
         func_8001C258_main((s16)D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar], 4, 0);
         newModel = &HmfModelData[D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar]];
-        newModel->unk02 = model->unk02;
-        newModel->unk40 = model->unk40;
-        newModel->unk03 = model->unk03;
-        newModel->unk4C = model->unk4C;
-        newModel->unk05 = model->unk05;
-        newModel->unk04 = model->unk04;
+        newModel->motId = model->motId;
+        newModel->motTime = model->motTime;
+        newModel->motAttr = model->motAttr;
+        newModel->motShiftTime = model->motShiftTime;
+        newModel->motShiftAttr = model->motShiftAttr;
+        newModel->motIdShift = model->motIdShift;
     }
     if (D_800D5558_main[0] & 2) {
         func_8001C258_main((s16)D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar], 4, 4);
@@ -312,12 +312,12 @@ void func_80105C4C_mchar(omObjData *arg0) {
     if ((u16)D_800D0590_main[1] & 0xC000) {
         model = &HmfModelData[D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar]];
         if ((u16)D_800D0590_main[1] & 0x4000) {
-            model->unk03 |= 4;
+            model->motAttr |= 4;
         }
-        model->unk03 &= 0xFE;
-        model->unk40 = func_8002FC7C_main(&D_800CCF58_main[model->unk02], model->unk03, model->unk40, model->unk48, model->unk44 + model->unk44);
-        model->unk4C = func_8002FC7C_main(&D_800CCF58_main[model->unk04], model->unk05, model->unk4C, model->unk54, model->unk50 + model->unk50);
-        model->unk03 = (model->unk03 & 0xFB) | 1;
+        model->motAttr &= 0xFE;
+        model->motTime = func_8002FC7C_main(&D_800CCF58_main[model->motId], model->motAttr, model->motTime, model->unk48, model->motSpeed + model->motSpeed);
+        model->motShiftTime = func_8002FC7C_main(&D_800CCF58_main[model->motIdShift], model->motShiftAttr, model->motShiftTime, model->unk54, model->motShiftSpeed + model->motShiftSpeed);
+        model->motAttr = (model->motAttr & 0xFB) | 1;
     }
     if ((D_800CDA7C_main[0] & 0x30) == 0x30) {
         D_80106E80_mchar = 1;
@@ -336,7 +336,7 @@ void func_80105C4C_mchar(omObjData *arg0) {
         print8(24, 198, D_80107950_mchar);
         sprintf(D_80107950_mchar, "ZOOM:  %3.3f", CZoom);
         print8(24, 206, D_80107950_mchar);
-        sprintf(D_80107950_mchar, "M_TIME:%d", (u16)model->unk40);
+        sprintf(D_80107950_mchar, "M_TIME:%d", (u16)model->motTime);
         print8(24, 214, D_80107950_mchar);
     }
 }
@@ -484,7 +484,7 @@ void func_80106D7C_mchar(void) {
     CZoom = 400.0f;
     Center.x = Center.z = 0.0f;
     Center.y = 64.0f;
-    gCameraList->fov[0] = 45.0f;
+    gCameraList->fov = 45.0f;
 }
 
 void func_80106DF8_mchar(omObjData *arg0) {

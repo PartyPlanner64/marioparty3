@@ -953,8 +953,8 @@ void func_80107964_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAway *entry = &D_80113570_pump_pump_away[obj->work[0]];
     UnkPumpPumpAwayJet *jet = &D_80113438_pump_pump_away[entry->unk_0C];
 
-    Hu3DMotionTimeSet(obj->model[0], HmfModelData[jet->unk_04->model[0]].unk40);
-    if (jet->unk_18 != 0 && HmfModelData[obj->model[0]].unk40 <= 6.0f) {
+    Hu3DMotionTimeSet(obj->model[0], HmfModelData[jet->unk_04->model[0]].motTime);
+    if (jet->unk_18 != 0 && HmfModelData[obj->model[0]].motTime <= 6.0f) {
         if (entry->unk_04 != 0) {
             entry->unk_04--;
         } else {
@@ -1082,7 +1082,7 @@ void func_80107EB8_pump_pump_away(omObjData *obj) {
             }
             break;
         case 1:
-            if (HmfModelData[obj->model[0]].unk40 >= D_800CCF58_main[HmfModelData[obj->model[0]].unk02].unk02 - 2) {
+            if (HmfModelData[obj->model[0]].motTime >= D_800CCF58_main[HmfModelData[obj->model[0]].motId].unk02 - 2) {
                 func_8001C5B4_main(obj->model[0], obj->motion[0]);
                 Hu3DMotionTimeSet(obj->model[0], 0);
                 hose->unk_04 = 0;
@@ -1099,14 +1099,14 @@ void func_8010811C_pump_pump_away(omObjData *obj) {
     f32 frame;
 
     if (hose->unk_04 == 2) {
-        if (HmfModelData[obj->model[0]].unk40 >= D_800CCF58_main[HmfModelData[obj->model[0]].unk02].unk02 - 2) {
+        if (HmfModelData[obj->model[0]].motTime >= D_800CCF58_main[HmfModelData[obj->model[0]].motId].unk02 - 2) {
             func_8001C258_main(obj->model[0], 4, 4);
             hose->unk_04 = 3;
         }
     } else if (hose->unk_04 != 3) {
-        frame = HmfModelData[obj->model[0]].unk40;
+        frame = HmfModelData[obj->model[0]].motTime;
         if (frame != 0.0f) {
-            if (frame >= D_800CCF58_main[HmfModelData[obj->model[0]].unk02].unk02 - 2) {
+            if (frame >= D_800CCF58_main[HmfModelData[obj->model[0]].motId].unk02 - 2) {
                 func_8001C5B4_main(obj->model[0], obj->motion[1]);
             } else {
                 return;
@@ -1547,7 +1547,7 @@ void func_801094CC_pump_pump_away(omObjData *obj) {
             state->state = 3;
             break;
         case 3:
-            if (HmfModelData[obj->model[0]].unk40 >= 16.0f && D_8011110A_pump_pump_away == 0) {
+            if (HmfModelData[obj->model[0]].motTime >= 16.0f && D_8011110A_pump_pump_away == 0) {
                 sound = HuAudFXPlay(0x363);
                 if (player->unk_28->work[0] != 0) {
                     HuAudFXPanning(sound, 0x60);
@@ -1750,16 +1750,16 @@ void func_80109E98_pump_pump_away(omObjData *obj) {
             }
             break;
         case 2:
-            if (HmfModelData[obj->model[0]].unk40 >= D_800CCF58_main[HmfModelData[obj->model[0]].unk02].unk02 - 2) {
+            if (HmfModelData[obj->model[0]].motTime >= D_800CCF58_main[HmfModelData[obj->model[0]].motId].unk02 - 2) {
                 func_8001C5B4_main(obj->model[0], obj->motion[0]);
-                Hu3DMotionTimeSet(obj->model[0], D_800CCF58_main[HmfModelData[obj->model[0]].unk02].unk02 - 2);
+                Hu3DMotionTimeSet(obj->model[0], D_800CCF58_main[HmfModelData[obj->model[0]].motId].unk02 - 2);
                 Hu3DMotionSpeedSet(obj->model[0], D_80110F9C_pump_pump_away[player->unk_10]);
                 func_8001C814_main(obj->model[0], 4, 4);
                 player->unk_0C = 3;
             }
             break;
         case 3:
-            if (HmfModelData[obj->model[0]].unk40 <= 2.0f) {
+            if (HmfModelData[obj->model[0]].motTime <= 2.0f) {
                 func_8001C5B4_main(obj->model[0], obj->motion[0]);
                 Hu3DMotionTimeSet(obj->model[0], 0);
                 player->unk_0C = 0;
@@ -1773,16 +1773,16 @@ void func_8010A150_pump_pump_away(omObjData *obj) {
 
     switch (player->unk_0C) {
         case 2:
-            if (HmfModelData[obj->model[0]].unk40 >= D_800CCF58_main[HmfModelData[obj->model[0]].unk02].unk02 - 2) {
+            if (HmfModelData[obj->model[0]].motTime >= D_800CCF58_main[HmfModelData[obj->model[0]].motId].unk02 - 2) {
                 func_8001C5B4_main(obj->model[0], obj->motion[0]);
-                Hu3DMotionTimeSet(obj->model[0], D_800CCF58_main[HmfModelData[obj->model[0]].unk02].unk02 - 2);
+                Hu3DMotionTimeSet(obj->model[0], D_800CCF58_main[HmfModelData[obj->model[0]].motId].unk02 - 2);
                 Hu3DMotionSpeedSet(obj->model[0], D_80110F9C_pump_pump_away[player->unk_10]);
                 func_8001C814_main(obj->model[0], 4, 4);
                 player->unk_0C = 3;
             }
             break;
         case 3:
-            if (HmfModelData[obj->model[0]].unk40 <= 2.0f) {
+            if (HmfModelData[obj->model[0]].motTime <= 2.0f) {
                 func_8001C5B4_main(obj->model[0], obj->motion[0]);
                 Hu3DMotionTimeSet(obj->model[0], 0);
                 func_8001C814_main(obj->model[0], 4, 0);
@@ -2215,7 +2215,7 @@ void func_8010B630_pump_pump_away(omObjData *obj) {
 
 void func_8010B898_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAwayJet *jet = &D_80113438_pump_pump_away[obj->work[0]];
-    f32 frame = HmfModelData[obj->model[0]].unk40;
+    f32 frame = HmfModelData[obj->model[0]].motTime;
     s16 sound;
 
     if (jet->unk_18 != 0) {
@@ -2243,7 +2243,7 @@ void func_8010B898_pump_pump_away(omObjData *obj) {
             jet->unk_2C = frame;
         }
     } else {
-        if (frame >= D_800CCF58_main[HmfModelData[obj->model[0]].unk02].unk02 - 2) {
+        if (frame >= D_800CCF58_main[HmfModelData[obj->model[0]].motId].unk02 - 2) {
             if (jet->unk_10 >= 6) {
                 jet->unk_10 *= 0.97;
             }
@@ -2258,7 +2258,7 @@ void func_8010B898_pump_pump_away(omObjData *obj) {
             } else {
                 HuAudFXPanning(sound, 0x20);
             }
-            if (frame >= D_800CCF58_main[HmfModelData[obj->model[0]].unk02].unk02) {
+            if (frame >= D_800CCF58_main[HmfModelData[obj->model[0]].motId].unk02) {
                 jet->unk_14 = (frame - jet->unk_2C) * 0.17;
             } else {
                 jet->unk_14 = (frame - jet->unk_2C) * 0.01;
@@ -2282,10 +2282,10 @@ void func_8010BC14_pump_pump_away(omObjData *obj) {
             func_8001C814_main(obj->model[0], 4, 0);
         }
     } else if (jet->unk_18 != 0) {
-        if (HmfModelData[obj->model[0]].unk40 <= 2.0f) {
+        if (HmfModelData[obj->model[0]].motTime <= 2.0f) {
             func_8001C814_main(obj->model[0], 1, 1);
         }
-    } else if (HmfModelData[obj->model[0]].unk40 >= D_800CCF58_main[HmfModelData[obj->model[0]].unk02].unk02 - 2) {
+    } else if (HmfModelData[obj->model[0]].motTime >= D_800CCF58_main[HmfModelData[obj->model[0]].motId].unk02 - 2) {
         func_8001C814_main(obj->model[0], 1, 1);
     }
 }
@@ -2315,7 +2315,7 @@ void func_8010BD80_pump_pump_away(omObjData *obj) {
             }
             obj->rot.y = 180.0f;
         case 1:
-            Hu3DMotionShiftSet(obj->model[0], HmfModelData[obj->motion[0]].unk02, 0, 20, 2);
+            Hu3DMotionShiftSet(obj->model[0], HmfModelData[obj->motion[0]].motId, 0, 20, 2);
             jet->unk_08 = 0;
             jet->unk_0C = 0;
             break;
@@ -2328,7 +2328,7 @@ void func_8010BF14_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAwayPlayer *other;
 
     if (D_80111978_pump_pump_away[obj->work[1]].unk_00 == 99 && jet->unk_0C == 0) {
-        Hu3DMotionShiftSet(obj->model[0], HmfModelData[obj->motion[4]].unk02, 0, 30, 2);
+        Hu3DMotionShiftSet(obj->model[0], HmfModelData[obj->motion[4]].motId, 0, 30, 2);
         jet->unk_08 = 4;
         jet->unk_0C = 1;
     }
@@ -2397,7 +2397,7 @@ void func_8010C1C8_pump_pump_away(omObjData *obj) {
                                                                                                               : obj->rot.y + 180.0f;
             if (angle >= 180.0f) {
                 obj->rot.y = 0;
-                Hu3DMotionShiftSet(obj->model[0], HmfModelData[obj->motion[0]].unk02, 0, 20, 2);
+                Hu3DMotionShiftSet(obj->model[0], HmfModelData[obj->motion[0]].motId, 0, 20, 2);
                 jet->unk_08 = 0;
                 jet->unk_0C = 9;
             }

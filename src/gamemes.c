@@ -277,9 +277,9 @@ void GMesExec(Gfx **arg0) {
                     result = func_800448C0_main(gMes, arg0);
                     break;
             }
-            gMes->unk04++;
-            if (gMes->unk04 >= 0x4000) {
-                gMes->unk04 = 0x2000;
+            gMes->time++;
+            if (gMes->time >= 0x4000) {
+                gMes->time = 0x2000;
             }
             if (result == FALSE) {
                 gMes->stat = GMES_STAT_NONE;
@@ -317,18 +317,18 @@ s16 GMesCreate(s16 mesNo, ...) {
     gMes = &gMesData[mesId];
     gMes->stat = GMES_STAT_EXIST;
     gMes->mesNo = mesNo;
-    gMes->unk04 = 0;
-    gMes->unk60 = 160.0f;
-    gMes->unk64 = 120.0f;
-    gMes->unk6C = 1.0f;
-    gMes->unk68 = 1.0f;
-    gMes->unk70 = 0;
-    gMes->unk03 = 0xFF;
-    gMes->unk06 = 0x3C;
+    gMes->time = 0;
+    gMes->pos.x = 160.0f;
+    gMes->pos.y = 120.0f;
+    gMes->scale.y = 1.0f;
+    gMes->scale.x = 1.0f;
+    gMes->angle = 0;
+    gMes->tpLvl = 0xFF;
+    gMes->timeMax = 0x3C;
     gMes->unk0E = 0;
     gMes->unk0C = 0;
-    gMes->unk0A = 0;
-    gMes->unk08 = 0;
+    gMes->work = 0;
+    gMes->subMode = 0;
     gMes->unk10 = gMes->unk14 = 0.0f;
     for (i = 0; i < GMES_STRMAX; i++) {
         gMes->strSprId[i] = gMes->strGId[i] = HUSPR_NONE;
@@ -342,24 +342,24 @@ s16 GMesCreate(s16 mesNo, ...) {
         case GMES_MES_13:
         case GMES_MES_31:
         case GMES_MES_33:
-            gMes->unk06 = 0x2D;
+            gMes->timeMax = 0x2D;
             break;
         case GMES_MES_MG_DRAW:
-            gMes->unk06 = 0x82;
+            gMes->timeMax = 0x82;
             break;
         case GMES_MES_MG_RECORD:
-            gMes->unk60 = 160.0f;
-            gMes->unk64 = 180.0f;
+            gMes->pos.x = 160.0f;
+            gMes->pos.y = 180.0f;
             break;
         case GMES_MES_MG_WINNER:
             gMes->unk0E = chr = va_arg(args, s32);
-            gMes->unk64 = func_800452C4_main();
-            gMes->unk06 = 0x78;
+            gMes->pos.y = func_800452C4_main();
+            gMes->timeMax = 0x78;
             break;
         case GMES_MES_29:
         case GMES_MES_36:
         case GMES_MES_37:
-            gMes->unk06 = 0x78;
+            gMes->timeMax = 0x78;
             break;
         case GMES_MES_MG_LOSER:
             gMes->unk0E = chr = va_arg(args, s32);
@@ -367,38 +367,38 @@ s16 GMesCreate(s16 mesNo, ...) {
         case GMES_MES_24:
         case GMES_MES_25:
             gMes->unk1C = va_arg(args, s32);
-            gMes->unk60 = va_arg(args, s32);
-            gMes->unk64 = va_arg(args, s32);
-            gMes->unk68 = va_arg(args, f64);
-            gMes->unk6C = va_arg(args, f64);
+            gMes->pos.x = va_arg(args, s32);
+            gMes->pos.y = va_arg(args, s32);
+            gMes->scale.x = va_arg(args, f64);
+            gMes->scale.y = va_arg(args, f64);
             gMes->unk02 = va_arg(args, s32);
             break;
         case GMES_MES_TIMER:
             gMesTimerId = mesId;
-            gMes->unk08 = va_arg(args, s32);
-            gMes->unk60 = va_arg(args, s32);
-            gMes->unk64 = va_arg(args, s32);
-            gMes->unk60 = 160.0f;
-            gMes->unk64 = 28.0f;
+            gMes->subMode = va_arg(args, s32);
+            gMes->pos.x = va_arg(args, s32);
+            gMes->pos.y = va_arg(args, s32);
+            gMes->pos.x = 160.0f;
+            gMes->pos.y = 28.0f;
             break;
         case GMES_MES_MG_WINNERS_2:
             gMes->unk0C = chr = va_arg(args, s32);
             gMes->unk0E = chr = va_arg(args, s32);
-            gMes->unk06 = 0x78;
+            gMes->timeMax = 0x78;
             break;
         case GMES_MES_MG_WINNERS_3:
-            gMes->unk0A = chr = va_arg(args, s32);
+            gMes->work = chr = va_arg(args, s32);
             gMes->unk0C = chr = va_arg(args, s32);
             gMes->unk0E = chr = va_arg(args, s32);
-            gMes->unk64 = func_80045314_main();
-            gMes->unk06 = 0x78;
+            gMes->pos.y = func_80045314_main();
+            gMes->timeMax = 0x78;
             break;
         case GMES_MES_MG_WINNERS_4:
-            gMes->unk08 = chr = va_arg(args, s32);
-            gMes->unk0A = chr = va_arg(args, s32);
+            gMes->subMode = chr = va_arg(args, s32);
+            gMes->work = chr = va_arg(args, s32);
             gMes->unk0C = chr = va_arg(args, s32);
             gMes->unk0E = chr = va_arg(args, s32);
-            gMes->unk06 = 0x78;
+            gMes->timeMax = 0x78;
             break;
     }
     GameMesTime = 0x5A;
@@ -426,12 +426,12 @@ void func_800370D0_main(s16 i, s16 value) {
     if (value == -1) {
         value = 0x7FFF;
     }
-    gMesData[i].unk06 = value;
+    gMesData[i].timeMax = value;
 }
 
 void GMesPosSet(s16 i, f32 x, f32 y) {
-    gMesData[i].unk60 = x;
-    gMesData[i].unk64 = y;
+    gMesData[i].pos.x = x;
+    gMesData[i].pos.y = y;
 }
 
 void GMesKill(s16 i) {
@@ -537,10 +537,10 @@ s32 func_80037574_main(GAMEMES *gMes, Gfx **gfx) {
     s32 i;
 
     if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
-        gMes->unk08 = 4;
+        gMes->subMode = 4;
     }
     result = TRUE;
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             GameMesStrCreate(gMes, "START", 1, -1, -1);
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
@@ -548,37 +548,37 @@ s32 func_80037574_main(GAMEMES *gMes, Gfx **gfx) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, 0.0f);
                 HuSprTPLvlSet(gMes->strGId[0], i + 1, 0);
             }
-            gMes->unk08 = 1;
+            gMes->subMode = 1;
             break;
         case 1:
             for (i = 0; i < len; i++) {
-                HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, gMes->unk04 * 0.05f);
-                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->unk04 * 12);
+                HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, gMes->time * 0.05f);
+                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->time * 12);
             }
-            if (gMes->unk04 >= 20) {
-                gMes->unk08 = 2;
+            if (gMes->time >= 20) {
+                gMes->subMode = 2;
                 for (i = 0; i < len; i++) {
                     HuSprTPLvlSet(gMes->strGId[0], i + 1, 255);
                 }
             }
             break;
         case 2:
-            if (gMes->unk04 >= 30) {
-                gMes->unk08 = 3;
-                gMes->unk0A = 0;
+            if (gMes->time >= 30) {
+                gMes->subMode = 3;
+                gMes->work = 0;
             }
             break;
         case 3:
             gMes->stat = 2;
-            gMes->unk0A += 6;
+            gMes->work += 6;
             for (i = 0; i < len; i++) {
-                HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, cosdf(gMes->unk0A));
+                HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, cosdf(gMes->work));
             }
-            if (gMes->unk04 >= gMes->unk06) {
+            if (gMes->time >= gMes->timeMax) {
                 for (i = 0; i < len; i++) {
                     HuSprAttrSet(gMes->strGId[0], i + 1, 0x8000);
                 }
-                gMes->unk08 = 4;
+                gMes->subMode = 4;
             }
             break;
         case 4:
@@ -588,10 +588,10 @@ s32 func_80037574_main(GAMEMES *gMes, Gfx **gfx) {
             result = FALSE;
             break;
     }
-    if (gMes->unk04 == 10) {
+    if (gMes->time == 10) {
         HuAudFXPlay(0x251);
     }
-    if (gMes->unk04 == 38) {
+    if (gMes->time == 38) {
         func_800452BC_main(func_80036610_main());
     }
     return result;
@@ -604,42 +604,42 @@ s32 func_80037878_main(GAMEMES *gMes, Gfx **gfx) {
     s32 i;
 
     if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
-        gMes->unk08 = 3;
+        gMes->subMode = 3;
     }
     result = TRUE;
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             GameMesStrCreate(gMes, str, 1, -1, -1);
-            gMes->unk6C = gMes->unk68 = 0.3f;
-            gMes->unk60 = 160.0f;
-            gMes->unk64 = 120.0f;
-            gMes->unk03 = 0;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+            gMes->scale.y = gMes->scale.x = 0.3f;
+            gMes->pos.x = 160.0f;
+            gMes->pos.y = 120.0f;
+            gMes->tpLvl = 0;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0; i < len; i++) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, 1.0f);
-                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->unk03);
+                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->tpLvl);
             }
-            gMes->unk08 = 1;
-            gMes->unk0A = 0;
+            gMes->subMode = 1;
+            gMes->work = 0;
             gMes->unk0C = 0;
             gMes->unk0E = 9;
             gMes->unk10 = 0.0f;
             break;
         case 1:
-            gMes->unk68 = gMes->unk10 + 0.3f;
-            gMes->unk6C = gMes->unk10 + 0.3f;
-            gMes->unk64 = 120.0f - sindf(gMes->unk0A) * 20.0f;
-            gMes->unk03 += 12;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+            gMes->scale.x = gMes->unk10 + 0.3f;
+            gMes->scale.y = gMes->unk10 + 0.3f;
+            gMes->pos.y = 120.0f - sindf(gMes->work) * 20.0f;
+            gMes->tpLvl += 12;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0; i < len; i++) {
-                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->unk68, gMes->unk6C);
-                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->scale.x, gMes->scale.y);
+                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->tpLvl);
             }
-            gMes->unk0A += gMes->unk0E;
+            gMes->work += gMes->unk0E;
             gMes->unk0C += 4;
             gMes->unk10 += 0.035f;
-            if (gMes->unk04 >= 20) {
-                gMes->unk08 = 2;
+            if (gMes->time >= 20) {
+                gMes->subMode = 2;
                 HuSprPosSet(gMes->strGId[0], 0, 160, 120);
                 for (i = 0; i < len; i++) {
                     HuSprTPLvlSet(gMes->strGId[0], i + 1, 255);
@@ -648,8 +648,8 @@ s32 func_80037878_main(GAMEMES *gMes, Gfx **gfx) {
             break;
         case 2:
             gMes->stat = 2;
-            if (gMes->unk04 >= gMes->unk06) {
-                gMes->unk08 = 3;
+            if (gMes->time >= gMes->timeMax) {
+                gMes->subMode = 3;
             }
             break;
         case 3:
@@ -659,10 +659,10 @@ s32 func_80037878_main(GAMEMES *gMes, Gfx **gfx) {
             result = FALSE;
             break;
     }
-    if (gMes->unk04 == 10) {
+    if (gMes->time == 10) {
         HuAudFXPlay(0x251);
     }
-    if (gMes->unk04 == 38) {
+    if (gMes->time == 38) {
         func_800452BC_main(func_80036610_main());
     }
     return result;
@@ -675,74 +675,74 @@ s32 func_80037C44_main(GAMEMES *gMes, Gfx **gfx) {
     s32 i;
 
     if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
-        gMes->unk08 = 5;
+        gMes->subMode = 5;
     }
     result = TRUE;
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             GameMesStrCreate(gMes, str, 1, -1, -1);
-            gMes->unk6C = gMes->unk68 = 0.3f;
-            gMes->unk60 = 160.0f;
-            gMes->unk64 = 40.0f;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+            gMes->scale.y = gMes->scale.x = 0.3f;
+            gMes->pos.x = 160.0f;
+            gMes->pos.y = 40.0f;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0; i < len; i++) {
-                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->unk68, gMes->unk6C);
+                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->scale.x, gMes->scale.y);
                 HuSprTPLvlSet(gMes->strGId[0], i + 1, 0);
             }
-            gMes->unk08 = 1;
-            gMes->unk0A = 0;
+            gMes->subMode = 1;
+            gMes->work = 0;
             gMes->unk0C = 0;
             gMes->unk10 = 0.0f;
             gMes->unk14 = 0.0f;
             break;
         case 1:
-            gMes->unk68 = gMes->unk10 + 0.3f;
-            gMes->unk6C = gMes->unk10 + 0.3f;
-            gMes->unk60 = 160.0f;
-            gMes->unk64 += gMes->unk14;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+            gMes->scale.x = gMes->unk10 + 0.3f;
+            gMes->scale.y = gMes->unk10 + 0.3f;
+            gMes->pos.x = 160.0f;
+            gMes->pos.y += gMes->unk14;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0; i < len; i++) {
-                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->unk68, gMes->unk6C);
+                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->scale.x, gMes->scale.y);
                 HuSprTPLvlSet(gMes->strGId[0], i + 1, sindf(gMes->unk0C) * 255.0f);
             }
             gMes->unk0C += 6;
             gMes->unk10 += 0.7f / 15;
             gMes->unk14 += 0.8f;
-            if (gMes->unk64 >= 120.0f) {
-                gMes->unk64 = 120.0f;
+            if (gMes->pos.y >= 120.0f) {
+                gMes->pos.y = 120.0f;
                 gMes->unk14 = -5.0f;
-                HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+                HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
                 for (i = 0; i < len; i++) {
                     HuSprTPLvlSet(gMes->strGId[0], i + 1, 255);
                 }
-                gMes->unk08 = 2;
+                gMes->subMode = 2;
             }
             break;
         case 2:
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
-            gMes->unk64 += gMes->unk14;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
+            gMes->pos.y += gMes->unk14;
             gMes->unk14 += 1.5f;
-            if (gMes->unk64 >= 120.0f) {
-                gMes->unk64 = 120.0f;
+            if (gMes->pos.y >= 120.0f) {
+                gMes->pos.y = 120.0f;
                 gMes->unk14 = -3.0f;
-                HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
-                gMes->unk08 = 3;
+                HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
+                gMes->subMode = 3;
             }
             break;
         case 3:
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
-            gMes->unk64 += gMes->unk14;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
+            gMes->pos.y += gMes->unk14;
             gMes->unk14 += 1.5f;
-            if (gMes->unk64 >= 120.0f) {
-                gMes->unk64 = 120.0f;
-                HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
-                gMes->unk08 = 4;
+            if (gMes->pos.y >= 120.0f) {
+                gMes->pos.y = 120.0f;
+                HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
+                gMes->subMode = 4;
             }
             break;
         case 4:
             gMes->stat = 2;
-            if (gMes->unk04 >= gMes->unk06) {
-                gMes->unk08 = 5;
+            if (gMes->time >= gMes->timeMax) {
+                gMes->subMode = 5;
             }
             break;
         case 5:
@@ -752,10 +752,10 @@ s32 func_80037C44_main(GAMEMES *gMes, Gfx **gfx) {
             result = FALSE;
             break;
     }
-    if (gMes->unk04 == 10) {
+    if (gMes->time == 10) {
         HuAudFXPlay(0x251);
     }
-    if (gMes->unk04 == 38) {
+    if (gMes->time == 38) {
         func_800452BC_main(func_80036610_main());
     }
     return result;
@@ -774,10 +774,10 @@ s32 func_80038208_main(GAMEMES *gMes) {
     GMesChar *chr;
 
     if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
-        gMes->unk08 = 6;
+        gMes->subMode = 6;
     }
     result = TRUE;
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             for (i = 0; i < 32; i++) {
                 chr = &D_800B1BC0_main[i];
@@ -794,11 +794,11 @@ s32 func_80038208_main(GAMEMES *gMes) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, chr->scaleX, chr->scaleY);
                 HuSprTPLvlSet(gMes->strGId[0], i + 1, chr->alpha);
             }
-            gMes->unk04 = gMes->unk0A = gMes->unk0C = gMes->unk0E = 0;
-            gMes->unk06 = 0;
-            gMes->unk60 = gMes->unk64 = 0.0f;
-            gMes->unk68 = gMes->unk6C = 1.0f;
-            gMes->unk70 = 0.0f;
+            gMes->time = gMes->work = gMes->unk0C = gMes->unk0E = 0;
+            gMes->timeMax = 0;
+            gMes->pos.x = gMes->pos.y = 0.0f;
+            gMes->scale.x = gMes->scale.y = 1.0f;
+            gMes->angle = 0.0f;
             gMes->unk1C = 0;
             break;
         case 1:
@@ -818,10 +818,10 @@ s32 func_80038208_main(GAMEMES *gMes) {
             result = FALSE;
             break;
     }
-    if (gMes->unk04 == 60) {
+    if (gMes->time == 60) {
         HuAudFXPlay(0x251);
     }
-    if (gMes->unk04 == 80) {
+    if (gMes->time == 80) {
         func_800452BC_main(func_80036610_main());
     }
     return result;
@@ -835,7 +835,7 @@ s32 func_8003843C_main(GAMEMES *gMes, Gfx **gfx) {
     f32 scale;
 
     result = func_80038208_main(gMes);
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             for (i = 0; i < len; i++) {
@@ -847,22 +847,22 @@ s32 func_8003843C_main(GAMEMES *gMes, Gfx **gfx) {
                 HuSprPosSet(gMes->strGId[0], i + 1, chr->x, chr->y);
                 HuSprAttrSet(gMes->strGId[0], i + 1, 2);
             }
-            gMes->unk08 = 1;
+            gMes->subMode = 1;
             break;
         case 1:
             chr = &D_800B1BC0_main[0];
-            if (gMes->unk04 > 60) {
+            if (gMes->time > 60) {
                 for (i = 0; i < len; i++) {
                     HuSprAttrReset(gMes->strGId[0], i + 1, 2);
                     HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, 1.0f);
                 }
-                gMes->unk08 = 2;
+                gMes->subMode = 2;
                 for (i = 0; i < len; i++) {
                     chr = &D_800B1BC0_main[i];
                     chr->alpha = 255;
                     HuSprTPLvlSet(gMes->strGId[0], i + 1, 255);
                 }
-            } else if (gMes->unk04 > 10) {
+            } else if (gMes->time > 10) {
                 chr->angle += 18.0f;
                 if (chr->angle > 360.0f) {
                     chr->angle -= 360.0f;
@@ -889,10 +889,10 @@ s32 func_8003843C_main(GAMEMES *gMes, Gfx **gfx) {
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             break;
         case 2:
-            if (gMes->unk04 >= 90) {
-                gMes->unk08 = 5;
+            if (gMes->time >= 90) {
+                gMes->subMode = 5;
                 gMes->unk0C = 0;
-                gMes->unk0A = 0;
+                gMes->work = 0;
             }
             for (i = 0; i < len; i++) {
                 HuSprAttrReset(gMes->strGId[0], i + 1, 2);
@@ -904,12 +904,12 @@ s32 func_8003843C_main(GAMEMES *gMes, Gfx **gfx) {
         case 4:
             break;
         case 5:
-            if (gMes->unk0A < 6) {
-                scale = cosdf(gMes->unk0A * 15.0f);
-                gMes->unk0A++;
+            if (gMes->work < 6) {
+                scale = cosdf(gMes->work * 15.0f);
+                gMes->work++;
             } else {
                 scale = 0.0f;
-                gMes->unk08 = 6;
+                gMes->subMode = 6;
             }
             for (i = 0; i < len; i++) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, scale, scale);
@@ -934,7 +934,7 @@ s32 func_80038934_main(GAMEMES *gMes, Gfx **gfx) {
 
     result = func_80038208_main(gMes);
     len = strlen("START");
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             for (i = 0; i < len; i++) {
@@ -947,13 +947,13 @@ s32 func_80038934_main(GAMEMES *gMes, Gfx **gfx) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, chr->scaleX, chr->scaleY);
                 HuSprPosSet(gMes->strGId[0], i + 1, chr->x, chr->y);
             }
-            gMes->unk08 = 1;
+            gMes->subMode = 1;
             gMes->unk0C = 0;
-            gMes->unk0A = 0;
+            gMes->work = 0;
             break;
         case 1:
-            if (gMes->unk04 > 60) {
-                gMes->unk08 = 2;
+            if (gMes->time > 60) {
+                gMes->subMode = 2;
                 gMes->unk0C = 0;
                 for (i = 0; i < len; i++) {
                     chr = &D_800B1BC0_main[i];
@@ -964,7 +964,7 @@ s32 func_80038934_main(GAMEMES *gMes, Gfx **gfx) {
                 for (i = 0; i < len; i++) {
                     chr = &D_800B1BC0_main[i];
                     t = 0.0f;
-                    if (gMes->unk04 > 30.0f / len * i) {
+                    if (gMes->time > 30.0f / len * i) {
                         if (chr->time > 30) {
                             t = 1.0f;
                         } else {
@@ -980,9 +980,9 @@ s32 func_80038934_main(GAMEMES *gMes, Gfx **gfx) {
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             break;
         case 2:
-            if (gMes->unk04 >= 90) {
-                gMes->unk08 = 5;
-                gMes->unk0A = 0;
+            if (gMes->time >= 90) {
+                gMes->subMode = 5;
+                gMes->work = 0;
             }
             break;
         case 3:
@@ -990,12 +990,12 @@ s32 func_80038934_main(GAMEMES *gMes, Gfx **gfx) {
         case 4:
             break;
         case 5:
-            if (gMes->unk0A < 6) {
-                scale = cosdf(gMes->unk0A * 15.0f);
-                gMes->unk0A++;
+            if (gMes->work < 6) {
+                scale = cosdf(gMes->work * 15.0f);
+                gMes->work++;
             } else {
                 scale = 0.0f;
-                gMes->unk08 = 6;
+                gMes->subMode = 6;
             }
             for (i = 0; i < len; i++) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, scale, scale);
@@ -1019,7 +1019,7 @@ s32 func_80038D78_main(GAMEMES *gMes, Gfx **gfx) {
 
     result = func_80038208_main(gMes);
     len = strlen("START");
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             for (i = 0; i < len; i++) {
@@ -1031,23 +1031,23 @@ s32 func_80038D78_main(GAMEMES *gMes, Gfx **gfx) {
                 HuSprPosSet(gMes->strGId[0], i + 1, chr->x, chr->y);
                 HuSprAttrSet(gMes->strGId[0], i + 1, 2);
             }
-            gMes->unk08 = 1;
+            gMes->subMode = 1;
             gMes->unk0E = 0;
             gMes->unk0C = 0;
-            gMes->unk0A = 0;
+            gMes->work = 0;
             break;
         case 1:
-            if (gMes->unk04 > 60) {
-                gMes->unk08 = 2;
+            if (gMes->time > 60) {
+                gMes->subMode = 2;
                 for (i = 0; i < len; i++) {
                     chr = &D_800B1BC0_main[i];
                     chr->alpha = 255;
                     HuSprTPLvlSet(gMes->strGId[0], i + 1, 255);
                 }
-            } else if (gMes->unk04 > 10) {
+            } else if (gMes->time > 10) {
                 for (i = 0; i < len; i++) {
                     chr = &D_800B1BC0_main[i];
-                    if (gMes->unk04 - 10 > 50.0f / len * i) {
+                    if (gMes->time - 10 > 50.0f / len * i) {
                         if (chr->time > 50.0f / len) {
                             scale = 1.0f;
                             chr->angle = 0.0f;
@@ -1084,9 +1084,9 @@ s32 func_80038D78_main(GAMEMES *gMes, Gfx **gfx) {
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             break;
         case 2:
-            if (gMes->unk04 >= 90) {
-                gMes->unk08 = 5;
-                gMes->unk0A = 0;
+            if (gMes->time >= 90) {
+                gMes->subMode = 5;
+                gMes->work = 0;
             }
             break;
         case 3:
@@ -1094,12 +1094,12 @@ s32 func_80038D78_main(GAMEMES *gMes, Gfx **gfx) {
         case 4:
             break;
         case 5:
-            if (gMes->unk0A < 6) {
-                scale = cosdf(gMes->unk0A * 15.0f);
-                gMes->unk0A++;
+            if (gMes->work < 6) {
+                scale = cosdf(gMes->work * 15.0f);
+                gMes->work++;
             } else {
                 scale = 0.0f;
-                gMes->unk08 = 6;
+                gMes->subMode = 6;
             }
             for (i = 0; i < len; i++) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, scale, scale);
@@ -1123,34 +1123,34 @@ s32 func_800392AC_main(GAMEMES *gMes, Gfx **gfx) {
 
     result = func_80038208_main(gMes);
     len = strlen("START");
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             for (i = 0; i < len; i++) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, 0.3f, 0.3f);
                 HuSprTPLvlSet(gMes->strGId[0], i + 1, 128);
             }
-            gMes->unk08 = 1;
+            gMes->subMode = 1;
             break;
         case 1:
-            if (gMes->unk04 > 60) {
-                gMes->unk08 = 2;
+            if (gMes->time > 60) {
+                gMes->subMode = 2;
                 for (i = 0; i < len; i++) {
                     chr = &D_800B1BC0_main[i];
                     chr->alpha = 255;
                     HuSprTPLvlSet(gMes->strGId[0], i + 1, 255);
                 }
-            } else if (gMes->unk04 > 38) {
+            } else if (gMes->time > 38) {
                 scale = 1.0f;
                 for (i = 0; i < len; i++) {
                     HuSprScaleSet(gMes->strGId[0], i + 1, scale, scale);
                 }
-            } else if (gMes->unk04 > 30) {
-                scale = 1.5f - (gMes->unk04 - 30.0f) * 0.5f * 0.125f;
+            } else if (gMes->time > 30) {
+                scale = 1.5f - (gMes->time - 30.0f) * 0.5f * 0.125f;
                 for (i = 0; i < len; i++) {
                     HuSprScaleSet(gMes->strGId[0], i + 1, scale, scale);
                 }
-            } else if (gMes->unk04 > 10) {
-                scale = (gMes->unk04 - 10) * 1.2f * 0.05f + 0.3f;
+            } else if (gMes->time > 10) {
+                scale = (gMes->time - 10) * 1.2f * 0.05f + 0.3f;
                 for (i = 0; i < len; i++) {
                     HuSprScaleSet(gMes->strGId[0], i + 1, scale, scale);
                 }
@@ -1162,9 +1162,9 @@ s32 func_800392AC_main(GAMEMES *gMes, Gfx **gfx) {
             }
             break;
         case 2:
-            if (gMes->unk04 >= 90) {
-                gMes->unk08 = 5;
-                gMes->unk0A = 0;
+            if (gMes->time >= 90) {
+                gMes->subMode = 5;
+                gMes->work = 0;
             }
             break;
         case 3:
@@ -1172,12 +1172,12 @@ s32 func_800392AC_main(GAMEMES *gMes, Gfx **gfx) {
         case 4:
             break;
         case 5:
-            if (gMes->unk0A < 6) {
-                scale = cosdf(gMes->unk0A * 15.0f);
-                gMes->unk0A++;
+            if (gMes->work < 6) {
+                scale = cosdf(gMes->work * 15.0f);
+                gMes->work++;
             } else {
                 scale = 0.0f;
-                gMes->unk08 = 6;
+                gMes->subMode = 6;
             }
             for (i = 0; i < len; i++) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, scale, scale);
@@ -1201,7 +1201,7 @@ s32 func_8003966C_main(GAMEMES *gMes, Gfx **gfx) {
 
     result = func_80038208_main(gMes);
     len = strlen("START");
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             for (i = 0; i < len; i++) {
@@ -1211,17 +1211,17 @@ s32 func_8003966C_main(GAMEMES *gMes, Gfx **gfx) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, chr->scaleX, chr->scaleY);
                 HuSprPosSet(gMes->strGId[0], i + 1, chr->x, chr->y);
             }
-            gMes->unk08 = 1;
+            gMes->subMode = 1;
             break;
         case 1:
-            if (gMes->unk04 > 60) {
-                gMes->unk08 = 2;
+            if (gMes->time > 60) {
+                gMes->subMode = 2;
                 for (i = 0; i < len; i++) {
                     chr = &D_800B1BC0_main[i];
                     chr->alpha = 255;
                     HuSprTPLvlSet(gMes->strGId[0], i + 1, 255);
                 }
-            } else if (gMes->unk0A == 0) {
+            } else if (gMes->work == 0) {
                 for (i = 0; i < len; i++) {
                     chr = &D_800B1BC0_main[i];
                     if (chr->unk34 == 0) {
@@ -1245,9 +1245,9 @@ s32 func_8003966C_main(GAMEMES *gMes, Gfx **gfx) {
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             break;
         case 2:
-            if (gMes->unk04 >= 90) {
-                gMes->unk08 = 5;
-                gMes->unk0A = 0;
+            if (gMes->time >= 90) {
+                gMes->subMode = 5;
+                gMes->work = 0;
             }
             break;
         case 3:
@@ -1255,12 +1255,12 @@ s32 func_8003966C_main(GAMEMES *gMes, Gfx **gfx) {
         case 4:
             break;
         case 5:
-            if (gMes->unk0A < 6) {
-                scale = cosdf(gMes->unk0A * 15.0f);
-                gMes->unk0A++;
+            if (gMes->work < 6) {
+                scale = cosdf(gMes->work * 15.0f);
+                gMes->work++;
             } else {
                 scale = 0.0f;
-                gMes->unk08 = 6;
+                gMes->subMode = 6;
             }
             for (i = 0; i < len; i++) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, scale, scale);
@@ -1284,7 +1284,7 @@ s32 func_80039A6C_main(GAMEMES *gMes, Gfx **gfx) {
 
     result = func_80038208_main(gMes);
     len = strlen("START");
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             for (i = 0; i < len; i++) {
@@ -1294,17 +1294,17 @@ s32 func_80039A6C_main(GAMEMES *gMes, Gfx **gfx) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, chr->scaleX, chr->scaleY);
                 HuSprPosSet(gMes->strGId[0], i + 1, chr->x, chr->y);
             }
-            gMes->unk08 = 1;
+            gMes->subMode = 1;
             break;
         case 1:
-            if (gMes->unk04 > 60) {
-                gMes->unk08 = 2;
+            if (gMes->time > 60) {
+                gMes->subMode = 2;
                 for (i = 0; i < len; i++) {
                     chr = &D_800B1BC0_main[i];
                     chr->alpha = 255;
                     HuSprTPLvlSet(gMes->strGId[0], i + 1, 255);
                 }
-            } else if (gMes->unk0A == 0) {
+            } else if (gMes->work == 0) {
                 for (i = 0; i < len; i++) {
                     chr = &D_800B1BC0_main[i];
                     if (chr->unk34 == 0) {
@@ -1328,9 +1328,9 @@ s32 func_80039A6C_main(GAMEMES *gMes, Gfx **gfx) {
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             break;
         case 2:
-            if (gMes->unk04 >= 90) {
-                gMes->unk08 = 5;
-                gMes->unk0A = 0;
+            if (gMes->time >= 90) {
+                gMes->subMode = 5;
+                gMes->work = 0;
             }
             break;
         case 3:
@@ -1338,12 +1338,12 @@ s32 func_80039A6C_main(GAMEMES *gMes, Gfx **gfx) {
         case 4:
             break;
         case 5:
-            if (gMes->unk0A < 6) {
-                scale = cosdf(gMes->unk0A * 15.0f);
-                gMes->unk0A++;
+            if (gMes->work < 6) {
+                scale = cosdf(gMes->work * 15.0f);
+                gMes->work++;
             } else {
                 scale = 0.0f;
-                gMes->unk08 = 6;
+                gMes->subMode = 6;
             }
             for (i = 0; i < len; i++) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, scale, scale);
@@ -1379,20 +1379,20 @@ s32 func_80039E80_main(GAMEMES *gMes, Gfx **gfx) {
     top = 12.0f;
     bottom = 228.0f;
     len = strlen("START");
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             for (i = 0; i < len; i++) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, 1.0f);
                 HuSprTPLvlSet(gMes->strGId[0], i + 1, 128);
             }
             HuSprPosSet(gMes->strGId[0], 0, 0, 0);
-            gMes->unk08 = 1;
-            gMes->unk0A = 0;
+            gMes->subMode = 1;
+            gMes->work = 0;
             gMes->unk0C = 0;
             break;
         case 1:
-            if (gMes->unk0A < 4) {
-                if (gMes->unk0A == 0) {
+            if (gMes->work < 4) {
+                if (gMes->work == 0) {
                     startX = left;
                     startY = top;
                     endX = right;
@@ -1401,10 +1401,10 @@ s32 func_80039E80_main(GAMEMES *gMes, Gfx **gfx) {
                         t = gMes->unk0C * 0.2f;
                         gMes->unk0C++;
                     } else {
-                        gMes->unk0A = 1;
+                        gMes->work = 1;
                         gMes->unk0C = 0;
                     }
-                } else if (gMes->unk0A == 1) {
+                } else if (gMes->work == 1) {
                     startX = right;
                     startY = (bottom - top) * 0.5f;
                     endX = (startX - left) * 0.5f;
@@ -1413,10 +1413,10 @@ s32 func_80039E80_main(GAMEMES *gMes, Gfx **gfx) {
                         t = gMes->unk0C * (1.0f / 7.0f);
                         gMes->unk0C++;
                     } else {
-                        gMes->unk0A = 2;
+                        gMes->work = 2;
                         gMes->unk0C = 0;
                     }
-                } else if (gMes->unk0A == 2) {
+                } else if (gMes->work == 2) {
                     startX = (right - left) * 0.5f;
                     startY = bottom;
                     endX = left;
@@ -1425,10 +1425,10 @@ s32 func_80039E80_main(GAMEMES *gMes, Gfx **gfx) {
                         t = gMes->unk0C * 0.125f;
                         gMes->unk0C++;
                     } else {
-                        gMes->unk0A = 3;
+                        gMes->work = 3;
                         gMes->unk0C = 0;
                     }
-                } else if (gMes->unk0A == 3) {
+                } else if (gMes->work == 3) {
                     startX = left;
                     startY = 120.0f;
                     endX = 160.0f;
@@ -1437,7 +1437,7 @@ s32 func_80039E80_main(GAMEMES *gMes, Gfx **gfx) {
                         t = gMes->unk0C * 0.1f;
                         gMes->unk0C++;
                     } else {
-                        gMes->unk0A = 4;
+                        gMes->work = 4;
                         gMes->unk0C = 0;
                     }
                 }
@@ -1446,7 +1446,7 @@ s32 func_80039E80_main(GAMEMES *gMes, Gfx **gfx) {
             } else {
                 x = 160.0f;
                 y = 120.0f;
-                gMes->unk08 = 2;
+                gMes->subMode = 2;
                 gMes->unk0C = 0;
                 for (i = 0; i < len; i++) {
                     chr = &D_800B1BC0_main[i];
@@ -1457,9 +1457,9 @@ s32 func_80039E80_main(GAMEMES *gMes, Gfx **gfx) {
             HuSprPosSet(gMes->strGId[0], 0, x, y);
             break;
         case 2:
-            if (gMes->unk04 >= 90) {
-                gMes->unk08 = 5;
-                gMes->unk0A = 0;
+            if (gMes->time >= 90) {
+                gMes->subMode = 5;
+                gMes->work = 0;
             }
             break;
         case 3:
@@ -1467,12 +1467,12 @@ s32 func_80039E80_main(GAMEMES *gMes, Gfx **gfx) {
         case 4:
             break;
         case 5:
-            if (gMes->unk0A < 6) {
-                scale = cosdf(gMes->unk0A * 15.0f);
-                gMes->unk0A++;
+            if (gMes->work < 6) {
+                scale = cosdf(gMes->work * 15.0f);
+                gMes->work++;
             } else {
                 scale = 0.0f;
-                gMes->unk08 = 6;
+                gMes->subMode = 6;
             }
             for (i = 0; i < len; i++) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, scale, scale);
@@ -1934,29 +1934,29 @@ s32 func_8003B170_main(GAMEMES *gMes, char *str, s32 seNo) {
     f32 i;
     f32 t;
 
-    if (gMes->unk04 == 0) {
+    if (gMes->time == 0) {
         GameMesStrCreate(gMes, str, 1, -1, -1);
-        HuSprPosSet(gMes->strGId[0], 0, 160, gMes->unk64);
-        gMes->unk08 = -1000;
-        gMes->unk0A = 300;
+        HuSprPosSet(gMes->strGId[0], 0, 160, gMes->pos.y);
+        gMes->subMode = -1000;
+        gMes->work = 300;
         HuAudFXPlay(seNo);
         D_800D6A58_main = 1;
         D_800D1100_main = 0;
     }
-    if (gMes->unk04 > gMes->unk06 || gMesCloseF || gMes->stat == GMES_STAT_KILL) {
+    if (gMes->time > gMes->timeMax || gMesCloseF || gMes->stat == GMES_STAT_KILL) {
         GMesSprKill(gMes);
         return FALSE;
     }
-    if (gMes->unk04 > gMes->unk06 - 10) {
+    if (gMes->time > gMes->timeMax - 10) {
         gMes->stat = 2;
-        t = gMes->unk04 - (gMes->unk06 - 10);
+        t = gMes->time - (gMes->timeMax - 10);
         for (i = 0.0f; i < len; i++) {
             HuSprScaleSet(gMes->strGId[0], i + 1, 1.8f - t / 6.0f, 1.8f - t / 6.0f);
             HuSprTPLvlSet(gMes->strGId[0], i + 1, 255.0f - t * 25.5f);
         }
-        gMes->unk08 += gMes->unk0A;
-        gMes->unk64 += gMes->unk08 / 100.0f;
-        HuSprPosSet(gMes->strGId[0], 0, 160, gMes->unk64);
+        gMes->subMode += gMes->work;
+        gMes->pos.y += gMes->subMode / 100.0f;
+        HuSprPosSet(gMes->strGId[0], 0, 160, gMes->pos.y);
         return TRUE;
     }
     for (i = 0.0f; i < len; i++) {
@@ -1970,57 +1970,57 @@ s32 func_8003B4D8_main(GAMEMES *gMes, s32 fileNo, s32 seNo) {
     s32 i;
 
     if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
-        gMes->unk08 = 4;
+        gMes->subMode = 4;
     }
     result = TRUE;
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             func_8003DCA4_main(gMes, fileNo);
             HuAudFXPlay(seNo);
             D_800D6A58_main = 1;
             D_800D1100_main = 0;
-            gMes->unk60 = 160.0f;
-            gMes->unk64 = 120.0f;
-            gMes->unk68 = 1.0f;
-            gMes->unk6C = 1.0f;
-            gMes->unk70 = 0.0f;
-            gMes->unk03 = 255;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
-            HuSprZRotSet(gMes->strGId[0], 0, gMes->unk70);
+            gMes->pos.x = 160.0f;
+            gMes->pos.y = 120.0f;
+            gMes->scale.x = 1.0f;
+            gMes->scale.y = 1.0f;
+            gMes->angle = 0.0f;
+            gMes->tpLvl = 255;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
+            HuSprZRotSet(gMes->strGId[0], 0, gMes->angle);
             for (i = 0; i < 2; i++) {
-                HuSprScaleSet(gMes->strGId[0], i, gMes->unk68, gMes->unk6C);
-                HuSprTPLvlSet(gMes->strGId[0], i, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[0], i, gMes->scale.x, gMes->scale.y);
+                HuSprTPLvlSet(gMes->strGId[0], i, gMes->tpLvl);
             }
-            gMes->unk08 = 1;
+            gMes->subMode = 1;
             break;
         case 1:
-            if (gMes->unk04 >= 25) {
-                gMes->unk08 = 2;
+            if (gMes->time >= 25) {
+                gMes->subMode = 2;
             }
             break;
         case 2:
-            gMes->unk60 += 8.0f;
-            gMes->unk64 -= 6.0f;
-            gMes->unk6C = gMes->unk68 -= 0.06f;
-            gMes->unk03 -= 17;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x += 8.0f;
+            gMes->pos.y -= 6.0f;
+            gMes->scale.y = gMes->scale.x -= 0.06f;
+            gMes->tpLvl -= 17;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0; i < 2; i++) {
-                HuSprScaleSet(gMes->strGId[0], i, gMes->unk68, gMes->unk6C);
-                HuSprTPLvlSet(gMes->strGId[0], i, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[0], i, gMes->scale.x, gMes->scale.y);
+                HuSprTPLvlSet(gMes->strGId[0], i, gMes->tpLvl);
             }
-            if (gMes->unk04 > gMes->unk06 - 10) {
+            if (gMes->time > gMes->timeMax - 10) {
                 gMes->stat = 2;
             }
-            if (gMes->unk04 >= 40) {
-                gMes->unk08 = 3;
+            if (gMes->time >= 40) {
+                gMes->subMode = 3;
                 for (i = 0; i < 2; i++) {
                     HuSprTPLvlSet(gMes->strGId[0], i, 0);
                 }
             }
             break;
         case 3:
-            if (gMes->unk04 >= gMes->unk06) {
-                gMes->unk08 = 4;
+            if (gMes->time >= gMes->timeMax) {
+                gMes->subMode = 4;
             }
             break;
         case 4:
@@ -2036,56 +2036,56 @@ s32 func_8003B7E8_main(GAMEMES *gMes, Gfx **gfx) {
     s32 i;
 
     if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
-        gMes->unk08 = 4;
+        gMes->subMode = 4;
     }
     result = TRUE;
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             func_8003DCA4_main(gMes, 0xC0090);
             HuAudFXPlay(0x253);
             D_800D6A58_main = 1;
             D_800D1100_main = 0;
-            gMes->unk68 = 1.0f;
-            gMes->unk6C = 1.0f;
-            gMes->unk60 = 160.0f;
-            gMes->unk64 = 120.0f;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, 120);
+            gMes->scale.x = 1.0f;
+            gMes->scale.y = 1.0f;
+            gMes->pos.x = 160.0f;
+            gMes->pos.y = 120.0f;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, 120);
             for (i = 0; i < 2; i++) {
-                HuSprScaleSet(gMes->strGId[0], i, gMes->unk68, gMes->unk6C);
+                HuSprScaleSet(gMes->strGId[0], i, gMes->scale.x, gMes->scale.y);
                 HuSprTPLvlSet(gMes->strGId[0], i, 255);
             }
-            gMes->unk08 = 1;
-            gMes->unk0A = 0;
+            gMes->subMode = 1;
+            gMes->work = 0;
             gMes->unk0C = 0;
             gMes->unk0E = 9;
             gMes->unk10 = 0.0f;
             break;
         case 1:
-            if (gMes->unk04 >= 25) {
-                gMes->unk08 = 2;
+            if (gMes->time >= 25) {
+                gMes->subMode = 2;
             }
             break;
         case 2:
-            gMes->unk68 = 1.0f - gMes->unk10;
-            gMes->unk6C = 1.0f - gMes->unk10;
-            gMes->unk60 = 160.0f;
-            gMes->unk64 = 120.0f - sindf(gMes->unk0A) * 50.0f;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+            gMes->scale.x = 1.0f - gMes->unk10;
+            gMes->scale.y = 1.0f - gMes->unk10;
+            gMes->pos.x = 160.0f;
+            gMes->pos.y = 120.0f - sindf(gMes->work) * 50.0f;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0; i < 2; i++) {
-                HuSprScaleSet(gMes->strGId[0], i, gMes->unk68, gMes->unk6C);
+                HuSprScaleSet(gMes->strGId[0], i, gMes->scale.x, gMes->scale.y);
                 HuSprTPLvlSet(gMes->strGId[0], i, cosdf(gMes->unk0C) * 255.0f);
             }
-            gMes->unk0A += gMes->unk0E;
+            gMes->work += gMes->unk0E;
             gMes->unk0C += 4;
             gMes->unk10 += 0.035f;
-            if (gMes->unk04 > gMes->unk06 - 10) {
+            if (gMes->time > gMes->timeMax - 10) {
                 gMes->stat = 2;
             }
-            if (gMes->unk04 >= gMes->unk06) {
+            if (gMes->time >= gMes->timeMax) {
                 for (i = 0; i < 2; i++) {
                     HuSprTPLvlSet(gMes->strGId[0], i, 0);
                 }
-                gMes->unk08 = 4;
+                gMes->subMode = 4;
             }
             break;
         case 4:
@@ -2101,82 +2101,82 @@ s32 func_8003BB84_main(GAMEMES *gMes, Gfx **gfx) {
     s32 i;
 
     if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
-        gMes->unk08 = 5;
+        gMes->subMode = 5;
     }
     result = TRUE;
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             func_8003DCA4_main(gMes, 0xC0090);
             HuAudFXPlay(0x253);
             D_800D6A58_main = 1;
             D_800D1100_main = 0;
-            gMes->unk68 = 1.0f;
-            gMes->unk6C = 1.0f;
-            gMes->unk60 = 160.0f;
-            gMes->unk64 = 120.0f;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, 120);
+            gMes->scale.x = 1.0f;
+            gMes->scale.y = 1.0f;
+            gMes->pos.x = 160.0f;
+            gMes->pos.y = 120.0f;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, 120);
             for (i = 0; i < 2; i++) {
-                HuSprScaleSet(gMes->strGId[0], i, gMes->unk68, gMes->unk6C);
+                HuSprScaleSet(gMes->strGId[0], i, gMes->scale.x, gMes->scale.y);
                 HuSprTPLvlSet(gMes->strGId[0], i, 255);
             }
-            gMes->unk08 = 1;
+            gMes->subMode = 1;
             break;
         case 1:
-            if (gMes->unk04 >= 10) {
-                gMes->unk08 = 2;
+            if (gMes->time >= 10) {
+                gMes->subMode = 2;
                 gMes->unk14 = -4.0f;
             }
             break;
         case 2:
-            gMes->unk64 += gMes->unk14;
+            gMes->pos.y += gMes->unk14;
             gMes->unk14 += 1.5f;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
-            if (gMes->unk64 >= 120.0f) {
-                gMes->unk64 = 120.0f;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
+            if (gMes->pos.y >= 120.0f) {
+                gMes->pos.y = 120.0f;
                 gMes->unk14 = -6.0f;
-                gMes->unk08 = 3;
+                gMes->subMode = 3;
             }
             break;
         case 3:
-            gMes->unk64 += gMes->unk14;
+            gMes->pos.y += gMes->unk14;
             gMes->unk14 += 1.5f;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
-            if (gMes->unk64 >= 120.0f) {
-                gMes->unk64 = 120.0f;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
+            if (gMes->pos.y >= 120.0f) {
+                gMes->pos.y = 120.0f;
                 gMes->unk14 = -10.0f;
                 gMes->unk10 = 0.0f;
-                gMes->unk08 = 4;
-                gMes->unk0A = 0;
+                gMes->subMode = 4;
+                gMes->work = 0;
                 gMes->unk0C = 0;
             }
             break;
         case 4:
-            gMes->unk64 += gMes->unk14;
+            gMes->pos.y += gMes->unk14;
             gMes->unk10 += 0.7f / 12;
-            gMes->unk68 = 1.0f - gMes->unk10;
-            gMes->unk6C = 1.0f - gMes->unk10;
+            gMes->scale.x = 1.0f - gMes->unk10;
+            gMes->scale.y = 1.0f - gMes->unk10;
             gMes->unk0C += 7;
             gMes->unk14 += 1.0f;
             for (i = 0; i < 2; i++) {
-                HuSprScaleSet(gMes->strGId[0], i, gMes->unk68, gMes->unk6C);
+                HuSprScaleSet(gMes->strGId[0], i, gMes->scale.x, gMes->scale.y);
                 HuSprTPLvlSet(gMes->strGId[0], i, cosdf(gMes->unk0C) * 255.0f);
             }
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
-            if (gMes->unk04 > gMes->unk06 - 10) {
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
+            if (gMes->time > gMes->timeMax - 10) {
                 gMes->stat = 2;
             }
-            gMes->unk0A++;
-            if (gMes->unk0A >= 12) {
+            gMes->work++;
+            if (gMes->work >= 12) {
                 for (i = 0; i < 2; i++) {
                     HuSprTPLvlSet(gMes->strGId[0], i, 0);
                 }
-                gMes->unk08 = 5;
+                gMes->subMode = 5;
             }
             break;
         case 5:
             gMes->stat = 2;
-            if (gMes->unk04 >= gMes->unk06) {
-                gMes->unk08 = 6;
+            if (gMes->time >= gMes->timeMax) {
+                gMes->subMode = 6;
             }
             break;
         case 6:
@@ -2199,10 +2199,10 @@ s32 func_8003C058_main(GAMEMES *gMes) {
     GMesChar *chr;
 
     if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
-        gMes->unk08 = 6;
+        gMes->subMode = 6;
     }
     result = TRUE;
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             D_800D6A58_main = 1;
             D_800D1100_main = 0;
@@ -2214,11 +2214,11 @@ s32 func_8003C058_main(GAMEMES *gMes) {
                 chr->unk34 = 0;
                 chr->time = 0;
             }
-            gMes->unk04 = gMes->unk0A = gMes->unk0C = gMes->unk0E = 0;
-            gMes->unk06 = 0;
-            gMes->unk60 = gMes->unk64 = 0.0f;
-            gMes->unk68 = gMes->unk6C = 1.0f;
-            gMes->unk70 = 0.0f;
+            gMes->time = gMes->work = gMes->unk0C = gMes->unk0E = 0;
+            gMes->timeMax = 0;
+            gMes->pos.x = gMes->pos.y = 0.0f;
+            gMes->scale.x = gMes->scale.y = 1.0f;
+            gMes->angle = 0.0f;
             gMes->unk1C = 0;
             GameMesStrCreate(gMes, "FINISH", 1, -1, -1);
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
@@ -2242,7 +2242,7 @@ s32 func_8003C058_main(GAMEMES *gMes) {
             result = FALSE;
             break;
     }
-    if (gMes->unk04 == 0) {
+    if (gMes->time == 0) {
         HuAudFXPlay(0x253);
     }
     return result;
@@ -2257,7 +2257,7 @@ s32 func_8003C248_main(GAMEMES *gMes, Gfx **gfx) {
 
     result = func_8003C058_main(gMes);
     len = strlen("FINISH");
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             for (i = 0; i < len; i++) {
@@ -2269,16 +2269,16 @@ s32 func_8003C248_main(GAMEMES *gMes, Gfx **gfx) {
                 HuSprTPLvlSet(gMes->strGId[0], i + 1, chr->alpha);
                 HuSprPosSet(gMes->strGId[0], i + 1, chr->x, chr->y);
             }
-            gMes->unk08 = 1;
+            gMes->subMode = 1;
             break;
         case 1:
-            gMes->unk08 = 2;
+            gMes->subMode = 2;
             break;
         case 2:
-            if (gMes->unk04 >= 30) {
-                gMes->unk08 = 5;
+            if (gMes->time >= 30) {
+                gMes->subMode = 5;
                 gMes->unk0C = 0;
-                gMes->unk0A = 0;
+                gMes->work = 0;
             }
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             break;
@@ -2288,13 +2288,13 @@ s32 func_8003C248_main(GAMEMES *gMes, Gfx **gfx) {
             break;
         case 5:
             gMes->stat = 2;
-            if (gMes->unk04 > 60) {
+            if (gMes->time > 60) {
                 for (i = 0; i < len; i++) {
                     HuSprAttrSet(gMes->strGId[0], i + 1, 0x8000);
                     HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, 1.0f);
                 }
                 gMes->unk0C = 0;
-                gMes->unk08 = 6;
+                gMes->subMode = 6;
             } else {
                 for (i = 0; i < len; i++) {
                     chr = &D_800B1BC0_main[i];
@@ -2318,9 +2318,9 @@ s32 func_8003C248_main(GAMEMES *gMes, Gfx **gfx) {
                 scale = 1.0f;
             }
             gMes->unk0C++;
-            gMes->unk60 = 160.0f;
-            gMes->unk64 = 120.0f - scale * 180.0f * scale;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = 160.0f;
+            gMes->pos.y = 120.0f - scale * 180.0f * scale;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
             break;
         case 6:
             break;
@@ -2339,7 +2339,7 @@ s32 func_8003C644_main(GAMEMES *gMes, Gfx **gfx) {
 
     result = func_8003C058_main(gMes);
     len = strlen("FINISH");
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             for (i = 0; i < len; i++) {
@@ -2353,16 +2353,16 @@ s32 func_8003C644_main(GAMEMES *gMes, Gfx **gfx) {
                 HuSprTPLvlSet(gMes->strGId[0], i + 1, chr->alpha);
                 HuSprPosSet(gMes->strGId[0], i + 1, chr->endX, chr->endY);
             }
-            gMes->unk08 = 1;
+            gMes->subMode = 1;
             break;
         case 1:
-            gMes->unk08 = 2;
+            gMes->subMode = 2;
             break;
         case 2:
-            if (gMes->unk04 >= 30) {
-                gMes->unk08 = 5;
+            if (gMes->time >= 30) {
+                gMes->subMode = 5;
                 gMes->unk0C = 0;
-                gMes->unk0A = 0;
+                gMes->work = 0;
             }
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             break;
@@ -2372,18 +2372,18 @@ s32 func_8003C644_main(GAMEMES *gMes, Gfx **gfx) {
             break;
         case 5:
             gMes->stat = 2;
-            if (gMes->unk04 > 60) {
+            if (gMes->time > 60) {
                 for (i = 0; i < len; i++) {
                     HuSprAttrSet(gMes->strGId[0], i + 1, 0x8000);
                     HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, 1.0f);
                 }
                 gMes->unk0C = 0;
-                gMes->unk08 = 6;
+                gMes->subMode = 6;
             } else {
                 for (i = 0; i < len; i++) {
                     chr = &D_800B1BC0_main[i];
                     t = 0.0f;
-                    if (gMes->unk04 > 20.0f / len * i + 30.0f) {
+                    if (gMes->time > 20.0f / len * i + 30.0f) {
                         if (chr->time > 20) {
                             t = 1.0f;
                         } else {
@@ -2415,7 +2415,7 @@ s32 func_8003CA24_main(GAMEMES *gMes, Gfx **gfx) {
 
     result = func_8003C058_main(gMes);
     len = strlen("FINISH");
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             for (i = 0; i < len; i++) {
@@ -2427,16 +2427,16 @@ s32 func_8003CA24_main(GAMEMES *gMes, Gfx **gfx) {
                 HuSprTPLvlSet(gMes->strGId[0], i + 1, chr->alpha);
                 HuSprPosSet(gMes->strGId[0], i + 1, chr->x, chr->y);
             }
-            gMes->unk08 = 1;
+            gMes->subMode = 1;
             break;
         case 1:
-            gMes->unk08 = 2;
+            gMes->subMode = 2;
             break;
         case 2:
-            if (gMes->unk04 >= 30) {
-                gMes->unk08 = 5;
+            if (gMes->time >= 30) {
+                gMes->subMode = 5;
                 gMes->unk0C = 0;
-                gMes->unk0A = 0;
+                gMes->work = 0;
             }
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             break;
@@ -2446,13 +2446,13 @@ s32 func_8003CA24_main(GAMEMES *gMes, Gfx **gfx) {
             break;
         case 5:
             gMes->stat = 2;
-            if (gMes->unk04 > 60) {
+            if (gMes->time > 60) {
                 for (i = 0; i < len; i++) {
                     HuSprAttrSet(gMes->strGId[0], i + 1, 0x8000);
                     HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, 1.0f);
                 }
                 gMes->unk0C = 0;
-                gMes->unk08 = 6;
+                gMes->subMode = 6;
             } else {
                 for (i = 0; i < len; i++) {
                     chr = &D_800B1BC0_main[i];
@@ -2476,9 +2476,9 @@ s32 func_8003CA24_main(GAMEMES *gMes, Gfx **gfx) {
                 scale = 1.0f;
             }
             gMes->unk0C++;
-            gMes->unk60 = 160.0f;
-            gMes->unk64 = 120.0f + scale * 180.0f * scale;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = 160.0f;
+            gMes->pos.y = 120.0f + scale * 180.0f * scale;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
             break;
         case 6:
             break;
@@ -2497,22 +2497,22 @@ s32 func_8003CE20_main(GAMEMES *gMes, Gfx **gfx) {
 
     result = func_8003C058_main(gMes);
     len = strlen("FINISH");
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             for (i = 0; i < len; i++) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, 1.0f);
                 HuSprTPLvlSet(gMes->strGId[0], i + 1, 225);
             }
-            gMes->unk08 = 1;
+            gMes->subMode = 1;
             break;
         case 1:
-            gMes->unk08 = 2;
+            gMes->subMode = 2;
             break;
         case 2:
-            if (gMes->unk04 >= 30) {
-                gMes->unk08 = 5;
+            if (gMes->time >= 30) {
+                gMes->subMode = 5;
                 gMes->unk0C = 0;
-                gMes->unk0A = 0;
+                gMes->work = 0;
             }
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             break;
@@ -2522,14 +2522,14 @@ s32 func_8003CE20_main(GAMEMES *gMes, Gfx **gfx) {
             break;
         case 5:
             gMes->stat = 2;
-            if (gMes->unk04 > 60) {
+            if (gMes->time > 60) {
                 for (i = 0; i < len; i++) {
                     HuSprAttrSet(gMes->strGId[0], i + 1, 0x8000);
                     HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, 1.0f);
                 }
                 gMes->unk0C = 0;
-                gMes->unk08 = 6;
-            } else if (gMes->unk04 > 50) {
+                gMes->subMode = 6;
+            } else if (gMes->time > 50) {
                 t = (gMes->unk0C - 20.0f) / 10.0f;
                 if (t > 1.0f) {
                     t = 1.0f;
@@ -2568,7 +2568,7 @@ s32 func_8003D134_main(GAMEMES *gMes, Gfx **gfx) {
 
     result = func_8003C058_main(gMes);
     len = strlen("FINISH");
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             for (i = 0; i < len; i++) {
@@ -2579,16 +2579,16 @@ s32 func_8003D134_main(GAMEMES *gMes, Gfx **gfx) {
                 HuSprTPLvlSet(gMes->strGId[0], i + 1, chr->alpha);
                 HuSprPosSet(gMes->strGId[0], i + 1, chr->x, chr->y);
             }
-            gMes->unk08 = 1;
+            gMes->subMode = 1;
             break;
         case 1:
-            gMes->unk08 = 2;
+            gMes->subMode = 2;
             break;
         case 2:
-            if (gMes->unk04 >= 30) {
-                gMes->unk08 = 5;
+            if (gMes->time >= 30) {
+                gMes->subMode = 5;
                 gMes->unk0C = 0;
-                gMes->unk0A = 0;
+                gMes->work = 0;
             }
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             break;
@@ -2598,17 +2598,17 @@ s32 func_8003D134_main(GAMEMES *gMes, Gfx **gfx) {
             break;
         case 5:
             gMes->stat = 2;
-            if (gMes->unk04 > 60) {
+            if (gMes->time > 60) {
                 for (i = 0; i < len; i++) {
                     HuSprAttrSet(gMes->strGId[0], i + 1, 0x8000);
                 }
                 gMes->unk0C = 0;
-                gMes->unk08 = 6;
+                gMes->subMode = 6;
             } else {
                 t = 0.0f;
                 for (i = 0; i < len; i++) {
                     chr = &D_800B1BC0_main[i];
-                    if (gMes->unk04 > 10.0f / len * i + 30.0f) {
+                    if (gMes->time > 10.0f / len * i + 30.0f) {
                         if (chr->time > 25) {
                             t = 1.0f;
                         } else {
@@ -2642,7 +2642,7 @@ s32 func_8003D4DC_main(GAMEMES *gMes, Gfx **gfx) {
 
     result = func_8003C058_main(gMes);
     len = strlen("FINISH");
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             for (i = 0; i < len; i++) {
@@ -2653,36 +2653,36 @@ s32 func_8003D4DC_main(GAMEMES *gMes, Gfx **gfx) {
                 HuSprTPLvlSet(gMes->strGId[0], i + 1, chr->alpha);
                 HuSprPosSet(gMes->strGId[0], i + 1, chr->x, chr->y);
             }
-            gMes->unk08 = 1;
+            gMes->subMode = 1;
             break;
         case 1:
-            gMes->unk08 = 2;
+            gMes->subMode = 2;
             break;
         case 3:
             break;
         case 4:
             break;
         case 2:
-            if (gMes->unk04 >= 30) {
-                gMes->unk08 = 5;
+            if (gMes->time >= 30) {
+                gMes->subMode = 5;
                 gMes->unk0C = 0;
-                gMes->unk0A = 0;
+                gMes->work = 0;
             }
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             /* fallthrough */
         case 5:
             gMes->stat = 2;
-            if (gMes->unk04 > 60) {
+            if (gMes->time > 60) {
                 for (i = 0; i < len; i++) {
                     HuSprAttrSet(gMes->strGId[0], i + 1, 0x8000);
                 }
                 gMes->unk0C = 0;
-                gMes->unk08 = 6;
+                gMes->subMode = 6;
             } else {
                 t = 0.0f;
                 for (i = 0; i < len; i++) {
                     chr = &D_800B1BC0_main[i];
-                    if (gMes->unk04 > 10.0f / len * i + 30.0f) {
+                    if (gMes->time > 10.0f / len * i + 30.0f) {
                         if (chr->time > 25) {
                             t = 1.0f;
                         } else {
@@ -2716,7 +2716,7 @@ s32 func_8003D890_main(GAMEMES *gMes, Gfx **gfx) {
 
     result = func_8003C058_main(gMes);
     len = strlen("FINISH");
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             for (i = 0; i < len; i++) {
@@ -2727,16 +2727,16 @@ s32 func_8003D890_main(GAMEMES *gMes, Gfx **gfx) {
                 HuSprTPLvlSet(gMes->strGId[0], i + 1, 225);
                 HuSprPosSet(gMes->strGId[0], i + 1, chr->x, chr->y);
             }
-            gMes->unk08 = 1;
+            gMes->subMode = 1;
             break;
         case 1:
-            gMes->unk08 = 2;
+            gMes->subMode = 2;
             break;
         case 2:
-            if (gMes->unk04 >= 30) {
-                gMes->unk08 = 5;
+            if (gMes->time >= 30) {
+                gMes->subMode = 5;
                 gMes->unk0C = 0;
-                gMes->unk0A = 0;
+                gMes->work = 0;
             }
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             break;
@@ -2746,13 +2746,13 @@ s32 func_8003D890_main(GAMEMES *gMes, Gfx **gfx) {
             break;
         case 5:
             gMes->stat = 2;
-            if (gMes->unk04 > 60) {
+            if (gMes->time > 60) {
                 for (i = 0; i < len; i++) {
                     HuSprAttrSet(gMes->strGId[0], i + 1, 0x8000);
                     HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, 1.0f);
                 }
                 gMes->unk0C = 0;
-                gMes->unk08 = 6;
+                gMes->subMode = 6;
             } else {
                 for (i = 0; i < len; i++) {
                     chr = &D_800B1BC0_main[i];
@@ -2776,9 +2776,9 @@ s32 func_8003D890_main(GAMEMES *gMes, Gfx **gfx) {
                 scale = 1.0f;
             }
             gMes->unk0C++;
-            gMes->unk60 = 160.0f - ((len + 2) * 11 + 240) * scale;
-            gMes->unk64 = 120.0f;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, 120);
+            gMes->pos.x = 160.0f - ((len + 2) * 11 + 240) * scale;
+            gMes->pos.y = 120.0f;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, 120);
             break;
         case 6:
             break;
@@ -2810,7 +2810,7 @@ void func_8003DCA4_main(GAMEMES *gMes, s32 fileNo) {
     HuSprPriSet(grp, 0, 5);
     HuSprAttrReset(grp, 0, 0xFFFF);
     HuSprAttrSet(grp, 0, 0x1008);
-    HuSprPosSet(grp, 0, 160, gMes->unk64);
+    HuSprPosSet(grp, 0, 160, gMes->pos.y);
     func_800554C4_main(grp, 0, -1);
     func_80055024_main(grp, 1, sprId1, 0);
     HuSprTPLvlSet(grp, 1, 255);
@@ -2849,37 +2849,37 @@ s32 GameMesMgWinnerExec(GAMEMES *gMes, Gfx **gfx) {
     f32 i;
 
     if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
-        gMes->unk08 = 5;
+        gMes->subMode = 5;
     }
     result = TRUE;
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->unk0E], 1, -1, -1, 1.0f, 1.0f);
             func_8003A3C4_main(gMes, (u8 *)wonStr, 1, -1, -1, 1.0f, 1.0f);
             total = nameLen + wonLen + 1.0f;
-            gMes->unk0A = 160.0f - total * 17.6f / 2.0f + nameLen * 17.6f / 2.0f;
-            gMes->unk60 = gMes->unk0A;
-            gMes->unk68 = gMes->unk6C = 1.0f;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+            gMes->work = 160.0f - total * 17.6f / 2.0f + nameLen * 17.6f / 2.0f;
+            gMes->pos.x = gMes->work;
+            gMes->scale.x = gMes->scale.y = 1.0f;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0.0f; i < nameLen; i++) {
-                HuSprScaleSet(gMes->strGId[0], i + 1, 0.8f, gMes->unk6C);
+                HuSprScaleSet(gMes->strGId[0], i + 1, 0.8f, gMes->scale.y);
                 HuSprTPLvlSet(gMes->strGId[0], i + 1, 255);
             }
             gMes->unk0C = 160.0f - total * 17.6f / 2.0f + (nameLen * 17.6f + 17.6f) + wonLen * 17.6f / 2.0f;
-            gMes->unk60 = gMes->unk0C;
-            HuSprPosSet(gMes->strGId[1], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = gMes->unk0C;
+            HuSprPosSet(gMes->strGId[1], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0.0f; i < wonLen; i++) {
-                HuSprScaleSet(gMes->strGId[1], i + 1, 0.8f, gMes->unk6C);
+                HuSprScaleSet(gMes->strGId[1], i + 1, 0.8f, gMes->scale.y);
                 HuSprTPLvlSet(gMes->strGId[1], i + 1, 255);
             }
-            gMes->unk08 = 1;
+            gMes->subMode = 1;
             gMes->unk10 = 0.0f;
             gMes->unk14 = 0.0f;
             break;
         case 1:
-            gMes->unk64 += sindf(gMes->unk14);
-            gMes->unk60 = gMes->unk0C + sindf(gMes->unk10);
-            HuSprPosSet(gMes->strGId[1], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.y += sindf(gMes->unk14);
+            gMes->pos.x = gMes->unk0C + sindf(gMes->unk10);
+            HuSprPosSet(gMes->strGId[1], 0, gMes->pos.x, gMes->pos.y);
             gMes->unk10 += 90.0f;
             gMes->unk14 += 45.0f;
             if (gMes->unk10 >= 360.0f) {
@@ -2888,11 +2888,11 @@ s32 GameMesMgWinnerExec(GAMEMES *gMes, Gfx **gfx) {
             if (gMes->unk14 >= 360.0f) {
                 gMes->unk14 = 0.0f;
             }
-            if (gMes->unk04 >= gMes->unk06) {
-                gMes->unk08 = 5;
+            if (gMes->time >= gMes->timeMax) {
+                gMes->subMode = 5;
             }
-            if (gMes->unk04 > gMes->unk06 - 10) {
-                scale = (gMes->unk06 - gMes->unk04) / 10.0f * 0.8f;
+            if (gMes->time > gMes->timeMax - 10) {
+                scale = (gMes->timeMax - gMes->time) / 10.0f * 0.8f;
                 for (i = 0.0f; i < nameLen; i++) {
                     HuSprScaleSet(gMes->strGId[0], i + 1, scale, scale);
                 }
@@ -2906,7 +2906,7 @@ s32 GameMesMgWinnerExec(GAMEMES *gMes, Gfx **gfx) {
             result = FALSE;
             break;
     }
-    if (gMes->unk04 > gMes->unk06 - 5) {
+    if (gMes->time > gMes->timeMax - 5) {
         gMes->stat = 2;
     }
     return result;
@@ -2914,34 +2914,34 @@ s32 GameMesMgWinnerExec(GAMEMES *gMes, Gfx **gfx) {
 
 s32 func_8003E4A4_main(GAMEMES *gMes, Gfx **gfx) {
     char lostStr[] = "LOST";
-    f32 nameLen = strlen(D_800A1410_main[gMes->unk08]);
+    f32 nameLen = strlen(D_800A1410_main[gMes->subMode]);
     f32 lostLen = strlen(lostStr);
     f32 x;
     s16 i;
 
-    if (gMes->unk04 == 0) {
-        GameMesStrCreate(gMes, D_800A1410_main[gMes->unk08], 1, -1, -1);
+    if (gMes->time == 0) {
+        GameMesStrCreate(gMes, D_800A1410_main[gMes->subMode], 1, -1, -1);
         GameMesStrCreate(gMes, lostStr, 1, -1, -1);
-        HuSprPosSet(gMes->strGId[0], 0, (320.0f - (nameLen + lostLen + 1.0f) * 24.0f) / 2.0f + nameLen * 24.0f / 2.0f, gMes->unk64 + 40.0f);
-        HuSprPosSet(gMes->strGId[1], 0, 320.0f - (320.0f - (nameLen + lostLen + 1.0f) * 24.0f) / 2.0f - lostLen * 24.0f / 2.0f, gMes->unk64 + 40.0f);
+        HuSprPosSet(gMes->strGId[0], 0, (320.0f - (nameLen + lostLen + 1.0f) * 24.0f) / 2.0f + nameLen * 24.0f / 2.0f, gMes->pos.y + 40.0f);
+        HuSprPosSet(gMes->strGId[1], 0, 320.0f - (320.0f - (nameLen + lostLen + 1.0f) * 24.0f) / 2.0f - lostLen * 24.0f / 2.0f, gMes->pos.y + 40.0f);
         for (i = 0; i < nameLen; i++) {
             HuSprAttrSet(gMes->strGId[0], i + 1, 0x8000);
         }
         for (i = 0; i < lostLen; i++) {
             HuSprAttrSet(gMes->strGId[1], i + 1, 0x8000);
         }
-        gMes->unk0A = 0;
+        gMes->work = 0;
     }
     if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
         GMesSprKill(gMes);
         return FALSE;
     }
-    if (gMes->unk04 > 80) {
+    if (gMes->time > 80) {
         gMes->stat = 2;
     }
-    if (gMes->unk04 > 50) {
-        if (++gMes->unk0A & 0x40) {
-            x = (u16)gMes->unk0A % 32;
+    if (gMes->time > 50) {
+        if (++gMes->work & 0x40) {
+            x = (u16)gMes->work % 32;
             x = cosdf(x * 11.612904f) * 55.0f + 200.0f;
             for (i = 0; i < nameLen; i++) {
                 HuSprTPLvlSet(gMes->strGId[0], i + 1, x);
@@ -2952,14 +2952,14 @@ s32 func_8003E4A4_main(GAMEMES *gMes, Gfx **gfx) {
         }
         return TRUE;
     }
-    x = gMes->unk04;
+    x = gMes->time;
     if (x <= 30.0f) {
         for (i = 0; i < nameLen; i++) {
             HuSprAttrReset(gMes->strGId[0], i + 1, 0x8000);
             HuSprTPLvlSet(gMes->strGId[0], i + 1, x * 8.5f);
         }
     }
-    x = gMes->unk04 - 20;
+    x = gMes->time - 20;
     if (x <= 30.0f && x > 0.0f) {
         for (i = 0; i < lostLen; i++) {
             HuSprAttrReset(gMes->strGId[1], i + 1, 0x8000);
@@ -2974,29 +2974,29 @@ s32 func_8003EBC8_main(GAMEMES *gMes, Gfx **gfx) {
     f32 scale;
     f32 i;
 
-    if (gMes->unk04 == 0) {
+    if (gMes->time == 0) {
         str = HuMemMemoryAllocPerm(256);
         func_80045208_main((u8 *)str, (void *)gMes->unk1C);
         GameMesStrCreate(gMes, str, gMes->unk02, -1, -1);
-        gMes->unk08 = strlen(str);
-        HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+        gMes->subMode = strlen(str);
+        HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
         HuMemMemoryFreePerm(str);
     }
-    if (gMes->unk04 > gMes->unk06 || gMesCloseF || gMes->stat == GMES_STAT_KILL) {
+    if (gMes->time > gMes->timeMax || gMesCloseF || gMes->stat == GMES_STAT_KILL) {
         GMesSprKill(gMes);
         return FALSE;
     }
-    if (gMes->unk04 < 14) {
-        scale = sindf(gMes->unk04 * 10.0f) + (1.0f - sindf(130.0f));
-        for (i = 0.0f; i < gMes->unk08; i++) {
-            HuSprScaleSet(gMes->strGId[0], i + 1, gMes->unk68, scale * gMes->unk6C);
+    if (gMes->time < 14) {
+        scale = sindf(gMes->time * 10.0f) + (1.0f - sindf(130.0f));
+        for (i = 0.0f; i < gMes->subMode; i++) {
+            HuSprScaleSet(gMes->strGId[0], i + 1, gMes->scale.x, scale * gMes->scale.y);
         }
     }
-    if (gMes->unk04 > gMes->unk06 - 10) {
+    if (gMes->time > gMes->timeMax - 10) {
         gMes->stat = 2;
-        scale = cosdf((gMes->unk04 - (gMes->unk06 - 10)) * 9.0f);
-        for (i = 0.0f; i < gMes->unk08; i++) {
-            HuSprScaleSet(gMes->strGId[0], i + 1, gMes->unk68, scale * gMes->unk6C);
+        scale = cosdf((gMes->time - (gMes->timeMax - 10)) * 9.0f);
+        for (i = 0.0f; i < gMes->subMode; i++) {
+            HuSprScaleSet(gMes->strGId[0], i + 1, gMes->scale.x, scale * gMes->scale.y);
         }
     }
     return TRUE;
@@ -3006,22 +3006,22 @@ s32 func_8003EE98_main(GAMEMES *gMes, Gfx **gfx) {
     char *str;
     f32 i;
 
-    if (gMes->unk04 == 0) {
+    if (gMes->time == 0) {
         str = HuMemMemoryAllocPerm(256);
         func_80045208_main((u8 *)str, (void *)gMes->unk1C);
         GameMesStrCreate(gMes, str, gMes->unk02, -1, -1);
-        gMes->unk08 = strlen(str);
+        gMes->subMode = strlen(str);
         HuMemMemoryFreePerm(str);
     }
-    if (gMes->unk04 > gMes->unk06 || gMesCloseF || gMes->stat == GMES_STAT_KILL) {
+    if (gMes->time > gMes->timeMax || gMesCloseF || gMes->stat == GMES_STAT_KILL) {
         GMesSprKill(gMes);
         return FALSE;
     }
-    HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
-    HuSprZRotSet(gMes->strGId[0], 0, gMes->unk70);
-    for (i = 0.0f; i < gMes->unk08; i++) {
-        HuSprScaleSet(gMes->strGId[0], i + 1, gMes->unk68, gMes->unk6C);
-        HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->unk03);
+    HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
+    HuSprZRotSet(gMes->strGId[0], 0, gMes->angle);
+    for (i = 0.0f; i < gMes->subMode; i++) {
+        HuSprScaleSet(gMes->strGId[0], i + 1, gMes->scale.x, gMes->scale.y);
+        HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->tpLvl);
     }
     return TRUE;
 }
@@ -3031,14 +3031,14 @@ s32 GMesTimerExec(GAMEMES *gMes, Gfx **arg1) {
     u8 temp_s2;
     u8 temp_s0;
 
-    if (gMes->unk04 == 0) {
+    if (gMes->time == 0) {
         GameMesStrCreate(gMes, "99", 0, -1, -1);
-        HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+        HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
         HuSprTPLvlSet(gMes->strGId[0], 1, 0x100);
         HuSprTPLvlSet(gMes->strGId[0], 2, 0x100);
-        gMes->unk0A = 0;
+        gMes->work = 0;
     }
-    temp_s2 = gMes->unk08 % 100;
+    temp_s2 = gMes->subMode % 100;
     temp_s0 = temp_s2 / 10;
     if (temp_s0 == 0) {
         HuSprAttrSet(gMes->strGId[0], 1, 0x8000);
@@ -3050,21 +3050,21 @@ s32 GMesTimerExec(GAMEMES *gMes, Gfx **arg1) {
     temp_s0 = temp_s2 % 10;
     HuSprBankSet(gMes->strGId[0], 2, temp_s0, 0);
     func_800550F4_main(gMes->strGId[0], 2, 1);
-    switch (gMes->unk0A) {
+    switch (gMes->work) {
         case 0:
-            if (gMes->unk04 < 14) {
-                temp_f22 = sindf(gMes->unk04 * 10.0f) * 5.0f + (1.0f - sindf(130.0f) * 5.0f);
+            if (gMes->time < 14) {
+                temp_f22 = sindf(gMes->time * 10.0f) * 5.0f + (1.0f - sindf(130.0f) * 5.0f);
                 HuSprScaleSet(gMes->strGId[0], 1, temp_f22, temp_f22);
                 HuSprScaleSet(gMes->strGId[0], 2, temp_f22, temp_f22);
             } else {
-                gMes->unk0A = 1;
+                gMes->work = 1;
             }
             break;
         case 1:
-            if (gMes->unk0E != gMes->unk08 && gMes->unk08 < 6) {
+            if (gMes->unk0E != gMes->subMode && gMes->subMode < 6) {
                 gMes->unk0C = 0;
-                if (gMes->unk08 != 0) {
-                    gMes->unk0A = 3;
+                if (gMes->subMode != 0) {
+                    gMes->work = 3;
                     HuAudFXPlay(8);
                 }
             } else {
@@ -3077,7 +3077,7 @@ s32 GMesTimerExec(GAMEMES *gMes, Gfx **arg1) {
                 HuSprTPLvlSet(gMes->strGId[0], 1, 230 - gMes->unk0C * 23);
                 HuSprTPLvlSet(gMes->strGId[0], 2, 230 - gMes->unk0C * 23);
             } else {
-                gMes->unk0A = 1;
+                gMes->work = 1;
                 gMes->stat = GMES_STAT_KILL;
             }
             gMes->unk0C++;
@@ -3091,12 +3091,12 @@ s32 GMesTimerExec(GAMEMES *gMes, Gfx **arg1) {
                 HuSprTPLvlSet(gMes->strGId[0], 1, temp_f22);
                 HuSprTPLvlSet(gMes->strGId[0], 2, temp_f22);
             } else {
-                gMes->unk0A = 1;
+                gMes->work = 1;
             }
             gMes->unk0C++;
             break;
     }
-    gMes->unk0E = gMes->unk08;
+    gMes->unk0E = gMes->subMode;
     if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
         GMesSprKill(gMes);
         gMesTimerId = -1;
@@ -3110,7 +3110,7 @@ void func_8003F578_main(s16 arg0) {
     if (gMesTimerId < 0 || arg0 < 0) {
         return;
     }
-    gMesData[gMesTimerId].unk08 = arg0;
+    gMesData[gMesTimerId].subMode = arg0;
 }
 
 // GMesTimerKill?
@@ -3118,7 +3118,7 @@ void func_8003F5C0_main(void) {
     if (gMesTimerId < 0) {
         return;
     }
-    gMesData[gMesTimerId].unk0A = 2;
+    gMesData[gMesTimerId].work = 2;
     gMesData[gMesTimerId].unk0C = 0;
 }
 
@@ -3132,56 +3132,56 @@ s32 GameMesMgRecordExec(GAMEMES *gMes, Gfx **gfx) {
     f32 x;
 
     if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
-        gMes->unk08 = 4;
+        gMes->subMode = 4;
     }
     result = TRUE;
     newLen = strlen(newStr);
     recordLen = strlen(recordStr);
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             GameMesStrCreate(gMes, newStr, 1, -1, -1);
             GameMesStrCreate(gMes, recordStr, 1, -1, -1);
-            gMes->unk68 = gMes->unk6C = 0.5f;
-            x = 160.0f - ((newLen + recordLen + 1) * 11 * gMes->unk68 - newLen * 11 * gMes->unk6C);
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60 - 160.0f + x, gMes->unk64);
-            gMes->unk03 = 0;
+            gMes->scale.x = gMes->scale.y = 0.5f;
+            x = 160.0f - ((newLen + recordLen + 1) * 11 * gMes->scale.x - newLen * 11 * gMes->scale.y);
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x - 160.0f + x, gMes->pos.y);
+            gMes->tpLvl = 0;
             for (i = 0; i < newLen; i++) {
-                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->unk68, gMes->unk68);
-                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->scale.x, gMes->scale.x);
+                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->tpLvl);
             }
-            x = (newLen + recordLen + 1) * 11 * gMes->unk68 - recordLen * 11 * gMes->unk6C + 160.0f;
-            gMes->unk70 = 0.0f;
-            HuSprPosSet(gMes->strGId[1], 0, gMes->unk60 - 160.0f + x, gMes->unk64);
-            HuSprZRotSet(gMes->strGId[1], 0, gMes->unk70);
+            x = (newLen + recordLen + 1) * 11 * gMes->scale.x - recordLen * 11 * gMes->scale.y + 160.0f;
+            gMes->angle = 0.0f;
+            HuSprPosSet(gMes->strGId[1], 0, gMes->pos.x - 160.0f + x, gMes->pos.y);
+            HuSprZRotSet(gMes->strGId[1], 0, gMes->angle);
             for (i = 0; i < recordLen; i++) {
-                HuSprScaleSet(gMes->strGId[1], i + 1, gMes->unk6C, gMes->unk6C);
-                HuSprTPLvlSet(gMes->strGId[1], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[1], i + 1, gMes->scale.y, gMes->scale.y);
+                HuSprTPLvlSet(gMes->strGId[1], i + 1, gMes->tpLvl);
             }
             D_800D6A58_main = 1;
             D_800D1100_main = 0;
-            gMes->unk08 = 1;
+            gMes->subMode = 1;
             gMes->unk10 = 90.0f;
             break;
         case 1:
             gMes->unk10 += 21.0f;
-            gMes->unk68 += 0.016666668f;
-            gMes->unk6C = 1.0f - sindf(gMes->unk10) * 0.5f;
-            x = 160.0f - ((newLen + recordLen + 1) * 11 * gMes->unk68 - newLen * 11 * gMes->unk68);
-            gMes->unk70 += 12.0f;
-            gMes->unk03 += 8;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60 - 160.0f + x, gMes->unk64);
-            HuSprZRotSet(gMes->strGId[0], 0, gMes->unk70);
+            gMes->scale.x += 0.016666668f;
+            gMes->scale.y = 1.0f - sindf(gMes->unk10) * 0.5f;
+            x = 160.0f - ((newLen + recordLen + 1) * 11 * gMes->scale.x - newLen * 11 * gMes->scale.x);
+            gMes->angle += 12.0f;
+            gMes->tpLvl += 8;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x - 160.0f + x, gMes->pos.y);
+            HuSprZRotSet(gMes->strGId[0], 0, gMes->angle);
             for (i = 0; i < newLen; i++) {
-                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->unk68, gMes->unk68);
-                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->scale.x, gMes->scale.x);
+                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->tpLvl);
             }
-            x = (newLen + recordLen + 1) * 11 * gMes->unk68 - recordLen * 11 * gMes->unk68 + 160.0f;
-            HuSprPosSet(gMes->strGId[1], 0, gMes->unk60 - 160.0f + x, gMes->unk64);
+            x = (newLen + recordLen + 1) * 11 * gMes->scale.x - recordLen * 11 * gMes->scale.x + 160.0f;
+            HuSprPosSet(gMes->strGId[1], 0, gMes->pos.x - 160.0f + x, gMes->pos.y);
             for (i = 0; i < recordLen; i++) {
-                HuSprScaleSet(gMes->strGId[1], i + 1, gMes->unk6C, gMes->unk6C);
-                HuSprTPLvlSet(gMes->strGId[1], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[1], i + 1, gMes->scale.y, gMes->scale.y);
+                HuSprTPLvlSet(gMes->strGId[1], i + 1, gMes->tpLvl);
             }
-            if (gMes->unk04 >= 30) {
+            if (gMes->time >= 30) {
                 gMes->stat = 2;
                 HuSprZRotSet(gMes->strGId[0], 0, 0.0f);
                 for (i = 0; i < newLen; i++) {
@@ -3190,30 +3190,30 @@ s32 GameMesMgRecordExec(GAMEMES *gMes, Gfx **gfx) {
                 for (i = 0; i < recordLen; i++) {
                     HuSprTPLvlSet(gMes->strGId[1], i + 1, 255);
                 }
-                gMes->unk0A = 30;
-                gMes->unk08 = 2;
+                gMes->work = 30;
+                gMes->subMode = 2;
             }
             break;
         case 2:
-            if (--gMes->unk0A == -1) {
-                gMes->unk0A = 255;
-                gMes->unk08 = 3;
+            if (--gMes->work == -1) {
+                gMes->work = 255;
+                gMes->subMode = 3;
             }
             break;
         case 3:
-            gMes->unk0A -= 16;
-            if (gMes->unk0A <= 0) {
-                gMes->unk0A = 0;
-                gMes->unk08 = 4;
+            gMes->work -= 16;
+            if (gMes->work <= 0) {
+                gMes->work = 0;
+                gMes->subMode = 4;
             }
             for (i = 0; i < newLen; i++) {
-                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->unk0A);
+                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->work);
             }
             for (i = 0; i < recordLen; i++) {
-                HuSprTPLvlSet(gMes->strGId[1], i + 1, gMes->unk0A);
+                HuSprTPLvlSet(gMes->strGId[1], i + 1, gMes->work);
             }
-            if (gMes->unk04 > 60) {
-                gMes->unk08 = 4;
+            if (gMes->time > 60) {
+                gMes->subMode = 4;
             }
             break;
         case 4:
@@ -3221,10 +3221,10 @@ s32 GameMesMgRecordExec(GAMEMES *gMes, Gfx **gfx) {
             result = FALSE;
             break;
     }
-    if (gMes->unk04 == 10) {
+    if (gMes->time == 10) {
         HuAudFXPlay(0x252);
     }
-    if (gMes->unk04 >= 56) {
+    if (gMes->time >= 56) {
         gMes->stat = 2;
     }
     return result;
@@ -3235,42 +3235,42 @@ s32 func_8003FD34_main(GAMEMES *gMes, Gfx **gfx) {
     s32 i;
 
     if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
-        gMes->unk08 = 3;
+        gMes->subMode = 3;
     }
     result = TRUE;
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             func_8003DCA4_main(gMes, 0xC0092);
             D_800D6A58_main = 1;
             D_800D1100_main = 0;
-            gMes->unk60 = 160.0f;
-            gMes->unk64 = 120.0f;
-            gMes->unk68 = 1.0f;
-            gMes->unk6C = 1.0f;
-            gMes->unk03 = 255;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = 160.0f;
+            gMes->pos.y = 120.0f;
+            gMes->scale.x = 1.0f;
+            gMes->scale.y = 1.0f;
+            gMes->tpLvl = 255;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0; i < 2; i++) {
-                HuSprScaleSet(gMes->strGId[0], i, gMes->unk68, gMes->unk6C);
-                HuSprTPLvlSet(gMes->strGId[0], i, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[0], i, gMes->scale.x, gMes->scale.y);
+                HuSprTPLvlSet(gMes->strGId[0], i, gMes->tpLvl);
             }
-            gMes->unk08 = 1;
+            gMes->subMode = 1;
             gMes->unk10 = 0.0f;
             break;
         case 1:
-            gMes->unk6C = gMes->unk68 = sindf(gMes->unk10) * 0.2f + 1.0f;
+            gMes->scale.y = gMes->scale.x = sindf(gMes->unk10) * 0.2f + 1.0f;
             gMes->unk10 += 15.0f;
             for (i = 0; i < 2; i++) {
-                HuSprScaleSet(gMes->strGId[0], i, gMes->unk68, gMes->unk6C);
+                HuSprScaleSet(gMes->strGId[0], i, gMes->scale.x, gMes->scale.y);
             }
-            if (gMes->unk04 > gMes->unk06 - 10) {
+            if (gMes->time > gMes->timeMax - 10) {
                 gMes->stat = 2;
-                gMes->unk03 -= 25;
+                gMes->tpLvl -= 25;
                 for (i = 0; i < 2; i++) {
-                    HuSprTPLvlSet(gMes->strGId[0], i, gMes->unk03);
+                    HuSprTPLvlSet(gMes->strGId[0], i, gMes->tpLvl);
                 }
             }
-            if (gMes->unk04 > gMes->unk06) {
-                gMes->unk08 = 3;
+            if (gMes->time > gMes->timeMax) {
+                gMes->subMode = 3;
                 for (i = 0; i < 2; i++) {
                     HuSprTPLvlSet(gMes->strGId[0], i, 0);
                 }
@@ -3289,47 +3289,47 @@ s32 func_8003FFD0_main(GAMEMES *gMes, Gfx **gfx) {
     s32 i;
 
     if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
-        gMes->unk08 = 3;
+        gMes->subMode = 3;
     }
     result = TRUE;
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             func_8003DCA4_main(gMes, 0xC0094);
             D_800D6A58_main = 1;
             D_800D1100_main = 0;
-            gMes->unk60 = 160.0f;
-            gMes->unk64 = 120.0f;
-            gMes->unk68 = 1.0f;
-            gMes->unk6C = 1.0f;
-            gMes->unk03 = 255;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = 160.0f;
+            gMes->pos.y = 120.0f;
+            gMes->scale.x = 1.0f;
+            gMes->scale.y = 1.0f;
+            gMes->tpLvl = 255;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0; i < 2; i++) {
-                HuSprScaleSet(gMes->strGId[0], i, gMes->unk68, gMes->unk6C);
-                HuSprTPLvlSet(gMes->strGId[0], i, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[0], i, gMes->scale.x, gMes->scale.y);
+                HuSprTPLvlSet(gMes->strGId[0], i, gMes->tpLvl);
             }
-            gMes->unk08 = 1;
+            gMes->subMode = 1;
             gMes->unk10 = 0.0f;
             break;
         case 1:
-            if (gMes->unk04 >= 10) {
-                gMes->unk08 = 2;
+            if (gMes->time >= 10) {
+                gMes->subMode = 2;
             }
             break;
         case 2:
-            gMes->unk6C = gMes->unk68 = sindf(gMes->unk10) * 0.3f + 1.0f;
+            gMes->scale.y = gMes->scale.x = sindf(gMes->unk10) * 0.3f + 1.0f;
             gMes->unk10 += 20.0f;
             for (i = 0; i < 2; i++) {
-                HuSprScaleSet(gMes->strGId[0], i, gMes->unk68, gMes->unk6C);
+                HuSprScaleSet(gMes->strGId[0], i, gMes->scale.x, gMes->scale.y);
             }
-            if (gMes->unk04 >= 40) {
-                gMes->unk03 -= 51;
+            if (gMes->time >= 40) {
+                gMes->tpLvl -= 51;
                 for (i = 0; i < 2; i++) {
-                    HuSprTPLvlSet(gMes->strGId[0], i, gMes->unk03);
+                    HuSprTPLvlSet(gMes->strGId[0], i, gMes->tpLvl);
                 }
             }
-            if (gMes->unk04 >= gMes->unk06) {
+            if (gMes->time >= gMes->timeMax) {
                 gMes->stat = 2;
-                gMes->unk08 = 3;
+                gMes->subMode = 3;
                 for (i = 0; i < 2; i++) {
                     HuSprTPLvlSet(gMes->strGId[0], i, 0);
                 }
@@ -3349,35 +3349,35 @@ s32 func_80040290_main(GAMEMES *gMes, Gfx **gfx) {
     f32 t;
 
     if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
-        gMes->unk08 = 4;
+        gMes->subMode = 4;
     }
     result = TRUE;
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             func_8003DCA4_main(gMes, 0xC0098);
             HuSprColorSet(gMes->strGId[0], 1, 69, 2, 133);
-            gMes->unk60 = 160.0f;
-            gMes->unk64 = 120.0f;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, 120);
+            gMes->pos.x = 160.0f;
+            gMes->pos.y = 120.0f;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, 120);
             for (i = 0; i < 2; i++) {
                 HuSprScaleSet(gMes->strGId[0], i, 0.0f, 2.0f);
             }
             D_800D6A58_main = 1;
             D_800D1100_main = 0;
-            gMes->unk08 = 1;
+            gMes->subMode = 1;
             gMes->unk10 = 0.0f;
             break;
         case 1:
-            gMes->unk68 = sindf(gMes->unk10);
-            gMes->unk6C = 2.0f - (1.0f - cosdf(gMes->unk10));
+            gMes->scale.x = sindf(gMes->unk10);
+            gMes->scale.y = 2.0f - (1.0f - cosdf(gMes->unk10));
             gMes->unk10 += 9.0f;
             for (i = 0; i < 2; i++) {
-                HuSprScaleSet(gMes->strGId[0], i, gMes->unk68, gMes->unk6C);
+                HuSprScaleSet(gMes->strGId[0], i, gMes->scale.x, gMes->scale.y);
             }
-            if (gMes->unk04 < 10) {
+            if (gMes->time < 10) {
                 break;
             }
-            gMes->unk08 = 2;
+            gMes->subMode = 2;
             gMes->unk10 = 90.0f;
             for (i = 0; i < 2; i++) {
                 HuSprScaleSet(gMes->strGId[0], i, 1.0f, 1.0f);
@@ -3385,31 +3385,31 @@ s32 func_80040290_main(GAMEMES *gMes, Gfx **gfx) {
             /* fallthrough */
         case 2:
             for (i = 0; i < 2; i++) {
-                HuSprScaleSet(gMes->strGId[0], i, gMes->unk68, gMes->unk6C);
+                HuSprScaleSet(gMes->strGId[0], i, gMes->scale.x, gMes->scale.y);
             }
-            gMes->unk68 = 1.5f - (sindf(gMes->unk10) < 0.0f ? -sindf(gMes->unk10) : sindf(gMes->unk10)) * 0.5f;
-            gMes->unk6C = (sindf(gMes->unk10) < 0.0f ? -sindf(gMes->unk10) : sindf(gMes->unk10)) * 0.7f + 0.3f;
+            gMes->scale.x = 1.5f - (sindf(gMes->unk10) < 0.0f ? -sindf(gMes->unk10) : sindf(gMes->unk10)) * 0.5f;
+            gMes->scale.y = (sindf(gMes->unk10) < 0.0f ? -sindf(gMes->unk10) : sindf(gMes->unk10)) * 0.7f + 0.3f;
             gMes->unk10 += 12.0f;
-            if (gMes->unk04 >= 25) {
+            if (gMes->time >= 25) {
                 for (i = 0; i < 2; i++) {
                 }
-                gMes->unk08 = 3;
+                gMes->subMode = 3;
                 gMes->unk10 = 0.0f;
             }
             break;
         case 3:
-            gMes->unk03 = cosdf(gMes->unk10) * 55.0f + 200.0f;
+            gMes->tpLvl = cosdf(gMes->unk10) * 55.0f + 200.0f;
             gMes->unk10 += 20.0f;
-            if (gMes->unk04 > gMes->unk06 - 10) {
-                t = (gMes->unk06 - gMes->unk04) / 10.0f;
+            if (gMes->time > gMes->timeMax - 10) {
+                t = (gMes->timeMax - gMes->time) / 10.0f;
             } else {
                 t = 1.0f;
             }
             for (i = 0; i < 2; i++) {
-                HuSprTPLvlSet(gMes->strGId[0], i, gMes->unk03 * t);
+                HuSprTPLvlSet(gMes->strGId[0], i, gMes->tpLvl * t);
             }
-            if (gMes->unk04 >= gMes->unk06) {
-                gMes->unk08 = 4;
+            if (gMes->time >= gMes->timeMax) {
+                gMes->subMode = 4;
             }
             break;
         case 4:
@@ -3417,10 +3417,10 @@ s32 func_80040290_main(GAMEMES *gMes, Gfx **gfx) {
             result = FALSE;
             break;
     }
-    if (gMes->unk04 == 10) {
+    if (gMes->time == 10) {
         HuAudFXPlay(0x24F);
     }
-    if (gMes->unk04 > gMes->unk06 - 5) {
+    if (gMes->time > gMes->timeMax - 5) {
         gMes->stat = 2;
     }
     return result;
@@ -3435,89 +3435,89 @@ s32 func_800407B8_main(GAMEMES *gMes, Gfx **gfx) {
     s32 i;
 
     if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
-        gMes->unk08 = 6;
+        gMes->subMode = 6;
     }
     result = TRUE;
     readyLen = strlen(readyStr);
     goLen = strlen(goStr);
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             GameMesStrCreate(gMes, readyStr, 1, -1, -1);
             GameMesStrCreate(gMes, goStr, 1, -1, -1);
-            gMes->unk68 = 0.5f;
-            gMes->unk03 = 0;
+            gMes->scale.x = 0.5f;
+            gMes->tpLvl = 0;
             for (i = 0; i < readyLen; i++) {
-                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->unk68, gMes->unk68);
-                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->scale.x, gMes->scale.x);
+                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->tpLvl);
             }
             for (i = 0; i < goLen; i++) {
                 HuSprAttrSet(gMes->strGId[1], i + 1, 0x8000);
             }
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
-            HuSprPosSet(gMes->strGId[1], 0, gMes->unk60, gMes->unk64);
-            gMes->unk08 = 1;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
+            HuSprPosSet(gMes->strGId[1], 0, gMes->pos.x, gMes->pos.y);
+            gMes->subMode = 1;
             gMes->unk0C = 0;
-            gMes->unk0A = 0;
+            gMes->work = 0;
             break;
         case 1:
-            gMes->unk68 += 0.1f;
-            gMes->unk03 += 25;
+            gMes->scale.x += 0.1f;
+            gMes->tpLvl += 25;
             for (i = 0; i < readyLen; i++) {
-                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->unk68, gMes->unk68);
-                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->scale.x, gMes->scale.x);
+                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->tpLvl);
             }
-            if (gMes->unk04 >= 10) {
+            if (gMes->time >= 10) {
                 for (i = 0; i < readyLen; i++) {
                     HuSprScaleSet(gMes->strGId[0], i + 1, 1.5f, 1.5f);
                     HuSprTPLvlSet(gMes->strGId[0], i + 1, 255);
                 }
-                gMes->unk08 = 2;
+                gMes->subMode = 2;
             }
             break;
         case 2:
-            if (gMes->unk04 >= 35) {
-                gMes->unk08 = 3;
+            if (gMes->time >= 35) {
+                gMes->subMode = 3;
             }
             break;
         case 3:
-            gMes->unk68 += 0.05f;
-            gMes->unk03 -= 51;
+            gMes->scale.x += 0.05f;
+            gMes->tpLvl -= 51;
             for (i = 0; i < readyLen; i++) {
-                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->unk68, gMes->unk68);
-                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->scale.x, gMes->scale.x);
+                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->tpLvl);
             }
-            if (gMes->unk04 >= 40) {
+            if (gMes->time >= 40) {
                 for (i = 0; i < readyLen; i++) {
                     HuSprTPLvlSet(gMes->strGId[0], i + 1, 0);
                 }
-                gMes->unk08 = 4;
+                gMes->subMode = 4;
             }
             break;
         case 4:
-            gMes->unk68 = gMes->unk6C = sindf(gMes->unk0A * 15) * 3.0f;
+            gMes->scale.x = gMes->scale.y = sindf(gMes->work * 15) * 3.0f;
             for (i = 0; i < goLen; i++) {
                 HuSprAttrReset(gMes->strGId[1], i + 1, 0x8000);
-                HuSprScaleSet(gMes->strGId[1], i + 1, gMes->unk68, gMes->unk6C);
+                HuSprScaleSet(gMes->strGId[1], i + 1, gMes->scale.x, gMes->scale.y);
             }
-            gMes->unk0A++;
-            if (gMes->unk04 >= 50) {
+            gMes->work++;
+            if (gMes->time >= 50) {
                 func_800452BC_main(func_80036610_main());
-                gMes->unk08 = 5;
-                gMes->unk03 = 255;
+                gMes->subMode = 5;
+                gMes->tpLvl = 255;
             }
             break;
         case 5:
             gMes->stat = 2;
-            gMes->unk03 -= 51;
+            gMes->tpLvl -= 51;
             for (i = 0; i < goLen; i++) {
-                HuSprTPLvlSet(gMes->strGId[1], i + 1, gMes->unk03);
+                HuSprTPLvlSet(gMes->strGId[1], i + 1, gMes->tpLvl);
             }
             gMes->unk0C++;
-            if (gMes->unk04 >= 55) {
+            if (gMes->time >= 55) {
                 for (i = 0; i < goLen; i++) {
                     HuSprAttrSet(gMes->strGId[1], i + 1, 0x8000);
                 }
-                gMes->unk08 = 6;
+                gMes->subMode = 6;
             }
             break;
         case 6:
@@ -3540,87 +3540,87 @@ s32 func_80040CF4_main(GAMEMES *gMes, Gfx **gfx) {
     f32 i;
 
     if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
-        gMes->unk08 = 5;
+        gMes->subMode = 5;
     }
     result = TRUE;
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->unk0C], 1, -1, -1, 0.8f, 1.0f);
             func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->unk0E], 1, -1, -1, 0.8f, 1.0f);
             GameMesStrCreate(gMes, wonStr, 1, -1, -1);
-            gMes->unk60 = 80.0f;
-            gMes->unk64 = 0.0f;
-            gMes->unk68 = gMes->unk6C = 1.0f;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = 80.0f;
+            gMes->pos.y = 0.0f;
+            gMes->scale.x = gMes->scale.y = 1.0f;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0.0f; i < name1Len; i++) {
-                HuSprScaleSet(gMes->strGId[0], i + 1, 0.8f, gMes->unk6C);
+                HuSprScaleSet(gMes->strGId[0], i + 1, 0.8f, gMes->scale.y);
                 HuSprTPLvlSet(gMes->strGId[0], i + 1, 255);
             }
-            gMes->unk60 = 240.0f;
+            gMes->pos.x = 240.0f;
             if (gMes->unk0C == 5) {
-                gMes->unk60 = 256.0f;
+                gMes->pos.x = 256.0f;
             }
-            HuSprPosSet(gMes->strGId[1], 0, gMes->unk60, gMes->unk64);
+            HuSprPosSet(gMes->strGId[1], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0.0f; i < name2Len; i++) {
-                HuSprScaleSet(gMes->strGId[1], i + 1, gMes->unk68 * 0.8f, gMes->unk6C);
+                HuSprScaleSet(gMes->strGId[1], i + 1, gMes->scale.x * 0.8f, gMes->scale.y);
                 HuSprTPLvlSet(gMes->strGId[1], i + 1, 255);
             }
             for (i = 0.0f; i < wonLen; i++) {
                 HuSprAttrSet(gMes->strGId[2], i + 1, 0x8000);
             }
-            gMes->unk08 = 1;
+            gMes->subMode = 1;
             gMes->unk10 = 0.0f;
             gMes->unk14 = 1.5f;
             break;
         case 1:
             gMes->unk10 += gMes->unk14;
-            gMes->unk64 += gMes->unk10;
-            gMes->unk60 = 80.0f;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
-            gMes->unk60 = 240.0f;
+            gMes->pos.y += gMes->unk10;
+            gMes->pos.x = 80.0f;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
+            gMes->pos.x = 240.0f;
             if (gMes->unk0C == 5) {
-                gMes->unk60 = 256.0f;
+                gMes->pos.x = 256.0f;
             }
-            HuSprPosSet(gMes->strGId[1], 0, gMes->unk60, gMes->unk64);
-            if (gMes->unk04 >= 15) {
-                gMes->unk08 = 2;
+            HuSprPosSet(gMes->strGId[1], 0, gMes->pos.x, gMes->pos.y);
+            if (gMes->time >= 15) {
+                gMes->subMode = 2;
                 gMes->unk10 = -12.0f;
                 gMes->unk14 = 1.0f;
             }
             break;
         case 2:
             gMes->unk10 += gMes->unk14;
-            gMes->unk64 += gMes->unk10;
-            gMes->unk60 = 80.0f;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
-            gMes->unk60 = 240.0f;
+            gMes->pos.y += gMes->unk10;
+            gMes->pos.x = 80.0f;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
+            gMes->pos.x = 240.0f;
             if (gMes->unk0C == 5) {
-                gMes->unk60 = 256.0f;
+                gMes->pos.x = 256.0f;
             }
-            HuSprPosSet(gMes->strGId[1], 0, gMes->unk60, gMes->unk64);
-            if (gMes->unk04 >= 25) {
-                gMes->unk08 = 3;
-                gMes->unk0A = gMes->unk64;
+            HuSprPosSet(gMes->strGId[1], 0, gMes->pos.x, gMes->pos.y);
+            if (gMes->time >= 25) {
+                gMes->subMode = 3;
+                gMes->work = gMes->pos.y;
             }
             break;
         case 3:
-            gMes->unk60 = 170.0f;
-            gMes->unk64 = 145.0f;
-            gMes->unk68 = gMes->unk6C = 1.0f;
-            HuSprPosSet(gMes->strGId[2], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = 170.0f;
+            gMes->pos.y = 145.0f;
+            gMes->scale.x = gMes->scale.y = 1.0f;
+            HuSprPosSet(gMes->strGId[2], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0.0f; i < wonLen; i++) {
-                HuSprScaleSet(gMes->strGId[2], i + 1, gMes->unk68, gMes->unk6C);
+                HuSprScaleSet(gMes->strGId[2], i + 1, gMes->scale.x, gMes->scale.y);
                 HuSprTPLvlSet(gMes->strGId[2], i + 1, 255);
                 HuSprAttrReset(gMes->strGId[2], i + 1, 0x8000);
             }
-            gMes->unk08 = 4;
+            gMes->subMode = 4;
             gMes->unk10 = 0.0f;
             gMes->unk14 = 0.0f;
             break;
         case 4:
-            gMes->unk60 = sindf(gMes->unk10) + 160.0f;
-            gMes->unk64 = sindf(gMes->unk14) + 145.0f;
-            HuSprPosSet(gMes->strGId[2], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = sindf(gMes->unk10) + 160.0f;
+            gMes->pos.y = sindf(gMes->unk14) + 145.0f;
+            HuSprPosSet(gMes->strGId[2], 0, gMes->pos.x, gMes->pos.y);
             gMes->unk10 += 90.0f;
             gMes->unk14 += 45.0f;
             if (gMes->unk10 >= 360.0f) {
@@ -3629,11 +3629,11 @@ s32 func_80040CF4_main(GAMEMES *gMes, Gfx **gfx) {
             if (gMes->unk14 >= 360.0f) {
                 gMes->unk14 = 0.0f;
             }
-            if (gMes->unk04 >= gMes->unk06) {
-                gMes->unk08 = 5;
+            if (gMes->time >= gMes->timeMax) {
+                gMes->subMode = 5;
             }
-            if (gMes->unk04 > gMes->unk06 - 10) {
-                scale = (gMes->unk06 - gMes->unk04) / 10.0f;
+            if (gMes->time > gMes->timeMax - 10) {
+                scale = (gMes->timeMax - gMes->time) / 10.0f;
                 for (i = 0.0f; i < name1Len; i++) {
                     HuSprScaleSet(gMes->strGId[0], i + 1, 0.8f, scale * 0.8f);
                 }
@@ -3650,7 +3650,7 @@ s32 func_80040CF4_main(GAMEMES *gMes, Gfx **gfx) {
             result = FALSE;
             break;
     }
-    if (gMes->unk04 > gMes->unk06 - 5) {
+    if (gMes->time > gMes->timeMax - 5) {
         gMes->stat = 2;
     }
     return result;
@@ -3662,57 +3662,57 @@ s32 GameMesMgDrawExec(GAMEMES *gMes, Gfx **gfx) {
     f32 t;
 
     if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
-        gMes->unk08 = 3;
+        gMes->subMode = 3;
     }
     result = TRUE;
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             func_8003DCA4_main(gMes, 0xC0096);
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
             D_800D6A58_main = 1;
             D_800D1100_main = 0;
-            gMes->unk60 = 160.0f;
-            gMes->unk64 = 120.0f;
-            gMes->unk68 = gMes->unk6C = 0.5f;
-            gMes->unk70 = 0.0f;
-            gMes->unk03 = 255;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
-            HuSprZRotSet(gMes->strGId[0], 0, gMes->unk70);
+            gMes->pos.x = 160.0f;
+            gMes->pos.y = 120.0f;
+            gMes->scale.x = gMes->scale.y = 0.5f;
+            gMes->angle = 0.0f;
+            gMes->tpLvl = 255;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
+            HuSprZRotSet(gMes->strGId[0], 0, gMes->angle);
             for (i = 0; i < 2; i++) {
-                HuSprScaleSet(gMes->strGId[0], i, gMes->unk68, gMes->unk6C);
-                HuSprTPLvlSet(gMes->strGId[0], i, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[0], i, gMes->scale.x, gMes->scale.y);
+                HuSprTPLvlSet(gMes->strGId[0], i, gMes->tpLvl);
             }
-            gMes->unk08 = 1;
+            gMes->subMode = 1;
             break;
         case 1:
-            gMes->unk6C = gMes->unk68 += 0.05f;
-            gMes->unk70 += 36.0f;
-            HuSprZRotSet(gMes->strGId[0], 0, gMes->unk70);
+            gMes->scale.y = gMes->scale.x += 0.05f;
+            gMes->angle += 36.0f;
+            HuSprZRotSet(gMes->strGId[0], 0, gMes->angle);
             for (i = 0; i < 2; i++) {
-                HuSprScaleSet(gMes->strGId[0], i, gMes->unk68, gMes->unk6C);
+                HuSprScaleSet(gMes->strGId[0], i, gMes->scale.x, gMes->scale.y);
             }
-            if (gMes->unk04 >= 10) {
+            if (gMes->time >= 10) {
                 HuSprZRotSet(gMes->strGId[0], 0, 0.0f);
                 for (i = 0; i < 2; i++) {
                     HuSprScaleSet(gMes->strGId[0], i, 1.0f, 1.0f);
                 }
-                gMes->unk08 = 2;
+                gMes->subMode = 2;
                 gMes->unk10 = 0.0f;
             }
             break;
         case 2:
-            gMes->unk03 = cosdf(gMes->unk10) * 55.0f + 200.0f;
+            gMes->tpLvl = cosdf(gMes->unk10) * 55.0f + 200.0f;
             gMes->unk10 += 20.0f;
-            if (gMes->unk04 > gMes->unk06 - 10) {
-                t = (gMes->unk06 - gMes->unk04) / 10.0f;
+            if (gMes->time > gMes->timeMax - 10) {
+                t = (gMes->timeMax - gMes->time) / 10.0f;
             } else {
                 t = 1.0f;
             }
             for (i = 0; i < 2; i++) {
-                HuSprTPLvlSet(gMes->strGId[0], i, gMes->unk03 * t);
+                HuSprTPLvlSet(gMes->strGId[0], i, gMes->tpLvl * t);
             }
-            if (gMes->unk04 >= gMes->unk06) {
-                gMes->unk08 = 3;
+            if (gMes->time >= gMes->timeMax) {
+                gMes->subMode = 3;
             }
             break;
         case 3:
@@ -3720,10 +3720,10 @@ s32 GameMesMgDrawExec(GAMEMES *gMes, Gfx **gfx) {
             result = FALSE;
             break;
     }
-    if (gMes->unk04 == 30) {
+    if (gMes->time == 30) {
         HuAudFXPlay(0x255);
     }
-    if (gMes->unk04 == gMes->unk06 - 5) {
+    if (gMes->time == gMes->timeMax - 5) {
         gMes->stat = 2;
     }
     return result;
@@ -3735,7 +3735,7 @@ s32 func_80041B68_main(GAMEMES *gMes, Gfx **gfx) {
     s32 endPos[4][2] = { { 240, 117 }, { 80, 117 }, { 160, 80 }, { 160, 145 } };
     s32 dx;
     s32 dy;
-    f32 name1Len = strlen(D_800A1410_main[gMes->unk0A]);
+    f32 name1Len = strlen(D_800A1410_main[gMes->work]);
     f32 name2Len = strlen(D_800A1410_main[gMes->unk0C]);
     f32 name3Len = strlen(D_800A1410_main[gMes->unk0E]);
     f32 wonLen = strlen(wonStr);
@@ -3744,76 +3744,76 @@ s32 func_80041B68_main(GAMEMES *gMes, Gfx **gfx) {
     f32 i;
 
     if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
-        gMes->unk08 = 5;
+        gMes->subMode = 5;
     }
     result = TRUE;
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
-            func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->unk0A], 1, -1, -1, 0.8f, 1.0f);
+            func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->work], 1, -1, -1, 0.8f, 1.0f);
             func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->unk0C], 1, -1, -1, 0.8f, 1.0f);
             func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->unk0E], 1, -1, -1, 0.8f, 1.0f);
             GameMesStrCreate(gMes, wonStr, 1, -1, -1);
-            gMes->unk60 = startPos[0][0];
-            gMes->unk64 = startPos[0][1] + gMes->unk64;
-            gMes->unk68 = gMes->unk6C = 0.5f;
-            gMes->unk03 = 0;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = startPos[0][0];
+            gMes->pos.y = startPos[0][1] + gMes->pos.y;
+            gMes->scale.x = gMes->scale.y = 0.5f;
+            gMes->tpLvl = 0;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0.0f; i < name1Len; i++) {
-                HuSprScaleSet(gMes->strGId[0], i + 1, 0.8f, gMes->unk6C);
-                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[0], i + 1, 0.8f, gMes->scale.y);
+                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->tpLvl);
             }
-            gMes->unk60 = startPos[1][0];
-            gMes->unk64 = startPos[1][1];
-            HuSprPosSet(gMes->strGId[1], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = startPos[1][0];
+            gMes->pos.y = startPos[1][1];
+            HuSprPosSet(gMes->strGId[1], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0.0f; i < name2Len; i++) {
-                HuSprScaleSet(gMes->strGId[1], i + 1, 0.8f, gMes->unk6C);
-                HuSprTPLvlSet(gMes->strGId[1], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[1], i + 1, 0.8f, gMes->scale.y);
+                HuSprTPLvlSet(gMes->strGId[1], i + 1, gMes->tpLvl);
             }
-            gMes->unk60 = startPos[2][0];
-            gMes->unk64 = startPos[2][1];
-            HuSprPosSet(gMes->strGId[2], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = startPos[2][0];
+            gMes->pos.y = startPos[2][1];
+            HuSprPosSet(gMes->strGId[2], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0.0f; i < name3Len; i++) {
-                HuSprScaleSet(gMes->strGId[2], i + 1, 0.8f, gMes->unk6C);
-                HuSprTPLvlSet(gMes->strGId[2], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[2], i + 1, 0.8f, gMes->scale.y);
+                HuSprTPLvlSet(gMes->strGId[2], i + 1, gMes->tpLvl);
             }
             for (i = 0.0f; i < wonLen; i++) {
                 HuSprAttrSet(gMes->strGId[3], i + 1, 0x8000);
             }
-            gMes->unk08 = 1;
+            gMes->subMode = 1;
             gMes->unk10 = 0.0f;
             break;
         case 1:
             dx = endPos[0][0] - startPos[0][0];
             dy = endPos[0][1] - startPos[0][1];
-            gMes->unk60 = startPos[0][0] + gMes->unk10 / 30.0f * dx;
-            gMes->unk64 = startPos[0][1] + gMes->unk10 / 30.0f * dy;
-            gMes->unk68 = gMes->unk6C = gMes->unk10 / 30.0f * 0.5f + 0.5f;
-            gMes->unk03 += 8;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = startPos[0][0] + gMes->unk10 / 30.0f * dx;
+            gMes->pos.y = startPos[0][1] + gMes->unk10 / 30.0f * dy;
+            gMes->scale.x = gMes->scale.y = gMes->unk10 / 30.0f * 0.5f + 0.5f;
+            gMes->tpLvl += 8;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0.0f; i < name1Len; i++) {
-                HuSprScaleSet(gMes->strGId[0], i + 1, 0.8f, gMes->unk6C);
-                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[0], i + 1, 0.8f, gMes->scale.y);
+                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->tpLvl);
             }
             dx = endPos[1][0] - startPos[1][0];
             dy = endPos[1][1] - startPos[1][1];
-            gMes->unk60 = startPos[1][0] + gMes->unk10 / 30.0f * dx;
-            gMes->unk64 = startPos[1][1] + gMes->unk10 / 30.0f * dy;
-            HuSprPosSet(gMes->strGId[1], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = startPos[1][0] + gMes->unk10 / 30.0f * dx;
+            gMes->pos.y = startPos[1][1] + gMes->unk10 / 30.0f * dy;
+            HuSprPosSet(gMes->strGId[1], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0.0f; i < name2Len; i++) {
-                HuSprScaleSet(gMes->strGId[1], i + 1, 0.8f, gMes->unk6C);
-                HuSprTPLvlSet(gMes->strGId[1], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[1], i + 1, 0.8f, gMes->scale.y);
+                HuSprTPLvlSet(gMes->strGId[1], i + 1, gMes->tpLvl);
             }
             dx = endPos[2][0] - startPos[2][0];
             dy = endPos[2][1] - startPos[2][1];
-            gMes->unk60 = startPos[2][0] + gMes->unk10 / 30.0f * dx;
-            gMes->unk64 = startPos[2][1] + gMes->unk10 / 30.0f * dy;
-            HuSprPosSet(gMes->strGId[2], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = startPos[2][0] + gMes->unk10 / 30.0f * dx;
+            gMes->pos.y = startPos[2][1] + gMes->unk10 / 30.0f * dy;
+            HuSprPosSet(gMes->strGId[2], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0.0f; i < name3Len; i++) {
-                HuSprScaleSet(gMes->strGId[2], i + 1, 0.8f, gMes->unk6C);
-                HuSprTPLvlSet(gMes->strGId[2], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[2], i + 1, 0.8f, gMes->scale.y);
+                HuSprTPLvlSet(gMes->strGId[2], i + 1, gMes->tpLvl);
             }
             gMes->unk10 += 1.0f;
-            if (gMes->unk04 >= 30) {
+            if (gMes->time >= 30) {
                 for (i = 0.0f; i < name1Len; i++) {
                     HuSprTPLvlSet(gMes->strGId[0], i + 1, 255);
                 }
@@ -3823,27 +3823,27 @@ s32 func_80041B68_main(GAMEMES *gMes, Gfx **gfx) {
                 for (i = 0.0f; i < name3Len; i++) {
                     HuSprTPLvlSet(gMes->strGId[2], i + 1, 255);
                 }
-                gMes->unk08 = 2;
+                gMes->subMode = 2;
             }
             break;
         case 2:
-            gMes->unk60 = startPos[3][0];
-            gMes->unk64 = startPos[3][1];
-            gMes->unk68 = gMes->unk6C = 1.0f;
-            HuSprPosSet(gMes->strGId[3], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = startPos[3][0];
+            gMes->pos.y = startPos[3][1];
+            gMes->scale.x = gMes->scale.y = 1.0f;
+            HuSprPosSet(gMes->strGId[3], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0.0f; i < wonLen; i++) {
-                HuSprScaleSet(gMes->strGId[3], i + 1, gMes->unk68, gMes->unk6C);
+                HuSprScaleSet(gMes->strGId[3], i + 1, gMes->scale.x, gMes->scale.y);
                 HuSprTPLvlSet(gMes->strGId[3], i + 1, 255);
                 HuSprAttrReset(gMes->strGId[3], i + 1, 0x8000);
             }
-            gMes->unk08 = 3;
+            gMes->subMode = 3;
             gMes->unk10 = 0.0f;
             gMes->unk14 = 0.0f;
             break;
         case 3:
-            gMes->unk60 = endPos[3][0] + sindf(gMes->unk10);
-            gMes->unk64 = endPos[3][1] + sindf(gMes->unk14);
-            HuSprPosSet(gMes->strGId[3], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = endPos[3][0] + sindf(gMes->unk10);
+            gMes->pos.y = endPos[3][1] + sindf(gMes->unk14);
+            HuSprPosSet(gMes->strGId[3], 0, gMes->pos.x, gMes->pos.y);
             gMes->unk10 += 90.0f;
             gMes->unk14 += 45.0f;
             if (gMes->unk10 >= 360.0f) {
@@ -3852,8 +3852,8 @@ s32 func_80041B68_main(GAMEMES *gMes, Gfx **gfx) {
             if (gMes->unk14 >= 360.0f) {
                 gMes->unk14 = 0.0f;
             }
-            if (gMes->unk04 > gMes->unk06 - 10) {
-                scale = (gMes->unk06 - gMes->unk04) / 10.0f;
+            if (gMes->time > gMes->timeMax - 10) {
+                scale = (gMes->timeMax - gMes->time) / 10.0f;
                 for (i = 0.0f; i < name1Len; i++) {
                     HuSprScaleSet(gMes->strGId[0], i + 1, 0.8f, scale * 0.8f);
                 }
@@ -3867,8 +3867,8 @@ s32 func_80041B68_main(GAMEMES *gMes, Gfx **gfx) {
                     HuSprScaleSet(gMes->strGId[3], i + 1, 1.0f, scale);
                 }
             }
-            if (gMes->unk04 >= gMes->unk06) {
-                gMes->unk08 = 5;
+            if (gMes->time >= gMes->timeMax) {
+                gMes->subMode = 5;
             }
             break;
         case 4:
@@ -3878,7 +3878,7 @@ s32 func_80041B68_main(GAMEMES *gMes, Gfx **gfx) {
             result = FALSE;
             break;
     }
-    if (gMes->unk04 > gMes->unk06 - 5) {
+    if (gMes->time > gMes->timeMax - 5) {
         gMes->stat = 2;
     }
     return result;
@@ -3888,8 +3888,8 @@ s32 func_80042AC8_main(GAMEMES *gMes, Gfx **gfx) {
     char wonStr[] = "WON\xC4 ";
     s32 dx;
     s32 dy;
-    f32 name1Len = strlen(D_800A1410_main[gMes->unk08]);
-    f32 name2Len = strlen(D_800A1410_main[gMes->unk0A]);
+    f32 name1Len = strlen(D_800A1410_main[gMes->subMode]);
+    f32 name2Len = strlen(D_800A1410_main[gMes->work]);
     f32 name3Len = strlen(D_800A1410_main[gMes->unk0C]);
     f32 name4Len = strlen(D_800A1410_main[gMes->unk0E]);
     f32 wonLen = strlen(wonStr);
@@ -3903,40 +3903,40 @@ s32 func_80042AC8_main(GAMEMES *gMes, Gfx **gfx) {
     result = TRUE;
     switch ((s32)gMes->unk10) {
         case 0:
-            func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->unk08], 1, -1, -1, 0.8f, 1.0f);
-            func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->unk0A], 1, -1, -1, 0.8f, 1.0f);
+            func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->subMode], 1, -1, -1, 0.8f, 1.0f);
+            func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->work], 1, -1, -1, 0.8f, 1.0f);
             func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->unk0C], 1, -1, -1, 0.8f, 1.0f);
             func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->unk0E], 1, -1, -1, 0.8f, 1.0f);
             func_8003A3C4_main(gMes, (u8 *)wonStr, 1, -1, -1, 0.8f, 1.0f);
-            gMes->unk60 = D_800A1434_main[0][0];
-            gMes->unk64 = D_800A1434_main[0][1];
-            gMes->unk68 = gMes->unk6C = 0.5f;
-            gMes->unk03 = 0;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = D_800A1434_main[0][0];
+            gMes->pos.y = D_800A1434_main[0][1];
+            gMes->scale.x = gMes->scale.y = 0.5f;
+            gMes->tpLvl = 0;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0.0f; i < name1Len; i++) {
-                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->unk68 * 0.8f, gMes->unk6C);
-                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->scale.x * 0.8f, gMes->scale.y);
+                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->tpLvl);
             }
-            gMes->unk60 = D_800A1434_main[1][0];
-            gMes->unk64 = D_800A1434_main[1][1];
-            HuSprPosSet(gMes->strGId[1], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = D_800A1434_main[1][0];
+            gMes->pos.y = D_800A1434_main[1][1];
+            HuSprPosSet(gMes->strGId[1], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0.0f; i < name2Len; i++) {
-                HuSprScaleSet(gMes->strGId[1], i + 1, gMes->unk68 * 0.8f, gMes->unk6C);
-                HuSprTPLvlSet(gMes->strGId[1], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[1], i + 1, gMes->scale.x * 0.8f, gMes->scale.y);
+                HuSprTPLvlSet(gMes->strGId[1], i + 1, gMes->tpLvl);
             }
-            gMes->unk60 = D_800A1434_main[2][0];
-            gMes->unk64 = D_800A1434_main[2][1];
-            HuSprPosSet(gMes->strGId[2], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = D_800A1434_main[2][0];
+            gMes->pos.y = D_800A1434_main[2][1];
+            HuSprPosSet(gMes->strGId[2], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0.0f; i < name3Len; i++) {
-                HuSprScaleSet(gMes->strGId[2], i + 1, gMes->unk68 * 0.8f, gMes->unk6C);
-                HuSprTPLvlSet(gMes->strGId[2], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[2], i + 1, gMes->scale.x * 0.8f, gMes->scale.y);
+                HuSprTPLvlSet(gMes->strGId[2], i + 1, gMes->tpLvl);
             }
-            gMes->unk60 = D_800A1434_main[3][0];
-            gMes->unk64 = D_800A1434_main[3][1];
-            HuSprPosSet(gMes->strGId[3], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = D_800A1434_main[3][0];
+            gMes->pos.y = D_800A1434_main[3][1];
+            HuSprPosSet(gMes->strGId[3], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0.0f; i < name4Len; i++) {
-                HuSprScaleSet(gMes->strGId[3], i + 1, gMes->unk68 * 0.8f, gMes->unk6C);
-                HuSprTPLvlSet(gMes->strGId[3], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[3], i + 1, gMes->scale.x * 0.8f, gMes->scale.y);
+                HuSprTPLvlSet(gMes->strGId[3], i + 1, gMes->tpLvl);
             }
             for (i = 0.0f; i < wonLen; i++) {
                 HuSprAttrSet(gMes->strGId[4], i + 1, 0x8000);
@@ -3947,44 +3947,44 @@ s32 func_80042AC8_main(GAMEMES *gMes, Gfx **gfx) {
         case 1:
             dx = D_800A145C_main[0][0] - D_800A1434_main[0][0];
             dy = D_800A145C_main[0][1] - D_800A1434_main[0][1];
-            gMes->unk60 = D_800A1434_main[0][0] + gMes->unk14 / 30.0f * dx;
-            gMes->unk64 = D_800A1434_main[0][1] + gMes->unk14 / 30.0f * dy;
-            gMes->unk68 = gMes->unk6C = gMes->unk14 / 30.0f * 0.5f + 0.5f;
-            gMes->unk03 += 8;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = D_800A1434_main[0][0] + gMes->unk14 / 30.0f * dx;
+            gMes->pos.y = D_800A1434_main[0][1] + gMes->unk14 / 30.0f * dy;
+            gMes->scale.x = gMes->scale.y = gMes->unk14 / 30.0f * 0.5f + 0.5f;
+            gMes->tpLvl += 8;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0.0f; i < name1Len; i++) {
-                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->unk68 * 0.8f, gMes->unk6C);
-                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->scale.x * 0.8f, gMes->scale.y);
+                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->tpLvl);
             }
             dx = D_800A145C_main[1][0] - D_800A1434_main[1][0];
             dy = D_800A145C_main[1][1] - D_800A1434_main[1][1];
-            gMes->unk60 = D_800A1434_main[1][0] + gMes->unk14 / 30.0f * dx;
-            gMes->unk64 = D_800A1434_main[1][1] + gMes->unk14 / 30.0f * dy;
-            HuSprPosSet(gMes->strGId[1], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = D_800A1434_main[1][0] + gMes->unk14 / 30.0f * dx;
+            gMes->pos.y = D_800A1434_main[1][1] + gMes->unk14 / 30.0f * dy;
+            HuSprPosSet(gMes->strGId[1], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0.0f; i < name2Len; i++) {
-                HuSprScaleSet(gMes->strGId[1], i + 1, gMes->unk68 * 0.8f, gMes->unk6C);
-                HuSprTPLvlSet(gMes->strGId[1], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[1], i + 1, gMes->scale.x * 0.8f, gMes->scale.y);
+                HuSprTPLvlSet(gMes->strGId[1], i + 1, gMes->tpLvl);
             }
             dx = D_800A145C_main[2][0] - D_800A1434_main[2][0];
             dy = D_800A145C_main[2][1] - D_800A1434_main[2][1];
-            gMes->unk60 = D_800A1434_main[2][0] + gMes->unk14 / 30.0f * dx;
-            gMes->unk64 = D_800A1434_main[2][1] + gMes->unk14 / 30.0f * dy;
-            HuSprPosSet(gMes->strGId[2], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = D_800A1434_main[2][0] + gMes->unk14 / 30.0f * dx;
+            gMes->pos.y = D_800A1434_main[2][1] + gMes->unk14 / 30.0f * dy;
+            HuSprPosSet(gMes->strGId[2], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0.0f; i < name3Len; i++) {
-                HuSprScaleSet(gMes->strGId[2], i + 1, gMes->unk68 * 0.8f, gMes->unk6C);
-                HuSprTPLvlSet(gMes->strGId[2], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[2], i + 1, gMes->scale.x * 0.8f, gMes->scale.y);
+                HuSprTPLvlSet(gMes->strGId[2], i + 1, gMes->tpLvl);
             }
             dx = D_800A145C_main[3][0] - D_800A1434_main[3][0];
             dy = D_800A145C_main[3][1] - D_800A1434_main[3][1];
-            gMes->unk60 = D_800A1434_main[3][0] + gMes->unk14 / 30.0f * dx;
-            gMes->unk64 = D_800A1434_main[3][1] + gMes->unk14 / 30.0f * dy;
-            HuSprPosSet(gMes->strGId[3], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = D_800A1434_main[3][0] + gMes->unk14 / 30.0f * dx;
+            gMes->pos.y = D_800A1434_main[3][1] + gMes->unk14 / 30.0f * dy;
+            HuSprPosSet(gMes->strGId[3], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0.0f; i < name4Len; i++) {
-                HuSprScaleSet(gMes->strGId[3], i + 1, gMes->unk68 * 0.8f, gMes->unk6C);
-                HuSprTPLvlSet(gMes->strGId[3], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[3], i + 1, gMes->scale.x * 0.8f, gMes->scale.y);
+                HuSprTPLvlSet(gMes->strGId[3], i + 1, gMes->tpLvl);
             }
             gMes->unk14 += 1.0f;
-            if (gMes->unk04 >= 30) {
+            if (gMes->time >= 30) {
                 for (i = 0.0f; i < name1Len; i++) {
                     HuSprTPLvlSet(gMes->strGId[0], i + 1, 255);
                 }
@@ -4001,12 +4001,12 @@ s32 func_80042AC8_main(GAMEMES *gMes, Gfx **gfx) {
             }
             break;
         case 2:
-            gMes->unk60 = D_800A1434_main[4][0];
-            gMes->unk64 = D_800A1434_main[4][1];
-            gMes->unk68 = gMes->unk6C = 1.0f;
-            HuSprPosSet(gMes->strGId[4], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = D_800A1434_main[4][0];
+            gMes->pos.y = D_800A1434_main[4][1];
+            gMes->scale.x = gMes->scale.y = 1.0f;
+            HuSprPosSet(gMes->strGId[4], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0.0f; i < wonLen; i++) {
-                HuSprScaleSet(gMes->strGId[4], i + 1, gMes->unk68 * 0.8f, gMes->unk6C);
+                HuSprScaleSet(gMes->strGId[4], i + 1, gMes->scale.x * 0.8f, gMes->scale.y);
                 HuSprTPLvlSet(gMes->strGId[4], i + 1, 255);
                 HuSprAttrReset(gMes->strGId[4], i + 1, 0x8000);
             }
@@ -4016,35 +4016,35 @@ s32 func_80042AC8_main(GAMEMES *gMes, Gfx **gfx) {
         case 3:
             dx = D_800A1484_main[0][0] - D_800A145C_main[0][0];
             dy = D_800A1484_main[0][1] - D_800A145C_main[0][1];
-            gMes->unk60 = D_800A145C_main[0][0] + gMes->unk14 / 10.0f * dx;
-            gMes->unk64 = D_800A145C_main[0][1] + gMes->unk14 / 10.0f * dy;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = D_800A145C_main[0][0] + gMes->unk14 / 10.0f * dx;
+            gMes->pos.y = D_800A145C_main[0][1] + gMes->unk14 / 10.0f * dy;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
             dx = D_800A1484_main[1][0] - D_800A145C_main[1][0];
             dy = D_800A1484_main[1][1] - D_800A145C_main[1][1];
-            gMes->unk60 = D_800A145C_main[1][0] + gMes->unk14 / 10.0f * dx;
-            gMes->unk64 = D_800A145C_main[1][1] + gMes->unk14 / 10.0f * dy;
-            HuSprPosSet(gMes->strGId[1], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = D_800A145C_main[1][0] + gMes->unk14 / 10.0f * dx;
+            gMes->pos.y = D_800A145C_main[1][1] + gMes->unk14 / 10.0f * dy;
+            HuSprPosSet(gMes->strGId[1], 0, gMes->pos.x, gMes->pos.y);
             dx = D_800A1484_main[2][0] - D_800A145C_main[2][0];
             dy = D_800A1484_main[2][1] - D_800A145C_main[2][1];
-            gMes->unk60 = D_800A145C_main[2][0] + gMes->unk14 / 10.0f * dx;
-            gMes->unk64 = D_800A145C_main[2][1] + gMes->unk14 / 10.0f * dy;
-            HuSprPosSet(gMes->strGId[2], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = D_800A145C_main[2][0] + gMes->unk14 / 10.0f * dx;
+            gMes->pos.y = D_800A145C_main[2][1] + gMes->unk14 / 10.0f * dy;
+            HuSprPosSet(gMes->strGId[2], 0, gMes->pos.x, gMes->pos.y);
             dx = D_800A1484_main[3][0] - D_800A145C_main[3][0];
             dy = D_800A1484_main[3][1] - D_800A145C_main[3][1];
-            gMes->unk60 = D_800A145C_main[3][0] + gMes->unk14 / 10.0f * dx;
-            gMes->unk64 = D_800A145C_main[3][1] + gMes->unk14 / 10.0f * dy;
-            HuSprPosSet(gMes->strGId[3], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = D_800A145C_main[3][0] + gMes->unk14 / 10.0f * dx;
+            gMes->pos.y = D_800A145C_main[3][1] + gMes->unk14 / 10.0f * dy;
+            HuSprPosSet(gMes->strGId[3], 0, gMes->pos.x, gMes->pos.y);
             gMes->unk14 += 1.0f;
-            if (gMes->unk04 >= 40) {
+            if (gMes->time >= 40) {
                 gMes->unk10 = 4.0f;
                 gMes->unk14 = 0.0f;
                 gMes->unk18 = 0.0f;
             }
             break;
         case 4:
-            gMes->unk60 = D_800A145C_main[4][0] + sindf(gMes->unk14);
-            gMes->unk64 = D_800A145C_main[4][1] + sindf(gMes->unk18);
-            HuSprPosSet(gMes->strGId[4], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = D_800A145C_main[4][0] + sindf(gMes->unk14);
+            gMes->pos.y = D_800A145C_main[4][1] + sindf(gMes->unk18);
+            HuSprPosSet(gMes->strGId[4], 0, gMes->pos.x, gMes->pos.y);
             gMes->unk14 += 90.0f;
             gMes->unk18 += 45.0f;
             if (gMes->unk14 >= 360.0f) {
@@ -4053,8 +4053,8 @@ s32 func_80042AC8_main(GAMEMES *gMes, Gfx **gfx) {
             if (gMes->unk18 >= 360.0f) {
                 gMes->unk18 = 0.0f;
             }
-            if (gMes->unk04 > gMes->unk06 - 10) {
-                scale = (gMes->unk06 - gMes->unk04) / 10.0f;
+            if (gMes->time > gMes->timeMax - 10) {
+                scale = (gMes->timeMax - gMes->time) / 10.0f;
                 for (i = 0.0f; i < name1Len; i++) {
                     HuSprScaleSet(gMes->strGId[0], i + 1, scale * 0.8f, 0.8f);
                 }
@@ -4071,7 +4071,7 @@ s32 func_80042AC8_main(GAMEMES *gMes, Gfx **gfx) {
                     HuSprScaleSet(gMes->strGId[4], i + 1, scale, 1.0f);
                 }
             }
-            if (gMes->unk04 >= gMes->unk06) {
+            if (gMes->time >= gMes->timeMax) {
                 gMes->unk10 = 5.0f;
             }
             break;
@@ -4080,7 +4080,7 @@ s32 func_80042AC8_main(GAMEMES *gMes, Gfx **gfx) {
             result = FALSE;
             break;
     }
-    if (gMes->unk04 > gMes->unk06 - 5) {
+    if (gMes->time > gMes->timeMax - 5) {
         gMes->stat = 2;
     }
     return result;
@@ -4096,83 +4096,83 @@ s32 func_800440D4_main(GAMEMES *gMes, Gfx **gfx) {
     f32 alpha;
 
     if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
-        gMes->unk08 = 4;
+        gMes->subMode = 4;
     }
     result = TRUE;
     gotLen = strlen(gotStr);
     itemLen = strlen(itemStr);
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             GameMesStrCreate(gMes, gotStr, 1, -1, -1);
             GameMesStrCreate(gMes, itemStr, 1, -1, -1);
-            gMes->unk68 = gMes->unk6C = 0.5f;
-            gMes->unk60 = cosdf(0.0f) * 55.0f + 149.0f;
-            gMes->unk64 = sindf(0.0f) * 55.0f + 120.0f;
-            gMes->unk03 = 0;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+            gMes->scale.x = gMes->scale.y = 0.5f;
+            gMes->pos.x = cosdf(0.0f) * 55.0f + 149.0f;
+            gMes->pos.y = sindf(0.0f) * 55.0f + 120.0f;
+            gMes->tpLvl = 0;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0; i < gotLen; i++) {
-                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->unk68, gMes->unk68);
-                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->scale.x, gMes->scale.x);
+                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->tpLvl);
             }
-            gMes->unk60 = cosdf(180.0f) * 55.0f + 149.0f;
-            gMes->unk64 = sindf(180.0f) * 55.0f + 120.0f;
-            HuSprPosSet(gMes->strGId[1], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = cosdf(180.0f) * 55.0f + 149.0f;
+            gMes->pos.y = sindf(180.0f) * 55.0f + 120.0f;
+            HuSprPosSet(gMes->strGId[1], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0; i < itemLen; i++) {
-                HuSprScaleSet(gMes->strGId[1], i + 1, gMes->unk6C, gMes->unk6C);
+                HuSprScaleSet(gMes->strGId[1], i + 1, gMes->scale.y, gMes->scale.y);
                 HuSprTPLvlSet(gMes->strGId[1], i + 1, 0);
             }
             D_800D6A58_main = 1;
             D_800D1100_main = 0;
-            gMes->unk08 = 1;
+            gMes->subMode = 1;
             gMes->unk10 = 0.0f;
             gMes->unk14 = 180.0f;
             break;
         case 1:
             gMes->unk10 += 12.0f;
             gMes->unk14 += 12.0f;
-            gMes->unk6C = gMes->unk68 += 0.033333335f;
-            gMes->unk60 = cosdf(gMes->unk10) * 55.0f + 149.0f;
-            gMes->unk64 = sindf(gMes->unk10) * 55.0f + 120.0f;
-            gMes->unk03 += 17;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+            gMes->scale.y = gMes->scale.x += 0.033333335f;
+            gMes->pos.x = cosdf(gMes->unk10) * 55.0f + 149.0f;
+            gMes->pos.y = sindf(gMes->unk10) * 55.0f + 120.0f;
+            gMes->tpLvl += 17;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0; i < gotLen; i++) {
-                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->unk68, gMes->unk68);
-                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->scale.x, gMes->scale.x);
+                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->tpLvl);
             }
-            gMes->unk60 = cosdf(gMes->unk14) * 55.0f + 149.0f;
-            gMes->unk64 = sindf(gMes->unk14) * 55.0f + 120.0f;
-            HuSprPosSet(gMes->strGId[1], 0, gMes->unk60, gMes->unk64);
+            gMes->pos.x = cosdf(gMes->unk14) * 55.0f + 149.0f;
+            gMes->pos.y = sindf(gMes->unk14) * 55.0f + 120.0f;
+            HuSprPosSet(gMes->strGId[1], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0; i < itemLen; i++) {
-                HuSprScaleSet(gMes->strGId[1], i + 1, gMes->unk6C, gMes->unk6C);
-                HuSprTPLvlSet(gMes->strGId[1], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[1], i + 1, gMes->scale.y, gMes->scale.y);
+                HuSprTPLvlSet(gMes->strGId[1], i + 1, gMes->tpLvl);
             }
-            if (gMes->unk04 >= 15) {
-                gMes->unk08 = 2;
+            if (gMes->time >= 15) {
+                gMes->subMode = 2;
                 gMes->unk10 = 630.0f;
             }
             break;
         case 2:
-            gMes->unk6C = gMes->unk68 = sindf(gMes->unk10) * 0.1f + 1.1f;
+            gMes->scale.y = gMes->scale.x = sindf(gMes->unk10) * 0.1f + 1.1f;
             gMes->unk10 += 36.0f;
             for (i = 0; i < gotLen; i++) {
-                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->unk68, gMes->unk68);
+                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->scale.x, gMes->scale.x);
             }
             for (i = 0; i < itemLen; i++) {
-                HuSprScaleSet(gMes->strGId[1], i + 1, gMes->unk68, gMes->unk68);
+                HuSprScaleSet(gMes->strGId[1], i + 1, gMes->scale.x, gMes->scale.x);
             }
-            if (gMes->unk04 >= 35) {
+            if (gMes->time >= 35) {
                 for (i = 0; i < gotLen; i++) {
                     HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, 1.0f);
                 }
                 for (i = 0; i < itemLen; i++) {
                     HuSprScaleSet(gMes->strGId[1], i + 1, 1.0f, 1.0f);
                 }
-                gMes->unk08 = 3;
+                gMes->subMode = 3;
             }
             break;
         case 3:
-            if (gMes->unk04 > gMes->unk06 - 10) {
-                alpha = (gMes->unk06 - gMes->unk04) / 10.0f * 255.0f;
+            if (gMes->time > gMes->timeMax - 10) {
+                alpha = (gMes->timeMax - gMes->time) / 10.0f * 255.0f;
                 for (i = 0; i < gotLen; i++) {
                     HuSprTPLvlSet(gMes->strGId[0], i + 1, alpha);
                 }
@@ -4180,8 +4180,8 @@ s32 func_800440D4_main(GAMEMES *gMes, Gfx **gfx) {
                     HuSprTPLvlSet(gMes->strGId[1], i + 1, alpha);
                 }
             }
-            if (gMes->unk04 >= gMes->unk06) {
-                gMes->unk08 = 4;
+            if (gMes->time >= gMes->timeMax) {
+                gMes->subMode = 4;
             }
             break;
         case 4:
@@ -4189,10 +4189,10 @@ s32 func_800440D4_main(GAMEMES *gMes, Gfx **gfx) {
             result = FALSE;
             break;
     }
-    if (gMes->unk04 == 1) {
+    if (gMes->time == 1) {
         HuAudFXPlay(0x260);
     }
-    if (gMes->unk04 > gMes->unk06 - 5) {
+    if (gMes->time > gMes->timeMax - 5) {
         gMes->stat = 2;
     }
     return result;
@@ -4209,34 +4209,34 @@ s32 func_800448C0_main(GAMEMES *gMes, Gfx **gfx) {
     s32 i;
 
     if (gMesCloseF || gMes->stat == GMES_STAT_KILL) {
-        gMes->unk08 = 5;
+        gMes->subMode = 5;
     }
     result = TRUE;
     gotLen = strlen(gotStr);
     itemLen = strlen(itemStr);
     exclLen = strlen(exclStr);
-    switch (gMes->unk08) {
+    switch (gMes->subMode) {
         case 0:
             GameMesStrCreate(gMes, gotStr, 1, -1, -1);
             GameMesStrCreate(gMes, itemStr, 1, -1, -1);
             GameMesStrCreate(gMes, exclStr, 1, -1, -1);
-            gMes->unk68 = gMes->unk6C = 0.5f;
-            gMes->unk60 = 99.0f;
-            gMes->unk64 = 45.0f;
-            gMes->unk03 = 0;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+            gMes->scale.x = gMes->scale.y = 0.5f;
+            gMes->pos.x = 99.0f;
+            gMes->pos.y = 45.0f;
+            gMes->tpLvl = 0;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0; i < gotLen; i++) {
-                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->unk68, gMes->unk68);
-                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->scale.x, gMes->scale.x);
+                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->tpLvl);
             }
-            gMes->unk0A = 189;
+            gMes->work = 189;
             gMes->unk0C = 195;
-            HuSprPosSet(gMes->strGId[1], 0, gMes->unk0A, gMes->unk0C);
+            HuSprPosSet(gMes->strGId[1], 0, gMes->work, gMes->unk0C);
             for (i = 0; i < itemLen; i++) {
-                HuSprScaleSet(gMes->strGId[1], i + 1, gMes->unk6C, gMes->unk6C);
-                HuSprTPLvlSet(gMes->strGId[1], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[1], i + 1, gMes->scale.y, gMes->scale.y);
+                HuSprTPLvlSet(gMes->strGId[1], i + 1, gMes->tpLvl);
             }
-            HuSprPosSet(gMes->strGId[2], 0, gMes->unk0A, gMes->unk0C);
+            HuSprPosSet(gMes->strGId[2], 0, gMes->work, gMes->unk0C);
             for (i = 0; i < exclLen; i++) {
                 HuSprAttrSet(gMes->strGId[2], 1, 0x8000);
                 HuSprScaleSet(gMes->strGId[2], i + 1, 1.0f, 1.0f);
@@ -4244,30 +4244,30 @@ s32 func_800448C0_main(GAMEMES *gMes, Gfx **gfx) {
             }
             D_800D6A58_main = 1;
             D_800D1100_main = 0;
-            gMes->unk08 = 1;
+            gMes->subMode = 1;
             gMes->unk10 = 0.0f;
             break;
         case 1:
             gMes->unk10 += 12.0f;
-            gMes->unk6C = gMes->unk68 += 0.033333335f;
-            gMes->unk60 = sindf(gMes->unk10) * 20.0f + 94.0f;
-            gMes->unk64 += 5.0f;
-            gMes->unk03 += 17;
-            HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
+            gMes->scale.y = gMes->scale.x += 0.033333335f;
+            gMes->pos.x = sindf(gMes->unk10) * 20.0f + 94.0f;
+            gMes->pos.y += 5.0f;
+            gMes->tpLvl += 17;
+            HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
             for (i = 0; i < gotLen; i++) {
-                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->unk68, gMes->unk68);
-                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[0], i + 1, gMes->scale.x, gMes->scale.x);
+                HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->tpLvl);
             }
-            gMes->unk0A = sindf(gMes->unk10) * 20.0f + 194.0f;
+            gMes->work = sindf(gMes->unk10) * 20.0f + 194.0f;
             gMes->unk0C -= 5;
-            HuSprPosSet(gMes->strGId[1], 0, gMes->unk0A, gMes->unk0C);
+            HuSprPosSet(gMes->strGId[1], 0, gMes->work, gMes->unk0C);
             for (i = 0; i < itemLen; i++) {
-                HuSprScaleSet(gMes->strGId[1], i + 1, gMes->unk6C, gMes->unk6C);
-                HuSprTPLvlSet(gMes->strGId[1], i + 1, gMes->unk03);
+                HuSprScaleSet(gMes->strGId[1], i + 1, gMes->scale.y, gMes->scale.y);
+                HuSprTPLvlSet(gMes->strGId[1], i + 1, gMes->tpLvl);
             }
-            if (gMes->unk04 >= 15) {
-                gMes->unk0A = 330;
-                HuSprPosSet(gMes->strGId[2], 0, gMes->unk0A, gMes->unk0C);
+            if (gMes->time >= 15) {
+                gMes->work = 330;
+                HuSprPosSet(gMes->strGId[2], 0, gMes->work, gMes->unk0C);
                 for (i = 0; i < gotLen; i++) {
                     HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, 1.0f);
                     HuSprTPLvlSet(gMes->strGId[0], i + 1, 255);
@@ -4281,33 +4281,33 @@ s32 func_800448C0_main(GAMEMES *gMes, Gfx **gfx) {
                     HuSprScaleSet(gMes->strGId[2], i + 1, 1.0f, 1.0f);
                     HuSprTPLvlSet(gMes->strGId[2], i + 1, 255);
                 }
-                gMes->unk08 = 2;
+                gMes->subMode = 2;
             }
             break;
         case 2:
-            gMes->unk0A -= 16;
-            HuSprPosSet(gMes->strGId[2], 0, gMes->unk0A, gMes->unk0C);
-            if (gMes->unk04 >= 20) {
-                gMes->unk08 = 3;
+            gMes->work -= 16;
+            HuSprPosSet(gMes->strGId[2], 0, gMes->work, gMes->unk0C);
+            if (gMes->time >= 20) {
+                gMes->subMode = 3;
                 gMes->unk10 = 630.0f;
             }
             break;
         case 3:
-            gMes->unk68 = sindf(gMes->unk10) * 0.5f + 1.5f;
+            gMes->scale.x = sindf(gMes->unk10) * 0.5f + 1.5f;
             gMes->unk10 += 36.0f;
             for (i = 0; i < exclLen; i++) {
-                HuSprScaleSet(gMes->strGId[2], i + 1, gMes->unk68, gMes->unk68);
+                HuSprScaleSet(gMes->strGId[2], i + 1, gMes->scale.x, gMes->scale.x);
             }
-            if (gMes->unk04 >= 40) {
+            if (gMes->time >= 40) {
                 for (i = 0; i < exclLen; i++) {
                     HuSprScaleSet(gMes->strGId[2], i + 1, 1.0f, 1.0f);
                 }
-                gMes->unk08 = 4;
+                gMes->subMode = 4;
             }
             break;
         case 4:
-            if (gMes->unk04 >= gMes->unk06) {
-                gMes->unk08 = 5;
+            if (gMes->time >= gMes->timeMax) {
+                gMes->subMode = 5;
             }
             break;
         case 5:
@@ -4315,7 +4315,7 @@ s32 func_800448C0_main(GAMEMES *gMes, Gfx **gfx) {
             result = FALSE;
             break;
     }
-    if (gMes->unk04 >= 31) {
+    if (gMes->time >= 31) {
         gMes->stat = 2;
     }
     return result;

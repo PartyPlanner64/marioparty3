@@ -205,8 +205,8 @@ s16 func_80045B24_main(s16 arg0, s16 arg1) {
     temp_v0 = HuWinCreate(arg0, arg1, 0xC8, 0x3C, 0, 0);
     HuWinPriSet(temp_v0, 0);
     temp_v0_2 = &winData[temp_v0];
-    temp_v0_2->unk_29 = 0;
-    temp_v0_2->unk_2A = 1;
+    temp_v0_2->spacing_x = 0;
+    temp_v0_2->spacing_y = 1;
     HuWinMesSpeedSet(temp_v0, 0);
     HuWinBGTPLvlSet(temp_v0, 0xD0);
     HuWinBGColSet(temp_v0, 0x30, 0x40, 0x80);

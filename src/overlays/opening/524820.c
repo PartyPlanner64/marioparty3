@@ -431,8 +431,8 @@ void opMotionTimeSet(s32 slot, u32 time) {
 }
 
 void opMotionEndWait(s32 slot) {
-    while (HmfModelData[D_80115630_opening[slot].modelId].unk40 !=
-           D_800CCF58_main[HmfModelData[D_80115630_opening[slot].modelId].unk02].unk02) {
+    while (HmfModelData[D_80115630_opening[slot].modelId].motTime !=
+           D_800CCF58_main[HmfModelData[D_80115630_opening[slot].modelId].motId].unk02) {
         HuPrcVSleep();
     }
 }
@@ -440,7 +440,7 @@ void opMotionEndWait(s32 slot) {
 s32 opMotionEndCheck(s32 arg0) {
     s16 modelId = D_80115630_opening[arg0].modelId;
 
-    return HmfModelData[modelId].unk40 == D_800CCF58_main[HmfModelData[modelId].unk02].unk02;
+    return HmfModelData[modelId].motTime == D_800CCF58_main[HmfModelData[modelId].motId].unk02;
 }
 
 void opMotionSet(s32 modelId, s32 motionId, s16 arg2) {

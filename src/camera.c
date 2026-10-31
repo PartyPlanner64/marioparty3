@@ -29,9 +29,9 @@ void Hu3DCamInit(u32 arg0) {
     }
     gCameraList = HuMemAlloc(0xD20);
     for (var_s3 = 0; var_s3 < 6; var_s3++) {
-        gCameraList[var_s3].fov[0] = 45.0f;
-        gCameraList[var_s3].fov[1] = 80.0f;
-        gCameraList[var_s3].fov[2] = 8000.0f;
+        gCameraList[var_s3].fov = 45.0f;
+        gCameraList[var_s3].near = 80.0f;
+        gCameraList[var_s3].far = 8000.0f;
         gCameraList[var_s3].unk2 = 0;
         gCameraList[var_s3].unk4 = -1;
         CameraViewportSet(var_s3, &D_800A0554_main, &D_800A0590_main);
@@ -61,9 +61,9 @@ void Hu3DCamSetPositionOrientation(s16 camIndex, Vec *pos, Vec *at, Vec *up) {
 
 void Hu3DCamSetPerspective(s16 camIndex, f32 fov, f32 near, f32 far) {
     HuCamera *camera = &gCameraList[camIndex];
-    camera->fov[0] = fov;
-    camera->fov[1] = near;
-    camera->fov[2] = far;
+    camera->fov = fov;
+    camera->near = near;
+    camera->far = far;
     camera->perspNorm = 1;
 }
 
@@ -88,7 +88,7 @@ void Hu3DCamUpdateMtx(s16 camIndex) {
     camera = &gCameraList[camIndex];
     mtxs = &camera->mtxs[D_800D418E_main];
 
-    guPerspective(&mtxs->perspMtx, &camera->perspNorm, camera->fov[0], (SCREEN_WIDTH / SCREEN_HEIGHT), camera->fov[1], camera->fov[2], 1.0f);
+    guPerspective(&mtxs->perspMtx, &camera->perspNorm, camera->fov, (SCREEN_WIDTH / SCREEN_HEIGHT), camera->near, camera->far, 1.0f);
     guLookAt(&mtxs->lookAtMtx, camera->pos.x, camera->pos.y, camera->pos.z, camera->at.x, camera->at.y, camera->at.z, camera->up.x, camera->up.y, camera->up.z);
 }
 
@@ -162,8 +162,8 @@ void Hu3DCam3DToScreen(s16 camIndex, Vec *worldPos, Vec2f *outPos) {
     projectedX = ((x * viewMtx[0][0]) + (y * viewMtx[1][0])) + (z * viewMtx[2][0]);
     projectedY = ((x * viewMtx[0][1]) + (y * viewMtx[1][1])) + (z * viewMtx[2][1]);
     projectedZ = ((x * viewMtx[0][2]) + (y * viewMtx[1][2])) + (z * viewMtx[2][2]);
-    x = sindf(camera->fov[0] / 2.0f) / cosdf(camera->fov[0] / 2.0f) * projectedZ * ASPECT_RATIO;
-    y = (sindf(camera->fov[0] / 2.0f) / cosdf(camera->fov[0] / 2.0f)) * projectedZ;
+    x = sindf(camera->fov / 2.0f) / cosdf(camera->fov / 2.0f) * projectedZ * ASPECT_RATIO;
+    y = (sindf(camera->fov / 2.0f) / cosdf(camera->fov / 2.0f)) * projectedZ;
     outPos->x = (projectedX * (SCREEN_WIDTH_CENTER / (-x))) + SCREEN_WIDTH_CENTER;
     outPos->y = ((projectedY * (SCREEN_HEIGHT_CENTER / y)) + SCREEN_HEIGHT_CENTER);
 }
@@ -202,8 +202,8 @@ void func_80012B14_main(s16 camIndex, Vec *worldPos, Vec2f *outPos) {
     projectedX = ((x * viewMtx[0][0]) + (y * viewMtx[1][0])) + (z * viewMtx[2][0]);
     projectedY = ((x * viewMtx[0][1]) + (y * viewMtx[1][1])) + (z * viewMtx[2][1]);
     projectedZ = ((x * viewMtx[0][2]) + (y * viewMtx[1][2])) + (z * viewMtx[2][2]);
-    x = sindf(camera->fov[0] / 2.0f) / cosdf(camera->fov[0] / 2.0f) * projectedZ * (camera->screenScale.x / camera->screenScale.y);
-    y = (sindf(camera->fov[0] / 2.0f) / cosdf(camera->fov[0] / 2.0f)) * projectedZ;
+    x = sindf(camera->fov / 2.0f) / cosdf(camera->fov / 2.0f) * projectedZ * (camera->screenScale.x / camera->screenScale.y);
+    y = (sindf(camera->fov / 2.0f) / cosdf(camera->fov / 2.0f)) * projectedZ;
     f2 = camera->screenPos.x / 4.0f;
     outPos->x = (projectedX * (f2 / (-x))) + f2;
     f4 = camera->screenPos.y / 4.0f;
@@ -231,7 +231,7 @@ void func_80012D0C_main(s16 camIndex, f32 depth, Vec2f *screenPos, Vec2f *outPos
         camera->up.y,
         camera->up.z);
 
-    y = sindf(camera->fov[0] / 2.0f) / cosdf(camera->fov[0] / 2.0f) * depth;
+    y = sindf(camera->fov / 2.0f) / cosdf(camera->fov / 2.0f) * depth;
     x = y * ASPECT_RATIO;
     screenX = screenPos->x / SCREEN_WIDTH;
     screenY = (SCREEN_HEIGHT - screenPos->y) / SCREEN_HEIGHT;

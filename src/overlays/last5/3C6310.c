@@ -65,7 +65,7 @@ s16 func_80105A68_last5(s16 *arg0, s16 arg1, s16 arg2) {
 }
 
 void func_80105AAC_last5(s16 arg0) {
-    winData[arg0].unk20 = 1;
+    winData[arg0].stat = 1;
     HuPrcVSleep();
     func_800EE2C0_shared_board(arg0);
 }

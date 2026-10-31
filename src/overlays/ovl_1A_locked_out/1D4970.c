@@ -189,8 +189,8 @@ void func_80105B38_locked_out(omObjData *object) {
     omOutView(object);
 
     camera = gCameraList;
-    sinFov = sindf(camera->fov[0] / 2.0);
-    cosFov = cosdf(camera->fov[0] / 2.0);
+    sinFov = sindf(camera->fov / 2.0);
+    cosFov = cosdf(camera->fov / 2.0);
     D_8010A700_locked_out = sinFov / cosFov;
     guMtxL2F(D_8010A680_locked_out, &camera->mtxs[0].lookAtMtx);
     guMtxL2F(D_8010A6C0_locked_out, &camera->mtxs[0].lookAtMtx);
@@ -563,8 +563,8 @@ void func_80106FBC_locked_out(omObjData *object) {
         if (entry->unk0C == 0) {
             continue;
         }
-        frames = D_800CCF58_main[HmfModelData[entry->unk0E].unk02].unk02;
-        radius = HmfModelData[entry->unk0E].unk40 * 175.0 / frames + 50.0;
+        frames = D_800CCF58_main[HmfModelData[entry->unk0E].motId].unk02;
+        radius = HmfModelData[entry->unk0E].motTime * 175.0 / frames + 50.0;
         pos.x = entry->pos.x - 86.5;
         pos.y = entry->pos.y;
         pos.z = entry->pos.z;
@@ -896,7 +896,7 @@ void func_80107ABC_locked_out(omObjData *object) {
     if (work->unk25 != 0) {
         D_800D5558_main[pad] &= ~0x4000;
     } else {
-        HmfModelData[object->model[0]].unk06 = 0xFF;
+        HmfModelData[object->model[0]].motIdShape = 0xFF;
     }
     entry = &D_8010A638_locked_out[work->unk3E];
     switch (work->unk3C) {
@@ -907,8 +907,8 @@ void func_80107ABC_locked_out(omObjData *object) {
                 D_800D5558_main[pad] = 0;
                 D_800CDA7C_main[pad] = 0;
                 data->unk40 = 0.0f;
-                time = HmfModelData[object->model[0]].unk40;
-                if (time >= D_800CCF58_main[HmfModelData[object->model[0]].unk02].unk02) {
+                time = HmfModelData[object->model[0]].motTime;
+                if (time >= D_800CCF58_main[HmfModelData[object->model[0]].motId].unk02) {
                     work->unk26 = 0;
                     if (work->unk25 != 0) {
                         func_8001EED8_main(object->model[0], object->motion[0x26], 0);
@@ -1013,7 +1013,7 @@ void func_80107ABC_locked_out(omObjData *object) {
             } else {
                 func_800E5690_minigame(object, 0);
             }
-            if (HmfModelData[entry->unk0E].unk40 >= D_800CCF58_main[HmfModelData[entry->unk0E].unk02].unk02) {
+            if (HmfModelData[entry->unk0E].motTime >= D_800CCF58_main[HmfModelData[entry->unk0E].motId].unk02) {
                 work->unk3C++;
                 work->unk40 = 30;
             }
@@ -1038,8 +1038,8 @@ void func_80107ABC_locked_out(omObjData *object) {
             break;
         case 4:
             Hu3DMotionSpeedSet(entry->unk0E, 0.0f);
-            Hu3DMotionTimeSet(entry->unk0E, HmfModelData[entry->unk0E].unk40 - 1.5);
-            if (HmfModelData[entry->unk0E].unk40 < 0.0) {
+            Hu3DMotionTimeSet(entry->unk0E, HmfModelData[entry->unk0E].motTime - 1.5);
+            if (HmfModelData[entry->unk0E].motTime < 0.0) {
                 Hu3DMotionTimeSet(entry->unk0E, 0.0f);
                 omVibrate(data->unk59, 2, 3, 10);
                 entry->unk0C = 0;
@@ -1068,7 +1068,7 @@ void func_801089F8_locked_out(omObjData *object, f32 x, f32 y, f32 z) {
     s32 i;
 
     for (i = 9; i < 12; i++) {
-        if (HmfModelData[object->model[i]].unk18 & 4) {
+        if (HmfModelData[object->model[i]].attr & 4) {
             func_800E4C88_minigame(object, i, x, y, z, 0.0f, 0.0f);
             return;
         }
@@ -1343,7 +1343,7 @@ void func_80109858_locked_out(omObjData *object, u8 isPlayer, u8 canGrab) {
         work->unk08.x = sindf(data->unk3C) * 4.0;
         work->unk08.y = 15.0f;
         work->unk08.z = cosdf(data->unk3C) * 4.0;
-        func_80109E88_locked_out(object->model[0], "item_hook", HmfModelData[object->model[0]].unk40, &hookPos);
+        func_80109E88_locked_out(object->model[0], "item_hook", HmfModelData[object->model[0]].motTime, &hookPos);
         block->trans.x = work->unk08.x * 20.0f + hookPos.x;
         block->trans.y = hookPos.y + 50.0;
         block->trans.z = work->unk08.z * 20.0f + hookPos.z;

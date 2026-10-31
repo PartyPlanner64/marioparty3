@@ -41,7 +41,7 @@ void func_801059A0_sldebug(void) {
     D_80106C1C_sldebug = 400.0f;
     D_80106C2C_sldebug.x = D_80106C2C_sldebug.z = 0.0f;
     D_80106C2C_sldebug.y = 150.0f;
-    gCameraList->fov[0] = 45.0f;
+    gCameraList->fov = 45.0f;
     func_80106850_sldebug();
     omAddObj(0x7D0, 0xA, 0xA, -1, func_80105B64_sldebug);
     omAddObj(0x7D0, 0, 0, -1, func_80106254_sldebug);

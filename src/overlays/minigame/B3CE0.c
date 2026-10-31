@@ -421,7 +421,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E2DA4_minigame);
 void func_800E2E98_minigame(omObjData *arg0) {
     func_800E1BA8_minigame_ObjData *temp_v0 = arg0->data;
 
-    HmfModelData[arg0->model[0]].unk06 = 0xFF;
+    HmfModelData[arg0->model[0]].motIdShape = 0xFF;
     temp_v0->unk50 &= 0xFEFF;
 }
 

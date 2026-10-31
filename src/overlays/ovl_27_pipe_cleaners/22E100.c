@@ -163,7 +163,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_801071
 void func_8010731C_pipe_cleaners(omObjData *obj) {
     s16 modelId = obj->model[0];
 
-    if (HmfModelData[modelId].unk40 == D_800CCF58_main[HmfModelData[modelId].unk02].unk02 - 2) {
+    if (HmfModelData[modelId].motTime == D_800CCF58_main[HmfModelData[modelId].motId].unk02 - 2) {
         func_8001C814_main(modelId, 1, 1);
     }
 }
@@ -171,7 +171,7 @@ void func_8010731C_pipe_cleaners(omObjData *obj) {
 void func_801073A4_pipe_cleaners(omObjData *obj) {
     s16 modelId = obj->model[0];
 
-    if (HmfModelData[modelId].unk40 == D_800CCF58_main[HmfModelData[modelId].unk02].unk02 - 2) {
+    if (HmfModelData[modelId].motTime == D_800CCF58_main[HmfModelData[modelId].motId].unk02 - 2) {
         func_8001C814_main(modelId, 1, 1);
     }
 }

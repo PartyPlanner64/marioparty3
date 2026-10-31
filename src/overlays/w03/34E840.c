@@ -146,7 +146,7 @@ void func_8010622C_w03(void) {
     D_8011EB08_w03 = proc;
     proc->user_data = temp;
     HuPrcSleep(30);
-    winData[guide->amount].unk20 = 1;
+    winData[guide->amount].stat = 1;
     HuPrcVSleep();
     func_80060C14_main(guide->amount, 1);
     func_800EE2C0_shared_board(guide->amount);
@@ -169,7 +169,7 @@ void func_8010622C_w03(void) {
     D_8011EB08_w03 = proc;
     proc->user_data = temp;
     HuPrcSleep(30);
-    winData[guide->amount].unk20 = 1;
+    winData[guide->amount].stat = 1;
     HuPrcVSleep();
     func_80060C14_main(guide->amount, 1);
     func_800EE2C0_shared_board(guide->amount);

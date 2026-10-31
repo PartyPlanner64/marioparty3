@@ -138,8 +138,8 @@ void func_80105AF4_eatsa_pizza(omObjData *object) {
     omOutView(object);
 
     camera = gCameraList;
-    sinFov = sindf(camera->fov[0] / 2.0);
-    cosFov = cosdf(camera->fov[0] / 2.0);
+    sinFov = sindf(camera->fov / 2.0);
+    cosFov = cosdf(camera->fov / 2.0);
     D_801093D8_eatsa_pizza = sinFov / cosFov;
     guMtxL2F(D_80109358_eatsa_pizza, &camera->mtxs[0].lookAtMtx);
     guMtxL2F(D_80109398_eatsa_pizza, &camera->mtxs[0].lookAtMtx);
@@ -494,7 +494,7 @@ void func_8010679C_eatsa_pizza(omObjData *object) {
                 }
                 work->unk14 = currentAngle;
                 object->rot.z = currentAngle - 180.0;
-                if (HmfModelData[object->model[0]].unk40 == 0.0) {
+                if (HmfModelData[object->model[0]].motTime == 0.0) {
                     cutResult = 1;
                 }
                 work->unk36 = 4;

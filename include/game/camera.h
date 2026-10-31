@@ -25,7 +25,9 @@ typedef struct HuCamera {
     /* 0x034 */ Vec screenScale;
     /* 0x040 */ Vec screenPos;
     /* 0x04C */ s32 unk4C;
-    /* 0x050 */ f32 fov[3];
+    /* 0x050 */ f32 fov;
+    /* 0x054 */ f32 near;
+    /* 0x058 */ f32 far;
     /* 0x05C */ f32 unk5C;
     /* 0x060 */ Vp viewports[3];
     /* 0x090 */ f32 screenLeft;

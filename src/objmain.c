@@ -139,7 +139,7 @@ void omInitObjMan(s16 numOfObjs, s32 numOfPrcs) {
         obj->next = -1;
         obj->prev = -1;
         obj->prio = -1;
-        obj->unk10 = 0;
+        obj->mode = 0;
         obj->rot.x =
             obj->rot.y =
                 obj->rot.z = 0.0f;
@@ -291,7 +291,7 @@ omObjData *omAddObj(s16 prio, u16 mdlcnt, u16 mtncnt, s16 group, omObjFunc func)
     }
 
     object->stat = 4;
-    object->unk10 = 0;
+    object->mode = 0;
     object->func = func;
     object->work[0] = object->work[1] = object->work[2] = object->work[3] = 0;
     omnextidx = object->next_idx;
@@ -512,17 +512,17 @@ void func_80047DFC_main(s16 group, u32 stat) {
 
     for (i = 0; i < grp->max_objs; i++) {
         if (grp->objs[i] != NULL) {
-            grp->objs[i]->unk10 |= stat;
+            grp->objs[i]->mode |= stat;
         }
     }
 }
 
 void func_80047E5C_main(s16 group, u16 idx, s32 flags) {
-    omgroup[group].objs[idx]->unk10 |= flags;
+    omgroup[group].objs[idx]->mode |= flags;
 }
 
 void func_80047E90_main(omObjData *obj, s32 arg1) {
-    obj->unk10 |= arg1;
+    obj->mode |= arg1;
 }
 
 Process *omAddPrcObj(process_func func, u16 priority, s32 stackSize, s32 extDataSize) {

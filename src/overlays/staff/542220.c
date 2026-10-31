@@ -216,9 +216,9 @@ void func_8010B430_staff(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     HuSprite *sprite = grp->members[arg1];
 
     if ((u32)arg2 || (u32)arg3) {
-        grp->unk_0C = 1;
-        sprite->unk_48 += arg2;
-        sprite->unk_4C += arg3;
+        grp->dirty = 1;
+        sprite->pos.x += arg2;
+        sprite->pos.y += arg3;
     }
 }
 
@@ -227,11 +227,11 @@ void func_8010B4B4_staff(s16 arg0, s16 arg1, s16 arg2) {
     HuSprGrp *grp = HuSprGrpData[arg0];
     HuSprite *sprite = grp->members[arg1];
 
-    if (sprite->unk_4C == value) {
+    if (sprite->pos.y == value) {
         return;
     }
-    grp->unk_0C = 1;
-    sprite->unk_4C = value;
+    grp->dirty = 1;
+    sprite->pos.y = value;
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010B514_staff);

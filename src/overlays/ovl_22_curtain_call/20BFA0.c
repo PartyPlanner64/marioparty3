@@ -49,7 +49,7 @@ void func_80105BD0_curtain_call(omObjData *arg0, u16 arg1, s16 arg2) {
 
 void func_80105C3C_curtain_call(omObjData *arg0, u16 arg1, s16 arg2, s16 arg3, s32 arg4) {
     if (arg1 < 0xA) {
-        Hu3DMotionShiftSet(arg0->model[0], HmfModelData[arg0->motion[arg1]].unk02, arg2, arg3, arg4);
+        Hu3DMotionShiftSet(arg0->model[0], HmfModelData[arg0->motion[arg1]].motId, arg2, arg3, arg4);
     }
 }
 

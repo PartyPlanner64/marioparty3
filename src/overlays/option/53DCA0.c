@@ -332,7 +332,7 @@ void func_80110DCC_option(s32 arg0, u32 arg1) {
 }
 
 void func_80110E30_option(s32 arg0) {
-    while (HmfModelData[D_80114F70_option[arg0].unk_00].unk40 != D_800CCF58_main[HmfModelData[D_80114F70_option[arg0].unk_00].unk02].unk02) {
+    while (HmfModelData[D_80114F70_option[arg0].unk_00].motTime != D_800CCF58_main[HmfModelData[D_80114F70_option[arg0].unk_00].motId].unk02) {
         HuPrcVSleep();
     }
 }
@@ -340,7 +340,7 @@ void func_80110E30_option(s32 arg0) {
 s32 func_80110ED0_option(s32 arg0) {
     s16 modelId = D_80114F70_option[arg0].unk_00;
 
-    return HmfModelData[modelId].unk40 == D_800CCF58_main[HmfModelData[modelId].unk02].unk02;
+    return HmfModelData[modelId].motTime == D_800CCF58_main[HmfModelData[modelId].motId].unk02;
 }
 
 void func_80110F58_option(s32 arg0, s32 arg1, s32 arg2) {

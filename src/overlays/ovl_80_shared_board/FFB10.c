@@ -272,14 +272,14 @@ void func_800EC980_shared_board(s16 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4
 }
 
 void func_800EC9DC_shared_board(void) {
-    winData[mbDlgWinId].unk20 = 1;
+    winData[mbDlgWinId].stat = 1;
     HuPrcVSleep();
     func_800EBF48_shared_board(mbDlgWinId, GwSystem.current_player_index);
 }
 
 void func_800ECA38_shared_board(void) {
     D_80101482_shared_board = 1;
-    winData[mbDlgWinId].unk20 = 1;
+    winData[mbDlgWinId].stat = 1;
     HuPrcVSleep();
     func_800EBF48_shared_board(mbDlgWinId, GwSystem.current_player_index);
     D_80101482_shared_board = 0;

@@ -150,7 +150,7 @@ static void func_800EDC90_shared_board(s32 arg0, s32 arg1, s32 arg2) {
         while ((HuWinStatGet(arg0) != 0) && !(func_8005B68C_main(arg0) & 0x200)) {
             HuPrcVSleep();
         }
-        winData[arg0].unk20 = 7;
+        winData[arg0].stat = 7;
     }
     HuWinComKeyReset();
 }
@@ -206,7 +206,7 @@ static void func_800EDFC8_shared_board(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
         while ((HuWinStatGet(arg0) != 0) && !(func_8005B68C_main(arg0) & 0x200)) {
             HuPrcVSleep();
         }
-        winData[arg0].unk20 = 7;
+        winData[arg0].stat = 7;
     }
     HuWinComKeyReset();
 }
@@ -250,7 +250,7 @@ static void func_800EE2DC_shared_board(s32 arg0, s32 arg1) {
             while ((HuWinStatGet(arg0) != 0) && !(func_8005B68C_main(arg0) & 0x200)) {
                 HuPrcVSleep();
             }
-            winData[arg0].unk20 = 7;
+            winData[arg0].stat = 7;
         }
     } else {
         for (i = 0; i < MB_MAX_PLAYERS; i++) {
@@ -271,7 +271,7 @@ static void func_800EE2DC_shared_board(s32 arg0, s32 arg1) {
             while ((HuWinStatGet(arg0) != 0) && !(func_8005B68C_main(arg0) & 0x200)) {
                 HuPrcVSleep();
             }
-            winData[arg0].unk20 = 7;
+            winData[arg0].stat = 7;
         }
     }
     HuWinComKeyReset();
@@ -333,8 +333,8 @@ static void func_800EE7AC_shared_board(omObjData *func) {
     UnkBoard *temp_s0;
 
     temp_s0 = &D_80105718_shared_board[func->work[0]];
-    if (HmfModelData[temp_s0->unk_04->omObj1->model[0]].unk40 ==
-        D_800CCF58_main[HmfModelData[temp_s0->unk_04->omObj1->model[0]].unk02].unk02) {
+    if (HmfModelData[temp_s0->unk_04->omObj1->model[0]].motTime ==
+        D_800CCF58_main[HmfModelData[temp_s0->unk_04->omObj1->model[0]].motId].unk02) {
         MBMotionShiftSet(temp_s0->unk_04, temp_s0->unk_00, 0, 0xA, temp_s0->unk_02);
         temp_s0->unk_04 = NULL;
         temp_s0->unk_08 = NULL;
@@ -940,8 +940,8 @@ static s16 func_800EFEF4_shared_board(void) {
     var_t0 = 0;
     var_a1 = winData->unk64;
     while (winData[var_a1].unk64 != -1) {
-        if (winData[var_a1].unk_38 & 0x40) {
-            var_t0 |= (u8)winData[var_a1].unk20; //TODO: why required cast?
+        if (winData[var_a1].attr & 0x40) {
+            var_t0 |= (u8)winData[var_a1].stat; //TODO: why required cast?
         }
         var_a1 = winData[var_a1].unk64;
     }

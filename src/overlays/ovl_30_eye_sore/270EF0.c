@@ -43,7 +43,7 @@ s32 func_80105CE4_eye_sore(s32 arg0) {
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_30_eye_sore/270EF0", func_80105D38_eye_sore);
 
 void func_80105DA0_eye_sore(omObjData *arg0, u16 arg1, s16 arg2, s16 arg3, s16 arg4) {
-    Hu3DMotionShiftSet(arg0->model[0], HmfModelData[arg0->motion[arg1]].unk02, arg2, arg3, arg4);
+    Hu3DMotionShiftSet(arg0->model[0], HmfModelData[arg0->motion[arg1]].motId, arg2, arg3, arg4);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_30_eye_sore/270EF0", func_80105E0C_eye_sore);

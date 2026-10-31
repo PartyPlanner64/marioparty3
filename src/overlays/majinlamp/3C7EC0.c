@@ -67,7 +67,7 @@ void func_801059A0_majinlamp(void) {
     omInitObjMan(0x50, 0x50);
     func_80107F54_majinlamp();
     func_80107E40_majinlamp();
-    func_8005A6B0_main();
+    HuWinInit();
     omAddPrcObj(func_80107D98_majinlamp, 0x300, 0x4000, 0);
     omAddObj(0x1000, 0, 0, -1, func_80107E1C_majinlamp);
 }
@@ -609,7 +609,7 @@ void func_80107DD8_majinlamp(omObjData *arg0) {
     if (WipeStatGet() == 0) {
         func_801080C4_majinlamp();
         func_80107E64_majinlamp();
-        func_8005F524_main();
+        HuWinAllKill();
         omOvlReturnEx(1);
     }
 }

@@ -50,7 +50,7 @@ void func_801059A0_last5(void) {
     func_801073B0_last5();
     func_80107358_last5();
     func_800D95C4_shared_board(1000.0f);
-    func_8005A6B0_main();
+    HuWinInit();
     func_800F453C_shared_board();
     func_800F7108_shared_board();
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
@@ -61,11 +61,11 @@ void func_801059A0_last5(void) {
 }
 
 s16 func_80105A68_last5(s16 *arg0, s16 arg1, s16 arg2) {
-    return func_80061188_main(-1, arg1, arg2, arg0[0], arg0[1], 0);
+    return HuWinExCreate(-1, arg1, arg2, arg0[0], arg0[1], 0);
 }
 
 void func_80105AAC_last5(s16 arg0) {
-    D_800CC69C_main[arg0].unk20 = 1;
+    winData[arg0].unk20 = 1;
     HuPrcVSleep();
     func_800EE2C0_shared_board(arg0);
 }
@@ -75,49 +75,49 @@ s16 func_80105B04_last5(s32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4, u32 ar
     s16 window;
 
     if (arg1 != 0) {
-        func_8006022C_main(arg1, 0);
+        HuWinInsertMesSizeGet(arg1, 0);
     }
     if (arg2 != 0) {
-        func_8006022C_main(arg2, 1);
+        HuWinInsertMesSizeGet(arg2, 1);
     }
     if (arg3 != 0) {
-        func_8006022C_main(arg3, 2);
+        HuWinInsertMesSizeGet(arg3, 2);
     }
     if (arg4 != 0) {
-        func_8006022C_main(arg4, 3);
+        HuWinInsertMesSizeGet(arg4, 3);
     }
     if (arg5 != 0) {
-        func_8006022C_main(arg5, 4);
+        HuWinInsertMesSizeGet(arg5, 4);
     }
 
-    func_80060394_main(1, sp10, arg0);
+    HuWinMesMaxSizeGet(1, sp10, arg0);
     window = func_80105A68_last5(sp10, arg6, arg7);
 
     if (arg1 != 0) {
-        func_8005B6BC_main(window, arg1, 0);
+        HuWinInsertMesSet(window, arg1, 0);
     }
     if (arg2 != 0) {
-        func_8005B6BC_main(window, arg2, 1);
+        HuWinInsertMesSet(window, arg2, 1);
     }
     if (arg3 != 0) {
-        func_8005B6BC_main(window, arg3, 2);
+        HuWinInsertMesSet(window, arg3, 2);
     }
     if (arg4 != 0) {
-        func_8005B6BC_main(window, arg4, 3);
+        HuWinInsertMesSet(window, arg4, 3);
     }
     if (arg5 != 0) {
-        func_8005B6BC_main(window, arg5, 4);
+        HuWinInsertMesSet(window, arg5, 4);
     }
 
-    func_8005B43C_main(window, arg0, -1, -1);
-    func_80061388_main(window);
+    HuWinMesSet(window, arg0, -1, -1);
+    HuWinExAnimIn(window);
     func_800EE2C0_shared_board(window);
     return window;
 }
 
 void func_80105C9C_last5(s16 arg0) {
-    func_80061A5C_main(arg0, 0);
-    func_8005F364_main(arg0);
+    HuWinExAnimOut(arg0, 0);
+    HuWinKill(arg0);
 }
 
 void func_80105CD4_last5(omObjData *arg0) {
@@ -507,7 +507,7 @@ void func_801072B0_last5(omObjData *arg0) {
         func_80107450_last5();
         func_80107384_last5();
         func_800F4730_shared_board();
-        func_8005F524_main();
+        HuWinAllKill();
         omOvlReturnEx(1);
     }
 }

@@ -27,7 +27,7 @@ void opObjectInit(void) {
     func_80030030_main(1.0f);
     func_8004A950_main();
     pfInit();
-    func_8005A6B0_main();
+    HuWinInit();
     HmfLightMaxSet(2);
     HmfLightColorSet(0, 128, 128, 128);
     HmfLightColorSet(1, 255, 255, 255);

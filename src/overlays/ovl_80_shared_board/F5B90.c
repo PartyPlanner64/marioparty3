@@ -38,11 +38,11 @@ static void func_800E1F70_shared_board(Unk3 *arg0) {
     s16 sp18[2];
 
     if (arg0->unk_0C != NULL) {
-        func_8006022C_main((u32)arg0->unk_0C, 0);
+        HuWinInsertMesSizeGet((u32)arg0->unk_0C, 0);
     }
 
-    func_80060394_main(1, sp18, D_80100F20_shared_board[arg0->unk_00]);
-    arg0->winID = func_8005A968_main(
+    HuWinMesMaxSizeGet(1, sp18, D_80100F20_shared_board[arg0->unk_00]);
+    arg0->winID = HuWinCreate(
         0xA0 - sp18[0] / 2,
         arg0->unk_02,
         sp18[0],
@@ -51,17 +51,17 @@ static void func_800E1F70_shared_board(Unk3 *arg0) {
         0);
 
     if (arg0->unk_0C != NULL) {
-        func_8005B6BC_main(arg0->winID, (u32)arg0->unk_0C, 0);
+        HuWinInsertMesSet(arg0->winID, (u32)arg0->unk_0C, 0);
     }
-    func_8005BE30_main(arg0->winID, 5);
-    func_8005BEE0_main(arg0->winID, 0);
-    func_8005BDFC_main(arg0->winID, 0);
+    HuWinPriSet(arg0->winID, 5);
+    HuWinBGTPLvlSet(arg0->winID, 0);
+    HuWinMesSpeedSet(arg0->winID, 0);
     func_8005B63C_main(arg0->winID, 0, 0x20000);
-    func_8005B43C_main(arg0->winID, D_80100F20_shared_board[arg0->unk_00], -1, -1);
+    HuWinMesSet(arg0->winID, D_80100F20_shared_board[arg0->unk_00], -1, -1);
 }
 
 static void func_800E2074_shared_board(Unk3 *arg0) {
-    func_8005F364_main(arg0->winID);
+    HuWinKill(arg0->winID);
     arg0->winID = -1;
 }
 
@@ -110,7 +110,7 @@ void MBHelpWinKill(Unk3 *arg0) {
         arg0->unk_04->data = NULL;
         omDelObj(arg0->unk_04);
         if (arg0->winID >= 0) {
-            func_8005F364_main(arg0->winID);
+            HuWinKill(arg0->winID);
             if (arg0->unk_0C != NULL) {
                 HuMemMemoryFreeTemp(arg0->unk_0C);
             }

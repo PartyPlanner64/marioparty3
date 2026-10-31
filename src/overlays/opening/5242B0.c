@@ -64,7 +64,7 @@ void opDemoMain(void) {
         omDelPrcObj(eventPrc);
     }
     opDemoEventKill();
-    func_8005F524_main();
+    HuWinAllKill();
     omOvlKill();
     if (omovlevtno == 0) {
         omOvlGotoEx(122, 0, 0x82);
@@ -117,7 +117,7 @@ void opTitleMain(void) {
                 omDelPrcObj(sprPrc);
             }
             opTitleKill();
-            func_8005F524_main();
+            HuWinAllKill();
             omOvlKill();
             omOvlGotoEx(121, 0, 0x91);
             omDelPrcObj(NULL);
@@ -137,7 +137,7 @@ void opTitleMain(void) {
                 omDelPrcObj(sprPrc);
             }
             opTitleKill();
-            func_8005F524_main();
+            HuWinAllKill();
             omOvlKill();
             omOvlGotoEx(88, 1, 0x90);
             omDelPrcObj(NULL);

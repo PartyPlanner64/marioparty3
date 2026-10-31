@@ -71,7 +71,7 @@ void func_801059A0_opboard(void) {
     func_80108CC0_opboard();
     func_80108C58_opboard();
     func_800D95C4_shared_board(1000.0f);
-    func_8005A6B0_main();
+    HuWinInit();
     omAddPrcObj(func_80108B3C_opboard, 0x300, 0x2000, 0);
     omAddObj(0x1000, 0, 0, -1, func_80108C0C_opboard);
     for (i = 1; i < 8; i++) {
@@ -959,7 +959,7 @@ void func_80108BB0_opboard(omObjData *obj) {
     if (WipeStatGet() == 0) {
         func_80108D44_opboard();
         func_80108C8C_opboard();
-        func_8005F524_main();
+        HuWinAllKill();
         if (D_80108D70_opboard != 0) {
             func_800F4730_shared_board();
         }

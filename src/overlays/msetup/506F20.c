@@ -212,16 +212,16 @@ void func_8010B5D0_msetup(void) {
     window = func_80060880_main(250, 204, 8);
     func_8005FE54_main(window, 1 << D_8011A948_msetup);
     func_8006105C_main(window, 224);
-    func_8005C060_main(window, 2, 255, 64, 64);
-    func_8005C060_main(window, 4, 96, 255, 64);
-    func_8005C060_main(window, 6, 255, 255, 64);
+    HuWinMesPalSet(window, 2, 255, 64, 64);
+    HuWinMesPalSet(window, 4, 96, 255, 64);
+    HuWinMesPalSet(window, 6, 255, 255, 64);
     D_8011A890_msetup = D_8011A892_msetup[0] = window;
     window = func_80060880_main(250, 204, 18);
     func_8005FE54_main(window, 1 << D_8011A948_msetup);
     func_8006105C_main(window, 224);
-    func_8005C060_main(window, 2, 255, 64, 64);
-    func_8005C060_main(window, 4, 96, 255, 64);
-    func_8005C060_main(window, 6, 255, 255, 64);
+    HuWinMesPalSet(window, 2, 255, 64, 64);
+    HuWinMesPalSet(window, 4, 96, 255, 64);
+    HuWinMesPalSet(window, 6, 255, 255, 64);
     D_8011A892_msetup[1] = window;
     D_8011A990_msetup = 0;
     state = 0;
@@ -237,7 +237,7 @@ void func_8010B5D0_msetup(void) {
                     if (state != 0) {
                         func_80060EA8_main(window, 1);
                     }
-                    func_8005D294_main(D_8011A890_msetup);
+                    HuWinHomeClear(D_8011A890_msetup);
                     func_80060C14_main(D_8011A890_msetup, 1);
                     break;
                 case 2:
@@ -246,7 +246,7 @@ void func_8010B5D0_msetup(void) {
                     if (state != 0) {
                         func_80060EA8_main(window, 1);
                     }
-                    func_8005D294_main(D_8011A890_msetup);
+                    HuWinHomeClear(D_8011A890_msetup);
                     func_80060C14_main(D_8011A890_msetup, 1);
                     break;
             }
@@ -257,29 +257,29 @@ void func_8010B5D0_msetup(void) {
 }
 
 void func_8010B82C_msetup(s32 message) {
-    func_8005B43C_main(D_8011A890_msetup, message, -1, -1);
+    HuWinMesSet(D_8011A890_msetup, message, -1, -1);
 }
 
 s32 func_8010B858_msetup(void) {
-    while (func_8005E0C0_main(D_8011A890_msetup) != 0) {
+    while (HuWinStatGet(D_8011A890_msetup) != 0) {
         HuPrcVSleep();
     }
-    return D_800CC69C_main[D_8011A890_msetup].unk_30 == 0 ? 0 : func_8005E1D8_main(D_8011A890_msetup, 0, 0);
+    return winData[D_8011A890_msetup].unk_30 == 0 ? 0 : HuWinChoiceGet(D_8011A890_msetup, 0, 0);
 }
 
 s32 func_8010B8E0_msetup(void) {
-    while (func_8005E0C0_main(D_8011A890_msetup) != 0) {
+    while (HuWinStatGet(D_8011A890_msetup) != 0) {
         HuPrcVSleep();
     }
-    return D_800CC69C_main[D_8011A890_msetup].unk_30 == 0 ? 0 : func_8005E1D8_main(D_8011A890_msetup, 1, 0);
+    return winData[D_8011A890_msetup].unk_30 == 0 ? 0 : HuWinChoiceGet(D_8011A890_msetup, 1, 0);
 }
 
 void func_8010B968_msetup(u32 arg0, s8 arg1) {
-    func_8005B6BC_main(D_8011A890_msetup, arg0, arg1);
+    HuWinInsertMesSet(D_8011A890_msetup, arg0, arg1);
 }
 
 void func_8010B998_msetup(void) {
-    func_8005D294_main(D_8011A890_msetup);
+    HuWinHomeClear(D_8011A890_msetup);
 }
 
 void func_8010B9B8_msetup(s32 arg0, s32 arg1) {
@@ -294,7 +294,7 @@ void func_8010BA10_msetup(s32 arg0, s32 arg1) {
 }
 
 s16 func_8010BA3C_msetup(void) {
-    return (s16)D_800CC69C_main[D_8011A890_msetup].input;
+    return (s16)winData[D_8011A890_msetup].input;
 }
 
 void func_8010BA6C_msetup(s16 start, s16 end) {

@@ -1131,7 +1131,7 @@ void func_80048EE8_main(omObjData *object) {
                         if (D_800D2118_main->work[0] & 1) {
                             D_800D2118_main->work[0] &= ~1;
                             if (D_800CE214_main == 1) {
-                                func_8005F524_main();
+                                HuWinAllKill();
                             }
                         }
                         break;
@@ -1299,7 +1299,7 @@ void func_800499B0_main(omObjData *object) {
                 }
             }
             if (D_800CE214_main == 1) {
-                func_8005F524_main();
+                HuWinAllKill();
             }
             func_80045A90_main();
             func_80003B70_main(D_800CDBC8_main, 0);
@@ -1359,7 +1359,7 @@ void func_800499B0_main(omObjData *object) {
             }
         }
         if (D_800A2150_main != 1) {
-            func_8005A6B0_main();
+            HuWinInit();
             D_800CE214_main = 1;
         } else {
             D_800CE214_main = 0;

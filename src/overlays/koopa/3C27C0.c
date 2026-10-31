@@ -32,7 +32,7 @@ typedef struct UnkBowser2 {
     s32 unk_20;
 } UnkBowser2; // sizeof 0x24
 
-void func_8005A6B0_main(void);
+void HuWinInit(void);
 void func_800E4A94_shared_board(void);
 void func_800E4B18_shared_board(void);
 void func_80108360_koopa(s32);
@@ -166,7 +166,7 @@ void func_801059A0_koopa(void) {
     func_801092D4_koopa();
     func_8010926C_koopa();
     func_800D95C4_shared_board(1000.0f);
-    func_8005A6B0_main();
+    HuWinInit();
     func_800F453C_shared_board();
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         MBStatusPosSet(i, 0x1E, -0x32);
@@ -196,7 +196,7 @@ void func_80105AD8_koopa(omObjData *obj) {
             obj->trans.y += 16.0f;
             for (i = 0; i < 5; i++) {
                 window = D_80109518_koopa[i];
-                func_8005BA90_main(window[0], window[1] + window[3] / 2, (window[2] + window[4] / 2) + (s16)obj->trans.y);
+                HuWinPosSet(window[0], window[1] + window[3] / 2, (window[2] + window[4] / 2) + (s16)obj->trans.y);
             }
             if (D_8010955E_koopa != -1) {
                 HuSprPosSet(D_8010955E_koopa, 0, D_8010951A_koopa[0] + 100, (s32)obj->trans.y + D_8010951A_koopa[1] + 50);
@@ -306,12 +306,12 @@ void func_80105AD8_koopa(omObjData *obj) {
                 window = D_80109518_koopa[i];
                 if (i == obj->work[1]) {
                     func_8005FBF8_main(window[0], 0, 200, 0);
-                    func_8005BEE0_main(window[0], 256);
-                    func_8005BE30_main(window[0], 9000);
+                    HuWinBGTPLvlSet(window[0], 256);
+                    HuWinPriSet(window[0], 9000);
                 } else {
                     func_8005FBF8_main(window[0], 64, 64, 128);
-                    func_8005BEE0_main(window[0], 0);
-                    func_8005BE30_main(window[0], 10000);
+                    HuWinBGTPLvlSet(window[0], 0);
+                    HuWinPriSet(window[0], 10000);
                 }
             }
             if (obj->trans.z != 0 && (obj->work[1] == obj->work[2] || obj->scale.x < 1.0f)) {
@@ -362,16 +362,16 @@ void func_80105AD8_koopa(omObjData *obj) {
                         }
                         obj->work[0] = 2;
                         obj->work[3] = 60;
-                        func_8005D294_main(D_80109518_koopa[obj->work[1]][0]);
+                        HuWinHomeClear(D_80109518_koopa[obj->work[1]][0]);
                         if (D_8010954A_koopa[obj->work[1]] == 0) {
-                            func_8005B6BC_main(D_80109518_koopa[obj->work[1]][0], (u32)D_80109508_koopa, 0);
-                            func_8006022C_main((u32)D_80109508_koopa, 0);
+                            HuWinInsertMesSet(D_80109518_koopa[obj->work[1]][0], (u32)D_80109508_koopa, 0);
+                            HuWinInsertMesSizeGet((u32)D_80109508_koopa, 0);
                         }
-                        func_8005B43C_main(D_80109518_koopa[obj->work[1]][0], D_80109354_koopa[D_8010954A_koopa[obj->work[1]]], -2, 4);
-                        func_8005C02C_main(D_80109518_koopa[obj->work[1]][0], 1);
+                        HuWinMesSet(D_80109518_koopa[obj->work[1]][0], D_80109354_koopa[D_8010954A_koopa[obj->work[1]]], -2, 4);
+                        HuWinMesColSet(D_80109518_koopa[obj->work[1]][0], 1);
                         func_8005C154_main(D_80109518_koopa[obj->work[1]][0], 160, 160, 160);
                         func_8005FBF8_main(D_80109518_koopa[obj->work[1]][0], 254, 255, 208);
-                        func_8005BDFC_main(D_80109518_koopa[obj->work[1]][0], 0);
+                        HuWinMesSpeedSet(D_80109518_koopa[obj->work[1]][0], 0);
                     } else {
                         obj->mtncnt = 1;
                         if (obj->rot.y >= 0.5f) {
@@ -407,7 +407,7 @@ void func_80105AD8_koopa(omObjData *obj) {
             obj->trans.y -= 32.0f;
             for (i = 0; i < 5; i++) {
                 window = D_80109518_koopa[i];
-                func_8005BA90_main(window[0], window[1] + window[3] / 2, (window[2] + window[4] / 2) + (s16)obj->trans.y);
+                HuWinPosSet(window[0], window[1] + window[3] / 2, (window[2] + window[4] / 2) + (s16)obj->trans.y);
             }
             if (D_8010955E_koopa != -1) {
                 HuSprPosSet(D_8010955E_koopa, 0, D_8010951A_koopa[0] + 100, (s32)obj->trans.y + D_8010951A_koopa[1] + 50);
@@ -492,7 +492,7 @@ void func_80106AB8_koopa(void) {
     for (i = 0; i < ARRAY_COUNT(D_80109518_koopa); i++) {
         s16 *temp = D_80109518_koopa[i];
         if (temp[0] != -1) {
-            func_8005F364_main(temp[0]);
+            HuWinKill(temp[0]);
             temp[0] = -1;
         }
     }
@@ -676,10 +676,10 @@ void func_80107190_koopa(void) {
         window[2] = positions[i].unk_02;
         window[3] = positions[i].unk_04;
         window[4] = positions[i].unk_06;
-        window[0] = func_8005A968_main(window[1] + window[3] / 2, window[2] + window[4] / 2, window[3], window[4], 0, 4);
+        window[0] = HuWinCreate(window[1] + window[3] / 2, window[2] + window[4] / 2, window[3], window[4], 0, 4);
         func_80060144_main(window[0]);
         func_8005BCA4_main(window[0], window[3] / 2, window[4] / 2);
-        func_8005BEE0_main(window[0], 0);
+        HuWinBGTPLvlSet(window[0], 0);
         switch (i) {
             case 0:
             case 1:
@@ -727,11 +727,11 @@ void func_80107190_koopa(void) {
         window = D_80109518_koopa[i];
         if (D_8010954A_koopa[i] == 0) {
             sprintf(D_80109508_koopa, D_801094C0_koopa, func_80107658_koopa(0, D_801094F4_koopa));
-            func_8005B6BC_main(window[0], (u32)D_80109508_koopa, 0);
-            func_8006022C_main((u32)D_80109508_koopa, 0);
+            HuWinInsertMesSet(window[0], (u32)D_80109508_koopa, 0);
+            HuWinInsertMesSizeGet((u32)D_80109508_koopa, 0);
         }
-        func_8005B43C_main(window[0], D_80109354_koopa[D_8010954A_koopa[i]], -2, 4);
-        func_8005BDFC_main(window[0], 0);
+        HuWinMesSet(window[0], D_80109354_koopa[D_8010954A_koopa[i]], -2, 4);
+        HuWinMesSpeedSet(window[0], 0);
     }
     D_80109550_koopa = omAddObj(0x8000, 0, 0, -1, func_80105AD8_koopa);
     D_80109550_koopa->work[0] = 3;
@@ -1278,7 +1278,7 @@ void func_801091C4_koopa(omObjData *obj) {
         func_80109320_koopa();
         func_801092A0_koopa();
         func_800F4730_shared_board();
-        func_8005F524_main();
+        HuWinAllKill();
         func_800EB09C_shared_board();
         func_800EA694_shared_board();
         omOvlReturnEx(1);

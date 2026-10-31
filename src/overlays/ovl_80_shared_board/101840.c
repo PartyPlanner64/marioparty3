@@ -130,29 +130,29 @@ static void func_800EDC90_shared_board(s32 arg0, s32 arg1, s32 arg2) {
 
     if (hasCom != 0) {
         func_8005B63C_main(arg0, 2, 2);
-        func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
-        func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
-        func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
-        func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
-        func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
-        func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
-        func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
         D_800A12C0_main = D_800A12C4_main;
     } else {
-        func_8005F744_main(sp18[0], sp18[1], sp18[2], sp18[3]);
+        HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
     }
 
     if (arg2 == 0) {
-        while (func_8005E0C0_main(arg0) != 0) {
+        while (HuWinStatGet(arg0) != 0) {
             HuPrcVSleep();
         }
     } else {
-        while ((func_8005E0C0_main(arg0) != 0) && !(func_8005B68C_main(arg0) & 0x200)) {
+        while ((HuWinStatGet(arg0) != 0) && !(func_8005B68C_main(arg0) & 0x200)) {
             HuPrcVSleep();
         }
-        D_800CC69C_main[arg0].unk20 = 7;
+        winData[arg0].unk20 = 7;
     }
-    func_8005F904_main();
+    HuWinComKeyReset();
 }
 
 void func_800EDF90_shared_board(s32 arg0, s32 arg1, s32 arg2) {
@@ -185,30 +185,30 @@ static void func_800EDFC8_shared_board(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 
     if (mask) {
         func_8005FE54_main(arg0, mask);
-        func_8005F744_main(sp18[0], sp18[1], sp18[2], sp18[3]);
+        HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
     } else {
         func_8005B63C_main(arg0, 2, 2);
-        func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
-        func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
-        func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
-        func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
-        func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
-        func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
-        func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
+        HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], D_800A12C0_main);
         D_800A12C0_main = D_800A12C4_main;
     }
 
     if (arg3 == 0) {
-        while (func_8005E0C0_main(arg0) != 0) {
+        while (HuWinStatGet(arg0) != 0) {
             HuPrcVSleep();
         }
     } else {
-        while ((func_8005E0C0_main(arg0) != 0) && !(func_8005B68C_main(arg0) & 0x200)) {
+        while ((HuWinStatGet(arg0) != 0) && !(func_8005B68C_main(arg0) & 0x200)) {
             HuPrcVSleep();
         }
-        D_800CC69C_main[arg0].unk20 = 7;
+        winData[arg0].unk20 = 7;
     }
-    func_8005F904_main();
+    HuWinComKeyReset();
 }
 
 void func_800EE2A4_shared_board(s32 arg0) {
@@ -234,23 +234,23 @@ static void func_800EE2DC_shared_board(s32 arg0, s32 arg1) {
 
     if (i == 4) {
         func_8005B63C_main(arg0, 2, 2);
-        func_8005F698_main(-0x8000, -0x8000, -0x8000, -0x8000, D_800A12C0_main);
-        func_8005F698_main(-0x8000, -0x8000, -0x8000, -0x8000, D_800A12C0_main);
-        func_8005F698_main(-0x8000, -0x8000, -0x8000, -0x8000, D_800A12C0_main);
-        func_8005F698_main(-0x8000, -0x8000, -0x8000, -0x8000, D_800A12C0_main);
-        func_8005F698_main(-0x8000, -0x8000, -0x8000, -0x8000, D_800A12C0_main);
-        func_8005F698_main(-0x8000, -0x8000, -0x8000, -0x8000, D_800A12C0_main);
-        func_8005F698_main(-0x8000, -0x8000, -0x8000, -0x8000, D_800A12C0_main);
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, D_800A12C0_main);
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, D_800A12C0_main);
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, D_800A12C0_main);
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, D_800A12C0_main);
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, D_800A12C0_main);
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, D_800A12C0_main);
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, D_800A12C0_main);
         D_800A12C0_main = D_800A12C4_main;
         if (arg1 == 0) {
-            while (func_8005E0C0_main(arg0) != 0) {
+            while (HuWinStatGet(arg0) != 0) {
                 HuPrcVSleep();
             }
         } else {
-            while ((func_8005E0C0_main(arg0) != 0) && !(func_8005B68C_main(arg0) & 0x200)) {
+            while ((HuWinStatGet(arg0) != 0) && !(func_8005B68C_main(arg0) & 0x200)) {
                 HuPrcVSleep();
             }
-            D_800CC69C_main[arg0].unk20 = 7;
+            winData[arg0].unk20 = 7;
         }
     } else {
         for (i = 0; i < MB_MAX_PLAYERS; i++) {
@@ -262,30 +262,30 @@ static void func_800EE2DC_shared_board(s32 arg0, s32 arg1) {
             }
         }
         func_8005FE54_main(arg0, mask);
-        func_8005F744_main(sp18[0], sp18[1], sp18[2], sp18[3]);
+        HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
         if (arg1 == 0) {
-            while (func_8005E0C0_main(arg0) != 0) {
+            while (HuWinStatGet(arg0) != 0) {
                 HuPrcVSleep();
             }
         } else {
-            while ((func_8005E0C0_main(arg0) != 0) && !(func_8005B68C_main(arg0) & 0x200)) {
+            while ((HuWinStatGet(arg0) != 0) && !(func_8005B68C_main(arg0) & 0x200)) {
                 HuPrcVSleep();
             }
-            D_800CC69C_main[arg0].unk20 = 7;
+            winData[arg0].unk20 = 7;
         }
     }
-    func_8005F904_main();
+    HuWinComKeyReset();
 }
 
 const u8 pad[4] = {0, 0, 0, 0};
 
 void func_800EE614_shared_board(s32 arg0) {
     func_8005FE54_main(arg0, 0xF);
-    func_8005F744_main(-1, -1, -1, -1);
-    while ((func_8005E0C0_main(arg0)) != 0) {
+    HuWinComKeySet(-1, -1, -1, -1);
+    while ((HuWinStatGet(arg0)) != 0) {
         HuPrcVSleep();
     }
-    func_8005F904_main();
+    HuWinComKeyReset();
 }
 
 void func_800EE688_shared_board(Object* arg0, f32 arg1, f32 arg2) {
@@ -736,13 +736,13 @@ static void func_800EF768_shared_board(UnkMBGuideData* arg0, s16 arg1) {
 }
 
 static void MBPauseDlgMesSet(s16 arg0, s32 arg1) {
-    func_8005D294_main(arg0);
-    func_8005B43C_main(arg0, MBPauseMesNumGet(arg1), -1, -1);
+    HuWinHomeClear(arg0);
+    HuWinMesSet(arg0, MBPauseMesNumGet(arg1), -1, -1);
 }
 
 static void MBPauseHelpMesSet(s32 arg0, s16 arg1) {
-    func_8005D294_main(arg0);
-    func_8005B43C_main(arg0, D_80101514_shared_board[arg1], -2, -2);
+    HuWinHomeClear(arg0);
+    HuWinMesSet(arg0, D_80101514_shared_board[arg1], -2, -2);
 }
 
 static s32 MBPauseHelpMesCreate(s16 arg0, s16 arg1, s16 arg2) {
@@ -750,8 +750,8 @@ static s32 MBPauseHelpMesCreate(s16 arg0, s16 arg1, s16 arg2) {
     s16 sp20[2];
     s32 win;
 
-    func_80060394_main(1, sp18, D_80101514_shared_board[0]);
-    func_80060394_main(1, sp20, D_80101514_shared_board[1]);
+    HuWinMesMaxSizeGet(1, sp18, D_80101514_shared_board[0]);
+    HuWinMesMaxSizeGet(1, sp20, D_80101514_shared_board[1]);
 
     if (sp20[0] > sp18[0]) {
         D_80105560_shared_board[0] = sp20[0];
@@ -760,11 +760,11 @@ static s32 MBPauseHelpMesCreate(s16 arg0, s16 arg1, s16 arg2) {
     }
     D_80105560_shared_board[1] = sp18[1];
     arg1 += 0xA0;
-    win = func_8005A968_main(arg1 - (D_80105560_shared_board[0] / 2), arg2,
+    win = HuWinCreate(arg1 - (D_80105560_shared_board[0] / 2), arg2,
                               D_80105560_shared_board[0], D_80105560_shared_board[1], 0, 4);
-    func_8005BE30_main(win, 9);
-    func_8005BEE0_main(win, 0);
-    func_8005BDFC_main(win, 0);
+    HuWinPriSet(win, 9);
+    HuWinBGTPLvlSet(win, 0);
+    HuWinMesSpeedSet(win, 0);
     func_8005B63C_main(win, 0, 0x20000);
     MBPauseHelpMesSet(win, arg0);
     return win;
@@ -818,31 +818,31 @@ static void MBPauseMesMain(void) {
             case 0x5101:
                 for (i = 0; i < 4; i++) {
                     if (GwPlayer[i].stat & 1) {
-                        func_8005B6BC_main(D_80105550_shared_board->amount, MBPauseMesNumGet(0x5104), i);
+                        HuWinInsertMesSet(D_80105550_shared_board->amount, MBPauseMesNumGet(0x5104), i);
                     } else {
-                        func_8005B6BC_main(D_80105550_shared_board->amount, MBPauseMesNumGet(0x5103), i);
+                        HuWinInsertMesSet(D_80105550_shared_board->amount, MBPauseMesNumGet(0x5103), i);
                     }
                 }
                 break;
 
             case 0x5105:
                 if (system->show_minigame_explanations == 0) {
-                    func_8005B6BC_main(D_80105550_shared_board->amount, MBPauseMesNumGet(0x5106), 0);
+                    HuWinInsertMesSet(D_80105550_shared_board->amount, MBPauseMesNumGet(0x5106), 0);
                 } else {
-                    func_8005B6BC_main(D_80105550_shared_board->amount, MBPauseMesNumGet(0x5107), 0);
+                    HuWinInsertMesSet(D_80105550_shared_board->amount, MBPauseMesNumGet(0x5107), 0);
                 }
                 break;
 
             case 0x5108:
                 switch (system->message_speed) {
                 case 0:
-                    func_8005B6BC_main(D_80105550_shared_board->amount, MBPauseMesNumGet(0x5109), 0);
+                    HuWinInsertMesSet(D_80105550_shared_board->amount, MBPauseMesNumGet(0x5109), 0);
                     break;
                 case 1:
-                    func_8005B6BC_main(D_80105550_shared_board->amount, MBPauseMesNumGet(0x510A), 0);
+                    HuWinInsertMesSet(D_80105550_shared_board->amount, MBPauseMesNumGet(0x510A), 0);
                     break;
                 case 2:
-                    func_8005B6BC_main(D_80105550_shared_board->amount, MBPauseMesNumGet(0x510B), 0);
+                    HuWinInsertMesSet(D_80105550_shared_board->amount, MBPauseMesNumGet(0x510B), 0);
                     break;
                 }
                 break;
@@ -850,13 +850,13 @@ static void MBPauseMesMain(void) {
             case 0x510C:
                 switch (system->save_mode) {
                 case 0:
-                    func_8005B6BC_main(D_80105550_shared_board->amount, MBPauseMesNumGet(0x510D), 0);
+                    HuWinInsertMesSet(D_80105550_shared_board->amount, MBPauseMesNumGet(0x510D), 0);
                     break;
                 case 1:
-                    func_8005B6BC_main(D_80105550_shared_board->amount, MBPauseMesNumGet(0x510E), 0);
+                    HuWinInsertMesSet(D_80105550_shared_board->amount, MBPauseMesNumGet(0x510E), 0);
                     break;
                 case 2:
-                    func_8005B6BC_main(D_80105550_shared_board->amount, MBPauseMesNumGet(0x510F), 0);
+                    HuWinInsertMesSet(D_80105550_shared_board->amount, MBPauseMesNumGet(0x510F), 0);
                     break;
                 }
                 break;
@@ -864,13 +864,13 @@ static void MBPauseMesMain(void) {
             case 0x5121:
                 switch (system->walk_speed) {
                 case 0:
-                    func_8005B6BC_main(D_80105550_shared_board->amount, MBPauseMesNumGet(0x5122), 0);
+                    HuWinInsertMesSet(D_80105550_shared_board->amount, MBPauseMesNumGet(0x5122), 0);
                     break;
                 case 1:
-                    func_8005B6BC_main(D_80105550_shared_board->amount, MBPauseMesNumGet(0x5123), 0);
+                    HuWinInsertMesSet(D_80105550_shared_board->amount, MBPauseMesNumGet(0x5123), 0);
                     break;
                 case 2:
-                    func_8005B6BC_main(D_80105550_shared_board->amount, MBPauseMesNumGet(0x5124), 0);
+                    HuWinInsertMesSet(D_80105550_shared_board->amount, MBPauseMesNumGet(0x5124), 0);
                     break;
                 }
                 break;
@@ -878,19 +878,19 @@ static void MBPauseMesMain(void) {
             case 0x5127:
                 switch (system->show_com_minigames) {
                 case 0:
-                    func_8005B6BC_main(D_80105550_shared_board->amount, MBPauseMesNumGet(0x5128), 0);
+                    HuWinInsertMesSet(D_80105550_shared_board->amount, MBPauseMesNumGet(0x5128), 0);
                     break;
                 case 1:
-                    func_8005B6BC_main(D_80105550_shared_board->amount, MBPauseMesNumGet(0x5129), 0);
+                    HuWinInsertMesSet(D_80105550_shared_board->amount, MBPauseMesNumGet(0x5129), 0);
                     break;
                 }
                 break;
 
             case 0x512C:
                 if (_CheckFlag(0x20) != 0) {
-                    func_8005B6BC_main(D_80105550_shared_board->amount, MBPauseMesNumGet(0x512B), 0);
+                    HuWinInsertMesSet(D_80105550_shared_board->amount, MBPauseMesNumGet(0x512B), 0);
                 } else {
-                    func_8005B6BC_main(D_80105550_shared_board->amount, MBPauseMesNumGet(0x512A), 0);
+                    HuWinInsertMesSet(D_80105550_shared_board->amount, MBPauseMesNumGet(0x512A), 0);
                 }
                 break;
             }
@@ -917,8 +917,8 @@ static Process* MBPauseMesCreate(s32* arg0, s32 arg1, s16 arg2) {
 
 static void func_800EFE0C_shared_board(Process* arg0) {
     if (D_801014EC_shared_board != 0) {
-        func_8005F364_main(D_8010555A_shared_board);
-        func_8005F364_main(D_8010555E_shared_board);
+        HuWinKill(D_8010555A_shared_board);
+        HuWinKill(D_8010555E_shared_board);
     }
     omDelPrcObj(arg0);
 }
@@ -927,9 +927,9 @@ static s16 MBPauseQuitMesCreate(s32 arg0, s16 arg1) {
     s16 sp18[2];
     s16 temp_v0;
 
-    func_80060394_main(1, sp18, arg0);
-    temp_v0 = func_8005A968_main(0xA0 - sp18[0] / 2, arg1, sp18[0], sp18[1], 0, 0);
-    func_8005B43C_main(temp_v0, arg0, -1, -1);
+    HuWinMesMaxSizeGet(1, sp18, arg0);
+    temp_v0 = HuWinCreate(0xA0 - sp18[0] / 2, arg1, sp18[0], sp18[1], 0, 0);
+    HuWinMesSet(temp_v0, arg0, -1, -1);
     return temp_v0;
 }
 
@@ -938,12 +938,12 @@ static s16 func_800EFEF4_shared_board(void) {
     s16 var_a1;
 
     var_t0 = 0;
-    var_a1 = D_800CC69C_main->unk64;
-    while (D_800CC69C_main[var_a1].unk64 != -1) {
-        if (D_800CC69C_main[var_a1].unk_38 & 0x40) {
-            var_t0 |= (u8)D_800CC69C_main[var_a1].unk20; //TODO: why required cast?
+    var_a1 = winData->unk64;
+    while (winData[var_a1].unk64 != -1) {
+        if (winData[var_a1].unk_38 & 0x40) {
+            var_t0 |= (u8)winData[var_a1].unk20; //TODO: why required cast?
         }
-        var_a1 = D_800CC69C_main[var_a1].unk64;
+        var_a1 = winData[var_a1].unk64;
     }
 
     if (GwSystem.playMode & 4) {
@@ -1246,23 +1246,23 @@ static s32 MBPauseQuitWinExec(s32 arg0) {
     s16 temp;
 
     temp_v0 = MBPauseQuitMesCreate(MBPauseMesNumGet(0x511E), 0x36);
-    func_8005BE30_main(temp_v0, 5);
-    func_8005BEE0_main(temp_v0, 0xFF);
-    func_8005B43C_main(temp_v0, MBPauseMesNumGet(0x511E), -1, -1);
-    func_8005BDFC_main(temp_v0, 0);
+    HuWinPriSet(temp_v0, 5);
+    HuWinBGTPLvlSet(temp_v0, 0xFF);
+    HuWinMesSet(temp_v0, MBPauseMesNumGet(0x511E), -1, -1);
+    HuWinMesSpeedSet(temp_v0, 0);
     
-    while ((func_8005E0C0_main(temp_v0)) != 0) {
+    while ((HuWinStatGet(temp_v0)) != 0) {
         HuPrcVSleep();
     }
     
     temp_s3 = MBPauseMesCreate(&D_801015A0_shared_board, 0, temp_v0);
     func_8005FE54_main(temp_v0, 1 << arg0);
-    temp = func_8005E1D8_main(temp_v0, 0, 0);
+    temp = HuWinChoiceGet(temp_v0, 0, 0);
     if (temp == 1) {
         D_80105556_shared_board = 1;
     }
     omDelPrcObj(temp_s3);
-    func_8005F364_main(temp_v0);
+    HuWinKill(temp_v0);
     return 4;
 }
 

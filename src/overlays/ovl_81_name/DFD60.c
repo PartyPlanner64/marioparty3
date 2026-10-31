@@ -499,34 +499,34 @@ void func_800F90BC_name_81(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 
     if (arg1 != 0) {
         func_8005FBA4_main(sp98, arg1);
-        func_8006022C_main((u32)sp98, 0);
+        HuWinInsertMesSizeGet((u32)sp98, 0);
     }
     if (arg2 != 0) {
         func_8005FBA4_main(spB8, arg2);
-        func_8006022C_main((u32)spB8, 1);
+        HuWinInsertMesSizeGet((u32)spB8, 1);
     }
 
     func_8005FBA4_main(sp18, arg0);
-    func_80060394_main(1, spD8, (u32)sp18);
-    temp_v0 = func_80061188_main(-1, 0xA0 - spD8[0] / 2, 0x78 - spD8[1] / 2, spD8[0], spD8[1], 0);
+    HuWinMesMaxSizeGet(1, spD8, (u32)sp18);
+    temp_v0 = HuWinExCreate(-1, 0xA0 - spD8[0] / 2, 0x78 - spD8[1] / 2, spD8[0], spD8[1], 0);
 
     if (arg1 != 0) {
-        func_8005B6BC_main(temp_v0, (u32)sp98, 0);
+        HuWinInsertMesSet(temp_v0, (u32)sp98, 0);
     }
     if (arg2 != 0) {
-        func_8005B6BC_main(temp_v0, (u32)spB8, 1);
+        HuWinInsertMesSet(temp_v0, (u32)spB8, 1);
     }
 
-    func_8005B43C_main(temp_v0, (u32)sp18, -1, -1);
-    func_80061388_main(temp_v0);
+    HuWinMesSet(temp_v0, (u32)sp18, -1, -1);
+    HuWinExAnimIn(temp_v0);
 
     if (arg3 == -1) {
         func_800EF3B4_name_81(temp_v0);
     } else {
         func_800EED68_name_81(temp_v0, arg3);
     }
-    func_80061A5C_main(temp_v0, 0);
-    func_8005F364_main(temp_v0);
+    HuWinExAnimOut(temp_v0, 0);
+    HuWinKill(temp_v0);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DFD60", func_800F924C_name_81);
@@ -1134,12 +1134,12 @@ void func_800FB160_name_81(void) {
     playerPad = GwPlayer[playerIndex].pad;
     var_s3 = 0;
     func_80060388_main(0x78);
-    func_800604A8_main(sp18, 0x4F00, 0x4F0A);
-    sp36 = func_80061188_main(D_801019C8_name_81[0], 0xA0 - sp18[0] / 2, 0x3C, sp18[0], sp18[1], 0);
+    HuWinMesMaxSizeBetGet(sp18, 0x4F00, 0x4F0A);
+    sp36 = HuWinExCreate(D_801019C8_name_81[0], 0xA0 - sp18[0] / 2, 0x3C, sp18[0], sp18[1], 0);
     func_8005E1A8_main(sp36, 0x78);
     func_8005FBF8_main(sp36, 1, 0xB9, 0xE7);
-    func_8005B43C_main(sp36, D_80101998_name_81[0], -1, -1);
-    func_80061388_main(sp36);
+    HuWinMesSet(sp36, D_80101998_name_81[0], -1, -1);
+    HuWinExAnimIn(sp36);
     temp_s4 = func_800F4528_name_81(3, 2);
 
     for (i = 0; i < 3; i++) {
@@ -1167,18 +1167,18 @@ void func_800FB160_name_81(void) {
         if (D_800D0590_main[playerPad] & 1) {
             var_s3++;
             var_s3 %= 12;
-            func_8005D294_main(sp36);
-            func_8005B43C_main(sp36, D_80101998_name_81[var_s3], -1, -1);
-            func_80061934_main(sp36, D_801019C8_name_81[var_s3]);
+            HuWinHomeClear(sp36);
+            HuWinMesSet(sp36, D_80101998_name_81[var_s3], -1, -1);
+            HuWinExAnimPopIn(sp36, D_801019C8_name_81[var_s3]);
         }
         if (D_800D0590_main[playerPad] & 2) {
             var_s3--;
             if (var_s3 < 0) {
                 var_s3 = 0xB;
             }
-            func_8005D294_main(sp36);
-            func_8005B43C_main(sp36, D_80101998_name_81[var_s3], -1, -1);
-            func_80061934_main(sp36, D_801019C8_name_81[var_s3]);
+            HuWinHomeClear(sp36);
+            HuWinMesSet(sp36, D_80101998_name_81[var_s3], -1, -1);
+            HuWinExAnimPopIn(sp36, D_801019C8_name_81[var_s3]);
         }
         HuPrcVSleep();
     }
@@ -1187,8 +1187,8 @@ void func_800FB160_name_81(void) {
     func_800E1854_name_81(sp3C);
     func_800E1854_name_81(temp_fp);
     func_800E1854_name_81(temp_s7);
-    func_80061A5C_main(sp36, 0);
-    func_8005F364_main(sp36);
+    HuWinExAnimOut(sp36, 0);
+    HuWinKill(sp36);
     omDelPrcObj(0);
 }
 

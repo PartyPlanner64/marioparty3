@@ -521,67 +521,67 @@ void func_80107140_opening(s32 slot, u32 event, s16 x, s16 y, s16 width, s16 hei
 s16 func_8010738C_opening(u32 event, s16 x, s16 y, s16 width, s16 height, s16 style) {
     s16 slot;
 
-    slot = func_8005A968_main(x, y, width, height, 0, 8);
+    slot = HuWinCreate(x, y, width, height, 0, 8);
     func_8005B63C_main(slot, -1, 17);
-    func_8005BDFC_main(slot, 0);
-    func_8005BEE0_main(slot, 255);
+    HuWinMesSpeedSet(slot, 0);
+    HuWinBGTPLvlSet(slot, 255);
     func_80060144_main(slot);
-    func_8005BE30_main(slot, 1);
+    HuWinPriSet(slot, 1);
     func_8005FE54_main(slot, 1);
     func_8005C154_main(slot, 192, 192, 192);
     func_8005FBF8_main(slot, 0, 64, 64);
-    func_8005C02C_main(slot, 7);
-    func_8005C060_main(slot, 2, 255, 64, 64);
-    func_8005C060_main(slot, 4, 96, 255, 64);
-    func_8005C060_main(slot, 6, 255, 255, 64);
-    func_8005D294_main(slot);
-    func_8005B43C_main(slot, event, -1, -1);
+    HuWinMesColSet(slot, 7);
+    HuWinMesPalSet(slot, 2, 255, 64, 64);
+    HuWinMesPalSet(slot, 4, 96, 255, 64);
+    HuWinMesPalSet(slot, 6, 255, 255, 64);
+    HuWinHomeClear(slot);
+    HuWinMesSet(slot, event, -1, -1);
     return slot;
 }
 
 s16 func_801074D8_opening(u32 event, s16 x, s16 y, s16 width, s16 height, s16 style) {
     s16 slot;
 
-    slot = func_8005A968_main(x, y, width, height, 0, 4);
+    slot = HuWinCreate(x, y, width, height, 0, 4);
     func_8005B63C_main(slot, -1, 17);
-    func_8005BDFC_main(slot, 0);
-    func_8005BEE0_main(slot, 255);
+    HuWinMesSpeedSet(slot, 0);
+    HuWinBGTPLvlSet(slot, 255);
     func_80060144_main(slot);
-    func_8005BE30_main(slot, 1);
+    HuWinPriSet(slot, 1);
     func_8005FE54_main(slot, 1);
-    func_8005C060_main(slot, 5, 0, 176, 192);
-    func_8005C060_main(slot, 2, 255, 64, 64);
-    func_8005C060_main(slot, 4, 96, 255, 64);
-    func_8005C060_main(slot, 6, 255, 255, 64);
+    HuWinMesPalSet(slot, 5, 0, 176, 192);
+    HuWinMesPalSet(slot, 2, 255, 64, 64);
+    HuWinMesPalSet(slot, 4, 96, 255, 64);
+    HuWinMesPalSet(slot, 6, 255, 255, 64);
     func_8005C154_main(slot, 192, 192, 192);
     func_8005FBF8_main(slot, 255, 255, 255);
-    func_8005C02C_main(slot, 1);
-    func_8005D294_main(slot);
-    func_8005B43C_main(slot, event, -1, -1);
+    HuWinMesColSet(slot, 1);
+    HuWinHomeClear(slot);
+    HuWinMesSet(slot, event, -1, -1);
     return slot;
 }
 
 s16 func_80107640_opening(u32 event, s16 x, s16 y, s16 width, s16 height, s16 style) {
     s16 slot;
 
-    slot = func_8005A968_main(x, y, width, height, 0, 8);
+    slot = HuWinCreate(x, y, width, height, 0, 8);
     func_8005B63C_main(slot, -1, 17);
-    func_8005BDFC_main(slot, 0);
+    HuWinMesSpeedSet(slot, 0);
     func_80060144_main(slot);
-    func_8005BE30_main(slot, 1);
+    HuWinPriSet(slot, 1);
     func_8005FE54_main(slot, 1);
-    func_8005C060_main(slot, 5, 0, 176, 192);
-    func_8005C060_main(slot, 7, 255, 255, 255);
-    func_8005C060_main(slot, 0, 0, 0, 0);
-    func_8005C060_main(slot, 3, 0, 0, 0);
-    func_8005C060_main(slot, 2, 255, 64, 64);
-    func_8005C060_main(slot, 4, 96, 255, 64);
-    func_8005C060_main(slot, 6, 255, 255, 64);
+    HuWinMesPalSet(slot, 5, 0, 176, 192);
+    HuWinMesPalSet(slot, 7, 255, 255, 255);
+    HuWinMesPalSet(slot, 0, 0, 0, 0);
+    HuWinMesPalSet(slot, 3, 0, 0, 0);
+    HuWinMesPalSet(slot, 2, 255, 64, 64);
+    HuWinMesPalSet(slot, 4, 96, 255, 64);
+    HuWinMesPalSet(slot, 6, 255, 255, 64);
     func_8005C154_main(slot, 192, 192, 0);
     func_8005FBF8_main(slot, 255, 255, 255);
-    func_8005C02C_main(slot, 6);
-    func_8005D294_main(slot);
-    func_8005B43C_main(slot, event, -1, -1);
+    HuWinMesColSet(slot, 6);
+    HuWinHomeClear(slot);
+    HuWinMesSet(slot, event, -1, -1);
     return slot;
 }
 
@@ -589,12 +589,12 @@ s16 func_801077E8_opening(u32 event, s16 x, s16 y, s16 style) {
     s16 slot;
 
     slot = func_80060880_main(x, y, 19);
-    func_8005C060_main(slot, 2, 255, 64, 64);
-    func_8005C060_main(slot, 4, 96, 255, 64);
-    func_8005C060_main(slot, 6, 255, 255, 64);
+    HuWinMesPalSet(slot, 2, 255, 64, 64);
+    HuWinMesPalSet(slot, 4, 96, 255, 64);
+    HuWinMesPalSet(slot, 6, 255, 255, 64);
     func_80060C14_main(slot, 1);
     func_8005FE54_main(slot, 1);
-    func_8005B43C_main(slot, event, -1, -1);
+    HuWinMesSet(slot, event, -1, -1);
     return slot;
 }
 
@@ -602,12 +602,12 @@ s16 func_801078B4_opening(u32 event, s16 x, s16 y, s16 style) {
     s16 slot;
 
     slot = func_80060880_main(x, y, 20);
-    func_8005C060_main(slot, 2, 255, 64, 64);
-    func_8005C060_main(slot, 4, 96, 255, 64);
-    func_8005C060_main(slot, 6, 255, 255, 64);
+    HuWinMesPalSet(slot, 2, 255, 64, 64);
+    HuWinMesPalSet(slot, 4, 96, 255, 64);
+    HuWinMesPalSet(slot, 6, 255, 255, 64);
     func_80060C14_main(slot, 0);
     func_8005FE54_main(slot, 1);
-    func_8005B43C_main(slot, event, -1, -1);
+    HuWinMesSet(slot, event, -1, -1);
     return slot;
 }
 
@@ -615,12 +615,12 @@ s16 func_80107980_opening(u32 event, s16 x, s16 y, s16 style) {
     s16 slot;
 
     slot = func_80060880_main(x, y, 19);
-    func_8005C060_main(slot, 2, 255, 64, 64);
-    func_8005C060_main(slot, 4, 96, 255, 64);
-    func_8005C060_main(slot, 6, 255, 255, 64);
+    HuWinMesPalSet(slot, 2, 255, 64, 64);
+    HuWinMesPalSet(slot, 4, 96, 255, 64);
+    HuWinMesPalSet(slot, 6, 255, 255, 64);
     func_8005FE54_main(slot, 1);
     func_80060C14_main(slot, 0);
-    func_8005B43C_main(slot, event, -1, -1);
+    HuWinMesSet(slot, event, -1, -1);
     return slot;
 }
 
@@ -636,10 +636,10 @@ void func_80107A4C_opening(void) {
 void func_80107A90_opening(s32 index) {
     if (D_801171B8_opening[index].unk_08 == 3) {
         func_80060EA8_main(D_801171B8_opening[index].espriteSlot, 1);
-        func_800610E0_main(D_801171B8_opening[index].espriteSlot);
+        HuWinExCleanup(D_801171B8_opening[index].espriteSlot);
     } else {
-        func_8005FE90_main(D_801171B8_opening[index].espriteSlot);
-        func_8005F364_main(D_801171B8_opening[index].espriteSlot);
+        HuWinDispOff(D_801171B8_opening[index].espriteSlot);
+        HuWinKill(D_801171B8_opening[index].espriteSlot);
         D_801171B8_opening[index].espriteSlot = -1;
     }
     if (D_801171B8_opening[index].event != NULL) {
@@ -659,25 +659,25 @@ void func_80107B74_opening(void) {
 }
 
 void func_80107BD8_opening(s32 slot, f32 x, f32 y) {
-    func_8005BB18_main(D_801171B8_opening[slot].espriteSlot, x, y);
+    HuWinScaleSet(D_801171B8_opening[slot].espriteSlot, x, y);
 }
 
 void func_80107C08_opening(s32 arg0, f32 arg1, f32 arg2) {
-    func_8005BA90_main(D_801171B8_opening[arg0].espriteSlot, arg1, arg2);
+    HuWinPosSet(D_801171B8_opening[arg0].espriteSlot, arg1, arg2);
 }
 
 void func_80107C70_opening(s32 slot) {
-    func_8005FFA8_main(D_801171B8_opening[slot].espriteSlot);
+    HuWinDispOn(D_801171B8_opening[slot].espriteSlot);
 }
 
 void func_80107CA0_opening(s32 slot) {
-    func_8005FE90_main(D_801171B8_opening[slot].espriteSlot);
+    HuWinDispOff(D_801171B8_opening[slot].espriteSlot);
 }
 
 void func_80107CD0_opening(s32 slot, u32 event) {
     u32 newEvent;
 
-    func_8005D294_main(D_801171B8_opening[slot].espriteSlot);
+    HuWinHomeClear(D_801171B8_opening[slot].espriteSlot);
     if (D_801171B8_opening[slot].event != NULL) {
         func_80019C00_main(D_801171B8_opening[slot].event);
         D_801171B8_opening[slot].event = NULL;
@@ -686,7 +686,7 @@ void func_80107CD0_opening(s32 slot, u32 event) {
     if (0x80000000U < newEvent) {
         D_801171B8_opening[slot].event = (void *)newEvent;
     }
-    func_8005B43C_main(D_801171B8_opening[slot].espriteSlot, newEvent, -1, -1);
+    HuWinMesSet(D_801171B8_opening[slot].espriteSlot, newEvent, -1, -1);
 }
 
 void func_80107D9C_opening(s32 slot, s8 arg1, s32 arg2) {
@@ -694,7 +694,7 @@ void func_80107D9C_opening(s32 slot, s8 arg1, s32 arg2) {
 }
 
 s32 func_80107DD8_opening(s32 slot, s16 arg1, s32 arg2) {
-    return func_8005E1D8_main(D_801171B8_opening[slot].espriteSlot, arg1, arg2);
+    return HuWinChoiceGet(D_801171B8_opening[slot].espriteSlot, arg1, arg2);
 }
 
 s16 func_80107E10_opening(s32 slot) {
@@ -702,7 +702,7 @@ s16 func_80107E10_opening(s32 slot) {
 }
 
 void func_80107E2C_opening(s32 index) {
-    while (func_8005E0C0_main(D_801171B8_opening[index].espriteSlot) != 0) {
+    while (HuWinStatGet(D_801171B8_opening[index].espriteSlot) != 0) {
         HuPrcVSleep();
     }
 }
@@ -714,7 +714,7 @@ void func_80107E80_opening(s32 arg0) {
 }
 
 void func_80107EBC_opening(s32 slot, s16 arg1) {
-    func_8005BE30_main(D_801171B8_opening[slot].espriteSlot, arg1);
+    HuWinPriSet(D_801171B8_opening[slot].espriteSlot, arg1);
 }
 
 u16 func_80107EF4_opening(s32 value) {

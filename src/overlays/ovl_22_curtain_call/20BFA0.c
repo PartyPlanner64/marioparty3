@@ -61,7 +61,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_801062E
 
 void func_80106408_curtain_call(void) {
     D_800D6A58_main = 1;
-    func_8005A6B0_main();
+    HuWinInit();
     D_8010CF34_curtain_call = omAddPrcObj(func_801062EC_curtain_call, 0x3F00, 0x800, 0);
 }
 

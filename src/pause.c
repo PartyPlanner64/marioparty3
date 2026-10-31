@@ -119,25 +119,25 @@ void func_800453FC_main(void) {
     for (var_s2 = 0; var_s2 < ARRAY_COUNT(D_800B2340_main) - 1; var_s2++) {
         func_80045964_main(D_800B2340_main[var_s2], var_s6);
         if (var_s4 <= var_s2 + var_s7 * 2) {
-            func_8005FE90_main(D_800B2340_main[var_s2]);
+            HuWinDispOff(D_800B2340_main[var_s2]);
         } else {
-            func_8005FFA8_main(D_800B2340_main[var_s2]);
-            func_8005B43C_main(D_800B2340_main[var_s2], sp18[var_s2 + var_s7 * 2], -1, -1);
+            HuWinDispOn(D_800B2340_main[var_s2]);
+            HuWinMesSet(D_800B2340_main[var_s2], sp18[var_s2 + var_s7 * 2], -1, -1);
         }
     }
     if (var_s4 < 3) {
-        func_80060394_main(1, sp20, 0x3919);
-        D_800B2344_main = var_s0_3 = func_8005A968_main((0x140 - sp20[0]) / 2, 0xE0 - sp20[1], sp20[0], sp20[1], 0, 0);
-        func_8005B43C_main(var_s0_3, 0x3919, -1, -1);
+        HuWinMesMaxSizeGet(1, sp20, 0x3919);
+        D_800B2344_main = var_s0_3 = HuWinCreate((0x140 - sp20[0]) / 2, 0xE0 - sp20[1], sp20[0], sp20[1], 0, 0);
+        HuWinMesSet(var_s0_3, 0x3919, -1, -1);
     } else {
-        func_80060394_main(1, sp20, 0x3918);
-        D_800B2344_main = var_s0_3 = func_8005A968_main((0x140 - sp20[0]) / 2, 0xE0 - sp20[1], sp20[0], sp20[1], 0, 0);
-        func_8005B43C_main(var_s0_3, 0x3918, -1, -1);
+        HuWinMesMaxSizeGet(1, sp20, 0x3918);
+        D_800B2344_main = var_s0_3 = HuWinCreate((0x140 - sp20[0]) / 2, 0xE0 - sp20[1], sp20[0], sp20[1], 0, 0);
+        HuWinMesSet(var_s0_3, 0x3918, -1, -1);
     }
-    func_8005C02C_main(var_s0_3, 0);
-    func_8005BDFC_main(var_s0_3, 0);
-    func_8005BE30_main(var_s0_3, 0);
-    func_8005BEE0_main(var_s0_3, 0xD0);
+    HuWinMesColSet(var_s0_3, 0);
+    HuWinMesSpeedSet(var_s0_3, 0);
+    HuWinPriSet(var_s0_3, 0);
+    HuWinBGTPLvlSet(var_s0_3, 0xD0);
     func_8005FBF8_main(var_s0_3, 0xFF, 0xFF, 0xFF);
     HuPrcVSleep();
     HuAudFXPlay(6);
@@ -148,10 +148,10 @@ void func_800453FC_main(void) {
             for (var_s2 = 0; var_s2 < 2; var_s2++) {
                 func_80045964_main(D_800B2340_main[var_s2], var_s6);
                 if (var_s4 <= var_s2 + var_s7 * 2) {
-                    func_8005FE90_main(D_800B2340_main[var_s2]);
+                    HuWinDispOff(D_800B2340_main[var_s2]);
                 } else {
-                    func_8005FFA8_main(D_800B2340_main[var_s2]);
-                    func_8005B43C_main(D_800B2340_main[var_s2], sp18[var_s2 + var_s7 * 2], -1, -1);
+                    HuWinDispOn(D_800B2340_main[var_s2]);
+                    HuWinMesSet(D_800B2340_main[var_s2], sp18[var_s2 + var_s7 * 2], -1, -1);
                 }
             }
         }
@@ -181,7 +181,7 @@ void func_80045964_main(s16 arg0, s16 arg1) {
         }
     }
     for (var_s0 = 0; var_s0 < 4; var_s0++) {
-        func_8005B6BC_main(arg0, 0x1C00 + GwPlayer[sp10[var_s0]].chr, var_s0);
+        HuWinInsertMesSet(arg0, 0x1C00 + GwPlayer[sp10[var_s0]].chr, var_s0);
     }
 }
 
@@ -192,7 +192,7 @@ void func_80045A90_main(void) {
     HuSprKill(D_800D0A38_main);
     if (D_800CE214_main == 0) {
         for (i = 0; i < ARRAY_COUNT(D_800B2340_main); i++) {
-            func_8005F364_main(D_800B2340_main[i]);
+            HuWinKill(D_800B2340_main[i]);
         }
     }
     omDelPrcObj(D_800CE298_main);
@@ -202,15 +202,15 @@ s16 func_80045B24_main(s16 arg0, s16 arg1) {
     TextWindow *temp_v0_2;
     s16 temp_v0;
 
-    temp_v0 = func_8005A968_main(arg0, arg1, 0xC8, 0x3C, 0, 0);
-    func_8005BE30_main(temp_v0, 0);
-    temp_v0_2 = &D_800CC69C_main[temp_v0];
+    temp_v0 = HuWinCreate(arg0, arg1, 0xC8, 0x3C, 0, 0);
+    HuWinPriSet(temp_v0, 0);
+    temp_v0_2 = &winData[temp_v0];
     temp_v0_2->unk_29 = 0;
     temp_v0_2->unk_2A = 1;
-    func_8005BDFC_main(temp_v0, 0);
-    func_8005BEE0_main(temp_v0, 0xD0);
+    HuWinMesSpeedSet(temp_v0, 0);
+    HuWinBGTPLvlSet(temp_v0, 0xD0);
     func_8005FBF8_main(temp_v0, 0x30, 0x40, 0x80);
-    func_8005C060_main(temp_v0, 2, 0x40, 0xFF, 0xFF);
+    HuWinMesPalSet(temp_v0, 2, 0x40, 0xFF, 0xFF);
     return temp_v0;
 }
 

@@ -154,7 +154,7 @@ void func_80106120_w02(void) {
             mesNum = 0x5E01;
         }
     }
-    func_8005B43C_main(guide->amount, mesNum, -1, -1);
+    HuWinMesSet(guide->amount, mesNum, -1, -1);
     func_80060C14_main(guide->amount, 1);
     HuAudFXPlay(0x2A7);
     func_800EE2C0_shared_board(guide->amount);
@@ -186,7 +186,7 @@ void func_80106120_w02(void) {
         D_8011EC18_w02 = NULL;
     }
 
-    func_8005B43C_main(guide->amount, D_8011C6CC_w02[face], -1, -1);
+    HuWinMesSet(guide->amount, D_8011C6CC_w02[face], -1, -1);
     func_80060C14_main(guide->amount, 1);
     func_800EE2C0_shared_board(guide->amount);
     MBMotionShiftSet(guide->obj, -1, 0, 6, 2);

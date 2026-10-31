@@ -21,10 +21,10 @@
 // extern s16 D_800D4080_main;
 // s16 MBRandCheck100(s8 arg0);
 // void func_800500E0_main(s32);
-// s16 func_8005E0C0_main(s16);
+// s16 HuWinStatGet(s16);
 // void func_800600C0_main(s16, s32);
-// s32 func_80061188_main(s16 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u16 arg5);
-// void func_80061A5C_main(s16, s16);
+// s32 HuWinExCreate(s16 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u16 arg5);
+// void HuWinExAnimOut(s16, s16);
 // void func_800DBFBC_shared_board(s32);
 // s32 func_800DCD9C_shared_board(s32);
 // Process *func_800DD6C4_shared_board(s32);

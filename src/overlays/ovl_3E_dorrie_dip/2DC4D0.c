@@ -314,7 +314,7 @@ void func_80105C7C_dorrie_dip(omObjData *obj) {
 void func_80105FD0_dorrie_dip(omObjData *obj) {
     func_8004AB0C_main(30);
     if (WipeStatGet() == 0) {
-        func_8005F524_main();
+        HuWinAllKill();
         GMesClose();
         func_800557A0_main();
         omOvlReturnEx(1);

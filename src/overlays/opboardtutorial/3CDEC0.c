@@ -53,7 +53,7 @@ void func_801059A0_opboardtutorial(void) {
     func_80107550_opboardtutorial();
     func_801074E8_opboardtutorial();
     func_800D95C4_shared_board(1000.0f);
-    func_8005A6B0_main();
+    HuWinInit();
     omAddPrcObj(func_80107408_opboardtutorial, 0x300, 0x2000, 0);
     omAddObj(0x1000, 0, 0, -1, func_801074A4_opboardtutorial);
     for (i = 1; i < 8; i++) {
@@ -340,10 +340,10 @@ void func_801068E4_opboardtutorial(Object *obj) {
     HuPrcSleep(10);
     obj->velocity.y = 0;
     obj->velocity.z = 0;
-    func_800610E0_main(D_80107768_opboardtutorial);
+    HuWinExCleanup(D_80107768_opboardtutorial);
     D_80107768_opboardtutorial = func_80060880_main(75, 159, 16);
-    func_8005C060_main(D_80107768_opboardtutorial, 4, 0, 224, 224);
-    func_8005BDFC_main(D_80107768_opboardtutorial, 0);
+    HuWinMesPalSet(D_80107768_opboardtutorial, 4, 0, 224, 224);
+    HuWinMesSpeedSet(D_80107768_opboardtutorial, 0);
 }
 
 void func_80106990_opboardtutorial(void) {
@@ -367,7 +367,7 @@ void func_80106990_opboardtutorial(void) {
     }
     func_800DCCE0_shared_board();
     HuPrcSleep(20);
-    func_8005B43C_main(D_80107768_opboardtutorial, 0x1601, -1, -1);
+    HuWinMesSet(D_80107768_opboardtutorial, 0x1601, -1, -1);
     func_80060C14_main(D_80107768_opboardtutorial, 1);
     func_800EE614_shared_board(D_80107768_opboardtutorial);
     func_80060EA8_main(D_80107768_opboardtutorial, 1);
@@ -449,15 +449,15 @@ void func_80106990_opboardtutorial(void) {
         MBStatusDispSideSet(i, 1);
     }
     HuPrcSleep(5);
-    func_8005C060_main(D_80107768_opboardtutorial, 4, 0, 255, 255);
-    func_8005B43C_main(D_80107768_opboardtutorial, 0x1602, -1, -1);
+    HuWinMesPalSet(D_80107768_opboardtutorial, 4, 0, 255, 255);
+    HuWinMesSet(D_80107768_opboardtutorial, 0x1602, -1, -1);
     func_80060C14_main(D_80107768_opboardtutorial, 1);
     func_800EE614_shared_board(D_80107768_opboardtutorial);
     for (i = 0; i < 4; i++) {
         s32 messages[4] = { 0x1603, 0x1604, 0x1605, 0x1606 };
 
         func_801060B4_opboardtutorial(D_80107764_opboardtutorial->omObj1->model[0], D_80107770_opboardtutorial[motion[i]]);
-        func_8005B43C_main(D_80107768_opboardtutorial, messages[i], -1, -1);
+        HuWinMesSet(D_80107768_opboardtutorial, messages[i], -1, -1);
         if (i != 0) {
             func_80060C14_main(D_80107768_opboardtutorial, 1);
         }
@@ -495,7 +495,7 @@ void func_80106F40_opboardtutorial(void) {
     D_80107764_opboardtutorial->rot.z = cosdf(10.0f);
     D_80107764_opboardtutorial->flags |= 1;
     D_80107768_opboardtutorial = func_80060880_main(75, 197, 16);
-    func_8005BDFC_main(D_80107768_opboardtutorial, 0);
+    HuWinMesSpeedSet(D_80107768_opboardtutorial, 0);
     D_80107770_opboardtutorial[0] = func_80105FA8_opboardtutorial(D_80107764_opboardtutorial->omObj1->model[0], 0xA007E, "c204n_0_DEF");
     D_80107770_opboardtutorial[1] = func_80106184_opboardtutorial(0xA007F);
     D_80107770_opboardtutorial[2] = func_80106184_opboardtutorial(0xA0080);
@@ -537,16 +537,16 @@ void func_80106F40_opboardtutorial(void) {
     }
     HuPrcSleep(20);
     HuAudSeqPlay(11);
-    func_8005B43C_main(D_80107768_opboardtutorial, 0x1600, -1, -1);
+    HuWinMesSet(D_80107768_opboardtutorial, 0x1600, -1, -1);
     func_80060C14_main(D_80107768_opboardtutorial, 1);
     func_800EE614_shared_board(D_80107768_opboardtutorial);
     func_80060EA8_main(D_80107768_opboardtutorial, 1);
     func_80106990_opboardtutorial();
-    func_8005B43C_main(D_80107768_opboardtutorial, 0x1607, -1, -1);
+    HuWinMesSet(D_80107768_opboardtutorial, 0x1607, -1, -1);
     func_80060C14_main(D_80107768_opboardtutorial, 1);
     func_800EE614_shared_board(D_80107768_opboardtutorial);
     func_80060EA8_main(D_80107768_opboardtutorial, 1);
-    func_800610E0_main(D_80107768_opboardtutorial);
+    HuWinExCleanup(D_80107768_opboardtutorial);
 }
 
 void func_80107408_opboardtutorial(void) {
@@ -562,7 +562,7 @@ void func_80107448_opboardtutorial(omObjData *obj) {
     if (WipeStatGet() == 0) {
         func_80107594_opboardtutorial();
         func_8010751C_opboardtutorial();
-        func_8005F524_main();
+        HuWinAllKill();
         if (D_801075C0_opboardtutorial != 0) {
             func_800F4730_shared_board();
         }

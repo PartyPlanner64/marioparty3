@@ -391,7 +391,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_801075D4_modesel);
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80107638_modesel);
 
 void func_80107668_modesel(s32 arg0, f32 arg1, f32 arg2) {
-    func_8005BA90_main(D_80110998_modesel[arg0][0], arg1, arg2);
+    HuWinPosSet(D_80110998_modesel[arg0][0], arg1, arg2);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_801076D0_modesel);

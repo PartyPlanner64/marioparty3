@@ -189,7 +189,7 @@ void func_800FC260_name_81(s32 arg0, s16 arg1) {
     }
 
     func_800DAB1C_name_81();
-    func_8005A6B0_main();
+    HuWinInit();
     func_800EB664_name_81();
 
     D_80105494_name_81 = -1;
@@ -216,7 +216,7 @@ void func_800FC4E4_name_81(void) {
     func_800E0E38_name_81();
     func_800DF210_name_81();
     func_800F4314_name_81();
-    func_8005F524_main();
+    HuWinAllKill();
     func_800F4030_name_81();
     func_800D7F0C_name_81();
     func_800E9D9C_name_81();

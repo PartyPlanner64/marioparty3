@@ -358,7 +358,7 @@ void func_801008E8_name_81(void) {
             }
 
             if (GwPlayer[GwSystem.current_player_index].stat & 1) {
-                func_8005F904_main();
+                HuWinComKeyReset();
                 goto label; // break doesn't work here for some reason
             }
         } while (mbCameraBtnF != 0 && !(D_800C9520_main[temp_s2] & 0xE010));
@@ -398,7 +398,7 @@ void func_801008E8_name_81(void) {
             } else {
                 break;
             }
-            func_8005F904_main();
+            HuWinComKeyReset();
         }
         func_80100890_name_81();
         MBDCameraSpeedSet(temp_f22);

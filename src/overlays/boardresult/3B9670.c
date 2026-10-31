@@ -23,7 +23,7 @@ void func_801059A0_boardresult(void) {
     func_8010BC3C_boardresult();
     func_800D87DC_name_81(700.0f);
     func_800D85A8_name_81(1.6f);
-    func_8005A6B0_main();
+    HuWinInit();
     omAddPrcObj(func_8010BA98_boardresult, 0x300, 0x2000, 0);
     omAddObj(0x1000, 0, 0, -1, func_8010BBF0_boardresult);
 

@@ -491,17 +491,17 @@ void func_8011035C_msetup(void) {
         func_80054FF8_main(group, member, D_80119C10_msetup[initialSelection][i]);
     }
     for (i = 0; i < 2; i++) {
-        window = func_8005A968_main(D_80119B90_msetup[i][0], D_80119B90_msetup[i][1],
+        window = HuWinCreate(D_80119B90_msetup[i][0], D_80119B90_msetup[i][1],
                                     D_80119B90_msetup[i][2], D_80119B90_msetup[i][3], 0, 12);
         sprites.windows[i] = window;
-        func_8005BDFC_main(window, 0);
-        func_8005BEE0_main(window, 0);
+        HuWinMesSpeedSet(window, 0);
+        HuWinBGTPLvlSet(window, 0);
         func_8005FBF8_main(window, 255, 255, 255);
-        func_8005D294_main(window);
-        func_8005FE90_main(window);
+        HuWinHomeClear(window);
+        HuWinDispOff(window);
         HuPrcVSleep();
     }
-    func_8005F904_main();
+    HuWinComKeyReset();
     active = 0;
     previousSelection = state->unk02;
     currentState = 0;
@@ -514,9 +514,9 @@ void func_8011035C_msetup(void) {
                     for (i = 0; i < 8; i++) {
                         HuSprAttrReset(group, i, 0x8000);
                     }
-                    func_8005FFA8_main(sprites.windows[0]);
+                    HuWinDispOn(sprites.windows[0]);
                     previousSelection = -1;
-                    func_8005FFA8_main(sprites.windows[1]);
+                    HuWinDispOn(sprites.windows[1]);
                     active = 1;
                     break;
                 case 2:
@@ -524,8 +524,8 @@ void func_8011035C_msetup(void) {
                         HuSprAttrSet(group, i, 0x8000);
                     }
                     active = 0;
-                    func_8005FE90_main(sprites.windows[0]);
-                    func_8005FE90_main(sprites.windows[1]);
+                    HuWinDispOff(sprites.windows[0]);
+                    HuWinDispOff(sprites.windows[1]);
                     break;
             }
             currentState = state->state;
@@ -539,9 +539,9 @@ void func_8011035C_msetup(void) {
                 for (; i < 3; i++, member++) {
                     func_80054FF8_main(group, member, D_80119C10_msetup[selection][i]);
                 }
-                func_8005B43C_main(sprites.windows[0], D_80119BD0_msetup[selection], -1, -1);
-                func_8005D294_main(sprites.windows[1]);
-                func_8005B43C_main(sprites.windows[1], D_80119BF0_msetup[selection], -2, -1);
+                HuWinMesSet(sprites.windows[0], D_80119BD0_msetup[selection], -1, -1);
+                HuWinHomeClear(sprites.windows[1]);
+                HuWinMesSet(sprites.windows[1], D_80119BF0_msetup[selection], -2, -1);
                 previousSelection = state->unk02;
             }
         }
@@ -565,7 +565,7 @@ void func_8011035C_msetup(void) {
     }
     for (i = 0; i < 2; i++) {
         if (sprites.windows[i] >= 0) {
-            func_8005F364_main(sprites.windows[i]);
+            HuWinKill(sprites.windows[i]);
         }
     }
     state->state = 0;

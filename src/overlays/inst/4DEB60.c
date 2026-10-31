@@ -154,7 +154,7 @@ void func_801059A0_inst(void) {
 
     Hu3DAnimInit(1);
     omInitObjMan(0x1E, 0x1E);
-    func_8005A6B0_main();
+    HuWinInit();
     func_8000B5F0_main(1);
     ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
@@ -390,7 +390,7 @@ void func_80106388_inst(void) {
 
 void func_801063F4_inst(void) {
     func_80037258_main();
-    func_8005F524_main();
+    HuWinAllKill();
 }
 
 s32 func_80106418_inst(Vec *startPosition, Vec *endPosition, Vec *startTarget, Vec *endTarget, s32 duration) {

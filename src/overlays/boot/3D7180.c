@@ -55,7 +55,7 @@ void func_80105AF0_ovl_boot(omObjData *arg0) {
 
 void func_80105BA4_ovl_boot(omObjData *arg0) {
     if (WipeStatGet() == 0) {
-        func_8005F524_main();
+        HuWinAllKill();
         if (D_80105F00_ovl_boot != 0) {
             omOvlGotoEx(opening, 2, 0x92);
             return;

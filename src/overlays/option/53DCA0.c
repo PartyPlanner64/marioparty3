@@ -383,67 +383,67 @@ INCLUDE_ASM("asm/nonmatchings/overlays/option/53DCA0", func_801110C0_option);
 s32 func_8011130C_option(s32 message, s16 x, s16 y, s16 width, s16 height) {
     s16 winID;
 
-    winID = func_8005A968_main(x, y, width, height, 0, 8);
+    winID = HuWinCreate(x, y, width, height, 0, 8);
     func_8005B63C_main(winID, -1, 17);
-    func_8005BDFC_main(winID, 0);
-    func_8005BEE0_main(winID, 255);
+    HuWinMesSpeedSet(winID, 0);
+    HuWinBGTPLvlSet(winID, 255);
     func_80060144_main(winID);
-    func_8005BE30_main(winID, 1);
+    HuWinPriSet(winID, 1);
     func_8005FE54_main(winID, 1);
     func_8005C154_main(winID, 192, 192, 192);
     func_8005FBF8_main(winID, 0, 64, 64);
-    func_8005C02C_main(winID, 7);
-    func_8005C060_main(winID, 2, 255, 64, 64);
-    func_8005C060_main(winID, 4, 96, 255, 64);
-    func_8005C060_main(winID, 6, 255, 255, 64);
-    func_8005D294_main(winID);
-    func_8005B43C_main(winID, message, -1, -1);
+    HuWinMesColSet(winID, 7);
+    HuWinMesPalSet(winID, 2, 255, 64, 64);
+    HuWinMesPalSet(winID, 4, 96, 255, 64);
+    HuWinMesPalSet(winID, 6, 255, 255, 64);
+    HuWinHomeClear(winID);
+    HuWinMesSet(winID, message, -1, -1);
     return winID;
 }
 
 s32 func_80111458_option(s32 message, s16 x, s16 y, s16 width, s16 height) {
     s16 winID;
 
-    winID = func_8005A968_main(x, y, width, height, 0, 4);
+    winID = HuWinCreate(x, y, width, height, 0, 4);
     func_8005B63C_main(winID, -1, 17);
-    func_8005BDFC_main(winID, 0);
-    func_8005BEE0_main(winID, 255);
+    HuWinMesSpeedSet(winID, 0);
+    HuWinBGTPLvlSet(winID, 255);
     func_80060144_main(winID);
-    func_8005BE30_main(winID, 1);
+    HuWinPriSet(winID, 1);
     func_8005FE54_main(winID, 1);
-    func_8005C060_main(winID, 5, 0, 176, 192);
-    func_8005C060_main(winID, 2, 255, 64, 64);
-    func_8005C060_main(winID, 4, 96, 255, 64);
-    func_8005C060_main(winID, 6, 255, 255, 64);
+    HuWinMesPalSet(winID, 5, 0, 176, 192);
+    HuWinMesPalSet(winID, 2, 255, 64, 64);
+    HuWinMesPalSet(winID, 4, 96, 255, 64);
+    HuWinMesPalSet(winID, 6, 255, 255, 64);
     func_8005C154_main(winID, 192, 192, 192);
     func_8005FBF8_main(winID, 255, 255, 255);
-    func_8005C02C_main(winID, 1);
-    func_8005D294_main(winID);
-    func_8005B43C_main(winID, message, -1, -1);
+    HuWinMesColSet(winID, 1);
+    HuWinHomeClear(winID);
+    HuWinMesSet(winID, message, -1, -1);
     return winID;
 }
 
 s32 func_801115C0_option(s32 message, s16 x, s16 y, s16 width, s16 height) {
     s16 winID;
 
-    winID = func_8005A968_main(x, y, width, height, 0, 8);
+    winID = HuWinCreate(x, y, width, height, 0, 8);
     func_8005B63C_main(winID, -1, 17);
-    func_8005BDFC_main(winID, 0);
+    HuWinMesSpeedSet(winID, 0);
     func_80060144_main(winID);
-    func_8005BE30_main(winID, 1);
+    HuWinPriSet(winID, 1);
     func_8005FE54_main(winID, 1);
-    func_8005C060_main(winID, 5, 0, 176, 192);
-    func_8005C060_main(winID, 7, 255, 255, 255);
-    func_8005C060_main(winID, 0, 0, 0, 0);
-    func_8005C060_main(winID, 3, 0, 0, 0);
-    func_8005C060_main(winID, 2, 255, 64, 64);
-    func_8005C060_main(winID, 4, 96, 255, 64);
-    func_8005C060_main(winID, 6, 255, 255, 64);
+    HuWinMesPalSet(winID, 5, 0, 176, 192);
+    HuWinMesPalSet(winID, 7, 255, 255, 255);
+    HuWinMesPalSet(winID, 0, 0, 0, 0);
+    HuWinMesPalSet(winID, 3, 0, 0, 0);
+    HuWinMesPalSet(winID, 2, 255, 64, 64);
+    HuWinMesPalSet(winID, 4, 96, 255, 64);
+    HuWinMesPalSet(winID, 6, 255, 255, 64);
     func_8005C154_main(winID, 192, 192, 0);
     func_8005FBF8_main(winID, 255, 255, 255);
-    func_8005C02C_main(winID, 6);
-    func_8005D294_main(winID);
-    func_8005B43C_main(winID, message, -1, -1);
+    HuWinMesColSet(winID, 6);
+    HuWinHomeClear(winID);
+    HuWinMesSet(winID, message, -1, -1);
     return winID;
 }
 
@@ -451,12 +451,12 @@ s32 func_80111768_option(s32 message, s16 x, s16 y) {
     s16 winID;
 
     winID = func_80060880_main(x, y, 19);
-    func_8005C060_main(winID, 2, 255, 64, 64);
-    func_8005C060_main(winID, 4, 96, 255, 64);
-    func_8005C060_main(winID, 6, 255, 255, 64);
+    HuWinMesPalSet(winID, 2, 255, 64, 64);
+    HuWinMesPalSet(winID, 4, 96, 255, 64);
+    HuWinMesPalSet(winID, 6, 255, 255, 64);
     func_80060C14_main(winID, 1);
     func_8005FE54_main(winID, 1);
-    func_8005B43C_main(winID, message, -1, -1);
+    HuWinMesSet(winID, message, -1, -1);
     return winID;
 }
 
@@ -464,12 +464,12 @@ s32 func_80111834_option(s32 message, s16 x, s16 y) {
     s16 winID;
 
     winID = func_80060880_main(x, y, 20);
-    func_8005C060_main(winID, 2, 255, 64, 64);
-    func_8005C060_main(winID, 4, 96, 255, 64);
-    func_8005C060_main(winID, 6, 255, 255, 64);
+    HuWinMesPalSet(winID, 2, 255, 64, 64);
+    HuWinMesPalSet(winID, 4, 96, 255, 64);
+    HuWinMesPalSet(winID, 6, 255, 255, 64);
     func_80060C14_main(winID, 0);
     func_8005FE54_main(winID, 1);
-    func_8005B43C_main(winID, message, -1, -1);
+    HuWinMesSet(winID, message, -1, -1);
     return winID;
 }
 
@@ -477,12 +477,12 @@ s32 func_80111900_option(s32 message, s16 x, s16 y) {
     s16 winID;
 
     winID = func_80060880_main(x, y, 19);
-    func_8005C060_main(winID, 2, 255, 64, 64);
-    func_8005C060_main(winID, 4, 96, 255, 64);
-    func_8005C060_main(winID, 6, 255, 255, 64);
+    HuWinMesPalSet(winID, 2, 255, 64, 64);
+    HuWinMesPalSet(winID, 4, 96, 255, 64);
+    HuWinMesPalSet(winID, 6, 255, 255, 64);
     func_8005FE54_main(winID, 1);
     func_80060C14_main(winID, 0);
-    func_8005B43C_main(winID, message, -1, -1);
+    HuWinMesSet(winID, message, -1, -1);
     return winID;
 }
 
@@ -498,10 +498,10 @@ void func_801119CC_option(void) {
 void func_80111A10_option(s32 arg0) {
     if (D_80115A78_option[arg0].unk_08 == 3) {
         func_80060EA8_main(D_80115A78_option[arg0].winID, 1);
-        func_800610E0_main(D_80115A78_option[arg0].winID);
+        HuWinExCleanup(D_80115A78_option[arg0].winID);
     } else {
-        func_8005FE90_main(D_80115A78_option[arg0].winID);
-        func_8005F364_main(D_80115A78_option[arg0].winID);
+        HuWinDispOff(D_80115A78_option[arg0].winID);
+        HuWinKill(D_80115A78_option[arg0].winID);
         D_80115A78_option[arg0].winID = -1;
     }
     if (D_80115A78_option[arg0].unk_04 != NULL) {
@@ -521,25 +521,25 @@ void func_80111AF4_option(void) {
 }
 
 void func_80111B58_option(s32 arg0, f32 arg1, f32 arg2) {
-    func_8005BB18_main(D_80115A78_option[arg0].winID, arg1, arg2);
+    HuWinScaleSet(D_80115A78_option[arg0].winID, arg1, arg2);
 }
 
 void func_80111B88_option(s32 arg0, f32 arg1, f32 arg2) {
-    func_8005BA90_main(D_80115A78_option[arg0].winID, arg1, arg2);
+    HuWinPosSet(D_80115A78_option[arg0].winID, arg1, arg2);
 }
 
 void func_80111BF0_option(s32 arg0) {
-    func_8005FFA8_main(D_80115A78_option[arg0].winID);
+    HuWinDispOn(D_80115A78_option[arg0].winID);
 }
 
 void func_80111C20_option(s32 arg0) {
-    func_8005FE90_main(D_80115A78_option[arg0].winID);
+    HuWinDispOff(D_80115A78_option[arg0].winID);
 }
 
 void func_80111C50_option(s32 arg0, u32 arg1) {
     u32 message;
 
-    func_8005D294_main(D_80115A78_option[arg0].winID);
+    HuWinHomeClear(D_80115A78_option[arg0].winID);
     if (D_80115A78_option[arg0].unk_04 != NULL) {
         func_80019C00_main(D_80115A78_option[arg0].unk_04);
         D_80115A78_option[arg0].unk_04 = NULL;
@@ -548,7 +548,7 @@ void func_80111C50_option(s32 arg0, u32 arg1) {
     if (message > 0x80000000U) {
         D_80115A78_option[arg0].unk_04 = (void *)message;
     }
-    func_8005B43C_main(D_80115A78_option[arg0].winID, message, -1, -1);
+    HuWinMesSet(D_80115A78_option[arg0].winID, message, -1, -1);
 }
 
 void func_80111D1C_option(s32 arg0, s8 arg1, u32 arg2) {
@@ -556,7 +556,7 @@ void func_80111D1C_option(s32 arg0, s8 arg1, u32 arg2) {
 }
 
 s32 func_80111D58_option(s32 arg0, s16 arg1, s32 arg2) {
-    return func_8005E1D8_main(D_80115A78_option[arg0].winID, arg1, arg2);
+    return HuWinChoiceGet(D_80115A78_option[arg0].winID, arg1, arg2);
 }
 
 s16 func_80111D90_option(s32 arg0) {
@@ -564,7 +564,7 @@ s16 func_80111D90_option(s32 arg0) {
 }
 
 void func_80111DAC_option(s32 arg0) {
-    while (func_8005E0C0_main(D_80115A78_option[arg0].winID) != 0) {
+    while (HuWinStatGet(D_80115A78_option[arg0].winID) != 0) {
         HuPrcVSleep();
     }
 }
@@ -576,7 +576,7 @@ void func_80111E00_option(s32 arg0) {
 }
 
 void func_80111E3C_option(s32 arg0, s16 arg1) {
-    func_8005BE30_main(D_80115A78_option[arg0].winID, arg1);
+    HuWinPriSet(D_80115A78_option[arg0].winID, arg1);
 }
 
 u16 func_80111E74_option(s32 value) {

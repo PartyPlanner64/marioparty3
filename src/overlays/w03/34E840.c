@@ -124,7 +124,7 @@ void func_8010622C_w03(void) {
         mesNum = 0x5E0A;
     }
 
-    func_8005B43C_main(guide->amount, mesNum, -1, -1);
+    HuWinMesSet(guide->amount, mesNum, -1, -1);
     func_80060C14_main(guide->amount, 1);
     HuAudFXPlay(0x2A7);
     temp = first;
@@ -146,7 +146,7 @@ void func_8010622C_w03(void) {
     D_8011EB08_w03 = proc;
     proc->user_data = temp;
     HuPrcSleep(30);
-    D_800CC69C_main[guide->amount].unk20 = 1;
+    winData[guide->amount].unk20 = 1;
     HuPrcVSleep();
     func_80060C14_main(guide->amount, 1);
     func_800EE2C0_shared_board(guide->amount);
@@ -169,7 +169,7 @@ void func_8010622C_w03(void) {
     D_8011EB08_w03 = proc;
     proc->user_data = temp;
     HuPrcSleep(30);
-    D_800CC69C_main[guide->amount].unk20 = 1;
+    winData[guide->amount].unk20 = 1;
     HuPrcVSleep();
     func_80060C14_main(guide->amount, 1);
     func_800EE2C0_shared_board(guide->amount);

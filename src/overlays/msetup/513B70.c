@@ -504,9 +504,9 @@ void func_80118D48_msetup(void) {
     D_8011A910_msetup = func_80060880_main(160, 204, 19);
     func_8005FE54_main(D_8011A910_msetup, 1 << D_8011A948_msetup);
     func_8006105C_main(D_8011A910_msetup, 0xE0);
-    func_8005C060_main(D_8011A910_msetup, 2, 255, 64, 64);
-    func_8005C060_main(D_8011A910_msetup, 4, 96, 255, 64);
-    func_8005C060_main(D_8011A910_msetup, 6, 255, 255, 64);
+    HuWinMesPalSet(D_8011A910_msetup, 2, 255, 64, 64);
+    HuWinMesPalSet(D_8011A910_msetup, 4, 96, 255, 64);
+    HuWinMesPalSet(D_8011A910_msetup, 6, 255, 255, 64);
     func_80060C14_main(D_8011A910_msetup, 0);
     HuAudSeqPlay(10);
     WipeColorSet(255, 255, 255);
@@ -519,8 +519,8 @@ void func_80118D48_msetup(void) {
     do {
         switch (step) {
             case 0:
-                func_8005B43C_main(D_8011A910_msetup, 0x6000, -1, -1);
-                while (func_8005E0C0_main(D_8011A910_msetup)) {
+                HuWinMesSet(D_8011A910_msetup, 0x6000, -1, -1);
+                while (HuWinStatGet(D_8011A910_msetup)) {
                     HuPrcVSleep();
                 }
                 step++;
@@ -531,12 +531,12 @@ void func_80118D48_msetup(void) {
                 do {
                     HuPrcVSleep();
                 } while (first.state);
-                func_8005B43C_main(D_8011A910_msetup, 0x6001, -1, -1);
+                HuWinMesSet(D_8011A910_msetup, 0x6001, -1, -1);
                 first.state = 5;
                 do {
                     HuPrcVSleep();
                 } while (first.state);
-                func_8005D294_main(D_8011A910_msetup);
+                HuWinHomeClear(D_8011A910_msetup);
                 if (first.result >= 0) {
                     first.state = 3;
                     step++;
@@ -548,12 +548,12 @@ void func_80118D48_msetup(void) {
                 do {
                     HuPrcVSleep();
                 } while (second.state);
-                func_8005B43C_main(D_8011A910_msetup, 0x6002, -1, -1);
+                HuWinMesSet(D_8011A910_msetup, 0x6002, -1, -1);
                 second.state = 5;
                 do {
                     HuPrcVSleep();
                 } while (second.state);
-                func_8005D294_main(D_8011A910_msetup);
+                HuWinHomeClear(D_8011A910_msetup);
                 if (second.result < 0) {
                     second.state = 3;
                     step--;
@@ -569,8 +569,8 @@ void func_80118D48_msetup(void) {
                 do {
                     HuPrcVSleep();
                 } while (third.state);
-                func_8005B43C_main(D_8011A910_msetup, 0x6004, -1, -1);
-                while (func_8005E0C0_main(D_8011A910_msetup)) {
+                HuWinMesSet(D_8011A910_msetup, 0x6004, -1, -1);
+                while (HuWinStatGet(D_8011A910_msetup)) {
                     HuPrcVSleep();
                 }
                 previous = -1;
@@ -579,14 +579,14 @@ void func_80118D48_msetup(void) {
                     if (previous != third.result) {
                         previous = third.result;
                         if (third.result != 0) {
-                            func_8005B43C_main(D_8011A910_msetup, 0x6006, -1, -1);
+                            HuWinMesSet(D_8011A910_msetup, 0x6006, -1, -1);
                         } else {
-                            func_8005B43C_main(D_8011A910_msetup, 0x6005, -1, -1);
+                            HuWinMesSet(D_8011A910_msetup, 0x6005, -1, -1);
                         }
                     }
                     HuPrcVSleep();
                 } while (third.state);
-                func_8005D294_main(D_8011A910_msetup);
+                HuWinHomeClear(D_8011A910_msetup);
                 if (third.result < 0) {
                     third.state = 3;
                     first.state = 3;
@@ -603,11 +603,11 @@ void func_80118D48_msetup(void) {
                 do {
                     HuPrcVSleep();
                 } while (second.state);
-                func_8005B43C_main(D_8011A910_msetup, 0x6003, -1, -1);
-                while (func_8005E0C0_main(D_8011A910_msetup)) {
+                HuWinMesSet(D_8011A910_msetup, 0x6003, -1, -1);
+                while (HuWinStatGet(D_8011A910_msetup)) {
                     HuPrcVSleep();
                 }
-                if (func_8005E1D8_main(D_8011A910_msetup, 0, 0) != 0) {
+                if (HuWinChoiceGet(D_8011A910_msetup, 0, 0) != 0) {
                     first.state = 4;
                     second.state = 4;
                     step--;
@@ -645,7 +645,7 @@ void func_80118D48_msetup(void) {
                     second.state = 6;
                     third.state = 6;
                 }
-                func_8005D294_main(D_8011A910_msetup);
+                HuWinHomeClear(D_8011A910_msetup);
                 break;
         }
         HuPrcVSleep();

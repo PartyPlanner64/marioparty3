@@ -541,7 +541,7 @@ void MBObjectSetup(s32 arg0, s16 arg1, s32 arg2, s32 unused) {
     MBTelopInit();
     func_800F453C_shared_board();
     func_800DB5DC_shared_board();
-    func_8005A6B0_main();
+    HuWinInit();
     func_800ECAB4_shared_board();
     D_80105664_shared_board = -1;
     D_800D1360.unk_20 = 0;
@@ -568,7 +568,7 @@ void MBExit(void) {
     func_800E18FC_shared_board();
     MBMgCallClose();
     func_800F2A34_shared_board();
-    func_8005F524_main();
+    HuWinAllKill();
     MBKSuitClose();
     func_800F27C4_shared_board();
     MBModelClose();
@@ -1205,24 +1205,24 @@ static s32 func_800FA104_shared_board(u8 *arg0) {
                 sp18[GwPlayer[system->current_player_index].pad] = -0x8000;
             }
             if (j == 0) {
-                func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
             } else {
-                func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], 5);
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], 5);
             }
         }
     } else {
-        func_8005F744_main(sp18[0], sp18[1], sp18[2], sp18[3]);
+        HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
     }
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if (arg0[i] == 0) {
-            func_8006010C_main(mbDlgWinId, i);
+            HuWinChoiceDisable(mbDlgWinId, i);
         }
     }
 
     i = 0;
     do {
-        i = func_8005E1D8_main(mbDlgWinId, i, 1);
+        i = HuWinChoiceGet(mbDlgWinId, i, 1);
     } while (arg0[i] == 0);
     return i;
 }
@@ -1538,8 +1538,8 @@ s32 MBKettouExec(GW_PLAYER *arg0, s32 arg1) {
 
     // Coin wager selection
     sprintf(sp20[0], "%d", 999);
-    func_8006022C_main((u32)sp20[0], 0);
-    func_80060394_main(1, sp68, 0x4003);
+    HuWinInsertMesSizeGet((u32)sp20[0], 0);
+    HuWinMesMaxSizeGet(1, sp68, 0x4003);
     sp84 = MBWinCreate(6, sp68, 0x64);
 
     var_s1_3 = 1;
@@ -1553,9 +1553,9 @@ s32 MBKettouExec(GW_PLAYER *arg0, s32 arg1) {
     }
 
     sprintf(sp20[0], "%d", var_s1_3);
-    func_8005B6BC_main(sp84, (u32)&sp20, 0);
-    func_8005B43C_main(sp84, 0x4003, -1, -1);
-    func_80061388_main(sp84);
+    HuWinInsertMesSet(sp84, (u32)&sp20, 0);
+    HuWinMesSet(sp84, 0x4003, -1, -1);
+    HuWinExAnimIn(sp84);
 
     if (MBPlayerComCheck(-1) != 0) {
         var_s3 = func_800F9F84_shared_board(var_s4);
@@ -1630,15 +1630,15 @@ s32 MBKettouExec(GW_PLAYER *arg0, s32 arg1) {
         var_s5 = var_s1_3;
 
         sprintf(sp20[0], "%d", var_s1_3);
-        func_8005B6BC_main(sp84, (u32)&sp20, 0);
-        func_8005B43C_main(sp84, 0x4003, -1, -1);
+        HuWinInsertMesSet(sp84, (u32)&sp20, 0);
+        HuWinMesSet(sp84, 0x4003, -1, -1);
 
         HuPrcVSleep();
     }
 
     HuAudFXPlay(0x247);
-    func_80061A5C_main(sp84, 0);
-    func_8005F364_main(sp84);
+    HuWinExAnimOut(sp84, 0);
+    HuWinKill(sp84);
     HuPrcSleep(0xA);
     MBCoinChangeStatusCreate(GwSystem.current_player_index, -var_s1_3);
     MBCoinTakeCreateSound(GwSystem.current_player_index, -var_s1_3, 0);
@@ -2284,13 +2284,13 @@ static void MBMain(void) {
                         _SetFlag(0);
                         GWBoardFlagSet(0);
 
-                        func_80060394_main(1, sp30, 0x5900);
-                        temp_v0_2 = func_8005A968_main(0, 0, sp30[0], sp30[1], 0, 2);
-                        func_8005BEE0_main(temp_v0_2, 0);
-                        func_8005B43C_main(temp_v0_2, 0x5900, -1, -1);
-                        func_8005BDFC_main(temp_v0_2, 0);
+                        HuWinMesMaxSizeGet(1, sp30, 0x5900);
+                        temp_v0_2 = HuWinCreate(0, 0, sp30[0], sp30[1], 0, 2);
+                        HuWinBGTPLvlSet(temp_v0_2, 0);
+                        HuWinMesSet(temp_v0_2, 0x5900, -1, -1);
+                        HuWinMesSpeedSet(temp_v0_2, 0);
 
-                        while (func_8005E0C0_main(temp_v0_2) != 0) {
+                        while (HuWinStatGet(temp_v0_2) != 0) {
                             HuPrcVSleep();
                         }
 
@@ -2303,14 +2303,14 @@ static void MBMain(void) {
                             func_800500E0_main(1);
                         }
 
-                        func_8005F364_main(temp_v0_2);
-                        func_80060394_main(1, sp30, 0x5901);
-                        temp_v0_3 = func_8005A968_main(0, 0, sp30[0], sp30[1], 0, 2);
-                        func_8005BEE0_main(temp_v0_3, 0);
-                        func_8005B43C_main(temp_v0_3, 0x5901, -1, -1);
-                        func_8005BDFC_main(temp_v0_3, 0);
+                        HuWinKill(temp_v0_2);
+                        HuWinMesMaxSizeGet(1, sp30, 0x5901);
+                        temp_v0_3 = HuWinCreate(0, 0, sp30[0], sp30[1], 0, 2);
+                        HuWinBGTPLvlSet(temp_v0_3, 0);
+                        HuWinMesSet(temp_v0_3, 0x5901, -1, -1);
+                        HuWinMesSpeedSet(temp_v0_3, 0);
                         HuPrcSleep(0xF);
-                        func_8005F364_main(temp_v0_3);
+                        HuWinKill(temp_v0_3);
                         break;
                 }
             }
@@ -2732,17 +2732,17 @@ static void MBMain(void) {
                     func_800DE858_shared_board();
 
                     // Display message window
-                    func_80060394_main(1, sp30, 0x3F00);
-                    temp_v0_9 = func_80061188_main(-1, 0xA0 - (sp30[0] / 2), 0x96, sp30[0], sp30[1], 0);
-                    func_8005B43C_main(temp_v0_9, 0x3F00, -1, -1);
-                    func_80061388_main(temp_v0_9);
+                    HuWinMesMaxSizeGet(1, sp30, 0x3F00);
+                    temp_v0_9 = HuWinExCreate(-1, 0xA0 - (sp30[0] / 2), 0x96, sp30[0], sp30[1], 0);
+                    HuWinMesSet(temp_v0_9, 0x3F00, -1, -1);
+                    HuWinExAnimIn(temp_v0_9);
                     func_800600C0_main(temp_v0_9, 1);
                     HuPrcChildWait();
 
                     func_800600C0_main(temp_v0_9, 0);
                     func_800EDC58_shared_board(temp_v0_9, temp_v0_4->turn);
-                    func_80061A5C_main(temp_v0_9, 0);
-                    func_8005F364_main(temp_v0_9);
+                    HuWinExAnimOut(temp_v0_9, 0);
+                    HuWinKill(temp_v0_9);
                     func_800DE868_shared_board();
 
                     // Wait for player input
@@ -2751,13 +2751,13 @@ static void MBMain(void) {
                     }
 
                     // Display follow-up message
-                    func_80060394_main(1, sp30, 0x3F01);
-                    temp_v0_9 = func_80061188_main(-1, 0xA0 - (sp30[0] / 2), 0x96, sp30[0], sp30[1], 0);
-                    func_8005B43C_main(temp_v0_9, 0x3F01, -1, -1);
-                    func_80061388_main(temp_v0_9);
+                    HuWinMesMaxSizeGet(1, sp30, 0x3F01);
+                    temp_v0_9 = HuWinExCreate(-1, 0xA0 - (sp30[0] / 2), 0x96, sp30[0], sp30[1], 0);
+                    HuWinMesSet(temp_v0_9, 0x3F01, -1, -1);
+                    HuWinExAnimIn(temp_v0_9);
                     func_800EDC58_shared_board(temp_v0_9, temp_v0_4->turn);
-                    func_80061A5C_main(temp_v0_9, 0);
-                    func_8005F364_main(temp_v0_9);
+                    HuWinExAnimOut(temp_v0_9, 0);
+                    HuWinKill(temp_v0_9);
                     func_800DE868_shared_board();
 
                     HuPrcChildLink(telopProc, temp_s1);
@@ -2779,16 +2779,16 @@ static void MBMain(void) {
                     HuPrcChildLink(telopProc, MBCameraZoomMotStart(1.6f));
                     temp_s1 = func_800DE7E4_shared_board(system->current_player_index);
                     func_800DE858_shared_board();
-                    func_80060394_main(1, sp38, 0x3F00);
-                    temp_v0_9 = func_80061188_main(-1, 0xA0 - (sp38[0] / 2), 0x96, sp38[0], sp38[1], 0);
-                    func_8005B43C_main(temp_v0_9, 0x3F00, -1, -1);
-                    func_80061388_main(temp_v0_9);
+                    HuWinMesMaxSizeGet(1, sp38, 0x3F00);
+                    temp_v0_9 = HuWinExCreate(-1, 0xA0 - (sp38[0] / 2), 0x96, sp38[0], sp38[1], 0);
+                    HuWinMesSet(temp_v0_9, 0x3F00, -1, -1);
+                    HuWinExAnimIn(temp_v0_9);
                     func_800600C0_main(temp_v0_9, 1);
                     HuPrcChildWait();
                     func_800600C0_main(temp_v0_9, 0);
                     func_800EDC58_shared_board(temp_v0_9, temp_v0_4->turn);
-                    func_80061A5C_main(temp_v0_9, 0);
-                    func_8005F364_main(temp_v0_9);
+                    HuWinExAnimOut(temp_v0_9, 0);
+                    HuWinKill(temp_v0_9);
                     func_800DE868_shared_board();
 
                     while (!func_800DE84C_shared_board()) {
@@ -2797,13 +2797,13 @@ static void MBMain(void) {
 
                     HuPrcChildLink(telopProc, temp_s1);
                     HuPrcChildWait();
-                    func_80060394_main(1, sp38, 0x3F02);
-                    temp_v0_9 = func_80061188_main(-1, 0xA0 - (sp38[0] / 2), 0x96, sp38[0], sp38[1], 0);
-                    func_8005B43C_main(temp_v0_9, 0x3F02, -1, -1);
-                    func_80061388_main(temp_v0_9);
+                    HuWinMesMaxSizeGet(1, sp38, 0x3F02);
+                    temp_v0_9 = HuWinExCreate(-1, 0xA0 - (sp38[0] / 2), 0x96, sp38[0], sp38[1], 0);
+                    HuWinMesSet(temp_v0_9, 0x3F02, -1, -1);
+                    HuWinExAnimIn(temp_v0_9);
                     func_800EDC58_shared_board(temp_v0_9, temp_v0_4->turn);
-                    func_80061A5C_main(temp_v0_9, 0);
-                    func_8005F364_main(temp_v0_9);
+                    HuWinExAnimOut(temp_v0_9, 0);
+                    HuWinKill(temp_v0_9);
                     HuPrcChildLink(telopProc, MBCameraZoomMotStart(1.3f));
                     HuPrcChildWait();
                     HuPrcSleep(1);
@@ -2838,17 +2838,17 @@ static void MBMain(void) {
                     func_800DE858_shared_board();
 
                     // Display item message window
-                    func_80060394_main(1, sp40, 0x3F00);
-                    temp_v0_9 = func_80061188_main(-1, 0xA0 - (sp40[0] / 2), 0x96, sp40[0], sp40[1], 0);
-                    func_8005B43C_main(temp_v0_9, 0x3F00, -1, -1);
-                    func_80061388_main(temp_v0_9);
+                    HuWinMesMaxSizeGet(1, sp40, 0x3F00);
+                    temp_v0_9 = HuWinExCreate(-1, 0xA0 - (sp40[0] / 2), 0x96, sp40[0], sp40[1], 0);
+                    HuWinMesSet(temp_v0_9, 0x3F00, -1, -1);
+                    HuWinExAnimIn(temp_v0_9);
                     func_800600C0_main(temp_v0_9, 1);
                     HuPrcChildWait();
 
                     func_800600C0_main(temp_v0_9, 0);
                     func_800EDC58_shared_board(temp_v0_9, temp_v0_4->turn);
-                    func_80061A5C_main(temp_v0_9, 0);
-                    func_8005F364_main(temp_v0_9);
+                    HuWinExAnimOut(temp_v0_9, 0);
+                    HuWinKill(temp_v0_9);
                     func_800DE868_shared_board();
 
                     // Wait for input
@@ -2857,17 +2857,17 @@ static void MBMain(void) {
                     }
 
                     func_800DE868_shared_board();
-                    func_8006022C_main(var_s1 + 0x3F04, 0);
+                    HuWinInsertMesSizeGet(var_s1 + 0x3F04, 0);
 
                     // Display item received message
-                    func_80060394_main(1, sp40, 0x3F03);
-                    temp_v0_9 = func_80061188_main(-1, 0xA0 - (sp40[0] / 2), 0x96, sp40[0], sp40[1], 0);
-                    func_8005B6BC_main(temp_v0_9, var_s1 + 0x3F04, 0);
-                    func_8005B43C_main(temp_v0_9, 0x3F03, -1, -1);
-                    func_80061388_main(temp_v0_9);
+                    HuWinMesMaxSizeGet(1, sp40, 0x3F03);
+                    temp_v0_9 = HuWinExCreate(-1, 0xA0 - (sp40[0] / 2), 0x96, sp40[0], sp40[1], 0);
+                    HuWinInsertMesSet(temp_v0_9, var_s1 + 0x3F04, 0);
+                    HuWinMesSet(temp_v0_9, 0x3F03, -1, -1);
+                    HuWinExAnimIn(temp_v0_9);
                     func_800EDC58_shared_board(temp_v0_9, temp_v0_4->turn);
-                    func_80061A5C_main(temp_v0_9, 0);
-                    func_8005F364_main(temp_v0_9);
+                    HuWinExAnimOut(temp_v0_9, 0);
+                    HuWinKill(temp_v0_9);
 
                     // Check if player has empty item slot
                     if (MBItemFindEmpty(system->current_player_index) == -1) {

@@ -266,7 +266,7 @@ void func_801059D0_option(void) {
     }
     func_80030030_main(1.0f);
     pfInit();
-    func_8005A6B0_main();
+    HuWinInit();
     HmfLightMaxSet(3);
     HmfLightColorSet(0, 128, 128, 128);
     HmfLightColorSet(1, 64, 64, 96);
@@ -1076,7 +1076,7 @@ void func_80108B58_option(void) {
     active = selection;
     func_8010FA28_option();
     func_8011239C_option();
-    func_8005F524_main();
+    HuWinAllKill();
     omOvlKill();
     switch (active) {
         case 0:
@@ -1603,7 +1603,7 @@ void func_8010A66C_option(void) {
     }
     result = selection;
     func_80112A44_option();
-    func_8005F524_main();
+    HuWinAllKill();
     omOvlKill();
     switch (result) {
         case 4:
@@ -2173,7 +2173,7 @@ void func_8010C224_option(void) {
     }
     result = selection;
     func_80112E14_option();
-    func_8005F524_main();
+    HuWinAllKill();
     omOvlKill();
     switch (result) {
         case 3:
@@ -2239,14 +2239,14 @@ void func_8010E8E0_option(void) {
     func_80113384_option(2);
     func_80112028_option(1, 30, 40);
     func_80113384_option(1);
-    titleWindow = func_80061188_main(-1, 24, 28, 120, 20, 0);
-    func_8005BEE0_main(titleWindow, 0);
+    titleWindow = HuWinExCreate(-1, 24, 28, 120, 20, 0);
+    HuWinBGTPLvlSet(titleWindow, 0);
     func_8005C154_main(titleWindow, 192, 192, 192);
     func_8005FBF8_main(titleWindow, 255, 255, 255);
-    func_8005C060_main(titleWindow, 0, 0, 0, 0);
-    func_8005C02C_main(titleWindow, 0);
-    func_8005B43C_main(titleWindow, menu.pages[0].title, -1, -1);
-    func_8005FFA8_main(titleWindow);
+    HuWinMesPalSet(titleWindow, 0, 0, 0, 0);
+    HuWinMesColSet(titleWindow, 0);
+    HuWinMesSet(titleWindow, menu.pages[0].title, -1, -1);
+    HuWinDispOn(titleWindow);
     customSounds = 0;
     if (func_800E905C_minigame(0) >= 0) {
         customSounds = 1;
@@ -2283,27 +2283,27 @@ void func_8010E8E0_option(void) {
         menu.pages[14].entries[0].sound = 0x240;
     }
     for (i = 0; i < 9; i++) {
-        windows[i] = func_80061188_main(-1, 36, (i + 1) * 14 + 28, 120, 20, 0);
-        func_8005BEE0_main(windows[i], 0);
+        windows[i] = HuWinExCreate(-1, 36, (i + 1) * 14 + 28, 120, 20, 0);
+        HuWinBGTPLvlSet(windows[i], 0);
         func_8005C154_main(windows[i], 192, 192, 192);
         func_8005FBF8_main(windows[i], 255, 255, 255);
-        func_8005C060_main(windows[i], 0, 0, 0, 0);
-        func_8005C02C_main(windows[i], 0);
+        HuWinMesPalSet(windows[i], 0, 0, 0, 0);
+        HuWinMesColSet(windows[i], 0);
         if (menu.pages[page].entries[i].message != -1) {
-            func_8005B43C_main(windows[i], menu.pages[page].entries[i].message, -1, -1);
+            HuWinMesSet(windows[i], menu.pages[page].entries[i].message, -1, -1);
         } else {
-            func_8005D294_main(windows[i]);
+            HuWinHomeClear(windows[i]);
         }
-        func_8005FFA8_main(windows[i]);
+        HuWinDispOn(windows[i]);
     }
-    windows[10] = func_80061188_main(-1, 36, 176, 120, 44, 0);
-    func_8005BEE0_main(windows[10], 0);
+    windows[10] = HuWinExCreate(-1, 36, 176, 120, 44, 0);
+    HuWinBGTPLvlSet(windows[10], 0);
     func_8005C154_main(windows[10], 192, 192, 192);
     func_8005FBF8_main(windows[10], 255, 255, 255);
-    func_8005C060_main(windows[10], 0, 0, 0, 0);
-    func_8005C02C_main(windows[10], 0);
-    func_8005B43C_main(windows[10], 0x5D00, -1, -1);
-    func_8005FFA8_main(windows[10]);
+    HuWinMesPalSet(windows[10], 0, 0, 0, 0);
+    HuWinMesColSet(windows[10], 0);
+    HuWinMesSet(windows[10], 0x5D00, -1, -1);
+    HuWinDispOn(windows[10]);
     frame = 0;
     while (1) {
         HuPrcVSleep();
@@ -2341,12 +2341,12 @@ void func_8010E8E0_option(void) {
                     page = buttons & 0x200 ? 13 : 0;
                 }
             }
-            func_8005B43C_main(titleWindow, menu.pages[page].title, -1, -1);
+            HuWinMesSet(titleWindow, menu.pages[page].title, -1, -1);
             for (i = 0; i < 9; i++) {
                 if (menu.pages[page].entries[i].message != -1) {
-                    func_8005B43C_main(windows[i], menu.pages[page].entries[i].message, -1, -1);
+                    HuWinMesSet(windows[i], menu.pages[page].entries[i].message, -1, -1);
                 } else {
-                    func_8005D294_main(windows[i]);
+                    HuWinHomeClear(windows[i]);
                 }
             }
             for (;;) {
@@ -2378,16 +2378,16 @@ void func_8010E8E0_option(void) {
         frame = frame < 11 ? frame + 1 : 0;
         func_8010E77C_option(30, (selected + 1) * 14 + 40, frame);
     }
-    func_8005FE90_main(titleWindow);
-    func_8005F364_main(titleWindow);
+    HuWinDispOff(titleWindow);
+    HuWinKill(titleWindow);
     for (i = 0; i < 9; i++) {
-        func_8005FE90_main(windows[i]);
+        HuWinDispOff(windows[i]);
     }
     for (i = 0; i < 9; i++) {
-        func_8005F364_main(windows[i]);
+        HuWinKill(windows[i]);
     }
-    func_8005FE90_main(windows[10]);
-    func_8005F364_main(windows[10]);
+    HuWinDispOff(windows[10]);
+    HuWinKill(windows[10]);
     HuAudFXPlay(0x2F9);
     func_8011331C_option(2, 15, 1);
     func_801132E4_option(2, 40);
@@ -2417,14 +2417,14 @@ void func_8010F138_option(void) {
     func_80113384_option(2);
     func_80112028_option(1, 170, 40);
     func_80113384_option(1);
-    titleWindow = func_80061188_main(-1, 164, 28, 120, 20, 0);
-    func_8005BEE0_main(titleWindow, 0);
+    titleWindow = HuWinExCreate(-1, 164, 28, 120, 20, 0);
+    HuWinBGTPLvlSet(titleWindow, 0);
     func_8005C154_main(titleWindow, 192, 192, 192);
     func_8005FBF8_main(titleWindow, 255, 255, 255);
-    func_8005C060_main(titleWindow, 0, 0, 0, 0);
-    func_8005C02C_main(titleWindow, 0);
-    func_8005B43C_main(titleWindow, 0x5D01, -1, -1);
-    func_8005FFA8_main(titleWindow);
+    HuWinMesPalSet(titleWindow, 0, 0, 0, 0);
+    HuWinMesColSet(titleWindow, 0);
+    HuWinMesSet(titleWindow, 0x5D01, -1, -1);
+    HuWinDispOn(titleWindow);
     if (func_80110018_option()) {
         menu.pages[2].entries[1].message = 0x5D15;
         menu.pages[2].entries[1].sound = 0x4C;
@@ -2454,27 +2454,27 @@ void func_8010F138_option(void) {
         menu.pages[10].entries[3].sound = 0x6;
     }
     for (i = 0; i < 9; i++) {
-        windows[i] = func_80061188_main(-1, 180, (i + 1) * 14 + 28, 118, 20, 0);
-        func_8005BEE0_main(windows[i], 0);
+        windows[i] = HuWinExCreate(-1, 180, (i + 1) * 14 + 28, 118, 20, 0);
+        HuWinBGTPLvlSet(windows[i], 0);
         func_8005C154_main(windows[i], 192, 192, 192);
         func_8005FBF8_main(windows[i], 255, 255, 255);
-        func_8005C060_main(windows[i], 0, 0, 0, 0);
-        func_8005C02C_main(windows[i], 0);
+        HuWinMesPalSet(windows[i], 0, 0, 0, 0);
+        HuWinMesColSet(windows[i], 0);
         if (menu.pages[page].entries[i].message != -1) {
-            func_8005B43C_main(windows[i], menu.pages[page].entries[i].message, -1, -1);
+            HuWinMesSet(windows[i], menu.pages[page].entries[i].message, -1, -1);
         } else {
-            func_8005D294_main(windows[i]);
+            HuWinHomeClear(windows[i]);
         }
-        func_8005FFA8_main(windows[i]);
+        HuWinDispOn(windows[i]);
     }
-    windows[10] = func_80061188_main(-1, 176, 190, 120, 44, 0);
-    func_8005BEE0_main(windows[10], 0);
+    windows[10] = HuWinExCreate(-1, 176, 190, 120, 44, 0);
+    HuWinBGTPLvlSet(windows[10], 0);
     func_8005C154_main(windows[10], 192, 192, 192);
     func_8005FBF8_main(windows[10], 255, 255, 255);
-    func_8005C060_main(windows[10], 0, 0, 0, 0);
-    func_8005C02C_main(windows[10], 0);
-    func_8005B43C_main(windows[10], 0x5D00, -1, -1);
-    func_8005FFA8_main(windows[10]);
+    HuWinMesPalSet(windows[10], 0, 0, 0, 0);
+    HuWinMesColSet(windows[10], 0);
+    HuWinMesSet(windows[10], 0x5D00, -1, -1);
+    HuWinDispOn(windows[10]);
     frame = 0;
     while (1) {
         HuPrcVSleep();
@@ -2507,12 +2507,12 @@ void func_8010F138_option(void) {
                     page = buttons & 0x200 ? 9 : 11;
                 }
             }
-            func_8005B43C_main(titleWindow, menu.pages[page].title, -1, -1);
+            HuWinMesSet(titleWindow, menu.pages[page].title, -1, -1);
             for (i = 0; i < 9; i++) {
                 if (menu.pages[page].entries[i].message != -1) {
-                    func_8005B43C_main(windows[i], menu.pages[page].entries[i].message, -1, -1);
+                    HuWinMesSet(windows[i], menu.pages[page].entries[i].message, -1, -1);
                 } else {
-                    func_8005D294_main(windows[i]);
+                    HuWinHomeClear(windows[i]);
                 }
             }
             for (;;) {
@@ -2544,16 +2544,16 @@ void func_8010F138_option(void) {
         frame = frame < 11 ? frame + 1 : 0;
         func_8010E77C_option(170, (selected + 1) * 14 + 40, frame);
     }
-    func_8005FE90_main(titleWindow);
-    func_8005F364_main(titleWindow);
+    HuWinDispOff(titleWindow);
+    HuWinKill(titleWindow);
     for (i = 0; i < 9; i++) {
-        func_8005FE90_main(windows[i]);
+        HuWinDispOff(windows[i]);
     }
     for (i = 0; i < 9; i++) {
-        func_8005F364_main(windows[i]);
+        HuWinKill(windows[i]);
     }
-    func_8005FE90_main(windows[10]);
-    func_8005F364_main(windows[10]);
+    HuWinDispOff(windows[10]);
+    HuWinKill(windows[10]);
     HuAudFXPlay(0x2F9);
     func_8011331C_option(3, 16, 1);
     func_801132E4_option(3, 40);

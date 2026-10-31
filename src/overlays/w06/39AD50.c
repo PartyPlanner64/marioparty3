@@ -2307,7 +2307,7 @@ void func_80106120_w06(void) {
     func_800E6FCC_shared_board();
     func_800E9730_shared_board(3.0f);
     func_80106094_w06((omObjData **)data);
-    func_8005B43C_main(
+    HuWinMesSet(
         data->amount,
         (loc->current_star_spawn == 0 && GWBoardFlagCheck(4) == 0)
             ? (((loc->current_board_index == 2) ? 0x5E09 : 0) | 0x5E00)
@@ -2340,7 +2340,7 @@ void func_80106120_w06(void) {
     } else {
         D_8011E2B8_w06 = 0;
     }
-    func_8005B43C_main(data->amount, D_8011B5EC_w06[idx], -1, -1);
+    HuWinMesSet(data->amount, D_8011B5EC_w06[idx], -1, -1);
     func_80060C14_main(data->amount, 1);
     func_800EE2C0_shared_board(data->amount);
     MBMotionShiftSet(data->obj, -1, 0, 6, 2);
@@ -2541,24 +2541,24 @@ s32 func_80106CC4_w06(u8 *arg0) {
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
             }
             if (j == 0) {
-                func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
             } else {
-                func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], 5);
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], 5);
             }
         }
     } else {
-        func_8005F744_main(sp18[0], sp18[1], sp18[2], sp18[3]);
+        HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
     }
 
     for (i = 0; i < 9; i++) {
         if (arg0[i] == 0) {
-            func_8006010C_main(mbDlgWinId, i);
+            HuWinChoiceDisable(mbDlgWinId, i);
         }
     }
 
     i = 0;
     do {
-        i = func_8005E1D8_main(mbDlgWinId, i, 0);
+        i = HuWinChoiceGet(mbDlgWinId, i, 0);
         if (i == -1) {
             return -1;
         }
@@ -2597,16 +2597,16 @@ s32 func_80106F58_w06(void) {
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
             }
             if (j == 0) {
-                func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
             } else {
-                func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], 5);
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], 5);
             }
         }
     } else {
-        func_8005F744_main(sp18[0], sp18[1], sp18[2], sp18[3]);
+        HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
     }
 
-    func_8005E1D8_main(mbDlgWinId, 0, 1);
+    HuWinChoiceGet(mbDlgWinId, 0, 1);
 }
 
 void func_80107170_w06(void) {
@@ -2715,24 +2715,24 @@ s32 func_80107438_w06(u8 *arg0, s32 arg1, s32 arg2) {
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
             }
             if (j == 0) {
-                func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
             } else {
-                func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], 5);
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], 5);
             }
         }
     } else {
-        func_8005F744_main(sp18[0], sp18[1], sp18[2], sp18[3]);
+        HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
     }
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if (arg0[i] == 0) {
-            func_8006010C_main(mbDlgWinId, i);
+            HuWinChoiceDisable(mbDlgWinId, i);
         }
     }
 
     i = 0;
     while (1) {
-        i = func_8005E1D8_main(mbDlgWinId, i, arg2);
+        i = HuWinChoiceGet(mbDlgWinId, i, arg2);
         if (arg2 == 0) {
             if (i == -1) {
                 return -1;
@@ -3386,8 +3386,8 @@ void func_801091EC_w06(void) {
     starPrc = omAddPrcObj(func_80108F94_w06, 0x1000, 0, 0);
     HuPrcChildLink(HuPrcCurrentGet(), func_80108F68_w06());
     HuPrcSleep(30);
-    msgWin = func_8005A968_main(0x6E, 0xB2, 0x64, 0x18, 0, 0);
-    func_8005BEE0_main(msgWin, 0x100);
+    msgWin = HuWinCreate(0x6E, 0xB2, 0x64, 0x18, 0, 0);
+    HuWinBGTPLvlSet(msgWin, 0x100);
     func_8005FBF8_main(msgWin, 0x8C, 0xC8, 0x3C);
     helpWin = func_800E210C_shared_board(0x14, 0xB4, 1);
     HuPrcChildWait();
@@ -3437,7 +3437,7 @@ void func_801091EC_w06(void) {
     }
 
     MBHelpWinKill(helpWin);
-    func_8005F364_main(msgWin);
+    HuWinKill(msgWin);
 
     if (i == 150) {
         starPrc->user_data = (void *)2;
@@ -4013,16 +4013,16 @@ s32 func_8010AE78_w06(s32 arg0) {
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
             }
             if (j == 0) {
-                func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
             } else {
-                func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], 0x10);
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], 0x10);
             }
         }
     } else {
-        func_8005F744_main(sp18[0], sp18[1], sp18[2], sp18[3]);
+        HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
     }
 
-    func_8005E1D8_main(mbDlgWinId, 0, 1);
+    HuWinChoiceGet(mbDlgWinId, 0, 1);
 }
 
 void func_8010B088_w06(void) {
@@ -4187,30 +4187,30 @@ s32 func_8010B4C4_w06(s32 arg0, s32 arg1) {
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
             }
             if (j == 0) {
-                func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
             } else {
-                func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], 5);
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], 5);
             }
         }
     } else {
-        func_8005F744_main(sp18[0], sp18[1], sp18[2], sp18[3]);
+        HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
     }
 
-    return func_8005E1D8_main(mbDlgWinId, 0, 1);
+    return HuWinChoiceGet(mbDlgWinId, 0, 1);
 }
 
 void func_8010B748_w06(s16 arg0, s32 arg1, s16 arg2, s32 arg3) {
     s16 sp10[2];
     s16 winId;
 
-    func_80060394_main(1, sp10, arg1);
+    HuWinMesMaxSizeGet(1, sp10, arg1);
     winId = MBWinCreate(arg0, sp10, arg2);
     mbDlgWinId = winId;
-    func_8005B43C_main(winId, arg1, -1, -1);
-    func_80061388_main(winId);
+    HuWinMesSet(winId, arg1, -1, -1);
+    HuWinExAnimIn(winId);
     func_800EBF98_shared_board(winId, arg3);
-    func_80061A5C_main(winId, 0);
-    func_8005F364_main(winId);
+    HuWinExAnimOut(winId, 0);
+    HuWinKill(winId);
 }
 
 void func_8010B804_w06(void) {
@@ -7381,25 +7381,25 @@ s32 func_801146F4_w06(u8 *arg0, s32 arg1) {
                 inputs[GwPlayer[GwSystem.current_player_index].pad] = 0x8000;
             }
             if (j == 0) {
-                func_8005F698_main(inputs[0], inputs[1], inputs[2], inputs[3],
+                HuWinComKeyWait(inputs[0], inputs[1], inputs[2], inputs[3],
                                     func_800EDC40_shared_board());
             } else {
-                func_8005F698_main(inputs[0], inputs[1], inputs[2], inputs[3], 5);
+                HuWinComKeyWait(inputs[0], inputs[1], inputs[2], inputs[3], 5);
             }
         }
     } else {
-        func_8005F744_main(inputs[0], inputs[1], inputs[2], inputs[3]);
+        HuWinComKeySet(inputs[0], inputs[1], inputs[2], inputs[3]);
     }
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if (arg0[i] == 0) {
-            func_8006010C_main(mbDlgWinId, i);
+            HuWinChoiceDisable(mbDlgWinId, i);
         }
     }
 
     i = 0;
     do {
-        i = func_8005E1D8_main(mbDlgWinId, i, 1);
+        i = HuWinChoiceGet(mbDlgWinId, i, 1);
     } while (arg0[i] == 0);
     return i;
 }

@@ -288,7 +288,7 @@ static void func_8010024C_shared_board(void) {
         }
 
         if (GwPlayer[GwSystem.current_player_index].stat & 1) {
-            func_8005F904_main();
+            HuWinComKeyReset();
             break;
         }
         if (mbCameraBtnF == 0) {

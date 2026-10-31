@@ -418,7 +418,7 @@ void MB1Ev_StarMapView(void) {
             mesNum = 0x5E01;
         }
     }
-    func_8005B43C_main(guide->amount, mesNum, -1, -1);
+    HuWinMesSet(guide->amount, mesNum, -1, -1);
     func_80060C14_main(guide->amount, 1);
     HuAudFXPlay(0x2A7);
     func_800EE2C0_shared_board(guide->amount);
@@ -452,7 +452,7 @@ void MB1Ev_StarMapView(void) {
         D_8011FAB8_ChillyWaters = NULL;
     }
 
-    func_8005B43C_main(guide->amount, D_8011D2EC_ChillyWaters[face], -1, -1);
+    HuWinMesSet(guide->amount, D_8011D2EC_ChillyWaters[face], -1, -1);
     func_80060C14_main(guide->amount, 1);
     func_800EE2C0_shared_board(guide->amount);
     MBMotionShiftSet(guide->obj, -1, 0, 6, 2);
@@ -665,23 +665,23 @@ s32 MB1_ComShopItemChoice(u8 *arg0) {
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
             }
             if (j == 0) {
-                func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
             } else {
-                func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], 5);
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], 5);
             }
         }
     } else {
-        func_8005F744_main(sp18[0], sp18[1], sp18[2], sp18[3]);
+        HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
     }
 
     for (i = 0; i < 9; i++) {
         if (arg0[i] == 0) {
-            func_8006010C_main(mbDlgWinId, i);
+            HuWinChoiceDisable(mbDlgWinId, i);
         }
     }
 
     for (i = 0;;) {
-        i = func_8005E1D8_main(mbDlgWinId, i, 0);
+        i = HuWinChoiceGet(mbDlgWinId, i, 0);
         if (i == -1) {
             return -1;
         }
@@ -719,16 +719,16 @@ s32 MB1_ComShopEnterChoice(void) {
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
             }
             if (j == 0) {
-                func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
             } else {
-                func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], 5);
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], 5);
             }
         }
     } else {
-        func_8005F744_main(sp18[0], sp18[1], sp18[2], sp18[3]);
+        HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
     }
 
-    return func_8005E1D8_main(mbDlgWinId, 0, 1);
+    return HuWinChoiceGet(mbDlgWinId, 0, 1);
 }
 
 
@@ -856,23 +856,23 @@ s32 MB1_ComTeresaChoice(u8 *arg0, s32 arg1, s32 arg2) {
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
             }
             if (j == 0) {
-                func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
             } else {
-                func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], 5);
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], 5);
             }
         }
     } else {
-        func_8005F744_main(sp18[0], sp18[1], sp18[2], sp18[3]);
+        HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
     }
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if (arg0[i] == 0) {
-            func_8006010C_main(mbDlgWinId, i);
+            HuWinChoiceDisable(mbDlgWinId, i);
         }
     }
 
     for (i = 0;;) {
-        i = func_8005E1D8_main(mbDlgWinId, i, arg2);
+        i = HuWinChoiceGet(mbDlgWinId, i, arg2);
         if (arg2 == 0) {
             if (i == -1) {
                 return -1;
@@ -1860,30 +1860,30 @@ s32 MB1Ev_YesNoChoiceGet(DecisionTreeNonLeafNode *arg0, s32 arg1) {
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
             }
             if (j == 0) {
-                func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
             } else {
-                func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], 5);
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], 5);
             }
         }
     } else {
-        func_8005F744_main(sp18[0], sp18[1], sp18[2], sp18[3]);
+        HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
     }
 
-    return func_8005E1D8_main(mbDlgWinId, 0, 1);
+    return HuWinChoiceGet(mbDlgWinId, 0, 1);
 }
 
 void func_8010A3B8_ChillyWaters(s16 arg0, s32 arg1, s16 arg2, s32 arg3) {
     s16 sp10[2];
     s16 temp_v0;
 
-    func_80060394_main(1, sp10, arg1);
+    HuWinMesMaxSizeGet(1, sp10, arg1);
     temp_v0 = MBWinCreate(arg0, sp10, arg2);
     mbDlgWinId = temp_v0;
-    func_8005B43C_main(temp_v0, arg1, -1, -1);
-    func_80061388_main(temp_v0);
+    HuWinMesSet(temp_v0, arg1, -1, -1);
+    HuWinExAnimIn(temp_v0);
     func_800EBF98_shared_board(temp_v0, arg3);
-    func_80061A5C_main(temp_v0, 0);
-    func_8005F364_main(temp_v0);
+    HuWinExAnimOut(temp_v0, 0);
+    HuWinKill(temp_v0);
 }
 
 void func_8010A474_ChillyWaters(void) {
@@ -4104,24 +4104,24 @@ s32 func_80113364_ChillyWaters(u8 *arg0, s32 arg1) {
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
             }
             if (j == 0) {
-                func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
             } else {
-                func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], 5);
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], 5);
             }
         }
     } else {
-        func_8005F744_main(sp18[0], sp18[1], sp18[2], sp18[3]);
+        HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
     }
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if (arg0[i] == 0) {
-            func_8006010C_main(mbDlgWinId, i);
+            HuWinChoiceDisable(mbDlgWinId, i);
         }
     }
 
     i = 0;
     do {
-        i = func_8005E1D8_main(mbDlgWinId, i, 1);
+        i = HuWinChoiceGet(mbDlgWinId, i, 1);
     } while (arg0[i] == 0);
     return i;
 }

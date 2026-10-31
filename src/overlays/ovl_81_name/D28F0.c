@@ -30,7 +30,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D28F0", func_800EB1D8_name_81
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D28F0", func_800EB258_name_81);
 
 void func_800EB278_name_81(void) {
-    func_80061A5C_main(D_8010555C_name_81, 0);
+    HuWinExAnimOut(D_8010555C_name_81, 0);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D28F0", func_800EB29C_name_81);
@@ -40,46 +40,46 @@ void func_800EB2BC_name_81(s16 arg0, s32 arg1, u32 arg2, u32 arg3, u32 arg4, u32
     s16 temp_v0;
 
     if (arg2 != 0) {
-        func_8006022C_main(arg2, 0);
+        HuWinInsertMesSizeGet(arg2, 0);
     }
     if (arg3 != 0) {
-        func_8006022C_main(arg3, 1);
+        HuWinInsertMesSizeGet(arg3, 1);
     }
     if (arg4 != 0) {
-        func_8006022C_main(arg4, 2);
+        HuWinInsertMesSizeGet(arg4, 2);
     }
     if (arg5 != 0) {
-        func_8006022C_main(arg5, 3);
+        HuWinInsertMesSizeGet(arg5, 3);
     }
     if (arg6 != 0) {
-        func_8006022C_main(arg6, 4);
+        HuWinInsertMesSizeGet(arg6, 4);
     }
-    func_80060394_main(1, sp10, arg1);
+    HuWinMesMaxSizeGet(1, sp10, arg1);
     temp_v0 = func_800EABBC_name_81(arg0, sp10, arg7);
     D_8010555C_name_81 = temp_v0;
     if (arg2 != 0) {
-        func_8005B6BC_main(temp_v0, arg2, 0);
+        HuWinInsertMesSet(temp_v0, arg2, 0);
     }
     if (arg3 != 0) {
-        func_8005B6BC_main(temp_v0, arg3, 1);
+        HuWinInsertMesSet(temp_v0, arg3, 1);
     }
     if (arg4 != 0) {
-        func_8005B6BC_main(temp_v0, arg4, 2);
+        HuWinInsertMesSet(temp_v0, arg4, 2);
     }
     if (arg5 != 0) {
-        func_8005B6BC_main(temp_v0, arg5, 3);
+        HuWinInsertMesSet(temp_v0, arg5, 3);
     }
     if (arg6 != 0) {
-        func_8005B6BC_main(temp_v0, arg6, 4);
+        HuWinInsertMesSet(temp_v0, arg6, 4);
     }
     if (D_801011D0_name_81 != 0) {
         func_8005E1A8_main(temp_v0, D_801011D0_name_81);
     }
-    func_8005B43C_main(temp_v0, arg1, -1, -1);
+    HuWinMesSet(temp_v0, arg1, -1, -1);
     if (arg0 == -1) {
-        func_80061388_main(temp_v0);
+        HuWinExAnimIn(temp_v0);
     } else {
-        func_80061388_main(temp_v0);
+        HuWinExAnimIn(temp_v0);
     }
 
     func_800EAB6C_name_81(temp_v0, GwSystem.current_player_index);

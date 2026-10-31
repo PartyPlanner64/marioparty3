@@ -110,23 +110,23 @@ void func_8010B990_inst(void) {
         }
     }
     D_8010DCA8_inst.curGroup = func_80060880_main(72, 188, 7);
-    func_8005C060_main(D_8010DCA8_inst.curGroup, 2, 0, 255, 255);
-    func_8005C060_main(D_8010DCA8_inst.curGroup, 4, 96, 255, 64);
-    func_8005C060_main(D_8010DCA8_inst.curGroup, 6, 255, 255, 64);
+    HuWinMesPalSet(D_8010DCA8_inst.curGroup, 2, 0, 255, 255);
+    HuWinMesPalSet(D_8010DCA8_inst.curGroup, 4, 96, 255, 64);
+    HuWinMesPalSet(D_8010DCA8_inst.curGroup, 6, 255, 255, 64);
     func_8005BA28_main(D_8010DCA8_inst.curGroup)->unk_29 = 1;
     func_8010CC14_inst();
-    D_8010DCA8_inst.mainMembers[0] = func_8005B7B8_main(D_8010DCA8_inst.curGroup, 0x17000B, 60, -33, 0);
-    D_8010DCA8_inst.mainMembers[1] = func_8005B7B8_main(D_8010DCA8_inst.curGroup, 0x170009, 148, -33, 0);
-    D_8010DCA8_inst.mainMembers[2] = func_8005B7B8_main(D_8010DCA8_inst.curGroup, 0x17000A, 200, -33, 0);
-    D_8010DCA8_inst.helpMembers[0] = func_8005B7B8_main(D_8010DCA8_inst.curGroup, 0x17000D, 60, -33, 0);
-    D_8010DCA8_inst.helpMembers[1] = func_8005B7B8_main(D_8010DCA8_inst.curGroup, 0x17000F, 200, -33, 0);
-    D_8010DCA8_inst.member = func_8005B7B8_main(D_8010DCA8_inst.curGroup, 0x17000C, 38, -33, 0);
+    D_8010DCA8_inst.mainMembers[0] = HuWinAnimSet(D_8010DCA8_inst.curGroup, 0x17000B, 60, -33, 0);
+    D_8010DCA8_inst.mainMembers[1] = HuWinAnimSet(D_8010DCA8_inst.curGroup, 0x170009, 148, -33, 0);
+    D_8010DCA8_inst.mainMembers[2] = HuWinAnimSet(D_8010DCA8_inst.curGroup, 0x17000A, 200, -33, 0);
+    D_8010DCA8_inst.helpMembers[0] = HuWinAnimSet(D_8010DCA8_inst.curGroup, 0x17000D, 60, -33, 0);
+    D_8010DCA8_inst.helpMembers[1] = HuWinAnimSet(D_8010DCA8_inst.curGroup, 0x17000F, 200, -33, 0);
+    D_8010DCA8_inst.member = HuWinAnimSet(D_8010DCA8_inst.curGroup, 0x17000C, 38, -33, 0);
     D_8010DCD4_inst = 0;
     D_8010DCCC_inst = D_8010DCD0_inst->message;
     if (D_8010D40A_inst == 4 && D_8010D411_inst != 2) {
         D_8010DCCC_inst++;
     }
-    func_8005B43C_main(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
+    HuWinMesSet(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
     omPrcSetDestructor(NULL, func_8010C8B4_inst);
     D_8010DCA4_inst = (void (*)(s32))func_8010BE28_inst;
     while (1) {
@@ -218,7 +218,7 @@ void func_8010C124_inst(s32 arg0) {
                     func_8010CBB8_inst(3);
                     D_8010DCD4_inst = 3;
                 }
-                func_8005B43C_main(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
+                HuWinMesSet(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
             }
             break;
         case 1:
@@ -227,7 +227,7 @@ void func_8010C124_inst(s32 arg0) {
                 if (D_8010D40A_inst == 4 && D_8010D411_inst != 2) {
                     D_8010DCCC_inst++;
                 }
-                func_8005B43C_main(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
+                HuWinMesSet(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
                 func_8010CBB8_inst(2);
                 D_8010DCD4_inst = 2;
             }
@@ -246,7 +246,7 @@ void func_8010C124_inst(s32 arg0) {
                     func_8010CBB8_inst(4);
                     D_8010DCD4_inst = 4;
                 }
-                func_8005B43C_main(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
+                HuWinMesSet(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
             }
             break;
         case 4:
@@ -263,7 +263,7 @@ void func_8010C124_inst(s32 arg0) {
                     func_8010CBB8_inst(6);
                     D_8010DCD4_inst = 6;
                 }
-                func_8005B43C_main(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
+                HuWinMesSet(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
             }
             break;
         case 6:
@@ -280,7 +280,7 @@ void func_8010C124_inst(s32 arg0) {
                     func_8010CBB8_inst(7);
                     D_8010DCD4_inst = 7;
                 }
-                func_8005B43C_main(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
+                HuWinMesSet(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
             }
             break;
         case 7:
@@ -291,7 +291,7 @@ void func_8010C124_inst(s32 arg0) {
                 if (D_8010D40A_inst == 4 && D_8010D411_inst != 2) {
                     D_8010DCCC_inst++;
                 }
-                func_8005B43C_main(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
+                HuWinMesSet(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
             }
             break;
         case 2:
@@ -300,7 +300,7 @@ void func_8010C124_inst(s32 arg0) {
                 if (D_8010D40A_inst == 4 && D_8010D411_inst != 2) {
                     D_8010DCCC_inst++;
                 }
-                func_8005B43C_main(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
+                HuWinMesSet(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
                 func_8010CBB8_inst(0);
                 D_8010DCD4_inst = 0;
             }
@@ -364,8 +364,8 @@ void func_8010C5C4_inst(s32 arg0) {
                     }
                     break;
             }
-            func_8005B43C_main(D_8010DCA8_inst.curGroup, message, -1, -1);
-            while (func_8005E0C0_main(D_8010DCA8_inst.curGroup) != 0) {
+            HuWinMesSet(D_8010DCA8_inst.curGroup, message, -1, -1);
+            while (HuWinStatGet(D_8010DCA8_inst.curGroup) != 0) {
                 if (func_8010C55C_inst() != 0) {
                     return;
                 }
@@ -375,8 +375,8 @@ void func_8010C5C4_inst(s32 arg0) {
         if (D_8010D40A_inst == 4) {
             message += D_8010D411_inst != 2;
         }
-        func_8005B43C_main(D_8010DCA8_inst.curGroup, message, -1, -1);
-        while (func_8005E0C0_main(D_8010DCA8_inst.curGroup) != 0) {
+        HuWinMesSet(D_8010DCA8_inst.curGroup, message, -1, -1);
+        while (HuWinStatGet(D_8010DCA8_inst.curGroup) != 0) {
             if (func_8010C55C_inst() != 0) {
                 return;
             }
@@ -484,7 +484,7 @@ u16 func_8010CA74_inst(u16 buttons, s16 wait) {
 }
 
 void func_8010CBB8_inst(s32 arg0) {
-    TextWindow *window = &D_800CC69C_main[D_8010DCA8_inst.curGroup];
+    TextWindow *window = &winData[D_8010DCA8_inst.curGroup];
     s16 member = D_8010DCA8_inst.member;
 
     func_80055024_main(window->unk_6C, member, window->unk_6E[member], arg0 & 0xFF);
@@ -495,7 +495,7 @@ void func_8010CC14_inst(void) {
     s32 pads;
 
     for (i = 0; i < 4; i++) {
-        func_8005B6BC_main(D_8010DCA8_inst.curGroup, GwPlayer[D_8010D400_inst[i]].chr + 0x1C00, i);
+        HuWinInsertMesSet(D_8010DCA8_inst.curGroup, GwPlayer[D_8010D400_inst[i]].chr + 0x1C00, i);
     }
     pads = 0;
     switch (D_8010D40A_inst) {
@@ -563,7 +563,7 @@ void func_8010CFF4_inst(void) {
 }
 
 void func_8010D044_inst(void) {
-    TextWindow *window = &D_800CC69C_main[D_8010DCA8_inst.curGroup];
+    TextWindow *window = &winData[D_8010DCA8_inst.curGroup];
     s8 i;
 
     if (D_8010D409_inst != 1) {
@@ -581,7 +581,7 @@ void func_8010D044_inst(void) {
         if ((D_8010D40A_inst == 4) && (D_8010D411_inst != 2)) {
             D_8010DCCC_inst++;
         }
-        func_8005B43C_main(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
+        HuWinMesSet(D_8010DCA8_inst.curGroup, D_8010DCCC_inst, -1, -1);
         func_8010CBB8_inst(0);
         D_8010DCD4_inst = 0;
         D_8010D5B1_inst = 0;
@@ -589,7 +589,7 @@ void func_8010D044_inst(void) {
 }
 
 void func_8010D1D4_inst(void) {
-    TextWindow *window = &D_800CC69C_main[D_8010DCA8_inst.curGroup];
+    TextWindow *window = &winData[D_8010DCA8_inst.curGroup];
     s8 i;
     s32 message;
 
@@ -642,7 +642,7 @@ void func_8010D1D4_inst(void) {
                 }
                 break;
         }
-        func_8005B43C_main(D_8010DCA8_inst.curGroup, message, -1, -1);
+        HuWinMesSet(D_8010DCA8_inst.curGroup, message, -1, -1);
         D_8010D5B1_inst = 1;
     }
 }

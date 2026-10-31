@@ -124,7 +124,7 @@ void func_801059A0_msetup(void) {
     Hu3DAnimInit(1);
     func_800142A0_main(25);
     omInitObjMan(51, 25);
-    func_8005A6B0_main();
+    HuWinInit();
     func_8004A208_main();
     D_800CD280_main = 1;
     D_8011A940_msetup = 80.0f;
@@ -236,7 +236,7 @@ void func_80105DB4_msetup(omObjData *object) {
     u16 flags;
 
     if (WipeStatGet() == 0) {
-        func_8005F524_main();
+        HuWinAllKill();
         func_8010ACB0_msetup();
         flags = 0x14;
         switch (D_8011A944_msetup) {

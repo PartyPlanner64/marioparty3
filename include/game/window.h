@@ -104,42 +104,42 @@ typedef struct TextWindow {
     /* 0x278 */ char pad278[4]; /* maybe part of unk276[3]? */
 } TextWindow;                   /* size = 0x27C */
 
-void func_8005A6B0_main(void);
-s16 func_8005A968_main(s16, s16, s16, s16, s32, s16);
-void func_8005B43C_main(s16, u32, s16, s16);
-void func_8005B6BC_main(s16 win_id, u32 arg1, s8 arg2);
-void func_8005BDFC_main(s16, s32);
-void func_8005BE30_main(s16, s32);
-void func_8005BEE0_main(s16, s16);
-void func_8005C02C_main(s16, s32);
-void func_8005C060_main(s16, u8, u8, u8, u8);
-s32 func_8005CCF0_main(TextWindow *window);
+void HuWinInit(void);
+s16 HuWinCreate(s16, s16, s16, s16, s32, s16);
+void HuWinMesSet(s16, u32, s16, s16);
+void HuWinInsertMesSet(s16 win_id, u32 arg1, s8 arg2);
+void HuWinMesSpeedSet(s16, s32);
+void HuWinPriSet(s16, s32);
+void HuWinBGTPLvlSet(s16, s16);
+void HuWinMesColSet(s16, s32);
+void HuWinMesPalSet(s16, u8, u8, u8, u8);
+s32 HuWinCR(TextWindow *window);
 s32 func_8005CD38_main(TextWindow *window);
-void func_8005D294_main(s16);
+void HuWinHomeClear(s16);
 void func_8005DD54_main(TextWindow *window);
 void func_8005E1A8_main(s16, s16);
-void func_8005F364_main(s16);
-void func_8005F524_main(void);
-void func_8005F784_main(s16, s16, s16, s16, s16);
+void HuWinKill(s16);
+void HuWinAllKill(void);
+void _HuWinComKeySet(s16, s16, s16, s16, s16);
 void func_8005FBF8_main(s16, s32, s32, s32);
-void func_8005FE90_main(s16);
-void func_8005FFA8_main(s16);
-void func_8006022C_main(u32 mesg, s16);
-void func_80060394_main(s16 count, s16 *size, ...);
-void func_80061388_main(s16);
+void HuWinDispOff(s16);
+void HuWinDispOn(s16);
+void HuWinInsertMesSizeGet(u32 mesg, s16);
+void HuWinMesMaxSizeGet(s16 count, s16 *size, ...);
+void HuWinExAnimIn(s16);
 void func_80060144_main(s16 obj);
 void func_800601BC_main(s16, u32, s8);
 void *func_800364DC_main(void *arg0);
 void func_800365E8_main(void *ptr);
-s16 func_8005B7B8_main(s16 win_id, u32 spriteMainFsPair, s16 arg2, s16 arg3, s16 arg4);
+s16 HuWinAnimSet(s16 win_id, u32 spriteMainFsPair, s16 arg2, s16 arg3, s16 arg4);
 TextWindow *func_8005BA28_main(s16 win_id);
-void func_8005BA90_main(s16, s16, s16);
+void HuWinPosSet(s16, s16, s16);
 void func_8005BCA4_main(s16, s16, s16);
-void func_8005DDDC_main(void);
-void func_8005F904_main(void);
-void func_800605A4_main(u32);
+void HuWinProc(void);
+void HuWinComKeyReset(void);
+void GetMesMaxSizeSub(u32);
 
-extern TextWindow *D_800CC69C_main;
-extern WindowInputRecord D_800CDA88_main[WINDOW_INPUT_RECORDS_MAX];
+extern TextWindow *winData;
+extern WindowInputRecord winComKeyBuf[WINDOW_INPUT_RECORDS_MAX];
 
 #endif

@@ -124,7 +124,7 @@ extern s16 D_800A1786_main;
 extern u8 D_800CD280_main;
 extern u16 D_800D530C_main;
 
-extern void func_80060858_main(s32, s16);
+extern void HuWinPushKeySet(s32, s16);
 extern s32 func_80016784_main(s32, s32);
 extern void func_80016FB4_main(s32, s32, s16);
 extern void func_80017320_main(s32);
@@ -143,7 +143,7 @@ void func_801059A0_meschk() {
     Hu3DAnimInit(1);
     func_800142A0_main(0x19);
     omInitObjMan(0x33, 10);
-    func_8005A6B0_main();
+    HuWinInit();
     temp_v0 = omAddObj(0x7FDA, 0, 0, -1, omOutView);
     Center.y = 100.0f;
     CZoom = 600.0f;
@@ -171,7 +171,7 @@ void func_801059A0_meschk() {
 void func_80105B50_meschk() {
     func_80105B8C_meschk();
     D_80106500_meschk.finished = 1;
-    func_8005F524_main();
+    HuWinAllKill();
     while (1) {
         HuPrcVSleep();
     }
@@ -193,8 +193,8 @@ void func_80105B8C_meschk() {
     s32 portrait;
 
     for (count = 0; D_80106518_meschk[count].firstMessage != 0xFFFF; count++) {}
-    nameWindow = func_80061188_main(-1, 60, 20, 200, 20, 0);
-    func_80061388_main(nameWindow);
+    nameWindow = HuWinExCreate(-1, 60, 20, 200, 20, 0);
+    HuWinExAnimIn(nameWindow);
     entry = 0;
     done = 0;
     do {
@@ -210,12 +210,12 @@ void func_80105B8C_meschk() {
                 check->name[i] = 0x3D;
             }
         }
-        func_8005D294_main(nameWindow);
-        func_8005B43C_main(nameWindow, (s32)check->name, -1, -1);
+        HuWinHomeClear(nameWindow);
+        HuWinMesSet(nameWindow, (s32)check->name, -1, -1);
         if (check->lastMessage == 0) {
             check->lastMessage = check->firstMessage;
         }
-        func_800604A8_main(size, check->firstMessage, check->lastMessage);
+        HuWinMesMaxSizeBetGet(size, check->firstMessage, check->lastMessage);
         text = func_800364DC_main((void *)check->firstMessage);
         for (i = 0, cursor = text; i < 5; i++, cursor++) {
             if (((cursor[0] == 0x10) | (cursor[0] == 0x20) || cursor[0] == 0x1A) &&
@@ -226,17 +226,17 @@ void func_80105B8C_meschk() {
         }
         func_800365E8_main(text);
         if (i == 5) {
-            window = func_80061188_main(0, 50, 44, size[0], size[1], 0);
+            window = HuWinExCreate(0, 50, 44, size[0], size[1], 0);
             portrait = 0;
         } else {
-            window = func_80061188_main(7, 50, 44, size[0], size[1], 0);
+            window = HuWinExCreate(7, 50, 44, size[0], size[1], 0);
             portrait = 1;
         }
-        func_80060858_main(window, 0x3F);
+        HuWinPushKeySet(window, 0x3F);
         func_8005FBF8_main(window, 0xC0, 0x20, 0xC0);
-        func_80061388_main(window);
+        HuWinExAnimIn(window);
         for (message = (s16)check->firstMessage; (u32)message <= check->lastMessage; message++) {
-            func_8005D294_main(window);
+            HuWinHomeClear(window);
             text = func_800364DC_main((void *)(s32)message);
             cursor = text;
             hasChoice = 0;
@@ -256,32 +256,32 @@ void func_80105B8C_meschk() {
                 }
             }
             if ((portrait == 1) & (i == 5)) {
-                func_80061934_main(window, 0);
+                HuWinExAnimPopIn(window, 0);
                 portrait = 0;
             } else if ((i != 5) & (portrait != 1)) {
-                func_80061934_main(window, 7);
+                HuWinExAnimPopIn(window, 7);
                 portrait = 1;
             }
             func_800365E8_main(text);
-            func_8005B43C_main(window, message, -1, -1);
-            while (func_8005E0C0_main(window) != 0) {
+            HuWinMesSet(window, message, -1, -1);
+            while (HuWinStatGet(window) != 0) {
                 HuPrcVSleep();
             }
-            if (D_800CC69C_main[window].unk_30 != 0) {
-                func_8005E1D8_main(window, 0, 0);
+            if (winData[window].unk_30 != 0) {
+                HuWinChoiceGet(window, 0, 0);
             } else if (hasChoice == 0) {
                 while (!(D_800D5558_main[0] & 0xC03F)) {
                     HuPrcVSleep();
                 }
             }
-            if ((D_800CC69C_main[window].input & 0x4000) || (D_800D5558_main[0] & 0x4000)) {
+            if ((winData[window].input & 0x4000) || (D_800D5558_main[0] & 0x4000)) {
                 if ((u32)message > check->firstMessage) {
                     message -= 2;
                 } else {
                     message--;
                 }
             }
-            if ((D_800CC69C_main[window].input & 8) || (D_800D5558_main[0] & 8)) {
+            if ((winData[window].input & 8) || (D_800D5558_main[0] & 8)) {
                 if (entry != 0) {
                     entry -= 2;
                 } else {
@@ -289,10 +289,10 @@ void func_80105B8C_meschk() {
                 }
                 break;
             }
-            if ((D_800CC69C_main[window].input & 4) || (D_800D5558_main[0] & 4)) {
+            if ((winData[window].input & 4) || (D_800D5558_main[0] & 4)) {
                 break;
             }
-            if ((D_800CC69C_main[window].input & 2) || (D_800D5558_main[0] & 2)) {
+            if ((winData[window].input & 2) || (D_800D5558_main[0] & 2)) {
                 if (entry - 5 >= 0) {
                     entry -= 6;
                 } else {
@@ -300,7 +300,7 @@ void func_80105B8C_meschk() {
                 }
                 break;
             }
-            if ((D_800CC69C_main[window].input & 1) || (D_800D5558_main[0] & 1)) {
+            if ((winData[window].input & 1) || (D_800D5558_main[0] & 1)) {
                 if (entry + 5 < count) {
                     entry += 4;
                 } else {
@@ -313,8 +313,8 @@ void func_80105B8C_meschk() {
                 break;
             }
         }
-        func_8005F364_main(window);
-        D_800CC69C_main[window].input = 0;
+        HuWinKill(window);
+        winData[window].input = 0;
         entry++;
         if (entry >= count) {
             entry--;

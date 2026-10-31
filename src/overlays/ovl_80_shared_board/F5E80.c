@@ -42,7 +42,7 @@ typedef struct TelopData {
 // void func_8005FBA4_main(u8 *, s32);
 // s32 func_80060880_main(s32 arg0, s32 arg1, s32 arg2);
 // extern void sincosdf(f32, f32*, f32*);
-// void func_800610E0_main(s16);
+// void HuWinExCleanup(s16);
 // void func_800FC938_shared_board(void);
 // f32 sindf(f32);
 // void MBStatusItemScaleSet(s32, s32, f32, f32);
@@ -866,11 +866,11 @@ static void MBItemDesc(void) {
         }
     }
     
-    func_800604A8_main(sp18, 0x3E00, 0x3E0A);
-    temp_v0_2 = func_80061188_main(D_80101148_shared_board[savedItemID], 0xA0 - (sp18[0] / 2), 0x3C, sp18[0], sp18[1], 0);
+    HuWinMesMaxSizeBetGet(sp18, 0x3E00, 0x3E0A);
+    temp_v0_2 = HuWinExCreate(D_80101148_shared_board[savedItemID], 0xA0 - (sp18[0] / 2), 0x3C, sp18[0], sp18[1], 0);
     func_8005FBF8_main(temp_v0_2, 1, 0xBC, 0xE7);
-    func_8005B43C_main(temp_v0_2, D_801010F8_shared_board[savedItemID], -1, -1);
-    func_80061388_main(temp_v0_2);
+    HuWinMesSet(temp_v0_2, D_801010F8_shared_board[savedItemID], -1, -1);
+    HuWinExAnimIn(temp_v0_2);
     D_801010D4_shared_board = func_800E210C_shared_board(0x10, 0xA0, 0);
     D_801010D8_shared_board = func_800E210C_shared_board(0x11, 0xAE, 0);
     D_801010DC_shared_board = func_800E210C_shared_board(4, 0xBC, 0);
@@ -882,18 +882,18 @@ static void MBItemDesc(void) {
         if (D_800D0590_main[padNo] & R_CBUTTONS) {
             savedItemID++;
             savedItemID %= 20;
-            func_8005D294_main(temp_v0_2);
-            func_8005B43C_main(temp_v0_2, D_801010F8_shared_board[savedItemID], -1, -1);
-            func_80061934_main(temp_v0_2, D_80101148_shared_board[savedItemID]);
+            HuWinHomeClear(temp_v0_2);
+            HuWinMesSet(temp_v0_2, D_801010F8_shared_board[savedItemID], -1, -1);
+            HuWinExAnimPopIn(temp_v0_2, D_80101148_shared_board[savedItemID]);
         }
         if (D_800D0590_main[padNo] & L_CBUTTONS) {
             savedItemID -= 1;
             if (savedItemID < 0) {
                 savedItemID = 19;
             }
-            func_8005D294_main(temp_v0_2);
-            func_8005B43C_main(temp_v0_2, D_801010F8_shared_board[savedItemID], -1, -1);
-            func_80061934_main(temp_v0_2, D_80101148_shared_board[savedItemID]);
+            HuWinHomeClear(temp_v0_2);
+            HuWinMesSet(temp_v0_2, D_801010F8_shared_board[savedItemID], -1, -1);
+            HuWinExAnimPopIn(temp_v0_2, D_80101148_shared_board[savedItemID]);
         }
         HuPrcVSleep();
              
@@ -902,8 +902,8 @@ static void MBItemDesc(void) {
     MBHelpWinKill(D_801010D4_shared_board);
     MBHelpWinKill(D_801010D8_shared_board);
     MBHelpWinKill(D_801010DC_shared_board);
-    func_80061A5C_main(temp_v0_2, 0);
-    func_8005F364_main(temp_v0_2);
+    HuWinExAnimOut(temp_v0_2, 0);
+    HuWinKill(temp_v0_2);
     omDelPrcObj(NULL);
 }
 
@@ -1592,7 +1592,7 @@ void MBGuideKill(UnkMBGuideData* arg0) {
     if (arg0 != NULL) {
         MBModelKill(arg0->obj);
         omDelPrcObj(arg0->unk_04);
-        func_800610E0_main(arg0->amount);
+        HuWinExCleanup(arg0->amount);
         HuMemMemoryFreeTemp(arg0);
     }
 }
@@ -1606,11 +1606,11 @@ void MBGuidePosSet(UnkMBGuideData* arg0, s16 arg1, s16 arg2) {
     if ((arg2) != 0) {
         var1 = 0x5B;
         var2 = 0x50;
-        func_8005BA90_main(arg0->amount, var1, arg0->spriteGroup + (arg2 + var2));
+        HuWinPosSet(arg0->amount, var1, arg0->spriteGroup + (arg2 + var2));
     } else {
         var1 = 0x4B;
         var2 = 0x5A;
-        func_8005BA90_main(arg0->amount, var1, arg0->spriteGroup + (arg2 + var2));
+        HuWinPosSet(arg0->amount, var1, arg0->spriteGroup + (arg2 + var2));
     }
 }
 

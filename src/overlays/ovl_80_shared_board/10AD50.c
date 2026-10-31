@@ -149,24 +149,24 @@ static s32 func_800F7240_shared_board(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
             }
             if (j == 0) {
-                func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
             } else {
-                func_8005F698_main(sp18[0], sp18[1], sp18[2], sp18[3], 0x10);
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], 0x10);
             }
         }
     } else {
-        func_8005F744_main(sp18[0], sp18[1], sp18[2], sp18[3]);
+        HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
     }
     for (i = 0; i < arg3; i++) {
         if ((arg0 != 0) && ((u8 *)arg0)[i] == 0) {
-            func_8006010C_main(mbDlgWinId, i);
+            HuWinChoiceDisable(mbDlgWinId, i);
         }
     }
 
     i = 0;
 
     while (1) {
-        i = func_8005E1D8_main(mbDlgWinId, i, arg1);
+        i = HuWinChoiceGet(mbDlgWinId, i, arg1);
         if (arg1 != 0) {
             if ((arg0 == 0) || ((((u8 *)arg0)[i] != 0))) {
                 return i;

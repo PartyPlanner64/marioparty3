@@ -52,7 +52,7 @@ void func_801059A0_mgresultbattle(void) {
     ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCamSetPerspective(0, 30.0f, 80.0f, 8000.0f);
-    omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), 0xA0);
+    omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
 
     for (var_a0_2 = 0, i = 0; i < MB_MAX_PLAYERS; i++) {
@@ -78,7 +78,7 @@ void func_801059A0_mgresultbattle(void) {
     omAddObj(0, 0, 0, -1, func_80105E64_mgresultbattle);
     func_80105EF4_mgresultbattle();
     func_80105E0C_mgresultbattle();
-    WipeCreateIn(0xFF, 0x10);
+    WipeCreateIn(WIPE_TYPE_PREV, 0x10);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80105CAC_mgresultbattle);
@@ -174,17 +174,17 @@ void func_80107BDC_mgresultbattle(f32 arg0) {
 void func_80107C44_mgresultbattle(void) {
     omObjData *itemObj = D_80108F90_mgresultbattle;
 
-    func_8001C258_main(itemObj->model[1], 4, 0);
-    func_8001C258_main(itemObj->model[2], 4, 0);
-    func_8001C258_main(itemObj->model[3], 4, 0);
+    func_8001C258_main(itemObj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    func_8001C258_main(itemObj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    func_8001C258_main(itemObj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
 }
 
 void func_80107CA4_mgresultbattle(void) {
     omObjData *itemObj = D_80108F90_mgresultbattle;
 
-    func_8001C258_main(itemObj->model[1], 4, 4);
-    func_8001C258_main(itemObj->model[2], 4, 4);
-    func_8001C258_main(itemObj->model[3], 4, 4);
+    func_8001C258_main(itemObj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    func_8001C258_main(itemObj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    func_8001C258_main(itemObj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 }
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultbattle/4F3780", D_801089C0_mgresultbattle);

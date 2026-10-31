@@ -915,7 +915,7 @@ static void func_800E90BC_shared_board(void) {
     D_80103418_shared_board = 1.0f;
     temp_v0 = omAddPrcObj(func_800E9358_shared_board, 0x1001, 0, 0);
     D_80103410_shared_board = temp_v0;
-    omPrcSetStatBit(temp_v0, 0x80);
+    omPrcSetStatBit(temp_v0, OM_STAT_NOALLPAUSE);
     D_80103414_shared_board = 0;
     Hu3DCamSetPerspective(0, D_80101248_shared_board->unk10, 10.0f, 200.0f);
     Hu3DCamSetPositionOrientation(0, &D_80103420_shared_board, &D_8010342C_shared_board, &D_80103438_shared_board);
@@ -1203,9 +1203,9 @@ static void func_800E9C94_shared_board(void) {
             }
 
             if (D_801012BC_shared_board != 0) {
-                HuSprAttrReset(obj->unk_02, 0, 0x8000);
+                HuSprDispOn(obj->unk_02, 0);
             } else {
-                HuSprAttrSet(obj->unk_02, 0, 0x8000);
+                HuSprDispOff(obj->unk_02, 0);
             }
         }
         HuPrcVSleep();
@@ -1257,7 +1257,7 @@ s32 func_800E9F24_shared_board(s32 arg0, Vec *arg1) {
         if (D_80105200_shared_board == 0) {
             proc = omAddPrcObj(func_800E9C94_shared_board, 0x1001, 0, 0);
             D_801012B8_shared_board = proc;
-            omPrcSetStatBit(proc, 0x80);
+            omPrcSetStatBit(proc, OM_STAT_NOALLPAUSE);
         }
         
         D_80105200_shared_board++;

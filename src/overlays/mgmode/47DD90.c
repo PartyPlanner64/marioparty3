@@ -26,7 +26,7 @@ s16 func_80116B20_mgmode(void) {
     sprGrp = espEntry(D_8011A3E0_mgmode, 0, 1);
     D_8011B650_mgmode = sprGrp;
     for (i = 0; i < ARRAY_COUNT(D_8011B654_mgmode); i++) {
-        D_8011B654_mgmode[i] = HuMemAllocTag(0x6000, 0x7918);
+        D_8011B654_mgmode[i] = HuMemAllocTag(0x6000, TAG_OVERLAY);
     }
     D_8011B660_mgmode = HuSprGet(D_800CD1DC_main[sprGrp].unk04, 0)->unk_84->unk00->unk00;
     D_8011B652_mgmode = 0;

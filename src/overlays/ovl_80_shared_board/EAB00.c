@@ -174,7 +174,7 @@ static void func_800D7280_shared_board(void) {
             }
         }
 
-        if ((D_800C9520_main[work->unkE] & 0x8000) && (sel >= 0)) {
+        if ((D_800C9520_main[work->unkE] & A_BUTTON) && (sel >= 0)) {
             sel = -4;
             func_800D7250_shared_board(work, sel);
             run = 0;

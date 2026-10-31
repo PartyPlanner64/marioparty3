@@ -184,7 +184,7 @@ void m257_InitEnvironment(void) {
     func_800142A0_main(0x30);
     omInitObjMan(50, 0);
     func_8004A208_main();
-    omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), 0xA0);
+    omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     HmfLightColorSet(0, 0xFF, 0xFF, 0xFF);
     HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
     HmfLightDirSet(1, -56.0f, 50.0f, 56.0f);
@@ -223,15 +223,15 @@ void m257_CreateMinigame(void) {
             }
         }
     }
-    m257_minigame = HuMemAllocTag(sizeof(MinigameData), 31000);
+    m257_minigame = HuMemAllocTag(sizeof(MinigameData), TAG_OVERLAY);
     memset(m257_minigame, 0, sizeof(MinigameData));
-    m257_players = HuMemAllocTag(PLAYERS_TOTAL * sizeof(PlayerData), 31000);
+    m257_players = HuMemAllocTag(PLAYERS_TOTAL * sizeof(PlayerData), TAG_OVERLAY);
     memset(m257_players, 0, PLAYERS_TOTAL * sizeof(PlayerData));
 }
 
 void m257_CheckExitRequest(omObjData *object) {
     if (D_800D530C_main == 1) { // omSysExitReq?
-        WipeCreateOut(0, 20);
+        WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         object->func = m257_WaitExitWipeOut;
     }
 }
@@ -280,7 +280,7 @@ void m257_InitMinigame(omObjData *object) {
         D_800EC598_minigame[i] = omAddObj(300, 9, 39, -1, m257_InitPlayer);
     }
     D_800EC1C0_minigame[0] = omAddObj(10, 5, 0, -1, m257_InitClock);
-    WipeCreateIn(0xFF, 16);
+    WipeCreateIn(WIPE_TYPE_PREV, 16);
     object->func = m257_UpdateSystem;
 }
 
@@ -326,7 +326,7 @@ void m257_InitClock(omObjData *object) {
             id = m257_SetAnimModel(0x5A, 4, 0.25f, ANIMMDL_ATTR_DISPON, var_s4);
         }
         m257_SetAnimModelDispOn(id, starPosX, -25.0f, starPosZ, 0.0f, 0.0f, 0.0f, 0.4f, rand16() % 31);
-        func_8001C258_main(m257_animModels[id].modelId, 4, 0);
+        func_8001C258_main(m257_animModels[id].modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     }
     m257_minigame->tensSpriteId = m257_SetSprite(0xF, 0, 0x2D, 0, 0);
     m257_minigame->unitsSpriteId = id = m257_SetSprite(0xF, 0, 0x2D, 0, 0);
@@ -370,7 +370,7 @@ void m257_InitPlayer(omObjData *object) {
     temp_a2 = D_800A178C_main[player->chr][1];
     func_800E1BA8_minigame(object, temp_a1, temp_a2, m257_playerId[object->work[0]], var_a0, var_a0);
     object->model[7] = func_8000B108_main(8, var_a0);
-    func_8001C258_main(object->model[7], 4, 4);
+    func_8001C258_main(object->model[7], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     player->dustBillId = m257_SetBill(0x57, 0x10, BILL_ATTR_01 | BILL_ATTR_ANIM | BILL_ATTR_DISPOFF);
     func_800E5A00_minigame(object, PLAYER_STATE_IDLE, func_80017BB8_main(player->chr, 0), 1, 0);
     func_800E5A00_minigame(object, PLAYER_STATE_WALK, func_80017BB8_main(player->chr, 2), 1, 0);
@@ -447,7 +447,7 @@ void m257_ExecMinigameStart(FuncGroupContext *groupCtx, FuncContext *ctx) {
             D_8010E4A2_tick_tock_hop = TRUE;
             break;
         default:
-            if (D_8010E4A2_tick_tock_hop && GMesStatGet() == 2) { // GMES_STAT_TIMEEND?
+            if (D_8010E4A2_tick_tock_hop && GMesStatGet() == GMES_STAT_TIMEEND) { // GMES_STAT_TIMEEND?
                 m257_jumpEnabled = TRUE;
                 m257_minigame->clockBaseSpeed[HAND_PLATFORM] = 0.0f;
                 m257_minigame->clockBaseSpeed[HAND_OBSTACLE] = 3.0f;
@@ -475,7 +475,7 @@ void m257_ExecMinigameStart(FuncGroupContext *groupCtx, FuncContext *ctx) {
 void m257_ExitOverlayOnWipeOut(FuncGroupContext *groupCtx, FuncContext *ctx) {
     switch (ctx->state) {
         case 0:
-            WipeCreateOut(0, 20);
+            WipeCreateOut(WIPE_TYPE_NORMAL, 20);
             ctx->state = 1;
             break;
         case 1:
@@ -1053,7 +1053,7 @@ void m257_CheckPlayerCollision(FuncGroupContext *groupCtx, FuncContext *ctx) {
         return;
     }
     if (player->obstacleCollisionTracker->colliding) {
-        func_8001C258_main(object->model[7], 4, 0);
+        func_8001C258_main(object->model[7], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(object->model[7], object->trans.x, 10.0f, object->trans.z);
         m257_SetPlayerState(player, PLAYER_STATE_KNOCKED, TRUE);
         m257_SetFunc(object->work[1], 0xFF, player, m257_ExecPlayerKnockedOut, 0);
@@ -1218,8 +1218,8 @@ void m257_ExecPlayerKnockedOut(FuncGroupContext *groupCtx, FuncContext *ctx) {
     if (object->trans.y < 10.0f) {
         ctx->work.s16[0] = 0;
         object->trans.y = 10.0f;
-        func_8001C258_main(object->model[0], 4, 4);
-        func_8001C258_main(object->model[1], 4, 4);
+        func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         m257_ResetFunc(object->work[1], ctx);
     }
 }

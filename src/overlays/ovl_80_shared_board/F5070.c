@@ -214,7 +214,7 @@ static void func_800E1934_shared_board(s32 arg0, s32 arg1) {
         }
 
         for (; var_s2 < 6; var_s2++) {
-            HuSprAttrSet(temp_v0_2, var_s2, 0x8000);
+            HuSprDispOff(temp_v0_2, var_s2);
         }
     }
 }

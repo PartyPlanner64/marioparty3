@@ -6,6 +6,16 @@
 #include "process.h"
 
 
+#define OM_STAT_DELETED (1 << 0)
+#define OM_STAT_DISABLED (1 << 1)
+#define OM_STAT_ACTIVE (1 << 2)
+#define OM_STAT_FUNCOFF (1 << 3) // object func is not called
+#define OM_STAT_PAUSED (1 << 4)
+#define OM_STAT_NOPAUSE (1 << 5)
+#define OM_STAT_ALLPAUSED (1 << 6) // set by omAllPause
+#define OM_STAT_NOALLPAUSE (1 << 7) // excluded from omAllPause
+#define OM_STAT_MODELPAUSE (1 << 8)
+
 #define OM_GET_WORK_PTR(object, type) ((type *)(&((object)->work[0])))
 #define OM_GET_DATA_PTR(object, type) ((type *)(((object)->data)))
 

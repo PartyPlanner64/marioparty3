@@ -425,7 +425,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010F9D4_staff);
 
 void func_8010FB28_staff(void) {
     Process *prc = omAddPrcObj(func_8010FB88_staff, 0x3F00, 0x2000, 0);
-    UnkStaff_5 *data = HuMemAllocTag(sizeof(UnkStaff_5), 0x7918);
+    UnkStaff_5 *data = HuMemAllocTag(sizeof(UnkStaff_5), TAG_OVERLAY);
 
     prc->user_data = data;
     data->unk_18.x = 0.0f;

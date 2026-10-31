@@ -122,7 +122,7 @@ void func_80107A80_slot_synch(void) {
 void func_80107A88_slot_synch(void) {
     memset(&D_8010DF70_slot_synch, 0, sizeof(D_8010DF70_slot_synch));
     D_8010DF70_slot_synch.unk_06 = 0;
-    D_8010DF70_slot_synch.unk_08 = HuMemAllocTag(0x420, 0x7918);
+    D_8010DF70_slot_synch.unk_08 = HuMemAllocTag(0x420, TAG_OVERLAY);
     memset(D_8010DF70_slot_synch.unk_08, 0, 0x420);
     D_8010DF70_slot_synch.unk_00 = omAddObj(0x1C, 0, 0, -1, NULL);
 }

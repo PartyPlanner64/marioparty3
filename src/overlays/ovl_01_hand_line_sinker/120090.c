@@ -37,7 +37,7 @@ void func_8010B5EC_hand_line_sinker(CameraPreset *preset, CameraPreset *to, s16 
     CRot = preset->rot;
     CZoom = preset->zoom;
     D_8010C190_hand_line_sinker = omAddObj(40, 0, 0, -1, func_8010B750_hand_line_sinker);
-    data = HuMemAllocTag(sizeof(CameraMotionData), 0x7918);
+    data = HuMemAllocTag(sizeof(CameraMotionData), TAG_OVERLAY);
     D_8010C190_hand_line_sinker->data = data;
     data->from = preset;
     data->to = to;

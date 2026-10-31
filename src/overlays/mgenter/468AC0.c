@@ -58,7 +58,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgenter/468AC0", func_801087C0_mgenter);
 
 void func_80108934_mgenter(omObjData *obj) {
     if ((D_80109AA4_mgenter != 0) || (D_800D530C_main != 0)) {
-        WipeCreateOut(0, 8);
+        WipeCreateOut(WIPE_TYPE_NORMAL, 8);
         if (D_80109AA6_mgenter == 0) {
             HuAudSeqFadeOut(0x3C);
         }

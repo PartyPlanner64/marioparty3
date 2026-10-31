@@ -211,10 +211,10 @@ s16 func_8000D3E0_main(s32 fileId, s32 attr, s16 count, void (*func)(s16)) {
     if (i == EFFECT_GROUP_MAX) {
         return -1;
     }
-    group = HuMemAllocTag(sizeof(EffectGroup), 0x7918);
+    group = HuMemAllocTag(sizeof(EffectGroup), TAG_OVERLAY);
     *slot = group;
     group->count = count;
-    entry = HuMemAllocTag(count * sizeof(EffectGroupModel), 0x7918);
+    entry = HuMemAllocTag(count * sizeof(EffectGroupModel), TAG_OVERLAY);
     group->models = entry;
     for (j = 0; j < count; j++, entry++) {
         model = func_8000CC98_main(fileId, attr | 4);
@@ -245,7 +245,7 @@ s16 func_8000D550_main(s16 index, f32 x, f32 y, f32 z) {
     Hu3DModelPosSet(model, x, y, z);
     func_80013954_main(model, 0);
     func_800138EC_main(model, 6, 0);
-    func_8001C258_main(model, 4, 0);
+    func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     return model;
 }
 
@@ -287,7 +287,7 @@ void func_8000D694_main(s16 model) {
         }
         if (++bc->unk02 >= 8) {
             bc->unk04 |= 4;
-            func_8001C258_main(model, 4, 4);
+            func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
     }
 }

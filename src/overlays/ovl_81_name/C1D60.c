@@ -67,7 +67,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C1D60", func_800DB4DC_name_81
 
 void func_800DB544_name_81(s32 arg0) {
     if (D_800CDBD0_main[arg0].unk_16 != -1) {
-        func_8001C258_main(D_800CDBD0_main[arg0].unk_16, 4, 4);
+        func_8001C258_main(D_800CDBD0_main[arg0].unk_16, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
 }
 
@@ -75,7 +75,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C1D60", func_800DB58C_name_81
 
 void func_800DB5AC_name_81(s32 playerIndex) {
     if (D_80105555_name_81 && D_800CDBD0_main[playerIndex].unk_16 != -1) {
-        func_8001C258_main(D_800CDBD0_main[playerIndex].unk_16, 4, 0);
+        func_8001C258_main(D_800CDBD0_main[playerIndex].unk_16, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     }
 }
 

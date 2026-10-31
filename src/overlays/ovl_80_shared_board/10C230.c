@@ -31,7 +31,6 @@ enum DIFFICULTIES {
     VERY_HARD = 3
 };
 
-extern u8 D_800CC0BA_main;
 extern s16 D_800D1380_main;
 extern s32 D_800A12CC_main;
 extern s16 D_800CC4A0_main;
@@ -557,7 +556,7 @@ void MBObjectSetup(s32 arg0, s16 arg1, s32 arg2, s32 unused) {
         temp_v0_3 = HuMemMemoryAlloc(temp_v0_2->heap, sizeof(UnkOvl81_1));
         temp_v0_2->user_data = temp_v0_3;
         temp_v0_3->unk_00 = i;
-        omPrcSetStatBit(temp_v0_2, 0xA0);
+        omPrcSetStatBit(temp_v0_2, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     }
 }
 
@@ -1198,7 +1197,7 @@ static s32 func_800FA104_shared_board(u8 *arg0) {
     }
 
     if (var_s2 != 0) {
-        func_8005B63C_main(mbDlgWinId, 2, 2);
+        func_8005B63C_main(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         for (j = 0; var_s2 != 0; j++) {
             var_s2--;
             if (var_s2 == 0) {
@@ -1386,7 +1385,7 @@ void MBKettouComResultSet(void) {
     mbItemBtnF = 1;
     D_800C9930_main = -1;
     D_800CE206 = 0;
-    omPrcSetStatBit(omAddPrcObj(func_800F9C68_shared_board, 0, 0, 0), 0xA0);
+    omPrcSetStatBit(omAddPrcObj(func_800F9C68_shared_board, 0, 0, 0), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     WipeCreateIn(8, 0x10);
     HuPrcSleep(17);
 }
@@ -1473,7 +1472,7 @@ s32 MBKettouExec(GW_PLAYER *arg0, s32 arg1) {
             mbItemBtnF = 1;
             D_800C9930_main = -1;
             D_800CE206 = 0;
-            omPrcSetStatBit(omAddPrcObj(func_800F9C68_shared_board, 0, 0, 0), 0xA0);
+            omPrcSetStatBit(omAddPrcObj(func_800F9C68_shared_board, 0, 0, 0), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
             HuPrcSleep(0x1F);
             return 0;
         } else {
@@ -1489,7 +1488,7 @@ s32 MBKettouExec(GW_PLAYER *arg0, s32 arg1) {
         mbItemBtnF = 1;
         D_800C9930_main = -1;
         D_800CE206 = 0;
-        omPrcSetStatBit(omAddPrcObj(func_800F9C68_shared_board, 0, 0, 0), 0xA0);
+        omPrcSetStatBit(omAddPrcObj(func_800F9C68_shared_board, 0, 0, 0), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
         HuPrcSleep(0x1F);
         return 0;
     }
@@ -1522,9 +1521,9 @@ s32 MBKettouExec(GW_PLAYER *arg0, s32 arg1) {
                 case 5:
                     mbCameraBtnF = 1;
                     mbItemBtnF = 0;
-                    omPrcSetStatBit(HuPrcCurrentGet(), 0x80);
+                    omPrcSetStatBit(HuPrcCurrentGet(), OM_STAT_NOALLPAUSE);
                     MBMapScrollExec(GwPlayer[GwSystem.current_player_index].pad);
-                    omPrcResetStatBit(HuPrcCurrentGet(), 0x80);
+                    omPrcResetStatBit(HuPrcCurrentGet(), OM_STAT_NOALLPAUSE);
                     mbCameraBtnF = 0;
                     mbItemBtnF = 1;
                     func_800FC8A4_shared_board();
@@ -1575,20 +1574,20 @@ s32 MBKettouExec(GW_PLAYER *arg0, s32 arg1) {
     while (1) {
         if (MBPlayerComCheck(-1) == 0) {
             // Player controlled input
-            if (D_800C9520_main[GwPlayer[GwSystem.current_player_index].pad] & 0x8000) { //?
+            if (D_800C9520_main[GwPlayer[GwSystem.current_player_index].pad] & A_BUTTON) { //?
                 break;                                                                    // Player confirmed selection
             }
 
-            if (D_800D0590_main[GwPlayer[GwSystem.current_player_index].pad] & 0x800) {
+            if (D_800D0590_main[GwPlayer[GwSystem.current_player_index].pad] & U_JPAD) {
                 var_s1_3++;
             }
-            if (D_800D0590_main[GwPlayer[GwSystem.current_player_index].pad] & 0x400) {
+            if (D_800D0590_main[GwPlayer[GwSystem.current_player_index].pad] & D_JPAD) {
                 var_s1_3--;
             }
-            if (D_800D0590_main[GwPlayer[GwSystem.current_player_index].pad] & 0x200) {
+            if (D_800D0590_main[GwPlayer[GwSystem.current_player_index].pad] & L_JPAD) {
                 var_s1_3 -= 0xA;
             }
-            if (D_800D0590_main[GwPlayer[GwSystem.current_player_index].pad] & 0x100) {
+            if (D_800D0590_main[GwPlayer[GwSystem.current_player_index].pad] & R_JPAD) {
                 var_s1_3 += 0xA;
             }
         } else {
@@ -2041,7 +2040,7 @@ static s32 func_800FB624_shared_board(GW_PLAYER* arg0) {
         mbItemBtnF = 1;
         D_800C9930_main = -1;
         D_800CE206 = 0;
-        omPrcSetStatBit(omAddPrcObj(func_800F9C68_shared_board, 0U, 0, 0), 0xA0);
+        omPrcSetStatBit(omAddPrcObj(func_800F9C68_shared_board, 0U, 0, 0), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
         HuPrcSleep(2);
         return 0;
     } else {
@@ -3417,7 +3416,7 @@ static void func_800FF158_shared_board(void) {
         if (mbItemBtnF == 0) {
             continue;
         }
-        if (D_800CC0BA_main == 3) {
+        if (wipeMode == WIPE_MODE_BLANK) {
             continue;
         }
         curPlayerNo = MBPlayerTurnGet();
@@ -3498,7 +3497,7 @@ void MBStart(u32 arg0) {
             switch (mbGameMode) {
                 case 0:
                 case 1:
-                    WipeCreateIn(0, 0);
+                    WipeCreateIn(WIPE_TYPE_NORMAL, 0);
                     func_800F2834_shared_board();
                     break;
                 default:
@@ -3515,7 +3514,7 @@ void MBStart(u32 arg0) {
                         MBPlayerVibrate(2, 0);
                         MBPlayerVibrate(3, 0);
                     } else {
-                        WipeCreateIn(0xFF, 0x10);
+                        WipeCreateIn(WIPE_TYPE_PREV, 0x10);
                     }
                     MBCameraZoomSet(D_800C9938_main);
                     func_800F27D0_shared_board();
@@ -3524,7 +3523,7 @@ void MBStart(u32 arg0) {
             MBCameraPos3DSet(&GwPlayer[GwSystem.current_player_index].player_obj->coords);
             omAddPrcObj(MBMain, 0xEFFF, 0x3000, 0);
             omAddPrcObj(func_800F93A4_shared_board, 0x1005, 0, 0);
-            omPrcSetStatBit(omAddPrcObj(func_800FF158_shared_board, 0x1001, 0, 0), 0x80);
+            omPrcSetStatBit(omAddPrcObj(func_800FF158_shared_board, 0x1001, 0, 0), OM_STAT_NOALLPAUSE);
             mbCameraBtnF = 0;
             mbItemBtnF = 0;
             D_800CDD64_main = 0;
@@ -3542,7 +3541,7 @@ void MBStart(u32 arg0) {
                 MBStatusColorSet(i, MBPlayerGet(i)->color);
             }
             omAddPrcObj(func_800F93A4_shared_board, 0x1005, 0, 0);
-            omPrcSetStatBit(omAddPrcObj(func_800FF0F8_shared_board, 0x1005, 0, 0), 0x80);
+            omPrcSetStatBit(omAddPrcObj(func_800FF0F8_shared_board, 0x1005, 0, 0), OM_STAT_NOALLPAUSE);
             mbCameraBtnF = 1;
             return;
         case 2:

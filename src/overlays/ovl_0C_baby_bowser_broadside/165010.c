@@ -193,7 +193,7 @@ void func_801059BC_baby_bowser_broadside(void) {
     func_800142A0_main(0x30);
     omInitObjMan(0x32, 0);
     func_8004A208_main();
-    omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), 0xA0);
+    omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     HmfLightColorSet(0, 0xFF, 0xFF, 0xFF);
     HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
     HmfLightDirSet(1, -56.0f, 50.0f, 56.0f);
@@ -220,15 +220,15 @@ void func_80105B94_baby_bowser_broadside(void) {
     s32 random;
     f32 startAngle;
 
-    D_80110008_baby_bowser_broadside = HuMemAllocTag(0x64, 0x7918);
+    D_80110008_baby_bowser_broadside = HuMemAllocTag(0x64, TAG_OVERLAY);
     memset(D_80110008_baby_bowser_broadside, 0, 0x64);
-    D_80110004_baby_bowser_broadside = HuMemAllocTag(0x180, 0x7918);
+    D_80110004_baby_bowser_broadside = HuMemAllocTag(0x180, TAG_OVERLAY);
     memset(D_80110004_baby_bowser_broadside, 0, 0x180);
     for (i = 0; i < 4; i++) {
-        D_80110004_baby_bowser_broadside[i].unk_54 = HuMemAllocTag(0x90, 0x7918);
+        D_80110004_baby_bowser_broadside[i].unk_54 = HuMemAllocTag(0x90, TAG_OVERLAY);
         memset(D_80110004_baby_bowser_broadside[i].unk_54, 0, 0x90);
     }
-    D_80110000_baby_bowser_broadside = HuMemAllocTag(0x30, 0x7918);
+    D_80110000_baby_bowser_broadside = HuMemAllocTag(0x30, TAG_OVERLAY);
     memset(D_80110000_baby_bowser_broadside, 0, 0x30);
     random = rand16();
     angle = random % 4;
@@ -247,7 +247,7 @@ void func_80105B94_baby_bowser_broadside(void) {
 
 void func_80105DE4_baby_bowser_broadside(omObjData *object) {
     if (D_800D530C_main == 1) {
-        WipeCreateOut(0, 20);
+        WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         object->func = func_80105E2C_baby_bowser_broadside;
     }
 }
@@ -290,7 +290,7 @@ void func_80105F64_baby_bowser_broadside(omObjData *object) {
     func_80109F64_baby_bowser_broadside(object, (s8)object->work[1], 0, 6);
     D_800EC1C0_minigame[0] = omAddObj(10, 1, 0, -1, func_801062C4_baby_bowser_broadside);
     D_800EC1C0_minigame[1] = omAddObj(10, 1, 0, -1, func_80106E70_baby_bowser_broadside);
-    omSetStatBit(D_800EC1C0_minigame[1], 0xA0);
+    omSetStatBit(D_800EC1C0_minigame[1], OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     counts[1] = 0;
     counts[0] = 0;
     for (i = 0; i < 4; i++) {
@@ -314,7 +314,7 @@ void func_80105F64_baby_bowser_broadside(omObjData *object) {
     D_80110008_baby_bowser_broadside->unk_04 = 900.0f;
     func_8010A0B4_baby_bowser_broadside((s8)object->work[1], 0xFFFF, 0, func_801076AC_baby_bowser_broadside, 0);
     func_8010A0B4_baby_bowser_broadside((s8)object->work[1], 0xF, 0, func_80107A80_baby_bowser_broadside, 0);
-    WipeCreateIn(0xFF, 16);
+    WipeCreateIn(WIPE_TYPE_PREV, 16);
     object->func = func_80106288_baby_bowser_broadside;
 }
 
@@ -508,7 +508,7 @@ void func_80107140_baby_bowser_broadside(omObjData *object) {
     object->scale.x = object->scale.y = object->scale.z = 1.0f;
     D_800EC280_minigame++;
     for (i = 0; i < 3; i++) {
-        player->unk_54[i].unk_2C = HuMemAllocTag(sizeof(BabyBowserBroadsideShip), 0x7918);
+        player->unk_54[i].unk_2C = HuMemAllocTag(sizeof(BabyBowserBroadsideShip), TAG_OVERLAY);
         func_8010E018_baby_bowser_broadside(player->unk_54[i].unk_2C, 6, 40.0f, player->unk_54[i].unk_02);
         player->unk_54[i].unk_2C->unk_04[1] = D_80110008_baby_bowser_broadside->unk_3C;
         player->unk_54[i].unk_2C->unk_04[2] = D_80110008_baby_bowser_broadside->unk_46;
@@ -516,9 +516,9 @@ void func_80107140_baby_bowser_broadside(omObjData *object) {
         player->unk_54[i].unk_2C->unk_04[4] = D_80110008_baby_bowser_broadside->unk_3E[1];
         player->unk_54[i].unk_2C->unk_04[5] = D_80110008_baby_bowser_broadside->unk_3E[2];
         player->unk_54[i].unk_2C->unk_04[6] = D_80110008_baby_bowser_broadside->unk_3E[3];
-        func_8001C258_main(player->unk_54[i].unk_02, 4, 4);
+        func_8001C258_main(player->unk_54[i].unk_02, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
-    player->unk_5C = HuMemAllocTag(sizeof(BabyBowserBroadsideShip), 0x7918);
+    player->unk_5C = HuMemAllocTag(sizeof(BabyBowserBroadsideShip), TAG_OVERLAY);
     func_8010E018_baby_bowser_broadside(player->unk_5C, 4, 50.0f, -1);
     player->unk_5C->unk_04[1] = D_80110008_baby_bowser_broadside->unk_48[0];
     player->unk_5C->unk_04[2] = D_80110008_baby_bowser_broadside->unk_48[1];
@@ -620,7 +620,7 @@ void func_80107A80_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBows
             D_8010FD70_baby_bowser_broadside = 1;
             break;
         default:
-            if (D_8010FD70_baby_bowser_broadside == 1 && GMesStatGet() == 2) {
+            if (D_8010FD70_baby_bowser_broadside == 1 && GMesStatGet() == GMES_STAT_TIMEEND) {
                 for (i = 0; i < 4; i++) {
                     if (GwPlayer[i].stat & PLAYER_IS_CPU) {
                         func_8010A0B4_baby_bowser_broadside((s8)(i + 3), 0, (s32)&D_80110004_baby_bowser_broadside[i], func_80108860_baby_bowser_broadside, 0);
@@ -735,7 +735,7 @@ void func_80107FE0_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBows
 void func_801081A4_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler) {
     switch ((s8)handler->unk_04) {
         case 0:
-            WipeCreateOut(0, 20);
+            WipeCreateOut(WIPE_TYPE_NORMAL, 20);
             handler->unk_04 = 1;
             break;
         case 1:
@@ -1007,7 +1007,7 @@ void func_8010913C_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBows
         if (--player->unk_58 < 0) {
             player->unk_58 = 0;
         }
-        if ((u16)D_800CDA7C_main[player->unk_00] & 0x8000) {
+        if ((u16)D_800CDA7C_main[player->unk_00] & A_BUTTON) {
             if (player->unk_58 == 0 && player->unk_10 == 0) {
                 player->unk_10 = 1;
                 index = func_80109970_baby_bowser_broadside(player);
@@ -1154,7 +1154,7 @@ void func_801098F8_baby_bowser_broadside(BabyBowserBroadsideEntry *entry) {
     s16 index = func_8010AADC_baby_bowser_broadside(entry->unk_28);
 
     func_8010AB80_baby_bowser_broadside(index, entry->unk_2C->pos.x, entry->unk_2C->pos.y, entry->unk_2C->pos.z, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
-    func_8001C258_main(entry->unk_02, 4, 4);
+    func_8001C258_main(entry->unk_02, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     entry->unk_00 = 0;
 }
 
@@ -1190,7 +1190,7 @@ void func_801099D4_baby_bowser_broadside(omObjData *object, BabyBowserBroadsideE
     entry->elapsed = 0.0f;
     entry->angle = angle;
     entry->unk_00 = 1;
-    func_8001C258_main(entry->unk_02, 4, 0);
+    func_8001C258_main(entry->unk_02, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     x = sinAngle * 180.0f;
     z = cosAngle * 180.0f;
     entry->unk_28 = team;

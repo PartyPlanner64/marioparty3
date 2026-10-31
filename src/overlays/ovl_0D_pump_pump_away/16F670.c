@@ -579,9 +579,9 @@ void func_8010628C_pump_pump_away(omObjData *obj) {
         players = &D_80111978_pump_pump_away[i];
         scale = players[-1].unk_28->trans.y - obj->trans.y - 200.0f;
         if ((scale > 1000.0f) | (scale < -100.0f)) {
-            func_8001C258_main(obj->model[i], 4, 4);
+            func_8001C258_main(obj->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         } else {
-            func_8001C258_main(obj->model[i], 4, 0);
+            func_8001C258_main(obj->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             scale = 3.0 - scale * 0.003;
             if (scale >= 3.0) {
                 scale = 3.0f;
@@ -747,8 +747,8 @@ void func_80106A6C_pump_pump_away(omObjData *obj) {
             }
             break;
         case 4:
-            func_8001C258_main(obj->model[0], 4, 0);
-            func_8001C258_main(obj->model[1], 4, 4);
+            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             players = D_80111978_pump_pump_away;
             other = &players[1];
             if (D_80111990_pump_pump_away > other->unk_18) {
@@ -805,8 +805,8 @@ void func_80106A6C_pump_pump_away(omObjData *obj) {
                 break;
             }
         case 7:
-            func_8001C258_main(obj->model[0], 4, 4);
-            func_8001C258_main(obj->model[1], 4, 0);
+            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             break;
     }
 }
@@ -817,8 +817,8 @@ void func_80107338_pump_pump_away(omObjData *obj) {
     func_8001C2FC_main(obj->model[0], 0x20000, 0x20000);
     func_8001C448_main(obj->model[0]);
     func_8001C954_main(obj->model[0]);
-    func_8001C258_main(obj->model[0], 4, 4);
-    func_8001C258_main(obj->model[1], 4, 0);
+    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     func_800335BC_main("m213_back_DEF", D_80113548_pump_pump_away);
     obj->trans.x = obj->trans.y = 0.0f;
     obj->trans.z = -1300.0f;
@@ -831,7 +831,7 @@ void func_80107338_pump_pump_away(omObjData *obj) {
 
 void func_8010745C_pump_pump_away(void) {
     omObjData *obj = omAddObj(0x64, 2, 0, -1, func_80107338_pump_pump_away);
-    omSetStatBit(obj, 0xA0);
+    omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
 void func_8010749C_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2) {
@@ -920,7 +920,7 @@ void func_8010780C_pump_pump_away(omObjData *obj) {
     D_80113534_pump_pump_away = func_8000B838_main(0x2E001E);
     D_8011353C_pump_pump_away = func_80055194_main(D_80113536_pump_pump_away);
     D_80113538_pump_pump_away = Hu3DHookFuncCreate(0, func_8010749C_pump_pump_away, 6);
-    Hu3DModelCameraSet(D_8011353A_pump_pump_away, 1);
+    Hu3DModelCameraSet(D_8011353A_pump_pump_away, HU3D_CAM0);
     D_80113540_pump_pump_away = 0;
     D_80113530_pump_pump_away.state = -1;
     D_80113544_pump_pump_away = 30;
@@ -986,7 +986,7 @@ void func_80107A8C_pump_pump_away(omObjData *obj) {
                 func_801078EC_pump_pump_away(obj);
                 entry->unk_00 = 1;
             }
-            func_8001C258_main(obj->model[0], 4, 4);
+            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             break;
         case 4:
             break;
@@ -1100,7 +1100,7 @@ void func_8010811C_pump_pump_away(omObjData *obj) {
 
     if (hose->unk_04 == 2) {
         if (HmfModelData[obj->model[0]].motTime >= D_800CCF58_main[HmfModelData[obj->model[0]].motId].unk02 - 2) {
-            func_8001C258_main(obj->model[0], 4, 4);
+            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             hose->unk_04 = 3;
         }
     } else if (hose->unk_04 != 3) {
@@ -1382,14 +1382,14 @@ void func_80108E74_pump_pump_away(omObjData *obj) {
     D_8011175C_pump_pump_away = func_8000B838_main(0x2E0015);
     D_80111764_pump_pump_away = func_80055194_main(D_8011175E_pump_pump_away);
     D_80111760_pump_pump_away = Hu3DHookFuncCreate(0, func_80108560_pump_pump_away, 2);
-    Hu3DModelCameraSet(D_80111762_pump_pump_away, 1);
+    Hu3DModelCameraSet(D_80111762_pump_pump_away, HU3D_CAM0);
     D_80111788_pump_pump_away = 0;
     entry->unk_00 = 0;
     entry++;
     D_80111790_pump_pump_away = func_8000B838_main(0x2E0016);
     D_80111798_pump_pump_away = func_80055194_main(D_80111792_pump_pump_away);
     D_80111794_pump_pump_away = Hu3DHookFuncCreate(0, func_80108810_pump_pump_away, 2);
-    Hu3DModelCameraSet(D_80111796_pump_pump_away, 1);
+    Hu3DModelCameraSet(D_80111796_pump_pump_away, HU3D_CAM0);
     D_801117BC_pump_pump_away = 0;
     entry->unk_00 = 0;
     obj->func = func_80108CFC_pump_pump_away;
@@ -1416,7 +1416,7 @@ void func_80108FE0_pump_pump_away(omObjData *obj) {
             func_8001C5B4_main(obj->model[0], obj->motion[0]);
             Hu3DMotionTimeSet(obj->model[0], 0);
             func_8001C814_main(obj->model[0], 1, 0);
-            func_8001C258_main(obj->model[0], 4, 0);
+            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             state->unk_00 = 3;
             break;
         case 2:
@@ -1424,7 +1424,7 @@ void func_80108FE0_pump_pump_away(omObjData *obj) {
             Hu3DMotionTimeSet(obj->model[1], 0);
             Hu3DMotionSpeedSet(obj->model[1], 0.5f);
             func_8001C814_main(obj->model[1], 1, 0);
-            func_8001C258_main(obj->model[1], 4, 0);
+            func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             state->unk_00 = 4;
             break;
         case 3:
@@ -1443,7 +1443,7 @@ void func_80108FE0_pump_pump_away(omObjData *obj) {
                 func_8001F9E4_main(obj->model[0], (u8)state->unk_04);
             } else {
                 func_8001C814_main(obj->model[0], 1, 1);
-                func_8001C258_main(obj->model[0], 4, 4);
+                func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 state->unk_04 = 255;
                 state->unk_00 = 0;
             }
@@ -1454,7 +1454,7 @@ void func_80108FE0_pump_pump_away(omObjData *obj) {
                 func_8001F9E4_main(obj->model[1], (u8)state->unk_04);
             } else {
                 func_8001C814_main(obj->model[1], 1, 1);
-                func_8001C258_main(obj->model[1], 4, 4);
+                func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 state->unk_04 = 255;
                 state->unk_00 = 0;
             }
@@ -1493,13 +1493,13 @@ void func_80109280_pump_pump_away(omObjData *obj) {
     func_8001C5B4_main(obj->model[0], obj->motion[0]);
     Hu3DMotionTimeSet(obj->model[0], 0);
     func_8001C814_main(obj->model[0], 1, 1);
-    func_8001C258_main(obj->model[0], 4, 4);
+    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     func_8001FA68_main(obj->model[1]);
     func_8001F9E4_main(obj->model[1], 255);
     func_8001C5B4_main(obj->model[1], obj->motion[1]);
     Hu3DMotionTimeSet(obj->model[1], 0);
     func_8001C814_main(obj->model[1], 1, 1);
-    func_8001C258_main(obj->model[1], 4, 4);
+    func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     obj->trans.x = D_80111004_pump_pump_away[obj->work[0]].x;
     obj->trans.y = D_80111004_pump_pump_away[obj->work[0]].y;
     obj->trans.z = D_80111004_pump_pump_away[obj->work[0]].z;
@@ -1530,7 +1530,7 @@ void func_801094CC_pump_pump_away(omObjData *obj) {
             func_8001C5B4_main(obj->model[0], obj->motion[0]);
             Hu3DMotionTimeSet(obj->model[0], 0);
             func_8001C814_main(obj->model[0], 1, 0);
-            func_8001C258_main(obj->model[0], 4, 0);
+            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             obj->trans.x = player->unk_28->trans.x;
             obj->trans.y = player->unk_28->trans.y + 200.0f;
             obj->trans.z = player->unk_28->trans.z;
@@ -1540,7 +1540,7 @@ void func_801094CC_pump_pump_away(omObjData *obj) {
             func_8001C5B4_main(obj->model[0], obj->motion[1]);
             Hu3DMotionTimeSet(obj->model[0], 0);
             func_8001C814_main(obj->model[0], 1, 0);
-            func_8001C258_main(obj->model[0], 4, 0);
+            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             obj->trans.x = player->unk_28->trans.x;
             obj->trans.y = player->unk_28->trans.y + 200.0f;
             obj->trans.z = player->unk_28->trans.z;
@@ -1597,7 +1597,7 @@ void func_801098E0_pump_pump_away(omObjData *obj) {
         func_8001C5B4_main(obj->model[0], obj->motion[1]);
         Hu3DMotionTimeSet(obj->model[0], 0);
         func_8001C814_main(obj->model[0], 1, 0);
-        func_8001C258_main(obj->model[0], 4, 0);
+        func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         obj->trans.x = player->unk_28->trans.x;
         obj->trans.y = player->unk_28->trans.y + 200.0f;
         obj->trans.z = player->unk_28->trans.z;
@@ -1638,7 +1638,7 @@ void func_80109A50_pump_pump_away(omObjData *obj) {
     func_8001C5B4_main(obj->model[0], obj->motion[0]);
     Hu3DMotionTimeSet(obj->model[0], 0);
     func_8001C814_main(obj->model[0], 1, 1);
-    func_8001C258_main(obj->model[0], 4, 4);
+    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     obj->trans.x = obj->trans.y = obj->trans.z = 0.0f;
     obj->func = func_801099D4_pump_pump_away;
     D_80113518_pump_pump_away.state = 0;
@@ -1681,7 +1681,7 @@ void func_80109C30_pump_pump_away(omObjData *obj) {
         case 0:
             break;
         case 1:
-            func_8001C258_main(obj->model[0], 4, 0);
+            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             entry->unk_00 = 2;
             break;
         case 2:
@@ -1693,7 +1693,7 @@ void func_80109C30_pump_pump_away(omObjData *obj) {
                 obj->scale.y += 0.1;
                 obj->scale.z += 0.1;
             } else {
-                func_8001C258_main(obj->model[0], 4, 4);
+                func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 entry->unk_04 = 255;
                 entry->unk_08 = 0;
                 entry->unk_00 = 0;
@@ -1709,7 +1709,7 @@ void func_80109D74_pump_pump_away(omObjData *obj) {
     obj->model[0] = func_8000B108_main(0x2E0013, 0x289);
     func_8001FA68_main(obj->model[0]);
     func_8001F9E4_main(obj->model[0], 255);
-    func_8001C258_main(obj->model[0], 4, 4);
+    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     obj->trans.x = obj->trans.y = obj->trans.z = 0.0f;
     obj->scale.x = obj->scale.y = obj->scale.z = 1.0f;
     obj->func = func_80109C30_pump_pump_away;
@@ -2708,7 +2708,7 @@ void func_8010D1B8_pump_pump_away(omObjData *obj) {
             func_800550F4_main(record->group, i, 0);
             func_80054FF8_main(record->group, i, 0);
             HuSprAttrSet(record->group, i, 0x1000);
-            HuSprAttrSet(record->group, i, 0x8000);
+            HuSprDispOff(record->group, i);
         }
     }
     record->espriteData = func_8000B838_main(0x2E0023);
@@ -2738,23 +2738,23 @@ void func_8010D48C_pump_pump_away(omObjData *obj) {
     if (D_801135E0_pump_pump_away == 0) {
         height = (first->unk_18 > other->unk_18) ? first->unk_18 : other->unk_18;
         if (marker->record * 10 - height * 0.1 + 400.0 < 2000.0) {
-            func_8001C258_main(obj->model[0], 4, 0);
+            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             obj->trans.y = marker->record * 10 - height * 0.1 + 350.0;
             if (obj->trans.y < -1000.0f) {
-                func_8001C258_main(obj->model[0], 4, 4);
+                func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 marker->hidden = 1;
             }
         }
     }
     if (D_80113530_pump_pump_away.state >= 2 && marker->state < 10) {
-        func_8001C258_main(obj->model[0], 4, 4);
+        func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         marker->state = 10;
     }
 }
 
 void func_8010D620_pump_pump_away(omObjData *obj) {
     obj->model[0] = func_8000B108_main(0x2E001F, 0x1689);
-    func_8001C258_main(obj->model[0], 4, 4);
+    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     obj->trans.x = 0.0f;
     obj->trans.y = 1000.0f;
     obj->trans.z = 550.0f;
@@ -2869,8 +2869,8 @@ void func_8010DC68_pump_pump_away(omObjData *obj) {
         func_8010D95C_pump_pump_away(obj);
     }
     if (D_80113530_pump_pump_away.state >= 2 && entry->unk_00 < 10) {
-        func_8001C258_main(obj->model[0], 4, 4);
-        func_8001C258_main(obj->model[1], 4, 4);
+        func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         entry->unk_00 = 10;
     }
 }
@@ -2936,10 +2936,10 @@ void func_8010E0F4_pump_pump_away(omObjData *obj) {
         distance = player->unk_18 > other->unk_18 ? player->unk_18 : other->unk_18;
         positions = D_8011101C_pump_pump_away;
         if (D_8011101C_pump_pump_away[obj->work[0]] - distance * 0.1 + 400.0 < 1000.0) {
-            func_8001C258_main(obj->model[0], 4, 0);
+            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             obj->trans.y = positions[obj->work[0]] - distance * 0.1 + 400.0;
             if (obj->trans.y < -1000.0f) {
-                func_8001C258_main(obj->model[0], 4, 4);
+                func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 nozzle->unk_04 = 1;
             }
         }
@@ -2970,7 +2970,7 @@ void func_8010E0F4_pump_pump_away(omObjData *obj) {
     nozzle->unk_10 = angle;
     obj->trans.y += sindf(angle) * 2.0;
     if (D_80113530_pump_pump_away.state >= 2 && nozzle->unk_00 < 10) {
-        func_8001C258_main(obj->model[0], 4, 4);
+        func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         nozzle->unk_00 = 10;
     }
 }
@@ -2984,7 +2984,7 @@ void func_8010E45C_pump_pump_away(omObjData *obj) {
         obj->model[0] = Hu3DModelLink(D_801116EC_pump_pump_away);
     }
     func_8001C814_main(obj->model[0], 2, 2);
-    func_8001C258_main(obj->model[0], 4, 4);
+    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     if (rand8() & 1) {
         obj->trans.x = (u8)(rand8() % 10) * 50;
     } else {
@@ -3021,10 +3021,10 @@ void func_8010E6B8_pump_pump_away(omObjData *obj) {
             distance = (player->unk_18 > other->unk_18) ? player->unk_18 : other->unk_18;
             positions = D_8011102C_pump_pump_away;
             if (D_8011102C_pump_pump_away[obj->work[0]] - distance * 0.1 + 400.0 < 1000.0) {
-                func_8001C258_main(obj->model[0], 4, 0);
+                func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 obj->trans.y = positions[obj->work[0]] - distance * 0.1 + 400.0;
                 if (obj->trans.y < -1000.0f) {
-                    func_8001C258_main(obj->model[0], 4, 4);
+                    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     effect->hidden = 1;
                 }
             }
@@ -3045,7 +3045,7 @@ void func_8010E6B8_pump_pump_away(omObjData *obj) {
             effect->direction ^= 1;
         }
         if (D_80113530_pump_pump_away.state >= 2 && effect->state < 10) {
-            func_8001C258_main(obj->model[0], 4, 4);
+            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             effect->state = 10;
         }
     }
@@ -3060,7 +3060,7 @@ void func_8010E98C_pump_pump_away(omObjData *obj) {
         obj->model[0] = Hu3DModelLink(D_801116EE_pump_pump_away);
     }
     func_8001C814_main(obj->model[0], 1, 1);
-    func_8001C258_main(obj->model[0], 4, 4);
+    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     if (rand8() & 1) {
         obj->trans.x = (u8)(rand8() % 10) * 50;
     } else {
@@ -3100,7 +3100,7 @@ void func_8010EBC4_pump_pump_away(omObjData *obj) {
                 case 0:
                     positions = D_8011103C_pump_pump_away;
                     if (D_8011103C_pump_pump_away[D_80111970_pump_pump_away] - distance * 0.1 + 400.0 < 1000.0) {
-                        func_8001C258_main(obj->model[0], 4, 0);
+                        func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                         obj->trans.y = positions[obj->work[0]] + distance * 0.1 + 400.0;
                         spray->unk_00 = 1;
                         obj->work[1] = D_80111970_pump_pump_away;
@@ -3110,7 +3110,7 @@ void func_8010EBC4_pump_pump_away(omObjData *obj) {
                 case 1:
                     obj->trans.y = D_8011103C_pump_pump_away[obj->work[1]] - distance * 0.1 + 400.0;
                     if (obj->trans.y < -500.0f) {
-                        func_8001C258_main(obj->model[0], 4, 4);
+                        func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         if (obj->work[0] & 1) {
                             obj->trans.x = rand16() % 501 + 100;
                         } else {
@@ -3139,7 +3139,7 @@ void func_8010EBC4_pump_pump_away(omObjData *obj) {
         }
         obj->rot.z = rotation;
         if (D_80113530_pump_pump_away.state >= 2 && spray->unk_00 < 10) {
-            func_8001C258_main(obj->model[0], 4, 4);
+            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             spray->unk_00 = 10;
         }
     }
@@ -3154,7 +3154,7 @@ void func_8010F024_pump_pump_away(omObjData *obj) {
         obj->model[0] = Hu3DModelLink(D_801116F0_pump_pump_away);
     }
     func_8001C814_main(obj->model[0], 1, 1);
-    func_8001C258_main(obj->model[0], 4, 4);
+    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     if (obj->work[0] & 1) {
         obj->trans.x = rand16() % 501 + 100;
     } else {
@@ -3194,7 +3194,7 @@ void func_8010F268_pump_pump_away(omObjData *obj) {
                 case 0:
                     positions = D_8011109C_pump_pump_away;
                     if (D_8011109C_pump_pump_away[D_801133F8_pump_pump_away] - distance * 0.1 + 400.0 < 1000.0) {
-                        func_8001C258_main(obj->model[0], 4, 0);
+                        func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                         obj->trans.y = positions[obj->work[0]] + distance * 0.1 + 400.0;
                         spray->unk_00 = 1;
                         obj->work[1] = D_801133F8_pump_pump_away;
@@ -3204,7 +3204,7 @@ void func_8010F268_pump_pump_away(omObjData *obj) {
                 case 1:
                     obj->trans.y = D_8011109C_pump_pump_away[obj->work[1]] - distance * 0.1 + 400.0;
                     if (obj->trans.y < -1000.0f) {
-                        func_8001C258_main(obj->model[0], 4, 4);
+                        func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         if (obj->work[0] & 1) {
                             obj->trans.x = rand16() % 301 + 100;
                         } else {
@@ -3227,7 +3227,7 @@ void func_8010F268_pump_pump_away(omObjData *obj) {
         spray->unk_08 = angle;
         obj->scale.y = obj->scale.z = obj->scale.x = sindf(angle) * 0.03 + 0.5;
         if ((D_80113530_pump_pump_away.state >= 2 && spray->unk_00 < 10) || (progress >= 351 && spray->unk_00 == 0)) {
-            func_8001C258_main(obj->model[0], 4, 4);
+            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             spray->unk_00 = 10;
             spray->unk_04 = 1;
         }
@@ -3243,7 +3243,7 @@ void func_8010F688_pump_pump_away(omObjData *obj) {
         obj->model[0] = Hu3DModelLink(D_801116F2_pump_pump_away);
     }
     func_8001C814_main(obj->model[0], 1, 1);
-    func_8001C258_main(obj->model[0], 4, 4);
+    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     if (obj->work[0] & 1) {
         obj->trans.x = rand16() % 301 + 100;
     } else {
@@ -3307,7 +3307,7 @@ void func_8010FA28_pump_pump_away(omObjData *obj) {
 }
 
 void func_8010FA64_pump_pump_away(omObjData *obj) {
-    if (GMesStatGet() & 0x2) {
+    if (GMesStatGet() & GMES_STAT_TIMEEND) {
         D_801116FC_pump_pump_away = 0x14;
         obj->func = func_8010FA28_pump_pump_away;
     }
@@ -3567,7 +3567,7 @@ void func_801103D8_pump_pump_away(omObjData *obj) {
     if (++D_80111118_pump_pump_away == 0x21) {
         HuAudSeqPlay(0x2E);
     }
-    if (GMesStatGet() == 0 || (GMesStatGet() & 2)) {
+    if (GMesStatGet() == 0 || (GMesStatGet() & GMES_STAT_TIMEEND)) {
         obj->func = func_8011038C_pump_pump_away;
         D_801116F8_pump_pump_away = 1;
     }
@@ -3592,7 +3592,7 @@ void func_801104BC_pump_pump_away(omObjData *obj) {
 
 void func_801104F4_pump_pump_away(omObjData *obj) {
     if (D_800D530C_main == 1) {
-        WipeCreateOut(0, 0x14);
+        WipeCreateOut(WIPE_TYPE_NORMAL, 0x14);
         obj->func = func_801104BC_pump_pump_away;
         HuAudSeqFadeOut(0x1E);
         func_8004AB0C_main(0x1E);
@@ -3630,7 +3630,7 @@ void func_80110574_pump_pump_away(omObjData *obj) {
         case 10:
             break;
         case 11:
-            WipeCreateOut(0, 0x14);
+            WipeCreateOut(WIPE_TYPE_NORMAL, 0x14);
             obj->func = func_801104BC_pump_pump_away;
             break;
     }
@@ -3861,7 +3861,7 @@ void func_80110A78_pump_pump_away(void) {
 
 void func_80110B34_pump_pump_away(omObjData *obj) {
     func_80110A78_pump_pump_away();
-    WipeCreateIn(0xFF, 0x10);
+    WipeCreateIn(WIPE_TYPE_PREV, 0x10);
     obj->func = func_80110574_pump_pump_away;
     omAddObj(0x32, 0, 0, -1, func_8010F900_pump_pump_away);
     omAddObj(0x320, 0, 0, -1, func_80110458_pump_pump_away);
@@ -3876,7 +3876,7 @@ void func_80110BB8_pump_pump_away(void) {
 
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     obj->work[0] = 1;
-    omSetStatBit(obj, 0xA0);
+    omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     func_8000B5F0_main(1);
     func_8000B710_main(1);
     for (i = 0; i < 1; i++) {

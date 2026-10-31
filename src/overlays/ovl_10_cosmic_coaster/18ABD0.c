@@ -129,7 +129,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_10_cosmic_coaster/18ABD0", func_8010A
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_10_cosmic_coaster/18ABD0", func_8010B04C_cosmic_coaster);
 
 void func_8010B1DC_cosmic_coaster(omObjData *arg0) {
-    CosmicCoasterCloudState *state = arg0->data = HuMemAllocTag(sizeof(CosmicCoasterCloudState), 0x7918);
+    CosmicCoasterCloudState *state = arg0->data = HuMemAllocTag(sizeof(CosmicCoasterCloudState), TAG_OVERLAY);
 
     state->angle = 0.0f;
     state->yOffset = -5.0f;

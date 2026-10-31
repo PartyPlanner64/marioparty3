@@ -61,8 +61,8 @@ void func_80106D9C_mgresultdealer(void) {
     D_80109A60_mgresultdealer = 0;
     Hu3DModelPosSet(obj->model[2], D_801098E4_mgresultdealer.x, 400.0f, -55.0f);
     Hu3DModelRotSet(obj->model[2], D_801098F0_mgresultdealer.x, D_801098F0_mgresultdealer.y, D_801098F0_mgresultdealer.z);
-    func_8001C258_main(obj->model[1], 4, 4);
-    func_8001C258_main(obj->model[2], 4, 0);
+    func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80106EA0_mgresultdealer);

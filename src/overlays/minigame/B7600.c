@@ -14,7 +14,7 @@ void func_800E4BA4_minigame(s32 arg0) {
     if (arg0 & 0xFF) {
         unk40 = HmfModelData[arg0 & 0xFF].motTime;
         if (D_800CCF58_main[HmfModelData[arg0 & 0xFF].motId].unk02 <= unk40) {
-            func_8001C258_main((u8)arg0, 4, 4);
+            func_8001C258_main((u8)arg0, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
     }
 }

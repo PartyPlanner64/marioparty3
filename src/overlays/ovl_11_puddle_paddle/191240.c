@@ -192,7 +192,7 @@ void func_8010C11C_puddle_paddle(s16 arg0) {
     UnkPuddlePaddleSpr *spr = &D_80111664_puddle_paddle[arg0];
 
     if (spr->unk_00 != 0) {
-        HuSprAttrSet(spr->unk_01, 0, 0x8000);
+        HuSprDispOff(spr->unk_01, 0);
         spr->unk_00 = 1;
     }
 }
@@ -209,7 +209,7 @@ s16 func_8010C324_puddle_paddle(s16 arg0, f32 arg1, s16 arg2, s32 arg3) {
     for (i = 0; i < 16; i++, work++) {
         if (work->unk_00 == 0) {
             work->unk_0C = Hu3DModelLink(arg0);
-            func_8001C258_main(work->unk_0C, 4, 4);
+            func_8001C258_main(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             model = &HmfModelData[work->unk_0C];
             model->motTime = 0;
             model->motSpeed = 0;

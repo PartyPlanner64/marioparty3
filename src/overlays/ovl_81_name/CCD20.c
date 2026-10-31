@@ -852,7 +852,7 @@ static void func_800E7EF8_name_81(void) {
     D_801031CC_name_81 = 1.0f;
     temp_v0 = omAddPrcObj(func_800E8194_name_81, 0x1001, 0, 0);
     D_801031C4_name_81 = temp_v0;
-    omPrcSetStatBit(temp_v0, 0x80);
+    omPrcSetStatBit(temp_v0, OM_STAT_NOALLPAUSE);
     D_801031C8_name_81 = 0;
     Hu3DCamSetPerspective(0, D_80100FF8_name_81->unk10, 10.0f, 200.0f);
     Hu3DCamSetPositionOrientation(0, &D_801031D4_name_81, &D_801031E0_name_81, &D_801031EC_name_81);
@@ -1140,9 +1140,9 @@ void func_800E8AB0_name_81(void) {
             }
 
             if (D_8010105C_name_81 != 0) {
-                HuSprAttrReset(obj->unk_02, 0, 0x8000);
+                HuSprDispOn(obj->unk_02, 0);
             } else {
-                HuSprAttrSet(obj->unk_02, 0, 0x8000);
+                HuSprDispOff(obj->unk_02, 0);
             }
         }
         HuPrcVSleep();
@@ -1196,7 +1196,7 @@ s32 func_800E8D54_name_81(s32 arg0, Vec *arg1) {
         if (D_80105050_name_81 == 0) {
             proc = omAddPrcObj(func_800E8AB0_name_81, 0x1001, 0, 0);
             D_80101058_name_81 = proc;
-            omPrcSetStatBit(proc, 0x80);
+            omPrcSetStatBit(proc, OM_STAT_NOALLPAUSE);
         }
         
         D_80105050_name_81++;

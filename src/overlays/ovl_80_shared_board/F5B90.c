@@ -56,7 +56,7 @@ static void func_800E1F70_shared_board(Unk3 *arg0) {
     HuWinPriSet(arg0->winID, 5);
     HuWinBGTPLvlSet(arg0->winID, 0);
     HuWinMesSpeedSet(arg0->winID, 0);
-    func_8005B63C_main(arg0->winID, 0, 0x20000);
+    func_8005B63C_main(arg0->winID, HUWIN_ATTR_NONE, HUWIN_ATTR_OUTLINE);
     HuWinMesSet(arg0->winID, D_80100F20_shared_board[arg0->unk_00], -1, -1);
 }
 
@@ -91,7 +91,7 @@ Unk3 *func_800E210C_shared_board(s16 arg0, s16 arg1, u8 arg2) {
         temp_v0_2 = omAddObj(0x100, 0, 0, -1, func_800E20A4_shared_board);
         temp_v0->unk_04 = temp_v0_2;
         temp_v0_2->data = temp_v0;
-        omSetStatBit(temp_v0->unk_04, 0x80);
+        omSetStatBit(temp_v0->unk_04, OM_STAT_NOALLPAUSE);
         temp_v0->winID = -1;
         if (arg0 != 6) {
             temp_v0->unk_0C = NULL;

@@ -88,9 +88,9 @@ void Hu3DAnimInit(s16 count) {
     s32 i;
 
     D_800B19E2_main = 0;
-    D_800D1104_main = HuMemAllocTag(count * sizeof(CollisionGrid), 0x55F0);
+    D_800D1104_main = HuMemAllocTag(count * sizeof(CollisionGrid), TAG_COLLISION);
     D_800B19E0_main = count;
-    D_800B19E8_main = HuMemAllocTag(count * sizeof(s16), 0x55F0);
+    D_800B19E8_main = HuMemAllocTag(count * sizeof(s16), TAG_COLLISION);
     for (i = 0; i < count; i++) {
         D_800B19E8_main[i] = i + 1;
     }
@@ -130,11 +130,11 @@ s16 func_8001FF04_main(s16 model) {
     grid->cellWidth = bits.f;
     bits.i = READ32(&data[0x14]);
     grid->cellDepth = bits.f;
-    cell = grid->cells = HuMemAllocTag(grid->width * sizeof(CollisionGridCell) * grid->depth, 0x55F0);
+    cell = grid->cells = HuMemAllocTag(grid->width * sizeof(CollisionGridCell) * grid->depth, TAG_COLLISION);
     data += 0x18;
-    grid->unk_14 = HuMemAllocTag(grid->width * sizeof(s16) * grid->depth, 0x55F0);
-    grid->unk_18 = HuMemAllocTag(grid->width * sizeof(s16) * grid->depth, 0x55F0);
-    grid->unk_1C = HuMemAllocTag(grid->width * sizeof(s16) * grid->depth, 0x55F0);
+    grid->unk_14 = HuMemAllocTag(grid->width * sizeof(s16) * grid->depth, TAG_COLLISION);
+    grid->unk_18 = HuMemAllocTag(grid->width * sizeof(s16) * grid->depth, TAG_COLLISION);
+    grid->unk_1C = HuMemAllocTag(grid->width * sizeof(s16) * grid->depth, TAG_COLLISION);
     for (z = 0; z < grid->depth; z++) {
         for (x = 0; x < grid->width; x++) {
             grid->unk_14[z * grid->width + x] = READ16(&data[0]);
@@ -147,7 +147,7 @@ s16 func_8001FF04_main(s16 model) {
             size -= 12;
         }
     }
-    faces = grid->faces = HuMemAllocTag(size, 0x55F0);
+    faces = grid->faces = HuMemAllocTag(size, TAG_COLLISION);
     for (i = 0; i < size; i += 2) {
         *faces++ = READ16(data);
         data += 2;
@@ -532,7 +532,7 @@ void func_800216F8_main(CollisionCircle *circle, HmfModel *model) {
 }
 
 void func_80021AF4_main(void) {
-    HuMemFreeAllWithTag(0x55F0);
+    HuMemFreeAllWithTag(TAG_COLLISION);
     D_800B19E0_main = 0;
     D_800B19E2_main = 0;
 }
@@ -554,7 +554,7 @@ void func_80021B20_main(s16 index) {
 }
 
 void func_80021BE0_main(Hu3DQuadPool *pool, u16 numQuads) {
-    pool->quads = HuMemAllocTag(numQuads * sizeof(Hu3DQuad *), 0x55F0);
+    pool->quads = HuMemAllocTag(numQuads * sizeof(Hu3DQuad *), TAG_COLLISION);
 }
 
 void func_80021C14_main(s16 model, Hu3DQuadPool *pool, s32 (*callback)(s32, s16 *, Hu3DPoint *, Vec *), Vec *pos) {

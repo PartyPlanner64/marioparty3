@@ -109,7 +109,7 @@ void func_801059A0_eatsa_pizza(void) {
     omInitObjMan(0x10, 0);
     func_8004A208_main();
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutView);
-    omSetStatBit(obj, 0xA0);
+    omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     func_8000B5F0_main(1);
     camIndex = func_8000B638_main();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
@@ -120,7 +120,7 @@ void func_801059A0_eatsa_pizza(void) {
     func_801083BC_eatsa_pizza();
     func_80105FF0_eatsa_pizza();
     Hu3DBGColorSet(0, 0, 0);
-    WipeCreateIn(0xFF, 0x10);
+    WipeCreateIn(WIPE_TYPE_PREV, 0x10);
 }
 
 void func_80105AF4_eatsa_pizza(omObjData *object) {
@@ -308,12 +308,12 @@ void func_80106504_eatsa_pizza(omObjData *object, s32 arg1, s32 arg2, u16 player
     for (i = 0; i < object->mdlcnt; i++) {
         object->model[i] = 0;
     }
-    object->data = HuMemAllocTag(0x15C, 0x7918);
+    object->data = HuMemAllocTag(0x15C, TAG_OVERLAY);
     memset(object->data, 0, 0x15C);
     data = object->data;
-    data->unkE8 = HuMemAllocTag(object->mtncnt * 3 * sizeof(s32), 0x7918);
+    data->unkE8 = HuMemAllocTag(object->mtncnt * 3 * sizeof(s32), TAG_OVERLAY);
     memset(data->unkE8, 0, object->mtncnt * 3 * sizeof(s32));
-    data->unk158 = HuMemAllocTag(0x38, 0x7918);
+    data->unk158 = HuMemAllocTag(0x38, TAG_OVERLAY);
     memset(data->unk158, 0, 0x38);
 
     object->model[0] = func_8000B108_main(arg1 | arg2, tag);
@@ -538,7 +538,7 @@ void func_8010679C_eatsa_pizza(omObjData *object) {
             return;
     }
 
-    if (input & 0x8000) {
+    if (input & A_BUTTON) {
         i = func_80107E6C_eatsa_pizza(object);
         if ((i & 0xFFFF) != 0) {
             cutResult = i;
@@ -613,7 +613,7 @@ s32 func_801070E8_eatsa_pizza(omObjData *object) {
     func_801083A8_eatsa_pizza(object, &data, (void **)&work);
     random = func_80108F4C_eatsa_pizza();
     if (random % (9 - (work->unk31 * 2)) == 0) {
-        input = 0x8000;
+        input = A_BUTTON;
     }
 
     if (work->unk2A >= 4) {
@@ -1167,7 +1167,7 @@ void func_801087DC_eatsa_pizza(omObjData *object) {
         wipe_timer:
             D_80109138_eatsa_pizza = 0x10;
             wipeDuration = &D_8010913A_eatsa_pizza;
-            WipeCreateOut(0, *wipeDuration);
+            WipeCreateOut(WIPE_TYPE_NORMAL, *wipeDuration);
             HuAudSeqFadeOut(*wipeDuration);
             func_8004AB0C_main(*wipeDuration);
             break;
@@ -1196,7 +1196,7 @@ void func_80108C50_eatsa_pizza(omObjData *object) {
         if (sprite->unk_8A < sprite->unk_84->unk10 - 1) {
             continue;
         }
-        HuSprAttrSet(group, i, 0x8000);
+        HuSprDispOff(group, i);
         D_80109298_eatsa_pizza[i] = 0;
     }
 }
@@ -1222,7 +1222,7 @@ s16 func_80108D1C_eatsa_pizza(s16 arg0, s16 arg1, s16 arg2, f32 arg3) {
     func_800550F4_main(group, i, 2);
     HuSprPosSet(group, i, arg1, arg2);
     HuSprZRotSet(group, i, arg3);
-    HuSprAttrReset(group, i, 0x8000);
+    HuSprDispOn(group, i);
     return i;
 }
 

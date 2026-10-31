@@ -45,13 +45,13 @@ void func_8010FB74_baby_bowser_broadside(f32 x, f32 y, f32 z, f32 rx, f32 ry, f3
 void func_8010FC2C_baby_bowser_broadside(Vec *vertices, s16 count, f32 *matrix, Vec *output);
 
 void func_80109ED0_baby_bowser_broadside(void) {
-    D_80110018_baby_bowser_broadside = HuMemAllocTag(14 * sizeof(BabyBowserBroadsideSprite), 0x7918);
+    D_80110018_baby_bowser_broadside = HuMemAllocTag(14 * sizeof(BabyBowserBroadsideSprite), TAG_OVERLAY);
     memset(D_80110018_baby_bowser_broadside, 0, 14 * sizeof(BabyBowserBroadsideSprite));
-    D_8011001C_baby_bowser_broadside = HuMemAllocTag(16 * sizeof(BabyBowserBroadsideModel), 0x7918);
+    D_8011001C_baby_bowser_broadside = HuMemAllocTag(16 * sizeof(BabyBowserBroadsideModel), TAG_OVERLAY);
     memset(D_8011001C_baby_bowser_broadside, 0, 16 * sizeof(BabyBowserBroadsideModel));
-    D_80110010_baby_bowser_broadside = HuMemAllocTag(8 * sizeof(BabyBowserBroadsideWork), 0x7918);
+    D_80110010_baby_bowser_broadside = HuMemAllocTag(8 * sizeof(BabyBowserBroadsideWork), TAG_OVERLAY);
     memset(D_80110010_baby_bowser_broadside, 0, 8 * sizeof(BabyBowserBroadsideWork));
-    D_80110014_baby_bowser_broadside = HuMemAllocTag(7 * sizeof(BabyBowserBroadsideGroup), 0x7918);
+    D_80110014_baby_bowser_broadside = HuMemAllocTag(7 * sizeof(BabyBowserBroadsideGroup), TAG_OVERLAY);
 }
 
 BabyBowserBroadsideGroup *func_80109F64_baby_bowser_broadside(omObjData *object, s8 index, s16 count, s16 handlers) {
@@ -61,14 +61,14 @@ BabyBowserBroadsideGroup *func_80109F64_baby_bowser_broadside(omObjData *object,
     }
     group = &D_80110014_baby_bowser_broadside[index];
     if (handlers != 0) {
-        group->unk_04 = HuMemAllocTag(handlers * sizeof(BabyBowserBroadsideHandler), 0x7918);
+        group->unk_04 = HuMemAllocTag(handlers * sizeof(BabyBowserBroadsideHandler), TAG_OVERLAY);
         memset(group->unk_04, 0, handlers * sizeof(BabyBowserBroadsideHandler));
-        group->unk_0C = HuMemAllocTag((handlers + 1) * sizeof(BabyBowserBroadsideOrder), 0x7918);
+        group->unk_0C = HuMemAllocTag((handlers + 1) * sizeof(BabyBowserBroadsideOrder), TAG_OVERLAY);
     }
     group->unk_08 = handlers;
-    group->unk_00 = HuMemAllocTag(sizeof(BabyBowserBroadsideSlot), 0x7918);
+    group->unk_00 = HuMemAllocTag(sizeof(BabyBowserBroadsideSlot), TAG_OVERLAY);
     if (count != 0) {
-        group->unk_00->unk_04 = HuMemAllocTag(count * sizeof(u16), 0x7918);
+        group->unk_00->unk_04 = HuMemAllocTag(count * sizeof(u16), TAG_OVERLAY);
         memset(group->unk_00->unk_04, 0, count * sizeof(u16));
     }
     group->unk_00->unk_08 = count;
@@ -226,7 +226,7 @@ void func_8010A738_baby_bowser_broadside(s16 index, s16 x, s16 y) {
 
     if (sprite->unk_00 != 0) {
         func_80054FF8_main(sprite->unk_01, 0, 0);
-        HuSprAttrReset(sprite->unk_01, 0, 0x8000);
+        HuSprDispOn(sprite->unk_01, 0);
         HuSprPosSet(sprite->unk_01, 0, x, y);
         sprite->unk_00 = 2;
     }
@@ -236,7 +236,7 @@ void func_8010A7CC_baby_bowser_broadside(s16 arg0) {
     BabyBowserBroadsideSprite *sprite = &D_80110018_baby_bowser_broadside[arg0];
 
     if (sprite->unk_00 != 0) {
-        HuSprAttrSet(sprite->unk_01, 0, 0x8000);
+        HuSprDispOff(sprite->unk_01, 0);
         sprite->unk_00 = 1;
     }
 }
@@ -248,7 +248,7 @@ void func_8010A81C_baby_bowser_broadside(void) {
     for (i = 0; i < 14; i++, sprite++) {
         if (sprite->unk_00 == 2) {
             if (HuSprGet(sprite->unk_01, 0)->unk_90 + 1 >= (u16)sprite->unk_04) {
-                HuSprAttrSet(sprite->unk_01, 0, 0x8000);
+                HuSprDispOff(sprite->unk_01, 0);
                 func_80054FF8_main(sprite->unk_01, 0, 0);
             }
         }
@@ -263,7 +263,7 @@ s16 func_8010A8C4_baby_bowser_broadside(s32 directory, s32 file, f32 scale, s16 
     for (i = 0; i < 16; i++, work++) {
         if (work->unk_00 == 0) {
             work->unk_0C = func_8000B108_main((directory << 16) | file, flags);
-            func_8001C258_main(work->unk_0C, 4, 4);
+            func_8001C258_main(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             model = &HmfModelData[work->unk_0C];
             model->motTime = 0;
             model->motSpeed = 0;
@@ -289,7 +289,7 @@ s16 func_8010A9D4_baby_bowser_broadside(s16 source, f32 scale, s16 type, s32 arg
     for (i = 0; i < 16; i++, work++) {
         if (work->unk_00 == 0) {
             work->unk_0C = Hu3DModelLink(source);
-            func_8001C258_main(work->unk_0C, 4, 4);
+            func_8001C258_main(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             model = &HmfModelData[work->unk_0C];
             model->motTime = 0;
             model->motSpeed = 0;
@@ -315,7 +315,7 @@ s16 func_8010AADC_baby_bowser_broadside(s16 type) {
     for (i = 0; i < 16; i++, work++) {
         if (work->unk_00 != 0 && work->unk_0A == type) {
             model = &HmfModelData[work->unk_0C];
-            if ((model->attr & 4) != 0 && work->unk_08 == -1) {
+            if ((model->attr & HU3D_ATTR_DISPOFF) != 0 && work->unk_08 == -1) {
                 break;
             }
         }
@@ -339,12 +339,12 @@ s32 func_8010AB80_baby_bowser_broadside(s16 index, f32 x, f32 y, f32 z, f32 rx, 
     {
         work = &D_8011001C_baby_bowser_broadside[index];
         model = &HmfModelData[work->unk_0C];
-        if ((model->attr & 4) != 0 && work->unk_08 == -1) {
+        if ((model->attr & HU3D_ATTR_DISPOFF) != 0 && work->unk_08 == -1) {
             Hu3DModelPosSet(work->unk_0C, x, y, z);
             Hu3DModelRotSet(work->unk_0C, rx, ry, rz);
             Hu3DModelScaleSet(work->unk_0C, scale, scale, scale);
             if (delay == 0.0f) {
-                func_8001C258_main(work->unk_0C, 4, 0);
+                func_8001C258_main(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 work->unk_08 = 1;
                 work->unk_18 = 0.0f;
                 work->unk_14 = 0.0f;
@@ -375,14 +375,14 @@ void func_8010ACF8_baby_bowser_broadside(void) {
                         model->hmf->unk98->unk08 = 0;
                     }
                     if (!(work->unk_04 & 1)) {
-                        func_8001C258_main(work->unk_0C, 4, 4);
+                        func_8001C258_main(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         work->unk_08 = -1;
                         model->motSpeed = 0;
                     }
                 }
             } else {
                 if (work->unk_14++ >= work->unk_18) {
-                    func_8001C258_main(work->unk_0C, 4, 0);
+                    func_8001C258_main(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     work->unk_08 = 1;
                     model->motSpeed = work->unk_10;
                 }
@@ -407,7 +407,7 @@ s16 func_8010AE60_baby_bowser_broadside(s32 directory, s32 file, s16 type, s32 f
                 work->unk_0C = func_8010B54C_baby_bowser_broadside(func_80055194_main(frame), 1.0f);
             }
             if (flags & 8) {
-                func_8001C258_main(work->unk_0C, 4, 4);
+                func_8001C258_main(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             work->unk_14 = &HmfModelData[work->unk_0C].pos.x;
             work->unk_18 = &HmfModelData[work->unk_0C].pos.y;
@@ -431,7 +431,7 @@ s16 func_8010AFF4_baby_bowser_broadside(s16 type) {
     for (i = 0; i < 8; i++, work++) {
         if (work->unk_00 != 0 && work->unk_08 == type) {
             model = &HmfModelData[work->unk_0C];
-            if ((model->attr & 4) != 0 && (work->unk_04 & 8) != 0) {
+            if ((model->attr & HU3D_ATTR_DISPOFF) != 0 && (work->unk_04 & 8) != 0) {
                 break;
             }
         }
@@ -452,7 +452,7 @@ void func_8010B098_baby_bowser_broadside(s16 arg0, f32 arg1, f32 arg2, f32 arg3,
     model->pos.x = arg1;
     model->pos.y = arg2;
     model->pos.z = arg3;
-    func_8001C258_main(D_80110010_baby_bowser_broadside[arg0].unk_0C, 4, 0);
+    func_8001C258_main(D_80110010_baby_bowser_broadside[arg0].unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     D_80110010_baby_bowser_broadside[arg0].unk_20[0] = arg4[0];
     D_80110010_baby_bowser_broadside[arg0].unk_20[1] = arg4[1];
     D_80110010_baby_bowser_broadside[arg0].unk_20[2] = arg4[2];
@@ -482,7 +482,7 @@ void func_8010B198_baby_bowser_broadside(s16 index, f32 *x, f32 *y, f32 *z) {
     } else {
         D_80110010_baby_bowser_broadside[index].unk_1C = &model->pos.z;
     }
-    func_8001C258_main(D_80110010_baby_bowser_broadside[index].unk_0C, 4, 0);
+    func_8001C258_main(D_80110010_baby_bowser_broadside[index].unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     D_80110010_baby_bowser_broadside[index].unk_04 = (D_80110010_baby_bowser_broadside[index].unk_04 & ~0x18) | 0x10;
 }
 
@@ -531,7 +531,7 @@ void func_8010B3B4_baby_bowser_broadside(void) {
                         } else {
                             work->unk_10 = 0;
                             work->unk_04 |= 8;
-                            func_8001C258_main(work->unk_0C, 4, 4);
+                            func_8001C258_main(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         }
                     }
                 }
@@ -920,7 +920,7 @@ s16 func_8010D6C4_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, HmfData *
 }
 
 void func_8010DAE8_baby_bowser_broadside(s32 arg0, BabyBowserBroadsideHandler *arg1) {
-    D_80110020_baby_bowser_broadside = HuMemAllocTag(0xAB0, 0x7918);
+    D_80110020_baby_bowser_broadside = HuMemAllocTag(0xAB0, TAG_OVERLAY);
     memset(D_80110020_baby_bowser_broadside, 0, 0xAB0);
     arg1->unk_40 = func_8010DE70_baby_bowser_broadside;
 }
@@ -1037,7 +1037,7 @@ void func_8010DE70_baby_bowser_broadside(void) {
 void func_8010E018_baby_bowser_broadside(BabyBowserBroadsideShip *ship, s16 count, f32 speed, s16 model) {
     if (ship != NULL) {
         ship->unk_08 = count + 1;
-        ship->unk_04 = HuMemAllocTag(ship->unk_08 * sizeof(s16), 0x7918);
+        ship->unk_04 = HuMemAllocTag(ship->unk_08 * sizeof(s16), TAG_OVERLAY);
         memset(ship->unk_04, -1, ship->unk_08 * sizeof(s16));
         ship->pos.x = ship->pos.y = ship->pos.z = 0.0f;
         ship->facing.x = ship->facing.y = ship->facing.z = 0.0f;

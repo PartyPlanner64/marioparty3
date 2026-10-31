@@ -20,8 +20,8 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/306F70", func_80
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/306F70", func_8010C670_game_guys_lucky_7);
 
 void func_8010C824_game_guys_lucky_7(void) {
-    HuSprAttrSet(D_8010D8E8_game_guys_lucky_7.group, 0, 0x8000);
-    HuSprAttrSet(D_8010D8D0_game_guys_lucky_7.group, 0, 0x8000);
+    HuSprDispOff(D_8010D8E8_game_guys_lucky_7.group, 0);
+    HuSprDispOff(D_8010D8D0_game_guys_lucky_7.group, 0);
     D_8010D8E8_game_guys_lucky_7.sprite->unk_84->unk00->unk00 =
         D_8010D8E8_game_guys_lucky_7.unk_04[0];
     D_8010D8D0_game_guys_lucky_7.sprite->unk_84->unk00->unk00 =

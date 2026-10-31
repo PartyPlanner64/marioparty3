@@ -78,9 +78,9 @@ void m254_CreateSystem(void) {
     s8 maxFuncs[FUNC_GRP_MAX] = { 4, 4, 4, 2, 8, 8 };
     s16 i;
 
-    m254_sprites = HuMemAllocTag(SPRITES_MAX * sizeof(SpriteData), 31000);
+    m254_sprites = HuMemAllocTag(SPRITES_MAX * sizeof(SpriteData), TAG_OVERLAY);
     memset(m254_sprites, 0, SPRITES_MAX * sizeof(SpriteData));
-    m254_funcGroups = HuMemAllocTag(FUNC_GRP_MAX * sizeof(FuncGroup), 31000);
+    m254_funcGroups = HuMemAllocTag(FUNC_GRP_MAX * sizeof(FuncGroup), TAG_OVERLAY);
     for (i = 0; i < FUNC_GRP_MAX; i++) {
         m254_InitFuncGroup(&m254_funcGroups[i], maxFuncs[i]);
     }
@@ -89,7 +89,7 @@ void m254_CreateSystem(void) {
 void m254_InitFuncGroup(FuncGroup *group, s16 maxFuncs) {
     s16 i;
 
-    group->funcCtx = HuMemAllocTag(maxFuncs * sizeof(FuncContext), 31000);
+    group->funcCtx = HuMemAllocTag(maxFuncs * sizeof(FuncContext), TAG_OVERLAY);
     memset(group->funcCtx, 0, maxFuncs * sizeof(FuncContext));
     memset(group->order, -1, sizeof(group->order));
     for (i = 0; i < maxFuncs; i++) {
@@ -239,7 +239,7 @@ void m254_SetSpriteDispOn(s16 spriteId, s32 posX, s32 posY) {
 
     if (sprite->state != SPRITE_STATE_NOTSET) {
         func_80054FF8_main(sprite->groupId, 0, 0);
-        HuSprAttrReset(sprite->groupId, 0, 0x8000);
+        HuSprDispOn(sprite->groupId, 0);
         HuSprPosSet(sprite->groupId, 0, posX, posY);
         sprite->state = SPRITE_STATE_VISIBLE;
     }
@@ -249,7 +249,7 @@ void m254_SetSpriteDispOff(s16 spriteId) {
     SpriteData *sprite = &m254_sprites[spriteId];
 
     if (sprite->state != SPRITE_STATE_NOTSET) {
-        HuSprAttrSet(sprite->groupId, 0, 0x8000);
+        HuSprDispOff(sprite->groupId, 0);
         sprite->state = SPRITE_STATE_INVISIBLE;
     }
 }
@@ -263,7 +263,7 @@ void m254_UpdateSprites(void) {
         switch (sprite->state) {
             case SPRITE_STATE_VISIBLE:
                 if (HuSprGet(sprite->groupId, 0)->unk_90 + 1 >= sprite->unk04) {
-                    HuSprAttrSet(sprite->groupId, 0, 0x8000);
+                    HuSprDispOff(sprite->groupId, 0);
                     func_80054FF8_main(sprite->groupId, 0, 0);
                 }
                 break;
@@ -280,7 +280,7 @@ s32 m254_SetAnimModel(s32 dir, s32 file, f32 freq, s32 attr, s32 arg4) {
     for (i = 0; i < ANIMMDL_MAX; i++, animModel++) {
         if (!animModel->set) {
             animModel->modelId = func_8000B108_main((dir << 16) | file, arg4);
-            func_8001C258_main(animModel->modelId, 4, 4);
+            func_8001C258_main(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             hmfModel = &HmfModelData[animModel->modelId];
             hmfModel->motTime = 0.0f;
             hmfModel->motSpeed = 0.0f;
@@ -314,7 +314,7 @@ s32 m254_SetAnimModelDispOn(s16 animModelId, f32 posX, f32 posY, f32 posZ, f32 r
         Hu3DModelRotSet(animModel->modelId, rotX, rotY, rotZ);
         Hu3DModelScaleSet(animModel->modelId, scale, scale, scale);
         if (animStart == 0.0f) {
-            func_8001C258_main(animModel->modelId, 4, 0);
+            func_8001C258_main(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             animModel->state = ANIMMDL_STATE_ANIM;
             animModel->animStart = 0.0f;
             animModel->animTimer = 0.0f;
@@ -348,7 +348,7 @@ void m254_UpdateAnimModels(void) {
                         hmfModel->hmf->unk98->unk08 = 0;
                     }
                     if (!(animModel->attr & ANIMMDL_ATTR_DISPON)) {
-                        func_8001C258_main(animModel->modelId, 4, 4);
+                        func_8001C258_main(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         animModel->state = ANIMMDL_STATE_INVISIBLE;
                         hmfModel->motSpeed = 0.0f;
                     }
@@ -356,7 +356,7 @@ void m254_UpdateAnimModels(void) {
                 break;
             case ANIMMDL_STATE_WAIT:
                 if (animModel->animStart <= animModel->animTimer++) {
-                    func_8001C258_main(animModel->modelId, 4, 0);
+                    func_8001C258_main(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     animModel->state = ANIMMDL_STATE_ANIM;
                     hmfModel->motSpeed = animModel->freq;
                 }

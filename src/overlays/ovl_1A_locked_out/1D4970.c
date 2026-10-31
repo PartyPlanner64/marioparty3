@@ -154,7 +154,7 @@ void func_801059A0_locked_out(void) {
     omInitObjMan(0x20, 0);
     func_8004A208_main();
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutView);
-    omSetStatBit(obj, 0xA0);
+    omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     func_8000B5F0_main(1);
     camIndex = func_8000B638_main();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
@@ -171,7 +171,7 @@ void func_801059A0_locked_out(void) {
     D_8010A678_locked_out = 0;
     func_80109110_locked_out();
     Hu3DBGColorSet(0, 0, 0);
-    WipeCreateIn(0xFF, 0x10);
+    WipeCreateIn(WIPE_TYPE_PREV, 0x10);
 }
 
 void func_80105B38_locked_out(omObjData *object) {
@@ -287,7 +287,7 @@ void func_80106134_locked_out(omObjData *object) {
     s32 i;
     s32 tag;
 
-    work = HuMemAllocTag(0xB4, 0x7918);
+    work = HuMemAllocTag(0xB4, TAG_OVERLAY);
     object->data = work;
     memset(work, 0, 0xB4);
     work->unk03 = 1;
@@ -316,7 +316,7 @@ void func_80106134_locked_out(omObjData *object) {
         Hu3DMotionSpeedSet(D_8010A638_locked_out[i].unk0F, 0.0f);
         Hu3DModelRotSet(D_8010A638_locked_out[i].unk0F, 90.0f, 0.0f, 0.0f);
         D_8010A638_locked_out[i].unk0E = Hu3DModelLink(object->model[6]);
-        func_8001C258_main(D_8010A638_locked_out[i].unk0E, 4, 4);
+        func_8001C258_main(D_8010A638_locked_out[i].unk0E, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         Hu3DMotionSpeedSet(D_8010A638_locked_out[i].unk0E, 0.0f);
     }
     object->model[5] = func_8000B108_main(0x3B000A, 0x2B9);
@@ -326,7 +326,7 @@ void func_80106134_locked_out(omObjData *object) {
 void func_80106424_locked_out(omObjData *object) {
     LockedOutSetupWork *work;
 
-    work = HuMemAllocTag(0xB4, 0x7918);
+    work = HuMemAllocTag(0xB4, TAG_OVERLAY);
     object->data = work;
     memset(work, 0, 0xB4);
     work->unk03 = 1;
@@ -451,7 +451,7 @@ void func_801064E0_locked_out(omObjData *object) {
                     Hu3DMotionSpeedSet(D_8010A638_locked_out[i].unk0E, 0.0f);
                     Hu3DMotionSpeedSet(D_8010A638_locked_out[i].unk0F, 0.0f);
                     Hu3DMotionTimeSet(D_8010A638_locked_out[i].unk0F, 0.0f);
-                    func_8001C258_main(D_8010A638_locked_out[i].unk0F, 4, 4);
+                    func_8001C258_main(D_8010A638_locked_out[i].unk0F, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     Hu3DModelPosSet(object->model[2 + i], D_8010A638_locked_out[i].pos.x,
                                     D_8010A638_locked_out[i].pos.y, D_8010A638_locked_out[i].pos.z);
                     Hu3DMotionSpeedSet(object->model[2 + i], 0.0f);
@@ -535,7 +535,7 @@ void func_801064E0_locked_out(omObjData *object) {
             } else {
                 func_800E6F0C_minigame(5);
                 D_8010A164_locked_out = 16;
-                WipeCreateOut(0, D_8010A164_locked_out);
+                WipeCreateOut(WIPE_TYPE_NORMAL, D_8010A164_locked_out);
                 HuAudSeqFadeOut(D_8010A164_locked_out);
                 func_8004AB0C_main((s16)D_8010A164_locked_out);
             }
@@ -638,7 +638,7 @@ void func_801071D8_locked_out(omObjData *object) {
     Hu3DModelRotSet(object->model[0], object->rot.x, object->rot.y, object->rot.z);
     Hu3DModelScaleSet(object->model[0], object->scale.x, object->scale.y, object->scale.z);
 
-    data->unk158 = HuMemAllocTag(sizeof(LockedOutPlayerWork), 0x7918);
+    data->unk158 = HuMemAllocTag(sizeof(LockedOutPlayerWork), TAG_OVERLAY);
     memset(data->unk158, 0, sizeof(LockedOutPlayerWork));
     work = data->unk158;
     work->unk20 = player;
@@ -702,10 +702,10 @@ void func_80107844_locked_out(omObjData *object, s32 arg1, s32 arg2, u16 player,
     for (i = 0; i < object->mdlcnt; i++) {
         object->model[i] = 0;
     }
-    object->data = HuMemAllocTag(sizeof(func_800E1BA8_minigame_ObjData), 0x7918);
+    object->data = HuMemAllocTag(sizeof(func_800E1BA8_minigame_ObjData), TAG_OVERLAY);
     memset(object->data, 0, sizeof(func_800E1BA8_minigame_ObjData));
     data = object->data;
-    data->unkE8 = HuMemAllocTag(object->mtncnt * 3 * sizeof(s32), 0x7918);
+    data->unkE8 = HuMemAllocTag(object->mtncnt * 3 * sizeof(s32), TAG_OVERLAY);
     memset(data->unkE8, 0, object->mtncnt * 3 * sizeof(s32));
 
     object->model[0] = func_8000B108_main(arg1 | arg2, tag);
@@ -819,8 +819,8 @@ void func_80107ABC_locked_out(omObjData *object) {
                 break;
             }
             if (work->unk23 == 0) {
-                func_8001C258_main(object->model[0], 4, 4);
-                func_8001C258_main(object->model[1], 4, 4);
+                func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 data->unk50 |= 0x600;
                 work->unk3C = 6;
                 return;
@@ -855,11 +855,11 @@ void func_80107ABC_locked_out(omObjData *object) {
                 Hu3DMotionSpeedSet(object->model[0], 1.0f);
             }
             if (work->unk3C != 6) {
-                func_8001C258_main(object->model[0], 4, 4);
+                func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 temp = object->model[0];
                 object->model[0] = object->model[9];
                 object->model[9] = temp;
-                func_8001C258_main(object->model[0], 4, 0);
+                func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 func_800E5690_minigame(object, 0);
             }
             work->unk3C = 6;
@@ -921,7 +921,7 @@ void func_80107ABC_locked_out(omObjData *object) {
             } else {
                 work->unk26 = 0;
             }
-            if (buttons & 0x8000) {
+            if (buttons & A_BUTTON) {
                 if (work->unk25 == 0) {
                     if (work->unk26 == 0 && func_800E5690_minigame(object, 0x27)) {
                         Hu3DMotionTimeSet(object->model[0], 0.0f);
@@ -949,13 +949,13 @@ void func_80107ABC_locked_out(omObjData *object) {
                         data->unk48 + 20.0) {
                         continue;
                     }
-                    func_8001C258_main(D_8010A638_locked_out[i].unk0E, 4, 0);
-                    func_8001C258_main(D_8010A638_locked_out[i].unk0D, 4, 4);
+                    func_8001C258_main(D_8010A638_locked_out[i].unk0E, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    func_8001C258_main(D_8010A638_locked_out[i].unk0D, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     Hu3DModelPosSet(D_8010A638_locked_out[i].unk0E, D_8010A638_locked_out[i].pos.x,
                                     D_8010A638_locked_out[i].pos.y, D_8010A638_locked_out[i].pos.z);
                     canGrab = TRUE;
                     Hu3DMotionSpeedSet(D_8010A638_locked_out[i].unk0F, 1.0f);
-                    func_8001C258_main(D_8010A638_locked_out[i].unk0F, 4, 0);
+                    func_8001C258_main(D_8010A638_locked_out[i].unk0F, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     Hu3DModelPosSet(D_8010A638_locked_out[i].unk0F, D_8010A638_locked_out[i].pos.x,
                                     D_8010A638_locked_out[i].pos.y + 200.0, D_8010A638_locked_out[i].pos.z);
                     func_8004AC5C_main(0x3D9, 4);
@@ -964,7 +964,7 @@ void func_80107ABC_locked_out(omObjData *object) {
                     work->unk3C = 1;
                     work->unk3E = i;
                     data->unk50 |= 0x200;
-                    func_8001C258_main(block->model[0], 4, 4);
+                    func_8001C258_main(block->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     blockWork->unk00 = 4;
                 }
             }
@@ -1220,7 +1220,7 @@ void func_80109264_locked_out(omObjData *object) {
     };
     LockedOutBlockWork *work;
 
-    work = HuMemAllocTag(sizeof(LockedOutBlockWork), 0x7918);
+    work = HuMemAllocTag(sizeof(LockedOutBlockWork), TAG_OVERLAY);
     object->data = work;
     memset(work, 0, sizeof(LockedOutBlockWork));
     work->unk00 = 0;
@@ -1245,7 +1245,7 @@ void func_80109444_locked_out(omObjData *object) {
     f32 angle;
 
     work = object->data;
-    func_8001C258_main(object->model[1], 4, 0);
+    func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     switch (work->unk00) {
         case 0:
             work->unk01 = 1;
@@ -1270,7 +1270,7 @@ void func_80109444_locked_out(omObjData *object) {
             break;
         case 1:
         case 4:
-            func_8001C258_main(object->model[1], 4, 4);
+            func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             work->unk01 = 0;
             break;
     }

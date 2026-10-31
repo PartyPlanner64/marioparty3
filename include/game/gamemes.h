@@ -73,6 +73,7 @@ typedef struct {
 
 #define GMES_STAT_NONE 0
 #define GMES_STAT_EXIST (1 << 0)
+#define GMES_STAT_TIMEEND (1 << 1)
 #define GMES_STAT_KILL (1 << 2)
 
 void GMesInit(void);

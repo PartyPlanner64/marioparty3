@@ -85,7 +85,7 @@ void func_801074B4_three_door_monty(void) {
     omObjData *obj = omAddObj(0x10E, 1, 0, -1, func_8010742C_three_door_monty);
     obj->work[0] = 0;
     D_8010D890_three_door_monty = obj;
-    omSetStatBit(obj, 0xA0);
+    omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2B_three_door_monty/24A760", func_80107500_three_door_monty);

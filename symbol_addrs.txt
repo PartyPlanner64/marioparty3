@@ -24,7 +24,11 @@ gspS2DEX2_fifoTextStart = 0x80092F90; //rom:0x93B90
 gspL3DEX2_fifoTextStart = 0x80094120; //rom:0x94D20
 D_800CC0B6_main = 0x800CC0B6; //type:s16
 D_800CC0B8_main = 0x800CC0B8; //type:s16
-D_800CC0BA_main = 0x800CC0BA; //type:s16
+wipeMode = 0x800CC0BA; //type:u8
+wipeType = 0x800A26D0; //type:u8
+wipeStat = 0x800CCF84; //type:u8
+wipeTime = 0x800D51F4; //type:f32
+wipeDuration = 0x800D0A3C; //type:f32
 
 //chancetime
 D_8010FD20_chancetime = 0x8010FD20; //rom:0x48BCF0 type:s32 size:0x18 force_migration:False

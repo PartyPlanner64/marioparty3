@@ -126,13 +126,13 @@ u32 D_8010E5A0_tick_tock_hop[] = {
 u8 m257_quadEdges[][3] = { { 0, 1 }, { 1, 2 }, { 2, 3 }, { 3, 0 } };
 
 void m257_CreateSystem(void) {
-    m257_sprites = HuMemAllocTag(SPRITES_MAX * sizeof(SpriteData), 31000);
+    m257_sprites = HuMemAllocTag(SPRITES_MAX * sizeof(SpriteData), TAG_OVERLAY);
     memset(m257_sprites, 0, SPRITES_MAX * sizeof(SpriteData));
-    m257_animModels = HuMemAllocTag(ANIMMDL_MAX * sizeof(AnimModelData), 31000);
+    m257_animModels = HuMemAllocTag(ANIMMDL_MAX * sizeof(AnimModelData), TAG_OVERLAY);
     memset(m257_animModels, 0, ANIMMDL_MAX * sizeof(AnimModelData));
-    m257_billboards = HuMemAllocTag(BILLS_MAX * sizeof(BillboardData), 31000);
+    m257_billboards = HuMemAllocTag(BILLS_MAX * sizeof(BillboardData), TAG_OVERLAY);
     memset(m257_billboards, 0, BILLS_MAX * sizeof(BillboardData));
-    m257_funcGroups = HuMemAllocTag(5 * sizeof(FuncGroup), 31000);
+    m257_funcGroups = HuMemAllocTag(5 * sizeof(FuncGroup), TAG_OVERLAY);
 }
 
 FuncGroup *m257_CreateFuncGroup(omObjData *object, s8 groupId, s16 maxModels, s16 maxFuncs) {
@@ -143,14 +143,14 @@ FuncGroup *m257_CreateFuncGroup(omObjData *object, s8 groupId, s16 maxModels, s1
     }
     group = &m257_funcGroups[groupId];
     if (maxFuncs != 0) {
-        group->funcCtx = HuMemAllocTag(maxFuncs * sizeof(FuncContext), 31000);
+        group->funcCtx = HuMemAllocTag(maxFuncs * sizeof(FuncContext), TAG_OVERLAY);
         memset(group->funcCtx, 0, maxFuncs * sizeof(FuncContext));
-        group->order = HuMemAllocTag((maxFuncs + 1) * sizeof(FuncOrder), 31000);
+        group->order = HuMemAllocTag((maxFuncs + 1) * sizeof(FuncOrder), TAG_OVERLAY);
     }
     group->maxFuncs = maxFuncs;
-    group->groupCtx = HuMemAllocTag(sizeof(FuncGroupContext), 31000);
+    group->groupCtx = HuMemAllocTag(sizeof(FuncGroupContext), TAG_OVERLAY);
     if (maxModels != 0) {
-        group->groupCtx->modelIds = HuMemAllocTag(maxModels * sizeof(s16), 31000);
+        group->groupCtx->modelIds = HuMemAllocTag(maxModels * sizeof(s16), TAG_OVERLAY);
         memset(group->groupCtx->modelIds, 0, maxModels * sizeof(s16));
     }
     group->groupCtx->maxModels = maxModels;
@@ -301,7 +301,7 @@ void m257_SetSpriteDispOn(s16 spriteId, s32 posX, s32 posY) {
 
     if (sprite->state != SPRITE_STATE_NOTSET) {
         func_80054FF8_main(sprite->groupId, 0, 0);
-        HuSprAttrReset(sprite->groupId, 0, 0x8000);
+        HuSprDispOn(sprite->groupId, 0);
         HuSprPosSet(sprite->groupId, 0, posX, posY);
         sprite->state = SPRITE_STATE_VISIBLE;
     }
@@ -311,7 +311,7 @@ void m257_SetSpriteDispOff(s16 spriteId) {
     SpriteData *sprite = &m257_sprites[spriteId];
 
     if (sprite->state != SPRITE_STATE_NOTSET) {
-        HuSprAttrSet(sprite->groupId, 0, 0x8000);
+        HuSprDispOff(sprite->groupId, 0);
         sprite->state = SPRITE_STATE_INVISIBLE;
     }
 }
@@ -325,7 +325,7 @@ void m257_UpdateSprites(void) {
         switch (sprite->state) {
             case SPRITE_STATE_VISIBLE:
                 if (HuSprGet(sprite->groupId, 0)->unk_90 + 1 >= sprite->unk04) {
-                    HuSprAttrSet(sprite->groupId, 0, 0x8000);
+                    HuSprDispOff(sprite->groupId, 0);
                     func_80054FF8_main(sprite->groupId, 0, 0);
                 }
                 break;
@@ -342,7 +342,7 @@ s32 m257_SetAnimModel(s32 dir, s32 file, f32 freq, s32 attr, s32 arg4) {
     for (i = 0; i < ANIMMDL_MAX; i++, animModel++) {
         if (!animModel->set) {
             animModel->modelId = func_8000B108_main((dir << 16) | file, arg4);
-            func_8001C258_main(animModel->modelId, 4, 4);
+            func_8001C258_main(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             hmfModel = &HmfModelData[animModel->modelId];
             hmfModel->motTime = 0.0f;
             hmfModel->motSpeed = 0.0f;
@@ -371,12 +371,12 @@ s32 m257_SetAnimModelDispOn(s16 animModelId, f32 posX, f32 posY, f32 posZ, f32 r
     }
     animModel = &m257_animModels[animModelId];
     hmfModel = &HmfModelData[animModel->modelId];
-    if ((hmfModel->attr & 4) && animModel->state == ANIMMDL_STATE_INVISIBLE) {
+    if ((hmfModel->attr & HU3D_ATTR_DISPOFF) && animModel->state == ANIMMDL_STATE_INVISIBLE) {
         Hu3DModelPosSet(animModel->modelId, posX, posY, posZ);
         Hu3DModelRotSet(animModel->modelId, rotX, rotY, rotZ);
         Hu3DModelScaleSet(animModel->modelId, scale, scale, scale);
         if (animStart == 0.0f) {
-            func_8001C258_main(animModel->modelId, 4, 0);
+            func_8001C258_main(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             animModel->state = ANIMMDL_STATE_ANIM;
             animModel->animStart = 0.0f;
             animModel->animTimer = 0.0f;
@@ -410,7 +410,7 @@ void m257_UpdateAnimModels(void) {
                         hmfModel->hmf->unk98->unk08 = 0;
                     }
                     if (!(animModel->attr & ANIMMDL_ATTR_DISPON)) {
-                        func_8001C258_main(animModel->modelId, 4, 4);
+                        func_8001C258_main(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         animModel->state = ANIMMDL_STATE_INVISIBLE;
                         hmfModel->motSpeed = 0.0f;
                     }
@@ -418,7 +418,7 @@ void m257_UpdateAnimModels(void) {
                 break;
             case ANIMMDL_STATE_WAIT:
                 if (animModel->animStart <= animModel->animTimer++) {
-                    func_8001C258_main(animModel->modelId, 4, 0);
+                    func_8001C258_main(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     animModel->state = ANIMMDL_STATE_ANIM;
                     hmfModel->motSpeed = animModel->freq;
                 }
@@ -442,7 +442,7 @@ s32 m257_SetBill(s32 dir, s32 file, s32 attr) {
                 bill->modelId = func_8010AD60_tick_tock_hop(func_80055194_main(temp_v0_2), 1.0f);
             }
             if (attr & BILL_ATTR_DISPOFF) {
-                func_8001C258_main(bill->modelId, 4, 4);
+                func_8001C258_main(bill->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             bill->posX = &HmfModelData[bill->modelId].pos.x;
             bill->posY = &HmfModelData[bill->modelId].pos.y;
@@ -467,7 +467,7 @@ void m257_SetBillDispOn(s16 billId, f32 posX, f32 posY, f32 posZ) {
         model->pos.x = posX;
         model->pos.y = posY;
         model->pos.z = posZ;
-        func_8001C258_main(m257_billboards[billId].modelId, 4, 0);
+        func_8001C258_main(m257_billboards[billId].modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         m257_billboards[billId].attr &= ~(BILL_ATTR_DISPOFF | BILL_ATTR_REF);
     }
 }
@@ -491,7 +491,7 @@ void m257_SetBillDispOnRef(s16 billId, f32 *posX, f32 *posY, f32 *posZ) {
         } else {
             m257_billboards[billId].posZ = &model->pos.z;
         }
-        func_8001C258_main(m257_billboards[billId].modelId, 4, 0);
+        func_8001C258_main(m257_billboards[billId].modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         m257_billboards[billId].attr &= ~(BILL_ATTR_DISPOFF | BILL_ATTR_REF);
         m257_billboards[billId].attr |= BILL_ATTR_REF;
     }
@@ -541,7 +541,7 @@ void m257_UpdateBills(void) {
                     } else {
                         bill->timer = 0;
                         bill->attr |= BILL_ATTR_DISPOFF;
-                        func_8001C258_main(bill->modelId, 4, 4);
+                        func_8001C258_main(bill->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     }
                 }
             }
@@ -946,7 +946,7 @@ s16 func_8010CED8_tick_tock_hop(HuSprite_Unk84_Struct *arg0, HmfData *arg1, f32 
 }
 
 void m257_CreateColliders(FuncGroupContext *groupCtx, FuncContext *ctx) {
-    m257_colliders = HuMemAllocTag(COLLIDERS_MAX * sizeof(QuadCollider), 31000);
+    m257_colliders = HuMemAllocTag(COLLIDERS_MAX * sizeof(QuadCollider), TAG_OVERLAY);
     memset(m257_colliders, 0, COLLIDERS_MAX * sizeof(QuadCollider));
     ctx->func = m257_UpdateColliders;
 }
@@ -969,7 +969,7 @@ s32 m257_SetCollider(s16 modelId, Quad *baseQuad, f32 height, s16 maxTrackers, s
             collider->height = height;
             collider->vertexCount = 4;
             if (maxTrackers != 0) {
-                collider->modelTrackers = HuMemAllocTag(maxTrackers * sizeof(ModelTracker), 31000);
+                collider->modelTrackers = HuMemAllocTag(maxTrackers * sizeof(ModelTracker), TAG_OVERLAY);
             }
             collider->maxTrackers = maxTrackers;
             collider->trackerCount = 0;

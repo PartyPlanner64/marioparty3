@@ -74,7 +74,7 @@ void func_80045350_main(void) {
 
 void GameMesPauseCreate(void) {
     pauseProc = omAddPrcObj(ExecPause, 0x3FFF, 0x800, 0);
-    omPrcSetStatBit(pauseProc, 0xA0);
+    omPrcSetStatBit(pauseProc, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
 void ExecPause(void) {
@@ -143,7 +143,7 @@ void ExecPause(void) {
     HuAudFXPlay(6);
     D_800D2132_main = 1;
     while (omPauseChk() != 0) {
-        if (var_s4 >= 3 && (D_800C9520_main[0] & 0x300)) {
+        if (var_s4 >= 3 && (D_800C9520_main[0] & (L_JPAD | R_JPAD))) {
             var_s7 ^= 1;
             for (var_s2 = 0; var_s2 < 2; var_s2++) {
                 func_80045964_main(D_800B2340_main[var_s2], var_s6);
@@ -366,8 +366,8 @@ void func_80046030_main(s16 arg0, s16 arg1) {
     func_8001C514_main(arg0);
     func_8001C954_main(arg0);
     temp_v0_4 = omAddPrcObj(func_800461D8_main, 0x3F00, 0x1000, 0);
-    omPrcSetStatBit(temp_v0_4, 0xA0);
-    temp_v0_4->user_data = temp_v0_5 = HuMemAllocTag(sizeof(UnkPausePrcData), 31000);
+    omPrcSetStatBit(temp_v0_4, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    temp_v0_4->user_data = temp_v0_5 = HuMemAllocTag(sizeof(UnkPausePrcData), TAG_OVERLAY);
     temp_v0_5->unk00 = arg0;
     temp_v0_5->unk02 = temp_v0;
     temp_v0_5->unk04 = arg1;

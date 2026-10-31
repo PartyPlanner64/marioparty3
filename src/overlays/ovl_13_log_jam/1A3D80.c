@@ -131,7 +131,7 @@ void func_80108D50_log_jam(void) {
     s32 i;
     LogJamPlayerWork *work;
 
-    D_8010E5C4_log_jam = HuMemAllocTag(0xF00, 0x7918);
+    D_8010E5C4_log_jam = HuMemAllocTag(0xF00, TAG_OVERLAY);
     work = D_8010E5C4_log_jam;
     for (i = 0; i < 0x20; i++) {
         work->unk_00 = i;
@@ -151,7 +151,7 @@ void func_80108D50_log_jam(void) {
         work++;
     }
     D_8010E5C0_log_jam = omAddObj(0x18, 0, 0, -1, func_80108E54_log_jam);
-    omSetStatBit(D_8010E5C0_log_jam, 0xA0);
+    omSetStatBit(D_8010E5C0_log_jam, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_13_log_jam/1A3D80", func_80108E54_log_jam);
@@ -205,7 +205,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_13_log_jam/1A3D80", func_801094E4_log
 void func_80109A00_log_jam(void) {
     s32 i;
 
-    D_8010E5C8_log_jam = HuMemAllocTag(0x12, 0x7918);
+    D_8010E5C8_log_jam = HuMemAllocTag(0x12, TAG_OVERLAY);
 
     for (i = 0; i < 9; i++) {
         D_8010E5C8_log_jam[i] = func_8000B108_main(D_8010E030_log_jam[i], 0xBD);

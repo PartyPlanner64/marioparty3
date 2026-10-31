@@ -222,8 +222,8 @@ static void MBMapFullLineFlash(void) {
                     HuSprPriSet(entry->spriteGroup, 1, 3);
                 }
                 
-                HuSprAttrReset(entry->spriteGroup, 0, 0x8000);
-                HuSprAttrReset(entry->spriteGroup, 1, 0x8000);
+                HuSprDispOn(entry->spriteGroup, 0);
+                HuSprDispOn(entry->spriteGroup, 1);
             }
         }
 
@@ -277,7 +277,7 @@ static void MBMapFullMain(void) {
     D_80102AA8_shared_board = sel;
     savedZoom = MBCameraZoomGet();
     MBCameraPos2DGet(&sp10);
-    WipeCreateOut(0, 8);
+    WipeCreateOut(WIPE_TYPE_NORMAL, 8);
     HuPrcSleep(8);
     func_800EA358_shared_board();
     MBStatusHideAll();
@@ -360,7 +360,7 @@ static void MBMapFullMain(void) {
     }
 
     func_8004A9DC_main(0x60);
-    WipeCreateIn(0, 8);
+    WipeCreateIn(WIPE_TYPE_NORMAL, 8);
     HuPrcSleep(7);
     help0 = func_800E210C_shared_board(0, 0xC0, 0);
     help1 = func_800E210C_shared_board(4, 0xCE, 0);
@@ -373,19 +373,19 @@ static void MBMapFullMain(void) {
         if (pad & 0x400) {
             dir = 1;
         }
-        if (D_800C9520_main[userData] & 0x200) {
+        if (D_800C9520_main[userData] & L_JPAD) {
             dir = 2;
         }
-        if (D_800C9520_main[userData] & 0x100) {
+        if (D_800C9520_main[userData] & R_JPAD) {
             dir = 3;
         }
         if (dir != -1) {
             sel += D_801007D4_shared_board[sel][dir];
         }
         D_80102AA8_shared_board = sel;
-    } while (!(D_800D5558_main[userData] & 0xE010));
+    } while (!(D_800D5558_main[userData] & (A_BUTTON | B_BUTTON | Z_TRIG | R_TRIG)));
 
-    WipeCreateOut(0, 8);
+    WipeCreateOut(WIPE_TYPE_NORMAL, 8);
     HuPrcSleep(8);
     HmfPauseF = 0;
     MBBackKill();
@@ -408,7 +408,7 @@ static void MBMapFullMain(void) {
     MBStatusShowAll();
     func_800EA6B0_shared_board(0);
     func_8004A9DC_main(0x7F);
-    WipeCreateIn(0, 8);
+    WipeCreateIn(WIPE_TYPE_NORMAL, 8);
     HuPrcSleep(8);
     omDelPrcObj(NULL);
 }
@@ -422,7 +422,7 @@ void MBMapFullExec(s32 playerPadNo) {
     temp_s1 = HuPrcCurrentGet();
     temp_v0 = omAddPrcObj(MBMapFullMain, 0x1005, 0, 0);
     temp_v0->user_data = (void*)playerPadNo;
-    omPrcSetStatBit(temp_v0, 0x80);
+    omPrcSetStatBit(temp_v0, OM_STAT_NOALLPAUSE);
     HuPrcChildLink(temp_s1, temp_v0);
     HuPrcChildWait();
     func_8004A0E0_main();

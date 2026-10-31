@@ -403,11 +403,11 @@ void opModelScaleGet(s32 modelId, f32 *scaleX, f32 *scaleY, f32 *scaleZ) {
 }
 
 void opModelDispOff(s32 arg0) {
-    func_8001C258_main(D_80115630_opening[arg0].modelId, 4, 4);
+    func_8001C258_main(D_80115630_opening[arg0].modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 }
 
 void opModelDispOn(s32 arg0) {
-    func_8001C258_main(D_80115630_opening[arg0].modelId, 4, 0);
+    func_8001C258_main(D_80115630_opening[arg0].modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
 }
 
 void opMotionFlagSet(s32 modelId, s16 arg1) {
@@ -522,12 +522,12 @@ s16 func_8010738C_opening(u32 event, s16 x, s16 y, s16 width, s16 height, s16 st
     s16 slot;
 
     slot = HuWinCreate(x, y, width, height, 0, 8);
-    func_8005B63C_main(slot, -1, 17);
+    func_8005B63C_main(slot, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
     HuWinMesSpeedSet(slot, 0);
     HuWinBGTPLvlSet(slot, 255);
     func_80060144_main(slot);
     HuWinPriSet(slot, 1);
-    func_8005FE54_main(slot, 1);
+    func_8005FE54_main(slot, HUWIN_PLAYER_1);
     func_8005C154_main(slot, 192, 192, 192);
     HuWinBGColSet(slot, 0, 64, 64);
     HuWinMesColSet(slot, 7);
@@ -543,12 +543,12 @@ s16 func_801074D8_opening(u32 event, s16 x, s16 y, s16 width, s16 height, s16 st
     s16 slot;
 
     slot = HuWinCreate(x, y, width, height, 0, 4);
-    func_8005B63C_main(slot, -1, 17);
+    func_8005B63C_main(slot, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
     HuWinMesSpeedSet(slot, 0);
     HuWinBGTPLvlSet(slot, 255);
     func_80060144_main(slot);
     HuWinPriSet(slot, 1);
-    func_8005FE54_main(slot, 1);
+    func_8005FE54_main(slot, HUWIN_PLAYER_1);
     HuWinMesPalSet(slot, 5, 0, 176, 192);
     HuWinMesPalSet(slot, 2, 255, 64, 64);
     HuWinMesPalSet(slot, 4, 96, 255, 64);
@@ -565,11 +565,11 @@ s16 func_80107640_opening(u32 event, s16 x, s16 y, s16 width, s16 height, s16 st
     s16 slot;
 
     slot = HuWinCreate(x, y, width, height, 0, 8);
-    func_8005B63C_main(slot, -1, 17);
+    func_8005B63C_main(slot, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
     HuWinMesSpeedSet(slot, 0);
     func_80060144_main(slot);
     HuWinPriSet(slot, 1);
-    func_8005FE54_main(slot, 1);
+    func_8005FE54_main(slot, HUWIN_PLAYER_1);
     HuWinMesPalSet(slot, 5, 0, 176, 192);
     HuWinMesPalSet(slot, 7, 255, 255, 255);
     HuWinMesPalSet(slot, 0, 0, 0, 0);
@@ -593,7 +593,7 @@ s16 func_801077E8_opening(u32 event, s16 x, s16 y, s16 style) {
     HuWinMesPalSet(slot, 4, 96, 255, 64);
     HuWinMesPalSet(slot, 6, 255, 255, 64);
     func_80060C14_main(slot, 1);
-    func_8005FE54_main(slot, 1);
+    func_8005FE54_main(slot, HUWIN_PLAYER_1);
     HuWinMesSet(slot, event, -1, -1);
     return slot;
 }
@@ -606,7 +606,7 @@ s16 func_801078B4_opening(u32 event, s16 x, s16 y, s16 style) {
     HuWinMesPalSet(slot, 4, 96, 255, 64);
     HuWinMesPalSet(slot, 6, 255, 255, 64);
     func_80060C14_main(slot, 0);
-    func_8005FE54_main(slot, 1);
+    func_8005FE54_main(slot, HUWIN_PLAYER_1);
     HuWinMesSet(slot, event, -1, -1);
     return slot;
 }
@@ -618,7 +618,7 @@ s16 func_80107980_opening(u32 event, s16 x, s16 y, s16 style) {
     HuWinMesPalSet(slot, 2, 255, 64, 64);
     HuWinMesPalSet(slot, 4, 96, 255, 64);
     HuWinMesPalSet(slot, 6, 255, 255, 64);
-    func_8005FE54_main(slot, 1);
+    func_8005FE54_main(slot, HUWIN_PLAYER_1);
     func_80060C14_main(slot, 0);
     HuWinMesSet(slot, event, -1, -1);
     return slot;
@@ -723,11 +723,11 @@ u16 func_80107EF4_opening(s32 value) {
 
     HuPrcSleep(3);
     while (1) {
-        if (D_800D5558_main[0] & 0xD010) {
+        if (D_800D5558_main[0] & (A_BUTTON | B_BUTTON | START_BUTTON | R_TRIG)) {
             sprintf(text, "\n%d\n", value);
             break;
         }
-        if (D_800D5558_main[0] & 0x2000) {
+        if (D_800D5558_main[0] & Z_TRIG) {
             camera = HmfModelData[gCameraList[0].unk4].hmf->unkBC;
             sprintf(text, "POS:%4.2f,%4.2f,%4.2f", camera->unk08, camera->unk0C, camera->unk10);
             print8(16, 180, text);

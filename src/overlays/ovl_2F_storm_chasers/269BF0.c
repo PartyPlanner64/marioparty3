@@ -136,7 +136,7 @@ void func_8010662C_storm_chasers(omObjData *object) {
     D_8010CF74_storm_chasers = func_80055194_main(D_8010CF6E_storm_chasers);
     D_8010CF70_storm_chasers =
         Hu3DHookFuncCreate(0, func_801063B0_storm_chasers, 2);
-    Hu3DModelCameraSet(D_8010CF72_storm_chasers, 1);
+    Hu3DModelCameraSet(D_8010CF72_storm_chasers, HU3D_CAM0);
     object->func = func_80106624_storm_chasers;
     D_8010CF68_storm_chasers = 0;
 }
@@ -178,7 +178,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2F_storm_chasers/269BF0", func_801077
 
 void func_801078A0_storm_chasers(void) {
     omObjData *object = omAddObj(0xB4, 1, 0, -1, func_801077A0_storm_chasers);
-    omSetStatBit(object, 0xA0);
+    omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2F_storm_chasers/269BF0", func_801078E0_storm_chasers);
@@ -355,7 +355,7 @@ void func_8010C060_storm_chasers(omObjData *object) {
     if (++D_8010CAB0_storm_chasers == 0x3F) {
         HuAudSeqPlay(0x38);
     }
-    if (GMesStatGet() == 0 || (GMesStatGet() & 2)) {
+    if (GMesStatGet() == 0 || (GMesStatGet() & GMES_STAT_TIMEEND)) {
         object->func = func_8010C014_storm_chasers;
         D_8010CCA4_storm_chasers = 1;
     }

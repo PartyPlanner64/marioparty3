@@ -90,8 +90,8 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", func_8010
 void func_80107C30_parasol_plummet(omObjData *object) {
     ParasolPlummetWork *work = OM_GET_DATA_PTR(object, ParasolPlummetWork);
 
-    func_8001C258_main(object->model[0], 4, 0);
-    func_8001C258_main(object->model[1], 4, 0);
+    func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     work->flags &= ~0x100;
 }
 

@@ -255,7 +255,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_06_hide_and_sneak/137C00", func_8010A
 
 void func_8010B0D0_hide_and_sneak(void) {
     D_8010CE54_hide_and_sneak.obj = omAddObj(0x3E8, 2, 1, -1, func_8010AFA0_hide_and_sneak);
-    omSetStatBit(D_8010CE54_hide_and_sneak.obj, 0xA0);
+    omSetStatBit(D_8010CE54_hide_and_sneak.obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_06_hide_and_sneak/137C00", func_8010B118_hide_and_sneak);

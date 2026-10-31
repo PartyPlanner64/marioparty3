@@ -1,4 +1,5 @@
 #include "common.h"
+#include "game/printfunc.h"
 
 u16 D_80106DB0_mchar2 = 0;
 u8 D_80106DB2_mchar2 = 1;
@@ -47,7 +48,7 @@ void func_801059A0_mchar2(void) {
     Hu3DAnimInit(1);
     func_800142A0_main(0x19);
     omInitObjMan(0x33, 0);
-    omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), 0xA0);
+    omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     if (omdispinfo != 0) {
         omdispinfo = 0;
         func_8004DEC8_main(D_800A1786_main);
@@ -63,7 +64,7 @@ void func_801059A0_mchar2(void) {
     func_80106CA8_mchar2();
     omAddObj(0x7D0, 10, 10, -1, func_80105B7C_mchar2);
     omAddObj(0x7D0, 0, 0, -1, func_801067C4_mchar2);
-    WipeCreateIn(0, 16);
+    WipeCreateIn(WIPE_TYPE_NORMAL, 16);
     D_800CD280_main = 1;
     Hu3DBGColorSet(0xC0, 0xE0, 0xFF);
     for (i = 0; D_80106DC4_mchar2[i] != 0xFFFF; i++) {}
@@ -81,7 +82,7 @@ void func_80105B7C_mchar2(omObjData *arg0) {
     }
     D_80106DF2_mchar2 = 0;
     func_80106428_mchar2(0);
-    func_8001C258_main((s16)D_80106EC8_mchar2[D_80106DEC_mchar2][D_80106DF0_mchar2], 4, 0);
+    func_8001C258_main((s16)D_80106EC8_mchar2[D_80106DEC_mchar2][D_80106DF0_mchar2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     func_8001C814_main((s16)D_80106EC8_mchar2[D_80106DEC_mchar2][D_80106DF0_mchar2], 2, 2);
     arg0->func = func_80105C90_mchar2;
 }
@@ -93,52 +94,52 @@ void func_80105C90_mchar2(omObjData *arg0) {
         D_80106DF5_mchar2--;
         if (D_80106DF5_mchar2 == 0) {
             func_80106428_mchar2(D_80106DF2_mchar2);
-            func_8001C258_main((s16)D_80106EC8_mchar2[D_80106DEC_mchar2][D_80106DF0_mchar2], 4, 0);
+            func_8001C258_main((s16)D_80106EC8_mchar2[D_80106DEC_mchar2][D_80106DF0_mchar2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             func_8001C814_main((s16)D_80106EC8_mchar2[D_80106DEC_mchar2][D_80106DF0_mchar2], 2, 2);
         }
     }
-    if ((u16)D_800D0590_main[0] & 0x8000) {
+    if ((u16)D_800D0590_main[0] & A_BUTTON) {
         D_80106DEE_mchar2++;
         if (D_80106DC4_mchar2[D_80106DEE_mchar2] == 0xFFFF) {
             D_80106DEE_mchar2 = 0;
         }
         func_80106630_mchar2((s16)D_80106DC4_mchar2[D_80106DEE_mchar2]);
     }
-    if (D_800D0590_main[0] & 0x4000) {
+    if (D_800D0590_main[0] & B_BUTTON) {
         D_80106DEE_mchar2--;
         if (D_80106DEE_mchar2 < 0) {
             D_80106DEE_mchar2 = D_80106EC0_mchar2 - 1;
         }
         func_80106630_mchar2((s16)D_80106DC4_mchar2[D_80106DEE_mchar2]);
     }
-    if (D_800D5558_main[0] & 0x1000) {
+    if (D_800D5558_main[0] & START_BUTTON) {
         D_80106DF4_mchar2++;
     }
-    if (D_800D5558_main[0] & 2) {
-        func_8001C258_main((s16)D_80106EC8_mchar2[D_80106DEC_mchar2][D_80106DF0_mchar2], 4, 4);
+    if (D_800D5558_main[0] & L_CBUTTONS) {
+        func_8001C258_main((s16)D_80106EC8_mchar2[D_80106DEC_mchar2][D_80106DF0_mchar2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         D_80106DEC_mchar2++;
         if (D_80106DEC_mchar2 >= 2) {
             D_80106DEC_mchar2 = 0;
         }
-        func_8001C258_main((s16)D_80106EC8_mchar2[D_80106DEC_mchar2][D_80106DF0_mchar2], 4, 0);
+        func_8001C258_main((s16)D_80106EC8_mchar2[D_80106DEC_mchar2][D_80106DF0_mchar2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DMotionSet((s16)D_80106EC8_mchar2[D_80106DEC_mchar2][D_80106DF0_mchar2], (s16)D_80106F08_mchar2[D_80106DEC_mchar2][0]);
         func_8001C814_main((s16)D_80106EC8_mchar2[D_80106DEC_mchar2][D_80106DF0_mchar2], 2, 2);
         func_80045ED0_main((D_80106DB4_mchar2[D_80106DEC_mchar2] << 16) | D_80106DEE_mchar2);
     }
-    if (D_800D5558_main[0] & 1) {
-        func_8001C258_main((s16)D_80106EC8_mchar2[D_80106DEC_mchar2][D_80106DF0_mchar2], 4, 4);
+    if (D_800D5558_main[0] & R_CBUTTONS) {
+        func_8001C258_main((s16)D_80106EC8_mchar2[D_80106DEC_mchar2][D_80106DF0_mchar2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         D_80106DEC_mchar2--;
         if (D_80106DEC_mchar2 < 0) {
             D_80106DEC_mchar2 = 1;
         }
-        func_8001C258_main((s16)D_80106EC8_mchar2[D_80106DEC_mchar2][D_80106DF0_mchar2], 4, 0);
+        func_8001C258_main((s16)D_80106EC8_mchar2[D_80106DEC_mchar2][D_80106DF0_mchar2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DMotionSet((s16)D_80106EC8_mchar2[D_80106DEC_mchar2][D_80106DF0_mchar2], (s16)D_80106F08_mchar2[D_80106DEC_mchar2][0]);
         func_8001C814_main((s16)D_80106EC8_mchar2[D_80106DEC_mchar2][D_80106DF0_mchar2], 2, 2);
         func_80045ED0_main((D_80106DB4_mchar2[D_80106DEC_mchar2] << 16) | D_80106DEE_mchar2);
     }
-    if ((u16)D_800D0590_main[1] & 0xC000) {
+    if ((u16)D_800D0590_main[1] & (A_BUTTON | B_BUTTON)) {
         model = &HmfModelData[D_80106EC8_mchar2[D_80106DEC_mchar2][D_80106DF0_mchar2]];
-        if ((u16)D_800D0590_main[1] & 0x4000) {
+        if ((u16)D_800D0590_main[1] & B_BUTTON) {
             model->motAttr |= 4;
         }
         model->motAttr &= 0xFE;
@@ -148,15 +149,15 @@ void func_80105C90_mchar2(omObjData *arg0) {
         }
         model->motAttr = (model->motAttr & 0xFB) | 1;
     }
-    if ((D_800CDA7C_main[0] & 0x30) == 0x30) {
+    if ((D_800CDA7C_main[0] & (L_TRIG | R_TRIG)) == 0x30) {
         D_80106DB0_mchar2 = 1;
     }
-    if (D_800D5558_main[1] & 0x1000) {
+    if (D_800D5558_main[1] & START_BUTTON) {
         D_80106DB2_mchar2 = !D_80106DB2_mchar2;
     }
     if (D_80106DB2_mchar2 != 0) {
         model = &HmfModelData[D_80106EC8_mchar2[D_80106DEC_mchar2][D_80106DF0_mchar2]];
-        fontcolor = 9;
+        fontcolor = FONT_COLOR_BLUE;
         sprintf(D_80106F48_mchar2, "MOTIONNO.%3d <%s>", D_80106DEE_mchar2, D_80106DD4_mchar2[D_80106DEE_mchar2]);
         print8(24, 182, D_80106F48_mchar2);
         sprintf(D_80106F48_mchar2, "CENTER:%3.3f,%3.3f,%3.3f", Center.x, Center.y, Center.z);
@@ -233,11 +234,11 @@ void func_801067C4_mchar2(omObjData *arg0) {
     f32 length;
     s8 stick;
 
-    if (D_800CDA7C_main[0] & 0x1000) {
+    if (D_800CDA7C_main[0] & START_BUTTON) {
         func_80106CA8_mchar2();
     }
-    if (D_800CDA7C_main[0] & 0x20) {
-        if (D_800CDA7C_main[0] & 0x2000) {
+    if (D_800CDA7C_main[0] & L_TRIG) {
+        if (D_800CDA7C_main[0] & Z_TRIG) {
             zoom = CZoom;
             zoom += 30.0f;
             CZoom = zoom;
@@ -247,8 +248,8 @@ void func_801067C4_mchar2(omObjData *arg0) {
             CZoom = zoom;
         }
     }
-    if ((D_800CDA7C_main[0] & 0x10) && (CZoom - 10.0f != 0.0f)) {
-        if (D_800CDA7C_main[0] & 0x2000) {
+    if ((D_800CDA7C_main[0] & R_TRIG) && (CZoom - 10.0f != 0.0f)) {
+        if (D_800CDA7C_main[0] & Z_TRIG) {
             CZoom -= 30.0f;
         } else {
             zoom = CZoom;
@@ -257,7 +258,7 @@ void func_801067C4_mchar2(omObjData *arg0) {
     }
     x = D_80107048_mchar2.x;
     y = D_80107048_mchar2.y;
-    if (D_800CDA7C_main[0] & 0x2000) {
+    if (D_800CDA7C_main[0] & Z_TRIG) {
         speed = 5.0f;
     } else {
         speed = 2.0f;
@@ -280,27 +281,27 @@ void func_801067C4_mchar2(omObjData *arg0) {
     D_80107048_mchar2.x = x;
     CRot.x = (s16)x;
     CRot.y = (s16)D_80107048_mchar2.y;
-    if (D_800CDA7C_main[0] & 0x2000) {
+    if (D_800CDA7C_main[0] & Z_TRIG) {
         speed = 10.0f;
     } else {
         speed = 2.0f;
     }
-    if (D_800CDA7C_main[0] & 0x800) {
+    if (D_800CDA7C_main[0] & U_JPAD) {
         Center.x += sindf(y) * sindf(x) * -speed;
         Center.y += cosdf(x) * -speed;
         Center.z += cosdf(y) * sindf(x) * -speed;
-    } else if (D_800CDA7C_main[0] & 0x400) {
+    } else if (D_800CDA7C_main[0] & D_JPAD) {
         Center.x += sindf(y) * sindf(x) * speed;
         Center.y += cosdf(x) * speed;
         Center.z += cosdf(y) * sindf(x) * speed;
-    } else if (D_800CDA7C_main[0] & 0x200) {
+    } else if (D_800CDA7C_main[0] & L_JPAD) {
         x = gCameraList->pos.z - Center.z;
         dz = -(gCameraList->pos.x - Center.x);
         length = 1.0f / HuSqrtf(x * x + dz * dz);
         Center.x += x * length * speed;
         Center.y += 0.0f;
         Center.z += dz * length * speed;
-    } else if (D_800CDA7C_main[0] & 0x100) {
+    } else if (D_800CDA7C_main[0] & R_JPAD) {
         x = -(gCameraList->pos.z - Center.z);
         dz = gCameraList->pos.x - Center.x;
         length = 1.0f / HuSqrtf(x * x + dz * dz);
@@ -321,7 +322,7 @@ void func_80106CA8_mchar2(void) {
 
 void func_80106D24_mchar2(omObjData *arg0) {
     if ((D_80106DB0_mchar2 != 0) || (D_800D530C_main != 0)) {
-        WipeCreateOut(0, 8);
+        WipeCreateOut(WIPE_TYPE_NORMAL, 8);
         arg0->func = func_80106D80_mchar2;
         HuAudSeqFadeOut(0x3C);
     }

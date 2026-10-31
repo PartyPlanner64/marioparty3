@@ -208,7 +208,7 @@ void func_80109884_game_guys_magic_boxes(omObjData *object) {
     } else {
         GwPlayer[D_8010C750_game_guys_magic_boxes].bonusCoin = 0;
     }
-    WipeCreateOut(0, 20);
+    WipeCreateOut(WIPE_TYPE_NORMAL, 20);
     HuAudSeqFadeOut(30);
     func_8004AB0C_main(30);
     object->func = func_80109984_game_guys_magic_boxes;

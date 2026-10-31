@@ -29,7 +29,7 @@ extern u16 D_800A0330_main[16][16]; // font palettes
 void pfInit(void) {
     s32 i;
 
-    fontcolor = 15;
+    fontcolor = FONT_COLOR_WHITE;
     empstrline = 0;
 
     // null every string by setting the first byte to 0

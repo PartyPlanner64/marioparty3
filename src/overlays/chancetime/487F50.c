@@ -72,7 +72,7 @@ void func_8010DAB0_chancetime(void) {
     s8 i;
 
     for (i = 0; i < 3; i++) {
-        func_8001C258_main(obj->model[i + 1], 4, 4);
+        func_8001C258_main(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
 }
 
@@ -80,7 +80,7 @@ void func_8010DB1C_chancetime(s8 arg0) {
     omObjData *obj = D_801100C8_chancetime;
 
     espDispOff(D_8010FE94_chancetime[arg0]);
-    func_8001C258_main(obj->model[arg0 + 1], 4, 0);
+    func_8001C258_main(obj->model[arg0 + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
 }
 
 void func_8010DB78_chancetime(void) {

@@ -6,6 +6,14 @@
 typedef enum
 {
     TAG_DELAYED_FREE = -1,
+    TAG_MODEL = 10000, // + modelId * 2 (+1 for secondary model data)
+    TAG_MOTION = 10356, // + modelId
+    TAG_TEXTURE = 15000,
+    TAG_TEXANIM = 20000, // + anim slot
+    TAG_COLLISION = 22000,
+    TAG_WIPE = 28000, // delay-freed when a wipe in completes
+    TAG_MODELENTRY = 30000,
+    TAG_OVERLAY = 31000, // freed when the overlay's objects are killed
 } EHuMemTag;
 
 typedef struct HuMallocHeader

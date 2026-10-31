@@ -460,7 +460,7 @@ s32 GameMesKillCheck(void) {
         return TRUE;
     }
     stat = GMesStatGet();
-    if (stat == GMES_STAT_NONE || (stat & 2) != 0) {
+    if (stat == GMES_STAT_NONE || (stat & GMES_STAT_TIMEEND) != 0) {
         countdown = GameMesTime - 1;
         GameMesTime = countdown;
         if (countdown < 0) {
@@ -569,14 +569,14 @@ s32 func_80037574_main(GAMEMES *gMes, Gfx **gfx) {
             }
             break;
         case 3:
-            gMes->stat = 2;
+            gMes->stat = GMES_STAT_TIMEEND;
             gMes->work += 6;
             for (i = 0; i < len; i++) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, cosdf(gMes->work));
             }
             if (gMes->time >= gMes->timeMax) {
                 for (i = 0; i < len; i++) {
-                    HuSprAttrSet(gMes->strGId[0], i + 1, 0x8000);
+                    HuSprDispOff(gMes->strGId[0], i + 1);
                 }
                 gMes->subMode = 4;
             }
@@ -647,7 +647,7 @@ s32 func_80037878_main(GAMEMES *gMes, Gfx **gfx) {
             }
             break;
         case 2:
-            gMes->stat = 2;
+            gMes->stat = GMES_STAT_TIMEEND;
             if (gMes->time >= gMes->timeMax) {
                 gMes->subMode = 3;
             }
@@ -740,7 +740,7 @@ s32 func_80037C44_main(GAMEMES *gMes, Gfx **gfx) {
             }
             break;
         case 4:
-            gMes->stat = 2;
+            gMes->stat = GMES_STAT_TIMEEND;
             if (gMes->time >= gMes->timeMax) {
                 gMes->subMode = 5;
             }
@@ -914,7 +914,7 @@ s32 func_8003843C_main(GAMEMES *gMes, Gfx **gfx) {
             for (i = 0; i < len; i++) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, scale, scale);
             }
-            gMes->stat = 2;
+            gMes->stat = GMES_STAT_TIMEEND;
             break;
         case 6:
             break;
@@ -1000,7 +1000,7 @@ s32 func_80038934_main(GAMEMES *gMes, Gfx **gfx) {
             for (i = 0; i < len; i++) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, scale, scale);
             }
-            gMes->stat = 2;
+            gMes->stat = GMES_STAT_TIMEEND;
             break;
         case 6:
             break;
@@ -1104,7 +1104,7 @@ s32 func_80038D78_main(GAMEMES *gMes, Gfx **gfx) {
             for (i = 0; i < len; i++) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, scale, scale);
             }
-            gMes->stat = 2;
+            gMes->stat = GMES_STAT_TIMEEND;
             break;
         case 6:
             break;
@@ -1182,7 +1182,7 @@ s32 func_800392AC_main(GAMEMES *gMes, Gfx **gfx) {
             for (i = 0; i < len; i++) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, scale, scale);
             }
-            gMes->stat = 2;
+            gMes->stat = GMES_STAT_TIMEEND;
             break;
         case 6:
             break;
@@ -1265,7 +1265,7 @@ s32 func_8003966C_main(GAMEMES *gMes, Gfx **gfx) {
             for (i = 0; i < len; i++) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, scale, scale);
             }
-            gMes->stat = 2;
+            gMes->stat = GMES_STAT_TIMEEND;
             break;
         case 6:
             break;
@@ -1348,7 +1348,7 @@ s32 func_80039A6C_main(GAMEMES *gMes, Gfx **gfx) {
             for (i = 0; i < len; i++) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, scale, scale);
             }
-            gMes->stat = 2;
+            gMes->stat = GMES_STAT_TIMEEND;
             break;
         case 6:
             break;
@@ -1477,7 +1477,7 @@ s32 func_80039E80_main(GAMEMES *gMes, Gfx **gfx) {
             for (i = 0; i < len; i++) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, scale, scale);
             }
-            gMes->stat = 2;
+            gMes->stat = GMES_STAT_TIMEEND;
             break;
         case 6:
             break;
@@ -1574,7 +1574,7 @@ s16 func_8003A3C4_main(GAMEMES *gMes, u8 *str, u8 flags, s16 x, s16 y, f32 scale
         str++;
     }
     func_80055024_main(grp, 0, animId, 0);
-    HuSprAttrSet(grp, 0, 0x8000);
+    HuSprDispOff(grp, 0);
     func_800554C4_main(grp, 0, -1);
     return i;
 }
@@ -1948,7 +1948,7 @@ s32 func_8003B170_main(GAMEMES *gMes, char *str, s32 seNo) {
         return FALSE;
     }
     if (gMes->time > gMes->timeMax - 10) {
-        gMes->stat = 2;
+        gMes->stat = GMES_STAT_TIMEEND;
         t = gMes->time - (gMes->timeMax - 10);
         for (i = 0.0f; i < len; i++) {
             HuSprScaleSet(gMes->strGId[0], i + 1, 1.8f - t / 6.0f, 1.8f - t / 6.0f);
@@ -2009,7 +2009,7 @@ s32 func_8003B4D8_main(GAMEMES *gMes, s32 fileNo, s32 seNo) {
                 HuSprTPLvlSet(gMes->strGId[0], i, gMes->tpLvl);
             }
             if (gMes->time > gMes->timeMax - 10) {
-                gMes->stat = 2;
+                gMes->stat = GMES_STAT_TIMEEND;
             }
             if (gMes->time >= 40) {
                 gMes->subMode = 3;
@@ -2079,7 +2079,7 @@ s32 func_8003B7E8_main(GAMEMES *gMes, Gfx **gfx) {
             gMes->unk0C += 4;
             gMes->unk10 += 0.035f;
             if (gMes->time > gMes->timeMax - 10) {
-                gMes->stat = 2;
+                gMes->stat = GMES_STAT_TIMEEND;
             }
             if (gMes->time >= gMes->timeMax) {
                 for (i = 0; i < 2; i++) {
@@ -2163,7 +2163,7 @@ s32 func_8003BB84_main(GAMEMES *gMes, Gfx **gfx) {
             }
             HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
             if (gMes->time > gMes->timeMax - 10) {
-                gMes->stat = 2;
+                gMes->stat = GMES_STAT_TIMEEND;
             }
             gMes->work++;
             if (gMes->work >= 12) {
@@ -2174,7 +2174,7 @@ s32 func_8003BB84_main(GAMEMES *gMes, Gfx **gfx) {
             }
             break;
         case 5:
-            gMes->stat = 2;
+            gMes->stat = GMES_STAT_TIMEEND;
             if (gMes->time >= gMes->timeMax) {
                 gMes->subMode = 6;
             }
@@ -2287,10 +2287,10 @@ s32 func_8003C248_main(GAMEMES *gMes, Gfx **gfx) {
         case 4:
             break;
         case 5:
-            gMes->stat = 2;
+            gMes->stat = GMES_STAT_TIMEEND;
             if (gMes->time > 60) {
                 for (i = 0; i < len; i++) {
-                    HuSprAttrSet(gMes->strGId[0], i + 1, 0x8000);
+                    HuSprDispOff(gMes->strGId[0], i + 1);
                     HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, 1.0f);
                 }
                 gMes->unk0C = 0;
@@ -2371,10 +2371,10 @@ s32 func_8003C644_main(GAMEMES *gMes, Gfx **gfx) {
         case 4:
             break;
         case 5:
-            gMes->stat = 2;
+            gMes->stat = GMES_STAT_TIMEEND;
             if (gMes->time > 60) {
                 for (i = 0; i < len; i++) {
-                    HuSprAttrSet(gMes->strGId[0], i + 1, 0x8000);
+                    HuSprDispOff(gMes->strGId[0], i + 1);
                     HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, 1.0f);
                 }
                 gMes->unk0C = 0;
@@ -2445,10 +2445,10 @@ s32 func_8003CA24_main(GAMEMES *gMes, Gfx **gfx) {
         case 4:
             break;
         case 5:
-            gMes->stat = 2;
+            gMes->stat = GMES_STAT_TIMEEND;
             if (gMes->time > 60) {
                 for (i = 0; i < len; i++) {
-                    HuSprAttrSet(gMes->strGId[0], i + 1, 0x8000);
+                    HuSprDispOff(gMes->strGId[0], i + 1);
                     HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, 1.0f);
                 }
                 gMes->unk0C = 0;
@@ -2521,10 +2521,10 @@ s32 func_8003CE20_main(GAMEMES *gMes, Gfx **gfx) {
         case 4:
             break;
         case 5:
-            gMes->stat = 2;
+            gMes->stat = GMES_STAT_TIMEEND;
             if (gMes->time > 60) {
                 for (i = 0; i < len; i++) {
-                    HuSprAttrSet(gMes->strGId[0], i + 1, 0x8000);
+                    HuSprDispOff(gMes->strGId[0], i + 1);
                     HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, 1.0f);
                 }
                 gMes->unk0C = 0;
@@ -2597,10 +2597,10 @@ s32 func_8003D134_main(GAMEMES *gMes, Gfx **gfx) {
         case 4:
             break;
         case 5:
-            gMes->stat = 2;
+            gMes->stat = GMES_STAT_TIMEEND;
             if (gMes->time > 60) {
                 for (i = 0; i < len; i++) {
-                    HuSprAttrSet(gMes->strGId[0], i + 1, 0x8000);
+                    HuSprDispOff(gMes->strGId[0], i + 1);
                 }
                 gMes->unk0C = 0;
                 gMes->subMode = 6;
@@ -2671,10 +2671,10 @@ s32 func_8003D4DC_main(GAMEMES *gMes, Gfx **gfx) {
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             /* fallthrough */
         case 5:
-            gMes->stat = 2;
+            gMes->stat = GMES_STAT_TIMEEND;
             if (gMes->time > 60) {
                 for (i = 0; i < len; i++) {
-                    HuSprAttrSet(gMes->strGId[0], i + 1, 0x8000);
+                    HuSprDispOff(gMes->strGId[0], i + 1);
                 }
                 gMes->unk0C = 0;
                 gMes->subMode = 6;
@@ -2745,10 +2745,10 @@ s32 func_8003D890_main(GAMEMES *gMes, Gfx **gfx) {
         case 4:
             break;
         case 5:
-            gMes->stat = 2;
+            gMes->stat = GMES_STAT_TIMEEND;
             if (gMes->time > 60) {
                 for (i = 0; i < len; i++) {
-                    HuSprAttrSet(gMes->strGId[0], i + 1, 0x8000);
+                    HuSprDispOff(gMes->strGId[0], i + 1);
                     HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, 1.0f);
                 }
                 gMes->unk0C = 0;
@@ -2907,7 +2907,7 @@ s32 GameMesMgWinnerExec(GAMEMES *gMes, Gfx **gfx) {
             break;
     }
     if (gMes->time > gMes->timeMax - 5) {
-        gMes->stat = 2;
+        gMes->stat = GMES_STAT_TIMEEND;
     }
     return result;
 }
@@ -2925,10 +2925,10 @@ s32 func_8003E4A4_main(GAMEMES *gMes, Gfx **gfx) {
         HuSprPosSet(gMes->strGId[0], 0, (320.0f - (nameLen + lostLen + 1.0f) * 24.0f) / 2.0f + nameLen * 24.0f / 2.0f, gMes->pos.y + 40.0f);
         HuSprPosSet(gMes->strGId[1], 0, 320.0f - (320.0f - (nameLen + lostLen + 1.0f) * 24.0f) / 2.0f - lostLen * 24.0f / 2.0f, gMes->pos.y + 40.0f);
         for (i = 0; i < nameLen; i++) {
-            HuSprAttrSet(gMes->strGId[0], i + 1, 0x8000);
+            HuSprDispOff(gMes->strGId[0], i + 1);
         }
         for (i = 0; i < lostLen; i++) {
-            HuSprAttrSet(gMes->strGId[1], i + 1, 0x8000);
+            HuSprDispOff(gMes->strGId[1], i + 1);
         }
         gMes->work = 0;
     }
@@ -2937,7 +2937,7 @@ s32 func_8003E4A4_main(GAMEMES *gMes, Gfx **gfx) {
         return FALSE;
     }
     if (gMes->time > 80) {
-        gMes->stat = 2;
+        gMes->stat = GMES_STAT_TIMEEND;
     }
     if (gMes->time > 50) {
         if (++gMes->work & 0x40) {
@@ -2955,14 +2955,14 @@ s32 func_8003E4A4_main(GAMEMES *gMes, Gfx **gfx) {
     x = gMes->time;
     if (x <= 30.0f) {
         for (i = 0; i < nameLen; i++) {
-            HuSprAttrReset(gMes->strGId[0], i + 1, 0x8000);
+            HuSprDispOn(gMes->strGId[0], i + 1);
             HuSprTPLvlSet(gMes->strGId[0], i + 1, x * 8.5f);
         }
     }
     x = gMes->time - 20;
     if (x <= 30.0f && x > 0.0f) {
         for (i = 0; i < lostLen; i++) {
-            HuSprAttrReset(gMes->strGId[1], i + 1, 0x8000);
+            HuSprDispOn(gMes->strGId[1], i + 1);
             HuSprTPLvlSet(gMes->strGId[1], i + 1, x * 8.5f);
         }
     }
@@ -2993,7 +2993,7 @@ s32 func_8003EBC8_main(GAMEMES *gMes, Gfx **gfx) {
         }
     }
     if (gMes->time > gMes->timeMax - 10) {
-        gMes->stat = 2;
+        gMes->stat = GMES_STAT_TIMEEND;
         scale = cosdf((gMes->time - (gMes->timeMax - 10)) * 9.0f);
         for (i = 0.0f; i < gMes->subMode; i++) {
             HuSprScaleSet(gMes->strGId[0], i + 1, gMes->scale.x, scale * gMes->scale.y);
@@ -3041,9 +3041,9 @@ s32 GMesTimerExec(GAMEMES *gMes, Gfx **arg1) {
     temp_s2 = gMes->subMode % 100;
     temp_s0 = temp_s2 / 10;
     if (temp_s0 == 0) {
-        HuSprAttrSet(gMes->strGId[0], 1, 0x8000);
+        HuSprDispOff(gMes->strGId[0], 1);
     } else {
-        HuSprAttrReset(gMes->strGId[0], 1, 0x8000);
+        HuSprDispOn(gMes->strGId[0], 1);
     }
     HuSprBankSet(gMes->strGId[0], 1, temp_s0, 0);
     func_800550F4_main(gMes->strGId[0], 1, 1);
@@ -3182,7 +3182,7 @@ s32 GameMesMgRecordExec(GAMEMES *gMes, Gfx **gfx) {
                 HuSprTPLvlSet(gMes->strGId[1], i + 1, gMes->tpLvl);
             }
             if (gMes->time >= 30) {
-                gMes->stat = 2;
+                gMes->stat = GMES_STAT_TIMEEND;
                 HuSprZRotSet(gMes->strGId[0], 0, 0.0f);
                 for (i = 0; i < newLen; i++) {
                     HuSprTPLvlSet(gMes->strGId[0], i + 1, 255);
@@ -3225,7 +3225,7 @@ s32 GameMesMgRecordExec(GAMEMES *gMes, Gfx **gfx) {
         HuAudFXPlay(0x252);
     }
     if (gMes->time >= 56) {
-        gMes->stat = 2;
+        gMes->stat = GMES_STAT_TIMEEND;
     }
     return result;
 }
@@ -3263,7 +3263,7 @@ s32 func_8003FD34_main(GAMEMES *gMes, Gfx **gfx) {
                 HuSprScaleSet(gMes->strGId[0], i, gMes->scale.x, gMes->scale.y);
             }
             if (gMes->time > gMes->timeMax - 10) {
-                gMes->stat = 2;
+                gMes->stat = GMES_STAT_TIMEEND;
                 gMes->tpLvl -= 25;
                 for (i = 0; i < 2; i++) {
                     HuSprTPLvlSet(gMes->strGId[0], i, gMes->tpLvl);
@@ -3328,7 +3328,7 @@ s32 func_8003FFD0_main(GAMEMES *gMes, Gfx **gfx) {
                 }
             }
             if (gMes->time >= gMes->timeMax) {
-                gMes->stat = 2;
+                gMes->stat = GMES_STAT_TIMEEND;
                 gMes->subMode = 3;
                 for (i = 0; i < 2; i++) {
                     HuSprTPLvlSet(gMes->strGId[0], i, 0);
@@ -3421,7 +3421,7 @@ s32 func_80040290_main(GAMEMES *gMes, Gfx **gfx) {
         HuAudFXPlay(0x24F);
     }
     if (gMes->time > gMes->timeMax - 5) {
-        gMes->stat = 2;
+        gMes->stat = GMES_STAT_TIMEEND;
     }
     return result;
 }
@@ -3451,7 +3451,7 @@ s32 func_800407B8_main(GAMEMES *gMes, Gfx **gfx) {
                 HuSprTPLvlSet(gMes->strGId[0], i + 1, gMes->tpLvl);
             }
             for (i = 0; i < goLen; i++) {
-                HuSprAttrSet(gMes->strGId[1], i + 1, 0x8000);
+                HuSprDispOff(gMes->strGId[1], i + 1);
             }
             HuSprPosSet(gMes->strGId[0], 0, gMes->pos.x, gMes->pos.y);
             HuSprPosSet(gMes->strGId[1], 0, gMes->pos.x, gMes->pos.y);
@@ -3496,7 +3496,7 @@ s32 func_800407B8_main(GAMEMES *gMes, Gfx **gfx) {
         case 4:
             gMes->scale.x = gMes->scale.y = sindf(gMes->work * 15) * 3.0f;
             for (i = 0; i < goLen; i++) {
-                HuSprAttrReset(gMes->strGId[1], i + 1, 0x8000);
+                HuSprDispOn(gMes->strGId[1], i + 1);
                 HuSprScaleSet(gMes->strGId[1], i + 1, gMes->scale.x, gMes->scale.y);
             }
             gMes->work++;
@@ -3507,7 +3507,7 @@ s32 func_800407B8_main(GAMEMES *gMes, Gfx **gfx) {
             }
             break;
         case 5:
-            gMes->stat = 2;
+            gMes->stat = GMES_STAT_TIMEEND;
             gMes->tpLvl -= 51;
             for (i = 0; i < goLen; i++) {
                 HuSprTPLvlSet(gMes->strGId[1], i + 1, gMes->tpLvl);
@@ -3515,7 +3515,7 @@ s32 func_800407B8_main(GAMEMES *gMes, Gfx **gfx) {
             gMes->unk0C++;
             if (gMes->time >= 55) {
                 for (i = 0; i < goLen; i++) {
-                    HuSprAttrSet(gMes->strGId[1], i + 1, 0x8000);
+                    HuSprDispOff(gMes->strGId[1], i + 1);
                 }
                 gMes->subMode = 6;
             }
@@ -3566,7 +3566,7 @@ s32 func_80040CF4_main(GAMEMES *gMes, Gfx **gfx) {
                 HuSprTPLvlSet(gMes->strGId[1], i + 1, 255);
             }
             for (i = 0.0f; i < wonLen; i++) {
-                HuSprAttrSet(gMes->strGId[2], i + 1, 0x8000);
+                HuSprDispOff(gMes->strGId[2], i + 1);
             }
             gMes->subMode = 1;
             gMes->unk10 = 0.0f;
@@ -3611,7 +3611,7 @@ s32 func_80040CF4_main(GAMEMES *gMes, Gfx **gfx) {
             for (i = 0.0f; i < wonLen; i++) {
                 HuSprScaleSet(gMes->strGId[2], i + 1, gMes->scale.x, gMes->scale.y);
                 HuSprTPLvlSet(gMes->strGId[2], i + 1, 255);
-                HuSprAttrReset(gMes->strGId[2], i + 1, 0x8000);
+                HuSprDispOn(gMes->strGId[2], i + 1);
             }
             gMes->subMode = 4;
             gMes->unk10 = 0.0f;
@@ -3651,7 +3651,7 @@ s32 func_80040CF4_main(GAMEMES *gMes, Gfx **gfx) {
             break;
     }
     if (gMes->time > gMes->timeMax - 5) {
-        gMes->stat = 2;
+        gMes->stat = GMES_STAT_TIMEEND;
     }
     return result;
 }
@@ -3724,7 +3724,7 @@ s32 GameMesMgDrawExec(GAMEMES *gMes, Gfx **gfx) {
         HuAudFXPlay(0x255);
     }
     if (gMes->time == gMes->timeMax - 5) {
-        gMes->stat = 2;
+        gMes->stat = GMES_STAT_TIMEEND;
     }
     return result;
 }
@@ -3777,7 +3777,7 @@ s32 func_80041B68_main(GAMEMES *gMes, Gfx **gfx) {
                 HuSprTPLvlSet(gMes->strGId[2], i + 1, gMes->tpLvl);
             }
             for (i = 0.0f; i < wonLen; i++) {
-                HuSprAttrSet(gMes->strGId[3], i + 1, 0x8000);
+                HuSprDispOff(gMes->strGId[3], i + 1);
             }
             gMes->subMode = 1;
             gMes->unk10 = 0.0f;
@@ -3834,7 +3834,7 @@ s32 func_80041B68_main(GAMEMES *gMes, Gfx **gfx) {
             for (i = 0.0f; i < wonLen; i++) {
                 HuSprScaleSet(gMes->strGId[3], i + 1, gMes->scale.x, gMes->scale.y);
                 HuSprTPLvlSet(gMes->strGId[3], i + 1, 255);
-                HuSprAttrReset(gMes->strGId[3], i + 1, 0x8000);
+                HuSprDispOn(gMes->strGId[3], i + 1);
             }
             gMes->subMode = 3;
             gMes->unk10 = 0.0f;
@@ -3879,7 +3879,7 @@ s32 func_80041B68_main(GAMEMES *gMes, Gfx **gfx) {
             break;
     }
     if (gMes->time > gMes->timeMax - 5) {
-        gMes->stat = 2;
+        gMes->stat = GMES_STAT_TIMEEND;
     }
     return result;
 }
@@ -3939,7 +3939,7 @@ s32 func_80042AC8_main(GAMEMES *gMes, Gfx **gfx) {
                 HuSprTPLvlSet(gMes->strGId[3], i + 1, gMes->tpLvl);
             }
             for (i = 0.0f; i < wonLen; i++) {
-                HuSprAttrSet(gMes->strGId[4], i + 1, 0x8000);
+                HuSprDispOff(gMes->strGId[4], i + 1);
             }
             gMes->unk10 = 1.0f;
             gMes->unk14 = 0.0f;
@@ -4008,7 +4008,7 @@ s32 func_80042AC8_main(GAMEMES *gMes, Gfx **gfx) {
             for (i = 0.0f; i < wonLen; i++) {
                 HuSprScaleSet(gMes->strGId[4], i + 1, gMes->scale.x * 0.8f, gMes->scale.y);
                 HuSprTPLvlSet(gMes->strGId[4], i + 1, 255);
-                HuSprAttrReset(gMes->strGId[4], i + 1, 0x8000);
+                HuSprDispOn(gMes->strGId[4], i + 1);
             }
             gMes->unk10 = 3.0f;
             gMes->unk14 = 0.0f;
@@ -4081,7 +4081,7 @@ s32 func_80042AC8_main(GAMEMES *gMes, Gfx **gfx) {
             break;
     }
     if (gMes->time > gMes->timeMax - 5) {
-        gMes->stat = 2;
+        gMes->stat = GMES_STAT_TIMEEND;
     }
     return result;
 }
@@ -4193,7 +4193,7 @@ s32 func_800440D4_main(GAMEMES *gMes, Gfx **gfx) {
         HuAudFXPlay(0x260);
     }
     if (gMes->time > gMes->timeMax - 5) {
-        gMes->stat = 2;
+        gMes->stat = GMES_STAT_TIMEEND;
     }
     return result;
 }
@@ -4238,7 +4238,7 @@ s32 func_800448C0_main(GAMEMES *gMes, Gfx **gfx) {
             }
             HuSprPosSet(gMes->strGId[2], 0, gMes->work, gMes->unk0C);
             for (i = 0; i < exclLen; i++) {
-                HuSprAttrSet(gMes->strGId[2], 1, 0x8000);
+                HuSprDispOff(gMes->strGId[2], 1);
                 HuSprScaleSet(gMes->strGId[2], i + 1, 1.0f, 1.0f);
                 HuSprTPLvlSet(gMes->strGId[2], i + 1, 255);
             }
@@ -4277,7 +4277,7 @@ s32 func_800448C0_main(GAMEMES *gMes, Gfx **gfx) {
                     HuSprTPLvlSet(gMes->strGId[1], i + 1, 255);
                 }
                 for (i = 0; i < exclLen; i++) {
-                    HuSprAttrReset(gMes->strGId[2], i + 1, 0x8000);
+                    HuSprDispOn(gMes->strGId[2], i + 1);
                     HuSprScaleSet(gMes->strGId[2], i + 1, 1.0f, 1.0f);
                     HuSprTPLvlSet(gMes->strGId[2], i + 1, 255);
                 }
@@ -4316,7 +4316,7 @@ s32 func_800448C0_main(GAMEMES *gMes, Gfx **gfx) {
             break;
     }
     if (gMes->time >= 31) {
-        gMes->stat = 2;
+        gMes->stat = GMES_STAT_TIMEEND;
     }
     return result;
 }

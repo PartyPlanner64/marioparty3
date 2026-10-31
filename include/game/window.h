@@ -11,8 +11,50 @@
 #define MAKE_MESSID(bank, mess) (((bank) << 16) + (mess))
 #define MAKE_MESSID_PTR(ptr) ((u32)(ptr))
 
+// Pass as the x/y message position to center the message in the window.
+#define HUWIN_POS_CENTER -2
+
+#define HUWIN_PLAYER_NONE 0
+#define HUWIN_PLAYER_1 (1 << 0)
+#define HUWIN_PLAYER_2 (1 << 1)
+#define HUWIN_PLAYER_3 (1 << 2)
+#define HUWIN_PLAYER_4 (1 << 3)
+#define HUWIN_PLAYER_ALL 0xF
+
+#define HUWIN_ATTR_NONE 0
+#define HUWIN_ATTR_NOCANCEL (1 << 0) // B does not cancel a choice
+#define HUWIN_ATTR_COMKEY (1 << 1) // input comes from the COM key queue
+#define HUWIN_ATTR_SHOWSPACE (1 << 2) // spaces drawn as glyphs, page breaks clear without waiting
+#define HUWIN_ATTR_DISPOFF (1 << 3)
+#define HUWIN_ATTR_KEYLOCK (1 << 4) // ignore input at the final key wait
+#define HUWIN_ATTR_MUTE (1 << 5) // window sound effects are silenced
+#define HUWIN_ATTR_PAUSE (1 << 6) // window pauses along with the game
+#define HUWIN_ATTR_BOLD (1 << 7)
+#define HUWIN_ATTR_BUFDIRTY (1 << 8) // text buffer was written this frame
+#define HUWIN_ATTR_INPUT (1 << 9) // input was accepted this frame
+#define HUWIN_ATTR_PROCOFF (1 << 10) // window is not processed
+#define HUWIN_ATTR_ALIGN_CENTER (1 << 11)
+#define HUWIN_ATTR_VALIGN_CENTER (1 << 12)
+#define HUWIN_ATTR_EX (1 << 13) // window created by HuWinExCreate
+#define HUWIN_ATTR_OPEN (1 << 14)
+#define HUWIN_ATTR_NOCURSORANIM (1 << 15)
+#define HUWIN_ATTR_ALTDIGITS (1 << 16)
+#define HUWIN_ATTR_OUTLINE (1 << 17)
+#define HUWIN_ATTR_NOCR (1 << 18)
+#define HUWIN_ATTR_MONOSPACE (1 << 19)
+
+#define HUWIN_STAT_NONE 0
+#define HUWIN_STAT_DRAWMES 1
+#define HUWIN_STAT_KEYWAIT 2
+#define HUWIN_STAT_CHOICE 5
+#define HUWIN_STAT_KEYWAIT_CLEAR 6 // key wait, then clear the window
+
+#define HUWIN_CHOICE_STAT_MES 0
+#define HUWIN_CHOICE_STAT_SPR 1
+#define HUWIN_CHOICE_STAT_DISABLED 2
+
 typedef struct TextWindowSprite {
-    /* 0x00 */ u8 stat; /* 0 = free, 1 = active, 2 = disabled */
+    /* 0x00 */ u8 stat; /* HUWIN_CHOICE_STAT_* */
     /* 0x01 */ char pad1[1];
     /* 0x02 */ s16 x;
     /* 0x04 */ s16 y;

@@ -148,7 +148,7 @@ void func_801059A0_meschk() {
     Center.y = 100.0f;
     CZoom = 600.0f;
     CRot.x = -30.0f;
-    omSetStatBit(temp_v0, 0xA0);
+    omSetStatBit(temp_v0, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     if (omdispinfo != 0) {
         omdispinfo = 0;
         func_8004DEC8_main(D_800A1786_main);
@@ -163,7 +163,7 @@ void func_801059A0_meschk() {
     HmfLightColorSet(3, 0, 0, 0);
     omAddPrcObj(func_80105B50_meschk, 0x3F00, 0x800, 0);
     omAddPrcObj(func_801063BC_meschk, 0x3F00, 0x800, 0);
-    WipeCreateIn(0, 0);
+    WipeCreateIn(WIPE_TYPE_NORMAL, 0);
     D_800CD280_main = 1;
     Hu3DBGColorSet(0xFF, 0xFF, 0xFF);
 }
@@ -270,18 +270,18 @@ void func_80105B8C_meschk() {
             if (winData[window].num_choices != 0) {
                 HuWinChoiceGet(window, 0, 0);
             } else if (hasChoice == 0) {
-                while (!(D_800D5558_main[0] & 0xC03F)) {
+                while (!(D_800D5558_main[0] & (A_BUTTON | B_BUTTON | L_TRIG | R_TRIG | U_CBUTTONS | D_CBUTTONS | L_CBUTTONS | R_CBUTTONS))) {
                     HuPrcVSleep();
                 }
             }
-            if ((winData[window].input & 0x4000) || (D_800D5558_main[0] & 0x4000)) {
+            if ((winData[window].input & B_BUTTON) || (D_800D5558_main[0] & B_BUTTON)) {
                 if ((u32)message > check->firstMessage) {
                     message -= 2;
                 } else {
                     message--;
                 }
             }
-            if ((winData[window].input & 8) || (D_800D5558_main[0] & 8)) {
+            if ((winData[window].input & U_CBUTTONS) || (D_800D5558_main[0] & U_CBUTTONS)) {
                 if (entry != 0) {
                     entry -= 2;
                 } else {
@@ -289,10 +289,10 @@ void func_80105B8C_meschk() {
                 }
                 break;
             }
-            if ((winData[window].input & 4) || (D_800D5558_main[0] & 4)) {
+            if ((winData[window].input & D_CBUTTONS) || (D_800D5558_main[0] & D_CBUTTONS)) {
                 break;
             }
-            if ((winData[window].input & 2) || (D_800D5558_main[0] & 2)) {
+            if ((winData[window].input & L_CBUTTONS) || (D_800D5558_main[0] & L_CBUTTONS)) {
                 if (entry - 5 >= 0) {
                     entry -= 6;
                 } else {
@@ -300,7 +300,7 @@ void func_80105B8C_meschk() {
                 }
                 break;
             }
-            if ((winData[window].input & 1) || (D_800D5558_main[0] & 1)) {
+            if ((winData[window].input & R_CBUTTONS) || (D_800D5558_main[0] & R_CBUTTONS)) {
                 if (entry + 5 < count) {
                     entry += 4;
                 } else {
@@ -308,7 +308,7 @@ void func_80105B8C_meschk() {
                 }
                 break;
             }
-            if ((D_800CDA7C_main[0] & 0x30) == 0x30) {
+            if ((D_800CDA7C_main[0] & (L_TRIG | R_TRIG)) == 0x30) {
                 done = 1;
                 break;
             }
@@ -324,7 +324,7 @@ void func_80105B8C_meschk() {
 
 void func_80106334_meschk(omObjData *arg0) {
     if ((D_80106500_meschk.finished != 0) || (D_800D530C_main != 0)) {
-        WipeCreateOut(0, 8);
+        WipeCreateOut(WIPE_TYPE_NORMAL, 8);
         arg0->func = &func_80106390_meschk;
         HuAudSeqFadeOut(0x3C);
     }

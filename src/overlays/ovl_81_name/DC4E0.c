@@ -50,7 +50,7 @@ void func_800F4E90_name_81(void) {
         player = &D_80105630_name_81[i];
 
         for (j = 0; j < 0x1D; j++) {
-            HuSprAttrSet(player->spriteGroup, j, 0x8000);
+            HuSprDispOff(player->spriteGroup, j);
         }
     }
 }
@@ -75,7 +75,7 @@ void func_800F57B0_name_81(s32 playerIndex) {
         player = &D_80105630_name_81[playerIndex];
 
         for (i = 0; i < 11; i++) {
-            HuSprAttrSet(player->spriteGroup, i + 7, 0x8000);
+            HuSprDispOff(player->spriteGroup, i + 7);
         }
     }
 }
@@ -92,7 +92,7 @@ void func_800F5E2C_name_81(s32 playerIndex) {
         player = &D_80105630_name_81[playerIndex];
 
         for (i = 0; i < 11; i++) {
-            HuSprAttrSet(player->spriteGroup, i + 0x12, 0x8000);
+            HuSprDispOff(player->spriteGroup, i + 0x12);
         }
     }
 }

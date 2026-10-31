@@ -52,18 +52,18 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", func_80105B8
 void func_801060E0_messy_memory(omObjData *obj) {
     switch (D_80115D8C_messy_memory) {
         case 8:
-            func_8001C258_main(*obj->model, 4, 0);
+            func_8001C258_main(*obj->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             break;
         case 0xC:
-            func_8001C258_main(*obj->model, 4, 4);
+            func_8001C258_main(*obj->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             break;
     }
 }
 
 void func_80106140_messy_memory(omObjData *obj) {
     *obj->model = Hu3DHookFuncCreate(0, func_80105B88_messy_memory, 2);
-    Hu3DModelCameraSet(*obj->model, 2);
-    func_8001C258_main(*obj->model, 4, 4);
+    Hu3DModelCameraSet(*obj->model, HU3D_CAM1);
+    func_8001C258_main(*obj->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     obj->func = func_801060E0_messy_memory;
 }
 

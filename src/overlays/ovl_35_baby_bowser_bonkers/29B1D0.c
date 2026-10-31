@@ -166,7 +166,7 @@ void func_801089CC_baby_bowser_bonkers(BabyBowserBonkersActor *actor) {
     actor->unk_04 = 0;
     actor->unk_08 = -1;
     actor->unk_18 = 0;
-    model->attr |= 4;
+    model->attr |= HU3D_ATTR_DISPOFF;
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_80108A0C_baby_bowser_bonkers);

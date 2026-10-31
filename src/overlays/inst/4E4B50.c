@@ -568,14 +568,14 @@ void func_8010D044_inst(void) {
 
     if (D_8010D409_inst != 1) {
         func_8010CFF4_inst();
-        HuSprAttrReset(window->group, D_8010DCA8_inst.member, 0x8000);
+        HuSprDispOn(window->group, D_8010DCA8_inst.member);
         for (i = 0; i < 3; i++) {
             if (i != 1) {
-                HuSprAttrReset(window->group, D_8010DCA8_inst.mainMembers[i], 0x8000);
+                HuSprDispOn(window->group, D_8010DCA8_inst.mainMembers[i]);
             }
         }
         for (i = 0; i < 2; i++) {
-            HuSprAttrSet(window->group, D_8010DCA8_inst.helpMembers[i], 0x8000);
+            HuSprDispOff(window->group, D_8010DCA8_inst.helpMembers[i]);
         }
         D_8010DCCC_inst = D_8010DCD0_inst->message;
         if ((D_8010D40A_inst == 4) && (D_8010D411_inst != 2)) {
@@ -596,12 +596,12 @@ void func_8010D1D4_inst(void) {
     if (D_8010D409_inst != 1) {
         func_8010CF98_inst();
         for (i = 0; i < 2; i++) {
-            HuSprAttrReset(window->group, D_8010DCA8_inst.helpMembers[i], 0x8000);
+            HuSprDispOn(window->group, D_8010DCA8_inst.helpMembers[i]);
         }
-        HuSprAttrSet(window->group, D_8010DCA8_inst.member, 0x8000);
+        HuSprDispOff(window->group, D_8010DCA8_inst.member);
         for (i = 0; i < 3; i++) {
             if (i != 1) {
-                HuSprAttrSet(window->group, D_8010DCA8_inst.mainMembers[i], 0x8000);
+                HuSprDispOff(window->group, D_8010DCA8_inst.mainMembers[i]);
             }
         }
         switch (D_8010D40B_inst) {

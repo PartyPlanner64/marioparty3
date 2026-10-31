@@ -1164,14 +1164,14 @@ void func_800FB160_name_81(void) {
         if (D_800C9520_main[playerPad] & B_BUTTON) {
             break;
         }
-        if (D_800D0590_main[playerPad] & 1) {
+        if (D_800D0590_main[playerPad] & R_CBUTTONS) {
             var_s3++;
             var_s3 %= 12;
             HuWinHomeClear(sp36);
             HuWinMesSet(sp36, D_80101998_name_81[var_s3], -1, -1);
             HuWinExAnimPopIn(sp36, D_801019C8_name_81[var_s3]);
         }
-        if (D_800D0590_main[playerPad] & 2) {
+        if (D_800D0590_main[playerPad] & L_CBUTTONS) {
             var_s3--;
             if (var_s3 < 0) {
                 var_s3 = 0xB;
@@ -1199,7 +1199,7 @@ void func_800FB524_name_81(void *arg0) {
     curProcess = HuPrcCurrentGet();
     newProcess = omAddPrcObj(func_800FB160_name_81, 0x1005, 0, 0);
     newProcess->user_data = arg0;
-    omPrcSetStatBit(newProcess, 0x80);
+    omPrcSetStatBit(newProcess, OM_STAT_NOALLPAUSE);
     HuPrcChildLink(curProcess, newProcess);
     HuPrcChildWait();
 }

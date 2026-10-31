@@ -20,7 +20,6 @@ typedef struct {
 } WipeTextureHeader;
 
 extern WipeTexture D_800D1F5C_main;
-extern u8 D_800A26D0_main;
 extern u16 *D_800A26D4_main;
 extern u16 *D_800BDA70_main;
 extern u16 *D_800BDA74_main;
@@ -28,13 +27,9 @@ extern u8 D_800BDA78_main;
 extern Gfx *D_800BDA7C_main;
 extern s16 D_800BDA80_main;
 extern s16 D_800BDA82_main;
-extern u8 D_800CC0BA_main;
-extern u8 D_800CCF84_main;
 extern u8 D_800CDA74_main;
-extern f32 D_800D0A3C_main;
 extern u8 D_800D0598_main;
 extern u8 *D_800D1F80_main[8];
-extern f32 D_800D51F4_main;
 extern u8 D_800D5304_main;
 extern u8 D_800D212E_main;
 extern u16 *D_800D5550_main;
@@ -75,8 +70,8 @@ s32 func_80065C9C_main(Gfx **gfx, s32 file);
 void WipeInit(void) {
     s16 i;
 
-    D_800CCF84_main = 0;
-    D_800CC0BA_main = 0;
+    wipeStat = 0;
+    wipeMode = WIPE_MODE_DUMMY;
     D_800D212E_main = 0;
     D_800D0598_main = 0;
     D_800CDA74_main = 0;
@@ -90,9 +85,9 @@ void WipeInit(void) {
 void WipeExecAlways(Gfx **gfx) {
     s16 i;
 
-    if (D_800CC0BA_main == 3) {
-        switch (D_800A26D0_main) {
-            case 0xFE:
+    if (wipeMode == WIPE_MODE_BLANK) {
+        switch (wipeType) {
+            case WIPE_TYPE_CROSS:
                 WipeFrameStill(gfx);
                 break;
             case 3:
@@ -112,28 +107,28 @@ void WipeExecAlways(Gfx **gfx) {
         return;
     }
     GMesExec(gfx);
-    if (D_800CC0BA_main == 0) {
+    if (wipeMode == WIPE_MODE_DUMMY) {
         return;
     }
-    switch (D_800CC0BA_main) {
-        case 1:
-            switch (D_800A26D0_main) {
+    switch (wipeMode) {
+        case WIPE_MODE_IN:
+            switch (wipeType) {
                 case 11:
-                    D_800CCF84_main = func_80062168_main(gfx);
+                    wipeStat = func_80062168_main(gfx);
                     break;
-                case 0xFE:
-                    D_800CCF84_main = func_800623F0_main(gfx);
+                case WIPE_TYPE_CROSS:
+                    wipeStat = func_800623F0_main(gfx);
                     break;
                 case 1:
-                    D_800CCF84_main = func_80063454_main(gfx);
+                    wipeStat = func_80063454_main(gfx);
                     break;
                 case 2:
-                    D_800CCF84_main = func_800640EC_main(gfx);
+                    wipeStat = func_800640EC_main(gfx);
                     break;
                 case 12:
-                    D_800CCF84_main = func_80065D80_main(gfx);
+                    wipeStat = func_80065D80_main(gfx);
                     break;
-                case 0:
+                case WIPE_TYPE_NORMAL:
                 case 3:
                 case 4:
                 case 5:
@@ -142,11 +137,11 @@ void WipeExecAlways(Gfx **gfx) {
                 case 8:
                 case 9:
                 case 10:
-                    D_800CCF84_main = func_8006515C_main(gfx);
+                    wipeStat = func_8006515C_main(gfx);
                     break;
             }
-            D_800D51F4_main += 1.0f;
-            if (D_800CCF84_main == 0) {
+            wipeTime += 1.0f;
+            if (wipeStat == 0) {
                 WipeColorSet(0, 0, 0);
                 if (D_800A26D4_main != NULL) {
                     if (D_800D5304_main == 0) {
@@ -161,93 +156,93 @@ void WipeExecAlways(Gfx **gfx) {
                     D_800D1F80_main[i] = NULL;
                 }
                 D_800D1F60_main = NULL;
-                func_80019C68_main(0x6D60);
+                func_80019C68_main(TAG_WIPE);
             }
             break;
-        case 2:
-            switch (D_800A26D0_main) {
-                case 0:
-                    D_800CCF84_main = func_80065C9C_main(gfx, 0);
+        case WIPE_MODE_OUT:
+            switch (wipeType) {
+                case WIPE_TYPE_NORMAL:
+                    wipeStat = func_80065C9C_main(gfx, 0);
                     break;
                 case 11:
-                    D_800CCF84_main = func_80062244_main(gfx);
+                    wipeStat = func_80062244_main(gfx);
                     break;
-                case 0xFE:
-                    D_800CCF84_main = func_80062584_main(gfx);
+                case WIPE_TYPE_CROSS:
+                    wipeStat = func_80062584_main(gfx);
                     break;
                 case 1:
-                    D_800CCF84_main = func_80063510_main(gfx);
+                    wipeStat = func_80063510_main(gfx);
                     break;
                 case 2:
-                    D_800CCF84_main = func_80065094_main(gfx);
+                    wipeStat = func_80065094_main(gfx);
                     break;
                 case 12:
-                    D_800CCF84_main = func_80065E88_main(gfx);
+                    wipeStat = func_80065E88_main(gfx);
                     break;
                 case 3:
-                    D_800CCF84_main = func_80065C9C_main(gfx, 18);
+                    wipeStat = func_80065C9C_main(gfx, 18);
                     break;
                 case 4:
-                    D_800CCF84_main = func_80065C9C_main(gfx, 19);
+                    wipeStat = func_80065C9C_main(gfx, 19);
                     break;
                 case 5:
-                    D_800CCF84_main = func_80065C9C_main(gfx, 20);
+                    wipeStat = func_80065C9C_main(gfx, 20);
                     break;
                 case 6:
-                    D_800CCF84_main = func_80065C9C_main(gfx, 21);
+                    wipeStat = func_80065C9C_main(gfx, 21);
                     break;
                 case 7:
-                    D_800CCF84_main = func_80065C9C_main(gfx, 22);
+                    wipeStat = func_80065C9C_main(gfx, 22);
                     break;
                 case 8:
-                    D_800CCF84_main = func_80065C9C_main(gfx, 17);
+                    wipeStat = func_80065C9C_main(gfx, 17);
                     break;
                 case 9:
-                    D_800CCF84_main = func_80065C9C_main(gfx, 16);
+                    wipeStat = func_80065C9C_main(gfx, 16);
                     break;
                 case 10:
-                    D_800CCF84_main = func_80065C9C_main(gfx, 15);
+                    wipeStat = func_80065C9C_main(gfx, 15);
                     break;
             }
-            D_800D51F4_main += 1.0f;
+            wipeTime += 1.0f;
             break;
     }
-    if (D_800CCF84_main == 0) {
-        if (D_800CC0BA_main == 2) {
-            D_800CC0BA_main = 3;
+    if (wipeStat == 0) {
+        if (wipeMode == WIPE_MODE_OUT) {
+            wipeMode = WIPE_MODE_BLANK;
         } else {
-            D_800CC0BA_main = 0;
+            wipeMode = WIPE_MODE_DUMMY;
         }
-        D_800D51F4_main = 0.0f;
+        wipeTime = 0.0f;
     }
 }
 
 void WipeCreateIn(s16 arg0, s16 arg1) {
-    if (D_800CCF84_main == 0) {
-        D_800CC0BA_main = 1;
-        D_800CCF84_main = 1;
-        if (arg0 != 0xFF) {
-            D_800A26D0_main = arg0;
+    if (wipeStat == 0) {
+        wipeMode = WIPE_MODE_IN;
+        wipeStat = 1;
+        if (arg0 != WIPE_TYPE_PREV) {
+            wipeType = arg0;
         }
-        D_800D0A3C_main = arg1;
-        D_800D51F4_main = 0.0f;
+        wipeDuration = arg1;
+        wipeTime = 0.0f;
     }
 }
 
 void WipeCreateOut(s16 arg0, s16 arg1) {
-    if (D_800CCF84_main == 0) {
-        D_800CC0BA_main = 2;
-        D_800CCF84_main = 1;
-        if (arg0 != 0xFF) {
-            D_800A26D0_main = arg0;
+    if (wipeStat == 0) {
+        wipeMode = WIPE_MODE_OUT;
+        wipeStat = 1;
+        if (arg0 != WIPE_TYPE_PREV) {
+            wipeType = arg0;
         }
-        D_800D0A3C_main = arg1;
-        D_800D51F4_main = 0.0f;
+        wipeDuration = arg1;
+        wipeTime = 0.0f;
     }
 }
 
 s32 WipeStatGet(void) {
-    return D_800CCF84_main;
+    return wipeStat;
 }
 
 void WipeColorSet(u8 red, u8 green, u8 blue) {
@@ -272,22 +267,22 @@ u8 *WipeMalloc(u32 size) {
 }
 
 s32 func_80062168_main(Gfx **gfx) {
-    if (D_800D0A3C_main == 0.0f) {
+    if (wipeDuration == 0.0f) {
         return 0;
     }
-    WipeColorFill(gfx, 255.0f - (D_800D51F4_main / D_800D0A3C_main) * 255.0f, D_800A2728_main);
-    if (D_800D51F4_main >= D_800D0A3C_main) {
+    WipeColorFill(gfx, 255.0f - (wipeTime / wipeDuration) * 255.0f, D_800A2728_main);
+    if (wipeTime >= wipeDuration) {
         return 0;
     }
     return 1;
 }
 
 s32 func_80062244_main(Gfx **gfx) {
-    if (D_800D0A3C_main == 0.0f) {
+    if (wipeDuration == 0.0f) {
         return 0;
     }
-    WipeColorFill(gfx, (D_800D51F4_main / D_800D0A3C_main) * 255.0f, D_800A2728_main);
-    if (D_800D51F4_main >= D_800D0A3C_main) {
+    WipeColorFill(gfx, (wipeTime / wipeDuration) * 255.0f, D_800A2728_main);
+    if (wipeTime >= wipeDuration) {
         return 0;
     }
     return 1;
@@ -307,16 +302,16 @@ s32 func_800623F0_main(Gfx **gfx) {
     if (D_800A26D4_main == NULL) {
         return 0;
     }
-    if (D_800D0A3C_main == 0.0f) {
+    if (wipeDuration == 0.0f) {
         goto cleanup;
     }
-    alpha = 255.0f - (D_800D51F4_main / D_800D0A3C_main) * 255.0f;
+    alpha = 255.0f - (wipeTime / wipeDuration) * 255.0f;
     gSPDisplayList((*gfx)++, D_800A26D8_main);
     gDPSetCombineMode((*gfx)++, G_CC_MODULATEI_PRIM, G_CC_MODULATEI_PRIM);
     gDPSetRenderMode((*gfx)++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
     gDPSetPrimColor((*gfx)++, 0, 0, 255, 255, 255, alpha);
     func_80062884_main(gfx, D_800D5550_main);
-    if (D_800D51F4_main >= D_800D0A3C_main) {
+    if (wipeTime >= wipeDuration) {
     cleanup:
         if (D_800D5304_main == 0) {
             HuMemMemoryFreePerm(D_800A26D4_main);
@@ -329,14 +324,14 @@ s32 func_800623F0_main(Gfx **gfx) {
 
 s32 func_80062584_main(Gfx **gfx) {
     gSPDisplayList((*gfx)++, D_800A26D8_main);
-    if (D_800D51F4_main == 0.0f) {
+    if (wipeTime == 0.0f) {
         D_800A26D4_main = HuMemMemoryAllocPerm(320 * 240 * sizeof(u16) + 64);
         D_800D5550_main = (u16 *)(((u32)D_800A26D4_main + 63) & ~63);
         func_8006265C_main(gfx, D_800D5550_main);
         return 1;
     }
     func_80062884_main(gfx, D_800D5550_main);
-    if (D_800D51F4_main > 1.0f) {
+    if (wipeTime > 1.0f) {
         return 0;
     }
     return 1;
@@ -384,11 +379,11 @@ s32 func_80062A30_main(Gfx **gfx) {
     f32 inverseScale;
     u16 *image;
 
-    if (D_800D51F4_main >= D_800D0A3C_main - 1.0f) {
+    if (wipeTime >= wipeDuration - 1.0f) {
         WipeColorFill(gfx, 255, D_800A2728_main);
         return 0;
     }
-    scale = 1.0f - D_800D51F4_main / D_800D0A3C_main;
+    scale = 1.0f - wipeTime / wipeDuration;
     inverseScale = 1.0f / scale;
     gSPDisplayList((*gfx)++, D_800A26D8_main);
     gDPSetAlphaCompare((*gfx)++, G_AC_THRESHOLD);
@@ -429,14 +424,14 @@ s32 func_80062A30_main(Gfx **gfx) {
 }
 
 s32 func_80063454_main(Gfx **gfx) {
-    if (D_800D0A3C_main == 0.0f) {
+    if (wipeDuration == 0.0f) {
         return 0;
     }
-    if (D_800D51F4_main == 0.0f) {
+    if (wipeTime == 0.0f) {
         func_800635F4_main(13);
     }
-    func_800636D8_main(gfx, D_800D51F4_main / D_800D0A3C_main, 1.0f);
-    if (D_800D51F4_main >= D_800D0A3C_main) {
+    func_800636D8_main(gfx, wipeTime / wipeDuration, 1.0f);
+    if (wipeTime >= wipeDuration) {
         return 0;
     }
     return 1;
@@ -445,17 +440,17 @@ s32 func_80063454_main(Gfx **gfx) {
 s32 func_80063510_main(Gfx **gfx) {
     f32 scale;
 
-    if (D_800D0A3C_main == 0.0f) {
+    if (wipeDuration == 0.0f) {
         return 0;
     }
-    if (D_800D51F4_main == 0.0f) {
+    if (wipeTime == 0.0f) {
         func_800635F4_main(13);
     }
-    scale = D_800D51F4_main / D_800D0A3C_main;
+    scale = wipeTime / wipeDuration;
     scale = 1.0f - scale;
     scale *= 1.1f;
     func_800636D8_main(gfx, scale, 1.0f);
-    if (D_800D51F4_main >= D_800D0A3C_main) {
+    if (wipeTime >= wipeDuration) {
         return 0;
     }
     return 1;
@@ -530,14 +525,14 @@ void func_800636D8_main(Gfx **gfx, f32 scale, f32 alpha) {
 }
 
 s32 func_800640EC_main(Gfx **gfx) {
-    if (D_800D0A3C_main == 0.0f) {
+    if (wipeDuration == 0.0f) {
         return 0;
     }
-    if (D_800D51F4_main == 0.0f && D_800D1F60_main == NULL) {
+    if (wipeTime == 0.0f && D_800D1F60_main == NULL) {
         func_800635F4_main(23);
     }
-    func_800641C8_main(gfx, 1.0f - (1.0f / D_800D0A3C_main) * D_800D51F4_main);
-    if (D_800D51F4_main >= D_800D0A3C_main) {
+    func_800641C8_main(gfx, 1.0f - (1.0f / wipeDuration) * wipeTime);
+    if (wipeTime >= wipeDuration) {
         return 0;
     }
     return 1;
@@ -629,25 +624,25 @@ void func_800641C8_main(Gfx **gfx, f32 progress) {
 }
 
 s32 func_80065094_main(Gfx **gfx) {
-    if (D_800D0A3C_main == 0.0f) {
+    if (wipeDuration == 0.0f) {
         return 0;
     }
-    if (D_800D51F4_main == 0.0f) {
+    if (wipeTime == 0.0f) {
         func_800635F4_main(23);
     }
-    func_800641C8_main(gfx, (1.0f / D_800D0A3C_main) * D_800D51F4_main);
-    if (D_800D51F4_main >= D_800D0A3C_main) {
+    func_800641C8_main(gfx, (1.0f / wipeDuration) * wipeTime);
+    if (wipeTime >= wipeDuration) {
         return 0;
     }
     return 1;
 }
 
 s32 func_8006515C_main(Gfx **gfx) {
-    if (D_800D0A3C_main == 0.0f) {
+    if (wipeDuration == 0.0f) {
         return 0;
     }
-    func_800651F0_main(gfx, 1.0f - (1.0f / D_800D0A3C_main) * D_800D51F4_main);
-    if (D_800D51F4_main >= D_800D0A3C_main) {
+    func_800651F0_main(gfx, 1.0f - (1.0f / wipeDuration) * wipeTime);
+    if (wipeTime >= wipeDuration) {
         return 0;
     }
     return 1;
@@ -709,18 +704,18 @@ void func_800651F0_main(Gfx **gfx, f32 progress) {
 }
 
 s32 func_80065C9C_main(Gfx **gfx, s32 file) {
-    if (D_800D0A3C_main == 0.0f) {
+    if (wipeDuration == 0.0f) {
         return 0;
     }
-    if (D_800D51F4_main == 0.0f) {
+    if (wipeTime == 0.0f) {
         if (file != 0) {
             func_800635F4_main(file);
         } else {
             D_800D1F60_main = NULL;
         }
     }
-    func_800651F0_main(gfx, (1.0f / D_800D0A3C_main) * D_800D51F4_main);
-    if (D_800D51F4_main >= D_800D0A3C_main) {
+    func_800651F0_main(gfx, (1.0f / wipeDuration) * wipeTime);
+    if (wipeTime >= wipeDuration) {
         return 0;
     }
     return 1;
@@ -730,20 +725,20 @@ s32 func_80065D80_main(Gfx **gfx) {
     f32 scale;
     f32 alpha;
 
-    if (D_800D0A3C_main == 0.0f) {
+    if (wipeDuration == 0.0f) {
         return 0;
     }
-    if (D_800D51F4_main == 0.0f) {
+    if (wipeTime == 0.0f) {
         func_800635F4_main(24);
     }
-    scale = (D_800D51F4_main / D_800D0A3C_main) * 2.0f;
-    if (D_800D51F4_main > D_800D0A3C_main * 0.5f) {
-        alpha = 1.0f - (D_800D51F4_main - D_800D0A3C_main * 0.5f) / (D_800D0A3C_main * 0.5f);
+    scale = (wipeTime / wipeDuration) * 2.0f;
+    if (wipeTime > wipeDuration * 0.5f) {
+        alpha = 1.0f - (wipeTime - wipeDuration * 0.5f) / (wipeDuration * 0.5f);
     } else {
         alpha = 1.0f;
     }
     func_800636D8_main(gfx, scale, alpha);
-    if (D_800D51F4_main >= D_800D0A3C_main) {
+    if (wipeTime >= wipeDuration) {
         return 0;
     }
     return 1;
@@ -753,20 +748,20 @@ s32 func_80065E88_main(Gfx **gfx) {
     f32 scale;
     f32 alpha;
 
-    if (D_800D0A3C_main == 0.0f) {
+    if (wipeDuration == 0.0f) {
         return 0;
     }
-    if (D_800D51F4_main == 0.0f) {
+    if (wipeTime == 0.0f) {
         func_800635F4_main(24);
     }
-    scale = (1.0f - D_800D51F4_main / D_800D0A3C_main) * 2.0f;
-    if (D_800D51F4_main < D_800D0A3C_main * 0.5f) {
-        alpha = D_800D51F4_main / (D_800D0A3C_main * 0.5f);
+    scale = (1.0f - wipeTime / wipeDuration) * 2.0f;
+    if (wipeTime < wipeDuration * 0.5f) {
+        alpha = wipeTime / (wipeDuration * 0.5f);
     } else {
         alpha = 1.0f;
     }
     func_800636D8_main(gfx, scale, alpha);
-    if (D_800D51F4_main >= D_800D0A3C_main) {
+    if (wipeTime >= wipeDuration) {
         return 0;
     }
     return 1;

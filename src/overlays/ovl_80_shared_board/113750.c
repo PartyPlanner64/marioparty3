@@ -115,7 +115,7 @@ static UnkBoard8* func_800FFD0C_shared_board(void) {
         temp_v0->model[i] = HuSprAnimRead(temp_s4);
         func_80055024_main(temp_v0->spriteGroup, i, temp_v0->model[i], 0);
         HuSprPriSet(temp_v0->spriteGroup, i, 0U);
-        HuSprAttrSet(temp_v0->spriteGroup, i, 0x8000);
+        HuSprDispOff(temp_v0->spriteGroup, i);
         HuSprPosSet(temp_v0->spriteGroup, i, D_80101EC0_shared_board[i][0], D_80101EC0_shared_board[i][1]);
         D_801056C8_shared_board[i][0] = D_80101EC0_shared_board[i][0];
         D_801056C8_shared_board[i][1] = D_80101EC0_shared_board[i][1];
@@ -124,7 +124,7 @@ static UnkBoard8* func_800FFD0C_shared_board(void) {
 
     DataClose(temp_s4);
     D_801056C0_shared_board = omAddObj(0x1000, 0U, 0U, -1, func_800FFB30_shared_board);
-    omSetStatBit(D_801056C0_shared_board, 0x20);
+    omSetStatBit(D_801056C0_shared_board, OM_STAT_NOPAUSE);
     return temp_v0;
 }
 
@@ -138,9 +138,9 @@ static void func_800FFEC4_shared_board(UnkBoard8* arg0, u16 arg1) {
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if ((arg1 >> i) & 1) {
-            HuSprAttrSet(arg0->spriteGroup, i, 0x8000);
+            HuSprDispOff(arg0->spriteGroup, i);
         } else {
-            HuSprAttrReset(arg0->spriteGroup, i, 0x8000);
+            HuSprDispOn(arg0->spriteGroup, i);
         }
     }
 }
@@ -294,7 +294,7 @@ static void func_8010024C_shared_board(void) {
         if (mbCameraBtnF == 0) {
             break;
         }
-        if (D_800C9520_main[temp_s2] & 0xE010) {
+        if (D_800C9520_main[temp_s2] & (A_BUTTON | B_BUTTON | Z_TRIG | R_TRIG)) {
             break;
         }
     }       
@@ -304,7 +304,7 @@ static void func_8010024C_shared_board(void) {
         MBHelpWinKill(var_s4);
     }
     func_800FFE90_shared_board(temp_s3);
-    WipeCreateOut(0, 4);
+    WipeCreateOut(WIPE_TYPE_NORMAL, 4);
     HuPrcSleep(4);
     if ((func_800F8858_shared_board()) == 0) {
         func_800E728C_shared_board();
@@ -331,7 +331,7 @@ static void func_8010024C_shared_board(void) {
             func_8004A9DC_main(0x7F);
         }
         
-        WipeCreateIn(0, 4);
+        WipeCreateIn(WIPE_TYPE_NORMAL, 4);
         HuPrcSleep(4);
     } else {
         func_80100228_shared_board();
@@ -358,14 +358,14 @@ void MBMapScrollExec(s32 arg0) {
     omAllPause();
     func_800E6FCC_shared_board();
     temp_v0 = omAddPrcObj(func_80100630_shared_board, 0x1005, 0, 0);
-    omPrcSetStatBit(temp_v0, 0x20);
+    omPrcSetStatBit(temp_v0, OM_STAT_NOPAUSE);
     HuPrcChildLink(HuPrcCurrentGet(), MBCameraZoomMotStart(1.0f));
     HuPrcChildWait();
     omDelPrcObj(temp_v0);
     temp_s0 = HuPrcCurrentGet();
     temp_v0 = omAddPrcObj(func_8010024C_shared_board, 0x1005, 0, 0);
     temp_v0->user_data = (void*)arg0;
-    omPrcSetStatBit(temp_v0, 0x80);
+    omPrcSetStatBit(temp_v0, OM_STAT_NOALLPAUSE);
     HuPrcChildLink(temp_s0, temp_v0);
     HuPrcChildWait();
     func_8004A0E0_main();

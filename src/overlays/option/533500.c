@@ -2309,7 +2309,7 @@ void func_8010E8E0_option(void) {
         HuPrcVSleep();
         buttons = D_800D1244_main[0];
         buttons |= func_80113204_option(0);
-        buttons = (buttons & ~0xC000) | (D_800D5558_main[0] & 0xC000);
+        buttons = (buttons & ~(A_BUTTON | B_BUTTON)) | (D_800D5558_main[0] & (A_BUTTON | B_BUTTON));
         if (buttons & 0x4000) {
             model = func_80113218_option(2);
             func_80033910_main(HmfModelData[model].hmf);
@@ -2480,7 +2480,7 @@ void func_8010F138_option(void) {
         HuPrcVSleep();
         buttons = D_800D1244_main[0];
         buttons |= func_80113204_option(0);
-        buttons = (buttons & ~0xC000) | (D_800D5558_main[0] & 0xC000);
+        buttons = (buttons & ~(A_BUTTON | B_BUTTON)) | (D_800D5558_main[0] & (A_BUTTON | B_BUTTON));
         if (buttons & 0x4000) {
             model = func_80113218_option(3);
             func_80033910_main(HmfModelData[model].hmf);
@@ -2628,11 +2628,11 @@ u16 func_8010FC40_option(s32 value) {
 
     HuPrcSleep(3);
     while (1) {
-        if (D_800D5558_main[0] & 0xD010) {
+        if (D_800D5558_main[0] & (A_BUTTON | B_BUTTON | START_BUTTON | R_TRIG)) {
             sprintf(text, "\n%d\n", value);
             break;
         }
-        if (D_800D5558_main[0] & 0x2000) {
+        if (D_800D5558_main[0] & Z_TRIG) {
             cam = HmfModelData[gCameraList->unk4].hmf->unkBC;
             sprintf(text, "POS:%4.2f,%4.2f,%4.2f", cam->unk08, cam->unk0C, cam->unk10);
             print8(16, 180, text);

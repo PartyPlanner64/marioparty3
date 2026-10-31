@@ -131,7 +131,7 @@ void func_801059A0_inst(void) {
     D_8010D40B_inst = GwSystem.minigame_index - 1;
     D_8010D40A_inst = D_800A6D44_main[D_8010D40B_inst].minigameType;
 
-    if (_CheckFlag(0xF) != 0) {
+    if (_CheckFlag(FLAG_MG_PRACTICE) != 0) {
         D_8010D407_inst = 1;
         D_8010D408_inst = 1;
     } else {
@@ -159,7 +159,7 @@ void func_801059A0_inst(void) {
     ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCamSetPerspective(0, 15.0f, 500.0f, 8000.0f);
-    omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, func_8010674C_inst), 0xA0U);
+    omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, func_8010674C_inst), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     func_800142A0_main(0x28);
     HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
     omAddPrcObj(func_80107470_inst, 0x1001, 0x1000, 0);
@@ -202,7 +202,7 @@ void func_801059A0_inst(void) {
     func_80106388_inst();
     func_80106850_inst(&D_8010D444_inst[2], &D_8010D474_inst[2]);
     func_801067CC_inst();
-    WipeCreateIn(0xFF, 0x10);
+    WipeCreateIn(WIPE_TYPE_PREV, 0x10);
 }
 
 void func_80105D9C_inst(omObjData *object) {
@@ -366,7 +366,7 @@ void func_801061EC_inst(void) {
 void func_80106310_inst(omObjData *object) {
     if (D_800D530C_main == 1) {
         if (D_8010D4A8_inst == 0) {
-            WipeCreateOut(0, 20);
+            WipeCreateOut(WIPE_TYPE_NORMAL, 20);
             D_8010D4A8_inst = 1;
         } else if (WipeStatGet() == 0) {
             HuAudSeqFadeOut(30);

@@ -544,7 +544,7 @@ OpBoardPath *func_8010727C_opboard(Vec *points, s32 flags) {
     s16 count;
     s16 i;
 
-    path = HuMemAllocTag(sizeof(OpBoardPath), 0x7918);
+    path = HuMemAllocTag(sizeof(OpBoardPath), TAG_OVERLAY);
     path->flags = flags;
     path->points = points;
     current = points;
@@ -564,7 +564,7 @@ OpBoardPath *func_8010727C_opboard(Vec *points, s32 flags) {
     }
     count++;
     path->count = count;
-    interval = HuMemAllocTag(count * sizeof(*interval), 0x7918);
+    interval = HuMemAllocTag(count * sizeof(*interval), TAG_OVERLAY);
     path->intervals = interval;
     current = points;
     next = current + 1;
@@ -860,7 +860,7 @@ void func_80107E58_opboard(void) {
                 func_8000CD00_main(effect, 4.0f, 20.0f, 4.0f);
                 func_8000D018_main(effect, 60.0f);
                 func_800138EC_main(effect, 1, 1);
-                func_8001C258_main(effect, 4, 0);
+                func_8001C258_main(effect, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 HuAudFXPlay(0x215);
                 for (k = 0; k < 50; k++) {
                     time = k * 0.02f;

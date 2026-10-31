@@ -118,8 +118,8 @@ void func_8004B7B0_main(s32 priority, s16 spriteGroup, void (*draw)(CameraViewDa
     HuCamera *camera;
 
     object = omAddObj(priority, 0, 0, -1, func_8004C4C4_main);
-    omSetStatBit(object, 0xA0);
-    data = HuMemAllocTag(sizeof(CameraViewData), 0x7918);
+    omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    data = HuMemAllocTag(sizeof(CameraViewData), TAG_OVERLAY);
     object->data = data;
     data->draw = draw;
     data->spriteGroup = spriteGroup;
@@ -157,8 +157,8 @@ void func_8004B984_main(u8 count, s32 priority, s16 *spriteGroups, void (*draw)(
     f32 far;
 
     object = omAddObj(priority, 0, 0, -1, func_8004C76C_main);
-    omSetStatBit(object, 0xA0);
-    object->data = HuMemAllocTag(count * sizeof(CameraViewData), 0x7918);
+    omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    object->data = HuMemAllocTag(count * sizeof(CameraViewData), TAG_OVERLAY);
     data = object->data;
     func_8004CD04_main(pos, at, &CZoom, &CRot, &Center);
     near = 80.0f;
@@ -391,7 +391,7 @@ void func_8004CD04_main(Vec *pos, Vec *at, f32 *zoom, Vec *rot, Vec *center) {
 
 void func_8004CEA4_main() {
     D_800CE194_main = omAddObj(0x7FD8, 0, 0, -1, func_8004CF00_main);
-    omSetStatBit(D_800CE194_main, 0xA0);
+    omSetStatBit(D_800CE194_main, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     D_800CE194_main->work[0] = D_800D6AB8_main;
 }
 
@@ -410,15 +410,15 @@ void func_8004CF30_main(void) {
     s32 i;
 
     D_800D6A40_main = omAddObj(0x7FD8, 0, 0, -1, func_8004D094_main);
-    data = D_800D6A40_main->data = HuMemAllocTag(sizeof(UnkAudioObjData), 0x7918);
+    data = D_800D6A40_main->data = HuMemAllocTag(sizeof(UnkAudioObjData), TAG_OVERLAY);
     func_80000EA8_main(&D_800D1398_main);
     D_800A1910_main = D_800D13EE_main;
-    data->unk00 = HuMemAllocTag(D_800A1910_main * sizeof(f32), 0x7918);
-    data->unk04 = HuMemAllocTag(D_800A1910_main * sizeof(f32), 0x7918);
-    data->unk08 = HuMemAllocTag(D_800A1910_main * sizeof(f32), 0x7918);
-    data->unk0C = HuMemAllocTag(D_800A1910_main * sizeof(f32), 0x7918);
-    data->unk10 = HuMemAllocTag(D_800A1910_main, 0x7918);
-    omSetStatBit(D_800D6A40_main, 0xA0);
+    data->unk00 = HuMemAllocTag(D_800A1910_main * sizeof(f32), TAG_OVERLAY);
+    data->unk04 = HuMemAllocTag(D_800A1910_main * sizeof(f32), TAG_OVERLAY);
+    data->unk08 = HuMemAllocTag(D_800A1910_main * sizeof(f32), TAG_OVERLAY);
+    data->unk0C = HuMemAllocTag(D_800A1910_main * sizeof(f32), TAG_OVERLAY);
+    data->unk10 = HuMemAllocTag(D_800A1910_main, TAG_OVERLAY);
+    omSetStatBit(D_800D6A40_main, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     for (i = 0; i < D_800A1910_main; i++) {
         data->unk10[i] = 0;
     }

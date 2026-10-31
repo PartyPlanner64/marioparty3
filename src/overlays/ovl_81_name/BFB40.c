@@ -52,9 +52,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D8B18_name_81
 void func_800D8E34_name_81(Object* arg0) {
     Object* temp_s0 = arg0;
 
-    func_8001C258_main(temp_s0->omObj1->model[0], 4, 0);
+    func_8001C258_main(temp_s0->omObj1->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     if (temp_s0->omObj2 != NULL) {
-        func_8001C258_main(temp_s0->omObj2->model[0], 4, 0);
+        func_8001C258_main(temp_s0->omObj2->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     }
 }
 
@@ -63,9 +63,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D8E88_name_81
 void func_800D8EB8_name_81(Object* arg0) {
     Object* temp_s0 = arg0;
 
-    func_8001C258_main(temp_s0->omObj1->model[0], 4, 4);
+    func_8001C258_main(temp_s0->omObj1->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     if (temp_s0->omObj2 != NULL) {
-        func_8001C258_main(temp_s0->omObj2->model[0], 4, 4);
+        func_8001C258_main(temp_s0->omObj2->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
 }
 

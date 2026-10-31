@@ -147,7 +147,7 @@ void HuWinInit(void) {
 
         temp_v0_4 = omAddPrcObj(HuWinProc, 0x1001, 0x800, 0);
         winProc = temp_v0_4;
-        omPrcSetStatBit(temp_v0_4, 0xA0);
+        omPrcSetStatBit(temp_v0_4, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 
         D_800A2150_main = 1;
         D_800CB99C_main = 0;
@@ -224,7 +224,7 @@ s16 HuWinCreate(s16 x, s16 y, s16 width, s16 height, s32 arg4, s16 flags) {
     window->mess_rect_x = window->mess_rect_y = window->mess_x = window->mess_y = 4;
     window->mess_rect_w = width - 8;
     window->mess_rect_h = height - 8;
-    window->stat = 0;
+    window->stat = HUWIN_STAT_NONE;
     window->mess_color = 7;
     window->unk_23 = 7;
     window->mess_shadow_color = 0;
@@ -239,7 +239,7 @@ s16 HuWinCreate(s16 x, s16 y, s16 width, s16 height, s32 arg4, s16 flags) {
     window->backgroundRed = D_800A2154_main[0];
     window->backgroundGreen = D_800A2154_main[1];
     window->backgroundBlue = D_800A2154_main[2];
-    window->active_pad = 15;
+    window->active_pad = HUWIN_PLAYER_ALL;
     window->choice = window->unk_32 = 0;
     window->attr = 0;
     window->unk_D0 = NULL;
@@ -287,11 +287,11 @@ s16 HuWinCreate(s16 x, s16 y, s16 width, s16 height, s32 arg4, s16 flags) {
             }
         }
         HuSprTPLvlSet(group, 0, 100);
-        HuSprAttrReset(group, 0, 0x8000);
+        HuSprDispOn(group, 0);
         func_800550F4_main(group, 0, 0);
     } else {
         HuSprTPLvlSet(group, 0, 0);
-        HuSprAttrSet(group, 0, 0x8000);
+        HuSprDispOff(group, 0);
         func_800550F4_main(group, 0, 0);
     }
     HuSprTPLvlSet(group, 1, 0x100);
@@ -376,7 +376,7 @@ void HuWinMesSet(s16 winId, u32 message, s16 x, s16 y) {
     if (window->unk_D0 != NULL && window->unk_D4 != 0) {
         func_800365E8_main(window->unk_D0);
     }
-    if ((u8)window->stat == 2) {
+    if ((u8)window->stat == HUWIN_STAT_KEYWAIT) {
         func_8005CF94_main(winId);
     }
     window->mess_time = 1;
@@ -390,22 +390,22 @@ void HuWinMesSet(s16 winId, u32 message, s16 x, s16 y) {
     }
     if (x >= 0) {
         window->mess_x = x;
-    } else if (x == -2) {
-        if (window->attr & 0x40000) {
+    } else if (x == HUWIN_POS_CENTER) {
+        if (window->attr & HUWIN_ATTR_NOCR) {
             HuWinMesSizeCancelCRSet();
         }
         width = func_8005B614_main((s32)window->mess);
         cancelCRF = 0;
         window->mess_x = (window->w - width) / 2;
-        window->attr |= 0x800;
+        window->attr |= HUWIN_ATTR_ALIGN_CENTER;
     }
     if (y >= 0) {
         window->mess_y = y;
-    } else if (y == -2) {
+    } else if (y == HUWIN_POS_CENTER) {
         window->mess_y = (window->h - 12) / 2;
-        window->attr |= 0x1000;
+        window->attr |= HUWIN_ATTR_VALIGN_CENTER;
     }
-    window->stat = 1;
+    window->stat = HUWIN_STAT_DRAWMES;
     window->num_choices = 0;
 }
 
@@ -430,7 +430,7 @@ void func_8005B63C_main(s16 winId, s32 arg1, s32 arg2) {
     TextWindow *window = &winData[winId];
 
     window->attr = arg2 | (window->attr & ~arg1);
-    if (arg2 & 0x20) {
+    if (arg2 & HUWIN_ATTR_MUTE) {
         window->unk_AA = 0;
     }
 }
@@ -500,7 +500,7 @@ s16 func_8005B974_main(s16 winId, u32 spriteMainFsPair, s16 x, s16 y, s16 arg4) 
     sprite->y = y;
     sprite->unk_06 = 0;
     sprite->unk_08 = 0;
-    sprite->stat = 1;
+    sprite->stat = HUWIN_CHOICE_STAT_SPR;
     window->num_choices++;
     return spriteId;
 }
@@ -600,9 +600,9 @@ void HuWinBGTPLvlSet(s16 winId, s16 arg1) {
     window = &winData[winId];
 
     if (arg1 == 0) {
-        HuSprAttrSet(window->group, 0, 0x8000);
+        HuSprDispOff(window->group, 0);
     } else {
-        HuSprAttrReset(window->group, 0, 0x8000);
+        HuSprDispOn(window->group, 0);
     }
     HuSprTPLvlSet(window->group, 0, arg1 & 0xFFFF);
 }
@@ -670,7 +670,7 @@ s32 HuWinDrawMes(s16 winId) {
                     func_800365E8_main(window->unk_D0);
                 }
                 window->unk_D0 = NULL;
-                window->stat = 0;
+                window->stat = HUWIN_STAT_NONE;
                 return 0;
             }
             if (*window->mess < 9) {
@@ -699,7 +699,7 @@ s32 HuWinDrawMes(s16 winId) {
                 }
                 window->insertionIndex = -1;
             }
-            if (window->attr & 4) {
+            if (window->attr & HUWIN_ATTR_SHOWSPACE) {
                 if (((*window->mess == 0x10) | (*window->mess == 0x20)) || *window->mess == 0x1A) {
                     if (*window->mess == 0x1A) {
                         *window->mess = 0x60;
@@ -715,36 +715,36 @@ s32 HuWinDrawMes(s16 winId) {
                 case 0x20:
                     if (gLanguageIndex == LANGUAGE_JAPANESE) {
                         window->unk_34 = 10;
-                    } else if (*window->mess == 0x1A || (window->attr & 0x80000)) {
+                    } else if (*window->mess == 0x1A || (window->attr & HUWIN_ATTR_MONOSPACE)) {
                         window->unk_34 = 10;
                     } else {
                         window->unk_34 = 4;
                     }
                     window->mess++;
                     if (!func_8005CC18_main(window)) {
-                        window->stat = 6;
+                        window->stat = HUWIN_STAT_KEYWAIT_CLEAR;
                         func_8005CEB0_main(winId);
                         return 1;
                     }
                     continue;
                 case 0xA:
-                    if (!(window->attr & 0x40000) && !HuWinCR(window) && window->mess[1] != 0) {
-                        window->stat = 6;
+                    if (!(window->attr & HUWIN_ATTR_NOCR) && !HuWinCR(window) && window->mess[1] != 0) {
+                        window->stat = HUWIN_STAT_KEYWAIT_CLEAR;
                         func_8005CEB0_main(winId);
                         window->mess++;
                         return 1;
                     }
                     break;
                 case 0x17:
-                    if (!(window->attr & 0x40000) && !func_8005CD38_main(window)) {
+                    if (!(window->attr & HUWIN_ATTR_NOCR) && !func_8005CD38_main(window)) {
                         window->mess++;
                         return 1;
                     }
                     break;
                 case 0xB:
-                    if (window->attr & 4) {
+                    if (window->attr & HUWIN_ATTR_SHOWSPACE) {
                         _HuWinHomeClear(window);
-                    } else if (window->insertionIndex < 0 && !(window->attr & 0x1800)) {
+                    } else if (window->insertionIndex < 0 && !(window->attr & (HUWIN_ATTR_ALIGN_CENTER | HUWIN_ATTR_VALIGN_CENTER))) {
                         func_8005CD84_main(window);
                     }
                     break;
@@ -759,7 +759,7 @@ s32 HuWinDrawMes(s16 winId) {
                     sprite = &window->choice_data[window->num_choices];
                     sprite->unk_06 = window->mess_x - (u16)sprite->x;
                     sprite->unk_08 = window->mess_y - (u16)sprite->y + window->unk_28;
-                    sprite->stat = 0;
+                    sprite->stat = HUWIN_CHOICE_STAT_MES;
                     window->unk_26 = window->speed;
                     window->num_choices++;
                     if (window->num_choices >= TEXT_WINDOW_SPRITES_MAX) {
@@ -774,10 +774,10 @@ s32 HuWinDrawMes(s16 winId) {
                     }
                     break;
                 case 0xF:
-                    window->attr |= 0x20000;
+                    window->attr |= HUWIN_ATTR_OUTLINE;
                     break;
                 case 0x16:
-                    window->attr &= ~0x20000;
+                    window->attr &= ~HUWIN_ATTR_OUTLINE;
                     break;
                 case 0x18:
                     window->mess++;
@@ -796,37 +796,37 @@ s32 HuWinDrawMes(s16 winId) {
             width = HuWinSpcFontEntry(winId, *window->mess - 0x21) + (u8)window->spacing_x;
             window->mess++;
             if (!func_8005CC3C_main(window, width)) {
-                window->stat = 6;
+                window->stat = HUWIN_STAT_KEYWAIT_CLEAR;
                 func_8005CEB0_main(winId);
                 return 1;
             }
             continue;
         }
         if (*window->mess == 0xFF) {
-            window->stat = 2;
+            window->stat = HUWIN_STAT_KEYWAIT;
             func_8005CEB0_main(winId);
             window->mess++;
             return 1;
         }
         window->mess_time -= (u8)window->unk_26;
         if ((s16)window->mess_y + window->unk_28 > window->mess_rect_y + window->mess_rect_h) {
-            window->stat = 6;
+            window->stat = HUWIN_STAT_KEYWAIT_CLEAR;
             func_8005CEB0_main(winId);
             return 1;
         }
         if (*window->mess >= 0x30) {
-            if (window->attr & 0x10000) {
+            if (window->attr & HUWIN_ATTR_ALTDIGITS) {
                 if ((u8)(*window->mess - 0x30) < 10) {
                     *window->mess += 0x70;
                 }
             }
-            if (window->attr & 0x80) {
+            if (window->attr & HUWIN_ATTR_BOLD) {
                 if ((u8)window->mess_color != 0) {
                     func_8005D30C_main(winId, *window->mess, 0, window->mess_x + 2, window->mess_y + 1);
                 }
                 func_8005D30C_main(winId, *window->mess, window->mess_color, window->mess_x, window->mess_y);
                 func_8005D30C_main(winId, *window->mess, window->mess_color, window->mess_x + 1, window->mess_y);
-            } else if (window->attr & 0x20000) {
+            } else if (window->attr & HUWIN_ATTR_OUTLINE) {
                 func_8005D30C_main(winId, *window->mess, window->mess_shadow_color, window->mess_x, window->mess_y - 1);
                 func_8005D30C_main(winId, *window->mess, window->mess_shadow_color, window->mess_x, window->mess_y + 1);
                 func_8005D30C_main(winId, *window->mess, window->mess_shadow_color, window->mess_x + 1, window->mess_y);
@@ -841,7 +841,7 @@ s32 HuWinDrawMes(s16 winId) {
         }
         window->mess++;
         if ((u8)(*window->mess + 0x80) < 2) {
-            if (window->attr & 0x20000) {
+            if (window->attr & HUWIN_ATTR_OUTLINE) {
                 func_8005D30C_main(winId, *window->mess, window->mess_shadow_color, window->unk_27 + window->mess_x - 3, window->mess_y - 2);
                 func_8005D30C_main(winId, *window->mess, window->mess_shadow_color, window->unk_27 + window->mess_x - 3, window->mess_y);
                 func_8005D30C_main(winId, *window->mess, window->mess_shadow_color, window->unk_27 + window->mess_x - 4, window->mess_y - 1);
@@ -871,7 +871,7 @@ s32 func_8005CC3C_main(TextWindow *window, s16 advance) {
     window->mess_x += advance;
     if (gLanguageIndex == LANGUAGE_JAPANESE) {
         width = window->unk_27;
-    } else if (window->attr & 0x80000) {
+    } else if (window->attr & HUWIN_ATTR_MONOSPACE) {
         width = 10;
     } else {
         width = D_800A2194_main[*window->mess];
@@ -914,7 +914,7 @@ void _HuWinHomeClear(TextWindow *window) {
     window->unk_9A = 0;
     for (i = 12; i < 22; i++) {
         if (window->sprite_id[i] != -1) {
-            HuSprAttrSet(window->group, i, 0x8000);
+            HuSprDispOff(window->group, i);
             window->sprite_id[i] = -1;
         }
     }
@@ -928,15 +928,15 @@ void func_8005CEB0_main(s16 winId) {
     HuSprAttrSet(window->group, 3, 0x1000000);
     HuSprPriSet(window->group, 3, window->prio - 1);
     HuSprPosSet(window->group, 3, window->unk58 - window->unk48, window->unk5A - window->unk4A);
-    if (window->attr & 8) {
-        HuSprAttrSet(window->group, 3, 0x8000);
+    if (window->attr & HUWIN_ATTR_DISPOFF) {
+        HuSprDispOff(window->group, 3);
     }
 }
 
 void func_8005CF94_main(s16 winId) {
     TextWindow *window = &winData[winId];
 
-    HuSprAttrSet(window->group, 3, 0x8000);
+    HuSprDispOff(window->group, 3);
 }
 
 s32 HuWinSpcFontEntry(s16 winId, s16 icon) {
@@ -947,7 +947,7 @@ s32 HuWinSpcFontEntry(s16 winId, s16 icon) {
 
     graphic = D_800BDA50_main[icon];
     if (graphic == -1) {
-        if (window->attr & 0x2000) {
+        if (window->attr & HUWIN_ATTR_EX) {
             data = DataRead(D_800A2294_main[icon].highlightedFile);
         } else {
             data = DataRead(D_800A2294_main[icon].file);
@@ -970,15 +970,15 @@ s32 HuWinSpcFontEntry(s16 winId, s16 icon) {
     func_800554C4_main(window->group, sprite, 0);
     if ((u8)window->mess_color == 0) {
         HuSprColorSet(window->group, sprite, 0, 0, 0);
-    } else if (window->attr & 0x2000) {
+    } else if (window->attr & HUWIN_ATTR_EX) {
         HuSprColorSet(window->group, sprite, 0x61, 0x61, 0xF8);
     } else {
         HuSprColorSet(window->group, sprite, 0x38, 0xF8, 0x25);
     }
-    if (window->attr & 8) {
-        HuSprAttrSet(window->group, sprite, 0x8000);
+    if (window->attr & HUWIN_ATTR_DISPOFF) {
+        HuSprDispOff(window->group, sprite);
     } else {
-        HuSprAttrReset(window->group, sprite, 0x8000);
+        HuSprDispOn(window->group, sprite);
     }
     return D_800A2294_main[icon].width;
 }
@@ -988,7 +988,7 @@ void HuWinHomeClear(s16 winId) {
 }
 
 void func_8005D2D4_main(s16 win_id) {
-    func_8005B63C_main(win_id, 0x40000, 0x40000);
+    func_8005B63C_main(win_id, HUWIN_ATTR_NOCR, HUWIN_ATTR_NOCR);
 }
 
 void func_8005D2FC_main(void) {
@@ -1022,7 +1022,7 @@ void func_8005D30C_main(s16 winId, u8 character, u8 color, s16 x, s16 y) {
     glyph = (u8 *)D_800D1FE4_main + D_800D1FE4_main->glyphOffset;
     glyph += (character - 0x30) * 60;
     width = 10;
-    if (gLanguageIndex != LANGUAGE_JAPANESE && !(window->attr & 0x80000)) {
+    if (gLanguageIndex != LANGUAGE_JAPANESE && !(window->attr & HUWIN_ATTR_MONOSPACE)) {
         width = D_800A2194_main[character];
     }
     window->unk_34 = width;
@@ -1147,8 +1147,8 @@ void *func_8005DAA4_main(s16 winId) {
         HuMemFree(sprite->unk_84->unk0C);
         sprite->unk_84->unk0C = HuMemAlloc(0x20);
         bcopy(window, sprite->unk_84->unk0C, 0x20);
-        if (!(window->attr & 8)) {
-            HuSprAttrReset(group, 1, 0x8000);
+        if (!(window->attr & HUWIN_ATTR_DISPOFF)) {
+            HuSprDispOn(group, 1);
         }
     }
     return sprite->unk_84->unk00[window->unk_24].unk00;
@@ -1162,7 +1162,7 @@ void func_8005DC94_main(s16 winId) {
     if (window->unk_24 >= 3) {
         window->unk_24 = 0;
     }
-    window->attr &= ~0x100;
+    window->attr &= ~HUWIN_ATTR_BUFDIRTY;
 }
 
 void func_8005DD14_main(s16 winId) {
@@ -1178,10 +1178,10 @@ void func_8005DD54_main(TextWindow *window) {
         prevBuf = window->unk_24 - 1;
     }
 
-    if (window->attr & 0x100) {
+    if (window->attr & HUWIN_ATTR_BUFDIRTY) {
         return;
     }
-    window->attr |= 0x100;
+    window->attr |= HUWIN_ATTR_BUFDIRTY;
 
     if (window->unk_E0[0] != NULL) {
         bcopy(window->unk_E0[prevBuf], window->unk_E0[window->unk_24], (window->unk44 * window->unk46) / 2);
@@ -1198,45 +1198,45 @@ void HuWinProc(void) {
         winId = winData[0].unk64;
         while (winData[winId].unk64 != -1) {
             window = &winData[winId];
-            if ((window->attr & 0x400) ||
-                ((!D_800CB99C_main || (window->attr & 0x40)) &&
+            if ((window->attr & HUWIN_ATTR_PROCOFF) ||
+                ((!D_800CB99C_main || (window->attr & HUWIN_ATTR_PAUSE)) &&
                  (omPauseChk() + D_800D6A90_main != 0))) {
-                if (window->attr & 0x100) {
+                if (window->attr & HUWIN_ATTR_BUFDIRTY) {
                     func_8005DC94_main(winId);
                 }
                 winId = winData[winId].unk64;
                 continue;
             }
-            window->attr &= ~0x200;
+            window->attr &= ~HUWIN_ATTR_INPUT;
             switch ((u8)window->stat) {
-                case 1:
+                case HUWIN_STAT_DRAWMES:
                     HuWinDrawMes(winId);
                     break;
-                case 2:
-                case 6:
-                    if (!(window->attr & 0x10) || (u8)window->stat == 6) {
+                case HUWIN_STAT_KEYWAIT:
+                case HUWIN_STAT_KEYWAIT_CLEAR:
+                    if (!(window->attr & HUWIN_ATTR_KEYLOCK) || (u8)window->stat == HUWIN_STAT_KEYWAIT_CLEAR) {
                         input = HuWinActivePadGet(window);
-                        if ((input & 0xC000) || (input & (u16)window->push_key)) {
+                        if ((input & (A_BUTTON | B_BUTTON)) || (input & (u16)window->push_key)) {
                             if (window->unk_AA != -1) {
                                 HuAudFXPlay(window->unk_AA);
                             }
-                            if ((u8)window->stat == 6) {
+                            if ((u8)window->stat == HUWIN_STAT_KEYWAIT_CLEAR) {
                                 HuWinHomeClear(winId);
                             }
-                            window->stat = 1;
-                            window->attr |= 0x200;
+                            window->stat = HUWIN_STAT_DRAWMES;
+                            window->attr |= HUWIN_ATTR_INPUT;
                             window->input = input;
                             func_8005CF94_main(winId);
                         }
                     }
                     break;
-                case 5:
+                case HUWIN_STAT_CHOICE:
                     if (HuWinChoice(winId) == 0) {
-                        window->stat = 0;
+                        window->stat = HUWIN_STAT_NONE;
                     }
                     break;
             }
-            if (window->attr & 0x100) {
+            if (window->attr & HUWIN_ATTR_BUFDIRTY) {
                 func_8005DC94_main(winId);
             }
             func_8005EEE4_main(window, &window->choice_data[window->choice]);
@@ -1280,13 +1280,13 @@ s32 HuWinChoiceGet(s16 winId, s16 arg1, s32 arg2) {
         HuSprPriSet(window->group, 2, window->prio - 1);
     }
     if (arg2 != 0) {
-        window->attr |= 1;
+        window->attr |= HUWIN_ATTR_NOCANCEL;
     }
     window->choice = arg1;
-    window->stat = 5;
+    window->stat = HUWIN_STAT_CHOICE;
     window->unk_9A = 1;
     window->unk_A4 = 0;
-    while (HuWinStatGet(winId) == 5) {
+    while (HuWinStatGet(winId) == HUWIN_STAT_CHOICE) {
         HuPrcVSleep();
     }
     return window->choice;
@@ -1325,16 +1325,16 @@ s32 HuWinChoice(s16 winId) {
     } else {
         input = 0;
     }
-    if (input & 0x200) {
+    if (input & L_JPAD) {
         direction = 0;
     }
-    if (input & 0x100) {
+    if (input & R_JPAD) {
         direction = 2;
     }
-    if (input & 0x800) {
+    if (input & U_JPAD) {
         direction = 1;
     }
-    if (input & 0x400) {
+    if (input & D_JPAD) {
         direction = 3;
     }
     x = window->choice_data[current].x;
@@ -1495,17 +1495,17 @@ s32 HuWinChoice(s16 winId) {
             window->cursorTargetY = sprite->y + 8;
         } while (0);
         window->unk_A4 = 0;
-        if (window->attr & 0x20) {
+        if (window->attr & HUWIN_ATTR_MUTE) {
             HuAudFXPlay(0);
         } else {
             HuAudFXPlay(1);
         }
     }
-    i = window->attr & 1 ? 0 : 0x4000;
-    if (input & 0x8000) {
-        if (window->choice_data[window->choice].stat == 2) {
+    i = window->attr & HUWIN_ATTR_NOCANCEL ? 0 : B_BUTTON;
+    if (input & A_BUTTON) {
+        if (window->choice_data[window->choice].stat == HUWIN_CHOICE_STAT_DISABLED) {
             if (window->unk_AA != -1) {
-                if (window->attr & 0x20) {
+                if (window->attr & HUWIN_ATTR_MUTE) {
                     HuAudFXPlay(0);
                 } else {
                     HuAudFXPlay(5);
@@ -1516,13 +1516,13 @@ s32 HuWinChoice(s16 winId) {
         window->unk_9A = 4;
         window->unk_A4 = 0;
         if (window->unk_AA != -1) {
-            if (window->attr & 0x20) {
+            if (window->attr & HUWIN_ATTR_MUTE) {
                 HuAudFXPlay(0);
             } else {
                 HuAudFXPlay(3);
             }
         }
-        window->attr |= 0x200;
+        window->attr |= HUWIN_ATTR_INPUT;
         window->input = input;
         return 0;
     }
@@ -1532,14 +1532,14 @@ s32 HuWinChoice(s16 winId) {
         window->choice = -1;
         if (input & i) {
             if (window->unk_AA != -1) {
-                if (window->attr & 0x20) {
+                if (window->attr & HUWIN_ATTR_MUTE) {
                     HuAudFXPlay(0);
                 } else {
                     HuAudFXPlay(4);
                 }
             }
         }
-        window->attr |= 0x200;
+        window->attr |= HUWIN_ATTR_INPUT;
         window->input = input;
         return 0;
     }
@@ -1568,11 +1568,11 @@ void func_8005EEE4_main(TextWindow *window, TextWindowSprite *sprite) {
     switch (window->unk_9A) {
         case 0:
             if (window->cursor_sprite != -1) {
-                HuSprAttrSet(window->group, 2, 0x8000);
+                HuSprDispOff(window->group, 2);
             }
             return;
         case 1:
-            if (window->attr & 0x8000) {
+            if (window->attr & HUWIN_ATTR_NOCURSORANIM) {
                 window->unk_A4 = 0;
                 window->unk_9A = 2;
             } else {
@@ -1610,7 +1610,7 @@ void func_8005EEE4_main(TextWindow *window, TextWindowSprite *sprite) {
             x += sindf(window->unk_A4) * 4.0f;
             break;
         case 4:
-            if (window->attr & 0x8000) {
+            if (window->attr & HUWIN_ATTR_NOCURSORANIM) {
                 scaleX = scaleY = 0.0f;
             } else if (window->unk_A4 >= 11) {
                 scaleX = scaleY = 1.3333334f;
@@ -1627,7 +1627,7 @@ void func_8005EEE4_main(TextWindow *window, TextWindowSprite *sprite) {
             break;
     }
     if ((scaleX == 0.0f) | (scaleY == 0.0f)) {
-        HuSprAttrSet(window->group, 2, 0x8000);
+        HuSprDispOff(window->group, 2);
     } else {
         dy = 0.8f;
         dx = scaleX * dy;
@@ -1636,8 +1636,8 @@ void func_8005EEE4_main(TextWindow *window, TextWindowSprite *sprite) {
         spriteScaleY = window->scaleY;
         HuSprScaleSet(window->group, 2, dx * spriteScaleX, dy * spriteScaleY);
         HuSprPosSet(window->group, 2, dx = x / dx * window->scaleX, dy = y / dy * window->scaleY);
-        if (!(window->attr & 8)) {
-            HuSprAttrReset(window->group, 2, 0x8000);
+        if (!(window->attr & HUWIN_ATTR_DISPOFF)) {
+            HuSprDispOn(window->group, 2);
         }
     }
 }
@@ -1739,35 +1739,35 @@ s32 HuWinActivePadGet(TextWindow *window) {
     s16 queuedInputs[4];
     s16 input = 0;
 
-    if (window->attr & 2) {
+    if (window->attr & HUWIN_ATTR_COMKEY) {
         HuWinComKeyGet(queuedInputs);
     }
-    if (window->active_pad & 1) {
-        if (window->attr & 2) {
+    if (window->active_pad & HUWIN_PLAYER_1) {
+        if (window->attr & HUWIN_ATTR_COMKEY) {
             input = queuedInputs[0] | input;
         } else {
-            input |= (D_800D0590_main[0] & 0x3FFF) | (D_800C9520_main[0] & 0xC000);
+            input |= (D_800D0590_main[0] & (u16)~(A_BUTTON | B_BUTTON)) | (D_800C9520_main[0] & (A_BUTTON | B_BUTTON));
         }
     }
-    if (window->active_pad & 2) {
-        if (window->attr & 2) {
+    if (window->active_pad & HUWIN_PLAYER_2) {
+        if (window->attr & HUWIN_ATTR_COMKEY) {
             input = queuedInputs[1] | input;
         } else {
-            input |= (D_800D0590_main[1] & 0x3FFF) | (D_800C9520_main[1] & 0xC000);
+            input |= (D_800D0590_main[1] & (u16)~(A_BUTTON | B_BUTTON)) | (D_800C9520_main[1] & (A_BUTTON | B_BUTTON));
         }
     }
-    if (window->active_pad & 4) {
-        if (window->attr & 2) {
+    if (window->active_pad & HUWIN_PLAYER_3) {
+        if (window->attr & HUWIN_ATTR_COMKEY) {
             input = queuedInputs[2] | input;
         } else {
-            input |= (D_800D0590_main[2] & 0x3FFF) | (D_800C9520_main[2] & 0xC000);
+            input |= (D_800D0590_main[2] & (u16)~(A_BUTTON | B_BUTTON)) | (D_800C9520_main[2] & (A_BUTTON | B_BUTTON));
         }
     }
-    if (window->active_pad & 8) {
-        if (window->attr & 2) {
+    if (window->active_pad & HUWIN_PLAYER_4) {
+        if (window->attr & HUWIN_ATTR_COMKEY) {
             input = queuedInputs[3] | input;
         } else {
-            input |= (D_800D0590_main[3] & 0x3FFF) | (D_800C9520_main[3] & 0xC000);
+            input |= (D_800D0590_main[3] & (u16)~(A_BUTTON | B_BUTTON)) | (D_800C9520_main[3] & (A_BUTTON | B_BUTTON));
         }
     }
     return input;
@@ -1852,40 +1852,40 @@ void HuWinDispOff(s16 winId) {
     TextWindow *window = &winData[winId];
     s16 i;
 
-    HuSprAttrSet(window->group, 0, 0x8000);
-    HuSprAttrSet(window->group, 1, 0x8000);
+    HuSprDispOff(window->group, 0);
+    HuSprDispOff(window->group, 1);
     for (i = 4; i < 22; i++) {
         if (window->sprite_id[i] != -1) {
-            HuSprAttrSet(window->group, i, 0x8000);
+            HuSprDispOff(window->group, i);
         }
     }
     if (window->cursor_sprite != -1) {
-        HuSprAttrSet(window->group, 2, 0x8000);
+        HuSprDispOff(window->group, 2);
     }
-    if (window->stat & 2) {
-        HuSprAttrSet(window->group, 3, 0x8000);
+    if (window->stat & HUWIN_STAT_KEYWAIT) {
+        HuSprDispOff(window->group, 3);
     }
-    func_8005B63C_main(winId, 0x4008, 8);
+    func_8005B63C_main(winId, HUWIN_ATTR_DISPOFF | HUWIN_ATTR_OPEN, HUWIN_ATTR_DISPOFF);
 }
 
 void HuWinDispOn(s16 winId) {
     TextWindow *window = &winData[winId];
     s16 i;
 
-    HuSprAttrReset(window->group, 0, 0x8000);
-    HuSprAttrReset(window->group, 1, 0x8000);
+    HuSprDispOn(window->group, 0);
+    HuSprDispOn(window->group, 1);
     for (i = 4; i < 22; i++) {
         if (window->sprite_id[i] != -1) {
-            HuSprAttrReset(window->group, i, 0x8000);
+            HuSprDispOn(window->group, i);
         }
     }
     if (window->cursor_sprite != -1) {
-        HuSprAttrReset(window->group, 2, 0x8000);
+        HuSprDispOn(window->group, 2);
     }
-    if (window->stat & 2) {
-        HuSprAttrReset(window->group, 3, 0x8000);
+    if (window->stat & HUWIN_STAT_KEYWAIT) {
+        HuSprDispOn(window->group, 3);
     }
-    func_8005B63C_main(winId, 0x4008, 0x4000);
+    func_8005B63C_main(winId, HUWIN_ATTR_DISPOFF | HUWIN_ATTR_OPEN, HUWIN_ATTR_OPEN);
 }
 
 void func_800600C0_main(s16 winId, s32 arg1) {
@@ -1893,9 +1893,9 @@ void func_800600C0_main(s16 winId, s32 arg1) {
 
     window = &winData[winId];
     if (arg1 != 0) {
-        window->attr |= 0x10;
+        window->attr |= HUWIN_ATTR_KEYLOCK;
     } else {
-        window->attr &= ~0x10;
+        window->attr &= ~HUWIN_ATTR_KEYLOCK;
     }
 }
 
@@ -1903,7 +1903,7 @@ void func_800600C0_main(s16 winId, s32 arg1) {
 void HuWinChoiceDisable(s32 winId, s16 spriteIndex) {
     TextWindow *window = &winData[winId];
 
-    window->choice_data[spriteIndex].stat = 2;
+    window->choice_data[spriteIndex].stat = HUWIN_CHOICE_STAT_DISABLED;
 }
 
 void func_80060144_main(s16 obj) {
@@ -2227,7 +2227,7 @@ s32 func_80060880_main(s32 x, s32 y, s32 frameIndex) {
     } else {
         window->unk276 = 0;
     }
-    window->attr |= 0x2000;
+    window->attr |= HUWIN_ATTR_EX;
     HuWinBGTPLvlSet(winId, 0);
     func_8005C154_main(winId, 192, 192, 192);
     HuWinMesColSet(winId, frame->speed);
@@ -2241,10 +2241,10 @@ void func_80060C14_main(s32 winId, s32 playSound) {
     s16 i;
     f32 scale;
 
-    if (!(window->attr & 0x4000)) {
+    if (!(window->attr & HUWIN_ATTR_OPEN)) {
         func_800600C0_main(winId, 1);
         if (playSound) {
-            if (window->attr & 0x20) {
+            if (window->attr & HUWIN_ATTR_MUTE) {
                 HuAudFXPlay(0);
             } else {
                 HuAudFXPlay(0x11D);
@@ -2265,7 +2265,7 @@ void func_80060C14_main(s32 winId, s32 playSound) {
         }
         HuWinScaleSet(winId, 1.0f, 1.0f);
         func_800600C0_main(winId, 0);
-        func_8005B63C_main(winId, 0x4000, 0x4000);
+        func_8005B63C_main(winId, HUWIN_ATTR_OPEN, HUWIN_ATTR_OPEN);
         HuPrcVSleep();
     }
 }
@@ -2280,17 +2280,17 @@ void func_80060DEC_main(s32 win_id) {
     }
     HuWinScaleSet(win_id, 1.0f, 1.0f);
     func_800600C0_main(win_id, 0);
-    func_8005B63C_main(win_id, 0x4000, 0x4000);
+    func_8005B63C_main(win_id, HUWIN_ATTR_OPEN, HUWIN_ATTR_OPEN);
 }
 
 void func_80060EA8_main(s32 winId, s32 playSound) {
     TextWindow *window = &winData[winId];
     f32 scale = 1.0f;
 
-    if (window->attr & 0x4000) {
+    if (window->attr & HUWIN_ATTR_OPEN) {
         func_800600C0_main(winId, 1);
         if (playSound) {
-            if (window->attr & 0x20) {
+            if (window->attr & HUWIN_ATTR_MUTE) {
                 HuAudFXPlay(0);
             } else {
                 HuAudFXPlay(0x137);
@@ -2311,7 +2311,7 @@ void func_80060EA8_main(s32 winId, s32 playSound) {
         }
         HuWinScaleSet(winId, scale, scale);
         func_800600C0_main(winId, 0);
-        func_8005B63C_main(winId, 0x4000, 0);
+        func_8005B63C_main(winId, HUWIN_ATTR_OPEN, HUWIN_ATTR_NONE);
     }
 }
 
@@ -2419,7 +2419,7 @@ void func_800615B8_main(s16 winId, s32 opening) {
     sprite = HuSprGet(window->group, window->unk274);
     original = sprite->unk_84->unk00->unk00;
     for (i = 0; i < 3; i++) {
-        buffers[i] = HuMemAllocTag(0x640, 0x7918);
+        buffers[i] = HuMemAllocTag(0x640, TAG_OVERLAY);
         memset(buffers[i], 0, 0x640);
     }
     source = sprite->unk_84->unk0C;

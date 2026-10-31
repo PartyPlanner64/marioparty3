@@ -273,7 +273,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2C_rockin_raceway/251FF0", func_8010D
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2C_rockin_raceway/251FF0", func_8010D288_rockin_raceway);
 
 void func_8010D5B8_rockin_raceway(void) {
-    u8 *pool = HuMemAllocTag(30 * 0x644, 0x7918);
+    u8 *pool = HuMemAllocTag(30 * 0x644, TAG_OVERLAY);
 
     D_80111C50_rockin_raceway = pool;
     memset(pool, 0, 30 * 0x644);
@@ -306,7 +306,7 @@ void func_8010E2E4_rockin_raceway(void) {
     RockinRacewaySfx *sfx;
     s32 i;
 
-    D_80111BD0_rockin_raceway = HuMemAllocTag(16 * sizeof(RockinRacewaySfx), 0x7918);
+    D_80111BD0_rockin_raceway = HuMemAllocTag(16 * sizeof(RockinRacewaySfx), TAG_OVERLAY);
     sfx = D_80111BD0_rockin_raceway;
     memset(sfx, 0, 16 * sizeof(RockinRacewaySfx));
     for (i = 0; i < 16; i++, sfx++) {

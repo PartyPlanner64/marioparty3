@@ -50,10 +50,10 @@ void func_800142A0_main(s32 count) {
 
     D_800CDD4E_main = count;
     for (i = 0; i < D_800D1FF0_main; i++) {
-        D_800CC080_main[i] = HuMemAllocTag((s16)count * 128, 30000);
-        ((s32 **)&D_800D1360)[i] = HuMemAllocTag((s16)count * 256, 30000);
+        D_800CC080_main[i] = HuMemAllocTag((s16)count * 128, TAG_MODELENTRY);
+        ((s32 **)&D_800D1360)[i] = HuMemAllocTag((s16)count * 256, TAG_MODELENTRY);
     }
-    D_800CBB60_main = HuMemAllocTag((s16)count * sizeof(HmfModelEntry), 30000);
+    D_800CBB60_main = HuMemAllocTag((s16)count * sizeof(HmfModelEntry), TAG_MODELENTRY);
     for (i = 0; i < (s16)count; i++) {
         D_800CBB60_main[i].modelId = -1;
     }
@@ -158,7 +158,7 @@ void func_80014850_main(s16 arg0) {
     entry->unk_0A = 0;
     entry->nodeIdx = 0;
     entry->flags &= 0xFF7F;
-    func_8001C258_main(entry->modelId, 4, 0);
+    func_8001C258_main(entry->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
 }
 
 void func_800148A8_main(s16 idx, u8 r0, u8 g0, u8 b0, u8 a0, u8 r1, u8 g1, u8 b1, u8 a1) {
@@ -216,7 +216,7 @@ void func_80014A3C_main(s32 frames) {
             continue;
         }
         if (entry->flags & 0x80) {
-            func_8001C258_main(entry->modelId, 4, 4);
+            func_8001C258_main(entry->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             entry->flags &= 0xFF7F;
             continue;
         }
@@ -407,7 +407,7 @@ void func_800166D0_main(void) {
                 func_800333B0_main(D_800CBB60_main[i].unk_02);
             }
         }
-        func_80019C68_main(30000);
+        func_80019C68_main(TAG_MODELENTRY);
         D_800A0620_main = 0;
     }
 }

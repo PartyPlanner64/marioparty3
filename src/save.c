@@ -64,7 +64,7 @@ s16 GWMgUnlockCheck(s16 arg0) {
 }
 
 void GWMgRecordSet(s16 arg0, u32 arg1) {
-    if (_CheckFlag(0xF) == 0) {
+    if (_CheckFlag(FLAG_MG_PRACTICE) == 0) {
         GwCommon.mgRecord[arg0] = arg1;
     }
 }

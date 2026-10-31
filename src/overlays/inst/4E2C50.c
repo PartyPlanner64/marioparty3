@@ -31,7 +31,7 @@ void func_80109A90_inst(void) {
         object->model[1] = func_8000B108_main(0x170047, 0x16B9);
         func_8001C258_main(object->model[1], 0x4000, 0x4000);
         func_8001C814_main(object->model[1], 2, 2);
-        func_8001C258_main(object->model[1], 4, 4);
+        func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         func_8001EF6C_main(object->model[1], object->model[0], "item_hook");
     }
     func_8001C5B4_main(object->model[0], object->motion[0]);
@@ -52,12 +52,12 @@ void func_80109A90_inst(void) {
     Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
     object->scale.x = object->scale.y = object->scale.z = 0.4f;
     Hu3DModelScaleSet(object->model[0], 0.4f, 0.4f, 0.4f);
-    func_8001C258_main(object->model[0], 4, 4);
+    func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     if (D_8010D408_inst == 1) {
         func_8001C5B4_main(object->model[0], object->motion[0]);
         func_8001C814_main(object->model[0], 2, 2);
-        func_8001C258_main(object->model[0], 4, 0);
-        func_8001C258_main(object->model[1], 4, 0);
+        func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         object->trans.x = D_8010D40A_inst == 3 ? -86.0f : -91.0f;
         object->trans.y = D_8010D40A_inst == 3 ? 50.0f : 36.0f;
         object->trans.z = 210.0f;
@@ -87,8 +87,8 @@ void func_80109F50_inst(omObjData *object) {
     if (D_8010D540_inst >= 110) {
         func_8001C5B4_main(object->model[0], object->motion[1]);
         func_8001C814_main(object->model[0], 2, 0);
-        func_8001C258_main(object->model[0], 4, 0);
-        func_8001C258_main(object->model[1], 4, 0);
+        func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         HuAudFXPlay(0x25B);
         D_8010DDD4_inst = func_8010A000_inst;
         D_8010D540_inst = 0;

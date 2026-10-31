@@ -121,7 +121,7 @@ void func_80108E80_winners_wheel(void) {
     wheel->flags |= 3;
     wheel->unk_04 = 340.0f;
     wheel->unk_4C = 340.0f;
-    func_8001C258_main(*D_8010A4C0_winners_wheel->model, 4, 0);
+    func_8001C258_main(*D_8010A4C0_winners_wheel->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     omSetRot(D_8010A4C0_winners_wheel, 0, 0, wheel->unk_04);
     D_8010A48A_winners_wheel = HuAudFXPlay(0x4C7);
 }
@@ -136,9 +136,9 @@ void func_8010907C_winners_wheel(void) {
     s32 i;
 
     for (i = 0; i < 3; i++) {
-        func_8001C258_main(*D_8010A4C0_winners_wheel->model, 4, 0);
+        func_8001C258_main(*D_8010A4C0_winners_wheel->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         HuPrcSleep(10);
-        func_8001C258_main(*D_8010A4C0_winners_wheel->model, 4, 4);
+        func_8001C258_main(*D_8010A4C0_winners_wheel->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         HuPrcSleep(10);
     }
     D_8010A464_winners_wheel = 4;

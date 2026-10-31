@@ -56,7 +56,7 @@ void func_801059D0_ChillyWaters(s16 arg0, s16 arg1) {
     unkfunc_801059D0 *temp_v0;
 
     process = omAddPrcObj(func_80105A64_ChillyWaters, 0x3F00, 0x1000, 0);
-    temp_v0 = HuMemAllocTag(sizeof(unkfunc_801059D0), 0x7918);
+    temp_v0 = HuMemAllocTag(sizeof(unkfunc_801059D0), TAG_OVERLAY);
     process->user_data = temp_v0;
     temp_v0->unk14 = process;
     temp_v0->unk0 = arg0;

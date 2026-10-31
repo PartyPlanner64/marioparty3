@@ -182,8 +182,8 @@ s16 Hu3DModelCreate(u8 *data, u32 arg1) {
         osSyncPrintf(D_800A6BBC_main);
         return -1;
     }
-    D_800D5204_main = 10000 + modelId * 2;
-    D_800CDD6A_main = 10001 + modelId * 2;
+    D_800D5204_main = TAG_MODEL + modelId * 2;
+    D_800CDD6A_main = TAG_MODEL + 1 + modelId * 2;
     modelP = &HmfModelData[modelId];
     modelP->unk08 = 0xFF;
     hmf = modelP->hmf = HuMemAlloc(sizeof(HmfData));
@@ -220,7 +220,7 @@ s16 Hu3DModelCreate(u8 *data, u32 arg1) {
         } else {
             modelP->unk10 = -1;
         }
-        hmf->unk00 = (arg1 >> 10) & 7;
+        hmf->unk00 = (arg1 >> HU3D_ATTR_LAYER_SHIFT) & 7;
         modelP->attr = arg1;
         modelP->motId = func_8002D2D8_main(data, hmf);
         if (modelP->motId != 0xFF) {
@@ -232,19 +232,19 @@ s16 Hu3DModelCreate(u8 *data, u32 arg1) {
         }
     }
     if (hmf->unk14 == 0) {
-        arg1 |= 4;
+        arg1 |= HU3D_ATTR_DISPOFF;
     }
 skip:
     modelP->attr = arg1;
     if (arg1 & 8) {
         gFreeFunc(data);
     }
-    if (arg1 & 1) {
+    if (arg1 & HU3D_ATTR_STATIC) {
         D_800C9940_main = modelP->attr;
         func_80022660_main(hmf);
     }
     hmf->unk0B = 1;
-    if (arg1 & 0x10) {
+    if (arg1 & HU3D_ATTR_DYNAMICFREE) {
         for (var_a0 = 0; var_a0 < hmf->unk10; var_a0++) {
             if (hmf->unk60[var_a0].unk50 & 0x06000000) {
                 break;
@@ -272,7 +272,7 @@ skip:
     modelP->pos.x = modelP->pos.y = modelP->pos.z = 0.0f;
     modelP->rot.x = modelP->rot.y = modelP->rot.z = 0.0f;
     modelP->scale.x = modelP->scale.y = modelP->scale.z = 1.0f;
-    modelP->cameraBit = -1;
+    modelP->cameraBit = HU3D_CAM_ALL;
     modelP->unk00 = 0;
     modelP->unkB4 = 0;
     func_8008A070_main(modelP->mtx);
@@ -320,7 +320,7 @@ s32 Hu3DModelLink(s16 linkMdlId) {
     modelP->pos.x = modelP->pos.y = modelP->pos.z = 0.0f;
     modelP->rot.x = modelP->rot.y = modelP->rot.z = 0.0f;
     modelP->scale.x = modelP->scale.y = modelP->scale.z = 1.0f;
-    modelP->cameraBit = -1;
+    modelP->cameraBit = HU3D_CAM_ALL;
     func_8008A070_main(modelP->mtx);
     D_800D1FE8_main++;
     return modelId;
@@ -340,18 +340,18 @@ s32 func_8001A894_main(u32 flags, void *dl, s32 mode) {
         osSyncPrintf(D_800A6BBC_main);
         return -1;
     }
-    D_800D5204_main = 10000 + modelId * 2;
-    D_800CDD6A_main = 10001 + modelId * 2;
+    D_800D5204_main = TAG_MODEL + modelId * 2;
+    D_800CDD6A_main = TAG_MODEL + 1 + modelId * 2;
     modelP = &HmfModelData[modelId];
     hmf = modelP->hmf = HuMemAllocTag(sizeof(HmfData), D_800CDD6A_main);
     hmf->unk0E = D_800D5204_main;
     hmf->unk3C = dl;
     hmf->unk0B = 1;
-    hmf->unk00 = (flags >> 10) & 7;
+    hmf->unk00 = (flags >> HU3D_ATTR_LAYER_SHIFT) & 7;
     modelP->hookFunc = NULL;
     modelP->hmf->unk98 = NULL;
     modelP->unk08 = 0xFF;
-    modelP->attr = flags | 1;
+    modelP->attr = flags | HU3D_ATTR_STATIC;
     modelP->motTime =
         modelP->motAttr =
             modelP->unk48 =
@@ -389,10 +389,10 @@ s32 func_8001A894_main(u32 flags, void *dl, s32 mode) {
             hmf->unk60->boundsMax[0] = hmf->unk60->boundsMax[1] = hmf->unk60->boundsMax[2] = -0x8000;
         case 0:
         case 2:
-            modelP->cameraBit = 0xFF;
+            modelP->cameraBit = HU3D_CAM_ALL;
             break;
         case 6:
-            modelP->cameraBit = 0;
+            modelP->cameraBit = HU3D_CAM_NONE;
             break;
     }
     modelP->unk00 = mode | 1;
@@ -416,9 +416,9 @@ void func_8001AC34_main(s16 arg0, s32 arg1) {
 
     model->unk00 = newFlags;
     if ((arg1 & 0xFF) == 6) {
-        model->cameraBit = 0;
+        model->cameraBit = HU3D_CAM_NONE;
     } else {
-        model->cameraBit = 0xFF;
+        model->cameraBit = HU3D_CAM_ALL;
     }
 }
 
@@ -529,7 +529,7 @@ void Hu3DExec(void *arg0, u16 arg1) {
     D_800CBB72_main[0] = D_800CBB72_main[1] = D_800CBB72_main[2] = D_800CBB72_main[3] = 0;
     for (i = 0; i < HU3D_MODEL_MAX; i++) {
         model = &HmfModelData[i];
-        if (model->hmf != NULL && !(model->attr & 4) && model->unk00 != 0) {
+        if (model->hmf != NULL && !(model->attr & HU3D_ATTR_DISPOFF) && model->unk00 != 0) {
             group = (model->unk00 & 6) >> 1;
             D_800D05A0_main[group][D_800CBB72_main[group]] = i;
             D_800CBB72_main[group]++;
@@ -580,14 +580,14 @@ void Hu3DExec(void *arg0, u16 arg1) {
                 continue;
             }
             count--;
-            if (model->attr & 0x800000) {
+            if (model->attr & HU3D_ATTR_REMAKESTATIC) {
                 func_8001C448_main(i);
             }
             hmf = model->hmf;
             if (D_800CD6A6_main == 0) {
                 hmf->unk0C = 0;
             }
-            if (model->attr & 4) {
+            if (model->attr & HU3D_ATTR_DISPOFF) {
                 continue;
             }
             if (!(model->cameraBit & mask)) {
@@ -605,7 +605,7 @@ void Hu3DExec(void *arg0, u16 arg1) {
             }
             if (model->attr & 0x1000000) {
                 bc = model->unkBC;
-                if ((!HmfPauseF || (model->attr & 0x8000)) && !(bc->unk04 & 2)) {
+                if ((!HmfPauseF || (model->attr & HU3D_ATTR_NOPAUSE)) && !(bc->unk04 & 2)) {
                     bc->unk18(i);
                 }
                 func_800139AC_main(i, bc->unk00);
@@ -716,10 +716,10 @@ void Hu3DExec(void *arg0, u16 arg1) {
     }
     for (i = 0; i < HU3D_MODEL_MAX; i++) {
         model = &HmfModelData[i];
-        if (model->hmf == NULL || (model->attr & 4)) {
+        if (model->hmf == NULL || (model->attr & HU3D_ATTR_DISPOFF)) {
             continue;
         }
-        if (HmfPauseF && !(model->attr & 0x8000)) {
+        if (HmfPauseF && !(model->attr & HU3D_ATTR_NOPAUSE)) {
             continue;
         }
         if (model->motId == 0xFF) {
@@ -840,10 +840,10 @@ void func_8001C258_main(s16 idx, s32 arg1, s32 arg2) {
 
     if (model->hmf != NULL) {
         if (arg1 & 0xB3F82) {
-            arg2 |= 0x800000;
+            arg2 |= HU3D_ATTR_REMAKESTATIC;
         }
-        if (arg1 & 0x1C00) {
-            func_8001C8E4_main(idx, arg2 & 0x1C00);
+        if (arg1 & HU3D_ATTR_LAYER_MASK) {
+            func_8001C8E4_main(idx, arg2 & HU3D_ATTR_LAYER_MASK);
         }
         model->attr &= ~arg1;
         model->attr |= arg2;
@@ -871,10 +871,10 @@ void func_8001C39C_main(s16 idx, char *name, s32 arg2, s32 arg3) {
 }
 
 void func_8001C448_main(s16 arg0) {
-    func_8001C258_main(arg0, 0x00800001, 1);
+    func_8001C258_main(arg0, HU3D_ATTR_REMAKESTATIC | HU3D_ATTR_STATIC, HU3D_ATTR_STATIC);
     D_800C9940_main = HmfModelData[arg0].attr;
 
-    if (D_800C9940_main & 0x10) {
+    if (D_800C9940_main & HU3D_ATTR_DYNAMICFREE) {
         osSyncPrintf("RemakeStatic Error! Executed DynamicFree already!\n");
         D_800A0530_main = 0x10002;
         return;
@@ -891,7 +891,7 @@ void func_8001C514_main(s16 idx) {
     } else {
         HuMemFreeAllWithTag(HmfModelData[idx].hmf->unk0E);
     }
-    func_8001C258_main(idx, 0x10, 0x10);
+    func_8001C258_main(idx, HU3D_ATTR_DYNAMICFREE, HU3D_ATTR_DYNAMICFREE);
 }
 
 void func_8001C5B4_main(s16 idx, s16 arg1) {
@@ -975,9 +975,9 @@ void Hu3DModelCameraSet(s16 idx, s16 arg1) {
 }
 
 void func_8001C8E4_main(s16 idx, u32 arg1) {
-    HmfModelData[idx].attr &= ~0x1C00;
+    HmfModelData[idx].attr &= ~HU3D_ATTR_LAYER_MASK;
     HmfModelData[idx].attr |= arg1;
-    HmfModelData[idx].hmf->unk00 = (arg1 >> 10) & 7;
+    HmfModelData[idx].hmf->unk00 = (arg1 >> HU3D_ATTR_LAYER_SHIFT) & 7;
 }
 
 void Hu3DMotionSpeedSet(s16 idx, f32 arg1) {
@@ -1667,7 +1667,7 @@ void func_8001F450_main(s16 arg0, s16 arg1, f32 arg2) {
     model->unk09 = arg0;
     model->unk6C = NULL;
     model->unk14 = 0.0f;
-    model->attr |= 4;
+    model->attr |= HU3D_ATTR_DISPOFF;
 }
 
 void func_8001F4BC_main(s16 idx) {
@@ -1686,7 +1686,7 @@ void func_8001F4BC_main(s16 idx) {
     if (hmf != model->hmf) {
         model->hmf = hmf;
         for (i = 0; i < HU3D_MODEL_MAX; i++) {
-            if (HmfModelData[i].hmf != NULL || (HmfModelData[i].attr & 4)) {
+            if (HmfModelData[i].hmf != NULL || (HmfModelData[i].attr & HU3D_ATTR_DISPOFF)) {
                 continue;
             }
             if ((HmfModelData[i].attr & 0x4000) &&
@@ -1695,7 +1695,7 @@ void func_8001F4BC_main(s16 idx) {
             }
         }
     }
-    HmfModelData[model->unk09].attr |= 4;
+    HmfModelData[model->unk09].attr |= HU3D_ATTR_DISPOFF;
 }
 s32 func_8001F668_main(s16 arg0) {
     HmfModel *model = &HmfModelData[arg0];

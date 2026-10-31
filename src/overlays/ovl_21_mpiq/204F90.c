@@ -1,4 +1,5 @@
 #include "common.h"
+#include "game/printfunc.h"
 #include "mallocblock.h"
 #include "overlays/minigame.h"
 
@@ -73,7 +74,7 @@ void func_80107168_mpiq(omObjData *obj);
 
 void func_80107114_mpiq(void) {
     omObjData *obj = omAddObj(5, 0, 0, -1, func_80107168_mpiq);
-    s32 *angle = HuMemAllocTag(sizeof(s32), 0x7918);
+    s32 *angle = HuMemAllocTag(sizeof(s32), TAG_OVERLAY);
 
     obj->data = angle;
     *angle = 0;
@@ -139,7 +140,7 @@ void func_80107D70_mpiq(void) {
 
     obj = omAddObj(0xFF, 1, 0, -1, func_80107DE0_mpiq);
     D_8010CAD0_mpiq = obj;
-    flags = HuMemAllocTag(sizeof(s32), 0x7918);
+    flags = HuMemAllocTag(sizeof(s32), TAG_OVERLAY);
     obj->data = flags;
     *flags = 0;
     *obj->model = func_8000B108_main(8, 0x69D);
@@ -160,7 +161,7 @@ void func_8010811C_mpiq(void) {
     MpiqMarkerObjWork *work = OM_GET_DATA_PTR(D_8010CAD4_mpiq, MpiqMarkerObjWork);
 
     if (--work->timer == 0) {
-        func_8001C258_main(*D_8010CAD4_mpiq->model, 4, 4);
+        func_8001C258_main(*D_8010CAD4_mpiq->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         work->flags &= ~1;
     }
 }
@@ -253,7 +254,7 @@ void func_8010C558_mpiq(omObjData *obj);
 
 void func_8010C504_mpiq(void) {
     omObjData *obj = omAddObj(0xA, 0, 0, -1, func_8010C558_mpiq);
-    s32 *value = HuMemAllocTag(sizeof(s32), 0x7918);
+    s32 *value = HuMemAllocTag(sizeof(s32), TAG_OVERLAY);
 
     obj->data = value;
     *value = 0;
@@ -265,7 +266,7 @@ void func_8010C558_mpiq(omObjData *obj) {
     s32 *counter = obj->data;
 
     if (((*counter += 1) & 0x10) != 0) {
-        fontcolor = 0xF;
+        fontcolor = FONT_COLOR_WHITE;
         sprintf(D_800D5218_main, D_8010C988_mpiq);
         print8(0xE8, 0x10, D_800D5218_main);
     }
@@ -277,7 +278,7 @@ const char D_8010C990_mpiq[] = "MOTION ERROR! WINNER=%d\n";
 const char D_8010C9AC_mpiq[] = "";
 
 void func_8010C624_mpiq(void) {
-    fontcolor = 0xF;
+    fontcolor = FONT_COLOR_WHITE;
     sprintf(D_800D5218_main, D_8010C990_mpiq, D_8010C9D8_mpiq);
     print8(0x20, 0xB0, D_800D5218_main);
 }

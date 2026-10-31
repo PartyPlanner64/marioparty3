@@ -259,7 +259,7 @@ void m254_InitEnvironment(void) {
     func_8004A208_main();
     temp_v0 = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     temp_v0->work[0] = 2;
-    omSetStatBit(temp_v0, 0xA0);
+    omSetStatBit(temp_v0, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     HmfLightColorSet(0, 0xFF, 0xFF, 0xFF);
     HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
     HmfLightDirSet(1, -56.0f, 50.0f, 56.0f);
@@ -302,9 +302,9 @@ void m254_CreateMinigame(void) {
             }
         }
     }
-    m254_minigame = HuMemAllocTag(sizeof(MinigameData), 31000);
+    m254_minigame = HuMemAllocTag(sizeof(MinigameData), TAG_OVERLAY);
     memset(m254_minigame, 0, sizeof(MinigameData));
-    m254_minigame->views = HuMemAllocTag(PLAYERS_TOTAL * sizeof(PlayerView), 31000);
+    m254_minigame->views = HuMemAllocTag(PLAYERS_TOTAL * sizeof(PlayerView), TAG_OVERLAY);
     memset(m254_minigame->views, 0, PLAYERS_TOTAL * sizeof(PlayerView));
     D_801137CE_motor_rooter = (rand16() % 201) / 100;
     switch (D_801137CE_motor_rooter) {
@@ -323,13 +323,13 @@ void m254_CreateMinigame(void) {
             break;
     }
     func_8010D2E4_motor_rooter(0);
-    D_801137C8_motor_rooter = HuMemAllocTag(2 * sizeof(D_801137C8_motor_rooter_Struct), 31000); // PLAYERS_TOTAL?
+    D_801137C8_motor_rooter = HuMemAllocTag(2 * sizeof(D_801137C8_motor_rooter_Struct), TAG_OVERLAY); // PLAYERS_TOTAL?
     memset(D_801137C8_motor_rooter, 0, 2 * sizeof(D_801137C8_motor_rooter_Struct));
 }
 
 void m254_CheckExitRequest(omObjData *object) {
     if (D_800D530C_main == 1) {
-        WipeCreateOut(0, 20);
+        WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         object->func = m254_WaitExitWipeOut;
     }
 }
@@ -380,7 +380,7 @@ void func_80106044_motor_rooter(omObjData *object) {
     memset(&m254_minigame->runtime, 0, sizeof(m254_minigame->runtime));
     m254_SetFunc(FGRP_CAMERA, 0, -1, NULL, m254_InitCamera, 0, FALSE);
     m254_SetFunc(1, 0, -1, NULL, func_80108BF0_motor_rooter, 0, FALSE);
-    WipeCreateIn(0xFF, 0x10);
+    WipeCreateIn(WIPE_TYPE_PREV, 0x10);
     object->func = func_80106298_motor_rooter;
 }
 
@@ -441,7 +441,7 @@ void func_80106508_motor_rooter(omObjData *object) {
         view->obstacleSlots[i] = view->nextObstacleSlot++;
         if (view->nextObstacleSlot > D_801137D2_motor_rooter) {
             for (j = i * 7; j < i * 7 + 7; j++) {
-                func_8001C258_main(object->model[j], 4, 4);
+                func_8001C258_main(object->model[j], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             view->obstacleSlots[i] = -1;
         } else {
@@ -522,10 +522,10 @@ void func_80106BAC_motor_rooter(omObjData *object) {
     characterModel = D_800A178C_main[characterIndex][0];
     characterMotion = D_800A178C_main[characterIndex][2];
     func_800E1BA8_minigame(object, characterModel, characterMotion, object->work[1], modelFlags, 0x299);
-    func_8001C258_main(object->model[1], 4, 4);
+    func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelScaleSet(object->model[1], 0.2f, 0.2f, 0.2f);
     object->model[9] = func_8000B108_main(modelFiles[object->work[0]] | 0x570000, 0x299);
-    func_8001C258_main(object->model[9], 4, 0);
+    func_8001C258_main(object->model[9], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     object->model[10] = func_8000B108_main(9, 0x99);
     Hu3DModelScaleSet(object->model[10], 0.4f, 0.4f, 0.4f);
     motion = func_80017BB8_main(character, 0);
@@ -547,7 +547,7 @@ void func_80106BAC_motor_rooter(omObjData *object) {
     object->scale.x = object->scale.y = object->scale.z = 0.2f;
     Hu3DModelPosSet(object->model[9], 0.0f, 0.0f, 200.0f);
     Hu3DModelRotSet(object->model[9], 0.0f, 180.0f, 0.0f);
-    func_8001C258_main(object->model[10], 4, 4);
+    func_8001C258_main(object->model[10], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     func_8010BDE4_motor_rooter(&D_801137C8_motor_rooter[object->work[0]], 38, 1);
     D_800EC280_minigame++;
     data = object->data;
@@ -712,7 +712,7 @@ void func_801079E8_motor_rooter(omObjData *object) {
         sprite = func_80055194_main(spriteId);
         object->model[i] = func_8010FC10_motor_rooter(sprite, &D_80113470_motor_rooter);
         Hu3DModelScaleSet(object->model[i], 2.0f, 2.0f, 1.0f);
-        func_8001C258_main(object->model[i], 4, 4);
+        func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         m254_minigame->views[object->work[0]].itemFrames[i] = 0;
         m254_minigame->views[object->work[0]].itemDelays[i] = rand16() % 11;
         m254_minigame->views[object->work[0]].itemStates[i] = 0;
@@ -722,7 +722,7 @@ void func_801079E8_motor_rooter(omObjData *object) {
     sprite = func_80055194_main(spriteId);
     object->model[i] = func_8010EFF8_motor_rooter(sprite, 1.0f);
     Hu3DModelScaleSet(object->model[i], 1.5f, 1.5f, 1.0f);
-    func_8001C258_main(object->model[i], 4, 4);
+    func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     m254_minigame->views[object->work[0]].itemFrames[i] = 0;
     m254_SyncWithModel(object);
     cameraMask = object->work[0] == 0 ? 1 : 2;
@@ -746,7 +746,7 @@ void func_80107D50_motor_rooter(omObjData *object) {
     i = 0;
     if (player->unk10 == 0.0f) {
         for (i = 0; i < 5; i++) {
-            func_8001C258_main(object->model[i], 4, 4);
+            func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
         return;
     }
@@ -754,7 +754,7 @@ void func_80107D50_motor_rooter(omObjData *object) {
         for (i = 0; i < 4; i++) {
             if (view->itemDelays[i] != 99) {
                 if (++m254_minigame->runtime.counters.gameplay.playerCounters[camera * 4 + i] > view->itemDelays[i]) {
-                    func_8001C258_main(object->model[i], 4, 0);
+                    func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     func_8010CB2C_motor_rooter(object, 4, i);
                     func_801108CC_motor_rooter(object->model[i], func_80055194_main(view->itemSprites[i]),
                                                view->itemFrames[i], &D_80113470_motor_rooter);
@@ -763,7 +763,7 @@ void func_80107D50_motor_rooter(omObjData *object) {
                             view->itemStates[i] = 1;
                             view->itemFrames[i] = 0;
                         } else {
-                            func_8001C258_main(object->model[i], 4, 4);
+                            func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                             m254_minigame->runtime.counters.gameplay.playerCounters[camera * 4 + i] = 0;
                             view->itemDelays[i] = 99;
                             view->itemFrames[i] = 0;
@@ -780,24 +780,24 @@ void func_80107D50_motor_rooter(omObjData *object) {
             }
         }
     } else if (player->unk78 & 1) {
-        func_8001C258_main(object->model[0], 4, 0);
+        func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         func_8010CB2C_motor_rooter(object, 1, 0);
         func_801108CC_motor_rooter(object->model[0], func_80055194_main(view->itemSprites[0]),
                                    view->itemFrames[0], &D_80113470_motor_rooter);
         if (++view->itemFrames[0] >= 15) {
-            func_8001C258_main(object->model[0], 4, 4);
+            func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             player->unk78 &= ~1;
             view->itemFrames[0] = 0;
         }
     }
     if (player->unk78 & 2) {
-        func_8001C258_main(object->model[4], 4, 0);
+        func_8001C258_main(object->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         func_8010CB2C_motor_rooter(object, 2, 4);
         func_801107FC_motor_rooter(object->model[4], func_80055194_main(view->itemSprites[4]), view->itemFrames[4]);
         if (++m254_minigame->runtime.counters.gameplay.impactFrameCounters[object->work[0]] >= 2) {
             m254_minigame->runtime.counters.gameplay.impactFrameCounters[object->work[0]] = 0;
             if (++view->itemFrames[4] >= 5) {
-                func_8001C258_main(object->model[4], 4, 4);
+                func_8001C258_main(object->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 player->unk78 &= ~2;
                 view->itemFrames[4] = 0;
             }
@@ -987,7 +987,7 @@ void func_80108BF0_motor_rooter(FuncContext *ctx) {
             D_80113494_motor_rooter = 1;
             break;
         default:
-            if (D_80113494_motor_rooter && GMesStatGet() == 2) {
+            if (D_80113494_motor_rooter && GMesStatGet() == GMES_STAT_TIMEEND) {
                 m254_SetFunc(1, 0, -1, NULL, func_801089B8_motor_rooter, 0, FALSE);
                 for (i = 0; i < 2; i++, player++) {
                     player->unk08 = (player->unk08 & ~1) | 0x120;
@@ -1074,7 +1074,7 @@ void func_80108FDC_motor_rooter(FuncContext *ctx) {
 void func_80109134_motor_rooter(FuncContext *ctx) {
     switch (ctx->state) {
         case 0:
-            WipeCreateOut(0, 20);
+            WipeCreateOut(WIPE_TYPE_NORMAL, 20);
             ctx->state = 1;
             break;
         case 1:
@@ -1124,7 +1124,7 @@ void func_801091A0_motor_rooter(FuncContext *ctx) {
         }
         if (direction >= 51) {
             Hu3DModelPosSet(object->model[ctx->work.s16[0] * 7 + i], 0.0f, 200.0f, 0.0f);
-            func_8001C258_main(object->model[ctx->work.s16[0] * 7 + i], 4, 4);
+            func_8001C258_main(object->model[ctx->work.s16[0] * 7 + i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             continue;
         }
         if (direction >= 8) {
@@ -1191,11 +1191,11 @@ void func_8010972C_motor_rooter(FuncContext *ctx) {
         }
         if (view->obstaclePoints[obstacle] - player->unk1C < m254_minigame->unk0E) {
             for (i = slot * 7; i < slot * 7 + 7; i++) {
-                func_8001C258_main(object->model[i], 4, 0);
+                func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
         } else {
             for (i = slot * 7; i < slot * 7 + 7; i++) {
-                func_8001C258_main(object->model[i], 4, 4);
+                func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
         }
         if (distance > view->obstaclePoints[obstacle] - player->unk1C) {
@@ -1226,12 +1226,12 @@ void func_8010972C_motor_rooter(FuncContext *ctx) {
             view->obstacleSlots[slot] = view->nextObstacleSlot++;
             if (view->nextObstacleSlot > D_801137D2_motor_rooter) {
                 for (i = slot * 7; i < slot * 7 + 7; i++) {
-                    func_8001C258_main(object->model[i], 4, 4);
+                    func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 }
                 view->obstacleSlots[slot] = -1;
             } else {
                 for (i = slot * 7; i < slot * 7 + 7; i++) {
-                    func_8001C258_main(object->model[i], 4, 4);
+                    func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 }
                 func_80109C94_motor_rooter(view, slot);
                 func_801091A0_motor_rooter(ctx);
@@ -1333,7 +1333,7 @@ void func_8010A174_motor_rooter(FuncContext *ctx) {
         for (slot = 0; slot < 15; slot++) {
 
             if (view->itemSlots[slot] >= D_801137D0_motor_rooter) {
-                func_8001C258_main(object->model[slot], 4, 4);
+                func_8001C258_main(object->model[slot], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 continue;
             }
             ctx->work.s16[0] = slot;
@@ -1596,7 +1596,7 @@ void func_8010ABC4_motor_rooter(FuncContext *ctx) {
             }
             break;
         case 2:
-            if ((u16)D_800CDA7C_main[player->controllerPort] & 0x8000) {
+            if ((u16)D_800CDA7C_main[player->controllerPort] & A_BUTTON) {
                 if (!ctx->work.s8[0]) {
                     ctx->work.s8[0] = 1;
                     ctx->work.s8[1] = 0;
@@ -1607,7 +1607,7 @@ void func_8010ABC4_motor_rooter(FuncContext *ctx) {
                         ctx->work.s8[2] = 4;
                     }
                 }
-            } else if (D_800CDA7C_main[player->controllerPort] & 0x4000) {
+            } else if (D_800CDA7C_main[player->controllerPort] & B_BUTTON) {
                 if (!ctx->work.s8[1]) {
                     ctx->work.s8[0] = 0;
                     ctx->work.s8[1] = 1;
@@ -1767,7 +1767,7 @@ void func_8010B394_motor_rooter(FuncContext *ctx) {
         HmfModelData[object->model[10]].pos.y = CenterM[camera].y + position[1];
         HmfModelData[object->model[10]].pos.z = CenterM[camera].z + position[2];
     } else {
-        func_8001C258_main(object->model[10], 4, 0);
+        func_8001C258_main(object->model[10], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(object->model[10], object->trans.x, object->trans.y - 10.0 + 0.0, object->trans.z);
     }
     if (player->unk08 & 0x400) {
@@ -1999,7 +1999,7 @@ void func_8010C44C_motor_rooter(FuncContext *ctx) {
         ctx->work.s8[0] = ctx->work.s8[1] = ctx->work.s8[2] = 0;
         func_8010BDE4_motor_rooter(player, 6, 1);
         CharFXPlay(0x3A, GwPlayer[m254_playerId[object->work[0]]].chr);
-        func_8001C258_main(object->model[1], 4, 0);
+        func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         ctx->state = 1;
     }
     t = ctx->work.s8[0] / 30.0f;
@@ -2137,7 +2137,7 @@ void func_8010CD84_motor_rooter(Vec *positions, s16 count) {
     f32 dx, dy, dz;
     s16 i;
 
-    D_801137C0_motor_rooter = HuMemAllocTag(count * sizeof(PathPoint), 31000);
+    D_801137C0_motor_rooter = HuMemAllocTag(count * sizeof(PathPoint), TAG_OVERLAY);
     point = D_801137C0_motor_rooter;
     finishDistance = distance = 0.0f;
     for (i = 0; i < count - 1; i++, point++) {
@@ -2397,7 +2397,7 @@ void func_8010DD10_motor_rooter(FuncContext *ctx) {
     ctx->work.s8[0]++;
     if (ctx->work.s8[0] >= 6) {
         ctx->work.s8[0] = 0;
-        if (D_800CDA7C_main[0] & 0x2000) {
+        if (D_800CDA7C_main[0] & Z_TRIG) {
             D_80113458_motor_rooter = D_80113458_motor_rooter + 1 < 3 ? D_80113458_motor_rooter + 1 : 0;
         }
     }

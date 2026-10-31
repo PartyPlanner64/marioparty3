@@ -55,7 +55,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3BFA00", func_8010D87C_boardr
 
 void func_8010D9D0_boardresult(void) {
     Process *proc = omAddPrcObj(func_8010DA30_boardresult, 0x3F00, 0x2000, 0);
-    BoardResultWork *work = proc->user_data = HuMemAllocTag(sizeof(BoardResultWork), 0x7918);
+    BoardResultWork *work = proc->user_data = HuMemAllocTag(sizeof(BoardResultWork), TAG_OVERLAY);
 
     work->pos.x = 0.0f;
     work->pos.y = 100.0f;

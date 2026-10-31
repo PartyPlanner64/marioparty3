@@ -265,7 +265,7 @@ void func_80109FE4_stardust_battle(void) {
     s32 i;
 
     if (streaks->unk_28 == NULL) {
-        streak = streaks->unk_28 = (UnkStardustBattleStreak *)HuMemAllocTag(0xF00, 0x7918);
+        streak = streaks->unk_28 = (UnkStardustBattleStreak *)HuMemAllocTag(0xF00, TAG_OVERLAY);
         memset(streak, 0, 0xF00);
 
         for (i = 0; i < 64; i++, streak++) {

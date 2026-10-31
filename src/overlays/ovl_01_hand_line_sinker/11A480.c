@@ -180,7 +180,7 @@ void func_801059A0_hand_line_sinker(void) {
     }
     omAddObj(0, 0, 0, -1, func_80105CF0_hand_line_sinker);
     omAddObj(6, 6, 0, -1, func_80105EE8_hand_line_sinker);
-    omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), 0xA0);
+    omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     players[0] = omAddObj(20, 6, 18, -1, func_80106040_hand_line_sinker);
     players[1] = omAddObj(20, 6, 18, -1, func_80106070_hand_line_sinker);
     players[2] = omAddObj(20, 6, 18, -1, func_801060A0_hand_line_sinker);
@@ -248,7 +248,7 @@ void func_80105D28_hand_line_sinker(omObjData *obj) {
             case 4:
                 break;
             case 5:
-                WipeCreateOut(0, 20);
+                WipeCreateOut(WIPE_TYPE_NORMAL, 20);
                 D_8010BF60_hand_line_sinker = 1;
                 break;
         }
@@ -263,7 +263,7 @@ void func_80105D28_hand_line_sinker(omObjData *obj) {
 }
 
 void func_80105EE8_hand_line_sinker(omObjData *obj) {
-    obj->data = HuMemAllocTag(0x24, 0x7918);
+    obj->data = HuMemAllocTag(0x24, TAG_OVERLAY);
     obj->model[0] = func_8000B108_main(0x220000, 0x699);
     obj->model[1] = func_8000B108_main(0x220001, 0x1A99);
     obj->model[2] = func_8000B108_main(0x220003, 0x699);
@@ -320,7 +320,7 @@ void func_80106100_hand_line_sinker(omObjData *obj, u16 playerNo) {
     chr = GwPlayer[playerNo].chr;
     model = D_800A178C_main[chr][0];
     motion = D_800A178C_main[chr][2];
-    obj->data = HuMemAllocTag(sizeof(HandLineSinkerPlayerWork), 0x7918);
+    obj->data = HuMemAllocTag(sizeof(HandLineSinkerPlayerWork), TAG_OVERLAY);
     work = obj->data;
     work->playerNo = playerNo;
     work->aiWait = 0;
@@ -358,7 +358,7 @@ void func_80106100_hand_line_sinker(omObjData *obj, u16 playerNo) {
         func_8000B460_main(obj, 13, func_80017BB8_main(chr, 0x36));
         func_8001C5B4_main(obj->model[0], obj->motion[4]);
         func_8001C814_main(obj->model[0], 2, 2);
-        func_8001C258_main(obj->model[2], 4, 4);
+        func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         func_8001EF6C_main(obj->model[3], obj->model[1], D_8010BF88_hand_line_sinker);
         func_8001C258_main(obj->model[3], 0x4000, 0x4000);
         func_8001C258_main(obj->model[1], 0x4000, 0x4000);
@@ -478,15 +478,15 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
                 obj->work[0] = 0;
                 break;
             }
-            if (btn & 0x8000) {
+            if (btn & A_BUTTON) {
                 if (func_800E6E8C_minigame() != 2) {
                     obj->work[0] = 0;
                     break;
                 }
                 obj->work[0] = 2;
                 func_8001C258_main(obj->model[1], 0x4000, 0);
-                func_8001C258_main(obj->model[1], 4, 4);
-                func_8001C258_main(obj->model[2], 4, 0);
+                func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 func_8001C5B4_main(obj->model[0], obj->motion[3]);
                 func_8001C5B4_main(obj->model[2], obj->motion[14]);
                 work->aiWait = 5;
@@ -499,8 +499,8 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
             if (func_800E6E8C_minigame() != 2) {
                 obj->work[0] = 0;
                 func_8001C258_main(obj->model[1], 0x4000, 0x4000);
-                func_8001C258_main(obj->model[1], 4, 0);
-                func_8001C258_main(obj->model[2], 4, 4);
+                func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 func_8001C5B4_main(obj->model[0], obj->motion[8]);
                 func_8001C814_main(obj->model[0], 3, 3);
                 break;
@@ -516,7 +516,7 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
             }
             work->lineObj = omAddObj(20, 1, 0, -1, func_80107B24_hand_line_sinker);
             work->lineObj->model[0] = obj->model[3];
-            work->lineObj->data = HuMemAllocTag(sizeof(HandLineSinkerObjWork), 0x7918);
+            work->lineObj->data = HuMemAllocTag(sizeof(HandLineSinkerObjWork), TAG_OVERLAY);
             lineWork = work->lineObj->data;
             work->lineObj->work[0] = 0;
             work->lineObj->work[1] = 0;
@@ -567,16 +567,16 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
                     func_80047E90_main(lineWork->unk1B8, 2);
                     obj->work[0] = 5;
                     func_8001C258_main(obj->model[1], 0x4000, 0);
-                    func_8001C258_main(obj->model[1], 4, 4);
-                    func_8001C258_main(obj->model[2], 4, 0);
+                    func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     func_8001C5B4_main(obj->model[0], obj->motion[2]);
                     func_8001C5B4_main(obj->model[2], obj->motion[17]);
                     func_8001C258_main(obj->model[3], 0x4000, 0x4000);
                 } else {
                     obj->work[0] = 0;
                     func_8001C258_main(obj->model[1], 0x4000, 0x4000);
-                    func_8001C258_main(obj->model[1], 4, 0);
-                    func_8001C258_main(obj->model[2], 4, 4);
+                    func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     func_8001C5B4_main(obj->model[0], obj->motion[8]);
                     func_8001C814_main(obj->model[0], 3, 3);
                     func_8001C258_main(obj->model[3], 0x4000, 0x4000);
@@ -618,8 +618,8 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
             if (HmfModelData[obj->model[0]].motTime >= D_800CCF58_main[HmfModelData[obj->model[0]].motId].unk02) {
                 obj->work[0] = 0;
                 func_8001C258_main(obj->model[1], 0x4000, 0x4000);
-                func_8001C258_main(obj->model[1], 4, 0);
-                func_8001C258_main(obj->model[2], 4, 4);
+                func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 func_8001C5B4_main(obj->model[0], obj->motion[8]);
                 func_8001C814_main(obj->model[0], 3, 3);
                 work->aiTarget = NULL;
@@ -701,7 +701,7 @@ void func_80107420_hand_line_sinker(omObjData *obj, s8 *stickX, s8 *stickY, u16 
             x = -sindf(angle) * dist;
             y = cosdf(angle) * dist;
             if (--work->aiCastTimer == 0) {
-                *btn |= 0x8000;
+                *btn |= A_BUTTON;
                 break;
             }
             *stickX = x;
@@ -947,7 +947,7 @@ void func_801081D0_hand_line_sinker(omObjData *obj) {
                 }
             }
             func_8010B1E4_hand_line_sinker(obj);
-            if (btn & 0x8000) {
+            if (btn & A_BUTTON) {
                 obj->work[0] = 1;
                 work->speed = 20.0f;
                 angle = obj->rot.y + 180.0f;
@@ -987,7 +987,7 @@ void func_801081D0_hand_line_sinker(omObjData *obj) {
             lineObj = ((HandLineSinkerPlayerWork *)D_8010C0FC_hand_line_sinker->data)->lineObj;
             lineWork = lineObj->data;
             if (lineWork != NULL) {
-                if (btn & 0x8000) {
+                if (btn & A_BUTTON) {
                     if (work->pressTimer < 2) {
                         lineWork->unk1BC = 0.5f;
                     } else if (work->pressTimer < 3) {
@@ -1055,7 +1055,7 @@ void func_80108880_hand_line_sinker(omObjData *obj, s8 *stickX, s8 *stickY, u16 
                 break;
             case 2:
                 if (obj->rot.y == work->aiTargetRot || obj->rot.y == work->aiPrevRot) {
-                    *btn |= 0x8000;
+                    *btn |= A_BUTTON;
                     work->aiState = 0;
                 } else {
                     *stickX = sindf(work->aiTargetRot) * 60.0f;
@@ -1256,7 +1256,7 @@ void func_801093A4_hand_line_sinker(omObjData *obj) {
 
     switch (D_8010C0EE_hand_line_sinker) {
         case 0:
-            WipeCreateIn(0xFF, 0x10);
+            WipeCreateIn(WIPE_TYPE_PREV, 0x10);
             D_8010C0E0_hand_line_sinker = func_8010A554_hand_line_sinker();
             D_8010C110_hand_line_sinker.center.x = D_8010C0E0_hand_line_sinker->trans.x;
             D_8010C110_hand_line_sinker.center.y = D_8010C0E0_hand_line_sinker->trans.y;
@@ -1312,8 +1312,8 @@ void func_80109584_hand_line_sinker(omObjData *obj) {
             func_8001C258_main(D_8010C0FC_hand_line_sinker->model[1], 0x4000, 0);
             func_8001C258_main(D_8010C0FC_hand_line_sinker->model[3], 0x4000, 0);
             func_8001C258_main(D_8010C0FC_hand_line_sinker->model[2], 0x4000, 0);
-            func_8001C258_main(D_8010C0FC_hand_line_sinker->model[1], 4, 4);
-            func_8001C258_main(D_8010C0FC_hand_line_sinker->model[3], 4, 4);
+            func_8001C258_main(D_8010C0FC_hand_line_sinker->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            func_8001C258_main(D_8010C0FC_hand_line_sinker->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             for (i = 0; i < 6; i++) {
                 dist = i * 17.0f;
                 pos.y = 240.0f - dist;
@@ -1474,8 +1474,8 @@ void func_80109B9C_hand_line_sinker(omObjData *obj) {
             func_8001C258_main(D_8010C0FC_hand_line_sinker->model[1], 0x4000, 0);
             func_8001C258_main(D_8010C0FC_hand_line_sinker->model[3], 0x4000, 0);
             func_8001C258_main(D_8010C0FC_hand_line_sinker->model[2], 0x4000, 0);
-            func_8001C258_main(D_8010C0FC_hand_line_sinker->model[1], 4, 4);
-            func_8001C258_main(D_8010C0FC_hand_line_sinker->model[3], 4, 4);
+            func_8001C258_main(D_8010C0FC_hand_line_sinker->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            func_8001C258_main(D_8010C0FC_hand_line_sinker->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             for (i = 0; i < 6; i++) {
                 dist = i * 17.0f;
                 pos.y = 240.0f - dist;
@@ -1618,10 +1618,10 @@ void func_8010A6D0_hand_line_sinker(omObjData *parent, u16 type, Vec *offset, Ve
         return;
     }
     D_8010C160_hand_line_sinker[i] = omAddObj(0x28, 1, 0, -1, D_8010BFA8_hand_line_sinker[type]);
-    D_8010C160_hand_line_sinker[i]->data = HuMemAllocTag(sizeof(HandLineSinkerFollowWork), 0x7918);
+    D_8010C160_hand_line_sinker[i]->data = HuMemAllocTag(sizeof(HandLineSinkerFollowWork), TAG_OVERLAY);
     work = D_8010C160_hand_line_sinker[i]->data;
     D_8010C160_hand_line_sinker[i]->work[0] = i;
-    func_8001C258_main(D_8010C148_hand_line_sinker[type][i], 4, 0);
+    func_8001C258_main(D_8010C148_hand_line_sinker[type][i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     D_8010C160_hand_line_sinker[i]->model[0] = D_8010C148_hand_line_sinker[type][i];
     Hu3DMotionTimeSet(D_8010C160_hand_line_sinker[i]->model[0], 0);
     work->parent = parent;
@@ -1648,7 +1648,7 @@ void func_8010A904_hand_line_sinker(omObjData *obj) {
                  work->parent->trans.z + work->offset.z);
     }
     if (D_800CCF58_main[HmfModelData[obj->model[0]].motId].unk02 <= HmfModelData[obj->model[0]].motTime) {
-        func_8001C258_main(obj->model[0], 4, 4);
+        func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         D_8010C160_hand_line_sinker[obj->work[0]] = 0;
         omDelObj(obj);
     }
@@ -1662,7 +1662,7 @@ void func_8010A9F8_hand_line_sinker(omObjData *obj) {
                  work->parent->trans.z + work->offset.z);
     }
     if (D_800CCF58_main[HmfModelData[obj->model[0]].motId].unk02 <= HmfModelData[obj->model[0]].motTime) {
-        func_8001C258_main(obj->model[0], 4, 4);
+        func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         D_8010C160_hand_line_sinker[obj->work[0]] = 0;
         omDelObj(obj);
     }

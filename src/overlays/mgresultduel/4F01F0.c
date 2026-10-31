@@ -31,7 +31,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80105E90_mgres
 void func_80105FD4_mgresultduel(void) {
     if (D_800D530C_main == 1) {
         if (D_80108E78_mgresultduel == 0) {
-            WipeCreateOut(0, 0x14);
+            WipeCreateOut(WIPE_TYPE_NORMAL, 0x14);
             D_80108E78_mgresultduel = 1;
             return;
         }

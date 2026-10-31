@@ -146,7 +146,7 @@ void func_801059A0_msetup(void) {
     HmfLightDirSet(3, 0.0f, 100.0f, 0.0f);
     HmfLightColorSet(1, 255, 255, 255);
     Hu3DBGColorSet(16, 16, 240);
-    omPrcSetStatBit(omAddPrcObj(func_80106320_msetup, 0x1100, 0x400, 0), 0xA0);
+    omPrcSetStatBit(omAddPrcObj(func_80106320_msetup, 0x1100, 0x400, 0), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     D_8011A944_msetup = 0;
     func_80106DF8_msetup();
     D_8011A938_msetup = -1;
@@ -632,7 +632,7 @@ omObjData *func_80107428_msetup(void) {
         return NULL;
     }
     object->model[0] = -1;
-    state = HuMemAllocTag(sizeof(MsetupSceneryState), 0x7918);
+    state = HuMemAllocTag(sizeof(MsetupSceneryState), TAG_OVERLAY);
     memset(state, 0, sizeof(MsetupSceneryState));
     object->data = state;
     height = 0.0f;

@@ -213,7 +213,7 @@ void m255_InitEnvironment(void) {
     func_8004A208_main();
     temp_v0 = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     temp_v0->work[0] = 2;
-    omSetStatBit(temp_v0, 0xA0);
+    omSetStatBit(temp_v0, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     HmfLightColorSet(0, 0xFF, 0xFF, 0xFF);
     HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
     HmfLightDirSet(1, -56.0f, 50.0f, 56.0f);
@@ -241,22 +241,22 @@ void m255_InitEnvironment(void) {
 void m255_CreateMinigame(void) {
     s16 i;
 
-    m255_minigame = HuMemAllocTag(sizeof(MinigameData), 31000);
+    m255_minigame = HuMemAllocTag(sizeof(MinigameData), TAG_OVERLAY);
     memset(m255_minigame, 0, sizeof(MinigameData));
-    m255_minigame->worlds = HuMemAllocTag(PLAYERS_TOTAL * sizeof(PlayerWorld), 31000);
+    m255_minigame->worlds = HuMemAllocTag(PLAYERS_TOTAL * sizeof(PlayerWorld), TAG_OVERLAY);
     memset(m255_minigame->worlds, 0, PLAYERS_TOTAL * sizeof(PlayerWorld));
     for (i = 0; i < PLAYERS_TOTAL; i++) {
-        m255_minigame->worlds[i].nuts = HuMemAllocTag(NUTS_TOTAL * sizeof(NutData), 31000);
+        m255_minigame->worlds[i].nuts = HuMemAllocTag(NUTS_TOTAL * sizeof(NutData), TAG_OVERLAY);
         memset(m255_minigame->worlds[i].nuts, 0, NUTS_TOTAL * sizeof(NutData));
     }
-    m255_players = HuMemAllocTag(PLAYERS_TOTAL * sizeof(PlayerData), 31000);
+    m255_players = HuMemAllocTag(PLAYERS_TOTAL * sizeof(PlayerData), TAG_OVERLAY);
     memset(m255_players, 0, PLAYERS_TOTAL * sizeof(PlayerData));
     m255_ChooseNutsPositions();
 }
 
 void m255_CheckExitRequest(omObjData *object) {
     if (D_800D530C_main == 1) {
-        WipeCreateOut(0, 20);
+        WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         object->func = m255_WaitExitWipeOut;
     }
 }
@@ -319,7 +319,7 @@ void m255_InitMinigame(omObjData *object) {
     }
     m255_SetSpriteDispOn(m255_SetSprite(0x58, 0xF, 0, 0), 160, 120);
     m255_SetFunc(FGRP_MINIGAME, 1, -1, 0, m255_ExecMinigameIntro, TRUE, FALSE);
-    WipeCreateIn(0xFF, 0x10);
+    WipeCreateIn(WIPE_TYPE_PREV, 0x10);
     object->func = m255_UpdateSystem;
 }
 
@@ -368,7 +368,7 @@ void m255_UpdateWall(omObjData *object) {
 
     if (m255_minigame->unk04 != 0) {
         for (i = 0; i < 8; i++) {
-            func_8001C258_main(object->model[i], 4, 4);
+            func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
     }
     for (i = 0; i < 8; i++) {
@@ -376,20 +376,20 @@ void m255_UpdateWall(omObjData *object) {
 
         if (i < 5) {
             if (CenterM[object->work[0]].z - 1050.0f < model->pos.z) {
-                func_8001C258_main(object->model[i], 4, 0);
+                func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
             if (CenterM[object->work[0]].z + 1600.0f < model->pos.z) {
-                func_8001C258_main(object->model[i], 4, 4);
+                func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 if (i != 4) {
                     m255_SetWall(object->model[i], object->work[0]);
                 }
             }
         } else {
             if (CenterM[object->work[0]].z - 1500.0f < model->pos.z) {
-                func_8001C258_main(object->model[i], 4, 0);
+                func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
             if (CenterM[object->work[0]].z + 1700.0f < model->pos.z) {
-                func_8001C258_main(object->model[i], 4, 4);
+                func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
         }
     }
@@ -424,10 +424,10 @@ void m255_UpdateSigns(omObjData *object) {
         HmfModel *model = &HmfModelData[object->model[i]];
 
         if (CenterM[object->work[0]].z - 1050.0f < model->pos.z) {
-            func_8001C258_main(object->model[i], 4, 0);
+            func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
         if (CenterM[object->work[0]].z + 1600.0f < model->pos.z) {
-            func_8001C258_main(object->model[i], 4, 4);
+            func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             if (i != 4) {
                 m255_SetWall(object->model[i], object->work[0]);
             }
@@ -469,10 +469,10 @@ void m255_UpdateScrews(omObjData *object) {
         HmfModel *model = &HmfModelData[object->model[i]];
 
         if (CenterM[object->work[0]].z - 800.0f < model->pos.z) {
-            func_8001C258_main(object->model[i], 4, 0);
+            func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
         if (CenterM[object->work[0]].z + 800.0f < model->pos.z) {
-            func_8001C258_main(object->model[i], 4, 4);
+            func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             if (i != 6) {
                 m255_SetScrew(object->model[i], object->work[0]);
             }
@@ -505,7 +505,7 @@ void m255_UpdateNuts(omObjData *object) {
 
     if (m255_minigame->unk04 != 0) {
         for (i = 0; i < NUTS_TOTAL; i++) {
-            func_8001C258_main(object->model[i], 4, 4);
+            func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
     }
     m255_UpdateFuncGroup(FGRP_NUTS_1 + object->work[0]);
@@ -532,9 +532,9 @@ void m255_InitPlayer(omObjData *object) {
     Hu3DModelScaleSet(object->model[MDL_ARROW], 1.25f, 1.25f, 1.25f);
     Hu3DModelScaleSet(object->model[MDL_BALLOON_B], 1.25f, 1.25f, 1.25f);
     Hu3DModelScaleSet(object->model[MDL_BALLOON_A], 1.25f, 1.25f, 1.25f);
-    func_8001C258_main(object->model[MDL_ARROW], 4, 4);
-    func_8001C258_main(object->model[MDL_BALLOON_B], 4, 4);
-    func_8001C258_main(object->model[MDL_BALLOON_A], 4, 4);
+    func_8001C258_main(object->model[MDL_ARROW], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    func_8001C258_main(object->model[MDL_BALLOON_B], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    func_8001C258_main(object->model[MDL_BALLOON_A], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     func_800E5A00_minigame(object, PLAYER_ANIM_IDLE, func_80017BB8_main(chr, 0), 1, 0);
     func_800E5A00_minigame(object, PLAYER_ANIM_WALK, func_80017BB8_main(chr, 1), 1, 0);
     func_800E5A00_minigame(object, PLAYER_ANIM_RUN, func_80017BB8_main(chr, 2), 1, 0);
@@ -548,7 +548,7 @@ void m255_InitPlayer(omObjData *object) {
     object->rot.y = 180.0f;
     func_800E5690_minigame(object, PLAYER_ANIM_IDLE);
     Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, object->trans.z);
-    func_8001C258_main(object->model[1], 4, 0);
+    func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     D_800EC280_minigame++;
     unkData = object->data;
     m255_players[object->work[0]].padId = unkData[0x57]; // TODO: figure out type.
@@ -869,7 +869,7 @@ void m255_ExecMinigameIntro(FuncContext *ctx) {
                     D_8010BE26_silly_screws = 1;
                     break;
                 default:
-                    if (D_8010BE26_silly_screws != 0 && GMesStatGet() == 2) {
+                    if (D_8010BE26_silly_screws != 0 && GMesStatGet() == GMES_STAT_TIMEEND) {
                         for (i = 0; i < PLAYERS_TOTAL; i++, player++) {
                             if (GwPlayer[m255_playerId[i]].stat & PLAYER_IS_CPU) {
                                 m255_SetFunc(FGRP_PLAYER_1 + player->object->work[0], 1, -1, player, m255_UpdateComInput, FALSE, FALSE);
@@ -925,7 +925,7 @@ void m255_ExecMinigameFinish(FuncContext *ctx) {
             } else if (D_8010BE20_silly_screws == 1) {
                 ctx->work.s16[0]++;
                 if (ctx->work.s16[0] >= 15) {
-                    WipeCreateOut(0, 20);
+                    WipeCreateOut(WIPE_TYPE_NORMAL, 20);
                     ctx->state = 2;
                 }
             }
@@ -940,9 +940,9 @@ void m255_ExecPlayersDraw(FuncContext *ctx) {
         case 0:
             for (i = 0; i < PLAYERS_TOTAL; i++) {
                 m255_players[i].cuesEnabled = FALSE;
-                func_8001C258_main(m255_players[i].object->model[MDL_ARROW], 4, 4);
-                func_8001C258_main(m255_players[i].object->model[MDL_BALLOON_B], 4, 4);
-                func_8001C258_main(m255_players[i].object->model[MDL_BALLOON_A], 4, 4);
+                func_8001C258_main(m255_players[i].object->model[MDL_ARROW], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                func_8001C258_main(m255_players[i].object->model[MDL_BALLOON_B], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                func_8001C258_main(m255_players[i].object->model[MDL_BALLOON_A], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             ctx->work.s16[0] = 0;
             ctx->state = 1;
@@ -960,7 +960,7 @@ void m255_ExecPlayersDraw(FuncContext *ctx) {
                     ctx->state = 3;
                     break;
                 case 30:
-                    WipeCreateOut(0, 20);
+                    WipeCreateOut(WIPE_TYPE_NORMAL, 20);
                     ctx->state = 2;
                     break;
             }
@@ -1007,15 +1007,15 @@ void m255_CheckMinigameEnd(FuncContext *ctx) {
             if (i == 0) {
                 m255_players[1].lost = TRUE;
                 m255_players[1].cuesEnabled = FALSE;
-                func_8001C258_main(m255_players[1].object->model[MDL_ARROW], 4, 4);
-                func_8001C258_main(m255_players[1].object->model[MDL_BALLOON_B], 4, 4);
-                func_8001C258_main(m255_players[1].object->model[MDL_BALLOON_A], 4, 4);
+                func_8001C258_main(m255_players[1].object->model[MDL_ARROW], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                func_8001C258_main(m255_players[1].object->model[MDL_BALLOON_B], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                func_8001C258_main(m255_players[1].object->model[MDL_BALLOON_A], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             } else {
                 m255_players[0].lost = TRUE;
                 m255_players[0].cuesEnabled = FALSE;
-                func_8001C258_main(m255_players[0].object->model[MDL_ARROW], 4, 4);
-                func_8001C258_main(m255_players[0].object->model[MDL_BALLOON_B], 4, 4);
-                func_8001C258_main(m255_players[0].object->model[MDL_BALLOON_A], 4, 4);
+                func_8001C258_main(m255_players[0].object->model[MDL_ARROW], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                func_8001C258_main(m255_players[0].object->model[MDL_BALLOON_B], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                func_8001C258_main(m255_players[0].object->model[MDL_BALLOON_A], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             func_8003F5C0_main();
             m255_SetFunc(FGRP_MINIGAME, 1, i, &m255_players[i], m255_ExecMinigameFinish, FALSE, FALSE);
@@ -1095,10 +1095,10 @@ void m255_UpdateNutSpinning(FuncContext *ctx) {
                 PlayerData *player = &m255_players[ctx->work.s16[0]];
 
                 if (CenterM[ctx->work.s16[0]].z - 800.0f < nutModel->pos.z) {
-                    func_8001C258_main(nut->modelId, 4, 0);
+                    func_8001C258_main(nut->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 }
                 if (CenterM[ctx->work.s16[0]].z + 900.0f < nutModel->pos.z) {
-                    func_8001C258_main(nut->modelId, 4, 4);
+                    func_8001C258_main(nut->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 }
                 if (player->inputEnabled && player->currNutId == i) {
                     m255_SpinNutModel(nutModel, player);
@@ -1164,9 +1164,9 @@ void m255_UpdatePlayerCue(FuncContext *ctx) {
                     currNutPosX = HmfModelData[nut->modelId].pos.x;
                     nextNutPosX = GOAL_POS_X;
                 }
-                func_8001C258_main(player->object->model[MDL_ARROW], 4, 4);
-                func_8001C258_main(player->object->model[MDL_BALLOON_B], 4, 4);
-                func_8001C258_main(player->object->model[MDL_BALLOON_A], 4, 4);
+                func_8001C258_main(player->object->model[MDL_ARROW], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                func_8001C258_main(player->object->model[MDL_BALLOON_B], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                func_8001C258_main(player->object->model[MDL_BALLOON_A], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 if (ABS((s32)(currNutPosX - nextNutPosX)) < JUMP_RANGE_X) {
                     ctx->work.s8[1] = ctx->work.s8[0];
                     ctx->work.s8[0] = CUE_ARROW;
@@ -1194,7 +1194,7 @@ void m255_UpdatePlayerCue(FuncContext *ctx) {
                     cuePosY = player->object->trans.y + 100.0f;
                     cuePosZ = player->object->trans.z - 125.0f - sindf(ctx->work.f32[0] * 90.0f) * 20.0f * 5.0f * 0.5f;
                     cueModel = &HmfModelData[player->object->model[MDL_ARROW]];
-                    func_8001C258_main(player->object->model[MDL_ARROW], 4, 0);
+                    func_8001C258_main(player->object->model[MDL_ARROW], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     break;
                 case CUE_BALLOON_B:
                     player->unk10 = 1;
@@ -1205,7 +1205,7 @@ void m255_UpdatePlayerCue(FuncContext *ctx) {
                     cuePosY = player->object->trans.y + 300.0f - sindf(ctx->work.f32[0] * 90.0f) * 20.0f * 5.0f * 0.25f;
                     cuePosZ = player->object->trans.z;
                     cueModel = &HmfModelData[player->object->model[MDL_BALLOON_B]];
-                    func_8001C258_main(player->object->model[MDL_BALLOON_B], 4, 0);
+                    func_8001C258_main(player->object->model[MDL_BALLOON_B], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     break;
                 case CUE_BALLOON_A:
                     player->unk10 = 0;
@@ -1216,7 +1216,7 @@ void m255_UpdatePlayerCue(FuncContext *ctx) {
                     cuePosY = player->object->trans.y + 300.0f - sindf(ctx->work.f32[0] * 90.0f) * 20.0f * 5.0f * 0.25f;
                     cuePosZ = player->object->trans.z;
                     cueModel = &HmfModelData[player->object->model[MDL_BALLOON_A]];
-                    func_8001C258_main(player->object->model[MDL_BALLOON_A], 4, 0);
+                    func_8001C258_main(player->object->model[MDL_BALLOON_A], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     break;
             }
             cueModel->pos.x = player->object->trans.x;
@@ -1506,9 +1506,9 @@ void m255_ExecPlayerJump(FuncContext *ctx) {
                                 player->accelY = -1.0f;
                                 player->work.s8[0] = 1;
                                 player->cuesEnabled = FALSE;
-                                func_8001C258_main(player->object->model[MDL_ARROW], 4, 4);
-                                func_8001C258_main(player->object->model[MDL_BALLOON_B], 4, 4);
-                                func_8001C258_main(player->object->model[MDL_BALLOON_A], 4, 4);
+                                func_8001C258_main(player->object->model[MDL_ARROW], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                                func_8001C258_main(player->object->model[MDL_BALLOON_B], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                                func_8001C258_main(player->object->model[MDL_BALLOON_A], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                             } else {
                                 ctxWork->f32[1] = 1800.0f;
                                 ctxWork->f32[2] = -3300.0f;
@@ -1516,7 +1516,7 @@ void m255_ExecPlayerJump(FuncContext *ctx) {
                                 player->accelY = -1.0f;
                                 player->work.s8[0] = 2;
                                 player->cuesEnabled = FALSE;
-                                func_8001C258_main(player->object->model[MDL_ARROW], 4, 4);
+                                func_8001C258_main(player->object->model[MDL_ARROW], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                             }
                         }
                     }

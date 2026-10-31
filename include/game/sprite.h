@@ -8,6 +8,11 @@
 
 #define HUSPR_NONE -1
 
+#define HUSPR_ATTR_DISPOFF 0x8000
+
+#define HuSprDispOff(grpId, memberNo) HuSprAttrSet(grpId, memberNo, HUSPR_ATTR_DISPOFF)
+#define HuSprDispOn(grpId, memberNo) HuSprAttrReset(grpId, memberNo, HUSPR_ATTR_DISPOFF)
+
 typedef struct {
     /* 0x00 */ void *unk00;
     /* 0x04 */ u16 unk04;

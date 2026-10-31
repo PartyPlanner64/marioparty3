@@ -69,7 +69,7 @@ void func_801059A0_mgresultboard(void) {
     }
 
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
-    omSetStatBit(obj, 0xA0);
+    omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     obj->work[0] = 2;
     HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
     minigameType = D_800A6D44_main[GwSystem.minigame_index - 1].minigameType;
@@ -141,7 +141,7 @@ void func_80105CE8_mgresultboard(omObjData *arg0) {
             break;
         case 1:
             if (D_8010AAF8_mgresultboard == 1) {
-                WipeCreateIn(0xFF, 0x10);
+                WipeCreateIn(WIPE_TYPE_PREV, 0x10);
                 state++;
             }
             break;
@@ -411,7 +411,7 @@ void func_80105CE8_mgresultboard(omObjData *arg0) {
             for (i = 0; i < MB_MAX_PLAYERS; i++) {
                 MBPlayerCoinAdd(i, 0);
             }
-            WipeCreateOut(0, 0x14);
+            WipeCreateOut(WIPE_TYPE_NORMAL, 0x14);
             HuAudSeqFadeOut(0x1E);
             state++;
             break;
@@ -442,7 +442,7 @@ void func_80105CE8_mgresultboard(omObjData *arg0) {
         }
     }
 
-    D_8010AAF4_mgresultboard = ((buttonPressed & 0x8000) || (cpuCount >= 4)) ? 4.0f : 1.0f;
+    D_8010AAF4_mgresultboard = ((buttonPressed & A_BUTTON) || (cpuCount >= 4)) ? 4.0f : 1.0f;
 }
 
 s32 func_80108250_mgresultboard(s32, s32, s8, s8);  /* extern */
@@ -524,7 +524,7 @@ void func_80106DE8_mgresultboard(void) {
 void func_80106F40_mgresultboard(omObjData* arg0) {
     if (D_800D530C_main == 1) {
         if (D_8010AAFC_mgresultboard == 0) {
-            WipeCreateOut(0, 0x14);
+            WipeCreateOut(WIPE_TYPE_NORMAL, 0x14);
             D_8010AAFC_mgresultboard = 1;
             return;
         }
@@ -554,7 +554,7 @@ void func_80106FC8_mgresultboard(void) {
 void func_80107024_mgresultboard(void) {
     s16 modelId = Hu3DHookFuncCreate(0, func_8010705C_mgresultboard, 2);
 
-    Hu3DModelCameraSet(modelId, 1);
+    Hu3DModelCameraSet(modelId, HU3D_CAM0);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E6DC0", func_8010705C_mgresultboard);

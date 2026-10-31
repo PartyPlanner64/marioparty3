@@ -64,12 +64,12 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80105EAC_mstory4);
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80105F40_mstory4);
 
 void func_80106000_mstory4(void) {
-    func_8001C258_main(D_80112122_mstory4, 4, 4);
+    func_8001C258_main(D_80112122_mstory4, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     espDispOff(D_80112128_mstory4);
 }
 
 void func_80106034_mstory4(void) {
-    func_8001C258_main(D_80112122_mstory4, 4, 0);
+    func_8001C258_main(D_80112122_mstory4, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     espDispOn(D_80112128_mstory4);
 }
 
@@ -436,15 +436,15 @@ void func_8010F0A0_mstory4(void) {
 void func_8010F0E0_mstory4(void) {
     omObjData *obj = D_801122A0_mstory4.obj;
 
-    func_8001C258_main(obj->model[1], 4, 4);
-    func_8001C258_main(obj->model[2], 4, 4);
+    func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 }
 
 void func_8010F12C_mstory4(void) {
     omObjData *obj = D_801122A0_mstory4.obj;
 
-    func_8001C258_main(obj->model[1], 4, 0);
-    func_8001C258_main(obj->model[2], 4, 0);
+    func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010F178_mstory4);
@@ -556,7 +556,7 @@ void func_8010FC98_mstory4(void) {
     HuPrcVSleep();
     func_8010F0A0_mstory4();
     HuPrcSleep(30);
-    func_8001C258_main(temp_s7->model[6], 4, 0);
+    func_8001C258_main(temp_s7->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DModelPosSet(temp_s7->model[6], 0.0f, 1000.0f, 2120.0f);
     Hu3DModelRotSet(temp_s7->model[6], 0, 0, 0);
     Hu3DModelScaleSet(temp_s7->model[6], 1.5f, 1.5f, 1.5f);

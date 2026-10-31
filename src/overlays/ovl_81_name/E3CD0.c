@@ -205,7 +205,7 @@ void func_800FC260_name_81(s32 arg0, s16 arg1) {
         temp_v0_3 = HuMemMemoryAlloc(temp_v0_2->heap, sizeof(UnkOvl81_1));
         temp_v0_2->user_data = temp_v0_3;
         temp_v0_3->unk_00 = i;
-        omPrcSetStatBit(temp_v0_2, 0xA0);
+        omPrcSetStatBit(temp_v0_2, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     }
 }
 

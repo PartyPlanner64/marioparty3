@@ -135,7 +135,7 @@ void omInitObjMan(s16 numOfObjs, s32 numOfPrcs) {
 
     for (i = 0; i < ommaxobjs; ++i) {
         obj = &omobjall[i];
-        obj->stat = 1;
+        obj->stat = OM_STAT_DELETED;
         obj->next = -1;
         obj->prev = -1;
         obj->prio = -1;
@@ -174,7 +174,7 @@ void omInitObjMan(s16 numOfObjs, s32 numOfPrcs) {
 
     for (i = 0; i < D_800A1774_main; ++i) {
         prcInfo = &D_800A177C_main[i];
-        prcInfo->stat = 1;
+        prcInfo->stat = OM_STAT_DELETED;
         prcInfo->unk2 = i + 1;
         prcInfo->processInstance = NULL;
         prcInfo->destructor = NULL;
@@ -202,7 +202,7 @@ void omDestroyObjMan(void) {
 
     for (i = 0; i < ommaxobjs; i++) {
         obj = &omobjall[i];
-        if (obj->stat == 1) {
+        if (obj->stat == OM_STAT_DELETED) {
             continue;
         }
         if (obj->model != NULL) {
@@ -236,7 +236,7 @@ void omDestroyObjMan(void) {
 
     for (i = 0; i < D_800A1774_main; i++) {
         prcInfo = &D_800A177C_main[i];
-        if (prcInfo->stat != 1) {
+        if (prcInfo->stat != OM_STAT_DELETED) {
             HuPrcDtor(prcInfo->processInstance, prcInfo->destructor);
             HuPrcKill(prcInfo->processInstance);
         }
@@ -246,7 +246,7 @@ void omDestroyObjMan(void) {
     D_800A1776_main = 0;
     HuMemMemoryFreeTemp(D_800A177C_main);
     D_800A177C_main = NULL;
-    HuMemFreeAllWithTag(0x7918);
+    HuMemFreeAllWithTag(TAG_OVERLAY);
     D_800D6A40_main = 0;
 }
 
@@ -290,7 +290,7 @@ omObjData *omAddObj(s16 prio, u16 mdlcnt, u16 mtncnt, s16 group, omObjFunc func)
         object->group_idx = 0;
     }
 
-    object->stat = 4;
+    object->stat = OM_STAT_ACTIVE;
     object->mode = 0;
     object->func = func;
     object->work[0] = object->work[1] = object->work[2] = object->work[3] = 0;
@@ -367,7 +367,7 @@ void omInsertObj(omObjData *obj) {
 void omDelObj(omObjData *obj) {
     u16 idx = obj->next_idx_alloc;
 
-    if (omnumobjs != 0 && obj->stat != 1) {
+    if (omnumobjs != 0 && obj->stat != OM_STAT_DELETED) {
         omnumobjs--;
 
         if (obj->group >= 0) {
@@ -389,7 +389,7 @@ void omDelObj(omObjData *obj) {
             obj->data = NULL;
         }
 
-        obj->stat = 1;
+        obj->stat = OM_STAT_DELETED;
 
         if (obj->next >= 0) {
             omobjall[obj->next].prev = obj->prev;
@@ -536,7 +536,7 @@ Process *omAddPrcObj(process_func func, u16 priority, s32 stackSize, s32 extData
 
     prevIdx = D_800A1778_main;
     temp_s0 = &D_800A177C_main[D_800A1778_main];
-    temp_s0->stat = 4;
+    temp_s0->stat = OM_STAT_ACTIVE;
     D_800A1778_main = temp_s0->unk2;
 
     newPrc = HuPrcCreate(func, priority, stackSize, extDataSize);
@@ -562,7 +562,7 @@ Process *func_80047F50_main(process_func func, s32 priority, s32 stack_size, s32
 
     prevIdx = D_800A1778_main;
     prcInfo = &D_800A177C_main[D_800A1778_main];
-    prcInfo->stat = 4;
+    prcInfo->stat = OM_STAT_ACTIVE;
     D_800A1778_main = prcInfo->unk2;
     process = HuPrcCreateChild(func, priority, stack_size, extra_data_size, parent);
     prcInfo->processInstance = process;
@@ -591,7 +591,7 @@ void omDestroyPrcObj(void) {
     if (temp_s0->destructor != NULL) {
         temp_s0->destructor();
     }
-    temp_s0->stat = 1;
+    temp_s0->stat = OM_STAT_DELETED;
     temp_s0->unk2 = D_800A1778_main;
     D_800A1778_main = currPrc->dtor_idx;
     --D_800A1776_main;
@@ -784,7 +784,7 @@ void omMain(void) {
     u8 temp_v0;
     u8 temp_v0_2;
 
-    fontcolor = 0xE;
+    fontcolor = FONT_COLOR_YELLOW;
     permSize = HuMemHeapAllocPermSizeGet();
     permUsed = HuMemUsedMemoryBlockGetPerm();
     if (omdispinfo != 0) {
@@ -948,22 +948,22 @@ void omMain(void) {
         D_800CC370_main++;
         D_800D054C_main = obj;
         var_s1 = obj->prev;
-        if (!(obj->stat & 3)) {
+        if (!(obj->stat & (OM_STAT_DELETED | OM_STAT_DISABLED))) {
             D_800CC3B8_main = obj->func;
             func = obj->func;
-            if (func != NULL && !(obj->stat & (0x40 | 0x10 | 0x08))) {
+            if (func != NULL && !(obj->stat & (OM_STAT_ALLPAUSED | OM_STAT_PAUSED | OM_STAT_FUNCOFF))) {
                 func(obj);
             }
             D_800CE190_main = 1;
             if (omobjlast != -1 && D_800A176C_main == 0) {
-                if (!(obj->stat & 3)) {
-                    if (omobjall[var_s1].stat & 3) {
+                if (!(obj->stat & (OM_STAT_DELETED | OM_STAT_DISABLED))) {
+                    if (omobjall[var_s1].stat & (OM_STAT_DELETED | OM_STAT_DISABLED)) {
                         var_s1 = obj->prev;
                     }
                     model = obj->model;
                     if (model != NULL) {
                         model_id = *model;
-                        if (model_id != -1 && !(obj->stat & 0x100)) {
+                        if (model_id != -1 && !(obj->stat & OM_STAT_MODELPAUSE)) {
                             Hu3DModelPosSet(model_id, obj->trans.x, obj->trans.y, obj->trans.z);
                             Hu3DModelRotSet(*obj->model, obj->rot.x, obj->rot.y, obj->rot.z);
                             Hu3DModelScaleSet(*obj->model, obj->scale.x, obj->scale.y, obj->scale.z);
@@ -1032,7 +1032,7 @@ void omSystemKeyCheckSetup(void) {
 
     temp_v0 = omAddObj(0x7FD9, 0, 0, -1, omSystemKeyCheck);
     omDBGSysKeyObj = temp_v0;
-    omSetStatBit(temp_v0, 0xA0);
+    omSetStatBit(temp_v0, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     temp_v0->work[0] = 0;
     temp_v0->work[1] = 0;
     temp_v0->work[2] = 0;
@@ -1049,9 +1049,9 @@ void func_80048EE8_main(omObjData *object) {
         port = OM_GET_WORK_PTR(object, PauseObjWork)->halfwords[3];
         if (!(object->work[0] & 4)) {
             sprintf(D_800D5218_main, "- PAUSE -");
-            fontcolor = 4;
+            fontcolor = FONT_COLOR_DARK_GREEN;
             print8(125, 97, D_800D5218_main);
-            fontcolor = 12;
+            fontcolor = FONT_COLOR_GREEN;
             print8(124, 96, D_800D5218_main);
             buf = D_800D5218_main;
             for (i = 0; i < 6; i++) {
@@ -1062,33 +1062,33 @@ void func_80048EE8_main(omObjData *object) {
                     fontcolor = D_800A184C_main[i].selectedColor;
                     print8(D_800A184C_main[i].x, D_800A184C_main[i].y, buf);
                 } else {
-                    fontcolor = 0;
+                    fontcolor = FONT_COLOR_BLACK;
                     print8(D_800A184C_main[i].x + 1, D_800A184C_main[i].y + 1, buf);
                     fontcolor = D_800A184C_main[i].color;
                     print8(D_800A184C_main[i].x, D_800A184C_main[i].y, buf);
                 }
             }
             sprintf(D_800D5218_main, ">");
-            fontcolor = 8;
+            fontcolor = FONT_COLOR_TRANSLUCENT_GRAY;
             print8(D_800A184C_main[object->work[2]].x + 1, D_800A184C_main[object->work[2]].y + 1, D_800D5218_main);
-            fontcolor = 15;
+            fontcolor = FONT_COLOR_WHITE;
             print8(D_800A184C_main[object->work[2]].x, D_800A184C_main[object->work[2]].y, D_800D5218_main);
 
-            if (D_800CDD5C_main[port] & 0x400) {
+            if (D_800CDD5C_main[port] & D_JPAD) {
                 HuAudFXPlay(0);
                 do {
                     if (++object->work[2] >= 6) {
                         object->work[2] = 0;
                     }
                 } while (D_800A184C_main[object->work[2]].disabled == 1);
-            } else if (D_800CDD5C_main[port] & 0x800) {
+            } else if (D_800CDD5C_main[port] & U_JPAD) {
                 HuAudFXPlay(0);
                 do {
                     if ((s8)--object->work[2] < 0) {
                         object->work[2] = 5;
                     }
                 } while (D_800A184C_main[object->work[2]].disabled == 1);
-            } else if (D_800CDD5C_main[port] & 8) {
+            } else if (D_800CDD5C_main[port] & U_CBUTTONS) {
                 object->work[0] ^= 8;
                 if (object->work[0] & 8) {
                     func_8004DF7C_main(1, 1, -1, 0x60, 0x80, 0xFF, 0, 0, 100);
@@ -1097,28 +1097,28 @@ void func_80048EE8_main(omObjData *object) {
                     D_800CE1DC_main.unk_00 = D_800CE1DC_main.unk_01 = 0;
                     D_800CE1DC_main.unk_02 = 0x90;
                 }
-            } else if (D_800CDD5C_main[port] & 4) {
+            } else if (D_800CDD5C_main[port] & D_CBUTTONS) {
                 object->work[0] ^= 0x20;
                 if (object->work[0] & 0x20) {
                     D_800CE1DC_main.unk_01 = 0xFF;
                 } else {
                     D_800CE1DC_main.unk_01 = 0;
                 }
-            } else if (D_800CDD5C_main[port] & 2) {
+            } else if (D_800CDD5C_main[port] & L_CBUTTONS) {
                 object->work[0] ^= 0x10;
                 if (object->work[0] & 0x10) {
                     D_800CE1DC_main.unk_00 = 0xFF;
                 } else {
                     D_800CE1DC_main.unk_00 = 0;
                 }
-            } else if (D_800CDD5C_main[port] & 1) {
+            } else if (D_800CDD5C_main[port] & R_CBUTTONS) {
                 object->work[0] ^= 0x40;
                 if (object->work[0] & 0x40) {
                     D_800CE1DC_main.unk_02 = 0xFF;
                 } else {
                     D_800CE1DC_main.unk_02 = 0;
                 }
-            } else if (D_800CDD5C_main[port] & 0x8000) {
+            } else if (D_800CDD5C_main[port] & A_BUTTON) {
                 D_800CDD5C_main[port] = 0;
                 HuAudFXPlay(0);
                 switch (object->work[2]) {
@@ -1163,7 +1163,7 @@ void func_80048EE8_main(omObjData *object) {
             }
         }
 
-        if (D_800CDD5C_main[port] & 0x20) {
+        if (D_800CDD5C_main[port] & L_TRIG) {
             close = 1;
         }
         if (D_800A176C_main == 1) {
@@ -1174,15 +1174,15 @@ void func_80048EE8_main(omObjData *object) {
             if (!(omDBGSysKeyObj->work[0] & 1)) {
                 HmfPauseF = D_800A1752_main[0];
                 for (i = 0; i < ommaxobjs; i++) {
-                    if (!(omobjall[i].stat & 0x21)) {
-                        omResetStatBit(&omobjall[i], 0x10);
+                    if (!(omobjall[i].stat & (OM_STAT_DELETED | OM_STAT_NOPAUSE))) {
+                        omResetStatBit(&omobjall[i], OM_STAT_PAUSED);
                     }
                 }
                 for (i = 0; i < D_800A1774_main; i++) {
-                    if (!(D_800A177C_main[i].stat & 0x21)) {
-                        omPrcResetStatBit(D_800A177C_main[i].processInstance, 0x10);
-                        if (!(D_800A177C_main[i].stat & 0x40)) {
-                            D_800A177C_main[i].processInstance->stat &= ~1;
+                    if (!(D_800A177C_main[i].stat & (OM_STAT_DELETED | OM_STAT_NOPAUSE))) {
+                        omPrcResetStatBit(D_800A177C_main[i].processInstance, OM_STAT_PAUSED);
+                        if (!(D_800A177C_main[i].stat & OM_STAT_ALLPAUSED)) {
+                            D_800A177C_main[i].processInstance->stat &= ~PROCESS_STAT_PAUSE;
                         }
                     }
                 }
@@ -1219,7 +1219,7 @@ void func_80048EE8_main(omObjData *object) {
         if (!CheckControllerRead(i)) {
             continue;
         }
-        if (!(D_800CDD5C_main[i] & 0x20)) {
+        if (!(D_800CDD5C_main[i] & L_TRIG)) {
             continue;
         }
         if ((D_800CCF7C_main[i] | D_800CDD5C_main[i]) & 0x10) {
@@ -1230,14 +1230,14 @@ void func_80048EE8_main(omObjData *object) {
         object->work[0] = 1;
         object->work[1] = i;
         for (i = 0; i < ommaxobjs; i++) {
-            if (!(omobjall[i].stat & 0x21)) {
-                omSetStatBit(&omobjall[i], 0x10);
+            if (!(omobjall[i].stat & (OM_STAT_DELETED | OM_STAT_NOPAUSE))) {
+                omSetStatBit(&omobjall[i], OM_STAT_PAUSED);
             }
         }
         for (i = 0; i < D_800A1774_main; i++) {
-            if (!(D_800A177C_main[i].stat & 0x21)) {
-                omPrcSetStatBit(D_800A177C_main[i].processInstance, 0x10);
-                D_800A177C_main[i].processInstance->stat |= 1;
+            if (!(D_800A177C_main[i].stat & (OM_STAT_DELETED | OM_STAT_NOPAUSE))) {
+                omPrcSetStatBit(D_800A177C_main[i].processInstance, OM_STAT_PAUSED);
+                D_800A177C_main[i].processInstance->stat |= PROCESS_STAT_PAUSE;
             }
         }
         D_800B23CC_main = printWin(120, 96, 208, 168, 0x40FF);
@@ -1278,19 +1278,19 @@ void omSystemKeyCheck(omObjData *object) {
             HmfPauseF = 0;
             object->work[0] &= ~1;
             for (i = 0; i < ommaxobjs; i++) {
-                if (!(omobjall[i].stat & 0x21)) {
-                    omResetStatBit(&omobjall[i], 0x10);
+                if (!(omobjall[i].stat & (OM_STAT_DELETED | OM_STAT_NOPAUSE))) {
+                    omResetStatBit(&omobjall[i], OM_STAT_PAUSED);
                 }
             }
             for (i = 0; i < D_800A1774_main; i++) {
-                if (!(D_800A177C_main[i].stat & 0x21)) {
-                    omPrcResetStatBit(D_800A177C_main[i].processInstance, 0x10);
-                    if (!(D_800A177C_main[i].stat & 0x40)) {
-                        D_800A177C_main[i].processInstance->stat &= ~1;
+                if (!(D_800A177C_main[i].stat & (OM_STAT_DELETED | OM_STAT_NOPAUSE))) {
+                    omPrcResetStatBit(D_800A177C_main[i].processInstance, OM_STAT_PAUSED);
+                    if (!(D_800A177C_main[i].stat & OM_STAT_ALLPAUSED)) {
+                        D_800A177C_main[i].processInstance->stat &= ~PROCESS_STAT_PAUSE;
                     }
                 }
             }
-            if (_CheckFlag(0xF)) {
+            if (_CheckFlag(FLAG_MG_PRACTICE)) {
                 espDispOn(D_800B23C4_main);
             }
             for (i = 0; i < 4; i++) {
@@ -1316,8 +1316,8 @@ void omSystemKeyCheck(omObjData *object) {
     }
 
     for (j = 0; j < 4; j++) {
-        if (CheckControllerRead(GwPlayer[j].pad) && _CheckFlag(0xF) && D_800D1100_main == 1 &&
-            (D_800CDD5C_main[GwPlayer[j].pad] & 0x10)) {
+        if (CheckControllerRead(GwPlayer[j].pad) && _CheckFlag(FLAG_MG_PRACTICE) && D_800D1100_main == 1 &&
+            (D_800CDD5C_main[GwPlayer[j].pad] & R_TRIG)) {
             D_800D530C_main = 1;
             return;
         }
@@ -1339,7 +1339,7 @@ void omSystemKeyCheck(omObjData *object) {
         } else if (GwPlayer[j].group >= D_800A1894_main[minigameType]) {
             continue;
         }
-        if (!(D_800CDD5C_main[GwPlayer[j].pad] & 0x1000)) {
+        if (!(D_800CDD5C_main[GwPlayer[j].pad] & START_BUTTON)) {
             continue;
         }
         D_800D2132_main = 0;
@@ -1348,14 +1348,14 @@ void omSystemKeyCheck(omObjData *object) {
         object->work[0] = 1;
         object->work[1] = GwPlayer[j].pad;
         for (i = 0; i < ommaxobjs; i++) {
-            if (!(omobjall[i].stat & 0x21)) {
-                omSetStatBit(&omobjall[i], 0x10);
+            if (!(omobjall[i].stat & (OM_STAT_DELETED | OM_STAT_NOPAUSE))) {
+                omSetStatBit(&omobjall[i], OM_STAT_PAUSED);
             }
         }
         for (i = 0; i < D_800A1774_main; i++) {
-            if (!(D_800A177C_main[i].stat & 0x21)) {
-                omPrcSetStatBit(D_800A177C_main[i].processInstance, 0x10);
-                D_800A177C_main[i].processInstance->stat |= 1;
+            if (!(D_800A177C_main[i].stat & (OM_STAT_DELETED | OM_STAT_NOPAUSE))) {
+                omPrcSetStatBit(D_800A177C_main[i].processInstance, OM_STAT_PAUSED);
+                D_800A177C_main[i].processInstance->stat |= PROCESS_STAT_PAUSE;
             }
         }
         if (D_800A2150_main != 1) {
@@ -1365,7 +1365,7 @@ void omSystemKeyCheck(omObjData *object) {
             D_800CE214_main = 0;
         }
         GameMesPauseCreate();
-        if (_CheckFlag(0xF)) {
+        if (_CheckFlag(FLAG_MG_PRACTICE)) {
             espDispOff(D_800B23C4_main);
         }
         func_80003A70_main(D_800CDBC8_main);
@@ -1396,14 +1396,14 @@ s32 omAllPause(void) {
     }
     D_800D6A90_main = 1;
     for (i = 0; i < ommaxobjs; i++) {
-        if (!(omobjall[i].stat & 0x81)) {
-            omSetStatBit(&omobjall[i], 0x40);
+        if (!(omobjall[i].stat & (OM_STAT_DELETED | OM_STAT_NOALLPAUSE))) {
+            omSetStatBit(&omobjall[i], OM_STAT_ALLPAUSED);
         }
     }
     for (i = 0; i < D_800A1774_main; i++) {
-        if (!(D_800A177C_main[i].stat & 0x81)) {
-            omPrcSetStatBit(D_800A177C_main[i].processInstance, 0x40);
-            D_800A177C_main[i].processInstance->stat |= 1;
+        if (!(D_800A177C_main[i].stat & (OM_STAT_DELETED | OM_STAT_NOALLPAUSE))) {
+            omPrcSetStatBit(D_800A177C_main[i].processInstance, OM_STAT_ALLPAUSED);
+            D_800A177C_main[i].processInstance->stat |= PROCESS_STAT_PAUSE;
         }
     }
     return 1;
@@ -1415,15 +1415,15 @@ void func_8004A0E0_main(void) {
 
     D_800D6A90_main = 0;
     for (i = 0; i < ommaxobjs; i++) {
-        if (!(omobjall[i].stat & 0x81)) {
-            omResetStatBit(&omobjall[i], 0x40);
+        if (!(omobjall[i].stat & (OM_STAT_DELETED | OM_STAT_NOALLPAUSE))) {
+            omResetStatBit(&omobjall[i], OM_STAT_ALLPAUSED);
         }
     }
     for (i = 0; i < D_800A1774_main; i++) {
-        if (!(D_800A177C_main[i].stat & 0x81)) {
-            omPrcResetStatBit(D_800A177C_main[i].processInstance, 0x40);
-            if (!(D_800A177C_main[i].stat & 0x10)) {
-                D_800A177C_main[i].processInstance->stat &= ~1;
+        if (!(D_800A177C_main[i].stat & (OM_STAT_DELETED | OM_STAT_NOALLPAUSE))) {
+            omPrcResetStatBit(D_800A177C_main[i].processInstance, OM_STAT_ALLPAUSED);
+            if (!(D_800A177C_main[i].stat & OM_STAT_PAUSED)) {
+                D_800A177C_main[i].processInstance->stat &= ~PROCESS_STAT_PAUSE;
             }
         }
     }
@@ -1444,7 +1444,7 @@ void func_8004A208_main(void) {
         func_8004CEA4_main();
     }
     func_8004CF30_main();
-    if (_CheckFlag(0xF) != 0) {
+    if (_CheckFlag(FLAG_MG_PRACTICE) != 0) {
         D_800B23C2_main = func_8000B838_main(0x94);
         D_800B23C4_main = espEntry(D_800B23C2_main, 0, 1);
         espTPLvlSet(D_800B23C4_main, 0x100);
@@ -1452,7 +1452,7 @@ void func_8004A208_main(void) {
         D_800B23C8_main = D_800A18B7_main[GwSystem.minigame_index];
         espPosSet(D_800B23C4_main, D_800A18A8_main[D_800B23C8_main][0], D_800A18A8_main[D_800B23C8_main][1]);
         D_800B23C6_main = 0;
-        omSetStatBit(omAddObj(10, 0, 0, -1, func_8004A354_main), 0xA0);
+        omSetStatBit(omAddObj(10, 0, 0, -1, func_8004A354_main), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     }
 }
 

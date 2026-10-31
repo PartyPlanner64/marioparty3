@@ -380,7 +380,7 @@ void func_80106270_crazy_cogs(omObjData *arg0) {
     espAttrSet(D_8010BA32_crazy_cogs, 0x5000);
     espPosSet(D_8010BA32_crazy_cogs, D_8010BA34_crazy_cogs, D_8010BA38_crazy_cogs);
     D_800EC1C0_minigame[D_800EBE28_minigame++] = arg0;
-    work = HuMemAllocTag(sizeof(CrazyCogsSetupWork), 0x7918);
+    work = HuMemAllocTag(sizeof(CrazyCogsSetupWork), TAG_OVERLAY);
     arg0->data = work;
     memset(work, 0, sizeof(CrazyCogsSetupWork));
     work->unk_03 = 1;
@@ -425,7 +425,7 @@ void func_801064AC_crazy_cogs(omObjData *arg0) {
     arg0->trans.y = 0.0f;
     arg0->trans.z = 0.0f;
     Hu3DModelPosSet(arg0->model[0], arg0->trans.x, arg0->trans.y, arg0->trans.z);
-    Hu3DModelCameraSet(arg0->model[0], 1);
+    Hu3DModelCameraSet(arg0->model[0], HU3D_CAM0);
     D_8010DE6A_crazy_cogs[cogIdx] = 0;
     arg0->func = func_80106418_crazy_cogs;
 }
@@ -461,8 +461,8 @@ void func_80106688_crazy_cogs(omObjData *arg0) {
     arg0->trans.x = arg0->trans.y = arg0->trans.z = 0.0f;
     Hu3DModelPosSet(arg0->model[0], arg0->trans.x, arg0->trans.y, arg0->trans.z);
     Hu3DModelPosSet(arg0->model[1], arg0->trans.x, arg0->trans.y, arg0->trans.z);
-    Hu3DModelCameraSet(arg0->model[0], 1);
-    Hu3DModelCameraSet(arg0->model[1], 1);
+    Hu3DModelCameraSet(arg0->model[0], HU3D_CAM0);
+    Hu3DModelCameraSet(arg0->model[1], HU3D_CAM0);
     arg0->func = func_801065F0_crazy_cogs;
     D_8010B9A8_crazy_cogs = 4.4f;
     D_8010DE14_crazy_cogs = 6.6000004f;
@@ -495,8 +495,8 @@ void func_8010683C_crazy_cogs(omObjData *arg0) {
     arg0->trans.z = -450.0f;
     Hu3DModelPosSet(arg0->model[0], arg0->trans.x, arg0->trans.y, arg0->trans.z);
     Hu3DModelPosSet(arg0->model[1], arg0->trans.x, arg0->trans.y, arg0->trans.z);
-    Hu3DModelCameraSet(arg0->model[0], 1);
-    Hu3DModelCameraSet(arg0->model[1], 1);
+    Hu3DModelCameraSet(arg0->model[0], HU3D_CAM0);
+    Hu3DModelCameraSet(arg0->model[1], HU3D_CAM0);
     arg0->func = func_801067AC_crazy_cogs;
 }
 
@@ -527,8 +527,8 @@ void func_801069DC_crazy_cogs(omObjData *arg0) {
     arg0->trans.z = -800.0f;
     Hu3DModelPosSet(arg0->model[0], arg0->trans.x, arg0->trans.y, arg0->trans.z);
     Hu3DModelPosSet(arg0->model[1], arg0->trans.x, arg0->trans.y, arg0->trans.z);
-    Hu3DModelCameraSet(arg0->model[0], 1);
-    Hu3DModelCameraSet(arg0->model[1], 1);
+    Hu3DModelCameraSet(arg0->model[0], HU3D_CAM0);
+    Hu3DModelCameraSet(arg0->model[1], HU3D_CAM0);
     arg0->func = func_8010694C_crazy_cogs;
 }
 
@@ -782,9 +782,9 @@ void func_801074A0_crazy_cogs(omObjData *arg0) {
     func_8001C448_main(arg0->model[2]);
     func_8001C514_main(arg0->model[2]);
     func_80088800_main(HmfModelData[arg0->model[2]].mtx, 0.0f, 0.0f, 0.0f);
-    Hu3DModelCameraSet(arg0->model[0], 1);
-    Hu3DModelCameraSet(arg0->model[1], 1);
-    Hu3DModelCameraSet(arg0->model[2], 1);
+    Hu3DModelCameraSet(arg0->model[0], HU3D_CAM0);
+    Hu3DModelCameraSet(arg0->model[1], HU3D_CAM0);
+    Hu3DModelCameraSet(arg0->model[2], HU3D_CAM0);
     arg0->trans.x = -600.0f;
     arg0->trans.y = 50.0f;
     arg0->trans.z = -600.0f;
@@ -851,8 +851,8 @@ void func_80107884_crazy_cogs(omObjData *arg0) {
     func_8001C448_main(arg0->model[1]);
     func_8001C514_main(arg0->model[1]);
     func_80088800_main(HmfModelData[arg0->model[1]].mtx, 0.0f, 0.0f, 0.0f);
-    Hu3DModelCameraSet(arg0->model[0], 1);
-    Hu3DModelCameraSet(arg0->model[1], 1);
+    Hu3DModelCameraSet(arg0->model[0], HU3D_CAM0);
+    Hu3DModelCameraSet(arg0->model[1], HU3D_CAM0);
     angle = func_801059BC_crazy_cogs(0.0f, (s16)cog->timer * 120);
     arg0->trans.x = sindf(angle) * 90.0f;
     arg0->trans.y = 28.0f;
@@ -992,10 +992,10 @@ void func_80107E00_crazy_cogs(omObjData *arg0) {
                 arg0->trans.x = introCog->obj->trans.x;
                 arg0->trans.y = introCog->obj->trans.y;
                 arg0->trans.z = introCog->obj->trans.z;
-                func_8001C258_main(arg0->model[0], 4, 0);
-                func_8001C258_main(arg0->model[1], 4, 0);
-                func_8001C258_main(introCog->obj->model[0], 4, 4);
-                func_8001C258_main(introCog->obj->model[1], 4, 4);
+                func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                func_8001C258_main(arg0->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                func_8001C258_main(introCog->obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                func_8001C258_main(introCog->obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             break;
         case 5:
@@ -1211,12 +1211,12 @@ void func_80108B0C_crazy_cogs(omObjData *arg0) {
     func_800E5A00_minigame(arg0, 0xD, func_80017BB8_main(character, 0x30), 1, 120);
     func_800E5690_minigame(arg0, 0);
     D_800EBE24_minigame = 1;
-    Hu3DModelCameraSet(arg0->model[0], 1);
-    Hu3DModelCameraSet(arg0->model[1], 1);
-    Hu3DModelCameraSet(arg0->model[3], 1);
-    Hu3DModelCameraSet(arg0->model[4], 1);
-    func_8001C258_main(arg0->model[0], 4, 4);
-    func_8001C258_main(arg0->model[1], 4, 4);
+    Hu3DModelCameraSet(arg0->model[0], HU3D_CAM0);
+    Hu3DModelCameraSet(arg0->model[1], HU3D_CAM0);
+    Hu3DModelCameraSet(arg0->model[3], HU3D_CAM0);
+    Hu3DModelCameraSet(arg0->model[4], HU3D_CAM0);
+    func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    func_8001C258_main(arg0->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     arg0->trans.x = 700.0f;
     arg0->trans.y = 28.0f;
     arg0->trans.z = 700.0f;
@@ -1302,7 +1302,7 @@ void func_8010908C_crazy_cogs(omObjData *arg0) {
     arg0->rot.y = arg0->rot.z = 0.0f;
     Hu3DModelRotSet(arg0->model[0], arg0->rot.x, arg0->rot.y, arg0->rot.z);
     Hu3DMotionSpeedSet(arg0->model[0], 2.0f);
-    Hu3DModelCameraSet(arg0->model[0], 1);
+    Hu3DModelCameraSet(arg0->model[0], HU3D_CAM0);
     arg0->func = func_80109084_crazy_cogs;
 }
 
@@ -1362,8 +1362,8 @@ void func_80109388_crazy_cogs(omObjData *arg0) {
     }
     D_8010DE88_crazy_cogs[arg0->work[0]] = 0.1f;
     cog->timer = 0;
-    func_8001C258_main(arg0->model[0], 4, 4);
-    func_8001C258_main(arg0->model[1], 4, 4);
+    func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    func_8001C258_main(arg0->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     if (arg0->work[0] < 4) {
         offset = func_80105B7C_crazy_cogs(54);
         offset = offset * 10 + func_80105B7C_crazy_cogs(100);
@@ -1585,8 +1585,8 @@ void func_80109D44_crazy_cogs(omObjData *arg0) {
         default:
             if ((s16)cog->timer != 0) {
                 func_80109298_crazy_cogs(arg0);
-                func_8001C258_main(arg0->model[0], 4, 4);
-                func_8001C258_main(arg0->model[1], 4, 4);
+                func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                func_8001C258_main(arg0->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 cog->timer = 0;
             }
             break;
@@ -1684,10 +1684,10 @@ void func_80109F64_crazy_cogs(omObjData *arg0) {
     cog->unk_20 = 0.9f / 80.0f;
     Hu3DModelScaleSet(arg0->model[1], 0.1f, 1.0f, 0.1f);
     Hu3DModelPosSet(arg0->model[1], arg0->trans.x, arg0->trans.y, arg0->trans.z);
-    func_8001C258_main(arg0->model[0], 4, 4);
-    func_8001C258_main(arg0->model[1], 4, 4);
-    Hu3DModelCameraSet(arg0->model[0], 1);
-    Hu3DModelCameraSet(arg0->model[1], 1);
+    func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    func_8001C258_main(arg0->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelCameraSet(arg0->model[0], HU3D_CAM0);
+    Hu3DModelCameraSet(arg0->model[1], HU3D_CAM0);
     func_80109388_crazy_cogs(arg0);
     arg0->func = func_80109D44_crazy_cogs;
 }
@@ -1744,8 +1744,8 @@ void func_8010A67C_crazy_cogs(omObjData *arg0) {
         if ((s16)cog->timer == 0) {
             cog->timer = 1;
             func_8010A548_crazy_cogs(cog);
-            func_8001C258_main(cog->obj->model[0], 4, 0);
-            func_8001C258_main(cog->obj->model[1], 4, 0);
+            func_8001C258_main(cog->obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            func_8001C258_main(cog->obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         } else {
             cogIndex++;
             for (i = 0; i < 6; cogIndex = (cogIndex + 1) % 7, i++) {
@@ -1757,8 +1757,8 @@ void func_8010A67C_crazy_cogs(omObjData *arg0) {
                     if ((s16)cog->timer == 0) {
                         cog->timer = 1;
                         func_8010A548_crazy_cogs(cog);
-                        func_8001C258_main(cog->obj->model[0], 4, 0);
-                        func_8001C258_main(cog->obj->model[1], 4, 0);
+                        func_8001C258_main(cog->obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                        func_8001C258_main(cog->obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                         break;
                     }
                 }
@@ -1769,24 +1769,24 @@ void func_8010A67C_crazy_cogs(omObjData *arg0) {
         cog = &D_8010B9F0_crazy_cogs[15];
         if ((s16)cog->timer == 0) {
             cog->timer = 1;
-            func_8001C258_main(cog->obj->model[0], 4, 0);
-            func_8001C258_main(cog->obj->model[1], 4, 0);
+            func_8001C258_main(cog->obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            func_8001C258_main(cog->obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
     }
     if ((D_8010B99E_crazy_cogs + 15) % 27 == 0 && func_80105B7C_crazy_cogs(5) == 0) {
         cog = &D_8010B9F0_crazy_cogs[16];
         if ((s16)cog->timer == 0) {
             cog->timer = 1;
-            func_8001C258_main(cog->obj->model[0], 4, 0);
-            func_8001C258_main(cog->obj->model[1], 4, 0);
+            func_8001C258_main(cog->obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            func_8001C258_main(cog->obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
     }
     if ((s16)(D_8010B99E_crazy_cogs % 15) == 0 && func_80105B7C_crazy_cogs(5) == 0) {
         cog = &D_8010B9F0_crazy_cogs[17];
         if ((s16)cog->timer == 0) {
             cog->timer = 1;
-            func_8001C258_main(cog->obj->model[0], 4, 0);
-            func_8001C258_main(cog->obj->model[1], 4, 0);
+            func_8001C258_main(cog->obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            func_8001C258_main(cog->obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
     }
     D_8010B99E_crazy_cogs++;
@@ -1891,8 +1891,8 @@ void func_8010AE08_crazy_cogs(omObjData *arg0) {
                     cog->obj->trans.y, cog->obj->trans.z);
     Hu3DModelRotSet(D_8010DEB0_crazy_cogs->obj->model[0], D_8010DEB0_crazy_cogs->obj->rot.x,
                     D_8010DEB0_crazy_cogs->obj->rot.y, D_8010DEB0_crazy_cogs->obj->rot.z);
-    func_8001C258_main(D_8010DEB0_crazy_cogs->obj->model[0], 4, 0);
-    func_8001C258_main(D_8010DEB0_crazy_cogs->obj->model[1], 4, 0);
+    func_8001C258_main(D_8010DEB0_crazy_cogs->obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    func_8001C258_main(D_8010DEB0_crazy_cogs->obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     arg0->model[0] = -1;
     arg0->func = func_8010ABE0_crazy_cogs;
 }
@@ -1928,7 +1928,7 @@ void func_8010B064_crazy_cogs(omObjData *arg0) {
 
 void func_8010B09C_crazy_cogs(omObjData *arg0) {
     if (D_800D530C_main == 1) {
-        WipeCreateOut(0, 20);
+        WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         arg0->func = func_8010B064_crazy_cogs;
         HuAudSeqFadeOut(30);
         func_8004AB0C_main(30);
@@ -2013,7 +2013,7 @@ void func_8010B0F4_crazy_cogs(omObjData *arg0) {
             if (GMesStatGet() == 0) {
                 D_8010DE66_crazy_cogs--;
                 if (D_8010DE66_crazy_cogs <= 0) {
-                    WipeCreateOut(0, 20);
+                    WipeCreateOut(WIPE_TYPE_NORMAL, 20);
                     arg0->func = func_8010B064_crazy_cogs;
                 }
             }
@@ -2045,7 +2045,7 @@ void func_8010B46C_crazy_cogs(omObjData *arg0) {
     func_801091F4_crazy_cogs();
     func_8010AF58_crazy_cogs();
     func_8010654C_crazy_cogs();
-    WipeCreateIn(0xFF, 16);
+    WipeCreateIn(WIPE_TYPE_PREV, 16);
     arg0->func = func_8010B0F4_crazy_cogs;
 }
 
@@ -2058,7 +2058,7 @@ void func_8010B570_crazy_cogs(void) {
 
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     obj->work[0] = 2;
-    omSetStatBit(obj, 0xA0);
+    omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     func_8000B5F0_main(1);
     func_8000B710_main(1);
     for (i = 0; i < 1; i++) {

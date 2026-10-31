@@ -66,7 +66,7 @@ void func_80108350_bounce_n_trounce(omObjData *object) {
     }
     work->unk_44 = 0.0f;
     work->unk_48 = 0.0f;
-    func_8001C258_main(object->model[3], 4, 4);
+    func_8001C258_main(object->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_18_bounce_n_trounce/1CC730", func_80108398_bounce_n_trounce);
@@ -96,7 +96,7 @@ void func_80108C18_bounce_n_trounce(omObjData *object) {
     BounceNTrounceWork *work = OM_GET_DATA_PTR(object, BounceNTrounceWork);
 
     work->state = 4;
-    func_8001C258_main(object->model[0], 4, 4);
+    func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DMotionShiftSet(object->model[1], HmfModelData[object->motion[3]].motId, 0, 6, 0);
     object->work[0] = 8;
     object->func = func_80108CA8_bounce_n_trounce;
@@ -116,7 +116,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_18_bounce_n_trounce/1CC730", func_801
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_18_bounce_n_trounce/1CC730", func_80108EFC_bounce_n_trounce);
 
 void func_80108F98_bounce_n_trounce(omObjData *object) {
-    func_8001C258_main(object->model[6], 4, 0);
+    func_8001C258_main(object->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DModelPosSet(object->model[6], object->trans.x, object->trans.y + 5.0f, object->trans.z);
     func_8001C814_main(object->model[6], 3, 0);
     Hu3DMotionTimeSet(object->model[6], 0.0f);

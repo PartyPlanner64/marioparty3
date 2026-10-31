@@ -1,4 +1,5 @@
 #include "common.h"
+#include "game/printfunc.h"
 
 #define DEFAULT_X_POS 24
 #define DEFAULT_Y_POS 16
@@ -31,7 +32,7 @@ void func_801059D0_storydebug(void) {
     HmfLightDirSet(1, -100.0f, 100.0f, 100.0f);
     omAddPrcObj(func_80106134_storydebug, 0xE000, 0, 0);
     omAddObj(0x500, 0, 0, -1, func_80106108_storydebug);
-    WipeCreateIn(0, 0);
+    WipeCreateIn(WIPE_TYPE_NORMAL, 0);
 }
 
 void func_80105A98_storydebug(void) {
@@ -39,7 +40,7 @@ void func_80105A98_storydebug(void) {
     s32 i, j;
 
     var_s2 = StringBufferIndex;
-    fontcolor = 15;
+    fontcolor = FONT_COLOR_WHITE;
 
     for (i = 0; i < 16 && (i * 8) < ARRAY_COUNT(D_801068C0_storydebug); i++) {
         sprintf(D_800D5218_main, "%3X:", var_s2);
@@ -61,7 +62,7 @@ void func_80105BB4_storydebug(void) {
     SLLoadBoardStory();
     while (1) {
         HuPrcVSleep();
-        if (D_800D5558_main[0] & 0x8000) {
+        if (D_800D5558_main[0] & A_BUTTON) {
             var_s1 = (var_s1 == 0) ? 2 : 0;
         }
 
@@ -76,12 +77,12 @@ void func_80105BB4_storydebug(void) {
 void func_80105C6C_storydebug(s16 playerIndex) {
     char buffer[256];
 
-    fontcolor = 10;
+    fontcolor = FONT_COLOR_RED;
     sprintf(buffer, "PLAYER%d", playerIndex);
     print8(DEFAULT_X_POS, TextYPos, buffer);
     INCREMENT_TEXT_Y_POSITION();
 
-    fontcolor = 15;
+    fontcolor = FONT_COLOR_WHITE;
 
     sprintf(buffer, "PAD:%2X,CHR:%2X,STAT:%2x,GCOIN:%4X", GwPlayer[playerIndex].pad, GwPlayer[playerIndex].chr, GwPlayer[playerIndex].stat, GwPlayer[playerIndex].gameCoin);
     print8(DEFAULT_X_POS, TextYPos, buffer);
@@ -138,7 +139,7 @@ void func_80106134_storydebug(void) {
     while (1) {
         HuPrcVSleep();
         func_801062A0_storydebug();
-        if (D_800D5558_main[0] & 0x8000) {
+        if (D_800D5558_main[0] & A_BUTTON) {
             for (j = 0; j < ARRAY_COUNT(GwStory.progress.fields.unk3); j++) {
                 GwStory.progress.fields.unk3[j] = 0;
             }
@@ -163,7 +164,7 @@ void func_801062A0_storydebug(void) {
     char sp18[0x120];
     s16 i, j;
 
-    fontcolor = 15;
+    fontcolor = FONT_COLOR_WHITE;
     sprintf(sp18, "INDEX:%2X,CHR:%2X,DIF:%2X,LAST:%2X", GwStory.unk0, GwStory.unk1, GwStory.unk2, GwStory.progress.fields.unkF);
     print8(DEFAULT_X_POS, TextYPos, sp18);
     INCREMENT_TEXT_Y_POSITION();

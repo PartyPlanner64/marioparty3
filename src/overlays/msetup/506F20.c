@@ -92,8 +92,8 @@ void func_8010AF40_msetup(MsetupModelHandle *models, s16 *animSlot, s16 *anim) {
     D_80119AF0_msetup->work[0] = 1;
     D_80119AF0_msetup->work[1] = 1;
     func_8010E00C_msetup(D_80119AF0_msetup, 2);
-    func_8001C258_main(model, 4, 0);
-    func_8001C258_main(linkedModel, 4, 0);
+    func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    func_8001C258_main(linkedModel, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     func_8010ACC0_msetup(model, linkedModel);
     D_80119AF0_msetup->work[0] = 0;
     HuAudFXPlay(0x135);
@@ -147,8 +147,8 @@ void func_8010B1F4_msetup(void) {
                 *requestedState = 0;
                 break;
             case 2:
-                func_8001C258_main(model, 4, 4);
-                func_8001C258_main(linkedModel, 4, 4);
+                func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                func_8001C258_main(linkedModel, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 *requestedState = 0;
                 break;
         }
@@ -421,7 +421,7 @@ void func_8010BEF8_msetup(void) {
     model = func_8000B108_main(D_80119964_msetup[setupCharacter], 0x2A9);
     index = model;
     func_8001C814_main(index, 2, 2);
-    func_8001C258_main(index, 4, 4);
+    func_8001C258_main(index, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     pos = &entry->pos;
     Hu3DModelPosSet(index, entry->pos.x, entry->pos.y, entry->pos.z);
     Hu3DModelRotSet(index, 0.0f, entry->value, 0.0f);
@@ -440,7 +440,7 @@ void func_8010BEF8_msetup(void) {
         index = Hu3DModelLink(D_801198C0_msetup);
     }
     shadow = index;
-    func_8001C258_main(shadow, 4, 4);
+    func_8001C258_main(shadow, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelPosSet(shadow, pos->x, 0.0f, pos->z);
     HuPrcVSleep();
     specialMotion = 0;
@@ -474,8 +474,8 @@ void func_8010BEF8_msetup(void) {
                 entry->state = 3;
                 break;
             case 3:
-                func_8001C258_main(model, 4, 0);
-                func_8001C258_main(shadow, 4, 0);
+                func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                func_8001C258_main(shadow, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 if (motions[0] >= 0 && (!specialMotion || entry->index != 0)) {
                     func_8001C5B4_main(model, motions[0]);
                     playing = 1;
@@ -499,8 +499,8 @@ void func_8010BEF8_msetup(void) {
                 scale -= scaleStep;
                 if (scale <= 0.0f) {
                     scale = 0.0f;
-                    func_8001C258_main(model, 4, 4);
-                    func_8001C258_main(shadow, 4, 4);
+                    func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    func_8001C258_main(shadow, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     entry->state = 0;
                 }
                 Hu3DModelScaleSet(model, scale, 1.0f, scale);

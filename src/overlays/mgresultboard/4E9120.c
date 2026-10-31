@@ -154,7 +154,7 @@ s32 func_8010A864_mgresultboard(omObjData *arg0, s8 arg1, s8 arg2) {
     D_8010AFB0_mgresultboard[arg1].unk_04 = arg2;
 
     if (D_8010AFB0_mgresultboard[arg1].unk_08 >= 0) {
-        func_8001C258_main(arg0->model[D_8010AFB0_mgresultboard[arg1].unk_08 + 1], 4, 0);
+        func_8001C258_main(arg0->model[D_8010AFB0_mgresultboard[arg1].unk_08 + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     }
 
     D_8010AFB0_mgresultboard[arg1].unk_00 = 1;

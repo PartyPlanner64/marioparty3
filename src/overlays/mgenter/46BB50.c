@@ -37,13 +37,13 @@ void func_80108A60_mgenter(void) {
     f32 length;
     s8 stick;
 
-    if (D_800D5558_main[1] & 0x10) {
+    if (D_800D5558_main[1] & R_TRIG) {
         osSyncPrintf("\t{\n\t{%4.1f,%4.1f,%4.1f},\n", CRot.x, CRot.y, CRot.z);
         osSyncPrintf("\t{%4.1f,%4.1f,%4.1f},\n", Center.x, Center.y, Center.z);
         osSyncPrintf("\t%4.1f,%4.1f\n\t},\n", CZoom, D_80109AB0_mgenter);
     }
-    if (D_800CDA7C_main[1] & 0x8) {
-        if (D_800CDA7C_main[1] & 0x2000) {
+    if (D_800CDA7C_main[1] & U_CBUTTONS) {
+        if (D_800CDA7C_main[1] & Z_TRIG) {
             zoom = CZoom;
             zoom += 30.0f;
             CZoom = zoom;
@@ -53,24 +53,24 @@ void func_80108A60_mgenter(void) {
             CZoom = zoom;
         }
     }
-    if ((D_800CDA7C_main[1] & 0x4) && (CZoom - 10.0f != 0.0f)) {
-        if (D_800CDA7C_main[1] & 0x2000) {
+    if ((D_800CDA7C_main[1] & D_CBUTTONS) && (CZoom - 10.0f != 0.0f)) {
+        if (D_800CDA7C_main[1] & Z_TRIG) {
             CZoom -= 30.0f;
         } else {
             zoom = CZoom;
             CZoom = zoom - 10.0f;
         }
     }
-    if (D_800CDA7C_main[1] & 2) {
+    if (D_800CDA7C_main[1] & L_CBUTTONS) {
         D_80109AB0_mgenter += 1.0f;
     }
-    if (D_800CDA7C_main[1] & 1) {
+    if (D_800CDA7C_main[1] & R_CBUTTONS) {
         D_80109AB0_mgenter -= 1.0f;
     }
     Hu3DCamSetPerspective(0, D_80109AB0_mgenter, D_80109B64_mgenter, D_80109B78_mgenter);
     x = CRot.x;
     y = CRot.y;
-    if (D_800CDA7C_main[1] & 0x2000) {
+    if (D_800CDA7C_main[1] & Z_TRIG) {
         speed = 5.0f;
     } else {
         speed = 2.0f;
@@ -91,27 +91,27 @@ void func_80108A60_mgenter(void) {
         x += 360.0f;
     }
     CRot.x = x;
-    if (D_800CDA7C_main[1] & 0x2000) {
+    if (D_800CDA7C_main[1] & Z_TRIG) {
         speed = 10.0f;
     } else {
         speed = 2.0f;
     }
-    if (D_800CDA7C_main[1] & 0x800) {
+    if (D_800CDA7C_main[1] & U_JPAD) {
         Center.x += sindf(y) * sindf(x) * -speed;
         Center.y += cosdf(x) * -speed;
         Center.z += cosdf(y) * sindf(x) * -speed;
-    } else if (D_800CDA7C_main[1] & 0x400) {
+    } else if (D_800CDA7C_main[1] & D_JPAD) {
         Center.x += sindf(y) * sindf(x) * speed;
         Center.y += cosdf(x) * speed;
         Center.z += cosdf(y) * sindf(x) * speed;
-    } else if (D_800CDA7C_main[1] & 0x200) {
+    } else if (D_800CDA7C_main[1] & L_JPAD) {
         x = gCameraList->pos.z - Center.z;
         dz = -(gCameraList->pos.x - Center.x);
         length = 1.0f / HuSqrtf(x * x + dz * dz);
         Center.x += x * length * speed;
         Center.y += 0.0f;
         Center.z += dz * length * speed;
-    } else if (D_800CDA7C_main[1] & 0x100) {
+    } else if (D_800CDA7C_main[1] & R_JPAD) {
         x = -(gCameraList->pos.z - Center.z);
         dz = gCameraList->pos.x - Center.x;
         length = 1.0f / HuSqrtf(x * x + dz * dz);
@@ -185,7 +185,7 @@ s16 func_801095F4_mgenter(void) {
     sprGrp = espEntry(D_80109B40_mgenter, 0, 1);
     D_80109B42_mgenter = sprGrp;
     for (i = 0; i < ARRAY_COUNT(D_80109B48_mgenter); i++) {
-        D_80109B48_mgenter[i] = HuMemAllocTag(0x6000, 0x7918);
+        D_80109B48_mgenter[i] = HuMemAllocTag(0x6000, TAG_OVERLAY);
     }
     D_80109B54_mgenter = HuSprGet(D_800CD1DC_main[sprGrp].unk04, 0)->unk_84->unk00->unk00;
     D_80109B44_mgenter = 0;
@@ -232,16 +232,16 @@ void func_801098D8_mgenter(void) {
     f32 x = 0.0f;
     f32 length;
 
-    if (D_800CDA7C_main[D_80109B74_mgenter] & 0x200) {
+    if (D_800CDA7C_main[D_80109B74_mgenter] & L_JPAD) {
         x = -1.0f;
     }
-    if (D_800CDA7C_main[D_80109B74_mgenter] & 0x100) {
+    if (D_800CDA7C_main[D_80109B74_mgenter] & R_JPAD) {
         x += 1.0f;
     }
-    if (D_800CDA7C_main[D_80109B74_mgenter] & 0x800) {
+    if (D_800CDA7C_main[D_80109B74_mgenter] & U_JPAD) {
         y += 1.0f;
     }
-    if (D_800CDA7C_main[D_80109B74_mgenter] & 0x400) {
+    if (D_800CDA7C_main[D_80109B74_mgenter] & D_JPAD) {
         y += -1.0f;
     }
     if ((x == 0.0f) & (y == 0.0f)) {

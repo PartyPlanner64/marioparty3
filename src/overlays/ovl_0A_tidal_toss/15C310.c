@@ -133,7 +133,7 @@ void func_801059A0_tidal_toss(void) {
     omInitObjMan(0x10, 0);
     func_8004A208_main();
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutView);
-    omSetStatBit(obj, 0xA0);
+    omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     func_8000B5F0_main(1);
     camIndex = func_8000B638_main();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
@@ -268,7 +268,7 @@ void func_80106104_tidal_toss(omObjData *object) {
     f32 scale;
     s32 i;
 
-    work = HuMemAllocTag(0xB4, 0x7918);
+    work = HuMemAllocTag(0xB4, TAG_OVERLAY);
     object->data = work;
     memset(work, 0, 0xB4);
     work->unk03 = 1;
@@ -331,7 +331,7 @@ void func_80106104_tidal_toss(omObjData *object) {
 void func_80106480_tidal_toss(omObjData *object) {
     TidalTossSetupWork *work;
 
-    work = HuMemAllocTag(sizeof(TidalTossSetupWork), 0x7918);
+    work = HuMemAllocTag(sizeof(TidalTossSetupWork), TAG_OVERLAY);
     object->data = work;
     memset(work, 0, sizeof(TidalTossSetupWork));
     work->unk03 = 1;
@@ -346,7 +346,7 @@ void func_80106480_tidal_toss(omObjData *object) {
 void func_80106514_tidal_toss(omObjData *object) {
     TidalTossSetupWork *work;
 
-    work = HuMemAllocTag(sizeof(TidalTossSetupWork), 0x7918);
+    work = HuMemAllocTag(sizeof(TidalTossSetupWork), TAG_OVERLAY);
     object->data = work;
     memset(work, 0, sizeof(TidalTossSetupWork));
     work->unk03 = 1;
@@ -441,7 +441,7 @@ void func_80108638_tidal_toss(omObjData *object) {
     Hu3DModelRotSet(object->model[0], object->rot.x, object->rot.y, object->rot.z);
     Hu3DModelScaleSet(object->model[0], object->scale.x, object->scale.y, object->scale.z);
 
-    data->unk158 = HuMemAllocTag(0x64, 0x7918);
+    data->unk158 = HuMemAllocTag(0x64, TAG_OVERLAY);
     memset(data->unk158, 0, 0x64);
     work = data->unk158;
     work->unk2B = playerIndex;
@@ -567,10 +567,10 @@ void func_80108F08_tidal_toss(omObjData *object, s32 arg1, s32 arg2, u16 player,
     for (i = 0; i < object->mdlcnt; i++) {
         object->model[i] = 0;
     }
-    object->data = HuMemAllocTag(sizeof(func_800E1BA8_minigame_ObjData), 0x7918);
+    object->data = HuMemAllocTag(sizeof(func_800E1BA8_minigame_ObjData), TAG_OVERLAY);
     memset(object->data, 0, sizeof(func_800E1BA8_minigame_ObjData));
     data = object->data;
-    data->unkE8 = HuMemAllocTag(object->mtncnt * 3 * sizeof(s32), 0x7918);
+    data->unkE8 = HuMemAllocTag(object->mtncnt * 3 * sizeof(s32), TAG_OVERLAY);
     memset(data->unkE8, 0, object->mtncnt * 3 * sizeof(s32));
 
     object->model[0] = func_8000B108_main(arg1 | arg2, tag);
@@ -686,7 +686,7 @@ void func_80109180_tidal_toss(omObjData *object) {
     }
 
     func_800DDD94_minigame(object);
-    func_8001C258_main(object->model[1], 4, 4);
+    func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 
     if (status & 0x200) {
         if ((data->unk50 & 0x80) && (work->unk2A == 0)) {

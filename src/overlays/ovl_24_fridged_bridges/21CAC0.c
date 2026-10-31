@@ -20,7 +20,7 @@ void func_8010BE0C_fridged_bridges(omObjData *arg0) {
     FridgedBridgesCameraTarget *target;
 
     player->unk_2C = obj;
-    target = HuMemAllocTag(sizeof(FridgedBridgesCameraTarget), 0x7918);
+    target = HuMemAllocTag(sizeof(FridgedBridgesCameraTarget), TAG_OVERLAY);
     obj->data = target;
     target->playerId = player->playerId;
     target->playerObj = arg0;
@@ -42,7 +42,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/21CAC0", func_8010
 
 void func_8010C178_fridged_bridges(omObjData *arg0) {
     if (--arg0->work[0] == 0) {
-        func_8001C258_main(arg0->model[0], 4, 4);
+        func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         D_8010DA48_fridged_bridges[arg0->work[1]] = 0;
         omDelObj(arg0);
     }

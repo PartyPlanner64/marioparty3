@@ -48,7 +48,7 @@ void func_80046600_main(void) {
     LightObjWork *work;
 
     D_800A1660_main = omAddObj(0x7FD0, 0, 0, -1, func_80046728_main);
-    omSetStatBit(D_800A1660_main, 0xA0);
+    omSetStatBit(D_800A1660_main, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     work = OM_GET_WORK_PTR(D_800A1660_main, LightObjWork);
     work->halfwords[0] = printWin(14, 14, 306, 34, 0xDF70);
     work->halfwords[4] =
@@ -82,7 +82,7 @@ void func_80046728_main(omObjData *object) {
     u16 button;
 
     statStr = D_800A166C_main[(D_800CE1D4_main->unk02[D_800A1664_main].stat ^ 1) & 1];
-    fontcolor = 14;
+    fontcolor = FONT_COLOR_YELLOW;
     sprintf(D_800D5218_main, "LIGHT%1d DIR%4d,%4d,%4d  STAT %s", D_800A1664_main,
             D_800CE1D4_main->unk02[D_800A1664_main].unk04, D_800CE1D4_main->unk02[D_800A1664_main].unk05,
             D_800CE1D4_main->unk02[D_800A1664_main].unk06, statStr);
@@ -93,7 +93,7 @@ void func_80046728_main(omObjData *object) {
 
     switch (D_800A1669_main) {
         case 0:
-            if ((D_800D5558_main[0] & 0x8000) && D_800A1666_main == 1) {
+            if ((D_800D5558_main[0] & A_BUTTON) && D_800A1666_main == 1) {
                 D_800CC440_main[*dirWin].unk_14 = 0x7070;
                 D_800A1668_main = 0xF0;
                 D_800A166A_main = -4;
@@ -112,25 +112,25 @@ void func_80046728_main(omObjData *object) {
             button = D_800D0590_main[0];
             row = D_800A1666_main / 3;
             col = D_800A1666_main % 3;
-            if (button & 0x200) {
+            if (button & L_JPAD) {
                 if (col == 0) {
                     D_800A1666_main = row * 3 + 2;
                 } else {
                     D_800A1666_main--;
                 }
-            } else if (button & 0x100) {
+            } else if (button & R_JPAD) {
                 if (col == 2) {
                     D_800A1666_main = row * 3;
                 } else {
                     D_800A1666_main++;
                 }
-            } else if (button & 0x800) {
+            } else if (button & U_JPAD) {
                 if (row == 0) {
                     D_800A1666_main = col + 3;
                 } else {
                     D_800A1666_main -= 3;
                 }
-            } else if (button & 0x400) {
+            } else if (button & D_JPAD) {
                 if (row == 1) {
                     D_800A1666_main = col;
                 } else {
@@ -140,17 +140,17 @@ void func_80046728_main(omObjData *object) {
 
             switch (D_800A1666_main) {
                 case 0:
-                    if ((D_800D1244_main[0] & 4) && D_800A1664_main >= 2) {
+                    if ((D_800D1244_main[0] & D_CBUTTONS) && D_800A1664_main >= 2) {
                         D_800A1664_main--;
                     }
-                    if ((D_800D1244_main[0] & 8) && D_800A1664_main < D_800CE1D4_main->unk00) {
+                    if ((D_800D1244_main[0] & U_CBUTTONS) && D_800A1664_main < D_800CE1D4_main->unk00) {
                         D_800A1664_main++;
                     }
                     break;
                 case 1:
                     break;
                 case 2:
-                    if (D_800D1244_main[0] & 0x800C) {
+                    if (D_800D1244_main[0] & (A_BUTTON | U_CBUTTONS | D_CBUTTONS)) {
                         if (D_800CE1D4_main->unk02[D_800A1664_main].stat & 1) {
                             HmfLightStatSet(D_800A1664_main, 1, 0);
                         } else {
@@ -159,51 +159,51 @@ void func_80046728_main(omObjData *object) {
                     }
                     break;
                 case 3:
-                    if (D_800D1244_main[0] & 4) {
+                    if (D_800D1244_main[0] & D_CBUTTONS) {
                         D_800CE1D4_main->unk02[D_800A1664_main].r -= 1;
                     }
-                    if (D_800D1244_main[0] & 8) {
+                    if (D_800D1244_main[0] & U_CBUTTONS) {
                         D_800CE1D4_main->unk02[D_800A1664_main].r += 1;
                     }
-                    if (D_800D1244_main[0] & 2) {
+                    if (D_800D1244_main[0] & L_CBUTTONS) {
                         D_800CE1D4_main->unk02[D_800A1664_main].r -= 5;
                     }
-                    if (D_800D1244_main[0] & 1) {
+                    if (D_800D1244_main[0] & R_CBUTTONS) {
                         D_800CE1D4_main->unk02[D_800A1664_main].r += 5;
                     }
                     break;
                 case 4:
-                    if (D_800D1244_main[0] & 4) {
+                    if (D_800D1244_main[0] & D_CBUTTONS) {
                         D_800CE1D4_main->unk02[D_800A1664_main].g -= 1;
                     }
-                    if (D_800D1244_main[0] & 8) {
+                    if (D_800D1244_main[0] & U_CBUTTONS) {
                         D_800CE1D4_main->unk02[D_800A1664_main].g += 1;
                     }
-                    if (D_800D1244_main[0] & 2) {
+                    if (D_800D1244_main[0] & L_CBUTTONS) {
                         D_800CE1D4_main->unk02[D_800A1664_main].g -= 5;
                     }
-                    if (D_800D1244_main[0] & 1) {
+                    if (D_800D1244_main[0] & R_CBUTTONS) {
                         D_800CE1D4_main->unk02[D_800A1664_main].g += 5;
                     }
                     break;
                 case 5:
-                    if (D_800D1244_main[0] & 4) {
+                    if (D_800D1244_main[0] & D_CBUTTONS) {
                         D_800CE1D4_main->unk02[D_800A1664_main].b -= 1;
                     }
-                    if (D_800D1244_main[0] & 8) {
+                    if (D_800D1244_main[0] & U_CBUTTONS) {
                         D_800CE1D4_main->unk02[D_800A1664_main].b += 1;
                     }
-                    if (D_800D1244_main[0] & 2) {
+                    if (D_800D1244_main[0] & L_CBUTTONS) {
                         D_800CE1D4_main->unk02[D_800A1664_main].b -= 5;
                     }
-                    if (D_800D1244_main[0] & 1) {
+                    if (D_800D1244_main[0] & R_CBUTTONS) {
                         D_800CE1D4_main->unk02[D_800A1664_main].b += 5;
                     }
                     break;
             }
             break;
         case 1:
-            if (D_800D5558_main[0] & 0xC000) {
+            if (D_800D5558_main[0] & (A_BUTTON | B_BUTTON)) {
                 D_800A1669_main = 0;
                 D_800CC440_main[*dirWin].unk_14 = 0xDF70;
             }

@@ -240,7 +240,7 @@ void func_80105C60_coconut_conk(omObjData *arg0) {
     CoconutConkCameraWork *work;
 
     D_800EC1C0_minigame[D_800EBE28_minigame++] = arg0;
-    work = HuMemAllocTag(sizeof(CoconutConkCameraWork), 0x7918);
+    work = HuMemAllocTag(sizeof(CoconutConkCameraWork), TAG_OVERLAY);
     arg0->data = work;
     memset(work, 0, sizeof(CoconutConkCameraWork));
     work->unk03 = 1;
@@ -299,7 +299,7 @@ void func_801060C8_coconut_conk(omObjData *arg0) {
     D_8010B2BC_coconut_conk = 67.0f;
     espPosSet(D_8010B2B6_coconut_conk, 160, 67);
     D_8010B1C4_coconut_conk = func_80055194_main(func_8000B838_main(0x23000E));
-    Hu3DModelCameraSet(Hu3DHookFuncCreate(0, func_80105D98_coconut_conk, 2), 1);
+    Hu3DModelCameraSet(Hu3DHookFuncCreate(0, func_80105D98_coconut_conk, 2), HU3D_CAM0);
     arg0->func = func_801060C0_coconut_conk;
 }
 
@@ -347,7 +347,7 @@ void func_80106394_coconut_conk(omObjData *arg0) {
     arg0->trans.x = 0.0f;
     arg0->trans.y = 0.0f;
     arg0->trans.z = 0.0f;
-    Hu3DModelCameraSet(arg0->model[0], 1);
+    Hu3DModelCameraSet(arg0->model[0], HU3D_CAM0);
     arg0->func = func_801062D4_coconut_conk;
 }
 
@@ -355,7 +355,7 @@ void func_8010641C_coconut_conk(void) {
     omObjData *obj = omAddObj(0x35C, 1, 0, -1, func_80106394_coconut_conk);
     obj->work[0] = 0;
     D_8010B400_coconut_conk = obj;
-    omSetStatBit(obj, 0xA0);
+    omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
 void func_80106468_coconut_conk(omObjData *arg0) {
@@ -392,8 +392,8 @@ void func_8010659C_coconut_conk(omObjData *arg0) {
     Hu3DModelPosSet(arg0->model[1], 450.0f, 750.0f, -1000.0f);
     D_8010B4A0_coconut_conk = 1.0f;
     D_8010B4A4_coconut_conk = 1.0f;
-    Hu3DModelCameraSet(arg0->model[0], 2);
-    Hu3DModelCameraSet(arg0->model[1], 2);
+    Hu3DModelCameraSet(arg0->model[0], HU3D_CAM1);
+    Hu3DModelCameraSet(arg0->model[1], HU3D_CAM1);
     arg0->func = func_80106468_coconut_conk;
 }
 
@@ -434,7 +434,7 @@ void func_801067E0_coconut_conk(omObjData *arg0) {
     arg0->trans.y = 0.0f;
     arg0->trans.z = -225.0f;
     Hu3DModelPosSet(arg0->model[0], arg0->trans.x, arg0->trans.y, -225.0f);
-    Hu3DModelCameraSet(arg0->model[0], 2);
+    Hu3DModelCameraSet(arg0->model[0], HU3D_CAM1);
     arg0->func = func_801066E4_coconut_conk;
 }
 
@@ -459,10 +459,10 @@ void func_801069BC_coconut_conk(omObjData *arg0) {
         case 0:
             Hu3DMotionTimeSet(arg0->model[0], 0.0f);
             Hu3DMotionSpeedSet(arg0->model[0], 0.0f);
-            func_8001C258_main(arg0->model[0], 4, 4);
+            func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             break;
         case 1:
-            func_8001C258_main(arg0->model[0], 4, 0);
+            func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             arg0->trans.y = 422.0f - (++data->unk06 & 1) * 10.0f;
             if (data->unk06 > 0) {
                 data->unk04 = 2;
@@ -494,16 +494,16 @@ void func_801069BC_coconut_conk(omObjData *arg0) {
                 HuAudFXPanning(sound, pan);
             }
             if ((++data->unk06 & 3) < 3) {
-                func_8001C258_main(arg0->model[0], 4, 0);
+                func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             } else {
-                func_8001C258_main(arg0->model[0], 4, 4);
+                func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             if (data->unk06 >= 16) {
                 D_8010B1DE_coconut_conk--;
                 data->unk04 = 0;
                 data->unk06 = 0;
                 arg0->trans.z = -200.0f;
-                func_8001C258_main(arg0->model[0], 4, 4);
+                func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 Hu3DMotionTimeSet(arg0->model[0], 0.0f);
                 Hu3DMotionSpeedSet(arg0->model[0], 0.0f);
             }
@@ -520,16 +520,16 @@ void func_801069BC_coconut_conk(omObjData *arg0) {
                 }
             }
             if ((++data->unk06 & 3) < 3) {
-                func_8001C258_main(arg0->model[0], 4, 0);
+                func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             } else {
-                func_8001C258_main(arg0->model[0], 4, 4);
+                func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             if (data->unk06 >= 16) {
                 D_8010B1DE_coconut_conk--;
                 data->unk04 = 0;
                 data->unk06 = 0;
                 arg0->trans.z = -200.0f;
-                func_8001C258_main(arg0->model[0], 4, 4);
+                func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 Hu3DMotionTimeSet(arg0->model[0], 0.0f);
                 Hu3DMotionSpeedSet(arg0->model[0], 0.0f);
             }
@@ -556,8 +556,8 @@ void func_80106D5C_coconut_conk(omObjData *arg0) {
     Hu3DModelPosSet(arg0->model[0], arg0->trans.x, arg0->trans.y, -200.0f);
     arg0->model[1] = func_8000B108_main(7, 0x2AD);
     Hu3DModelPosSet(arg0->model[1], arg0->trans.x, arg0->trans.y, arg0->trans.z);
-    Hu3DModelCameraSet(arg0->model[0], 2);
-    Hu3DModelCameraSet(arg0->model[1], 2);
+    Hu3DModelCameraSet(arg0->model[0], HU3D_CAM1);
+    Hu3DModelCameraSet(arg0->model[1], HU3D_CAM1);
     arg0->func = func_80106D40_coconut_conk;
 }
 
@@ -849,7 +849,7 @@ void func_80107B8C_coconut_conk(omObjData *arg0) {
                 D_8010B1CC_coconut_conk = 1;
                 func_80105BA4_coconut_conk(arg0, 2);
                 Hu3DMotionSpeedSet(arg0->model[6], 1.0f);
-                func_8001C258_main(arg0->model[6], 4, 0);
+                func_8001C258_main(arg0->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 Hu3DModelPosSet(arg0->model[6], arg0->trans.x, arg0->trans.y + 50.0f, arg0->trans.z);
                 data->unk0A = 1;
                 if (!(GwPlayer[arg0->work[0]].stat & 1)) {
@@ -860,8 +860,8 @@ void func_80107B8C_coconut_conk(omObjData *arg0) {
         }
     }
     if (D_800CCF58_main[HmfModelData[arg0->model[6]].motId].unk02 <= HmfModelData[arg0->model[6]].motTime) {
-        func_8001C258_main(arg0->model[6], 4, 4);
-        func_8001C258_main(arg0->model[7], 4, 0);
+        func_8001C258_main(arg0->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        func_8001C258_main(arg0->model[7], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(arg0->model[7], arg0->trans.x, arg0->trans.y + 50.0f, arg0->trans.z + 40.0f);
         if (data->unk0C == 0) {
             sound = PlayerFXPlay(D_8010AF60_coconut_conk, arg0->work[0]);
@@ -981,13 +981,13 @@ void func_8010815C_coconut_conk(omObjData *arg0) {
             }
             switch (data->unk08) {
                 case 0:
-                    func_8001C258_main(arg0->model[3], 4, 4);
+                    func_8001C258_main(arg0->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     func_8001C258_main(arg0->model[3], 0x4000, 0);
                     Hu3DMotionSpeedSet(arg0->model[4], 1.0f);
-                    func_8001C258_main(arg0->model[4], 4, 0);
+                    func_8001C258_main(arg0->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     Hu3DModelPosSet(arg0->model[4], arg0->trans.x, arg0->trans.y + 20.0f, arg0->trans.z);
                     Hu3DMotionSpeedSet(arg0->model[5], 1.0f);
-                    func_8001C258_main(arg0->model[5], 4, 0);
+                    func_8001C258_main(arg0->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     Hu3DModelPosSet(arg0->model[5], arg0->trans.x, arg0->trans.y + 20.0f, arg0->trans.z);
                     func_80105BA4_coconut_conk(arg0, 1);
                     arg0->rot.z = 0.0f;
@@ -1009,10 +1009,10 @@ void func_8010815C_coconut_conk(omObjData *arg0) {
                     }
                     func_8001F9E4_main(arg0->model[4], data->unk20);
                     if (D_800CCF58_main[HmfModelData[arg0->model[4]].motId].unk02 <= HmfModelData[arg0->model[4]].motTime) {
-                        func_8001C258_main(arg0->model[4], 4, 4);
+                        func_8001C258_main(arg0->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     }
                     if (D_800CCF58_main[HmfModelData[arg0->model[5]].motId].unk02 <= HmfModelData[arg0->model[5]].motTime) {
-                        func_8001C258_main(arg0->model[5], 4, 4);
+                        func_8001C258_main(arg0->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     }
                     break;
                 case 2:
@@ -1022,10 +1022,10 @@ void func_8010815C_coconut_conk(omObjData *arg0) {
                     }
                     func_8001F9E4_main(arg0->model[4], data->unk20);
                     if (D_800CCF58_main[HmfModelData[arg0->model[4]].motId].unk02 <= HmfModelData[arg0->model[4]].motTime) {
-                        func_8001C258_main(arg0->model[4], 4, 4);
+                        func_8001C258_main(arg0->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     }
                     if (D_800CCF58_main[HmfModelData[arg0->model[5]].motId].unk02 <= HmfModelData[arg0->model[5]].motTime) {
-                        func_8001C258_main(arg0->model[5], 4, 4);
+                        func_8001C258_main(arg0->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     }
                     break;
             }
@@ -1140,14 +1140,14 @@ void func_801089DC_coconut_conk(omObjData *obj) {
     Hu3DModelPosSet(obj->model[7], 0.0f, 0.0f, 0.0f);
     Hu3DModelScaleSet(obj->model[7], 1.5f, 1.5f, 1.5f);
     func_8001C814_main(obj->model[7], 2, 2);
-    Hu3DModelCameraSet(obj->model[0], 2);
-    Hu3DModelCameraSet(obj->model[1], 2);
-    Hu3DModelCameraSet(obj->model[2], 2);
-    Hu3DModelCameraSet(obj->model[3], 2);
-    Hu3DModelCameraSet(obj->model[4], 2);
-    Hu3DModelCameraSet(obj->model[5], 2);
-    Hu3DModelCameraSet(obj->model[6], 2);
-    Hu3DModelCameraSet(obj->model[7], 2);
+    Hu3DModelCameraSet(obj->model[0], HU3D_CAM1);
+    Hu3DModelCameraSet(obj->model[1], HU3D_CAM1);
+    Hu3DModelCameraSet(obj->model[2], HU3D_CAM1);
+    Hu3DModelCameraSet(obj->model[3], HU3D_CAM1);
+    Hu3DModelCameraSet(obj->model[4], HU3D_CAM1);
+    Hu3DModelCameraSet(obj->model[5], HU3D_CAM1);
+    Hu3DModelCameraSet(obj->model[6], HU3D_CAM1);
+    Hu3DModelCameraSet(obj->model[7], HU3D_CAM1);
     obj->func = func_8010815C_coconut_conk;
 }
 
@@ -1286,7 +1286,7 @@ void func_801095C8_coconut_conk(omObjData *arg0) {
     }
     func_800DDD94_minigame(arg0);
     if (HmfModelData[arg0->model[7]].motTime == 0.0f) {
-        func_8001C258_main(arg0->model[7], 4, 4);
+        func_8001C258_main(arg0->model[7], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     if (work->unk5C == 0x200 && work->unk50 == 0x80 && data->unk04 == 0) {
         data->unk04 = 1;
@@ -1444,7 +1444,7 @@ void func_80109940_coconut_conk(omObjData *arg0) {
     if (work->unk53[1] != -1) {
         arg0->trans.x = data->unk18;
     }
-    func_8001C258_main(arg0->model[1], 4, 4);
+    func_8001C258_main(arg0->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     if (data->unk16 > 0) {
         data->unk16++;
     }
@@ -1539,10 +1539,10 @@ void func_80109DEC_coconut_conk(omObjData *arg0) {
     Hu3DModelPosSet(arg0->model[1], arg0->trans.x, arg0->trans.y, arg0->trans.z);
     Hu3DModelPosSet(arg0->model[7], arg0->trans.x, arg0->trans.y, arg0->trans.z);
     Hu3DModelPosSet(arg0->model[6], arg0->trans.x, arg0->trans.y, arg0->trans.z);
-    Hu3DModelCameraSet(arg0->model[0], 2);
-    Hu3DModelCameraSet(arg0->model[1], 2);
-    Hu3DModelCameraSet(arg0->model[7], 2);
-    Hu3DModelCameraSet(arg0->model[6], 2);
+    Hu3DModelCameraSet(arg0->model[0], HU3D_CAM1);
+    Hu3DModelCameraSet(arg0->model[1], HU3D_CAM1);
+    Hu3DModelCameraSet(arg0->model[7], HU3D_CAM1);
+    Hu3DModelCameraSet(arg0->model[6], HU3D_CAM1);
     func_800E149C_minigame(arg0, 0, 2);
     func_80105B04_coconut_conk(arg0->work[0]);
     arg0->func = func_80109940_coconut_conk;
@@ -1618,7 +1618,7 @@ void func_8010A5D8_coconut_conk(omObjData *arg0) {
 
 void func_8010A610_coconut_conk(omObjData *arg0) {
     if (D_800D530C_main == 1) {
-        WipeCreateOut(0, 20);
+        WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         arg0->func = func_8010A5D8_coconut_conk;
         HuAudSeqFadeOut(30);
         func_8004AB0C_main(30);
@@ -1735,7 +1735,7 @@ void func_8010A668_coconut_conk(omObjData *arg0) {
             break;
         case 5:
             if (D_8010B1E0_coconut_conk == 0) {
-                WipeCreateOut(0, 20);
+                WipeCreateOut(WIPE_TYPE_NORMAL, 20);
                 arg0->func = func_8010A5D8_coconut_conk;
                 D_8010B1E0_coconut_conk++;
             }
@@ -1747,7 +1747,7 @@ void func_8010AB4C_coconut_conk(omObjData *arg0) {
     s16 i;
 
     func_800E6F0C_minigame(2);
-    WipeCreateIn(0xFF, 16);
+    WipeCreateIn(WIPE_TYPE_PREV, 16);
     D_8010B1E0_coconut_conk = 0;
     D_8010B1C8_coconut_conk = 0;
     D_8010CBBA_coconut_conk = 100;
@@ -1786,7 +1786,7 @@ void func_8010AC90_coconut_conk(void) {
 
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     obj->work[0] = 2;
-    omSetStatBit(obj, 0xA0);
+    omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     func_8000B5F0_main(2);
     func_8000B710_main(2);
     for (i = 0; i < 2; i++) {

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "game/printfunc.h"
 #include "opening.h"
 
 void func_80105B64_sldebug(omObjData *); /* extern */
@@ -29,7 +30,7 @@ void func_801059A0_sldebug(void) {
     func_800142A0_main(0x2D);
     omInitObjMan(0x33, 0xA);
     func_8004A208_main();
-    omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), 0xA0U);
+    omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     omAddObj(0x2710, 0, 0, -1, func_801068D4_sldebug);
     HmfLightMaxSet(4);
     HmfLightColorSet(0, 0x78, 0x78, 0x78);
@@ -45,7 +46,7 @@ void func_801059A0_sldebug(void) {
     func_80106850_sldebug();
     omAddObj(0x7D0, 0xA, 0xA, -1, func_80105B64_sldebug);
     omAddObj(0x7D0, 0, 0, -1, func_80106254_sldebug);
-    WipeCreateIn(0, 0x10);
+    WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
     D_800CD280_main = 1;
     func_80050ABC_main();
     HuAudSeqPlay(8);
@@ -60,7 +61,7 @@ void func_80105B64_sldebug(omObjData *arg0) {
     char *difficultyNames[] = { "STORY DIFF  EASY", "STORY DIFF  NORMAL", "STORY DIFF  HARD", "STORY DIFF  VERYHARD" };
     s16 i;
 
-    fontcolor = 15;
+    fontcolor = FONT_COLOR_WHITE;
     print8(70, 80, "ALL MINIGAME ENABLE");
     print8(70, 90, "WLUIGI & DAISY ENABLE");
     print8(70, 100, storyNames[D_8010697C_sldebug]);
@@ -68,19 +69,19 @@ void func_80105B64_sldebug(omObjData *arg0) {
     print8(70, 120, difficultyNames[D_80106988_sldebug]);
     print8(70, 130, "WLUIGILAND & REVKUNMAP ENABLE");
     print8(70, 140, "EXIT");
-    if (D_800D0590_main[0] & 0x800) {
+    if (D_800D0590_main[0] & U_JPAD) {
         HuAudFXPlay(1);
         D_80106978_sldebug--;
         if (D_80106978_sldebug < 0) {
             D_80106978_sldebug = 6;
         }
-    } else if (D_800D0590_main[0] & 0x400) {
+    } else if (D_800D0590_main[0] & D_JPAD) {
         HuAudFXPlay(1);
         D_80106978_sldebug++;
         if (D_80106978_sldebug >= 7) {
             D_80106978_sldebug = 0;
         }
-    } else if (D_800D0590_main[0] & 0x200) {
+    } else if (D_800D0590_main[0] & L_JPAD) {
         switch (D_80106978_sldebug) {
             case 2:
                 HuAudFXPlay(1);
@@ -104,7 +105,7 @@ void func_80105B64_sldebug(omObjData *arg0) {
                 }
                 break;
         }
-    } else if (D_800D0590_main[0] & 0x100) {
+    } else if (D_800D0590_main[0] & R_JPAD) {
         switch (D_80106978_sldebug) {
             case 2:
                 HuAudFXPlay(1);
@@ -128,7 +129,7 @@ void func_80105B64_sldebug(omObjData *arg0) {
                 }
                 break;
         }
-    } else if (D_800D5558_main[0] & 0x8000) {
+    } else if (D_800D5558_main[0] & A_BUTTON) {
         if (func_8010612C_sldebug() != 0) {
             if (D_80106980_sldebug != 0) {
                 GwStory.unk0 = D_8010697C_sldebug;
@@ -178,7 +179,7 @@ s32 func_8010612C_sldebug(void) {
     switch (D_80106978_sldebug) {
         case 0:
             _SetFlag(0x1D);
-            if ((u16)D_800CDA7C_main[0] & 0x8000) {
+            if ((u16)D_800CDA7C_main[0] & A_BUTTON) {
                 for (i = 0; i < 0x48; i++) {
                     GWMgUnlockSet(i);
                 }
@@ -220,22 +221,22 @@ void func_80106254_sldebug(omObjData *arg0) {
     f32 backSpeed;
     s8 stick;
 
-    if (D_800D5558_main[0] & 0x10) {
+    if (D_800D5558_main[0] & R_TRIG) {
         D_8010698C_sldebug ^= 1;
     }
-    if (D_800CDA7C_main[0] & 0x1000) {
+    if (D_800CDA7C_main[0] & START_BUTTON) {
         func_80106850_sldebug();
     }
-    if (D_800CDA7C_main[0] & 8) {
-        if (D_800CDA7C_main[0] & 0x2000) {
+    if (D_800CDA7C_main[0] & U_CBUTTONS) {
+        if (D_800CDA7C_main[0] & Z_TRIG) {
             zoom = CZoom + 30.0f;
         } else {
             zoom = CZoom + 10.0f;
         }
         CZoom = zoom;
     }
-    if ((D_800CDA7C_main[0] & 4) && CZoom - 10.0f != 0.0f) {
-        if (D_800CDA7C_main[0] & 0x2000) {
+    if ((D_800CDA7C_main[0] & D_CBUTTONS) && CZoom - 10.0f != 0.0f) {
+        if (D_800CDA7C_main[0] & Z_TRIG) {
             CZoom = CZoom - 30.0f;
         } else {
             zoom = CZoom;
@@ -244,7 +245,7 @@ void func_80106254_sldebug(omObjData *arg0) {
     }
     xRot = D_80106C20_sldebug.x;
     yRot = D_80106C20_sldebug.y;
-    if (D_800CDA7C_main[0] & 0x2000) {
+    if (D_800CDA7C_main[0] & Z_TRIG) {
         speed = 5.0f;
     } else {
         speed = 2.0f;
@@ -266,27 +267,27 @@ void func_80106254_sldebug(omObjData *arg0) {
     D_80106C20_sldebug.x = xRot;
     CRot.x = (s16)D_80106C20_sldebug.x;
     CRot.y = (s16)D_80106C20_sldebug.y;
-    if (D_800CDA7C_main[0] & 0x2000) {
+    if (D_800CDA7C_main[0] & Z_TRIG) {
         speed = 10.0f;
     } else {
         speed = 2.0f;
     }
-    if (D_800CDA7C_main[0] & 0x800) {
+    if (D_800CDA7C_main[0] & U_JPAD) {
         Center.x += sindf(yRot) * sindf(xRot) * (backSpeed = -speed);
         Center.y = cosdf(xRot) * backSpeed + Center.y;
         Center.z = cosdf(yRot) * sindf(xRot) * backSpeed + Center.z;
-    } else if (D_800CDA7C_main[0] & 0x400) {
+    } else if (D_800CDA7C_main[0] & D_JPAD) {
         Center.x += sindf(yRot) * sindf(xRot) * speed;
         Center.y = cosdf(xRot) * speed + Center.y;
         Center.z = cosdf(yRot) * sindf(xRot) * speed + Center.z;
-    } else if (D_800CDA7C_main[0] & 0x200) {
+    } else if (D_800CDA7C_main[0] & L_JPAD) {
         xRot = gCameraList->pos.z - Center.z;
         z = -(gCameraList->pos.x - Center.x);
         scale = 1.0f / HuSqrtf(xRot * xRot + z * z);
         Center.x += xRot * scale * speed;
         Center.y += 0.0f;
         Center.z += z * scale * speed;
-    } else if (D_800CDA7C_main[0] & 0x100) {
+    } else if (D_800CDA7C_main[0] & R_JPAD) {
         xRot = -(gCameraList->pos.z - Center.z);
         z = gCameraList->pos.x - Center.x;
         scale = 1.0f / HuSqrtf(xRot * xRot + z * z);
@@ -313,7 +314,7 @@ void func_80106850_sldebug(void) {
 
 void func_801068D4_sldebug(omObjData *arg0) {
     if ((D_80106960_sldebug != 0) || (D_800D530C_main != 0)) {
-        WipeCreateOut(0, 8);
+        WipeCreateOut(WIPE_TYPE_NORMAL, 8);
         arg0->func = func_80106930_sldebug;
         HuAudSeqFadeOut(0x3C);
     }

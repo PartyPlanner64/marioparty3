@@ -254,7 +254,7 @@ void func_80105AD8_koopa(omObjData *obj) {
                     obj->trans.z = 1.0f;
                 } else {
                     buttons = D_800C9520_main[GwPlayer[D_801094F4_koopa].pad];
-                    if (buttons & 0x8000) {
+                    if (buttons & A_BUTTON) {
                         obj->trans.z = 1.0f;
                     }
                 }
@@ -367,7 +367,7 @@ void func_80105AD8_koopa(omObjData *obj) {
                             HuWinInsertMesSet(D_80109518_koopa[obj->work[1]][0], (u32)D_80109508_koopa, 0);
                             HuWinInsertMesSizeGet((u32)D_80109508_koopa, 0);
                         }
-                        HuWinMesSet(D_80109518_koopa[obj->work[1]][0], D_80109354_koopa[D_8010954A_koopa[obj->work[1]]], -2, 4);
+                        HuWinMesSet(D_80109518_koopa[obj->work[1]][0], D_80109354_koopa[D_8010954A_koopa[obj->work[1]]], HUWIN_POS_CENTER, 4);
                         HuWinMesColSet(D_80109518_koopa[obj->work[1]][0], 1);
                         func_8005C154_main(D_80109518_koopa[obj->work[1]][0], 160, 160, 160);
                         HuWinBGColSet(D_80109518_koopa[obj->work[1]][0], 254, 255, 208);
@@ -730,7 +730,7 @@ void func_80107190_koopa(void) {
             HuWinInsertMesSet(window[0], (u32)D_80109508_koopa, 0);
             HuWinInsertMesSizeGet((u32)D_80109508_koopa, 0);
         }
-        HuWinMesSet(window[0], D_80109354_koopa[D_8010954A_koopa[i]], -2, 4);
+        HuWinMesSet(window[0], D_80109354_koopa[D_8010954A_koopa[i]], HUWIN_POS_CENTER, 4);
         HuWinMesSpeedSet(window[0], 0);
     }
     D_80109550_koopa = omAddObj(0x8000, 0, 0, -1, func_80105AD8_koopa);
@@ -946,7 +946,7 @@ s32 func_80107DDC_koopa(void) {
         HuSprScaleSet(sprite->spriteGroup, 0, 1.0f - i / 140.0f, 1.0f - i / 140.0f);
         HuPrcVSleep();
     }
-    HuSprAttrSet(sprite->spriteGroup, 0, 0x8000);
+    HuSprDispOff(sprite->spriteGroup, 0);
     HuAudFXPlay(0x10);
     GwPlayer[D_801094F4_koopa].itemNo[MBItemFindEmpty(D_801094F4_koopa)] = ITEM_BOWSER_PHONE;
     MBStatusItemIconSprReinit(D_801094F4_koopa);
@@ -954,7 +954,7 @@ s32 func_80107DDC_koopa(void) {
         MBWinOpen(0x4216);
         func_800EC3C0_shared_board(D_801094F4_koopa);
         func_800EC3E4_shared_board();
-        HuSprAttrReset(sprite->spriteGroup, 0, 0x8000);
+        HuSprDispOn(sprite->spriteGroup, 0);
         HuSprTPLvlSet(sprite->spriteGroup, 0, 256);
         for (i = 0; i <= 10; i++) {
             HuSprPosSet(sprite->spriteGroup, 0, 160, 88);
@@ -968,7 +968,7 @@ s32 func_80107DDC_koopa(void) {
             HuSprScaleSet(sprite->spriteGroup, 0, 1.0f - i / 140.0f, 1.0f - i / 140.0f);
             HuPrcVSleep();
         }
-        HuSprAttrSet(sprite->spriteGroup, 0, 0x8000);
+        HuSprDispOff(sprite->spriteGroup, 0);
         HuAudFXPlay(0x10);
         GwPlayer[D_801094F4_koopa].itemNo[MBItemFindEmpty(D_801094F4_koopa)] = ITEM_BOWSER_PHONE;
         MBStatusItemIconSprReinit(D_801094F4_koopa);

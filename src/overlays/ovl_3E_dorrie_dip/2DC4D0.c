@@ -193,7 +193,7 @@ void func_801059A0_dorrie_dip(void) {
     func_800142A0_main(0x40);
     func_8004A208_main();
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutView);
-    omSetStatBit(obj, 0xA0);
+    omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     func_80105B44_dorrie_dip(500.0f, 345.0f, 0.0f, 0.0f, 0.0f, 190.0f, 0.0f);
     omOutView(obj);
     Hu3DBGColorSet(0, 0, 0);
@@ -202,7 +202,7 @@ void func_801059A0_dorrie_dip(void) {
     D_800EC280_minigame = 0;
     func_800E18D8_minigame();
     D_800EB774_minigame = 1.0f;
-    WipeCreateIn(0xFF, 16);
+    WipeCreateIn(WIPE_TYPE_PREV, 16);
     func_80108800_dorrie_dip();
     omAddObj(0x50, 0, 0, -1, func_80105C7C_dorrie_dip);
     func_8010601C_dorrie_dip();
@@ -239,7 +239,7 @@ void func_80105C7C_dorrie_dip(omObjData *obj) {
     if (D_800D530C_main != 0) {
         HuAudFXAllStop();
         HuAudSeqFadeOut(30);
-        WipeCreateOut(0, 20);
+        WipeCreateOut(WIPE_TYPE_NORMAL, 20);
     }
     switch (func_800E6F40_minigame(obj)) {
         case 0:
@@ -305,7 +305,7 @@ void func_80105C7C_dorrie_dip(omObjData *obj) {
             } else {
                 GwPlayer[D_8010A1FC_dorrie_dip].bonusCoin = -1;
             }
-            WipeCreateOut(0, 20);
+            WipeCreateOut(WIPE_TYPE_NORMAL, 20);
             obj->func = func_80105FD0_dorrie_dip;
             break;
     }
@@ -330,7 +330,7 @@ void func_8010601C_dorrie_dip(void) {
 
     obj = omAddObj(250, 12, 0, -1, func_80106210_dorrie_dip);
     D_8010A230_dorrie_dip = obj;
-    obj->data = HuMemAllocTag(sizeof(DorrieDipDips), 0x7918);
+    obj->data = HuMemAllocTag(sizeof(DorrieDipDips), TAG_OVERLAY);
     dips = obj->data;
     for (i = 0; i < 6; i++) {
         dips->unk00[i] = 0;
@@ -390,7 +390,7 @@ void func_80106210_dorrie_dip(omObjData *obj) {
                 dips->unk30[i] = 4.8f;
             }
             if (dips->unk30[i] >= 4.0f && dips->unk30[i] < 4.2f) {
-                func_8001C258_main(D_8010A230_dorrie_dip->model[i + 6], 4, 0);
+                func_8001C258_main(D_8010A230_dorrie_dip->model[i + 6], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 func_8001C814_main(D_8010A230_dorrie_dip->model[i + 6], 2, 2);
             }
         }
@@ -411,7 +411,7 @@ void func_80106538_dorrie_dip(void) {
     DorrieDipDorrie *data;
 
     obj = omAddObj(255, 1, 5, -1, func_80106668_dorrie_dip);
-    obj->data = HuMemAllocTag(sizeof(DorrieDipDorrie), 0x7918);
+    obj->data = HuMemAllocTag(sizeof(DorrieDipDorrie), TAG_OVERLAY);
     D_8010A238_dorrie_dip = obj;
     data = obj->data;
     obj->model[0] = func_8000B108_main(0x5F0005, 0x699);
@@ -453,7 +453,7 @@ void func_80106668_dorrie_dip(omObjData *obj) {
         if (D_8010A220_dorrie_dip != -1) {
             func_8001EF6C_main(D_8010A230_dorrie_dip->model[D_8010A220_dorrie_dip], obj->model[0], "item_hook");
             func_8001C258_main(D_8010A230_dorrie_dip->model[D_8010A220_dorrie_dip], 0x4000, 0x4000);
-            func_8001C258_main(D_8010A230_dorrie_dip->model[D_8010A220_dorrie_dip + 6], 4, 4);
+            func_8001C258_main(D_8010A230_dorrie_dip->model[D_8010A220_dorrie_dip + 6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             dips->unk00[D_8010A220_dorrie_dip] &= ~1;
             func_8001C814_main(obj->model[0], 8, 0);
             if (D_8010A220_dorrie_dip == D_8010A200_dorrie_dip) {
@@ -650,7 +650,7 @@ void func_80107690_dorrie_dip(void) {
     s16 sprite;
 
     obj = omAddObj(254, 10, 0, -1, func_801079D4_dorrie_dip);
-    obj->data = HuMemAllocTag(sizeof(DorrieDipSplashes), 0x7918);
+    obj->data = HuMemAllocTag(sizeof(DorrieDipSplashes), TAG_OVERLAY);
     D_8010A23C_dorrie_dip = obj;
     splashes = obj->data;
     dips = D_8010A230_dorrie_dip->data;
@@ -762,7 +762,7 @@ void func_80107D58_dorrie_dip(void) {
     DorrieDipDips *dips;
 
     obj = omAddObj(254, 2, 3, -1, func_80107EE0_dorrie_dip);
-    obj->data = HuMemAllocTag(sizeof(DorrieDipData), 0x7918);
+    obj->data = HuMemAllocTag(sizeof(DorrieDipData), TAG_OVERLAY);
     D_8010A234_dorrie_dip = obj;
     data = obj->data;
     dips = D_8010A230_dorrie_dip->data;
@@ -898,7 +898,7 @@ void func_80108484_dorrie_dip(void) {
 
     for (i = 0; i < 6; i++) {
         dips->unk00[i] &= ~1;
-        func_8001C258_main(D_8010A230_dorrie_dip->model[i + 6], 4, 4);
+        func_8001C258_main(D_8010A230_dorrie_dip->model[i + 6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         if (i != D_8010A200_dorrie_dip) {
             func_80108EA0_dorrie_dip(i);
         }
@@ -971,7 +971,7 @@ void func_80108800_dorrie_dip(void) {
 
     obj = omAddObj(255, 4, 0, -1, func_8010898C_dorrie_dip);
     D_8010A224_dorrie_dip[0] = obj;
-    data = HuMemAllocTag(sizeof(DorrieDipBackground), 0x7918);
+    data = HuMemAllocTag(sizeof(DorrieDipBackground), TAG_OVERLAY);
     obj->data = data;
     obj->model[0] = func_8000B0A0_main(0x5F0000, 0x699);
     obj->model[1] = func_8000B0A0_main(0x5F0001, 0x699);
@@ -1029,7 +1029,7 @@ void func_80108B98_dorrie_dip(void) {
 
     obj = omAddObj(255, 6, 0, -1, func_80108C6C_dorrie_dip);
     D_8010A248_dorrie_dip = obj;
-    obj->data = HuMemAllocTag(sizeof(DorrieDipEffects), 0x7918);
+    obj->data = HuMemAllocTag(sizeof(DorrieDipEffects), TAG_OVERLAY);
     data = obj->data;
     for (i = 0; i < 6; i++) {
         if (i == 0) {
@@ -1064,7 +1064,7 @@ void func_80108C6C_dorrie_dip(omObjData *obj) {
         }
         if ((data->flags[i] & 1) &&
             HmfModelData[obj->model[i]].motTime >= D_800CCF58_main[HmfModelData[obj->model[i]].motId].unk02) {
-            func_8001C258_main(obj->model[i], 4, 4);
+            func_8001C258_main(obj->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             data->flags[i] &= ~1;
         }
     }
@@ -1079,8 +1079,8 @@ void func_80108EA0_dorrie_dip(s32 dipIdx) {
     DorrieDipSplashes *splashes = D_8010A23C_dorrie_dip->data;
     DorrieDipDorrie *dorrie = D_8010A238_dorrie_dip->data;
 
-    func_8001C258_main(D_8010A230_dorrie_dip->model[dipIdx], 4, 4);
-    func_8001C258_main(D_8010A230_dorrie_dip->model[dipIdx + 6], 4, 4);
+    func_8001C258_main(D_8010A230_dorrie_dip->model[dipIdx], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    func_8001C258_main(D_8010A230_dorrie_dip->model[dipIdx + 6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     splashIdx = -1;
     for (i = 0; i < 5; i++) {
         if (splashes->playerIdx[i] == dipIdx) {
@@ -1089,9 +1089,9 @@ void func_80108EA0_dorrie_dip(s32 dipIdx) {
     }
     if (splashIdx != -1) {
         if (dipIdx != D_8010A220_dorrie_dip) {
-            func_8001C258_main(D_8010A23C_dorrie_dip->model[splashIdx], 4, 4);
+            func_8001C258_main(D_8010A23C_dorrie_dip->model[splashIdx], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
-        func_8001C258_main(D_8010A23C_dorrie_dip->model[splashIdx + 5], 4, 4);
+        func_8001C258_main(D_8010A23C_dorrie_dip->model[splashIdx + 5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     x = sindf(dips->unk18[dipIdx]) * 450.0f;
     z = cosdf(dips->unk18[dipIdx]) * 450.0f;
@@ -1105,7 +1105,7 @@ void func_80108EA0_dorrie_dip(s32 dipIdx) {
     }
     dips->unk00[dipIdx] &= ~1;
     effects->flags[dipIdx] |= 1;
-    func_8001C258_main(D_8010A248_dorrie_dip->model[dipIdx], 4, 0);
+    func_8001C258_main(D_8010A248_dorrie_dip->model[dipIdx], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     func_8001C814_main(D_8010A224_dorrie_dip[0]->model[1], 1, 1);
 }
 
@@ -1192,7 +1192,7 @@ void func_80109520_dorrie_dip(void) {
 
     obj = omAddObj(255, 9, 0, -1, func_801095FC_dorrie_dip);
     D_8010A24C_dorrie_dip = obj;
-    obj->data = HuMemAllocTag(9 * sizeof(s32), 0x7918);
+    obj->data = HuMemAllocTag(9 * sizeof(s32), TAG_OVERLAY);
     data = obj->data;
     for (i = 0; i < 9; i++) {
         if (i == 0) {
@@ -1211,7 +1211,7 @@ void func_801095FC_dorrie_dip(omObjData *obj) {
 
     for (i = 0; i < 9; i++) {
         if ((data[i] & 1) && HmfModelData[obj->model[i]].motTime >= D_800CCF58_main[HmfModelData[obj->model[i]].motId].unk02) {
-            func_8001C258_main(obj->model[i], 4, 4);
+            func_8001C258_main(obj->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             data[i] &= ~1;
         }
     }
@@ -1254,7 +1254,7 @@ void func_80109738_dorrie_dip(void) {
                 } else {
                     Hu3DModelPosSet(D_8010A24C_dorrie_dip->model[effectIdx], x, 0.0f, z);
                 }
-                func_8001C258_main(D_8010A24C_dorrie_dip->model[effectIdx], 4, 0);
+                func_8001C258_main(D_8010A24C_dorrie_dip->model[effectIdx], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 Hu3DMotionTimeSet(D_8010A24C_dorrie_dip->model[effectIdx], 0.0f);
             }
         }
@@ -1321,7 +1321,7 @@ void func_80109B28_dorrie_dip(void) {
 
     obj = omAddObj(255, 6, 0, -1, func_80109C14_dorrie_dip);
     D_8010A260_dorrie_dip = obj;
-    obj->data = HuMemAllocTag(sizeof(DorrieDipWakes), 0x7918);
+    obj->data = HuMemAllocTag(sizeof(DorrieDipWakes), TAG_OVERLAY);
     data = obj->data;
     for (i = 0; i < 6; i++) {
         if (i == 0) {
@@ -1352,7 +1352,7 @@ void func_80109C14_dorrie_dip(omObjData *obj) {
         if (data->flags[i] & 1) {
             data->scaleX[i] = (4.8f - dips->unk30[i]) / 4.8f;
             if (data->scaleX[i] == 0.0f) {
-                func_8001C258_main(obj->model[i], 4, 4);
+                func_8001C258_main(obj->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 data->flags[i] &= ~1;
             }
         }
@@ -1370,7 +1370,7 @@ void func_80109E1C_dorrie_dip(s32 dipIdx) {
     data->posX[dipIdx] = sindf(dips->unk18[dipIdx]) * 450.0f;
     data->posY[dipIdx] = D_8010A22C_dorrie_dip;
     data->posZ[dipIdx] = cosdf(dips->unk18[dipIdx]) * 450.0f;
-    func_8001C258_main(D_8010A260_dorrie_dip->model[dipIdx], 4, 0);
+    func_8001C258_main(D_8010A260_dorrie_dip->model[dipIdx], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     func_8001C814_main(D_8010A260_dorrie_dip->model[dipIdx], 2, 2);
 }
 

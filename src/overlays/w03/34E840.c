@@ -146,7 +146,7 @@ void func_8010622C_w03(void) {
     D_8011EB08_w03 = proc;
     proc->user_data = temp;
     HuPrcSleep(30);
-    winData[guide->amount].stat = 1;
+    winData[guide->amount].stat = HUWIN_STAT_DRAWMES;
     HuPrcVSleep();
     func_80060C14_main(guide->amount, 1);
     func_800EE2C0_shared_board(guide->amount);
@@ -169,7 +169,7 @@ void func_8010622C_w03(void) {
     D_8011EB08_w03 = proc;
     proc->user_data = temp;
     HuPrcSleep(30);
-    winData[guide->amount].stat = 1;
+    winData[guide->amount].stat = HUWIN_STAT_DRAWMES;
     HuPrcVSleep();
     func_80060C14_main(guide->amount, 1);
     func_800EE2C0_shared_board(guide->amount);
@@ -209,7 +209,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80106CA0_w03);
 
 void func_80106D28_w03(void) {
     mbItemBtnF = 0;
-    omPrcSetStatBit(HuPrcCurrentGet(), 0x80);
+    omPrcSetStatBit(HuPrcCurrentGet(), OM_STAT_NOALLPAUSE);
     MBMapScrollExec(GwPlayer[GwSystem.current_player_index].pad);
     mbItemBtnF = 1;
 }

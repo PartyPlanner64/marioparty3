@@ -208,7 +208,7 @@ void func_8010934C_bobbing_bow_loons(void) {
     loons->x[0] = player->pos.x;
     loons->y[0] = player->pos.y + 50.0f;
     loons->z[0] = player->pos.z + 2.0f;
-    func_8001C258_main(D_80109B60_bobbing_bow_loons->model[0], 4, 0);
+    func_8001C258_main(D_80109B60_bobbing_bow_loons->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DMotionTimeSet(D_80109B60_bobbing_bow_loons->model[0], 0.0f);
 }
 
@@ -226,7 +226,7 @@ void func_80109680_bobbing_bow_loons(void) {
     omObjData *object = omAddObj(0xFF, 1, 0, -1, NULL);
 
     D_80109B58_bobbing_bow_loons = object;
-    object->data = HuMemAllocTag(8, 0x7918);
+    object->data = HuMemAllocTag(8, TAG_OVERLAY);
     object->model[0] = func_8000B108_main(0xB0003, 0x6DD);
 }
 

@@ -186,14 +186,14 @@ s16 func_8010D5EC_msetup(s16 controller) {
     s8 stickY = D_800D20A1_main[controller];
 
     if (stickX > 30) {
-        buttons |= 0x100;
+        buttons |= R_JPAD;
     } else if (stickX < -30) {
-        buttons |= 0x200;
+        buttons |= L_JPAD;
     }
     if (stickY > 30) {
-        buttons |= 0x800;
+        buttons |= U_JPAD;
     } else if (stickY < -30) {
-        buttons |= 0x400;
+        buttons |= D_JPAD;
     }
     return buttons;
 }
@@ -447,8 +447,8 @@ omObjData *func_8010DE38_msetup(s32 leftX, s32 rightX, s32 y) {
     if (object == NULL) {
         return NULL;
     }
-    omSetStatBit(object, 0x100);
-    anim = HuMemAllocTag(sizeof(MsetupPairSpriteAnim), 0x7918);
+    omSetStatBit(object, OM_STAT_MODELPAUSE);
+    anim = HuMemAllocTag(sizeof(MsetupPairSpriteAnim), TAG_OVERLAY);
     memset(anim, 0, sizeof(MsetupPairSpriteAnim));
     object->data = anim;
 
@@ -548,8 +548,8 @@ omObjData *func_8010E21C_msetup(void) {
     if (object == NULL) {
         return NULL;
     }
-    omSetStatBit(object, 0x100);
-    anim = HuMemAllocTag(sizeof(MsetupBoardAnim), 0x7918);
+    omSetStatBit(object, OM_STAT_MODELPAUSE);
+    anim = HuMemAllocTag(sizeof(MsetupBoardAnim), TAG_OVERLAY);
     memset(anim, 0, sizeof(MsetupBoardAnim));
     object->data = anim;
     model = object->model[0] = func_8000CBA0_main(0x110012, 0x289);
@@ -781,7 +781,7 @@ void func_8010EB94_msetup(void) {
                     anim.scale[0] = 0;
                     anim.speed[0] = 1.0f / 7.0f;
                     handle = slots[0];
-                    func_8001C258_main(handle, 4, 0);
+                    func_8001C258_main(handle, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     Hu3DModelPosSet(handle, 260.0f, 345.0f, -40.0f);
                     Hu3DModelRotSet(handle, 0, 180.0f, 0);
                     anim.fade.sprite.alpha[0] = 0;
@@ -822,7 +822,7 @@ void func_8010EB94_msetup(void) {
                     anim.scale[1] = 0;
                     anim.speed[1] = 1.0f / 7.0f;
                     handle = slots[1];
-                    func_8001C258_main(handle, 4, 0);
+                    func_8001C258_main(handle, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     Hu3DModelPosSet(handle, 260.0f, 175.0f, -80.0f);
                     Hu3DModelRotSet(handle, 0, 180.0f, 0);
                     anim.fade.destroy[1] = 0;
@@ -902,7 +902,7 @@ void func_8010EB94_msetup(void) {
                 } else if (anim.scale[i] <= 0) {
                     anim.scale[i] = 0;
                     anim.speed[i] = 0;
-                    func_8001C258_main(handle, 4, 4);
+                    func_8001C258_main(handle, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     if (anim.fade.destroy[index] != 0) {
                         if (values[index] >= 0) {
                             func_80033430_main(values[index]);

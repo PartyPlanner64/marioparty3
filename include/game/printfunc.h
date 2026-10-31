@@ -3,6 +3,23 @@
 
 #include "ultra64.h"
 
+#define FONT_COLOR_BLACK 0
+#define FONT_COLOR_DARK_BLUE 1
+#define FONT_COLOR_DARK_RED 2
+#define FONT_COLOR_DARK_MAGENTA 3
+#define FONT_COLOR_DARK_GREEN 4
+#define FONT_COLOR_DARK_CYAN 5
+#define FONT_COLOR_DARK_YELLOW 6
+#define FONT_COLOR_GRAY 7
+#define FONT_COLOR_TRANSLUCENT_GRAY 8
+#define FONT_COLOR_BLUE 9
+#define FONT_COLOR_RED 10
+#define FONT_COLOR_MAGENTA 11
+#define FONT_COLOR_GREEN 12
+#define FONT_COLOR_CYAN 13
+#define FONT_COLOR_YELLOW 14
+#define FONT_COLOR_WHITE 15
+
 // filled rect behind debug text
 typedef struct Unk_D_800CC440 {
     u16 unk_00; // active

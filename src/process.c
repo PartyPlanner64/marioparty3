@@ -72,7 +72,7 @@ Process *HuPrcCreate(process_func func, u16 priority, s32 stack_size, s32 extra_
 
     process = (Process *)HuMemMemoryAlloc(process_heap, sizeof(Process));
     process->heap = process_heap;
-    process->exec_mode = EXEC_PROCESS_DEFAULT;
+    process->exec_mode = HUPRC_EXEC_NORMAL;
     process->stat = 0;
     process->priority = priority;
     process->sleep_time = 0;
@@ -123,7 +123,7 @@ Process *HuPrcCreateChild(process_func func, u16 priority, s32 stack_size, s32 e
 void HuPrcChildWait() {
     Process *process = HuPrcCurrentGet();
     if (process->oldest_child) {
-        process->exec_mode = EXEC_PROCESS_WATCH;
+        process->exec_mode = HUPRC_EXEC_CHILDWATCH;
         if (!setjmp(&process->prc_jump)) {
             longjmp(&process_jmp_buf, 1);
         }
@@ -146,9 +146,9 @@ s32 HuPrcChildGet(Process *process) {
 }
 
 s32 HuPrcStatKill(Process *process) {
-    if (process->exec_mode != EXEC_PROCESS_DEAD) {
+    if (process->exec_mode != HUPRC_EXEC_KILLED) {
         HuPrcAwake(process);
-        process->exec_mode = EXEC_PROCESS_DEAD;
+        process->exec_mode = HUPRC_EXEC_KILLED;
         return 0;
     } else {
         return -1;
@@ -191,8 +191,8 @@ void HuPrcExit() {
 
 void HuPrcSleep(s32 time) {
     Process *process = HuPrcCurrentGet();
-    if (time != 0 && process->exec_mode != EXEC_PROCESS_DEAD) {
-        process->exec_mode = EXEC_PROCESS_SLEEPING;
+    if (time != 0 && process->exec_mode != HUPRC_EXEC_KILLED) {
+        process->exec_mode = HUPRC_EXEC_SLEEP;
         process->sleep_time = time;
     }
     if (!setjmp(&process->prc_jump)) {
@@ -241,32 +241,32 @@ void HuPrcCall(s32 time) {
 
         sPrcSleepLoc = current_process->prc_jump.sp[10];
 
-        if ((cur_proc_local->stat & 0x1)) {
-            if (cur_proc_local->exec_mode != 3) {
+        if ((cur_proc_local->stat & PROCESS_STAT_PAUSE)) {
+            if (cur_proc_local->exec_mode != HUPRC_EXEC_KILLED) {
                 ret = 1;
                 continue;
             }
         }
 
         switch (cur_proc_local->exec_mode) {
-            case EXEC_PROCESS_SLEEPING:
+            case HUPRC_EXEC_SLEEP:
                 if (cur_proc_local->sleep_time > 0 && (cur_proc_local->sleep_time -= time) <= 0) {
                     cur_proc_local->sleep_time = 0;
-                    cur_proc_local->exec_mode = EXEC_PROCESS_DEFAULT;
+                    cur_proc_local->exec_mode = HUPRC_EXEC_NORMAL;
                 }
                 ret = 1;
                 break;
 
-            case EXEC_PROCESS_WATCH:
+            case HUPRC_EXEC_CHILDWATCH:
                 if (cur_proc_local->oldest_child != 0) {
                     ret = 1;
                 } else {
-                    cur_proc_local->exec_mode = EXEC_PROCESS_DEFAULT;
+                    cur_proc_local->exec_mode = HUPRC_EXEC_NORMAL;
                     ret = 0;
                 }
                 break;
 
-            case EXEC_PROCESS_DEAD:
+            case HUPRC_EXEC_KILLED:
                 cur_proc_local->prc_jump.func = HuPrcExit;
 
             case 0:

@@ -72,10 +72,10 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_8010649
 void func_801064A0_curtain_call(omObjData *arg0) {
     switch (D_8010CEC1_curtain_call) {
         case 3:
-            func_8001C258_main(arg0->model[2], 4, 4);
+            func_8001C258_main(arg0->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             break;
         case 5:
-            func_8001C258_main(arg0->model[2], 4, 0);
+            func_8001C258_main(arg0->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             break;
     }
 }

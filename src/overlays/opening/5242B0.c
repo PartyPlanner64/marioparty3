@@ -150,7 +150,7 @@ void opTitleMain(void) {
 
 s32 opBtnStartCheck(void) {
     if (GWContErrorGet() == 1) {
-        return (D_800D5558_main[0] & 0x1000) != 0;
+        return (D_800D5558_main[0] & START_BUTTON) != 0;
     }
     return 0;
 }

@@ -9,6 +9,26 @@
 
 #define HU3D_MODEL_MAX 128
 
+#define HU3D_ATTR_NONE 0
+#define HU3D_ATTR_STATIC (1 << 0) // drawn from prebuilt static display lists
+#define HU3D_ATTR_DISPOFF (1 << 2)
+#define HU3D_ATTR_DYNAMICFREE (1 << 4) // dynamic model data has been freed
+#define HU3D_ATTR_LAYER_SHIFT 10
+#define HU3D_ATTR_LAYER_MASK (7 << HU3D_ATTR_LAYER_SHIFT)
+#define HU3D_ATTR_NOPAUSE (1 << 15)
+#define HU3D_ATTR_REMAKESTATIC (1 << 23) // static display lists need rebuilding
+
+#define HU3D_CAM0 (1 << 0)
+#define HU3D_CAM1 (1 << 1)
+#define HU3D_CAM2 (1 << 2)
+#define HU3D_CAM3 (1 << 3)
+#define HU3D_CAM4 (1 << 4)
+#define HU3D_CAM5 (1 << 5)
+#define HU3D_CAM6 (1 << 6)
+#define HU3D_CAM7 (1 << 7)
+#define HU3D_CAM_ALL 0xFF
+#define HU3D_CAM_NONE 0
+
 #define HMF_TEXTURE_MASK(size) ((size) <= 2 ? 1 : (size) <= 4 ? 2 \
                                               : (size) <= 8   ? 3 \
                                               : (size) <= 16  ? 4 \

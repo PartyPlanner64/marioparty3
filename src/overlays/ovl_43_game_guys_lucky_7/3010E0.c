@@ -94,7 +94,7 @@ void func_80107DE4_game_guys_lucky_7(omObjData *object) {
             GwPlayer[D_8010D6DC_game_guys_lucky_7[0]].bonusCoin = 2;
         }
     }
-    WipeCreateOut(0, 20);
+    WipeCreateOut(WIPE_TYPE_NORMAL, 20);
     HuAudSeqFadeOut(30);
     func_8004AB0C_main(30);
     object->func = func_80107EEC_game_guys_lucky_7;

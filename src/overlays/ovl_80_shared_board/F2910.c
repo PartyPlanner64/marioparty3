@@ -226,7 +226,7 @@ static void MBMgCallListExec(omObjData *arg0) {
                         func_8005D2D4_main(entry->obj);
                         HuWinHomeClear(D_80102BD0_shared_board[arg0->work[1]].obj);
                         HuWinMesSet(D_80102BD0_shared_board[arg0->work[1]].obj,
-                                            D_80102C08_shared_board[arg0->work[1]] + FILE_FROM_OVL_ID(boardcall) - 1, -2, 4);
+                                            D_80102C08_shared_board[arg0->work[1]] + FILE_FROM_OVL_ID(boardcall) - 1, HUWIN_POS_CENTER, 4);
                         HuWinMesColSet(D_80102BD0_shared_board[arg0->work[1]].obj, 1);
                         func_8005C154_main(D_80102BD0_shared_board[arg0->work[1]].obj, 0xA0, 0xA0, 0xA0);
                         HuWinBGColSet(D_80102BD0_shared_board[arg0->work[1]].obj, 0xFE, 0xFF, 0xD0);
@@ -489,9 +489,9 @@ void MBMgCallListCreate(s32 arg0) {
         func_8005D2D4_main(entry->obj);
 
         if (GWMgUnlockCheck(D_80102C08_shared_board[i] - 1) != FALSE) {
-            HuWinMesSet(entry->obj, D_80102C08_shared_board[i] + FILE_FROM_OVL_ID(boardcall) - 1, -2, 4);
+            HuWinMesSet(entry->obj, D_80102C08_shared_board[i] + FILE_FROM_OVL_ID(boardcall) - 1, HUWIN_POS_CENTER, 4);
         } else {
-            HuWinMesSet(entry->obj, 0x4748, -2, 4);
+            HuWinMesSet(entry->obj, 0x4748, HUWIN_POS_CENTER, 4);
         }
 
         HuWinMesColSet(entry->obj, D_80100E9B_shared_board[D_80102C08_shared_board[i]]);
@@ -1062,7 +1062,7 @@ static void func_800E0C94_shared_board(void) {
                 break;
             case 1:
                 if ((func_800F5278_shared_board() == 0) &&
-                    (((D_800D5558_main[GwPlayer[temp_s2->curPlayerNo].pad] & 0x8000) && !(GwPlayer[temp_s2->curPlayerNo].stat & 1)) || (GwPlayer[temp_s2->curPlayerNo].stat & 1))) {
+                    (((D_800D5558_main[GwPlayer[temp_s2->curPlayerNo].pad] & A_BUTTON) && !(GwPlayer[temp_s2->curPlayerNo].stat & 1)) || (GwPlayer[temp_s2->curPlayerNo].stat & 1))) {
                     func_800E00EC_shared_board();
                     MBStatusDispMoveSet(5);
                     temp_s2->unk_00++;

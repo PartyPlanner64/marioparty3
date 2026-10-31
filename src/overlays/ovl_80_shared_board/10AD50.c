@@ -143,7 +143,7 @@ static s32 func_800F7240_shared_board(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
 
     if (arg2 != 0) {
-        func_8005B63C_main(mbDlgWinId, 2, 2);
+        func_8005B63C_main(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         for (j = 0; arg2 != 0; j++) {
             if (--arg2 == 0) {
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
@@ -490,7 +490,7 @@ static void func_800F7FE8_shared_board(void) {
         HuAudFXPlay(0x11A);
     }
 
-    Hu3DModelCameraSet(D_80105658_shared_board, 1);
+    Hu3DModelCameraSet(D_80105658_shared_board, HU3D_CAM0);
     func_8000CD00_main(D_80105658_shared_board, 1.0f, 20.0f, 1.0f);
     func_8000D018_main(D_80105658_shared_board, 15.0f);
     MBModelTempAllocFree(D_80105620_shared_board);

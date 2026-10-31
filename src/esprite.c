@@ -97,11 +97,11 @@ void func_8000BA30_main(void) {
 }
 
 void espDispOn(u16 arg0) {
-    HuSprAttrReset(D_800CD1DC_main[arg0].unk04, 0, 0x8000);
+    HuSprDispOn(D_800CD1DC_main[arg0].unk04, 0);
 }
 
 void espDispOff(u16 arg0) {
-    HuSprAttrSet(D_800CD1DC_main[arg0].unk04, 0, 0x8000);
+    HuSprDispOff(D_800CD1DC_main[arg0].unk04, 0);
 }
 
 void espPosSet(u16 spriteId, s16 x, s16 y) {

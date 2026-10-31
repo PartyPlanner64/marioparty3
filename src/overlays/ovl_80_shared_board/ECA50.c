@@ -143,11 +143,11 @@ Object *MBModelFileCreate(s32 arg0, s32 arg1, f32 arg2, f32 arg3, u32 *arg4) {
         objData = object->omObj1 = omAddObj(0x4000, 1, motionCnt, -1, func_800D93C0_shared_board);
 
         mdlIdx = func_8000B108_main(arg0, 0x6A9);
-        omSetStatBit(objData, 0x80);
+        omSetStatBit(objData, OM_STAT_NOALLPAUSE);
         objData->model[0] = mdlIdx;
         omSetRot(objData, 0.0f, 0.0f, 0.0f);
         func_8001C814_main(mdlIdx, 2, 2);
-        Hu3DModelCameraSet(mdlIdx, 1);
+        Hu3DModelCameraSet(mdlIdx, HU3D_CAM0);
         Hu3DModelScaleSet(mdlIdx, 0.0f, 0.0f, 0.0f);
         if (HmfModelData[mdlIdx].motId != 0xFF) {
             object->unk44 = MBMotionLock(HmfModelData[mdlIdx].motId);
@@ -165,10 +165,10 @@ Object *MBModelFileCreate(s32 arg0, s32 arg1, f32 arg2, f32 arg3, u32 *arg4) {
         if ((arg1 >= 0) && (arg3 > 0.0f)) {
             objData = object->omObj2 = omAddObj(0x4000, 1, 0, -1, func_800D95D0_shared_board);
             mdlIdx = func_8000B108_main(arg1, 0x229);
-            omSetStatBit(objData, 0x80);
+            omSetStatBit(objData, OM_STAT_NOALLPAUSE);
             objData->model[0] = mdlIdx;
             omSetRot(objData, 0.0f, 0.0f, 0.0f);
-            Hu3DModelCameraSet(mdlIdx, 1);
+            Hu3DModelCameraSet(mdlIdx, HU3D_CAM0);
             Hu3DModelScaleSet(mdlIdx, 0.0f, 0.0f, 0.0f);
 
             work = HuMemMemoryAllocTemp(sizeof(UnkObj));
@@ -298,11 +298,11 @@ Object *MBModelLinkCreate(Object *src) {
         objData = object->omObj1 = omAddObj(0x4000, 1, src->omObj1->mtncnt, -1, func_800D93C0_shared_board);
 
         mdlIdx = Hu3DModelLink(src->omObj1->model[0]);
-        omSetStatBit(objData, 0x80);
+        omSetStatBit(objData, OM_STAT_NOALLPAUSE);
         objData->model[0] = mdlIdx;
         omSetRot(objData, 0.0f, 0.0f, 0.0f);
         func_8001C814_main(mdlIdx, 2, 2);
-        Hu3DModelCameraSet(mdlIdx, 1);
+        Hu3DModelCameraSet(mdlIdx, HU3D_CAM0);
         Hu3DModelScaleSet(mdlIdx, 0.0f, 0.0f, 0.0f);
 
         if (HmfModelData[mdlIdx].motId != 0xFF) {
@@ -327,10 +327,10 @@ Object *MBModelLinkCreate(Object *src) {
             objData = object->omObj2= omAddObj(0x4000, 1, 0, -1, func_800D95D0_shared_board);
 
             mdlIdx = Hu3DModelLink(src->omObj2->model[0]);
-            omSetStatBit(objData, 0x80);
+            omSetStatBit(objData, OM_STAT_NOALLPAUSE);
             objData->model[0] = mdlIdx;
             omSetRot(objData, 0.0f, 0.0f, 0.0f);
-            Hu3DModelCameraSet(mdlIdx, 1);
+            Hu3DModelCameraSet(mdlIdx, HU3D_CAM0);
             Hu3DModelScaleSet(mdlIdx, 0.0f, 0.0f, 0.0f);
 
             work = HuMemMemoryAllocTemp(sizeof(UnkObj));
@@ -349,9 +349,9 @@ void func_800D9A40_shared_board(Object* arg0) {
 }
 
 void MBModelAttrSetDispOn(Object* arg0) {
-    func_8001C258_main(arg0->omObj1->model[0], 4, 0);
+    func_8001C258_main(arg0->omObj1->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     if (arg0->omObj2 != NULL) {
-        func_8001C258_main(arg0->omObj2->model[0], 4, 0);
+        func_8001C258_main(arg0->omObj2->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     }
 }
 
@@ -361,9 +361,9 @@ void MBModelDispOn(Object* arg0) {
 }
 
 void MBModelAttrSetDispOff(Object* arg0) {
-    func_8001C258_main(arg0->omObj1->model[0], 4, 4);
+    func_8001C258_main(arg0->omObj1->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     if (arg0->omObj2 != NULL) {
-        func_8001C258_main(arg0->omObj2->model[0], 4, 4);
+        func_8001C258_main(arg0->omObj2->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
 }
 

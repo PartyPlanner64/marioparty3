@@ -354,7 +354,7 @@ void func_800DB884_shared_board(s32 arg0) {
                                     120 - (s32)(MBCameraZoomGet() * 24.0f));
             }
 
-            HuSprAttrReset(entry->sprites[entry->rollValueIdx], 0, 0x8000);
+            HuSprDispOn(entry->sprites[entry->rollValueIdx], 0);
 
             if (entry->omObj == NULL) {
                 if ((func_800F8858_shared_board() == 0) && (D_8010570F_shared_board == 0)) {
@@ -489,7 +489,7 @@ void func_800DBFBC_shared_board(s32 arg0) {
 
 void func_800DC024_shared_board(s32 arg0) {
     if (D_800CDBD0_main[arg0].unk_16 != -1) {
-        func_8001C258_main(D_800CDBD0_main[arg0].unk_16, 4, 4);
+        func_8001C258_main(D_800CDBD0_main[arg0].unk_16, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
 }
 
@@ -501,7 +501,7 @@ void func_800DC06C_shared_board(s32 arg0) {
 void func_800DC08C_shared_board(s32 arg0) {
     if (D_801057D8_shared_board != 0) {
         if (D_800CDBD0_main[arg0].unk_16 != -1) {
-            func_8001C258_main(D_800CDBD0_main[arg0].unk_16, 4, 0);
+            func_8001C258_main(D_800CDBD0_main[arg0].unk_16, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
     }
 }
@@ -572,7 +572,7 @@ s16 func_800DC128_shared_board(s32 arg0) {
     }
 
     entry->unk_16 = Hu3DModelCreate(DataRead(D_80100D60_shared_board[entry->unk_0A]), 0x6A9);
-    Hu3DModelCameraSet(entry->unk_16, 1);
+    Hu3DModelCameraSet(entry->unk_16, HU3D_CAM0);
     Hu3DModelScaleSet(entry->unk_16, 0.0f, 0.0f, 0.0f);
     func_8001C2FC_main(entry->unk_16, 0x20000, 0x20000);
 
@@ -609,7 +609,7 @@ s16 func_800DC128_shared_board(s32 arg0) {
     dice = omAddObj(-0x8000, 1, 1, -1, func_800DAAAC_shared_board);
     entry->dice = dice;
     *dice->model = entry->unk_16;
-    omSetStatBit(dice, 0xA0);
+    omSetStatBit(dice, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 
     dice->trans.x = GwPlayer[arg0].player_obj->coords.x;
     dice->trans.y = GwPlayer[arg0].player_obj->coords.y + D_80105708_shared_board;
@@ -687,7 +687,7 @@ static void func_800DC718_shared_board(s32 arg0, s32 arg1, s32 arg2, char *arg3[
         entry->unk_0A = 0;
 
         entry->unk_16 = Hu3DModelCreate(DataRead(arg1), 0x6A9);
-        Hu3DModelCameraSet(entry->unk_16, 1);
+        Hu3DModelCameraSet(entry->unk_16, HU3D_CAM0);
         Hu3DModelScaleSet(entry->unk_16, 0.0f, 0.0f, 0.0f);
         func_8001C2FC_main(entry->unk_16, 0x20000, 0x20000);
         
@@ -717,7 +717,7 @@ static void func_800DC718_shared_board(s32 arg0, s32 arg1, s32 arg2, char *arg3[
         dice = omAddObj(-0x8000, 1, 1, -1, func_800DAAAC_shared_board);
         entry->dice = dice;
         dice->model[0] = entry->unk_16;
-        omSetStatBit(dice, 0xA0);
+        omSetStatBit(dice, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
         dice->trans.x = GwPlayer[arg0].player_obj->coords.x;
         dice->trans.y = GwPlayer[arg0].player_obj->coords.y + D_80105708_shared_board;
         dice->trans.z = GwPlayer[arg0].player_obj->coords.z;
@@ -901,7 +901,7 @@ static void func_800DCDD4_shared_board(void) {
                 HuPrcSleep(0x14);
                 break;
             case 1:
-                if (((GwPlayer[temp_s3->unk0].stat & 1) || (D_800D5558_main[GwPlayer[temp_s3->unk0].pad] & 0x8000)) && !(HmfModelData[D_800CDBD0_main[temp_s3->unk0].unk_16].attr & 4) && (GWBoardFlagCheck(0x11) == 0)) {
+                if (((GwPlayer[temp_s3->unk0].stat & 1) || (D_800D5558_main[GwPlayer[temp_s3->unk0].pad] & A_BUTTON)) && !(HmfModelData[D_800CDBD0_main[temp_s3->unk0].unk_16].attr & 4) && (GWBoardFlagCheck(0x11) == 0)) {
                     temp_s3->unk4++;
                     MBPlayerMotionSet(temp_s3->unk0, 2, 0);
                     func_800EE688_shared_board(GwPlayer[temp_s3->unk0].player_obj, 2.0f, -0.3f);
@@ -1099,7 +1099,7 @@ static void func_800DD724_shared_board(void) {
     temp_v0_2 = func_8000CED8_main(0xB0004, 0xAA9);
     func_8000CD00_main(temp_v0_2, 1.0f, 20.0f, 1.0f);
     func_8000D018_main(temp_v0_2, 15.0f);
-    Hu3DModelCameraSet(temp_v0_2, 1);
+    Hu3DModelCameraSet(temp_v0_2, HU3D_CAM0);
     func_8000CFA4_main(temp_v0_2, temp_v0->coords.x, temp_v0->coords.y + temp_v0->velocity.x, temp_v0->coords.z);
     
     for (var_f20 = 0.0f, i = 0; i < 6; i++) {
@@ -1520,11 +1520,11 @@ static void func_800DE9B8_shared_board(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     entry = &D_800CDBD0_main[arg0];
 
     if (entry->rollValue[arg1] >= 10) {
-        HuSprAttrReset(entry->sprites[arg1], 1, 0x8000);
+        HuSprDispOn(entry->sprites[arg1], 1);
         HuSprPosSet(entry->sprites[arg1], 0, arg2 + 10, arg3);
         HuSprPosSet(entry->sprites[arg1], 1, -0x1C, 0);
     } else {
-        HuSprAttrSet(entry->sprites[arg1], 1, 0x8000);
+        HuSprDispOff(entry->sprites[arg1], 1);
         HuSprPosSet(entry->sprites[arg1], 0, arg2, arg3);
     }
 }

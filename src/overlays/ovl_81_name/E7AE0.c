@@ -115,7 +115,7 @@ UnkBoard4 *func_800FFEEC_name_81(void) {
         temp_v0->unk_0C[i] = HuSprAnimRead(temp_s4);
         func_80055024_main(temp_v0->unk_0A, i, temp_v0->unk_0C[i], 0);
         HuSprPriSet(temp_v0->unk_0A, i, 0);
-        HuSprAttrSet(temp_v0->unk_0A, i, 0x8000);
+        HuSprDispOff(temp_v0->unk_0A, i);
         HuSprPosSet(temp_v0->unk_0A, i, D_80101B50_name_81[i][0], D_80101B50_name_81[i][1]);
         D_80105508_name_81[i][0] = D_80101B50_name_81[i][0];
         D_80105508_name_81[i][1] = D_80101B50_name_81[i][1];
@@ -125,7 +125,7 @@ UnkBoard4 *func_800FFEEC_name_81(void) {
     DataClose(temp_s4);
     temp_v0_2 = omAddObj(0x1000, 0, 0, -1, func_800FFD10_name_81);
     D_80105500_name_81 = temp_v0_2;
-    omSetStatBit(temp_v0_2, 0x20);
+    omSetStatBit(temp_v0_2, OM_STAT_NOPAUSE);
     return temp_v0;
 }
 
@@ -141,9 +141,9 @@ void func_801000A4_name_81(UnkBoard4 *arg0, u16 arg1) {
     for (i = 0; i < 4; i++) {
         var_v0 = arg1 >> i;
         if (var_v0 & 1) {
-            HuSprAttrSet(arg0->unk_0A, i, 0x8000);
+            HuSprDispOff(arg0->unk_0A, i);
         } else {
-            HuSprAttrReset(arg0->unk_0A, i, 0x8000);
+            HuSprDispOn(arg0->unk_0A, i);
         }
     }
 }
@@ -160,13 +160,13 @@ void func_80100124_name_81(UnkBoard4 *arg0, s32 arg1) {
     HuSprPosSet(arg0->unk_0A, 4, (D_80101B80_name_81[4][0] + (sp10.x / 9.0f) + ((sp18.x - 160.0f) / 9.0f)), ((D_80101B80_name_81[4][1] + (sp10.y / 9.0f) + ((sp18.y - 120.0f) / 9.0f)) - 4.0f));
 
     if (arg1 == 0) {
-        HuSprAttrSet(arg0->unk_0A, 3, 0x8000);
-        HuSprAttrReset(arg0->unk_0A, 4, 0x8000);
+        HuSprDispOff(arg0->unk_0A, 3);
+        HuSprDispOn(arg0->unk_0A, 4);
         return;
     }
 
-    HuSprAttrReset(arg0->unk_0A, 3, 0x8000);
-    HuSprAttrSet(arg0->unk_0A, 4, 0x8000);
+    HuSprDispOn(arg0->unk_0A, 3);
+    HuSprDispOff(arg0->unk_0A, 4);
 }
 
 // TODO: what is this?
@@ -361,7 +361,7 @@ void func_801008E8_name_81(void) {
                 HuWinComKeyReset();
                 goto label; // break doesn't work here for some reason
             }
-        } while (mbCameraBtnF != 0 && !(D_800C9520_main[temp_s2] & 0xE010));
+        } while (mbCameraBtnF != 0 && !(D_800C9520_main[temp_s2] & (A_BUTTON | B_BUTTON | Z_TRIG | R_TRIG)));
 
         while (1) {
         label:
@@ -371,7 +371,7 @@ void func_801008E8_name_81(void) {
             }
             func_80100070_name_81(temp_s3);
             func_801005DC_name_81(D_80105518_name_81);
-            WipeCreateOut(0, 4);
+            WipeCreateOut(WIPE_TYPE_NORMAL, 4);
             HuPrcSleep(4);
             if ((func_800FC114_name_81()) == 0) {
                 func_800E5C20_name_81();
@@ -390,7 +390,7 @@ void func_801008E8_name_81(void) {
                 func_800DB5AC_name_81(GwSystem.current_player_index);
                 func_80100890_name_81();
                 func_8004A9DC_main(0x7F);
-                WipeCreateIn(0, 4);
+                WipeCreateIn(WIPE_TYPE_NORMAL, 4);
                 HuPrcSleep(4);
                 MBDCameraSpeedSet(temp_f22);
                 omDelPrcObj(0);
@@ -424,7 +424,7 @@ void func_80100CEC_name_81(s32 padIdx) {
     omAllPause();
     func_800E5964_name_81();
     procObj = omAddPrcObj(func_80100CA0_name_81, 0x1005, 0, 0);
-    omPrcSetStatBit(procObj, 0x20);
+    omPrcSetStatBit(procObj, OM_STAT_NOPAUSE);
     proc = HuPrcCurrentGet();
     HuPrcChildLink(proc, MBDCameraZoomMotStart(1.0f));
     HuPrcChildWait();
@@ -432,7 +432,7 @@ void func_80100CEC_name_81(s32 padIdx) {
     proc2 = HuPrcCurrentGet();
     procObj = omAddPrcObj(func_801008E8_name_81, 0x1005, 0, 0);
     procObj->user_data = (void *)padIdx;
-    omPrcSetStatBit(procObj, 0x80);
+    omPrcSetStatBit(procObj, OM_STAT_NOALLPAUSE);
     HuPrcChildLink(proc2, procObj);
     HuPrcChildWait();
     func_8004A0E0_main();

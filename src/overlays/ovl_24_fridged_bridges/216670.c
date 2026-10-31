@@ -110,7 +110,7 @@ void func_80108EBC_fridged_bridges(omObjData *arg0) {
     scale = (f32 *)&arg0->work[2];
     *scale -= 0.04f;
     if (*scale <= 0.0f) {
-        func_8001C258_main(modelId, 4, 4);
+        func_8001C258_main(modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         omDelObj(arg0);
     } else {
         Hu3DModelScaleSet(modelId, *scale, *scale, *scale);

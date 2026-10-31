@@ -172,9 +172,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E149C_minigame);
 
 void func_800E14B0_minigame(omObjData *arg0, s32 arg1, s32 arg2) {
     if (!(arg2 & 0xFF)) {
-        func_8001C258_main(arg0->model[arg1 & 0xFF], 4, 4);
+        func_8001C258_main(arg0->model[arg1 & 0xFF], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     } else {
-        func_8001C258_main(arg0->model[arg1 & 0xFF], 4, 0);
+        func_8001C258_main(arg0->model[arg1 & 0xFF], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     }
 }
 
@@ -288,10 +288,10 @@ void func_800E1BA8_minigame(omObjData *arg0, u32 arg1, s32 arg2, u16 arg3, s32 a
     for (var_a0 = 0; var_a0 < arg0->mdlcnt; var_a0++) {
         arg0->model[var_a0] = 0;
     }
-    arg0->data = HuMemAllocTag(sizeof(func_800E1BA8_minigame_ObjData), 31000);
+    arg0->data = HuMemAllocTag(sizeof(func_800E1BA8_minigame_ObjData), TAG_OVERLAY);
     memset(arg0->data, 0, sizeof(func_800E1BA8_minigame_ObjData));
     temp_s0 = arg0->data;
-    temp_s0->unkE8 = HuMemAllocTag(arg0->mtncnt * sizeof(func_800E1BA8_minigame_UnkE8_ObjData), 31000);
+    temp_s0->unkE8 = HuMemAllocTag(arg0->mtncnt * sizeof(func_800E1BA8_minigame_UnkE8_ObjData), TAG_OVERLAY);
     if (D_800EB73A_minigame == 1) {
         func_800E1160_minigame(arg0, 0, arg3, arg1 | arg2, arg4, 750.0f);
     } else {

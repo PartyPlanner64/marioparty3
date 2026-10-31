@@ -20,8 +20,8 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/30DC30", fun
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/30DC30", func_8010B700_game_guys_magic_boxes);
 
 void func_8010B8B4_game_guys_magic_boxes(void) {
-    HuSprAttrSet(D_8010CAF8_game_guys_magic_boxes.group, 0, 0x8000);
-    HuSprAttrSet(D_8010CAE0_game_guys_magic_boxes.group, 0, 0x8000);
+    HuSprDispOff(D_8010CAF8_game_guys_magic_boxes.group, 0);
+    HuSprDispOff(D_8010CAE0_game_guys_magic_boxes.group, 0);
     D_8010CAF8_game_guys_magic_boxes.sprite->unk_84->unk00->unk00 = D_8010CAF8_game_guys_magic_boxes.unk_04[0];
     D_8010CAE0_game_guys_magic_boxes.sprite->unk_84->unk00->unk00 = D_8010CAE0_game_guys_magic_boxes.unk_04[0];
 }

@@ -6,6 +6,9 @@
 
 #define STAR_POSITIONS_TOTAL 8
 
+// Indices into GwCommon.flag, for _CheckFlag/_SetFlag/_ClearFlag
+#define FLAG_MG_PRACTICE 15
+
 typedef struct GwCommon_s {
 /* 0x00 */ u8 unk_00;
 /* 0x01 */ u8 languageIndex;

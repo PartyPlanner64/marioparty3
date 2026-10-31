@@ -1001,7 +1001,7 @@ void func_80024814_main(HmfData *arg0, s16 arg1, HmfDrawObject *arg2) {
         gDPSetEnvColor(gMainGfxPos++, (u8)arg0->unk02[4], (u8)arg0->unk02[5], (u8)arg0->unk02[6], (u8)arg0->unk02[7]);
         gDPSetPrimColor(gMainGfxPos++, 0, 0, (u8)arg0->unk02[0], (u8)arg0->unk02[1], (u8)arg0->unk02[2], (u8)arg0->unk02[3]);
     }
-    if (D_800C9940_main & 1) {
+    if (D_800C9940_main & HU3D_ATTR_STATIC) {
         if (((Gfx **)arg0->unk3C)[arg1] == NULL) {
             return;
         }
@@ -1241,7 +1241,7 @@ void func_800257BC_main(HmfData *hmf, s16 objectIndex) {
     } else {
         previousTexture = (HmfData_Unk84_Entry *)-1;
     }
-    vertexLimit = D_800A0AD8_main[(u32)(D_800C9940_main & 0x1C00) >> 10];
+    vertexLimit = D_800A0AD8_main[(u32)(D_800C9940_main & HU3D_ATTR_LAYER_MASK) >> HU3D_ATTR_LAYER_SHIFT];
     for (i = 0, animated = 0; i < faceCount; i++) {
         source = &hmf->unk60[objectIndex].unk54[i];
         if (source->unk00 >= 3) {
@@ -2519,7 +2519,7 @@ s32 func_8002D3D0_main(HmfData *hmf, HmfMotionFile *file, s32 arg2) {
     HmfMotionFile *copy;
     s32 result;
 
-    D_800CE2B4_main = arg2 + 0x2874;
+    D_800CE2B4_main = arg2 + TAG_MOTION;
     D_800CCF58_main[modelIndex].unk00 = 0;
     if (hmf == NULL) {
         size = file->size + 8;
@@ -2537,7 +2537,7 @@ void func_8002D4B8_main(s32 arg0) {
     s16 modelIndex = arg0;
 
     if (modelIndex != 0xFF) {
-        HuMemFreeAllWithTag(modelIndex + 0x2874);
+        HuMemFreeAllWithTag(modelIndex + TAG_MOTION);
         D_800CCF58_main[modelIndex].unk02 = -1;
     }
 }
@@ -2547,7 +2547,7 @@ void func_8002D514_main(void) {
 
     for (i = 0; i < HU3D_MODEL_MAX; i++) {
         if (D_800CCF58_main[i].unk02 != -1) {
-            HuMemFreeAllWithTag(i + 0x2874);
+            HuMemFreeAllWithTag(i + TAG_MOTION);
             D_800CCF58_main[i].unk02 = -1;
         }
     }

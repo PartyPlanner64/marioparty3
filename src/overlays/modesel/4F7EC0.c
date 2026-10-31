@@ -290,11 +290,11 @@ void func_801066B4_modesel(s32 arg0, f32 *arg1, f32 *arg2, f32 *arg3) {
 }
 
 void func_801066FC_modesel(s32 arg0) {
-    func_8001C258_main(D_8010FE90_modesel[arg0].unk_00, 4, 4);
+    func_8001C258_main(D_8010FE90_modesel[arg0].unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 }
 
 void func_8010673C_modesel(s32 arg0) {
-    func_8001C258_main(D_8010FE90_modesel[arg0].unk_00, 4, 0);
+    func_8001C258_main(D_8010FE90_modesel[arg0].unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
 }
 
 void func_8010677C_modesel(s32 arg0, s32 arg1) {

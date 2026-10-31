@@ -53,7 +53,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duelresult/45A700", func_8010C72C_duelres
 
 void func_8010C880_duelresult(void) {
     Process *process = omAddPrcObj(func_8010C8E0_duelresult, 0x3F00, 0x2000, 0);
-    DuelResultWork *work = HuMemAllocTag(sizeof(DuelResultWork), 0x7918);
+    DuelResultWork *work = HuMemAllocTag(sizeof(DuelResultWork), TAG_OVERLAY);
 
     process->user_data = work;
     work->unk_18.x = 0.0f;

@@ -13,10 +13,12 @@ typedef struct jump_buf
 extern s32 setjmp(jmp_buf *jump_buf);
 extern s32 longjmp(jmp_buf *jump_buf, s32 val);
 
-#define EXEC_PROCESS_DEFAULT 0
-#define EXEC_PROCESS_SLEEPING 1
-#define EXEC_PROCESS_WATCH 2
-#define EXEC_PROCESS_DEAD 3
+#define PROCESS_STAT_PAUSE 0x1
+
+#define HUPRC_EXEC_NORMAL 0
+#define HUPRC_EXEC_SLEEP 1
+#define HUPRC_EXEC_CHILDWATCH 2
+#define HUPRC_EXEC_KILLED 3
 
 typedef void (*process_func)();
 

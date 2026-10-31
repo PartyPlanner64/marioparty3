@@ -109,7 +109,7 @@ void HuSprInit(void) {
     D_800D1FDC_main = NULL;
     guOrtho(&D_800BD7C0_main, -160.0f, 160.0f, -120.0f, 120.0f, 0.0f, 8000.0f, 2.0f);
     D_800D0468_main = Hu3DHookFuncCreate(0, func_80054218_main, 0);
-    Hu3DModelCameraSet(D_800D0468_main, 1);
+    Hu3DModelCameraSet(D_800D0468_main, HU3D_CAM0);
     D_800D10F2_main = Hu3DHookFuncCreate(0, func_80054658_main, 6);
     func_80055628_main();
     func_80056CD0_main();
@@ -464,7 +464,7 @@ HuSprite *func_800530AC_main(void) {
     for (group = HuSprGrpLast; group != NULL; group = group->prev) {
         for (i = 0; i < group->unk_0A; i++) {
             sprite = group->members[i];
-            if (sprite->unk_24 & 0x8000) {
+            if (sprite->unk_24 & HUSPR_ATTR_DISPOFF) {
                 continue;
             }
             bucket = sprite->prio >> 8;
@@ -1125,7 +1125,7 @@ void HuSprZRotSet(s16 group, s16 member, f32 arg2) {
 void HuSprAttrReset(s16 group, s16 member, s32 attr) {
     HuSprite *sprite_ptr = HuSprGrpData[group]->members[member];
 
-    if ((sprite_ptr->attr & 0x8000) && (attr & 0x8000)) {
+    if ((sprite_ptr->attr & HUSPR_ATTR_DISPOFF) && (attr & HUSPR_ATTR_DISPOFF)) {
         D_800A1EA0_main = 1;
     }
     if ((sprite_ptr->attr & 0x4000) && (attr & 0x4000)) {
@@ -1138,7 +1138,7 @@ void HuSprAttrReset(s16 group, s16 member, s32 attr) {
 void HuSprAttrSet(s16 group, s16 member, s32 attr) {
     HuSprite *sprite_ptr = HuSprGrpData[group]->members[member];
 
-    if (!(sprite_ptr->attr & 0x8000) && (attr & 0x8000)) {
+    if (!(sprite_ptr->attr & HUSPR_ATTR_DISPOFF) && (attr & HUSPR_ATTR_DISPOFF)) {
         D_800A1EA0_main = 1;
     }
     if (!(sprite_ptr->attr & 0x4000) && (attr & 0x4000)) {
@@ -1695,7 +1695,7 @@ void func_80056758_main(HuSprite *sprite) {
     s32 changed;
 
     sprite->unk_24 = sprite->unk_92 ^ sprite->attr;
-    if (sprite->unk_84 == NULL || (sprite->unk_24 & 0x8000)) {
+    if (sprite->unk_84 == NULL || (sprite->unk_24 & HUSPR_ATTR_DISPOFF)) {
         return;
     }
     if (fabs(fmod(sprite->unk_20, 360.0)) > 0.1f || (sprite->unk_24 & 0x3C0C00) ||

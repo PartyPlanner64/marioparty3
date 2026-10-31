@@ -218,14 +218,14 @@ void func_80031B30_main(u8 *data, HmfData *hmf, HmfData_Unk84_Entry2 *tex) {
         if ((tex->unk1C == 2 && size > 0x800) || size > 0x1000) {
             tex->unk1F |= 1;
         }
-        tex->unk28 = HuMemAllocTag(size, 15000);
+        tex->unk28 = HuMemAllocTag(size, TAG_TEXTURE);
         bcopy(data + 0xA, tex->unk28, size);
     } else {
         size = size / 3 * 2;
         if (size > 0x1000) {
             tex->unk1F |= 1;
         }
-        tex->unk28 = HuMemAllocTag(size, 15000);
+        tex->unk28 = HuMemAllocTag(size, TAG_TEXTURE);
         dst = tex->unk28;
         data += 0xA;
         for (i = 0; i < size; i += 2) {
@@ -325,7 +325,7 @@ void func_800321B8_main(u8 *data, HmfData *hmf, HmfPaletteData *pal) {
 
     data += 0xA;
     count = (data[0] << 8) + data[1];
-    pal->data = HuMemAllocTag(count * 2, 15000);
+    pal->data = HuMemAllocTag(count * 2, TAG_TEXTURE);
     pal->colorCount = count;
     data += 2;
     dst = (u16 *)pal->data;
@@ -509,7 +509,7 @@ s16 func_800329B4_main(u8 *data) {
     table = data + (data[0xD] << 16) + (data[0xE] << 8) + data[0xF];
     if (bpp <= 8) {
         if (palCount >= 2 && !(set->interp & 0x8000)) {
-            set->unk14 = HuMemAllocTag(palCount * 2, slot + 20000);
+            set->unk14 = HuMemAllocTag(palCount * 2, slot + TAG_TEXANIM);
             bcopy(table, set->unk14, palCount * 2);
         } else {
             set->rotCount = 0;
@@ -522,7 +522,7 @@ s16 func_800329B4_main(u8 *data) {
 
     imgCount = (data[0x10] << 8) + data[0x11];
     set->unk00 = imgCount;
-    set->unk0C = HuMemAllocTag(imgCount * sizeof(HmfAnimImage), slot + 20000);
+    set->unk0C = HuMemAllocTag(imgCount * sizeof(HmfAnimImage), slot + TAG_TEXANIM);
     table = data + (data[1] << 16) + (data[2] << 8) + data[3];
     for (i = 0; i < imgCount; i++) {
         img = &set->unk0C[i];
@@ -531,7 +531,7 @@ s16 func_800329B4_main(u8 *data) {
         height = img->height = (table[6] << 8) + table[7];
         img->unk04 = (table[8] << 8) + table[9];
         img->unk06 = (table[10] << 8) + table[11];
-        img->data = HuMemAllocTag(width * height * bpp / 8, slot + 20000);
+        img->data = HuMemAllocTag(width * height * bpp / 8, slot + TAG_TEXANIM);
         bcopy(pixels, img->data, width * height * bpp / 8);
         img->palette = set->unk14;
         img->colorCount = set->rotCount;
@@ -541,12 +541,12 @@ s16 func_800329B4_main(u8 *data) {
     bankCount = (data[0x12] << 8) + data[0x13];
     set->unk02 = bankCount;
     if (bankCount != 0) {
-        set->rot = HuMemAllocTag(bankCount * sizeof(HmfAnimRot), slot + 20000);
+        set->rot = HuMemAllocTag(bankCount * sizeof(HmfAnimRot), slot + TAG_TEXANIM);
         table = data + (data[5] << 16) + (data[6] << 8) + data[7];
         for (i = 0; i < bankCount; i++) {
             src = data + (table[i * 4 + 1] << 16) + (table[i * 4 + 2] << 8) + table[i * 4 + 3];
             set->rot[i].frameCount = frameCount = (src[0] << 8) + src[1];
-            set->rot[i].frames = HuMemAllocTag(frameCount * sizeof(HmfAnimFrame), slot + 20000);
+            set->rot[i].frames = HuMemAllocTag(frameCount * sizeof(HmfAnimFrame), slot + TAG_TEXANIM);
             src += 2;
             total = 0;
             for (j = 0; j < frameCount; j++) {
@@ -565,9 +565,9 @@ s16 func_800329B4_main(u8 *data) {
         }
     } else {
         set->unk02 = 1;
-        set->rot = HuMemAllocTag(sizeof(HmfAnimRot), slot + 20000);
+        set->rot = HuMemAllocTag(sizeof(HmfAnimRot), slot + TAG_TEXANIM);
         set->rot->frameCount = frameCount = imgCount;
-        set->rot->frames = HuMemAllocTag(frameCount * sizeof(HmfAnimFrame), slot + 20000);
+        set->rot->frames = HuMemAllocTag(frameCount * sizeof(HmfAnimFrame), slot + TAG_TEXANIM);
         for (j = 0; j < frameCount; j++) {
             frame = &set->rot->frames[j];
             frame->unk00 = j;
@@ -663,7 +663,7 @@ void func_800333B0_main(s16 animIdx) {
     if (D_800D408C_main[animIdx].unk0C != NULL) {
         D_800D408C_main[animIdx].refCount--;
         if (D_800D408C_main[animIdx].refCount == 0) {
-            func_80019C68_main(animIdx + 0x4E20);
+            func_80019C68_main(animIdx + TAG_TEXANIM);
             D_800D408C_main[animIdx].unk0C = NULL;
         }
     }
@@ -679,7 +679,7 @@ void func_80033450_main(void) {
     for (i = 0; i < 0x20; i++) {
         if (D_800D408C_main[i].unk0C != NULL) {
             D_800D408C_main[i].unk0C = NULL;
-            func_80019C68_main(i + 0x4E20);
+            func_80019C68_main(i + TAG_TEXANIM);
         }
     }
     for (i = 0; i < 0x80; i++) {
@@ -696,7 +696,7 @@ void func_80033510_main(void) {
     for (i = 0; i < 0x80; i++) {
         D_800CD2F8_main[i].nameHash = 0;
     }
-    func_80019C68_main(15000);
+    func_80019C68_main(TAG_TEXTURE);
 }
 
 void func_800335BC_main(char *name, u16 *out) {
@@ -865,13 +865,13 @@ s16 func_80033D0C_main(HmfData *hmf, u8 *data) {
     set = &D_800D408C_main[slot];
     count = (data[4] << 8) + data[5];
     set->unk00 = count;
-    set->unk0C = HuMemAllocTag(count * sizeof(HmfAnimImage), slot + 20000);
+    set->unk0C = HuMemAllocTag(count * sizeof(HmfAnimImage), slot + TAG_TEXANIM);
     entry = data + 6;
     set->interp = (data[0x18] << 8) + data[0x19];
     set->unk02 = 1;
-    set->rot = HuMemAllocTag(sizeof(HmfAnimRot), slot + 20000);
+    set->rot = HuMemAllocTag(sizeof(HmfAnimRot), slot + TAG_TEXANIM);
     set->rot->frameCount = count + 1;
-    set->rot->frames = HuMemAllocTag((count + 1) * sizeof(HmfAnimFrame), slot + 20000);
+    set->rot->frames = HuMemAllocTag((count + 1) * sizeof(HmfAnimFrame), slot + TAG_TEXANIM);
     totalTime = 0;
     for (i = 0; i < count; i++) {
         img = &set->unk0C[i];

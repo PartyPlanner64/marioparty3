@@ -548,11 +548,11 @@ void func_80106654_filesel(s32 arg0, f32 *arg1, f32 *arg2, f32 *arg3) {
 }
 
 void func_8010669C_filesel(s32 arg0) {
-    func_8001C258_main(D_80113650_filesel[arg0].unk_00, 4, 4);
+    func_8001C258_main(D_80113650_filesel[arg0].unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 }
 
 void func_801066DC_filesel(s32 arg0) {
-    func_8001C258_main(D_80113650_filesel[arg0].unk_00, 4, 0);
+    func_8001C258_main(D_80113650_filesel[arg0].unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
 }
 
 void func_8010671C_filesel(s32 arg0, s32 arg1) {
@@ -672,12 +672,12 @@ INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80106B40_filesel);
 s32 func_80106D8C_filesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
     s16 window = HuWinCreate(x, y, width, height, 0, 8);
 
-    func_8005B63C_main(window, -1, 0x11);
+    func_8005B63C_main(window, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
     HuWinMesSpeedSet(window, 0);
     HuWinBGTPLvlSet(window, 255);
     func_80060144_main(window);
     HuWinPriSet(window, 1);
-    func_8005FE54_main(window, 1);
+    func_8005FE54_main(window, HUWIN_PLAYER_1);
     func_8005C154_main(window, 192, 192, 192);
     HuWinBGColSet(window, 0, 64, 64);
     HuWinMesColSet(window, 7);
@@ -692,12 +692,12 @@ s32 func_80106D8C_filesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 
 s32 func_80106ED8_filesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
     s16 window = HuWinCreate(x, y, width, height, 0, 4);
 
-    func_8005B63C_main(window, -1, 0x11);
+    func_8005B63C_main(window, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
     HuWinMesSpeedSet(window, 0);
     HuWinBGTPLvlSet(window, 255);
     func_80060144_main(window);
     HuWinPriSet(window, 1);
-    func_8005FE54_main(window, 1);
+    func_8005FE54_main(window, HUWIN_PLAYER_1);
     HuWinMesPalSet(window, 5, 0, 176, 192);
     HuWinMesPalSet(window, 2, 255, 64, 64);
     HuWinMesPalSet(window, 4, 96, 255, 64);
@@ -713,11 +713,11 @@ s32 func_80106ED8_filesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 
 s32 func_80107040_filesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
     s16 window = HuWinCreate(x, y, width, height, 0, 8);
 
-    func_8005B63C_main(window, -1, 0x11);
+    func_8005B63C_main(window, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
     HuWinMesSpeedSet(window, 0);
     func_80060144_main(window);
     HuWinPriSet(window, 1);
-    func_8005FE54_main(window, 1);
+    func_8005FE54_main(window, HUWIN_PLAYER_1);
     HuWinMesPalSet(window, 5, 0, 176, 192);
     HuWinMesPalSet(window, 7, 255, 255, 255);
     HuWinMesPalSet(window, 0, 0, 0, 0);
@@ -740,7 +740,7 @@ s32 func_801071E8_filesel(u32 message, s16 x, s16 y, s16 style) {
     HuWinMesPalSet(window, 4, 96, 255, 64);
     HuWinMesPalSet(window, 6, 255, 255, 64);
     func_80060C14_main(window, 1);
-    func_8005FE54_main(window, 1);
+    func_8005FE54_main(window, HUWIN_PLAYER_1);
     HuWinMesSet(window, message, -1, -1);
     return window;
 }
@@ -752,7 +752,7 @@ s32 func_801072B4_filesel(u32 message, s16 x, s16 y, s16 style) {
     HuWinMesPalSet(window, 4, 96, 255, 64);
     HuWinMesPalSet(window, 6, 255, 255, 64);
     func_80060C14_main(window, 0);
-    func_8005FE54_main(window, 1);
+    func_8005FE54_main(window, HUWIN_PLAYER_1);
     HuWinMesSet(window, message, -1, -1);
     return window;
 }
@@ -763,7 +763,7 @@ s32 func_80107380_filesel(u32 message, s16 x, s16 y, s16 style) {
     HuWinMesPalSet(window, 2, 255, 64, 64);
     HuWinMesPalSet(window, 4, 96, 255, 64);
     HuWinMesPalSet(window, 6, 255, 255, 64);
-    func_8005FE54_main(window, 1);
+    func_8005FE54_main(window, HUWIN_PLAYER_1);
     func_80060C14_main(window, 0);
     HuWinMesSet(window, message, -1, -1);
     return window;
@@ -876,11 +876,11 @@ u16 func_801078F4_filesel(s32 value) {
 
     HuPrcSleep(3);
     while (1) {
-        if (D_800D5558_main[0] & 0xD010) {
+        if (D_800D5558_main[0] & (A_BUTTON | B_BUTTON | START_BUTTON | R_TRIG)) {
             sprintf(text, "\n%d\n", value);
             break;
         }
-        if (D_800D5558_main[0] & 0x2000) {
+        if (D_800D5558_main[0] & Z_TRIG) {
             camera = HmfModelData[gCameraList[0].unk4].hmf->unkBC;
             sprintf(text, "POS:%4.2f,%4.2f,%4.2f", camera->unk08, camera->unk0C, camera->unk10);
             print8(16, 180, text);
@@ -1676,8 +1676,8 @@ void func_8010A028_filesel(void) {
                 func_8010779C_filesel(4, 1, (u32) "0");
                 func_8010779C_filesel(4, 2, (u32) "0");
                 func_8010779C_filesel(4, 3, (u32) "0");
-                func_8005B63C_main(D_80114158_filesel[4].unk_00, 0x11, 0);
-                func_8005FE54_main(D_80114158_filesel[4].unk_00, 1);
+                func_8005B63C_main(D_80114158_filesel[4].unk_00, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK, HUWIN_ATTR_NONE);
+                func_8005FE54_main(D_80114158_filesel[4].unk_00, HUWIN_PLAYER_1);
                 func_801076D0_filesel(4, 0x2A09);
                 while (HuWinStatGet(D_80114158_filesel[4].unk_00) != 0) {
                     HuPrcVSleep();
@@ -1733,14 +1733,14 @@ void func_8010A028_filesel(void) {
                         func_80106550_filesel(cursor, 0.8f, 0.8f, 0.8f);
                         HuPrcSleep(16);
                         func_8010F844_filesel(selection);
-                        func_8005B63C_main(D_80114158_filesel[4].unk_00, -1, 0x11);
+                        func_8005B63C_main(D_80114158_filesel[4].unk_00, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
                         func_801076D0_filesel(4, 0x2A0B);
                         func_80107670_filesel(4);
                         func_80105F24_filesel(18);
                         break;
                     }
                 }
-                func_8005B63C_main(D_80114158_filesel[4].unk_00, -1, 0x11);
+                func_8005B63C_main(D_80114158_filesel[4].unk_00, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
                 func_801076D0_filesel(4, 0x2A08);
                 break;
             }
@@ -1834,7 +1834,7 @@ void func_8010A7D8_filesel(s32 arg0) {
         scale += ((10.0f - scale) / 67.0f) * 4.0f;
         HuPrcVSleep();
     }
-    func_8001C258_main(model, 4, 4);
+    func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelKill(model);
     HuPrcSleep(3);
 }
@@ -1994,7 +1994,7 @@ s32 func_8010AC58_filesel(s32 fileIndex) {
     func_80112508_filesel(fileIndex, name);
     func_80106B40_filesel(10, (u32)name, 104, 46, 62, 20, 2);
     window = func_80107810_filesel(10);
-    func_8005B63C_main(window, 0x80000, 0x80000);
+    func_8005B63C_main(window, HUWIN_ATTR_MONOSPACE, HUWIN_ATTR_MONOSPACE);
     HuWinBGColSet(window, 128, 128, 128);
     HuWinMesColSet(window, 7);
     func_80105E48_filesel(16, 0x1F0020);
@@ -2309,7 +2309,7 @@ s32 func_8010B998_filesel(u32 buttons) {
         func_8010B6F4_filesel(D_80114478_filesel.option);
         return 0;
     }
-    if (D_800D5558_main[0] & 0x8000) {
+    if (D_800D5558_main[0] & A_BUTTON) {
         switch (D_80114478_filesel.option) {
             case 7:
             case 8:
@@ -2350,7 +2350,7 @@ s32 func_8010B998_filesel(u32 buttons) {
         }
         func_8010B6F4_filesel(D_80114478_filesel.option);
         func_8010B684_filesel(D_80114478_filesel.keyboard);
-    } else if (D_800D5558_main[0] & 0x4000) {
+    } else if (D_800D5558_main[0] & B_BUTTON) {
         D_80114478_filesel.name[D_80114478_filesel.length] = 0;
         if (D_80114478_filesel.length > 0) {
             HuAudFXPlay(0x2EF);
@@ -2486,7 +2486,7 @@ s32 func_8010BE30_filesel(u32 buttons) {
         func_8010BDC4_filesel();
         return 0;
     }
-    if (D_800D5558_main[0] & 0x8000) {
+    if (D_800D5558_main[0] & A_BUTTON) {
         if (D_80114478_filesel.length < 5) {
             HuAudFXPlay(0x2EE);
             D_80114478_filesel.name[D_80114478_filesel.length] = func_8010B4D0_filesel(D_80114478_filesel.column, D_80114478_filesel.row);
@@ -2505,7 +2505,7 @@ s32 func_8010BE30_filesel(u32 buttons) {
         }
         return 0;
     }
-    if (D_800D5558_main[0] & 0x4000) {
+    if (D_800D5558_main[0] & B_BUTTON) {
         D_80114478_filesel.name[D_80114478_filesel.length] = 0;
         if (D_80114478_filesel.length > 0) {
             HuAudFXPlay(0x2EF);
@@ -2610,7 +2610,7 @@ s32 func_8010C25C_filesel(u32 buttons) {
         func_8010BDC4_filesel();
         return 0;
     }
-    if (D_800D5558_main[0] & 0x8000) {
+    if (D_800D5558_main[0] & A_BUTTON) {
         if (D_80114478_filesel.length < 5) {
             HuAudFXPlay(0x2EE);
             D_80114478_filesel.name[D_80114478_filesel.length] = func_8010B4FC_filesel(D_80114478_filesel.column, D_80114478_filesel.row);
@@ -2629,7 +2629,7 @@ s32 func_8010C25C_filesel(u32 buttons) {
         }
         return 0;
     }
-    if (D_800D5558_main[0] & 0x4000) {
+    if (D_800D5558_main[0] & B_BUTTON) {
         D_80114478_filesel.name[D_80114478_filesel.length] = 0;
         if (D_80114478_filesel.length > 0) {
             HuAudFXPlay(0x2EF);
@@ -2734,7 +2734,7 @@ s32 func_8010C688_filesel(u32 buttons) {
         func_8010BDC4_filesel();
         return 0;
     }
-    if (D_800D5558_main[0] & 0x8000) {
+    if (D_800D5558_main[0] & A_BUTTON) {
         if (D_80114478_filesel.length < 5) {
             HuAudFXPlay(0x2EE);
             D_80114478_filesel.name[D_80114478_filesel.length] = func_8010B528_filesel(D_80114478_filesel.column, D_80114478_filesel.row);
@@ -2753,7 +2753,7 @@ s32 func_8010C688_filesel(u32 buttons) {
         }
         return 0;
     }
-    if (D_800D5558_main[0] & 0x4000) {
+    if (D_800D5558_main[0] & B_BUTTON) {
         D_80114478_filesel.name[D_80114478_filesel.length] = 0;
         if (D_80114478_filesel.length > 0) {
             HuAudFXPlay(0x2EF);
@@ -2919,11 +2919,11 @@ s32 func_8010CCA8_filesel(void) {
         if (stick != -1) {
             input |= stick;
         }
-        if (D_800D5558_main[0] & 0x4000) {
+        if (D_800D5558_main[0] & B_BUTTON) {
             input = -1;
             break;
         }
-        if (D_800D5558_main[0] & 0x8000) {
+        if (D_800D5558_main[0] & A_BUTTON) {
             func_80105FA0_filesel(18);
             if (selected == 0) {
                 HuAudFXPlay(3);
@@ -2941,13 +2941,13 @@ s32 func_8010CCA8_filesel(void) {
                         if (func_801077D8_filesel(4, 0, 0) == 0) {
                             func_801076D0_filesel(4, (u32)D_80112A64_filesel);
                             HuPrcVSleep();
-                            func_8005B63C_main(D_80114158_filesel[4].unk_00, 0x11, 0);
+                            func_8005B63C_main(D_80114158_filesel[4].unk_00, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK, HUWIN_ATTR_NONE);
                             func_801076D0_filesel(4, 0x2A18);
                             func_8010782C_filesel(4);
                             func_801076D0_filesel(4, 0x2A19);
                             func_8010782C_filesel(4);
                             input = func_801077D8_filesel(4, 1, 0) == 0 ? 2 : -1;
-                            func_8005B63C_main(D_80114158_filesel[4].unk_00, -1, 0x11);
+                            func_8005B63C_main(D_80114158_filesel[4].unk_00, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
                             break;
                         }
                     }
@@ -3425,7 +3425,7 @@ void func_8010E864_filesel(void) {
     while (1) {
         if (D_80114500_filesel == -1 || D_80114500_filesel == 0) {
             if (D_80114500_filesel == 0) {
-                if (D_800CDA7C_main[0] & 0x2000) {
+                if (D_800CDA7C_main[0] & Z_TRIG) {
                     CZoom += D_800D20A1_main[0];
                     if (CZoom < 100.0f) {
                         CZoom = 100.0f;
@@ -3532,7 +3532,7 @@ void func_8010F168_filesel(void) {
     y = 168.0f;
     func_80106B40_filesel(1, (u32)D_801142D8_filesel.files[0].name, x, 168, width, 20, 2);
     window = func_80107810_filesel(1);
-    func_8005B63C_main(window, 0x80000, 0x80000);
+    func_8005B63C_main(window, HUWIN_ATTR_MONOSPACE, HUWIN_ATTR_MONOSPACE);
     HuWinBGColSet(window, 192, 192, 192);
     HuWinMesColSet(window, 7);
     if (!(D_801142D8_filesel.files[0].name[0] | D_801142D8_filesel.files[0].name[1])) {
@@ -3547,7 +3547,7 @@ void func_8010F168_filesel(void) {
     x = screen.x - (s32)(width >> 1);
     func_80106B40_filesel(2, (u32)D_801142D8_filesel.files[1].name, x, y, width, 20, 2);
     window = func_80107810_filesel(2);
-    func_8005B63C_main(window, 0x80000, 0x80000);
+    func_8005B63C_main(window, HUWIN_ATTR_MONOSPACE, HUWIN_ATTR_MONOSPACE);
     HuWinBGColSet(window, 192, 192, 192);
     HuWinMesColSet(window, 7);
     if (!(D_801142D8_filesel.files[1].name[0] | D_801142D8_filesel.files[1].name[1])) {
@@ -3562,7 +3562,7 @@ void func_8010F168_filesel(void) {
     x = screen.x - (s32)(width >> 1);
     func_80106B40_filesel(3, (u32)D_801142D8_filesel.files[2].name, x, y, width, 20, 2);
     window = func_80107810_filesel(3);
-    func_8005B63C_main(window, 0x80000, 0x80000);
+    func_8005B63C_main(window, HUWIN_ATTR_MONOSPACE, HUWIN_ATTR_MONOSPACE);
     HuWinBGColSet(window, 128, 128, 128);
     HuWinMesColSet(window, 7);
     if (!(D_801142D8_filesel.files[2].name[0] | D_801142D8_filesel.files[2].name[1])) {

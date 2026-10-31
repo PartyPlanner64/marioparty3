@@ -55,7 +55,7 @@ void func_801063FC_river_raiders(void) {
     omObjData *obj = omAddObj(0x3B6, 1, 0xA, -1, func_80106300_river_raiders);
     obj->work[0] = 0;
     D_8010EE90_river_raiders = obj;
-    omSetStatBit(obj, 0xA0);
+    omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_09_river_raiders/1542E0", func_80106448_river_raiders);

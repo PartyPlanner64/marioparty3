@@ -200,8 +200,8 @@ void func_80117A3C_msetup(void) {
     model = func_8000B108_main(0xA0089, 0x29D);
     decoration = func_8000B108_main(0x140068, 0x29D);
     func_8001C814_main(model, 2, 2);
-    func_8001C258_main(model, 4, 0);
-    func_8001C258_main(decoration, 4, 0);
+    func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    func_8001C258_main(decoration, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DModelScaleSet(model, 0.8f, 0.8f, 0.8f);
     Hu3DModelScaleSet(decoration, 0.8f, 0.8f, 0.8f);
     target = &D_8011A38C_msetup[menu->type];
@@ -272,7 +272,7 @@ void func_80117A3C_msetup(void) {
                     switch (menu->type) {
                         case 0:
                             for (i = 0; i < optionCount; i++) {
-                                HuSprAttrSet(shadowGroup, i, 0x8000);
+                                HuSprDispOff(shadowGroup, i);
                             }
                             break;
                         case 1:
@@ -301,7 +301,7 @@ void func_80117A3C_msetup(void) {
                     cursor.state = 1;
                     switch (menu->type) {
                         case 0:
-                            HuSprAttrReset(group, selection + 1, 0x8000);
+                            HuSprDispOn(group, selection + 1);
                             break;
                         case 1:
                             HuSprTPLvlSet(group, selection + 1, 0x100);
@@ -364,27 +364,27 @@ void func_80117A3C_msetup(void) {
         if (state == 5) {
             switch (menu->type) {
                 case 0:
-                    if (buttons & 0xF00) {
+                    if (buttons & (U_JPAD | D_JPAD | L_JPAD | R_JPAD)) {
                         i = func_8010D4DC_msetup(D_8011A514_msetup, disabled, 6, selection, D_8011A948_msetup, buttons);
                         if ((i >= 0) & (i < 6U)) {
                             selection = i;
                         }
                         if (cursor.selection != selection) {
                             HuAudFXPlay(1);
-                            HuSprAttrSet(group, cursor.selection + 1, 0x8000);
-                            HuSprAttrReset(group, selection + 1, 0x8000);
+                            HuSprDispOff(group, cursor.selection + 1);
+                            HuSprDispOn(group, selection + 1);
                             cursor.selection = selection;
                         }
                     }
                     if (buttons & A_BUTTON) {
                         menu->state = 0;
                         menu->result = selection;
-                        HuSprAttrReset(group, selection + 1, 0x8000);
+                        HuSprDispOn(group, selection + 1);
                         HuAudFXPlay(D_8011A0D0_msetup[selection]);
                         RepeatVibrator(D_8011A948_msetup, 5, 0, 5);
                         for (i = 1; i < optionCount; i++) {
                             if (i != selection + 1) {
-                                HuSprAttrReset(shadowGroup, i, 0x8000);
+                                HuSprDispOn(shadowGroup, i);
                             }
                         }
                     } else if (buttons & B_BUTTON) {
@@ -401,12 +401,12 @@ void func_80117A3C_msetup(void) {
                     }
                     break;
                 case 1:
-                    if (buttons & 0x600) {
+                    if (buttons & (D_JPAD | L_JPAD)) {
                         selection++;
                         if (selection >= difficultyCount) {
                             selection = difficultyCount - 1;
                         }
-                    } else if (buttons & 0x900) {
+                    } else if (buttons & (U_JPAD | R_JPAD)) {
                         selection--;
                         if (selection < 0) {
                             selection = 0;
@@ -430,9 +430,9 @@ void func_80117A3C_msetup(void) {
                     }
                     break;
                 case 2:
-                    if (buttons & 0x600) {
+                    if (buttons & (D_JPAD | L_JPAD)) {
                         selection = 0;
-                    } else if (buttons & 0x900) {
+                    } else if (buttons & (U_JPAD | R_JPAD)) {
                         selection = 1;
                     }
                     if (cursor.selection != selection) {

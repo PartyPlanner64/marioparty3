@@ -78,7 +78,7 @@ void func_80105E60_pipe_cleaners(void) {
 void func_80105E94_pipe_cleaners(s32 arg0) {
     s16 modelId = D_8010A830_pipe_cleaners[arg0];
 
-    func_8001C258_main(D_800CBB60_main[modelId].modelId, 4, 0);
+    func_8001C258_main(D_800CBB60_main[modelId].modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     func_800146DC_main(modelId, 1, 0);
 }
 
@@ -146,7 +146,7 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", D_8010A1
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80106BF8_pipe_cleaners);
 
 void func_80106CB4_pipe_cleaners(s32 arg0, PipeCleanerWork *work) {
-    func_8001C258_main(work->object->model[2], 4, 4);
+    func_8001C258_main(work->object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     work->state = 3;
 }
 

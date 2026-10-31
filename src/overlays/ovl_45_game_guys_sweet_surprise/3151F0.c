@@ -20,8 +20,8 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/3151F0", 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/3151F0", func_8010C090_game_guys_sweet_surprise);
 
 void func_8010C244_game_guys_sweet_surprise(void) {
-    HuSprAttrSet(D_8010D0E8_game_guys_sweet_surprise.group, 0, 0x8000);
-    HuSprAttrSet(D_8010D0D0_game_guys_sweet_surprise.group, 0, 0x8000);
+    HuSprDispOff(D_8010D0E8_game_guys_sweet_surprise.group, 0);
+    HuSprDispOff(D_8010D0D0_game_guys_sweet_surprise.group, 0);
     D_8010D0E8_game_guys_sweet_surprise.sprite->unk_84->unk00->unk00 =
         D_8010D0E8_game_guys_sweet_surprise.unk_04[0];
     D_8010D0D0_game_guys_sweet_surprise.sprite->unk_84->unk00->unk00 =

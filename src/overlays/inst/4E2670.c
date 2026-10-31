@@ -47,11 +47,11 @@ void func_801094B0_inst(void) {
     Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
     object->scale.x = object->scale.y = object->scale.z = 0.4f;
     Hu3DModelScaleSet(object->model[0], 0.4f, 0.4f, 0.4f);
-    func_8001C258_main(object->model[0], 4, 4);
+    func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     if (D_8010D408_inst == 1) {
         func_8001C5B4_main(object->model[0], object->motion[3]);
         func_8001C814_main(object->model[0], 2, 2);
-        func_8001C258_main(object->model[0], 4, 0);
+        func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         object->trans.x = -91.0f;
         object->trans.y = 29.0f;
         object->trans.z = 210.0f;
@@ -82,7 +82,7 @@ void func_8010986C_inst(omObjData *object) {
     if (D_8010D530_inst >= 100) {
         D_8010DDEC_inst = func_801098D8_inst;
         D_8010D530_inst = 0;
-        func_8001C258_main(object->model[0], 4, 0);
+        func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         HuAudFXPlay(0x298);
         func_8010C8D0_inst();
     }

@@ -191,7 +191,7 @@ void func_8010683C_snowball_summit(omObjData *this) {
     *this->model = func_8000B108_main(0x490003, 0x2B9);
     this->trans.x = this->trans.z = 0.0f;
     this->trans.y = 20.0f;
-    Hu3DModelCameraSet(*this->model, 2);
+    Hu3DModelCameraSet(*this->model, HU3D_CAM1);
     this->func = func_80106834_snowball_summit;
 }
 
@@ -207,7 +207,7 @@ void func_801068EC_snowball_summit(omObjData *this) {
     func_8001C814_main(*this->model, 2, 2);
     this->trans.x = this->trans.z = 0.0f;
     this->trans.y = 0.0f;
-    Hu3DModelCameraSet(*this->model, 1);
+    Hu3DModelCameraSet(*this->model, HU3D_CAM0);
     this->func = func_801068E4_snowball_summit;
 }
 
@@ -275,7 +275,7 @@ void func_80107860_snowball_summit(omObjData *this) {
 
     *model = func_8000CBA0_main(0x49000D, 0x2A9);
     func_8000CD00_main(*model, 15.0f, 110.0f, 8.0f);
-    Hu3DModelCameraSet(*model, 2);
+    Hu3DModelCameraSet(*model, HU3D_CAM1);
     this->func = func_8010775C_snowball_summit;
 }
 
@@ -412,7 +412,7 @@ void func_8010C2EC_snowball_summit(omObjData *arg0) {
 }
 
 void func_8010C328_snowball_summit(omObjData *arg0) {
-    if (GMesStatGet() & 2) {
+    if (GMesStatGet() & GMES_STAT_TIMEEND) {
         D_8010F88C_snowball_summit = 0x14;
         arg0->func = func_8010C2EC_snowball_summit;
     }
@@ -493,7 +493,7 @@ void func_8010C7A4_snowball_summit(omObjData *arg0) {
 }
 
 void func_8010C7F0_snowball_summit(omObjData *arg0) {
-    if (GMesStatGet() == 0 || GMesStatGet() & 2) {
+    if (GMesStatGet() == 0 || GMesStatGet() & GMES_STAT_TIMEEND) {
         arg0->func = func_8010C7A4_snowball_summit;
         D_8010F884_snowball_summit = 1;
         HuAudSeqPlay(0x30);

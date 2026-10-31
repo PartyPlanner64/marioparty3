@@ -301,11 +301,11 @@ void func_80110BD4_option(s32 arg0, f32 *arg1, f32 *arg2, f32 *arg3) {
 }
 
 void func_80110C1C_option(s32 arg0) {
-    func_8001C258_main(D_80114F70_option[arg0].unk_00, 4, 4);
+    func_8001C258_main(D_80114F70_option[arg0].unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 }
 
 void func_80110C5C_option(s32 arg0) {
-    func_8001C258_main(D_80114F70_option[arg0].unk_00, 4, 0);
+    func_8001C258_main(D_80114F70_option[arg0].unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
 }
 
 void func_80110C9C_option(s32 arg0, s32 arg1) {
@@ -384,12 +384,12 @@ s32 func_8011130C_option(s32 message, s16 x, s16 y, s16 width, s16 height) {
     s16 winID;
 
     winID = HuWinCreate(x, y, width, height, 0, 8);
-    func_8005B63C_main(winID, -1, 17);
+    func_8005B63C_main(winID, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
     HuWinMesSpeedSet(winID, 0);
     HuWinBGTPLvlSet(winID, 255);
     func_80060144_main(winID);
     HuWinPriSet(winID, 1);
-    func_8005FE54_main(winID, 1);
+    func_8005FE54_main(winID, HUWIN_PLAYER_1);
     func_8005C154_main(winID, 192, 192, 192);
     HuWinBGColSet(winID, 0, 64, 64);
     HuWinMesColSet(winID, 7);
@@ -405,12 +405,12 @@ s32 func_80111458_option(s32 message, s16 x, s16 y, s16 width, s16 height) {
     s16 winID;
 
     winID = HuWinCreate(x, y, width, height, 0, 4);
-    func_8005B63C_main(winID, -1, 17);
+    func_8005B63C_main(winID, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
     HuWinMesSpeedSet(winID, 0);
     HuWinBGTPLvlSet(winID, 255);
     func_80060144_main(winID);
     HuWinPriSet(winID, 1);
-    func_8005FE54_main(winID, 1);
+    func_8005FE54_main(winID, HUWIN_PLAYER_1);
     HuWinMesPalSet(winID, 5, 0, 176, 192);
     HuWinMesPalSet(winID, 2, 255, 64, 64);
     HuWinMesPalSet(winID, 4, 96, 255, 64);
@@ -427,11 +427,11 @@ s32 func_801115C0_option(s32 message, s16 x, s16 y, s16 width, s16 height) {
     s16 winID;
 
     winID = HuWinCreate(x, y, width, height, 0, 8);
-    func_8005B63C_main(winID, -1, 17);
+    func_8005B63C_main(winID, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
     HuWinMesSpeedSet(winID, 0);
     func_80060144_main(winID);
     HuWinPriSet(winID, 1);
-    func_8005FE54_main(winID, 1);
+    func_8005FE54_main(winID, HUWIN_PLAYER_1);
     HuWinMesPalSet(winID, 5, 0, 176, 192);
     HuWinMesPalSet(winID, 7, 255, 255, 255);
     HuWinMesPalSet(winID, 0, 0, 0, 0);
@@ -455,7 +455,7 @@ s32 func_80111768_option(s32 message, s16 x, s16 y) {
     HuWinMesPalSet(winID, 4, 96, 255, 64);
     HuWinMesPalSet(winID, 6, 255, 255, 64);
     func_80060C14_main(winID, 1);
-    func_8005FE54_main(winID, 1);
+    func_8005FE54_main(winID, HUWIN_PLAYER_1);
     HuWinMesSet(winID, message, -1, -1);
     return winID;
 }
@@ -468,7 +468,7 @@ s32 func_80111834_option(s32 message, s16 x, s16 y) {
     HuWinMesPalSet(winID, 4, 96, 255, 64);
     HuWinMesPalSet(winID, 6, 255, 255, 64);
     func_80060C14_main(winID, 0);
-    func_8005FE54_main(winID, 1);
+    func_8005FE54_main(winID, HUWIN_PLAYER_1);
     HuWinMesSet(winID, message, -1, -1);
     return winID;
 }
@@ -480,7 +480,7 @@ s32 func_80111900_option(s32 message, s16 x, s16 y) {
     HuWinMesPalSet(winID, 2, 255, 64, 64);
     HuWinMesPalSet(winID, 4, 96, 255, 64);
     HuWinMesPalSet(winID, 6, 255, 255, 64);
-    func_8005FE54_main(winID, 1);
+    func_8005FE54_main(winID, HUWIN_PLAYER_1);
     func_80060C14_main(winID, 0);
     HuWinMesSet(winID, message, -1, -1);
     return winID;
@@ -590,11 +590,11 @@ u16 func_80111E74_option(s32 value) {
 
     HuPrcSleep(3);
     while (1) {
-        if (D_800D5558_main[0] & 0xD010) {
+        if (D_800D5558_main[0] & (A_BUTTON | B_BUTTON | START_BUTTON | R_TRIG)) {
             sprintf(text, exitFormat, value);
             break;
         }
-        if (D_800D5558_main[0] & 0x2000) {
+        if (D_800D5558_main[0] & Z_TRIG) {
             cam = HmfModelData[gCameraList->unk4].hmf->unkBC;
             sprintf(text, posFormat, cam->unk08, cam->unk0C, cam->unk10);
             print8(16, 180, text);

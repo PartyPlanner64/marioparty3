@@ -6,6 +6,7 @@
 #include "overlay.h"
 #include "rom.h"
 #include "pad.h"
+#include "mallocblock.h"
 
 #define HAS_TEXT_SECTION 1
 #define HAS_DATA_SECTION 2
@@ -186,5 +187,5 @@ s16 HmfAnimRead(HmfData* arg0, s32 arg1, char* arg2) {
 }
 
 s16 func_8000B5BC_main(s32 arg0) {
-    return Hu3DModelCreate(DataReadNum(arg0, 0x7918), 0);
+    return Hu3DModelCreate(DataReadNum(arg0, TAG_OVERLAY), 0);
 }

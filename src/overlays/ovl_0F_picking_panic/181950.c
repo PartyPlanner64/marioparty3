@@ -145,16 +145,16 @@ void func_801059A0_picking_panic(void) {
     CZoomM[1] = 4687.5f;
     omAddObj(0, 0, 0, -1, func_80105D3C_picking_panic);
     D_8010EEFC_picking_panic = omAddObj(8, 38, 38, -1, func_8010664C_picking_panic);
-    omSetStatBit(D_8010EEFC_picking_panic, 0xA0);
+    omSetStatBit(D_8010EEFC_picking_panic, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     D_8010EF00_picking_panic[0] = omAddObj(3, 8, 5, -1, func_8010B160_picking_panic);
     D_8010EF00_picking_panic[1] = omAddObj(3, 8, 5, -1, func_8010B194_picking_panic);
     D_8010EF00_picking_panic[2] = omAddObj(3, 8, 5, -1, func_8010B1C0_picking_panic);
     D_8010EF00_picking_panic[3] = omAddObj(3, 8, 5, -1, func_8010B1F4_picking_panic);
     object = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     object->work[0] = 2;
-    omSetStatBit(object, 0xA0);
+    omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     func_80045010_main(D_8010E720_picking_panic, 1);
-    WipeCreateIn(0xFF, 16);
+    WipeCreateIn(WIPE_TYPE_PREV, 16);
     D_8010E5B0_picking_panic.unk01 = 1;
     D_8010E5B0_picking_panic.unk1C = 60;
     D_8010E5B0_picking_panic.unk1E = 900;
@@ -317,17 +317,17 @@ void func_80106020_picking_panic(omObjData *object) {
             break;
         case 7:
             if (D_8010EFA8_picking_panic == 1) {
-                WipeCreateOut(0, 20);
+                WipeCreateOut(WIPE_TYPE_NORMAL, 20);
             } else if (D_8010EFA8_picking_panic >= 32) {
                 D_8010EFBE_picking_panic = 1;
             }
             break;
     }
 
-    if (_CheckFlag(0xF) && D_800D530C_main == 0 && D_8010EFA5_picking_panic == 0 && (u16)D_8010EF80_picking_panic == 2) {
+    if (_CheckFlag(FLAG_MG_PRACTICE) && D_800D530C_main == 0 && D_8010EFA5_picking_panic == 0 && (u16)D_8010EF80_picking_panic == 2) {
         for (j = 0; j < 2; j++) {
             if (D_8010EEE0_picking_panic[j]->unk4 == -1 &&
-                (D_800D5558_main[D_8010EEE0_picking_panic[j]->unk2] & 0x10)) {
+                (D_800D5558_main[D_8010EEE0_picking_panic[j]->unk2] & R_TRIG)) {
                 D_8010EFA5_picking_panic = 1;
             }
         }
@@ -339,7 +339,7 @@ void func_80106020_picking_panic(omObjData *object) {
         }
         if (D_8010EFA5_picking_panic != 0) {
             if (D_8010EFA5_picking_panic == 1) {
-                WipeCreateOut(0, 20);
+                WipeCreateOut(WIPE_TYPE_NORMAL, 20);
                 HuAudSeqFadeOut(20);
                 func_8004AB0C_main(20);
             }
@@ -369,12 +369,12 @@ void func_8010664C_picking_panic(omObjData *object) {
     omSetTra(object, 0.0f, -525.0f, -450.0f);
     omSetSca(object, 1.75f, 1.75f, 1.75f);
     func_8001C814_main(object->model[0], 1, 1);
-    Hu3DModelCameraSet(object->model[0], 1);
+    Hu3DModelCameraSet(object->model[0], HU3D_CAM0);
     object->model[1] = Hu3DModelLink(object->model[0]);
     Hu3DModelPosSet(object->model[1], 0.0f, -525.0f, -450.0f);
     Hu3DModelScaleSet(object->model[1], 1.75f, 1.75f, 1.75f);
     func_8001C814_main(object->model[1], 1, 1);
-    Hu3DModelCameraSet(object->model[1], 2);
+    Hu3DModelCameraSet(object->model[1], HU3D_CAM1);
 
     for (i = 0; i < 2; i++) {
         object->model[4 + i] = func_8000B108_main((i == 1) ? 0x300005 : 0x300006, 0x43D);
@@ -392,7 +392,7 @@ void func_8010664C_picking_panic(omObjData *object) {
         Hu3DModelPosSet(object->model[2 + i], 890.0f, -222.0f, 0.0f);
         Hu3DModelScaleSet(object->model[2 + i], 1.38125f, 1.3f, 1.3f);
         func_8001C814_main(object->model[2 + i], 1, 1);
-        Hu3DModelCameraSet(object->model[2 + i], (i == 0) ? 1 : 2);
+        Hu3DModelCameraSet(object->model[2 + i], (i == 0) ? HU3D_CAM0 : HU3D_CAM1);
     }
 
     object->model[32] = func_8000B108_main(0x300007, 0x499);
@@ -406,7 +406,7 @@ void func_8010664C_picking_panic(omObjData *object) {
         object->model[10 + i] = func_8000B108_main(0x300009, 0x4BD);
         Hu3DModelPosSet(object->model[10 + i], -855.0f, 125.0f, 0.0f);
         Hu3DModelScaleSet(object->model[10 + i], 2.0f, 2.0f, 2.0f);
-        Hu3DModelCameraSet(object->model[10 + i], (i == 0) ? 1 : 2);
+        Hu3DModelCameraSet(object->model[10 + i], (i == 0) ? HU3D_CAM0 : HU3D_CAM1);
     }
 
     object->model[8] = func_8000B108_main(0x300008, 0x4B9);
@@ -427,7 +427,7 @@ void func_8010664C_picking_panic(omObjData *object) {
                                 zs[idx] / 4687.5 * 5187.5, -500.0f);
                 Hu3DModelPosSet(object->model[(j == 0) ? 12 + idx : 22 + idx], 0.0f, 0.0f, -500.0f);
                 func_8001C814_main(object->model[(j == 0) ? 12 + idx : 22 + idx], 1, 1);
-                Hu3DModelCameraSet(object->model[(j == 0) ? 12 + idx : 22 + idx], (j == 0) ? 1 : 2);
+                Hu3DModelCameraSet(object->model[(j == 0) ? 12 + idx : 22 + idx], (j == 0) ? HU3D_CAM0 : HU3D_CAM1);
             }
         }
     }
@@ -494,8 +494,8 @@ void func_80106E84_picking_panic(omObjData *object) {
         }
         if (D_8010EFA4_picking_panic == 30) {
             for (i = 0; i < 10; i++) {
-                func_8001C258_main(D_8010EEFC_picking_panic->model[12 + i], 4, 4);
-                func_8001C258_main(D_8010EEFC_picking_panic->model[22 + i], 4, 4);
+                func_8001C258_main(D_8010EEFC_picking_panic->model[12 + i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                func_8001C258_main(D_8010EEFC_picking_panic->model[22 + i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
         }
     } else {
@@ -615,14 +615,14 @@ void func_80107A48_picking_panic(void) {
             progress[view] = (1.0f - progress[view] * progress[view]) * 0.75 + (1.0f - progress[view]) * 0.25;
         }
         if (D_8010EF10_picking_panic[view] == 26) {
-            func_8001C258_main(D_8010EEFC_picking_panic->model[10 + view], 4, 0);
+            func_8001C258_main(D_8010EEFC_picking_panic->model[10 + view], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DMotionTimeSet(D_8010EEFC_picking_panic->model[10 + view], 0);
             func_8001C814_main(D_8010EEFC_picking_panic->model[10 + view], 3, 0);
             func_8010B11C_picking_panic(D_8010EEFC_picking_panic->model[10 + view], 0);
         }
         if (D_8010EF10_picking_panic[view] == 27) {
             func_8001C258_main(
-                *D_8010EF18_picking_panic[view][D_8010EEF0_picking_panic[view]][D_8010EF98_picking_panic[view]], 4, 0);
+                *D_8010EF18_picking_panic[view][D_8010EEF0_picking_panic[view]][D_8010EF98_picking_panic[view]], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DMotionTimeSet(*D_8010EF18_picking_panic[view][D_8010EEF0_picking_panic[view]][D_8010EF98_picking_panic[view]],
                                0);
             func_8001C814_main(*D_8010EF18_picking_panic[view][D_8010EEF0_picking_panic[view]][D_8010EF98_picking_panic[view]],
@@ -921,11 +921,11 @@ void func_8010B220_picking_panic(omObjData *object, s8 arg1) {
     object->model[0] = func_8000B108_main((files[chr] << 16) | models[chr], 0x4B9);
     omSetSca(object, 1.3f, 1.3f, 1.3f);
     func_8001C2FC_main(object->model[0], 0x600, 0x400);
-    Hu3DModelCameraSet(object->model[0], (arg1 >= 2) ? 2 : 1);
+    Hu3DModelCameraSet(object->model[0], (arg1 >= 2) ? HU3D_CAM1 : HU3D_CAM0);
     object->model[1] = func_8000B108_main((files[chr] << 16) | linkModels[chr], 0x4AD);
     Hu3DModelScaleSet(object->model[1], 1.3f, 1.3f, 1.3f);
     func_8001C2FC_main(object->model[1], 0x600, 0x400);
-    Hu3DModelCameraSet(object->model[1], (arg1 >= 2) ? 2 : 1);
+    Hu3DModelCameraSet(object->model[1], (arg1 >= 2) ? HU3D_CAM1 : HU3D_CAM0);
     D_8010EEE0_picking_panic[arg1]->unk6 =
         func_80017790_main(object->model[1], 1, motions[chr], (files[chr] << 16) | anims[0][chr]);
     D_8010EEE0_picking_panic[arg1]->unk8 = func_80017AD8_main((files[chr] << 16) | anims[1][chr]);
@@ -957,9 +957,9 @@ void func_8010B220_picking_panic(omObjData *object, s8 arg1) {
                 } else {
                     *model = Hu3DModelLink(D_8010EF00_picking_panic[0]->model[2 + i]);
                 }
-                Hu3DModelCameraSet(*model, (arg1 >= 2) ? 2 : 1);
+                Hu3DModelCameraSet(*model, (arg1 >= 2) ? HU3D_CAM1 : HU3D_CAM0);
                 func_8001C2FC_main(*model, 0x20000000, 0x20000000);
-                func_8001C258_main(*model, 4, 4);
+                func_8001C258_main(*model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 Hu3DModelScaleSet(*model, 1.3f, 1.3f, 1.3f);
             }
         }
@@ -1119,8 +1119,8 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
                     D_8010EE98_picking_panic = velY;
                     D_8010EE90_picking_panic = rot;
                     for (k = 0; k < 2; k++) {
-                        func_8001C258_main(D_8010EF00_picking_panic[winner + k]->model[0], 4, 4);
-                        func_8001C258_main(D_8010EF00_picking_panic[winner + k]->model[1], 4, 0);
+                        func_8001C258_main(D_8010EF00_picking_panic[winner + k]->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                        func_8001C258_main(D_8010EF00_picking_panic[winner + k]->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                         Hu3DMotionShiftSet(D_8010EF00_picking_panic[winner + k]->model[1],
                                            HmfModelData[D_8010EF00_picking_panic[winner + k]->motion[2]].motId, 50,
                                            flyFrames, 0);
@@ -1162,11 +1162,11 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
                 if (j == 1 && D_8010EFA4_picking_panic < 255) {
                     if (D_8010EFA4_picking_panic == 1) {
                         for (k = 0; k < 3; k++) {
-                            func_8001C258_main(D_8010EEFC_picking_panic->model[k + 32], 4, 4);
-                            func_8001C258_main(D_8010EEFC_picking_panic->model[k + 35], 4, 4);
+                            func_8001C258_main(D_8010EEFC_picking_panic->model[k + 32], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                            func_8001C258_main(D_8010EEFC_picking_panic->model[k + 35], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         }
-                        func_8001C258_main(D_8010EEFC_picking_panic->model[8], 4, 4);
-                        func_8001C258_main(D_8010EEFC_picking_panic->model[9], 4, 4);
+                        func_8001C258_main(D_8010EEFC_picking_panic->model[8], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                        func_8001C258_main(D_8010EEFC_picking_panic->model[9], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     }
                     D_8010EFA4_picking_panic -= (D_8010EFA4_picking_panic != 0);
                 }
@@ -1176,7 +1176,7 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
 
     if (HmfModelData[D_8010EEFC_picking_panic->model[arg1 + 10]].motTime >= 60.0f) {
         HmfModelData[D_8010EEFC_picking_panic->model[arg1 + 10]].motTime = 0.0f;
-        func_8001C258_main(D_8010EEFC_picking_panic->model[arg1 + 10], 4, 4);
+        func_8001C258_main(D_8010EEFC_picking_panic->model[arg1 + 10], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     D_8010EF10_picking_panic[arg1] =
         (D_8010EF10_picking_panic[arg1] < 46) ? D_8010EF10_picking_panic[arg1] + (D_8010EF10_picking_panic[arg1] != 0) : 0;
@@ -1215,7 +1215,7 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
             D_8010E6F0_picking_panic[arg1][D_8010EEF0_picking_panic[arg1]] == 1 &&
             D_8010EF98_picking_panic[arg1] != -1 &&
             (D_8010EF10_picking_panic[arg1] == 0 || D_8010EF10_picking_panic[arg1] >= 30) &&
-            ((player0->unk4 == -1 && (D_800D5558_main[player0->unk2] & 0x8000)) ||
+            ((player0->unk4 == -1 && (D_800D5558_main[player0->unk2] & A_BUTTON)) ||
              (player0->unk4 != -1 && D_8010E704_picking_panic[arg1].unk0 == 0))) {
             dx = D_8010EE70_picking_panic - -855.0f;
             dy = D_8010EE74_picking_panic - -25.0f;
@@ -1249,7 +1249,7 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
         }
     }
     if (D_8010EF80_picking_panic == 2 && D_8010E700_picking_panic[idx1] == -1 &&
-        ((player1->unk4 == -1 && (D_800D5558_main[player1->unk2] & 0x8000)) ||
+        ((player1->unk4 == -1 && (D_800D5558_main[player1->unk2] & A_BUTTON)) ||
          (player1->unk4 != -1 && D_8010E704_picking_panic[arg1].unk4 > rand8()))) {
         for (i = 0; i < 4; i++) {
             if (D_8010E6F0_picking_panic[arg1][i] == 3) {
@@ -1284,7 +1284,7 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
     if (D_8010EF80_picking_panic >= 2 && D_8010E700_picking_panic[idx0] != -1 &&
         D_8010E6F0_picking_panic[arg1][D_8010E700_picking_panic[idx0]] == 2 &&
         (D_8010EF80_picking_panic != 2 ||
-         ((player0->unk4 == -1) ? !((u16)D_800CDA7C_main[player0->unk2] & 0x8000)
+         ((player0->unk4 == -1) ? !((u16)D_800CDA7C_main[player0->unk2] & A_BUTTON)
                                 : D_8010E6EC_picking_panic % 60 == (D_8010E704_picking_panic[arg1].unk2 + 68) % 60))) {
         if (hand0->rot.z > 210.0f) {
             t = 0.0f;
@@ -1318,7 +1318,7 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
     if (D_8010EF80_picking_panic >= 2 && D_8010E700_picking_panic[idx1] != -1 &&
         D_8010E6F0_picking_panic[arg1][D_8010E700_picking_panic[idx1]] == 4 &&
         (D_8010EF80_picking_panic != 2 ||
-         (player1->unk4 == -1 && !((u16)D_800CDA7C_main[player1->unk2] & 0x8000)) ||
+         (player1->unk4 == -1 && !((u16)D_800CDA7C_main[player1->unk2] & A_BUTTON)) ||
          (player1->unk4 != -1 && D_8010E704_picking_panic[arg1].unk6 == 0 &&
           ((D_8010E6EC_picking_panic % 60 >= 43 && D_8010E6EC_picking_panic % 60 < 48 && rand8() % 3 == 0) ||
            D_8010E6EC_picking_panic % 60 == 48)))) {
@@ -1429,7 +1429,7 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
                         omVibrate(player0->unk0, 5, 0, 5);
                         omVibrate(player1->unk0, 5, 0, 5);
                     }
-                    func_8001C258_main(model, 4, 4);
+                    func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     Hu3DMotionTimeSet(D_8010EEFC_picking_panic->model[arg1 + 2], 0.0f);
                     func_8001C814_main(D_8010EEFC_picking_panic->model[arg1 + 2], 1, 0);
                     Hu3DMotionTimeSet(D_8010EEFC_picking_panic->model[arg1], 0.0f);
@@ -1437,7 +1437,7 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
                     func_8004AC98_main(0x36E, arg1);
                     D_8010E6F0_picking_panic[arg1][i] = 0;
                 } else if (D_8010EDD0_picking_panic[arg1][i] < -500.0f) {
-                    func_8001C258_main(model, 4, 4);
+                    func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     D_8010E6F0_picking_panic[arg1][i] = 0;
                 } else {
                     Hu3DModelPosSet(*D_8010EF18_picking_panic[arg1][i][D_8010EDA0_picking_panic[arg1][i]],

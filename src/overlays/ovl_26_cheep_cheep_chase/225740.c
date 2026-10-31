@@ -221,7 +221,7 @@ void func_8010DB24_cheep_cheep_chase(s16 arg0) {
     UnkCheepCheepChaseSprite *sprite = &D_8010E390_cheep_cheep_chase[arg0];
 
     if (sprite->state != 0) {
-        HuSprAttrSet(sprite->groupId, 0, 0x8000);
+        HuSprDispOff(sprite->groupId, 0);
         sprite->state = 1;
     }
 }

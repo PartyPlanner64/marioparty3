@@ -129,7 +129,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_80106AB0_w04);
 
 void func_80106B38_w04(void) {
     mbItemBtnF = 0;
-    omPrcSetStatBit(HuPrcCurrentGet(), 0x80);
+    omPrcSetStatBit(HuPrcCurrentGet(), OM_STAT_NOALLPAUSE);
     MBMapScrollExec(GwPlayer[GwSystem.current_player_index].pad);
     mbItemBtnF = 1;
 }

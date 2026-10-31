@@ -7,9 +7,9 @@ extern s16 D_80118F48_duel01[];
 void func_801059D0_duel01(void) {
     mbCameraBtnF = 1;
     mbItemBtnF = 0;
-    omPrcSetStatBit(HuPrcCurrentGet(), 0x80);
+    omPrcSetStatBit(HuPrcCurrentGet(), OM_STAT_NOALLPAUSE);
     func_80100CEC_name_81(GwPlayer[GwSystem.current_player_index].pad);
-    omPrcResetStatBit(HuPrcCurrentGet(), 0x80);
+    omPrcResetStatBit(HuPrcCurrentGet(), OM_STAT_NOALLPAUSE);
     mbCameraBtnF = 0;
     mbItemBtnF = 1;
 }

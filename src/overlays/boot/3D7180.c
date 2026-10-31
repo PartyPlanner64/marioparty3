@@ -70,7 +70,7 @@ void func_80105C14_ovl_boot(omObjData *arg0) {
 
     if (WipeStatGet() == 0) {
         temp_v0 = GWContErrorGet();
-        if ((temp_v0 == 1) && (CheckControllerRead(0) != 0) && (D_800D5558_main[0] & 0x1000)) {
+        if ((temp_v0 == 1) && (CheckControllerRead(0) != 0) && (D_800D5558_main[0] & START_BUTTON)) {
             D_80105F04_ovl_boot = temp_v0;
         }
     }

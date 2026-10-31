@@ -22,7 +22,7 @@ void func_801080A0_mgresultbattle(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        func_8001C258_main(obj->model[i + 1], 4, 0);
+        func_8001C258_main(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         func_8001C814_main(obj->model[i + 1], 1, 0);
         Hu3DMotionTimeSet(obj->model[i + 1], 0.0f);
     }

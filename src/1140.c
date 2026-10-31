@@ -2525,19 +2525,12 @@ void func_800049E8_main(GameSound *sound) {
     } while (i <= linkCount);
 }
 
-#ifdef NON_MATCHING
-/* Register allocation differs: the mod loop index and its sign-extended copy
- * are swapped, and the volume/pan delta lands in v1 instead of a0. Reusing the
- * loop index for the delta puts both in the same register, as in the target,
- * but the index/copy swap remains. */
 /* Runs the script of a voice until it has to wait. Each command byte is
  * followed by a variable length wait time unless bit 7 is set. */
 void func_80004D4C_main(GameSound *sound) {
     u8 *cursor;
     u8 *op;
     u8 *count;
-    s8 delta;
-    s8 idx;
     u16 bit;
     s8 i;
 
@@ -2594,17 +2587,16 @@ void func_80004D4C_main(GameSound *sound) {
             case 3:
                 cursor = op + SE_READ32(cursor);
                 break;
-            case 4:
-                {
-                    s32 offset = SE_READ32(cursor);
+            case 4: {
+                s32 offset = SE_READ32(cursor);
 
-                    cursor += 4;
-                    if (sound->callDepth < ARRAY_COUNT(sound->callStack)) {
-                        sound->callStack[sound->callDepth++] = cursor;
-                        cursor = op + offset;
-                    }
+                cursor += 4;
+                if (sound->callDepth < ARRAY_COUNT(sound->callStack)) {
+                    sound->callStack[sound->callDepth++] = cursor;
+                    cursor = op + offset;
                 }
                 break;
+            }
             case 16:
                 if (sound->soundIdx < 0 && ((sound->flags & 0x1000) || sound->sndState != AL_STOPPED)) {
                     cursor = op;
@@ -2650,10 +2642,10 @@ void func_80004D4C_main(GameSound *sound) {
                 sound->flags |= 0x4000;
                 break;
             case 21:
-                delta = *cursor++;
-                sound->scriptVol += delta;
+                i = *cursor++;
+                sound->scriptVol += i;
                 if (sound->scriptVol < 0) {
-                    if (delta < 0) {
+                    if (i < 0) {
                         sound->scriptVol = 0;
                     } else {
                         sound->scriptVol = 0x7F;
@@ -2666,10 +2658,10 @@ void func_80004D4C_main(GameSound *sound) {
                 sound->flags |= 0x8000;
                 break;
             case 23:
-                delta = *cursor++;
-                sound->scriptPan += delta;
+                i = *cursor++;
+                sound->scriptPan += i;
                 if (sound->scriptPan < 0) {
-                    if (delta < 0) {
+                    if (i < 0) {
                         sound->scriptPan = 0;
                     } else {
                         sound->scriptPan = 0x7F;
@@ -2801,30 +2793,33 @@ void func_80004D4C_main(GameSound *sound) {
                 sound->randFlags &= ~4;
                 break;
             case 80:
-                sound->mods[(s8)*cursor++].value = 0;
+                i = *cursor++;
+                sound->mods[i].value = 0;
                 break;
             case 81:
-                sound->mods[(s8)cursor[0]].value = SE_READ16(cursor + 1);
+                i = cursor[0];
+                sound->mods[i].value = SE_READ16(cursor + 1);
                 cursor += 3;
                 break;
             case 82:
-                sound->mods[(s8)cursor[0]].value += SE_READ16(cursor + 1);
+                i = cursor[0];
+                sound->mods[i].value += SE_READ16(cursor + 1);
                 cursor += 3;
                 break;
             case 88:
-                idx = *cursor++;
-                sound->mods[idx].target = 9;
-                sound->modMask |= 1 << idx;
+                i = *cursor++;
+                sound->mods[i].target = 9;
+                sound->modMask |= 1 << i;
                 break;
             case 89:
-                idx = *cursor++;
-                sound->mods[idx].target = 10;
-                sound->modMask |= 1 << idx;
+                i = *cursor++;
+                sound->mods[i].target = 10;
+                sound->modMask |= 1 << i;
                 break;
             case 90:
-                idx = *cursor++;
-                sound->mods[idx].target = 11;
-                sound->modMask |= 1 << idx;
+                i = *cursor++;
+                sound->mods[i].target = 11;
+                sound->modMask |= 1 << i;
                 break;
             case 1:
                 break;
@@ -2851,9 +2846,6 @@ void func_80004D4C_main(GameSound *sound) {
     sound->script = cursor;
     sound->wait--;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/1140", func_80004D4C_main);
-#endif
 
 /**
  * Reads a big-endian style variable length quantity: each byte contributes its

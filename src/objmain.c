@@ -805,7 +805,7 @@ void omMain(void) {
         sprintf(D_800D5218_main, "C:%04X D:%02X", i, func_80000F08_main(5));
         print8(0x28, 0x40, D_800D5218_main);
         if (D_800A1786_main == -1) {
-            D_800A1786_main = func_8004DE24_main(0xE, 0x16, 0x82, 0x4A, 0xFF70);
+            D_800A1786_main = printWin(0xE, 0x16, 0x82, 0x4A, 0xFF70);
         }
     }
     func_8004B1AC_main();
@@ -1010,14 +1010,14 @@ extern s16 D_800A1894_main[];
 extern u8 D_800A2150_main;
 extern u16 D_800CE214_main;
 s32 func_800034D8_main(s32);
-void func_800453BC_main(void);
+void GameMesPauseCreate(void);
 void func_80045A90_main(void);
 void func_8004AFBC_main(s16 duration);
 void func_8004B0D4_main(void);
 void func_80046600_main(void);
 void func_800466D8_main(void);
 
-void func_80048E88_main(void);
+void omSystemKeyCheckSetup(void);
 char const D_800A7AE4_main[] = " SE STP";
 char const D_800A7AEC_main[] = " MUSSTP";
 char const D_800A7AF4_main[] = " INFO  ";
@@ -1025,12 +1025,12 @@ char const D_800A7AFC_main[] = " LIGHT ";
 char const D_800A7B04_main[] = " RESET ";
 char const D_800A7B0C_main[] = " CANCEL";
 
-void func_800499B0_main(omObjData *);
+void omSystemKeyCheck(omObjData *);
 
-void func_80048E88_main(void) {
+void omSystemKeyCheckSetup(void) {
     omObjData *temp_v0;
 
-    temp_v0 = omAddObj(0x7FD9, 0, 0, -1, func_800499B0_main);
+    temp_v0 = omAddObj(0x7FD9, 0, 0, -1, omSystemKeyCheck);
     omDBGSysKeyObj = temp_v0;
     omSetStatBit(temp_v0, 0xA0);
     temp_v0->work[0] = 0;
@@ -1240,8 +1240,8 @@ void func_80048EE8_main(omObjData *object) {
                 D_800A177C_main[i].processInstance->stat |= 1;
             }
         }
-        D_800B23CC_main = func_8004DE24_main(120, 96, 208, 168, 0x40FF);
-        D_800B23CE_main = func_8004DE24_main(116, 92, 204, 164, 0x90FF);
+        D_800B23CC_main = printWin(120, 96, 208, 168, 0x40FF);
+        D_800B23CE_main = printWin(116, 92, 204, 164, 0x90FF);
         func_8004DF4C_main(0, 0, 0x90);
         func_80003A70_main(D_800CDBC8_main);
         if (func_800034D8_main(1) == 4) {
@@ -1259,7 +1259,7 @@ void func_80048EE8_main(omObjData *object) {
 }
 
 // Watches for the pause button and pauses/resumes the game.
-void func_800499B0_main(omObjData *object) {
+void omSystemKeyCheck(omObjData *object) {
     s32 i;
     s32 j;
     u8 minigameType;
@@ -1364,7 +1364,7 @@ void func_800499B0_main(omObjData *object) {
         } else {
             D_800CE214_main = 0;
         }
-        func_800453BC_main();
+        GameMesPauseCreate();
         if (_CheckFlag(0xF)) {
             espDispOff(D_800B23C4_main);
         }
@@ -1388,7 +1388,7 @@ u16 omPauseChk(void) {
 }
 
 // Pauses all objects and processes.
-s32 func_80049FB8_main(void) {
+s32 omAllPause(void) {
     s32 i;
 
     if (WipeStatGet() == 1 || D_800A176C_main == 1) {
@@ -1435,7 +1435,7 @@ void func_8004A0E0_main(void) {
 void func_8004A208_main(void) {
     func_80045350_main();
     if (omovlstat & 0x10) {
-        func_80048E88_main();
+        omSystemKeyCheckSetup();
         if (omovlstat & 4) {
             D_800D6A58_main = 1;
         }

@@ -422,7 +422,7 @@ void func_8001AC34_main(s16 arg0, s32 arg1) {
     }
 }
 
-s32 func_8001AC8C_main(s32 arg0, void (*arg1)(Gfx **, s32, s32), u8 arg2) {
+s32 Hu3DHookFuncCreate(s32 arg0, void (*arg1)(Gfx **, s32, s32), u8 arg2) {
     s16 idx = func_8001A894_main(arg0, NULL, arg2);
     HmfModel *var_v1 = &HmfModelData[idx];
 
@@ -904,7 +904,7 @@ void func_8001C5B4_main(s16 idx, s16 arg1) {
     model->unk04 = 0xFF;
 }
 
-void func_8001C624_main(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+void Hu3DMotionShiftSet(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     HmfModel *temp_a0;
 
     temp_a0 = &HmfModelData[arg0];
@@ -939,14 +939,14 @@ f32 func_8001C718_main(s16 arg0) {
     return HmfModelData[arg0].unk58;
 }
 
-f32 func_8001C760_main(s16 arg0) {
+f32 Hu3DMotionShapeMaxTimeGet(s16 arg0) {
     if (HmfModelData[arg0].unk58 < 0.0f) {
         return 0.0f;
     }
     return D_800CCF58_main[HmfModelData[arg0].unk06].unk02;
 }
 
-f32 func_8001C7D0_main(s16 idx) {
+f32 Hu3DMotionShiftTimeGet(s16 idx) {
     if (HmfModelData[idx].unk04 == 0xFF) {
         return -1.0f;
     }
@@ -968,7 +968,7 @@ void func_8001C814_main(s16 idx, s16 arg1, s16 arg2) {
     }
 }
 
-void func_8001C8A8_main(s16 idx, s16 arg1) {
+void Hu3DModelCameraSet(s16 idx, s16 arg1) {
     if (idx >= 0 && HmfModelData[idx].hmf != NULL) {
         HmfModelData[idx].unk01 = arg1;
     }

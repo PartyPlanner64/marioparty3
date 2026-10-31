@@ -417,7 +417,7 @@ void func_80105CE8_mgresultboard(omObjData *arg0) {
             break;
         case 18:
             if (WipeStatGet() == 0) {
-                func_80037258_main();
+                GameMesStub();
                 MBBackKill();
                 MBBackClose();
                 omOvlReturnEx(1);
@@ -530,7 +530,7 @@ void func_80106F40_mgresultboard(omObjData* arg0) {
         }
         if (WipeStatGet() == 0) {
             HuAudSeqFadeOut(30);
-            func_80037258_main();
+            GameMesStub();
             MBBackKill();
             MBBackClose();
             omOvlReturnEx(1);
@@ -552,9 +552,9 @@ void func_80106FC8_mgresultboard(void) {
 }
 
 void func_80107024_mgresultboard(void) {
-    s16 modelId = func_8001AC8C_main(0, func_8010705C_mgresultboard, 2);
+    s16 modelId = Hu3DHookFuncCreate(0, func_8010705C_mgresultboard, 2);
 
-    func_8001C8A8_main(modelId, 1);
+    Hu3DModelCameraSet(modelId, 1);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E6DC0", func_8010705C_mgresultboard);

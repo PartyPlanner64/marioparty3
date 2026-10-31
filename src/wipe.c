@@ -44,7 +44,7 @@ extern Gfx D_800A2738_main[];
 extern u16 *currFrameBuffer;
 extern u8 *D_800D1F60_main;
 
-void func_8006231C_main(Gfx **gfx, u8 alpha, Gfx *displayList);
+void WipeColorFill(Gfx **gfx, u8 alpha, Gfx *displayList);
 void func_8006265C_main(Gfx **gfx, u16 *image);
 void func_800341D0_main(Gfx **gfx, u16 *image, s32 fmt, s32 siz, s32 width, s32 height,
                         s32 uls, s32 ult, s32 lrs, s32 lrt, s32 pal, s32 cms, s32 cmt,
@@ -58,7 +58,7 @@ void func_8006619C_main(Gfx **gfx, s32 arg1, s32 arg2);
 void func_800661D4_main(Gfx **gfx, s32 arg1, s32 arg2);
 
 void GMesExec(Gfx **gfx);
-void func_80062844_main(Gfx **gfx);
+void WipeFrameStill(Gfx **gfx);
 s32 func_80062168_main(Gfx **gfx);
 s32 func_80062244_main(Gfx **gfx);
 s32 func_800623F0_main(Gfx **gfx);
@@ -93,7 +93,7 @@ void WipeExecAlways(Gfx **gfx) {
     if (D_800CC0BA_main == 3) {
         switch (D_800A26D0_main) {
             case 0xFE:
-                func_80062844_main(gfx);
+                WipeFrameStill(gfx);
                 break;
             case 3:
             case 4:
@@ -106,7 +106,7 @@ void WipeExecAlways(Gfx **gfx) {
                 func_800651F0_main(gfx, 1.0f);
                 break;
             default:
-                func_8006231C_main(gfx, 255, D_800A2728_main);
+                WipeColorFill(gfx, 255, D_800A2728_main);
                 break;
         }
         return;
@@ -275,7 +275,7 @@ s32 func_80062168_main(Gfx **gfx) {
     if (D_800D0A3C_main == 0.0f) {
         return 0;
     }
-    func_8006231C_main(gfx, 255.0f - (D_800D51F4_main / D_800D0A3C_main) * 255.0f, D_800A2728_main);
+    WipeColorFill(gfx, 255.0f - (D_800D51F4_main / D_800D0A3C_main) * 255.0f, D_800A2728_main);
     if (D_800D51F4_main >= D_800D0A3C_main) {
         return 0;
     }
@@ -286,14 +286,14 @@ s32 func_80062244_main(Gfx **gfx) {
     if (D_800D0A3C_main == 0.0f) {
         return 0;
     }
-    func_8006231C_main(gfx, (D_800D51F4_main / D_800D0A3C_main) * 255.0f, D_800A2728_main);
+    WipeColorFill(gfx, (D_800D51F4_main / D_800D0A3C_main) * 255.0f, D_800A2728_main);
     if (D_800D51F4_main >= D_800D0A3C_main) {
         return 0;
     }
     return 1;
 }
 
-void func_8006231C_main(Gfx **gfx, u8 alpha, Gfx *displayList) {
+void WipeColorFill(Gfx **gfx, u8 alpha, Gfx *displayList) {
     gSPDisplayList((*gfx)++, D_800A26D8_main);
     gDPSetRenderMode((*gfx)++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
     gDPSetCombineMode((*gfx)++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
@@ -358,7 +358,7 @@ void func_8006265C_main(Gfx **gfx, u16 *image) {
     gDPSetColorImage((*gfx)++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 320, (u16 *)0x02000000);
 }
 
-void func_80062844_main(Gfx **gfx) {
+void WipeFrameStill(Gfx **gfx) {
     gSPDisplayList((*gfx)++, D_800A26D8_main);
     func_80062884_main(gfx, D_800D5550_main);
 }
@@ -385,7 +385,7 @@ s32 func_80062A30_main(Gfx **gfx) {
     u16 *image;
 
     if (D_800D51F4_main >= D_800D0A3C_main - 1.0f) {
-        func_8006231C_main(gfx, 255, D_800A2728_main);
+        WipeColorFill(gfx, 255, D_800A2728_main);
         return 0;
     }
     scale = 1.0f - D_800D51F4_main / D_800D0A3C_main;
@@ -484,7 +484,7 @@ void func_800636D8_main(Gfx **gfx, f32 scale, f32 alpha) {
     f32 radius;
 
     if (scale == 0.0f) {
-        func_8006231C_main(gfx, 255, D_800A2728_main);
+        WipeColorFill(gfx, 255, D_800A2728_main);
         return;
     }
     gSPDisplayList((*gfx)++, D_800A26D8_main);
@@ -779,7 +779,7 @@ void func_80065F8C_main(void) {
     D_800BDA7C_main = HuMemAlloc(0x1900);
     gfx = D_800BDA7C_main;
     D_800BDA74_main = (u16 *)(((u32)D_800BDA70_main + 63) & ~63);
-    D_800BDA80_main = func_8001AC8C_main(0, func_8006619C_main, 6);
+    D_800BDA80_main = Hu3DHookFuncCreate(0, func_8006619C_main, 6);
     gSPDisplayList(gfx++, D_800A26D8_main);
     func_8006265C_main(&gfx, D_800BDA74_main);
     gSPEndDisplayList(gfx);
@@ -800,7 +800,7 @@ void func_8006608C_main(void) {
 
     D_800BDA7C_main = HuMemAlloc(0x1900);
     gfx = D_800BDA7C_main;
-    D_800BDA82_main = func_8001AC8C_main(0, func_800661D4_main, 0);
+    D_800BDA82_main = Hu3DHookFuncCreate(0, func_800661D4_main, 0);
     gSPDisplayList(gfx++, D_800A26D8_main);
     gDPSetCombineMode(gfx++, G_CC_MODULATEI_PRIM, G_CC_MODULATEI_PRIM);
     gDPSetRenderMode(gfx++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);

@@ -233,7 +233,7 @@ void func_80105B8C_meschk() {
             portrait = 1;
         }
         HuWinPushKeySet(window, 0x3F);
-        func_8005FBF8_main(window, 0xC0, 0x20, 0xC0);
+        HuWinBGColSet(window, 0xC0, 0x20, 0xC0);
         HuWinExAnimIn(window);
         for (message = (s16)check->firstMessage; (u32)message <= check->lastMessage; message++) {
             HuWinHomeClear(window);

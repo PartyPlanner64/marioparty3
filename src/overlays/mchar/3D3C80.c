@@ -388,7 +388,7 @@ void func_80106764_mchar(s16 arg0) {
         D_80107AA0_mchar[i][0] = func_8001F1FC_main(data, 0);
         DataCloseTemp(data);
     }
-    func_8001C624_main((s16)D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar],
+    Hu3DMotionShiftSet((s16)D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar],
                        (s16)D_80107AA0_mchar[D_80107114_mchar][0], 0, 10, 2);
 }
 

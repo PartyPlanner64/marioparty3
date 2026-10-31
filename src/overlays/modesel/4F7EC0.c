@@ -105,7 +105,7 @@ void espTPLvlSet(u16, s16);
 void espAttrSet(u16, u16);
 void espAttrReset(u16, u16);
 void espPriSet(u16, s32);
-void func_8000BD94_main(u16, s32, s32);
+void espBankSet(u16, s32, s32);
 void espScaleSet(u16, f32, f32);
 void func_8010601C_modesel(s32, s32, s32);
 void func_80106A38_modesel(s32, s32, s16);
@@ -222,7 +222,7 @@ void func_80106194_modesel(s32 arg0, u16 arg1) {
 
 void func_801061C8_modesel(s32 arg0, u16 arg1, u16 arg2) {
     func_8000BDDC_main(D_8010F710_modesel[arg0].unk_00, 1);
-    func_8000BD94_main(D_8010F710_modesel[arg0].unk_00, arg1, arg2);
+    espBankSet(D_8010F710_modesel[arg0].unk_00, arg1, arg2);
 }
 
 void func_80106234_modesel(void) {
@@ -302,7 +302,7 @@ void func_8010677C_modesel(s32 arg0, s32 arg1) {
 }
 
 void func_801067C0_modesel(s32 arg0, s32 arg1, s16 arg2, s16 arg3, s16 arg4) {
-    func_8001C624_main(D_8010FE90_modesel[arg0].unk_00, D_8010FE90_modesel[arg1].unk_02, arg2, arg3, arg4);
+    Hu3DMotionShiftSet(D_8010FE90_modesel[arg0].unk_00, D_8010FE90_modesel[arg1].unk_02, arg2, arg3, arg4);
 }
 
 void func_80106830_modesel(s32 arg0, s32 arg1) {

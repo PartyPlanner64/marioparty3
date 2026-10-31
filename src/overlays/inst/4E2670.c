@@ -106,7 +106,7 @@ void func_801099C0_inst(omObjData *object) {
     s16 model = object->model[0];
 
     if (D_800CCF58_main[HmfModelData[model].unk02].unk02 <= HmfModelData[model].unk40) {
-        func_8001C624_main(model, HmfModelData[object->motion[3]].unk02, 0, 30, 2);
+        Hu3DMotionShiftSet(model, HmfModelData[object->motion[3]].unk02, 0, 30, 2);
         func_8010C848_inst();
         D_8010DDEC_inst = func_80109A84_inst;
     }

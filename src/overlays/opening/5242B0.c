@@ -71,7 +71,7 @@ void opDemoMain(void) {
     } else if (omovlevtno == 1) {
         if (!_CheckFlag(50)) {
             _SetFlag(50);
-            func_80050064_main(1);
+            SLCommonSet(1);
         }
         omOvlReturnEx(1);
     } else {

@@ -2300,7 +2300,7 @@ static void MBMain(void) {
                             func_8005035C_main(1);
                         } else {
                             _SetFlag(0x16);
-                            func_800500E0_main(1);
+                            SLSaveBoard(1);
                         }
 
                         HuWinKill(temp_v0_2);

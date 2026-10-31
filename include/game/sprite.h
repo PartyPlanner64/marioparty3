@@ -189,7 +189,7 @@ void func_80054FF8_main(s16 group, s16 member, s32 arg2);
 void func_80055024_main(s16 group, s16 member, s16 arg2, u16 arg3);
 void HuSprSpeedSet(s16 group, s16 member, f32 arg2);
 void func_800550F4_main(s16, s16, s32);
-void func_80055140_main(s16, s16, u16, s32);
+void HuSprBankSet(s16, s16, u16, s32);
 u8 func_800551AC_main(s16 group, s16 member);
 HuSprite_Unk84_Struct *func_80055194_main(s16 arg0);
 void HuSprScaleSet(s16 group, s16 member, f32 x, f32 y);

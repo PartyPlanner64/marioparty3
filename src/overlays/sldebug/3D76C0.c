@@ -158,7 +158,7 @@ void func_80105B64_sldebug(omObjData *arg0) {
                 }
                 func_8005035C_main(1);
             } else {
-                func_80050064_main(1);
+                SLCommonSet(1);
             }
             D_80106960_sldebug = 1;
             arg0->func = func_80106124_sldebug;

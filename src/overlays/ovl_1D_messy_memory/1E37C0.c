@@ -61,8 +61,8 @@ void func_801060E0_messy_memory(omObjData *obj) {
 }
 
 void func_80106140_messy_memory(omObjData *obj) {
-    *obj->model = func_8001AC8C_main(0, func_80105B88_messy_memory, 2);
-    func_8001C8A8_main(*obj->model, 2);
+    *obj->model = Hu3DHookFuncCreate(0, func_80105B88_messy_memory, 2);
+    Hu3DModelCameraSet(*obj->model, 2);
     func_8001C258_main(*obj->model, 4, 4);
     obj->func = func_801060E0_messy_memory;
 }

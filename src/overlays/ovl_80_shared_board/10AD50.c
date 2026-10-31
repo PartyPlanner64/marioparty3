@@ -490,7 +490,7 @@ static void func_800F7FE8_shared_board(void) {
         HuAudFXPlay(0x11A);
     }
 
-    func_8001C8A8_main(D_80105658_shared_board, 1);
+    Hu3DModelCameraSet(D_80105658_shared_board, 1);
     func_8000CD00_main(D_80105658_shared_board, 1.0f, 20.0f, 1.0f);
     func_8000D018_main(D_80105658_shared_board, 15.0f);
     MBModelTempAllocFree(D_80105620_shared_board);

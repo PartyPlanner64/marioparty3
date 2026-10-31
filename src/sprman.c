@@ -108,9 +108,9 @@ void HuSprInit(void) {
                 D_800D59F4_main = NULL;
     D_800D1FDC_main = NULL;
     guOrtho(&D_800BD7C0_main, -160.0f, 160.0f, -120.0f, 120.0f, 0.0f, 8000.0f, 2.0f);
-    D_800D0468_main = func_8001AC8C_main(0, func_80054218_main, 0);
-    func_8001C8A8_main(D_800D0468_main, 1);
-    D_800D10F2_main = func_8001AC8C_main(0, func_80054658_main, 6);
+    D_800D0468_main = Hu3DHookFuncCreate(0, func_80054218_main, 0);
+    Hu3DModelCameraSet(D_800D0468_main, 1);
+    D_800D10F2_main = Hu3DHookFuncCreate(0, func_80054658_main, 6);
     func_80055628_main();
     func_80056CD0_main();
     D_800A1EA0_main = 1;
@@ -1072,7 +1072,7 @@ void func_800550F4_main(s16 group, s16 member, s32 arg2) {
     func_80052E14_main(sprite_ptr);
 }
 
-void func_80055140_main(s16 group, s16 member, u16 arg2, s32 arg3) {
+void HuSprBankSet(s16 group, s16 member, u16 arg2, s32 arg3) {
     HuSprite *sprite = HuSprGrpData[group]->members[member];
 
     sprite->unk_88 &= 0x7F;
@@ -1209,7 +1209,7 @@ void func_800555B8_main(s16 group, s16 member, u16 arg2, u16 arg3) {
     sprite->unk_3A = arg3;
 }
 
-void func_800555E8_main(s16 group, s16 member, u16 arg2, u16 arg3, u16 arg4, u16 arg5) {
+void HuSprScissorSet(s16 group, s16 member, u16 arg2, u16 arg3, u16 arg4, u16 arg5) {
     HuSprite *sprite = HuSprGrpData[group]->members[member];
 
     sprite->unk_204 = arg2;

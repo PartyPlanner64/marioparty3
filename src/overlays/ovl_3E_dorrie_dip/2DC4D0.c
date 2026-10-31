@@ -481,7 +481,7 @@ void func_80106668_dorrie_dip(omObjData *obj) {
         }
         if (time >= D_800CCF58_main[HmfModelData[obj->model[0]].unk02].unk02) {
             data->flags &= ~4;
-            func_8001C624_main(obj->model[0], HmfModelData[D_8010A238_dorrie_dip->motion[0]].unk02, 0, 10, 0);
+            Hu3DMotionShiftSet(obj->model[0], HmfModelData[D_8010A238_dorrie_dip->motion[0]].unk02, 0, 10, 0);
             func_8001C814_main(obj->model[0], 2, 2);
         }
         if (HmfModelData[obj->model[0]].unk40 == 50.0f) {
@@ -507,13 +507,13 @@ void func_80106BC0_dorrie_dip(void) {
 void func_80106BEC_dorrie_dip(void) {
     DorrieDipDorrie *data = D_8010A238_dorrie_dip->data;
 
-    func_8001C624_main(D_8010A238_dorrie_dip->model[0], HmfModelData[D_8010A238_dorrie_dip->motion[1]].unk02, 0, 10, 0);
+    Hu3DMotionShiftSet(D_8010A238_dorrie_dip->model[0], HmfModelData[D_8010A238_dorrie_dip->motion[1]].unk02, 0, 10, 0);
     data->flags |= 2;
     while (HmfModelData[D_8010A238_dorrie_dip->model[0]].unk40 <
            D_800CCF58_main[HmfModelData[D_8010A238_dorrie_dip->model[0]].unk02].unk02) {
         HuPrcVSleep();
     }
-    func_8001C624_main(D_8010A238_dorrie_dip->model[0], HmfModelData[D_8010A238_dorrie_dip->motion[0]].unk02, 0, 10, 0);
+    Hu3DMotionShiftSet(D_8010A238_dorrie_dip->model[0], HmfModelData[D_8010A238_dorrie_dip->motion[0]].unk02, 0, 10, 0);
     func_8001C814_main(D_8010A238_dorrie_dip->model[0], 2, 2);
     data->flags &= ~2;
     func_800E6F0C_minigame(3);
@@ -525,7 +525,7 @@ void func_80106D50_dorrie_dip(void) {
     DorrieDipDorrie *data = obj->data;
 
     data->flags |= 4;
-    func_8001C624_main(obj->model[0], HmfModelData[obj->motion[2]].unk02, 0, 0xA, 0);
+    Hu3DMotionShiftSet(obj->model[0], HmfModelData[obj->motion[2]].unk02, 0, 0xA, 0);
 }
 
 void func_80106DB8_dorrie_dip(omObjData *obj) {
@@ -1124,7 +1124,7 @@ void func_801090F0_dorrie_dip(void) {
     }
     if (D_8010A220_dorrie_dip != -1 && D_8010A208_dorrie_dip[D_8010A220_dorrie_dip] != 17) {
         func_800E5798_minigame(D_800EC598_minigame[0], 13);
-        func_8001C624_main(D_8010A238_dorrie_dip->model[0], HmfModelData[D_8010A238_dorrie_dip->motion[4]].unk02, 0, 10, 0);
+        Hu3DMotionShiftSet(D_8010A238_dorrie_dip->model[0], HmfModelData[D_8010A238_dorrie_dip->motion[4]].unk02, 0, 10, 0);
         func_80045ED0_main(D_800A178C_main[GwPlayer[data->unk59].chr][0] | 0x35);
         for (i = 0; i < 60; i++) {
             HuPrcVSleep();
@@ -1133,7 +1133,7 @@ void func_801090F0_dorrie_dip(void) {
     } else {
         func_800E5798_minigame(D_800EC598_minigame[0], 14);
         if (D_8010A220_dorrie_dip == -1) {
-            func_8001C624_main(D_8010A238_dorrie_dip->model[0], HmfModelData[D_8010A238_dorrie_dip->motion[3]].unk02, 0, 10, 0);
+            Hu3DMotionShiftSet(D_8010A238_dorrie_dip->model[0], HmfModelData[D_8010A238_dorrie_dip->motion[3]].unk02, 0, 10, 0);
         }
     }
     omDelPrcObj(NULL);

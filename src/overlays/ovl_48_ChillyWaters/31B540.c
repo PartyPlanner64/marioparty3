@@ -49,7 +49,7 @@ typedef struct ESprite {
 
 void func_80105A64_ChillyWaters(void);
 void func_8010BCA4_boardresult(void);
-void func_800555E8_main(s16 group, s16 member, u16 arg2, u16 arg3, u16 arg4, u16 arg5);
+void HuSprScissorSet(s16 group, s16 member, u16 arg2, u16 arg3, u16 arg4, u16 arg5);
 
 void func_801059D0_ChillyWaters(s16 arg0, s16 arg1) {
     Process *process;
@@ -93,7 +93,7 @@ void func_80105A64_ChillyWaters(void) {
     HuSprPosSet(grpId, 0, work->unk0, work->unk4);
     HuSprAttrSet(grpId, 0, 0x5000);
     HuSprColorSet(grpId, 0, 0x20, 0xA0, 0x90);
-    func_800555E8_main(grpId, 0, 0x10, 0xC, 0x130, 0xE4);
+    HuSprScissorSet(grpId, 0, 0x10, 0xC, 0x130, 0xE4);
 
     spr = HuSprGet(grpId, 0);
     img = spr->unk_84->unk00;

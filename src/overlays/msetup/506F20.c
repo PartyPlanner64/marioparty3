@@ -604,7 +604,7 @@ void func_8010BEF8_msetup(void) {
                 break;
             case 17:
                 if (motions[0] >= 0) {
-                    func_8001C624_main(model, HmfModelData[motions[0]].unk02, 0, 6, 0);
+                    Hu3DMotionShiftSet(model, HmfModelData[motions[0]].unk02, 0, 6, 0);
                 }
                 entry->state = 0;
                 playing = 1;
@@ -614,7 +614,7 @@ void func_8010BEF8_msetup(void) {
                 break;
         }
         if (playing && D_800CCF58_main[HmfModelData[model].unk02].unk02 <= HmfModelData[model].unk40) {
-            func_8001C624_main(model, motions[3], 0, 30, 2);
+            Hu3DMotionShiftSet(model, motions[3], 0, 30, 2);
             playing = 0;
         }
         for (i = 0; i < 4; i++) {

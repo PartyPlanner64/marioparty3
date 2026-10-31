@@ -57,7 +57,7 @@ void func_8004D6E8_main(s16);
 #define INTR_MESG_BUF_SIZE 256
 #define OTHER_MESG_BUF_SIZE 8
 
-void func_800354A0_main() {
+void main() {
     s32 iVar5;
     s32 stopLooping;
 

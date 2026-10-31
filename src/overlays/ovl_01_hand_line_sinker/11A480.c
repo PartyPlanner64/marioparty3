@@ -554,7 +554,7 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
         case 4:
             if (stat & 1) {
                 obj->unk10 &= ~1;
-                func_8001C624_main(D_8010C0FC_hand_line_sinker->model[0],
+                Hu3DMotionShiftSet(D_8010C0FC_hand_line_sinker->model[0],
                                    HmfModelData[D_8010C0FC_hand_line_sinker->motion[5]].unk02, 0, 6, 2);
                 obj->work[0] = 3;
             }
@@ -1284,7 +1284,7 @@ void func_801093A4_hand_line_sinker(omObjData *obj) {
         case 3:
             D_8010C190_hand_line_sinker->work[1] = 1;
             if (D_8010C190_hand_line_sinker->work[0] == 0) {
-                func_8001C624_main(D_8010C0FC_hand_line_sinker->model[0],
+                Hu3DMotionShiftSet(D_8010C0FC_hand_line_sinker->model[0],
                                    HmfModelData[D_8010C0FC_hand_line_sinker->motion[8]].unk02, 0, 30, 3);
                 omDelObj(D_8010C190_hand_line_sinker);
                 D_8010C190_hand_line_sinker = NULL;
@@ -1326,7 +1326,7 @@ void func_80109584_hand_line_sinker(omObjData *obj) {
                 func_8000CFD8_main(effect, 16);
             }
             obj->work[1] = 2;
-            func_8001C624_main(D_8010C0FC_hand_line_sinker->model[0],
+            Hu3DMotionShiftSet(D_8010C0FC_hand_line_sinker->model[0],
                                HmfModelData[D_8010C0FC_hand_line_sinker->motion[10]].unk02, 0, 6, 2);
             break;
         case 2:
@@ -1355,7 +1355,7 @@ void func_80109584_hand_line_sinker(omObjData *obj) {
             }
             if (fabs(D_8010C0FC_hand_line_sinker->rot.y) < 0.0001f) {
                 D_8010C0FC_hand_line_sinker->rot.y = 0.0f;
-                func_8001C624_main(D_8010C0FC_hand_line_sinker->model[0],
+                Hu3DMotionShiftSet(D_8010C0FC_hand_line_sinker->model[0],
                                    HmfModelData[D_8010C0FC_hand_line_sinker->motion[11]].unk02, 0, 6, 2);
                 obj->work[1] = 3;
             }
@@ -1371,7 +1371,7 @@ void func_80109584_hand_line_sinker(omObjData *obj) {
                 work = D_8010C0FC_hand_line_sinker->data;
                 func_80017954_main(D_8010C0FC_hand_line_sinker->model[0], 2, GwPlayer[work->playerNo].chr,
                                    D_8010C0FC_hand_line_sinker->model[5]);
-                func_8001C624_main(D_8010C0FC_hand_line_sinker->model[0],
+                Hu3DMotionShiftSet(D_8010C0FC_hand_line_sinker->model[0],
                                    HmfModelData[D_8010C0FC_hand_line_sinker->motion[12]].unk02, 0, 8, 0);
                 func_80045ED0_main(D_800A178C_main[GwPlayer[work->playerNo].chr][0] | 0x2F);
                 omDelObj(D_8010C190_hand_line_sinker);
@@ -1488,7 +1488,7 @@ void func_80109B9C_hand_line_sinker(omObjData *obj) {
                 func_8000CFD8_main(effect, 16);
             }
             obj->work[1] = 5;
-            func_8001C624_main(D_8010C0FC_hand_line_sinker->model[0],
+            Hu3DMotionShiftSet(D_8010C0FC_hand_line_sinker->model[0],
                                HmfModelData[D_8010C0FC_hand_line_sinker->motion[10]].unk02, 0, 6, 2);
             break;
         case 5:
@@ -1517,7 +1517,7 @@ void func_80109B9C_hand_line_sinker(omObjData *obj) {
             }
             if (fabs(D_8010C0FC_hand_line_sinker->rot.y) < 0.0001f) {
                 HuAudFXPlay(GwPlayer[work->playerNo].chr + 0x287);
-                func_8001C624_main(D_8010C0FC_hand_line_sinker->model[0],
+                Hu3DMotionShiftSet(D_8010C0FC_hand_line_sinker->model[0],
                                    HmfModelData[D_8010C0FC_hand_line_sinker->motion[13]].unk02, 0, 6, 0);
                 obj->work[1] = 6;
             }
@@ -1821,7 +1821,7 @@ void func_8010B0FC_hand_line_sinker(omObjData *arg0, f32 arg1) {
         volume = 127.0f;
     }
     if (work->seNo >= 0) {
-        func_8004AAD0_main(work->seNo, volume);
+        HuAudFXVolSet(work->seNo, volume);
     }
 }
 

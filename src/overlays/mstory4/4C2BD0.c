@@ -462,7 +462,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010F660_mstory4);
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010F910_mstory4);
 
 void espDispOff(u16);           /* extern */
-void func_8000BD94_main(u16, s32, s32); /* extern */
+void espBankSet(u16, s32, s32); /* extern */
 void func_8000BDDC_main(u16, s32);      /* extern */
 void espKill(u16);
 void func_80017954_main(s16, s16, s16, s16);
@@ -536,7 +536,7 @@ void func_8010FC98_mstory4(void) {
     for (i = 0; i < 6; i++) {
         // if (D_80112088_mstory4[i].unk_00 > 0) {
         for (j = 0, temp_s4 = D_80112088_mstory4[i].unk_00; j < temp_s4; var_s3++, j++) {
-            func_8000BD94_main(D_80112378_mstory4[var_s3], 0, 0);
+            espBankSet(D_80112378_mstory4[var_s3], 0, 0);
             func_8000BDDC_main(D_80112378_mstory4[var_s3], 1);
             espDispOff(D_80112378_mstory4[var_s3]);
             espKill(D_80112378_mstory4[var_s3]);
@@ -563,28 +563,28 @@ void func_8010FC98_mstory4(void) {
     func_8010E5C4_mstory4(temp_s7, 0.0f, 400.0f, 2120.0f, 0x3C, 0);
     D_80111B8C_mstory4 = 0;
     HuPrcSleep(20);
-    func_8001C624_main(temp_fp, HmfModelData[temp_s5->motion[0]].unk02, 0, 0xA, 2);
+    Hu3DMotionShiftSet(temp_fp, HmfModelData[temp_s5->motion[0]].unk02, 0, 0xA, 2);
     func_80107480_mstory4(temp_s5, 0.0f, 180.0f, 0.0f, 8);
     HuPrcSleep(20);
     func_80106C78_mstory4();
     func_80106CCC_mstory4(0x5A7E);
     func_80106CA8_mstory4();
-    func_8001C624_main(temp_fp, HmfModelData[temp_s5->motion[4]].unk02, 0, 0xA, 0);
+    Hu3DMotionShiftSet(temp_fp, HmfModelData[temp_s5->motion[4]].unk02, 0, 0xA, 0);
     func_801074AC_mstory4(temp_fp);
-    func_8001C624_main(temp_fp, HmfModelData[temp_s5->motion[0]].unk02, 0, 0xA, 2);
+    Hu3DMotionShiftSet(temp_fp, HmfModelData[temp_s5->motion[0]].unk02, 0, 0xA, 2);
     func_80107480_mstory4(temp_s5, 0.0f, 0.0f, 0.0f, 0xA);
-    func_8001C624_main(temp_fp, HmfModelData[temp_s5->motion[11]].unk02, 0, 0xA, 2);
+    Hu3DMotionShiftSet(temp_fp, HmfModelData[temp_s5->motion[11]].unk02, 0, 0xA, 2);
     func_801118F8_mstory4(0, 0x1F);
     func_8010724C_mstory4(temp_s5, 0.0f, 0.0f, 2930.0f, 0x28, 0);
     func_8011196C_mstory4(0);
-    func_8001C624_main(temp_fp, HmfModelData[temp_s5->motion[0]].unk02, 0, 0xA, 2);
+    Hu3DMotionShiftSet(temp_fp, HmfModelData[temp_s5->motion[0]].unk02, 0, 0xA, 2);
     HuPrcSleep(20);
     CharFXPlay(0x2C6, GwStory.unk1);
-    func_8001C624_main(temp_fp, HmfModelData[temp_s5->motion[2]].unk02, 0, 0xA, 0);
+    Hu3DMotionShiftSet(temp_fp, HmfModelData[temp_s5->motion[2]].unk02, 0, 0xA, 0);
     func_80017954_main(temp_fp, 2, GwStory.unk1, D_80112330_mstory4);
     func_8010E5C4_mstory4(temp_s7, 0.0f, 400.0f, 2500.0f, 0x14, 0);
     func_801074AC_mstory4(temp_fp);
-    func_8001C624_main(temp_fp, HmfModelData[temp_s5->motion[3]].unk02, 0, 0xA, 2);
+    Hu3DMotionShiftSet(temp_fp, HmfModelData[temp_s5->motion[3]].unk02, 0, 0xA, 2);
     func_80110270_mstory4();
     HuPrcVSleep();
     for (i = 0; i < 4; i++) {

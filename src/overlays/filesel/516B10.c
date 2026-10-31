@@ -117,7 +117,7 @@ typedef struct FileSelectCameraState {
 } FileSelectCameraState;
 
 void func_80030030_main(f32);
-void func_8005086C_main(void);
+void SLLoadBoard(void);
 
 void func_80106B40_filesel(s32, u32, s16, s16, s16, s16, s16);
 void func_8010F678_filesel(s32);
@@ -202,14 +202,14 @@ s32 func_80111B14_filesel(s32);
 u32 func_80106AD8_filesel(u32);
 s32 func_8010AC58_filesel(s32);
 s32 func_80112494_filesel(s32, u8 *);
-void func_80050064_main(s32);
+void SLCommonSet(s32);
 void func_80050DDC_main(s16, s16);
 void espColorSet(u16, u8, u8, u8);
 void espTPLvlSet(u16, s16);
 void espAttrSet(u16, u16);
 void espAttrReset(u16, u16);
 void espPriSet(u16, s32);
-void func_8000BD94_main(u16, s32, s32);
+void espBankSet(u16, s32, s32);
 void espScaleSet(u16, f32, f32);
 
 extern Vec D_80112EA0_filesel;
@@ -449,7 +449,7 @@ void func_80106134_filesel(s32 arg0, u16 arg1) {
 
 void func_80106168_filesel(s32 arg0, u16 arg1, u16 arg2) {
     func_8000BDDC_main(D_80112ED0_filesel[arg0].unk_00, 1);
-    func_8000BD94_main(D_80112ED0_filesel[arg0].unk_00, arg1, arg2);
+    espBankSet(D_80112ED0_filesel[arg0].unk_00, arg1, arg2);
 }
 
 void func_801061D4_filesel(void) {
@@ -560,7 +560,7 @@ void func_8010671C_filesel(s32 arg0, s32 arg1) {
 }
 
 void func_80106760_filesel(s32 arg0, s32 arg1, s16 arg2, s16 arg3, s16 arg4) {
-    func_8001C624_main(D_80113650_filesel[arg0].unk_00, D_80113650_filesel[arg1].unk_02, arg2, arg3, arg4);
+    Hu3DMotionShiftSet(D_80113650_filesel[arg0].unk_00, D_80113650_filesel[arg1].unk_02, arg2, arg3, arg4);
 }
 
 void func_801067D0_filesel(s32 arg0, s16 arg1) {
@@ -679,7 +679,7 @@ s32 func_80106D8C_filesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 
     HuWinPriSet(window, 1);
     func_8005FE54_main(window, 1);
     func_8005C154_main(window, 192, 192, 192);
-    func_8005FBF8_main(window, 0, 64, 64);
+    HuWinBGColSet(window, 0, 64, 64);
     HuWinMesColSet(window, 7);
     HuWinMesPalSet(window, 2, 255, 64, 64);
     HuWinMesPalSet(window, 4, 96, 255, 64);
@@ -703,7 +703,7 @@ s32 func_80106ED8_filesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 
     HuWinMesPalSet(window, 4, 96, 255, 64);
     HuWinMesPalSet(window, 6, 255, 255, 64);
     func_8005C154_main(window, 192, 192, 192);
-    func_8005FBF8_main(window, 255, 255, 255);
+    HuWinBGColSet(window, 255, 255, 255);
     HuWinMesColSet(window, 1);
     HuWinHomeClear(window);
     HuWinMesSet(window, message, -1, -1);
@@ -726,7 +726,7 @@ s32 func_80107040_filesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 
     HuWinMesPalSet(window, 4, 96, 255, 64);
     HuWinMesPalSet(window, 6, 255, 255, 64);
     func_8005C154_main(window, 192, 192, 0);
-    func_8005FBF8_main(window, 255, 255, 255);
+    HuWinBGColSet(window, 255, 255, 255);
     HuWinMesColSet(window, 6);
     HuWinHomeClear(window);
     HuWinMesSet(window, message, -1, -1);
@@ -1554,7 +1554,7 @@ void func_80109B2C_filesel(void) {
         HuPrcSleep(3);
         func_80050DDC_main(source, destination);
         SLCurBoxNoSet(destination);
-        func_80050800_main();
+        SLLoadGameStat();
         func_80112184_filesel(destination);
         HuPrcSleep(3);
         func_8010F874_filesel(destination);
@@ -1693,7 +1693,7 @@ void func_8010A028_filesel(void) {
                         SLCurBoxNoSet(selection);
                         D_801142D8_filesel.files[selection].unk_04 = 0;
                         GwCommon.unk_00 = 0;
-                        func_80050064_main(1);
+                        SLCommonSet(1);
                         func_80105F54_filesel(18);
                         input = func_8010642C_filesel(selection);
                         func_801076A0_filesel(4);
@@ -1995,7 +1995,7 @@ s32 func_8010AC58_filesel(s32 fileIndex) {
     func_80106B40_filesel(10, (u32)name, 104, 46, 62, 20, 2);
     window = func_80107810_filesel(10);
     func_8005B63C_main(window, 0x80000, 0x80000);
-    func_8005FBF8_main(window, 128, 128, 128);
+    HuWinBGColSet(window, 128, 128, 128);
     HuWinMesColSet(window, 7);
     func_80105E48_filesel(16, 0x1F0020);
     func_80106044_filesel(16, 1.0f, 1.0f);
@@ -3514,7 +3514,7 @@ void func_8010F168_filesel(void) {
 
     func_80106B40_filesel(0, 0x2A11, 24, 20, 200, 24, 2);
     window = func_80107810_filesel(0);
-    func_8005FBF8_main(window, 128, 128, 128);
+    HuWinBGColSet(window, 128, 128, 128);
     HuWinMesColSet(window, 7);
     func_801078BC_filesel(0, 120);
     func_801076A0_filesel(0);
@@ -3533,7 +3533,7 @@ void func_8010F168_filesel(void) {
     func_80106B40_filesel(1, (u32)D_801142D8_filesel.files[0].name, x, 168, width, 20, 2);
     window = func_80107810_filesel(1);
     func_8005B63C_main(window, 0x80000, 0x80000);
-    func_8005FBF8_main(window, 192, 192, 192);
+    HuWinBGColSet(window, 192, 192, 192);
     HuWinMesColSet(window, 7);
     if (!(D_801142D8_filesel.files[0].name[0] | D_801142D8_filesel.files[0].name[1])) {
         func_801076D0_filesel(1, (u32)D_80112AF0_filesel);
@@ -3548,7 +3548,7 @@ void func_8010F168_filesel(void) {
     func_80106B40_filesel(2, (u32)D_801142D8_filesel.files[1].name, x, y, width, 20, 2);
     window = func_80107810_filesel(2);
     func_8005B63C_main(window, 0x80000, 0x80000);
-    func_8005FBF8_main(window, 192, 192, 192);
+    HuWinBGColSet(window, 192, 192, 192);
     HuWinMesColSet(window, 7);
     if (!(D_801142D8_filesel.files[1].name[0] | D_801142D8_filesel.files[1].name[1])) {
         func_801076D0_filesel(2, (u32)D_80112AF0_filesel);
@@ -3563,7 +3563,7 @@ void func_8010F168_filesel(void) {
     func_80106B40_filesel(3, (u32)D_801142D8_filesel.files[2].name, x, y, width, 20, 2);
     window = func_80107810_filesel(3);
     func_8005B63C_main(window, 0x80000, 0x80000);
-    func_8005FBF8_main(window, 128, 128, 128);
+    HuWinBGColSet(window, 128, 128, 128);
     HuWinMesColSet(window, 7);
     if (!(D_801142D8_filesel.files[2].name[0] | D_801142D8_filesel.files[2].name[1])) {
         func_801076D0_filesel(3, (u32)D_80112AF0_filesel);
@@ -4373,7 +4373,7 @@ void func_80111C30_filesel(void) {
     D_801142D8_filesel.selected = 0;
     for (i = 0; i < 3; i++) {
         SLCurBoxNoSet(i);
-        func_80050800_main();
+        SLLoadGameStat();
         if (GwCommon.unk_00 == UNK_VALUE && D_800D09A9_main == i) {
             D_801142D8_filesel.selected = i;
         }
@@ -4415,7 +4415,7 @@ void func_80111E78_filesel(s32 fileIndex) {
     D_801142D8_filesel.files[fileIndex].unk_7C = 0;
     D_801142D8_filesel.files[fileIndex].unk_80 = 99;
     if (_CheckFlag(0x16)) {
-        func_8005086C_main();
+        SLLoadBoard();
         D_801142D8_filesel.files[fileIndex].unk_68[0] = 0;
         D_801142D8_filesel.files[fileIndex].unk_68[1] = 1;
         D_801142D8_filesel.files[fileIndex].unk_68[2] = 2;
@@ -4435,7 +4435,7 @@ void func_80111FFC_filesel(s32 fileIndex) {
     D_801142D8_filesel.files[fileIndex].unk_60 = 0;
     D_801142D8_filesel.files[fileIndex].unk_64 = 99;
     if (_CheckFlag(0x17)) {
-        func_80050974_main();
+        SLLoadBoardStory();
         D_801142D8_filesel.files[fileIndex].unk_4C[0] = 0;
         D_801142D8_filesel.files[fileIndex].unk_4C[1] = 1;
         D_801142D8_filesel.files[fileIndex].unk_4C[2] = 2;
@@ -4541,10 +4541,10 @@ s32 func_80112508_filesel(s32 arg0, u8 *arg1) {
 
 void func_80112584_filesel(s32 arg0) {
     SLCurBoxNoSet(arg0);
-    func_80050800_main();
+    SLLoadGameStat();
     bcopy(D_801142D8_filesel.files[arg0].name, GwCommon.fileName, 10);
     D_800D09A9_main = arg0;
-    func_80050064_main(1);
+    SLCommonSet(1);
 }
 
 s32 func_801125E8_filesel(UnkFileName *arg0) {

@@ -505,7 +505,7 @@ s16 func_8005B974_main(s16 winId, u32 spriteMainFsPair, s16 x, s16 y, s16 arg4) 
     return spriteId;
 }
 
-TextWindow *func_8005BA28_main(s16 win_id) {
+TextWindow *HuWinGet(s16 win_id) {
     return &winData[win_id];
 }
 
@@ -1805,7 +1805,7 @@ void func_8005FBA4_main(u8 *buffer, s32 message) {
     *buffer = 0;
 }
 
-void func_8005FBF8_main(s16 winId, s32 red, s32 green, s32 blue) {
+void HuWinBGColSet(s16 winId, s32 red, s32 green, s32 blue) {
     TextWindow *window = &winData[winId];
     HuSprite *sprite;
     u16 *palette;
@@ -2231,7 +2231,7 @@ s32 func_80060880_main(s32 x, s32 y, s32 frameIndex) {
     HuWinBGTPLvlSet(winId, 0);
     func_8005C154_main(winId, 192, 192, 192);
     HuWinMesColSet(winId, frame->speed);
-    func_8005FBF8_main(winId, 255, 255, 255);
+    HuWinBGColSet(winId, 255, 255, 255);
     HuWinScaleSet(winId, 0, 0);
     return winId;
 }
@@ -2367,7 +2367,7 @@ s32 HuWinExCreate(s16 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u16 arg5) {
     temp_s2->unk4C = 6;
     HuWinBGTPLvlSet(temp_v0, 0xD0);
     HuWinMesPalSet(temp_v0, 1, 0x40, 0xF0, 0xFF);
-    func_8005FBF8_main(temp_v0, 0x40, 0x20, 0xB0);
+    HuWinBGColSet(temp_v0, 0x40, 0x20, 0xB0);
     HuWinHomeClear(temp_v0);
     HuWinDispOff(temp_v0);
     HuWinComKeyReset();

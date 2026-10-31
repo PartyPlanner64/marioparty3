@@ -1046,7 +1046,7 @@ void func_800FAE18_name_81(Object *arg0, s16 arg1, s16 arg2) {
 }
 
 void func_800FAE98_name_81(Object *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
-    func_8001C624_main(arg0->omObj1->model[0], D_80105470_name_81[arg1], arg2, arg3, arg4);
+    Hu3DMotionShiftSet(arg0->omObj1->model[0], D_80105470_name_81[arg1], arg2, arg3, arg4);
 }
 
 void func_800FAEE8_name_81(void) {
@@ -1137,7 +1137,7 @@ void func_800FB160_name_81(void) {
     HuWinMesMaxSizeBetGet(sp18, 0x4F00, 0x4F0A);
     sp36 = HuWinExCreate(D_801019C8_name_81[0], 0xA0 - sp18[0] / 2, 0x3C, sp18[0], sp18[1], 0);
     func_8005E1A8_main(sp36, 0x78);
-    func_8005FBF8_main(sp36, 1, 0xB9, 0xE7);
+    HuWinBGColSet(sp36, 1, 0xB9, 0xE7);
     HuWinMesSet(sp36, D_80101998_name_81[0], -1, -1);
     HuWinExAnimIn(sp36);
     temp_s4 = func_800F4528_name_81(3, 2);

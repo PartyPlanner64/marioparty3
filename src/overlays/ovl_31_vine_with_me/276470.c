@@ -320,7 +320,7 @@ void func_80105D08_vine_with_me(omObjData *arg0) {
         D_80115530_vine_with_me[var_s0]->unk01 = var_s0;
         D_80115530_vine_with_me[var_s0]->unk04 = (GwPlayer[D_80115670_vine_with_me[var_s0]].stat & 1) ? GwPlayer[D_80115670_vine_with_me[var_s0]].cpu_difficulty : -1;
     }
-    func_8001AC8C_main(0, func_8010ADB0_vine_with_me, 2);
+    Hu3DHookFuncCreate(0, func_8010ADB0_vine_with_me, 2);
     arg0->func = func_80106004_vine_with_me;
 }
 
@@ -501,58 +501,58 @@ void func_8010683C_vine_with_me(omObjData *arg0) {
         espDispOff(D_80115640_vine_with_me.unk00[var_s3]);
     }
     arg0->model[0] = func_8000B108_main(0x520008, 0x23D);
-    func_8001C8A8_main(arg0->model[0], 1);
+    Hu3DModelCameraSet(arg0->model[0], 1);
     omSetTra(arg0, 1950.0f, 172.0f, 0.0f);
     omSetSca(arg0, 1.0f, 0.594f, 0.0f);
     omSetRot(arg0, 0.0f, 0.0f, 5.0f);
     arg0->model[1] = Hu3DModelLink(arg0->model[0]);
-    func_8001C8A8_main(arg0->model[1], 2);
+    Hu3DModelCameraSet(arg0->model[1], 2);
     Hu3DModelPosSet(arg0->model[1], 1950.0f, 172.0f, 0.0f);
     Hu3DModelScaleSet(arg0->model[1], 1.0f, 0.594f, 0.0f);
     Hu3DModelRotSet(arg0->model[1], 0.0f, 0.0f, 5.0f);
     arg0->model[6] = func_8000B108_main(8, 0xA3D);
-    func_8001C8A8_main(arg0->model[6], 1);
+    Hu3DModelCameraSet(arg0->model[6], 1);
     Hu3DModelPosSet(arg0->model[6], 300.0f, -350.0f, 0.0f);
     arg0->model[7] = Hu3DModelLink(arg0->model[6]);
-    func_8001C8A8_main(arg0->model[7], 2);
+    Hu3DModelCameraSet(arg0->model[7], 2);
     Hu3DModelPosSet(arg0->model[7], 300.0f, -350.0f, 0.0f);
     arg0->model[10] = func_8000B108_main(0x520007, 0x23D);
-    func_8001C8A8_main(arg0->model[10], 1);
+    Hu3DModelCameraSet(arg0->model[10], 1);
     Hu3DModelPosSet(arg0->model[10], 475.0f, -370.0f, 0.0f);
     arg0->model[11] = Hu3DModelLink(arg0->model[10]);
-    func_8001C8A8_main(arg0->model[11], 2);
+    Hu3DModelCameraSet(arg0->model[11], 2);
     Hu3DModelPosSet(arg0->model[11], 475.0f, -370.0f, 0.0f);
     arg0->model[2] = func_8000B108_main(0x520001, 0x619);
-    func_8001C8A8_main(arg0->model[2], 1);
+    Hu3DModelCameraSet(arg0->model[2], 1);
     Hu3DModelPosSet(D_801155A0_vine_with_me->model[2], 375.0f, -375.0f, -250.0f);
     Hu3DModelScaleSet(D_801155A0_vine_with_me->model[2], 1.4375f, 1.4375f, 1.0f);
     arg0->model[3] = Hu3DModelLink(arg0->model[2]);
-    func_8001C8A8_main(arg0->model[3], 2);
+    Hu3DModelCameraSet(arg0->model[3], 2);
     Hu3DModelPosSet(arg0->model[3], 375.0f, -375.0f, -250.0f);
     Hu3DModelScaleSet(arg0->model[3], 1.4375f, 1.4375f, 1.0f);
     arg0->model[8] = func_8000B108_main(0x520006, 0x23D);
-    func_8001C8A8_main(arg0->model[8], 1);
+    Hu3DModelCameraSet(arg0->model[8], 1);
     Hu3DModelPosSet(arg0->model[8], 475.0f, -300.0f, 0.0f);
     arg0->model[9] = Hu3DModelLink(arg0->model[8]);
-    func_8001C8A8_main(arg0->model[9], 2);
+    Hu3DModelCameraSet(arg0->model[9], 2);
     Hu3DModelPosSet(arg0->model[9], 475.0f, -300.0f, 0.0f);
     arg0->model[4] = func_8000B108_main(0x520002, 0x49D);
     Hu3DModelPosSet(arg0->model[4], 325.0f, -650.0f, 0.0f);
     Hu3DModelScaleSet(arg0->model[4], 0.5f, 0.5f, 1.0f);
     func_8001C814_main(arg0->model[4], 3, 0);
-    func_8001C8A8_main(arg0->model[4], 1);
+    Hu3DModelCameraSet(arg0->model[4], 1);
     arg0->model[5] = Hu3DModelLink(arg0->model[4]);
     Hu3DModelPosSet(arg0->model[5], 325.0f, -650.0f, 0.0f);
     Hu3DModelScaleSet(arg0->model[5], 0.5f, 0.5f, 1.0f);
     func_8001C814_main(arg0->model[5], 3, 0);
-    func_8001C8A8_main(arg0->model[5], 2);
+    Hu3DModelCameraSet(arg0->model[5], 2);
     for (var_s3 = 0; var_s3 < 8; var_s3++) {
         D_80115678_vine_with_me[var_s3] = 90;
         D_80115640_vine_with_me.unk22[var_s3] = 0;
         arg0->model[12 + var_s3] = func_8000B108_main(0x520003, 0x6BD);
         Hu3DModelRotSet(arg0->model[12 + var_s3], 0.0f, 0.0f, 0.0f);
         func_8001C814_main(arg0->model[12 + var_s3], 2, 2);
-        func_8001C8A8_main(arg0->model[12 + var_s3], 0);
+        Hu3DModelCameraSet(arg0->model[12 + var_s3], 0);
         func_8001FDE8_main(arg0->model[12 + var_s3]);
     }
     for (var_s3 = 0; var_s3 < 2; var_s3++) {
@@ -756,7 +756,7 @@ void func_80106F1C_vine_with_me(omObjData *arg0) {
             func_80016FB4_main(arg0->model[12 + var_s1], D_80115630_vine_with_me[D_80115595_vine_with_me[var_s1] == 3], 0);
             func_8001C814_main(arg0->model[12 + var_s1], 2, 2);
             func_8001C258_main(arg0->model[12 + var_s1], 4, 0);
-            func_8001C8A8_main(arg0->model[12 + var_s1], D_80115640_vine_with_me.unk22[var_s1] != 0 ? 2 : 1);
+            Hu3DModelCameraSet(arg0->model[12 + var_s1], D_80115640_vine_with_me.unk22[var_s1] != 0 ? 2 : 1);
         } else if (temp_s2 == 89) {
             func_8001C258_main(arg0->model[12 + var_s1], 4, 4);
         } else if (temp_s2 >= 31 && temp_s2 < 36) {
@@ -1012,8 +1012,8 @@ void func_8010CF18_vine_with_me(omObjData *arg0, s8 arg1, s32 arg2) {
     func_8001C2FC_main(arg0->model[1], 0x600, 0x400);
     func_8001C5B4_main(arg0->model[0], arg0->motion[1]);
     func_8001C814_main(arg0->model[0], 2, 2);
-    func_8001C8A8_main(arg0->model[0], (arg1 != 0) ? 2 : 1);
-    func_8001C8A8_main(arg0->model[1], (arg1 != 0) ? 2 : 1);
+    Hu3DModelCameraSet(arg0->model[0], (arg1 != 0) ? 2 : 1);
+    Hu3DModelCameraSet(arg0->model[1], (arg1 != 0) ? 2 : 1);
     for (var_s1 = 0; var_s1 < 24; var_s1++) {
         if (var_s1 == 0) {
             arg0->model[2] = func_8000B108_main(0x520000, 0x4B9);
@@ -1023,7 +1023,7 @@ void func_8010CF18_vine_with_me(omObjData *arg0, s8 arg1, s32 arg2) {
         Hu3DModelPosSet(arg0->model[var_s1 + 2], 0.0f, var_s1 * -50.0, 0.0f);
         Hu3DModelRotSet(arg0->model[var_s1 + 2], 0.0f, 0.0f, 0.0f);
         Hu3DModelScaleSet(arg0->model[var_s1 + 2], 1.0f, 1.0f, 1.0f);
-        func_8001C8A8_main(arg0->model[var_s1 + 2], (arg1 != 0) ? 2 : 1);
+        Hu3DModelCameraSet(arg0->model[var_s1 + 2], (arg1 != 0) ? 2 : 1);
     }
     D_801155B8_vine_with_me = 0;
 }
@@ -1270,7 +1270,7 @@ void func_8010D4AC_vine_with_me(omObjData *arg0, s8 arg1, s8 arg2) {
     if (D_80111C3C_vine_with_me[arg1] == 1) {
         D_80111C98_vine_with_me[arg1] += (D_80111C98_vine_with_me[arg1] < 0xFF);
         if (D_80111C78_vine_with_me[arg1] < D_80111C2C_vine_with_me[arg1][D_80111C38_vine_with_me[arg1]] && D_80111C78_vine_with_me[arg1] + 0.4375 >= D_80111C2C_vine_with_me[arg1][D_80111C38_vine_with_me[arg1]]) {
-            func_8001C624_main(arg0->model[0], HmfModelData[arg0->motion[1]].unk02, 0, 4, 2);
+            Hu3DMotionShiftSet(arg0->model[0], HmfModelData[arg0->motion[1]].unk02, 0, 4, 2);
         }
         D_80111C78_vine_with_me[arg1] += 0.4375;
         if (D_80111C2C_vine_with_me[arg1][D_80111C38_vine_with_me[arg1]] <= D_80111C78_vine_with_me[arg1]) {
@@ -1364,7 +1364,7 @@ void func_8010D4AC_vine_with_me(omObjData *arg0, s8 arg1, s8 arg2) {
                 D_80111C3C_vine_with_me[arg1] = 0;
                 D_80112598_vine_with_me[arg1] = D_80111C8C_vine_with_me[arg1] = (D_80111C68_vine_with_me[arg1] - D_801125A8_vine_with_me[arg1]) * 1.25;
                 D_801125A0_vine_with_me[arg1] = (D_80111C70_vine_with_me[arg1] - D_801125B0_vine_with_me[arg1]) * 1.25;
-                func_8001C624_main(arg0->model[0], HmfModelData[arg0->motion[3]].unk02, 0, 7, sp3D7);
+                Hu3DMotionShiftSet(arg0->model[0], HmfModelData[arg0->motion[3]].unk02, 0, 7, sp3D7);
                 var_f4_2 = D_80111C68_vine_with_me[arg1];
                 var_f8 = D_80111C70_vine_with_me[arg1];
                 temp_f12_5 = D_80112598_vine_with_me[arg1];
@@ -1391,7 +1391,7 @@ void func_8010D4AC_vine_with_me(omObjData *arg0, s8 arg1, s8 arg2) {
         D_80111C70_vine_with_me[arg1] += 1.0;
         D_80112598_vine_with_me[arg1] = 10.0f;
         D_801125A0_vine_with_me[arg1] = 30.0f;
-        func_8001C624_main(arg0->model[0], HmfModelData[arg0->motion[3]].unk02, 0, 4, 1);
+        Hu3DMotionShiftSet(arg0->model[0], HmfModelData[arg0->motion[3]].unk02, 0, 4, 1);
     }
     if (D_80111C3C_vine_with_me[arg1] == 0) {
         if (D_80111C70_vine_with_me[arg1] <= -812.5 || D_80111C80_vine_with_me[arg1] > 0.0f) {
@@ -1498,7 +1498,7 @@ void func_8010D4AC_vine_with_me(omObjData *arg0, s8 arg1, s8 arg2) {
                     func_8001C5B4_main(arg0->model[0], arg0->motion[4]);
                     Hu3DMotionTimeSet(arg0->model[0], 8.0f);
                     func_8001C814_main(arg0->model[0], 3, 0);
-                    func_8001C624_main(arg0->model[0], HmfModelData[arg0->motion[0]].unk02, 0, 0x14, 2);
+                    Hu3DMotionShiftSet(arg0->model[0], HmfModelData[arg0->motion[0]].unk02, 0, 0x14, 2);
                     if (D_80111C5C_vine_with_me[arg1] < 8) {
                         func_8001C8E4_main(arg0->model[0], 0);
                     }

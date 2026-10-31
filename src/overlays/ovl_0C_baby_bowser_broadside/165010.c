@@ -607,7 +607,7 @@ void func_80107A80_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBows
 
     if ((s8)handler->unk_04 == 0) {
         D_8011000C_baby_bowser_broadside = HuAudFXPlay(0x35C);
-        func_8004AAD0_main(D_8011000C_baby_bowser_broadside, 64);
+        HuAudFXVolSet(D_8011000C_baby_bowser_broadside, 64);
         handler->unk_1C = 0;
         handler->unk_04 = 1;
     }

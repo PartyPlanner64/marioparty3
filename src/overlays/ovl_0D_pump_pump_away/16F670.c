@@ -286,7 +286,7 @@ void espAttrSet(u16 arg0, u16 arg1);
 void espScaleSet(u16 spriteId, f32 x, f32 y);
 omObjData *func_80045EF4_main(u32 arg0, s16 arg1);
 u16 GWMgRecordGet(s16 arg0);
-void func_8004AE00_main(s16 arg0, s16 arg1);
+void HuAudFXPanning(s16 arg0, s16 arg1);
 void func_80034048_main(s16 arg0, s16 arg1);
 void func_80105EE4_pump_pump_away(Vec *position, Vec *target, Vec *result);
 void func_80088800_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
@@ -919,8 +919,8 @@ void func_8010775C_pump_pump_away(omObjData *obj) {
 void func_8010780C_pump_pump_away(omObjData *obj) {
     D_80113534_pump_pump_away = func_8000B838_main(0x2E001E);
     D_8011353C_pump_pump_away = func_80055194_main(D_80113536_pump_pump_away);
-    D_80113538_pump_pump_away = func_8001AC8C_main(0, func_8010749C_pump_pump_away, 6);
-    func_8001C8A8_main(D_8011353A_pump_pump_away, 1);
+    D_80113538_pump_pump_away = Hu3DHookFuncCreate(0, func_8010749C_pump_pump_away, 6);
+    Hu3DModelCameraSet(D_8011353A_pump_pump_away, 1);
     D_80113540_pump_pump_away = 0;
     D_80113530_pump_pump_away.state = -1;
     D_80113544_pump_pump_away = 30;
@@ -1381,15 +1381,15 @@ void func_80108E74_pump_pump_away(omObjData *obj) {
 
     D_8011175C_pump_pump_away = func_8000B838_main(0x2E0015);
     D_80111764_pump_pump_away = func_80055194_main(D_8011175E_pump_pump_away);
-    D_80111760_pump_pump_away = func_8001AC8C_main(0, func_80108560_pump_pump_away, 2);
-    func_8001C8A8_main(D_80111762_pump_pump_away, 1);
+    D_80111760_pump_pump_away = Hu3DHookFuncCreate(0, func_80108560_pump_pump_away, 2);
+    Hu3DModelCameraSet(D_80111762_pump_pump_away, 1);
     D_80111788_pump_pump_away = 0;
     entry->unk_00 = 0;
     entry++;
     D_80111790_pump_pump_away = func_8000B838_main(0x2E0016);
     D_80111798_pump_pump_away = func_80055194_main(D_80111792_pump_pump_away);
-    D_80111794_pump_pump_away = func_8001AC8C_main(0, func_80108810_pump_pump_away, 2);
-    func_8001C8A8_main(D_80111796_pump_pump_away, 1);
+    D_80111794_pump_pump_away = Hu3DHookFuncCreate(0, func_80108810_pump_pump_away, 2);
+    Hu3DModelCameraSet(D_80111796_pump_pump_away, 1);
     D_801117BC_pump_pump_away = 0;
     entry->unk_00 = 0;
     obj->func = func_80108CFC_pump_pump_away;
@@ -1550,9 +1550,9 @@ void func_801094CC_pump_pump_away(omObjData *obj) {
             if (HmfModelData[obj->model[0]].unk40 >= 16.0f && D_8011110A_pump_pump_away == 0) {
                 sound = HuAudFXPlay(0x363);
                 if (player->unk_28->work[0] != 0) {
-                    func_8004AE00_main(sound, 0x60);
+                    HuAudFXPanning(sound, 0x60);
                 } else {
-                    func_8004AE00_main(sound, 0x20);
+                    HuAudFXPanning(sound, 0x20);
                 }
                 D_8011110A_pump_pump_away = 1;
             }
@@ -1744,9 +1744,9 @@ void func_80109E98_pump_pump_away(omObjData *obj) {
             player->unk_0C = 2;
             sound = HuAudFXPlay(0x362);
             if (obj->work[0] != 0) {
-                func_8004AE00_main(sound, 0x60);
+                HuAudFXPanning(sound, 0x60);
             } else {
-                func_8004AE00_main(sound, 0x20);
+                HuAudFXPanning(sound, 0x20);
             }
             break;
         case 2:
@@ -1908,9 +1908,9 @@ void func_8010A570_pump_pump_away(omObjData *obj) {
                 if (D_80111110_pump_pump_away == 0 && player->unk_20 < -1.2) {
                     sound = HuAudFXPlay(0x360);
                     if (obj->work[0] != 0) {
-                        func_8004AE00_main(sound, 0x60);
+                        HuAudFXPanning(sound, 0x60);
                     } else {
-                        func_8004AE00_main(sound, 0x20);
+                        HuAudFXPanning(sound, 0x20);
                     }
                     D_80111110_pump_pump_away = 1;
                 }
@@ -2071,9 +2071,9 @@ void func_8010AF70_pump_pump_away(omObjData *obj) {
                 player->unk_08 = 22;
                 sound = HuAudFXPlay(0x361);
                 if (obj->work[0] != 0) {
-                    func_8004AE00_main(sound, 96);
+                    HuAudFXPanning(sound, 96);
                 } else {
-                    func_8004AE00_main(sound, 32);
+                    HuAudFXPanning(sound, 32);
                 }
                 for (i = 0; i < 4; i++) {
                     jet = &D_80113438_pump_pump_away[i];
@@ -2229,9 +2229,9 @@ void func_8010B898_pump_pump_away(omObjData *obj) {
         if (D_800D5558_main[GwPlayer[obj->work[0]].pad] & 0x8000) {
             sound = func_8004AC98_main(0x35D, obj->work[0]);
             if (obj->work[1] != 0) {
-                func_8004AE00_main(sound, 0x60);
+                HuAudFXPanning(sound, 0x60);
             } else {
-                func_8004AE00_main(sound, 0x20);
+                HuAudFXPanning(sound, 0x20);
             }
             if (frame < 2.0f) {
                 jet->unk_14 = (jet->unk_2C - frame) * 0.17;
@@ -2254,9 +2254,9 @@ void func_8010B898_pump_pump_away(omObjData *obj) {
             (D_800D5558_main[GwPlayer[obj->work[0]].pad] & 0x2000)) {
             sound = func_8004AC98_main(0x35E, obj->work[0]);
             if (obj->work[1] != 0) {
-                func_8004AE00_main(sound, 0x60);
+                HuAudFXPanning(sound, 0x60);
             } else {
-                func_8004AE00_main(sound, 0x20);
+                HuAudFXPanning(sound, 0x20);
             }
             if (frame >= D_800CCF58_main[HmfModelData[obj->model[0]].unk02].unk02) {
                 jet->unk_14 = (frame - jet->unk_2C) * 0.17;
@@ -2315,7 +2315,7 @@ void func_8010BD80_pump_pump_away(omObjData *obj) {
             }
             obj->rot.y = 180.0f;
         case 1:
-            func_8001C624_main(obj->model[0], HmfModelData[obj->motion[0]].unk02, 0, 20, 2);
+            Hu3DMotionShiftSet(obj->model[0], HmfModelData[obj->motion[0]].unk02, 0, 20, 2);
             jet->unk_08 = 0;
             jet->unk_0C = 0;
             break;
@@ -2328,7 +2328,7 @@ void func_8010BF14_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAwayPlayer *other;
 
     if (D_80111978_pump_pump_away[obj->work[1]].unk_00 == 99 && jet->unk_0C == 0) {
-        func_8001C624_main(obj->model[0], HmfModelData[obj->motion[4]].unk02, 0, 30, 2);
+        Hu3DMotionShiftSet(obj->model[0], HmfModelData[obj->motion[4]].unk02, 0, 30, 2);
         jet->unk_08 = 4;
         jet->unk_0C = 1;
     }
@@ -2359,9 +2359,9 @@ void func_8010C060_pump_pump_away(omObjData *obj) {
                 jet->unk_08 = 6;
                 sound = PlayerFXPlay(0x286, obj->work[0]);
                 if (obj->work[1] != 0) {
-                    func_8004AE00_main(sound, 0x60);
+                    HuAudFXPanning(sound, 0x60);
                 } else {
-                    func_8004AE00_main(sound, 0x20);
+                    HuAudFXPanning(sound, 0x20);
                 }
             }
             break;
@@ -2397,7 +2397,7 @@ void func_8010C1C8_pump_pump_away(omObjData *obj) {
                                                                                                               : obj->rot.y + 180.0f;
             if (angle >= 180.0f) {
                 obj->rot.y = 0;
-                func_8001C624_main(obj->model[0], HmfModelData[obj->motion[0]].unk02, 0, 20, 2);
+                Hu3DMotionShiftSet(obj->model[0], HmfModelData[obj->motion[0]].unk02, 0, 20, 2);
                 jet->unk_08 = 0;
                 jet->unk_0C = 9;
             }

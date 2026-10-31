@@ -389,7 +389,7 @@ void func_80106388_inst(void) {
 }
 
 void func_801063F4_inst(void) {
-    func_80037258_main();
+    GameMesStub();
     HuWinAllKill();
 }
 

@@ -135,8 +135,8 @@ void func_8010662C_storm_chasers(omObjData *object) {
     D_8010CF6C_storm_chasers = func_8000B838_main(0x500001);
     D_8010CF74_storm_chasers = func_80055194_main(D_8010CF6E_storm_chasers);
     D_8010CF70_storm_chasers =
-        func_8001AC8C_main(0, func_801063B0_storm_chasers, 2);
-    func_8001C8A8_main(D_8010CF72_storm_chasers, 1);
+        Hu3DHookFuncCreate(0, func_801063B0_storm_chasers, 2);
+    Hu3DModelCameraSet(D_8010CF72_storm_chasers, 1);
     object->func = func_80106624_storm_chasers;
     D_8010CF68_storm_chasers = 0;
 }

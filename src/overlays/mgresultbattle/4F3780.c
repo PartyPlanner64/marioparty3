@@ -62,7 +62,7 @@ void func_801059A0_mgresultbattle(void) {
     }
 
     if (var_a0_2 >= 4) {
-        func_80037258_main();
+        GameMesStub();
         MBBackKill();
         MBBackClose();
         omOvlReturnEx(1);
@@ -109,7 +109,7 @@ void func_80105EF4_mgresultbattle(void) {
 }
 
 void func_80105F50_mgresultbattle(void) {
-    func_8001AC8C_main(0, func_80105F78_mgresultbattle, 0);
+    Hu3DHookFuncCreate(0, func_80105F78_mgresultbattle, 0);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80105F78_mgresultbattle);

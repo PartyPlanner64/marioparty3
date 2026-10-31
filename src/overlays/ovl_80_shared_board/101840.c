@@ -1693,7 +1693,7 @@ void MBPauseCreate(s32 arg0) {
 
     func_800EA358_shared_board();
     D_800CB99C_main = 1;
-    func_80049FB8_main();
+    omAllPause();
     temp_s2 = _CheckFlag(0x20) != 0;
     
     for (i = 0; i < 4; i++) {
@@ -1709,7 +1709,7 @@ void MBPauseCreate(s32 arg0) {
     }
     
     func_8001AC34_main(D_800D10F2_main, 2);
-    func_8001C8A8_main(D_800D10F2_main, 1);
+    Hu3DModelCameraSet(D_800D10F2_main, 1);
     D_80105550_shared_board = 0;
     D_80105554_shared_board = 0;
     D_80105556_shared_board = 0;

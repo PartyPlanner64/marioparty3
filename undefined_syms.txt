@@ -57,4 +57,4 @@ D_8010DC42_inst = D_8010DC40_inst + 0x2;
 D_8010DDE4_inst = D_8010DDE0_inst + 0x4; /* update */
 D_8010DDEC_inst = D_8010DDE8_inst + 0x4; /* update */
 
-/* gamemes "WON" string literal, now emitted by C func_8003DE60_main; still referenced by the WINNERS asm. */
+/* gamemes "WON" string literal, now emitted by C GameMesMgWinnerExec; still referenced by the WINNERS asm. */

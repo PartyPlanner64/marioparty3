@@ -25,7 +25,7 @@ typedef struct TelopData {
     char unk_08[8];
 } TelopData;
 
-// void func_80049FB8_main(void);
+// void omAllPause(void);
 // void func_800E9AF0_shared_board(Vec *, s32);
 // void MBPlayerPosMasuSet(s16, s16);
 // void MBPlayerMasuSwap(s16, s16);
@@ -738,7 +738,7 @@ static void MBItemSel(void) {
                 MBMapScrollExec(playerPadNo);
                 MBItemHelpCreate();
                 D_800CB99C_main = 1;
-                func_80049FB8_main();
+                omAllPause();
                 D_80102CB4_shared_board = D_80100F90_shared_board;
                 MBItemScaleEffCreate();
             }
@@ -751,7 +751,7 @@ static void MBItemSel(void) {
                 MBMapFullExec(playerPadNo);
                 MBItemHelpCreate();
                 D_800CB99C_main = 1;
-                func_80049FB8_main();
+                omAllPause();
                 D_80102CB4_shared_board = D_80100F90_shared_board;
                 MBItemScaleEffCreate();
             }
@@ -783,7 +783,7 @@ void MBItemSelExec(s32 playerNo, s32 arg1) {
     func_800DC06C_shared_board(playerNo);
     
     D_800CB99C_main = 1;
-    func_80049FB8_main();
+    omAllPause();
     D_80102CB0_shared_board = arg1;
     temp_s2 = HuPrcCurrentGet();
     temp_v0 = omAddPrcObj(MBItemSel, 0x1005, 0x1000, 0);
@@ -836,7 +836,7 @@ void MBItemViewExec(s32 playerNo) {
     Process* temp_v0;
 
     D_800CB99C_main = 1;
-    func_80049FB8_main();
+    omAllPause();
     temp_s1 = HuPrcCurrentGet();
     temp_v0 = omAddPrcObj(MBItemView, 0x1005, 0, 0);
     temp_v0->user_data = (void*)playerNo;
@@ -868,7 +868,7 @@ static void MBItemDesc(void) {
     
     HuWinMesMaxSizeBetGet(sp18, 0x3E00, 0x3E0A);
     temp_v0_2 = HuWinExCreate(D_80101148_shared_board[savedItemID], 0xA0 - (sp18[0] / 2), 0x3C, sp18[0], sp18[1], 0);
-    func_8005FBF8_main(temp_v0_2, 1, 0xBC, 0xE7);
+    HuWinBGColSet(temp_v0_2, 1, 0xBC, 0xE7);
     HuWinMesSet(temp_v0_2, D_801010F8_shared_board[savedItemID], -1, -1);
     HuWinExAnimIn(temp_v0_2);
     D_801010D4_shared_board = func_800E210C_shared_board(0x10, 0xA0, 0);
@@ -1516,7 +1516,7 @@ UnkMBGuideData* MBGuideCreate(u32* arg0, s32 arg1) {
         temp_v0->obj = temp_v0_2;
         temp_v0_2->flags |= 1;
 
-        func_8001C8A8_main(temp_v0->obj->omObj1->model[0], 2);
+        Hu3DModelCameraSet(temp_v0->obj->omObj1->model[0], 2);
 
         temp_a2 = &HmfModelData[temp_v0->obj->omObj1->model[0]];
         sincosdf(15.0f, &temp_a2->mtx[1][2], &temp_a2->mtx[1][1]);

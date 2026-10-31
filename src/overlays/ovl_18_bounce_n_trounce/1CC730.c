@@ -97,7 +97,7 @@ void func_80108C18_bounce_n_trounce(omObjData *object) {
 
     work->state = 4;
     func_8001C258_main(object->model[0], 4, 4);
-    func_8001C624_main(object->model[1], HmfModelData[object->motion[3]].unk02, 0, 6, 0);
+    Hu3DMotionShiftSet(object->model[1], HmfModelData[object->motion[3]].unk02, 0, 6, 0);
     object->work[0] = 8;
     object->func = func_80108CA8_bounce_n_trounce;
 }
@@ -106,7 +106,7 @@ void func_80108CA8_bounce_n_trounce(omObjData *object) {
     if (object->work[0] != 0) {
         object->work[0]--;
     } else {
-        func_8001C624_main(object->model[1], HmfModelData[object->motion[1]].unk02, 0, 6, 2);
+        Hu3DMotionShiftSet(object->model[1], HmfModelData[object->motion[1]].unk02, 0, 6, 2);
         object->func = func_80108D28_bounce_n_trounce;
     }
 }

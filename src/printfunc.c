@@ -21,7 +21,7 @@ extern strline_data strline[MAX_STRINGS];
 extern u16 strlinecnt;
 extern u16 empstrline;
 extern u16 D_800D6A46_main;
-extern u16 D_800CDD4C_main;         // screen border enabled
+extern u16 saftyFrameF;         // screen border enabled
 extern u16 D_800A1D64_main;         // palette currently loaded for the font texture
 extern u8 D_8009F730_main[];        // 64x64 CI4 font texture, 8x8 glyphs starting at ' '
 extern u16 D_800A0330_main[16][16]; // font palettes
@@ -43,7 +43,7 @@ void pfInit(void) {
     for (i = 0; i < 4; i++) {
         D_800CC440_main[i].unk_00 = 0;
     }
-    D_800CDD4C_main = 0;
+    saftyFrameF = 0;
 }
 
 void pfClsScr(void) {
@@ -95,8 +95,7 @@ s32 print8(u16 x, u16 y, char *src) {
     }
 }
 
-// printWin?
-s16 func_8004DE24_main(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+s16 printWin(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     Unk_D_800CC440 *temp;
     s32 i;
 
@@ -140,7 +139,7 @@ void func_8004DF4C_main(u8 arg0, u8 arg1, u8 arg2) {
     D_800CE1DC_main.unk_01 = arg1;
     D_800CE1DC_main.unk_02 = arg2;
     D_800CE1DC_main.unk_03 = D_800CE1DC_main.unk_04 = D_800CE1DC_main.unk_05 = 0;
-    D_800CDD4C_main = 1;
+    saftyFrameF = 1;
 }
 
 void func_8004DF7C_main(s8 arg0, s8 arg1, s8 arg2, s8 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8) {
@@ -160,7 +159,7 @@ void func_8004DFC0_main(void) {
 }
 
 void func_8004DFD8_main(void) {
-    D_800CDD4C_main = 0;
+    saftyFrameF = 0;
 }
 
 void func_8004DFE4_main(s16 arg0, u8 *src) {
@@ -220,7 +219,7 @@ Gfx *pfDrawFonts(Gfx *gfx) {
         }
     }
 
-    if (D_800CDD4C_main != 0) {
+    if (saftyFrameF != 0) {
         if (D_800CE1DC_main.unk_03 != 0) {
             speed = D_800CE1DC_main.unk_03;
             if (speed < 0) {

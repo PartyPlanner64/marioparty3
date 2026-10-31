@@ -26,7 +26,7 @@ void func_80113424_option(s32);
 s32 func_801130E8_option(s32);
 void func_801133EC_option(s32);
 void espTPLvlSet(u16, s16);
-void func_8000BD94_main(u16, s32, s32);
+void espBankSet(u16, s32, s32);
 void func_8000BDDC_main(u16, s32);
 void espAttrSet(u16, u16);
 void espAttrReset(u16, u16);
@@ -201,7 +201,7 @@ void func_801106B4_option(s32 arg0, u16 arg1) {
 
 void func_801106E8_option(s32 arg0, u16 arg1, u16 arg2) {
     func_8000BDDC_main(D_801147F0_option[arg0].espriteSlot, 1);
-    func_8000BD94_main(D_801147F0_option[arg0].espriteSlot, arg1, arg2);
+    espBankSet(D_801147F0_option[arg0].espriteSlot, arg1, arg2);
 }
 
 void func_80110754_option(void) {
@@ -313,7 +313,7 @@ void func_80110C9C_option(s32 arg0, s32 arg1) {
 }
 
 void func_80110CE0_option(s32 arg0, s32 arg1, s16 arg2, s16 arg3, s32 arg4) {
-    func_8001C624_main(D_80114F70_option[arg0].unk_00, D_80114F70_option[arg1].unk_02, arg2, arg3, arg4);
+    Hu3DMotionShiftSet(D_80114F70_option[arg0].unk_00, D_80114F70_option[arg1].unk_02, arg2, arg3, arg4);
 }
 
 void func_80110D50_option(s32 arg0, s32 arg1) {
@@ -391,7 +391,7 @@ s32 func_8011130C_option(s32 message, s16 x, s16 y, s16 width, s16 height) {
     HuWinPriSet(winID, 1);
     func_8005FE54_main(winID, 1);
     func_8005C154_main(winID, 192, 192, 192);
-    func_8005FBF8_main(winID, 0, 64, 64);
+    HuWinBGColSet(winID, 0, 64, 64);
     HuWinMesColSet(winID, 7);
     HuWinMesPalSet(winID, 2, 255, 64, 64);
     HuWinMesPalSet(winID, 4, 96, 255, 64);
@@ -416,7 +416,7 @@ s32 func_80111458_option(s32 message, s16 x, s16 y, s16 width, s16 height) {
     HuWinMesPalSet(winID, 4, 96, 255, 64);
     HuWinMesPalSet(winID, 6, 255, 255, 64);
     func_8005C154_main(winID, 192, 192, 192);
-    func_8005FBF8_main(winID, 255, 255, 255);
+    HuWinBGColSet(winID, 255, 255, 255);
     HuWinMesColSet(winID, 1);
     HuWinHomeClear(winID);
     HuWinMesSet(winID, message, -1, -1);
@@ -440,7 +440,7 @@ s32 func_801115C0_option(s32 message, s16 x, s16 y, s16 width, s16 height) {
     HuWinMesPalSet(winID, 4, 96, 255, 64);
     HuWinMesPalSet(winID, 6, 255, 255, 64);
     func_8005C154_main(winID, 192, 192, 0);
-    func_8005FBF8_main(winID, 255, 255, 255);
+    HuWinBGColSet(winID, 255, 255, 255);
     HuWinMesColSet(winID, 6);
     HuWinHomeClear(winID);
     HuWinMesSet(winID, message, -1, -1);

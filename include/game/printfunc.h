@@ -32,7 +32,7 @@ extern s32 fontcolor;
 extern Unk_D_800CC440 D_800CC440_main[4];
 extern Unk_D_800CE1DC D_800CE1DC_main;
 
-s16 func_8004DE24_main(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
+s16 printWin(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
 void func_8004DEC8_main(s16 arg0);
 void func_8004DF10_main(void);
 void func_8004DF4C_main(u8 arg0, u8 arg1, u8 arg2);

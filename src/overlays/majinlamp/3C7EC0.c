@@ -518,7 +518,7 @@ void func_8010771C_majinlamp(void) {
     func_8001C954_main(D_80108330_majinlamp->omObj1->model[0]);
     Hu3DMotionSpeedSet(D_80108330_majinlamp->omObj1->model[0], 0.25f);
     HuVecCopyXYZ(&D_80108330_majinlamp->scale, 4.0f, 4.0f, 4.0f);
-    func_8001C8A8_main(D_80108330_majinlamp->omObj1->model[0], 2);
+    Hu3DModelCameraSet(D_80108330_majinlamp->omObj1->model[0], 2);
     omAddObj(0x1000, 0, 0, -1, func_80106BB0_majinlamp);
     D_801080D0_majinlamp = 45.0f;
     D_801080DC_majinlamp = 100.0f;

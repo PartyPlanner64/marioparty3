@@ -1,7 +1,7 @@
 #include "common.h"
 #include "PR/os.h"
 
-extern void func_800354A0_main(void *arg);
+extern void main(void *arg);
 
 extern OSThread gInitThread;
 extern u8 gThread1Stack[];
@@ -26,7 +26,7 @@ void ultraMain() {
 }
 
 void thread1_idle(void *arg) {
-    osCreateThread(&gMainThread, 3, &func_800354A0_main, arg, &gThread3Stack, 2);
+    osCreateThread(&gMainThread, 3, &main, arg, &gThread3Stack, 2);
     osStartThread(&gMainThread);
     osSetIntMask(0x3FFF01);
     osSetThreadPri(NULL, 0);

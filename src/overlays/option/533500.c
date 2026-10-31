@@ -173,7 +173,7 @@ omObjData *func_80107758_option(Vec *, Vec *, s32);
 void func_801133EC_option(s32);
 s32 func_800078F8_main(s32);
 void espTPLvlSet(u16, s16);
-void func_8000BD94_main(u16, s32, s32);
+void espBankSet(u16, s32, s32);
 void func_8000BDDC_main(u16, s32);
 void espAttrSet(u16, u16);
 void espAttrReset(u16, u16);
@@ -2242,7 +2242,7 @@ void func_8010E8E0_option(void) {
     titleWindow = HuWinExCreate(-1, 24, 28, 120, 20, 0);
     HuWinBGTPLvlSet(titleWindow, 0);
     func_8005C154_main(titleWindow, 192, 192, 192);
-    func_8005FBF8_main(titleWindow, 255, 255, 255);
+    HuWinBGColSet(titleWindow, 255, 255, 255);
     HuWinMesPalSet(titleWindow, 0, 0, 0, 0);
     HuWinMesColSet(titleWindow, 0);
     HuWinMesSet(titleWindow, menu.pages[0].title, -1, -1);
@@ -2286,7 +2286,7 @@ void func_8010E8E0_option(void) {
         windows[i] = HuWinExCreate(-1, 36, (i + 1) * 14 + 28, 120, 20, 0);
         HuWinBGTPLvlSet(windows[i], 0);
         func_8005C154_main(windows[i], 192, 192, 192);
-        func_8005FBF8_main(windows[i], 255, 255, 255);
+        HuWinBGColSet(windows[i], 255, 255, 255);
         HuWinMesPalSet(windows[i], 0, 0, 0, 0);
         HuWinMesColSet(windows[i], 0);
         if (menu.pages[page].entries[i].message != -1) {
@@ -2299,7 +2299,7 @@ void func_8010E8E0_option(void) {
     windows[10] = HuWinExCreate(-1, 36, 176, 120, 44, 0);
     HuWinBGTPLvlSet(windows[10], 0);
     func_8005C154_main(windows[10], 192, 192, 192);
-    func_8005FBF8_main(windows[10], 255, 255, 255);
+    HuWinBGColSet(windows[10], 255, 255, 255);
     HuWinMesPalSet(windows[10], 0, 0, 0, 0);
     HuWinMesColSet(windows[10], 0);
     HuWinMesSet(windows[10], 0x5D00, -1, -1);
@@ -2420,7 +2420,7 @@ void func_8010F138_option(void) {
     titleWindow = HuWinExCreate(-1, 164, 28, 120, 20, 0);
     HuWinBGTPLvlSet(titleWindow, 0);
     func_8005C154_main(titleWindow, 192, 192, 192);
-    func_8005FBF8_main(titleWindow, 255, 255, 255);
+    HuWinBGColSet(titleWindow, 255, 255, 255);
     HuWinMesPalSet(titleWindow, 0, 0, 0, 0);
     HuWinMesColSet(titleWindow, 0);
     HuWinMesSet(titleWindow, 0x5D01, -1, -1);
@@ -2457,7 +2457,7 @@ void func_8010F138_option(void) {
         windows[i] = HuWinExCreate(-1, 180, (i + 1) * 14 + 28, 118, 20, 0);
         HuWinBGTPLvlSet(windows[i], 0);
         func_8005C154_main(windows[i], 192, 192, 192);
-        func_8005FBF8_main(windows[i], 255, 255, 255);
+        HuWinBGColSet(windows[i], 255, 255, 255);
         HuWinMesPalSet(windows[i], 0, 0, 0, 0);
         HuWinMesColSet(windows[i], 0);
         if (menu.pages[page].entries[i].message != -1) {
@@ -2470,7 +2470,7 @@ void func_8010F138_option(void) {
     windows[10] = HuWinExCreate(-1, 176, 190, 120, 44, 0);
     HuWinBGTPLvlSet(windows[10], 0);
     func_8005C154_main(windows[10], 192, 192, 192);
-    func_8005FBF8_main(windows[10], 255, 255, 255);
+    HuWinBGColSet(windows[10], 255, 255, 255);
     HuWinMesPalSet(windows[10], 0, 0, 0, 0);
     HuWinMesColSet(windows[10], 0);
     HuWinMesSet(windows[10], 0x5D00, -1, -1);

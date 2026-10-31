@@ -303,7 +303,7 @@ void func_80106734_opening(s32 arg0, u16 arg1) {
 
 void func_80106768_opening(s32 slot, u16 arg1, u16 arg2) {
     func_8000BDDC_main(D_80114EB0_opening[slot].espriteSlot, 1);
-    func_8000BD94_main(D_80114EB0_opening[slot].espriteSlot, arg1, arg2);
+    espBankSet(D_80114EB0_opening[slot].espriteSlot, arg1, arg2);
 }
 
 void func_801067D4_opening(void) {
@@ -415,7 +415,7 @@ void opMotionFlagSet(s32 modelId, s16 arg1) {
 }
 
 void opMotionShiftSet(s32 modelId, s32 motionId, s16 arg2, s16 arg3, s16 arg4) {
-    func_8001C624_main(D_80115630_opening[modelId].modelId, D_80115630_opening[motionId].motionId, arg2, arg3, arg4);
+    Hu3DMotionShiftSet(D_80115630_opening[modelId].modelId, D_80115630_opening[motionId].motionId, arg2, arg3, arg4);
 }
 
 void func_80106DD0_opening(s32 modelId, s16 arg1) {
@@ -529,7 +529,7 @@ s16 func_8010738C_opening(u32 event, s16 x, s16 y, s16 width, s16 height, s16 st
     HuWinPriSet(slot, 1);
     func_8005FE54_main(slot, 1);
     func_8005C154_main(slot, 192, 192, 192);
-    func_8005FBF8_main(slot, 0, 64, 64);
+    HuWinBGColSet(slot, 0, 64, 64);
     HuWinMesColSet(slot, 7);
     HuWinMesPalSet(slot, 2, 255, 64, 64);
     HuWinMesPalSet(slot, 4, 96, 255, 64);
@@ -554,7 +554,7 @@ s16 func_801074D8_opening(u32 event, s16 x, s16 y, s16 width, s16 height, s16 st
     HuWinMesPalSet(slot, 4, 96, 255, 64);
     HuWinMesPalSet(slot, 6, 255, 255, 64);
     func_8005C154_main(slot, 192, 192, 192);
-    func_8005FBF8_main(slot, 255, 255, 255);
+    HuWinBGColSet(slot, 255, 255, 255);
     HuWinMesColSet(slot, 1);
     HuWinHomeClear(slot);
     HuWinMesSet(slot, event, -1, -1);
@@ -578,7 +578,7 @@ s16 func_80107640_opening(u32 event, s16 x, s16 y, s16 width, s16 height, s16 st
     HuWinMesPalSet(slot, 4, 96, 255, 64);
     HuWinMesPalSet(slot, 6, 255, 255, 64);
     func_8005C154_main(slot, 192, 192, 0);
-    func_8005FBF8_main(slot, 255, 255, 255);
+    HuWinBGColSet(slot, 255, 255, 255);
     HuWinMesColSet(slot, 6);
     HuWinHomeClear(slot);
     HuWinMesSet(slot, event, -1, -1);
@@ -4075,7 +4075,7 @@ void opWipeKill(s32 index) {
 void opWipeInCreate(s32 index, s32 totalFrames) {
     opWipeKill(index);
     opDemoObjCreate(index, opWipeInMain);
-    D_80117388_opening[index].effectId = func_8001AC8C_main(0, opWipeDraw, 6);
+    D_80117388_opening[index].effectId = Hu3DHookFuncCreate(0, opWipeDraw, 6);
     opWipeColorSet(index, 0, 0, 0, 255);
     D_8011738C_opening[index][0] = 0;
     D_80117390_opening[index][0] = totalFrames;
@@ -4084,7 +4084,7 @@ void opWipeInCreate(s32 index, s32 totalFrames) {
 void opWipeOutCreate(s32 index, s32 totalFrames) {
     opWipeKill(index);
     opDemoObjCreate(index, opWipeOutMain);
-    D_80117388_opening[index].effectId = func_8001AC8C_main(0, opWipeDraw, 6);
+    D_80117388_opening[index].effectId = Hu3DHookFuncCreate(0, opWipeDraw, 6);
     opWipeColorSet(index, 0, 0, 0, 255);
     D_8011738C_opening[index][0] = 0;
     D_80117390_opening[index][0] = totalFrames;

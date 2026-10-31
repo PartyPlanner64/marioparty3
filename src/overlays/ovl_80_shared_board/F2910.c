@@ -197,11 +197,11 @@ static void MBMgCallListExec(omObjData *arg0) {
             for (i = 0; i < D_80100E18_shared_board[D_80102C0D_shared_board]; i++) {
                 entry = &D_80102BD0_shared_board[i];
                 if (i == arg0->work[1]) {
-                    func_8005FBF8_main(entry->obj, 0, 0xC8, 0);
+                    HuWinBGColSet(entry->obj, 0, 0xC8, 0);
                     HuWinBGTPLvlSet(entry->obj, 0x100);
                     HuWinPriSet(entry->obj, 0x2328);
                 } else {
-                    func_8005FBF8_main(entry->obj, 0x40, 0x40, 0x80);
+                    HuWinBGColSet(entry->obj, 0x40, 0x40, 0x80);
                     HuWinBGTPLvlSet(entry->obj, 0);
                     HuWinPriSet(entry->obj, 0x2710);
                 }
@@ -229,7 +229,7 @@ static void MBMgCallListExec(omObjData *arg0) {
                                             D_80102C08_shared_board[arg0->work[1]] + FILE_FROM_OVL_ID(boardcall) - 1, -2, 4);
                         HuWinMesColSet(D_80102BD0_shared_board[arg0->work[1]].obj, 1);
                         func_8005C154_main(D_80102BD0_shared_board[arg0->work[1]].obj, 0xA0, 0xA0, 0xA0);
-                        func_8005FBF8_main(D_80102BD0_shared_board[arg0->work[1]].obj, 0xFE, 0xFF, 0xD0);
+                        HuWinBGColSet(D_80102BD0_shared_board[arg0->work[1]].obj, 0xFE, 0xFF, 0xD0);
                         HuWinMesSpeedSet(D_80102BD0_shared_board[arg0->work[1]].obj, 0);
                     } else {
                         arg0->scale.y = 1.0f;

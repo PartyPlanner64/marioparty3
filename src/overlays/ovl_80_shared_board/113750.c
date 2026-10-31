@@ -355,7 +355,7 @@ void MBMapScrollExec(s32 arg0) {
     D_801056E8_shared_board = MBCameraZoomGet();
     MBCameraPos2DGet(&D_801056EC_shared_board);
     D_800CB99C_main = 1;
-    func_80049FB8_main();
+    omAllPause();
     func_800E6FCC_shared_board();
     temp_v0 = omAddPrcObj(func_80100630_shared_board, 0x1005, 0, 0);
     omPrcSetStatBit(temp_v0, 0x20);

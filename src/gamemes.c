@@ -52,18 +52,18 @@ s32 func_8003D134_main(GAMEMES *gMes, Gfx **);
 s32 func_8003D4DC_main(GAMEMES *gMes, Gfx **);
 s32 func_8003D890_main(GAMEMES *gMes, Gfx **);
 s32 func_8003DC88_main(GAMEMES *gMes, Gfx **);
-s32 func_8003DE60_main(GAMEMES *gMes, Gfx **);
+s32 GameMesMgWinnerExec(GAMEMES *gMes, Gfx **);
 s32 func_8003E4A4_main(GAMEMES *gMes, Gfx **);
 s32 func_8003EBC8_main(GAMEMES *gMes, Gfx **);
 s32 func_8003EE98_main(GAMEMES *gMes, Gfx **);
 s32 GMesTimerExec(GAMEMES *gMes, Gfx **);
-s32 func_8003F604_main(GAMEMES *gMes, Gfx **);
+s32 GameMesMgRecordExec(GAMEMES *gMes, Gfx **);
 s32 func_8003FD34_main(GAMEMES *gMes, Gfx **);
 s32 func_8003FFD0_main(GAMEMES *gMes, Gfx **);
 s32 func_80040290_main(GAMEMES *gMes, Gfx **);
 s32 func_800407B8_main(GAMEMES *gMes, Gfx **);
 s32 func_80040CF4_main(GAMEMES *gMes, Gfx **);
-s32 func_80041700_main(GAMEMES *gMes, Gfx **);
+s32 GameMesMgDrawExec(GAMEMES *gMes, Gfx **);
 s32 func_80041B68_main(GAMEMES *gMes, Gfx **);
 s32 func_80042AC8_main(GAMEMES *gMes, Gfx **);
 s32 func_800440D4_main(GAMEMES *gMes, Gfx **);
@@ -72,7 +72,7 @@ s32 func_800452C4_main(void);
 s32 func_80045314_main(void);
 s32 func_80036610_main(void);
 void func_800452BC_main(s32 mgIndex);
-s16 func_8003A37C_main(GAMEMES *gMes, char *str, u8 flags, s16 arg3, s16 arg4);
+s16 GameMesStrCreate(GAMEMES *gMes, char *str, u8 flags, s16 arg3, s16 arg4);
 s16 func_8003A3C4_main(GAMEMES *gMes, u8 *str, u8 flags, s16 x, s16 y, f32 scaleX, f32 scaleY);
 s16 func_8005B5EC_main(u8 *str);
 s32 func_8003B4D8_main(GAMEMES *gMes, s32 fileNo, s32 seNo);
@@ -82,7 +82,7 @@ u32 func_8003A81C_main(u8 *str, u8 flags);
 s32 func_8003A9C8_main(u8 *str, s32 flags, s32 *idx);
 s32 func_8003AC9C_main(u8 *str, s32 mode, u8 flags, s32 *width);
 s16 func_8003AE44_main(s16 fileNo);
-s16 func_8003AE9C_main(u8 c, u8 flags);
+s16 CreateFontChar(u8 c, u8 flags);
 s32 func_80045208_main(u8 *dst, u8 *src);
 u16 func_800450B8_main(u16 code);
 u8 func_8005FA90_main(u8 *str);
@@ -94,9 +94,9 @@ extern u16 D_800D1100_main;
 extern u8 D_800D6A58_main;
 extern s8 D_800B1A50_main;
 extern u8 gMesCloseF;
-extern u8 D_800B1A52_main;
+extern u8 GameMesDebugF;
 extern s8 gMesTimerId;
-extern u16 D_800B1A54_main;
+extern u16 GameMesTime;
 extern s16 D_800B1A58_main[];
 extern s16 D_800B1A70_main[];
 extern s16 D_800B1A88_main[];
@@ -147,7 +147,7 @@ void GMesInit(void) {
     }
     gMesCloseF = FALSE;
     gMesTimerId = -1;
-    D_800B1A52_main = 0;
+    GameMesDebugF = 0;
 }
 
 void GMesExec(Gfx **arg0) {
@@ -241,7 +241,7 @@ void GMesExec(Gfx **arg0) {
                     result = GMesTimerExec(gMes, arg0);
                     break;
                 case GMES_MES_MG_RECORD:
-                    result = func_8003F604_main(gMes, arg0);
+                    result = GameMesMgRecordExec(gMes, arg0);
                     break;
                 case GMES_MES_31:
                     result = func_8003FD34_main(gMes, arg0);
@@ -256,10 +256,10 @@ void GMesExec(Gfx **arg0) {
                     result = func_800407B8_main(gMes, arg0);
                     break;
                 case GMES_MES_MG_DRAW:
-                    result = func_80041700_main(gMes, arg0);
+                    result = GameMesMgDrawExec(gMes, arg0);
                     break;
                 case GMES_MES_MG_WINNER:
-                    result = func_8003DE60_main(gMes, arg0);
+                    result = GameMesMgWinnerExec(gMes, arg0);
                     break;
                 case GMES_MES_MG_WINNERS_2:
                     result = func_80040CF4_main(gMes, arg0);
@@ -283,14 +283,14 @@ void GMesExec(Gfx **arg0) {
             }
             if (result == FALSE) {
                 gMes->stat = GMES_STAT_NONE;
-                if (D_800B1A52_main == 0) {
+                if (GameMesDebugF == 0) {
                     for (j = 0; j < GMES_MAX; j++) {
                         if (gMesData[j].stat != GMES_STAT_NONE && gMesData[j].mesNo != GMES_MES_TIMER) {
                             break;
                         }
                     }
                     if (j == GMES_MAX) {
-                        func_80037258_main();
+                        GameMesStub();
                     }
                 }
             }
@@ -401,7 +401,7 @@ s16 GMesCreate(s16 mesNo, ...) {
             gMes->unk06 = 0x78;
             break;
     }
-    D_800B1A54_main = 0x5A;
+    GameMesTime = 0x5A;
     va_end(args);
     return mesId;
 }
@@ -445,11 +445,11 @@ void GMesClose(void) {
     gMesCloseF = TRUE;
     GMesExec(&gMainGfxPos);
     gMesCloseF = FALSE;
-    func_80037258_main();
-    D_800B1A52_main = 0;
+    GameMesStub();
+    GameMesDebugF = 0;
 }
 
-s32 func_800371DC_main(void) {
+s32 GameMesKillCheck(void) {
     s32 stat;
     s16 countdown;
 
@@ -461,8 +461,8 @@ s32 func_800371DC_main(void) {
     }
     stat = GMesStatGet();
     if (stat == GMES_STAT_NONE || (stat & 2) != 0) {
-        countdown = D_800B1A54_main - 1;
-        D_800B1A54_main = countdown;
+        countdown = GameMesTime - 1;
+        GameMesTime = countdown;
         if (countdown < 0) {
             return FALSE;
         }
@@ -471,10 +471,10 @@ s32 func_800371DC_main(void) {
 }
 
 void func_8003724C_main(s16 countdown) {
-    D_800B1A54_main = countdown;
+    GameMesTime = countdown;
 }
 
-void func_80037258_main(void) {
+void GameMesStub(void) {
     s16 i;
 
     for (i = 0; i < 9; i++) {
@@ -542,7 +542,7 @@ s32 func_80037574_main(GAMEMES *gMes, Gfx **gfx) {
     result = TRUE;
     switch (gMes->unk08) {
         case 0:
-            func_8003A37C_main(gMes, "START", 1, -1, -1);
+            GameMesStrCreate(gMes, "START", 1, -1, -1);
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             for (i = 0; i < len; i++) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, 0.0f);
@@ -609,7 +609,7 @@ s32 func_80037878_main(GAMEMES *gMes, Gfx **gfx) {
     result = TRUE;
     switch (gMes->unk08) {
         case 0:
-            func_8003A37C_main(gMes, str, 1, -1, -1);
+            GameMesStrCreate(gMes, str, 1, -1, -1);
             gMes->unk6C = gMes->unk68 = 0.3f;
             gMes->unk60 = 160.0f;
             gMes->unk64 = 120.0f;
@@ -680,7 +680,7 @@ s32 func_80037C44_main(GAMEMES *gMes, Gfx **gfx) {
     result = TRUE;
     switch (gMes->unk08) {
         case 0:
-            func_8003A37C_main(gMes, str, 1, -1, -1);
+            GameMesStrCreate(gMes, str, 1, -1, -1);
             gMes->unk6C = gMes->unk68 = 0.3f;
             gMes->unk60 = 160.0f;
             gMes->unk64 = 40.0f;
@@ -787,7 +787,7 @@ s32 func_80038208_main(GAMEMES *gMes) {
                 chr->unk34 = 0;
                 chr->time = 0;
             }
-            func_8003A37C_main(gMes, "START", 1, -1, -1);
+            GameMesStrCreate(gMes, "START", 1, -1, -1);
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             for (i = 0; i < len; i++) {
                 chr = &D_800B1BC0_main[i];
@@ -1497,10 +1497,10 @@ s16 func_8003A308_main(GAMEMES *gMes, char *str, u8 flags, s16 arg3, s16 arg4) {
     for (i = 0; i < GMES_STRMAX; i++) {
         gMes->strSprId[i] = gMes->strGId[i] = HUSPR_NONE;
     }
-    return func_8003A37C_main(gMes, str, flags, arg3, arg4);
+    return GameMesStrCreate(gMes, str, flags, arg3, arg4);
 }
 
-s16 func_8003A37C_main(GAMEMES *gMes, char *str, u8 flags, s16 arg3, s16 arg4) {
+s16 GameMesStrCreate(GAMEMES *gMes, char *str, u8 flags, s16 arg3, s16 arg4) {
     return func_8003A3C4_main(gMes, (u8 *)str, flags, arg3, arg4, 1.0f, 1.0f);
 }
 
@@ -1625,14 +1625,14 @@ u32 func_8003A81C_main(u8 *str, u8 flags) {
             animId = D_800B1A58_main[7];
         }
     } else if (type == 8) {
-        animId = func_8003AE9C_main(c, flags);
+        animId = CreateFontChar(c, flags);
     } else if (type == 0) {
-        animId = func_8003AE9C_main(c, flags);
+        animId = CreateFontChar(c, flags);
     } else if (type == 1) {
-        animId = func_8003AE9C_main(c, flags);
+        animId = CreateFontChar(c, flags);
     } else {
         idx = 0;
-        animId = func_8003AE9C_main(c, flags);
+        animId = CreateFontChar(c, flags);
     }
     return (animId << 16) | idx;
 }
@@ -1839,7 +1839,7 @@ s16 func_8003AE44_main(s16 fileNo) {
 #ifdef NON_MATCHING
 /* Only diff: target has an extra andi 0xFF after the lbu from D_800A13B0_main in the search loop,
    as if the loaded byte were kept live past the comparison. */
-s16 func_8003AE9C_main(u8 c, u8 flags) {
+s16 CreateFontChar(u8 c, u8 flags) {
     s16 *animId;
     s32 fileNo;
     s32 idx;
@@ -1917,12 +1917,12 @@ s16 func_8003AE9C_main(u8 c, u8 flags) {
     return id;
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/gamemes", func_8003AE9C_main);
+INCLUDE_ASM("asm/nonmatchings/gamemes", CreateFontChar);
 #endif
 
 void func_8003B128_main(GAMEMES *gMes) {
     GMesSprKill(gMes);
-    func_80037258_main();
+    GameMesStub();
 }
 
 s32 func_8003B14C_main(GAMEMES *gMes, Gfx **gfx) {
@@ -1935,7 +1935,7 @@ s32 func_8003B170_main(GAMEMES *gMes, char *str, s32 seNo) {
     f32 t;
 
     if (gMes->unk04 == 0) {
-        func_8003A37C_main(gMes, str, 1, -1, -1);
+        GameMesStrCreate(gMes, str, 1, -1, -1);
         HuSprPosSet(gMes->strGId[0], 0, 160, gMes->unk64);
         gMes->unk08 = -1000;
         gMes->unk0A = 300;
@@ -2220,7 +2220,7 @@ s32 func_8003C058_main(GAMEMES *gMes) {
             gMes->unk68 = gMes->unk6C = 1.0f;
             gMes->unk70 = 0.0f;
             gMes->unk1C = 0;
-            func_8003A37C_main(gMes, "FINISH", 1, -1, -1);
+            GameMesStrCreate(gMes, "FINISH", 1, -1, -1);
             HuSprPosSet(gMes->strGId[0], 0, 160, 120);
             for (i = 0; i < len; i++) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, 0.0f);
@@ -2839,7 +2839,7 @@ INCLUDE_RODATA("asm/nonmatchings/gamemes", D_800A7734_main);
 
 INCLUDE_RODATA("asm/nonmatchings/gamemes", D_800A773C_main);
 
-s32 func_8003DE60_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesMgWinnerExec(GAMEMES *gMes, Gfx **gfx) {
     char wonStr[] = "WON\xC4 ";
     f32 nameLen = strlen(D_800A1410_main[gMes->unk0E]);
     f32 wonLen = strlen(wonStr);
@@ -2920,8 +2920,8 @@ s32 func_8003E4A4_main(GAMEMES *gMes, Gfx **gfx) {
     s16 i;
 
     if (gMes->unk04 == 0) {
-        func_8003A37C_main(gMes, D_800A1410_main[gMes->unk08], 1, -1, -1);
-        func_8003A37C_main(gMes, lostStr, 1, -1, -1);
+        GameMesStrCreate(gMes, D_800A1410_main[gMes->unk08], 1, -1, -1);
+        GameMesStrCreate(gMes, lostStr, 1, -1, -1);
         HuSprPosSet(gMes->strGId[0], 0, (320.0f - (nameLen + lostLen + 1.0f) * 24.0f) / 2.0f + nameLen * 24.0f / 2.0f, gMes->unk64 + 40.0f);
         HuSprPosSet(gMes->strGId[1], 0, 320.0f - (320.0f - (nameLen + lostLen + 1.0f) * 24.0f) / 2.0f - lostLen * 24.0f / 2.0f, gMes->unk64 + 40.0f);
         for (i = 0; i < nameLen; i++) {
@@ -2977,7 +2977,7 @@ s32 func_8003EBC8_main(GAMEMES *gMes, Gfx **gfx) {
     if (gMes->unk04 == 0) {
         str = HuMemMemoryAllocPerm(256);
         func_80045208_main((u8 *)str, (void *)gMes->unk1C);
-        func_8003A37C_main(gMes, str, gMes->unk02, -1, -1);
+        GameMesStrCreate(gMes, str, gMes->unk02, -1, -1);
         gMes->unk08 = strlen(str);
         HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
         HuMemMemoryFreePerm(str);
@@ -3009,7 +3009,7 @@ s32 func_8003EE98_main(GAMEMES *gMes, Gfx **gfx) {
     if (gMes->unk04 == 0) {
         str = HuMemMemoryAllocPerm(256);
         func_80045208_main((u8 *)str, (void *)gMes->unk1C);
-        func_8003A37C_main(gMes, str, gMes->unk02, -1, -1);
+        GameMesStrCreate(gMes, str, gMes->unk02, -1, -1);
         gMes->unk08 = strlen(str);
         HuMemMemoryFreePerm(str);
     }
@@ -3032,7 +3032,7 @@ s32 GMesTimerExec(GAMEMES *gMes, Gfx **arg1) {
     u8 temp_s0;
 
     if (gMes->unk04 == 0) {
-        func_8003A37C_main(gMes, "99", 0, -1, -1);
+        GameMesStrCreate(gMes, "99", 0, -1, -1);
         HuSprPosSet(gMes->strGId[0], 0, gMes->unk60, gMes->unk64);
         HuSprTPLvlSet(gMes->strGId[0], 1, 0x100);
         HuSprTPLvlSet(gMes->strGId[0], 2, 0x100);
@@ -3045,10 +3045,10 @@ s32 GMesTimerExec(GAMEMES *gMes, Gfx **arg1) {
     } else {
         HuSprAttrReset(gMes->strGId[0], 1, 0x8000);
     }
-    func_80055140_main(gMes->strGId[0], 1, temp_s0, 0);
+    HuSprBankSet(gMes->strGId[0], 1, temp_s0, 0);
     func_800550F4_main(gMes->strGId[0], 1, 1);
     temp_s0 = temp_s2 % 10;
-    func_80055140_main(gMes->strGId[0], 2, temp_s0, 0);
+    HuSprBankSet(gMes->strGId[0], 2, temp_s0, 0);
     func_800550F4_main(gMes->strGId[0], 2, 1);
     switch (gMes->unk0A) {
         case 0:
@@ -3122,7 +3122,7 @@ void func_8003F5C0_main(void) {
     gMesData[gMesTimerId].unk0C = 0;
 }
 
-s32 func_8003F604_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesMgRecordExec(GAMEMES *gMes, Gfx **gfx) {
     char *newStr = "NEW";
     char *recordStr = "RECORD";
     s32 newLen;
@@ -3139,8 +3139,8 @@ s32 func_8003F604_main(GAMEMES *gMes, Gfx **gfx) {
     recordLen = strlen(recordStr);
     switch (gMes->unk08) {
         case 0:
-            func_8003A37C_main(gMes, newStr, 1, -1, -1);
-            func_8003A37C_main(gMes, recordStr, 1, -1, -1);
+            GameMesStrCreate(gMes, newStr, 1, -1, -1);
+            GameMesStrCreate(gMes, recordStr, 1, -1, -1);
             gMes->unk68 = gMes->unk6C = 0.5f;
             x = 160.0f - ((newLen + recordLen + 1) * 11 * gMes->unk68 - newLen * 11 * gMes->unk6C);
             HuSprPosSet(gMes->strGId[0], 0, gMes->unk60 - 160.0f + x, gMes->unk64);
@@ -3442,8 +3442,8 @@ s32 func_800407B8_main(GAMEMES *gMes, Gfx **gfx) {
     goLen = strlen(goStr);
     switch (gMes->unk08) {
         case 0:
-            func_8003A37C_main(gMes, readyStr, 1, -1, -1);
-            func_8003A37C_main(gMes, goStr, 1, -1, -1);
+            GameMesStrCreate(gMes, readyStr, 1, -1, -1);
+            GameMesStrCreate(gMes, goStr, 1, -1, -1);
             gMes->unk68 = 0.5f;
             gMes->unk03 = 0;
             for (i = 0; i < readyLen; i++) {
@@ -3547,7 +3547,7 @@ s32 func_80040CF4_main(GAMEMES *gMes, Gfx **gfx) {
         case 0:
             func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->unk0C], 1, -1, -1, 0.8f, 1.0f);
             func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->unk0E], 1, -1, -1, 0.8f, 1.0f);
-            func_8003A37C_main(gMes, wonStr, 1, -1, -1);
+            GameMesStrCreate(gMes, wonStr, 1, -1, -1);
             gMes->unk60 = 80.0f;
             gMes->unk64 = 0.0f;
             gMes->unk68 = gMes->unk6C = 1.0f;
@@ -3656,7 +3656,7 @@ s32 func_80040CF4_main(GAMEMES *gMes, Gfx **gfx) {
     return result;
 }
 
-s32 func_80041700_main(GAMEMES *gMes, Gfx **gfx) {
+s32 GameMesMgDrawExec(GAMEMES *gMes, Gfx **gfx) {
     s32 result;
     s32 i;
     f32 t;
@@ -3752,7 +3752,7 @@ s32 func_80041B68_main(GAMEMES *gMes, Gfx **gfx) {
             func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->unk0A], 1, -1, -1, 0.8f, 1.0f);
             func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->unk0C], 1, -1, -1, 0.8f, 1.0f);
             func_8003A3C4_main(gMes, (u8 *)D_800A1410_main[gMes->unk0E], 1, -1, -1, 0.8f, 1.0f);
-            func_8003A37C_main(gMes, wonStr, 1, -1, -1);
+            GameMesStrCreate(gMes, wonStr, 1, -1, -1);
             gMes->unk60 = startPos[0][0];
             gMes->unk64 = startPos[0][1] + gMes->unk64;
             gMes->unk68 = gMes->unk6C = 0.5f;
@@ -4103,8 +4103,8 @@ s32 func_800440D4_main(GAMEMES *gMes, Gfx **gfx) {
     itemLen = strlen(itemStr);
     switch (gMes->unk08) {
         case 0:
-            func_8003A37C_main(gMes, gotStr, 1, -1, -1);
-            func_8003A37C_main(gMes, itemStr, 1, -1, -1);
+            GameMesStrCreate(gMes, gotStr, 1, -1, -1);
+            GameMesStrCreate(gMes, itemStr, 1, -1, -1);
             gMes->unk68 = gMes->unk6C = 0.5f;
             gMes->unk60 = cosdf(0.0f) * 55.0f + 149.0f;
             gMes->unk64 = sindf(0.0f) * 55.0f + 120.0f;
@@ -4217,9 +4217,9 @@ s32 func_800448C0_main(GAMEMES *gMes, Gfx **gfx) {
     exclLen = strlen(exclStr);
     switch (gMes->unk08) {
         case 0:
-            func_8003A37C_main(gMes, gotStr, 1, -1, -1);
-            func_8003A37C_main(gMes, itemStr, 1, -1, -1);
-            func_8003A37C_main(gMes, exclStr, 1, -1, -1);
+            GameMesStrCreate(gMes, gotStr, 1, -1, -1);
+            GameMesStrCreate(gMes, itemStr, 1, -1, -1);
+            GameMesStrCreate(gMes, exclStr, 1, -1, -1);
             gMes->unk68 = gMes->unk6C = 0.5f;
             gMes->unk60 = 99.0f;
             gMes->unk64 = 45.0f;
@@ -4331,7 +4331,7 @@ void func_80045010_main(const s16 *str, s32 flags) {
         c += (c[1] == 0x80 || c[1] == 0x81);
         c++;
     }
-    D_800B1A52_main = 1;
+    GameMesDebugF = 1;
     HuMemMemoryFreePerm(buf);
 }
 

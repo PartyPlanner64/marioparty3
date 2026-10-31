@@ -1191,7 +1191,7 @@ s32 func_800E8D54_name_81(s32 arg0, Vec *arg1) {
         func_800550F4_main(obj->unk_02, 0, 1);
         HuSprPriSet(obj->unk_02, 0, 0x8000);
         HuSprAttrSet(obj->unk_02, 0, 0x9000);
-        func_800555E8_main(obj->unk_02, 0, 0x10, 0xC, 0x130, 0xE4);
+        HuSprScissorSet(obj->unk_02, 0, 0x10, 0xC, 0x130, 0xE4);
     
         if (D_80105050_name_81 == 0) {
             proc = omAddPrcObj(func_800E8AB0_name_81, 0x1001, 0, 0);
@@ -1229,7 +1229,7 @@ s32 func_800E8EE8_name_81(s32 arg0, Vec *arg1) {
         func_800550F4_main(unkBoard7->unk_02, 0, 1);
         HuSprPriSet(unkBoard7->unk_02, 0, 0x8000);
         HuSprAttrSet(unkBoard7->unk_02, 0, 0x9000);
-        func_800555E8_main(unkBoard7->unk_02, 0, 0x10, 0xC, 0x130, 0xE4);
+        HuSprScissorSet(unkBoard7->unk_02, 0, 0x10, 0xC, 0x130, 0xE4);
 
         D_80105050_name_81++;
         return i;

@@ -83,7 +83,7 @@ s32 GMesStatGet(void);
 void GMesPosSet(s16 mesId, f32 x, f32 y);
 void GMesKill(s16 mesId);
 void GMesClose(void);
-void func_80037258_main(void);
+void GameMesStub(void);
 void func_8003F578_main(s16);
 void func_8003F5C0_main(void);
 void func_80045010_main(const s16 *, s32);

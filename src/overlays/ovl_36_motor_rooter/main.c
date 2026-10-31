@@ -408,7 +408,7 @@ void func_801062BC_motor_rooter(omObjData *object) {
     m254_SyncWithModel(object);
     cameraMask = object->work[0] == 0 ? 1 : 2;
     for (i = 0; i < modelCounts[D_801137CE_motor_rooter]; i++) {
-        func_8001C8A8_main(object->model[i], cameraMask);
+        Hu3DModelCameraSet(object->model[i], cameraMask);
     }
     m254_minigame->runtime.counters.initialization.viewCounters[0]++;
     object->func = func_801064EC_motor_rooter;
@@ -452,7 +452,7 @@ void func_80106508_motor_rooter(omObjData *object) {
     cameraMask = object->work[0] == 0 ? 1 : 2;
     for (i = 0; i < 3; i++) {
         for (j = 0; j < 7; j++) {
-            func_8001C8A8_main(object->model[i * 7 + j], cameraMask);
+            Hu3DModelCameraSet(object->model[i * 7 + j], cameraMask);
         }
     }
     m254_minigame->runtime.counters.initialization.viewCounters[1]++;
@@ -491,7 +491,7 @@ void func_80106998_motor_rooter(omObjData *object) {
     m254_SyncWithModel(object);
     cameraMask = object->work[0] == 0 ? 1 : 2;
     for (i = 0; i < 15; i++) {
-        func_8001C8A8_main(object->model[i], cameraMask);
+        Hu3DModelCameraSet(object->model[i], cameraMask);
     }
     m254_minigame->runtime.counters.initialization.viewCounters[3]++;
     m254_SetFunc(3, 5, -1, object, func_8010A174_motor_rooter, 0, FALSE);
@@ -557,7 +557,7 @@ void func_80106BAC_motor_rooter(omObjData *object) {
     D_801137C8_motor_rooter[object->work[0]].unk14 = 1;
     cameraMask = object->work[0] == 0 ? 1 : 2;
     for (i = 0; i < 11; i++) {
-        func_8001C8A8_main(object->model[i], cameraMask);
+        Hu3DModelCameraSet(object->model[i], cameraMask);
     }
     m254_SetFunc((u8)object->work[0] + 4, 5, -1, &D_801137C8_motor_rooter[object->work[0]], func_8010ABC4_motor_rooter, 0, 0);
     m254_SetFunc((u8)object->work[0] + 4, 9, -1, &D_801137C8_motor_rooter[object->work[0]], func_8010BCD0_motor_rooter, 0, 0);
@@ -727,7 +727,7 @@ void func_801079E8_motor_rooter(omObjData *object) {
     m254_SyncWithModel(object);
     cameraMask = object->work[0] == 0 ? 1 : 2;
     for (i = 0; i < 5; i++) {
-        func_8001C8A8_main(object->model[i], cameraMask);
+        Hu3DModelCameraSet(object->model[i], cameraMask);
     }
     m254_minigame->runtime.counters.initialization.itemViewCount++;
     object->func = func_80107D50_motor_rooter;
@@ -1241,14 +1241,14 @@ void func_8010972C_motor_rooter(FuncContext *ctx) {
     if (!player->obstacleSoundStarted) {
         player->obstacleSoundStarted = 1;
         player->obstacleSound = func_8004AC5C_main(0x4B2, ctx->tag);
-        func_8004AAD0_main(player->obstacleSound, 0);
+        HuAudFXVolSet(player->obstacleSound, 0);
     }
     distance += 3;
     if (distance < 26) {
         distance = distance < 0 ? 0 : distance;
-        func_8004AAD0_main(player->obstacleSound, 127 - distance * 3);
+        HuAudFXVolSet(player->obstacleSound, 127 - distance * 3);
     } else {
-        func_8004AAD0_main(player->obstacleSound, 0);
+        HuAudFXVolSet(player->obstacleSound, 0);
     }
 }
 
@@ -1843,7 +1843,7 @@ void func_8010BB78_motor_rooter(FuncContext *ctx) {
                 player->unk28[player->unk14] = 2;
                 player->unk10 -= 4.0f;
             }
-            func_8004AAD0_main(D_801137D8_motor_rooter, 64);
+            HuAudFXVolSet(D_801137D8_motor_rooter, 64);
             HuAudFXPitchSet(D_801137D8_motor_rooter, D_8011345A_motor_rooter[player->unk14]);
         }
     }
@@ -1887,7 +1887,7 @@ void func_8010BDF0_motor_rooter(FuncContext *ctx) {
         ctx->state = 1;
         player->unk08 |= 0x200;
         D_801137D8_motor_rooter = func_8004AC5C_main(0x4AF, player->unk00->work[0]);
-        func_8004AAD0_main(D_801137D8_motor_rooter, 64);
+        HuAudFXVolSet(D_801137D8_motor_rooter, 64);
         HuAudFXPitchSet(D_801137D8_motor_rooter, D_8011345A_motor_rooter[player->unk14]);
         m254_SetFunc((u8)object->work[0] + 4, 8, -1, &D_801137C8_motor_rooter[object->work[0]],
                      func_8010B394_motor_rooter, 0, 0);

@@ -713,22 +713,22 @@ void func_80107960_chip_shot_challenge(s16 value) {
 
     if ((s16)(value / 1000) != 0) {
         HuSprAttrReset(D_8010AAC0_chip_shot_challenge, 0, 0x8000);
-        func_80055140_main(D_8010AAC0_chip_shot_challenge, 0, value / 1000, 0);
+        HuSprBankSet(D_8010AAC0_chip_shot_challenge, 0, value / 1000, 0);
         func_800550F4_main(D_8010AAC0_chip_shot_challenge, 0, 1);
     }
     value -= (s16)(value / 1000) * 1000;
     HuSprAttrReset(D_8010AAC0_chip_shot_challenge, 1, 0x8000);
     digit = value / 100;
-    func_80055140_main(D_8010AAC0_chip_shot_challenge, 1, digit, 0);
+    HuSprBankSet(D_8010AAC0_chip_shot_challenge, 1, digit, 0);
     func_800550F4_main(D_8010AAC0_chip_shot_challenge, 1, 1);
     value -= digit * 100;
     HuSprAttrReset(D_8010AAC0_chip_shot_challenge, 2, 0x8000);
     digit = value / 10;
-    func_80055140_main(D_8010AAC0_chip_shot_challenge, 2, digit, 0);
+    HuSprBankSet(D_8010AAC0_chip_shot_challenge, 2, digit, 0);
     func_800550F4_main(D_8010AAC0_chip_shot_challenge, 2, 1);
     value -= digit * 10;
     HuSprAttrReset(D_8010AAC0_chip_shot_challenge, 3, 0x8000);
-    func_80055140_main(D_8010AAC0_chip_shot_challenge, 3, value, 0);
+    HuSprBankSet(D_8010AAC0_chip_shot_challenge, 3, value, 0);
     func_800550F4_main(D_8010AAC0_chip_shot_challenge, 3, 1);
     HuSprAttrReset(D_8010AAC4_chip_shot_challenge, 0, 0x8000);
     func_80054FF8_main(D_8010AAC4_chip_shot_challenge, 0, 1);

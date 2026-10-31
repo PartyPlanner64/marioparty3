@@ -421,7 +421,7 @@ void func_80100CEC_name_81(s32 padIdx) {
     D_80105528_name_81 = MBDCameraZoomGet();
     MBDCameraPos2DGet(&D_8010552C_name_81);
     D_800CB99C_main = 1;
-    func_80049FB8_main();
+    omAllPause();
     func_800E5964_name_81();
     procObj = omAddPrcObj(func_80100CA0_name_81, 0x1005, 0, 0);
     omPrcSetStatBit(procObj, 0x20);

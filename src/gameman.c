@@ -82,10 +82,10 @@ void func_8000E3C0_main(void) {
     {
         s32 temp_s0 = func_8004FDC0_main();
         GWInit();
-        func_8000E978_main();
+        GWGameStatReset();
         func_80000EA8_main(&D_800D5298_main);
         SLCurBoxNoSet(0);
-        func_80050800_main();
+        SLLoadGameStat();
         if (temp_s0 != 0) {
             omOvlCallEx(slerror, 0, 0x82);
         } else {
@@ -178,7 +178,7 @@ void func_8000E804_main(void) {
 }
 
 /* Initialize Game Save Data */
-void func_8000E978_main(void) {
+void GWGameStatReset(void) {
     func_8000E804_main();
     GWMgRecordSet(0, 0x64);
     GWMgRecordSet(1, 0xE10);

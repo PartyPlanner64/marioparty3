@@ -1013,7 +1013,7 @@ void m257_ExecPlayerJump(FuncGroupContext *groupCtx, FuncContext *ctx) {
         CharFXPlay(0x3A, GwPlayer[m257_playerId[object->work[0]]].chr);
         ctx->state = 1;
     }
-    var_f2 = func_8001C7D0_main(object->model[0]);
+    var_f2 = Hu3DMotionShiftTimeGet(object->model[0]);
     if (var_f2 == -1.0f) {
         var_f2 = HmfModelData[object->model[0]].unk40;
     }

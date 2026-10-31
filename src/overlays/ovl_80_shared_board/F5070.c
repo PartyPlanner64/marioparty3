@@ -157,9 +157,9 @@ static void func_800E1934_shared_board(s32 arg0, s32 arg1) {
         func_800550F4_main(temp_v0_2, 2, 1);
 
         if (var_s3 > 0) {
-            func_80055140_main(temp_v0_2, var_s2, 0xA, 0);
+            HuSprBankSet(temp_v0_2, var_s2, 0xA, 0);
         } else {
-            func_80055140_main(temp_v0_2, var_s2, 0xB, 0);
+            HuSprBankSet(temp_v0_2, var_s2, 0xB, 0);
         }
 
         HuSprPriSet(temp_v0_2, var_s2, 0x2010);
@@ -171,7 +171,7 @@ static void func_800E1934_shared_board(s32 arg0, s32 arg1) {
         if (var_s3 >= 100) {
             func_80055024_main(temp_v0_2, var_s2, D_80102C28_shared_board[arg0][1], 0);
             func_800550F4_main(temp_v0_2, var_s2, 1);
-            func_80055140_main(temp_v0_2, var_s2, (var_s3 / 100), 0);
+            HuSprBankSet(temp_v0_2, var_s2, (var_s3 / 100), 0);
             HuSprPriSet(temp_v0_2, var_s2, 0x2010);
             HuSprAttrSet(temp_v0_2, var_s2, 0x1000);
             var_s2++;
@@ -180,7 +180,7 @@ static void func_800E1934_shared_board(s32 arg0, s32 arg1) {
         if (var_s3 >= 10) {
             func_80055024_main(temp_v0_2, var_s2, D_80102C28_shared_board[arg0][1], 0);
             func_800550F4_main(temp_v0_2, var_s2, 1);
-            func_80055140_main(temp_v0_2, var_s2, ((var_s3 / 10) % 10), 0);
+            HuSprBankSet(temp_v0_2, var_s2, ((var_s3 / 10) % 10), 0);
             HuSprPriSet(temp_v0_2, var_s2, 0x2010U);
             HuSprAttrSet(temp_v0_2, var_s2, 0x1000);
             var_s2 += 1;
@@ -190,7 +190,7 @@ static void func_800E1934_shared_board(s32 arg0, s32 arg1) {
 
         func_80055024_main(temp_v0_2, var_s2, D_80102C28_shared_board[arg0][1], 0);
         func_800550F4_main(temp_v0_2, var_s2, 1);
-        func_80055140_main(temp_v0_2, var_s2, var_s3, 0);
+        HuSprBankSet(temp_v0_2, var_s2, var_s3, 0);
         HuSprPriSet(temp_v0_2, var_s2, 0x2010U);
         HuSprAttrSet(temp_v0_2, var_s2, 0x1000);
         var_s2++;

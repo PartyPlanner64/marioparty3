@@ -43,11 +43,11 @@ const s16 D_8010DB24_inst[2][3] = {
 };
 const s16 D_8010DB30_inst[] = {0x3811, 0x3812, 0x3813, 0x0000};
 
-s32 func_8003A37C_main(GAMEMES *, const char *, s32, s32, s32);
+s32 GameMesStrCreate(GAMEMES *, const char *, s32, s32, s32);
 
 void espAttrSet(u16, u16);
 void espTPLvlSet(u16, s16);
-void func_8000BD94_main(u16, s32, s32);
+void espBankSet(u16, s32, s32);
 void func_8010CDE4_inst(const char *, s32, s32);
 void func_8010CF14_inst(void);
 void func_8010CFF4_inst(void);
@@ -106,14 +106,14 @@ void func_8010B990_inst(void) {
             sprites[i] = slot;
             positions = D_8010DAF8_inst;
             espPosSet(sprites[i], positions[i].x, -78);
-            func_8000BD94_main(sprites[i], (u16)digits[i], 0);
+            espBankSet(sprites[i], (u16)digits[i], 0);
         }
     }
     D_8010DCA8_inst.curGroup = func_80060880_main(72, 188, 7);
     HuWinMesPalSet(D_8010DCA8_inst.curGroup, 2, 0, 255, 255);
     HuWinMesPalSet(D_8010DCA8_inst.curGroup, 4, 96, 255, 64);
     HuWinMesPalSet(D_8010DCA8_inst.curGroup, 6, 255, 255, 64);
-    func_8005BA28_main(D_8010DCA8_inst.curGroup)->unk_29 = 1;
+    HuWinGet(D_8010DCA8_inst.curGroup)->unk_29 = 1;
     func_8010CC14_inst();
     D_8010DCA8_inst.mainMembers[0] = HuWinAnimSet(D_8010DCA8_inst.curGroup, 0x17000B, 60, -33, 0);
     D_8010DCA8_inst.mainMembers[1] = HuWinAnimSet(D_8010DCA8_inst.curGroup, 0x170009, 148, -33, 0);
@@ -531,7 +531,7 @@ void func_8010CDE4_inst(const char *message, s32 x, s32 y) {
     char *text = func_800364DC_main((char *)message);
 
     D_8010DCD8_inst.unk08 = -1;
-    D_8010DCD8_inst.unk08 = func_8003A37C_main(&D_8010DCD8_inst, text + 1, 0, -1, -1);
+    D_8010DCD8_inst.unk08 = GameMesStrCreate(&D_8010DCD8_inst, text + 1, 0, -1, -1);
     D_8010DCD8_inst.unk60 = (s16)x;
     D_8010DCD8_inst.unk64 = (s16)y;
     HuSprPosSet(D_8010DCD8_inst.strGId[D_8010DCD8_inst.unk08], 0, D_8010DCD8_inst.unk60,
@@ -544,7 +544,7 @@ void func_8010CED0_inst(s32 x, s32 y) {
 }
 
 void func_8010CF14_inst(void) {
-    D_8010DD50_inst.unk08 = func_8003A37C_main(&D_8010DD50_inst, "PRACTICE", 0, -1, -1);
+    D_8010DD50_inst.unk08 = GameMesStrCreate(&D_8010DD50_inst, "PRACTICE", 0, -1, -1);
     D_8010DD50_inst.unk60 = 216.0f;
     D_8010DD50_inst.unk64 = 90.0f;
     HuSprPosSet(D_8010DD50_inst.strGId[D_8010DD50_inst.unk08], 0, 216, 90);

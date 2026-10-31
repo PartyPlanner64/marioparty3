@@ -246,7 +246,7 @@ static void MBStatusNumUpdate(s32 playerIndex) {
             coinDigits.digits[HUNDREDS] = DIGIT_X;
         }
         for (i = 0; i < ARRAY_COUNT(coinDigits.digits); i++) {
-            func_80055140_main(playerBoardStatus->playerIndex, i + COINS_HUNDREDS_DIGIT, coinDigits.digits[i], 0);
+            HuSprBankSet(playerBoardStatus->playerIndex, i + COINS_HUNDREDS_DIGIT, coinDigits.digits[i], 0);
             func_800550F4_main(playerBoardStatus->playerIndex, i + COINS_HUNDREDS_DIGIT, 1);
         }
 
@@ -255,15 +255,15 @@ static void MBStatusNumUpdate(s32 playerIndex) {
 
     if (playerBoardStatus->prevStars != GwPlayer[playerIndex].star) {
         if (GwPlayer[playerIndex].star > STARS_MAX) {
-            func_80055140_main(playerBoardStatus->playerIndex, STARS_TENS_DIGIT, 9, 0);
-            func_80055140_main(playerBoardStatus->playerIndex, STARS_ONES_DIGIT, 9, 0);
+            HuSprBankSet(playerBoardStatus->playerIndex, STARS_TENS_DIGIT, 9, 0);
+            HuSprBankSet(playerBoardStatus->playerIndex, STARS_ONES_DIGIT, 9, 0);
         } else {
             if (GwPlayer[playerIndex].star > (STARS_MAX % 10)) {
-                func_80055140_main(playerBoardStatus->playerIndex, STARS_TENS_DIGIT, (GwPlayer[playerIndex].star / 10), 0);
+                HuSprBankSet(playerBoardStatus->playerIndex, STARS_TENS_DIGIT, (GwPlayer[playerIndex].star / 10), 0);
             } else {
-                func_80055140_main(playerBoardStatus->playerIndex, STARS_TENS_DIGIT, DIGIT_X, 0);
+                HuSprBankSet(playerBoardStatus->playerIndex, STARS_TENS_DIGIT, DIGIT_X, 0);
             }
-            func_80055140_main(playerBoardStatus->playerIndex, STARS_ONES_DIGIT, GwPlayer[playerIndex].star % 10, 0);
+            HuSprBankSet(playerBoardStatus->playerIndex, STARS_ONES_DIGIT, GwPlayer[playerIndex].star % 10, 0);
         }
         func_800550F4_main(playerBoardStatus->playerIndex, STARS_TENS_DIGIT, 1);
         func_800550F4_main(playerBoardStatus->playerIndex, STARS_ONES_DIGIT, 1);
@@ -285,7 +285,7 @@ static void MBStatusNumUpdate(s32 playerIndex) {
             playerBoardStatus->unk2[i]--;
             if (playerBoardStatus->unk2[i] == 0) {
                 if (i != 0 || D_801055E8_shared_board[playerIndex] == NULL) {
-                    func_80055140_main(playerBoardStatus->playerIndex, i + 2, 0, 0);
+                    HuSprBankSet(playerBoardStatus->playerIndex, i + 2, 0, 0);
                     HuSprSpeedSet(playerBoardStatus->playerIndex, i + 2, 0.0f);
                     func_800550F4_main(playerBoardStatus->playerIndex, i + 2, 1);
                 }
@@ -294,12 +294,12 @@ static void MBStatusNumUpdate(s32 playerIndex) {
         playerBoardStatus->counts[i] = coinDigits.unk_08[i];
     }
     if (playerBoardStatus->unk1 != -1) {
-        func_80055140_main(playerBoardStatus->playerIndex, DIGIT_X, playerBoardStatus->unk1, 0);
+        HuSprBankSet(playerBoardStatus->playerIndex, DIGIT_X, playerBoardStatus->unk1, 0);
         func_800550F4_main(playerBoardStatus->playerIndex, DIGIT_X, 1);
         return;
     }
     if (playerBoardStatus->prevRank != BoardPlayerRankCalc(playerIndex)) {
-        func_80055140_main(playerBoardStatus->playerIndex, DIGIT_X, BoardPlayerRankCalc(playerIndex), 0);
+        HuSprBankSet(playerBoardStatus->playerIndex, DIGIT_X, BoardPlayerRankCalc(playerIndex), 0);
         func_800550F4_main(playerBoardStatus->playerIndex, DIGIT_X, 1);
         playerBoardStatus->prevRank = BoardPlayerRankCalc(playerIndex);
     }
@@ -484,7 +484,7 @@ static void MBStatusNumSprCreate(s32 arg0) {
     for (i = 0; i < 5; i++) {
         func_80055024_main(temp_s2, i + 4, temp_s4->unk_3A, 0);
         func_800550F4_main(temp_s2, i + 4, 1);
-        func_80055140_main(temp_s2, i + 4, 0xA, 0);
+        HuSprBankSet(temp_s2, i + 4, 0xA, 0);
         HuSprPriSet(temp_s2, i + 4, ((arg0 * 5) + 0x4790));
         HuSprAttrReset(temp_s2, i + 4, 0xFFFF);
         HuSprAttrSet(temp_s2, i + 4, 0);
@@ -515,7 +515,7 @@ static void MBStatusRankSprCreate(s32 playerNo) {
     temp_s0 = temp_v0->playerIndex;
     func_80055024_main(temp_s0, 0xA, D_80105588_shared_board[8], 0);
     func_800550F4_main(temp_s0, 0xA, 1);
-    func_80055140_main(temp_s0, 0xA, 0, 0);
+    HuSprBankSet(temp_s0, 0xA, 0, 0);
     HuSprPriSet(temp_s0, 0xA, ((playerNo * 5) + 0x478F));
     HuSprAttrSet(temp_s0, 0xA, 0);
     HuSprPosSet(temp_s0, 0xA, D_801018E4_shared_board[10][0], D_801018E4_shared_board[10][1]);

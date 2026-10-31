@@ -20,7 +20,7 @@
 // void func_800EC5EC_shared_board(s16 arg0, s32 arg1, s16 arg2);
 // extern s16 D_800D4080_main;
 // s16 MBRandCheck100(s8 arg0);
-// void func_800500E0_main(s32);
+// void SLSaveBoard(s32);
 // s16 HuWinStatGet(s16);
 // void func_800600C0_main(s16, s32);
 // s32 HuWinExCreate(s16 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u16 arg5);

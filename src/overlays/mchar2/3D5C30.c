@@ -216,10 +216,10 @@ void func_80106630_mchar2(s32 arg0) {
         DataCloseTemp(data);
     }
     if (arg0 & 0x8000) {
-        func_8001C624_main((s16)D_80106EC8_mchar2[D_80106DEC_mchar2][D_80106DF0_mchar2],
+        Hu3DMotionShiftSet((s16)D_80106EC8_mchar2[D_80106DEC_mchar2][D_80106DF0_mchar2],
                            (s16)D_80106F08_mchar2[D_80106DEC_mchar2][0], 0, 10, 0);
     } else {
-        func_8001C624_main((s16)D_80106EC8_mchar2[D_80106DEC_mchar2][D_80106DF0_mchar2],
+        Hu3DMotionShiftSet((s16)D_80106EC8_mchar2[D_80106DEC_mchar2][D_80106DF0_mchar2],
                            (s16)D_80106F08_mchar2[D_80106DEC_mchar2][0], 0, 10, 2);
     }
 }

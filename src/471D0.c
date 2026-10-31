@@ -50,9 +50,9 @@ void func_80046600_main(void) {
     D_800A1660_main = omAddObj(0x7FD0, 0, 0, -1, func_80046728_main);
     omSetStatBit(D_800A1660_main, 0xA0);
     work = OM_GET_WORK_PTR(D_800A1660_main, LightObjWork);
-    work->halfwords[0] = func_8004DE24_main(14, 14, 306, 34, 0xDF70);
+    work->halfwords[0] = printWin(14, 14, 306, 34, 0xDF70);
     work->halfwords[4] =
-        func_8004DE24_main(D_800A1674_main[D_800A1666_main], D_800A1680_main[D_800A1666_main],
+        printWin(D_800A1674_main[D_800A1666_main], D_800A1680_main[D_800A1666_main],
                            D_800A168C_main[D_800A1666_main], D_800A1698_main[D_800A1666_main],
                            (D_800A1668_main << 24) | 0x80);
     D_800A1669_main = 0;

@@ -154,11 +154,11 @@ void func_8000BD50_main(u16 spriteId, s16 arg1) {
     func_80054FF8_main(sprite->unk04, 0, arg1);
 }
 
-void func_8000BD94_main(u16 spriteId, s32 arg1, s32 arg2) {
+void espBankSet(u16 spriteId, s32 arg1, s32 arg2) {
     D_800CD1DC_main_Struct *sprite;
 
     sprite = D_800CD1DC_main + spriteId;
-    func_80055140_main(sprite->unk04, 0, arg1, (u16)arg2);
+    HuSprBankSet(sprite->unk04, 0, arg1, (u16)arg2);
 }
 
 void func_8000BDDC_main(u16 spriteId, s32 arg1) {

@@ -496,7 +496,7 @@ void func_8011035C_msetup(void) {
         sprites.windows[i] = window;
         HuWinMesSpeedSet(window, 0);
         HuWinBGTPLvlSet(window, 0);
-        func_8005FBF8_main(window, 255, 255, 255);
+        HuWinBGColSet(window, 255, 255, 255);
         HuWinHomeClear(window);
         HuWinDispOff(window);
         HuPrcVSleep();

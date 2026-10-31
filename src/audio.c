@@ -217,7 +217,7 @@ s16 HuAudFXPlay(s16 seId) {
     return func_80007064_main(seId);
 }
 
-void func_8004AAD0_main(s16 seNo, s8 volume) {
+void HuAudFXVolSet(s16 seNo, s8 volume) {
     D_800CE218_main[seNo] = volume;
     func_80007B28_main(seNo, volume);
 }
@@ -305,7 +305,7 @@ void func_8004ADDC_main(s16 arg0) {
     func_80007C80_main(-1, arg0);
 }
 
-void func_8004AE00_main(s16 arg0, s16 arg1) {
+void HuAudFXPanning(s16 arg0, s16 arg1) {
     func_80007C80_main(arg0, arg1);
 }
 

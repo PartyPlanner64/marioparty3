@@ -305,11 +305,11 @@ void func_80105AD8_koopa(omObjData *obj) {
             for (i = 0; i < 5; i++) {
                 window = D_80109518_koopa[i];
                 if (i == obj->work[1]) {
-                    func_8005FBF8_main(window[0], 0, 200, 0);
+                    HuWinBGColSet(window[0], 0, 200, 0);
                     HuWinBGTPLvlSet(window[0], 256);
                     HuWinPriSet(window[0], 9000);
                 } else {
-                    func_8005FBF8_main(window[0], 64, 64, 128);
+                    HuWinBGColSet(window[0], 64, 64, 128);
                     HuWinBGTPLvlSet(window[0], 0);
                     HuWinPriSet(window[0], 10000);
                 }
@@ -370,7 +370,7 @@ void func_80105AD8_koopa(omObjData *obj) {
                         HuWinMesSet(D_80109518_koopa[obj->work[1]][0], D_80109354_koopa[D_8010954A_koopa[obj->work[1]]], -2, 4);
                         HuWinMesColSet(D_80109518_koopa[obj->work[1]][0], 1);
                         func_8005C154_main(D_80109518_koopa[obj->work[1]][0], 160, 160, 160);
-                        func_8005FBF8_main(D_80109518_koopa[obj->work[1]][0], 254, 255, 208);
+                        HuWinBGColSet(D_80109518_koopa[obj->work[1]][0], 254, 255, 208);
                         HuWinMesSpeedSet(D_80109518_koopa[obj->work[1]][0], 0);
                     } else {
                         obj->mtncnt = 1;

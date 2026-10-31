@@ -290,7 +290,7 @@ void func_80106104_tidal_toss(omObjData *object) {
     D_8010AF38_tidal_toss = model;
     func_8001C954_main(object->model[0]);
     object->model[1] = func_8000B108_main(0x2B0004, 0x2D9);
-    object->model[2] = func_8001AC8C_main(0x80, func_80106D24_tidal_toss, 2);
+    object->model[2] = Hu3DHookFuncCreate(0x80, func_80106D24_tidal_toss, 2);
     D_8010AF3A_tidal_toss = func_8010A90C_tidal_toss(0x2B0001);
 
     entry = D_8010AF48_tidal_toss;

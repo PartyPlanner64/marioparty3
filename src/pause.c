@@ -33,7 +33,7 @@ typedef struct {
     /* 0x04 */ s16 unk04;
 } UnkPausePrcData; // Size 6
 
-void func_800453FC_main(void);
+void ExecPause(void);
 void func_80045964_main(s16, s16);
 s16 func_80045B24_main(s16, s16);
 omObjData *func_80045F48_main(u32, s16, s16, s16);
@@ -52,7 +52,7 @@ extern f32 D_800B23A0_main;
 extern f32 D_800B23A4_main;
 extern f32 D_800B23A8_main;
 extern u16 D_800CE214_main;
-extern Process *D_800CE298_main;
+extern Process *pauseProc;
 extern s16 D_800D0A38_main;
 extern u8 D_800D2008_main;
 extern s8 D_800D2132_main;
@@ -72,12 +72,12 @@ void func_80045350_main(void) {
     }
 }
 
-void func_800453BC_main(void) {
-    D_800CE298_main = omAddPrcObj(func_800453FC_main, 0x3FFF, 0x800, 0);
-    omPrcSetStatBit(D_800CE298_main, 0xA0);
+void GameMesPauseCreate(void) {
+    pauseProc = omAddPrcObj(ExecPause, 0x3FFF, 0x800, 0);
+    omPrcSetStatBit(pauseProc, 0xA0);
 }
 
-void func_800453FC_main(void) {
+void ExecPause(void) {
     void *temp_v0_3;
     s16 sp18[4];
     s16 sp20[2];
@@ -138,7 +138,7 @@ void func_800453FC_main(void) {
     HuWinMesSpeedSet(var_s0_3, 0);
     HuWinPriSet(var_s0_3, 0);
     HuWinBGTPLvlSet(var_s0_3, 0xD0);
-    func_8005FBF8_main(var_s0_3, 0xFF, 0xFF, 0xFF);
+    HuWinBGColSet(var_s0_3, 0xFF, 0xFF, 0xFF);
     HuPrcVSleep();
     HuAudFXPlay(6);
     D_800D2132_main = 1;
@@ -195,7 +195,7 @@ void func_80045A90_main(void) {
             HuWinKill(D_800B2340_main[i]);
         }
     }
-    omDelPrcObj(D_800CE298_main);
+    omDelPrcObj(pauseProc);
 }
 
 s16 func_80045B24_main(s16 arg0, s16 arg1) {
@@ -209,7 +209,7 @@ s16 func_80045B24_main(s16 arg0, s16 arg1) {
     temp_v0_2->unk_2A = 1;
     HuWinMesSpeedSet(temp_v0, 0);
     HuWinBGTPLvlSet(temp_v0, 0xD0);
-    func_8005FBF8_main(temp_v0, 0x30, 0x40, 0x80);
+    HuWinBGColSet(temp_v0, 0x30, 0x40, 0x80);
     HuWinMesPalSet(temp_v0, 2, 0x40, 0xFF, 0xFF);
     return temp_v0;
 }
@@ -304,10 +304,10 @@ void func_80045D38_main(omObjData *object) {
         }
         if (seNo >= 0) {
             if (D_800B2350_main[i].unk02 >= 0) {
-                func_8004AE00_main(seNo, D_800B2350_main[i].unk02);
+                HuAudFXPanning(seNo, D_800B2350_main[i].unk02);
             }
             if (D_800B2350_main[i].unk04 >= 0) {
-                func_8004AAD0_main(seNo, D_800B2350_main[i].unk04);
+                HuAudFXVolSet(seNo, D_800B2350_main[i].unk04);
             }
         }
         D_800B2350_main[i].unk00 = -1;

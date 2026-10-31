@@ -357,7 +357,7 @@ void m255_CreateWall(omObjData *object) {
     m255_SyncWithModel(object);
     var_a1 = (object->work[0] == 0) ? 1 : 2;
     for (i = 0; i < 8; i++) {
-        func_8001C8A8_main(object->model[i], var_a1);
+        Hu3DModelCameraSet(object->model[i], var_a1);
     }
     m255_minigame->work.s8[0]++;
     object->func = m255_UpdateWall;
@@ -411,7 +411,7 @@ void m255_CreateSigns(omObjData *object) {
     m255_SyncWithModel(object);
     var_a1 = (object->work[0] == 0) ? 1 : 2;
     for (i = 0; i < SIGNS_TOTAL; i++) {
-        func_8001C8A8_main(object->model[i], var_a1);
+        Hu3DModelCameraSet(object->model[i], var_a1);
     }
     m255_minigame->work.s8[3]++;
     object->func = m255_UpdateSigns;
@@ -456,7 +456,7 @@ void m255_CreateScrews(omObjData *object) {
     m255_SyncWithModel(object);
     var_a1 = (object->work[0] == 0) ? 1 : 2;
     for (i = 0; i < SCREWS_TOTAL + 1; i++) {
-        func_8001C8A8_main(object->model[i], var_a1);
+        Hu3DModelCameraSet(object->model[i], var_a1);
     }
     m255_minigame->work.s8[2]++;
     object->func = m255_UpdateScrews;
@@ -492,7 +492,7 @@ void m255_CreateNuts(omObjData *object) {
     for (i = 0; i < NUTS_TOTAL; i++) {
         object->model[i] = world->nuts[i].modelId = func_8000B108_main(0x580000 | file[i], 0x9D);
         Hu3DModelPosSet(object->model[i], m255_minigame->worlds[object->work[0]].nuts[i].startPosX, 1800.0f, 0.0f - i * 450.0f);
-        func_8001C8A8_main(object->model[i], var_s4);
+        Hu3DModelCameraSet(object->model[i], var_s4);
     }
     m255_SyncWithModel(object);
     m255_minigame->work.s8[1]++;
@@ -560,7 +560,7 @@ void m255_InitPlayer(omObjData *object) {
     m255_players[object->work[0]].nutSeActive = FALSE;
     var_a1 = (object->work[0] == 0) ? 1 : 2;
     for (i = 0; i < 12; i++) {
-        func_8001C8A8_main(object->model[i], var_a1);
+        Hu3DModelCameraSet(object->model[i], var_a1);
     }
     m255_SetFunc(FGRP_PLAYER_1 + object->work[0], 9, -1, &m255_players[object->work[0]], m255_UpdatePlayerAnimation, FALSE, FALSE);
     object->func = m255_UpdatePlayer;
@@ -1314,7 +1314,7 @@ void m255_UpdatePlayerSpeed(FuncContext *ctx) {
                     }
                     HuAudFXPitchSet(player->nutSeNo, pitch);
                     absSpeed = ABS(player->speed);
-                    func_8004AAD0_main(player->nutSeNo, 100 + (s32)((absSpeed / 15.0f) * 27.0f));
+                    HuAudFXVolSet(player->nutSeNo, 100 + (s32)((absSpeed / 15.0f) * 27.0f));
                 }
             } else if (D_800CDA7C_main[player->padId] & A_BUTTON) {
                 if (ctx->work.s8[1] == 0 && player->state != PLAYER_STATE_ROTATE) {
@@ -1346,7 +1346,7 @@ void m255_UpdatePlayerSpeed(FuncContext *ctx) {
                     }
                     HuAudFXPitchSet(player->nutSeNo, pitch);
                     absSpeed = ABS(player->speed);
-                    func_8004AAD0_main(player->nutSeNo, 100 + (s32)((absSpeed / 15.0f) * 27.0f));
+                    HuAudFXVolSet(player->nutSeNo, 100 + (s32)((absSpeed / 15.0f) * 27.0f));
                 }
             }
             if (!(D_800CDA7C_main[player->padId] & B_BUTTON)) {

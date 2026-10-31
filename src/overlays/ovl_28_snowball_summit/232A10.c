@@ -191,7 +191,7 @@ void func_8010683C_snowball_summit(omObjData *this) {
     *this->model = func_8000B108_main(0x490003, 0x2B9);
     this->trans.x = this->trans.z = 0.0f;
     this->trans.y = 20.0f;
-    func_8001C8A8_main(*this->model, 2);
+    Hu3DModelCameraSet(*this->model, 2);
     this->func = func_80106834_snowball_summit;
 }
 
@@ -207,7 +207,7 @@ void func_801068EC_snowball_summit(omObjData *this) {
     func_8001C814_main(*this->model, 2, 2);
     this->trans.x = this->trans.z = 0.0f;
     this->trans.y = 0.0f;
-    func_8001C8A8_main(*this->model, 1);
+    Hu3DModelCameraSet(*this->model, 1);
     this->func = func_801068E4_snowball_summit;
 }
 
@@ -275,7 +275,7 @@ void func_80107860_snowball_summit(omObjData *this) {
 
     *model = func_8000CBA0_main(0x49000D, 0x2A9);
     func_8000CD00_main(*model, 15.0f, 110.0f, 8.0f);
-    func_8001C8A8_main(*model, 2);
+    Hu3DModelCameraSet(*model, 2);
     this->func = func_8010775C_snowball_summit;
 }
 

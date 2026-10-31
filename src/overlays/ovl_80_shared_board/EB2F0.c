@@ -418,7 +418,7 @@ void MBMapFullExec(s32 playerPadNo) {
     Process* temp_v0;
 
     D_800CB99C_main = 1;
-    func_80049FB8_main();
+    omAllPause();
     temp_s1 = HuPrcCurrentGet();
     temp_v0 = omAddPrcObj(MBMapFullMain, 0x1005, 0, 0);
     temp_v0->user_data = (void*)playerPadNo;

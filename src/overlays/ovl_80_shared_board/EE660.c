@@ -176,11 +176,11 @@ static void func_800DAF1C_shared_board(omObjData *arg0) {
     HuSprScaleSet(entry->sprites[arg0->work[1]], 1, arg0->scale.x / 2.0f, arg0->scale.x / 2.0f);
 
     roll = arg0->work[1];
-    func_80055140_main(entry->sprites[roll], 0, entry->rollValue[roll] % 10, 0);
+    HuSprBankSet(entry->sprites[roll], 0, entry->rollValue[roll] % 10, 0);
     func_800550F4_main(entry->sprites[arg0->work[1]], 0, 1);
 
     roll = arg0->work[1];
-    func_80055140_main(entry->sprites[roll], 1, entry->rollValue[roll] / 10, 0);
+    HuSprBankSet(entry->sprites[roll], 1, entry->rollValue[roll] / 10, 0);
     func_800550F4_main(entry->sprites[arg0->work[1]], 1, 1);
 
     pos.x = GwPlayer[arg0->work[3]].player_obj->coords.x;
@@ -224,7 +224,7 @@ static void func_800DB318_shared_board(omObjData *arg0) {
     HuSprScaleSet(entry->sprites[entry->rollValueIdx], 0, arg0->scale.x, arg0->scale.x);
 
     roll = entry->rollValueIdx;
-    func_80055140_main(entry->sprites[roll], 0, entry->rollValue[roll], 0);
+    HuSprBankSet(entry->sprites[roll], 0, entry->rollValue[roll], 0);
     func_800550F4_main(entry->sprites[entry->rollValueIdx], 0, 1);
 
     pos.x = GwPlayer[arg0->work[3]].player_obj->coords.x;
@@ -309,7 +309,7 @@ void func_800DB6A8_shared_board(s32 arg0) {
         HuSprAttrSet(entry->sprites[entry->rollValueIdx], i, 0x9000);
         HuSprSpeedSet(entry->sprites[entry->rollValueIdx], i, 0.0f);
         HuSprScaleSet(entry->sprites[entry->rollValueIdx], i, 0.0f, 0.0f);
-        func_80055140_main(entry->sprites[entry->rollValueIdx], i, 0, 0);
+        HuSprBankSet(entry->sprites[entry->rollValueIdx], i, 0, 0);
         func_800550F4_main(entry->sprites[entry->rollValueIdx], i, 1);
     }
 
@@ -337,7 +337,7 @@ void func_800DB884_shared_board(s32 arg0) {
                 entry->unk_0B = 0;
             } else {
                 roll = entry->rollValueIdx;
-                func_80055140_main(entry->sprites[roll], 0, entry->rollValue[roll], 0);
+                HuSprBankSet(entry->sprites[roll], 0, entry->rollValue[roll], 0);
                 HuSprPriSet(entry->sprites[entry->rollValueIdx], 0, 0x4000);
                 func_800550F4_main(entry->sprites[entry->rollValueIdx], 0, 1);
             }
@@ -572,7 +572,7 @@ s16 func_800DC128_shared_board(s32 arg0) {
     }
 
     entry->unk_16 = Hu3DModelCreate(DataRead(D_80100D60_shared_board[entry->unk_0A]), 0x6A9);
-    func_8001C8A8_main(entry->unk_16, 1);
+    Hu3DModelCameraSet(entry->unk_16, 1);
     Hu3DModelScaleSet(entry->unk_16, 0.0f, 0.0f, 0.0f);
     func_8001C2FC_main(entry->unk_16, 0x20000, 0x20000);
 
@@ -687,7 +687,7 @@ static void func_800DC718_shared_board(s32 arg0, s32 arg1, s32 arg2, char *arg3[
         entry->unk_0A = 0;
 
         entry->unk_16 = Hu3DModelCreate(DataRead(arg1), 0x6A9);
-        func_8001C8A8_main(entry->unk_16, 1);
+        Hu3DModelCameraSet(entry->unk_16, 1);
         Hu3DModelScaleSet(entry->unk_16, 0.0f, 0.0f, 0.0f);
         func_8001C2FC_main(entry->unk_16, 0x20000, 0x20000);
         
@@ -1099,7 +1099,7 @@ static void func_800DD724_shared_board(void) {
     temp_v0_2 = func_8000CED8_main(0xB0004, 0xAA9);
     func_8000CD00_main(temp_v0_2, 1.0f, 20.0f, 1.0f);
     func_8000D018_main(temp_v0_2, 15.0f);
-    func_8001C8A8_main(temp_v0_2, 1);
+    Hu3DModelCameraSet(temp_v0_2, 1);
     func_8000CFA4_main(temp_v0_2, temp_v0->coords.x, temp_v0->coords.y + temp_v0->velocity.x, temp_v0->coords.z);
     
     for (var_f20 = 0.0f, i = 0; i < 6; i++) {

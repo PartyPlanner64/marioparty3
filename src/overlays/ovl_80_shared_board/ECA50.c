@@ -147,7 +147,7 @@ Object *MBModelFileCreate(s32 arg0, s32 arg1, f32 arg2, f32 arg3, u32 *arg4) {
         objData->model[0] = mdlIdx;
         omSetRot(objData, 0.0f, 0.0f, 0.0f);
         func_8001C814_main(mdlIdx, 2, 2);
-        func_8001C8A8_main(mdlIdx, 1);
+        Hu3DModelCameraSet(mdlIdx, 1);
         Hu3DModelScaleSet(mdlIdx, 0.0f, 0.0f, 0.0f);
         if (HmfModelData[mdlIdx].unk02 != 0xFF) {
             object->unk44 = MBMotionLock(HmfModelData[mdlIdx].unk02);
@@ -168,7 +168,7 @@ Object *MBModelFileCreate(s32 arg0, s32 arg1, f32 arg2, f32 arg3, u32 *arg4) {
             omSetStatBit(objData, 0x80);
             objData->model[0] = mdlIdx;
             omSetRot(objData, 0.0f, 0.0f, 0.0f);
-            func_8001C8A8_main(mdlIdx, 1);
+            Hu3DModelCameraSet(mdlIdx, 1);
             Hu3DModelScaleSet(mdlIdx, 0.0f, 0.0f, 0.0f);
 
             work = HuMemMemoryAllocTemp(sizeof(UnkObj));
@@ -302,7 +302,7 @@ Object *MBModelLinkCreate(Object *src) {
         objData->model[0] = mdlIdx;
         omSetRot(objData, 0.0f, 0.0f, 0.0f);
         func_8001C814_main(mdlIdx, 2, 2);
-        func_8001C8A8_main(mdlIdx, 1);
+        Hu3DModelCameraSet(mdlIdx, 1);
         Hu3DModelScaleSet(mdlIdx, 0.0f, 0.0f, 0.0f);
 
         if (HmfModelData[mdlIdx].unk02 != 0xFF) {
@@ -330,7 +330,7 @@ Object *MBModelLinkCreate(Object *src) {
             omSetStatBit(objData, 0x80);
             objData->model[0] = mdlIdx;
             omSetRot(objData, 0.0f, 0.0f, 0.0f);
-            func_8001C8A8_main(mdlIdx, 1);
+            Hu3DModelCameraSet(mdlIdx, 1);
             Hu3DModelScaleSet(mdlIdx, 0.0f, 0.0f, 0.0f);
 
             work = HuMemMemoryAllocTemp(sizeof(UnkObj));
@@ -455,7 +455,7 @@ void MBMotionShiftSet(Object* arg0, s16 arg1, s32 arg2, s32 arg3, u16 arg4) {
         var = arg0->omObj1->motion[arg1];
         arg0->unk46 = arg1;
     }
-    func_8001C624_main(arg0->omObj1->model[0], var, arg2, arg3, arg4);
+    Hu3DMotionShiftSet(arg0->omObj1->model[0], var, arg2, arg3, arg4);
 }
 
 u16 MBMotionCheck(Object* arg0) {

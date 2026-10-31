@@ -274,7 +274,7 @@ void func_80113874_mstory3(void);
 extern void (*D_80115D2C_mstory3)(void);
 
 void func_80113800_mstory3(omObjData *arg0) {
-    func_8001C624_main(arg0->model[1], HmfModelData[D_80115D28_mstory3->motion[3]].unk02, 0, 0xA, 2);
+    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[D_80115D28_mstory3->motion[3]].unk02, 0, 0xA, 2);
     HuPrcSleep(0xA);
     D_80115D2C_mstory3 = func_80113874_mstory3;
 }
@@ -299,7 +299,7 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mstory3/4B9A30", D_80115B54_mstory3);
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory3/4B9A30", func_80113AA8_mstory3);
 
 void func_80113B3C_mstory3(omObjData *arg0) {
-    func_8001C624_main(arg0->model[1], HmfModelData[D_80115D28_mstory3->motion[3]].unk02, 0, 0xA, 2);
+    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[D_80115D28_mstory3->motion[3]].unk02, 0, 0xA, 2);
     D_80115D40_mstory3 = func_8010D774_mstory3;
 }
 

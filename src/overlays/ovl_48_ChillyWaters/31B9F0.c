@@ -315,7 +315,7 @@ void MB1Ev_StarGuideIn(void) {
     func_8000CD00_main(light, 2.0f, 20.0f, 1.0f);
     func_8000D018_main(light, 30.0f);
     func_8000CFA4_main(light, star->coords.x, star->coords.y + star->velocity.x, star->coords.z);
-    func_8001C8A8_main(light, 1);
+    Hu3DModelCameraSet(light, 1);
 
     scale = 0.0f;
 
@@ -507,7 +507,7 @@ void MB1Ev_StarGet(void) {
     light = func_8000CED8_main(0xB0004, 0xAA9);
     func_8000CD00_main(light, 1.0f, 20.0f, 1.0f);
     func_8000D018_main(light, 15.0f);
-    func_8001C8A8_main(light, 1);
+    Hu3DModelCameraSet(light, 1);
     func_8000CFA4_main(light, star->coords.x, star->coords.y + star->velocity.x, star->coords.z);
 
     scale = 0.0f;
@@ -2535,7 +2535,7 @@ s32 MB1Ev_TeresaSteal(s32 arg0) {
                 count++;
                 hold = 0xA;
                 if (pulled == 0) {
-                    func_80055140_main(chrGrp, 0, 1, 0);
+                    HuSprBankSet(chrGrp, 0, 1, 0);
                     func_800550F4_main(chrGrp, 0, 1);
                     pulled = 1;
                     HuSprPosSet(chrGrp, 0,
@@ -2548,7 +2548,7 @@ s32 MB1Ev_TeresaSteal(s32 arg0) {
 
         dummy:
         if ((hold == 0) && (pulled == 1)) {
-            func_80055140_main(chrGrp, 0, 0, 0);
+            HuSprBankSet(chrGrp, 0, 0, 0);
             func_800550F4_main(chrGrp, 0, 1);
             pulled = 0;
             HuSprPosSet(chrGrp, 0,
@@ -2591,7 +2591,7 @@ s32 MB1Ev_TeresaSteal(s32 arg0) {
             }
         }
 
-        func_80055140_main(chrGrp, 0, 0, 0);
+        HuSprBankSet(chrGrp, 0, 0, 0);
         func_800550F4_main(chrGrp, 0, 1);
         for (i = 0x10; i >= 0; i -= 2, HuPrcVSleep()) {
             HuSprTPLvlSet(booGrp, 0, i * 0x10);
@@ -2953,7 +2953,7 @@ void MB1Ev_ItemKinoko(void) {
     s32 i;
     GW_SYSTEM *system = &GwSystem;
 
-    func_80055140_main(mbItemCursorGrpId, 0, 1, 0);
+    HuSprBankSet(mbItemCursorGrpId, 0, 1, 0);
     func_800550F4_main(mbItemCursorGrpId, 0, 1);
     HuPrcSleep(20);
     HuAudFXPlay(0x145);
@@ -2962,7 +2962,7 @@ void MB1Ev_ItemKinoko(void) {
     HuPrcChildLink(process, MB1Ev_ItemMoveCreate(mbItemCursorGrpId, sp18[0], sp18[1], D_8011E354_ChillyWaters[system->current_player_index][0], D_8011E354_ChillyWaters[GwSystem.current_player_index][1], -1));
     HuPrcChildWait();
     HuPrcSleep(0xA);
-    func_80055140_main(mbItemCursorGrpId, 0, 0, 0);
+    HuSprBankSet(mbItemCursorGrpId, 0, 0, 0);
     func_800550F4_main(mbItemCursorGrpId, 0, 1);
 
     for (i = 1; i < 10; i++) {
@@ -2984,7 +2984,7 @@ void func_8010FE54_ChillyWaters(void) {
     f32 sp18[2];
     s32 i;
 
-    func_80055140_main(mbItemCursorGrpId, 0, 1, 0);
+    HuSprBankSet(mbItemCursorGrpId, 0, 1, 0);
     func_800550F4_main(mbItemCursorGrpId, 0, 1);
     HuPrcSleep(0x14);
     HuAudFXPlay(0x145);
@@ -3009,7 +3009,7 @@ void func_80110024_ChillyWaters(void) {
     Process* temp_s0;
     s32 i;
 
-    func_80055140_main(mbItemCursorGrpId, 0, 1U, 0);
+    HuSprBankSet(mbItemCursorGrpId, 0, 1U, 0);
     func_800550F4_main(mbItemCursorGrpId, 0, 1);
     HuPrcSleep(0x14);
     HuAudFXPlay(0x145);
@@ -3032,7 +3032,7 @@ void MB1Ev_ItemShake(void) {
     s32 i;
     GW_SYSTEM* system = &GwSystem;
 
-    func_80055140_main(mbItemCursorGrpId, 0, 1, 0);
+    HuSprBankSet(mbItemCursorGrpId, 0, 1, 0);
     func_800550F4_main(mbItemCursorGrpId, 0, 1);
     HuPrcSleep(0x14);
     HuAudFXPlay(0x145);
@@ -3049,7 +3049,7 @@ void MB1Ev_ItemShake(void) {
     HuPrcChildWait();
     HuPrcSleep(0xA);
 
-    func_80055140_main(mbItemCursorGrpId, 0, 0, 0);
+    HuSprBankSet(mbItemCursorGrpId, 0, 0, 0);
     func_800550F4_main(mbItemCursorGrpId, 0, 1);
 
     for (i = 1; i < 10; i++, HuPrcVSleep()) {
@@ -3083,7 +3083,7 @@ void MB1Ev_ItemPhoneMove(void) {
     Process* proc;
     s32 i;
 
-    func_80055140_main(mbItemCursorGrpId, 0, 1, 0);
+    HuSprBankSet(mbItemCursorGrpId, 0, 1, 0);
     func_800550F4_main(mbItemCursorGrpId, 0, 1);
     HuPrcSleep(0x14);
     HuAudFXPlay(0x145);
@@ -3092,7 +3092,7 @@ void MB1Ev_ItemPhoneMove(void) {
     HuPrcChildLink(proc, MB1Ev_ItemMoveCreate(mbItemCursorGrpId, sp18[0], sp18[1], D_8011E354_ChillyWaters[GwSystem.current_player_index][0], D_8011E354_ChillyWaters[GwSystem.current_player_index][1], -1));
     HuPrcChildWait();
     HuPrcSleep(0xA);
-    func_80055140_main(mbItemCursorGrpId, 0, 0, 0);
+    HuSprBankSet(mbItemCursorGrpId, 0, 0, 0);
     func_800550F4_main(mbItemCursorGrpId, 0, 1);
     
     for (i = 1; i < 0xA; i++, HuPrcVSleep()) {
@@ -3276,7 +3276,7 @@ void MB1Ev_ItemShopPhone(void) {
         proc = omAddPrcObj(func_8010A474_ChillyWaters, 0, 0, 0);
         omPrcSetStatBit(proc, 0x80); MB1_MapScrollCancel();
         D_800CB99C_main = 1;
-        func_80049FB8_main();
+        omAllPause();
         omDelPrcObj(proc);
         func_800FC8A4_shared_board();
         goto label;
@@ -3388,7 +3388,7 @@ void MB1Ev_ItemKoopaPhone(void) {
         omPrcSetStatBit(proc, 0x80);
         MB1_MapScrollCancel();
         D_800CB99C_main = 1;
-        func_80049FB8_main();
+        omAllPause();
         omDelPrcObj(proc);
         func_800FC8A4_shared_board();
         goto choiceLoop;
@@ -3668,7 +3668,7 @@ void MB1Ev_ItemKeyManUse(void) {
     HuSprPriSet(grpId, 0, 0x4780);
     HuSprAttrSet(grpId, 0, 0x9000);
 
-    func_80055140_main(mbItemCursorGrpId, 0, 1, 0);
+    HuSprBankSet(mbItemCursorGrpId, 0, 1, 0);
     func_800550F4_main(mbItemCursorGrpId, 0, 1);
     HuPrcSleep(0x14);
     HuAudFXPlay(0x145);
@@ -3683,7 +3683,7 @@ void MB1Ev_ItemKeyManUse(void) {
     HuPrcChildWait();
     HuPrcSleep(0xA);
 
-    func_80055140_main(mbItemCursorGrpId, 0, 0, 0);
+    HuSprBankSet(mbItemCursorGrpId, 0, 0, 0);
     func_800550F4_main(mbItemCursorGrpId, 0, 1);
 
     for (i = 1; i < 0xA; i++, HuPrcVSleep()) {
@@ -3724,7 +3724,7 @@ choiceLoop:
         HuSprAttrSet(grpId, 0, 0x8000);
         MB1_MapScrollCancel();
         D_800CB99C_main = 1;
-        func_80049FB8_main();
+        omAllPause();
         HuSprAttrReset(grpId, 0, 0x8000);
         goto choiceLoop;
     }
@@ -4231,7 +4231,7 @@ void func_80114650_ChillyWaters(void) {
     light = func_8000CED8_main(0xB0004, 0xAA9);
     func_8000CD00_main(light, 1.0f, 20.0f, 1.0f);
     func_8000D018_main(light, 10.0f);
-    func_8001C8A8_main(light, 1);
+    Hu3DModelCameraSet(light, 1);
     HuAudFXPlay(0x24C);
 
     for (angle = 0.0f, speed = 2.0f; speed < 80.0f; HuPrcVSleep()) {
@@ -4392,7 +4392,7 @@ loop:
         default:
             MB1_MapScrollCancel();
             D_800CB99C_main = 1;
-            func_80049FB8_main();
+            omAllPause();
             goto loop;
     }
 
@@ -5913,7 +5913,7 @@ void func_8011BBA4_ChillyWaters(void) {
     func_8001C954_main(model);
     func_8001C514_main(model);
     Hu3DModelScaleSet(model, MBBackMdlScaleGet(), MBBackMdlScaleGet(), MBBackMdlScaleGet());
-    func_8001C8A8_main(model, 1);
+    Hu3DModelCameraSet(model, 1);
 
     space = MBMasuGet(D_8011E6CC_ChillyWaters[idx][0]);
     Hu3DModelScaleSet(model, MBBackMdlScaleGet(), MBBackMdlScaleGet(), MBBackMdlScaleGet());

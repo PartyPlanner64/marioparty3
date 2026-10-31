@@ -58,7 +58,7 @@ void func_80105BB4_storydebug(void) {
 
     var_s1 = 0;
     SLCurBoxNoSet(0);
-    func_80050974_main();
+    SLLoadBoardStory();
     while (1) {
         HuPrcVSleep();
         if (D_800D5558_main[0] & 0x8000) {

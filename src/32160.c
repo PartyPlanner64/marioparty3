@@ -716,8 +716,6 @@ void func_800335BC_main(char *name, u16 *out) {
     }
 }
 
-#ifdef NON_MATCHING
-/* s1/s2 swapped between tex and the i*16 temp in the static texture fallback path */
 void func_80033694_main(HmfData *hmf) {
     HmfData_Unk84_Entry2 *tex;
     HmfAnimSet *set;
@@ -742,19 +740,22 @@ void func_80033694_main(HmfData *hmf) {
                 if (D_800D408C_main[anim->animIdx].unk14 != NULL) {
                     gSPSegment(gMainGfxPos++, (s8)hmf->unk84[i].unk4, osVirtualToPhysical(set->unk0C[img].palette));
                 }
-                continue;
+            } else {
+                tex = hmf->unk84[i].unkC;
+                gSPSegment(gMainGfxPos++, hmf->unk84[i].unk3, osVirtualToPhysical(tex->unk28));
+                if (tex->unk_30 != NULL) {
+                    gSPSegment(gMainGfxPos++, (s8)hmf->unk84[i].unk4, osVirtualToPhysical(tex->unk_30->data));
+                }
             }
-        }
-        tex = hmf->unk84[i].unkC;
-        gSPSegment(gMainGfxPos++, hmf->unk84[i].unk3, osVirtualToPhysical(tex->unk28));
-        if (tex->unk_30 != NULL) {
-            gSPSegment(gMainGfxPos++, (s8)hmf->unk84[i].unk4, osVirtualToPhysical(tex->unk_30->data));
+        } else {
+            tex = hmf->unk84[i].unkC;
+            gSPSegment(gMainGfxPos++, hmf->unk84[i].unk3, osVirtualToPhysical(tex->unk28));
+            if (tex->unk_30 != NULL) {
+                gSPSegment(gMainGfxPos++, (s8)hmf->unk84[i].unk4, osVirtualToPhysical(tex->unk_30->data));
+            }
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/32160", func_80033694_main);
-#endif
 
 void func_80033910_main(HmfData *arg0) {
     s16 i;

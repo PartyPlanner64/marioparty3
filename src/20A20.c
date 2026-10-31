@@ -343,7 +343,12 @@ void func_80020B48_main(CollisionRect *rect, HmfModel *model) {
 }
 
 #ifdef NON_MATCHING
-/* Saved-register allocation differs: target gives model s1, fan s2, shape s3, cell s4 */
+/*
+ * Saved-register allocation differs: target gives model s1, fan s2, shape s3, cell s4.
+ * Instructions are otherwise identical. global-alloc ranks model (20 weighted refs over
+ * ~400 insns) below the hoisted TRUE constant, x, and cell, so model would need roughly
+ * twice as many weighted refs to be allocated second as in the target.
+ */
 void func_80020E94_main(CollisionFan *fan, HmfModel *model) {
     Hu3DPoint tri[3];
     HuMtx4F mtx;

@@ -578,32 +578,7 @@ void func_800534C8_main(f32 a0[][2], f32 a1[][2], f32 a2[][2]) {
 
 // Updates all sprite groups, resolving parent-relative positions and
 // rotations by walking each group's sprite hierarchy.
-// Updates all sprite groups, resolving parent-relative positions and
-// rotations by walking each group's sprite hierarchy.
-// Updates all sprite groups, resolving parent-relative positions and
-// rotations by walking each group's sprite hierarchy.
-// Updates all sprite groups, resolving parent-relative positions and
-// rotations by walking each group's sprite hierarchy.
-// Updates all sprite groups, resolving parent-relative positions and
-// rotations by walking each group's sprite hierarchy.
-// Updates all sprite groups, resolving parent-relative positions and
-// rotations by walking each group's sprite hierarchy.
-// Updates all sprite groups, resolving parent-relative positions and
-// rotations by walking each group's sprite hierarchy.
-// Updates all sprite groups, resolving parent-relative positions and
-// rotations by walking each group's sprite hierarchy.
-// Updates all sprite groups, resolving parent-relative positions and
-// rotations by walking each group's sprite hierarchy.
-// Updates all sprite groups, resolving parent-relative positions and
-// rotations by walking each group's sprite hierarchy.
-// Updates all sprite groups, resolving parent-relative positions and
-// rotations by walking each group's sprite hierarchy.
-// Updates all sprite groups, resolving parent-relative positions and
-// rotations by walking each group's sprite hierarchy.
-// Updates all sprite groups, resolving parent-relative positions and
-// rotations by walking each group's sprite hierarchy.
-#ifdef NON_MATCHING
-// Traversal stack depth handling differs (target masks reads 0xFFFF, writes 0xFF).
+// The traversal stack depth wraps at 8 bits.
 void func_80053558_main(void) {
     f32 mtx[0x100][3][2];
     f32 parentMtx[3][2];
@@ -614,7 +589,7 @@ void func_80053558_main(void) {
     HuSprite *parent;
     s32 cur;
     s32 n;
-    u8 depth = 0;
+    u16 depth = 0;
     f32 angle;
 
     for (group = HuSprGrpLast; group != NULL; group = group->prev) {
@@ -649,10 +624,13 @@ void func_80053558_main(void) {
                         func_80056758_main(sprite);
                         if (sprite->unk_116 >= 0) {
                             stack[depth++] = cur;
+                            depth = (u8)depth;
                             cur = sprite->unk_116;
                         } else {
                             while (sprite->unk_114 < 0 && depth != 0) {
-                                cur = stack[--depth];
+                                depth--;
+                                cur = stack[depth];
+                                depth &= 0xFF;
                                 sprite = group->members[cur];
                             }
                             cur = sprite->unk_114;
@@ -676,10 +654,13 @@ void func_80053558_main(void) {
                         func_80056758_main(sprite);
                         if (sprite->unk_116 >= 0) {
                             stack[depth++] = cur;
+                            depth = (u8)depth;
                             cur = sprite->unk_116;
                         } else {
                             while (sprite->unk_114 < 0 && depth != 0) {
-                                cur = stack[--depth];
+                                depth--;
+                                cur = stack[depth];
+                                depth &= 0xFF;
                                 sprite = group->members[cur];
                             }
                             cur = sprite->unk_114;
@@ -704,10 +685,13 @@ void func_80053558_main(void) {
                         func_80056758_main(sprite);
                         if (sprite->unk_116 >= 0) {
                             stack[depth++] = cur;
+                            depth = (u8)depth;
                             cur = sprite->unk_116;
                         } else {
                             while (sprite->unk_114 < 0 && depth != 0) {
-                                cur = stack[--depth];
+                                depth--;
+                                cur = stack[depth];
+                                depth &= 0xFF;
                                 sprite = group->members[cur];
                             }
                             cur = sprite->unk_114;
@@ -736,7 +720,7 @@ void func_80053558_main(void) {
                             sprite->unk_08 = (s16)parentMtx[2][1];
                         }
                         sprite->unk_20 = sprite->unk_58;
-                        angle = -sprite->unk_58 * (M_PI / 180.0);
+                        angle = -sprite->unk_58 * (3.141592654 / 180.0);
                         localMtx[0][0] = localMtx[1][1] = cosf(angle);
                         localMtx[0][1] = sinf(angle);
                         localMtx[1][0] = -localMtx[0][1];
@@ -745,10 +729,13 @@ void func_80053558_main(void) {
                         func_80056758_main(sprite);
                         if (sprite->unk_116 >= 0) {
                             stack[depth++] = cur;
+                            depth = (u8)depth;
                             cur = sprite->unk_116;
                         } else {
                             while (sprite->unk_114 < 0 && depth != 0) {
-                                cur = stack[--depth];
+                                depth--;
+                                cur = stack[depth];
+                                depth &= 0xFF;
                                 sprite = group->members[cur];
                             }
                             cur = sprite->unk_114;
@@ -779,7 +766,7 @@ void func_80053558_main(void) {
                             sprite->unk_08 = (s16)parentMtx[2][1];
                             sprite->unk_20 = parent->unk_20 + sprite->unk_58;
                         }
-                        angle = -sprite->unk_58 * (M_PI / 180.0);
+                        angle = -sprite->unk_58 * (3.141592654 / 180.0);
                         localMtx[0][0] = localMtx[1][1] = cosf(angle);
                         localMtx[0][1] = sinf(angle);
                         localMtx[1][0] = -localMtx[0][1];
@@ -788,10 +775,13 @@ void func_80053558_main(void) {
                         func_80056758_main(sprite);
                         if (sprite->unk_116 >= 0) {
                             stack[depth++] = cur;
+                            depth = (u8)depth;
                             cur = sprite->unk_116;
                         } else {
                             while (sprite->unk_114 < 0 && depth != 0) {
-                                cur = stack[--depth];
+                                depth--;
+                                cur = stack[depth];
+                                depth &= 0xFF;
                                 sprite = group->members[cur];
                             }
                             cur = sprite->unk_114;
@@ -820,10 +810,13 @@ void func_80053558_main(void) {
                         func_80056758_main(sprite);
                         if (sprite->unk_116 >= 0) {
                             stack[depth++] = cur;
+                            depth = (u8)depth;
                             cur = sprite->unk_116;
                         } else {
                             while (sprite->unk_114 < 0 && depth != 0) {
-                                cur = stack[--depth];
+                                depth--;
+                                cur = stack[depth];
+                                depth &= 0xFF;
                                 sprite = group->members[cur];
                             }
                             cur = sprite->unk_114;
@@ -834,9 +827,6 @@ void func_80053558_main(void) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/sprman", func_80053558_main);
-#endif
 
 void func_80054170_main(void) {
     if (D_800CE1B8_main[D_800D2008_main] != NULL) {

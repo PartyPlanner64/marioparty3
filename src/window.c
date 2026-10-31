@@ -1293,7 +1293,14 @@ s32 func_8005E1D8_main(s16 winId, s16 arg1, s32 arg2) {
 }
 
 #ifdef NON_MATCHING
-/* The cursor target index reuses its sign extension, leaving this attempt one instruction short. */
+/*
+ * Remaining diffs: the cursor target index reuses the sign extension from the
+ * `unk_31 != selected` compare (one instruction short), and `sprite` lands in
+ * v1 instead of a0. The target needs a CSE block boundary (label or loop end)
+ * between the cursorStart and cursorTarget assignments; e.g. a `do {} while (0)`
+ * there restores the missing instruction. Reusing `i` as the cancel mask
+ * matches its register (a1).
+ */
 s32 func_8005E348_main(s16 winId) {
     TextWindow *window = &D_800CC69C_main[winId];
     TextWindowSprite *sprite;
@@ -1310,7 +1317,6 @@ s32 func_8005E348_main(s16 winId) {
     s16 square;
     f32 bestX;
     f32 bestY;
-    s16 cancel;
 
     if (window->unk_9A != 3) {
         input = func_8005F918_main(window);
@@ -1489,7 +1495,7 @@ s32 func_8005E348_main(s16 winId) {
             HuAudFXPlay(1);
         }
     }
-    cancel = window->unk_38 & 1 ? 0 : 0x4000;
+    i = window->unk_38 & 1 ? 0 : 0x4000;
     if (input & 0x8000) {
         if (window->unk_F4[window->unk_31].unk_00 == 2) {
             if (window->unk_AA != -1) {
@@ -1514,11 +1520,11 @@ s32 func_8005E348_main(s16 winId) {
         window->input = input;
         return 0;
     }
-    if ((input & cancel) || (input & window->unk_A6)) {
+    if ((input & i) || (input & window->unk_A6)) {
         window->unk_9A = 0;
         window->unk_A4 = 0;
         window->unk_31 = -1;
-        if (input & cancel) {
+        if (input & i) {
             if (window->unk_AA != -1) {
                 if (window->unk_38 & 0x20) {
                     HuAudFXPlay(0);

@@ -73,7 +73,7 @@ s32 func_80045314_main(void);
 s32 func_80036610_main(void);
 void func_800452BC_main(s32 mgIndex);
 s16 func_8003A37C_main(GAMEMES *gMes, char *str, u8 flags, s16 arg3, s16 arg4);
-s16 func_8003A3C4_main(GAMEMES *gMes, u8 *str, u8 flags, s16 x, s16 arg4, f32 scaleX, f32 scaleY);
+s16 func_8003A3C4_main(GAMEMES *gMes, u8 *str, u8 flags, s16 x, s16 y, f32 scaleX, f32 scaleY);
 s16 func_8005B5EC_main(u8 *str);
 s32 func_8003B4D8_main(GAMEMES *gMes, s32 fileNo, s32 seNo);
 s32 func_8003C058_main(GAMEMES *gMes);
@@ -1504,17 +1504,15 @@ s16 func_8003A37C_main(GAMEMES *gMes, char *str, u8 flags, s16 arg3, s16 arg4) {
     return func_8003A3C4_main(gMes, (u8 *)str, flags, arg3, arg4, 1.0f, 1.0f);
 }
 
-#ifdef NON_MATCHING
-/* Unused arg4 is loaded into a saved register and charW is copied between registers in the target. */
-s16 func_8003A3C4_main(GAMEMES *gMes, u8 *str, u8 flags, s16 x, s16 arg4, f32 scaleX, f32 scaleY) {
+s16 func_8003A3C4_main(GAMEMES *gMes, u8 *str, u8 flags, s16 x, s16 y, f32 scaleX, f32 scaleY) {
+    s16 grp;
     s16 animId = -1;
     s16 len;
     s16 i;
-    s16 grp;
     s16 member;
     s16 width;
-    s32 charW;
-    s16 y;
+    s16 charW;
+    s16 ofsY;
     u32 code;
     u8 *p;
 
@@ -1526,8 +1524,7 @@ s16 func_8003A3C4_main(GAMEMES *gMes, u8 *str, u8 flags, s16 x, s16 arg4, f32 sc
     }
     grp = gMes->strGId[i] = HuSprGrpCreate(len + 1, 5);
     charW = (flags & 1) ? 22 : 15;
-    width = 0;
-    for (p = str; *p != 0; p++) {
+    for (p = str, width = 0; *p != 0; p++) {
         if ((*p >= 'a' && *p <= 'z') || (*p >= 0xD0 && *p <= 0xEF)) {
             width += 10;
         } else if (*p == 0x5C) {
@@ -1543,15 +1540,20 @@ s16 func_8003A3C4_main(GAMEMES *gMes, u8 *str, u8 flags, s16 x, s16 arg4, f32 sc
     } else {
         x = -x * scaleX;
     }
+    if (y == -1) {
+        y = 0;
+    } else {
+        y = -y * scaleY;
+    }
     for (member = 1; *str != 0; member++) {
         code = func_8003A81C_main(str, flags);
         animId = code >> 16;
         func_80055024_main(grp, member, animId, code & 0xFF);
-        y = 0;
+        ofsY = 0;
         if (*str >= 0xD0 && *p < 0xF0) {
-            y = -2;
+            ofsY = -2;
         }
-        HuSprPosSet(grp, member, x, y);
+        HuSprPosSet(grp, member, x, ofsY);
         func_80055458_main(grp, member, 255);
         HuSprPriSet(grp, member, 5);
         HuSprAttrReset(grp, member, 0xFFFF);
@@ -1566,7 +1568,9 @@ s16 func_8003A3C4_main(GAMEMES *gMes, u8 *str, u8 flags, s16 x, s16 arg4, f32 sc
             x += charW * scaleX;
         }
         func_800554C4_main(grp, member, 0);
-        str += (str[1] == 0x80 || str[1] == 0x81);
+        if (str[1] == 0x80 || str[1] == 0x81) {
+            str++;
+        }
         str++;
     }
     func_80055024_main(grp, 0, animId, 0);
@@ -1574,9 +1578,6 @@ s16 func_8003A3C4_main(GAMEMES *gMes, u8 *str, u8 flags, s16 x, s16 arg4, f32 sc
     func_800554C4_main(grp, 0, -1);
     return i;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/gamemes", func_8003A3C4_main);
-#endif
 
 u32 func_8003A81C_main(u8 *str, u8 flags) {
     u8 c = str[0];

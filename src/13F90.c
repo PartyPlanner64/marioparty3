@@ -19,8 +19,6 @@ void func_80013D44_main(s16 model);
 void func_80013D4C_main(s16 model);
 void func_80013FB4_main(s16 model);
 
-#ifdef NON_MATCHING
-/* rand8() mask now matches via implicit declaration; remaining diff is a2/a3 swaps (swap tmp, group/j loop) */
 void func_80013390_main(s16 model, s16 type, char *name, void (*func)(s16)) {
     HmfModel *modelP = &HmfModelData[model];
     HmfData *hmf = modelP->hmf;
@@ -31,7 +29,6 @@ void func_80013390_main(s16 model, s16 type, char *name, void (*func)(s16)) {
     s32 first;
     s32 count;
     s16 i;
-    s16 j;
     Vtx *vert;
     s16 a;
     s16 b;
@@ -74,11 +71,18 @@ void func_80013390_main(s16 model, s16 type, char *name, void (*func)(s16)) {
         order[b] = tmp;
     }
     group = &hmf->unkB0[first];
-    for (j = 0; j < group->count; j++) {
-        vert = &hmf->unk40[group->indices[j]];
-        bc->unk28[j].x = vert->v.ob[0] - group->center.x;
-        bc->unk28[j].y = vert->v.ob[1] - group->center.y;
-        bc->unk28[j].z = vert->v.ob[2] - group->center.z;
+    /* A goto loop (no loop notes) is needed for GCC to weight register allocation as the original did. */
+    tmp = 0;
+    if (tmp < group->count) {
+    nextVertex:
+        vert = &hmf->unk40[group->indices[tmp]];
+        bc->unk28[tmp].x = vert->v.ob[0] - group->center.x;
+        bc->unk28[tmp].y = vert->v.ob[1] - group->center.y;
+        bc->unk28[tmp].z = vert->v.ob[2] - group->center.z;
+        tmp++;
+        if (tmp < group->count) {
+            goto nextVertex;
+        }
     }
     if (type != -1) {
         switch (type) {
@@ -114,9 +118,6 @@ void func_80013390_main(s16 model, s16 type, char *name, void (*func)(s16)) {
     HuMemFree(hmf->unk40);
     HuMemFree(order);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/13F90", func_80013390_main);
-#endif
 
 void func_800138EC_main(s16 arg0, s32 arg1, s32 arg2) {
     HmfModelData_UnkBC_Struct *lightFlags = HmfModelData[arg0].unkBC;

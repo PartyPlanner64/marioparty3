@@ -153,8 +153,6 @@ HmfData_Unk84_Entry2 *func_80031A60_main(HmfData *hmf, char *name) {
     return &D_800D1FCC_main[i];
 }
 
-#ifdef NON_MATCHING
-/* data/tex pointers are allocated to swapped saved registers (s1/s2) */
 void func_80031B30_main(u8 *data, HmfData *hmf, HmfData_Unk84_Entry2 *tex) {
     u16 bpp;
     s32 size;
@@ -231,16 +229,16 @@ void func_80031B30_main(u8 *data, HmfData *hmf, HmfData_Unk84_Entry2 *tex) {
         dst = tex->unk28;
         data += 0xA;
         for (i = 0; i < size; i += 2) {
+            /* Only the first byte of each RGB triple contributes to the pixel. */
             pixel = ((data[0] & 0xF8) << 8) + ((data[0] & 0xF8) << 3) + ((data[0] & 0xF8) >> 2) + 1;
-            data += 3;
+            data++;
+            data++;
+            data++;
             *dst++ = pixel >> 8;
             *dst++ = pixel;
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/32160", func_80031B30_main);
-#endif
 
 void func_80031DF4_main(HmfData *hmf) {
     char name[0x20];

@@ -3525,10 +3525,6 @@ s32 func_80007080_main(s32 seId, SePlayParam *param) {
     return slots[0];
 }
 
-#ifdef NON_MATCHING
-/* The temporaries holding se, entry and mask get different registers (the
- * target gives them lower allocation priority), and the target frame is 8 bytes
- * larger, as if there were an extra unused 8-byte local. */
 /* Picks the voice to play the given layer of a sound effect on: the requested
  * slot, a free voice, or the oldest voice of lower priority. Returns -1 if
  * there is none. */
@@ -3539,10 +3535,7 @@ s32 func_800072A4_main(s32 seId, s32 layer, s32 slot, s32 variant) {
     SeVoiceList lists[3];
     GameSound *sound;
     u32 order;
-    u32 bit;
     s32 count;
-    s32 tmp;
-    s32 idx;
     s32 i;
     s32 j;
 
@@ -3557,15 +3550,16 @@ s32 func_800072A4_main(s32 seId, s32 layer, s32 slot, s32 variant) {
         return slot;
     }
     if (variant != 0) {
-        mask <<= (variant - 1) * (entry->layers[layer].voiceShift & 0xF);
+        j = (variant - 1) * (entry->layers[layer].voiceShift & 0xF);
+        mask <<= j;
     }
     lists[SE_VOICES_OTHER].count = 0;
     lists[SE_VOICES_SAME].count = 0;
     lists[SE_VOICES_FREE].count = 0;
     count = 0;
     for (i = (mask & 0x1F) ? 0 : 5; i < se->soundCount && mask != 0; i++) {
-        bit = 1 << i;
-        if (mask & bit) {
+        j = 1 << i;
+        if (mask & j) {
             sound = &se->sounds[i];
             if (sound->state >= 2) {
                 if (sound->seId == seId) {
@@ -3577,7 +3571,7 @@ s32 func_800072A4_main(s32 seId, s32 layer, s32 slot, s32 variant) {
                 lists[SE_VOICES_FREE].slots[lists[SE_VOICES_FREE].count++] = i;
             }
             count++;
-            mask &= ~bit;
+            mask &= ~j;
         }
     }
     if (count >= 2) {
@@ -3593,27 +3587,28 @@ s32 func_800072A4_main(s32 seId, s32 layer, s32 slot, s32 variant) {
     }
     if (lists[SE_VOICES_OTHER].count != 0) {
         if (lists[SE_VOICES_OTHER].count == 1) {
-            idx = lists[SE_VOICES_OTHER].slots[0];
-            if (!(entry->priority < se->sounds[idx].priority)) {
-                return idx;
+            i = lists[SE_VOICES_OTHER].slots[0];
+            if (!(entry->priority < se->sounds[i].priority)) {
+                return i;
             }
         } else {
             for (i = 0; i < lists[SE_VOICES_OTHER].count - 1; i++) {
                 order = se->sounds[lists[SE_VOICES_OTHER].slots[i]].order;
                 for (j = i + 1; j < lists[SE_VOICES_OTHER].count; j++) {
-                    idx = lists[SE_VOICES_OTHER].slots[j];
-                    if (se->sounds[idx].order < order) {
-                        order = se->sounds[idx].order;
-                        tmp = lists[SE_VOICES_OTHER].slots[i];
-                        lists[SE_VOICES_OTHER].slots[i] = idx;
-                        lists[SE_VOICES_OTHER].slots[j] = tmp;
+                    sound = &se->sounds[lists[SE_VOICES_OTHER].slots[j]];
+                    if (sound->order < order) {
+                        order = sound->order;
+                        /* mask is no longer needed, reused as the swap temporary */
+                        mask = lists[SE_VOICES_OTHER].slots[i];
+                        lists[SE_VOICES_OTHER].slots[i] = lists[SE_VOICES_OTHER].slots[j];
+                        lists[SE_VOICES_OTHER].slots[j] = mask;
                     }
                 }
             }
             for (j = 0; j < lists[SE_VOICES_OTHER].count; j++) {
-                idx = lists[SE_VOICES_OTHER].slots[j];
-                if (!(entry->priority < se->sounds[idx].priority)) {
-                    return idx;
+                i = lists[SE_VOICES_OTHER].slots[j];
+                if (!(entry->priority < se->sounds[i].priority)) {
+                    return i;
                 }
             }
         }
@@ -3632,9 +3627,6 @@ s32 func_800072A4_main(s32 seId, s32 layer, s32 slot, s32 variant) {
     }
     return -1;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/1140", func_800072A4_main);
-#endif
 
 /* Sets up a voice for a newly started sound effect layer. */
 void func_800076B8_main(s32 seId, s32 slot, u8 priority, SePlayParam *param) {

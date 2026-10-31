@@ -1294,12 +1294,14 @@ s32 func_8005E1D8_main(s16 winId, s16 arg1, s32 arg2) {
 
 #ifdef NON_MATCHING
 /*
- * Remaining diffs: the cursor target index reuses the sign extension from the
- * `unk_31 != selected` compare (one instruction short), and `sprite` lands in
- * v1 instead of a0. The target needs a CSE block boundary (label or loop end)
- * between the cursorStart and cursorTarget assignments; e.g. a `do {} while (0)`
- * there restores the missing instruction. Reusing `i` as the cancel mask
- * matches its register (a1).
+ * Remaining diff: `sprite` is allocated to v1 instead of a0 (6 instructions).
+ * The do/while blocks give the CSE block boundary the target needs, so the
+ * cursor target index is recomputed from `selected` instead of reusing the
+ * compare's sign extension. An empty `if` there has the same effect.
+ * `sprite` has two deaths, so global-alloc places it. It only conflicts with
+ * `window`, `selected` and `input`, which all cross calls and so cannot exclude
+ * v1. The original likely has another pseudo live across this block (or an a0
+ * preference) that is not yet understood.
  */
 s32 func_8005E348_main(s16 winId) {
     TextWindow *window = &D_800CC69C_main[winId];
@@ -1483,11 +1485,15 @@ s32 func_8005E348_main(s16 winId) {
         sprite = &window->unk_F4[window->unk_31];
         window->unk_31 = window->unk_32 = selected;
         window->unk_9A = 3;
-        window->cursorStartX = sprite->unk_02 - 12;
-        window->cursorStartY = sprite->unk_04 + 8;
-        sprite = &window->unk_F4[selected];
-        window->cursorTargetX = sprite->unk_02 - 12;
-        window->cursorTargetY = sprite->unk_04 + 8;
+        do {
+            window->cursorStartX = sprite->unk_02 - 12;
+            window->cursorStartY = sprite->unk_04 + 8;
+        } while (0);
+        do {
+            sprite = &window->unk_F4[selected];
+            window->cursorTargetX = sprite->unk_02 - 12;
+            window->cursorTargetY = sprite->unk_04 + 8;
+        } while (0);
         window->unk_A4 = 0;
         if (window->unk_38 & 0x20) {
             HuAudFXPlay(0);

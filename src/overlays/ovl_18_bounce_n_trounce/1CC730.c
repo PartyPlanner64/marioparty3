@@ -119,7 +119,7 @@ void func_80108F98_bounce_n_trounce(omObjData *object) {
     func_8001C258_main(object->model[6], 4, 0);
     Hu3DModelPosSet(object->model[6], object->trans.x, object->trans.y + 5.0f, object->trans.z);
     func_8001C814_main(object->model[6], 3, 0);
-    func_8001C6A8_main(object->model[6], 0.0f);
+    Hu3DMotionTimeSet(object->model[6], 0.0f);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_18_bounce_n_trounce/1CC730", func_80109018_bounce_n_trounce);

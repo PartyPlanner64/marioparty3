@@ -261,7 +261,7 @@ s16 HuWinCreate(s16 x, s16 y, s16 width, s16 height, s32 arg4, s16 flags) {
     window->unk68 = HuSprAnimRead(D_800CE2C4_main);
     group = HuSprGrpCreate(22, 5);
     window->unk_6C = group;
-    func_80055458_main(group, 0, 0x100);
+    HuSprTPLvlSet(group, 0, 0x100);
     HuSprAttrReset(group, 0, 0xFFFF);
     HuSprAttrSet(group, 0, 0x1009000);
     func_80055024_main(group, 0, window->unk66, 0);
@@ -286,15 +286,15 @@ s16 HuWinCreate(s16 x, s16 y, s16 width, s16 height, s32 arg4, s16 flags) {
                 func_8005B040_main(window->pixels, width, height);
             }
         }
-        func_80055458_main(group, 0, 100);
+        HuSprTPLvlSet(group, 0, 100);
         HuSprAttrReset(group, 0, 0x8000);
         func_800550F4_main(group, 0, 0);
     } else {
-        func_80055458_main(group, 0, 0);
+        HuSprTPLvlSet(group, 0, 0);
         HuSprAttrSet(group, 0, 0x8000);
         func_800550F4_main(group, 0, 0);
     }
-    func_80055458_main(group, 1, 0x100);
+    HuSprTPLvlSet(group, 1, 0x100);
     HuSprAttrReset(group, 1, 0xFFFF);
     HuSprAttrSet(group, 1, 0x1009000);
     func_80055024_main(group, 1, window->unk68, 0);
@@ -604,17 +604,17 @@ void HuWinBGTPLvlSet(s16 winId, s16 arg1) {
     } else {
         HuSprAttrReset(window->unk_6C, 0, 0x8000);
     }
-    func_80055458_main(window->unk_6C, 0, arg1 & 0xFFFF);
+    HuSprTPLvlSet(window->unk_6C, 0, arg1 & 0xFFFF);
 }
 
 void func_8005BF70_main(s16 winId, s32 arg1) {
     TextWindow *window = &winData[winId];
     s16 i;
 
-    func_80055458_main(window->unk_6C, 1, arg1 & 0xFFFF);
+    HuSprTPLvlSet(window->unk_6C, 1, arg1 & 0xFFFF);
     for (i = 12; i < 22; i++) {
         if (window->unk_6E[i] != -1) {
-            func_80055458_main(window->unk_6C, i, arg1 & 0xFFFF);
+            HuSprTPLvlSet(window->unk_6C, i, arg1 & 0xFFFF);
         }
     }
 }
@@ -1200,7 +1200,7 @@ void HuWinProc(void) {
             window = &winData[winId];
             if ((window->unk_38 & 0x400) ||
                 ((!D_800CB99C_main || (window->unk_38 & 0x40)) &&
-                 (func_80049F98_main() + D_800D6A90_main != 0))) {
+                 (omPauseChk() + D_800D6A90_main != 0))) {
                 if (window->unk_38 & 0x100) {
                     func_8005DC94_main(winId);
                 }
@@ -1274,7 +1274,7 @@ s32 HuWinChoiceGet(s16 winId, s16 arg1, s32 arg2) {
         window->unk6A = HuSprAnimRead(data);
         HuMemMemoryFreePerm(data);
         func_80055024_main(window->unk_6C, 2, window->unk6A, 0);
-        func_80055458_main(window->unk_6C, 2, 0x100);
+        HuSprTPLvlSet(window->unk_6C, 2, 0x100);
         HuSprAttrReset(window->unk_6C, 2, 0xFFFF);
         HuSprAttrSet(window->unk_6C, 2, 0x1009000);
         HuSprPriSet(window->unk_6C, 2, window->unk60 - 1);
@@ -2215,7 +2215,7 @@ s32 func_80060880_main(s32 x, s32 y, s32 frameIndex) {
     if (frame->shadowFile != 0) {
         member = HuWinAnimSet(winId, frame->shadowFile, 0, 0, 0);
         window->unk276 = member;
-        func_80055458_main(window->unk_6C, member, 255);
+        HuSprTPLvlSet(window->unk_6C, member, 255);
         HuSprPriSet(window->unk_6C, member, 15001);
         HuSprPosSet(window->unk_6C, member, 0, 0);
         HuSprScaleSet(window->unk_6C, member, 0, 0);
@@ -2320,9 +2320,9 @@ void func_8006105C_main(s32 winId, s32 alpha) {
 
     HuSprAttrSet(window->unk_6C, window->unk274, 0x1000);
     alpha &= 0xFF;
-    func_80055458_main(window->unk_6C, window->unk274, alpha);
+    HuSprTPLvlSet(window->unk_6C, window->unk274, alpha);
     if (window->unk276 != 0) {
-        func_80055458_main(window->unk_6C, window->unk276, alpha);
+        HuSprTPLvlSet(window->unk_6C, window->unk276, alpha);
     }
 }
 

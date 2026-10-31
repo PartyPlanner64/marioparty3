@@ -644,7 +644,7 @@ void func_80106F1C_vine_with_me(omObjData *arg0) {
     D_80115608_vine_with_me = (-D_801155B4_vine_with_me * D_80115604_vine_with_me + 0.5) * 320.0 * 4.0;
     D_80115638_vine_with_me = (-D_801155AC_vine_with_me * D_80115604_vine_with_me + 0.5) * 240.0 * 4.0;
     func_801087BC_vine_with_me();
-    if (func_80049F98_main() != 0) {
+    if (omPauseChk() != 0) {
         return;
     }
     var_f20 = -300.0f;
@@ -664,8 +664,8 @@ void func_80106F1C_vine_with_me(omObjData *arg0) {
             func_8001C258_main(arg0->model[11], 4, 0);
         }
         if (D_80111B94_vine_with_me == 4) {
-            func_8001C6A8_main(arg0->model[4], 0.0f);
-            func_8001C6A8_main(arg0->model[5], 0.0f);
+            Hu3DMotionTimeSet(arg0->model[4], 0.0f);
+            Hu3DMotionTimeSet(arg0->model[5], 0.0f);
             func_8001C258_main(arg0->model[4], 4, 0);
             func_8001C258_main(arg0->model[5], 4, 0);
             func_8001C8E4_main(D_80115584_vine_with_me[0]->model[0], 0x400);
@@ -699,7 +699,7 @@ void func_80106F1C_vine_with_me(omObjData *arg0) {
             HmfModelData[arg0->model[3]].pos.y += ((D_8011560C_vine_with_me + 0.75) / 15.0) * 16.0;
         }
         if (D_80111B94_vine_with_me == 16) {
-            func_8001C6A8_main(arg0->model[6], 0.0f);
+            Hu3DMotionTimeSet(arg0->model[6], 0.0f);
             func_8001C258_main(arg0->model[6], 4, 0);
             func_8001C258_main(arg0->model[7], 4, 0);
             func_8001C8E4_main(arg0->model[2], 0);
@@ -765,7 +765,7 @@ void func_80106F1C_vine_with_me(omObjData *arg0) {
             Hu3DModelPosSet(arg0->model[12 + var_s1], D_80115610_vine_with_me[var_s1], -640.0 - D_80115640_vine_with_me.unk22[var_s1] * 30.0 - (temp_s2 - 79.0) * (temp_s2 - 79.0) - (temp_s2 - 0x4F) * 10.0, 0.0f);
         } else {
             Hu3DModelPosSet(arg0->model[12 + var_s1], D_80115610_vine_with_me[var_s1], -640.0 - D_80115640_vine_with_me.unk22[var_s1] * 30.0, 0.0f);
-            func_8001C6A8_main(arg0->model[12 + var_s1], temp_s2 - 30.0);
+            Hu3DMotionTimeSet(arg0->model[12 + var_s1], temp_s2 - 30.0);
         }
         if (temp_s2 >= 31 && temp_s2 < 89) {
             temp_a0_3 = (temp_s2 - 30 + D_8011558D_vine_with_me[var_s1] / 2) * 2;
@@ -1415,7 +1415,7 @@ void func_8010D4AC_vine_with_me(omObjData *arg0, s8 arg1, s8 arg2) {
                 }
                 D_80112590_vine_with_me[arg1] = atan2df(-D_801125A0_vine_with_me[arg1] * 0.5, -(D_801125B8_vine_with_me[arg1] * 0.96 + D_80111C38_vine_with_me[arg1] * 450.0 * 0.04 - D_801125B8_vine_with_me[arg1]) * 0.5);
                 func_8001C5B4_main(arg0->model[0], arg0->motion[3]);
-                func_8001C6A8_main(arg0->model[0], 0.0f);
+                Hu3DMotionTimeSet(arg0->model[0], 0.0f);
                 func_8001C814_main(arg0->model[0], 1, 1);
             }
             if (D_80111C80_vine_with_me[arg1] == 20.0f) {
@@ -1449,7 +1449,7 @@ void func_8010D4AC_vine_with_me(omObjData *arg0, s8 arg1, s8 arg2) {
                     D_80111C80_vine_with_me[arg1] -= 1.0f;
                 }
                 if (D_80111C80_vine_with_me[arg1] == 1.0f) {
-                    func_8004ACE0_main(0x286, D_80115670_vine_with_me[arg1]);
+                    PlayerFXPlay(0x286, D_80115670_vine_with_me[arg1]);
                     func_8004AC98_main(0x493, arg1);
                     omVibrate(D_80115670_vine_with_me[arg1], 0xA, 0, 0xA);
                     D_801155FA_vine_with_me = 1;
@@ -1474,7 +1474,7 @@ void func_8010D4AC_vine_with_me(omObjData *arg0, s8 arg1, s8 arg2) {
                     D_80112590_vine_with_me[arg1] = 275.0f;
                     D_80112598_vine_with_me[arg1] /= 1.5;
                     func_8001C5B4_main(arg0->model[0], arg0->motion[4]);
-                    func_8001C6A8_main(arg0->model[0], 8.0f);
+                    Hu3DMotionTimeSet(arg0->model[0], 8.0f);
                     func_8001C814_main(arg0->model[0], 1, 1);
                 }
                 if (D_80111C68_vine_with_me[arg1] < temp_f20_3 + 135.0 && temp_f20_3 - 165.0 < D_80111C68_vine_with_me[arg1] && D_80111C70_vine_with_me[arg1] <= -182.5 && D_801125B0_vine_with_me[arg1] > -182.5) {
@@ -1496,7 +1496,7 @@ void func_8010D4AC_vine_with_me(omObjData *arg0, s8 arg1, s8 arg2) {
                         }
                     }
                     func_8001C5B4_main(arg0->model[0], arg0->motion[4]);
-                    func_8001C6A8_main(arg0->model[0], 8.0f);
+                    Hu3DMotionTimeSet(arg0->model[0], 8.0f);
                     func_8001C814_main(arg0->model[0], 3, 0);
                     func_8001C624_main(arg0->model[0], HmfModelData[arg0->motion[0]].unk02, 0, 0x14, 2);
                     if (D_80111C5C_vine_with_me[arg1] < 8) {

@@ -141,7 +141,7 @@ void func_80117A3C_msetup(void) {
     backgroundGroup = HuSprGrpCreate(backgroundCount, 0);
     for (i = 0; i < backgroundCount; i++) {
         sprites[i] = func_8000B838_main(backgrounds[i].dataId);
-        func_80055458_main(backgroundGroup, i, 0x100);
+        HuSprTPLvlSet(backgroundGroup, i, 0x100);
         HuSprAttrReset(backgroundGroup, i, 0xFFFF);
         HuSprAttrSet(backgroundGroup, i, 0x1000);
         HuSprScaleSet(backgroundGroup, i, 1.0f, 1.0f);
@@ -163,7 +163,7 @@ void func_80117A3C_msetup(void) {
         HuSprAttrSet(group, i, 0x1000);
         func_800550F4_main(group, i, 0);
         func_80055024_main(group, i, optionSprites[i], 0);
-        func_80055458_main(group, i, 0x100);
+        HuSprTPLvlSet(group, i, 0x100);
         if (i != 0) {
             HuSprPriSet(group, i, 400);
             switch (menu->type) {
@@ -171,7 +171,7 @@ void func_80117A3C_msetup(void) {
                     HuSprAttrSet(group, i, 0x9000);
                     break;
                 case 1:
-                    func_80055458_main(group, i, 0x40);
+                    HuSprTPLvlSet(group, i, 0x40);
                     break;
                 case 2:
                     break;
@@ -188,14 +188,14 @@ void func_80117A3C_msetup(void) {
             HuSprAttrSet(shadowGroup, i, 0x9000);
             func_800550F4_main(shadowGroup, i, 0);
             func_80055024_main(shadowGroup, i, sprite, 0);
-            func_80055458_main(shadowGroup, i, 0x80);
+            HuSprTPLvlSet(shadowGroup, i, 0x80);
             HuSprPriSet(shadowGroup, i, 450);
             HuSprColorSet(shadowGroup, i, 0, 0, 0);
         }
     } else if (menu->type == 2) {
         HuSprPriSet(group, 1, 500);
-        func_80055458_main(group, 0, 0x40);
-        func_80055458_main(group, 1, 0x40);
+        HuSprTPLvlSet(group, 0, 0x40);
+        HuSprTPLvlSet(group, 1, 0x40);
     }
     model = func_8000B108_main(0xA0089, 0x29D);
     decoration = func_8000B108_main(0x140068, 0x29D);
@@ -276,7 +276,7 @@ void func_80117A3C_msetup(void) {
                             }
                             break;
                         case 1:
-                            func_80055458_main(group, selection + 1, 0x40);
+                            HuSprTPLvlSet(group, selection + 1, 0x40);
                             break;
                     }
                 case 1:
@@ -304,10 +304,10 @@ void func_80117A3C_msetup(void) {
                             HuSprAttrReset(group, selection + 1, 0x8000);
                             break;
                         case 1:
-                            func_80055458_main(group, selection + 1, 0x100);
+                            HuSprTPLvlSet(group, selection + 1, 0x100);
                             break;
                         case 2:
-                            func_80055458_main(group, selection, 0x100);
+                            HuSprTPLvlSet(group, selection, 0x100);
                             break;
                     }
                     break;
@@ -414,8 +414,8 @@ void func_80117A3C_msetup(void) {
                     }
                     if (cursor.selection != selection) {
                         HuAudFXPlay(1);
-                        func_80055458_main(group, cursor.selection + 1, 0x40);
-                        func_80055458_main(group, selection + 1, 0x100);
+                        HuSprTPLvlSet(group, cursor.selection + 1, 0x40);
+                        HuSprTPLvlSet(group, selection + 1, 0x100);
                         cursor.selection = selection;
                     }
                     if (buttons & A_BUTTON) {
@@ -426,7 +426,7 @@ void func_80117A3C_msetup(void) {
                         HuAudFXPlay(4);
                         menu->state = 0;
                         menu->result = -1;
-                        func_80055458_main(group, cursor.selection + 1, 0x40);
+                        HuSprTPLvlSet(group, cursor.selection + 1, 0x40);
                     }
                     break;
                 case 2:
@@ -437,8 +437,8 @@ void func_80117A3C_msetup(void) {
                     }
                     if (cursor.selection != selection) {
                         HuAudFXPlay(1);
-                        func_80055458_main(group, cursor.selection, 0x40);
-                        func_80055458_main(group, selection, 0x100);
+                        HuSprTPLvlSet(group, cursor.selection, 0x40);
+                        HuSprTPLvlSet(group, selection, 0x100);
                         cursor.selection = selection;
                         menu->result = selection;
                     }
@@ -450,7 +450,7 @@ void func_80117A3C_msetup(void) {
                         HuAudFXPlay(4);
                         menu->state = 0;
                         menu->result = -1;
-                        func_80055458_main(group, cursor.selection, 0x40);
+                        HuSprTPLvlSet(group, cursor.selection, 0x40);
                     }
                     break;
             }

@@ -482,7 +482,7 @@ void func_800F8908_shared_board(void) {
             (D_800A12D8_main == 0) &&
             ((GwSystem.current_player_index != temp_s0[0]) || (D_800A12D4_main == 0)) &&
             (D_800C9520_main[GwPlayer[temp_s0[0]].pad] & 0x20)) {
-            func_8004ACE0_main(0x2BD, temp_s0[0]);
+            PlayerFXPlay(0x2BD, temp_s0[0]);
         }
         HuPrcVSleep();
     }
@@ -852,10 +852,10 @@ static void func_800F93A4_shared_board(void) {
             if (D_800C9930_main != -1) {
                 func_800039A4_main(D_800C9930_main, 0x5A);
                 D_800C9930_main = -1;
-                func_8004A950_main();
+                HuAudSeqStop();
             }
             if (D_800CE206 != 0) {
-                func_8004A950_main();
+                HuAudSeqStop();
                 D_800CE206 = 0;
             }
         }
@@ -2519,7 +2519,7 @@ static void MBMain(void) {
 
                     if ((space->unk_02 & 0x8000) || func_800F9A68_shared_board(system->current_player_index)) {
                         // Jump animation
-                        func_8004ACE0_main(0x3A, system->current_player_index);
+                        PlayerFXPlay(0x3A, system->current_player_index);
                         MBPlayerMotionSet(-1, 2, 0);
 
                         switch (system->walk_speed) {
@@ -2547,19 +2547,19 @@ static void MBMain(void) {
 
                         switch (system->walk_speed) {
                             case 0:
-                                func_8001C92C_main(temp_v0_4->player_obj->omObj1->model[0], 2.0f);
+                                Hu3DMotionSpeedSet(temp_v0_4->player_obj->omObj1->model[0], 2.0f);
                                 MBPlayerPosMoveSet(system->current_player_index, 5);
                                 break;
                             case 1:
-                                func_8001C92C_main(temp_v0_4->player_obj->omObj1->model[0], 1.0f);
+                                Hu3DMotionSpeedSet(temp_v0_4->player_obj->omObj1->model[0], 1.0f);
                                 MBPlayerPosMoveSet(system->current_player_index, 0xA);
                                 break;
                             case 2:
-                                func_8001C92C_main(temp_v0_4->player_obj->omObj1->model[0], 0.75f);
+                                Hu3DMotionSpeedSet(temp_v0_4->player_obj->omObj1->model[0], 0.75f);
                                 MBPlayerPosMoveSet(system->current_player_index, 0xF);
                                 break;
                         }
-                        func_8001C92C_main(temp_v0_4->player_obj->omObj1->model[0], 1.0f);
+                        Hu3DMotionSpeedSet(temp_v0_4->player_obj->omObj1->model[0], 1.0f);
                     }
 
                     // Update position
@@ -3070,20 +3070,20 @@ static void MBMain(void) {
                                     func_800550F4_main(temp_s2_2, 0, 0);
                                     HuSprAttrSet(temp_s2_2, 0, 0x180C);
                                     HuSprPosSet(temp_s2_2, 0, 0xA0, 0x5A);
-                                    func_80055458_main(temp_s2_2, 0, 0);
+                                    HuSprTPLvlSet(temp_s2_2, 0, 0);
                                     HuAudFXPlay(0x10);
 
                                     // Animate sprite appearing
                                     for (i = 0; i < 0xA; i++) {
-                                        func_80055458_main(temp_s2_2, 0, (i * 25));
+                                        HuSprTPLvlSet(temp_s2_2, 0, (i * 25));
                                         HuPrcVSleep();
                                     }
 
-                                    func_80055458_main(temp_s2_2, 0, 0x100);
+                                    HuSprTPLvlSet(temp_s2_2, 0, 0x100);
                                     HuPrcSleep(5);
                                     MBPlayerMotionSet(-1, 5, 0);
                                     HuPrcSleep(5);
-                                    func_8004ACE0_main(0x2BD, system->current_player_index);
+                                    PlayerFXPlay(0x2BD, system->current_player_index);
                                     HuPrcSleep(0x14);
                                     func_800F2388_shared_board(-1, -1, 0, 5, 2);
                                     HuPrcSleep(0xA);
@@ -3250,13 +3250,13 @@ static void MBMain(void) {
                                 MBCoinTakeCreate(system->current_player_index, var_s1_12);
                                 HuPrcSleep(0x14);
                                 MBPlayerMotionSet(-1, 5, 0);
-                                func_8004ACE0_main(0x274, system->current_player_index);
+                                PlayerFXPlay(0x274, system->current_player_index);
                                 MBPlayerMotionWait(-1);
                             } else {
                                 // Lost everything
                                 MBDlgWinExec(-1, 0x2F04);
                                 MBPlayerMotionSet(-1, 3, 0);
-                                func_8004ACE0_main(0x286, system->current_player_index);
+                                PlayerFXPlay(0x286, system->current_player_index);
                                 MBPlayerMotionWait(-1);
                                 HuPrcSleep(0x14);
                             }

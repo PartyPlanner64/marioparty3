@@ -322,13 +322,13 @@ void func_80110D50_option(s32 arg0, s32 arg1) {
 
 void func_80110D94_option(s32 arg0) {
     // The original call omits the scale argument.
-    void (*setModelScale)() = (void (*)())func_8001C92C_main;
+    void (*setModelScale)() = (void (*)())Hu3DMotionSpeedSet;
 
     setModelScale(D_80114F70_option[arg0].unk_00);
 }
 
 void func_80110DCC_option(s32 arg0, u32 arg1) {
-    func_8001C6A8_main(D_80114F70_option[arg0].unk_00, arg1);
+    Hu3DMotionTimeSet(D_80114F70_option[arg0].unk_00, arg1);
 }
 
 void func_80110E30_option(s32 arg0) {
@@ -347,7 +347,7 @@ void func_80110F58_option(s32 arg0, s32 arg1, s32 arg2) {
     s16 modelId = func_801109AC_option(arg0);
     s16 parentModelId = func_801109D0_option(arg1);
 
-    func_8001F304_main(modelId, parentModelId);
+    Hu3DMotionSet(modelId, parentModelId);
     func_8001C814_main(modelId, -1, arg2);
 }
 

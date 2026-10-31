@@ -59,7 +59,7 @@ Process* omAddPrcObj(process_func func, u16 priority, s32 stackSize, s32 extData
 s32 omDelPrcObj(Process*);
 s32 omOvlCallEx(s32 ovlID, s16 event, u16 stat);
 void omMain(void);
-u16 func_80049F98_main(void);
+u16 omPauseChk(void);
 void func_8004A208_main(void);
 void omPrcSetStatBit(Process* prc, s32 stat);
 void omOvlGotoEx(s32 ovlID, s16 event, u16 stat);

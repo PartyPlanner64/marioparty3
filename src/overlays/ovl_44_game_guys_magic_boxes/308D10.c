@@ -141,7 +141,7 @@ void func_80108AF8_game_guys_magic_boxes(void) {
             } else {
                 D_8010C21E_game_guys_magic_boxes -= 8;
             }
-            func_80055458_main(D_8010C9F0_game_guys_magic_boxes, 0, D_8010C21E_game_guys_magic_boxes);
+            HuSprTPLvlSet(D_8010C9F0_game_guys_magic_boxes, 0, D_8010C21E_game_guys_magic_boxes);
             break;
         case 2:
             D_8010C9D9_game_guys_magic_boxes = 0;

@@ -358,7 +358,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800F397C_name_81
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800F3A04_name_81);
 
 void func_800F3AF4_name_81(s32 playerIndex, f32 arg1) {
-    func_8001C92C_main(MBDGetPlayerStruct(playerIndex)->player_obj->omObj1->model[0], arg1);
+    Hu3DMotionSpeedSet(MBDGetPlayerStruct(playerIndex)->player_obj->omObj1->model[0], arg1);
     func_800F8CD8_name_81(playerIndex, arg1);
 }
 

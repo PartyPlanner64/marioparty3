@@ -165,6 +165,11 @@ Hu3DModelPosGet = 0x8001C114; //rom:0x1CD14
 Hu3DModelRotSet = 0x8001C150; //rom:0x1CD50
 Hu3DModelScaleSet = 0x8001C1A0; //rom:0x1CDA0
 Hu3DBGColorSet = 0x8001F38C; //rom:0x1FF8C
+Hu3DInit = 0x8001BF14;
+Hu3DMotionTimeSet = 0x8001C6A8;
+Hu3DMotionSpeedSet = 0x8001C92C;
+Hu3DMotionSet = 0x8001F304;
+Hu3DMotionMotionMaxTimeGet = 0x8001F358;
 
 // gamemes
 GMesInit = 0x8003661C; //rom:0x3721C
@@ -206,6 +211,11 @@ omOvlGotoEx = 0x80048228; //rom:0x48E28
 omOvlHisChg = 0x80048460; //rom:0x49060
 omOvlKill = 0x8004849C; //rom:0x4909C
 omMain = 0x80048504; //rom:0x49104
+omMakeGroup = 0x80047C0C;
+omDelMember = 0x80047D4C;
+omGetGroupMemberList = 0x80047DBC;
+omPauseChk = 0x80049F98;
+omDBGSysKeyObj = 0x800D2118;
 omprevovl = 0x800A1758; //rom:0xA2358 type:s32
 omovlstat = 0x800A1766; //rom:0xA2366 type:u16
 omovlhisidx = 0x800A1768; //rom:0xA2368 size:0x02 type:s16
@@ -239,6 +249,9 @@ HuAudFXPlay = 0x8004AA88; //rom:0x4B688
 HuAudFXPitchSet = 0x8004ABE8; //rom:0x4B7E8
 CharFXPlay = 0x8004AC10; //rom:0x4B810
 HuAudFXStop = 0x8004AD50; //rom:0x4B950
+HuAudSeqStop = 0x8004A950;
+PlayerFXPlay = 0x8004ACE0;
+HuAudFXAllStop = 0x8004AD70;
 
 // 4BF40
 omOutView = 0x8004B340; //rom:0x4BF40
@@ -264,6 +277,9 @@ HuSprColorSet = 0x80055420; //rom:0x56020
 HuSprGet = 0x80055520; //rom:0x56120
 HuSprKill = 0x80055670; //rom:0x56270
 HuSprAnimRead = 0x80055810; //rom:0x56410
+HuSprInit = 0x80052330;
+HuSprTPLvlSet = 0x80055458;
+HuSprClose = 0x80056BAC;
 HuSprGrpLast = 0x800C9934; //
 HuSprGrpFirst = 0x800CC0A0; //
 HuSprGrpData = 0x800CDD70; //

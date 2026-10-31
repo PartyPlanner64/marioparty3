@@ -132,8 +132,8 @@ void func_80105CD4_last5(omObjData *arg0) {
         arg0->rot.x -= 360.0f;
     }
     if (arg0->work[0] >= 0x15) {
-        func_80055458_main(D_80107578_last5->spriteGroup, 0, (0x1F - arg0->work[0]) * 25);
-        func_80055458_main(D_80107578_last5->spriteGroup, 1, (0x1F - arg0->work[0]) * 25);
+        HuSprTPLvlSet(D_80107578_last5->spriteGroup, 0, (0x1F - arg0->work[0]) * 25);
+        HuSprTPLvlSet(D_80107578_last5->spriteGroup, 1, (0x1F - arg0->work[0]) * 25);
     }
 }
 

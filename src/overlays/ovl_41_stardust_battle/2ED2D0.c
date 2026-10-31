@@ -108,7 +108,7 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", D_8011
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80105DA0_stardust_battle);
 
 void func_801065B4_stardust_battle(void) {
-    func_8004A950_main();
+    HuAudSeqStop();
     omOvlReturnEx(1);
 }
 

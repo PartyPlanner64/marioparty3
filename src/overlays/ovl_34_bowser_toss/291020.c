@@ -90,7 +90,7 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", D_8010F53C
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_80105CEC_bowser_toss);
 
 void func_8010649C_bowser_toss(void) {
-    func_8004A950_main();
+    HuAudSeqStop();
     omOvlReturnEx(1);
 }
 

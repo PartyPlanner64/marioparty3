@@ -181,7 +181,7 @@ typedef struct HuSprGrp {
 
 extern HuSprGrp *HuSprGrpData[HUSPR_GRP_MAX];
 
-void func_80052330_main(void);
+void HuSprInit(void);
 void HuSprGrpKill(s16);
 s16 HuSprGrpCreate(u16 arg0, u16 arg1);
 void HuSprPosSet(s16 group, s16 member, s16 arg2, s16 arg3);
@@ -198,11 +198,11 @@ void HuSprZRotSet(s16, s16, f32);
 void HuSprAttrReset(s16 group, s16 member, s32 attr);
 void HuSprAttrSet(s16 group, s16 member, s32 attr);
 void HuSprColorSet(s16, s16, u8, u8, u8);
-void func_80055458_main(s16, s16, u16);
+void HuSprTPLvlSet(s16, s16, u16);
 void func_800554C4_main(s16 group, s16 member, s16 arg2);
 HuSprite *HuSprGet(s16 group, s16 member);
 void HuSprKill(s16);
 s16 HuSprAnimRead(void *);
-void func_80056BAC_main(void);
+void HuSprClose(void);
 
 #endif

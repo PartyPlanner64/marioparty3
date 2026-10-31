@@ -617,7 +617,7 @@ void func_80107210_motor_rooter(omObjData *object) {
         } else {
             m254_sprites[sprite].unk06 = 0;
         }
-        func_80055458_main(m254_sprites[sprite].groupId, 0, (u8)m254_sprites[sprite].unk06);
+        HuSprTPLvlSet(m254_sprites[sprite].groupId, 0, (u8)m254_sprites[sprite].unk06);
         D_801137C8_motor_rooter[object->work[0]].unk28[i] = 0;
     }
     D_801137C8_motor_rooter[object->work[0]].progressSprite = sprite = m254_SetSprite(0xFFF, 0x21, characters.fileIds[GwPlayer[m254_playerId[object->work[0]]].chr], 0, 0);
@@ -651,7 +651,7 @@ void func_801076AC_motor_rooter(omObjData *object) {
             if (D_80113468_motor_rooter[i] == 0) {
                 for (j = 0; j < 5; j++) {
                     sprite = &m254_sprites[player->meterSprites[j]];
-                    func_80055458_main(sprite->groupId, 0, 0);
+                    HuSprTPLvlSet(sprite->groupId, 0, 0);
                 }
                 if (++D_8011346C_motor_rooter[i] >= 3) {
                     D_8011346C_motor_rooter[i] = 0;
@@ -660,7 +660,7 @@ void func_801076AC_motor_rooter(omObjData *object) {
             } else {
                 for (j = 0; j < 5; j++) {
                     sprite = &m254_sprites[player->meterSprites[j]];
-                    func_80055458_main(sprite->groupId, 0, 255);
+                    HuSprTPLvlSet(sprite->groupId, 0, 255);
                 }
                 if (++D_8011346C_motor_rooter[i] >= 3) {
                     D_8011346C_motor_rooter[i] = 0;
@@ -671,7 +671,7 @@ void func_801076AC_motor_rooter(omObjData *object) {
             for (j = 0; j < 5; j++) {
                 sprite = &m254_sprites[player->meterSprites[j]];
                 if (player->unk28[j] == 0) {
-                    func_80055458_main(sprite->groupId, 0, (u8)sprite->unk06);
+                    HuSprTPLvlSet(sprite->groupId, 0, (u8)sprite->unk06);
                 } else {
                     if (player->unk28[j] == 1) {
                         alpha = sprite->unk06 + 10;
@@ -689,7 +689,7 @@ void func_801076AC_motor_rooter(omObjData *object) {
                             player->unk28[j] = 0;
                         }
                     }
-                    func_80055458_main(sprite->groupId, 0, (u8)sprite->unk06);
+                    HuSprTPLvlSet(sprite->groupId, 0, (u8)sprite->unk06);
                 }
             }
         }

@@ -487,7 +487,7 @@ void func_80108638_tidal_toss(omObjData *object) {
     if (work->unk2D != 0) {
         for (i = 9; i < 12; i++) {
             object->model[i] = func_8000B108_main(0x320003, modelTag);
-            func_8001C92C_main(object->model[i], 0.5f);
+            Hu3DMotionSpeedSet(object->model[i], 0.5f);
             Hu3DModelScaleSet(object->model[i], 1.0f, 1.0f, 1.0f);
         }
     }

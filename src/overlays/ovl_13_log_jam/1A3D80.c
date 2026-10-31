@@ -71,7 +71,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_13_log_jam/1A3D80", func_80105B9C_log
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_13_log_jam/1A3D80", func_80105C10_log_jam);
 
 void func_801060C4_log_jam(void) {
-    func_8004A950_main();
+    HuAudSeqStop();
     omOvlReturnEx(1);
 }
 

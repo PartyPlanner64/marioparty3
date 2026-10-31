@@ -91,7 +91,7 @@ extern HuSprGrp *HuSprGrpFirst;
 HuSprGrp *HuSprGrpData[HUSPR_GRP_MAX] BSS;
 extern u16 HuSprGrpNum;
 
-void func_80052330_main(void) {
+void HuSprInit(void) {
     s16 i;
     void **p;
 
@@ -1156,7 +1156,7 @@ void HuSprColorSet(s16 group, s16 member, u8 r, u8 g, u8 b) {
     sprite_ptr->unk_28[2] = b;
 }
 
-void func_80055458_main(s16 group, s16 member, u16 arg2) {
+void HuSprTPLvlSet(s16 group, s16 member, u16 arg2) {
     HuSprite *sprite_ptr = HuSprGrpData[group]->members[member];
 
     sprite_ptr->unk_2C = arg2;
@@ -1786,7 +1786,7 @@ void func_80056758_main(HuSprite *sprite) {
     sprite->unk_200 = sprite->unk_24;
 }
 
-void func_80056BAC_main(void) {
+void HuSprClose(void) {
     s16 i;
 
     func_80052700_main();

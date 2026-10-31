@@ -2443,7 +2443,7 @@ void func_801064DC_w06(void) {
     }
 
     MBPlayerMotionSet(-1, 6, 0);
-    func_8004ACE0_main(0x262, GwSystem.current_player_index);
+    PlayerFXPlay(0x262, GwSystem.current_player_index);
     if (D_8011B608_w06 != 0) {
         HuPrcSleep(16);
         func_80003A70_main(D_800CDBC8_main);
@@ -3194,7 +3194,7 @@ void func_80108A2C_w06(void) {
         masuA = MBMasuGet(masuAArr[i][0]);
         MBVecDirGet(&masuA->coords, &MBMasuGet(masuBArr[i][0])->coords, &obj->rot);
         if (GwSystem.boardData.halfWordBytes[0] == i) {
-            func_8001C6A8_main(obj->omObj1->model[0], 1000.0f);
+            Hu3DMotionTimeSet(obj->omObj1->model[0], 1000.0f);
         }
         func_8001C814_main(obj->omObj1->model[0], 6, 1);
     }
@@ -3285,7 +3285,7 @@ void func_80108BD0_w06(void) {
             clampedAlpha = mask & alpha;
             alpha = clampedAlpha;
         }
-        func_80055458_main(grp, 0, alpha);
+        HuSprTPLvlSet(grp, 0, alpha);
         if (count >= 2) {
             break;
         }
@@ -3421,7 +3421,7 @@ void func_801091EC_w06(void) {
         }
 
     move:
-        func_8004ACE0_main(0x3A, playerIdx);
+        PlayerFXPlay(0x3A, playerIdx);
         MBPlayerMotionSet(-1, 2, 0);
         func_800EE688_shared_board(player->player_obj, 16.0f, -0.95f);
         HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(
@@ -3447,7 +3447,7 @@ void func_801091EC_w06(void) {
         HuPrcChildWait();
         MBPlayerVibrate(-1, 2);
         MBPlayerMotionSet(-1, -1, 2);
-        func_8004ACE0_main(0x31, playerIdx);
+        PlayerFXPlay(0x31, playerIdx);
         starPrc->user_data = (void *)1;
         HuPrcSleep(40);
         starPrc->user_data = (void *)2;
@@ -3471,14 +3471,14 @@ void func_801091EC_w06(void) {
         } else {
             starMasu = MBMasuGet(0x77);
             MBVecDirGet(&player->player_obj->coords, &starMasu->coords, &player->player_obj->rot);
-            func_8004ACE0_main(0x3A, playerIdx);
+            PlayerFXPlay(0x3A, playerIdx);
             MBPlayerMotionSet(-1, 2, 0);
             func_800EE688_shared_board(player->player_obj, 15.0f, -2.0f);
             HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(
                                                   &player->player_obj->coords, &starMasu->coords, &player->player_obj->coords, 14));
             HuPrcChildWait();
             MBPlayerMotionSet(-1, -1, 2);
-            func_8004ACE0_main(0x31, playerIdx);
+            PlayerFXPlay(0x31, playerIdx);
         }
     }
 
@@ -3903,7 +3903,7 @@ void func_8010A860_w06(void) {
         MBModelTempAllocFree(model2);
         HuVecCopy3F(&model2->coords, &player->player_obj->coords);
         HuAudFXPlay(0x1BD);
-        func_8004ACE0_main(0x286, playerIdx);
+        PlayerFXPlay(0x286, playerIdx);
         MBPlayerVibrate(-1, 4);
         scale = 1.0f;
         player->stat |= 4;
@@ -4260,7 +4260,7 @@ void func_8010B844_w06(void) {
                         HuPrcSleep(30);
                         MBDlgWinExec(0x16, 0x4802);
                         if (D_800A12D0_main != 0) {
-                            func_8004A950_main();
+                            HuAudSeqStop();
                             func_800039A4_main(D_800C9930_main, 60);
                             D_800C9930_main = -1;
                         } else {
@@ -4432,7 +4432,7 @@ void func_8010BBF0_w06(void) {
     }
 
     MBMotionSet(model, -1, 0);
-    func_8001C92C_main(model->omObj1->model[0], 1.2f);
+    Hu3DMotionSpeedSet(model->omObj1->model[0], 1.2f);
     while (MBMotionCheck(model) == 0) {
         HuPrcVSleep();
     }
@@ -4515,7 +4515,7 @@ void func_8010BBF0_w06(void) {
                 func_80107FC0_w06();
                 MBVecForwardSet(&MBPlayerGet(-1)->player_obj->rot);
                 MBPlayerMotionSet(-1, 5, 0);
-                func_8004ACE0_main(0x274, sys->current_player_index);
+                PlayerFXPlay(0x274, sys->current_player_index);
                 HuPrcSleep(30);
                 MBPlayerMotionSet(-1, -1, 2);
                 func_800EC6A8_shared_board();
@@ -4530,8 +4530,8 @@ void func_8010BBF0_w06(void) {
 
     HuAudFXPlay(0x115);
     MBMotionSet(model, -1, 4);
-    func_8001C92C_main(model->omObj1->model[0], 1.2f);
-    func_8001C6A8_main(
+    Hu3DMotionSpeedSet(model->omObj1->model[0], 1.2f);
+    Hu3DMotionTimeSet(
         model->omObj1->model[0], D_800CCF58_main[HmfModelData[model->omObj1->model[0]].unk02].unk02);
     while (func_800D9E80_shared_board(model) == 0) {
         HuPrcVSleep();
@@ -4775,7 +4775,7 @@ void func_8010C9EC_w06(void) {
         model->scale.y = model->scale.x = model->scale.z = 1.0f;
         func_800D9A40_shared_board(effectModel);
         MBMotionSet(model, -1, 0);
-        func_8001C92C_main(model->omObj1->model[0], 1.2f);
+        Hu3DMotionSpeedSet(model->omObj1->model[0], 1.2f);
         while (MBMotionCheck(model) == 0) {
             HuPrcVSleep();
         }
@@ -4904,15 +4904,15 @@ itemSelect:
             func_800550F4_main(grp, 0, 0);
             HuSprAttrSet(grp, 0, 0x180C);
             HuSprPosSet(grp, 0, 0xA0, 0x5A);
-            func_80055458_main(grp, 0, 0);
+            HuSprTPLvlSet(grp, 0, 0);
             MBVecForwardSet(&sp48);
             func_800ED128_shared_board(&player->player_obj->rot, &sp48, &player->player_obj->rot, 0xA);
             HuAudFXPlay(0x19);
             for (; i < 10; i++) {
-                func_80055458_main(grp, 0, i * 25);
+                HuSprTPLvlSet(grp, 0, i * 25);
                 HuPrcVSleep();
             }
-            func_80055458_main(grp, 0, 0x100);
+            HuSprTPLvlSet(grp, 0, 0x100);
 
             if (D_8011C790_w06[shopIdx][row][sel] == 0x13) {
                 while (MBItemFindEmpty(system->current_player_index) != -1) {
@@ -4969,7 +4969,7 @@ itemSelect:
                     func_800550F4_main(grp2, 0, 0);
                     HuSprAttrSet(grp2, 0, 0x1000);
                     HuSprPosSet(grp2, 0, 0xA0, 0x5A);
-                    func_80055458_main(grp2, 0, 0);
+                    HuSprTPLvlSet(grp2, 0, 0);
                     MBVecForwardSet(&sp48);
                     func_800ED128_shared_board(&player->player_obj->rot, &sp48, &player->player_obj->rot, 0xA);
 
@@ -4977,7 +4977,7 @@ itemSelect:
                     scale = 0.0f;
                     do {
                         HuSprPosSet(grp2, 0, 0xA0, sprY);
-                        func_80055458_main(grp2, 0, i * 25);
+                        HuSprTPLvlSet(grp2, 0, i * 25);
                         HuSprScaleSet(grp2, 0, scale, scale);
                         i++;
                         HuPrcVSleep();
@@ -4985,7 +4985,7 @@ itemSelect:
                         scale += 0.1f;
                     } while (i < 10);
                     HuSprScaleSet(grp2, 0, 1.0f, 1.0f);
-                    func_80055458_main(grp2, 0, 0x100);
+                    HuSprTPLvlSet(grp2, 0, 0x100);
                     HuPrcSleep(10);
                     GwPlayer[system->current_player_index].itemNo[MBItemFindEmpty(system->current_player_index)] = item;
                     HuSprGrpKill(grp2);
@@ -4999,7 +4999,7 @@ itemSelect:
             HuPrcSleep(5);
             MBPlayerMotionSet(-1, 5, 0);
             HuPrcSleep(5);
-            func_8004ACE0_main(0x274, system->current_player_index);
+            PlayerFXPlay(0x274, system->current_player_index);
             HuPrcSleep(20);
             HuPrcVSleep();
             func_800F2388_shared_board(-1, -1, 0, 5, 2);
@@ -5025,8 +5025,8 @@ end:
     if (camMasu != -1) {
         HuAudFXPlay(0x115);
         MBMotionSet(model, -1, 4);
-        func_8001C92C_main(model->omObj1->model[0], 1.2f);
-        func_8001C6A8_main(
+        Hu3DMotionSpeedSet(model->omObj1->model[0], 1.2f);
+        Hu3DMotionTimeSet(
             model->omObj1->model[0], D_800CCF58_main[HmfModelData[model->omObj1->model[0]].unk02].unk02);
         while (func_800D9E80_shared_board(model) == 0) {
             HuPrcVSleep();
@@ -5117,7 +5117,7 @@ s32 func_8010DDE4_w06(s32 playerIndex) {
     HuSprAttrSet(grp, 0, 0x1000);
     HuSprPosSet(grp, 0, D_8011C8DC_w06[playerIndex].x,
                         D_8011C8DC_w06[playerIndex].y);
-    func_80055458_main(grp, 0, 0);
+    HuSprTPLvlSet(grp, 0, 0);
     HuAudFXPlay(0x134);
 
     for (i = 0; i < 0x11; i++) {
@@ -5126,10 +5126,10 @@ s32 func_8010DDE4_w06(s32 playerIndex) {
                                 D_8011C8DC_w06[playerIndex].x,
                             (i * D_8011C8FC_w06[playerIndex].y) +
                                 D_8011C8DC_w06[playerIndex].y);
-        func_80055458_main(grp, 0, i << 4);
+        HuSprTPLvlSet(grp, 0, i << 4);
         HuPrcVSleep();
     }
-    func_80055458_main(grp, 0, 0xFF);
+    HuSprTPLvlSet(grp, 0, 0xFF);
 
     if (MBItemFind(playerIndex, 0xC) != -1) {
         hasRareItem = 1;
@@ -5160,7 +5160,7 @@ s32 func_8010DDE4_w06(s32 playerIndex) {
                                 D_8011C8DC_w06[playerIndex].x,
                             (i * D_8011C8FC_w06[playerIndex].y) +
                                 D_8011C8DC_w06[playerIndex].y);
-        func_80055458_main(grp, 0, i << 4);
+        HuSprTPLvlSet(grp, 0, i << 4);
         HuPrcVSleep();
     }
     HuSprGrpKill(grp);
@@ -5200,7 +5200,7 @@ s32 func_8010E250_w06(s32 playerIndex) {
     HuSprAttrSet(grp, 0, 0x1000);
     HuSprPosSet(grp, 0, D_8011C8DC_w06[playerIndex].x,
                         D_8011C8DC_w06[playerIndex].y);
-    func_80055458_main(grp, 0, 0);
+    HuSprTPLvlSet(grp, 0, 0);
 
     {
         playerGrp = HuSprGrpCreate(1, 5);
@@ -5224,7 +5224,7 @@ s32 func_8010E250_w06(s32 playerIndex) {
                                 (D_8011C8FC_w06[playerIndex].x * 16.0f) - 8.0f,
                             D_8011C8DC_w06[playerIndex].y +
                                 (D_8011C8FC_w06[playerIndex].y * 16.0f));
-        func_80055458_main(playerGrp, 0, 0);
+        HuSprTPLvlSet(playerGrp, 0, 0);
         HuAudFXPlay(0x133);
 
         for (i = 0; i < 0x11; i++) {
@@ -5233,12 +5233,12 @@ s32 func_8010E250_w06(s32 playerIndex) {
                                     D_8011C8DC_w06[playerIndex].x,
                                 (i * D_8011C8FC_w06[playerIndex].y) +
                                     D_8011C8DC_w06[playerIndex].y);
-            func_80055458_main(grp, 0, i << 4);
-            func_80055458_main(playerGrp, 0, i << 4);
+            HuSprTPLvlSet(grp, 0, i << 4);
+            HuSprTPLvlSet(playerGrp, 0, i << 4);
             HuPrcVSleep();
         }
-        func_80055458_main(grp, 0, 0xFF);
-        func_80055458_main(playerGrp, 0, 0xFF);
+        HuSprTPLvlSet(grp, 0, 0xFF);
+        HuSprTPLvlSet(playerGrp, 0, 0xFF);
 
         MBWinInsertOpen(MBItemFind(playerIndex, 0xC) == -1 ? 0x620E : 0x620F,
                         (char *)mbCharNameMesTbl[GwPlayer[playerIndex].chr], 0, 0, 0, 0);
@@ -5355,8 +5355,8 @@ s32 func_8010E250_w06(s32 playerIndex) {
                                     D_8011C8DC_w06[playerIndex].x,
                                 (i * D_8011C8FC_w06[playerIndex].y) +
                                     D_8011C8DC_w06[playerIndex].y);
-            func_80055458_main(grp, 0, i << 4);
-            func_80055458_main(playerGrp, 0, i << 4);
+            HuSprTPLvlSet(grp, 0, i << 4);
+            HuSprTPLvlSet(playerGrp, 0, i << 4);
             HuPrcVSleep();
         }
     } else {
@@ -5379,7 +5379,7 @@ s32 func_8010E250_w06(s32 playerIndex) {
         func_80055140_main(playerGrp, 0, 0, 0);
         func_800550F4_main(playerGrp, 0, 1);
         for (i = 0x10; i >= 0; i -= 2) {
-            func_80055458_main(grp, 0, i << 4);
+            HuSprTPLvlSet(grp, 0, i << 4);
             HuPrcVSleep();
         }
     }
@@ -5549,7 +5549,7 @@ void func_8010F20C_w06(void) {
             model->scale.x = -1.0f;
         }
         MBMotionSet(model, -1, 0);
-        func_8001C92C_main(model->omObj1->model[0], 1.2f);
+        Hu3DMotionSpeedSet(model->omObj1->model[0], 1.2f);
         while (MBMotionCheck(model) == 0) {
             HuPrcVSleep();
         }
@@ -5807,7 +5807,7 @@ playerSelected:
             MBVecForwardSet(&MBPlayerGet(-1)->player_obj->rot);
             MBPlayerMotionSet(-1, 5, 0);
             HuPrcSleep(5);
-            func_8004ACE0_main(0x274, sys->current_player_index);
+            PlayerFXPlay(0x274, sys->current_player_index);
             HuPrcSleep(45);
             mbItemBtnF = 1;
             goto outcomeDone;
@@ -5863,8 +5863,8 @@ finishMenu:
     if (camMasu != -1) {
         HuAudFXPlay(0x126);
         MBMotionSet(model, -1, 4);
-        func_8001C92C_main(model->omObj1->model[0], 1.2f);
-        func_8001C6A8_main(
+        Hu3DMotionSpeedSet(model->omObj1->model[0], 1.2f);
+        Hu3DMotionTimeSet(
             model->omObj1->model[0], D_800CCF58_main[HmfModelData[model->omObj1->model[0]].unk02].unk02);
         while (func_800D9E80_shared_board(model) == 0) {
             HuPrcVSleep();
@@ -6211,7 +6211,7 @@ void func_80110FB4_w06(void) {
     MBStatusItemTPLvlSet(system->current_player_index,
                          MBItemSelNoGet(), 0);
     MBPlayerMotionSet(-1, 5, 0);
-    func_8004ACE0_main(0x274, system->current_player_index);
+    PlayerFXPlay(0x274, system->current_player_index);
     HuPrcSleep(50);
     MBPlayerMotionSet(-1, -1, 2);
     HuSprAttrSet(mbItemCursorGrpId, 0, 0x8000);
@@ -6236,13 +6236,13 @@ void func_801111E4_w06(void) {
     for (i = 1; i < 10; i++) {
         MBStatusItemTPLvlSet(system->current_player_index,
                              MBItemSelNoGet(), 255 - (i * 25));
-        func_80055458_main(mbItemCursorGrpId, 0, 255 - (i * 25));
+        HuSprTPLvlSet(mbItemCursorGrpId, 0, 255 - (i * 25));
         HuPrcVSleep();
     }
 
     MBStatusItemTPLvlSet(system->current_player_index,
                          MBItemSelNoGet(), 0);
-    func_80055458_main(mbItemCursorGrpId, 0, 0);
+    HuSprTPLvlSet(mbItemCursorGrpId, 0, 0);
     HuPrcSleep(2);
     HuSprAttrSet(mbItemCursorGrpId, 0, 0x8000);
 }
@@ -6268,11 +6268,11 @@ void func_801113B4_w06(void) {
     HuPrcChildWait();
 
     for (i = 1; i < 10; i++) {
-        func_80055458_main(mbItemCursorGrpId, 0, 255 - (i * 25));
+        HuSprTPLvlSet(mbItemCursorGrpId, 0, 255 - (i * 25));
         HuPrcVSleep();
     }
 
-    func_80055458_main(mbItemCursorGrpId, 0, 0);
+    HuSprTPLvlSet(mbItemCursorGrpId, 0, 0);
     HuSprAttrSet(mbItemCursorGrpId, 0, 0x8000);
 }
 
@@ -6299,11 +6299,11 @@ void func_80111524_w06(void) {
     func_800550F4_main(mbItemCursorGrpId, 0, 1);
 
     for (i = 1; i < 10; i++) {
-        func_80055458_main(mbItemCursorGrpId, 0, 255 - (i * 25));
+        HuSprTPLvlSet(mbItemCursorGrpId, 0, 255 - (i * 25));
         HuPrcVSleep();
     }
 
-    func_80055458_main(mbItemCursorGrpId, 0, 0);
+    HuSprTPLvlSet(mbItemCursorGrpId, 0, 0);
     if ((GwPlayer[system->current_player_index].itemNo[MBItemSelNoGet()] == 0xB) ||
         (GwPlayer[system->current_player_index].itemNo[MBItemSelNoGet()] == 8)) {
         HuAudFXPlay(0x141);
@@ -6351,11 +6351,11 @@ void func_80111870_w06(void) {
     func_800550F4_main(mbItemCursorGrpId, 0, 1);
 
     for (i = 1; i < 10; i++) {
-        func_80055458_main(mbItemCursorGrpId, 0, 255 - (i * 25));
+        HuSprTPLvlSet(mbItemCursorGrpId, 0, 255 - (i * 25));
         HuPrcVSleep();
     }
 
-    func_80055458_main(mbItemCursorGrpId, 0, 0);
+    HuSprTPLvlSet(mbItemCursorGrpId, 0, 0);
     HuSprAttrSet(mbItemCursorGrpId, 0, 0x8000);
 }
 
@@ -6441,7 +6441,7 @@ void func_80111CCC_w06(void) {
 
     MBModelKill(model);
     HuPrcSleep(20);
-    func_8004ACE0_main(0x274, GwSystem.current_player_index);
+    PlayerFXPlay(0x274, GwSystem.current_player_index);
     MBKSuitMotionSet(5, 2);
     HuPrcSleep(40);
     MBKSuitMotionSet(-1, 2);
@@ -6516,11 +6516,11 @@ void func_80112198_w06(void) {
         x += cosdf(angle) * 5.0f;
         y -= sindf(angle) * 5.0f;
         HuSprPosSet(group, 0, x, y);
-        func_80055458_main(group, 0, alpha);
+        HuSprTPLvlSet(group, 0, alpha);
         HuPrcVSleep();
     }
 
-    func_80055458_main(group, 0, 0);
+    HuSprTPLvlSet(group, 0, 0);
     MBPlayerVibrateObjKill(dialog);
     HuSprGrpKill(group);
     omDelPrcObj(0);
@@ -6991,10 +6991,10 @@ void func_80113404_w06(void) {
     func_80055140_main(mbItemCursorGrpId, 0, 0, 0);
     func_800550F4_main(mbItemCursorGrpId, 0, 1);
     for (i = 1; i < 10; i++) {
-        func_80055458_main(mbItemCursorGrpId, 0, 255 - i * 25);
+        HuSprTPLvlSet(mbItemCursorGrpId, 0, 255 - i * 25);
         HuPrcVSleep();
     }
-    func_80055458_main(mbItemCursorGrpId, 0, 0);
+    HuSprTPLvlSet(mbItemCursorGrpId, 0, 0);
     HuSprAttrSet(mbItemCursorGrpId, 0, 0x8000);
     GwPlayer[player].itemNo[MBItemSelNoGet()] = -1;
     MBStatusItemTPLvlSet(player, MBItemSelNoGet(), 0);
@@ -7034,10 +7034,10 @@ retry:
     if (result == 0) {
         HuPrcSleep(10);
         for (i = 1; i < 0x40; i++) {
-            func_80055458_main(group, 0, (u16)(255.0f - (f32)i * 3.984f));
+            HuSprTPLvlSet(group, 0, (u16)(255.0f - (f32)i * 3.984f));
             HuPrcVSleep();
         }
-        func_80055458_main(group, 0, 0);
+        HuSprTPLvlSet(group, 0, 0);
     }
     HuSprGrpKill(group);
     HuSprKill(spriteCount);
@@ -7069,19 +7069,19 @@ void func_8011394C_w06(void) {
         setupGroup, 0, (f32)xPos + D_8011CB50_w06[playerIndex].x,
         (f32)yPos + D_8011CB50_w06[playerIndex].y);
     HuSprColorSet(group, 0, 0xFF, 0xFF, 0xFF);
-    func_80055458_main(group, 0, 0xFF);
+    HuSprTPLvlSet(group, 0, 0xFF);
 
     scale = 0.0f;
     alpha = 0xFF;
     while (alpha >= 0) {
         HuSprScaleSet(group, 0, scale, scale);
-        func_80055458_main(group, 0, alpha);
+        HuSprTPLvlSet(group, 0, alpha);
         HuPrcVSleep();
         alpha -= 10;
         scale += 0.1f;
     }
 
-    func_80055458_main(group, 0, 0);
+    HuSprTPLvlSet(group, 0, 0);
     HuSprGrpKill(group);
     omDelPrcObj(NULL);
 }
@@ -7123,7 +7123,7 @@ void func_80113B68_w06(void) {
     HuSprPriSet(setupGroup, 1, 9);
     HuSprAttrSet(setupGroup, 1, 0x9000);
     HuSprColorSet(setupGroup, 1, 0xFF, 0xFF, 0xFF);
-    func_80055458_main(setupGroup, 1, 0xFF);
+    HuSprTPLvlSet(setupGroup, 1, 0xFF);
     HuSprScaleSet(setupGroup, 1, 2.0f, 2.0f);
     func_800554C4_main(setupGroup, 1, 0);
 
@@ -7176,14 +7176,14 @@ void func_80113B68_w06(void) {
     HuPrcChildLink(HuPrcCurrentGet(), childProcess);
     HuPrcChildWait();
     HuAudFXStop(fxId);
-    func_80055458_main(group, 1, 0);
+    HuSprTPLvlSet(group, 1, 0);
 
     for (i = 0xFF; i >= 0; i -= 0x1E) {
-        func_80055458_main(group, 0, i);
+        HuSprTPLvlSet(group, 0, i);
         HuPrcVSleep();
     }
 
-    func_80055458_main(group, 0, 0);
+    HuSprTPLvlSet(group, 0, 0);
     HuSprGrpKill(group);
     HuSprKill(D_8011E354_w06);
     HuSprKill(auraSpriteId);
@@ -7341,7 +7341,7 @@ void func_80114338_w06(void) {
     MBVecForwardSet(&MBPlayerGet(-1)->player_obj->rot);
     MBPlayerMotionSet(-1, 5, 0);
     HuPrcSleep(5);
-    func_8004ACE0_main(0x274, system->current_player_index);
+    PlayerFXPlay(0x274, system->current_player_index);
     HuPrcSleep(0x2D);
     MBPlayerMotionSet(-1, -1, 2);
 }
@@ -7721,11 +7721,11 @@ void func_80114C74_w06(void) {
     MBModelKill(box);
 
     if (noAnimation) {
-        func_8004ACE0_main(0x286, system->current_player_index);
+        PlayerFXPlay(0x286, system->current_player_index);
         MBPlayerMotionSet(-1, 3, 0);
         HuPrcSleep(70);
     } else {
-        func_8004ACE0_main(0x274, system->current_player_index);
+        PlayerFXPlay(0x274, system->current_player_index);
         MBPlayerMotionSet(-1, 5, 0);
         HuPrcSleep(50);
     }
@@ -8133,11 +8133,11 @@ void func_80116954_w06(void) {
 
     HuSprAttrReset(D_8011E370_w06[idx], 0, 0x8000U);
     for (i = 0; i < 255; i += 255 / divisor) {
-        func_80055458_main(D_8011E370_w06[idx], 0, i & 0xFFFF);
+        HuSprTPLvlSet(D_8011E370_w06[idx], 0, i & 0xFFFF);
         HuPrcVSleep();
     }
 
-    func_80055458_main(D_8011E370_w06[idx], 0, 0xFF);
+    HuSprTPLvlSet(D_8011E370_w06[idx], 0, 0xFF);
     omDelPrcObj(0);
 }
 
@@ -8258,7 +8258,7 @@ void func_80116F10_w06(void) {
         func_80055024_main(D_8011E370_w06[i], 0, sp18[i], 0);
         HuSprPriSet(D_8011E370_w06[i], 0, 0x4780U);
         HuSprAttrSet(D_8011E370_w06[i], 0, 0x980CU);
-        func_80055458_main(D_8011E370_w06[i], 0, 0U);
+        HuSprTPLvlSet(D_8011E370_w06[i], 0, 0U);
         HuSprColorSet(D_8011E370_w06[i], 0, 0xFF, 0xFF, 0);
     }
     temp_v0_3 = MBModelCreate(0x46, NULL);
@@ -8326,7 +8326,7 @@ void func_80116F10_w06(void) {
     HuSprPosSet(temp_s4, 0, temp_s0_3, (((1.0f - cosdf(90.0f)) * 90.0f) + sp3C));
 
     for (j = 255; j > 0; j -= 0x19, HuPrcVSleep()) {
-        func_80055458_main(temp_s4, 0, j);
+        HuSprTPLvlSet(temp_s4, 0, j);
     }
 
     HuSprGrpKill(temp_s4);
@@ -8338,7 +8338,7 @@ void func_80116F10_w06(void) {
     }
 
     HuSprAttrReset(D_8011E370_w06[3], 0, 0x8000U);
-    func_80055458_main(D_8011E370_w06[3], 0, 0xFFU);
+    HuSprTPLvlSet(D_8011E370_w06[3], 0, 0xFFU);
     HuSprPosSet(D_8011E370_w06[3], 0, 0xA0, 0x78);
     HuPrcChildLink(HuPrcCurrentGet(), omAddPrcObj(func_80116AC4_w06, 0x4002U, 0, 0));
     sp40 = 0;
@@ -8986,7 +8986,7 @@ void func_80118FF0_w06(void) {
 
     if (GwPlayer[targetPlayer].itemNo[0] == -1) {
         MBPlayerMotionSet(-1, 3, 0);
-        func_8004ACE0_main(0x286, system->current_player_index);
+        PlayerFXPlay(0x286, system->current_player_index);
         HuPrcSleep(60);
         func_800E2260_shared_board(targetPlayer, playerNames[0]);
         MBWinInsertOpen(0x3A0F, playerNames[0], 0, 0, 0, 0);
@@ -9027,7 +9027,7 @@ void func_80118FF0_w06(void) {
                                             D_8011CA84_w06[system->current_player_index].x,
                                             D_8011CA84_w06[system->current_player_index].y, 5));
     HuPrcChildWait();
-    func_8004ACE0_main(0x274, system->current_player_index);
+    PlayerFXPlay(0x274, system->current_player_index);
     MBPlayerMotionLoad(system->current_player_index, 5, 0x31);
     MBPlayerMotionSet(-1, 5, 0);
     HuPrcSleep(50);
@@ -9154,7 +9154,7 @@ void func_80119748_w06(void) {
         for (i = 0; i < 4; i++) {
             if ((mask & (1 << i)) != 0) {
                 MBMotionSet(MBPlayerGet(i)->player_obj, 4, 2);
-                func_8004ACE0_main(0x286, i);
+                PlayerFXPlay(0x286, i);
             }
         }
         HuPrcSleep(0x28);

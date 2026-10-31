@@ -466,7 +466,7 @@ static void MBStatusIconSprCreate(s32 arg0) {
         HuSprZRotSet(temp_s2, i + 2, 0.0f);
         HuSprPosSet(temp_s2, i + 2, D_801018E4_shared_board[i + 2][0], D_801018E4_shared_board[i + 2][1]);
         HuSprSpeedSet(temp_s2, i + 2, 0.0f);
-        func_80055458_main(temp_s2, i + 2, 0x100);
+        HuSprTPLvlSet(temp_s2, i + 2, 0x100);
     }
 }
 
@@ -490,7 +490,7 @@ static void MBStatusNumSprCreate(s32 arg0) {
         HuSprAttrSet(temp_s2, i + 4, 0);
         HuSprPosSet(temp_s2, i + 4, D_801018E4_shared_board[i + 4][0], D_801018E4_shared_board[i + 4][1]);
         HuSprColorSet(temp_s2, i + 4, 0xFF, 0xFF, 0xFF);
-        func_80055458_main(temp_s2, i + 4, 0x100);
+        HuSprTPLvlSet(temp_s2, i + 4, 0x100);
         HuSprZRotSet(temp_s2, i + 4, 0.0f);
     }
     DataClose(temp_v0);
@@ -1344,9 +1344,9 @@ static void MBStatusItemSprCreate(s32 playerNo, s32 arg1) {
             HuSprScaleSet(temp_s5, i + 2, 1.0f, 1.0f);
             HuSprSpeedSet(temp_s5, i + 2, 0.0f);
             if (playerNo == GwSystem.current_player_index) {
-                func_80055458_main(temp_s5, i + 2, 0x100);
+                HuSprTPLvlSet(temp_s5, i + 2, 0x100);
             } else {
-                func_80055458_main(temp_s5, i + 2, 0x80);
+                HuSprTPLvlSet(temp_s5, i + 2, 0x80);
             }
 
         } else {
@@ -1473,7 +1473,7 @@ void MBStatusItemPosSet(s32 playerNo, s32 arg1, s16 arg2, s16 arg3) {
 }
 
 void MBStatusItemTPLvlSet(s32 playerNo, s32 arg1, s16 arg2) {
-    func_80055458_main(mbStatusData[playerNo].playerIndex, (arg1 + 2), arg2);
+    HuSprTPLvlSet(mbStatusData[playerNo].playerIndex, (arg1 + 2), arg2);
 }
 
 void MBStatusItemRotSet(s32 playerNo, s32 arg1, f32 arg2) {

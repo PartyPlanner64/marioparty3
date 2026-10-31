@@ -474,7 +474,7 @@ void func_8011035C_msetup(void) {
             sprite = func_8000B838_main(D_80119B44_msetup[member]);
             sprites.sprites[member] = sprite;
         }
-        func_80055458_main(group, member, 256);
+        HuSprTPLvlSet(group, member, 256);
         HuSprAttrReset(group, member, 0xFFFF);
         HuSprAttrSet(group, member, 0x9000);
         HuSprScaleSet(group, member, 1.0f, 1.0f);
@@ -970,7 +970,7 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
         for (j = 0, member = i; j < 2; j++, member += 8) {
             characterSprite = func_8000B838_main(spriteIds[j]);
             sprites[member] = characterSprite;
-            func_80055458_main(group, member, 0x100);
+            HuSprTPLvlSet(group, member, 0x100);
             HuSprAttrReset(group, member, 0xFFFF);
             HuSprAttrSet(group, member, 0x9000);
             HuSprScaleSet(group, member, 1.0f, 1.0f);
@@ -1039,12 +1039,12 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
     }
     for (alpha = 0; alpha < 256; alpha += 36) {
         for (i = 0; i < 8; i++) {
-            func_80055458_main(group, i, alpha);
+            HuSprTPLvlSet(group, i, alpha);
         }
         HuPrcVSleep();
     }
     for (i = 0; i < 8; i++) {
-        func_80055458_main(group, i, 256);
+        HuSprTPLvlSet(group, i, 256);
     }
     switch (D_8011A938_msetup) {
         default:
@@ -1254,7 +1254,7 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
     }
     for (alpha = 256; alpha > 0; alpha -= 36) {
         for (i = 0; i < 16; i++) {
-            func_80055458_main(group, i, alpha);
+            HuSprTPLvlSet(group, i, alpha);
         }
         HuPrcVSleep();
     }
@@ -1359,7 +1359,7 @@ void func_80112804_msetup(void) {
     for (; i < 6; i++) {
         index = func_8000B838_main(D_80119E38_msetup[i]);
         sprites.sprites[i] = index;
-        func_80055458_main(group, i, 0);
+        HuSprTPLvlSet(group, i, 0);
         HuSprAttrReset(group, i, 0xFFFF);
         HuSprAttrSet(group, i, 0x9000);
         HuSprScaleSet(group, i, 1.0f, 1.0f);
@@ -1476,7 +1476,7 @@ void func_80112804_msetup(void) {
                             }
                         }
                         for (i = first; i <= last; i++) {
-                            func_80055458_main(group, i, sprites.alpha[side]);
+                            HuSprTPLvlSet(group, i, sprites.alpha[side]);
                         }
                     }
                 }
@@ -1657,10 +1657,10 @@ s16 func_801132C4_msetup(MsetupMenuState *state) {
     Hu3DModelPosSet(model, 0.0f, -300.0f, -280.0f);
     func_8001C814_main(model, 1, 1);
     if (_CheckFlag(0x2D)) {
-        func_8001C6A8_main(model, D_800CCF58_main[HmfModelData[model].unk02].unk02);
+        Hu3DMotionTimeSet(model, D_800CCF58_main[HmfModelData[model].unk02].unk02);
         difficultyCount = 4;
     } else {
-        func_8001C6A8_main(model, 0.0f);
+        Hu3DMotionTimeSet(model, 0.0f);
         difficultyCount = 3;
     }
     if (D_8011AA30_msetup.cpuCount == 1) {

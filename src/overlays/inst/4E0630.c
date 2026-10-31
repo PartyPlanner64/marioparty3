@@ -325,7 +325,7 @@ s32 func_80107E20_inst(void) {
 }
 
 void func_80107E98_inst(void) {
-    func_8001C6A8_main(D_8010DDD8_inst.object->model[0], 0);
+    Hu3DMotionTimeSet(D_8010DDD8_inst.object->model[0], 0);
     func_8001C814_main(D_8010DDD8_inst.object->model[0], 1, 0);
 }
 
@@ -378,7 +378,7 @@ void func_8010815C_inst(omObjData *obj) {
 
     func_8001C814_main(obj->model[0], 1, 0);
     func_8001C258_main(obj->model[0], 4, 0);
-    func_8001C6A8_main(obj->model[0], duration);
+    Hu3DMotionTimeSet(obj->model[0], duration);
     HmfModelData[obj->model[1]].rot.x = D_8010D414_inst - 90.0f;
     HmfModelData[obj->model[2]].rot.x = D_8010D414_inst;
     for (i = 0; i < 3; i++) {

@@ -110,7 +110,7 @@ void func_8010AF40_msetup(MsetupModelHandle *models, s16 *animSlot, s16 *anim) {
     while (HmfModelData[model].unk40 < 80.0) {
         HuPrcVSleep();
     }
-    func_8001F304_main(model, models[0].motion);
+    Hu3DMotionSet(model, models[0].motion);
     func_8001C814_main(model, 2, 2);
 }
 
@@ -129,7 +129,7 @@ void func_8010B1F4_msetup(void) {
     model = models[0].model;
     linkedModel = models[3].model;
     Hu3DModelScaleSet(linkedModel, 0.6f, 1.0f, 0.6f);
-    func_8001F304_main(model, models[1].motion);
+    Hu3DMotionSet(model, models[1].motion);
     func_8001C814_main(model, 2, 2);
     animSlot[0] = -1;
     anim = func_8010B388_msetup(model, animSlot, 0xA007E, "c204n_0_DEF");

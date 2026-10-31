@@ -15,7 +15,7 @@ extern HuSprite_Unk84_Struct *D_800C9530_main[];
 void espInit(void) {
     u16 var_a0;
 
-    func_80052330_main();
+    HuSprInit();
     D_800CD1DC_main = HuMemAlloc(0x100 * sizeof(D_800CD1DC_main_Struct));
     D_800C951C_main = 0x100;
     D_800CB8BC_main = 0;
@@ -61,7 +61,7 @@ void func_8000B880_main(s16 arg0, f32 r, f32 g, f32 b) {
 }
 
 void func_8000BA00_main() {
-    func_80056BAC_main();
+    HuSprClose();
     HuMemFree(D_800CD1DC_main);
     D_800CD1DC_main = NULL;
 }
@@ -78,7 +78,7 @@ void func_8000BA30_main(void) {
                 gid = sprite->unk04;
                 HuSprPosSet(gid, 0, sprite->unkA, sprite->unkC);
                 if (sprite->unk00 & 2) {
-                    func_80055458_main(gid, 0, sprite->unk1E);
+                    HuSprTPLvlSet(gid, 0, sprite->unk1E);
                     sprite->unk1E += sprite->unk20;
                     if (sprite->unk20 > 0) {
                         if (sprite->unk1E > sprite->unk1C) {
@@ -118,7 +118,7 @@ void espTPLvlSet(u16 spriteId, s16 arg1) {
     sprite = D_800CD1DC_main + spriteId;
     sprite->unk1E = arg1;
     sprite->unk1C = arg1;
-    func_80055458_main(sprite->unk04, 0, arg1);
+    HuSprTPLvlSet(sprite->unk04, 0, arg1);
 }
 
 void espAttrSet(u16 arg0, u16 arg1) {
@@ -219,7 +219,7 @@ void func_8000BF8C_main(u16 spriteId, s16 arg1) {
     if (arg1 > 0) {
         sprite->unk1E = arg1;
         sprite->unk1C = arg1;
-        func_80055458_main(sprite->unk04, 0, arg1 & 0xFFFF);
+        HuSprTPLvlSet(sprite->unk04, 0, arg1 & 0xFFFF);
     }
 }
 
@@ -239,7 +239,7 @@ s16 espEntry(s16 arg0, s16 arg1, u16 arg2) {
     temp_s0->unk00 |= 1;
     temp_s0->unk06 = arg0;
     temp_s0->unk10 = temp_s0->unk14 = 1.0f;
-    func_80055458_main(temp_v0, 0, 0x100);
+    HuSprTPLvlSet(temp_v0, 0, 0x100);
     HuSprAttrReset(temp_v0, 0, 0xFFFF);
     HuSprAttrSet(temp_v0, 0, 0x1000);
     HuSprScaleSet(temp_v0, 0, 1.0f, 1.0f);

@@ -209,7 +209,7 @@ void func_8010934C_bobbing_bow_loons(void) {
     loons->y[0] = player->pos.y + 50.0f;
     loons->z[0] = player->pos.z + 2.0f;
     func_8001C258_main(D_80109B60_bobbing_bow_loons->model[0], 4, 0);
-    func_8001C6A8_main(D_80109B60_bobbing_bow_loons->model[0], 0.0f);
+    Hu3DMotionTimeSet(D_80109B60_bobbing_bow_loons->model[0], 0.0f);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3D_bobbing_bow_loons/2D8370", func_801093DC_bobbing_bow_loons);

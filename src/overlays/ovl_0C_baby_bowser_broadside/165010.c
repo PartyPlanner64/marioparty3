@@ -405,10 +405,10 @@ void func_801062C4_baby_bowser_broadside(omObjData *object) {
         Hu3DModelScaleSet(D_80110010_baby_bowser_broadside[index].unk_0C, 2.0f, 2.0f, 1.0f);
     }
     sprite = func_8010A598_baby_bowser_broadside(255, 0x2D, 14, 0, attr);
-    func_80055458_main(D_80110018_baby_bowser_broadside[sprite].unk_01, 0, 190);
+    HuSprTPLvlSet(D_80110018_baby_bowser_broadside[sprite].unk_01, 0, 190);
     func_8010A738_baby_bowser_broadside(sprite, 70, 32);
     sprite = func_8010A598_baby_bowser_broadside(255, 0x2D, 14, 0, attr);
-    func_80055458_main(D_80110018_baby_bowser_broadside[sprite].unk_01, 0, 190);
+    HuSprTPLvlSet(D_80110018_baby_bowser_broadside[sprite].unk_01, 0, 190);
     func_8010A738_baby_bowser_broadside(sprite, 250, 32);
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 2; j++) {
@@ -457,7 +457,7 @@ void func_80106EC4_baby_bowser_broadside(omObjData *object) {
     func_8001E65C_main(object->model[0], sindf(D_8010FD64_baby_bowser_broadside) * 15.0f, -D_8010FD68_baby_bowser_broadside, 64, 64);
     func_8001F6BC_main(object->model[0], (u8)(cosdf(D_8010FD6C_baby_bowser_broadside) * 32.0f + 32.0f), 0, 0, (u8)(cosdf(D_8010FD6C_baby_bowser_broadside) * 32.0f + 32.0f));
     func_8001F6F8_main(object->model[0], 64, 32, 32, 0);
-    if (func_80049F98_main() + D_800D6A90_main == 0) {
+    if (omPauseChk() + D_800D6A90_main == 0) {
         D_8010FD64_baby_bowser_broadside += 0.5f;
         if (D_8010FD64_baby_bowser_broadside >= 360.0f) {
             D_8010FD64_baby_bowser_broadside -= 360.0f;

@@ -502,16 +502,16 @@ void func_8010679C_eatsa_pizza(omObjData *object) {
                 work->pos.y -= cosdf(angle) * data->unk40 * 0.1;
             }
             if (work->unk37 != 0) {
-                func_8001C92C_main(object->model[0], 1.0f);
+                Hu3DMotionSpeedSet(object->model[0], 1.0f);
                 work->unk37--;
             } else {
-                func_8001C92C_main(object->model[0], data->unk40 * 0.075);
+                Hu3DMotionSpeedSet(object->model[0], data->unk40 * 0.075);
             }
             break;
         case 3:
         case 4:
             func_800E5690_minigame(object, 0);
-            func_8001C92C_main(object->model[0], 1.0f);
+            Hu3DMotionSpeedSet(object->model[0], 1.0f);
             work->unk36 = 2;
             break;
         case 5:
@@ -1172,7 +1172,7 @@ void func_801087DC_eatsa_pizza(omObjData *object) {
             func_8004AB0C_main(*wipeDuration);
             break;
         case 7:
-            func_8004A950_main();
+            HuAudSeqStop();
             omOvlReturnEx(1);
             break;
     }

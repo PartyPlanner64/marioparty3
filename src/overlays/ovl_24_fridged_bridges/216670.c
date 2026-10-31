@@ -10,7 +10,7 @@ extern omObjData *D_8010DA70_fridged_bridges;
 
 void func_80105F34_fridged_bridges(omObjData *arg0);
 void func_80108FBC_fridged_bridges(omObjData *arg0);
-omObjData **func_80047DBC_main(s16 arg0);
+omObjData **omGetGroupMemberList(s16 arg0);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_801059A0_fridged_bridges);
 
@@ -80,7 +80,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_8010
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_80108B08_fridged_bridges);
 
 void func_80108BEC_fridged_bridges(omObjData *arg0) {
-    omObjData **bridgeObjs = func_80047DBC_main(1);
+    omObjData **bridgeObjs = omGetGroupMemberList(1);
     s32 deletedCount = 0;
     s32 i;
 

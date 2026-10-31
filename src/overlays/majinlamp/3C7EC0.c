@@ -503,7 +503,7 @@ void func_80106E74_majinlamp(void) {
     }
     MBModelDispOff(D_80108334_majinlamp->player_obj);
     MBModelDispOff(D_8010832C_majinlamp);
-    func_80055458_main(D_80108338_majinlamp, 0, 0);
+    HuSprTPLvlSet(D_80108338_majinlamp, 0, 0);
 }
 
 void func_8010771C_majinlamp(void) {
@@ -516,7 +516,7 @@ void func_8010771C_majinlamp(void) {
     D_80108330_majinlamp = MBModelFileCreate(0x1301F6, -1, 1.0f, 0.0f, NULL);
     HuVecCopyXYZ(&D_80108330_majinlamp->scale, 2.0f, 2.0f, 2.0f);
     func_8001C954_main(D_80108330_majinlamp->omObj1->model[0]);
-    func_8001C92C_main(D_80108330_majinlamp->omObj1->model[0], 0.25f);
+    Hu3DMotionSpeedSet(D_80108330_majinlamp->omObj1->model[0], 0.25f);
     HuVecCopyXYZ(&D_80108330_majinlamp->scale, 4.0f, 4.0f, 4.0f);
     func_8001C8A8_main(D_80108330_majinlamp->omObj1->model[0], 2);
     omAddObj(0x1000, 0, 0, -1, func_80106BB0_majinlamp);
@@ -571,7 +571,7 @@ void func_8010771C_majinlamp(void) {
                                                                  &D_80108334_majinlamp->player_obj->rot, 0xA));
     HuPrcChildWait();
     func_80007DD8_main(sound);
-    func_8004ACE0_main(0x2BD, D_8010833E_majinlamp);
+    PlayerFXPlay(0x2BD, D_8010833E_majinlamp);
     func_80017954_main(D_80108334_majinlamp->player_obj->omObj1->model[0], 2,
                        GwPlayer[D_8010833C_majinlamp].chr, D_80108342_majinlamp);
     MBPlayerMotionSet(D_8010833C_majinlamp, 5, 2);

@@ -13,7 +13,7 @@
 // void func_800DB56C_shared_board(void);
 // void MBMgCallHisInit(void);
 // void func_800F2484_shared_board(s32);
-// void func_8004A950_main(void);
+// void HuAudSeqStop(void);
 // void MBNextPlayerTurn(void);
 // s32 MBLast5Check(void);
 // s16 MBMasuKakusiBlockGet(u8);

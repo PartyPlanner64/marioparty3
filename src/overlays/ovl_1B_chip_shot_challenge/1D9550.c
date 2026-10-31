@@ -368,7 +368,7 @@ void func_8010646C_chip_shot_challenge(omObjData *object) {
     s32 i;
     s32 j;
 
-    if (func_80049F98_main() + D_800D6A90_main != 0) {
+    if (omPauseChk() + D_800D6A90_main != 0) {
         return;
     }
     time = func_800E6E9C_minigame();
@@ -1163,7 +1163,7 @@ void func_801091E8_chip_shot_challenge(omObjData *object) {
             if (scale >= 30.0f) {
                 scale = 30.0f;
             }
-            func_8001C6A8_main(object->model[i + 1], scale);
+            Hu3DMotionTimeSet(object->model[i + 1], scale);
             rotX -= 7.0f;
         }
         D_8010A974_chip_shot_challenge += D_8010A82C_chip_shot_challenge / 10.0f;

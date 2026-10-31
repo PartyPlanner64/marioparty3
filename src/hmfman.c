@@ -771,7 +771,7 @@ Gfx *func_8001BD24_main(Gfx *arg0, s16 arg1, u16 arg2) {
     return arg0;
 }
 
-void func_8001BF14_main(void) {
+void Hu3DInit(void) {
     s16 i;
 
     HuMemSetDirty();
@@ -922,7 +922,7 @@ void func_8001C624_main(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     temp_a0->unk54 = 0.0f;
 }
 
-void func_8001C6A8_main(s16 arg0, f32 arg1) {
+void Hu3DMotionTimeSet(s16 arg0, f32 arg1) {
     HmfModel *model = &HmfModelData[arg0];
 
     if (D_800CCF58_main[model->unk02].unk02 < arg1) {
@@ -980,7 +980,7 @@ void func_8001C8E4_main(s16 idx, u32 arg1) {
     HmfModelData[idx].hmf->unk00 = (arg1 >> 10) & 7;
 }
 
-void func_8001C92C_main(s16 idx, f32 arg1) {
+void Hu3DMotionSpeedSet(s16 idx, f32 arg1) {
     HmfModel *model = &HmfModelData[idx];
     model->unk44 = arg1;
 }
@@ -1611,7 +1611,7 @@ s32 func_8001F1FC_main(void *arg0, s32 arg1) {
     return ret;
 }
 
-void func_8001F304_main(s16 arg0, s16 arg1) {
+void Hu3DMotionSet(s16 arg0, s16 arg1) {
     HmfModel *temp_v0;
 
     temp_v0 = &HmfModelData[arg0];
@@ -1623,7 +1623,7 @@ void func_8001F304_main(s16 arg0, s16 arg1) {
     temp_v0->unk04 = 0xFF;
 }
 
-f32 func_8001F358_main(s16 arg0) {
+f32 Hu3DMotionMotionMaxTimeGet(s16 arg0) {
     return D_800CCF58_main[arg0].unk02;
 }
 

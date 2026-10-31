@@ -384,7 +384,7 @@ void MBModelKill(Object* arg0) {
         } else {
             D_80102AB0_shared_board = arg0->prev;
         }
-        func_8001F304_main(arg0->omObj1->model[0], -1);
+        Hu3DMotionSet(arg0->omObj1->model[0], -1);
         Hu3DModelKill(arg0->omObj1->model[0]);
         if (arg0->omObj2 != NULL) {
             Hu3DModelKill(arg0->omObj2->model[0]);
@@ -441,7 +441,7 @@ void MBMotionSet(Object *arg0, s16 arg1, u16 arg2) {
         var_v1 = arg0->omObj1->motion[arg1];
         arg0->unk46 = arg1;
     }
-    func_8001F304_main(arg0->omObj1->model[0], var_v1);
+    Hu3DMotionSet(arg0->omObj1->model[0], var_v1);
     func_8001C814_main(arg0->omObj1->model[0], -1, arg2);
 }
 

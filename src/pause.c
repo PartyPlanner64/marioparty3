@@ -142,7 +142,7 @@ void func_800453FC_main(void) {
     HuPrcVSleep();
     HuAudFXPlay(6);
     D_800D2132_main = 1;
-    while (func_80049F98_main() != 0) {
+    while (omPauseChk() != 0) {
         if (var_s4 >= 3 && (D_800C9520_main[0] & 0x300)) {
             var_s7 ^= 1;
             for (var_s2 = 0; var_s2 < 2; var_s2++) {

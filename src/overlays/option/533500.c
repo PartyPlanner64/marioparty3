@@ -2486,7 +2486,7 @@ void func_8010F138_option(void) {
             func_80033910_main(HmfModelData[model].hmf);
             break;
         } else if (buttons & 0x8000) {
-            func_8004A950_main();
+            HuAudSeqStop();
             if (menu.pages[page].entries[selected].sound != -1) {
                 HuAudSeqPlay(menu.pages[page].entries[selected].sound);
             }

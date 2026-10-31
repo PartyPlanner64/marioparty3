@@ -166,7 +166,7 @@ void func_8010E2DC_duel04(void) {
 
 void func_8010E308_duel04(void) {
     func_8001C814_main(D_8011B508_duel04->omObj1->model[0], 1, 4);
-    func_8001C92C_main(D_8011B508_duel04->omObj1->model[0], 1.0f);
+    Hu3DMotionSpeedSet(D_8011B508_duel04->omObj1->model[0], 1.0f);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010E358_duel04);
@@ -185,7 +185,7 @@ void func_8010E8E8_duel04(void) {
 
 void func_8010E914_duel04(void) {
     func_8001C814_main(D_8011B510_duel04->omObj1->model[0], 1, 4);
-    func_8001C92C_main(D_8011B510_duel04->omObj1->model[0], 1.0f);
+    Hu3DMotionSpeedSet(D_8011B510_duel04->omObj1->model[0], 1.0f);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010E964_duel04);

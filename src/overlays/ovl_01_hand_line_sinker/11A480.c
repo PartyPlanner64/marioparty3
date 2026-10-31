@@ -113,9 +113,9 @@ void func_8010B5B0_hand_line_sinker(void);
 void func_8010A5F0_hand_line_sinker(void);
 s32 func_800329B4_main(void *data);
 void func_80045C2C_main(void);
-void func_80047C0C_main(u16 group, u16 max_objs);
+void omMakeGroup(u16 group, u16 max_objs);
 void omAddMember(u16 group, omObjData *obj);
-omObjData **func_80047DBC_main(s16 arg0);
+omObjData **omGetGroupMemberList(s16 arg0);
 void func_8001766C_main(void);
 void func_80105FA4_hand_line_sinker(omObjData *obj);
 void func_8001E888_main(s16 model, f32 x, f32 y, u16 arg3, u16 arg4, char *name, s32 arg6);
@@ -185,7 +185,7 @@ void func_801059A0_hand_line_sinker(void) {
     players[1] = omAddObj(20, 6, 18, -1, func_80106070_hand_line_sinker);
     players[2] = omAddObj(20, 6, 18, -1, func_801060A0_hand_line_sinker);
     players[3] = omAddObj(20, 6, 18, -1, func_801060D0_hand_line_sinker);
-    func_80047C0C_main(0, 4);
+    omMakeGroup(0, 4);
     for (i = 0; i < 4; i++) {
         if (i == D_8010C0EA_hand_line_sinker) {
             D_8010C0FC_hand_line_sinker = players[i];
@@ -193,7 +193,7 @@ void func_801059A0_hand_line_sinker(void) {
             omAddMember(0, players[i]);
         }
     }
-    D_8010C100_hand_line_sinker = func_80047DBC_main(0);
+    D_8010C100_hand_line_sinker = omGetGroupMemberList(0);
     func_80045010_main(D_8010BFB0_hand_line_sinker, 1);
     func_800E5EA0_minigame(&D_8010BF00_hand_line_sinker);
     D_800EB930_minigame = 45;
@@ -275,7 +275,7 @@ void func_80105EE8_hand_line_sinker(omObjData *obj) {
 }
 
 void func_80105FA4_hand_line_sinker(omObjData *obj) {
-    if (func_80049F98_main() + D_800D6A90_main == 0) {
+    if (omPauseChk() + D_800D6A90_main == 0) {
         D_8010C108_hand_line_sinker += 0.1f;
     }
     func_8001E888_main(obj->model[1], D_8010C108_hand_line_sinker, 0.0f, D_8010C104_hand_line_sinker[0],
@@ -508,8 +508,8 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
             obj->work[0] = 4;
             func_8001C5B4_main(obj->model[0], obj->motion[8]);
             func_8001C814_main(obj->model[0], 3, 3);
-            func_8001C92C_main(obj->model[0], 1.0f);
-            func_8001C92C_main(obj->model[2], 1.0f);
+            Hu3DMotionSpeedSet(obj->model[0], 1.0f);
+            Hu3DMotionSpeedSet(obj->model[2], 1.0f);
             func_8001C258_main(obj->model[3], 0x4000, 0);
             if (work->lineObj != NULL) {
                 omDelObj(work->lineObj);
@@ -957,7 +957,7 @@ void func_801081D0_hand_line_sinker(omObjData *obj) {
                 rot.x = rot.z = 0.0f;
                 rot.y = obj->rot.y + 180.0f;
                 func_8010A6D0_hand_line_sinker(obj, 1, &offset, &rot);
-                func_8004ACE0_main(0x306, work->playerNo);
+                PlayerFXPlay(0x306, work->playerNo);
             }
             work->pressTimer = 1000;
             break;
@@ -1537,7 +1537,7 @@ void func_80109B9C_hand_line_sinker(omObjData *obj) {
                     }
                     work->velY = 60.0f;
                     work->splashed = 0;
-                    func_8004ACE0_main(0x28F, work->playerNo);
+                    PlayerFXPlay(0x28F, work->playerNo);
                     player->func = func_80108C5C_hand_line_sinker;
                     player->work[0] = 5;
                     if (player->trans.x < min[0]) {
@@ -1623,7 +1623,7 @@ void func_8010A6D0_hand_line_sinker(omObjData *parent, u16 type, Vec *offset, Ve
     D_8010C160_hand_line_sinker[i]->work[0] = i;
     func_8001C258_main(D_8010C148_hand_line_sinker[type][i], 4, 0);
     D_8010C160_hand_line_sinker[i]->model[0] = D_8010C148_hand_line_sinker[type][i];
-    func_8001C6A8_main(D_8010C160_hand_line_sinker[i]->model[0], 0);
+    Hu3DMotionTimeSet(D_8010C160_hand_line_sinker[i]->model[0], 0);
     work->parent = parent;
     work->offset = *offset;
     work->unk10 = *rot;

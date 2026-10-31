@@ -102,7 +102,7 @@ void func_801160A0_mgmode(s16 arg0) {
     if (D_8011B818_mgmode[0] > 0) {
         do {
             i++;
-            func_80055458_main(D_8011B818_mgmode[12], (s16)i, arg0);
+            HuSprTPLvlSet(D_8011B818_mgmode[12], (s16)i, arg0);
         } while ((s16)i < D_8011B818_mgmode[0]);
     }
 }

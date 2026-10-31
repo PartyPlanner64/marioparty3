@@ -9,7 +9,7 @@ typedef struct UnkE3CD0 {
     f32 unk_30;
 } UnkE3CD0;
 
-void func_8004A950_main(void);
+void HuAudSeqStop(void);
 extern s32 D_80101AF8_name_81;
 extern s32 D_80101AFC_name_81;
 extern s32 D_80101B00_name_81;
@@ -126,7 +126,7 @@ void func_800FC198_name_81(omObjData *obj) {
             (D_800A12D8_main == 0) &&
             ((GwSystem.current_player_index != temp_s0[0]) || (D_800A12D4_main == 0)) &&
             (D_800C9520_main[GwPlayer[temp_s0[0]].pad] & 0x20)) {
-            func_8004ACE0_main(0x2BD, temp_s0[0]);
+            PlayerFXPlay(0x2BD, temp_s0[0]);
         }
         HuPrcVSleep();
     }
@@ -469,10 +469,10 @@ void func_800FCAB4_name_81(void) {
             if (D_800C9930_main != -1) {
                 func_800039A4_main(D_800C9930_main, 0x5A);
                 D_800C9930_main = -1;
-                func_8004A950_main();
+                HuAudSeqStop();
             }
             if (D_800CE206 != 0) {
-                func_8004A950_main();
+                HuAudSeqStop();
                 D_800CE206 = 0;
             }
         }

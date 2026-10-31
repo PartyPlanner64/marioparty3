@@ -87,7 +87,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_14_slot_synch/1AC970", func_80105B98_
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_14_slot_synch/1AC970", func_80105C08_slot_synch);
 
 void func_80106080_slot_synch(void) {
-    func_8004A950_main();
+    HuAudSeqStop();
     omOvlReturnEx(1);
 }
 

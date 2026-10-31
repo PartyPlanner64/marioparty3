@@ -177,8 +177,7 @@ void func_8004A918_main(s16 musId) {
     func_8004A7C4_main(0);
 }
 
-// HuAudSeqStop?
-void func_8004A950_main(void) {
+void HuAudSeqStop(void) {
     D_800A1904_main = -1;
     func_800035E8_main(D_800CDBC8_main);
     D_800A1906_main &= ~(2 | 8);
@@ -274,7 +273,7 @@ s16 func_8004AC98_main(s16 arg0, s16 arg1) {
     return func_8004AC5C_main(arg0, arg1);
 }
 
-s16 func_8004ACE0_main(s16 seId, s16 playerIdx) {
+s16 PlayerFXPlay(s16 seId, s16 playerIdx) {
     if (D_800A1902_main == 0) {
         return 0;
     }
@@ -288,7 +287,7 @@ void HuAudFXStop(s32 seNo) {
     func_80007DD8_main(seNo);
 }
 
-void func_8004AD70_main() {
+void HuAudFXAllStop() {
     func_80007DD8_main(-1);
 }
 

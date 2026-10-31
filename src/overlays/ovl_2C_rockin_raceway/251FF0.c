@@ -91,7 +91,7 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_2C_rockin_raceway/251FF0", D_80111
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2C_rockin_raceway/251FF0", func_80105CB0_rockin_raceway);
 
 void func_80106A5C_rockin_raceway(void) {
-    func_8004A950_main();
+    HuAudSeqStop();
     omOvlReturnEx(1);
 }
 

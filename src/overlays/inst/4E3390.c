@@ -84,7 +84,7 @@ void func_8010A1D0_inst(void) {
         func_80017358_main(D_8010DC98_inst[i], D_8010D55C_inst[GwPlayer[player].chr],
                            object->model[i + 1], D_8010D58C_inst[D_8010D554_inst[i]]);
         func_8001C258_main(D_8010DC98_inst[i], 4, 4);
-        func_8001C6A8_main(object->model[i + 1], 0);
+        Hu3DMotionTimeSet(object->model[i + 1], 0);
         func_8001C814_main(object->model[i + 1], 2, 0);
     }
     object->trans.x = 0;
@@ -151,7 +151,7 @@ void func_8010A750_inst(omObjData *object) {
     if (func_80107E20_inst() == 1) {
         models = D_8010D4C0_inst[D_8010D40A_inst][0];
         for (i = 0; i < models->count; i++) {
-            func_8001C6A8_main(object->model[i + 1], 0);
+            Hu3DMotionTimeSet(object->model[i + 1], 0);
             func_8001C814_main(object->model[i + 1], 1, 0);
             HmfModelData[object->model[i + 1]].rot.x = 0;
             func_80016B00_main(source->model[0], duration, models->nodes[i], D_8010DC50_inst);
@@ -160,7 +160,7 @@ void func_8010A750_inst(omObjData *object) {
         }
         models = D_8010D4C0_inst[D_8010D40A_inst][1];
         for (i = 0; i < models->count; i++) {
-            func_8001C6A8_main(object->model[i + 10], 0);
+            Hu3DMotionTimeSet(object->model[i + 10], 0);
             func_8001C814_main(object->model[i + 10], 1, 0);
             HmfModelData[object->model[i + 10]].rot.x = 0;
             func_80016B00_main(source->model[0], duration, models->nodes[i], D_8010DC50_inst);
@@ -192,13 +192,13 @@ void func_8010AC30_inst(omObjData *object) {
     models = D_8010D4C0_inst[D_8010D40A_inst][0];
     for (i = 0; i < models->count; i++) {
         func_8001C258_main(object->model[i + 5], 4, 0);
-        func_8001C6A8_main(object->model[i + 5], 0);
+        Hu3DMotionTimeSet(object->model[i + 5], 0);
         func_8001C814_main(object->model[i + 5], 1, 0);
     }
     models = D_8010D4C0_inst[D_8010D40A_inst][1];
     for (i = 0; i < models->count; i++) {
         func_8001C258_main(object->model[i + 15], 4, 0);
-        func_8001C6A8_main(object->model[i + 15], 0);
+        Hu3DMotionTimeSet(object->model[i + 15], 0);
         func_8001C814_main(object->model[i + 15], 1, 0);
     }
     D_8010DC94_inst = func_8010AD78_inst;
@@ -348,14 +348,14 @@ void func_8010B628_inst(omObjData *object) {
     models = D_8010D4C0_inst[D_8010D40A_inst][0];
     for (i = 0; i < models->count; i++) {
         func_8001C258_main(object->model[i + 5], 4, 0);
-        func_8001C6A8_main(object->model[i + 5], duration);
+        Hu3DMotionTimeSet(object->model[i + 5], duration);
         func_8001C814_main(object->model[i + 5], 1, 0);
     }
     models = D_8010D4C0_inst[D_8010D40A_inst][1];
     duration = D_800CCF58_main[HmfModelData[object->model[15]].unk02].unk02;
     for (i = 0; i < models->count; i++) {
         func_8001C258_main(object->model[i + 15], 4, 0);
-        func_8001C6A8_main(object->model[i + 15], duration);
+        Hu3DMotionTimeSet(object->model[i + 15], duration);
         func_8001C814_main(object->model[i + 15], 1, 0);
     }
     models = D_8010D4C0_inst[D_8010D40A_inst][0];

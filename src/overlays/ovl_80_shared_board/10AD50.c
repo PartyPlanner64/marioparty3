@@ -332,11 +332,11 @@ void func_800F76A4_shared_board(s32 arg0) {
         HuSprPosSet(temp_s2->spriteGroup, 0, sp20[0], sp20[1]);
 
         for (i = 0; i < 15; i++) {
-            func_80055458_main(temp_s2->spriteGroup, 0, ((i * 16) + i));
+            HuSprTPLvlSet(temp_s2->spriteGroup, 0, ((i * 16) + i));
             HuPrcVSleep();
         }
 
-        func_80055458_main(temp_s2->spriteGroup, 0, 0xFF);
+        HuSprTPLvlSet(temp_s2->spriteGroup, 0, 0xFF);
 
         if (arg0 == 1) {
             MBDlgWinInsertCreateY(-1, 0x3C0D, D_80101A94_shared_board[D_8010565C_shared_board], 0, 0, 0, 0, 0x8C);
@@ -346,7 +346,7 @@ void func_800F76A4_shared_board(s32 arg0) {
         for (i = 0; i < 70; i += 5) {
             // this sure is a line of code
             HuSprPosSet(temp_s2->spriteGroup, 0, (((sindf(i) * (D_80101A74_shared_board[playerNo][0] - sp20[0])) + sp20[0])), ((sp20[1] - (sindf((i + 0x5A)) * (D_80101A74_shared_board[playerNo][1] - sp20[1]))) + (D_80101A74_shared_board[playerNo][1] - sp20[1])));
-            func_80055458_main(temp_s2->spriteGroup, 0, (256.0 - (i * 1.5)));
+            HuSprTPLvlSet(temp_s2->spriteGroup, 0, (256.0 - (i * 1.5)));
             HuSprScaleSet(temp_s2->spriteGroup, 0, (1.0f - (i / 200.0f)), (1.0f - (i / 200.0f)));
             HuPrcVSleep();
         }

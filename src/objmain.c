@@ -37,7 +37,7 @@ void func_8004A354_main(omObjData *);
 void func_8004A444_main(s32);
 void func_8004A468_main(u16, u16, u16);
 void func_8004CEA4_main();
-void func_80047D4C_main(omObjData *obj);
+void omDelMember(omObjData *obj);
 extern u8 D_800A16B0_main[][2];
 extern u8 D_800A1740_main[][2];
 extern s16 D_800A1754_main;
@@ -85,7 +85,7 @@ extern u16 D_800CD2F4_main;
 extern s32 omovl;
 extern u16 D_800CE202_main;
 extern u16 D_800D0A3A_main;
-extern omObjData *D_800D2118_main;
+extern omObjData *omDBGSysKeyObj;
 extern u16 D_800D4082_main;
 extern f32 D_800D4198_main[];
 extern f32 D_800D5210_main;
@@ -123,7 +123,7 @@ void omInitObjMan(s16 numOfObjs, s32 numOfPrcs) {
     omnextidx = 0;
     omobjlast = -1;
     omobjfirst = -1;
-    D_800D2118_main = NULL;
+    omDBGSysKeyObj = NULL;
     D_800D530C_main = 0;
     D_800D6A90_main = 0;
 
@@ -371,7 +371,7 @@ void omDelObj(omObjData *obj) {
         omnumobjs--;
 
         if (obj->group >= 0) {
-            func_80047D4C_main(obj);
+            omDelMember(obj);
         }
 
         if (obj->motion != NULL) {
@@ -450,7 +450,7 @@ void omSetSca(omObjData *obj, f32 x, f32 y, f32 z) {
     obj->scale.z = z;
 }
 
-void func_80047C0C_main(u16 group, u16 max_objs) {
+void omMakeGroup(u16 group, u16 max_objs) {
     omObjGroup *grp = &omgroup[group];
     s32 i;
 
@@ -485,7 +485,7 @@ void omAddMember(u16 group, omObjData *obj) {
     }
 }
 
-void func_80047D4C_main(omObjData *obj) {
+void omDelMember(omObjData *obj) {
     omObjGroup *grp;
 
     if (obj->group != -1) {
@@ -498,7 +498,7 @@ void func_80047D4C_main(omObjData *obj) {
     }
 }
 
-omObjData **func_80047DBC_main(s16 arg0) {
+omObjData **omGetGroupMemberList(s16 arg0) {
     return omgroup[arg0].objs;
 }
 
@@ -735,8 +735,8 @@ extern s32 D_800CC370_main;
 extern omObjData *D_800D054C_main;
 extern s16 D_800CE190_main;
 extern void (*D_800CC3B8_main)(omObjData *);
-void func_8004A950_main(void);
-void func_8001BF14_main(void);
+void HuAudSeqStop(void);
+void Hu3DInit(void);
 
 extern u8 D_800A1762_main;
 extern u8 D_800A176C_main;
@@ -748,7 +748,7 @@ void ResetVibrator(s16);
 s32 func_80000F08_main(s32);
 void func_8004B1AC_main(void);
 void func_8004AE28_main(void);
-void func_8004AD70_main(void);
+void HuAudFXAllStop(void);
 s32 func_80000DF0_main(void);
 void func_8004B2C8_main(void);
 void espInit(void);
@@ -820,13 +820,13 @@ void omMain(void) {
                 }
                 return;
             }
-            func_8004A950_main();
+            HuAudSeqStop();
         }
         if (D_800A1762_main == 0) {
             if (D_800D1FA0_main != 1) {
                 if (D_800A1780_main == 1) {
                     if (D_800D0A3A_main == 4) {
-                        func_8001BF14_main();
+                        Hu3DInit();
                     }
                     if (D_800D0A3A_main != 0) {
                         D_800D0A3A_main--;
@@ -849,10 +849,10 @@ void omMain(void) {
                     } else {
                         D_800B23CA_main = 0;
                         if ((func_8004B2C0_main()) == 1) {
-                            func_8004A950_main();
+                            HuAudSeqStop();
                             func_800035E8_main(0);
                             func_800035E8_main(1);
-                            func_8004AD70_main();
+                            HuAudFXAllStop();
                             if (D_800A1849_main == 0) {
                                 D_800A1848_main = 5;
                                 return;
@@ -910,7 +910,7 @@ void omMain(void) {
             func_8001F6B0_main(1);
             func_80045C2C_main();
             if (D_800A176D_main == 0) {
-                func_8004AD70_main();
+                HuAudFXAllStop();
                 if (D_800A1783_main == 1) {
                     func_8004AB7C_main(0x7F);
                 }
@@ -1031,7 +1031,7 @@ void func_80048E88_main(void) {
     omObjData *temp_v0;
 
     temp_v0 = omAddObj(0x7FD9, 0, 0, -1, func_800499B0_main);
-    D_800D2118_main = temp_v0;
+    omDBGSysKeyObj = temp_v0;
     omSetStatBit(temp_v0, 0xA0);
     temp_v0->work[0] = 0;
     temp_v0->work[1] = 0;
@@ -1128,8 +1128,8 @@ void func_80048EE8_main(omObjData *object) {
                     case 1: // RESET
                         D_800D530C_main = 1;
                         D_800CDD5C_main[port] |= 0x20;
-                        if (D_800D2118_main->work[0] & 1) {
-                            D_800D2118_main->work[0] &= ~1;
+                        if (omDBGSysKeyObj->work[0] & 1) {
+                            omDBGSysKeyObj->work[0] &= ~1;
                             if (D_800CE214_main == 1) {
                                 HuWinAllKill();
                             }
@@ -1151,12 +1151,12 @@ void func_80048EE8_main(omObjData *object) {
                         break;
                     case 4: // MUSSTP
                         if ((D_800A1900_main ^= 1) == 0) {
-                            func_8004A950_main();
+                            HuAudSeqStop();
                         }
                         break;
                     case 5: // SE STP
                         if ((D_800A1902_main ^= 1) == 0) {
-                            func_8004AD70_main();
+                            HuAudFXAllStop();
                         }
                         break;
                 }
@@ -1171,7 +1171,7 @@ void func_80048EE8_main(omObjData *object) {
         }
         if (close == 1) {
             object->work[0] &= ~1;
-            if (!(D_800D2118_main->work[0] & 1)) {
+            if (!(omDBGSysKeyObj->work[0] & 1)) {
                 HmfPauseF = D_800A1752_main[0];
                 for (i = 0; i < ommaxobjs; i++) {
                     if (!(omobjall[i].stat & 0x21)) {
@@ -1383,8 +1383,8 @@ void func_800499B0_main(omObjData *object) {
     }
 }
 
-u16 func_80049F98_main(void) {
-    return D_800D2118_main != NULL ? (OM_GET_WORK_PTR(D_800D2118_main, PauseObjWork)->halfwords[1] & 1) : 0;
+u16 omPauseChk(void) {
+    return omDBGSysKeyObj != NULL ? (OM_GET_WORK_PTR(omDBGSysKeyObj, PauseObjWork)->halfwords[1] & 1) : 0;
 }
 
 // Pauses all objects and processes.

@@ -983,7 +983,7 @@ void MBItemKSuitWalkExec(void) {
                     MBDlgWinClose();
                     totalCoinsToLose += coinsToLose;
                     MBDlgWinKill();
-                    func_8004ACE0_main(0, sp20[i]);
+                    PlayerFXPlay(0, sp20[i]);
                     MBCoinChangeStatusCreate(sp20[i], temp_s0_2);
                     MBCoinTakeCreate(sp20[i], temp_s0_2);
                     HuPrcSleep(30);
@@ -1212,7 +1212,7 @@ static void MBTelopPlayerMain(omObjData* arg0) {
     case 2:
         arg0->scale.x += 0.2f;
         HuSprScaleSet(D_80102D38_shared_board, 0, arg0->scale.x, arg0->scale.x);
-        func_80055458_main(D_80102D38_shared_board, 0, (2.0f - arg0->scale.x) * 256.0f);
+        HuSprTPLvlSet(D_80102D38_shared_board, 0, (2.0f - arg0->scale.x) * 256.0f);
         if (arg0->scale.x >= 2.0f) {
             arg0->work[0] = 3;
             return;
@@ -1278,7 +1278,7 @@ static void MBTelopMgTypeMain(omObjData *obj) {
         (D_80102D58_shared_board + 2.0f * sindf(obj->rot.z)));
 
     for (i = 1; D_8010118C_shared_board[obj->work[0]] >= i; i++) {
-        func_80055458_main(D_80102CE0_shared_board[D_80102D34_shared_board], i, (obj->scale.x * 256.0f));
+        HuSprTPLvlSet(D_80102CE0_shared_board[D_80102D34_shared_board], i, (obj->scale.x * 256.0f));
     }
 }
 
@@ -1400,7 +1400,7 @@ void MBTelopMgTypeCreate(s32 arg0, u32 arg1) {
         HuSprPosSet(D_80102CE0_shared_board[D_80102D34_shared_board], 0, (D_80101194_shared_board[var_s1] + 0x50), D_80102D58_shared_board);
         
         for (i = 1; D_8010118C_shared_board[var_s1] >= i; i++) {
-            func_80055458_main(D_80102CE0_shared_board[D_80102D34_shared_board], i, 0);
+            HuSprTPLvlSet(D_80102CE0_shared_board[D_80102D34_shared_board], i, 0);
         }
         
         temp_v0_2 = omAddObj(-0x8000, 0, 0, -1, MBTelopMgTypeMain);

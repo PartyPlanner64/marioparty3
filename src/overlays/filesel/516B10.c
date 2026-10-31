@@ -295,7 +295,7 @@ void func_801059D0_filesel(void) {
     Hu3DCamSetPerspective(0, 41.0f, 80.0f, 8000.0f);
     Hu3DCamSetPositionOrientation(0, &position, &target, &up);
     func_80030030_main(1.0f);
-    func_8004A950_main();
+    HuAudSeqStop();
     pfInit();
     HuWinInit();
     HmfLightMaxSet(3);
@@ -569,13 +569,13 @@ void func_801067D0_filesel(s32 arg0, s16 arg1) {
 
 void func_80106814_filesel(s32 arg0) {
     // The original call omits the scale argument.
-    void (*setModelScale)() = (void (*)())func_8001C92C_main;
+    void (*setModelScale)() = (void (*)())Hu3DMotionSpeedSet;
 
     setModelScale(D_80113650_filesel[arg0].unk_00);
 }
 
 void func_8010684C_filesel(s32 arg0, u32 arg1) {
-    func_8001C6A8_main(D_80113650_filesel[arg0].unk_00, arg1);
+    Hu3DMotionTimeSet(D_80113650_filesel[arg0].unk_00, arg1);
 }
 
 void func_801068B0_filesel(s32 arg0) {
@@ -595,7 +595,7 @@ void func_801069D8_filesel(s32 arg0, s32 arg1, s16 arg2) {
     s16 modelId = func_8010642C_filesel(arg0);
     s16 parentModelId = func_80106450_filesel(arg1);
 
-    func_8001F304_main(modelId, parentModelId);
+    Hu3DMotionSet(modelId, parentModelId);
     func_8001C814_main(modelId, -1, arg2);
 }
 

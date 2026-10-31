@@ -25,7 +25,7 @@ void opObjectInit(void) {
         Hu3DCamSetPositionOrientation(0, &pos, &at, &up);
     }
     func_80030030_main(1.0f);
-    func_8004A950_main();
+    HuAudSeqStop();
     pfInit();
     HuWinInit();
     HmfLightMaxSet(2);

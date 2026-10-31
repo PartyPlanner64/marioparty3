@@ -423,11 +423,11 @@ void func_80106DD0_opening(s32 modelId, s16 arg1) {
 }
 
 void opMotionSpeedSet(s32 modelId, f32 speed) {
-    func_8001C92C_main(D_80115630_opening[modelId].modelId, speed);
+    Hu3DMotionSpeedSet(D_80115630_opening[modelId].modelId, speed);
 }
 
 void opMotionTimeSet(s32 slot, u32 time) {
-    func_8001C6A8_main(D_80115630_opening[slot].modelId, time);
+    Hu3DMotionTimeSet(D_80115630_opening[slot].modelId, time);
 }
 
 void opMotionEndWait(s32 slot) {
@@ -447,7 +447,7 @@ void opMotionSet(s32 modelId, s32 motionId, s16 arg2) {
     s16 model = opModelIdGet(modelId);
     s16 motion = opMotionIdGet(motionId);
 
-    func_8001F304_main(model, motion);
+    Hu3DMotionSet(model, motion);
     func_8001C814_main(model, -1, arg2);
 }
 

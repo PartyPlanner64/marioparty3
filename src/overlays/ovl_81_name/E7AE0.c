@@ -207,7 +207,7 @@ void *func_80100420_name_81(void) {
         HuSprPriSet(temp_s2->unk_0A, i, 0);
         if (i == 0) {
             HuSprAttrSet(temp_s2->unk_0A, 0, 0x1000);
-            func_80055458_main(temp_s2->unk_0A, 0, 0x80U);
+            HuSprTPLvlSet(temp_s2->unk_0A, 0, 0x80U);
         } else {
             HuSprAttrSet(temp_s2->unk_0A, i, 0);
         }

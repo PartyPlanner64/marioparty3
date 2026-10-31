@@ -1734,7 +1734,7 @@ void MBPauseCreate(s32 arg0) {
         if (D_800C9930_main != -1) {
             func_800039A4_main(D_800C9930_main, 0x5A);
             D_800C9930_main = -1;
-            func_8004A950_main();
+            HuAudSeqStop();
         }
         WipeCreateOut(0, 0x10);
         HuPrcSleep(0x11);

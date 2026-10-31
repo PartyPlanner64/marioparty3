@@ -164,9 +164,9 @@ void MBPlayerSpeedSet(s32 playerNo, f32 arg1) {
     GW_PLAYER *player = MBPlayerGet(playerNo);
 
     if (player->itemTurn != 0) {
-        func_8001C92C_main(D_801011FC_shared_board->omObj1->model[0], arg1);
+        Hu3DMotionSpeedSet(D_801011FC_shared_board->omObj1->model[0], arg1);
     } else {
-        func_8001C92C_main(player->player_obj->omObj1->model[0], arg1);
+        Hu3DMotionSpeedSet(player->player_obj->omObj1->model[0], arg1);
     }
 }
 

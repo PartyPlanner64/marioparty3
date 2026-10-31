@@ -365,11 +365,11 @@ void func_800F8CD8_name_81(s32 playerIndex, f32 arg1) {
     }
 
     if (player->stats.partners.frontID != PARTNER_NONE) {
-        func_8001C92C_main(Duel_PartnerObjects[playerIndex][PARTNER_FRONT]->omObj1->model[0], arg1);
+        Hu3DMotionSpeedSet(Duel_PartnerObjects[playerIndex][PARTNER_FRONT]->omObj1->model[0], arg1);
     }
 
     if (player->stats.partners.backID != PARTNER_NONE) {
-        func_8001C92C_main(Duel_PartnerObjects[playerIndex][PARTNER_BACK]->omObj1->model[0], arg1);
+        Hu3DMotionSpeedSet(Duel_PartnerObjects[playerIndex][PARTNER_BACK]->omObj1->model[0], arg1);
     }
 }
 
@@ -1040,7 +1040,7 @@ void func_800FADB4_name_81(void) {
 
 void func_800FAE18_name_81(Object *arg0, s16 arg1, s16 arg2) {
     if (arg1 <= D_80101990_name_81) {
-        func_8001F304_main(arg0->omObj1->model[0], D_80105470_name_81[arg1]);
+        Hu3DMotionSet(arg0->omObj1->model[0], D_80105470_name_81[arg1]);
         func_8001C814_main(arg0->omObj1->model[0], -1, arg2);
     }
 }
@@ -1085,7 +1085,7 @@ void func_800FAFAC_name_81(void) {
 
 void func_800FB038_name_81(Object *arg0, s16 arg1, u16 arg2) {
     if (arg1 < D_80101992_name_81) {
-        func_8001F304_main(arg0->omObj1->model[0], D_80105480_name_81[arg1]);
+        Hu3DMotionSet(arg0->omObj1->model[0], D_80105480_name_81[arg1]);
         func_8001C814_main(arg0->omObj1->model[0], -1, arg2);
     }
 }

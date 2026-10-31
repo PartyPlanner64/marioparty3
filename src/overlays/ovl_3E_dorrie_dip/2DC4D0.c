@@ -105,7 +105,7 @@ extern u8 D_8010A046_dorrie_dip;
 extern omObjData *D_8010A260_dorrie_dip;
 extern DorrieDipCpu D_8010A254_dorrie_dip;
 
-void func_8004AD70_main(void);
+void HuAudFXAllStop(void);
 void func_800557A0_main(void);
 s32 func_8000B638_main(void);
 void func_80105FD0_dorrie_dip(omObjData *);
@@ -237,7 +237,7 @@ void func_80105C7C_dorrie_dip(omObjData *obj) {
     s32 i;
 
     if (D_800D530C_main != 0) {
-        func_8004AD70_main();
+        HuAudFXAllStop();
         HuAudSeqFadeOut(30);
         WipeCreateOut(0, 20);
     }
@@ -1255,7 +1255,7 @@ void func_80109738_dorrie_dip(void) {
                     Hu3DModelPosSet(D_8010A24C_dorrie_dip->model[effectIdx], x, 0.0f, z);
                 }
                 func_8001C258_main(D_8010A24C_dorrie_dip->model[effectIdx], 4, 0);
-                func_8001C6A8_main(D_8010A24C_dorrie_dip->model[effectIdx], 0.0f);
+                Hu3DMotionTimeSet(D_8010A24C_dorrie_dip->model[effectIdx], 0.0f);
             }
         }
         HuPrcVSleep();

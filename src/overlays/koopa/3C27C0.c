@@ -891,7 +891,7 @@ s32 func_80107A9C_koopa(void) {
     HuPrcSleep(15);
     for (i = 0; i < 70; i += 5) {
         HuSprPosSet(sprite->spriteGroup, 0, sindf(i) * 90.0f + 160.0f, sindf(i + 90) * 50.0f + 38.0f);
-        func_80055458_main(sprite->spriteGroup, 0, 256 - i * 2);
+        HuSprTPLvlSet(sprite->spriteGroup, 0, 256 - i * 2);
         HuSprScaleSet(sprite->spriteGroup, 0, 1.0f - i / 140.0f, 1.0f - i / 140.0f);
         HuPrcVSleep();
     }
@@ -942,7 +942,7 @@ s32 func_80107DDC_koopa(void) {
     HuPrcSleep(15);
     for (i = 0; i < 70; i += 5) {
         HuSprPosSet(sprite->spriteGroup, 0, sindf(i) * 90.0f + 160.0f, sindf(i + 90) * 50.0f + 38.0f);
-        func_80055458_main(sprite->spriteGroup, 0, 256 - i * 2);
+        HuSprTPLvlSet(sprite->spriteGroup, 0, 256 - i * 2);
         HuSprScaleSet(sprite->spriteGroup, 0, 1.0f - i / 140.0f, 1.0f - i / 140.0f);
         HuPrcVSleep();
     }
@@ -955,7 +955,7 @@ s32 func_80107DDC_koopa(void) {
         func_800EC3C0_shared_board(D_801094F4_koopa);
         func_800EC3E4_shared_board();
         HuSprAttrReset(sprite->spriteGroup, 0, 0x8000);
-        func_80055458_main(sprite->spriteGroup, 0, 256);
+        HuSprTPLvlSet(sprite->spriteGroup, 0, 256);
         for (i = 0; i <= 10; i++) {
             HuSprPosSet(sprite->spriteGroup, 0, 160, 88);
             HuSprScaleSet(sprite->spriteGroup, 0, i / 10.0f, i / 10.0f);
@@ -964,7 +964,7 @@ s32 func_80107DDC_koopa(void) {
         HuPrcSleep(15);
         for (i = 0; i < 70; i += 5) {
             HuSprPosSet(sprite->spriteGroup, 0, sindf(i) * 90.0f + 160.0f, sindf(i + 90) * 50.0f + 38.0f);
-            func_80055458_main(sprite->spriteGroup, 0, 256 - i * 2);
+            HuSprTPLvlSet(sprite->spriteGroup, 0, 256 - i * 2);
             HuSprScaleSet(sprite->spriteGroup, 0, 1.0f - i / 140.0f, 1.0f - i / 140.0f);
             HuPrcVSleep();
         }
@@ -1178,7 +1178,7 @@ s32 func_80108BB0_koopa(void) {
 
     HuPrcSleep(15);
     MBMotionSet(D_801094F8_koopa, 6, 2);
-    func_8001C92C_main(D_801094F8_koopa->omObj1->model[0], 2.0f);
+    Hu3DMotionSpeedSet(D_801094F8_koopa->omObj1->model[0], 2.0f);
     MBVecDirGet(&D_801094F8_koopa->coords, &D_801093BC_koopa, &direction);
     HuPrcChildLink(HuPrcCurrentGet(), func_800ED128_shared_board(&D_801094F8_koopa->rot, &direction, &D_801094F8_koopa->rot, 10));
     HuPrcChildWait();
@@ -1223,7 +1223,7 @@ void func_80108D2C_koopa(void) {
     } else {
         HuPrcSleep(20);
         MBMotionSet(D_801094F8_koopa, 4, 4);
-        func_8001C6A8_main(D_801094F8_koopa->omObj1->model[0], 1024.0f);
+        Hu3DMotionTimeSet(D_801094F8_koopa->omObj1->model[0], 1024.0f);
         while (func_800D9E80_shared_board(D_801094F8_koopa) == 0) {
             HuPrcVSleep();
         }

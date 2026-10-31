@@ -46,7 +46,7 @@ void func_8010AF18_thwomp_pull(s16 arg0, s16 arg1) {
     HmfModel *model = &HmfModelData[arg0];
     f32 value = arg1;
 
-    func_8001C6A8_main(arg0, value);
+    Hu3DMotionTimeSet(arg0, value);
     model->hmf->unk98->unk08 = value;
 }
 

@@ -972,7 +972,7 @@ static void func_800DCDD4_shared_board(void) {
                                     MBCoinChangeCreate(temp_s3->unk0, 10);
                                     MBCoinTakeCreate(temp_s3->unk0, 10);
                                 }
-                                func_8004ACE0_main(0x274, temp_s3->unk0);
+                                PlayerFXPlay(0x274, temp_s3->unk0);
                                 MBPlayerMotionSet(temp_s3->unk0, 5, 0);
                                 HuPrcSleep(0x1E);
                                 MBPlayerMotionSet(temp_s3->unk0, -1, 2);
@@ -1021,7 +1021,7 @@ static void func_800DCDD4_shared_board(void) {
                                         MBCoinChangeCreate(temp_s3->unk0, 20);
                                         MBCoinTakeCreate(temp_s3->unk0, 20);
                                     }
-                                    func_8004ACE0_main(0x274, temp_s3->unk0);
+                                    PlayerFXPlay(0x274, temp_s3->unk0);
                                     MBPlayerMotionSet(temp_s3->unk0, 5, 0);
                                     HuPrcSleep(0x1E);
                                     if (temp_s4->rollValue[0] == 7) {
@@ -1164,7 +1164,7 @@ static void func_800DD724_shared_board(void) {
     
     MBVecForwardSet(&temp_s4->player_obj->rot);
     MBPlayerMotionSet(-1, 6, 0);
-    func_8004ACE0_main(0x262, GwSystem.current_player_index);
+    PlayerFXPlay(0x262, GwSystem.current_player_index);
     HuPrcSleep(16);
     func_80003A70_main(D_800CDBC8_main);
     func_8004A918_main(0x6F);
@@ -1295,7 +1295,7 @@ static void func_800DDE3C_shared_board(void) {
                 func_800550F4_main(grp, 0, 0);
                 HuSprAttrSet(grp, 0, 0x180C);
                 HuSprPosSet(grp, 0, 160, 90);
-                func_80055458_main(grp, 0, 0);
+                HuSprTPLvlSet(grp, 0, 0);
 
                 amp = 1.0f / sindf(20.0f);
                 
@@ -1304,7 +1304,7 @@ static void func_800DDE3C_shared_board(void) {
                     f32 temp1 = sindf(angle) * amp * 0.8f + 0.2f;
                     f32 temp2 = sindf(angle) * amp * 0.8f + 0.2f;
                     HuSprScaleSet(grp, 0, temp1, temp2);
-                    func_80055458_main(grp, 0, 0x100);
+                    HuSprTPLvlSet(grp, 0, 0x100);
                     HuPrcVSleep();
                 }
                 
@@ -1316,7 +1316,7 @@ static void func_800DDE3C_shared_board(void) {
                     angle -= 11.25f;
                 }
                 HuSprScaleSet(grp, 0, 1.0f, 1.0f);
-                func_80055458_main(grp, 0, 0x100);
+                HuSprTPLvlSet(grp, 0, 0x100);
 
                 func_800DE858_shared_board();
                 HuPrcSleep(5);
@@ -1332,20 +1332,20 @@ static void func_800DDE3C_shared_board(void) {
                     HuAudFXPlay(0x10);
                 } else {
                     for (i = 1; i < 64; i++) {
-                        func_80055458_main(grp, 0, 255.0f - (i * 3.984f));
+                        HuSprTPLvlSet(grp, 0, 255.0f - (i * 3.984f));
                         HuPrcVSleep();
                     }
-                    func_80055458_main(grp, 0, 0);
+                    HuSprTPLvlSet(grp, 0, 0);
                 }
 
                 HuSprKill(anim);
                 HuSprGrpKill(grp);
 
                 if (gotItem != 0) {
-                    func_8004ACE0_main(0x274, work->playerNo);
+                    PlayerFXPlay(0x274, work->playerNo);
                     MBPlayerMotionSet(work->playerNo, 5, 0);
                 } else {
-                    func_8004ACE0_main(0x286, work->playerNo);
+                    PlayerFXPlay(0x286, work->playerNo);
                     MBPlayerMotionSet(work->playerNo, 3, 0);
                 }
                 
@@ -1438,7 +1438,7 @@ static void func_800DE5EC_shared_board(void) {
                     }
                     func_800EE6C0_shared_board(GwPlayer[work->playerNo].player_obj);
                 }
-                func_8004ACE0_main(0x274, work->playerNo);
+                PlayerFXPlay(0x274, work->playerNo);
                 MBPlayerMotionSet(work->playerNo, 5, 0);
                 HuPrcSleep(30);
                 MBPlayerMotionSet(work->playerNo, -1, 2);

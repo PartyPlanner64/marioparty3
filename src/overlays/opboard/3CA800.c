@@ -510,7 +510,7 @@ void func_80106CFC_opboard(void) {
         MBDlgWinClose();
         MBDlgWinKill();
         MBMotionShiftSet(D_80108F1C_opboard, -1, 0, 5, 2);
-        func_8004ACE0_main(0x274, i);
+        PlayerFXPlay(0x274, i);
         func_800EE94C_shared_board(D_80109068_opboard[i]->player_obj, 3, 0);
         func_800EE884_shared_board(D_80109068_opboard[i]->player_obj, -1, 2);
         func_800DBEC0_shared_board(order[i]);

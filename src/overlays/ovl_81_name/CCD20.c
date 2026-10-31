@@ -1111,7 +1111,7 @@ void func_800E8AB0_name_81(void) {
                 HuSprPosSet(obj->unk_02, 0, pos.x, pos.y);
             }
             
-            func_80055458_main(obj->unk_02, 0, obj->unk_06);
+            HuSprTPLvlSet(obj->unk_02, 0, obj->unk_06);
 
             if (obj->vel.x != 0.0f) {
                 maxX = MBDBackMaxXGet();

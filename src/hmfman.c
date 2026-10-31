@@ -115,7 +115,7 @@ extern s32 D_800C9940_main;
 extern u16 D_800CBB72_main[];
 extern s8 D_800CC0A8_main;
 extern s16 D_800CC0B6_main;
-extern void (*D_800CC3D8_main[])(Gfx **, HuCamMtxs *, u8);
+extern void (*D_800CC3D8_main[])(Gfx **, HuCamMtxs *, s16);
 extern u16 D_800CD2F6_main;
 extern s8 D_800CDA84_main;
 extern s16 D_800CDD6A_main;
@@ -504,8 +504,6 @@ void Hu3DModelAllKill(void) {
     func_8000D3AC_main();
 }
 
-#ifdef NON_MATCHING
-/* Saved regs match; loop.c hoists the 0xDF000000 (G_ENDDL) constant out of the camera loop here but not in the target */
 void Hu3DExec(void *arg0, u16 arg1) {
     HuMtx4F mtx;
     HuMtx4F scaleMtx;
@@ -555,7 +553,7 @@ void Hu3DExec(void *arg0, u16 arg1) {
         }
         func_80012640_main(D_800CD6A6_main, &gMainGfxPos);
         func_800127C4_main(D_800CD6A6_main, &gMainGfxPos);
-        mask = 1 << D_800CD6A6_main;
+        mask = 1 << (s16)D_800CD6A6_main;
         gSPDisplayList(gMainGfxPos++, D_800A09C8_main);
         gSPEndDisplayList(gMainGfxPos++);
         gfx = gMainGfxPos;
@@ -746,9 +744,6 @@ void Hu3DExec(void *arg0, u16 arg1) {
     func_8000EF64_main(gfxStart, D_800CE19A_main, 1, arg0, 0x309);
     D_800A08B0_main++;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/hmfman", Hu3DExec);
-#endif
 
 Gfx *func_8001BD24_main(Gfx *arg0, s16 arg1, u16 arg2) {
     s16 i;

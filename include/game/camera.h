@@ -34,8 +34,8 @@ typedef struct HuCamera {
     /* 0x09C */ f32 screenBottom;
     /* 0x0A0 */ void (*unkA0)(void*, struct HmfModel*); // TODO: unsure about first arg type.
     /* 0x0A4 */ void* unkA4;
-    /* 0x0A8 */ void (*unkA8)(s32);
-    /* 0x0AC */ void (*unkAC)(s32);
+    /* 0x0A8 */ void (*unkA8)(s16);
+    /* 0x0AC */ void (*unkAC)(s16);
     /* 0x0B0 */ HuCamMtxs mtxs[3];
 } HuCamera; //0x230 in size?
 

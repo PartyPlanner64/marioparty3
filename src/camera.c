@@ -122,11 +122,11 @@ void func_80012888_main(s16 camIndex, void (*arg1)(void *, struct HmfModel *), v
     camera->unkA4 = arg2;
 }
 
-void func_800128BC_main(s16 camIndex, void (*arg1)(s32)) {
+void func_800128BC_main(s16 camIndex, void (*arg1)(s16)) {
     gCameraList[camIndex].unkA8 = arg1;
 }
 
-void func_800128EC_main(s16 camIndex, void (*arg1)(s32)) {
+void func_800128EC_main(s16 camIndex, void (*arg1)(s16)) {
     gCameraList[camIndex].unkAC = arg1;
 }
 

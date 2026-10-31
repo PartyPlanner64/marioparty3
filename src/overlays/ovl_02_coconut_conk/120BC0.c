@@ -147,7 +147,7 @@ void func_800E1310_minigame(omObjData *, f32);
 void func_800E131C_minigame(omObjData *, f32);
 void func_800E139C_minigame(omObjData *, f32, f32, f32, f32, f32);
 void func_800335BC_main(char *name, u16 *result);
-void func_8000BC48_main(u16, u16);
+void espAttrSet(u16, u16);
 void func_8001E888_main(s16 model, f32 x, f32 y, u16 arg3, u16 arg4, char *name, s32 arg6);
 
 void func_801059A0_coconut_conk(void) {
@@ -293,11 +293,11 @@ void func_801060C0_coconut_conk(omObjData *arg0) {
 
 void func_801060C8_coconut_conk(omObjData *arg0) {
     D_8010B2B4_coconut_conk = func_8000B838_main(0x23000D);
-    D_8010B2B6_coconut_conk = InitEspriteSlot(D_8010B2B4_coconut_conk, 0, 0);
-    func_8000BC48_main(D_8010B2B6_coconut_conk, 0x4000);
+    D_8010B2B6_coconut_conk = espEntry(D_8010B2B4_coconut_conk, 0, 0);
+    espAttrSet(D_8010B2B6_coconut_conk, 0x4000);
     D_8010B2B8_coconut_conk = 160.0f;
     D_8010B2BC_coconut_conk = 67.0f;
-    func_8000BBD4_main(D_8010B2B6_coconut_conk, 160, 67);
+    espPosSet(D_8010B2B6_coconut_conk, 160, 67);
     D_8010B1C4_coconut_conk = func_80055194_main(func_8000B838_main(0x23000E));
     func_8001C8A8_main(func_8001AC8C_main(0, func_80105D98_coconut_conk, 2), 1);
     arg0->func = func_801060C0_coconut_conk;
@@ -314,11 +314,11 @@ void func_801061EC_coconut_conk(omObjData *arg0) {
 
 void func_801061F4_coconut_conk(omObjData *arg0) {
     D_8010B3BC_coconut_conk = func_8000B838_main(0x23000F);
-    D_8010B3BE_coconut_conk = InitEspriteSlot(D_8010B3BC_coconut_conk, 0, 0);
-    func_8000BC48_main(D_8010B3BE_coconut_conk, 0);
+    D_8010B3BE_coconut_conk = espEntry(D_8010B3BC_coconut_conk, 0, 0);
+    espAttrSet(D_8010B3BE_coconut_conk, 0);
     D_8010B3C0_coconut_conk = 160.0f;
     D_8010B3C4_coconut_conk = 219.0f;
-    func_8000BBD4_main(D_8010B3BE_coconut_conk, 160, 219);
+    espPosSet(D_8010B3BE_coconut_conk, 160, 219);
     arg0->func = func_801061EC_coconut_conk;
 }
 

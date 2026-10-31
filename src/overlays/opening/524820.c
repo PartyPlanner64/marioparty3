@@ -24,7 +24,7 @@ extern const Vec D_80114D90_opening;
 extern Vec D_80114B70_opening[2], D_80114B88_opening[2], D_80114BA0_opening, D_80114BAC_opening;
 extern const Vec D_80114D9C_opening, D_80114DA8_opening;
 
-void func_8000BEAC_main(u16 spriteId, s32 arg1, s32 arg2, s32 arg3);
+void espColorSet(u16 spriteId, s32 arg1, s32 arg2, s32 arg3);
 void func_80088800_main(HuMtx4F, f32, f32, f32);
 void func_80017CD0_main(HuMtx4F, f32, f32, f32);
 HmfMotionNode *func_8001D33C_main(s16 model, char *name);
@@ -218,13 +218,13 @@ void opAnimKill(s32 arg0) {
 }
 
 void opEspCreate(s32 slot, s16 animId) {
-    D_80114EB0_opening[slot].espriteSlot = InitEspriteSlot(D_801155B0_opening[animId].animId, 0, 0);
+    D_80114EB0_opening[slot].espriteSlot = espEntry(D_801155B0_opening[animId].animId, 0, 0);
     opSprPosSet(slot, 0xA0, 0x78);
 }
 
 void opEspKill(s32 slot) {
     if (D_80114EB0_opening[slot].espriteSlot != -1) {
-        func_8000C184_main(D_80114EB0_opening[slot].espriteSlot);
+        espKill(D_80114EB0_opening[slot].espriteSlot);
     }
     D_80114EB0_opening[slot].espriteSlot = -1;
 }
@@ -236,7 +236,7 @@ void opSprCreate(s32 slot, s32 resourceId) {
 
 void opSprBGCreate(s32 slot, s32 resourceId) {
     opSprCreate(slot, resourceId);
-    func_8000BC48_main(D_80114EB0_opening[slot].espriteSlot, 0x4000);
+    espAttrSet(D_80114EB0_opening[slot].espriteSlot, 0x4000);
 }
 
 void opSprKill(s32 slot) {
@@ -253,11 +253,11 @@ void opSprKillAll(void) {
 }
 
 void opSprDispOn(s32 slot) {
-    func_8000BB54_main(D_80114EB0_opening[slot].espriteSlot);
+    espDispOn(D_80114EB0_opening[slot].espriteSlot);
 }
 
 void opSprDispOff(s32 slot) {
-    func_8000BB94_main(D_80114EB0_opening[slot].espriteSlot);
+    espDispOff(D_80114EB0_opening[slot].espriteSlot);
 }
 
 void opSprBGDispOn(s32 slot) {
@@ -271,7 +271,7 @@ void opSprBGDispOff(s32 slot) {
 void opSprPosSet(s32 arg0, s32 arg1, s32 arg2) {
     D_80114EB0_opening[arg0].unk_04 = arg1;
     D_80114EB0_opening[arg0].unk_08 = arg2;
-    func_8000BBD4_main(D_80114EB0_opening[arg0].espriteSlot, arg1, arg2);
+    espPosSet(D_80114EB0_opening[arg0].espriteSlot, arg1, arg2);
 }
 
 void opSprPosGet(s32 slot, s32 *x, s32 *y) {
@@ -282,23 +282,23 @@ void opSprPosGet(s32 slot, s32 *x, s32 *y) {
 void opSprScaleSet(s32 arg0, f32 arg1, f32 arg2) {
     D_80114EB0_opening[arg0].unk_0C = arg1;
     D_80114EB0_opening[arg0].unk_10 = arg2;
-    func_8000BE5C_main(D_80114EB0_opening[arg0].espriteSlot, arg1, arg2);
+    espScaleSet(D_80114EB0_opening[arg0].espriteSlot, arg1, arg2);
 }
 
 void opSprAlphaSet(s32 arg0, u16 arg1) {
-    func_8000BBFC_main(D_80114EB0_opening[arg0].espriteSlot, arg1);
+    espTPLvlSet(D_80114EB0_opening[arg0].espriteSlot, arg1);
 }
 
 void opSprAttrSet(s32 arg0, u16 arg1) {
-    func_8000BC48_main(D_80114EB0_opening[arg0].espriteSlot, arg1);
+    espAttrSet(D_80114EB0_opening[arg0].espriteSlot, arg1);
 }
 
 void opSprAttrReset(s32 arg0, u16 arg1) {
-    func_8000BC88_main(D_80114EB0_opening[arg0].espriteSlot, arg1);
+    espAttrReset(D_80114EB0_opening[arg0].espriteSlot, arg1);
 }
 
 void func_80106734_opening(s32 arg0, u16 arg1) {
-    func_8000BCC8_main(D_80114EB0_opening[arg0].espriteSlot, arg1);
+    espPriSet(D_80114EB0_opening[arg0].espriteSlot, arg1);
 }
 
 void func_80106768_opening(s32 slot, u16 arg1, u16 arg2) {
@@ -454,13 +454,13 @@ void opMotionSet(s32 modelId, s32 motionId, s16 arg2) {
 void func_80107048_opening(void) {
     // The original call omits the resource id.
     D_801171B0_opening = ((s16 (*)())func_8000B838_main)();
-    D_801171B2_opening = InitEspriteSlot(D_801171B0_opening, 0, 0);
-    func_8000BC48_main(D_801171B2_opening, 0x4000);
-    func_8000BBD4_main(D_801171B2_opening, 0xA0, 0x78);
+    D_801171B2_opening = espEntry(D_801171B0_opening, 0, 0);
+    espAttrSet(D_801171B2_opening, 0x4000);
+    espPosSet(D_801171B2_opening, 0xA0, 0x78);
 }
 
 void func_801070AC_opening(void) {
-    func_8000C184_main(D_801171B2_opening);
+    espKill(D_801171B2_opening);
     HuSprKill(D_801171B0_opening);
 }
 
@@ -911,7 +911,7 @@ void opDemoEvent(void) {
                 func_80106768_opening(i, 0U, func_80111C30_opening(6U) & 0xFFFF);
             }
             opSprPosSet(i, starLayout.stars[i].x, starLayout.stars[i].y);
-            func_8000BEAC_main(opEspIdGet(i) & 0xFFFF, 0xFF, 0xFF, 0xFF);
+            espColorSet(opEspIdGet(i) & 0xFFFF, 0xFF, 0xFF, 0xFF);
             i += 1;
         }
         loopContinue = i < 10;
@@ -3502,36 +3502,36 @@ void opTitleSetup(void) {
     }
     opSprBGCreate(0, 0x100000);
     opSprPosSet(0, 160, 120);
-    func_8000BCC8_main((u16)opEspIdGet(0), 9);
+    espPriSet((u16)opEspIdGet(0), 9);
     opSprBGDispOn(0);
     opSprBGCreate(1, 0x100001);
     opSprPosSet(1, 160, 120);
-    func_8000BCC8_main((u16)opEspIdGet(1), 11);
+    espPriSet((u16)opEspIdGet(1), 11);
     opSprBGDispOn(1);
     opSprBGCreate(2, 0x100002);
     opSprPosSet(2, 160, 71);
     opSprAttrSet(2, 8);
     opSprAlphaSet(2, 255);
-    func_8000BCC8_main((u16)opEspIdGet(2), 8);
+    espPriSet((u16)opEspIdGet(2), 8);
     opSprBGCreate(3, 0x100005);
     opSprPosSet(3, 160, 71);
     opSprAttrSet(3, 8);
     opSprAlphaSet(3, 255);
     sprite = opEspIdGet(3);
-    func_8000BEAC_main(sprite, 255, 255, 255);
-    func_8000BCC8_main(sprite, 9);
+    espColorSet(sprite, 255, 255, 255);
+    espPriSet(sprite, 9);
     opSprBGCreate(4, 0x100003);
     opSprPosSet(4, 158, 197);
     opSprAttrSet(4, 8);
     opSprAlphaSet(4, 255);
-    func_8000BCC8_main((u16)opEspIdGet(4), 8);
+    espPriSet((u16)opEspIdGet(4), 8);
     opSprBGCreate(5, 0x100004);
     opSprPosSet(5, 158, 197);
     opSprAttrSet(5, 0x1008);
     opSprAlphaSet(5, 255);
     sprite = opEspIdGet(5);
-    func_8000BEAC_main(sprite, 0, 6, 115);
-    func_8000BCC8_main(sprite, 9);
+    espColorSet(sprite, 0, 6, 115);
+    espPriSet(sprite, 9);
 }
 
 void opTitleSprMain(void) {
@@ -4115,28 +4115,28 @@ void opSleep(s32 frames) {
 void opContErrorCreate(void) {
     if (GWContErrorGet() == 0) {
         D_80117750_opening.animId = func_8000B838_main(0x100005);
-        D_80117750_opening.espriteSlot = InitEspriteSlot(D_80117750_opening.animId, 0, 1);
-        func_8000BBD4_main(D_80117750_opening.espriteSlot, 0xA0, 0xA8);
-        func_8000BCC8_main(D_80117750_opening.espriteSlot, 0);
-        func_8000BB94_main(D_80117750_opening.espriteSlot);
+        D_80117750_opening.espriteSlot = espEntry(D_80117750_opening.animId, 0, 1);
+        espPosSet(D_80117750_opening.espriteSlot, 0xA0, 0xA8);
+        espPriSet(D_80117750_opening.espriteSlot, 0);
+        espDispOff(D_80117750_opening.espriteSlot);
     }
 }
 
 void opContErrorDispOn(void) {
     if (GWContErrorGet() == 0) {
-        func_8000BB54_main(D_80117750_opening.espriteSlot);
+        espDispOn(D_80117750_opening.espriteSlot);
     }
 }
 
 void opContErrorDispOff(void) {
     if (GWContErrorGet() == 0) {
-        func_8000BB94_main(D_80117750_opening.espriteSlot);
+        espDispOff(D_80117750_opening.espriteSlot);
     }
 }
 
 void opContErrorKill(void) {
     if (GWContErrorGet() == 0) {
-        func_8000C184_main(D_80117750_opening.espriteSlot);
+        espKill(D_80117750_opening.espriteSlot);
         HuSprKill(D_80117750_opening.animId);
     }
 }

@@ -23,14 +23,14 @@ s16 func_80116B20_mgmode(void) {
     s16 i;
 
     D_8011A3E0_mgmode = func_8000B838_main(0x12000E);
-    sprGrp = InitEspriteSlot(D_8011A3E0_mgmode, 0, 1);
+    sprGrp = espEntry(D_8011A3E0_mgmode, 0, 1);
     D_8011B650_mgmode = sprGrp;
     for (i = 0; i < ARRAY_COUNT(D_8011B654_mgmode); i++) {
         D_8011B654_mgmode[i] = HuMemAllocTag(0x6000, 0x7918);
     }
     D_8011B660_mgmode = HuSprGet(D_800CD1DC_main[sprGrp].unk04, 0)->unk_84->unk00->unk00;
     D_8011B652_mgmode = 0;
-    func_8000BB94_main(sprGrp);
+    espDispOff(sprGrp);
     return sprGrp;
 }
 
@@ -54,7 +54,7 @@ void func_80116C18_mgmode(s16 arg0) {
     if (D_8011B652_mgmode >= ARRAY_COUNT(D_8011B654_mgmode)) {
         D_8011B652_mgmode = 0;
     }
-    func_8000BB54_main(D_8011B650_mgmode);
+    espDispOn(D_8011B650_mgmode);
 }
 
 void func_80116D4C_mgmode(void) {
@@ -63,7 +63,7 @@ void func_80116D4C_mgmode(void) {
     if (D_8011A3E0_mgmode != -1) {
         HuSprGet(D_800CD1DC_main[D_8011B650_mgmode].unk04, 0)->unk_84->unk00->unk00 =
             D_8011B660_mgmode;
-        func_8000C184_main(D_8011B650_mgmode);
+        espKill(D_8011B650_mgmode);
         HuSprKill(D_8011A3E0_mgmode);
         for (i = 0; i < ARRAY_COUNT(D_8011B654_mgmode); i++) {
             HuMemFree(D_8011B654_mgmode[i]);

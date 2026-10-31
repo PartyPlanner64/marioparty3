@@ -45,8 +45,8 @@ const s16 D_8010DB30_inst[] = {0x3811, 0x3812, 0x3813, 0x0000};
 
 s32 func_8003A37C_main(GAMEMES *, const char *, s32, s32, s32);
 
-void func_8000BC48_main(u16, u16);
-void func_8000BBFC_main(u16, s16);
+void espAttrSet(u16, u16);
+void espTPLvlSet(u16, s16);
 void func_8000BD94_main(u16, s32, s32);
 void func_8010CDE4_inst(const char *, s32, s32);
 void func_8010CF14_inst(void);
@@ -78,18 +78,18 @@ void func_8010B990_inst(void) {
     object = omAddObj(20, 5, 0, -1, NULL);
     D_8010DCA0_inst = object;
     D_8010DCD0_inst = &D_800A6D40_main[D_8010D40B_inst];
-    D_8010DCC0_inst[0] = InitEspriteSlot(func_8000B838_main(0x170008), 0, 1);
-    func_8000BC48_main(D_8010DCC0_inst[0], 0x1000);
-    func_8000BBFC_main(D_8010DCC0_inst[0], 255);
-    func_8000BBD4_main(D_8010DCC0_inst[0], 160, -100);
+    D_8010DCC0_inst[0] = espEntry(func_8000B838_main(0x170008), 0, 1);
+    espAttrSet(D_8010DCC0_inst[0], 0x1000);
+    espTPLvlSet(D_8010DCC0_inst[0], 255);
+    espPosSet(D_8010DCC0_inst[0], 160, -100);
     func_8010CDE4_inst((const char *)(D_8010D40B_inst + 0x4700), 160, -100);
     func_8010CF14_inst();
     func_8010CFF4_inst();
     if (D_8010D40A_inst == 3) {
-        D_8010DCC0_inst[1] = InitEspriteSlot(func_8000B838_main(0x17000E), 0, 1);
-        func_8000BC48_main(D_8010DCC0_inst[1], 0x1000);
-        func_8000BBFC_main(D_8010DCC0_inst[1], 255);
-        func_8000BBD4_main(D_8010DCC0_inst[1], 160, -78);
+        D_8010DCC0_inst[1] = espEntry(func_8000B838_main(0x17000E), 0, 1);
+        espAttrSet(D_8010DCC0_inst[1], 0x1000);
+        espTPLvlSet(D_8010DCC0_inst[1], 255);
+        espPosSet(D_8010DCC0_inst[1], 160, -78);
         score = D_800CC698_main;
         sprite = func_8000B838_main(0x1300CF);
         if (score >= 1000) {
@@ -101,11 +101,11 @@ void func_8010B990_inst(void) {
         digits[1] = score / 10 - score / 100 * 10;
         digits[2] = score % 10;
         for (i = 0; i < 3; i++) {
-            slot = InitEspriteSlot(sprite, 0, 0);
+            slot = espEntry(sprite, 0, 0);
             sprites = D_8010DCC4_inst;
             sprites[i] = slot;
             positions = D_8010DAF8_inst;
-            func_8000BBD4_main(sprites[i], positions[i].x, -78);
+            espPosSet(sprites[i], positions[i].x, -78);
             func_8000BD94_main(sprites[i], (u16)digits[i], 0);
         }
     }
@@ -155,13 +155,13 @@ void func_8010BE78_inst(s32 arg0) {
     const InstSpritePos *positions;
 
     if (D_8010D408_inst == 0) {
-        func_8000BBD4_main(D_8010DCC0_inst[0], 160, *(y = &D_8010D5BA_inst));
+        espPosSet(D_8010DCC0_inst[0], 160, *(y = &D_8010D5BA_inst));
         func_8010CED0_inst(160, *y);
         value = D_8010D40A_inst;
         if (value == 3) {
-            func_8000BBD4_main(D_8010DCC0_inst[1], 160, *y + 22);
+            espPosSet(D_8010DCC0_inst[1], 160, *y + 22);
             for (i = 0, sprites = D_8010DCC4_inst, positions = D_8010DAF8_inst; i < 3; i++) {
-                func_8000BBD4_main(sprites[i], positions[i].x, D_8010D5BA_inst + 22);
+                espPosSet(sprites[i], positions[i].x, D_8010D5BA_inst + 22);
             }
         }
         D_8010D5B4_inst++;
@@ -171,23 +171,23 @@ void func_8010BE78_inst(s32 arg0) {
         }
         D_8010D5B4_inst = 0;
         D_8010D5B8_inst = -64;
-        func_8000BBD4_main(D_8010DCC0_inst[0], 160, 32);
+        espPosSet(D_8010DCC0_inst[0], 160, 32);
         func_8010CED0_inst(160, 32);
         value = D_8010D40A_inst;
         if (value == 3) {
-            func_8000BBD4_main(D_8010DCC0_inst[1], 160, 54);
+            espPosSet(D_8010DCC0_inst[1], 160, 54);
             for (i = 0, sprites = D_8010DCC4_inst, positions = D_8010DAF8_inst; i < 3; i++) {
-                func_8000BBD4_main(sprites[i], positions[i].x, 54);
+                espPosSet(sprites[i], positions[i].x, 54);
             }
         }
     } else {
-        func_8000BBD4_main(D_8010DCC0_inst[0], 160, 32);
+        espPosSet(D_8010DCC0_inst[0], 160, 32);
         func_8010CED0_inst(160, 32);
         value = D_8010D40A_inst;
         if (value == 3) {
-            func_8000BBD4_main(D_8010DCC0_inst[1], 160, 54);
+            espPosSet(D_8010DCC0_inst[1], 160, 54);
             for (i = 0, sprites = D_8010DCC4_inst, positions = D_8010DAF8_inst; i < 3; i++) {
-                func_8000BBD4_main(sprites[i], positions[i].x, 54);
+                espPosSet(sprites[i], positions[i].x, 54);
             }
         }
         func_80060DEC_main(D_8010DCA8_inst.curGroup);

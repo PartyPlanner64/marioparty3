@@ -89,11 +89,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory2/49BD40", func_8010614C_mstory2);
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory2/49BD40", func_801061BC_mstory2);
 
 void func_801061EC_mstory2(void) {
-    func_8000BB54_main(D_8011C646_mstory2);
+    espDispOn(D_8011C646_mstory2);
 }
 
 void func_8010620C_mstory2(void) {
-    func_8000BB94_main(D_8011C646_mstory2);
+    espDispOff(D_8011C646_mstory2);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory2/49BD40", func_8010622C_mstory2);

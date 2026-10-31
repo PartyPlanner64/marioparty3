@@ -182,14 +182,14 @@ s16 func_801095F4_mgenter(void) {
     s16 i;
 
     D_80109B40_mgenter = func_8000B838_main(0x12000E);
-    sprGrp = InitEspriteSlot(D_80109B40_mgenter, 0, 1);
+    sprGrp = espEntry(D_80109B40_mgenter, 0, 1);
     D_80109B42_mgenter = sprGrp;
     for (i = 0; i < ARRAY_COUNT(D_80109B48_mgenter); i++) {
         D_80109B48_mgenter[i] = HuMemAllocTag(0x6000, 0x7918);
     }
     D_80109B54_mgenter = HuSprGet(D_800CD1DC_main[sprGrp].unk04, 0)->unk_84->unk00->unk00;
     D_80109B44_mgenter = 0;
-    func_8000BB94_main(sprGrp);
+    espDispOff(sprGrp);
     return sprGrp;
 }
 
@@ -213,14 +213,14 @@ void func_801096EC_mgenter(s16 arg0) {
     if (D_80109B44_mgenter >= ARRAY_COUNT(D_80109B48_mgenter)) {
         D_80109B44_mgenter = 0;
     }
-    func_8000BB54_main(D_80109B42_mgenter);
+    espDispOn(D_80109B42_mgenter);
 }
 
 void func_80109820_mgenter(void) {
     s16 i;
 
     HuSprGet(D_800CD1DC_main[D_80109B42_mgenter].unk04, 0)->unk_84->unk00->unk00 = D_80109B54_mgenter;
-    func_8000C184_main(D_80109B42_mgenter);
+    espKill(D_80109B42_mgenter);
     HuSprKill(D_80109B40_mgenter);
     for (i = 0; i < ARRAY_COUNT(D_80109B48_mgenter); i++) {
         HuMemFree(D_80109B48_mgenter[i]);

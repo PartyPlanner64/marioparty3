@@ -31,7 +31,7 @@ extern s16 D_8011A890_msetup;
 extern s16 D_8011A892_msetup[2];
 extern s16 D_8011A990_msetup;
 
-void func_8000BBFC_main(u16, s16);
+void espTPLvlSet(u16, s16);
 void func_80012B14_main(s16, Vec *, Vec2f *);
 s16 func_8010CAF0_msetup(s32, s32);
 s32 func_8010CD14_msetup(s16, f32, f32, f32);
@@ -510,7 +510,7 @@ void func_8010BEF8_msetup(void) {
             case 11:
                 for (i = 0; i < 4; i++) {
                     if (slots[i] >= 0) {
-                        func_8000BB54_main(slots[i]);
+                        espDispOn(slots[i]);
                         alphaTarget[i] = D_80119AC8_msetup[i];
                         alphaStep[i] = (u8)(D_80119AC8_msetup[i] / 5U);
                     }
@@ -558,7 +558,7 @@ void func_8010BEF8_msetup(void) {
                 offset[1] = -30;
             createSprite:
                 if (slots[(s16)i] >= 0) {
-                    func_8000C184_main(slots[(s16)i]);
+                    espKill(slots[(s16)i]);
                 }
                 if (sprites[(s16)i] >= 0) {
                     HuSprKill(sprites[(s16)i]);
@@ -566,12 +566,12 @@ void func_8010BEF8_msetup(void) {
                 index = i;
                 kill[index] = 0;
                 sprites[index] = func_8000B838_main(dataId);
-                slots[index] = InitEspriteSlot(sprites[index], 0, 1);
-                func_8000BCC8_main(slots[index], 1);
+                slots[index] = espEntry(sprites[index], 0, 1);
+                espPriSet(slots[index], 1);
                 func_80012B14_main(0, pos, &projected);
-                func_8000BBD4_main(slots[index], (s16)(offset[0] + projected.x), (s16)(offset[1] + projected.y));
-                func_8000BBFC_main(slots[index], 0);
-                func_8000BB54_main(slots[index]);
+                espPosSet(slots[index], (s16)(offset[0] + projected.x), (s16)(offset[1] + projected.y));
+                espTPLvlSet(slots[index], 0);
+                espDispOn(slots[index]);
                 alphaTarget[index] = D_80119AC8_msetup[index];
                 alphaStep[index] = (u8)(D_80119AC8_msetup[index] / 7U);
                 entry->state = 0;
@@ -587,7 +587,7 @@ void func_8010BEF8_msetup(void) {
                 if (alpha[(s16)i] == 0 && kill[(s16)i] != 0) {
                     kill[(s16)i] = 0;
                     if (slots[(s16)i] >= 0) {
-                        func_8000C184_main(slots[(s16)i]);
+                        espKill(slots[(s16)i]);
                         slots[(s16)i] = -1;
                     }
                     if (sprites[(s16)i] >= 0) {
@@ -632,13 +632,13 @@ void func_8010BEF8_msetup(void) {
                             alphaStep[i] = 0;
                         }
                     }
-                    func_8000BBFC_main(slots[i], alpha[i]);
+                    espTPLvlSet(slots[i], alpha[i]);
                     if (alpha[i] == 0) {
-                        func_8000BB94_main(slots[i]);
+                        espDispOff(slots[i]);
                         if (kill[i] != 0) {
                             kill[i] = 0;
                             if (slots[i] >= 0) {
-                                func_8000C184_main(slots[i]);
+                                espKill(slots[i]);
                                 slots[i] = -1;
                             }
                             if (sprites[i] >= 0) {
@@ -653,7 +653,7 @@ void func_8010BEF8_msetup(void) {
     } while (state >= 0);
     for (i = 0; i < 4; i++) {
         if (slots[i] >= 0) {
-            func_8000C184_main(slots[i]);
+            espKill(slots[i]);
         }
         if (sprites[i] >= 0) {
             HuSprKill(sprites[i]);

@@ -6,7 +6,7 @@ extern s32 D_80109950_mgresultdealer;
 extern s32 D_8010A244_mgresultdealer;
 extern omObjFunc D_8010A260_mgresultdealer;
 
-void func_8000BC48_main(u16 arg0, u16 arg1);
+void espAttrSet(u16 arg0, u16 arg1);
 void func_80109710_mgresultdealer(omObjData *);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_801059A0_mgresultdealer);
@@ -20,9 +20,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80106234_mgr
 void func_801062B4_mgresultdealer(void) {
     u16 espriteSlot;
 
-    espriteSlot = InitEspriteSlot(func_8000B838_main(0x190000), 0, 0);
-    func_8000BBD4_main(espriteSlot, 0xA0, 0x78);
-    func_8000BC48_main(espriteSlot, 0x4000);
+    espriteSlot = espEntry(func_8000B838_main(0x190000), 0, 0);
+    espPosSet(espriteSlot, 0xA0, 0x78);
+    espAttrSet(espriteSlot, 0x4000);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_8010630C_mgresultdealer);

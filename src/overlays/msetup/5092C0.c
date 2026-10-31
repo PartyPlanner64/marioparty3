@@ -39,15 +39,15 @@ extern f32 D_80119AF4_msetup;
 extern f32 D_80119AF8_msetup;
 extern f32 D_80119AFC_msetup;
 
-void func_8000BE5C_main(u16, f32, f32);
+void espScaleSet(u16, f32, f32);
 s16 func_80011460_main(u8 *);
 void func_80088800_main(HuMtx4F, f32, f32, f32);
 void func_80017D24_main(HuMtx4F, f32, f32, f32);
 void func_80017CD0_main(HuMtx4F, f32, f32, f32);
 void func_80018044_main(HuMtx4F, HuMtx4F, HuMtx4F);
-void func_8000BBFC_main(u16, s16);
-void func_8000BCC8_main(u16, s32);
-void func_8000C184_main(u16);
+void espTPLvlSet(u16, s16);
+void espPriSet(u16, s32);
+void espKill(u16);
 void Hu3DModelRotSet(s16, f32, f32, f32);
 void Hu3DModelScaleSet(s16, f32, f32, f32);
 void HuSprKill(s16);
@@ -232,12 +232,12 @@ void func_8010D6D0_msetup(void) {
     cursor = HuPrcCurrentGet()->user_data;
     position = cursor->pos;
     sprite = func_8000B838_main(cursor->dataId);
-    slot = InitEspriteSlot(sprite, cursor->priority, 1);
-    func_8000BCC8_main(slot, 1);
+    slot = espEntry(sprite, cursor->priority, 1);
+    espPriSet(slot, 1);
     x = targetX = cursor->pos[0];
     y = targetY = cursor->pos[1];
-    func_8000BBD4_main(slot, x, y);
-    func_8000BB94_main(slot);
+    espPosSet(slot, x, y);
+    espDispOff(slot);
     visible = 0;
     alpha = 0;
     alphaDelta = 0;
@@ -256,8 +256,8 @@ void func_8010D6D0_msetup(void) {
                     alphaDelta = 64;
                     if (visible == 0) {
                         alpha = 0;
-                        func_8000BBFC_main(slot, 0);
-                        func_8000BB54_main(slot);
+                        espTPLvlSet(slot, 0);
+                        espDispOn(slot);
                         visible = 1;
                     }
                     break;
@@ -267,7 +267,7 @@ void func_8010D6D0_msetup(void) {
                     }
                     break;
                 case -1:
-                    func_8000C184_main(slot);
+                    espKill(slot);
                     HuSprKill(sprite);
                     cursor->state = 100;
                     while (1) {
@@ -305,10 +305,10 @@ void func_8010D6D0_msetup(void) {
             } else if (alpha < 0) {
                 alpha = 0;
                 alphaDelta = 0;
-                func_8000BB94_main(slot);
+                espDispOff(slot);
                 visible = 0;
             }
-            func_8000BBFC_main(slot, alpha);
+            espTPLvlSet(slot, alpha);
         }
         if ((x != targetX) | (y != targetY)) {
             if (frames == 0) {
@@ -320,7 +320,7 @@ void func_8010D6D0_msetup(void) {
                 x = startX + deltaX * weight;
                 y = startY + deltaY * weight;
             }
-            func_8000BBD4_main(slot, x, y);
+            espPosSet(slot, x, y);
         }
         HuPrcVSleep();
     }
@@ -341,8 +341,8 @@ void func_8010DAC4_msetup(omObjData *object) {
                 break;
             case 1:
                 object->work[2] = 0;
-                func_8000BB54_main(object->model[0]);
-                func_8000BB54_main(object->model[1]);
+                espDispOn(object->model[0]);
+                espDispOn(object->model[1]);
                 break;
             case 2:
                 object->work[2] = 255;
@@ -353,7 +353,7 @@ void func_8010DAC4_msetup(omObjData *object) {
                     slot = object->model[value];
                     x = anim->pos[value][0];
                     y = anim->pos[value][1];
-                    func_8000BBD4_main(slot, x, y);
+                    espPosSet(slot, x, y);
                 }
                 object->work[2] = 0;
                 object->work[1] = 5;
@@ -366,7 +366,7 @@ void func_8010DAC4_msetup(omObjData *object) {
                     slot = object->model[value];
                     x = anim->pos[value][0];
                     y = anim->pos[value][1];
-                    func_8000BBD4_main(slot, x, y);
+                    espPosSet(slot, x, y);
                 }
                 object->work[2] = 1;
                 object->work[1] = 5;
@@ -374,8 +374,8 @@ void func_8010DAC4_msetup(omObjData *object) {
                 anim->speed = 36.0f;
                 break;
             case 255:
-                func_8000C184_main(object->model[0]);
-                func_8000C184_main(object->model[1]);
+                espKill(object->model[0]);
+                espKill(object->model[1]);
                 HuSprKill(object->model[2]);
                 HuSprKill(object->model[3]);
                 object->work[0] = 0;
@@ -393,20 +393,20 @@ void func_8010DAC4_msetup(omObjData *object) {
                 object->work[0] = 0;
             }
             object->work[2] = value;
-            func_8000BBFC_main(object->model[0], value);
-            func_8000BBFC_main(object->model[1], value);
+            espTPLvlSet(object->model[0], value);
+            espTPLvlSet(object->model[1], value);
             break;
         case 2:
             value = object->work[2] - object->work[1];
             if (value < 0) {
                 value = 0;
-                func_8000BB94_main(object->model[0]);
-                func_8000BB94_main(object->model[1]);
+                espDispOff(object->model[0]);
+                espDispOff(object->model[1]);
                 object->work[0] = 0;
             }
             object->work[2] = value;
-            func_8000BBFC_main(object->model[0], value);
-            func_8000BBFC_main(object->model[1], value);
+            espTPLvlSet(object->model[0], value);
+            espTPLvlSet(object->model[1], value);
             break;
         case 3:
         case 4:
@@ -423,14 +423,14 @@ void func_8010DAC4_msetup(omObjData *object) {
                 offset *= 12.0f;
                 x += offset;
             }
-            func_8000BBD4_main(slot, x, y);
+            espPosSet(slot, x, y);
             break;
     }
 }
 
 void func_8010DDD8_msetup(omObjData *object) {
-    func_8000C184_main(object->model[0]);
-    func_8000C184_main(object->model[1]);
+    espKill(object->model[0]);
+    espKill(object->model[1]);
     HuSprKill(object->model[2]);
     HuSprKill(object->model[3]);
     HuMemFree(object->data);
@@ -453,22 +453,22 @@ omObjData *func_8010DE38_msetup(s32 leftX, s32 rightX, s32 y) {
     object->data = anim;
 
     sprite = func_8000B838_main(0x140012);
-    i = InitEspriteSlot(sprite, 0, 1);
+    i = espEntry(sprite, 0, 1);
     object->model[0] = i;
     object->model[2] = sprite;
-    func_8000BCC8_main(i, 0x4800);
-    func_8000BBD4_main(i, leftX, y);
-    func_8000BB94_main(i);
+    espPriSet(i, 0x4800);
+    espPosSet(i, leftX, y);
+    espDispOff(i);
     anim->pos[0][0] = leftX;
     anim->pos[0][1] = y;
 
     sprite = func_8000B838_main(0x140013);
-    i = InitEspriteSlot(sprite, 0, 1);
+    i = espEntry(sprite, 0, 1);
     object->model[1] = i;
     object->model[3] = sprite;
-    func_8000BCC8_main(i, 0x4800);
-    func_8000BBD4_main(i, rightX, y);
-    func_8000BB94_main(i);
+    espPriSet(i, 0x4800);
+    espPosSet(i, rightX, y);
+    espDispOff(i);
     anim->pos[1][0] = rightX;
     anim->pos[1][1] = y;
 
@@ -789,14 +789,14 @@ void func_8010EB94_msetup(void) {
                     handle = slots[2];
                     switch (D_8011A938_msetup) {
                         case 0:
-                            func_8000BE5C_main((u16)handle, 0.8f, 0.8f);
+                            espScaleSet((u16)handle, 0.8f, 0.8f);
                             break;
                         case 1:
-                            func_8000BE5C_main((u16)handle, 0.8f, 0.8f);
+                            espScaleSet((u16)handle, 0.8f, 0.8f);
                             break;
                     }
-                    func_8000BBD4_main((u16)handle, 263, 48);
-                    func_8000BB54_main((u16)handle);
+                    espPosSet((u16)handle, 263, 48);
+                    espDispOn((u16)handle);
                     anim.fade.destroy[0] = 0;
                     anim.fade.destroy[2] = 0;
                     data->state = 0;
@@ -871,7 +871,7 @@ void func_8010EB94_msetup(void) {
                     handle = 2;
                     for (i = 0; i < 1; i++) {
                         if (slots[handle] >= 0) {
-                            func_8000C184_main((u16)slots[handle]);
+                            espKill((u16)slots[handle]);
                         }
                         if (values[handle] >= 0) {
                             HuSprKill(values[handle]);
@@ -931,9 +931,9 @@ void func_8010EB94_msetup(void) {
                     } else if (anim.fade.sprite.alpha[i] < 0) {
                         anim.fade.sprite.alpha[i] = 0;
                         anim.fade.sprite.delta[i] = 0;
-                        func_8000BB94_main((u16)handle);
+                        espDispOff((u16)handle);
                         if (anim.fade.destroy[index] != 0) {
-                            func_8000C184_main((u16)handle);
+                            espKill((u16)handle);
                             if (values[index] >= 0) {
                                 HuSprKill(values[index]);
                                 values[index] = -1;
@@ -944,7 +944,7 @@ void func_8010EB94_msetup(void) {
                         }
                     }
                     if (handle >= 0) {
-                        func_8000BBFC_main((u16)handle, anim.fade.sprite.alpha[i]);
+                        espTPLvlSet((u16)handle, anim.fade.sprite.alpha[i]);
                     }
                 }
             }

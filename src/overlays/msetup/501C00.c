@@ -72,11 +72,11 @@ extern f32 D_800CE17C_main[];
 extern f32 D_800D5210_main;
 extern f32 D_800CB890_main;
 
-void func_8000BBFC_main(u16, s16);
-void func_8000BC48_main(u16, s32);
-void func_8000BCC8_main(u16, s32);
-void func_8000BE5C_main(u16, f32, f32);
-void func_8000C184_main(u16);
+void espTPLvlSet(u16, s16);
+void espAttrSet(u16, s32);
+void espPriSet(u16, s32);
+void espScaleSet(u16, f32, f32);
+void espKill(u16);
 void Hu3DModelKill(s16);
 void Hu3DModelRotSet(s16, f32, f32, f32);
 void Hu3DModelScaleSet(s16, f32, f32, f32);

@@ -101,12 +101,12 @@ extern s32 D_80110CF4_modesel[][3];
 extern omObjData *D_80110CF8_modesel[][3];
 extern s32 D_80110DEC_modesel;
 
-void func_8000BBFC_main(u16, s16);
-void func_8000BC48_main(u16, u16);
-void func_8000BC88_main(u16, u16);
-void func_8000BCC8_main(u16, s32);
+void espTPLvlSet(u16, s16);
+void espAttrSet(u16, u16);
+void espAttrReset(u16, u16);
+void espPriSet(u16, s32);
 void func_8000BD94_main(u16, s32, s32);
-void func_8000BE5C_main(u16, f32, f32);
+void espScaleSet(u16, f32, f32);
 void func_8010601C_modesel(s32, s32, s32);
 void func_80106A38_modesel(s32, s32, s16);
 void func_80108F8C_modesel(Vec *, Vec *, Vec *);
@@ -163,13 +163,13 @@ void func_80105D78_modesel(s32 arg0) {
 }
 
 void func_80105DD0_modesel(s32 arg0, s16 arg1) {
-    D_8010F710_modesel[arg0].unk_00 = InitEspriteSlot(D_8010FE10_modesel[arg1][0], 0, 0);
+    D_8010F710_modesel[arg0].unk_00 = espEntry(D_8010FE10_modesel[arg1][0], 0, 0);
     func_8010601C_modesel(arg0, 0xA0, 0x78);
 }
 
 void func_80105E38_modesel(s32 arg0) {
     if (D_8010F710_modesel[arg0].unk_00 != -1) {
-        func_8000C184_main(D_8010F710_modesel[arg0].unk_00);
+        espKill(D_8010F710_modesel[arg0].unk_00);
     }
     D_8010F710_modesel[arg0].unk_00 = -1;
 }
@@ -193,7 +193,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80106000_modesel);
 void func_8010601C_modesel(s32 arg0, s32 arg1, s32 arg2) {
     D_8010F710_modesel[arg0].unk_04 = arg1;
     D_8010F710_modesel[arg0].unk_08 = arg2;
-    func_8000BBD4_main(D_8010F710_modesel[arg0].unk_00, arg1, arg2);
+    espPosSet(D_8010F710_modesel[arg0].unk_00, arg1, arg2);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80106074_modesel);
@@ -201,23 +201,23 @@ INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80106074_modesel);
 void func_801060A4_modesel(s32 arg0, f32 arg1, f32 arg2) {
     D_8010F710_modesel[arg0].unk_0C = arg1;
     D_8010F710_modesel[arg0].unk_10 = arg2;
-    func_8000BE5C_main(D_8010F710_modesel[arg0].unk_00, arg1, arg2);
+    espScaleSet(D_8010F710_modesel[arg0].unk_00, arg1, arg2);
 }
 
 void func_801060F4_modesel(s32 arg0, u16 arg1) {
-    func_8000BBFC_main(D_8010F710_modesel[arg0].unk_00, arg1);
+    espTPLvlSet(D_8010F710_modesel[arg0].unk_00, arg1);
 }
 
 void func_8010612C_modesel(s32 arg0, u16 arg1) {
-    func_8000BC48_main(D_8010F710_modesel[arg0].unk_00, arg1);
+    espAttrSet(D_8010F710_modesel[arg0].unk_00, arg1);
 }
 
 void func_80106160_modesel(s32 arg0, u16 arg1) {
-    func_8000BC88_main(D_8010F710_modesel[arg0].unk_00, arg1);
+    espAttrReset(D_8010F710_modesel[arg0].unk_00, arg1);
 }
 
 void func_80106194_modesel(s32 arg0, u16 arg1) {
-    func_8000BCC8_main(D_8010F710_modesel[arg0].unk_00, arg1);
+    espPriSet(D_8010F710_modesel[arg0].unk_00, arg1);
 }
 
 void func_801061C8_modesel(s32 arg0, u16 arg1, u16 arg2) {
@@ -337,13 +337,13 @@ void func_80106A38_modesel(s32 arg0, s32 arg1, s16 arg2) {
 void func_80106AA8_modesel(void) {
     // The original call omits the resource id.
     D_80110990_modesel = ((s16 (*)())func_8000B838_main)();
-    D_80110992_modesel = InitEspriteSlot(D_80110990_modesel, 0, 0);
-    func_8000BC48_main(D_80110992_modesel, 0x4000);
-    func_8000BBD4_main(D_80110992_modesel, 0xA0, 0x78);
+    D_80110992_modesel = espEntry(D_80110990_modesel, 0, 0);
+    espAttrSet(D_80110992_modesel, 0x4000);
+    espPosSet(D_80110992_modesel, 0xA0, 0x78);
 }
 
 void func_80106B0C_modesel(void) {
-    func_8000C184_main(D_80110992_modesel);
+    espKill(D_80110992_modesel);
     HuSprKill(D_80110990_modesel);
 }
 

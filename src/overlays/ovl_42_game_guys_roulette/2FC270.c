@@ -5,7 +5,7 @@ extern s16 D_8010A678_game_guys_roulette;
 extern u8 D_8010AB50_game_guys_roulette;
 
 void func_801088B0_game_guys_roulette(omObjData *object);
-void func_8000BC48_main(u16, u16);
+void espAttrSet(u16, u16);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_42_game_guys_roulette/2FC270", func_801059A0_game_guys_roulette);
 
@@ -114,8 +114,8 @@ void func_801089EC_game_guys_roulette(omObjData *object) {
 }
 
 void func_80108A14_game_guys_roulette(u8 *espriteSlot, s32 spriteIndex, u16 visibility) {
-    *espriteSlot = InitEspriteSlot(func_8000B838_main(spriteIndex), 0, 1);
-    func_8000BC48_main(*espriteSlot, visibility);
+    *espriteSlot = espEntry(func_8000B838_main(spriteIndex), 0, 1);
+    espAttrSet(*espriteSlot, visibility);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_42_game_guys_roulette/2FC270", func_80108A6C_game_guys_roulette);

@@ -282,8 +282,8 @@ void func_8001F974_main(s16 arg0, s16 arg1);
 void func_800335BC_main(char *name, u16 *result);
 void func_80106A6C_pump_pump_away(omObjData *obj);
 void func_8000B710_main(s32 arg0);
-void func_8000BC48_main(u16 arg0, u16 arg1);
-void func_8000BE5C_main(u16 spriteId, f32 x, f32 y);
+void espAttrSet(u16 arg0, u16 arg1);
+void espScaleSet(u16 spriteId, f32 x, f32 y);
 omObjData *func_80045EF4_main(u32 arg0, s16 arg1);
 u16 GWMgRecordGet(s16 arg0);
 void func_8004AE00_main(s16 arg0, s16 arg1);
@@ -2673,8 +2673,8 @@ void func_8010CEE8_pump_pump_away(omObjData *obj) {
             HuSprAttrSet(record->group, i, 0x1000);
             HuSprAttrSet(record->group, i, 0);
         }
-        func_8000BE5C_main(record->esprite, record->unk_20 / 12.0f + 1.0f, record->unk_20 / 12.0f + 1.0f);
-        func_8000BBD4_main(record->esprite, record->unk_20 * 4 + 78, record->unk_20 / 4 + 22);
+        espScaleSet(record->esprite, record->unk_20 / 12.0f + 1.0f, record->unk_20 / 12.0f + 1.0f);
+        espPosSet(record->esprite, record->unk_20 * 4 + 78, record->unk_20 / 4 + 22);
     }
 }
 
@@ -2712,10 +2712,10 @@ void func_8010D1B8_pump_pump_away(omObjData *obj) {
         }
     }
     record->espriteData = func_8000B838_main(0x2E0023);
-    record->esprite = InitEspriteSlot(record->espriteData, 0, 0);
-    func_8000BC48_main(record->esprite, 0x1000);
-    func_8000BBD4_main(record->esprite, 78, 22);
-    func_8000BB54_main(record->esprite);
+    record->esprite = espEntry(record->espriteData, 0, 0);
+    espAttrSet(record->esprite, 0x1000);
+    espPosSet(record->esprite, 78, 22);
+    espDispOn(record->esprite);
     record->unk_20 = 0;
     record->unk_24 = 0;
     obj->func = func_8010CEE8_pump_pump_away;

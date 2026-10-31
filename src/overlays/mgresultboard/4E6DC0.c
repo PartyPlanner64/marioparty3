@@ -6,9 +6,9 @@ extern PlayerResult D_8010B018_mgresultboard[4];
 extern PlayerResult D_8010B048_mgresultboard[4];
 extern s8 D_8010AAFC_mgresultboard;
 
-void func_8000BBFC_main(u16, u8);
-void func_8000BC48_main(u16, u16); 
-void func_8000BEAC_main(u16, u8, u8, u8);
+void espTPLvlSet(u16, u8);
+void espAttrSet(u16, u16); 
+void espColorSet(u16, u8, u8, u8);
 void func_8010705C_mgresultboard(Gfx**, s32, s32);
 void func_80107B40_mgresultboard(void);
 void func_80107D00_mgresultboard(void);
@@ -562,12 +562,12 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E6DC0", func_8010705C_mgre
 void func_80107188_mgresultboard(void) {
     u16 temp_s0;
 
-    temp_s0 = InitEspriteSlot(func_8000B838_main(0x18000A), 0, 0);
-    func_8000BBD4_main(temp_s0, 0xA0, 0x20);
-    func_8000BC48_main(temp_s0, 0x1000);
-    func_8000BBFC_main(temp_s0, 0xFF);
-    func_8000BEAC_main(temp_s0, 0xFF, 0xFF, 0xFF);
-    func_8000BBD4_main(InitEspriteSlot(func_8000B838_main(0x180009), 0, 0), 0xA0, 0x20);
+    temp_s0 = espEntry(func_8000B838_main(0x18000A), 0, 0);
+    espPosSet(temp_s0, 0xA0, 0x20);
+    espAttrSet(temp_s0, 0x1000);
+    espTPLvlSet(temp_s0, 0xFF);
+    espColorSet(temp_s0, 0xFF, 0xFF, 0xFF);
+    espPosSet(espEntry(func_8000B838_main(0x180009), 0, 0), 0xA0, 0x20);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E6DC0", func_80107234_mgresultboard);

@@ -204,13 +204,13 @@ s32 func_8010AC58_filesel(s32);
 s32 func_80112494_filesel(s32, u8 *);
 void func_80050064_main(s32);
 void func_80050DDC_main(s16, s16);
-void func_8000BEAC_main(u16, u8, u8, u8);
-void func_8000BBFC_main(u16, s16);
-void func_8000BC48_main(u16, u16);
-void func_8000BC88_main(u16, u16);
-void func_8000BCC8_main(u16, s32);
+void espColorSet(u16, u8, u8, u8);
+void espTPLvlSet(u16, s16);
+void espAttrSet(u16, u16);
+void espAttrReset(u16, u16);
+void espPriSet(u16, s32);
 void func_8000BD94_main(u16, s32, s32);
-void func_8000BE5C_main(u16, f32, f32);
+void espScaleSet(u16, f32, f32);
 
 extern Vec D_80112EA0_filesel;
 extern Vec D_80112EAC_filesel;
@@ -364,13 +364,13 @@ void func_80105D18_filesel(s32 arg0) {
 }
 
 void func_80105D70_filesel(s32 arg0, s16 arg1) {
-    D_80112ED0_filesel[arg0].unk_00 = InitEspriteSlot(D_801135D0_filesel[arg1][0], 0, 0);
+    D_80112ED0_filesel[arg0].unk_00 = espEntry(D_801135D0_filesel[arg1][0], 0, 0);
     func_80105FBC_filesel(arg0, 0xA0, 0x78);
 }
 
 void func_80105DD8_filesel(s32 arg0) {
     if (D_80112ED0_filesel[arg0].unk_00 != -1) {
-        func_8000C184_main(D_80112ED0_filesel[arg0].unk_00);
+        espKill(D_80112ED0_filesel[arg0].unk_00);
     }
     D_80112ED0_filesel[arg0].unk_00 = -1;
 }
@@ -382,7 +382,7 @@ void func_80105E48_filesel(s32 arg0, s32 arg1) {
 
 void func_80105E7C_filesel(s32 arg0, s32 arg1) {
     func_80105E48_filesel(arg0, arg1);
-    func_8000BC48_main(D_80112ED0_filesel[arg0].unk_00, 0x4000);
+    espAttrSet(D_80112ED0_filesel[arg0].unk_00, 0x4000);
 }
 
 void func_80105EC0_filesel(s32 arg0) {
@@ -399,11 +399,11 @@ void func_80105EEC_filesel(void) {
 }
 
 void func_80105F24_filesel(s32 arg0) {
-    func_8000BB54_main(D_80112ED0_filesel[arg0].unk_00);
+    espDispOn(D_80112ED0_filesel[arg0].unk_00);
 }
 
 void func_80105F54_filesel(s32 arg0) {
-    func_8000BB94_main(D_80112ED0_filesel[arg0].unk_00);
+    espDispOff(D_80112ED0_filesel[arg0].unk_00);
 }
 
 void func_80105F84_filesel(s32 arg0) {
@@ -417,7 +417,7 @@ void func_80105FA0_filesel(s32 arg0) {
 void func_80105FBC_filesel(s32 arg0, s32 arg1, s32 arg2) {
     D_80112ED0_filesel[arg0].unk_04 = arg1;
     D_80112ED0_filesel[arg0].unk_08 = arg2;
-    func_8000BBD4_main(D_80112ED0_filesel[arg0].unk_00, arg1, arg2);
+    espPosSet(D_80112ED0_filesel[arg0].unk_00, arg1, arg2);
 }
 
 void func_80106014_filesel(s32 arg0, s32 *arg1, s32 *arg2) {
@@ -428,23 +428,23 @@ void func_80106014_filesel(s32 arg0, s32 *arg1, s32 *arg2) {
 void func_80106044_filesel(s32 arg0, f32 arg1, f32 arg2) {
     D_80112ED0_filesel[arg0].unk_0C = arg1;
     D_80112ED0_filesel[arg0].unk_10 = arg2;
-    func_8000BE5C_main(D_80112ED0_filesel[arg0].unk_00, arg1, arg2);
+    espScaleSet(D_80112ED0_filesel[arg0].unk_00, arg1, arg2);
 }
 
 void func_80106094_filesel(s32 arg0, u16 arg1) {
-    func_8000BBFC_main(D_80112ED0_filesel[arg0].unk_00, arg1);
+    espTPLvlSet(D_80112ED0_filesel[arg0].unk_00, arg1);
 }
 
 void func_801060CC_filesel(s32 arg0, u16 arg1) {
-    func_8000BC48_main(D_80112ED0_filesel[arg0].unk_00, arg1);
+    espAttrSet(D_80112ED0_filesel[arg0].unk_00, arg1);
 }
 
 void func_80106100_filesel(s32 arg0, u16 arg1) {
-    func_8000BC88_main(D_80112ED0_filesel[arg0].unk_00, arg1);
+    espAttrReset(D_80112ED0_filesel[arg0].unk_00, arg1);
 }
 
 void func_80106134_filesel(s32 arg0, u16 arg1) {
-    func_8000BCC8_main(D_80112ED0_filesel[arg0].unk_00, arg1);
+    espPriSet(D_80112ED0_filesel[arg0].unk_00, arg1);
 }
 
 void func_80106168_filesel(s32 arg0, u16 arg1, u16 arg2) {
@@ -602,13 +602,13 @@ void func_801069D8_filesel(s32 arg0, s32 arg1, s16 arg2) {
 void func_80106A48_filesel(void) {
     // The original call omits the resource id.
     D_80114150_filesel = ((s16 (*)())func_8000B838_main)();
-    D_80114152_filesel = InitEspriteSlot(D_80114150_filesel, 0, 0);
-    func_8000BC48_main(D_80114152_filesel, 0x4000);
-    func_8000BBD4_main(D_80114152_filesel, 0xA0, 0x78);
+    D_80114152_filesel = espEntry(D_80114150_filesel, 0, 0);
+    espAttrSet(D_80114152_filesel, 0x4000);
+    espPosSet(D_80114152_filesel, 0xA0, 0x78);
 }
 
 void func_80106AAC_filesel(void) {
-    func_8000C184_main(D_80114152_filesel);
+    espKill(D_80114152_filesel);
     HuSprKill(D_80114150_filesel);
 }
 
@@ -3035,9 +3035,9 @@ void func_8010D13C_filesel(s32 fileIndex) {
     func_80105F54_filesel(23);
     sprite = func_80105CC4_filesel(23);
     if (flags & 2) {
-        func_8000BEAC_main(sprite, 255, 64, 64);
+        espColorSet(sprite, 255, 64, 64);
     } else {
-        func_8000BEAC_main(sprite, 0, 255, 255);
+        espColorSet(sprite, 0, 255, 255);
     }
     if (flags & 2) {
         func_80105E48_filesel(24, 0x1F000A);
@@ -3091,7 +3091,7 @@ void func_8010D13C_filesel(s32 fileIndex) {
     func_80105F54_filesel(29);
     func_80105E48_filesel(30, 0x1F0028);
     func_80105FBC_filesel(30, x + 16, y);
-    func_8000BEAC_main(func_80105CC4_filesel(30), 0, 255, 0);
+    espColorSet(func_80105CC4_filesel(30), 0, 255, 0);
     func_80106134_filesel(30, 5);
     func_80105F54_filesel(30);
 }
@@ -3110,13 +3110,13 @@ void func_8010D660_filesel(s32 fileIndex) {
     func_80105FBC_filesel(32, x, y - 21);
     func_80106168_filesel(32, 0, 0);
     func_80105F54_filesel(32);
-    func_8000BEAC_main(func_80105CC4_filesel(32), 0, 255, 255);
+    espColorSet(func_80105CC4_filesel(32), 0, 255, 255);
     func_80105D70_filesel(40, 32);
     func_80106134_filesel(40, 5);
     func_80105FBC_filesel(40, x, y + 22);
     func_80106168_filesel(40, 1, 0);
     func_80105F54_filesel(40);
-    func_8000BEAC_main(func_80105CC4_filesel(40), 255, 64, 64);
+    espColorSet(func_80105CC4_filesel(40), 255, 64, 64);
     func_80105E48_filesel(33, 0x1F000B);
     func_80106134_filesel(33, 5);
     func_80105FBC_filesel(33, x, y - 11);
@@ -3164,7 +3164,7 @@ void func_8010D660_filesel(s32 fileIndex) {
     func_80105F54_filesel(38);
     func_80105E48_filesel(39, 0x1F0028);
     func_80105FBC_filesel(39, x + 16, row);
-    func_8000BEAC_main(func_80105CC4_filesel(39), 0, 255, 0);
+    espColorSet(func_80105CC4_filesel(39), 0, 255, 0);
     func_80106134_filesel(39, 5);
     func_80105F54_filesel(39);
     if (!_CheckFlag(0x17)) {
@@ -3209,7 +3209,7 @@ void func_8010D660_filesel(s32 fileIndex) {
         func_80105E48_filesel(47, 0x1F0028);
         func_80105FBC_filesel(47, x + 16, y + 48);
     }
-    func_8000BEAC_main(func_80105CC4_filesel(47), 0, 255, 0);
+    espColorSet(func_80105CC4_filesel(47), 0, 255, 0);
     func_80106134_filesel(47, 5);
     func_80105F54_filesel(47);
 }

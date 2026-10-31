@@ -65,12 +65,12 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80105F40_mstory4);
 
 void func_80106000_mstory4(void) {
     func_8001C258_main(D_80112122_mstory4, 4, 4);
-    func_8000BB94_main(D_80112128_mstory4);
+    espDispOff(D_80112128_mstory4);
 }
 
 void func_80106034_mstory4(void) {
     func_8001C258_main(D_80112122_mstory4, 4, 0);
-    func_8000BB54_main(D_80112128_mstory4);
+    espDispOn(D_80112128_mstory4);
 }
 
 void func_80106068_mstory4(void) {
@@ -393,11 +393,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010EDA0_mstory4);
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010EE3C_mstory4);
 
 void func_8010EF00_mstory4(s32 index) {
-    func_8000BB54_main(D_80112368_mstory4[index]);
+    espDispOn(D_80112368_mstory4[index]);
 }
 
 void func_8010EF28_mstory4(s32 index) {
-    func_8000BB94_main(D_80112368_mstory4[index]);
+    espDispOff(D_80112368_mstory4[index]);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010EF50_mstory4);
@@ -406,8 +406,8 @@ void func_8010EF80_mstory4(void) {
     s32 i;
 
     for (i = 0; i < 8; i++) {
-        func_8000BB94_main(D_80112368_mstory4[i]);
-        func_8000C184_main(D_80112368_mstory4[i]);
+        espDispOff(D_80112368_mstory4[i]);
+        espKill(D_80112368_mstory4[i]);
         HuSprKill(D_80112358_mstory4[i]);
     }
     HuPrcSleep(3);
@@ -417,8 +417,8 @@ void func_8010F010_mstory4(void) {
     s32 i;
 
     for (i = 0; i < 7; i++) {
-        func_8000BB94_main(D_80112368_mstory4[i]);
-        func_8000C184_main(D_80112368_mstory4[i]);
+        espDispOff(D_80112368_mstory4[i]);
+        espKill(D_80112368_mstory4[i]);
         HuSprKill(D_80112358_mstory4[i]);
         HuPrcSleep(3);
     }
@@ -428,8 +428,8 @@ void func_8010F0A0_mstory4(void) {
     u16 *espriteSlot = &D_80112376_mstory4;
     s16 *sprite = &D_80112366_mstory4;
 
-    func_8000BB94_main(*espriteSlot);
-    func_8000C184_main(*espriteSlot);
+    espDispOff(*espriteSlot);
+    espKill(*espriteSlot);
     HuSprKill(*sprite);
 }
 
@@ -461,10 +461,10 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010F660_mstory4);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010F910_mstory4);
 
-void func_8000BB94_main(u16);           /* extern */
+void espDispOff(u16);           /* extern */
 void func_8000BD94_main(u16, s32, s32); /* extern */
 void func_8000BDDC_main(u16, s32);      /* extern */
-void func_8000C184_main(u16);
+void espKill(u16);
 void func_80017954_main(s16, s16, s16, s16);
 void Hu3DModelRotSet(s16, f32, f32, f32);                    /* extern */
 void func_800E4F50_name_81(Addr *);                          /* extern */
@@ -538,8 +538,8 @@ void func_8010FC98_mstory4(void) {
         for (j = 0, temp_s4 = D_80112088_mstory4[i].unk_00; j < temp_s4; var_s3++, j++) {
             func_8000BD94_main(D_80112378_mstory4[var_s3], 0, 0);
             func_8000BDDC_main(D_80112378_mstory4[var_s3], 1);
-            func_8000BB94_main(D_80112378_mstory4[var_s3]);
-            func_8000C184_main(D_80112378_mstory4[var_s3]);
+            espDispOff(D_80112378_mstory4[var_s3]);
+            espKill(D_80112378_mstory4[var_s3]);
         }
         // }
     }

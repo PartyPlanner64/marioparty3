@@ -361,8 +361,8 @@ void func_8010664C_picking_panic(omObjData *object) {
 
     for (i = 0; i < 10; i++) {
         D_8010EFF8_picking_panic[i] = func_8000B838_main(fileIds[i]);
-        D_8010EFD0_picking_panic[i] = InitEspriteSlot(D_8010EFF8_picking_panic[i], 0, 0);
-        func_8000BB94_main(D_8010EFD0_picking_panic[i]);
+        D_8010EFD0_picking_panic[i] = espEntry(D_8010EFF8_picking_panic[i], 0, 0);
+        espDispOff(D_8010EFD0_picking_panic[i]);
     }
 
     object->model[0] = func_8000B108_main(0x300000, 0x499);

@@ -2,8 +2,8 @@
 #include "mallocblock.h"
 #include "overlays/mgmode.h"
 
-void func_8000BC48_main(u16, u16);
-void func_8000BC88_main(u16, u16);
+void espAttrSet(u16, u16);
+void espAttrReset(u16, u16);
 
 void func_80116610_mgmode(MgmodeModelEntry *entries, s16 index, s16 modelId) {
     MgmodeModelEntry *entry = &entries[index];
@@ -24,7 +24,7 @@ void func_801168E0_mgmode(MgmodeEsprite *arg0) {
         if (sprite->spriteGroup == -1) {
             break;
         }
-        func_8000C184_main(sprite->espriteSlot);
+        espKill(sprite->espriteSlot);
         HuSprKill(sprite->spriteGroup);
         sprite++;
     }
@@ -32,23 +32,23 @@ void func_801168E0_mgmode(MgmodeEsprite *arg0) {
 }
 
 void func_80116968_mgmode(MgmodeEsprite *arg0, s16 index, s16 arg2, s16 arg3) {
-    func_8000BBD4_main(arg0[index].espriteSlot, arg2, arg3);
+    espPosSet(arg0[index].espriteSlot, arg2, arg3);
 }
 
 void func_801169A0_mgmode(MgmodeEsprite *arg0, s16 index) {
-    func_8000BB54_main(arg0[index].espriteSlot);
+    espDispOn(arg0[index].espriteSlot);
 }
 
 void func_801169C8_mgmode(MgmodeEsprite *arg0, s16 index) {
-    func_8000BB94_main(arg0[index].espriteSlot);
+    espDispOff(arg0[index].espriteSlot);
 }
 
 void func_801169F0_mgmode(MgmodeEsprite *arg0, s16 index, s16 arg2) {
-    func_8000BC48_main(arg0[index].espriteSlot, arg2);
+    espAttrSet(arg0[index].espriteSlot, arg2);
 }
 
 void func_80116A1C_mgmode(MgmodeEsprite *arg0, s16 index, s16 arg2) {
-    func_8000BC88_main(arg0[index].espriteSlot, arg2);
+    espAttrReset(arg0[index].espriteSlot, arg2);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47D880", func_80116A48_mgmode);
@@ -61,5 +61,5 @@ void func_80116AA8_mgmode(MgmodeEsprite *arg0, s16 index, s16 arg2) {
 }
 
 void func_80116AEC_mgmode(MgmodeEsprite *arg0, s16 index, u16 arg2) {
-    func_8000BCC8_main(arg0[index].espriteSlot, arg2);
+    espPriSet(arg0[index].espriteSlot, arg2);
 }

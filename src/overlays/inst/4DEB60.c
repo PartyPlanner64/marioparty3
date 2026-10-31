@@ -104,7 +104,7 @@ void func_80109A90_inst(void);        /* extern */
 void func_8010A1D0_inst(void);        /* extern */
 void func_8010B990_inst(void);        /* extern */
 HmfSkeletonNode *func_8001D33C_main(s16, const char *);
-void func_8000BC48_main(u16, u16); /* extern */
+void espAttrSet(u16, u16); /* extern */
 
 void func_801059A0_inst(void) {
     void (*procFunc)(void) = NULL;
@@ -383,9 +383,9 @@ void func_80106388_inst(void) {
     };
     u16 espriteSlot;
 
-    espriteSlot = InitEspriteSlot(func_8000B838_main(D_8010D658_inst[D_8010D40A_inst]), 0, 0);
-    func_8000BBD4_main(espriteSlot, 0xA0, 0x78);
-    func_8000BC48_main(espriteSlot, 0x4000);
+    espriteSlot = espEntry(func_8000B838_main(D_8010D658_inst[D_8010D40A_inst]), 0, 0);
+    espPosSet(espriteSlot, 0xA0, 0x78);
+    espAttrSet(espriteSlot, 0x4000);
 }
 
 void func_801063F4_inst(void) {

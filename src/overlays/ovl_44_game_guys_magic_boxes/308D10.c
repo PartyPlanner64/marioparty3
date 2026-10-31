@@ -48,7 +48,7 @@ extern s16 D_8010C9F0_game_guys_magic_boxes;
 extern void *D_8010C9F4_game_guys_magic_boxes[3];
 extern s16 D_8010CA0C_game_guys_magic_boxes;
 
-void func_8000BC48_main(u16, u16);
+void espAttrSet(u16, u16);
 void func_80109884_game_guys_magic_boxes(omObjData *object);
 void func_80109984_game_guys_magic_boxes(omObjData *object);
 
@@ -240,8 +240,8 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", fun
 
 void func_80109C98_game_guys_magic_boxes(GameGuysMagicBoxesSprite *sprite, s32 spriteIndex, u16 numSlots,
                                          u16 visibility) {
-    sprite->unk_00 = InitEspriteSlot(func_8000B838_main(spriteIndex), 0, numSlots);
-    func_8000BC48_main(sprite->unk_00, visibility);
+    sprite->unk_00 = espEntry(func_8000B838_main(spriteIndex), 0, numSlots);
+    espAttrSet(sprite->unk_00, visibility);
 }
 
 void func_80109CFC_game_guys_magic_boxes(GameGuysMagicBoxesSprite *sprite, s16 priority, s16 unk04, s16 x,

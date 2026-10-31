@@ -163,7 +163,7 @@ void func_801060E0_snowball_summit(u16 arg0, u16 arg1, char *arg2, u16 arg3) {
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010610C_snowball_summit);
 
 void func_80106184_snowball_summit(void) {
-    func_8000BBD4_main(D_801101F2_snowball_summit, D_801101F4_snowball_summit, D_801101F8_snowball_summit);
+    espPosSet(D_801101F2_snowball_summit, D_801101F4_snowball_summit, D_801101F8_snowball_summit);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_801061DC_snowball_summit);

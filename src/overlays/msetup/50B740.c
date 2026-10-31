@@ -141,11 +141,11 @@ void func_800332D4_main(s16, f32);
 void func_8010F43C_msetup(s16 model, char *node, Vec2f *screenPos);
 void func_80017D24_main(HuMtx4F, f32, f32, f32);
 void func_80017CD0_main(HuMtx4F, f32, f32, f32);
-void func_8000BBFC_main(u16, s16);
-void func_8000BC48_main(u16, s32);
-void func_8000BCC8_main(u16, s32);
-void func_8000BE5C_main(u16, f32, f32);
-void func_8000C184_main(u16);
+void espTPLvlSet(u16, s16);
+void espAttrSet(u16, s32);
+void espPriSet(u16, s32);
+void espScaleSet(u16, f32, f32);
+void espKill(u16);
 void Hu3DModelKill(s16);
 void Hu3DModelRotSet(s16, f32, f32, f32);
 void Hu3DModelScaleSet(s16, f32, f32, f32);
@@ -627,12 +627,12 @@ void func_80110954_msetup(void) {
     }
     if (cursor->priority < 0) {
         sprite = func_8000B838_main(0x11000E);
-        slot = InitEspriteSlot(sprite, 0, 1);
+        slot = espEntry(sprite, 0, 1);
     } else {
         sprite = func_8000B838_main(0x140042);
-        slot = InitEspriteSlot(sprite, cursor->priority, 1);
+        slot = espEntry(sprite, cursor->priority, 1);
     }
-    func_8000BCC8_main(slot, 1);
+    espPriSet(slot, 1);
     position = cursor->pos;
     offsetX = (cursor->priority & 1) ? 1 : -1;
     offsetY = (cursor->priority & 2) ? 1 : -1;
@@ -642,8 +642,8 @@ void func_80110954_msetup(void) {
     }
     x = targetX = position[0];
     y = targetY = position[1];
-    func_8000BBD4_main(slot, x, y);
-    func_8000BB94_main(slot);
+    espPosSet(slot, x, y);
+    espDispOff(slot);
     visible = 0;
     alpha = 0;
     alphaDelta = 0;
@@ -667,11 +667,11 @@ void func_80110954_msetup(void) {
     }
     for (i = 0; i < cursor->count; i++) {
         data.sprites[i] = func_8000B838_main(D_80119AD0_msetup[cursor->priority]);
-        data.slots[i] = InitEspriteSlot(data.sprites[i], 0, 1);
-        func_8000BCC8_main(data.slots[i], 2);
-        func_8000BE5C_main(data.slots[i], 0.75f, 0.75f);
-        func_8000BBFC_main(data.slots[i], 256);
-        func_8000BB94_main(data.slots[i]);
+        data.slots[i] = espEntry(data.sprites[i], 0, 1);
+        espPriSet(data.slots[i], 2);
+        espScaleSet(data.slots[i], 0.75f, 0.75f);
+        espTPLvlSet(data.slots[i], 256);
+        espDispOff(data.slots[i]);
     }
     refresh = 0;
     HuPrcVSleep();
@@ -693,13 +693,13 @@ void func_80110954_msetup(void) {
                                 cursor->entries[i].flags = 0;
                                 HuSprAttrSet(cursor->entries[i].group, cursor->entries[i].selected, 0x8000);
                                 HuSprAttrReset(cursor->entries[i].group, cursor->entries[i].normal, 0x8000);
-                                func_8000BB94_main(data.slots[selectedCount]);
+                                espDispOff(data.slots[selectedCount]);
                             }
                         }
                         cursor->result = 0;
                         alpha = 0;
-                        func_8000BBFC_main(slot, 0);
-                        func_8000BB54_main(slot);
+                        espTPLvlSet(slot, 0);
+                        espDispOn(slot);
                         func_8010D684_msetup(cursor->controller, &data.previousButtons);
                         func_8010D684_msetup(cursor->controller, &data.previousButtons);
                         visible = 1;
@@ -724,11 +724,11 @@ void func_80110954_msetup(void) {
                     }
                     break;
                 case -1:
-                    func_8000C184_main(slot);
+                    espKill(slot);
                     HuSprKill(sprite);
                     for (i = 0; i < 4; i++) {
                         if (data.slots[i] >= 0) {
-                            func_8000C184_main(data.slots[i]);
+                            espKill(data.slots[i]);
                         }
                         if (data.sprites[i] >= 0) {
                             HuSprKill(data.sprites[i]);
@@ -768,7 +768,7 @@ void func_80110954_msetup(void) {
                             HuSprAttrSet(cursor->entries[i].group, cursor->entries[i].selected, 0x8000);
                             HuSprAttrReset(cursor->entries[i].group, cursor->entries[i].normal, 0x8000);
                         }
-                        func_8000BB94_main(data.slots[selectedCount]);
+                        espDispOff(data.slots[selectedCount]);
                     }
                     cursor->result = 0;
                     enabled = 1;
@@ -787,8 +787,8 @@ void func_80110954_msetup(void) {
                     HuSprAttrSet(cursor->entries[selection].group, cursor->entries[selection].normal, 0x8000);
                     HuSprAttrReset(cursor->entries[selection].group, cursor->entries[selection].selected, 0x8000);
                     data.selections[selectedCount] = selection;
-                    func_8000BBD4_main(data.slots[selectedCount], targetX, targetY + 13);
-                    func_8000BB54_main(data.slots[selectedCount]);
+                    espPosSet(data.slots[selectedCount], targetX, targetY + 13);
+                    espDispOn(data.slots[selectedCount]);
                     selectedCount++;
                     if (selectedCount >= cursor->count) {
                         cursor->result = 1;
@@ -866,11 +866,11 @@ void func_80110954_msetup(void) {
             } else if (alpha < 0) {
                 alpha = 0;
                 alphaDelta = 0;
-                func_8000BB94_main(slot);
+                espDispOff(slot);
                 visible = 0;
                 cursor->state = 0;
             }
-            func_8000BBFC_main(slot, alpha);
+            espTPLvlSet(slot, alpha);
         }
         if ((x != targetX) | (y != targetY)) {
             if (!frames) {
@@ -882,7 +882,7 @@ void func_80110954_msetup(void) {
                 x = startX + deltaX * weight;
                 y = startY + deltaY * weight;
             }
-            func_8000BBD4_main(slot, x, y);
+            espPosSet(slot, x, y);
         }
         HuPrcVSleep();
     }
@@ -1070,11 +1070,11 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
             index = index < 8 ? index : 0;
             entries[index].flags = 1;
             sprite = func_8000B838_main(D_80119AD0_msetup[0]);
-            slot = InitEspriteSlot(sprite, 0, 1);
-            func_8000BCC8_main(slot, 2);
-            func_8000BE5C_main(slot, 0.75f, 0.75f);
-            func_8000BBFC_main(slot, 256);
-            func_8000BBD4_main(slot, positions[index][0], positions[index][1] + 12);
+            slot = espEntry(sprite, 0, 1);
+            espPriSet(slot, 2);
+            espScaleSet(slot, 0.75f, 0.75f);
+            espTPLvlSet(slot, 256);
+            espPosSet(slot, positions[index][0], positions[index][1] + 12);
             HuSprAttrSet(group, entries[index].normal, 0x8000);
             HuSprAttrReset(group, entries[index].selected, 0x8000);
             break;
@@ -1238,7 +1238,7 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
                 }
             finish_cpu:
                 menuState = -1;
-                func_8000BB94_main(slot);
+                espDispOff(slot);
                 break;
         }
         HuPrcVSleep();
@@ -1284,7 +1284,7 @@ s16 func_80111650_msetup(MsetupMenuState *state) {
     }
     Hu3DModelKill(model);
     if (slot >= 0) {
-        func_8000C184_main(slot);
+        espKill(slot);
     }
     if (sprite >= 0) {
         HuSprKill(sprite);
@@ -2008,25 +2008,25 @@ s16 func_80113ED4_msetup(MsetupMenuState *arg0) {
         if (prevBoardIndex != curBoardIndex) {
             if (backgroundEspriteSlot >= 0) {
                 for (i = 255; i > 0; i -= (255 / 5)) {
-                    func_8000BBFC_main(backgroundEspriteSlot, i);
+                    espTPLvlSet(backgroundEspriteSlot, i);
                     HuPrcVSleep();
                 }
-                func_8000C184_main(backgroundEspriteSlot);
+                espKill(backgroundEspriteSlot);
                 HuSprKill(var_s6);
             }
             temp_v0_4 = DataReadTemp(mainFSArray[curBoardIndex]);
             var_s6 = HuSprAnimRead(temp_v0_4);
             DataCloseTemp(temp_v0_4);
-            backgroundEspriteSlot = InitEspriteSlot(var_s6, 0, 1);
-            func_8000BC48_main(backgroundEspriteSlot, 0x1000);
-            func_8000BCC8_main(backgroundEspriteSlot, 1);
-            func_8000BBD4_main(backgroundEspriteSlot, 0xA0, var_fp);
-            func_8000BE5C_main(backgroundEspriteSlot, tempFloat, tempFloat);
+            backgroundEspriteSlot = espEntry(var_s6, 0, 1);
+            espAttrSet(backgroundEspriteSlot, 0x1000);
+            espPriSet(backgroundEspriteSlot, 1);
+            espPosSet(backgroundEspriteSlot, 0xA0, var_fp);
+            espScaleSet(backgroundEspriteSlot, tempFloat, tempFloat);
             for (i = 0; i < 255; i += (255 / 5)) {
-                func_8000BBFC_main(backgroundEspriteSlot, i);
+                espTPLvlSet(backgroundEspriteSlot, i);
                 HuPrcVSleep();
             }
-            func_8000BBFC_main(backgroundEspriteSlot, 0xFF);
+            espTPLvlSet(backgroundEspriteSlot, 0xFF);
             prevBoardIndex = curBoardIndex;
             func_8010B82C_msetup(boardDescriptionId[curBoardIndex]);
         }
@@ -2042,11 +2042,11 @@ s16 func_80113ED4_msetup(MsetupMenuState *arg0) {
     temp_s5->work[1] = 17;
 
     for (i = 255; i > 0; i -= (255 / 5)) {
-        func_8000BBFC_main(backgroundEspriteSlot, i);
+        espTPLvlSet(backgroundEspriteSlot, i);
         HuPrcVSleep();
     }
 
-    func_8000BBFC_main(backgroundEspriteSlot, 0);
+    espTPLvlSet(backgroundEspriteSlot, 0);
 
     for (var_f20 = 2.5f; var_f20 > 1.0f; var_f20 += -(3.0f / 14.0f)) {
         Hu3DModelScaleSet(temp, var_f20, var_f20, var_f20);
@@ -2073,7 +2073,7 @@ s16 func_80113ED4_msetup(MsetupMenuState *arg0) {
         for (i = 0; i < 2; i++) {
             Hu3DModelKill(sp20[i].model);
         }
-        func_8000C184_main(backgroundEspriteSlot);
+        espKill(backgroundEspriteSlot);
         HuSprKill(var_s6);
     }
     func_8010DDD8_msetup(temp_s5);
@@ -2131,20 +2131,20 @@ s16 func_801145D0_msetup(MsetupMenuState *state) {
     data = DataReadTemp(backgrounds[board]);
     sprite = HuSprAnimRead(data);
     DataCloseTemp(data);
-    slot = InitEspriteSlot(sprite, 0, 1);
-    func_8000BC48_main(slot, 0x1000);
-    func_8000BCC8_main(slot, 1);
-    func_8000BBD4_main(slot, 160, y);
-    func_8000BE5C_main(slot, scale, scale);
+    slot = espEntry(sprite, 0, 1);
+    espAttrSet(slot, 0x1000);
+    espPriSet(slot, 1);
+    espPosSet(slot, 160, y);
+    espScaleSet(slot, scale, scale);
     for (i = 0; i < 255; i += 255 / 7) {
-        func_8000BBFC_main(slot, i);
+        espTPLvlSet(slot, i);
         HuPrcVSleep();
     }
-    func_8000BBFC_main(slot, 255);
+    espTPLvlSet(slot, 255);
     func_8010B82C_msetup(messages[board]);
     func_8010B858_msetup();
     for (i = 255; i > 0; i -= 255 / 7) {
-        func_8000BBFC_main(slot, i);
+        espTPLvlSet(slot, i);
         HuPrcVSleep();
     }
     for (value = 2.5f; value > 1.0f; value += -(3.0f / 14.0f)) {
@@ -2163,7 +2163,7 @@ s16 func_801145D0_msetup(MsetupMenuState *state) {
     for (i = 0; i < 2; i++) {
         Hu3DModelKill(models[i].model);
     }
-    func_8000C184_main(slot);
+    espKill(slot);
     HuSprKill(sprite);
     return 0;
 }

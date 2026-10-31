@@ -43,8 +43,8 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F5AF0", func_801082C0_mgr
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F5AF0", func_80108510_mgresultbattle);
 
 void func_80108858_mgresultbattle(s16 group) {
-    func_8000BB94_main(D_80108F30_mgresultbattle[group]);
-    func_8000BB94_main(D_80108F38_mgresultbattle[group].unk_00);
-    func_8000BB94_main(D_80108F38_mgresultbattle[group].unk_02);
-    func_8000BB94_main(D_80108F38_mgresultbattle[group].unk_04);
+    espDispOff(D_80108F30_mgresultbattle[group]);
+    espDispOff(D_80108F38_mgresultbattle[group].unk_00);
+    espDispOff(D_80108F38_mgresultbattle[group].unk_02);
+    espDispOff(D_80108F38_mgresultbattle[group].unk_04);
 }

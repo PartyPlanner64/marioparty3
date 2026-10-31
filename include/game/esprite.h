@@ -24,14 +24,14 @@ typedef struct {
 extern D_800CD1DC_main_Struct *D_800CD1DC_main;
 
 s16 func_8000B838_main(s32 arg0);
-void func_8000BB54_main(u16 arg0);
-void func_8000BB94_main(u16 arg0);
+void espDispOn(u16 arg0);
+void espDispOff(u16 arg0);
 void func_8000BA30_main(void);
-void func_8000BBD4_main(u16 spriteId, s16 x, s16 y);
-void func_8000BCC8_main(u16, s32);
+void espPosSet(u16 spriteId, s16 x, s16 y);
+void espPriSet(u16, s32);
 void func_8000BD50_main(u16 spriteId, s16 arg1);
 void func_8000BDDC_main(u16 spriteId, s32 arg1);
-s16 InitEspriteSlot(s16 arg0, s16 arg1, u16 arg2);
-void func_8000C184_main(u16);
+s16 espEntry(s16 arg0, s16 arg1, u16 arg2);
+void espKill(u16);
 
 #endif

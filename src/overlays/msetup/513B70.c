@@ -40,7 +40,7 @@ extern s16 D_800D418E_main;
 
 void func_80106260_msetup(MsetupCameraPreset *);
 void func_80117A3C_msetup(void);
-void func_8000BC48_main(u16, s32);
+void espAttrSet(u16, s32);
 void func_8006105C_main(s16, s32);
 
 f32 func_80054B1C_main(s16, s16, s16, f32, f32, f32);
@@ -498,9 +498,9 @@ void func_80118D48_msetup(void) {
     third.pos.x = 0;
     third.pos.y = 0;
     third.pos.z = 0;
-    sprite = InitEspriteSlot(func_8000B838_main(0x140067), 0, 0);
-    func_8000BC48_main(sprite, 0x4000);
-    func_8000BBD4_main(sprite, 160, 120);
+    sprite = espEntry(func_8000B838_main(0x140067), 0, 0);
+    espAttrSet(sprite, 0x4000);
+    espPosSet(sprite, 160, 120);
     D_8011A910_msetup = func_80060880_main(160, 204, 19);
     func_8005FE54_main(D_8011A910_msetup, 1 << D_8011A948_msetup);
     func_8006105C_main(D_8011A910_msetup, 0xE0);

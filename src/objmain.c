@@ -27,7 +27,7 @@ extern s8 D_800D1710_main;
 
 void omDestroyPrcObj(void);
 void func_8000BA00_main(void);
-void func_8000BBFC_main(s32, s16);
+void espTPLvlSet(s32, s16);
 void func_800166D0_main(void);
 void Hu3DModelAllKill(void);
 void func_80021AF4_main(void);
@@ -751,7 +751,7 @@ void func_8004AE28_main(void);
 void func_8004AD70_main(void);
 s32 func_80000DF0_main(void);
 void func_8004B2C8_main(void);
-void func_8000B7A0_main(void);
+void espInit(void);
 void func_8000B1A0_main(s32, u8);
 void func_8001766C_main(void);
 void func_8004A49C_main(void);
@@ -885,7 +885,7 @@ void omMain(void) {
                 }
             }
             D_800D6A58_main = 0;
-            func_8000B7A0_main();
+            espInit();
             func_8001766C_main();
             D_800A176C_main = 0;
             func_8004A49C_main();
@@ -1291,7 +1291,7 @@ void func_800499B0_main(omObjData *object) {
                 }
             }
             if (_CheckFlag(0xF)) {
-                func_8000BB54_main(D_800B23C4_main);
+                espDispOn(D_800B23C4_main);
             }
             for (i = 0; i < 4; i++) {
                 if (CheckControllerRead(i)) {
@@ -1366,7 +1366,7 @@ void func_800499B0_main(omObjData *object) {
         }
         func_800453BC_main();
         if (_CheckFlag(0xF)) {
-            func_8000BB94_main(D_800B23C4_main);
+            espDispOff(D_800B23C4_main);
         }
         func_80003A70_main(D_800CDBC8_main);
         if (func_800034D8_main(1) == 4) {
@@ -1446,11 +1446,11 @@ void func_8004A208_main(void) {
     func_8004CF30_main();
     if (_CheckFlag(0xF) != 0) {
         D_800B23C2_main = func_8000B838_main(0x94);
-        D_800B23C4_main = InitEspriteSlot(D_800B23C2_main, 0, 1);
-        func_8000BBFC_main(D_800B23C4_main, 0x100);
-        func_8000BCC8_main(D_800B23C4_main, 1);
+        D_800B23C4_main = espEntry(D_800B23C2_main, 0, 1);
+        espTPLvlSet(D_800B23C4_main, 0x100);
+        espPriSet(D_800B23C4_main, 1);
         D_800B23C8_main = D_800A18B7_main[GwSystem.minigame_index];
-        func_8000BBD4_main(D_800B23C4_main, D_800A18A8_main[D_800B23C8_main][0], D_800A18A8_main[D_800B23C8_main][1]);
+        espPosSet(D_800B23C4_main, D_800A18A8_main[D_800B23C8_main][0], D_800A18A8_main[D_800B23C8_main][1]);
         D_800B23C6_main = 0;
         omSetStatBit(omAddObj(10, 0, 0, -1, func_8004A354_main), 0xA0);
     }
@@ -1461,12 +1461,12 @@ void func_8004A354_main(omObjData *arg0) {
     if (D_800B23C6_main > 180) {
         D_800B23C6_main -= 180;
     }
-    func_8000BBFC_main(D_800B23C4_main, sindf(D_800B23C6_main) * 255.0f);
-    func_8000BBD4_main(D_800B23C4_main, D_800A18A8_main[D_800B23C8_main][0], D_800A18A8_main[D_800B23C8_main][1]);
+    espTPLvlSet(D_800B23C4_main, sindf(D_800B23C6_main) * 255.0f);
+    espPosSet(D_800B23C4_main, D_800A18A8_main[D_800B23C8_main][0], D_800A18A8_main[D_800B23C8_main][1]);
     if (D_800D1100_main == 1) {
-        func_8000BB54_main(D_800B23C4_main);
+        espDispOn(D_800B23C4_main);
     } else {
-        func_8000BB94_main(D_800B23C4_main);
+        espDispOff(D_800B23C4_main);
     }
 }
 

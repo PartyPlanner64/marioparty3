@@ -25,12 +25,12 @@ void func_80113490_option(s32);
 void func_80113424_option(s32);
 s32 func_801130E8_option(s32);
 void func_801133EC_option(s32);
-void func_8000BBFC_main(u16, s16);
+void espTPLvlSet(u16, s16);
 void func_8000BD94_main(u16, s32, s32);
 void func_8000BDDC_main(u16, s32);
-void func_8000BC48_main(u16, u16);
-void func_8000BC88_main(u16, u16);
-void func_8000BE5C_main(u16, f32, f32);
+void espAttrSet(u16, u16);
+void espAttrReset(u16, u16);
+void espScaleSet(u16, f32, f32);
 void func_80033910_main(HmfData *);
 void func_80112F48_option(s32, s32, f32, f32, f32);
 void func_8011331C_option(s32, s32, u16);
@@ -117,13 +117,13 @@ void func_80110298_option(s32 arg0) {
 }
 
 void func_801102F0_option(s32 arg0, s16 arg1) {
-    D_801147F0_option[arg0].espriteSlot = InitEspriteSlot(D_80114EF0_option[arg1].espriteSlot, 0, 0);
+    D_801147F0_option[arg0].espriteSlot = espEntry(D_80114EF0_option[arg1].espriteSlot, 0, 0);
     func_8011053C_option(arg0, 0xA0, 0x78);
 }
 
 void func_80110358_option(s32 arg0) {
     if (D_801147F0_option[arg0].espriteSlot != -1) {
-        func_8000C184_main(D_801147F0_option[arg0].espriteSlot);
+        espKill(D_801147F0_option[arg0].espriteSlot);
     }
     D_801147F0_option[arg0].espriteSlot = -1;
 }
@@ -135,7 +135,7 @@ void func_801103C8_option(s32 arg0, s32 resourceId) {
 
 void func_801103FC_option(s32 arg0, s32 resourceId) {
     func_801103C8_option(arg0, resourceId);
-    func_8000BC48_main(D_801147F0_option[arg0].espriteSlot, 0x4000);
+    espAttrSet(D_801147F0_option[arg0].espriteSlot, 0x4000);
 }
 
 void func_80110440_option(s32 arg0) {
@@ -151,11 +151,11 @@ void func_8011046C_option(void) {
 }
 
 void func_801104A4_option(s32 arg0) {
-    func_8000BB54_main(D_801147F0_option[arg0].espriteSlot);
+    espDispOn(D_801147F0_option[arg0].espriteSlot);
 }
 
 void func_801104D4_option(s32 arg0) {
-    func_8000BB94_main(D_801147F0_option[arg0].espriteSlot);
+    espDispOff(D_801147F0_option[arg0].espriteSlot);
 }
 
 void func_80110504_option(s32 arg0) {
@@ -169,7 +169,7 @@ void func_80110520_option(s32 arg0) {
 void func_8011053C_option(s32 arg0, s32 arg1, s32 arg2) {
     D_801147F0_option[arg0].unk_04 = arg1;
     D_801147F0_option[arg0].unk_08 = arg2;
-    func_8000BBD4_main(D_801147F0_option[arg0].espriteSlot, arg1, arg2);
+    espPosSet(D_801147F0_option[arg0].espriteSlot, arg1, arg2);
 }
 
 void func_80110594_option(s32 arg0, s32 *arg1, s32 *arg2) {
@@ -180,23 +180,23 @@ void func_80110594_option(s32 arg0, s32 *arg1, s32 *arg2) {
 void func_801105C4_option(s32 arg0, f32 arg1, f32 arg2) {
     D_801147F0_option[arg0].unk_0C = arg1;
     D_801147F0_option[arg0].unk_10 = arg2;
-    func_8000BE5C_main(D_801147F0_option[arg0].espriteSlot, arg1, arg2);
+    espScaleSet(D_801147F0_option[arg0].espriteSlot, arg1, arg2);
 }
 
 void func_80110614_option(s32 arg0, u16 arg1) {
-    func_8000BBFC_main(D_801147F0_option[arg0].espriteSlot, arg1);
+    espTPLvlSet(D_801147F0_option[arg0].espriteSlot, arg1);
 }
 
 void func_8011064C_option(s32 arg0, u16 arg1) {
-    func_8000BC48_main(D_801147F0_option[arg0].espriteSlot, arg1);
+    espAttrSet(D_801147F0_option[arg0].espriteSlot, arg1);
 }
 
 void func_80110680_option(s32 arg0, u16 arg1) {
-    func_8000BC88_main(D_801147F0_option[arg0].espriteSlot, arg1);
+    espAttrReset(D_801147F0_option[arg0].espriteSlot, arg1);
 }
 
 void func_801106B4_option(s32 arg0, u16 arg1) {
-    func_8000BCC8_main(D_801147F0_option[arg0].espriteSlot, arg1);
+    espPriSet(D_801147F0_option[arg0].espriteSlot, arg1);
 }
 
 void func_801106E8_option(s32 arg0, u16 arg1, u16 arg2) {
@@ -354,13 +354,13 @@ void func_80110F58_option(s32 arg0, s32 arg1, s32 arg2) {
 void func_80110FC8_option(void) {
     // The original call omits the resource id.
     D_80115A70_option = ((s16 (*)())func_8000B838_main)();
-    D_80115A72_option = InitEspriteSlot(D_80115A70_option, 0, 0);
-    func_8000BC48_main(D_80115A72_option, 0x4000);
-    func_8000BBD4_main(D_80115A72_option, 0xA0, 0x78);
+    D_80115A72_option = espEntry(D_80115A70_option, 0, 0);
+    espAttrSet(D_80115A72_option, 0x4000);
+    espPosSet(D_80115A72_option, 0xA0, 0x78);
 }
 
 void func_8011102C_option(void) {
-    func_8000C184_main(D_80115A72_option);
+    espKill(D_80115A72_option);
     HuSprKill(D_80115A70_option);
 }
 

@@ -74,7 +74,7 @@ void func_801085B0_aces_high(void) {
         AceHighPlayer *player = OM_GET_DATA_PTR(D_8010DE68_aces_high[i], AceHighPlayer);
 
         for (j = 0; j < 2; j++) {
-            func_8000BB94_main(player->espriteSlots[j]);
+            espDispOff(player->espriteSlots[j]);
         }
     }
 }
@@ -158,9 +158,9 @@ void func_8010C9DC_aces_high(void) {
 
     D_8010DE80_aces_high = obj;
     obj->work[0] = 1;
-    D_8010DF20_aces_high = InitEspriteSlot(func_8000B838_main(0x38001C), 0, 0);
-    func_8000BBD4_main(D_8010DF20_aces_high, 0xA0, 0x78);
-    func_8000BCC8_main(D_8010DF20_aces_high, 0x8064);
+    D_8010DF20_aces_high = espEntry(func_8000B838_main(0x38001C), 0, 0);
+    espPosSet(D_8010DF20_aces_high, 0xA0, 0x78);
+    espPriSet(D_8010DF20_aces_high, 0x8064);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_8010CA6C_aces_high);

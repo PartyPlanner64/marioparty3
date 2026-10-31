@@ -34,12 +34,12 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_80105E00_mstory1);
 
 void func_80105EC0_mstory1(void) {
     func_8001C258_main(D_801158B2_mstory1, 4, 4);
-    func_8000BB94_main(D_801158B8_mstory1);
+    espDispOff(D_801158B8_mstory1);
 }
 
 void func_80105EF4_mstory1(void) {
     func_8001C258_main(D_801158B2_mstory1, 4, 0);
-    func_8000BB54_main(D_801158B8_mstory1);
+    espDispOn(D_801158B8_mstory1);
 }
 
 void func_80105F28_mstory1(void) {

@@ -1986,22 +1986,22 @@ void func_8010B658_hyper_hydrants(omObjData *object) {
 
     sprite = func_8000B838_main(0x2F000A);
     for (i = 0; i < 2; i++) {
-        D_8010C012_hyper_hydrants[i] = InitEspriteSlot(sprite, 0, 1);
-        func_8000BBD4_main(D_8010C012_hyper_hydrants[i], positions[i][0], positions[i][1]);
-        func_8000BB94_main(D_8010C012_hyper_hydrants[i]);
+        D_8010C012_hyper_hydrants[i] = espEntry(sprite, 0, 1);
+        espPosSet(D_8010C012_hyper_hydrants[i], positions[i][0], positions[i][1]);
+        espDispOff(D_8010C012_hyper_hydrants[i]);
     }
     sprite = func_8000B838_main(0x21001B);
     for (i = 0; i < 2; i++) {
-        D_8010C016_hyper_hydrants[i] = InitEspriteSlot(sprite, 0, 1);
-        func_8000BBD4_main(D_8010C016_hyper_hydrants[i], positions[i][0] + 12, positions[i][1]);
-        func_8000BB94_main(D_8010C016_hyper_hydrants[i]);
+        D_8010C016_hyper_hydrants[i] = espEntry(sprite, 0, 1);
+        espPosSet(D_8010C016_hyper_hydrants[i], positions[i][0] + 12, positions[i][1]);
+        espDispOff(D_8010C016_hyper_hydrants[i]);
     }
     sprite = func_8000B838_main(0x31);
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 2; j++) {
-            D_8010C01A_hyper_hydrants[i][j] = InitEspriteSlot(sprite, 0, 1);
-            func_8000BBD4_main(D_8010C01A_hyper_hydrants[i][j], D_8010BE14_hyper_hydrants[i][j][0], D_8010BE14_hyper_hydrants[i][j][1]);
-            func_8000BB94_main(D_8010C01A_hyper_hydrants[i][j]);
+            D_8010C01A_hyper_hydrants[i][j] = espEntry(sprite, 0, 1);
+            espPosSet(D_8010C01A_hyper_hydrants[i][j], D_8010BE14_hyper_hydrants[i][j][0], D_8010BE14_hyper_hydrants[i][j][1]);
+            espDispOff(D_8010C01A_hyper_hydrants[i][j]);
         }
     }
     object->func = func_8010B8B0_hyper_hydrants;
@@ -2015,42 +2015,42 @@ void func_8010B8B0_hyper_hydrants(omObjData *object) {
         case 2:
         case 3:
             if (D_8010BE24_hyper_hydrants < 10) {
-                func_8000BB54_main(D_8010C01A_hyper_hydrants[0][0]);
+                espDispOn(D_8010C01A_hyper_hydrants[0][0]);
                 func_8000BD50_main(D_8010C01A_hyper_hydrants[0][0], (s8)(D_8010BE24_hyper_hydrants % 10));
-                func_8000BBD4_main(D_8010C01A_hyper_hydrants[0][0], D_8010BE14_hyper_hydrants[0][0][0], D_8010BE14_hyper_hydrants[0][0][1]);
-                func_8000BB94_main(D_8010C01A_hyper_hydrants[0][1]);
+                espPosSet(D_8010C01A_hyper_hydrants[0][0], D_8010BE14_hyper_hydrants[0][0][0], D_8010BE14_hyper_hydrants[0][0][1]);
+                espDispOff(D_8010C01A_hyper_hydrants[0][1]);
             } else {
-                func_8000BB54_main(D_8010C01A_hyper_hydrants[0][0]);
+                espDispOn(D_8010C01A_hyper_hydrants[0][0]);
                 func_8000BD50_main(D_8010C01A_hyper_hydrants[0][0], (s8)(D_8010BE24_hyper_hydrants / 10));
-                func_8000BBD4_main(D_8010C01A_hyper_hydrants[0][0], D_8010BE14_hyper_hydrants[0][0][0], D_8010BE14_hyper_hydrants[0][0][1]);
-                func_8000BB54_main(D_8010C01A_hyper_hydrants[0][1]);
+                espPosSet(D_8010C01A_hyper_hydrants[0][0], D_8010BE14_hyper_hydrants[0][0][0], D_8010BE14_hyper_hydrants[0][0][1]);
+                espDispOn(D_8010C01A_hyper_hydrants[0][1]);
                 func_8000BD50_main(D_8010C01A_hyper_hydrants[0][1], (s8)(D_8010BE24_hyper_hydrants % 10));
-                func_8000BBD4_main(D_8010C01A_hyper_hydrants[0][1], D_8010BE14_hyper_hydrants[0][1][0], D_8010BE14_hyper_hydrants[0][1][1]);
+                espPosSet(D_8010C01A_hyper_hydrants[0][1], D_8010BE14_hyper_hydrants[0][1][0], D_8010BE14_hyper_hydrants[0][1][1]);
             }
             if (D_8010BE25_hyper_hydrants < 10) {
-                func_8000BB54_main(D_8010C01A_hyper_hydrants[1][0]);
+                espDispOn(D_8010C01A_hyper_hydrants[1][0]);
                 func_8000BD50_main(D_8010C01A_hyper_hydrants[1][0], (s8)(D_8010BE25_hyper_hydrants % 10));
-                func_8000BBD4_main(D_8010C01A_hyper_hydrants[1][0], D_8010BE14_hyper_hydrants[1][0][0], D_8010BE14_hyper_hydrants[1][0][1]);
-                func_8000BB94_main(D_8010C01A_hyper_hydrants[1][1]);
+                espPosSet(D_8010C01A_hyper_hydrants[1][0], D_8010BE14_hyper_hydrants[1][0][0], D_8010BE14_hyper_hydrants[1][0][1]);
+                espDispOff(D_8010C01A_hyper_hydrants[1][1]);
             } else {
-                func_8000BB54_main(D_8010C01A_hyper_hydrants[1][0]);
+                espDispOn(D_8010C01A_hyper_hydrants[1][0]);
                 func_8000BD50_main(D_8010C01A_hyper_hydrants[1][0], (s8)(D_8010BE25_hyper_hydrants / 10));
-                func_8000BBD4_main(D_8010C01A_hyper_hydrants[1][0], D_8010BE14_hyper_hydrants[1][0][0], D_8010BE14_hyper_hydrants[1][0][1]);
-                func_8000BB54_main(D_8010C01A_hyper_hydrants[1][1]);
+                espPosSet(D_8010C01A_hyper_hydrants[1][0], D_8010BE14_hyper_hydrants[1][0][0], D_8010BE14_hyper_hydrants[1][0][1]);
+                espDispOn(D_8010C01A_hyper_hydrants[1][1]);
                 func_8000BD50_main(D_8010C01A_hyper_hydrants[1][1], (s8)(D_8010BE25_hyper_hydrants % 10));
-                func_8000BBD4_main(D_8010C01A_hyper_hydrants[1][1], D_8010BE14_hyper_hydrants[1][1][0], D_8010BE14_hyper_hydrants[1][1][1]);
+                espPosSet(D_8010C01A_hyper_hydrants[1][1], D_8010BE14_hyper_hydrants[1][1][0], D_8010BE14_hyper_hydrants[1][1][1]);
             }
             for (i = 0; i < 2; i++) {
-                func_8000BB54_main(D_8010C012_hyper_hydrants[i]);
-                func_8000BB54_main(D_8010C016_hyper_hydrants[i]);
+                espDispOn(D_8010C012_hyper_hydrants[i]);
+                espDispOn(D_8010C016_hyper_hydrants[i]);
             }
             break;
         default:
             for (i = 0; i < 2; i++) {
-                func_8000BB94_main(D_8010C012_hyper_hydrants[i]);
-                func_8000BB94_main(D_8010C016_hyper_hydrants[i]);
+                espDispOff(D_8010C012_hyper_hydrants[i]);
+                espDispOff(D_8010C016_hyper_hydrants[i]);
                 for (j = 0; j < 2; j++) {
-                    func_8000BB94_main(D_8010C01A_hyper_hydrants[i][j]);
+                    espDispOff(D_8010C01A_hyper_hydrants[i][j]);
                 }
             }
             break;

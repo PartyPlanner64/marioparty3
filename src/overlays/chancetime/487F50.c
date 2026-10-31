@@ -59,9 +59,9 @@ void func_8010DA24_chancetime(void) {
     D_8010FB80_chancetime = 1;
     D_8010FB81_chancetime = 0;
     for (i = 0; i < 3; i++) {
-        func_8000BB54_main(D_8010FE94_chancetime[i]);
+        espDispOn(D_8010FE94_chancetime[i]);
     }
-    func_8000BB54_main(D_8010FE9A_chancetime);
+    espDispOn(D_8010FE9A_chancetime);
     D_801100CC_chancetime = func_8010C610_chancetime;
 }
 
@@ -79,7 +79,7 @@ void func_8010DAB0_chancetime(void) {
 void func_8010DB1C_chancetime(s8 arg0) {
     omObjData *obj = D_801100C8_chancetime;
 
-    func_8000BB94_main(D_8010FE94_chancetime[arg0]);
+    espDispOff(D_8010FE94_chancetime[arg0]);
     func_8001C258_main(obj->model[arg0 + 1], 4, 0);
 }
 

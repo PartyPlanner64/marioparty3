@@ -497,8 +497,8 @@ void func_8010683C_vine_with_me(omObjData *arg0) {
 
     for (var_s3 = 0; var_s3 < 17; var_s3++) {
         D_80115560_vine_with_me[var_s3] = func_8000B838_main(sp10[var_s3]);
-        D_80115640_vine_with_me.unk00[var_s3] = InitEspriteSlot(D_80115560_vine_with_me[var_s3], 0, 0);
-        func_8000BB94_main(D_80115640_vine_with_me.unk00[var_s3]);
+        D_80115640_vine_with_me.unk00[var_s3] = espEntry(D_80115560_vine_with_me[var_s3], 0, 0);
+        espDispOff(D_80115640_vine_with_me.unk00[var_s3]);
     }
     arg0->model[0] = func_8000B108_main(0x520008, 0x23D);
     func_8001C8A8_main(arg0->model[0], 1);

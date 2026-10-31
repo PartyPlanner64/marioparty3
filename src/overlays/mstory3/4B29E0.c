@@ -75,11 +75,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory3/4B29E0", func_801060E4_mstory3);
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory3/4B29E0", func_80106154_mstory3);
 
 void func_80106184_mstory3(void) {
-    func_8000BB54_main(D_80115B94_mstory3);
+    espDispOn(D_80115B94_mstory3);
 }
 
 void func_801061A4_mstory3(void) {
-    func_8000BB94_main(D_80115B94_mstory3);
+    espDispOff(D_80115B94_mstory3);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory3/4B29E0", func_801061C4_mstory3);

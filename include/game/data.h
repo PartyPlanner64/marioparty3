@@ -2,7 +2,7 @@
 #define __DATA_H
 
 #include "ultra64.h"
-#include "decode.h"
+#include "game/decode.h"
 
 typedef enum
 {

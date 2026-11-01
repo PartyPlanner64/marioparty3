@@ -1,7 +1,7 @@
 #include "game/audio.h"
 #include "game/msm.h"
 #include "game/vibrator.h"
-#include "pad.h"
+#include "game/pad.h"
 #include "common.h" // TODO: remove.
 
 extern s16 D_800B23D0_main[6];

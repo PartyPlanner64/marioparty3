@@ -2,7 +2,7 @@
 #include "game/object.h"
 #include "game/board.h"
 #include "game/window.h"
-#include "malloc.h"
+#include "game/malloc.h"
 
 typedef void (*PartnerFunc)(s16, s32, Object*, Object*, s32, s32);
 

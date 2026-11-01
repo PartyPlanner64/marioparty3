@@ -2,11 +2,11 @@
 #include "game/util.h"
 #include "game/camera.h"
 #include "game/data.h"
-#include "game/hmfman.h"
+#include "game/hu3d.h"
 #include "overlay.h"
-#include "rom.h"
-#include "pad.h"
-#include "mallocblock.h"
+#include "game/rom.h"
+#include "game/pad.h"
+#include "game/mallocblock.h"
 
 #define HAS_TEXT_SECTION 1
 #define HAS_DATA_SECTION 2

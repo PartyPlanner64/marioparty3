@@ -1,8 +1,8 @@
 #include "common.h"
 #include "game/hmflight.h"
-#include "game/hmfman.h"
+#include "game/hu3d.h"
 #include "game/camera.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 #include "gcc/string.h"
 
 #define HMF_HILITE_RENDER_MODE (Z_CMP | IM_RD | CVG_DST_SAVE | FORCE_BL |                \

@@ -1,8 +1,8 @@
 #include "common.h"
 #include "game/camera.h"
-#include "game/hmfman.h"
+#include "game/hu3d.h"
 #include "game/object.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 #include "hand_line_sinker.h"
 
 typedef struct CameraMotionData {

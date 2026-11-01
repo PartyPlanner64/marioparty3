@@ -1,5 +1,5 @@
 #include "common.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 #include "overlays/ovl_24.h"
 
 // Small object that keeps a player's camera center glued to that player's object.

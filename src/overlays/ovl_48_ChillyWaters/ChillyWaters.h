@@ -1,5 +1,5 @@
 #include "common.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 #include "game/board.h"
 
 

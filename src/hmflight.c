@@ -1,7 +1,7 @@
 #include "game/hmflight.h"
 #include "game/camera.h"
-#include "game/hmfman.h"
-#include "mallocblock.h"
+#include "game/hu3d.h"
+#include "game/mallocblock.h"
 
 // EXTERN
 

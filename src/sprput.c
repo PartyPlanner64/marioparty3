@@ -1,5 +1,5 @@
 #include "common.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 
 #define SPRPUT_CC_PRIM_DECALA 0, 0, 0, PRIMITIVE, 0, 0, 0, TEXEL0
 #define SPRPUT_CC_PRIM_MODULATEA 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0

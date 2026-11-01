@@ -1,5 +1,5 @@
 #include "common.h"
-#include "graphics.h"
+#include "game/graphics.h"
 #include "game/nnsched.h"
 
 extern unkSchedStruct *D_800BBAC0_main;

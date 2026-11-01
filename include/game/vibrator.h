@@ -2,7 +2,7 @@
 #define _VIBRATOR_H_
 
 #include "ultra64.h"
-#include "siman.h"
+#include "game/siman.h"
 
 extern void PRENMICallbackVibrator(void);
 extern s32 _InitVibrator(void);

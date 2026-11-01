@@ -6,11 +6,11 @@
 #include "game/gamemes.h"
 #include "game/gamework_data.h"
 #include "game/hmflight.h"
-#include "game/hmfman.h"
+#include "game/hu3d.h"
 #include "game/pause.h"
 #include "game/sprite.h"
 #include "game/wipe.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 
 #define PLAYERS_TOTAL 2
 #define JUMPS_MAX 99

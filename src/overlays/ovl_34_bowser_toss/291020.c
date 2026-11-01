@@ -1,5 +1,5 @@
 #include "common.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 #include "overlays/minigame.h"
 
 typedef struct UnkBowser { // 0x64 bytes, two entries

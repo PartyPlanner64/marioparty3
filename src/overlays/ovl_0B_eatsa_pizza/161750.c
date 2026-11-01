@@ -1,6 +1,6 @@
 #include "common.h"
 #include "overlays/minigame.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 
 extern u32 D_80109148_eatsa_pizza;
 extern u8 D_80109101_eatsa_pizza[4][2];

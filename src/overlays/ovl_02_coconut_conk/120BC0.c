@@ -1,7 +1,7 @@
 #include "common.h"
 #include "game/pause.h"
 #include "overlays/minigame.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 #include "humath.h"
 
 typedef struct {

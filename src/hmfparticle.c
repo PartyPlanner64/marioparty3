@@ -4,9 +4,9 @@
 #include "ultra64.h"
 #include "types.h"
 #include "game/camera.h"
-#include "game/hmfman.h"
+#include "game/hu3d.h"
 #include "include_asm.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 
 s32 rand8(void);
 

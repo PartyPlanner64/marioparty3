@@ -1,6 +1,6 @@
 #include "common.h"
 #include "overlays/msetup_internal.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 #include "gcc/string.h"
 
 typedef struct MsetupModelSpriteAnim {

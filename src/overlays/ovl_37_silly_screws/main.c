@@ -6,11 +6,11 @@
 #include "game/gamemes.h"
 #include "game/gamework_data.h"
 #include "game/hmflight.h"
-#include "game/hmfman.h"
+#include "game/hu3d.h"
 #include "game/pause.h"
 #include "game/util.h"
 #include "game/wipe.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 #include "include_asm.h"
 
 #define ABS(x) ((x) > 0 ? (x) : -(x))

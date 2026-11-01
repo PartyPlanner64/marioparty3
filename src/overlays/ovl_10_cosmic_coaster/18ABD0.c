@@ -1,5 +1,5 @@
 #include "common.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 
 // Per-object cloud motion state stored in omObjData.data (offset 0x5C). The
 // angle swings up to a 40 degree cap, while the height settles from 400 down

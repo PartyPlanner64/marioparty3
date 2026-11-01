@@ -5,7 +5,7 @@
 #include "humath.h"
 #include "game/object.h"
 #include "game/camera.h"
-#include "game/hmfman.h"
+#include "game/hu3d.h"
 
 typedef struct {
     /* 0x00 */ s16 modelId;

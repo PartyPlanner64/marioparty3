@@ -1,9 +1,9 @@
 #include "common.h"
 #include "game/hmflight.h"
 #include "game/printfunc.h"
-#include "input.h"
+#include "game/input.h"
 #include "humath.h"
-#include "pad.h"
+#include "game/pad.h"
 #include "variables.h"
 
 typedef union LightObjWork {

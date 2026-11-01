@@ -1,6 +1,6 @@
 #include "common.h"
-#include "malloc.h"
-#include "mallocblock.h"
+#include "game/malloc.h"
+#include "game/mallocblock.h"
 
 typedef struct MgmodeSpaceCoord {
     /* 0x00 */ s16 x;

@@ -1,9 +1,9 @@
 #include "common.h"
-#include "input.h"
+#include "game/input.h"
 #include "game/pause.h"
 #include "gcc/memory.h"
-#include "mallocblock.h"
-#include "opening.h"
+#include "game/mallocblock.h"
+#include "overlays/opening.h"
 #include "overlays/minigame.h"
 #include "hyper_hydrants.h"
 

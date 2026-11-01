@@ -1,5 +1,5 @@
 #include "common.h"
-#include "malloc.h"
+#include "game/malloc.h"
 
 extern u8 D_800D6A90_main;
 extern char D_80102180_shared_board[];

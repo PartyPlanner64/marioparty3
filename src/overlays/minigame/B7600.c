@@ -1,6 +1,6 @@
 #include "overlays/minigame.h"
 #include "game/data.h"
-#include "game/hmfman.h"
+#include "game/hu3d.h"
 #include "variables.h"
 #include "include_asm.h"
 

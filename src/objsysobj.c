@@ -2,7 +2,7 @@
 #include "game/object.h"
 #include "game/sprite.h"
 #include "game/camera.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 
 typedef struct CameraViewData {
     s16 spriteGroup;

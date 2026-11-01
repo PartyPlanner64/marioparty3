@@ -1,5 +1,5 @@
 #include "common.h"
-#include "input.h"
+#include "game/input.h"
 
 void ContDataInit(void) {
     s16 i;

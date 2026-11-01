@@ -1,7 +1,7 @@
 #include "common.h"
 #include "overlays/minigame.h"
 #include "game/sprite.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 #include "game/pause.h"
 
 #define PLAYER_WORK(obj) ((LockedOutPlayerWork *)((func_800E1BA8_minigame_ObjData *)(obj)->data)->unk158)

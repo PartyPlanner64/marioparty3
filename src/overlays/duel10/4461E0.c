@@ -1,6 +1,6 @@
 #include "common.h"
 #include "game/process.h"
-#include "malloc.h"
+#include "game/malloc.h"
 
 typedef struct {
     /* 0x00 */ s16 spriteGroup;

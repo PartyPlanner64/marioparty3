@@ -1,5 +1,5 @@
 #include "common.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 
 // Work area allocated by func_8010ABE0 and stored at the process's user_data
 // (see Process.user_data). Total size is 0x4C; fields are added as functions

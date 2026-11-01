@@ -4,7 +4,7 @@
 #include "ultra64.h"
 #include "humath.h"
 
-#include "game/hmfman.h"
+#include "game/hu3d.h"
 #include "game/object.h"
 #include "game/util.h"
 

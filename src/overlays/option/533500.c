@@ -1,8 +1,8 @@
 #include "common.h"
 #include "overlays/option.h"
 #include "game/vibrator.h"
-#include "mallocblock.h"
-#include "pad.h"
+#include "game/mallocblock.h"
+#include "game/pad.h"
 
 typedef struct {
     /* 0x00 */ s32 overlay;

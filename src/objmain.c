@@ -3,8 +3,8 @@
 #include "game/board.h"
 #include "game/pause.h"
 #include "game/printfunc.h"
-#include "malloc.h"
-#include "mallocblock.h"
+#include "game/malloc.h"
+#include "game/mallocblock.h"
 
 typedef struct unkProcessStruct {
     u16 stat;

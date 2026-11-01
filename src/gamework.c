@@ -1,5 +1,5 @@
 #include "common.h"
-#include "pad.h"
+#include "game/pad.h"
 
 extern s32 D_800B1A30_main;
 

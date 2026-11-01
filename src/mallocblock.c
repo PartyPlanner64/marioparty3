@@ -1,5 +1,5 @@
 #include "common.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 
 void HuMemInit(HuAllocFunc malloc, HuFreeFunc free) {
     HuMallocHeader *newBlock;

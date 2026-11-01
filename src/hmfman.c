@@ -1,10 +1,10 @@
 #include "common.h"
 #include "gcc/string.h"
-#include "game/hmfman.h"
+#include "game/hu3d.h"
 #include "game/camera.h"
 #include "game/hmflight.h"
 #include "macros.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 #include "include_asm.h"
 
 s32 func_80023264_main(HmfData *);

@@ -1,5 +1,5 @@
 #include "common.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 #include "overlays/minigame.h"
 
 // Array of 4 of these allocated in func_80109DA8_rockin_raceway, stored in D_80111B40_rockin_raceway

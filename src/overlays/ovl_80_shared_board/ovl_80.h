@@ -1,7 +1,7 @@
 #include "common.h"
 #include "game/object.h"
 #include "game/board.h"
-#include "malloc.h"
+#include "game/malloc.h"
 
 //very closely resembles UnkBoard5, but member at offset 0x08 must be s16 here instead of s32?
 //this needs to be removed, already exist in 106640.h

@@ -1,9 +1,9 @@
 #include "game/window.h"
 #include "game/sprite.h"
 #include "common.h"
-#include "malloc.h"
-#include "mallocblock.h"
-#include "input.h"
+#include "game/malloc.h"
+#include "game/mallocblock.h"
+#include "game/input.h"
 #include "stdarg.h"
 
 typedef struct WindowIconDefinition {

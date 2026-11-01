@@ -1,5 +1,5 @@
 #include "game/camera.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 #include "include_asm.h"
 #include "macros.h"
 #include "types.h"

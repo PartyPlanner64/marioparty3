@@ -1,7 +1,7 @@
 #include "game/esprite.h"
 #include "game/data.h"
 #include "game/sprite.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 #include "include_asm.h"
 
 // malloc

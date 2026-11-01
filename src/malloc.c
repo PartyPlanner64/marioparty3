@@ -1,5 +1,5 @@
 #include "common.h"
-#include "malloc.h"
+#include "game/malloc.h"
 
 #define HEAP_CONSTANT 0xA5
 #define MIN_ALLOC_SIZE 16

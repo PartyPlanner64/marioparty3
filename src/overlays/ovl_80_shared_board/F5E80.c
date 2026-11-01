@@ -16,8 +16,8 @@
 #include "101840.h"
 #include "F9DE0.h"
 #include "F5070.h"
-#include "mallocblock.h"
-#include "malloc.h"
+#include "game/mallocblock.h"
+#include "game/malloc.h"
 
 typedef struct TelopData {
     s32 unk_00;

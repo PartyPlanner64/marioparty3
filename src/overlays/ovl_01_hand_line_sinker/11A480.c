@@ -1,9 +1,9 @@
 #include "common.h"
-#include "game/hmfman.h"
+#include "game/hu3d.h"
 #include "game/object.h"
 #include "game/pause.h"
 #include "game/util.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 #include "overlays/minigame.h"
 #include "hand_line_sinker.h"
 

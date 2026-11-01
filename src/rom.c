@@ -1,5 +1,5 @@
 #include "common.h"
-#include "rom.h"
+#include "game/rom.h"
 
 OSPiHandle *osCartRomInit(void);
 extern OSPiHandle *D_800CDD50_main;

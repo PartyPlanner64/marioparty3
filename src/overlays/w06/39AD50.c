@@ -1,6 +1,6 @@
-#include "WaluigisIsland.h"
+#include "overlays/WaluigisIsland.h"
 #include "gcc/memory.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 #include "../ovl_80_shared_board/1006F0.h"
 #include "../ovl_80_shared_board/101840.h"
 #include "../ovl_80_shared_board/105D50.h"

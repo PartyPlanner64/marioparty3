@@ -3,9 +3,9 @@
 #include "gcc/memory.h"
 #include "game/gamework_data.h"
 #include "game/util.h"
-#include "game/hmfman.h"
+#include "game/hu3d.h"
 #include "game/audio.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 #include "include_asm.h"
 
 // Common header of the per-object data of the minigame objects registered in

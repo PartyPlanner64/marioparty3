@@ -1,6 +1,6 @@
 #include "common.h"
 #include "gcc/string.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 
 extern HmfPaletteData *D_800CD2F8_main;
 extern HmfData_Unk84_Entry2 *D_800D1FCC_main;

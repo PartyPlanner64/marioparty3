@@ -1,5 +1,5 @@
 #include "common.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 
 #define CLAMP_S16(x)            \
     if ((x) > 0x7FFF) {         \

@@ -1,7 +1,7 @@
 #include "common.h"
 #include "game/vibrator.h"
 #include "game/gamework_data.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 
 #define UNK_VALUE 0x91
 

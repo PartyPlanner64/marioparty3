@@ -1,5 +1,5 @@
 #include "common.h"
-#include "siman.h"
+#include "game/siman.h"
 #include "game/vibrator.h"
 
 static OSPfs D_800BD860_main[4];

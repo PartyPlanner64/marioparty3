@@ -1,6 +1,6 @@
 #include "common.h"
-#include "siman.h"
-#include "eeprom.h"
+#include "game/siman.h"
+#include "game/eeprom.h"
 
 #define SAVE_FILE_HEADER_SIZE 0x20
 #define SAVE_FILE_SIZE 0x2A0

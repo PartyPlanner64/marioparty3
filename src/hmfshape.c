@@ -1,6 +1,6 @@
 #include "common.h"
-#include "mallocblock.h"
-#include "game/hmfman.h"
+#include "game/mallocblock.h"
+#include "game/hu3d.h"
 
 #define READ_VERTEX_ANIM_NIBBLE(stream, nibble, result) \
     do {                                                \

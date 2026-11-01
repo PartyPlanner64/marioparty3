@@ -1,7 +1,7 @@
 #include "common.h"
-#include "malloc.h"
-#include "rom.h"
-#include "decode.h"
+#include "game/malloc.h"
+#include "game/rom.h"
+#include "game/decode.h"
 
 // string table parsing code.
 

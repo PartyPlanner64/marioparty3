@@ -1,5 +1,5 @@
 #include "common.h"
-#include "malloc.h"
+#include "game/malloc.h"
 #include "../ovl_80_shared_board/FA250.h"
 #include "../ovl_80_shared_board/ECA50.h"
 #include "../ovl_80_shared_board/105D50.h"

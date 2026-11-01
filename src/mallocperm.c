@@ -1,5 +1,5 @@
 #include "common.h"
-#include "malloc.h"
+#include "game/malloc.h"
 
 /*
  * Primary heap. Never reset during gameplay.

@@ -1,6 +1,6 @@
 #include "common.h"
-#include "eeprom.h"
-#include "pad.h"
+#include "game/eeprom.h"
+#include "game/pad.h"
 
 #define SAVE_BOX_SIZE 0x2A0
 #define SAVE_BOX_COUNT 3

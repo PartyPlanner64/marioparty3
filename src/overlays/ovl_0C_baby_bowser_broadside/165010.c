@@ -1,6 +1,6 @@
 #include "common.h"
 #include "overlays/minigame.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 #include "game/pause.h"
 #include "overlays/baby_bowser_broadside.h"
 

@@ -2,7 +2,7 @@
 #define _GAME_CAMERA_H
 
 #include "ultra64.h"
-#include "game/hmfman.h"
+#include "game/hu3d.h"
 #include "humath.h"
 
 // Forward declaration to prevent issues with hmfman.h.

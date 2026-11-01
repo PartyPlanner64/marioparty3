@@ -1,7 +1,7 @@
 #include "common.h"
 #include "../ovl_80_shared_board/FA250.h"
-#include "mallocblock.h"
-#include "opening.h"
+#include "game/mallocblock.h"
+#include "overlays/opening.h"
 
 extern s8 D_800D2132_main;
 

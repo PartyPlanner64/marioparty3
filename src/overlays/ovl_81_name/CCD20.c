@@ -1,7 +1,7 @@
 #include "common.h"
-#include "rom.h"
+#include "game/rom.h"
 #include "ovl_81.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 
 typedef struct UnkModelStruct {
     /* 0x00 */ s32 unk0;

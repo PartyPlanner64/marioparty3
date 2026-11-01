@@ -1,7 +1,7 @@
 #include "common.h"
-#include "malloc.h"
-#include "siman.h"
-#include "pad.h"
+#include "game/malloc.h"
+#include "game/siman.h"
+#include "game/pad.h"
 
 s32 D_800A12A0_main = 0;
 f32 D_800A12A4_main = 0.0f;

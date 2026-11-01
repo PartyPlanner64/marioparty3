@@ -1,7 +1,7 @@
 #include "common.h"
 #include "game/hvq.h"
-#include "malloc.h"
-#include "mallocblock.h"
+#include "game/malloc.h"
+#include "game/mallocblock.h"
 
 s16 func_8002C834_main(HmfData *arg0, char *name);
 

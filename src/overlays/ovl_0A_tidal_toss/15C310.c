@@ -1,6 +1,6 @@
 #include "common.h"
 #include "overlays/minigame.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 
 typedef struct {
     f32 unk00;

@@ -1,6 +1,6 @@
 #include "common.h"
 #include "humath.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 #include "gcc/string.h"
 #include "game/hmfvertex.h"
 

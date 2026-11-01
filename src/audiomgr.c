@@ -1,5 +1,5 @@
 #include "common.h"
-#include "graphics.h"
+#include "game/graphics.h"
 #include "PR/n_libaudio.h"
 #include "PR/ucode.h"
 

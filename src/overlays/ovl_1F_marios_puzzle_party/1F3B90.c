@@ -1,5 +1,5 @@
 #include "common.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 
 // 0x14 byte entry for one space of a Mario's Puzzle Party board path
 typedef struct MarioPuzzlePartyPathSpace {

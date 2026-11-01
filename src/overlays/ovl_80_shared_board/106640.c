@@ -1,7 +1,7 @@
 #include "common.h"
 #include "106640.h"
-#include "malloc.h"
-#include "mallocblock.h"
+#include "game/malloc.h"
+#include "game/mallocblock.h"
 
 extern UnkBoard8 *D_80105570_shared_board;
 extern u16 D_80105574_shared_board;

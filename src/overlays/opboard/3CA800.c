@@ -1,6 +1,6 @@
 #include "common.h"
-#include "malloc.h"
-#include "mallocblock.h"
+#include "game/malloc.h"
+#include "game/mallocblock.h"
 #include "../ovl_80_shared_board/106A50.h"
 #include "../ovl_80_shared_board/EE660.h"
 #include "../ovl_80_shared_board/F5B90.h"

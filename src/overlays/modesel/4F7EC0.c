@@ -1,6 +1,6 @@
 #include "common.h"
 #include "game/vibrator.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 
 typedef struct UnkModeSel {
     s16 unk_00;

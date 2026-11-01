@@ -1,6 +1,6 @@
 #include "common.h"
-#include "siman.h"
-#include "pad.h"
+#include "game/siman.h"
+#include "game/pad.h"
 
 s32 _InitController(u16 *channel) {
     OSContStatus contStat[MAXCONTROLLERS];

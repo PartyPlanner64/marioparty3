@@ -1,5 +1,5 @@
 #include "common.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 #include "overlays/mgmode.h"
 
 void espAttrSet(u16 arg0, u16 arg1);

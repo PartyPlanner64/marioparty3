@@ -1,7 +1,7 @@
 #include "common.h"
-#include "malloc.h"
-#include "mallocblock.h"
-#include "opening.h"
+#include "game/malloc.h"
+#include "game/mallocblock.h"
+#include "overlays/opening.h"
 #include "gcc/string.h"
 #include "game/board.h"
 

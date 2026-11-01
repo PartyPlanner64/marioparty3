@@ -1,5 +1,5 @@
 #include "common.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3BFA00", func_8010BD30_boardresult);
 

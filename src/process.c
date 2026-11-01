@@ -1,7 +1,7 @@
 #include "common.h"
 
 #include "game/process.h"
-#include "malloc.h"
+#include "game/malloc.h"
 
 extern jmp_buf process_jmp_buf;
 extern Process *top_process;

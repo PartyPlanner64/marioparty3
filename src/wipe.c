@@ -1,9 +1,9 @@
 #include "game/wipe.h"
 #include "include_asm.h"
 #include "common.h"
-#include "malloc.h"
-#include "mallocblock.h"
-#include "game/hmfman.h"
+#include "game/malloc.h"
+#include "game/mallocblock.h"
+#include "game/hu3d.h"
 #include "game/data.h"
 
 typedef struct {

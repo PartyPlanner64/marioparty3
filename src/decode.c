@@ -1,6 +1,6 @@
 #include "common.h"
-#include "decode.h"
-#include "rom.h"
+#include "game/decode.h"
+#include "game/rom.h"
 
 static u8 readBuffer[1024]; // src copy
 static u8 textBuffer[1024]; // window

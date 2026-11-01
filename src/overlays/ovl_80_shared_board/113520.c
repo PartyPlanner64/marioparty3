@@ -1,7 +1,7 @@
 #include "common.h"
 #include "105D50.h"
-#include "malloc.h"
-#include "mallocblock.h"
+#include "game/malloc.h"
+#include "game/mallocblock.h"
 
 extern s8 D_80101E80_shared_board[];
 

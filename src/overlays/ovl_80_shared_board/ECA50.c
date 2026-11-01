@@ -1,5 +1,5 @@
 #include "common.h"
-#include "malloc.h"
+#include "game/malloc.h"
 #include "F9DE0.h"
 #include "105D50.h"
 #include "FA250.h"

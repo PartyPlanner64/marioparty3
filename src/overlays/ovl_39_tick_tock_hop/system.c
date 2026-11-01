@@ -2,7 +2,7 @@
 #include "gcc/memory.h"
 #include "game/esprite.h"
 #include "game/sprite.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 #include "macros.h"
 
 #define FUNC_GRP_MAX 5

@@ -1,5 +1,5 @@
 #include "common.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 #include "../ovl_81_name/ovl_81.h"
 
 // Partial definition of the 0x7918 byte work struct allocated by

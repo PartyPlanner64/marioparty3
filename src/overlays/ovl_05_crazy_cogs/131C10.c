@@ -1,6 +1,6 @@
 #include "common.h"
 #include "overlays/minigame.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 #include "game/pause.h"
 
 typedef struct UnkCrazyCogsCog { // 0x84 bytes, one entry per cog slot

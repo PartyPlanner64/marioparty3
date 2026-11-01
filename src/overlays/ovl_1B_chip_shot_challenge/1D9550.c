@@ -1,6 +1,6 @@
 #include "common.h"
 #include "game/pause.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 #include "overlays/minigame.h"
 
 // Per-object work block, reached via ObjData->data

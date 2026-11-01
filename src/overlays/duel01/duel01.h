@@ -1,7 +1,7 @@
 #include "common.h"
 #include "game/process.h"
 #include "common_structs.h"
-#include "malloc.h"
+#include "game/malloc.h"
 #include "game/board.h"
 
 typedef struct unkStruct {

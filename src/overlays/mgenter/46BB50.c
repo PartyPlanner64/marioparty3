@@ -1,8 +1,8 @@
 #include "common.h"
 #include "game/camera.h"
 #include "game/hvq.h"
-#include "malloc.h"
-#include "mallocblock.h"
+#include "game/malloc.h"
+#include "game/mallocblock.h"
 
 typedef struct CameraViewState {
     f32 rotY;

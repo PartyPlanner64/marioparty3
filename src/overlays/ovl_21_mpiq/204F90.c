@@ -1,6 +1,6 @@
 #include "common.h"
 #include "game/printfunc.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 #include "overlays/minigame.h"
 
 // Per-player work for each of the four quads, allocated in func_80107584_mpiq

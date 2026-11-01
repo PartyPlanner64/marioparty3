@@ -2,8 +2,8 @@
 #define __PAD_H
 
 #include "ultra64.h"
-#include "siman.h"
-#include "input.h"
+#include "game/siman.h"
+#include "game/input.h"
 
 #define PAD_NOT_INSERTED 0
 

@@ -1,5 +1,5 @@
 #include "common.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 #include "gcc/memory.h"
 
 #include "overlays/baby_bowser_broadside.h"

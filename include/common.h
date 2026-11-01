@@ -21,7 +21,7 @@
 #include "game/gamemes.h"
 #include "game/gamework_data.h"
 #include "game/hmflight.h"
-#include "game/hmfman.h"
+#include "game/hu3d.h"
 #include "game/object.h"
 #include "game/sprite.h"
 #include "game/util.h"
@@ -35,7 +35,7 @@
 #include "macros.h"
 #include "enums.h"
 #include "overlay.h"
-#include "input.h"
+#include "game/input.h"
 
 #ifndef RECOMP
 #include "include_asm.h"

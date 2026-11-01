@@ -1,6 +1,6 @@
 #include "common.h"
 #include "overlays/option.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 
 extern Vec D_801146BC_option;
 extern Vec D_801146C8_option;

@@ -1,5 +1,5 @@
 #include "common.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 #include "overlays/minigame.h"
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BA4B0", func_800E7930_minigame);

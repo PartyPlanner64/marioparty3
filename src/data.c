@@ -1,9 +1,9 @@
 #include "common.h"
 #include "game/data.h"
-#include "rom.h"
-#include "malloc.h"
-#include "mallocblock.h"
-#include "decode.h"
+#include "game/rom.h"
+#include "game/malloc.h"
+#include "game/mallocblock.h"
+#include "game/decode.h"
 
 // -----------------------------------------------------------------
 

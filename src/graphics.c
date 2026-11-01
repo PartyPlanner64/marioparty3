@@ -1,5 +1,5 @@
 #include "common.h"
-#include "graphics.h"
+#include "game/graphics.h"
 
 extern swapChainTaskQueue swapChainTask;
 extern OSThread swapChainThread;

@@ -1,10 +1,10 @@
 #include "overlays/ovl_37.h"
 #include "gcc/memory.h"
 #include "game/esprite.h"
-#include "game/hmfman.h"
+#include "game/hu3d.h"
 #include "game/sprite.h"
 #include "game/util.h"
-#include "mallocblock.h"
+#include "game/mallocblock.h"
 
 #define FUNC_GRP_MAX 6
 #define FUNC_PRIO_MAX 10

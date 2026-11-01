@@ -1,4 +1,7 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
+#include "game/profiler.h"
 #include "PR/os.h"
 
 #define PROF_MAX_SAMPLES 10

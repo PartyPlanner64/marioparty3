@@ -5,6 +5,7 @@
 #include "include_asm.h"
 #include "macros.h"
 #include "game/profiler.h"
+#include "game/malloc.h"
 
 #define HUSPR_READ16(p) (((p)[0] << 8) + (p)[1])
 #define HUSPR_READ32(p) (((p)[0] << 24) + ((p)[1] << 16) + ((p)[2] << 8) + (p)[3])
@@ -43,7 +44,6 @@ typedef struct {
     HuSprite *first;
 } HuSprPrioBucket;
 
-void *HuMemMemoryReallocPerm(void *mem, u32 new_size);
 
 f64 fmod(f64 x, f64 y);
 void func_8007E040_main(Mtx *m, Mtx *n, Mtx *res);

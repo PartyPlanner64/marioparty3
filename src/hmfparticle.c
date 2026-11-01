@@ -7,14 +7,14 @@
 #include "game/hu3d.h"
 #include "include_asm.h"
 #include "game/mallocblock.h"
+#include "game/hmfspr.h"
+#include "game/hmfdraw.h"
 
 s32 rand8(void);
 
 extern u8 D_800CD6A6_main;
 extern u8 D_800D2008_main;
 
-s32 func_80018F18_main(HuMtx4F src, HuMtx4F dst);
-s16 func_8002C834_main(HmfData *arg0, char *name);
 void func_80013D44_main(s16 model);
 void func_80013D4C_main(s16 model);
 void func_80013FB4_main(s16 model);

@@ -19,12 +19,11 @@
 #include "game/hmfcoll.h"
 #include "game/esprite.h"
 #include "game/hmfspr.h"
+#include "game/camsetup.h"
 
 #define PLAYERS_TOTAL 2
 
 // camsetup
-void func_8000B5F0_main(u8 arg0);
-s32 func_8000B710_main(s32 arg0);
 
 // hmfspr
 

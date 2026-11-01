@@ -1,4 +1,7 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
+#include "macros.h"
 #include "game/malloc.h"
 
 #define HEAP_CONSTANT 0xA5

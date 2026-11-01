@@ -1,4 +1,8 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
+#include "game/camsetup.h"
+#include "game/hmfcoll.h"
 #include "game/camera.h"
 
 extern u8 D_80097660_main;

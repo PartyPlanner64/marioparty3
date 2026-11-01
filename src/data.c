@@ -1,4 +1,6 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
 #include "game/data.h"
 #include "game/rom.h"
 #include "game/malloc.h"

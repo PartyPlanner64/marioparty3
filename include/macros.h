@@ -16,6 +16,12 @@
 
 #define BSS __attribute__ ((nocommon, section (".bss")))
 
+#define IS_DEBUG_PANIC(statement, file, line) do {} while(1)
+#define ASSERT(condition) \
+    if (!(condition)) { \
+        IS_DEBUG_PANIC("Assertion failed: " #condition, __FILE__, __LINE__); \
+    }
+
 #define ALIGN_16(size) (((size) + 0x1F) & ~0xF)
 
 #define offsetof(type, field) ((u32) & (((type *)0)->field))

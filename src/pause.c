@@ -13,9 +13,9 @@
 #include "common_structs.h"
 #include "variables.h"
 #include "game/mgdata.h"
+#include "game/hmfdraw.h"
 
 // hmfdraw
-s16 func_8002C834_main(HmfData *arg0, char *name);
 
 
 // LOCAL

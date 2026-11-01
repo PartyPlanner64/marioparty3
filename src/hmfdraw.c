@@ -10,6 +10,10 @@
 #include "game/camera.h"
 #include "game/mallocblock.h"
 #include "gcc/string.h"
+#include "game/graphics.h"
+#include "game/hmfanim.h"
+#include "game/hmfshape.h"
+#include "game/hmfload.h"
 
 #define HMF_HILITE_RENDER_MODE (Z_CMP | IM_RD | CVG_DST_SAVE | FORCE_BL |                \
                                 GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA) | \
@@ -145,16 +149,6 @@ extern Gfx D_800A1118_main[];
 extern u8 *D_800A114C_main[];
 
 extern Gfx D_800A0A80_main[];
-u8 func_8000EF64_main(Gfx *arg0, u16 arg1, s32 arg2, OSMesgQueue *arg3, s32 arg4);
-void func_80033694_main(HmfData *);
-void func_80030208_main(HmfData *);
-void func_80031560_main(void);
-void func_80030040_main(void);
-s16 func_80011460_main(u8 *);
-
-u8 *func_80010A38_main(s32 tag, void *start, void *end);
-void *func_80010AC8_main(void *);
-s16 func_8000FDAC_main(void *arg0, s16 arg1);
 
 
 void func_800222B0_main(HuAllocFunc alloc, HuFreeFunc free, u16 vertexCount, u16 matrixCount, u16 gfxCount, u8 bufferCount) {

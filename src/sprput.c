@@ -1,4 +1,9 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
+#include "game/sprite.h"
+#include "game/texload.h"
+#include "game/hmfspr.h"
 #include "game/mallocblock.h"
 
 #define SPRPUT_CC_PRIM_DECALA 0, 0, 0, PRIMITIVE, 0, 0, 0, TEXEL0

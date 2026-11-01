@@ -1,4 +1,7 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
+#include "game/hvq.h"
 #include "gcc/string.h"
 
 typedef struct HvqBitStream {

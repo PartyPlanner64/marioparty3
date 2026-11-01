@@ -1,4 +1,7 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "macros.h"
+#include "game/audiomgr.h"
 #include "game/msm.h"
 #include "PR/n_libaudio.h"
 #include "humath.h"

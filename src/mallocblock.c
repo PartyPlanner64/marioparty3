@@ -1,4 +1,6 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
 #include "game/mallocblock.h"
 
 void HuMemInit(HuAllocFunc malloc, HuFreeFunc free) {

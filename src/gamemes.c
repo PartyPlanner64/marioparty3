@@ -7,6 +7,8 @@
 #include "stdarg.h"
 #include "gcc/string.h"
 #include "include_asm.h"
+#include "game/window.h"
+#include "game/malloc.h"
 
 /* Per-character animation work for the GMES_MES_3..10 / 14..21 message families. */
 typedef struct {
@@ -30,10 +32,6 @@ typedef struct {
 extern Gfx *gMainGfxPos;
 extern s8 HmfPauseF;
 
-s16 func_8005B5EC_main(u8 *str);
-u8 func_8005FA90_main(u8 *str);
-void *HuMemMemoryAllocPerm(u32 size);
-void HuMemMemoryFreePerm(void *ptr);
 
 extern u16 D_800D530C_main;
 extern u16 D_800D1100_main;

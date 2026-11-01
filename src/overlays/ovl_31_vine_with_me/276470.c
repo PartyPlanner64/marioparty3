@@ -13,22 +13,15 @@
 #include "game/util.h"
 #include "game/wipe.h"
 #include "include_asm.h"
+#include "game/camsetup.h"
+#include "game/hmfspr.h"
+#include "game/gamework.h"
 
 // EXTERN
 
 // camsetup
-void func_8000B5F0_main(u8 arg0);
-s32 func_8000B710_main(s32 arg0);
 
 // hmfspr
-void func_800142A0_main(s32);
-HmfModelSet *func_80016784_main(s16 model, s16 step);
-void func_80016FB4_main(s16 model, HmfModelSet *set, s16 frame);
-void func_80017320_main(HmfModelSet *set);
-s16 func_80017790_main(s16 model, s16 slot, s16 chr, s32 dataNum);
-void func_80017954_main(s16, s16, s16, s16);
-s16 func_80017AD8_main(s32);
-s32 func_80017BB8_main(s16 chr, s16 animId);
 
 // 8EA10
 
@@ -40,7 +33,6 @@ s32 func_80017BB8_main(s16 chr, s16 animId);
 extern u16 D_800D5558_main[];
 
 // save
-s32 _CheckFlag(s32);
 
 // unknown
 extern u16 D_800D530C_main;

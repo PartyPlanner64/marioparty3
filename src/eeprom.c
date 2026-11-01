@@ -1,4 +1,7 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
+#include "macros.h"
 #include "game/siman.h"
 #include "game/eeprom.h"
 #include "gcc/memory.h"

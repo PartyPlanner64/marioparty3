@@ -1,4 +1,10 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
+#include "game/effect.h"
+#include "game/hu3d.h"
+#include "game/hmfparticle.h"
+#include "game/util.h"
 #include "game/mallocblock.h"
 
 #define EFFECT_GROUP_MAX 8

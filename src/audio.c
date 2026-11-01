@@ -2,7 +2,12 @@
 #include "game/msm.h"
 #include "game/vibrator.h"
 #include "game/pad.h"
-#include "common.h" // TODO: remove.
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
+#include "variables.h"
+#include "game/gamework_data.h"
+#include "ld_addrs.h"
 
 extern s16 D_800B23D0_main[6];
 extern s8 D_800D6A4C_main[4];

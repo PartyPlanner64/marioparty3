@@ -12,17 +12,15 @@
 #include "game/wipe.h"
 #include "game/mallocblock.h"
 #include "game/hmfcoll.h"
+#include "game/camsetup.h"
+#include "game/hmfspr.h"
 
 #define PLAYERS_TOTAL 2
 #define JUMPS_MAX 99
 
 // camsetup
-void func_8000B5F0_main(u8 arg0);
-s32 func_8000B638_main(void);
 
 // hmfspr
-void func_800142A0_main(s32);
-s32 func_80017BB8_main(s16 chr, s16 animId);
 
 // hmfcoll
 

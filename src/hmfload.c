@@ -6,6 +6,7 @@
 #include "game/hmfvertex.h"
 #include "game/hu3d.h"
 #include "game/hmfload.h"
+#include "game/hmfspr.h"
 
 typedef struct {
     u8 unk00;
@@ -232,9 +233,6 @@ extern s16 D_800A0544_main;
 extern s16 D_800CDD6A_main;
 extern s16 D_800D5204_main;
 
-void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
-void func_8001866C_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
-void func_80018978_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 s16 func_8000FA34_main(HmfLoadData *, void *);
 void func_8000FEE4_main(HmfLoadData *);
 s16 func_800100EC_main(HmfLoadData *);

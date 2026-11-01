@@ -3,9 +3,9 @@
 #include "game/sprite.h"
 #include "game/mallocblock.h"
 #include "include_asm.h"
+#include "game/malloc.h"
 
 // malloc
-void HuMemMemoryFreePerm(void *ptr);
 
 extern u16 D_800C951C_main;
 extern u16 D_800CB8BC_main;

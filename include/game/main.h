@@ -3,6 +3,7 @@
 
 #include "ultra64.h"
 
+void main(void *arg);
 void func_800357AC_main(s16 count);
 
 #endif

@@ -1,4 +1,8 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
+#include "game/saveEncode.h"
+#include "macros.h"
 #include "gcc/memory.h"
 
 // Total number of bytes needed to hold the bits described by an encoding scheme.

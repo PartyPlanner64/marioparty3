@@ -10,6 +10,8 @@
 #include "overlays/opening.h"
 #include "gcc/string.h"
 #include "game/board.h"
+#include "game/hmfload.h"
+#include "game/hmfdraw.h"
 
 #define HMFSPR_CC_PRIM_MODULATEA 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0
 #define HMFSPR_CC_MODULATEA_PRIM TEXEL0, 0, SHADE, 0, TEXEL0, 0, PRIMITIVE, 0
@@ -44,11 +46,6 @@ void func_800333B0_main(s16 animIdx);
 void func_80033910_main(HmfData *hmf);
 void func_80033970_main(HmfData *hmf);
 
-s16 func_80011460_main(u8 *str);
-
-s16 func_8002C834_main(HmfData *arg0, char *name);
-void func_8002DFF8_main(HmfData *hmf, f32 frame, HmfModelData_Unk64_Unk8C_Struct *motion, s32 arg3);
-void func_8002367C_main(HuMtx4F dst, HuMtx4F src);
 
 void func_800142A0_main(s32 count) {
     s16 i;

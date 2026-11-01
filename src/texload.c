@@ -1,4 +1,7 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
+#include "game/texload.h"
 
 extern u32 D_800A11F0_main[4]; // = { 0, 1, 2, 4 }; //sSizBytes
 extern u32 D_800A1200_main[4]; // = { 0, 1, 2, 2 }; //sSizLineBytes

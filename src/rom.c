@@ -1,4 +1,6 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
 #include "game/rom.h"
 
 extern OSPiHandle *D_800CDD50_main;

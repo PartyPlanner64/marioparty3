@@ -4,6 +4,7 @@
 #include "game/sprite.h"
 #include "game/mallocblock.h"
 #include "macros.h"
+#include "game/hmfspr.h"
 
 #define FUNC_GRP_MAX 5
 #define SPRITES_MAX 8
@@ -15,7 +16,6 @@
 #define M_ID(m, i, j) ((m)[(i) * 4 + (j)])
 
 // hmfspr
-void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 
 // 8EA10
 

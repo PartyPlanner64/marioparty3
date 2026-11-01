@@ -1,4 +1,7 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
+#include "game/msm.h"
 #include "PR/n_synthInternals.h"
 
 

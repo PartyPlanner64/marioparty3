@@ -13,6 +13,9 @@
 #include "game/mallocblock.h"
 #include "include_asm.h"
 #include "game/hmfcoll.h"
+#include "game/camsetup.h"
+#include "game/hmfspr.h"
+#include "game/printfunc.h"
 
 #define ABS(x) ((x) > 0 ? (x) : -(x))
 
@@ -27,13 +30,8 @@
 #define JUMP_RANGE_X 25.0f
 
 // camsetup
-void func_8000B5F0_main(u8 arg0);
-s32 func_8000B710_main(s32 arg0);
 
 // hmfspr
-void func_800142A0_main(s32);
-s16 func_80017790_main(s16 model, s16 slot, s16 chr, s32 dataNum);
-s32 func_80017BB8_main(s16 chr, s16 animId);
 
 // hmfcoll
 
@@ -44,7 +42,6 @@ extern u16 D_800CDA7C_main[];
 extern u16 D_800D5558_main[];
 
 // printfunc
-s32 print8(u16 x, u16 y, char *src);
 
 // unknown
 extern s32 D_800A178C_main[][6];

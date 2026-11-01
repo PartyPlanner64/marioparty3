@@ -1,4 +1,9 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
+#include "macros.h"
+#include "game/profiler.h"
+#include "game/vibrator.h"
 #include "game/graphics.h"
 #include "game/nnsched.h"
 

@@ -1,4 +1,8 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
+#include "game/gamework.h"
+#include "game/gamework_data.h"
 #include "game/pad.h"
 
 extern s32 D_800B1A30_main;

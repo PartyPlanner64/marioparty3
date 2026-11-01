@@ -1,8 +1,9 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
+#include "game/main.h"
 #include "PR/os.h"
 #include "game/nnsched.h"
-
-void main(void *arg);
 
 extern OSThread gInitThread;
 extern u8 gThread1Stack[];

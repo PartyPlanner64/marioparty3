@@ -1,4 +1,6 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "game/lightdebug.h"
 #include "game/hmflight.h"
 #include "game/printfunc.h"
 #include "game/input.h"

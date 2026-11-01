@@ -1,4 +1,7 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
+#include "game/mapspace.h"
 
 
 void func_8000D960_main(HuMtx4F in, HuMtx4F out) {

@@ -1,4 +1,12 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
+#include "game/hmfcoll.h"
+#include "include_asm.h"
+#include "game/camera.h"
+#include "game/hmfspr.h"
+#include "game/hmflight.h"
+#include "game/hmfdraw.h"
 #include "game/mallocblock.h"
 
 #define CLAMP_S16(x)            \

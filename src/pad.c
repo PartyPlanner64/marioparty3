@@ -1,4 +1,7 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
+#include "variables.h"
 #include "game/siman.h"
 #include "game/pad.h"
 

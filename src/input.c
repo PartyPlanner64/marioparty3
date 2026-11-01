@@ -1,4 +1,6 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
 #include "game/input.h"
 
 void ContDataInit(void) {

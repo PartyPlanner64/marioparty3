@@ -1,4 +1,8 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
+#include "overlay.h"
+#include "ld_addrs.h"
 
 u8 D_800962F0_main[] = { 0, 0, 0, 0 };
 

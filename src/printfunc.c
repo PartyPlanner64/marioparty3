@@ -1,4 +1,6 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
 #include "game/printfunc.h"
 
 #define MAX_STRINGS 512

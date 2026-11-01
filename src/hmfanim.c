@@ -1,4 +1,9 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
+#include "game/hmfanim.h"
+#include "include_asm.h"
+#include "game/hmfload.h"
 #include "gcc/string.h"
 #include "game/mallocblock.h"
 
@@ -8,7 +13,7 @@ extern u8 D_800CCF85_main;
 extern HmfData_Unk84_Entry2 D_800A1190_main;
 extern Gfx *gMainGfxPos;
 
-s16 func_80011334_main(HmfData *, void *, s16);
+s16 func_80011334_main(HmfData *, void *, s16); // Declared locally: hmfload.c defines this with its HmfLoadData view of HmfData.
 
 void func_80031560_main(void) {
     s16 i;

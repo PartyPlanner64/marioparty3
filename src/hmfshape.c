@@ -1,4 +1,7 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
+#include "game/hmfshape.h"
 #include "game/mallocblock.h"
 #include "game/hu3d.h"
 

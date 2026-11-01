@@ -72,10 +72,10 @@ typedef struct CollisionFan {
     /* 0x0C */ CollisionFanShape shape;
 } CollisionFan; // sizeof 0x18
 
-extern s16 D_800B19E0_main;
-extern s16 D_800B19E2_main;
-extern s16 D_800B19E4_main;
-extern s16 *D_800B19E8_main;
+static s16 D_800B19E0_main;
+static s16 D_800B19E2_main;
+static s16 D_800B19E4_main;
+static s16 *D_800B19E8_main;
 extern CollisionGrid *D_800D1104_main;
 extern s32 D_800C9940_main;
 extern HuCamera *D_800D10F4_main;

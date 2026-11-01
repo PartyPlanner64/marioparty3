@@ -25,12 +25,12 @@ typedef struct {
 
 extern WipeTexture D_800D1F5C_main;
 extern u16 *D_800A26D4_main;
-extern u16 *D_800BDA70_main;
-extern u16 *D_800BDA74_main;
-extern u8 D_800BDA78_main;
-extern Gfx *D_800BDA7C_main;
-extern s16 D_800BDA80_main;
-extern s16 D_800BDA82_main;
+static u16 *D_800BDA70_main;
+static u16 *D_800BDA74_main;
+static u8 D_800BDA78_main;
+static Gfx *D_800BDA7C_main;
+static s16 D_800BDA80_main;
+static s16 D_800BDA82_main;
 extern u8 D_800CDA74_main;
 extern u8 D_800D0598_main;
 extern u8 *D_800D1F80_main[8];

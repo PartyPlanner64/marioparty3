@@ -421,12 +421,12 @@ typedef struct {
     /* 0x74 */ s16 fxId; // id of the loaded effect table
 } SndSys;
 
-extern AudioManager *D_800A97B8_main;
-extern SeManager *D_800A97BC_main;
-extern ALHeap D_800A9730_main;
-extern OSMesg D_800A9650_main[50];
-extern OSMesgQueue D_800A9718_main;
-extern SndSys D_800A9740_main;
+static OSMesg D_800A9650_main[50];
+static OSMesgQueue D_800A9718_main;
+static ALHeap D_800A9730_main;
+static SndSys D_800A9740_main;
+static AudioManager *D_800A97B8_main;
+static SeManager *D_800A97BC_main;
 
 SndSys *func_80000E9C_main(void);
 s32 func_80001E10_main(SndSys *sys, ALHeap *heap, s32 arg2, s32 arg3);

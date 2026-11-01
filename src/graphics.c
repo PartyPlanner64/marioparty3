@@ -1,19 +1,26 @@
 #include "ultra64.h"
 #include "types.h"
+#include "macros.h"
 #include "humath.h"
 #include "game/profiler.h"
 #include "game/graphics.h"
 
-extern swapChainTaskQueue swapChainTask;
+static u64 swapChainStack[0x1800 / sizeof(u64)];
+static u8 D_800AE000_main[0x3800]; // unreferenced
+static swapChainTaskQueue swapChainTask;
+static OSMesgQueue gSwapChainMesgQueue;
+static OSMesg gSwapChainInitMesg[0x40];
+static OSMesgQueue gMesgQueue;
+static OSMesg gMesgQueueInitMesg[8];
+static void **frameBufferPool;
+static u16 frameBufferCount;
+static u16 frameBufferSegmentID;
+static u32 D_800B19A0_main; // message count?
+
 extern OSThread swapChainThread;
-extern u8 swapChainStack[];
 
 extern graphicsMessage gMesgRingBuffer[0x40];
 extern s16 ringBufferIndex;
-
-extern void **frameBufferPool;
-extern u16 frameBufferCount;
-extern u16 frameBufferSegmentID;
 
 extern u64 *gThreadOutStackSize;
 extern u64 *gThreadYieldStack;
@@ -27,14 +34,8 @@ extern void *nextFrameBuffer;
 extern void *currFrameBuffer;
 
 extern s32 *gUCodeAddresses;
-extern u32 D_800B19A0_main; // message count?
 
-extern OSMesgQueue gSwapChainMesgQueue;
-extern void *gSwapChainInitMesg;
 extern s16 gSwapChainMesgTotal;
-
-extern OSMesgQueue gMesgQueue;
-extern void *gMesgQueueInitMesg;
 
 extern u32 D_800D2094_main;         // Unk
 extern OSMesgQueue D_800CC3C0_main; // Another system's message queue
@@ -64,9 +65,9 @@ void func_8000EA10_main(void **arg1, s32 arg2, s32 arg3, u64 **arg4, s32 *arg5) 
     D_800CC0A4_main = 0;
     nextFrameBuffer = 0;
     currFrameBuffer = 0;
-    osCreateMesgQueue(&gSwapChainMesgQueue, &gSwapChainInitMesg, 0x40);
-    osCreateMesgQueue(&gMesgQueue, &gMesgQueueInitMesg, 8);
-    osCreateThread(&swapChainThread, 0x10, &func_8000EBEC_main, NULL, &swapChainStack, 0x64);
+    osCreateMesgQueue(&gSwapChainMesgQueue, gSwapChainInitMesg, 0x40);
+    osCreateMesgQueue(&gMesgQueue, gMesgQueueInitMesg, 8);
+    osCreateThread(&swapChainThread, 0x10, &func_8000EBEC_main, NULL, &swapChainStack[ARRAY_COUNT(swapChainStack)], 0x64);
     osStartThread(&swapChainThread);
 }
 

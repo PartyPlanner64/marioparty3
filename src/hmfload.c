@@ -218,15 +218,15 @@ typedef union {
     f32 single;
 } HmfFloatBits;
 
-extern u8 *D_800B19B0_main;
-extern u8 *D_800B19B4_main;
-extern u8 *D_800B19B8_main;
-extern u8 *D_800B19BC_main;
-extern u8 *D_800B19C0_main;
-extern u8 *D_800B19C4_main;
-extern u8 *D_800B19C8_main;
-extern u8 *D_800B19CC_main;
-extern u8 *D_800B19D0_main;
+static u8 *D_800B19B0_main;
+static u8 *D_800B19B4_main;
+static u8 *D_800B19B8_main;
+static u8 *D_800B19BC_main;
+static u8 *D_800B19C0_main;
+static u8 *D_800B19C4_main;
+static u8 *D_800B19C8_main;
+static u8 *D_800B19CC_main;
+static u8 *D_800B19D0_main;
 extern u8 D_800CB8B0_main;
 extern u8 D_800CCF85_main;
 extern s16 D_800A0544_main;

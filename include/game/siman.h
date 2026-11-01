@@ -39,13 +39,6 @@ void CallSIClient(s16 type);
 s32 RequestSIFunction(unkMesg* siMessg, void* func, void* arg, s32 type);
 void SIProc(void* arg0);
 
-extern void *D_800BCD00_main;
-extern void *D_800BCD80_main;
-extern OSThread D_800BCE00_main;
-
-extern functionListEntry* D_800BD7B0_main;
-extern functionListEntry* D_800BD7B4_main;
-
 extern OSMesgQueue D_800CE1A0_main;
 extern OSMesgQueue D_800D1220_main;
 

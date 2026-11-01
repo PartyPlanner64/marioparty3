@@ -1,18 +1,19 @@
 #include "ultra64.h"
 #include "types.h"
+#include "macros.h"
 #include "humath.h"
 #include "game/rom.h"
 
 extern OSPiHandle *D_800CDD50_main;
-extern OSMesgQueue D_800B29F0_main;
-extern void *D_800B2A08_main;
+static OSMesgQueue D_800B29F0_main;
+static OSMesg D_800B2A08_main[10];
 extern void *D_800CCFA8_main;
 extern OSMesgQueue D_800D6B28_main;
 
 void dmaInit(void) {
     osCreatePiManager(OS_PRIORITY_PIMGR, &D_800D6B28_main, &D_800CCFA8_main, 0x2A);
     D_800CDD50_main = osCartRomInit();
-    osCreateMesgQueue(&D_800B29F0_main, &D_800B2A08_main, 0xA);
+    osCreateMesgQueue(&D_800B29F0_main, D_800B2A08_main, ARRAY_COUNT(D_800B2A08_main));
 }
 
 s32 dmaStart(OSIoMesg *msg, u8 pri, s32 direction, u8 *src, u8 *dest, u32 size, OSMesgQueue *retQueue) {

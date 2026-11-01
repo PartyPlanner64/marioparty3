@@ -4,13 +4,12 @@
 
 extern OSDevMgr __osViDevMgr;
 extern u32 __additional_scanline;
-extern OSThread viThread;
-extern u8 viThreadStack[OS_VIM_STACKSIZE];
-extern OSMesgQueue viEventQueue;
-extern OSMesg viEventBuf[5];
-extern OSIoMesg viRetraceMsg;
-extern OSIoMesg viCounterMsg;
-extern u16 retrace; /* static in the original source */
+static OSThread viThread;
+static u8 viThreadStack[OS_VIM_STACKSIZE];
+static OSMesgQueue viEventQueue;
+static OSMesg viEventBuf[5];
+static OSIoMesg viRetraceMsg;
+static OSIoMesg viCounterMsg;
 
 void viMgrMain(void *arg);
 
@@ -61,6 +60,7 @@ void viMgrMain(void *arg) {
     OSIoMesg *mb = NULL;
     s32 first = 0;
     u32 count;
+    static u16 retrace;
 
     vc = __osViGetCurrentContext();
     retrace = vc->retraceCount;

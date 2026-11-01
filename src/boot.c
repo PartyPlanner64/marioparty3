@@ -1,13 +1,14 @@
 #include "ultra64.h"
 #include "types.h"
+#include "macros.h"
 #include "humath.h"
 #include "game/main.h"
 #include "PR/os.h"
 #include "game/nnsched.h"
 
-extern OSThread gInitThread;
-extern u8 gThread1Stack[];
-extern OSThread gMainThread;
+u8 gThread1Stack[0x800] BSS; // Also the initial stack used by entrypoint
+static OSThread gInitThread;
+static OSThread gMainThread;
 extern u64 *gThread3Stack;
 
 void ultraMain(void);

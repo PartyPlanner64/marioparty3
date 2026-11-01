@@ -5,7 +5,7 @@
 #include "game/gamework_data.h"
 #include "game/pad.h"
 
-extern s32 D_800B1A30_main;
+static s32 D_800B1A30_main;
 
 void GWInit(void) {
     GW_COMMON *gw = &GwCommon;

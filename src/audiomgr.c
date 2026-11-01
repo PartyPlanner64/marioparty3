@@ -56,25 +56,25 @@ typedef struct {
     /* 0x04 */ AMDMABuffer *firstFree;
 } AMDMAState;
 
-extern unkSchedStruct D_800A97C0_main; // scheduler client
-extern u64 D_800A97D0_main[0x400];     // audio thread stack
-extern OSMesgQueue *D_800AB7D0_main;   // scheduler command queue
-extern AMAudioMgr D_800AB7D8_main;     // __am
-extern AMDMAState D_800ABA70_main;     // dmaState
-extern u32 D_800ABA78_main;            // audFrameCt
-extern u32 D_800ABA7C_main;            // nextDMA
-extern s32 D_800ABA80_main;            // DMA buffer length
-extern s32 D_800ABA84_main;            // frames before a DMA buffer is freed
-extern s32 D_800ABA88_main;            // curAcmdList
-extern s32 D_800ABA8C_main;            // minFrameSize
-extern s32 D_800ABA90_main;            // maxFrameSize
-extern u32 D_800ABA94_main;            // frameSize
-extern s32 D_800ABA98_main;
-extern OSIoMesg D_800ABAA0_main[NUM_DMA_MESSAGES];
-extern OSMesgQueue D_800ABDA0_main; // audDMAMessageQ
-extern OSMesg D_800ABDB8_main[NUM_DMA_MESSAGES];
-extern OSPiHandle *D_800ABE38_main;
-extern s32 D_800ABE3C_main; // use the short frame next
+static unkSchedStruct D_800A97C0_main; // scheduler client
+static u64 D_800A97D0_main[0x400];     // audio thread stack
+static OSMesgQueue *D_800AB7D0_main;   // scheduler command queue
+static AMAudioMgr D_800AB7D8_main;     // __am
+static AMDMAState D_800ABA70_main;     // dmaState
+static u32 D_800ABA78_main;            // audFrameCt
+static u32 D_800ABA7C_main;            // nextDMA
+static s32 D_800ABA80_main;            // DMA buffer length
+static s32 D_800ABA84_main;            // frames before a DMA buffer is freed
+static s32 D_800ABA88_main;            // curAcmdList
+static s32 D_800ABA8C_main;            // minFrameSize
+static s32 D_800ABA90_main;            // maxFrameSize
+static u32 D_800ABA94_main;            // frameSize
+static s32 D_800ABA98_main;
+static OSIoMesg D_800ABAA0_main[NUM_DMA_MESSAGES];
+static OSMesgQueue D_800ABDA0_main; // audDMAMessageQ
+static OSMesg D_800ABDB8_main[NUM_DMA_MESSAGES];
+static OSPiHandle *D_800ABE38_main;
+static s32 D_800ABE3C_main; // use the short frame next
 extern OSMesgQueue D_800CC3A0_main;
 
 extern u8 n_aspMain_code[];

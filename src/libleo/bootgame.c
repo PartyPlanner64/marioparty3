@@ -15,7 +15,9 @@
  */
 
 extern u32 _osPreNMI;
-extern u32 D_800C2170_main;
+
+u8 D_800C1560_main[0xC10]; /* unreferenced */
+u32 D_800C2170_main;
 
 void __LeoBootGame2(void *entry);
 extern void __LeoBootGame3(void *entry);

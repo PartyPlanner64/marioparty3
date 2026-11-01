@@ -5,6 +5,20 @@
 #include "game/siman.h"
 #include "game/pad.h"
 
+static OSContPad D_800ABE40_main[8 * MAXCONTROLLERS];
+static unkMesg D_800ABF00_main[8];
+static s16 D_800ABF80_main;
+static s16 D_800ABF82_main;
+static s16 D_800ABF84_main;
+static s8 D_800ABF86_main[MAXCONTROLLERS];
+static u8 D_800ABF8A_main[MAXCONTROLLERS];
+static s8 D_800ABF8E_main;
+static s8 D_800ABF8F_main;
+static functionListEntry D_800ABF90_main;
+static s16 D_800ABF9C_main;
+static OSMesgQueue D_800ABFA0_main;
+static OSMesg D_800ABFB8_main;
+
 s32 _InitController(u16 *channel) {
     OSContStatus contStat[MAXCONTROLLERS];
     u8 pattern;

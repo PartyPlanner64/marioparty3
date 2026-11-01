@@ -63,10 +63,14 @@ extern s16 D_800A18A8_main[][2];
 extern u8 D_800A18B7_main[];
 extern s16 D_800A1908_main;
 extern s16 D_800A190C_main;
-extern u16 D_800B23C2_main;
-extern u16 D_800B23C4_main;
-extern s16 D_800B23C6_main;
-extern s16 D_800B23C8_main;
+static u16 D_800B23C0_main;
+static u16 D_800B23C2_main;
+static u16 D_800B23C4_main;
+static s16 D_800B23C6_main;
+static s16 D_800B23C8_main;
+static u8 D_800B23CA_main;
+static s16 D_800B23CC_main;
+static s16 D_800B23CE_main;
 extern u16 D_800D1100_main;
 
 typedef struct UnkomOvl {
@@ -108,7 +112,6 @@ extern u8 D_800D6A90_main;
 extern s16 omnextidx;
 
 extern u8 D_800A1762_main;
-extern u16 D_800B23C0_main;
 extern u16 D_800CD050_main;
 
 typedef struct OverlayInfo {
@@ -732,7 +735,6 @@ extern void *D_800A1240_main[3];
 extern u8 D_800A1782_main;
 extern u8 D_800A1848_main;
 extern u8 D_800A1849_main;
-extern u8 D_800B23CA_main;
 extern u16 D_800A190A_main;
 extern u16 D_800A190E_main;
 extern f32 D_800D5410_main;
@@ -980,8 +982,6 @@ typedef struct DebugMenuItem {
 
 extern DebugMenuItem D_800A184C_main[6];
 extern u16 D_800A1900_main;
-extern s16 D_800B23CC_main;
-extern s16 D_800B23CE_main;
 extern u16 D_800CCF7C_main[];
 extern u16 D_800CDD5C_main[];
 extern u8 D_800D2132_main;

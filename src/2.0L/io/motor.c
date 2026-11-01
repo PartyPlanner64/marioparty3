@@ -8,7 +8,7 @@
 #define CONT_BLOCK_DETECT 0x400
 #define CONT_BLOCK_RUMBLE 0x600
 
-extern OSPifRam __MotorDataBuf[MAXCONTROLLERS];
+static OSPifRam __MotorDataBuf[MAXCONTROLLERS];
 
 s32 __osMotorAccess(OSPfs *pfs, s32 flag) {
     s32 i;

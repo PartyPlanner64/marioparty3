@@ -41,13 +41,16 @@ extern s16 D_800A159C_main[];
 extern u8 *D_800A1610_main[];
 extern u8 D_800A1630_main[];
 extern u8 D_800A1640_main[][4];
-extern s16 D_800B2340_main[3];
-extern s16 D_800B2344_main;
-extern D_800B2350_main_Struct D_800B2350_main[];
-extern omObjData *D_800B2390_main;
-extern f32 D_800B23A0_main;
-extern f32 D_800B23A4_main;
-extern f32 D_800B23A8_main;
+static s16 D_800B2340_main[3];
+static u8 D_800B2346_main[10]; // unreferenced
+static D_800B2350_main_Struct D_800B2350_main[8];
+static omObjData *D_800B2390_main;
+// unreferenced; the following variables are only used from func_80046030_main
+// onward, which starts on a 16-byte boundary and may be a separate file
+static u8 D_800B2394_main[0xC];
+static f32 D_800B23A0_main;
+static f32 D_800B23A4_main;
+static f32 D_800B23A8_main;
 extern u16 D_800CE214_main;
 extern Process *pauseProc;
 extern s16 D_800D0A38_main;
@@ -124,11 +127,11 @@ void ExecPause(void) {
     }
     if (var_s4 < 3) {
         HuWinMesMaxSizeGet(1, sp20, 0x3919);
-        D_800B2344_main = var_s0_3 = HuWinCreate((0x140 - sp20[0]) / 2, 0xE0 - sp20[1], sp20[0], sp20[1], 0, 0);
+        D_800B2340_main[2] = var_s0_3 = HuWinCreate((0x140 - sp20[0]) / 2, 0xE0 - sp20[1], sp20[0], sp20[1], 0, 0);
         HuWinMesSet(var_s0_3, 0x3919, -1, -1);
     } else {
         HuWinMesMaxSizeGet(1, sp20, 0x3918);
-        D_800B2344_main = var_s0_3 = HuWinCreate((0x140 - sp20[0]) / 2, 0xE0 - sp20[1], sp20[0], sp20[1], 0, 0);
+        D_800B2340_main[2] = var_s0_3 = HuWinCreate((0x140 - sp20[0]) / 2, 0xE0 - sp20[1], sp20[0], sp20[1], 0, 0);
         HuWinMesSet(var_s0_3, 0x3918, -1, -1);
     }
     HuWinMesColSet(var_s0_3, 0);

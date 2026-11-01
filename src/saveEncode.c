@@ -22,8 +22,8 @@
 
 
 extern u8 gEncodedSaveBuffer[220];
-extern s32 D_800BBAA0_main;
-extern s32 D_800BBAA4_main;
+static s32 D_800BBAA0_main;
+static s32 D_800BBAA4_main;
 extern u8 D_800A1D70_main[];
 extern u8 D_800A1D9C_main[];
 extern u8 D_800A1DC8_main[];

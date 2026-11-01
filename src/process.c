@@ -5,10 +5,10 @@
 #include "game/process.h"
 #include "game/malloc.h"
 
-extern jmp_buf process_jmp_buf;
-extern Process *top_process;
-extern Process *current_process;
-extern s16 process_count;
+static jmp_buf process_jmp_buf;
+static Process *top_process;
+static Process *current_process;
+static s16 process_count;
 
 // pointer to where HuPrcVSleep was called
 extern u32 sPrcSleepLoc;

@@ -55,16 +55,6 @@ typedef struct
     u32 bytesCopy;
 } HuFileInfoD;
 
-extern u32 DataRomAddr; // FS ROM location
-extern u32 DataDirMax; // Directory count
-extern s32* DataDirTbl; // Directory offset table pointer.
-
-extern u32 DataFileRomAddr; // FS ROM location (copy)
-extern u32 DataFileMax; // Directory count (copy)
-extern s32* DataFileTbl; // Directory offset table pointer (copy)
-
-extern HuArchive gArchive;
-
 void DataInit(u32 fsRomPtr);
 void DataInfoRead(EArchiveType type, s32 index, HuFileInfo* info);
 void* DataRead(s32 dirAndFile);

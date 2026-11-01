@@ -19,7 +19,7 @@ typedef struct strline_data {
     /* 0x08 */ u8 str[64];
 } strline_data;
 
-extern strline_data strline[MAX_STRINGS];
+static strline_data strline[MAX_STRINGS];
 extern u16 strlinecnt;
 extern u16 empstrline;
 extern u16 D_800D6A46_main;

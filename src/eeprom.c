@@ -22,8 +22,8 @@ typedef struct UnkEepStruct {
 
 extern u8 D_80097710_main[];
 extern u8 D_800D0450_main[];
-extern u8 D_800AC7F0_main;
-extern u8 D_800AC7F1_main;
+static u8 D_800AC7F0_main;
+static u8 D_800AC7F1_main;
 extern u8 D_800D0E50_main[];
 extern u8 curBoxNo;
 

@@ -15,6 +15,7 @@
 #define ARRAY_COUNT_2D_COLS(arr) (s32)(sizeof(arr[0]) / sizeof(arr[0][0]))
 
 #define BSS __attribute__ ((nocommon, section (".bss")))
+#define ALIGNED(x) __attribute__ ((aligned (x)))
 
 #define IS_DEBUG_PANIC(statement, file, line) do {} while(1)
 #define ASSERT(condition) \

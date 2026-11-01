@@ -60,9 +60,11 @@ extern u8 D_800A2324_main[];
 extern u8 D_800A2325_main[];
 extern u8 D_800A232C_main[];
 extern u8 *D_800A2344_main[];
-extern s16 D_800BDA50_main[12];
-extern s8 D_800BDA6D_main;
-extern s16 D_800BDA68_main;
+static s16 D_800BDA50_main[12];
+static s16 D_800BDA68_main;
+static u8 winInsertF;
+static u16 winMaxWidth;
+static u16 winMaxHeight;
 extern u8 cancelCRF;
 extern void *D_800CE2C4_main;
 extern Process *winProc;
@@ -75,9 +77,6 @@ extern s8 winTabSize;
 extern s8 comKeyIdxNow;
 extern s16 winPrio;
 extern s32 D_800A25D0_main[];
-extern u8 winInsertF;
-extern u16 winMaxWidth;
-extern u16 winMaxHeight;
 extern u8 mesWInsert[5];
 extern s8 winTabSize;
 
@@ -1934,7 +1933,7 @@ void HuWinInsertMesSizeGet(u32 str, s16 index) {
     winMaxWidth = 0;
     GetMesMaxSizeSub(str);
     cancelCRF = 0;
-    mesWInsert[index] = D_800BDA6D_main;
+    mesWInsert[index] = winMaxWidth;
 }
 
 void func_80060290_main(u32 str, s16 index) {
@@ -1957,7 +1956,7 @@ void func_80060290_main(u32 str, s16 index) {
     if (allocated) {
         func_800365E8_main(text);
     }
-    mesWInsert[index] = D_800BDA6D_main;
+    mesWInsert[index] = winMaxWidth;
 }
 
 void func_8006034C_main(s16 winId, s16 arg1, u8 arg2) {

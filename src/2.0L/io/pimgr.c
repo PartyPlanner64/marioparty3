@@ -6,16 +6,16 @@
 
 extern s32 __osEPiRawStartDma(OSPiHandle *pihandle, s32 direction, u32 devAddr, void *dramAddr, u32 size);
 
-extern OSThread piThread;
-extern u8 piThreadStack[OS_PIM_STACKSIZE];
-extern OSThread ramromThread;
-extern u8 ramromThreadStack[OS_RAMROM_STACKSIZE];
-extern OSMesgQueue getRamromQ;
-extern OSMesg getRamromBuf[1];
-extern OSMesgQueue freeRamromQ;
-extern OSMesg freeRamromBuf[1];
-extern OSMesgQueue piEventQueue;
-extern OSMesg piEventBuf[1];
+static OSThread piThread;
+static u8 piThreadStack[OS_PIM_STACKSIZE];
+static OSThread ramromThread;
+static u8 ramromThreadStack[OS_RAMROM_STACKSIZE];
+static OSMesgQueue getRamromQ;
+static OSMesg getRamromBuf[1];
+static OSMesgQueue freeRamromQ;
+static OSMesg freeRamromBuf[1];
+static OSMesgQueue piEventQueue;
+static OSMesg piEventBuf[1];
 
 static void ramromMain(void *arg);
 

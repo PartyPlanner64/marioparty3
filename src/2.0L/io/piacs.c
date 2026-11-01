@@ -1,13 +1,15 @@
 #include "common.h"
 #include "piint.h"
 
-extern OSMesg D_800C3940_main[1];
+#define PI_Q_BUF_LEN 1
+
+static OSMesg piAccessBuf[PI_Q_BUF_LEN];
 
 void __osPiCreateAccessQueue(void) {
     OSMesgQueue *queue = &__osPiAccessQueue;
 
     __osPiAccessQueueEnabled = 1;
-    osCreateMesgQueue(queue, D_800C3940_main, 1);
+    osCreateMesgQueue(queue, piAccessBuf, PI_Q_BUF_LEN);
     osSendMesg(queue, NULL, OS_MESG_NOBLOCK);
 }
 
@@ -16,7 +18,7 @@ void __osPiGetAccess(void) {
 
     if (__osPiAccessQueueEnabled == 0) {
         __osPiAccessQueueEnabled = 1;
-        osCreateMesgQueue(&__osPiAccessQueue, D_800C3940_main, 1);
+        osCreateMesgQueue(&__osPiAccessQueue, piAccessBuf, PI_Q_BUF_LEN);
         osSendMesg(&__osPiAccessQueue, NULL, OS_MESG_NOBLOCK);
     }
     osRecvMesg(&__osPiAccessQueue, &msg, OS_MESG_BLOCK);

@@ -12,18 +12,18 @@
 #define SPRPUT_CC_BLEND_MODULATEA 1, PRIMITIVE, TEXEL0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0
 #define SPRPUT_CC_TEX_MODULATEA 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0
 
-extern f32 D_800BD810_main[4][2];
+static f32 D_800BD810_main[4][2];
+static s32 D_800BD830_main;
+static s32 D_800BD834_main;
+static s32 D_800BD838_main;
+static s32 D_800BD83C_main;
+static s32 D_800BD840_main;
+static s32 D_800BD844_main;
+static s32 D_800BD848_main;
+static s32 D_800BD84C_main;
+static s32 D_800BD850_main;
 
-extern s32 D_800BD830_main;
-extern s32 D_800BD834_main;
-extern s32 D_800BD838_main;
 extern s32 D_800A1EB0_main;
-extern s32 D_800BD83C_main;
-extern s32 D_800BD840_main;
-extern s32 D_800BD844_main;
-extern s32 D_800BD848_main;
-extern s32 D_800BD84C_main;
-extern s32 D_800BD850_main;
 extern s32 D_800A1EB4_main[];
 extern s32 D_800A1EC4_main[];
 extern s32 D_800A1ED0_main[];

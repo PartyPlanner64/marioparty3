@@ -49,14 +49,14 @@ f64 fmod(f64 x, f64 y);
 void func_8007E040_main(Mtx *m, Mtx *n, Mtx *res);
 
 extern s32 D_800A1EA0_main; // redraw?
-extern Mtx D_800BD7C0_main;
-extern Gfx *D_800BD800_main;
+static Mtx D_800BD7C0_main;
+static Gfx *D_800BD800_main;
+static HuSprite *D_800BD804_main; // head of sorted draw list
+static f32 D_800BD808_main;
 extern Gfx *D_800CCF30_main;
 extern Vp D_800A1E90_main;
-extern HuSprite *D_800BD804_main; // head of sorted draw list
 extern s16 D_800D0468_main;
 extern s16 D_800D418E_main;
-extern f32 D_800BD808_main;
 extern HuSprAnmDesc *D_800D0A50_main[0x100];
 extern u16 D_800D554E_main;
 extern u16 D_800CC3E6_main;
@@ -69,7 +69,7 @@ extern void *D_800D59F4_main;
 extern s8 HmfPauseF;
 extern HuSprGrp *HuSprGrpLast;
 extern HuSprGrp *HuSprGrpFirst;
-HuSprGrp *HuSprGrpData[HUSPR_GRP_MAX] BSS;
+extern HuSprGrp *HuSprGrpData[HUSPR_GRP_MAX];
 extern u16 HuSprGrpNum;
 
 void HuSprInit(void) {

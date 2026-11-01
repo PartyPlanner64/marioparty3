@@ -9,7 +9,7 @@
 #include "game/gamework_data.h"
 #include "ld_addrs.h"
 
-extern s16 D_800B23D0_main[6];
+static s16 D_800B23D0_main[6];
 extern s8 D_800D6A4C_main[4];
 extern s8 D_800D123C_main[4];
 extern s16 D_800CCF7C_main[4];

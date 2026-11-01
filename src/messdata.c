@@ -8,10 +8,10 @@
 
 // string table parsing code.
 
-extern u32 D_800B1A40_main;  // strings ROM pointer
-extern s32 D_800B1A44_main;  // string directory count
-extern u32 *D_800B1A48_main; // string directory table
-extern s32 D_800B1A4C_main;  // string directory table size
+static u32 D_800B1A40_main;  // strings ROM pointer
+static s32 D_800B1A44_main;  // string directory count
+static u32 *D_800B1A48_main; // string directory table
+static s32 D_800B1A4C_main;  // string directory table size
 
 void func_80036380_main(u32 stringsRomPtr) {
     s32 stringDirTableSize;

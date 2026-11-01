@@ -24,8 +24,8 @@ extern s16 D_800A1674_main[];
 extern s16 D_800A1680_main[];
 extern s16 D_800A168C_main[];
 extern s16 D_800A1698_main[];
-extern s8 D_800B23B0_main;
-extern s8 D_800B23B1_main;
+static s8 D_800B23B0_main;
+static s8 D_800B23B1_main;
 extern UnkLightData *D_800CE1D4_main;
 
 

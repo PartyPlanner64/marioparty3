@@ -6,7 +6,7 @@
 /*
  * Temporary heap. Reset occasionally during gameplay.
  */
-extern HeapNode *temp_heap_addr;
+static HeapNode *temp_heap_addr;
 
 /*
  * Creates the temporary heap.

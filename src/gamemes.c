@@ -7,6 +7,7 @@
 #include "stdarg.h"
 #include "gcc/string.h"
 #include "include_asm.h"
+#include "macros.h"
 #include "game/window.h"
 #include "game/malloc.h"
 
@@ -36,21 +37,23 @@ extern s8 HmfPauseF;
 extern u16 D_800D530C_main;
 extern u16 D_800D1100_main;
 extern u8 D_800D6A58_main;
-extern s8 D_800B1A50_main;
-extern u8 gMesCloseF;
-extern u8 GameMesDebugF;
-extern s8 gMesTimerId;
-extern u16 GameMesTime;
-extern s16 D_800B1A58_main[];
-extern s16 D_800B1A70_main[];
-extern s16 D_800B1A88_main[];
-extern s16 D_800B1AC0_main[];
-extern s16 D_800B1AF8_main[];
-extern s16 D_800B1B30_main[];
-extern s16 D_800B1B50_main[];
-extern s16 D_800B1B70_main[];
+static s8 D_800B1A50_main;
+static u8 gMesCloseF;
+static u8 GameMesDebugF;
+static s8 gMesTimerId;
+static u16 GameMesTime;
+static s16 D_800B1A58_main[9];
+static s16 D_800B1A70_main[9];
+/* Character sprite tables; the CreateFontChar asm indexes them by character code (see undefined_syms.txt).
+ * Global for that alias, and aligned to match the placement they get as statics. */
+s16 D_800B1A88_main[27] BSS ALIGNED(8);
+s16 D_800B1AC0_main[27] BSS ALIGNED(8);
+s16 D_800B1AF8_main[27] BSS ALIGNED(8);
+static s16 D_800B1B30_main[16];
+static s16 D_800B1B50_main[16];
+static s16 D_800B1B70_main[37];
+static GMesChar D_800B1BC0_main[32];
 extern GAMEMES gMesData[];
-extern GMesChar D_800B1BC0_main[32];
 extern Vec2f D_800A1380_main[];
 extern Vec2f D_800A13D8_main[];
 extern u8 D_800A13B0_main[];

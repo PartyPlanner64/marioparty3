@@ -43,8 +43,11 @@ typedef struct {
     HmfData_Unk84_Entry *texture;
 } HmfDrawFace;
 
-extern HmfModelData_Unk64_Unk60_Struct *D_800B19F0_main;
-extern s32 D_800B19F4_main;
+static HmfModelData_Unk64_Unk60_Struct *D_800B19F0_main;
+static s32 D_800B19F4_main;
+static u8 D_800B19F8_main[8]; // unreferenced
+static u16 D_800B1A00_main;
+static u16 D_800B1A02_main;
 extern s16 D_800D0A44_main;
 extern s16 D_800CDD66_main;
 extern u8 D_800A0AD8_main[8];
@@ -61,8 +64,6 @@ extern u32 D_800CD2FC_main;
 extern u32 D_800D6A20_main;
 extern u32 D_800C952C_main;
 extern u32 D_800D1FFC_main;
-extern u16 D_800B1A00_main;
-extern u16 D_800B1A02_main;
 extern s16 D_800CE2B4_main;
 extern HuCamera *D_800D10F4_main;
 extern HmfLookAtData D_800D1408_main[];

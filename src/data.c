@@ -1,11 +1,22 @@
 #include "ultra64.h"
 #include "types.h"
+#include "macros.h"
 #include "humath.h"
 #include "game/data.h"
 #include "game/rom.h"
 #include "game/malloc.h"
 #include "game/mallocblock.h"
 #include "game/decode.h"
+
+static u32 DataRomAddr; // FS ROM location
+static u32 DataDirMax; // Directory count
+static s32 *DataDirTbl; // Directory offset table pointer.
+
+static u32 DataFileRomAddr; // FS ROM location (copy)
+static u32 DataFileMax; // Directory count (copy)
+static s32 *DataFileTbl; // Directory offset table pointer (copy)
+
+static HuArchive gArchive ALIGNED(16); // DMA target, cache line aligned
 
 // -----------------------------------------------------------------
 

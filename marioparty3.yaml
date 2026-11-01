@@ -564,18 +564,50 @@ segments:
       - [0xA96A0, .rodata, libm/logf]
       - [0xA96B0, .rodata, libm/sind]
       - [0xA96E0, .rodata, libm/sindf]
-      - { start: 0xA96F0, type: bss, vram: 0x800A8AF0 }
+      - { start: 0xA96F0, type: .bss, vram: 0x800A8AF0, name: boot }
+      - { start: 0xA96F0, type: .bss, vram: 0x800A9650, name: msm }
+      - { start: 0xA96F0, type: .bss, vram: 0x800A97C0, name: audiomgr }
+      - { start: 0xA96F0, type: .bss, vram: 0x800ABE40, name: pad }
+      - { start: 0xA96F0, type: .bss, vram: 0x800ABFC0, name: data }
       - { start: 0xA96F0, type: .bss, vram: 0x800ABFF0, name: decode }
-      - { start: 0xA96F0, type: bss, vram: 0x800AC7F0, name: main_after_decode }
+      - { start: 0xA96F0, type: .bss, vram: 0x800AC7F0, name: eeprom }
+      - { start: 0xA96F0, type: .bss, vram: 0x800AC800, name: graphics }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B19B0, name: hmfload }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B19E0, name: hmfcoll }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B19F0, name: hmfdraw }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B1A10, name: mallocperm }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B1A20, name: malloctemp }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B1A30, name: gamework }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B1A40, name: messdata }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B1A50, name: gamemes }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B2340, name: pause }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B23B0, name: lightdebug }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B23C0, name: objmain }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B23D0, name: audio }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B23E0, name: profiler }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B29F0, name: rom }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B2A30, name: printfunc }
+      - { start: 0xA96F0, type: .bss, vram: 0x800BBA30, name: process }
+      - { start: 0xA96F0, type: .bss, vram: 0x800BBAA0, name: saveEncode }
+      - { start: 0xA96F0, type: .bss, vram: 0x800BBAB0, name: saveload }
+      - { start: 0xA96F0, type: .bss, vram: 0x800BBAC0, name: nnsched }
+      - { start: 0xA96F0, type: .bss, vram: 0x800BCD00, name: siman }
+      - { start: 0xA96F0, type: .bss, vram: 0x800BD7C0, name: sprman }
+      - { start: 0xA96F0, type: .bss, vram: 0x800BD810, name: sprput }
       - { start: 0xA96F0, type: .bss, vram: 0x800BD860, name: vibrator }
-      - { start: 0xA96F0, type: bss, vram: 0x800BDA50, name: main_after_vibrator }
+      - { start: 0xA96F0, type: .bss, vram: 0x800BDA50, name: window }
+      - { start: 0xA96F0, type: .bss, vram: 0x800BDA70, name: wipe }
       - { start: 0xA96F0, type: .bss, vram: 0x800BDA90, name: lib/hvq }
-      - { start: 0xA96F0, type: bss, vram: 0x800C1560, name: main_after_hvq }
+      - { start: 0xA96F0, type: .bss, vram: 0x800C1560, name: libleo/bootgame }
+      - { start: 0xA96F0, type: .bss, vram: 0x800C2180, name: 2.0L/io/pimgr }
+      - { start: 0xA96F0, type: .bss, vram: 0x800C3940, name: 2.0L/io/piacs }
       - { start: 0xA96F0, type: .bss, vram: 0x800C3950, name: 2.0L/io/sptask }
-      - { start: 0xA96F0, type: bss, vram: 0x800C3990, name: main_after_sptask }
+      - { start: 0xA96F0, type: .bss, vram: 0x800C3990, name: 2.0L/io/siacs }
+      - { start: 0xA96F0, type: .bss, vram: 0x800C39A0, name: 2.0L/io/vimgr }
+      - { start: 0xA96F0, type: .bss, vram: 0x800C4BC0, name: 2.0L/io/motor }
       - { start: 0xA96F0, type: .bss, vram: 0x800C4CC0, name: 2.0L/debug/kdebugserver }
       - { start: 0xA96F0, type: .bss, vram: 0x800C4CD0, name: 2.0L/debug/readhost }
-      - { start: 0xA96F0, type: bss, vram: 0x800C4CF0, name: main_after_readhost }
+      - { start: 0xA96F0, type: .bss, vram: 0x800C4CF0, name: 2.0L/os/initialize_isv }
       - { start: 0xA96F0, type: .bss, vram: 0x800C4D00, name: 2.0L/rmon/rmonsio }
       - { start: 0xA96F0, type: .bss, vram: 0x800C4D20, name: 2.0L/rmon/rmonmisc }
       - { start: 0xA96F0, type: .bss, vram: 0x800C8F30, name: 2.0L/rmon/rmonregs }
@@ -585,8 +617,6 @@ segments:
       - { start: 0xA96F0, type: .bss, vram: 0x800C94F0, name: libm/sind }
       - { start: 0xA96F0, type: .bss, vram: 0x800C9500, name: libm/sindf }
       - { start: 0xA96F0, type: bss, vram: 0x800C9510, name: main_after_libm }
-      - { start: 0xA96F0, type: .bss, vram: 0x800CDD70, name: sprman }
-      - { start: 0xA96F0, type: bss, vram: 0x800CE170, name: main_after_sprman }
 
   - type: code
     start: 0xA96F0

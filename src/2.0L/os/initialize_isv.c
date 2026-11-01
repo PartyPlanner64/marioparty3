@@ -17,7 +17,7 @@ typedef struct {
 
 extern __osExceptionVector __isExpJP;
 
-extern OSPiHandle *is_Handle;
+static OSPiHandle *is_Handle;
 extern u32 gISVFlag;
 extern u16 gISVChk;
 extern ISVDbg *gISVDbgPrnAdrs;

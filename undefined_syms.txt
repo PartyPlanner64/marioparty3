@@ -58,3 +58,12 @@ D_8010DDE4_inst = D_8010DDE0_inst + 0x4; /* update */
 D_8010DDEC_inst = D_8010DDE8_inst + 0x4; /* update */
 
 /* gamemes "WON" string literal, now emitted by C GameMesMgWinnerExec; still referenced by the WINNERS asm. */
+
+/* gamemes character tables offset by the first character code, referenced by the CreateFontChar asm. */
+D_800B19C6_main = D_800B1A88_main - 0x61 * 2; /* 'a' */
+D_800B1A3E_main = D_800B1AC0_main - 0x41 * 2; /* 'A' */
+D_800B1A76_main = D_800B1AF8_main - 0x41 * 2; /* 'A' */
+
+/* profiler sample buffer sampleCount fields. */
+D_800B246C_main = D_800B2468_main + 0x4;
+D_800B24F4_main = D_800B24F0_main + 0x4;

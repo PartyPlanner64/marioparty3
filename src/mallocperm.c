@@ -6,7 +6,7 @@
 /*
  * Primary heap. Never reset during gameplay.
  */
-extern HeapNode *perm_heap_addr;
+static HeapNode *perm_heap_addr;
 
 /*
  * Creates the "permanent" heap that is never reset.

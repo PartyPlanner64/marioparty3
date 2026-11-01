@@ -3,15 +3,22 @@
 #include "humath.h"
 #include "game/process.h"
 #include "game/siman.h"
+#include "macros.h"
 
-// TODO: find SI thread stack size
+static OSMesg D_800BCD00_main[32];
+static OSMesg D_800BCD80_main[32];
+static OSThread D_800BCE00_main;
+static u64 sSIThreadStack[0x800 / sizeof(u64)];
+static functionListEntry *D_800BD7B0_main;
+static functionListEntry *D_800BD7B4_main;
+
 void InitSI(void) {
     D_800BD7B0_main = NULL;
     D_800BD7B4_main = NULL;
-    osCreateMesgQueue(&D_800CE1A0_main, &D_800BCD00_main, 32);
+    osCreateMesgQueue(&D_800CE1A0_main, D_800BCD00_main, ARRAY_COUNT(D_800BCD00_main));
     osSetEventMesg(OS_EVENT_SI, &D_800CE1A0_main, (OSMesg)32);
-    osCreateMesgQueue(&D_800D1220_main, &D_800BCD80_main, 32);
-    osCreateThread(&D_800BCE00_main, 0x14, SIProc, NULL, &D_800BD7B0_main, HOS_PRIORITY_SIMGR);
+    osCreateMesgQueue(&D_800D1220_main, D_800BCD80_main, ARRAY_COUNT(D_800BCD80_main));
+    osCreateThread(&D_800BCE00_main, 0x14, SIProc, NULL, &sSIThreadStack[ARRAY_COUNT(sSIThreadStack)], HOS_PRIORITY_SIMGR);
     osStartThread(&D_800BCE00_main);
 }
 

@@ -1,8 +1,8 @@
 #ifndef _PLAYER_H
 #define _PLAYER_H
 
-#include "common.h"
-#include "process.h"
+#include "ultra64.h"
+#include "game/process.h"
 #include "math.h"
 #include "game/object.h"
 

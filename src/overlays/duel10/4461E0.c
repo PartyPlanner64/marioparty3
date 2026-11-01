@@ -1,5 +1,5 @@
 #include "common.h"
-#include "process.h"
+#include "game/process.h"
 #include "malloc.h"
 
 typedef struct {

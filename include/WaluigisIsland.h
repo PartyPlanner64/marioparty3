@@ -1,7 +1,7 @@
 #ifndef _WALUIGIS_ISLAND_H
 #define _WALUIGIS_ISLAND_H
 
-#include "common.h"
+#include "ultra64.h"
 #include "game/board.h"
 
 typedef struct MasuIdTable {

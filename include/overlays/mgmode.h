@@ -2,6 +2,7 @@
 #define _OVL_MGMODE_H
 
 #include "ultra64.h"
+#include "math.h"
 
 typedef struct {
     /* 0x00 */ s16 spriteGroup;

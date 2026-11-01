@@ -1,7 +1,7 @@
 #ifndef _INPUT_H
 #define _INPUT_H
 
-#include "common.h"
+#include "ultra64.h"
 
 extern u16 D_800C9520_main[];
 extern s16 D_800D0590_main[];

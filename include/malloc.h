@@ -1,7 +1,7 @@
 #ifndef __MALLOC_H
 #define __MALLOC_H
 
-#include <libultra.h>
+#include "ultra64.h"
 #include "common_structs.h"
 
 void* HuMemHeapInit(void *ptr, u32 size);

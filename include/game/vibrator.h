@@ -1,7 +1,7 @@
 #ifndef _VIBRATOR_H_
 #define _VIBRATOR_H_
 
-#include "common.h"
+#include "ultra64.h"
 #include "siman.h"
 
 extern void PRENMICallbackVibrator(void);

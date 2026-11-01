@@ -1,6 +1,8 @@
 #ifndef _TYPES_H_
 #define _TYPES_H_
 
+#include "PR/ultratypes.h"
+
 #define NULL 0
 
 /// Linker symbol address, as in `ld_addrs.h`.

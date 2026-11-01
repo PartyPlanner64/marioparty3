@@ -1,7 +1,7 @@
 #ifndef __PAD_H
 #define __PAD_H
 
-#include "common.h"
+#include "ultra64.h"
 #include "siman.h"
 #include "input.h"
 

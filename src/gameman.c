@@ -3,7 +3,7 @@
 #include "gameman.h"
 #include "malloc.h"
 #include "pad.h"
-#include "process.h"
+#include "game/process.h"
 #include "game/object.h"
 #include "game/util.h"
 

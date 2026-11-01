@@ -1,7 +1,7 @@
 #ifndef _ENUMS_H_
 #define _ENUMS_H_
 
-#include "common.h"
+#include "ultra64.h"
 
 #define SPACES_MAX 128
 

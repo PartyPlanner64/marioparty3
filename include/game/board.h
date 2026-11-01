@@ -3,6 +3,11 @@
 
 #include "ultra64.h"
 #include "game/hvq.h"
+#include "game/object.h"
+#include "game/process.h"
+#include "game/gamework_data.h"
+#include "common_structs.h"
+#include "enums.h"
 
 #define MINIGAME_ID(id) ((id) + 1)
 

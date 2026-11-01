@@ -1,7 +1,7 @@
 #ifndef _SIMAN_H
 #define _SIMAN_H
 
-#include <libultra.h>
+#include "ultra64.h"
 #include "game/nnsched.h"
 
 #define HOS_PRIORITY_SIMGR 0x5A

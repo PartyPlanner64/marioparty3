@@ -10,6 +10,8 @@
 #include "include_asm.h"
 #include "macros.h"
 #include "input.h"
+#include "common_structs.h"
+#include "variables.h"
 
 // hmfdraw
 s16 func_8002C834_main(HmfData *arg0, char *name);

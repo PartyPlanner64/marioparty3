@@ -1,5 +1,5 @@
 #include "common.h"
-#include "process.h"
+#include "game/process.h"
 #include "common_structs.h"
 #include "malloc.h"
 #include "game/board.h"

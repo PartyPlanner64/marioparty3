@@ -1,7 +1,7 @@
 #ifndef __MALLOCBLOCK_H
 #define __MALLOCBLOCK_H
 
-#include "libultra.h"
+#include "ultra64.h"
 
 typedef enum
 {

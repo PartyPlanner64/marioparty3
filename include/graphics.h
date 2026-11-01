@@ -1,7 +1,7 @@
 #ifndef __GRAPHICS_H
 #define __GRAPHICS_H
 
-#include <libultra.h>
+#include "ultra64.h"
 #include "game/nnsched.h"
 
 typedef struct {
@@ -24,12 +24,6 @@ void func_8000F088_main(s32 *);             // Set graphics state
 void func_8000F094_main(u32);               // Set unk swap chain state
 void func_8000EBEC_main(void *);            // Swap Chain Loop
 
-/* TODO: Where is the libultra header for this? */
-extern void *osViGetCurrentFramebuffer(void);
-extern void *osViGetNextFramebuffer(void);
-extern void osViSwapBuffer(void *);
-extern void osViBlack(u8);
-extern void osViSetYScale(f32);
 
 typedef struct {
     u8 unk00[0x20];

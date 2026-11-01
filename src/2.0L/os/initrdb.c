@@ -1,5 +1,4 @@
 #include "common.h"
-#include "libultra.h"
 
 extern u32 __osDisableInt(void);
 extern void __osRestoreInt(u32);

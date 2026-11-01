@@ -3,7 +3,7 @@
 
 #include "ultra64.h"
 #include "math.h"
-#include "process.h"
+#include "game/process.h"
 
 
 #define OM_STAT_DELETED (1 << 0)

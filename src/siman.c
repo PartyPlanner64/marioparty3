@@ -1,5 +1,5 @@
 #include "common.h"
-#include "process.h"
+#include "game/process.h"
 #include "siman.h"
 
 // TODO: find SI thread stack size

@@ -1,7 +1,11 @@
 #ifndef OPENING_H
 #define OPENING_H
 
-#include "common.h"
+#include "ultra64.h"
+#include "math.h"
+#include "game/object.h"
+#include "game/camera.h"
+#include "game/hmfman.h"
 
 typedef struct {
     /* 0x00 */ s16 modelId;

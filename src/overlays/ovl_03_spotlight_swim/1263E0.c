@@ -1,7 +1,7 @@
 #include "common.h"
 #include "overlays/minigame.h"
 #include "mallocblock.h"
-#include "math.h"
+#include "humath.h"
 #include "game/pause.h"
 
 typedef struct {
@@ -166,7 +166,6 @@ extern s8 D_8010EE48_spotlight_swim;
 extern SpotlightSwimUnk8 D_8010EE50_spotlight_swim[];
 
 void func_80105E9C_spotlight_swim(s16, f32, f32, f32, f32 *);
-void func_80088850_main(Mtx *mtx, const f32 x, const f32 y, const f32 z);
 void func_8007E040_main(Mtx *m, Mtx *n, Mtx *res);
 void func_801072C4_spotlight_swim(omObjData *);
 void func_80106150_spotlight_swim(omObjData *);
@@ -191,7 +190,6 @@ s16 func_8002C834_main(HmfData *arg0, char *name);
 void func_8010AE9C_spotlight_swim(omObjData *);
 void func_80106BC8_spotlight_swim(omObjData *);
 void func_8010CB78_spotlight_swim(void);
-void func_80088800_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 void func_80109F60_spotlight_swim(omObjData *);
 void func_80107C10_spotlight_swim(omObjData *);
 

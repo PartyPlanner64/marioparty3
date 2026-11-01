@@ -1,4 +1,4 @@
-#include "common.h"
+#include "humath.h"
 
 // Build a fixed-point look-at matrix.
 void func_80089FF0_main(Mtx *mtx, Vec *camera) {

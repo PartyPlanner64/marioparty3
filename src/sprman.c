@@ -48,7 +48,6 @@ void *HuMemMemoryReallocPerm(void *mem, u32 new_size);
 HuSprite *func_800530AC_main(void);
 
 void func_80052E68_main(HuSprGrp *group, u16 count);
-void func_8008A0D0_main(Mtx *);
 void func_80052518_main(HuSprite *arg0);
 void func_80056F80_main(s16 arg0);
 s16 func_8005630C_main(HuSprAnm *arg0);

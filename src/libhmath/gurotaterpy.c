@@ -1,4 +1,4 @@
-#include "common.h"
+#include "humath.h"
 
 // Builds a floating-point Euler rotation matrix.
 void func_80088910_main(HuMtx4F mtx, f32 r, f32 p, f32 h) {

@@ -2,7 +2,7 @@
 #include "game/pause.h"
 #include "overlays/minigame.h"
 #include "mallocblock.h"
-#include "math.h"
+#include "humath.h"
 
 typedef struct {
     /* 0x00 */ omObjData *unk00;

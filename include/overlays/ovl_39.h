@@ -2,7 +2,7 @@
 #define _OVL_39_H
 
 #include "ultra64.h"
-#include "math.h"
+#include "humath.h"
 
 #include "game/hmfman.h"
 #include "game/object.h"

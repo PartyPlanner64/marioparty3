@@ -1,5 +1,5 @@
 #include "common.h"
-#include "math.h"
+#include "humath.h"
 #include "mallocblock.h"
 #include "gcc/string.h"
 #include "game/hmfvertex.h"
@@ -191,8 +191,8 @@ typedef struct {
     s32 unkC8;
     void *unkCC;
     HmfData_UnkD0 *unkD0;
-    void (*unkD4)(f32 *, f32, f32, f32);
-    void (*unkD8)(f32 *, f32, f32, f32);
+    void (*unkD4)(HuMtx4F, f32, f32, f32);
+    void (*unkD8)(HuMtx4F, f32, f32, f32);
 } HmfLoadData;
 
 typedef struct {
@@ -231,10 +231,9 @@ extern s16 D_800CDD6A_main;
 extern s16 D_800D5204_main;
 
 void osSyncPrintf(const char *fmt, ...);
-void func_80017D24_main(f32 *, f32, f32, f32);
-void func_8001866C_main(f32 *, f32, f32, f32);
-void func_80018978_main(f32 *, f32, f32, f32);
-void func_80088910_main(f32 *, f32, f32, f32);
+void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
+void func_8001866C_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
+void func_80018978_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 s16 func_8000FA34_main(HmfLoadData *, void *);
 s16 func_8000FDAC_main(void *arg0, s16 arg1);
 void func_8000FEE4_main(HmfLoadData *);

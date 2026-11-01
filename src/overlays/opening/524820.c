@@ -25,14 +25,12 @@ extern Vec D_80114B70_opening[2], D_80114B88_opening[2], D_80114BA0_opening, D_8
 extern const Vec D_80114D9C_opening, D_80114DA8_opening;
 
 void espColorSet(u16 spriteId, s32 arg1, s32 arg2, s32 arg3);
-void func_80088800_main(HuMtx4F, f32, f32, f32);
 void func_80017CD0_main(HuMtx4F, f32, f32, f32);
 void *func_8001D33C_main(s16 idx, char *name);
 
 void Hu3DModelHookSet(s16, s16, char *);
 void func_8002367C_main(HuMtx4F, HuMtx4F);
 void func_80046030_main(s16, s16);
-void func_80088700_main(HuMtx4F, f32, f32, f32);
 void opDemoEndSet(s32);
 f32 func_8011124C_opening(f32 x1, f32 z1, f32 x2, f32 z2, f32 weight);
 

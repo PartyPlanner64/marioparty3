@@ -1,5 +1,4 @@
-#include "common.h"
-#include "math.h"
+#include "humath.h"
 
 f32 HuVecGetLengthSqr3F(Vec *vec) {
     f32 x;

@@ -1,4 +1,4 @@
-#include "common.h"
+#include "humath.h"
 
 // Build a fixed-point Euler rotation matrix with scale and translation.
 void func_8008AD60_main(Mtx *m, const f32 *rot, const f32 *scale, const f32 *translation) {

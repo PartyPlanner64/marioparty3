@@ -1,4 +1,4 @@
-#include "common.h"
+#include "humath.h"
 
 // Apply scale to a float matrix.
 void func_8008CB30_main(HuMtx4F src, f32 *scale, HuMtx4F dst) {

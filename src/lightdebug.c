@@ -2,7 +2,7 @@
 #include "game/hmflight.h"
 #include "game/printfunc.h"
 #include "input.h"
-#include "math.h"
+#include "humath.h"
 #include "pad.h"
 #include "variables.h"
 

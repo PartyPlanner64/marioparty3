@@ -1,7 +1,7 @@
 #include "common.h"
 #include "game/msm.h"
 #include "PR/n_libaudio.h"
-#include "math.h"
+#include "humath.h"
 
 /* Oscillator types, as in the N64 SDK sequence player demos. */
 #define TREMELO_SIN 1

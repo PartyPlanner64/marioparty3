@@ -1,5 +1,4 @@
-#include "common.h"
-#include "math.h"
+#include "humath.h"
 
 void HuVecLinearComb(Vec *out, f32 scaleA, Vec *a, f32 scaleB, Vec *b) {
     f32 x = (scaleA * a->x) + (scaleB * b->x);

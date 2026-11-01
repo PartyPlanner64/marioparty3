@@ -11,7 +11,7 @@
 #include "game/sprite.h"
 #include "game/wipe.h"
 #include "mallocblock.h"
-#include "math.h"
+#include "humath.h"
 #include "include_asm.h"
 #include "input.h"
 #include "variables.h"

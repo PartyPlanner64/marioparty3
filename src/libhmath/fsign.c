@@ -1,4 +1,4 @@
-#include "common.h"
+#include "humath.h"
 
 // Returns the sign of a value.
 s32 func_80089750_main(f32 value) {

@@ -134,7 +134,6 @@ void func_801064FC_dorrie_dip(void);
 void func_80109E1C_dorrie_dip(s32);
 void func_80108A74_dorrie_dip(s16, char *, s16, Vec *);
 void func_80016B00_main(s16 model, s16 frame, char *name, HuMtx4F *out);
-void func_80088800_main(HuMtx4F, f32, f32, f32);
 void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 void func_80017CD0_main(HuMtx4F, f32, f32, f32);
 void func_80018044_main(HuMtx4F, HuMtx4F, HuMtx4F);

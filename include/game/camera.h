@@ -3,7 +3,7 @@
 
 #include "ultra64.h"
 #include "game/hmfman.h"
-#include "math.h"
+#include "humath.h"
 
 // Forward declaration to prevent issues with hmfman.h.
 struct HmfModel;

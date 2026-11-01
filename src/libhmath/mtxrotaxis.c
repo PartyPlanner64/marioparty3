@@ -1,4 +1,4 @@
-#include "common.h"
+#include "humath.h"
 
 // Builds a fixed-point matrix that aligns the negative Z axis to a direction.
 void func_8008B300_main(Mtx *m, f32 angle, const f32 *axis) {

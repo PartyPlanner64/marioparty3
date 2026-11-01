@@ -1,4 +1,4 @@
-#include "common.h"
+#include "humath.h"
 
 void func_8008CCC0_main(const HuMtx4F a, const HuMtx4F b, HuMtx4F result) {
     HuMtx4F temp;

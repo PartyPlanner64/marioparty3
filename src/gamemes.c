@@ -3,7 +3,7 @@
 #include "game/sprite.h"
 #include "game/gamework_data.h"
 #include "game/data.h"
-#include "math.h"
+#include "humath.h"
 #include "stdarg.h"
 #include "gcc/string.h"
 #include "include_asm.h"

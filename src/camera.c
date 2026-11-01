@@ -5,7 +5,6 @@
 #include "types.h"
 
 // EXTERN
-void func_8008A0D0_main(Mtx *);
 
 extern HuCamera *gCameraList;
 extern Vec D_800A0554_main;

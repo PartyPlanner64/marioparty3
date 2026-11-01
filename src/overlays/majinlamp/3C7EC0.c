@@ -45,7 +45,6 @@ extern const char D_80108268_majinlamp[];
 
 void func_8001E888_main(s16 idx, f32 x, f32 y, u16 width, u16 height, char *name, u8 reset);
 void msmSeStop(s32 slot);
-void func_8008A120_main(HuMtx4F, f32);
 void MBDlgResultWinExec(s32);
 void MBDlgWinExecY(s16, s32, s32);
 void *memcpy(void *, const void *, unsigned int);

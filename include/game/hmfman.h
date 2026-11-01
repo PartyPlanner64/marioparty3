@@ -3,7 +3,7 @@
 
 #include "ultra64.h"
 #include "types.h"
-#include "math.h"
+#include "humath.h"
 #include "types.h"
 #include "game/hmfvertex.h"
 

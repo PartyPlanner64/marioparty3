@@ -1,5 +1,4 @@
-#include "common.h"
-#include "math.h"
+#include "humath.h"
 
 void HuVecAddScaled(Vec *out, Vec *a, f32 scalar, Vec *b) {
     f32 x = a->x + (scalar * b->x);

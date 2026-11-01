@@ -1,4 +1,4 @@
-#include "common.h"
+#include "humath.h"
 
 // Builds a floating-point axis-angle rotation matrix.
 void func_80088570_main(HuMtx4F mtx, f32 angle, f32 x, f32 y, f32 z) {

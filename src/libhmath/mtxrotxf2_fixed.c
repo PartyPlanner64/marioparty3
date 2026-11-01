@@ -1,4 +1,4 @@
-#include "common.h"
+#include "humath.h"
 #include "mtxpack.h"
 
 // Concatenate a fixed-point Z-axis rotation with a matrix.

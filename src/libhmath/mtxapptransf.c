@@ -1,4 +1,4 @@
-#include "common.h"
+#include "humath.h"
 
 // Apply translation to a float matrix.
 void func_8008CBF0_main(const HuMtx4F src, f32 *translation, HuMtx4F dst) {

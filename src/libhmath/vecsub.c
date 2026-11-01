@@ -1,4 +1,4 @@
-#include "common.h"
+#include "humath.h"
 
 void HuVecSubtract(Vec *out, Vec *a, Vec *b) {
     f32 x = a->x - b->x;

@@ -1,9 +1,7 @@
 #include "common.h"
 
 f32 atan2df(f32, f32);
-void HuVecNormalize3F(Vec *);
 f32 acosdf(f32);
-f32 HuVecDot3F(Vec *, Vec *);
 
 f32 MBVecAngleGet(Vec *arg0) {
     f32 temp_f16;

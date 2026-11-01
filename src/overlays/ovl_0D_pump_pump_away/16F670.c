@@ -289,7 +289,6 @@ u16 GWMgRecordGet(s16 arg0);
 void HuAudFXPanning(s16 arg0, s16 arg1);
 void func_80034048_main(s16 arg0, s16 arg1);
 void func_80105EE4_pump_pump_away(Vec *position, Vec *target, Vec *result);
-void func_80088800_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 void func_8010628C_pump_pump_away(omObjData *obj);
 void func_8010654C_pump_pump_away(omObjData *obj);
 void func_80106724_pump_pump_away(omObjData *obj);

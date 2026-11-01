@@ -1,4 +1,4 @@
-#include "common.h"
+#include "humath.h"
 
 // Builds a floating-point position matrix from Euler rotation, scale, and translation.
 void func_80088CB0_main(HuMtx4F mtx, f32 r, f32 p, f32 h, f32 s, f32 x, f32 y, f32 z) {

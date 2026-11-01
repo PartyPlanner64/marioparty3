@@ -1,4 +1,4 @@
-#include "common.h"
+#include "humath.h"
 
 // Build a float rotation matrix around the Y axis.
 void func_8008A2A0_main(HuMtx4F mtx, f32 angle) {

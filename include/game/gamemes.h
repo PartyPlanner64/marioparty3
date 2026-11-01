@@ -2,7 +2,7 @@
 #define _GAME_GAMEMES_H
 
 #include "ultra64.h"
-#include "math.h"
+#include "humath.h"
 
 #define GMES_ID_NONE -1
 

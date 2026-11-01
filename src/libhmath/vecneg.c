@@ -1,5 +1,4 @@
-#include "common.h"
-#include "math.h"
+#include "humath.h"
 
 void HuVecNeg(Vec *out, Vec *a) {
     f32 x = -a->x;

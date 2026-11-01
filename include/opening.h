@@ -2,7 +2,7 @@
 #define OPENING_H
 
 #include "ultra64.h"
-#include "math.h"
+#include "humath.h"
 #include "game/object.h"
 #include "game/camera.h"
 #include "game/hmfman.h"

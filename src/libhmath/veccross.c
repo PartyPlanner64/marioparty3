@@ -1,4 +1,4 @@
-#include "math.h"
+#include "humath.h"
 
 void HuVecCross(Vec *out, Vec *a, Vec *b) {
     f32 vector1Y = a->y;

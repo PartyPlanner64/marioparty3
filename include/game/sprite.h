@@ -2,7 +2,7 @@
 #define _GAME_SPRITE_H
 
 #include "ultra64.h"
-#include "math.h"
+#include "humath.h"
 
 #define HUSPR_GRP_MAX 256
 

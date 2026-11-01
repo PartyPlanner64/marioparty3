@@ -1,4 +1,4 @@
-#include "common.h"
+#include "humath.h"
 
 // Build a fixed-point rotation matrix from Euler angles.
 void func_8008A960_main(Mtx *mtx, const f32 *rot) {

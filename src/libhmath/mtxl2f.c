@@ -1,4 +1,4 @@
-#include "common.h"
+#include "humath.h"
 
 // Likely equivalent to guMtxL2F.
 void func_80089980_main(HuMtx4F mf, Mtx *m) {

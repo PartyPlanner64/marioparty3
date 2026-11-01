@@ -37,7 +37,6 @@ void func_80016C2C_main(HmfData *hmf, s16 nodeIdx, s16 target);
 s16 func_8002C834_main(HmfData *arg0, char *name);
 void func_8002DFF8_main(HmfData *hmf, f32 frame, HmfModelData_Unk64_Unk8C_Struct *motion, s32 arg3);
 void func_8002367C_main(HuMtx4F dst, HuMtx4F src);
-void func_8008A070_main(HuMtx4F mtx);
 void func_80033910_main(HmfData *hmf);
 void func_80033970_main(HmfData *hmf);
 void func_80017C10_main(HuMtx4F mtx, f32 x, f32 y, f32 z);

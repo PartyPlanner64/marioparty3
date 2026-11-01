@@ -142,7 +142,6 @@ void func_80107960_chip_shot_challenge(s16 value);
 void func_80107BB0_chip_shot_challenge(void);
 void func_80107E94_chip_shot_challenge(void);
 f32 func_80109AD0_chip_shot_challenge(omObjData *object, f32 x, f32 y, f32 z);
-void func_80088800_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 void func_800E17D4_minigame(omObjData *object, f32 x, f32 y, f32 z);
 void func_800E147C_minigame(omObjData *object);

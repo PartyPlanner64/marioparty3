@@ -64,13 +64,11 @@ void func_80034048_main(s16 animIdx, s16 count);
 void HmfAnimExec(u16 vcount);
 
 // 8AC70.c
-void func_8008A070_main(HuMtx4F mtx);
 
 // hmfspr.c
 void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 
 // libhmath/gurotaterpy.c
-void func_80088910_main(HuMtx4F mtx, f32 r, f32 p, f32 h);
 
 // camera.c
 void func_80012E54_main(s16 camIndex);

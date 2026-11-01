@@ -1,6 +1,5 @@
-#include "common.h"
+#include "humath.h"
 
-#include "math.h"
 
 static inline void Normalize(f32 *x, f32 *y, f32 *z) {
     f32 oldX = *x;

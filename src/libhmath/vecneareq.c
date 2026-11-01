@@ -1,5 +1,4 @@
-#include "common.h"
-#include "math.h"
+#include "humath.h"
 
 // Keep separate negated comparisons to reject NaNs and preserve the matching branches.
 // Vec3 near-equal test with an explicit epsilon.

@@ -2,7 +2,7 @@
 #define _GAME_OBJECT_H
 
 #include "ultra64.h"
-#include "math.h"
+#include "humath.h"
 #include "game/process.h"
 
 

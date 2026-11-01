@@ -1,7 +1,7 @@
 #ifndef _LIBM_H_
 #define _LIBM_H_
 
-#include "math.h"
+#include "humath.h"
 
 extern const s32 D_800A4350_main[12];
 extern const f64 D_800A4380_main[100];

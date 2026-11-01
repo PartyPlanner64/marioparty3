@@ -2,7 +2,7 @@
 #define MSETUP_H
 
 #include "ultra64.h"
-#include "math.h"
+#include "humath.h"
 
 typedef struct MsetupCameraPreset {
     Vec rot;

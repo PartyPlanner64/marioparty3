@@ -1,4 +1,4 @@
-#include "common.h"
+#include "humath.h"
 
 // Apply scale to a fixed-point matrix.
 void func_8008CB90_main(Mtx *src, f32 *scale, Mtx *dst) {

@@ -1,5 +1,4 @@
-#include "common.h"
-#include "math.h"
+#include "humath.h"
 
 void HuVecMulScalar(Vec *out, f32 scalar, Vec *a) {
     f32 x = scalar * a->x;

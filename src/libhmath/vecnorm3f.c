@@ -1,5 +1,4 @@
-#include "common.h"
-#include "math.h"
+#include "humath.h"
 
 void HuVecNormalize3F(Vec *const vec) {
     const Vec *input = vec;

@@ -56,7 +56,6 @@ void func_8010A750_inst(omObjData *);
 void func_8010AC30_inst(omObjData *); /* extern */
 void func_8010AD78_inst(omObjData *);
 void func_8010B038_inst(omObjData *object);
-void func_8008A120_main(HuMtx4F, f32);
 void func_8002367C_main(HuMtx4F, HuMtx4F);
 void func_80018044_main(HuMtx4F, HuMtx4F, HuMtx4F);
 void func_8010B2A4_inst(omObjData *);

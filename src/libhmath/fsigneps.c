@@ -1,5 +1,4 @@
-#include "common.h"
-#include "math.h"
+#include "humath.h"
 
 // Returns the sign of a value using the global epsilon threshold.
 s32 func_800897D0_main(f32 value) {

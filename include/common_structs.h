@@ -3,7 +3,7 @@
 
 #include "ultra64.h"
 #include "game/process.h"
-#include "math.h"
+#include "humath.h"
 #include "game/object.h"
 
 #define CUR_PLAYER -1

@@ -7,7 +7,6 @@
 
 extern HuCamMtxs *D_800D0444_main;
 
-f32 HuSqrtf(f32);
 
 // LOCAL
 

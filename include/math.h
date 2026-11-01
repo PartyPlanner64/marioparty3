@@ -20,48 +20,18 @@
 #define M_DTORf 0.01745329251994329577f
 #define M_RTODf 57.2957795130823208768f
 
-typedef struct {
-    f32 x;
-    f32 y;
-    f32 z;
-} Vec;
-
-typedef struct {
-    s32 x;
-    s32 y;
-    s32 z;
-} HuVec3I;
-
-typedef struct {
-    f32 fov;
-    f32 aspect;
-    f32 near;
-    f32 far;
-    f32 scale;
-} PerspectiveParams;
-
-typedef struct Vec2f {
-    /* 0x00 */ f32 x;
-    /* 0x04 */ f32 y;
-} Vec2f;
-
 f64 fabs(f64 x);
 f32 fabsf(f32 x);
 int abs(int x);
-
-/* Application-owned default tolerance used by libhmath's epsilon helpers. */
-extern f32 D_800A12A4_main;
 
 /* Libultra trigonometry takes angles in radians. */
 f32 sinf(f32 angle);
 f32 cosf(f32 angle);
 f32 sqrtf(f32 x);
 
-/* KMC and libhmath square-root entry points remain distinct from libultra. */
+/* KMC square-root entry points remain distinct from libultra. */
 f64 sqrt(f64 x);
 f32 kmc_sqrtf(f32 x);
-f64 HuSqrt(f64 x);
-f32 HuSqrtf(f32 x);
 
 /* Scalar libm uses d for degrees and a trailing f for single precision. */
 f64 sind(f64 angle);
@@ -84,21 +54,5 @@ f64 exp(f64 x);
 f32 expf(f32 x);
 f64 log(f64 x);
 f32 logf(f32 x);
-
-s32 func_80089820_main(f32 value, f32 threshold);
-s32 func_80089860_main(f32 value);
-
-void HuVecNormalize3F(Vec *vec);
-void HuVecCross(Vec *out, Vec *a, Vec *b);
-void HuVecCopyXYZ(Vec *out, f32 x, f32 y, f32 z);
-void HuVecCopy3F(Vec *out, Vec *a);
-f32 HuVecGetLengthSqr3F(Vec *vec);
-f32 HuVecGetLength3F(Vec *vec);
-f32 HuVecDot3F(Vec *a, Vec *b);
-
-f32 HuVecDistanceSqr(const Vec *a, const Vec *b);
-f32 HuVecDistance(const Vec *a, const Vec *b);
-
-void HuLookAtF(f32 mf[4][4], f32 xEye, f32 yEye, f32 zEye, f32 xAt, f32 yAt, f32 zAt, f32 xUp, f32 yUp, f32 zUp);
 
 #endif

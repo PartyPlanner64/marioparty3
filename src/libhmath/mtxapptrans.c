@@ -1,4 +1,4 @@
-#include "common.h"
+#include "humath.h"
 
 // Apply translation to a fixed-point matrix.
 void func_8008CC60_main(Mtx *src, f32 *translation, Mtx *dst) {

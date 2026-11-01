@@ -41,7 +41,6 @@ extern f32 D_80119AFC_msetup;
 
 void espScaleSet(u16, f32, f32);
 s16 func_80011460_main(u8 *);
-void func_80088800_main(HuMtx4F, f32, f32, f32);
 void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 void func_80017CD0_main(HuMtx4F, f32, f32, f32);
 void func_80018044_main(HuMtx4F, HuMtx4F, HuMtx4F);

@@ -1,4 +1,4 @@
-#include "common.h"
+#include "humath.h"
 
 // Build a fixed-point perspective matrix.
 void func_8008A030_main(Mtx *mtx, u16 *perspNorm, PerspectiveParams *params) {

@@ -110,7 +110,6 @@ s32 func_8000B638_main(void);
 u16 func_8000B0D4_main(s32 arg0, s32 arg1);
 void func_8002367C_main(HuMtx4F dst, HuMtx4F src);
 void func_80016B00_main(s16 model, s16 frame, char *name, HuMtx4F *out);
-void func_80088800_main(HuMtx4F, f32, f32, f32);
 void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 void func_80017CD0_main(HuMtx4F, f32, f32, f32);
 void func_80018044_main(HuMtx4F, HuMtx4F, HuMtx4F);
@@ -143,7 +142,6 @@ void func_800E6F0C_minigame(s32);
 void func_80109CDC_locked_out(void);
 void func_800DDD94_minigame(omObjData *);
 void func_800E5138_minigame(omObjData *);
-void func_80088910_main(HuMtx4F mtx, f32 r, f32 p, f32 h);
 
 void func_801059A0_locked_out(void) {
     omObjData *obj;

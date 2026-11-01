@@ -1,4 +1,4 @@
-#include "common.h"
+#include "humath.h"
 
 // Build a float scale matrix.
 void func_8008A5C0_main(HuMtx4F mtx, f32 *scale) {

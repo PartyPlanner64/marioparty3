@@ -1,5 +1,5 @@
 #include <PR/ultratypes.h>
-#include "math.h"
+#include "humath.h"
 
 f32 HuVecDistance(const Vec *a, const Vec *b) {
     f32 x;

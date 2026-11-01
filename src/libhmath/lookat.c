@@ -1,5 +1,4 @@
-#include "common.h"
-#include "math.h"
+#include "humath.h"
 
 // Build a view matrix from camera[0..2] (eye, target, up), returning its basis vectors.
 void func_8008D450_main(HuMtx4F mtx, Vec *camera, Vec *basis) {

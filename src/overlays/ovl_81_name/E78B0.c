@@ -8,7 +8,6 @@ typedef struct UnkE78B0 {
     Process *proc;
 } UnkE78B0; // sizeof 0xC
 
-void func_800FFAE0_name_81(s16, s16);
 
 void func_800FFAE0_name_81(s16 playerNo, s16 arg1) {
     if (playerNo == CUR_PLAYER) {

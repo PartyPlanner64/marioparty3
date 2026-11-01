@@ -62,4 +62,6 @@ void HuPrcDestructorSet(process_func destructor);
 void* HuPrcMemAlloc(s32 size);
 void HuPrcMemFree(void *ptr);
 
+void HuPrcCall(s32 time);
+
 #endif

@@ -5,7 +5,6 @@ extern s16 D_8010A678_game_guys_roulette;
 extern u8 D_8010AB50_game_guys_roulette;
 
 void func_801088B0_game_guys_roulette(omObjData *object);
-void espAttrSet(u16 arg0, u16 arg1);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_42_game_guys_roulette/2FC270", func_801059A0_game_guys_roulette);
 

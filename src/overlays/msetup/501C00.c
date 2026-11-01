@@ -72,16 +72,6 @@ extern f32 D_800CE17C_main[];
 extern f32 D_800D5210_main;
 extern f32 D_800CB890_main;
 
-void espTPLvlSet(u16 spriteId, s16 arg1);
-void espAttrSet(u16 arg0, u16 arg1);
-void espPriSet(u16, s32);
-void espScaleSet(u16, f32, f32);
-void espKill(u16);
-void Hu3DModelKill(s16);
-void Hu3DModelRotSet(s16, f32, f32, f32);
-void Hu3DModelScaleSet(s16, f32, f32, f32);
-void func_8001C258_main(s16, s32, s32);
-void HuSprAnimKill(s16);
 void func_8010B82C_msetup(s32);
 s32 func_8010B858_msetup(void);
 void func_8010B968_msetup(u32, s8);
@@ -100,8 +90,6 @@ void func_8010E4D8_msetup(MsetupLinkedModel *, s32);
 void func_8010E8C8_msetup(Array2D *models, s16 count, s16 frames, f32 rotation, f32 height, f32 scale, f32 endScale, s16 animateBoard);
 void func_8010F320_msetup(Process *, s16, s16, s16);
 s16 func_8010F2F4_msetup(Process *, s16);
-s32 _CheckFlag(s32);            /* extern */
-s16 HuSprAnimRead(void *); /* extern */
 s16 func_80113ED4_msetup(MsetupMenuState *arg0);
 void func_80107F88_msetup(s16, s16, s16);
 void func_80105F7C_msetup(MsetupModelEntry *, s16);
@@ -116,7 +104,6 @@ void func_80106DF8_msetup(void);
 void func_80117820_msetup(void);
 void func_8010B1F4_msetup(void);
 Process *func_8010F2BC_msetup(void);
-f32 InterpolateBMLine(f32 *, f32 *, f32);
 void func_801068F4_msetup(MsetupCameraKeyframe *, f32, void (*)(s16, s16, s16));
 
 void func_801059A0_msetup(void) {

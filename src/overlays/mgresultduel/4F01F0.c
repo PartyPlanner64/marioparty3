@@ -2,6 +2,8 @@
 #include "game/object.h"
 #include "../ovl_81_name/ovl_81.h"
 
+void func_80106850_mgresultduel(omObjData *, s32);
+
 typedef struct UnkOmData {
     omObjData *unk_00;
     void (*objFunc)(omObjData *); // func pointer

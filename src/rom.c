@@ -1,7 +1,6 @@
 #include "common.h"
 #include "game/rom.h"
 
-OSPiHandle *osCartRomInit(void);
 extern OSPiHandle *D_800CDD50_main;
 extern OSMesgQueue D_800B29F0_main;
 extern void *D_800B2A08_main;

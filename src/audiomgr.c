@@ -75,18 +75,9 @@ extern OSMesgQueue D_800CC3A0_main;
 extern u8 n_aspMain_code[];
 extern u8 n_aspMain_data[];
 
-void *func_800010B8_main(s32 size);
-void func_800023B4_main(void);
-void func_80002528_main(void);
-void func_80006E30_main(void);
-void func_80006FC4_main(void);
-void __amMain(void *arg);
 s32 __amHandleFrameMsg(AudioInfo *info, AudioInfo *lastInfo);
 void __amHandleDoneMsg(AudioInfo *info);
-s32 __amDMA(s32 addr, s32 len, void *state);
 ALDMAproc __amDmaNew(AMDMAState **state);
-void __clearAudioDMA(void);
-void func_80008CC0_main(s32 arg0, s32 remove);
 void func_80008D28_main(swapChainTaskQueue *task, AudioMsg *msg, Acmd *cmdp);
 
 s32 amCreateAudioMgr(str800D5298 *cfg, ALHeap *heap) {

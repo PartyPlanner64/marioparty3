@@ -4,7 +4,7 @@
 #include "game/mallocblock.h"
 #include "include_asm.h"
 #include "macros.h"
-#include "functions.us.h"
+#include "game/profiler.h"
 
 #define HUSPR_READ16(p) (((p)[0] << 8) + (p)[1])
 #define HUSPR_READ32(p) (((p)[0] << 24) + ((p)[1] << 16) + ((p)[2] << 8) + (p)[3])
@@ -43,26 +43,9 @@ typedef struct {
     HuSprite *first;
 } HuSprPrioBucket;
 
-void *HuMemAlloc(s32 size);
 void *HuMemMemoryReallocPerm(void *mem, u32 new_size);
-HuSprite *func_800530AC_main(void);
 
-void func_80052E68_main(HuSprGrp *group, u16 count);
-void func_80052518_main(HuSprite *arg0);
-void func_80056F80_main(s16 arg0);
-s16 func_8005630C_main(HuSprAnm *arg0);
-void func_800563A4_main(HuSprAnm *arg0);
-void func_800571C8_main(HuSprPalAnm *arg0);
-void func_80054218_main(Gfx **, s32, s32);
-void func_80054658_main(Gfx **, s32, s32);
-void func_80055628_main(void);
-void func_80056CD0_main(void);
-void func_80057158_main(void);
 f64 fmod(f64 x, f64 y);
-void func_80053558_main(void);
-void func_80056650_main(HuSprite *sprite);
-void func_80056758_main(HuSprite *sprite);
-void func_800579E4_main(Gfx **gfx, HuSprite *sprite, s32 arg2);
 void func_8007E040_main(Mtx *m, Mtx *n, Mtx *res);
 
 extern s32 D_800A1EA0_main; // redraw?

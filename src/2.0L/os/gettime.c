@@ -1,8 +1,6 @@
 #include "common.h"
 #include "PR/osint.h"
 
-extern u32 __osDisableInt(void);
-extern void __osRestoreInt(u32);
 
 OSTime osGetTime(void) {
     u32 tmptime;

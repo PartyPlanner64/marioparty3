@@ -3,6 +3,7 @@
 #include "game/sprite.h"
 #include "game/mallocblock.h"
 #include "game/pause.h"
+#include "gcc/memory.h"
 
 #define PLAYER_WORK(obj) ((LockedOutPlayerWork *)((func_800E1BA8_minigame_ObjData *)(obj)->data)->unk158)
 
@@ -105,14 +106,6 @@ void func_800E1334_minigame(omObjData *, f32);
 void func_800E1340_minigame(omObjData *, f32);
 void func_800E139C_minigame(omObjData *, f32, f32, f32, f32, f32);
 void func_800E4C88_minigame(omObjData *, u8, f32, f32, f32, f32, f32);
-void func_80021BE0_main(Hu3DQuadPool *pool, u16 numQuads);
-s32 func_8000B638_main(void);
-u16 func_8000B0D4_main(s32 arg0, s32 arg1);
-void func_8002367C_main(HuMtx4F dst, HuMtx4F src);
-void func_80016B00_main(s16 model, s16 frame, char *name, HuMtx4F *out);
-void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
-void func_80017CD0_main(HuMtx4F, f32, f32, f32);
-void func_80018044_main(HuMtx4F, HuMtx4F, HuMtx4F);
 
 void func_80105B38_locked_out(omObjData *object);
 void func_80105CB4_locked_out(HuMtx4F, HuMtx4F);
@@ -137,7 +130,6 @@ void func_800E149C_minigame(omObjData *, s32, s32);
 void func_80109858_locked_out(omObjData *object, u8 isPlayer, u8 canGrab);
 void func_801090FC_locked_out(omObjData *object, func_800E1BA8_minigame_ObjData **data, LockedOutPlayerWork **arg2);
 void func_80109E88_locked_out(s16 model, char *hook, s16 time, Vec *pos);
-void Hu3DModelHookSet(s16, s16, char *);
 void func_800E6F0C_minigame(s32);
 void func_80109CDC_locked_out(void);
 void func_800DDD94_minigame(omObjData *);

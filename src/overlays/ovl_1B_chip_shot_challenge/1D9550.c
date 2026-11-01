@@ -2,6 +2,7 @@
 #include "game/pause.h"
 #include "game/mallocblock.h"
 #include "overlays/minigame.h"
+#include "gcc/memory.h"
 
 // Per-object work block, reached via ObjData->data
 typedef struct ChipShotChallengeWork {
@@ -123,17 +124,10 @@ extern s32 D_8010AA9C_chip_shot_challenge;
 extern f32 D_8010A830_chip_shot_challenge;
 extern s32 D_8010A84C_chip_shot_challenge[4][3];
 
-f32 func_800202A8_main(f32 angle);
-u16 func_8000B0D4_main(s32 arg0, s32 arg1);
 void func_800E149C_minigame(omObjData *, s32, s32);
 void func_800E3584_minigame(s16);
 void func_800E3628_minigame(s16, Vec *);
-void func_80013390_main(s16 model, s16 type, char *name, void (*func)(s16));
-s16 HmfAnimRead(HmfData *, s32, char *);
-s32 func_8000B638_main(void);
-void espAttrSet(u16 arg0, u16 arg1);
 s32 func_80105DE0_chip_shot_challenge(s32 playerIndex);
-void func_80021BE0_main(Hu3DQuadPool *pool, u16 numQuads);
 void func_800E1490_minigame(u16 arg0);
 void func_80106B84_chip_shot_challenge(omObjData *object);
 void func_8010646C_chip_shot_challenge(omObjData *object);
@@ -142,7 +136,6 @@ void func_80107960_chip_shot_challenge(s16 value);
 void func_80107BB0_chip_shot_challenge(void);
 void func_80107E94_chip_shot_challenge(void);
 f32 func_80109AD0_chip_shot_challenge(omObjData *object, f32 x, f32 y, f32 z);
-void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 void func_800E17D4_minigame(omObjData *object, f32 x, f32 y, f32 z);
 void func_800E147C_minigame(omObjData *object);
 void func_800E1468_minigame(omObjData *object);
@@ -162,10 +155,6 @@ void func_800E2B58_minigame(HuMtx4F mtx, Vec *arg1);
 void func_800E2BD4_minigame(HuMtx4F mtx, Vec *arg1);
 void func_800E2C68_minigame(HuMtx4F mtx, Vec *arg1);
 s32 func_800DB704_minigame(s32 count, s16 *vtx, Hu3DPoint *points, Vec *pos);
-void func_80021C14_main(s16 model, Hu3DQuadPool *pool, s32 (*callback)(s32, s16 *, Hu3DPoint *, Vec *), Vec *pos);
-Hu3DQuad *func_80022198_main(Hu3DQuadPool *pool);
-f32 func_800204F4_main(f32 x, f32 y, f32 z, Hu3DPoint *points, Hu3DQuad *quad);
-s32 func_8002038C_main(Hu3DPoint *p0, Hu3DPoint *p1, Hu3DPoint *p2, Vec *out);
 s32 func_800D8818_minigame(f32 x, f32 y, f32 z, Hu3DPoint *points, Hu3DQuad *quad, Vec *dir, Vec *out);
 void func_801071A8_chip_shot_challenge(void);
 void func_801073D4_chip_shot_challenge(s16 model);

@@ -32,15 +32,7 @@ extern u32 D_800D2094_main;
 extern OSViMode D_800A2E00_main[];
 extern s32 _osPreNMI;
 
-void EventHandler(void *arg);
-void ScExecuteAudio(void *arg);
-void ScExecuteGraphics(void *arg);
-void PRENMICallbackVibrator(void);
-void HuProfRecordAwaitRsp(void);
 s32 __osAfterPreNMI(void);
-s16 func_8004D710_main(u8 red, u8 green, u8 blue);
-void func_8004D788_main(s16 sampleIdx);
-void func_8004D888_main(void);
 
 void InitSchedulerEvent(void) {
     osCreateMesgQueue(&D_800BBAC8_main, D_800BBAE0_main, ARRAY_COUNT(D_800BBAE0_main));

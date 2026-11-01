@@ -1,7 +1,10 @@
 #ifndef _OVL_BABY_BOWSER_BROADSIDE_H
 #define _OVL_BABY_BOWSER_BROADSIDE_H
 
-#include "common.h"
+#include "ultra64.h"
+#include "humath.h"
+#include "types.h"
+#include "game/object.h"
 
 typedef struct BabyBowserBroadsideWork { // 0x24 bytes, 0x8 entries
     /* 0x00 */ s8 unk_00;

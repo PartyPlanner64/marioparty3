@@ -1,5 +1,6 @@
 #include "common.h"
 #include "overlays/mgmode.h"
+#include "gcc/memory.h"
 
 extern s16 D_8011B818_mgmode[28];
 extern s16 D_8011B830_mgmode[16];

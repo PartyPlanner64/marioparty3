@@ -6,6 +6,7 @@
 #include "game/process.h"
 #include "game/object.h"
 #include "game/util.h"
+#include "gcc/memory.h"
 
 extern str800D5298 D_800D5298_main;
 extern void *D_800CCF38_main;

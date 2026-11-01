@@ -9,7 +9,6 @@ typedef struct UnkE3CD0 {
     f32 unk_30;
 } UnkE3CD0;
 
-void HuAudSeqStop(void);
 extern s32 D_80101AF8_name_81;
 extern s32 D_80101AFC_name_81;
 extern s32 D_80101B00_name_81;

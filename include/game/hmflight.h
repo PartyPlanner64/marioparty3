@@ -2,6 +2,7 @@
 #define _GAME_HMFLIGHT_H
 
 #include "ultra64.h"
+#include "game/hu3d.h"
 
 typedef struct {
     /* 0x00 */ u8 r;
@@ -26,5 +27,11 @@ void HmfLightStatSet(s16, u8, u8);
 void HmfLightColorSet(s16, u8, u8, u8);
 void HmfLightDirSet(s16, f32, f32, f32);
 void func_80019968_main(s16);
+
+void HmfLightInit(void);
+void HmfLightClose(void);
+void HmfLightReset(void);
+void func_80019668_main(HmfData_UnkD0 *arg0);
+s16 func_80019828_main(s16 arg0, s16 arg1);
 
 #endif

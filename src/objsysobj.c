@@ -38,18 +38,10 @@ extern s32 D_800D6AB8_main;
 s32 msmSeGetStatus(s32 slot);
 void msmSeSetVolume(s32 seNo, s32 volume);
 void msmSeStop(s32 slot);
-void func_80012B14_main(s16 camIndex, Vec *worldPos, Vec2f *outPos);
 void func_80000EA8_main(struct str800D5298 *config);
 void msmMusSetVolume(s32 musNo, s32 volume);
-void func_8004A72C_main(s16 arg0);
 void func_8004B7B0_main(s32 priority, s16 spriteGroup, void (*draw)(CameraViewData *), f32 fov, Vec *pos, Vec *at);
 void func_8004B984_main(u8 count, s32 priority, s16 *spriteGroups, void (*draw)(CameraViewData *), f32 fov, Vec *pos, Vec *at);
-void func_8004C76C_main(omObjData *);
-void func_8004C4C4_main(omObjData *);
-void func_8004CB44_main(Vec *out, Vec *normal);
-void func_8004CD04_main(Vec *pos, Vec *at, f32 *zoom, Vec *rot, Vec *center);
-void func_8004CF00_main(omObjData *);
-void func_8004D094_main(omObjData *);
 
 void omOutView(omObjData *object) {
     Vec pos, at, up;

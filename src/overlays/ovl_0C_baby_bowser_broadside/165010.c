@@ -3,6 +3,7 @@
 #include "game/mallocblock.h"
 #include "game/pause.h"
 #include "overlays/baby_bowser_broadside.h"
+#include "gcc/memory.h"
 
 typedef struct BabyBowserBroadsideEntry {
     /* 0x00 */ s16 unk_00;
@@ -120,9 +121,6 @@ extern f32 D_8010FD64_baby_bowser_broadside;
 extern f32 D_8010FD68_baby_bowser_broadside;
 extern f32 D_8010FD6C_baby_bowser_broadside;
 
-void func_8001E65C_main(s16 model, f32 x, f32 y, s32 width, s32 height);
-void func_8001F6BC_main(s16 model, u8 r, u8 g, u8 b, u8 a);
-void func_8001F6F8_main(s16 model, u8 r, u8 g, u8 b, u8 a);
 extern s32 D_800A178C_main[][6];
 extern s32 D_800A1790_main[][6];
 
@@ -134,8 +132,6 @@ void func_80109D94_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBows
 void func_80109EB0_baby_bowser_broadside(unk_80109EBC *player, s16 motion, s8 arg2);
 void func_8010E0B0_baby_bowser_broadside(BabyBowserBroadsideShip *ship);
 void func_8010E018_baby_bowser_broadside(BabyBowserBroadsideShip *ship, s16 count, f32 speed, s16 model);
-s32 func_8000B638_main(void);
-f32 atan2df(f32 y, f32 x);
 void func_80106288_baby_bowser_broadside(omObjData *object);
 void func_801062C4_baby_bowser_broadside(omObjData *object);
 void func_80106E70_baby_bowser_broadside(omObjData *object);

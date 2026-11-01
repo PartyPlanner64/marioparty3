@@ -1,4 +1,5 @@
 #include "common.h"
+#include "gcc/memory.h"
 
 typedef struct UnkPuddlePaddle {
     /* 0x00 */ char pad00[8];

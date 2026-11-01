@@ -26,11 +26,6 @@ extern s32 fontcolor;
 extern u16 omdispinfo;
 extern s16 D_800A1786_main;
 
-void func_800142A0_main(s32);
-void func_8004DEC8_main(s16);
-void func_80045C2C_main(void);
-omObjData *func_80045ED0_main(s32 arg0);
-f32 func_8002FC7C_main(HmfModelData_Unk64_Unk8C_Struct *arg0, u16 flags, f32 frame, f32 start, f32 speed);
 void func_80106630_mchar2(s32 arg0);
 void func_80105B7C_mchar2(omObjData *arg0);
 void func_80105C90_mchar2(omObjData *arg0);

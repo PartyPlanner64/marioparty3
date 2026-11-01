@@ -1,6 +1,7 @@
 #include "common.h"
 #include "game/eeprom.h"
 #include "game/pad.h"
+#include "gcc/memory.h"
 
 #define SAVE_BOX_SIZE 0x2A0
 #define SAVE_BOX_COUNT 3
@@ -37,25 +38,6 @@ extern u16 D_800CCF54_main;
 extern u16 D_800CD6A4_main;
 extern u16 D_800CE2C0_main;
 
-s32 func_8004F504_main(GW_SYSTEM *system);
-s32 func_8004F524_main(GW_SYSTEM *system);
-s32 SavePlayerStruct(GW_PLAYER *player);
-s32 func_8004F564_main(GW_COMMON *common);
-s32 func_8004F584_main(GW_STORY *story);
-void func_8004F8BC_main(u8 *src, GW_SYSTEM *system);
-void func_8004F90C_main(u8 *src, GW_SYSTEM *system);
-void func_8004F95C_main(u8 *src, GW_PLAYER *player);
-void func_8004F9AC_main(u8 *src, GW_COMMON *common);
-void func_8004F9FC_main(u8 *src, GW_STORY *story);
-void GWGameStatReset(void);
-
-void func_8004FCF0_main(void);
-s32 SLCommonSet(s32 writeBox);
-s32 func_80050CDC_main(void);
-s32 func_80050CFC_main(void);
-void SLCheckSumBoxSet(void);
-s32 SLCheckSumCheck(void);
-void func_80050E84_main(void);
 
 void func_8004FCF0_main(void) {
     GWInit();

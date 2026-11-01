@@ -1,8 +1,9 @@
 #ifndef _VARIABLES_H_
 #define _VARIABLES_H_
 
-#include "common.h"
+#include "ultra64.h"
 #include "common_structs.h"
+#include "game/hu3d.h"
 
 extern s16 omovlevtno;
 extern s16 D_800CDBC8_main;

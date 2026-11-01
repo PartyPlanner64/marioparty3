@@ -1,4 +1,5 @@
 #include "ChillyWaters.h"
+#include "gcc/memory.h"
 
 #define X_OFFSET 66
 #define Y_OFFSET 44
@@ -49,7 +50,6 @@ typedef struct ESprite {
 
 void func_80105A64_ChillyWaters(void);
 void func_8010BCA4_boardresult(void);
-void HuSprScissorSet(s16 group, s16 member, u16 arg2, u16 arg3, u16 arg4, u16 arg5);
 
 void func_801059D0_ChillyWaters(s16 arg0, s16 arg1) {
     Process *process;

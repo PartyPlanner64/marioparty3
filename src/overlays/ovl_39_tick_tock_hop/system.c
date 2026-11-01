@@ -18,13 +18,10 @@
 void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 
 // 8EA10
-f32 atan2df(f32, f32);
 
 // 8EFF0
-f32 cosdf(f32);
 
 // 8FB20
-f32 sindf(f32);
 
 // unknown
 extern s16 D_800CDD6A_main;

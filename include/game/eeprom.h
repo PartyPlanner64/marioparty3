@@ -16,4 +16,8 @@ void ClearCommonBuf(void);
 s32 DestroyEeprom(void);
 u16 CalcChecksumEeprom(u8 *data, u16 startIndex, u16 size);
 
+s32 _InitEeprom(u8 **arg0);
+s32 _DestroyEeprom(void);
+s32 WriteEeprom(OSMesgQueue *arg0, u8 arg1, u8 *arg2, s32 arg3);
+
 #endif

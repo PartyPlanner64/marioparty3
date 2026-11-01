@@ -12,7 +12,6 @@ void func_80106BA0_mgresultbattle(void);
 void func_80107400_mgresultbattle(void);
 void func_80107D10_mgresultbattle(void);
 void func_80108130_mgresultbattle(void);
-void MBBackCreate(s32, s32);
 void func_80105CAC_mgresultbattle(omObjData *);
 void func_80105E64_mgresultbattle(omObjData *);
 void func_80105F50_mgresultbattle(void);

@@ -12,6 +12,7 @@
 #include "game/wipe.h"
 #include "game/mallocblock.h"
 #include "include_asm.h"
+#include "game/hmfcoll.h"
 
 #define ABS(x) ((x) > 0 ? (x) : -(x))
 
@@ -37,7 +38,6 @@ s32 func_80017BB8_main(s16 chr, s16 animId);
 // hmfcoll
 
 // 8FB20
-f32 sindf(f32);
 
 // pad
 extern u16 D_800CDA7C_main[];

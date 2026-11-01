@@ -1,6 +1,5 @@
 #include "common.h"
 
-s32 PrecalcPntToTriangle(Vec *origin, Vec *u, Vec *v, Vec *normal, Vec *point, Vec *out);
 
 void func_8000D960_main(HuMtx4F in, HuMtx4F out) {
     f32 m00m11 = in[0][0] * in[1][1];

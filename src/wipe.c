@@ -39,33 +39,6 @@ extern Gfx D_800A2738_main[];
 extern u16 *currFrameBuffer;
 extern u8 *D_800D1F60_main;
 
-void WipeColorFill(Gfx **gfx, u8 alpha, Gfx *displayList);
-void func_8006265C_main(Gfx **gfx, u16 *image);
-void func_800341D0_main(Gfx **gfx, u16 *image, s32 fmt, s32 siz, s32 width, s32 height,
-                        s32 uls, s32 ult, s32 lrs, s32 lrt, s32 pal, s32 cms, s32 cmt,
-                        s32 masks, s32 maskt, s32 shifts, s32 shiftt);
-void func_80062884_main(Gfx **gfx, u16 *image);
-u8 *func_800635F4_main(s32 file);
-void func_800636D8_main(Gfx **gfx, f32 scale, f32 alpha);
-void func_800641C8_main(Gfx **gfx, f32 progress);
-void func_800651F0_main(Gfx **gfx, f32 progress);
-void func_8006619C_main(Gfx **gfx, s32 arg1, s32 arg2);
-void func_800661D4_main(Gfx **gfx, s32 arg1, s32 arg2);
-
-void GMesExec(Gfx **gfx);
-void WipeFrameStill(Gfx **gfx);
-s32 WipeFadeIn(Gfx **gfx);
-s32 WipeFadeOut(Gfx **gfx);
-s32 WipeCrossFadeIn(Gfx **gfx);
-s32 WipeCrossFadeOut(Gfx **gfx);
-s32 func_80063454_main(Gfx **gfx);
-s32 func_80063510_main(Gfx **gfx);
-s32 func_800640EC_main(Gfx **gfx);
-s32 func_80065094_main(Gfx **gfx);
-s32 func_8006515C_main(Gfx **gfx);
-s32 func_80065D80_main(Gfx **gfx);
-s32 func_80065E88_main(Gfx **gfx);
-s32 WipeImageOut(Gfx **gfx, s32 file);
 
 void WipeInit(void) {
     s16 i;

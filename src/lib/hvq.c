@@ -81,8 +81,6 @@ static s16 sHvqCrSamples[16];
 static s32 sHvqSampleFractionBits;
 static s32 sHvqSampleRoundingBias;
 
-void func_800677B8_main(u16 *, s16 *, s16 *, s16 *);
-void func_80067D50_main(u16 *, s16 *, s16 *, s16 *);
 
 static inline u32 HvqReadBit(HvqBitStream *stream) {
     u32 bit;

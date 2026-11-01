@@ -3,6 +3,7 @@
 #include "overlays/minigame.h"
 #include "game/mallocblock.h"
 #include "humath.h"
+#include "gcc/memory.h"
 
 typedef struct {
     /* 0x00 */ omObjData *unk00;
@@ -135,10 +136,7 @@ void func_80109DEC_coconut_conk(omObjData *);
 void func_8010A55C_coconut_conk(omObjData *);
 void func_8010A668_coconut_conk(omObjData *);
 void func_8010AE04_coconut_conk(void);
-s32 func_8000B710_main(s32 arg0);
-void Hu3DModelHookSet(s16, s16, char *);
 void func_800E149C_minigame(omObjData *, s32, s32);
-void HuAudFXPanning(s16 arg0, s16 arg1);
 void func_800E4C88_minigame(omObjData *object, u8 type, f32 x, f32 y, f32 z, f32 arg5, f32 arg6);
 void func_800DDD94_minigame(omObjData *);
 void func_800E6F0C_minigame(s32);
@@ -146,9 +144,6 @@ void func_800E1304_minigame(omObjData *, f32);
 void func_800E1310_minigame(omObjData *, f32);
 void func_800E131C_minigame(omObjData *, f32);
 void func_800E139C_minigame(omObjData *, f32, f32, f32, f32, f32);
-void func_800335BC_main(char *name, u16 *result);
-void espAttrSet(u16 arg0, u16 arg1);
-void func_8001E888_main(s16 idx, f32 x, f32 y, u16 width, u16 height, char *name, u8 reset);
 
 void func_801059A0_coconut_conk(void) {
     func_8010AE04_coconut_conk();

@@ -23,7 +23,6 @@ typedef struct {
 } UnkAudioObjData;
 
 s16 HuAudSeqPlay(s16 musId);
-s32 msmMusPlayDefault(s32 trackId);
 s16 func_8004A5C4_main(s16);
 void HuAudSeqFadeOut(s16 speed);
 s16 HuAudFXPlay(s16 seId);
@@ -38,5 +37,27 @@ void HuAudFXPanning(s16 arg0, s16 arg1);
 void HuAudFXStop(s32 seNo);
 void func_8004AEF0_main(s16, s32);
 void omVibrate(s16 player, s16 duration, s16 off, s16 on);
+
+void func_8004A650_main(s32 arg0);
+void func_8004A670_main(s16 duration);
+void func_8004A72C_main(s16 duration);
+void func_8004A7C4_main(s16 duration);
+void func_8004A880_main(s16 duration);
+void func_8004A918_main(s16 musId);
+void HuAudSeqStop(void);
+void func_8004A9DC_main(s8 volume);
+void func_8004AA04_main(s8 volume);
+void func_8004AA38_main(s16 arg0);
+s16 func_8004AA60_main(void);
+void func_8004AB7C_main(s8 volume);
+void HuAudFXAllStop(void);
+s16 func_8004AD8C_main(s16 seId);
+void func_8004ADDC_main(s16 arg0);
+void func_8004AE28_main(void);
+void func_8004AFBC_main(s16 duration);
+void func_8004B0D4_main(void);
+void func_8004B1AC_main(void);
+u16 func_8004B2C0_main(void);
+void func_8004B2C8_main(void);
 
 #endif

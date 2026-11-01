@@ -31,16 +31,8 @@ extern s16 D_8011A890_msetup;
 extern s16 D_8011A892_msetup[2];
 extern s16 D_8011A990_msetup;
 
-void espTPLvlSet(u16 spriteId, s16 arg1);
-void func_80012B14_main(s16, Vec *, Vec2f *);
 s16 func_8010CAF0_msetup(s32, s32);
 s32 func_8010CD14_msetup(s16, f32, f32, f32);
-void func_8006105C_main(s32 winId, s32 alpha);
-void Hu3DModelScaleSet(s16, f32, f32, f32);
-void func_8001C258_main(s16, s32, s32);
-s32 func_800329B4_main(u8 *data); // Declared locally: this caller was compiled against an int return type.
-void func_80033910_main(HmfData *);
-void func_80033970_main(HmfData *);
 void func_8010BEF8_msetup(void);
 void func_8010ACC0_msetup(s16, s16);
 void func_8010B4B8_msetup(s16, s16 *, s16);

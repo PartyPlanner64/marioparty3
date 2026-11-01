@@ -116,8 +116,6 @@ typedef struct FileSelectCameraState {
     FileSelectCameraTransition transition;
 } FileSelectCameraState;
 
-void func_80030030_main(f32);
-s32 SLLoadBoard(void);
 
 void func_80106B40_filesel(s32, u32, s16, s16, s16, s16, s16);
 void func_8010F678_filesel(s32);
@@ -202,15 +200,6 @@ s32 func_80111B14_filesel(s32);
 u32 func_80106AD8_filesel(u32);
 s32 func_8010AC58_filesel(s32);
 s32 func_80112494_filesel(s32, u8 *);
-s32 SLCommonSet(s32 writeBox);
-s32 func_80050DDC_main(s16 srcBoxNo, s16 dstBoxNo);
-void espColorSet(u16 spriteId, s32 arg1, s32 arg2, s32 arg3);
-void espTPLvlSet(u16 spriteId, s16 arg1);
-void espAttrSet(u16 arg0, u16 arg1);
-void espAttrReset(u16, u16);
-void espPriSet(u16, s32);
-void espBankSet(u16, s32, s32);
-void espScaleSet(u16, f32, f32);
 
 extern Vec D_80112EA0_filesel;
 extern Vec D_80112EAC_filesel;
@@ -220,7 +209,6 @@ extern u8 D_80112AE0_filesel[];
 extern u8 D_80112AE4_filesel[];
 extern u8 D_80112AE8_filesel[];
 extern s32 D_80112E90_filesel;
-extern u16 D_800D1244_main;
 extern FileSelectData D_801142D8_filesel;
 extern u8 D_800D20EC_main;
 extern u8 D_80114490_filesel[0x20];
@@ -1262,7 +1250,7 @@ u32 func_80109570_filesel(s32 arg0) {
     unkValue = UNK_VALUE;
 
     while (1) {
-        pressedInput = D_800D1244_main;
+        pressedInput = D_800D1244_main[0];
         temp_v0 = func_80111B14_filesel(0);
         if (temp_v0 != -1) {
             pressedInput |= temp_v0;
@@ -1452,7 +1440,7 @@ s32 func_801099A8_filesel(s32 selection, s32 option0, s32 option1, s32 option2) 
         func_8010AB1C_filesel(18, selection);
         func_8010AB58_filesel(18, -(timer / 8));
         timer = timer < 20 ? timer + 1 : 0;
-        input = D_800D1244_main;
+        input = D_800D1244_main[0];
         extraInput = func_80111B14_filesel(0);
         if (extraInput != -1) {
             input |= extraInput;
@@ -1656,7 +1644,7 @@ void func_8010A028_filesel(void) {
         func_8010AB1C_filesel(18, selection);
         func_8010AB58_filesel(18, -(timer / 8));
         timer = timer < 20 ? timer + 1 : 0;
-        input = D_800D1244_main;
+        input = D_800D1244_main[0];
         extraInput = func_80111B14_filesel(0);
         if (extraInput != -1) {
             input |= extraInput;
@@ -2847,7 +2835,7 @@ s32 func_8010C9B4_filesel(s32 preset) {
     func_8010A978_filesel(D_80114478_filesel.length + 1);
     while (1) {
         option = D_80114478_filesel.option;
-        input = D_800D1244_main;
+        input = D_800D1244_main[0];
         input |= func_80111A08_filesel(0);
         if (D_80114478_filesel.mode) {
             input = func_8010B998_filesel(input);
@@ -2914,7 +2902,7 @@ s32 func_8010CCA8_filesel(void) {
     func_801076D0_filesel(4, 0x2A0E);
     while (1) {
         HuPrcVSleep();
-        input = D_800D1244_main;
+        input = D_800D1244_main[0];
         stick = func_80111B14_filesel(0);
         if (stick != -1) {
             input |= stick;

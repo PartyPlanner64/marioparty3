@@ -1,6 +1,7 @@
 #include "common.h"
 #include "overlays/minigame.h"
 #include "game/mallocblock.h"
+#include "gcc/memory.h"
 
 extern u32 D_80109148_eatsa_pizza;
 extern u8 D_80109101_eatsa_pizza[4][2];
@@ -61,8 +62,6 @@ typedef struct {
 
 extern Work *D_80109268_eatsa_pizza[4][2];
 
-void func_8002367C_main(HuMtx4F dst, HuMtx4F src);
-f32 atan2df(f32, f32);
 void func_800E12EC_minigame(omObjData *arg0, f32 arg1);
 void func_800E1328_minigame(omObjData *arg0, f32 arg1);
 void func_800E1334_minigame(omObjData *arg0, f32 arg1);
@@ -75,7 +74,6 @@ void func_80107A64_eatsa_pizza(omObjData *object);
 void func_80106084_eatsa_pizza(omObjData *object);
 void func_8010679C_eatsa_pizza(omObjData *object);
 void func_801083A8_eatsa_pizza(omObjData *arg0, func_800E1BA8_minigame_ObjData **arg1, void **arg2);
-s16 HuSprAnimRead(void *data);
 void *func_801090B4_eatsa_pizza(s16 arg0, s16 arg1);
 void func_801087DC_eatsa_pizza(omObjData *object);
 void func_80108C50_eatsa_pizza(omObjData *);
@@ -84,7 +82,6 @@ s16 func_80108FEC_eatsa_pizza(s16 arg0, s16 arg1);
 s16 func_80108E48_eatsa_pizza(u16 arg0, f32 *arg1);
 s32 func_80108F4C_eatsa_pizza(void);
 s32 func_801070E8_eatsa_pizza(omObjData *object);
-omObjData *func_80045F1C_main(u32 arg0, s16 arg1, s16 arg2);
 
 void func_80105AF4_eatsa_pizza(omObjData *object);
 void func_801083BC_eatsa_pizza(void);
@@ -94,9 +91,6 @@ void func_80105C64_eatsa_pizza(HuMtx4F src, HuMtx4F dst);
 void func_80105FF0_eatsa_pizza(void);
 void func_80106504_eatsa_pizza(omObjData *object, s32 arg1, s32 arg2, u16 player, u16 tag);
 void func_800E1490_minigame(s32 arg0);
-void func_800E1804_minigame(void);
-void func_80021BE0_main(Hu3DQuadPool *pool, u16 numQuads);
-s32 func_8000B638_main(void);
 
 extern Hu3DQuadPool D_800EBEB0_minigame;
 

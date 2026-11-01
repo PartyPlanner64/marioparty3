@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game/mallocblock.h"
+#include "gcc/memory.h"
 
 typedef struct UnkSlotSynch {
     char unk_00[0x16];

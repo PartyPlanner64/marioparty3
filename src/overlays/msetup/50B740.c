@@ -136,29 +136,10 @@ extern MsetupPortraitState D_8011A904_msetup;
 
 s16 func_80115A9C_msetup(s16, s16, HuMtx4F, s16 *, s16);
 void func_8010E32C_msetup(Array2D *, s32, f32, s32);
-void func_800332D4_main(s16, f32);
 
 void func_8010F43C_msetup(s16 model, char *node, Vec2f *screenPos);
-void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
-void func_80017CD0_main(HuMtx4F, f32, f32, f32);
-void espTPLvlSet(u16 spriteId, s16 arg1);
-void espAttrSet(u16 arg0, u16 arg1);
-void espPriSet(u16, s32);
-void espScaleSet(u16, f32, f32);
-void espKill(u16);
-void Hu3DModelKill(s16);
-void Hu3DModelRotSet(s16, f32, f32, f32);
-void Hu3DModelScaleSet(s16, f32, f32, f32);
-void func_8001C258_main(s16, s32, s32);
-void HuSprAnimKill(s16);
-s32 _CheckFlag(s32);            /* extern */
-s16 HuSprAnimRead(void *); /* extern */
 s32 func_801138F8_msetup(MsetupMenuState *, s32, s32 *, s32);
-s16 func_80113ED4_msetup(MsetupMenuState *arg0);
 
-s16 HmfAnimRead(HmfData *, s32, char *);
-void *func_8001D33C_main(s16 idx, char *name);
-void func_8002367C_main(HuMtx4F, HuMtx4F);
 
 void func_80112804_msetup(void);
 

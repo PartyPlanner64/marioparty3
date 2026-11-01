@@ -1,4 +1,5 @@
 #include "common.h"
+#include "gcc/memory.h"
 
 // Total number of bytes needed to hold the bits described by an encoding scheme.
 #define SAVE_SCHEME_BYTE_SIZE(dest, scheme)              \
@@ -15,9 +16,6 @@
         (dest) = (_bits % 8 != 0) ? _bytes + 1 : _bytes; \
     }
 
-void func_8004F83C_main(s32);
-s32 func_8004FC84_main(void);
-void func_8004FA4C_main(u8 *src, u8 *destData, u8 *encodingScheme);
 
 extern u8 gEncodedSaveBuffer[220];
 extern s32 D_800BBAA0_main;
@@ -34,7 +32,6 @@ extern u16 D_800CCF54_main;
 extern u16 D_800CD6A4_main;
 extern u16 D_800CE2C0_main;
 
-s32 SaveFileEncode(u8 *sourceData, u8 *encodingScheme);
 
 // extern char D_800A7B40_main[];
 

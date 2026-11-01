@@ -91,7 +91,6 @@ extern f32 D_8010EFE4_picking_panic[2];
 extern f32 D_8010EFEC_picking_panic[2];
 extern s16 D_8010EFF8_picking_panic[10];
 
-s32 func_8000B710_main(s32 arg0);
 void func_80105D3C_picking_panic(omObjData *object);
 void func_80106020_picking_panic(omObjData *object);
 void func_8010664C_picking_panic(omObjData *object);
@@ -107,7 +106,6 @@ void func_8010B220_picking_panic(omObjData *object, s8 arg1);
 void func_8010B8D0_picking_panic(omObjData *object);
 void func_8010B8EC_picking_panic(omObjData *object);
 void func_8010B908_picking_panic(omObjData *object, s8 arg1);
-void Hu3DModelHookSet(s16, s16, char *);
 
 void func_801059A0_picking_panic(void) {
     omObjData *object;

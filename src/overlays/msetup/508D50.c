@@ -1,7 +1,6 @@
 #include "common.h"
 #include "overlays/msetup.h"
 
-void func_80013390_main(s16 model, s16 type, char *name, void (*func)(s16));
 void func_8010CE8C_msetup(s16);
 u32 func_80106208_msetup(u32);
 

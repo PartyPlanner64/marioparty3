@@ -5,7 +5,6 @@
 
 extern s8 D_800D2132_main;
 
-void func_80030030_main(f32 value);
 
 void opObjectInit(void) {
     omInitObjMan(32, 8);

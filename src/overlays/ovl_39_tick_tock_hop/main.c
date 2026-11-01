@@ -11,6 +11,7 @@
 #include "game/sprite.h"
 #include "game/wipe.h"
 #include "game/mallocblock.h"
+#include "game/hmfcoll.h"
 
 #define PLAYERS_TOTAL 2
 #define JUMPS_MAX 99
@@ -26,10 +27,8 @@ s32 func_80017BB8_main(s16 chr, s16 animId);
 // hmfcoll
 
 // 8EFF0
-f32 cosdf(f32);
 
 // 8FB20
-f32 sindf(f32);
 
 // pad
 extern s8 D_800CBB6E_main[];

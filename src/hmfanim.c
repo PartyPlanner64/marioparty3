@@ -9,22 +9,6 @@ extern HmfData_Unk84_Entry2 D_800A1190_main;
 extern Gfx *gMainGfxPos;
 
 s16 func_80011334_main(HmfData *, void *, s16);
-s16 func_80011460_main(u8 *);
-HmfData_Unk84_Entry2 *func_80031A60_main(HmfData *hmf, char *name);
-void func_80032194_main(HmfPaletteData *pal);
-void func_8003235C_main(void);
-void func_80031B30_main(u8 *chunk, HmfData *hmf, HmfData_Unk84_Entry2 *tex);
-void func_80031DF4_main(HmfData *hmf);
-HmfPaletteData *func_80032038_main(HmfData *hmf, s16 index);
-void func_800321B8_main(u8 *data, HmfData *hmf, HmfPaletteData *pal);
-u8 *func_80010A38_main(s32 tag, void *start, void *end);
-void *func_80010AC8_main(void *chunk);
-void func_800333B0_main(s16 animIdx);
-s16 func_800329B4_main(u8 *data);
-s16 func_80033F8C_main(void);
-s16 func_80033FEC_main(void);
-s16 func_80033D0C_main(HmfData *hmf, u8 *data);
-void func_80032950_main(void);
 
 void func_80031560_main(void) {
     s16 i;
@@ -473,7 +457,7 @@ void func_80032950_main(void) {
     }
 }
 
-s16 func_800329B4_main(u8 *data) {
+s32 func_800329B4_main(u8 *data) {
     HmfAnimSet *set;
     HmfAnimImage *img;
     HmfAnimFrame *frame;

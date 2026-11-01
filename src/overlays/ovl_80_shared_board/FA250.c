@@ -1467,7 +1467,6 @@ extern Gfx D_801013D8_shared_board[];
 extern Addr D_101358;
 extern Addr D_101398;
 extern u8 D_80101308_shared_board[]; //u8 array that links space type to render type
-void func_80017CD0_main(HuMtx4F, f32, f32, f32);
 
 static void MBMasuDraw(Gfx **arg0, Mtx *arg1, s32 arg2) {
     Gfx **gfxPos = arg0;

@@ -77,4 +77,10 @@ void DataClose(void* data);
 void DataCloseTemp(void* data);
 void DataDirInit(EArchiveType type, s32 dir);
 
+HuFileInfoD *FileCreate(EArchiveType type, s32 index);
+void FileClose(HuFileInfoD *info);
+s32 FileRead(HuFileInfoD *info);
+s32 FileReadBuf(s8 *arg0, s32 arg1, s32 arg2, HuFileInfoD *arg3);
+void FileSeek(HuFileInfoD *info, s32 arg1, s32 arg2);
+
 #endif

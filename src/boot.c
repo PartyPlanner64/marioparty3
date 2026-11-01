@@ -12,9 +12,7 @@ extern u64 *gThread3Stack;
 void ultraMain(void);
 void thread1_idle(void *arg);
 
-void __osInitialize_common(void);
 void __osInitialize_autodetect(void);
-void func_800357AC_main(s16 count);
 
 void ultraMain() {
     __osInitialize_common();

@@ -5,6 +5,7 @@
 #include "game/mallocblock.h"
 #include "game/input.h"
 #include "stdarg.h"
+#include "gcc/memory.h"
 
 typedef struct WindowIconDefinition {
     u32 highlightedFile;
@@ -71,29 +72,6 @@ extern u16 winMaxHeight;
 extern u8 mesWInsert[5];
 extern s8 winTabSize;
 
-void func_8005B040_main(u8 *, s16, s16);
-void func_8005B238_main(u8 *, s16, s16);
-s16 HuWinSprIDGet(s16, s16);
-void HuWinScaleSet(s16, f32, f32);
-void func_800615B8_main(s16, s32);
-s32 func_8005CC3C_main(TextWindow *, s16);
-void func_8005CD84_main(TextWindow *);
-void _HuWinHomeClear(TextWindow *);
-void *func_8005DAA4_main(s16);
-void func_8005D83C_main(s16, s16, s16, s16, s16);
-void HuWinComKeyGet(s16 *);
-s16 func_8005B614_main(s32);
-void HuWinKeyWaitIconOff(s16);
-void HuWinMesSizeCancelCRSet(void);
-void func_8005DD14_main(s16);
-s32 HuWinDrawMes(s16);
-s32 func_8005CC18_main(TextWindow *);
-void HuWinKeyWaitEntry(s16);
-s32 HuWinSpcFontEntry(s16, s16);
-void charEntry(s16, u8, u8, s16, s16);
-s32 HuWinChoice(s16);
-void func_8005EEE4_main(TextWindow *, TextWindowSprite *);
-s32 HuWinActivePadGet(TextWindow *);
 
 void HuWinInit(void) {
     Process *temp_v0_4;

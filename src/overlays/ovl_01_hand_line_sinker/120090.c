@@ -21,7 +21,6 @@ extern HmfModel *D_8010C18C_hand_line_sinker;
 extern u8 D_800D2008_main;
 extern Gfx *gMainGfxPos;
 
-s32 func_8000B638_main(void);
 void func_8010B750_hand_line_sinker(omObjData *obj);
 
 void func_8010B5B0_hand_line_sinker(void) {

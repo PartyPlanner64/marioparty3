@@ -101,12 +101,6 @@ extern s32 D_80110CF4_modesel[][3];
 extern omObjData *D_80110CF8_modesel[][3];
 extern s32 D_80110DEC_modesel;
 
-void espTPLvlSet(u16 spriteId, s16 arg1);
-void espAttrSet(u16 arg0, u16 arg1);
-void espAttrReset(u16, u16);
-void espPriSet(u16, s32);
-void espBankSet(u16, s32, s32);
-void espScaleSet(u16, f32, f32);
 void func_8010601C_modesel(s32, s32, s32);
 void func_80106A38_modesel(s32, s32, s16);
 void func_80108F8C_modesel(Vec *, Vec *, Vec *);

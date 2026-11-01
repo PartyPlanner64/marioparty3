@@ -18,13 +18,10 @@
 extern HmfModelData_Unk64_Unk8C_Struct *D_800CCF58_main; // esprite
 
 // 8EA10
-f32 atan2df(f32, f32);
 
 // 8EFF0
-f32 cosdf(f32);
 
 // 8FB20
-f32 sindf(f32);
 
 // unknown
 extern s16 D_800CDD6A_main;

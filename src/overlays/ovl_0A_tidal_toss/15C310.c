@@ -1,6 +1,7 @@
 #include "common.h"
 #include "overlays/minigame.h"
 #include "game/mallocblock.h"
+#include "gcc/memory.h"
 
 typedef struct {
     f32 unk00;
@@ -87,12 +88,8 @@ extern Hu3DQuadPool D_800EBEB0_minigame;
 extern D_80111B50_vine_with_me_Struct D_8010AEB0_tidal_toss;
 
 void func_80108638_tidal_toss(omObjData *);
-void func_8002367C_main(HuMtx4F dst, HuMtx4F src);
-void func_80021BE0_main(Hu3DQuadPool *pool, u16 numQuads);
-void func_800E1804_minigame(void);
 void func_800E4C88_minigame(omObjData *, u8, f32, f32, f32, f32, f32);
 void func_800E1490_minigame(s32);
-s32 func_8000B638_main(void);
 void func_80105B04_tidal_toss(omObjData *object);
 void func_8010600C_tidal_toss(void);
 void func_801085A4_tidal_toss(void);
@@ -101,7 +98,6 @@ void func_80106480_tidal_toss(omObjData *);
 void func_80106514_tidal_toss(omObjData *);
 void func_801065AC_tidal_toss(omObjData *);
 void func_80106D24_tidal_toss(Gfx **, s32, s32);
-f32 atan2df(f32, f32);
 void func_800E12EC_minigame(omObjData *, f32);
 void func_800E1328_minigame(omObjData *, f32);
 void func_800E1334_minigame(omObjData *, f32);
@@ -113,14 +109,12 @@ void func_800E1404_minigame(omObjData *, f32, f32);
 u32 func_800E4A90_minigame(omObjData *);
 s32 func_8010A7F8_tidal_toss(void);
 u16 func_8010A11C_tidal_toss(omObjData *);
-omObjData *func_80045ED0_main(s32 arg0);
 void func_800DDD94_minigame(omObjData *);
 void func_8010A7E4_tidal_toss(omObjData *, func_800E1BA8_minigame_ObjData **, TidalTossWork **);
 void func_80105C80_tidal_toss(HuMtx4F, HuMtx4F);
 s16 func_8010A90C_tidal_toss(s32);
 s16 func_8010A954_tidal_toss(s16, s16);
 void func_800E149C_minigame(omObjData *, s32, s32);
-void func_800E5978_minigame(omObjData *, u16, s32, u16, u16);
 void func_8010961C_tidal_toss(omObjData *);
 void func_80109180_tidal_toss(omObjData *);
 

@@ -25,19 +25,6 @@ extern unkProcessStruct *D_800A177C_main;
 extern s16 D_800A1780_main;
 extern s8 D_800D1710_main;
 
-void omDestroyPrcObj(void);
-void func_8000BA00_main(void);
-void espTPLvlSet(u16 spriteId, s16 arg1);
-void func_800166D0_main(void);
-void Hu3DModelAllKill(void);
-void func_80021AF4_main(void);
-void omInsertObj(omObjData *obj);
-void omAddMember(u16 group, omObjData *obj);
-void func_8004A354_main(omObjData *);
-void func_8004A444_main(s32);
-void func_8004A468_main(u16, u16, u16);
-void func_8004CEA4_main();
-void omDelMember(omObjData *obj);
 extern u8 D_800A16B0_main[][2];
 extern u8 D_800A1740_main[][2];
 extern s16 D_800A1754_main;
@@ -735,37 +722,12 @@ extern s32 D_800CC370_main;
 extern omObjData *D_800D054C_main;
 extern s16 D_800CE190_main;
 extern void (*D_800CC3B8_main)(omObjData *);
-void HuAudSeqStop(void);
-void Hu3DInit(void);
 
 extern u8 D_800A1762_main;
 extern u8 D_800A176C_main;
 extern u16 D_800D0A3A_main;
 
-u16 func_8004B2C0_main(void);
-void func_8000F024_main(void **pool, u16 size, u16 segment);
-void ResetVibrator(s16);
-s32 func_80000F08_main(s32);
-void func_8004B1AC_main(void);
-void func_8004AE28_main(void);
-void HuAudFXAllStop(void);
-s32 func_80000DF0_main(void);
-void func_8004B2C8_main(void);
-void espInit(void);
-void func_8000B1A0_main(s32, u8);
-void func_8001766C_main(void);
-void func_8004A49C_main(void);
-void OvlLoad(s32 overlayIndex);
-void HmfLightInit(void);
-void HmfLightStatSet(s16 arg0, u8 arg1, u8 arg2);
-void func_8001F6B0_main(s8 arg0);
-void func_80045C2C_main(void);
-void func_8004AB7C_main(s8 volume);
-void func_8004ADDC_main(s16 arg0);
-void func_80007D2C_main(s32, s32);
-void func_8004AA04_main(s8 volume);
 void func_801059A0(void);
-void func_8004D6E8_main(s16);
 
 void omMain(void) {
     omObjData *obj;
@@ -1009,15 +971,7 @@ extern s8 D_800A1785_main;
 extern s16 D_800A1894_main[];
 extern u8 D_800A2150_main;
 extern u16 D_800CE214_main;
-s32 msmMusGetStatus(s32);
-void GameMesPauseCreate(void);
-void func_80045A90_main(void);
-void func_8004AFBC_main(s16 duration);
-void func_8004B0D4_main(void);
-void func_80046600_main(void);
-void func_800466D8_main(void);
 
-void omSystemKeyCheckSetup(void);
 char const D_800A7AE4_main[] = " SE STP";
 char const D_800A7AEC_main[] = " MUSSTP";
 char const D_800A7AF4_main[] = " INFO  ";
@@ -1025,7 +979,6 @@ char const D_800A7AFC_main[] = " LIGHT ";
 char const D_800A7B04_main[] = " RESET ";
 char const D_800A7B0C_main[] = " CANCEL";
 
-void omSystemKeyCheck(omObjData *);
 
 void omSystemKeyCheckSetup(void) {
     omObjData *temp_v0;

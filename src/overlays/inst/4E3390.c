@@ -46,18 +46,13 @@ const char D_8010DAC8_inst[] = "hook_ao";
 
 s32 func_80107E20_inst(void);
 void func_8010B040_inst(void);
-void func_80017358_main(s16, const char *, s16, const char *);
-u16 func_8000B0D4_main(s32 arg0, s32 arg1);
 void func_801080FC_inst(void);
 void func_8010AC04_inst(omObjData *object);
 void func_8010B628_inst(omObjData *);
-void func_80016B00_main(s16 model, s16 frame, char *name, HuMtx4F *out);
 void func_8010A750_inst(omObjData *);
 void func_8010AC30_inst(omObjData *); /* extern */
 void func_8010AD78_inst(omObjData *);
 void func_8010B038_inst(omObjData *object);
-void func_8002367C_main(HuMtx4F, HuMtx4F);
-void func_80018044_main(HuMtx4F, HuMtx4F, HuMtx4F);
 void func_8010B2A4_inst(omObjData *);
 
 void func_8010A1D0_inst(void) {

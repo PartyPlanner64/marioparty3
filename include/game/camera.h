@@ -61,4 +61,13 @@ void func_80013320_main(s16 value, s16 camIndex);
 
 extern HuCamera* gCameraList;
 
+void func_800123F4_main(void);
+void func_800128BC_main(s16 camIndex, void (*arg1)(s16));
+void func_800128EC_main(s16 camIndex, void (*arg1)(s16));
+void Hu3D3Dto2D(s16 camIndex, Vec *worldPos, Vec2f *outPos);
+void func_80012B14_main(s16 camIndex, Vec *worldPos, Vec2f *outPos);
+void Hu3D2Dto3D(s16 camIndex, f32 depth, Vec2f *screenPos, Vec2f *outPos);
+void func_80012E54_main(s16 camIndex);
+void func_80013350_main(s16 camIndex);
+
 #endif

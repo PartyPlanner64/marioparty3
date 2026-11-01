@@ -1,8 +1,11 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
 #include "humath.h"
 #include "game/mallocblock.h"
 #include "gcc/string.h"
 #include "game/hmfvertex.h"
+#include "game/hu3d.h"
+#include "game/hmfload.h"
 
 typedef struct {
     u8 unk00;
@@ -85,7 +88,6 @@ typedef struct {
     void *unk54;
     char unk58[0x40];
 } HmfMotionData;
-
 
 
 typedef struct {
@@ -230,21 +232,16 @@ extern s16 D_800A0544_main;
 extern s16 D_800CDD6A_main;
 extern s16 D_800D5204_main;
 
-void osSyncPrintf(const char *fmt, ...);
 void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 void func_8001866C_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 void func_80018978_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 s16 func_8000FA34_main(HmfLoadData *, void *);
-s16 func_8000FDAC_main(void *arg0, s16 arg1);
 void func_8000FEE4_main(HmfLoadData *);
 s16 func_800100EC_main(HmfLoadData *);
 s16 func_8001052C_main(HmfLoadData *);
 s16 func_8001073C_main(HmfLoadData *, u16, void *);
-u8 *func_80010A38_main(s32 tag, void *start, void *end);
-void *func_80010AC8_main(void *);
 void func_80010AF8_main(HmfLoadData *, s16, s16, s16);
 void func_80010EB0_main(HmfFaceData *, u8 *, HmfLoadData *, u16 *);
-void func_8001116C_main(s8 *, u16 *, u16 *, u16 *);
 HmfData_Unk84_Entry2 *func_80031A08_main(HmfLoadData *, s16);
 s16 func_80011334_main(HmfLoadData *hmf, void *arg1, s16 index);
 s32 func_800114C0_main(HmfLoadData *);

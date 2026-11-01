@@ -31,13 +31,10 @@ s16 func_80017AD8_main(s32);
 s32 func_80017BB8_main(s16 chr, s16 animId);
 
 // 8EA10
-f32 atan2df(f32, f32);
 
 // 8EFF0
-f32 cosdf(f32);
 
 // 8FB20
-f32 sindf(f32);
 
 // pad
 extern u16 D_800D5558_main[];

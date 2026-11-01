@@ -1,4 +1,10 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
+#include "game/hmfdraw.h"
+#include "macros.h"
+#include "game/hmfspr.h"
+#include "variables.h"
 #include "game/hmflight.h"
 #include "game/hu3d.h"
 #include "game/camera.h"
@@ -138,64 +144,18 @@ extern s16 D_800CC0B4_main;
 extern Gfx D_800A1118_main[];
 extern u8 *D_800A114C_main[];
 
-void func_8002B2AC_main(HmfData_Unk84_Entry2 *, s16, s16);
-void func_8002CB6C_main(HmfData *, s16);
-void func_8002CDF4_main(HmfData *, s16);
-void func_8002C960_main(HmfData *, s16, HmfData *);
-s32 func_8002C5B8_main(HmfData *, s16, s16);
-void func_8002C0EC_main(HmfData *, s16);
-void func_8002B104_main(HmfData *, s16);
 extern Gfx D_800A0A80_main[];
-void func_800260F0_main(HmfData *, s32 *);
-void func_8002A358_main(HmfMaterialData *, HmfData_Unk84_Entry *, u32);
-void func_80029FB4_main(HmfData *, s16);
-s32 func_8002DF2C_main(HmfModelData_Unk64_Unk8C_Struct *, HmfMotionFile *);
-s32 func_8002D5B0_main(HmfModelData_Unk64_Unk8C_Struct *, HmfData *);
-s32 func_8002D3D0_main(HmfData *, HmfMotionFile *, s32);
-s16 func_8002D2D8_main(HmfMotionFile *file, HmfData *hmf);
 u8 func_8000EF64_main(Gfx *arg0, u16 arg1, s32 arg2, OSMesgQueue *arg3, s32 arg4);
-void func_8002AC5C_main(u16);
-void func_8002AF40_main(void);
-void func_8002AFEC_main(HmfData *, s32, s16);
 void func_80033694_main(HmfData *);
-void func_80017CD0_main(HuMtx4F, f32, f32, f32);
-void func_8002367C_main(HuMtx4F, HuMtx4F);
-void func_80018044_main(HuMtx4F, HuMtx4F, HuMtx4F);
-s32 func_8002C4C0_main(HmfData *, s16, HuMtx4F, HuMtx4F);
-void func_80024DF0_main(HmfData *, s16, Mtx *, HuMtx4F);
-void func_80023700_main(HmfData *, s16);
-void func_8002404C_main(HmfData *, s16);
-void func_80024354_main(HmfData *, s16);
-void func_80023AF8_main(HmfData *, s16);
-void func_8002DFF8_main(HmfData *, f32, HmfModelData_Unk64_Unk8C_Struct *, s32);
-void func_8002EAC0_main(HmfData *, f32, f32);
-void HmfLightReset(void);
-void func_80022F08_main(HmfData *);
-void func_80022FF4_main(HmfData *);
-void func_800230F8_main(HmfData *);
-void func_8002D094_main(Gfx **, s16, s32);
-void func_800257BC_main(HmfData *, s16);
 void func_80030208_main(HmfData *);
-void HmfLightClose(void);
-void func_800123F4_main(void);
-void HmfLightInit(void);
 void func_80031560_main(void);
 void func_80030040_main(void);
 s16 func_80011460_main(u8 *);
-s32 func_80018544_main(HuMtx4F src, HuMtx4F dst);
-void func_80019C00_main(void *data);
-void func_80022660_main(HmfData *);
-void func_80030030_main(f32);
-void func_8002FE08_main(s16, s16, char *, s16, s16, s16);
 
-s32 func_8002DA98_main(HmfModelData_Unk64_Unk8C_Struct *, s16, u8 *);
-s32 func_8002DD4C_main(HmfData *, s16, u8 *);
 u8 *func_80010A38_main(s32 tag, void *start, void *end);
 void *func_80010AC8_main(void *);
 s16 func_8000FDAC_main(void *arg0, s16 arg1);
 
-f32 func_8002E78C_main(HmfModelData_Unk64_Unk8C_Struct *, HmfMotionChannel *, f32);
-f32 func_8002E8E8_main(HmfModelData_Unk64_Unk8C_Struct *, HmfMotionChannel *, f32);
 
 void func_800222B0_main(HuAllocFunc alloc, HuFreeFunc free, u16 vertexCount, u16 matrixCount, u16 gfxCount, u8 bufferCount) {
     s16 i;

@@ -1,7 +1,5 @@
 #include "common.h"
 
-f32 atan2df(f32, f32);
-f32 acosdf(f32);
 
 f32 MBVecAngleGet(Vec *arg0) {
     f32 temp_f16;

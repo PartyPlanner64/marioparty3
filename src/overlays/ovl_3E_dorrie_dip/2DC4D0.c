@@ -1,6 +1,7 @@
 #include "common.h"
 #include "game/mallocblock.h"
 #include "overlays/minigame.h"
+#include "gcc/memory.h"
 
 typedef struct {
     f32 posX[6];
@@ -105,9 +106,6 @@ extern u8 D_8010A046_dorrie_dip;
 extern omObjData *D_8010A260_dorrie_dip;
 extern DorrieDipCpu D_8010A254_dorrie_dip;
 
-void HuAudFXAllStop(void);
-void HuSprAnimAllKill(void);
-s32 func_8000B638_main(void);
 void func_80105FD0_dorrie_dip(omObjData *);
 void func_80106210_dorrie_dip(omObjData *);
 void func_80106668_dorrie_dip(omObjData *);
@@ -119,24 +117,17 @@ void func_80108C6C_dorrie_dip(omObjData *);
 void func_801095FC_dorrie_dip(omObjData *);
 void func_800E1490_minigame(u16);
 void func_800E5798_minigame(omObjData *, u16);
-omObjData *func_80045ED0_main(s32 arg0);
 void func_800E1370_minigame(omObjData *, s32, f32);
 void func_80107EE0_dorrie_dip(omObjData *);
 void func_80109F00_dorrie_dip(void);
-void GMesPosSet(s16, f32, f32);
 void func_80106BC0_dorrie_dip(void);
 void func_800DDD94_minigame(omObjData *);
 void func_800E6F0C_minigame(u8);
 void func_800E149C_minigame(omObjData *, s32, s32);
-void Hu3DModelHookSet(s16, s16, char *);
 void func_8010971C_dorrie_dip(void);
 void func_801064FC_dorrie_dip(void);
 void func_80109E1C_dorrie_dip(s32);
 void func_80108A74_dorrie_dip(s16, char *, s16, Vec *);
-void func_80016B00_main(s16 model, s16 frame, char *name, HuMtx4F *out);
-void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
-void func_80017CD0_main(HuMtx4F, f32, f32, f32);
-void func_80018044_main(HuMtx4F, HuMtx4F, HuMtx4F);
 void func_801074CC_dorrie_dip(void);
 void func_80108148_dorrie_dip(void);
 void func_80106D50_dorrie_dip(void);
@@ -147,7 +138,6 @@ void func_801081A8_dorrie_dip(void);
 void func_80108EA0_dorrie_dip(s32);
 void func_801092E0_dorrie_dip(void);
 void func_801090C4_dorrie_dip(void);
-void func_80021BE0_main(Hu3DQuadPool *pool, u16 numQuads);
 void func_80105B44_dorrie_dip(f32, f32, f32, f32, f32, f32, f32);
 void func_80105C7C_dorrie_dip(omObjData *);
 void func_8010601C_dorrie_dip(void);

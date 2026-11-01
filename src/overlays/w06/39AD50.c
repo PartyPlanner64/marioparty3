@@ -2117,9 +2117,7 @@ extern const ModelIdTable D_8011E1F8_w06;
 extern const MessageTable D_8011E204_w06;
 extern const MasuIdTable D_8011E214_w06;
 
-void func_8001ED54_main(s16 arg0);
 void func_800D9F5C_name_81(Object *arg0, Vec *arg1, s32 arg2);
-void func_8011A2A0_w06(void);
 void func_80108A10_w06(void);
 
 s16 func_801059D0_w06(void) {

@@ -131,8 +131,6 @@ extern s16 D_8010C012_hyper_hydrants[2];
 extern s16 D_8010C016_hyper_hydrants[2];
 extern s16 D_8010C01A_hyper_hydrants[2][2];
 
-void func_80021BE0_main(Hu3DQuadPool *pool, u16 numQuads);
-void func_800E1804_minigame(void);
 void func_80105CB4_hyper_hydrants(D_80111B50_vine_with_me_Struct *arg0);
 void func_80105FC8_hyper_hydrants(void);
 void func_80105D44_hyper_hydrants(omObjData *object);
@@ -149,9 +147,6 @@ s16 func_8010BC80_hyper_hydrants(s16 soundId, s16 side, s8 playerSound, s16 play
 void func_800E6F0C_minigame(s32 state);
 void func_800E1840_minigame(void);
 void func_800E1370_minigame(omObjData *object, s32 arg1, f32 arg2);
-void HuAudFXAllStop(void);
-void HuAudFXPanning(s16 arg0, s16 arg1);
-s32 func_8000B710_main(s32 arg0);
 void func_80105EB0_hyper_hydrants(s8 camera);
 void func_8010B8B0_hyper_hydrants(omObjData *object);
 void func_8010B38C_hyper_hydrants(void);
@@ -168,10 +163,6 @@ void func_80109B30_hyper_hydrants(omObjData *object);
 void func_80109E44_hyper_hydrants(omObjData *object);
 void func_8010A458_hyper_hydrants(omObjData *object);
 void func_80109484_hyper_hydrants(omObjData *object);
-void func_80012B14_main(s16 camera, Vec *position, Vec2f *screen);
-void func_8001F6BC_main(s16 model, u8 r, u8 g, u8 b, u8 a);
-void func_8001F6F8_main(s16 model, u8 r, u8 g, u8 b, u8 a);
-s16 HmfAnimRead(HmfData *hmf, s32 file, char *name);
 void func_800E4C88_minigame(omObjData *object, u8 type, f32 x, f32 y, f32 z, f32 arg5, f32 arg6);
 
 void func_801059A0_hyper_hydrants(void) {

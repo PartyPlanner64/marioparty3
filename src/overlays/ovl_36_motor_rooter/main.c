@@ -15,7 +15,10 @@
 #include "include_asm.h"
 #include "game/input.h"
 #include "variables.h"
-#include "functions.us.h"
+#include "game/printfunc.h"
+#include "game/hmfcoll.h"
+#include "game/esprite.h"
+#include "game/hmfspr.h"
 
 #define PLAYERS_TOTAL 2
 
@@ -24,8 +27,6 @@ void func_8000B5F0_main(u8 arg0);
 s32 func_8000B710_main(s32 arg0);
 
 // hmfspr
-void func_800142A0_main(s32);
-void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 
 // hmfcoll
 

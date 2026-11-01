@@ -28,33 +28,6 @@ extern u8 D_800D2008_main;
 extern Gfx *D_800CCF30_main;
 extern Vtx *D_800D59F4_main;
 
-void func_80034F70_main(Gfx **gfx, void *image, s32 fmt, u32 width, u32 height,
-                        s32 uls, s32 ult, s32 lrs, s32 lrt, s32 pal, s32 cms, s32 cmt,
-                        s32 masks, s32 maskt, s32 shifts, s32 shiftt, s32 tile, s32 tmem);
-void func_800343FC_main(Gfx **gfx, void *image, s32 fmt, s32 siz, s32 width, s32 height,
-                        s32 uls, s32 ult, s32 lrs, s32 lrt, s32 pal, s32 cms, s32 cmt,
-                        s32 masks, s32 maskt, s32 shifts, s32 shiftt, s32 tile, s32 tmem);
-void func_80034C08_main(Gfx **gfx, void *image, s32 fmt, s32 siz, s32 width, s32 height,
-                        s32 uls, s32 ult, s32 lrs, s32 lrt, s32 pal, s32 cms, s32 cmt,
-                        s32 masks, s32 maskt, s32 shifts, s32 shiftt, s32 tile, s32 tmem);
-
-void func_80034998_main(Gfx **gfx, void *image, s32 fmt, u32 width, u32 height,
-                        s32 uls, s32 ult, s32 lrs, s32 lrt, s32 pal, s32 cms, s32 cmt,
-                        s32 masks, s32 maskt, s32 shifts, s32 shiftt);
-void func_800341D0_main(Gfx **gfx, u16 *image, s32 fmt, s32 siz, s32 width, s32 height,
-                        s32 uls, s32 ult, s32 lrs, s32 lrt, s32 pal, s32 cms, s32 cmt,
-                        s32 masks, s32 maskt, s32 shifts, s32 shiftt);
-void func_80059CDC_main(Gfx **gfx, HuSprite *sprite, u16 height, u16 uls, u16 ult,
-                        u16 lrs, u16 lrt, u16 cms, u16 cmt, u16 masks, u16 maskt);
-
-void func_8005988C_main(Gfx **gfx, HuSprite *sprite, u16 height, u16 uls, u16 ult,
-                        u16 lrs, u16 lrt, u16 cms, u16 cmt, u16 masks, u16 maskt);
-
-Gfx *func_800589F4_main(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, s32 arg4);
-void func_8003521C_main(HuMtx4F transform, f64 x, f64 y, f64 angle);
-void func_80017CD0_main(HuMtx4F transform, f32 x, f32 y, f32 z);
-
-s32 func_800575D8_main(f32 vertices[][2]);
 
 s32 func_80057400_main(HuSprite *sprite) {
     HuSprite_Unk84_Unk00_Struct *cel;

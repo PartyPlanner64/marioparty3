@@ -32,7 +32,6 @@ typedef struct UnkBowser2 {
     s32 unk_20;
 } UnkBowser2; // sizeof 0x24
 
-void HuWinInit(void);
 void func_800E4A94_shared_board(void);
 void func_800E4B18_shared_board(void);
 void func_80108360_koopa(s32);

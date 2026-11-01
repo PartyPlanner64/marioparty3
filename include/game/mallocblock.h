@@ -59,4 +59,8 @@ void HuMemFreeAll(void);
 void HuMemCleanUp(void);
 void HuMemSetTag(void* data, s16 tag);
 
+s32 HuMemGetSizeTag(s16 tag);
+s32 HuMemGetSize(void);
+s32 HuMemDebugCheck(void);
+
 #endif

@@ -32,4 +32,13 @@ extern s32 __osMotorAccess(OSPfs *, s32);
 void RepeatVibrator(s16 contId, s16 onTime, s16 offTime, s16 duration);
 s32 _ResetVibrator(s16* contId);
 
+void RetraceCallbackVibrator(void);
+void InitVibrator(void);
+void ResetVibrator(s16 contId);
+void _StartVibrator(s16 *contId);
+void StartVibrator(s16 contId);
+void _StopVibrator(s16 *contId);
+void StopVibrator(s16 contId);
+void _RepeatVibrator(VibratorSetting *setting);
+
 #endif

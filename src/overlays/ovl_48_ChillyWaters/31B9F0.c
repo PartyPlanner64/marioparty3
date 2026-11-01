@@ -198,9 +198,7 @@ extern s32 D_8011E6CC_ChillyWaters[][2];
 extern f32 D_8011E6AC_ChillyWaters[][2];
 
 s16 MB1Ev_StarGuideMasuGet(void);
-s32 MB1Ev_YesNoChoiceGet(DecisionTreeNonLeafNode *arg0, s32 arg1);
 void func_80106EEC_ChillyWaters(Object*);
-s32 msmMusPlayDefault(s32);
 s32 func_801059D0_ChillyWaters(s16, s16); // Defined as void, but this caller uses the result.
 void func_80105DB8_ChillyWaters(s32);
 void func_8011BBA4_ChillyWaters(void);
@@ -2879,7 +2877,6 @@ void MB1Ev_ItemWarpBlock(void) {
     func_800DAA40_shared_board(temp_s2);
 }
 
-void MBStatusItemPosSet(s32 playerNo, s32 arg1, s16 arg2, s16 arg3);
 
 typedef struct ItemMoveWork {
     /* 0x00 */ s16 startX;
@@ -5472,7 +5469,6 @@ void MB1Ev_ItemRobBox(void) {
     }
 
 
-
     HuAudFXPlay(0x149);
     func_8001C814_main(box->omObj1->model[0], 1, 0);
     HuPrcSleep(0x14);
@@ -5818,7 +5814,6 @@ void func_8011A794_ChillyWaters(void) {
         MBMotionSet(obj, -1, work->unk_08);
         HuVecCopy3F(&obj->coords, &src->coords);
     }
-
 
 
     while ((MBMotionCheck(obj) == 0) && (work->unk_0C == 0)) {

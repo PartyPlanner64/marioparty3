@@ -185,8 +185,6 @@ void func_80109690_spotlight_swim(omObjData *);
 void func_80109E08_spotlight_swim(void);
 void func_8010A670_spotlight_swim(void);
 void func_8010C5E0_spotlight_swim(omObjData *);
-s32 func_8000B710_main(s32 arg0);
-s16 func_8002C834_main(HmfData *arg0, char *name);
 void func_8010AE9C_spotlight_swim(omObjData *);
 void func_80106BC8_spotlight_swim(omObjData *);
 void func_8010CB78_spotlight_swim(void);

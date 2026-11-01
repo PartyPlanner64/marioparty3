@@ -35,11 +35,6 @@ typedef struct {
     /* 0x04 */ s16 unk04;
 } UnkPausePrcData; // Size 6
 
-void ExecPause(void);
-void func_80045964_main(s16, s16);
-s16 func_80045B24_main(s16, s16);
-omObjData *func_80045F48_main(u32, s16, s16, s16);
-void func_800461D8_main(void);
 
 extern u8 D_800A1590_main[];
 extern s16 D_800A159C_main[];
@@ -278,7 +273,6 @@ s16 func_80045C64_main(u32 arg0, D_800B2350_main_Struct *arg1) {
 }
 
 // https://decomp.me/scratch/TTLIZ
-void func_80045D38_main(omObjData *);
 void func_80045D38_main(omObjData *object) {
     s16 seNo;
     s32 i;

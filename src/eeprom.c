@@ -1,6 +1,7 @@
 #include "common.h"
 #include "game/siman.h"
 #include "game/eeprom.h"
+#include "gcc/memory.h"
 
 #define SAVE_FILE_HEADER_SIZE 0x20
 #define SAVE_FILE_SIZE 0x2A0
@@ -25,8 +26,6 @@ extern u8 curBoxNo;
 
 s32 _WriteEeprom(EepData *arg0);
 s32 _ReadEeprom(EepData *arg0);
-s32 _DestroyEeprom(void);
-s32 WriteEeprom(OSMesgQueue *arg0, u8 arg1, u8 *arg2, s32 arg3);
 
 s32 _InitEeprom(u8 **arg0) {
     s16 eepromProbeResult;

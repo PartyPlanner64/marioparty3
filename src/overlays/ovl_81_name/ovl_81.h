@@ -286,3 +286,4 @@ void func_800D87DC_name_81(f32);
 void func_800EF3EC_name_81(s32);
 s32 func_800EF7D4_name_81(Object*);
 SpaceData* MBDMasuGet(s16 spaceIdx);
+void func_800F64FC_name_81(void);

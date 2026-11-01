@@ -1,4 +1,10 @@
-#include "common.h"
+#include "ultra64.h"
+#include "types.h"
+#include "humath.h"
+#include "game/hmfspr.h"
+#include "include_asm.h"
+#include "variables.h"
+#include "game/data.h"
 #include "game/malloc.h"
 #include "game/mallocblock.h"
 #include "overlays/opening.h"
@@ -28,21 +34,22 @@ extern s16 D_800D4090_main[6][3][7];
 extern u8 D_800D6A50_main[6];
 extern char *D_800A063C_main[3 * 16];
 
+/* hmfanim functions. This file does not include game/hmfanim.h: it was compiled
+ * against an s16 return type for func_800329B4_main, which is declared s32 there. */
+s32 HmfAnimCreate(HmfData *hmf, void *data, s16 bank, char *name);
+s16 HmfAnimLink(HmfData *hmf, u16 linkIdx, s16 bank, char *name);
 s16 func_800329B4_main(u8 *data);
+void func_80032FC0_main(s16 animIdx, u8 bitmask, u8 flags);
+void func_80033354_main(s16 animIdx);
+void func_800333B0_main(s16 animIdx);
+void func_80033910_main(HmfData *hmf);
+void func_80033970_main(HmfData *hmf);
+
 s16 func_80011460_main(u8 *str);
 
-void func_800146DC_main(s16 arg0, u16 arg1, u16 arg2);
-void func_800169E0_main(s16 model, s16 step, HmfModelSet *set, s16 target);
-void func_80016C2C_main(HmfData *hmf, s16 nodeIdx, s16 target);
 s16 func_8002C834_main(HmfData *arg0, char *name);
 void func_8002DFF8_main(HmfData *hmf, f32 frame, HmfModelData_Unk64_Unk8C_Struct *motion, s32 arg3);
 void func_8002367C_main(HuMtx4F dst, HuMtx4F src);
-void func_80033910_main(HmfData *hmf);
-void func_80033970_main(HmfData *hmf);
-void func_80017C10_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
-void func_80017CD0_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
-void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
-void func_80018044_main(HuMtx4F a, HuMtx4F b, HuMtx4F out);
 
 void func_800142A0_main(s32 count) {
     s16 i;

@@ -4,7 +4,6 @@
 extern u8 D_80097660_main;
 extern u8 D_80097661_main;
 extern s32 D_800CE178_main; // TODO: type correctly
-void func_80020E94_main(void *, struct HmfModel *);
 
 typedef struct UnkC1F0 {
     char unk_00[0x18];

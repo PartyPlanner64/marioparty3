@@ -93,4 +93,38 @@ extern Vec CenterM[];
 extern Vec Center;
 extern Vec CRotM[];
 
+void omSetObjPrio(omObjData *obj, s16 prio);
+void omInsertObj(omObjData *obj);
+void omSetStat(omObjData *obj, u16 stat);
+void omResetStatBit(omObjData *obj, u16 stat);
+void omPrcSetStat(Process *prc, s32 stat);
+void omMakeGroup(u16 group, u16 max_objs);
+void omAddMember(u16 group, omObjData *obj);
+void omDelMember(omObjData *obj);
+omObjData **omGetGroupMemberList(s16 arg0);
+omObjData *func_80047DD4_main(s16 arg0, u16 arg1);
+void func_80047DFC_main(s16 group, u32 stat);
+void func_80047E5C_main(s16 group, u16 idx, s32 flags);
+void func_80047E90_main(omObjData *obj, s32 arg1);
+Process *func_80047F50_main(process_func func, s32 priority, s32 stack_size, s32 extra_data_size, Process *parent);
+void omDestroyPrcObj(void);
+void omSystemKeyCheckSetup(void);
+void func_80048EE8_main(omObjData *object);
+void omSystemKeyCheck(omObjData *object);
+s32 omAllPause(void);
+void omAllUPause(void);
+void func_8004A354_main(omObjData *arg0);
+void func_8004A444_main(s32 arg0);
+void func_8004A468_main(u16 arg0, u16 arg1, u16 arg2);
+void func_8004A49C_main(void);
+void func_8004BC00_main(void);
+void func_8004C4C4_main(omObjData *object);
+void func_8004C76C_main(omObjData *object);
+void func_8004CB44_main(Vec *out, Vec *normal);
+void func_8004CD04_main(Vec *pos, Vec *at, f32 *zoom, Vec *rot, Vec *center);
+void func_8004CEA4_main(void);
+void func_8004CF00_main(omObjData *object);
+void func_8004CF30_main(void);
+void func_8004D094_main(omObjData *object);
+
 #endif //_GAME_OBJECT_H

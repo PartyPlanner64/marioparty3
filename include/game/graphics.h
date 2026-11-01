@@ -29,7 +29,11 @@ typedef struct {
     u8 unk00[0x20];
 } unkGraphicsMessage2; // OSMesg
 
-void func_8004D85C_main(void);
-void func_8004D878_main(void);
+void func_8000EA10_main(void **arg1, s32 arg2, s32 arg3, u64 **arg4, s32 *arg5);
+void *func_8000EB60_main(void);
+graphicsMessage *func_8000EF10_main(void);
+u8 func_8000EF64_main(Gfx *arg0, u16 arg1, s32 arg2, OSMesgQueue *arg3, s32 arg4);
+void func_8000F040_main(u16 size);
+
 
 #endif

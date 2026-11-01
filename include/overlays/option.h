@@ -1,7 +1,7 @@
 #ifndef _OVERLAYS_OPTION_H
 #define _OVERLAYS_OPTION_H
 
-#include "common.h"
+#include "ultra64.h"
 
 typedef struct UnkOption {
     s16 unk_00;

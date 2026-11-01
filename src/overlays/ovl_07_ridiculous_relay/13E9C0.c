@@ -1,6 +1,5 @@
 #include "common.h"
 
-void func_80012B14_main(s16 camIndex, Vec *worldPos, Vec2f *outPos);
 
 extern u16 D_800A1902_main;
 

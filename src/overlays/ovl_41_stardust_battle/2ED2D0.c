@@ -1,6 +1,7 @@
 #include "common.h"
 #include "overlays/minigame.h"
 #include "game/mallocblock.h"
+#include "gcc/memory.h"
 
 typedef struct UnkStardustBattleStard {
     /* 0x00 */ s16 active;

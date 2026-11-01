@@ -29,4 +29,9 @@ void hvqMpsDecodeStart1(void *data);
 /* output contains RGBA5551 pixels; stride is measured in pixels. */
 void hvqMpsDecode1(void *data, u16 *output, s32 stride, u8 *work);
 
+void func_800677B8_main(u16 *output, s16 *luma, s16 *cb, s16 *cr);
+void func_80067D50_main(u16 *output, s16 *luma, s16 *cb, s16 *cr);
+void func_80068ECC_main(u16 *output);
+void func_800694D0_main(u16 *output);
+
 #endif

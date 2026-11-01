@@ -461,12 +461,6 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010F660_mstory4);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010F910_mstory4);
 
-void espDispOff(u16);           /* extern */
-void espBankSet(u16, s32, s32); /* extern */
-void func_8000BDDC_main(u16, s32);      /* extern */
-void espKill(u16);
-void func_80017954_main(s16, s16, s16, s16);
-void Hu3DModelRotSet(s16, f32, f32, f32);                    /* extern */
 void func_800E4F50_name_81(u8 *);
 void MBDBackCreate(s32, s32);                                /* extern */
 void func_80106C78_mstory4(void);                            /* extern */

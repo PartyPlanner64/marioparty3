@@ -33,7 +33,6 @@ extern omObjData *D_80109B2C_bobbing_bow_loons;
 extern omObjData *D_80109B58_bobbing_bow_loons;
 extern omObjData *D_80109B60_bobbing_bow_loons;
 
-s32 func_8000B638_main(void);
 
 void func_80107C74_bobbing_bow_loons(void);
 void func_80107D78_bobbing_bow_loons(void);

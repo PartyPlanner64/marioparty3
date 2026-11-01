@@ -61,7 +61,6 @@ extern u8 D_8010D4B8_inst[8];
 extern u16 D_800A11D0_main[5];
 extern u16 D_800A11DC_main[5];
 
-u16 func_8000B0D4_main(s32 arg0, s32 arg1);
 
 s32 BoardGetTurnTier(s32);
 s32 BoardPlayerRankCalc(s32);
@@ -103,8 +102,6 @@ void func_8010986C_inst(omObjData *); /* extern */
 void func_80109A90_inst(void);        /* extern */
 void func_8010A1D0_inst(void);        /* extern */
 void func_8010B990_inst(void);        /* extern */
-void *func_8001D33C_main(s16 idx, char *name);
-void espAttrSet(u16, u16); /* extern */
 
 void func_801059A0_inst(void) {
     void (*procFunc)(void) = NULL;

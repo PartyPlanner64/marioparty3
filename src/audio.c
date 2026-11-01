@@ -27,21 +27,6 @@ s16 D_800A190C_main = 1;
 s16 D_800A190E_main = 1;
 s16 D_800A1910_main = 0x40;
 
-s32 msmSysInit(str800D5298 *cfg);
-s32 msmMusPlayDefault(s32);
-s32 msmSePlayDefault(s32);
-s32 msmSePlay(s32 seId, SePlayParam *param);
-void msmSeSetPitch(s32 slot, s32 pitch);
-void msmSeSetPan(s32 slot, s32 pan);
-void msmSeStop(s32 slot);
-s32 msmMusGetStatus(s32);
-void msmMusSetMasterVolume(s32);
-void msmMusSetTempo(s32, s32);
-s32 func_800038EC_main(s32);
-void msmSeSetMasterVolume(s32 vol);
-void msmSeSetVolume(s32, s32);
-s32 func_8000793C_main(s32 seId);
-s32 msmSeGetStatus(s32 slot);
 
 s16 HuAudSeqPlay(s16 musId) {
     if (D_800A1900_main == 0) {

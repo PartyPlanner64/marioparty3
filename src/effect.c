@@ -17,15 +17,6 @@ typedef struct EffectGroup {
 extern u8 D_80097720_main[];
 extern EffectGroup *D_800D6A00_main[EFFECT_GROUP_MAX];
 
-void func_80013390_main(s16 model, s16 type, char *name, void (*func)(s16));
-void func_800138EC_main(s16 model, s32 clear, s32 set);
-s16 func_80013928_main(s16 model);
-void func_80013954_main(s16 model, s16 value);
-s16 func_8000CC98_main(s32 fileId, s32 attr);
-void func_8000D06C_main(omObjData *obj);
-void func_8000D268_main(s16 model);
-s16 func_8000D3E0_main(s32 fileId, s32 attr, s16 count, void (*func)(s16));
-void func_8000D694_main(s16 model);
 
 s16 func_8000CBA0_main(s32 fileId, s32 attr) {
     s16 model;

@@ -2,6 +2,7 @@
 #include "overlays/minigame.h"
 #include "game/mallocblock.h"
 #include "game/pause.h"
+#include "gcc/memory.h"
 
 typedef struct UnkCrazyCogsCog { // 0x84 bytes, one entry per cog slot
     /* 0x00 */ omObjData *obj;
@@ -141,10 +142,6 @@ void func_80107AB8_crazy_cogs(void);
 void func_80108EE8_crazy_cogs(void);
 void func_8010A4A4_crazy_cogs(void);
 void func_8010B0F4_crazy_cogs(omObjData *);
-s32 func_8000B710_main(s32 arg0);
-f32 atan2df(f32, f32);
-s16 func_8004AD8C_main(s16 seId);
-void espAttrSet(u16 arg0, u16 arg1);
 void func_800E1304_minigame(omObjData *, f32);
 void func_800E1310_minigame(omObjData *, f32);
 void func_800E131C_minigame(omObjData *, f32);

@@ -2,6 +2,7 @@
 #include "game/malloc.h"
 #include "game/siman.h"
 #include "game/pad.h"
+#include "gcc/memory.h"
 
 s32 D_800A12A0_main = 0;
 f32 D_800A12A4_main = 0.0f;
@@ -38,18 +39,6 @@ extern OSMesgQueue D_800CCF60_main;
 extern s32 D_800D1F70_main;
 extern u32 D_800D2094_main;
 
-extern void func_8000E3C0_main(void);
-void func_8000EA10_main(void **arg1, s32 arg2, s32 arg3, u64 **arg4, s32 *arg5);
-void HuProfInit(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u16 arg4);
-void InitSI(void);
-void InitVibrator(void);
-void dmaInit(void);
-void func_8004D814_main(void);
-void func_8000F094_main(u32); // Set unk swap chain state
-void func_8004D7D8_main(void);
-s16 func_8004D6AC_main(u8 red, u8 green, u8 blue);
-void HuPrcCall(s32 time);
-void func_8004D6E8_main(s16);
 
 #define TV_TYPE_NTSC 1
 #define TV_TYPE_PAL 0

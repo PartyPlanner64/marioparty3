@@ -75,14 +75,6 @@ extern s16 D_800D418E_main;
 extern Mtx *MTXBuf;
 extern s16 MTXBufNum;
 
-void func_80017CD0_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
-void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
-void func_80018044_main(HuMtx4F a, HuMtx4F b, HuMtx4F out);
-void func_80019668_main(HmfData_UnkD0 *light);
-void func_80024DF0_main(HmfData *hmf, s16 objectIndex, Mtx *dest, HuMtx4F mtx);
-
-s32 func_80021550_main(f32 x, f32 z, Hu3DPoint *tri);
-f32 func_80021F98_main(Hu3DPoint *points, s16 i0, s16 i1, s16 i2, f32 *centerX, f32 *centerZ);
 
 void Hu3DAnimInit(s16 count) {
     s32 i;

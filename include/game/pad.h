@@ -51,4 +51,6 @@ void ResetAutoReadController(void);
 s32 CheckControllerRead(s16 padNum);
 s16 FlushController(void);
 
+void ReadController(void);
+
 #endif

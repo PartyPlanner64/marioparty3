@@ -57,4 +57,11 @@ void func_8004DF7C_main(s8 arg0, s8 arg1, s8 arg2, s8 arg3, u8 arg4, u8 arg5, u8
 void func_8004DFC0_main(void);
 void func_8004DFD8_main(void);
 
+void pfInit(void);
+void pfClsScr(void);
+void func_8004DCFC_main(s16 arg0);
+s32 print8(u16 x, u16 y, char *src);
+void func_8004DFE4_main(s16 arg0, u8 *src);
+Gfx *pfDrawFonts(Gfx *gfx);
+
 #endif

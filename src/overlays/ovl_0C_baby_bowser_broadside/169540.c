@@ -17,13 +17,11 @@ extern BabyBowserBroadsideColor D_8010FFE0_baby_bowser_broadside;
 extern const f64 D_8010FFE8_baby_bowser_broadside;
 extern const f64 D_8010FFF0_baby_bowser_broadside;
 
-f32 atan2df(f32 y, f32 x);
 
 s16 func_8010B54C_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, f32 scale);
 s16 func_8010C8D4_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, u8 *color);
 
 void func_8010F878_baby_bowser_broadside(f32 *matrix);
-void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 void func_8010D590_baby_bowser_broadside(u16 model, HuSprite_Unk84_Struct *sprite, u16 frame, u8 *color);
 
 s16 func_8010D6C4_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, HmfData *data, f32 scale, s16 arg3, s16 arg4);

@@ -26,7 +26,6 @@ extern s8 D_800B23B0_main;
 extern s8 D_800B23B1_main;
 extern UnkLightData *D_800CE1D4_main;
 
-void func_80046728_main(omObjData *);
 
 s32 func_800465D0_main(void) {
     return D_800B23B0_main;

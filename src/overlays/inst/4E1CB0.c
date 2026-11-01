@@ -3,7 +3,6 @@
 #include "game/malloc.h"
 #include "game/mallocblock.h"
 
-s16 func_8002C834_main(HmfData *arg0, char *name);
 
 void func_80108AF0_inst(s16 model, void *imageHeader, void *imageData, u8 *alpha) {
     u16 *decoded;

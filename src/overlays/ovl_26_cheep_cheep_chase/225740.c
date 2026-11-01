@@ -1,4 +1,5 @@
 #include "common.h"
+#include "gcc/memory.h"
 
 typedef struct UnkCheepCheepChaseSprite {
     /* 0x00 */ s8 state;   // 0 while unused, 1 once hidden, 2 once shown

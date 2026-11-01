@@ -39,22 +39,10 @@ extern f32 D_80119AF4_msetup;
 extern f32 D_80119AF8_msetup;
 extern f32 D_80119AFC_msetup;
 
-void espScaleSet(u16, f32, f32);
-s16 func_80011460_main(u8 *);
-void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
-void func_80017CD0_main(HuMtx4F, f32, f32, f32);
-void func_80018044_main(HuMtx4F, HuMtx4F, HuMtx4F);
-void espTPLvlSet(u16 spriteId, s16 arg1);
-void espPriSet(u16, s32);
-void espKill(u16);
-void Hu3DModelRotSet(s16, f32, f32, f32);
-void Hu3DModelScaleSet(s16, f32, f32, f32);
-void HuSprAnimKill(s16);
 void func_8010DAC4_msetup(omObjData *);
 void func_8010EB94_msetup(void);
 void func_8010E09C_msetup(omObjData *);
 
-void func_80016B00_main(s16 model, s16 frame, char *name, HuMtx4F *out);
 
 void func_8010D060_msetup(HmfData *arg0, s16 arg1) {
     // 0x80 in unk9 marks the entry's texture as used, but only if a texture is assigned

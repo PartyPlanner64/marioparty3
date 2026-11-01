@@ -6,7 +6,6 @@ extern s32 D_80109950_mgresultdealer;
 extern s32 D_8010A244_mgresultdealer;
 extern omObjFunc D_8010A260_mgresultdealer;
 
-void espAttrSet(u16 arg0, u16 arg1);
 void func_80109710_mgresultdealer(omObjData *);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_801059A0_mgresultdealer);

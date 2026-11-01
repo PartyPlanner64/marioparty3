@@ -2,8 +2,6 @@
 #include "game/mallocblock.h"
 #include "overlays/mgmode.h"
 
-void espAttrSet(u16 arg0, u16 arg1);
-void espAttrReset(u16, u16);
 
 void func_80116610_mgmode(MgmodeModelEntry *entries, s16 index, s16 modelId) {
     MgmodeModelEntry *entry = &entries[index];

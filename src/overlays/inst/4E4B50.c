@@ -43,11 +43,7 @@ const s16 D_8010DB24_inst[2][3] = {
 };
 const s16 D_8010DB30_inst[] = {0x3811, 0x3812, 0x3813, 0x0000};
 
-s16 GameMesStrCreate(GAMEMES *gMes, char *str, u8 flags, s16 arg3, s16 arg4);
 
-void espAttrSet(u16 arg0, u16 arg1);
-void espTPLvlSet(u16 spriteId, s16 arg1);
-void espBankSet(u16, s32, s32);
 void func_8010CDE4_inst(const char *, s32, s32);
 void func_8010CF14_inst(void);
 void func_8010CFF4_inst(void);
@@ -62,7 +58,6 @@ void func_8010D1D4_inst(void);
 u16 func_8010C8E0_inst(s32);
 void func_8010D044_inst(void);
 void func_8010CED0_inst(s32, s32);
-void func_80060DEC_main(s32 win_id);
 void func_8010BE78_inst(s32 arg0); /* extern */
 
 void func_8010B990_inst(void) {

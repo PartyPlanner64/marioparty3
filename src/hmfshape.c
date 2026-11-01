@@ -36,9 +36,7 @@ extern HmfVertexAnim *D_800D59F8_main;
 extern s16 D_800CDD6A_main;
 extern u8 D_800D2008_main;
 
-void func_80030414_main(HmfData *, s16, f32);
 void func_800308C0_main(HmfVertexAnim *, HmfData *, HmfVertexAnimCache *, s16);
-void func_80031324_main(HmfData *, f32);
 
 void func_80030040_main(void) {
     s16 i;

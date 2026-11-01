@@ -3,6 +3,7 @@
 #include "game/hu3d.h"
 #include "variables.h"
 #include "include_asm.h"
+#include "game/util.h"
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B7600", func_800E4A80_minigame);
 

@@ -32,7 +32,6 @@ static s32 D_80107568_last5[4];
 static UnkBoard8 *D_80107578_last5;
 static Object *D_8010757C_last5;
 
-void func_800138EC_main(s16 arg0, s32 arg1, s32 arg2);
 void func_800EC5B4_shared_board(s16 arg0, s32 arg1);
 void func_80105F9C_last5(void);
 void func_80107178_last5(void);

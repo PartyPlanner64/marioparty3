@@ -276,18 +276,7 @@ extern s32 D_801135E4_pump_pump_away;
 extern s32 fontcolor;
 extern const s16 D_801116D8_pump_pump_away[];
 
-void func_8001E888_main(s16 idx, f32 x, f32 y, u16 width, u16 height, char *name, u8 reset);
-s16 func_8000B5BC_main(s32 arg0);
-void func_8001F974_main(s16 arg0, s16 arg1);
-void func_800335BC_main(char *name, u16 *result);
 void func_80106A6C_pump_pump_away(omObjData *obj);
-s32 func_8000B710_main(s32 arg0);
-void espAttrSet(u16 arg0, u16 arg1);
-void espScaleSet(u16 spriteId, f32 x, f32 y);
-omObjData *func_80045EF4_main(u32 arg0, s16 arg1);
-u16 GWMgRecordGet(s16 arg0);
-void HuAudFXPanning(s16 arg0, s16 arg1);
-void func_80034048_main(s16 arg0, s16 arg1);
 void func_80105EE4_pump_pump_away(Vec *position, Vec *target, Vec *result);
 void func_8010628C_pump_pump_away(omObjData *obj);
 void func_8010654C_pump_pump_away(omObjData *obj);

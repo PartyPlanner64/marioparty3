@@ -1,6 +1,7 @@
 #include "common.h"
 #include "game/vibrator.h"
 #include "overlays/msetup_internal.h"
+#include "gcc/memory.h"
 
 typedef struct MsetupStoryMenu {
     Vec pos;
@@ -40,10 +41,7 @@ extern s16 D_800D418E_main;
 
 void func_80106260_msetup(MsetupCameraPreset *);
 void func_80117A3C_msetup(void);
-void espAttrSet(u16 arg0, u16 arg1);
-void func_8006105C_main(s32 winId, s32 alpha);
 
-f32 func_80054B1C_main(s16, s16, s16, f32, f32, f32);
 
 void func_80117910_msetup(s16 group, s16 member, s16 camera, f32 x, f32 y, f32 z, f32 scale) {
     HuSprite *sprite;

@@ -7,98 +7,47 @@
 #include "game/mallocblock.h"
 #include "include_asm.h"
 
-s32 func_80023264_main(HmfData *);
 extern s32 D_800A0530_main;
 extern s32 D_800C9940_main;
 
 // graphics.c
-u8 func_8000EF64_main(Gfx *arg0, u16 arg1, s32 arg2, OSMesgQueue *arg3, s32 arg4);
 
 // hmfload.c
 void func_8000F978_main(HmfData *);
-s16 func_80011460_main(u8 *);
 
 // hmfparticle.c
-void func_800139AC_main(s16 model, s16 group);
 
 // hmfspr.c
-void func_80017CD0_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
-void func_80018044_main(HuMtx4F a, HuMtx4F b, HuMtx4F out);
 
 // hmflight.c
-void func_80019668_main(HmfData_UnkD0 *light);
 
 // hmfcoll.c
-void func_80021AF4_main(void);
-void func_80021B20_main(s16 index);
 
 // hmfdraw.c
-void func_800222B0_main(HuAllocFunc alloc, HuFreeFunc free, u16 vertexCount, u16 matrixCount, u16 gfxCount, u8 bufferCount);
-void func_800224BC_main(void);
-void func_80022660_main(HmfData *);
-void func_800225D4_main(void);
-void func_80023404_main(HmfData *arg0, HuMtx4F arg1, HuMtx4F arg2);
-void func_8002367C_main(HuMtx4F dst, HuMtx4F src);
-Gfx *func_800250D4_main(s16 arg0, Gfx *arg1, Gfx *arg2);
-s32 func_8002F60C_main(HmfData *hmf);
-s16 func_8002C834_main(HmfData *arg0, char *name);
-void func_8002D260_main(void);
-s32 func_8002D3AC_main(HmfMotionFile *file);
-void func_8002D514_main(void);
-void func_80030030_main(f32);
-f32 func_8002FC7C_main(HmfModelData_Unk64_Unk8C_Struct *arg0, u16 flags, f32 frame, f32 start, f32 speed);
 
 // hmfshape.c
-void func_80030178_main(s32 arg0);
-void func_800303C8_main(HmfModel *model, f32 time);
-void func_80030198_main(void);
-s32 func_800300A4_main(HmfData *model, u8 *data);
 
 // hmfanim.c
 extern HmfData_Unk84_Entry2 *D_800D1FCC_main;
-void func_8003186C_main(HmfData *hmf);
-HmfData_Unk84_Entry2 *func_80031A44_main(HmfData *hmf, char *name);
-void func_80033450_main(void);
-void func_80033510_main(void);
-void func_80034048_main(s16 animIdx, s16 count);
-void HmfAnimExec(u16 vcount);
 
 // 8AC70.c
 
 // hmfspr.c
-void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 
 // libhmath/gurotaterpy.c
 
 // camera.c
-void func_80012E54_main(s16 camIndex);
 
 // wipe.c
-void WipeExecAlways(Gfx **gfx);
 
 // printfunc.c
-Gfx *pfDrawFonts(Gfx *gfx);
 
 // unknown
-void func_8000D3AC_main(void);
 
-Gfx *func_8001BD24_main(Gfx *arg0, s16 arg1, u16 arg2);
-void func_8001F038_main(HmfModel *model, u16 speed);
-void func_8001F154_main(HmfModel *model);
-void func_8001F4BC_main(s16 idx);
-
-void func_8001D874_main(HmfData *hmf, f32 arg1, f32 arg2, u16 arg3, u16 arg4);
-void func_8001DACC_main(HmfData *hmf, f32 arg1, f32 arg2, u16 arg3, u16 arg4);
-void func_8001DDB8_main(HmfData *hmf, f32 arg1, f32 arg2, u16 arg3, u16 arg4);
-void func_8001CF1C_main(HmfData *hmf1, HmfData *hmf2, f32 arg2, s16 node1, s16 node2, s32 arg5);
 
 extern Gfx *gMainGfxPos;
 
 void Hmfload(HmfData *, void *, s32);
-void *func_80010AC8_main(void *);
-void Hu3DFogClear(void);
-s16 func_8001FF04_main(s16 model);
-s16 func_8002D2D8_main(HmfMotionFile *file, HmfData *hmf);
 
 extern u8 D_800A0540_main;
 extern u8 D_800A0541_main;

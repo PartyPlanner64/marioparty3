@@ -9,7 +9,6 @@ extern s32 D_8010D540_inst;
 extern s32 D_8010D544_inst;
 extern void (*D_8010DDD4_inst)(omObjData *);
 
-void Hu3DModelHookSet(s16, s16, char *);
 void func_80109E94_inst(omObjData *);
 void func_80109F50_inst(omObjData *);
 void func_8010A000_inst(omObjData *);

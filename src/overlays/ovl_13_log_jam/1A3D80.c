@@ -1,6 +1,7 @@
 #include "common.h"
 #include "overlays/minigame.h"
 #include "game/mallocblock.h"
+#include "gcc/memory.h"
 
 typedef struct UnkLogJamSprites { // 0xC bytes, two entries
     s16 unk_00;

@@ -1,7 +1,6 @@
 #include "common.h"
 #include "piint.h"
 
-extern OSPiHandle *__osPiTable;
 extern s32 first; /* static in the original source */
 
 OSPiHandle *osCartRomInit(void) {

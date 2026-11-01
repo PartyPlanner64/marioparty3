@@ -541,6 +541,9 @@ extern HmfAnim *D_800D1714_main;
 extern HmfAnimSet *D_800D408C_main;
 extern HmfModelEntry *D_800CBB60_main;
 
+extern u8 D_800CD280_main;
+extern HmfModelData_Unk64_Unk8C_Struct *D_800CCF58_main;
+
 void func_8001A070_main(void *arg0, void *arg1, u16 arg2, u16 arg3, u16 arg4, u8 arg5);
 s16 Hu3DModelCreate(u8 *, u32);
 s32 Hu3DModelLink(s16 linkMdlId);

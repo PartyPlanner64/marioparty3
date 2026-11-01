@@ -12,7 +12,6 @@
 
 // EXTERN
 
-extern HmfModelData_Unk64_Unk8C_Struct* D_800CCF58_main; // esprite
 
 // LOCAL
 

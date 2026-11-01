@@ -11,7 +11,6 @@
 extern str800D5298 D_800D5298_main;
 extern void *D_800CCF38_main;
 extern u8 D_800CCF78_main[];
-extern f32 CZoomM[];
 extern u16 D_800CD2F4_main;
 extern OSPiHandle *D_800CDD50_main;
 extern Process *D_800D0448_main;
@@ -20,9 +19,7 @@ extern Process *D_800D170C_main;
 extern u8 D_800D1710_main;
 extern s16 D_800D1F36_main;
 extern u16 D_800D4082_main;
-extern Vec CenterM[];
 extern u16 D_800D6A56_main;
-extern Vec CRotM[];
 extern u16 D_800A190C_main;
 extern u16 D_800A190E_main;
 

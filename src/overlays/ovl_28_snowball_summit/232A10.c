@@ -11,7 +11,6 @@ extern f32 D_801101F4_snowball_summit;
 extern f32 D_801101F8_snowball_summit;
 extern s32 D_80110248_snowball_summit;
 extern s32 D_8011024C_snowball_summit;
-extern s32 fontcolor;
 extern s16 D_80110030_snowball_summit;
 
 typedef struct UnkSnowballSummitSnowball {

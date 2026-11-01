@@ -22,6 +22,9 @@ typedef struct {
     s16 unk34;
 } UnkAudioObjData;
 
+extern u16 D_800A1902_main;
+extern u16 D_800A1906_main;
+
 s16 HuAudSeqPlay(s16 musId);
 s16 func_8004A5C4_main(s16);
 void HuAudSeqFadeOut(s16 speed);

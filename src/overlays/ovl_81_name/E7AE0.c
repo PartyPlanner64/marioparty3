@@ -4,7 +4,6 @@
 #define UNK_ARR_SIZE 4
 
 extern s32 D_800D41B0_main[];
-extern u16 D_800D5546_main[];
 
 extern omObjData *D_80105500_name_81;
 extern UnkBoard4 *D_80105504_name_81;

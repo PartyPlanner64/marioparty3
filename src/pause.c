@@ -12,11 +12,11 @@
 #include "game/input.h"
 #include "common_structs.h"
 #include "variables.h"
+#include "game/mgdata.h"
 
 // hmfdraw
 s16 func_8002C834_main(HmfData *arg0, char *name);
 
-extern MinigameTable D_800A6D44_main[];
 
 // LOCAL
 

@@ -72,7 +72,6 @@ extern s16 D_8010CF6E_storm_chasers;
 extern s32 D_8010CF70_storm_chasers;
 extern s16 D_8010CF72_storm_chasers;
 extern HuSprite_Unk84_Struct *D_8010CF74_storm_chasers;
-extern s32 fontcolor;
 
 void func_80106218_storm_chasers(omObjData *);
 void func_801063B0_storm_chasers(Gfx **, s32, s32);

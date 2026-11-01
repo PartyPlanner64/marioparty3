@@ -36,7 +36,6 @@ extern s32 D_800A12CC_main;
 extern s16 D_800CC4A0_main;
 extern s16 D_800D2130_main;
 extern s32 D_80105660_shared_board;
-extern s16 D_800CDD64_main;
 extern s16 kakusiMasuStarHisIdx;
 extern s16 kakusiMasuCoinHisIdx;
 extern s16 D_800D1708_main;
@@ -46,7 +45,6 @@ extern s16 D_800CE206;
 extern s32 D_80105668_shared_board;
 extern s16 D_8010566C_shared_board;
 extern s16 D_800D037E_main;
-extern s32 mbTurnOnF;
 extern s16 D_8010566E_shared_board;
 extern Vec D_80105670_shared_board;
 extern Vec *D_8010567C_shared_board;
@@ -57,7 +55,6 @@ extern omObjData *mbBattleKuriboObj;
 extern s16 D_800A12C8_main;
 extern f32 D_800C9938_main;
 extern s16 D_800CE206;
-extern s32 mbWalkNum;
 extern s16 D_800D1708_main;
 extern s16 D_800D4080_main;
 extern s16 kakusiMasuItemHisIdx;
@@ -1803,7 +1800,6 @@ static s32 func_800FB624_shared_board(GW_PLAYER* arg0) {
             }
         }
 
-        
         
         var_s2 = MBRand(100.0f);
         

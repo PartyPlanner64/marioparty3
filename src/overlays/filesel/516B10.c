@@ -210,7 +210,6 @@ extern u8 D_80112AE4_filesel[];
 extern u8 D_80112AE8_filesel[];
 extern s32 D_80112E90_filesel;
 extern FileSelectData D_801142D8_filesel;
-extern u8 D_800D20EC_main;
 extern u8 D_80114490_filesel[0x20];
 extern UnkFileSelect2 D_80114158_filesel[0x20]; // sizeof 0xC
 extern UnkFileSelect3 D_80113650_filesel[0x40];

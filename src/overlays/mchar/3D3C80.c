@@ -183,9 +183,6 @@ static Vec D_80107A50_mchar;
 static s32 D_80107A60_mchar[8][2];
 static s32 D_80107AA0_mchar[8][2];
 
-extern s32 fontcolor;
-extern u16 omdispinfo;
-extern s16 D_800A1786_main;
 
 void func_80106DF8_mchar(omObjData *arg0);
 void func_80106D7C_mchar(void);

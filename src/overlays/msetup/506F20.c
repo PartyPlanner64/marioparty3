@@ -14,7 +14,6 @@ extern s32 D_80119A8C_msetup[];
 extern s32 D_80119AB4_msetup[];
 extern u8 D_80119AC8_msetup[];
 extern u16 D_80119ACC_msetup;
-extern u8 D_800D20B8_main[16][3];
 extern u8 D_800D5570_main[16][3];
 extern MsetupModelEntry D_801198C4_msetup[];
 extern Vec D_80119A0C_msetup[];

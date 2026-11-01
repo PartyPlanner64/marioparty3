@@ -6,14 +6,12 @@
 
 // EXTERN
 
-extern HuCamera *gCameraList;
 extern Vec D_800A0554_main;
 extern Vec D_800A0590_main;
 extern RectF D_800A05CC_main;
 extern s16 D_800C9932_main;
 extern HuCamMtxs *D_800D0444_main;
 extern HuCamera *D_800D10F4_main;
-extern u8 D_800D1FF0_main;
 extern u8 D_800D2008_main;
 extern s16 D_800D418E_main;
 

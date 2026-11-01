@@ -76,7 +76,6 @@ extern omObjData *omDBGSysKeyObj;
 extern u16 D_800D4082_main;
 extern f32 D_800D4198_main[];
 extern f32 D_800D5210_main;
-extern u16 D_800D530C_main;
 extern s16 omobjfirst;
 extern s32 D_800D6A40_main;
 extern u16 D_800D6A56_main;
@@ -701,11 +700,7 @@ void omOvlKill(void) {
     D_800CD280_main = 1;
 }
 
-extern s32 fontcolor;
-extern u16 omdispinfo;
 extern s32 omovl;
-extern u16 D_800A1906_main;
-extern s16 D_800A1786_main;
 extern u8 D_800A1783_main;
 extern u8 D_800D1FA0_main;
 extern void *D_800A1240_main[3];
@@ -960,7 +955,6 @@ typedef struct DebugMenuItem {
 
 extern DebugMenuItem D_800A184C_main[6];
 extern u16 D_800A1900_main;
-extern u16 D_800A1902_main;
 extern s16 D_800B23CC_main;
 extern s16 D_800B23CE_main;
 extern u16 D_800CCF7C_main[];
@@ -969,7 +963,6 @@ extern u8 D_800D2132_main;
 extern u8 D_800A1752_main[2];
 extern s8 D_800A1785_main;
 extern s16 D_800A1894_main[];
-extern u8 D_800A2150_main;
 extern u16 D_800CE214_main;
 
 char const D_800A7AE4_main[] = " SE STP";

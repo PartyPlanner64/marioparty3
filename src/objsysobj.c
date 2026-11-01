@@ -22,17 +22,14 @@ extern s16 D_800CDBC8_main;
 extern u16 D_800D530C_main;
 extern u16 D_800D13EE_main;
 extern s16 D_800A1910_main;
-extern u16 D_800A1906_main;
 extern s16 D_800D037E_main;
 extern Vec D_800CD2A8_main[4];
 extern Vec D_800D6A78_main;
 extern f32 D_800CB890_main;
 extern f32 D_800CCF98_main[];
-extern f32 D_800CE17C_main[];
 extern f32 D_800D04B8_main[][6];
 extern f32 D_800D4198_main[];
 extern f32 D_800D5210_main;
-extern omObjData *D_800CE194_main;
 extern s32 D_800D6AB8_main;
 
 s32 msmSeGetStatus(s32 slot);

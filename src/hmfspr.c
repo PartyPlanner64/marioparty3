@@ -29,7 +29,6 @@ extern Vtx *D_800CC080_main[8];
 extern Vtx *D_800CDD54_main;
 extern u8 D_800D2008_main;
 extern Gfx *D_800D1F30_main;
-extern u8 D_800D20B8_main[16][3];
 extern s16 D_800D4090_main[6][3][7];
 extern u8 D_800D6A50_main[6];
 extern char *D_800A063C_main[3 * 16];

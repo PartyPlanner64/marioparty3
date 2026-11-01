@@ -29,7 +29,6 @@ extern u8 D_800BBAB0_main;
 extern SaveCommonBuf D_800D09A8_main;
 extern u8 D_800D0450_main[];
 extern u8 D_800D0E50_main[];
-extern u8 D_800D20EC_main;
 extern u8 gEncodedSaveBuffer[];
 extern u16 D_800D04B0_main;
 extern u16 D_800CBB64_main;

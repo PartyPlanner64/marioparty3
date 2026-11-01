@@ -7,7 +7,6 @@ typedef struct UnkMstory2Obj {
 } UnkMstory2Obj; // sizeof 0xC
 
 extern f32 D_800CB890_main;
-extern f32 D_800CE17C_main[];
 extern f32 D_800D5210_main;
 
 extern Vec D_8011B920_mstory2;

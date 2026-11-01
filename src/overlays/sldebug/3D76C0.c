@@ -9,7 +9,6 @@ s32 func_8010612C_sldebug(void);
 void func_80106850_sldebug(void);        /* extern */
 void func_801068D4_sldebug(omObjData *); /* extern */
 void func_80106930_sldebug(omObjData *); /* extern */
-extern s32 fontcolor;
 extern u16 D_80106960_sldebug;
 extern s16 D_8010698C_sldebug;
 extern s32 D_80106978_sldebug;

@@ -109,7 +109,6 @@ extern Vec D_8010C028_hyper_hydrants[2];
 extern HyperHydrantsChainPoint *D_8010BFB0_hyper_hydrants[2][6];
 
 extern u8 D_800D6A90_main;
-extern u16 D_800A1906_main;
 extern s16 D_800EB930_minigame;
 extern s32 D_8010BF48_hyper_hydrants;
 extern s32 D_8010BF4C_hyper_hydrants;

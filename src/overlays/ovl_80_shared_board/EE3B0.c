@@ -1,7 +1,6 @@
 #include "common.h"
 #include "ovl_80.h"
 
-extern s32 fontcolor;
 
 typedef struct UnkData {
     Process *unk_00;

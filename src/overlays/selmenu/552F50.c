@@ -16,7 +16,6 @@ typedef struct SelMenuPlayerGroups {
     u8 unk_04[0xC];
 } SelMenuPlayerGroups; // sizeof 0x10
 
-extern s32 fontcolor;
 
 extern s16 D_8010A070_selmenu;
 extern s16 D_8010A072_selmenu;

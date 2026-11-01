@@ -32,7 +32,6 @@ extern u8 D_800CE20A_main;
 extern s32 D_8010D4A4_inst;
 extern u32 D_8010D4AC_inst;
 extern f32 D_800CB890_main;
-extern f32 D_800CE17C_main[];
 extern f32 D_800D5210_main;
 
 extern s8 D_8010D400_inst[4];

@@ -3,6 +3,8 @@
 
 #include "ultra64.h"
 
+extern u8 D_800D20EC_main;
+
 void func_8004FCF0_main(void);
 s32 func_8004FDC0_main(void);
 void func_80050044_main(void);

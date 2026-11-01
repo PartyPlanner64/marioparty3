@@ -16,7 +16,6 @@ typedef struct UnkSelmenu2SpaceGroups {
     s16 unk_08[4];
 } UnkSelmenu2SpaceGroups; // sizeof 0x10
 
-extern s32 fontcolor;
 
 extern s16 D_80109B00_selmenu2;
 extern s16 D_80109B02_selmenu2;

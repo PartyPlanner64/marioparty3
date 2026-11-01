@@ -37,7 +37,6 @@ extern omObjData *D_8010CAC0_mpiq[];
 extern MpiqObjWork *D_8010CA80_mpiq[];
 extern omObjData *D_8010CAD0_mpiq;
 extern omObjData *D_8010CAD4_mpiq;
-extern s32 fontcolor;
 extern s32 D_8010C9D8_mpiq;
 
 void func_80107DE0_mpiq(omObjData *obj);

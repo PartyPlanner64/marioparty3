@@ -185,6 +185,8 @@ typedef struct HuSprGrp {
 
 extern HuSprGrp *HuSprGrpData[HUSPR_GRP_MAX];
 
+extern s16 D_800D10F2_main;
+
 void HuSprInit(void);
 void HuSprGrpKill(s16);
 s16 HuSprGrpCreate(u16 arg0, u16 arg1);

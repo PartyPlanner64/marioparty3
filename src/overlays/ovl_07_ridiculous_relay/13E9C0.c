@@ -1,8 +1,6 @@
 #include "common.h"
 
 
-extern u16 D_800A1902_main;
-
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", func_801059A0_ridiculous_relay);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", func_80105D40_ridiculous_relay);

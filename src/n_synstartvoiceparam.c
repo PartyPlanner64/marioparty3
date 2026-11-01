@@ -1,7 +1,6 @@
 #include "common.h"
 #include "PR/n_synthInternals.h"
 
-extern u8 D_800CB8AC_main;
 
 // MP3's version of n_alSynStartVoiceParams, which can force centered panning.
 void func_80066270_main(N_ALVoice *v, ALWaveTable *w, f32 pitch, s16 vol, ALPan pan, u8 fxmix, ALMicroTime t) {

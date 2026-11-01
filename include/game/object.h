@@ -61,6 +61,20 @@ typedef struct Object_s {
 /* 0x46 */ s16 unk46;
 } Object; //sizeof 0x48
 
+typedef struct omOvlHisData { //Object Manager History Data
+/* 0x00 */ s32 overlayID;
+/* 0x04 */ s16 event;
+/* 0x06 */ s16 stat;
+} omOvlHisData; //sizeof 0x08
+
+extern s16 omovlevtno;
+extern s16 omovlhisidx;
+extern omOvlHisData omovlhis[12];
+extern u16 omdispinfo;
+extern s16 D_800A1786_main;
+extern f32 D_800CE17C_main[];
+extern omObjData *D_800CE194_main;
+
 void omInitObjMan(s16 numOfObjs, s32 numOfPrcs);
 void omSetStatBit(omObjData *obj, u16 stat);
 s32 omOvlReturnEx(s16 level);

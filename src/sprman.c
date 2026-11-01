@@ -57,7 +57,6 @@ extern HuSprite *D_800BD804_main; // head of sorted draw list
 extern s16 D_800D0468_main;
 extern s16 D_800D418E_main;
 extern f32 D_800BD808_main;
-extern s16 D_800D10F2_main;
 extern HuSprAnmDesc *D_800D0A50_main[0x100];
 extern u16 D_800D554E_main;
 extern u16 D_800CC3E6_main;

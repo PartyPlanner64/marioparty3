@@ -119,10 +119,6 @@ MessageCheckEntry D_80106518_meschk[] = {
     { (u8 *)"", 0xFFFF, 0xFFFF },
 };
 
-extern u16 omdispinfo;
-extern s16 D_800A1786_main;
-extern u8 D_800CD280_main;
-extern u16 D_800D530C_main;
 
 extern void func_80105B50_meschk(void);
 extern void func_80105B8C_meschk(void);

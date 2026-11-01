@@ -68,7 +68,6 @@ extern MsetupCameraKeyframe D_801196C0_msetup[];
 extern s8 D_80119418_msetup;
 extern Vec D_8011A920_msetup;
 extern Vec D_8011A92C_msetup;
-extern f32 D_800CE17C_main[];
 extern f32 D_800D5210_main;
 extern f32 D_800CB890_main;
 

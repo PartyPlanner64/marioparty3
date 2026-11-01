@@ -18,7 +18,6 @@ typedef struct UnkSeEntry {
 } UnkSeEntry; // sizeof 0x18
 
 extern f32 D_800CB890_main;
-extern f32 D_800CE17C_main[];
 extern f32 D_800D5210_main;
 
 extern Vec D_8011473C_mstory5;

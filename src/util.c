@@ -16,8 +16,6 @@
 extern OverlayTable mod_ovltbl[];
 extern OverlayTable mod_modeovltbl[];
 #else
-extern OverlayTable _ovltbl[];
-extern OverlayTable _modeovltbl[];
 #endif
 
 extern u8 D_800962F0_main;

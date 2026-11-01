@@ -42,7 +42,6 @@ extern OSMesgQueue *D_800B25E0_main;
 extern s32 D_800B25E4_main;
 extern Gfx D_800B25F0_main[];
 extern s32 *gUCodeAddresses;
-extern long long int rspbootTextStart[];
 
 void HuProfInit(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u16 arg4) {
     D_800B246E_main.unk0 = arg1;

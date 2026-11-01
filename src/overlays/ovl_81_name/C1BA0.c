@@ -1,7 +1,6 @@
 #include "common.h"
 #include "ovl_81.h"
 
-extern s32 fontcolor;
 
 typedef struct UnkInputWaitWork {
     /* 0x00 */ Process *prc;

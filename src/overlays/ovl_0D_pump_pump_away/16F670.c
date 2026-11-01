@@ -273,7 +273,6 @@ extern u16 D_80113548_pump_pump_away[2];
 extern f32 D_801116E0_pump_pump_away;
 extern f32 D_801116E4_pump_pump_away;
 extern s32 D_801135E4_pump_pump_away;
-extern s32 fontcolor;
 extern const s16 D_801116D8_pump_pump_away[];
 
 void func_80106A6C_pump_pump_away(omObjData *obj);

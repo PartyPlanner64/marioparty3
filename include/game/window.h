@@ -146,6 +146,8 @@ typedef struct TextWindow {
     /* 0x278 */ char pad278[4]; /* maybe part of unk276[3]? */
 } TextWindow;                   /* size = 0x27C */
 
+extern u8 D_800A2150_main;
+
 void HuWinInit(void);
 s16 HuWinCreate(s16, s16, s16, s16, s32, s16);
 void HuWinMesSet(s16, u32, s16, s16);

@@ -31,7 +31,6 @@ s32 func_8000B710_main(s32 arg0);
 // hmfcoll
 
 // unknown
-extern u16 D_800D530C_main;
 extern s32 D_800A178C_main[][6];
 
 enum {

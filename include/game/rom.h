@@ -1,5 +1,5 @@
-#ifndef __ROM_H
-#define __ROM_H
+#ifndef _GAME_ROM_H
+#define _GAME_ROM_H
 
 #include "ultra64.h"
 

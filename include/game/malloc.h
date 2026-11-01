@@ -1,5 +1,5 @@
-#ifndef __MALLOC_H
-#define __MALLOC_H
+#ifndef _GAME_MALLOC_H
+#define _GAME_MALLOC_H
 
 #include "ultra64.h"
 #include "common_structs.h"

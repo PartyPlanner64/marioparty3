@@ -1,5 +1,5 @@
-#ifndef __PROCESS_H
-#define __PROCESS_H
+#ifndef _GAME_PROCESS_H
+#define _GAME_PROCESS_H
 
 #include "ultra64.h"
 

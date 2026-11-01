@@ -1,5 +1,5 @@
-#ifndef _AUDIO_H
-#define _AUDIO_H
+#ifndef _GAME_AUDIO_H
+#define _GAME_AUDIO_H
 
 #include "ultra64.h"
 

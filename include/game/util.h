@@ -1,5 +1,5 @@
-#ifndef _UTIL_H
-#define _UTIL_H
+#ifndef _GAME_UTIL_H
+#define _GAME_UTIL_H
 
 #include "ultra64.h"
 #include "game/object.h"
@@ -23,4 +23,4 @@ s8 func_8000B4B4_main(void);
 s16 HmfAnimRead(HmfData* arg0, s32 arg1, char* arg2);
 s16 func_8000B5BC_main(s32 arg0);
 
-#endif //_UTIL_H
+#endif //_GAME_UTIL_H

@@ -1,5 +1,5 @@
-#ifndef _EEPROM_H
-#define _EEPROM_H
+#ifndef _GAME_EEPROM_H
+#define _GAME_EEPROM_H
 
 #include "ultra64.h"
 

@@ -1,5 +1,5 @@
-#ifndef __MALLOCBLOCK_H
-#define __MALLOCBLOCK_H
+#ifndef _GAME_MALLOCBLOCK_H
+#define _GAME_MALLOCBLOCK_H
 
 #include "ultra64.h"
 

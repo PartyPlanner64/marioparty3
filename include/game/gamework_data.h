@@ -1,5 +1,5 @@
-#ifndef _GAMEWORK_DATA_H
-#define _GAMEWORK_DATA_H
+#ifndef _GAME_GAMEWORK_DATA_H
+#define _GAME_GAMEWORK_DATA_H
 
 #include "ultra64.h"
 #include "game/object.h"

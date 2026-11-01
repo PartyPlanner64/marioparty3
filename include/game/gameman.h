@@ -1,5 +1,5 @@
-#ifndef __GAMEMAN_H
-#define __GAMEMAN_H
+#ifndef _GAME_GAMEMAN_H
+#define _GAME_GAMEMAN_H
 
 void func_8000E740_main(void);
 void func_8000E78C_main(void);

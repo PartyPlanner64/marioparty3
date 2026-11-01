@@ -1,5 +1,5 @@
-#ifndef _SIMAN_H
-#define _SIMAN_H
+#ifndef _GAME_SIMAN_H
+#define _GAME_SIMAN_H
 
 #include "ultra64.h"
 #include "game/nnsched.h"

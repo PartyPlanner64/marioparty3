@@ -1,5 +1,5 @@
-#ifndef _VIBRATOR_H_
-#define _VIBRATOR_H_
+#ifndef _GAME_VIBRATOR_H
+#define _GAME_VIBRATOR_H
 
 #include "ultra64.h"
 #include "game/siman.h"

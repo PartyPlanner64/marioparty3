@@ -1,5 +1,5 @@
-#ifndef _GAME_HMFMAN_H
-#define _GAME_HMFMAN_H
+#ifndef _GAME_HU3D_H
+#define _GAME_HU3D_H
 
 #include "ultra64.h"
 #include "types.h"

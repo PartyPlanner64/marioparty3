@@ -7,7 +7,6 @@
 #include "game/data.h"
 #include "game/malloc.h"
 #include "game/mallocblock.h"
-#include "overlays/opening.h"
 #include "gcc/string.h"
 #include "game/board.h"
 #include "game/hmfload.h"

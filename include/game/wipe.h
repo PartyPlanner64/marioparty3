@@ -1,5 +1,5 @@
-#ifndef _WIPE_H
-#define _WIPE_H
+#ifndef _GAME_WIPE_H
+#define _GAME_WIPE_H
 
 #include "ultra64.h"
 
@@ -66,4 +66,4 @@ void func_800661D4_main(Gfx **arg0, s32 arg1, s32 arg2);
 void func_800661F8_main(void);
 void func_80066228_main(void);
 
-#endif //_WIPE_H
+#endif //_GAME_WIPE_H

@@ -7,6 +7,7 @@
 #include "common_structs.h"
 
 extern u8 D_800D20B8_main[16][3];
+extern u8 D_800D5570_main[16][3];
 extern UnkOvl81 D_800D1360;
 
 void func_800142A0_main(s32 count);

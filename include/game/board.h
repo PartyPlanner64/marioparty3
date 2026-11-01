@@ -1,5 +1,5 @@
-#ifndef _BOARD_H
-#define _BOARD_H
+#ifndef _GAME_BOARD_H
+#define _GAME_BOARD_H
 
 #include "ultra64.h"
 #include "game/hvq.h"
@@ -239,4 +239,4 @@ extern void (*MBItemSubFunctions[22])(void);
 //TODO: should these be here?
 extern s16 D_800CE198_main;
 
-#endif //_BOARD_H
+#endif //_GAME_BOARD_H

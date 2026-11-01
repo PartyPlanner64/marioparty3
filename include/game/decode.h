@@ -1,5 +1,5 @@
-#ifndef __DECODE_H
-#define __DECODE_H
+#ifndef _GAME_DECODE_H
+#define _GAME_DECODE_H
 
 #include "ultra64.h"
 

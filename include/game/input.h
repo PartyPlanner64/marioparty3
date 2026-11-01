@@ -1,5 +1,5 @@
-#ifndef _INPUT_H
-#define _INPUT_H
+#ifndef _GAME_INPUT_H
+#define _GAME_INPUT_H
 
 #include "ultra64.h"
 

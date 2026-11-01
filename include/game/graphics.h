@@ -1,5 +1,5 @@
-#ifndef __GRAPHICS_H
-#define __GRAPHICS_H
+#ifndef _GAME_GRAPHICS_H
+#define _GAME_GRAPHICS_H
 
 #include "ultra64.h"
 #include "game/nnsched.h"

@@ -1,5 +1,5 @@
-#ifndef __PAD_H
-#define __PAD_H
+#ifndef _GAME_PAD_H
+#define _GAME_PAD_H
 
 #include "ultra64.h"
 #include "game/siman.h"

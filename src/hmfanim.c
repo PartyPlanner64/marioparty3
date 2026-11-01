@@ -17,7 +17,7 @@ void func_80031B30_main(u8 *chunk, HmfData *hmf, HmfData_Unk84_Entry2 *tex);
 void func_80031DF4_main(HmfData *hmf);
 HmfPaletteData *func_80032038_main(HmfData *hmf, s16 index);
 void func_800321B8_main(u8 *data, HmfData *hmf, HmfPaletteData *pal);
-u8 *func_80010A38_main(s32 magic, void *start, void *end);
+u8 *func_80010A38_main(s32 tag, void *start, void *end);
 void *func_80010AC8_main(void *chunk);
 void func_800333B0_main(s16 animIdx);
 s16 func_800329B4_main(u8 *data);

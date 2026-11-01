@@ -34,8 +34,8 @@ static void func_800F288C_shared_board(void) {
     omDelPrcObj(NULL);
 }
 
-void func_800F292C_shared_board(void) {
-    omAddPrcObj(func_800F288C_shared_board, 0x1002, 0, 0);
+Process *func_800F292C_shared_board(void) {
+    return omAddPrcObj(func_800F288C_shared_board, 0x1002, 0, 0);
 }
 
 static void func_800F2958_shared_board(void) {
@@ -53,7 +53,7 @@ static void func_800F2958_shared_board(void) {
     omDelPrcObj(NULL);
 }
 
-void func_800F29EC_shared_board(void) {
-    omAddPrcObj(func_800F2958_shared_board, 0x1002, 0, 0);
+Process *func_800F29EC_shared_board(void) {
+    return omAddPrcObj(func_800F2958_shared_board, 0x1002, 0, 0);
 }
 

@@ -99,10 +99,10 @@ void func_80106EC4_baby_bowser_broadside(omObjData *object);
 void func_80108210_baby_bowser_broadside(BabyBowserBroadsideSlot *slot);
 void func_80108350_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler);
 void func_80108614_baby_bowser_broadside(void);
-s16 func_8010A598_baby_bowser_broadside(s32 priority, s32 directory, s32 file, s32 bank, s32 attr);
+s16 func_8010A598_baby_bowser_broadside(s16 priority, s32 directory, s32 file, s32 bank, s32 attr);
 void func_8010A738_baby_bowser_broadside(s16 sprite, s16 x, s16 y);
-s16 func_8010A8C4_baby_bowser_broadside(s32 directory, s32 file, f32 scale, s32 type, s32 arg4, s32 flags);
-s16 func_8010AE60_baby_bowser_broadside(s32 directory, s32 file, s32 arg2, s32 arg3);
+s16 func_8010A8C4_baby_bowser_broadside(s32 directory, s32 file, f32 scale, s16 type, s32 arg4, s32 flags);
+s16 func_8010AE60_baby_bowser_broadside(s32 directory, s32 file, s16 type, s32 flags);
 void func_8010DAE8_baby_bowser_broadside(s32 arg0, BabyBowserBroadsideHandler *handler);
 s16 func_8010DB38_baby_bowser_broadside(s16 model, Vec *positions, s16 count, f32 arg3, f32 arg4, s32 flags);
 s16 func_8010DC88_baby_bowser_broadside(s16 boat, s32 flags);
@@ -141,7 +141,7 @@ void func_801062C4_baby_bowser_broadside(omObjData *object);
 void func_80106E70_baby_bowser_broadside(omObjData *object);
 void func_80107140_baby_bowser_broadside(omObjData *object);
 void func_80107630_baby_bowser_broadside(void);
-void func_801076AC_baby_bowser_broadside();
+void func_801076AC_baby_bowser_broadside(void);
 void func_80107A00_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler);
 void func_80107C64_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler);
 void func_80109BD8_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler);
@@ -152,7 +152,7 @@ void func_80107A80_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBows
 s32 func_80109058_baby_bowser_broadside(omObjData *object, unk_80109EBC *player);
 void func_80108860_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler);
 BabyBowserBroadsideGroup *func_80109F64_baby_bowser_broadside(omObjData *object, s8 group, s16 count, s16 handlers);
-s16 func_8010A0B4_baby_bowser_broadside(s8 group, s32 flags, s32 arg2, void (*callback)(), s32 arg4);
+s16 func_8010A0B4_baby_bowser_broadside(s8 index, s32 flags, s32 arg2, void (*callback)(), s32 arg4); // Declared with s32 arg4: this caller does not narrow to u8.
 
 extern s16 D_8010FD78_baby_bowser_broadside[];
 extern s16 D_8010FD84_baby_bowser_broadside[];
@@ -168,7 +168,7 @@ void func_80105E2C_baby_bowser_broadside(omObjData *object);
 void func_80105E64_baby_bowser_broadside(omObjData *object);
 void func_80105F64_baby_bowser_broadside(omObjData *object);
 void func_80109ED0_baby_bowser_broadside(void);
-void func_8010A158_baby_bowser_broadside();
+void func_8010A158_baby_bowser_broadside(); // Unprototyped: called with one argument.
 void func_8010A2C4_baby_bowser_broadside(s8 group);
 void func_8010A81C_baby_bowser_broadside(void);
 void func_8010ACF8_baby_bowser_broadside(void);

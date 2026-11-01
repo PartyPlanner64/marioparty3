@@ -145,7 +145,7 @@ void opDemoSprKill(void);
 void func_80107A90_opening(s32 index);
 void func_80112A74_opening(omObjData *obj);
 void opDemoStarWaitMain(omObjData *obj);
-void SLCommonSet(s32 arg0);
+s32 SLCommonSet(s32 writeBox);
 void opDemoEventSetup(void);
 void opDemoEventKill(void);
 void opTitleSetup(void);
@@ -172,7 +172,7 @@ void func_80111090_opening(omObjData *);
 void func_80112944_opening(void);
 void opContErrorCreate(void);
 void MBCameraOffsetSet(s16 arg0, s16 arg1);
-void espTPLvlSet(u16 arg0, s16 arg1);
+void espTPLvlSet(u16 spriteId, s16 arg1);
 void espAttrSet(u16 arg0, u16 arg1);
 void espAttrReset(u16 arg0, u16 arg1);
 void espScaleSet(u16 arg0, f32 arg1, f32 arg2);
@@ -189,6 +189,6 @@ void opContErrorDispOff(void);
 void opWipeKill(s32 index);
 void func_80111F58_opening(s16 modelId);
 void func_80112120_opening(s16 modelId);
-void func_80013390_main(s16 model, s32 arg1, s32 arg2, void (*callback)(s16));
+void func_80013390_main(s16 model, s16 type, char *name, void (*func)(s16));
 
 #endif

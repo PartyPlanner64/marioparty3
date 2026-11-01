@@ -13,13 +13,7 @@
 
 // EXTERN
 
-typedef struct {
-    /* 0x00 */ char unk00[2];
-    /* 0x02 */ s16 unk02;
-    /* 0x04 */ char unk04[0x14];
-} D_800CCF58_main_Struct; // Size 0x18
-
-extern D_800CCF58_main_Struct *D_800CCF58_main; // esprite
+extern HmfModelData_Unk64_Unk8C_Struct *D_800CCF58_main; // esprite
 
 // LOCAL
 

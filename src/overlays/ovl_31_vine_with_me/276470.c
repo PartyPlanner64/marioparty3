@@ -18,17 +18,17 @@
 
 // camsetup
 void func_8000B5F0_main(u8 arg0);
-void func_8000B710_main(s32);
+s32 func_8000B710_main(s32 arg0);
 
 // hmfspr
 void func_800142A0_main(s32);
-s32 func_80016784_main(s32, s32);
-void func_80016FB4_main(s32, s32, s16);
-void func_80017320_main(s32);
-s16 func_80017790_main(s16 model, s32 arg1, s16 arg2, s32 arg3);
+HmfModelSet *func_80016784_main(s16 model, s16 step);
+void func_80016FB4_main(s16 model, HmfModelSet *set, s16 frame);
+void func_80017320_main(HmfModelSet *set);
+s16 func_80017790_main(s16 model, s16 slot, s16 chr, s32 dataNum);
 void func_80017954_main(s16, s16, s16, s16);
 s16 func_80017AD8_main(s32);
-s32 func_80017BB8_main(s16, s16);
+s32 func_80017BB8_main(s16 chr, s16 animId);
 
 // 8EA10
 f32 atan2df(f32, f32);
@@ -130,7 +130,7 @@ static f32 D_80115604_vine_with_me;
 static f32 D_80115608_vine_with_me;
 static f32 D_8011560C_vine_with_me;
 static f32 D_80115610_vine_with_me[8];
-static s32 D_80115630_vine_with_me[2];
+static HmfModelSet *D_80115630_vine_with_me[2];
 static f32 D_80115638_vine_with_me;
 static s16 D_8011563C_vine_with_me;
 static D_80115640_vine_with_me_Struct D_80115640_vine_with_me;

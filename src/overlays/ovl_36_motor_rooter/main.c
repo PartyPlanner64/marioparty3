@@ -25,7 +25,7 @@ s32 func_8000B710_main(s32 arg0);
 
 // hmfspr
 void func_800142A0_main(s32);
-void func_80017D24_main(f32 *, f32, f32, f32);
+void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 
 // hmfcoll
 
@@ -1149,7 +1149,7 @@ void func_801091A0_motor_rooter(FuncContext *ctx) {
         model->rot.x = pitch;
         model->rot.y = point->yaw;
         m254_MakeIdentityMtx(model->mtx[0]);
-        func_80017D24_main(model->mtx[0], 0.0f, 0.0f, angle);
+        func_80017D24_main(model->mtx, 0.0f, 0.0f, angle);
     }
 }
 
@@ -1317,7 +1317,7 @@ void func_80109EFC_motor_rooter(FuncContext *ctx) {
     model->rot.x = pitch;
     model->rot.y = point->yaw;
     m254_MakeIdentityMtx(model->mtx[0]);
-    func_80017D24_main(model->mtx[0], 0.0f, 0.0f, angle);
+    func_80017D24_main(model->mtx, 0.0f, 0.0f, angle);
 }
 
 void func_8010A174_motor_rooter(FuncContext *ctx) {
@@ -1701,7 +1701,7 @@ void func_8010AF0C_motor_rooter(FuncContext *ctx) {
     if (player->unk08 & 0x400) {
         object->rot.x = CRotM[camera].x;
         m254_MakeIdentityMtx(HmfModelData[object->model[0]].mtx[0]);
-        func_80017D24_main(HmfModelData[object->model[0]].mtx[0], 0.0f, player->unk74, 0.0f);
+        func_80017D24_main(HmfModelData[object->model[0]].mtx, 0.0f, player->unk74, 0.0f);
         object->rot.y = 0.0f;
     } else {
         object->rot.x = 360.0f - CRotM[camera].x;
@@ -1709,7 +1709,7 @@ void func_8010AF0C_motor_rooter(FuncContext *ctx) {
             object->rot.y = CRotM[camera].y + 180.0f;
         }
         m254_MakeIdentityMtx(HmfModelData[object->model[0]].mtx[0]);
-        func_80017D24_main(HmfModelData[object->model[0]].mtx[0], 0.0f, 0.0f, 360.0f - angle);
+        func_80017D24_main(HmfModelData[object->model[0]].mtx, 0.0f, 0.0f, 360.0f - angle);
     }
 }
 
@@ -1747,11 +1747,11 @@ void func_8010B394_motor_rooter(FuncContext *ctx) {
     Hu3DModelRotSet(object->model[9], object->rot.x, object->rot.y, object->rot.z);
     if (player->unk08 & 0x400) {
         m254_MakeIdentityMtx(model->mtx[0]);
-        func_80017D24_main(model->mtx[0], 0.0f, player->unk74, 0.0f);
+        func_80017D24_main(model->mtx, 0.0f, player->unk74, 0.0f);
         model->rot.y = model->rot.z = 0.0f;
     } else {
         m254_MakeIdentityMtx(model->mtx[0]);
-        func_80017D24_main(model->mtx[0], 0.0f, 0.0f, 360.0f - player->turnAngle);
+        func_80017D24_main(model->mtx, 0.0f, 0.0f, 360.0f - player->turnAngle);
     }
     if (!(player->unk08 & 0x200)) {
         angle = player->motion.y;
@@ -1773,11 +1773,11 @@ void func_8010B394_motor_rooter(FuncContext *ctx) {
     if (player->unk08 & 0x400) {
         Hu3DModelRotSet(object->model[10], object->rot.x, object->rot.y, 0.0f);
         m254_MakeIdentityMtx(HmfModelData[object->model[10]].mtx[0]);
-        func_80017D24_main(HmfModelData[object->model[10]].mtx[0], 0.0f, player->unk74, 0.0f);
+        func_80017D24_main(HmfModelData[object->model[10]].mtx, 0.0f, player->unk74, 0.0f);
     } else {
         Hu3DModelRotSet(object->model[10], object->rot.x, object->rot.y, object->rot.z);
         m254_MakeIdentityMtx(HmfModelData[object->model[10]].mtx[0]);
-        func_80017D24_main(HmfModelData[object->model[10]].mtx[0], 0.0f, 0.0f, 360.0f - player->turnAngle);
+        func_80017D24_main(HmfModelData[object->model[10]].mtx, 0.0f, 0.0f, 360.0f - player->turnAngle);
     }
 }
 
@@ -2126,7 +2126,7 @@ void func_8010CB2C_motor_rooter(omObjData *object, s16 item, s16 modelIndex) {
     model->rot.x = CRotM[camera].x;
     model->rot.y = CRotM[camera].y;
     m254_MakeIdentityMtx(model->mtx[0]);
-    func_80017D24_main(model->mtx[0], 0.0f, 0.0f, angle);
+    func_80017D24_main(model->mtx, 0.0f, 0.0f, angle);
 }
 
 void func_8010CD84_motor_rooter(Vec *positions, s16 count) {

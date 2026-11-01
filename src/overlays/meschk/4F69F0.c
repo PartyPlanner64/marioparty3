@@ -125,9 +125,9 @@ extern u8 D_800CD280_main;
 extern u16 D_800D530C_main;
 
 extern void HuWinPushKeySet(s32, s16);
-extern s32 func_80016784_main(s32, s32);
-extern void func_80016FB4_main(s32, s32, s16);
-extern void func_80017320_main(s32);
+extern HmfModelSet *func_80016784_main(s16 model, s16 step);
+extern void func_80016FB4_main(s16 model, HmfModelSet *set, s16 frame);
+extern void func_80017320_main(HmfModelSet *set);
 extern void func_800142A0_main(s32);
 extern void func_8004DEC8_main(s16);
 extern void func_80105B50_meschk(void);
@@ -339,7 +339,7 @@ void func_80106390_meschk(omObjData *arg0) {
 void func_801063BC_meschk() {
     s16 model;
     s16 motion;
-    s32 animation;
+    HmfModelSet *animation;
     s16 frame;
 
     model = func_8000B108_main(0x700A0, 0x2A9);

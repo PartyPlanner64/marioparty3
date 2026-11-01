@@ -60,7 +60,7 @@ void func_8000B880_main(s16 arg0, f32 r, f32 g, f32 b) {
     }
 }
 
-void func_8000BA00_main() {
+void func_8000BA00_main(void) {
     HuSprClose();
     HuMemFree(D_800CD1DC_main);
     D_800CD1DC_main = NULL;

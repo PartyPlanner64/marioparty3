@@ -86,7 +86,7 @@ s8 D_8010BE38_hyper_hydrants[][16] = {
 s8 D_8010BE68_hyper_hydrants[2] = { 0, 0 };
 s8 D_8010BE6A_hyper_hydrants = 0;
 
-extern void *D_800EBEB0_minigame;
+extern Hu3DQuadPool D_800EBEB0_minigame;
 extern D_80111B50_vine_with_me_Struct D_8010BF60_hyper_hydrants;
 extern omObjData *D_8010BFE8_hyper_hydrants[2][5];
 
@@ -131,7 +131,7 @@ extern s16 D_8010C012_hyper_hydrants[2];
 extern s16 D_8010C016_hyper_hydrants[2];
 extern s16 D_8010C01A_hyper_hydrants[2][2];
 
-void func_80021BE0_main(void *arg0, u16 arg1);
+void func_80021BE0_main(Hu3DQuadPool *pool, u16 numQuads);
 void func_800E1804_minigame(void);
 void func_80105CB4_hyper_hydrants(D_80111B50_vine_with_me_Struct *arg0);
 void func_80105FC8_hyper_hydrants(void);
@@ -151,7 +151,7 @@ void func_800E1840_minigame(void);
 void func_800E1370_minigame(omObjData *object, s32 arg1, f32 arg2);
 void HuAudFXAllStop(void);
 void HuAudFXPanning(s16 arg0, s16 arg1);
-void func_8000B710_main(s32 arg0);
+s32 func_8000B710_main(s32 arg0);
 void func_80105EB0_hyper_hydrants(s8 camera);
 void func_8010B8B0_hyper_hydrants(omObjData *object);
 void func_8010B38C_hyper_hydrants(void);

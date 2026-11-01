@@ -13,8 +13,8 @@ s32 rand8(void);
 extern u8 D_800CD6A6_main;
 extern u8 D_800D2008_main;
 
-void func_80018F18_main(HuMtx4F in, HuMtx4F out);
-s16 func_8002C834_main(HmfData *hmf, char *name);
+s32 func_80018F18_main(HuMtx4F src, HuMtx4F dst);
+s16 func_8002C834_main(HmfData *arg0, char *name);
 void func_80013D44_main(s16 model);
 void func_80013D4C_main(s16 model);
 void func_80013FB4_main(s16 model);

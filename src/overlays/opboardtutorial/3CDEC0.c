@@ -30,10 +30,10 @@ extern Object *D_80107798_opboardtutorial;
 void func_800DCCE0_shared_board(void);
 void func_800DCD64_shared_board(s32 player, s32 value);
 void func_800EE614_shared_board(s32 window);
-void func_80013390_main(s16 model, s32 arg1, s32 arg2, void (*callback)(s16));
+void func_80013390_main(s16 model, s16 type, char *name, void (*func)(s16));
 void func_800138EC_main(s16 model, s32 arg1, s32 arg2);
 void func_80105DE0_opboardtutorial(s16 model);
-s32 func_800329B4_main(void *data);
+s32 func_800329B4_main(u8 *data); // Declared locally: this caller was compiled against an int return type.
 void func_80033910_main(HmfData *hmf);
 void func_80033970_main(HmfData *hmf);
 void func_80107408_opboardtutorial(void);

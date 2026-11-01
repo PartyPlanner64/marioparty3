@@ -146,14 +146,14 @@ const char D_8010D978_inst[] = "gamen";
 
 const char D_8010D980_inst[] = "frame";
 
-s16 func_8000B0D4_main(s32, u16);
+u16 func_8000B0D4_main(s32 arg0, s32 arg1);
 void func_80107E98_inst(void);
 s32 func_80107E20_inst(void);
 void func_80107BE4_inst(void);
 void func_80107938_inst(omObjData *);
 void func_8010815C_inst(omObjData *);
 void func_80107EE0_inst(void);
-void func_80108AF0_inst(s16, void *, void *, void *);
+void func_80108AF0_inst(s16 model, void *imageHeader, void *imageData, u8 *alpha);
 void func_80107470_inst(void); /* extern */
 void func_801079CC_inst(omObjData *);
 s32 func_8010B10C_inst(void);
@@ -162,7 +162,7 @@ void func_80107F98_inst(omObjData *);
 void func_8010B124_inst(void);
 void func_80107A24_inst(omObjData *); /* extern */
 void func_80107BF8_inst(omObjData *); /* extern */
-HmfSkeletonNode *func_8001D33C_main(s16, const char *);
+void *func_8001D33C_main(s16 idx, char *name);
 
 void func_80107470_inst(void) {
     s32 i;

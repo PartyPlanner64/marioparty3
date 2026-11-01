@@ -28,7 +28,7 @@ extern u8 D_800D2008_main;
 extern Gfx *D_800CCF30_main;
 extern Vtx *D_800D59F4_main;
 
-void func_80034F70_main(Gfx **gfx, void *image, s32 fmt, s32 width, s32 height,
+void func_80034F70_main(Gfx **gfx, void *image, s32 fmt, u32 width, u32 height,
                         s32 uls, s32 ult, s32 lrs, s32 lrt, s32 pal, s32 cms, s32 cmt,
                         s32 masks, s32 maskt, s32 shifts, s32 shiftt, s32 tile, s32 tmem);
 void func_800343FC_main(Gfx **gfx, void *image, s32 fmt, s32 siz, s32 width, s32 height,
@@ -38,7 +38,7 @@ void func_80034C08_main(Gfx **gfx, void *image, s32 fmt, s32 siz, s32 width, s32
                         s32 uls, s32 ult, s32 lrs, s32 lrt, s32 pal, s32 cms, s32 cmt,
                         s32 masks, s32 maskt, s32 shifts, s32 shiftt, s32 tile, s32 tmem);
 
-void func_80034998_main(Gfx **gfx, void *image, s32 fmt, s32 width, s32 height,
+void func_80034998_main(Gfx **gfx, void *image, s32 fmt, u32 width, u32 height,
                         s32 uls, s32 ult, s32 lrs, s32 lrt, s32 pal, s32 cms, s32 cmt,
                         s32 masks, s32 maskt, s32 shifts, s32 shiftt);
 void func_800341D0_main(Gfx **gfx, u16 *image, s32 fmt, s32 siz, s32 width, s32 height,

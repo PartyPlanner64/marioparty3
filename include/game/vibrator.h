@@ -4,8 +4,8 @@
 #include "common.h"
 #include "siman.h"
 
-extern void PRENMICallbackVibrator();
-extern s32 _InitVibrator();
+extern void PRENMICallbackVibrator(void);
+extern s32 _InitVibrator(void);
 
 typedef struct {
     s16 stat;

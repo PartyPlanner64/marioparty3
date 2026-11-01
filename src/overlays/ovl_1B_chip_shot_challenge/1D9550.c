@@ -128,7 +128,7 @@ u16 func_8000B0D4_main(s32 arg0, s32 arg1);
 void func_800E149C_minigame(omObjData *, s32, s32);
 void func_800E3584_minigame(s16);
 void func_800E3628_minigame(s16, Vec *);
-void func_80013390_main(s16 model, s32 arg1, s32 arg2, void (*callback)(s16));
+void func_80013390_main(s16 model, s16 type, char *name, void (*func)(s16));
 s16 HmfAnimRead(HmfData *, s32, char *);
 s32 func_8000B638_main(void);
 void espAttrSet(u16 arg0, u16 arg1);
@@ -143,7 +143,7 @@ void func_80107BB0_chip_shot_challenge(void);
 void func_80107E94_chip_shot_challenge(void);
 f32 func_80109AD0_chip_shot_challenge(omObjData *object, f32 x, f32 y, f32 z);
 void func_80088800_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
-void func_80017D24_main(f32 *mtx, f32 x, f32 y, f32 z);
+void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 void func_800E17D4_minigame(omObjData *object, f32 x, f32 y, f32 z);
 void func_800E147C_minigame(omObjData *object);
 void func_800E1468_minigame(omObjData *object);
@@ -1242,7 +1242,7 @@ void func_801094D8_chip_shot_challenge(omObjData *object) {
     D_8010A978_chip_shot_challenge = func_800202A8_main(D_8010A978_chip_shot_challenge);
     D_8010A97C_chip_shot_challenge = func_800202A8_main(D_8010A97C_chip_shot_challenge);
     object->rot.y = angle;
-    func_80017D24_main(HmfModelData[object->model[0]].mtx[0], D_8010A978_chip_shot_challenge, 0.0f, 0.0f);
+    func_80017D24_main(HmfModelData[object->model[0]].mtx, D_8010A978_chip_shot_challenge, 0.0f, 0.0f);
     if (D_8010AAF0_chip_shot_challenge->trans.y < -100.0f ||
         (D_8010A838_chip_shot_challenge == 0.0f && D_8010A83C_chip_shot_challenge != 1)) {
         D_8010A840_chip_shot_challenge++;

@@ -33,7 +33,7 @@ extern s16 D_8010C7D0_end_of_the_line;
 extern f32 D_8010C5CC_end_of_the_line;
 extern f32 D_8010C5D0_end_of_the_line[2];
 
-void espTPLvlSet(u16 spriteId, s16 alpha);
+void espTPLvlSet(u16 spriteId, s16 arg1);
 void func_80105E88_end_of_the_line(omObjData *obj);
 void func_8010AA1C_end_of_the_line(omObjData *obj);
 

@@ -2,9 +2,10 @@
 #define __GRAPHICS_H
 
 #include <libultra.h>
+#include "game/nnsched.h"
 
 typedef struct {
-    s32 unk00;
+    Gfx *unk00;
     u16 unk04;
     s32 unk08;
     OSMesgQueue *unk0C;
@@ -17,7 +18,7 @@ typedef struct combinedStruct {
     OSMesg completionMsg;
 } swapChainTaskQueue;
 
-void func_8000F024_main(void **, u16, u16); // Init graphics frame buffer pool
+void func_8000F024_main(void **pool, u16 size, u16 segment); // Init graphics frame buffer pool
 void func_8000F04C_main(u64 **);            // Set gThreadStacks
 void func_8000F088_main(s32 *);             // Set graphics state
 void func_8000F094_main(u32);               // Set unk swap chain state
@@ -30,19 +31,11 @@ extern void osViSwapBuffer(void *);
 extern void osViBlack(u8);
 extern void osViSetYScale(f32);
 
-// TODO: Move to respective header files
-typedef struct unkSchedStruct {
-    struct unkSchedStruct *unk00; // next client in list
-    OSMesgQueue *unk04;
-    s32 unk08;    // event mask
-} unkSchedStruct; // sizeof 0xC
-
 typedef struct {
     u8 unk00[0x20];
 } unkGraphicsMessage2; // OSMesg
 
-void AddSchedulerClient(unkSchedStruct *, OSMesgQueue *, s32);
-void func_8004D85C_main();
-void func_8004D878_main();
+void func_8004D85C_main(void);
+void func_8004D878_main(void);
 
 #endif

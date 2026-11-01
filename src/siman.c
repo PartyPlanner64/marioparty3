@@ -130,7 +130,7 @@ void CallSIClient(s16 type) {
 void SIProc(void *arg0) {
     unkMesgWrapper msgWrapper;
 
-    AddSchedulerClient(&msgWrapper, &D_800D1220_main, 3);
+    AddSchedulerClient(&msgWrapper.client, &D_800D1220_main, 3);
 
     while (TRUE) {
         osRecvMesg(&D_800D1220_main, (OSMesg *)&msgWrapper.unkMsg, OS_MESG_BLOCK);

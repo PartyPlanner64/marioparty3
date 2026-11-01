@@ -46,7 +46,7 @@ typedef struct unkStruct06 {
 
 extern s16 omovlevtno;
 f32 func_800D76D0_name_81(void *);
-void func_80100CEC_name_81(u8);
+void func_80100CEC_name_81(s32 padIdx);
 s32 func_800E1824_name_81(s32, s32, s32);
 s32 func_800E88FC_name_81(void);
 void func_800E1854_name_81(s32);
@@ -69,8 +69,8 @@ void func_800ECD0C_name_81(s16, s16, s16);
 void func_800EB708_name_81(s32, s32, unkStruct01 *);
 unkStruct03 *func_80047EA0_main(void *, s32, s32, s32);
 void func_80105CC0_duel01(void); // probably takes object as arg
-void func_800FC8C4_name_81(void *);
-extern s32 D_80105540_name_81;
+void func_800FC8C4_name_81(Vec *arg0);
+extern Vec D_80105540_name_81;
 void func_800EC1E4_name_81(void *, s32, void *, f32);
 void func_800EBF2C_name_81(void *, s32, void *);
 void func_80106308_duel01(void);

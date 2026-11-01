@@ -91,7 +91,7 @@ extern f32 D_8010EFE4_picking_panic[2];
 extern f32 D_8010EFEC_picking_panic[2];
 extern s16 D_8010EFF8_picking_panic[10];
 
-void func_8000B710_main(s32 arg0);
+s32 func_8000B710_main(s32 arg0);
 void func_80105D3C_picking_panic(omObjData *object);
 void func_80106020_picking_panic(omObjData *object);
 void func_8010664C_picking_panic(omObjData *object);

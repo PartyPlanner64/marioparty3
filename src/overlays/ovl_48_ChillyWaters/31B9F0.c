@@ -201,7 +201,7 @@ s16 MB1Ev_StarGuideMasuGet(void);
 s32 MB1Ev_YesNoChoiceGet(DecisionTreeNonLeafNode *arg0, s32 arg1);
 void func_80106EEC_ChillyWaters(Object*);
 s32 msmMusPlayDefault(s32);
-s32 func_801059D0_ChillyWaters(s16, s16);
+s32 func_801059D0_ChillyWaters(s16, s16); // Defined as void, but this caller uses the result.
 void func_80105DB8_ChillyWaters(s32);
 void func_8011BBA4_ChillyWaters(void);
 void func_8011BD8C_ChillyWaters(void);
@@ -6164,7 +6164,7 @@ void MB1Ev_Lake(void) {
 }
 
 // entrypoint 4
-void MB1Ev_OpStarMapView() {
+void MB1Ev_OpStarMapView(void) {
     Hu3DCamInit(2);
     Hu3DCameraScissorSet(1, &D_8011E8B8_ChillyWaters);
     MB1_ObjectSetup();

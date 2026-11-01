@@ -175,18 +175,6 @@ typedef struct Unk3 {
     char* unk_0C; //messageID / pointer to message?
 } Unk3; //sizeof 0x10
 
-typedef struct {
-    /* 0x00 */ u8 unk00;
-    /* 0x01 */ char unk01[1];
-    /* 0x02 */ s16 unk02;
-    /* 0x04 */ s16 unk04;
-    /* 0x06 */ char unk06[2];
-    /* 0x08 */ HmfMotionChannel **unk08;
-    /* 0x0C */ u8 *unk0C;
-    /* 0x10 */ s16 *unk10;
-    /* 0x14 */ f32 *unk14;
-} D_800CCF58_main_Struct; // Size 0x18
-
 // Per-object data block for the duel overlays, holding per-instance data for
 // 16 model instances. Reached via omObjData::data.
 typedef struct UnkDuelObjData {

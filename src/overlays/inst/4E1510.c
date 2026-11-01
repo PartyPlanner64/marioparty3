@@ -10,7 +10,7 @@ extern void (*D_8010DDE4_inst)(omObjData *);
 extern s32 D_8010D520_inst;
 extern s32 D_8010D524_inst;
 
-s32 func_800329B4_main(void *);
+s16 func_800329B4_main(u8 *data);
 void func_80033910_main(HmfData *);
 void func_80033970_main(HmfData *);
 void func_8010872C_inst(omObjData *);

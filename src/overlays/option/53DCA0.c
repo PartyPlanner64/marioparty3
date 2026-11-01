@@ -25,10 +25,10 @@ void func_80113490_option(s32);
 void func_80113424_option(s32);
 s32 func_801130E8_option(s32);
 void func_801133EC_option(s32);
-void espTPLvlSet(u16, s16);
+void espTPLvlSet(u16 spriteId, s16 arg1);
 void espBankSet(u16, s32, s32);
 void func_8000BDDC_main(u16, s32);
-void espAttrSet(u16, u16);
+void espAttrSet(u16 arg0, u16 arg1);
 void espAttrReset(u16, u16);
 void espScaleSet(u16, f32, f32);
 void func_80033910_main(HmfData *);
@@ -919,7 +919,7 @@ s32 func_801130E8_option(s32 pad) {
     return D_801139D0_option;
 }
 
-u16 func_80113204_option(s32 arg0) {
+s32 func_80113204_option(s32 arg0) {
     return (u16)D_800D0590_main[arg0];
 }
 

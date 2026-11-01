@@ -39,7 +39,6 @@ extern s32 D_800D1F70_main;
 extern u32 D_800D2094_main;
 
 extern void func_8000E3C0_main(void);
-void InitScheduler(u8, u8);
 void func_8000EA10_main(void **arg1, s32 arg2, s32 arg3, u64 **arg4, s32 *arg5);
 void HuProfInit(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u16 arg4);
 void InitSI(void);
@@ -57,7 +56,7 @@ void func_8004D6E8_main(s16);
 #define INTR_MESG_BUF_SIZE 256
 #define OTHER_MESG_BUF_SIZE 8
 
-void main() {
+void main(void *arg) {
     s32 iVar5;
     s32 stopLooping;
 

@@ -80,7 +80,6 @@ void func_800023B4_main(void);
 void func_80002528_main(void);
 void func_80006E30_main(void);
 void func_80006FC4_main(void);
-void RemoveSchedulerClient(unkSchedStruct *client);
 void __amMain(void *arg);
 s32 __amHandleFrameMsg(AudioInfo *info, AudioInfo *lastInfo);
 void __amHandleDoneMsg(AudioInfo *info);

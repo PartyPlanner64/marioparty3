@@ -117,7 +117,7 @@ typedef struct FileSelectCameraState {
 } FileSelectCameraState;
 
 void func_80030030_main(f32);
-void SLLoadBoard(void);
+s32 SLLoadBoard(void);
 
 void func_80106B40_filesel(s32, u32, s16, s16, s16, s16, s16);
 void func_8010F678_filesel(s32);
@@ -202,11 +202,11 @@ s32 func_80111B14_filesel(s32);
 u32 func_80106AD8_filesel(u32);
 s32 func_8010AC58_filesel(s32);
 s32 func_80112494_filesel(s32, u8 *);
-void SLCommonSet(s32);
-void func_80050DDC_main(s16, s16);
-void espColorSet(u16, u8, u8, u8);
-void espTPLvlSet(u16, s16);
-void espAttrSet(u16, u16);
+s32 SLCommonSet(s32 writeBox);
+s32 func_80050DDC_main(s16 srcBoxNo, s16 dstBoxNo);
+void espColorSet(u16 spriteId, s32 arg1, s32 arg2, s32 arg3);
+void espTPLvlSet(u16 spriteId, s16 arg1);
+void espAttrSet(u16 arg0, u16 arg1);
 void espAttrReset(u16, u16);
 void espPriSet(u16, s32);
 void espBankSet(u16, s32, s32);

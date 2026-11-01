@@ -27,7 +27,7 @@ extern const Vec D_80114D9C_opening, D_80114DA8_opening;
 void espColorSet(u16 spriteId, s32 arg1, s32 arg2, s32 arg3);
 void func_80088800_main(HuMtx4F, f32, f32, f32);
 void func_80017CD0_main(HuMtx4F, f32, f32, f32);
-HmfMotionNode *func_8001D33C_main(s16 model, char *name);
+void *func_8001D33C_main(s16 idx, char *name);
 
 void Hu3DModelHookSet(s16, s16, char *);
 void func_8002367C_main(HuMtx4F, HuMtx4F);
@@ -2579,12 +2579,12 @@ void opDemoEvent(void) {
         opMotionTimeSet(0x16, 0U);
         opMotionFlagSet(0x16, 1);
         temp_v0_13 = opModelIdGet(0x16);
-        func_80088800_main(func_8001D33C_main(temp_v0_13, "mario")->unk58, 0.0f, -4000.0f, 0.0f);
-        func_80088800_main(func_8001D33C_main(temp_v0_13, "luigi")->unk58, 0.0f, -4000.0f, 0.0f);
-        func_80088800_main(func_8001D33C_main(temp_v0_13, "peach")->unk58, 0.0f, -4000.0f, 0.0f);
-        func_80088800_main(func_8001D33C_main(temp_v0_13, "yoshi")->unk58, 0.0f, -4000.0f, 0.0f);
-        func_80088800_main(func_8001D33C_main(temp_v0_13, "wario")->unk58, 0.0f, -4000.0f, 0.0f);
-        func_80088800_main(func_8001D33C_main(temp_v0_13, "donkey")->unk58, 0.0f, -4000.0f, 0.0f);
+        func_80088800_main(((HmfMotionNode *)func_8001D33C_main(temp_v0_13, "mario"))->unk58, 0.0f, -4000.0f, 0.0f);
+        func_80088800_main(((HmfMotionNode *)func_8001D33C_main(temp_v0_13, "luigi"))->unk58, 0.0f, -4000.0f, 0.0f);
+        func_80088800_main(((HmfMotionNode *)func_8001D33C_main(temp_v0_13, "peach"))->unk58, 0.0f, -4000.0f, 0.0f);
+        func_80088800_main(((HmfMotionNode *)func_8001D33C_main(temp_v0_13, "yoshi"))->unk58, 0.0f, -4000.0f, 0.0f);
+        func_80088800_main(((HmfMotionNode *)func_8001D33C_main(temp_v0_13, "wario"))->unk58, 0.0f, -4000.0f, 0.0f);
+        func_80088800_main(((HmfMotionNode *)func_8001D33C_main(temp_v0_13, "donkey"))->unk58, 0.0f, -4000.0f, 0.0f);
         HuVecCopyXYZ(&sp3C8, 0.0f, 0.0f, -200.0f);
         sp3C8.z -= 8.0f;
         opModelCreate(0x17, 0xD0003, 0x2A9);

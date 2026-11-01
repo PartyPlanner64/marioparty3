@@ -149,7 +149,7 @@ s16 MBTurnRemain(void) {
     return system->total_turns - system->current_turn + 1;
 }
 
-s32 func_800ECF18_shared_board(s16 arg0, f32 arg1) {
+s16 func_800ECF18_shared_board(s16 arg0, f32 arg1) {
     Vec sp10;
     s32 var_v0;
 

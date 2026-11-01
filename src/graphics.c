@@ -197,7 +197,7 @@ graphicsMessage *func_8000EF10_main(void) {
 }
 
 /* Send graphics OSMesg */
-u8 func_8000EF64_main(s32 arg0, u16 arg1, s32 arg2, OSMesgQueue *arg3, s32 arg4) {
+u8 func_8000EF64_main(Gfx *arg0, u16 arg1, s32 arg2, OSMesgQueue *arg3, s32 arg4) {
     graphicsMessage *mesg;
     u32 intMask;
 

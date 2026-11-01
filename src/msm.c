@@ -1,4 +1,5 @@
 #include "common.h"
+#include "game/msm.h"
 #include "PR/n_libaudio.h"
 #include "math.h"
 
@@ -228,21 +229,6 @@ typedef struct {
     /* 0x00 */ s32 count;
     /* 0x04 */ s8 slots[20];
 } SeVoiceList; // size: 0x18
-
-/* Optional parameters for starting a sound effect. */
-typedef struct {
-    /* 0x00 */ s32 flags; // which of the fields below are valid
-    /* 0x04 */ s32 slot;
-    /* 0x08 */ s32 variant;
-    /* 0x0C */ s32 vol;
-    /* 0x10 */ s32 pitch;
-    /* 0x14 */ s32 pan;
-    /* 0x18 */ s32 fxMix;
-    /* 0x1C */ s32 angle;
-    /* 0x20 */ f32 dist;
-    /* 0x24 */ f32 unk_24;
-    /* 0x28 */ f32 unk_28;
-} SePlayParam; // size: 0x2C
 
 /* Positional parameters of a sound effect voice. */
 typedef struct {

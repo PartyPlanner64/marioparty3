@@ -35,9 +35,9 @@ extern f32 D_800D5210_main;
 extern omObjData *D_800CE194_main;
 extern s32 D_800D6AB8_main;
 
-s32 msmSeGetStatus(s16 seNo);
+s32 msmSeGetStatus(s32 slot);
 void msmSeSetVolume(s32 seNo, s32 volume);
-void msmSeStop(s16 seNo);
+void msmSeStop(s32 slot);
 void func_80012B14_main(s16 camIndex, Vec *worldPos, Vec2f *outPos);
 void func_80000EA8_main(struct str800D5298 *config);
 void msmMusSetVolume(s32 musNo, s32 volume);

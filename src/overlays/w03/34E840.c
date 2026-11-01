@@ -249,7 +249,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80107970_w03);
 INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80107A04_w03);
 
 // entrypoint 2
-void func_80107CA4_w03() {
+void func_80107CA4_w03(void) {
     HuAudSeqPlay(0x1A);
     D_800CE198_main = 0x1A;
     func_800F8D6C_shared_board(0x1A);
@@ -824,7 +824,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_8011A704_w03);
 INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_8011B1FC_w03);
 
 // entrypoint 4
-void func_8011B41C_w03() {
+void func_8011B41C_w03(void) {
     Hu3DCamInit(2);
     Hu3DCameraScissorSet(1, &D_8011D598_w03);
     func_80107A04_w03();

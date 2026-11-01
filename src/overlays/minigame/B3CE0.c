@@ -19,7 +19,7 @@ typedef struct {
 
 // EXTERN
 
-s16 func_8000B0D4_main(s32, s32);
+u16 func_8000B0D4_main(s32 arg0, s32 arg1);
 void func_800DDD94_minigame(omObjData *);
 
 // LOCAL

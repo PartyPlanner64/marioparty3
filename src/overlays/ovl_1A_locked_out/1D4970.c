@@ -85,7 +85,7 @@ extern s16 D_8010A678_locked_out;
 extern s16 D_8010A674_locked_out;
 extern s16 D_8010A67A_locked_out;
 extern D_80111B50_vine_with_me_Struct D_8010A588_locked_out;
-extern void *D_800EBEB0_minigame;
+extern Hu3DQuadPool D_800EBEB0_minigame;
 extern s32 D_8010A164_locked_out;
 extern u16 D_8010A168_locked_out;
 extern s32 D_8010A16C_locked_out;
@@ -105,13 +105,13 @@ void func_800E1334_minigame(omObjData *, f32);
 void func_800E1340_minigame(omObjData *, f32);
 void func_800E139C_minigame(omObjData *, f32, f32, f32, f32, f32);
 void func_800E4C88_minigame(omObjData *, u8, f32, f32, f32, f32, f32);
-void func_80021BE0_main(void *arg0, u16 arg1);
+void func_80021BE0_main(Hu3DQuadPool *pool, u16 numQuads);
 s32 func_8000B638_main(void);
 u16 func_8000B0D4_main(s32 arg0, s32 arg1);
 void func_8002367C_main(HuMtx4F dst, HuMtx4F src);
-void func_80016B00_main(s16, s16, char *, HuMtx4F);
+void func_80016B00_main(s16 model, s16 frame, char *name, HuMtx4F *out);
 void func_80088800_main(HuMtx4F, f32, f32, f32);
-void func_80017D24_main(HuMtx4F, f32, f32, f32);
+void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 void func_80017CD0_main(HuMtx4F, f32, f32, f32);
 void func_80018044_main(HuMtx4F, HuMtx4F, HuMtx4F);
 
@@ -1436,7 +1436,7 @@ void func_80109E88_locked_out(s16 model, char *hook, s16 time, Vec *pos) {
     HuMtx4F hookTransform;
     HmfModel *modelData;
 
-    func_80016B00_main(model, time, hook, hookTransform);
+    func_80016B00_main(model, time, hook, &hookTransform);
     modelData = &HmfModelData[model];
     func_80088800_main(transform, modelData->pos.x, modelData->pos.y, modelData->pos.z);
     func_80017D24_main(transform, modelData->rot.x, modelData->rot.y, modelData->rot.z);

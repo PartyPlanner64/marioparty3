@@ -23,7 +23,7 @@ s16 func_8010B54C_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, f32 scale
 s16 func_8010C8D4_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, u8 *color);
 
 void func_8010F878_baby_bowser_broadside(f32 *matrix);
-void func_80017D24_main(f32 *matrix, f32 x, f32 y, f32 z);
+void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 void func_8010D590_baby_bowser_broadside(u16 model, HuSprite_Unk84_Struct *sprite, u16 frame, u8 *color);
 
 s16 func_8010D6C4_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, HmfData *data, f32 scale, s16 arg3, s16 arg4);
@@ -520,7 +520,7 @@ void func_8010B3B4_baby_bowser_broadside(void) {
             model->rot.x = CRot.x;
             model->rot.y = CRot.y;
             func_8010F878_baby_bowser_broadside(model->mtx[0]);
-            func_80017D24_main(model->mtx[0], 0.0f, 0.0f, CRot.z);
+            func_80017D24_main(model->mtx, 0.0f, 0.0f, CRot.z);
             if (work->unk_04 & 1) {
                 if (work->unk_04 & 2) {
                     func_8010D590_baby_bowser_broadside((u16)work->unk_0C, func_80055194_main(work->unk_0A), (u16)work->unk_10, work->unk_20);

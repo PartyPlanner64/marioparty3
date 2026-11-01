@@ -11,7 +11,7 @@ typedef struct Duel04SpriteWork {
     /* 0x0C */ char unk_0C[0x4];
 } Duel04SpriteWork; // sizeof 0x10
 
-void func_800FC8C4_name_81(Vec *);
+void func_800FC8C4_name_81(Vec *arg0);
 void *memcpy(void *, const void *, unsigned int);
 extern Vec D_80105540_name_81;
 extern s16 D_8011AFC4_duel04[];

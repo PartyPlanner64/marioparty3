@@ -12,7 +12,7 @@
 #include "input.h"
 
 // hmfdraw
-s16 func_8002C834_main(HmfData *, const char *);
+s16 func_8002C834_main(HmfData *arg0, char *name);
 
 extern MinigameTable D_800A6D44_main[];
 
@@ -314,7 +314,7 @@ void func_80045D38_main(omObjData *object) {
     }
 }
 
-omObjData *func_80045ED0_main(u32 arg0) {
+omObjData *func_80045ED0_main(s32 arg0) {
     return func_80045F48_main(arg0, -1, -1, -1);
 }
 

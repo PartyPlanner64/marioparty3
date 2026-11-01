@@ -15,7 +15,7 @@
 #define M_ID(m, i, j) ((m)[(i) * 4 + (j)])
 
 // hmfspr
-void func_80017D24_main(f32 *, f32, f32, f32);
+void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 
 // 8EA10
 f32 atan2df(f32, f32);
@@ -530,7 +530,7 @@ void m257_UpdateBills(void) {
         model->rot.x = CRot.x;
         model->rot.y = CRot.y;
         m257_MakeIdentityMtx(model->mtx[0]);
-        func_80017D24_main(model->mtx[0], 0.0f, 0.0f, CRot.z);
+        func_80017D24_main(model->mtx, 0.0f, 0.0f, CRot.z);
         if (bill->attr & BILL_ATTR_01) {
             if (bill->attr & BILL_ATTR_ANIM) {
                 func_8010CCD4_tick_tock_hop(bill->modelId, func_80055194_main(bill->unk08), bill->timer);

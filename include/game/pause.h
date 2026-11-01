@@ -5,7 +5,7 @@
 #include "game/object.h"
 
 void func_80045350_main(void);
-omObjData* func_80045ED0_main(u32 arg0);
+omObjData *func_80045ED0_main(s32 arg0);
 omObjData* func_80045F1C_main(u32, s16, s16);
 
 #endif

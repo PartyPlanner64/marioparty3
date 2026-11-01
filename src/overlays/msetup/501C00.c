@@ -72,8 +72,8 @@ extern f32 D_800CE17C_main[];
 extern f32 D_800D5210_main;
 extern f32 D_800CB890_main;
 
-void espTPLvlSet(u16, s16);
-void espAttrSet(u16, s32);
+void espTPLvlSet(u16 spriteId, s16 arg1);
+void espAttrSet(u16 arg0, u16 arg1);
 void espPriSet(u16, s32);
 void espScaleSet(u16, f32, f32);
 void espKill(u16);
@@ -93,11 +93,11 @@ void func_8010BE8C_msetup(s16);
 void func_8010BA6C_msetup(s16, s16);
 void func_8010BC18_msetup(s16, s16);
 void func_8010B9B8_msetup(s32, s32);
-void func_8010DDD8_msetup(void *);
+void func_8010DDD8_msetup(omObjData *object);
 omObjData *func_8010DE38_msetup(s32, s32, s32);
 void func_8010E4BC_msetup(Array2D *, s32, f32);
 void func_8010E4D8_msetup(MsetupLinkedModel *, s32);
-void func_8010E8C8_msetup(Array2D *, s32, s32, f32, f32, f32, f32, s32);
+void func_8010E8C8_msetup(Array2D *models, s16 count, s16 frames, f32 rotation, f32 height, f32 scale, f32 endScale, s16 animateBoard);
 void func_8010F320_msetup(Process *, s16, s16, s16);
 s16 func_8010F2F4_msetup(Process *, s16);
 s32 _CheckFlag(s32);            /* extern */

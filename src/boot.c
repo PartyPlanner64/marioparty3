@@ -1,7 +1,8 @@
 #include "common.h"
 #include "PR/os.h"
+#include "game/nnsched.h"
 
-extern void main(void *arg);
+void main(void *arg);
 
 extern OSThread gInitThread;
 extern u8 gThread1Stack[];
@@ -13,8 +14,7 @@ void thread1_idle(void *arg);
 
 void __osInitialize_common(void);
 void __osInitialize_autodetect(void);
-void InitSchedulerEvent(void);
-void func_800357AC_main(s32);
+void func_800357AC_main(s16 count);
 
 void ultraMain() {
     __osInitialize_common();

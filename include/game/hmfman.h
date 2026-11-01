@@ -99,15 +99,16 @@ typedef struct {
 } HmfMotionChannel;
 
 typedef struct {
-    u8 unk00;
-    u8 unk01;
-    s16 unk02;
-    char unk04[4];
-    HmfMotionChannel **unk08;
-    u8 *unk0C;
-    s16 *unk10;
-    f32 *unk14;
-} HmfModelData_Unk64_Unk8C_Struct;
+    /* 0x00 */ u8 unk00;
+    /* 0x01 */ u8 unk01;
+    /* 0x02 */ s16 unk02;
+    /* 0x04 */ s16 unk04;
+    /* 0x06 */ char unk06[2];
+    /* 0x08 */ HmfMotionChannel **unk08;
+    /* 0x0C */ u8 *unk0C;
+    /* 0x10 */ s16 *unk10;
+    /* 0x14 */ f32 *unk14;
+} HmfModelData_Unk64_Unk8C_Struct; // Size 0x18
 
 typedef struct {
     u8 components[4];
@@ -273,6 +274,18 @@ typedef struct {
     s8 (*normals[2])[3];
     u8 *visited;
 } HmfVertexAnimCache;
+
+typedef struct {
+    u32 magic;
+    u32 size;
+    u8 unk08;
+    u8 objectCount;
+    s16 duration;
+    u32 channelOffset;
+    u32 timeOffset;
+    u32 valueOffset;
+    u32 objectOffsets[1];
+} HmfMotionFile;
 
 typedef struct HmfData {
     /* 0x00 */ u8 unk00;

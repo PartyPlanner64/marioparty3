@@ -12,7 +12,7 @@ extern s32 D_800A0530_main;
 extern s32 D_800C9940_main;
 
 // graphics.c
-u8 func_8000EF64_main(void *arg0, u16 arg1, s32 arg2, void *arg3, s32 arg4);
+u8 func_8000EF64_main(Gfx *arg0, u16 arg1, s32 arg2, OSMesgQueue *arg3, s32 arg4);
 
 // hmfload.c
 void func_8000F978_main(HmfData *);
@@ -33,7 +33,7 @@ void func_80021AF4_main(void);
 void func_80021B20_main(s16 index);
 
 // hmfdraw.c
-void func_800222B0_main(void *arg0, void *arg1, u16 arg2, u16 arg3, u16 arg4, u8 arg5);
+void func_800222B0_main(HuAllocFunc alloc, HuFreeFunc free, u16 vertexCount, u16 matrixCount, u16 gfxCount, u8 bufferCount);
 void func_800224BC_main(void);
 void func_80022660_main(HmfData *);
 void func_800225D4_main(void);
@@ -41,9 +41,9 @@ void func_80023404_main(HmfData *arg0, HuMtx4F arg1, HuMtx4F arg2);
 void func_8002367C_main(HuMtx4F dst, HuMtx4F src);
 Gfx *func_800250D4_main(s16 arg0, Gfx *arg1, Gfx *arg2);
 s32 func_8002F60C_main(HmfData *hmf);
-s16 func_8002C834_main(HmfData *, char *);
+s16 func_8002C834_main(HmfData *arg0, char *name);
 void func_8002D260_main(void);
-s32 func_8002D3AC_main(void *);
+s32 func_8002D3AC_main(HmfMotionFile *file);
 void func_8002D514_main(void);
 void func_80030030_main(f32);
 f32 func_8002FC7C_main(HmfModelData_Unk64_Unk8C_Struct *arg0, u16 flags, f32 frame, f32 start, f32 speed);
@@ -52,7 +52,7 @@ f32 func_8002FC7C_main(HmfModelData_Unk64_Unk8C_Struct *arg0, u16 flags, f32 fra
 void func_80030178_main(s32 arg0);
 void func_800303C8_main(HmfModel *model, f32 time);
 void func_80030198_main(void);
-s32 func_800300A4_main(void *, void *);
+s32 func_800300A4_main(HmfData *model, u8 *data);
 
 // hmfanim.c
 extern HmfData_Unk84_Entry2 *D_800D1FCC_main;
@@ -64,7 +64,7 @@ void func_80034048_main(s16 animIdx, s16 count);
 void HmfAnimExec(u16 vcount);
 
 // 8AC70.c
-void func_8008A070_main(void *);
+void func_8008A070_main(HuMtx4F mtx);
 
 // hmfspr.c
 void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
@@ -99,8 +99,8 @@ extern Gfx *gMainGfxPos;
 void Hmfload(HmfData *, void *, s32);
 void *func_80010AC8_main(void *);
 void Hu3DFogClear(void);
-s32 func_8001FF04_main(s32);
-s32 func_8002D2D8_main(void *, HmfData *);
+s16 func_8001FF04_main(s16 model);
+s16 func_8002D2D8_main(HmfMotionFile *file, HmfData *hmf);
 
 extern u8 D_800A0540_main;
 extern u8 D_800A0541_main;
@@ -195,7 +195,7 @@ s16 Hu3DModelCreate(u8 *data, u32 arg1) {
         hmf->unkC8 = 0;
         hmf->unk98 = NULL;
         if (data[2] == 'N' && data[3] == 'X') {
-            modelP->motId = func_8002D3AC_main(data);
+            modelP->motId = func_8002D3AC_main((HmfMotionFile *)data);
             arg1 &= ~(0x10 | 0x1);
         } else {
             var_a1 = data + 8;
@@ -210,7 +210,7 @@ s16 Hu3DModelCreate(u8 *data, u32 arg1) {
             } else {
                 modelP->motId = 0xFF;
             }
-            modelP->unk08 = func_800300A4_main(data, var_a1);
+            modelP->unk08 = func_800300A4_main((HmfData *)data, var_a1);
         }
     } else {
         Hmfload(hmf, data, arg1);
@@ -222,7 +222,7 @@ s16 Hu3DModelCreate(u8 *data, u32 arg1) {
         }
         hmf->unk00 = (arg1 >> HU3D_ATTR_LAYER_SHIFT) & 7;
         modelP->attr = arg1;
-        modelP->motId = func_8002D2D8_main(data, hmf);
+        modelP->motId = func_8002D2D8_main((HmfMotionFile *)data, hmf);
         if (modelP->motId != 0xFF) {
             if (hmf->unk14 == 0) {
                 func_8000F978_main(hmf);
@@ -660,17 +660,17 @@ void Hu3DExec(void *arg0, u16 arg1) {
                 func_80019668_main(model->unkB4);
             }
             if (model->motId != 0xFF) {
-                hmf->unk8C = (HmfModelData_Unk64_Unk8C_Struct *)&D_800CCF58_main[model->motId];
+                hmf->unk8C = &D_800CCF58_main[model->motId];
                 hmf->unkA0 = model->motTime;
                 if (model->motIdShape != 0xFF) {
-                    hmf->unk94 = (HmfModelData_Unk64_Unk8C_Struct *)&D_800CCF58_main[model->motIdShape];
+                    hmf->unk94 = &D_800CCF58_main[model->motIdShape];
                     hmf->unkAC = model->motShapeTime;
                 } else {
                     hmf->unk94 = NULL;
                 }
                 if (model->motIdShift != 0xFF) {
                     if (model->unk0C != 0) {
-                        hmf->unk90 = (HmfModelData_Unk64_Unk8C_Struct *)&D_800CCF58_main[model->motIdShift];
+                        hmf->unk90 = &D_800CCF58_main[model->motIdShift];
                         hmf->unkA4 = model->motShiftTime;
                         hmf->unkA8 = (f32)model->unk0E / model->unk0C;
                         if (!HmfPauseF) {
@@ -1568,14 +1568,14 @@ void func_8001EFEC_main(s16 idx, char *name) {
 }
 
 void func_8001F038_main(HmfModel *model, u16 speed) {
-    model->motTime = func_8002FC7C_main((HmfModelData_Unk64_Unk8C_Struct *)&D_800CCF58_main[model->motId], model->motAttr,
+    model->motTime = func_8002FC7C_main(&D_800CCF58_main[model->motId], model->motAttr,
                                       model->motTime, model->unk48, speed * model->motSpeed);
     if (model->motIdShift != 0xFF) {
-        model->motShiftTime = func_8002FC7C_main((HmfModelData_Unk64_Unk8C_Struct *)&D_800CCF58_main[model->motIdShift],
+        model->motShiftTime = func_8002FC7C_main(&D_800CCF58_main[model->motIdShift],
                                           model->motShiftAttr, model->motShiftTime, model->unk54, speed * model->motShiftSpeed);
     }
     if (model->motIdShape != 0xFF) {
-        model->motShapeTime = func_8002FC7C_main((HmfModelData_Unk64_Unk8C_Struct *)&D_800CCF58_main[model->motIdShape],
+        model->motShapeTime = func_8002FC7C_main(&D_800CCF58_main[model->motIdShape],
                                           model->motShapeAttr, model->motShapeTime, model->unk60, speed * model->motShapeSpeed);
     }
 }
@@ -1599,11 +1599,11 @@ s32 func_8001F1FC_main(void *arg0, s32 arg1) {
         D_800CDD6A_main = 0x2811;
         D_800CB8C0_main.unk0E = 0x2810;
         Hmfload(&D_800CB8C0_main, data, (s16)arg1);
-        ret = func_8002D2D8_main(data, &D_800CB8C0_main);
+        ret = func_8002D2D8_main((HmfMotionFile *)data, &D_800CB8C0_main);
         HuMemFreeAllWithTag(D_800D5204_main);
         HuMemFreeAllWithTag(D_800CDD6A_main);
     } else {
-        ret = func_8002D3AC_main(data);
+        ret = func_8002D3AC_main((HmfMotionFile *)data);
     }
     if (arg1 & 8) {
         gFreeFunc(data);

@@ -2,6 +2,7 @@
 #define _SIMAN_H
 
 #include <libultra.h>
+#include "game/nnsched.h"
 
 #define HOS_PRIORITY_SIMGR 0x5A
 
@@ -23,7 +24,8 @@ typedef struct {
 } unkMesg;
 
 typedef struct {
-    s32 unk0[4];
+    unkSchedStruct client;
+    s32 unk0C;
     unkMesg* unkMsg;
 } unkMesgWrapper;
 
@@ -35,7 +37,6 @@ s32 _RemoveSIClient(functionListEntry* arg0);
 void RemoveSIClient(void* entry);
 void CallSIClient(s16 type);
 s32 RequestSIFunction(unkMesg* siMessg, void* func, void* arg, s32 type);
-void AddSchedulerClient(unkMesgWrapper*, OSMesgQueue*, s32);
 void SIProc(void* arg0);
 
 extern void *D_800BCD00_main;

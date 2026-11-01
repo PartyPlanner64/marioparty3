@@ -1,14 +1,8 @@
 #include "game/audio.h"
+#include "game/msm.h"
 #include "game/vibrator.h"
 #include "pad.h"
 #include "common.h" // TODO: remove.
-
-typedef struct {
-    /* 0x00 */ s32 unk00;
-    /* 0x04 */ char unk04[4];
-    /* 0x08 */ s32 unk08;
-    /* 0x0C */ char unk0C[0x1D];
-} UnkAudStruct; // Size unknown (min: 0x29, max: 0x30)
 
 extern s16 D_800B23D0_main[6];
 extern s8 D_800D6A4C_main[4];
@@ -33,21 +27,21 @@ s16 D_800A190C_main = 1;
 s16 D_800A190E_main = 1;
 s16 D_800A1910_main = 0x40;
 
-void msmSysInit(str800D5298 *);
+s32 msmSysInit(str800D5298 *cfg);
 s32 msmMusPlayDefault(s32);
 s32 msmSePlayDefault(s32);
-s32 msmSePlay(s16, UnkAudStruct *);
-void msmSeSetPitch(s16, s16);
-void msmSeSetPan(s16, s16);
-void msmSeStop(s16);
+s32 msmSePlay(s32 seId, SePlayParam *param);
+void msmSeSetPitch(s32 slot, s32 pitch);
+void msmSeSetPan(s32 slot, s32 pan);
+void msmSeStop(s32 slot);
 s32 msmMusGetStatus(s32);
 void msmMusSetMasterVolume(s32);
 void msmMusSetTempo(s32, s32);
 s32 func_800038EC_main(s32);
-void msmSeSetMasterVolume(s8);
+void msmSeSetMasterVolume(s32 vol);
 void msmSeSetVolume(s32, s32);
-s32 func_8000793C_main(s16);
-s32 msmSeGetStatus(s16);
+s32 func_8000793C_main(s32 seId);
+s32 msmSeGetStatus(s32 slot);
 
 s16 HuAudSeqPlay(s16 musId) {
     if (D_800A1900_main == 0) {
@@ -242,7 +236,7 @@ void func_8004AB7C_main(s8 volume) {
 }
 
 void HuAudFXPitchSet(s32 seNo, s32 pitch) {
-    msmSeSetPitch(seNo, pitch);
+    msmSeSetPitch((s16)seNo, (s16)pitch);
 }
 
 s16 CharFXPlay(s16 seId, u8 charNo) {
@@ -256,10 +250,10 @@ s16 CharFXPlay(s16 seId, u8 charNo) {
 }
 
 s32 func_8004AC5C_main(s16 arg0, s16 arg1) {
-    UnkAudStruct sp10;
+    SePlayParam sp10;
 
-    sp10.unk00 = 0x200;
-    sp10.unk08 = arg1 + 1;
+    sp10.flags = 0x200;
+    sp10.variant = arg1 + 1;
     return msmSePlay(arg0, &sp10);
 }
 
@@ -284,10 +278,10 @@ s16 PlayerFXPlay(s16 seId, s16 playerIdx) {
 }
 
 void HuAudFXStop(s32 seNo) {
-    msmSeStop(seNo);
+    msmSeStop((s16)seNo);
 }
 
-void HuAudFXAllStop() {
+void HuAudFXAllStop(void) {
     msmSeStop(-1);
 }
 
@@ -405,7 +399,7 @@ void omVibrate(s16 player, s16 duration, s16 off, s16 on) {
     }
 }
 
-s32 func_8004B2C0_main() {
+u16 func_8004B2C0_main(void) {
     return 0;
 }
 

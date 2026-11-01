@@ -46,18 +46,6 @@ typedef struct {
     f32 outTangent;
 } HmfHermiteKey;
 
-typedef struct {
-    u32 magic;
-    u32 size;
-    u8 unk08;
-    u8 objectCount;
-    s16 duration;
-    u32 channelOffset;
-    u32 timeOffset;
-    u32 valueOffset;
-    u32 objectOffsets[1];
-} HmfMotionFile;
-
 extern u32 D_800CCF88_main;
 extern u32 D_800CD2FC_main;
 extern u32 D_800D6A20_main;
@@ -161,12 +149,12 @@ extern Gfx D_800A0A80_main[];
 void func_800260F0_main(HmfData *, s32 *);
 void func_8002A358_main(HmfMaterialData *, HmfData_Unk84_Entry *, u32);
 void func_80029FB4_main(HmfData *, s16);
-s32 func_8002DF2C_main(D_800CCF58_main_Struct *, HmfMotionFile *);
-s32 func_8002D5B0_main(D_800CCF58_main_Struct *, HmfData *);
+s32 func_8002DF2C_main(HmfModelData_Unk64_Unk8C_Struct *, HmfMotionFile *);
+s32 func_8002D5B0_main(HmfModelData_Unk64_Unk8C_Struct *, HmfData *);
 s32 func_8002D3D0_main(HmfData *, HmfMotionFile *, s32);
-s16 func_8002D2D8_main(HmfMotionFile *, HmfData *);
+s16 func_8002D2D8_main(HmfMotionFile *file, HmfData *hmf);
 f32 HuSqrtf(f32);
-u8 func_8000EF64_main(void *, u16, s32, void *, s32);
+u8 func_8000EF64_main(Gfx *arg0, u16 arg1, s32 arg2, OSMesgQueue *arg3, s32 arg4);
 void func_8002AC5C_main(u16);
 void func_8002AF40_main(void);
 void func_80089980_main(HuMtx4F, Mtx *);
@@ -174,7 +162,7 @@ void func_8002AFEC_main(HmfData *, s32, s16);
 void func_80033694_main(HmfData *);
 void func_80088700_main(HuMtx4F, f32, f32, f32);
 void func_80088800_main(HuMtx4F, f32, f32, f32);
-void func_8008A070_main(f32 *);
+void func_8008A070_main(HuMtx4F mtx);
 void func_80017CD0_main(HuMtx4F, f32, f32, f32);
 void func_8002367C_main(HuMtx4F, HuMtx4F);
 void func_80018044_main(HuMtx4F, HuMtx4F, HuMtx4F);
@@ -199,17 +187,17 @@ void HmfLightInit(void);
 void func_80031560_main(void);
 void func_80030040_main(void);
 s16 func_80011460_main(u8 *);
-void func_80018544_main(HuMtx4F, HuMtx4F);
+s32 func_80018544_main(HuMtx4F src, HuMtx4F dst);
 void func_80019C00_main(void *data);
 void func_80022660_main(HmfData *);
 void func_80030030_main(f32);
 void func_8002FE08_main(s16, s16, char *, s16, s16, s16);
 
-s32 func_8002DA98_main(D_800CCF58_main_Struct *, s16, u8 *);
+s32 func_8002DA98_main(HmfModelData_Unk64_Unk8C_Struct *, s16, u8 *);
 s32 func_8002DD4C_main(HmfData *, s16, u8 *);
-void *func_80010A38_main(s32, void *, void *);
+u8 *func_80010A38_main(s32 tag, void *start, void *end);
 void *func_80010AC8_main(void *);
-s16 func_8000FDAC_main(HmfData *, s16);
+s16 func_8000FDAC_main(void *arg0, s16 arg1);
 
 f32 func_8002E78C_main(HmfModelData_Unk64_Unk8C_Struct *, HmfMotionChannel *, f32);
 f32 func_8002E8E8_main(HmfModelData_Unk64_Unk8C_Struct *, HmfMotionChannel *, f32);
@@ -674,7 +662,7 @@ void func_80023700_main(HmfData *arg0, s16 arg1) {
     if (arg0->unk8C == NULL) {
         func_80018044_main(node->unk4C, D_800D5A00_main[0], mtx);
     } else {
-        func_8008A070_main(mtx[0]);
+        func_8008A070_main(mtx);
         if (node->pos.x != 0.0f || node->pos.y != 0.0f || node->pos.z != 0.0f) {
             func_80017C10_main(mtx, node->pos.x, node->pos.y, node->pos.z);
             transformed = 1;
@@ -685,7 +673,7 @@ void func_80023700_main(HmfData *arg0, s16 arg1) {
         }
         if (node->scale.x != 1.0f || node->scale.y != 1.0f || node->scale.z != 1.0f) {
             func_80017CD0_main(mtx, node->scale.x, node->scale.y, node->scale.z);
-            func_8008A070_main(temp[0]);
+            func_8008A070_main(temp);
             func_80017CD0_main(temp, node->scale.x, node->scale.y, node->scale.z);
             D_800D5214_main++;
             func_80018044_main(temp, D_800D41B0_main[D_800D5214_main], D_800D41B0_main[D_800D5214_main + 1]);
@@ -2291,7 +2279,7 @@ s32 func_8002C5B8_main(HmfData *hmf, s16 nodeIndex, s16 targetIndex) {
     return 1;
 }
 
-s32 func_8002C834_main(HmfData *arg0, char *name) {
+s16 func_8002C834_main(HmfData *arg0, char *name) {
     s16 hash;
     s16 i;
 
@@ -2345,7 +2333,7 @@ void func_8002CAE4_main(HmfData *hmf) {
     if (hmf->unk14 != 0) {
         D_800D5214_main = 0;
         D_800D138A_main = 0;
-        func_8008A070_main(D_800D5A00_main[0][0]);
+        func_8008A070_main(D_800D5A00_main[0]);
         if (hmf->unk80 == (HmfMotionNode *)-1) {
             if (hmf->unk64 != 0) {
                 func_8002CB6C_main(hmf, 0);
@@ -2366,7 +2354,7 @@ void func_8002CB6C_main(HmfData *hmf, s16 nodeIndex) {
     node = &hmf->unk68[nodeIndex];
     scaled = 0;
     changed = 0;
-    func_8008A070_main(mtx[0]);
+    func_8008A070_main(mtx);
     if (hmf->unk8C == NULL) {
         if (node->unk08.x != 0.0f || node->unk08.y != 0.0f || node->unk08.z != 0.0f) {
             func_80017C10_main(mtx, node->unk08.x, node->unk08.y, node->unk08.z);
@@ -2413,7 +2401,7 @@ void func_8002CDF4_main(HmfData *hmf, s16 nodeIndex) {
     node = &hmf->unk80[nodeIndex];
     scaled = 0;
     changed = 0;
-    func_8008A070_main(mtx[0]);
+    func_8008A070_main(mtx);
     if (node->basePos.x != 0.0f || node->basePos.y != 0.0f || node->basePos.z != 0.0f) {
         func_80017C10_main(mtx, node->basePos.x, node->basePos.y, node->basePos.z);
         changed = 1;
@@ -2556,7 +2544,7 @@ void func_8002D514_main(void) {
     }
 }
 
-s32 func_8002D5B0_main(D_800CCF58_main_Struct *motion, HmfData *hmf) {
+s32 func_8002D5B0_main(HmfModelData_Unk64_Unk8C_Struct *motion, HmfData *hmf) {
     u8 *data;
     u8 *record;
     HmfMotionChannel *channels;
@@ -2668,7 +2656,7 @@ s32 func_8002D5B0_main(D_800CCF58_main_Struct *motion, HmfData *hmf) {
     return 1;
 }
 
-s32 func_8002DA98_main(D_800CCF58_main_Struct *motion, s16 channelIndex, u8 *data) {
+s32 func_8002DA98_main(HmfModelData_Unk64_Unk8C_Struct *motion, s16 channelIndex, u8 *data) {
     HmfMotionChannel *channel;
     s16 i;
     u16 type;
@@ -2765,7 +2753,7 @@ s32 func_8002DD4C_main(HmfData *hmf, s16 trackIndex, u8 *data) {
     return 1;
 }
 
-s32 func_8002DF2C_main(D_800CCF58_main_Struct *motion, HmfMotionFile *file) {
+s32 func_8002DF2C_main(HmfModelData_Unk64_Unk8C_Struct *motion, HmfMotionFile *file) {
     s16 count;
     s16 i;
     u32 *offsets;
@@ -3442,7 +3430,7 @@ void func_8002FDCC_main(s16 arg0, s16 arg1, char *arg2, s16 arg3, s16 arg4) {
 }
 
 void func_8002FE08_main(s16 modelIndex, s16 motionIndex, char *name, s16 target, s16 component, s16 flags) {
-    D_800CCF58_main_Struct *motion;
+    HmfModelData_Unk64_Unk8C_Struct *motion;
     HmfData *hmf;
     s16 objectIndex;
     s16 i;

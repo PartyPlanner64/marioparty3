@@ -48,7 +48,7 @@ extern s16 D_8010C9F0_game_guys_magic_boxes;
 extern void *D_8010C9F4_game_guys_magic_boxes[3];
 extern s16 D_8010CA0C_game_guys_magic_boxes;
 
-void espAttrSet(u16, u16);
+void espAttrSet(u16 arg0, u16 arg1);
 void func_80109884_game_guys_magic_boxes(omObjData *object);
 void func_80109984_game_guys_magic_boxes(omObjData *object);
 

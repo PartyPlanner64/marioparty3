@@ -139,10 +139,10 @@ void func_8010E32C_msetup(Array2D *, s32, f32, s32);
 void func_800332D4_main(s16, f32);
 
 void func_8010F43C_msetup(s16 model, char *node, Vec2f *screenPos);
-void func_80017D24_main(HuMtx4F, f32, f32, f32);
+void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 void func_80017CD0_main(HuMtx4F, f32, f32, f32);
-void espTPLvlSet(u16, s16);
-void espAttrSet(u16, s32);
+void espTPLvlSet(u16 spriteId, s16 arg1);
+void espAttrSet(u16 arg0, u16 arg1);
 void espPriSet(u16, s32);
 void espScaleSet(u16, f32, f32);
 void espKill(u16);
@@ -157,7 +157,7 @@ s32 func_801138F8_msetup(MsetupMenuState *, s32, s32 *, s32);
 s16 func_80113ED4_msetup(MsetupMenuState *arg0);
 
 s16 HmfAnimRead(HmfData *, s32, char *);
-HmfMotionNode *func_8001D33C_main(s16, char *);
+void *func_8001D33C_main(s16 idx, char *name);
 void func_8002367C_main(HuMtx4F, HuMtx4F);
 
 void func_80112804_msetup(void);
@@ -2423,7 +2423,7 @@ s16 func_801152C4_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButto
             } else if (angle < 0.0f) {
                 angle += 360.0f;
             }
-            nodeMatrix = &func_8001D33C_main(model, (char *)D_8011A7F8_msetup)->unk58;
+            nodeMatrix = &((HmfMotionNode *)func_8001D33C_main(model, (char *)D_8011A7F8_msetup))->unk58;
             func_8002367C_main(*nodeMatrix, matrix);
             func_80017D24_main(*nodeMatrix, 0.0f, 0.0f, angle);
         }
@@ -2576,7 +2576,7 @@ s16 func_80115A9C_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButto
             } else if (angle < 0.0f) {
                 angle += 360.0f;
             }
-            nodeMatrix = &func_8001D33C_main(model, (char *)D_8011A7F8_msetup)->unk58;
+            nodeMatrix = &((HmfMotionNode *)func_8001D33C_main(model, (char *)D_8011A7F8_msetup))->unk58;
             func_8002367C_main(*nodeMatrix, matrix);
             func_80017D24_main(*nodeMatrix, 0.0f, 0.0f, angle);
         }
@@ -2649,17 +2649,17 @@ s16 func_80115EE0_msetup(MsetupMenuState *state) {
     pos = D_80119B20_msetup;
     Hu3DModelPosSet(linkedModel, pos.x, pos.y, pos.z);
     Hu3DModelScaleSet(linkedModel, 0.1f, 0.1f, 0.1f);
-    func_8002367C_main(matrix, func_8001D33C_main(linkedModel, (char *)D_8011A7F8_msetup)->unk58);
+    func_8002367C_main(matrix, ((HmfMotionNode *)func_8001D33C_main(linkedModel, (char *)D_8011A7F8_msetup))->unk58);
     message = 0;
     switch (D_8011A938_msetup) {
         case 0:
-            func_80017CD0_main(func_8001D33C_main(linkedModel, (char *)D_8011A800_msetup)->unk58, 0, 0, 0);
+            func_80017CD0_main(((HmfMotionNode *)func_8001D33C_main(linkedModel, (char *)D_8011A800_msetup))->unk58, 0, 0, 0);
             message = 0x1524;
             break;
         case 1:
-            func_80017CD0_main(func_8001D33C_main(linkedModel, (char *)D_8011A7E0_msetup)->unk58, 0, 0, 0);
-            func_80017CD0_main(func_8001D33C_main(linkedModel, (char *)D_8011A7E8_msetup)->unk58, 0, 0, 0);
-            func_80017CD0_main(func_8001D33C_main(linkedModel, (char *)D_8011A7F0_msetup)->unk58, 0, 0, 0);
+            func_80017CD0_main(((HmfMotionNode *)func_8001D33C_main(linkedModel, (char *)D_8011A7E0_msetup))->unk58, 0, 0, 0);
+            func_80017CD0_main(((HmfMotionNode *)func_8001D33C_main(linkedModel, (char *)D_8011A7E8_msetup))->unk58, 0, 0, 0);
+            func_80017CD0_main(((HmfMotionNode *)func_8001D33C_main(linkedModel, (char *)D_8011A7F0_msetup))->unk58, 0, 0, 0);
             message = 0x242E;
             break;
     }

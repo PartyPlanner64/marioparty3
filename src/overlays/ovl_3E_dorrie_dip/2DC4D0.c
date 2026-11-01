@@ -77,7 +77,7 @@ extern omObjData *D_8010A238_dorrie_dip;
 
 extern omObjData *D_8010A23C_dorrie_dip;
 
-extern void *D_800EBEB0_minigame;
+extern Hu3DQuadPool D_800EBEB0_minigame;
 extern f32 D_800EB774_minigame;
 extern D_80111B50_vine_with_me_Struct D_8010A040_dorrie_dip;
 extern s32 D_8010A1F4_dorrie_dip;
@@ -119,7 +119,7 @@ void func_80108C6C_dorrie_dip(omObjData *);
 void func_801095FC_dorrie_dip(omObjData *);
 void func_800E1490_minigame(u16);
 void func_800E5798_minigame(omObjData *, u16);
-omObjData *func_80045ED0_main(u32);
+omObjData *func_80045ED0_main(s32 arg0);
 void func_800E1370_minigame(omObjData *, s32, f32);
 void func_80107EE0_dorrie_dip(omObjData *);
 void func_80109F00_dorrie_dip(void);
@@ -133,9 +133,9 @@ void func_8010971C_dorrie_dip(void);
 void func_801064FC_dorrie_dip(void);
 void func_80109E1C_dorrie_dip(s32);
 void func_80108A74_dorrie_dip(s16, char *, s16, Vec *);
-void func_80016B00_main(s16, s16, char *, HuMtx4F);
+void func_80016B00_main(s16 model, s16 frame, char *name, HuMtx4F *out);
 void func_80088800_main(HuMtx4F, f32, f32, f32);
-void func_80017D24_main(HuMtx4F, f32, f32, f32);
+void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
 void func_80017CD0_main(HuMtx4F, f32, f32, f32);
 void func_80018044_main(HuMtx4F, HuMtx4F, HuMtx4F);
 void func_801074CC_dorrie_dip(void);
@@ -148,7 +148,7 @@ void func_801081A8_dorrie_dip(void);
 void func_80108EA0_dorrie_dip(s32);
 void func_801092E0_dorrie_dip(void);
 void func_801090C4_dorrie_dip(void);
-void func_80021BE0_main(void **, s32);
+void func_80021BE0_main(Hu3DQuadPool *pool, u16 numQuads);
 void func_80105B44_dorrie_dip(f32, f32, f32, f32, f32, f32, f32);
 void func_80105C7C_dorrie_dip(omObjData *);
 void func_8010601C_dorrie_dip(void);
@@ -1010,7 +1010,7 @@ void func_80108A74_dorrie_dip(s16 model, char *hook, s16 time, Vec *pos) {
     HuMtx4F hookTransform;
     HmfModel *modelData;
 
-    func_80016B00_main(model, time, hook, hookTransform);
+    func_80016B00_main(model, time, hook, &hookTransform);
     modelData = &HmfModelData[model];
     func_80088800_main(transform, modelData->pos.x, modelData->pos.y, modelData->pos.z);
     func_80017D24_main(transform, modelData->rot.x, modelData->rot.y, modelData->rot.z);

@@ -33,6 +33,6 @@ extern s16 D_800D6A48_main;
 extern u8 D_800CB99C_main;
 
 //esprite
-extern D_800CCF58_main_Struct* D_800CCF58_main;
+extern HmfModelData_Unk64_Unk8C_Struct* D_800CCF58_main;
 
 #endif //_VARIABLES_H_

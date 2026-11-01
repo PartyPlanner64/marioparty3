@@ -34,7 +34,7 @@ s16 func_80011460_main(u8 *str);
 void func_800146DC_main(s16 arg0, u16 arg1, u16 arg2);
 void func_800169E0_main(s16 model, s16 step, HmfModelSet *set, s16 target);
 void func_80016C2C_main(HmfData *hmf, s16 nodeIdx, s16 target);
-s16 func_8002C834_main(HmfData *hmf, char *name);
+s16 func_8002C834_main(HmfData *arg0, char *name);
 void func_8002DFF8_main(HmfData *hmf, f32 frame, HmfModelData_Unk64_Unk8C_Struct *motion, s32 arg3);
 void func_8002367C_main(HuMtx4F dst, HuMtx4F src);
 void func_8008A070_main(HuMtx4F mtx);
@@ -416,7 +416,7 @@ void func_800166D0_main(void) {
 // code above does not call into them). Not aligned by 16 though.
 HmfModelSet *func_80016784_main(s16 model, s16 step) {
     HmfData *hmf = HmfModelData[model].hmf;
-    D_800CCF58_main_Struct *motion = &D_800CCF58_main[HmfModelData[model].motId];
+    HmfModelData_Unk64_Unk8C_Struct *motion = &D_800CCF58_main[HmfModelData[model].motId];
     HmfModelSet *set = HuMemMemoryAllocPerm(sizeof(HmfModelSet));
 
     set->unk_08 = HuMemMemoryAllocPerm((motion->unk02 + step) / step * (hmf->unk16 << 6));
@@ -429,7 +429,7 @@ HmfModelSet *func_80016784_main(s16 model, s16 step) {
 
 HmfModelSet *func_800168A8_main(s16 model, s16 step, char *name) {
     HmfData *hmf = HmfModelData[model].hmf;
-    D_800CCF58_main_Struct *motion = &D_800CCF58_main[HmfModelData[model].motId];
+    HmfModelData_Unk64_Unk8C_Struct *motion = &D_800CCF58_main[HmfModelData[model].motId];
     s16 node = func_8002C834_main(hmf, name);
     HmfModelSet *set = HuMemMemoryAllocPerm(sizeof(HmfModelSet));
 
@@ -443,7 +443,7 @@ HmfModelSet *func_800168A8_main(s16 model, s16 step, char *name) {
 
 void func_800169E0_main(s16 model, s16 step, HmfModelSet *set, s16 target) {
     HmfData *hmf = HmfModelData[model].hmf;
-    D_800CCF58_main_Struct *motion = &D_800CCF58_main[HmfModelData[model].motId];
+    HmfModelData_Unk64_Unk8C_Struct *motion = &D_800CCF58_main[HmfModelData[model].motId];
     s16 frame;
 
     D_800D1358_main = set->unk_08;
@@ -451,7 +451,7 @@ void func_800169E0_main(s16 model, s16 step, HmfModelSet *set, s16 target) {
     D_800CD1B0_main = 0;
     guMtxIdentF(D_800D5A00_main[0]);
     for (frame = 0; frame < motion->unk02; frame += step) {
-        func_8002DFF8_main(hmf, frame, (HmfModelData_Unk64_Unk8C_Struct *)motion, 1);
+        func_8002DFF8_main(hmf, frame, motion, 1);
         D_800D138A_main = 0;
         func_80016C2C_main(hmf, 0, target);
     }
@@ -461,13 +461,13 @@ void func_80016B00_main(s16 model, s16 frame, char *name, HuMtx4F *out) {
     s16 nodeMap[4];
     HmfData *hmf = HmfModelData[model].hmf;
     s16 node = func_8002C834_main(hmf, name);
-    D_800CCF58_main_Struct *motion = &D_800CCF58_main[HmfModelData[model].motId];
+    HmfModelData_Unk64_Unk8C_Struct *motion = &D_800CCF58_main[HmfModelData[model].motId];
 
     D_800D1358_main = out;
     D_800D04B4_main = nodeMap;
     D_800CD1B0_main = 0;
     guMtxIdentF(D_800D5A00_main[0]);
-    func_8002DFF8_main(hmf, frame, (HmfModelData_Unk64_Unk8C_Struct *)motion, 1);
+    func_8002DFF8_main(hmf, frame, motion, 1);
     D_800D138A_main = 0;
     func_80016C2C_main(hmf, 0, node);
     if (D_800CD1B0_main >= 2) {

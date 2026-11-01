@@ -49,7 +49,7 @@ f32 InterpolateBMLine(f32 *values, f32 *times, f32 time);
 void func_800DCCE0_shared_board(void);
 void func_80007EC0_main(s32 frames);
 void func_800138EC_main(s16 model, s32 arg1, s32 arg2);
-void func_80013390_main(s16 model, s32 arg1, s32 arg2, void (*callback)(s16));
+void func_80013390_main(s16 model, s16 type, char *name, void (*func)(s16));
 void func_80105DC4_opboard(s16 model);
 
 void func_801066F0_opboard(void);

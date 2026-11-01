@@ -27,7 +27,7 @@ extern s8 D_800D1710_main;
 
 void omDestroyPrcObj(void);
 void func_8000BA00_main(void);
-void espTPLvlSet(s32, s16);
+void espTPLvlSet(u16 spriteId, s16 arg1);
 void func_800166D0_main(void);
 void Hu3DModelAllKill(void);
 void func_80021AF4_main(void);
@@ -743,7 +743,7 @@ extern u8 D_800A176C_main;
 extern u16 D_800D0A3A_main;
 
 u16 func_8004B2C0_main(void);
-void func_8000F024_main(void *, u8, s32);
+void func_8000F024_main(void **pool, u16 size, u16 segment);
 void ResetVibrator(s16);
 s32 func_80000F08_main(s32);
 void func_8004B1AC_main(void);
@@ -758,12 +758,12 @@ void func_8004A49C_main(void);
 void OvlLoad(s32 overlayIndex);
 void HmfLightInit(void);
 void HmfLightStatSet(s16 arg0, u8 arg1, u8 arg2);
-void func_8001F6B0_main(s32);
+void func_8001F6B0_main(s8 arg0);
 void func_80045C2C_main(void);
-void func_8004AB7C_main(s32);
-void func_8004ADDC_main(s32);
+void func_8004AB7C_main(s8 volume);
+void func_8004ADDC_main(s16 arg0);
 void func_80007D2C_main(s32, s32);
-void func_8004AA04_main(s32);
+void func_8004AA04_main(s8 volume);
 void func_801059A0(void);
 void func_8004D6E8_main(s16);
 
@@ -833,7 +833,7 @@ void omMain(void) {
                         return;
                     }
                     D_800CCF52_main = D_800D1710_main;
-                    func_8000F024_main(D_800A1240_main, D_800D1710_main, 2);
+                    func_8000F024_main(D_800A1240_main, (u8)D_800D1710_main, 2);
                     func_8001A070_main(HuMemMemoryAllocPerm, HuMemMemoryFreePerm, D_800D4082_main, D_800CD2F4_main, (u16)(s32)D_800D6A56_main, (u8)(s32)(u8)D_800D1710_main);
                     func_800224BC_main();
                     func_8001BF90_main(0x02000000, 0x3D0800);

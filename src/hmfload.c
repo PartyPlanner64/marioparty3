@@ -129,6 +129,10 @@ typedef struct {
     char unk4C[0x40];
 } HmfSkeletonData;
 
+/* The loader's view of HmfData (see game/hmfman.h). It differs in some field
+ * types, e.g. the loader assembles float fields from raw s32 words, so the
+ * functions here that take it are declared locally instead of in a header,
+ * until the two views are reconciled. */
 typedef struct {
     u8 unk00;
     s8 unk01;
@@ -232,18 +236,18 @@ void func_8001866C_main(f32 *, f32, f32, f32);
 void func_80018978_main(f32 *, f32, f32, f32);
 void func_80088910_main(f32 *, f32, f32, f32);
 s16 func_8000FA34_main(HmfLoadData *, void *);
-s16 func_8000FDAC_main(void *, s16);
+s16 func_8000FDAC_main(void *arg0, s16 arg1);
 void func_8000FEE4_main(HmfLoadData *);
 s16 func_800100EC_main(HmfLoadData *);
 s16 func_8001052C_main(HmfLoadData *);
 s16 func_8001073C_main(HmfLoadData *, u16, void *);
-u8 *func_80010A38_main(s32, void *, void *);
+u8 *func_80010A38_main(s32 tag, void *start, void *end);
 void *func_80010AC8_main(void *);
 void func_80010AF8_main(HmfLoadData *, s16, s16, s16);
 void func_80010EB0_main(HmfFaceData *, u8 *, HmfLoadData *, u16 *);
 void func_8001116C_main(s8 *, u16 *, u16 *, u16 *);
 HmfData_Unk84_Entry2 *func_80031A08_main(HmfLoadData *, s16);
-s16 func_80011334_main(HmfLoadData *, void *, s16);
+s16 func_80011334_main(HmfLoadData *hmf, void *arg1, s16 index);
 s32 func_800114C0_main(HmfLoadData *);
 s32 func_80011874_main(HmfLoadData *);
 void func_80011B94_main(HmfLoadData *, void *, s16);

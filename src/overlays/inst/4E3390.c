@@ -47,11 +47,11 @@ const char D_8010DAC8_inst[] = "hook_ao";
 s32 func_80107E20_inst(void);
 void func_8010B040_inst(void);
 void func_80017358_main(s16, const char *, s16, const char *);
-s16 func_8000B0D4_main(s32, u16);
+u16 func_8000B0D4_main(s32 arg0, s32 arg1);
 void func_801080FC_inst(void);
 void func_8010AC04_inst(omObjData *object);
 void func_8010B628_inst(omObjData *);
-void func_80016B00_main(s16, s16, const char *, HuMtx4F);
+void func_80016B00_main(s16 model, s16 frame, char *name, HuMtx4F *out);
 void func_8010A750_inst(omObjData *);
 void func_8010AC30_inst(omObjData *); /* extern */
 void func_8010AD78_inst(omObjData *);
@@ -141,12 +141,12 @@ void func_8010A750_inst(omObjData *object) {
     models = D_8010D4C0_inst[D_8010D40A_inst][0];
     for (i = 0; i < models->count; i++) {
         model = &HmfModelData[object->model[i + 1]];
-        func_80016B00_main(source->model[0], time, models->nodes[i], model->mtx);
+        func_80016B00_main(source->model[0], time, models->nodes[i], &model->mtx);
     }
     models = D_8010D4C0_inst[D_8010D40A_inst][1];
     for (i = 0; i < models->count; i++) {
         model = &HmfModelData[object->model[i + 10]];
-        func_80016B00_main(source->model[0], time, models->nodes[i], model->mtx);
+        func_80016B00_main(source->model[0], time, models->nodes[i], &model->mtx);
     }
     if (func_80107E20_inst() == 1) {
         models = D_8010D4C0_inst[D_8010D40A_inst][0];
@@ -154,7 +154,7 @@ void func_8010A750_inst(omObjData *object) {
             Hu3DMotionTimeSet(object->model[i + 1], 0);
             func_8001C814_main(object->model[i + 1], 1, 0);
             HmfModelData[object->model[i + 1]].rot.x = 0;
-            func_80016B00_main(source->model[0], duration, models->nodes[i], D_8010DC50_inst);
+            func_80016B00_main(source->model[0], duration, models->nodes[i], &D_8010DC50_inst);
             Hu3DModelPosSet(object->model[i + 5], D_8010DC50_inst[3][0] * 0.5f, D_8010DC50_inst[3][1] * 0.5f,
                             D_8010DC50_inst[3][2] * 0.5f);
         }
@@ -163,7 +163,7 @@ void func_8010A750_inst(omObjData *object) {
             Hu3DMotionTimeSet(object->model[i + 10], 0);
             func_8001C814_main(object->model[i + 10], 1, 0);
             HmfModelData[object->model[i + 10]].rot.x = 0;
-            func_80016B00_main(source->model[0], duration, models->nodes[i], D_8010DC50_inst);
+            func_80016B00_main(source->model[0], duration, models->nodes[i], &D_8010DC50_inst);
             Hu3DModelPosSet(object->model[i + 15], D_8010DC50_inst[3][0] * 0.5f, D_8010DC50_inst[3][1] * 0.5f,
                             D_8010DC50_inst[3][2] * 0.5f);
         }

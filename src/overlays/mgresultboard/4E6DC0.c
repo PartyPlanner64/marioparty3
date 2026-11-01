@@ -6,9 +6,9 @@ extern PlayerResult D_8010B018_mgresultboard[4];
 extern PlayerResult D_8010B048_mgresultboard[4];
 extern s8 D_8010AAFC_mgresultboard;
 
-void espTPLvlSet(u16, u8);
-void espAttrSet(u16, u16); 
-void espColorSet(u16, u8, u8, u8);
+void espTPLvlSet(u16 spriteId, s16 arg1);
+void espAttrSet(u16 arg0, u16 arg1);
+void espColorSet(u16 spriteId, s32 arg1, s32 arg2, s32 arg3);
 void func_8010705C_mgresultboard(Gfx**, s32, s32);
 void func_80107B40_mgresultboard(void);
 void func_80107D00_mgresultboard(void);

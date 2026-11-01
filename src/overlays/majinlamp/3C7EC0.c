@@ -43,8 +43,8 @@ extern Vec D_801082D4_majinlamp;
 extern const char D_80108260_majinlamp[];
 extern const char D_80108268_majinlamp[];
 
-void func_8001E888_main(s16, f32, f32, s32, s32, const char *, s32);
-void msmSeStop(s16);
+void func_8001E888_main(s16 idx, f32 x, f32 y, u16 width, u16 height, char *name, u8 reset);
+void msmSeStop(s32 slot);
 void func_8008A120_main(HuMtx4F, f32);
 void MBDlgResultWinExec(s32);
 void MBDlgWinExecY(s16, s32, s32);

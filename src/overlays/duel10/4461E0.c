@@ -21,7 +21,7 @@ typedef struct Duel10SpriteWork {
 extern Vec D_80105540_name_81;
 extern u8 D_80100E20_name_81;
 
-void func_800FC8C4_name_81(Vec *);
+void func_800FC8C4_name_81(Vec *arg0);
 extern void func_80105D2C_duel10(void);
 extern void func_80106374_duel10(void);
 extern void func_8010F620_duel10(void);

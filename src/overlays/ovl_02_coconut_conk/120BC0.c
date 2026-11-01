@@ -135,7 +135,7 @@ void func_80109DEC_coconut_conk(omObjData *);
 void func_8010A55C_coconut_conk(omObjData *);
 void func_8010A668_coconut_conk(omObjData *);
 void func_8010AE04_coconut_conk(void);
-void func_8000B710_main(s32);
+s32 func_8000B710_main(s32 arg0);
 void Hu3DModelHookSet(s16, s16, char *);
 void func_800E149C_minigame(omObjData *, s32, s32);
 void HuAudFXPanning(s16 arg0, s16 arg1);
@@ -147,8 +147,8 @@ void func_800E1310_minigame(omObjData *, f32);
 void func_800E131C_minigame(omObjData *, f32);
 void func_800E139C_minigame(omObjData *, f32, f32, f32, f32, f32);
 void func_800335BC_main(char *name, u16 *result);
-void espAttrSet(u16, u16);
-void func_8001E888_main(s16 model, f32 x, f32 y, u16 arg3, u16 arg4, char *name, s32 arg6);
+void espAttrSet(u16 arg0, u16 arg1);
+void func_8001E888_main(s16 idx, f32 x, f32 y, u16 width, u16 height, char *name, u8 reset);
 
 void func_801059A0_coconut_conk(void) {
     func_8010AE04_coconut_conk();

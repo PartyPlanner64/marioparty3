@@ -31,8 +31,8 @@ s32 func_8000B710_main(s32 arg0);
 
 // hmfspr
 void func_800142A0_main(s32);
-s16 func_80017790_main(s16 model, s32 arg1, s32 arg2, s32 arg3);
-s32 func_80017BB8_main(s32, s32);
+s16 func_80017790_main(s16 model, s16 slot, s16 chr, s32 dataNum);
+s32 func_80017BB8_main(s16 chr, s16 animId);
 
 // hmfcoll
 

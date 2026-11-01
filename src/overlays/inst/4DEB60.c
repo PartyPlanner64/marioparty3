@@ -61,7 +61,7 @@ extern u8 D_8010D4B8_inst[8];
 extern u16 D_800A11D0_main[5];
 extern u16 D_800A11DC_main[5];
 
-s16 func_8000B0D4_main(s32, u16);
+u16 func_8000B0D4_main(s32 arg0, s32 arg1);
 
 s32 BoardGetTurnTier(s32);
 s32 BoardPlayerRankCalc(s32);
@@ -88,7 +88,7 @@ void func_80107308_inst(void);         /* extern */
 void func_80107938_inst(omObjData *);
 void func_8010815C_inst(omObjData *);
 void func_80107EE0_inst(void);
-void func_80108AF0_inst(s16, void *, void *, void *);
+void func_80108AF0_inst(s16 model, void *imageHeader, void *imageData, u8 *alpha);
 void func_80107470_inst(void); /* extern */
 void func_801079CC_inst(omObjData *);
 s32 func_8010B10C_inst(void);
@@ -103,7 +103,7 @@ void func_8010986C_inst(omObjData *); /* extern */
 void func_80109A90_inst(void);        /* extern */
 void func_8010A1D0_inst(void);        /* extern */
 void func_8010B990_inst(void);        /* extern */
-HmfSkeletonNode *func_8001D33C_main(s16, const char *);
+void *func_8001D33C_main(s16 idx, char *name);
 void espAttrSet(u16, u16); /* extern */
 
 void func_801059A0_inst(void) {

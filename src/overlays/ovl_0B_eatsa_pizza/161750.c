@@ -95,10 +95,10 @@ void func_80105FF0_eatsa_pizza(void);
 void func_80106504_eatsa_pizza(omObjData *object, s32 arg1, s32 arg2, u16 player, u16 tag);
 void func_800E1490_minigame(s32 arg0);
 void func_800E1804_minigame(void);
-void func_80021BE0_main(void *arg0, u16 arg1);
+void func_80021BE0_main(Hu3DQuadPool *pool, u16 numQuads);
 s32 func_8000B638_main(void);
 
-extern void *D_800EBEB0_minigame;
+extern Hu3DQuadPool D_800EBEB0_minigame;
 
 void func_801059A0_eatsa_pizza(void) {
     omObjData *obj;

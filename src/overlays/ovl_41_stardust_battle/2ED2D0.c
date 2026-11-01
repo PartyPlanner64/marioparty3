@@ -94,7 +94,7 @@ extern f32 D_800EB774_minigame;
 
 /* Call sites pass only the object and use the result as a pointer, so this
    can't use the definition's full prototype. */
-u32 func_80111FEC_stardust_battle();
+u32 func_80111FEC_stardust_battle(); // Unprototyped: called with varying argument counts.
 void func_80108120_stardust_battle(omObjData *object);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_801059A0_stardust_battle);

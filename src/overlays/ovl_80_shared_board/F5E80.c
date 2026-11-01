@@ -69,7 +69,7 @@ extern s16 D_80102D38_shared_board;
 extern s16 D_80102D3A_shared_board[];
 extern omObjData* D_80102D40_shared_board;
 extern omObjData* D_80102D44_shared_board;
-extern char D_80102CC0_shared_board[0x20];
+extern GAMEMES D_80102CC0_shared_board;
 extern s16 D_80102D48_shared_board[];
 extern s16 D_80102D4C_shared_board[];
 extern s16 D_801052B8_shared_board[];
@@ -1119,7 +1119,7 @@ void MBTelopInit(void) {
 
 void MBTelopClose(void) {
     if (D_80102D36_shared_board & 0x20) {
-        func_8003B128_main(D_80102CC0_shared_board);
+        func_8003B128_main(&D_80102CC0_shared_board);
     }
     if (D_80102D36_shared_board & 0x10) {
         HuSprGrpKill(D_80102D38_shared_board);
@@ -1393,7 +1393,7 @@ void MBTelopMgTypeCreate(s32 arg0, u32 arg1) {
         HuVecCopy3F(&D_80102D54_shared_board->coords, &D_8010125C_shared_board);
         HuVecCopyXYZ(&D_80102D54_shared_board->scale, 0.0f, 1.0f, 1.0f);
         D_80102D54_shared_board->coords.y += 56.0f;
-        D_80102D34_shared_board = func_8003A308_main(D_80102CC0_shared_board, D_80101170_shared_board[var_s1], 0, 0, 0U);
+        D_80102D34_shared_board = func_8003A308_main(&D_80102CC0_shared_board, D_80101170_shared_board[var_s1], 0, 0, 0U);
         MBCamera3Dto2D(&D_80102D54_shared_board->coords, sp18);
         D_80102D58_shared_board = (sp18[1] - 14.0f);
         D_80102D58_shared_board = D_80102D58_shared_board + ((1.3f - MBCameraZoomGet()) * 50.0f);
@@ -1432,7 +1432,7 @@ void MBTelopMgTypeKill(void) {
     MBModelKill(D_80102D54_shared_board);
     omDelObj(D_80102D40_shared_board);
     D_80102D40_shared_board = NULL;
-    func_8003B128_main(D_80102CC0_shared_board);
+    func_8003B128_main(&D_80102CC0_shared_board);
     D_80102D36_shared_board &= ~(0x20 | 0x10 | 0x08 | 0x04);
 }
 

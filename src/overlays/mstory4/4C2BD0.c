@@ -467,7 +467,7 @@ void func_8000BDDC_main(u16, s32);      /* extern */
 void espKill(u16);
 void func_80017954_main(s16, s16, s16, s16);
 void Hu3DModelRotSet(s16, f32, f32, f32);                    /* extern */
-void func_800E4F50_name_81(Addr *);                          /* extern */
+void func_800E4F50_name_81(u8 *);
 void MBDBackCreate(s32, s32);                                /* extern */
 void func_80106C78_mstory4(void);                            /* extern */
 void func_80106CA8_mstory4(void);                            /* extern */
@@ -530,7 +530,7 @@ void func_8010FC98_mstory4(void) {
 
     D_80111AC4_mstory4 = 1;
     var_s3 = 0;
-    func_800E4F50_name_81(hvq_data_ROM_START);
+    func_800E4F50_name_81((u8 *)hvq_data_ROM_START);
     MBDBackCreate(0x20, 0);
     func_8010EF28_mstory4(7);
     for (i = 0; i < 6; i++) {

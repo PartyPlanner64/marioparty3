@@ -102,7 +102,7 @@ segments:
       - [0x36440, c, mallocperm]
       - [0x36510, c, malloctemp]
       - [0x365E0, c, ovlEvent]
-      - [0x36650, c, save]
+      - [0x36650, c, gamework]
       - [0x36CD0, c, malloc]
       - [0x36F80, c, messdata]
       - [0x37210, c, gamemes]

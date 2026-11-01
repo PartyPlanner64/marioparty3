@@ -2229,11 +2229,11 @@ s32 func_8002C5B8_main(HmfData *hmf, s16 nodeIndex, s16 targetIndex) {
     return 1;
 }
 
-s16 func_8002C834_main(HmfData *arg0, char *name) {
+s16 func_8002C834_main(HmfData *arg0, const char *name) {
     s16 hash;
     s16 i;
 
-    hash = func_80011460_main((u8 *)name);
+    hash = func_80011460_main((const u8 *)name);
     for (i = 0; i < arg0->unk10; i++) {
         if (arg0->unk60[i].unk26 == hash && strcmp(arg0->unk60[i].unk00, name) == 0) {
             break;

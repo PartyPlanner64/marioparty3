@@ -1063,7 +1063,7 @@ void func_8001D330_main(s16 arg0) {
     D_800A0A78_main = arg0;
 }
 
-void *func_8001D33C_main(s16 idx, char *name) {
+void *func_8001D33C_main(s16 idx, const char *name) {
     HmfData *hmf = HmfModelData[idx].hmf;
     s16 node = func_8002C834_main(hmf, name);
     s16 count;
@@ -1377,7 +1377,7 @@ void func_8001E65C_main(s16 idx, f32 x, f32 y, s32 width, s32 height) {
         dst++;
     }
 }
-void func_8001E888_main(s16 idx, f32 x, f32 y, u16 width, u16 height, char *name, u8 reset) {
+void func_8001E888_main(s16 idx, f32 x, f32 y, u16 width, u16 height, const char *name, u8 reset) {
     HmfData *hmf = HmfModelData[idx].hmf;
     Vtx *src;
     Vtx *dst;

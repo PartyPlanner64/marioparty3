@@ -458,7 +458,7 @@ void func_800169E0_main(s16 model, s16 step, HmfModelSet *set, s16 target) {
     }
 }
 
-void func_80016B00_main(s16 model, s16 frame, char *name, HuMtx4F *out) {
+void func_80016B00_main(s16 model, s16 frame, const char *name, HuMtx4F *out) {
     s16 nodeMap[4];
     HmfData *hmf = HmfModelData[model].hmf;
     s16 node = func_8002C834_main(hmf, name);
@@ -570,7 +570,7 @@ void func_80017320_main(HmfModelSet *set) {
     HuMemMemoryFreePerm(set);
 }
 
-void func_80017358_main(s16 srcModel, char *srcName, s16 dstModel, char *dstName) {
+void func_80017358_main(s16 srcModel, const char *srcName, s16 dstModel, const char *dstName) {
     HmfData *src = HmfModelData[srcModel].hmf;
     HmfData *dst = HmfModelData[dstModel].hmf;
     s16 hash;
@@ -580,7 +580,7 @@ void func_80017358_main(s16 srcModel, char *srcName, s16 dstModel, char *dstName
 
     // Note: the strcmp calls compare against the address of the name pointer,
     // and the source object name is read from the destination model.
-    hash = func_80011460_main((u8 *)srcName);
+    hash = func_80011460_main((const u8 *)srcName);
     for (srcObj = 0; srcObj < src->unk10; srcObj++) {
         if (src->unk60[srcObj].unk26 == hash && strcmp(dst->unk60[srcObj].unk00, (char *)&srcName)) {
             break;
@@ -590,7 +590,7 @@ void func_80017358_main(s16 srcModel, char *srcName, s16 dstModel, char *dstName
         osSyncPrintf("Can't find ObjName %s\n", srcName);
         return;
     }
-    hash = func_80011460_main((u8 *)dstName);
+    hash = func_80011460_main((const u8 *)dstName);
     for (dstObj = 0; dstObj < dst->unk10; dstObj++) {
         if (dst->unk60[dstObj].unk26 == hash && strcmp(dst->unk60[dstObj].unk00, (char *)&dstName)) {
             break;

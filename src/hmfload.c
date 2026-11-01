@@ -1206,7 +1206,7 @@ s16 func_80011334_main(HmfLoadData *hmf, void *arg1, s16 index) {
     return sum;
 }
 
-s16 func_80011460_main(u8 *arg0) {
+s16 func_80011460_main(const u8 *arg0) {
     s32 sum = 0;
     s16 i = 1;
     u8 c = arg0[0];

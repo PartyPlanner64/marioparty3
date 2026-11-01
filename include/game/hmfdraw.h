@@ -37,7 +37,7 @@ void func_8002C0EC_main(HmfData *hmf, s16 objectIndex);
 s32 func_8002C4C0_main(HmfData *arg0, s16 arg1, HuMtx4F arg2, HuMtx4F arg3);
 void func_8002C520_main(HmfData *hmf, s16 nodeIndex, HuMtx4F mtx);
 s32 func_8002C5B8_main(HmfData *hmf, s16 nodeIndex, s16 targetIndex);
-s16 func_8002C834_main(HmfData *arg0, char *name);
+s16 func_8002C834_main(HmfData *arg0, const char *name);
 void func_8002C914_main(HmfData *hmf, char *name, HmfData *replacement);
 void func_8002C960_main(HmfData *hmf, s16 objectIndex, HmfData *replacement);
 void func_8002CAE4_main(HmfData *hmf);

@@ -106,7 +106,7 @@ struct A96F0_ObjData {
     /* 0x50 */ u16 unk50;
     /* 0x52 */ u8 unk52;
     /* 0x53 */ s8 unk53;
-    /* 0x54 */ s8 unk54;
+    /* 0x54 */ u8 unk54;
     /* 0x55 */ char unk55[3];
     /* 0x58 */ f32 unk58;
     /* 0x5C */ f32 unk5C;

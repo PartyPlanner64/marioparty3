@@ -52,6 +52,7 @@ extern f32 D_800EB764_minigame;
 extern f32 D_800EB768_minigame;
 extern f32 D_800EB76C_minigame;
 extern f32 D_800EB770_minigame;
+extern u8 D_800EB735_minigame;
 extern f32 D_800EBE2C_minigame;
 extern f32 D_800EC5D8_minigame;
 extern Vec D_800EC298_minigame[];
@@ -97,6 +98,11 @@ void func_800E454C_minigame(omObjData *arg0, omObjData *arg1, f32 x, f32 z, u16 
 void func_800E4C88_minigame(omObjData *arg0, u8 arg1, f32 x, f32 y, f32 z, f32 rotX, f32 rotY);
 s32 func_800DA768_minigame(omObjData *arg0, f32 x, f32 y, f32 z);
 void func_800DB628_minigame(omObjData *arg0);
+void func_800D81C8_minigame(omObjData *arg0, omObjData *arg1);
+void func_800E317C_minigame(omObjData *arg0, f32 x, f32 z);
+void func_800E34D8_minigame(omObjData *arg0, omObjData *arg1);
+void func_800E1A9C_minigame(func_800E1BA8_minigame_ObjData *arg0, s32 arg1);
+void func_800E561C_minigame(omObjData *, u8);
 f32 func_800D9F10_minigame(omObjData *arg0, f32 arg1);
 void func_800E47D8_minigame(omObjData *arg0, f32 arg1);
 void func_800E4890_minigame(omObjData *arg0, f32 x, f32 y, f32 z, f32 groundY, Vec *normal);
@@ -737,7 +743,249 @@ s32 func_800DA540_minigame(Vec *pos, s16 *face, Hu3DPoint *points) {
     return TRUE;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DA768_minigame);
+s32 func_800DA768_minigame(omObjData *arg0, f32 x, f32 y, f32 z) {
+    func_800E1BA8_minigame_ObjData *data = arg0->data;
+    func_800E1BA8_minigame_ObjData *otherData;
+    A96F0_ObjData *itemData;
+    omObjData *other;
+    f32 radius = data->unk48;
+    f32 speed = data->unk40;
+    f32 dx, dy, dz;
+    f32 dist;
+    f32 dist2;
+    f32 dot;
+    u16 i;
+
+    if (data->unk50 & 6) {
+        speed *= 0.6f;
+    }
+    speed *= (data->unk38 != 1000.0f) ? data->unk4C * data->unkB4 : data->unkB4;
+    x += sindf(data->unk3C) * speed;
+    z += cosdf(data->unk3C) * speed;
+    data->unkF0 = 0;
+    for (i = 0; i < D_800EC1B8_minigame; i++) {
+        other = D_800EBE70_minigame[i];
+        itemData = other->data;
+        if (itemData->unk54 == 0) {
+            continue;
+        }
+        dx = other->trans.x - (x + D_800EBE2C_minigame);
+        dy = other->trans.y - y;
+        dz = other->trans.z - (z + D_800EC5D8_minigame);
+        dist2 = 100.0f;
+        if (itemData->unk34 != 0.0f && other->trans.y <= y && y <= other->trans.y + itemData->unk34) {
+            dist2 = HuSqrtf(dx * dx + dz * dz) - (radius + itemData->unk48);
+        }
+        dist = HuSqrtf(dx * dx + dy * dy + dz * dz) - (radius + itemData->unk48);
+        if (dist < 0.0f || dist2 < 0.0f) {
+            if (data->unkEC != NULL && data->unkEC(arg0, other) == 1) {
+                continue;
+            }
+            if (itemData->unk52 == 7) {
+                if (data->unkBE != 0) {
+                    D_800EC288_minigame++;
+                    continue;
+                }
+                if (data->unk50 & 0x200) {
+                    continue;
+                }
+                dot = func_800E2ED4_minigame(sindf(data->unk3C), cosdf(data->unk3C), dx, dz);
+                if (data->unk50 & 0x10) {
+                    func_800E2CA4_minigame(arg0, D_800EB768_minigame);
+                }
+                if (dot > 0.0f) {
+                    func_800E5690_minigame(arg0, 9);
+                    data->unk40 = -D_800EB760_minigame;
+                } else {
+                    func_800E5690_minigame(arg0, 10);
+                    data->unk40 = D_800EB760_minigame;
+                }
+                data->unk38 = -D_800EB744_minigame * 0.7f;
+                data->unkBE = 105;
+                func_800E4C88_minigame(arg0, 5, other->trans.x, y, other->trans.z, 0.0f, atan2df(dx, dz) + 180.0f);
+                func_800E19FC_minigame(data, 8);
+                omVibrate(data->unk59, 20, 0, 20);
+                continue;
+            }
+            if (itemData->unk50 & 0x20) {
+                if (itemData->unk50 & 0x10) {
+                    continue;
+                }
+                dist = HuSqrtf(dx * dx + dy * dy + dz * dz) - (itemData->unk48 + data->unk48);
+                if (!(dist < 0.0f)) {
+                    continue;
+                }
+                if (itemData->unk38 < 1000.0f) {
+                    itemData->unk38 = -D_800EB744_minigame * 0.6f;
+                    if (func_800E2ED4_minigame(sindf(itemData->unk3C), cosdf(itemData->unk3C), dx, dz) < 0.0f) {
+                        itemData->unk40 = -D_800EB76C_minigame;
+                    } else {
+                        itemData->unk40 = D_800EB76C_minigame;
+                    }
+                } else if (itemData->unk40 == D_800EB770_minigame) {
+                    if (data->unk38 != 1000.0f) {
+                        func_800E317C_minigame(arg0, dx, dz);
+                        func_800E1A9C_minigame(data, 9);
+                    } else {
+                        if (dx == 0.0f && dz == 0.0f) {
+                            dx = sindf(data->unk3C);
+                            dz = cosdf(data->unk3C);
+                        }
+                        func_800DFCDC_minigame(dx, dz, dist);
+                    }
+                } else {
+                    itemData->unk40 = -itemData->unk40;
+                }
+            } else if (data->unkBE != 0) {
+                D_800EC288_minigame++;
+            } else {
+                func_800D81C8_minigame(arg0, other);
+            }
+        }
+    }
+
+    y += data->unk48;
+    if (data->unk50 & 0x400) {
+        return 0;
+    }
+    for (i = 0; i < D_800EC280_minigame; i++) {
+        other = D_800EC598_minigame[i];
+        otherData = other->data;
+        if (data == otherData) {
+            continue;
+        }
+        dx = other->trans.x - (x + D_800EBE2C_minigame);
+        dy = (other->trans.y + otherData->unk48) - y;
+        dz = other->trans.z - (z + D_800EC5D8_minigame);
+        if (otherData->unk50 & 0x400) {
+            continue;
+        }
+        dist = HuSqrtf(dx * dx + dz * dz) - (data->unk48 + otherData->unk48) * 0.6f;
+        dist2 = HuSqrtf(dx * dx + dy * dy + dz * dz) - (otherData->unk48 + data->unk48);
+        if ((dist < 0.0f || dist2 < 0.0f) && data->unk38 != 1000.0f && !(data->unk50 & 0x8000)) {
+            if (y - (otherData->unk34 + otherData->unk48) <= other->trans.y && other->trans.y <= y - data->unk48 + data->unk34) {
+                if (!(otherData->unk50 & 7) && data->unkBE == 0 && otherData->unkBE == 0) {
+                    if (otherData->unk38 != 1000.0f) {
+                        if (data->unk5C & 0x200) {
+                            if (dist < 0.0f && dy < -data->unk34 * 0.5f) {
+                                func_800E4C88_minigame(arg0, 7, x, y, z, 0.0f, 0.0f);
+                                if (!(otherData->unk50 & 0x200)) {
+                                    func_800E561C_minigame(other, 1);
+                                    func_800E5690_minigame(other, 0x1E);
+                                    if (otherData->unk50 & 0x10) {
+                                        func_800E2CA4_minigame(other, D_800EB76C_minigame);
+                                    }
+                                }
+                                otherData->unk38 = data->unk38;
+                                otherData->unk40 = D_800EB770_minigame;
+                                func_800E317C_minigame(arg0, dx, dz);
+                                func_800E1A9C_minigame(data, 9);
+                            } else {
+                                if (D_800EB735_minigame == 1) {
+                                    func_800E34D8_minigame(arg0, other);
+                                } else {
+                                    func_800DFCDC_minigame(dx, dz, HuSqrtf(dx * dx + dz * dz) - (otherData->unk48 + data->unk48));
+                                }
+                                return 0;
+                            }
+                        } else if (dist < 0.0f && dy < -data->unk34 * 0.2) {
+                            if (!(otherData->unk50 & 0x200)) {
+                                func_800E4C88_minigame(arg0, 6, x, y, z, -90.0f, 0.0f);
+                                if (otherData->unk50 & 0x10) {
+                                    func_800E2CA4_minigame(other, D_800EB76C_minigame);
+                                }
+                            }
+                            if (otherData->unk38 < 0.0f) {
+                                otherData->unk38 = 0.0f;
+                            }
+                            otherData->unk40 = D_800EB770_minigame;
+                            func_800E317C_minigame(arg0, dx, dz);
+                            func_800E1A9C_minigame(data, 9);
+                        } else {
+                            if (D_800EB735_minigame == 1) {
+                                func_800E34D8_minigame(arg0, other);
+                            } else {
+                                func_800DFCDC_minigame(dx, dz, HuSqrtf(dx * dx + dz * dz) - (otherData->unk48 + data->unk48));
+                            }
+                            return 0;
+                        }
+                        omVibrate(data->unk59, 2, 3, 10);
+                        omVibrate(otherData->unk59, 2, 3, 10);
+                        return 2;
+                    }
+                    if (dist < 0.0f && dy < 0.0f) {
+                        if (!(otherData->unk50 & 0x200)) {
+                            if (data->unk5C & 0x200) {
+                                func_800E561C_minigame(other, 1);
+                                func_800E5690_minigame(other, 0);
+                                func_800E4C88_minigame(arg0, 7, x, y, z, 0.0f, 0.0f);
+                                if (otherData->unk50 & 0x10) {
+                                    func_800E2CA4_minigame(other, D_800EB76C_minigame);
+                                }
+                            } else {
+                                func_800E4C88_minigame(arg0, 6, x, y, z, -90.0f, 0.0f);
+                                func_800E561C_minigame(other, 2);
+                                if (otherData->unk50 & 0x10) {
+                                    func_800E2CA4_minigame(other, D_800EB76C_minigame);
+                                }
+                            }
+                        }
+                        func_800E317C_minigame(arg0, dx, dz);
+                        func_800E1A9C_minigame(data, 9);
+                        omVibrate(data->unk59, 2, 3, 10);
+                        omVibrate(otherData->unk59, 20, 0, 20);
+                        return 2;
+                    }
+                    func_800E317C_minigame(arg0, dx, dz);
+                    data->unk38 = -D_800EB744_minigame * 0.6f;
+                    data->unk40 *= 0.5;
+                    func_800E1A9C_minigame(data, 9);
+                    omVibrate(data->unk59, 2, 3, 10);
+                    omVibrate(otherData->unk59, 20, 0, 20);
+                    continue;
+                }
+                if (data->unk38 != 1000.0f && otherData->unk38 != 1000.0f) {
+                    if (data->unkBE != 0 || otherData->unkBE != 0) {
+                        if (D_800EB735_minigame == 1) {
+                            func_800E34D8_minigame(arg0, other);
+                            omVibrate(data->unk59, 2, 3, 10);
+                            return 0;
+                        }
+                        func_800DFCDC_minigame(dx, dz, dist2);
+                        return 0;
+                    }
+                    continue;
+                }
+                if (data->unk5C & 0x200) {
+                    func_800E4C88_minigame(arg0, 7, x, y, z, 0.0f, 0.0f);
+                } else {
+                    func_800E4C88_minigame(arg0, 6, x, y, z, -90.0f, 0.0f);
+                }
+                omVibrate(data->unk59, 2, 3, 10);
+                func_800E317C_minigame(arg0, dx, dz);
+                func_800E1A9C_minigame(data, 9);
+                continue;
+            }
+            if (dist2 < 0.0f) {
+                if (D_800EB735_minigame == 1) {
+                    func_800E34D8_minigame(arg0, other);
+                } else {
+                    func_800DFCDC_minigame(dx, dz, dist2);
+                }
+            }
+            continue;
+        }
+        dist = HuSqrtf(dx * dx + dy * dy + dz * dz) - (otherData->unk48 + data->unk48);
+        if (dist < 0.0f) {
+            if (otherData->unk38 != 1000.0f && data->unk38 == 1000.0f) {
+                continue;
+            }
+            func_800DFCDC_minigame(dx, dz, dist);
+            data->unk53[1] = i;
+        }
+    }
+    return 0;
+}
 
 void func_800DB628_minigame(omObjData *arg0) {
     func_800E1BA8_minigame_ObjData *data = arg0->data;

@@ -3,6 +3,14 @@
 
 #include "ultra64.h"
 
+extern s32 D_800A12C0_main;
+extern s32 D_800A12C4_main;
+extern s16 D_800A12C8_main;
+extern s32 D_800A12CC_main;
+extern s8 D_800A12D0_main;
+extern s32 D_800A12D4_main;
+extern s32 D_800A12D8_main;
+
 void GWInit(void);
 void GWMgNoSet(s8 arg0);
 void GWMgBitGet(s16 bitPos, s16 *byteIdx, s16 *bitIdx);

@@ -1,7 +1,7 @@
 #include "common.h"
 #include "piint.h"
 
-extern s32 first; /* static in the original source */
+static s32 first = 1;
 
 OSPiHandle *osCartRomInit(void) {
     u32 value = 0;

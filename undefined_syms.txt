@@ -73,3 +73,6 @@ D_800A178C_main = D_800A1788_main + 0x4;
 D_800A1790_main = D_800A1788_main + 0x8;
 D_800A1794_main = D_800A1788_main + 0xC;
 D_800A1798_main = D_800A1788_main + 0x10;
+
+/* Low byte of the gamework message speed, referenced by the name overlay asm. */
+D_800A12C3_main = D_800A12C0_main + 0x3;

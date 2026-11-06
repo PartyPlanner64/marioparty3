@@ -121,13 +121,6 @@ static s16 D_800B23CC_main;
 static s16 D_800B23CE_main;
 extern u16 D_800D1100_main;
 
-typedef struct UnkomOvl {
-    u16 unk_00;
-    u16 unk_02;
-    u16 unk_04;
-    char unk_06[2]; // unused pad?
-} UnkomOvl;
-
 typedef struct {
     u16 next_idx;
     u16 max_objs;
@@ -135,8 +128,6 @@ typedef struct {
     u16 *next;
     omObjData **objs;
 } omObjGroup;
-
-extern UnkomOvl D_800A1920_main[];
 
 extern f32 D_800CB890_main;
 extern s16 omobjlast;

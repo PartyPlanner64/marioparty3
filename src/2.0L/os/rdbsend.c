@@ -2,6 +2,8 @@
 #include "PR/os_internal.h"
 #include "PR/rdb.h"
 
+unsigned int __osRdbWriteOK = 1;
+
 extern rdbPacket *D_800D5554_main;
 extern u32 D_800CE174_main;
 extern u32 D_800D6A8C_main;

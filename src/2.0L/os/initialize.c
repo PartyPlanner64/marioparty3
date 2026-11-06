@@ -6,6 +6,12 @@
 
 #define DEVICE_TYPE_INIT 7
 
+u64 osClockRate = OS_CLOCK_RATE;
+s32 osViClock = VI_NTSC_CLOCK;
+u32 _osPreNMI = 0;
+u32 __OSGlobalIntMask = OS_IM_ALL;
+char *(*__printfunc)(char *dst, const char *src, unsigned int count) = NULL;
+
 extern __osExceptionVector __osExceptionPreamble[];
 
 extern OSPiHandle __Dom1SpeedParam;

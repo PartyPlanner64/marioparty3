@@ -9,17 +9,18 @@
 extern u32 D_8007FB20_main[];
 
 extern u32 __kmc_pt_mode;
-extern u32 D_800A3FD0_main; // stat
-extern u32 D_800A3FD4_main; // wport
-extern u32 D_800A3FDC_main; // column
+static u32 stat = 0xBFF08004;
+static u32 wport = 0xBFF08000;
+static u32 piok = PHYS_TO_K1(PI_STATUS_REG); // unreferenced
+static u32 column = 0;
 
 static inline void msp_putchar(char c) {
     u32 data;
 
     while (TRUE) {
-        osPiReadIo(D_800A3FD0_main, &data);
+        osPiReadIo(stat, &data);
         if (data & 4) {
-            osPiWriteIo(D_800A3FD4_main, c);
+            osPiWriteIo(wport, c);
             break;
         }
     }
@@ -40,15 +41,15 @@ char *msp_proutSyncPrintf(char *str, const char *buf, int n) {
         switch (c) {
             case '\n':
                 *p++ = '\n';
-                D_800A3FDC_main = 0;
+                column = 0;
                 break;
             case '\t':
                 do {
                     *p++ = ' ';
-                } while (++D_800A3FDC_main & 7);
+                } while (++column & 7);
                 break;
             default:
-                D_800A3FDC_main++;
+                column++;
                 *p++ = c;
                 break;
         }

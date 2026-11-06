@@ -3,6 +3,8 @@
 
 #define READFORMAT(ptr) ((__OSContRamReadFormat *)(ptr))
 
+s32 __osPfsLastChannel = -1;
+
 s32 __osContRamRead(OSMesgQueue *mq, int channel, u16 address, u8 *buffer) {
     s32 ret = 0;
     s32 i;

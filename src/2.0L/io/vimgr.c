@@ -2,8 +2,9 @@
 #include "PR/viint.h"
 #include "PR/osint.h"
 
-extern OSDevMgr __osViDevMgr;
-extern u32 __additional_scanline;
+OSDevMgr __osViDevMgr = { 0 };
+u32 __additional_scanline = 0;
+
 static OSThread viThread;
 static u8 viThreadStack[OS_VIM_STACKSIZE];
 static OSMesgQueue viEventQueue;

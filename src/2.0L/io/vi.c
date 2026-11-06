@@ -1,8 +1,9 @@
 #include "common.h"
 #include <PR/viint.h>
 
-extern __OSViContext vi[2];
-
+static __OSViContext vi[2] = { 0 };
+__OSViContext *__osViCurr = &vi[0];
+__OSViContext *__osViNext = &vi[1];
 
 void __osViInit(void) {
     bzero(vi, sizeof(vi));

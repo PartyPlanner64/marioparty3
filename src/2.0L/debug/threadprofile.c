@@ -1,5 +1,8 @@
 #include "common.h"
 
+u32 __osThprofFlag = 0;
+void (*__osThprofFunc)(OSThread *) = NULL;
+
 extern u32 __osThprofCount;
 extern u32 __osThprofLastTimer;
 

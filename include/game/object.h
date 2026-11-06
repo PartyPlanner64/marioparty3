@@ -67,6 +67,15 @@ typedef struct omOvlHisData { //Object Manager History Data
 /* 0x06 */ s16 stat;
 } omOvlHisData; //sizeof 0x08
 
+typedef struct UnkomOvl {
+    u16 unk_00;
+    u16 unk_02;
+    u16 unk_04;
+    u16 unk_06; // unused pad?
+} UnkomOvl;
+
+extern UnkomOvl D_800A1920_main[128]; // per-overlay arguments for func_8004A468_main
+
 extern s16 omovlevtno;
 extern s16 omovlhisidx;
 extern omOvlHisData omovlhis[12];

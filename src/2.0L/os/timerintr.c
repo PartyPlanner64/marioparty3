@@ -1,6 +1,8 @@
 #include "common.h"
 #include "PR/osint.h"
 
+OSTimer *__osTimerList = &__osBaseTimer;
+
 extern OSMesgQueue __osProfTimerQ;
 extern OSProf *__osProfileList;
 extern OSProf *__osProfileListEnd;

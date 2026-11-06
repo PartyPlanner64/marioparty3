@@ -4,6 +4,16 @@
 #include "game/gamework.h"
 #include "game/gamework_data.h"
 #include "game/pad.h"
+#include "game/board.h"
+
+s32 D_800A12C0_main = 25; // message speed
+s32 D_800A12C4_main = 25;
+s16 D_800A12C8_main = -1;
+s32 D_800A12CC_main = 0;
+s8 D_800A12D0_main = 0;
+s32 D_800A12D4_main = 1;
+s32 D_800A12D8_main = 0;
+s32 mbTurnOnF = 0;
 
 static s32 D_800B1A30_main;
 

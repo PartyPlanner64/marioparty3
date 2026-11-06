@@ -2,14 +2,15 @@
 
 #define SI_Q_BUF_LEN 1
 
+u32 __osSiAccessQueueEnabled = 0;
+
 extern OSMesgQueue __osSiAccessQueue;
 static OSMesg siAccessBuf[SI_Q_BUF_LEN];
-extern s32 D_800A2DA0_main;
 
 void __osSiCreateAccessQueue(void) {
     OSMesgQueue *queue = &__osSiAccessQueue;
 
-    D_800A2DA0_main = 1;
+    __osSiAccessQueueEnabled = 1;
     osCreateMesgQueue(queue, siAccessBuf, SI_Q_BUF_LEN);
     osSendMesg(queue, NULL, OS_MESG_NOBLOCK);
 }
@@ -17,8 +18,8 @@ void __osSiCreateAccessQueue(void) {
 void __osSiGetAccess(void) {
     OSMesg msg;
 
-    if (D_800A2DA0_main == 0) {
-        D_800A2DA0_main = 1;
+    if (__osSiAccessQueueEnabled == 0) {
+        __osSiAccessQueueEnabled = 1;
         osCreateMesgQueue(&__osSiAccessQueue, siAccessBuf, SI_Q_BUF_LEN);
         osSendMesg(&__osSiAccessQueue, NULL, OS_MESG_NOBLOCK);
     }

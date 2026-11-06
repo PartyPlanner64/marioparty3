@@ -1,7 +1,8 @@
 #include "common.h"
 #include "controller.h"
 
-extern s32 __osPfsInodeCacheChannel;
+s32 __osPfsInodeCacheChannel = -1;
+u8 __osPfsInodeCacheBank = 250;
 extern __OSInode __osPfsInodeCache;
 
 u16 __osSumcalc(u8 *ptr, s32 length) {

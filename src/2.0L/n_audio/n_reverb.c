@@ -181,6 +181,8 @@ Acmd *_n_loadOutputBuffer(N_ALFx *r, N_ALDelay *d, s32 buff, Acmd *p) {
     s32 ramalign = 0, length;
     s32 inCount = N_REVERB_OUTCOUNT;
     s8 tmp;
+    static f32 val = 0.0, lastval = -10.0;
+    static f32 blob = 0;
 
     /*
      * The following section implements the chorus resampling. Modulate where you pull

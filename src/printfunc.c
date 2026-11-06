@@ -19,12 +19,25 @@ typedef struct strline_data {
     /* 0x08 */ u8 str[64];
 } strline_data;
 
+// unreferenced: restores the render state that pfDrawFonts leaves behind
+static Gfx D_800A1D20_main[] = {
+    gsSPTexture(0, 0, 0, G_TX_RENDERTILE, G_OFF),
+    gsDPPipeSync(),
+    gsDPSetCombineMode(G_CC_SHADE, G_CC_SHADE),
+    gsDPSetRenderMode(G_RM_ZB_OPA_SURF, G_RM_ZB_OPA_SURF2),
+    gsDPSetTextureLUT(G_TT_NONE),
+    gsDPSetTexturePersp(G_TP_PERSP),
+    gsDPSetTextureFilter(G_TF_BILERP),
+    gsSPEndDisplayList(),
+};
+static Gfx *D_800A1D60_main = D_800A1D20_main; // unreferenced
+u16 D_800A1D64_main = 0xFFFF; // palette currently loaded for the font texture
+
 static strline_data strline[MAX_STRINGS];
 extern u16 strlinecnt;
 extern u16 empstrline;
 extern u16 D_800D6A46_main;
 extern u16 saftyFrameF;         // screen border enabled
-extern u16 D_800A1D64_main;         // palette currently loaded for the font texture
 extern u8 D_8009F730_main[];        // 64x64 CI4 font texture, 8x8 glyphs starting at ' '
 extern u16 D_800A0330_main[16][16]; // font palettes
 

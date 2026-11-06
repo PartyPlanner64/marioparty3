@@ -34,7 +34,6 @@ extern s32 D_800CCF2C_main;
 extern u32 D_800CE210_main;
 extern u32 D_800CE2C8_main;
 extern u32 D_800D2094_main;
-extern OSViMode D_800A2E00_main[];
 extern s32 _osPreNMI;
 
 s32 __osAfterPreNMI(void);
@@ -55,7 +54,7 @@ void InitScheduler(u8 mode, u8 retraceCount) {
     D_800BCC88_main = NULL;
     D_800BCCB0_main = 0;
     osCreateViManager(OS_PRIORITY_VIMGR);
-    osViSetMode(&D_800A2E00_main[mode]);
+    osViSetMode(&osViModeTable[mode]);
     osViSetYScale(1.0f);
     osViBlack(TRUE);
     osCreateMesgQueue(&D_800BBB00_main, D_800BBB18_main, ARRAY_COUNT(D_800BBB18_main));

@@ -1,10 +1,10 @@
 #include "common.h"
 
-extern u32 D_800A2D60_main;
+static u32 xseed = 174823885;
 
 int guRandom(void) {
-    u32 t0 = D_800A2D60_main * 4;
+    u32 t0 = xseed * 4;
     u32 t1 = t0 + 2;
     t0 += 3;
-    return D_800A2D60_main = (t1 * t0) >> 2;
+    return xseed = (t1 * t0) >> 2;
 }

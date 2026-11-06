@@ -1,9 +1,9 @@
 #include "common.h"
 #include "PR/osint.h"
 
-extern u8 hdwrBugFlag;
 
 s32 osAiSetNextBuffer(void *bufPtr, u32 size) {
+    static u8 hdwrBugFlag = 0;
     char *bptr;
 
     if (__osAiDeviceBusy()) {

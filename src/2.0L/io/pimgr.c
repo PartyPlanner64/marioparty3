@@ -6,6 +6,12 @@
 
 extern s32 __osEPiRawStartDma(OSPiHandle *pihandle, s32 direction, u32 devAddr, void *dramAddr, u32 size);
 
+extern OSPiHandle __Dom1SpeedParam;
+extern OSPiHandle __Dom2SpeedParam;
+
+OSDevMgr __osPiDevMgr = { 0 };
+OSPiHandle *__osPiTable = NULL;
+OSPiHandle *__osCurrentHandle[2] = { &__Dom1SpeedParam, &__Dom2SpeedParam };
 static OSThread piThread;
 static u8 piThreadStack[OS_PIM_STACKSIZE];
 static OSThread ramromThread;

@@ -2,7 +2,7 @@
 #include "PR/osint.h"
 
 extern u32 _osPreNMI;
-extern u32 _osShutdown;
+u32 _osShutdown = 0;
 
 void osSetEventMesg(OSEvent event, OSMesgQueue *mq, OSMesg msg) {
     register u32 saveMask = __osDisableInt();

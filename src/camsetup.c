@@ -5,8 +5,26 @@
 #include "game/hmfcoll.h"
 #include "game/camera.h"
 
-extern u8 D_80097660_main;
-extern u8 D_80097661_main;
+u8 D_80097660_main = 0;
+u8 D_80097661_main = 0;
+Vec D_80097664_main[] = {
+    { 640.0f, 480.0f, 511.0f },
+    { 640.0f, 480.0f, 511.0f },
+    { 640.0f, 480.0f, 511.0f },
+    { 640.0f, 480.0f, 511.0f },
+};
+Vec D_80097694_main[] = {
+    { 640.0f, 480.0f, 511.0f },
+    { 640.0f, 480.0f, 511.0f },
+    { 640.0f, 480.0f, 511.0f },
+    { 640.0f, 480.0f, 511.0f },
+};
+RectF D_800976C4_main[] = {
+    { 0.0f, 0.0f, 320.0f, 240.0f },
+    { 0.0f, 0.0f, 320.0f, 240.0f },
+    { 0.0f, 0.0f, 320.0f, 240.0f },
+    { 0.0f, 0.0f, 320.0f, 240.0f },
+};
 extern s32 D_800CE178_main; // TODO: type correctly
 
 typedef struct UnkC1F0 {

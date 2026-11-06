@@ -5,6 +5,8 @@
 #include "game/profiler.h"
 #include "game/graphics.h"
 
+s32 D_800A0530_main = 0xFF88FF88;
+
 static u64 swapChainStack[0x1800 / sizeof(u64)];
 static u8 D_800AE000_main[0x3800]; // unreferenced
 static swapChainTaskQueue swapChainTask;

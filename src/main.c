@@ -13,36 +13,28 @@
 #include "game/siman.h"
 #include "game/pad.h"
 #include "gcc/memory.h"
+#include "PR/gs2dex.h"
+
+void *D_800A1240_main[3] = { (void *)0x80360000, (void *)0x80385800, (void *)0x803AB000 };
+u64 *D_800A124C_main[4] = { (u64 *)0x803F6000, (u64 *)0x803F6400, (u64 *)0x803FC400, (u64 *)0x803FC400 };
+
+// RSP microcode text/data pairs
+void *D_800A125C_main[] = {
+    gspF3DEX2_fifoTextStart,     gspF3DEX2_fifoDataStart,
+    gspF3DEX2_NoN_fifoTextStart, gspF3DEX2_NoN_fifoDataStart,
+    gspF3DLX2_Rej_fifoTextStart, gspF3DLX2_Rej_fifoDataStart,
+    gspS2DEX2_fifoTextStart,     gspS2DEX2_fifoDataStart,
+    gspL3DEX2_fifoTextStart,     gspL3DEX2_fifoDataStart,
+    gspF3DEX2_fifoTextStart,     gspF3DEX2_fifoDataStart,
+    gspF3DEX2_NoN_fifoTextStart, gspF3DEX2_NoN_fifoDataStart,
+    gspF3DLX2_Rej_fifoTextStart, gspF3DLX2_Rej_fifoDataStart,
+};
+s32 D_800A129C_main = 1000; // unreferenced
 
 s32 D_800A12A0_main = 0;
 f32 D_800A12A4_main = 0.0f;
 
-    // /* A1E5C 800A125C 8008F1C0 */ .word gspF3DEX2_fifoTextStart
-    // /* A1E60 800A1260 800A4C80 */ .word gspF3DEX2_fifoDataStart
-    // /* A1E64 800A1264 80090550 */ .word gspF3DEX2_NoN_fifoTextStart
-    // /* A1E68 800A1268 800A50A0 */ .word gspF3DEX2_NoN_fifoDataStart
-    // /* A1E6C 800A126C 800918E0 */ .word gspF3DLX2_Rej_fifoTextStart
-    // /* A1E70 800A1270 800A54C0 */ .word gspF3DLX2_Rej_fifoDataStart
-    // /* A1E74 800A1274 80092A70 */ .word gspS2DEX2_fifoTextStart
-    // /* A1E78 800A1278 800A58D0 */ .word gspS2DEX2_fifoDataStart
-    // /* A1E7C 800A127C 80094330 */ .word gspL3DEX2_fifoTextStart
-    // /* A1E80 800A1280 800A5C60 */ .word gspL3DEX2_fifoDataStart
-    // /* A1E84 800A1284 8008F1C0 */ .word gspF3DEX2_fifoTextStart
-    // /* A1E88 800A1288 800A4C80 */ .word gspF3DEX2_fifoDataStart
-    // /* A1E8C 800A128C 80090550 */ .word gspF3DEX2_NoN_fifoTextStart
-    // /* A1E90 800A1290 800A50A0 */ .word gspF3DEX2_NoN_fifoDataStart
-    // /* A1E94 800A1294 800918E0 */ .word gspF3DLX2_Rej_fifoTextStart
-    // /* A1E98 800A1298 800A54C0 */ .word gspF3DLX2_Rej_fifoDataStart
-    // /* A1E9C 800A129C 000003E8 */ .word 0x000003E8
-
-// typedef struct UnkF3DEX2Data {
-
-// }
-
 extern s32 D_800A08B0_main;
-extern void *D_800A1240_main[3];
-extern void *D_800A124C_main[4]; //TODO: is this correct size?
-extern void *D_800A125C_main;
 extern u8 D_800CCF52_main;
 extern OSMesgQueue D_800CCF38_main;
 extern OSMesgQueue D_800CCF60_main;
@@ -81,7 +73,7 @@ void main(void *arg) {
 
     D_800CCF52_main = 3;
 
-    func_8000EA10_main(D_800A1240_main, 3, 2, (void*)&D_800A124C_main, (void*)&D_800A125C_main);
+    func_8000EA10_main(D_800A1240_main, 3, 2, D_800A124C_main, (s32 *)D_800A125C_main);
 
     if (osTvType == TV_TYPE_PAL) {
         while (TRUE) {}

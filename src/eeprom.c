@@ -20,7 +20,7 @@ typedef struct UnkEepStruct {
     char unk_00[0x10];
 } UnkEepStruct;
 
-extern u8 D_80097710_main[];
+u8 D_80097710_main[EEPROM_BLOCK_SIZE] = "HUDSON";
 extern u8 D_800D0450_main[];
 static u8 D_800AC7F0_main;
 static u8 D_800AC7F1_main;

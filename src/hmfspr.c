@@ -15,24 +15,22 @@
 #define HMFSPR_CC_PRIM_MODULATEA 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0
 #define HMFSPR_CC_MODULATEA_PRIM TEXEL0, 0, SHADE, 0, TEXEL0, 0, PRIMITIVE, 0
 
-extern u8 D_800A0620_main;
-extern s16 D_800A0624_main[];
 extern u16 D_800CDD4E_main;
 extern s16 D_800CD1B0_main;
 extern s16 *D_800D04B4_main;
 extern HuMtx4F *D_800D1358_main;
 extern s16 D_800D138A_main;
 extern HuMtx4F D_800D5A00_main[];
-extern s16 D_800A06FC_main[];
-extern s32 D_800A0728_main[8];
-extern u16 D_800A0748_main[172];
 extern Vtx *D_800CC080_main[8];
 extern Vtx *D_800CDD54_main;
 extern u8 D_800D2008_main;
 extern Gfx *D_800D1F30_main;
 extern s16 D_800D4090_main[6][3][7];
 extern u8 D_800D6A50_main[6];
-extern char *D_800A063C_main[3 * 16];
+
+u8 D_800A0620_main = 0;
+s16 D_800A0624_main[] = { G_TF_POINT, G_TF_AVERAGE, G_TF_BILERP, G_TF_POINT };
+s16 D_800A062C_main[] = { 2, 3, 7, 4, 5, 6, 8, 9 }; // unreferenced
 
 /* hmfanim functions. This file does not include game/hmfanim.h: it was compiled
  * against an s16 return type for func_800329B4_main, which is declared s32 there. */
@@ -625,9 +623,61 @@ void func_80017358_main(s16 srcModel, const char *srcName, s16 dstModel, const c
     }
 }
 
-// Reasonable file boundary: ROM 0x1826C (character texture animation slots start here; only the
-// code below uses D_800D20B8_main, D_800D4090_main, D_800D6A50_main and D_800A063C_main).
-// Not aligned by 16 though.
+// Character texture animation slots. The data below continues the .data of the earlier
+// definitions without 16-byte alignment, and its strings follow the "Can't find ObjName"
+// rodata, so this is the same file and the data is defined here rather than at the top.
+char *D_800A063C_main[3 * 16] = {
+    "c000n_0_DEF", "c001n_0_DEF", "c002n_0_DEF", "c003n_0_DEF",
+    "c004n_0_DEF", "c005n_0_DEF", "c300n_0_DEF", "c301n_0_DEF",
+    "c103m_0_DEF", "c103m_0_DEF", "c160n_0_DEF", "c161s_0_DEF",
+    "c162n_0_DEF", "c164m_0_DEF", "c166n_0_DEF", "c204n_0_DEF",
+    "c000l_0_DEF", "c001l_0_DEF", "c002l_0_DEF", "c003l_0_DEF",
+    "c004l_0_DEF", "c005l_0_DEF", "c300l_0_DEF", "c301l_0_DEF",
+    "c103m_0_DEF", "c103m_0_DEF", "c160n_0_DEF", "c161n_0_DEF",
+    "c162n_0_DEF", "c164m_0_DEF", "c166n_0_DEF", "c204n_0_DEF",
+    "c000l_0_DEF", "c001l_0_DEF", "c002l_0_DEF", "c003l_0_DEF",
+    "c004l_0_DEF", "c005l_0_DEF", "c300l_0_DEF", "c301l_0_DEF",
+    "c103m_0_DEF", "c103m_0_DEF", "c160n_0_DEF", "c161n_0_DEF",
+    "c162n_0_DEF", "c164m_0_DEF", "c166n_0_DEF", "c204n_0_DEF",
+};
+s16 D_800A06FC_main[] = {
+    0x00A3, 0x00A4, 0x00A4,
+    -1, 0x00A5, 0x00A5,
+    -1, 0x00A6, 0x00A6,
+    -1, 0x00A7, 0x00A7,
+    -1, 0x00A8, 0x00A8,
+    -1, 0x00A9, 0x00A9,
+    -1, 0x00AA, 0x00AA,
+};
+s32 D_800A0728_main[8] = {
+    0x00020000, 0x00030000, 0x00070000, 0x00040000,
+    0x00050000, 0x00060000, 0x00080000, 0x00090000,
+};
+u16 D_800A0748_main[172] = {
+    0x0904, 0x0905, 0x0702, 0x0906, 0x0704, 0x0705, 0x0706, 0x0707,
+    0x0708, 0x0709, 0x070A, 0x070B, 0x070C, 0x070D, 0x070E, 0x070F,
+    0x0710, 0x0711, 0x0712, 0x0713, 0x0714, 0x0715, 0x0716, 0x0717,
+    0x0718, 0x0719, 0x071A, 0x071B, 0x071C, 0x071D, 0x071E, 0x071F,
+    0x0720, 0x0721, 0x0722, 0x0723, 0x0724, 0x0725, 0x0726, 0x0727,
+    0x0728, 0x0729, 0x072A, 0x072B, 0x072C, 0x072D, 0x072E, 0x0907,
+    0x0908, 0x0909, 0x090A, 0x090B, 0x090C, 0x090D, 0x090E, 0x090F,
+    0x0910, 0x0911, 0x0912, 0x073B, 0x073C, 0x073D, 0x073E, 0x073F,
+    0x0740, 0x0741, 0x0742, 0x0743, 0x0744, 0x0745, 0x0746, 0x0747,
+    0x0748, 0x0749, 0x074A, 0x074B, 0x074C, 0x074D, 0x0913, 0x074F,
+    0x0750, 0x0751, 0x0752, 0x0753, 0x0754, 0x0755, 0x0756, 0x0757,
+    0x0758, 0x0759, 0x075A, 0x075B, 0x075C, 0x075D, 0x075E, 0x075F,
+    0x0760, 0x0761, 0x0914, 0x0763, 0x0764, 0x0765, 0x0766, 0x0767,
+    0x0768, 0x0769, 0x076A, 0x076B, 0x076C, 0x076D, 0x076E, 0x076F,
+    0x0770, 0x0771, 0x0772, 0x0773, 0x0774, 0x0775, 0x0776, 0x0777,
+    0x0778, 0x0915, 0x077A, 0x077B, 0x077C, 0x077D, 0x077E, 0x077F,
+    0x0780, 0x0781, 0x0782, 0x0783, 0x0784, 0x0785, 0x0786, 0x0787,
+    0x0788, 0x0789, 0x078A, 0x078B, 0x078C, 0x078D, 0x078E, 0x0916,
+    0x0790, 0x0917, 0x0792, 0x0793, 0x0794, 0x0795, 0x0796, 0x0797,
+    0x0798, 0x0799, 0x079A, 0x079B, 0x0918, 0x0919, 0x079E, 0x079F,
+    0x0900, 0x0901, 0x0903, 0x091A, 0x091B, 0x091C, 0x091D, 0x091E,
+    0x0922, 0x0925, 0x0926, 0x0927,
+};
+
 void func_8001766C_main(void) {
     s16 i, j, k;
 
@@ -1081,51 +1131,3 @@ s32 func_80018F18_main(HuMtx4F src, HuMtx4F dst) {
     }
     return 1;
 }
-
-INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6A98_main);
-
-INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6AA4_main);
-
-INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6AB0_main);
-
-INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6ABC_main);
-
-INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6AC8_main);
-
-INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6AD4_main);
-
-INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6AE0_main);
-
-INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6AEC_main);
-
-INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6AF8_main);
-
-INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6B04_main);
-
-INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6B10_main);
-
-INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6B1C_main);
-
-INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6B28_main);
-
-INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6B34_main);
-
-INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6B40_main);
-
-INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6B4C_main);
-
-INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6B58_main);
-
-INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6B64_main);
-
-INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6B70_main);
-
-INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6B7C_main);
-
-INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6B88_main);
-
-INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6B94_main);
-
-INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6BA0_main);
-
-INCLUDE_RODATA("asm/nonmatchings/hmfspr", D_800A6BAC_main);

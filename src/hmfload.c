@@ -218,6 +218,11 @@ typedef union {
     f32 single;
 } HmfFloatBits;
 
+u8 D_800A0540_main = 0;
+u8 D_800A0541_main = 0;
+u8 D_800A0542_main = 0;
+s16 D_800A0544_main = 0;
+
 static u8 *D_800B19B0_main;
 static u8 *D_800B19B4_main;
 static u8 *D_800B19B8_main;
@@ -229,7 +234,6 @@ static u8 *D_800B19CC_main;
 static u8 *D_800B19D0_main;
 extern u8 D_800CB8B0_main;
 extern u8 D_800CCF85_main;
-extern s16 D_800A0544_main;
 extern s16 D_800CDD6A_main;
 extern s16 D_800D5204_main;
 

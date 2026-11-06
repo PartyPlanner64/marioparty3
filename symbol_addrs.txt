@@ -1077,6 +1077,9 @@ FileSeek = 0x8000A150; //rom:0xAD50
 
 OvlLoad = 0x8000B2C4; //rom:0xBEC4
 rnd_seed = 0x80097650; //rom:0x98250 type:u32
+D_80097730_main = 0x80097730; //rom:0x98330 size:0x8000
+D_8009F730_main = 0x8009F730; //rom:0xA0330 size:0xC00
+D_800A0330_main = 0x800A0330; //rom:0xA0F30 size:0x200
 
 SavePlayerStruct = 0x8004F544; //rom:0x50144
 MBMasuGet = 0x800EB160; //rom:0xFED80 segment:shared_board

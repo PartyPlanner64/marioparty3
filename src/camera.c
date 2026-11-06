@@ -4,11 +4,34 @@
 #include "macros.h"
 #include "types.h"
 
+HuCamera *gCameraList = NULL;
+
+Vec D_800A0554_main[] = {
+    { 640.0f, 480.0f, 511.0f },
+    { 320.0f, 240.0f, 511.0f },
+    { 320.0f, 240.0f, 511.0f },
+    { 320.0f, 240.0f, 511.0f },
+    { 320.0f, 240.0f, 511.0f },
+};
+
+Vec D_800A0590_main[] = {
+    { 640.0f, 480.0f, 511.0f },
+    { 320.0f, 240.0f, 511.0f },
+    { 960.0f, 240.0f, 511.0f },
+    { 320.0f, 720.0f, 511.0f },
+    { 960.0f, 720.0f, 511.0f },
+};
+
+RectF D_800A05CC_main[] = {
+    { 0.0f, 0.0f, 320.0f, 240.0f },
+    { 0.0f, 0.0f, 160.0f, 120.0f },
+    { 160.0f, 0.0f, 320.0f, 120.0f },
+    { 0.0f, 120.0f, 160.0f, 240.0f },
+    { 160.0f, 120.0f, 320.0f, 240.0f },
+};
+
 // EXTERN
 
-extern Vec D_800A0554_main;
-extern Vec D_800A0590_main;
-extern RectF D_800A05CC_main;
 extern s16 D_800C9932_main;
 extern HuCamMtxs *D_800D0444_main;
 extern HuCamera *D_800D10F4_main;
@@ -31,8 +54,8 @@ void Hu3DCamInit(u32 arg0) {
         gCameraList[var_s3].far = 8000.0f;
         gCameraList[var_s3].unk2 = 0;
         gCameraList[var_s3].unk4 = -1;
-        Hu3DCameraViewportSet(var_s3, &D_800A0554_main, &D_800A0590_main);
-        Hu3DCameraScissorSet(var_s3, &D_800A05CC_main);
+        Hu3DCameraViewportSet(var_s3, D_800A0554_main, D_800A0590_main);
+        Hu3DCameraScissorSet(var_s3, D_800A05CC_main);
         gCameraList[var_s3].unkA0 = NULL;
         gCameraList[var_s3].unkA8 = NULL;
         gCameraList[var_s3].unkAC = NULL;

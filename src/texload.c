@@ -3,11 +3,11 @@
 #include "humath.h"
 #include "game/texload.h"
 
-extern u32 D_800A11F0_main[4]; // = { 0, 1, 2, 4 }; //sSizBytes
-extern u32 D_800A1200_main[4]; // = { 0, 1, 2, 2 }; //sSizLineBytes
-extern u32 D_800A1210_main[4]; // = { 2, 2, 2, 3 }; //sSizLoadBlock
-extern u32 D_800A1220_main[4]; // = { 3, 1, 0, 0 }; //sSizIncr
-extern u32 D_800A1230_main[4]; // = { 2, 1, 0, 0 }; //sSizShift
+u32 D_800A11F0_main[4] = { 0, 1, 2, 4 }; // sSizBytes
+u32 D_800A1200_main[4] = { 0, 1, 2, 2 }; // sSizLineBytes
+u32 D_800A1210_main[4] = { 2, 2, 2, 3 }; // sSizLoadBlock
+u32 D_800A1220_main[4] = { 3, 1, 0, 0 }; // sSizIncr
+u32 D_800A1230_main[4] = { 2, 1, 0, 0 }; // sSizShift
 
 void func_800341D0_main(Gfx **gdl, u16 *timg, s32 fmt, s32 siz,
                         s32 width, s32 height,

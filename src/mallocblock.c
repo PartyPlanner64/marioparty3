@@ -3,6 +3,9 @@
 #include "humath.h"
 #include "game/mallocblock.h"
 
+s16 gHuMemIsDirty = FALSE;
+s16 D_800A08A2_main = 0;
+
 void HuMemInit(HuAllocFunc malloc, HuFreeFunc free) {
     HuMallocHeader *newBlock;
 

@@ -20,7 +20,7 @@ typedef struct EffectGroup {
     /* 0x04 */ EffectGroupModel *models;
 } EffectGroup; // Size 0x08
 
-extern u8 D_80097720_main[];
+u8 D_80097720_main[] = { 0, 1, 2, 1 };
 extern EffectGroup *D_800D6A00_main[EFFECT_GROUP_MAX];
 
 

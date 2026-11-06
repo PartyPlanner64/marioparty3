@@ -67,11 +67,6 @@ void Hmfload(HmfData *, void *, s32); // Declared locally: hmfload.c defines thi
 extern u8 D_800A0540_main;
 extern u8 D_800A0541_main;
 extern u8 D_800A0542_main;
-extern Gfx D_800A09B0_main[];
-extern Gfx D_800A0A08_main[];
-extern Gfx D_800A0A38_main[];
-extern f32 D_800A0A7C_main;
-extern s16 D_800A0A78_main;
 extern s16 D_800C9932_main;
 extern s32 D_800C9940_main;
 extern u16 D_800CBB72_main[];
@@ -90,10 +85,8 @@ extern u16 D_800D05A0_main[][128];
 extern Gfx *D_800D1FF8_main;
 extern u8 D_800CD6A6_main;
 extern s16 D_800D418E_main;
-extern Gfx D_800A09C8_main[];
 extern HmfDrawEntry *D_800D2070_main[8];
 extern HmfDrawObject *D_800CC0BC_main;
-extern s32 D_800A08B0_main;
 extern HuCamera *D_800D10F4_main;
 extern s32 D_800D1F70_main;
 extern s32 D_800D1FE8_main;
@@ -102,6 +95,82 @@ extern u16 D_800D20EE_main;
 extern s8 D_800D41C4_main;
 extern u16 D_800D5204_main;
 extern s16 D_800D6B64_main;
+
+s32 D_800A08B0_main = 0;
+
+Gfx D_800A08B8_main[] = {
+    gsSPSegment(0x00, 0x00000000),
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsDPPipelineMode(G_PM_NPRIMITIVE),
+    gsDPSetTextureLOD(G_TL_TILE),
+    gsDPSetTextureLUT(G_TT_NONE),
+    gsDPSetTextureDetail(G_TD_CLAMP),
+    gsDPSetTexturePersp(G_TP_NONE),
+    gsDPSetTileSize(0, 0, 0, 0, 0),
+    gsDPSetTileSize(1, 0, 0, 0, 0),
+    gsDPSetTile(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+    gsDPSetTile(0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0),
+    gsDPSetTextureFilter(G_TF_BILERP),
+    gsDPSetTextureConvert(G_TC_FILT),
+    gsDPSetCombineMode(G_CC_SHADE, G_CC_SHADE),
+    gsDPSetCombineKey(G_CK_NONE),
+    gsDPSetAlphaCompare(G_AC_NONE),
+    gsDPSetDepthSource(G_ZS_PIXEL),
+    gsDPSetRenderMode(G_RM_OPA_SURF, G_RM_OPA_SURF2),
+    gsDPNoOp(),
+    gsDPSetColorDither(G_CD_DISABLE),
+    gsDPPipeSync(),
+    gsSPEndDisplayList(),
+};
+
+Gfx D_800A0970_main[] = {
+    gsSPClearGeometryMode(0xFFFFFFFF),
+    gsSPTexture(0, 0, 0, G_TX_RENDERTILE, G_OFF),
+    gsSPClipRatio(FRUSTRATIO_2),
+    gsSPSetGeometryMode(G_SHADE | G_SHADING_SMOOTH),
+    gsSPEndDisplayList(),
+};
+
+Gfx D_800A09B0_main[] = {
+    gsSPDisplayList(D_800A0970_main),
+    gsSPDisplayList(D_800A08B8_main),
+    gsSPEndDisplayList(),
+};
+
+Gfx D_800A09C8_main[] = {
+    gsDPPipeSync(),
+    gsSPDisplayList(D_800A09B0_main),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsSPSetGeometryMode(G_ZBUFFER | G_CULL_BACK | G_LIGHTING | G_SHADING_SMOOTH),
+    gsDPSetBlendColor(0, 0, 0, 0),
+    gsDPSetPrimColor(0, 0, 0, 0, 0, 255),
+    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
+    gsSPEndDisplayList(),
+};
+
+Gfx D_800A0A08_main[] = {
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_FILL),
+    gsDPSetRenderMode(G_RM_NOOP, G_RM_NOOP2),
+    gsDPSetFillColor(0xFFFCFFFC),
+    gsDPFillRectangle(0, 0, 319, 239),
+    gsSPEndDisplayList(),
+};
+
+Gfx D_800A0A38_main[] = {
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_FILL),
+    gsDPSetRenderMode(G_RM_NOOP, G_RM_NOOP2),
+    gsDPFillRectangle(0, 0, 319, 239),
+    gsDPNoOp(),
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsSPEndDisplayList(),
+};
+
+s16 D_800A0A78_main = 1;
+f32 D_800A0A7C_main = 0.0f;
 
 const char D_800A6BB8_main[] = "%x\n";
 const char D_800A6BBC_main[] = "Model Entry Over!\n";

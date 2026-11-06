@@ -24,10 +24,32 @@ extern OverlayTable mod_modeovltbl[];
 #endif
 
 extern u8 D_800962F0_main;
-extern u32 rnd_seed;
-extern RectF D_800975F0_main[];
-extern Vec D_80097560_main[];
-extern Vec D_800975A8_main[];
+
+Vec D_80097560_main[] = {
+    { 640.0f, 480.0f, 511.0f },
+    { 640.0f, 480.0f, 511.0f },
+    { 640.0f, 480.0f, 511.0f },
+    { 640.0f, 480.0f, 511.0f },
+    { 640.0f, 480.0f, 511.0f },
+    { 0.0f, 0.0f, 0.0f },
+};
+Vec D_800975A8_main[] = {
+    { 640.0f, 480.0f, 511.0f },
+    { 640.0f, 480.0f, 511.0f },
+    { 640.0f, 480.0f, 511.0f },
+    { 640.0f, 480.0f, 511.0f },
+    { 640.0f, 480.0f, 511.0f },
+    { 0.0f, 0.0f, 0.0f },
+};
+RectF D_800975F0_main[] = {
+    { 0.0f, 0.0f, 320.0f, 240.0f },
+    { 0.0f, 0.0f, 320.0f, 240.0f },
+    { 0.0f, 0.0f, 320.0f, 240.0f },
+    { 0.0f, 0.0f, 320.0f, 240.0f },
+    { 0.0f, 0.0f, 320.0f, 240.0f },
+    { 0.0f, 0.0f, 0.0f, 0.0f },
+};
+u32 rnd_seed = 0xD9ED;
 
 u16 func_8000B0A0_main(s32 arg0, s32 arg1) {
     return Hu3DModelCreate(DataRead(arg0), arg1);

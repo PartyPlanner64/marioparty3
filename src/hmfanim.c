@@ -10,8 +10,16 @@
 extern HmfPaletteData *D_800CD2F8_main;
 extern HmfData_Unk84_Entry2 *D_800D1FCC_main;
 extern u8 D_800CCF85_main;
-extern HmfData_Unk84_Entry2 D_800A1190_main;
 extern Gfx *gMainGfxPos;
+
+u16 D_800A1170_main[] = {
+    0x03C1, 0x03C1, 0x03C1, 0x03C1, 0x03C1, 0x03C1, 0x03C1, 0x03C1,
+    0x03C1, 0x03C1, 0x03C1, 0x03C1, 0x03C1, 0x03C1, 0x03C1, 0x03C1,
+};
+
+HmfData_Unk84_Entry2 D_800A1190_main = {
+    "0123456789ABCDE", 0, 2, 4, 4, 0xFF, 0, 0, 0, (u8 *)D_800A1170_main, (struct HmfData *)-1, NULL,
+};
 
 s16 func_80011334_main(HmfData *, void *, s16); // Declared locally: hmfload.c defines this with its HmfLoadData view of HmfData.
 

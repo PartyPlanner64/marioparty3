@@ -1008,7 +1008,8 @@ void HuWinCancelCRSet(void) {
 }
 
 #ifdef NON_MATCHING
-/* Seven register uses differ: the saved buffer/window ID and glyph character index. */
+/* Two callee-saved registers are swapped: the window ID copy (target s7) and pixelData (target fp).
+ * Writing pixels = pixelData + offset fixes that, but then pixels/j swap a2/a3 instead. */
 void charEntry(s16 winId, u8 character, u8 color, s16 x, s16 y) {
     TextWindow *window = &winData[winId];
     u8 *pixels;
@@ -1033,15 +1034,14 @@ void charEntry(s16 winId, u8 character, u8 color, s16 x, s16 y) {
     pixelData = func_8005DAA4_main(winId);
     glyph = (u8 *)D_800D1FE4_main + D_800D1FE4_main->glyphOffset;
     glyph += (character - 0x30) * 60;
-    width = 10;
     if (gLanguageIndex != LANGUAGE_JAPANESE && !(window->attr & HUWIN_ATTR_MONOSPACE)) {
         width = D_800A2194_main[character];
+    } else {
+        width = 10;
     }
     window->unk_34 = width;
-    if (((window->attr >> 2) & 1) & (character != 0x80)) {
-        if ((character != 0x81) & (color == 0)) {
-            func_8005D83C_main(winId, x - 1, y - 2, width + ((u8)window->spacing_x + 3), 14);
-        }
+    if ((window->attr & HUWIN_ATTR_SHOWSPACE) && character != 0x80 && character != 0x81 && color == 0) {
+        func_8005D83C_main(winId, x - 1, y - 2, width + ((u8)window->spacing_x + 3), 14);
     }
     pixels = pixelData;
     pixels += (x + y * window->unk44) / 2;
@@ -1055,14 +1055,14 @@ void charEntry(s16 winId, u8 character, u8 color, s16 x, s16 y) {
                 if ((*glyph & 0xF0) == 0xF0) {
                     pixels[j] = (pixels[j] & 0xF0) | color;
                 } else if ((pixels[j] & 0xF) != 1 && (pixels[j] & 0xF) != background) {
-                    if (((*glyph & 0xF0) != 0) & (color != 1)) {
+                    if ((*glyph & 0xF0) && color != 1) {
                         pixels[j] = (pixels[j] & 0xF0) | (color + 7);
                     }
                 }
                 if ((*glyph & 0xF) == 0xF) {
                     (pixels + j)[1] = ((pixels + j)[1] & 0xF) | (color << 4);
                 } else if (((pixels + j)[1] & 0xF0) != 0x10 && ((pixels + j)[1] & 0xF0) != backgroundHigh) {
-                    if (((*glyph & 0xF) != 0) & (color != 1)) {
+                    if ((*glyph & 0xF) && color != 1) {
                         (pixels + j)[1] = ((pixels + j)[1] & 0xF) | ((color + 7) << 4);
                     }
                 }
@@ -1077,14 +1077,14 @@ void charEntry(s16 winId, u8 character, u8 color, s16 x, s16 y) {
                 if ((*glyph & 0xF0) == 0xF0) {
                     *pixels = (*pixels & 0xF) | (color << 4);
                 } else if ((*pixels & 0xF0) != 0x10 && (*pixels & 0xF0) != backgroundHigh) {
-                    if (((*glyph & 0xF0) != 0) & (color != 1)) {
+                    if ((*glyph & 0xF0) && color != 1) {
                         *pixels = (*pixels & 0xF) | ((color + 7) << 4);
                     }
                 }
                 if ((*glyph & 0xF) == 0xF) {
                     *pixels = (*pixels & 0xF0) | color;
                 } else if ((*pixels & 0xF) != 1 && (*pixels & 0xF) != background) {
-                    if (((*glyph & 0xF) != 0) & (color != 1)) {
+                    if ((*glyph & 0xF) && color != 1) {
                         *pixels = (*pixels & 0xF0) | (color + 7);
                     }
                 }

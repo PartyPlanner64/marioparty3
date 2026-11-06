@@ -285,7 +285,46 @@ void func_800D80DC_minigame(omObjData *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/A96F0", func_800D81C8_minigame);
+void func_800D81C8_minigame(omObjData *arg0, omObjData *arg1) {
+    A96F0_ObjData *data = arg1->data;
+    func_800E1BA8_minigame_ObjData *playerData = arg0->data;
+    u8 sprite;
+    u8 model;
+
+    if (data->unk84[8] != NULL && data->unk84[8](arg0) == 1) {
+        return;
+    }
+    sprite = data->unk21[3];
+    model = arg1->model[3];
+    func_8001C258_main(model, 4, 0);
+    func_80014714_main(sprite, 0);
+    func_800146DC_main(sprite, 4, 4);
+    Hu3DModelPosSet(model, arg1->trans.x, arg1->trans.y, arg1->trans.z);
+    Hu3DModelScaleSet(model, 5.0f, 5.0f, 5.0f);
+    switch (data->unk52) {
+        case 3:
+            GwPlayer[playerData->unk59].gameCoin += 1;
+            HuAudFXPlay(0);
+            break;
+        case 4:
+            GwPlayer[playerData->unk59].gameCoin += 3;
+            HuAudFXPlay(0);
+            break;
+        case 5:
+            GwPlayer[playerData->unk59].gameCoin += 2;
+            HuAudFXPlay(0);
+            break;
+        case 6:
+            GwPlayer[playerData->unk59].gameCoin += 5;
+            HuAudFXPlay(0);
+            omVibrate(playerData->unk59, 2, 3, 10);
+            break;
+    }
+    data->unk54 = 0;
+    data->unk78 = 0;
+    func_8001C258_main(arg1->model[0], 4, 4);
+    func_8001C258_main(arg1->model[1], 4, 4);
+}
 
 #ifdef NON_MATCHING
 // CSE folds shadowFile | 0x400 into a constant (target keeps it as an ori from

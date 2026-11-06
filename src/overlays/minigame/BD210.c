@@ -18,9 +18,7 @@ typedef struct func_800EA6C4_minigame_ObjData {
     /* 0x04 */ omObjFunc unk04;
     /* 0x08 */ omObjFunc unk08;
     /* 0x0C */ omObjFunc unk0C;
-    /* 0x10 */ s32 unk10;
-    /* 0x14 */ s32 unk14;
-    /* 0x18 */ s32 unk18;
+    /* 0x10 */ Vec unk10;
     /* 0x1C */ f32 unk1C;
     /* 0x20 */ s32 unk20;
     /* 0x024 */ func_800EA6C4_minigame_Entry unk24[10];
@@ -109,12 +107,12 @@ void func_800EA8F0_minigame(omObjData *obj, f32 value) {
     data->unk1C = value;
 }
 
-void func_800EA8FC_minigame(omObjData *obj, s32 arg1, s32 arg2, s32 arg3) {
+void func_800EA8FC_minigame(omObjData *obj, f32 x, f32 y, f32 z) {
     func_800EA6C4_minigame_ObjData *data = obj->data;
 
-    data->unk10 = arg1;
-    data->unk14 = arg2;
-    data->unk18 = arg3;
+    data->unk10.x = x;
+    data->unk10.y = y;
+    data->unk10.z = z;
 }
 
 void func_800EA910_minigame(omObjData *obj, s32 value) {
@@ -236,7 +234,126 @@ void func_800EAE14_minigame(omObjData *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BD210", func_800EAE7C_minigame);
+s32 func_800EAE7C_minigame(omObjData *obj) {
+    func_800EA6C4_minigame_ObjData *data = obj->data;
+    func_800EA6C4_minigame_Entry *entry;
+    s32 count = 0;
+    f32 growStep;
+    f32 shrinkStep;
+    f32 maxScale;
+    f32 angle;
+    f32 sinAngle;
+    f32 cosAngle;
+    f32 step;
+    f32 offsetX;
+    f32 offsetZ;
+    f32 x;
+    f32 y;
+    f32 z;
+    s16 model;
+    s32 i;
+
+    growStep = 4.0f / data->unk28A;
+    shrinkStep = -1.6f / data->unk28A;
+    maxScale = data->unk28E * 2.0f;
+    angle = CRot.y + 90.0f;
+    entry = data->unk24;
+    if (angle > 360.0f) {
+        angle -= 360.0f;
+    }
+    sinAngle = sindf(angle);
+    cosAngle = cosdf(angle);
+    for (i = 3; i < 23; entry++, i++) {
+        if (i == 13) {
+            entry = data->unk13C;
+        }
+        if (entry->unk18 == 0) {
+            continue;
+        }
+        model = obj->model[i];
+        count++;
+        switch (entry->unk18) {
+            case 1:
+                if (entry->unk1A != 0) {
+                    entry->unk1A--;
+                    break;
+                }
+                entry->unk18 = 2;
+                entry->unk1A = data->unk28A;
+                Hu3DModelScaleSet(model, entry->unk14, entry->unk14, entry->unk14);
+                y = sindf(entry->unk10) * entry->unk0C;
+                x = y * sinAngle;
+                z = y * cosAngle;
+                y = cosdf(entry->unk10) * entry->unk0C;
+                x += entry->pos.x;
+                y += entry->pos.y;
+                z += entry->pos.z;
+                Hu3DModelPosSet(model, x, y, z);
+                func_8001C258_main(model, 4, 0);
+                if (i == 3) {
+                    func_8001C258_main(obj->model[2], 4, 0);
+                    offsetX = sinAngle * 10.0f;
+                    offsetZ = cosAngle * 10.0f;
+                    Hu3DModelPosSet(obj->model[2], x + offsetX, y - 10.0f, z + offsetZ);
+                    func_800146DC_main(data->sprites[2], 4, 4);
+                }
+                break;
+            case 2:
+                if (entry->unk1A != 0 && entry->unk14 < maxScale) {
+                    step = growStep;
+                    goto update;
+                }
+                entry->unk18 = 3;
+                break;
+            case 3:
+                if (entry->unk1A != 0) {
+                    step = shrinkStep;
+                update:
+                    entry->unk14 += step;
+                    Hu3DModelScaleSet(model, entry->unk14, entry->unk14, entry->unk14);
+                    x = data->unk10.x - entry->pos.x;
+                    y = data->unk10.y - entry->pos.y;
+                    z = data->unk10.z - entry->pos.z;
+                    x /= entry->unk1A;
+                    y /= entry->unk1A;
+                    z /= entry->unk1A;
+                    entry->pos.x += x;
+                    entry->pos.y += y;
+                    entry->pos.z += z;
+                    y = sindf(entry->unk10) * entry->unk0C;
+                    x = y * sinAngle;
+                    z = y * cosAngle;
+                    y = cosdf(entry->unk10) * entry->unk0C;
+                    x += entry->pos.x;
+                    y += entry->pos.y;
+                    z += entry->pos.z;
+                    Hu3DModelPosSet(model, x, y, z);
+                    if (i == 3) {
+                        offsetX = sinAngle * 10.0f;
+                        offsetZ = cosAngle * 10.0f;
+                        Hu3DModelPosSet(obj->model[2], x + offsetX, y - 10.0f, z + offsetZ);
+                        func_80014714_main(data->sprites[2], entry->unk1A % 8);
+                    }
+                    entry->unk0C -= entry->unk0C / entry->unk1A;
+                    entry->unk10 += 450.0f / data->unk28A;
+                    if (entry->unk10 > 360.0f) {
+                        entry->unk10 -= 360.0f;
+                    } else if (entry->unk10 < 0.0f) {
+                        entry->unk10 += 360.0f;
+                    }
+                    entry->unk1A--;
+                } else {
+                    entry->unk18 = 0;
+                    func_8001C258_main(model, 4, 4);
+                    if (i < 13) {
+                        HuAudFXPlay(0);
+                    }
+                }
+                break;
+        }
+    }
+    return count;
+}
 
 void func_800EB3CC_minigame(omObjData *obj) {
     func_800EA6C4_minigame_ObjData *data = obj->data;

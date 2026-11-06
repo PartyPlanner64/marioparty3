@@ -119,7 +119,7 @@ void func_800146DC_main(s16 arg0, u16 arg1, u16 arg2) {
     entry->flags = (entry->flags & ~arg1) | arg2;
 }
 
-void func_80014714_main(s16 arg0, s16 arg1) {
+void func_80014714_main(s16 arg0, u16 arg1) {
     D_800CBB60_main[arg0].nodeIdx = arg1;
 }
 

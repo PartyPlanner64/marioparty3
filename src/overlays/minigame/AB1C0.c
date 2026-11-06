@@ -438,7 +438,79 @@ s32 func_800DCA34_minigame(func_800DC7D8_minigame_Arg *arg0, func_800E1BA8_minig
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DCCB0_minigame);
+void func_800DCCB0_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1, Vec *arg2, f32 arg3) {
+    s32 i = D_800EB736_minigame;
+    func_800E1BA8_minigame_ObjData *data = arg0->data;
+    f32 x = arg1->x;
+    f32 z = arg1->z;
+    f32 minX;
+    f32 minZ;
+    f32 maxX;
+    f32 maxZ;
+    f32 edgeX;
+    f32 edgeZ;
+
+    if (arg1->y < arg3 + data->unk14 && data->unk14 - data->unk98 - arg3 < arg1->y) {
+        minX = data->unkA0 - arg1->unk0C;
+        minZ = data->unkA4 - arg1->unk0C;
+        maxX = data->unkA8.f + arg1->unk0C;
+        maxZ = data->unkAC + arg1->unk0C;
+        if (((minX <= x) & (x < maxX)) && ((minZ < z) & (z < maxZ))) {
+            if (func_800DCA34_minigame(arg1, data) == 1) {
+                if (minX <= x && x <= data->unkA0) {
+                    if (data->unkA4 <= arg1->z && arg1->z <= data->unkAC) {
+                        edgeX = data->unkA0;
+                        if (edgeX == arg1->x) {
+                            edgeX += 1.0f;
+                        }
+                        func_800E048C_minigame(edgeX, arg1->y, arg1->z);
+                        func_800E0430_minigame(-1.0f, 0.0f, 0.0f);
+                        D_800EB736_minigame++;
+                    }
+                } else if (x <= maxX && data->unkA8.f <= x) {
+                    if (data->unkA4 <= arg1->z && arg1->z <= data->unkAC) {
+                        edgeX = data->unkA8.f;
+                        if (edgeX == arg1->x) {
+                            edgeX -= 1.0f;
+                        }
+                        func_800E048C_minigame(edgeX, arg1->y, arg1->z);
+                        func_800E0430_minigame(1.0f, 0.0f, 0.0f);
+                        D_800EB736_minigame++;
+                    }
+                } else if (minZ <= z && z <= data->unkA4) {
+                    if (data->unkA0 <= arg1->x && arg1->x <= data->unkA8.f) {
+                        edgeZ = data->unkA4;
+                        if (edgeZ == arg1->z) {
+                            edgeZ += 1.0f;
+                        }
+                        func_800E048C_minigame(arg1->x, arg1->y, edgeZ);
+                        func_800E0430_minigame(0.0f, 0.0f, -1.0f);
+                        D_800EB736_minigame++;
+                    }
+                } else if (z <= maxZ && data->unkAC <= z) {
+                    if (data->unkA0 <= arg1->x && arg1->x <= data->unkA8.f) {
+                        edgeZ = data->unkAC;
+                        if (edgeZ == arg1->z) {
+                            edgeZ -= 1.0f;
+                        }
+                        func_800E048C_minigame(arg1->x, arg1->y, edgeZ);
+                        func_800E0430_minigame(0.0f, 0.0f, 1.0f);
+                        D_800EB736_minigame++;
+                    }
+                }
+            }
+            for (; i < D_800EB736_minigame; i++) {
+                if (arg0->trans.x != 0.0f || arg0->trans.y != 0.0f || arg0->trans.z != 0.0f || arg0->rot.x != 0.0f ||
+                    arg0->rot.y != 0.0f || arg0->rot.z != 0.0f) {
+                    func_800E2BD4_minigame(D_800EC240_minigame, (Vec *)&D_800EBEB8_minigame[i]);
+                }
+                minX = D_800EBEB8_minigame[i].unk00 - arg2->x;
+                minZ = D_800EBEB8_minigame[i].unk08 - arg2->z;
+                func_800DFCDC_minigame(minX, minZ, HuSqrtf(minX * minX + minZ * minZ) - arg1->unk0C);
+            }
+        }
+    }
+}
 
 void func_800DD1F4_minigame(omObjData *obj, Vec *pos, f32 arg2) {
     func_800E1BA8_minigame_ObjData *data;

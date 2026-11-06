@@ -49,6 +49,7 @@ extern u8 D_800EBAD4_minigame[];
 extern u8 D_800EBADC_minigame[];
 extern u8 D_800EBAE4_minigame[];
 extern u8 D_800EBAEC_minigame[];
+extern s16 D_800EBAF0_minigame;
 extern u8 D_800EBAF4_minigame[];
 
 s16 func_800E7BCC_minigame(BA4B0_Work *work);
@@ -303,7 +304,165 @@ s16 func_800E905C_minigame(s16 arg0) {
     return rank;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BA4B0", func_800E9170_minigame);
+void func_800E9170_minigame(void) {
+    s16 sprites[2];
+    BA4B0_Pos pos[2];
+    s16 *result;
+    s16 cursorAnim;
+    s16 arrowAnim;
+    s16 window;
+    s16 frameAnim;
+    s16 frame;
+    s16 cursor;
+    Process *prc;
+    s16 i;
+    s16 selection;
+    s16 speed;
+    s16 angle;
+    s16 story;
+    f32 offset;
+
+    result = HuPrcCurrentGet()->user_data;
+
+    frameAnim = func_8000B838_main(0x140064);
+    frame = espEntry(frameAnim, 0, 1);
+    espPriSet(frame, 0x4BA);
+    espScaleSet(frame, 10.0f, 8.0f);
+    espPosSet(frame, 160, 120);
+    espColorSet(frame, 0, 0, 0);
+    espTPLvlSet(frame, 0);
+    espDispOff(frame);
+
+    cursorAnim = func_8000B838_main(0x150001);
+    cursor = espEntry(cursorAnim, 0, 1);
+    espPriSet(cursor, 600);
+    espPosSet(cursor, 160, 204);
+    espTPLvlSet(cursor, 0);
+    espDispOff(cursor);
+
+    window = HuWinCreate(48, 187, 224, 42, 0, 12);
+    HuWinMesSpeedSet(window, 0);
+    HuWinBGTPLvlSet(window, 0);
+    HuWinPriSet(window, 1);
+    HuWinMesPalSet(window, 2, 255, 0, 0);
+    HuWinMesPalSet(window, 4, 0, 144, 0);
+    HuWinMesPalSet(window, 5, 0, 176, 192);
+    HuWinMesPalSet(window, 6, 255, 173, 0);
+    func_8005C154_main(window, 64, 64, 64);
+    HuWinBGColSet(window, 0, 0, 0);
+    HuWinMesColSet(window, 7);
+    func_8005BF70_main(window, 255);
+
+    pos[0].x = 25;
+    pos[1].x = 295;
+    pos[0].y = pos[1].y = 130;
+    arrowAnim = func_8000B838_main(0x150003);
+    for (i = 0; i < 2; i++) {
+        sprites[i] = espEntry(arrowAnim, 0, 1);
+        espPriSet(sprites[i], 100);
+        espPosSet(sprites[i], pos[i].x, pos[i].y);
+        espTPLvlSet(sprites[i], 0);
+        espDispOff(sprites[i]);
+    }
+    espAttrSet(sprites[1], 1);
+
+    if (*result < 0) {
+        story = GwStory.unk1;
+    } else {
+        story = *result;
+    }
+    prc = func_800E8EC4_minigame(0, story);
+    HuPrcVSleep();
+    func_800E8FE4_minigame(prc, 1);
+    espDispOn(cursor);
+    espDispOn(sprites[0]);
+    espDispOn(sprites[1]);
+    espDispOn(frame);
+    for (i = 0; i <= 256; i += 36) {
+        espTPLvlSet(cursor, i);
+        espTPLvlSet(sprites[0], i);
+        espTPLvlSet(sprites[1], i);
+        if (i <= 128) {
+            espTPLvlSet(frame, i);
+        }
+        HuPrcVSleep();
+    }
+
+    HuWinMesSet(window, 0x6125, -1, -1);
+    HuPrcVSleep();
+    selection = 0;
+    angle = 0;
+    speed = 0;
+    while (TRUE) {
+        if (D_800D5558_main[D_800EBAF0_minigame] & 0x4000) {
+            HuAudFXPlay(4);
+            *result = -2;
+            break;
+        }
+        if (D_800D5558_main[D_800EBAF0_minigame] & 0x1000) {
+            HuAudFXPlay(2);
+            *result = -1;
+            break;
+        }
+        if (func_800E8FF8_minigame(prc) == 0) {
+            if ((D_800D5558_main[D_800EBAF0_minigame] & 0x100) || D_800CBB6E_main[D_800EBAF0_minigame] >= 31) {
+                HuAudFXPlay(1);
+                func_800E8FE4_minigame(prc, 3);
+                angle = 180;
+                speed = -22;
+                selection = 1;
+            } else if ((D_800D5558_main[D_800EBAF0_minigame] & 0x200) || D_800CBB6E_main[D_800EBAF0_minigame] < -30) {
+                HuAudFXPlay(1);
+                func_800E8FE4_minigame(prc, 4);
+                angle = 180;
+                speed = 22;
+                selection = 0;
+            }
+        }
+        if (speed != 0) {
+            if ((u16)(angle += speed) > 360) {
+                espPosSet(sprites[0], pos[0].x, pos[0].y);
+                speed = 0;
+                espPosSet(sprites[1], pos[1].x, pos[1].y);
+            } else {
+                offset = sindf(angle) * 8.0f;
+                espPosSet(sprites[selection], pos[selection].x + offset, pos[selection].y);
+            }
+        }
+        HuPrcVSleep();
+    }
+
+    func_800E8FE4_minigame(prc, 2);
+    HuWinHomeClear(window);
+    for (i = 256; i >= 0; i -= 36) {
+        espTPLvlSet(cursor, i);
+        espTPLvlSet(sprites[0], i);
+        espTPLvlSet(sprites[1], i);
+        if (i <= 128) {
+            espTPLvlSet(frame, i);
+        }
+        HuPrcVSleep();
+    }
+    espDispOff(cursor);
+    espDispOff(sprites[0]);
+    espDispOff(sprites[1]);
+    espDispOff(frame);
+    func_800E9004_minigame(prc, 0);
+    func_800E8F78_minigame(prc);
+    espKill(frame);
+    espKill(cursor);
+    espKill(sprites[0]);
+    espKill(sprites[1]);
+    HuSprAnimKill(frameAnim);
+    HuSprAnimKill(cursorAnim);
+    HuSprAnimKill(arrowAnim);
+    HuWinKill(window);
+    omDelPrcObj(NULL);
+    *result = -3;
+    while (TRUE) {
+        HuPrcVSleep();
+    }
+}
 
 void func_800E989C_minigame(void) {
     GW_PLAYER *temp;

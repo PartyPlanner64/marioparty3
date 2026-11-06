@@ -3,6 +3,7 @@
 #include "game/hmfcoll.h"
 #include "game/hmfspr.h"
 #include "game/hu3d.h"
+#include "game/mapspace.h"
 #include "math.h"
 
 typedef struct {
@@ -28,6 +29,12 @@ typedef struct {
     /* 0x0C */ f32 unk0C;
 } func_800DC7D8_minigame_Arg; // Size 0x10
 
+typedef struct {
+    /* 0x00 */ Vec pos;
+    /* 0x0C */ f32 radius;
+    /* 0x10 */ Vec prev;
+} func_800DBCF4_minigame_Arg; // Size 0x1C
+
 extern Vec D_800EBDD0_minigame;
 extern f32 D_800EB760_minigame;
 extern f32 D_800EB764_minigame;
@@ -38,6 +45,7 @@ extern f32 D_800EBE2C_minigame;
 extern f32 D_800EC5D8_minigame;
 extern Vec D_800EC298_minigame[];
 extern HuMtx4F D_800EC240_minigame;
+extern HuMtx4F D_800EBE30_minigame;
 
 void func_800DFCDC_minigame(f32 x, f32 z, f32 scale);
 void func_800E19FC_minigame(func_800E1BA8_minigame_ObjData *, s32);
@@ -280,7 +288,89 @@ s32 func_800DB704_minigame(s32 count, s16 *vtx, Hu3DPoint *points, Vec *pos) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DB724_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DBCF4_minigame);
+s32 func_800DBCF4_minigame(s32 count, s16 *vtx, Hu3DPoint *points, func_800DBCF4_minigame_Arg *arg3) {
+    func_800DC7D8_minigame_Arg sphere;
+    func_800DC7D8_minigame_Arg prev;
+    Vec closest;
+    Vec quad[4];
+    Vec tri[3];
+    Vec dir;
+    s32 side;
+    s32 hit;
+    f32 dx;
+    f32 dz;
+    f32 depth;
+    s16 *face;
+
+    prev.x = sphere.x = arg3->pos.x + D_800EBE2C_minigame;
+    prev.y = sphere.y = arg3->pos.y;
+    prev.z = sphere.z = arg3->pos.z + D_800EC5D8_minigame;
+    sphere.unk0C = prev.unk0C = arg3->radius;
+    face = vtx - 1;
+    side = func_800DA054_minigame(&sphere, (Hu3DQuad *)face, points);
+    if (side == 0) {
+        return 0;
+    }
+    if (((u16)face[0] >> 14) + 2 == 4) {
+        quad[0].x = points[vtx[0]].x;
+        quad[0].y = points[vtx[0]].y;
+        quad[0].z = points[vtx[0]].z;
+        quad[1].x = points[vtx[1]].x;
+        quad[1].y = points[vtx[1]].y;
+        quad[1].z = points[vtx[1]].z;
+        quad[2].x = points[vtx[2]].x;
+        quad[2].y = points[vtx[2]].y;
+        quad[2].z = points[vtx[2]].z;
+        quad[3].x = points[vtx[3]].x;
+        quad[3].y = points[vtx[3]].y;
+        quad[3].z = points[vtx[3]].z;
+        hit = Hitcheck_Quadrangle_with_Sphere(quad, (Vec *)&prev, sphere.unk0C, &closest);
+    } else {
+        tri[0].x = points[vtx[0]].x;
+        tri[0].y = points[vtx[0]].y;
+        tri[0].z = points[vtx[0]].z;
+        tri[1].x = points[vtx[1]].x;
+        tri[1].y = points[vtx[1]].y;
+        tri[1].z = points[vtx[1]].z;
+        tri[2].x = points[vtx[2]].x;
+        tri[2].y = points[vtx[2]].y;
+        tri[2].z = points[vtx[2]].z;
+        hit = Hitcheck_Triangle_with_Sphere(tri, (Vec *)&prev, sphere.unk0C, &closest);
+    }
+    if (hit == 1) {
+        prev.x = arg3->prev.x + D_800EBE2C_minigame;
+        prev.y = arg3->prev.y;
+        prev.z = arg3->prev.z + D_800EC5D8_minigame;
+        func_800E2BD4_minigame(D_800EC240_minigame, &closest);
+        func_800E048C_minigame(closest.x, closest.y, closest.z);
+        func_8002038C_main(&points[vtx[0]], &points[vtx[1]], &points[vtx[2]], &D_800EC298_minigame[D_800EB736_minigame]);
+        D_800EB736_minigame++;
+        dx = closest.x - prev.x;
+        dz = closest.z - prev.z;
+        depth = sphere.unk0C - HuSqrtf(dx * dx + dz * dz);
+        if (side > 0) {
+            sphere.x = D_800EBDD0_minigame.x;
+            sphere.y = D_800EBDD0_minigame.y;
+            sphere.z = D_800EBDD0_minigame.z;
+            func_800E2BD4_minigame(D_800EBE30_minigame, (Vec *)&sphere);
+            if (func_800D9F3C_minigame((Vec *)&sphere, (Hu3DQuad *)(vtx - 1), points) < 0) {
+                dir.x = sphere.x - prev.x;
+                dir.y = sphere.y - prev.y;
+                dir.z = sphere.z - prev.z;
+                func_800202FC_main(&dir);
+                if (func_800DA2E0_minigame((Vec *)&prev, vtx - 1, points, &dir) == hit) {
+                    depth = HuSqrtf(dx * dx + dz * dz) + sphere.unk0C;
+                }
+            } else {
+                depth = 0.0f;
+            }
+        }
+        if (0.0f <= depth) {
+            func_800DFCDC_minigame(-dx, -dz, depth);
+        }
+    }
+    return hit;
+}
 
 void func_800DC354_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1, Vec *arg2) {
     s32 i = D_800EB736_minigame;

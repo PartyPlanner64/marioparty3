@@ -164,7 +164,7 @@ void func_800E139C_minigame(omObjData *arg0, f32 arg1, f32 arg2, f32 arg3, f32 a
     temp_v0->unk14 = arg1;
     temp_v0->unkA0 = arg2;
     temp_v0->unkA4 = arg3;
-    temp_v0->unkA8 = arg4;
+    temp_v0->unkA8.f = arg4;
     temp_v0->unkAC = arg5;
 }
 
@@ -176,7 +176,7 @@ void func_800E13CC_minigame(omObjData *arg0, f32 arg1, f32 arg2, f32 arg3, f32 a
     temp_v0->unk98 = arg2;
     temp_v0->unkA0 = arg3;
     temp_v0->unkA4 = arg4;
-    temp_v0->unkA8 = arg5;
+    temp_v0->unkA8.f = arg5;
     temp_v0->unkAC = arg6;
 }
 

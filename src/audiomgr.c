@@ -77,9 +77,6 @@ static OSPiHandle *D_800ABE38_main;
 static s32 D_800ABE3C_main; // use the short frame next
 extern OSMesgQueue D_800CC3A0_main;
 
-extern u8 n_aspMain_code[];
-extern u8 n_aspMain_data[];
-
 s32 __amHandleFrameMsg(AudioInfo *info, AudioInfo *lastInfo);
 void __amHandleDoneMsg(AudioInfo *info);
 ALDMAproc __amDmaNew(AMDMAState **state);
@@ -361,8 +358,8 @@ void func_80008D28_main(swapChainTaskQueue *task, AudioMsg *msg, Acmd *cmdp) {
     task->task.t.ucode_boot = (u64 *)rspbootTextStart;
     task->task.t.ucode_boot_size = (u32)gspF3DEX2_fifoTextStart - (u32)rspbootTextStart;
     task->task.t.flags = 0;
-    task->task.t.ucode = (u64 *)n_aspMain_code;
-    task->task.t.ucode_data = (u64 *)n_aspMain_data;
+    task->task.t.ucode = (u64 *)n_aspMainTextStart;
+    task->task.t.ucode_data = (u64 *)n_aspMainDataStart;
     task->task.t.ucode_data_size = SP_UCODE_DATA_SIZE;
     task->task.t.dram_stack = NULL;
     task->task.t.dram_stack_size = 0;

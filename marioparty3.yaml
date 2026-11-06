@@ -527,7 +527,7 @@ segments:
       - [0xA4BA0, .data, 2.0L/os/initialize]
       - [0xA4BC0, .data, 2.0L/os/initialize_kmc]
       - [0xA4BD0, .data, 2.0L/os/initialize_msp]
-      - [0xA4BE0, data] # exceptasm
+      - [0xA4BE0, data, 2.0L/os/exceptasm]
       - [0xA4C20, .data, 2.0L/debug/kdebugserver]
       - [0xA4C30, .data, 2.0L/debug/threadprofile]
       - [0xA4C40, .data, 2.0L/debug/readhost]
@@ -548,7 +548,7 @@ segments:
       - [0xA60C0, rodatabin, gspF3DLX2_Rej_fifo_data]
       - [0xA64D0, rodatabin, gspS2DEX2_fifo_data]
       - [0xA6860, rodatabin, gspL3DEX2_fifo_data]
-      - [0xA6C50, rodata, n_aspMain_data]
+      - [0xA6C50, rodatabin, n_aspMain_data]
       - [0xA6F00, .rodata, msm]
       - [0xA7580, .rodata, audiomgr]
       - [0xA7590, .rodata, decode]
@@ -580,7 +580,7 @@ segments:
       - [0xA8D40, .rodata, 2.0L/n_audio/n_drvrNew]
       - [0xA8D70, .rodata, 2.0L/n_audio/n_reverb]
       - [0xA8DB0, .rodata, 2.0L/n_audio/n_seqplayer]
-      - [0xA8E10, rodata] # setintmask (__osRcpImTable)
+      - [0xA8E10, rodata, 2.0L/os/setintmask]
       - [0xA8E90, .rodata, 2.0L/io/devmgr]
       - [0xA8EB0, .rodata, 2.0L/io/aisetfreq]
       - [0xA8EC0, .rodata, 2.0L/audio/drvrnew]
@@ -597,8 +597,9 @@ segments:
       - [0xA91E0, .rodata, 2.0L/gu/perspective]
       - [0xA9220, .rodata, 2.0L/gu/sinf]
       - [0xA9280, .rodata, 2.0L/io/viswapcontext]
-      - [0xA9290, rodata] # exceptasm
-      - [0xA9300, rodata] # libm_vals (__libm_qnan_f)
+      - [0xA9290, rodata, 2.0L/os/exceptasm]
+      - [0xA9300, .rodata, 2.0L/gu/libm_vals]
+      - [0xA9304, pad, pad_A9304] # zero padding: libm_vals.s was assembled with .align 4
       - [0xA9310, .rodata, 2.0L/libc/xprintf]
       - [0xA9490, .rodata, 2.0L/libc/xldtob]
       - [0xA9500, .rodata, 2.0L/rmon/rmonmem]

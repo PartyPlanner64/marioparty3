@@ -1780,8 +1780,8 @@ mbItemBtnF = 0x800D037C; // type:s16
 D_800D51F8_main = 0x800D51F8; // type:s16
 MBMasuTypeSet = 0x800EB7F0; //rom:0xFF410 segment:shared_board
 
-n_aspMain_code = 0x800954C0; //rom:0x960C0 size:0xC60
-n_aspMain_data = 0x800A6050; //rom:0xA6C50 size:0x2B0
+n_aspMainTextStart = 0x800954C0; //rom:0x960C0 size:0xC60
+n_aspMainDataStart = 0x800A6050; //rom:0xA6C50 size:0x2B0
 
 //ovl_80
 mbStatusData = 0x801057E0; //size:0x1B0 segment:shared_board
@@ -2371,3 +2371,7 @@ __OSGlobalIntMask = 0x800A3FB0; //size:0x4
 __osThprofFlag = 0x800A4030; //size:0x4
 __osThprofFunc = 0x800A4034; //size:0x4
 __osRcpImTable = 0x800A8210; //size:0x80
+__osHwIntTable = 0x800A3FE0; //size:0x28
+__osPiIntTable = 0x800A4008; //size:0x8
+__osIntOffTable = 0x800A8690; //size:0x20
+__osIntTable = 0x800A86B0; //size:0x24

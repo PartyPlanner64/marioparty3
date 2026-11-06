@@ -31,9 +31,18 @@ s32 func_800E8F78_minigame(Process *prc) {
     return result;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BA4B0", func_800E8FE4_minigame);
+s16 func_800E8FE4_minigame(Process *prc, s16 value) {
+    func_800E1BA8_minigame_UnkE8_ObjData *data = prc->user_data;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BA4B0", func_800E8FF8_minigame);
+    data->unk04 = value;
+    return value;
+}
+
+s16 func_800E8FF8_minigame(Process *prc) {
+    func_800E1BA8_minigame_UnkE8_ObjData *data = prc->user_data;
+
+    return data->unk04;
+}
 
 void func_800E9004_minigame(Process *prc, s16 value) {
     func_800E1BA8_minigame_UnkE8_ObjData *data = prc->user_data;

@@ -30,8 +30,8 @@ typedef struct func_800EA6C4_minigame_ObjData {
     /* 0x284 */ u16 unk284;
     /* 0x286 */ u16 unk286;
     /* 0x288 */ u16 unk288;
-    /* 0x28A */ s16 unk28A;
-    /* 0x28C */ s16 unk28C;
+    /* 0x28A */ u16 unk28A;
+    /* 0x28C */ u16 unk28C;
     /* 0x28E */ u16 unk28E;
 } func_800EA6C4_minigame_ObjData;
 
@@ -41,6 +41,7 @@ void func_800EAA58_minigame(omObjData *obj);
 void func_800EB3CC_minigame(omObjData *obj);
 void func_800EB5E4_minigame(omObjData *obj);
 void func_800EAE14_minigame(omObjData *arg0);
+s32 func_800EAE7C_minigame(omObjData *obj);
 
 void func_800EA690_minigame(void) {
     s32 i;
@@ -237,7 +238,62 @@ void func_800EAE14_minigame(omObjData *arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BD210", func_800EAE7C_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BD210", func_800EB3CC_minigame);
+void func_800EB3CC_minigame(omObjData *obj) {
+    func_800EA6C4_minigame_ObjData *data = obj->data;
+    func_800EA6C4_minigame_Entry *entry;
+    s16 model;
+    f32 time;
+    s32 index;
+    s32 i;
+
+    if (data->unk20 > 0) {
+        model = obj->model[0];
+        switch (data->unk20) {
+            case 1:
+                func_8001C814_main(model, 1, 0);
+                data->unk20 = 2;
+                HuAudFXPlay(0);
+                break;
+            case 2:
+                time = HmfModelData[model].motTime;
+                if (D_800CCF58_main[HmfModelData[model].motId].unk02 <= time) {
+                    data->unk20 = 3;
+                    entry = data->unk24;
+                    index = 0;
+                    for (i = 0; i < 10; i++, entry++) {
+                        entry->unk1A = index;
+                        index += 2;
+                        entry->unk0C = data->unk28C;
+                        entry->unk10 = 180.0f;
+                        entry->unk14 = data->unk28E;
+                        entry->unk18 = 1;
+                        entry->pos.x = obj->trans.x;
+                        entry->pos.y = obj->trans.y + entry->unk0C;
+                        entry->pos.z = obj->trans.z;
+                    }
+                    entry = data->unk13C;
+                    index--;
+                    for (i = 0; i < 10; i++, entry++) {
+                        entry->unk1A = index;
+                        index++;
+                        entry->unk0C = data->unk28C;
+                        entry->unk10 = 180.0f;
+                        entry->unk14 = data->unk28E;
+                        entry->unk18 = 1;
+                        entry->pos.x = obj->trans.x;
+                        entry->pos.y = obj->trans.y + entry->unk0C;
+                        entry->pos.z = obj->trans.z;
+                    }
+                }
+                break;
+            case 3:
+                if (func_800EAE7C_minigame(obj) == 0) {
+                    data->unk20 = 0;
+                }
+                break;
+        }
+    }
+}
 
 void func_800EB5E4_minigame(omObjData *obj) {
     func_800EA6C4_minigame_ObjData *data = obj->data;

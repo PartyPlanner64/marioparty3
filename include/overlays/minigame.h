@@ -81,8 +81,8 @@ typedef struct {
     /* 0x0D6 */ u16 unkD6;
     /* 0x0D8 */ func_800E5638_minigame_UnkD8_ObjData unkD8;
     /* 0x0E8 */ func_800E1BA8_minigame_UnkE8_ObjData *unkE8;
-    /* 0x0EC */ s32 unkEC;
-    /* 0x0F0 */ char unkF0[2];
+    /* 0x0EC */ s32 (*unkEC)(omObjData *, omObjData *);
+    /* 0x0F0 */ s16 unkF0;
     /* 0x0F2 */ s8 unkF2[0x12];
     /* 0x104 */ s32 (*unk104[21])();
     /* 0x158 */ void *unk158;
@@ -171,7 +171,7 @@ extern u16 D_800EB916_minigame;
 extern u16 D_800EB918_minigame;
 extern s16 D_800EB736_minigame;
 extern D_800EBEB8_minigame_Entry D_800EBEB8_minigame[64];
-extern s16 D_800EC1B8_minigame;
+extern u16 D_800EC1B8_minigame;
 extern omObjData *D_800EC1C0_minigame[];
 /* Indexed by D_800EBE28_minigame one slot before D_800EC1C0_minigame, only read
    by the stardust battle overlay. */

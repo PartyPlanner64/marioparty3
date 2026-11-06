@@ -46,6 +46,9 @@ extern f32 D_800EC5D8_minigame;
 extern Vec D_800EC298_minigame[];
 extern HuMtx4F D_800EC240_minigame;
 extern HuMtx4F D_800EBE30_minigame;
+extern omObjData *D_800EBE70_minigame[];
+extern s8 D_800EC286_minigame;
+extern u16 D_800EC288_minigame;
 
 void func_800DFCDC_minigame(f32 x, f32 z, f32 scale);
 void func_800E19FC_minigame(func_800E1BA8_minigame_ObjData *, s32);
@@ -55,6 +58,12 @@ void func_800E048C_minigame(f32 arg0, f32 arg1, f32 arg2);
 void func_800E2CA4_minigame(omObjData *, f32);
 void func_800E2C68_minigame(HuMtx4F mtx, Vec *arg1);
 void func_800E2BD4_minigame(HuMtx4F mtx, Vec *arg1);
+s8 func_800DD530_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1, f32 arg2);
+s32 func_800E1510_minigame(s8 arg0);
+s32 func_800E2DA4_minigame(omObjData *arg0, omObjData *item);
+s32 func_800E4510_minigame(omObjData *arg0, omObjData *arg1);
+void func_800E454C_minigame(omObjData *arg0, omObjData *arg1, f32 x, f32 z, u16 arg4);
+void func_800E4C88_minigame(omObjData *arg0, u8 arg1, f32 x, f32 y, f32 z, f32 rotX, f32 rotY);
 
 f32 func_800D8640_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1, f32 arg2) {
     func_800D8640_minigame_ObjData *data = arg0->data;
@@ -765,7 +774,105 @@ void func_800DFE44_minigame(omObjData *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DFF3C_minigame);
+void func_800DFF3C_minigame(omObjData *arg0, f32 x, f32 y, f32 z) {
+    func_800E1BA8_minigame_ObjData *data = arg0->data;
+    func_800E1BA8_minigame_ObjData *otherData;
+    A96F0_ObjData *itemData;
+    omObjData *other;
+    func_800DC7D8_minigame_Arg pos;
+    f32 time;
+    f32 angle;
+    f32 dist;
+    f32 dx, dy, dz;
+    f32 px, py, pz;
+    f32 rot;
+    u16 i;
+
+    time = Hu3DMotionShiftTimeGet(arg0->model[0]);
+    if (time == -1.0f) {
+        time = HmfModelData[arg0->model[0]].motTime;
+    }
+    if ((time < 16.0f) | (time > 20.0f)) {
+        return;
+    }
+    if (data->unkBE != 0) {
+        D_800EC288_minigame++;
+        return;
+    }
+    if (data->unk50 & 0x400) {
+        return;
+    }
+    dist = data->unk64 + data->unk48;
+    angle = data->unk3C;
+    px = x + sindf(angle) * dist;
+    py = y;
+    pz = z + cosdf(angle) * dist;
+    data->unkF0 = 1;
+    for (i = 0; i < D_800EC280_minigame; i++) {
+        other = D_800EC598_minigame[i];
+        otherData = other->data;
+        if (otherData->unk5C & 0x8C00) {
+            continue;
+        }
+        if (otherData->unk50 & 7) {
+            continue;
+        }
+        if (otherData->unkBE != 0) {
+            continue;
+        }
+        if (otherData->unk50 & 0x400) {
+            continue;
+        }
+        if (data == otherData) {
+            continue;
+        }
+        if (func_800E4510_minigame(arg0, other) != 1) {
+            continue;
+        }
+        dx = other->trans.x - px;
+        dy = other->trans.y - py;
+        dz = other->trans.z - pz;
+        if (HuSqrtf(dx * dx + dy * dy + dz * dz) < otherData->unk48 + 30.0f) {
+            func_800E454C_minigame(arg0, other, dx, dz, i);
+        }
+    }
+    if (!(data->unk50 & 0x17)) {
+        for (i = 0; i < D_800EC1B8_minigame; i++) {
+            other = D_800EBE70_minigame[i];
+            itemData = other->data;
+            if (!(itemData->unk50 & 0x20)) {
+                continue;
+            }
+            if (itemData->unk50 & 0x10) {
+                continue;
+            }
+            if (data->unkBE != 0) {
+                D_800EC288_minigame++;
+                continue;
+            }
+            dx = other->trans.x - px;
+            dy = other->trans.y - py;
+            dz = other->trans.z - pz;
+            dist = HuSqrtf(dx * dx + dy * dy + dz * dz) - (itemData->unk48 + data->unk48);
+            if (dist < 0.0f) {
+                if (data->unkEC == NULL || data->unkEC(arg0, other) != 1) {
+                    func_800E2DA4_minigame(arg0, other);
+                }
+            }
+        }
+    }
+    pos.x = sindf(angle) * data->unk48 + arg0->trans.x;
+    pos.y = py;
+    pos.z = cosdf(angle) * data->unk48 + arg0->trans.z;
+    pos.unk0C = data->unk64;
+    data->unk53[2] = func_800DD530_minigame(arg0, &pos, -D_800EB760_minigame);
+    if (D_800EB736_minigame != 0 && func_800E1510_minigame(D_800EC286_minigame) == 1) {
+        rot = atan2df(D_800EBEB8_minigame[0].unk00 - arg0->trans.x, D_800EBEB8_minigame[0].unk08 - arg0->trans.z);
+        func_800E4C88_minigame(arg0, 6, px, py, pz, 0.0f, rot + 180.0f);
+    }
+    D_800EB736_minigame = 0;
+    D_800EBE2C_minigame = D_800EC5D8_minigame = 0.0f;
+}
 
 void func_800E0430_minigame(f32 x, f32 y, f32 z) {
     D_800EC298_minigame[D_800EB736_minigame].x = x;

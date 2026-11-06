@@ -7,6 +7,7 @@
 #include "game/hmfcoll.h"
 #include "game/hmfdraw.h"
 #include "game/hmfspr.h"
+#include "game/hmfanim.h"
 #include "game/audio.h"
 #include "game/mallocblock.h"
 #include "include_asm.h"
@@ -270,9 +271,30 @@ void func_800E1594_minigame(omObjData *arg0, s32 arg1, s32 arg2, s32 arg3) {
     func_8001C2FC_main(arg0->model[0], 0x70000000, 0x70000000);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E1610_minigame);
+void func_800E1610_minigame(omObjData *arg0, u8 arg1, s32 arg2, s32 arg3, char *arg4, s32 arg5) {
+    func_800E1BA8_minigame_ObjData *data = arg0->data;
+    u8 anim;
+    HmfModel *model;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E1718_minigame);
+    arg0->model[arg1] = func_8000B0D4_main(arg2, arg5);
+    model = &HmfModelData[arg0->model[arg1]];
+    anim = HmfAnimRead(model->hmf, arg3, arg4);
+    data->unk21[arg1] = anim;
+    Hu3DModelRemakeStatic(arg0->model[arg1]);
+    func_80032FC0_main(anim, 1, 1);
+    func_80032FC0_main(anim, 2, 2);
+    Hu3DModelScaleSet(arg0->model[arg1], 2.0f, 2.0f, 2.0f);
+}
+
+void func_800E1718_minigame(omObjData *arg0, u8 arg1, s32 arg2, s32 arg3, s32 arg4) {
+    func_800E1BA8_minigame_ObjData *data = arg0->data;
+    u16 sprite = SprModelRead(arg2, arg3, arg4);
+
+    arg0->model[arg1] = D_800CBB60_main[(u8)sprite].modelId;
+    data->unk21[arg1] = sprite;
+    func_8001C2FC_main(D_800CBB60_main[(u8)sprite].modelId, 0x70000000, 0x70000000);
+    func_800146DC_main((u8)sprite, 4, 4);
+}
 
 void func_800E17D4_minigame(omObjData *arg0, f32 x, f32 y, f32 z) {
     arg0->trans.x = x;
@@ -704,7 +726,15 @@ s32 func_800E30B8_minigame(Vec *pos, D_800EC1C0_minigame_ObjData *data) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E317C_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E341C_minigame);
+void func_800E341C_minigame(func_800E1BA8_minigame_ObjData *arg0, f32 x, f32 z) {
+    if (0.0f <= func_800E2ED4_minigame(sindf(arg0->unk3C), cosdf(arg0->unk3C), x, z)) {
+        arg0->unk40 = D_800EB764_minigame;
+    } else {
+        arg0->unk40 = -D_800EB764_minigame;
+    }
+    arg0->unk50 |= 8;
+    func_800E19FC_minigame(arg0, 7);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E34D8_minigame);
 

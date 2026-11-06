@@ -321,7 +321,7 @@ void func_800DFD9C_minigame(omObjData *arg0, f32 x, f32 y, f32 z) {
     s16 temp;
 
     func_800E5690_minigame(arg0, 0x10);
-    temp = data->unk23;
+    temp = data->unk21[2];
     func_80014850_main(temp);
     func_800146DC_main(temp, 4, 4);
     Hu3DModelPosSet(arg0->model[2], x, y, z);

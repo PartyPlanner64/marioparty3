@@ -27,9 +27,9 @@ typedef struct {
     /* 0x00C */ f32 unk0C;
     /* 0x010 */ f32 unk10;
     /* 0x014 */ f32 unk14;
-    /* 0x018 */ char unk18[0xB];
-    /* 0x023 */ u8 unk23;
-    /* 0x024 */ char unk24[0x10];
+    /* 0x018 */ char unk18[9];
+    /* 0x021 */ u8 unk21[4];
+    /* 0x025 */ char unk25[0xF];
     /* 0x034 */ f32 unk34;
     /* 0x038 */ f32 unk38;
     /* 0x03C */ f32 unk3C;

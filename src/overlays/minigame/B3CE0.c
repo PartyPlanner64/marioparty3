@@ -59,6 +59,9 @@ extern f32 D_800EB778_minigame;
 extern f32 D_800EB77C_minigame;
 extern s32 D_800EBE24_minigame;
 extern s16 D_800EB784_minigame[][14];
+extern s32 D_800EB820_minigame[][7];
+extern s32 D_800A178C_main[][6];
+extern u8 D_800D2008_main;
 
 void func_800E1160_minigame(omObjData *, s32, s32, s32, s32, f32);
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E1160_minigame);
@@ -448,9 +451,24 @@ void func_800E1BA8_minigame(omObjData *arg0, u32 arg1, s32 arg2, u16 arg3, s32 a
     D_800EB784_minigame[temp_s0->unk59][13] = var_a0 + 0xB8;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E210C_minigame);
+void func_800E210C_minigame(omObjData *arg0, s16 arg1, s16 arg2) {
+    func_800E1BA8_minigame_ObjData *temp_data = arg0->data;
+    s32 chr;
+    s32 model;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E21B8_minigame);
+    temp_data->unk5A = arg1;
+    temp_data->unk5B = arg2;
+    chr = GwPlayer[temp_data->unk59].chr;
+    model = D_800A178C_main[chr][0];
+    func_80017790_main(arg1, arg2, chr, model | func_80017B6C_main(chr, arg2, 0));
+}
+
+void func_800E21B8_minigame(omObjData *arg0, s32 arg1, s32 arg2) {
+    func_800E1BA8_minigame_ObjData *temp_data = arg0->data;
+
+    temp_data->unkF2[arg2] =
+        func_80017AD8_main(D_800EB820_minigame[GwPlayer[arg1].chr][arg2] | D_800A178C_main[GwPlayer[0].chr][0]);
+}
 
 #ifdef NON_MATCHING
 s32 func_800E2250_minigame(omObjData *arg0, s16 arg1, s16 arg2) {
@@ -673,4 +691,32 @@ void func_800E3568_minigame(func_800E1BA8_minigame_ObjData *arg0, s32 index, s32
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E3584_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E3628_minigame);
+void func_800E3628_minigame(s16 model, Vec *normal) {
+    HmfModel *hmfModel = &HmfModelData[model];
+    HmfData *hmf = hmfModel->hmf;
+    Vtx *vtx = hmf->unk44[D_800D2008_main];
+    Vtx *src = hmf->unk40;
+    f32 dist;
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 scale;
+    Vec unused;
+    s16 i;
+
+    dist = normal->x * hmfModel->pos.x + normal->y * hmfModel->pos.y + normal->z * hmfModel->pos.z;
+    for (i = 0; i < hmfModel->hmf->unk18; vtx++, i++, src++) {
+        x = vtx->v.ob[0] + hmfModel->pos.x;
+        z = vtx->v.ob[2] + hmfModel->pos.z;
+        y = dist - x * normal->x - z * normal->z;
+        y /= normal->y;
+        vtx->v.ob[1] = y - hmfModel->pos.y + 0.5f;
+        x = src->v.ob[0];
+        y = vtx->v.ob[1];
+        z = src->v.ob[2];
+        scale = (f32)(src->v.ob[0] * src->v.ob[0] + vtx->v.ob[2] * vtx->v.ob[2]) / (x * x + y * y + z * z);
+        vtx->v.ob[0] = x * scale;
+        vtx->v.ob[1] = vtx->v.ob[1] * scale;
+        vtx->v.ob[2] = src->v.ob[2] * scale;
+    }
+}

@@ -42,7 +42,7 @@ extern f32 D_800EB760_minigame;
 extern f32 D_800EB764_minigame;
 extern f32 D_800EB768_minigame;
 extern f32 D_800EB76C_minigame;
-extern s32 D_800EB770_minigame;
+extern f32 D_800EB770_minigame;
 extern f32 D_800EB774_minigame;
 extern f32 D_800EB778_minigame;
 extern f32 D_800EB77C_minigame;
@@ -328,7 +328,7 @@ void func_800E18D8_minigame(void) {
     D_800EB764_minigame = 13.5f;
     D_800EB768_minigame = 9.0f;
     D_800EB76C_minigame = 4.5f;
-    D_800EB770_minigame = 0;
+    D_800EB770_minigame = 0.0f;
     D_800EB774_minigame = 1.6f;
     D_800EB77C_minigame = 0.14500001f;
     D_800EB735_minigame = 1;

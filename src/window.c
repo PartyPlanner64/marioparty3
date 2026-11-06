@@ -18,6 +18,12 @@
 #include "stdarg.h"
 #include "gcc/memory.h"
 
+#define HUWIN_CURSOR_POS(posX, posY, sprite) \
+    do {                                     \
+        (posX) = (sprite)->x - 12;           \
+        (posY) = (sprite)->y + 8;            \
+    } while (0)
+
 typedef struct WindowIconDefinition {
     u32 highlightedFile;
     u32 file;
@@ -1307,13 +1313,17 @@ s32 HuWinChoiceGet(s16 winId, s16 arg1, s32 arg2) {
 #ifdef NON_MATCHING
 /*
  * Remaining diff: `sprite` is allocated to v1 instead of a0 (6 instructions).
- * The do/while blocks give the CSE block boundary the target needs, so the
- * cursor target index is recomputed from `selected` instead of reusing the
- * compare's sign extension. An empty `if` there has the same effect.
- * `sprite` has two deaths, so global-alloc places it. It only conflicts with
- * `window`, `selected` and `input`, which all cross calls and so cannot exclude
- * v1. The original likely has another pseudo live across this block (or an a0
- * preference) that is not yet understood.
+ * The do/while(0) in HUWIN_CURSOR_POS after the cursor start stores gives the
+ * CSE block boundary the target needs, so the cursor target index is
+ * recomputed from `selected` instead of reusing the compare's sign extension.
+ * `sprite` has two sets, so global-alloc places it. Its only conflicts are
+ * `window`, `selected` and `input` (plus v0); they all cross calls, so
+ * prune_preferences drops any v1 preference they have and nothing in
+ * regs_someone_prefers excludes v1. `sprite` has no hard reg preference of its
+ * own, so find_reg takes v1 first. The original must give `sprite` an a0
+ * preference or a v1 conflict that is not yet understood. Tried without
+ * success: two separate pointers, a saved s8/s16/s32 previous choice, pointer
+ * arithmetic, reversed compare, static inline helpers, and folded `if` blocks.
  */
 s32 HuWinChoice(s16 winId) {
     TextWindow *window = &winData[winId];
@@ -1497,15 +1507,9 @@ s32 HuWinChoice(s16 winId) {
         sprite = &window->choice_data[window->choice];
         window->choice = window->unk_32 = selected;
         window->unk_9A = 3;
-        do {
-            window->cursorStartX = sprite->x - 12;
-            window->cursorStartY = sprite->y + 8;
-        } while (0);
-        do {
-            sprite = &window->choice_data[selected];
-            window->cursorTargetX = sprite->x - 12;
-            window->cursorTargetY = sprite->y + 8;
-        } while (0);
+        HUWIN_CURSOR_POS(window->cursorStartX, window->cursorStartY, sprite);
+        sprite = &window->choice_data[selected];
+        HUWIN_CURSOR_POS(window->cursorTargetX, window->cursorTargetY, sprite);
         window->unk_A4 = 0;
         if (window->attr & HUWIN_ATTR_MUTE) {
             HuAudFXPlay(0);

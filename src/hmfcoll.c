@@ -324,13 +324,6 @@ void func_80020B48_main(CollisionRect *rect, HmfModel *model) {
     MTXBufNum++;
 }
 
-#ifdef NON_MATCHING
-/*
- * Saved-register allocation differs: target gives model s1, fan s2, shape s3, cell s4.
- * Instructions are otherwise identical. global-alloc ranks model (20 weighted refs over
- * ~400 insns) below the hoisted TRUE constant, x, and cell, so model would need roughly
- * twice as many weighted refs to be allocated second as in the target.
- */
 void func_80020E94_main(CollisionFan *fan, HmfModel *model) {
     Hu3DPoint tri[3];
     HuMtx4F mtx;
@@ -390,22 +383,37 @@ void func_80020E94_main(CollisionFan *fan, HmfModel *model) {
             x1 = x0 + D_800D1104_main[gridIndex].cellWidth;
             object = D_800D1104_main[gridIndex].unk_14[cell];
             if (object != -1) {
-                if (func_80021550_main(x0, z0, tri) == TRUE || func_80021550_main(x1, z0, tri) == TRUE ||
-                    func_80021550_main(x0, z1, tri) == TRUE || func_80021550_main(x1, z1, tri) == TRUE) {
+                if (func_80021550_main(x0, z0, tri) == TRUE) {
+                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], ident);
+                } else if (func_80021550_main(x1, z0, tri) == TRUE) {
+                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], ident);
+                } else if (func_80021550_main(x0, z1, tri) == TRUE) {
+                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], ident);
+                } else if (func_80021550_main(x1, z1, tri) == TRUE) {
                     func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], ident);
                 }
             }
             object = D_800D1104_main[gridIndex].unk_18[cell];
             if (object != -1) {
-                if (func_80021550_main(x0, z0, tri) == TRUE || func_80021550_main(x1, z0, tri) == TRUE ||
-                    func_80021550_main(x0, z1, tri) == TRUE || func_80021550_main(x1, z1, tri) == TRUE) {
+                if (func_80021550_main(x0, z0, tri) == TRUE) {
+                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
+                } else if (func_80021550_main(x1, z0, tri) == TRUE) {
+                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
+                } else if (func_80021550_main(x0, z1, tri) == TRUE) {
+                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
+                } else if (func_80021550_main(x1, z1, tri) == TRUE) {
                     func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
                 }
             }
             object = D_800D1104_main[gridIndex].unk_1C[cell];
             if (object != -1) {
-                if (func_80021550_main(x0, z0, tri) == TRUE || func_80021550_main(x1, z0, tri) == TRUE ||
-                    func_80021550_main(x0, z1, tri) == TRUE || func_80021550_main(x1, z1, tri) == TRUE) {
+                if (func_80021550_main(x0, z0, tri) == TRUE) {
+                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
+                } else if (func_80021550_main(x1, z0, tri) == TRUE) {
+                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
+                } else if (func_80021550_main(x0, z1, tri) == TRUE) {
+                    func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
+                } else if (func_80021550_main(x1, z1, tri) == TRUE) {
                     func_80024DF0_main(model->hmf, object, &MTXBuf[MTXBufNum], mtx);
                 }
             }
@@ -413,9 +421,6 @@ void func_80020E94_main(CollisionFan *fan, HmfModel *model) {
     }
     MTXBufNum++;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/hmfcoll", func_80020E94_main);
-#endif
 
 s32 func_80021550_main(f32 x, f32 z, Hu3DPoint *tri) {
     s32 i;

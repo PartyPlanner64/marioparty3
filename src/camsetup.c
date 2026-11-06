@@ -44,7 +44,7 @@ s32 func_8000B638_main(void) {
     s32 temp_s0;
 
     temp_s0 = D_80097661_main;
-    func_80012888_main(D_80097661_main, &func_80020E94_main, &D_800CE178_main);
+    func_80012888_main(D_80097661_main, (void (*)(void *, struct HmfModel *))func_80020E94_main, &D_800CE178_main);
     D_80097661_main++;
     return temp_s0;
 }
@@ -66,7 +66,7 @@ s32 func_8000B710_main(s32 arg0) {
     s32 i;
 
     for (i = 0; i < arg0; i++) {
-        func_80012888_main(i, &func_80020E94_main, &D_800D04B8_main[i]);
+        func_80012888_main(i, (void (*)(void *, struct HmfModel *))func_80020E94_main, &D_800D04B8_main[i]);
         D_80097661_main++;
     }
 

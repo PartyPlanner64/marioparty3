@@ -69,7 +69,23 @@ f32 func_800D9F10_minigame(omObjData *arg0, f32 arg1) {
     return ret;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800D9F3C_minigame);
+s32 func_800D9F3C_minigame(Vec *pos, Hu3DQuad *quad, Hu3DPoint *points) {
+    Vec normal;
+    Hu3DPoint *p0;
+    f32 px;
+    f32 py;
+    f32 pz;
+
+    func_8002038C_main(&points[quad->vtx[1]], &points[quad->vtx[2]], &points[quad->vtx[3]], &normal);
+    p0 = &points[quad->vtx[1]];
+    px = p0->x;
+    py = p0->y;
+    pz = p0->z;
+    px -= pos->x;
+    py -= pos->y;
+    pz -= pos->z;
+    return (px * normal.x + py * normal.y + pz * normal.z < 0.0f) ? -1 : 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DA054_minigame);
 
@@ -84,15 +100,84 @@ f32 func_800DA204_minigame(f32 x, f32 y, f32 z, Hu3DPoint *p, Hu3DPoint *q, Vec 
     return (ay * bz - az * by) * normal->x + (az * bx - ax * bz) * normal->y + (ax * by - ay * bx) * normal->z;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DA2E0_minigame);
+s32 func_800DA2E0_minigame(Vec *pos, s16 *face, Hu3DPoint *points, Vec *normal) {
+    f32 x = pos->x;
+    f32 y = pos->y;
+    f32 z = pos->z;
+    s32 count;
+    s32 i;
+    s32 next;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DA540_minigame);
+    count = ((u16)face[0] >> 14) + 2;
+    face++;
+    if (func_800DA204_minigame(x, y, z, &points[face[0]], &points[face[1]], normal) > 0.0f) {
+        for (i = 1; i < count; i++) {
+            next = (i + 1) % count;
+            if (func_800DA204_minigame(x, y, z, &points[face[i]], &points[face[next]], normal) < 0.0f) {
+                return FALSE;
+            }
+        }
+    } else {
+        for (i = 1; i < count; i++) {
+            next = (i + 1) % count;
+            if (func_800DA204_minigame(x, y, z, &points[face[i]], &points[face[next]], normal) > 0.0f) {
+                return FALSE;
+            }
+        }
+    }
+    return TRUE;
+}
+
+s32 func_800DA540_minigame(Vec *pos, s16 *face, Hu3DPoint *points) {
+    f32 x;
+    f32 z;
+    s32 count;
+    s32 i;
+    s32 next;
+
+    if (((u16)face[0] & 0x3F00) > 0x200) {
+        return FALSE;
+    }
+    x = pos->x;
+    z = pos->z;
+    count = ((u16)face[0] >> 14) + 2;
+    face++;
+    if (func_8002048C_main(x, z, &points[face[0]], &points[face[1]]) > 0.0f) {
+        for (i = 1; i < count; i++) {
+            next = (i + 1) % count;
+            if (func_8002048C_main(x, z, &points[face[i]], &points[face[next]]) < 0.0f) {
+                return FALSE;
+            }
+        }
+    } else {
+        for (i = 1; i < count; i++) {
+            next = (i + 1) % count;
+            if (func_8002048C_main(x, z, &points[face[i]], &points[face[next]]) > 0.0f) {
+                return FALSE;
+            }
+        }
+    }
+    return TRUE;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DA768_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DB628_minigame);
+void func_800DB628_minigame(omObjData *arg0) {
+    func_800E1BA8_minigame_ObjData *data = arg0->data;
+    f32 limit = data->unk48;
+    f32 angle;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DB704_minigame);
+    if (HuSqrtf(D_800EBE2C_minigame * D_800EBE2C_minigame + D_800EC5D8_minigame * D_800EC5D8_minigame) > limit ||
+        fabs(D_800EBE2C_minigame) > limit || fabs(D_800EC5D8_minigame) > limit) {
+        angle = data->unk3C;
+        D_800EBE2C_minigame = -sindf(angle) * data->unk40;
+        D_800EC5D8_minigame = -cosdf(angle) * data->unk40;
+    }
+}
+
+s32 func_800DB704_minigame(s32 count, s16 *vtx, Hu3DPoint *points, Vec *pos) {
+    return func_800DA540_minigame(pos, vtx - 1, points);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DB724_minigame);
 

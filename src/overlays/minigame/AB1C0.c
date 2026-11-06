@@ -84,7 +84,30 @@ f32 func_800D8778_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1
     return arg2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800D8818_minigame);
+f32 func_800D8818_minigame(f32 x, f32 y, f32 z, Hu3DPoint *points, Hu3DQuad *quad, Vec *dir, Vec *out) {
+    Vec normal;
+    Hu3DPoint *p0 = &points[quad->vtx[1]];
+    f32 px = p0->x;
+    f32 py = p0->y;
+    f32 pz = p0->z;
+    f32 dx = dir->x;
+    f32 dy = dir->y;
+    f32 dz = dir->z;
+    f32 nx, ny, nz;
+    f32 denom;
+    f32 t;
+
+    func_8002038C_main(p0, &points[quad->vtx[2]], &points[quad->vtx[3]], &normal);
+    nx = normal.x;
+    ny = normal.y;
+    nz = normal.z;
+    denom = nx * dx + ny * dy + nz * dz;
+    t = (nx * (px - x) + ny * (py - y) + nz * (pz - z)) / denom;
+    out->x = x += dx * t;
+    out->y = y += dy * t;
+    out->z = z += dz * t;
+    return y;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800D89CC_minigame);
 
@@ -354,7 +377,47 @@ INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DD1F4_minigame);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DD530_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DDB60_minigame);
+void func_800DDB60_minigame(omObjData *obj, Vec *dir) {
+    func_800E1BA8_minigame_ObjData *data = obj->data;
+    f32 rotX;
+    f32 rotZ;
+    f32 curX;
+    f32 curZ;
+
+    if (data->unk40 > D_800EB764_minigame) {
+        rotX = -(atan2df(dir->y, dir->z) - 90.0f);
+        rotZ = atan2df(dir->y, dir->x) - 90.0f;
+        curX = data->unk9C;
+        curZ = data->unkA4;
+        if (curX < rotX) {
+            if (rotX < (data->unk9C += 4.0f)) {
+                data->unk9C = rotX;
+            }
+        } else if (rotX < curX) {
+            if ((data->unk9C -= 4.0f) < rotX) {
+                data->unk9C = rotX;
+            }
+        }
+        if (curZ < rotZ) {
+            if (rotZ < (data->unkA4 += 4.0f)) {
+                data->unkA4 = rotZ;
+            }
+        } else if (rotZ < curZ) {
+            if ((data->unkA4 -= 4.0f) < rotZ) {
+                data->unkA4 = rotZ;
+            }
+        }
+    } else {
+        if (fabs(data->unk9C) > 2.0) {
+            obj->rot.x = data->unk9C *= 0.3;
+        }
+        if (fabs(data->unkA4) > 2.0) {
+            obj->rot.z = data->unkA4 *= 0.3;
+        }
+    }
+    obj->rot.x = data->unk9C;
+    obj->rot.z = data->unkA4;
+}
 
 void func_800DDD70_minigame(omObjData *arg0) {
     D_800EBDD0_minigame.x = arg0->trans.x;

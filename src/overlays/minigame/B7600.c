@@ -9,8 +9,10 @@
 
 extern s32 D_800A178C_main[][6];
 extern s32 D_800EB820_minigame[][7];
+extern u16 D_800EC288_minigame;
 
 void func_800E58F8_minigame(omObjData *arg0, s32 arg1, s32 arg2);
+void func_800E561C_minigame(omObjData *arg0, u8 arg1);
 
 s32 func_800E4A80_minigame(omObjData *arg0) {
     func_800E1BA8_minigame_ObjData *data = arg0->data;
@@ -227,7 +229,93 @@ void func_800E4E30_minigame(omObjData *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B7600", func_800E5138_minigame);
+void func_800E5138_minigame(omObjData *arg0) {
+    func_800E1BA8_minigame_ObjData *data = arg0->data;
+    u16 start;
+    u16 end;
+    f32 scaleXZ;
+    f32 scaleY;
+    f32 t;
+    s16 attr;
+    u16 prevBE;
+
+    if (data->unk50 & 7) {
+        data->unkA8.u16 += 2;
+        if (data->unk50 & 2) {
+            start = 60;
+            end = 106;
+            scaleY = 0.6f;
+            scaleXZ = data->unkAC * 1.4f;
+        } else {
+            start = 120;
+            end = 166;
+            scaleY = 0.1f;
+            scaleXZ = data->unkAC * 1.6f;
+            if (data->unkA8.u16 >= 120 && (data->unk50 & 1)) {
+                data->unk50 = (data->unk50 & ~1) | 4;
+            }
+        }
+        if (data->unkA8.u16 < end) {
+            if (data->unkA8.u16 <= start) {
+                arg0->scale.x = arg0->scale.z = scaleXZ;
+                arg0->scale.y = scaleY;
+            } else if (data->unkA8.u16 <= start + 10) {
+                t = data->unkA8.u16 - start;
+                arg0->scale.y = t * 0.05f + 0.2;
+                arg0->scale.z = arg0->scale.x = 1.8 - t * 0.08f;
+            } else if (data->unkA8.u16 <= start + 20) {
+                t = data->unkA8.u16 - (start + 10);
+                arg0->scale.y = 0.9 - t * 0.05f;
+                arg0->scale.z = arg0->scale.x = t * 0.05f + 1.0;
+            } else if (data->unkA8.u16 <= start + 30) {
+                t = data->unkA8.u16 - (start + 20);
+                arg0->scale.y = t * 0.05f + 0.7;
+                arg0->scale.z = arg0->scale.x = 1.4 - t * 0.04f;
+            } else if (data->unkA8.u16 <= start + 38) {
+                t = data->unkA8.u16 - (start + 30);
+                arg0->scale.y = 1.3 - t * 0.1f;
+                arg0->scale.z = arg0->scale.x = t * 0.02f + 1.0;
+            } else {
+                t = data->unkA8.u16 - (start + 38);
+                arg0->scale.y = t * 0.1f + 0.3;
+                arg0->scale.z = arg0->scale.x = 1.1 - t * 0.01f;
+            }
+        } else {
+            arg0->scale.x = arg0->scale.y = arg0->scale.z = 1.0f;
+            data->unk50 &= ~7;
+            data->unkA8.u16 = 0;
+        }
+    } else if (data->unk8C != 65536.0f) {
+        if (data->unk38 == 1000.0f) {
+            if (arg0->scale.y <= 0.5f) {
+                func_800E561C_minigame(arg0, 1);
+            } else {
+                arg0->scale.y = data->unkB0;
+                arg0->scale.x = arg0->scale.z = (1.0f - data->unkB0) * 2 + 1.0f;
+            }
+        }
+    } else {
+        data->unkB0 = arg0->scale.x = arg0->scale.y = arg0->scale.z = 1.0f;
+    }
+    if (data->unkBE != 0) {
+        prevBE = data->unkBE;
+        data->unkBE = prevBE - 1;
+        if (data->unkBE == 0) {
+            if (D_800EC288_minigame != 0) {
+                data->unkBE = prevBE;
+            } else {
+                data->unkC2 = 1;
+            }
+        }
+        attr = (data->unkC2 & 1) ? 0 : HU3D_ATTR_DISPOFF;
+        func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, attr);
+        if (attr) {
+            func_8001F038_main(&HmfModelData[arg0->model[0]], 2);
+        }
+        data->unkC2 = (data->unkC2 + 1) & 3;
+    }
+    func_800E4C2C_minigame(arg0);
+}
 
 void func_800E561C_minigame(omObjData *arg0, u8 arg1) {
     func_800E1BA8_minigame_ObjData *data = arg0->data;

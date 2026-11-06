@@ -33,6 +33,7 @@ typedef struct {
 // EXTERN
 
 void func_800DDD94_minigame(omObjData *);
+void func_800D853C_minigame(omObjData *, omObjData *);
 
 // LOCAL
 
@@ -650,9 +651,58 @@ void func_800E2C68_minigame(HuMtx4F mtx, Vec *arg1) {
     arg1->y = x * mtx[0][1] + y * mtx[1][1] + z * mtx[2][1] + mtx[3][1];
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E2CA4_minigame);
+void func_800E2CA4_minigame(omObjData *arg0) {
+    func_800E1BA8_minigame_ObjData *data = arg0->data;
+    omObjData *item;
+    A96F0_ObjData *itemData;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E2DA4_minigame);
+    if (data->unk50 & 0x10) {
+        item = data->unkC8;
+        itemData = item->data;
+        if (data->unk104[19] != NULL && data->unk104[19](arg0, item) == 1) {
+            return;
+        }
+        data->unk50 &= ~0x150;
+        itemData->unk50 &= ~0x10;
+        func_8001C258_main(item->model[0], 0x4000, HU3D_ATTR_NONE);
+        HmfModelData[arg0->model[0]].motIdShape = 0xFF;
+        if (item->model[1] != 0) {
+            func_8001C258_main(item->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        }
+        func_800D853C_minigame(arg0, item);
+        data->unkC8 = NULL;
+        data->unkB4 = 1.0f;
+    }
+}
+
+s32 func_800E2DA4_minigame(omObjData *arg0, omObjData *item) {
+    func_800E1BA8_minigame_ObjData *data = arg0->data;
+    A96F0_ObjData *itemData = item->data;
+
+    if (!(itemData->unk50 & 0x20)) {
+        return 0;
+    }
+    if (itemData->unk50 & 0x10) {
+        return 0;
+    }
+    if (data->unk50 & 0x10) {
+        return 0;
+    }
+    data->unk50 |= 0x110;
+    itemData->unk50 |= 0x10;
+    if (itemData->unk50 & 0x40) {
+        data->unk50 |= 0x40;
+    }
+    data->unkC8 = item;
+    itemData->unk80 = arg0;
+    Hu3DModelHookSet(item->model[0], arg0->model[0], "item_hook");
+    func_8001C258_main(item->model[0], 0x4000, 0x4000);
+    data->unkB4 = itemData->unk74;
+    if (item->model[1] != 0) {
+        func_8001C258_main(item->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    }
+    return 1;
+}
 
 void func_800E2E98_minigame(omObjData *arg0) {
     func_800E1BA8_minigame_ObjData *temp_v0 = arg0->data;

@@ -68,7 +68,8 @@ typedef struct {
     /* 0x0B8 */ char unkB8[0xB];
     /* 0x0C3 */ s8 unkC3;
     /* 0x0C4 */ s8 unkC4;
-    /* 0x0C5 */ char unkC5[7];
+    /* 0x0C5 */ char unkC5[3];
+    /* 0x0C8 */ omObjData *unkC8; // Held item object
     /* 0x0CC */ f32 unkCC;
     /* 0x0D0 */ u16 unkD0;
     /* 0x0D2 */ u16 unkD2;
@@ -82,6 +83,40 @@ typedef struct {
     /* 0x104 */ s32 (*unk104[21])();
     /* 0x158 */ void *unk158;
 } func_800E1BA8_minigame_ObjData; // Size 0x15C
+
+typedef struct A96F0_ObjData A96F0_ObjData;
+
+// Per-object data (omObjData.data) of the item objects driven by A96F0.c.
+struct A96F0_ObjData {
+    /* 0x00 */ char unk00[0x21];
+    /* 0x21 */ u8 unk21[4];
+    /* 0x25 */ char unk25[0xF];
+    /* 0x34 */ f32 unk34;
+    /* 0x38 */ f32 unk38;
+    /* 0x3C */ f32 unk3C;
+    /* 0x40 */ f32 unk40;
+    /* 0x44 */ f32 unk44;
+    /* 0x48 */ f32 unk48;
+    /* 0x4C */ char unk4C[4];
+    /* 0x50 */ u16 unk50;
+    /* 0x52 */ s8 unk52;
+    /* 0x53 */ s8 unk53;
+    /* 0x54 */ s8 unk54;
+    /* 0x55 */ char unk55[3];
+    /* 0x58 */ f32 unk58;
+    /* 0x5C */ f32 unk5C;
+    /* 0x60 */ f32 unk60;
+    /* 0x64 */ f32 unk64;
+    /* 0x68 */ f32 unk68;
+    /* 0x6C */ char unk6C[4];
+    /* 0x70 */ f32 unk70;
+    /* 0x74 */ f32 unk74;
+    /* 0x78 */ s32 unk78;
+    /* 0x7C */ s32 unk7C;
+    /* 0x80 */ omObjData *unk80; // Object holding this one
+    /* 0x84 */ s32 (*unk84[9])(omObjData *);
+    /* 0xA8 */ void *unkA8;
+}; // Size 0xAC
 
 typedef struct {
     /* 0x00 */ f32 unk00;

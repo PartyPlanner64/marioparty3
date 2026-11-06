@@ -8,40 +8,6 @@
 #include "game/mallocblock.h"
 #include "game/util.h"
 
-typedef struct A96F0_ObjData A96F0_ObjData;
-
-// Per-object data (omObjData.data) of the objects driven by this file.
-struct A96F0_ObjData {
-    /* 0x00 */ char unk00[0x21];
-    /* 0x21 */ u8 unk21[4];
-    /* 0x25 */ char unk25[0xF];
-    /* 0x34 */ f32 unk34;
-    /* 0x38 */ f32 unk38;
-    /* 0x3C */ f32 unk3C;
-    /* 0x40 */ f32 unk40;
-    /* 0x44 */ f32 unk44;
-    /* 0x48 */ f32 unk48;
-    /* 0x4C */ char unk4C[4];
-    /* 0x50 */ s16 unk50;
-    /* 0x52 */ s8 unk52;
-    /* 0x53 */ s8 unk53;
-    /* 0x54 */ s8 unk54;
-    /* 0x55 */ char unk55[3];
-    /* 0x58 */ f32 unk58;
-    /* 0x5C */ f32 unk5C;
-    /* 0x60 */ f32 unk60;
-    /* 0x64 */ f32 unk64;
-    /* 0x68 */ f32 unk68;
-    /* 0x6C */ char unk6C[4];
-    /* 0x70 */ f32 unk70;
-    /* 0x74 */ char unk74[4];
-    /* 0x78 */ s32 unk78;
-    /* 0x7C */ s32 unk7C;
-    /* 0x80 */ s32 unk80;
-    /* 0x84 */ s32 (*unk84[9])(omObjData *);
-    /* 0xA8 */ void *unkA8;
-}; // Size 0xAC
-
 typedef struct A96F0_Sphere {
     /* 0x00 */ Vec pos;
     /* 0x0C */ f32 radius;
@@ -348,7 +314,7 @@ void func_800D853C_minigame(omObjData *arg0, omObjData *arg1) {
     if (data1->unk40 < D_800EB760_minigame) {
         data1->unk40 = D_800EB760_minigame;
     }
-    data1->unk80 = 0;
+    data1->unk80 = NULL;
     arg1->trans.x = arg0->trans.x;
     arg1->trans.y = data0->unk34 + data1->unk48 + arg0->trans.y;
     arg1->trans.z = arg0->trans.z;

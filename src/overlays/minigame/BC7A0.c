@@ -13,6 +13,8 @@ typedef struct D_800EBDF4_minigame_Entry {
 
 extern D_800EBDF4_minigame_Entry *D_800EBDF4_minigame;
 
+void func_800EA2A8_minigame(s16 arg0);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BC7A0", func_800E9C20_minigame);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BC7A0", func_800E9E28_minigame);
@@ -24,9 +26,21 @@ void func_800EA0FC_minigame(s16 arg0, f32 arg1, f32 arg2) {
     D_800EBDF4_minigame[arg0].unk_0C = arg2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BC7A0", func_800EA128_minigame);
+void func_800EA128_minigame(s16 arg0, f32 arg1) {
+    D_800EBDF4_minigame[arg0].unk_10 = arg1;
+    if (!(D_800EBDF4_minigame[arg0].unk_14 & 1)) {
+        func_800EA2A8_minigame(arg0);
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BC7A0", func_800EA178_minigame);
+void func_800EA178_minigame(s16 arg0, f32 arg1) {
+    f32 range = D_800EBDF4_minigame[arg0].unk_0C - D_800EBDF4_minigame[arg0].unk_08;
+
+    D_800EBDF4_minigame[arg0].unk_10 = (arg1 - D_800EBDF4_minigame[arg0].unk_08) / range;
+    if (!(D_800EBDF4_minigame[arg0].unk_14 & 1)) {
+        func_800EA2A8_minigame(arg0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BC7A0", func_800EA1E4_minigame);
 

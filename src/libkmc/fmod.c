@@ -35,4 +35,11 @@ double ceil(f64 x) {
     return t;
 }
 
-INCLUDE_ASM("asm/nonmatchings/libkmc/fmod", floor);
+double floor(f64 x) {
+    f64 t = __fint(x);
+
+    if ((x < 0.0) & (t != x)) {
+        return t - 1.0;
+    }
+    return t;
+}

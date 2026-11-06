@@ -29,6 +29,7 @@ typedef struct {
 } func_800DC7D8_minigame_Arg; // Size 0x10
 
 extern Vec D_800EBDD0_minigame;
+extern f32 D_800EB760_minigame;
 extern f32 D_800EB764_minigame;
 extern f32 D_800EB768_minigame;
 extern f32 D_800EB76C_minigame;
@@ -39,6 +40,8 @@ extern Vec D_800EC298_minigame[];
 extern HuMtx4F D_800EC240_minigame;
 
 void func_800DFCDC_minigame(f32 x, f32 z, f32 scale);
+void func_800E19FC_minigame(func_800E1BA8_minigame_ObjData *, s32);
+f32 func_800E2ED4_minigame(f32, f32, f32, f32);
 void func_800E0430_minigame(f32 x, f32 y, f32 z);
 void func_800E048C_minigame(f32 arg0, f32 arg1, f32 arg2);
 void func_800E2CA4_minigame(omObjData *, f32);
@@ -373,7 +376,66 @@ s32 func_800DCA34_minigame(func_800DC7D8_minigame_Arg *arg0, func_800E1BA8_minig
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DCCB0_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DD1F4_minigame);
+void func_800DD1F4_minigame(omObjData *obj, Vec *pos, f32 arg2) {
+    func_800E1BA8_minigame_ObjData *data;
+    f32 speed;
+    f32 dx, dy, dz;
+    f32 limit;
+    s32 i;
+
+    if (D_800EB736_minigame == 0) {
+        return;
+    }
+    data = obj->data;
+    if (data->unk52 == 0) {
+        f32 base = data->unk40;
+        f32 scale = data->unkB4;
+
+        if (data->unk50 & 6) {
+            speed = base * 0.6f * scale;
+        } else {
+            speed = base * scale;
+        }
+    } else {
+        speed = data->unk40;
+    }
+    if (data->unk38 != 1000.0f) {
+        speed *= data->unk4C;
+    }
+    for (i = 0; i < D_800EB736_minigame; i++) {
+        dx = D_800EBEB8_minigame[i].unk00 - pos->x;
+        dy = D_800EBEB8_minigame[i].unk04 - pos->y;
+        dz = D_800EBEB8_minigame[i].unk08 - pos->z;
+        HuSqrtf(dx * dx + dy * dy + dz * dz);
+        if (func_800E2ED4_minigame(sindf(data->unk3C) * speed + D_800EBE2C_minigame,
+                                   cosdf(data->unk3C) * speed + D_800EC5D8_minigame, dx, dz) > 0.9f &&
+            data->unk38 != 1000.0f && data->unk40 > D_800EB764_minigame) {
+            limit = data->unk40;
+            if (data->unk50 & 6) {
+                limit *= 0.6f;
+            }
+            limit *= data->unk4C * data->unkB4 * 0.98f;
+            if (HuSqrtf(D_800EBE2C_minigame * D_800EBE2C_minigame + D_800EC5D8_minigame * D_800EC5D8_minigame) <
+                limit) {
+                if (data->unk50 & 8) {
+                    data->unk40 = -D_800EB760_minigame;
+                } else {
+                    data->unk40 = -D_800EB76C_minigame;
+                }
+                func_800E5690_minigame(obj, 30);
+                func_800E19FC_minigame(data, 7);
+                omVibrate(data->unk59, 5, 0, 5);
+                return;
+            }
+        }
+        if (arg2 != 0.0f) {
+            data->unk40 = arg2;
+            func_800E19FC_minigame(data, 7);
+            omVibrate(data->unk59, 2, 3, 10);
+            return;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DD530_minigame);
 

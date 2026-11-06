@@ -5,6 +5,8 @@
 #include "game/util.h"
 #include "game/hu3d.h"
 #include "game/hmfcoll.h"
+#include "game/hmfdraw.h"
+#include "game/hmfspr.h"
 #include "game/audio.h"
 #include "game/mallocblock.h"
 #include "include_asm.h"
@@ -16,7 +18,16 @@ typedef struct {
     /* 0x04 */ u8 unk04;
     /* 0x05 */ u8 unk05;
     /* 0x06 */ u16 unk06;
-} D_800EC1C0_minigame_ObjData; // Size 0x08
+    /* 0x08 */ u8 unk08[0x10];
+    /* 0x18 */ HuMtx4F unk18;
+    /* 0x58 */ HuMtx4F unk58;
+    /* 0x98 */ u8 unk98[4];
+    /* 0x9C */ f32 unk9C;
+    /* 0xA0 */ f32 unkA0;
+    /* 0xA4 */ f32 unkA4;
+    /* 0xA8 */ f32 unkA8;
+    /* 0xAC */ f32 unkAC;
+} D_800EC1C0_minigame_ObjData; // Size >= 0xB0
 
 // EXTERN
 
@@ -441,9 +452,46 @@ INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E210C_minigame);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E21B8_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E2250_minigame);
+#ifdef NON_MATCHING
+s32 func_800E2250_minigame(omObjData *arg0, s16 arg1, s16 arg2) {
+    func_800E1BA8_minigame_ObjData *temp_a3 = arg0->data;
+    s32 value = (arg1 << 16) | (arg2 & 0xFFFF);
+    s16 sumHi;
+    s16 sumLo;
+    u8 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E2308_minigame);
+    temp_a3->unk74[temp_a3->unk58++] = value;
+    if (temp_a3->unk58 >= 6) {
+        temp_a3->unk58 = 0;
+    }
+    sumLo = 0;
+    sumHi = 0;
+    for (i = 0; i < 6; i++) {
+        sumHi += temp_a3->unk74[i] >> 16;
+        sumLo += temp_a3->unk74[i] & 0xFFFF;
+    }
+    sumHi /= 6;
+    sumLo /= 6;
+    return (sumHi << 16) | (sumLo & 0xFFFF);
+}
+#else
+INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E2250_minigame);
+#endif
+
+void func_800E2308_minigame(s16 *arg0, s16 *arg1) {
+    Vec vec;
+    f32 x = *arg0;
+    f32 z = *arg1;
+
+    if (HuSqrtf(x * x + z * z) > 60.0f) {
+        vec.x = x;
+        vec.y = 0.0f;
+        vec.z = z;
+        func_800202FC_main(&vec);
+        *arg0 = vec.x * 60.0f;
+        *arg1 = vec.z * 60.0f;
+    }
+}
 
 void func_800E23E0_minigame(omObjData *arg0) {
     func_800E1BA8_minigame_ObjData *temp_v0 = arg0->data;
@@ -456,9 +504,58 @@ void func_800E23E0_minigame(omObjData *arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E240C_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E2780_minigame);
+void func_800E2780_minigame(omObjData *obj) {
+    s32 model = obj->model[0];
+    D_800EC1C0_minigame_ObjData *data = obj->data;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E28BC_minigame);
+    if (obj->trans.x != 0.0f || obj->trans.y != 0.0f || obj->trans.z != 0.0f) {
+        func_80088800_main(data->unk18, obj->trans.x, obj->trans.y, obj->trans.z);
+    } else {
+        func_8008A070_main(data->unk18);
+    }
+    if (obj->rot.x != 0.0f || obj->rot.y != 0.0f || obj->rot.z != 0.0f) {
+        func_80017D24_main(data->unk18, obj->rot.x, obj->rot.y, obj->rot.z);
+    }
+    if (data->unk06 & 0x100) {
+        guMtxCatF(HmfModelData[model].mtx, data->unk18, data->unk18);
+    }
+    func_80018F18_main(data->unk18, data->unk58);
+}
+
+void func_800E28BC_minigame(HuMtx4F mtx, HuMtx4F result, Vec *pos, omObjData *obj) {
+    D_800EC1C0_minigame_ObjData *data = obj->data;
+    s32 model = obj->model[0];
+    f32 rotX = obj->rot.x;
+    f32 rotY = obj->rot.y;
+    f32 rotZ = obj->rot.z;
+    f32 transX = obj->trans.x;
+    f32 transY = obj->trans.y;
+    f32 transZ = obj->trans.z;
+    f32 x = pos->x;
+    f32 y = pos->y;
+    f32 z = pos->z;
+
+    if (data->unk06 & 0x80) {
+        func_8002367C_main(mtx, data->unk18);
+        func_8002367C_main(result, data->unk58);
+    } else {
+        if (transX != 0.0f || transY != 0.0f || transZ != 0.0f) {
+            func_80088800_main(mtx, transX, transY, transZ);
+        } else {
+            func_8008A070_main(mtx);
+        }
+        if (rotX != 0.0f || rotY != 0.0f || rotZ != 0.0f) {
+            func_80017D24_main(mtx, rotX, rotY, rotZ);
+        }
+        if (data->unk06 & 0x100) {
+            guMtxCatF(HmfModelData[model].mtx, mtx, mtx);
+        }
+        func_80018F18_main(mtx, result);
+    }
+    pos->x = x * result[0][0] + y * result[1][0] + z * result[2][0] + result[3][0];
+    pos->y = x * result[0][1] + y * result[1][1] + z * result[2][1] + result[3][1];
+    pos->z = x * result[0][2] + y * result[1][2] + z * result[2][2] + result[3][2];
+}
 
 void func_800E2B58_minigame(HuMtx4F mtx, Vec *arg1) {
     f32 x = arg1->x;
@@ -499,13 +596,68 @@ void func_800E2E98_minigame(omObjData *arg0) {
     temp_v0->unk50 &= 0xFEFF;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E2ED4_minigame);
+f32 func_800E2ED4_minigame(f32 x1, f32 z1, f32 x2, f32 z2) {
+    Vec a;
+    Vec b;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E2F40_minigame);
+    a.x = x1;
+    a.y = 0.0f;
+    a.z = z1;
+    func_800202FC_main(&a);
+    b.x = x2;
+    b.y = 0.0f;
+    b.z = z2;
+    func_800202FC_main(&b);
+    return HuVecDot3F(&b, &a);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E2FD8_minigame);
+s32 func_800E2F40_minigame(HmfModelData_Unk64_Unk60_Struct *obj, Vec *pos) {
+    f32 minX = obj->boundsMin[0];
+    f32 minZ = obj->boundsMin[2];
+    f32 maxX = obj->boundsMax[0];
+    f32 maxZ = obj->boundsMax[2];
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E30B8_minigame);
+    return minX <= pos->x && minZ <= pos->z && pos->x <= maxX && pos->z <= maxZ;
+}
+
+s32 func_800E2FD8_minigame(HmfModelData_Unk64_Unk60_Struct *obj, Vec *pos, f32 margin) {
+    f32 x;
+    f32 z;
+    f32 minX;
+    f32 maxX;
+    f32 maxZ;
+    f32 minZ;
+
+    x = pos->x;
+    z = pos->z;
+    minX = obj->boundsMin[0] - margin;
+    minZ = obj->boundsMin[2] - margin;
+    maxX = obj->boundsMax[0] + margin;
+    maxZ = obj->boundsMax[2] + margin;
+    if (minX <= x && minZ <= z && x <= maxX && z <= maxZ) {
+        return 1;
+    }
+    return 0;
+}
+
+s32 func_800E30B8_minigame(Vec *pos, D_800EC1C0_minigame_ObjData *data) {
+    f32 x;
+    f32 z;
+
+    if (!(data->unk06 & 0x50)) {
+        return 1;
+    }
+    x = pos->x;
+    z = pos->z;
+    if (data->unk06 & 0x10) {
+        if (data->unkA0 <= x && x <= data->unkA8 && data->unkA4 <= z && z <= data->unkAC) {
+            return 1;
+        }
+    } else if (HuSqrtf(x * x + z * z) <= data->unk9C) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E317C_minigame);
 
@@ -513,7 +665,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E341C_minigame);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E34D8_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E3568_minigame);
+void func_800E3568_minigame(func_800E1BA8_minigame_ObjData *arg0, s32 index, s32 (*func)()) {
+    if (index < 21) {
+        arg0->unk104[index] = func;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E3584_minigame);
 

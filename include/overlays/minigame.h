@@ -53,7 +53,8 @@ typedef struct {
     /* 0x070 */ f32 unk70;
     /* 0x074 */ s32 unk74[6];
     /* 0x08C */ f32 unk8C;
-    /* 0x090 */ char unk90[8];
+    /* 0x090 */ f32 unk90;
+    /* 0x094 */ f32 unk94;
     /* 0x098 */ f32 unk98;
     /* 0x09C */ f32 unk9C;
     /* 0x0A0 */ f32 unkA0;

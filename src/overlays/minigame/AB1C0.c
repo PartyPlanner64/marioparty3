@@ -3,6 +3,7 @@
 #include "game/hmfcoll.h"
 #include "game/hmfspr.h"
 #include "game/hu3d.h"
+#include "math.h"
 
 typedef struct {
     /* 0x00 */ char unk00[4];
@@ -120,7 +121,45 @@ s32 func_800D9F3C_minigame(Vec *pos, Hu3DQuad *quad, Hu3DPoint *points) {
     return (px * normal.x + py * normal.y + pz * normal.z < 0.0f) ? -1 : 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DA054_minigame);
+s32 func_800DA054_minigame(func_800DC7D8_minigame_Arg *pos, Hu3DQuad *quad, Hu3DPoint *points) {
+    Vec normal;
+    Hu3DPoint *p0;
+    f32 px;
+    f32 py;
+    f32 pz;
+    f32 dx;
+    f32 dy;
+    f32 dz;
+    f32 dist;
+    f32 proj;
+    s32 side = -1;
+    s32 flags;
+
+    flags = (u16)quad->vtx[0] & 0x3F00;
+    if (flags <= 0x200) {
+        return FALSE;
+    }
+    func_8002038C_main(&points[quad->vtx[1]], &points[quad->vtx[2]], &points[quad->vtx[3]], &normal);
+    p0 = &points[quad->vtx[1]];
+    px = p0->x;
+    py = p0->y;
+    pz = p0->z;
+    dx = px - pos->x;
+    dy = py - pos->y;
+    dz = pz - pos->z;
+    dist = dx * normal.x + dy * normal.y + dz * normal.z;
+    if (dist >= 0.0f) {
+        side = 1;
+    }
+    if (fabsf(dist) > pos->unk0C) {
+        return FALSE;
+    }
+    proj = dx * normal.x + dy * normal.y + dz * normal.z;
+    pos->x += proj * normal.x;
+    pos->y += proj * normal.y;
+    pos->z += proj * normal.z;
+    return side;
+}
 
 f32 func_800DA204_minigame(f32 x, f32 y, f32 z, Hu3DPoint *p, Hu3DPoint *q, Vec *normal) {
     f32 ax = p->x - x;

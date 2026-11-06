@@ -21,7 +21,7 @@ typedef struct func_800EA6C4_minigame_ObjData {
     /* 0x10 */ s32 unk10;
     /* 0x14 */ s32 unk14;
     /* 0x18 */ s32 unk18;
-    /* 0x1C */ s32 unk1C;
+    /* 0x1C */ f32 unk1C;
     /* 0x20 */ s32 unk20;
     /* 0x024 */ func_800EA6C4_minigame_Entry unk24[10];
     /* 0x13C */ func_800EA6C4_minigame_Entry unk13C[10];
@@ -29,7 +29,7 @@ typedef struct func_800EA6C4_minigame_ObjData {
     /* 0x282 */ s16 unk282;
     /* 0x284 */ s16 unk284;
     /* 0x286 */ s16 unk286;
-    /* 0x288 */ s16 unk288;
+    /* 0x288 */ u16 unk288;
     /* 0x28A */ s16 unk28A;
     /* 0x28C */ s16 unk28C;
     /* 0x28E */ s16 unk28E;
@@ -101,7 +101,7 @@ void func_800EA7F0_minigame(omObjData *obj, f32 arg1, f32 arg2, f32 arg3) {
     }
 }
 
-void func_800EA8F0_minigame(omObjData *obj, s32 value) {
+void func_800EA8F0_minigame(omObjData *obj, f32 value) {
     func_800EA6C4_minigame_ObjData *data = obj->data;
 
     data->unk1C = value;
@@ -177,4 +177,28 @@ INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BD210", func_800EAE7C_minigame);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BD210", func_800EB3CC_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BD210", func_800EB5E4_minigame);
+void func_800EB5E4_minigame(omObjData *obj) {
+    func_800EA6C4_minigame_ObjData *data = obj->data;
+    s16 model = obj->model[1];
+    f32 maxScale;
+    f32 scale;
+
+    Hu3DModelPosSet(model, obj->trans.x, data->unk1C, obj->trans.z);
+    // Distance above the shadow plane; reused below as the shadow scale.
+    scale = obj->trans.y - data->unk1C - obj->scale.y * 50.0f;
+    if (data->unk288 == 0) {
+        maxScale = obj->scale.y * 0.58f;
+    } else {
+        maxScale = obj->scale.y * 1.2f;
+    }
+    if (scale < 0.0f) {
+        scale = maxScale;
+    } else {
+        scale = maxScale - scale * 0.002f;
+        if (scale < 0.00001f) {
+            scale = 0.00001f;
+        }
+    }
+    Hu3DModelScaleSet(model, scale, scale, scale);
+    Hu3DModelRotSet(model, obj->rot.x, obj->rot.y, obj->rot.z);
+}

@@ -65,9 +65,16 @@ extern s16 D_800EBE10_minigame[];
 extern s32 D_800EB820_minigame[][7];
 extern s32 D_800A178C_main[][6];
 extern u8 D_800D2008_main;
+extern s32 D_800EB800_minigame[];
 
-void func_800E1160_minigame(omObjData *, s32, s32, s32, s32, f32);
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E1160_minigame);
+void func_800E1160_minigame(omObjData *arg0, u16 arg1, u16 player, s32 arg3, s32 arg4, f32 arg5) {
+    s32 dataNum = D_800EB800_minigame[GwPlayer[player].chr];
+    s16 anim;
+
+    arg0->model[arg1] = func_8000B108_main(arg3, arg4 & ~0x11);
+    anim = func_80017790_main(arg0->model[arg1], 0, GwPlayer[player].chr, dataNum);
+    func_80017954_main(arg0->model[arg1], 0, GwPlayer[player].chr, anim);
+}
 
 void func_800E123C_minigame(omObjData *arg0, u16 arg1, s32 arg2, s32 arg3, f32 arg4) {
     s16 model = func_8000B108_main(arg2, arg3);
@@ -786,7 +793,12 @@ void func_800E341C_minigame(func_800E1BA8_minigame_ObjData *arg0, f32 x, f32 z) 
     func_800E19FC_minigame(arg0, 7);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E34D8_minigame);
+void func_800E34D8_minigame(omObjData *arg0, omObjData *arg1) {
+    func_800E1BA8_minigame_ObjData *data1 = arg1->data;
+
+    func_800E341C_minigame(arg0->data, arg0->trans.x - arg1->trans.x, arg0->trans.z - arg1->trans.z);
+    func_800E341C_minigame(data1, arg1->trans.x - arg0->trans.x, arg1->trans.z - arg0->trans.z);
+}
 
 void func_800E3568_minigame(func_800E1BA8_minigame_ObjData *arg0, s32 index, s32 (*func)()) {
     if (index < 21) {

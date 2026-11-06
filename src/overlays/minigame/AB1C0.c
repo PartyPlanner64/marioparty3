@@ -10,6 +10,17 @@ typedef struct {
 } func_800D8778_minigame_ObjData;
 
 typedef struct {
+    /* 0x00 */ char unk00[4];
+    /* 0x04 */ u8 unk04;
+    /* 0x05 */ char unk05;
+    /* 0x06 */ u16 unk06;
+    /* 0x08 */ char unk08[0xC];
+    /* 0x14 */ f32 unk14;
+    /* 0x18 */ char unk18[0x80];
+    /* 0x98 */ f32 unk98;
+} func_800D8640_minigame_ObjData;
+
+typedef struct {
     /* 0x00 */ f32 x;
     /* 0x04 */ f32 y;
     /* 0x08 */ f32 z;
@@ -24,13 +35,35 @@ extern f32 D_800EB770_minigame;
 extern f32 D_800EBE2C_minigame;
 extern f32 D_800EC5D8_minigame;
 extern Vec D_800EC298_minigame[];
+extern HuMtx4F D_800EC240_minigame;
 
 void func_800DFCDC_minigame(f32 x, f32 z, f32 scale);
 void func_800E0430_minigame(f32 x, f32 y, f32 z);
 void func_800E048C_minigame(f32 arg0, f32 arg1, f32 arg2);
 void func_800E2CA4_minigame(omObjData *, f32);
+void func_800E2C68_minigame(HuMtx4F mtx, Vec *arg1);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800D8640_minigame);
+f32 func_800D8640_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1, f32 arg2) {
+    func_800D8640_minigame_ObjData *data = arg0->data;
+    Vec pos;
+    f32 y;
+
+    if (data->unk06 & 0x50) {
+        y = data->unk14 - data->unk98;
+        if ((y < arg2 + arg1->unk34) & (arg2 < y)) {
+            pos.x = 0.0f;
+            pos.y = y;
+            pos.z = 0.0f;
+            if (arg0->trans.x != 0.0f || arg0->trans.y != 0.0f || arg0->trans.z != 0.0f || arg0->rot.x != 0.0f ||
+                arg0->rot.y != 0.0f || arg0->rot.z != 0.0f) {
+                func_800E2C68_minigame(D_800EC240_minigame, &pos);
+            }
+            arg1->unk8C = pos.y;
+            arg1->unk53[3] = data->unk04;
+        }
+    }
+    return data->unk14;
+}
 
 f32 func_800D8778_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1, f32 arg2, f32 arg3, Vec *arg4) {
     func_800D8778_minigame_ObjData *data = arg0->data;

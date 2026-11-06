@@ -13,30 +13,92 @@ typedef struct A96F0_Sphere {
     /* 0x0C */ f32 radius;
 } A96F0_Sphere; // Size 0x10
 
+extern f32 D_800EB720_minigame;
 extern f32 D_800EB724_minigame;
 extern f32 D_800EB728_minigame;
+extern f32 D_800EB72C_minigame;
 extern f32 D_800EB740_minigame;
 extern f32 D_800EB744_minigame;
 extern f32 D_800EB760_minigame;
 extern f32 D_800EB770_minigame;
+extern Vec D_800EBDC0_minigame;
 extern f32 D_800EBE2C_minigame;
 extern f32 D_800EC5D8_minigame;
 extern Vec D_800EC298_minigame[];
 extern u8 D_800EB739_minigame;
 
+f32 func_800D6E14_minigame(omObjData *arg0, f32 x, f32 y, f32 z);
 void func_800D6F20_minigame(omObjData *arg0, A96F0_Sphere *arg1);
 f32 func_800D72B0_minigame(omObjData *arg0, A96F0_Sphere *arg1);
 void func_800D7388_minigame(omObjData *arg0, f32 x, f32 y, f32 z, f32 floorY, Vec *normal);
 f32 func_800D74AC_minigame(omObjData *arg0, A96F0_Sphere *arg1, Vec *normal);
+void func_800D7084_minigame(A96F0_ObjData *arg0);
+void func_800D710C_minigame(omObjData *arg0);
+void func_800D71F0_minigame(omObjData *arg0);
 void func_800D7AA8_minigame(omObjData *arg0, f32 x, f32 y, f32 z);
 void func_800D7C14_minigame(omObjData *arg0, A96F0_Sphere *arg1);
 void func_800DFCDC_minigame(f32 x, f32 z, f32 scale);
 void func_800E1594_minigame(omObjData *arg0, s32 arg1, s32 arg2, s32 arg3);
+void func_800D80DC_minigame(omObjData *arg0);
 void func_800E1718_minigame(omObjData *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
+void func_800E17D4_minigame(omObjData *arg0, f32 x, f32 y, f32 z);
 void func_800E17F4_minigame(omObjData *arg0, f32 x, f32 y, f32 z);
 void func_800E3628_minigame(s16 model, Vec *normal);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/A96F0", func_800D6B70_minigame);
+void func_800D6B70_minigame(omObjData *arg0) {
+    A96F0_ObjData *data = arg0->data;
+    s32 result = 0;
+    f32 x, y, z;
+    f32 angle;
+    f32 floorY;
+
+    if (data->unk50 & 0x20) {
+        if (data->unk50 & 0x10) {
+            return;
+        }
+    }
+    D_800EBE2C_minigame = D_800EC5D8_minigame = 0.0f;
+    D_800EBDC0_minigame.x = x = arg0->trans.x;
+    D_800EBDC0_minigame.y = y = arg0->trans.y;
+    D_800EBDC0_minigame.z = z = arg0->trans.z;
+    angle = data->unk3C;
+    if (data->unk84[0] != NULL && data->unk84[0](arg0) == 1) {
+        return;
+    }
+    x += sindf(angle) * data->unk40;
+    z += cosdf(angle) * data->unk40;
+    func_800D7084_minigame(data);
+    if (data->unk38 != 1000.0f) {
+        y += data->unk38 * data->unk38 * (data->unk38 >= 0.0f ? -35.0f : 35.0f);
+        data->unk38 += D_800EB72C_minigame;
+        if (data->unk38 > D_800EB720_minigame) {
+            data->unk38 = D_800EB720_minigame;
+        }
+        floorY = func_800D6E14_minigame(arg0, x, y, z);
+        if (y < floorY) {
+            if (data->unk84[4] != NULL) {
+                result = data->unk84[4](arg0);
+            }
+            y = floorY;
+            if (result != 1) {
+                data->unk38 = -data->unk38 * 0.7f;
+                if (data->unk38 >= -0.4f) {
+                    data->unk38 = 1000.0f;
+                }
+                func_800D710C_minigame(arg0);
+            }
+        }
+    } else {
+        y = func_800D6E14_minigame(arg0, x, y, z);
+        func_800D710C_minigame(arg0);
+        func_800D71F0_minigame(arg0);
+    }
+    func_800E17D4_minigame(arg0, x + D_800EBE2C_minigame, y, z + D_800EC5D8_minigame);
+    func_800D80DC_minigame(arg0);
+    if (data->unk84[1] != NULL) {
+        data->unk84[1](arg0);
+    }
+}
 
 f32 func_800D6E14_minigame(omObjData *arg0, f32 x, f32 y, f32 z) {
     A96F0_ObjData *data = arg0->data;

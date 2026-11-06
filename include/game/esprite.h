@@ -21,7 +21,9 @@ typedef struct {
     /* 0x22 */ char unk22[2];
 } ESPRITE; // Size 0x24
 
+#ifndef NO_EXTERN_VARIABLES
 extern ESPRITE *D_800CD1DC_main;
+#endif
 
 s16 func_8000B838_main(s32 arg0);
 void espDispOn(u16 arg0);

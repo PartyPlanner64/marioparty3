@@ -5,7 +5,6 @@
 #include "humath.h"
 #include "game/process.h"
 
-
 #define OM_STAT_DELETED (1 << 0)
 #define OM_STAT_DISABLED (1 << 1)
 #define OM_STAT_ACTIVE (1 << 2)
@@ -44,6 +43,14 @@ typedef struct om_obj_data {
 /* 0x5C */ void* data;
 } omObjData;
 
+typedef struct {
+    u16 next_idx;
+    u16 max_objs;
+    u16 num_objs;
+    u16 *next;
+    omObjData **objs;
+} omObjGroup;
+
 typedef struct Object_s {
 /* 0x00 */ struct Object_s *prev;
 /* 0x04 */ struct Object_s *next;
@@ -74,6 +81,7 @@ typedef struct UnkomOvl {
     u16 unk_06; // unused pad?
 } UnkomOvl;
 
+#ifndef NO_EXTERN_VARIABLES
 extern UnkomOvl D_800A1920_main[128]; // per-overlay arguments for func_8004A468_main
 
 extern s16 omovlevtno;
@@ -83,6 +91,7 @@ extern u16 omdispinfo;
 extern s16 D_800A1786_main;
 extern f32 D_800CE17C_main[];
 extern omObjData *D_800CE194_main;
+#endif
 
 void omInitObjMan(s16 numOfObjs, s32 numOfPrcs);
 void omSetStatBit(omObjData *obj, u16 stat);
@@ -109,12 +118,14 @@ void omDelObj(omObjData*);
 void omOutView(omObjData* object);
 void omOutViewMulti(omObjData* object);
 
+#ifndef NO_EXTERN_VARIABLES
 extern f32 CZoomM[];
 extern f32 CZoom;
 extern Vec CRot;
 extern Vec CenterM[];
 extern Vec Center;
 extern Vec CRotM[];
+#endif
 
 void omSetObjPrio(omObjData *obj, s16 prio);
 void omInsertObj(omObjData *obj);

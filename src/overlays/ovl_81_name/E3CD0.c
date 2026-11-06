@@ -22,6 +22,7 @@ extern f32 D_800C9938_main;
 extern s16 D_800CE1D0_main;
 extern s16 D_800CE206;
 extern s16 D_800D124C_main;
+extern s16 D_800D1380_main;
 extern s16 D_80101A50_name_81;
 extern void (*D_80101A8C_name_81)(void);
 extern s32 D_80101A70_name_81[];
@@ -191,7 +192,7 @@ void func_800FC260_name_81(s32 arg0, s16 arg1) {
     func_800EB664_name_81();
 
     D_80105494_name_81 = -1;
-    D_800D1360.unk_20 = 0;
+    D_800D1380_main = 0;
     D_80105496_name_81 = 0;
     func_800F4080_name_81();
     D_80101A8C_name_81 = NULL;
@@ -475,7 +476,7 @@ void func_800FCAB4_name_81(void) {
             }
         }
 
-        WipeCreateOut((s32)D_800D1360.unk_20, 0x10);
+        WipeCreateOut((s32)D_800D1380_main, 0x10);
         HuPrcSleep(0x11);
         func_800FC4E4_name_81();
         if (D_80105494_name_81 & 0x20) {
@@ -604,7 +605,7 @@ void func_800FD55C_name_81(void) {
 
 void func_800FD5F0_name_81(void) {
     mbGameMode = 7;
-    D_800D1360.unk_20 = 8;
+    D_800D1380_main = 8;
     func_800FD55C_name_81();
 }
 
@@ -623,7 +624,7 @@ void func_800FD620_name_81(void) {
     mbGameMode = 10;
     D_80105494_name_81 = 2;
     D_80105496_name_81 = 1;
-    D_800D1360.unk_20 = 10;
+    D_800D1380_main = 10;
     GwPlayer[0].group = 0;
     GwPlayer[1].group = 1;
     GwPlayer[2].group = 2;
@@ -648,7 +649,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/E3CD0", func_800FF640_name_81
 void func_800FF944_name_81(s16 arg0) {
     D_800CD2A0_main.unk_02 = 1;
     D_80105494_name_81 = 0x40;
-    D_800D1360.unk_20 = arg0;
+    D_800D1380_main = arg0;
     D_80105496_name_81 = 0;
 }
 
@@ -660,7 +661,7 @@ void func_800FF97C_name_81(s32 arg0, s16 arg1, s16 arg2, s16 arg3) {
     D_80105498_name_81 = arg0;
     D_8010549C_name_81 = arg1;
     D_80105494_name_81 = 8;
-    D_800D1360.unk_20 = arg2;
+    D_800D1380_main = arg2;
     D_80105496_name_81 = arg3;
 }
 
@@ -674,7 +675,7 @@ void func_800FF9D8_name_81(void) {
 
 void func_800FF9E8_name_81(s16 arg0, s16 arg1) {
     D_80105494_name_81 = 0x10;
-    D_800D1360.unk_20 = arg0;
+    D_800D1380_main = arg0;
     D_80105496_name_81 = arg1;
     func_800FC108_name_81();
 }

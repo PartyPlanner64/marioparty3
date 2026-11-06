@@ -26,15 +26,6 @@
         stream++;                                               \
     } while (0)
 
-typedef struct {
-    HmfData *model;
-    u8 *data;
-    u8 *frames;
-    s16 duration;
-    s16 frameCount;
-    s16 frameStep;
-} HmfVertexAnim;
-
 extern HmfVertexAnim *D_800D59F8_main;
 extern s16 D_800CDD6A_main;
 extern u8 D_800D2008_main;

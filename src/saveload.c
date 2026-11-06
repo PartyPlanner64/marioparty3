@@ -23,13 +23,6 @@
 #define SAVE_OFS_STORY (SAVE_OFS_STORY_SYSTEM + D_800C9944_main)
 #define SAVE_OFS_STORY_PLAYERS (D_800CD6A4_main + SAVE_OFS_STORY)
 
-typedef struct SaveCommonBuf {
-    /* 0x00 */ u8 flags;
-    /* 0x01 */ u8 boxNo;
-    /* 0x02 */ u8 unk_02[0x14];
-    /* 0x16 */ u16 checksum;
-} SaveCommonBuf; // sizeof 0x18
-
 static u8 D_800A1E80_main = 0;
 u8 curBoxNo = 0;
 static s16 D_800A1E82_main = 0;
@@ -44,7 +37,6 @@ extern u16 D_800C9944_main;
 extern u16 D_800CCF54_main;
 extern u16 D_800CD6A4_main;
 extern u16 D_800CE2C0_main;
-
 
 void func_8004FCF0_main(void) {
     GWInit();

@@ -537,12 +537,14 @@ typedef struct HmfModelEntry {
     /* 0x20 */ HmfColorKey *unk_20;
 } HmfModelEntry; // Size 0x24
 
+#ifndef NO_EXTERN_VARIABLES
 extern HmfAnim *D_800D1714_main;
 extern HmfAnimSet *D_800D408C_main;
 extern HmfModelEntry *D_800CBB60_main;
 
 extern u8 D_800CD280_main;
 extern HmfModelData_Unk64_Unk8C_Struct *D_800CCF58_main;
+#endif
 
 void func_8001A070_main(void *arg0, void *arg1, u16 arg2, u16 arg3, u16 arg4, u8 arg5);
 s16 Hu3DModelCreate(u8 *, u32);
@@ -578,7 +580,9 @@ void Hu3DBGColorSet(s32, s32, s32);
 void func_8001F450_main(s16, s16, f32);
 void func_8001FDE8_main(s16);
 
+#ifndef NO_EXTERN_VARIABLES
 extern HmfModel *HmfModelData;
+#endif
 
 s16 func_8001ABD4_main(s16 arg0, s8 arg1);
 void func_8001AC34_main(s16 arg0, s32 arg1);

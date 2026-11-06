@@ -4,6 +4,15 @@
 #include "ultra64.h"
 #include "game/hu3d.h"
 
+typedef struct {
+    HmfData *model;
+    u8 *data;
+    u8 *frames;
+    s16 duration;
+    s16 frameCount;
+    s16 frameStep;
+} HmfVertexAnim;
+
 void func_80030040_main(void);
 s32 func_800300A4_main(HmfData *model, u8 *data);
 void func_80030178_main(s32 arg0);

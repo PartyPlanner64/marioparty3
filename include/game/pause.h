@@ -4,7 +4,9 @@
 #include "ultra64.h"
 #include "game/object.h"
 
+#ifndef NO_EXTERN_VARIABLES
 extern u8 D_800CB99C_main;
+#endif
 
 void func_80045350_main(void);
 omObjData *func_80045ED0_main(s32 arg0);

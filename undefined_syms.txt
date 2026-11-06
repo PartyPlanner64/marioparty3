@@ -83,3 +83,32 @@ D_800A1798_main = D_800A1788_main + 0x10;
 
 /* Low byte of the gamework message speed, referenced by the name overlay asm. */
 D_800A12C3_main = D_800A12C0_main + 0x3;
+
+/* main bss.c: arrays that sat at 2-byte or odd addresses in the original COMMON
+ * layout. GCC 2.7.2 aligns array definitions to 4 bytes, so they are carved out
+ * of a 4-byte aligned container that starts at the preceding variable. */
+D_800CB8B1_main = D_800CB8B0_main + 0x1;
+D_800CBB66_main = D_800CBB64_main + 0x2;
+D_800CBB6E_main = D_800CBB64_main + 0xA;
+D_800CBB72_main = D_800CBB64_main + 0xE;
+D_800D056A_main = D_800D0568_main + 0x2;
+D_800D1382_main = D_800D1380_main + 0x2;
+D_800D20A1_main = D_800D20A0_main + 0x1;
+mesWInsert = D_800D5204_main + 0x2;
+D_800D5546_main = D_800D5544_main + 0x2;
+
+/* main bss.c: fields and elements of larger objects, referenced separately. */
+D_800CD360_main = gMesData + 0x60;
+D_800CD364_main = gMesData + 0x64;
+D_800CE202_main = omovl + 0x2; /* low halfword */
+D_800D09A9_main = D_800D09A8_main + 0x1; /* SaveCommonBuf boxNo */
+D_800D13EE_main = D_800D1398_main + 0x56;
+D_800D1F60_main = D_800D1F5C_main + 0x4; /* WipeTexture pixels */
+D_800D52C0_main = D_800D5298_main + 0x28; /* str800D5298 unk28 */
+D_800D54FC_main = CenterM + 0x4;
+D_800D5500_main = CenterM + 0x8;
+D_800D5A40_main = D_800D5A00_main + 0x40;
+D_800D6AE4_main = CRotM + 0x4;
+
+/* main bss.c: base of a matrix table indexed from 1. */
+D_800D41B0_main = D_800D41F0_main - 0x40;

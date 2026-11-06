@@ -50,7 +50,7 @@ void func_800142A0_main(s32 count) {
     D_800CDD4E_main = count;
     for (i = 0; i < D_800D1FF0_main; i++) {
         D_800CC080_main[i] = HuMemAllocTag((s16)count * 128, TAG_MODELENTRY);
-        ((s32 **)&D_800D1360)[i] = HuMemAllocTag((s16)count * 256, TAG_MODELENTRY);
+        D_800D1360[i] = HuMemAllocTag((s16)count * 256, TAG_MODELENTRY);
     }
     D_800CBB60_main = HuMemAllocTag((s16)count * sizeof(HmfModelEntry), TAG_MODELENTRY);
     for (i = 0; i < (s16)count; i++) {
@@ -65,7 +65,7 @@ void func_800143F0_main(void) {
         s32 playerIdx = D_800D2008_main;
 
         D_800CDD54_main = D_800CC080_main[playerIdx];
-        D_800D1F30_main = ((Gfx *const *)&D_800D1360)[playerIdx];
+        D_800D1F30_main = D_800D1360[playerIdx];
     }
 }
 

@@ -19,7 +19,9 @@ typedef struct {
     /* 0x28 */ f32 unk_28;
 } SePlayParam; // size: 0x2C
 
+#ifndef NO_EXTERN_VARIABLES
 extern u8 D_800CB8AC_main;
+#endif
 
 s32 func_80000650_main(void);
 void func_800007FC_main(str800D5298 *cfg);

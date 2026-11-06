@@ -4,6 +4,19 @@
 #include "ultra64.h"
 #include "game/object.h"
 
+#define EFFECT_GROUP_MAX 8
+
+typedef struct EffectGroupModel {
+    /* 0x00 */ s16 unk00;
+    /* 0x02 */ s16 model;
+    /* 0x04 */ Vec unk04;
+} EffectGroupModel; // Size 0x10
+
+typedef struct EffectGroup {
+    /* 0x00 */ s16 count;
+    /* 0x04 */ EffectGroupModel *models;
+} EffectGroup; // Size 0x08
+
 s16 func_8000CBA0_main(s32 fileId, s32 attr);
 s16 func_8000CC98_main(s32 fileId, s32 attr);
 void func_8000CD00_main(s16 model, f32 arg1, f32 arg2, f32 arg3);

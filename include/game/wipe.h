@@ -3,6 +3,12 @@
 
 #include "ultra64.h"
 
+typedef struct {
+    s16 width;
+    s16 height;
+    u8 *pixels;
+} WipeTexture;
+
 typedef enum
 {
     WIPE_STRIPES = 0,
@@ -22,11 +28,13 @@ typedef enum
 #define WIPE_MODE_OUT 2
 #define WIPE_MODE_BLANK 3
 
+#ifndef NO_EXTERN_VARIABLES
 extern u8 wipeType;
 extern u8 wipeMode;
 extern u8 wipeStat;
 extern f32 wipeDuration;
 extern f32 wipeTime;
+#endif
 
 void WipeInit(void);
 void WipeCreateIn(s16, s16);

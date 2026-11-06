@@ -76,14 +76,18 @@ void __rmonSendHeader(KKHeader *const block, u32 blockSize, u32 type);
 void __rmonSendReply(KKHeader *const block, u32 blockSize, u32 replyType);
 void __rmonSendData(char *const block, unsigned int blockSize);
 
+#ifndef NO_EXTERN_VARIABLES
 extern int __rmonActive;
+#endif
 
 /* rmonmisc */
 
 void __rmonInit(void);
 void __rmonPanic(void);
 
+#ifndef NO_EXTERN_VARIABLES
 extern OSMesgQueue __rmonMQ;
+#endif
 
 /* rmonmem */
 
@@ -92,7 +96,9 @@ u32 __rmonReadWordAt(u32 *addr);
 void __rmonMemcpy(u8 *dest, u8 *srce, u32 count);
 void __rmonCopyWords(u32 *dest, u32 *srce, u32 count);
 
+#ifndef NO_EXTERN_VARIABLES
 extern u8 __rmonUtilityBuffer[256];
+#endif
 
 /* rmonsio */
 
@@ -101,8 +107,10 @@ void __rmonIOflush(void);
 void __rmonIOputw(u32 word);
 void __rmonIOhandler(void);
 
+#ifndef NO_EXTERN_VARIABLES
 extern void *__osRdb_DbgRead_Buf;
 extern u8 rmonRdbReadBuf[2048];
+#endif
 
 /* rmonrcp */
 
@@ -121,7 +129,9 @@ void __rmonHitSpBreak(void);
 void __rmonHitCpuFault(void);
 void rmonFindFaultedThreads(void);
 
+#ifndef NO_EXTERN_VARIABLES
 extern u8 __rmonRcpAtBreak;
+#endif
 
 /* rmonregs */
 

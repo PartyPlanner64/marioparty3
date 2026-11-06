@@ -26,23 +26,6 @@
 #define HMF_TEXTURE_SIZE_BYTES D_800D6A20_main
 #define HMF_TEXTURE_SIZE_LINE_BYTES D_800C952C_main
 
-typedef struct {
-    union {
-        Mtx mtx;
-        Hilite hilite;
-    } data;
-    LookAt lookAt;
-} HmfLookAtData;
-
-typedef struct {
-    s16 count;
-    s16 indices[4];
-    u8 flags;
-    char unk0B[1];
-    HmfMaterialData *material;
-    HmfData_Unk84_Entry *texture;
-} HmfDrawFace;
-
 static HmfModelData_Unk64_Unk60_Struct *D_800B19F0_main;
 static s32 D_800B19F4_main;
 static u8 D_800B19F8_main[8]; // unreferenced
@@ -288,7 +271,6 @@ Gfx D_800A1118_main[] = {
 
 u8 *D_800A1150_main[] = { D_800A0B18_main, D_800A0D18_main, D_800A0F18_main, NULL };
 s16 D_800A1160_main = 0;
-
 
 void func_800222B0_main(HuAllocFunc alloc, HuFreeFunc free, u16 vertexCount, u16 matrixCount, u16 gfxCount, u8 bufferCount) {
     s16 i;

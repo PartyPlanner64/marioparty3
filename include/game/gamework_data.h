@@ -79,8 +79,7 @@ typedef struct GW_SYSTEM {
     /* 0x5A - 800CD0B2 */ s16 playerIndexVisitingBowser;
     /* 0x5C - 800CD0B4 */ s16 bank_coins;
     /* 0x5E - 800CD0B6 */ u8 data_flags[8]; //unknown what this is, unknown size
-    /* 0x66 - 800CD0B8 */ u8 unk_66[0x3E];
-} GW_SYSTEM; //sizeof 0xA4
+} GW_SYSTEM; //sizeof 0x66
 
 enum PlayerFlags {
     PLAYER_IS_CPU = 1,
@@ -197,10 +196,12 @@ typedef struct GwPlayer_s {
 
 #define FILE_FROM_OVL_ID(ovlID) (ovlID << 8)
 
+#ifndef NO_EXTERN_VARIABLES
 extern GW_COMMON GwCommon;
 extern GW_STORY GwStory;
 extern GW_SYSTEM GwSystem;
 extern GW_PLAYER GwPlayer[5]; //5 players due to remnants of mp2's bowser bomb
+#endif
 
 GW_PLAYER* MBDGetPlayerStruct(s32 playerIndex);
 

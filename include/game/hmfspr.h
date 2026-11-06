@@ -6,9 +6,11 @@
 #include "types.h"
 #include "common_structs.h"
 
+#ifndef NO_EXTERN_VARIABLES
 extern u8 D_800D20B8_main[16][3];
 extern u8 D_800D5570_main[16][3];
-extern UnkOvl81 D_800D1360;
+extern Gfx *D_800D1360[8];
+#endif
 
 void func_800142A0_main(s32 count);
 void func_800143F0_main(void);

@@ -145,6 +145,7 @@ s32 __osPfsGetStatus(OSMesgQueue *queue, int channel);
 void __osPfsRequestOneChannel(s32 channel, s32 cmd);
 void __osPfsGetOneChannelData(s32 channel, OSContStatus *data);
 
+#ifndef NO_EXTERN_VARIABLES
 extern u8 __osMaxControllers;
 extern u8 __osContLastCmd;
 extern OSTimer __osEepromTimer;
@@ -156,5 +157,6 @@ extern OSPifRam __osPfsPifRam;
 extern s32 __osPfsLastChannel;
 extern u8 __osPfsInodeCacheBank;
 extern s32 __osEepromRead16K;
+#endif
 
 #endif

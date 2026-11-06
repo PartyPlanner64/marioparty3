@@ -6,15 +6,6 @@
 
 #define ISV_BUFFER_LEN (sizeof(((ISVDbg *)0)->data))
 
-typedef struct {
-    /* 0x00 */ u32 magic;
-    /* 0x04 */ u32 get;
-    /* 0x08 */ u8 unk_08[0x14 - 0x08];
-    /* 0x14 */ u32 put;
-    /* 0x18 */ u8 unk_18[0x20 - 0x18];
-    /* 0x20 */ u8 data[0x10000 - 0x20];
-} ISVDbg;
-
 extern __osExceptionVector __isExpJP;
 
 static OSPiHandle *is_Handle;

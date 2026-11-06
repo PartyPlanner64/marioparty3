@@ -540,7 +540,7 @@ void MBObjectSetup(s32 arg0, s16 arg1, s32 arg2, s32 unused) {
     HuWinInit();
     func_800ECAB4_shared_board();
     D_80105664_shared_board = -1;
-    D_800D1360.unk_20 = 0;
+    D_800D1380_main = 0;
     D_80105666_shared_board = 0;
     func_800F27D0_shared_board();
     D_80101B64_shared_board = NULL;
@@ -856,7 +856,7 @@ static void func_800F93A4_shared_board(void) {
             }
         }
 
-        WipeCreateOut(D_800D1360.unk_20, 0x10);
+        WipeCreateOut(D_800D1380_main, 0x10);
         HuPrcSleep(0x11);
         MBExit();
 
@@ -3106,7 +3106,7 @@ static void MBMain(void) {
                                 mbGameMode = 0x11;
                                 D_80105664_shared_board = 2;
                                 D_80105666_shared_board = 1;
-                                D_800D1360.unk_20 = 6;
+                                D_800D1380_main = 6;
                                 HuPrcSleep(-1);
                                 goto label2444;
                         }
@@ -3264,7 +3264,7 @@ static void MBMain(void) {
                             mbGameMode = 0x13;
                             D_80105664_shared_board = 2;
                             D_80105666_shared_board = 1;
-                            D_800D1360.unk_20 = 9;
+                            D_800D1380_main = 9;
 
                             for (i = 0; i < 4; i++) {
                                 GwPlayer[i].group = 1;
@@ -3345,7 +3345,7 @@ static void MBMain(void) {
                             D_80105664_shared_board = 3;
                         }
                         D_80105666_shared_board = 1;
-                        D_800D1360.unk_20 = 0xA;
+                        D_800D1380_main = 0xA;
 
                         for (var_s0_2 = 0; var_s0_2 < 4; var_s0_2++) {
                             func_800F482C_shared_board(var_s0_2);

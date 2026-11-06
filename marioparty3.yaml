@@ -667,7 +667,7 @@ segments:
       - { start: 0xA96F0, type: .bss, vram: 0x800C94E0, name: libm/tables }
       - { start: 0xA96F0, type: .bss, vram: 0x800C94F0, name: libm/sind }
       - { start: 0xA96F0, type: .bss, vram: 0x800C9500, name: libm/sindf }
-      - { start: 0xA96F0, type: bss, vram: 0x800C9510, name: main_after_libm }
+      - { start: 0xA96F0, type: .bss, vram: 0x800C9510, name: bss }
 
   - type: code
     start: 0xA96F0

@@ -6,6 +6,23 @@
 #include "game/hu3d.h"
 #include "types.h"
 
+typedef struct {
+    union {
+        Mtx mtx;
+        Hilite hilite;
+    } data;
+    LookAt lookAt;
+} HmfLookAtData;
+
+typedef struct {
+    s16 count;
+    s16 indices[4];
+    u8 flags;
+    char unk0B[1];
+    HmfMaterialData *material;
+    HmfData_Unk84_Entry *texture;
+} HmfDrawFace;
+
 void func_800222B0_main(HuAllocFunc alloc, HuFreeFunc free, u16 vertexCount, u16 matrixCount, u16 gfxCount, u8 bufferCount);
 void func_800224BC_main(void);
 void func_800225D4_main(void);

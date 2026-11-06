@@ -20,11 +20,13 @@
 #define LEO_ERROR_4 4
 #define LEO_ERROR_29 29
 
+#ifndef NO_EXTERN_VARIABLES
 extern OSDevMgr __osPiDevMgr;
 extern OSPiHandle *__osCurrentHandle[2];
 extern OSPiHandle __CartRomHandle;
 extern OSMesgQueue __osPiAccessQueue;
 extern u32 __osPiAccessQueueEnabled;
+#endif
 
 void __osDevMgrMain(void *args);
 void __osPiCreateAccessQueue(void);

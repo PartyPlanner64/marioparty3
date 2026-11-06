@@ -124,15 +124,6 @@ typedef struct HeapNode {
 /* 0x0C */ struct HeapNode* next;
 } HeapNode;
 
-typedef struct UnkOvl81 {
-/* 0x00 */ void* unk0;
-/* 0x04 */ void* unk4;
-/* 0x08 */ void* unk8;
-/* 0x0C */ char unk_0C[0x14];
-/* 0x20 */ s16 unk_20;
-/* 0x22 */ char unk_22[2];
-} UnkOvl81;
-
 typedef struct UnkOvl81_1 {
     s32 unk_00;
     s32 unk_04;

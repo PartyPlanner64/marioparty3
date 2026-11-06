@@ -3,7 +3,16 @@
 
 #include "ultra64.h"
 
+typedef struct SaveCommonBuf {
+    /* 0x00 */ u8 flags;
+    /* 0x01 */ u8 boxNo;
+    /* 0x02 */ u8 unk_02[0x14];
+    /* 0x16 */ u16 checksum;
+} SaveCommonBuf; // sizeof 0x18
+
+#ifndef NO_EXTERN_VARIABLES
 extern u8 D_800D20EC_main;
+#endif
 
 void func_8004FCF0_main(void);
 s32 func_8004FDC0_main(void);

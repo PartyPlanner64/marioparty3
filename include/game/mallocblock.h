@@ -30,6 +30,7 @@ typedef struct HuMallocHeader
 typedef HuMallocHeader *(*HuAllocFunc)(u32 size);
 typedef void (*HuFreeFunc)(void* ptr);
 
+#ifndef NO_EXTERN_VARIABLES
 extern s16 gHuMemIsDirty;
 extern s16 D_800A08A2_main;
 
@@ -44,6 +45,7 @@ extern s32 D_800D20AC_main;
 extern void* D_800D2140_main[];
 extern HuAllocFunc gMallocFunc;
 extern HuMallocHeader* gFirstMallocBlock;
+#endif
 
 
 void HuMemInit(HuAllocFunc malloc, HuFreeFunc free);

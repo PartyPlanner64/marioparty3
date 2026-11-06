@@ -25,11 +25,6 @@ typedef struct WindowIconDefinition {
     u8 width;
 } WindowIconDefinition; // Size 0xC
 
-typedef struct WindowFont {
-    u32 unk00[2];
-    u32 glyphOffset;
-} WindowFont;
-
 typedef struct WindowFrameDefinition {
     u32 file;
     u32 shadowFile;
@@ -111,7 +106,6 @@ extern s8 comKeyIdxNow;
 extern s16 winPrio;
 extern u8 mesWInsert[5];
 extern s8 winTabSize;
-
 
 void HuWinInit(void) {
     Process *temp_v0_4;

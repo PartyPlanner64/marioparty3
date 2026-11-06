@@ -12,6 +12,7 @@ typedef struct {
     s32 unk[4];
 } HuPad;
 
+#ifndef NO_EXTERN_VARIABLES
 extern u16 D_800CBB66_main[];
 extern s16 D_800CDA7C_main[];
 extern s16 D_800D056A_main[];
@@ -22,6 +23,7 @@ extern s8 D_800D5418_main[][8];
 extern s16 D_800D5542_main;
 extern s16 gNumOfControllers;
 extern s8 D_800D20A1_main[];
+#endif
 s32 _InitController(u16* channel);
 s16 InitController(s16 ch, s32 arg1);
 s32 _ReadController(s32 arg0);

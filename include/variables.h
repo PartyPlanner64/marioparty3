@@ -6,6 +6,7 @@
 
 /* Globals whose owning module is not yet known. Most are main segment BSS
  * shared with board overlays. */
+#ifndef NO_EXTERN_VARIABLES
 extern s16 D_800CDBC8_main;
 extern UnkDiceRelated D_800CDBD0_main[5];
 extern s16 D_800CDD64_main;
@@ -21,5 +22,6 @@ extern u8 D_800D6A58_main;
 
 extern s16 D_800CC0B8_main;
 extern s16 D_800D6A48_main;
+#endif
 
 #endif //_VARIABLES_H_

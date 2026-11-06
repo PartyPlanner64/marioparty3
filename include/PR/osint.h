@@ -23,6 +23,7 @@ extern void __osTimerInterrupt(void);
 extern u32 __osProbeTLB(void *);
 extern int __osSpDeviceBusy(void);
 
+#ifndef NO_EXTERN_VARIABLES
 extern OSThread *__osRunningThread;
 extern OSThread *__osActiveQueue;
 extern OSThread *__osFaultedThread;
@@ -39,6 +40,7 @@ extern __OSEventState __osEventStateTab[OS_NUM_EVENTS];
 
 // not sure if this should be here
 extern s32 osViClock;
+#endif
 extern void __osTimerServicesInit(void);
 extern s32 __osAiDeviceBusy(void);
 extern int __osDpDeviceBusy(void);

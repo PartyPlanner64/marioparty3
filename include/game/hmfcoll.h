@@ -7,6 +7,23 @@
 #include "game/hu3d.h"
 #include "types.h"
 
+typedef struct CollisionGridCell {
+    /* 0x00 */ s32 faceOffset;
+    /* 0x04 */ s16 faceCount;
+} CollisionGridCell; // sizeof 0x8
+
+typedef struct CollisionGrid {
+    /* 0x00 */ s32 width;
+    /* 0x04 */ s32 depth;
+    /* 0x08 */ f32 cellWidth;
+    /* 0x0C */ f32 cellDepth;
+    /* 0x10 */ s16 *faces;
+    /* 0x14 */ s16 *unk_14;
+    /* 0x18 */ s16 *unk_18;
+    /* 0x1C */ s16 *unk_1C;
+    /* 0x20 */ CollisionGridCell *cells;
+} CollisionGrid; // sizeof 0x24
+
 void Hu3DAnimInit(s16 count);
 s32 func_8001FED0_main(s16 index);
 s16 func_8001FF04_main(s16 model);

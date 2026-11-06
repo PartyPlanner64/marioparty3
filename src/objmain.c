@@ -121,14 +121,6 @@ static s16 D_800B23CC_main;
 static s16 D_800B23CE_main;
 extern u16 D_800D1100_main;
 
-typedef struct {
-    u16 next_idx;
-    u16 max_objs;
-    u16 num_objs;
-    u16 *next;
-    omObjData **objs;
-} omObjGroup;
-
 extern f32 D_800CB890_main;
 extern s16 omobjlast;
 extern s16 ommaxobjs;
@@ -1039,7 +1031,6 @@ static u8 D_800A18B8_main[] = {
     0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 1, 1,
 };
-
 
 void omSystemKeyCheckSetup(void) {
     omObjData *temp_v0;

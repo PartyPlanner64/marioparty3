@@ -45,9 +45,11 @@ typedef struct Unk_D_800CE1DC {
     u8 unk_0B; // blue min
 } Unk_D_800CE1DC;
 
+#ifndef NO_EXTERN_VARIABLES
 extern s32 fontcolor;
 extern Unk_D_800CC440 D_800CC440_main[4];
 extern Unk_D_800CE1DC D_800CE1DC_main;
+#endif
 
 s16 printWin(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
 void func_8004DEC8_main(s16 arg0);

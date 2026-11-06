@@ -183,9 +183,11 @@ typedef struct HuSprGrp {
     HuSprite *members[4]; // unknown size
 } HuSprGrp;               // unknown size
 
+#ifndef NO_EXTERN_VARIABLES
 extern HuSprGrp *HuSprGrpData[HUSPR_GRP_MAX];
 
 extern s16 D_800D10F2_main;
+#endif
 
 void HuSprInit(void);
 void HuSprGrpKill(s16);

@@ -53,6 +53,11 @@
 #define HUWIN_CHOICE_STAT_SPR 1
 #define HUWIN_CHOICE_STAT_DISABLED 2
 
+typedef struct WindowFont {
+    u32 unk00[2];
+    u32 glyphOffset;
+} WindowFont;
+
 typedef struct TextWindowSprite {
     /* 0x00 */ u8 stat; /* HUWIN_CHOICE_STAT_* */
     /* 0x01 */ char pad1[1];
@@ -146,7 +151,9 @@ typedef struct TextWindow {
     /* 0x278 */ char pad278[4]; /* maybe part of unk276[3]? */
 } TextWindow;                   /* size = 0x27C */
 
+#ifndef NO_EXTERN_VARIABLES
 extern u8 D_800A2150_main;
+#endif
 
 void HuWinInit(void);
 s16 HuWinCreate(s16, s16, s16, s16, s32, s16);
@@ -181,8 +188,10 @@ void HuWinProc(void);
 void HuWinComKeyReset(void);
 void GetMesMaxSizeSub(u32);
 
+#ifndef NO_EXTERN_VARIABLES
 extern TextWindow *winData;
 extern WindowInputRecord winComKeyBuf[WINDOW_INPUT_RECORDS_MAX];
+#endif
 
 void func_8005B040_main(u8 *pixels, s16 width, s16 height);
 void func_8005B238_main(u8 *pixels, s16 width, s16 height);

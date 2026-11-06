@@ -18,23 +18,6 @@
 #define READ16(p) (((p)[0] << 8) | (p)[1])
 #define READ32(p) ((p)[0] << 24 | (p)[1] << 16 | (p)[2] << 8 | (p)[3])
 
-typedef struct CollisionGridCell {
-    /* 0x00 */ s32 faceOffset;
-    /* 0x04 */ s16 faceCount;
-} CollisionGridCell; // sizeof 0x8
-
-typedef struct CollisionGrid {
-    /* 0x00 */ s32 width;
-    /* 0x04 */ s32 depth;
-    /* 0x08 */ f32 cellWidth;
-    /* 0x0C */ f32 cellDepth;
-    /* 0x10 */ s16 *faces;
-    /* 0x14 */ s16 *unk_14;
-    /* 0x18 */ s16 *unk_18;
-    /* 0x1C */ s16 *unk_1C;
-    /* 0x20 */ CollisionGridCell *cells;
-} CollisionGrid; // sizeof 0x24
-
 typedef struct Hu3DSphere {
     /* 0x00 */ Vec pos;
     /* 0x0C */ f32 radius;
@@ -82,7 +65,6 @@ extern HuCamera *D_800D10F4_main;
 extern s16 D_800D418E_main;
 extern Mtx *MTXBuf;
 extern s16 MTXBufNum;
-
 
 void Hu3DAnimInit(s16 count) {
     s32 i;

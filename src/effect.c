@@ -7,22 +7,8 @@
 #include "game/util.h"
 #include "game/mallocblock.h"
 
-#define EFFECT_GROUP_MAX 8
-
-typedef struct EffectGroupModel {
-    /* 0x00 */ s16 unk00;
-    /* 0x02 */ s16 model;
-    /* 0x04 */ Vec unk04;
-} EffectGroupModel; // Size 0x10
-
-typedef struct EffectGroup {
-    /* 0x00 */ s16 count;
-    /* 0x04 */ EffectGroupModel *models;
-} EffectGroup; // Size 0x08
-
 u8 D_80097720_main[] = { 0, 1, 2, 1 };
 extern EffectGroup *D_800D6A00_main[EFFECT_GROUP_MAX];
-
 
 s16 func_8000CBA0_main(s32 fileId, s32 attr) {
     s16 model;

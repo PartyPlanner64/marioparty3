@@ -11,12 +11,6 @@
 #include "game/data.h"
 
 typedef struct {
-    s16 width;
-    s16 height;
-    u8 *pixels;
-} WipeTexture;
-
-typedef struct {
     u8 unk00[2];
     u8 offset[2];
     u8 width[2];
@@ -70,7 +64,6 @@ extern u8 D_800D212E_main;
 extern u16 *D_800D5550_main;
 extern u16 *currFrameBuffer;
 extern u8 *D_800D1F60_main;
-
 
 void WipeInit(void) {
     s16 i;

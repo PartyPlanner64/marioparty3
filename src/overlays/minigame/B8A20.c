@@ -11,7 +11,7 @@ extern s32 D_800EB924_minigame;
 extern u16 D_800EB926_minigame;
 extern s16 D_800EBDE4_minigame;
 extern s16 D_800EBDE6_minigame;
-extern s16 D_800EBDE8_minigame;
+extern s16 D_800EBDE8_minigame[];
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B8A20", func_800E5EA0_minigame);
 
@@ -46,7 +46,7 @@ s16 func_800E6300_minigame(s16 x, s16 y) {
     s16 member;
     s16 memberX;
 
-    group = D_800EBDE8_minigame = HuSprGrpCreate(7, 5);
+    group = D_800EBDE8_minigame[0] = HuSprGrpCreate(7, 5);
     HuSprGrpMemberSet(group, 0, D_800EBDE4_minigame, 0);
     HuSprAttrReset(group, 0, 0xFFFF);
     HuSprDispOff(group, 0);
@@ -72,9 +72,78 @@ s16 func_800E6300_minigame(s16 x, s16 y) {
     return group;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B8A20", func_800E64B8_minigame);
+s16 func_800E64B8_minigame(s16 x, s16 y) {
+    s16 group;
+    s16 member;
+    s16 memberX;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B8A20", func_800E6670_minigame);
+    group = D_800EBDE8_minigame[1] = HuSprGrpCreate(7, 5);
+    HuSprGrpMemberSet(group, 0, D_800EBDE6_minigame, 0);
+    HuSprAttrReset(group, 0, 0xFFFF);
+    HuSprDispOff(group, 0);
+    HuSprPosSet(group, 0, x - 16, y);
+    HuSprPriSet(group, 0, D_800EB926_minigame);
+
+    memberX = 4;
+    for (member = 1; member < 7; member++) {
+        HuSprPriSet(group, member, D_800EB926_minigame);
+        HuSprGrpMemberSet(group, member, D_800EBDE6_minigame, 0);
+        HuSprPosSet(group, member, memberX, 0);
+        HuSprAttrReset(group, member, 0xFFFF);
+        HuSprDispOff(group, member);
+        if (member == 3) {
+            memberX += 8;
+        } else {
+            memberX += 12;
+        }
+        func_800554C4_main(group, member, 0);
+    }
+
+    HuSprDispOn(group, 2);
+    return group;
+}
+
+void func_800E6670_minigame(s16 index, s16 time) {
+    s16 group = D_800EBDE8_minigame[index];
+    s16 digit;
+    s16 seconds;
+
+    HuSprDispOn(group, 0);
+    digit = time / 3600;
+    HuSprBankSet(group, 0, digit, 0);
+    func_800550F4_main(group, 0, 1);
+    time -= digit * 3600;
+
+    HuSprDispOn(group, 1);
+    HuSprBankSet(group, 1, 10, 0);
+    func_800550F4_main(group, 1, 1);
+
+    HuSprDispOn(group, 2);
+    digit = time / 600;
+    HuSprBankSet(group, 2, digit, 0);
+    func_800550F4_main(group, 2, 1);
+    time -= digit * 600;
+
+    seconds = time / 60;
+    digit = seconds;
+    HuSprDispOn(group, 3);
+    HuSprBankSet(group, 3, seconds, 0);
+    func_800550F4_main(group, 3, 1);
+    time = time * 100 / 60 - digit * 100;
+
+    HuSprDispOn(group, 4);
+    HuSprBankSet(group, 4, 11, 0);
+    func_800550F4_main(group, 4, 1);
+
+    HuSprDispOn(group, 5);
+    HuSprBankSet(group, 5, time / 10, 0);
+    func_800550F4_main(group, 5, 1);
+    time %= 10;
+
+    HuSprDispOn(group, 6);
+    HuSprBankSet(group, 6, time, 0);
+    func_800550F4_main(group, 6, 1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B8A20", func_800E6968_minigame);
 

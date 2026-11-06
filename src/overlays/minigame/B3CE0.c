@@ -59,6 +59,7 @@ extern f32 D_800EB778_minigame;
 extern f32 D_800EB77C_minigame;
 extern s32 D_800EBE24_minigame;
 extern s16 D_800EB784_minigame[][14];
+extern s16 D_800EBE10_minigame[];
 extern s32 D_800EB820_minigame[][7];
 extern s32 D_800A178C_main[][6];
 extern u8 D_800D2008_main;
@@ -357,9 +358,33 @@ void func_800E19F0_minigame(s8 arg0) {
     D_800EB739_minigame = arg0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E19FC_minigame);
+void func_800E19FC_minigame(func_800E1BA8_minigame_ObjData *arg0, s32 arg1) {
+    s16 sound = D_800EB784_minigame[arg0->unk59][arg1];
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E1A9C_minigame);
+    if (sound >= 0) {
+        if (arg0->unkC4 != arg1) {
+            arg0->unkC5[0] = func_8004AC98_main(sound, arg0->unk59);
+            arg0->unkC4 = arg1;
+            D_800EBE10_minigame[arg0->unk59] = sound;
+        }
+    } else {
+        arg0->unkC4 = -1;
+    }
+}
+
+void func_800E1A9C_minigame(func_800E1BA8_minigame_ObjData *arg0, s32 arg1) {
+    s16 sound = D_800EB784_minigame[arg0->unk59][arg1];
+
+    if (sound >= 0) {
+        if (arg0->unkC4 != arg1) {
+            arg0->unkC5[0] = func_8004AC98_main(sound, arg0->unk59);
+            arg0->unkC4 = arg1;
+            D_800EBE10_minigame[arg0->unk59] = sound;
+        }
+    } else {
+        arg0->unkC4 = -1;
+    }
+}
 
 void func_800E1B3C_minigame(void) {
     s32 i;
@@ -689,7 +714,16 @@ void func_800E3568_minigame(func_800E1BA8_minigame_ObjData *arg0, s32 index, s32
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E3584_minigame);
+void func_800E3584_minigame(s16 model) {
+    HmfData *hmf;
+    s16 i;
+
+    func_8001C954_main(model);
+    hmf = HmfModelData[model].hmf;
+    for (i = 0; i < D_800D1FF0_main; i++) {
+        bcopy(hmf->unk40, hmf->unk44[i], hmf->unk18 * sizeof(Vtx));
+    }
+}
 
 void func_800E3628_minigame(s16 model, Vec *normal) {
     HmfModel *hmfModel = &HmfModelData[model];

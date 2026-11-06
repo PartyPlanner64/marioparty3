@@ -9,11 +9,95 @@ extern s32 D_800EB91C_minigame;
 extern s32 D_800EB920_minigame;
 extern s32 D_800EB924_minigame;
 extern u16 D_800EB926_minigame;
+extern s16 D_800EB92A_minigame;
+extern s32 D_800EB92C_minigame;
+extern s16 D_800EB934_minigame;
+extern s32 omovl;
+extern u8 D_800CE20A_main;
 extern s16 D_800EBDE4_minigame;
 extern s16 D_800EBDE6_minigame;
 extern s16 D_800EBDE8_minigame[];
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B8A20", func_800E5EA0_minigame);
+void func_800E9C20_minigame(s16 count, u16 length);
+void func_800E9F40_minigame(s16 arg0, s16 x, s16 y, s16 arg3);
+void func_800EA0FC_minigame(s16 arg0, f32 arg1, f32 arg2);
+void func_800EA2A8_minigame(s16 arg0);
+void func_800E6268_minigame(void);
+void func_800E62A8_minigame(void);
+s16 func_800E6300_minigame(s32 x, s32 y);
+s16 func_800E64B8_minigame(s32 x, s32 y);
+void func_800E6670_minigame(s16 index, s16 time);
+
+void func_800E5EA0_minigame(D_80111B50_vine_with_me_Struct *arg0) {
+    arg0->unk00 = 0;
+    D_800EBDE0_minigame = arg0;
+    if (arg0->unk03 == 1) {
+        func_800E62A8_minigame();
+        func_800E6268_minigame();
+        func_800E64B8_minigame(D_800EB91C_minigame, D_800EB920_minigame);
+        func_800E6300_minigame(D_800EB91C_minigame, D_800EB920_minigame + 12);
+        switch ((u32)omovl) {
+            case 0x10:
+                D_800EB92C_minigame = 1;
+                D_800EB92A_minigame = GWMgRecordGet(D_800EB92C_minigame);
+                break;
+            case 0x23:
+                D_800EB92C_minigame = 2;
+                D_800EB92A_minigame = GWMgRecordGet(D_800EB92C_minigame);
+                break;
+            case 0x46:
+                D_800EB92C_minigame = D_800CE20A_main + 5;
+                D_800EB92A_minigame = GWMgRecordGet(D_800EB92C_minigame);
+                break;
+        }
+        func_800E6670_minigame(1, D_800EB92A_minigame);
+        func_800E6670_minigame(0, 0);
+    }
+
+    switch (D_800EBDE0_minigame->unk05 & 0xF0) {
+        case 0x80:
+            func_800E9C20_minigame(4, D_800EBDE0_minigame->unk05 & 0xF);
+            func_800EA0FC_minigame(0, 0.0f, 100.0f);
+            func_800E9F40_minigame(0, 24, 16, 0);
+            func_800EA2A8_minigame(0);
+            func_800EA0FC_minigame(1, 0.0f, 100.0f);
+            func_800E9F40_minigame(1, 296 - (D_800EBDE0_minigame->unk05 & 0xF) * 10, 16, 0);
+            func_800EA2A8_minigame(1);
+            func_800EA0FC_minigame(2, 0.0f, 100.0f);
+            func_800E9F40_minigame(2, 24, 200, 0);
+            func_800EA2A8_minigame(2);
+            func_800EA0FC_minigame(3, 0.0f, 100.0f);
+            func_800E9F40_minigame(3, 296 - (D_800EBDE0_minigame->unk05 & 0xF) * 10, 200, 0);
+            func_800EA2A8_minigame(3);
+            break;
+        case 0x40:
+            func_800E9C20_minigame(2, D_800EBDE0_minigame->unk05 & 0xF);
+            func_800EA0FC_minigame(0, 0.0f, 100.0f);
+            func_800E9F40_minigame(0, 24, 16, 0);
+            func_800EA2A8_minigame(0);
+            func_800EA0FC_minigame(1, 0.0f, 100.0f);
+            func_800E9F40_minigame(1, 296 - (D_800EBDE0_minigame->unk05 & 0xF) * 10, 16, 0);
+            func_800EA2A8_minigame(1);
+            break;
+        case 0x20:
+            func_800E9C20_minigame(2, D_800EBDE0_minigame->unk05 & 0xF);
+            func_800EA0FC_minigame(0, 0.0f, 100.0f);
+            func_800E9F40_minigame(0, 296 - (D_800EBDE0_minigame->unk05 & 0xF) * 10, 16, 0);
+            func_800EA2A8_minigame(0);
+            func_800EA0FC_minigame(1, 0.0f, 100.0f);
+            func_800E9F40_minigame(1, 296 - (D_800EBDE0_minigame->unk05 & 0xF) * 10, 130, 0);
+            func_800EA2A8_minigame(1);
+            break;
+    }
+
+    D_800EB910_minigame = 0;
+    D_800EB912_minigame = 0;
+    D_800EB914_minigame = 0;
+    D_800EB916_minigame = 0;
+    D_800EB918_minigame = 0;
+    D_800EB91A_minigame = 0;
+    D_800EB934_minigame = 0;
+}
 
 void func_800E6248_minigame(s32 arg0, s32 arg1) {
     D_800EB91C_minigame = arg0;
@@ -41,7 +125,7 @@ void func_800E62A8_minigame(void) {
     func_8000B880_main(D_800EBDE6_minigame, 0.0f, 1.0f, 0.0f);
 }
 
-s16 func_800E6300_minigame(s16 x, s16 y) {
+s16 func_800E6300_minigame(s32 x, s32 y) {
     s16 group;
     s16 member;
     s16 memberX;
@@ -72,7 +156,7 @@ s16 func_800E6300_minigame(s16 x, s16 y) {
     return group;
 }
 
-s16 func_800E64B8_minigame(s16 x, s16 y) {
+s16 func_800E64B8_minigame(s32 x, s32 y) {
     s16 group;
     s16 member;
     s16 memberX;

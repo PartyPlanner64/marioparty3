@@ -69,6 +69,12 @@ extern s32 D_800EB820_minigame[][7];
 extern s32 D_800A178C_main[][6];
 extern u8 D_800D2008_main;
 extern s32 D_800EB800_minigame[];
+extern s16 D_800EBE18_minigame[];
+extern u8 D_800EBE20_minigame[];
+extern s8 D_800EC1BA_minigame[];
+extern s8 D_800EC282_minigame[];
+extern s16 D_800EC28A_minigame[];
+extern u8 D_800EC5DC_minigame[];
 
 void func_800E1160_minigame(omObjData *arg0, u16 arg1, u16 player, s32 arg3, s32 arg4, f32 arg5) {
     s32 dataNum = D_800EB800_minigame[GwPlayer[player].chr];
@@ -578,7 +584,62 @@ void func_800E23E0_minigame(omObjData *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E240C_minigame);
+s16 func_800E240C_minigame(s16 idx, s16 arg1, s8 x, s8 y) {
+    s16 mult = 1;
+    s16 angle;
+    s16 diff;
+    s16 dir;
+
+    if (x == 0 && y == 0) {
+        return 0;
+    }
+    angle = atan2df(y, x);
+    if (angle < 0) {
+        angle += 360;
+    }
+    angle /= 90;
+    if (angle == D_800EBE20_minigame[idx]) {
+        if (++D_800EC282_minigame[idx] > arg1) {
+            D_800EC282_minigame[idx] = arg1;
+            D_800EC1BA_minigame[idx] = 0;
+            D_800EC5DC_minigame[idx] = angle;
+            D_800EBE18_minigame[idx] = 0;
+            return 0;
+        }
+        D_800EBE18_minigame[idx]++;
+        return D_800EC1BA_minigame[idx];
+    }
+    D_800EBE18_minigame[idx]++;
+    D_800EC282_minigame[idx] = 0;
+    if (D_800EC5DC_minigame[idx] == angle) {
+        mult = 2;
+        D_800EC28A_minigame[idx] = D_800EBE18_minigame[idx];
+        D_800EBE18_minigame[idx] = 0;
+    }
+    diff = angle - D_800EBE20_minigame[idx];
+    if (diff >= 0 ? diff == 3 : -diff == 3) {
+        diff = -diff;
+    }
+    dir = (diff < 0) ? -1 : 1;
+    if (dir != 0 && dir != D_800EC1BA_minigame[idx]) {
+        D_800EC1BA_minigame[idx] = dir;
+        D_800EBE20_minigame[idx] = angle;
+        D_800EC282_minigame[idx] = 0;
+        D_800EC5DC_minigame[idx] = angle;
+        D_800EBE18_minigame[idx] = 0;
+        return 0;
+    }
+    D_800EBE18_minigame[idx]++;
+    if (((D_800EBE20_minigame[idx] + D_800EC1BA_minigame[idx]) & 3) == angle) {
+        D_800EBE20_minigame[idx] = angle;
+        return D_800EC1BA_minigame[idx] * mult;
+    }
+    D_800EC1BA_minigame[idx] = dir;
+    D_800EBE20_minigame[idx] = angle;
+    D_800EC282_minigame[idx] = 0;
+    D_800EBE18_minigame[idx] = 0;
+    return 0;
+}
 
 void func_800E2780_minigame(omObjData *obj) {
     s32 model = obj->model[0];

@@ -49,6 +49,7 @@ extern u8 D_800EBAD4_minigame[];
 extern u8 D_800EBADC_minigame[];
 extern u8 D_800EBAE4_minigame[];
 extern u8 D_800EBAEC_minigame[];
+extern u8 D_800EBAF4_minigame[];
 
 s16 func_800E7BCC_minigame(BA4B0_Work *work);
 void func_800E7F60_minigame(void);
@@ -304,4 +305,81 @@ s16 func_800E905C_minigame(s16 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BA4B0", func_800E9170_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BA4B0", func_800E989C_minigame);
+void func_800E989C_minigame(void) {
+    GW_PLAYER *temp;
+    GW_PLAYER *player;
+    GW_PLAYER *player0;
+    s32 overlay;
+    s16 event;
+    u16 stat;
+    s16 count;
+    s8 star;
+    s16 first;
+    s32 i;
+
+    switch (D_800EBAF4_minigame[GwStory.unk0]) {
+        case 0:
+            _ClearFlag(0x28);
+            _ClearFlag(0);
+            _SetFlag(0x1B);
+            stat = 0x92;
+            overlay = 0x47;
+            event = 0;
+            count = 4;
+            star = 0;
+            break;
+        case 1:
+            _ClearFlag(0x28);
+            _ClearFlag(0);
+            stat = 0x4090;
+            overlay = 0x5A;
+            event = 0;
+            count = 2;
+            star = 5;
+            break;
+        case 2:
+        default:
+            stat = 0x92;
+            overlay = 0x70;
+            event = 0;
+            omOvlHisChg(-1, overlay, event, stat);
+            GwSystem.minigame_index = 0x42;
+            GwSystem.show_minigame_explanations = 0;
+            GwPlayer[0].group = 0;
+            GwPlayer[0].chr = GwStory.unk1;
+            GwPlayer[0].cpu_difficulty = GwStory.unk2;
+            for (i = 1; i < 4; i++) {
+                GwPlayer[i].group = 1;
+                GwPlayer[i].cpu_difficulty = GwStory.unk2;
+                GwPlayer[i].chr = 6;
+            }
+            count = 2;
+            star = 0;
+            break;
+    }
+    first = TRUE;
+    for (i = 0; i < count; i++) {
+        GwPlayer[i].star = star;
+        GwPlayer[i].coin = 0;
+        if (GwPlayer[i].chr == GwStory.unk1) {
+            GwPlayer[i].stat = 0;
+            if (first) {
+                first = FALSE;
+                if (i != 0) {
+                    player = &GwPlayer[i];
+                    player0 = &GwPlayer[0];
+                    temp = HuMemAllocTag(sizeof(GW_PLAYER), TAG_OVERLAY);
+                    *temp = *player0;
+                    *player0 = *player;
+                    *player = *temp;
+                    HuMemFree(temp);
+                }
+            }
+        } else {
+            GwPlayer[i].stat = 1;
+        }
+    }
+    omOvlHisChg(0, 0x7D, 0, 0x4090);
+    omovlhisidx++;
+    omOvlGotoEx(overlay, event, stat);
+}

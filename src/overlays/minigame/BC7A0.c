@@ -17,9 +17,38 @@ extern s16 D_800EBDF8_minigame;
 extern s16 D_800EBDFA_minigame;
 extern u16 D_800EBDFC_minigame;
 
+void func_800E9F40_minigame(s16 arg0, s16 x, s16 y, s16 arg3);
+void func_800EA0FC_minigame(s16 arg0, f32 arg1, f32 arg2);
+void func_800EA178_minigame(s16 arg0, f32 arg1);
+void func_800EA1E4_minigame(s16 arg0, s32 arg1);
 void func_800EA2A8_minigame(s16 arg0);
+void func_800EA444_minigame(s16 arg0);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BC7A0", func_800E9C20_minigame);
+void func_800E9C20_minigame(s16 count, u16 length) {
+    s32 i;
+    s32 j;
+
+    D_800EBDF0_minigame = count;
+    D_800EBDFC_minigame = length;
+    D_800EBDF4_minigame = HuMemAllocTag(count * sizeof(D_800EBDF4_minigame_Entry), 0x7918);
+    D_800EBDF8_minigame = func_8000B838_main(0x210018);
+    D_800EBDFA_minigame = func_8000B838_main(0x210019);
+    for (i = 0; i < count; i++) {
+        D_800EBDF4_minigame[i].unk_00 = HuMemAllocTag(length * sizeof(s16), 0x7918);
+        D_800EBDF4_minigame[i].unk_04 = HuMemAllocTag(length * sizeof(s16), 0x7918);
+        D_800EBDF4_minigame[i].unk_16 = 0;
+        D_800EBDF4_minigame[i].unk_14 = 0;
+        for (j = 0; j < length; j++) {
+            D_800EBDF4_minigame[i].unk_00[j] = espEntry(D_800EBDF8_minigame, 0, 0);
+            D_800EBDF4_minigame[i].unk_04[j] = espEntry(D_800EBDFA_minigame, 0, 0);
+        }
+        func_800E9F40_minigame(i, 24, 16, 0);
+        func_800EA0FC_minigame(i, 0.0f, 100.0f);
+        func_800EA178_minigame(i, 0.0f);
+        func_800EA1E4_minigame(i, 0x8000);
+        func_800EA444_minigame(i);
+    }
+}
 
 void func_800E9E28_minigame(void) {
     s32 i;

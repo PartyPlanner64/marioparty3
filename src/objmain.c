@@ -43,24 +43,72 @@ typedef union PauseObjWork {
     u16 halfwords[8];
 } PauseObjWork;
 
-extern s16 D_800A1774_main;
-extern s16 D_800A1776_main;
-extern s16 D_800A1778_main;
-extern unkProcessStruct *D_800A177C_main;
-extern s16 D_800A1780_main;
+typedef struct {
+    /* 0x00 */ s16 chr;
+    /* 0x04 */ s32 model;
+    /* 0x08 */ s32 motion[3];
+    /* 0x14 */ f32 scale;
+} omCharModelData; // Size 0x18
+
+static u8 D_800A16B0_main[][2] = {
+    { 4, 20 }, { 4, 20 }, { 4, 20 }, { 1, 20 }, { 1, 20 }, { 4, 20 },
+    { 1, 20 }, { 1, 20 }, { 1, 20 }, { 1, 20 }, { 1, 20 }, { 1, 20 },
+    { 1, 20 }, { 1, 20 }, { 1, 20 }, { 1, 20 }, { 1, 20 }, { 1, 20 },
+    { 1, 20 }, { 1, 20 }, { 4, 20 }, { 2, 20 }, { 1, 20 }, { 1, 20 },
+    { 1, 20 }, { 1, 20 }, { 4, 20 }, { 1, 20 }, { 2, 20 }, { 1, 20 },
+    { 1, 20 }, { 1, 20 }, { 1, 20 }, { 4, 20 }, { 4, 20 }, { 2, 20 },
+    { 3, 20 }, { 4, 20 }, { 1, 20 }, { 1, 20 }, { 1, 20 }, { 1, 20 },
+    { 1, 20 }, { 1, 20 }, { 1, 20 }, { 1, 20 }, { 1, 20 }, { 1, 20 },
+    { 1, 20 }, { 1, 20 }, { 3, 20 }, { 4, 20 }, { 1, 20 }, { 1, 20 },
+    { 4, 20 }, { 1, 20 }, { 1, 20 }, { 1, 20 }, { 1, 20 }, { 1, 20 },
+    { 1, 20 }, { 1, 20 }, { 1, 20 }, { 1, 20 }, { 4, 20 }, { 1, 20 },
+    { 1, 20 }, { 4, 20 }, { 1, 20 }, { 1, 20 }, { 1, 20 }, { 1, 20 },
+};
+static u8 D_800A1740_main[][2] = {
+    { 1, 20 }, { 1, 20 }, { 1, 20 }, { 1, 20 }, { 1, 20 }, { 1, 20 },
+    { 1, 20 }, { 1, 20 }, { 1, 20 },
+};
+static u8 D_800A1752_main = 0;
+static u8 D_800A1753_main = 0;
+static s16 D_800A1754_main = -1;
+static u16 D_800A1756_main = 999;
+s32 omprevovl = 999;
+s16 D_800A175C_main = 0; // unreferenced
+u8 D_800A175E_main = 0;
+u16 omdispinfo = 0;
+static u8 D_800A1762_main = 0;
+s16 omovlevtno = -1;
+u16 omovlstat = 0;
+s16 omovlhisidx = -1;
+s16 D_800A176A_main = 0; // unreferenced
+static u8 D_800A176C_main = 1;
+u8 D_800A176D_main = 0;
+static omObjData *omobjall = NULL;
+static s16 D_800A1774_main = 0;
+static s16 D_800A1776_main = 0;
+static s16 D_800A1778_main = 0;
+static unkProcessStruct *D_800A177C_main = NULL;
+static s16 D_800A1780_main = 0;
+static u8 D_800A1782_main = 0;
+static u8 D_800A1783_main = 1;
+static s8 D_800A1784_main = 0;
+static s8 D_800A1785_main = 0;
+s16 D_800A1786_main = -1;
+omCharModelData D_800A1788_main[] = {
+    { 0, 0x20000, { 0xA2, 0xA0, 0xA1 }, 1.0f },
+    { 1, 0x30000, { 0xA2, 0xA0, 0xA1 }, 1.0f },
+    { 2, 0x70000, { 0xA2, 0xA0, 0xA1 }, 1.0f },
+    { 3, 0x40000, { 0xA2, 0xA0, 0xA1 }, 0.9f },
+    { 4, 0x50000, { 0xA2, 0xA0, 0xA1 }, 0.8f },
+    { 5, 0x60000, { 0xA2, 0xA0, 0xA1 }, 0.7f },
+    { 6, 0x80000, { 0xA2, 0xA0, 0xA1 }, 1.0f },
+    { 7, 0x90000, { 0x3, 0x0, 0x1 }, 1.0f },
+};
+static u8 D_800A1848_main = 0;
+static u8 D_800A1849_main = 0;
+
 extern s8 D_800D1710_main;
 
-extern u8 D_800A16B0_main[][2];
-extern u8 D_800A1740_main[][2];
-extern s16 D_800A1754_main;
-extern u16 D_800A1756_main;
-extern s32 omprevovl;
-extern u16 omovlstat;
-extern u8 D_800A176C_main;
-extern omObjData *omobjall;
-extern s8 D_800A1784_main;
-extern s16 D_800A18A8_main[][2];
-extern u8 D_800A18B7_main[];
 extern s16 D_800A1908_main;
 extern s16 D_800A190C_main;
 static u16 D_800B23C0_main;
@@ -111,7 +159,6 @@ extern u16 D_800D6A56_main;
 extern u8 D_800D6A90_main;
 extern s16 omnextidx;
 
-extern u8 D_800A1762_main;
 extern u16 D_800CD050_main;
 
 typedef struct OverlayInfo {
@@ -729,24 +776,17 @@ void omOvlKill(void) {
 }
 
 extern s32 omovl;
-extern u8 D_800A1783_main;
 extern u8 D_800D1FA0_main;
 extern void *D_800A1240_main[3];
-extern u8 D_800A1782_main;
-extern u8 D_800A1848_main;
-extern u8 D_800A1849_main;
 extern u16 D_800A190A_main;
 extern u16 D_800A190E_main;
 extern f32 D_800D5410_main;
 extern f32 D_800D51FC_main;
-extern u8 D_800A176D_main;
 extern s32 D_800CC370_main;
 extern omObjData *D_800D054C_main;
 extern s16 D_800CE190_main;
 extern void (*D_800CC3B8_main)(omObjData *);
 
-extern u8 D_800A1762_main;
-extern u8 D_800A176C_main;
 extern u16 D_800D0A3A_main;
 
 void func_801059A0(void);
@@ -980,22 +1020,34 @@ typedef struct DebugMenuItem {
     /* 0x08 */ const char *label;
 } DebugMenuItem; // Size 0xC
 
-extern DebugMenuItem D_800A184C_main[6];
 extern u16 D_800A1900_main;
 extern u16 D_800CCF7C_main[];
 extern u16 D_800CDD5C_main[];
 extern u8 D_800D2132_main;
-extern u8 D_800A1752_main[2];
-extern s8 D_800A1785_main;
-extern s16 D_800A1894_main[];
 extern u16 D_800CE214_main;
 
-char const D_800A7AE4_main[] = " SE STP";
-char const D_800A7AEC_main[] = " MUSSTP";
-char const D_800A7AF4_main[] = " INFO  ";
-char const D_800A7AFC_main[] = " LIGHT ";
-char const D_800A7B04_main[] = " RESET ";
-char const D_800A7B0C_main[] = " CANCEL";
+static DebugMenuItem D_800A184C_main[] = {
+    { 0, 132, 112, 6, 14, " CANCEL" },
+    { 0, 132, 120, 6, 14, " RESET " },
+    { 0, 132, 128, 6, 14, " LIGHT " },
+    { 0, 132, 136, 6, 14, " INFO  " },
+    { 0, 132, 144, 6, 14, " MUSSTP" },
+    { 0, 132, 152, 6, 14, " SE STP" },
+};
+
+static s16 D_800A1894_main[] = { 5, 5, 5, 5, 2, 1, 1, 1, 1 };
+
+static s16 D_800A18A8_main[][2] = {
+    { 160, 216 }, { 264, 216 }, { 160, 120 }, { 160, 24 },
+};
+
+static u8 D_800A18B8_main[] = {
+    1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0,
+    0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 1, 1,
+};
 
 
 void omSystemKeyCheckSetup(void) {
@@ -1143,7 +1195,7 @@ void func_80048EE8_main(omObjData *object) {
         if (close == 1) {
             object->work[0] &= ~1;
             if (!(omDBGSysKeyObj->work[0] & 1)) {
-                HmfPauseF = D_800A1752_main[0];
+                HmfPauseF = D_800A1752_main;
                 for (i = 0; i < ommaxobjs; i++) {
                     if (!(omobjall[i].stat & (OM_STAT_DELETED | OM_STAT_NOPAUSE))) {
                         omResetStatBit(&omobjall[i], OM_STAT_PAUSED);
@@ -1196,7 +1248,7 @@ void func_80048EE8_main(omObjData *object) {
         if ((D_800CCF7C_main[i] | D_800CDD5C_main[i]) & 0x10) {
             continue;
         }
-        D_800A1752_main[0] = HmfPauseF;
+        D_800A1752_main = HmfPauseF;
         HmfPauseF = 1;
         object->work[0] = 1;
         object->work[1] = i;
@@ -1244,8 +1296,8 @@ void omSystemKeyCheck(omObjData *object) {
             return;
         }
         if ((D_800CDD5C_main[OM_GET_WORK_PTR(object, PauseObjWork)->halfwords[3]] & 0x1000) ||
-            D_800A176C_main == 1 || D_800A1752_main[1] == 1) {
-            D_800A1752_main[1] = 0;
+            D_800A176C_main == 1 || D_800A1753_main == 1) {
+            D_800A1753_main = 0;
             HmfPauseF = 0;
             object->work[0] &= ~1;
             for (i = 0; i < ommaxobjs; i++) {
@@ -1314,7 +1366,7 @@ void omSystemKeyCheck(omObjData *object) {
             continue;
         }
         D_800D2132_main = 0;
-        D_800A1752_main[1] = 0;
+        D_800A1753_main = 0;
         HmfPauseF = 1;
         object->work[0] = 1;
         object->work[1] = GwPlayer[j].pad;
@@ -1420,7 +1472,7 @@ void func_8004A208_main(void) {
         D_800B23C4_main = espEntry(D_800B23C2_main, 0, 1);
         espTPLvlSet(D_800B23C4_main, 0x100);
         espPriSet(D_800B23C4_main, 1);
-        D_800B23C8_main = D_800A18B7_main[GwSystem.minigame_index];
+        D_800B23C8_main = D_800A18B8_main[GwSystem.minigame_index - 1];
         espPosSet(D_800B23C4_main, D_800A18A8_main[D_800B23C8_main][0], D_800A18A8_main[D_800B23C8_main][1]);
         D_800B23C6_main = 0;
         omSetStatBit(omAddObj(10, 0, 0, -1, func_8004A354_main), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);

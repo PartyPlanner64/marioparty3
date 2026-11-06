@@ -30,9 +30,9 @@ typedef struct SaveCommonBuf {
     /* 0x16 */ u16 checksum;
 } SaveCommonBuf; // sizeof 0x18
 
-extern u8 D_800A1E80_main;
-extern u8 curBoxNo;
-extern s16 D_800A1E82_main;
+static u8 D_800A1E80_main = 0;
+u8 curBoxNo = 0;
+static s16 D_800A1E82_main = 0;
 static u8 D_800BBAB0_main;
 extern SaveCommonBuf D_800D09A8_main;
 extern u8 D_800D0450_main[];

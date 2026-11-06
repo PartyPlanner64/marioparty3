@@ -13,17 +13,17 @@ typedef union LightObjWork {
     s16 halfwords[8];
 } LightObjWork;
 
-extern omObjData *D_800A1660_main;
-extern s16 D_800A1664_main;
-extern s16 D_800A1666_main;
-extern u8 D_800A1668_main;
-extern u8 D_800A1669_main;
-extern s8 D_800A166A_main;
-extern char *D_800A166C_main[];
-extern s16 D_800A1674_main[];
-extern s16 D_800A1680_main[];
-extern s16 D_800A168C_main[];
-extern s16 D_800A1698_main[];
+static omObjData *D_800A1660_main = NULL;
+static s16 D_800A1664_main = 1;
+static s16 D_800A1666_main = 0;
+static u8 D_800A1668_main = 0xF0;
+static u8 D_800A1669_main = 0;
+static s8 D_800A166A_main = -1;
+static char *D_800A166C_main[] = { "STAT", "CAME" };
+static s16 D_800A1674_main[] = { 16, 72, 224, 88, 152, 232 };
+static s16 D_800A1680_main[] = { 16, 16, 16, 24, 24, 24 };
+static s16 D_800A168C_main[] = { 56, 96, 256, 112, 192, 264 };
+static s16 D_800A1698_main[] = { 24, 24, 24, 32, 32, 32 };
 static s8 D_800B23B0_main;
 static s8 D_800B23B1_main;
 extern UnkLightData *D_800CE1D4_main;

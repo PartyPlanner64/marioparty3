@@ -23,8 +23,7 @@ typedef struct WindowIconDefinition {
     u32 file;
     u8 bank;
     u8 width;
-    u8 padA[2];
-} WindowIconDefinition;
+} WindowIconDefinition; // Size 0xC
 
 typedef struct WindowFont {
     u32 unk00[2];
@@ -44,21 +43,55 @@ typedef struct WindowFrameDefinition {
     u16 spriteHeight;
     u8 speed;
     u8 attributes;
-    u8 pad1A[2];
-} WindowFrameDefinition;
+} WindowFrameDefinition; // Size 0x1C
 
-extern u8 D_800A2154_main[];
-extern u16 D_800A2174_main[];
-extern WindowFrameDefinition D_800A2384_main[];
-extern WindowIconDefinition D_800A2294_main[];
 extern s32 D_800D209C_main;
-extern u8 D_800A2194_main[];
-extern u16 D_800A2186_main[];
 extern u8 D_800D6A90_main;
-extern u8 gLanguageIndex;
-extern u8 D_800A2324_main[];
-extern u8 D_800A2325_main[];
-extern u8 D_800A232C_main[];
+u8 D_800A2150_main = 0;
+u8 gLanguageIndex = 2;
+static u8 D_800A2154_main[] = {
+    0x40, 0x20, 0xB0, 0x00, 0x00, 0x00, 0x20, 0x0E, 0x71, 0xFF, 0x3C, 0x52, 0xFF, 0x00, 0xFF, 0x50,
+    0xFF, 0x50, 0x00, 0x3E, 0xF9, 0xFF, 0xFF, 0x00, 0xFF, 0xFF, 0xFF, 0x80, 0xFF, 0x80, 0x00, 0x00,
+};
+static u16 D_800A2174_main[] = {
+    0x0000, 0x0001, 0x003F, 0xFA11, 0xF83F, 0x07C1, 0x07FF, 0xFFC1,
+    0xFFFF, 0x0021, 0x8109, 0x8021, 0x0401, 0x0421, 0x8401, 0x8421,
+};
+u8 D_800A2194_main[] = {
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    4, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+    6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 10, 10, 6, 6, 6, 6,
+    4, 6, 6, 6, 6, 6, 6, 6, 6, 4, 6, 6, 6, 8, 8, 6,
+    6, 8, 6, 6, 6, 6, 6, 8, 8, 6, 6, 6, 2, 4, 4, 6,
+    10, 6, 6, 6, 6, 6, 4, 6, 6, 2, 4, 6, 2, 8, 6, 6,
+    6, 6, 6, 6, 4, 6, 6, 8, 6, 6, 6, 2, 6, 4, 8, 10,
+    4, 4, 4, 4, 10, 4, 6, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+    10, 6, 6, 6, 6, 6, 6, 6, 6, 4, 4, 6, 6, 6, 6, 8,
+    10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+    10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+    6, 6, 4, 6, 8, 8, 6, 4, 10, 10, 10, 10, 10, 10, 10, 10,
+    10, 6, 6, 6, 6, 6, 6, 6, 6, 4, 4, 6, 6, 6, 6, 6,
+    6, 4, 4, 6, 6, 6, 6, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+    10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 8, 10,
+};
+static WindowIconDefinition D_800A2294_main[] = {
+    { 0x34, 0x34, 0, 10 },
+    { 0x34, 0x34, 1, 10 },
+    { 0x34, 0x34, 2, 10 },
+    { 0x34, 0x34, 3, 10 },
+    { 0x34, 0x34, 4, 10 },
+    { 0x34, 0x34, 5, 10 },
+    { 0x34, 0x34, 6, 10 },
+    { 0x34, 0x34, 7, 10 },
+    { 0x34, 0x34, 8, 10 },
+    { 0x34, 0x34, 9, 10 },
+    { 0x34, 0x34, 10, 10 },
+    { 0x34, 0x34, 11, 10 },
+};
+static u8 D_800A2324_main[] = { 0x00, 0x44, 0x04, 0x77, 0x47, 0xCF, 0x47, 0xFF };
+// 零一二三四五六七八九
+static u8 D_800A232C_main[] = "\x97\xEB\x88\xEA\x93\xF1\x8E\x4F\x8E\x6C\x8C\xDC\x98\x5A\x8E\xB5\x94\xAA\x8B\xE3";
 extern u8 *D_800A2344_main[];
 static s16 D_800BDA50_main[12];
 static s16 D_800BDA68_main;
@@ -76,7 +109,6 @@ extern u8 mesWInsert[5];
 extern s8 winTabSize;
 extern s8 comKeyIdxNow;
 extern s16 winPrio;
-extern s32 D_800A25D0_main[];
 extern u8 mesWInsert[5];
 extern s8 winTabSize;
 
@@ -320,11 +352,11 @@ void func_8005B040_main(u8 *pixels, s16 width, s16 height) {
     }
     for (y = 0; y < 4; y++) {
         pixels[y * stride] = D_800A2324_main[(s16)(y * 2)];
-        pixels[y * stride + 1] = D_800A2325_main[(s16)(y * 2)];
+        pixels[y * stride + 1] = D_800A2324_main[(s16)(y * 2) + 1];
         pixels[(height - y - 1) * stride] = D_800A2324_main[(s16)(y * 2)];
-        pixels[(height - y - 1) * stride + 1] = D_800A2325_main[(s16)(y * 2)];
+        pixels[(height - y - 1) * stride + 1] = D_800A2324_main[(s16)(y * 2) + 1];
         left = (D_800A2324_main[(s16)(y * 2)] >> 4) | (D_800A2324_main[(s16)(y * 2)] << 4);
-        right = (D_800A2325_main[(s16)(y * 2)] >> 4) | (D_800A2325_main[(s16)(y * 2)] << 4);
+        right = (D_800A2324_main[(s16)(y * 2) + 1] >> 4) | (D_800A2324_main[(s16)(y * 2) + 1] << 4);
         pixels[y * stride + stride - 2] = right;
         pixels[y * stride + stride - 1] = left;
         pixels[(height - y - 1) * stride + stride - 2] = right;
@@ -1807,7 +1839,7 @@ void HuWinBGColSet(s16 winId, s32 red, s32 green, s32 blue) {
     HuSprColorSet(window->group, 0, red, green, blue);
     sprite = HuSprGet(window->group, 1);
     for (i = 0; i < 7; i++) {
-        color = D_800A2186_main[i];
+        color = D_800A2174_main[i + 9];
         r = ((color >> 8) & 0xF8) * 0.3f + (u8)red * 0.7f;
         if (r >= 256) {
             r = 255;
@@ -2013,37 +2045,77 @@ void HuWinMesMaxSizeBetGet(s16 *arg0, s16 arg1, s16 arg2) {
     arg0[1] = winMaxHeight + 6;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/window", D_800A7CB0_main);
+// The following data is defined here rather than at the top of the file so that the
+// character set strings are placed in the middle of this file's .rodata.
+u8 *D_800A2344_main[] = {
+    // 終黒青赤紫緑水黄白※行頁＜＞間［
+    (u8 *)"\x8F\x49\x8D\x95\x90\xC2\x90\xD4\x8E\x87\x97\xCE\x90\x85\x89\xA9\x94\x92\x81\xA6\x8D\x73\x95\xC5\x81\x83\x81\x84\x8A\xD4\x81\x6D",
+    // 　①②③④⑤］半特基※※※※※※
+    (u8 *)"\x81\x40\x87\x40\x87\x41\x87\x42\x87\x43\x87\x44\x81\x6E\x94\xBC\x93\xC1\x8A\xEE\x81\xA6\x81\xA6\x81\xA6\x81\xA6\x81\xA6\x81\xA6",
+    // ※αβ㊤㊨㊧㊦Ζ〒●★始右※※※
+    (u8 *)"\x81\xA6\x83\xBF\x83\xC0\x87\x85\x87\x89\x87\x88\x87\x87\x83\xA4\x81\xA7\x81\x9C\x81\x9A\x8E\x6E\x89\x45\x81\xA6\x81\xA6\x81\xA6",
+    // ０１２３４５６７８９○☆＋－×→
+    (u8 *)"\x82\x4F\x82\x50\x82\x51\x82\x52\x82\x53\x82\x54\x82\x55\x82\x56\x82\x57\x82\x58\x81\x9B\x81\x99\x81\x7B\x81\x7C\x81\x7E\x81\xA8",
+    // ※ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯ
+    (u8 *)"\x81\xA6\x82\x60\x82\x61\x82\x62\x82\x63\x82\x64\x82\x65\x82\x66\x82\x67\x82\x68\x82\x69\x82\x6A\x82\x6B\x82\x6C\x82\x6D\x82\x6E",
+    // ＰＱＲＳＴＵＶＷＸＹＺ”’（）／
+    (u8 *)"\x82\x6F\x82\x70\x82\x71\x82\x72\x82\x73\x82\x74\x82\x75\x82\x76\x82\x77\x82\x78\x82\x79\x81\x68\x81\x66\x81\x69\x81\x6A\x81\x5E",
+    // ※ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏ
+    (u8 *)"\x81\xA6\x82\x81\x82\x82\x82\x83\x82\x84\x82\x85\x82\x86\x82\x87\x82\x88\x82\x89\x82\x8A\x82\x8B\x82\x8C\x82\x8D\x82\x8E\x82\x8F",
+    // ｐｑｒｓｔｕｖｗｘｙｚ：％・※※
+    (u8 *)"\x82\x90\x82\x91\x82\x92\x82\x93\x82\x94\x82\x95\x82\x96\x82\x97\x82\x98\x82\x99\x82\x9A\x81\x46\x81\x93\x81\x45\x81\xA6\x81\xA6",
+    // ゛゜、。ー．をぁぃぅぇぉゃゅょっ
+    (u8 *)"\x81\x4A\x81\x4B\x81\x41\x81\x42\x81\x5B\x81\x44\x82\xF0\x82\x9F\x82\xA1\x82\xA3\x82\xA5\x82\xA7\x82\xE1\x82\xE3\x82\xE5\x82\xC1",
+    // ※あいうえおかきくけこさしすせそ
+    (u8 *)"\x81\xA6\x82\xA0\x82\xA2\x82\xA4\x82\xA6\x82\xA8\x82\xA9\x82\xAB\x82\xAD\x82\xAF\x82\xB1\x82\xB3\x82\xB5\x82\xB7\x82\xB9\x82\xBB",
+    // たちつてとなにぬねのはひふへほま
+    (u8 *)"\x82\xBD\x82\xBF\x82\xC2\x82\xC4\x82\xC6\x82\xC8\x82\xC9\x82\xCA\x82\xCB\x82\xCC\x82\xCD\x82\xD0\x82\xD3\x82\xD6\x82\xD9\x82\xDC",
+    // みむめもやゆよらりるれろわん※※
+    (u8 *)"\x82\xDD\x82\xDE\x82\xDF\x82\xE0\x82\xE2\x82\xE4\x82\xE6\x82\xE7\x82\xE8\x82\xE9\x82\xEA\x82\xEB\x82\xED\x82\xF1\x81\xA6\x81\xA6",
+    // 「」！？♯♭ヲァィゥェォャュョッ
+    (u8 *)"\x81\x75\x81\x76\x81\x49\x81\x48\x81\xF2\x81\xF3\x83\x92\x83\x40\x83\x42\x83\x44\x83\x46\x83\x48\x83\x83\x83\x85\x83\x87\x83\x62",
+    // ※アイウエオカキクケコサシスセソ
+    (u8 *)"\x81\xA6\x83\x41\x83\x43\x83\x45\x83\x47\x83\x49\x83\x4A\x83\x4C\x83\x4E\x83\x50\x83\x52\x83\x54\x83\x56\x83\x58\x83\x5A\x83\x5C",
+    // タチツテトナニヌネノハヒフヘホマ
+    (u8 *)"\x83\x5E\x83\x60\x83\x63\x83\x65\x83\x67\x83\x69\x83\x6A\x83\x6B\x83\x6C\x83\x6D\x83\x6E\x83\x71\x83\x74\x83\x77\x83\x7A\x83\x7D",
+    // ミムメモヤユヨラリルレロワン…▼
+    (u8 *)"\x83\x7E\x83\x80\x83\x81\x83\x82\x83\x84\x83\x86\x83\x88\x83\x89\x83\x8A\x83\x8B\x83\x8C\x83\x8D\x83\x8F\x83\x93\x81\x63\x81\xA5",
+};
 
-INCLUDE_RODATA("asm/nonmatchings/window", D_800A7CD4_main);
+static WindowFrameDefinition D_800A2384_main[] = {
+    { 0x87, 0x0, 220, 46, 24, 9, 190, 28, 3, 22, 1, 1 },
+    { 0x93, 0x0, 220, 62, 23, 12, 190, 42, 4, 38, 1, 0 },
+    { 0x11000A, 0x0, 220, 74, 27, 9, 190, 56, 3, 36, 1, 0 },
+    { 0x110009, 0x0, 214, 42, 15, 9, 190, 28, 33, 54, 1, 0 },
+    { 0x11000B, 0x0, 214, 75, 13, 27, 190, 42, 31, 5, 1, 0 },
+    { 0x11000C, 0x0, 214, 75, 13, 27, 190, 42, 45, 0, 1, 0 },
+    { 0x11000D, 0x0, 220, 62, 23, 12, 180, 42, 4, 38, 1, 0 },
+    { 0x86, 0x0, 224, 74, 23, 12, 190, 56, 0, 32, 1, 0 },
+    { 0x87, 0x0, 224, 46, 15, 10, 190, 28, 226, 23, 1, 0 },
+    { 0x89, 0x8A, 180, 90, 23, 28, 130, 42, 60, 4, 1, 0 },
+    { 0x8B, 0x8C, 158, 64, 20, 16, 128, 30, 96, 62, 1, 0 },
+    { 0x8B, 0x8C, 158, 64, 17, 16, 130, 30, 96, 62, 1, 0 },
+    { 0x89, 0x8A, 180, 90, 24, 23, 130, 42, 60, 86, 1, 2 },
+    { 0x89, 0x8A, 180, 90, 24, 23, 130, 42, 120, 86, 1, 3 },
+    { 0x8D, 0x8E, 180, 90, 24, 23, 130, 42, 36, 88, 1, 0 },
+    { 0x8D, 0x8E, 180, 90, 24, 23, 130, 42, 144, 88, 1, 1 },
+    { 0x8F, 0x0, 226, 62, 27, 12, 186, 45, 0, 31, 1, 0 },
+    { 0x90, 0x0, 206, 62, 27, 12, 180, 45, 0, 31, 1, 0 },
+    { 0x93, 0x0, 220, 62, 14, 12, 190, 42, 216, 38, 1, 1 },
+    { 0x91, 0x0, 230, 42, 9, 8, 210, 30, 115, 21, 1, 0 },
+    { 0x92, 0x0, 230, 52, 9, 6, 210, 45, 115, 26, 1, 0 },
+};
 
-INCLUDE_RODATA("asm/nonmatchings/window", D_800A7CF8_main);
-
-INCLUDE_RODATA("asm/nonmatchings/window", D_800A7D1C_main);
-
-INCLUDE_RODATA("asm/nonmatchings/window", D_800A7D40_main);
-
-INCLUDE_RODATA("asm/nonmatchings/window", D_800A7D64_main);
-
-INCLUDE_RODATA("asm/nonmatchings/window", D_800A7D88_main);
-
-INCLUDE_RODATA("asm/nonmatchings/window", D_800A7DAC_main);
-
-INCLUDE_RODATA("asm/nonmatchings/window", D_800A7DD0_main);
-
-INCLUDE_RODATA("asm/nonmatchings/window", D_800A7DF4_main);
-
-INCLUDE_RODATA("asm/nonmatchings/window", D_800A7E18_main);
-
-INCLUDE_RODATA("asm/nonmatchings/window", D_800A7E3C_main);
-
-INCLUDE_RODATA("asm/nonmatchings/window", D_800A7E60_main);
-
-INCLUDE_RODATA("asm/nonmatchings/window", D_800A7E84_main);
-
-INCLUDE_RODATA("asm/nonmatchings/window", D_800A7EA8_main);
-
-INCLUDE_RODATA("asm/nonmatchings/window", D_800A7ECC_main);
+static s32 D_800A25D0_main[] = {
+    0x35, 0x36, 0x3C, 0x3D, 0x3E, 0x42, 0x3F, 0x40,
+    0x37, 0x38, 0x41, 0x39, 0x3A, 0x3B, 0x46, 0x47,
+    0x48, 0x49, 0x4A, 0x4B, 0x4C, 0x43, 0x44, 0x140036,
+    0x140037, 0x140038, 0x140039, 0x14003A, 0x14003B, 0x14003C, 0x14003D, 0x14003E,
+    0x14003F, 0x140040, 0x140041, 0x4D, 0x4E, 0x4F, 0x50, 0x51,
+    0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59,
+    0x5A, 0x5B, 0x5C, 0x5D, 0x5E, 0x5F, 0x60, 0x45,
+    0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69,
+};
 
 // Measures a message or string, accounting for layout and replacement control codes.
 void GetMesMaxSizeSub(u32 str) {

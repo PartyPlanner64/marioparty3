@@ -24,7 +24,38 @@ typedef struct {
 } WipeTextureHeader;
 
 extern WipeTexture D_800D1F5C_main;
-extern u16 *D_800A26D4_main;
+u8 wipeType = 0;
+u16 *D_800A26D4_main = NULL;
+
+Gfx D_800A26D8_main[] = {
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
+    gsDPSetRenderMode(G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2),
+    gsDPSetPrimColor(0, 0, 0, 0, 0, 192),
+    gsDPSetTexturePersp(G_TP_NONE),
+    gsDPSetTextureFilter(G_TF_POINT),
+    gsDPSetTextureLUT(G_TT_NONE),
+    gsDPSetAlphaDither(G_AD_DISABLE),
+    gsSPEndDisplayList(),
+};
+
+Gfx D_800A2728_main[] = {
+    { 0xFFFFFFFF, 0xFFFFFFFF },
+    { 0xFFFFFFFF, 0xFFFFFFFF },
+};
+
+Gfx D_800A2738_main[] = {
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_FILL),
+    gsDPSetRenderMode(G_RM_NOOP, G_RM_NOOP2),
+    gsDPSetFillColor(0),
+    gsDPFillRectangle(0, 0, 319, 239),
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsSPEndDisplayList(),
+};
+
 static u16 *D_800BDA70_main;
 static u16 *D_800BDA74_main;
 static u8 D_800BDA78_main;
@@ -37,9 +68,6 @@ extern u8 *D_800D1F80_main[8];
 extern u8 D_800D5304_main;
 extern u8 D_800D212E_main;
 extern u16 *D_800D5550_main;
-extern Gfx D_800A26D8_main[];
-extern Gfx D_800A2728_main[];
-extern Gfx D_800A2738_main[];
 extern u16 *currFrameBuffer;
 extern u8 *D_800D1F60_main;
 

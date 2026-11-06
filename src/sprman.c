@@ -48,13 +48,15 @@ typedef struct {
 f64 fmod(f64 x, f64 y);
 void func_8007E040_main(Mtx *m, Mtx *n, Mtx *res);
 
-extern s32 D_800A1EA0_main; // redraw?
+static Vp D_800A1E90_main = {
+    { { 640, 480, 511, 0 }, { 640, 480, 511, 0 } },
+};
+static s32 D_800A1EA0_main = 0; // redraw?
 static Mtx D_800BD7C0_main;
 static Gfx *D_800BD800_main;
 static HuSprite *D_800BD804_main; // head of sorted draw list
 static f32 D_800BD808_main;
 extern Gfx *D_800CCF30_main;
-extern Vp D_800A1E90_main;
 extern s16 D_800D0468_main;
 extern s16 D_800D418E_main;
 extern HuSprAnmDesc *D_800D0A50_main[0x100];

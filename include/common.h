@@ -7,6 +7,7 @@
 
 #include "game/audio.h"
 #include "game/audiomgr.h"
+#include "game/aura.h"
 #include "game/board.h"
 #include "game/camera.h"
 #include "game/camsetup.h"

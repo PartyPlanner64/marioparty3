@@ -22,13 +22,110 @@
 
 
 extern u8 gEncodedSaveBuffer[220];
+
+// Encoding schemes: { bit width, count, byte offset } tuples, terminated by a zero width.
+static u8 D_800A1D70_main[] = {
+    2, 1, 0x9F,
+    2, 1, 0xA2,
+    2, 1, 0x9E,
+    2, 1, 0xA0,
+    2, 1, 0xA1,
+    8, 1, 0x00,
+    3, 1, 0x01,
+    8, 10, 0x94,
+    8, 9, 0x16,
+    8, 9, 0x8B,
+    16, 10, 0x02,
+    72, 6, 0x1F,
+    72, 6, 0x55,
+    0, 0, 0x00,
+};
+
+static u8 D_800A1D9C_main[] = {
+    2, 1, 0x0F,
+    2, 1, 0x04,
+    3, 1, 0x00,
+    3, 1, 0x01,
+    3, 1, 0x05,
+    3, 8, 0x06,
+    7, 1, 0x02,
+    7, 1, 0x03,
+    8, 1, 0x10,
+    8, 1, 0x11,
+    8, 3, 0x5E,
+    8, 1, 0x0E,
+    16, 16, 0x3E,
+    0, 0, 0x00,
+};
+
+static u8 D_800A1DC8_main[] = {
+    2, 19, 0x2A,
+    2, 1, 0x04,
+    2, 1, 0x0F,
+    3, 1, 0x00,
+    3, 1, 0x01,
+    3, 1, 0x05,
+    3, 8, 0x06,
+    7, 1, 0x02,
+    7, 1, 0x03,
+    8, 1, 0x10,
+    8, 1, 0x11,
+    6, 19, 0x17,
+    8, 3, 0x5E,
+    8, 1, 0x0E,
+    16, 16, 0x3E,
+    0, 0, 0x00,
+};
+
+static u8 D_800A1DF8_main[] = {
+    2, 1, 0x02,
+    2, 1, 0x1D,
+    2, 1, 0x01,
+    3, 1, 0x03,
+    8, 1, 0x17,
+    5, 1, 0x0F,
+    5, 1, 0x10,
+    5, 1, 0x11,
+    5, 1, 0x12,
+    8, 1, 0x13,
+    8, 1, 0x14,
+    5, 1, 0x15,
+    5, 1, 0x16,
+    7, 1, 0x0E,
+    8, 1, 0x04,
+    8, 1, 0x1B,
+    8, 1, 0x1C,
+    8, 3, 0x18,
+    8, 1, 0x2C,
+    8, 1, 0x2D,
+    8, 1, 0x2E,
+    8, 1, 0x2F,
+    8, 1, 0x30,
+    8, 1, 0x31,
+    8, 1, 0x32,
+    8, 1, 0x33,
+    8, 1, 0x34,
+    8, 1, 0x35,
+    10, 1, 0x0A,
+    16, 1, 0x2A,
+    16, 1, 0x28,
+    0, 0, 0x00,
+};
+
+static u8 D_800A1E58_main[] = {
+    2, 1, 0x66,
+    2, 6, 0x5E,
+    3, 1, 0x65,
+    3, 12, 0x67,
+    3, 72, 0x10,
+    4, 1, 0x73,
+    4, 6, 0x58,
+    4, 1, 0x64,
+    0, 0, 0x00,
+};
+
 static s32 D_800BBAA0_main;
 static s32 D_800BBAA4_main;
-extern u8 D_800A1D70_main[];
-extern u8 D_800A1D9C_main[];
-extern u8 D_800A1DC8_main[];
-extern u8 D_800A1DF8_main[];
-extern u8 D_800A1E58_main[];
 extern u16 D_800D04B0_main;
 extern u16 D_800CBB64_main;
 extern u16 D_800C9944_main;

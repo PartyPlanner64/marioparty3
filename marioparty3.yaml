@@ -107,6 +107,7 @@ segments:
       - [0x36F80, c, messdata]
       - [0x37210, c, gamemes]
       - [0x45F50, c, pause]
+      - [0x46C30, c, aura]
       - [0x471D0, c, lightdebug]
       - [0x47D60, c, objmain]
       - [0x4B120, c, audio]
@@ -463,18 +464,19 @@ segments:
       - [0x98160, data]
       - [0xA1EA0, .data, main]
       - [0xA1EB0, data]
-      - [0xA1EE0, data, gamemes]
-      - [0xA2190, data, pause]
-      - [0xA2260, data, lightdebug]
-      - [0xA22B0, data, objmain]
+      - [0xA1EE0, .data, gamemes]
+      - [0xA2190, .data, pause]
+      - [0xA2240, .data, aura]
+      - [0xA2260, .data, lightdebug]
+      - [0xA22B0, .data, objmain]
       - [0xA2500, .data, audio]
       - [0xA2520, data]
-      - [0xA2970, data, saveEncode]
-      - [0xA2A80, data, saveload]
-      - [0xA2A90, data, sprman]
-      - [0xA2AB0, data, sprput]
-      - [0xA2D50, data, window]
-      - [0xA32D0, data, wipe]
+      - [0xA2970, .data, saveEncode]
+      - [0xA2A80, .data, saveload]
+      - [0xA2A90, .data, sprman]
+      - [0xA2AB0, .data, sprput]
+      - [0xA2D50, .data, window]
+      - [0xA32D0, .data, wipe]
       - [0xA3380, .data, 2.0L/n_audio/n_env]
       - [0xA3480, .data, 2.0L/n_audio/n_sl]
       - [0xA3490, .data, 2.0L/n_audio/n_drvrNew]
@@ -512,8 +514,8 @@ segments:
       - [0xA78E0, .rodata, hmfanim]
       - [0xA7F00, .rodata, texload]
       - [0xA7F20, .rodata, gamemes]
-      - [0xA8620, .rodata, pause]
-      - [0xA8638, .rodata, lightdebug]
+      - [0xA8620, .rodata, aura]
+      - [0xA8628, .rodata, lightdebug]
       - [0xA8698, .rodata, objmain]
       - [0xA8740, .rodata, saveEncode]
       - [0xA8760, .rodata, sndplayer]
@@ -581,6 +583,7 @@ segments:
       - { start: 0xA96F0, type: .bss, vram: 0x800B1A40, name: messdata }
       - { start: 0xA96F0, type: .bss, vram: 0x800B1A50, name: gamemes }
       - { start: 0xA96F0, type: .bss, vram: 0x800B2340, name: pause }
+      - { start: 0xA96F0, type: .bss, vram: 0x800B23A0, name: aura }
       - { start: 0xA96F0, type: .bss, vram: 0x800B23B0, name: lightdebug }
       - { start: 0xA96F0, type: .bss, vram: 0x800B23C0, name: objmain }
       - { start: 0xA96F0, type: .bss, vram: 0x800B23D0, name: audio }

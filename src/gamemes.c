@@ -37,6 +37,46 @@ extern s8 HmfPauseF;
 extern u16 D_800D530C_main;
 extern u16 D_800D1100_main;
 extern u8 D_800D6A58_main;
+
+// unreferenced
+u8 D_800A12E0_main[] = {
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x01,
+    0xFF, 0x01, 0x00, 0x00, 0x03, 0x01, 0x01, 0x03, 0x01, 0x03, 0xFF, 0x03, 0x01, 0x01, 0x03, 0x00,
+    0x03, 0x03, 0xFF, 0x00, 0x00, 0x00, 0x03, 0x00, 0x03, 0x01, 0x02, 0x00, 0xFF, 0x03, 0x03, 0x03,
+    0x03, 0x00, 0x01, 0x02, 0x01, 0x01, 0x01, 0x03, 0x03, 0x01, 0x03, 0x03, 0x00, 0x03, 0x03, 0x03,
+    0x03, 0x03, 0x03, 0x03, 0x02, 0x03, 0x00, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03,
+    0x02, 0x02,
+};
+
+static u8 D_800A1334_main[] = {
+    0x91, 0x92, 0x93, 0x94, 0x95, 0x96, 0x97, 0x98, 0x99, 0x9A, 0x9B, 0x9C, 0x9D, 0x9E, 0x9F, 0xA0,
+    0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8, 0xA9, 0xAA, 0xAB, 0xAC, 0xAD, 0xAE, 0xAF, 0xB0,
+    0xB1, 0xB2, 0xB3, 0xB4, 0xB5, 0xB6, 0xB7, 0xB8, 0xB9, 0xBA, 0xBB, 0xBC, 0x86, 0xBD, 0x87, 0x88,
+    0x89, 0x8A, 0x8B, 0x8F, 0x8C, 0x8D, 0x8E,
+};
+
+static u8 D_800A136C_main[] = {
+    0x96, 0x97, 0x98, 0x99, 0x9A, 0x9B, 0x9C, 0x9D, 0x9E, 0x9F,
+    0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xAA, 0xAB, 0xAC, 0xAD, 0xAE,
+};
+
+// "START" character start positions
+static Vec2f D_800A1380_main[] = {
+    { -248.0f, -208.0f }, { 248.0f, 208.0f }, { 248.0f, -240.0f }, { -248.0f, 32.0f }, { -248.0f, -98.0f }, { 0.0f, 0.0f },
+};
+
+u8 D_800A13B0_main[] = {
+    0x91, 0x92, 0x93, 0x94, 0x95, 0x96, 0x97, 0x98, 0x99, 0x9A, 0x9B, 0x9C, 0x9D, 0x9E, 0x9F, 0xD1,
+    0xD2, 0xD3, 0xD4, 0xD5, 0xD6, 0xD7, 0xD8, 0xD9, 0xDA, 0xDB, 0xDC, 0xDD, 0xDE, 0xDF, 0xE0, 0xE1,
+    0xE2, 0xE3, 0xE4, 0xE5, 0xE6,
+};
+
+// "FINISH" character start positions
+static Vec2f D_800A13D8_main[] = {
+    { -256.0f, 0.0f }, { 256.0f, 216.0f }, { 256.0f, -60.0f }, { -256.0f, 24.0f },
+    { 64.0f, -216.0f }, { -256.0f, -216.0f }, { 0.0f, 0.0f },
+};
+
 static s8 D_800B1A50_main;
 static u8 gMesCloseF;
 static u8 GameMesDebugF;
@@ -54,20 +94,7 @@ static s16 D_800B1B50_main[16];
 static s16 D_800B1B70_main[37];
 static GMesChar D_800B1BC0_main[32];
 extern GAMEMES gMesData[];
-extern Vec2f D_800A1380_main[];
-extern Vec2f D_800A13D8_main[];
-extern u8 D_800A13B0_main[];
-extern char *D_800A1410_main[];
-extern u8 D_800A1334_main[];
-extern u8 D_800A136C_main[];
 extern s32 omovl;
-extern s32 D_800A1434_main[5][2];
-extern s32 D_800A145C_main[5][2];
-extern s32 D_800A1484_main[5][2];
-extern u8 D_800A14AC_main[];
-extern u8 D_800A1500_main[];
-extern u8 D_800A1554_main[];
-extern u8 D_800A156C_main[];
 
 s32 func_80036610_main(void) {
     return GwSystem.minigame_index;
@@ -2768,23 +2795,35 @@ void func_8003DCA4_main(GAMEMES *gMes, s32 fileNo) {
     func_800554C4_main(grp, 1, 0);
 }
 
-INCLUDE_RODATA("asm/nonmatchings/gamemes", D_800A76F8_main);
+// The following data is defined here rather than at the top of the file so that the
+// name strings are placed in the middle of this file's .rodata.
+static char *D_800A1410_main[] = {
+    " MARIO ", " LUIGI ", " PEACH ", " YOSHI ", " WARIO ", "\t DK\t  ", " WALUIGI ", " DAISY ", "  ALL\t",
+};
 
-INCLUDE_RODATA("asm/nonmatchings/gamemes", D_800A7700_main);
+static s32 D_800A1434_main[5][2] = {
+    { 30, 45 }, { 265, 45 }, { 30, 200 }, { 265, 200 }, { 170, 120 },
+};
 
-INCLUDE_RODATA("asm/nonmatchings/gamemes", D_800A7708_main);
+static s32 D_800A145C_main[5][2] = {
+    { 105, 95 }, { 235, 95 }, { 105, 150 }, { 235, 150 }, { 170, 120 },
+};
 
-INCLUDE_RODATA("asm/nonmatchings/gamemes", D_800A7714_main);
+static s32 D_800A1484_main[5][2] = {
+    { 90, 95 }, { 250, 95 }, { 90, 150 }, { 250, 150 }, { 170, 120 },
+};
 
-INCLUDE_RODATA("asm/nonmatchings/gamemes", D_800A771C_main);
+// がぎぐげござじずぜぞだぢづでどばびぶべぼガギグゲゴザジズゼゾダヂヅデドバビブベボ
+static u8 D_800A14AC_main[] = "\x82\xAA\x82\xAC\x82\xAE\x82\xB0\x82\xB2\x82\xB4\x82\xB6\x82\xB8\x82\xBA\x82\xBC\x82\xBE\x82\xC0\x82\xC3\x82\xC5\x82\xC7\x82\xCE\x82\xD1\x82\xD4\x82\xD7\x82\xDA\x83\x4B\x83\x4D\x83\x4F\x83\x51\x83\x53\x83\x55\x83\x57\x83\x59\x83\x5B\x83\x5D\x83\x5F\x83\x61\x83\x64\x83\x66\x83\x68\x83\x6F\x83\x72\x83\x75\x83\x78\x83\x7B";
 
-INCLUDE_RODATA("asm/nonmatchings/gamemes", D_800A7724_main);
+// かきくけこさしすせそたちつてとはひふへほカキクケコサシスセソタチツテトハヒフヘホ
+static u8 D_800A1500_main[] = "\x82\xA9\x82\xAB\x82\xAD\x82\xAF\x82\xB1\x82\xB3\x82\xB5\x82\xB7\x82\xB9\x82\xBB\x82\xBD\x82\xBF\x82\xC2\x82\xC4\x82\xC6\x82\xCD\x82\xD0\x82\xD3\x82\xD6\x82\xD9\x83\x4A\x83\x4C\x83\x4E\x83\x50\x83\x52\x83\x54\x83\x56\x83\x58\x83\x5A\x83\x5C\x83\x5E\x83\x60\x83\x63\x83\x65\x83\x67\x83\x6E\x83\x71\x83\x74\x83\x77\x83\x7A";
 
-INCLUDE_RODATA("asm/nonmatchings/gamemes", D_800A772C_main);
+// ぱぴぷぺぽパピプペポ
+static u8 D_800A1554_main[] = "\x82\xCF\x82\xD2\x82\xD5\x82\xD8\x82\xDB\x83\x70\x83\x73\x83\x76\x83\x79\x83\x7C";
 
-INCLUDE_RODATA("asm/nonmatchings/gamemes", D_800A7734_main);
-
-INCLUDE_RODATA("asm/nonmatchings/gamemes", D_800A773C_main);
+// はひふへほハヒフヘホ
+static u8 D_800A156C_main[] = "\x82\xCD\x82\xD0\x82\xD3\x82\xD6\x82\xD9\x83\x6E\x83\x71\x83\x74\x83\x77\x83\x7A";
 
 s32 GameMesMgWinnerExec(GAMEMES *gMes, Gfx **gfx) {
     char wonStr[] = "WON\xC4 ";

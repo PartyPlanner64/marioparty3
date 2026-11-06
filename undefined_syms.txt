@@ -67,3 +67,9 @@ D_800B1A76_main = D_800B1AF8_main - 0x41 * 2; /* 'A' */
 /* profiler sample buffer sampleCount fields. */
 D_800B246C_main = D_800B2468_main + 0x4;
 D_800B24F4_main = D_800B24F0_main + 0x4;
+
+/* objmain character model table fields, referenced by overlays as separate arrays. */
+D_800A178C_main = D_800A1788_main + 0x4;
+D_800A1790_main = D_800A1788_main + 0x8;
+D_800A1794_main = D_800A1788_main + 0xC;
+D_800A1798_main = D_800A1788_main + 0x10;

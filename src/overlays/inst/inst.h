@@ -37,16 +37,6 @@ typedef struct {
 } UnkInstWin;           /* sizeof 0x0E */
 
 typedef struct {
-    s32 overlay;
-    u8 minigameType;
-    u8 unk05;
-    u16 flags;
-    s16 message;
-    s16 unk_0A[4];
-    s16 finalMessage;
-} InstMessageInfo;
-
-typedef struct {
     s16 unk_00;
     s16 x;
 } InstSpritePos;

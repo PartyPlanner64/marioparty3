@@ -4,12 +4,6 @@
 #include "game/mallocblock.h"
 #include "game/pad.h"
 
-typedef struct {
-    /* 0x00 */ s32 overlay;
-    /* 0x04 */ u8 minigameType;
-    /* 0x05 */ u8 unk_05[15];
-} OptMinigameEntry; // sizeof 0x14
-
 // One entry per on-screen cursor; the object is the 3D cursor for that slot.
 typedef struct {
     /* 0x00 */ Vec unk_00;
@@ -65,7 +59,6 @@ typedef struct {
 extern OptSoundMenu D_80113DA8_option;
 extern OptMusicMenu D_8011421C_option;
 
-extern OptMinigameEntry D_800A6D40_main[];
 extern Vec D_80113A80_option;
 extern Vec D_80113A8C_option;
 extern Vec D_80113AA4_option;

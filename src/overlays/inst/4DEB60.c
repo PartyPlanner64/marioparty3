@@ -1,20 +1,11 @@
 #include "common.h"
 #include "inst.h"
 
-typedef struct {
-    s32 overlay;
-    u8 minigameType;
-    u8 unk05;
-    u16 flags;
-    u8 unk08[12];
-} InstMinigameEntry;
-
 extern InstModelHooks *D_8010D4C0_inst[][2];
 extern const s32 D_8010D90C_inst[][2];
 extern const s32 D_8010D910_inst[][2];
 extern const s32 D_8010D954_inst[];
 
-extern InstMinigameEntry D_800A6D40_main[];
 extern const char D_8010D978_inst[];
 extern const char D_8010D980_inst[];
 extern s32 D_8010D43C_inst;
@@ -125,7 +116,7 @@ void func_801059A0_inst(void) {
         }
     }
     D_8010D40B_inst = GwSystem.minigame_index - 1;
-    D_8010D40A_inst = D_800A6D44_main[D_8010D40B_inst].minigameType;
+    D_8010D40A_inst = D_800A6D40_main[D_8010D40B_inst].minigameType;
 
     if (_CheckFlag(FLAG_MG_PRACTICE) != 0) {
         D_8010D407_inst = 1;

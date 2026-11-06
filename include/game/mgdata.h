@@ -4,16 +4,16 @@
 #include "ultra64.h"
 
 typedef struct MinigameTable {
-    /* 0x00 */ u8 minigameType;
-    /* 0x01 */ char unk_01[5];
-    /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
-    /* 0x0A */ s16 unk_0A;
-    /* 0x0C */ s16 unk_0C;
-    /* 0x0E */ char unk_0E[6];
-} MinigameTable;
+    /* 0x00 */ s32 overlay;
+    /* 0x04 */ u8 minigameType;
+    /* 0x05 */ u8 unk_05;
+    /* 0x06 */ u16 flags;
+    /* 0x08 */ s16 message;
+    /* 0x0A */ s16 unk_0A[4];
+    /* 0x12 */ s16 finalMessage;
+} MinigameTable; // sizeof 0x14
 
-extern MinigameTable D_800A6D44_main[];
+extern const MinigameTable D_800A6D40_main[];
 
 s32 func_800341C0_main(void);
 

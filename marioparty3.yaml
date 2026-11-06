@@ -96,7 +96,7 @@ segments:
       - [0x22EB0, c, hmfdraw]
       - [0x30C40, c, hmfshape]
       - [0x32160, c, hmfanim]
-      - [0x34DC0, c, mgdata] # Separate file, not part of hmfanim: hmfanim ends with nop padding at 0x34DBC; this is one function (func_800341C0_main, returns 0x70) padded to 0x34DD0. Its rodata is likely the minigame table at 0x800A6D40-0x800A7300 (overlay 0x70 is special-cased by the option overlay).
+      - [0x34DC0, c, mgdata] # Separate file, not part of hmfanim: hmfanim ends with nop padding at 0x34DBC; this is one function (func_800341C0_main, returns 0x70) padded to 0x34DD0. Its rodata is the minigame table at 0x800A6D40 (overlay 0x70 is special-cased by the option overlay).
       - [0x34DD0, c, texload]
       - [0x360A0, c, main]
       - [0x36440, c, mallocperm]
@@ -558,6 +558,8 @@ segments:
       - [0xA77B8, .rodata, hmfman]
       - [0xA7828, .rodata, hmfdraw]
       - [0xA78E0, .rodata, hmfanim]
+      - [0xA7940, .rodata, mgdata]
+      - [0xA7EF4, pad, pad_A7EF4] # zero padding: texload's rodata is 16-byte aligned, but subalign is 8
       - [0xA7F00, .rodata, texload]
       - [0xA7F20, .rodata, gamemes]
       - [0xA8620, .rodata, aura]

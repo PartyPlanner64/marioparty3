@@ -26,6 +26,10 @@ D_8010BF84_silly_screws = 0x8010BF84;
 
 D_800EC1BC_minigame = 0x800EC1BC;
 
+/* Minigame table field aliases: MinigameTable (mgdata.c). */
+D_800A6D44_main = D_800A6D40_main + 0x4; /* minigameType */
+D_800A6D46_main = D_800A6D40_main + 0x6; /* flags */
+
 /* msetup field aliases: MsetupMenuContext, MsetupMessageWindows, MsetupPlayerConfig. */
 D_8011A880_msetup = msetupMenuContext;          /* playerCount */
 D_8011A882_msetup = msetupMenuContext + 0x2;    /* menu */

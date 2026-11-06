@@ -28,7 +28,7 @@ u16 D_8010DCC0_inst[2] BSS;
 u16 D_8010DCC4_inst[3] BSS;
 s16 D_8010DCCA_inst BSS;
 s32 D_8010DCCC_inst BSS;
-InstMessageInfo *D_8010DCD0_inst BSS;
+const MinigameTable *D_8010DCD0_inst BSS;
 s8 D_8010DCD4_inst BSS;
 GAMEMES D_8010DCD8_inst BSS;
 u8 D_8010DD4C_inst[4] BSS;

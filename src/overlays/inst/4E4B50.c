@@ -1,7 +1,6 @@
 #include "common.h"
 #include "inst.h"
 
-extern InstMessageInfo D_800A6D40_main[];
 extern u16 D_800CC698_main;
 extern omObjData *D_8010DCA0_inst;
 extern s32 D_8010D5B4_inst;
@@ -14,7 +13,7 @@ extern s8 D_8010D40B_inst;
 extern s8 D_8010D5B1_inst;
 extern s8 D_8010DCD4_inst;
 extern s32 D_8010DCCC_inst;
-extern InstMessageInfo *D_8010DCD0_inst;
+extern const MinigameTable *D_8010DCD0_inst;
 extern s8 D_8010D400_inst[4];
 extern s8 D_8010D406_inst;
 extern s8 D_8010D408_inst;

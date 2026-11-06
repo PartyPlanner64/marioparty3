@@ -1345,7 +1345,7 @@ void omSystemKeyCheck(omObjData *object) {
         if (!CheckControllerRead(GwPlayer[j].pad)) {
             continue;
         }
-        minigameType = D_800A6D44_main[GwSystem.minigame_index - 1].minigameType;
+        minigameType = D_800A6D40_main[GwSystem.minigame_index - 1].minigameType;
         if (minigameType == 7) {
             if (j != 0) {
                 continue;

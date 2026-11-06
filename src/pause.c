@@ -58,7 +58,7 @@ extern s16 D_800D6ADA_main;
 void func_80045350_main(void) {
     s32 var_v1;
 
-    if (D_800A6D44_main[GwSystem.minigame_index - 1].minigameType == 6) {
+    if (D_800A6D40_main[GwSystem.minigame_index - 1].minigameType == 6) {
         return;
     }
     for (var_v1 = 0; var_v1 < 4; var_v1++) {
@@ -88,17 +88,17 @@ void ExecPause(void) {
     HuPrcSleep(2);
     D_800CB99C_main = 1;
     var_s6 = GwSystem.minigame_index - 1;
-    sp18[0] = D_800A6D44_main[var_s6].unk_06;
-    sp18[1] = D_800A6D44_main[var_s6].unk_08;
-    sp18[2] = D_800A6D44_main[var_s6].unk_0A;
-    sp18[3] = D_800A6D44_main[var_s6].unk_0C;
+    sp18[0] = D_800A6D40_main[var_s6].unk_0A[0];
+    sp18[1] = D_800A6D40_main[var_s6].unk_0A[1];
+    sp18[2] = D_800A6D40_main[var_s6].unk_0A[2];
+    sp18[3] = D_800A6D40_main[var_s6].unk_0A[3];
     for (var_s4 = 0; var_s4 < 4; var_s4++) {
         if (sp18[var_s4] == -1) {
             break;
         }
     }
     var_s1 = (var_s4 >= 2) ? 0x41 : 0x6E;
-    if (D_800A6D44_main[var_s6].minigameType == 6) {
+    if (D_800A6D40_main[var_s6].minigameType == 6) {
         var_s1 = 0x8C;
         var_s4 = 0;
     }

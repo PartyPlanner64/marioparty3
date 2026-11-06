@@ -18,21 +18,21 @@ s32 D_800A12A0_main = 0;
 f32 D_800A12A4_main = 0.0f;
 
     // /* A1E5C 800A125C 8008F1C0 */ .word gspF3DEX2_fifoTextStart
-    // /* A1E60 800A1260 800A4C80 */ .word D_800A4C80_main
+    // /* A1E60 800A1260 800A4C80 */ .word gspF3DEX2_fifoDataStart
     // /* A1E64 800A1264 80090550 */ .word gspF3DEX2_NoN_fifoTextStart
-    // /* A1E68 800A1268 800A50A0 */ .word D_800A50A0_main
+    // /* A1E68 800A1268 800A50A0 */ .word gspF3DEX2_NoN_fifoDataStart
     // /* A1E6C 800A126C 800918E0 */ .word gspF3DLX2_Rej_fifoTextStart
-    // /* A1E70 800A1270 800A54C0 */ .word D_800A54C0_main
+    // /* A1E70 800A1270 800A54C0 */ .word gspF3DLX2_Rej_fifoDataStart
     // /* A1E74 800A1274 80092A70 */ .word gspS2DEX2_fifoTextStart
-    // /* A1E78 800A1278 800A58D0 */ .word D_800A58D0_main
+    // /* A1E78 800A1278 800A58D0 */ .word gspS2DEX2_fifoDataStart
     // /* A1E7C 800A127C 80094330 */ .word gspL3DEX2_fifoTextStart
-    // /* A1E80 800A1280 800A5C60 */ .word D_800A5C60_main
+    // /* A1E80 800A1280 800A5C60 */ .word gspL3DEX2_fifoDataStart
     // /* A1E84 800A1284 8008F1C0 */ .word gspF3DEX2_fifoTextStart
-    // /* A1E88 800A1288 800A4C80 */ .word D_800A4C80_main
+    // /* A1E88 800A1288 800A4C80 */ .word gspF3DEX2_fifoDataStart
     // /* A1E8C 800A128C 80090550 */ .word gspF3DEX2_NoN_fifoTextStart
-    // /* A1E90 800A1290 800A50A0 */ .word D_800A50A0_main
+    // /* A1E90 800A1290 800A50A0 */ .word gspF3DEX2_NoN_fifoDataStart
     // /* A1E94 800A1294 800918E0 */ .word gspF3DLX2_Rej_fifoTextStart
-    // /* A1E98 800A1298 800A54C0 */ .word D_800A54C0_main
+    // /* A1E98 800A1298 800A54C0 */ .word gspF3DLX2_Rej_fifoDataStart
     // /* A1E9C 800A129C 000003E8 */ .word 0x000003E8
 
 // typedef struct UnkF3DEX2Data {

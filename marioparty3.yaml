@@ -527,7 +527,11 @@ segments:
       - [0xA4F30, .data, libm/exp]
       - [0xA4F40, .data, libm/expf]
       - [0xA4F50, .rodata, libm/tables]
-      - [0xA5880, rodata] # F3DEX2-family microcode data
+      - [0xA5880, rodatabin, gspF3DEX2_fifo_data]
+      - [0xA5CA0, rodatabin, gspF3DEX2_NoN_fifo_data]
+      - [0xA60C0, rodatabin, gspF3DLX2_Rej_fifo_data]
+      - [0xA64D0, rodatabin, gspS2DEX2_fifo_data]
+      - [0xA6860, rodatabin, gspL3DEX2_fifo_data]
       - [0xA6C50, rodata, n_aspMain_data]
       - [0xA6F00, .rodata, msm]
       - [0xA7580, .rodata, audiomgr]

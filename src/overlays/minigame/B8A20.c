@@ -5,7 +5,7 @@
 #include "game/sprite.h"
 #include "math.h"
 
-extern s16 D_800EB91A_minigame;
+extern u16 D_800EB91A_minigame;
 extern s32 D_800EB91C_minigame;
 extern s32 D_800EB920_minigame;
 extern s32 D_800EB924_minigame;
@@ -19,6 +19,11 @@ extern s16 D_800EBDE4_minigame;
 extern s16 D_800EBDE6_minigame;
 extern s16 D_800EBDE8_minigame[];
 extern f32 D_800EB938_minigame;
+extern s16 D_800EB92E_minigame;
+extern s16 D_800EB930_minigame;
+extern s16 D_800EB932_minigame;
+extern s32 D_800EB93C_minigame;
+extern s32 D_800EB940_minigame;
 
 void func_800E9C20_minigame(s16 count, u16 length);
 void func_800E9F40_minigame(s16 arg0, s16 x, s16 y, s16 arg3);
@@ -29,6 +34,8 @@ void func_800E62A8_minigame(void);
 s16 func_800E6300_minigame(s32 x, s32 y);
 s16 func_800E64B8_minigame(s32 x, s32 y);
 void func_800E6670_minigame(s16 index, s16 time);
+void func_800EA178_minigame(s16 arg0, f32 arg1);
+void func_800EA518_minigame(void);
 
 void func_800E5EA0_minigame(D_80111B50_vine_with_me_Struct *arg0) {
     arg0->unk00 = 0;
@@ -343,14 +350,249 @@ void func_800E6F34_minigame(s32 arg0) {
     D_800EB91A_minigame = arg0;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/minigame/B8A20", D_800EBCF4_minigame);
+u8 func_800E6F40_minigame(void) {
+    char *stateNames[] = { "OPENING", "PLAYING", "DIRECTION", "ENDING" };
+    s16 mes;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/minigame/B8A20", D_800EBCFC_minigame);
+    if (D_800D530C_main == 1) {
+        func_800E6F0C_minigame(5);
+    }
+    func_800EA518_minigame();
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/minigame/B8A20", D_800EBD04_minigame);
+    switch (D_800EBDE0_minigame->unk00) {
+        case 0:
+            if (WipeStatGet() != 0) {
+                break;
+            }
+            if (D_800EBDE0_minigame->unk1C == 0) {
+                func_800E6F0C_minigame(1);
+            } else if (D_800EBDE0_minigame->unk1C != -1) {
+                D_800EBDE0_minigame->unk1C--;
+            }
+            D_800EB910_minigame++;
+            break;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/minigame/B8A20", D_800EBD10_minigame);
+        case 1:
+            if (D_800EB912_minigame == 0) {
+                switch (D_800EBDE0_minigame->unk01) {
+                    case 0:
+                        mes = 3;
+                        break;
+                    case 1:
+                        mes = 5;
+                        break;
+                    case 2:
+                        mes = 4;
+                        break;
+                    case 3:
+                        mes = 8;
+                        break;
+                    case 4:
+                        mes = 6;
+                        break;
+                    case 6:
+                        mes = 9;
+                        break;
+                    case 5:
+                    case 7:
+                        mes = 7;
+                        break;
+                }
+                GMesCreate(mes);
+            } else if (D_800EB912_minigame == 75.0) {
+                func_800E6F0C_minigame(2);
+            }
+            if (D_800EB932_minigame == D_800EB912_minigame && D_800EB930_minigame != -1) {
+                HuAudSeqPlay(D_800EB930_minigame);
+            }
+            D_800EB912_minigame++;
+            break;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/minigame/B8A20", D_800EBD18_minigame);
+        case 2:
+            if (D_800EB914_minigame == 0 && D_800EBDE0_minigame->unk03 == 2) {
+                GMesCreate(0x1A, 30, 160, 24);
+            }
+            switch (D_800EBDE0_minigame->unk03) {
+                case 0:
+                    break;
+                case 1:
+                    func_800E6670_minigame(0, D_800EB914_minigame * 2);
+                    if (D_800EBDE0_minigame->unk20 == D_800EB914_minigame) {
+                        func_800E6F0C_minigame(3);
+                    }
+                    break;
+                case 2:
+                    func_8003F578_main(D_800EBDE0_minigame->unk1E / 30 + 1);
+                    break;
+            }
+            if (D_800EBDE0_minigame->unk20 != -1) {
+                if (D_800EBDE0_minigame->unk20 - 900 == D_800EB914_minigame) {
+                    GMesCreate(0x1A, 30, 160, 24);
+                    D_800EB93C_minigame = 1;
+                } else if (D_800EBDE0_minigame->unk20 - 900 < D_800EB914_minigame) {
+                    func_8003F578_main((D_800EBDE0_minigame->unk20 - D_800EB914_minigame) / 30 + 1);
+                }
+            }
+            if (D_800EBDE0_minigame->unk1E != -1) {
+                switch (D_800EBDE0_minigame->unk02) {
+                    case 0:
+                        if (D_800EBDE0_minigame->unk1E >= D_800EBDE0_minigame->unk20) {
+                            func_800E6F0C_minigame(3);
+                        } else {
+                            D_800EBDE0_minigame->unk1E++;
+                        }
+                        break;
+                    case 1:
+                        if (D_800EBDE0_minigame->unk1E == 0) {
+                            func_800E6F0C_minigame(3);
+                            func_8003F578_main(0);
+                        } else {
+                            D_800EBDE0_minigame->unk1E--;
+                        }
+                        break;
+                    case 2:
+                        break;
+                }
+            }
+            D_800EB914_minigame++;
+            break;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B8A20", func_800E6F40_minigame);
+        case 3:
+            if (D_800EB916_minigame == 0) {
+                D_800EB914_minigame--;
+                if (D_800EB914_minigame * 2 < D_800EB92A_minigame) {
+                    D_800EBDE0_minigame->unk04 = 1;
+                    GWMgRecordSet(D_800EB92E_minigame, (u16)(D_800EB914_minigame * 2));
+                    D_800EBDE0_minigame->unk24 += 75.0;
+                    D_800EB940_minigame = 1;
+                }
+                if (D_800EBDE0_minigame->unk03 == 2 || D_800EB93C_minigame != 0) {
+                    func_8003F5C0_main();
+                }
+                switch (D_800EBDE0_minigame->unk01) {
+                    case 0:
+                        mes = 0xE;
+                        break;
+                    case 1:
+                        mes = 0x10;
+                        break;
+                    case 2:
+                        mes = 0xF;
+                        break;
+                    case 3:
+                        mes = 0x13;
+                        break;
+                    case 4:
+                        mes = 0x11;
+                        break;
+                    case 6:
+                        mes = 0x14;
+                        break;
+                    case 5:
+                    case 7:
+                        mes = 0x12;
+                        break;
+                }
+                GMesCreate(mes);
+                HuAudSeqFadeOut(120);
+            }
+            if (D_800EBDE0_minigame->unk22 == 0) {
+                func_800E6F0C_minigame(4);
+            } else if (D_800EBDE0_minigame->unk22 != -1) {
+                D_800EBDE0_minigame->unk22--;
+            }
+            D_800EB916_minigame++;
+            break;
+
+        case 4:
+            D_800EB934_minigame = 0;
+            if (D_800EB918_minigame == 0 && D_800EBDE0_minigame->unk04 == 1) {
+                D_800EB91A_minigame = 75;
+                GMesCreate(0x1B);
+            }
+            if (D_800EB918_minigame == D_800EB91A_minigame) {
+                switch (D_800EBDE0_minigame->unk06) {
+                    case 0:
+                        GMesCreate(0x16, GwPlayer[D_800EBDE0_minigame->unk18[0]].chr);
+                        if (D_800EBDE0_minigame->unk04 == 1) {
+                            HuAudSeqPlay(0x6A);
+                        } else if (D_800EBDE0_minigame->unk01 == 4) {
+                            HuAudSeqPlay(0x67);
+                        } else {
+                            HuAudSeqPlay(0x65);
+                        }
+                        break;
+                    case 1:
+                        GMesCreate(0x1E, GwPlayer[D_800EBDE0_minigame->unk18[0]].chr,
+                                   GwPlayer[D_800EBDE0_minigame->unk18[1]].chr);
+                        if (D_800EBDE0_minigame->unk04 == 1) {
+                            HuAudSeqPlay(0x6A);
+                        } else {
+                            HuAudSeqPlay(0x66);
+                        }
+                        break;
+                    case 2:
+                        GMesCreate(0x22, GwPlayer[D_800EBDE0_minigame->unk18[0]].chr,
+                                   GwPlayer[D_800EBDE0_minigame->unk18[1]].chr,
+                                   GwPlayer[D_800EBDE0_minigame->unk18[2]].chr);
+                        HuAudSeqPlay(0x66);
+                        break;
+                    case 3:
+                        GMesCreate(0x23, GwPlayer[D_800EBDE0_minigame->unk18[0]].chr,
+                                   GwPlayer[D_800EBDE0_minigame->unk18[1]].chr,
+                                   GwPlayer[D_800EBDE0_minigame->unk18[2]].chr,
+                                   GwPlayer[D_800EBDE0_minigame->unk18[3]].chr);
+                        HuAudSeqPlay(0x66);
+                        break;
+                    case 4:
+                        GMesCreate(0x20);
+                        HuAudSeqPlay(0x6C);
+                        break;
+                    case 5:
+                        GMesCreate(0x24);
+                        HuAudSeqPlay(0x68);
+                        break;
+                    case 6:
+                        GMesCreate(0x25);
+                        HuAudSeqPlay(0x69);
+                        break;
+                    case 7:
+                        GMesCreate(0x1D);
+                        HuAudSeqPlay(0x6B);
+                        break;
+                    case 8:
+                        GMesCreate(0x17);
+                        break;
+                    case 9:
+                        break;
+                }
+                D_800EB934_minigame = 1;
+            }
+            if (D_800EBDE0_minigame->unk24 == 0) {
+                func_800E6F0C_minigame(5);
+            } else if (D_800EBDE0_minigame->unk24 != -1) {
+                D_800EBDE0_minigame->unk24--;
+            }
+            if (D_800EB940_minigame != 0) {
+                func_800E6968_minigame(1, D_800EB914_minigame * 2);
+            }
+            D_800EB918_minigame++;
+            break;
+
+        case 5:
+            break;
+    }
+
+    switch (D_800EBDE0_minigame->unk05 & 0xF0) {
+        case 0x80:
+            func_800EA178_minigame(2, D_800EBDE0_minigame->unk08[2]);
+            func_800EA178_minigame(3, D_800EBDE0_minigame->unk08[3]);
+        case 0x40:
+        case 0x20:
+            func_800EA178_minigame(0, D_800EBDE0_minigame->unk08[0]);
+            func_800EA178_minigame(1, D_800EBDE0_minigame->unk08[1]);
+            break;
+    }
+
+    return D_800EBDE0_minigame->unk00;
+}

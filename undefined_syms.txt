@@ -3,6 +3,9 @@ osRomBase = 0x80000308;
 osResetType = 0x8000030C;
 osAppNMIBuffer = 0x8000031C;
 
+/* Microcode text is linked from binary segments, which have no end labels. */
+rspbootTextEnd = gspF3DEX2_fifoTextStart;
+
 D_801155E0_vine_with_me = 0x801155E0;
 D_801155E4_vine_with_me = 0x801155E4;
 D_8011564A_vine_with_me = 0x8011564A;

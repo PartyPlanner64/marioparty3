@@ -11,6 +11,8 @@
 #include "game/audio.h"
 #include "game/mallocblock.h"
 #include "include_asm.h"
+#include "game/pad.h"
+#include "math.h"
 
 // Common header of the per-object data of the minigame objects registered in
 // D_800EC1C0_minigame.
@@ -37,6 +39,7 @@ void func_800D853C_minigame(omObjData *, omObjData *);
 
 // LOCAL
 
+s32 func_800E2250_minigame(omObjData *arg0, s16 arg1, s16 arg2);
 void func_800E3584_minigame(s16);
 
 extern s32 D_800EB730_minigame;
@@ -462,7 +465,7 @@ void func_800E1BA8_minigame(omObjData *arg0, u32 arg1, s32 arg2, u16 arg3, s32 a
     temp_s0->unkD0 = 0xFFFF;
     temp_s0->unk4C = 0.5f;
     temp_s0->unkCC = 1.0f;
-    temp_s0->unk60 = 0;
+    temp_s0->unk60 = 0.0f;
     func_800E1328_minigame(arg0, 60.0f);
     func_800E1334_minigame(arg0, 150.0f);
     func_800E1340_minigame(arg0, 20.0f);
@@ -781,7 +784,52 @@ s32 func_800E30B8_minigame(Vec *pos, D_800EC1C0_minigame_ObjData *data) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E317C_minigame);
+void func_800E317C_minigame(omObjData *arg0, f32 x, f32 z) {
+    func_800E1BA8_minigame_ObjData *data = arg0->data;
+    s16 stickX;
+    s16 stickY;
+    s32 avg;
+
+    if (data->unk5C & 0x200) {
+        data->unk4C = 0.7f;
+    } else {
+        data->unk4C = 0.6f;
+    }
+    func_800E5690_minigame(arg0, 6);
+    if (abs(D_800CBB6E_main[data->unk57]) >= 9 || abs(D_800D20A1_main[data->unk57]) >= 9) {
+        stickX = D_800CBB6E_main[data->unk57];
+        stickY = D_800D20A1_main[data->unk57];
+        if (stickX > 60) {
+            stickX = 60;
+        }
+        if (stickY > 60) {
+            stickY = 60;
+        }
+        if (stickX < -60) {
+            stickX = -60;
+        }
+        if (stickY < -60) {
+            stickY = -60;
+        }
+        func_800E2308_minigame(&stickX, &stickY);
+        func_800E2250_minigame(arg0, stickX, stickY);
+        func_800E2250_minigame(arg0, stickX, stickY);
+        func_800E2250_minigame(arg0, stickX, stickY);
+        func_800E2250_minigame(arg0, stickX, stickY);
+        func_800E2250_minigame(arg0, stickX, stickY);
+        avg = func_800E2250_minigame(arg0, stickX, stickY);
+        stickX = avg >> 16;
+        stickY = avg;
+        data->unk3C = atan2df(stickX, -stickY) + data->unk60;
+        data->unk40 = D_800EB760_minigame;
+    } else if (func_800E2ED4_minigame(sindf(data->unk3C), cosdf(data->unk3C), x, z) < 0.0f) {
+        data->unk40 = D_800EB760_minigame;
+    } else {
+        data->unk40 = -D_800EB760_minigame;
+    }
+    data->unk38 = -D_800EB744_minigame * 0.9f;
+    data->unk50 |= 8;
+}
 
 void func_800E341C_minigame(func_800E1BA8_minigame_ObjData *arg0, f32 x, f32 z) {
     if (0.0f <= func_800E2ED4_minigame(sindf(arg0->unk3C), cosdf(arg0->unk3C), x, z)) {

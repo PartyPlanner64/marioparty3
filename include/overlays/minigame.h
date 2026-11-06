@@ -46,7 +46,7 @@ typedef struct {
     /* 0x05A */ u8 unk5A;
     /* 0x05B */ u8 unk5B;
     /* 0x05C */ s32 unk5C;
-    /* 0x060 */ s32 unk60;
+    /* 0x060 */ f32 unk60;
     /* 0x064 */ f32 unk64;
     /* 0x068 */ f32 unk68;
     /* 0x06C */ f32 unk6C;

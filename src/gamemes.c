@@ -1811,8 +1811,11 @@ s16 func_8003AE44_main(s16 fileNo) {
 }
 
 #ifdef NON_MATCHING
-/* Only diff: target has an extra andi 0xFF after the lbu from D_800A13B0_main in the search loop,
-   as if the loaded byte were kept live past the comparison. */
+/* Only diff: target has an extra andi 0xFF after the lbu from D_800A13B0_main in the search loop.
+   That means the load and its zero-extension were never combined. Declaring the table as
+   `volatile u8 D_800A13B0_main[]` matches exactly, because combine rejects volatile MEMs. No
+   non-volatile form tried so far reproduces it: u8/s8 casts, u8/s32/u16/s16 temporaries, reusing the
+   flags param, pointer indexing, and while/do-while/condition-in-for loop shapes. */
 s16 CreateFontChar(u8 c, u8 flags) {
     s16 *animId;
     s32 fileNo;

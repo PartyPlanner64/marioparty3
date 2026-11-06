@@ -1,11 +1,16 @@
 #include "overlays/minigame.h"
 #include "game/data.h"
 #include "game/hu3d.h"
+#include "game/hmfspr.h"
 #include "variables.h"
 #include "include_asm.h"
 #include "game/util.h"
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B7600", func_800E4A80_minigame);
+s32 func_800E4A80_minigame(omObjData *arg0) {
+    func_800E1BA8_minigame_ObjData *data = arg0->data;
+
+    return data->unkD8.unk02 & 0x3FFF;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B7600", func_800E4A90_minigame);
 
@@ -20,7 +25,13 @@ void func_800E4BA4_minigame(s32 arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B7600", func_800E4C2C_minigame);
+void func_800E4C2C_minigame(omObjData *arg0) {
+    s32 i;
+
+    for (i = 3; i < 9 && i < arg0->mdlcnt; i++) {
+        func_800E4BA4_minigame((u8)arg0->model[i]);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B7600", func_800E4C88_minigame);
 
@@ -53,13 +64,41 @@ void func_800E5638_minigame(func_800E5638_minigame_UnkD8_ObjData *arg0, u16 arg1
     arg0->unk06 = arg4;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B7600", func_800E5664_minigame);
+s32 func_800E5664_minigame(omObjData *arg0, u16 arg1) {
+    func_800E1BA8_minigame_ObjData *data = arg0->data;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B7600", func_800E567C_minigame);
+    return data->unkD8.unk02 == arg1;
+}
+
+s32 func_800E567C_minigame(func_800E1BA8_minigame_ObjData *arg0, u16 arg1) {
+    return arg0->unkD8.unk02 == arg1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B7600", func_800E5690_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B7600", func_800E5798_minigame);
+s32 func_800E5798_minigame(omObjData *arg0, s32 arg1) {
+    func_800E1BA8_minigame_ObjData *data = arg0->data;
+    func_800E1BA8_minigame_UnkE8_ObjData *entry;
+    u16 unk00;
+    u16 unk02;
+    s16 unk04;
+
+    if (data->unk52 != 0) {
+        return 0;
+    }
+    entry = &data->unkE8[arg1 & 0xFFFF];
+    if ((u16)arg0->motion[arg1 & 0xFFFF] != 0xFFFF) {
+        unk00 = entry->unk00;
+        unk02 = entry->unk02;
+        unk04 = entry->unk04;
+        data->unkD0 = 0;
+        data->unkD2 = 1;
+        func_800E5638_minigame(&data->unkD8, unk00, arg1, unk02, unk04);
+        data->unkD6 = 1;
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B7600", func_800E5848_minigame);
 
@@ -135,7 +174,17 @@ void func_800E5A00_minigame(omObjData *arg0, u16 arg1, s32 arg2, s32 arg3, u16 a
     temp_v0_2->unk02 = arg4;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B7600", func_800E5A98_minigame);
+s16 func_800E5A98_minigame(omObjData *arg0, s32 arg1) {
+    func_800E1BA8_minigame_ObjData *data = arg0->data;
+    s32 i;
+
+    for (i = 0; i < arg0->mtncnt; i++) {
+        if (data->unkE8[i].unk08 == arg1) {
+            return data->unkE8[i].unk04;
+        }
+    }
+    return func_80017AD8_main(arg1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B7600", func_800E5B08_minigame);
 

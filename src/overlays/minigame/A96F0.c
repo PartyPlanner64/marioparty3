@@ -31,7 +31,8 @@ extern Hu3DQuadPool D_800EBEB0_minigame;
 extern HuMtx4F D_800EC240_minigame;
 
 f32 func_800D6E14_minigame(omObjData *arg0, f32 x, f32 y, f32 z);
-void func_800D6F20_minigame(omObjData *arg0, A96F0_Sphere *arg1);
+void func_800D6E74_minigame(omObjData *arg0, Vec *arg1);
+void func_800D6F20_minigame(omObjData *arg0, Vec *arg1);
 f32 func_800D72B0_minigame(omObjData *arg0, A96F0_Sphere *arg1);
 void func_800D7388_minigame(omObjData *arg0, f32 x, f32 y, f32 z, f32 floorY, Vec *normal);
 f32 func_800D74AC_minigame(omObjData *arg0, A96F0_Sphere *arg1, Vec *normal);
@@ -51,6 +52,12 @@ void func_800DC7D8_minigame(omObjData *arg0, A96F0_Sphere *arg1);
 void func_800DC8E4_minigame(omObjData *arg0, A96F0_Sphere *arg1, f32 arg2);
 void func_800E28BC_minigame(HuMtx4F mtx, HuMtx4F result, Vec *pos, omObjData *obj);
 void func_800E2B58_minigame(HuMtx4F mtx, Vec *arg1);
+void func_800E2BD4_minigame(HuMtx4F mtx, Vec *arg1);
+void func_800E2C68_minigame(HuMtx4F mtx, Vec *arg1);
+s32 func_800E2F40_minigame(HmfModelData_Unk64_Unk60_Struct *obj, Vec *pos);
+s32 func_800E30B8_minigame(Vec *pos, func_800E1BA8_minigame_ObjData *data);
+s32 func_800DB704_minigame(s32 count, s16 *vtx, Hu3DPoint *points, Vec *pos);
+s32 func_800D8818_minigame(f32 x, f32 y, f32 z, Hu3DPoint *points, Hu3DQuad *quad, Vec *dir, Vec *out);
 s32 func_800E2FD8_minigame(HmfModelData_Unk64_Unk60_Struct *obj, Vec *pos, f32 margin);
 void func_800E1718_minigame(omObjData *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
 void func_800E17D4_minigame(omObjData *arg0, f32 x, f32 y, f32 z);
@@ -125,15 +132,15 @@ f32 func_800D6E14_minigame(omObjData *arg0, f32 x, f32 y, f32 z) {
     return func_800D72B0_minigame(arg0, &sphere);
 }
 
-void func_800D6E74_minigame(omObjData *arg0, A96F0_Sphere *arg1) {
+void func_800D6E74_minigame(omObjData *arg0, Vec *arg1) {
     A96F0_ObjData *data = arg0->data;
     func_800E1BA8_minigame_ObjData *other;
 
     if (data->unk53 >= 0 && data->unk38 == 1000.0f) {
         other = D_800EC1C0_minigame[data->unk53]->data;
-        data->unk5C = arg1->pos.x * other->unk10;
-        data->unk60 = arg1->pos.y;
-        data->unk64 = arg1->pos.z * other->unk10;
+        data->unk5C = arg1->x * other->unk10;
+        data->unk60 = arg1->y;
+        data->unk64 = arg1->z * other->unk10;
         if (other->unk06 & 0x400) {
             func_800D6F20_minigame(arg0, arg1);
         }
@@ -144,15 +151,15 @@ void func_800D6E74_minigame(omObjData *arg0, A96F0_Sphere *arg1) {
     }
 }
 
-void func_800D6F20_minigame(omObjData *arg0, A96F0_Sphere *arg1) {
+void func_800D6F20_minigame(omObjData *arg0, Vec *arg1) {
     A96F0_ObjData *data = arg0->data;
     f32 rotX;
     f32 rotZ;
     f32 curX;
     f32 curZ;
 
-    rotX = -(atan2df(arg1->pos.y, arg1->pos.z) - 90.0f);
-    rotZ = atan2df(arg1->pos.y, arg1->pos.x) - 90.0f;
+    rotX = -(atan2df(arg1->y, arg1->z) - 90.0f);
+    rotZ = atan2df(arg1->y, arg1->x) - 90.0f;
     curX = data->unk68;
     curZ = data->unk70;
     if (curX < rotX) {
@@ -269,7 +276,129 @@ void func_800D7388_minigame(omObjData *arg0, f32 x, f32 y, f32 z, f32 floorY, Ve
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/A96F0", func_800D74AC_minigame);
+f32 func_800D74AC_minigame(omObjData *arg0, A96F0_Sphere *arg1, Vec *normal) {
+    A96F0_ObjData *data;
+    func_800E1BA8_minigame_ObjData *objData;
+    omObjData *obj;
+    Hu3DPoint *points;
+    Hu3DQuad *quad;
+    Vec pos;
+    Vec unused1; // Unused, but needed for stack layout
+    Vec unused2;
+    Vec tmp;
+    Vec dir;
+    f32 x, y, z;
+    f32 floorY;
+    f32 hitY;
+    s16 model;
+    u8 transformed;
+    s16 i;
+
+    x = arg1->pos.x;
+    y = arg1->pos.y;
+    z = arg1->pos.z;
+    data = arg0->data;
+    floorY = -65536.0f;
+    data->unk53 = -1;
+    for (i = 0; i < D_800EBE28_minigame; i++) {
+        obj = D_800EC1C0_minigame[i];
+        objData = obj->data;
+        if (data->unk00[i] & 1) {
+            continue;
+        }
+        pos.x = x;
+        pos.y = y;
+        pos.z = z;
+        func_800E28BC_minigame(D_800EC240_minigame, D_800EBE30_minigame, &pos, obj);
+        if (objData->unk06 & 4) {
+            if (func_800E2F40_minigame(HmfModelData[obj->model[0]].hmf->unk60, &pos) == 0) {
+                continue;
+            }
+        }
+        if (objData->unk06 & 0x7A) {
+            if (objData->unk06 & 0x50) {
+                if (func_800E30B8_minigame(&pos, objData) == 0) {
+                    continue;
+                }
+            }
+            hitY = objData->unk14;
+            if (obj->trans.x != 0.0f || obj->trans.y != 0.0f || obj->trans.z != 0.0f || obj->rot.x != 0.0f ||
+                obj->rot.y != 0.0f || obj->rot.z != 0.0f) {
+                pos.y = hitY;
+                func_800E2C68_minigame(D_800EC240_minigame, &pos);
+                hitY = pos.y;
+                if (floorY <= hitY && hitY < y + 150.0f) {
+                    floorY = hitY;
+                    data->unk53 = i;
+                    if (normal != NULL) {
+                        tmp.x = 0.0f;
+                        tmp.y = 1.0f;
+                        tmp.z = 0.0f;
+                        func_800E2B58_minigame(D_800EC240_minigame, &tmp);
+                        normal->x = tmp.x;
+                        normal->y = tmp.y;
+                        normal->z = tmp.z;
+                        func_800202FC_main(normal);
+                    }
+                }
+            } else if (floorY <= hitY && hitY < y + 150.0f) {
+                floorY = hitY;
+                data->unk53 = i;
+                if (normal != NULL) {
+                    normal->x = 0.0f;
+                    normal->y = 1.0f;
+                    normal->z = 0.0f;
+                }
+            }
+        } else {
+            model = obj->model[0];
+            points = (Hu3DPoint *)HmfModelData[model].hmf->unk50;
+            func_80021C14_main(model, &D_800EBEB0_minigame, func_800DB704_minigame, &pos);
+            for (quad = func_80022198_main(&D_800EBEB0_minigame); quad != NULL;
+                 quad = func_80022198_main(&D_800EBEB0_minigame)) {
+                transformed = FALSE;
+                if (HmfModelData[model].pos.x != 0.0f || HmfModelData[model].pos.y != 0.0f ||
+                    HmfModelData[model].pos.z != 0.0f || HmfModelData[model].rot.x != 0.0f ||
+                    HmfModelData[model].rot.y != 0.0f || HmfModelData[model].rot.z != 0.0f) {
+                    tmp.x = x;
+                    tmp.y = y + 10.0f;
+                    tmp.z = z;
+                    func_800E2BD4_minigame(D_800EBE30_minigame, &tmp);
+                    dir.x = tmp.x - pos.x;
+                    dir.y = tmp.y - pos.y;
+                    dir.z = tmp.z - pos.z;
+                    func_800202FC_main(&dir);
+                    func_800D8818_minigame(pos.x, pos.y, pos.z, points, quad, &dir, &pos);
+                    func_800E2C68_minigame(D_800EC240_minigame, &pos);
+                    hitY = pos.y;
+                    transformed = TRUE;
+                } else {
+                    hitY = func_800204F4_main(pos.x, pos.y, pos.z, points, quad);
+                }
+                if (floorY <= hitY && hitY < y + 150.0f) {
+                    floorY = hitY;
+                    data->unk53 = i;
+                    if (normal != NULL) {
+                        func_8002038C_main(&points[quad->vtx[1]], &points[quad->vtx[2]], &points[quad->vtx[3]],
+                                           normal);
+                        if (transformed == TRUE) {
+                            tmp.x = normal->x;
+                            tmp.y = normal->y;
+                            tmp.z = normal->z;
+                            func_800E2B58_minigame(D_800EC240_minigame, &tmp);
+                            normal->x = tmp.x;
+                            normal->y = tmp.y;
+                            normal->z = tmp.z;
+                            func_800202FC_main(normal);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    func_800D6E74_minigame(arg0, normal);
+    return floorY;
+}
 
 #ifdef NON_MATCHING
 // Float register allocation differs: target puts x/z in f30/f28 and the 0.0f

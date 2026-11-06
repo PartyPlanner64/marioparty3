@@ -184,6 +184,8 @@ build/src/8A6B0.c.o: OPTFLAGS = -O2 #Could also be -O3?
 build/src/n_synstartvoiceparam.c.o: OPTFLAGS = -O0
 build/src/n_synstartvoiceparam.c.o: NO_STRIP_NOP = 1
 build/src/n_synstartvoiceparam.c.o: CFLAGS += -Wa,-g
+# libkmc fmod was built without the post-call nop strip.
+build/src/libkmc/fmod.c.o: NO_STRIP_NOP = 1
 build/src/2.0L/debug/kdebugserver.c.o: OPTFLAGS = -O3
 build/src/2.0L/debug/readhost.c.o: OPTFLAGS = -O2
 build/src/2.0L/debug/threadprofile.c.o: OPTFLAGS = -O2

@@ -19,7 +19,12 @@ double __fint(f64 x) {
     return v.d;
 }
 
-INCLUDE_ASM("asm/nonmatchings/libkmc/fmod", fmod);
+double fmod(f64 x, f64 y) {
+    if (y == 0.0) {
+        return 0.0;
+    }
+    return x - __fint(x / y) * y;
+}
 
 INCLUDE_ASM("asm/nonmatchings/libkmc/fmod", ceil);
 

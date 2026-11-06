@@ -25,14 +25,14 @@ typedef struct func_800EA6C4_minigame_ObjData {
     /* 0x20 */ s32 unk20;
     /* 0x024 */ func_800EA6C4_minigame_Entry unk24[10];
     /* 0x13C */ func_800EA6C4_minigame_Entry unk13C[10];
-    /* 0x254 */ char unk254[0x2E];
-    /* 0x282 */ s16 unk282;
-    /* 0x284 */ s16 unk284;
-    /* 0x286 */ s16 unk286;
+    /* 0x254 */ s16 sprites[23];
+    /* 0x282 */ u16 unk282;
+    /* 0x284 */ u16 unk284;
+    /* 0x286 */ u16 unk286;
     /* 0x288 */ u16 unk288;
     /* 0x28A */ s16 unk28A;
     /* 0x28C */ s16 unk28C;
-    /* 0x28E */ s16 unk28E;
+    /* 0x28E */ u16 unk28E;
 } func_800EA6C4_minigame_ObjData;
 
 extern s16 D_800EBE00_minigame[4];
@@ -40,6 +40,7 @@ extern s16 D_800EBE00_minigame[4];
 void func_800EAA58_minigame(omObjData *obj);
 void func_800EB3CC_minigame(omObjData *obj);
 void func_800EB5E4_minigame(omObjData *obj);
+void func_800EAE14_minigame(omObjData *arg0);
 
 void func_800EA690_minigame(void) {
     s32 i;
@@ -157,7 +158,68 @@ void func_800EA928_minigame(omObjData *obj, u16 arg1) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BD210", func_800EAA58_minigame);
+void func_800EAA58_minigame(omObjData *obj) {
+    func_800EA6C4_minigame_ObjData *data = obj->data;
+    s16 sprite;
+    s16 model;
+    s16 j;
+    s16 k;
+    s32 i;
+
+    if (D_800EBE00_minigame[0] < 0) {
+        D_800EBE00_minigame[0] = model = func_8000B108_main(0x1C, data->unk282);
+    } else {
+        model = Hu3DModelLink(D_800EBE00_minigame[0]);
+    }
+    obj->model[0] = model;
+    func_8001C814_main(model, 1, 1);
+
+    if (D_800EBE00_minigame[1] < 0) {
+        D_800EBE00_minigame[1] = model = func_8000B0D4_main(data->unk288 ? 9 : 1, data->unk284);
+    } else {
+        model = Hu3DModelLink(D_800EBE00_minigame[1]);
+    }
+    obj->model[1] = model;
+
+    if (D_800EBE00_minigame[2] < 0) {
+        D_800EBE00_minigame[2] = sprite = SprModelRead(12, data->unk286 | 4, 8);
+    } else {
+        sprite = func_80014618_main(D_800EBE00_minigame[2], 8);
+    }
+    data->sprites[2] = sprite;
+    model = D_800CBB60_main[sprite].modelId;
+    obj->model[2] = model;
+    func_8001C258_main(model, 4, 4);
+    func_80014794_main(sprite, 0xC0);
+    func_800147FC_main(sprite, 0xFF, 0xFF, 0xBE);
+    func_8001C2FC_main(model, 0x70000000, 0x70000000);
+    func_800146DC_main(sprite, 4, 0);
+    Hu3DModelScaleSet(model, data->unk28E * 3.0f, data->unk28E * 3.0f, data->unk28E * 3.0f);
+
+    for (j = 3, k = 13, i = 0; i < 10; i++, j++, k++) {
+        if (D_800EBE00_minigame[3] < 0) {
+            D_800EBE00_minigame[3] = sprite = SprModelRead(10, data->unk286, 8);
+        } else {
+            sprite = func_80014618_main(D_800EBE00_minigame[3], 8);
+        }
+        data->sprites[j] = sprite;
+        model = D_800CBB60_main[sprite].modelId;
+        obj->model[j] = model;
+        func_8001C2FC_main(model, 0x70000000, 0x70000000);
+        Hu3DModelScaleSet(model, 2.0f, 2.0f, 2.0f);
+        func_8001C258_main(model, 4, 4);
+
+        sprite = func_80014618_main(D_800EBE00_minigame[3], 8);
+        data->sprites[k] = sprite;
+        model = D_800CBB60_main[sprite].modelId;
+        obj->model[k] = model;
+        func_8001C2FC_main(model, 0x70000000, 0x70000000);
+        Hu3DModelScaleSet(model, 2.0f, 2.0f, 2.0f);
+        func_8001C258_main(model, 4, 4);
+        func_80014794_main(sprite, (u8)(i * 15 + 0x60));
+    }
+    obj->func = func_800EAE14_minigame;
+}
 
 void func_800EAE14_minigame(omObjData *arg0) {
     func_800EA6C4_minigame_ObjData *data = arg0->data;

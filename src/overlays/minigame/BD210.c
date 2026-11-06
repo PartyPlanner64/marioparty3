@@ -2,6 +2,15 @@
 #include "game/mallocblock.h"
 #include "gcc/memory.h"
 
+typedef struct func_800EA6C4_minigame_Entry {
+    /* 0x00 */ Vec pos;
+    /* 0x0C */ f32 unk0C;
+    /* 0x10 */ f32 unk10;
+    /* 0x14 */ f32 unk14;
+    /* 0x18 */ s16 unk18;
+    /* 0x1A */ s16 unk1A;
+} func_800EA6C4_minigame_Entry; // Size 0x1C
+
 // Per-object state allocated in func_800EA6C4_minigame (0x290 bytes), stored
 // in the `data` pointer (0x5C) of the omObjData it belongs to.
 typedef struct func_800EA6C4_minigame_ObjData {
@@ -14,7 +23,9 @@ typedef struct func_800EA6C4_minigame_ObjData {
     /* 0x18 */ s32 unk18;
     /* 0x1C */ s32 unk1C;
     /* 0x20 */ s32 unk20;
-    /* 0x24 */ char unk24[0x25E];
+    /* 0x024 */ func_800EA6C4_minigame_Entry unk24[10];
+    /* 0x13C */ func_800EA6C4_minigame_Entry unk13C[10];
+    /* 0x254 */ char unk254[0x2E];
     /* 0x282 */ s16 unk282;
     /* 0x284 */ s16 unk284;
     /* 0x286 */ s16 unk286;
@@ -116,7 +127,35 @@ s32 func_800EA91C_minigame(omObjData *obj) {
     return data->unk20;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BD210", func_800EA928_minigame);
+void func_800EA928_minigame(omObjData *obj, u16 arg1) {
+    func_800EA6C4_minigame_Entry *entry;
+    s16 model = obj->model[0];
+    s16 i;
+
+    if (model < 0) {
+        return;
+    }
+    switch (arg1) {
+        case 0:
+            Hu3DMotionTimeSet(model, 0.0f);
+            break;
+        case 4:
+            entry = ((func_800EA6C4_minigame_ObjData *)obj->data)->unk24;
+            for (i = 10; i != 0; i--, entry++) {
+                entry->unk18 = 0;
+            }
+            entry = ((func_800EA6C4_minigame_ObjData *)obj->data)->unk13C;
+            for (i = 10; i != 0; i--, entry++) {
+                entry->unk18 = 0;
+            }
+            break;
+    }
+    func_8001C258_main(model, 4, arg1);
+    func_8001C258_main(obj->model[1], 4, arg1);
+    for (i = 2; i < 23; i++) {
+        func_8001C258_main(obj->model[i], 4, 4);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BD210", func_800EAA58_minigame);
 

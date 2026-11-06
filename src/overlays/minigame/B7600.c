@@ -1,10 +1,14 @@
 #include "overlays/minigame.h"
 #include "game/data.h"
+#include "game/gamework_data.h"
 #include "game/hu3d.h"
 #include "game/hmfspr.h"
 #include "variables.h"
 #include "include_asm.h"
 #include "game/util.h"
+
+extern s32 D_800A178C_main[][6];
+extern s32 D_800EB820_minigame[][7];
 
 void func_800E58F8_minigame(omObjData *arg0, s32 arg1, s32 arg2);
 
@@ -14,7 +18,104 @@ s32 func_800E4A80_minigame(omObjData *arg0) {
     return data->unkD8.unk02 & 0x3FFF;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B7600", func_800E4A90_minigame);
+u32 func_800E4A90_minigame(omObjData *arg0) {
+    func_800E1BA8_minigame_ObjData *data = arg0->data;
+    u16 anim;
+    s32 flag;
+
+    if (data->unkD0 == 0xFFFF) {
+        return 1;
+    }
+    anim = func_800E4A80_minigame(arg0);
+    switch (anim) {
+        case 0:
+        case 11:
+        case 24:
+            flag = 2;
+            break;
+        case 16:
+            flag = 0x20000;
+            break;
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+            flag = 4;
+            break;
+        case 25:
+        case 27:
+            flag = 8;
+            break;
+        case 26:
+            flag = 0x10;
+            break;
+        case 6:
+            flag = 0x20;
+            break;
+        case 20:
+            flag = 0x80;
+            break;
+        case 5:
+            flag = 0x40;
+            break;
+        case 7:
+            flag = 0x100;
+            break;
+        case 8:
+            flag = 0x200;
+            break;
+        case 21:
+            flag = 0x10000;
+            break;
+        case 18:
+        case 19:
+        case 28:
+        case 30:
+        case 31:
+        case 33:
+        case 34:
+            flag = 0x8000;
+            break;
+        case 9:
+        case 12:
+        case 29:
+            flag = 0x400;
+            break;
+        case 10:
+        case 23:
+            flag = 0x800;
+            break;
+        case 13:
+        case 14:
+        case 15:
+            flag = 0x1000;
+            break;
+        case 17:
+            flag = 0x2000;
+            break;
+        case 32:
+            flag = 0x4000;
+            break;
+        case 35:
+            flag = 0x40000;
+            break;
+        case 36:
+            flag = 0x80000;
+            break;
+        case 37:
+            flag = 0x100000;
+            break;
+        default:
+            if (anim >= 0x26) {
+                flag = 0x200000;
+            } else {
+                flag = 0;
+            }
+            break;
+    }
+    data->unk5C = flag;
+    return flag;
+}
 
 void func_800E4BA4_minigame(s32 arg0) {
     f32 unk40;
@@ -251,6 +352,46 @@ s16 func_800E5A98_minigame(omObjData *arg0, s32 arg1) {
     return func_80017AD8_main(arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B7600", func_800E5B08_minigame);
+void func_800E5B08_minigame(omObjData *arg0, u16 arg1, s32 arg2, u16 arg3, u16 arg4, s16 arg5) {
+    func_800E1BA8_minigame_ObjData *data;
+    func_800E1BA8_minigame_UnkE8_ObjData *entry;
+    s16 modelId;
+    s32 chr;
+    s32 unk08;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B7600", func_800E5C18_minigame);
+    modelId = func_8000B13C_main(arg2);
+    if (modelId < 0) {
+        return;
+    }
+    data = arg0->data;
+    arg0->motion[arg1] = modelId;
+    entry = &data->unkE8[arg1];
+    entry->unk00 = arg3;
+    entry->unk02 = arg4;
+    chr = GwPlayer[data->unk59].chr;
+    unk08 = D_800EB820_minigame[chr][arg5] | D_800A178C_main[chr][0];
+    entry->unk04 = func_800E5A98_minigame(arg0, unk08);
+    entry->unk08 = unk08;
+}
+
+void func_800E5C18_minigame(omObjData *arg0, u16 arg1, s32 arg2, s32 arg3, u16 arg4, s16 arg5) {
+    func_800E1BA8_minigame_ObjData *data;
+    func_800E1BA8_minigame_UnkE8_ObjData *entry;
+    s16 modelId;
+    s32 chr;
+    s32 unk08;
+
+    modelId = func_8001F1FC_main(DataRead(arg2), 0x18);
+    if (modelId < 0) {
+        return;
+    }
+    data = arg0->data;
+    arg0->motion[arg1] = modelId;
+    entry = &data->unkE8[arg1];
+    entry->unk00 = arg3 | 4;
+    entry->unk02 = arg4;
+    chr = GwPlayer[data->unk59].chr;
+    unk08 = D_800EB820_minigame[chr][arg5] | D_800A178C_main[chr][0];
+    entry->unk04 = func_800E5A98_minigame(arg0, unk08);
+    entry->unk08 = unk08;
+}

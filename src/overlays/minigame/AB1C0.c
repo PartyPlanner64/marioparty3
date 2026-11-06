@@ -1,19 +1,34 @@
 #include "common.h"
 #include "overlays/minigame.h"
 #include "game/hmfcoll.h"
+#include "game/hmfspr.h"
+#include "game/hu3d.h"
 
 typedef struct {
     /* 0x00 */ char unk00[4];
     /* 0x04 */ u8 unk04;
 } func_800D8778_minigame_ObjData;
 
+typedef struct {
+    /* 0x00 */ f32 x;
+    /* 0x04 */ f32 y;
+    /* 0x08 */ f32 z;
+    /* 0x0C */ f32 unk0C;
+} func_800DC7D8_minigame_Arg; // Size 0x10
+
 extern Vec D_800EBDD0_minigame;
 extern f32 D_800EB764_minigame;
 extern f32 D_800EB768_minigame;
 extern f32 D_800EB76C_minigame;
+extern f32 D_800EB770_minigame;
 extern f32 D_800EBE2C_minigame;
 extern f32 D_800EC5D8_minigame;
 extern Vec D_800EC298_minigame[];
+
+void func_800DFCDC_minigame(f32 x, f32 z, f32 scale);
+void func_800E0430_minigame(f32 x, f32 y, f32 z);
+void func_800E048C_minigame(f32 arg0, f32 arg1, f32 arg2);
+void func_800E2CA4_minigame(omObjData *, f32);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800D8640_minigame);
 
@@ -85,11 +100,96 @@ INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DBCF4_minigame);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DC354_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DC7D8_minigame);
+void func_800DC7D8_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1) {
+    func_800E1BA8_minigame_ObjData *data = arg0->data;
+    f32 x = arg1->x;
+    f32 z = arg1->z;
+    f32 dist;
+    Vec dir;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DC8E4_minigame);
+    dist = data->unk9C - (HuSqrtf(x * x + z * z) + arg1->unk0C);
+    if (dist <= 0.0f) {
+        func_800DFCDC_minigame(x, z, dist);
+        dir.x = x;
+        dir.y = 0.0f;
+        dir.z = z;
+        func_800202FC_main(&dir);
+        func_800E048C_minigame(arg1->x * dir.x, arg1->y, arg1->z * dir.z);
+        func_800E0430_minigame(-arg1->x, 0.0f, -arg1->z);
+        D_800EB736_minigame++;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DCA34_minigame);
+void func_800DC8E4_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1, f32 arg2) {
+    func_800E1BA8_minigame_ObjData *data = arg0->data;
+    f32 x = arg1->x;
+    f32 z = arg1->z;
+    f32 dist;
+    Vec dir;
+
+    if (arg1->y < arg2 + data->unk14 && data->unk14 - data->unk98 - arg2 < arg1->y) {
+        dist = HuSqrtf(x * x + z * z) - data->unk9C;
+        if (0.0f <= dist && dist <= arg1->unk0C) {
+            func_800DFCDC_minigame(x, z, arg1->unk0C - dist);
+            dir.x = x;
+            dir.y = 0.0f;
+            dir.z = z;
+            func_800202FC_main(&dir);
+            func_800E048C_minigame(-arg1->x * dir.x, arg1->y, -arg1->z * dir.z);
+            func_800E0430_minigame(arg1->x, 0.0f, arg1->z);
+            D_800EB736_minigame++;
+        }
+    }
+}
+
+s32 func_800DCA34_minigame(func_800DC7D8_minigame_Arg *arg0, func_800E1BA8_minigame_ObjData *data) {
+    f32 x = arg0->x;
+    f32 y = arg0->y;
+    f32 z = arg0->z;
+    f32 dx;
+    f32 dz;
+
+    if (x <= data->unkA0) {
+        dx = data->unkA0 - x;
+        if (z <= data->unkA4) {
+            dz = data->unkA4 - z;
+            if (HuSqrtf(dx * dx + dz * dz) - arg0->unk0C < 0.0f) {
+                func_800E048C_minigame(data->unkA0, y, data->unkA4);
+                func_800E0430_minigame(x - data->unkA0, 0.0f, z - data->unkA4);
+                D_800EB736_minigame++;
+                return 0;
+            }
+        } else if (data->unkAC <= z) {
+            dz = data->unkAC - z;
+            if (HuSqrtf(dx * dx + dz * dz) - arg0->unk0C < 0.0f) {
+                func_800E048C_minigame(data->unkA0, y, data->unkAC);
+                func_800E0430_minigame(x - data->unkA0, 0.0f, z - data->unkAC);
+                D_800EB736_minigame++;
+                return 0;
+            }
+        }
+    } else if (arg0->x >= data->unkA8.f) {
+        dx = data->unkA8.f - x;
+        if (z <= data->unkA4) {
+            dz = data->unkA4 - z;
+            if (HuSqrtf(dx * dx + dz * dz) - arg0->unk0C < 0.0f) {
+                func_800E048C_minigame(data->unkA8.f, y, data->unkA4);
+                func_800E0430_minigame(x - data->unkA8.f, 0.0f, z - data->unkA4);
+                D_800EB736_minigame++;
+                return 0;
+            }
+        } else if (data->unkAC <= z) {
+            dz = data->unkAC - z;
+            if (HuSqrtf(dx * dx + dz * dz) - arg0->unk0C < 0.0f) {
+                func_800E048C_minigame(data->unkA8.f, y, data->unkAC);
+                func_800E0430_minigame(x - data->unkA8.f, 0.0f, z - data->unkAC);
+                D_800EB736_minigame++;
+                return 0;
+            }
+        }
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DCCB0_minigame);
 
@@ -131,9 +231,31 @@ f32 func_800DFD48_minigame(f32 arg0) {
     return arg0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DFD9C_minigame);
+void func_800DFD9C_minigame(omObjData *arg0, f32 x, f32 y, f32 z) {
+    func_800E1BA8_minigame_ObjData *data = arg0->data;
+    s16 temp;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DFE44_minigame);
+    func_800E5690_minigame(arg0, 0x10);
+    temp = data->unk23;
+    func_80014850_main(temp);
+    func_800146DC_main(temp, 4, 4);
+    Hu3DModelPosSet(arg0->model[2], x, y, z);
+    data->unk40 = D_800EB770_minigame;
+    func_800E1810_minigame();
+}
+
+void func_800DFE44_minigame(omObjData *arg0) {
+    func_800E1BA8_minigame_ObjData *data = arg0->data;
+    f32 time;
+
+    time = Hu3DMotionShiftTimeGet(arg0->model[0]);
+    if (time == -1.0f) {
+        time = HmfModelData[arg0->model[0]].motTime;
+    }
+    if (time >= 28.0f && time <= 29.0f) {
+        func_800E2CA4_minigame(arg0, (data->unk40 + D_800EB768_minigame) * data->unkCC);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DFF3C_minigame);
 
@@ -144,7 +266,7 @@ void func_800E0430_minigame(f32 x, f32 y, f32 z) {
     func_800202FC_main(&D_800EC298_minigame[D_800EB736_minigame]);
 }
 
-void func_800E048C_minigame(f32 arg0, f32 arg1, s32 arg2) {
+void func_800E048C_minigame(f32 arg0, f32 arg1, f32 arg2) {
     D_800EBEB8_minigame[D_800EB736_minigame].unk00 = arg0;
     D_800EBEB8_minigame[D_800EB736_minigame].unk04 = arg1;
     D_800EBEB8_minigame[D_800EB736_minigame].unk08 = arg2;

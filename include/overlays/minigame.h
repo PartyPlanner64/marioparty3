@@ -27,7 +27,9 @@ typedef struct {
     /* 0x00C */ f32 unk0C;
     /* 0x010 */ f32 unk10;
     /* 0x014 */ f32 unk14;
-    char unk18[0x1C];
+    /* 0x018 */ char unk18[0xB];
+    /* 0x023 */ u8 unk23;
+    /* 0x024 */ char unk24[0x10];
     /* 0x034 */ f32 unk34;
     /* 0x038 */ f32 unk38;
     /* 0x03C */ f32 unk3C;
@@ -82,7 +84,7 @@ typedef struct {
 typedef struct {
     /* 0x00 */ f32 unk00;
     /* 0x04 */ f32 unk04;
-    /* 0x08 */ s32 unk08;
+    /* 0x08 */ f32 unk08;
 } D_800EBEB8_minigame_Entry; // Size 0xC
 
 typedef struct {
@@ -106,6 +108,7 @@ typedef struct {
 void func_800E18D8_minigame(void);
 void func_800E19F0_minigame(s8);
 void func_800E1804_minigame(void);
+void func_800E1810_minigame(void);
 void func_800E1BA8_minigame(omObjData *, u32, s32, u16, s32, s32);
 void func_800E4E30_minigame(omObjData *);
 void func_800E5638_minigame(func_800E5638_minigame_UnkD8_ObjData *, u16, u16, u16, s16);

@@ -151,6 +151,17 @@ s32 func_800E4510_minigame(omObjData *arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B63A0", func_800E454C_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B63A0", func_800E47D8_minigame);
+void func_800E47D8_minigame(omObjData *arg0, f32 arg1) {
+    func_800E1BA8_minigame_ObjData *data = arg0->data;
+
+    if (data->unk104[4] != NULL && data->unk104[4](arg0, &arg1) == 1) {
+        return;
+    }
+    if (data->unk38 == 1000.0f) {
+        data->unkB0 = (data->unk8C - arg1) / data->unk34;
+    } else if (data->unk38 < 0.0f) {
+        data->unk38 = D_800EB744_minigame * 0.1f;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B63A0", func_800E4890_minigame);

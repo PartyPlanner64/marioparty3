@@ -43,12 +43,14 @@ typedef struct {
 } BA4B0_Work; // Size 0x144
 
 extern BA4B0_Pos D_800EBAA0_minigame[];
+extern u32 D_800EBABC_minigame[];
 extern u8 D_800EBACC_minigame[];
 extern u8 D_800EBAD4_minigame[];
 extern u8 D_800EBADC_minigame[];
 extern u8 D_800EBAE4_minigame[];
 extern u8 D_800EBAEC_minigame[];
 
+s16 func_800E7BCC_minigame(BA4B0_Work *work);
 void func_800E7F60_minigame(void);
 s16 func_800E905C_minigame(s16 arg0);
 
@@ -160,7 +162,42 @@ s16 func_800E7BCC_minigame(BA4B0_Work *work) {
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BA4B0", func_800E7BCC_minigame);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BA4B0", func_800E7E08_minigame);
+s16 func_800E7E08_minigame(s16 page, BA4B0_Work *work) {
+    u8 *values;
+    BA4B0_Elem *elems;
+    BA4B0_Elem *elemsB;
+    s16 alt;
+
+    HuWinHomeClear(work->window);
+    HuWinMesSet(work->window, D_800EBABC_minigame[page], -2, -1);
+    work->unk12E = 1;
+    if (page < 2) {
+        alt = 0;
+        elems = &work->elems[2];
+        if (page == 1) {
+            alt = 1;
+            elems = &work->elems[8];
+        }
+        if (work->unk118 < 0) {
+            values = GwStory.progress.fields.unk3;
+        } else {
+            values = GwStory.unk10[work->unk118];
+        }
+        elemsB = &work->elems[16];
+        return func_800E7A2C_minigame(values, alt, 0, 6, elems, elemsB, work);
+    } else if (page == 2) {
+        if (work->unk118 < 0) {
+            values = &GwStory.progress.fields.unkF;
+        } else {
+            values = &GwStory.unk58[work->unk118];
+        }
+        elems = &work->elems[14];
+        elemsB = &work->elems[22];
+        return func_800E7A2C_minigame(values, 0, 6, 7, elems, elemsB, work);
+    } else {
+        return func_800E7BCC_minigame(work);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BA4B0", func_800E7F60_minigame);
 

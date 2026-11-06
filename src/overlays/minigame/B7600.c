@@ -170,7 +170,62 @@ void func_800E4D9C_minigame(omObjData *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B7600", func_800E4E30_minigame);
+void func_800E4E30_minigame(omObjData *arg0) {
+    s16 model = arg0->model[0];
+    func_800E1BA8_minigame_ObjData *data = arg0->data;
+    func_800E5638_minigame_UnkD8_ObjData *anim;
+    func_800E1BA8_minigame_UnkE8_ObjData *entry;
+    s32 chr;
+    s16 shape;
+    s16 motion;
+    u16 shiftTime;
+    f32 time;
+
+    if (data->unkD6 != 0) {
+        chr = GwPlayer[data->unk59].chr;
+        shape = 0;
+        if (data->unkD2 != 0) {
+            anim = &data->unkD8;
+            if (anim->unk00 & 4) {
+                motion = arg0->motion[anim->unk02] & 0x3FFF;
+                data->unkB8 = Hu3DMotionMotionMaxTimeGet(motion);
+                shiftTime = data->unkB8 / 5.0f;
+            } else {
+                motion = HmfModelData[arg0->motion[anim->unk02] & 0x3FFF].motId;
+                data->unkB8 = D_800CCF58_main[HmfModelData[arg0->motion[anim->unk02] & 0x3FFF].motId].unk02;
+                shiftTime = data->unkB8 / 5.0f;
+            }
+            if (anim->unk00 & 1) {
+                shape = 2;
+            }
+            if (anim->unk06 >= 0) {
+                func_80017954_main(data->unk5A, data->unk5B, chr, anim->unk06);
+            }
+            Hu3DMotionShiftSet(model, motion, 0, shiftTime, shape);
+            HmfModelData[(u16)model].unk54 = anim->unk0C;
+            if (data->unk50 & 0x100) {
+                func_800E4D9C_minigame(arg0);
+            }
+        }
+        data->unkD6 = 0;
+    } else {
+        entry = &data->unkE8[(u16)func_800E4A80_minigame(arg0)];
+        if (entry->unk00 & 1) {
+            return;
+        }
+        time = Hu3DMotionShiftTimeGet(model);
+        if (time == -1.0f) {
+            time = HmfModelData[(u16)model].motTime;
+        }
+        if (data->unkB8 <= time) {
+            data->unkD0++;
+            if (data->unkD2 <= data->unkD0) {
+                data->unkD2 = 0;
+                data->unkD0 = 0xFFFF;
+            }
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B7600", func_800E5138_minigame);
 

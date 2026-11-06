@@ -43,8 +43,8 @@ typedef struct {
     /* 0x057 */ s8 unk57;
     /* 0x058 */ u8 unk58;
     /* 0x059 */ s8 unk59;
-    /* 0x05A */ s8 unk5A;
-    /* 0x05B */ s8 unk5B;
+    /* 0x05A */ u8 unk5A;
+    /* 0x05B */ u8 unk5B;
     /* 0x05C */ s32 unk5C;
     /* 0x060 */ s32 unk60;
     /* 0x064 */ f32 unk64;
@@ -65,7 +65,8 @@ typedef struct {
     /* 0x0AC */ f32 unkAC;
     /* 0x0B0 */ f32 unkB0;
     /* 0x0B4 */ f32 unkB4;
-    /* 0x0B8 */ char unkB8[8];
+    /* 0x0B8 */ f32 unkB8;
+    /* 0x0BC */ char unkBC[4];
     /* 0x0C0 */ s16 unkC0;
     /* 0x0C2 */ char unkC2;
     /* 0x0C3 */ s8 unkC3;

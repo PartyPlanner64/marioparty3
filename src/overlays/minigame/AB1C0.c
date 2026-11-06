@@ -46,6 +46,7 @@ void func_800E0430_minigame(f32 x, f32 y, f32 z);
 void func_800E048C_minigame(f32 arg0, f32 arg1, f32 arg2);
 void func_800E2CA4_minigame(omObjData *, f32);
 void func_800E2C68_minigame(HuMtx4F mtx, Vec *arg1);
+void func_800E2BD4_minigame(HuMtx4F mtx, Vec *arg1);
 
 f32 func_800D8640_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1, f32 arg2) {
     func_800D8640_minigame_ObjData *data = arg0->data;
@@ -281,7 +282,70 @@ INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DB724_minigame);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DBCF4_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DC354_minigame);
+void func_800DC354_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1, Vec *arg2) {
+    s32 i = D_800EB736_minigame;
+    func_800E1BA8_minigame_ObjData *data = arg0->data;
+    f32 minX = data->unkA0 + arg1->unk0C;
+    f32 minZ = data->unkA4 + arg1->unk0C;
+    f32 maxX = data->unkA8.f - arg1->unk0C;
+    f32 maxZ = data->unkAC - arg1->unk0C;
+    f32 half;
+
+    if (arg1->x <= minX) {
+        func_800E048C_minigame(data->unkA0, arg1->y, arg1->z);
+        func_800E0430_minigame(1.0f, 0.0f, 0.0f);
+        D_800EB736_minigame++;
+    }
+    if (maxX <= arg1->x) {
+        func_800E048C_minigame(data->unkA8.f, arg1->y, arg1->z);
+        func_800E0430_minigame(-1.0f, 0.0f, 0.0f);
+        D_800EB736_minigame++;
+    }
+    if (arg1->z <= minZ) {
+        func_800E048C_minigame(arg1->x, arg1->y, data->unkA4);
+        func_800E0430_minigame(0.0f, 0.0f, 1.0f);
+        D_800EB736_minigame++;
+    }
+    if (maxZ <= arg1->z) {
+        func_800E048C_minigame(arg1->x, arg1->y, data->unkAC);
+        func_800E0430_minigame(0.0f, 0.0f, -1.0f);
+        D_800EB736_minigame++;
+    }
+    if (i == D_800EB736_minigame) {
+        half = arg1->unk0C * 0.5f;
+        if (arg1->x <= minX - half) {
+            func_800E048C_minigame(data->unkA0, arg1->y, arg1->z);
+            func_800E0430_minigame(1.0f, 0.0f, 0.0f);
+            D_800EB736_minigame++;
+        }
+        if (maxX + half <= arg1->x) {
+            func_800E048C_minigame(data->unkA8.f, arg1->y, arg1->z);
+            func_800E0430_minigame(-1.0f, 0.0f, 0.0f);
+            D_800EB736_minigame++;
+        }
+        if (arg1->z <= minZ - half) {
+            func_800E048C_minigame(arg1->x, arg1->y, data->unkA4);
+            func_800E0430_minigame(0.0f, 0.0f, 1.0f);
+            D_800EB736_minigame++;
+        }
+        if (maxZ + half <= arg1->z) {
+            func_800E048C_minigame(arg1->x, arg1->y, data->unkAC);
+            func_800E0430_minigame(0.0f, 0.0f, -1.0f);
+            D_800EB736_minigame++;
+        }
+    }
+    // minX/minZ are reused as the offset to each new contact point.
+    while (i < D_800EB736_minigame) {
+        minX = D_800EBEB8_minigame[i].unk00 - arg1->x;
+        minZ = D_800EBEB8_minigame[i].unk08 - arg1->z;
+        func_800DFCDC_minigame(-minX, -minZ, arg1->unk0C - HuSqrtf(minX * minX + minZ * minZ));
+        if (arg0->trans.x != 0.0f || arg0->trans.y != 0.0f || arg0->trans.z != 0.0f || arg0->rot.x != 0.0f ||
+            arg0->rot.y != 0.0f || arg0->rot.z != 0.0f) {
+            func_800E2BD4_minigame(D_800EC240_minigame, (Vec *)&D_800EBEB8_minigame[i]);
+        }
+        i++;
+    }
+}
 
 void func_800DC7D8_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1) {
     func_800E1BA8_minigame_ObjData *data = arg0->data;

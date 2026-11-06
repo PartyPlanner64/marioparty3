@@ -30,6 +30,7 @@ void func_800D7388_minigame(omObjData *arg0, f32 x, f32 y, f32 z, f32 floorY, Ve
 f32 func_800D74AC_minigame(omObjData *arg0, A96F0_Sphere *arg1, Vec *normal);
 void func_800D7AA8_minigame(omObjData *arg0, f32 x, f32 y, f32 z);
 void func_800D7C14_minigame(omObjData *arg0, A96F0_Sphere *arg1);
+void func_800DFCDC_minigame(f32 x, f32 z, f32 scale);
 void func_800E1594_minigame(omObjData *arg0, s32 arg1, s32 arg2, s32 arg3);
 void func_800E1718_minigame(omObjData *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
 void func_800E17F4_minigame(omObjData *arg0, f32 x, f32 y, f32 z);
@@ -196,7 +197,35 @@ void func_800D7388_minigame(omObjData *arg0, f32 x, f32 y, f32 z, f32 floorY, Ve
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/A96F0", func_800D74AC_minigame);
 
+#ifdef NON_MATCHING
+// Float register allocation differs: target puts x/z in f30/f28 and the 0.0f
+// constant in f26, but this allocates 0.0f to f30 and x/z to f28/f26.
+void func_800D7AA8_minigame(omObjData *arg0, f32 x, f32 y, f32 z) {
+    A96F0_ObjData *data = arg0->data;
+    A96F0_ObjData *otherData;
+    omObjData *other;
+    f32 dx;
+    f32 dz;
+    f32 dist;
+    s32 i;
+
+    if ((data->unk52 & 7) != 0) {
+        return;
+    }
+    for (i = 0; i < D_800EC280_minigame; i++) {
+        other = D_800EC598_minigame[i];
+        otherData = other->data;
+        dx = other->trans.x - (x + D_800EBE2C_minigame);
+        dz = other->trans.z - (z + D_800EC5D8_minigame);
+        dist = HuSqrtf(dx * dx + dz * dz) - (data->unk48 + otherData->unk48);
+        if (dist < 0.0f && data->unk38 == 1000.0f && otherData->unk38 == 1000.0f) {
+            func_800DFCDC_minigame(dx, dz, dist);
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/A96F0", func_800D7AA8_minigame);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/minigame/A96F0", func_800D7C14_minigame);
 

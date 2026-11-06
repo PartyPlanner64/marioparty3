@@ -3,6 +3,7 @@
 #include "game/data.h"
 #include "game/esprite.h"
 #include "game/sprite.h"
+#include "math.h"
 
 extern s16 D_800EB91A_minigame;
 extern s32 D_800EB91C_minigame;
@@ -17,6 +18,7 @@ extern u8 D_800CE20A_main;
 extern s16 D_800EBDE4_minigame;
 extern s16 D_800EBDE6_minigame;
 extern s16 D_800EBDE8_minigame[];
+extern f32 D_800EB938_minigame;
 
 void func_800E9C20_minigame(s16 count, u16 length);
 void func_800E9F40_minigame(s16 arg0, s16 x, s16 y, s16 arg3);
@@ -229,7 +231,60 @@ void func_800E6670_minigame(s16 index, s16 time) {
     func_800550F4_main(group, 6, 1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B8A20", func_800E6968_minigame);
+void func_800E6968_minigame(s16 index, s16 time) {
+    s16 group = D_800EBDE8_minigame[index];
+    s16 digit;
+    s16 seconds;
+
+    D_800EB938_minigame += 10.0f;
+    if (D_800EB938_minigame > 180.0f) {
+        D_800EB938_minigame = 180.0f;
+    }
+
+    HuSprScaleSet(group, 0, sindf(D_800EB938_minigame) + 1.0f, sindf(D_800EB938_minigame) + 1.0f);
+    HuSprScaleSet(group, 1, sindf(D_800EB938_minigame) + 1.0f, sindf(D_800EB938_minigame) + 1.0f);
+    HuSprScaleSet(group, 2, sindf(D_800EB938_minigame) + 1.0f, sindf(D_800EB938_minigame) + 1.0f);
+    HuSprScaleSet(group, 3, sindf(D_800EB938_minigame) + 1.0f, sindf(D_800EB938_minigame) + 1.0f);
+    HuSprScaleSet(group, 4, sindf(D_800EB938_minigame) + 1.0f, sindf(D_800EB938_minigame) + 1.0f);
+    HuSprScaleSet(group, 5, sindf(D_800EB938_minigame) + 1.0f, sindf(D_800EB938_minigame) + 1.0f);
+    HuSprScaleSet(group, 6, sindf(D_800EB938_minigame) + 1.0f, sindf(D_800EB938_minigame) + 1.0f);
+
+    HuSprDispOn(group, 0);
+    digit = time / 3600;
+    HuSprBankSet(group, 0, digit, 0);
+    func_800550F4_main(group, 0, 1);
+    time -= digit * 3600;
+
+    HuSprDispOn(group, 1);
+    HuSprBankSet(group, 1, 10, 0);
+    func_800550F4_main(group, 1, 1);
+
+    HuSprDispOn(group, 2);
+    digit = time / 600;
+    HuSprBankSet(group, 2, digit, 0);
+    func_800550F4_main(group, 2, 1);
+    time -= digit * 600;
+
+    seconds = time / 60;
+    digit = seconds;
+    HuSprDispOn(group, 3);
+    HuSprBankSet(group, 3, seconds, 0);
+    func_800550F4_main(group, 3, 1);
+    time = time * 100 / 60 - digit * 100;
+
+    HuSprDispOn(group, 4);
+    HuSprBankSet(group, 4, 11, 0);
+    func_800550F4_main(group, 4, 1);
+
+    HuSprDispOn(group, 5);
+    HuSprBankSet(group, 5, time / 10, 0);
+    func_800550F4_main(group, 5, 1);
+    time %= 10;
+
+    HuSprDispOn(group, 6);
+    HuSprBankSet(group, 6, time, 0);
+    func_800550F4_main(group, 6, 1);
+}
 
 void func_800E6E4C_minigame(s16 arg0) {
     D_800EBDE0_minigame->unk1C = arg0;

@@ -16,7 +16,8 @@ typedef struct {
     /* 0x04 */ u8 unk04;
     /* 0x05 */ char unk05;
     /* 0x06 */ u16 unk06;
-    /* 0x08 */ char unk08[0xC];
+    /* 0x08 */ char unk08[8];
+    /* 0x10 */ f32 unk10;
     /* 0x14 */ f32 unk14;
     /* 0x18 */ char unk18[0x80];
     /* 0x98 */ f32 unk98;
@@ -54,6 +55,7 @@ extern Vec D_800EC28C_minigame[];
 extern Hu3DQuadPool D_800EBEB0_minigame;
 extern s8 D_800EB738_minigame;
 extern f32 D_800EB778_minigame;
+extern f32 D_800EB77C_minigame;
 
 void func_800DFCDC_minigame(f32 x, f32 z, f32 scale);
 void func_800DC354_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1, Vec *arg2);
@@ -87,6 +89,7 @@ void func_800DB628_minigame(omObjData *arg0);
 f32 func_800D9F10_minigame(omObjData *arg0, f32 arg1);
 void func_800E47D8_minigame(omObjData *arg0, f32 arg1);
 void func_800E4890_minigame(omObjData *arg0, f32 x, f32 y, f32 z, f32 groundY, Vec *normal);
+void func_800DDB60_minigame(omObjData *obj, Vec *dir);
 
 f32 func_800D8640_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1, f32 arg2) {
     func_800D8640_minigame_ObjData *data = arg0->data;
@@ -421,7 +424,167 @@ f32 func_800D9028_minigame(omObjData *arg0, f32 x, f32 y, f32 z) {
     return y;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800D972C_minigame);
+f32 func_800D972C_minigame(omObjData *arg0, f32 angle, f32 x, f32 y, f32 z) {
+    s8 idx = -1;
+    func_800E1BA8_minigame_ObjData *data = arg0->data;
+    func_800DC7D8_minigame_Arg pos;
+    Vec floorNormal;
+    Vec normal2;
+    Vec *normal;
+    func_800D8640_minigame_ObjData *objData;
+    func_800D8640_minigame_ObjData *platform;
+    Hu3DPoint *points;
+    Hu3DQuad *quad;
+    f32 speed;
+    f32 mult;
+    f32 dist;
+    f32 newX;
+    f32 newZ;
+    f32 best;
+    f32 groundY;
+    f32 height;
+
+    data->unk53[0] = data->unk53[1] = -1;
+    data->unk8C = 65536.0f;
+    normal = NULL;
+    speed = data->unk40;
+    mult = data->unkB4;
+    if (data->unk50 & 6) {
+        dist = speed * 0.6f * mult;
+    } else {
+        dist = speed * mult;
+    }
+    if (fabs(data->unk90) > 1.0) {
+        D_800EBE2C_minigame += data->unk90;
+    }
+    if (fabs(data->unk98) > 1.0) {
+        D_800EC5D8_minigame += data->unk98;
+    }
+    newX = x + sindf(angle) * dist;
+    newX += D_800EBE2C_minigame;
+    newZ = z + cosdf(angle) * dist;
+    newZ += D_800EC5D8_minigame;
+    groundY = -65536.0f;
+    best = groundY;
+    if (func_800DA768_minigame(arg0, newX, y, newZ) != 2) {
+        func_800DB628_minigame(arg0);
+        speed = data->unk40;
+        mult = data->unkB4;
+        if (data->unk50 & 6) {
+            dist = speed * 0.6f * mult;
+        } else {
+            dist = speed * mult;
+        }
+        newX = x + sindf(angle) * dist;
+        newZ = z + cosdf(angle) * dist;
+        pos.x = newX + D_800EBE2C_minigame;
+        pos.y = y;
+        pos.z = newZ + D_800EC5D8_minigame;
+        pos.unk0C = data->unk48;
+        func_800DD530_minigame(arg0, &pos, 0);
+        func_800DB628_minigame(arg0);
+        pos.x = newX + D_800EBE2C_minigame;
+        pos.y = y;
+        pos.z = newZ + D_800EC5D8_minigame;
+        if (!(data->unk00[D_800EB734_minigame] & 1)) {
+            objData = D_800EC1C0_minigame[D_800EB734_minigame]->data;
+            if (objData->unk06 & 0x7A) {
+                if (func_800E30B8_minigame((Vec *)&pos, objData) == 1) {
+                    height = objData->unk14;
+                    if (best < height && height < y + 150.0f) {
+                        best = height;
+                        idx = D_800EB734_minigame;
+                        if (groundY < best && groundY < y + 35.0f) {
+                            groundY = best;
+                            floorNormal.x = 0.0f;
+                            floorNormal.y = 1.0f;
+                            floorNormal.z = 0.0f;
+                            normal = &floorNormal;
+                        }
+                    }
+                }
+            } else {
+                points = (Hu3DPoint *)HmfModelData[D_800EC1C0_minigame[D_800EB734_minigame]->model[0]].hmf->unk50;
+                func_80021C14_main(D_800EC1C0_minigame[D_800EB734_minigame]->model[0], &D_800EBEB0_minigame,
+                                   func_800DB704_minigame, (Vec *)&pos);
+                for (quad = func_80022198_main(&D_800EBEB0_minigame); quad != NULL;
+                     quad = func_80022198_main(&D_800EBEB0_minigame)) {
+                    height = func_800204F4_main(newX, y, newZ, points, quad);
+                    if (best < height) {
+                        best = height;
+                        idx = D_800EB734_minigame;
+                    }
+                    if (groundY < height && groundY < y + 35.0f) {
+                        groundY = height;
+                        func_8002038C_main(&points[quad->vtx[1]], &points[quad->vtx[2]], &points[quad->vtx[3]],
+                                           &floorNormal);
+                        normal = &floorNormal;
+                    }
+                }
+                if (best == -65536.0f) {
+                    best = -65536.0f;
+                }
+            }
+        }
+        height = func_800D89CC_minigame(arg0, newX + D_800EBE2C_minigame, y, newZ + D_800EC5D8_minigame, &normal2);
+        if (best < height && height < y + 35.0f) {
+            idx = D_800EB738_minigame;
+            best = height;
+        } else {
+            if (height < y + 150.0f && y + 35.0f < height) {
+                best = 65536.0f;
+            }
+            data->unk53[0] = -1;
+        }
+        if (groundY < height && height < y + 35.0f) {
+            groundY = height;
+            normal = &normal2;
+        }
+        if (y - 35.0f < best && best < y + 35.0f) {
+            if (idx != -1) {
+                data->unk53[0] = idx;
+            }
+            y = func_800D9F10_minigame(arg0, best);
+            if (data->unk00[idx] & 8) {
+                func_800E1810_minigame();
+            }
+            data->unk38 = 1000.0f;
+            if (data->unk8C != 65536.0f) {
+                func_800E47D8_minigame(arg0, y);
+            }
+        } else {
+            func_800E5690_minigame(arg0, 6);
+            data->unk38 = D_800EB77C_minigame;
+            data->unk53[0] = -1;
+            func_800E19FC_minigame(data, 13);
+            return 65536.0f;
+        }
+    } else {
+        pos.x = newX + D_800EBE2C_minigame;
+        pos.y = y;
+        pos.z = newZ + D_800EC5D8_minigame;
+        pos.unk0C = data->unk48;
+        func_800DD530_minigame(arg0, &pos, 0);
+    }
+    if (arg0->model[1] != 0) {
+        func_800E4890_minigame(arg0, newX, y, newZ, groundY, normal);
+    }
+    if (data->unk53[0] >= 0) {
+        platform = D_800EC1C0_minigame[data->unk53[0]]->data;
+        data->unk90 = normal->x * platform->unk10;
+        data->unk94 = normal->y;
+        data->unk98 = normal->z * platform->unk10;
+        if (platform->unk06 & 0x400) {
+            func_800DDB60_minigame(arg0, normal);
+            return y;
+        }
+    } else {
+        data->unk90 = data->unk94 = data->unk98 = 0.0f;
+        data->unk9C = data->unkA4 = 0.0f;
+        arg0->rot.x = arg0->rot.z = 0.0f;
+    }
+    return y;
+}
 
 f32 func_800D9F10_minigame(omObjData *arg0, f32 arg1) {
     func_800E1BA8_minigame_ObjData *data = arg0->data;

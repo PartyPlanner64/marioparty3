@@ -4,6 +4,7 @@ extern s16 D_800D1FE0_main;
 extern u16 D_80109AA4_mgenter;
 extern s16 D_80109AA6_mgenter;
 extern s16 D_80109B20_mgenter;
+extern s16 D_80109B22_mgenter;
 extern s16 D_80109B24_mgenter;
 extern s16 D_80109B2A_mgenter;
 extern s16 D_80109B2E_mgenter;
@@ -122,7 +123,71 @@ void func_80108560_mgenter(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     D_80109B20_mgenter = 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgenter/468AC0", func_80108590_mgenter);
+void func_80108590_mgenter(void) {
+    s8 prevState = 0;
+    s16 fading = 0;
+    s16 data1;
+    s16 data2;
+    s16 sprite1;
+    s16 sprite2;
+    s16 alpha;
+    s16 prevAlpha;
+    s16 step;
+
+    D_80109B22_mgenter = 0;
+    D_80109B20_mgenter = 0;
+    data1 = func_8000B838_main(0x140012);
+    data2 = func_8000B838_main(0x140013);
+    sprite1 = espEntry(data1, 0, 1);
+    sprite2 = espEntry(data2, 0, 1);
+    espPriSet(sprite1, 0x4800);
+    espPriSet(sprite2, 0x4800);
+    espPosSet(sprite1, 160, 120);
+    espPosSet(sprite2, 160, 120);
+    espDispOff(sprite1);
+    espDispOff(sprite2);
+    alpha = 0;
+    step = 0;
+    while (TRUE) {
+        HuPrcVSleep();
+        if (prevState != D_80109B22_mgenter) {
+            prevState = D_80109B22_mgenter;
+            fading = 1;
+            if (D_80109B22_mgenter != 0) {
+                step = 63;
+            } else {
+                step = -63;
+            }
+        }
+        if (fading) {
+            prevAlpha = alpha;
+            alpha += step;
+            if (alpha >= 255) {
+                fading = 0;
+                alpha = 255;
+            } else if (alpha <= 0) {
+                fading = 0;
+                alpha = 0;
+            }
+            if (alpha != 0) {
+                if (prevAlpha == 0) {
+                    espDispOn(sprite1);
+                    espDispOn(sprite2);
+                }
+                espTPLvlSet(sprite1, alpha);
+                espTPLvlSet(sprite2, alpha);
+            } else {
+                espDispOff(sprite1);
+                espDispOff(sprite2);
+            }
+        }
+        if (D_80109B20_mgenter != 0) {
+            espPosSet(sprite1, D_80109B34_mgenter, D_80109B38_mgenter);
+            espPosSet(sprite2, D_80109B36_mgenter, D_80109B3A_mgenter);
+            D_80109B20_mgenter = 0;
+        }
+    }
+}
 
 void func_801087C0_mgenter(void) {
     s16 minigameType = D_800A6D40_main[D_80109B2A_mgenter].minigameType;

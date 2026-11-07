@@ -1,8 +1,10 @@
 #include "common.h"
 #include "game/object.h"
+#include "game/audio.h"
 
 extern omObjFunc D_80109330_mgresultduel;
 extern omObjFunc D_80109344_mgresultduel;
+extern s8 D_80109310_mgresultduel[];
 extern s8 D_801092F8_mgresultduel;
 extern s16 D_8010930A_mgresultduel;
 extern s16 D_8010930C_mgresultduel;
@@ -23,6 +25,7 @@ void func_80108318_mgresultduel(omObjData *);
 void func_80108818_mgresultduel(omObjData *);
 void func_80108820_mgresultduel(omObjData *);
 void func_80108D30_mgresultduel(s16, s16, s16);
+void func_80108E18_mgresultduel(void);
 void func_80108E2C_mgresultduel(omObjData *);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F1180", func_80106930_mgresultduel);
@@ -93,7 +96,21 @@ void func_801074DC_mgresultduel(s8 arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F1180", func_8010751C_mgresultduel);
+void func_8010751C_mgresultduel(s8 arg0) {
+    HuPrcSleep(2);
+    if (arg0 == -1) {
+        HuAudFXPanning(PlayerFXPlay(0x28F, D_80109310_mgresultduel[0]), 0x20);
+        HuAudFXPanning(PlayerFXPlay(0x26B, D_80109310_mgresultduel[1]), 0x60);
+        D_80109344_mgresultduel = func_80106BD8_mgresultduel;
+        D_80109330_mgresultduel = func_80107244_mgresultduel;
+    } else {
+        HuAudFXPanning(PlayerFXPlay(0x26B, D_80109310_mgresultduel[0]), 0x20);
+        HuAudFXPanning(PlayerFXPlay(0x28F, D_80109310_mgresultduel[1]), 0x60);
+        D_80109344_mgresultduel = func_80106C3C_mgresultduel;
+        D_80109330_mgresultduel = func_801071E0_mgresultduel;
+    }
+    func_80108E18_mgresultduel();
+}
 
 void func_80107618_mgresultduel(void) {
     HuPrcSleep(2);

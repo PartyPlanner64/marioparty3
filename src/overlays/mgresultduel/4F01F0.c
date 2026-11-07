@@ -144,7 +144,19 @@ void func_80106560_mgresultduel(void) {
     D_80109338_mgresultduel.objFunc = func_80106574_mgresultduel;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80106574_mgresultduel);
+void func_80106574_mgresultduel(omObjData *obj) {
+    Hu3DMotionShiftSet(obj->model[1], HmfModelData[obj->motion[3]].motId, 0, 0x1E, 0);
+    func_8001C814_main(obj->model[1], 2, 0);
+    func_8001C814_main(obj->model[1], 4, 4);
+    func_80106850_mgresultduel(obj, HmfModelData[obj->motion[3]].motId);
+    Hu3DMotionSpeedSet(obj->model[1], 1.0f);
+    while (HmfModelData[obj->model[1]].motTime > 0.0f) {
+        HuPrcVSleep();
+    }
+    Hu3DMotionShiftSet(obj->model[1], HmfModelData[obj->motion[4]].motId, 0, 0x1E, 2);
+    func_80106850_mgresultduel(obj, HmfModelData[obj->motion[4]].motId);
+    D_80109338_mgresultduel.objFunc = func_80106270_mgresultduel;
+}
 
 void func_80106730_mgresultduel(void) {
     D_80109338_mgresultduel.objFunc = func_80106744_mgresultduel;

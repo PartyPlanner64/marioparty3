@@ -56,6 +56,7 @@ extern omObjData *D_8010AFE0_mgresultboard;
 extern s32 D_8010AB00_mgresultboard[3];
 extern s32 D_8010AB0C_mgresultboard;
 extern s16 D_8010AD96_mgresultboard[3];
+extern u8 D_8010AD24_mgresultboard[];
 
 // updates mg star coins on results scene load
 void func_801059A0_mgresultboard(void) {
@@ -587,7 +588,72 @@ void func_80107188_mgresultboard(void) {
     espPosSet(espEntry(func_8000B838_main(0x180009), 0, 0), 0xA0, 0x20);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E6DC0", func_80107234_mgresultboard);
+void func_80107234_mgresultboard(void) {
+    s32 ranks[4];
+    s32 values[2];
+    PlayerResult temp;
+    s32 i;
+    s32 j;
+    s32 rank;
+    s32 place;
+    s32 count;
+
+    for (i = 0; i < 4; i++) {
+        D_8010B048_mgresultboard[i].idx = i;
+        D_8010B048_mgresultboard[i].unk_01 = 0;
+        D_8010B048_mgresultboard[i].unk_03 = 0;
+        D_8010B048_mgresultboard[i].unk_02 = GwPlayer[i].chr;
+        D_8010B048_mgresultboard[i].score = GwPlayer[i].star;
+        D_8010B048_mgresultboard[i].coin = GwPlayer[i].coin;
+        D_8010B048_mgresultboard[i].gameCoin = GwPlayer[i].gameCoin;
+        D_8010B048_mgresultboard[i].gameCoin += GwPlayer[i].bonusCoin;
+        D_8010B048_mgresultboard[i].bonusCoin = GwPlayer[i].bonusCoin;
+    }
+
+    for (i = 0; i < 3; i++) {
+        for (j = i + 1; j < 4; j++) {
+            values[0] = D_8010B048_mgresultboard[i].score * 1000 + D_8010B048_mgresultboard[i].coin;
+            values[1] = D_8010B048_mgresultboard[j].score * 1000 + D_8010B048_mgresultboard[j].coin;
+            if (values[0] < values[1]) {
+                temp = D_8010B048_mgresultboard[i];
+                D_8010B048_mgresultboard[i] = D_8010B048_mgresultboard[j];
+                D_8010B048_mgresultboard[j] = temp;
+            } else if (values[0] == values[1] && D_8010B048_mgresultboard[i].idx > D_8010B048_mgresultboard[j].idx) {
+                temp = D_8010B048_mgresultboard[i];
+                D_8010B048_mgresultboard[i] = D_8010B048_mgresultboard[j];
+                D_8010B048_mgresultboard[j] = temp;
+            }
+        }
+    }
+
+    rank = 0;
+    D_8010B048_mgresultboard[0].unk_01 = 0;
+    D_8010B048_mgresultboard[0].unk_03 = D_8010AD24_mgresultboard[0];
+    for (i = 1; i < 4; i++) {
+        values[0] = D_8010B048_mgresultboard[i - 1].score * 1000 + D_8010B048_mgresultboard[i - 1].coin;
+        values[1] = D_8010B048_mgresultboard[i].score * 1000 + D_8010B048_mgresultboard[i].coin;
+        rank += (values[0] != values[1]);
+        D_8010B048_mgresultboard[i].unk_01 = rank;
+    }
+
+    place = 0;
+    count = 0;
+    for (j = 0; j < 4; j++) {
+        for (i = 0; i < 4; i++) {
+            if (j == D_8010B048_mgresultboard[i].unk_01) {
+                count++;
+                ranks[i] = place;
+            }
+        }
+        place += count;
+        count = 0;
+    }
+
+    for (i = 0; i < 4; i++) {
+        D_8010B048_mgresultboard[i].unk_01 = ranks[i];
+        D_8010B048_mgresultboard[i].unk_03 = D_8010AD24_mgresultboard[ranks[i]];
+    }
+}
 
 void func_80107650_mgresultboard(s32 player) {
     omObjData *obj;

@@ -4,6 +4,9 @@ extern s16 D_800D1FE0_main;
 extern u16 D_80109AA4_mgenter;
 extern s16 D_80109AA6_mgenter;
 extern s16 D_80109B20_mgenter;
+extern s16 D_80109B24_mgenter;
+extern s16 D_80109B2A_mgenter;
+extern s16 D_80109B2E_mgenter;
 extern s16 D_80109B34_mgenter;
 extern s16 D_80109B36_mgenter;
 extern s16 D_80109B38_mgenter;
@@ -12,6 +15,7 @@ extern s16 D_80109B76_mgenter;
 extern s16 D_80109B7C_mgenter;
 extern s16 D_80109B98_mgenter;
 
+void func_80106710_mgenter(u8 *str);
 void func_801089A0_mgenter(omObjData *);
 void func_80109820_mgenter(void);
 
@@ -32,7 +36,35 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgenter/468AC0", func_80105CD8_mgenter);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgenter/468AC0", func_80106294_mgenter);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgenter/468AC0", func_80106568_mgenter);
+void func_80106568_mgenter(void) {
+    GAMEMES gMes;
+    u8 *text;
+    s16 strId;
+    s16 i;
+    f32 y;
+
+    text = func_800364DC_main((void *)(D_80109B2A_mgenter + 0x4700));
+    func_80106710_mgenter(text);
+    strId = func_8003A308_main(&gMes, (char *)text, 0, -1, -1);
+    HuSprPosSet(gMes.strGId[strId], 0, 0, -100);
+    func_800365E8_main(text);
+    D_80109B24_mgenter = -1;
+    if (D_80109B2E_mgenter != 1) {
+        y = 28.0f;
+    } else {
+        y = 44.0f;
+    }
+    while (TRUE) {
+        if (D_80109B24_mgenter == 0) {
+            for (i = 0; i < 11; i++) {
+                HuSprPosSet(gMes.strGId[strId], 0, sindf(i * 9.0f) * 160.0f, y);
+                HuPrcVSleep();
+            }
+            D_80109B24_mgenter = -1;
+        }
+        HuPrcVSleep();
+    }
+}
 
 void func_80106710_mgenter(u8 *str) {
     u8 *dst = str;
@@ -92,7 +124,36 @@ void func_80108560_mgenter(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgenter/468AC0", func_80108590_mgenter);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgenter/468AC0", func_801087C0_mgenter);
+void func_801087C0_mgenter(void) {
+    s16 minigameType = D_800A6D40_main[D_80109B2A_mgenter].minigameType;
+    s16 i;
+
+    if (minigameType == 1 || minigameType == 2) {
+        for (i = 0; i < 4; i++) {
+            if (GwPlayer[i].group >= 2) {
+                break;
+            }
+        }
+        if (i == 4) {
+            return;
+        }
+        if (minigameType == 2) {
+            for (i = 0; i < 4; i++) {
+                if (GwPlayer[i].group != 0) {
+                    GwPlayer[i].group = 1;
+                }
+            }
+        } else {
+            for (i = 0; i < 4; i++) {
+                if (GwPlayer[i].group < 2) {
+                    GwPlayer[i].group = 0;
+                } else {
+                    GwPlayer[i].group = 1;
+                }
+            }
+        }
+    }
+}
 
 void func_80108934_mgenter(omObjData *obj) {
     if ((D_80109AA4_mgenter != 0) || (D_800D530C_main != 0)) {

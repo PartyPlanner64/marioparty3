@@ -256,7 +256,23 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80108820_mgres
 void func_80108D28_mgresultduel(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80108D30_mgresultduel);
+void func_80108D30_mgresultduel(s16 model, s16 anim, s16 animIdx) {
+    HmfAnim *entry;
+
+    if (anim >= 0) {
+        if (animIdx == -1) {
+            func_80033910_main(HmfModelData[model].hmf);
+        } else {
+            func_80033970_main(HmfModelData[model].hmf);
+            entry = &D_800D1714_main[anim];
+            entry->animIdx = animIdx;
+            entry->rot = 0;
+            entry->flags = 0;
+            entry->interp = 0;
+            entry->frame = 0;
+        }
+    }
+}
 
 void func_80108E04_mgresultduel(void) {
     D_80109328_mgresultduel = func_80108820_mgresultduel;

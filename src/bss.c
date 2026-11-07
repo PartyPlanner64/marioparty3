@@ -47,6 +47,7 @@ u16 D_800C9944_main BSS; // saveEncode.c, saveload.c
 void *__osRdb_DbgRead_Buf BSS; // 2.0L/rmon/rmonsio.c
 void *D_800C9950_main[2000] ALIGNED(8) BSS; // mallocblock.c
 f32 D_800CB890_main BSS; // objmain.c, objsysobj.c
+s16 D_800CB894_main BSS; // overlays only
 u32 __osBaseCounter ALIGNED(8) BSS; // 2.0L/io/vimgr.c, 2.0L/os/gettime.c, 2.0L/os/timerintr.c
 void *currFrameBuffer BSS; // graphics.c, wipe.c
 u16 D_800CB8A0_main BSS; // sprman.c

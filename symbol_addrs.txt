@@ -1887,6 +1887,7 @@ D_800CE1CE_main = 0x800CE1CE; //type:s16 size:0x2
 D_800CE1D0_main = 0x800CE1D0; //type:s16 size:0x2
 D_800D1244_main = 0x800D1244; //size:0x8
 D_800C9938_main = 0x800C9938; // type:f32
+D_800CB894_main = 0x800CB894; // type:s16
 
 //weird bug going on with these 2 symbols
 //they must be declared in this order, or D_80105718_shared_board will be used for both symbols

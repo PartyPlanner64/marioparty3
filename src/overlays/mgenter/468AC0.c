@@ -30,6 +30,7 @@ void func_80106294_mgenter(void);
 void func_80106568_mgenter(void);
 void func_80106710_mgenter(u8 *str);
 void func_801079B4_mgenter(void);
+void func_80107E5C_mgenter(s16 winId, s16 value, u8 *buf);
 void func_801087C0_mgenter(void);
 void func_80108934_mgenter(omObjData *obj);
 void func_80109020_mgenter(void);
@@ -278,7 +279,103 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mgenter/468AC0", D_80109AC4_mgenter);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgenter/468AC0", func_80106BD0_mgenter);
 
+#ifdef NON_MATCHING
+// Matches except loop.c hoists the constant 1 (for the D_80109AA4/D_80109AA6
+// stores) into a callee-saved register, using one extra saved register.
+void func_801079B4_mgenter(void) {
+    s16 size[2];
+    u8 buf[16];
+    u16 sprite;
+    s16 i;
+    s16 winId;
+    s16 valueWinId;
+    s16 value;
+    s16 delta;
+    u16 btn;
+
+    D_800A11E6_main = -1;
+    omAddPrcObj(func_80106568_mgenter, 0x3F00, 0x800, 0);
+    sprite = func_801095F4_mgenter();
+    func_801096EC_mgenter(D_800A6D40_main[D_80109B2A_mgenter].flags & 0x7FF);
+    espPosSet(sprite, 0, -100);
+    while (WipeStatGet() != 0) {
+        HuPrcVSleep();
+    }
+    D_80109B24_mgenter = 0;
+    for (i = 0; i < 11; i++) {
+        espPosSet(sprite, sindf(i * 9.0f) * 240.0f - 80.0f, 100);
+        HuPrcVSleep();
+    }
+    HuWinMesMaxSizeGet(1, size, 0x4601);
+    winId = HuWinExCreate(-1, (320 - size[0]) / 2, 180, size[0], size[1], 0);
+    for (i = 0; i < 4; i++) {
+        buf[i] = 0xA0;
+    }
+    buf[i] = '\0';
+    HuWinInsertMesSizeGet((u32)buf, 0);
+    HuWinMesMaxSizeGet(1, size, 0x4602);
+    valueWinId = HuWinExCreate(-1, (320 - size[0]) / 2, 155, size[0], size[1], 0);
+    HuWinMesSpeedSet(winId, 0);
+    HuWinExAnimIn(winId);
+    HuWinMesSet(winId, 0x4601, -1, -1);
+    value = 100;
+    func_80107E5C_mgenter(valueWinId, value, buf);
+    HuWinMesSet(valueWinId, 0x4602, -1, -1);
+    while (HuWinStatGet(valueWinId) != 0) {
+        HuPrcVSleep();
+    }
+    HuWinExAnimIn(valueWinId);
+    while (TRUE) {
+        btn = D_800D0590_main[D_80109B74_mgenter];
+        if (btn & 0x800) {
+            delta = 100;
+        } else {
+            delta = (btn & 0x400) ? -100 : 0;
+        }
+        if (value == 1000 && delta > 0) {
+            value = 100;
+        } else if (value + delta >= 1000) {
+            value = 1000;
+        } else if (value + delta < 100) {
+            value = 1000;
+        } else {
+            value += delta;
+        }
+        if (delta != 0) {
+            func_80107E5C_mgenter(valueWinId, value, buf);
+            HuWinMesSet(valueWinId, 0x4602, -1, -1);
+        }
+        btn = D_800D5558_main[D_80109B74_mgenter];
+        if ((s16)btn & 0x8000) {
+            HuAudFXPlay(2);
+            D_800CB894_main = value;
+            break;
+        }
+        if (btn & 0x4000) {
+            HuAudFXPlay(4);
+            D_80109B7C_mgenter = 0;
+            D_80109AA4_mgenter = 1;
+            D_80109AA6_mgenter = 1;
+            while (TRUE) {
+                HuPrcVSleep();
+            }
+        }
+        HuPrcVSleep();
+    }
+    func_801087C0_mgenter();
+    HuWinKill(winId);
+    HuWinKill(valueWinId);
+    D_80109B7C_mgenter = 2;
+    D_80109B76_mgenter = func_800341C0_main(GwSystem.minigame_index);
+    D_80109B98_mgenter = 0;
+    D_80109AA4_mgenter = 1;
+    while (TRUE) {
+        HuPrcVSleep();
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/mgenter/468AC0", func_801079B4_mgenter);
+#endif
 
 void func_80107E5C_mgenter(s16 winId, s16 value, u8 *buf) {
     s16 i;

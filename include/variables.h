@@ -13,6 +13,7 @@ extern s16 D_800CDD64_main;
 extern u8 D_800CC0C0_main;
 extern s16 D_800D51F8_main;
 extern s16 D_800C9930_main;
+extern s16 D_800CB894_main;
 extern char D_800D5218_main[];
 extern u16 D_800D5558_main[4];
 extern u16 D_800D530C_main;

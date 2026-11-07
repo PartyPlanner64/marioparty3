@@ -15,7 +15,7 @@ typedef struct PlayerResult {
 } PlayerResult; // sizeof 0x0C
 
 typedef struct UnkTemp { // is this just a copy of PlayerResult ?
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ s8 unk_00;
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ s16 unk_04;
     /* 0x06 */ s16 unk_06;

@@ -9,6 +9,7 @@ extern void (*D_8010AFE4_mgresultboard)(omObjData *);
 extern s32 D_8010AE80_mgresultboard[8];
 extern Vec D_8010AC60_mgresultboard[4];
 extern s32 D_8010AAF8_mgresultboard;
+extern f32 D_8010AAF4_mgresultboard;
 
 void func_8010A334_mgresultboard(omObjData *);
 void func_8010A350_mgresultboard(void);
@@ -107,7 +108,68 @@ s32 func_8010A454_mgresultboard(omObjData *arg0, s8 arg1, s8 arg2) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4EB420", func_8010A4A0_mgresultboard);
+void func_8010A4A0_mgresultboard(omObjData *obj) {
+    s16 cur;
+    s16 next;
+    s16 model;
+    s16 temp;
+    f32 time;
+    f32 endTime;
+    s8 i;
+
+    for (i = 0; i < 4; i++) {
+        next = D_8010AFB0_mgresultboard[i].unk_08;
+        cur = D_8010AFB0_mgresultboard[i].unk_06;
+        model = obj->model[cur + 1];
+        time = HmfModelData[model].motTime;
+        endTime = D_800CCF58_main[HmfModelData[model].motId].unk02;
+        switch (D_8010AFB0_mgresultboard[i].unk_00) {
+            case 1:
+                if (cur >= 0) {
+                    func_8001C814_main(model, 1, 0);
+                    func_8001C258_main(obj->model[cur + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DMotionSpeedSet(obj->model[cur + 1], D_8010AAF4_mgresultboard);
+                }
+                if (next >= 0) {
+                    func_8001C814_main(obj->model[next + 1], 1, 0);
+                    func_8001C258_main(obj->model[next + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DMotionSpeedSet(obj->model[next + 1], D_8010AAF4_mgresultboard);
+                }
+                if (D_8010AFB0_mgresultboard[i].unk_04 >= 0) {
+                    if (endTime <= time) {
+                        func_80032FF8_main(D_8010AE80_mgresultboard[next], D_8010AFB0_mgresultboard[i].unk_04);
+                        D_8010AFB0_mgresultboard[i].unk_02 = D_8010AFB0_mgresultboard[i].unk_04;
+                        D_8010AFB0_mgresultboard[i].unk_04 = -1;
+                        if (cur >= 0) {
+                            Hu3DMotionTimeSet(obj->model[cur + 1], 0.0f);
+                        }
+                        if (next >= 0) {
+                            Hu3DMotionTimeSet(obj->model[next + 1], 20.0f);
+                        }
+                        temp = D_8010AFB0_mgresultboard[i].unk_06;
+                        D_8010AFB0_mgresultboard[i].unk_06 = D_8010AFB0_mgresultboard[i].unk_08;
+                        D_8010AFB0_mgresultboard[i].unk_08 = temp;
+                    }
+                    break;
+                }
+                D_8010AFB0_mgresultboard[i].unk_00 = 0;
+            case 0:
+                if (endTime <= time) {
+                    if (next >= 0) {
+                        Hu3DMotionTimeSet(obj->model[next + 1], 20.0f);
+                        func_8001C814_main(obj->model[next + 1], 1, 1);
+                        func_8001C258_main(obj->model[next + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    }
+                    if (cur >= 0) {
+                        func_80032FF8_main(D_8010AE80_mgresultboard[cur], D_8010AFB0_mgresultboard[i].unk_02);
+                        Hu3DMotionTimeSet(obj->model[cur + 1], endTime);
+                        func_8001C814_main(obj->model[cur + 1], 1, 1);
+                    }
+                }
+                break;
+        }
+    }
+}
 
 s32 func_8010A864_mgresultboard(omObjData *arg0, s8 arg1, s8 arg2) {
     if (D_8010AFB0_mgresultboard[arg1].unk_04 >= 0) {

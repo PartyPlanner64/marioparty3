@@ -19,7 +19,11 @@ void func_80106ED0_mgresultbattle(omObjData *);
 void func_80107610_mgresultbattle(omObjData *);
 void func_801075EC_mgresultbattle(void);
 void func_801075F4_mgresultbattle(omObjData *);
+void func_80107B5C_mgresultbattle(f32 arg0, f32 arg1, f32 arg2);
+void func_80107BDC_mgresultbattle(f32 arg0);
+void func_80107C44_mgresultbattle(void);
 void func_80107CA4_mgresultbattle(void);
+void func_801082AC_mgresultbattle(void);
 
 extern ResultBattlePlayerObj D_80108F90_mgresultbattle;
 extern s32 D_801088E0_mgresultbattle[];
@@ -28,6 +32,8 @@ extern omObjData *D_80108F74_mgresultbattle;
 extern omObjFunc D_80108F78_mgresultbattle;
 extern Vec D_801089D0_mgresultbattle[4];
 extern s8 D_80108F8C_mgresultbattle[4];
+extern s32 D_80108F70_mgresultbattle;
+extern const s32 D_801089C0_mgresultbattle[];
 
 void func_80106BA0_mgresultbattle(void) {
     omObjData *obj;
@@ -205,7 +211,96 @@ void func_801075FC_mgresultbattle(void) {
     D_80108F90_mgresultbattle.func = func_80107610_mgresultbattle;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F4980", func_80107610_mgresultbattle);
+void func_80107610_mgresultbattle(omObjData *obj) {
+    s32 weights[4];
+    Vec2f pos;
+    f32 t;
+    f32 angle;
+    f32 rot;
+    s32 count;
+    s32 player;
+    s32 total;
+    s32 r;
+    s32 i;
+
+    player = 3;
+    func_80107C44_mgresultbattle();
+    rot = 0.0f;
+    HuAudFXPlay(0x25B);
+    t = rot;
+    func_80106EA0_mgresultbattle();
+    for (i = 0; i < 60; i++) {
+        angle = t * 2.6666667f + 10.0f;
+        t += 1.0f;
+        pos.x = cosdf(angle) * 750.0f;
+        pos.y = -sindf(angle) * 400.0f;
+        func_80107B5C_mgresultbattle(pos.x + 0.0f, pos.y + 950.0f, 0.0f);
+        func_80107BDC_mgresultbattle(sindf(rot) * 25.0f);
+        rot += 1.5f;
+        if (player >= 0 && pos.x + 0.0f <= D_801089D0_mgresultbattle[player].x) {
+            count = GwPlayer[D_80108F8C_mgresultbattle[player]].gameCoin;
+            if (count > 0) {
+                if (count > 10) {
+                    count = 10;
+                }
+                func_80107260_mgresultbattle(
+                    D_801089D0_mgresultbattle[player].x, pos.y + 950.0f + 0.0f, 0.0f, count,
+                    HmfModelData[D_80108F50_mgresultbattle[player].obj->model[1]].pos.y + 160.0f);
+            }
+            player--;
+        }
+        HuPrcVSleep();
+    }
+
+    rot = 0.0f;
+    if (D_80108F70_mgresultbattle > 0) {
+        HuPrcSleep(30);
+        func_80106EA0_mgresultbattle();
+        total = 0;
+        for (i = 0; i < 4; i++) {
+            weights[i] = D_801089C0_mgresultbattle[GwPlayer[i].bonusCoin];
+            total += weights[i];
+        }
+        r = rand16() % total + 1;
+        total = 0;
+        player = 4;
+        for (i = 0; i < 4; i++) {
+            total += weights[i];
+            if (total >= r) {
+                player = i;
+                break;
+            }
+        }
+        GwPlayer[D_80108F8C_mgresultbattle[player]].gameCoin += D_80108F70_mgresultbattle;
+
+        t = 0.0f;
+        for (i = 0; i < 40; i++) {
+            angle = t * 4.0f + 10.0f;
+            t += 1.0f;
+            pos.x = -cosdf(angle) * 750.0f;
+            pos.y = -sindf(angle) * 400.0f;
+            func_80107B5C_mgresultbattle(pos.x + 0.0f, pos.y + 950.0f, 0.0f);
+            func_80107BDC_mgresultbattle(-sindf(rot) * 25.0f);
+            rot += 1.5f;
+            if (player >= 0 && pos.x + 0.0f >= D_801089D0_mgresultbattle[player].x) {
+                count = D_80108F70_mgresultbattle;
+                if (count > 0) {
+                    if (count > 10) {
+                        count = 10;
+                    }
+                    func_80107260_mgresultbattle(
+                        D_801089D0_mgresultbattle[player].x, pos.y + 950.0f + 0.0f, 0.0f, count,
+                        HmfModelData[D_80108F50_mgresultbattle[player].obj->model[1]].pos.y + 160.0f);
+                }
+                player = -1;
+            }
+            HuPrcVSleep();
+        }
+    }
+    func_80107CA4_mgresultbattle();
+    func_801082AC_mgresultbattle();
+    D_80108F90_mgresultbattle.func = func_801075F4_mgresultbattle;
+}
 
 void func_80107B5C_mgresultbattle(f32 arg0, f32 arg1, f32 arg2) {
     omObjData *itemObj = D_80108F90_mgresultbattle.obj;

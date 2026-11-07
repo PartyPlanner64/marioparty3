@@ -80,9 +80,62 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E9120", func_80108C60_mgre
 void func_8010913C_mgresultboard(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E9120", func_80109144_mgresultboard);
+void func_80109144_mgresultboard(void) {
+    static const s16 D_8010AD58_mgresultboard[4][5] = {
+        { 0, 1, 8, 9, 10 },
+        { 2, 3, 11, 12, 13 },
+        { 4, 5, 14, 15, 16 },
+        { 6, 7, 17, 18, 19 },
+    };
+    s8 i;
+    s8 j;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E9120", func_801092E0_mgresultboard);
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 2; j++) {
+            D_8010AEA8_mgresultboard[i][j].unk_00 = 0;
+            D_8010AEA8_mgresultboard[i][j].unk_02 = 0;
+            D_8010AEA8_mgresultboard[i][j].unk_04 = -1;
+            D_8010AEA8_mgresultboard[i][j].unk_06 = D_8010AD58_mgresultboard[i][j];
+            D_8010AEA8_mgresultboard[i][j].unk_08 = D_8010AD58_mgresultboard[i][j] + 20;
+            D_8010AEA8_mgresultboard[i][j].unk_0A = 0;
+        }
+        for (; j < 5; j++) {
+            D_8010AEA8_mgresultboard[i][j].unk_00 = 0;
+            D_8010AEA8_mgresultboard[i][j].unk_02 = 0;
+            D_8010AEA8_mgresultboard[i][j].unk_04 = -1;
+            D_8010AEA8_mgresultboard[i][j].unk_06 = D_8010AD58_mgresultboard[i][j];
+            D_8010AEA8_mgresultboard[i][j].unk_08 = D_8010AD58_mgresultboard[i][j] + 20;
+            D_8010AEA8_mgresultboard[i][j].unk_0A = 0;
+        }
+    }
+}
+
+s32 func_801092E0_mgresultboard(omObjData *arg0, s8 arg1, s16 arg2) {
+    s16 digits[2];
+    s16 value;
+    s8 i;
+
+    if (D_8010AEA8_mgresultboard[arg1][0].unk_04 >= 0) {
+        return 0;
+    }
+    if (arg2 >= 100) {
+        arg2 = 99;
+    }
+    value = (arg2 < 0) ? 0 : arg2;
+    digits[0] = (value / 10) % 10;
+    digits[1] = value % 10;
+    if (digits[0] == 0) {
+        digits[0] = 11;
+    }
+    for (i = 0; i < 2; i++) {
+        D_8010AEA8_mgresultboard[arg1][i].unk_04 = digits[i];
+        if (D_8010AEA8_mgresultboard[arg1][i].unk_08 >= 0) {
+            func_8001C258_main(arg0->model[D_8010AEA8_mgresultboard[arg1][i].unk_08 + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        }
+        D_8010AEA8_mgresultboard[arg1][i].unk_00 = 1;
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E9120", func_80109498_mgresultboard);
 
@@ -193,5 +246,3 @@ void func_80109F30_mgresultboard(s16 model, s16 anim, s16 animIdx) {
         }
     }
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultboard/4E9120", D_8010AD58_mgresultboard);

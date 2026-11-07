@@ -6,31 +6,9 @@
 #include "game/mapspace.h"
 #include "math.h"
 
-typedef struct {
-    /* 0x00 */ char unk00[4];
-    /* 0x04 */ u8 unk04;
-} func_800D8778_minigame_ObjData;
-
-typedef struct {
-    /* 0x00 */ char unk00[3];
-    /* 0x03 */ u8 unk03;
-    /* 0x04 */ u8 unk04;
-    /* 0x05 */ char unk05;
-    /* 0x06 */ u16 unk06;
-    /* 0x08 */ f32 unk08;
-    /* 0x0C */ f32 unk0C;
-    /* 0x10 */ f32 unk10;
-    /* 0x14 */ f32 unk14;
-    /* 0x18 */ char unk18[0x80];
-    /* 0x98 */ f32 unk98;
-} func_800D8640_minigame_ObjData;
-
 extern Vec D_800EBDD0_minigame;
 extern u8 D_800EB73B_minigame;
-extern f32 D_800EB73C_minigame;
 extern f32 D_800EB740_minigame;
-extern f32 D_800EB744_minigame;
-extern f32 D_800EB748_minigame;
 extern f32 D_800EB74C_minigame;
 extern f32 D_800EB750_minigame;
 extern f32 D_800EB754_minigame;
@@ -41,86 +19,18 @@ extern f32 D_800EB764_minigame;
 extern f32 D_800EB768_minigame;
 extern f32 D_800EB76C_minigame;
 extern f32 D_800EB770_minigame;
-extern f32 D_800EB774_minigame;
-extern f32 D_800EBE2C_minigame;
-extern f32 D_800EC5D8_minigame;
 extern Vec D_800EC298_minigame[];
-extern HuMtx4F D_800EC240_minigame;
-extern HuMtx4F D_800EBE30_minigame;
 extern omObjData *D_800EBE70_minigame[];
 extern s8 D_800EC286_minigame;
 extern u16 D_800EC288_minigame;
 extern u8 D_800EB734_minigame;
 extern Vec D_800EC28C_minigame[];
-extern Hu3DQuadPool D_800EBEB0_minigame;
 extern s8 D_800EB738_minigame;
 extern f32 D_800EB778_minigame;
-extern f32 D_800EB77C_minigame;
 extern s8 D_800EB780_minigame;
 
-void func_800DFCDC_minigame(f32 x, f32 z, f32 scale);
-void func_800DC354_minigame(omObjData *arg0, Hu3DSphere *arg1, Vec *arg2);
-void func_800DCCB0_minigame(omObjData *arg0, Hu3DSphere *arg1, Vec *arg2, f32 arg3);
-void func_800DC7D8_minigame(omObjData *arg0, Hu3DSphere *arg1);
-void func_800DC8E4_minigame(omObjData *arg0, Hu3DSphere *arg1, f32 arg2);
-s32 func_800DB724_minigame(s32 count, s16 *vtx, Hu3DPoint *points, Hu3DSphere *arg3);
-void func_800DD1F4_minigame(omObjData *obj, Vec *pos, f32 arg2);
-void func_800E28BC_minigame(HuMtx4F mtx, HuMtx4F result, Vec *pos, omObjData *obj);
-void func_800E2B58_minigame(HuMtx4F mtx, Vec *arg1);
-s32 func_800E2F40_minigame(HmfModelData_Unk64_Unk60_Struct *obj, Vec *pos);
-s32 func_800E30B8_minigame(Vec *pos, func_800D8640_minigame_ObjData *data);
-s32 func_800DB704_minigame(s32 count, s16 *vtx, Hu3DPoint *points, Vec *pos);
-s32 func_800E2FD8_minigame(HmfModelData_Unk64_Unk60_Struct *obj, Vec *pos, f32 margin);
-void func_800E19FC_minigame(func_800E1BA8_minigame_ObjData *, s32);
-f32 func_800E2ED4_minigame(f32, f32, f32, f32);
-void func_800E0430_minigame(f32 x, f32 y, f32 z);
-void func_800E048C_minigame(f32 arg0, f32 arg1, f32 arg2);
-void func_800E2CA4_minigame(omObjData *, f32);
-void func_800E2C68_minigame(HuMtx4F mtx, Vec *arg1);
-void func_800E2BD4_minigame(HuMtx4F mtx, Vec *arg1);
-s8 func_800DD530_minigame(omObjData *arg0, Hu3DSphere *arg1, f32 arg2);
-s32 func_800E1510_minigame(s8 arg0);
-s32 func_800E2DA4_minigame(omObjData *arg0, omObjData *item);
-void func_800E454C_minigame(omObjData *arg0, omObjData *arg1, f32 x, f32 z, u16 arg4);
-void func_800E4C88_minigame(omObjData *arg0, u8 arg1, f32 x, f32 y, f32 z, f32 rotX, f32 rotY);
-s32 func_800DA768_minigame(omObjData *arg0, f32 x, f32 y, f32 z);
-void func_800DB628_minigame(omObjData *arg0);
-void func_800D81C8_minigame(omObjData *arg0, omObjData *arg1);
-void func_800E317C_minigame(omObjData *arg0, f32 x, f32 z);
-void func_800E34D8_minigame(omObjData *arg0, omObjData *arg1);
-void func_800E1A9C_minigame(func_800E1BA8_minigame_ObjData *arg0, s32 arg1);
-void func_800E561C_minigame(omObjData *, u8);
-f32 func_800D9F10_minigame(omObjData *arg0, f32 arg1);
-void func_800E47D8_minigame(omObjData *arg0, f32 arg1);
-void func_800E4890_minigame(omObjData *arg0, f32 x, f32 y, f32 z, f32 groundY, Vec *normal);
-void func_800DDB60_minigame(omObjData *obj, Vec *dir);
-void func_800DDD70_minigame(omObjData *arg0);
-f32 func_800DFD48_minigame(f32 arg0);
-void func_800DFD9C_minigame(omObjData *arg0, f32 x, f32 y, f32 z);
-s32 func_800E2250_minigame(omObjData *arg0, s16 arg1, s16 arg2);
-void func_800E2308_minigame(s16 *arg0, s16 *arg1);
-void func_800E23E0_minigame(omObjData *arg0);
-s16 func_800E240C_minigame(s16 idx, s16 arg1, s8 x, s8 y);
-void func_800E3820_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1);
-void func_800E38A4_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1);
-void func_800E39CC_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1,
-                            func_800D8640_minigame_ObjData *arg2, s16 arg3, s16 arg4);
-void func_800E3AB8_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1);
-void func_800E3B98_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1,
-                            func_800D8640_minigame_ObjData *arg2, f32 arg3, f32 arg4, f32 arg5);
-void func_800E3CA0_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1,
-                            func_800D8640_minigame_ObjData *arg2, f32 arg3, f32 arg4, f32 arg5);
-void func_800E3D3C_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1);
-void func_800E3E24_minigame(omObjData *arg0, f32 arg1, f32 arg2, f32 arg3);
-void func_800E3F44_minigame(omObjData *arg0, s32 arg1, f32 arg2, f32 arg3, f32 arg4);
-void func_800E3FD8_minigame(omObjData *arg0, f32 x, f32 y, f32 z);
-void func_800E4248_minigame(omObjData *arg0, f32 x, f32 y, f32 z);
-u32 func_800E4A90_minigame(omObjData *arg0);
-void func_800E17D4_minigame(omObjData *arg0, f32 x, f32 y, f32 z);
-void func_800E5138_minigame(omObjData *arg0);
-
 f32 func_800D8640_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1, f32 arg2) {
-    func_800D8640_minigame_ObjData *data = arg0->data;
+    D_800EC1C0_minigame_ObjData *data = arg0->data;
     Vec pos;
     f32 y;
 
@@ -142,7 +52,7 @@ f32 func_800D8640_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1
 }
 
 f32 func_800D8778_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1, f32 arg2, f32 arg3, Vec *arg4) {
-    func_800D8778_minigame_ObjData *data = arg0->data;
+    D_800EC1C0_minigame_ObjData *data = arg0->data;
     Vec unused;
 
     if ((arg2 < arg3 + arg1->unk34) & (arg3 < arg2)) {
@@ -190,7 +100,7 @@ f32 func_800D89CC_minigame(omObjData *arg0, f32 x, f32 y, f32 z, Vec *normal) {
     Vec tmp;
     Vec dir;
     omObjData *obj;
-    func_800D8640_minigame_ObjData *objData;
+    D_800EC1C0_minigame_ObjData *objData;
     Hu3DPoint *points;
     Hu3DQuad *quad;
     f32 best;
@@ -308,7 +218,7 @@ f32 func_800D9028_minigame(omObjData *arg0, f32 x, f32 y, f32 z, f32 prevY) {
     Vec floorNormal;
     Vec normal2;
     Vec *normal;
-    func_800D8640_minigame_ObjData *objData;
+    D_800EC1C0_minigame_ObjData *objData;
     Hu3DPoint *points;
     Hu3DQuad *quad;
     f32 speed;
@@ -460,8 +370,8 @@ f32 func_800D972C_minigame(omObjData *arg0, f32 angle, f32 x, f32 y, f32 z) {
     Vec floorNormal;
     Vec normal2;
     Vec *normal;
-    func_800D8640_minigame_ObjData *objData;
-    func_800D8640_minigame_ObjData *platform;
+    D_800EC1C0_minigame_ObjData *objData;
+    D_800EC1C0_minigame_ObjData *platform;
     Hu3DPoint *points;
     Hu3DQuad *quad;
     f32 speed;
@@ -1470,7 +1380,7 @@ s8 func_800DD530_minigame(omObjData *arg0, Hu3DSphere *arg1, f32 arg2) {
     Hu3DSphere sphere;
     func_800DBCF4_minigame_Arg local;
     omObjData *obj;
-    func_800D8640_minigame_ObjData *objData;
+    D_800EC1C0_minigame_ObjData *objData;
     s16 count;
     s16 i;
 
@@ -1633,7 +1543,7 @@ void func_800DDD94_minigame(omObjData *arg0) {
     s32 avg;
     s16 avgX, avgY;
     omObjData *other;
-    func_800D8640_minigame_ObjData *otherData;
+    D_800EC1C0_minigame_ObjData *otherData;
     s16 turn;
     u16 motion;
     s32 idle;
@@ -1701,7 +1611,7 @@ void func_800DDD94_minigame(omObjData *arg0) {
             y = func_800D9028_minigame(arg0, x, newY, z, y);
             if (data->unk38 == 1000.0f) {
                 other = D_800EC1C0_minigame[data->unk53[0]];
-                if (((func_800D8640_minigame_ObjData *)other->data)->unk03 == 2) {
+                if (((D_800EC1C0_minigame_ObjData *)other->data)->unk03 == 2) {
                     func_800DFD9C_minigame(arg0, x, other->trans.y, z);
                 }
             }
@@ -1790,7 +1700,7 @@ void func_800DDD94_minigame(omObjData *arg0) {
             y = func_800D9028_minigame(arg0, x, newY, z, y);
             if (data->unk38 == 1000.0f) {
                 other = D_800EC1C0_minigame[data->unk53[0]];
-                if (((func_800D8640_minigame_ObjData *)other->data)->unk03 == 2) {
+                if (((D_800EC1C0_minigame_ObjData *)other->data)->unk03 == 2) {
                     func_800DFD9C_minigame(arg0, x, other->trans.y, z);
                 } else if (state & 0x10) {
                     func_800E5690_minigame(arg0, 0x12);
@@ -1842,7 +1752,7 @@ void func_800DDD94_minigame(omObjData *arg0) {
             }
         }
         if (data->unk53[0] >= 0) {
-            accel = ((func_800D8640_minigame_ObjData *)D_800EC1C0_minigame[data->unk53[0]]->data)->unk08;
+            accel = ((D_800EC1C0_minigame_ObjData *)D_800EC1C0_minigame[data->unk53[0]]->data)->unk08;
         } else {
             accel = D_800EB740_minigame;
         }
@@ -1978,7 +1888,7 @@ void func_800DDD94_minigame(omObjData *arg0) {
             y = func_800D9028_minigame(arg0, x, newY, z, y);
             if (data->unk38 == 1000.0f) {
                 other = D_800EC1C0_minigame[data->unk53[0]];
-                if (((func_800D8640_minigame_ObjData *)other->data)->unk03 == 2) {
+                if (((D_800EC1C0_minigame_ObjData *)other->data)->unk03 == 2) {
                     func_800DFD9C_minigame(arg0, x, other->trans.y, z);
                 } else if (abs(stickX) < 8 && abs(stickY) < 8) {
                     data->unk40 = D_800EB770_minigame;
@@ -1998,7 +1908,7 @@ void func_800DDD94_minigame(omObjData *arg0) {
         avgY = avg;
         speed = HuSqrtf(avgX * avgX + avgY * avgY) / D_800EB75C_minigame;
         if (data->unk53[0] >= 0) {
-            func_800D8640_minigame_ObjData *otherData = D_800EC1C0_minigame[data->unk53[0]]->data;
+            D_800EC1C0_minigame_ObjData *otherData = D_800EC1C0_minigame[data->unk53[0]]->data;
 
             if (otherData->unk0C != 0.0f) {
                 data->unk40 += speed / otherData->unk0C;

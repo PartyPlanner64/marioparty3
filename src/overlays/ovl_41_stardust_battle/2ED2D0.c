@@ -89,10 +89,6 @@ extern omObjData *D_80114B18_stardust_battle;
 extern UnkStardustBattleStard *D_80114B5C_stardust_battle;
 extern UnkStardustBattleStars *D_80114B2C_stardust_battle;
 
-extern f32 D_800EB744_minigame;
-extern f32 D_800EB748_minigame;
-extern f32 D_800EB774_minigame;
-
 /* Call sites pass only the object and use the result as a pointer, so this
    can't use the definition's full prototype. */
 u32 func_80111FEC_stardust_battle(); // Unprototyped: called with varying argument counts.

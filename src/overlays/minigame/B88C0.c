@@ -1,4 +1,5 @@
 #include "common.h"
+#include "overlays/minigame.h"
 
 extern u32 D_800EB900_minigame;
 

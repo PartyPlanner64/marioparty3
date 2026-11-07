@@ -14,42 +14,11 @@
 #include "game/pad.h"
 #include "math.h"
 
-// Common header of the per-object data of the minigame objects registered in
-// D_800EC1C0_minigame.
-typedef struct {
-    /* 0x00 */ u8 unk00[4];
-    /* 0x04 */ u8 unk04;
-    /* 0x05 */ u8 unk05;
-    /* 0x06 */ u16 unk06;
-    /* 0x08 */ u8 unk08[0x10];
-    /* 0x18 */ HuMtx4F unk18;
-    /* 0x58 */ HuMtx4F unk58;
-    /* 0x98 */ u8 unk98[4];
-    /* 0x9C */ f32 unk9C;
-    /* 0xA0 */ f32 unkA0;
-    /* 0xA4 */ f32 unkA4;
-    /* 0xA8 */ f32 unkA8;
-    /* 0xAC */ f32 unkAC;
-} D_800EC1C0_minigame_ObjData; // Size >= 0xB0
-
-// EXTERN
-
-void func_800DDD94_minigame(omObjData *);
-void func_800D853C_minigame(omObjData *, omObjData *);
-
-// LOCAL
-
-s32 func_800E2250_minigame(omObjData *arg0, s16 arg1, s16 arg2);
-void func_800E3584_minigame(s16);
-
 extern s32 D_800EB730_minigame;
 extern u8 D_800EB734_minigame;
 extern u8 D_800EB739_minigame;
 extern u8 D_800EB73A_minigame;
-extern f32 D_800EB73C_minigame;
 extern f32 D_800EB740_minigame;
-extern f32 D_800EB744_minigame;
-extern f32 D_800EB748_minigame;
 extern f32 D_800EB74C_minigame;
 extern f32 D_800EB750_minigame;
 extern f32 D_800EB75C_minigame;
@@ -58,10 +27,7 @@ extern f32 D_800EB764_minigame;
 extern f32 D_800EB768_minigame;
 extern f32 D_800EB76C_minigame;
 extern f32 D_800EB770_minigame;
-extern f32 D_800EB774_minigame;
 extern f32 D_800EB778_minigame;
-extern f32 D_800EB77C_minigame;
-extern s32 D_800EBE24_minigame;
 extern s16 D_800EB784_minigame[][14];
 extern s16 D_800EBE10_minigame[];
 extern s32 D_800EB820_minigame[][7];
@@ -721,7 +687,7 @@ void func_800E2C68_minigame(HuMtx4F mtx, Vec *arg1) {
     arg1->y = x * mtx[0][1] + y * mtx[1][1] + z * mtx[2][1] + mtx[3][1];
 }
 
-void func_800E2CA4_minigame(omObjData *arg0) {
+void func_800E2CA4_minigame(omObjData *arg0, f32 arg1) {
     func_800E1BA8_minigame_ObjData *data = arg0->data;
     omObjData *item;
     A96F0_ObjData *itemData;

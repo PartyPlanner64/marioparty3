@@ -1,4 +1,5 @@
 #include "common.h"
+#include "overlays/minigame.h"
 #include "game/mallocblock.h"
 #include "gcc/memory.h"
 
@@ -34,12 +35,6 @@ typedef struct func_800EA6C4_minigame_ObjData {
 } func_800EA6C4_minigame_ObjData;
 
 extern s16 D_800EBE00_minigame[4];
-
-void func_800EAA58_minigame(omObjData *obj);
-void func_800EB3CC_minigame(omObjData *obj);
-void func_800EB5E4_minigame(omObjData *obj);
-void func_800EAE14_minigame(omObjData *arg0);
-s32 func_800EAE7C_minigame(omObjData *obj);
 
 void func_800EA690_minigame(void) {
     s32 i;

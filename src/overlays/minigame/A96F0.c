@@ -8,54 +8,14 @@
 #include "game/mallocblock.h"
 #include "game/util.h"
 
-extern f32 D_800EB720_minigame;
 extern f32 D_800EB724_minigame;
 extern f32 D_800EB728_minigame;
-extern f32 D_800EB72C_minigame;
 extern f32 D_800EB740_minigame;
-extern f32 D_800EB744_minigame;
 extern f32 D_800EB760_minigame;
 extern f32 D_800EB770_minigame;
 extern Vec D_800EBDC0_minigame;
-extern f32 D_800EBE2C_minigame;
-extern f32 D_800EC5D8_minigame;
 extern Vec D_800EC298_minigame[];
 extern u8 D_800EB739_minigame;
-extern HuMtx4F D_800EBE30_minigame;
-extern Hu3DQuadPool D_800EBEB0_minigame;
-extern HuMtx4F D_800EC240_minigame;
-
-f32 func_800D6E14_minigame(omObjData *arg0, f32 x, f32 y, f32 z);
-void func_800D6E74_minigame(omObjData *arg0, Vec *arg1);
-void func_800D6F20_minigame(omObjData *arg0, Vec *arg1);
-f32 func_800D72B0_minigame(omObjData *arg0, Hu3DSphere *arg1);
-void func_800D7388_minigame(omObjData *arg0, f32 x, f32 y, f32 z, f32 floorY, Vec *normal);
-f32 func_800D74AC_minigame(omObjData *arg0, Hu3DSphere *arg1, Vec *normal);
-void func_800D7084_minigame(A96F0_ObjData *arg0);
-void func_800D710C_minigame(omObjData *arg0);
-void func_800D71F0_minigame(omObjData *arg0);
-void func_800D7AA8_minigame(omObjData *arg0, f32 x, f32 y, f32 z);
-void func_800D7C14_minigame(omObjData *arg0, Hu3DSphere *arg1);
-void func_800DFCDC_minigame(f32 x, f32 z, f32 scale);
-void func_800E1594_minigame(omObjData *arg0, s32 arg1, s32 arg2, s32 arg3);
-void func_800D80DC_minigame(omObjData *arg0);
-void func_800D7FA8_minigame(omObjData *arg0);
-void func_800DC354_minigame(omObjData *arg0, Hu3DSphere *arg1, Vec *arg2);
-void func_800DCCB0_minigame(omObjData *arg0, Hu3DSphere *arg1, Vec *arg2, f32 arg3);
-void func_800DC7D8_minigame(omObjData *arg0, Hu3DSphere *arg1);
-void func_800DC8E4_minigame(omObjData *arg0, Hu3DSphere *arg1, f32 arg2);
-void func_800E28BC_minigame(HuMtx4F mtx, HuMtx4F result, Vec *pos, omObjData *obj);
-void func_800E2B58_minigame(HuMtx4F mtx, Vec *arg1);
-void func_800E2BD4_minigame(HuMtx4F mtx, Vec *arg1);
-void func_800E2C68_minigame(HuMtx4F mtx, Vec *arg1);
-s32 func_800E2F40_minigame(HmfModelData_Unk64_Unk60_Struct *obj, Vec *pos);
-s32 func_800E30B8_minigame(Vec *pos, func_800E1BA8_minigame_ObjData *data);
-s32 func_800DB704_minigame(s32 count, s16 *vtx, Hu3DPoint *points, Vec *pos);
-s32 func_800E2FD8_minigame(HmfModelData_Unk64_Unk60_Struct *obj, Vec *pos, f32 margin);
-void func_800E1718_minigame(omObjData *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
-void func_800E17D4_minigame(omObjData *arg0, f32 x, f32 y, f32 z);
-void func_800E17F4_minigame(omObjData *arg0, f32 x, f32 y, f32 z);
-void func_800E3628_minigame(s16 model, Vec *normal);
 
 void func_800D6B70_minigame(omObjData *arg0) {
     A96F0_ObjData *data = arg0->data;
@@ -127,7 +87,7 @@ f32 func_800D6E14_minigame(omObjData *arg0, f32 x, f32 y, f32 z) {
 
 void func_800D6E74_minigame(omObjData *arg0, Vec *arg1) {
     A96F0_ObjData *data = arg0->data;
-    func_800E1BA8_minigame_ObjData *other;
+    D_800EC1C0_minigame_ObjData *other;
 
     if (data->unk53 >= 0 && data->unk38 == 1000.0f) {
         other = D_800EC1C0_minigame[data->unk53]->data;
@@ -198,7 +158,7 @@ void func_800D710C_minigame(omObjData *arg0) {
         if (data->unk84[2] != NULL && data->unk84[2](arg0) == 1) {
             return;
         }
-        temp = ((func_800E1BA8_minigame_ObjData *)D_800EC1C0_minigame[data->unk53]->data)->unk08;
+        temp = ((D_800EC1C0_minigame_ObjData *)D_800EC1C0_minigame[data->unk53]->data)->unk08;
         if (temp != 0.0f) {
             data->unk40 -= temp;
         } else {
@@ -271,7 +231,7 @@ void func_800D7388_minigame(omObjData *arg0, f32 x, f32 y, f32 z, f32 floorY, Ve
 
 f32 func_800D74AC_minigame(omObjData *arg0, Hu3DSphere *arg1, Vec *normal) {
     A96F0_ObjData *data;
-    func_800E1BA8_minigame_ObjData *objData;
+    D_800EC1C0_minigame_ObjData *objData;
     omObjData *obj;
     Hu3DPoint *points;
     Hu3DQuad *quad;
@@ -428,7 +388,7 @@ void func_800D7C14_minigame(omObjData *arg0, Hu3DSphere *arg1) {
     Hu3DSphere sphere;
     func_800DBCF4_minigame_Arg local;
     omObjData *obj;
-    func_800E1BA8_minigame_ObjData *objData;
+    D_800EC1C0_minigame_ObjData *objData;
     s16 count;
     s16 i;
 

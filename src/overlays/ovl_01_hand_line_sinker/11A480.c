@@ -93,7 +93,6 @@ extern s16 D_8010C12C_hand_line_sinker;
 extern u16 D_8010C0EA_hand_line_sinker;
 extern D_80111B50_vine_with_me_Struct D_8010BF00_hand_line_sinker;
 extern const s16 D_8010BFB0_hand_line_sinker[];
-extern s16 D_800EB930_minigame;
 extern f32 D_8010C0E4_hand_line_sinker;
 extern CameraPreset D_8010BF44_hand_line_sinker;
 extern u8 D_8010BF18_hand_line_sinker;

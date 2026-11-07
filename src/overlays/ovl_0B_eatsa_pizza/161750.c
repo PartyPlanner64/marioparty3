@@ -62,12 +62,6 @@ typedef struct {
 
 extern Work *D_80109268_eatsa_pizza[4][2];
 
-void func_800E12EC_minigame(omObjData *arg0, f32 arg1);
-void func_800E1328_minigame(omObjData *arg0, f32 arg1);
-void func_800E1334_minigame(omObjData *arg0, f32 arg1);
-void func_800E1340_minigame(omObjData *arg0, f32 arg1);
-u32 func_800E4A90_minigame(void);
-s32 func_800E2250_minigame(omObjData *arg0, s32 arg1, s32 arg2);
 s32 func_80107E6C_eatsa_pizza(omObjData *object);
 void func_801078C4_eatsa_pizza(omObjData *object);
 void func_80107A64_eatsa_pizza(omObjData *object);
@@ -90,9 +84,6 @@ void func_801084F8_eatsa_pizza(omObjData *object);
 void func_80105C64_eatsa_pizza(HuMtx4F src, HuMtx4F dst);
 void func_80105FF0_eatsa_pizza(void);
 void func_80106504_eatsa_pizza(omObjData *object, s32 arg1, s32 arg2, u16 player, u16 tag);
-void func_800E1490_minigame(s32 arg0);
-
-extern Hu3DQuadPool D_800EBEB0_minigame;
 
 void func_801059A0_eatsa_pizza(void) {
     omObjData *obj;
@@ -373,7 +364,7 @@ void func_8010679C_eatsa_pizza(omObjData *object) {
     data = object->data;
     work = data->unk158;
     currentAngle = data->unk3C;
-    frameStatus = func_800E4A90_minigame();
+    frameStatus = func_800E4A90_minigame(object);
     work->unk20 = (s16)(s32)(work->pos.x + 160.0f);
     work->unk20 >>= 5;
     work->unk22 = (s16)(s32)(work->pos.y + 120.0f);

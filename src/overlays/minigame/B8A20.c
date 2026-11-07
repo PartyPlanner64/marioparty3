@@ -12,7 +12,6 @@ extern s32 D_800EB924_minigame;
 extern u16 D_800EB926_minigame;
 extern s16 D_800EB92A_minigame;
 extern s32 D_800EB92C_minigame;
-extern s16 D_800EB934_minigame;
 extern s32 omovl;
 extern u8 D_800CE20A_main;
 extern s16 D_800EBDE4_minigame;
@@ -20,22 +19,8 @@ extern s16 D_800EBDE6_minigame;
 extern s16 D_800EBDE8_minigame[];
 extern f32 D_800EB938_minigame;
 extern s16 D_800EB92E_minigame;
-extern s16 D_800EB930_minigame;
-extern s16 D_800EB932_minigame;
 extern s32 D_800EB93C_minigame;
 extern s32 D_800EB940_minigame;
-
-void func_800E9C20_minigame(s16 count, u16 length);
-void func_800E9F40_minigame(s16 arg0, s16 x, s16 y, s16 arg3);
-void func_800EA0FC_minigame(s16 arg0, f32 arg1, f32 arg2);
-void func_800EA2A8_minigame(s16 arg0);
-void func_800E6268_minigame(void);
-void func_800E62A8_minigame(void);
-s16 func_800E6300_minigame(s32 x, s32 y);
-s16 func_800E64B8_minigame(s32 x, s32 y);
-void func_800E6670_minigame(s16 index, s16 time);
-void func_800EA178_minigame(s16 arg0, f32 arg1);
-void func_800EA518_minigame(void);
 
 void func_800E5EA0_minigame(D_80111B50_vine_with_me_Struct *arg0) {
     arg0->unk00 = 0;

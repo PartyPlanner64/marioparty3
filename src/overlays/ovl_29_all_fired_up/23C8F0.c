@@ -9,7 +9,6 @@ typedef struct {
 
 extern u8 D_801099C9_all_fired_up;
 extern omObjData *D_80109B00_all_fired_up[];
-extern s16 D_800EB932_minigame;
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_29_all_fired_up/23C8F0", func_801059A0_all_fired_up);
 

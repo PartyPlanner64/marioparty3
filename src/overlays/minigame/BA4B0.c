@@ -73,8 +73,6 @@ extern u8 D_800EBAF4_minigame[];
 extern s16 winPrio;
 
 s16 func_800E7BCC_minigame(BA4B0_Work *work);
-void func_800E7F60_minigame(void);
-s16 func_800E905C_minigame(s16 arg0);
 
 void func_800E7930_minigame(s16 group, s16 member, s16 graphic, s16 prio, s16 x, s16 y) {
     HuSprTPLvlSet(group, member, 256);

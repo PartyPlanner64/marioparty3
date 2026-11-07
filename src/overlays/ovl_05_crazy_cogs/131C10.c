@@ -88,7 +88,6 @@ extern f32 D_8010BA38_crazy_cogs;
 
 extern s32 D_800A178C_main[][6];
 extern s32 D_800A1790_main[][6];
-extern s32 D_800EBE24_minigame;
 extern s16 D_8010B86E_crazy_cogs[8][2];
 extern f32 D_8010B88C_crazy_cogs[3];
 extern s8 D_8010B9A1_crazy_cogs;
@@ -141,10 +140,6 @@ void func_80107AB8_crazy_cogs(void);
 void func_80108EE8_crazy_cogs(void);
 void func_8010A4A4_crazy_cogs(void);
 void func_8010B0F4_crazy_cogs(omObjData *);
-void func_800E1304_minigame(omObjData *, f32);
-void func_800E1310_minigame(omObjData *, f32);
-void func_800E131C_minigame(omObjData *, f32);
-void func_800E1404_minigame(omObjData *, f32, f32);
 void func_8010908C_crazy_cogs(omObjData *);
 void func_8010ABE0_crazy_cogs(omObjData *);
 void func_80109388_crazy_cogs(omObjData *);
@@ -158,7 +153,6 @@ void func_8010A67C_crazy_cogs(omObjData *);
 void func_8010AA10_crazy_cogs(omObjData *);
 void func_8010AE08_crazy_cogs(omObjData *);
 void func_80108B0C_crazy_cogs(omObjData *);
-void func_800DDD94_minigame(omObjData *);
 
 void func_801059A0_crazy_cogs(void) {
     func_8010B6E0_crazy_cogs();

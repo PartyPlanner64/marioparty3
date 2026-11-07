@@ -92,7 +92,6 @@ extern CoconutConkData D_8010B508_coconut_conk[6];
 extern CoconutConkData D_8010B820_coconut_conk[9];
 extern CoconutConkData D_8010BCC4_coconut_conk;
 extern CoconutConkData D_8010BD48_coconut_conk[];
-extern f32 D_800EB73C_minigame;
 extern s16 D_8010B1C0_coconut_conk;
 extern s16 D_8010B1C2_coconut_conk;
 extern u8 D_8010B1C9_coconut_conk[3];
@@ -113,7 +112,6 @@ extern u8 D_8010CBBE_coconut_conk;
 extern s16 D_8010CBC0_coconut_conk;
 extern s32 D_800A178C_main[][6];
 extern s32 D_800A1790_main[][6];
-extern s32 D_800EBE24_minigame;
 
 void func_80105C58_coconut_conk(omObjData *);
 void func_80105C60_coconut_conk(omObjData *);
@@ -136,13 +134,6 @@ void func_80109DEC_coconut_conk(omObjData *);
 void func_8010A55C_coconut_conk(omObjData *);
 void func_8010A668_coconut_conk(omObjData *);
 void func_8010AE04_coconut_conk(void);
-void func_800E149C_minigame(omObjData *, s32, s32);
-void func_800E4C88_minigame(omObjData *object, u8 type, f32 x, f32 y, f32 z, f32 arg5, f32 arg6);
-void func_800DDD94_minigame(omObjData *);
-void func_800E1304_minigame(omObjData *, f32);
-void func_800E1310_minigame(omObjData *, f32);
-void func_800E131C_minigame(omObjData *, f32);
-void func_800E139C_minigame(omObjData *, f32, f32, f32, f32, f32);
 
 void func_801059A0_coconut_conk(void) {
     func_8010AE04_coconut_conk();

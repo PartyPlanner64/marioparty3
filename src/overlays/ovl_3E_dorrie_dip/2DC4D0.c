@@ -78,8 +78,6 @@ extern omObjData *D_8010A238_dorrie_dip;
 
 extern omObjData *D_8010A23C_dorrie_dip;
 
-extern Hu3DQuadPool D_800EBEB0_minigame;
-extern f32 D_800EB774_minigame;
 extern D_80111B50_vine_with_me_Struct D_8010A040_dorrie_dip;
 extern s32 D_8010A1F4_dorrie_dip;
 extern u8 D_8010A1F8_dorrie_dip;
@@ -115,13 +113,9 @@ void func_801079D4_dorrie_dip(omObjData *);
 void func_8010898C_dorrie_dip(omObjData *);
 void func_80108C6C_dorrie_dip(omObjData *);
 void func_801095FC_dorrie_dip(omObjData *);
-void func_800E1490_minigame(u16);
-void func_800E1370_minigame(omObjData *, s32, f32);
 void func_80107EE0_dorrie_dip(omObjData *);
 void func_80109F00_dorrie_dip(void);
 void func_80106BC0_dorrie_dip(void);
-void func_800DDD94_minigame(omObjData *);
-void func_800E149C_minigame(omObjData *, s32, s32);
 void func_8010971C_dorrie_dip(void);
 void func_801064FC_dorrie_dip(void);
 void func_80109E1C_dorrie_dip(s32);

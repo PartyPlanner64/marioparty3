@@ -1,5 +1,6 @@
 #include "common.h"
 #include "overlays/option.h"
+#include "overlays/minigame.h"
 #include "game/vibrator.h"
 #include "game/mallocblock.h"
 #include "game/pad.h"
@@ -136,7 +137,6 @@ extern OptWinEntry D_80115A78_option[0x20];
 extern u8 D_800D09A8_main;
 extern s32 D_801139D0_option;
 
-s16 func_800E905C_minigame(s32);
 s32 func_80113204_option(s32 arg0);
 s32 func_8010FE00_option(void);
 s32 func_80110018_option(void);

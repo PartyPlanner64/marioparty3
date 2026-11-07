@@ -11,9 +11,6 @@ extern s32 D_800A178C_main[][6];
 extern s32 D_800EB820_minigame[][7];
 extern u16 D_800EC288_minigame;
 
-void func_800E58F8_minigame(omObjData *arg0, s32 arg1, s32 arg2);
-void func_800E561C_minigame(omObjData *arg0, u8 arg1);
-
 s32 func_800E4A80_minigame(omObjData *arg0) {
     func_800E1BA8_minigame_ObjData *data = arg0->data;
 

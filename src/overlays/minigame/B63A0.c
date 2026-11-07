@@ -5,25 +5,11 @@
 #include "math.h"
 
 extern u8 D_800EB739_minigame;
-extern f32 D_800EB744_minigame;
 extern f32 D_800EB760_minigame;
 extern f32 D_800EB764_minigame;
 extern f32 D_800EB768_minigame;
 extern f32 D_800EB76C_minigame;
 extern f32 D_800EB770_minigame;
-
-void func_800DFE44_minigame(omObjData *);
-void func_800DFF3C_minigame(omObjData *, f32, f32, f32);
-void func_800E19FC_minigame(func_800E1BA8_minigame_ObjData *, s32);
-void func_800E23E0_minigame(omObjData *);
-void func_800E2CA4_minigame(omObjData *, f32);
-void func_800E2E98_minigame(omObjData *);
-f32 func_800E2ED4_minigame(f32, f32, f32, f32);
-void func_800E3628_minigame(s16, Vec *);
-void func_800E3928_minigame(omObjData *, func_800E1BA8_minigame_ObjData *);
-void func_800E3EA4_minigame(omObjData *, func_800E1BA8_minigame_ObjData *);
-void func_800E4C88_minigame(omObjData *, u8, f32, f32, f32, f32, f32);
-void func_800E561C_minigame(omObjData *, u8);
 
 void func_800E3820_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1) {
     if (arg1->unk50 & 0x40) {
@@ -62,7 +48,8 @@ void func_800E3928_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg
     }
 }
 
-void func_800E39CC_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1, s32 arg2, s16 arg3, s16 arg4) {
+void func_800E39CC_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1, D_800EC1C0_minigame_ObjData *arg2,
+                            s16 arg3, s16 arg4) {
     if (arg1->unk104[3] != NULL && arg1->unk104[3](arg0, arg2) == 1) {
         return;
     }
@@ -93,8 +80,8 @@ void func_800E3AB8_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg
     func_800E19FC_minigame(arg1, 0xA);
 }
 
-void func_800E3B98_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1, s32 arg2, f32 arg3, f32 arg4,
-                            f32 arg5) {
+void func_800E3B98_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1, D_800EC1C0_minigame_ObjData *arg2,
+                            f32 arg3, f32 arg4, f32 arg5) {
     if (arg1->unk104[6] != NULL && arg1->unk104[6](arg0, arg2) == 1) {
         return;
     }
@@ -106,8 +93,8 @@ void func_800E3B98_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg
     omVibrate(arg1->unk59, 10, 0, 10);
 }
 
-void func_800E3CA0_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1, s32 arg2, f32 arg3, f32 arg4,
-                            f32 arg5) {
+void func_800E3CA0_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1, D_800EC1C0_minigame_ObjData *arg2,
+                            f32 arg3, f32 arg4, f32 arg5) {
     if (arg1->unk104[7] != NULL && arg1->unk104[7](arg0, arg2) == 1) {
         return;
     }

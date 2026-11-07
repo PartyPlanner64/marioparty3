@@ -86,7 +86,6 @@ s8 D_8010BE38_hyper_hydrants[][16] = {
 s8 D_8010BE68_hyper_hydrants[2] = { 0, 0 };
 s8 D_8010BE6A_hyper_hydrants = 0;
 
-extern Hu3DQuadPool D_800EBEB0_minigame;
 extern D_80111B50_vine_with_me_Struct D_8010BF60_hyper_hydrants;
 extern omObjData *D_8010BFE8_hyper_hydrants[2][5];
 
@@ -104,19 +103,16 @@ extern u32 D_800A178C_main[][6];
 extern s32 D_800A1790_main[][6];
 extern s8 D_8010BF40_hyper_hydrants;
 extern s16 D_8010C022_hyper_hydrants[2];
-extern s16 D_800EB934_minigame;
 extern Vec D_8010C028_hyper_hydrants[2];
 extern HyperHydrantsChainPoint *D_8010BFB0_hyper_hydrants[2][6];
 
 extern u8 D_800D6A90_main;
-extern s16 D_800EB930_minigame;
 extern s32 D_8010BF48_hyper_hydrants;
 extern s32 D_8010BF4C_hyper_hydrants;
 extern s8 D_8010BFA8_hyper_hydrants;
 extern s8 D_8010BFA9_hyper_hydrants;
 extern s8 D_8010BFAA_hyper_hydrants;
 extern s8 D_8010BFAB_hyper_hydrants;
-extern s16 D_800EB932_minigame;
 extern omObjData *D_8010BFE0_hyper_hydrants[];
 extern s8 D_8010BF46_hyper_hydrants;
 extern s16 D_8010BF8E_hyper_hydrants;
@@ -143,8 +139,6 @@ void func_80106238_hyper_hydrants(omObjData *object);
 void func_8010A68C_hyper_hydrants(omObjData *object);
 void func_8010B658_hyper_hydrants(omObjData *object);
 s16 func_8010BC80_hyper_hydrants(s16 soundId, s16 side, s8 playerSound, s16 player);
-void func_800E1840_minigame(void);
-void func_800E1370_minigame(omObjData *object, s32 arg1, f32 arg2);
 void func_80105EB0_hyper_hydrants(s8 camera);
 void func_8010B8B0_hyper_hydrants(omObjData *object);
 void func_8010B38C_hyper_hydrants(void);
@@ -161,7 +155,6 @@ void func_80109B30_hyper_hydrants(omObjData *object);
 void func_80109E44_hyper_hydrants(omObjData *object);
 void func_8010A458_hyper_hydrants(omObjData *object);
 void func_80109484_hyper_hydrants(omObjData *object);
-void func_800E4C88_minigame(omObjData *object, u8 type, f32 x, f32 y, f32 z, f32 arg5, f32 arg6);
 
 void func_801059A0_hyper_hydrants(void) {
     omObjData *object;

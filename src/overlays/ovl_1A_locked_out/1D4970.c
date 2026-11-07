@@ -86,7 +86,6 @@ extern s16 D_8010A678_locked_out;
 extern s16 D_8010A674_locked_out;
 extern s16 D_8010A67A_locked_out;
 extern D_80111B50_vine_with_me_Struct D_8010A588_locked_out;
-extern Hu3DQuadPool D_800EBEB0_minigame;
 extern s32 D_8010A164_locked_out;
 extern u16 D_8010A168_locked_out;
 extern s32 D_8010A16C_locked_out;
@@ -97,16 +96,6 @@ extern u8 D_8010A174_locked_out;
 extern s32 D_8010A580_locked_out;
 extern s16 D_8010A584_locked_out;
 
-void func_800E12EC_minigame(omObjData *, f32);
-void func_800E1304_minigame(omObjData *, f32);
-void func_800E1310_minigame(omObjData *, f32);
-void func_800E131C_minigame(omObjData *, f32);
-void func_800E1328_minigame(omObjData *, f32);
-void func_800E1334_minigame(omObjData *, f32);
-void func_800E1340_minigame(omObjData *, f32);
-void func_800E139C_minigame(omObjData *, f32, f32, f32, f32, f32);
-void func_800E4C88_minigame(omObjData *, u8, f32, f32, f32, f32, f32);
-
 void func_80105B38_locked_out(omObjData *object);
 void func_80105CB4_locked_out(HuMtx4F, HuMtx4F);
 void func_80106040_locked_out(void);
@@ -116,7 +105,6 @@ void func_8010713C_locked_out(void);
 s32 func_80109D70_locked_out(void);
 f32 func_80109DBC_locked_out(f32 y, f32 x);
 f32 func_80109E34_locked_out(Vec *arg0, Vec *arg1);
-void func_800E1490_minigame(s32 arg0);
 void func_80109110_locked_out(void);
 void func_80109264_locked_out(omObjData *object);
 void func_80109444_locked_out(omObjData *object);
@@ -125,14 +113,10 @@ void func_801064E0_locked_out(omObjData *object);
 void func_80106FBC_locked_out(omObjData *object);
 void func_80107ABC_locked_out(omObjData *object);
 u16 func_80108A90_locked_out(omObjData *object);
-u32 func_800E4A90_minigame(omObjData *);
-void func_800E149C_minigame(omObjData *, s32, s32);
 void func_80109858_locked_out(omObjData *object, u8 isPlayer, u8 canGrab);
 void func_801090FC_locked_out(omObjData *object, func_800E1BA8_minigame_ObjData **data, LockedOutPlayerWork **arg2);
 void func_80109E88_locked_out(s16 model, char *hook, s16 time, Vec *pos);
 void func_80109CDC_locked_out(void);
-void func_800DDD94_minigame(omObjData *);
-void func_800E5138_minigame(omObjData *);
 
 void func_801059A0_locked_out(void) {
     omObjData *obj;

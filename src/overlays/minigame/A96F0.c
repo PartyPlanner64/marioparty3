@@ -589,11 +589,6 @@ void func_800D81C8_minigame(omObjData *arg0, omObjData *arg1) {
     func_8001C258_main(arg1->model[1], 4, 4);
 }
 
-#ifdef NON_MATCHING
-// CSE folds shadowFile | 0x400 into a constant (target keeps it as an ori from
-// a saved register), and the arg1/shadowFile saved registers end up swapped.
-// Placing a loop before the arg1 == 3 block avoids the folding, which hints
-// that the target had a basic block boundary there.
 void func_800D83D8_minigame(omObjData *arg0, s32 arg1) {
     A96F0_ObjData *data;
     s32 shadowFile = 0x299;
@@ -603,6 +598,10 @@ void func_800D83D8_minigame(omObjData *arg0, s32 arg1) {
     memset(arg0->data, 0, sizeof(A96F0_ObjData));
     data = arg0->data;
     data->unkA8 = HuMemAllocTag(4, TAG_OVERLAY);
+    // Empty loop needed to match; keeps shadowFile | 0x400 from being
+    // constant-folded.
+    for (i = 0; i < 0; i++) {
+    }
     if (arg1 == 3) {
         func_800E1594_minigame(arg0, 10, 0x689, 8);
         func_800E1718_minigame(arg0, 3, 12, shadowFile | 0x400, 8);
@@ -628,9 +627,6 @@ void func_800D83D8_minigame(omObjData *arg0, s32 arg1) {
         data->unk84[i] = NULL;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/A96F0", func_800D83D8_minigame);
-#endif
 
 void func_800D853C_minigame(omObjData *arg0, omObjData *arg1) {
     A96F0_ObjData *data1 = arg1->data;

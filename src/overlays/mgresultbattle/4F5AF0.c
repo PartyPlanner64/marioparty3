@@ -17,7 +17,9 @@ void func_80107F94_mgresultbattle(void);
 void func_80107F9C_mgresultbattle(omObjData *obj);
 void func_8010829C_mgresultbattle(omObjData *obj);
 void func_801082A4_mgresultbattle(void);
-void func_801082C0_mgresultbattle(omObjData *);
+void func_801082C0_mgresultbattle(omObjData *obj);
+void func_80106918_mgresultbattle(void);
+void func_80108510_mgresultbattle(s16 group, s16 x, s16 y);
 
 void func_80107D10_mgresultbattle(void) {
     omObjData *obj;
@@ -122,7 +124,37 @@ void func_801082AC_mgresultbattle(void) {
     D_80108F88_mgresultbattle = func_801082C0_mgresultbattle;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F5AF0", func_801082C0_mgresultbattle);
+void func_801082C0_mgresultbattle(omObjData *obj) {
+    Vec pos;
+    Vec2f screen;
+    Vec2f screenPos[4];
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        pos.x = HmfModelData[D_80108F50_mgresultbattle[i].obj->model[1]].pos.x;
+        pos.y = HmfModelData[D_80108F50_mgresultbattle[i].obj->model[1]].pos.y;
+        pos.z = HmfModelData[D_80108F50_mgresultbattle[i].obj->model[1]].pos.z;
+        Hu3D3Dto2D(0, &pos, &screen);
+        espPosSet(D_80108F30_mgresultbattle[i], screen.x, (s32)screen.y - 48);
+        espDispOn(D_80108F30_mgresultbattle[i]);
+        espScaleSet(D_80108F30_mgresultbattle[i], 0.0f, 0.0f);
+        screenPos[i] = screen;
+    }
+
+    for (i = 0; i < 20; i++) {
+        sindf(i * 4.5f);
+        HuPrcVSleep();
+    }
+
+    for (i = 0; i < 4; i++) {
+        espScaleSet(D_80108F30_mgresultbattle[i], 1.0f, 1.0f);
+        func_80108510_mgresultbattle(i, screenPos[i].x, (s32)screenPos[i].y - 48);
+    }
+
+    func_80106918_mgresultbattle();
+    HuPrcSleep(50);
+    D_80108F88_mgresultbattle = func_8010829C_mgresultbattle;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F5AF0", func_80108510_mgresultbattle);
 

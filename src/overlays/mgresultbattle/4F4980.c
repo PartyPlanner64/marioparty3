@@ -14,9 +14,11 @@ typedef struct {
 } ResultBattleEffect; /* size = 0x20 */
 
 void func_80107610_mgresultbattle(omObjData *);
+void func_801075EC_mgresultbattle(void);
+void func_801075F4_mgresultbattle(omObjData *);
+void func_80107CA4_mgresultbattle(void);
 
-extern omObjData *D_80108F90_mgresultbattle;
-extern omObjFunc D_80108F94_mgresultbattle;
+extern ResultBattlePlayerObj D_80108F90_mgresultbattle;
 extern s32 D_801088E0_mgresultbattle[];
 extern ResultBattleEffect D_80108A30_mgresultbattle[40];
 
@@ -58,36 +60,67 @@ void func_80107260_mgresultbattle(f32 x, f32 y, f32 z, s32 count, f32 arg4) {
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultbattle/4F4980", D_801089A0_mgresultbattle);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F4980", func_80107400_mgresultbattle);
+void func_80107400_mgresultbattle(void) {
+    omObjData *itemObj;
+
+    itemObj = omAddObj(20, 4, 8, -1, NULL);
+    D_80108F90_mgresultbattle.obj = itemObj;
+    itemObj->model[1] = func_8000B108_main(0xA00A5, 0x2B9);
+    func_8001C814_main(itemObj->model[1], 2, 2);
+    func_8001C258_main(itemObj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    itemObj->model[2] = func_8000B108_main(0x1B0000, 0x2B9);
+    func_8001C258_main(itemObj->model[2], 0x4000, 0x4000);
+    func_8001C814_main(itemObj->model[2], 2, 2);
+    func_8001C258_main(itemObj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelHookSet(itemObj->model[2], itemObj->model[1], "item_hook");
+    itemObj->model[3] = func_8000B108_main(0x130200, 0x2B9);
+    func_8001C814_main(itemObj->model[3], 2, 2);
+    func_8001C258_main(itemObj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    func_8000B460_main(itemObj, 0, 0xA00A6);
+    func_8000B460_main(itemObj, 1, 0xA00B6);
+    func_8001C5B4_main(itemObj->model[1], itemObj->motion[1]);
+    func_8001C814_main(itemObj->model[1], 2, 2);
+    func_80107CA4_mgresultbattle();
+    itemObj->trans.x = 0.0f;
+    itemObj->trans.y = 0.0f;
+    itemObj->trans.z = 0.0f;
+    Hu3DModelPosSet(itemObj->model[0], itemObj->trans.x, itemObj->trans.y, itemObj->trans.z);
+    omPrcSetDestructor(NULL, func_801075EC_mgresultbattle);
+    D_80108F90_mgresultbattle.func = func_801075F4_mgresultbattle;
+    while (TRUE) {
+        D_80108F90_mgresultbattle.func(itemObj);
+        HuPrcVSleep();
+    }
+}
 
 void func_801075EC_mgresultbattle(void) {
 }
 
-void func_801075F4_mgresultbattle(void) {
+void func_801075F4_mgresultbattle(omObjData *object) {
 }
 
 void func_801075FC_mgresultbattle(void) {
-    D_80108F94_mgresultbattle = func_80107610_mgresultbattle;
+    D_80108F90_mgresultbattle.func = func_80107610_mgresultbattle;
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F4980", func_80107610_mgresultbattle);
 
 void func_80107B5C_mgresultbattle(f32 arg0, f32 arg1, f32 arg2) {
-    omObjData *itemObj = D_80108F90_mgresultbattle;
+    omObjData *itemObj = D_80108F90_mgresultbattle.obj;
 
     Hu3DModelPosSet(itemObj->model[1], arg0, arg1, arg2);
     Hu3DModelPosSet(itemObj->model[3], arg0, arg1, arg2);
 }
 
 void func_80107BDC_mgresultbattle(f32 arg0) {
-    omObjData *itemObj = D_80108F90_mgresultbattle;
+    omObjData *itemObj = D_80108F90_mgresultbattle.obj;
 
     Hu3DModelRotSet(itemObj->model[1], 0.0f, 0.0f, arg0);
     Hu3DModelRotSet(itemObj->model[3], 0.0f, 0.0f, arg0);
 }
 
 void func_80107C44_mgresultbattle(void) {
-    omObjData *itemObj = D_80108F90_mgresultbattle;
+    omObjData *itemObj = D_80108F90_mgresultbattle.obj;
 
     func_8001C258_main(itemObj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     func_8001C258_main(itemObj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
@@ -95,7 +128,7 @@ void func_80107C44_mgresultbattle(void) {
 }
 
 void func_80107CA4_mgresultbattle(void) {
-    omObjData *itemObj = D_80108F90_mgresultbattle;
+    omObjData *itemObj = D_80108F90_mgresultbattle.obj;
 
     func_8001C258_main(itemObj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     func_8001C258_main(itemObj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);

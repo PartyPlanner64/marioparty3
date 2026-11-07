@@ -23,6 +23,7 @@ extern s32 D_80108908_mgresultbattle[];
 extern omObjData *D_80108F90_mgresultbattle;
 extern omObjFunc D_80108F94_mgresultbattle;
 extern s32 D_801088E0_mgresultbattle[];
+extern s8 D_801088D8_mgresultbattle;
 
 void func_801059A0_mgresultbattle(void) {
     s16 var_a0_2;
@@ -95,7 +96,23 @@ void func_80105E0C_mgresultbattle(void) {
     Center.z = -460.0f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80105E64_mgresultbattle);
+void func_80105E64_mgresultbattle(omObjData *obj) {
+    if (D_800D530C_main == 1) {
+        if (D_801088D8_mgresultbattle == 0) {
+            WipeCreateOut(WIPE_TYPE_NORMAL, 20);
+            D_801088D8_mgresultbattle = 1;
+            return;
+        }
+        if (WipeStatGet() == 0) {
+            HuAudSeqFadeOut(30);
+            func_8004AB0C_main(30);
+            GameMesStub();
+            MBBackKill();
+            MBBackClose();
+            omOvlReturnEx(1);
+        }
+    }
+}
 
 void func_80105EF4_mgresultbattle(void) {
     GW_SYSTEM *system = &GwSystem;

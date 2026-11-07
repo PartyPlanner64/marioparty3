@@ -67,13 +67,14 @@ typedef struct {
     /* 0x0B0 */ f32 unkB0;
     /* 0x0B4 */ f32 unkB4;
     /* 0x0B8 */ f32 unkB8;
-    /* 0x0BC */ char unkBC[2];
+    /* 0x0BC */ u16 unkBC;
     /* 0x0BE */ u16 unkBE;
-    /* 0x0C0 */ s16 unkC0;
+    /* 0x0C0 */ u16 unkC0;
     /* 0x0C2 */ u8 unkC2;
     /* 0x0C3 */ s8 unkC3;
     /* 0x0C4 */ s8 unkC4;
-    /* 0x0C5 */ char unkC5[3];
+    /* 0x0C5 */ s8 unkC5;
+    /* 0x0C6 */ s16 unkC6;
     /* 0x0C8 */ omObjData *unkC8; // Held item object
     /* 0x0CC */ f32 unkCC;
     /* 0x0D0 */ u16 unkD0;

@@ -12,11 +12,13 @@ typedef struct {
 } func_800D8778_minigame_ObjData;
 
 typedef struct {
-    /* 0x00 */ char unk00[4];
+    /* 0x00 */ char unk00[3];
+    /* 0x03 */ u8 unk03;
     /* 0x04 */ u8 unk04;
     /* 0x05 */ char unk05;
     /* 0x06 */ u16 unk06;
-    /* 0x08 */ char unk08[8];
+    /* 0x08 */ f32 unk08;
+    /* 0x0C */ f32 unk0C;
     /* 0x10 */ f32 unk10;
     /* 0x14 */ f32 unk14;
     /* 0x18 */ char unk18[0x80];
@@ -52,6 +54,7 @@ extern f32 D_800EB764_minigame;
 extern f32 D_800EB768_minigame;
 extern f32 D_800EB76C_minigame;
 extern f32 D_800EB770_minigame;
+extern f32 D_800EB774_minigame;
 extern u8 D_800EB735_minigame;
 extern f32 D_800EBE2C_minigame;
 extern f32 D_800EC5D8_minigame;
@@ -107,6 +110,30 @@ f32 func_800D9F10_minigame(omObjData *arg0, f32 arg1);
 void func_800E47D8_minigame(omObjData *arg0, f32 arg1);
 void func_800E4890_minigame(omObjData *arg0, f32 x, f32 y, f32 z, f32 groundY, Vec *normal);
 void func_800DDB60_minigame(omObjData *obj, Vec *dir);
+void func_800DDD70_minigame(omObjData *arg0);
+f32 func_800DFD48_minigame(f32 arg0);
+void func_800DFD9C_minigame(omObjData *arg0, f32 x, f32 y, f32 z);
+s32 func_800E2250_minigame(omObjData *arg0, s16 arg1, s16 arg2);
+void func_800E2308_minigame(s16 *arg0, s16 *arg1);
+void func_800E23E0_minigame(omObjData *arg0);
+s16 func_800E240C_minigame(s16 idx, s16 arg1, s8 x, s8 y);
+void func_800E3820_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1);
+void func_800E38A4_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1);
+void func_800E39CC_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1,
+                            func_800D8640_minigame_ObjData *arg2, s16 arg3, s16 arg4);
+void func_800E3AB8_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1);
+void func_800E3B98_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1,
+                            func_800D8640_minigame_ObjData *arg2, f32 arg3, f32 arg4, f32 arg5);
+void func_800E3CA0_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1,
+                            func_800D8640_minigame_ObjData *arg2, f32 arg3, f32 arg4, f32 arg5);
+void func_800E3D3C_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1);
+void func_800E3E24_minigame(omObjData *arg0, f32 arg1, f32 arg2, f32 arg3);
+void func_800E3F44_minigame(omObjData *arg0, s32 arg1, f32 arg2, f32 arg3, f32 arg4);
+void func_800E3FD8_minigame(omObjData *arg0, f32 x, f32 y, f32 z);
+void func_800E4248_minigame(omObjData *arg0, f32 x, f32 y, f32 z);
+u32 func_800E4A90_minigame(omObjData *arg0);
+void func_800E17D4_minigame(omObjData *arg0, f32 x, f32 y, f32 z);
+void func_800E5138_minigame(omObjData *arg0);
 
 f32 func_800D8640_minigame(omObjData *arg0, func_800E1BA8_minigame_ObjData *arg1, f32 arg2) {
     func_800D8640_minigame_ObjData *data = arg0->data;
@@ -290,7 +317,8 @@ f32 func_800D89CC_minigame(omObjData *arg0, f32 x, f32 y, f32 z, Vec *normal) {
     return best;
 }
 
-f32 func_800D9028_minigame(omObjData *arg0, f32 x, f32 y, f32 z) {
+// prevY is unused, but callers pass it on the stack.
+f32 func_800D9028_minigame(omObjData *arg0, f32 x, f32 y, f32 z, f32 prevY) {
     func_800E1BA8_minigame_ObjData *data = arg0->data;
     func_800DC7D8_minigame_Arg pos;
     Vec floorNormal;
@@ -1602,7 +1630,590 @@ void func_800DDD70_minigame(omObjData *arg0) {
     D_800EBDD0_minigame.z = arg0->trans.z;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/AB1C0", func_800DDD94_minigame);
+void func_800DDD94_minigame(omObjData *arg0) {
+    func_800E1BA8_minigame_ObjData *data = arg0->data;
+    s8 pad = data->unk57;
+    f32 speed = 0.0f;
+    f32 x, y, z;
+    s16 stickX, stickY;
+    u16 held;
+    u16 pressed;
+    u32 state;
+    s16 model;
+    f32 prevVy;
+    f32 newY;
+    f32 accel;
+    f32 angle;
+    f32 dx, dz;
+    f32 px;
+    s32 avg;
+    s16 avgX, avgY;
+    omObjData *other;
+    func_800D8640_minigame_ObjData *otherData;
+    s16 turn;
+    u16 motion;
+    s32 idle;
+
+    x = arg0->trans.x;
+    y = arg0->trans.y;
+    z = arg0->trans.z;
+    func_800DDD70_minigame(arg0);
+    model = arg0->model[0];
+    prevVy = data->unk38;
+    D_800EBE2C_minigame = D_800EC5D8_minigame = speed;
+    D_800EC288_minigame = 0;
+    D_800EC286_minigame = data->unk53[2] = -1;
+    if (data->unk104[0] != NULL) {
+        data->unk104[0](arg0);
+    }
+    if (func_800E6E8C_minigame() == 2 && pad >= 0 && !(data->unk50 & 1)) {
+        stickX = D_800CBB6E_main[pad];
+        stickY = D_800D20A1_main[pad];
+        if (stickX > 60) {
+            stickX = 60;
+        }
+        if (stickY > 60) {
+            stickY = 60;
+        }
+        if (stickX < -60) {
+            stickX = -60;
+        }
+        if (stickY < -60) {
+            stickY = -60;
+        }
+        func_800E2308_minigame(&stickX, &stickY);
+        held = 0;
+        if (!(data->unk50 & 6)) {
+            pressed = D_800D5558_main[pad];
+            held = D_800CDA7C_main[pad];
+        } else {
+            pressed = 0;
+        }
+    } else {
+        stickY = 0;
+        stickX = 0;
+        held = 0;
+        pressed = 0;
+    }
+    state = func_800E4A90_minigame(arg0);
+    if (state & 1) {
+        idle = 1;
+        if (data->unk38 == 1000.0f) {
+            if (func_800D972C_minigame(arg0, data->unk3C, x, y, z) != 65536.0f && (pressed & 0x8000)) {
+                func_800E3820_minigame(arg0, data);
+                idle = 0;
+            }
+        } else {
+            f32 vy = data->unk38;
+            if (vy > D_800EB774_minigame) {
+                vy = D_800EB774_minigame;
+            }
+            newY = y + vy * vy * (data->unk38 >= 0.0f ? -35.0f : 35.0f);
+            data->unk38 += D_800EB748_minigame;
+            if (func_800E5690_minigame(arg0, 6) == 1) {
+                func_800E19FC_minigame(data, 3);
+                idle = 0;
+            }
+            y = func_800D9028_minigame(arg0, x, newY, z, y);
+            if (data->unk38 == 1000.0f) {
+                other = D_800EC1C0_minigame[data->unk53[0]];
+                if (((func_800D8640_minigame_ObjData *)other->data)->unk03 == 2) {
+                    func_800DFD9C_minigame(arg0, x, other->trans.y, z);
+                }
+            }
+        }
+        if (idle == 1) {
+            func_800E5690_minigame(arg0, 0);
+        }
+        data->unkC6 = 0;
+    } else if (state & 0x100000) {
+        data->unkC0--;
+        if (data->unkC0 == 0) {
+            func_800E5690_minigame(arg0, 0x13);
+        }
+        if (data->unkC0 - 52 < 0) {
+            data->unk40 = D_800EB770_minigame;
+            arg0->rot.y = 0.0f;
+        } else {
+            arg0->rot.y = func_800202A8_main(data->unkC0 * 45.0f);
+            if (data->unk40 < D_800EB770_minigame) {
+                data->unk40 += D_800EB740_minigame * 0.2f;
+                if (D_800EB770_minigame <= data->unk40) {
+                    data->unk40 = D_800EB770_minigame;
+                }
+            } else if (D_800EB770_minigame <= data->unk40) {
+                data->unk40 += -D_800EB740_minigame * 0.2f;
+                if (data->unk40 <= D_800EB770_minigame) {
+                    data->unk40 = D_800EB770_minigame;
+                }
+            }
+        }
+        newY = func_800D972C_minigame(arg0, data->unk3C, x, y, z);
+        if (newY != 65536.0f) {
+            y = newY;
+        }
+    } else if (state & 0x18C18) {
+        f32 vy;
+
+        if (state & 0x10000) {
+            if (pressed & 0x8000) {
+                func_800E3820_minigame(arg0, data);
+            }
+        } else if (data->unk40 == D_800EB770_minigame) {
+            if (state & 0x400) {
+                func_800E5690_minigame(arg0, 0x21);
+            } else if (state & 0x10) {
+                func_800E5690_minigame(arg0, 0x12);
+            } else if (state & 0x800) {
+                func_800E5690_minigame(arg0, 0x22);
+            } else if (state & 8) {
+                func_800E5690_minigame(arg0, 0x13);
+            } else {
+                func_800E5690_minigame(arg0, 0);
+            }
+        } else if (data->unk40 < D_800EB770_minigame) {
+            data->unk40 += D_800EB740_minigame * 2.0f;
+            if (D_800EB770_minigame <= data->unk40) {
+                data->unk40 = D_800EB770_minigame;
+            }
+        } else if (D_800EB770_minigame <= data->unk40) {
+            data->unk40 += -D_800EB740_minigame * 2.0f;
+            if (data->unk40 <= D_800EB770_minigame) {
+                data->unk40 = D_800EB770_minigame;
+            }
+        }
+        vy = data->unk38;
+        if (vy == 1000.0f) {
+            if (state & 0x10) {
+                if (data->unk40 > D_800EB760_minigame) {
+                    data->unk3C += -(f32)stickX / D_800EB750_minigame;
+                } else {
+                    f32 rate = (data->unk40 <= D_800EB76C_minigame) ? D_800EB76C_minigame : data->unk40;
+
+                    data->unk3C += -(stickX / D_800EB750_minigame) * (rate / D_800EB760_minigame);
+                }
+            }
+            newY = func_800D972C_minigame(arg0, data->unk3C, x, y, z);
+            if (newY != 65536.0f) {
+                y = newY;
+            }
+        } else {
+            if (vy > D_800EB774_minigame) {
+                vy = D_800EB774_minigame;
+            }
+            newY = y + vy * vy * (data->unk38 >= 0.0f ? -35.0f : 35.0f);
+            data->unk38 += D_800EB748_minigame;
+            y = func_800D9028_minigame(arg0, x, newY, z, y);
+            if (data->unk38 == 1000.0f) {
+                other = D_800EC1C0_minigame[data->unk53[0]];
+                if (((func_800D8640_minigame_ObjData *)other->data)->unk03 == 2) {
+                    func_800DFD9C_minigame(arg0, x, other->trans.y, z);
+                } else if (state & 0x10) {
+                    func_800E5690_minigame(arg0, 0x12);
+                } else if (state & 8) {
+                    func_800E5690_minigame(arg0, 0x13);
+                } else if (!(state & 0xC00)) {
+                    func_800E5690_minigame(arg0, 0);
+                }
+            }
+        }
+        data->unkC6 = 0;
+    } else if (state & 0x6000) {
+        f32 time;
+
+        func_800E2250_minigame(arg0, stickX, stickY);
+        time = Hu3DMotionShiftTimeGet(model);
+        if (time == -1.0f) {
+            time = HmfModelData[model].motTime;
+        }
+        if (state & 0x4000) {
+            data->unk3C += 25.0f;
+            if (time >= 14.0f) {
+                func_800E5690_minigame(arg0, 1);
+                data->unk40 = D_800EB76C_minigame;
+                func_800E19FC_minigame(data, 1);
+            }
+        } else if (time >= 10.0f) {
+            if (abs(stickX) >= 9 || abs(stickY) >= 9) {
+                if (data->unk40 < D_800EB76C_minigame) {
+                    if (func_800E2ED4_minigame(stickX, -stickY, sindf(data->unk3C), cosdf(data->unk3C)) < 0.0f) {
+                        func_800E5690_minigame(arg0, 0x20);
+                    }
+                }
+            }
+            if (time >= 15.0f && data->unk40 < D_800EB76C_minigame) {
+                if (abs(stickX) >= 9 || abs(stickY) >= 9) {
+                    if (data->unk40 < D_800EB76C_minigame) {
+                        if (func_800E2ED4_minigame(stickX, -stickY, sindf(data->unk3C), cosdf(data->unk3C)) < 0.0f) {
+                            func_800E5690_minigame(arg0, 0x20);
+                        } else {
+                            func_800E5690_minigame(arg0, 2);
+                            data->unk40 = D_800EB764_minigame;
+                            func_800E19FC_minigame(data, 1);
+                        }
+                    }
+                } else {
+                    func_800E5690_minigame(arg0, 0);
+                }
+            }
+        }
+        if (data->unk53[0] >= 0) {
+            accel = ((func_800D8640_minigame_ObjData *)D_800EC1C0_minigame[data->unk53[0]]->data)->unk08;
+        } else {
+            accel = D_800EB740_minigame;
+        }
+        accel *= 2.0f;
+        if (data->unk40 < D_800EB770_minigame) {
+            data->unk40 += accel;
+            if (D_800EB770_minigame <= data->unk40) {
+                data->unk40 = D_800EB770_minigame;
+            }
+        } else if (D_800EB770_minigame <= data->unk40) {
+            data->unk40 -= accel;
+            if (data->unk40 <= D_800EB770_minigame) {
+                data->unk40 = D_800EB770_minigame;
+            }
+        }
+        newY = func_800D972C_minigame(arg0, data->unk3C, x, y, z);
+        if (newY != 65536.0f) {
+            y = newY;
+            if (pressed & 0x8000) {
+                func_800E3820_minigame(arg0, data);
+            } else if (pressed & 0x4000) {
+                func_800E38A4_minigame(arg0, data);
+                func_800E23E0_minigame(arg0);
+            }
+        }
+        data->unkC6 = 0;
+    } else if (state & 0x320) {
+        f32 time;
+        f32 vy;
+        f32 dist;
+
+        time = Hu3DMotionShiftTimeGet(model);
+        if (time == -1.0f) {
+            time = HmfModelData[model].motTime;
+        }
+        vy = data->unk38;
+        if (!(state & 0x300)) {
+            if (((time > 5.0f) & (time < 7.0f)) && !(held & 0x8000) && (!(data->unk50 & 8) & (vy < 0.0f))) {
+                data->unk38 = -D_800EB744_minigame * 0.2f;
+            }
+            if (abs(stickX) >= 9 || abs(stickY) >= 9) {
+                D_800EBE2C_minigame = stickX / D_800EB74C_minigame * data->unkB4;
+                D_800EC5D8_minigame = -(f32)stickY / D_800EB74C_minigame * data->unkB4;
+                dist = HuSqrtf(D_800EBE2C_minigame * D_800EBE2C_minigame + D_800EC5D8_minigame * D_800EC5D8_minigame);
+                angle = atan2df(D_800EBE2C_minigame, D_800EC5D8_minigame) + data->unk60;
+                D_800EBE2C_minigame = sindf(angle) * dist;
+                D_800EC5D8_minigame = cosdf(angle) * dist;
+                if (data->unk50 & 8) {
+                    D_800EBE2C_minigame *= 0.2f;
+                    D_800EC5D8_minigame *= 0.2f;
+                }
+            }
+            if (pressed & 0x4000) {
+                func_800E3D3C_minigame(arg0, data);
+            }
+            if ((pressed & 0x2000) && !(data->unk50 & 8)) {
+                func_800E3AB8_minigame(arg0, data);
+            }
+            if (vy > D_800EB774_minigame) {
+                vy = D_800EB774_minigame;
+            }
+            newY = y + vy * vy * (data->unk38 >= 0.0f ? -35.0f : 35.0f);
+            data->unk38 += D_800EB748_minigame;
+        } else {
+            if (vy > D_800EB774_minigame) {
+                vy = D_800EB774_minigame;
+            }
+            if (time > 26.0f) {
+                newY = y + vy * vy * (data->unk38 >= 0.0f ? -35.0f : 35.0f);
+                data->unk38 += D_800EB748_minigame * 2.0f;
+            } else if (state & 0x100) {
+                newY = y + vy * vy * (data->unk38 >= 0.0f ? -35.0f : 35.0f);
+                data->unk38 += D_800EB748_minigame / 2.0f;
+            } else {
+                newY = y;
+            }
+            if (state & 0x100) {
+                func_800E3E24_minigame(arg0, x, newY, z);
+            }
+        }
+        y = func_800D9028_minigame(arg0, x, newY, z, y);
+        if (data->unk38 == 1000.0f) {
+            other = D_800EC1C0_minigame[data->unk53[0]];
+            otherData = other->data;
+            if (otherData->unk03 == 2) {
+                func_800DFD9C_minigame(arg0, x, other->trans.y, z);
+            } else if (state & 0x200) {
+                if (!(data->unk50 & 0x80) && data->unkBE == 0) {
+                    func_800E3B98_minigame(arg0, data, otherData, x, y, z);
+                } else {
+                    func_800E3CA0_minigame(arg0, data, otherData, x, y, z);
+                }
+            } else {
+                func_800E39CC_minigame(arg0, data, otherData, stickX, stickY);
+            }
+        }
+        data->unkC6 = 0;
+    } else if (state & 0xC0) {
+        func_800E3F44_minigame(arg0, state, x, y, z);
+        if (data->unk38 == 1000.0f) {
+            if (data->unk40 < D_800EB770_minigame) {
+                data->unk40 += D_800EB740_minigame * 2.0f;
+                if (D_800EB770_minigame < data->unk40) {
+                    data->unk40 = D_800EB770_minigame;
+                }
+            } else if (D_800EB770_minigame < data->unk40) {
+                data->unk40 += -D_800EB740_minigame * 2.0f;
+                if (data->unk40 < D_800EB770_minigame) {
+                    data->unk40 = D_800EB770_minigame;
+                }
+            }
+            newY = func_800D972C_minigame(arg0, data->unk3C, x, y, z);
+            if (newY != 65536.0f) {
+                y = newY;
+            }
+        } else {
+            f32 vy = data->unk38;
+            f32 time;
+
+            if (vy > D_800EB774_minigame) {
+                vy = D_800EB774_minigame;
+            }
+            time = Hu3DMotionShiftTimeGet(model);
+            if (time == -1.0f) {
+                time = HmfModelData[model].motTime;
+            }
+            newY = y + vy * vy * (data->unk38 >= 0.0f ? -35.0f : 35.0f);
+            if (time > 30.0f) {
+                data->unk38 += D_800EB748_minigame * 2.0f;
+            } else {
+                data->unk38 += D_800EB748_minigame / 2.0f;
+            }
+            y = func_800D9028_minigame(arg0, x, newY, z, y);
+            if (data->unk38 == 1000.0f) {
+                other = D_800EC1C0_minigame[data->unk53[0]];
+                if (((func_800D8640_minigame_ObjData *)other->data)->unk03 == 2) {
+                    func_800DFD9C_minigame(arg0, x, other->trans.y, z);
+                } else if (abs(stickX) < 8 && abs(stickY) < 8) {
+                    data->unk40 = D_800EB770_minigame;
+                    func_800E5690_minigame(arg0, 0x15);
+                    func_800E19FC_minigame(data, 4);
+                } else {
+                    func_800E5690_minigame(arg0, 1);
+                    data->unk40 = D_800EB768_minigame;
+                    func_800E19FC_minigame(data, 1);
+                }
+            }
+        }
+        data->unkC6 = 0;
+    } else if (state & 6) {
+        avg = func_800E2250_minigame(arg0, stickX, stickY);
+        avgX = avg >> 16;
+        avgY = avg;
+        speed = HuSqrtf(avgX * avgX + avgY * avgY) / D_800EB75C_minigame;
+        if (data->unk53[0] >= 0) {
+            func_800D8640_minigame_ObjData *otherData = D_800EC1C0_minigame[data->unk53[0]]->data;
+
+            if (otherData->unk0C != 0.0f) {
+                data->unk40 += speed / otherData->unk0C;
+            } else {
+                data->unk40 += speed / D_800EB73C_minigame;
+            }
+            if (stickX | stickY) {
+                data->unk40 -= otherData->unk08;
+            } else {
+                data->unk40 += -otherData->unk08 * 3.0f;
+            }
+        } else {
+            data->unk40 += speed / D_800EB73C_minigame;
+            if (stickX | stickY) {
+                data->unk40 -= D_800EB740_minigame;
+            } else {
+                data->unk40 += -D_800EB740_minigame * 3.0f;
+            }
+        }
+        speed = func_800DFD48_minigame(speed);
+        if (speed < data->unk40) {
+            data->unk40 = speed;
+        }
+        if (data->unk40 < D_800EB770_minigame) {
+            data->unk40 = D_800EB770_minigame;
+        }
+        if (abs(avgX) >= 9 || abs(avgY) >= 9) {
+            data->unk3C = atan2df(avgX, -avgY) + data->unk60;
+        }
+        newY = func_800D972C_minigame(arg0, data->unk3C, x, y, z);
+        if (newY != 65536.0f) {
+            y = newY;
+            if (!(func_800E4A90_minigame(arg0) & 0xC00)) {
+                if (pressed & 0x8000) {
+                    func_800E3820_minigame(arg0, data);
+                } else if (pressed & 0x4000) {
+                    func_800E38A4_minigame(arg0, data);
+                } else {
+                    dx = stickX - avgX;
+                    dz = stickY - avgY;
+                    if (HuSqrtf(dx * dx + dz * dz) > 65.0f) {
+                        if (fabs(data->unk40) >= D_800EB764_minigame) {
+                            func_800E5690_minigame(arg0, 0x11);
+                            data->unk40 = D_800EB768_minigame;
+                            func_800E19FC_minigame(data, 2);
+                            px = x + sindf(data->unk3C) * 70.0f;
+                            func_800E4C88_minigame(arg0, 4, px, y, z + cosdf(data->unk3C) * 70.0f, 0.0f,
+                                                   data->unk3C + 180.0f);
+                        }
+                    } else if (HuSqrtf(avgX * avgX + avgY * avgY) > 43.0f && abs(stickX) < 8 && abs(stickY) < 8) {
+                        if (fabs(data->unk40) >= D_800EB764_minigame) {
+                            func_800E5690_minigame(arg0, 0x11);
+                            data->unk40 = D_800EB768_minigame;
+                            func_800E19FC_minigame(data, 2);
+                            px = x + sindf(data->unk3C) * 70.0f;
+                            func_800E4C88_minigame(arg0, 4, px, y, z + cosdf(data->unk3C) * 70.0f, 0.0f,
+                                                   data->unk3C + 180.0f);
+                        }
+                    } else if (data->unk40 == D_800EB770_minigame) {
+                        data->unkC6 = 0;
+                        func_800E5690_minigame(arg0, 0);
+                        if (data->unkC4 > 0) {
+                            if (data->unkC5 > 0) {
+                                HuAudFXStop(data->unkC5);
+                            }
+                            data->unkC4 = -1;
+                        }
+                    } else if (D_800EB764_minigame < speed) {
+                        f32 time;
+
+                        motion = 2;
+                        turn = func_800E240C_minigame(data->unk59, 12, stickX, stickY);
+                        if (turn > 0) {
+                            data->unkC6++;
+                            if (data->unkC6 >= 0) {
+                                if (data->unkC6 > 12) {
+                                    data->unkC6 = 12;
+                                    motion = 4;
+                                }
+                            }
+                        } else if (turn < 0) {
+                            data->unkC6--;
+                            if (data->unkC6 < 0) {
+                                if (data->unkC6 < -12) {
+                                    data->unkC6 = -12;
+                                    motion = 3;
+                                }
+                            }
+                        } else {
+                            data->unkC6 = 0;
+                        }
+                        if (func_800E5690_minigame(arg0, motion) == 1) {
+                            func_800E1A9C_minigame(data, 1);
+                        } else {
+                            time = Hu3DMotionShiftTimeGet(model);
+                            if (time == -1.0f) {
+                                time = HmfModelData[model].motTime;
+                            }
+                            if (time == 0.0f) {
+                                func_800E1A9C_minigame(data, 1);
+                            }
+                        }
+                        if (data->unkBC < 60) {
+                            px = x - sindf(data->unk3C) * 20.0f;
+                            func_800E4C88_minigame(arg0, 3, px, y, z - cosdf(data->unk3C) * 20.0f, 0.0f, data->unk3C);
+                        }
+                        data->unkBC++;
+                        if (data->unkBC > 200) {
+                            data->unkBC = 200;
+                        }
+                        if (data->unk90 > D_800EB768_minigame || data->unk98 > D_800EB768_minigame) {
+                            px = x - sindf(data->unk3C) * 20.0f;
+                            func_800E4C88_minigame(arg0, 3, px, y, z - cosdf(data->unk3C) * 20.0f, 0.0f, data->unk3C);
+                        }
+                    } else {
+                        f32 time;
+
+                        data->unkC6 = 0;
+                        if (func_800E5690_minigame(arg0, 1) == 1) {
+                            func_800E1A9C_minigame(data, 0);
+                        } else {
+                            time = Hu3DMotionShiftTimeGet(model);
+                            if (time == -1.0f) {
+                                time = HmfModelData[model].motTime;
+                            }
+                            if (time == 0.0f) {
+                                func_800E1A9C_minigame(data, 0);
+                            }
+                        }
+                        data->unkBC = 0;
+                    }
+                }
+            }
+        }
+    } else if (state & 0x20000) {
+        omObjData *other = D_800EC1C0_minigame[data->unk53[0]];
+
+        y -= 20.0f;
+        if (y < other->trans.y - 75.0f) {
+            y = other->trans.y - 75.0f;
+        }
+        if (data->unk40 > D_800EB770_minigame) {
+            data->unk40 -= D_800EB740_minigame;
+            if (data->unk40 <= D_800EB770_minigame) {
+                data->unk40 = D_800EB770_minigame;
+            }
+        } else if (data->unk40 < D_800EB770_minigame) {
+            data->unk40 += D_800EB740_minigame;
+            if (D_800EB770_minigame <= data->unk40) {
+                data->unk40 = D_800EB770_minigame;
+            }
+        }
+        if (arg0->model[2] != 0) {
+            Hu3DModelPosSet(arg0->model[2], x, other->trans.y - 64.0f, z);
+            Hu3DModelScaleSet(arg0->model[2], 6.0f, 6.0f, 6.0f);
+        }
+    } else if (state & 0xC0000) {
+        if (state & 0x40000) {
+            func_800E3FD8_minigame(arg0, x, y, z);
+        } else {
+            func_800E4248_minigame(arg0, x, y, z);
+        }
+        if (data->unk40 < D_800EB770_minigame) {
+            data->unk40 += D_800EB740_minigame * 2.0f;
+            if (D_800EB770_minigame < data->unk40) {
+                data->unk40 = D_800EB770_minigame;
+            }
+        } else if (D_800EB770_minigame < data->unk40) {
+            data->unk40 += -D_800EB740_minigame * 2.0f;
+            if (data->unk40 < D_800EB770_minigame) {
+                data->unk40 = D_800EB770_minigame;
+            }
+        }
+        newY = func_800D972C_minigame(arg0, data->unk3C, x, y, z);
+        if (newY != 65536.0f) {
+            y = newY;
+        }
+    } else if (state & 0x1000) {
+        data->unk40 = D_800EB770_minigame;
+    } else if (state & 0x200000) {
+        if (data->unk104[20] != NULL) {
+            data->unk104[20](arg0, &x, &y, &z);
+        }
+    }
+    speed = data->unk40;
+    if (data->unk50 & 6) {
+        speed *= 0.6f;
+    }
+    speed *= (prevVy != 1000.0f) ? data->unk4C * data->unkB4 : data->unkB4;
+    x += sindf(data->unk3C) * speed + D_800EBE2C_minigame;
+    z += cosdf(data->unk3C) * speed + D_800EC5D8_minigame;
+    func_80088910_main(HmfModelData[arg0->model[0]].mtx, 0.0f, data->unk3C, 0.0f);
+    func_800E17D4_minigame(arg0, x, y, z);
+    if (data->unk104[1] != NULL) {
+        data->unk104[1](arg0);
+    }
+    func_800E4E30_minigame(arg0);
+    func_800E5138_minigame(arg0);
+}
 
 void func_800DFCDC_minigame(f32 x, f32 z, f32 scale) {
     Vec dir;

@@ -402,7 +402,7 @@ void func_800E19FC_minigame(func_800E1BA8_minigame_ObjData *arg0, s32 arg1) {
 
     if (sound >= 0) {
         if (arg0->unkC4 != arg1) {
-            arg0->unkC5[0] = func_8004AC98_main(sound, arg0->unk59);
+            arg0->unkC5 = func_8004AC98_main(sound, arg0->unk59);
             arg0->unkC4 = arg1;
             D_800EBE10_minigame[arg0->unk59] = sound;
         }
@@ -416,7 +416,7 @@ void func_800E1A9C_minigame(func_800E1BA8_minigame_ObjData *arg0, s32 arg1) {
 
     if (sound >= 0) {
         if (arg0->unkC4 != arg1) {
-            arg0->unkC5[0] = func_8004AC98_main(sound, arg0->unk59);
+            arg0->unkC5 = func_8004AC98_main(sound, arg0->unk59);
             arg0->unkC4 = arg1;
             D_800EBE10_minigame[arg0->unk59] = sound;
         }
@@ -429,7 +429,7 @@ void func_800E1B3C_minigame(void) {
     s32 i;
 
     for (i = 0; i < D_800EC280_minigame; i++) {
-        HuAudFXStop(OM_GET_DATA_PTR(D_800EC598_minigame[i], func_800E1BA8_minigame_ObjData)->unkC5[0]);
+        HuAudFXStop(OM_GET_DATA_PTR(D_800EC598_minigame[i], func_800E1BA8_minigame_ObjData)->unkC5);
     }
 }
 

@@ -6,13 +6,87 @@ extern UnkTemp D_8010AFE8_mgresultboard[];
 extern PlayerResult D_8010B048_mgresultboard[4];
 extern s32 D_8010ADB0_mgresultboard[8];
 extern f32 D_8010AAF4_mgresultboard;
+extern s32 D_8010AAF8_mgresultboard;
+extern omObjData *D_8010AFA8_mgresultboard;
+extern void (*D_8010AFAC_mgresultboard)(omObjData *);
+extern Vec D_8010AB40_mgresultboard[4];
+extern u8 D_8010AD28_mgresultboard[4][3];
+extern omObjData *D_8010AEA0_mgresultboard;
+extern void (*D_8010AEA4_mgresultboard)(omObjData *);
+extern s32 D_8010ADD0_mgresultboard[40];
+extern s32 D_8010AE70_mgresultboard[2];
+extern Vec D_8010AB70_mgresultboard[8];
+extern Vec D_8010ABD0_mgresultboard[12];
 
+void func_801080C4_mgresultboard(void);
+void func_80108150_mgresultboard(omObjData *);
+void func_801081CC_mgresultboard(omObjData *);
+void func_801081E8_mgresultboard(void);
 s32 func_801081F0_mgresultboard(omObjData *, s8, s8, s8);
 void func_80108330_mgresultboard(omObjData *);
-s32 func_80109744_mgresultboard(s32, s8, s16);
-s32 func_80109DAC_mgresultboard(s32, s8, s16);
+void func_80108BBC_mgresultboard(omObjData *);
+void func_80108BC4_mgresultboard(omObjData *);
+void func_80108C60_mgresultboard(omObjData *);
+void func_8010913C_mgresultboard(void);
+void func_80109144_mgresultboard(void);
+s32 func_80109744_mgresultboard(omObjData *, s8, s16);
+s32 func_80109DAC_mgresultboard(omObjData *, s8, s16);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E9120", func_80107D00_mgresultboard);
+void func_80107D00_mgresultboard(void) {
+    omObjData *obj;
+    void *modelData;
+    void *animData;
+    s32 anim;
+    s32 i;
+
+    anim = 0;
+    obj = omAddObj(0x14, 0xC, 0, -1, NULL);
+    D_8010AFA8_mgresultboard = obj;
+    modelData = DataRead(0x180004);
+    for (i = 0; i < 8; i++) {
+        obj->model[i + 1] = Hu3DModelCreate(modelData, 0x2A0);
+        func_8001C814_main(obj->model[i + 1], 2, 0);
+        Hu3DModelPosSet(obj->model[i + 1], D_8010AB40_mgresultboard[i & 3].x, D_8010AB40_mgresultboard[i & 3].y,
+                        D_8010AB40_mgresultboard[i & 3].z);
+        Hu3DModelCameraSet(obj->model[i + 1], 2);
+        if (i == 0) {
+            animData = DataRead(0x180008);
+            anim = (s16)HmfAnimCreate(HmfModelData[obj->model[1]].hmf, animData, 0, "ys04_04_DEF");
+            D_8010ADB0_mgresultboard[0] = anim;
+            HuMemMemoryFreePerm(animData);
+        } else {
+            D_8010ADB0_mgresultboard[i] = HmfAnimLink(HmfModelData[obj->model[i + 1]].hmf, anim, 0, "ys04_04_DEF");
+        }
+        Hu3DModelRemakeStatic(obj->model[i + 1]);
+        func_8001C514_main(obj->model[i + 1]);
+        func_80032FC0_main(D_8010ADB0_mgresultboard[i], 1, 1);
+        func_80032FF8_main(D_8010ADB0_mgresultboard[i], D_8010AD28_mgresultboard[i][0]);
+        if (i < 4) {
+            Hu3DMotionTimeSet(obj->model[i + 1], 40.0f);
+            func_80032FF8_main(D_8010ADB0_mgresultboard[i],
+                               D_8010AD28_mgresultboard[D_8010B048_mgresultboard[i].unk_02][D_8010B048_mgresultboard[i].unk_03]);
+        } else {
+            Hu3DMotionTimeSet(obj->model[i + 1], 20.0f);
+            func_80032FF8_main(D_8010ADB0_mgresultboard[i],
+                               D_8010AD28_mgresultboard[D_8010B048_mgresultboard[rand8() & 3].unk_02][rand8() % 3]);
+        }
+    }
+    HuMemMemoryFreePerm(modelData);
+    obj->trans.x = 0.0f;
+    obj->trans.y = 0.0f;
+    obj->trans.z = 0.0f;
+    func_801080C4_mgresultboard();
+    omPrcSetDestructor(0, func_801081E8_mgresultboard);
+    while (D_8010AAF8_mgresultboard == 0) {
+        HuPrcVSleep();
+    }
+    D_8010AFAC_mgresultboard = func_801081CC_mgresultboard;
+    func_80108150_mgresultboard(obj);
+    while (TRUE) {
+        D_8010AFAC_mgresultboard(obj);
+        HuPrcVSleep();
+    }
+}
 
 void func_801080C4_mgresultboard(void) {
     s8 i;
@@ -124,12 +198,79 @@ void func_80108330_mgresultboard(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E9120", func_80108700_mgresultboard);
+void func_80108700_mgresultboard(void) {
+    omObjData *obj;
+    void *data;
+    s32 i;
 
-void func_80108BBC_mgresultboard(void) {
+    obj = omAddObj(0x14, 0x32, 0, -1, NULL);
+    D_8010AEA0_mgresultboard = obj;
+    obj->model[1] = func_8000B0D4_main(0x180000, 0x2A8);
+    data = DataRead(0x180005);
+    D_8010ADD0_mgresultboard[0] = (s16)HmfAnimCreate(HmfModelData[obj->model[1]].hmf, data, 0, "zero_DEF");
+    HuMemMemoryFreePerm(data);
+    D_8010AE70_mgresultboard[0] = D_800D1714_main[D_8010ADD0_mgresultboard[0]].animIdx;
+    Hu3DModelRemakeStatic(obj->model[1]);
+    func_8001C514_main(obj->model[1]);
+    func_80032FC0_main(D_8010ADD0_mgresultboard[0], 1, 1);
+    func_80032FF8_main(D_8010ADD0_mgresultboard[0], 0);
+    Hu3DModelCameraSet(obj->model[1], 2);
+    data = DataRead(0x180006);
+    D_8010AE70_mgresultboard[1] = (s16)func_800329B4_main(data);
+    HuMemMemoryFreePerm(data);
+    data = DataRead(0x180000);
+    for (i = 1; i < 40; i++) {
+        obj->model[i + 1] = Hu3DModelCreate(data, 0x2A0);
+        Hu3DModelCameraSet(obj->model[i + 1], 2);
+        D_8010ADD0_mgresultboard[i] =
+            HmfAnimLink(HmfModelData[obj->model[i + 1]].hmf, D_8010ADD0_mgresultboard[0], 0, "zero_DEF");
+        Hu3DModelRemakeStatic(obj->model[i + 1]);
+        func_8001C514_main(obj->model[i + 1]);
+        func_80032FC0_main(D_8010ADD0_mgresultboard[i], 1, 1);
+        func_80032FF8_main(D_8010ADD0_mgresultboard[i], 0);
+    }
+    HuMemMemoryFreePerm(data);
+    for (i = 0; i < 8; i++) {
+        Hu3DModelPosSet(obj->model[i + 1], D_8010AB70_mgresultboard[i].x, D_8010AB70_mgresultboard[i].y,
+                        D_8010AB70_mgresultboard[i].z);
+        Hu3DMotionTimeSet(obj->model[i + 1], 40.0f);
+        func_8001C814_main(obj->model[i + 1], 2, 0);
+        Hu3DModelPosSet(obj->model[i + 21], D_8010AB70_mgresultboard[i].x, D_8010AB70_mgresultboard[i].y,
+                        D_8010AB70_mgresultboard[i].z);
+        Hu3DMotionTimeSet(obj->model[i + 21], 20.0f);
+        func_8001C814_main(obj->model[i + 21], 2, 0);
+    }
+    for (i = 0; i < 12; i++) {
+        Hu3DModelPosSet(obj->model[i + 9], D_8010ABD0_mgresultboard[i].x, D_8010ABD0_mgresultboard[i].y,
+                        D_8010ABD0_mgresultboard[i].z);
+        Hu3DMotionTimeSet(obj->model[i + 9], 40.0f);
+        func_8001C814_main(obj->model[i + 9], 2, 0);
+        Hu3DModelPosSet(obj->model[i + 29], D_8010ABD0_mgresultboard[i].x, D_8010ABD0_mgresultboard[i].y,
+                        D_8010ABD0_mgresultboard[i].z);
+        Hu3DMotionTimeSet(obj->model[i + 29], 20.0f);
+        func_8001C814_main(obj->model[i + 29], 2, 0);
+    }
+    obj->trans.x = 0.0f;
+    obj->trans.y = 0.0f;
+    obj->trans.z = 0.0f;
+    func_80109144_mgresultboard();
+    omPrcSetDestructor(0, func_8010913C_mgresultboard);
+    while (D_8010AAF8_mgresultboard == 0) {
+        HuPrcVSleep();
+    }
+    D_8010AEA4_mgresultboard = func_80108BBC_mgresultboard;
+    func_80108BC4_mgresultboard(obj);
+    while (TRUE) {
+        D_8010AEA4_mgresultboard(obj);
+        func_80108C60_mgresultboard(obj);
+        HuPrcVSleep();
+    }
 }
 
-void func_80108BC4_mgresultboard(s32 arg0) {
+void func_80108BBC_mgresultboard(omObjData *arg0) {
+}
+
+void func_80108BC4_mgresultboard(omObjData *arg0) {
     s8 i;
 
     for (i = 0; i < 4; i++) {
@@ -249,7 +390,7 @@ s32 func_801096E0_mgresultboard(s32 arg0, s8 arg1) {
     return 1;
 }
 
-s32 func_80109744_mgresultboard(s32 arg0, s8 arg1, s16 arg2) {
+s32 func_80109744_mgresultboard(omObjData *arg0, s8 arg1, s16 arg2) {
     s16 digits[2];
     s16 value;
     s8 i;
@@ -351,7 +492,7 @@ s32 func_80109D44_mgresultboard(s32 arg0, s8 arg1) {
     return 1;
 }
 
-s32 func_80109DAC_mgresultboard(s32 arg0, s8 arg1, s16 arg2) {
+s32 func_80109DAC_mgresultboard(omObjData *arg0, s8 arg1, s16 arg2) {
     s16 digits[3];
     s16 value;
     s8 i;

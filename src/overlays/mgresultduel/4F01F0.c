@@ -9,6 +9,9 @@ typedef struct UnkOmData {
 
 extern UnkOmData D_80109338_mgresultduel;
 extern s8 D_80108E70_mgresultduel;
+extern s32 D_80108E74_mgresultduel;
+extern s8 D_80109310_mgresultduel[];
+extern s8 D_80109318_mgresultduel;
 extern s8 D_80108E78_mgresultduel;
 extern char D_80108EC0_mgresultduel[];
 
@@ -19,12 +22,57 @@ void func_80106278_mgresultduel(omObjData *);
 void func_80106574_mgresultduel(omObjData *);
 void func_80106744_mgresultduel(omObjData *);
 void func_80106850_mgresultduel(omObjData *, s32);
+void func_801074B8_mgresultduel(void);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_801059A0_mgresultduel);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultduel/4F01F0", D_80108EA0_mgresultduel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80105E90_mgresultduel);
+void func_80105E90_mgresultduel(omObjData *object) {
+    s32 state;
+    s16 playerIdx;
+
+    state = D_80108E70_mgresultduel;
+    switch (state) {
+        case 0:
+            HuAudSeqPlay(0x16);
+            D_80108E74_mgresultduel = 0;
+            state++;
+            break;
+        case 1:
+            D_80108E74_mgresultduel++;
+            if (D_80108E74_mgresultduel >= 20) {
+                state++;
+            }
+            break;
+        case 2:
+            func_801074B8_mgresultduel();
+            state++;
+            break;
+        case 4:
+            if (D_80109318_mgresultduel != 2) {
+                if (D_80109318_mgresultduel == -1) {
+                    playerIdx = D_80109310_mgresultduel[0];
+                } else {
+                    playerIdx = D_80109310_mgresultduel[1];
+                }
+                GwPlayer[playerIdx].gameCoin = 0;
+                GwPlayer[playerIdx].bonusCoin = 0;
+            }
+            WipeCreateOut(WIPE_TYPE_NORMAL, 20);
+            HuAudSeqFadeOut(30);
+            func_8004AB0C_main(30);
+            state++;
+            break;
+        case 5:
+            if (WipeStatGet() == 0) {
+                func_80106054_mgresultduel();
+                omOvlReturnEx(1);
+            }
+            break;
+    }
+    D_80108E70_mgresultduel = state;
+}
 
 void func_80105FD4_mgresultduel(void) {
     if (D_800D530C_main == 1) {

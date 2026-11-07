@@ -1,6 +1,8 @@
 #include "common.h"
 #include "game/object.h"
 #include "game/audio.h"
+#include "game/data.h"
+#include "game/hmfspr.h"
 #include "../ovl_81_name/ovl_81.h"
 
 typedef struct UnkResultDuelStruct {
@@ -36,7 +38,10 @@ extern s32 D_80108E88_mgresultduel;
 extern s32 D_80108E8C_mgresultduel;
 extern s32 D_80108E90_mgresultduel;
 extern s32 D_80108E94_mgresultduel;
+extern u16 D_80108F30_mgresultduel;
+extern u16 D_80108F32_mgresultduel;
 extern UnkResultDuelStruct D_80108F38_mgresultduel[20];
+extern UnkResultDuelStruct D_80109118_mgresultduel[20];
 
 void func_80106B68_mgresultduel(omObjData *);
 void func_80106B70_mgresultduel(omObjData *);
@@ -51,6 +56,8 @@ void func_801072A8_mgresultduel(omObjData *);
 void func_80107618_mgresultduel(void);
 void func_80107654_mgresultduel(omObjData *);
 void func_80108304_mgresultduel(void);
+void func_80107AF4_mgresultduel(omObjData *);
+void func_80107AFC_mgresultduel(void);
 void func_80107B04_mgresultduel(s32);
 void func_80107CA4_mgresultduel(omObjData *);
 void func_80108318_mgresultduel(omObjData *);
@@ -293,7 +300,57 @@ void func_80107654_mgresultduel(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F1180", func_80107710_mgresultduel);
+void func_80107710_mgresultduel(void) {
+    omObjData *obj;
+    void *data;
+    s8 i;
+
+    obj = omAddObj(20, 42, 0, -1, NULL);
+    D_8010931C_mgresultduel = obj;
+
+    data = DataRead(0x210026);
+    D_80108F30_mgresultduel = HmfSprModelCreate(data, 0x2BD, 8);
+    DataClose(data);
+    func_8001C2FC_main(D_800CBB60_main[D_80108F30_mgresultduel].modelId, 0x70000000, 0x70000000);
+    for (i = 0; i < 20; i++) {
+        D_80108F38_mgresultduel[i].unk00 = 0;
+        D_80108F38_mgresultduel[i].unk02 = func_80014618_main(D_80108F30_mgresultduel, 8);
+        D_80108F38_mgresultduel[i].unk04 = 0;
+        obj->model[i + 1] = D_800CBB60_main[D_80108F38_mgresultduel[i].unk02].modelId;
+        Hu3DModelPosSet(obj->model[i + 1], 0.0f, 400.0f, 0.0f);
+        Hu3DModelCameraSet(obj->model[i + 1], 1);
+        Hu3DMotionSpeedSet(obj->model[i + 1], 2.0f);
+        Hu3DModelScaleSet(D_800CBB60_main[i + 1].modelId, 1.5f, 1.5f, 1.5f);
+    }
+
+    data = DataRead(0xC);
+    D_80108F32_mgresultduel = HmfSprModelCreate(data, 0x2BD, 8);
+    DataClose(data);
+    func_8001C2FC_main(D_800CBB60_main[D_80108F32_mgresultduel].modelId, 0x70000000, 0x70000000);
+    Hu3DModelScaleSet(D_800CBB60_main[D_80108F32_mgresultduel].modelId, 1.0f, 1.0f, 1.0f);
+    for (i = 0; i < 20; i++) {
+        D_80109118_mgresultduel[i].unk00 = 0;
+        D_80109118_mgresultduel[i].unk02 = func_80014618_main(D_80108F32_mgresultduel, 8);
+        D_80109118_mgresultduel[i].unk04 = 0;
+        obj->model[i + 21] = D_800CBB60_main[D_80109118_mgresultduel[i].unk02].modelId;
+        Hu3DModelPosSet(obj->model[i + 21], 0.0f, 400.0f, 0.0f);
+        Hu3DModelCameraSet(obj->model[i + 21], 1);
+        Hu3DMotionSpeedSet(obj->model[i + 21], 1.0f);
+        Hu3DModelScaleSet(D_800CBB60_main[i + 21].modelId, 3.0f, 3.0f, 3.0f);
+    }
+
+    obj->trans.x = 0.0f;
+    obj->trans.y = 0.0f;
+    obj->trans.z = 0.0f;
+    Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
+    omPrcSetDestructor(0, func_80107AFC_mgresultduel);
+    D_80109320_mgresultduel = func_80107AF4_mgresultduel;
+
+    while (TRUE) {
+        D_80109320_mgresultduel(obj);
+        HuPrcVSleep();
+    }
+}
 
 void func_80107AF4_mgresultduel(omObjData *arg0) {
 }

@@ -97,7 +97,21 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", D_801099A8_mgr
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80106EEC_mgresultdealer);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_8010705C_mgresultdealer);
+extern s16 D_8010990C_mgresultdealer;
+extern s16 D_801099F8_mgresultdealer[];
+
+void func_801070EC_mgresultdealer(s16);
+
+void func_8010705C_mgresultdealer(void) {
+    s16 i;
+
+    for (i = 0; i < 4; i++) {
+        if (((D_8010990C_mgresultdealer + i) & 7) == 0) {
+            func_801070EC_mgresultdealer(D_801099F8_mgresultdealer[i]);
+        }
+    }
+    D_8010990C_mgresultdealer++;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_801070EC_mgresultdealer);
 

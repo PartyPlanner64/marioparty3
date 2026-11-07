@@ -12,6 +12,11 @@ typedef struct {
     /* 0x2C */ u16 unk_2C;
 } UnkDealerSprites;
 
+typedef struct {
+    /* 0x00 */ omObjData *obj;
+    /* 0x04 */ omObjFunc objFunc;
+} UnkDealerFadeProc;
+
 extern s8 D_80109911_mgresultdealer;
 extern s8 D_80109930_mgresultdealer;
 extern s8 D_80109931_mgresultdealer;
@@ -23,6 +28,9 @@ extern s8 D_80109941_mgresultdealer;
 extern s32 D_80109944_mgresultdealer;
 extern s32 D_80109948_mgresultdealer;
 extern s32 D_80109950_mgresultdealer;
+extern s16 D_8010A200_mgresultdealer;
+extern s32 D_8010A204_mgresultdealer;
+extern HuSprite *D_8010A208_mgresultdealer;
 extern u8 *D_8010A20C_mgresultdealer;
 extern UnkDealerSprites D_8010A210_mgresultdealer;
 extern s32 D_8010A240_mgresultdealer;
@@ -30,7 +38,11 @@ extern s32 D_8010A244_mgresultdealer;
 extern s16 D_8010A258_mgresultdealer;
 extern omObjFunc D_8010A260_mgresultdealer;
 extern s16 D_8010A264_mgresultdealer;
+extern UnkDealerFadeProc D_8010A26C_mgresultdealer;
 
+void func_80108194_mgresultdealer(omObjData *);
+void func_80108258_mgresultdealer(void);
+void func_801082A8_mgresultdealer(Gfx **, s32, s32);
 void func_80108544_mgresultdealer(void);
 void func_80108560_mgresultdealer(u8);
 void func_80108BD4_mgresultdealer(omObjData *);
@@ -50,9 +62,35 @@ s8 func_80108034_mgresultdealer(void) {
     return D_80109911_mgresultdealer;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EDCB0", func_80108040_mgresultdealer);
+void func_80108040_mgresultdealer(void) {
+    omObjData *obj;
+    s16 sprite;
+    s16 group;
 
-void func_80108194_mgresultdealer(void) {
+    obj = omAddObj(0x14, 1, 0, -1, NULL);
+    D_8010A26C_mgresultdealer.obj = obj;
+    sprite = func_8000B838_main(0x190001);
+    D_8010A204_mgresultdealer = sprite;
+    group = HuSprGrpCreate(1, 0);
+    HuSprAttrSet(group, 0, 0x8000);
+    HuSprGrpMemberSet(group, 0, sprite, 0);
+    D_8010A208_mgresultdealer = HuSprGet(group, 0);
+    D_8010A20C_mgresultdealer = D_8010A208_mgresultdealer->unk_84->unk00->unk00;
+    D_8010A200_mgresultdealer = Hu3DHookFuncCreate(0, func_801082A8_mgresultdealer, 2);
+    Hu3DModelCameraSet(D_8010A200_mgresultdealer, 1);
+    D_80109930_mgresultdealer = 0;
+    obj->trans.x = 0.0f;
+    obj->trans.y = 0.0f;
+    obj->trans.z = 0.0f;
+    omPrcSetDestructor(0, func_80108258_mgresultdealer);
+    D_8010A26C_mgresultdealer.objFunc = func_80108194_mgresultdealer;
+    while (TRUE) {
+        D_8010A26C_mgresultdealer.objFunc(obj);
+        HuPrcVSleep();
+    }
+}
+
+void func_80108194_mgresultdealer(omObjData *obj) {
     f32 step;
 
     if (D_80109930_mgresultdealer) {

@@ -103,7 +103,29 @@ void func_80107244_mgresultduel(omObjData *arg0) {
     D_80109330_mgresultduel = func_80107170_mgresultduel;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F1180", func_801072A8_mgresultduel);
+void func_801072A8_mgresultduel(omObjData *arg0) {
+    f32 i;
+    f32 x;
+    f32 rot;
+
+    Hu3DModelRotSet(arg0->model[1], 0.0f, -90.0f, 0.0f);
+    func_8001C5B4_main(arg0->model[1], arg0->motion[1]);
+    func_8001C814_main(arg0->model[1], 2, 2);
+    for (i = 0.0f; i < 240.0f; i += 16.0f) {
+        Hu3DModelPosSet(arg0->model[1], 460.0f - i, 0.0f, 2300.0f);
+        Hu3DModelPosSet(arg0->model[2], 460.0f - i, -5.0f, 2300.0f);
+        HuPrcVSleep();
+    }
+    Hu3DModelPosSet(arg0->model[1], x = 220.0f, 0.0f, 2300.0f);
+    Hu3DModelPosSet(arg0->model[2], x, -5.0f, 2300.0f);
+    for (rot = 90.0f; rot >= 0.0f; rot -= 8.0f) {
+        Hu3DModelRotSet(arg0->model[1], 0.0f, -rot, 0.0f);
+        HuPrcVSleep();
+    }
+    Hu3DModelRotSet(arg0->model[1], 0.0f, 0.0f, 0.0f);
+    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[arg0->motion[0]].motId, 0, 0x1E, 2);
+    D_80109330_mgresultduel = func_80107170_mgresultduel;
+}
 
 void func_801074B0_mgresultduel(void) {
 }

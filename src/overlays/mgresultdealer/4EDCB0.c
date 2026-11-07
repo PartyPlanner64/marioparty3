@@ -10,6 +10,7 @@ extern s8 D_80109940_mgresultdealer;
 extern s8 D_80109941_mgresultdealer;
 extern s32 D_80109944_mgresultdealer;
 extern s32 D_80109950_mgresultdealer;
+extern u8 *D_8010A20C_mgresultdealer;
 extern s32 D_8010A240_mgresultdealer;
 extern s32 D_8010A244_mgresultdealer;
 extern omObjFunc D_8010A260_mgresultdealer;
@@ -64,7 +65,35 @@ s8 func_8010829C_mgresultdealer(void) {
     return D_80109931_mgresultdealer;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EDCB0", func_801082A8_mgresultdealer);
+void func_801082A8_mgresultdealer(Gfx **gfx, s32 arg1, s32 arg2) {
+    Gfx *gdl;
+    s32 alpha;
+    s32 y;
+
+    if (D_80109938_mgresultdealer) {
+        alpha = D_8010993A_mgresultdealer;
+        gdl = *gfx;
+        gDPPipeSync(gdl++);
+        gDPSetCycleType(gdl++, G_CYC_1CYCLE);
+        gSPClearGeometryMode(gdl++, G_SHADE | G_SHADING_SMOOTH | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
+                                        G_TEXTURE_GEN_LINEAR | G_LOD);
+        gSPSetGeometryMode(gdl++, G_SHADE | G_CULL_BACK | G_SHADING_SMOOTH);
+        gDPSetTexturePersp(gdl++, G_TP_NONE);
+        gDPSetPrimColor(gdl++, 0, 0, 0, 0, 0, alpha);
+        gDPSetRenderMode(gdl++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
+        gDPSetCombineMode(gdl++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+        gDPSetTextureLUT(gdl++, G_TT_NONE);
+
+        for (y = 0; y < 240; y += 10) {
+            gDPLoadTextureTile_4b(gdl++, D_8010A20C_mgresultdealer, G_IM_FMT_I, 320, 240, 0, y, 319, y + 9, 0,
+                                  G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                                  G_TX_NOLOD, G_TX_NOLOD);
+            gDPSetTileSize(gdl++, G_TX_RENDERTILE, 0, 0, 320 << 2, 10 << 2);
+            gSPTextureRectangle(gdl++, 0, y << 2, 320 << 2, (y + 10) << 2, G_TX_RENDERTILE, 0, 0, 0x400, 0x400);
+        }
+        *gfx = gdl;
+    }
+}
 
 void func_80108544_mgresultdealer(void) {
     D_80109938_mgresultdealer = 1;

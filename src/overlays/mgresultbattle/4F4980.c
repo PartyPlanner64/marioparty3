@@ -1,10 +1,11 @@
 #include "common.h"
+#include "game/hmfspr.h"
 #include "mgresultbattle.h"
 
 typedef struct {
     /* 0x00 */ u8 state;
-    /* 0x02 */ s16 unk02;
-    /* 0x04 */ s16 unk04;
+    /* 0x02 */ u16 unk02;
+    /* 0x04 */ u16 unk04;
     /* 0x08 */ s32 unk08;
     /* 0x0C */ f32 x;
     /* 0x10 */ f32 y;
@@ -13,6 +14,8 @@ typedef struct {
     /* 0x1C */ f32 unk1C;
 } ResultBattleEffect; /* size = 0x20 */
 
+void func_80106E98_mgresultbattle(void);
+void func_80106ED0_mgresultbattle(omObjData *);
 void func_80107610_mgresultbattle(omObjData *);
 void func_801075EC_mgresultbattle(void);
 void func_801075F4_mgresultbattle(omObjData *);
@@ -21,8 +24,56 @@ void func_80107CA4_mgresultbattle(void);
 extern ResultBattlePlayerObj D_80108F90_mgresultbattle;
 extern s32 D_801088E0_mgresultbattle[];
 extern ResultBattleEffect D_80108A30_mgresultbattle[40];
+extern omObjData *D_80108F74_mgresultbattle;
+extern omObjFunc D_80108F78_mgresultbattle;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F4980", func_80106BA0_mgresultbattle);
+void func_80106BA0_mgresultbattle(void) {
+    omObjData *obj;
+    void *data;
+    u16 sprite1;
+    u16 sprite2;
+    s32 i;
+
+    obj = omAddObj(0x14, 0x58, 8, -1, NULL);
+    D_80108F74_mgresultbattle = obj;
+
+    data = DataRead(0x210026);
+    sprite1 = HmfSprModelCreate(data, 0x2BD, 8);
+    DataClose(data);
+    func_8001C2FC_main(D_800CBB60_main[sprite1].modelId, 0x70000000, 0x70000000);
+
+    data = DataRead(0xC);
+    sprite2 = HmfSprModelCreate(data, 0x2BD, 8);
+    DataClose(data);
+    func_8001C2FC_main(D_800CBB60_main[sprite2].modelId, 0x70000000, 0x70000000);
+
+    for (i = 0; i < 40; i++) {
+        D_80108A30_mgresultbattle[i].state = 1;
+        D_80108A30_mgresultbattle[i].unk02 = func_80014618_main(sprite1, 8);
+        D_80108A30_mgresultbattle[i].unk04 = func_80014618_main(sprite2, 8);
+        D_80108A30_mgresultbattle[i].unk08 = 0;
+        D_80108A30_mgresultbattle[i].unk18 = 0;
+        D_80108A30_mgresultbattle[i].unk1C = 0.0f;
+        obj->model[i + 1] = D_800CBB60_main[D_80108A30_mgresultbattle[i].unk02].modelId;
+        Hu3DMotionSpeedSet(obj->model[i + 1], 2.0f);
+        Hu3DModelScaleSet(D_800CBB60_main[i + 1].modelId, 3.0f, 3.0f, 3.0f);
+        func_8001C258_main(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        obj->model[i + 41] = D_800CBB60_main[D_80108A30_mgresultbattle[i].unk04].modelId;
+        Hu3DModelScaleSet(D_800CBB60_main[i + 41].modelId, 3.0f, 3.0f, 3.0f);
+    }
+
+    obj->trans.x = 0.0f;
+    obj->trans.y = 0.0f;
+    obj->trans.z = 0.0f;
+    Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
+    omPrcSetDestructor(NULL, func_80106E98_mgresultbattle);
+    D_80108F78_mgresultbattle = func_80106ED0_mgresultbattle;
+
+    while (TRUE) {
+        D_80108F78_mgresultbattle(obj);
+        HuPrcVSleep();
+    }
+}
 
 void func_80106E98_mgresultbattle(void) {
 }

@@ -3,6 +3,7 @@
 #include "game/audio.h"
 #include "game/data.h"
 #include "game/hmfspr.h"
+#include "math.h"
 #include "../ovl_81_name/ovl_81.h"
 
 typedef struct UnkResultDuelStruct {
@@ -20,6 +21,7 @@ typedef struct ResultDuelObj {
 
 extern s8 D_80109310_mgresultduel[];
 extern s8 D_801092F8_mgresultduel;
+extern s16 D_80109306_mgresultduel;
 extern s16 D_8010930A_mgresultduel;
 extern s16 D_8010930C_mgresultduel;
 extern omObjFunc D_80109320_mgresultduel;
@@ -28,6 +30,7 @@ extern omObjData *D_8010931C_mgresultduel;
 extern ResultDuelObj D_8010932C_mgresultduel;
 extern ResultDuelObj D_80109340_mgresultduel;
 extern ResultDuelObj D_80109324_mgresultduel;
+extern ResultDuelObj D_80109338_mgresultduel;
 extern s32 D_80109300_mgresultduel[3];
 extern s32 D_80109314_mgresultduel;
 extern s32 D_800A178C_main[][6];
@@ -44,6 +47,9 @@ extern u16 D_80108F30_mgresultduel;
 extern u16 D_80108F32_mgresultduel;
 extern UnkResultDuelStruct D_80108F38_mgresultduel[20];
 extern UnkResultDuelStruct D_80109118_mgresultduel[20];
+extern f32 D_80108ED4_mgresultduel[5][3];
+extern f32 D_80108F10_mgresultduel[];
+extern f32 D_80108F18_mgresultduel[];
 
 void func_80106B68_mgresultduel(omObjData *);
 void func_80106B70_mgresultduel(omObjData *);
@@ -65,6 +71,7 @@ void func_80107CA4_mgresultduel(omObjData *);
 void func_80108318_mgresultduel(omObjData *);
 void func_80106730_mgresultduel(void);
 void func_80106560_mgresultduel(void);
+void func_8010654C_mgresultduel(void);
 void func_8010751C_mgresultduel(s8);
 void func_800F79E8_name_81(s32);
 void func_800E1504_name_81(s8, s32, s32, s32);
@@ -608,7 +615,84 @@ void func_801084B0_mgresultduel(void) {
 void func_80108818_mgresultduel(omObjData *arg0) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F1180", func_80108820_mgresultduel);
+void func_80108820_mgresultduel(omObjData *obj) {
+    omObjData *otherObj;
+    f32 values[4];
+    f32 pos[3];
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 t;
+    s8 i;
+    s8 j;
+    s32 seg;
+    s32 started;
+
+    otherObj = D_80109338_mgresultduel.obj;
+    x = 700.0f;
+    z = 1600.0f;
+    started = 0;
+    Hu3DModelPosSet(obj->model[1], x, 300.0f, z);
+    seg = 0;
+    Hu3DModelPosSet(obj->model[2], x, -0.5f, z);
+    HuPrcVSleep();
+    t = 0.0f;
+    while (TRUE) {
+        for (i = 0; i < 3; i++) {
+            for (j = 0; j < 4; j++) {
+                values[j] = D_80108ED4_mgresultduel[j + seg][i];
+            }
+            pos[i] = InterpolateBMLine(values, &D_80108F10_mgresultduel[seg], t);
+        }
+        t += 1.0f;
+        if (D_80108F18_mgresultduel[seg] <= t) {
+            seg++;
+            if (seg + 3 >= 5) {
+                break;
+            }
+        }
+        Hu3DModelPosSet(obj->model[1], pos[0], pos[1], pos[2]);
+        Hu3DModelPosSet(obj->model[2], pos[0], -0.5f, pos[2]);
+        HuPrcVSleep();
+    }
+
+    x = pos[0];
+    z = pos[2];
+    Hu3DModelPosSet(obj->model[1], x, pos[1], z);
+    Hu3DModelPosSet(obj->model[2], x, -0.5f, z);
+    func_80108D30_mgresultduel(obj->model[1], D_8010930C_mgresultduel, D_80109306_mgresultduel);
+    HuPrcSleep(12);
+    Hu3DMotionShiftSet(obj->model[0], HmfModelData[obj->motion[3]].motId, 0, 10, 0);
+    for (i = 0; i < 6; i++) {
+        y = sindf(i * 15.0f) * 120.0f;
+        Hu3DModelPosSet(obj->model[1], x, pos[1] - y, z);
+        if (i >= 2 && started != TRUE) {
+            func_8010654C_mgresultduel();
+            started = 1;
+        }
+        HuPrcVSleep();
+    }
+
+    HuPrcSleep(2);
+    Hu3DMotionShiftSet(obj->model[0], HmfModelData[obj->motion[0]].motId, 0, 30, 2);
+    for (i = 0; i < 12; i++) {
+        y = cosdf(i * 7.5f) * 120.0f;
+        Hu3DModelPosSet(obj->model[1], x, pos[1] - y, z);
+        HuPrcVSleep();
+    }
+
+    x = HmfModelData[otherObj->model[1]].pos.x;
+    z = HmfModelData[otherObj->model[1]].pos.z;
+    Hu3DModelPosSet(obj->model[1], x, pos[1], z);
+    Hu3DModelPosSet(obj->model[2], x, -0.5f, z);
+    HuPrcVSleep();
+    for (i = 0; i < 10; i++) {
+        y = sindf(i * 9.0f) * 50.0f;
+        Hu3DModelPosSet(obj->model[1], x, y + pos[1], z);
+        HuPrcVSleep();
+    }
+    D_80109328_mgresultduel = func_80108818_mgresultduel;
+}
 
 void func_80108D28_mgresultduel(void) {
 }

@@ -6,6 +6,18 @@
 #include "../ovl_80_shared_board/105D50.h"
 #include "mgresultbattle.h"
 
+typedef struct {
+    /* 0x00 */ u8 state;
+    /* 0x02 */ s16 unk02;
+    /* 0x04 */ s16 unk04;
+    /* 0x08 */ s32 unk08;
+    /* 0x0C */ f32 x;
+    /* 0x10 */ f32 y;
+    /* 0x14 */ f32 z;
+    /* 0x18 */ s32 unk18;
+    /* 0x1C */ f32 unk1C;
+} ResultBattleEffect; /* size = 0x20 */
+
 void func_80105E0C_mgresultbattle(void);
 void func_80105EF4_mgresultbattle(void);
 void func_801060A4_mgresultbattle(void);
@@ -30,6 +42,7 @@ extern s32 D_801088E0_mgresultbattle[];
 extern s8 D_801088D8_mgresultbattle;
 extern s8 D_801088D0_mgresultbattle;
 extern s32 D_801088D4_mgresultbattle;
+extern ResultBattleEffect D_80108A30_mgresultbattle[40];
 
 void func_801059A0_mgresultbattle(void) {
     s16 var_a0_2;
@@ -249,7 +262,26 @@ void func_80106EA0_mgresultbattle(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80106ED0_mgresultbattle);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80107260_mgresultbattle);
+void func_80107260_mgresultbattle(f32 x, f32 y, f32 z, s32 count, f32 arg4) {
+    s32 n;
+    s32 i;
+
+    n = 0;
+    for (i = 0; i < 40; i++) {
+        if (D_80108A30_mgresultbattle[i].state == 1) {
+            D_80108A30_mgresultbattle[i].state = 4;
+            D_80108A30_mgresultbattle[i].unk08 = n++;
+            D_80108A30_mgresultbattle[i].x = x + (u8)(rand8() % 50);
+            D_80108A30_mgresultbattle[i].y = y;
+            D_80108A30_mgresultbattle[i].z = z + (u8)(rand8() % 50);
+            D_80108A30_mgresultbattle[i].unk18 = 0;
+            D_80108A30_mgresultbattle[i].unk1C = arg4;
+        }
+        if (n >= count) {
+            break;
+        }
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultbattle/4F3780", D_80108908_mgresultbattle);
 

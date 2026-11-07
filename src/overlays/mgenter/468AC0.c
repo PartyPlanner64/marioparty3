@@ -1,4 +1,5 @@
 #include "common.h"
+#include "gcc/string.h"
 
 extern s16 D_800A11E6_main;
 extern s16 D_800D1F36_main;
@@ -9,7 +10,9 @@ extern s16 D_80109B20_mgenter;
 extern s16 D_80109B22_mgenter;
 extern s16 D_80109B24_mgenter;
 extern s16 D_80109B2A_mgenter;
+extern s16 D_80109B2C_mgenter;
 extern s16 D_80109B2E_mgenter;
+extern s16 D_80109B30_mgenter;
 extern s16 D_80109B34_mgenter;
 extern s16 D_80109B36_mgenter;
 extern s16 D_80109B38_mgenter;
@@ -209,7 +212,65 @@ void func_80106710_mgenter(u8 *str) {
     *dst = '\0';
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgenter/468AC0", func_8010677C_mgenter);
+void func_8010677C_mgenter(void) {
+    GAMEMES gMes[3];
+    u8 buf[32];
+    u8 *text;
+    s16 len;
+    s16 i;
+    s16 j;
+    s16 k;
+    s16 strId;
+    s16 cur;
+    f32 x;
+
+    cur = D_80109B2C_mgenter;
+    for (i = 0; i < 3; i++) {
+        text = func_800364DC_main((void *)(i + 0x4608));
+        len = strlen((char *)text);
+        k = 0;
+        for (j = 0; j <= len; j++) {
+            if (text[j] < 0x30 && text[j] != 0x20) {
+                continue;
+            }
+            buf[k++] = text[j];
+        }
+        buf[k] = '\0';
+        strId = func_8003A308_main(&gMes[i], (char *)buf, 0, -1, -1);
+        HuSprPosSet(gMes[i].strGId[strId], 0, -340, 52);
+        gMes[i].subMode = k;
+        func_800365E8_main(text);
+    }
+    while (TRUE) {
+        if (D_80109B24_mgenter == 0) {
+            for (i = 0; i < 11; i++) {
+                x = sindf(i * 9.0f) * 160.0f;
+                HuSprPosSet(gMes[cur].strGId[strId], 0, x, 52);
+                HuPrcVSleep();
+            }
+        }
+        if (D_80109B30_mgenter != 0) {
+            for (i = 1; i < 6; i++) {
+                x = (1.0f - cosdf(i * 18.0f)) * 240.0f * D_80109B30_mgenter + 160.0f;
+                HuSprPosSet(gMes[cur].strGId[strId], 0, x, 52);
+                HuPrcVSleep();
+            }
+            cur += D_80109B30_mgenter;
+            if (cur >= 3) {
+                cur = 0;
+            }
+            if (cur < 0) {
+                cur = 2;
+            }
+            for (i = 1; i < 6; i++) {
+                x = -(1.0f - sindf(i * 18.0f)) * 240.0f * D_80109B30_mgenter + 160.0f;
+                HuSprPosSet(gMes[cur].strGId[strId], 0, x, 52);
+                HuPrcVSleep();
+            }
+        }
+        HuPrcVSleep();
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mgenter/468AC0", D_80109AC0_mgenter);
 

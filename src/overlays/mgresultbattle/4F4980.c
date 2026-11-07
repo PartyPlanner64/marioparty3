@@ -10,7 +10,7 @@ typedef struct {
     /* 0x0C */ f32 x;
     /* 0x10 */ f32 y;
     /* 0x14 */ f32 z;
-    /* 0x18 */ s32 unk18;
+    /* 0x18 */ f32 unk18;
     /* 0x1C */ f32 unk1C;
 } ResultBattleEffect; /* size = 0x20 */
 
@@ -26,6 +26,8 @@ extern s32 D_801088E0_mgresultbattle[];
 extern ResultBattleEffect D_80108A30_mgresultbattle[40];
 extern omObjData *D_80108F74_mgresultbattle;
 extern omObjFunc D_80108F78_mgresultbattle;
+extern Vec D_801089D0_mgresultbattle[4];
+extern s8 D_80108F8C_mgresultbattle[4];
 
 void func_80106BA0_mgresultbattle(void) {
     omObjData *obj;
@@ -52,7 +54,7 @@ void func_80106BA0_mgresultbattle(void) {
         D_80108A30_mgresultbattle[i].unk02 = func_80014618_main(sprite1, 8);
         D_80108A30_mgresultbattle[i].unk04 = func_80014618_main(sprite2, 8);
         D_80108A30_mgresultbattle[i].unk08 = 0;
-        D_80108A30_mgresultbattle[i].unk18 = 0;
+        D_80108A30_mgresultbattle[i].unk18 = 0.0f;
         D_80108A30_mgresultbattle[i].unk1C = 0.0f;
         obj->model[i + 1] = D_800CBB60_main[D_80108A30_mgresultbattle[i].unk02].modelId;
         Hu3DMotionSpeedSet(obj->model[i + 1], 2.0f);
@@ -86,7 +88,56 @@ void func_80106EA0_mgresultbattle(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F4980", func_80106ED0_mgresultbattle);
+void func_80106ED0_mgresultbattle(omObjData *obj) {
+    f32 dist;
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < 40; i++) {
+        switch (D_80108A30_mgresultbattle[i].state) {
+            case 1:
+                break;
+            case 4:
+                if (--D_80108A30_mgresultbattle[i].unk08 > 0) {
+                    break;
+                }
+                D_80108A30_mgresultbattle[i].state = 2;
+                /* fallthrough */
+            case 2:
+                Hu3DModelScaleSet(obj->model[i + 1], 1.5f, 1.5f, 1.5f);
+                func_8001C258_main(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelPosSet(obj->model[i + 1], D_80108A30_mgresultbattle[i].x, D_80108A30_mgresultbattle[i].y,
+                                D_80108A30_mgresultbattle[i].z);
+                D_80108A30_mgresultbattle[i].y -= D_80108A30_mgresultbattle[i].unk18;
+                D_80108A30_mgresultbattle[i].unk18 += 4.0f;
+                if (D_80108A30_mgresultbattle[i].y <= D_80108A30_mgresultbattle[i].unk1C) {
+                    HuAudFXPlay(0x106);
+                    for (j = 0; j < 4; j++) {
+                        if (GwPlayer[D_80108F8C_mgresultbattle[j]].stat & 1) {
+                            continue;
+                        }
+                        if (D_801088E0_mgresultbattle[j] != 0) {
+                            continue;
+                        }
+                        dist = D_801089D0_mgresultbattle[j].x - D_80108A30_mgresultbattle[i].x;
+                        if ((dist > 0.0f ? dist : -(D_801089D0_mgresultbattle[j].x - D_80108A30_mgresultbattle[i].x)) <
+                            100.0f) {
+                            omVibrate(D_80108F8C_mgresultbattle[j], 5, 0, 5);
+                            D_801088E0_mgresultbattle[j] = 1;
+                            break;
+                        }
+                    }
+                    D_80108A30_mgresultbattle[i].state = 1;
+                    func_8001C258_main(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    func_80014714_main(D_80108A30_mgresultbattle[i].unk04, 0);
+                    Hu3DModelPosSet(obj->model[i + 41], D_80108A30_mgresultbattle[i].x,
+                                    D_80108A30_mgresultbattle[i].unk1C, D_80108A30_mgresultbattle[i].z);
+                    func_8001C258_main(obj->model[i + 41], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                }
+                break;
+        }
+    }
+}
 
 void func_80107260_mgresultbattle(f32 x, f32 y, f32 z, s32 count, f32 arg4) {
     s32 n;
@@ -100,7 +151,7 @@ void func_80107260_mgresultbattle(f32 x, f32 y, f32 z, s32 count, f32 arg4) {
             D_80108A30_mgresultbattle[i].x = x + (u8)(rand8() % 50);
             D_80108A30_mgresultbattle[i].y = y;
             D_80108A30_mgresultbattle[i].z = z + (u8)(rand8() % 50);
-            D_80108A30_mgresultbattle[i].unk18 = 0;
+            D_80108A30_mgresultbattle[i].unk18 = 0.0f;
             D_80108A30_mgresultbattle[i].unk1C = arg4;
         }
         if (n >= count) {

@@ -20,7 +20,18 @@ s32 func_801081F0_mgresultboard(omObjData *, s8, s8, s8);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E9120", func_80107D00_mgresultboard);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E9120", func_801080C4_mgresultboard);
+void func_801080C4_mgresultboard(void) {
+    s8 i;
+
+    for (i = 0; i < 4; i++) {
+        D_8010AFE8_mgresultboard[i].unk_00 = 0;
+        D_8010AFE8_mgresultboard[i].unk_02 = 0;
+        D_8010AFE8_mgresultboard[i].unk_04 = -1;
+        D_8010AFE8_mgresultboard[i].unk_06 = i;
+        D_8010AFE8_mgresultboard[i].unk_08 = i + 4;
+        D_8010AFE8_mgresultboard[i].unk_0A = 0;
+    }
+}
 
 void func_80108150_mgresultboard(omObjData *arg0) {
     s8 i;
@@ -127,7 +138,18 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E9120", func_8010A334_mgre
 void func_8010A350_mgresultboard(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E9120", func_8010A358_mgresultboard);
+void func_8010A358_mgresultboard(void) {
+    s8 i;
+
+    for (i = 0; i < 4; i++) {
+        D_8010AFB0_mgresultboard[i].unk_00 = 0;
+        D_8010AFB0_mgresultboard[i].unk_02 = 0;
+        D_8010AFB0_mgresultboard[i].unk_04 = -1;
+        D_8010AFB0_mgresultboard[i].unk_06 = i;
+        D_8010AFB0_mgresultboard[i].unk_08 = i + 4;
+        D_8010AFB0_mgresultboard[i].unk_0A = 0;
+    }
+}
 
 void func_8010A3E4_mgresultboard(omObjData *arg0) {
     s8 i;

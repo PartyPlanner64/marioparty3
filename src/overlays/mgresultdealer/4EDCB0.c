@@ -34,7 +34,20 @@ s8 func_80108034_mgresultdealer(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EDCB0", func_80108040_mgresultdealer);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EDCB0", func_80108194_mgresultdealer);
+void func_80108194_mgresultdealer(void) {
+    f32 step;
+
+    if (D_80109930_mgresultdealer) {
+        step = 255.0f / 30;
+        func_80108560_mgresultdealer(D_80109934_mgresultdealer * step);
+        D_80109934_mgresultdealer++;
+        if (D_80109934_mgresultdealer >= 30) {
+            func_80108560_mgresultdealer(255);
+            D_80109931_mgresultdealer = 1;
+            D_80109930_mgresultdealer = 0;
+        }
+    }
+}
 
 void func_80108258_mgresultdealer(void) {
 }

@@ -25,6 +25,8 @@ extern omObjFunc D_80109328_mgresultduel;
 extern omObjData *D_8010931C_mgresultduel;
 extern ResultDuelObj D_8010932C_mgresultduel;
 extern ResultDuelObj D_80109340_mgresultduel;
+extern ResultDuelObj D_80109324_mgresultduel;
+extern s32 D_80109300_mgresultduel[3];
 extern s32 D_80109314_mgresultduel;
 extern s32 D_800A178C_main[][6];
 extern s8 D_80109318_mgresultduel;
@@ -57,6 +59,7 @@ void func_800F79E8_name_81(s32);
 void func_800E1504_name_81(s8, s32, s32, s32);
 void func_800F37E0_name_81(s16, s32);
 void func_80108818_mgresultduel(omObjData *);
+void func_80108D28_mgresultduel(void);
 void func_80108820_mgresultduel(omObjData *);
 void func_80108D30_mgresultduel(s16, s16, s16);
 void func_80108E04_mgresultduel(void);
@@ -385,7 +388,62 @@ void func_80108318_mgresultduel(omObjData *arg0) {
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F1180", func_80108318_mgresultduel);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F1180", func_801084B0_mgresultduel);
+void func_801084B0_mgresultduel(void) {
+    omObjData *obj;
+    void *data;
+
+    obj = omAddObj(20, 5, 6, -1, NULL);
+    D_80109324_mgresultduel.obj = obj;
+    obj->model[1] = func_8000B108_main(0xA0075, 0x2A9);
+    func_8001C814_main(obj->model[1], 2, 2);
+
+    data = DataRead(0xA007E);
+    D_80109300_mgresultduel[0] = (s16)HmfAnimCreate(HmfModelData[obj->model[1]].hmf, data, 0, "c204n_0_DEF");
+    HuMemMemoryFreePerm(data);
+    Hu3DModelRemakeStatic(obj->model[1]);
+    func_8001C514_main(obj->model[1]);
+    func_80032FC0_main(D_80109300_mgresultduel[0], 1, 0);
+    func_80032FF8_main(D_80109300_mgresultduel[0], 0);
+    D_8010930C_mgresultduel =
+        HmfAnimLink(HmfModelData[obj->model[1]].hmf, D_80109300_mgresultduel[0], 0, "c204n_0_DEF");
+    D_80109300_mgresultduel[0] = D_800D1714_main[D_80109300_mgresultduel[0]].animIdx;
+
+    data = DataRead(0xA0081);
+    D_80109300_mgresultduel[1] = (s16)func_800329B4_main(data);
+    HuMemMemoryFreePerm(data);
+
+    data = DataRead(0xA0084);
+    D_80109300_mgresultduel[2] = (s16)func_800329B4_main(data);
+    HuMemMemoryFreePerm(data);
+
+    func_80108D30_mgresultduel(obj->model[1], D_8010930C_mgresultduel, D_80109300_mgresultduel[0]);
+
+    obj->model[2] = func_8000B108_main(9, 0x2B9);
+    Hu3DModelPosSet(obj->model[2], 0.0f, -5.0f, 0.0f);
+    Hu3DModelScaleSet(obj->model[2], 1.0f, 1.0f, 1.0f);
+
+    func_8000B460_main(obj, 0, 0xA0076);
+    func_8000B460_main(obj, 1, 0xA0077);
+    func_8000B460_main(obj, 2, 0xA0078);
+    func_8000B460_main(obj, 3, 0xA007A);
+    func_8000B460_main(obj, 4, 0xA007B);
+    func_8001C5B4_main(obj->model[1], obj->motion[0]);
+    func_8001C814_main(obj->model[1], 2, 2);
+
+    obj->trans.x = 0.0f;
+    obj->trans.y = 0.0f;
+    obj->trans.z = 0.0f;
+    Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
+    Hu3DModelPosSet(obj->model[1], 700.0f, 300.0f, 1600.0f);
+    Hu3DModelPosSet(obj->model[2], 700.0f, -5.0f, 1600.0f);
+    omPrcSetDestructor(0, func_80108D28_mgresultduel);
+    D_80109324_mgresultduel.func = func_80108818_mgresultduel;
+
+    while (TRUE) {
+        D_80109328_mgresultduel(obj);
+        HuPrcVSleep();
+    }
+}
 
 void func_80108818_mgresultduel(omObjData *arg0) {
 }

@@ -156,7 +156,32 @@ void func_801082C0_mgresultbattle(omObjData *obj) {
     D_80108F88_mgresultbattle = func_8010829C_mgresultbattle;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F5AF0", func_80108510_mgresultbattle);
+void func_80108510_mgresultbattle(s16 group, s16 x, s16 y) {
+    s32 coins = GwPlayer[D_80108F8C_mgresultbattle[group]].gameCoin;
+
+    if (coins < 10) {
+        espDispOn(D_80108F38_mgresultbattle[group][0]);
+        espDispOn(D_80108F38_mgresultbattle[group][1]);
+        espPosSet(D_80108F38_mgresultbattle[group][0], x - 6, y - 18);
+        espPosSet(D_80108F38_mgresultbattle[group][1], x + 4, y - 18);
+        func_8000BD50_main(D_80108F38_mgresultbattle[group][0], 11);
+        func_8000BD50_main(D_80108F38_mgresultbattle[group][1], coins % 10);
+    } else {
+        espDispOn(D_80108F38_mgresultbattle[group][0]);
+        espDispOn(D_80108F38_mgresultbattle[group][1]);
+        espDispOn(D_80108F38_mgresultbattle[group][2]);
+        espPosSet(D_80108F38_mgresultbattle[group][0], x - 11, y - 18);
+        espPosSet(D_80108F38_mgresultbattle[group][1], x - 1, y - 18);
+        espPosSet(D_80108F38_mgresultbattle[group][2], x + 9, y - 18);
+        if (coins < 100) {
+            func_8000BD50_main(D_80108F38_mgresultbattle[group][0], 11);
+        } else {
+            func_8000BD50_main(D_80108F38_mgresultbattle[group][0], coins / 100 % 10);
+        }
+        func_8000BD50_main(D_80108F38_mgresultbattle[group][1], coins / 10 % 10);
+        func_8000BD50_main(D_80108F38_mgresultbattle[group][2], coins % 10);
+    }
+}
 
 void func_80108858_mgresultbattle(s16 group) {
     espDispOff(D_80108F30_mgresultbattle[group]);

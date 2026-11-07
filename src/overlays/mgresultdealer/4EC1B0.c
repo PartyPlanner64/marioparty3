@@ -5,6 +5,13 @@ extern s16 D_80109A6A_mgresultdealer;
 extern omObjFunc D_8010A254_mgresultdealer;
 extern s8 D_8010A266_mgresultdealer;
 extern s8 D_801098D0_mgresultdealer;
+extern u8 D_801098E0_mgresultdealer;
+extern u8 D_801098E1_mgresultdealer;
+extern s8 D_801098E2_mgresultdealer;
+extern Vec D_801098E4_mgresultdealer;
+extern Vec D_801098F0_mgresultdealer;
+extern f32 D_80109A60_mgresultdealer;
+extern omObjData *D_8010A250_mgresultdealer;
 
 void func_80106A50_mgresultdealer(omObjData *);
 void func_80106EC0_mgresultdealer(omObjData *);
@@ -48,18 +55,22 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80106A50_mgr
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80106B94_mgresultdealer);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80106CC8_mgresultdealer);
+void func_80106CC8_mgresultdealer(omObjData *obj) {
+    D_801098E4_mgresultdealer.y -= D_80109A60_mgresultdealer;
+    D_80109A60_mgresultdealer += 0.98f;
+    if (D_801098E4_mgresultdealer.y <= 0.0f) {
+        D_801098E4_mgresultdealer.y = 0.0f;
+        D_801098E0_mgresultdealer = 0;
+        D_8010A254_mgresultdealer = func_80106A50_mgresultdealer;
+    }
+    Hu3DModelPosSet(obj->model[2], D_801098E4_mgresultdealer.x, D_801098E4_mgresultdealer.y,
+                    D_801098E4_mgresultdealer.z);
+    Hu3DModelRotSet(obj->model[2], D_801098F0_mgresultdealer.x, D_801098F0_mgresultdealer.y,
+                    D_801098F0_mgresultdealer.z);
+}
 
 void func_80106D94_mgresultdealer(void) {
 }
-
-extern u8 D_801098E0_mgresultdealer;
-extern u8 D_801098E1_mgresultdealer;
-extern s8 D_801098E2_mgresultdealer;
-extern Vec D_801098E4_mgresultdealer;
-extern Vec D_801098F0_mgresultdealer;
-extern s32 D_80109A60_mgresultdealer;
-extern omObjData *D_8010A250_mgresultdealer;
 
 void func_80106D9C_mgresultdealer(void) {
     omObjData *obj = D_8010A250_mgresultdealer;

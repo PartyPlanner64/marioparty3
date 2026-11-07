@@ -16,8 +16,20 @@ extern s8 D_80109318_mgresultduel;
 extern s8 D_80108E78_mgresultduel;
 extern char D_80108EC0_mgresultduel[];
 extern s32 D_80109314_mgresultduel;
+extern s16 D_80109316_mgresultduel;
+const s16 D_80108EA0_mgresultduel[2][2] = { { 30, 40 }, { 194, 40 } };
+extern Addr D_128CC60;
 
+void func_800F6550_name_81(s32, s16, s16);
+void func_800F7458_name_81(s32, f32, f32);
+void func_80105E90_mgresultduel(omObjData *);
+void func_80105FD4_mgresultduel(omObjData *);
 void func_80106054_mgresultduel(void);
+void func_80106080_mgresultduel(void);
+void func_80106930_mgresultduel(void);
+void func_80106F38_mgresultduel(void);
+void func_80107710_mgresultduel(void);
+void func_801084B0_mgresultduel(void);
 void func_80106544_mgresultduel(omObjData *);
 void func_80106270_mgresultduel(omObjData *);
 void func_80106278_mgresultduel(omObjData *);
@@ -28,9 +40,95 @@ void func_801074B8_mgresultduel(void);
 void func_801074DC_mgresultduel(s8);
 void func_80107C74_mgresultduel(s32, s32);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_801059A0_mgresultduel);
+void func_801059A0_mgresultduel(void) {
+    s16 coins[2];
+    s8 count = 0;
+    s8 i;
+    s8 j;
+    s8 player;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultduel/4F01F0", D_80108EA0_mgresultduel);
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 4; j++) {
+            if (i == GwPlayer[j].group) {
+                D_80109310_mgresultduel[count] = j;
+                count++;
+                if (count >= 4) {
+                    break;
+                }
+            }
+        }
+        if (count >= 4) {
+            break;
+        }
+    }
+
+    omInitObjMan(50, 20);
+    func_800142A0_main(120);
+    func_800F6390_name_81();
+    func_800F6550_name_81(0, D_80108EA0_mgresultduel[0][0], D_80108EA0_mgresultduel[0][1]);
+    func_800F6550_name_81(1, D_80108EA0_mgresultduel[1][0], D_80108EA0_mgresultduel[1][1]);
+    func_800F7458_name_81(0, 0.0f, 0.0f);
+    func_800F7458_name_81(1, 0.0f, 0.0f);
+    Hu3DCamInit(1);
+    func_800E4F50_name_81(D_128CC60);
+    MBDBackLoad(23);
+    func_800E8180_name_81(1000.0f, 10000.0f);
+
+    coins[0] = GwPlayer[D_80109310_mgresultduel[0]].gameCoin + GwPlayer[D_80109310_mgresultduel[0]].bonusCoin;
+    coins[1] = GwPlayer[D_80109310_mgresultduel[1]].gameCoin + GwPlayer[D_80109310_mgresultduel[1]].bonusCoin;
+    if (coins[0] >= coins[1]) {
+        if (coins[0] == coins[1]) {
+            D_80109318_mgresultduel = 2;
+            D_80109314_mgresultduel = 0;
+        } else {
+            player = D_80109310_mgresultduel[0];
+            D_80109318_mgresultduel = -1;
+            D_80109314_mgresultduel = GwPlayer[D_80109310_mgresultduel[player]].gameCoin + GwPlayer[player].bonusCoin;
+            if (GwSystem.bank_coins == 0) {
+                if (GwSystem.current_turn < 11) {
+                    D_80109314_mgresultduel *= 2;
+                } else if (GwSystem.current_turn < 20) {
+                    D_80109314_mgresultduel *= 3;
+                } else {
+                    D_80109314_mgresultduel *= 4;
+                }
+            }
+        }
+    } else {
+        player = D_80109310_mgresultduel[1];
+        D_80109318_mgresultduel = 1;
+        D_80109314_mgresultduel = GwPlayer[D_80109310_mgresultduel[player]].gameCoin + GwPlayer[player].bonusCoin;
+        if (GwSystem.bank_coins == 0) {
+            if (GwSystem.current_turn < 11) {
+                D_80109314_mgresultduel *= 2;
+            } else if (GwSystem.current_turn < 20) {
+                D_80109314_mgresultduel *= 3;
+            } else {
+                D_80109314_mgresultduel *= 4;
+            }
+        }
+    }
+
+    if (coins[0] != coins[1]) {
+        if (coins[0] >= coins[1]) {
+            GwPlayer[D_80109310_mgresultduel[0]].gamePrize += D_80109316_mgresultduel;
+        } else {
+            GwPlayer[D_80109310_mgresultduel[1]].gamePrize += D_80109316_mgresultduel;
+        }
+    }
+
+    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    HmfLightDirSet(1, 0.0f, 50.0f, 100.0f);
+    omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    omAddPrcObj(func_80106930_mgresultduel, 0x1001, 0x2000, 0);
+    omAddPrcObj(func_80106F38_mgresultduel, 0x1001, 0x2000, 0);
+    omAddPrcObj(func_80106080_mgresultduel, 0x1001, 0x2000, 0);
+    omAddPrcObj(func_801084B0_mgresultduel, 0x1001, 0x2000, 0);
+    omAddPrcObj(func_80107710_mgresultduel, 0x1001, 0x2000, 0);
+    omAddObj(10, 0, 0, -1, func_80105E90_mgresultduel);
+    omAddObj(10, 0, 0, -1, func_80105FD4_mgresultduel);
+    WipeCreateIn(WIPE_TYPE_PREV, 16);
+}
 
 void func_80105E90_mgresultduel(omObjData *object) {
     s32 state;
@@ -78,7 +176,7 @@ void func_80105E90_mgresultduel(omObjData *object) {
     D_80108E70_mgresultduel = state;
 }
 
-void func_80105FD4_mgresultduel(void) {
+void func_80105FD4_mgresultduel(omObjData *obj) {
     if (D_800D530C_main == 1) {
         if (D_80108E78_mgresultduel == 0) {
             WipeCreateOut(WIPE_TYPE_NORMAL, 0x14);

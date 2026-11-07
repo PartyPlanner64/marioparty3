@@ -8,7 +8,7 @@
 typedef struct UnkResultDuelStruct {
     /* 0x00 */ u8 unk00;
     /* 0x02 */ u16 unk02;
-    /* 0x04 */ f32 unk04;
+    /* 0x04 */ s32 unk04;
     /* 0x08 */ Vec pos;
     /* 0x14 */ f32 unk14;
 } UnkResultDuelStruct; // size = 0x18
@@ -38,6 +38,8 @@ extern s32 D_80108E88_mgresultduel;
 extern s32 D_80108E8C_mgresultduel;
 extern s32 D_80108E90_mgresultduel;
 extern s32 D_80108E94_mgresultduel;
+extern s32 D_80108E98_mgresultduel;
+extern s8 D_80108E9C_mgresultduel;
 extern u16 D_80108F30_mgresultduel;
 extern u16 D_80108F32_mgresultduel;
 extern UnkResultDuelStruct D_80108F38_mgresultduel[20];
@@ -62,6 +64,8 @@ void func_80107B04_mgresultduel(s32);
 void func_80107CA4_mgresultduel(omObjData *);
 void func_80108318_mgresultduel(omObjData *);
 void func_80106730_mgresultduel(void);
+void func_80106560_mgresultduel(void);
+void func_8010751C_mgresultduel(s8);
 void func_800F79E8_name_81(s32);
 void func_800E1504_name_81(s8, s32, s32, s32);
 void func_800F37E0_name_81(s16, s32);
@@ -393,7 +397,106 @@ void func_80107C74_mgresultduel(s32 arg0, s32 arg1) {
     D_80109320_mgresultduel = func_80107CA4_mgresultduel;
 }
 
+#ifdef NON_MATCHING
+/*
+ * Only diff: s4/s5 are swapped between `obj` and `max`. global-alloc ranks
+ * `obj` (15 refs over 287 insns) slightly ahead of `max` (6 refs over 79
+ * insns); the target behaves as if `max` had the higher priority. The
+ * analogous func_80107888_mgresultdealer matches with obj in s4.
+ */
+void func_80107CA4_mgresultduel(omObjData *obj) {
+    HmfModelEntry *entry;
+    HmfAnimSet *animSet;
+    HmfAnimRot *rot;
+    s8 i;
+    s8 count;
+    s32 max;
+    s32 player;
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 t;
+
+    if (D_80108E88_mgresultduel < D_80108E90_mgresultduel) {
+        count = 0;
+        for (i = 0; i < 20; i++) {
+            if (D_80108F38_mgresultduel[i].unk00 == 1) {
+                continue;
+            }
+            if (D_80108E80_mgresultduel % D_80108E94_mgresultduel != 0) {
+                continue;
+            }
+            entry = &D_800CBB60_main[D_80108F38_mgresultduel[i].unk02];
+            animSet = &D_800D408C_main[(u16)entry->unk_02];
+            rot = &animSet->rot[entry->pointIdx];
+            func_8001C258_main(obj->model[i + 1], HU3D_ATTR_DISPOFF, 0);
+            if (D_80108E84_mgresultduel >= 20) {
+                max = (rand8() & 1) + 1;
+            } else {
+                max = 1;
+            }
+            Hu3DModelPosSet(obj->model[i + 1], 0.0f, 400.0f, 0.0f);
+            D_80108F38_mgresultduel[i].pos.x = (u8)(rand8() % 40) - 20;
+            D_80108F38_mgresultduel[i].pos.y = (u8)(rand8() % 40) - 20;
+            D_80108F38_mgresultduel[i].pos.z = (u8)(rand8() % 40) - 20;
+            D_80108F38_mgresultduel[i].unk00 = 1;
+            D_80108F38_mgresultduel[i].unk04 = 0;
+            entry->nodeIdx = rand8() % rot->frameCount;
+            entry->unk_08 = 0;
+            D_80108E88_mgresultduel++;
+            if (D_80108E88_mgresultduel >= D_80108E90_mgresultduel) {
+                break;
+            }
+            count++;
+            if (count >= max) {
+                break;
+            }
+        }
+    } else if (!D_80108E9C_mgresultduel) {
+        func_80106560_mgresultduel();
+        D_80108E9C_mgresultduel = 1;
+    }
+
+    for (i = 0; i < 20; i++) {
+        if (D_80108F38_mgresultduel[i].unk00 == 0) {
+            continue;
+        }
+        t = D_80108F38_mgresultduel[i].unk04;
+        x = t * 8.8f + D_80108F38_mgresultduel[i].pos.x;
+        y = sindf(t * 7.2f) * 170.0f + D_80108F38_mgresultduel[i].pos.y;
+        z = D_80108F38_mgresultduel[i].pos.z;
+        Hu3DModelPosSet(obj->model[i + 1], x * D_801092F8_mgresultduel, y + 170.0f, z + 2300.0f);
+        D_80108F38_mgresultduel[i].unk04++;
+        if (D_80108F38_mgresultduel[i].unk04 < 25) {
+            continue;
+        }
+        D_80108E8C_mgresultduel++;
+        D_80108F38_mgresultduel[i].unk00 = 0;
+        func_8001C258_main(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        func_8001C258_main(obj->model[i + 21], HU3D_ATTR_DISPOFF, 0);
+        Hu3DModelPosSet(obj->model[i + 21], x * D_801092F8_mgresultduel, y + 170.0f, z + 2300.0f);
+        Hu3DMotionTimeSet(obj->model[i + 21], 0);
+        func_80014714_main(D_80109118_mgresultduel[i].unk02, 0);
+        HuAudFXPlay(9);
+        if (D_80108E98_mgresultduel == 0) {
+            player = (D_80109318_mgresultduel == -1) ? D_80109310_mgresultduel[0] : D_80109310_mgresultduel[1];
+            if (!(GwPlayer[player].stat & 1)) {
+                omVibrate(player, 5, 0, 5);
+            }
+            D_80108E98_mgresultduel = 1;
+        }
+    }
+
+    D_80108E80_mgresultduel++;
+    if (D_80108E8C_mgresultduel >= D_80108E84_mgresultduel) {
+        D_80108E9C_mgresultduel = 0;
+        func_8010751C_mgresultduel(D_80109318_mgresultduel);
+        D_80109320_mgresultduel = func_80107AF4_mgresultduel;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F1180", func_80107CA4_mgresultduel);
+#endif
 
 void func_80108304_mgresultduel(void) {
     D_80109320_mgresultduel = func_80108318_mgresultduel;

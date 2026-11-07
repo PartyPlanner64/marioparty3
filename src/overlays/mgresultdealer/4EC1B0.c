@@ -173,7 +173,35 @@ void func_8010705C_mgresultdealer(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_801070EC_mgresultdealer);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_801072A8_mgresultdealer);
+void func_801072A8_mgresultdealer(s16 model) {
+    HmfData *hmf = HmfModelData[model].hmf;
+    HmfModelData_UnkBC_Struct *bc = HmfModelData[model].unkBC;
+    HmfModelData_UnkBC_Unk58_Struct *particle;
+    s16 count = hmf->unk1A;
+    s16 i;
+
+    if (bc->unk02 == 0) {
+        bc->unk04 &= ~4;
+        particle = bc->unk58;
+        for (i = 0; i < count; i++, particle++) {
+            particle->unk0C = particle->unk10 = particle->unk14 = 0.0f;
+            particle->unk24 = particle->unk28 = particle->unk2C = 0.0f;
+            particle->unk08 = 0.0f;
+            particle->unk04 = 1.0f;
+        }
+        bc->unk02++;
+    }
+    particle = bc->unk58;
+    for (i = 0; i < count; i++, particle++) {
+        if (particle->unk10 > 0.0f) {
+            particle->unk0C += particle->unk18;
+            particle->unk10 += particle->unk1C - 8.0f;
+            particle->unk14 += particle->unk20;
+        } else {
+            particle->unk08 = 0.0f;
+        }
+    }
+}
 
 void func_801073F4_mgresultdealer(void) {
     func_80017954_main(D_8010A250_mgresultdealer->model[0], 2, GwPlayer[D_8010A266_mgresultdealer].chr,

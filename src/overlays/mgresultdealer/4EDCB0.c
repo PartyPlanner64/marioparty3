@@ -18,7 +18,7 @@ typedef struct {
 } UnkDealerFadeProc;
 
 typedef struct {
-    /* 0x00 */ s8 unk_00;
+    /* 0x00 */ u8 unk_00;
     /* 0x02 */ u16 unk_02;
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ Vec unk_08;
@@ -32,6 +32,8 @@ extern s32 D_80109918_mgresultdealer;
 extern s32 D_8010991C_mgresultdealer;
 extern s32 D_80109920_mgresultdealer;
 extern s32 D_80109924_mgresultdealer;
+extern s32 D_80109928_mgresultdealer;
+extern s32 D_8010992C_mgresultdealer;
 extern s8 D_80109930_mgresultdealer;
 extern s8 D_80109931_mgresultdealer;
 extern s32 D_80109934_mgresultdealer;
@@ -61,6 +63,7 @@ extern UnkDealerCoin D_80109A78_mgresultdealer[40];
 extern UnkDealerCoin D_80109E38_mgresultdealer[40];
 extern omObjFunc D_8010A278_mgresultdealer;
 extern omObjData *D_8010A274_mgresultdealer;
+extern s8 D_8010A266_mgresultdealer[4];
 
 void func_80107888_mgresultdealer(omObjData *);
 void func_80107E3C_mgresultdealer(void);
@@ -130,7 +133,97 @@ void func_801074A0_mgresultdealer(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EDCB0", func_80107888_mgresultdealer);
+void func_80107888_mgresultdealer(omObjData *obj) {
+    HmfModelEntry *entry;
+    HmfAnimSet *animSet;
+    HmfAnimRot *rot;
+    s8 i;
+    s8 count;
+    s32 max;
+    s16 landed;
+    s8 spawning;
+    f32 x;
+    f32 y;
+    f32 z;
+
+    if (D_80109910_mgresultdealer) {
+        if ((spawning = D_8010991C_mgresultdealer < D_80109920_mgresultdealer) == TRUE) {
+            count = 0;
+            for (i = 0; i < 40; i++) {
+                if (D_80109A78_mgresultdealer[i].unk_00 != 0) {
+                    continue;
+                }
+                if (D_80109914_mgresultdealer % D_80109924_mgresultdealer != 0) {
+                    continue;
+                }
+                entry = &D_800CBB60_main[D_80109A78_mgresultdealer[i].unk_02];
+                animSet = &D_800D408C_main[(u16)entry->unk_02];
+                rot = &animSet->rot[entry->pointIdx];
+                func_8001C258_main(obj->model[i + 1], HU3D_ATTR_DISPOFF, 0);
+                if (D_80109918_mgresultdealer >= 20) {
+                    max = (rand8() & 1) + 1;
+                } else {
+                    max = 1;
+                }
+                Hu3DModelPosSet(obj->model[i + 1], 0.0f, 400.0f, 0.0f);
+                D_80109A78_mgresultdealer[i].unk_08.x = (u8)(rand8() % 60) - 30;
+                D_80109A78_mgresultdealer[i].unk_08.y = 400.0f;
+                D_80109A78_mgresultdealer[i].unk_08.z = (u8)(rand8() % 60) - 30;
+                D_80109A78_mgresultdealer[i].unk_00 = 1;
+                D_80109A78_mgresultdealer[i].unk_14 = 0.98f;
+                entry->nodeIdx = rand8() % rot->frameCount;
+                entry->unk_08 = 0;
+                D_8010991C_mgresultdealer++;
+                if (D_8010991C_mgresultdealer >= D_80109920_mgresultdealer) {
+                    break;
+                }
+                count++;
+                if (count >= max) {
+                    break;
+                }
+            }
+        }
+
+        landed = 0;
+        for (i = 0; i < 40; i++) {
+            if (D_80109A78_mgresultdealer[i].unk_00 != 1) {
+                continue;
+            }
+            x = D_80109A78_mgresultdealer[i].unk_08.x;
+            y = D_80109A78_mgresultdealer[i].unk_08.y;
+            z = D_80109A78_mgresultdealer[i].unk_08.z;
+            Hu3DModelPosSet(obj->model[i + 1], x, y, z);
+            D_80109A78_mgresultdealer[i].unk_08.y -= D_80109A78_mgresultdealer[i].unk_14;
+            D_80109A78_mgresultdealer[i].unk_14 += 0.98f;
+            D_80109A78_mgresultdealer[i].unk_04++;
+            if (y <= 152.5f) {
+                D_80109A78_mgresultdealer[i].unk_00 = 0;
+                func_8001C258_main(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                func_8001C258_main(obj->model[i + 41], HU3D_ATTR_DISPOFF, 0);
+                Hu3DModelPosSet(obj->model[i + 41], x, y, z);
+                Hu3DMotionTimeSet(obj->model[i + 41], 0);
+                func_80014714_main(D_80109E38_mgresultdealer[i].unk_02, 0);
+                HuAudFXPlay(9);
+                if (D_8010992C_mgresultdealer == 0) {
+                    if (!(GwPlayer[D_8010A266_mgresultdealer[0]].stat & 1)) {
+                        omVibrate(D_8010A266_mgresultdealer[0], 5, 0, 5);
+                    }
+                    D_8010992C_mgresultdealer = 1;
+                }
+            }
+            landed++;
+        }
+
+        if (landed == 0 && spawning != TRUE) {
+            if (D_80109928_mgresultdealer == 0) {
+                HuAudFXPlay(0x517);
+                D_80109928_mgresultdealer = 1;
+            }
+            D_80109911_mgresultdealer = 1;
+        }
+        D_80109914_mgresultdealer++;
+    }
+}
 
 void func_80107E3C_mgresultdealer(void) {
 }

@@ -4,7 +4,7 @@
 #include "overlays/minigame.h"
 
 typedef struct {
-    /* 0x00 */ u16 unk00;
+    /* 0x00 */ s16 unk00;
     /* 0x02 */ s16 unk02;
     /* 0x04 */ s16 unk04;
     /* 0x06 */ s16 unk06;
@@ -26,14 +26,23 @@ typedef struct {
 } BA4B0_Elem; // Size 0xC
 
 typedef struct {
+    /* 0x00 */ s32 file;
+    /* 0x04 */ BA4B0_Pos pos;
+} BA4B0_SprDef; // Size 0x8
+
+typedef struct {
+    /* 0x00 */ s16 x;
+    /* 0x02 */ s16 y;
+    /* 0x04 */ s16 w;
+    /* 0x06 */ s16 h;
+} BA4B0_WinDef; // Size 0x8
+
+typedef struct {
     /* 0x000 */ BA4B0_ProcessData *data;
     /* 0x004 */ BA4B0_Elem elems[23];
     /* 0x118 */ s16 unk118;
-    /* 0x11A */ char unk11A[0x8];
-    /* 0x122 */ s16 window;
-    /* 0x124 */ char unk124[0xA];
-    /* 0x12E */ s16 unk12E;
-    /* 0x130 */ s16 unk130;
+    /* 0x11A */ s16 windows[6];
+    /* 0x126 */ s16 winFlags[6];
     /* 0x132 */ s16 group;
     /* 0x134 */ s16 graphics[4];
     /* 0x13C */ s16 unk13C;
@@ -42,6 +51,16 @@ typedef struct {
     /* 0x142 */ char unk142[0x2];
 } BA4B0_Work; // Size 0x144
 
+extern BA4B0_SprDef D_800EB950_minigame[15];
+extern s32 D_800EB9C8_minigame[];
+extern s32 D_800EB9E4_minigame[];
+extern u32 D_800EB9FC_minigame[];
+extern u32 D_800EBA14_minigame[];
+extern u32 D_800EBA24_minigame[];
+extern u8 D_800EBA40_minigame[];
+extern u8 D_800EBA4C_minigame[];
+extern u8 D_800EBA58_minigame[][3];
+extern BA4B0_WinDef D_800EBA70_minigame[6];
 extern BA4B0_Pos D_800EBAA0_minigame[];
 extern u32 D_800EBABC_minigame[];
 extern u8 D_800EBACC_minigame[];
@@ -51,12 +70,13 @@ extern u8 D_800EBAE4_minigame[];
 extern u8 D_800EBAEC_minigame[];
 extern s16 D_800EBAF0_minigame;
 extern u8 D_800EBAF4_minigame[];
+extern s16 winPrio;
 
 s16 func_800E7BCC_minigame(BA4B0_Work *work);
 void func_800E7F60_minigame(void);
 s16 func_800E905C_minigame(s16 arg0);
 
-void func_800E7930_minigame(s16 group, s16 member, s16 graphic, u16 prio, s16 x, s16 y) {
+void func_800E7930_minigame(s16 group, s16 member, s16 graphic, s16 prio, s16 x, s16 y) {
     HuSprTPLvlSet(group, member, 256);
     HuSprAttrReset(group, member, 0xFFFF);
     HuSprAttrSet(group, member, 0x9000);
@@ -156,7 +176,7 @@ s16 func_800E7BCC_minigame(BA4B0_Work *work) {
     for (rank = member; rank < 13; rank++) {
         HuSprDispOff(group, rank);
     }
-    work->unk130 = 1;
+    work->winFlags[5] = 1;
     work->unk140 = 1;
     return 0;
 }
@@ -170,9 +190,9 @@ s16 func_800E7E08_minigame(s16 page, BA4B0_Work *work) {
     BA4B0_Elem *elemsB;
     s16 alt;
 
-    HuWinHomeClear(work->window);
-    HuWinMesSet(work->window, D_800EBABC_minigame[page], -2, -1);
-    work->unk12E = 1;
+    HuWinHomeClear(work->windows[4]);
+    HuWinMesSet(work->windows[4], D_800EBABC_minigame[page], -2, -1);
+    work->winFlags[4] = 1;
     if (page < 2) {
         alt = 0;
         elems = &work->elems[2];
@@ -201,7 +221,404 @@ s16 func_800E7E08_minigame(s16 page, BA4B0_Work *work) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BA4B0", func_800E7F60_minigame);
+void func_800E7F60_minigame(void) {
+    s16 color[3];
+    s16 step[3];
+    u32 msgs[4];
+    BA4B0_ProcessData *data;
+    s16 *rankWin;
+    BA4B0_Work *work;
+    BA4B0_Elem *elem;
+    BA4B0_SprDef *def;
+    s16 *win;
+    s16 *flag;
+    s16 *gfx;
+    u8 *colorStart;
+    u8 *colorPtr;
+    u16 group;
+    s16 state;
+    s16 shown;
+    s16 fadeInWait;
+    s16 sprFadeSpeed;
+    s16 sprAlpha;
+    s16 winFadeSpeed;
+    s16 winAlpha;
+    s16 hasRank;
+    s16 colorFrames;
+    s16 colorTimer;
+    s16 colorCycle;
+    s16 page;
+    s16 prevPage;
+    s16 pageChanging;
+    s16 rank;
+    s16 graphic;
+    s16 x;
+    s16 y;
+    s16 member;
+    s32 prio;
+    s16 markX;
+    s32 done;
+    s32 i;
+
+    data = HuPrcCurrentGet()->user_data;
+    work = HuMemAllocTag(sizeof(BA4B0_Work), 0x7918);
+    memset(work, 0, sizeof(BA4B0_Work));
+    work->data = data;
+    page = 0;
+    prevPage = 0;
+    for (elem = work->elems, i = 0; i < 23; i++, elem++) {
+        elem->unk04 = -1;
+        elem->unk06 = 256;
+        elem->unk08 = 0;
+        elem->unk0A = 0;
+    }
+    work->unk13E = -1;
+    work->unk13C = -1;
+    hasRank = 0;
+    rank = -1;
+    switch (data->unk00) {
+        case 0:
+        default:
+            hasRank = 1;
+            rank = func_800E905C_minigame(data->unk02);
+            msgs[0] = 0x6101;
+            msgs[2] = D_800EBA14_minigame[GwStory.unk5E[data->unk02]];
+            msgs[3] = D_800EBA24_minigame[rank];
+            work->unk118 = data->unk02;
+            break;
+        case 1:
+            data->unk02 = GwStory.unk1;
+            hasRank = 1;
+            rank = func_800E905C_minigame(-1);
+            msgs[0] = 0x6101;
+            msgs[2] = D_800EBA14_minigame[GwStory.unk2];
+            msgs[3] = D_800EBA24_minigame[rank];
+            work->unk118 = -1;
+            break;
+        case 2:
+            data->unk02 = GwStory.unk1;
+            msgs[0] = 0x6100;
+            msgs[2] = D_800EBA14_minigame[GwStory.unk2];
+            work->unk118 = -1;
+            if (GwStory.unk0 == 12) {
+                hasRank = 1;
+                rank = func_800E905C_minigame(-1);
+                page = 2;
+                prevPage = 2;
+                msgs[3] = D_800EBA24_minigame[rank];
+            } else {
+                prevPage = page = D_800EBAF4_minigame[GwStory.unk0];
+            }
+            break;
+    }
+    msgs[1] = D_800EB9FC_minigame[data->unk02];
+
+    group = HuSprGrpCreate(23, 0);
+    member = 0;
+    def = D_800EB950_minigame;
+    for (elem = work->elems, i = 0; i < ARRAY_COUNTU(D_800EB950_minigame);
+         i++, member++, def++, elem++) {
+        prio = 1200;
+        graphic = func_8000B838_main(def->file);
+        elem->unk04 = graphic;
+        elem->pos = def->pos;
+        x = elem->pos.x + data->x;
+        y = elem->pos.y + data->y;
+        if (i >= 2) {
+            prio = 1199;
+        }
+        func_800E7930_minigame(group, member, graphic, prio, x, y);
+    }
+    HuSprScaleSet(group, 1, 1.0f, 1.02f);
+    HuSprColorSet(group, 1, 0, 0, 0);
+    HuSprTPLvlSet(group, 1, 255);
+    work->elems[1].unk06 = 255;
+    work->group = group;
+
+    graphic = func_8000B838_main(D_800EB9E4_minigame[data->unk02]);
+    work->elems[15].unk04 = graphic;
+    work->elems[15].pos.x = -96;
+    work->elems[15].pos.y = -74;
+    x = work->elems[15].pos.x + data->x;
+    y = work->elems[15].pos.y + data->y;
+    func_800E7930_minigame(group, 15, graphic, 1200, x, y);
+    for (gfx = work->graphics, i = 0; i < 4; i++, gfx++) {
+        *gfx = func_8000B838_main(D_800EB9C8_minigame[i]);
+    }
+    work->unk13C = HuSprGrpCreate(13, 0);
+    work->unk13E = func_8000B838_main(0x15001D);
+    y = data->y - 28;
+    for (i = 0; i < 13; i++) {
+        markX = data->x + (s16)(i * 12 - 24);
+        func_800E7930_minigame(work->unk13C, i, work->unk13E, 1200, markX, y);
+    }
+
+    winPrio = 400;
+    win = work->windows;
+    flag = work->winFlags;
+    x = data->x;
+    y = data->y;
+    for (i = 0; i < ARRAY_COUNTU(work->windows); i++, win++, flag++) {
+        *win = HuWinCreate(x + D_800EBA70_minigame[i].x, y + D_800EBA70_minigame[i].y, D_800EBA70_minigame[i].w,
+                           D_800EBA70_minigame[i].h, 0, 12);
+        HuWinMesSpeedSet(*win, 0);
+        HuWinBGTPLvlSet(*win, 0);
+        HuWinMesPalSet(*win, 2, 255, 0, 0);
+        HuWinMesPalSet(*win, 4, 0, 144, 0);
+        HuWinMesPalSet(*win, 5, 0, 176, 192);
+        HuWinMesPalSet(*win, 6, 255, 173, 0);
+        func_8005C154_main(*win, 64, 64, 64);
+        HuWinBGColSet(*win, 0, 0, 0);
+        HuWinMesColSet(*win, 7);
+        func_8005BF70_main(*win, 0);
+        *flag = 0;
+    }
+    win = work->windows;
+    HuWinMesSet(win[0], msgs[0], -1, -1);
+    HuWinMesSet(win[1], msgs[1], -1, -1);
+    HuWinMesSet(win[2], msgs[2], -1, -1);
+    work->winFlags[0] = work->winFlags[1] = work->winFlags[2] = 1;
+    if (hasRank) {
+        HuWinMesSet(win[3], msgs[3], -1, -1);
+        work->winFlags[3] = 1;
+        HuWinMesPalSet(win[3], 7, D_800EBA58_minigame[rank][0], D_800EBA58_minigame[rank][1],
+                       D_800EBA58_minigame[rank][2]);
+    }
+    HuWinMesSet(win[5], 0x6111, -1, -1);
+    func_800E7E08_minigame(page, work);
+
+    state = 0;
+    work->unk140 = 0;
+    shown = 0;
+    fadeInWait = 0;
+    pageChanging = 0;
+    sprFadeSpeed = 0;
+    sprAlpha = 0;
+    winFadeSpeed = 0;
+    winAlpha = 0;
+    colorCycle = 0;
+    colorTimer = 0;
+    colorFrames = 0;
+    rankWin = &work->windows[3];
+    do {
+        if ((state == 1 || state == 2) && work->winFlags[0] == 0) {
+            data->unk04 = 0;
+        }
+        if (fadeInWait) {
+            if (sprFadeSpeed == 0 && winFadeSpeed == 0) {
+                fadeInWait = 0;
+                data->unk04 = 0;
+            }
+        }
+        if (pageChanging) {
+            if (sprFadeSpeed == 0 && winFadeSpeed == 0) {
+                pageChanging = 0;
+                func_800E7E08_minigame(page, work);
+                sprAlpha = 0;
+                sprFadeSpeed = 51;
+                winAlpha = 0;
+                winFadeSpeed = 51;
+                fadeInWait = 1;
+            }
+        } else if (prevPage != page) {
+            sprAlpha = 255;
+            sprFadeSpeed = -51;
+            winAlpha = 255;
+            winFadeSpeed = -51;
+            work->winFlags[4] = 1;
+            if (prevPage == 3) {
+                work->winFlags[5] = 1;
+                work->unk140 = 1;
+            }
+            for (elem = work->elems, i = 0; i < 23; i++, elem++) {
+                if (elem->unk0A > 0) {
+                    elem->unk0A = 0;
+                    elem->unk08 = 1;
+                }
+            }
+            prevPage = page;
+            pageChanging = 1;
+        }
+        if (state != data->unk04) {
+            elem = work->elems;
+            switch (data->unk04) {
+                case 0:
+                    break;
+                case 1:
+                    if (!shown) {
+                        shown = 1;
+                        sprAlpha = 0;
+                        sprFadeSpeed = 36;
+                        winAlpha = 0;
+                        winFadeSpeed = 36;
+                        elem[0].unk08 = 1;
+                        elem[1].unk08 = 1;
+                        elem[15].unk08 = 1;
+                        if (rank == 4) {
+                            colorCycle = 1;
+                            colorPtr = colorStart = D_800EBA40_minigame;
+                            colorFrames = 6;
+                        } else if (rank == 3) {
+                            colorCycle = 1;
+                            colorPtr = colorStart = D_800EBA4C_minigame;
+                            colorFrames = 8;
+                        }
+                    }
+                    break;
+                case 2:
+                    if (shown) {
+                        shown = 0;
+                        sprAlpha = 255;
+                        sprFadeSpeed = -36;
+                        winAlpha = 255;
+                        winFadeSpeed = -36;
+                        elem[0].unk08 = 1;
+                        elem[1].unk08 = 1;
+                        elem[15].unk08 = 1;
+                        for (flag = work->winFlags, i = 0; i < 5; i++, flag++) {
+                            *flag = 1;
+                        }
+                        if (prevPage == 3) {
+                            work->winFlags[5] = 1;
+                            work->unk140 = 1;
+                        }
+                        for (elem = work->elems, i = 0; i < 23; i++, elem++) {
+                            if (elem->unk0A > 0) {
+                                elem->unk0A = 0;
+                                elem->unk08 = 1;
+                            }
+                        }
+                    }
+                    break;
+                case 3:
+                    page++;
+                    if (page >= 4) {
+                        page = 0;
+                    }
+                    break;
+                case 4:
+                    page--;
+                    if (page < 0) {
+                        page = 3;
+                    }
+                    break;
+                case 255:
+                    break;
+            }
+            state = data->unk04;
+        }
+        if (colorCycle) {
+            if (colorTimer != 0) {
+                colorTimer--;
+                color[0] -= step[0];
+                color[1] -= step[1];
+                color[2] -= step[2];
+                HuWinMesPalSet(*rankWin, 7, color[0], color[1], color[2]);
+            } else {
+                color[0] = colorPtr[0];
+                color[1] = colorPtr[1];
+                color[2] = colorPtr[2];
+                HuWinMesPalSet(*rankWin, 7, color[0], color[1], color[2]);
+                colorPtr += 3;
+                if (colorPtr[0] == 0 && colorPtr[1] == 0 && colorPtr[2] == 0) {
+                    colorPtr = colorStart;
+                }
+                step[0] = (color[0] - colorPtr[0]) / colorFrames;
+                step[1] = (color[1] - colorPtr[1]) / colorFrames;
+                step[2] = (color[2] - colorPtr[2]) / colorFrames;
+                colorTimer = colorFrames - 1;
+            }
+        }
+        if (sprFadeSpeed != 0) {
+            done = 0;
+            sprAlpha += sprFadeSpeed;
+            if (sprAlpha >= 255) {
+                sprFadeSpeed = 0;
+                sprAlpha = 255;
+                done = 1;
+            } else if (sprAlpha <= 0) {
+                sprFadeSpeed = 0;
+                sprAlpha = 0;
+                done = 1;
+            }
+            for (elem = work->elems, i = 0; i < 23; i++, elem++) {
+                if (elem->unk08 > 0) {
+                    if (elem->unk08 == 1) {
+                        elem->unk08 = 2;
+                        HuSprDispOn(group, i);
+                    }
+                    if ((s16)done) {
+                        elem->unk08 = 0;
+                    }
+                    if (sprAlpha == 0) {
+                        HuSprDispOff(group, i);
+                    }
+                    if (sprAlpha >= elem->unk06) {
+                        HuSprTPLvlSet(group, i, elem->unk06);
+                    } else {
+                        HuSprTPLvlSet(group, i, sprAlpha);
+                    }
+                }
+            }
+            if (work->unk140) {
+                if (done) {
+                    work->unk140 = 0;
+                }
+                x = work->unk13C;
+                for (i = 0; i < 13; i++) {
+                    if (sprAlpha == 0) {
+                        HuSprDispOff(x, i);
+                    }
+                    HuSprTPLvlSet(x, i, sprAlpha);
+                }
+            }
+        }
+        if (winFadeSpeed != 0) {
+            done = 0;
+            winAlpha += winFadeSpeed;
+            if (winAlpha >= 255) {
+                winFadeSpeed = 0;
+                winAlpha = 255;
+                done = 1;
+            } else if (winAlpha <= 0) {
+                winFadeSpeed = 0;
+                winAlpha = 0;
+                done = 1;
+            }
+            for (win = work->windows, flag = work->winFlags, i = 0; i < 6; i++, win++, flag++) {
+                if (*flag > 0) {
+                    if ((s16)done) {
+                        *flag = 0;
+                    }
+                    func_8005BF70_main(*win, winAlpha);
+                }
+            }
+        }
+        HuPrcVSleep();
+    } while (state != 255);
+
+    HuSprGrpKill(group);
+    for (elem = work->elems, i = 0; i < ARRAY_COUNTU(work->elems); i++, elem++) {
+        if (elem->unk04 >= 0) {
+            HuSprAnimKill(elem->unk04);
+        }
+    }
+    HuSprGrpKill(work->unk13C);
+    HuSprAnimKill(work->unk13E);
+    for (gfx = work->graphics, i = 0; i < 4; i++, gfx++) {
+        if (*gfx >= 0) {
+            HuSprAnimKill(*gfx);
+        }
+    }
+    for (win = work->windows, i = 0; i < ARRAY_COUNTU(work->windows); i++, win++) {
+        HuWinKill(*win);
+    }
+    HuMemFree(work);
+    data->unk04 = 0;
+    while (TRUE) {
+        HuPrcVSleep();
+    }
+}
 
 Process *func_800E8EC4_minigame(u16 arg0, s16 arg1) {
     BA4B0_ProcessData *data;

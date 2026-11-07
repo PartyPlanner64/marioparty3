@@ -31,6 +31,7 @@ void func_8010913C_mgresultboard(void);
 void func_80109144_mgresultboard(void);
 s32 func_80109744_mgresultboard(omObjData *, s8, s16);
 s32 func_80109DAC_mgresultboard(omObjData *, s8, s16);
+void func_80109F30_mgresultboard(s16, s16, s16);
 
 void func_80107D00_mgresultboard(void) {
     omObjData *obj;
@@ -279,7 +280,82 @@ void func_80108BC4_mgresultboard(omObjData *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E9120", func_80108C60_mgresultboard);
+void func_80108C60_mgresultboard(omObjData *obj) {
+    f32 time;
+    f32 maxTime;
+    s16 nextModel;
+    s16 curModel;
+    s16 model;
+    s8 i;
+    s8 j;
+
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 5; j++) {
+            nextModel = D_8010AEA8_mgresultboard[i][j].unk_08;
+            curModel = D_8010AEA8_mgresultboard[i][j].unk_06;
+            model = obj->model[curModel + 1];
+            time = HmfModelData[model].motTime;
+            maxTime = D_800CCF58_main[HmfModelData[model].motId].unk02;
+            switch (D_8010AEA8_mgresultboard[i][j].unk_00) {
+                case 1:
+                    if (curModel >= 0) {
+                        func_8001C814_main(obj->model[curModel + 1], 1, 0);
+                        func_8001C258_main(obj->model[curModel + 1], 4, 0);
+                        Hu3DMotionSpeedSet(obj->model[curModel + 1], D_8010AAF4_mgresultboard);
+                    }
+                    if (nextModel >= 0) {
+                        func_8001C814_main(obj->model[nextModel + 1], 1, 0);
+                        func_8001C258_main(obj->model[nextModel + 1], 4, 0);
+                        Hu3DMotionSpeedSet(obj->model[nextModel + 1], D_8010AAF4_mgresultboard);
+                    }
+                    if (D_8010AEA8_mgresultboard[i][j].unk_04 >= 0) {
+                        if (time >= maxTime) {
+                            func_80032FF8_main(D_8010ADD0_mgresultboard[nextModel],
+                                               D_8010AEA8_mgresultboard[i][j].unk_04);
+                            D_8010AEA8_mgresultboard[i][j].unk_02 = D_8010AEA8_mgresultboard[i][j].unk_04;
+                            D_8010AEA8_mgresultboard[i][j].unk_04 = -1;
+                            if (curModel >= 0) {
+                                Hu3DMotionTimeSet(obj->model[curModel + 1], 0.0f);
+                            }
+                            if (nextModel >= 0) {
+                                Hu3DMotionTimeSet(obj->model[nextModel + 1], 20.0f);
+                            }
+                            model = D_8010AEA8_mgresultboard[i][j].unk_06;
+                            D_8010AEA8_mgresultboard[i][j].unk_06 = D_8010AEA8_mgresultboard[i][j].unk_08;
+                            D_8010AEA8_mgresultboard[i][j].unk_08 = model;
+                            if (D_8010AEA8_mgresultboard[i][j].unk_0A == 0) {
+                                func_80109F30_mgresultboard(obj->model[nextModel + 1],
+                                                            D_8010ADD0_mgresultboard[nextModel],
+                                                            D_8010AE70_mgresultboard[0]);
+                            } else {
+                                func_80109F30_mgresultboard(obj->model[nextModel + 1],
+                                                            D_8010ADD0_mgresultboard[nextModel],
+                                                            D_8010AE70_mgresultboard[1]);
+                            }
+                        }
+                        break;
+                    }
+                    D_8010AEA8_mgresultboard[i][j].unk_00 = 0;
+                    /* fallthrough */
+                case 0:
+                    if (time >= maxTime) {
+                        if (nextModel >= 0) {
+                            Hu3DMotionTimeSet(obj->model[nextModel + 1], 20.0f);
+                            func_8001C814_main(obj->model[nextModel + 1], 1, 1);
+                            func_8001C258_main(obj->model[nextModel + 1], 4, 4);
+                        }
+                        if (curModel >= 0) {
+                            func_80032FF8_main(D_8010ADD0_mgresultboard[curModel],
+                                               D_8010AEA8_mgresultboard[i][j].unk_02);
+                            Hu3DMotionTimeSet(obj->model[curModel + 1], maxTime);
+                            func_8001C814_main(obj->model[curModel + 1], 1, 1);
+                        }
+                    }
+                    break;
+            }
+        }
+    }
+}
 
 void func_8010913C_mgresultboard(void) {
 }

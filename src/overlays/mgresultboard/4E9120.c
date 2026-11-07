@@ -47,7 +47,17 @@ s32 func_801081F0_mgresultboard(omObjData *arg0, s8 arg1, s8 arg2, s8 arg3) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E9120", func_80108250_mgresultboard);
+s32 func_80108250_mgresultboard(omObjData *arg0, s8 arg1, s8 arg2, s8 arg3) {
+    if (D_8010AFE8_mgresultboard[arg1].unk_04 >= 0) {
+        return 0;
+    }
+    D_8010AFE8_mgresultboard[arg1].unk_04 = arg2 * 3 + arg3;
+    if (D_8010AFE8_mgresultboard[arg1].unk_08 >= 0) {
+        func_8001C258_main(arg0->model[D_8010AFE8_mgresultboard[arg1].unk_08 + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    }
+    D_8010AFE8_mgresultboard[arg1].unk_00 = 1;
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E9120", func_80108330_mgresultboard);
 
@@ -98,7 +108,27 @@ s32 func_801096E0_mgresultboard(s32 arg0, s8 arg1) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E9120", func_80109744_mgresultboard);
+s32 func_80109744_mgresultboard(s32 arg0, s8 arg1, s16 arg2) {
+    s16 digits[2];
+    s16 value;
+    s8 i;
+
+    if (arg2 >= 100) {
+        arg2 = 99;
+    }
+    value = (arg2 < 0) ? 0 : arg2;
+    digits[0] = (value / 10) % 10;
+    digits[1] = value % 10;
+    if (digits[0] == 0) {
+        digits[0] = 11;
+    }
+    for (i = 0; i < 2; i++) {
+        D_8010AEA8_mgresultboard[arg1][i].unk_02 = digits[i];
+        D_8010AEA8_mgresultboard[arg1][i].unk_04 = -1;
+        D_8010AEA8_mgresultboard[arg1][i].unk_00 = 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E9120", func_80109878_mgresultboard);
 

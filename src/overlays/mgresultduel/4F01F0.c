@@ -8,6 +8,7 @@ typedef struct UnkOmData {
 } UnkOmData;
 
 extern UnkOmData D_80109338_mgresultduel;
+extern s8 D_80108E70_mgresultduel;
 extern s8 D_80108E78_mgresultduel;
 extern char D_80108EC0_mgresultduel[];
 
@@ -101,7 +102,23 @@ void func_80106730_mgresultduel(void) {
     D_80109338_mgresultduel.objFunc = func_80106744_mgresultduel;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80106744_mgresultduel);
+void func_80106744_mgresultduel(omObjData *obj) {
+    HmfMotionNode *node;
+    f32 rot;
+
+    node = func_8001D33C_main(obj->model[1], D_80108EC0_mgresultduel);
+    node->baseRot.y = (GwSystem.bank_coins - 5) * 60;
+    if (GwSystem.bank_coins == 0) {
+        for (rot = 0.0f; rot >= -60.0f; rot -= 2.0f) {
+            node->baseRot.y = (GwSystem.bank_coins - 5) * 60 + rot;
+            HuPrcVSleep();
+        }
+        GwSystem.bank_coins = 5;
+        HuPrcSleep(10);
+    }
+    D_80108E70_mgresultduel = 4;
+    D_80109338_mgresultduel.objFunc = func_80106270_mgresultduel;
+}
 
 void func_80106850_mgresultduel(omObjData *obj, s32 motId) {
     HmfMotionNode *node;

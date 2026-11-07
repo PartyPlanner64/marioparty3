@@ -8,12 +8,52 @@ extern omObjData *D_80108F7C_mgresultbattle;
 extern omObjData *D_80108F84_mgresultbattle;
 extern omObjFunc D_80108F88_mgresultbattle;
 extern Vec D_801089D0_mgresultbattle[4];
+extern s32 D_80108A00_mgresultbattle[4];
+extern f32 D_80108A10_mgresultbattle[4];
+extern omObjFunc D_80108F80_mgresultbattle;
+extern s8 D_80108F8C_mgresultbattle[4];
 
+void func_80107F94_mgresultbattle(void);
+void func_80107F9C_mgresultbattle(omObjData *obj);
 void func_8010829C_mgresultbattle(omObjData *obj);
 void func_801082A4_mgresultbattle(void);
 void func_801082C0_mgresultbattle(omObjData *);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F5AF0", func_80107D10_mgresultbattle);
+void func_80107D10_mgresultbattle(void) {
+    omObjData *obj;
+    s32 i;
+
+    obj = omAddObj(0x14, 8, 8, -1, NULL);
+    D_80108F7C_mgresultbattle = obj;
+    obj->model[0] = func_8000B108_main(0x1B0005, 0x2B9);
+
+    for (i = 0; i < 4; i++) {
+        obj->model[i + 1] = func_8000B108_main(
+            D_80108A00_mgresultbattle[GwPlayer[D_80108F8C_mgresultbattle[i]].bonusCoin], 0x16B9);
+        func_8001C814_main(obj->model[i + 1], 2, 0);
+        func_8001C814_main(obj->model[i + 1], 1, 1);
+        func_8001C258_main(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelPosSet(obj->model[i + 1], D_801089D0_mgresultbattle[i].x, D_801089D0_mgresultbattle[i].y,
+                        D_801089D0_mgresultbattle[i].z);
+        Hu3DModelRotSet(obj->model[i + 1], 0.0f, D_80108A10_mgresultbattle[i], 0.0f);
+        func_8001C258_main(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DMotionTimeSet(obj->model[i + 1], D_800CCF58_main[HmfModelData[obj->model[i + 1]].motId].unk02);
+        func_8001C814_main(obj->model[i + 1], 1, 1);
+    }
+
+    obj->trans.x = 0.0f;
+    obj->trans.y = -5.0f;
+    obj->trans.z = 0.0f;
+    Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
+    omPrcSetDestructor(NULL, func_80107F94_mgresultbattle);
+    D_80108F80_mgresultbattle = func_80107F9C_mgresultbattle;
+    HuPrcSleep(2);
+
+    while (TRUE) {
+        D_80108F80_mgresultbattle(obj);
+        HuPrcVSleep();
+    }
+}
 
 void func_80107F94_mgresultbattle(void) {
 }

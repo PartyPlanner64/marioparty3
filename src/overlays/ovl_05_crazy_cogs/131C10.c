@@ -136,7 +136,6 @@ extern s8 D_8010DE10_crazy_cogs[3];
 extern s8 D_8010DE60_crazy_cogs;
 extern s8 D_8010DE6A_crazy_cogs[4];
 
-void func_800E6F0C_minigame(s32);
 void func_80107778_crazy_cogs(void);
 void func_80107AB8_crazy_cogs(void);
 void func_80108EE8_crazy_cogs(void);

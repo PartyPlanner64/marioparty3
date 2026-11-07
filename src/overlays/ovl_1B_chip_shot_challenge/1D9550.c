@@ -155,7 +155,6 @@ void func_800E2B58_minigame(HuMtx4F mtx, Vec *arg1);
 void func_800E2BD4_minigame(HuMtx4F mtx, Vec *arg1);
 void func_800E2C68_minigame(HuMtx4F mtx, Vec *arg1);
 s32 func_800DB704_minigame(s32 count, s16 *vtx, Hu3DPoint *points, Vec *pos);
-s32 func_800D8818_minigame(f32 x, f32 y, f32 z, Hu3DPoint *points, Hu3DQuad *quad, Vec *dir, Vec *out);
 void func_801071A8_chip_shot_challenge(void);
 void func_801073D4_chip_shot_challenge(s16 model);
 void func_80107238_chip_shot_challenge(s16 model);
@@ -168,7 +167,6 @@ void func_80109EF0_chip_shot_challenge(omObjData *object, f32 x, f32 y, f32 z, f
 f32 func_8010A04C_chip_shot_challenge(ChipShotChallengeSphere *sphere, Vec *normal);
 void func_8010A3DC_chip_shot_challenge(omObjData *object, Vec *arg1);
 void func_8010A454_chip_shot_challenge(omObjData *object, s32 *stickX, s32 *stickY, s32 *buttons);
-void func_800E6F0C_minigame(s32 arg0);
 
 void func_801059A0_chip_shot_challenge(void) {
     u8 camIndex;

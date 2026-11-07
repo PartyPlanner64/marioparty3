@@ -32,12 +32,6 @@ typedef struct {
     /* 0x0C */ f32 unk0C;
 } func_800DC7D8_minigame_Arg; // Size 0x10
 
-typedef struct {
-    /* 0x00 */ Vec pos;
-    /* 0x0C */ f32 radius;
-    /* 0x10 */ Vec prev;
-} func_800DBCF4_minigame_Arg; // Size 0x1C
-
 extern Vec D_800EBDD0_minigame;
 extern u8 D_800EB73B_minigame;
 extern f32 D_800EB73C_minigame;
@@ -55,7 +49,6 @@ extern f32 D_800EB768_minigame;
 extern f32 D_800EB76C_minigame;
 extern f32 D_800EB770_minigame;
 extern f32 D_800EB774_minigame;
-extern u8 D_800EB735_minigame;
 extern f32 D_800EBE2C_minigame;
 extern f32 D_800EC5D8_minigame;
 extern Vec D_800EC298_minigame[];
@@ -78,7 +71,6 @@ void func_800DCCB0_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1, V
 void func_800DC7D8_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1);
 void func_800DC8E4_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1, f32 arg2);
 s32 func_800DB724_minigame(s32 count, s16 *vtx, Hu3DPoint *points, func_800DC7D8_minigame_Arg *arg3);
-s32 func_800DBCF4_minigame(s32 count, s16 *vtx, Hu3DPoint *points, func_800DBCF4_minigame_Arg *arg3);
 void func_800DD1F4_minigame(omObjData *obj, Vec *pos, f32 arg2);
 void func_800E28BC_minigame(HuMtx4F mtx, HuMtx4F result, Vec *pos, omObjData *obj);
 void func_800E2B58_minigame(HuMtx4F mtx, Vec *arg1);
@@ -96,7 +88,6 @@ void func_800E2BD4_minigame(HuMtx4F mtx, Vec *arg1);
 s8 func_800DD530_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1, f32 arg2);
 s32 func_800E1510_minigame(s8 arg0);
 s32 func_800E2DA4_minigame(omObjData *arg0, omObjData *item);
-s32 func_800E4510_minigame(omObjData *arg0, omObjData *arg1);
 void func_800E454C_minigame(omObjData *arg0, omObjData *arg1, f32 x, f32 z, u16 arg4);
 void func_800E4C88_minigame(omObjData *arg0, u8 arg1, f32 x, f32 y, f32 z, f32 rotX, f32 rotY);
 s32 func_800DA768_minigame(omObjData *arg0, f32 x, f32 y, f32 z);

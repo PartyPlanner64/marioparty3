@@ -139,7 +139,6 @@ void func_8010AE04_coconut_conk(void);
 void func_800E149C_minigame(omObjData *, s32, s32);
 void func_800E4C88_minigame(omObjData *object, u8 type, f32 x, f32 y, f32 z, f32 arg5, f32 arg6);
 void func_800DDD94_minigame(omObjData *);
-void func_800E6F0C_minigame(s32);
 void func_800E1304_minigame(omObjData *, f32);
 void func_800E1310_minigame(omObjData *, f32);
 void func_800E131C_minigame(omObjData *, f32);

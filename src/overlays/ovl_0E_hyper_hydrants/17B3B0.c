@@ -143,7 +143,6 @@ void func_80106238_hyper_hydrants(omObjData *object);
 void func_8010A68C_hyper_hydrants(omObjData *object);
 void func_8010B658_hyper_hydrants(omObjData *object);
 s16 func_8010BC80_hyper_hydrants(s16 soundId, s16 side, s8 playerSound, s16 player);
-void func_800E6F0C_minigame(s32 state);
 void func_800E1840_minigame(void);
 void func_800E1370_minigame(omObjData *object, s32 arg1, f32 arg2);
 void func_80105EB0_hyper_hydrants(s8 camera);

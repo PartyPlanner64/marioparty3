@@ -45,7 +45,6 @@ void func_800DFCDC_minigame(f32 x, f32 z, f32 scale);
 void func_800E1594_minigame(omObjData *arg0, s32 arg1, s32 arg2, s32 arg3);
 void func_800D80DC_minigame(omObjData *arg0);
 void func_800D7FA8_minigame(omObjData *arg0);
-s32 func_800DBCF4_minigame(s32 count, s16 *vtx, Hu3DPoint *points, Vec *pos);
 void func_800DC354_minigame(omObjData *arg0, A96F0_Sphere *arg1, Vec *arg2);
 void func_800DCCB0_minigame(omObjData *arg0, A96F0_Sphere *arg1, Vec *arg2, f32 arg3);
 void func_800DC7D8_minigame(omObjData *arg0, A96F0_Sphere *arg1);
@@ -57,7 +56,6 @@ void func_800E2C68_minigame(HuMtx4F mtx, Vec *arg1);
 s32 func_800E2F40_minigame(HmfModelData_Unk64_Unk60_Struct *obj, Vec *pos);
 s32 func_800E30B8_minigame(Vec *pos, func_800E1BA8_minigame_ObjData *data);
 s32 func_800DB704_minigame(s32 count, s16 *vtx, Hu3DPoint *points, Vec *pos);
-s32 func_800D8818_minigame(f32 x, f32 y, f32 z, Hu3DPoint *points, Hu3DQuad *quad, Vec *dir, Vec *out);
 s32 func_800E2FD8_minigame(HmfModelData_Unk64_Unk60_Struct *obj, Vec *pos, f32 margin);
 void func_800E1718_minigame(omObjData *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
 void func_800E17D4_minigame(omObjData *arg0, f32 x, f32 y, f32 z);
@@ -433,8 +431,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/minigame/A96F0", func_800D7AA8_minigame);
 void func_800D7C14_minigame(omObjData *arg0, A96F0_Sphere *arg1) {
     A96F0_ObjData *data = arg0->data;
     A96F0_Sphere sphere;
-    A96F0_Sphere local;
-    Vec pos;
+    func_800DBCF4_minigame_Arg local;
     omObjData *obj;
     func_800E1BA8_minigame_ObjData *objData;
     s16 count;
@@ -455,9 +452,9 @@ void func_800D7C14_minigame(omObjData *arg0, A96F0_Sphere *arg1) {
             continue;
         }
         count = D_800EB736_minigame;
-        local.pos.x = pos.x = arg1->pos.x;
-        local.pos.y = pos.y = data->unk34 / 2 + arg1->pos.y;
-        local.pos.z = pos.z = arg1->pos.z;
+        local.pos.x = local.prev.x = arg1->pos.x;
+        local.pos.y = local.prev.y = data->unk34 / 2 + arg1->pos.y;
+        local.pos.z = local.prev.z = arg1->pos.z;
         local.radius = sphere.radius = arg1->radius;
         func_800E28BC_minigame(D_800EC240_minigame, D_800EBE30_minigame, &local.pos, obj);
         if (objData->unk06 & 4) {
@@ -468,22 +465,22 @@ void func_800D7C14_minigame(omObjData *arg0, A96F0_Sphere *arg1) {
         if (objData->unk06 & 8) {
             local.pos.x += D_800EBE2C_minigame;
             local.pos.y += D_800EC5D8_minigame;
-            func_800DC354_minigame(obj, &local, &pos);
+            func_800DC354_minigame(obj, (A96F0_Sphere *)&local, &local.prev);
         } else if (objData->unk06 & 0x10) {
             local.pos.x += D_800EBE2C_minigame;
             local.pos.y += D_800EC5D8_minigame;
-            func_800DCCB0_minigame(obj, &local, &pos, data->unk34 / 2);
+            func_800DCCB0_minigame(obj, (A96F0_Sphere *)&local, &local.prev, data->unk34 / 2);
         } else if (objData->unk06 & 0x20) {
             local.pos.x += D_800EBE2C_minigame;
             local.pos.y += D_800EC5D8_minigame;
-            func_800DC7D8_minigame(obj, &local);
+            func_800DC7D8_minigame(obj, (A96F0_Sphere *)&local);
         } else if (objData->unk06 & 0x40) {
             local.pos.x += D_800EBE2C_minigame;
             local.pos.y += D_800EC5D8_minigame;
-            func_800DC8E4_minigame(obj, &local, data->unk34 / 2);
+            func_800DC8E4_minigame(obj, (A96F0_Sphere *)&local, data->unk34 / 2);
         } else {
-            func_80021C14_main(D_800EC1C0_minigame[i]->model[0], &D_800EBEB0_minigame, func_800DBCF4_minigame,
-                               &local.pos);
+            func_80021C14_main(D_800EC1C0_minigame[i]->model[0], &D_800EBEB0_minigame,
+                               (s32 (*)(s32, s16 *, Hu3DPoint *, Vec *))func_800DBCF4_minigame, &local.pos);
         }
         if (count != D_800EB736_minigame) {
             func_800E2B58_minigame(D_800EC240_minigame, &D_800EC298_minigame[count]);

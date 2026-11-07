@@ -117,7 +117,6 @@ f32 func_8010ABD4_hand_line_sinker(f32 a);
 void func_801081D0_hand_line_sinker(omObjData *obj);
 void func_8010A6D0_hand_line_sinker(omObjData *parent, u16 type, Vec *offset, Vec *rot);
 omObjData *func_8010A554_hand_line_sinker(void);
-void func_800E6F0C_minigame(s32);
 void func_80109584_hand_line_sinker(omObjData *obj);
 void func_80109B9C_hand_line_sinker(omObjData *obj);
 void func_8010689C_hand_line_sinker(omObjData *obj);

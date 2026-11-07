@@ -44,7 +44,6 @@ void func_800E3584_minigame(s16);
 
 extern s32 D_800EB730_minigame;
 extern u8 D_800EB734_minigame;
-extern s8 D_800EB735_minigame;
 extern u8 D_800EB739_minigame;
 extern u8 D_800EB73A_minigame;
 extern f32 D_800EB73C_minigame;

@@ -245,11 +245,11 @@ void func_800E4248_minigame(omObjData *arg0, f32 x, f32 y, f32 z) {
     }
 }
 
-s32 func_800E4510_minigame(omObjData *arg0) {
+s32 func_800E4510_minigame(omObjData *arg0, omObjData *arg1) {
     func_800E1BA8_minigame_ObjData *temp_v0 = arg0->data;
 
     if (temp_v0->unk104[16] != NULL) {
-        if (temp_v0->unk104[16](arg0) == 1) {
+        if (temp_v0->unk104[16](arg0, arg1) == 1) {
             return 0;
         }
     }

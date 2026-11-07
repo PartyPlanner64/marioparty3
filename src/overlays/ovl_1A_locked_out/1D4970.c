@@ -130,7 +130,6 @@ void func_800E149C_minigame(omObjData *, s32, s32);
 void func_80109858_locked_out(omObjData *object, u8 isPlayer, u8 canGrab);
 void func_801090FC_locked_out(omObjData *object, func_800E1BA8_minigame_ObjData **data, LockedOutPlayerWork **arg2);
 void func_80109E88_locked_out(s16 model, char *hook, s16 time, Vec *pos);
-void func_800E6F0C_minigame(s32);
 void func_80109CDC_locked_out(void);
 void func_800DDD94_minigame(omObjData *);
 void func_800E5138_minigame(omObjData *);

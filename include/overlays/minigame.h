@@ -2,6 +2,7 @@
 #define _OVL_MINIGAME_H
 
 #include "ultra64.h"
+#include "common_structs.h"
 #include "game/object.h"
 
 typedef struct {
@@ -148,6 +149,18 @@ typedef struct {
     /* 0x24 */ s16 unk24;
 } D_80111B50_vine_with_me_Struct; // Size unknown (>= 0x26 and <= 0x28)
 
+typedef struct {
+    /* 0x00 */ Vec pos;
+    /* 0x0C */ f32 radius;
+    /* 0x10 */ Vec prev;
+} func_800DBCF4_minigame_Arg; // Size 0x1C
+
+f32 func_800D8818_minigame(f32 x, f32 y, f32 z, Hu3DPoint *points, Hu3DQuad *quad, Vec *dir, Vec *out);
+s32 func_800DBCF4_minigame(s32 count, s16 *vtx, Hu3DPoint *points, func_800DBCF4_minigame_Arg *arg3);
+s32 func_800E4510_minigame(omObjData *arg0, omObjData *arg1);
+s32 func_800E5798_minigame(omObjData *arg0, s32 arg1);
+void func_800E6F0C_minigame(u8 arg0);
+
 void func_800E18D8_minigame(void);
 void func_800E19F0_minigame(s8);
 void func_800E1804_minigame(void);
@@ -171,6 +184,7 @@ extern u16 D_800EB912_minigame;
 extern u16 D_800EB914_minigame;
 extern u16 D_800EB916_minigame;
 extern u16 D_800EB918_minigame;
+extern u8 D_800EB735_minigame;
 extern s16 D_800EB736_minigame;
 extern D_800EBEB8_minigame_Entry D_800EBEB8_minigame[64];
 extern u16 D_800EC1B8_minigame;

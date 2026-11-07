@@ -404,13 +404,6 @@ void func_80107C74_mgresultduel(s32 arg0, s32 arg1) {
     D_80109320_mgresultduel = func_80107CA4_mgresultduel;
 }
 
-#ifdef NON_MATCHING
-/*
- * Only diff: s4/s5 are swapped between `obj` and `max`. global-alloc ranks
- * `obj` (15 refs over 287 insns) slightly ahead of `max` (6 refs over 79
- * insns); the target behaves as if `max` had the higher priority. The
- * analogous func_80107888_mgresultdealer matches with obj in s4.
- */
 void func_80107CA4_mgresultduel(omObjData *obj) {
     HmfModelEntry *entry;
     HmfAnimSet *animSet;
@@ -418,7 +411,6 @@ void func_80107CA4_mgresultduel(omObjData *obj) {
     s8 i;
     s8 count;
     s32 max;
-    s32 player;
     f32 x;
     f32 y;
     f32 z;
@@ -486,24 +478,26 @@ void func_80107CA4_mgresultduel(omObjData *obj) {
         func_80014714_main(D_80109118_mgresultduel[i].unk02, 0);
         HuAudFXPlay(9);
         if (D_80108E98_mgresultduel == 0) {
-            player = (D_80109318_mgresultduel == -1) ? D_80109310_mgresultduel[0] : D_80109310_mgresultduel[1];
-            if (!(GwPlayer[player].stat & 1)) {
-                omVibrate(player, 5, 0, 5);
+            if (D_80109318_mgresultduel == -1) {
+                if (!(GwPlayer[D_80109310_mgresultduel[0]].stat & 1)) {
+                    omVibrate(D_80109310_mgresultduel[0], 5, 0, 5);
+                }
+            } else {
+                if (!(GwPlayer[D_80109310_mgresultduel[1]].stat & 1)) {
+                    omVibrate(D_80109310_mgresultduel[1], 5, 0, 5);
+                }
             }
             D_80108E98_mgresultduel = 1;
         }
     }
 
     D_80108E80_mgresultduel++;
-    if (D_80108E8C_mgresultduel >= D_80108E84_mgresultduel) {
+    if (D_80108E84_mgresultduel <= D_80108E8C_mgresultduel) {
         D_80108E9C_mgresultduel = 0;
         func_8010751C_mgresultduel(D_80109318_mgresultduel);
         D_80109320_mgresultduel = func_80107AF4_mgresultduel;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F1180", func_80107CA4_mgresultduel);
-#endif
 
 void func_80108304_mgresultduel(void) {
     D_80109320_mgresultduel = func_80108318_mgresultduel;

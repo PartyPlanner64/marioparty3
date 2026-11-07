@@ -21,6 +21,7 @@ extern s16 D_80109B34_mgenter;
 extern s16 D_80109B36_mgenter;
 extern s16 D_80109B38_mgenter;
 extern s16 D_80109B3A_mgenter;
+extern f32 D_80109AA0_mgenter;
 extern f32 D_80109AB0_mgenter;
 extern f32 D_80109B64_mgenter;
 extern s16 D_80109B74_mgenter;
@@ -528,7 +529,77 @@ void func_80107E5C_mgenter(s16 winId, s16 value, u8 *buf) {
     HuWinInsertMesSet(winId, (u32)buf, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgenter/468AC0", func_80107F0C_mgenter);
+void func_80107F0C_mgenter(void) {
+    u16 sprite;
+    s16 i;
+    f32 t;
+    f32 x;
+
+    D_80109B24_mgenter = -1;
+    sprite = func_801095F4_mgenter();
+    func_801096EC_mgenter((D_800A6D40_main[D_80109B2A_mgenter].flags & 0x7FF) + D_80109B2C_mgenter * 2);
+    espDispOff(sprite);
+    D_80109B26_mgenter = -1;
+    while (TRUE) {
+        switch (D_80109B26_mgenter) {
+            case 0:
+                espDispOn(sprite);
+                for (i = 0; i < 11; i++) {
+                    x = sindf(i * 9.0f) * 240.0f - 80.0f;
+                    espPosSet(sprite, x, D_80109AA0_mgenter);
+                    HuPrcVSleep();
+                }
+                D_80109B26_mgenter = -1;
+                break;
+            case 1:
+                for (i = 1; i < 11; i++) {
+                    t = sindf(i * 9.0f);
+                    D_80109AA0_mgenter = 115.0f - t * 35.0f;
+                    espPosSet(sprite, 160, D_80109AA0_mgenter);
+                    espScaleSet(sprite, 1.0f - t * 0.2f, 1.0f - t * 0.2f);
+                    t = 1.0f - t;
+                    Hu3DFogSet((s16)(970.0f - t * 100.0f), (s16)(975.0f - t * 100.0f), 255, 255, 255);
+                    HuPrcVSleep();
+                }
+                D_80109B26_mgenter = -1;
+                break;
+            case 2:
+                for (i = 1; i < 11; i++) {
+                    t = 1.0f - sindf(i * 9.0f);
+                    D_80109AA0_mgenter = 115.0f - t * 35.0f;
+                    espPosSet(sprite, 160, D_80109AA0_mgenter);
+                    espScaleSet(sprite, 1.0f - t * 0.2f, 1.0f - t * 0.2f);
+                    t = 1.0f - t;
+                    Hu3DFogSet((s16)(970.0f - t * 100.0f), (s16)(975.0f - t * 100.0f), 255, 255, 255);
+                    HuPrcVSleep();
+                }
+                D_80109B26_mgenter = -1;
+                break;
+        }
+        if (D_80109B30_mgenter != 0) {
+            for (i = 1; i < 6; i++) {
+                x = (1.0f - cosdf(i * 18.0f)) * 240.0f * D_80109B30_mgenter + 160.0f;
+                espPosSet(sprite, x, D_80109AA0_mgenter);
+                HuPrcVSleep();
+            }
+            D_80109B2C_mgenter += D_80109B30_mgenter;
+            if (D_80109B2C_mgenter >= D_80109B2E_mgenter) {
+                D_80109B2C_mgenter = 0;
+            }
+            if (D_80109B2C_mgenter < 0) {
+                D_80109B2C_mgenter = D_80109B2E_mgenter - 1;
+            }
+            func_801096EC_mgenter((D_800A6D40_main[D_80109B2A_mgenter].flags & 0x7FF) + D_80109B2C_mgenter * 2);
+            for (i = 1; i < 6; i++) {
+                x = -(1.0f - sindf(i * 18.0f)) * 240.0f * D_80109B30_mgenter + 160.0f;
+                espPosSet(sprite, x, D_80109AA0_mgenter);
+                HuPrcVSleep();
+            }
+            D_80109B30_mgenter = 0;
+        }
+        HuPrcVSleep();
+    }
+}
 
 void func_80108560_mgenter(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     D_80109B34_mgenter = arg0;

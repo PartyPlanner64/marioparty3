@@ -74,8 +74,8 @@ void func_80106560_mgresultduel(void);
 void func_8010654C_mgresultduel(void);
 void func_8010751C_mgresultduel(s8);
 void func_800F79E8_name_81(s32);
-void func_800E1504_name_81(s8, s32, s32, s32);
-void func_800F37E0_name_81(s16, s32);
+void func_800E1504_name_81(s32, s32, s32, s32);
+void func_800F37E0_name_81(s32, s32);
 void func_80108818_mgresultduel(omObjData *);
 void func_80108D28_mgresultduel(void);
 void func_80108820_mgresultduel(omObjData *);
@@ -509,21 +509,10 @@ void func_80108304_mgresultduel(void) {
     D_80109320_mgresultduel = func_80108318_mgresultduel;
 }
 
-#ifdef NON_MATCHING
-/*
- * Only diff: when promoting `player` for func_800F37E0_name_81, the target
- * shifts into a0 (sll a0,s0,16) while this compiles to sll s0,s0,16.
- * `player` is local to one basic block here, so local-alloc ties the shift
- * temp to it. The target behaves as if `player` were not block-local
- * (assigning it in both arms of the if/else fixes this part, via
- * cross-jumping, but then the s8 extension for func_800E1504_name_81 no
- * longer reuses the shifted temp).
- */
 void func_80108318_mgresultduel(omObjData *arg0) {
     omObjData *obj;
     Vec pos;
     Vec2f screenPos;
-    s8 temp;
     s16 player;
 
     func_800F79E8_name_81(-1);
@@ -538,9 +527,13 @@ void func_80108318_mgresultduel(omObjData *arg0) {
         pos.z = HmfModelData[obj->model[1]].pos.z;
         Hu3D3Dto2D(0, &pos, &screenPos);
         func_800E0CEC_name_81();
-        temp = (D_80109318_mgresultduel == -1) ? D_80109310_mgresultduel[0] : D_80109310_mgresultduel[1];
-        player = temp;
-        func_800E1504_name_81(temp, D_80109314_mgresultduel, screenPos.x, screenPos.y);
+        if (D_80109318_mgresultduel == -1) {
+            player = D_80109310_mgresultduel[0];
+            func_800E1504_name_81(D_80109310_mgresultduel[0], D_80109314_mgresultduel, screenPos.x, screenPos.y);
+        } else {
+            player = D_80109310_mgresultduel[1];
+            func_800E1504_name_81(D_80109310_mgresultduel[1], D_80109314_mgresultduel, screenPos.x, screenPos.y);
+        }
         HuPrcSleep(20);
         func_800F37E0_name_81(player, D_80109314_mgresultduel);
         HuPrcSleep(20);
@@ -551,9 +544,6 @@ void func_80108318_mgresultduel(omObjData *arg0) {
     func_80106730_mgresultduel();
     D_80109320_mgresultduel = func_80107AF4_mgresultduel;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F1180", func_80108318_mgresultduel);
-#endif
 
 void func_801084B0_mgresultduel(void) {
     omObjData *obj;

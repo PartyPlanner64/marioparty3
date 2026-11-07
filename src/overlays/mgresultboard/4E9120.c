@@ -137,7 +137,32 @@ s32 func_801092E0_mgresultboard(omObjData *arg0, s8 arg1, s16 arg2) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E9120", func_80109498_mgresultboard);
+s32 func_80109498_mgresultboard(omObjData *arg0, s8 arg1, s16 arg2) {
+    s16 digits[2];
+    s16 value;
+    s8 i;
+
+    if (D_8010AEA8_mgresultboard[arg1][0].unk_04 >= 0) {
+        return 0;
+    }
+    if (arg2 >= 100) {
+        arg2 = 99;
+    }
+    value = (arg2 < 0) ? 0 : arg2;
+    digits[0] = (value / 10) % 10;
+    digits[1] = value % 10;
+    if (digits[0] == 0) {
+        digits[0] = 10;
+    }
+    for (i = 0; i < 2; i++) {
+        D_8010AEA8_mgresultboard[arg1][i].unk_04 = digits[i];
+        if (D_8010AEA8_mgresultboard[arg1][i].unk_08 >= 0) {
+            func_8001C258_main(arg0->model[D_8010AEA8_mgresultboard[arg1][i].unk_08 + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        }
+        D_8010AEA8_mgresultboard[arg1][i].unk_00 = 1;
+    }
+    return 1;
+}
 
 s32 func_80109650_mgresultboard(s32 arg0, s8 arg1) {
     s8 i;
@@ -183,9 +208,63 @@ s32 func_80109744_mgresultboard(s32 arg0, s8 arg1, s16 arg2) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E9120", func_80109878_mgresultboard);
+s32 func_80109878_mgresultboard(omObjData *arg0, s8 arg1, s16 arg2) {
+    s16 digits[3];
+    s16 value;
+    s8 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E9120", func_80109A90_mgresultboard);
+    if (D_8010AEA8_mgresultboard[arg1][2].unk_04 >= 0) {
+        return 0;
+    }
+    if (arg2 >= 1000) {
+        arg2 = 999;
+    }
+    value = (arg2 < 0) ? 0 : arg2;
+    digits[0] = (value / 100) % 10;
+    digits[1] = (value / 10) % 10;
+    digits[2] = value % 10;
+    if (digits[0] == 0) {
+        digits[0] = 11;
+    }
+    for (i = 0; i < 3; i++) {
+        D_8010AEA8_mgresultboard[arg1][i + 2].unk_04 = digits[i];
+        D_8010AEA8_mgresultboard[arg1][i + 2].unk_00 = 1;
+        if (D_8010AEA8_mgresultboard[arg1][i + 2].unk_08 >= 0) {
+            func_8001C258_main(arg0->model[D_8010AEA8_mgresultboard[arg1][i + 2].unk_08 + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        }
+        D_8010AEA8_mgresultboard[arg1][i + 2].unk_0A = 0;
+    }
+    return 1;
+}
+
+s32 func_80109A90_mgresultboard(omObjData *arg0, s8 arg1, s16 arg2) {
+    s16 digits[3];
+    s16 value;
+    s8 i;
+
+    if (D_8010AEA8_mgresultboard[arg1][2].unk_04 >= 0) {
+        return 0;
+    }
+    if (arg2 >= 1000) {
+        arg2 = 999;
+    }
+    value = (arg2 < 0) ? 0 : arg2;
+    digits[0] = (value / 100) % 10;
+    digits[1] = (value / 10) % 10;
+    digits[2] = value % 10;
+    if (digits[0] == 0) {
+        digits[0] = 10;
+    }
+    for (i = 0; i < 3; i++) {
+        D_8010AEA8_mgresultboard[arg1][i + 2].unk_04 = digits[i];
+        D_8010AEA8_mgresultboard[arg1][i + 2].unk_00 = 1;
+        if (D_8010AEA8_mgresultboard[arg1][i + 2].unk_08 >= 0) {
+            func_8001C258_main(arg0->model[D_8010AEA8_mgresultboard[arg1][i + 2].unk_08 + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        }
+        D_8010AEA8_mgresultboard[arg1][i + 2].unk_0A = 1;
+    }
+    return 1;
+}
 
 s32 func_80109CB0_mgresultboard(s32 arg0, s8 arg1) {
     s8 i;

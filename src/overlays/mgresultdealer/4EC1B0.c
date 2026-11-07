@@ -12,6 +12,9 @@ extern Vec D_801098E4_mgresultdealer;
 extern Vec D_801098F0_mgresultdealer;
 extern f32 D_80109A60_mgresultdealer;
 extern omObjData *D_8010A250_mgresultdealer;
+extern s32 D_801098FC_mgresultdealer[];
+extern s16 D_8010990C_mgresultdealer;
+extern s16 D_801099F8_mgresultdealer[];
 
 void func_80106A50_mgresultdealer(omObjData *);
 void func_80106B94_mgresultdealer(omObjData *);
@@ -19,6 +22,9 @@ void func_80106CC8_mgresultdealer(omObjData *);
 void func_80106EC0_mgresultdealer(omObjData *);
 void func_80106EEC_mgresultdealer(void);
 void func_8010630C_mgresultdealer(s16);
+void func_8010705C_mgresultdealer(omObjData *);
+void func_801070EC_mgresultdealer(s16);
+void func_801072A8_mgresultdealer(s16);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_801059A0_mgresultdealer);
 
@@ -153,14 +159,26 @@ void func_80106EC0_mgresultdealer(omObjData *obj) {
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", D_801099A8_mgresultdealer);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80106EEC_mgresultdealer);
+void func_80106EEC_mgresultdealer(void) {
+    s16 model;
+    s16 i;
 
-extern s16 D_8010990C_mgresultdealer;
-extern s16 D_801099F8_mgresultdealer[];
+    for (i = 0; i < 4; i++) {
+        model = func_8000B108_main(D_801098FC_mgresultdealer[i], 0x2A9);
+        D_801099F8_mgresultdealer[i] = model;
+        func_8003302C_main(HmfAnimRead(HmfModelData[model].hmf, 0xB0048, "e268p01_I8"), i * 2);
+        Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
+        func_8001C2FC_main(model, 0x20000, 0x20000);
+        Hu3DModelRemakeStatic(model);
+        func_8001C954_main(model);
+        func_8001C514_main(model);
+        func_80013390_main(model, -1, 0, func_801072A8_mgresultdealer);
+        Hu3DModelCameraSet(model, 2);
+    }
+    omAddObj(10, 10, 10, -1, func_8010705C_mgresultdealer);
+}
 
-void func_801070EC_mgresultdealer(s16);
-
-void func_8010705C_mgresultdealer(void) {
+void func_8010705C_mgresultdealer(omObjData *obj) {
     s16 i;
 
     for (i = 0; i < 4; i++) {

@@ -156,7 +156,28 @@ s32 func_80109D44_mgresultboard(s32 arg0, s8 arg1) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E9120", func_80109DAC_mgresultboard);
+s32 func_80109DAC_mgresultboard(s32 arg0, s8 arg1, s16 arg2) {
+    s16 digits[3];
+    s16 value;
+    s8 i;
+
+    if (arg2 >= 1000) {
+        arg2 = 999;
+    }
+    value = (arg2 < 0) ? 0 : arg2;
+    digits[0] = (value / 100) % 10;
+    digits[1] = (value / 10) % 10;
+    digits[2] = value % 10;
+    if (digits[0] == 0) {
+        digits[0] = 11;
+    }
+    for (i = 0; i < 3; i++) {
+        D_8010AEA8_mgresultboard[arg1][i + 2].unk_02 = digits[i];
+        D_8010AEA8_mgresultboard[arg1][i + 2].unk_04 = -1;
+        D_8010AEA8_mgresultboard[arg1][i + 2].unk_00 = 0;
+    }
+    return 1;
+}
 
 void func_80109F30_mgresultboard(s16 model, s16 anim, s16 animIdx) {
     if (anim >= 0) {

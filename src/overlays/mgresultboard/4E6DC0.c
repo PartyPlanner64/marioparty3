@@ -556,7 +556,23 @@ void func_80107024_mgresultboard(void) {
     Hu3DModelCameraSet(modelId, HU3D_CAM0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E6DC0", func_8010705C_mgresultboard);
+void func_8010705C_mgresultboard(Gfx **gfx, s32 arg1, s32 arg2) {
+    Gfx *gdl = *gfx;
+
+    gDPPipeSync(gdl++);
+    gDPSetCycleType(gdl++, G_CYC_1CYCLE);
+    gSPClearGeometryMode(gdl++, G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR |
+                                    G_LOD | G_SHADING_SMOOTH);
+    gSPSetGeometryMode(gdl++, G_SHADE | G_CULL_BACK | G_SHADING_SMOOTH);
+    gDPSetTexturePersp(gdl++, G_TP_NONE);
+    gDPSetPrimColor(gdl++, 0, 0, 0, 0, 0, 127);
+    gDPSetRenderMode(gdl++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
+    gDPSetCombineMode(gdl++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
+    gDPSetTextureLUT(gdl++, G_TT_NONE);
+    gDPSetFillColor(gdl++, 0x10001);
+    gDPFillRectangle(gdl++, 0, 0, 319, 239);
+    *gfx = gdl;
+}
 
 void func_80107188_mgresultboard(void) {
     u16 temp_s0;

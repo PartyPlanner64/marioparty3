@@ -21,15 +21,19 @@ extern s16 D_8010993A_mgresultdealer;
 extern s8 D_80109940_mgresultdealer;
 extern s8 D_80109941_mgresultdealer;
 extern s32 D_80109944_mgresultdealer;
+extern s32 D_80109948_mgresultdealer;
 extern s32 D_80109950_mgresultdealer;
 extern u8 *D_8010A20C_mgresultdealer;
 extern UnkDealerSprites D_8010A210_mgresultdealer;
 extern s32 D_8010A240_mgresultdealer;
 extern s32 D_8010A244_mgresultdealer;
+extern s16 D_8010A258_mgresultdealer;
 extern omObjFunc D_8010A260_mgresultdealer;
+extern s16 D_8010A264_mgresultdealer;
 
 void func_80108544_mgresultdealer(void);
 void func_80108560_mgresultdealer(u8);
+void func_80108BD4_mgresultdealer(omObjData *);
 void func_80109100_mgresultdealer(void);
 void func_80109710_mgresultdealer(omObjData *);
 
@@ -122,7 +126,32 @@ void func_80108560_mgresultdealer(u8 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EDCB0", func_80108570_mgresultdealer);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EDCB0", func_80108AEC_mgresultdealer);
+void func_80108AEC_mgresultdealer(void) {
+    if (D_80109940_mgresultdealer == 0) {
+        return;
+    }
+
+    D_80109948_mgresultdealer++;
+
+    if (D_80109948_mgresultdealer < 0xF) {
+        return;
+    }
+
+    D_80109948_mgresultdealer = 0;
+
+    if (D_8010A264_mgresultdealer * D_8010A258_mgresultdealer == 0) {
+        D_80109940_mgresultdealer = 0;
+        D_80109941_mgresultdealer = 1;
+        D_80109948_mgresultdealer = 0;
+        D_8010A244_mgresultdealer = 0;
+        D_8010A260_mgresultdealer = func_80109710_mgresultdealer;
+    } else {
+        espBankSet(D_8010A210_mgresultdealer.groups[0].unk_00, 0, 0);
+        func_8000BDDC_main(D_8010A210_mgresultdealer.groups[0].unk_00, 1);
+        espDispOn(D_8010A210_mgresultdealer.groups[0].unk_00);
+        D_8010A260_mgresultdealer = func_80108BD4_mgresultdealer;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EDCB0", func_80108BD4_mgresultdealer);
 

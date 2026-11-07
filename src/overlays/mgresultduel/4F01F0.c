@@ -28,6 +28,7 @@ void func_80107178_mgresultduel(omObjData *);
 void func_80107244_mgresultduel(omObjData *);
 void func_801072A8_mgresultduel(omObjData *);
 void func_80107654_mgresultduel(omObjData *);
+void func_80108304_mgresultduel(void);
 void func_80106278_mgresultduel(omObjData *);
 void func_80106574_mgresultduel(omObjData *);
 void func_80106744_mgresultduel(omObjData *);
@@ -201,7 +202,23 @@ void func_80107618_mgresultduel(void) {
     D_80109330_mgresultduel = func_80107244_mgresultduel;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80107654_mgresultduel);
+void func_80107654_mgresultduel(omObjData *obj) {
+    f32 time;
+    f32 endTime;
+    s16 model;
+
+    model = obj->model[1];
+    time = HmfModelData[model].motTime;
+    endTime = D_800CCF58_main[HmfModelData[model].motId].unk02;
+    while (endTime <= time) {
+        HuPrcVSleep();
+    }
+    HuPrcSleep(10);
+    func_80108304_mgresultduel();
+    while (TRUE) {
+        HuPrcVSleep();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80107710_mgresultduel);
 

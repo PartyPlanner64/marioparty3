@@ -6,6 +6,9 @@ extern UnkTemp D_8010AFE8_mgresultboard[];
 extern PlayerResult D_8010B048_mgresultboard[4];
 
 s32 func_801081F0_mgresultboard(omObjData *, s8, s8, s8);
+void func_80108330_mgresultboard(omObjData *);
+s32 func_80109744_mgresultboard(s32, s8, s16);
+s32 func_80109DAC_mgresultboard(s32, s8, s16);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E9120", func_80107D00_mgresultboard);
 
@@ -30,7 +33,9 @@ void func_80108150_mgresultboard(omObjData *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E9120", func_801081CC_mgresultboard);
+void func_801081CC_mgresultboard(omObjData *arg0) {
+    func_80108330_mgresultboard(arg0);
+}
 
 void func_801081E8_mgresultboard(void) {
 }
@@ -51,7 +56,14 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E9120", func_80108700_mgre
 void func_80108BBC_mgresultboard(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E9120", func_80108BC4_mgresultboard);
+void func_80108BC4_mgresultboard(s32 arg0) {
+    s8 i;
+
+    for (i = 0; i < 4; i++) {
+        func_80109744_mgresultboard(arg0, i, D_8010B048_mgresultboard[i].score);
+        func_80109DAC_mgresultboard(arg0, i, D_8010B048_mgresultboard[i].coin);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E9120", func_80108C60_mgresultboard);
 

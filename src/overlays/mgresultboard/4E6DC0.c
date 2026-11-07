@@ -50,11 +50,9 @@ extern s32 D_8010AD90_mgresultboard;
 extern s8 D_8010AD94_mgresultboard;
 s32 func_8010A864_mgresultboard(omObjData *, s8, s8); /* extern */
 extern omObjData *D_8010AFE0_mgresultboard;
-extern s32 D_8010AB00_mgresultboard;
-extern s32 D_8010AB04_mgresultboard;
+extern s32 D_8010AB00_mgresultboard[3];
 extern s32 D_8010AB0C_mgresultboard;
-extern s16 D_8010AD96_mgresultboard;
-extern s16 D_8010AD98_mgresultboard;
+extern s16 D_8010AD96_mgresultboard[3];
 
 // updates mg star coins on results scene load
 void func_801059A0_mgresultboard(void) {
@@ -582,15 +580,15 @@ void func_801079B0_mgresultboard(s32 arg0) {
 
     if (arg0 > 0) {
         if (D_8010AAF4_mgresultboard == 4.0f) {
-            played = &D_8010AB00_mgresultboard;
+            played = &D_8010AB00_mgresultboard[0];
             if (*played == 0) {
-                D_8010AD96_mgresultboard = HuAudFXPlay(0x11E);
+                D_8010AD96_mgresultboard[0] = HuAudFXPlay(0x11E);
                 *played = 1;
             }
         } else {
-            played = &D_8010AB04_mgresultboard;
+            played = &D_8010AB00_mgresultboard[1];
             if (*played == 0) {
-                D_8010AD98_mgresultboard = HuAudFXPlay(0x11F);
+                D_8010AD96_mgresultboard[1] = HuAudFXPlay(0x11F);
                 *played = 1;
             }
         }
@@ -598,14 +596,23 @@ void func_801079B0_mgresultboard(s32 arg0) {
     D_8010AB0C_mgresultboard = 20;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E6DC0", func_80107A58_mgresultboard);
+void func_80107A58_mgresultboard(void) {
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E6DC0", func_80107B40_mgresultboard);
-
-void func_80107CEC_mgresultboard(void) {
-}
-
-void func_80107CF4_mgresultboard(void) {
+    if (D_8010AAF4_mgresultboard == 4.0f) {
+        D_8010AB0C_mgresultboard = 0;
+    }
+    if (D_8010AB0C_mgresultboard > 0) {
+        D_8010AB0C_mgresultboard--;
+        return;
+    }
+    for (i = 0; i < 3; i++) {
+        if (D_8010AB00_mgresultboard[i] == 1) {
+            HuAudFXStop(D_8010AD96_mgresultboard[i]);
+            D_8010AB00_mgresultboard[i] = 0;
+            HuAudFXPlay(0x15F);
+        }
+    }
 }
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultboard/4E6DC0", D_8010AD0C_mgresultboard);

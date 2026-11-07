@@ -5,10 +5,13 @@ extern UnkTemp D_8010AFB0_mgresultboard[];
 extern PlayerResult D_8010B048_mgresultboard[4];
 
 s32 func_8010A454_mgresultboard(omObjData *, s8, s8);
+void func_8010A4A0_mgresultboard(omObjData *);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4EB420", func_8010A000_mgresultboard);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4EB420", func_8010A334_mgresultboard);
+void func_8010A334_mgresultboard(omObjData *arg0) {
+    func_8010A4A0_mgresultboard(arg0);
+}
 
 void func_8010A350_mgresultboard(void) {
 }

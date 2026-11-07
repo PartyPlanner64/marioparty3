@@ -2415,6 +2415,7 @@ segments:
     bss_size: 0x2F0
     subsegments:
       - [0x4E6DC0, c]
+      - [0x4E8F60, c]
       - [0x4E9120, c]
       - [0x4EB420, c]
       - [0x4EBD50, c]

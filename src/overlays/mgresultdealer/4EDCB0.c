@@ -41,6 +41,7 @@ extern s8 D_80109940_mgresultdealer;
 extern s8 D_80109941_mgresultdealer;
 extern s32 D_80109944_mgresultdealer;
 extern s32 D_80109948_mgresultdealer;
+extern s32 D_8010994C_mgresultdealer;
 extern s32 D_80109950_mgresultdealer;
 extern s16 D_8010A200_mgresultdealer;
 extern s32 D_8010A204_mgresultdealer;
@@ -68,6 +69,7 @@ void func_801082A8_mgresultdealer(Gfx **, s32, s32);
 void func_80108544_mgresultdealer(void);
 void func_80108560_mgresultdealer(u8);
 void func_80108BD4_mgresultdealer(omObjData *);
+void func_80109044_mgresultdealer(omObjData *arg0);
 void func_80109100_mgresultdealer(void);
 void func_80109484_mgresultdealer(omObjData *);
 void func_80109710_mgresultdealer(omObjData *);
@@ -297,9 +299,72 @@ void func_80108AEC_mgresultdealer(omObjData *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EDCB0", func_80108BD4_mgresultdealer);
+void func_80108BD4_mgresultdealer(omObjData *arg0) {
+    s32 total;
+    s16 value;
+    s8 i;
 
-void func_80109044_mgresultdealer(void) {
+    if (D_80109940_mgresultdealer == 0) {
+        return;
+    }
+
+    total = D_8010A264_mgresultdealer * D_8010A258_mgresultdealer;
+    total = (total >= 1000) ? 999 : total;
+    value = total / 28.0f * D_80109944_mgresultdealer;
+    D_8010A210_mgresultdealer.groups[2].unk_02[0] = (s16)(value / 100) % 10;
+    D_8010A210_mgresultdealer.groups[2].unk_02[1] = (s16)(value / 10) % 10;
+    D_8010A210_mgresultdealer.groups[2].unk_02[2] = value % 10;
+    for (i = 0; i < 3; i++) {
+        func_8000BDDC_main(D_8010A210_mgresultdealer.groups[2].unk_08[i], 1);
+        espBankSet(D_8010A210_mgresultdealer.groups[2].unk_08[i], (u16)D_8010A210_mgresultdealer.groups[2].unk_02[i], 0);
+    }
+    if (value < 10) {
+        espDispOff(D_8010A210_mgresultdealer.groups[2].unk_08[0]);
+        espDispOff(D_8010A210_mgresultdealer.groups[2].unk_08[1]);
+    } else if (value < 100) {
+        espDispOff(D_8010A210_mgresultdealer.groups[2].unk_08[0]);
+        espDispOn(D_8010A210_mgresultdealer.groups[2].unk_08[1]);
+    } else {
+        espDispOn(D_8010A210_mgresultdealer.groups[2].unk_08[0]);
+        espDispOn(D_8010A210_mgresultdealer.groups[2].unk_08[1]);
+    }
+    espDispOn(D_8010A210_mgresultdealer.groups[2].unk_08[2]);
+    if (D_8010994C_mgresultdealer < value) {
+        HuAudFXPlay(9);
+        D_8010994C_mgresultdealer = value;
+    }
+
+    D_80109944_mgresultdealer++;
+    if (D_80109944_mgresultdealer < 28) {
+        return;
+    }
+
+    HuAudFXPlay(9);
+    value = total;
+    D_8010A210_mgresultdealer.groups[2].unk_02[0] = (s16)(value / 100) % 10;
+    D_8010A210_mgresultdealer.groups[2].unk_02[1] = (s16)(value / 10) % 10;
+    D_8010A210_mgresultdealer.groups[2].unk_02[2] = value % 10;
+    for (i = 0; i < 3; i++) {
+        func_8000BDDC_main(D_8010A210_mgresultdealer.groups[2].unk_08[i], 1);
+        espBankSet(D_8010A210_mgresultdealer.groups[2].unk_08[i], (u16)D_8010A210_mgresultdealer.groups[2].unk_02[i], 0);
+    }
+    if (value < 10) {
+        espDispOff(D_8010A210_mgresultdealer.groups[2].unk_08[0]);
+        espDispOff(D_8010A210_mgresultdealer.groups[2].unk_08[1]);
+    } else if (value < 100) {
+        espDispOff(D_8010A210_mgresultdealer.groups[2].unk_08[0]);
+        espDispOn(D_8010A210_mgresultdealer.groups[2].unk_08[1]);
+    } else {
+        espDispOn(D_8010A210_mgresultdealer.groups[2].unk_08[0]);
+        espDispOn(D_8010A210_mgresultdealer.groups[2].unk_08[1]);
+    }
+    espDispOn(D_8010A210_mgresultdealer.groups[2].unk_08[2]);
+    func_8000BDDC_main(D_8010A210_mgresultdealer.groups[0].unk_00, 0);
+    D_8010994C_mgresultdealer = 0;
+    D_8010A260_mgresultdealer = func_80109044_mgresultdealer;
+}
+
+void func_80109044_mgresultdealer(omObjData *arg0) {
     if (D_80109940_mgresultdealer == 0) {
         return;
     }

@@ -16,10 +16,13 @@ void func_80105CAC_mgresultbattle(omObjData *);
 void func_80105E64_mgresultbattle(omObjData *);
 void func_80105F50_mgresultbattle(void);
 void func_80105F78_mgresultbattle(Gfx **, s32, s32);
+void func_80107610_mgresultbattle(omObjData *);
 
 extern u8 D_80108F8C_mgresultbattle[4];
 extern s32 D_80108908_mgresultbattle[];
 extern omObjData *D_80108F90_mgresultbattle;
+extern omObjFunc D_80108F94_mgresultbattle;
+extern s32 D_801088E0_mgresultbattle[];
 
 void func_801059A0_mgresultbattle(void) {
     s16 var_a0_2;
@@ -132,7 +135,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80106BA0_mgr
 void func_80106E98_mgresultbattle(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80106EA0_mgresultbattle);
+void func_80106EA0_mgresultbattle(void) {
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        D_801088E0_mgresultbattle[i] = 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80106ED0_mgresultbattle);
 
@@ -152,7 +161,9 @@ void func_801075EC_mgresultbattle(void) {
 void func_801075F4_mgresultbattle(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_801075FC_mgresultbattle);
+void func_801075FC_mgresultbattle(void) {
+    D_80108F94_mgresultbattle = func_80107610_mgresultbattle;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80107610_mgresultbattle);
 

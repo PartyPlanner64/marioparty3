@@ -13,6 +13,11 @@ extern UnkOmData D_80109338_mgresultduel;
 extern omObjFunc D_80109330_mgresultduel;
 extern omObjFunc D_80109344_mgresultduel;
 extern s8 D_80108E78_mgresultduel;
+extern s8 D_801092F8_mgresultduel;
+extern s16 D_8010930A_mgresultduel;
+extern s16 D_8010930C_mgresultduel;
+extern omObjFunc D_80109320_mgresultduel;
+extern omObjFunc D_80109328_mgresultduel;
 void func_80106054_mgresultduel(void);
 void func_80106544_mgresultduel(omObjData *);
 void func_80106270_mgresultduel(omObjData *);
@@ -23,6 +28,16 @@ void func_80107178_mgresultduel(omObjData *);
 void func_80107244_mgresultduel(omObjData *);
 void func_801072A8_mgresultduel(omObjData *);
 void func_80107654_mgresultduel(omObjData *);
+void func_80106278_mgresultduel(omObjData *);
+void func_80106574_mgresultduel(omObjData *);
+void func_80106744_mgresultduel(omObjData *);
+void func_80107B04_mgresultduel(s32);
+void func_80107CA4_mgresultduel(omObjData *);
+void func_80108318_mgresultduel(omObjData *);
+void func_80108818_mgresultduel(omObjData *);
+void func_80108820_mgresultduel(omObjData *);
+void func_80108D30_mgresultduel(s16, s16, s16);
+void func_80108E2C_mgresultduel(omObjData *);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_801059A0_mgresultduel);
 
@@ -92,13 +107,19 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80106278_mgres
 void func_80106544_mgresultduel(omObjData *arg0) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_8010654C_mgresultduel);
+void func_8010654C_mgresultduel(void) {
+    D_80109338_mgresultduel.objFunc = func_80106278_mgresultduel;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80106560_mgresultduel);
+void func_80106560_mgresultduel(void) {
+    D_80109338_mgresultduel.objFunc = func_80106574_mgresultduel;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80106574_mgresultduel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80106730_mgresultduel);
+void func_80106730_mgresultduel(void) {
+    D_80109338_mgresultduel.objFunc = func_80106744_mgresultduel;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80106744_mgresultduel);
 
@@ -192,11 +213,17 @@ void func_80107AFC_mgresultduel(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80107B04_mgresultduel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80107C74_mgresultduel);
+void func_80107C74_mgresultduel(s32 arg0, s32 arg1) {
+    D_801092F8_mgresultduel = arg1;
+    func_80107B04_mgresultduel(arg0);
+    D_80109320_mgresultduel = func_80107CA4_mgresultduel;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80107CA4_mgresultduel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80108304_mgresultduel);
+void func_80108304_mgresultduel(void) {
+    D_80109320_mgresultduel = func_80108318_mgresultduel;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80108318_mgresultduel);
 
@@ -204,7 +231,7 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultduel/4F01F0", D_80108EC0_mgres
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_801084B0_mgresultduel);
 
-void func_80108818_mgresultduel(void) {
+void func_80108818_mgresultduel(omObjData *arg0) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80108820_mgresultduel);
@@ -214,11 +241,18 @@ void func_80108D28_mgresultduel(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80108D30_mgresultduel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80108E04_mgresultduel);
+void func_80108E04_mgresultduel(void) {
+    D_80109328_mgresultduel = func_80108820_mgresultduel;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80108E18_mgresultduel);
+void func_80108E18_mgresultduel(void) {
+    D_80109328_mgresultduel = func_80108E2C_mgresultduel;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80108E2C_mgresultduel);
+void func_80108E2C_mgresultduel(omObjData *arg0) {
+    func_80108D30_mgresultduel(arg0->model[1], D_8010930C_mgresultduel, D_8010930A_mgresultduel);
+    D_80109328_mgresultduel = func_80108818_mgresultduel;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultduel/4F01F0", D_80108ED4_mgresultduel);
 

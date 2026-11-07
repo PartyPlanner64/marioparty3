@@ -4,15 +4,19 @@
 extern s16 D_800A11E6_main;
 extern s16 D_800D1F36_main;
 extern s16 D_800D1FE0_main;
+extern u8 D_800CE20A_main;
 extern u16 D_80109AA4_mgenter;
 extern s16 D_80109AA6_mgenter;
 extern s16 D_80109B20_mgenter;
 extern s16 D_80109B22_mgenter;
 extern s16 D_80109B24_mgenter;
+extern s16 D_80109B26_mgenter;
+extern s16 D_80109B28_mgenter;
 extern s16 D_80109B2A_mgenter;
 extern s16 D_80109B2C_mgenter;
 extern s16 D_80109B2E_mgenter;
 extern s16 D_80109B30_mgenter;
+extern s16 D_80109B32_mgenter;
 extern s16 D_80109B34_mgenter;
 extern s16 D_80109B36_mgenter;
 extern s16 D_80109B38_mgenter;
@@ -27,10 +31,15 @@ extern s16 D_80109B98_mgenter;
 
 void func_80105CD8_mgenter(void);
 void func_80106294_mgenter(void);
+void func_80106BD0_mgenter(void);
 void func_80106568_mgenter(void);
 void func_80106710_mgenter(u8 *str);
+void func_8010677C_mgenter(void);
 void func_801079B4_mgenter(void);
 void func_80107E5C_mgenter(s16 winId, s16 value, u8 *buf);
+void func_80107F0C_mgenter(void);
+void func_80108560_mgenter(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
+void func_80108590_mgenter(void);
 void func_801087C0_mgenter(void);
 void func_80108934_mgenter(omObjData *obj);
 void func_80109020_mgenter(void);
@@ -38,6 +47,7 @@ s16 func_801095F4_mgenter(void);
 void func_801096EC_mgenter(s16 arg0);
 void func_801089A0_mgenter(omObjData *);
 void func_80109820_mgenter(void);
+void func_801098D8_mgenter(void);
 
 void func_801059D0_mgenter(void) {
     process_func func;
@@ -104,7 +114,133 @@ void func_80105C60_mgenter(void) {
     D_800D1FE0_main++;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgenter/468AC0", func_80105CD8_mgenter);
+void func_80105CD8_mgenter(void) {
+    s16 size[2];
+    s16 winId;
+    s16 confirmed;
+
+    D_80109B2C_mgenter = D_800A11E6_main;
+    if (D_80109B2C_mgenter < 0) {
+        D_80109B2C_mgenter = 0;
+    }
+    D_80109B30_mgenter = 0;
+    D_80109B28_mgenter = -1;
+    omAddPrcObj(func_80108590_mgenter, 0x3F00, 0x800, 0);
+    omAddPrcObj(func_80106568_mgenter, 0x3F00, 0x800, 0);
+    omAddPrcObj(func_8010677C_mgenter, 0x3F00, 0x800, 0);
+    omAddPrcObj(func_80107F0C_mgenter, 0x3F00, 0x800, 0);
+    omAddPrcObj(func_80106BD0_mgenter, 0x3F00, 0x800, 0);
+    while (WipeStatGet() != 0) {
+        HuPrcVSleep();
+    }
+    D_80109B24_mgenter = 0;
+    D_80109B26_mgenter = 0;
+    HuPrcSleep(10);
+    HuWinMesMaxSizeGet(3, size, 0x4600, 0x4601, 0x4603);
+    winId = HuWinExCreate(-1, (320 - size[0]) / 2, 180, size[0], size[1], 0);
+    HuWinMesSpeedSet(winId, 0);
+    HuWinExAnimIn(winId);
+    D_80109B32_mgenter = 0;
+    while (TRUE) {
+        HuWinMesSet(winId, 0x4600, -1, -1);
+        while (HuWinStatGet(winId) != 0) {
+            HuPrcVSleep();
+        }
+        func_80108560_mgenter(60, 110, 260, 110);
+        D_80109B22_mgenter = 1;
+        while (TRUE) {
+            func_801098D8_mgenter();
+            if (D_800CBB6E_main[D_80109B74_mgenter] >= 31 || (D_800D5558_main[D_80109B74_mgenter] & 1)) {
+                HuAudFXPlay(1);
+                D_80109B30_mgenter = 1;
+                D_80109B22_mgenter = 0;
+                HuPrcSleep(10);
+                D_80109B22_mgenter = 1;
+            } else if (D_800CBB6E_main[D_80109B74_mgenter] < -30 || (D_800D5558_main[D_80109B74_mgenter] & 2)) {
+                HuAudFXPlay(1);
+                D_80109B30_mgenter = -1;
+                D_80109B22_mgenter = 0;
+                HuPrcSleep(10);
+                D_80109B22_mgenter = 1;
+            }
+            if (D_800D5558_main[D_80109B74_mgenter] & 0x8000) {
+                HuAudFXPlay(2);
+                D_800A11E6_main = D_80109B2C_mgenter;
+                D_800CE20A_main = D_80109B2C_mgenter;
+                break;
+            }
+            if (D_800D5558_main[D_80109B74_mgenter] & 0x4000) {
+                HuAudFXPlay(4);
+                D_800A11E6_main = -1;
+                D_80109B7C_mgenter = 0;
+                D_80109AA4_mgenter = 1;
+                D_80109AA6_mgenter = 1;
+                while (TRUE) {
+                    HuPrcVSleep();
+                }
+            }
+            HuPrcVSleep();
+        }
+        D_80109B22_mgenter = 0;
+        D_80109B26_mgenter = 1;
+        D_80109B28_mgenter = 0;
+        HuPrcSleep(10);
+        func_80108560_mgenter(80, 155, 240, 155);
+        D_80109B22_mgenter = 1;
+        HuWinMesSet(winId, 0x4603, -1, -1);
+        while (HuWinStatGet(winId) != 0) {
+            HuPrcVSleep();
+        }
+        while (TRUE) {
+            func_801098D8_mgenter();
+            if (D_800CBB6E_main[D_80109B74_mgenter] >= 31 || (D_800D5558_main[D_80109B74_mgenter] & 1)) {
+                HuAudFXPlay(1);
+                if (++D_80109B32_mgenter >= 3) {
+                    D_80109B32_mgenter = 0;
+                }
+                D_80109B22_mgenter = 0;
+                HuPrcSleep(10);
+                D_80109B22_mgenter = 1;
+            } else if (D_800CBB6E_main[D_80109B74_mgenter] < -30 || (D_800D5558_main[D_80109B74_mgenter] & 2)) {
+                HuAudFXPlay(1);
+                if (--D_80109B32_mgenter < 0) {
+                    D_80109B32_mgenter = 2;
+                }
+                D_80109B22_mgenter = 0;
+                HuPrcSleep(10);
+                D_80109B22_mgenter = 1;
+            }
+            if (D_800D5558_main[D_80109B74_mgenter] & 0x8000) {
+                HuAudFXPlay(2);
+                confirmed = TRUE;
+                break;
+            }
+            if (D_800D5558_main[D_80109B74_mgenter] & 0x4000) {
+                HuAudFXPlay(4);
+                confirmed = FALSE;
+                break;
+            }
+            HuPrcVSleep();
+        }
+        if (confirmed) {
+            break;
+        }
+        D_80109B22_mgenter = 0;
+        D_80109B26_mgenter = 2;
+        D_80109B28_mgenter = 1;
+        HuPrcSleep(10);
+    }
+    GwPlayer[0].group = 0;
+    D_800CB894_main = D_80109B32_mgenter;
+    HuWinKill(winId);
+    D_80109B7C_mgenter = 2;
+    D_80109B76_mgenter = func_800341C0_main(GwSystem.minigame_index);
+    D_80109B98_mgenter = 0;
+    D_80109AA4_mgenter = 1;
+    while (TRUE) {
+        HuPrcVSleep();
+    }
+}
 
 void func_80106294_mgenter(void) {
     s16 size[2];

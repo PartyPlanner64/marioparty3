@@ -3,6 +3,7 @@
 #include "game/object.h"
 #include "game/wipe.h"
 #include "../ovl_80_shared_board/FA250.h"
+#include "../ovl_80_shared_board/105D50.h"
 #include "mgresultbattle.h"
 
 void func_80105E0C_mgresultbattle(void);
@@ -19,6 +20,7 @@ void func_80105F50_mgresultbattle(void);
 void func_80105F78_mgresultbattle(Gfx **, s32, s32);
 void func_80107610_mgresultbattle(omObjData *);
 void func_801069FC_mgresultbattle(omObjData *);
+void func_801075FC_mgresultbattle(void);
 
 extern s8 D_80108F8C_mgresultbattle[4];
 extern s32 D_80108908_mgresultbattle[];
@@ -26,6 +28,8 @@ extern omObjData *D_80108F90_mgresultbattle;
 extern omObjFunc D_80108F94_mgresultbattle;
 extern s32 D_801088E0_mgresultbattle[];
 extern s8 D_801088D8_mgresultbattle;
+extern s8 D_801088D0_mgresultbattle;
+extern s32 D_801088D4_mgresultbattle;
 
 void func_801059A0_mgresultbattle(void) {
     s16 var_a0_2;
@@ -86,7 +90,56 @@ void func_801059A0_mgresultbattle(void) {
     WipeCreateIn(WIPE_TYPE_PREV, 0x10);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80105CAC_mgresultbattle);
+void func_80105CAC_mgresultbattle(omObjData *obj) {
+    s32 state;
+    s32 i;
+    s32 coins;
+    s32 newCoins;
+
+    state = D_801088D0_mgresultbattle;
+    switch (state) {
+        case 0:
+            HuAudSeqPlay(0x15);
+            D_801088D4_mgresultbattle = 0;
+            state++;
+            break;
+        case 1:
+            state++;
+            break;
+        case 2:
+            if (D_801088D4_mgresultbattle++ >= 6) {
+                func_801075FC_mgresultbattle();
+                D_801088D4_mgresultbattle = 0;
+                state++;
+            }
+            break;
+        case 4:
+            for (i = 0; i < MB_MAX_PLAYERS; i++) {
+                coins = GwPlayer[i].coin + GwPlayer[i].gameCoin;
+                if (coins <= 999) {
+                    newCoins = coins;
+                } else {
+                    newCoins = 999;
+                }
+                GwPlayer[i].coin = newCoins;
+                MBPlayerCoinAdd(i, 0);
+            }
+            WipeCreateOut(WIPE_TYPE_NORMAL, 20);
+            HuAudSeqFadeOut(30);
+            func_8004AB0C_main(30);
+            state++;
+            break;
+        case 5:
+            if (WipeStatGet() == 0) {
+                GameMesStub();
+                MBBackKill();
+                MBBackClose();
+                omOvlReturnEx(1);
+            }
+            break;
+    }
+    D_801088D0_mgresultbattle = state;
+}
 
 void func_80105E0C_mgresultbattle(void) {
     CZoom = 2300.0f;

@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game/object.h"
+#include "math.h"
 #include "../ovl_81_name/ovl_81.h"
 
 typedef struct UnkOmData {
@@ -14,6 +15,7 @@ extern s8 D_80109310_mgresultduel[];
 extern s8 D_80109318_mgresultduel;
 extern s8 D_80108E78_mgresultduel;
 extern char D_80108EC0_mgresultduel[];
+extern s32 D_80109314_mgresultduel;
 
 void func_80106054_mgresultduel(void);
 void func_80106544_mgresultduel(omObjData *);
@@ -23,6 +25,8 @@ void func_80106574_mgresultduel(omObjData *);
 void func_80106744_mgresultduel(omObjData *);
 void func_80106850_mgresultduel(omObjData *, s32);
 void func_801074B8_mgresultduel(void);
+void func_801074DC_mgresultduel(s8);
+void func_80107C74_mgresultduel(s32, s32);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_801059A0_mgresultduel);
 
@@ -131,7 +135,33 @@ void func_80106080_mgresultduel(void) {
 void func_80106270_mgresultduel(omObjData *arg0) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F01F0", func_80106278_mgresultduel);
+void func_80106278_mgresultduel(omObjData *obj) {
+    f32 scale;
+    s8 i;
+
+    scale = 0.9f;
+    Hu3DModelScaleSet(obj->model[1], scale, scale, scale);
+    Hu3DMotionShiftSet(obj->model[1], HmfModelData[obj->motion[1]].motId, 0, 0x1E, 2);
+    func_80106850_mgresultduel(obj, HmfModelData[obj->motion[1]].motId);
+    HuAudFXPlay(0x20F);
+    for (i = 0; i < 4; i++) {
+        Hu3DModelScaleSet(obj->model[1], 0.9f, 0.9f - sindf(i * 22.5f) * 0.24f, 0.9f);
+        HuPrcVSleep();
+    }
+    HuPrcSleep(2);
+    for (i = 0; i < 4; i++) {
+        Hu3DModelScaleSet(obj->model[1], 0.9f, 0.9f - cosdf(i * 22.5f) * 0.24f, 0.9f);
+        HuPrcVSleep();
+    }
+    Hu3DModelScaleSet(obj->model[1], 0.9f, 0.9f, 0.9f);
+    HuAudFXPlay(0x20D);
+    Hu3DMotionShiftSet(obj->model[1], HmfModelData[obj->motion[3]].motId, 0, 0x1E, 2);
+    func_80106850_mgresultduel(obj, HmfModelData[obj->motion[3]].motId);
+    Hu3DMotionSpeedSet(obj->model[1], 2.0f);
+    func_801074DC_mgresultduel(D_80109318_mgresultduel);
+    func_80107C74_mgresultduel(D_80109314_mgresultduel, D_80109318_mgresultduel);
+    D_80109338_mgresultduel.objFunc = func_80106270_mgresultduel;
+}
 
 void func_80106544_mgresultduel(omObjData *arg0) {
 }

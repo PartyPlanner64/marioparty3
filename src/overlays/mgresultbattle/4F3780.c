@@ -131,7 +131,23 @@ void func_80105F50_mgresultbattle(void) {
     Hu3DHookFuncCreate(0, func_80105F78_mgresultbattle, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80105F78_mgresultbattle);
+void func_80105F78_mgresultbattle(Gfx **gfx, s32 arg1, s32 arg2) {
+    Gfx *gdl = *gfx;
+
+    gDPPipeSync(gdl++);
+    gDPSetCycleType(gdl++, G_CYC_1CYCLE);
+    gSPClearGeometryMode(gdl++, G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR |
+                                    G_LOD | G_SHADING_SMOOTH);
+    gSPSetGeometryMode(gdl++, G_SHADE | G_CULL_BACK | G_SHADING_SMOOTH);
+    gDPSetTexturePersp(gdl++, G_TP_NONE);
+    gDPSetPrimColor(gdl++, 0, 0, 0, 0, 0, 127);
+    gDPSetRenderMode(gdl++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
+    gDPSetCombineMode(gdl++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
+    gDPSetTextureLUT(gdl++, G_TT_NONE);
+    gDPSetFillColor(gdl++, 0x10001);
+    gDPFillRectangle(gdl++, 0, 0, 319, 239);
+    *gfx = gdl;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_801060A4_mgresultbattle);
 

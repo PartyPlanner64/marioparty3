@@ -4,6 +4,7 @@ extern s16 D_80109A68_mgresultdealer;
 extern s16 D_80109A6A_mgresultdealer;
 extern omObjFunc D_8010A254_mgresultdealer;
 extern s8 D_8010A266_mgresultdealer;
+extern s8 D_801098D0_mgresultdealer;
 
 void func_80106A50_mgresultdealer(omObjData *);
 void func_80106EC0_mgresultdealer(omObjData *);
@@ -15,7 +16,21 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80105C88_mgr
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_801061C8_mgresultdealer);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80106234_mgresultdealer);
+void func_80106234_mgresultdealer(omObjData *obj) {
+    if (D_800D530C_main == 1) {
+        if (D_801098D0_mgresultdealer == 0) {
+            WipeCreateOut(WIPE_TYPE_NORMAL, 20);
+            D_801098D0_mgresultdealer = 1;
+            return;
+        }
+        if (WipeStatGet() == 0) {
+            HuAudSeqFadeOut(30);
+            func_8004AB0C_main(30);
+            GameMesStub();
+            omOvlReturnEx(1);
+        }
+    }
+}
 
 void func_801062B4_mgresultdealer(void) {
     u16 espriteSlot;

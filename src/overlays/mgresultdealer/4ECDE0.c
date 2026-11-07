@@ -1,9 +1,5 @@
 #include "common.h"
-
-typedef struct {
-    /* 0x00 */ omObjData *obj;
-    /* 0x04 */ omObjFunc func;
-} ResultDealerObj;
+#include "mgresultdealer.h"
 
 extern s16 D_80109A64_mgresultdealer[4];
 extern s8 D_8010A266_mgresultdealer[4];
@@ -13,7 +9,6 @@ extern s8 D_801098E2_mgresultdealer;
 extern Vec D_801098E4_mgresultdealer;
 extern Vec D_801098F0_mgresultdealer;
 extern f32 D_80109A60_mgresultdealer;
-extern ResultDealerObj D_8010A250_mgresultdealer;
 extern s32 D_801098FC_mgresultdealer[];
 extern s16 D_8010990C_mgresultdealer;
 extern s16 D_801099F8_mgresultdealer[];

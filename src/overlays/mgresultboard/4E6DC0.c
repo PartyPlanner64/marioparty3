@@ -32,17 +32,20 @@ s32 func_80106D50_mgresultboard(s32, s32);
 s32 func_80106D88_mgresultboard(s32, s16);
 s32 func_80106DB8_mgresultboard(s8, s16);
 void func_80107234_mgresultboard(void);
-void func_80107650_mgresultboard(s8);
+void func_80107650_mgresultboard(s32);
 void func_80107800_mgresultboard(s32);
 void func_801079B0_mgresultboard(s32);
 void func_80107A58_mgresultboard(void);
-s32 func_80109A90_mgresultboard(s32, s8, s16);
+s32 func_80109A90_mgresultboard(omObjData *, s8, s16);
 
 typedef struct Unk {
-    s32 unk_00;
+    omObjData *unk_00;
 } Unk;
 
 extern Unk D_8010AEA0_mgresultboard; // unknown size
+extern omObjData *D_8010AF98_mgresultboard;
+extern omObjData *D_8010AFA0_mgresultboard;
+extern omObjData *D_8010AFA8_mgresultboard;
 extern u32 D_8010AAF0_mgresultboard;
 extern f32 D_8010AAF4_mgresultboard;
 extern s32 D_8010AAF8_mgresultboard;
@@ -445,10 +448,9 @@ void func_80105CE8_mgresultboard(omObjData *arg0) {
     D_8010AAF4_mgresultboard = ((buttonPressed & A_BUTTON) || (cpuCount >= 4)) ? 4.0f : 1.0f;
 }
 
-s32 func_80108250_mgresultboard(s32, s32, s8, s8); /* extern */
-s32 func_801092E0_mgresultboard(s32, s32, s16);    /* extern */
-s32 func_80109878_mgresultboard(s32, s32, s16);    /* extern */
-extern s32 D_8010AFA8_mgresultboard;
+s32 func_80108250_mgresultboard(omObjData *, s32, s8, s8); /* extern */
+s32 func_801092E0_mgresultboard(omObjData *, s32, s16);    /* extern */
+s32 func_80109878_mgresultboard(omObjData *, s32, s16);    /* extern */
 
 s32 func_80106A80_mgresultboard(s8 arg0) {
     u16 var_s0;
@@ -587,9 +589,57 @@ void func_80107188_mgresultboard(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E6DC0", func_80107234_mgresultboard);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E6DC0", func_80107650_mgresultboard);
+void func_80107650_mgresultboard(s32 player) {
+    omObjData *obj;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E6DC0", func_80107800_mgresultboard);
+    obj = D_8010AFE0_mgresultboard;
+    Hu3DModelCameraSet(obj->model[player + 1], HU3D_CAM0);
+    Hu3DModelCameraSet(obj->model[player + 5], HU3D_CAM0);
+    obj = D_8010AFA8_mgresultboard;
+    Hu3DModelCameraSet(obj->model[player + 1], HU3D_CAM0);
+    Hu3DModelCameraSet(obj->model[player + 5], HU3D_CAM0);
+    obj = D_8010AFA0_mgresultboard;
+    Hu3DModelCameraSet(obj->model[player + 1], HU3D_CAM0);
+    obj = D_8010AF98_mgresultboard;
+    Hu3DModelCameraSet(obj->model[player + 1], HU3D_CAM0);
+    obj = D_8010AEA0_mgresultboard.unk_00;
+    Hu3DModelCameraSet(obj->model[player * 2 + 1], HU3D_CAM0);
+    Hu3DModelCameraSet(obj->model[player * 2 + 2], HU3D_CAM0);
+    Hu3DModelCameraSet(obj->model[player * 2 + 21], HU3D_CAM0);
+    Hu3DModelCameraSet(obj->model[player * 2 + 22], HU3D_CAM0);
+    Hu3DModelCameraSet(obj->model[player * 3 + 9], HU3D_CAM0);
+    Hu3DModelCameraSet(obj->model[player * 3 + 10], HU3D_CAM0);
+    Hu3DModelCameraSet(obj->model[player * 3 + 11], HU3D_CAM0);
+    Hu3DModelCameraSet(obj->model[player * 3 + 29], HU3D_CAM0);
+    Hu3DModelCameraSet(obj->model[player * 3 + 30], HU3D_CAM0);
+    Hu3DModelCameraSet(obj->model[player * 3 + 31], HU3D_CAM0);
+}
+
+void func_80107800_mgresultboard(s32 player) {
+    omObjData *obj;
+
+    obj = D_8010AFE0_mgresultboard;
+    Hu3DModelCameraSet(obj->model[player + 1], HU3D_CAM1);
+    Hu3DModelCameraSet(obj->model[player + 5], HU3D_CAM1);
+    obj = D_8010AFA8_mgresultboard;
+    Hu3DModelCameraSet(obj->model[player + 1], HU3D_CAM1);
+    Hu3DModelCameraSet(obj->model[player + 5], HU3D_CAM1);
+    obj = D_8010AFA0_mgresultboard;
+    Hu3DModelCameraSet(obj->model[player + 1], HU3D_CAM1);
+    obj = D_8010AF98_mgresultboard;
+    Hu3DModelCameraSet(obj->model[player + 1], HU3D_CAM1);
+    obj = D_8010AEA0_mgresultboard.unk_00;
+    Hu3DModelCameraSet(obj->model[player * 2 + 1], HU3D_CAM1);
+    Hu3DModelCameraSet(obj->model[player * 2 + 2], HU3D_CAM1);
+    Hu3DModelCameraSet(obj->model[player * 2 + 21], HU3D_CAM1);
+    Hu3DModelCameraSet(obj->model[player * 2 + 22], HU3D_CAM1);
+    Hu3DModelCameraSet(obj->model[player * 3 + 9], HU3D_CAM1);
+    Hu3DModelCameraSet(obj->model[player * 3 + 10], HU3D_CAM1);
+    Hu3DModelCameraSet(obj->model[player * 3 + 11], HU3D_CAM1);
+    Hu3DModelCameraSet(obj->model[player * 3 + 29], HU3D_CAM1);
+    Hu3DModelCameraSet(obj->model[player * 3 + 30], HU3D_CAM1);
+    Hu3DModelCameraSet(obj->model[player * 3 + 31], HU3D_CAM1);
+}
 
 void func_801079B0_mgresultboard(s32 arg0) {
     s32 *played;

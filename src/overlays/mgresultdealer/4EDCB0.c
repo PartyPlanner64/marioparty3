@@ -164,7 +164,7 @@ void func_80108560_mgresultdealer(u8 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EDCB0", func_80108570_mgresultdealer);
 
-void func_80108AEC_mgresultdealer(void) {
+void func_80108AEC_mgresultdealer(omObjData *arg0) {
     if (D_80109940_mgresultdealer == 0) {
         return;
     }
@@ -252,4 +252,26 @@ s8 func_80109478_mgresultdealer(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EDCB0", func_80109484_mgresultdealer);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EDCB0", func_80109710_mgresultdealer);
+void func_80109710_mgresultdealer(omObjData *arg0) {
+    f32 scale = 1.0f;
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < 5; i++) {
+        espScaleSet(D_8010A210_mgresultdealer.unk_2A, 1.0f, scale);
+        espScaleSet(D_8010A210_mgresultdealer.unk_2C, 1.0f, scale);
+        espScaleSet(D_8010A210_mgresultdealer.groups[0].unk_00, 1.0f, scale);
+        espScaleSet(D_8010A210_mgresultdealer.groups[1].unk_00, 1.0f, scale);
+        espScaleSet(D_8010A210_mgresultdealer.groups[2].unk_00, 1.0f, scale);
+        for (j = 0; j < 3; j++) {
+            espScaleSet(D_8010A210_mgresultdealer.groups[0].unk_08[j], 1.0f, scale);
+            espScaleSet(D_8010A210_mgresultdealer.groups[1].unk_08[j], 1.0f, scale);
+            espScaleSet(D_8010A210_mgresultdealer.groups[2].unk_08[j], 1.0f, scale);
+        }
+        scale = cosdf(i * 18.0f);
+        HuPrcVSleep();
+    }
+    func_801093A0_mgresultdealer();
+    D_8010A244_mgresultdealer = 1;
+    D_8010A260_mgresultdealer = func_80108AEC_mgresultdealer;
+}

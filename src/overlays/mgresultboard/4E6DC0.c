@@ -6,7 +6,7 @@ extern PlayerResult D_8010B018_mgresultboard[4];
 extern PlayerResult D_8010B048_mgresultboard[4];
 extern s8 D_8010AAFC_mgresultboard;
 
-void func_8010705C_mgresultboard(Gfx**, s32, s32);
+void func_8010705C_mgresultboard(Gfx **, s32, s32);
 void func_80107B40_mgresultboard(void);
 void func_80107D00_mgresultboard(void);
 void func_80108700_mgresultboard(void);
@@ -42,7 +42,7 @@ typedef struct Unk {
     s32 unk_00;
 } Unk;
 
-extern Unk D_8010AEA0_mgresultboard; //unknown size
+extern Unk D_8010AEA0_mgresultboard; // unknown size
 extern u32 D_8010AAF0_mgresultboard;
 extern f32 D_8010AAF4_mgresultboard;
 extern s32 D_8010AAF8_mgresultboard;
@@ -50,6 +50,11 @@ extern s32 D_8010AD90_mgresultboard;
 extern s8 D_8010AD94_mgresultboard;
 s32 func_8010A864_mgresultboard(omObjData *, s8, s8); /* extern */
 extern omObjData *D_8010AFE0_mgresultboard;
+extern s32 D_8010AB00_mgresultboard;
+extern s32 D_8010AB04_mgresultboard;
+extern s32 D_8010AB0C_mgresultboard;
+extern s16 D_8010AD96_mgresultboard;
+extern s16 D_8010AD98_mgresultboard;
 
 // updates mg star coins on results scene load
 void func_801059A0_mgresultboard(void) {
@@ -442,9 +447,9 @@ void func_80105CE8_mgresultboard(omObjData *arg0) {
     D_8010AAF4_mgresultboard = ((buttonPressed & A_BUTTON) || (cpuCount >= 4)) ? 4.0f : 1.0f;
 }
 
-s32 func_80108250_mgresultboard(s32, s32, s8, s8);  /* extern */
-s32 func_801092E0_mgresultboard(s32, s32, s16);     /* extern */
-s32 func_80109878_mgresultboard(s32, s32, s16);     /* extern */
+s32 func_80108250_mgresultboard(s32, s32, s8, s8); /* extern */
+s32 func_801092E0_mgresultboard(s32, s32, s16);    /* extern */
+s32 func_80109878_mgresultboard(s32, s32, s16);    /* extern */
 extern s32 D_8010AFA8_mgresultboard;
 
 s32 func_80106A80_mgresultboard(s8 arg0) {
@@ -481,7 +486,6 @@ s32 func_80106C80_mgresultboard(s8 arg0) {
     return temp_s3;
 }
 
-
 s32 func_80106D50_mgresultboard(s32 arg0, s32 arg1) {
     if (func_8010A864_mgresultboard(D_8010AFE0_mgresultboard, arg0, arg1) ^ 1) {
         return 0;
@@ -514,11 +518,11 @@ void func_80106DE8_mgresultboard(void) {
         CRotM[i] = CRot;
         CenterM[i] = Center;
         CZoomM[i] = CZoom;
-        Hu3DCameraPerspectiveSet(i, fov, 80.0f, 8000.0f);        
+        Hu3DCameraPerspectiveSet(i, fov, 80.0f, 8000.0f);
     }
 }
 
-void func_80106F40_mgresultboard(omObjData* arg0) {
+void func_80106F40_mgresultboard(omObjData *arg0) {
     if (D_800D530C_main == 1) {
         if (D_8010AAFC_mgresultboard == 0) {
             WipeCreateOut(WIPE_TYPE_NORMAL, 0x14);
@@ -573,7 +577,26 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E6DC0", func_80107650_mgre
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E6DC0", func_80107800_mgresultboard);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E6DC0", func_801079B0_mgresultboard);
+void func_801079B0_mgresultboard(s32 arg0) {
+    s32 *played;
+
+    if (arg0 > 0) {
+        if (D_8010AAF4_mgresultboard == 4.0f) {
+            played = &D_8010AB00_mgresultboard;
+            if (*played == 0) {
+                D_8010AD96_mgresultboard = HuAudFXPlay(0x11E);
+                *played = 1;
+            }
+        } else {
+            played = &D_8010AB04_mgresultboard;
+            if (*played == 0) {
+                D_8010AD98_mgresultboard = HuAudFXPlay(0x11F);
+                *played = 1;
+            }
+        }
+    }
+    D_8010AB0C_mgresultboard = 20;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultboard/4E6DC0", func_80107A58_mgresultboard);
 

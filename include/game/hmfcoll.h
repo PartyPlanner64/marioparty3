@@ -24,6 +24,11 @@ typedef struct CollisionGrid {
     /* 0x20 */ CollisionGridCell *cells;
 } CollisionGrid; // sizeof 0x24
 
+typedef struct Hu3DSphere {
+    /* 0x00 */ Vec pos;
+    /* 0x0C */ f32 radius;
+} Hu3DSphere; // sizeof 0x10
+
 void Hu3DAnimInit(s16 count);
 s32 func_8001FED0_main(s16 index);
 s16 func_8001FF04_main(s16 model);

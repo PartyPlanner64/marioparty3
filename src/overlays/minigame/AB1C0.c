@@ -25,13 +25,6 @@ typedef struct {
     /* 0x98 */ f32 unk98;
 } func_800D8640_minigame_ObjData;
 
-typedef struct {
-    /* 0x00 */ f32 x;
-    /* 0x04 */ f32 y;
-    /* 0x08 */ f32 z;
-    /* 0x0C */ f32 unk0C;
-} func_800DC7D8_minigame_Arg; // Size 0x10
-
 extern Vec D_800EBDD0_minigame;
 extern u8 D_800EB73B_minigame;
 extern f32 D_800EB73C_minigame;
@@ -66,11 +59,11 @@ extern f32 D_800EB77C_minigame;
 extern s8 D_800EB780_minigame;
 
 void func_800DFCDC_minigame(f32 x, f32 z, f32 scale);
-void func_800DC354_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1, Vec *arg2);
-void func_800DCCB0_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1, Vec *arg2, f32 arg3);
-void func_800DC7D8_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1);
-void func_800DC8E4_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1, f32 arg2);
-s32 func_800DB724_minigame(s32 count, s16 *vtx, Hu3DPoint *points, func_800DC7D8_minigame_Arg *arg3);
+void func_800DC354_minigame(omObjData *arg0, Hu3DSphere *arg1, Vec *arg2);
+void func_800DCCB0_minigame(omObjData *arg0, Hu3DSphere *arg1, Vec *arg2, f32 arg3);
+void func_800DC7D8_minigame(omObjData *arg0, Hu3DSphere *arg1);
+void func_800DC8E4_minigame(omObjData *arg0, Hu3DSphere *arg1, f32 arg2);
+s32 func_800DB724_minigame(s32 count, s16 *vtx, Hu3DPoint *points, Hu3DSphere *arg3);
 void func_800DD1F4_minigame(omObjData *obj, Vec *pos, f32 arg2);
 void func_800E28BC_minigame(HuMtx4F mtx, HuMtx4F result, Vec *pos, omObjData *obj);
 void func_800E2B58_minigame(HuMtx4F mtx, Vec *arg1);
@@ -85,7 +78,7 @@ void func_800E048C_minigame(f32 arg0, f32 arg1, f32 arg2);
 void func_800E2CA4_minigame(omObjData *, f32);
 void func_800E2C68_minigame(HuMtx4F mtx, Vec *arg1);
 void func_800E2BD4_minigame(HuMtx4F mtx, Vec *arg1);
-s8 func_800DD530_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1, f32 arg2);
+s8 func_800DD530_minigame(omObjData *arg0, Hu3DSphere *arg1, f32 arg2);
 s32 func_800E1510_minigame(s8 arg0);
 s32 func_800E2DA4_minigame(omObjData *arg0, omObjData *item);
 void func_800E454C_minigame(omObjData *arg0, omObjData *arg1, f32 x, f32 z, u16 arg4);
@@ -193,7 +186,7 @@ f32 func_800D8818_minigame(f32 x, f32 y, f32 z, Hu3DPoint *points, Hu3DQuad *qua
 
 f32 func_800D89CC_minigame(omObjData *arg0, f32 x, f32 y, f32 z, Vec *normal) {
     func_800E1BA8_minigame_ObjData *data = arg0->data;
-    func_800DC7D8_minigame_Arg pos;
+    Hu3DSphere sphere;
     Vec tmp;
     Vec dir;
     omObjData *obj;
@@ -206,7 +199,7 @@ f32 func_800D89CC_minigame(omObjData *arg0, f32 x, f32 y, f32 z, Vec *normal) {
     s16 i;
 
     best = -65536.0f;
-    pos.unk0C = 10.0f;
+    sphere.radius = 10.0f;
     data->unk53[0] = -1;
     for (i = 0; i < D_800EBE28_minigame; i++) {
         obj = D_800EC1C0_minigame[i];
@@ -217,27 +210,27 @@ f32 func_800D89CC_minigame(omObjData *arg0, f32 x, f32 y, f32 z, Vec *normal) {
         if (data->unk00[i] & 1) {
             continue;
         }
-        pos.x = x;
-        pos.y = y;
-        pos.z = z;
-        func_800E28BC_minigame(D_800EC240_minigame, D_800EBE30_minigame, (Vec *)&pos, obj);
+        sphere.pos.x = x;
+        sphere.pos.y = y;
+        sphere.pos.z = z;
+        func_800E28BC_minigame(D_800EC240_minigame, D_800EBE30_minigame, &sphere.pos, obj);
         if (objData->unk06 & 4) {
-            if (func_800E2F40_minigame(HmfModelData[obj->model[0]].hmf->unk60, (Vec *)&pos) == 0) {
+            if (func_800E2F40_minigame(HmfModelData[obj->model[0]].hmf->unk60, &sphere.pos) == 0) {
                 continue;
             }
         }
         if (objData->unk06 & 0x7A) {
             if (objData->unk06 & 0x50) {
-                if (func_800E30B8_minigame((Vec *)&pos, objData) == 0) {
+                if (func_800E30B8_minigame(&sphere.pos, objData) == 0) {
                     continue;
                 }
             }
-            height = func_800D8640_minigame(obj, data, pos.y);
+            height = func_800D8640_minigame(obj, data, sphere.pos.y);
             if (obj->trans.x != 0.0f || obj->trans.y != 0.0f || obj->trans.z != 0.0f || obj->rot.x != 0.0f ||
                 obj->rot.y != 0.0f || obj->rot.z != 0.0f) {
-                pos.y = height;
-                func_800E2C68_minigame(D_800EC240_minigame, (Vec *)&pos);
-                height = pos.y;
+                sphere.pos.y = height;
+                func_800E2C68_minigame(D_800EC240_minigame, &sphere.pos);
+                height = sphere.pos.y;
                 if (height >= best && height < y + 150.0f) {
                     best = height;
                     data->unk53[0] = D_800EB738_minigame = i;
@@ -260,7 +253,7 @@ f32 func_800D89CC_minigame(omObjData *arg0, f32 x, f32 y, f32 z, Vec *normal) {
             }
         } else {
             points = (Hu3DPoint *)HmfModelData[obj->model[0]].hmf->unk50;
-            func_80021C14_main(obj->model[0], &D_800EBEB0_minigame, func_800DB704_minigame, (Vec *)&pos);
+            func_80021C14_main(obj->model[0], &D_800EBEB0_minigame, func_800DB704_minigame, &sphere.pos);
             for (quad = func_80022198_main(&D_800EBEB0_minigame); quad != NULL;
                  quad = func_80022198_main(&D_800EBEB0_minigame)) {
                 transformed = 0;
@@ -270,18 +263,18 @@ f32 func_800D89CC_minigame(omObjData *arg0, f32 x, f32 y, f32 z, Vec *normal) {
                     tmp.y = y + 101.23f;
                     tmp.z = z;
                     func_800E2BD4_minigame(D_800EBE30_minigame, &tmp);
-                    dir.x = tmp.x - pos.x;
-                    dir.y = tmp.y - pos.y;
-                    dir.z = tmp.z - pos.z;
+                    dir.x = tmp.x - sphere.pos.x;
+                    dir.y = tmp.y - sphere.pos.y;
+                    dir.z = tmp.z - sphere.pos.z;
                     func_800202FC_main(&dir);
-                    func_800D8818_minigame(pos.x, pos.y, pos.z, points, quad, &dir, (Vec *)&pos);
-                    func_800E2C68_minigame(D_800EC240_minigame, (Vec *)&pos);
+                    func_800D8818_minigame(sphere.pos.x, sphere.pos.y, sphere.pos.z, points, quad, &dir, &sphere.pos);
+                    func_800E2C68_minigame(D_800EC240_minigame, &sphere.pos);
                     func_8002038C_main(&points[quad->vtx[1]], &points[quad->vtx[2]], &points[quad->vtx[3]], &dir);
                     func_800E2B58_minigame(D_800EC240_minigame, &dir);
-                    height = func_800D8778_minigame(obj, data, pos.y, y, &dir);
+                    height = func_800D8778_minigame(obj, data, sphere.pos.y, y, &dir);
                     transformed = 1;
                 } else {
-                    height = func_800204F4_main(pos.x, pos.y, pos.z, points, quad);
+                    height = func_800204F4_main(sphere.pos.x, sphere.pos.y, sphere.pos.z, points, quad);
                 }
                 if (height >= best && height < y + 150.0f) {
                     best = height;
@@ -311,7 +304,7 @@ f32 func_800D89CC_minigame(omObjData *arg0, f32 x, f32 y, f32 z, Vec *normal) {
 // prevY is unused, but callers pass it on the stack.
 f32 func_800D9028_minigame(omObjData *arg0, f32 x, f32 y, f32 z, f32 prevY) {
     func_800E1BA8_minigame_ObjData *data = arg0->data;
-    func_800DC7D8_minigame_Arg pos;
+    Hu3DSphere sphere;
     Vec floorNormal;
     Vec normal2;
     Vec *normal;
@@ -358,19 +351,19 @@ f32 func_800D9028_minigame(omObjData *arg0, f32 x, f32 y, f32 z, f32 prevY) {
         dist *= mult;
         newX = x + sindf(data->unk3C) * dist;
         newZ = z + cosdf(data->unk3C) * dist;
-        pos.x = newX;
-        pos.y = y;
-        pos.z = newZ;
-        pos.unk0C = data->unk48;
-        func_800DD530_minigame(arg0, &pos, 0);
+        sphere.pos.x = newX;
+        sphere.pos.y = y;
+        sphere.pos.z = newZ;
+        sphere.radius = data->unk48;
+        func_800DD530_minigame(arg0, &sphere, 0);
         func_800DB628_minigame(arg0);
-        pos.x = newX + D_800EBE2C_minigame;
-        pos.y = y;
-        pos.z = newZ + D_800EC5D8_minigame;
+        sphere.pos.x = newX + D_800EBE2C_minigame;
+        sphere.pos.y = y;
+        sphere.pos.z = newZ + D_800EC5D8_minigame;
         if (!(data->unk00[D_800EB734_minigame] & 1)) {
             objData = D_800EC1C0_minigame[D_800EB734_minigame]->data;
             if (objData->unk06 & 0x7A) {
-                if (func_800E30B8_minigame((Vec *)&pos, objData) == 1) {
+                if (func_800E30B8_minigame(&sphere.pos, objData) == 1) {
                     height = objData->unk14;
                     if (best < height && height < y + 150.0f) {
                         best = height;
@@ -387,7 +380,7 @@ f32 func_800D9028_minigame(omObjData *arg0, f32 x, f32 y, f32 z, f32 prevY) {
             } else {
                 points = (Hu3DPoint *)HmfModelData[D_800EC1C0_minigame[D_800EB734_minigame]->model[0]].hmf->unk50;
                 func_80021C14_main(D_800EC1C0_minigame[D_800EB734_minigame]->model[0], &D_800EBEB0_minigame,
-                                   func_800DB704_minigame, (Vec *)&pos);
+                                   func_800DB704_minigame, &sphere.pos);
                 for (quad = func_80022198_main(&D_800EBEB0_minigame); quad != NULL;
                      quad = func_80022198_main(&D_800EBEB0_minigame)) {
                     height = func_800204F4_main(newX + D_800EBE2C_minigame, y, newZ + D_800EC5D8_minigame, points,
@@ -445,11 +438,11 @@ f32 func_800D9028_minigame(omObjData *arg0, f32 x, f32 y, f32 z, f32 prevY) {
             }
         }
     } else {
-        pos.x = newX + D_800EBE2C_minigame;
-        pos.y = y;
-        pos.z = newZ + D_800EC5D8_minigame;
-        pos.unk0C = data->unk48;
-        func_800DD530_minigame(arg0, &pos, 0);
+        sphere.pos.x = newX + D_800EBE2C_minigame;
+        sphere.pos.y = y;
+        sphere.pos.z = newZ + D_800EC5D8_minigame;
+        sphere.radius = data->unk48;
+        func_800DD530_minigame(arg0, &sphere, 0);
     }
     if (arg0->model[1] != 0) {
         func_800E4890_minigame(arg0, newX, y, newZ, groundY, normal);
@@ -463,7 +456,7 @@ f32 func_800D9028_minigame(omObjData *arg0, f32 x, f32 y, f32 z, f32 prevY) {
 f32 func_800D972C_minigame(omObjData *arg0, f32 angle, f32 x, f32 y, f32 z) {
     s8 idx = -1;
     func_800E1BA8_minigame_ObjData *data = arg0->data;
-    func_800DC7D8_minigame_Arg pos;
+    Hu3DSphere sphere;
     Vec floorNormal;
     Vec normal2;
     Vec *normal;
@@ -513,19 +506,19 @@ f32 func_800D972C_minigame(omObjData *arg0, f32 angle, f32 x, f32 y, f32 z) {
         }
         newX = x + sindf(angle) * dist;
         newZ = z + cosdf(angle) * dist;
-        pos.x = newX + D_800EBE2C_minigame;
-        pos.y = y;
-        pos.z = newZ + D_800EC5D8_minigame;
-        pos.unk0C = data->unk48;
-        func_800DD530_minigame(arg0, &pos, 0);
+        sphere.pos.x = newX + D_800EBE2C_minigame;
+        sphere.pos.y = y;
+        sphere.pos.z = newZ + D_800EC5D8_minigame;
+        sphere.radius = data->unk48;
+        func_800DD530_minigame(arg0, &sphere, 0);
         func_800DB628_minigame(arg0);
-        pos.x = newX + D_800EBE2C_minigame;
-        pos.y = y;
-        pos.z = newZ + D_800EC5D8_minigame;
+        sphere.pos.x = newX + D_800EBE2C_minigame;
+        sphere.pos.y = y;
+        sphere.pos.z = newZ + D_800EC5D8_minigame;
         if (!(data->unk00[D_800EB734_minigame] & 1)) {
             objData = D_800EC1C0_minigame[D_800EB734_minigame]->data;
             if (objData->unk06 & 0x7A) {
-                if (func_800E30B8_minigame((Vec *)&pos, objData) == 1) {
+                if (func_800E30B8_minigame(&sphere.pos, objData) == 1) {
                     height = objData->unk14;
                     if (best < height && height < y + 150.0f) {
                         best = height;
@@ -542,7 +535,7 @@ f32 func_800D972C_minigame(omObjData *arg0, f32 angle, f32 x, f32 y, f32 z) {
             } else {
                 points = (Hu3DPoint *)HmfModelData[D_800EC1C0_minigame[D_800EB734_minigame]->model[0]].hmf->unk50;
                 func_80021C14_main(D_800EC1C0_minigame[D_800EB734_minigame]->model[0], &D_800EBEB0_minigame,
-                                   func_800DB704_minigame, (Vec *)&pos);
+                                   func_800DB704_minigame, &sphere.pos);
                 for (quad = func_80022198_main(&D_800EBEB0_minigame); quad != NULL;
                      quad = func_80022198_main(&D_800EBEB0_minigame)) {
                     height = func_800204F4_main(newX, y, newZ, points, quad);
@@ -596,11 +589,11 @@ f32 func_800D972C_minigame(omObjData *arg0, f32 angle, f32 x, f32 y, f32 z) {
             return 65536.0f;
         }
     } else {
-        pos.x = newX + D_800EBE2C_minigame;
-        pos.y = y;
-        pos.z = newZ + D_800EC5D8_minigame;
-        pos.unk0C = data->unk48;
-        func_800DD530_minigame(arg0, &pos, 0);
+        sphere.pos.x = newX + D_800EBE2C_minigame;
+        sphere.pos.y = y;
+        sphere.pos.z = newZ + D_800EC5D8_minigame;
+        sphere.radius = data->unk48;
+        func_800DD530_minigame(arg0, &sphere, 0);
     }
     if (arg0->model[1] != 0) {
         func_800E4890_minigame(arg0, newX, y, newZ, groundY, normal);
@@ -651,7 +644,7 @@ s32 func_800D9F3C_minigame(Vec *pos, Hu3DQuad *quad, Hu3DPoint *points) {
     return (px * normal.x + py * normal.y + pz * normal.z < 0.0f) ? -1 : 1;
 }
 
-s32 func_800DA054_minigame(func_800DC7D8_minigame_Arg *pos, Hu3DQuad *quad, Hu3DPoint *points) {
+s32 func_800DA054_minigame(Hu3DSphere *sphere, Hu3DQuad *quad, Hu3DPoint *points) {
     Vec normal;
     Hu3DPoint *p0;
     f32 px;
@@ -674,20 +667,20 @@ s32 func_800DA054_minigame(func_800DC7D8_minigame_Arg *pos, Hu3DQuad *quad, Hu3D
     px = p0->x;
     py = p0->y;
     pz = p0->z;
-    dx = px - pos->x;
-    dy = py - pos->y;
-    dz = pz - pos->z;
+    dx = px - sphere->pos.x;
+    dy = py - sphere->pos.y;
+    dz = pz - sphere->pos.z;
     dist = dx * normal.x + dy * normal.y + dz * normal.z;
     if (dist >= 0.0f) {
         side = 1;
     }
-    if (fabsf(dist) > pos->unk0C) {
+    if (fabsf(dist) > sphere->radius) {
         return FALSE;
     }
     proj = dx * normal.x + dy * normal.y + dz * normal.z;
-    pos->x += proj * normal.x;
-    pos->y += proj * normal.y;
-    pos->z += proj * normal.z;
+    sphere->pos.x += proj * normal.x;
+    sphere->pos.y += proj * normal.y;
+    sphere->pos.z += proj * normal.z;
     return side;
 }
 
@@ -1023,9 +1016,9 @@ s32 func_800DB704_minigame(s32 count, s16 *vtx, Hu3DPoint *points, Vec *pos) {
     return func_800DA540_minigame(pos, vtx - 1, points);
 }
 
-s32 func_800DB724_minigame(s32 count, s16 *vtx, Hu3DPoint *points, func_800DC7D8_minigame_Arg *arg3) {
-    func_800DC7D8_minigame_Arg sphere;
-    func_800DC7D8_minigame_Arg prev;
+s32 func_800DB724_minigame(s32 count, s16 *vtx, Hu3DPoint *points, Hu3DSphere *arg3) {
+    Hu3DSphere sphere;
+    Hu3DSphere prev;
     Vec closest;
     Vec quad[4];
     Vec tri[3];
@@ -1037,10 +1030,10 @@ s32 func_800DB724_minigame(s32 count, s16 *vtx, Hu3DPoint *points, func_800DC7D8
     f32 depth;
     s16 *face;
 
-    prev.x = sphere.x = arg3->x + D_800EBE2C_minigame;
-    prev.y = sphere.y = arg3->y;
-    prev.z = sphere.z = arg3->z + D_800EC5D8_minigame;
-    sphere.unk0C = arg3->unk0C;
+    prev.pos.x = sphere.pos.x = arg3->pos.x + D_800EBE2C_minigame;
+    prev.pos.y = sphere.pos.y = arg3->pos.y;
+    prev.pos.z = sphere.pos.z = arg3->pos.z + D_800EC5D8_minigame;
+    sphere.radius = arg3->radius;
     face = vtx - 1;
     side = func_800DA054_minigame(&sphere, (Hu3DQuad *)face, points);
     if (side == 0) {
@@ -1059,7 +1052,7 @@ s32 func_800DB724_minigame(s32 count, s16 *vtx, Hu3DPoint *points, func_800DC7D8
         quad[3].x = points[vtx[3]].x;
         quad[3].y = points[vtx[3]].y;
         quad[3].z = points[vtx[3]].z;
-        hit = Hitcheck_Quadrangle_with_Sphere(quad, (Vec *)&prev, sphere.unk0C, &closest);
+        hit = Hitcheck_Quadrangle_with_Sphere(quad, &prev.pos, sphere.radius, &closest);
     } else {
         tri[0].x = points[vtx[0]].x;
         tri[0].y = points[vtx[0]].y;
@@ -1070,23 +1063,23 @@ s32 func_800DB724_minigame(s32 count, s16 *vtx, Hu3DPoint *points, func_800DC7D8
         tri[2].x = points[vtx[2]].x;
         tri[2].y = points[vtx[2]].y;
         tri[2].z = points[vtx[2]].z;
-        hit = Hitcheck_Triangle_with_Sphere(tri, (Vec *)&prev, sphere.unk0C, &closest);
+        hit = Hitcheck_Triangle_with_Sphere(tri, &prev.pos, sphere.radius, &closest);
     }
     if (hit == 1) {
         func_800E048C_minigame(closest.x, closest.y, closest.z);
         func_8002038C_main(&points[vtx[0]], &points[vtx[1]], &points[vtx[2]], &D_800EC298_minigame[D_800EB736_minigame]);
         D_800EB736_minigame++;
-        dx = closest.x - prev.x;
-        dz = closest.z - prev.z;
-        depth = sphere.unk0C - HuSqrtf(dx * dx + dz * dz);
+        dx = closest.x - prev.pos.x;
+        dz = closest.z - prev.pos.z;
+        depth = sphere.radius - HuSqrtf(dx * dx + dz * dz);
         if (side > 0) {
             if (func_800D9F3C_minigame(&D_800EBDD0_minigame, (Hu3DQuad *)(vtx - 1), points) < 0) {
-                dir.x = D_800EBDD0_minigame.x - prev.x;
-                dir.y = D_800EBDD0_minigame.y - prev.y;
-                dir.z = D_800EBDD0_minigame.z - prev.z;
+                dir.x = D_800EBDD0_minigame.x - prev.pos.x;
+                dir.y = D_800EBDD0_minigame.y - prev.pos.y;
+                dir.z = D_800EBDD0_minigame.z - prev.pos.z;
                 func_800202FC_main(&dir);
-                if (func_800DA2E0_minigame((Vec *)&prev, vtx - 1, points, &dir) == hit) {
-                    depth = HuSqrtf(dx * dx + dz * dz) + sphere.unk0C;
+                if (func_800DA2E0_minigame(&prev.pos, vtx - 1, points, &dir) == hit) {
+                    depth = HuSqrtf(dx * dx + dz * dz) + sphere.radius;
                 }
             } else {
                 depth = 0.0f;
@@ -1098,8 +1091,8 @@ s32 func_800DB724_minigame(s32 count, s16 *vtx, Hu3DPoint *points, func_800DC7D8
 }
 
 s32 func_800DBCF4_minigame(s32 count, s16 *vtx, Hu3DPoint *points, func_800DBCF4_minigame_Arg *arg3) {
-    func_800DC7D8_minigame_Arg sphere;
-    func_800DC7D8_minigame_Arg prev;
+    Hu3DSphere sphere;
+    Hu3DSphere prev;
     Vec closest;
     Vec quad[4];
     Vec tri[3];
@@ -1111,10 +1104,10 @@ s32 func_800DBCF4_minigame(s32 count, s16 *vtx, Hu3DPoint *points, func_800DBCF4
     f32 depth;
     s16 *face;
 
-    prev.x = sphere.x = arg3->pos.x + D_800EBE2C_minigame;
-    prev.y = sphere.y = arg3->pos.y;
-    prev.z = sphere.z = arg3->pos.z + D_800EC5D8_minigame;
-    sphere.unk0C = prev.unk0C = arg3->radius;
+    prev.pos.x = sphere.pos.x = arg3->pos.x + D_800EBE2C_minigame;
+    prev.pos.y = sphere.pos.y = arg3->pos.y;
+    prev.pos.z = sphere.pos.z = arg3->pos.z + D_800EC5D8_minigame;
+    sphere.radius = prev.radius = arg3->radius;
     face = vtx - 1;
     side = func_800DA054_minigame(&sphere, (Hu3DQuad *)face, points);
     if (side == 0) {
@@ -1133,7 +1126,7 @@ s32 func_800DBCF4_minigame(s32 count, s16 *vtx, Hu3DPoint *points, func_800DBCF4
         quad[3].x = points[vtx[3]].x;
         quad[3].y = points[vtx[3]].y;
         quad[3].z = points[vtx[3]].z;
-        hit = Hitcheck_Quadrangle_with_Sphere(quad, (Vec *)&prev, sphere.unk0C, &closest);
+        hit = Hitcheck_Quadrangle_with_Sphere(quad, &prev.pos, sphere.radius, &closest);
     } else {
         tri[0].x = points[vtx[0]].x;
         tri[0].y = points[vtx[0]].y;
@@ -1144,31 +1137,31 @@ s32 func_800DBCF4_minigame(s32 count, s16 *vtx, Hu3DPoint *points, func_800DBCF4
         tri[2].x = points[vtx[2]].x;
         tri[2].y = points[vtx[2]].y;
         tri[2].z = points[vtx[2]].z;
-        hit = Hitcheck_Triangle_with_Sphere(tri, (Vec *)&prev, sphere.unk0C, &closest);
+        hit = Hitcheck_Triangle_with_Sphere(tri, &prev.pos, sphere.radius, &closest);
     }
     if (hit == 1) {
-        prev.x = arg3->prev.x + D_800EBE2C_minigame;
-        prev.y = arg3->prev.y;
-        prev.z = arg3->prev.z + D_800EC5D8_minigame;
+        prev.pos.x = arg3->prev.x + D_800EBE2C_minigame;
+        prev.pos.y = arg3->prev.y;
+        prev.pos.z = arg3->prev.z + D_800EC5D8_minigame;
         func_800E2BD4_minigame(D_800EC240_minigame, &closest);
         func_800E048C_minigame(closest.x, closest.y, closest.z);
         func_8002038C_main(&points[vtx[0]], &points[vtx[1]], &points[vtx[2]], &D_800EC298_minigame[D_800EB736_minigame]);
         D_800EB736_minigame++;
-        dx = closest.x - prev.x;
-        dz = closest.z - prev.z;
-        depth = sphere.unk0C - HuSqrtf(dx * dx + dz * dz);
+        dx = closest.x - prev.pos.x;
+        dz = closest.z - prev.pos.z;
+        depth = sphere.radius - HuSqrtf(dx * dx + dz * dz);
         if (side > 0) {
-            sphere.x = D_800EBDD0_minigame.x;
-            sphere.y = D_800EBDD0_minigame.y;
-            sphere.z = D_800EBDD0_minigame.z;
-            func_800E2BD4_minigame(D_800EBE30_minigame, (Vec *)&sphere);
-            if (func_800D9F3C_minigame((Vec *)&sphere, (Hu3DQuad *)(vtx - 1), points) < 0) {
-                dir.x = sphere.x - prev.x;
-                dir.y = sphere.y - prev.y;
-                dir.z = sphere.z - prev.z;
+            sphere.pos.x = D_800EBDD0_minigame.x;
+            sphere.pos.y = D_800EBDD0_minigame.y;
+            sphere.pos.z = D_800EBDD0_minigame.z;
+            func_800E2BD4_minigame(D_800EBE30_minigame, &sphere.pos);
+            if (func_800D9F3C_minigame(&sphere.pos, (Hu3DQuad *)(vtx - 1), points) < 0) {
+                dir.x = sphere.pos.x - prev.pos.x;
+                dir.y = sphere.pos.y - prev.pos.y;
+                dir.z = sphere.pos.z - prev.pos.z;
                 func_800202FC_main(&dir);
-                if (func_800DA2E0_minigame((Vec *)&prev, vtx - 1, points, &dir) == hit) {
-                    depth = HuSqrtf(dx * dx + dz * dz) + sphere.unk0C;
+                if (func_800DA2E0_minigame(&prev.pos, vtx - 1, points, &dir) == hit) {
+                    depth = HuSqrtf(dx * dx + dz * dz) + sphere.radius;
                 }
             } else {
                 depth = 0.0f;
@@ -1181,63 +1174,63 @@ s32 func_800DBCF4_minigame(s32 count, s16 *vtx, Hu3DPoint *points, func_800DBCF4
     return hit;
 }
 
-void func_800DC354_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1, Vec *arg2) {
+void func_800DC354_minigame(omObjData *arg0, Hu3DSphere *arg1, Vec *arg2) {
     s32 i = D_800EB736_minigame;
     func_800E1BA8_minigame_ObjData *data = arg0->data;
-    f32 minX = data->unkA0 + arg1->unk0C;
-    f32 minZ = data->unkA4 + arg1->unk0C;
-    f32 maxX = data->unkA8.f - arg1->unk0C;
-    f32 maxZ = data->unkAC - arg1->unk0C;
+    f32 minX = data->unkA0 + arg1->radius;
+    f32 minZ = data->unkA4 + arg1->radius;
+    f32 maxX = data->unkA8.f - arg1->radius;
+    f32 maxZ = data->unkAC - arg1->radius;
     f32 half;
 
-    if (arg1->x <= minX) {
-        func_800E048C_minigame(data->unkA0, arg1->y, arg1->z);
+    if (arg1->pos.x <= minX) {
+        func_800E048C_minigame(data->unkA0, arg1->pos.y, arg1->pos.z);
         func_800E0430_minigame(1.0f, 0.0f, 0.0f);
         D_800EB736_minigame++;
     }
-    if (maxX <= arg1->x) {
-        func_800E048C_minigame(data->unkA8.f, arg1->y, arg1->z);
+    if (maxX <= arg1->pos.x) {
+        func_800E048C_minigame(data->unkA8.f, arg1->pos.y, arg1->pos.z);
         func_800E0430_minigame(-1.0f, 0.0f, 0.0f);
         D_800EB736_minigame++;
     }
-    if (arg1->z <= minZ) {
-        func_800E048C_minigame(arg1->x, arg1->y, data->unkA4);
+    if (arg1->pos.z <= minZ) {
+        func_800E048C_minigame(arg1->pos.x, arg1->pos.y, data->unkA4);
         func_800E0430_minigame(0.0f, 0.0f, 1.0f);
         D_800EB736_minigame++;
     }
-    if (maxZ <= arg1->z) {
-        func_800E048C_minigame(arg1->x, arg1->y, data->unkAC);
+    if (maxZ <= arg1->pos.z) {
+        func_800E048C_minigame(arg1->pos.x, arg1->pos.y, data->unkAC);
         func_800E0430_minigame(0.0f, 0.0f, -1.0f);
         D_800EB736_minigame++;
     }
     if (i == D_800EB736_minigame) {
-        half = arg1->unk0C * 0.5f;
-        if (arg1->x <= minX - half) {
-            func_800E048C_minigame(data->unkA0, arg1->y, arg1->z);
+        half = arg1->radius * 0.5f;
+        if (arg1->pos.x <= minX - half) {
+            func_800E048C_minigame(data->unkA0, arg1->pos.y, arg1->pos.z);
             func_800E0430_minigame(1.0f, 0.0f, 0.0f);
             D_800EB736_minigame++;
         }
-        if (maxX + half <= arg1->x) {
-            func_800E048C_minigame(data->unkA8.f, arg1->y, arg1->z);
+        if (maxX + half <= arg1->pos.x) {
+            func_800E048C_minigame(data->unkA8.f, arg1->pos.y, arg1->pos.z);
             func_800E0430_minigame(-1.0f, 0.0f, 0.0f);
             D_800EB736_minigame++;
         }
-        if (arg1->z <= minZ - half) {
-            func_800E048C_minigame(arg1->x, arg1->y, data->unkA4);
+        if (arg1->pos.z <= minZ - half) {
+            func_800E048C_minigame(arg1->pos.x, arg1->pos.y, data->unkA4);
             func_800E0430_minigame(0.0f, 0.0f, 1.0f);
             D_800EB736_minigame++;
         }
-        if (maxZ + half <= arg1->z) {
-            func_800E048C_minigame(arg1->x, arg1->y, data->unkAC);
+        if (maxZ + half <= arg1->pos.z) {
+            func_800E048C_minigame(arg1->pos.x, arg1->pos.y, data->unkAC);
             func_800E0430_minigame(0.0f, 0.0f, -1.0f);
             D_800EB736_minigame++;
         }
     }
     // minX/minZ are reused as the offset to each new contact point.
     while (i < D_800EB736_minigame) {
-        minX = D_800EBEB8_minigame[i].unk00 - arg1->x;
-        minZ = D_800EBEB8_minigame[i].unk08 - arg1->z;
-        func_800DFCDC_minigame(-minX, -minZ, arg1->unk0C - HuSqrtf(minX * minX + minZ * minZ));
+        minX = D_800EBEB8_minigame[i].unk00 - arg1->pos.x;
+        minZ = D_800EBEB8_minigame[i].unk08 - arg1->pos.z;
+        func_800DFCDC_minigame(-minX, -minZ, arg1->radius - HuSqrtf(minX * minX + minZ * minZ));
         if (arg0->trans.x != 0.0f || arg0->trans.y != 0.0f || arg0->trans.z != 0.0f || arg0->rot.x != 0.0f ||
             arg0->rot.y != 0.0f || arg0->rot.z != 0.0f) {
             func_800E2BD4_minigame(D_800EC240_minigame, (Vec *)&D_800EBEB8_minigame[i]);
@@ -1246,52 +1239,52 @@ void func_800DC354_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1, V
     }
 }
 
-void func_800DC7D8_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1) {
+void func_800DC7D8_minigame(omObjData *arg0, Hu3DSphere *arg1) {
     func_800E1BA8_minigame_ObjData *data = arg0->data;
-    f32 x = arg1->x;
-    f32 z = arg1->z;
+    f32 x = arg1->pos.x;
+    f32 z = arg1->pos.z;
     f32 dist;
     Vec dir;
 
-    dist = data->unk9C - (HuSqrtf(x * x + z * z) + arg1->unk0C);
+    dist = data->unk9C - (HuSqrtf(x * x + z * z) + arg1->radius);
     if (dist <= 0.0f) {
         func_800DFCDC_minigame(x, z, dist);
         dir.x = x;
         dir.y = 0.0f;
         dir.z = z;
         func_800202FC_main(&dir);
-        func_800E048C_minigame(arg1->x * dir.x, arg1->y, arg1->z * dir.z);
-        func_800E0430_minigame(-arg1->x, 0.0f, -arg1->z);
+        func_800E048C_minigame(arg1->pos.x * dir.x, arg1->pos.y, arg1->pos.z * dir.z);
+        func_800E0430_minigame(-arg1->pos.x, 0.0f, -arg1->pos.z);
         D_800EB736_minigame++;
     }
 }
 
-void func_800DC8E4_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1, f32 arg2) {
+void func_800DC8E4_minigame(omObjData *arg0, Hu3DSphere *arg1, f32 arg2) {
     func_800E1BA8_minigame_ObjData *data = arg0->data;
-    f32 x = arg1->x;
-    f32 z = arg1->z;
+    f32 x = arg1->pos.x;
+    f32 z = arg1->pos.z;
     f32 dist;
     Vec dir;
 
-    if (arg1->y < arg2 + data->unk14 && data->unk14 - data->unk98 - arg2 < arg1->y) {
+    if (arg1->pos.y < arg2 + data->unk14 && data->unk14 - data->unk98 - arg2 < arg1->pos.y) {
         dist = HuSqrtf(x * x + z * z) - data->unk9C;
-        if (0.0f <= dist && dist <= arg1->unk0C) {
-            func_800DFCDC_minigame(x, z, arg1->unk0C - dist);
+        if (0.0f <= dist && dist <= arg1->radius) {
+            func_800DFCDC_minigame(x, z, arg1->radius - dist);
             dir.x = x;
             dir.y = 0.0f;
             dir.z = z;
             func_800202FC_main(&dir);
-            func_800E048C_minigame(-arg1->x * dir.x, arg1->y, -arg1->z * dir.z);
-            func_800E0430_minigame(arg1->x, 0.0f, arg1->z);
+            func_800E048C_minigame(-arg1->pos.x * dir.x, arg1->pos.y, -arg1->pos.z * dir.z);
+            func_800E0430_minigame(arg1->pos.x, 0.0f, arg1->pos.z);
             D_800EB736_minigame++;
         }
     }
 }
 
-s32 func_800DCA34_minigame(func_800DC7D8_minigame_Arg *arg0, func_800E1BA8_minigame_ObjData *data) {
-    f32 x = arg0->x;
-    f32 y = arg0->y;
-    f32 z = arg0->z;
+s32 func_800DCA34_minigame(Hu3DSphere *arg0, func_800E1BA8_minigame_ObjData *data) {
+    f32 x = arg0->pos.x;
+    f32 y = arg0->pos.y;
+    f32 z = arg0->pos.z;
     f32 dx;
     f32 dz;
 
@@ -1299,7 +1292,7 @@ s32 func_800DCA34_minigame(func_800DC7D8_minigame_Arg *arg0, func_800E1BA8_minig
         dx = data->unkA0 - x;
         if (z <= data->unkA4) {
             dz = data->unkA4 - z;
-            if (HuSqrtf(dx * dx + dz * dz) - arg0->unk0C < 0.0f) {
+            if (HuSqrtf(dx * dx + dz * dz) - arg0->radius < 0.0f) {
                 func_800E048C_minigame(data->unkA0, y, data->unkA4);
                 func_800E0430_minigame(x - data->unkA0, 0.0f, z - data->unkA4);
                 D_800EB736_minigame++;
@@ -1307,18 +1300,18 @@ s32 func_800DCA34_minigame(func_800DC7D8_minigame_Arg *arg0, func_800E1BA8_minig
             }
         } else if (data->unkAC <= z) {
             dz = data->unkAC - z;
-            if (HuSqrtf(dx * dx + dz * dz) - arg0->unk0C < 0.0f) {
+            if (HuSqrtf(dx * dx + dz * dz) - arg0->radius < 0.0f) {
                 func_800E048C_minigame(data->unkA0, y, data->unkAC);
                 func_800E0430_minigame(x - data->unkA0, 0.0f, z - data->unkAC);
                 D_800EB736_minigame++;
                 return 0;
             }
         }
-    } else if (arg0->x >= data->unkA8.f) {
+    } else if (arg0->pos.x >= data->unkA8.f) {
         dx = data->unkA8.f - x;
         if (z <= data->unkA4) {
             dz = data->unkA4 - z;
-            if (HuSqrtf(dx * dx + dz * dz) - arg0->unk0C < 0.0f) {
+            if (HuSqrtf(dx * dx + dz * dz) - arg0->radius < 0.0f) {
                 func_800E048C_minigame(data->unkA8.f, y, data->unkA4);
                 func_800E0430_minigame(x - data->unkA8.f, 0.0f, z - data->unkA4);
                 D_800EB736_minigame++;
@@ -1326,7 +1319,7 @@ s32 func_800DCA34_minigame(func_800DC7D8_minigame_Arg *arg0, func_800E1BA8_minig
             }
         } else if (data->unkAC <= z) {
             dz = data->unkAC - z;
-            if (HuSqrtf(dx * dx + dz * dz) - arg0->unk0C < 0.0f) {
+            if (HuSqrtf(dx * dx + dz * dz) - arg0->radius < 0.0f) {
                 func_800E048C_minigame(data->unkA8.f, y, data->unkAC);
                 func_800E0430_minigame(x - data->unkA8.f, 0.0f, z - data->unkAC);
                 D_800EB736_minigame++;
@@ -1337,11 +1330,11 @@ s32 func_800DCA34_minigame(func_800DC7D8_minigame_Arg *arg0, func_800E1BA8_minig
     return 1;
 }
 
-void func_800DCCB0_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1, Vec *arg2, f32 arg3) {
+void func_800DCCB0_minigame(omObjData *arg0, Hu3DSphere *arg1, Vec *arg2, f32 arg3) {
     s32 i = D_800EB736_minigame;
     func_800E1BA8_minigame_ObjData *data = arg0->data;
-    f32 x = arg1->x;
-    f32 z = arg1->z;
+    f32 x = arg1->pos.x;
+    f32 z = arg1->pos.z;
     f32 minX;
     f32 minZ;
     f32 maxX;
@@ -1349,50 +1342,50 @@ void func_800DCCB0_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1, V
     f32 edgeX;
     f32 edgeZ;
 
-    if (arg1->y < arg3 + data->unk14 && data->unk14 - data->unk98 - arg3 < arg1->y) {
-        minX = data->unkA0 - arg1->unk0C;
-        minZ = data->unkA4 - arg1->unk0C;
-        maxX = data->unkA8.f + arg1->unk0C;
-        maxZ = data->unkAC + arg1->unk0C;
+    if (arg1->pos.y < arg3 + data->unk14 && data->unk14 - data->unk98 - arg3 < arg1->pos.y) {
+        minX = data->unkA0 - arg1->radius;
+        minZ = data->unkA4 - arg1->radius;
+        maxX = data->unkA8.f + arg1->radius;
+        maxZ = data->unkAC + arg1->radius;
         if (((minX <= x) & (x < maxX)) && ((minZ < z) & (z < maxZ))) {
             if (func_800DCA34_minigame(arg1, data) == 1) {
                 if (minX <= x && x <= data->unkA0) {
-                    if (data->unkA4 <= arg1->z && arg1->z <= data->unkAC) {
+                    if (data->unkA4 <= arg1->pos.z && arg1->pos.z <= data->unkAC) {
                         edgeX = data->unkA0;
-                        if (edgeX == arg1->x) {
+                        if (edgeX == arg1->pos.x) {
                             edgeX += 1.0f;
                         }
-                        func_800E048C_minigame(edgeX, arg1->y, arg1->z);
+                        func_800E048C_minigame(edgeX, arg1->pos.y, arg1->pos.z);
                         func_800E0430_minigame(-1.0f, 0.0f, 0.0f);
                         D_800EB736_minigame++;
                     }
                 } else if (x <= maxX && data->unkA8.f <= x) {
-                    if (data->unkA4 <= arg1->z && arg1->z <= data->unkAC) {
+                    if (data->unkA4 <= arg1->pos.z && arg1->pos.z <= data->unkAC) {
                         edgeX = data->unkA8.f;
-                        if (edgeX == arg1->x) {
+                        if (edgeX == arg1->pos.x) {
                             edgeX -= 1.0f;
                         }
-                        func_800E048C_minigame(edgeX, arg1->y, arg1->z);
+                        func_800E048C_minigame(edgeX, arg1->pos.y, arg1->pos.z);
                         func_800E0430_minigame(1.0f, 0.0f, 0.0f);
                         D_800EB736_minigame++;
                     }
                 } else if (minZ <= z && z <= data->unkA4) {
-                    if (data->unkA0 <= arg1->x && arg1->x <= data->unkA8.f) {
+                    if (data->unkA0 <= arg1->pos.x && arg1->pos.x <= data->unkA8.f) {
                         edgeZ = data->unkA4;
-                        if (edgeZ == arg1->z) {
+                        if (edgeZ == arg1->pos.z) {
                             edgeZ += 1.0f;
                         }
-                        func_800E048C_minigame(arg1->x, arg1->y, edgeZ);
+                        func_800E048C_minigame(arg1->pos.x, arg1->pos.y, edgeZ);
                         func_800E0430_minigame(0.0f, 0.0f, -1.0f);
                         D_800EB736_minigame++;
                     }
                 } else if (z <= maxZ && data->unkAC <= z) {
-                    if (data->unkA0 <= arg1->x && arg1->x <= data->unkA8.f) {
+                    if (data->unkA0 <= arg1->pos.x && arg1->pos.x <= data->unkA8.f) {
                         edgeZ = data->unkAC;
-                        if (edgeZ == arg1->z) {
+                        if (edgeZ == arg1->pos.z) {
                             edgeZ -= 1.0f;
                         }
-                        func_800E048C_minigame(arg1->x, arg1->y, edgeZ);
+                        func_800E048C_minigame(arg1->pos.x, arg1->pos.y, edgeZ);
                         func_800E0430_minigame(0.0f, 0.0f, 1.0f);
                         D_800EB736_minigame++;
                     }
@@ -1405,7 +1398,7 @@ void func_800DCCB0_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1, V
                 }
                 minX = D_800EBEB8_minigame[i].unk00 - arg2->x;
                 minZ = D_800EBEB8_minigame[i].unk08 - arg2->z;
-                func_800DFCDC_minigame(minX, minZ, HuSqrtf(minX * minX + minZ * minZ) - arg1->unk0C);
+                func_800DFCDC_minigame(minX, minZ, HuSqrtf(minX * minX + minZ * minZ) - arg1->radius);
             }
         }
     }
@@ -1472,19 +1465,19 @@ void func_800DD1F4_minigame(omObjData *obj, Vec *pos, f32 arg2) {
     }
 }
 
-s8 func_800DD530_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1, f32 arg2) {
+s8 func_800DD530_minigame(omObjData *arg0, Hu3DSphere *arg1, f32 arg2) {
     func_800E1BA8_minigame_ObjData *data = arg0->data;
-    func_800DC7D8_minigame_Arg sphere;
+    Hu3DSphere sphere;
     func_800DBCF4_minigame_Arg local;
     omObjData *obj;
     func_800D8640_minigame_ObjData *objData;
     s16 count;
     s16 i;
 
-    sphere.x = arg1->x;
-    sphere.y = data->unk34 / 2 + arg1->y;
-    sphere.z = arg1->z;
-    sphere.unk0C = arg1->unk0C;
+    sphere.pos.x = arg1->pos.x;
+    sphere.pos.y = data->unk34 / 2 + arg1->pos.y;
+    sphere.pos.z = arg1->pos.z;
+    sphere.radius = arg1->radius;
     D_800EC286_minigame = -1;
     D_800EB736_minigame = 0;
     count = 0;
@@ -1492,24 +1485,24 @@ s8 func_800DD530_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1, f32
         obj = D_800EC1C0_minigame[D_800EB734_minigame];
         objData = obj->data;
         if (objData->unk06 & 8) {
-            sphere.x += D_800EBE2C_minigame;
-            sphere.y += D_800EC5D8_minigame;
-            func_800DC354_minigame(obj, &sphere, (Vec *)&sphere);
+            sphere.pos.x += D_800EBE2C_minigame;
+            sphere.pos.y += D_800EC5D8_minigame;
+            func_800DC354_minigame(obj, &sphere, &sphere.pos);
         } else if (objData->unk06 & 0x10) {
-            sphere.x += D_800EBE2C_minigame;
-            sphere.y += D_800EC5D8_minigame;
-            func_800DCCB0_minigame(obj, &sphere, (Vec *)&sphere, data->unk34 / 2);
+            sphere.pos.x += D_800EBE2C_minigame;
+            sphere.pos.y += D_800EC5D8_minigame;
+            func_800DCCB0_minigame(obj, &sphere, &sphere.pos, data->unk34 / 2);
         } else if (objData->unk06 & 0x20) {
-            sphere.x += D_800EBE2C_minigame;
-            sphere.y += D_800EC5D8_minigame;
+            sphere.pos.x += D_800EBE2C_minigame;
+            sphere.pos.y += D_800EC5D8_minigame;
             func_800DC7D8_minigame(obj, &sphere);
         } else if (objData->unk06 & 0x40) {
-            sphere.x += D_800EBE2C_minigame;
-            sphere.y += D_800EC5D8_minigame;
+            sphere.pos.x += D_800EBE2C_minigame;
+            sphere.pos.y += D_800EC5D8_minigame;
             func_800DC8E4_minigame(obj, &sphere, data->unk34 / 2);
         } else if (!(objData->unk06 & 2)) {
             func_80021C14_main(D_800EC1C0_minigame[D_800EB734_minigame]->model[0], &D_800EBEB0_minigame,
-                               (s32 (*)(s32, s16 *, Hu3DPoint *, Vec *))func_800DB724_minigame, (Vec *)&sphere);
+                               (s32 (*)(s32, s16 *, Hu3DPoint *, Vec *))func_800DB724_minigame, &sphere.pos);
         }
         if (count != D_800EB736_minigame) {
             D_800EC286_minigame = objData->unk04;
@@ -1528,10 +1521,10 @@ s8 func_800DD530_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1, f32
             continue;
         }
         count = D_800EB736_minigame;
-        local.pos.x = local.prev.x = arg1->x;
-        local.pos.y = local.prev.y = data->unk34 / 2 + arg1->y;
-        local.pos.z = local.prev.z = arg1->z;
-        local.radius = sphere.unk0C = arg1->unk0C;
+        local.pos.x = local.prev.x = arg1->pos.x;
+        local.pos.y = local.prev.y = data->unk34 / 2 + arg1->pos.y;
+        local.pos.z = local.prev.z = arg1->pos.z;
+        local.radius = sphere.radius = arg1->radius;
         func_800E28BC_minigame(D_800EC240_minigame, D_800EBE30_minigame, &local.pos, obj);
         if (objData->unk06 & 4) {
             if (func_800E2FD8_minigame(HmfModelData[obj->model[0]].hmf->unk60, &local.pos, data->unk48) == 0) {
@@ -1541,19 +1534,19 @@ s8 func_800DD530_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1, f32
         if (objData->unk06 & 8) {
             local.pos.x += D_800EBE2C_minigame;
             local.pos.y += D_800EC5D8_minigame;
-            func_800DC354_minigame(obj, (func_800DC7D8_minigame_Arg *)&local, &local.prev);
+            func_800DC354_minigame(obj, (Hu3DSphere *)&local, &local.prev);
         } else if (objData->unk06 & 0x10) {
             local.pos.x += D_800EBE2C_minigame;
             local.pos.y += D_800EC5D8_minigame;
-            func_800DCCB0_minigame(obj, (func_800DC7D8_minigame_Arg *)&local, &local.prev, data->unk34 / 2);
+            func_800DCCB0_minigame(obj, (Hu3DSphere *)&local, &local.prev, data->unk34 / 2);
         } else if (objData->unk06 & 0x20) {
             local.pos.x += D_800EBE2C_minigame;
             local.pos.y += D_800EC5D8_minigame;
-            func_800DC7D8_minigame(obj, (func_800DC7D8_minigame_Arg *)&local);
+            func_800DC7D8_minigame(obj, (Hu3DSphere *)&local);
         } else if (objData->unk06 & 0x40) {
             local.pos.x += D_800EBE2C_minigame;
             local.pos.y += D_800EC5D8_minigame;
-            func_800DC8E4_minigame(obj, (func_800DC7D8_minigame_Arg *)&local, data->unk34 / 2);
+            func_800DC8E4_minigame(obj, (Hu3DSphere *)&local, data->unk34 / 2);
         } else {
             func_80021C14_main(D_800EC1C0_minigame[i]->model[0], &D_800EBEB0_minigame,
                                (s32 (*)(s32, s16 *, Hu3DPoint *, Vec *))func_800DBCF4_minigame, &local.pos);
@@ -1563,12 +1556,12 @@ s8 func_800DD530_minigame(omObjData *arg0, func_800DC7D8_minigame_Arg *arg1, f32
             func_800E2B58_minigame(D_800EC240_minigame, &D_800EC28C_minigame[D_800EB736_minigame]);
         }
     }
-    sphere.x = arg1->x + D_800EBE2C_minigame;
-    sphere.y = data->unk34 / 2 + arg1->y;
-    sphere.z = arg1->z + D_800EC5D8_minigame;
-    sphere.unk0C = arg1->unk0C;
+    sphere.pos.x = arg1->pos.x + D_800EBE2C_minigame;
+    sphere.pos.y = data->unk34 / 2 + arg1->pos.y;
+    sphere.pos.z = arg1->pos.z + D_800EC5D8_minigame;
+    sphere.radius = arg1->radius;
     if (func_800E1510_minigame(D_800EC286_minigame) == 1) {
-        func_800DD1F4_minigame(arg0, (Vec *)&sphere, arg2);
+        func_800DD1F4_minigame(arg0, &sphere.pos, arg2);
     }
     return D_800EC286_minigame;
 }
@@ -2261,7 +2254,7 @@ void func_800DFF3C_minigame(omObjData *arg0, f32 x, f32 y, f32 z) {
     func_800E1BA8_minigame_ObjData *otherData;
     A96F0_ObjData *itemData;
     omObjData *other;
-    func_800DC7D8_minigame_Arg pos;
+    Hu3DSphere sphere;
     f32 time;
     f32 angle;
     f32 dist;
@@ -2343,11 +2336,11 @@ void func_800DFF3C_minigame(omObjData *arg0, f32 x, f32 y, f32 z) {
             }
         }
     }
-    pos.x = sindf(angle) * data->unk48 + arg0->trans.x;
-    pos.y = py;
-    pos.z = cosdf(angle) * data->unk48 + arg0->trans.z;
-    pos.unk0C = data->unk64;
-    data->unk53[2] = func_800DD530_minigame(arg0, &pos, -D_800EB760_minigame);
+    sphere.pos.x = sindf(angle) * data->unk48 + arg0->trans.x;
+    sphere.pos.y = py;
+    sphere.pos.z = cosdf(angle) * data->unk48 + arg0->trans.z;
+    sphere.radius = data->unk64;
+    data->unk53[2] = func_800DD530_minigame(arg0, &sphere, -D_800EB760_minigame);
     if (D_800EB736_minigame != 0 && func_800E1510_minigame(D_800EC286_minigame) == 1) {
         rot = atan2df(D_800EBEB8_minigame[0].unk00 - arg0->trans.x, D_800EBEB8_minigame[0].unk08 - arg0->trans.z);
         func_800E4C88_minigame(arg0, 6, px, py, pz, 0.0f, rot + 180.0f);

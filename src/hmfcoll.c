@@ -18,11 +18,6 @@
 #define READ16(p) (((p)[0] << 8) | (p)[1])
 #define READ32(p) ((p)[0] << 24 | (p)[1] << 16 | (p)[2] << 8 | (p)[3])
 
-typedef struct Hu3DSphere {
-    /* 0x00 */ Vec pos;
-    /* 0x0C */ f32 radius;
-} Hu3DSphere; // sizeof 0x10
-
 typedef struct CollisionCircle {
     /* 0x00 */ f32 unk_00;
     /* 0x04 */ f32 x;

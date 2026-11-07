@@ -3,11 +3,7 @@
 #include "game/object.h"
 #include "game/wipe.h"
 #include "../ovl_80_shared_board/FA250.h"
-
-typedef struct {
-    /* 0x00 */ omObjData *obj;
-    /* 0x04 */ omObjFunc func;
-} ResultBattlePlayerObj;
+#include "mgresultbattle.h"
 
 void func_80105E0C_mgresultbattle(void);
 void func_80105EF4_mgresultbattle(void);
@@ -25,7 +21,6 @@ void func_80107610_mgresultbattle(omObjData *);
 void func_801069FC_mgresultbattle(omObjData *);
 
 extern s8 D_80108F8C_mgresultbattle[4];
-extern ResultBattlePlayerObj D_80108F50_mgresultbattle[4];
 extern s32 D_80108908_mgresultbattle[];
 extern omObjData *D_80108F90_mgresultbattle;
 extern omObjFunc D_80108F94_mgresultbattle;

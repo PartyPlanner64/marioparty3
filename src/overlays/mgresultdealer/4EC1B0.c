@@ -1,12 +1,13 @@
 #include "common.h"
 
-extern s8 D_80109940_mgresultdealer;
-extern s8 D_80109941_mgresultdealer;
-extern s32 D_80109950_mgresultdealer;
-extern s32 D_8010A244_mgresultdealer;
-extern omObjFunc D_8010A260_mgresultdealer;
+extern s16 D_80109A68_mgresultdealer;
+extern s16 D_80109A6A_mgresultdealer;
+extern omObjFunc D_8010A254_mgresultdealer;
+extern s8 D_8010A266_mgresultdealer;
 
-void func_80109710_mgresultdealer(omObjData *);
+void func_80106A50_mgresultdealer(omObjData *);
+void func_80106EC0_mgresultdealer(omObjData *);
+void func_80106EEC_mgresultdealer(void);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_801059A0_mgresultdealer);
 
@@ -39,7 +40,7 @@ void func_80106D94_mgresultdealer(void) {
 
 extern u8 D_801098E0_mgresultdealer;
 extern u8 D_801098E1_mgresultdealer;
-extern u8 D_801098E2_mgresultdealer;
+extern s8 D_801098E2_mgresultdealer;
 extern Vec D_801098E4_mgresultdealer;
 extern Vec D_801098F0_mgresultdealer;
 extern s32 D_80109A60_mgresultdealer;
@@ -64,11 +65,18 @@ void func_80106D9C_mgresultdealer(void) {
     func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80106EA0_mgresultdealer);
+s8 func_80106EA0_mgresultdealer(void) {
+    return D_801098E2_mgresultdealer;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80106EAC_mgresultdealer);
+void func_80106EAC_mgresultdealer(void) {
+    D_8010A254_mgresultdealer = func_80106EC0_mgresultdealer;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80106EC0_mgresultdealer);
+void func_80106EC0_mgresultdealer(omObjData *obj) {
+    func_80106EEC_mgresultdealer();
+    D_8010A254_mgresultdealer = func_80106A50_mgresultdealer;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", D_801099A8_mgresultdealer);
 
@@ -80,79 +88,12 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_801070EC_mgr
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_801072A8_mgresultdealer);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_801073F4_mgresultdealer);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80107448_mgresultdealer);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_801074A0_mgresultdealer);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80107888_mgresultdealer);
-
-void func_80107E3C_mgresultdealer(void) {
+void func_801073F4_mgresultdealer(void) {
+    func_80017954_main(D_8010A250_mgresultdealer->model[0], 2, GwPlayer[D_8010A266_mgresultdealer].chr,
+                       D_80109A68_mgresultdealer);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80107E44_mgresultdealer);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80108034_mgresultdealer);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80108040_mgresultdealer);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80108194_mgresultdealer);
-
-void func_80108258_mgresultdealer(void) {
+void func_80107448_mgresultdealer(void) {
+    func_80017954_main(D_8010A250_mgresultdealer->model[0], 2, GwPlayer[D_8010A266_mgresultdealer].chr,
+                       D_80109A6A_mgresultdealer);
 }
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80108260_mgresultdealer);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_8010829C_mgresultdealer);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_801082A8_mgresultdealer);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80108544_mgresultdealer);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80108554_mgresultdealer);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80108560_mgresultdealer);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80108570_mgresultdealer);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80108AEC_mgresultdealer);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80108BD4_mgresultdealer);
-
-void func_80109044_mgresultdealer(void) {
-    if (D_80109940_mgresultdealer == 0) {
-        return;
-    }
-
-    D_80109950_mgresultdealer++;
-
-    if (D_80109950_mgresultdealer < 0xF) {
-        return;
-    }
-
-    D_80109940_mgresultdealer = 0;
-    D_80109941_mgresultdealer = 1;
-    D_80109950_mgresultdealer = 0;
-    D_8010A244_mgresultdealer = 0;
-    D_8010A260_mgresultdealer = func_80109710_mgresultdealer;
-}
-
-void func_801090AC_mgresultdealer(void) {
-}
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_801090B4_mgresultdealer);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_801090E8_mgresultdealer);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_801090F4_mgresultdealer);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80109100_mgresultdealer);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_801093A0_mgresultdealer);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80109478_mgresultdealer);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80109484_mgresultdealer);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80109710_mgresultdealer);

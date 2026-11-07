@@ -2434,6 +2434,7 @@ segments:
     bss_size: 0x8A0
     subsegments:
       - [0x4EC1B0, c]
+      - [0x4EDCB0, c]
       - [0x4F00D0, data, 4EC1B0] #801098C0
       - [0x4F0170, .rodata, 4EC1B0] #80109960
       - {0x4F01F0, type: bss, vram: 0x801099E0, name: mgresultdealer_bss}

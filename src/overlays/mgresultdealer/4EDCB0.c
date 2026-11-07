@@ -17,7 +17,21 @@ typedef struct {
     /* 0x04 */ omObjFunc objFunc;
 } UnkDealerFadeProc;
 
+typedef struct {
+    /* 0x00 */ s8 unk_00;
+    /* 0x02 */ s16 unk_02;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ Vec unk_08;
+    /* 0x14 */ f32 unk_14;
+} UnkDealerCoin; // Size 0x18
+
+extern s8 D_80109910_mgresultdealer;
 extern s8 D_80109911_mgresultdealer;
+extern s32 D_80109914_mgresultdealer;
+extern s32 D_80109918_mgresultdealer;
+extern s32 D_8010991C_mgresultdealer;
+extern s32 D_80109920_mgresultdealer;
+extern s32 D_80109924_mgresultdealer;
 extern s8 D_80109930_mgresultdealer;
 extern s8 D_80109931_mgresultdealer;
 extern s32 D_80109934_mgresultdealer;
@@ -39,6 +53,8 @@ extern s16 D_8010A258_mgresultdealer;
 extern omObjFunc D_8010A260_mgresultdealer;
 extern s16 D_8010A264_mgresultdealer;
 extern UnkDealerFadeProc D_8010A26C_mgresultdealer;
+extern UnkDealerCoin D_80109A78_mgresultdealer[40];
+extern omObjData *D_8010A274_mgresultdealer;
 
 void func_80108194_mgresultdealer(omObjData *);
 void func_80108258_mgresultdealer(void);
@@ -56,7 +72,39 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EDCB0", func_80107888_mgr
 void func_80107E3C_mgresultdealer(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EDCB0", func_80107E44_mgresultdealer);
+void func_80107E44_mgresultdealer(s32 count) {
+    omObjData *obj = D_8010A274_mgresultdealer;
+    s8 i;
+
+    if (count > 0) {
+        count = (count >= 1000) ? 999 : count;
+        D_80109918_mgresultdealer = count;
+        D_8010991C_mgresultdealer = 0;
+        D_80109914_mgresultdealer = 0;
+        if (count <= 50) {
+            D_80109920_mgresultdealer = count;
+        } else {
+            D_80109920_mgresultdealer = 50;
+        }
+        if (count > 40) {
+            D_80109924_mgresultdealer = 100 / (D_80109920_mgresultdealer + 1);
+        } else if (count > 20) {
+            D_80109924_mgresultdealer = 80 / (D_80109920_mgresultdealer + 1);
+        } else {
+            D_80109924_mgresultdealer = 60 / (D_80109920_mgresultdealer + 1);
+        }
+        for (i = 0; i < 40; i++) {
+            D_80109A78_mgresultdealer[i].unk_00 = 0;
+            D_80109A78_mgresultdealer[i].unk_04 = 0;
+            D_80109A78_mgresultdealer[i].unk_08.x = D_80109A78_mgresultdealer[i].unk_08.y = D_80109A78_mgresultdealer[i].unk_08.z = 0.0f;
+            D_80109A78_mgresultdealer[i].unk_14 = 0.98f;
+            func_8001C258_main(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelPosSet(obj->model[i + 1], 0.0f, 400.0f, 0.0f);
+        }
+        D_80109910_mgresultdealer = 1;
+        D_80109911_mgresultdealer = 0;
+    }
+}
 
 s8 func_80108034_mgresultdealer(void) {
     return D_80109911_mgresultdealer;

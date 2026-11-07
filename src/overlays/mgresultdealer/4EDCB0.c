@@ -1,5 +1,17 @@
 #include "common.h"
 
+typedef struct {
+    /* 0x00 */ u16 unk_00;
+    /* 0x02 */ u16 unk_02[3];
+    /* 0x08 */ u16 unk_08[3];
+} UnkDealerSprGroup; // Size 0xE
+
+typedef struct {
+    /* 0x00 */ UnkDealerSprGroup groups[3];
+    /* 0x2A */ u16 unk_2A;
+    /* 0x2C */ u16 unk_2C;
+} UnkDealerSprites;
+
 extern s8 D_80109911_mgresultdealer;
 extern s8 D_80109930_mgresultdealer;
 extern s8 D_80109931_mgresultdealer;
@@ -11,6 +23,7 @@ extern s8 D_80109941_mgresultdealer;
 extern s32 D_80109944_mgresultdealer;
 extern s32 D_80109950_mgresultdealer;
 extern u8 *D_8010A20C_mgresultdealer;
+extern UnkDealerSprites D_8010A210_mgresultdealer;
 extern s32 D_8010A240_mgresultdealer;
 extern s32 D_8010A244_mgresultdealer;
 extern omObjFunc D_8010A260_mgresultdealer;
@@ -151,7 +164,20 @@ s32 func_801090F4_mgresultdealer(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EDCB0", func_80109100_mgresultdealer);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EDCB0", func_801093A0_mgresultdealer);
+void func_801093A0_mgresultdealer(void) {
+    s8 i;
+
+    espDispOff(D_8010A210_mgresultdealer.unk_2A);
+    espDispOff(D_8010A210_mgresultdealer.unk_2C);
+    espDispOff(D_8010A210_mgresultdealer.groups[0].unk_00);
+    espDispOff(D_8010A210_mgresultdealer.groups[1].unk_00);
+    espDispOff(D_8010A210_mgresultdealer.groups[2].unk_00);
+    for (i = 0; i < 3; i++) {
+        espDispOff(D_8010A210_mgresultdealer.groups[0].unk_08[i]);
+        espDispOff(D_8010A210_mgresultdealer.groups[1].unk_08[i]);
+        espDispOff(D_8010A210_mgresultdealer.groups[2].unk_08[i]);
+    }
+}
 
 s8 func_80109478_mgresultdealer(void) {
     return D_80109941_mgresultdealer;

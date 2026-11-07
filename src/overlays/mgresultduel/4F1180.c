@@ -1,6 +1,7 @@
 #include "common.h"
 #include "game/object.h"
 #include "game/audio.h"
+#include "../ovl_81_name/ovl_81.h"
 
 typedef struct UnkResultDuelStruct {
     /* 0x00 */ u8 unk00;
@@ -19,6 +20,10 @@ extern s16 D_8010930C_mgresultduel;
 extern omObjFunc D_80109320_mgresultduel;
 extern omObjFunc D_80109328_mgresultduel;
 extern omObjData *D_8010931C_mgresultduel;
+extern omObjData *D_8010932C_mgresultduel;
+extern omObjData *D_80109340_mgresultduel;
+extern s32 D_80109314_mgresultduel;
+extern s8 D_80109318_mgresultduel;
 extern s32 D_80108E80_mgresultduel;
 extern s32 D_80108E84_mgresultduel;
 extern s32 D_80108E88_mgresultduel;
@@ -38,6 +43,10 @@ void func_80108304_mgresultduel(void);
 void func_80107B04_mgresultduel(s32);
 void func_80107CA4_mgresultduel(omObjData *);
 void func_80108318_mgresultduel(omObjData *);
+void func_80106730_mgresultduel(void);
+void func_800F79E8_name_81(s32);
+void func_800E1504_name_81(s8, s32, s32, s32);
+void func_800F37E0_name_81(s16, s32);
 void func_80108818_mgresultduel(omObjData *);
 void func_80108820_mgresultduel(omObjData *);
 void func_80108D30_mgresultduel(s16, s16, s16);
@@ -154,7 +163,7 @@ void func_80107654_mgresultduel(omObjData *obj) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F1180", func_80107710_mgresultduel);
 
-void func_80107AF4_mgresultduel(void) {
+void func_80107AF4_mgresultduel(omObjData *arg0) {
 }
 
 void func_80107AFC_mgresultduel(void) {
@@ -201,7 +210,51 @@ void func_80108304_mgresultduel(void) {
     D_80109320_mgresultduel = func_80108318_mgresultduel;
 }
 
+#ifdef NON_MATCHING
+/*
+ * Only diff: when promoting `player` for func_800F37E0_name_81, the target
+ * shifts into a0 (sll a0,s0,16) while this compiles to sll s0,s0,16.
+ * `player` is local to one basic block here, so local-alloc ties the shift
+ * temp to it. The target behaves as if `player` were not block-local
+ * (assigning it in both arms of the if/else fixes this part, via
+ * cross-jumping, but then the s8 extension for func_800E1504_name_81 no
+ * longer reuses the shifted temp).
+ */
+void func_80108318_mgresultduel(omObjData *arg0) {
+    omObjData *obj;
+    Vec pos;
+    Vec2f screenPos;
+    s8 temp;
+    s16 player;
+
+    func_800F79E8_name_81(-1);
+    if (D_80109318_mgresultduel != 2) {
+        if (D_80109318_mgresultduel == -1) {
+            obj = D_80109340_mgresultduel;
+        } else {
+            obj = D_8010932C_mgresultduel;
+        }
+        pos.x = HmfModelData[obj->model[1]].pos.x;
+        pos.y = HmfModelData[obj->model[1]].pos.y + 120.0f;
+        pos.z = HmfModelData[obj->model[1]].pos.z;
+        Hu3D3Dto2D(0, &pos, &screenPos);
+        func_800E0CEC_name_81();
+        temp = (D_80109318_mgresultduel == -1) ? D_80109310_mgresultduel[0] : D_80109310_mgresultduel[1];
+        player = temp;
+        func_800E1504_name_81(temp, D_80109314_mgresultduel, screenPos.x, screenPos.y);
+        HuPrcSleep(20);
+        func_800F37E0_name_81(player, D_80109314_mgresultduel);
+        HuPrcSleep(20);
+        func_800E0E38_name_81();
+    } else {
+        HuPrcSleep(40);
+    }
+    func_80106730_mgresultduel();
+    D_80109320_mgresultduel = func_80107AF4_mgresultduel;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F1180", func_80108318_mgresultduel);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F1180", func_801084B0_mgresultduel);
 

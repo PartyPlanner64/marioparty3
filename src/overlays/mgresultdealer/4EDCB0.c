@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x00 */ u16 unk_00;
-    /* 0x02 */ u16 unk_02[3];
+    /* 0x02 */ s16 unk_02[3];
     /* 0x08 */ u16 unk_08[3];
 } UnkDealerSprGroup; // Size 0xE
 
@@ -63,6 +63,7 @@ void func_80108544_mgresultdealer(void);
 void func_80108560_mgresultdealer(u8);
 void func_80108BD4_mgresultdealer(omObjData *);
 void func_80109100_mgresultdealer(void);
+void func_80109484_mgresultdealer(omObjData *);
 void func_80109710_mgresultdealer(omObjData *);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EDCB0", func_801074A0_mgresultdealer);
@@ -277,7 +278,63 @@ s32 func_801090F4_mgresultdealer(void) {
     return D_8010A244_mgresultdealer;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EDCB0", func_80109100_mgresultdealer);
+void func_80109100_mgresultdealer(void) {
+    s32 i;
+
+    D_8010A240_mgresultdealer = 0;
+    espDispOn(D_8010A210_mgresultdealer.unk_2A);
+    espDispOn(D_8010A210_mgresultdealer.unk_2C);
+    espDispOn(D_8010A210_mgresultdealer.groups[0].unk_00);
+    espDispOn(D_8010A210_mgresultdealer.groups[1].unk_00);
+    espDispOn(D_8010A210_mgresultdealer.groups[2].unk_00);
+    if (D_8010A210_mgresultdealer.groups[0].unk_02[0] == 0) {
+        espDispOff(D_8010A210_mgresultdealer.groups[0].unk_08[0]);
+        if (D_8010A210_mgresultdealer.groups[0].unk_02[1] == 0) {
+            espDispOff(D_8010A210_mgresultdealer.groups[0].unk_08[1]);
+        } else {
+            espDispOn(D_8010A210_mgresultdealer.groups[0].unk_08[1]);
+        }
+    } else {
+        espDispOn(D_8010A210_mgresultdealer.groups[0].unk_08[0]);
+        espDispOn(D_8010A210_mgresultdealer.groups[0].unk_08[1]);
+    }
+    espDispOn(D_8010A210_mgresultdealer.groups[0].unk_08[2]);
+    if (D_8010A210_mgresultdealer.groups[1].unk_02[0] == 0) {
+        espDispOff(D_8010A210_mgresultdealer.groups[1].unk_08[0]);
+        if (D_8010A210_mgresultdealer.groups[1].unk_02[1] == 0) {
+            espDispOff(D_8010A210_mgresultdealer.groups[1].unk_08[1]);
+        } else {
+            espDispOn(D_8010A210_mgresultdealer.groups[1].unk_08[1]);
+        }
+    } else {
+        espDispOn(D_8010A210_mgresultdealer.groups[1].unk_08[0]);
+        espDispOn(D_8010A210_mgresultdealer.groups[1].unk_08[1]);
+    }
+    espDispOn(D_8010A210_mgresultdealer.groups[1].unk_08[2]);
+    if (D_8010A210_mgresultdealer.groups[2].unk_02[0] == 0) {
+        espDispOff(D_8010A210_mgresultdealer.groups[2].unk_08[0]);
+        if (D_8010A210_mgresultdealer.groups[2].unk_02[1] == 0) {
+            espDispOff(D_8010A210_mgresultdealer.groups[2].unk_08[1]);
+        } else {
+            espDispOn(D_8010A210_mgresultdealer.groups[2].unk_08[1]);
+        }
+    } else {
+        espDispOn(D_8010A210_mgresultdealer.groups[2].unk_08[0]);
+        espDispOn(D_8010A210_mgresultdealer.groups[2].unk_08[1]);
+    }
+    espDispOn(D_8010A210_mgresultdealer.groups[2].unk_08[2]);
+    espScaleSet(D_8010A210_mgresultdealer.unk_2A, 1.0f, 0.0f);
+    espScaleSet(D_8010A210_mgresultdealer.unk_2C, 1.0f, 0.0f);
+    espScaleSet(D_8010A210_mgresultdealer.groups[0].unk_00, 1.0f, 0.0f);
+    espScaleSet(D_8010A210_mgresultdealer.groups[1].unk_00, 1.0f, 0.0f);
+    espScaleSet(D_8010A210_mgresultdealer.groups[2].unk_00, 1.0f, 0.0f);
+    for (i = 0; i < 3; i++) {
+        espScaleSet(D_8010A210_mgresultdealer.groups[0].unk_08[i], 1.0f, 0.0f);
+        espScaleSet(D_8010A210_mgresultdealer.groups[1].unk_08[i], 1.0f, 0.0f);
+        espScaleSet(D_8010A210_mgresultdealer.groups[2].unk_08[i], 1.0f, 0.0f);
+    }
+    D_8010A260_mgresultdealer = func_80109484_mgresultdealer;
+}
 
 void func_801093A0_mgresultdealer(void) {
     s8 i;
@@ -298,7 +355,38 @@ s8 func_80109478_mgresultdealer(void) {
     return D_80109941_mgresultdealer;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EDCB0", func_80109484_mgresultdealer);
+void func_80109484_mgresultdealer(omObjData *arg0) {
+    f32 scale = 0.0f;
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < 10; i++) {
+        espScaleSet(D_8010A210_mgresultdealer.unk_2A, 1.0f, scale);
+        espScaleSet(D_8010A210_mgresultdealer.unk_2C, 1.0f, scale);
+        espScaleSet(D_8010A210_mgresultdealer.groups[0].unk_00, 1.0f, scale);
+        espScaleSet(D_8010A210_mgresultdealer.groups[1].unk_00, 1.0f, scale);
+        espScaleSet(D_8010A210_mgresultdealer.groups[2].unk_00, 1.0f, scale);
+        for (j = 0; j < 3; j++) {
+            espScaleSet(D_8010A210_mgresultdealer.groups[0].unk_08[j], 1.0f, scale);
+            espScaleSet(D_8010A210_mgresultdealer.groups[1].unk_08[j], 1.0f, scale);
+            espScaleSet(D_8010A210_mgresultdealer.groups[2].unk_08[j], 1.0f, scale);
+        }
+        scale = sindf(i * 9.0f) * 1.1f;
+        HuPrcVSleep();
+    }
+    espScaleSet(D_8010A210_mgresultdealer.unk_2A, 1.0f, 1.0f);
+    espScaleSet(D_8010A210_mgresultdealer.unk_2C, 1.0f, 1.0f);
+    espScaleSet(D_8010A210_mgresultdealer.groups[0].unk_00, 1.0f, 1.0f);
+    espScaleSet(D_8010A210_mgresultdealer.groups[1].unk_00, 1.0f, 1.0f);
+    espScaleSet(D_8010A210_mgresultdealer.groups[2].unk_00, 1.0f, 1.0f);
+    for (j = 0; j < 3; j++) {
+        espScaleSet(D_8010A210_mgresultdealer.groups[0].unk_08[j], 1.0f, 1.0f);
+        espScaleSet(D_8010A210_mgresultdealer.groups[1].unk_08[j], 1.0f, 1.0f);
+        espScaleSet(D_8010A210_mgresultdealer.groups[2].unk_08[j], 1.0f, 1.0f);
+    }
+    D_8010A240_mgresultdealer = 1;
+    D_8010A260_mgresultdealer = func_80108AEC_mgresultdealer;
+}
 
 void func_80109710_mgresultdealer(omObjData *arg0) {
     f32 scale = 1.0f;

@@ -38,6 +38,7 @@ void func_80106D0C_mgresultduel(omObjData *);
 void func_80107178_mgresultduel(omObjData *);
 void func_80107244_mgresultduel(omObjData *);
 void func_801072A8_mgresultduel(omObjData *);
+void func_80107618_mgresultduel(void);
 void func_80107654_mgresultduel(omObjData *);
 void func_80108304_mgresultduel(void);
 void func_80107B04_mgresultduel(s32);
@@ -50,6 +51,7 @@ void func_800F37E0_name_81(s16, s32);
 void func_80108818_mgresultduel(omObjData *);
 void func_80108820_mgresultduel(omObjData *);
 void func_80108D30_mgresultduel(s16, s16, s16);
+void func_80108E04_mgresultduel(void);
 void func_80108E18_mgresultduel(void);
 void func_80108E2C_mgresultduel(omObjData *);
 
@@ -81,7 +83,34 @@ void func_80106CA0_mgresultduel(omObjData *arg0) {
 void func_80106D04_mgresultduel(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F1180", func_80106D0C_mgresultduel);
+void func_80106D0C_mgresultduel(omObjData *arg0) {
+    f32 i;
+    f32 x;
+    f32 rot;
+
+    Hu3DModelRotSet(arg0->model[1], 0.0f, 90.0f, 0.0f);
+    func_8001C5B4_main(arg0->model[1], arg0->motion[1]);
+    func_8001C814_main(arg0->model[1], 2, 2);
+    for (i = 0.0f; i < 240.0f; i += 16.0f) {
+        Hu3DModelPosSet(arg0->model[1], -460.0f + i, 0.0f, 2300.0f);
+        Hu3DModelPosSet(arg0->model[2], -460.0f + i, -5.0f, 2300.0f);
+        HuPrcVSleep();
+    }
+    Hu3DModelPosSet(arg0->model[1], x = -220.0f, 0.0f, 2300.0f);
+    Hu3DModelPosSet(arg0->model[2], x, -5.0f, 2300.0f);
+    for (rot = 90.0f; rot >= 0.0f; rot -= 8.0f) {
+        Hu3DModelRotSet(arg0->model[1], 0.0f, rot, 0.0f);
+        HuPrcVSleep();
+    }
+    Hu3DModelRotSet(arg0->model[1], 0.0f, 0.0f, 0.0f);
+    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[arg0->motion[0]].motId, 0, 0x1E, 2);
+    D_80109344_mgresultduel = func_80106B68_mgresultduel;
+    if (D_80109318_mgresultduel != 2) {
+        func_80108E04_mgresultduel();
+    } else {
+        func_80107618_mgresultduel();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F1180", func_80106F38_mgresultduel);
 

@@ -4,6 +4,11 @@
 #include "game/wipe.h"
 #include "../ovl_80_shared_board/FA250.h"
 
+typedef struct {
+    /* 0x00 */ omObjData *obj;
+    /* 0x04 */ omObjFunc func;
+} ResultBattlePlayerObj;
+
 void func_80105E0C_mgresultbattle(void);
 void func_80105EF4_mgresultbattle(void);
 void func_801060A4_mgresultbattle(void);
@@ -17,8 +22,10 @@ void func_80105E64_mgresultbattle(omObjData *);
 void func_80105F50_mgresultbattle(void);
 void func_80105F78_mgresultbattle(Gfx **, s32, s32);
 void func_80107610_mgresultbattle(omObjData *);
+void func_801069FC_mgresultbattle(omObjData *);
 
-extern u8 D_80108F8C_mgresultbattle[4];
+extern s8 D_80108F8C_mgresultbattle[4];
+extern ResultBattlePlayerObj D_80108F50_mgresultbattle[4];
 extern s32 D_80108908_mgresultbattle[];
 extern omObjData *D_80108F90_mgresultbattle;
 extern omObjFunc D_80108F94_mgresultbattle;
@@ -159,7 +166,23 @@ void func_80106908_mgresultbattle(void) {
 void func_80106910_mgresultbattle(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80106918_mgresultbattle);
+void func_80106918_mgresultbattle(void) {
+    omObjData *obj;
+    s32 motion;
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        obj = D_80108F50_mgresultbattle[i].obj;
+        if (GwPlayer[D_80108F8C_mgresultbattle[i]].gameCoin > 0) {
+            motion = 1;
+            PlayerFXPlay(0x274, D_80108F8C_mgresultbattle[i]);
+        } else {
+            motion = 2;
+        }
+        Hu3DMotionShiftSet(obj->model[1], HmfModelData[obj->motion[motion]].motId, 0, 0x14, 0);
+    }
+    D_80108F50_mgresultbattle[0].func = func_801069FC_mgresultbattle;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_801069FC_mgresultbattle);
 

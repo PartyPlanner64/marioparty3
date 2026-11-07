@@ -23,16 +23,12 @@ void func_80107B5C_mgresultbattle(f32 arg0, f32 arg1, f32 arg2);
 void func_80107BDC_mgresultbattle(f32 arg0);
 void func_80107C44_mgresultbattle(void);
 void func_80107CA4_mgresultbattle(void);
-void func_801082AC_mgresultbattle(void);
 
 extern ResultBattlePlayerObj D_80108F90_mgresultbattle;
 extern s32 D_801088E0_mgresultbattle[];
 extern ResultBattleEffect D_80108A30_mgresultbattle[40];
 extern omObjData *D_80108F74_mgresultbattle;
 extern omObjFunc D_80108F78_mgresultbattle;
-extern Vec D_801089D0_mgresultbattle[4];
-extern s8 D_80108F8C_mgresultbattle[4];
-extern s32 D_80108F70_mgresultbattle;
 extern const s32 D_801089C0_mgresultbattle[];
 
 void func_80106BA0_mgresultbattle(void) {

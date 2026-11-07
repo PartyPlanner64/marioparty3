@@ -6,18 +6,6 @@
 #include "../ovl_80_shared_board/105D50.h"
 #include "mgresultbattle.h"
 
-typedef struct {
-    /* 0x00 */ u8 state;
-    /* 0x02 */ s16 unk02;
-    /* 0x04 */ s16 unk04;
-    /* 0x08 */ s32 unk08;
-    /* 0x0C */ f32 x;
-    /* 0x10 */ f32 y;
-    /* 0x14 */ f32 z;
-    /* 0x18 */ s32 unk18;
-    /* 0x1C */ f32 unk1C;
-} ResultBattleEffect; /* size = 0x20 */
-
 void func_80105E0C_mgresultbattle(void);
 void func_80105EF4_mgresultbattle(void);
 void func_801060A4_mgresultbattle(void);
@@ -30,19 +18,14 @@ void func_80105CAC_mgresultbattle(omObjData *);
 void func_80105E64_mgresultbattle(omObjData *);
 void func_80105F50_mgresultbattle(void);
 void func_80105F78_mgresultbattle(Gfx **, s32, s32);
-void func_80107610_mgresultbattle(omObjData *);
 void func_801069FC_mgresultbattle(omObjData *);
 void func_801075FC_mgresultbattle(void);
 
 extern s8 D_80108F8C_mgresultbattle[4];
 extern s32 D_80108908_mgresultbattle[];
-extern omObjData *D_80108F90_mgresultbattle;
-extern omObjFunc D_80108F94_mgresultbattle;
-extern s32 D_801088E0_mgresultbattle[];
 extern s8 D_801088D8_mgresultbattle;
 extern s8 D_801088D0_mgresultbattle;
 extern s32 D_801088D4_mgresultbattle;
-extern ResultBattleEffect D_80108A30_mgresultbattle[40];
 
 void func_801059A0_mgresultbattle(void) {
     s16 var_a0_2;
@@ -224,7 +207,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80106660_mgr
 void func_80106908_mgresultbattle(void) {
 }
 
-void func_80106910_mgresultbattle(void) {
+void func_80106910_mgresultbattle(omObjData *obj) {
 }
 
 void func_80106918_mgresultbattle(void) {
@@ -245,102 +228,38 @@ void func_80106918_mgresultbattle(void) {
     D_80108F50_mgresultbattle[0].func = func_801069FC_mgresultbattle;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_801069FC_mgresultbattle);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80106BA0_mgresultbattle);
-
-void func_80106E98_mgresultbattle(void) {
-}
-
-void func_80106EA0_mgresultbattle(void) {
+void func_801069FC_mgresultbattle(omObjData *obj) {
+    s32 pressed;
     s32 i;
+    s32 j;
 
-    for (i = 0; i < 4; i++) {
-        D_801088E0_mgresultbattle[i] = 0;
+    HuPrcSleep(5);
+    while (!(Hu3DMotionShiftTimeGet(obj->model[1]) < 0.0f)) {
+        HuPrcVSleep();
     }
-}
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80106ED0_mgresultbattle);
-
-void func_80107260_mgresultbattle(f32 x, f32 y, f32 z, s32 count, f32 arg4) {
-    s32 n;
-    s32 i;
-
-    n = 0;
-    for (i = 0; i < 40; i++) {
-        if (D_80108A30_mgresultbattle[i].state == 1) {
-            D_80108A30_mgresultbattle[i].state = 4;
-            D_80108A30_mgresultbattle[i].unk08 = n++;
-            D_80108A30_mgresultbattle[i].x = x + (u8)(rand8() % 50);
-            D_80108A30_mgresultbattle[i].y = y;
-            D_80108A30_mgresultbattle[i].z = z + (u8)(rand8() % 50);
-            D_80108A30_mgresultbattle[i].unk18 = 0;
-            D_80108A30_mgresultbattle[i].unk1C = arg4;
-        }
-        if (n >= count) {
+    while (TRUE) {
+        if (D_800CCF58_main[HmfModelData[obj->model[1]].motId].unk02 <= HmfModelData[obj->model[1]].motTime) {
+            pressed = 0;
+            for (i = 0; i < 40; i++) {
+                for (j = 0; j < 4; j++) {
+                    if (!(GwPlayer[j].stat & 1) && (D_800D5558_main[GwPlayer[j].pad] & A_BUTTON)) {
+                        pressed = 1;
+                        break;
+                    }
+                }
+                if (pressed == 1) {
+                    break;
+                }
+                HuPrcVSleep();
+            }
+            D_801088D0_mgresultbattle = 4;
             break;
         }
+        HuPrcVSleep();
     }
+    D_80108F50_mgresultbattle[0].func = func_80106910_mgresultbattle;
 }
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultbattle/4F3780", D_80108908_mgresultbattle);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultbattle/4F3780", D_80108920_mgresultbattle);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultbattle/4F3780", D_801089A0_mgresultbattle);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80107400_mgresultbattle);
-
-void func_801075EC_mgresultbattle(void) {
-}
-
-void func_801075F4_mgresultbattle(void) {
-}
-
-void func_801075FC_mgresultbattle(void) {
-    D_80108F94_mgresultbattle = func_80107610_mgresultbattle;
-}
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_80107610_mgresultbattle);
-
-void func_80107B5C_mgresultbattle(f32 arg0, f32 arg1, f32 arg2) {
-    omObjData *itemObj = D_80108F90_mgresultbattle;
-
-    Hu3DModelPosSet(itemObj->model[1], arg0, arg1, arg2);
-    Hu3DModelPosSet(itemObj->model[3], arg0, arg1, arg2);
-}
-
-void func_80107BDC_mgresultbattle(f32 arg0) {
-    omObjData *itemObj = D_80108F90_mgresultbattle;
-
-    Hu3DModelRotSet(itemObj->model[1], 0.0f, 0.0f, arg0);
-    Hu3DModelRotSet(itemObj->model[3], 0.0f, 0.0f, arg0);
-}
-
-void func_80107C44_mgresultbattle(void) {
-    omObjData *itemObj = D_80108F90_mgresultbattle;
-
-    func_8001C258_main(itemObj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-    func_8001C258_main(itemObj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-    func_8001C258_main(itemObj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-}
-
-void func_80107CA4_mgresultbattle(void) {
-    omObjData *itemObj = D_80108F90_mgresultbattle;
-
-    func_8001C258_main(itemObj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8001C258_main(itemObj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    func_8001C258_main(itemObj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-}
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultbattle/4F3780", D_801089C0_mgresultbattle);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultbattle/4F3780", D_801089D0_mgresultbattle);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultbattle/4F3780", D_801089D4_mgresultbattle);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultbattle/4F3780", D_801089D8_mgresultbattle);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultbattle/4F3780", D_80108A00_mgresultbattle);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultbattle/4F3780", D_80108A10_mgresultbattle);

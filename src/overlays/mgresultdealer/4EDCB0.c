@@ -51,6 +51,7 @@ extern UnkDealerSprites D_8010A210_mgresultdealer;
 extern s32 D_8010A240_mgresultdealer;
 extern s32 D_8010A244_mgresultdealer;
 extern s16 D_8010A258_mgresultdealer;
+extern omObjData *D_8010A25C_mgresultdealer;
 extern omObjFunc D_8010A260_mgresultdealer;
 extern s16 D_8010A264_mgresultdealer;
 extern UnkDealerFadeProc D_8010A26C_mgresultdealer;
@@ -68,8 +69,10 @@ void func_80108258_mgresultdealer(void);
 void func_801082A8_mgresultdealer(Gfx **, s32, s32);
 void func_80108544_mgresultdealer(void);
 void func_80108560_mgresultdealer(u8);
+void func_80108AEC_mgresultdealer(omObjData *);
 void func_80108BD4_mgresultdealer(omObjData *);
 void func_80109044_mgresultdealer(omObjData *arg0);
+void func_801090AC_mgresultdealer(void);
 void func_80109100_mgresultdealer(void);
 void func_80109484_mgresultdealer(omObjData *);
 void func_80109710_mgresultdealer(omObjData *);
@@ -270,7 +273,91 @@ void func_80108560_mgresultdealer(u8 arg0) {
     D_8010993A_mgresultdealer = arg0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EDCB0", func_80108570_mgresultdealer);
+void func_80108570_mgresultdealer(void) {
+    omObjData *obj;
+    s16 multSprite;
+    s16 sprite;
+    s16 x;
+    s8 i;
+
+    obj = omAddObj(0x14, 0, 0, -1, NULL);
+    D_8010A25C_mgresultdealer = obj;
+
+    D_8010A210_mgresultdealer.groups[0].unk_02[0] = (s16)(D_8010A264_mgresultdealer / 100) % 10;
+    D_8010A210_mgresultdealer.groups[0].unk_02[1] = (s16)(D_8010A264_mgresultdealer / 10) % 10;
+    D_8010A210_mgresultdealer.groups[0].unk_02[2] = D_8010A264_mgresultdealer % 10;
+    D_8010A210_mgresultdealer.groups[1].unk_02[0] = (s16)(D_8010A258_mgresultdealer / 100) % 10;
+    D_8010A210_mgresultdealer.groups[1].unk_02[1] = (s16)(D_8010A258_mgresultdealer / 10) % 10;
+    D_8010A210_mgresultdealer.groups[1].unk_02[2] = D_8010A258_mgresultdealer % 10;
+    D_8010A210_mgresultdealer.groups[2].unk_02[0] = 0;
+    D_8010A210_mgresultdealer.groups[2].unk_02[1] = 0;
+    D_8010A210_mgresultdealer.groups[2].unk_02[2] = 0;
+
+    sprite = func_8000B838_main(0x190005);
+    D_8010A210_mgresultdealer.unk_2C = espEntry(sprite, 0, 1);
+    espTPLvlSet(D_8010A210_mgresultdealer.unk_2C, 0x7F);
+    espPosSet(D_8010A210_mgresultdealer.unk_2C, 0xA9, 0x60);
+    espDispOff(D_8010A210_mgresultdealer.unk_2C);
+    x = 0x5C;
+
+    sprite = func_8000B838_main(0x190004);
+    D_8010A210_mgresultdealer.unk_2A = espEntry(sprite, 0, 1);
+    espPosSet(D_8010A210_mgresultdealer.unk_2A, 0xA3, 0x5A);
+    espDispOff(D_8010A210_mgresultdealer.unk_2A);
+
+    sprite = func_8000B838_main(0x190009);
+    D_8010A210_mgresultdealer.groups[0].unk_00 = espEntry(sprite, 0, 1);
+    espPosSet(D_8010A210_mgresultdealer.groups[0].unk_00, 0x4C, 0x5A);
+    espBankSet(D_8010A210_mgresultdealer.groups[0].unk_00, 0, 0);
+    espSpeedSet(D_8010A210_mgresultdealer.groups[0].unk_00, 2.0f);
+    func_8000BDDC_main(D_8010A210_mgresultdealer.groups[0].unk_00, 0);
+    espDispOff(D_8010A210_mgresultdealer.groups[0].unk_00);
+
+    sprite = func_8000B838_main(0xC0086);
+    for (i = 0; i < 3; i++) {
+        D_8010A210_mgresultdealer.groups[0].unk_08[i] = espEntry(sprite, 0, 0);
+        espPosSet(D_8010A210_mgresultdealer.groups[0].unk_08[i], x, 0x5A);
+        espBankSet(D_8010A210_mgresultdealer.groups[0].unk_08[i], (u16)D_8010A210_mgresultdealer.groups[0].unk_02[i], 0);
+        espDispOff(D_8010A210_mgresultdealer.groups[0].unk_08[i]);
+        x += 16;
+    }
+
+    multSprite = func_8000B838_main(0xC008C);
+    D_8010A210_mgresultdealer.groups[1].unk_00 = espEntry(multSprite, 0, 0);
+    espPosSet(D_8010A210_mgresultdealer.groups[1].unk_00, x, 0x5A);
+    espBankSet(D_8010A210_mgresultdealer.groups[1].unk_00, 0, 0);
+    espDispOff(D_8010A210_mgresultdealer.groups[1].unk_00);
+    x += 16;
+
+    for (i = 0; i < 3; i++) {
+        D_8010A210_mgresultdealer.groups[1].unk_08[i] = espEntry(sprite, 0, 0);
+        espPosSet(D_8010A210_mgresultdealer.groups[1].unk_08[i], x, 0x5A);
+        espBankSet(D_8010A210_mgresultdealer.groups[1].unk_08[i], (u16)D_8010A210_mgresultdealer.groups[1].unk_02[i], 0);
+        espDispOff(D_8010A210_mgresultdealer.groups[1].unk_08[i]);
+        x += 16;
+    }
+
+    D_8010A210_mgresultdealer.groups[2].unk_00 = espEntry(multSprite, 0, 0);
+    espPosSet(D_8010A210_mgresultdealer.groups[2].unk_00, x, 0x5A);
+    espBankSet(D_8010A210_mgresultdealer.groups[2].unk_00, 3, 0);
+    espDispOff(D_8010A210_mgresultdealer.groups[2].unk_00);
+    x += 16;
+
+    for (i = 0; i < 3; i++) {
+        D_8010A210_mgresultdealer.groups[2].unk_08[i] = espEntry(sprite, 0, 0);
+        espPosSet(D_8010A210_mgresultdealer.groups[2].unk_08[i], x, 0x5A);
+        espBankSet(D_8010A210_mgresultdealer.groups[2].unk_08[i], (u16)D_8010A210_mgresultdealer.groups[2].unk_02[i], 0);
+        espDispOff(D_8010A210_mgresultdealer.groups[2].unk_08[i]);
+        x += 16;
+    }
+
+    omPrcSetDestructor(0, func_801090AC_mgresultdealer);
+    D_8010A260_mgresultdealer = func_80108AEC_mgresultdealer;
+    while (TRUE) {
+        D_8010A260_mgresultdealer(obj);
+        HuPrcVSleep();
+    }
+}
 
 void func_80108AEC_mgresultdealer(omObjData *arg0) {
     if (D_80109940_mgresultdealer == 0) {

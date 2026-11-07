@@ -16,12 +16,21 @@ extern omObjData *D_8010A250_mgresultdealer;
 void func_80106A50_mgresultdealer(omObjData *);
 void func_80106EC0_mgresultdealer(omObjData *);
 void func_80106EEC_mgresultdealer(void);
+void func_8010630C_mgresultdealer(s16);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_801059A0_mgresultdealer);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_80105C88_mgresultdealer);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_801061C8_mgresultdealer);
+void func_801061C8_mgresultdealer(void) {
+    s16 model;
+
+    model = func_8000B108_main(0x190002, 0x2002B9);
+    Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
+    func_80019828_main(model, 2);
+    func_80013320_main(model, 0);
+    func_8010630C_mgresultdealer(model);
+}
 
 void func_80106234_mgresultdealer(omObjData *obj) {
     if (D_800D530C_main == 1) {

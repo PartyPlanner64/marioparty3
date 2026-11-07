@@ -82,6 +82,6 @@ const MinigameTable D_800A6D40_main[] = {
     { -1, 0, 0, 0x0000, -1, { -1, -1, -1, -1 }, -1 },
 };
 
-s32 func_800341C0_main(void) {
+s32 func_800341C0_main(s32 minigameIndex) {
     return 0x70;
 }

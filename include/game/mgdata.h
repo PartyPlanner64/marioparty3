@@ -15,6 +15,6 @@ typedef struct MinigameTable {
 
 extern const MinigameTable D_800A6D40_main[];
 
-s32 func_800341C0_main(void);
+s32 func_800341C0_main(s32 minigameIndex);
 
 #endif

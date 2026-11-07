@@ -1,5 +1,7 @@
 #include "common.h"
 
+extern s16 D_800A11E6_main;
+extern s16 D_800D1F36_main;
 extern s16 D_800D1FE0_main;
 extern u16 D_80109AA4_mgenter;
 extern s16 D_80109AA6_mgenter;
@@ -12,15 +14,80 @@ extern s16 D_80109B34_mgenter;
 extern s16 D_80109B36_mgenter;
 extern s16 D_80109B38_mgenter;
 extern s16 D_80109B3A_mgenter;
+extern f32 D_80109AB0_mgenter;
+extern f32 D_80109B64_mgenter;
+extern s16 D_80109B74_mgenter;
+extern f32 D_80109B78_mgenter;
 extern s16 D_80109B76_mgenter;
 extern s16 D_80109B7C_mgenter;
 extern s16 D_80109B98_mgenter;
 
+void func_80105CD8_mgenter(void);
+void func_80106294_mgenter(void);
+void func_80106568_mgenter(void);
 void func_80106710_mgenter(u8 *str);
+void func_801079B4_mgenter(void);
+void func_801087C0_mgenter(void);
+void func_80108934_mgenter(omObjData *obj);
+void func_80109020_mgenter(void);
+s16 func_801095F4_mgenter(void);
+void func_801096EC_mgenter(s16 arg0);
 void func_801089A0_mgenter(omObjData *);
 void func_80109820_mgenter(void);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgenter/468AC0", func_801059D0_mgenter);
+void func_801059D0_mgenter(void) {
+    process_func func;
+    s16 typeBits;
+
+    Hu3DCamInit(1);
+    Hu3DAnimInit(1);
+    func_800142A0_main(0x19);
+    omInitObjMan(0x33, 0x19);
+    HuWinInit();
+    func_8004A208_main();
+    omAddObj(0x2710, 0, 0, -1, func_80108934_mgenter);
+    HmfLightMaxSet(1);
+    D_80109B78_mgenter = 8000.0f;
+    D_80109AB0_mgenter = 45.0f;
+    D_80109B64_mgenter = 80.0f;
+    CRot.x = 354.0f;
+    CRot.y = 0.0f;
+    CRot.z = 0.0f;
+    CZoom = 2240.0f;
+    Center.x = 0.0f;
+    Center.y = 260.0f;
+    Center.z = 13.0f;
+    Hu3DCameraPerspectiveSet(0, D_80109AB0_mgenter, D_80109B64_mgenter, D_80109B78_mgenter);
+    omPrcSetStatBit(omAddPrcObj(func_80109020_mgenter, 0x1100, 0x800, 0), 0xA0);
+    WipeCreateIn(0xFF, 0x10);
+    D_800CD280_main = 1;
+    Hu3DBGColorSet(0xFF, 0xFF, 0xFF);
+    D_80109B74_mgenter = D_800D1F36_main;
+    D_80109B7C_mgenter = 1;
+    D_80109B76_mgenter = func_800341C0_main(GwSystem.minigame_index);
+    D_80109B98_mgenter = 0;
+    D_80109B2A_mgenter = GwSystem.minigame_index - 1;
+    typeBits = (D_800A6D40_main[D_80109B2A_mgenter].flags & 0x3800) >> 11;
+    D_80109B2E_mgenter = typeBits + 1;
+    if (D_80109B2E_mgenter >= 2) {
+        D_80109B2E_mgenter = typeBits;
+    }
+    if (D_80109B2A_mgenter == 70) {
+        func = func_80105CD8_mgenter;
+    } else if (D_80109B2A_mgenter == 30) {
+        func = func_801079B4_mgenter;
+    } else {
+        func = func_80106294_mgenter;
+    }
+    omAddPrcObj(func, 0x3F00, 0x2000, 0);
+    if (D_800D1FE0_main != 0) {
+        GwSystem.show_minigame_explanations = 1;
+    } else {
+        D_800D1FE0_main++;
+    }
+    _SetFlag(0xD);
+    HuAudSeqPlay(8);
+}
 
 void func_80105C60_mgenter(void) {
     Hu3DCamInit(1);
@@ -35,7 +102,61 @@ void func_80105C60_mgenter(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgenter/468AC0", func_80105CD8_mgenter);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgenter/468AC0", func_80106294_mgenter);
+void func_80106294_mgenter(void) {
+    s16 size[2];
+    u16 sprite;
+    s16 i;
+    s16 winId;
+    s16 btn;
+
+    D_800A11E6_main = -1;
+    omAddPrcObj(func_80106568_mgenter, 0x3F00, 0x800, 0);
+    sprite = func_801095F4_mgenter();
+    func_801096EC_mgenter(D_800A6D40_main[D_80109B2A_mgenter].flags & 0x7FF);
+    espPosSet(sprite, 0, -100);
+    while (WipeStatGet() != 0) {
+        HuPrcVSleep();
+    }
+    D_80109B24_mgenter = 0;
+    for (i = 0; i < 11; i++) {
+        espPosSet(sprite, sindf(i * 9.0f) * 240.0f - 80.0f, 115);
+        HuPrcVSleep();
+    }
+    HuWinMesMaxSizeGet(1, size, 0x4607);
+    winId = HuWinExCreate(-1, (320 - size[0]) / 2, 180, size[0], size[1], 0);
+    HuWinMesSpeedSet(winId, 0);
+    HuWinExAnimIn(winId);
+    HuWinMesSet(winId, 0x4607, -1, -1);
+    while (HuWinStatGet(winId) != 0) {
+        HuPrcVSleep();
+    }
+    while (TRUE) {
+        btn = D_800D5558_main[D_80109B74_mgenter];
+        if (btn & 0x8000) {
+            HuAudFXPlay(2);
+            break;
+        }
+        if (btn & 0x4000) {
+            HuAudFXPlay(4);
+            D_80109B7C_mgenter = 0;
+            D_80109AA4_mgenter = 1;
+            D_80109AA6_mgenter = 1;
+            while (TRUE) {
+                HuPrcVSleep();
+            }
+        }
+        HuPrcVSleep();
+    }
+    func_801087C0_mgenter();
+    HuWinKill(winId);
+    D_80109B7C_mgenter = 2;
+    D_80109B76_mgenter = func_800341C0_main(GwSystem.minigame_index);
+    D_80109B98_mgenter = 0;
+    D_80109AA4_mgenter = 1;
+    while (TRUE) {
+        HuPrcVSleep();
+    }
+}
 
 void func_80106568_mgenter(void) {
     GAMEMES gMes;

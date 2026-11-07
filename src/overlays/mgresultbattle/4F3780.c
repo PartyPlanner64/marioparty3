@@ -30,6 +30,10 @@ extern s32 D_80108908_mgresultbattle[];
 extern s8 D_801088D8_mgresultbattle;
 extern s8 D_801088D0_mgresultbattle;
 extern s32 D_801088D4_mgresultbattle;
+extern s32 D_80108F70_mgresultbattle;
+extern const s8 D_801089A0_mgresultbattle[];
+extern const f32 D_80108920_mgresultbattle[][4];
+extern u16 D_800CC698_main;
 
 void func_801059A0_mgresultbattle(void) {
     s16 var_a0_2;
@@ -204,7 +208,131 @@ void func_80105F78_mgresultbattle(Gfx **gfx, s32 arg1, s32 arg2) {
     *gfx = gdl;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultbattle/4F3780", func_801060A4_mgresultbattle);
+void func_801060A4_mgresultbattle(void) {
+    s32 order[4];
+    s32 ranks[4];
+    s8 rankCounts[4];
+    s32 rank;
+    s32 total;
+    s32 type;
+    s32 count;
+    s32 i;
+    s32 j;
+    s32 player;
+
+    for (i = 0, j = 0; i < 4; i++) {
+        j += (GwPlayer[i].bonusCoin >= 3);
+    }
+    if (j >= 4) {
+        D_80108F70_mgresultbattle = 0;
+        for (i = 0; i < 4; i++) {
+            GwPlayer[i].gameCoin = 0;
+            GwPlayer[i].coin += GwPlayer[i].checkCoin;
+        }
+        return;
+    }
+
+    rank = 0;
+    count = 0;
+    for (j = 0; j < 4; j++) {
+        for (i = 0; i < 4; i++) {
+            if (j == GwPlayer[i].bonusCoin) {
+                count++;
+                ranks[i] = rank;
+            }
+        }
+        rank += count;
+        count = 0;
+    }
+    for (i = 0; i < 4; i++) {
+        GwPlayer[i].bonusCoin = ranks[i];
+    }
+    for (i = 0; i < 4; i++) {
+        rankCounts[i] = 0;
+    }
+    for (i = 0; i < 4; i++) {
+        rankCounts[GwPlayer[i].bonusCoin]++;
+    }
+
+    type = 0;
+    if (rankCounts[0] == 1 && rankCounts[1] == 1 && rankCounts[2] == 1 && rankCounts[3] == 1) {
+        type = 0;
+    } else if (rankCounts[0] == 2 && rankCounts[2] == 2) {
+        type = 2;
+    } else if (rankCounts[0] == 2) {
+        type = 1;
+    } else if (rankCounts[0] == 3) {
+        type = 3;
+    } else if (rankCounts[1] == 2) {
+        type = 4;
+    } else if (rankCounts[1] == 3) {
+        type = 5;
+    } else if (rankCounts[2] == 2) {
+        type = 6;
+    } else if (rankCounts[0] == 4) {
+        type = 7;
+    }
+
+    total = 0;
+    for (i = 0; i < 4; i++) {
+        if (D_801089A0_mgresultbattle[type] == 0) {
+            GwPlayer[i].gameCoin = D_800CC698_main * D_80108920_mgresultbattle[type][GwPlayer[i].bonusCoin];
+        } else if (D_80108920_mgresultbattle[type][GwPlayer[i].bonusCoin] != 0.0f) {
+            GwPlayer[i].gameCoin = D_800CC698_main / D_80108920_mgresultbattle[type][GwPlayer[i].bonusCoin];
+        } else {
+            GwPlayer[i].gameCoin = 0;
+        }
+        total += GwPlayer[i].gameCoin;
+    }
+    D_80108F70_mgresultbattle = D_800CC698_main - total;
+
+    switch (type) {
+        case 4:
+            if (D_80108F70_mgresultbattle == 2) {
+                for (i = 0; i < 4; i++) {
+                    if (GwPlayer[i].bonusCoin == 1) {
+                        GwPlayer[i].gameCoin += 1;
+                    }
+                }
+                D_80108F70_mgresultbattle = 0;
+            }
+            break;
+        case 5:
+            if (D_80108F70_mgresultbattle == 3) {
+                for (i = 0; i < 4; i++) {
+                    if (GwPlayer[i].bonusCoin == 1) {
+                        GwPlayer[i].gameCoin += 1;
+                    }
+                }
+                D_80108F70_mgresultbattle = 0;
+            }
+            break;
+        case 6:
+            if (D_80108F70_mgresultbattle == 2) {
+                for (i = 0; i < 4; i++) {
+                    if (GwPlayer[i].bonusCoin == 0) {
+                        GwPlayer[i].gameCoin += 2;
+                        break;
+                    }
+                }
+                D_80108F70_mgresultbattle = 0;
+            }
+            break;
+    }
+
+    count = 0;
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 4; j++) {
+            player = D_80108F8C_mgresultbattle[j];
+            if (i == GwPlayer[player].bonusCoin) {
+                order[count++] = player;
+            }
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        D_80108F8C_mgresultbattle[i] = order[i];
+    }
+}
 
 void func_80106660_mgresultbattle(void) {
     omObjData *obj;

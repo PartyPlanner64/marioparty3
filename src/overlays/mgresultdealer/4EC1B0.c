@@ -189,7 +189,26 @@ void func_8010705C_mgresultdealer(omObjData *obj) {
     D_8010990C_mgresultdealer++;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EC1B0", func_801070EC_mgresultdealer);
+void func_801070EC_mgresultdealer(s16 model) {
+    HmfData *hmf = HmfModelData[model].hmf;
+    HmfModelData_UnkBC_Struct *bc = HmfModelData[model].unkBC;
+    HmfModelData_UnkBC_Unk58_Struct *particle = bc->unk58;
+    s16 count = hmf->unk1A;
+    s16 i;
+
+    for (i = 0; i < count; i++, particle++) {
+        if (particle->unk10 <= 0.0f) {
+            particle->unk0C = (100.0f - rand8() % 200) * 2.0f;
+            particle->unk10 = 500.0f;
+            particle->unk14 = ((rand8() * 125) >> 5) - 500;
+            particle->unk18 = ((s32)((rand8() * 5U) >> 7) - 5) / 2.0f;
+            particle->unk1C = 0.0f;
+            particle->unk20 = ((s32)((rand8() * 5U) >> 7) - 5) / 2.0f;
+            particle->unk08 = 3.0f;
+            break;
+        }
+    }
+}
 
 void func_801072A8_mgresultdealer(s16 model) {
     HmfData *hmf = HmfModelData[model].hmf;

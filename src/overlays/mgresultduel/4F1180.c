@@ -2,6 +2,14 @@
 #include "game/object.h"
 #include "game/audio.h"
 
+typedef struct UnkResultDuelStruct {
+    /* 0x00 */ u8 unk00;
+    /* 0x02 */ u16 unk02;
+    /* 0x04 */ f32 unk04;
+    /* 0x08 */ Vec pos;
+    /* 0x14 */ f32 unk14;
+} UnkResultDuelStruct; // size = 0x18
+
 extern omObjFunc D_80109330_mgresultduel;
 extern omObjFunc D_80109344_mgresultduel;
 extern s8 D_80109310_mgresultduel[];
@@ -10,6 +18,14 @@ extern s16 D_8010930A_mgresultduel;
 extern s16 D_8010930C_mgresultduel;
 extern omObjFunc D_80109320_mgresultduel;
 extern omObjFunc D_80109328_mgresultduel;
+extern omObjData *D_8010931C_mgresultduel;
+extern s32 D_80108E80_mgresultduel;
+extern s32 D_80108E84_mgresultduel;
+extern s32 D_80108E88_mgresultduel;
+extern s32 D_80108E8C_mgresultduel;
+extern s32 D_80108E90_mgresultduel;
+extern s32 D_80108E94_mgresultduel;
+extern UnkResultDuelStruct D_80108F38_mgresultduel[20];
 
 void func_80106B70_mgresultduel(omObjData *);
 void func_80106CA0_mgresultduel(omObjData *);
@@ -144,7 +160,34 @@ void func_80107AF4_mgresultduel(void) {
 void func_80107AFC_mgresultduel(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultduel/4F1180", func_80107B04_mgresultduel);
+void func_80107B04_mgresultduel(s32 arg0) {
+    omObjData *obj;
+    s8 i;
+
+    obj = D_8010931C_mgresultduel;
+    if (arg0 > 0) {
+        arg0 = (arg0 > 50) ? 50 : arg0;
+        D_80108E84_mgresultduel = arg0;
+        D_80108E88_mgresultduel = 0;
+        D_80108E80_mgresultduel = 0;
+        D_80108E8C_mgresultduel = 0;
+        if (arg0 <= 100) {
+            D_80108E90_mgresultduel = arg0;
+        } else {
+            D_80108E90_mgresultduel = 100;
+        }
+        D_80108E94_mgresultduel = 4;
+        for (i = 0; i < 20; i++) {
+            D_80108F38_mgresultduel[i].unk00 = 0;
+            D_80108F38_mgresultduel[i].unk04 = 0;
+            D_80108F38_mgresultduel[i].pos.x = D_80108F38_mgresultduel[i].pos.y =
+                D_80108F38_mgresultduel[i].pos.z = 0.0f;
+            D_80108F38_mgresultduel[i].unk14 = -10.0f;
+            func_8001C258_main(obj->model[i + 1], 4, 4);
+            Hu3DModelPosSet(obj->model[i + 1], 0.0f, 400.0f, 0.0f);
+        }
+    }
+}
 
 void func_80107C74_mgresultduel(s32 arg0, s32 arg1) {
     D_801092F8_mgresultduel = arg1;

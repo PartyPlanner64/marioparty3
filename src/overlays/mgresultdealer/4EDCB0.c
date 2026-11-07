@@ -19,7 +19,7 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ s8 unk_00;
-    /* 0x02 */ s16 unk_02;
+    /* 0x02 */ u16 unk_02;
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ Vec unk_08;
     /* 0x14 */ f32 unk_14;
@@ -53,9 +53,15 @@ extern s16 D_8010A258_mgresultdealer;
 extern omObjFunc D_8010A260_mgresultdealer;
 extern s16 D_8010A264_mgresultdealer;
 extern UnkDealerFadeProc D_8010A26C_mgresultdealer;
+extern u16 D_80109A70_mgresultdealer;
+extern u16 D_80109A72_mgresultdealer;
 extern UnkDealerCoin D_80109A78_mgresultdealer[40];
+extern UnkDealerCoin D_80109E38_mgresultdealer[40];
+extern omObjFunc D_8010A278_mgresultdealer;
 extern omObjData *D_8010A274_mgresultdealer;
 
+void func_80107888_mgresultdealer(omObjData *);
+void func_80107E3C_mgresultdealer(void);
 void func_80108194_mgresultdealer(omObjData *);
 void func_80108258_mgresultdealer(void);
 void func_801082A8_mgresultdealer(Gfx **, s32, s32);
@@ -66,7 +72,58 @@ void func_80109100_mgresultdealer(void);
 void func_80109484_mgresultdealer(omObjData *);
 void func_80109710_mgresultdealer(omObjData *);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EDCB0", func_801074A0_mgresultdealer);
+void func_801074A0_mgresultdealer(void) {
+    omObjData *obj;
+    void *data;
+    s8 i;
+
+    obj = omAddObj(0x14, 0x51, 0, -1, NULL);
+    D_8010A274_mgresultdealer = obj;
+
+    data = DataRead(0x210026);
+    D_80109A70_mgresultdealer = HmfSprModelCreate(data, 0x2BD, 8);
+    DataClose(data);
+    func_8001C2FC_main(D_800CBB60_main[D_80109A70_mgresultdealer].modelId, 0x70000000, 0x70000000);
+    for (i = 0; i < 40; i++) {
+        D_80109A78_mgresultdealer[i].unk_00 = 0;
+        D_80109A78_mgresultdealer[i].unk_02 = func_80014618_main(D_80109A70_mgresultdealer, 8);
+        D_80109A78_mgresultdealer[i].unk_04 = 0;
+        obj->model[i + 1] = D_800CBB60_main[D_80109A78_mgresultdealer[i].unk_02].modelId;
+        Hu3DModelPosSet(obj->model[i + 1], 0.0f, 400.0f, 0.0f);
+        Hu3DModelCameraSet(obj->model[i + 1], 1);
+        Hu3DMotionSpeedSet(obj->model[i + 1], 2.0f);
+        Hu3DModelScaleSet(D_800CBB60_main[i + 1].modelId, 1.5f, 1.5f, 1.5f);
+    }
+
+    data = DataRead(0xC);
+    D_80109A72_mgresultdealer = HmfSprModelCreate(data, 0x2BD, 8);
+    DataClose(data);
+    func_8001C2FC_main(D_800CBB60_main[D_80109A72_mgresultdealer].modelId, 0x70000000, 0x70000000);
+    Hu3DModelScaleSet(D_800CBB60_main[D_80109A72_mgresultdealer].modelId, 1.0f, 1.0f, 1.0f);
+    for (i = 0; i < 40; i++) {
+        D_80109E38_mgresultdealer[i].unk_00 = 0;
+        D_80109E38_mgresultdealer[i].unk_02 = func_80014618_main(D_80109A72_mgresultdealer, 8);
+        D_80109E38_mgresultdealer[i].unk_04 = 0;
+        obj->model[i + 41] = D_800CBB60_main[D_80109E38_mgresultdealer[i].unk_02].modelId;
+        Hu3DModelPosSet(obj->model[i + 41], 0.0f, 400.0f, 0.0f);
+        Hu3DModelCameraSet(obj->model[i + 41], 1);
+        Hu3DMotionSpeedSet(obj->model[i + 41], 1.0f);
+        Hu3DModelScaleSet(D_800CBB60_main[i + 41].modelId, 3.0f, 3.0f, 3.0f);
+    }
+
+    obj->model[0] = -1;
+    D_80109910_mgresultdealer = 0;
+    D_80109911_mgresultdealer = 0;
+    obj->trans.x = 0.0f;
+    obj->trans.y = 0.0f;
+    obj->trans.z = 0.0f;
+    omPrcSetDestructor(0, func_80107E3C_mgresultdealer);
+    D_8010A278_mgresultdealer = func_80107888_mgresultdealer;
+    while (TRUE) {
+        D_8010A278_mgresultdealer(obj);
+        HuPrcVSleep();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgresultdealer/4EDCB0", func_80107888_mgresultdealer);
 

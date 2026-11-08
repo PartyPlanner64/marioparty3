@@ -1,10 +1,11 @@
 #include "common.h"
+#include "chancetime.h"
 
 extern s32 D_8010FB00_chancetime;
 extern s32 D_8010FB04_chancetime;
+extern s32 D_8010FB08_chancetime;
 extern s32 D_8010FB60_chancetime;
-extern omObjData *D_801100D4_chancetime;
-extern void (*D_801100D8_chancetime)(omObjData *);
+extern ChanceTimeObjState D_801100D4_chancetime;
 
 void func_80107B18_chancetime(omObjData *object);
 void func_80107E40_chancetime(omObjData *object);
@@ -20,7 +21,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80107300_chancet
 void func_80107A80_chancetime(omObjData *object) {
 }
 
-void func_80107A88_chancetime(void) {
+void func_80107A88_chancetime(omObjData *object) {
 }
 
 void func_80107A90_chancetime(void) {
@@ -31,7 +32,7 @@ void func_80107A98_chancetime(omObjData *object) {
     func_8001C814_main(object->model[1], 2, 0);
     func_8001C5B4_main(object->model[3], object->motion[2]);
     func_8001C814_main(object->model[3], 2, 0);
-    D_801100D8_chancetime = func_80107B18_chancetime;
+    D_801100D4_chancetime.func = func_80107B18_chancetime;
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80107B18_chancetime);
@@ -53,17 +54,17 @@ INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80108414_chancet
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80108578_chancetime);
 
 void func_801086DC_chancetime(void) {
-    D_801100D8_chancetime = func_80107A98_chancetime;
+    D_801100D4_chancetime.func = func_80107A98_chancetime;
 }
 
 void func_801086F0_chancetime(void) {
-    D_801100D8_chancetime = func_80107E40_chancetime;
+    D_801100D4_chancetime.func = func_80107E40_chancetime;
 }
 
 void func_80108704_chancetime(void) {
     D_8010FB00_chancetime = 1;
     D_8010FB04_chancetime = 0;
-    D_801100D8_chancetime = func_80108414_chancetime;
+    D_801100D4_chancetime.func = func_80108414_chancetime;
 }
 
 s32 func_8010872C_chancetime(void) {
@@ -72,22 +73,40 @@ s32 func_8010872C_chancetime(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80108738_chancetime);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80108A88_chancetime);
+void func_80108A88_chancetime(void) {
+    omObjData *object = D_801100D4_chancetime.obj;
 
-#ifdef NON_MATCHING
-// D_801100D4/D_801100D8 accessed via a shared base register in the target.
+    Hu3DMotionShiftSet(object->model[1], HmfModelData[object->motion[5]].motId, 0, 30, 2);
+    Hu3DMotionShiftSet(object->model[3], HmfModelData[object->motion[5]].motId, 0, 30, 2);
+    D_8010FB08_chancetime = 0;
+    D_801100D4_chancetime.func = func_80107A88_chancetime;
+}
+
 void func_80108B50_chancetime(void) {
-    omObjData *object = D_801100D4_chancetime;
+    omObjData *object = D_801100D4_chancetime.obj;
 
-    D_801100D8_chancetime = func_80107A80_chancetime;
+    D_801100D4_chancetime.func = func_80107A80_chancetime;
     Hu3DMotionShiftSet(object->model[1], HmfModelData[object->motion[4]].motId, 0, 30, 2);
     Hu3DMotionShiftSet(object->model[3], HmfModelData[object->motion[4]].motId, 0, 30, 2);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80108B50_chancetime);
-#endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80108C08_chancetime);
+void func_80108C08_chancetime(s16 model, s16 slot, s16 animIdx) {
+    if (slot >= 0) {
+        if (animIdx == -1) {
+            func_80033910_main(HmfModelData[model].hmf);
+        } else {
+            HmfAnim *anim;
+
+            func_80033970_main(HmfModelData[model].hmf);
+            anim = &D_800D1714_main[slot];
+            anim->animIdx = animIdx;
+            anim->rot = 0;
+            anim->flags = 0;
+            anim->interp = 0;
+            anim->frame = 0;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80108CDC_chancetime);
 
@@ -190,7 +209,7 @@ s32 func_8010BF3C_chancetime(void) {
 }
 
 void func_8010BF48_chancetime(void) {
-    omObjData *object = D_801100D4_chancetime;
+    omObjData *object = D_801100D4_chancetime.obj;
 
     func_8010BC10_chancetime(object, 0.0f, 45.0f, 0.0f, 10);
 }

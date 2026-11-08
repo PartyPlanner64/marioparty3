@@ -1,9 +1,5 @@
 #include "common.h"
-
-typedef struct ChanceTimeObjState {
-    /* 0x00 */ omObjData *obj;
-    /* 0x04 */ void (*func)(omObjData *);
-} ChanceTimeObjState;
+#include "chancetime.h"
 
 extern s32 D_8010FAF0_chancetime;
 extern s32 D_8010FE70_chancetime;

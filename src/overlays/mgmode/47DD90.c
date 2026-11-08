@@ -1,6 +1,7 @@
 #include "common.h"
 #include "game/malloc.h"
 #include "game/mallocblock.h"
+#include "math.h"
 
 typedef struct MgmodeSpaceCoord {
     /* 0x00 */ s16 x;
@@ -10,12 +11,15 @@ typedef struct MgmodeSpaceCoord {
 extern u8 D_8011B630_mgmode[0x20];
 extern s16 D_8011B650_mgmode;
 extern s16 D_8011B652_mgmode;
-extern u16* D_8011B654_mgmode[3];
-extern void* D_8011B660_mgmode;
+extern u16 *D_8011B654_mgmode[3];
+extern void *D_8011B660_mgmode;
 extern s16 D_8011A3E0_mgmode;
 extern s16 D_8011B664_mgmode;
 extern s16 D_8011B666_mgmode;
+extern s16 D_8011B668_mgmode;
 extern s16 D_8011B66A_mgmode;
+extern s16 D_8011B66E_mgmode;
+extern s16 D_8011A3F8_mgmode[];
 extern MgmodeSpaceCoord *D_8011B670_mgmode;
 
 s16 func_80116B20_mgmode(void) {
@@ -81,36 +85,36 @@ typedef struct CamData {
 
 extern f32 D_8011B6A4_mgmode;
 extern Vec D_8011B898_mgmode;
-extern CamData* D_8011B954_mgmode;
+extern CamData *D_8011B954_mgmode;
 extern s8 D_8011B958_mgmode;
 
 void func_80116E24_mgmode(s16 arg0) {
     CRot = D_8011B954_mgmode[arg0].rot;
     D_8011B898_mgmode = CRot;
-    
+
     Center = D_8011B954_mgmode[arg0].center;
     CZoom = D_8011B954_mgmode[arg0].zoom;
-    
+
     D_8011B6A4_mgmode = D_8011B954_mgmode[arg0].unk_1C;
     D_8011B958_mgmode = arg0;
 }
 
 #ifdef NON_MATCHING
-void func_80116ED4_mgmode(s16 presetIdx, s16 duration, s16 easeType, void (*callback)(s16*)) {
-    Vec rotDelta;                       /* sp10 */
-    Vec centerDelta;                    /* sp20 */
-    Vec rotStart;                       /* sp30 */
-    Vec centerStart;                    /* sp40 */
-    Vec rot;                            /* sp50 */
-    Vec center;                         /* sp60 */
-    s16 cbArg[24];                      /* sp70..sp9F (0x30 bytes) */
-    Vec eye;                            /* spA0 */
-    void (*cb)(s16*);                   /* s8 */
-    f32 zoom;                           /* f22 */
-    f32 zoomDelta;                      /* f24 */
-    f32 zoomStart;                      /* f22_2 */
-    f32 unkDelta;                       /* f28 */
-    f32 unkStart;                       /* f26 */
+void func_80116ED4_mgmode(s16 presetIdx, s16 duration, s16 easeType, void (*callback)(s16 *)) {
+    Vec rotDelta;      /* sp10 */
+    Vec centerDelta;   /* sp20 */
+    Vec rotStart;      /* sp30 */
+    Vec centerStart;   /* sp40 */
+    Vec rot;           /* sp50 */
+    Vec center;        /* sp60 */
+    s16 cbArg[24];     /* sp70..sp9F (0x30 bytes) */
+    Vec eye;           /* spA0 */
+    void (*cb)(s16 *); /* s8 */
+    f32 zoom;          /* f22 */
+    f32 zoomDelta;     /* f24 */
+    f32 zoomStart;     /* f22_2 */
+    f32 unkDelta;      /* f28 */
+    f32 unkStart;      /* f26 */
     f64 mag;
     f64 diff;
     f64 rate;
@@ -166,7 +170,7 @@ void func_80116ED4_mgmode(s16 presetIdx, s16 duration, s16 easeType, void (*call
             Center.z = rate * centerDelta.z + centerStart.z;
             CZoom = rate * zoomDelta + zoomStart;
             D_8011B6A4_mgmode = rate * unkDelta + unkStart;
-            if (callback != (void (*)(s16*))-1) {
+            if (callback != (void (*)(s16 *))-1) {
                 cbArg[0] = i;
                 cb(cbArg);
             }
@@ -182,7 +186,7 @@ void func_80116ED4_mgmode(s16 presetIdx, s16 duration, s16 easeType, void (*call
             Center.y = rate * centerDelta.y + centerStart.y;
             Center.z = rate * centerDelta.z + centerStart.z;
             CZoom = rate * zoomDelta + zoomStart;
-            if (callback != (void (*)(s16*))-1) {
+            if (callback != (void (*)(s16 *))-1) {
                 cbArg[0] = i;
                 cb(cbArg);
             }
@@ -195,29 +199,24 @@ void func_80116ED4_mgmode(s16 presetIdx, s16 duration, s16 easeType, void (*call
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_80116ED4_mgmode);
 #endif
 
-#ifdef NON_MATCHING
-f32 atan2df(f32, f32);
-void func_801177BC_mgmode(Vec* arg0, Vec* arg1) {
-    f32 temp_f0;
-    f32 temp_f22;
-    f32 temp_f24;
-    f32 temp_f26;
-    f32 temp_f28;
+void func_801177BC_mgmode(Vec *eye, Vec *center) {
+    f32 dx;
+    f32 dy;
+    f32 dz;
+    f32 angle;
 
-    temp_f22 = arg0->x - arg1->x;
-    temp_f28 = arg0->y - arg1->y;
-    temp_f24 = arg0->z - arg1->z;
-    CZoom = HuSqrtf((temp_f22 * temp_f22) + (temp_f28 * temp_f28) + (temp_f24 * temp_f24));
-    temp_f0 = atan2df(temp_f24, temp_f22);
-    CRot.y = -(temp_f0 - 90.0f);
-    temp_f26 = cosdf(-temp_f0);
-    CRot.x = -atan2df(temp_f28, (temp_f22 * temp_f26) + (temp_f24 * -sindf(-temp_f0)));
+    dx = eye->x - center->x;
+    dy = eye->y - center->y;
+    dz = eye->z - center->z;
+    CZoom = HuSqrtf((dx * dx) + (dy * dy) + (dz * dz));
+    angle = atan2df(dz, dx);
+    CRot.y = -(angle - 90.0f);
+    angle = -angle;
+    dx = dx * cosdf(angle) + dz * -sindf(angle);
+    CRot.x = -atan2df(dy, dx);
     CRot.z = 0.0f;
-    Center = *arg1;
+    Center = *center;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_801177BC_mgmode);
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_801178E0_mgmode);
 
@@ -243,13 +242,21 @@ void func_8011822C_mgmode(MgmodeSpaceCoord *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_8011829C_mgmode);
+void func_8011829C_mgmode(s16 arg0) {
+    D_8011B668_mgmode = arg0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_801182A8_mgmode);
+void func_801182A8_mgmode(s16 arg0) {
+    D_8011B66A_mgmode = arg0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_801182B4_mgmode);
+void func_801182B4_mgmode(s16 arg0) {
+    D_8011B66E_mgmode = arg0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_801182C0_mgmode);
+void func_801182C0_mgmode(s16 index) {
+    D_8011B630_mgmode[index] = 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_801182DC_mgmode);
 
@@ -261,9 +268,13 @@ void func_80118624_mgmode(s16 dstModel, s16 srcModel) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_80118678_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_80118888_mgmode);
+void func_80118888_mgmode(s16 index) {
+    D_8011A3F8_mgmode[index] = 1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_801188A4_mgmode);
+void func_801188A4_mgmode(s16 index) {
+    D_8011A3F8_mgmode[index] = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_801188BC_mgmode);
 

@@ -2,6 +2,7 @@
 
 extern s32 D_8010FB00_chancetime;
 extern s32 D_8010FB04_chancetime;
+extern s32 D_8010FB60_chancetime;
 extern void (*D_801100D8_chancetime)(omObjData *);
 
 void func_80107B18_chancetime(omObjData *object);
@@ -119,7 +120,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010BC88_chancet
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010BD40_chancetime);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010BF3C_chancetime);
+s32 func_8010BF3C_chancetime(void) {
+    return D_8010FB60_chancetime;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010BF48_chancetime);
 

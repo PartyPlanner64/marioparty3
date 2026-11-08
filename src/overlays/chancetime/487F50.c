@@ -4,6 +4,7 @@ extern s8 D_8010FB80_chancetime;
 extern s8 D_8010FB81_chancetime;
 extern s32 D_8010FC10_chancetime;
 extern s32 D_8010FC14_chancetime;
+extern s32 D_8010FC18_chancetime;
 extern s32 D_8010FC1C_chancetime;
 extern s16 D_8010FE94_chancetime[3];
 extern u16 D_8010FE9A_chancetime;
@@ -17,6 +18,8 @@ extern void (*D_801100CC_chancetime)(void);
 
 void func_8010C610_chancetime(void);
 void func_8010DFA4_chancetime(void);
+void func_8010E280_chancetime(void);
+void func_8010F1F8_chancetime(void);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010BF80_chancetime);
 
@@ -65,7 +68,9 @@ void func_8010DA24_chancetime(void) {
     D_801100CC_chancetime = func_8010C610_chancetime;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010DAA4_chancetime);
+s8 func_8010DAA4_chancetime(void) {
+    return D_8010FB81_chancetime;
+}
 
 void func_8010DAB0_chancetime(void) {
     omObjData *obj = D_801100C8_chancetime;
@@ -89,7 +94,10 @@ void func_8010DB78_chancetime(void) {
     D_8010FEC9_chancetime = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010DB98_chancetime);
+void func_8010DB98_chancetime(void) {
+    D_8010FEC8_chancetime = 0;
+    D_8010FEC9_chancetime = 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010DBB0_chancetime);
 
@@ -119,21 +127,33 @@ void func_8010E210_chancetime(void) {
     D_80110084_chancetime = func_8010DF70_chancetime;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010E258_chancetime);
+s32 func_8010E258_chancetime(void) {
+    return D_8010FC14_chancetime;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010E264_chancetime);
+void func_8010E264_chancetime(void) {
+    D_8010FC18_chancetime = 0;
+    D_80110084_chancetime = func_8010E280_chancetime;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010E280_chancetime);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010E4C4_chancetime);
+s32 func_8010E4C4_chancetime(void) {
+    return D_8010FC18_chancetime;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010E4D0_chancetime);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010F1DC_chancetime);
+void func_8010F1DC_chancetime(void) {
+    D_8010FC10_chancetime = 0;
+    D_80110084_chancetime = func_8010F1F8_chancetime;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010F1F8_chancetime);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010F420_chancetime);
+s32 func_8010F420_chancetime(void) {
+    return D_8010FC10_chancetime;
+}
 
 void func_8010F42C_chancetime(void) {
     D_8010FC10_chancetime = 1;

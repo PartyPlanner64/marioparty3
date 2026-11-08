@@ -243,7 +243,40 @@ void func_801177BC_mgmode(Vec *eye, Vec *center) {
     Center = *center;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_801178E0_mgmode);
+void func_801178E0_mgmode(Vec *center, Vec *rot, f32 zoom, Vec *pos, Vec *at, Vec *up) {
+    f32 rotX, rotY, rotZ;
+    f32 upX, upY, upZ;
+    f32 dx, dy, dz;
+    f32 length;
+
+    rotX = rot->x;
+    rotY = rot->y;
+    rotZ = rot->z;
+    pos->x = sindf(rotY) * cosdf(rotX) * zoom + center->x;
+    pos->y = -sindf(rotX) * zoom + center->y;
+    pos->z = cosdf(rotY) * cosdf(rotX) * zoom + center->z;
+    *at = *center;
+    upX = sindf(rotY) * sindf(rotX);
+    upY = cosdf(rotX);
+    upZ = cosdf(rotY) * sindf(rotX);
+    dx = at->x - pos->x;
+    dy = at->y - pos->y;
+    dz = at->z - pos->z;
+    length = dx * dx + dy * dy + dz * dz;
+    length = HuSqrtf(length);
+    dx /= length;
+    dy /= length;
+    dz /= length;
+    up->x = upX * (dx * dx + (1.0f - dx * dx) * cosdf(rotZ)) +
+            upY * (dx * dy * (1.0f - cosdf(rotZ)) - dz * sindf(rotZ)) +
+            upZ * (dx * dz * (1.0f - cosdf(rotZ)) + dy * sindf(rotZ));
+    up->y = upX * (dx * dy * (1.0f - cosdf(rotZ)) + dz * sindf(rotZ)) +
+            upY * (dy * dy + (1.0f - dy * dy) * cosdf(rotZ)) +
+            upZ * (dy * dz * (1.0f - cosdf(rotZ)) - dx * sindf(rotZ));
+    up->z = upX * (dx * dz * (1.0f - cosdf(rotZ)) - dy * sindf(rotZ)) +
+            upY * (dy * dz * (1.0f - cosdf(rotZ)) + dx * sindf(rotZ)) +
+            upZ * (dz * dz + (1.0f - dz * dz) * cosdf(rotZ));
+}
 
 void func_80117DD0_mgmode(void) {
     s16 prev = -1;

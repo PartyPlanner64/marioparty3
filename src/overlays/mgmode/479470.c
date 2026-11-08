@@ -39,6 +39,9 @@ extern s16 D_800CE29C_main;
 extern u8 D_80118EB1_mgmode;
 extern s16 D_80118EB4_mgmode;
 extern s16 D_8011B950_mgmode;
+extern s16 D_8011B79A_mgmode;
+extern s16 D_8011B800_mgmode;
+extern s32 D_801194CC_mgmode;
 extern s16 D_8011B95A_mgmode;
 
 void func_80115BB8_mgmode(s16 value);
@@ -78,6 +81,14 @@ void func_80115848_mgmode(void);
 void func_80114344_mgmode(void);
 void func_80115BE8_mgmode(void);
 void func_80115E20_mgmode(void);
+void func_80116E24_mgmode(s16 arg0);
+void func_801146D8_mgmode(void);
+void func_80114EBC_mgmode(void);
+void func_80114404_mgmode(void);
+void func_80114FA0_mgmode(void);
+void func_801152C0_mgmode(void);
+void func_80118CD8_mgmode(void);
+s32 func_80114048_mgmode(void);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80112200_mgmode);
 
@@ -230,7 +241,175 @@ void func_801134C0_mgmode(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_801136EC_mgmode);
+s32 func_801136EC_mgmode(void) {
+    s16 save = FALSE;
+    s16 choice;
+    s16 i;
+
+    D_800D1F2C_main++;
+    D_800D1F2C_main %= 8;
+    func_80116E24_mgmode(6);
+    func_801141EC_mgmode(0);
+    D_801194C4_mgmode = func_80116B20_mgmode();
+    espPriSet(D_801194C4_mgmode, 15);
+    espAttrSet(D_801194C4_mgmode, 0x5008);
+    espPosSet(D_801194C4_mgmode, 184, 132);
+    func_80116C18_mgmode(D_800A6D40_main[D_800CE29C_main].flags & 0x7FF);
+    func_80115E9C_mgmode(D_800CE29C_main + 0x4700, 184, 62);
+    func_80115C5C_mgmode(D_800D1FE0_main);
+    Hu3DModelPosSet(D_8011B8A8_mgmode[4], -208.0f, 63.75f, -332.0f);
+    HmfModelData[D_8011B8A8_mgmode[4]].rot.y = 15.0f;
+    func_8001C258_main(D_8011B8A8_mgmode[8], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelPosSet(D_8011B8A8_mgmode[8], 2.0f, 0.0f, -332.0f);
+    func_8001C258_main(D_8011B8A8_mgmode[17], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelPosSet(D_8011B8A8_mgmode[17], 2.0f, 63.75f, -332.0f);
+    WipeCreateIn(0xFF, 10);
+    func_8001C258_main(D_8011B8A8_mgmode[18], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    while (WipeStatGet() != 0) {
+        HuPrcVSleep();
+    }
+    HuPrcSleep(10);
+    func_80114EBC_mgmode();
+    HuWinMesSet(D_8011B6A8_mgmode, 0x580C, -1, -1);
+    HuWinExAnimIn(D_8011B6A8_mgmode);
+    func_80114404_mgmode();
+    while (!(D_800D5558_main[D_8011B808_mgmode] & (A_BUTTON | B_BUTTON))) {
+        HuPrcVSleep();
+    }
+    if (D_800D1FE0_main <= 0) {
+        HuWinMesSet(D_8011B6A8_mgmode, 0x5811, -1, -1);
+        while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+            HuPrcVSleep();
+        }
+        Hu3DMotionShiftSet(D_8011B8B8_mgmode[0], D_8011B79A_mgmode, 0, 4, 0);
+        func_8004AC5C_main(GwPlayer[0].chr + 0x26C, 0);
+        HuWinMesSet(D_8011B6A8_mgmode, 0x5812, -1, -1);
+        while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+            HuPrcVSleep();
+        }
+        choice = HuWinChoiceGet(D_8011B6A8_mgmode, 0, 0);
+        func_80114614_mgmode(8);
+        func_801146D8_mgmode();
+        Hu3DMotionShiftSet(D_8011B8B8_mgmode[0], D_8011B790_mgmode, 0, 8, 2);
+        if (choice == 0) {
+            func_80115E20_mgmode();
+            HuWinExAnimOut(D_8011B6A8_mgmode, 0);
+            return 1;
+        }
+    } else if (D_800D1FE0_main >= 1000) {
+        omAddPrcObj(func_801152C0_mgmode, 0x3F00, 0x800, 0);
+        HuWinMesSet(D_8011B6A8_mgmode, 0x580D, -1, -1);
+        while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+            HuPrcVSleep();
+        }
+        while (D_801194C8_mgmode == 0) {
+            HuPrcVSleep();
+        }
+        D_801194C8_mgmode = 0;
+        if (_CheckFlag(0x1F)) {
+            HuWinInsertMesSet(D_8011B6A8_mgmode, GwPlayer[D_8011B800_mgmode].chr + 0x1C00, 0);
+            HuWinMesSet(D_8011B6A8_mgmode, 0x5810, -1, -1);
+            while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+                HuPrcVSleep();
+            }
+        } else {
+            _SetFlag(0x1F);
+            HuWinMesSet(D_8011B6A8_mgmode, 0x580E, -1, -1);
+            while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+                HuPrcVSleep();
+            }
+            func_80114FA0_mgmode();
+            HuWinMesSet(D_8011B6A8_mgmode, 0x580F, -1, -1);
+            while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+                HuPrcVSleep();
+            }
+            HuWinInsertMesSet(D_8011B6A8_mgmode, GwPlayer[D_8011B800_mgmode].chr + 0x1C00, 0);
+            HuWinMesSet(D_8011B6A8_mgmode, 0x5810, -1, -1);
+            while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+                HuPrcVSleep();
+            }
+            func_80114614_mgmode(8);
+            save = TRUE;
+        }
+        func_801146D8_mgmode();
+        func_80115848_mgmode();
+        HuAudSeqFadeOut(60);
+        D_801194CC_mgmode = 1;
+        if (save) {
+            func_80118CD8_mgmode();
+        }
+        return 0;
+    } else {
+        if (D_800D5558_main[D_8011B808_mgmode] & B_BUTTON) {
+            HuAudFXPlay(4);
+            if (func_80114048_mgmode()) {
+                goto cancel;
+            }
+        }
+        Hu3DMotionShiftSet(D_8011B8B8_mgmode[0], D_8011B790_mgmode, 0, 10, 2);
+        HuWinMesSet(D_8011B6A8_mgmode, 0x5809, -1, -1);
+        while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+            HuPrcVSleep();
+        }
+        if (func_8005B68C_main(D_8011B6A8_mgmode) & 8) {
+            HuWinExAnimIn(D_8011B6A8_mgmode);
+        }
+        func_801146D8_mgmode();
+        D_800CE29C_main = func_801149F4_mgmode();
+        HuWinInsertMesSet(D_8011B6A8_mgmode, D_800CE29C_main + 0x4700, 0);
+        HuWinMesSet(D_8011B6A8_mgmode, 0x580A, -1, -1);
+        while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+            HuPrcVSleep();
+        }
+        if (func_8005B68C_main(D_8011B6A8_mgmode) & 8) {
+            HuWinExAnimIn(D_8011B6A8_mgmode);
+        }
+        if (winData[D_8011B6A8_mgmode].input & B_BUTTON) {
+            HuAudFXPlay(4);
+            if (func_80114048_mgmode()) {
+                goto cancel;
+            }
+        }
+        HuWinMesSet(D_8011B6A8_mgmode, 0x580B, -1, -1);
+        if (func_8005B68C_main(D_8011B6A8_mgmode) & 8) {
+            HuWinExAnimIn(D_8011B6A8_mgmode);
+        }
+        D_800CB894_main = -1;
+        do {
+            D_800CB894_main = func_80114C80_mgmode();
+            if (D_800CB894_main < 0) {
+                if (func_80114048_mgmode()) {
+                    goto cancel;
+                }
+                HuWinMesSet(D_8011B6A8_mgmode, 0x580B, -1, -1);
+                if (func_8005B68C_main(D_8011B6A8_mgmode) & 8) {
+                    HuWinExAnimIn(D_8011B6A8_mgmode);
+                }
+            }
+        } while (D_800CB894_main < 0);
+        D_800D1FE0_main -= D_800CB894_main;
+        GwPlayer[0].gameCoin = D_800CB894_main;
+        GwPlayer[0].group = 0;
+        for (i = 1; i < 4; i++) {
+            GwPlayer[i].group = 1;
+        }
+        _SetFlag(0xD);
+        GwSystem.minigame_index = (u8)D_800CE29C_main + 1;
+        omOvlHisChg(0, 0x69, 5, 0x84);
+        D_80118EB1_mgmode = 1;
+        D_8011B95A_mgmode = 0x70;
+        D_8011B950_mgmode = 0;
+        D_80118EB4_mgmode = 2;
+        while (TRUE) {
+            HuPrcVSleep();
+        }
+    cancel:
+        func_801146D8_mgmode();
+        Hu3DMotionShiftSet(D_8011B8B8_mgmode[0], D_8011B790_mgmode, 0, 8, 2);
+    }
+    func_80115848_mgmode();
+    return 0;
+}
 
 s32 func_80114048_mgmode(void) {
     s16 size[2];

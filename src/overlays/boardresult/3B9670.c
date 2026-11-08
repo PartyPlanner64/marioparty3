@@ -16,6 +16,7 @@ extern s32 D_8010E910_boardresult[6];
 extern u8 D_8010EAF0_boardresult;
 extern Object *D_8010EAF4_boardresult;
 extern Object *D_8010EB60_boardresult[4];
+extern s16 D_8010EB74_boardresult;
 extern s16 D_8010EB76_boardresult;
 extern s32 D_8010EB88_boardresult[4];
 extern s32 D_8010EB98_boardresult;
@@ -59,7 +60,20 @@ void func_80105B68_boardresult(omObjData *obj) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80105BD8_boardresult);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_8010685C_boardresult);
+s16 func_8010685C_boardresult(s16 model, s32 dataNum, char *name) {
+    void *data = DataRead(dataNum);
+    s32 anim;
+    s16 animIdx;
+
+    anim = HmfAnimCreate(HmfModelData[model].hmf, data, 0, name);
+    D_8010EB74_boardresult = anim;
+    func_80032FC0_main(anim, 1, 1);
+    DataClose(data);
+    animIdx = D_800D1714_main[(s16)anim].animIdx;
+    D_8010EB76_boardresult = HmfAnimLink(HmfModelData[model].hmf, anim, 0, name);
+    Hu3DModelRemakeStatic(model);
+    return animIdx;
+}
 
 void func_80106968_boardresult(s16 model, s16 animIdx) {
     HmfAnim *anim;

@@ -12,9 +12,7 @@ typedef struct BoardResultWork {
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
-    /* 0x0C */ s32 unk_0C;
-    /* 0x10 */ f32 unk_10;
-    /* 0x14 */ s32 unk_14;
+    /* 0x0C */ Vec unk_0C;
     /* 0x18 */ Vec pos;
     /* 0x24 */ char unk_24[0x28];
 } BoardResultWork; // sizeof 0x4C
@@ -25,15 +23,25 @@ void func_8010BDBC_boardresult(BoardResultWork *arg0, s32 arg1) {
     arg0->unk_00 = arg1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3BFA00", func_8010BDC4_boardresult);
+void func_8010BDC4_boardresult(BoardResultWork *arg0, f32 x, f32 y, f32 z) {
+    arg0->unk_0C.x = x;
+    arg0->unk_0C.y = y;
+    arg0->unk_0C.z = z;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3BFA00", func_8010BDD4_boardresult);
+void func_8010BDD4_boardresult(BoardResultWork *arg0, f32 x, f32 y, f32 z) {
+    arg0->pos.x = x;
+    arg0->pos.y = y;
+    arg0->pos.z = z;
+}
 
 void func_8010BDE4_boardresult(BoardResultWork *arg0, s16 arg1) {
     arg0->unk_0A = arg1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3BFA00", func_8010BDEC_boardresult);
+void func_8010BDEC_boardresult(BoardResultWork *arg0, s32 mask, s32 flags) {
+    arg0->unk_04 = flags | (arg0->unk_04 & ~mask);
+}
 
 s16 func_8010BE04_boardresult(BoardResultWork *arg0) {
     return arg0->unk_04;

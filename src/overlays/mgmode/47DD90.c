@@ -17,6 +17,10 @@ extern s16 D_8011B66A_mgmode;
 extern s16 D_8011B66E_mgmode;
 extern s16 D_8011A3F8_mgmode[];
 extern MgmodeSpaceCoord *D_8011B670_mgmode;
+extern s16 D_8011B678_mgmode[4][4];
+extern s16 D_8011B698_mgmode[4];
+
+void func_801189C4_mgmode(s16 model);
 
 s16 func_80116B20_mgmode(void) {
     s16 sprGrp;
@@ -289,7 +293,20 @@ void func_801188A4_mgmode(s16 index) {
     D_8011A3F8_mgmode[index] = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_801188BC_mgmode);
+void func_801188BC_mgmode(omObjData *obj) {
+    s16 index = obj->work[0];
+    s16 i;
+
+    if (D_8011A3F8_mgmode[index] != 0) {
+        for (i = 0; i < 4; i++) {
+            func_8001C258_main(D_8011B678_mgmode[index][i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            if (((D_8011B698_mgmode[index] + i) & 3) == 0) {
+                func_801189C4_mgmode(D_8011B678_mgmode[index][i]);
+            }
+        }
+        D_8011B698_mgmode[index]++;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_801189C4_mgmode);
 

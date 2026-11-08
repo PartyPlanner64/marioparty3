@@ -2,6 +2,7 @@
 #include "../ovl_81_name/ovl_81.h"
 
 void func_8010BA98_boardresult(void);
+void func_8010BAD8_boardresult(omObjData *);
 void func_8010BBF0_boardresult(omObjData *);
 void func_8010BC3C_boardresult(void);
 void func_8010BCA4_boardresult(void);
@@ -12,6 +13,7 @@ extern s32 *D_8010E88C_boardresult[];
 extern s32 *D_8010E8AC_boardresult[];
 extern s32 D_8010E910_boardresult[6];
 extern u8 D_8010EAF0_boardresult;
+extern Object *D_8010EAF4_boardresult;
 
 void func_801059A0_boardresult(void) {
     s32 i;
@@ -42,7 +44,13 @@ void func_801059A0_boardresult(void) {
     func_800EF3EC_name_81(4);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80105B68_boardresult);
+void func_80105B68_boardresult(omObjData *obj) {
+    D_8010EAF4_boardresult->velocity.x = sindf(obj->rot.x) * obj->rot.z;
+    obj->rot.x += obj->rot.y;
+    if (obj->rot.x >= 360.0f) {
+        obj->rot.x -= 360.0f;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80105BD8_boardresult);
 
@@ -50,7 +58,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_8010685C_boardr
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80106968_boardresult);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80106A38_boardresult);
+s16 func_80106A38_boardresult(s32 dataNum) {
+    void *data = DataRead(dataNum);
+    s16 anim = func_800329B4_main(data);
+
+    DataClose(data);
+    return anim;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80106A80_boardresult);
 
@@ -109,7 +123,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_8010BA98_boardr
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_8010BAD8_boardresult);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_8010BBF0_boardresult);
+void func_8010BBF0_boardresult(omObjData *obj) {
+    if (D_800D530C_main != 0) {
+        WipeCreateOut(2, 20);
+        func_80007EC0_main(40);
+        obj->func = func_8010BAD8_boardresult;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_8010BC3C_boardresult);
 

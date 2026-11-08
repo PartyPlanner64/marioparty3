@@ -17,6 +17,9 @@ extern s16 D_8011B8A8_mgmode[];
 extern s16 D_8011B6A8_mgmode;
 extern s16 D_8011B808_mgmode;
 extern s16 D_800D1FE0_main;
+extern s16 D_8011B794_mgmode;
+extern s16 D_8011B796_mgmode;
+extern s16 D_8011B8B8_mgmode;
 
 void func_80115BB8_mgmode(s16 value);
 void func_80115CAC_mgmode(s16 value);
@@ -33,6 +36,9 @@ void func_80116024_mgmode(void);
 void func_80116260_mgmode(void);
 void func_801160A0_mgmode(s16 arg0);
 void func_80116D4C_mgmode(void);
+void func_80114614_mgmode(s16 index);
+void func_80114804_mgmode(s16 arg0, s16 arg1, s16 arg2);
+void func_80115A9C_mgmode(s16 x, s16 y, s16 value);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80112200_mgmode);
 
@@ -121,7 +127,37 @@ void func_80114344_mgmode(void) {
     D_801194C0_mgmode = (MgmodeEsprite *)-1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80114404_mgmode);
+void func_80114404_mgmode(void) {
+    s16 rate = D_800CB894_main;
+    s16 coins = GwPlayer[0].bonusCoin;
+    s16 i;
+
+    func_801169A0_mgmode(D_801194C0_mgmode, 1);
+    func_80116968_mgmode(D_801194C0_mgmode, 1, 184, 46);
+    func_801169A0_mgmode(D_801194C0_mgmode, 2);
+    func_80116968_mgmode(D_801194C0_mgmode, 2, 184, 98);
+    func_80115A9C_mgmode(184, 122, D_800D1FE0_main);
+    func_80114804_mgmode(rate, 0, 0);
+    func_80115BB8_mgmode(D_800D1FE0_main);
+    func_80115CAC_mgmode(D_800D1FE0_main);
+    HuPrcSleep(10);
+    for (i = 0; i <= coins; i++) {
+        func_80114804_mgmode(rate, i, rate * i);
+        func_80115BB8_mgmode(D_800D1FE0_main + rate * i);
+        func_80115CAC_mgmode(D_800D1FE0_main + rate * i);
+        HuAudFXPlay(9);
+        HuPrcSleep(2);
+    }
+    D_800D1FE0_main += coins * rate;
+    if (coins == 0) {
+        Hu3DMotionShiftSet(D_8011B8B8_mgmode, D_8011B796_mgmode, 0, 8, 0);
+        func_8004AC5C_main(GwPlayer[0].chr + 0x287, 0);
+    } else {
+        Hu3DMotionShiftSet(D_8011B8B8_mgmode, D_8011B794_mgmode, 0, 8, 0);
+        func_8004AC5C_main(GwPlayer[0].chr + 0x275, 0);
+    }
+    func_80114614_mgmode(8);
+}
 
 void func_80114614_mgmode(s16 index) {
     while (Hu3DMotionShiftTimeGet(D_8011B8A8_mgmode[index]) != -1.0f ||

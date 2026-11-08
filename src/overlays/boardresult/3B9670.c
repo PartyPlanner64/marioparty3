@@ -15,6 +15,7 @@ extern omObjData *D_8010E8EC_boardresult[4];
 extern s32 D_8010E910_boardresult[6];
 extern u8 D_8010EAF0_boardresult;
 extern Object *D_8010EAF4_boardresult;
+extern s16 D_8010EB76_boardresult;
 extern s32 D_8010EB88_boardresult[4];
 extern s32 D_8010EB98_boardresult;
 
@@ -59,7 +60,23 @@ INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80105BD8_boardr
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_8010685C_boardresult);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80106968_boardresult);
+void func_80106968_boardresult(s16 model, s16 animIdx) {
+    HmfAnim *anim;
+
+    if (D_8010EB76_boardresult != 0xFF) {
+        if (animIdx == -1) {
+            func_80033910_main(HmfModelData[model].hmf);
+        } else {
+            func_80033970_main(HmfModelData[model].hmf);
+            anim = &D_800D1714_main[D_8010EB76_boardresult];
+            anim->animIdx = animIdx;
+            anim->rot = 0;
+            anim->flags = 0;
+            anim->interp = 0;
+            anim->frame = 0;
+        }
+    }
+}
 
 s16 func_80106A38_boardresult(s32 dataNum) {
     void *data = DataRead(dataNum);
@@ -99,7 +116,19 @@ void func_80107AB4_boardresult(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80107B50_boardresult);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80107EE8_boardresult);
+void func_80107EE8_boardresult(void) {
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        if (D_8010E8EC_boardresult[i] != NULL) {
+            omDelObj(D_8010E8EC_boardresult[i]);
+            D_8010E8EC_boardresult[i] = NULL;
+        }
+        HuSprGrpKill(D_8010EB88_boardresult[i]);
+    }
+    HuSprAnimKill(D_8010EB98_boardresult);
+    HuPrcVSleep();
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80107F84_boardresult);
 

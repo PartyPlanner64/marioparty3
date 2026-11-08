@@ -308,9 +308,57 @@ void func_801188BC_mgmode(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_801189C4_mgmode);
+void func_801189C4_mgmode(s16 model) {
+    HmfData *hmf = HmfModelData[model].hmf;
+    HmfModelData_UnkBC_Struct *bc = HmfModelData[model].unkBC;
+    HmfModelData_UnkBC_Unk58_Struct *particle = bc->unk58;
+    s16 spread = bc->unk08.f;
+    s16 count = hmf->unk1A;
+    s16 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_80118B8C_mgmode);
+    for (i = 0; i < count; i++, particle++) {
+        if (particle->unk10 <= 0.0f) {
+            particle->unk0C = (((rand8() << 1) * spread) >> 8) + bc->unk1C.f - spread;
+            particle->unk10 = bc->unk20.f;
+            particle->unk14 = (((rand8() << 1) * spread) >> 8) + bc->unk24.f - spread;
+            particle->unk18 = ((s32)((rand8() * 5U) >> 7) - 5) / 2;
+            particle->unk1C = 0.0f;
+            particle->unk20 = ((s32)((rand8() * 5U) >> 7) - 5) / 2;
+            particle->unk08 = 2.0f;
+            break;
+        }
+    }
+}
+
+void func_80118B8C_mgmode(s16 model) {
+    HmfData *hmf = HmfModelData[model].hmf;
+    HmfModelData_UnkBC_Struct *bc = HmfModelData[model].unkBC;
+    HmfModelData_UnkBC_Unk58_Struct *particle;
+    s16 count = hmf->unk1A;
+    s16 i;
+
+    if (bc->unk02 == 0) {
+        bc->unk04 &= ~4;
+        particle = bc->unk58;
+        for (i = 0; i < count; i++, particle++) {
+            particle->unk0C = particle->unk10 = particle->unk14 = 0.0f;
+            particle->unk24 = particle->unk28 = particle->unk2C = 0.0f;
+            particle->unk08 = 0.0f;
+            particle->unk04 = 1.0f;
+        }
+        bc->unk02++;
+    }
+    particle = bc->unk58;
+    for (i = 0; i < count; i++, particle++) {
+        if (particle->unk10 > 0.0f) {
+            particle->unk0C += particle->unk18;
+            particle->unk10 += particle->unk1C - 8.0f;
+            particle->unk14 += particle->unk20;
+        } else {
+            particle->unk08 = 0.0f;
+        }
+    }
+}
 
 void func_80118CD8_mgmode(void) {
     _ClearFlag(0x1C);

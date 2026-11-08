@@ -7,7 +7,12 @@ extern s32 D_8010FB08_chancetime;
 extern Vec D_8010FB48_chancetime;
 extern Vec D_8010FB54_chancetime;
 extern s32 D_8010FB60_chancetime;
+extern s32 D_8010FB68_chancetime;
+extern f32 D_8010FB78_chancetime;
+extern f32 D_8010FB7C_chancetime;
 extern char D_8010FC8C_chancetime[];
+extern s16 D_8010FE8A_chancetime;
+extern s16 D_8010FE8E_chancetime;
 extern ChanceTimeObjState D_801100B0_chancetime;
 extern ChanceTimeObjState D_801100B8_chancetime;
 extern ChanceTimeObjState D_801100D4_chancetime;
@@ -17,7 +22,9 @@ void func_80107D60_chancetime(omObjData *object);
 void func_80108738_chancetime(omObjData *object);
 void func_80107E40_chancetime(omObjData *object);
 void func_80107F58_chancetime(omObjData *object);
+void func_801080EC_chancetime(omObjData *object);
 void func_80108414_chancetime(omObjData *object);
+void func_80108C08_chancetime(s16 model, s16 slot, s16 animIdx);
 s32 func_8010B6F4_chancetime(s16 arg0);
 void func_8010B818_chancetime(omObjData *object, Vec *pos, s32 arg2);
 void func_8010B834_chancetime(omObjData *object, Vec *pos, s32 arg2, s32 arg3);
@@ -80,15 +87,63 @@ void func_80107E40_chancetime(omObjData *object) {
     D_801100D4_chancetime.func = func_80107F58_chancetime;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80107F58_chancetime);
+void func_80107F58_chancetime(omObjData *object) {
+    f32 time = Hu3DMotionShiftTimeGet(object->model[1]);
+
+    if (D_8010FB68_chancetime == 0) {
+        if (time >= 20.0f) {
+            func_8001C258_main(object->model[5], 0x4000, 0);
+            func_8001C258_main(object->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            func_8001C258_main(object->model[6], 0x4000, 0);
+            func_8001C258_main(object->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            func_80108738_chancetime(object);
+            D_8010FB68_chancetime = 1;
+        }
+    }
+    if (time < 0.0f) {
+        Hu3DMotionShiftSet(object->model[1], HmfModelData[object->motion[0]].motId, 0, 30, 2);
+        Hu3DMotionShiftSet(object->model[3], HmfModelData[object->motion[1]].motId, 0, 30, 2);
+        D_8010FB68_chancetime = 0;
+        func_80108C08_chancetime(object->model[1], D_8010FE8E_chancetime, D_8010FE8A_chancetime);
+        D_801100D4_chancetime.func = func_801080EC_chancetime;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_801080EC_chancetime);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010827C_chancetime);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80108414_chancetime);
+void func_80108414_chancetime(omObjData *object) {
+    Hu3DModelPosSet(object->model[1], -200.0f, sindf(D_8010FB78_chancetime * 18.0f) * 50.0f, -50.0f);
+    Hu3DModelPosSet(object->model[3], 200.0f, sindf(D_8010FB78_chancetime * 18.0f) * 50.0f, -50.0f);
+    D_8010FB78_chancetime += 1.0f;
+    if (D_8010FB78_chancetime >= 10.0f) {
+        D_8010FB78_chancetime = 0.0f;
+        Hu3DModelPosSet(object->model[1], -200.0f, 0.0f, -50.0f);
+        Hu3DModelPosSet(object->model[3], 200.0f, 0.0f, -50.0f);
+        Hu3DModelPosSet(object->model[2], -200.0f, 0.0f, -50.0f);
+        Hu3DModelPosSet(object->model[4], 200.0f, 0.0f, -50.0f);
+        D_8010FB00_chancetime = 0;
+        D_8010FB04_chancetime = 1;
+        D_801100D4_chancetime.func = func_80107A80_chancetime;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80108578_chancetime);
+void func_80108578_chancetime(omObjData *object) {
+    Hu3DModelPosSet(object->model[1], -200.0f, sindf(D_8010FB7C_chancetime * 36.0f) * 20.0f, -50.0f);
+    Hu3DModelPosSet(object->model[3], 200.0f, sindf(D_8010FB7C_chancetime * 36.0f) * 20.0f, -50.0f);
+    D_8010FB7C_chancetime += 1.0f;
+    if (D_8010FB7C_chancetime >= 5.0f) {
+        D_8010FB7C_chancetime = 0.0f;
+        Hu3DModelPosSet(object->model[1], -200.0f, 0.0f, -50.0f);
+        Hu3DModelPosSet(object->model[3], 200.0f, 0.0f, -50.0f);
+        Hu3DModelPosSet(object->model[2], -200.0f, 0.0f, -50.0f);
+        Hu3DModelPosSet(object->model[4], 200.0f, 0.0f, -50.0f);
+        D_8010FB00_chancetime = 0;
+        D_8010FB04_chancetime = 1;
+        D_801100D4_chancetime.func = func_80107A80_chancetime;
+    }
+}
 
 void func_801086DC_chancetime(void) {
     D_801100D4_chancetime.func = func_80107A98_chancetime;

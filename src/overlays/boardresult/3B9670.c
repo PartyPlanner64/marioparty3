@@ -212,7 +212,73 @@ void func_80107598_boardresult(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_801076A0_boardresult);
+void func_801076A0_boardresult(void) {
+    void *data;
+    s32 i;
+    s32 j;
+    s32 count;
+    s32 coin;
+    s32 digits[3];
+    Vec pos3d;
+    Vec2f pos2d;
+
+    data = DataRead(0x1301C5);
+    D_8010EB98_boardresult = HuSprAnimRead(data);
+    DataClose(data);
+
+    for (i = 0; i < 4; i++) {
+        D_8010EB88_boardresult[i] = HuSprGrpCreate(3, 5);
+        coin = GwPlayer[i].coin;
+        if (coin >= 100) {
+            count = 3;
+            digits[0] = coin / 100;
+            coin %= 100;
+            digits[1] = coin / 10;
+            coin %= 10;
+            digits[2] = coin;
+        } else if (coin >= 10) {
+            count = 2;
+            coin %= 100;
+            digits[0] = coin / 10;
+            coin %= 10;
+            digits[1] = coin;
+        } else {
+            count = 1;
+            digits[0] = coin;
+        }
+
+        for (j = 0; j < count; j++) {
+            HuSprGrpMemberSet(D_8010EB88_boardresult[i], j, D_8010EB98_boardresult, 0);
+            func_800550F4_main(D_8010EB88_boardresult[i], j, 1);
+            HuSprBankSet(D_8010EB88_boardresult[i], j, digits[j], 0);
+            HuSprPriSet(D_8010EB88_boardresult[i], j, 0x4790);
+            HuSprAttrSet(D_8010EB88_boardresult[i], j, 0x1000);
+            HuSprColorSet(D_8010EB88_boardresult[i], j, 0xFF, 0xFF, 0);
+            if (j == 0) {
+                pos3d.x = GwPlayer[i].player_obj->coords.x;
+                pos3d.y = GwPlayer[i].player_obj->coords.y + 280.0f;
+                pos3d.z = GwPlayer[i].player_obj->coords.z;
+                MBDCamera3Dto2D(&pos3d, &pos2d);
+                HuSprPosSet(D_8010EB88_boardresult[i], 0, pos2d.x - (count - 1) * 7, pos2d.y);
+            } else {
+                HuSprPosSet(D_8010EB88_boardresult[i], j, j * 14, 0);
+            }
+        }
+
+        coin = GwPlayer[i].coin;
+        for (j = 0; j < 4; j++) {
+            if (j != i && coin < GwPlayer[j].coin) {
+                coin = GwPlayer[j].coin;
+            }
+        }
+        if (coin == GwPlayer[i].coin) {
+            D_8010E8EC_boardresult[i] = omAddObj(0x1000, 0, 0, -1, func_80107598_boardresult);
+            D_8010E8EC_boardresult[i]->work[0] = i;
+            D_8010E8EC_boardresult[i]->work[1] = count;
+            D_8010E8EC_boardresult[i]->rot.x = 0.0f;
+        }
+    }
+}
 
 void func_80107AB4_boardresult(void) {
     s32 i;

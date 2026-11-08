@@ -1,11 +1,16 @@
 #include "common.h"
 #include "../ovl_81_name/ovl_81.h"
 
+typedef struct BoardResultWork BoardResultWork;
+
 void func_8010BA98_boardresult(void);
 void func_8010BAD8_boardresult(omObjData *);
 void func_8010BBF0_boardresult(omObjData *);
 void func_8010BC3C_boardresult(void);
 void func_8010BCA4_boardresult(void);
+void func_8010BDC4_boardresult(BoardResultWork *, f32, f32, f32);
+void func_8010BDD4_boardresult(BoardResultWork *, f32, f32, f32);
+void func_8010BDE4_boardresult(BoardResultWork *, s16);
 extern s32 D_8010E72C_boardresult[];
 extern u32 D_8010E738_boardresult[];
 extern s32 D_8010E73C_boardresult[];
@@ -16,6 +21,7 @@ extern s32 D_8010E910_boardresult[6];
 extern u8 D_8010EAF0_boardresult;
 extern Object *D_8010EAF4_boardresult;
 extern Object *D_8010EB60_boardresult[4];
+extern Object *D_8010EB70_boardresult;
 extern s16 D_8010EB74_boardresult;
 extern s16 D_8010EB76_boardresult;
 extern s32 D_8010EB88_boardresult[4];
@@ -125,7 +131,17 @@ void func_80106CA8_boardresult(omObjData *obj) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80106DA4_boardresult);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80106F54_boardresult);
+void func_80106F54_boardresult(omObjData *obj) {
+    Object *target = D_8010EB70_boardresult;
+
+    obj->work[0]++;
+    target->coords.x += sindf(obj->work[0] * 180.0f / obj->work[2]) * 700.0f;
+    target->coords.y += sindf(obj->work[0] * 180.0f / obj->work[2]) * 0.0f;
+    target->coords.z += sindf(obj->work[0] * 180.0f / obj->work[2]) * 0.0f;
+    if (obj->work[0] == obj->work[2]) {
+        omDelObj(obj);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_801070F8_boardresult);
 
@@ -193,7 +209,18 @@ s32 func_80109320_boardresult(void) {
     return i == 6;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_8010935C_boardresult);
+void func_8010935C_boardresult(BoardResultWork *work, s32 index) {
+    s32 x, y, z;
+
+    x = func_800EFE20_name_81(256.0f) - 128;
+    y = -func_800EFE20_name_81(256.0f) - 500;
+    func_8010BDD4_boardresult(work, x, y, 0.0f);
+    x = func_800EFE20_name_81(100.0f) + index * 500 - 550;
+    y = func_800EFE20_name_81(64.0f) + 218;
+    z = func_800EFE20_name_81(500.0f) - 500;
+    func_8010BDC4_boardresult(work, x, y, z);
+    func_8010BDE4_boardresult(work, func_800EFE20_name_81(60.0f) + 30);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_801094A8_boardresult);
 

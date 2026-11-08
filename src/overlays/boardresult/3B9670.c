@@ -228,7 +228,66 @@ void func_80107AB4_boardresult(void) {
     HuPrcVSleep();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80107B50_boardresult);
+void func_80107B50_boardresult(void) {
+    void *data;
+    s32 i;
+    s32 j;
+    s32 count;
+    s32 star;
+    s32 digits[2];
+    Vec pos3d;
+    Vec2f pos2d;
+
+    data = DataRead(0x1301C5);
+    D_8010EB98_boardresult = HuSprAnimRead(data);
+    DataClose(data);
+
+    for (i = 0; i < 4; i++) {
+        D_8010EB88_boardresult[i] = HuSprGrpCreate(2, 5);
+        star = GwPlayer[i].star;
+        count = 1;
+        if (star >= 10) {
+            count = 2;
+            star %= 100;
+            digits[0] = star / 10;
+            star %= 10;
+            digits[1] = star;
+        } else {
+            digits[0] = star;
+        }
+
+        for (j = 0; j < count; j++) {
+            HuSprGrpMemberSet(D_8010EB88_boardresult[i], j, D_8010EB98_boardresult, 0);
+            func_800550F4_main(D_8010EB88_boardresult[i], j, 1);
+            HuSprBankSet(D_8010EB88_boardresult[i], j, digits[j], 0);
+            HuSprPriSet(D_8010EB88_boardresult[i], j, 0x4790);
+            HuSprAttrSet(D_8010EB88_boardresult[i], j, 0x1000);
+            HuSprColorSet(D_8010EB88_boardresult[i], j, 0xFF, 0xFF, 0);
+            if (j == 0) {
+                pos3d.x = GwPlayer[i].player_obj->coords.x;
+                pos3d.y = GwPlayer[i].player_obj->coords.y + 280.0f;
+                pos3d.z = GwPlayer[i].player_obj->coords.z;
+                MBDCamera3Dto2D(&pos3d, &pos2d);
+                HuSprPosSet(D_8010EB88_boardresult[i], 0, pos2d.x - (count - 1) * 7, pos2d.y);
+            } else {
+                HuSprPosSet(D_8010EB88_boardresult[i], j, j * 14, 0);
+            }
+        }
+
+        star = GwPlayer[i].star;
+        for (j = 0; j < 4; j++) {
+            if (j != i && star < GwPlayer[j].star) {
+                star = GwPlayer[j].star;
+            }
+        }
+        if (star == GwPlayer[i].star) {
+            D_8010E8EC_boardresult[i] = omAddObj(0x1000, 0, 0, -1, func_80107598_boardresult);
+            D_8010E8EC_boardresult[i]->work[0] = i;
+            D_8010E8EC_boardresult[i]->work[1] = count;
+            D_8010E8EC_boardresult[i]->rot.x = 0.0f;
+        }
+    }
+}
 
 void func_80107EE8_boardresult(void) {
     s32 i;

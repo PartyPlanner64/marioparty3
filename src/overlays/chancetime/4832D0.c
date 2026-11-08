@@ -17,7 +17,7 @@ void func_8010BC10_chancetime(omObjData *object, f32 x, f32 y, f32 z, s32 arg4);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80107300_chancetime);
 
-void func_80107A80_chancetime(void) {
+void func_80107A80_chancetime(omObjData *object) {
 }
 
 void func_80107A88_chancetime(void) {
@@ -74,7 +74,18 @@ INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80108738_chancet
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80108A88_chancetime);
 
+#ifdef NON_MATCHING
+// D_801100D4/D_801100D8 accessed via a shared base register in the target.
+void func_80108B50_chancetime(void) {
+    omObjData *object = D_801100D4_chancetime;
+
+    D_801100D8_chancetime = func_80107A80_chancetime;
+    Hu3DMotionShiftSet(object->model[1], HmfModelData[object->motion[4]].motId, 0, 30, 2);
+    Hu3DMotionShiftSet(object->model[3], HmfModelData[object->motion[4]].motId, 0, 30, 2);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80108B50_chancetime);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80108C08_chancetime);
 
@@ -106,7 +117,15 @@ INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010B030_chancet
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010B124_chancetime);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010B6F4_chancetime);
+s32 func_8010B6F4_chancetime(s16 model) {
+    f32 time = Hu3DMotionShiftTimeGet(model);
+    s32 ret = 0;
+
+    if (time == -1.0f && D_800CCF58_main[HmfModelData[model].motId].unk02 <= HmfModelData[model].motTime) {
+        ret = -1;
+    }
+    return ret;
+}
 
 void func_8010B7A0_chancetime(s16 arg0) {
     HuPrcSleep(15);
@@ -149,7 +168,20 @@ f32 func_8010BC3C_chancetime(Vec *from, Vec *to) {
     return -(atan2df(diff.z, diff.x) - 90.0f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010BC88_chancetime);
+void func_8010BC88_chancetime(omObjData *object, f32 x, f32 y, f32 z, s32 arg4) {
+    Vec from;
+    Vec to;
+    s16 modelId = object->model[1];
+
+    from.x = HmfModelData[modelId].pos.x;
+    from.y = HmfModelData[modelId].pos.y;
+    from.z = HmfModelData[modelId].pos.z;
+    to.x = x;
+    to.y = y;
+    to.z = z;
+    func_8010BC10_chancetime(object, 0.0f, func_8010BC3C_chancetime(&from, &to), 0.0f, 10);
+    func_8010B818_chancetime(object, &to, arg4);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010BD40_chancetime);
 

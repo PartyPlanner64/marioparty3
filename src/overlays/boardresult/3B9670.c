@@ -27,19 +27,20 @@ extern s32 D_8010E73C_boardresult[];
 extern s32 *D_8010E88C_boardresult[];
 extern s32 *D_8010E8AC_boardresult[];
 extern omObjData *D_8010E8EC_boardresult[4];
+extern s32 D_8010E908_boardresult;
+extern f32 D_8010E90C_boardresult;
 extern s32 D_8010E910_boardresult[6];
 extern s32 D_8010E928_boardresult[];
 extern u8 D_8010EAF0_boardresult;
 extern Object *D_8010EAF4_boardresult;
-extern Object *D_8010EB48_boardresult;
-extern Object *D_8010EB4C_boardresult;
-extern Object *D_8010EB50_boardresult;
+extern Object *D_8010EB48_boardresult[6];
 extern Object *D_8010EB60_boardresult[4];
 extern Object *D_8010EB70_boardresult;
 extern s16 D_8010EB74_boardresult;
 extern s16 D_8010EB76_boardresult;
 extern s32 D_8010EB88_boardresult[4];
 extern s32 D_8010EB98_boardresult;
+extern f32 D_8010EBB8_boardresult[6];
 extern s16 kakusiMasuItemHis[10];
 
 void func_801059A0_boardresult(void) {
@@ -123,9 +124,9 @@ s16 func_80106A38_boardresult(s32 dataNum) {
 }
 
 void func_80106A80_boardresult(omObjData *obj) {
-    func_8001E888_main(D_8010EB48_boardresult->omObj1->model[0], obj->trans.x, 0, 0x40, 0x2B, "kumo-endkumo", 0);
-    func_8001E888_main(D_8010EB4C_boardresult->omObj1->model[0], obj->trans.y, 0, 0x40, 0x2B, "kumo-endkumo", 0);
-    func_8001E888_main(D_8010EB50_boardresult->omObj1->model[0], obj->trans.z, 0, 0x40, 0x2B, "kumo-endkumo", 0);
+    func_8001E888_main(D_8010EB48_boardresult[0]->omObj1->model[0], obj->trans.x, 0, 0x40, 0x2B, "kumo-endkumo", 0);
+    func_8001E888_main(D_8010EB48_boardresult[1]->omObj1->model[0], obj->trans.y, 0, 0x40, 0x2B, "kumo-endkumo", 0);
+    func_8001E888_main(D_8010EB48_boardresult[2]->omObj1->model[0], obj->trans.z, 0, 0x40, 0x2B, "kumo-endkumo", 0);
 
     obj->trans.x -= 4.0f;
     obj->trans.y -= 2.0f;
@@ -373,7 +374,28 @@ INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80107F84_boardr
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80108378_boardresult);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80109128_boardresult);
+void func_80109128_boardresult(void) {
+    s32 i;
+
+    while (1) {
+        for (i = 0; i < 6; i++) {
+            HuVecCopyXYZ(&D_8010EB48_boardresult[i]->coords, D_8010EB48_boardresult[i]->coords.x,
+                         D_8010EB48_boardresult[i]->coords.y - (D_8010E90C_boardresult + D_8010EBB8_boardresult[i]),
+                         D_8010EB48_boardresult[i]->coords.z);
+            if (D_8010EB48_boardresult[i]->coords.y <= -1000.0f) {
+                HuVecCopyXYZ(&D_8010EB48_boardresult[i]->coords, (func_800EFE20_name_81(300.0f) - 150) * 5.0f,
+                             (func_800EFE20_name_81(200.0f) + 250) * 5.0f, (300 - i * 50) * 5.0f);
+                D_8010EBB8_boardresult[i] =
+                    func_800EFE20_name_81(D_8010E90C_boardresult / 2.0f) - D_8010E90C_boardresult / 4.0f;
+                if (D_8010E908_boardresult) {
+                    func_800D8F0C_name_81(D_8010EB48_boardresult[i]);
+                    D_8010E910_boardresult[i] = 1;
+                }
+            }
+        }
+        HuPrcVSleep();
+    }
+}
 
 s32 func_80109320_boardresult(void) {
     s32 i;

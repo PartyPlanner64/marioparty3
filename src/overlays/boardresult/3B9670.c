@@ -9,10 +9,13 @@ void func_8010BA98_boardresult(void);
 void func_8010BAD8_boardresult(omObjData *);
 void func_8010BBF0_boardresult(omObjData *);
 void func_8010BC3C_boardresult(void);
+void func_8010BC70_boardresult(void);
 void func_8010BCA4_boardresult(void);
+void func_8010BD04_boardresult(void);
 void func_8010BDC4_boardresult(BoardResultWork *, f32, f32, f32);
 void func_8010BDD4_boardresult(BoardResultWork *, f32, f32, f32);
 void func_8010BDE4_boardresult(BoardResultWork *, s16);
+extern s32 D_8010E3E0_boardresult;
 extern s32 D_8010E72C_boardresult[];
 extern u32 D_8010E738_boardresult[];
 extern s32 D_8010E73C_boardresult[];
@@ -28,6 +31,7 @@ extern s16 D_8010EB74_boardresult;
 extern s16 D_8010EB76_boardresult;
 extern s32 D_8010EB88_boardresult[4];
 extern s32 D_8010EB98_boardresult;
+extern s16 kakusiMasuItemHis[10];
 
 void func_801059A0_boardresult(void) {
     s32 i;
@@ -257,7 +261,32 @@ void func_8010BA98_boardresult(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_8010BAD8_boardresult);
+void func_8010BAD8_boardresult(omObjData *obj) {
+    if (WipeStatGet() == 0) {
+        func_8010BD04_boardresult();
+        func_8010BC70_boardresult();
+        if (D_8010E3E0_boardresult == 0) {
+            HuWinAllKill();
+        }
+        if (!(GwSystem.playMode & 4)) {
+            GWPlayNumInc(-1);
+            GWCharPlayNumInc(-1, GwPlayer[kakusiMasuItemHis[0]].chr);
+        }
+        if (GwSystem.playMode & 4) {
+            if (_CheckFlag(0)) {
+                _ClearFlag(0);
+                _ClearFlag(0x28);
+            }
+        } else if (_CheckFlag(0)) {
+            _ClearFlag(0);
+            _ClearFlag(0x16);
+            SLSaveBoard(1);
+        } else {
+            SLCommonSet(1);
+        }
+        omOvlGotoEx(0x55, 0, 0x4190);
+    }
+}
 
 void func_8010BBF0_boardresult(omObjData *obj) {
     if (D_800D530C_main != 0) {

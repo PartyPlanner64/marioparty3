@@ -21,8 +21,11 @@ extern s16 D_80109A4C_boardresult2;
 extern s16 D_80109A4E_boardresult2;
 extern s32 D_801097B0_boardresult2;
 extern s32 D_801097B4_boardresult2;
+extern s16 kakusiMasuItemHis[10];
 
 void func_80105B98_boardresult2(s16 model, s16 animIdx);
+void func_801074B4_boardresult2(void);
+s32 func_80106B94_boardresult2(s32);
 void func_80108E1C_boardresult2(void);
 void func_801096AC_boardresult2(omObjData *);
 void func_801096F0_boardresult2(omObjData *);
@@ -145,11 +148,119 @@ void func_80106A9C_boardresult2(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_80106B94_boardresult2);
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/boardresult2/3CFC80", D_80109864_boardresult2);
+void func_801074B4_boardresult2(void) {
+    u8 buf[8];
+    s32 offsets[] = { 0, -30, -25, -20, -15 };
+    GW_PLAYER *player;
+    s32 mask;
+    s32 value;
+    s32 digits;
+    s32 row;
+    s32 i;
+    s32 j;
+    s32 k;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_801074B4_boardresult2);
+    for (i = 0; i < 13; i++) {
+        HuSprDispOff(D_801099EC_boardresult2->unk_0A, i);
+    }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/boardresult2/3CFC80", D_80109880_boardresult2);
+    for (i = D_801097B0_boardresult2, row = 0; i < D_801097B0_boardresult2 + 4; i++, row++) {
+        HuSprDispOn(D_801099EC_boardresult2->unk_0A, i);
+        HuSprPosSet(D_801099EC_boardresult2->unk_0A, i, row * 44 + 145, 52);
+    }
+
+    for (i = 0; i < 64; i++) {
+        HuSprDispOff(D_801099F0_boardresult2->unk_0A, i);
+    }
+
+    for (i = D_801097B0_boardresult2, row = 0; i < D_801097B0_boardresult2 + 4; i++, row++) {
+        for (j = 0; j < 4; j++) {
+            player = MBDGetPlayerStruct(kakusiMasuItemHis[j]);
+            digits = 1;
+            mask = func_80106B94_boardresult2(i);
+            value = 1;
+            switch (i) {
+                case 0:
+                    value = player->star;
+                    digits = 2;
+                    break;
+                case 1:
+                    value = player->coin;
+                    digits = 3;
+                    break;
+                case 2:
+                    value = player->gamePrize;
+                    if (value >= 1000) {
+                        value = 999;
+                    }
+                    digits = 3;
+                    break;
+                case 3:
+                    value = player->coinPrize;
+                    digits = 3;
+                    break;
+                case 4:
+                    value = player->stats.prize.bluePrize;
+                    digits = 2;
+                    break;
+                case 5:
+                    value = player->stats.prize.redPrize;
+                    digits = 2;
+                    break;
+                case 6:
+                    value = player->stats.prize.hatenaPrize;
+                    digits = 2;
+                    break;
+                case 7:
+                    value = player->stats.prize.eventPrize;
+                    digits = 2;
+                    break;
+                case 8:
+                    value = player->stats.prize.kupaPrize;
+                    digits = 2;
+                    break;
+                case 9:
+                    value = player->stats.prize.battlePrize;
+                    digits = 2;
+                    break;
+                case 10:
+                    value = player->stats.prize.itemPrize;
+                    digits = 2;
+                    break;
+                case 11:
+                    value = player->stats.prize.bankPrize;
+                    digits = 2;
+                    break;
+                case 12:
+                    value = player->stats.prize.gamblePrize;
+                    digits = 2;
+                    break;
+            }
+            sprintf((char *)buf, "%4d", value);
+
+            for (k = 0; k < 4; k++) {
+                if (buf[k] == ' ') {
+                    HuSprDispOff(D_801099F0_boardresult2->unk_0A, row * 16 + j * 4 + k);
+                    continue;
+                }
+                if (mask & (1 << j)) {
+                    HuSprGrpMemberSet(D_801099F0_boardresult2->unk_0A, row * 16 + j * 4 + k,
+                                      D_801099F0_boardresult2->unk_0C[1], 0);
+                } else {
+                    HuSprGrpMemberSet(D_801099F0_boardresult2->unk_0A, row * 16 + j * 4 + k,
+                                      D_801099F0_boardresult2->unk_0C[0], 0);
+                }
+                HuSprDispOn(D_801099F0_boardresult2->unk_0A, row * 16 + j * 4 + k);
+                HuSprPosSet(D_801099F0_boardresult2->unk_0A, row * 16 + j * 4 + k,
+                            row * 44 + (s16)(k * 10 + 145) + offsets[digits], j * 22 + 73);
+                HuSprBankSet(D_801099F0_boardresult2->unk_0A, row * 16 + j * 4 + k, buf[k] - '0', 0);
+                func_800550F4_main(D_801099F0_boardresult2->unk_0A, row * 16 + j * 4 + k, 1);
+            }
+        }
+    }
+
+    HuSprPosSet(D_801099F4_boardresult2->unk_0A, 0, D_801097B4_boardresult2 * 44 + 146, 96);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/boardresult2/3CFC80", D_801098B4_boardresult2);
 
@@ -183,9 +294,69 @@ void func_80108548_boardresult2(void) {
     func_800E4E64_name_81(D_801099C8_boardresult2);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_801085F8_boardresult2);
+void func_801085F8_boardresult2(void) {
+    s32 i;
+    s32 j;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_8010879C_boardresult2);
+    HuSprDispOff(D_801099CC_boardresult2->unk_0A, 0);
+    HuSprDispOff(D_801099D0_boardresult2->unk_0A, 0);
+    HuSprDispOff(D_801099D0_boardresult2->unk_0A, 1);
+    HuSprDispOff(D_801099D4_boardresult2->unk_0A, 0);
+
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 10; j++) {
+            HuSprDispOff(D_801099D8_boardresult2[i]->unk_0A, j);
+        }
+    }
+
+    for (j = 0; j < 2; j++) {
+        HuSprDispOff(D_801099E8_boardresult2->unk_0A, j);
+    }
+
+    for (j = 0; j < 13; j++) {
+        HuSprDispOff(D_801099EC_boardresult2->unk_0A, j);
+    }
+
+    for (j = 0; j < 64; j++) {
+        HuSprDispOff(D_801099F0_boardresult2->unk_0A, j);
+    }
+
+    HuSprDispOff(D_801099F4_boardresult2->unk_0A, 0);
+    func_800D8F0C_name_81(D_801099C8_boardresult2->obj);
+    HuWinDispOff(D_801099C8_boardresult2->win_id);
+}
+
+void func_8010879C_boardresult2(void) {
+    s32 i;
+    s32 j;
+
+    HuSprDispOn(D_801099CC_boardresult2->unk_0A, 0);
+    HuSprDispOn(D_801099D0_boardresult2->unk_0A, 0);
+    HuSprDispOn(D_801099D0_boardresult2->unk_0A, 1);
+    HuSprDispOn(D_801099D4_boardresult2->unk_0A, 0);
+
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 10; j++) {
+            HuSprDispOn(D_801099D8_boardresult2[i]->unk_0A, j);
+        }
+    }
+
+    for (j = 0; j < 2; j++) {
+        HuSprDispOn(D_801099E8_boardresult2->unk_0A, j);
+    }
+
+    func_801074B4_boardresult2();
+    HuSprDispOn(D_801099F4_boardresult2->unk_0A, 0);
+    func_800D8E88_name_81(D_801099C8_boardresult2->obj);
+    HuWinDispOn(D_801099C8_boardresult2->win_id);
+
+    if (D_801097B0_boardresult2 == 0 && D_801097B4_boardresult2 == 0) {
+        HuSprDispOff(D_801099E8_boardresult2->unk_0A, 0);
+    }
+    if (D_801097B0_boardresult2 == 9 && D_801097B4_boardresult2 == 3) {
+        HuSprDispOff(D_801099E8_boardresult2->unk_0A, 1);
+    }
+}
 
 void func_80108958_boardresult2(void) {
     s32 messages[] = {
@@ -210,9 +381,55 @@ void func_80108958_boardresult2(void) {
                                D_80109A38_boardresult2[D_801099F8_boardresult2[D_801097B0_boardresult2 + D_801097B4_boardresult2]]);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_80108A48_boardresult2);
+void func_80108A48_boardresult2(void) {
+    s32 index = *(s32 *)HuPrcCurrentGet()->user_data;
+    f32 angle;
+    f32 scale;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_80108C70_boardresult2);
+    for (angle = 90.0f; angle < 180.0f; angle += 10.0f) {
+        HuSprPosSet(D_801099B0_boardresult2[index]->unk_0A, 0, 111,
+                    (index * 40 + 69) + sindf(angle) * -(index * 40 + 109));
+        HuPrcVSleep();
+    }
+
+    scale = -8.0f;
+    HuAudFXPlay(0x178);
+    for (angle = 0.0f; angle <= 1260.0f; angle += 50.0f) {
+        HuSprPosSet(D_801099B0_boardresult2[index]->unk_0A, 0, 111, (index * 40 + 69) + sindf(angle) * scale);
+        scale += 0.3174603f;
+        if (scale > 0.0f) {
+            scale = 0.0f;
+        }
+        HuPrcVSleep();
+    }
+
+    HuSprPosSet(D_801099B0_boardresult2[index]->unk_0A, 0, 111, index * 40 + 69);
+    omDelPrcObj(NULL);
+}
+
+void func_80108C70_boardresult2(void) {
+    f32 angle;
+    f32 scale;
+
+    for (angle = 90.0f; angle < 180.0f; angle += 10.0f) {
+        HuSprPosSet(D_801099C0_boardresult2->unk_0A, 0, 160, sindf(angle) * -73.0f + 33.0f);
+        HuPrcVSleep();
+    }
+
+    scale = -4.0f;
+    HuAudFXPlay(0x179);
+    for (angle = 0.0f; angle <= 720.0f; angle += 50.0f) {
+        HuSprPosSet(D_801099C0_boardresult2->unk_0A, 0, 160, sindf(angle) * scale + 33.0f);
+        scale += 0.2777778f;
+        if (scale > 0.0f) {
+            scale = 0.0f;
+        }
+        HuPrcVSleep();
+    }
+
+    HuSprPosSet(D_801099C0_boardresult2->unk_0A, 0, 160, 33);
+    omDelPrcObj(NULL);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_80108E1C_boardresult2);
 

@@ -22,6 +22,9 @@ extern s16 D_8011B940_mgmode[];
 extern s16 D_8011B6A8_mgmode;
 extern u8 D_800D20B0_main;
 extern MgmodeSpaceCoord D_80119158_mgmode[];
+extern Vec D_8011AA80_mgmode[][25];
+extern s16 D_8011B8B6_mgmode[];
+extern s16 D_8011B8C4_mgmode;
 
 void func_8010BD98_mgmode(omObjData *arg0);
 void func_80108DDC_mgmode(s16 arg0);
@@ -112,7 +115,27 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_80108DDC_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_801090C4_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_80109C10_mgmode);
+void func_80109C10_mgmode(s16 arg0, s16 arg1) {
+    s16 model;
+    f32 x;
+    f32 z;
+    f32 dist;
+
+    if (arg0 == 6 && arg1 == 0) {
+        model = D_8011B8C4_mgmode;
+    } else {
+        model = D_8011B8B6_mgmode[arg0];
+    }
+    func_8001C258_main(model, 4, 0);
+    Hu3DModelRotSet(model, 15.0f, CRot.y, 0.0f);
+    x = sindf(CRot.y) * cosdf(CRot.x);
+    z = cosdf(CRot.y) * cosdf(CRot.x);
+    dist = HuSqrtf(x * x + z * z);
+    x = x / dist * 20.0f;
+    z = z / dist * 20.0f;
+    Hu3DModelPosSet(model, x + D_8011AA80_mgmode[arg0][arg1].x, D_8011AA80_mgmode[arg0][arg1].y - 3.0f,
+                    z + D_8011AA80_mgmode[arg0][arg1].z);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_80109DBC_mgmode);
 

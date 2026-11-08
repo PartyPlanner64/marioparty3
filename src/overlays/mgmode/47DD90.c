@@ -1,4 +1,5 @@
 #include "common.h"
+#include "game/input.h"
 #include "game/malloc.h"
 #include "game/mallocblock.h"
 #include "math.h"
@@ -20,6 +21,7 @@ extern s16 D_8011A3F8_mgmode[];
 extern MgmodeSpaceCoord *D_8011B670_mgmode;
 extern s16 D_8011B678_mgmode[4][4];
 extern s16 D_8011B698_mgmode[4];
+extern s16 D_8011B808_mgmode;
 
 void func_801189C4_mgmode(s16 model);
 
@@ -392,4 +394,29 @@ void func_80118CD8_mgmode(void) {
     _SetFlag(0x1C);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_80118D0C_mgmode);
+void func_80118D0C_mgmode(void) {
+    f32 x;
+    f32 y;
+    f32 dist;
+
+    y = 0.0f;
+    x = y;
+    if (D_800CDA7C_main[D_8011B808_mgmode] & 0x200) {
+        x = -1.0f;
+    }
+    if (D_800CDA7C_main[D_8011B808_mgmode] & 0x100) {
+        x += 1.0f;
+    }
+    if (D_800CDA7C_main[D_8011B808_mgmode] & 0x800) {
+        y += 1.0f;
+    }
+    if (D_800CDA7C_main[D_8011B808_mgmode] & 0x400) {
+        y += -1.0f;
+    }
+    if (x == 0.0f && y == 0.0f) {
+        return;
+    }
+    dist = HuSqrtf(x * x + y * y);
+    D_800CBB6E_main[D_8011B808_mgmode] = x / dist * 50.0f;
+    D_800D20A1_main[D_8011B808_mgmode] = y / dist * 50.0f;
+}

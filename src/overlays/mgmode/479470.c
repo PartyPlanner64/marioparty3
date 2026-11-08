@@ -14,6 +14,9 @@ extern MgmodeEsprite *D_801195D0_mgmode;
 extern MgmodeEspriteDef D_8011A270_mgmode[];
 extern MgmodeEspriteDef D_8011A2C4_mgmode[];
 extern s16 D_8011B8A8_mgmode[];
+extern s16 D_8011B6A8_mgmode;
+extern s16 D_8011B808_mgmode;
+extern s16 D_800D1FE0_main;
 
 void func_80115BB8_mgmode(s16 value);
 void func_80115CAC_mgmode(s16 value);
@@ -43,7 +46,39 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_801134C0_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_801136EC_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80114048_mgmode);
+s32 func_80114048_mgmode(void) {
+    s16 size[2];
+    s32 result = FALSE;
+    s16 winId;
+    s16 choice;
+
+    HuWinMesSet(D_8011B6A8_mgmode, 0x5813, -1, -1);
+    while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+        HuPrcVSleep();
+    }
+    if ((s16)HuWinChoiceGet(D_8011B6A8_mgmode, 0, 0) == 0) {
+        if (D_800D1FE0_main < 11) {
+            result = TRUE;
+        } else {
+            HuWinExAnimOut(D_8011B6A8_mgmode, 0);
+            HuWinMesMaxSizeGet(1, size, 0x5814);
+            winId = HuWinExCreate(-1, (320 - size[0]) / 2, 224 - size[1], size[0], size[1], 0);
+            HuWinActivePlayerSet(winId, 1 << D_8011B808_mgmode);
+            HuWinExAnimIn(winId);
+            HuWinMesSet(winId, 0x5814, -1, -1);
+            while (HuWinStatGet(winId) != 0) {
+                HuPrcVSleep();
+            }
+            choice = HuWinChoiceGet(winId, 0, 0);
+            HuWinExAnimOut(winId, 0);
+            HuWinKill(winId);
+            if (choice == 0) {
+                result = TRUE;
+            }
+        }
+    }
+    return result;
+}
 
 void func_801141EC_mgmode(s32 animate) {
     s16 i;

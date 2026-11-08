@@ -1,6 +1,20 @@
 #include "common.h"
 #include "../ovl_81_name/ovl_81.h"
 
+#define OBJ_HMF_MODEL(obj) (HmfModelData[(obj)->omObj1->model[0]])
+
+#define OBJ_MODEL_ROT_X(obj, angle)                                                                          \
+    {                                                                                                        \
+        sincosdf((angle), &OBJ_HMF_MODEL(obj).mtx[1][2], &OBJ_HMF_MODEL(obj).mtx[1][1]);                     \
+        OBJ_HMF_MODEL(obj).mtx[2][1] = -OBJ_HMF_MODEL(obj).mtx[1][2];                                        \
+        OBJ_HMF_MODEL(obj).mtx[2][2] = OBJ_HMF_MODEL(obj).mtx[1][1];                                         \
+        OBJ_HMF_MODEL(obj).mtx[0][1] = OBJ_HMF_MODEL(obj).mtx[0][2] = OBJ_HMF_MODEL(obj).mtx[0][3] =         \
+            OBJ_HMF_MODEL(obj).mtx[1][0] = OBJ_HMF_MODEL(obj).mtx[1][3] = OBJ_HMF_MODEL(obj).mtx[2][0] =     \
+                OBJ_HMF_MODEL(obj).mtx[2][3] = OBJ_HMF_MODEL(obj).mtx[3][0] = OBJ_HMF_MODEL(obj).mtx[3][1] = \
+                    OBJ_HMF_MODEL(obj).mtx[3][2] = 0.0f;                                                     \
+        OBJ_HMF_MODEL(obj).mtx[0][0] = OBJ_HMF_MODEL(obj).mtx[3][3] = 1.0f;                                  \
+    }
+
 typedef struct BoardResultWork BoardResultWork;
 
 void func_80105BD8_boardresult(void);
@@ -20,7 +34,10 @@ void func_8010BDBC_boardresult(BoardResultWork *, s32);
 void func_8010BDEC_boardresult(BoardResultWork *, s32, s32);
 s16 func_8010BE04_boardresult(BoardResultWork *);
 void func_8010BE0C_boardresult(BoardResultWork *, s16);
+Process *func_800EBF2C_name_81(Vec *from, Vec *to, Vec *dest, s32 time);
 extern s32 D_8010E3E0_boardresult;
+extern Vec D_8010E4D4_boardresult[];
+extern Vec D_8010E504_boardresult[];
 extern s32 D_8010E72C_boardresult[];
 extern u32 D_8010E738_boardresult[];
 extern s32 D_8010E73C_boardresult[];
@@ -33,6 +50,7 @@ extern s32 D_8010E910_boardresult[6];
 extern s32 D_8010E928_boardresult[];
 extern u8 D_8010EAF0_boardresult;
 extern Object *D_8010EAF4_boardresult;
+extern GW_PLAYER *D_8010EB38_boardresult[4];
 extern Object *D_8010EB48_boardresult[6];
 extern Object *D_8010EB60_boardresult[4];
 extern Object *D_8010EB70_boardresult;
@@ -198,7 +216,39 @@ void func_80106F54_boardresult(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_801070F8_boardresult);
+void func_801070F8_boardresult(void) {
+    s32 index;
+    Process *process;
+    f32 angle;
+    s32 offset;
+
+    index = *(s32 *)HuPrcCurrentGet()->user_data;
+    process = HuPrcCurrentGet();
+    HuPrcChildLink(process, func_800EBF2C_name_81(&D_8010EB38_boardresult[index]->player_obj->coords,
+                                                  &D_8010E504_boardresult[index],
+                                                  &D_8010EB38_boardresult[index]->player_obj->coords, 10));
+    func_800D90D0_name_81(D_8010EB38_boardresult[index]->player_obj, 0, 0);
+
+    for (angle = 90.0f; angle > 0.0f; angle -= 9.0f) {
+        OBJ_MODEL_ROT_X(D_8010EB60_boardresult[3 - index], angle);
+        HuPrcVSleep();
+    }
+    OBJ_MODEL_ROT_X(D_8010EB60_boardresult[3 - index], 0.0f);
+
+    HuAudFXPlay(0x175);
+    for (offset = 0, angle = 30.0f; angle <= 180.0f; angle += 10.0f) {
+        HuVecCopyXYZ(&D_8010EB38_boardresult[index]->player_obj->coords, D_8010E4D4_boardresult[index + 4].x,
+                     D_8010E4D4_boardresult[index + 4].y - sindf(angle) * 100.0f + offset,
+                     D_8010E4D4_boardresult[index + 4].z);
+        HuVecCopyXYZ(&D_8010EB60_boardresult[3 - index]->coords, D_8010E4D4_boardresult[index + 4].x,
+                     D_8010E4D4_boardresult[index + 4].y - sindf(angle) * 100.0f + offset,
+                     D_8010E4D4_boardresult[index + 4].z);
+        offset -= 10;
+        HuPrcVSleep();
+    }
+    func_800D90D0_name_81(D_8010EB38_boardresult[index]->player_obj, -1, 2);
+    omDelPrcObj(NULL);
+}
 
 void func_80107598_boardresult(omObjData *obj) {
     f32 scale;

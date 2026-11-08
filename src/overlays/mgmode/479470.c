@@ -1,10 +1,10 @@
 #include "common.h"
 #include "overlays/mgmode.h"
 #include "gcc/memory.h"
+#include "gcc/string.h"
 
-extern s16 D_8011B818_mgmode[28];
-extern s16 D_8011B830_mgmode[16];
-extern s16 D_8011B850_mgmode[16];
+extern u8 D_8011B510_mgmode[256];
+extern GAMEMES D_8011B810_mgmode;
 extern u8 *D_8011B610_mgmode[3];
 extern s16 D_8011B61C_mgmode;
 extern s16 D_8011B61E_mgmode;
@@ -12,6 +12,7 @@ extern MgmodeEsprite *D_801194C0_mgmode;
 extern s16 D_801194C4_mgmode;
 extern MgmodeEsprite *D_801195D0_mgmode;
 extern MgmodeEspriteDef D_8011A270_mgmode[];
+extern MgmodeEspriteDef D_8011A2C4_mgmode[];
 extern s16 D_8011B8A8_mgmode[];
 
 void func_80115BB8_mgmode(s16 value);
@@ -24,6 +25,7 @@ void func_801169A0_mgmode(MgmodeEsprite *arg0, s16 index);
 void func_801169C8_mgmode(MgmodeEsprite *arg0, s16 index);
 void func_80116A48_mgmode(MgmodeEsprite *arg0, s16 index, f32 x, f32 y);
 void func_80116AA8_mgmode(MgmodeEsprite *arg0, s16 index, s16 arg2);
+void func_80116AEC_mgmode(MgmodeEsprite *arg0, s16 index, u16 arg2);
 void func_80116024_mgmode(void);
 void func_80116260_mgmode(void);
 void func_801160A0_mgmode(s16 arg0);
@@ -43,7 +45,32 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_801136EC_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80114048_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_801141EC_mgmode);
+void func_801141EC_mgmode(s32 animate) {
+    s16 i;
+    f32 t;
+    f32 scaleX;
+    f32 scaleY;
+
+    if (D_801194C0_mgmode == (MgmodeEsprite *)-1) {
+        D_801194C0_mgmode = func_80116794_mgmode(D_8011A2C4_mgmode);
+        if (animate) {
+            HuAudFXPlay(0x243);
+            func_80116A48_mgmode(D_801194C0_mgmode, 0, 0.0f, 0.0f);
+            HuPrcSleep(5);
+            for (i = 0; i < 11; i++) {
+                t = i / 10.0f;
+                scaleX = sindf(t * 90.0f);
+                scaleY = cosdf(t * 270.0f + 90.0f);
+                if (scaleY < 0.0f) {
+                    scaleY = -scaleY;
+                }
+                func_80116A48_mgmode(D_801194C0_mgmode, 0, scaleX, scaleY);
+                HuPrcVSleep();
+            }
+        }
+        func_80116AEC_mgmode(D_801194C0_mgmode, 0, 20);
+    }
+}
 
 void func_80114344_mgmode(void) {
     s16 i;
@@ -188,19 +215,42 @@ void func_80115E4C_mgmode(void) {
     s16 i;
 
     for (i = 0; i < 16; i++) {
-        D_8011B850_mgmode[i] = D_8011B830_mgmode[i] = -1;
+        D_8011B810_mgmode.strSprId[i] = D_8011B810_mgmode.strGId[i] = -1;
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80115E9C_mgmode);
+void func_80115E9C_mgmode(s32 mesId, s16 x, s16 y) {
+    u8 *str;
+    s16 len;
+    s16 count;
+    s16 i;
+
+    str = func_800364DC_main((void *)mesId);
+    len = strlen((char *)str);
+    count = 0;
+    for (i = 0; i <= len; i++) {
+        if (str[i] >= '0') {
+            D_8011B510_mgmode[count++] = str[i];
+        }
+    }
+    D_8011B510_mgmode[count] = 0;
+    func_800365E8_main(str);
+    D_8011B810_mgmode.subMode = count;
+    GameMesStrCreate(&D_8011B810_mgmode, (char *)D_8011B510_mgmode, 0, -1, -1);
+    for (i = 0; i < D_8011B810_mgmode.subMode; i++) {
+        HuSprPriSet(D_8011B810_mgmode.strGId[0], i + 1, 10);
+        HuSprScaleSet(D_8011B810_mgmode.strGId[0], i + 1, 0.7f, 1.0f);
+    }
+    HuSprPosSet(D_8011B810_mgmode.strGId[0], 0, x, y);
+}
 
 void func_80116024_mgmode(void) {
     s16 i;
 
-    if (D_8011B830_mgmode[0] != GMES_ID_NONE) {
-        GMesSprKill((GAMEMES *)((u8 *)D_8011B830_mgmode - offsetof(GAMEMES, strGId)));
+    if (D_8011B810_mgmode.strGId[0] != GMES_ID_NONE) {
+        GMesSprKill(&D_8011B810_mgmode);
         for (i = 0; i < 16; i++) {
-            D_8011B850_mgmode[i] = D_8011B830_mgmode[i] = GMES_ID_NONE;
+            D_8011B810_mgmode.strSprId[i] = D_8011B810_mgmode.strGId[i] = GMES_ID_NONE;
         }
     }
 }
@@ -209,11 +259,11 @@ void func_801160A0_mgmode(s16 arg0) {
     int i;
 
     i = 0;
-    if (D_8011B818_mgmode[0] > 0) {
+    if (D_8011B810_mgmode.subMode > 0) {
         do {
             i++;
-            HuSprTPLvlSet(D_8011B818_mgmode[12], (s16)i, arg0);
-        } while ((s16)i < D_8011B818_mgmode[0]);
+            HuSprTPLvlSet(D_8011B810_mgmode.strGId[0], (s16)i, arg0);
+        } while ((s16)i < D_8011B810_mgmode.subMode);
     }
 }
 

@@ -6,6 +6,8 @@ extern s16 D_8011B818_mgmode[28];
 extern s16 D_8011B830_mgmode[16];
 extern s16 D_8011B850_mgmode[16];
 extern u8 *D_8011B610_mgmode[3];
+extern s16 D_8011B61C_mgmode;
+extern s16 D_8011B61E_mgmode;
 extern MgmodeEsprite *D_801194C0_mgmode;
 extern s16 D_801194C4_mgmode;
 extern MgmodeEsprite *D_801195D0_mgmode;
@@ -23,6 +25,7 @@ void func_801169C8_mgmode(MgmodeEsprite *arg0, s16 index);
 void func_80116A48_mgmode(MgmodeEsprite *arg0, s16 index, f32 x, f32 y);
 void func_80116AA8_mgmode(MgmodeEsprite *arg0, s16 index, s16 arg2);
 void func_80116024_mgmode(void);
+void func_80116260_mgmode(void);
 void func_801160A0_mgmode(s16 arg0);
 void func_80116D4C_mgmode(void);
 
@@ -214,7 +217,25 @@ void func_801160A0_mgmode(s16 arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_8011611C_mgmode);
+void func_8011611C_mgmode(void) {
+    HuSprite *sprite;
+
+    D_8011B61C_mgmode = func_8000B838_main(0x12003D);
+    D_8011B61E_mgmode = HuSprGrpCreate(5, 0);
+    HuSprGrpMemberSet(D_8011B61E_mgmode, 0, D_8011B61C_mgmode, 0);
+    HuSprAttrReset(D_8011B61E_mgmode, 0, 0xFFFF);
+    HuSprAttrSet(D_8011B61E_mgmode, 0, 0x9008);
+    HuSprPosSet(D_8011B61E_mgmode, 0, 160, 120);
+    HuSprPriSet(D_8011B61E_mgmode, 0, 15);
+    HuSprScaleSet(D_8011B61E_mgmode, 0, 1.0f, 2.0f);
+    sprite = HuSprGet(D_8011B61E_mgmode, 0);
+    HuMemFree(sprite->unk_84->unk00->unk00);
+    D_8011B610_mgmode[0] = HuMemAllocTag(0x4B00, 0x7918);
+    D_8011B610_mgmode[1] = HuMemAllocTag(0x4B00, 0x7918);
+    D_8011B610_mgmode[2] = HuMemAllocTag(0x4B00, 0x7918);
+    sprite->unk_84->unk00->unk00 = D_8011B610_mgmode[0];
+    func_80116260_mgmode();
+}
 
 void func_80116260_mgmode(void) {
     memset(D_8011B610_mgmode[0], 0xFF, 0x4B00);

@@ -29,7 +29,28 @@ void func_8011667C_mgmode(MgmodeModelEntry *entries) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47D880", func_80116794_mgmode);
+MgmodeEsprite *func_80116794_mgmode(MgmodeEspriteDef *defs) {
+    MgmodeEsprite *sprites;
+    s16 count;
+    s16 i;
+    u16 slot;
+
+    for (count = 0; count < 0x40; count++) {
+        if (defs[count].dataNum == -1) {
+            break;
+        }
+    }
+    sprites = HuMemAllocTag((count + 1) * sizeof(MgmodeEsprite), 0x7918);
+    for (i = 0; i < count; i++, defs++) {
+        sprites[i].spriteGroup = func_8000B838_main(defs->dataNum);
+        slot = sprites[i].espriteSlot = espEntry(sprites[i].spriteGroup, 0, 1);
+        espPosSet(slot, defs->x, defs->y);
+        espAttrReset(slot, 0xFFFF);
+        espAttrSet(slot, defs->attr);
+    }
+    sprites[i].spriteGroup = -1;
+    return sprites;
+}
 
 void func_801168E0_mgmode(MgmodeEsprite *arg0) {
     MgmodeEsprite *sprite = arg0;

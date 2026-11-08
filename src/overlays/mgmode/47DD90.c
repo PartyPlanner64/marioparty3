@@ -14,6 +14,7 @@ extern s16 D_8011B664_mgmode;
 extern s16 D_8011B666_mgmode;
 extern s16 D_8011B668_mgmode;
 extern s16 D_8011B66A_mgmode;
+extern s16 D_8011B66C_mgmode;
 extern s16 D_8011B66E_mgmode;
 extern s16 D_8011A3F8_mgmode[];
 extern MgmodeSpaceCoord *D_8011B670_mgmode;
@@ -239,7 +240,31 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_801178E0_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_80117DD0_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_801180A4_mgmode);
+void func_801180A4_mgmode(void) {
+    s16 prev = 0;
+    s16 i;
+
+    while (TRUE) {
+        HuPrcVSleep();
+        if (prev == D_8011B66E_mgmode) {
+            continue;
+        }
+        if (D_8011B66E_mgmode != 0) {
+            espDispOn(D_8011B66C_mgmode);
+            for (i = 0; i < 5; i++) {
+                espTPLvlSet(D_8011B66C_mgmode, i * 63.75f);
+                HuPrcVSleep();
+            }
+        } else {
+            for (i = 0; i < 5; i++) {
+                espTPLvlSet(D_8011B66C_mgmode, 255.0f - i * 63.75f);
+                HuPrcVSleep();
+            }
+            espDispOff(D_8011B66C_mgmode);
+        }
+        prev = D_8011B66E_mgmode;
+    }
+}
 
 void func_801181F4_mgmode(s16 index) {
     D_8011B664_mgmode = D_8011B670_mgmode[index].x;

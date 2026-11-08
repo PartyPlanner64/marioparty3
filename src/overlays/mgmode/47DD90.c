@@ -347,7 +347,56 @@ void func_801182C0_mgmode(s16 index) {
     D_8011B630_mgmode[index] = 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_801182DC_mgmode);
+s16 func_801182DC_mgmode(s16 stickX, s16 stickY) {
+    f32 dir[32][2];
+    f32 dist[32];
+    f32 dx;
+    f32 dy;
+    f32 len;
+    f32 nx;
+    f32 ny;
+    f32 minDist;
+    s16 best;
+    s16 i;
+
+    for (i = 0; D_8011B670_mgmode[i].x != -1 || D_8011B670_mgmode[i].y != D_8011B670_mgmode[i].x; i++) {
+        if (i == D_8011B66A_mgmode || D_8011B630_mgmode[i] != 0) {
+            dist[i] = -1.0f;
+        } else {
+            dx = D_8011B670_mgmode[D_8011B66A_mgmode].x - D_8011B670_mgmode[i].x;
+            dy = D_8011B670_mgmode[D_8011B66A_mgmode].y - D_8011B670_mgmode[i].y;
+            dist[i] = HuSqrtf(dx * dx + dy * dy);
+            len = dist[i];
+            dir[i][0] = dx / len;
+            dir[i][1] = dy / len;
+        }
+    }
+    len = HuSqrtf(stickX * stickX + stickY * stickY);
+    nx = stickX / len;
+    ny = stickY / len;
+    for (i = 0; D_8011B670_mgmode[i].x != -1 || D_8011B670_mgmode[i].y != D_8011B670_mgmode[i].x; i++) {
+        if (dist[i] < 0.0f) {
+            continue;
+        }
+        dx = nx - dir[i][0];
+        dy = ny - dir[i][1];
+        if (HuSqrtf(dx * dx + dy * dy) > 0.5f) {
+            dist[i] = -1.0f;
+        }
+    }
+    minDist = 100000.0f;
+    best = -1;
+    for (i = 0; D_8011B670_mgmode[i].x != -1 || D_8011B670_mgmode[i].y != D_8011B670_mgmode[i].x; i++) {
+        if (dist[i] < 0.0f) {
+            continue;
+        }
+        if (dist[i] < minDist) {
+            minDist = dist[i];
+            best = i;
+        }
+    }
+    return best;
+}
 
 void func_80118624_mgmode(s16 dstModel, s16 srcModel) {
     HmfModelData[dstModel].pos.x = HmfModelData[srcModel].pos.x;

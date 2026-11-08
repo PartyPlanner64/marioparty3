@@ -32,8 +32,28 @@ extern u16 D_8011B488_mgmode[28];
 extern s16 D_8011B808_mgmode;
 extern MgmodeSpaceCoord D_8011943C_mgmode[];
 extern s16 D_8011944C_mgmode[];
+extern MgmodeEspriteDef D_80119EB0_mgmode[];
+extern s16 D_800CB894_main;
+extern u8 D_80118EB1_mgmode;
+extern s16 D_80118EB4_mgmode;
+extern s16 D_8011B950_mgmode;
+extern s16 D_8011B95A_mgmode;
 
 void func_8010CBFC_mgmode(void);
+s16 func_8010DAB8_mgmode(s32 arg0);
+void func_8010E6F0_mgmode(s16 arg0);
+void func_8010D98C_mgmode(void);
+void func_8010E40C_mgmode(void);
+void func_8010E1F0_mgmode(void);
+void func_8010EE84_mgmode(s16 arg0);
+s16 func_8010F348_mgmode(s16 category);
+s16 func_8010A148_mgmode(s16 arg0);
+void func_8010A5F0_mgmode(void);
+void func_8010D308_mgmode(void);
+s16 func_8010D3B0_mgmode(s32 arg0);
+MgmodeEsprite *func_80116794_mgmode(MgmodeEspriteDef *defs);
+void func_801169F0_mgmode(MgmodeEsprite *arg0, s16 index, s16 arg2);
+void func_80116D4C_mgmode(void);
 void func_801168E0_mgmode(MgmodeEsprite *arg0);
 void func_801169C8_mgmode(MgmodeEsprite *arg0, s16 index);
 void func_80116A78_mgmode(MgmodeEsprite *arg0, s16 index, s16 tpLvl);
@@ -69,7 +89,152 @@ void func_8010CB20_mgmode(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010CBFC_mgmode);
+void func_8010CBFC_mgmode(void) {
+    s16 i;
+    s16 state;
+    s16 back;
+    s16 result;
+    f32 t;
+    f32 sx;
+    f32 sy;
+
+    HuPrcSleep(3);
+    D_8011B450_mgmode = func_80116794_mgmode(D_80119EB0_mgmode);
+    func_80116968_mgmode(D_8011B450_mgmode, 0, 180, 110);
+    for (i = 0; i < 9; i++) {
+        func_801169C8_mgmode(D_8011B450_mgmode, i);
+        func_801169F0_mgmode(D_8011B450_mgmode, i, 0x4000);
+    }
+    HuAudFXPlay(0x243);
+    HuPrcSleep(5);
+    func_801169A0_mgmode(D_8011B450_mgmode, 0);
+    for (i = 0; i < 11; i++) {
+        t = i / 10.0f;
+        sx = sindf(t * 90.0f);
+        sy = cosdf(t * 270.0f + 90.0f);
+        if (sy < 0.0f) {
+            sy = -sy;
+        }
+        func_80116A48_mgmode(D_8011B450_mgmode, 0, sx, sy);
+        HuPrcVSleep();
+    }
+    for (i = 0, D_8011B454_mgmode = 0; i < 5; i++) {
+        if (D_8011B928_mgmode[i] >= 3) {
+            D_8011B458_mgmode[D_8011B454_mgmode] = i;
+            D_8011B454_mgmode++;
+        }
+    }
+    D_800D1F2C_main = 0;
+    state = 0;
+    back = 0;
+    while (state != 4) {
+        switch (state) {
+            case 0:
+                D_800CC438_main = func_8010D3B0_mgmode(back);
+                if (D_800CC438_main == -1) {
+                    func_8010D98C_mgmode();
+                    state = 4;
+                } else {
+                    back = 0;
+                    state++;
+                }
+                break;
+            case 1:
+                result = func_8010DAB8_mgmode(back);
+                if (result == -1) {
+                    func_8010E40C_mgmode();
+                    back = 1;
+                    state--;
+                } else {
+                    D_800D4194_main = D_8011B458_mgmode[result];
+                    if (D_800D4194_main != 1 && D_800D4194_main != 2) {
+                        for (i = 0; i < 4; i++) {
+                            GwPlayer[i].group = i;
+                        }
+                        state++;
+                    }
+                    state++;
+                }
+                break;
+            case 2:
+                HuWinMesSet(D_8011B6A8_mgmode, 0x560A, -1, -1);
+                while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+                    HuPrcVSleep();
+                }
+                result = func_8010A148_mgmode(D_800D4194_main);
+                func_8010A5F0_mgmode();
+                if (result != 0) {
+                    state++;
+                } else {
+                    back = 1;
+                    state--;
+                }
+                break;
+            case 3:
+                for (i = 0; i < 4; i++) {
+                    D_800D1F20_main[i] = GwPlayer[i].group;
+                }
+                func_8010E6F0_mgmode(D_800D4194_main);
+                func_8010E1F0_mgmode();
+                HuWinMesSet(D_8011B6A8_mgmode, 0x560B, -1, -1);
+                while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+                    HuPrcVSleep();
+                }
+                D_800CE29C_main = func_8010F348_mgmode(D_800D4194_main);
+                HuPrcSleep(20);
+                HuWinInsertMesSet(D_8011B6A8_mgmode, D_800CE29C_main + 0x4700, 0);
+                HuWinMesSet(D_8011B6A8_mgmode, 0x560D, -1, -1);
+                while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+                    HuPrcVSleep();
+                }
+                HuWinMesSet(D_8011B6A8_mgmode, 0x560E, -1, -1);
+                while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+                    HuPrcVSleep();
+                }
+                result = HuWinChoiceGet(D_8011B6A8_mgmode, 0, 0);
+                if (result == -1) {
+                    func_8010EE84_mgmode(D_800D4194_main);
+                    func_80116D4C_mgmode();
+                    D_80119340_mgmode = -1;
+                    state -= 2;
+                    if (D_800D4194_main == 1 || D_800D4194_main == 2) {
+                        state++;
+                    }
+                    break;
+                }
+                if (result == 0) {
+                    GwSystem.show_minigame_explanations = 1;
+                } else {
+                    GwSystem.show_minigame_explanations = 0;
+                }
+                _SetFlag(0xD);
+                for (i = 0; i < 4; i++) {
+                    D_800D03FE_main[i] = 0;
+                }
+                GwSystem.minigame_index = (u8)D_800CE29C_main + 1;
+                D_800CB894_main = 100;
+                omOvlHisChg(0, 0x69, 4, 0x84);
+                D_80118EB1_mgmode = 1;
+                D_8011B95A_mgmode = 0x70;
+                D_8011B950_mgmode = 0;
+                D_80118EB4_mgmode = 2;
+                if (D_800D4194_main == 0 || D_800D4194_main == 3) {
+                    for (i = 0; i < 4; i++) {
+                        GwPlayer[i].star = D_800D03FE_main[i];
+                        GwPlayer[i].coin = rand8() & 0xF;
+                    }
+                }
+                while (TRUE) {
+                    HuPrcVSleep();
+                }
+        }
+    }
+    func_8010D308_mgmode();
+    func_80116D4C_mgmode();
+    D_80119340_mgmode = -1;
+    func_801182B4_mgmode(0);
+    func_801168E0_mgmode(D_8011B450_mgmode);
+}
 
 void func_8010D308_mgmode(void) {
     s16 i;

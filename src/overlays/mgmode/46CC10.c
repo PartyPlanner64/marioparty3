@@ -621,12 +621,12 @@ void func_80109DBC_mgmode(s16 arg0, s16 arg1) {
     }
 }
 
-s32 func_8010A148_mgmode(s16 arg0) {
+s16 func_8010A148_mgmode(s16 arg0) {
     s8 *orders;
     s16 i;
     s16 timer;
     s16 sel;
-    s32 ret = 1;
+    s16 ret = 1;
 
     if (arg0 == 2) {
         D_8011B3E0_mgmode = D_80119320_mgmode;

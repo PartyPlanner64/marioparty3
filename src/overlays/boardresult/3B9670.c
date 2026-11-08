@@ -3,6 +3,8 @@
 
 typedef struct BoardResultWork BoardResultWork;
 
+void func_80105BD8_boardresult(void);
+void func_80109754_boardresult(void);
 void func_8010BA98_boardresult(void);
 void func_8010BAD8_boardresult(omObjData *);
 void func_8010BBF0_boardresult(omObjData *);
@@ -129,7 +131,17 @@ void func_80106CA8_boardresult(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80106DA4_boardresult);
+void func_80106DA4_boardresult(omObjData *obj) {
+    Object *target = D_8010EB60_boardresult[obj->work[1]];
+
+    obj->work[0]++;
+    target->coords.x += sindf(obj->work[0] * 180.0f / obj->work[2]) * -700.0f;
+    target->coords.y += sindf(obj->work[0] * 180.0f / obj->work[2]) * 0.0f;
+    target->coords.z += sindf(obj->work[0] * 180.0f / obj->work[2]) * 0.0f;
+    if (obj->work[0] == obj->work[2]) {
+        omDelObj(obj);
+    }
+}
 
 void func_80106F54_boardresult(omObjData *obj) {
     Object *target = D_8010EB70_boardresult;
@@ -236,7 +248,14 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/boardresult/3B9670", D_8010EAB0_boardr
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80109754_boardresult);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_8010BA98_boardresult);
+void func_8010BA98_boardresult(void) {
+    func_80105BD8_boardresult();
+    func_80109754_boardresult();
+    D_800D530C_main = 1;
+    while (1) {
+        HuPrcVSleep();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_8010BAD8_boardresult);
 
@@ -248,9 +267,19 @@ void func_8010BBF0_boardresult(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_8010BC3C_boardresult);
+void func_8010BC3C_boardresult(void) {
+    func_800D7EB8_name_81();
+    func_800F3F4C_name_81();
+    func_800EF840_name_81();
+    func_800F4300_name_81();
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_8010BC70_boardresult);
+void func_8010BC70_boardresult(void) {
+    func_800F4314_name_81();
+    func_800EF880_name_81();
+    func_800F4030_name_81();
+    func_800D7F0C_name_81();
+}
 
 void func_8010BCA4_boardresult(void) {
     Hu3DCamInit(1);

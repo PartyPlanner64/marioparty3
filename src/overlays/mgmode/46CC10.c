@@ -31,6 +31,9 @@ extern s16 D_8011B8B6_mgmode[];
 extern s16 D_8011B8C4_mgmode;
 extern MgmodeSpaceCoord D_80119170_mgmode[];
 extern s16 D_8011B808_mgmode;
+extern s16 D_8011B8B4_mgmode;
+extern HuMtx4F D_8011A808_mgmode;
+extern char D_8011A46C_mgmode[];
 
 void func_8010BD98_mgmode(omObjData *arg0);
 void func_80108DDC_mgmode(s16 arg0);
@@ -41,6 +44,7 @@ void func_801169C8_mgmode(MgmodeEsprite *arg0, s16 index);
 void func_80116D4C_mgmode(void);
 void func_80118CD8_mgmode(void);
 void func_801090C4_mgmode(s16 arg0);
+void func_80107D0C_mgmode(s32 mes, s16 x, s16 y);
 void func_8011829C_mgmode(s16 arg0);
 void func_801182A8_mgmode(s16 arg0);
 s16 func_801182DC_mgmode(s16 stickX, s16 stickY);
@@ -160,7 +164,78 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mgmode/46CC10", D_8011A49C_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_80107D0C_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_80108824_mgmode);
+void func_80108824_mgmode(s32 arg0) {
+    s16 total;
+    s16 choice;
+    s16 i;
+    HmfMotionNode *node;
+
+    total = D_8011B928_mgmode[0] + D_8011B928_mgmode[1] + D_8011B928_mgmode[2] + D_8011B928_mgmode[3] +
+            D_8011B928_mgmode[4] + D_8011B928_mgmode[5] + D_8011B928_mgmode[7];
+    if (total < 0) {
+        total = 0;
+    }
+    sprintf(D_8011A708_mgmode, D_8011A430_mgmode, total);
+    HuWinInsertMesSet(D_8011B6A0_mgmode, (u32)D_8011A708_mgmode, 0);
+    if (arg0 == 0) {
+        HuWinMesSet(D_8011B6A0_mgmode, 0x570B, -1, -1);
+        HuWinExAnimIn(D_8011B6A0_mgmode);
+        while (HuWinStatGet(D_8011B6A0_mgmode) != 0) {
+            HuPrcVSleep();
+        }
+        HuWinMesSet(D_8011B6A0_mgmode, 0x5712, -1, -1);
+        while (HuWinStatGet(D_8011B6A0_mgmode) != 0) {
+            HuPrcVSleep();
+        }
+    } else {
+        HuWinMesSet(D_8011B6A0_mgmode, 0x5712, -1, -1);
+        HuWinExAnimIn(D_8011B6A0_mgmode);
+        while (HuWinStatGet(D_8011B6A0_mgmode) != 0) {
+            HuPrcVSleep();
+        }
+    }
+    choice = HuWinChoiceGet(D_8011B6A0_mgmode, 0, 0);
+    HuWinExAnimOut(D_8011B6A0_mgmode, 0);
+    if (choice == -1) {
+        HuWinMesSet(D_8011B6A8_mgmode, 0x5702, -1, -1);
+        HuWinExAnimIn(D_8011B6A8_mgmode);
+        func_801182B4_mgmode(1);
+        return;
+    }
+    if (choice == 0) {
+        func_801182B4_mgmode(0);
+        func_80116ED4_mgmode(2, 10, 1, (void (*)(s16 *))-1);
+        HuWinMesSet(D_8011B6A0_mgmode, 0x5713, -1, -1);
+        HuWinExAnimIn(D_8011B6A0_mgmode);
+        while (HuWinStatGet(D_8011B6A0_mgmode) != 0) {
+            HuPrcVSleep();
+        }
+        func_80108DDC_mgmode(0);
+    } else if (choice == 1) {
+        func_801182B4_mgmode(0);
+        node = func_8001D33C_main(D_8011B8B4_mgmode, D_8011A46C_mgmode);
+        HuAudFXPlay(0x245);
+        for (i = 0; i < 11; i++) {
+            HuPrcVSleep();
+            func_8002367C_main(node->unk58, D_8011A808_mgmode);
+            func_80017D24_main(node->unk58, 0.0f, sindf(i * 9) * 117.0f, 0.0f);
+        }
+        func_80116ED4_mgmode(6, 10, 1, (void (*)(s16 *))-1);
+        func_80107D0C_mgmode(0x12000F, 160, 120);
+        func_80116ED4_mgmode(1, 10, 1, (void (*)(s16 *))-1);
+        HuAudFXPlay(0x245);
+        for (i = 0; i < 11; i++) {
+            HuPrcVSleep();
+            func_8002367C_main(node->unk58, D_8011A808_mgmode);
+            func_80017D24_main(node->unk58, 0.0f, (1.0f - sindf(i * 9)) * 117.0f, 0.0f);
+        }
+    }
+    func_8011822C_mgmode(D_80119158_mgmode);
+    func_801181F4_mgmode(0);
+    func_801182B4_mgmode(1);
+    HuWinMesSet(D_8011B6A8_mgmode, 0x5702, -1, -1);
+    HuWinExAnimIn(D_8011B6A8_mgmode);
+}
 
 void func_80108C88_mgmode(void) {
     HuWinDispOn(D_8011B6A0_mgmode);

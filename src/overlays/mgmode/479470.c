@@ -21,6 +21,7 @@ extern s16 D_8011B794_mgmode;
 extern s16 D_8011B796_mgmode;
 extern s16 D_8011B8B8_mgmode[];
 extern s16 D_8011B792_mgmode;
+extern s16 D_8011B790_mgmode;
 extern s16 D_800D0418_main[8];
 extern s16 D_801195BC_mgmode[];
 extern u8 D_801195C4_mgmode[4];
@@ -424,7 +425,42 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80114FA0_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_801152C0_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80115590_mgmode);
+void func_80115590_mgmode(void) {
+    s16 model = D_8011B8B8_mgmode[0];
+    s16 other = D_8011B8B8_mgmode[9];
+    f32 dx = 198.0f;
+    f32 dz = 210.0f;
+    f32 angle;
+    f32 t;
+    f32 x;
+    f32 z;
+    s16 i;
+
+    func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    func_8001C258_main(other, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DMotionSet(model, D_8011B792_mgmode);
+    func_8001C814_main(model, 2, 2);
+    angle = atan2df(dx, dz) + 180.0f;
+    Hu3DModelPosSet(model, 200.0f, 0.0f, -122.0f);
+    Hu3DModelRotSet(model, 0.0f, angle, 0.0f);
+    for (i = 0; i < 16; i++) {
+        t = 1.0f - i / 15.0f;
+        x = dx * t + 2.0f;
+        z = dz * t + -332.0f;
+        Hu3DModelPosSet(model, x, 0.0f, z);
+        func_80118624_mgmode(other, model);
+        if (i < 12 && i % 5 == 0) {
+            func_8004AC5C_main(GwPlayer[0].chr + 0x29, 0);
+        }
+        HuPrcVSleep();
+    }
+    Hu3DMotionShiftSet(model, D_8011B790_mgmode, 0, 8, 2);
+    for (i = 0; i < 9; i++) {
+        t = 1.0f - i / 8.0f;
+        HmfModelData[model].rot.y = t * angle;
+        HuPrcVSleep();
+    }
+}
 
 void func_80115848_mgmode(void) {
     s16 model = D_8011B8B8_mgmode[0];

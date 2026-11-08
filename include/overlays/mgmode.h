@@ -19,7 +19,8 @@ typedef struct {
 typedef struct MgmodeModelEntry {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s16 unk_08;
+    /* 0x0A */ s16 motAttr;
     /* 0x0C */ Vec pos;
     /* 0x18 */ Vec rot;
 } MgmodeModelEntry; // sizeof 0x24

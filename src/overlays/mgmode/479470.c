@@ -12,10 +12,12 @@ extern MgmodeEsprite *D_801195D0_mgmode;
 extern MgmodeEspriteDef D_8011A270_mgmode[];
 extern s16 D_8011B8A8_mgmode[];
 
+void func_80115BB8_mgmode(s16 value);
 void func_80115CAC_mgmode(s16 value);
 void func_80115CDC_mgmode(MgmodeEsprite *sprites, s16 base, s16 value, s16 digits);
 MgmodeEsprite *func_80116794_mgmode(MgmodeEspriteDef *defs);
 void func_801168E0_mgmode(MgmodeEsprite *arg0);
+void func_80116968_mgmode(MgmodeEsprite *arg0, s16 index, s16 arg2, s16 arg3);
 void func_801169A0_mgmode(MgmodeEsprite *arg0, s16 index);
 void func_801169C8_mgmode(MgmodeEsprite *arg0, s16 index);
 void func_80116A48_mgmode(MgmodeEsprite *arg0, s16 index, f32 x, f32 y);
@@ -64,7 +66,23 @@ void func_80114614_mgmode(s16 index) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_801146D8_mgmode);
+void func_801146D8_mgmode(void) {
+    s16 i;
+    s16 j;
+    f32 scale;
+
+    for (i = 0; i < 10; i++) {
+        scale = 1.0f - i / 10.0f;
+        for (j = 1; j < 21; j++) {
+            func_80116A48_mgmode(D_801194C0_mgmode, j, scale, scale);
+        }
+        HuPrcVSleep();
+    }
+    for (j = 1; j < 21; j++) {
+        func_801169C8_mgmode(D_801194C0_mgmode, j);
+        func_80116A48_mgmode(D_801194C0_mgmode, j, 1.0f, 1.0f);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80114804_mgmode);
 
@@ -95,7 +113,20 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80115590_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80115848_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80115A9C_mgmode);
+void func_80115A9C_mgmode(s16 x, s16 y, s16 value) {
+    s16 left;
+    s16 i;
+
+    left = x - 40;
+    func_80116968_mgmode(D_801194C0_mgmode, 0xF, left, y);
+    func_801169A0_mgmode(D_801194C0_mgmode, 0xF);
+    func_80116968_mgmode(D_801194C0_mgmode, 0x10, x - 24, y);
+    func_801169A0_mgmode(D_801194C0_mgmode, 0x10);
+    for (i = 0; i < 4; i++) {
+        func_80116968_mgmode(D_801194C0_mgmode, i + 0x11, left + (i + 2) * 16, y);
+    }
+    func_80115BB8_mgmode(value);
+}
 
 void func_80115BB8_mgmode(s16 value) {
     func_80115CDC_mgmode(D_801194C0_mgmode, 0x11, value, 4);

@@ -22,6 +22,9 @@ extern s16 D_8011B796_mgmode;
 extern s16 D_8011B8B8_mgmode[];
 extern s16 D_8011B792_mgmode;
 extern s16 D_8011B790_mgmode;
+extern s16 D_8011B798_mgmode;
+extern s16 D_8011B624_mgmode;
+extern s32 D_801194C8_mgmode;
 extern s16 D_800D0418_main[8];
 extern s16 D_801195BC_mgmode[];
 extern u8 D_801195C4_mgmode[4];
@@ -60,6 +63,9 @@ void func_80115C5C_mgmode(s16 value);
 s16 func_80116B20_mgmode(void);
 void func_80116C18_mgmode(s16 arg0);
 void func_80115E9C_mgmode(s32 mesId, s16 x, s16 y);
+void func_801162B4_mgmode(f32 arg0, f32 arg1);
+void func_80118888_mgmode(s16 index);
+void func_801188A4_mgmode(s16 index);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80112200_mgmode);
 
@@ -423,7 +429,38 @@ void func_80114EBC_mgmode(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80114FA0_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_801152C0_mgmode);
+void func_801152C0_mgmode(void) {
+    s16 i;
+
+    D_801194C8_mgmode = 0;
+    HuAudFXPlay(0x248);
+    func_80116260_mgmode();
+    HuSprDispOn(D_8011B61E_mgmode, 0);
+    for (i = 0; i < 31; i++) {
+        if (i == 15) {
+            func_80118888_mgmode(D_8011B624_mgmode);
+        }
+        if (i == 25) {
+            Hu3DMotionShiftSet(D_8011B8B8_mgmode[0], D_8011B798_mgmode, 0, 8, 0);
+            func_8004AC5C_main(GwPlayer[0].chr + 0x263, 0);
+        }
+        HuSprTPLvlSet(D_8011B61E_mgmode, 0, i / 30.0f * 220.0f);
+        func_801162B4_mgmode(186.0f, sindf(i / 30.0f * 90.0f) * 10.0f);
+        HuPrcVSleep();
+    }
+    func_80114614_mgmode(8);
+    D_801194C8_mgmode = 1;
+    do {
+        HuPrcVSleep();
+    } while (D_801194C8_mgmode != 0);
+    for (i = 0; i < 11; i++) {
+        HuSprTPLvlSet(D_8011B61E_mgmode, 0, (1.0f - i / 30.0f) * 220.0f);
+        HuPrcVSleep();
+    }
+    HuSprDispOff(D_8011B61E_mgmode, 0);
+    func_801188A4_mgmode(D_8011B624_mgmode);
+    omDelPrcObj(NULL);
+}
 
 void func_80115590_mgmode(void) {
     s16 model = D_8011B8B8_mgmode[0];

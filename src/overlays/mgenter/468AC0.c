@@ -410,11 +410,144 @@ void func_8010677C_mgenter(void) {
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgenter/468AC0", D_80109AC0_mgenter);
+void func_80106BD0_mgenter(void) {
+    s16 models[3];
+    GAMEMES gMes[3];
+    u8 buf[32];
+    u8 mesIds[] = { 1, 0, 2 };
+    u8 charIds[] = { 0, 2, 1 };
+    HmfData *hmf;
+    u8 *text;
+    s16 model;
+    s16 len;
+    s16 strId;
+    s16 i;
+    s16 j;
+    s16 k;
+    s16 prevSel;
+    f32 baseAngle;
+    f32 rotAngle;
+    f32 dir;
+    f32 alpha;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgenter/468AC0", D_80109AC4_mgenter);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgenter/468AC0", func_80106BD0_mgenter);
+    Hu3DFogSet(500, 550, 255, 255, 255);
+    for (i = 0; i < 3; i++) {
+        models[i] = func_8000B108_main(charIds[i] | 0x670000, 0x2BD);
+        model = models[i];
+        func_8001C258_main(model, 4, 4);
+        func_8001C814_main(model, 1, 1);
+        Hu3DMotionTimeSet(model, D_800CCF58_main[HmfModelData[model].motId].unk02 / 2);
+        Hu3DModelPosSet(model, sindf(i * 120) * 500.0f, 0.0f, cosdf(i * 120) * 500.0f);
+        hmf = HmfModelData[model].hmf;
+        hmf->unk60[func_8002C834_main(hmf, "atama_2")].unk24 = 1;
+        HmfModelData[model].rot.x = 20.0f;
+    }
+    for (i = 0; i < 3; i++) {
+        text = func_800364DC_main((void *)(mesIds[i] + 0x4604));
+        len = strlen((char *)text);
+        j = 0;
+        for (k = 0; k <= len; k++) {
+            if (text[k] >= 0x30) {
+                buf[j++] = text[k];
+            }
+        }
+        buf[j] = '\0';
+        strId = func_8003A308_main(&gMes[i], (char *)buf, 0, -1, -1);
+        HuSprPosSet(gMes[i].strGId[strId], 0, 160, 130);
+        len = j;
+        gMes[i].subMode = j;
+        for (j = 0; j < len; j++) {
+            HuSprTPLvlSet(gMes[i].strGId[0], j + 1, 0);
+        }
+        func_800365E8_main(text);
+    }
+    baseAngle = 0.0f;
+    prevSel = D_80109B32_mgenter;
+    rotAngle = 0.0f;
+    while (TRUE) {
+        switch (D_80109B28_mgenter) {
+            case 0:
+                baseAngle = D_80109B32_mgenter * 120;
+                prevSel = D_80109B32_mgenter;
+                for (j = 0; j < 3; j++) {
+                    Hu3DModelPosSet(models[j], sindf(j * 120 + baseAngle) * 500.0f, 0.0f,
+                                    cosdf(j * 120 + baseAngle) * 500.0f);
+                }
+                for (i = 0; i < 3; i++) {
+                    if (HmfModelData[models[i]].pos.z > 0.0f) {
+                        func_8001C258_main(models[i], 4, 0);
+                    } else {
+                        func_8001C258_main(models[i], 4, 4);
+                    }
+                }
+                for (i = 0; i < 6; i++) {
+                    alpha = i * 51.0f;
+                    for (j = 0; j < gMes[D_80109B32_mgenter].subMode; j++) {
+                        HuSprTPLvlSet(gMes[D_80109B32_mgenter].strGId[0], j + 1, alpha);
+                    }
+                    HuPrcVSleep();
+                }
+                break;
+            case 1:
+                for (i = 0; i < 3; i++) {
+                    func_8001C258_main(models[i], 4, 4);
+                }
+                func_8001C258_main(models[D_80109B32_mgenter], 4, 0);
+                for (i = 0; i < 6; i++) {
+                    alpha = i * 51.0f;
+                    for (j = 0; j < gMes[D_80109B32_mgenter].subMode; j++) {
+                        HuSprTPLvlSet(gMes[D_80109B32_mgenter].strGId[0], j + 1, 255.0f - alpha);
+                    }
+                    HuPrcVSleep();
+                }
+                HuPrcSleep(5);
+                for (i = 0; i < 3; i++) {
+                    func_8001C258_main(models[i], 4, 4);
+                }
+                break;
+        }
+        D_80109B28_mgenter = -1;
+        if (prevSel != D_80109B32_mgenter) {
+            dir = -func_80089750_main(prevSel - D_80109B32_mgenter);
+            if ((D_80109B32_mgenter == 2 && prevSel == 0) || (D_80109B32_mgenter == 0 && prevSel == 2)) {
+                dir = -dir;
+            }
+            for (i = 0; i < 3; i++) {
+                func_8001C258_main(models[i], 4, 0);
+            }
+            for (i = 1; i < 11; i++) {
+                for (j = 0; j < 3; j++) {
+                    Hu3DModelPosSet(models[j], sindf(j * 120 + baseAngle + i * 12 * dir) * 500.0f, 0.0f,
+                                    cosdf(j * 120 + baseAngle + i * 12 * dir) * 500.0f);
+                    func_8008A2A0_main(HmfModelData[models[j]].mtx, rotAngle);
+                }
+                alpha = i * 25;
+                for (j = 0; j < gMes[prevSel].subMode; j++) {
+                    HuSprTPLvlSet(gMes[prevSel].strGId[0], j + 1, 255.0f - alpha);
+                }
+                for (j = 0; j < gMes[D_80109B32_mgenter].subMode; j++) {
+                    HuSprTPLvlSet(gMes[D_80109B32_mgenter].strGId[0], j + 1, alpha);
+                }
+                rotAngle += 3.0f;
+                HuPrcVSleep();
+            }
+            prevSel = D_80109B32_mgenter;
+            for (i = 0; i < 3; i++) {
+                if (HmfModelData[models[i]].pos.z > 0.0f) {
+                    func_8001C258_main(models[i], 4, 0);
+                } else {
+                    func_8001C258_main(models[i], 4, 4);
+                }
+            }
+            baseAngle = D_80109B32_mgenter * 120;
+        }
+        for (j = 0; j < 3; j++) {
+            func_8008A2A0_main(HmfModelData[models[j]].mtx, rotAngle);
+        }
+        rotAngle += 3.0f;
+        HuPrcVSleep();
+    }
+}
 
 #ifdef NON_MATCHING
 // Matches except loop.c hoists the constant 1 (for the D_80109AA4/D_80109AA6

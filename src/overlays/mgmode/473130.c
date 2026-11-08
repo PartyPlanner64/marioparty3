@@ -7,6 +7,9 @@ extern s16 D_8011B458_mgmode[8];
 extern u8 D_8011B430_mgmode[4];
 extern u8 D_8011B434_mgmode;
 extern s16 D_800CC438_main;
+extern s16 D_800CE29C_main;
+extern s16 D_800D03FE_main[4];
+extern u8 D_80119430_mgmode[];
 extern s16 D_800D4194_main;
 
 void func_801169C8_mgmode(MgmodeEsprite *arg0, s16 index);
@@ -82,7 +85,17 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_80110554_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_80111380_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_80111B08_mgmode);
+s32 func_80111B08_mgmode(void) {
+    s16 i;
+
+    func_80110420_mgmode(D_800CE29C_main);
+    for (i = 0; i < D_8011B434_mgmode; i++) {
+        if (D_800D03FE_main[D_8011B430_mgmode[i]] + 1 >= D_80119430_mgmode[D_800CC438_main]) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_80111BB0_mgmode);
 

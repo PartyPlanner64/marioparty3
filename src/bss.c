@@ -210,7 +210,9 @@ u32 D_800CE210_main BSS; // nnsched.c
 u16 D_800CE214_main BSS; // objmain.c, pause.c
 s16 D_800CE218_main[64] BSS; // audio.c
 Process *pauseProc BSS; // pause.c
-u8 D_800CE29C_main[0x18] BSS; // unreferenced
+s16 D_800CE29C_main BSS; // overlays only
+s16 D_800CE29E_main BSS; // unreferenced
+u8 D_800CE2A0_main[0x14] BSS; // unreferenced
 s16 D_800CE2B4_main BSS; // hmfdraw.c
 OSTime __osCurrentTime BSS; // 2.0L/io/vimgr.c, 2.0L/os/gettime.c, 2.0L/os/timerintr.c
 u16 D_800CE2C0_main BSS; // saveEncode.c, saveload.c
@@ -228,7 +230,7 @@ OSPiHandle __CartRomHandle BSS; // 2.0L/io/cartrominit.c
 HuMallocHeader *gLastMallocBlock BSS; // mallocblock.c
 HmfModel *HmfModelData BSS; // aura.c, camera.c, effect.c, ...
 u16 D_800D03FC BSS; // overlays only
-s16 D_800D03FE_main BSS; // unreferenced
+s16 D_800D03FE_main BSS; // overlays only; accessed as s16[4] in mgmode
 u8 D_800D0400_main[0x8] BSS; // unreferenced
 u8 D_800D0408_main[0x4] BSS; // unreferenced
 Process *winProc BSS; // window.c

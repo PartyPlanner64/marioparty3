@@ -17,13 +17,17 @@ extern s16 D_8011B668_mgmode;
 extern s16 D_8011B66A_mgmode;
 extern s16 D_8011B66C_mgmode;
 extern s16 D_8011B66E_mgmode;
+extern s32 D_8011A3E4_mgmode[4];
+extern s16 D_8011A3F4_mgmode;
 extern s16 D_8011A3F8_mgmode[];
 extern MgmodeSpaceCoord *D_8011B670_mgmode;
 extern s16 D_8011B678_mgmode[4][4];
 extern s16 D_8011B698_mgmode[4];
 extern s16 D_8011B808_mgmode;
 
+void func_801188BC_mgmode(omObjData *obj);
 void func_801189C4_mgmode(s16 model);
+void func_80118B8C_mgmode(s16 model);
 
 s16 func_80116B20_mgmode(void) {
     s16 sprGrp;
@@ -310,7 +314,37 @@ void func_80118624_mgmode(s16 dstModel, s16 srcModel) {
     HmfModelData[dstModel].pos.z = HmfModelData[srcModel].pos.z;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_80118678_mgmode);
+s16 func_80118678_mgmode(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+    omObjData *obj;
+    HmfModelData_UnkBC_Struct *bc;
+    s16 model;
+    s16 anim;
+    s16 i;
+
+    for (i = 0; i < 4; i++) {
+        model = func_8000B108_main(D_8011A3E4_mgmode[i], 0x2A9);
+        D_8011B678_mgmode[D_8011A3F4_mgmode][i] = model;
+        anim = HmfAnimRead(HmfModelData[model].hmf, 0xB0048, "e268p01_I8");
+        Hu3DModelCameraSet(model, 2);
+        func_8003302C_main(anim, i * 2);
+        Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
+        func_8001C2FC_main(model, 0x20000, 0x20000);
+        Hu3DModelRemakeStatic(model);
+        func_8001C954_main(model);
+        func_8001C514_main(model);
+        func_80013390_main(model, -1, 0, func_80118B8C_mgmode);
+        bc = HmfModelData[model].unkBC;
+        bc->unk1C.f = arg0;
+        bc->unk20.f = arg1;
+        bc->unk24.f = arg2;
+        bc->unk08.f = arg3;
+        func_8001C258_main(model, 4, 4);
+    }
+    obj = omAddObj(10, 10, 10, -1, func_801188BC_mgmode);
+    obj->work[0] = D_8011A3F4_mgmode;
+    D_8011A3F4_mgmode++;
+    return obj->work[0];
+}
 
 void func_80118888_mgmode(s16 index) {
     D_8011A3F8_mgmode[index] = 1;

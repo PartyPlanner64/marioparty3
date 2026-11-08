@@ -303,6 +303,7 @@ u8 D_800D1F20_main[4] BSS; // overlays only
 u32 __osThprofLastTimer BSS; // 2.0L/debug/threadprofile.c
 s16 D_800D1F28_main BSS; // unreferenced
 u8 D_800D1F2A_main BSS; // hmfdraw.c
+s16 D_800D1F2C_main BSS; // overlays only
 Gfx *D_800D1F30_main ALIGNED(8) BSS; // hmfspr.c
 u8 comKeyIdx BSS; // window.c
 Gfx *D_800D1F38_main[8] BSS; // hmfdraw.c

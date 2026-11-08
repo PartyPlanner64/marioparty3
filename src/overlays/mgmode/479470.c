@@ -25,6 +25,12 @@ extern s16 D_800D0418_main[8];
 extern s16 D_801195BC_mgmode[];
 extern u8 D_801195C4_mgmode[4];
 extern u8 D_801195C8_mgmode[8];
+extern s16 D_800D1F2C_main;
+extern s16 D_800CE29C_main;
+extern u8 D_80118EB1_mgmode;
+extern s16 D_80118EB4_mgmode;
+extern s16 D_8011B950_mgmode;
+extern s16 D_8011B95A_mgmode;
 
 void func_80115BB8_mgmode(s16 value);
 void func_80115CAC_mgmode(s16 value);
@@ -45,12 +51,65 @@ void func_80114614_mgmode(s16 index);
 void func_80114804_mgmode(s16 arg0, s16 arg1, s16 arg2);
 void func_80115A9C_mgmode(s16 x, s16 y, s16 value);
 void func_80118624_mgmode(s16 dstModel, s16 srcModel);
+void func_801134C0_mgmode(void);
+void func_801141EC_mgmode(s32 animate);
+s16 func_801149F4_mgmode(void);
+s16 func_80114C80_mgmode(void);
+void func_80115C5C_mgmode(s16 value);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80112200_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80112CF4_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80112F98_mgmode);
+void func_80112F98_mgmode(void) {
+    s16 i;
+
+    D_800D1FE0_main = 10;
+    D_800D1F2C_main = 0;
+    func_801134C0_mgmode();
+    func_80115C5C_mgmode(D_800D1FE0_main);
+    HuPrcVSleep();
+    func_801141EC_mgmode(1);
+    HuWinMesSet(D_8011B6A8_mgmode, 0x5808, -1, -1);
+    HuWinExAnimIn(D_8011B6A8_mgmode);
+    D_800CE29C_main = func_801149F4_mgmode();
+    HuWinInsertMesSet(D_8011B6A8_mgmode, D_800CE29C_main + 0x4700, 0);
+    HuWinMesSet(D_8011B6A8_mgmode, 0x580A, -1, -1);
+    while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+        HuPrcVSleep();
+    }
+    HuWinMesSet(D_8011B6A8_mgmode, 0x580B, -1, -1);
+    D_800CB894_main = -1;
+    do {
+        D_800CB894_main = func_80114C80_mgmode();
+        if (D_800CB894_main < 0) {
+            HuWinMesSet(D_8011B6A8_mgmode, 0x5813, -1, -1);
+            while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+                HuPrcVSleep();
+            }
+            if ((s16)HuWinChoiceGet(D_8011B6A8_mgmode, 0, 0) == 0) {
+                return;
+            }
+            HuWinMesSet(D_8011B6A8_mgmode, 0x580B, -1, -1);
+        }
+    } while (D_800CB894_main < 0);
+    D_800D1FE0_main -= D_800CB894_main;
+    GwPlayer[0].gameCoin = D_800CB894_main;
+    GwPlayer[0].group = 0;
+    for (i = 1; i < 4; i++) {
+        GwPlayer[i].group = 1;
+    }
+    _SetFlag(0xD);
+    GwSystem.minigame_index = (u8)D_800CE29C_main + 1;
+    omOvlHisChg(0, 0x69, 5, 0x84);
+    D_80118EB1_mgmode = 1;
+    D_8011B95A_mgmode = 0x70;
+    D_8011B950_mgmode = 0;
+    D_80118EB4_mgmode = 2;
+    while (TRUE) {
+        HuPrcVSleep();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80113204_mgmode);
 

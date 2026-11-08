@@ -549,9 +549,6 @@ void func_80106BD0_mgenter(void) {
     }
 }
 
-#ifdef NON_MATCHING
-// Matches except loop.c hoists the constant 1 (for the D_80109AA4/D_80109AA6
-// stores) into a callee-saved register, using one extra saved register.
 void func_801079B4_mgenter(void) {
     s16 size[2];
     u8 buf[16];
@@ -561,7 +558,7 @@ void func_801079B4_mgenter(void) {
     s16 valueWinId;
     s16 value;
     s16 delta;
-    u16 btn;
+    s16 btn;
 
     D_800A11E6_main = -1;
     omAddPrcObj(func_80106568_mgenter, 0x3F00, 0x800, 0);
@@ -616,7 +613,7 @@ void func_801079B4_mgenter(void) {
             HuWinMesSet(valueWinId, 0x4602, -1, -1);
         }
         btn = D_800D5558_main[D_80109B74_mgenter];
-        if ((s16)btn & 0x8000) {
+        if (btn & 0x8000) {
             HuAudFXPlay(2);
             D_800CB894_main = value;
             break;
@@ -643,9 +640,6 @@ void func_801079B4_mgenter(void) {
         HuPrcVSleep();
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/mgenter/468AC0", func_801079B4_mgenter);
-#endif
 
 void func_80107E5C_mgenter(s16 winId, s16 value, u8 *buf) {
     s16 i;

@@ -3,6 +3,7 @@
 
 extern s32 D_8010FAF0_chancetime;
 extern f32 D_8010FAF4_chancetime;
+extern f32 D_8010FAFC_chancetime;
 extern s32 D_8010FE70_chancetime;
 extern s32 D_8010FE74_chancetime;
 extern s8 D_8010FE78_chancetime;
@@ -14,7 +15,7 @@ void func_80106BEC_chancetime(omObjData *object);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4822F0", func_80106320_chancetime);
 
-void func_80106760_chancetime(void) {
+void func_80106760_chancetime(omObjData *object) {
 }
 
 void func_80106768_chancetime(void) {
@@ -38,7 +39,23 @@ void func_80106770_chancetime(omObjData *object) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4822F0", func_8010684C_chancetime);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4822F0", func_80106A2C_chancetime);
+void func_80106A2C_chancetime(omObjData *object) {
+    s32 done = FALSE;
+
+    HuPrcSleep(2);
+    HuAudFXPlay(0x501);
+    do {
+        D_8010FAFC_chancetime += 0.14f;
+        if (D_8010FAFC_chancetime >= 0.7f) {
+            D_8010FAFC_chancetime = 0.7f;
+            done = TRUE;
+        }
+        Hu3DModelScaleSet(object->model[3], D_8010FAFC_chancetime, D_8010FAFC_chancetime, D_8010FAFC_chancetime);
+        HuPrcVSleep();
+    } while (done != TRUE);
+    D_8010FAFC_chancetime = 0.0f;
+    D_801100C0_chancetime.func = func_80106760_chancetime;
+}
 
 void func_80106B18_chancetime(void) {
     omObjData *obj = D_801100C0_chancetime.obj;

@@ -41,6 +41,8 @@ extern s16 D_8011B950_mgmode;
 extern s16 D_8011B95A_mgmode;
 extern MgmodeSpaceCoord D_80119454_mgmode[];
 extern MgmodeSpaceCoord D_8011B468_mgmode[];
+extern s16 D_8011B4C0_mgmode;
+extern s16 D_80119490_mgmode[];
 
 void func_8010CBFC_mgmode(void);
 s16 func_8010DAB8_mgmode(s32 arg0);
@@ -738,7 +740,122 @@ u8 func_80110420_mgmode(s16 mgIndex) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_80110554_mgmode);
 
+#ifdef NON_MATCHING
+// Matches except for the `case 4` loop. In the target, the store to
+// sprites[count] and the following reads of sprites[count] use separately
+// computed addresses (as in `case 2`, where the if/else separates them), and
+// the sprites base (sp+0x10) is hoisted into a saved register. The compiled
+// version below instead CSEs the store/read addresses.
+// Partial (artificial) workaround: inserting `do {} while (0);` between the
+// sprites[count] store and espDispOn() in `case 4` fixes all of that, leaving
+// only the sign-extended loop index at the loop top allocated to v0 instead of
+// a0 (and a `bnez` instead of `bnezl` at the loop end). Loop shape, player
+// type/variable, and break/default variations did not fix the remaining diff.
+s32 func_80111380_mgmode(void) {
+    u16 sprites[4];
+    s16 i;
+    s16 j;
+    s16 count;
+    s16 mask;
+    s16 y;
+    s16 player;
+    f32 tpLvl;
+    f32 scale;
+
+    count = 0;
+    if (D_8011B434_mgmode == 0) {
+        return 0;
+    }
+    switch (D_800D4194_main) {
+        case 0:
+        case 3:
+            for (i = 0; i < D_8011B434_mgmode; i++) {
+                player = D_8011B430_mgmode[i];
+                sprites[i] = D_8011B488_mgmode[D_8011B4C0_mgmode];
+                count++;
+                espDispOn(sprites[i]);
+                espPosSet(sprites[i], D_80119490_mgmode[D_800CC438_main * 7 + D_800D03FE_main[player]] + 180,
+                          player * 24 + 80);
+                D_8011B4C0_mgmode++;
+            }
+            break;
+        case 1:
+            mask = 0;
+            for (i = 0; i < D_8011B434_mgmode; i++) {
+                player = D_8011B430_mgmode[i];
+                if (!((mask >> D_800D1F20_main[player]) & 1)) {
+                    mask |= 1 << D_800D1F20_main[player];
+                    sprites[count] = D_8011B488_mgmode[D_8011B4C0_mgmode];
+                    espDispOn(sprites[count]);
+                    espPosSet(sprites[count], D_80119490_mgmode[D_800CC438_main * 7 + D_800D03FE_main[player]] + 180,
+                              D_800D1F20_main[player] * 48 + 93);
+                    count++;
+                    D_8011B4C0_mgmode++;
+                }
+            }
+            break;
+        case 2:
+            mask = 0;
+            for (i = 0; i < D_8011B434_mgmode; i++) {
+                player = D_8011B430_mgmode[i];
+                if (!((mask >> D_800D1F20_main[player]) & 1)) {
+                    mask |= 1 << D_800D1F20_main[player];
+                    sprites[count] = D_8011B488_mgmode[D_8011B4C0_mgmode];
+                    if (D_800D1F20_main[player] == 0) {
+                        y = 80;
+                    } else {
+                        y = 128;
+                    }
+                    espDispOn(sprites[count]);
+                    espPosSet(sprites[count], D_80119490_mgmode[D_800CC438_main * 7 + D_800D03FE_main[player]] + 180, y);
+                    count++;
+                    D_8011B4C0_mgmode++;
+                }
+            }
+            break;
+        case 4:
+            for (i = 0; i < D_8011B434_mgmode; i++) {
+                player = D_8011B430_mgmode[i];
+                sprites[count] = D_8011B488_mgmode[D_8011B4C0_mgmode];
+                espDispOn(sprites[count]);
+                espPosSet(sprites[count], D_80119490_mgmode[D_800CC438_main * 7 + D_800D03FE_main[player]] + 180,
+                          player * 24 + 104);
+                count++;
+                D_8011B4C0_mgmode++;
+            }
+            break;
+    }
+    for (i = 0; i < D_8011B434_mgmode; i++) {
+        D_800D03FE_main[D_8011B430_mgmode[i]]++;
+    }
+    for (i = 0, D_8011B434_mgmode = 0; i < 4; i++) {
+        if (D_800D03FE_main[i] >= D_80119430_mgmode[D_800CC438_main]) {
+            D_8011B430_mgmode[D_8011B434_mgmode] = i;
+            D_8011B434_mgmode++;
+            if (!(GwPlayer[i].stat & 1)) {
+                RepeatVibrator(GwPlayer[i].pad, 10, 0, 10);
+            }
+        }
+    }
+    if (D_8011B434_mgmode != 0) {
+        HuAudFXPlay(0x24B);
+    } else {
+        HuAudFXPlay(0x24A);
+    }
+    for (i = 0; i < 31; i++) {
+        tpLvl = sindf(i * 3.0f) * 255.0f;
+        scale = sindf(i * 5.0f) * 2;
+        for (j = 0; j < count; j++) {
+            espTPLvlSet(sprites[j], tpLvl);
+            espScaleSet(sprites[j], scale, scale);
+        }
+        HuPrcVSleep();
+    }
+    return D_8011B434_mgmode != 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_80111380_mgmode);
+#endif
 
 s32 func_80111B08_mgmode(void) {
     s16 i;

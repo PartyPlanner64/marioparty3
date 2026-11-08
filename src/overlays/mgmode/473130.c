@@ -18,6 +18,8 @@ extern s16 D_8011B940_mgmode[];
 extern s16 D_8011B6A8_mgmode;
 extern MgmodeSpaceCoord D_80119424_mgmode[];
 extern u8 D_800D1F20_main[4];
+extern s16 D_8011B8B6_mgmode[];
+extern s16 D_8011B8E8_mgmode[];
 
 void func_8010CBFC_mgmode(void);
 void func_801169C8_mgmode(MgmodeEsprite *arg0, s16 index);
@@ -119,7 +121,41 @@ void func_8010E40C_mgmode(void) {
     }
 }
 
+#ifdef NON_MATCHING
+// Matches except for one register copy: target emits `move t3,a2` for rank = 0.
+void func_8010E494_mgmode(s16 arg0) {
+    Vec pos[4];
+    s16 order[4];
+    s16 count;
+    s16 i;
+    s16 slot;
+    s16 rank;
+
+    count = (arg0 != 4) ? 4 : 2;
+    for (i = 0; i < count; i++) {
+        order[i] = D_800D1F20_main[i];
+    }
+    for (slot = 0, rank = 0; rank < count || slot < count; rank++) {
+        for (i = 0; i < count; i++) {
+            if (rank == order[i]) {
+                pos[i].x = slot * 80 - 122;
+                pos[i].y = 26.0f;
+                pos[i].z = -312.0f;
+                order[i] = -1;
+                slot++;
+            }
+        }
+    }
+    for (i = 0; i < count; i++) {
+        func_8001C258_main(D_8011B8B6_mgmode[i], 4, 0);
+        Hu3DModelPosSet(D_8011B8B6_mgmode[i], pos[i].x, pos[i].y, pos[i].z);
+        func_8001C258_main(D_8011B8E8_mgmode[i], 4, 0);
+        Hu3DModelPosSet(D_8011B8E8_mgmode[i], pos[i].x, pos[i].y, pos[i].z);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010E494_mgmode);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010E6F0_mgmode);
 

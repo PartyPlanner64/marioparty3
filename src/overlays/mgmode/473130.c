@@ -13,10 +13,13 @@ extern u8 D_80119430_mgmode[];
 extern s16 D_800D4194_main;
 extern s16 D_8011B6A8_mgmode;
 extern MgmodeSpaceCoord D_80119424_mgmode[];
+extern u8 D_800D1F20_main[4];
 
 void func_8010CBFC_mgmode(void);
 void func_801169C8_mgmode(MgmodeEsprite *arg0, s16 index);
 void func_80116A48_mgmode(MgmodeEsprite *arg0, s16 index, f32 x, f32 y);
+void func_80118888_mgmode(s16 index);
+void func_801188A4_mgmode(s16 index);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010BEC0_mgmode);
 
@@ -154,4 +157,36 @@ void func_80111F9C_mgmode(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_80112060_mgmode);
+void func_80112060_mgmode(s32 arg0) {
+    s16 order[4];
+    s16 i;
+    s16 j;
+    s16 k;
+    s16 count;
+
+    for (j = 0; j < 4; j++) {
+        order[j] = D_800D1F20_main[j];
+    }
+
+    count = 0;
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 4; j++) {
+            if (i == order[j]) {
+                for (k = 0; k < D_8011B434_mgmode; k++) {
+                    if (D_8011B430_mgmode[k] == j) {
+                        break;
+                    }
+                }
+                if (k != D_8011B434_mgmode) {
+                    if (arg0) {
+                        func_80118888_mgmode(count);
+                    } else {
+                        func_801188A4_mgmode(count);
+                    }
+                    order[j] = -1;
+                }
+                count++;
+            }
+        }
+    }
+}

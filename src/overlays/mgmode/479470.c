@@ -149,7 +149,30 @@ void func_801146D8_mgmode(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80114804_mgmode);
+void func_80114804_mgmode(s16 arg0, s16 arg1, s16 arg2) {
+    s16 i;
+
+    if (arg2 >= 10000) {
+        arg2 = 9999;
+    }
+    func_80115CDC_mgmode(D_801194C0_mgmode, 3, arg0, 3);
+    for (i = 0; i < 3; i++) {
+        func_80116968_mgmode(D_801194C0_mgmode, i + 3, i * 16 + 104, 70);
+    }
+    func_80115CDC_mgmode(D_801194C0_mgmode, 8, arg1, 2);
+    for (i = 0; i < 2; i++) {
+        func_80116968_mgmode(D_801194C0_mgmode, i + 8, i * 16 + 168, 70);
+    }
+    func_80115CDC_mgmode(D_801194C0_mgmode, 11, arg2, 4);
+    for (i = 0; i < 4; i++) {
+        func_80116968_mgmode(D_801194C0_mgmode, i + 11, i * 16 + 216, 70);
+    }
+    func_801169A0_mgmode(D_801194C0_mgmode, 7);
+    func_80116968_mgmode(D_801194C0_mgmode, 7, 152, 70);
+    func_801169A0_mgmode(D_801194C0_mgmode, 10);
+    func_80116AA8_mgmode(D_801194C0_mgmode, 10, 3);
+    func_80116968_mgmode(D_801194C0_mgmode, 10, 200, 70);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_801149F4_mgmode);
 

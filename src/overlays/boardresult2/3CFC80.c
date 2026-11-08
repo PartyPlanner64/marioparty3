@@ -14,10 +14,28 @@ typedef struct BoardResult2Portraits {
     s32 files[8];
 } BoardResult2Portraits;
 
+typedef struct BoardResult2Files4 {
+    s32 files[4];
+} BoardResult2Files4;
+
+typedef struct BoardResult2BoardFiles {
+    s32 files[6];
+} BoardResult2BoardFiles;
+
+typedef struct BoardResult2StatFiles {
+    s32 files[13];
+} BoardResult2StatFiles;
+
 extern BoardResult2Positions D_801097C0_boardresult2;
 extern BoardResult2PlayerFiles D_801097D0_boardresult2;
 extern BoardResult2Portraits D_80109800_boardresult2;
 extern BoardResult2Positions D_80109820_boardresult2;
+extern BoardResult2Files4 D_801098B4_boardresult2;
+extern BoardResult2BoardFiles D_801098C4_boardresult2;
+extern BoardResult2Portraits D_801098DC_boardresult2;
+extern BoardResult2Portraits D_801098FC_boardresult2;
+extern BoardResult2Files4 D_8010991C_boardresult2;
+extern BoardResult2StatFiles D_8010992C_boardresult2;
 
 extern UnkBoard4 *D_801099A0_boardresult2;
 extern UnkBoard4 *D_801099A4_boardresult2;
@@ -609,7 +627,149 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/boardresult2/3CFC80", D_8010991C_board
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/boardresult2/3CFC80", D_8010992C_boardresult2);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_80107964_boardresult2);
+void func_80107964_boardresult2(void) {
+    BoardResult2Files4 rankFiles = D_801098B4_boardresult2;
+    BoardResult2BoardFiles boardFiles = D_801098C4_boardresult2;
+    BoardResult2Portraits nameFiles = D_801098DC_boardresult2;
+    BoardResult2Portraits faceFiles = D_801098FC_boardresult2;
+    BoardResult2Files4 lengthFiles = D_8010991C_boardresult2;
+    BoardResult2StatFiles statFiles = D_8010992C_boardresult2;
+    void *data;
+    s32 i;
+
+    D_801099CC_boardresult2 = func_800F4528_name_81(1, 0);
+    data = DataRead(boardFiles.files[GwSystem.current_board_index]);
+    D_801099CC_boardresult2->unk_0C[0] = HuSprAnimRead(data);
+    DataClose(data);
+    HuSprGrpMemberSet(D_801099CC_boardresult2->unk_0A, 0, D_801099CC_boardresult2->unk_0C[0], 0);
+    HuSprPriSet(D_801099CC_boardresult2->unk_0A, 0, 110);
+    HuSprAttrSet(D_801099CC_boardresult2->unk_0A, 0, 0x4000);
+    HuSprPosSet(D_801099CC_boardresult2->unk_0A, 0, 74, 39);
+
+    D_801099D0_boardresult2 = func_800F4528_name_81(2, 0);
+    data = DataRead(0x13004B);
+    D_801099D0_boardresult2->unk_0C[0] = HuSprAnimRead(data);
+    DataClose(data);
+    HuSprGrpMemberSet(D_801099D0_boardresult2->unk_0A, 0, D_801099D0_boardresult2->unk_0C[0], 0);
+    HuSprPriSet(D_801099D0_boardresult2->unk_0A, 0, 100);
+    HuSprAttrSet(D_801099D0_boardresult2->unk_0A, 0, 0x4000);
+    HuSprPosSet(D_801099D0_boardresult2->unk_0A, 0, 210, 28);
+
+    if (GwSystem.playMode & 4) {
+        data = DataRead(0x13007C);
+    } else {
+        data = DataRead(lengthFiles.files[GwSystem.current_game_length]);
+    }
+    D_801099D0_boardresult2->unk_0C[1] = HuSprAnimRead(data);
+    DataClose(data);
+    HuSprGrpMemberSet(D_801099D0_boardresult2->unk_0A, 1, D_801099D0_boardresult2->unk_0C[1], 0);
+    HuSprPriSet(D_801099D0_boardresult2->unk_0A, 1, 99);
+    HuSprAttrSet(D_801099D0_boardresult2->unk_0A, 1, 0x4000);
+    HuSprPosSet(D_801099D0_boardresult2->unk_0A, 1, 210, 28);
+
+    D_801099D4_boardresult2 = func_800F4528_name_81(1, 0);
+    data = DataRead(0x13004C);
+    D_801099D4_boardresult2->unk_0C[0] = HuSprAnimRead(data);
+    DataClose(data);
+    HuSprGrpMemberSet(D_801099D4_boardresult2->unk_0A, 0, D_801099D4_boardresult2->unk_0C[0], 0);
+    HuSprPriSet(D_801099D4_boardresult2->unk_0A, 0, 99);
+    HuSprAttrSet(D_801099D4_boardresult2->unk_0A, 0, 0x4000);
+    HuSprPosSet(D_801099D4_boardresult2->unk_0A, 0, 218, 51);
+
+    for (i = 0; i < 4; i++) {
+        D_801099D8_boardresult2[i] = func_800F4528_name_81(10, 2);
+        data = DataRead(rankFiles.files[i]);
+        D_801099D8_boardresult2[i]->unk_0C[1] = HuSprAnimRead(data);
+        DataClose(data);
+        HuSprGrpMemberSet(D_801099D8_boardresult2[i]->unk_0A, 1, D_801099D8_boardresult2[i]->unk_0C[1], 0);
+        HuSprPriSet(D_801099D8_boardresult2[i]->unk_0A, 1, 98);
+        HuSprAttrSet(D_801099D8_boardresult2[i]->unk_0A, 1, 0x4000);
+        HuSprPosSet(D_801099D8_boardresult2[i]->unk_0A, 1, 172, 0);
+
+        data = DataRead(nameFiles.files[GwPlayer[kakusiMasuItemHis[i]].chr]);
+        D_801099D8_boardresult2[i]->unk_0C[2] = HuSprAnimRead(data);
+        DataClose(data);
+        HuSprGrpMemberSet(D_801099D8_boardresult2[i]->unk_0A, 2, D_801099D8_boardresult2[i]->unk_0C[2], 0);
+        HuSprPriSet(D_801099D8_boardresult2[i]->unk_0A, 2, 97);
+        HuSprAttrSet(D_801099D8_boardresult2[i]->unk_0A, 2, 0x4000);
+        HuSprPosSet(D_801099D8_boardresult2[i]->unk_0A, 2, 36, 1);
+
+        data = DataRead(faceFiles.files[GwPlayer[kakusiMasuItemHis[i]].chr]);
+        D_801099D8_boardresult2[i]->unk_0C[3] = HuSprAnimRead(data);
+        DataClose(data);
+        HuSprGrpMemberSet(D_801099D8_boardresult2[i]->unk_0A, 3, D_801099D8_boardresult2[i]->unk_0C[3], 0);
+        HuSprPriSet(D_801099D8_boardresult2[i]->unk_0A, 3, 96);
+        HuSprAttrSet(D_801099D8_boardresult2[i]->unk_0A, 3, 0x4000);
+        HuSprPosSet(D_801099D8_boardresult2[i]->unk_0A, 3, 77, 1);
+    }
+
+    for (i = 0; i < 4; i++) {
+        HuSprPosSet(D_801099D8_boardresult2[i]->unk_0A, 0, 0, i * 22 + 73);
+    }
+
+    D_801099E8_boardresult2 = func_800F4528_name_81(2, 0);
+    for (i = 0; i < 2; i++) {
+        data = DataRead(0x13002E);
+        D_801099E8_boardresult2->unk_0C[i] = HuSprAnimRead(data);
+        DataClose(data);
+        HuSprGrpMemberSet(D_801099E8_boardresult2->unk_0A, i, D_801099E8_boardresult2->unk_0C[i], 0);
+        HuSprPriSet(D_801099E8_boardresult2->unk_0A, i, 90);
+        HuSprAttrSet(D_801099E8_boardresult2->unk_0A, i, 0x4000);
+        HuSprPosSet(D_801099E8_boardresult2->unk_0A, i, i * 154 + 133, 161);
+    }
+    HuSprAttrSet(D_801099E8_boardresult2->unk_0A, 0, 1);
+
+    D_801099EC_boardresult2 = func_800F4528_name_81(13, 0);
+    for (i = 0; i < 13; i++) {
+        data = DataRead(statFiles.files[i]);
+        D_801099EC_boardresult2->unk_0C[i] = HuSprAnimRead(data);
+        DataClose(data);
+        HuSprGrpMemberSet(D_801099EC_boardresult2->unk_0A, i, D_801099EC_boardresult2->unk_0C[i], 0);
+        HuSprPriSet(D_801099EC_boardresult2->unk_0A, i, 80);
+        HuSprAttrSet(D_801099EC_boardresult2->unk_0A, i, 0xC000);
+    }
+
+    D_801099F0_boardresult2 = func_800F4528_name_81(64, 0);
+    data = DataRead(0x130077);
+    D_801099F0_boardresult2->unk_0C[0] = HuSprAnimRead(data);
+    DataClose(data);
+    data = DataRead(0x130078);
+    D_801099F0_boardresult2->unk_0C[1] = HuSprAnimRead(data);
+    DataClose(data);
+    for (i = 0; i < 64; i++) {
+        HuSprGrpMemberSet(D_801099F0_boardresult2->unk_0A, i, D_801099F0_boardresult2->unk_0C[0], 0);
+        HuSprPriSet(D_801099F0_boardresult2->unk_0A, i, 70);
+        HuSprAttrSet(D_801099F0_boardresult2->unk_0A, i, 0xC000);
+    }
+
+    D_801099F4_boardresult2 = func_800F4528_name_81(1, 0);
+    data = DataRead(0x130076);
+    D_801099F4_boardresult2->unk_0C[0] = HuSprAnimRead(data);
+    DataClose(data);
+    HuSprGrpMemberSet(D_801099F4_boardresult2->unk_0A, 0, D_801099F4_boardresult2->unk_0C[0], 0);
+    HuSprPriSet(D_801099F4_boardresult2->unk_0A, 0, 60);
+    HuSprAttrSet(D_801099F4_boardresult2->unk_0A, 0, 0x4000);
+
+    D_801099C8_boardresult2 = func_800E4B64_name_81(0, 8);
+    func_800E4EAC_name_81(D_801099C8_boardresult2, 105, 8);
+    HuVecCopyXYZ(&D_801099C8_boardresult2->obj->scale, 0.1f, 0.1f, 0.1f);
+    HuWinScaleSet(D_801099C8_boardresult2->win_id, 1.0f, 1.0f);
+    func_8005B63C_main(D_801099C8_boardresult2->win_id, 0x4000, 0x4000);
+    HuWinMesPalSet(D_801099C8_boardresult2->win_id, 2, 255, 96, 96);
+    HuWinMesPalSet(D_801099C8_boardresult2->win_id, 4, 96, 255, 64);
+    HuWinMesPalSet(D_801099C8_boardresult2->win_id, 6, 64, 255, 255);
+    func_800E4EAC_name_81(D_801099C8_boardresult2, 113, 8);
+
+    D_80109A38_boardresult2[0] =
+        func_80105A8C_boardresult2(D_801099C8_boardresult2->obj->omObj1->model[0], 0xA007E, "c204n_0_DEF");
+    D_80109A38_boardresult2[1] = func_80105C68_boardresult2(0xA007F);
+    D_80109A38_boardresult2[2] = func_80105C68_boardresult2(0xA0080);
+    D_80109A38_boardresult2[3] = func_80105C68_boardresult2(0xA0081);
+    D_80109A38_boardresult2[4] = func_80105C68_boardresult2(0xA0082);
+    D_80109A38_boardresult2[5] = func_80105C68_boardresult2(0xA0083);
+    D_80109A38_boardresult2[6] = func_80105C68_boardresult2(0xA0084);
+    func_80105B98_boardresult2(D_801099C8_boardresult2->obj->omObj1->model[0], D_80109A38_boardresult2[0]);
+}
 
 void func_80108548_boardresult2(void) {
     s32 i;

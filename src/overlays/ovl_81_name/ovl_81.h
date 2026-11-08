@@ -179,6 +179,8 @@ s32 func_800E1824_name_81(s32, s32, s32);
 void func_800E1854_name_81(s32);
 void func_800F4584_name_81(UnkBoard4*);
 void func_800E4E64_name_81(UnkOvl81_2*);
+UnkOvl81_2* func_800E4B64_name_81(s32, s32);
+void func_800E4EAC_name_81(UnkOvl81_2*, s32, s32);
 void func_800FAD04_name_81(s32 arg0);
 void func_800D8F0C_name_81(Object*);
 void func_800D96F4_name_81(void);

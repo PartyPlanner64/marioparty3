@@ -7,6 +7,9 @@ typedef struct ChanceTimeUnkFED0 {
 
 extern s8 D_8010FB80_chancetime;
 extern s8 D_8010FB81_chancetime;
+extern s16 D_8010FB84_chancetime[2];
+extern f32 D_8010FB88_chancetime;
+extern f32 D_8010FB8C_chancetime;
 extern s32 D_8010FBF0_chancetime;
 extern s32 D_8010FBF4_chancetime;
 extern s32 D_8010FBF8_chancetime;
@@ -28,6 +31,7 @@ extern void (*D_80110084_chancetime)();
 extern omObjData *D_801100C8_chancetime;
 extern void (*D_801100CC_chancetime)(void);
 
+s32 func_8010872C_chancetime(void);
 void func_8010C610_chancetime(void);
 void func_8010D320_chancetime(void);
 void func_8010D6A4_chancetime(s32 arg0);
@@ -44,7 +48,21 @@ void func_8010C5F4_chancetime(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010C610_chancetime);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010C870_chancetime);
+void func_8010C870_chancetime(void) {
+    D_8010FB84_chancetime[0] = 74;
+    D_8010FB84_chancetime[1] = 25;
+    espPosSet(D_8010FE9A_chancetime, 161, 71);
+    espPosSet(D_8010FE94_chancetime[0], D_8010FB84_chancetime[0] + 51, D_8010FB84_chancetime[1] + 46);
+    espPosSet(D_8010FE94_chancetime[1], D_8010FB84_chancetime[0] + 124, D_8010FB84_chancetime[1] + 46);
+    espPosSet(D_8010FE94_chancetime[2], D_8010FB84_chancetime[0] + 87, D_8010FB84_chancetime[1] + 116);
+    if (func_8010872C_chancetime() == 1) {
+        D_8010FB88_chancetime = 600.0f;
+        D_8010FB8C_chancetime = 0.0f;
+        D_8010FB80_chancetime = 0;
+        D_8010FB81_chancetime = 1;
+        D_801100CC_chancetime = func_8010C5F4_chancetime;
+    }
+}
 
 void func_8010C98C_chancetime(void) {
 }

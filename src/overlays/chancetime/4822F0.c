@@ -7,7 +7,10 @@ extern f32 D_8010FAFC_chancetime;
 extern s32 D_8010FE70_chancetime;
 extern s32 D_8010FE74_chancetime;
 extern s8 D_8010FE78_chancetime;
+extern s16 D_8010FE7C_chancetime;
+extern s16 D_8010FE7E_chancetime;
 extern ChanceTimeObjState D_801100C0_chancetime;
+extern s8 D_801100D0_chancetime[];
 
 void func_80106770_chancetime(omObjData *object);
 void func_8010684C_chancetime(omObjData *object);
@@ -84,8 +87,53 @@ s32 func_80106BE0_chancetime(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4822F0", func_80106BEC_chancetime);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4822F0", func_80106F10_chancetime);
+void func_80106F10_chancetime(void) {
+    omObjData *object = D_801100C0_chancetime.obj;
+    f32 time;
+    f32 length;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4822F0", func_8010705C_chancetime);
+    HuAudFXPlay(0x502);
+    CharFXPlay(0x274, GwPlayer[D_801100D0_chancetime[0]].chr);
+    func_80017954_main(object->model[1], 2, GwPlayer[D_801100D0_chancetime[0]].chr, D_8010FE7C_chancetime);
+    Hu3DMotionShiftSet(object->model[1], HmfModelData[object->motion[2]].motId, 0, 30, 0);
+    HuPrcSleep(30);
+    do {
+        time = HmfModelData[object->model[1]].motTime;
+        length = D_800CCF58_main[HmfModelData[object->model[1]].motId].unk02;
+        HuPrcVSleep();
+    } while (time < length);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4822F0", func_801071A8_chancetime);
+void func_8010705C_chancetime(void) {
+    omObjData *object = D_801100C0_chancetime.obj;
+    f32 time;
+    f32 length;
+
+    HuAudFXPlay(0x503);
+    CharFXPlay(0x26B, GwPlayer[D_801100D0_chancetime[0]].chr);
+    func_80017954_main(object->model[1], 2, GwPlayer[D_801100D0_chancetime[0]].chr, D_8010FE7E_chancetime);
+    Hu3DMotionShiftSet(object->model[1], HmfModelData[object->motion[3]].motId, 0, 30, 0);
+    HuPrcSleep(30);
+    do {
+        time = HmfModelData[object->model[1]].motTime;
+        length = D_800CCF58_main[HmfModelData[object->model[1]].motId].unk02;
+        HuPrcVSleep();
+    } while (time < length);
+}
+
+void func_801071A8_chancetime(void) {
+    omObjData *object = D_801100C0_chancetime.obj;
+    f32 time;
+    f32 length;
+
+    HuAudFXPlay(0x503);
+    CharFXPlay(0x26B, GwPlayer[D_801100D0_chancetime[0]].chr);
+    func_80017954_main(object->model[1], 2, GwPlayer[D_801100D0_chancetime[0]].chr, D_8010FE7E_chancetime);
+    Hu3DMotionShiftSet(object->model[1], HmfModelData[object->motion[4]].motId, 0, 30, 0);
+    HuPrcSleep(30);
+    do {
+        time = HmfModelData[object->model[1]].motTime;
+        length = D_800CCF58_main[HmfModelData[object->model[1]].motId].unk02;
+        HuPrcVSleep();
+    } while (time < length);
+}

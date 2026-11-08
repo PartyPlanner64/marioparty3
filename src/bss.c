@@ -345,7 +345,7 @@ s32 D_800D209C_main BSS; // window.c
 u8 D_800D20A0_main[8] BSS; // audio.c, hmfdraw.c, input.c, ...; contains D_800D20A1_main
 u32 sPrcSleepLoc BSS; // process.c
 s32 D_800D20AC_main BSS; // hmfdraw.c, hmfman.c, mallocblock.c
-u8 D_800D20B0_main BSS; // unreferenced
+u8 D_800D20B0_main BSS; // mgmode
 s8 HmfPauseF BSS; // gamemes.c, hmfman.c, hmfspr.c, ...
 u8 D_800D20B8_main[16][3] ALIGNED(8) BSS; // hmfspr.c
 u8 D_800D20E8_main[0x4] BSS; // unreferenced

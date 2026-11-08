@@ -16,8 +16,12 @@ extern char D_8011A708_mgmode[];
 extern s16 D_8011B6A0_mgmode;
 extern s16 D_8011B928_mgmode[];
 extern s16 D_8011B940_mgmode[];
+extern s16 D_8011B6A8_mgmode;
+extern u8 D_800D20B0_main;
+extern MgmodeSpaceCoord D_80119158_mgmode[];
 
 void func_8010BD98_mgmode(omObjData *arg0);
+void func_80108DDC_mgmode(s16 arg0);
 void func_801168E0_mgmode(MgmodeEsprite *arg0);
 void func_80116968_mgmode(MgmodeEsprite *arg0, s16 index, s16 arg2, s16 arg3);
 
@@ -77,7 +81,15 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_80107D0C_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_80108824_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_80108C88_mgmode);
+void func_80108C88_mgmode(void) {
+    HuWinDispOn(D_8011B6A0_mgmode);
+    func_80108DDC_mgmode(D_800D20B0_main);
+    func_8011822C_mgmode(D_80119158_mgmode);
+    func_801181F4_mgmode(0);
+    func_801182B4_mgmode(1);
+    HuWinMesSet(D_8011B6A8_mgmode, 0x5702, -1, -1);
+    HuWinExAnimIn(D_8011B6A8_mgmode);
+}
 
 void func_80108CF4_mgmode(s16 arg0) {
     s32 mesOffset;

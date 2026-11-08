@@ -11,13 +11,31 @@ extern s16 D_800CE29C_main;
 extern s16 D_800D03FE_main[4];
 extern u8 D_80119430_mgmode[];
 extern s16 D_800D4194_main;
+extern s16 D_8011B6A8_mgmode;
+extern MgmodeSpaceCoord D_80119424_mgmode[];
 
+void func_8010CBFC_mgmode(void);
 void func_801169C8_mgmode(MgmodeEsprite *arg0, s16 index);
 void func_80116A48_mgmode(MgmodeEsprite *arg0, s16 index, f32 x, f32 y);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010BEC0_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010CB20_mgmode);
+void func_8010CB20_mgmode(void) {
+    HuWinMesSet(D_8011B6A8_mgmode, 0x5607, -1, -1);
+    while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+        HuPrcVSleep();
+    }
+    func_80116ED4_mgmode(2, 10, 1, (void (*)(s16 *))-1);
+    func_8010CBFC_mgmode();
+    func_80116ED4_mgmode(5, 10, 1, (void (*)(s16 *))-1);
+    func_8011822C_mgmode(D_80119424_mgmode);
+    func_801181F4_mgmode(0);
+    func_801182B4_mgmode(1);
+    HuWinMesSet(D_8011B6A8_mgmode, 0x5600, -1, -1);
+    while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+        HuPrcVSleep();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010CBFC_mgmode);
 

@@ -2,11 +2,7 @@
 #include "game/malloc.h"
 #include "game/mallocblock.h"
 #include "math.h"
-
-typedef struct MgmodeSpaceCoord {
-    /* 0x00 */ s16 x;
-    /* 0x02 */ s16 y;
-} MgmodeSpaceCoord;
+#include "overlays/mgmode.h"
 
 extern u8 D_8011B630_mgmode[0x20];
 extern s16 D_8011B650_mgmode;

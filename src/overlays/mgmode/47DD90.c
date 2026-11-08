@@ -99,27 +99,23 @@ void func_80116E24_mgmode(s16 arg0) {
     D_8011B958_mgmode = arg0;
 }
 
-#ifdef NON_MATCHING
 void func_80116ED4_mgmode(s16 presetIdx, s16 duration, s16 easeType, void (*callback)(s16 *)) {
-    Vec rotDelta;      /* sp10 */
-    Vec centerDelta;   /* sp20 */
-    Vec rotStart;      /* sp30 */
-    Vec centerStart;   /* sp40 */
-    Vec rot;           /* sp50 */
-    Vec center;        /* sp60 */
-    s16 cbArg[24];     /* sp70..sp9F (0x30 bytes) */
-    Vec eye;           /* spA0 */
-    void (*cb)(s16 *); /* s8 */
-    f32 zoom;          /* f22 */
-    f32 zoomDelta;     /* f24 */
-    f32 zoomStart;     /* f22_2 */
-    f32 unkDelta;      /* f28 */
-    f32 unkStart;      /* f26 */
-    f64 mag;
-    f64 diff;
-    f64 rate;
+    Vec rotDelta;
+    Vec centerDelta;
+    Vec rotStart;
+    Vec centerStart;
+    Vec rot;
+    Vec center;
+    s16 cbArg[24];
+    Vec eye;
+    void (*cb)(s16 *);
+    f32 zoom;
+    f32 zoomDelta;
+    f32 zoomStart;
+    f32 unkDelta;
+    f32 unkStart;
+    f64 t;
     s16 i;
-    f32 hundred;
 
     cb = callback;
     rot = D_8011B954_mgmode[presetIdx].rot;
@@ -129,47 +125,71 @@ void func_80116ED4_mgmode(s16 presetIdx, s16 duration, s16 easeType, void (*call
     eye.x = sindf(rot.y) * cosdf(rot.x) * zoom + center.x;
     eye.y = -sindf(rot.x) * zoom + center.y;
     eye.z = cosdf(rot.y) * cosdf(rot.x) * zoom + center.z;
-    hundred = 100.0f;
-    mag = hundred / zoom;
-    center.x = eye.x + (center.x - eye.x) * mag;
-    center.y = eye.y + (center.y - eye.y) * mag;
-    center.z = eye.z + (center.z - eye.z) * mag;
+    t = 100.0f / zoom;
+    center.x = eye.x + (center.x - eye.x) * t;
+    center.y = eye.y + (center.y - eye.y) * t;
+    center.z = eye.z + (center.z - eye.z) * t;
+    zoom = 100.0f;
 
-    diff = rot.x - CRot.x;
-    WRAP180(rotDelta.x, diff, rot.x, CRot.x);
-    diff = rot.y - CRot.y;
-    WRAP180(rotDelta.y, diff, rot.y, CRot.y);
-    diff = rot.z - CRot.z;
-    WRAP180(rotDelta.z, diff, rot.z, CRot.z);
+    t = rot.x - CRot.x;
+    if ((t < 0.0 ? -t : t) > 180.0) {
+        if (rot.x < CRot.x) {
+            rotDelta.x = t + 360.0;
+        } else {
+            rotDelta.x = t - 360.0;
+        }
+    } else {
+        rotDelta.x = t;
+    }
+    t = rot.y - CRot.y;
+    if ((t < 0.0 ? -t : t) > 180.0) {
+        if (rot.y < CRot.y) {
+            rotDelta.y = t + 360.0;
+        } else {
+            rotDelta.y = t - 360.0;
+        }
+    } else {
+        rotDelta.y = t;
+    }
+    t = rot.z - CRot.z;
+    if ((t < 0.0 ? -t : t) > 180.0) {
+        if (rot.z < CRot.z) {
+            rotDelta.z = t + 360.0;
+        } else {
+            rotDelta.z = t - 360.0;
+        }
+    } else {
+        rotDelta.z = t;
+    }
 
     centerDelta.x = center.x - Center.x;
     centerDelta.y = center.y - Center.y;
     centerDelta.z = center.z - Center.z;
-    zoomDelta = hundred - CZoom;
+    zoomDelta = zoom - CZoom;
     unkDelta = D_8011B954_mgmode[presetIdx].unk_1C - D_8011B6A4_mgmode;
     cbArg[1] = duration;
+    unkStart = D_8011B6A4_mgmode;
     centerStart = Center;
     rotStart = CRot;
     zoomStart = CZoom;
-    unkStart = D_8011B6A4_mgmode;
 
     if (easeType == 1 || easeType == 2) {
         for (i = 0; i < duration; i++) {
             if (easeType != 2) {
-                rate = sindf(i * 90.0f / duration);
+                t = sindf(i * 90.0f / duration);
             } else if (i <= duration / 2) {
-                rate = (1.0f - cosdf(i * 180.0f / duration)) * 0.5f;
+                t = (1.0f - cosdf(i * 180.0f / duration)) * 0.5f;
             } else {
-                rate = -cosdf(i * 180.0f / duration) * 0.5f + 0.5f;
+                t = -cosdf(i * 180.0f / duration) * 0.5f + 0.5f;
             }
-            D_8011B898_mgmode.x = CRot.x = rate * rotDelta.x + rotStart.x;
-            D_8011B898_mgmode.y = CRot.y = rate * rotDelta.y + rotStart.y;
-            D_8011B898_mgmode.z = CRot.z = rate * rotDelta.z + rotStart.z;
-            Center.x = rate * centerDelta.x + centerStart.x;
-            Center.y = rate * centerDelta.y + centerStart.y;
-            Center.z = rate * centerDelta.z + centerStart.z;
-            CZoom = rate * zoomDelta + zoomStart;
-            D_8011B6A4_mgmode = rate * unkDelta + unkStart;
+            D_8011B898_mgmode.x = CRot.x = t * rotDelta.x + rotStart.x;
+            D_8011B898_mgmode.y = CRot.y = t * rotDelta.y + rotStart.y;
+            D_8011B898_mgmode.z = CRot.z = t * rotDelta.z + rotStart.z;
+            Center.x = t * centerDelta.x + centerStart.x;
+            Center.y = t * centerDelta.y + centerStart.y;
+            Center.z = t * centerDelta.z + centerStart.z;
+            CZoom = t * zoomDelta + zoomStart;
+            D_8011B6A4_mgmode = t * unkDelta + unkStart;
             if (callback != (void (*)(s16 *))-1) {
                 cbArg[0] = i;
                 cb(cbArg);
@@ -178,14 +198,14 @@ void func_80116ED4_mgmode(s16 presetIdx, s16 duration, s16 easeType, void (*call
         }
     } else {
         for (i = 0; i <= duration; i++) {
-            rate = (1.0f / duration) * i;
-            D_8011B898_mgmode.x = CRot.x = rate * rotDelta.x + rotStart.x;
-            D_8011B898_mgmode.y = CRot.y = rate * rotDelta.y + rotStart.y;
-            D_8011B898_mgmode.z = CRot.z = rate * rotDelta.z + rotStart.z;
-            Center.x = rate * centerDelta.x + centerStart.x;
-            Center.y = rate * centerDelta.y + centerStart.y;
-            Center.z = rate * centerDelta.z + centerStart.z;
-            CZoom = rate * zoomDelta + zoomStart;
+            t = (1.0f / duration) * i;
+            D_8011B898_mgmode.x = CRot.x = t * rotDelta.x + rotStart.x;
+            D_8011B898_mgmode.y = CRot.y = t * rotDelta.y + rotStart.y;
+            D_8011B898_mgmode.z = CRot.z = t * rotDelta.z + rotStart.z;
+            Center.x = t * centerDelta.x + centerStart.x;
+            Center.y = t * centerDelta.y + centerStart.y;
+            Center.z = t * centerDelta.z + centerStart.z;
+            CZoom = t * zoomDelta + zoomStart;
             if (callback != (void (*)(s16 *))-1) {
                 cbArg[0] = i;
                 cb(cbArg);
@@ -195,9 +215,6 @@ void func_80116ED4_mgmode(s16 presetIdx, s16 duration, s16 easeType, void (*call
     }
     func_80116E24_mgmode(presetIdx);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_80116ED4_mgmode);
-#endif
 
 void func_801177BC_mgmode(Vec *eye, Vec *center) {
     f32 dx;

@@ -23,6 +23,7 @@ extern s16 D_8011B796_mgmode;
 extern s16 D_8011B8B8_mgmode[];
 extern s16 D_8011B792_mgmode;
 extern s16 D_8011B790_mgmode;
+extern s16 D_8011B79C_mgmode;
 extern s16 D_8011B798_mgmode;
 extern s16 D_8011B788_mgmode;
 extern s16 D_8011B78C_mgmode;
@@ -496,7 +497,48 @@ void func_80114EBC_mgmode(void) {
     D_801194C4_mgmode = -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80114FA0_mgmode);
+void func_80114FA0_mgmode(void) {
+    s16 model = D_8011B8B8_mgmode[7];
+    s16 camera;
+    f32 scale;
+    f32 y;
+    s16 i;
+
+    camera = func_8000CED8_main(0xB0004, 0x2A9);
+    Hu3DModelCameraSet(camera, 2);
+    func_8000D018_main(camera, 50.0f);
+    func_8000CD00_main(camera, 2.0f, 20.0f, 0.0f);
+    Hu3DMotionShiftSet(D_8011B8B8_mgmode[0], D_8011B790_mgmode, 0, 8, 0);
+    func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelPosSet(model, 2.0f, 500.0f, -382.0f);
+    func_8000CFA4_main(camera, 2.0f, 500.0f, -332.0f);
+    Hu3DModelRotSet(model, 30.0f, 80.0f, 3.0f);
+    func_80088800_main(HmfModelData[model].mtx, 0.0f, 0.0f, 20.0f);
+    scale = 1.0f;
+    HuAudFXPlay(0x249);
+    for (i = 0; i < 51; i++) {
+        y = (1.0f - sindf(i / 50.0f * 90.0f)) * 400.0f + 100.0f;
+        HmfModelData[model].pos.y = y;
+        func_8000CFA4_main(camera, 2.0f, y + 30.0f, -332.0f);
+        if (i == 10) {
+            Hu3DMotionShiftSet(D_8011B8B8_mgmode[0], D_8011B79C_mgmode, 0, 8, 0);
+        }
+        if (i == 40) {
+            Hu3DMotionShiftSet(D_8011B8B8_mgmode[0], D_8011B794_mgmode, 0, 8, 0);
+            RepeatVibrator(D_8011B808_mgmode, 20, 0, 20);
+        }
+        if (i > 30) {
+            scale -= 0.1f;
+            if (scale < 0.0f) {
+                scale = 0.0f;
+            }
+            Hu3DModelScaleSet(model, scale, scale, scale);
+        }
+        HuPrcVSleep();
+    }
+    func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    func_8000D044_main(camera);
+}
 
 void func_801152C0_mgmode(void) {
     s16 i;

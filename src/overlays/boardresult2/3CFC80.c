@@ -1,6 +1,8 @@
 #include "common.h"
 #include "../ovl_81_name/ovl_81.h"
+#include "overlays/minigame.h"
 
+extern UnkBoard4 *D_801099A0_boardresult2;
 extern UnkBoard4 *D_801099A4_boardresult2;
 extern UnkBoard4 *D_801099A8_boardresult2;
 extern UnkBoard4 *D_801099B0_boardresult2[4];
@@ -24,6 +26,17 @@ extern s32 D_801097B4_boardresult2;
 extern s16 kakusiMasuItemHis[10];
 
 void func_80105B98_boardresult2(s16 model, s16 animIdx);
+void func_80105CB0_boardresult2(void);
+void func_80106924_boardresult2(void);
+void func_801069A4_boardresult2(void);
+void func_80106A9C_boardresult2(void);
+void func_80107964_boardresult2(void);
+void func_80108548_boardresult2(void);
+void func_801085F8_boardresult2(void);
+void func_8010879C_boardresult2(void);
+void func_80108958_boardresult2(void);
+void func_80108A48_boardresult2(void);
+void func_80108C70_boardresult2(void);
 void func_801074B4_boardresult2(void);
 s32 func_80106B94_boardresult2(s32);
 void func_80108E1C_boardresult2(void);
@@ -599,7 +612,190 @@ void func_80108C70_boardresult2(void) {
     omDelPrcObj(NULL);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_80108E1C_boardresult2);
+void func_80108E1C_boardresult2(void) {
+    Process *process;
+    void *data;
+    f32 angle;
+    f32 scale;
+    s32 prevPage;
+    s32 prevRow;
+    s32 timer;
+    s32 allCpu;
+    s32 showingDetails;
+    s32 leftWindow = 0;
+    s32 rightWindow = 0;
+    s32 i;
+
+    D_801099A0_boardresult2 = func_800F4528_name_81(6, 0);
+    data = DataRead(0x13002F);
+    D_801099A0_boardresult2->unk_0C[0] = HuSprAnimRead(data);
+    DataClose(data);
+
+    for (i = 0; i < 6; i++) {
+        HuSprGrpMemberSet(D_801099A0_boardresult2->unk_0A, i, D_801099A0_boardresult2->unk_0C[0], 0);
+        HuSprPriSet(D_801099A0_boardresult2->unk_0A, i, 200);
+        HuSprAttrSet(D_801099A0_boardresult2->unk_0A, i, 0x4000);
+        HuSprPosSet(D_801099A0_boardresult2->unk_0A, i, (i / 2) * 128 + 64, (i & 1) * 128 + 64);
+    }
+
+    func_80105CB0_boardresult2();
+    showingDetails = 0;
+    func_80107964_boardresult2();
+    func_80108958_boardresult2();
+    func_801085F8_boardresult2();
+    func_80106A9C_boardresult2();
+
+    for (i = 0; i < 4; i++) {
+        HuSprPosSet(D_801099B0_boardresult2[i]->unk_0A, 0, 111, -40);
+    }
+    HuSprPosSet(D_801099C0_boardresult2->unk_0A, 0, 160, -40);
+    HuSprPosSet(D_801099C4_boardresult2->unk_0A, 0, 55, -40);
+
+    WipeCreateIn(2, 16);
+    while (WipeStatGet() != 0) {
+        HuPrcVSleep();
+    }
+
+    for (i = 3; i >= 0; i--) {
+        process = omAddPrcObj(func_80108A48_boardresult2, 0x1000, 0, 0x40);
+        process->user_data = HuMemMemoryAlloc(process->heap, 0x20);
+        *(s32 *)process->user_data = i;
+        HuPrcSleep(15);
+    }
+    omAddPrcObj(func_80108C70_boardresult2, 0x1000, 0, 0);
+    HuPrcSleep(20);
+
+    for (angle = 90.0f; angle < 180.0f; angle += 10.0f) {
+        HuSprPosSet(D_801099C4_boardresult2->unk_0A, 0, 55, sindf(angle) * -73.0f + 41.0f);
+        HuPrcVSleep();
+    }
+
+    scale = -4.0f;
+    HuAudFXPlay(0x17A);
+    for (angle = 0.0f; angle <= 720.0f; angle += 50.0f) {
+        HuSprPosSet(D_801099C4_boardresult2->unk_0A, 0, 55, sindf(angle) * scale + 41.0f);
+        scale += 0.2777778f;
+        if (scale > 0.0f) {
+            scale = 0.0f;
+        }
+        HuPrcVSleep();
+    }
+    HuSprPosSet(D_801099C4_boardresult2->unk_0A, 0, 55, 41);
+
+    allCpu = 0;
+    for (i = 0; i < 4; i++) {
+        if (!func_800F37B8_name_81(i)) {
+            break;
+        }
+    }
+    if (i == 4) {
+        allCpu = 1;
+    }
+
+    timer = 60;
+    while (1) {
+        if (allCpu) {
+            if (--timer == 0) {
+                break;
+            }
+            if (leftWindow == 0) {
+                leftWindow = func_800E172C_name_81(0x16, 60, 207, 1);
+            }
+            if (rightWindow == 0) {
+                rightWindow = func_800E172C_name_81(0x17, 200, 207, 1);
+            }
+        } else {
+            for (i = 0; i < 4; i++) {
+                if (func_800F37B8_name_81(i)) {
+                    continue;
+                }
+                if (!showingDetails) {
+                    if (leftWindow == 0) {
+                        leftWindow = func_800E172C_name_81(0x16, 60, 207, 1);
+                    }
+                    if (rightWindow == 0) {
+                        rightWindow = func_800E172C_name_81(0x17, 200, 207, 1);
+                    }
+                    if (D_800C9520_main[GwPlayer[i].pad] & START_BUTTON) {
+                        showingDetails = 1;
+                        func_801069A4_boardresult2();
+                        func_8010879C_boardresult2();
+                        if (leftWindow != 0) {
+                            func_800E1854_minigame(leftWindow);
+                            leftWindow = 0;
+                        }
+                        if (rightWindow != 0) {
+                            func_800E1854_minigame(rightWindow);
+                            rightWindow = 0;
+                        }
+                    } else if (D_800C9520_main[GwPlayer[i].pad] & A_BUTTON) {
+                        goto exit;
+                    }
+                } else {
+                    prevRow = D_801097B4_boardresult2;
+                    prevPage = D_801097B0_boardresult2;
+                    if (D_800C9520_main[GwPlayer[i].pad] & START_BUTTON) {
+                        showingDetails = 0;
+                        func_801085F8_boardresult2();
+                        func_80106A9C_boardresult2();
+                    } else if (D_800D0590_main[GwPlayer[i].pad] & R_JPAD) {
+                        if (++D_801097B4_boardresult2 >= 4) {
+                            D_801097B4_boardresult2 = 3;
+                            if (++D_801097B0_boardresult2 >= 10) {
+                                D_801097B0_boardresult2 = 9;
+                            }
+                        }
+                    } else if (D_800D0590_main[GwPlayer[i].pad] & L_JPAD) {
+                        if (--D_801097B4_boardresult2 < 0) {
+                            D_801097B4_boardresult2 = 0;
+                            if (--D_801097B0_boardresult2 < 0) {
+                                D_801097B0_boardresult2 = 0;
+                            }
+                        }
+                    }
+                    if (D_801097B4_boardresult2 != prevRow || D_801097B0_boardresult2 != prevPage) {
+                        func_80108958_boardresult2();
+                        func_801074B4_boardresult2();
+                    }
+                }
+            }
+
+            if (showingDetails == 1) {
+                if (D_801097B0_boardresult2 == 0 && D_801097B4_boardresult2 == 0) {
+                    HuSprAttrSet(D_801099E8_boardresult2->unk_0A, 0, 0x8000);
+                } else {
+                    HuSprAttrReset(D_801099E8_boardresult2->unk_0A, 0, 0x8000);
+                }
+                if (D_801097B0_boardresult2 == 9 && D_801097B4_boardresult2 == 3) {
+                    HuSprAttrSet(D_801099E8_boardresult2->unk_0A, 1, 0x8000);
+                } else {
+                    HuSprAttrReset(D_801099E8_boardresult2->unk_0A, 1, 0x8000);
+                }
+            }
+        }
+        HuPrcVSleep();
+    }
+
+exit:
+    if (leftWindow != 0) {
+        func_800E1854_minigame(leftWindow);
+    }
+    if (rightWindow != 0) {
+        func_800E1854_minigame(rightWindow);
+    }
+    if (!(GwSystem.playMode & 4) || (GwPlayer[kakusiMasuItemHis[0]].stat & PLAYER_IS_CPU)) {
+        HuAudSeqFadeOut(60);
+    }
+    WipeCreateOut(0, 20);
+    HuPrcSleep(20);
+    func_80106924_boardresult2();
+    func_80108548_boardresult2();
+    func_800F4584_name_81(D_801099A0_boardresult2);
+    D_800D530C_main = 1;
+    while (1) {
+        HuPrcVSleep();
+    }
+}
 
 void func_801096AC_boardresult2(omObjData *obj) {
     if (WipeStatGet() == 0) {

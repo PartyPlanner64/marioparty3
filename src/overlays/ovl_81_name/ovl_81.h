@@ -117,6 +117,7 @@ void func_800DAAB0_name_81(void);
 void func_800DF154_name_81(void);
 s32 func_800F37B8_name_81(s16 playerIndex);
 s32 func_800E1824_name_81(s32, s32, s32);
+s32 func_800E172C_name_81(s32, s32, s32, s32);
 void func_800E1854_name_81(s32);
 Process* func_800E0888_name_81(void);
 void func_800EDE1C_name_81(void);

@@ -4,8 +4,12 @@
 extern s32 D_8010FB00_chancetime;
 extern s32 D_8010FB04_chancetime;
 extern s32 D_8010FB08_chancetime;
+extern Vec D_8010FB48_chancetime;
+extern Vec D_8010FB54_chancetime;
 extern s32 D_8010FB60_chancetime;
 extern char D_8010FC8C_chancetime[];
+extern ChanceTimeObjState D_801100B0_chancetime;
+extern ChanceTimeObjState D_801100B8_chancetime;
 extern ChanceTimeObjState D_801100D4_chancetime;
 
 void func_80107B18_chancetime(omObjData *object);
@@ -18,6 +22,8 @@ void func_8010B818_chancetime(omObjData *object, Vec *pos, s32 arg2);
 void func_8010B834_chancetime(omObjData *object, Vec *pos, s32 arg2, s32 arg3);
 void func_8010BA68_chancetime(omObjData *object, Vec *pos, s32 arg2);
 void func_8010BC10_chancetime(omObjData *object, f32 x, f32 y, f32 z, s32 arg4);
+void func_8010AA90_chancetime(omObjData *object);
+void func_8010B124_chancetime(omObjData *object);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80107300_chancetime);
 
@@ -148,11 +154,41 @@ INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010A468_chancet
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010A5D8_chancetime);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010A99C_chancetime);
+void func_8010A99C_chancetime(void) {
+    omObjData *parent = D_801100D4_chancetime.obj;
+    omObjData *object = omAddObj(20, 4, 0, -1, NULL);
+
+    D_801100B0_chancetime.obj = object;
+    object->model[1] = parent->model[1];
+    object->model[2] = parent->model[2];
+    Hu3DModelPosSet(object->model[1], D_8010FB48_chancetime.x, D_8010FB48_chancetime.y, D_8010FB48_chancetime.z);
+    Hu3DModelPosSet(object->model[2], D_8010FB48_chancetime.x, D_8010FB48_chancetime.y, D_8010FB48_chancetime.z);
+    func_8001C258_main(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    D_801100B0_chancetime.func = func_8010AA90_chancetime;
+    while (TRUE) {
+        D_801100B0_chancetime.func(object);
+        HuPrcVSleep();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010AA90_chancetime);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010B030_chancetime);
+void func_8010B030_chancetime(void) {
+    omObjData *parent = D_801100D4_chancetime.obj;
+    omObjData *object = omAddObj(20, 4, 0, -1, NULL);
+
+    D_801100B8_chancetime.obj = object;
+    object->model[1] = parent->model[3];
+    object->model[2] = parent->model[4];
+    Hu3DModelPosSet(object->model[1], D_8010FB54_chancetime.x, D_8010FB54_chancetime.y, D_8010FB54_chancetime.z);
+    Hu3DModelPosSet(object->model[2], D_8010FB54_chancetime.x, D_8010FB54_chancetime.y, D_8010FB54_chancetime.z);
+    func_8001C258_main(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    D_801100B8_chancetime.func = func_8010B124_chancetime;
+    while (TRUE) {
+        D_801100B8_chancetime.func(object);
+        HuPrcVSleep();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010B124_chancetime);
 

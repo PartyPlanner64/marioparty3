@@ -22,6 +22,7 @@ extern s16 D_8011B8B6_mgmode[];
 extern s16 D_8011B8E8_mgmode[];
 extern s16 D_8011B8A8_mgmode[];
 extern s16 D_8011B796_mgmode[];
+extern s16 D_8011B78E_mgmode[];
 extern s16 D_8011B78C_mgmode;
 extern s16 D_8011B788_mgmode;
 extern s16 D_80119340_mgmode;
@@ -514,7 +515,104 @@ void func_8010E494_mgmode(s16 arg0) {
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010E494_mgmode);
 #endif
 
+#ifdef NON_MATCHING
+// Matches except for one register copy, the same issue as func_8010E494_mgmode:
+// target emits `move t2,a2` for rank = 0 (copying slot), but GCC propagates the
+// constant (`move t2,zero`). Tried `rank = slot = 0`, a while loop, moving
+// `slot = 0` before the order loop or to the top of the function, `|` instead
+// of `||`, and the `if (count) {}` workaround from func_8010E494_mgmode; none
+// produce the copy without other diffs. Notes for the rest of the function:
+// the second Hu3DModelPosSet z coordinate really uses delta[i].x (original
+// bug), model ids must come from the shared D_8011B8A8_mgmode table in the
+// first setup loop to get both table bases hoisted, and `count` must be
+// declared before `node` for the stack slots to match.
+void func_8010E6F0_mgmode(s16 arg0) {
+    Vec pos[4];
+    Vec delta[4];
+    s16 order[4];
+    f32 angle[4];
+    s16 count;
+    HmfMotionNode *node;
+    s16 i;
+    s16 j;
+    s16 slot;
+    s16 rank;
+    s16 model;
+    f32 t;
+    f32 rot;
+
+    rot = 0.0f;
+    count = (arg0 != 4) ? 4 : 2;
+    for (i = 0; i < count; i++) {
+        order[i] = D_800D1F20_main[i];
+    }
+    for (slot = 0, rank = 0; rank < count || slot < count; rank++) {
+        for (i = 0; i < count; i++) {
+            if (rank == order[i]) {
+                pos[i].x = slot * 80 - 122;
+                pos[i].y = 26.0f;
+                pos[i].z = -312.0f;
+                order[i] = -1;
+                slot++;
+            }
+        }
+    }
+    for (i = 0; i < count; i++) {
+        delta[i].x = 400.0f - pos[i].x;
+        delta[i].z = 900.0f - pos[i].z;
+        func_8001C258_main(D_8011B8A8_mgmode[i + 7], 4, 0);
+        Hu3DMotionSet(D_8011B8A8_mgmode[i + 7], D_8011B796_mgmode[i]);
+        func_8001C814_main(D_8011B8A8_mgmode[i + 7], 2, 2);
+        func_8001C258_main(D_8011B8A8_mgmode[i + 32], 4, 0);
+        angle[i] = atan2df(delta[i].x, delta[i].z) + 180.0f;
+        Hu3DModelRotSet(D_8011B8A8_mgmode[i + 7], 0.0f, angle[i], 0.0f);
+    }
+    model = D_8011B8A8_mgmode[4];
+    func_8002FD8C_main(model, HmfModelData[model].motId, "c100_1-atama", 0x4C, 0x46);
+    node = func_8001D33C_main(model, "c100_1-atama");
+    for (j = 0; j < 31; j++) {
+        t = 1.0f - sindf(j * 3.0f);
+        for (i = 0; i < count; i++) {
+            Hu3DModelPosSet(D_8011B8A8_mgmode[i + 7], pos[i].x + t * delta[i].x, pos[i].y, pos[i].z + t * delta[i].x);
+            func_80118624_mgmode(D_8011B8A8_mgmode[i + 32], D_8011B8A8_mgmode[i + 7]);
+            if (j < 25 && j % 5 == 0) {
+                func_8004AC5C_main(GwPlayer[i].chr + 0x29, i);
+            }
+        }
+        if (j < 10) {
+            rot = atan2df(HmfModelData[D_8011B8A8_mgmode[7]].pos.x - HmfModelData[D_8011B8A8_mgmode[4]].pos.x,
+                          HmfModelData[D_8011B8A8_mgmode[7]].pos.z - HmfModelData[D_8011B8A8_mgmode[4]].pos.z) -
+                  HmfModelData[D_8011B8A8_mgmode[4]].rot.y;
+            rot *= j / 10.0f;
+        } else if (j < 20) {
+            rot = atan2df(HmfModelData[D_8011B8A8_mgmode[7]].pos.x - HmfModelData[D_8011B8A8_mgmode[4]].pos.x,
+                          HmfModelData[D_8011B8A8_mgmode[7]].pos.z - HmfModelData[D_8011B8A8_mgmode[4]].pos.z) -
+                  HmfModelData[D_8011B8A8_mgmode[4]].rot.y;
+        } else {
+            rot -= 5.0f;
+        }
+        node->baseRot.y = node->rot.y = rot;
+        HuPrcVSleep();
+    }
+    for (i = 0; i < count; i++) {
+        Hu3DMotionShiftSet(D_8011B8B6_mgmode[i], D_8011B78E_mgmode[i], 0, 8, 2);
+    }
+    for (j = 0; j < 9; j++) {
+        t = 1.0f - j / 8.0f;
+        for (i = 0; i < count; i++) {
+            Hu3DModelRotSet(D_8011B8B6_mgmode[i], 0.0f, t * angle[i], 0.0f);
+        }
+        rot -= 5.0f;
+        if (rot < 0.0f) {
+            rot = 0.0f;
+        }
+        node->baseRot.y = node->rot.y = rot;
+        HuPrcVSleep();
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010E6F0_mgmode);
+#endif
 
 void func_8010EE84_mgmode(s16 arg0) {
     Vec pos[4];

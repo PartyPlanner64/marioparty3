@@ -1,6 +1,8 @@
 #include "common.h"
 #include "overlays/mgmode.h"
 
+#define ABS(x) ((x) < 0 ? -(x) : (x))
+
 extern u8 D_80118EB1_mgmode;
 extern u8 D_80118EB2_mgmode;
 extern s16 D_80118EB4_mgmode;
@@ -26,6 +28,8 @@ extern MgmodeSpaceCoord D_80119158_mgmode[];
 extern Vec D_8011AA80_mgmode[][25];
 extern s16 D_8011B8B6_mgmode[];
 extern s16 D_8011B8C4_mgmode;
+extern MgmodeSpaceCoord D_80119170_mgmode[];
+extern s16 D_8011B808_mgmode;
 
 void func_8010BD98_mgmode(omObjData *arg0);
 void func_80108DDC_mgmode(s16 arg0);
@@ -35,6 +39,11 @@ void func_801169A0_mgmode(MgmodeEsprite *arg0, s16 index);
 void func_801169C8_mgmode(MgmodeEsprite *arg0, s16 index);
 void func_80116D4C_mgmode(void);
 void func_80118CD8_mgmode(void);
+void func_801090C4_mgmode(s16 arg0);
+void func_8011829C_mgmode(s16 arg0);
+void func_801182A8_mgmode(s16 arg0);
+s16 func_801182DC_mgmode(s16 stickX, s16 stickY);
+void func_80118D0C_mgmode(void);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_801059A0_mgmode);
 
@@ -114,7 +123,53 @@ void func_80108CF4_mgmode(s16 arg0) {
     HuWinMesSet(D_8011B6A0_mgmode, D_80119190_mgmode[mesOffset + arg0], -1, -1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_80108DDC_mgmode);
+void func_80108DDC_mgmode(s16 arg0) {
+    s16 next;
+
+    func_80108CF4_mgmode(arg0);
+    while (WipeStatGet() != 0) {
+        HuPrcVSleep();
+    }
+    func_8011822C_mgmode(D_80119170_mgmode);
+    func_801181F4_mgmode(arg0);
+    func_8011829C_mgmode(5);
+    func_801182B4_mgmode(1);
+    HuPrcSleep(5);
+    while (TRUE) {
+        HuPrcVSleep();
+        func_80118D0C_mgmode();
+        if (ABS(D_800CBB6E_main[D_8011B808_mgmode]) >= 31 || ABS(D_800D20A1_main[D_8011B808_mgmode]) >= 31) {
+            next = func_801182DC_mgmode(-D_800CBB6E_main[D_8011B808_mgmode], D_800D20A1_main[D_8011B808_mgmode]);
+            if (next == -1) {
+                continue;
+            }
+            HuAudFXPlay(1);
+            func_801182A8_mgmode(next);
+            HuPrcSleep(5);
+            func_80108CF4_mgmode(next);
+            arg0 = next;
+        } else if ((D_800D5558_main[D_8011B808_mgmode] & A_BUTTON) && D_8011B928_mgmode[D_801191E4_mgmode[arg0]] != 0) {
+            HuAudFXPlay(2);
+            func_801182B4_mgmode(0);
+            HuWinExAnimOut(D_8011B6A0_mgmode, 0);
+            func_80116ED4_mgmode(arg0 + 7, 15, 1, (void (*)(s16 *))-1);
+            func_801090C4_mgmode(arg0);
+            func_80116ED4_mgmode(2, 15, 1, (void (*)(s16 *))-1);
+            func_8011822C_mgmode(D_80119170_mgmode);
+            func_801181F4_mgmode(arg0);
+            func_8011829C_mgmode(5);
+            func_801182B4_mgmode(1);
+            func_80108CF4_mgmode(arg0);
+            HuWinExAnimIn(D_8011B6A0_mgmode);
+        } else if (D_800D5558_main[D_8011B808_mgmode] & B_BUTTON) {
+            HuAudFXPlay(4);
+            func_801182B4_mgmode(0);
+            HuWinExAnimOut(D_8011B6A0_mgmode, 0);
+            func_80116ED4_mgmode(1, 10, 1, (void (*)(s16 *))-1);
+            return;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_801090C4_mgmode);
 

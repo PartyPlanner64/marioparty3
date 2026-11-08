@@ -20,6 +20,10 @@ extern s16 D_800D1FE0_main;
 extern s16 D_8011B794_mgmode;
 extern s16 D_8011B796_mgmode;
 extern s16 D_8011B8B8_mgmode;
+extern s16 D_800D0418_main[8];
+extern s16 D_801195BC_mgmode[];
+extern u8 D_801195C4_mgmode[4];
+extern u8 D_801195C8_mgmode[8];
 
 void func_80115BB8_mgmode(s16 value);
 void func_80115CAC_mgmode(s16 value);
@@ -48,7 +52,42 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80112F98_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80113204_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_801134C0_mgmode);
+void func_801134C0_mgmode(void) {
+    u8 counts[4] = { 0, 0, 0, 0 };
+    s16 attempt;
+    s16 i;
+    s16 type;
+
+    for (attempt = 0; attempt < 100; attempt++) {
+        for (i = 0; i < 4; i++) {
+            counts[i] = 0;
+        }
+        type = rand8() & 3;
+        D_800D0418_main[0] = type;
+        counts[type]++;
+        for (i = 1; i < 8; i++) {
+            do {
+                type = rand8() & 3;
+            } while (D_800D0418_main[i - 1] == type);
+            counts[type]++;
+            if (D_801195C4_mgmode[type] < counts[type]) {
+                break;
+            }
+            D_800D0418_main[i] = type;
+        }
+        if (i == 8 && D_800D0418_main[0] != D_800D0418_main[7]) {
+            break;
+        }
+    }
+    if (attempt == 100) {
+        for (i = 0; i < 8; i++) {
+            D_800D0418_main[i] = D_801195C8_mgmode[i];
+        }
+    }
+    for (i = 0; i < 8; i++) {
+        D_800D0418_main[i] = D_801195BC_mgmode[D_800D0418_main[i]];
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_801136EC_mgmode);
 
@@ -277,8 +316,6 @@ void func_80115C5C_mgmode(s16 value) {
 void func_80115CAC_mgmode(s16 value) {
     func_80115CDC_mgmode(D_801195D0_mgmode, 2, value, 4);
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgmode/479470", D_8011A688_mgmode);
 
 void func_80115CDC_mgmode(MgmodeEsprite *sprites, s16 base, s16 value, s16 digits) {
     u8 buf[8];

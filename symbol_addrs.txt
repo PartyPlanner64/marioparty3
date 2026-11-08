@@ -1336,6 +1336,7 @@ MBMasuDraw = 0x800EA6F4; //rom:0xFE314 segment:shared_board
 HmfModelData = 0x800D03F8; //type:u32
 D_800D03FC = 0x800D03FC; //type:s16
 D_800D03FE_main = 0x800D03FE; //type:s16
+D_800D0418_main = 0x800D0418; //size:0x10
 D_800CE208 = 0x800CE208; //type:s16
 
 MBModelCreate = 0x800D90C8; //rom:0xECCE8 segment:shared_board

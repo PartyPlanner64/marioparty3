@@ -11,6 +11,10 @@ extern s16 D_800CE29C_main;
 extern s16 D_800D03FE_main[4];
 extern u8 D_80119430_mgmode[];
 extern s16 D_800D4194_main;
+extern s16 D_800D0418_main[8];
+extern u8 D_8011B6B0_mgmode[][25];
+extern s16 D_8011B928_mgmode[];
+extern s16 D_8011B940_mgmode[];
 extern s16 D_8011B6A8_mgmode;
 extern MgmodeSpaceCoord D_80119424_mgmode[];
 extern u8 D_800D1F20_main[4];
@@ -79,7 +83,33 @@ void func_8010D98C_mgmode(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010DAB8_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010E1F0_mgmode);
+void func_8010E1F0_mgmode(void) {
+    s16 list[20];
+    s16 count;
+    s16 i;
+    s16 j;
+    s16 r;
+    s16 tmp;
+    s16 category;
+
+    category = D_800D4194_main;
+    count = 0;
+    for (i = 0; i < D_8011B940_mgmode[category]; i++) {
+        if (D_8011B6B0_mgmode[category][i] != 0xFF) {
+            list[count++] = D_8011B6B0_mgmode[category][i];
+        }
+    }
+    for (i = 0; i < count * 2; i++) {
+        j = i % count;
+        r = (rand8() * count) >> 8;
+        tmp = list[j];
+        list[j] = list[r];
+        list[r] = tmp;
+    }
+    for (i = 0; i < D_8011B928_mgmode[category]; i++) {
+        D_800D0418_main[i] = list[i];
+    }
+}
 
 void func_8010E40C_mgmode(void) {
     s16 i;

@@ -236,7 +236,9 @@ u8 D_800D0408_main[0x4] BSS; // unreferenced
 Process *winProc BSS; // window.c
 u16 empstrline BSS; // printfunc.c
 s16 D_800D0412_main BSS; // unreferenced
-u8 D_800D0414_main[0x2C] BSS; // unreferenced
+u8 D_800D0414_main[0x4] BSS; // unreferenced
+s16 D_800D0418_main[8] BSS; // overlays only
+u8 D_800D0428_main[0x18] BSS; // unreferenced
 HmfData_Unk84_Entry *D_800D0440_main BSS; // hmfdraw.c
 HuCamMtxs *D_800D0444_main BSS; // camera.c, hmflight.c, hmfman.c
 Process *D_800D0448_main BSS; // gameman.c

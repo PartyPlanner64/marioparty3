@@ -5,6 +5,7 @@ extern s32 D_8010FB04_chancetime;
 extern void (*D_801100D8_chancetime)(omObjData *);
 
 void func_80107B18_chancetime(omObjData *object);
+void func_80107E40_chancetime(omObjData *object);
 void func_80108414_chancetime(omObjData *object);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80107300_chancetime);
@@ -44,9 +45,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80108414_chancet
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80108578_chancetime);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_801086DC_chancetime);
+void func_801086DC_chancetime(void) {
+    D_801100D8_chancetime = func_80107A98_chancetime;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_801086F0_chancetime);
+void func_801086F0_chancetime(void) {
+    D_801100D8_chancetime = func_80107E40_chancetime;
+}
 
 void func_80108704_chancetime(void) {
     D_8010FB00_chancetime = 1;
@@ -54,7 +59,9 @@ void func_80108704_chancetime(void) {
     D_801100D8_chancetime = func_80108414_chancetime;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010872C_chancetime);
+s32 func_8010872C_chancetime(void) {
+    return D_8010FB04_chancetime;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80108738_chancetime);
 

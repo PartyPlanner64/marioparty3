@@ -6,8 +6,23 @@ extern UnkBoard4 *D_801099A8_boardresult2;
 extern UnkBoard4 *D_801099B0_boardresult2[4];
 extern UnkBoard4 *D_801099C0_boardresult2;
 extern UnkBoard4 *D_801099C4_boardresult2;
+extern UnkOvl81_2 *D_801099C8_boardresult2;
+extern UnkBoard4 *D_801099CC_boardresult2;
+extern UnkBoard4 *D_801099D0_boardresult2;
+extern UnkBoard4 *D_801099D4_boardresult2;
+extern UnkBoard4 *D_801099D8_boardresult2[4];
+extern UnkBoard4 *D_801099E8_boardresult2;
+extern UnkBoard4 *D_801099EC_boardresult2;
+extern UnkBoard4 *D_801099F0_boardresult2;
+extern UnkBoard4 *D_801099F4_boardresult2;
 extern s32 D_801099F8_boardresult2[16];
+extern s16 D_80109A38_boardresult2[10];
+extern s16 D_80109A4C_boardresult2;
+extern s16 D_80109A4E_boardresult2;
+extern s32 D_801097B0_boardresult2;
+extern s32 D_801097B4_boardresult2;
 
+void func_80105B98_boardresult2(s16 model, s16 animIdx);
 void func_80108E1C_boardresult2(void);
 void func_801096AC_boardresult2(omObjData *);
 void func_801096F0_boardresult2(omObjData *);
@@ -33,9 +48,38 @@ void func_801059A0_boardresult2(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_80105A8C_boardresult2);
+s16 func_80105A8C_boardresult2(s16 model, s32 dataNum, char *name) {
+    void *data = DataRead(dataNum);
+    s32 anim;
+    s16 animIdx;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_80105B98_boardresult2);
+    anim = HmfAnimCreate(HmfModelData[model].hmf, data, 0, name);
+    D_80109A4C_boardresult2 = anim;
+    func_80032FC0_main(anim, 1, 1);
+    DataClose(data);
+    animIdx = D_800D1714_main[(s16)anim].animIdx;
+    D_80109A4E_boardresult2 = HmfAnimLink(HmfModelData[model].hmf, anim, 0, name);
+    Hu3DModelRemakeStatic(model);
+    return animIdx;
+}
+
+void func_80105B98_boardresult2(s16 model, s16 animIdx) {
+    HmfAnim *anim;
+
+    if (D_80109A4E_boardresult2 != 0xFF) {
+        if (animIdx == -1) {
+            func_80033910_main(HmfModelData[model].hmf);
+        } else {
+            func_80033970_main(HmfModelData[model].hmf);
+            anim = &D_800D1714_main[D_80109A4E_boardresult2];
+            anim->animIdx = animIdx;
+            anim->rot = 0;
+            anim->flags = 0;
+            anim->interp = 0;
+            anim->frame = 0;
+        }
+    }
+}
 
 s16 func_80105C68_boardresult2(s32 dataNum) {
     void *data = DataRead(dataNum);
@@ -121,13 +165,50 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/boardresult2/3CFC80", D_8010992C_board
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_80107964_boardresult2);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_80108548_boardresult2);
+void func_80108548_boardresult2(void) {
+    s32 i;
+
+    func_800F4584_name_81(D_801099CC_boardresult2);
+    func_800F4584_name_81(D_801099D0_boardresult2);
+    func_800F4584_name_81(D_801099D4_boardresult2);
+
+    for (i = 0; i < 4; i++) {
+        func_800F4584_name_81(D_801099D8_boardresult2[i]);
+    }
+
+    func_800F4584_name_81(D_801099E8_boardresult2);
+    func_800F4584_name_81(D_801099EC_boardresult2);
+    func_800F4584_name_81(D_801099F0_boardresult2);
+    func_800F4584_name_81(D_801099F4_boardresult2);
+    func_800E4E64_name_81(D_801099C8_boardresult2);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_801085F8_boardresult2);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_8010879C_boardresult2);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_80108958_boardresult2);
+void func_80108958_boardresult2(void) {
+    s32 messages[] = {
+        0x1900,
+        0x1901,
+        0x1902,
+        0x1903,
+        0x1904,
+        0x1905,
+        0x1906,
+        0x1907,
+        0x1908,
+        0x1909,
+        0x190A,
+        0x190B,
+        0x190C,
+    };
+
+    HuWinHomeClear(D_801099C8_boardresult2->win_id);
+    HuWinMesSet(D_801099C8_boardresult2->win_id, messages[D_801097B0_boardresult2 + D_801097B4_boardresult2], -1, -1);
+    func_80105B98_boardresult2(D_801099C8_boardresult2->obj->omObj1->model[0],
+                               D_80109A38_boardresult2[D_801099F8_boardresult2[D_801097B0_boardresult2 + D_801097B4_boardresult2]]);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_80108A48_boardresult2);
 
@@ -169,5 +250,3 @@ void func_8010976C_boardresult2(void) {
 
 void func_8010979C_boardresult2(void) {
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/boardresult2/3CFC80", D_8010996C_boardresult2);

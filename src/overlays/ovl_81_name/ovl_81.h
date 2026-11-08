@@ -52,6 +52,12 @@ typedef struct UnkBoard5 {
     /* 0x1C */ s16* unk_1C;
 } UnkBoard5; //sizeof 0x20
 
+typedef struct UnkOvl81_2 {
+    /* 0x00 */ Object* obj;
+    /* 0x04 */ Process* process;
+    /* 0x08 */ s16 win_id;
+} UnkOvl81_2; //sizeof 0xC
+
 typedef struct NameEntry {
     /* 0x00 */ struct NameEntry* next;
     /* 0x04 */ struct NameEntry* prev;
@@ -171,6 +177,7 @@ UnkBoard4* func_800F4528_name_81(s16 arg0, s16 arg1);
 s32 func_800E1824_name_81(s32, s32, s32);
 void func_800E1854_name_81(s32);
 void func_800F4584_name_81(UnkBoard4*);
+void func_800E4E64_name_81(UnkOvl81_2*);
 void func_800FAD04_name_81(s32 arg0);
 void func_800D8F0C_name_81(Object*);
 void func_800D96F4_name_81(void);

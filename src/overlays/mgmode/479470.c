@@ -7,8 +7,16 @@ extern s16 D_8011B830_mgmode[16];
 extern s16 D_8011B850_mgmode[16];
 extern u8 *D_8011B610_mgmode[3];
 extern MgmodeEsprite *D_801194C0_mgmode;
+extern MgmodeEsprite *D_801195D0_mgmode;
+extern MgmodeEspriteDef D_8011A270_mgmode[];
 
+void func_80115CAC_mgmode(s16 value);
+void func_80115CDC_mgmode(MgmodeEsprite *sprites, s16 base, s16 value, s16 digits);
+MgmodeEsprite *func_80116794_mgmode(MgmodeEspriteDef *defs);
+void func_801168E0_mgmode(MgmodeEsprite *arg0);
+void func_801169A0_mgmode(MgmodeEsprite *arg0, s16 index);
 void func_801169C8_mgmode(MgmodeEsprite *arg0, s16 index);
+void func_80116AA8_mgmode(MgmodeEsprite *arg0, s16 index, s16 arg2);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80112200_mgmode);
 
@@ -52,7 +60,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80115848_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80115A9C_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80115BB8_mgmode);
+void func_80115BB8_mgmode(s16 value) {
+    func_80115CDC_mgmode(D_801194C0_mgmode, 0x11, value, 4);
+}
 
 void func_80115BE8_mgmode(void) {
     s16 i;
@@ -65,15 +75,43 @@ void func_80115BE8_mgmode(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80115C5C_mgmode);
+void func_80115C5C_mgmode(s16 value) {
+    if (D_801195D0_mgmode == (MgmodeEsprite *)-1) {
+        D_801195D0_mgmode = func_80116794_mgmode(D_8011A270_mgmode);
+        func_80115CAC_mgmode(value);
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80115CAC_mgmode);
+void func_80115CAC_mgmode(s16 value) {
+    func_80115CDC_mgmode(D_801195D0_mgmode, 2, value, 4);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mgmode/479470", D_8011A688_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80115CDC_mgmode);
+void func_80115CDC_mgmode(MgmodeEsprite *sprites, s16 base, s16 value, s16 digits) {
+    u8 buf[8];
+    s16 offset;
+    s16 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80115E20_mgmode);
+    if (value >= 10000) {
+        value = 9999;
+    }
+    sprintf((char *)buf, "%4d", value);
+    offset = 4 - digits;
+    for (i = 0; i < digits; i++) {
+        if (buf[offset + i] < '0') {
+            func_801169C8_mgmode(sprites, base + i);
+        } else {
+            func_801169A0_mgmode(sprites, base + i);
+            func_80116AA8_mgmode(sprites, base + i, buf[offset + i] & 0xF);
+        }
+    }
+}
+
+void func_80115E20_mgmode(void) {
+    func_801168E0_mgmode(D_801195D0_mgmode);
+    D_801195D0_mgmode = (MgmodeEsprite *)-1;
+}
 
 void func_80115E4C_mgmode(void) {
     s16 i;

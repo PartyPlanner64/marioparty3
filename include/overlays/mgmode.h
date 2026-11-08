@@ -9,6 +9,13 @@ typedef struct {
     /* 0x02 */ s16 espriteSlot;
 } MgmodeEsprite;
 
+typedef struct {
+    /* 0x00 */ s32 dataNum;
+    /* 0x04 */ u16 attr;
+    /* 0x06 */ s16 x;
+    /* 0x08 */ s16 y;
+} MgmodeEspriteDef; // sizeof 0xC
+
 typedef struct MgmodeModelEntry {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;

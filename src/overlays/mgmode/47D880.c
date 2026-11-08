@@ -2,7 +2,6 @@
 #include "game/mallocblock.h"
 #include "overlays/mgmode.h"
 
-
 void func_80116610_mgmode(MgmodeModelEntry *entries, s16 index, s16 modelId) {
     MgmodeModelEntry *entry = &entries[index];
 
@@ -49,9 +48,13 @@ void func_80116A1C_mgmode(MgmodeEsprite *arg0, s16 index, s16 arg2) {
     espAttrReset(arg0[index].espriteSlot, arg2);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47D880", func_80116A48_mgmode);
+void func_80116A48_mgmode(MgmodeEsprite *arg0, s16 index, f32 x, f32 y) {
+    espScaleSet(arg0[index].espriteSlot, x, y);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47D880", func_80116A78_mgmode);
+void func_80116A78_mgmode(MgmodeEsprite *arg0, s16 index, s16 tpLvl) {
+    espTPLvlSet(arg0[index].espriteSlot, tpLvl);
+}
 
 void func_80116AA8_mgmode(MgmodeEsprite *arg0, s16 index, s16 arg2) {
     func_8000BD50_main(arg0[index].espriteSlot, arg2);

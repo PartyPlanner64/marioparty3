@@ -39,6 +39,14 @@ extern s16 D_8011B808_mgmode;
 extern s16 D_8011B8B4_mgmode;
 extern HuMtx4F D_8011A808_mgmode;
 extern char D_8011A46C_mgmode[];
+extern char D_8011A404_mgmode[];
+extern char D_8011A40C_mgmode[];
+extern HuMtx4F D_8011A848_mgmode;
+extern HuMtx4F D_8011A888_mgmode;
+extern s16 D_8011B8A8_mgmode[];
+extern char *D_801192D8_mgmode[];
+extern u8 D_801192F4_mgmode[];
+extern u8 D_800D1FF0_main;
 extern s8 D_801192FC_mgmode[];
 extern s8 D_80119310_mgmode[];
 extern u16 D_80119320_mgmode[];
@@ -171,7 +179,91 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mgmode/46CC10", D_8011A464_mgmode);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mgmode/46CC10", D_8011A46C_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_801076B0_mgmode);
+void func_801076B0_mgmode(void) {
+    s16 order[20];
+    Vec tmpPos;
+    HmfData *hmf;
+    HmfVertexGroup *group;
+    Vtx *verts;
+    s16 model;
+    s16 node;
+    s16 count;
+    s16 i;
+    s16 j;
+    s16 k;
+    s16 b;
+    s16 tmp;
+    f32 x;
+    f32 y;
+    f32 z;
+    void *data;
+
+    func_8002367C_main(D_8011A808_mgmode,
+                       ((HmfMotionNode *)func_8001D33C_main(D_8011B8A8_mgmode[6], D_8011A46C_mgmode))->unk58);
+    func_8002367C_main(D_8011A848_mgmode,
+                       ((HmfMotionNode *)func_8001D33C_main(D_8011B8A8_mgmode[3], D_8011A404_mgmode))->unk58);
+    func_8002367C_main(D_8011A888_mgmode,
+                       ((HmfMotionNode *)func_8001D33C_main(D_8011B8A8_mgmode[3], D_8011A40C_mgmode))->unk58);
+    model = D_8011B8A8_mgmode[2];
+    func_8001C2FC_main(model, 0x20000, 0x20000);
+    Hu3DModelRemakeStatic(model);
+    func_8001C954_main(model);
+    func_8001C514_main(model);
+    hmf = HmfModelData[model].hmf;
+    for (i = 0; i < 7; i++) {
+        node = func_8002C834_main(hmf, D_801192D8_mgmode[i]);
+        group = &hmf->unkB0[hmf->unk60[node].unk2C];
+        verts = hmf->unk40;
+        count = hmf->unk60[node].unk2E;
+        for (j = 0; j < count; j++, group++) {
+            x = y = z = 0.0f;
+            for (k = 0; k < group->count; k++) {
+                x += verts[group->indices[k]].v.ob[0];
+                y += verts[group->indices[k]].v.ob[1];
+                z += verts[group->indices[k]].v.ob[2];
+            }
+            D_8011AA80_mgmode[i][j].x = x / group->count;
+            D_8011AA80_mgmode[i][j].y = y / group->count;
+            D_8011AA80_mgmode[i][j].z = z / group->count;
+            order[j] = j;
+        }
+        for (k = count - 1; k >= 0; k--) {
+            for (b = 0; b < k; b++) {
+                if (D_8011AA80_mgmode[i][b].x > D_8011AA80_mgmode[i][b + 1].x) {
+                    tmpPos = D_8011AA80_mgmode[i][b];
+                    D_8011AA80_mgmode[i][b] = D_8011AA80_mgmode[i][b + 1];
+                    D_8011AA80_mgmode[i][b + 1] = tmpPos;
+                    tmp = order[b];
+                    order[b] = order[b + 1];
+                    order[b + 1] = tmp;
+                }
+            }
+        }
+        for (j = 0; j < count; j++) {
+            group = &hmf->unkB0[hmf->unk60[node].unk2C + order[j]];
+            for (b = 0; b < D_800D1FF0_main; b++) {
+                verts = hmf->unk44[b];
+                for (k = 0; k < group->count; k++) {
+                    if (D_8011B6B0_mgmode[D_801191E4_mgmode[i]][j] != 0xFF) {
+                        if (i == 6 && j == 0) {
+                            verts[group->indices[k]].v.tc[0] += 0x1000;
+                        } else {
+                            verts[group->indices[k]].v.tc[0] += D_801192F4_mgmode[i] << 9;
+                        }
+                    } else {
+                        verts[group->indices[k]].v.tc[0] += 0xE00;
+                    }
+                }
+            }
+        }
+    }
+    model = D_8011B8A8_mgmode[15];
+    data = DataRead(0xA002A);
+    HmfAnimCreate(HmfModelData[model].hmf, data, 0, "c160n_0_DEF");
+    DataClose(data);
+    Hu3DModelRemakeStatic(model);
+    func_8001C514_main(model);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mgmode/46CC10", D_8011A484_mgmode);
 

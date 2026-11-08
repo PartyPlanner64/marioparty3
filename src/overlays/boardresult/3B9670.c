@@ -25,6 +25,9 @@ extern omObjData *D_8010E8EC_boardresult[4];
 extern s32 D_8010E910_boardresult[6];
 extern u8 D_8010EAF0_boardresult;
 extern Object *D_8010EAF4_boardresult;
+extern Object *D_8010EB48_boardresult;
+extern Object *D_8010EB4C_boardresult;
+extern Object *D_8010EB50_boardresult;
 extern Object *D_8010EB60_boardresult[4];
 extern Object *D_8010EB70_boardresult;
 extern s16 D_8010EB74_boardresult;
@@ -113,7 +116,34 @@ s16 func_80106A38_boardresult(s32 dataNum) {
     return anim;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80106A80_boardresult);
+void func_80106A80_boardresult(omObjData *obj) {
+    func_8001E888_main(D_8010EB48_boardresult->omObj1->model[0], obj->trans.x, 0, 0x40, 0x2B, "kumo-endkumo", 0);
+    func_8001E888_main(D_8010EB4C_boardresult->omObj1->model[0], obj->trans.y, 0, 0x40, 0x2B, "kumo-endkumo", 0);
+    func_8001E888_main(D_8010EB50_boardresult->omObj1->model[0], obj->trans.z, 0, 0x40, 0x2B, "kumo-endkumo", 0);
+
+    obj->trans.x -= 4.0f;
+    obj->trans.y -= 2.0f;
+    obj->trans.z -= 1.0f;
+
+    if (obj->trans.x >= 64.0f) {
+        obj->trans.x -= 64.0f;
+    }
+    if (obj->trans.y >= 64.0f) {
+        obj->trans.y -= 64.0f;
+    }
+    if (obj->trans.z >= 64.0f) {
+        obj->trans.z -= 64.0f;
+    }
+    if (obj->trans.x <= -64.0f) {
+        obj->trans.x += 64.0f;
+    }
+    if (obj->trans.y <= -64.0f) {
+        obj->trans.y += 64.0f;
+    }
+    if (obj->trans.z <= -64.0f) {
+        obj->trans.z += 64.0f;
+    }
+}
 
 void func_80106CA8_boardresult(omObjData *obj) {
     s32 i;

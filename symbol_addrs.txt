@@ -283,6 +283,7 @@ omovlhisidx = 0x800A1768; //rom:0xA2368 size:0x02 type:s16
 omobjall = 0x800A1770; //rom:0xA2370
 curBoxNo = 0x800A1E81; //rom:0xA2A81 type:u8
 omobjlast = 0x800CC430; //type:s16
+D_800CC438_main = 0x800CC438; // type:s16 size:0x2
 ommaxobjs = 0x800CCF50; // type:s16
 omnumobjs = 0x800CCF8C; // type:s16
 omgroup = 0x800CD1E0; //

@@ -96,7 +96,9 @@ u8 D_800CC3E8_main[0x8] BSS; // unreferenced
 OSPifRam __osContPifRam BSS; // 2.0L/io/contreaddata.c, 2.0L/io/controller.c
 s16 omobjlast BSS; // objmain.c
 s16 D_800CC432_main BSS; // unreferenced
-u8 D_800CC434_main[0x8] BSS; // unreferenced
+u8 D_800CC434_main[0x4] BSS; // unreferenced
+s16 D_800CC438_main BSS; // overlays only
+s16 D_800CC43A_main BSS; // unreferenced
 u32 D_800CC43C_main BSS; // 2.0L/os/initrdb.c, 2.0L/os/rdbsend.c
 Unk_D_800CC440 D_800CC440_main[4] BSS; // lightdebug.c, printfunc.c
 UnkData_CD0A0 D_800CC4A0_main BSS; // overlays only

@@ -9,6 +9,13 @@ extern s16 D_8011B3E4_mgmode;
 extern MgmodeEsprite *D_8011B3EC_mgmode;
 extern s16 D_8011B8B2_mgmode;
 extern u16 *D_8011B3E0_mgmode;
+extern s32 D_80119190_mgmode[];
+extern s32 D_801191E4_mgmode[];
+extern char D_8011A430_mgmode[];
+extern char D_8011A708_mgmode[];
+extern s16 D_8011B6A0_mgmode;
+extern s16 D_8011B928_mgmode[];
+extern s16 D_8011B940_mgmode[];
 
 void func_8010BD98_mgmode(omObjData *arg0);
 void func_801168E0_mgmode(MgmodeEsprite *arg0);
@@ -72,7 +79,17 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_80108824_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_80108C88_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_80108CF4_mgmode);
+void func_80108CF4_mgmode(s16 arg0) {
+    s32 mesOffset;
+
+    mesOffset = (D_8011B928_mgmode[D_801191E4_mgmode[arg0]] != 0) ? 7 : 0;
+    if (D_8011B928_mgmode[D_801191E4_mgmode[arg0]] == D_8011B940_mgmode[D_801191E4_mgmode[arg0]]) {
+        mesOffset = 14;
+    }
+    sprintf(D_8011A708_mgmode, D_8011A430_mgmode, D_8011B928_mgmode[D_801191E4_mgmode[arg0]]);
+    HuWinInsertMesSet(D_8011B6A0_mgmode, (u32)D_8011A708_mgmode, 0);
+    HuWinMesSet(D_8011B6A0_mgmode, D_80119190_mgmode[mesOffset + arg0], -1, -1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_80108DDC_mgmode);
 

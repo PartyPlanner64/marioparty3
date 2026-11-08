@@ -85,7 +85,7 @@ void func_801169C8_mgmode(MgmodeEsprite *arg0, s16 index);
 void func_80116D4C_mgmode(void);
 void func_80118CD8_mgmode(void);
 void func_801090C4_mgmode(s16 arg0);
-void func_80107D0C_mgmode(s32 mes, s16 x, s16 y);
+void func_80107D0C_mgmode(s32 dataNum, s16 x, s16 y);
 void func_8011829C_mgmode(s16 arg0);
 void func_801182A8_mgmode(s16 arg0);
 s16 func_801182DC_mgmode(s16 stickX, s16 stickY);
@@ -410,13 +410,140 @@ void func_801076B0_mgmode(void) {
     func_8001C514_main(model);
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgmode/46CC10", D_8011A484_mgmode);
+void func_80107D0C_mgmode(s32 dataNum, s16 x, s16 y) {
+    s16 wins[10];
+    u8 buf[32];
+    u8 buf2[32];
+    u8 buf3[32];
+    u8 games[10] = { 0, 1, 2, 4, 3, 5, 6, 7, 9, 8 };
+    s8 unlockIds[10] = { 13, 16, 35, 52, 44, 71, 71, 71, 0, -1 };
+    s32 names[10] = { 0x4501, 0x4502, 0x4503, 0x4504, 0x4505, 0x4506, 0x4507, 0x4508, 0x4509, 0x450A };
+    s16 anim;
+    s16 sprite;
+    s16 win;
+    s16 i;
+    s16 j;
+    s16 rec;
+    f32 scale;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgmode/46CC10", D_8011A490_mgmode);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgmode/46CC10", D_8011A49C_mgmode);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_80107D0C_mgmode);
+    HuPrcSleep(3);
+    anim = func_8000B838_main(dataNum);
+    sprite = espEntry(anim, 0, 1);
+    espPosSet(sprite, x, y);
+    espPriSet(sprite, 0x8000);
+    espScaleSet(sprite, 0.0f, 0.0f);
+    for (i = 0; i < 10; i++) {
+        wins[i] = HuWinExCreate(-1, x - 104, y - 71 + i * 14, 213, 20, 0);
+        HuWinBGTPLvlSet(wins[i], 0);
+    }
+    win = HuWinExCreate(-1, 0, 0, 210, 14, 1);
+    HuWinBGColSet(win, 255, 255, 255);
+    HuAudFXPlay(0x2E7);
+    for (i = 1; i < 11; i++) {
+        scale = cosdf(i * 36.0f) * 0.5f + 0.5f;
+        espScaleSet(sprite, scale, sindf(i * 9.0f));
+        HuPrcVSleep();
+    }
+    for (i = 0; i < 10; i++) {
+        rec = GWMgRecordGet(games[i]);
+        if (rec < 0) {
+            rec = 0;
+        }
+        switch (games[i]) {
+            case 0:
+                sprintf((char *)buf, "%3d", rec);
+                HuWinInsertMesSet(wins[i], (u32)buf, 0);
+                break;
+            case 1:
+            case 2:
+            case 5:
+            case 6:
+            case 7:
+                sprintf((char *)buf, D_8011A430_mgmode, (s16)(rec / 3600));
+                HuWinInsertMesSet(wins[i], (u32)buf, 0);
+                rec %= 3600;
+                sprintf((char *)buf2, "%2d", (s16)(rec / 60));
+                if (buf2[0] == ' ') {
+                    buf2[0] = '0';
+                }
+                HuWinInsertMesSet(wins[i], (u32)buf2, 1);
+                sprintf((char *)buf3, "%2d", (s16)((s16)(rec % 60) / 60.0f * 100.0f));
+                if (buf3[0] == ' ') {
+                    buf3[0] = '0';
+                }
+                HuWinInsertMesSet(wins[i], (u32)buf3, 2);
+                break;
+            case 4:
+                sprintf((char *)buf, "%3d", (s16)(rec / 100));
+                rec %= 100;
+                HuWinInsertMesSet(wins[i], (u32)buf, 0);
+                sprintf((char *)buf2, "%2d", rec);
+                if (buf2[0] == ' ') {
+                    buf2[0] = '0';
+                }
+                HuWinInsertMesSet(wins[i], (u32)buf2, 1);
+                break;
+            case 3:
+            case 9:
+                sprintf((char *)buf, D_8011A430_mgmode, (s16)(rec / 1800));
+                HuWinInsertMesSet(wins[i], (u32)buf, 0);
+                rec %= 1800;
+                sprintf((char *)buf2, "%2d", (s16)(rec / 30));
+                if (buf2[0] == ' ') {
+                    buf2[0] = '0';
+                }
+                HuWinInsertMesSet(wins[i], (u32)buf2, 1);
+                sprintf((char *)buf3, "%2d", (s16)((s16)(rec % 30) * (1.0f / 30.0f) * 99.0f));
+                if (buf3[0] == ' ') {
+                    buf3[0] = '0';
+                }
+                HuWinInsertMesSet(wins[i], (u32)buf3, 2);
+                break;
+            case 8:
+                sprintf((char *)buf, "%4d", rec);
+                HuWinInsertMesSet(wins[i], (u32)buf, 0);
+                break;
+        }
+        HuWinDispOn(wins[i]);
+        rec = unlockIds[i] - 1;
+        if (rec == 70 && _CheckFlag(0x2B)) {
+            HuWinMesSet(wins[i], names[i], -1, -1);
+        } else if (rec >= 0 && GWMgUnlockCheck(rec)) {
+            HuWinMesSet(wins[i], names[i], -1, -1);
+        } else if (rec == -1 && _CheckFlag(0x1E)) {
+            HuWinMesSet(wins[i], names[i], -1, -1);
+        } else if (rec == -2 && _CheckFlag(0x1F)) {
+            HuWinMesSet(wins[i], names[i], -1, -1);
+        } else {
+            HuWinMesSet(wins[i], 0x4500, -1, -1);
+        }
+        HuWinPosSet(win, x, y - 62 + i * 14);
+        HuWinDispOn(win);
+        HuAudFXPlay(0x2E8);
+        for (j = 1; j < 4; j++) {
+            HuWinBGTPLvlSet(win, (1.0f - j / 3.0f) * 256.0f);
+            HuPrcVSleep();
+        }
+    }
+    HuWinKill(win);
+    do {
+        HuPrcVSleep();
+    } while (!(D_800D5558_main[0] & (A_BUTTON | B_BUTTON)));
+    for (i = 0; i < 10; i++) {
+        HuWinDispOff(wins[i]);
+    }
+    HuAudFXPlay(0x2E9);
+    for (i = 1; i < 11; i++) {
+        scale = 1.0f - sindf(i * 9.0f);
+        espScaleSet(sprite, scale, scale);
+        HuPrcVSleep();
+    }
+    for (i = 0; i < 10; i++) {
+        HuWinKill(wins[i]);
+    }
+    espKill(sprite);
+    HuSprAnimKill(anim);
+}
 
 void func_80108824_mgmode(s32 arg0) {
     s16 total;

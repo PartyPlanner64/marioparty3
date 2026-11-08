@@ -15,6 +15,11 @@ void func_8010BD04_boardresult(void);
 void func_8010BDC4_boardresult(BoardResultWork *, f32, f32, f32);
 void func_8010BDD4_boardresult(BoardResultWork *, f32, f32, f32);
 void func_8010BDE4_boardresult(BoardResultWork *, s16);
+BoardResultWork *func_8010BD30_boardresult(s32);
+void func_8010BDBC_boardresult(BoardResultWork *, s32);
+void func_8010BDEC_boardresult(BoardResultWork *, s32, s32);
+s16 func_8010BE04_boardresult(BoardResultWork *);
+void func_8010BE0C_boardresult(BoardResultWork *, s16);
 extern s32 D_8010E3E0_boardresult;
 extern s32 D_8010E72C_boardresult[];
 extern u32 D_8010E738_boardresult[];
@@ -23,6 +28,7 @@ extern s32 *D_8010E88C_boardresult[];
 extern s32 *D_8010E8AC_boardresult[];
 extern omObjData *D_8010E8EC_boardresult[4];
 extern s32 D_8010E910_boardresult[6];
+extern s32 D_8010E928_boardresult[];
 extern u8 D_8010EAF0_boardresult;
 extern Object *D_8010EAF4_boardresult;
 extern Object *D_8010EB48_boardresult;
@@ -268,7 +274,58 @@ void func_8010935C_boardresult(BoardResultWork *work, s32 index) {
     func_8010BDE4_boardresult(work, func_800EFE20_name_81(60.0f) + 30);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_801094A8_boardresult);
+void func_801094A8_boardresult(void) {
+    BoardResultWork *works[3];
+    s32 i;
+    s32 count;
+
+    for (i = 0; i < 3; i++) {
+        works[i] = func_8010BD30_boardresult(D_8010E928_boardresult[GwPlayer[kakusiMasuItemHis[0]].chr]);
+        func_8010935C_boardresult(works[i], i);
+        func_8010BDEC_boardresult(works[i], 2, 2);
+    }
+
+    while (1) {
+        for (i = 0; i < 3; i++) {
+            if ((func_8010BE04_boardresult(works[i]) & 1) && rand8() < 0x20) {
+                while (1) {
+                    for (i = 0, count = 0; i < 3; i++) {
+                        func_8010BDEC_boardresult(works[i], 2, 0);
+                        count += func_8010BE04_boardresult(works[i]) & 1;
+                    }
+                    if (count >= 3) {
+                        break;
+                    }
+                    HuPrcVSleep();
+                }
+                func_8010935C_boardresult(works[0], 0);
+                func_8010BDC4_boardresult(works[0], 0.0f, 250.0f, 1500.0f);
+                func_8010BDEC_boardresult(works[0], 1, 0);
+                func_8010BDBC_boardresult(works[0], 0xB0046);
+                func_8010BE0C_boardresult(works[0], 120);
+                while (1) {
+                    for (i = 0, count = 0; i < 3; i++) {
+                        func_8010BDEC_boardresult(works[i], 2, 0);
+                        count += func_8010BE04_boardresult(works[i]) & 1;
+                    }
+                    if (count >= 3) {
+                        break;
+                    }
+                    HuPrcVSleep();
+                }
+                for (i = 0; i < 3; i++) {
+                    func_8010BDEC_boardresult(works[i], 3, 2);
+                    func_8010BDBC_boardresult(works[i], D_8010E928_boardresult[GwPlayer[kakusiMasuItemHis[0]].chr]);
+                }
+                func_8010BE0C_boardresult(works[0], 60);
+                func_8010935C_boardresult(works[0], 0);
+                break;
+            }
+            func_8010935C_boardresult(works[i], i);
+        }
+        HuPrcVSleep();
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/boardresult/3B9670", D_8010EA60_boardresult);
 

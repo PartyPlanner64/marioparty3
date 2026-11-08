@@ -253,7 +253,56 @@ void func_80114804_mgmode(s16 arg0, s16 arg1, s16 arg2) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_801149F4_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80114C80_mgmode);
+s16 func_80114C80_mgmode(void) {
+    s16 value = 0;
+    s16 delta;
+
+    func_80115A9C_mgmode(184, 126, 0);
+    while (TRUE) {
+        HuPrcVSleep();
+        if ((D_800D5558_main[D_8011B808_mgmode] & A_BUTTON) && value != 0) {
+            HuAudFXPlay(0x247);
+            break;
+        }
+        if (D_800D5558_main[D_8011B808_mgmode] & B_BUTTON) {
+            HuAudFXPlay(4);
+            value = -1;
+            break;
+        }
+        if (D_800D0590_main[D_8011B808_mgmode] & L_JPAD) {
+            delta = 10;
+        } else if (D_800D0590_main[D_8011B808_mgmode] & R_JPAD) {
+            delta = -10;
+        } else if (D_800D0590_main[D_8011B808_mgmode] & U_JPAD) {
+            delta = 1;
+        } else if (D_800D0590_main[D_8011B808_mgmode] & D_JPAD) {
+            delta = -1;
+        } else {
+            delta = 0;
+        }
+        if (delta != 0) {
+            HuAudFXPlay(0x246);
+        }
+        if ((value == D_800D1FE0_main || value == 100) && delta > 0) {
+            value = 0;
+        } else if (value + delta >= 100 || value + delta > D_800D1FE0_main) {
+            value = D_800D1FE0_main;
+            if (value > 100) {
+                value = 100;
+            }
+        } else if (value + delta < 0) {
+            value = D_800D1FE0_main;
+            if (value > 100) {
+                value = 100;
+            }
+        } else {
+            value += delta;
+        }
+        func_80115BB8_mgmode(value);
+        func_80115CAC_mgmode(D_800D1FE0_main - value);
+    }
+    return value;
+}
 
 void func_80114EBC_mgmode(void) {
     s16 i;

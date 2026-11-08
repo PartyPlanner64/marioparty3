@@ -19,7 +19,8 @@ extern s16 D_8011B808_mgmode;
 extern s16 D_800D1FE0_main;
 extern s16 D_8011B794_mgmode;
 extern s16 D_8011B796_mgmode;
-extern s16 D_8011B8B8_mgmode;
+extern s16 D_8011B8B8_mgmode[];
+extern s16 D_8011B792_mgmode;
 extern s16 D_800D0418_main[8];
 extern s16 D_801195BC_mgmode[];
 extern u8 D_801195C4_mgmode[4];
@@ -43,6 +44,7 @@ void func_80116D4C_mgmode(void);
 void func_80114614_mgmode(s16 index);
 void func_80114804_mgmode(s16 arg0, s16 arg1, s16 arg2);
 void func_80115A9C_mgmode(s16 x, s16 y, s16 value);
+void func_80118624_mgmode(s16 dstModel, s16 srcModel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80112200_mgmode);
 
@@ -189,10 +191,10 @@ void func_80114404_mgmode(void) {
     }
     D_800D1FE0_main += coins * rate;
     if (coins == 0) {
-        Hu3DMotionShiftSet(D_8011B8B8_mgmode, D_8011B796_mgmode, 0, 8, 0);
+        Hu3DMotionShiftSet(D_8011B8B8_mgmode[0], D_8011B796_mgmode, 0, 8, 0);
         func_8004AC5C_main(GwPlayer[0].chr + 0x287, 0);
     } else {
-        Hu3DMotionShiftSet(D_8011B8B8_mgmode, D_8011B794_mgmode, 0, 8, 0);
+        Hu3DMotionShiftSet(D_8011B8B8_mgmode[0], D_8011B794_mgmode, 0, 8, 0);
         func_8004AC5C_main(GwPlayer[0].chr + 0x275, 0);
     }
     func_80114614_mgmode(8);
@@ -274,7 +276,38 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_801152C0_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80115590_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80115848_mgmode);
+void func_80115848_mgmode(void) {
+    s16 model = D_8011B8B8_mgmode[0];
+    s16 other = D_8011B8B8_mgmode[9];
+    f32 dx = -198.0f;
+    f32 dz = -210.0f;
+    f32 angle;
+    f32 t;
+    f32 x;
+    f32 z;
+    s16 i;
+
+    Hu3DMotionShiftSet(model, D_8011B792_mgmode, 0, 8, 2);
+    angle = atan2df(dx, dz) + 180.0f;
+    for (i = 0; i < 9; i++) {
+        t = i / 8.0f;
+        HmfModelData[model].rot.y = t * angle;
+        HuPrcVSleep();
+    }
+    for (i = 0; i < 16; i++) {
+        t = 1.0f - i / 15.0f;
+        x = dx * t + 200.0f;
+        z = dz * t + -122.0f;
+        Hu3DModelPosSet(model, x, 0.0f, z);
+        func_80118624_mgmode(other, model);
+        if (i < 12 && i % 5 == 0) {
+            func_8004AC5C_main(GwPlayer[0].chr + 0x29, 0);
+        }
+        HuPrcVSleep();
+    }
+    func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    func_8001C258_main(other, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+}
 
 void func_80115A9C_mgmode(s16 x, s16 y, s16 value) {
     s16 left;

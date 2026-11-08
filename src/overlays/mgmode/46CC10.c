@@ -1,8 +1,6 @@
 #include "common.h"
 #include "overlays/mgmode.h"
 
-#define ABS(x) ((x) < 0 ? -(x) : (x))
-
 extern u8 D_80118EB1_mgmode;
 extern u8 D_80118EB2_mgmode;
 extern s16 D_80118EB4_mgmode;

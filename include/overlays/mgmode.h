@@ -4,6 +4,8 @@
 #include "ultra64.h"
 #include "humath.h"
 
+#define ABS(x) ((x) < 0 ? -(x) : (x))
+
 typedef struct {
     /* 0x00 */ s16 spriteGroup;
     /* 0x02 */ s16 espriteSlot;

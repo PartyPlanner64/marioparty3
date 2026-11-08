@@ -2322,6 +2322,7 @@ D_80109A70_mgresultdealer = 0x80109A70; //size:0x2 segment:mgresultdealer
 D_80109A72_mgresultdealer = 0x80109A72; //size:0x2 segment:mgresultdealer
 D_80108F30_mgresultduel = 0x80108F30; //size:0x2 segment:mgresultduel
 D_80108F32_mgresultduel = 0x80108F32; //size:0x2 segment:mgresultduel
+D_80119FA0_mgmode = 0x80119FA0; //size:0x2D0 segment:mgmode
 D_8011B810_mgmode = 0x8011B810; //size:0x74 segment:mgmode
 D_8010AAB8_tidal_toss = 0x8010AAB8; //rom:0x161428 type:u8 size:0x1
 D_8010AAB9_tidal_toss = 0x8010AAB9; //rom:0x161429 type:u8 size:0x1

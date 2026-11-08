@@ -27,6 +27,13 @@ typedef struct MgmodeModelEntry {
     /* 0x18 */ Vec rot;
 } MgmodeModelEntry; // sizeof 0x24
 
+typedef struct CamData {
+    Vec rot;
+    Vec center;
+    f32 zoom;
+    f32 unk_1C;
+} CamData;
+
 typedef struct MgmodeSpaceCoord {
     /* 0x00 */ s16 x;
     /* 0x02 */ s16 y;

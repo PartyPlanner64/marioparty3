@@ -43,6 +43,17 @@ extern s16 D_8011B79A_mgmode;
 extern s16 D_8011B800_mgmode;
 extern s32 D_801194CC_mgmode;
 extern s16 D_8011B95A_mgmode;
+extern CamData *D_8011B954_mgmode;
+extern CamData D_801194D0_mgmode[];
+extern f32 D_8011B888_mgmode;
+extern s16 D_8011B622_mgmode;
+extern s16 D_8011B620_mgmode;
+extern MgmodeModelEntry D_80119FA0_mgmode[];
+extern HuMtx4F D_8011B4D0_mgmode;
+extern s16 D_8011B884_mgmode;
+extern u8 D_8011B958_mgmode;
+extern MgmodeSpaceCoord D_801195B0_mgmode[];
+extern s16 D_8011B78A_mgmode;
 
 void func_80115BB8_mgmode(s16 value);
 void func_80115CAC_mgmode(s16 value);
@@ -89,8 +100,221 @@ void func_80114FA0_mgmode(void);
 void func_801152C0_mgmode(void);
 void func_80118CD8_mgmode(void);
 s32 func_80114048_mgmode(void);
+void func_80115E4C_mgmode(void);
+void func_8011611C_mgmode(void);
+void func_8011667C_mgmode(MgmodeModelEntry *entries);
+s16 func_80118678_mgmode(f32 arg0, f32 arg1, f32 arg2, f32 arg3);
+void func_8011829C_mgmode(s16 arg0);
+void func_801182A8_mgmode(s16 arg0);
+void func_80112CF4_mgmode(void);
+s32 func_801136EC_mgmode(void);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80112200_mgmode);
+void func_80112200_mgmode(void) {
+    s16 size[2];
+    HmfMotionNode *node;
+    s16 choice;
+    s16 changed;
+    s16 i;
+
+    HuWinMesMaxSizeBetGet(size, 0x5800, 0x5813);
+    D_8011B6A8_mgmode = HuWinExCreate(-1, (320 - size[0]) / 2, 224 - size[1], size[0], size[1], 0);
+    HuWinActivePlayerSet(D_8011B6A8_mgmode, 1 << D_8011B808_mgmode);
+    HuWinPriSet(D_8011B6A8_mgmode, 10);
+    func_80115E4C_mgmode();
+    func_8011611C_mgmode();
+    D_8011B954_mgmode = D_801194D0_mgmode;
+    D_8011B888_mgmode = 2500.0f;
+    D_8011B622_mgmode = GwPlayer[D_8011B800_mgmode].chr;
+    D_80119FA0_mgmode[8].unk_00 = func_80017BB8_main(D_8011B622_mgmode, 0xA1);
+    D_80119FA0_mgmode[9].unk_00 = func_80017BB8_main(D_8011B622_mgmode, 0x2);
+    D_80119FA0_mgmode[10].unk_00 = func_80017BB8_main(D_8011B622_mgmode, 0x33);
+    D_80119FA0_mgmode[11].unk_00 = func_80017BB8_main(D_8011B622_mgmode, 0x3A);
+    D_80119FA0_mgmode[12].unk_00 = func_80017BB8_main(D_8011B622_mgmode, 0x2F);
+    D_80119FA0_mgmode[13].unk_00 = func_80017BB8_main(D_8011B622_mgmode, 0x37);
+    D_80119FA0_mgmode[14].unk_00 = func_80017BB8_main(D_8011B622_mgmode, 0x9B);
+    func_8011667C_mgmode(D_80119FA0_mgmode);
+    Hu3DModelCameraSet(D_8011B8A8_mgmode[4], 2);
+    Hu3DModelCameraSet(D_8011B8A8_mgmode[8], 2);
+    D_8011B620_mgmode = func_80017790_main(D_8011B8A8_mgmode[8], 1, D_8011B622_mgmode,
+                                           func_80017B6C_main(D_8011B622_mgmode, 1, 0));
+    func_8001C514_main(D_8011B8A8_mgmode[8]);
+    func_8001C258_main(D_8011B8A8_mgmode[18], 0x180, HU3D_ATTR_NONE);
+    Hu3DModelRemakeStatic(D_8011B8A8_mgmode[18]);
+    func_8001C514_main(D_8011B8A8_mgmode[18]);
+    Hu3DModelPosSet(D_8011B8A8_mgmode[18], -208.0f, 0.0f, -332.0f);
+    Hu3DModelCameraSet(D_8011B8A8_mgmode[15], 2);
+    D_8011B624_mgmode = func_80118678_mgmode(2.0f, 400.0f, -332.0f, 50.0f);
+    node = func_8001D33C_main(D_8011B8A8_mgmode[0], "door");
+    func_8002367C_main(D_8011B4D0_mgmode, node->unk58);
+    if (omovlevtno == 3) {
+        Hu3DMotionSet(D_8011B8A8_mgmode[4], D_8011B78A_mgmode);
+        func_8001C814_main(D_8011B8A8_mgmode[4], 2, 2);
+        func_80116E24_mgmode(0);
+        WipeCreateIn(0xFF, 0);
+        node = func_8001D33C_main(D_8011B8A8_mgmode[0], "door");
+        RepeatVibrator(D_8011B808_mgmode, 5, 0, 5);
+        HuAudFXPlay(0x2EB);
+        for (i = 0; i < 19; i++) {
+            HuPrcVSleep();
+            func_8002367C_main(node->unk58, D_8011B4D0_mgmode);
+            func_80017D24_main(node->unk58, 0.0f, i * 5, 0.0f);
+        }
+        func_80116ED4_mgmode(1, 10, 1, (void (*)(s16 *))-1);
+        HuPrcSleep(5);
+        func_8002367C_main(node->unk58, D_8011B4D0_mgmode);
+        func_80116ED4_mgmode(2, 20, 1, (void (*)(s16 *))-1);
+        HuAudFXPlay(0x2A1);
+    } else {
+        D_8011B884_mgmode = 1;
+        if (func_801136EC_mgmode()) {
+            func_80112F98_mgmode();
+            func_80115848_mgmode();
+        }
+        func_80113204_mgmode();
+        if (D_801194CC_mgmode != 0) {
+            HuAudSeqPlay(0x4D);
+        }
+        Hu3DMotionSet(D_8011B8A8_mgmode[4], D_8011B78A_mgmode);
+        func_8001C814_main(D_8011B8A8_mgmode[4], 2, 2);
+        D_8011B884_mgmode = 0;
+    }
+    func_8011822C_mgmode(D_801195B0_mgmode);
+    func_801181F4_mgmode(0);
+    func_801182B4_mgmode(1);
+    HuWinMesSet(D_8011B6A8_mgmode, 0x5800, -1, -1);
+    HuWinExAnimIn(D_8011B6A8_mgmode);
+    while (TRUE) {
+        HuPrcVSleep();
+        func_8011829C_mgmode(5);
+        switch (D_8011B958_mgmode) {
+            case 2:
+                changed = FALSE;
+                if (D_800D5558_main[D_8011B808_mgmode] & A_BUTTON) {
+                    HuAudFXPlay(2);
+                    Hu3DMotionShiftSet(D_8011B8A8_mgmode[4], D_8011B788_mgmode, 0, 8, 2);
+                    func_801182B4_mgmode(0);
+                    while (TRUE) {
+                        HuWinMesSet(D_8011B6A8_mgmode, 0x5803, -1, -1);
+                        while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+                            HuPrcVSleep();
+                        }
+                        HuWinMesSet(D_8011B6A8_mgmode, 0x5804, -1, -1);
+                        while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+                            HuPrcVSleep();
+                        }
+                        if ((s16)HuWinChoiceGet(D_8011B6A8_mgmode, 0, 0) != 0) {
+                            choice = -1;
+                            break;
+                        }
+                        HuWinMesSet(D_8011B6A8_mgmode, 0x5805, -1, -1);
+                        while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+                            HuPrcVSleep();
+                        }
+                        choice = HuWinChoiceGet(D_8011B6A8_mgmode, 0, 0);
+                        if (choice == -1) {
+                            continue;
+                        }
+                        if (choice == 0) {
+                            HuWinMesSet(D_8011B6A8_mgmode, 0x5806, -1, -1);
+                            while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+                                HuPrcVSleep();
+                            }
+                        }
+                        break;
+                    }
+                    if (choice != -1) {
+                        HuWinMesSet(D_8011B6A8_mgmode, 0x5807, -1, -1);
+                        while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+                            HuPrcVSleep();
+                        }
+                        func_80112CF4_mgmode();
+                    }
+                    func_801182B4_mgmode(1);
+                    HuWinMesSet(D_8011B6A8_mgmode, 0x5800, -1, -1);
+                    HuWinExAnimIn(D_8011B6A8_mgmode);
+                } else if ((D_800C9520_main[D_8011B808_mgmode] & L_JPAD) ||
+                           (D_800D5558_main[D_8011B808_mgmode] & B_BUTTON)) {
+                    HuAudFXPlay(1);
+                    HuWinExAnimOut(D_8011B6A8_mgmode, 0);
+                    func_8011829C_mgmode(20);
+                    func_801182A8_mgmode(1);
+                    func_80116ED4_mgmode(3, 20, 1, (void (*)(s16 *))-1);
+                    changed = TRUE;
+                } else if (D_800C9520_main[D_8011B808_mgmode] & R_JPAD) {
+                    HuAudFXPlay(1);
+                    HuWinExAnimOut(D_8011B6A8_mgmode, 0);
+                    func_8011829C_mgmode(30);
+                    func_801182A8_mgmode(1);
+                    func_80116ED4_mgmode(5, 15, 0, (void (*)(s16 *))-1);
+                    func_80116ED4_mgmode(3, 15, 1, (void (*)(s16 *))-1);
+                    changed = TRUE;
+                }
+                if (changed) {
+                    HuWinMesSet(D_8011B6A8_mgmode, 0x5801, -1, -1);
+                    HuWinExAnimIn(D_8011B6A8_mgmode);
+                }
+                break;
+            case 3:
+                changed = FALSE;
+                if (D_800D5558_main[D_8011B808_mgmode] & A_BUTTON) {
+                    HuAudFXPlay(2);
+                    HuWinMesSet(D_8011B6A8_mgmode, 0x5802, -1, -1);
+                    while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+                        HuPrcVSleep();
+                    }
+                    if ((s16)HuWinChoiceGet(D_8011B6A8_mgmode, 0, 0) != 0) {
+                        HuWinMesSet(D_8011B6A8_mgmode, 0x5801, -1, -1);
+                        while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+                            HuPrcVSleep();
+                        }
+                        break;
+                    }
+                    func_801182B4_mgmode(0);
+                    HuWinExAnimOut(D_8011B6A8_mgmode, 0);
+                    HuPrcSleep(10);
+                    node = func_8001D33C_main(D_8011B8A8_mgmode[0], "door");
+                    RepeatVibrator(D_8011B808_mgmode, 5, 0, 5);
+                    HuAudFXPlay(0x2EB);
+                    for (i = 0; i < 19; i++) {
+                        HuPrcVSleep();
+                        func_8002367C_main(node->unk58, D_8011B4D0_mgmode);
+                        func_80017D24_main(node->unk58, 0.0f, i * 5, 0.0f);
+                    }
+                    func_80116ED4_mgmode(4, 20, 1, (void (*)(s16 *))-1);
+                    D_80118EB1_mgmode = 1;
+                    D_80118EB4_mgmode = 0x80;
+                    HuAudSeqFadeOut(60);
+                    while (TRUE) {
+                        HuPrcVSleep();
+                    }
+                } else if (D_800C9520_main[D_8011B808_mgmode] & R_JPAD) {
+                    HuAudFXPlay(1);
+                    HuWinExAnimOut(D_8011B6A8_mgmode, 0);
+                    func_8011829C_mgmode(20);
+                    func_801182A8_mgmode(0);
+                    func_80116ED4_mgmode(2, 20, 1, (void (*)(s16 *))-1);
+                    changed = TRUE;
+                } else if (D_800C9520_main[D_8011B808_mgmode] & L_JPAD) {
+                    HuAudFXPlay(1);
+                    HuWinExAnimOut(D_8011B6A8_mgmode, 0);
+                    func_8011829C_mgmode(30);
+                    func_801182A8_mgmode(0);
+                    func_80116ED4_mgmode(5, 15, 0, (void (*)(s16 *))-1);
+                    func_80116ED4_mgmode(2, 15, 1, (void (*)(s16 *))-1);
+                    changed = TRUE;
+                }
+                if (changed) {
+                    HuWinMesSet(D_8011B6A8_mgmode, 0x5800, -1, -1);
+                    HuWinExAnimIn(D_8011B6A8_mgmode);
+                }
+                break;
+        }
+        if (HmfModelData[D_8011B8A8_mgmode[4]].motId != D_8011B78A_mgmode &&
+            HmfModelData[D_8011B8A8_mgmode[4]].motIdShift != D_8011B78A_mgmode) {
+            Hu3DMotionShiftSet(D_8011B8A8_mgmode[4], D_8011B78A_mgmode, 0, 8, 2);
+        }
+    }
+}
 
 void func_80112CF4_mgmode(void) {
     f32 radius;

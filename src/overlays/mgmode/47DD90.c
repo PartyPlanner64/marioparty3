@@ -84,13 +84,6 @@ void func_80116D4C_mgmode(void) {
     }
 }
 
-typedef struct CamData {
-    Vec rot;
-    Vec center;
-    f32 zoom;
-    f32 unk_1C;
-} CamData;
-
 extern f32 D_8011B6A4_mgmode;
 extern Vec D_8011B898_mgmode;
 extern CamData *D_8011B954_mgmode;

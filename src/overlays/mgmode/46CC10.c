@@ -12,6 +12,7 @@ extern s16 D_8011B3E4_mgmode;
 extern MgmodeEsprite *D_8011B3EC_mgmode;
 extern s16 D_8011B8B2_mgmode;
 extern u16 *D_8011B3E0_mgmode;
+extern s8 D_8011B3E6_mgmode[];
 extern s32 D_80119190_mgmode[];
 extern s32 D_801191E4_mgmode[];
 extern char D_8011A430_mgmode[];
@@ -30,6 +31,8 @@ void func_8010BD98_mgmode(omObjData *arg0);
 void func_80108DDC_mgmode(s16 arg0);
 void func_801168E0_mgmode(MgmodeEsprite *arg0);
 void func_80116968_mgmode(MgmodeEsprite *arg0, s16 index, s16 arg2, s16 arg3);
+void func_801169A0_mgmode(MgmodeEsprite *arg0, s16 index);
+void func_801169C8_mgmode(MgmodeEsprite *arg0, s16 index);
 void func_80116D4C_mgmode(void);
 void func_80118CD8_mgmode(void);
 
@@ -147,7 +150,22 @@ void func_8010A5F0_mgmode(void) {
     HuWinKill(D_8011B3E4_mgmode);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_8010A62C_mgmode);
+void func_8010A62C_mgmode(s32 arg0, s32 arg1) {
+    s16 i;
+
+    for (i = 0; i < 4; i++) {
+        func_80116968_mgmode(D_8011B3EC_mgmode, D_8011B3E6_mgmode[i], arg0 + D_8011B3E0_mgmode[i] - 0x54, arg1);
+        func_80116968_mgmode(D_8011B3EC_mgmode, D_8011B3E6_mgmode[i] + 10, arg0 + D_8011B3E0_mgmode[i] - 0x54,
+                             arg1 + 0x1E);
+        func_80116968_mgmode(D_8011B3EC_mgmode, i + 4, arg0 + D_8011B3E0_mgmode[i] - 0x54, arg1);
+        if (GwPlayer[D_8011B3E6_mgmode[i]].stat & 1) {
+            func_801169A0_mgmode(D_8011B3EC_mgmode, i + 14);
+            func_80116968_mgmode(D_8011B3EC_mgmode, i + 14, arg0 + D_8011B3E0_mgmode[i] - 0x54, arg1 + 0xE);
+        } else {
+            func_801169C8_mgmode(D_8011B3EC_mgmode, i + 14);
+        }
+    }
+}
 
 #ifdef NON_MATCHING
 void func_8010A824_mgmode(s32 arg0, s32 arg1) {

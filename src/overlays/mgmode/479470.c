@@ -8,6 +8,7 @@ extern GAMEMES D_8011B810_mgmode;
 extern u8 *D_8011B610_mgmode[3];
 extern s16 D_8011B61C_mgmode;
 extern s16 D_8011B61E_mgmode;
+extern u8 D_800D2008_main;
 extern MgmodeEsprite *D_801194C0_mgmode;
 extern s16 D_801194C4_mgmode;
 extern MgmodeEsprite *D_801195D0_mgmode;
@@ -748,4 +749,44 @@ void func_80116260_mgmode(void) {
     memset(D_8011B610_mgmode[2], 0xFF, 0x4B00);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_801162B4_mgmode);
+void func_801162B4_mgmode(f32 centerX, f32 angle) {
+    u8 *dst;
+    f32 spread;
+    s16 y;
+    s16 x;
+    s16 left;
+    s16 right;
+    u8 *p;
+    u8 pixel;
+
+    dst = D_8011B610_mgmode[D_800D2008_main];
+    spread = sindf(angle);
+    for (y = 0; y < 120; y++) {
+        left = centerX - spread * (y + 100);
+        right = centerX + spread * (y + 100);
+        for (x = 0; x < 320; x++) {
+            if (left < x && x < right) {
+                pixel = *dst;
+                *dst = (x & 1) ? pixel & 0xF0 : pixel & 0xF;
+            } else {
+                pixel = *dst;
+                *dst = (x & 1) ? pixel | 0xF : pixel | 0xF0;
+            }
+            dst += x & 1;
+        }
+
+        p = &D_8011B610_mgmode[D_800D2008_main][(y * 320 + left - 1) / 2];
+        *p &= ((left - 1) & 1) ? 0xF0 : 0xF;
+        *p |= ((left - 1) & 1) ? 0xA : 0xA0;
+        p = &D_8011B610_mgmode[D_800D2008_main][(y * 320 + right + 1) / 2];
+        *p &= ((right + 1) & 1) ? 0xF0 : 0xF;
+        *p |= ((right + 1) & 1) ? 0xA : 0xA0;
+        p = &D_8011B610_mgmode[D_800D2008_main][(y * 320 + left) / 2];
+        *p &= (left & 1) ? 0xF0 : 0xF;
+        *p |= (left & 1) ? 0x4 : 0x40;
+        p = &D_8011B610_mgmode[D_800D2008_main][(y * 320 + right) / 2];
+        *p &= (right & 1) ? 0xF0 : 0xF;
+        *p |= (right & 1) ? 0x4 : 0x40;
+    }
+    HuSprGet(D_8011B61E_mgmode, 0)->unk_84->unk00->unk00 = D_8011B610_mgmode[D_800D2008_main];
+}

@@ -40,6 +40,8 @@ extern s16 D_8010EB74_boardresult;
 extern s16 D_8010EB76_boardresult;
 extern s32 D_8010EB88_boardresult[4];
 extern s32 D_8010EB98_boardresult;
+extern Object *D_8010EBA0_boardresult[4];
+extern s16 D_8010EBB0_boardresult[4];
 extern f32 D_8010EBB8_boardresult[6];
 extern s16 kakusiMasuItemHis[10];
 
@@ -370,7 +372,68 @@ void func_80107EE8_boardresult(void) {
     HuPrcVSleep();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80107F84_boardresult);
+void func_80107F84_boardresult(u8 *flags) {
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < 4; i++) {
+        if (flags[i] != 0) {
+            GwPlayer[i].star++;
+            if (GwPlayer[i].star >= 100) {
+                GwPlayer[i].star = 99;
+            }
+            func_800EFA8C_name_81(GwPlayer[i].player_obj, 1, 0);
+            PlayerFXPlay(0x274, i);
+            func_800138EC_main(D_8010EBB0_boardresult[i], 0, 1);
+            for (j = 800; j >= 250; j -= 15) {
+                f32 angle;
+
+                func_800D8E88_name_81(D_8010EBA0_boardresult[i]);
+                HuVecCopyXYZ(&D_8010EBA0_boardresult[i]->scale, 0.75f, 0.75f, 0.75f);
+                HuVecCopyXYZ(&D_8010EBA0_boardresult[i]->coords, GwPlayer[i].player_obj->coords.x,
+                             j + GwPlayer[i].player_obj->coords.y, GwPlayer[i].player_obj->coords.z - 50.0f);
+                angle = j * 2 - 160;
+                D_8010EBA0_boardresult[i]->rot.x = sindf(angle);
+                D_8010EBA0_boardresult[i]->rot.z = cosdf(angle);
+                func_8000CFA4_main(D_8010EBB0_boardresult[i], D_8010EBA0_boardresult[i]->coords.x,
+                                   D_8010EBA0_boardresult[i]->coords.y - 20.0f, D_8010EBA0_boardresult[i]->coords.z);
+                if (j == 650) {
+                    HuAudFXPlay(0x176);
+                }
+                HuPrcVSleep();
+            }
+            func_800138EC_main(D_8010EBB0_boardresult[i], 1, 0);
+        }
+    }
+    for (j = 0; j < 4; j++) {
+        if (flags[j] != 0) {
+            func_800EFABC_name_81(GwPlayer[j].player_obj);
+        }
+    }
+    HuPrcSleep(10);
+    HuAudFXPlay(0x171);
+    while (1) {
+        for (i = 0; i < 4; i++) {
+            D_8010EBA0_boardresult[i]->scale.x -= 0.1f;
+            D_8010EBA0_boardresult[i]->scale.y -= 0.1f;
+            D_8010EBA0_boardresult[i]->scale.z -= 0.1f;
+            D_8010EBA0_boardresult[i]->coords.y -= 20.0f;
+        }
+        HuPrcVSleep();
+        if (D_8010EBA0_boardresult[0]->scale.x <= 0.05f) {
+            break;
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        func_800D8F0C_name_81(D_8010EBA0_boardresult[i]);
+        HuVecCopyXYZ(&D_8010EBA0_boardresult[i]->scale, 0.75f, 0.75f, 0.75f);
+    }
+    for (j = 0; j < 4; j++) {
+        if (flags[j] != 0) {
+            func_800EFA8C_name_81(GwPlayer[j].player_obj, -1, 2);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80108378_boardresult);
 

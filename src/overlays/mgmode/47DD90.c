@@ -25,6 +25,7 @@ extern s16 D_8011B678_mgmode[4][4];
 extern s16 D_8011B698_mgmode[4];
 extern s16 D_8011B808_mgmode;
 
+void func_801180A4_mgmode(void);
 void func_801188BC_mgmode(omObjData *obj);
 void func_801189C4_mgmode(s16 model);
 void func_80118B8C_mgmode(s16 model);
@@ -244,7 +245,47 @@ void func_801177BC_mgmode(Vec *eye, Vec *center) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_801178E0_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_80117DD0_mgmode);
+void func_80117DD0_mgmode(void) {
+    s16 prev = -1;
+    s16 startX;
+    s16 startY;
+    s16 dx;
+    s16 dy;
+    f32 t;
+
+    D_8011B66E_mgmode = 0;
+    D_8011B66C_mgmode = espEntry(func_8000B838_main(0x11000E), 0, 1);
+    espPriSet(D_8011B66C_mgmode, 1);
+    espPosSet(D_8011B66C_mgmode, 160, 120);
+    espDispOff(D_8011B66C_mgmode);
+    D_8011B664_mgmode = 160;
+    D_8011B666_mgmode = 120;
+    D_8011B668_mgmode = 10;
+    omAddPrcObj(func_801180A4_mgmode, 0x3F00, 0x800, 0);
+    while (TRUE) {
+        HuPrcVSleep();
+        if (D_8011B66E_mgmode == 0) {
+            prev = D_8011B66A_mgmode;
+        } else if (prev != D_8011B66A_mgmode && D_8011B66A_mgmode != -1) {
+            if (D_8011B670_mgmode[D_8011B66A_mgmode].x != D_8011B664_mgmode ||
+                D_8011B670_mgmode[D_8011B66A_mgmode].y != D_8011B666_mgmode) {
+                startX = D_8011B664_mgmode;
+                startY = D_8011B666_mgmode;
+                dx = D_8011B670_mgmode[D_8011B66A_mgmode].x - startX;
+                dy = D_8011B670_mgmode[D_8011B66A_mgmode].y - startY;
+                for (prev = 1; prev <= D_8011B668_mgmode; prev++) {
+                    t = sindf(90.0f / D_8011B668_mgmode * prev);
+                    D_8011B664_mgmode = startX + dx * t;
+                    D_8011B666_mgmode = startY + dy * t;
+                    espPosSet(D_8011B66C_mgmode, D_8011B664_mgmode, D_8011B666_mgmode);
+                    HuPrcVSleep();
+                }
+            }
+            prev = D_8011B66A_mgmode;
+        }
+        espPosSet(D_8011B66C_mgmode, D_8011B664_mgmode, D_8011B666_mgmode);
+    }
+}
 
 void func_801180A4_mgmode(void) {
     s16 prev = 0;

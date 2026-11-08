@@ -72,6 +72,9 @@ extern s16 D_800CB894_main;
 extern u16 D_800CC698_main;
 extern u8 D_80118EB0_mgmode;
 extern u8 D_8011B958_mgmode;
+extern MgmodeSpaceCoord D_8011AA18_mgmode[];
+extern u16 D_80119200_mgmode[];
+extern s8 D_800D2124_main[];
 
 void func_8010BD98_mgmode(omObjData *arg0);
 void func_80108DDC_mgmode(s16 arg0);
@@ -100,6 +103,13 @@ void func_80112200_mgmode(void);
 s32 func_80111B08_mgmode(void);
 void func_80117DD0_mgmode(void);
 void func_80116E24_mgmode(s16 arg0);
+s16 func_80116B20_mgmode(void);
+void func_80116C18_mgmode(s16 arg0);
+void func_801182C0_mgmode(s16 index);
+void func_80109C10_mgmode(s16 arg0, s16 arg1);
+void func_80109DBC_mgmode(s16 arg0, s16 arg1);
+s16 func_8010A148_mgmode(s16 arg0);
+void func_8010A5F0_mgmode(void);
 
 void func_801059A0_mgmode(void) {
     HmfModel *model;
@@ -551,7 +561,172 @@ void func_80108DDC_mgmode(s16 arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_801090C4_mgmode);
+void func_801090C4_mgmode(s16 arg0) {
+    Vec pos;
+    Vec2f screen;
+    s16 category;
+    s16 count;
+    s16 i;
+    s16 sel;
+    s16 next;
+    s16 ok;
+    s16 win;
+    s16 spriteGrp;
+    s16 icon;
+    s16 badge;
+
+    category = D_801191E4_mgmode[arg0];
+    count = D_8011B940_mgmode[category];
+    for (i = 0; i < count; i++) {
+        pos = D_8011AA80_mgmode[arg0][i];
+        Hu3D3Dto2D(0, &pos, &screen);
+        D_8011AA18_mgmode[i].x = screen.x;
+        D_8011AA18_mgmode[i].y = screen.y;
+    }
+    D_8011AA18_mgmode[i].x = -1;
+    D_8011AA18_mgmode[i].y = -1;
+    win = HuWinExCreate(-1, 24, 16, 272, 80, 0);
+    HuWinActivePlayerSet(win, 1 << D_8011B808_mgmode);
+    icon = func_80116B20_mgmode();
+    espAttrSet(icon, 8);
+    espPosSet(icon, 76, 56);
+    espScaleSet(icon, 0.75f, 0.75f);
+    spriteGrp = func_8000B838_main(0x120013);
+    badge = espEntry(spriteGrp, 0, 1);
+    espPriSet(badge, 1);
+    espDispOff(badge);
+    espPosSet(badge, 76, 84);
+    func_8011822C_mgmode(D_8011AA18_mgmode);
+    sel = D_800D2124_main[arg0];
+    for (i = 0; i < count; i++) {
+        if (D_8011B6B0_mgmode[category][i] == 0xFF || D_8011B6B0_mgmode[category][i] >= 72) {
+            func_801182C0_mgmode(i);
+        } else if (sel == -1) {
+            sel = D_800D2124_main[arg0] = i;
+        }
+    }
+    func_801181F4_mgmode(sel);
+    func_801182B4_mgmode(1);
+    func_8011829C_mgmode(3);
+    if (D_8011B6B0_mgmode[category][sel] != 0xFF && D_8011B6B0_mgmode[category][sel] < 72) {
+        func_80109C10_mgmode(arg0, sel);
+    }
+    HuWinInsertMesSet(win, D_8011B6B0_mgmode[category][sel] + 0x4700, 0);
+    HuWinMesSet(win, D_80119200_mgmode[D_8011B6B0_mgmode[category][sel]], -1, -1);
+    HuWinExAnimIn(win);
+    if (D_8011B6B0_mgmode[category][sel] != 0xFF && D_8011B6B0_mgmode[category][sel] < 72) {
+        espDispOn(icon);
+        if (D_800A6D40_main[D_8011B6B0_mgmode[category][sel]].flags >> 15) {
+            espDispOn(badge);
+        } else {
+            espDispOff(badge);
+        }
+        func_80116C18_mgmode(D_800A6D40_main[D_8011B6B0_mgmode[category][sel]].flags & 0x7FF);
+    } else {
+        espDispOff(icon);
+    }
+    while (TRUE) {
+        HuPrcVSleep();
+        func_80118D0C_mgmode();
+        if (ABS(D_800CBB6E_main[D_8011B808_mgmode]) >= 31 || ABS(D_800D20A1_main[D_8011B808_mgmode]) >= 31) {
+            next = func_801182DC_mgmode(-D_800CBB6E_main[D_8011B808_mgmode], D_800D20A1_main[D_8011B808_mgmode]);
+            if (next == -1) {
+                continue;
+            }
+            HuAudFXPlay(1);
+            func_801182A8_mgmode(next);
+            sel = next;
+            D_800D2124_main[arg0] = sel;
+            for (i = 0; i < 8; i++) {
+                func_8001C258_main(D_8011B8B6_mgmode[i], 4, 4);
+            }
+            if (D_8011B6B0_mgmode[category][sel] != 0xFF && D_8011B6B0_mgmode[category][sel] < 72) {
+                func_80109C10_mgmode(arg0, sel);
+                espDispOn(icon);
+                if (D_800A6D40_main[D_8011B6B0_mgmode[category][sel]].flags >> 15) {
+                    espDispOn(badge);
+                } else {
+                    espDispOff(badge);
+                }
+                func_80116C18_mgmode(D_800A6D40_main[D_8011B6B0_mgmode[category][sel]].flags & 0x7FF);
+                HuWinInsertMesSet(win, D_8011B6B0_mgmode[category][sel] + 0x4700, 0);
+                HuWinMesSet(win, D_80119200_mgmode[D_8011B6B0_mgmode[category][sel]], -1, -1);
+            } else {
+                espDispOff(icon);
+                HuWinMesSet(win, 0x4401, -1, -1);
+            }
+            HuPrcSleep(3);
+        } else if ((D_800D5558_main[D_8011B808_mgmode] & A_BUTTON) && D_8011B6B0_mgmode[category][sel] != 0xFF) {
+            HuAudFXPlay(2);
+            for (i = 0; i < 4; i++) {
+                GwPlayer[i].group = i;
+            }
+            ok = 1;
+            if (category == 1 || category == 2) {
+                func_801182B4_mgmode(0);
+                ok = func_8010A148_mgmode(category);
+                if (ok == 0) {
+                    func_8010A5F0_mgmode();
+                    func_801182B4_mgmode(1);
+                    HuPrcSleep(5);
+                }
+            }
+            if (ok == 0) {
+                continue;
+            }
+            HuWinMesSet(win, 0x4400, -1, -1);
+            while (HuWinStatGet(win) != 0) {
+                HuPrcVSleep();
+            }
+            next = HuWinChoiceGet(win, 0, 0);
+            if (category == 1 || category == 2) {
+                func_8010A5F0_mgmode();
+            }
+            if (next == -1) {
+                func_801182B4_mgmode(1);
+                HuPrcSleep(2);
+                HuWinMesSet(win, D_80119200_mgmode[D_8011B6B0_mgmode[category][sel]], -1, -1);
+                continue;
+            }
+            func_801182B4_mgmode(0);
+            _SetFlag(13);
+            func_80109DBC_mgmode(arg0, sel);
+            if (next == 1) {
+                GwSystem.show_minigame_explanations = 1;
+            } else {
+                GwSystem.show_minigame_explanations = 0;
+            }
+            GwSystem.minigame_index = D_8011B6B0_mgmode[category][sel] + 1;
+            D_800D20B0_main = arg0;
+            omOvlHisChg(0, 0x69, 1, 0x84);
+            D_80118EB1_mgmode = 1;
+            D_8011B95A_mgmode = 0x68;
+            if (GwSystem.minigame_index == 0x47 || GwSystem.minigame_index == 0x1F) {
+                D_8011B950_mgmode = 0;
+            } else {
+                HuAudSeqFadeOut(60);
+                D_8011B950_mgmode = 1;
+            }
+            D_80118EB4_mgmode = 0x82;
+            D_800D1FE0_main = 0;
+            while (TRUE) {
+                HuPrcVSleep();
+            }
+        } else if (D_800D5558_main[D_8011B808_mgmode] & B_BUTTON) {
+            HuAudFXPlay(4);
+            func_801182B4_mgmode(0);
+            break;
+        }
+    }
+    func_80116D4C_mgmode();
+    espKill(badge);
+    HuSprAnimKill(spriteGrp);
+    HuWinExAnimOut(win, 0);
+    for (i = 0; i < 8; i++) {
+        func_8001C258_main(D_8011B8B6_mgmode[i], 4, 4);
+    }
+    HuWinKill(win);
+}
 
 void func_80109C10_mgmode(s16 arg0, s16 arg1) {
     s16 model;

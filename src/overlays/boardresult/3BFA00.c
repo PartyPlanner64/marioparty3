@@ -152,7 +152,106 @@ HmfModelData_UnkBC_Unk58_Struct *func_8010D28C_boardresult(s16 model, f32 x, f32
     return particle;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3BFA00", func_8010D36C_boardresult);
+void func_8010D36C_boardresult(s16 model) {
+    HmfData *hmf = HmfModelData[model].hmf;
+    HmfModelData_UnkBC_Struct *effect = HmfModelData[model].unkBC;
+    HmfModelData_UnkBC_Unk58_Struct *particle;
+    HmfModelData_UnkBC_Unk58_Struct *src;
+    HmfModelData_UnkBC_Unk58_Struct *dst;
+    s16 count = hmf->unk1A;
+    s16 i;
+    s16 j;
+    s16 done;
+    u8 r;
+    u8 g;
+    u8 b;
+    f32 angle;
+
+    if (effect->unk02 == 0) {
+        effect->unk04 &= ~4;
+        particle = effect->unk58;
+        for (i = 0; i < count; i++, particle++) {
+            if (particle->unk2C > 0.0f) {
+                particle->unk08 = 1.0f;
+            }
+        }
+    }
+    particle = effect->unk58;
+
+    r = rand8() | 0x80;
+    g = rand8() | 0x80;
+    b = rand8() | 0x80;
+
+    if (effect->unk02 <= effect->unk08.f) {
+        if (effect->unk02 > 20) {
+            for (j = 0; j < 2; j++) {
+                src = &effect->unk58[(rand8() * count) >> 8];
+                if (src->unk2C > 0.0f) {
+                    dst = &effect->unk58[(rand8() * count) >> 8];
+                    if (dst->unk2C <= 0.0f) {
+                        dst->unk0C = src->unk0C;
+                        dst->unk10 = src->unk10;
+                        dst->unk14 = src->unk14;
+                        dst->unk08 = 1.0f;
+                    }
+                }
+            }
+        }
+        for (i = 0; i < count; i++, particle++) {
+            if (particle->unk08 > 0.0f) {
+                particle->unk00[0] = r;
+                particle->unk00[1] = g;
+                particle->unk00[2] = b;
+                if (particle->unk2C > 0.0f) {
+                    angle = effect->unk02 * particle->unk04;
+                    if (angle > 90.0f) {
+                        angle = 90.0f;
+                    }
+                    particle->unk0C = sindf(angle) * particle->unk24;
+                    particle->unk10 = sindf(angle) * particle->unk28;
+                    particle->unk14 = 0.0f;
+                    particle->unk08 = ((effect->unk02 + i) & 1) * 0.5f + 1.0f;
+                } else {
+                    particle->unk10 -= 10.0f;
+                    particle->unk08 -= 0.04f;
+                }
+            } else {
+                particle->unk08 = 0.0f;
+            }
+        }
+    } else {
+        for (i = 0, done = 0; i < count; i++, particle++) {
+            if (particle->unk08 > 0.0f) {
+                particle->unk00[0] = r;
+                particle->unk00[1] = g;
+                particle->unk00[2] = b;
+                if (particle->unk2C > 0.0f) {
+                    if (particle->unk18 <= 0.0f) {
+                        particle->unk10 -= particle->unk04 * 5.0f;
+                        particle->unk08 -= 0.02f;
+                        if (particle->unk08 < 0.0f) {
+                            particle->unk08 = 0.0f;
+                        }
+                    } else {
+                        particle->unk18 -= 1.0f;
+                        particle->unk08 = ((effect->unk02 + i) & 1) * 0.5f + 1.0f;
+                    }
+                } else {
+                    particle->unk10 -= 10.0f;
+                    particle->unk08 -= 0.04f;
+                }
+            } else {
+                particle->unk08 = 0.0f;
+                done++;
+            }
+        }
+        if (done >= i) {
+            effect->unk04 |= 2;
+            return;
+        }
+    }
+    effect->unk02++;
+}
 
 void func_8010D87C_boardresult(s16 model) {
     HmfData *hmf = HmfModelData[model].hmf;

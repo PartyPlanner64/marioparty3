@@ -1,7 +1,16 @@
 #include "common.h"
 
+typedef struct ChanceTimeUnkFED0 {
+    /* 0x00 */ s8 unk00;
+    /* 0x01 */ char unk01[0x27];
+} ChanceTimeUnkFED0; // size = 0x28
+
 extern s8 D_8010FB80_chancetime;
 extern s8 D_8010FB81_chancetime;
+extern s32 D_8010FBF0_chancetime;
+extern s32 D_8010FBF4_chancetime;
+extern s32 D_8010FBF8_chancetime;
+extern s32 D_8010FBFC_chancetime;
 extern s32 D_8010FC10_chancetime;
 extern s32 D_8010FC14_chancetime;
 extern s32 D_8010FC18_chancetime;
@@ -9,6 +18,8 @@ extern s32 D_8010FC1C_chancetime;
 extern s16 D_8010FE94_chancetime[3];
 extern u16 D_8010FE9A_chancetime;
 extern s32 D_8010FEC4_chancetime;
+extern ChanceTimeUnkFED0 D_8010FED0_chancetime[3];
+extern s32 D_8010FF48_chancetime[3];
 extern s8 D_8010FEC8_chancetime;
 extern s8 D_8010FEC9_chancetime;
 extern s8 D_80110000_chancetime;
@@ -60,7 +71,29 @@ INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010D320_chancet
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010D6A4_chancetime);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010D92C_chancetime);
+void func_8010D92C_chancetime(s8 arg0) {
+    switch (D_8010FBF0_chancetime) {
+        case 1:
+            if (D_8010FBF4_chancetime == 1) {
+                HuAudFXStop((s16)D_8010FF48_chancetime[0]);
+            }
+            HuAudFXPlay(0x4FC);
+            break;
+        case 2:
+            if (D_8010FBF8_chancetime == 1) {
+                HuAudFXStop((s16)D_8010FF48_chancetime[1]);
+            }
+            HuAudFXPlay(0x4FD);
+            break;
+        case 3:
+            if (D_8010FBFC_chancetime == 1) {
+                HuAudFXStop((s16)D_8010FF48_chancetime[2]);
+            }
+            HuAudFXPlay(0x4FE);
+            break;
+    }
+    D_8010FED0_chancetime[arg0].unk00 = 1;
+}
 
 void func_8010DA24_chancetime(void) {
     s32 i;

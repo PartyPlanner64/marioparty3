@@ -5,10 +5,12 @@ extern s32 D_8010FB00_chancetime;
 extern s32 D_8010FB04_chancetime;
 extern s32 D_8010FB08_chancetime;
 extern s32 D_8010FB60_chancetime;
+extern char D_8010FC8C_chancetime[];
 extern ChanceTimeObjState D_801100D4_chancetime;
 
 void func_80107B18_chancetime(omObjData *object);
 void func_80107D60_chancetime(omObjData *object);
+void func_80108738_chancetime(omObjData *object);
 void func_80107E40_chancetime(omObjData *object);
 void func_80108414_chancetime(omObjData *object);
 s32 func_8010B6F4_chancetime(s16 arg0);
@@ -46,7 +48,18 @@ void func_80107C84_chancetime(omObjData *object) {
     D_801100D4_chancetime.func = func_80107D60_chancetime;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80107D60_chancetime);
+void func_80107D60_chancetime(omObjData *object) {
+    if (Hu3DMotionShiftTimeGet(object->model[1]) >= 5.0f) {
+        Hu3DModelHookSet(object->model[5], object->model[1], D_8010FC8C_chancetime);
+        func_8001C258_main(object->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        func_8001C814_main(object->model[5], 1, 0);
+        Hu3DModelHookSet(object->model[6], object->model[3], D_8010FC8C_chancetime);
+        func_8001C258_main(object->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        func_8001C814_main(object->model[6], 1, 0);
+        func_80108738_chancetime(object);
+        D_801100D4_chancetime.func = func_80107A80_chancetime;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80107E40_chancetime);
 

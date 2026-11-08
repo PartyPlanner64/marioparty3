@@ -56,6 +56,20 @@ extern u8 D_800CB8B1_main[];
 extern f32 D_8011B6A4_mgmode;
 extern f32 D_8011B804_mgmode;
 extern f32 D_8011B888_mgmode;
+extern Vec D_8011B898_mgmode;
+extern Vec D_8011B88C_mgmode;
+extern f32 D_8011B938_mgmode;
+extern u8 D_8011B778_mgmode;
+extern u8 D_8011B8A4_mgmode;
+extern s16 D_8011B800_mgmode;
+extern u8 D_800CD280_main;
+extern u8 D_800D6A58_main;
+extern u16 D_800CE2A0_main[];
+extern u8 D_800CE20A_main;
+extern s16 D_800D0468_main;
+extern s16 D_800D1FE0_main;
+extern s16 D_800CB894_main;
+extern u16 D_800CC698_main;
 
 void func_8010BD98_mgmode(omObjData *arg0);
 void func_80108DDC_mgmode(s16 arg0);
@@ -74,8 +88,126 @@ void func_80118D0C_mgmode(void);
 MgmodeEsprite *func_80116794_mgmode(MgmodeEspriteDef *defs);
 void func_8010A62C_mgmode(s32 arg0, s32 arg1);
 void func_8010A824_mgmode(s32 arg0, s32 arg1);
+void func_8010606C_mgmode(void);
+void func_8010A8E4_mgmode(s32 arg0);
+void func_8010AF78_mgmode(Gfx **arg0, s32 arg1, s32 arg2);
+void func_8010AFEC_mgmode(void);
+void func_8010BD28_mgmode(omObjData *arg0);
+void func_8010BEC0_mgmode(void);
+void func_80112200_mgmode(void);
+s32 func_80111B08_mgmode(void);
+void func_80117DD0_mgmode(void);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_801059A0_mgmode);
+void func_801059A0_mgmode(void) {
+    HmfModel *model;
+    s16 i;
+
+    omInitObjMan(20, 10);
+    Hu3DCamInit(2);
+    HuWinInit();
+    func_800142A0_main(20);
+    Hu3DBGColorSet(0, 0, 0);
+    D_800CD280_main = 1;
+    D_800D6A58_main = 1;
+    ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
+    ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
+    ScissorSet(1, 0.0f, 0.0f, 320.0f, 240.0f);
+    ViewportSet(1, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
+    CRot.x = 0.0f;
+    CRot.y = 0.0f;
+    D_8011B898_mgmode.z = 90.0f; // CRot.z is left as-is and copied over this below
+    CZoom = 660.0f;
+    Center.x = 0.0f;
+    Center.y = 181.0f;
+    Center.z = -395.0f;
+    D_8011B6A4_mgmode = 40.0f;
+    D_8011B898_mgmode = CRot;
+    D_8011B938_mgmode = CZoom;
+    D_8011B88C_mgmode = Center;
+    D_8011B804_mgmode = 80.0f;
+    D_8011B888_mgmode = 1800.0f;
+    Hu3DCameraPerspectiveSet(0, D_8011B6A4_mgmode, D_8011B804_mgmode, D_8011B888_mgmode);
+    Hu3DCameraPerspectiveSet(1, D_8011B6A4_mgmode, D_8011B804_mgmode, D_8011B888_mgmode);
+    HmfLightMaxSet(4);
+    HmfLightColorSet(1, 64, 64, 64);
+    HmfLightDirSet(1, 0.0f, 119.0f, 0.0f);
+    HmfLightStatSet(0, 1, 1);
+    HmfLightColorSet(2, 150, 150, 110);
+    HmfLightDirSet(2, 40.0f, 42.0f, 104.0f);
+    HmfLightColorSet(3, 0, 0, 0);
+    omAddObj(10000, 0, 0, -1, func_8010BD28_mgmode);
+    omPrcSetStatBit(omAddPrcObj(func_8010AFEC_mgmode, 0x1100, 0x1000, 0), 0xA0);
+    omAddPrcObj(func_80117DD0_mgmode, 0x3F00, 0x800, 0);
+    func_8010A8E4_mgmode(0);
+
+    if (omovlevtno == 0 || omovlevtno == 1 || omovlevtno == 6 || omovlevtno == 7) {
+        omAddPrcObj(func_8010606C_mgmode, 0x3FF6, 0x2000, 0);
+        HuAudSeqPlay(8);
+    } else if (omovlevtno == 2 || omovlevtno == 4) {
+        func_8010A8E4_mgmode(1);
+        HmfLightColorSet(3, 130, 130, 50);
+        HmfLightDirSet(3, -17.0f, -101.0f, -61.0f);
+        omAddPrcObj(func_8010BEC0_mgmode, 0x3FF6, 0x2000, 0);
+        if (omovlevtno == 4) {
+            if (func_80111B08_mgmode() == 0) {
+                HuAudSeqPlay(76);
+            } else {
+                HuAudSeqPlay(22);
+            }
+        } else {
+            HuAudSeqPlay(76);
+        }
+    } else if (omovlevtno == 3 || omovlevtno == 5) {
+        omAddPrcObj(func_80112200_mgmode, 0x3FF6, 0x2000, 0);
+        if (omovlevtno == 5 && D_800D1FE0_main + D_800CB894_main * GwPlayer[0].bonusCoin >= 1000) {
+            HuAudSeqPlay(70);
+        } else {
+            HuAudSeqPlay(77);
+        }
+    }
+
+    if (omovlevtno != 0) {
+        for (i = 0; i < 10; i++) {
+            if (D_800CE2A0_main[i] != GwCommon.mgRecord[i]) {
+                break;
+            }
+        }
+        if (i != 10) {
+            func_80118CD8_mgmode();
+        }
+    }
+    for (i = 0; i < 10; i++) {
+        D_800CE2A0_main[i] = GwCommon.mgRecord[i];
+    }
+    D_8011B808_mgmode = 0;
+    D_8011B800_mgmode = 0;
+    _ClearFlag(13);
+    _SetFlag(28);
+    D_800CE20A_main = 0;
+    model = &HmfModelData[D_800D0468_main];
+    model->unk00 = (model->unk00 & 0xF9) | 3;
+    Hu3DModelCameraSet(D_800D0468_main, 1);
+    D_8011B8A4_mgmode = 0;
+    D_8011B778_mgmode = 0;
+    for (i = 0; i < 6; i++) {
+        if (D_8011B928_mgmode[i] >= 3) {
+            D_8011B778_mgmode = 1;
+            break;
+        }
+    }
+    if (_CheckFlag(29)) {
+        D_8011B8A4_mgmode = 1;
+    }
+    D_8011B884_mgmode = 0;
+    Hu3DModelCameraSet(Hu3DHookFuncCreate(0, func_8010AF78_mgmode, 0), 2);
+    for (i = 0; i < 4; i++) {
+        D_800CB8B1_main[i] = 0;
+    }
+    D_800CC698_main = 0;
+    for (i = 0; i < 4; i++) {
+        GwPlayer[i].star = 0;
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mgmode/46CC10", D_8011A400_mgmode);
 

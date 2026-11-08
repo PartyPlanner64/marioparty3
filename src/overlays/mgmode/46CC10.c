@@ -70,6 +70,8 @@ extern s16 D_800D0468_main;
 extern s16 D_800D1FE0_main;
 extern s16 D_800CB894_main;
 extern u16 D_800CC698_main;
+extern u8 D_80118EB0_mgmode;
+extern u8 D_8011B958_mgmode;
 
 void func_8010BD98_mgmode(omObjData *arg0);
 void func_80108DDC_mgmode(s16 arg0);
@@ -97,6 +99,7 @@ void func_8010BEC0_mgmode(void);
 void func_80112200_mgmode(void);
 s32 func_80111B08_mgmode(void);
 void func_80117DD0_mgmode(void);
+void func_80116E24_mgmode(s16 arg0);
 
 void func_801059A0_mgmode(void) {
     HmfModel *model;
@@ -868,7 +871,94 @@ void func_8010AFEC_mgmode(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_8010B574_mgmode);
+void func_8010B574_mgmode(void) {
+    char buf[256];
+    HmfModel *model;
+    f32 rotX;
+    f32 rotY;
+    f32 speed;
+    f32 dirZ;
+    f32 inv;
+
+    model = &HmfModelData[D_8011B8A8_mgmode[15]];
+    if (D_800D5558_main[1] & 0x10) {
+        D_80118EB0_mgmode ^= 1;
+        if (D_80118EB0_mgmode) {
+            osSyncPrintf("\t{\n\t{%4.1f,%4.1f,%4.1f},\n", CRot.x, CRot.y, CRot.z);
+            osSyncPrintf("\t{%4.1f,%4.1f,%4.1f},\n", Center.x, Center.y, Center.z);
+            osSyncPrintf("\t%4.1f,%4.1f\n\t},\n", CZoom, D_8011B6A4_mgmode);
+            osSyncPrintf("HMF>%4.1f,%4.1f,%4.1f\n", model->rot.x, model->rot.y, model->rot.z);
+        }
+    }
+    if (D_800CDA7C_main[1] & 0x1000) {
+        func_80116E24_mgmode(D_8011B958_mgmode);
+    }
+    if (D_800CDA7C_main[1] & 8) {
+        CZoom = (D_800CDA7C_main[1] & 0x2000) ? CZoom + 30.0f : CZoom + 10.0f;
+    }
+    if ((D_800CDA7C_main[1] & 4) && CZoom - 10.0f != 0.0f) {
+        CZoom = (D_800CDA7C_main[1] & 0x2000) ? CZoom - 30.0f : CZoom - 10.0f;
+    }
+    if (D_800CDA7C_main[1] & 2) {
+        D_8011B6A4_mgmode += 1.0f;
+    }
+    if (D_800CDA7C_main[1] & 1) {
+        D_8011B6A4_mgmode -= 1.0f;
+    }
+    Hu3DCameraPerspectiveSet(0, D_8011B6A4_mgmode, D_8011B804_mgmode, D_8011B888_mgmode);
+    rotX = D_8011B898_mgmode.x;
+    rotY = D_8011B898_mgmode.y;
+    speed = (D_800CDA7C_main[1] & 0x2000) ? 5.0f : 2.0f;
+    rotY += (-D_800CBB6E_main[1] / 30) * speed;
+    if (rotY >= 360.0f) {
+        rotY -= 360.0f;
+    } else if (rotY < 0.0f) {
+        rotY += 360.0f;
+    }
+    D_8011B898_mgmode.y = rotY;
+    rotX += (s8)(D_800D20A1_main[1] / 30) * speed;
+    if (rotX >= 360.0f) {
+        rotX -= 360.0f;
+    } else if (rotX < 0.0f) {
+        rotX += 360.0f;
+    }
+    D_8011B898_mgmode.x = rotX;
+    CRot.x = (s16)rotX;
+    CRot.y = (s16)D_8011B898_mgmode.y;
+    speed = (D_800CDA7C_main[1] & 0x2000) ? 10.0f : 2.0f;
+    if (D_800CDA7C_main[1] & 0x800) {
+        Center.x += sindf(rotY) * sindf(rotX) * -speed;
+        Center.y += cosdf(rotX) * -speed;
+        Center.z += cosdf(rotY) * sindf(rotX) * -speed;
+    } else if (D_800CDA7C_main[1] & 0x400) {
+        Center.x += sindf(rotY) * sindf(rotX) * speed;
+        Center.y += cosdf(rotX) * speed;
+        Center.z += cosdf(rotY) * sindf(rotX) * speed;
+    } else if (D_800CDA7C_main[1] & 0x200) {
+        // rotX is reused here as the X component of the camera direction.
+        rotX = gCameraList->pos.z - Center.z;
+        dirZ = -(gCameraList->pos.x - Center.x);
+        inv = 1.0f / HuSqrtf(rotX * rotX + dirZ * dirZ);
+        Center.x += rotX * inv * speed;
+        Center.y += 0.0f;
+        Center.z += dirZ * inv * speed;
+    } else if (D_800CDA7C_main[1] & 0x100) {
+        rotX = -(gCameraList->pos.z - Center.z);
+        dirZ = gCameraList->pos.x - Center.x;
+        inv = 1.0f / HuSqrtf(rotX * rotX + dirZ * dirZ);
+        Center.x += rotX * inv * speed;
+        Center.y += 0.0f;
+        Center.z += dirZ * inv * speed;
+    }
+    if (D_80118EB0_mgmode) {
+        sprintf(buf, "CROT %4.1f,%4.1f,%4.1f", CRot.x, CRot.y, CRot.z);
+        print8(32, 180, buf);
+        sprintf(buf, "INT %4.1f,%4.1f,%4.1f", Center.x, Center.y, Center.z);
+        print8(32, 190, buf);
+        sprintf(buf, "CZOOM %4.1f  FOVY %4.1f", CZoom, D_8011B6A4_mgmode);
+        print8(32, 200, buf);
+    }
+}
 
 void func_8010BD28_mgmode(omObjData *arg0) {
     if ((D_80118EB1_mgmode != 0) || (D_800D530C_main != 0)) {

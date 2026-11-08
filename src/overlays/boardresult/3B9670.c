@@ -15,6 +15,7 @@ extern omObjData *D_8010E8EC_boardresult[4];
 extern s32 D_8010E910_boardresult[6];
 extern u8 D_8010EAF0_boardresult;
 extern Object *D_8010EAF4_boardresult;
+extern Object *D_8010EB60_boardresult[4];
 extern s16 D_8010EB76_boardresult;
 extern s32 D_8010EB88_boardresult[4];
 extern s32 D_8010EB98_boardresult;
@@ -88,7 +89,25 @@ s16 func_80106A38_boardresult(s32 dataNum) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80106A80_boardresult);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80106CA8_boardresult);
+void func_80106CA8_boardresult(omObjData *obj) {
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        D_8010EB60_boardresult[i]->rot.x = sindf(obj->rot.x);
+        D_8010EB60_boardresult[i]->rot.z = cosdf(obj->rot.x);
+    }
+
+    if (obj->work[0] == 0) {
+        obj->rot.x += 20.0f;
+        if (obj->rot.x >= 360.0f) {
+            obj->rot.x -= 360.0f;
+        }
+    } else if (obj->rot.x < 360.0f) {
+        obj->rot.x += 20.0f;
+    } else {
+        obj->rot.x = 360.0f;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80106DA4_boardresult);
 
@@ -96,7 +115,20 @@ INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80106F54_boardr
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_801070F8_boardresult);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80107598_boardresult);
+void func_80107598_boardresult(omObjData *obj) {
+    f32 scale;
+    u32 i;
+
+    scale = sinf(obj->rot.x * (M_PI / 180.0)) * 0.3f + 1.0;
+    for (i = 0; i < obj->work[1]; i++) {
+        HuSprScaleSet(D_8010EB88_boardresult[obj->work[0]], i, scale, scale);
+    }
+
+    obj->rot.x += 30.0f;
+    if (obj->rot.x >= 360.0f) {
+        obj->rot.x -= 360.0f;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_801076A0_boardresult);
 

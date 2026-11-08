@@ -69,7 +69,63 @@ void func_8010BE0C_boardresult(BoardResultWork *arg0, s16 arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3BFA00", func_8010BE14_boardresult);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3BFA00", func_8010CEF4_boardresult);
+void func_8010CEF4_boardresult(s16 model, s32 dataNum) {
+    s16 anim = func_8000B838_main(dataNum);
+    s16 group = HuSprGrpCreate(1, 0);
+    HuSprite *sprite;
+    u16 *pixels;
+    s16 width;
+    s16 height;
+    s16 count;
+    HmfModelData_UnkBC_Struct *effect;
+    HmfModelData_UnkBC_Unk58_Struct *particle;
+    s16 used;
+    s16 x;
+    s16 y;
+    s16 i;
+    s16 white;
+
+    HuSprGrpMemberSet(group, 0, anim, 0);
+    sprite = HuSprGet(group, 0);
+    pixels = sprite->unk_84->unk00->unk00;
+    width = sprite->unk_84->unk00->unk04;
+    height = sprite->unk_84->unk00->unk06;
+    // Counts the white pixels, but the result goes unused.
+    white = 0;
+    for (i = 0; i < width * height; i++) {
+        if (*pixels++ == 0xFFFF) {
+            white++;
+        }
+    }
+    (void)white;
+
+    pixels = sprite->unk_84->unk00->unk00;
+    effect = HmfModelData[model].unkBC;
+    count = HmfModelData[model].hmf->unk1A;
+    particle = effect->unk58;
+    for (y = 0, used = 0; y < height; y++) {
+        for (x = 0; x < width; x++) {
+            if (*pixels++ == 0xFFFF && used < count) {
+                particle = &effect->unk58[used];
+                particle->unk18 = rand8() & 0xF;
+                particle->unk24 = (x - width / 2) * 12;
+                particle->unk28 = (height / 2 - y) * 12;
+                particle->unk2C = 1.0f;
+                particle->unk08 = 3.0f;
+                particle->unk04 = (s32)((s16)rand8() * 5U / 128) * 0.1f + 3.0f;
+                used++;
+                particle++;
+            }
+        }
+    }
+
+    for (i = 0; i < count - used; i++, particle++) {
+        particle->unk08 = particle->unk2C = particle->unk0C = particle->unk10 = particle->unk14 = 0.0f;
+    }
+
+    HuSprGrpKill(group);
+    HuSprAnimKill(anim);
+}
 
 HmfModelData_UnkBC_Unk58_Struct *func_8010D28C_boardresult(s16 model, f32 x, f32 y, f32 z, f32 arg4, f32 arg5,
                                                            f32 arg6, u8 r, u8 g, u8 b) {

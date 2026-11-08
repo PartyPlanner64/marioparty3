@@ -8,6 +8,9 @@ extern Vec D_8010FB48_chancetime;
 extern Vec D_8010FB54_chancetime;
 extern s32 D_8010FB60_chancetime;
 extern s32 D_8010FB68_chancetime;
+extern f32 D_8010FB6C_chancetime;
+extern f32 D_8010FB70_chancetime;
+extern f32 D_8010FB74_chancetime;
 extern f32 D_8010FB78_chancetime;
 extern f32 D_8010FB7C_chancetime;
 extern char D_8010FC8C_chancetime[];
@@ -23,7 +26,9 @@ void func_80108738_chancetime(omObjData *object);
 void func_80107E40_chancetime(omObjData *object);
 void func_80107F58_chancetime(omObjData *object);
 void func_801080EC_chancetime(omObjData *object);
+void func_8010827C_chancetime(omObjData *object);
 void func_80108414_chancetime(omObjData *object);
+void func_80106B18_chancetime(void);
 void func_80108C08_chancetime(s16 model, s16 slot, s16 animIdx);
 s32 func_8010B6F4_chancetime(s16 arg0);
 void func_8010B818_chancetime(omObjData *object, Vec *pos, s32 arg2);
@@ -109,9 +114,48 @@ void func_80107F58_chancetime(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_801080EC_chancetime);
+void func_801080EC_chancetime(omObjData *object) {
+    s8 count = 0;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010827C_chancetime);
+    D_8010FB6C_chancetime += 8.0f;
+    if (D_8010FB6C_chancetime >= 45.0f) {
+        D_8010FB6C_chancetime = 45.0f;
+        count++;
+    }
+    Hu3DModelRotSet(object->model[1], 0.0f, 45.0f - D_8010FB6C_chancetime, 0.0f);
+    D_8010FB70_chancetime += 8.0f;
+    if (D_8010FB70_chancetime >= 135.0f) {
+        D_8010FB70_chancetime = 135.0f;
+        count++;
+    }
+    Hu3DModelRotSet(object->model[3], 0.0f, D_8010FB70_chancetime + -45.0f, 0.0f);
+    if (count >= 2) {
+        Hu3DMotionShiftSet(object->model[3], HmfModelData[object->motion[1]].motId, 0, 30, 2);
+        D_8010FB6C_chancetime = D_8010FB70_chancetime = 0.0f;
+        D_801100D4_chancetime.func = func_8010827C_chancetime;
+    }
+}
+
+void func_8010827C_chancetime(omObjData *object) {
+    s8 count = 0;
+
+    D_8010FB74_chancetime += 30.0f;
+    if (D_8010FB74_chancetime >= 250.0f) {
+        D_8010FB74_chancetime = 250.0f;
+        count++;
+    }
+    Hu3DModelPosSet(object->model[3], D_8010FB74_chancetime + 200.0f, 0.0f, -50.0f);
+    Hu3DModelPosSet(object->model[4], D_8010FB74_chancetime + 200.0f, -5.0f, -50.0f);
+    if (count == 1) {
+        D_8010FB74_chancetime = 0.0f;
+        func_8001C258_main(object->model[3], 4, 4);
+        func_8001C258_main(object->model[4], 4, 4);
+        func_80106B18_chancetime();
+        Hu3DMotionShiftSet(object->model[1], HmfModelData[object->motion[5]].motId, 0, 30, 2);
+        Hu3DMotionShiftSet(object->model[3], HmfModelData[object->motion[5]].motId, 0, 30, 2);
+        D_801100D4_chancetime.func = func_80107A88_chancetime;
+    }
+}
 
 void func_80108414_chancetime(omObjData *object) {
     Hu3DModelPosSet(object->model[1], -200.0f, sindf(D_8010FB78_chancetime * 18.0f) * 50.0f, -50.0f);

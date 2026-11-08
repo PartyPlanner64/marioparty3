@@ -20,6 +20,10 @@ extern MgmodeSpaceCoord D_80119424_mgmode[];
 extern u8 D_800D1F20_main[4];
 extern s16 D_8011B8B6_mgmode[];
 extern s16 D_8011B8E8_mgmode[];
+extern s16 D_8011B8A8_mgmode[];
+extern s16 D_8011B796_mgmode[];
+extern s16 D_8011B78C_mgmode;
+extern s16 D_8011B788_mgmode;
 extern s16 D_80119340_mgmode;
 extern s16 D_800D1F2C_main;
 extern MgmodeEsprite *D_8011B480_mgmode;
@@ -35,6 +39,7 @@ void func_80118888_mgmode(s16 index);
 void func_801188A4_mgmode(s16 index);
 s16 func_80116B20_mgmode(void);
 void func_80116C18_mgmode(s16 arg0);
+void func_80118624_mgmode(s16 dstModel, s16 srcModel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010BEC0_mgmode);
 
@@ -173,7 +178,53 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010E494_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010E6F0_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010EE84_mgmode);
+void func_8010EE84_mgmode(s16 arg0) {
+    Vec pos[4];
+    Vec delta[4];
+    f32 angle[4];
+    s16 count;
+    s16 i;
+    s16 j;
+    f32 t;
+
+    count = (arg0 != 4) ? 4 : 2;
+    for (i = 0; i < count; i++) {
+        pos[i].x = HmfModelData[D_8011B8A8_mgmode[i + 7]].pos.x;
+        pos[i].y = HmfModelData[D_8011B8A8_mgmode[i + 7]].pos.y;
+        pos[i].z = HmfModelData[D_8011B8A8_mgmode[i + 7]].pos.z;
+        delta[i].x = 400.0f - pos[i].x;
+        delta[i].z = 900.0f - pos[i].z;
+        func_8001C258_main(D_8011B8A8_mgmode[i + 7], 4, 0);
+        Hu3DMotionShiftSet(D_8011B8A8_mgmode[i + 7], D_8011B796_mgmode[i], 0, 8, 2);
+        angle[i] = atan2df(delta[i].x, delta[i].z);
+    }
+    for (j = 0; j < 9; j++) {
+        t = j / 8.0f;
+        for (i = 0; i < count; i++) {
+            Hu3DModelRotSet(D_8011B8A8_mgmode[i + 7], 0.0f, t * angle[i], 0.0f);
+        }
+        HuPrcVSleep();
+    }
+    for (j = 0; j < 31; j++) {
+        if (j == 10) {
+            Hu3DMotionShiftSet(D_8011B8A8_mgmode[4], D_8011B78C_mgmode, 0, 8, 2);
+        }
+        t = 1.0f - sindf(j / 30.0f * 90.0f + 90.0f);
+        for (i = 0; i < count; i++) {
+            Hu3DModelPosSet(D_8011B8A8_mgmode[i + 7], pos[i].x + t * delta[i].x, pos[i].y, pos[i].z + t * delta[i].z);
+            func_80118624_mgmode(D_8011B8A8_mgmode[i + 32], D_8011B8A8_mgmode[i + 7]);
+            if (j < 25 && j % 5 == 0) {
+                func_8004AC5C_main(GwPlayer[i].chr + 0x29, i);
+            }
+        }
+        HuPrcVSleep();
+    }
+    for (i = 0; i < count; i++) {
+        func_8001C258_main(D_8011B8A8_mgmode[i + 7], 4, 4);
+        func_8001C258_main(D_8011B8A8_mgmode[i + 32], 4, 4);
+    }
+    Hu3DMotionShiftSet(D_8011B8A8_mgmode[4], D_8011B788_mgmode, 0, 8, 2);
+}
 
 #ifdef NON_MATCHING
 // Matches except for one register: after `prev = idx;`, CSE substitutes `prev`

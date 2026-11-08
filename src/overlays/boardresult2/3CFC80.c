@@ -2,6 +2,23 @@
 #include "../ovl_81_name/ovl_81.h"
 #include "overlays/minigame.h"
 
+typedef struct BoardResult2Positions {
+    s32 x[4];
+} BoardResult2Positions;
+
+typedef struct BoardResult2PlayerFiles {
+    s32 files[4][3];
+} BoardResult2PlayerFiles;
+
+typedef struct BoardResult2Portraits {
+    s32 files[8];
+} BoardResult2Portraits;
+
+extern BoardResult2Positions D_801097C0_boardresult2;
+extern BoardResult2PlayerFiles D_801097D0_boardresult2;
+extern BoardResult2Portraits D_80109800_boardresult2;
+extern BoardResult2Positions D_80109820_boardresult2;
+
 extern UnkBoard4 *D_801099A0_boardresult2;
 extern UnkBoard4 *D_801099A4_boardresult2;
 extern UnkBoard4 *D_801099A8_boardresult2;
@@ -105,7 +122,144 @@ s16 func_80105C68_boardresult2(s32 dataNum) {
     return anim;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult2/3CFC80", func_80105CB0_boardresult2);
+void func_80105CB0_boardresult2(void) {
+    BoardResult2Positions headerX = D_801097C0_boardresult2;
+    BoardResult2PlayerFiles playerFiles = D_801097D0_boardresult2;
+    BoardResult2Portraits portraits = D_80109800_boardresult2;
+    BoardResult2Positions memberX = D_80109820_boardresult2;
+    void *data;
+    s32 i;
+    s32 j;
+
+    D_801099A4_boardresult2 = func_800F4528_name_81(4, 0);
+    data = DataRead(0x130030);
+    D_801099A4_boardresult2->unk_0C[0] = HuSprAnimRead(data);
+    DataClose(data);
+
+    for (j = 0; j < 4; j++) {
+        HuSprGrpMemberSet(D_801099A4_boardresult2->unk_0A, j, D_801099A4_boardresult2->unk_0C[0], 0);
+        HuSprPriSet(D_801099A4_boardresult2->unk_0A, j, 99);
+        HuSprAttrSet(D_801099A4_boardresult2->unk_0A, j, 0x4000);
+        HuSprPosSet(D_801099A4_boardresult2->unk_0A, j, headerX.x[j], 104);
+    }
+
+    D_801099A8_boardresult2 = func_800F4528_name_81(1, 0);
+    data = DataRead(0x130031);
+    D_801099A8_boardresult2->unk_0C[0] = HuSprAnimRead(data);
+    DataClose(data);
+    HuSprGrpMemberSet(D_801099A8_boardresult2->unk_0A, 0, D_801099A8_boardresult2->unk_0C[0], 0);
+    HuSprPriSet(D_801099A8_boardresult2->unk_0A, 0, 99);
+    HuSprAttrSet(D_801099A8_boardresult2->unk_0A, 0, 0x4000);
+    HuSprPosSet(D_801099A8_boardresult2->unk_0A, 0, 55, 129);
+
+    for (i = 0; i < 4; i++) {
+        D_801099B0_boardresult2[i] = func_800F4528_name_81(10, 2);
+        for (j = 0; j < 3; j++) {
+            data = DataRead(playerFiles.files[i][j]);
+            D_801099B0_boardresult2[i]->unk_0C[j + 1] = HuSprAnimRead(data);
+            DataClose(data);
+            HuSprGrpMemberSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, D_801099B0_boardresult2[i]->unk_0C[j + 1], 0);
+            HuSprPriSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, 98 - j);
+            HuSprAttrSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, 0x4000);
+            HuSprPosSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, memberX.x[j], 0);
+        }
+
+        data = DataRead(portraits.files[GwPlayer[kakusiMasuItemHis[i]].chr]);
+        D_801099B0_boardresult2[i]->unk_0C[4] = HuSprAnimRead(data);
+        DataClose(data);
+        HuSprGrpMemberSet(D_801099B0_boardresult2[i]->unk_0A, 4, D_801099B0_boardresult2[i]->unk_0C[4], 0);
+        HuSprPriSet(D_801099B0_boardresult2[i]->unk_0A, 4, 95);
+        HuSprAttrSet(D_801099B0_boardresult2[i]->unk_0A, 4, 0x4000);
+        HuSprPosSet(D_801099B0_boardresult2[i]->unk_0A, 4, memberX.x[3], 1);
+
+        j = 4;
+        if (GwPlayer[kakusiMasuItemHis[i]].star >= 10) {
+            data = DataRead(0xC0086);
+            D_801099B0_boardresult2[i]->unk_0C[j + 1] = HuSprAnimRead(data);
+        } else {
+            data = DataRead(0xC003C);
+            D_801099B0_boardresult2[i]->unk_0C[j + 1] = HuSprAnimRead(data);
+        }
+        DataClose(data);
+        HuSprGrpMemberSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, D_801099B0_boardresult2[i]->unk_0C[j + 1],
+                          GwPlayer[kakusiMasuItemHis[i]].star / 10);
+        HuSprPriSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, 98 - j);
+        HuSprAttrSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, 0x4000);
+        HuSprPosSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, 68, 4);
+
+        data = DataRead(0xC0086);
+        D_801099B0_boardresult2[i]->unk_0C[6] = HuSprAnimRead(data);
+        DataClose(data);
+        HuSprGrpMemberSet(D_801099B0_boardresult2[i]->unk_0A, 6, D_801099B0_boardresult2[i]->unk_0C[6],
+                          GwPlayer[kakusiMasuItemHis[i]].star % 10);
+        HuSprPriSet(D_801099B0_boardresult2[i]->unk_0A, 6, 93);
+        HuSprAttrSet(D_801099B0_boardresult2[i]->unk_0A, 6, 0x4000);
+        HuSprPosSet(D_801099B0_boardresult2[i]->unk_0A, 6, 84, 4);
+
+        j = 6;
+        if (GwPlayer[kakusiMasuItemHis[i]].coin >= 100) {
+            data = DataRead(0xC0086);
+            D_801099B0_boardresult2[i]->unk_0C[j + 1] = HuSprAnimRead(data);
+        } else {
+            data = DataRead(0xC003C);
+            D_801099B0_boardresult2[i]->unk_0C[j + 1] = HuSprAnimRead(data);
+        }
+        DataClose(data);
+        HuSprGrpMemberSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, D_801099B0_boardresult2[i]->unk_0C[j + 1],
+                          GwPlayer[kakusiMasuItemHis[i]].coin / 100);
+        HuSprPriSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, 98 - j);
+        HuSprAttrSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, 0x4000);
+        HuSprPosSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, 142, 4);
+
+        j = 7;
+        data = DataRead(0xC0086);
+        D_801099B0_boardresult2[i]->unk_0C[j + 1] = HuSprAnimRead(data);
+        DataClose(data);
+        if (GwPlayer[kakusiMasuItemHis[i]].coin >= 10) {
+            HuSprGrpMemberSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, D_801099B0_boardresult2[i]->unk_0C[j + 1],
+                              GwPlayer[kakusiMasuItemHis[i]].coin / 10 % 10);
+        } else {
+            HuSprGrpMemberSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, D_801099B0_boardresult2[i]->unk_0C[j + 1],
+                              GwPlayer[kakusiMasuItemHis[i]].coin);
+        }
+        HuSprPriSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, 98 - j);
+        HuSprAttrSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, 0x4000);
+        HuSprPosSet(D_801099B0_boardresult2[i]->unk_0A, j + 1, 158, 4);
+
+        if (GwPlayer[kakusiMasuItemHis[i]].coin >= 10) {
+            data = DataRead(0xC0086);
+            D_801099B0_boardresult2[i]->unk_0C[9] = HuSprAnimRead(data);
+            DataClose(data);
+            HuSprGrpMemberSet(D_801099B0_boardresult2[i]->unk_0A, 9, D_801099B0_boardresult2[i]->unk_0C[9],
+                              GwPlayer[kakusiMasuItemHis[i]].coin % 10);
+            HuSprPriSet(D_801099B0_boardresult2[i]->unk_0A, 9, 90);
+            HuSprAttrSet(D_801099B0_boardresult2[i]->unk_0A, 9, 0x4000);
+            HuSprPosSet(D_801099B0_boardresult2[i]->unk_0A, 9, 174, 4);
+        }
+    }
+
+    for (j = 0; j < 4; j++) {
+        HuSprPosSet(D_801099B0_boardresult2[j]->unk_0A, 0, 111, j * 40 + 69);
+    }
+
+    D_801099C0_boardresult2 = func_800F4528_name_81(1, 0);
+    data = DataRead(0x130046);
+    D_801099C0_boardresult2->unk_0C[0] = HuSprAnimRead(data);
+    DataClose(data);
+    HuSprGrpMemberSet(D_801099C0_boardresult2->unk_0A, 0, D_801099C0_boardresult2->unk_0C[0], 0);
+    HuSprPriSet(D_801099C0_boardresult2->unk_0A, 0, 90);
+    HuSprAttrSet(D_801099C0_boardresult2->unk_0A, 0, 0x4000);
+    HuSprPosSet(D_801099C0_boardresult2->unk_0A, 0, 160, 33);
+
+    D_801099C4_boardresult2 = func_800F4528_name_81(1, 0);
+    data = DataRead(0x130062);
+    D_801099C4_boardresult2->unk_0C[0] = HuSprAnimRead(data);
+    DataClose(data);
+    HuSprGrpMemberSet(D_801099C4_boardresult2->unk_0A, 0, D_801099C4_boardresult2->unk_0C[0], 0);
+    HuSprPriSet(D_801099C4_boardresult2->unk_0A, 0, 89);
+    HuSprAttrSet(D_801099C4_boardresult2->unk_0A, 0, 0x4000);
+    HuSprPosSet(D_801099C4_boardresult2->unk_0A, 0, 55, 41);
+}
 
 void func_80106924_boardresult2(void) {
     s32 i;

@@ -25,6 +25,7 @@ extern s16 D_8011B790_mgmode;
 extern s16 D_8011B798_mgmode;
 extern s16 D_8011B788_mgmode;
 extern s16 D_8011B78C_mgmode;
+extern s16 D_8011B78E_mgmode;
 extern s16 D_8011B624_mgmode;
 extern s32 D_801194C8_mgmode;
 extern s16 D_800D0418_main[8];
@@ -72,6 +73,9 @@ void func_80112F98_mgmode(void);
 void func_80113204_mgmode(void);
 void func_80115590_mgmode(void);
 void func_80115848_mgmode(void);
+void func_80114344_mgmode(void);
+void func_80115BE8_mgmode(void);
+void func_80115E20_mgmode(void);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80112200_mgmode);
 
@@ -155,7 +159,37 @@ void func_80112F98_mgmode(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/479470", func_80113204_mgmode);
+void func_80113204_mgmode(void) {
+    f32 radius;
+    f32 t;
+    s16 i;
+
+    HuWinExAnimOut(D_8011B6A8_mgmode, 0);
+    func_80116024_mgmode();
+    func_80115BE8_mgmode();
+    func_80116D4C_mgmode();
+    D_801194C4_mgmode = -1;
+    func_80114344_mgmode();
+    func_80115E20_mgmode();
+    HuAudFXPlay(0x519);
+    Hu3DMotionShiftSet(D_8011B8A8_mgmode[4], D_8011B78E_mgmode, 0, 8, 0);
+    radius = 144.0f;
+    for (i = 0; i < 9; i++) {
+        if (i < 6) {
+            Hu3DModelScaleSet(D_8011B8A8_mgmode[18], 1.0f, cosdf(i / 5.0f * 90.0f), 1.0f);
+        }
+        t = i / 8.0f * 90.0f;
+        HmfModelData[D_8011B8A8_mgmode[4]].pos.x = cosdf(t) * radius + -352.0;
+        HmfModelData[D_8011B8A8_mgmode[4]].pos.y = sindf(t) * 100.0f + 63.75f;
+        HmfModelData[D_8011B8A8_mgmode[4]].rot.y = -sindf(t) * 100.0f + 15.0f;
+        HuPrcVSleep();
+    }
+    Hu3DModelPosSet(D_8011B8A8_mgmode[4], -436.0f, 0.0f, 92.0f);
+    HmfModelData[D_8011B8A8_mgmode[4]].rot.y = 100.0f;
+    Hu3DMotionShiftSet(D_8011B8A8_mgmode[4], D_8011B788_mgmode, 0, 8, 0);
+    func_80116ED4_mgmode(2, 20, 1, (void (*)(s16 *))-1);
+    func_8001C258_main(D_8011B8A8_mgmode[18], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+}
 
 void func_801134C0_mgmode(void) {
     u8 counts[4] = { 0, 0, 0, 0 };

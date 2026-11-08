@@ -47,6 +47,9 @@ extern u16 D_80119320_mgmode[];
 extern u16 D_8011932C_mgmode[];
 extern MgmodeEspriteDef D_8011988C_mgmode[];
 extern u8 D_800CB8B1_main[];
+extern f32 D_8011B6A4_mgmode;
+extern f32 D_8011B804_mgmode;
+extern f32 D_8011B888_mgmode;
 
 void func_8010BD98_mgmode(omObjData *arg0);
 void func_80108DDC_mgmode(s16 arg0);
@@ -597,7 +600,51 @@ void func_8010AF78_mgmode(Gfx **arg0, s32 arg1, s32 arg2) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_8010AFEC_mgmode);
+void func_8010AFEC_mgmode(void) {
+    Vec pos, at, up;
+    f32 rotX, rotY, rotZ;
+    f32 upX, upY, upZ;
+    f32 dx, dy, dz;
+    f32 length;
+
+    while (TRUE) {
+        rotX = CRot.x;
+        rotY = CRot.y;
+        rotZ = CRot.z;
+        pos.x = sindf(rotY) * cosdf(rotX) * CZoom + Center.x;
+        pos.y = -sindf(rotX) * CZoom + Center.y;
+        pos.z = cosdf(rotY) * cosdf(rotX) * CZoom + Center.z;
+        at.x = Center.x;
+        at.y = Center.y;
+        at.z = Center.z;
+        upX = sindf(rotY) * sindf(rotX);
+        upY = cosdf(rotX);
+        upZ = cosdf(rotY) * sindf(rotX);
+        dx = at.x - pos.x;
+        dy = at.y - pos.y;
+        dz = at.z - pos.z;
+        length = HuSqrtf(dx * dx + dy * dy + dz * dz);
+        dx /= length;
+        dy /= length;
+        dz /= length;
+        up.x = upX * (dx * dx + (1.0f - dx * dx) * cosdf(rotZ)) +
+               upY * (dx * dy * (1.0f - cosdf(rotZ)) - dz * sindf(rotZ)) +
+               upZ * (dx * dz * (1.0f - cosdf(rotZ)) + dy * sindf(rotZ));
+        up.y = upX * (dx * dy * (1.0f - cosdf(rotZ)) + dz * sindf(rotZ)) +
+               upY * (dy * dy + (1.0f - dy * dy) * cosdf(rotZ)) +
+               upZ * (dy * dz * (1.0f - cosdf(rotZ)) - dx * sindf(rotZ));
+        up.z = upX * (dx * dz * (1.0f - cosdf(rotZ)) - dy * sindf(rotZ)) +
+               upY * (dy * dz * (1.0f - cosdf(rotZ)) + dx * sindf(rotZ)) +
+               upZ * (dz * dz + (1.0f - dz * dz) * cosdf(rotZ));
+        Hu3DCameraPerspectiveSet(0, D_8011B6A4_mgmode, D_8011B804_mgmode, D_8011B888_mgmode);
+        Hu3DCameraPosSetV(0, &pos, &at, &up);
+        Hu3DCamUpdateMtx(0);
+        Hu3DCameraPerspectiveSet(1, D_8011B6A4_mgmode, D_8011B804_mgmode, D_8011B888_mgmode);
+        Hu3DCameraPosSetV(1, &pos, &at, &up);
+        Hu3DCamUpdateMtx(1);
+        HuPrcVSleep();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_8010B574_mgmode);
 

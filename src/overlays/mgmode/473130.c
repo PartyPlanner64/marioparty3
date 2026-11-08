@@ -131,7 +131,12 @@ void func_8010E40C_mgmode(void) {
 }
 
 #ifdef NON_MATCHING
-// Matches except for one register copy: target emits `move t3,a2` for rank = 0.
+// Matches except for one register copy: target emits `move t3,a2` for rank = 0,
+// but GCC propagates the constant (`move t3,zero`) whenever `slot = 0` and
+// `rank = 0` share a basic block, regardless of how the initializer is written.
+// Partial workaround: putting an empty `if (count) {}` between `slot = 0;` and
+// `rank = slot;` keeps the copy and gets within 2 instructions, but it's an
+// artificial construct. A real fix likely needs a different loop structure.
 void func_8010E494_mgmode(s16 arg0) {
     Vec pos[4];
     s16 order[4];

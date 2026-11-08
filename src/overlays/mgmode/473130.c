@@ -20,12 +20,16 @@ extern MgmodeSpaceCoord D_80119424_mgmode[];
 extern u8 D_800D1F20_main[4];
 extern s16 D_8011B8B6_mgmode[];
 extern s16 D_8011B8E8_mgmode[];
+extern s16 D_80119340_mgmode;
+extern s16 D_800D1F2C_main;
 
 void func_8010CBFC_mgmode(void);
 void func_801169C8_mgmode(MgmodeEsprite *arg0, s16 index);
 void func_80116A48_mgmode(MgmodeEsprite *arg0, s16 index, f32 x, f32 y);
 void func_80118888_mgmode(s16 index);
 void func_801188A4_mgmode(s16 index);
+s16 func_80116B20_mgmode(void);
+void func_80116C18_mgmode(s16 arg0);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010BEC0_mgmode);
 
@@ -161,7 +165,55 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010E6F0_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010EE84_mgmode);
 
+#ifdef NON_MATCHING
+// Matches except for one register: after `prev = idx;`, CSE substitutes `prev`
+// for `idx` in the following `list[idx]` access (s0 instead of target s2).
+// Reusing `category` for prev/result fixes that but changes register
+// allocation priority so that `count` takes s0 and an extra s4 is saved.
+s16 func_8010F348_mgmode(s16 category) {
+    s16 list[32];
+    s16 count;
+    s16 i;
+    s16 idx;
+    s16 prev;
+
+    if (D_80119340_mgmode == -1) {
+        D_80119340_mgmode = func_80116B20_mgmode();
+        espAttrSet(D_80119340_mgmode, 0x4008);
+        espPosSet(D_80119340_mgmode, 180, 134);
+        for (i = 0; i < 10; i++) {
+            espTPLvlSet(D_80119340_mgmode, i / 10.0f * 255.0f);
+            HuPrcVSleep();
+        }
+    }
+    count = 0;
+    for (i = 0; i < D_8011B940_mgmode[category]; i++) {
+        if (D_8011B6B0_mgmode[category][i] != 0xFF) {
+            list[count++] = D_8011B6B0_mgmode[category][i];
+        }
+    }
+    prev = -1;
+    idx = (rand8() * count) >> 8;
+    func_80116C18_mgmode(D_800A6D40_main[list[idx]].flags & 0x7FF);
+    for (i = 0; i < 30; i++) {
+        HuPrcVSleep();
+        while (idx == prev) {
+            idx = (rand8() * count) >> 8;
+        }
+        prev = idx;
+        func_80116C18_mgmode(D_800A6D40_main[list[idx]].flags & 0x7FF);
+        HuAudFXPlay(0x104);
+    }
+    HuPrcVSleep();
+    prev = D_800D0418_main[D_800D1F2C_main];
+    func_80116C18_mgmode(D_800A6D40_main[prev].flags & 0x7FF);
+    HuPrcVSleep();
+    HuAudFXPlay(0x105);
+    return prev;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010F348_mgmode);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010F648_mgmode);
 

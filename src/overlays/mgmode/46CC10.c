@@ -17,6 +17,7 @@ extern u16 *D_8011B3E0_mgmode;
 extern s8 D_8011B3E6_mgmode[];
 extern s32 D_80119190_mgmode[];
 extern s32 D_801191E4_mgmode[];
+extern char D_8011A400_mgmode[];
 extern char D_8011A430_mgmode[];
 extern char D_8011A708_mgmode[];
 extern s16 D_8011B6A0_mgmode;
@@ -55,7 +56,67 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mgmode/46CC10", D_8011A40C_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_8010606C_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_80107298_mgmode);
+s16 func_80107298_mgmode(void) {
+    s16 count = 0;
+    s16 win;
+    s16 total;
+    s16 remaining;
+    s16 size[2];
+
+    if (_CheckFlag(0x1E) && !_CheckFlag(0x2A)) {
+        count = 1;
+        _SetFlag(0x2A);
+    }
+    if (D_8011B928_mgmode[0] >= 20 && D_8011B928_mgmode[1] >= 10 && D_8011B928_mgmode[2] >= 10 &&
+        D_8011B928_mgmode[3] >= 8 && D_8011B928_mgmode[4] >= 10 && D_8011B928_mgmode[5] >= 6 && !_CheckFlag(0x2B)) {
+        count++;
+        _SetFlag(0x2B);
+    }
+    if (_CheckFlag(0x1F) && !_CheckFlag(0x2C)) {
+        count++;
+        _SetFlag(0x2C);
+    }
+    if (count == 0) {
+        return 0;
+    }
+    HuWinInsertMesSizeGet((u32)D_8011A400_mgmode, 0);
+    HuWinInsertMesSizeGet((u32)D_8011A400_mgmode, 1);
+    HuWinMesMaxSizeBetGet(size, 0x570D, 0x5710);
+    win = HuWinExCreate(-1, (320 - size[0]) / 2, 224 - size[1], size[0], size[1], 0);
+    HuWinActivePlayerSet(win, 1 << D_8011B808_mgmode);
+    HuWinMesSet(win, 0x570D, -1, -1);
+    HuWinExAnimIn(win);
+    while (HuWinStatGet(win) != 0) {
+        HuPrcVSleep();
+    }
+    if (count == 3) {
+        HuWinMesSet(win, 0x570F, -1, -1);
+    } else {
+        sprintf(D_8011A708_mgmode, D_8011A430_mgmode, count);
+        HuWinInsertMesSet(win, (u32)D_8011A708_mgmode, 0);
+        HuWinMesSet(win, 0x570E, -1, -1);
+    }
+    while (HuWinStatGet(win) != 0) {
+        HuPrcVSleep();
+    }
+    total = D_8011B928_mgmode[0] + D_8011B928_mgmode[1] + D_8011B928_mgmode[2] + D_8011B928_mgmode[3] +
+            D_8011B928_mgmode[4] + D_8011B928_mgmode[5] + D_8011B928_mgmode[7];
+    remaining = 67 - total;
+    if (remaining == 0) {
+        HuWinMesSet(win, 0x5711, -1, -1);
+    } else {
+        sprintf(D_8011A708_mgmode, D_8011A430_mgmode, total);
+        HuWinInsertMesSet(win, (u32)D_8011A708_mgmode, 0);
+        HuWinMesSet(win, 0x5710, -1, -1);
+    }
+    while (HuWinStatGet(win) != 0) {
+        HuPrcVSleep();
+    }
+    HuWinExAnimOut(win, 0);
+    HuWinKill(win);
+    func_80118CD8_mgmode();
+    return count;
+}
 
 void func_80107610_mgmode(void) {
     s32 angle = 0;
@@ -195,7 +256,54 @@ void func_80109C10_mgmode(s16 arg0, s16 arg1) {
                     z + D_8011AA80_mgmode[arg0][arg1].z);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_80109DBC_mgmode);
+void func_80109DBC_mgmode(s16 arg0, s16 arg1) {
+    s16 model;
+    s16 i;
+    f32 x;
+    f32 z;
+    f32 dist;
+    f32 startX;
+    f32 startY;
+    f32 startZ;
+    f32 endX;
+    f32 endY;
+    f32 endZ;
+    f32 rotX;
+    f32 t;
+
+    if (arg0 == 6 && arg1 == 0) {
+        model = D_8011B8C4_mgmode;
+    } else {
+        model = D_8011B8B6_mgmode[arg0];
+    }
+    Hu3DModelRotSet(model, 15.0f, CRot.y, 0.0f);
+    x = sindf(CRot.y) * cosdf(CRot.x);
+    z = cosdf(CRot.y) * cosdf(CRot.x);
+    dist = HuSqrtf(x * x + z * z);
+    x = x / dist * 20.0f;
+    z = z / dist * 20.0f;
+    rotX = 15.0f;
+    startX = x + D_8011AA80_mgmode[arg0][arg1].x;
+    startY = D_8011AA80_mgmode[arg0][arg1].y - 3.0f;
+    startZ = z + D_8011AA80_mgmode[arg0][arg1].z;
+    endX = Center.x + sindf(CRot.y) * cosdf(CRot.x) * CZoom - 50.0f;
+    endY = Center.y + -sindf(CRot.x) * CZoom;
+    endZ = Center.z + cosdf(CRot.y) * cosdf(CRot.x) * CZoom;
+    for (i = 0; i < 30; i++) {
+        HuPrcVSleep();
+        if (i == 20) {
+            WipeCreateOut(11, 10);
+        }
+        t = i / 30.0f * 0.5f;
+        Hu3DModelPosSet(model, startX + (endX - startX) * t, startY + (endY - startY) * t,
+                        startZ + (endZ - startZ) * t);
+        Hu3DModelRotSet(model, rotX, CRot.y - i * 3, 0.0f);
+        rotX -= 3.0f;
+        if (rotX < 0.0f) {
+            rotX = 0.0f;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_8010A148_mgmode);
 

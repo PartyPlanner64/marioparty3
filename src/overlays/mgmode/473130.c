@@ -22,9 +22,14 @@ extern s16 D_8011B8B6_mgmode[];
 extern s16 D_8011B8E8_mgmode[];
 extern s16 D_80119340_mgmode;
 extern s16 D_800D1F2C_main;
+extern MgmodeEsprite *D_8011B480_mgmode;
+extern s16 D_8011B484_mgmode;
+extern u16 D_8011B488_mgmode[28];
 
 void func_8010CBFC_mgmode(void);
+void func_801168E0_mgmode(MgmodeEsprite *arg0);
 void func_801169C8_mgmode(MgmodeEsprite *arg0, s16 index);
+void func_80116A78_mgmode(MgmodeEsprite *arg0, s16 index, s16 tpLvl);
 void func_80116A48_mgmode(MgmodeEsprite *arg0, s16 index, f32 x, f32 y);
 void func_80118888_mgmode(s16 index);
 void func_801188A4_mgmode(s16 index);
@@ -255,7 +260,38 @@ s32 func_80111B08_mgmode(void) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_80111BB0_mgmode);
+void func_80111BB0_mgmode(void) {
+    s16 i;
+    s16 j;
+
+    for (i = 0; i < 28; i++) {
+        espScaleSet(D_8011B488_mgmode[i], 0.0f, 0.0f);
+    }
+    for (i = 0; i < 4; i++) {
+        func_80116A78_mgmode(D_8011B480_mgmode, i + 5, 0);
+    }
+    for (j = 0; j < 6; j++) {
+        for (i = 0; i < 4; i++) {
+            func_80116A78_mgmode(D_8011B480_mgmode, i + 5, (1.0 - j / 5.0) * 255.0);
+        }
+        for (i = 0; i < 28; i++) {
+            espScaleSet(D_8011B488_mgmode[i], 1.0 - j / 5.0, 1.0 - j / 5.0);
+        }
+        HuPrcVSleep();
+    }
+    for (j = 0; j < 6; j++) {
+        for (i = 0; i < 4; i++) {
+            func_80116A78_mgmode(D_8011B480_mgmode, i + 1, (1.0 - j / 5.0) * 255.0);
+        }
+        func_80116A78_mgmode(D_8011B480_mgmode, 0, (1.0 - j / 5.0) * 192.0);
+        HuPrcVSleep();
+    }
+    func_801168E0_mgmode(D_8011B480_mgmode);
+    for (i = 0; i < 28; i++) {
+        espKill(D_8011B488_mgmode[i]);
+    }
+    HuSprAnimKill(D_8011B484_mgmode);
+}
 
 void func_80111ED8_mgmode(void) {
     s16 i;

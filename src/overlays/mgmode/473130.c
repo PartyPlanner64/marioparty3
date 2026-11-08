@@ -53,7 +53,26 @@ void func_8010D308_mgmode(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010D3B0_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010D98C_mgmode);
+void func_8010D98C_mgmode(void) {
+    s16 i;
+    s16 j;
+    s16 frame;
+
+    for (i = 1; i < 15; i++) {
+        for (j = 0; j < 3; j++) {
+            frame = i - (2 - j) * 3;
+            if (frame < 0) {
+                continue;
+            }
+            if (frame >= 9) {
+                func_801169C8_mgmode(D_8011B450_mgmode, j + 1);
+            } else {
+                func_80116A48_mgmode(D_8011B450_mgmode, j + 1, 1.0f, cosdf(frame / 8.0f * 90.0f));
+            }
+        }
+        HuPrcVSleep();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010DAB8_mgmode);
 

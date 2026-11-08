@@ -2,7 +2,10 @@
 #include "overlays/mgmode.h"
 
 extern u8 D_80118EB1_mgmode;
-extern u16 D_80118EB4_mgmode;
+extern u8 D_80118EB2_mgmode;
+extern s16 D_80118EB4_mgmode;
+extern s16 D_8011B950_mgmode;
+extern s16 D_8011B95A_mgmode;
 extern s16 D_8011B884_mgmode;
 extern Gfx D_80119290_mgmode[];
 extern s16 D_8011B3E4_mgmode;
@@ -24,6 +27,8 @@ void func_8010BD98_mgmode(omObjData *arg0);
 void func_80108DDC_mgmode(s16 arg0);
 void func_801168E0_mgmode(MgmodeEsprite *arg0);
 void func_80116968_mgmode(MgmodeEsprite *arg0, s16 index, s16 arg2, s16 arg3);
+void func_80116D4C_mgmode(void);
+void func_80118CD8_mgmode(void);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_801059A0_mgmode);
 
@@ -157,4 +162,30 @@ void func_8010BD28_mgmode(omObjData *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_8010BD98_mgmode);
+void func_8010BD98_mgmode(omObjData *arg0) {
+    if (WipeStatGet() != 0) {
+        return;
+    }
+    HuWinAllKill();
+    if (D_80118EB2_mgmode != 0) {
+        func_80118CD8_mgmode();
+    }
+    func_80116D4C_mgmode();
+    D_80118EB4_mgmode &= 0xF;
+    _ClearFlag(0x1C);
+    if (D_80118EB4_mgmode == 0) {
+        omOvlReturnEx(1);
+    } else if (D_80118EB4_mgmode == 2) {
+        if (D_8011B95A_mgmode == 0x68) {
+            _SetFlag(0x1C);
+        }
+        if (D_8011B95A_mgmode == 0x70) {
+            _SetFlag(0x1C);
+            omOvlCallEx(D_8011B95A_mgmode, D_8011B950_mgmode, 0x82);
+        } else {
+            omOvlCallEx(D_8011B95A_mgmode, D_8011B950_mgmode, 0x84);
+        }
+    } else {
+        omOvlGotoEx(D_8011B95A_mgmode, D_8011B950_mgmode, 0x82);
+    }
+}

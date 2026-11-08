@@ -11,19 +11,25 @@ extern u16 D_8010FE9A_chancetime;
 extern s32 D_8010FEC4_chancetime;
 extern s8 D_8010FEC8_chancetime;
 extern s8 D_8010FEC9_chancetime;
+extern s8 D_80110000_chancetime;
 extern s32 D_80110008_chancetime;
 extern void (*D_80110084_chancetime)();
 extern omObjData *D_801100C8_chancetime;
 extern void (*D_801100CC_chancetime)(void);
 
 void func_8010C610_chancetime(void);
+void func_8010D320_chancetime(void);
+void func_8010D6A4_chancetime(s32 arg0);
 void func_8010DFA4_chancetime(void);
+void func_8010E210_chancetime(void);
 void func_8010E280_chancetime(void);
 void func_8010F1F8_chancetime(void);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010BF80_chancetime);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010C5F4_chancetime);
+void func_8010C5F4_chancetime(void) {
+    func_8010D320_chancetime();
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010C610_chancetime);
 
@@ -115,7 +121,10 @@ void func_8010DF78_chancetime(s32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010DFA4_chancetime);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010E1E0_chancetime);
+void func_8010E1E0_chancetime(void) {
+    func_8010D6A4_chancetime(D_80110000_chancetime);
+    D_80110084_chancetime = func_8010E210_chancetime;
+}
 
 void func_8010E210_chancetime(void) {
     D_8010FC1C_chancetime++;

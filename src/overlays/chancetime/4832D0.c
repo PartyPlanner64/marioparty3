@@ -3,11 +3,17 @@
 extern s32 D_8010FB00_chancetime;
 extern s32 D_8010FB04_chancetime;
 extern s32 D_8010FB60_chancetime;
+extern omObjData *D_801100D4_chancetime;
 extern void (*D_801100D8_chancetime)(omObjData *);
 
 void func_80107B18_chancetime(omObjData *object);
 void func_80107E40_chancetime(omObjData *object);
 void func_80108414_chancetime(omObjData *object);
+s32 func_8010B6F4_chancetime(s16 arg0);
+void func_8010B818_chancetime(omObjData *object, Vec *pos, s32 arg2);
+void func_8010B834_chancetime(omObjData *object, Vec *pos, s32 arg2, s32 arg3);
+void func_8010BA68_chancetime(omObjData *object, Vec *pos, s32 arg2);
+void func_8010BC10_chancetime(omObjData *object, f32 x, f32 y, f32 z, s32 arg4);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80107300_chancetime);
 
@@ -102,19 +108,46 @@ INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010B124_chancet
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010B6F4_chancetime);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010B7A0_chancetime);
+void func_8010B7A0_chancetime(s16 arg0) {
+    HuPrcSleep(15);
+    while (!func_8010B6F4_chancetime(arg0)) {
+        HuPrcVSleep();
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010B7EC_chancetime);
+void func_8010B7EC_chancetime(omObjData *object, f32 x, f32 y, f32 z, s32 arg4) {
+    Vec pos;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010B818_chancetime);
+    pos.x = x;
+    pos.y = y;
+    pos.z = z;
+    func_8010B818_chancetime(object, &pos, arg4);
+}
+
+void func_8010B818_chancetime(omObjData *object, Vec *pos, s32 arg2) {
+    func_8010B834_chancetime(object, pos, arg2, 1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010B834_chancetime);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010BA68_chancetime);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010BC10_chancetime);
+void func_8010BC10_chancetime(omObjData *object, f32 x, f32 y, f32 z, s32 arg4) {
+    Vec pos;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010BC3C_chancetime);
+    pos.x = x;
+    pos.y = y;
+    pos.z = z;
+    func_8010BA68_chancetime(object, &pos, arg4);
+}
+
+f32 func_8010BC3C_chancetime(Vec *from, Vec *to) {
+    Vec diff;
+
+    diff.x = to->x - from->x;
+    diff.z = to->z - from->z;
+    return -(atan2df(diff.z, diff.x) - 90.0f);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010BC88_chancetime);
 
@@ -124,7 +157,11 @@ s32 func_8010BF3C_chancetime(void) {
     return D_8010FB60_chancetime;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010BF48_chancetime);
+void func_8010BF48_chancetime(void) {
+    omObjData *object = D_801100D4_chancetime;
+
+    func_8010BC10_chancetime(object, 0.0f, 45.0f, 0.0f, 10);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/4832D0", D_8010FC80_chancetime);
 

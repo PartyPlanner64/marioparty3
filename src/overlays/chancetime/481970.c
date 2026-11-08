@@ -1,4 +1,8 @@
 #include "common.h"
+#include "game/window.h"
+#include "../ovl_80_shared_board/106A50.h"
+
+extern s32 D_8010FAE4_chancetime;
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/481970", func_801059A0_chancetime);
 
@@ -20,4 +24,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/481970", func_801061B8_chancet
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/481970", func_80106240_chancetime);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/481970", func_801062DC_chancetime);
+void func_801062DC_chancetime(void) {
+    HuWinAllKill();
+    if (D_8010FAE4_chancetime == 1) {
+        func_800F5EF0_shared_board();
+    }
+}

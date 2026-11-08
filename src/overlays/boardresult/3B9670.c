@@ -11,9 +11,12 @@ extern u32 D_8010E738_boardresult[];
 extern s32 D_8010E73C_boardresult[];
 extern s32 *D_8010E88C_boardresult[];
 extern s32 *D_8010E8AC_boardresult[];
+extern omObjData *D_8010E8EC_boardresult[4];
 extern s32 D_8010E910_boardresult[6];
 extern u8 D_8010EAF0_boardresult;
 extern Object *D_8010EAF4_boardresult;
+extern s32 D_8010EB88_boardresult[4];
+extern s32 D_8010EB98_boardresult;
 
 void func_801059A0_boardresult(void) {
     s32 i;
@@ -80,7 +83,19 @@ INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80107598_boardr
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_801076A0_boardresult);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80107AB4_boardresult);
+void func_80107AB4_boardresult(void) {
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        if (D_8010E8EC_boardresult[i] != NULL) {
+            omDelObj(D_8010E8EC_boardresult[i]);
+            D_8010E8EC_boardresult[i] = NULL;
+        }
+        HuSprGrpKill(D_8010EB88_boardresult[i]);
+    }
+    HuSprAnimKill(D_8010EB98_boardresult);
+    HuPrcVSleep();
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3B9670", func_80107B50_boardresult);
 

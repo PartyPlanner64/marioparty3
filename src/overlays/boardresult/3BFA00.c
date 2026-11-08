@@ -1,8 +1,6 @@
 #include "common.h"
 #include "game/mallocblock.h"
 
-INCLUDE_ASM("asm/nonmatchings/overlays/boardresult/3BFA00", func_8010BD30_boardresult);
-
 // Work area allocated by func_8010BD30 (HuMemAllocTag 0x4C bytes) and stored at
 // the process object's user_data (offset 0x8C). Total size is 0x4C; fields are
 // added as functions are decompiled.
@@ -17,7 +15,25 @@ typedef struct BoardResultWork {
     /* 0x24 */ char unk_24[0x28];
 } BoardResultWork; // sizeof 0x4C
 
+void func_8010BE14_boardresult(void); /* extern */
 void func_8010DA30_boardresult(void); /* extern */
+
+BoardResultWork *func_8010BD30_boardresult(s32 arg0) {
+    Process *proc = omAddPrcObj(func_8010BE14_boardresult, 0x3F00, 0x2000, 0);
+    BoardResultWork *work = proc->user_data = HuMemAllocTag(sizeof(BoardResultWork), TAG_OVERLAY);
+
+    work->unk_06 = 60;
+    work->unk_0A = 60;
+    work->unk_0C.x = 0.0f;
+    work->unk_0C.y = 500.0f;
+    work->unk_0C.z = 0.0f;
+    work->pos.x = 0.0f;
+    work->pos.y = 0.0f;
+    work->pos.z = 0.0f;
+    work->unk_00 = arg0;
+    work->unk_04 = 0;
+    return work;
+}
 
 void func_8010BDBC_boardresult(BoardResultWork *arg0, s32 arg1) {
     arg0->unk_00 = arg1;

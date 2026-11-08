@@ -6,6 +6,7 @@ extern s16 D_8011B454_mgmode;
 extern s16 D_8011B458_mgmode[8];
 
 void func_801169C8_mgmode(MgmodeEsprite *arg0, s16 index);
+void func_80116A48_mgmode(MgmodeEsprite *arg0, s16 index, f32 x, f32 y);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010BEC0_mgmode);
 
@@ -13,7 +14,17 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010CB20_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010CBFC_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010D308_mgmode);
+void func_8010D308_mgmode(void) {
+    s16 i;
+    f32 scale;
+
+    HuAudFXPlay(0x244);
+    for (i = 0; i < 11; i++) {
+        scale = cosdf(i / 10.0f * 90.0f);
+        func_80116A48_mgmode(D_8011B450_mgmode, 0, scale, scale);
+        HuPrcVSleep();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010D3B0_mgmode);
 

@@ -7,9 +7,12 @@ extern s16 D_8011B884_mgmode;
 extern Gfx D_80119290_mgmode[];
 extern s16 D_8011B3E4_mgmode;
 extern MgmodeEsprite *D_8011B3EC_mgmode;
+extern s16 D_8011B8B2_mgmode;
+extern u16 *D_8011B3E0_mgmode;
 
 void func_8010BD98_mgmode(omObjData *arg0);
 void func_801168E0_mgmode(MgmodeEsprite *arg0);
+void func_80116968_mgmode(MgmodeEsprite *arg0, s16 index, s16 arg2, s16 arg3);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_801059A0_mgmode);
 
@@ -23,7 +26,19 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_8010606C_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_80107298_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_80107610_mgmode);
+void func_80107610_mgmode(void) {
+    s32 angle = 0;
+
+    Hu3DModelScaleSet(D_8011B8B2_mgmode, 0.5f, 0.5f, 0.5f);
+    while (TRUE) {
+        HuPrcVSleep();
+        HmfModelData[D_8011B8B2_mgmode].pos.y = sindf(angle) * 20.0f;
+        angle += 2;
+        if (angle > 360) {
+            angle -= 360;
+        }
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mgmode/46CC10", D_8011A430_mgmode);
 
@@ -77,7 +92,17 @@ void func_8010A5F0_mgmode(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_8010A62C_mgmode);
 
+#ifdef NON_MATCHING
+void func_8010A824_mgmode(s32 arg0, s32 arg1) {
+    s32 x = arg0 - 0x54;
+
+    func_80116968_mgmode(D_8011B3EC_mgmode, 18, D_8011B3E0_mgmode[4] + x, arg1);
+    func_80116968_mgmode(D_8011B3EC_mgmode, 8, D_8011B3E0_mgmode[0] + arg0 - 0x70, arg1);
+    func_80116968_mgmode(D_8011B3EC_mgmode, 9, D_8011B3E0_mgmode[3] + arg0 - 0x38, arg1);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_8010A824_mgmode);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_8010A8E4_mgmode);
 

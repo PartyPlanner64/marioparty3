@@ -1,11 +1,15 @@
 #include "common.h"
+#include "overlays/mgmode.h"
 
 extern u8 D_80118EB1_mgmode;
 extern u16 D_80118EB4_mgmode;
 extern s16 D_8011B884_mgmode;
 extern Gfx D_80119290_mgmode[];
+extern s16 D_8011B3E4_mgmode;
+extern MgmodeEsprite *D_8011B3EC_mgmode;
 
 void func_8010BD98_mgmode(omObjData *arg0);
+void func_801168E0_mgmode(MgmodeEsprite *arg0);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_801059A0_mgmode);
 
@@ -65,7 +69,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_80109DBC_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_8010A148_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_8010A5F0_mgmode);
+void func_8010A5F0_mgmode(void) {
+    func_801168E0_mgmode(D_8011B3EC_mgmode);
+    HuWinExAnimOut(D_8011B3E4_mgmode, 0);
+    HuWinKill(D_8011B3E4_mgmode);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/46CC10", func_8010A62C_mgmode);
 

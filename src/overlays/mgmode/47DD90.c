@@ -299,6 +299,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_801189C4_mgmode);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_80118B8C_mgmode);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_80118CD8_mgmode);
+void func_80118CD8_mgmode(void) {
+    _ClearFlag(0x1C);
+    SLCommonSet(1);
+    _ClearFlag(0xD);
+    _SetFlag(0x1C);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/47DD90", func_80118D0C_mgmode);

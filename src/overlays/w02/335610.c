@@ -278,6 +278,7 @@ void func_8011720C_w02(void);
 void func_80117344_w02(void);
 void func_801177C8_w02(void);
 s32 func_8011BC6C_w02(void);
+void func_80112124_w02(void);
 s16 func_801059D0_w02(void) {
     return D_8011C6A0_w02[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
 }
@@ -1798,7 +1799,19 @@ s32 func_80109C98_w02(s32 arg0, s32 arg1) {
     return HuWinChoiceGet(mbDlgWinId, 0, 1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80109F1C_w02);
+void func_80109F1C_w02(s16 arg0, s32 arg1, s16 arg2, s32 arg3) {
+    s16 sp10[2];
+    s16 winId;
+
+    HuWinMesMaxSizeGet(1, sp10, arg1);
+    winId = MBWinCreate(arg0, sp10, arg2);
+    mbDlgWinId = winId;
+    HuWinMesSet(winId, arg1, -1, -1);
+    HuWinExAnimIn(winId);
+    func_800EBF98_shared_board(winId, arg3);
+    HuWinExAnimOut(winId, 0);
+    HuWinKill(winId);
+}
 
 void func_80109FD8_w02(void) {
     while (1) {
@@ -4655,7 +4668,110 @@ void func_80112124_w02(void) {
     omDelPrcObj(NULL);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80112340_w02);
+void func_80112340_w02(void) {
+    s32 playerIndex;
+    void *data;
+    s32 itemSpriteId;
+    s32 auraSpriteId;
+    s32 group;
+    s16 setupGroup;
+    s32 xPos;
+    s16 fadeGroup;
+    s32 yPos;
+    s32 i;
+    s32 j;
+    Process *childProcess;
+    s32 fxId;
+
+    playerIndex = (s32)HuPrcCurrentGet()->user_data;
+    data = DataRead(0x21002C);
+    itemSpriteId = HuSprAnimRead(data);
+    DataClose(data);
+    data = DataRead(0x1301BA);
+    auraSpriteId = HuSprAnimRead(data);
+    DataClose(data);
+    data = DataRead(0x1301B9);
+    D_8011ECA8_w02 = HuSprAnimRead(data);
+    DataClose(data);
+
+    group = HuSprGrpCreate(2, 2);
+    setupGroup = group;
+    func_800550F4_main(setupGroup, 0, 1);
+    HuSprGrpMemberSet(setupGroup, 0, itemSpriteId, 0xC);
+    HuSprPriSet(setupGroup, 0, 9);
+    HuSprAttrSet(setupGroup, 0, 0x1000);
+    func_800554C4_main(setupGroup, 0, -1);
+    HuSprGrpMemberSet(setupGroup, 1, auraSpriteId, 0);
+    HuSprPriSet(setupGroup, 1, 9);
+    HuSprAttrSet(setupGroup, 1, 0x9000);
+    HuSprColorSet(setupGroup, 1, 0xFF, 0xFF, 0xFF);
+    HuSprTPLvlSet(setupGroup, 1, 0xFF);
+    HuSprScaleSet(setupGroup, 1, 2.0f, 2.0f);
+    func_800554C4_main(setupGroup, 1, 0);
+
+    yPos = 0xC8;
+    if (playerIndex & 1) {
+        HuSprAttrSet(setupGroup, 0, 1);
+        HuSprAttrSet(setupGroup, 1, 1);
+        HuSprPosSet(setupGroup, 1, 0x14, -5);
+    } else {
+        yPos = 0x78;
+        HuSprPosSet(group, 1, -0x14, -5);
+    }
+
+    xPos = (playerIndex < 2) ? -0x20 : 0x110;
+    HuPrcSleep(0x14);
+    GwPlayer[playerIndex].itemNo[MBItemFind(playerIndex, 0xC)] = -1;
+    MBItemRemoveEmpty(playerIndex);
+    MBStatusItemIconSprReinit(playerIndex);
+
+    do {
+        if (playerIndex < 2) {
+            xPos += 5;
+            if (xPos >= 0x33) {
+                break;
+            }
+        } else {
+            xPos -= 5;
+            if (xPos < 0xD2) {
+                break;
+            }
+        }
+        HuSprPosSet(group, 0, yPos, xPos);
+        HuPrcVSleep();
+    } while (1);
+
+    HuPrcSleep(0xA);
+    HuSprDispOn(group, 1);
+    fxId = HuAudFXPlay(0x14C);
+    D_8011ECA4_w02 = playerIndex;
+
+    for (j = 0; j < 4; j++) {
+        for (i = 0; i < 6; i++) {
+            childProcess = omAddPrcObj(func_80112124_w02, 0x4002, 0, 0);
+            childProcess->user_data = (void *)i;
+            HuPrcSleep(2);
+        }
+        HuPrcSleep(5);
+    }
+
+    HuPrcChildLink(HuPrcCurrentGet(), childProcess);
+    HuPrcChildWatch();
+    HuAudFXStop(fxId);
+    HuSprTPLvlSet(group, 1, 0);
+
+    for (i = 0xFF; i >= 0; i -= 0x1E) {
+        HuSprTPLvlSet(group, 0, i);
+        HuPrcVSleep();
+    }
+
+    HuSprTPLvlSet(group, 0, 0);
+    HuSprGrpKill(group);
+    HuSprAnimKill(D_8011ECA8_w02);
+    HuSprAnimKill(auraSpriteId);
+    HuSprAnimKill(itemSpriteId);
+    omDelPrcObj(NULL);
+}
 
 void func_80112734_w02(void) {
     s32 i;

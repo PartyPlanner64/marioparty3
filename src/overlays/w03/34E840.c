@@ -4966,7 +4966,88 @@ void func_80112EF0_w03(void) {
     omDelPrcObj(0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80113080_w03);
+void func_80113080_w03(void) {
+    s32 flag = 0;
+    GW_SYSTEM *system = &GwSystem;
+    void *data;
+    UnkVibrateProcess *process;
+    s32 positionX;
+    s32 positionY;
+    s32 bankCoins;
+    s32 coinCount;
+    s32 spriteId;
+    f32 coinStep;
+    f32 coinProgress;
+
+    mbItemCursorGrpId = HuSprGrpCreate(1, 5);
+    data = DataRead(D_80101040_shared_board[GwPlayer[system->current_player_index].chr]);
+    spriteId = HuSprAnimRead(data);
+    DataClose(data);
+    HuSprGrpMemberSet(mbItemCursorGrpId, 0, spriteId, 0);
+    HuSprPriSet(mbItemCursorGrpId, 0, 10);
+    func_800550F4_main(mbItemCursorGrpId, 0, 1);
+    HuSprDispOff(mbItemCursorGrpId, 0);
+    MBStatusItemPosGet(-1, 0, &positionX, &positionY);
+    HuSprPosSet(mbItemCursorGrpId, 0, positionX, positionY);
+    MBStatusShrink(-1);
+    MBStatusItemDispSetAll(1);
+    MBStatusGrow(-1);
+    MBItemSelNoSet(MBItemFind(-1, 0xF));
+    func_8010FF2C_w03();
+
+    D_8011EBB4_w03 = MBModelCreate(0x44, NULL);
+    HuVecCopy3F(&D_8011EBB4_w03->coords, &MBPlayerGet(-1)->player_obj->coords);
+    D_8011EBB4_w03->velocity.x = 100.0f;
+    while (30.0f < D_8011EBB4_w03->velocity.x) {
+        D_8011EBB4_w03->velocity.x -= 1.0f;
+        HuPrcVSleep();
+    }
+    MBStatusShrink(-1);
+    MBStatusItemDispSetAll(0);
+    MBStatusGrow(-1);
+    omAddPrcObj(func_80112EF0_w03, 0x4002, 0, 0)->user_data = &flag;
+    process = MBPlayerVibrateObjCreate(-1, 4, 5);
+
+    bankCoins = GwSystem.bank_coins;
+    coinStep = (f32)bankCoins / 30.0f;
+    coinProgress = 0.0f;
+    D_8011EBB0_w03 = MBModelCreate(0x19, NULL);
+    MBModelTempAllocFree(D_8011EBB0_w03);
+    MBModelDispOff(D_8011EBB0_w03);
+    if (bankCoins != 0) {
+        while (bankCoins != 0) {
+            coinProgress += coinStep;
+            coinCount = 0;
+            while (coinProgress >= 1.0f) {
+                coinProgress -= 1.0f;
+                coinCount++;
+            }
+            if (coinCount != 0) {
+                func_80112EB4_w03(D_8011EBB4_w03);
+                if (bankCoins - coinCount < 0) {
+                    coinCount = bankCoins;
+                }
+                bankCoins -= coinCount;
+                MBPlayerCoinAdd(system->current_player_index, coinCount);
+                HuAudFXPlay(0x106);
+                GwSystem.bank_coins -= coinCount;
+                func_80108174_w03();
+                HuPrcSleep(5);
+            }
+        }
+    }
+
+    MBPlayerVibrateObjKill(process);
+    flag = 1;
+    HuPrcSleep(20);
+    MBModelKill(D_8011EBB0_w03);
+    MBVecForwardSet(&MBPlayerGet(-1)->player_obj->rot);
+    MBPlayerMotionSet(-1, 5, 0);
+    HuPrcSleep(5);
+    PlayerFXPlay(0x274, system->current_player_index);
+    HuPrcSleep(0x2D);
+    MBPlayerMotionSet(-1, -1, 2);
+}
 
 s32 func_8011343C_w03(u8 *arg0, s32 arg1) {
     s32 delay = 0;

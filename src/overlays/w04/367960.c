@@ -30,6 +30,7 @@ void func_80108558_w04(void);
 void func_80117EA8_w04(void);
 void func_801183D4_w04(void);
 void func_801191B8_w04(void);
+void func_8011A858_w04(void);
 extern s16 D_8011B740_w04[];
 extern s16 D_8011B750_w04[];
 extern s16 D_8011B760_w04[];
@@ -191,6 +192,10 @@ extern s16 D_8011B8D0_w04[];
 extern u32 *D_8011B90C_w04[];
 extern s32 D_8011B790_w04[];
 extern s32 D_8011B7AC_w04[];
+extern event_table_entry D_8011C77C_w04[];
+extern event_table_entry D_8011C7F4_w04[];
+extern event_table_entry D_8011C988_w04[];
+extern event_table_entry D_8011C9C0_w04[];
 s16 func_801059D0_w04(void) {
     return D_8011B780_w04[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
 }
@@ -851,7 +856,19 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_80107780_w04);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_80107828_w04);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_80107B34_w04);
+void func_80107B34_w04(void) {
+    HuAudSeqPlay(0x1B);
+    D_800CE198_main = 0x1B;
+    func_800F8D6C_shared_board(0x1B);
+    Hu3DCamInit(2);
+    func_80107828_w04();
+    MBMasuEventTblAdd(D_8011C77C_w04);
+    MBMasuEventTblAdd(D_8011C9C0_w04);
+    MBHatenaFuncSet(&func_8011A858_w04);
+    MBMasuEventTblAdd(D_8011C7F4_w04);
+    MBMasuEventTblAdd(D_8011C988_w04);
+    MBStart(0);
+}
 
 void func_80107BB8_w04(void) {
     Hu3DCamInit(1);

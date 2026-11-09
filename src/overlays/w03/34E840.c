@@ -1638,14 +1638,33 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80109AD8_w03);
 void func_80109E90_w03(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80109E98_w03);
+void func_80109E98_w03(void) {
+    GW_PLAYER *player = MBPlayerGet(-1);
+
+    if (MBMasuLinkMasuIdGet(player->clink, player->cidx) == 2 &&
+        MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0x63) {
+        MBMoveNextMasuSet(-1, 9, 6);
+    }
+}
 
 void func_80109F3C_w03(void) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80109F44_w03);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_8010A1C8_w03);
+void func_8010A1C8_w03(s16 arg0, s32 arg1, s16 arg2, s32 arg3) {
+    s16 sp10[2];
+    s16 winId;
+
+    HuWinMesMaxSizeGet(1, sp10, arg1);
+    winId = MBWinCreate(arg0, sp10, arg2);
+    mbDlgWinId = winId;
+    HuWinMesSet(winId, arg1, -1, -1);
+    HuWinExAnimIn(winId);
+    func_800EBF98_shared_board(winId, arg3);
+    HuWinExAnimOut(winId, 0);
+    HuWinKill(winId);
+}
 
 void func_8010A284_w03(void) {
     while (1) {

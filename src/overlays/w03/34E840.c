@@ -6815,7 +6815,46 @@ void func_8011908C_w03(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80119120_w03);
+void func_80119120_w03(void) {
+    Object *obj;
+    omObjData *model;
+    f32 angle;
+    f32 scale;
+    s32 count;
+
+    if (HuPrcCurrentGet()->user_data == NULL) {
+        obj = D_8011EB34_w03;
+    } else {
+        obj = D_8011EB38_w03;
+    }
+
+    angle = 0.0f;
+    scale = 1.0f;
+    while (angle < 90.0f) {
+        HuVecCopyXYZ(&obj->scale, scale, scale, scale);
+        scale = sindf(angle) * 0.3f + 1.0f;
+        HuPrcVSleep();
+        angle += 22.5f;
+    }
+
+    count = 0;
+    model = obj->omObj1;
+    model->rot.z = 0.0f;
+    angle = model->rot.z;
+    scale = 5.0f;
+    while (count < 4) {
+        obj->omObj1->rot.z = sindf(angle) * scale;
+        if (angle > 360.0f) {
+            count++;
+            angle -= 360.0f;
+            scale -= 1.0f;
+        }
+        HuPrcVSleep();
+        angle += 45.0f;
+    }
+    obj->omObj1->rot.z = 0.0f;
+    omDelPrcObj(NULL);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80119290_w03);
 

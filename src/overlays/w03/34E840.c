@@ -142,6 +142,9 @@ extern Unk3 *D_8011EB1C_w03;
 extern Unk3 *D_8011EB20_w03;
 extern s32 D_8011EB24_w03;
 extern s32 D_8011EB28_w03;
+extern Object *D_8011EB30_w03;
+extern Object *D_8011EB34_w03;
+extern Object *D_8011EB38_w03;
 extern Object *D_8011EB54_w03;
 extern Object *D_8011EB58_w03[1];
 extern Object *D_8011EB5C_w03;
@@ -6762,11 +6765,55 @@ void func_80117D38_w03(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_801183E0_w03);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80118E3C_w03);
+void func_80118E3C_w03(omObjData *obj) {
+    func_8001E888_main(D_8011EB30_w03->omObj1->model[0], 0, obj->trans.x, 0x40, 0x40, "R3-cyl4", 0);
+    obj->trans.x += 1.0f;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80118F64_w03);
+    if (obj->trans.x >= 64.0f) {
+        obj->trans.x -= 64.0f;
+    }
+    if (obj->trans.y >= 64.0f) {
+        obj->trans.y -= 64.0f;
+    }
+    if (obj->trans.x <= -64.0f) {
+        obj->trans.x += 64.0f;
+    }
+    if (obj->trans.y <= -64.0f) {
+        obj->trans.y += 64.0f;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_8011908C_w03);
+void func_80118F64_w03(omObjData *obj) {
+    func_8001E888_main(D_8011EB30_w03->omObj1->model[0], 0, obj->trans.x, 0x40, 0x40, "R3-cyl5_2", 0);
+    obj->trans.x += 1.0f;
+
+    if (obj->trans.x >= 64.0f) {
+        obj->trans.x -= 64.0f;
+    }
+    if (obj->trans.y >= 64.0f) {
+        obj->trans.y -= 64.0f;
+    }
+    if (obj->trans.x <= -64.0f) {
+        obj->trans.x += 64.0f;
+    }
+    if (obj->trans.y <= -64.0f) {
+        obj->trans.y += 64.0f;
+    }
+}
+
+void func_8011908C_w03(void) {
+    Object *obj;
+
+    obj = D_8011EB34_w03 = MBModelCreate(0x4A, NULL);
+    MBModelTempAllocFree(obj);
+    HuVecCopy3F(&obj->coords, &MBMasuGet(0x85)->coords);
+    obj = D_8011EB38_w03 = MBModelCreate(0x4B, NULL);
+    MBModelTempAllocFree(obj);
+    HuVecCopy3F(&obj->coords, &MBMasuGet(0x87)->coords);
+    while (1) {
+        HuPrcVSleep();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80119120_w03);
 

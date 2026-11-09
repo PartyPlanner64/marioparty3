@@ -6274,7 +6274,30 @@ void func_80116ADC_w03(s32 arg) {
     D_8011EBF0_w03[arg]->trans.x = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80116B78_w03);
+void func_80116B78_w03(void) {
+    s32 i;
+    s32 idx;
+
+    for (i = 0; i < 4; i++) {
+        D_8011EBF0_w03[i] = NULL;
+        D_8011EBE0_w03[i] = NULL;
+        idx = -!(MBPlayerGet(i)->rev & 0x2);
+        if (MBPlayerGet(i)->rev & 0x4) {
+            idx = 1;
+        }
+        if (MBPlayerGet(i)->rev & 0x20) {
+            idx = 2;
+        }
+        if (MBPlayerGet(i)->rev & 0x40) {
+            idx = 3;
+        }
+        if (idx != -1) {
+            func_801169DC_w03(i, idx);
+            func_80116ADC_w03(i);
+        }
+    }
+    func_800F8D54_shared_board(func_801167CC_w03);
+}
 
 void func_80116C78_w03(void) {
     GW_SYSTEM *loc = &GwSystem;
@@ -6351,7 +6374,118 @@ void func_80116FE4_w03(void) {
     omDelPrcObj(NULL);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80117034_w03);
+void func_80117034_w03(void) {
+    GW_SYSTEM *loc = &GwSystem;
+    GW_PLAYER *player;
+    s32 choice;
+    s16 targetPlayer;
+    UnkVibrateProcess *vib;
+    s16 previousPlayer;
+    f32 scale;
+    f32 hudScale;
+
+    MBDlgWinInsertCreate(-1, 0x5C01, GwPlayer[0].chr + 0x1C00, GwPlayer[1].chr + 0x1C00,
+                         GwPlayer[2].chr + 0x1C00, GwPlayer[3].chr + 0x1C00, 0);
+    choice = func_80109F44_w03(2, D_8011EC04_w03);
+    MBDlgWinClose();
+    MBDlgWinKill();
+
+    if (choice >= MB_MAX_PLAYERS) {
+        targetPlayer = func_800EF0D8_shared_board(0);
+    } else if (choice < 0) {
+        targetPlayer = func_800EF0D8_shared_board(0);
+    } else {
+        targetPlayer = choice;
+    }
+
+    GwSystem.slow_dice_flags |= 1 << targetPlayer;
+    player = MBPlayerGet(targetPlayer);
+
+    for (scale = 1.0f, hudScale = 1.0f; scale > 0.0f;) {
+        scale -= 0.1f;
+        hudScale += 0.07f;
+        MBStatusItemScaleSet(loc->current_player_index, MBItemSelNoGet(), scale, hudScale);
+        HuPrcVSleep();
+    }
+
+    MBStatusItemTPLvlSet(loc->current_player_index, MBItemSelNoGet(), 0);
+    MBStatusShrink(-1);
+    MBStatusItemDispSetAll(0);
+    MBStatusGrow(-1);
+
+    if (targetPlayer != loc->current_player_index) {
+        WipeCreateOut(WIPE_TYPE_NORMAL, 0x10);
+        HuPrcSleep(0x10);
+        MBCameraFocusModeSet(2);
+        MBCameraFocusStaticPosSet(&player->player_obj->coords);
+        MBCameraPos3DSet(&player->player_obj->coords);
+        HuPrcVSleep();
+        WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
+        D_800A12D8_main = 1;
+        HuPrcSleep(0x10);
+    }
+
+    func_80116754_w03(targetPlayer);
+    player->rev = (player->rev & 0x99) | 2;
+    func_801169DC_w03(targetPlayer, 0);
+    for (scale = 0.0f; scale <= 1.0f; scale += 0.08f) {
+        HuVecCopyXYZ(&D_8011EBE0_w03[targetPlayer]->scale, scale, scale, scale);
+        HuPrcVSleep();
+    }
+    HuVecCopyXYZ(&D_8011EBE0_w03[targetPlayer]->scale, 1.0f, 1.0f, 1.0f);
+
+    if (targetPlayer == loc->current_player_index) {
+        MBPlayerMotionSet(targetPlayer, 4, 2);
+    } else {
+        MBMotionSet(MBPlayerGet(targetPlayer)->player_obj, 4, 2);
+    }
+    CharFXPlay(0x286, GwPlayer[targetPlayer].chr);
+    func_80116ADC_w03(targetPlayer);
+    vib = MBPlayerVibrateObjCreate(targetPlayer, 1, 5);
+    omAddPrcObj(func_80116FE4_w03, 0x4002, 0, 0)->user_data = vib;
+    HuPrcSleep(0x14);
+
+    previousPlayer = loc->current_player_index;
+    loc->current_player_index = targetPlayer;
+    if (player->rev & 0x80) {
+        MBDlgWinExec(-1, 0x3A09);
+    }
+    MBDlgWinExec(-1, 0x3A06);
+    loc->current_player_index = previousPlayer;
+    if (targetPlayer == (s8)previousPlayer) {
+        MBPlayerMotionSet(-1, -1, 2);
+    } else {
+        MBMotionSet(MBPlayerGet(targetPlayer)->player_obj, -1, 2);
+        D_800A12D8_main = 0;
+    }
+
+    if (targetPlayer != loc->current_player_index) {
+        WipeCreateOut(WIPE_TYPE_NORMAL, 0x10);
+        HuPrcSleep(0x10);
+        MBCameraFocusModeSet(1);
+        MBCameraPos3DSet(&MBPlayerGet(-1)->player_obj->coords);
+        HuPrcVSleep();
+        WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
+        HuPrcSleep(0x10);
+    }
+
+    if (targetPlayer == loc->current_player_index) {
+        GWBoardFlagSet(0x10);
+        MBDlgWinExec(-1, 0x3A07);
+        for (scale = 1.0f; scale >= 0.0f; scale -= 0.08f) {
+            HuVecCopyXYZ(&D_8011EBE0_w03[targetPlayer]->scale, scale, scale, scale);
+            HuPrcVSleep();
+        }
+        HuVecCopyXYZ(&D_8011EBE0_w03[targetPlayer]->scale, 0.0f, 0.0f, 0.0f);
+        func_80116754_w03(loc->current_player_index);
+        func_800DCA64_shared_board(GwSystem.current_player_index);
+        MBPlayerVibrate(-1, 2);
+        func_800DC128_shared_board(GwSystem.current_player_index);
+        HuPrcSleep(0xF);
+        GwSystem.slow_dice_flags &= ~(1 << GwSystem.current_player_index);
+        player->rev &= ~2;
+    }
+}
 
 void func_801175AC_w03(void) {
     GW_SYSTEM *loc = &GwSystem;
@@ -6408,7 +6542,103 @@ void func_8011777C_w03(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_801178B4_w03);
+void func_801178B4_w03(void) {
+    GW_SYSTEM *loc = &GwSystem;
+    GW_PLAYER *player;
+    s32 choice;
+    s16 targetPlayer;
+    s16 previousPlayer;
+    f32 scale;
+    f32 hudScale;
+    UnkVibrateProcess *vib;
+
+    MBDlgWinInsertCreate(-1, 0x5C01, GwPlayer[0].chr + 0x1C00, GwPlayer[1].chr + 0x1C00,
+                         GwPlayer[2].chr + 0x1C00, GwPlayer[3].chr + 0x1C00, 0);
+    choice = func_80109F44_w03(2, D_8011EC00_w03);
+    MBDlgWinClose();
+    MBDlgWinKill();
+
+    if (choice >= MB_MAX_PLAYERS) {
+        targetPlayer = func_800EF0D8_shared_board(0);
+    } else if (choice < 0) {
+        targetPlayer = func_800EF0D8_shared_board(0);
+    } else {
+        targetPlayer = choice;
+    }
+
+    player = MBPlayerGet(targetPlayer);
+    player->rev |= 0x80;
+
+    for (scale = 1.0f, hudScale = 1.0f; scale > 0.0f;) {
+        scale -= 0.1f;
+        hudScale += 0.07f;
+        MBStatusItemScaleSet(loc->current_player_index, MBItemSelNoGet(), scale, hudScale);
+        HuPrcVSleep();
+    }
+    MBStatusItemTPLvlSet(loc->current_player_index, MBItemSelNoGet(), 0);
+
+    if (targetPlayer != loc->current_player_index) {
+        WipeCreateOut(WIPE_TYPE_NORMAL, 0x10);
+        HuPrcSleep(0x10);
+        MBCameraFocusModeSet(2);
+        MBCameraFocusStaticPosSet(&player->player_obj->coords);
+        MBCameraPos3DSet(&player->player_obj->coords);
+        HuPrcVSleep();
+        WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
+        D_800A12D8_main = 1;
+        HuPrcSleep(0x10);
+    }
+
+    func_80116754_w03(targetPlayer);
+    player->rev = (player->rev & 0x99) | 4;
+    MBPlayerVibrate(targetPlayer, 3);
+    func_801169DC_w03(targetPlayer, 1);
+    for (scale = 0.0f; scale <= 1.0f; scale += 0.08f) {
+        HuVecCopyXYZ(&D_8011EBE0_w03[targetPlayer]->scale, scale, scale, scale);
+        HuPrcVSleep();
+    }
+    HuVecCopyXYZ(&D_8011EBE0_w03[targetPlayer]->scale, 1.0f, 1.0f, 1.0f);
+
+    if (targetPlayer == loc->current_player_index) {
+        MBPlayerMotionSet(targetPlayer, 4, 2);
+    } else {
+        MBMotionSet(MBPlayerGet(targetPlayer)->player_obj, 4, 2);
+    }
+    CharFXPlay(0x286, GwPlayer[targetPlayer].chr);
+    vib = MBPlayerVibrateObjCreate(targetPlayer, 1, 5);
+    func_80116ADC_w03(targetPlayer);
+    omAddPrcObj(func_80116FE4_w03, 0x4002, 0, 0)->user_data = vib;
+    HuPrcSleep(0x14);
+
+    previousPlayer = loc->current_player_index;
+    loc->current_player_index = targetPlayer;
+    if (((previousPlayer == targetPlayer) && (func_800DEB2C_shared_board(previousPlayer) == 3)) ||
+        ((GwSystem.slow_dice_flags >> targetPlayer) & 1)) {
+        MBDlgWinExec(-1, 0x3A05);
+    }
+    MBDlgWinExec(-1, 0x3A02);
+    loc->current_player_index = previousPlayer;
+    if (targetPlayer == (s8)previousPlayer) {
+        MBPlayerMotionSet(-1, -1, 2);
+    } else {
+        MBMotionSet(MBPlayerGet(targetPlayer)->player_obj, -1, 2);
+        D_800A12D8_main = 0;
+    }
+
+    if (targetPlayer != loc->current_player_index) {
+        WipeCreateOut(WIPE_TYPE_NORMAL, 0x10);
+        HuPrcSleep(0x10);
+        MBCameraFocusModeSet(1);
+        MBCameraPos3DSet(&MBPlayerGet(-1)->player_obj->coords);
+        HuPrcVSleep();
+        WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
+        HuPrcSleep(0x10);
+    }
+
+    if (targetPlayer == loc->current_player_index) {
+        func_801175AC_w03();
+    }
+}
 
 void func_80117D38_w03(void) {
     char playerNames[4][16];

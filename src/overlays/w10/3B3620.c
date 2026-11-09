@@ -8,6 +8,7 @@
 #include "../ovl_80_shared_board/1063F0.h"
 #include "../ovl_80_shared_board/EA790.h"
 #include "../ovl_80_shared_board/EAB00.h"
+#include "../ovl_80_shared_board/EC3B0.h"
 #include "../ovl_80_shared_board/ECA50.h"
 #include "../ovl_80_shared_board/EE660.h"
 #include "../ovl_80_shared_board/101840.h"
@@ -48,8 +49,11 @@ extern Object *D_8010BA68_w10;
 extern Object *D_8010BA6C_w10;
 extern Object *D_8010BA70_w10;
 extern Object *D_8010BA74_w10;
+extern event_table_entry D_8010B8B0_w10[];
 extern Object *D_8010BA90_w10;
 extern s32 D_8010BA94_w10;
+
+void func_80109444_w10(void);
 
 void func_801059D0_w10(void) {
     GwSystem.current_board_index = 6;
@@ -851,4 +855,44 @@ void func_8010B434_w10(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_8010B5A4_w10);
+void func_8010B5A4_w10(void) {
+    Vec dir;
+    SpaceData *space;
+    GW_PLAYER *player;
+    s16 spaceIdx;
+    s32 i;
+
+    Hu3DCamInit(2);
+    omInitObjMan(0x50, 0x28);
+    func_8004A208_main();
+    HmfLightMaxSet(1);
+    HmfLightColorSet(0, 0x78, 0x78, 0x78);
+    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    HmfLightDirSet(1, -100.0f, 100.0f, 300.0f);
+    MBObjectSetup(0x15, 0x240, 0, 0);
+    space = MBMasuGet(0x2A);
+    MBVecDirGet(&space->coords, &MBMasuGet(0x2B)->coords, &dir);
+    MBMasuArrowAngleAdd(MBVecAngleGet(&dir) + 180.0f);
+    for (i = 0; i < 4; i++) {
+        MBPlayerGet(i)->coin = 10;
+    }
+    func_80105B70_w10();
+    func_80105C28_w10();
+    func_80105D6C_w10();
+    MBMasuEventTblAdd(D_8010B8B0_w10);
+    for (i = 0; i < 4; i++) {
+        player = MBPlayerGet(i);
+        spaceIdx = MBMasuLinkMasuIdGet(player->clink, player->cidx);
+        MBPlayerPosMasuSet(i, spaceIdx);
+        MBPlayerForwardSet(i);
+    }
+    func_800EBDAC_shared_board();
+    func_800E6FBC_shared_board();
+    func_800E9730_shared_board(1.0f);
+    MBCameraSpeedSet(-1.0f);
+    MBCameraPos3DSet(&MBPlayerGet(-1)->player_obj->coords);
+    omAddPrcObj(func_80109444_w10, 0xEFFF, 0, 0);
+    omAddPrcObj(func_80106574_w10, 0x1005, 0, 0);
+    omPrcSetStatBit(omAddPrcObj(func_8010B434_w10, 0x1005, 0, 0), OM_STAT_NOALLPAUSE);
+    omAddPrcObj(func_80108F28_w10, 0x4800, 0, 0);
+}

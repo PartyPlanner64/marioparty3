@@ -84,7 +84,7 @@ s32 func_8010872C_chancetime(void);
 void func_8010C870_chancetime(omObjData *object);
 void func_8010C5F4_chancetime(omObjData *object);
 void func_8010C98C_chancetime(void);
-void func_8010C994_chancetime(Gfx **gfx, s32 arg1, s32 arg2);
+void func_8010C994_chancetime(Gfx **gfxPos, s32 arg1, s32 arg2);
 void func_8010CF78_chancetime(s8 arg0);
 void func_8010DAB0_chancetime(void);
 void func_8010C610_chancetime(omObjData *object);
@@ -259,7 +259,79 @@ void func_8010C870_chancetime(omObjData *object) {
 void func_8010C98C_chancetime(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010C994_chancetime);
+void func_8010C994_chancetime(Gfx **gfxPos, s32 arg1, s32 arg2) {
+    Gfx *gfx;
+    s16 texX[2];
+    s16 texY[2];
+    s16 x;
+    s16 y;
+    s16 width;
+    s16 height;
+    s16 screenX;
+    s16 screenY;
+    s16 texWidth;
+    s16 row;
+    s16 rows;
+    s16 offset;
+
+    width = D_8010FEA8_chancetime[0];
+    height = D_8010FEA8_chancetime[1];
+    x = D_8010FB84_chancetime[0];
+    y = D_8010FB84_chancetime[1];
+    if ((x + width < 0) | (x >= 320)) {
+        return;
+    }
+    if ((y + height < 0) | (y >= 240)) {
+        return;
+    }
+
+    texX[0] = (x < 0) ? -x : 0;
+    texX[1] = (x + width > 320) ? 320 - x : width;
+    if (x < 0) {
+        screenX = 0;
+    } else if (x >= 319) {
+        screenX = 319;
+    } else {
+        screenX = x;
+    }
+    texWidth = texX[1] - texX[0];
+    texY[0] = (y < 0) ? -y : 0;
+    texY[1] = (y + height > 240) ? 240 - y : height;
+    if (y < 0) {
+        screenY = 0;
+    } else if (y >= 319) {
+        screenY = 319;
+    } else {
+        screenY = y;
+    }
+
+    gfx = *gfxPos;
+    gDPPipeSync(gfx++);
+    gDPSetScissor(gfx++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
+    gDPSetCycleType(gfx++, G_CYC_1CYCLE);
+    gSPClearGeometryMode(gfx++, G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH);
+    gSPSetGeometryMode(gfx++, G_SHADE | G_CULL_BACK | G_SHADING_SMOOTH);
+    gDPSetTexturePersp(gfx++, G_TP_NONE);
+    gDPSetPrimColor(gfx++, 0, 0, 255, 255, 255, 255);
+    gDPSetRenderMode(gfx++, G_RM_TEX_EDGE, G_RM_TEX_EDGE2);
+    gDPSetCombineMode(gfx++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+    gDPSetTextureLUT(gfx++, G_TT_RGBA16);
+    gDPLoadTLUT_pal256(gfx++, D_8010FEA4_chancetime);
+
+    rows = 4;
+    offset = 0;
+    for (row = texY[0]; row < texY[1]; row += rows) {
+        if (row + rows > texY[1]) {
+            rows = texY[1] - row;
+        }
+        gDPLoadTextureTile(gfx++, D_8010FEA0_chancetime, G_IM_FMT_CI, G_IM_SIZ_8b, width, rows, texX[0], row, texX[1] - 1, row + rows - 1, 0, G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, texWidth << 2, rows << 2);
+        gSPTextureRectangle(gfx++, screenX << 2, (offset + screenY) << 2, (texWidth + screenX) << 2, (offset + rows + screenY) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+        offset += rows;
+    }
+    gDPSetScissor(gfx++, G_SC_NON_INTERLACE, 104, 52, 215, 163);
+    *gfxPos = gfx;
+}
 
 void func_8010CF78_chancetime(s8 arg0) {
     s8 i;

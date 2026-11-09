@@ -6758,7 +6758,74 @@ void func_8011946C_w02(s16 model) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80119680_w02);
+void func_80119680_w02(s16 model) {
+    HmfData *hmf = HmfModelData[model].hmf;
+    HmfModelData_UnkBC_Struct *effect = HmfModelData[model].unkBC;
+    HmfModelData_UnkBC_Unk58_Struct *particle;
+    s16 count = hmf->unk1A;
+    s16 i;
+    f32 dx;
+    f32 dy;
+    f32 dz;
+    f32 dist;
+    f32 scale;
+    f32 speed;
+
+    if (effect->unk02 == 0) {
+        effect->unk04 &= ~4;
+        particle = effect->unk58;
+        for (i = 0; i < count; i++, particle++) {
+            particle->unk0C = particle->unk10 = particle->unk14 = 0.0f;
+            particle->unk24 = particle->unk28 = particle->unk2C = 0.0f;
+            particle->unk08 = 0.0f;
+            particle->unk04 = 1.0f;
+        }
+        effect->unk02++;
+    }
+
+    particle = effect->unk58;
+    for (i = 0; i < count; i++, particle++) {
+        if (particle->unk08 > 0.0f) {
+            if (effect->unk0C.f > 0.0f) {
+                particle->unk0C += particle->unk18;
+                particle->unk10 += particle->unk1C;
+                particle->unk14 += particle->unk20;
+                dx = effect->unk1C.f - particle->unk0C;
+                dy = effect->unk20.f - particle->unk10;
+                dz = effect->unk24.f - particle->unk14;
+                speed = HuSqrtf(dx * dx + dy * dy + dz * dz);
+                dist = speed;
+                scale = speed / 1000.0f * 3.0f;
+                if ((speed < 100.0f) | (scale < 0.1f)) {
+                    particle->unk08 = 0.0f;
+                } else {
+                    particle->unk08 = scale;
+                    speed = (effect->unk08.f - speed) / speed;
+                    if (speed < 0.05f) {
+                        speed = 0.05f;
+                    }
+                    speed *= effect->unk0C.f;
+                    particle->unk18 = dx / dist * speed;
+                    particle->unk1C = dy / dist * speed;
+                    particle->unk20 = dz / dist * speed;
+                }
+            } else {
+                particle->unk0C += particle->unk18;
+                particle->unk10 += particle->unk1C;
+                particle->unk14 += particle->unk20;
+                particle->unk18 *= 0.98;
+                particle->unk1C *= 0.98f;
+                particle->unk20 *= 0.98f;
+                particle->unk08 -= 0.001f;
+                if (particle->unk08 < 0.0f) {
+                    particle->unk08 = 0.0f;
+                }
+            }
+        } else {
+            particle->unk08 = 0.0f;
+        }
+    }
+}
 
 void func_801199EC_w02(void) {
     void *data;

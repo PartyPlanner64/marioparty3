@@ -1440,7 +1440,18 @@ void func_80108E1C_w02(void) {
     func_80115FEC_w02(D_8011D2B0_w02, D_8011D2B8_w02, D_8011CFA0_w02);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80108E4C_w02);
+void func_80108E4C_w02(void) {
+    GW_PLAYER *player = MBPlayerGet(CUR_PLAYER);
+
+    if ((player->rev & 0x80) && mbWalkNum != 0 && MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0x67) {
+        func_80108E1C_w02();
+    } else if ((player->rev & 0x80) && MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0x67) {
+        MBMoveBackMasuSet(-1, 0, 0x10);
+        MBMoveNextMasuSet(-1, 0, 0xE);
+    } else if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0x67) {
+        MBMoveBackMasuSet(-1, 0, 0xE);
+    }
+}
 
 void func_80108F8C_w02(void) {
     GW_PLAYER *player = MBPlayerGet(CUR_PLAYER);
@@ -6708,7 +6719,44 @@ void func_80119438_w02(s16 arg0, f32 arg1, f32 arg2, f32 arg3) {
     model->unk24.f = arg3;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_8011946C_w02);
+void func_8011946C_w02(s16 model) {
+    HmfData *hmf = HmfModelData[model].hmf;
+    HmfModelData_UnkBC_Struct *effect = HmfModelData[model].unkBC;
+    HmfModelData_UnkBC_Unk58_Struct *particle = effect->unk58;
+    s16 i;
+    s16 count = hmf->unk1A;
+    f32 angle;
+    f32 dx;
+    f32 dy;
+    f32 dz;
+    f32 dist;
+
+    for (i = 0; i < count; i++, particle++) {
+        if (particle->unk08 <= 0.0f) {
+            dist = (u8)(rand8() / 10) + 300;
+            angle = (s32)(rand8() * 25U >> 7) + 15;
+            particle->unk0C = sindf(angle) * dist + effect->unk1C.f;
+            particle->unk10 = 0.0f;
+            particle->unk14 = cosdf(angle) * dist + effect->unk24.f;
+            if (effect->unk0C.f > 0.0f) {
+                particle->unk18 = particle->unk1C = particle->unk20 = 0.0f;
+            } else {
+                dx = effect->unk1C.f - particle->unk0C;
+                dy = effect->unk20.f - particle->unk10;
+                dz = effect->unk24.f - particle->unk14;
+                dist = HuSqrtf(dx * dx + dy * dy + dz * dz);
+                particle->unk18 = dx / dist * effect->unk0C.f;
+                particle->unk1C = dy / dist * effect->unk0C.f;
+                particle->unk20 = dz / dist * effect->unk0C.f;
+                particle->unk0C = effect->unk1C.f;
+                particle->unk10 = effect->unk20.f;
+                particle->unk14 = effect->unk24.f;
+            }
+            particle->unk08 = 1.0f;
+            break;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80119680_w02);
 

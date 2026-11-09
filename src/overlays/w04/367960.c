@@ -1,6 +1,7 @@
 #include "common.h"
 #include "../ovl_80_shared_board/1006F0.h"
 #include "../ovl_80_shared_board/105D50.h"
+#include "../ovl_80_shared_board/1063F0.h"
 #include "../ovl_80_shared_board/113520.h"
 #include "../ovl_80_shared_board/106A50.h"
 #include "../ovl_80_shared_board/F5B90.h"
@@ -152,6 +153,9 @@ extern DecisionTreeNonLeafNode *D_8011BC24_w04[];
 extern s16 D_8011C120_w04[][3];
 extern BranchPair D_8011C134_w04[];
 extern s16 D_8011B9BC_w04[];
+extern s16 D_8011C998_w04[2];
+extern s16 D_8011C99C_w04[2];
+extern Object *D_8011E118_w04[2];
 extern DecisionTreeNonLeafNode *D_8011BAEC_w04[];
 extern s16 D_8011C048_w04[][3];
 extern BranchPair D_8011C05C_w04[];
@@ -192,6 +196,8 @@ extern s32 D_8011C670_w04[2];
 extern u32 D_8011C678_w04[];
 extern u32 D_8011C680_w04[];
 extern DecisionTreeNonLeafNode D_8011C508_w04[];
+extern DecisionTreeNonLeafNode D_8011BF6C_w04[];
+extern DecisionTreeNonLeafNode D_8011BF9C_w04[];
 extern u32 D_8011C520_w04[];
 extern s16 D_8011B7CC_w04[];
 extern s16 D_8011B7D0_w04[];
@@ -6742,7 +6748,21 @@ Process *func_80118240_w04(void) {
     return omAddPrcObj(func_80117EA8_w04, 0x1000, 0, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_8011826C_w04);
+void func_8011826C_w04(omObjData *obj) {
+    s32 i;
+
+    if (obj->work[0] == 0) {
+        for (i = 0; i < 2; i++) {
+            HuVecCopy3F(&D_8011E118_w04[i]->coords, &MBMasuGet(D_8011C998_w04[i])->coords);
+            D_8011E118_w04[i]->coords.x += MBRand(30.0f) / 10.0f - 1.5f;
+        }
+    } else {
+        for (i = 0; i < 2; i++) {
+            HuVecCopy3F(&D_8011E118_w04[i]->coords, &MBMasuGet(D_8011C99C_w04[i])->coords);
+            D_8011E118_w04[i]->coords.x += MBRand(30.0f) / 10.0f - 1.5f;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_801183D4_w04);
 
@@ -6766,7 +6786,77 @@ void func_8011A4E0_w04(s32 arg0) {
     MBCameraFocusModeSet(1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_8011A5DC_w04);
+void func_8011A5DC_w04(void) {
+    GW_SYSTEM *system;
+    SpaceData *space = MBMasuGet(D_8011B9BC_w04[0]);
+    DecisionTreeNonLeafNode *tree;
+    s32 masu;
+    s32 choice;
+
+    masu = MBMasuCurGet();
+    system = &GwSystem;
+    if (masu == 0x73) {
+        tree = D_8011BF6C_w04;
+        masu = 0x7F;
+    } else {
+        tree = D_8011BF9C_w04;
+        masu = 0x80;
+    }
+
+    func_800DBEC0_shared_board(system->current_player_index);
+    MBPlayerMotionSet(-1, -1, 2);
+    func_800ED20C_shared_board(-1, 8, masu);
+    HuPrcSleep(8);
+
+    if (GwPlayer[system->current_player_index].coin < 5) {
+        MBDlgWinExec(0x3D, 0xB01);
+    } else {
+    dialogLoop:
+        MBDlgWinInsertCreate(0x3D, 0xB00, 0, 0, 0, 0, 0);
+        choice = func_80109CD4_w04((s32)tree, 0);
+        MBDlgWinClose();
+        MBDlgWinKill();
+        switch (choice) {
+            case 0:
+                MBCoinChangeCreate(system->current_player_index, -5);
+                MBCoinTakeCreate(system->current_player_index, -5);
+                HuPrcSleep(30);
+                MBDlgWinExec(0x3D, 0xB02);
+                WipeCreateOut(0xB, 0x10);
+                while (WipeStatGet() != 0) {
+                    HuPrcVSleep();
+                }
+                MBCameraFocusModeSet(0);
+                func_800E9AF0_shared_board(&space->coords, 0);
+                HuPrcSleep(5);
+                WipeCreateIn(0xB, 0x10);
+                while (WipeStatGet() != 0) {
+                    HuPrcVSleep();
+                }
+                func_80119FCC_w04(-1, 0);
+                WipeCreateOut(0xB, 0x10);
+                while (WipeStatGet() != 0) {
+                    HuPrcVSleep();
+                }
+                MBCameraFocusModeSet(1);
+                HuPrcSleep(5);
+                WipeCreateIn(0xB, 0x10);
+                while (WipeStatGet() != 0) {
+                    HuPrcVSleep();
+                }
+                break;
+            case 1:
+                MBDlgWinExec(0x3D, 0xB04);
+                break;
+            default:
+                func_80106AB0_w04();
+                goto dialogLoop;
+        }
+    }
+
+    func_800DB884_shared_board(system->current_player_index);
+    HuPrcSleep(10);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/w04/367960", D_8011DE80_w04);
 
@@ -6803,7 +6893,28 @@ void func_8011A858_w04(void) {
     omDelPrcObj(NULL);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_8011A91C_w04);
+void func_8011A91C_w04(void) {
+    Vec pos;
+    SpaceData *space = MBMasuGet(D_8011B9BC_w04[0]);
+
+    if (GwSystem.current_turn >= 2) {
+        HuVecCopy3F(&pos, &space->coords);
+        MBCameraFocusModeSet(4);
+        MBCameraFocusVecSet(&pos);
+        HuPrcSleep(2);
+        MBPlayerPosFixSet(0, 1);
+        MBPlayerPosFixSet(1, 1);
+        MBPlayerPosFixSet(2, 1);
+        MBPlayerPosFixSet(3, 1);
+        HuPrcChildLink(HuPrcCurrentGet(), func_800F29EC_shared_board());
+        HuPrcChildWatch();
+        func_80119FCC_w04(-1, 1);
+        HuPrcChildLink(HuPrcCurrentGet(), func_800F292C_shared_board());
+        HuPrcChildWatch();
+        MBCameraFocusModeSet(1);
+        HuPrcSleep(5);
+    }
+}
 
 void func_8011AA10_w04(void) {
     Hu3DCamInit(2);

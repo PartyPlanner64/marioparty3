@@ -239,6 +239,8 @@ void func_8010D9A8_w02(s32 arg);
 void func_800D9F5C_shared_board(Object *arg0, Vec *arg1, s32 arg2);
 void func_801084A8_w02(s32 arg0, s32 arg1);
 s32 func_8010964C_w02(s32 arg0);
+extern Object *D_8011C8DC_w02;
+extern s16 D_8011C8E4_w02[];
 s16 func_801059D0_w02(void) {
     return D_8011C6A0_w02[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
 }
@@ -1176,7 +1178,17 @@ void func_801086DC_w02(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80108754_w02);
+void func_80108754_w02(void) {
+    SpaceData *masu = MBMasuGet(0x81);
+    Object *obj = MBModelFileCreate(0x13016D, -1, 0.8f, 0, NULL);
+
+    MBModelTempAllocFree(obj);
+    D_8011C8DC_w02 = obj;
+    obj->flags |= 2;
+    obj->rot.x = sindf(-138.0f);
+    obj->rot.z = cosdf(-138.0f);
+    HuVecCopy3F(&obj->coords, &masu->coords);
+}
 
 void func_801087F8_w02(void) {
     SpaceData *masu = MBMasuGet(0x7B);
@@ -1200,9 +1212,29 @@ void func_80108870_w02(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_801088EC_w02);
+void func_801088EC_w02(s16 arg0) {
+    Object *obj;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_801089C0_w02);
+    if (D_8011EC80_w02[arg0] == NULL) {
+        obj = MBModelFileCreate(0x13016C, -1, 1.0f, 0, NULL);
+        MBModelTempAllocFree(obj);
+        D_8011EC80_w02[arg0] = obj;
+        obj->flags |= 2;
+        HuVecCopy3F(&obj->coords, &MBMasuGet(D_8011C8E4_w02[arg0])->coords);
+        obj->coords.x -= 4.0f;
+        obj->coords.z -= 2.0f;
+    }
+}
+
+void func_801089C0_w02(void) {
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        D_8011EC80_w02[i] = NULL;
+        func_801088EC_w02(i);
+    }
+    func_80108870_w02();
+}
 
 // Counts the set bits among the 4 low per-board flags in GwSystem.boardData
 s32 func_80108A20_w02(void) {

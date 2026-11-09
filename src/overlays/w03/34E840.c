@@ -20,6 +20,8 @@ void func_80105DB0_w03(void);
 void func_801061A0_w03(UnkMBGuideData *);
 void func_801066CC_w03(void);
 void func_80108734_w03(void);
+extern s16 D_8011C110_w03[];
+extern s16 D_8011C120_w03[];
 extern s16 D_8011C130_w03[];
 extern s16 D_8011C140_w03[];
 extern s16 D_8011C150_w03[];
@@ -54,11 +56,85 @@ s16 func_801059D0_w03(void) {
     return D_8011C150_w03[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_801059F8_w03);
+void func_801059F8_w03(void) {
+    s32 i;
+    s32 idx1;
+    s32 idx2;
+    GW_SYSTEM *loc = &GwSystem;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80105B44_w03);
+    for (i = 0; i < 0x3C; i++) {
+        idx1 = rand8() & 7;
+        idx2 = rand8() & 7;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80105C50_w03);
+        if (idx1 != idx2) {
+            if (idx1 < D_8011C120_w03[idx2]) {
+                continue;
+            }
+            if (idx2 < D_8011C120_w03[idx1]) {
+                continue;
+            }
+            {
+                s32 temp = D_8011C110_w03[idx1];
+                D_8011C110_w03[idx1] = D_8011C110_w03[idx2];
+                D_8011C110_w03[idx2] = temp;
+                temp = D_8011C120_w03[idx1];
+                D_8011C120_w03[idx1] = D_8011C120_w03[idx2];
+                D_8011C120_w03[idx2] = temp;
+            }
+        }
+    }
+
+    for (i = 0; i < 8; i++) {
+        loc->star_spawn_indices[i] = D_8011C110_w03[i];
+    }
+
+    do {
+        GwSystem.boardData.halfWordBytes[0] = loc->star_spawn_indices[MBRand(6.0f) + 1];
+    } while (GwSystem.boardData.halfWordBytes[0] == 7);
+    GWBoardFlagClear(0x12);
+}
+
+void func_80105B44_w03(void) {
+    GW_SYSTEM *loc = &GwSystem;
+    GW_SYSTEM *system = &GwSystem;
+    s32 sp7;
+    s32 sp0;
+
+    system->current_star_spawn++;
+    if (system->current_star_spawn >= 8) {
+        sp7 = system->star_spawn_indices[7];
+        system->current_star_spawn = 0;
+        GWBoardFlagSet(4);
+        func_801059F8_w03();
+        sp0 = system->star_spawn_indices[0];
+        if ((sp7 ^ sp0) == 0) {
+            system->star_spawn_indices[0] = system->star_spawn_indices[7];
+            system->star_spawn_indices[7] = sp0;
+        }
+    }
+
+    if (loc->current_star_spawn >= 7) {
+        GwSystem.boardData.halfWordBytes[0] = loc->star_spawn_indices[MBRand(6.0f)];
+    } else {
+        GwSystem.boardData.halfWordBytes[0] =
+            loc->star_spawn_indices[MBRand(7 - loc->current_star_spawn) + loc->current_star_spawn + 1];
+    }
+    GWBoardFlagClear(0x12);
+}
+
+void func_80105C50_w03(void) {
+    s32 i;
+    GW_SYSTEM *loc = &GwSystem;
+
+    for (i = 0; i < 8; i++) {
+        GWBoardFlagSet(D_8011C130_w03[i]);
+    }
+    MBMasuTypeSet(D_8011C140_w03[loc->star_spawn_indices[loc->current_star_spawn]], 0xE);
+    GWBoardFlagClear(D_8011C130_w03[loc->star_spawn_indices[loc->current_star_spawn]]);
+    if (GwSystem.boardData.halfWordBytes[0] != -1) {
+        MBMasuTypeSet(D_8011C140_w03[GwSystem.boardData.halfWordBytes[0]], 0xE);
+    }
+}
 
 s16 func_80105D20_w03(s16 arg0) {
     s32 i;

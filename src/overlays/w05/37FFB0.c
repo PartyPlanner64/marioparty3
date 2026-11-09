@@ -126,6 +126,14 @@ extern omObjData *D_80120880_w05[4];
 extern Object *D_80120870_w05[4];
 extern Object *D_8012078C_w05;
 extern Object *D_801207C4_w05;
+extern s16 D_8011EF78_w05[];
+extern s16 D_8011EF80_w05[];
+extern s16 D_8011EF88_w05[];
+extern s16 D_8011EF90_w05[];
+extern DecisionTreeNonLeafNode D_8011E2B0_w05;
+extern DecisionTreeNonLeafNode D_8011E31C_w05;
+extern DecisionTreeNonLeafNode D_8011E34C_w05;
+extern DecisionTreeNonLeafNode D_8011E370_w05;
 extern Object *D_801207CC_w05;
 extern s32 D_8011D0CC_w05;
 extern f32 D_8011EF38_w05[][2];
@@ -6485,7 +6493,102 @@ void func_8011A6E8_w05(void) {
     omDelPrcObj(NULL);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_8011A8D8_w05);
+void func_8011A8D8_w05(void) {
+    GW_SYSTEM *system = &GwSystem;
+    GW_PLAYER *player;
+    UnkEA790Struct *win;
+    s16 *choices;
+    DecisionTreeNonLeafNode *tree;
+    s32 sel;
+    s32 count;
+    s32 i;
+
+    func_80106B94_w05();
+    player = MBPlayerGet(-1);
+
+    switch (MBMasuLinkMasuIdGet(player->clink, player->cidx)) {
+        case 0x7E:
+            choices = D_8011EF78_w05;
+            break;
+        case 0x96:
+            choices = D_8011EF80_w05;
+            break;
+        case 0x84:
+            choices = D_8011EF88_w05;
+            break;
+        default:
+            choices = D_8011EF90_w05;
+            break;
+    }
+    win = func_800D76A0_shared_board(system->current_player_index, choices);
+    func_800D742C_shared_board(win, system->current_player_index, 0);
+
+    if (MBPlayerComCheck(-1)) {
+        switch (MBMasuLinkMasuIdGet(player->clink, player->cidx)) {
+            case 0x7E:
+                tree = &D_8011E2B0_w05;
+                break;
+            case 0x96:
+                tree = &D_8011E31C_w05;
+                break;
+            case 0x84:
+                tree = &D_8011E34C_w05;
+                break;
+            default:
+                tree = &D_8011E370_w05;
+                break;
+        }
+        count = MBComTreeExec(tree);
+        for (i = 0; i < count; i++) {
+            func_800D7250_shared_board(win, -2);
+        }
+        func_800D7250_shared_board(win, -4);
+    }
+
+    sel = func_800D7518_shared_board(win);
+    func_800D6CA0_shared_board(win);
+    func_80106C64_w05();
+
+    switch (MBMasuLinkMasuIdGet(player->clink, player->cidx)) {
+        case 0x7E:
+            if (sel == 0) {
+                MBMoveNextMasuSet(-1, 0x10, 0x11);
+                player->rev |= 1;
+            } else {
+                MBMoveNextMasuSet(-1, 8, 1);
+                player->rev &= ~1;
+            }
+            break;
+        case 0x96:
+            if (sel == 0) {
+                MBMoveNextMasuSet(-1, 2, 0);
+                player->rev |= 1;
+            } else {
+                MBMoveNextMasuSet(-1, 2, 2);
+                player->rev &= ~1;
+            }
+            break;
+        case 0x84:
+            if (sel == 0) {
+                MBMoveNextMasuSet(-1, 9, 0xC);
+                player->rev |= 1;
+            } else {
+                MBMoveNextMasuSet(-1, 0xA, 1);
+                player->rev &= ~1;
+            }
+            break;
+        default:
+            if (sel == 0) {
+                MBMoveNextMasuSet(-1, 5, 0);
+                player->rev |= 1;
+            } else {
+                MBMoveNextMasuSet(-1, 5, 2);
+                player->rev &= ~1;
+            }
+            break;
+    }
+    omDelPrcObj(NULL);
+}
 
 void func_8011ABEC_w05(s16 *masuList, s32 type, s32 mode, s32 arg3) {
     s32 order = 0;

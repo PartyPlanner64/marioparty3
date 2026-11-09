@@ -186,6 +186,8 @@ extern Object *D_8011EBB4_w03;
 extern Object *D_8011EBD8_w03;
 extern s32 D_8011D388_w03;
 extern Object *D_8011EBC0_w03;
+extern RGB D_8011D3B0_w03[];
+extern s32 D_8011EBC8_w03[4];
 s16 func_801059D0_w03(void) {
     return D_8011C150_w03[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
 }
@@ -2671,7 +2673,34 @@ void func_80115564_w03(s32 arg0, s32 arg1, f32 *arg2) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_8011569C_w03);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_8011580C_w03);
+void func_8011580C_w03(omObjData *obj) {
+    RGB2 sp18;
+    RGB2 sp28;
+    s32 i;
+    s32 j;
+
+    for (i = 0; i <= 0; i++) {
+        sp18.r = D_8011D3B0_w03[i].r;
+        sp18.g = D_8011D3B0_w03[i].g;
+        sp18.b = D_8011D3B0_w03[i].b;
+
+        sp28.r = (D_8011D3B0_w03[i + 1].r - sp18.r) / 30;
+        sp28.g = (D_8011D3B0_w03[i + 1].g - sp18.g) / 30;
+        sp28.b = (D_8011D3B0_w03[i + 1].b - sp18.b) / 30;
+
+        for (j = 0; j < 30; j++) {
+            HuSprColorSet(D_8011EBC8_w03[3], 0, sp18.r, sp18.g, sp18.b);
+            sp18.r += sp28.r;
+            sp18.g += sp28.g;
+            sp18.b += sp28.b;
+            HuPrcVSleep();
+        }
+        HuSprColorSet(D_8011EBC8_w03[3], 0, D_8011D3B0_w03[i + 1].r, D_8011D3B0_w03[i + 1].g, D_8011D3B0_w03[i + 1].b);
+        HuPrcSleep(0xA);
+    }
+
+    omDelPrcObj(0);
+}
 
 void func_801159D4_w03(void) {
     s32 *state = HuPrcCurrentGet()->user_data;

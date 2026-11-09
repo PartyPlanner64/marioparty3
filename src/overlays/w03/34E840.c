@@ -17,6 +17,7 @@
 #include "../ovl_80_shared_board/EDDB0.h"
 #include "../ovl_80_shared_board/EA790.h"
 #include "../ovl_80_shared_board/EAB00.h"
+#include "../ovl_80_shared_board/EE660.h"
 
 void func_80105DB0_w03(void);
 void func_80107D54_w03(s16 arg0);
@@ -1591,7 +1592,7 @@ void func_80109868_w03(void) {
     }
 }
 
-s32 func_801098C8_w03(void) {
+s32 func_801098C8_w03(s32 arg0) {
     s32 var_s2 = 0;
     s16 sp18[MB_MAX_PLAYERS];
     u8 sp20[MB_MAX_PLAYERS];
@@ -1633,7 +1634,104 @@ s32 func_801098C8_w03(void) {
     return HuWinChoiceGet(mbDlgWinId, 0, 1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80109AD8_w03);
+void func_80109AD8_w03(void) {
+    s32 moveOn = TRUE;
+    GW_SYSTEM *sys = &GwSystem;
+    GW_PLAYER *player = MBPlayerGet(-1);
+    s32 masu = MBMasuLinkMasuIdGet(player->clink, player->cidx);
+    s32 choice;
+    UnkVibrateProcess *vibrate;
+
+    if ((masu == 0x74 || masu == 0x8C) && (player->rev & 1)) {
+        goto end;
+    }
+    if ((masu == 0x75 || masu == 0x8D) && !(player->rev & 1)) {
+        goto end;
+    }
+
+    MBPlayerMotionSet(-1, -1, 2);
+    if (MBItemFind(sys->current_player_index, 1) != -1) {
+        func_800DBEC0_shared_board(sys->current_player_index);
+        switch (masu) {
+            case 0x74:
+            case 0x75:
+                func_800ED20C_shared_board(-1, 8, 0x7D);
+                break;
+            default:
+                func_800ED20C_shared_board(-1, 8, 0x7E);
+                break;
+        }
+        HuPrcChildLink(HuPrcCurrentGet(), MBCameraZoomMotStart(1.6f));
+        HuPrcChildWatch();
+        MBPlayerVibrate(-1, 1);
+    retry:
+        MBDlgWinCreate(0x38, 0x4103);
+        choice = func_801098C8_w03(0);
+        MBDlgWinClose();
+        MBDlgWinKill();
+        switch (choice) {
+            case 0:
+                MBDlgWinExec(0x38, 0x4104);
+                GwPlayer[sys->current_player_index].itemNo[MBItemFind(sys->current_player_index, 1)] = -1;
+                MBItemRemoveEmpty(GwSystem.current_player_index);
+                MBStatusItemIconSprReinit(-1);
+                switch (masu) {
+                    case 0x74:
+                        func_8010866C_w03(0, 0);
+                        break;
+                    case 0x75:
+                        func_8010866C_w03(0, 1);
+                        break;
+                    case 0x8C:
+                        func_8010866C_w03(1, 0);
+                        break;
+                    default:
+                        func_8010866C_w03(1, 1);
+                        break;
+                }
+                moveOn = FALSE;
+                vibrate = MBPlayerVibrateObjCreate(-1, 2, 5);
+                HuPrcSleep(20);
+                MBPlayerVibrateObjKill(vibrate);
+                break;
+            case 1:
+                MBDlgWinExec(0x38, 0x4105);
+                break;
+            case 2:
+                func_80106CA0_w03();
+                goto retry;
+        }
+        func_800DB884_shared_board(sys->current_player_index);
+        HuPrcChildLink(HuPrcCurrentGet(), MBCameraZoomMotStart(1.3f));
+        HuPrcChildWatch();
+    } else {
+        MBDlgWinExec(-1, 0x4106);
+    }
+
+    if (moveOn) {
+        switch (masu) {
+            case 0x74:
+                MBMoveNextMasuSet(-1, 10, 1);
+                player->rev |= 1;
+                break;
+            case 0x75:
+                MBMoveNextMasuSet(-1, 10, 5);
+                player->rev &= ~1;
+                break;
+            case 0x8C:
+                MBMoveNextMasuSet(-1, 11, 2);
+                player->rev |= 1;
+                break;
+            default:
+                MBMoveNextMasuSet(-1, 11, 6);
+                player->rev &= ~1;
+                break;
+        }
+    }
+
+end:
+    omDelPrcObj(NULL);
+}
 
 void func_80109E90_w03(void) {
 }

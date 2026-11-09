@@ -77,6 +77,7 @@ void func_80118464_w05(void);
 s32 func_8011CC50_w05(void);
 s32 func_8011CFB4_w05(void);
 void func_80106B94_w05(void);
+s32 func_801096DC_w05(s32 arg0, s32 arg1);
 void func_80115A30_w05(s16 (*masu)[3], BranchPair *links, DecisionTreeNonLeafNode **trees);
 void func_801085B4_w05(void);
 void func_8010D298_w05(void);
@@ -1523,7 +1524,122 @@ void func_80109214_w05(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80109270_w05);
+void func_80109270_w05(void) {
+    s32 moveOn = TRUE;
+    GW_SYSTEM *sys = &GwSystem;
+    GW_PLAYER *player = MBPlayerGet(-1);
+    s32 masu = MBMasuLinkMasuIdGet(player->clink, player->cidx);
+    s16 prevMasu;
+    s32 choice;
+    UnkVibrateProcess *vibrate;
+
+    switch (masu) {
+        case 0x74:
+        case 0x88:
+            prevMasu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
+            switch (prevMasu) {
+                case 0x75:
+                    MBMoveNextMasuSet(-1, 16, 7);
+                    goto end;
+                case 0x89:
+                    MBMoveNextMasuSet(-1, 14, 5);
+                    goto end;
+            }
+            break;
+        case 0x73:
+        case 0x87:
+            prevMasu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
+            switch (prevMasu) {
+                case 0x75:
+                case 0x89:
+                    goto end;
+            }
+            break;
+    }
+
+    MBPlayerMotionSet(-1, -1, 2);
+    if (MBItemFind(sys->current_player_index, 1) != -1) {
+        func_800DBEC0_shared_board(sys->current_player_index);
+        switch (masu) {
+            case 0x73:
+            case 0x74:
+                func_800ED20C_shared_board(-1, 8, 0x75);
+                break;
+            default:
+                func_800ED20C_shared_board(-1, 8, 0x89);
+                break;
+        }
+        HuPrcChildLink(HuPrcCurrentGet(), MBCameraZoomMotStart(1.6f));
+        HuPrcChildWatch();
+        MBPlayerVibrate(-1, 1);
+    retry:
+        MBDlgWinCreate(0x38, 0x4103);
+        choice = func_801096DC_w05(2, 0);
+        MBDlgWinClose();
+        MBDlgWinKill();
+        switch (choice) {
+            case 0:
+                MBDlgWinExec(0x38, 0x4104);
+                GwPlayer[sys->current_player_index].itemNo[MBItemFind(sys->current_player_index, 1)] = -1;
+                MBItemRemoveEmpty(GwSystem.current_player_index);
+                MBStatusItemIconSprReinit(-1);
+                switch (masu) {
+                    case 0x73:
+                        func_801084EC_w05(0, 0);
+                        break;
+                    case 0x74:
+                        func_801084EC_w05(0, 1);
+                        break;
+                    case 0x87:
+                        func_801084EC_w05(1, 0);
+                        break;
+                    default:
+                        func_801084EC_w05(1, 1);
+                        break;
+                }
+                moveOn = FALSE;
+                vibrate = MBPlayerVibrateObjCreate(-1, 2, 5);
+                HuPrcSleep(20);
+                MBPlayerVibrateObjKill(vibrate);
+                break;
+            case 1:
+                MBDlgWinExec(0x38, 0x4105);
+                break;
+            case 2:
+                func_80106AB0_w05();
+                goto retry;
+        }
+        func_800DB884_shared_board(sys->current_player_index);
+        HuPrcChildLink(HuPrcCurrentGet(), MBCameraZoomMotStart(1.3f));
+        HuPrcChildWatch();
+    } else {
+        MBDlgWinExec(-1, 0x4106);
+    }
+
+    if (moveOn) {
+        switch (masu) {
+            case 0x73:
+                MBMoveNextMasuSet(-1, 7, 0);
+                player->rev |= 1;
+                break;
+            case 0x74:
+                MBMoveNextMasuSet(-1, 16, 7);
+                player->rev &= ~1;
+                break;
+            case 0x87:
+                MBMoveNextMasuSet(-1, 13, 0);
+                player->rev |= 1;
+                break;
+            default:
+                MBMoveNextMasuSet(-1, 14, 5);
+                player->rev &= ~1;
+                break;
+        }
+    }
+
+end:
+    omDelPrcObj(NULL);
+}
 
 void func_801096C4_w05(void) {
 }

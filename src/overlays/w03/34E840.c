@@ -105,6 +105,7 @@ extern s32 D_8011EB24_w03;
 extern s32 D_8011EB28_w03;
 extern Object *D_8011EB30_w03;
 extern SpaceData *D_8011EB3C_w03;
+extern s32 D_8011EB40_w03[];
 extern s32 D_8011EB50_w03;
 extern Vec2f D_8011D438_w03[];
 extern s16 D_8011D3F8_w03[];
@@ -6778,7 +6779,223 @@ void func_80117D38_w03(void) {
     func_801100FC_w03();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_801183E0_w03);
+void func_801183E0_w03(void) {
+    s32 anims[4];
+    s32 playerAnims[4];
+    s32 grps[4];
+    s32 i;
+    s32 j;
+    void *data;
+    s32 bgAnim;
+    s32 boxAnim;
+    s32 grp;
+    Process *process;
+    s32 g;
+    s32 count;
+    s32 flag;
+    s32 fading;
+    s32 tpLvl;
+    f32 angle;
+    f32 speed;
+    Unk3 *helpWin;
+
+    process = HuPrcCurrentGet();
+    data = DataRead(0x1300F7);
+    bgAnim = HuSprAnimRead(data);
+    DataClose(data);
+    data = DataRead(0x1300F8);
+    anims[0] = HuSprAnimRead(data);
+    DataClose(data);
+    data = DataRead(0x1300FB);
+    anims[1] = HuSprAnimRead(data);
+    DataClose(data);
+    data = DataRead(0x1300F9);
+    anims[2] = HuSprAnimRead(data);
+    DataClose(data);
+    data = DataRead(0x1300FA);
+    anims[3] = HuSprAnimRead(data);
+    DataClose(data);
+    data = DataRead(0x1300FC);
+    boxAnim = HuSprAnimRead(data);
+    DataClose(data);
+    for (i = 0; i < 4; i++) {
+        data = DataRead((GwPlayer[i].chr + 8) | 0x210000);
+        playerAnims[i] = HuSprAnimRead(data);
+        DataClose(data);
+    }
+
+    grp = HuSprGrpCreate(1, 5);
+    HuSprGrpMemberSet(grp, 0, bgAnim, 0);
+    HuSprAttrReset(grp, 0, 0xFFFF);
+    HuSprAttrSet(grp, 0, 0x1008);
+    HuSprPriSet(grp, 0, 0x1000);
+    HuSprPosSet(grp, 0, 160, 90);
+
+    angle = 0.0f;
+    speed = 30.0f;
+    count = 0;
+    flag = 0;
+    while (TRUE) {
+        if (angle >= 90.0f && !flag) {
+            flag = 1;
+            count++;
+        }
+        if (angle >= 360.0f) {
+            flag = 0;
+            angle -= 360.0f;
+        }
+        if (angle >= 180.0f && angle <= 360.0f) {
+            HuSprAttrSet(grp, 0, 2);
+        } else {
+            HuSprAttrReset(grp, 0, 2);
+        }
+        HuSprScaleSet(grp, 0, 1.0f, sindf(angle >= 180.0f ? angle - 180.0f : angle));
+        if (count >= 2) {
+            break;
+        }
+        HuPrcVSleep();
+        angle += speed;
+    }
+    HuSprAttrReset(grp, 0, 2);
+    HuSprScaleSet(grp, 0, 1.0f, 1.0f);
+    helpWin = func_800E210C_shared_board(0x14, 0xA0, 1);
+
+    for (i = 0; i < 4; i++) {
+        grps[i] = HuSprGrpCreate(6, 5);
+        g = grps[i];
+        HuSprGrpMemberSet(g, 0, boxAnim, 0);
+        func_800550F4_main(g, 0, 0);
+        HuSprAttrReset(g, 0, 0xFFFF);
+        if (D_8011EB40_w03[i] != 0) {
+            HuSprAttrSet(g, 0, 8);
+        } else {
+            HuSprDispOff(g, 0);
+        }
+        HuSprPriSet(g, 0, 0x1000);
+        func_800554C4_main(g, 0, -1);
+        HuSprGrpMemberSet(g, 1, playerAnims[i], 0);
+        func_800550F4_main(g, 1, 0);
+        HuSprAttrReset(g, 1, 0xFFFF);
+        if (D_8011EB40_w03[i] != 0) {
+            HuSprAttrSet(g, 1, 8);
+        } else {
+            HuSprDispOff(g, 1);
+        }
+        HuSprPriSet(g, 1, 0x1000);
+        HuSprPosSet(g, 1, 0, -9);
+        func_800554C4_main(g, 1, 0);
+        for (j = 0; j < 4; j++) {
+            HuSprGrpMemberSet(g, j + 2, anims[j], 0);
+            func_800550F4_main(g, j + 2, 1);
+            HuSprAttrReset(g, j + 2, 0xFFFF);
+            if (D_8011EB40_w03[i] == j + 1) {
+                HuSprAttrSet(g, j + 2, 8);
+            } else {
+                HuSprDispOff(g, j + 2);
+            }
+            HuSprPriSet(g, j + 2, 0x1000);
+            HuSprPosSet(g, j + 2, 0, 9);
+            func_800554C4_main(g, j + 2, 0);
+        }
+        HuSprPosSet(g, 0, i * 70 + 55, 200);
+    }
+    HuPrcSleep(20);
+
+    angle = 90.0f;
+    count = 0;
+    fading = 0;
+    flag = 0;
+    tpLvl = 255;
+    while (TRUE) {
+        if (angle >= 360.0f && !flag) {
+            flag = 1;
+            count++;
+        }
+        if (angle >= 360.0f) {
+            flag = 0;
+            angle -= 360.0f;
+        }
+        if (!fading && count != 0 && angle >= 90.0f && angle < 180.0f) {
+            fading = 1;
+        }
+        if (fading) {
+            tpLvl -= 21;
+            if (tpLvl <= 0) {
+                tpLvl = 0;
+            }
+        }
+        HuSprTPLvlSet(grp, 0, tpLvl);
+        if (count >= 2) {
+            break;
+        }
+        HuPrcVSleep();
+        angle += speed;
+    }
+    HuSprScaleSet(grp, 0, 1.0f, 0.0f);
+    HuSprGrpKill(grp);
+    HuSprAnimKill(bgAnim);
+    process->user_data = (void *)1;
+
+    while (TRUE) {
+        for (i = 0; i < 4; i++) {
+            switch (D_8011EB40_w03[i]) {
+                case 0:
+                    for (j = 0; j < 6; j++) {
+                        HuSprDispOff(grps[i], j);
+                    }
+                    break;
+                case 1:
+                    for (j = 0; j < 6; j++) {
+                        HuSprDispOn(grps[i], j);
+                    }
+                    for (j = 0; j < 4; j++) {
+                        HuSprDispOff(grps[i], j + 2);
+                    }
+                    HuSprDispOn(grps[i], 2);
+                    break;
+                case 2:
+                    for (j = 0; j < 6; j++) {
+                        HuSprDispOn(grps[i], j);
+                    }
+                    for (j = 0; j < 4; j++) {
+                        HuSprDispOff(grps[i], j + 2);
+                    }
+                    HuSprDispOn(grps[i], 3);
+                    break;
+                case 3:
+                    for (j = 0; j < 6; j++) {
+                        HuSprDispOn(grps[i], j);
+                    }
+                    for (j = 0; j < 4; j++) {
+                        HuSprDispOff(grps[i], j + 2);
+                    }
+                    HuSprDispOn(grps[i], 4);
+                    break;
+                case 4:
+                    for (j = 0; j < 6; j++) {
+                        HuSprDispOn(grps[i], j);
+                    }
+                    for (j = 0; j < 4; j++) {
+                        HuSprDispOff(grps[i], j + 2);
+                    }
+                    HuSprDispOn(grps[i], 5);
+                    break;
+                default:
+                    goto end;
+            }
+        }
+        HuPrcVSleep();
+    }
+end:
+    MBHelpWinKill(helpWin);
+    HuSprAnimKill(boxAnim);
+    for (i = 0; i < 4; i++) {
+        HuSprAnimKill(anims[i]);
+        HuSprAnimKill(playerAnims[i]);
+        HuSprGrpKill(grps[i]);
+    }
+    omDelPrcObj(NULL);
+}
 
 void func_80118E3C_w03(omObjData *obj) {
     func_8001E888_main(D_8011EB30_w03->omObj1->model[0], 0, obj->trans.x, 0x40, 0x40, "R3-cyl4", 0);

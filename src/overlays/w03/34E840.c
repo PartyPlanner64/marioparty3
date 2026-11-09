@@ -25,6 +25,7 @@ extern s16 D_8011C120_w03[];
 extern s16 D_8011C130_w03[];
 extern s16 D_8011C140_w03[];
 extern s16 D_8011C150_w03[];
+extern s32 D_8011C160_w03;
 extern s16 D_8011C1A8_w03[][2];
 extern s16 D_8011C1B0_w03[][2];
 extern s32 D_8011C2E4_w03[];
@@ -155,9 +156,87 @@ s16 func_80105D20_w03(s16 arg0) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80105DB0_w03);
+void func_80105DB0_w03(void) {
+    SpaceData *space = HuPrcCurrentGet()->user_data;
+    Object *model;
+    s32 obj;
+    f32 scale;
+    f32 angle;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_801061A0_w03);
+    HuAudFXPlay(0x11B);
+    D_8011EB0C_w03 = MBModelCreate(0x3A, NULL);
+    model = D_8011EB0C_w03;
+    func_800461B4_main(model->omObj1->model[0]);
+    model->flags |= 4;
+    func_800ECC54_shared_board(model);
+    HuVecCopy3F(&model->coords, &space->coords);
+    model->velocity.x = 50.0f;
+    obj = func_8000CED8_main(0xB0004, 0xAA9);
+    func_8000CD00_main(obj, 2.0f, 20.0f, 1.0f);
+    func_8000D018_main(obj, 30.0f);
+    func_8000CFA4_main(obj, model->coords.x, model->coords.y + model->velocity.x, model->coords.z);
+    Hu3DModelCameraSet(obj, HU3D_CAM0);
+
+    scale = 0.0f;
+    for (i = 0; i < 6; i++) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        scale += 0.5f;
+        func_8000D018_main(obj, scale * 30.0f);
+        HuPrcVSleep();
+    }
+
+    for (i = 0; i < 3; i++) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        scale -= 0.4f;
+        func_8000D018_main(obj, scale * 30.0f);
+        HuPrcVSleep();
+    }
+
+    func_8000D018_main(obj, scale * 30.0f);
+    HuPrcSleep(30);
+    HuAudFXPlay(0x132);
+
+    angle = 0.0f;
+    while (1) {
+        func_8008A2A0_main(HmfModelData[model->omObj1->model[0]].mtx, angle);
+        angle += 20.0f;
+        if (angle >= 360.0f) {
+            angle -= 360.0f;
+        }
+        if (scale > 0.6f) {
+            scale -= 0.04f;
+        }
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        if (model->velocity.x > 10.0f) {
+            model->velocity.x -= 1.2f;
+        }
+        func_8000D018_main(obj, scale * 30.0f);
+        func_8000CFA4_main(obj, model->coords.x, model->coords.y + model->velocity.x, model->coords.z);
+        if ((model->velocity.x <= 10.0f) & (scale <= 0.6f)) {
+            if (angle == 0.0f) {
+                break;
+            }
+        }
+        HuPrcVSleep();
+    }
+
+    func_8008A2A0_main(HmfModelData[model->omObj1->model[0]].mtx, 0.0f);
+    func_8000D044_main(obj);
+    D_8011EB08_w03 = 0;
+    omDelPrcObj(NULL);
+}
+
+void func_801061A0_w03(UnkMBGuideData *guide) {
+    Object *obj = guide->obj;
+
+    obj->velocity.y = 4.0f;
+    obj->velocity.z = -0.6f;
+    HuPrcSleep(3);
+    while (obj->velocity.z != 0.0f) {
+        HuPrcVSleep();
+    }
+}
 
 // Star tour.
 void func_8010622C_w03(void) {
@@ -268,7 +347,102 @@ void func_8010622C_w03(void) {
     HuPrcVSleep();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_801066CC_w03);
+void func_801066CC_w03(void) {
+    Object *playerModel = HuPrcCurrentGet()->user_data;
+    GW_PLAYER *player = MBPlayerGet(-1);
+    Object *model;
+    Vec camPos;
+    f32 scale;
+    f32 angle;
+    s32 obj;
+    s32 i;
+
+    HuAudFXPlay(0x11B);
+    model = MBModelCreate(0x1A, NULL);
+    model->flags |= 4;
+    func_800ECC54_shared_board(model);
+    if (MBMasuLinkMasuIdGet(MBPlayerGet(-1)->clink, MBPlayerGet(-1)->cidx) == 0x8E) {
+        HuVecCopyXYZ(&model->coords, playerModel->coords.x, playerModel->coords.y + 10.0f, playerModel->coords.z);
+        HuVecCopyXYZ(&camPos, gCameraList->pos.x, gCameraList->pos.y, gCameraList->pos.z);
+        model->velocity.x = 15.0f;
+    } else {
+        HuVecCopyXYZ(&model->coords, playerModel->coords.x, playerModel->coords.y + 10.0f, playerModel->coords.z + 30.0f);
+        HuVecCopyXYZ(&camPos, gCameraList->pos.x, gCameraList->pos.y, gCameraList->pos.z);
+        model->velocity.x = 35.0f;
+    }
+
+    obj = func_8000CED8_main(0xB0004, 0xAA9);
+    func_8000CD00_main(obj, 1.0f, 20.0f, 1.0f);
+    func_8000D018_main(obj, 15.0f);
+    Hu3DModelCameraSet(obj, HU3D_CAM0);
+    func_8000CFA4_main(obj, model->coords.x, model->coords.y + model->velocity.x, model->coords.z);
+
+    scale = 0.0f;
+    for (i = 0; i < 6; i++) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        scale += 0.5f;
+        func_8000D018_main(obj, scale * 15.0f);
+        HuPrcVSleep();
+    }
+
+    for (i = 0; i < 3; i++) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        scale -= 0.4f;
+        func_8000D018_main(obj, scale * 15.0f);
+        HuPrcVSleep();
+    }
+
+    func_8000D018_main(obj, scale * 15.0f);
+    HuPrcSleep(20);
+    HuAudFXPlay(0x132);
+
+    angle = 0.0f;
+    HuVecCopyXYZ(&camPos, player->player_obj->coords.x, player->player_obj->coords.y - 10.0f, player->player_obj->coords.z);
+    MBPlayerPosMoveCreate(&model->coords, &camPos, &model->coords, 40);
+
+    for (i = 0; i < 40; i++) {
+        func_8008A2A0_main(HmfModelData[model->omObj1->model[0]].mtx, angle);
+        angle += 20.0f;
+        scale -= 0.05f;
+        if (scale < 0.0f) {
+            scale = 0.0f;
+        }
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        func_8000D018_main(obj, scale * 15.0f);
+        func_8000CFA4_main(obj, model->coords.x, model->coords.y + model->velocity.x, model->coords.z);
+        HuPrcVSleep();
+    }
+
+    MBModelKill(model);
+    func_8000D044_main(obj);
+    MBVecForwardSet(&player->player_obj->rot);
+    MBPlayerVibrate(-1, 5);
+    if (D_8011C160_w03 != 0) {
+        func_8004A670_main(0xE);
+    } else {
+        HuAudSeqPlay(0x6F);
+    }
+
+    GwPlayer[GwSystem.current_player_index].star += 1;
+    if (GwPlayer[GwSystem.current_player_index].star >= 100) {
+        GwPlayer[GwSystem.current_player_index].star = 99;
+    }
+
+    MBPlayerMotionSet(-1, 6, 0);
+    PlayerFXPlay(0x262, GwSystem.current_player_index);
+    if (D_8011C160_w03 != 0) {
+        HuPrcSleep(16);
+        func_80003A70_main(D_800CDBC8_main);
+        func_8004A918_main(0x6F);
+        func_8004A880_main(0);
+        HuPrcSleep(110);
+        func_80003B70_main(D_800CDBC8_main, 0);
+        func_8004A72C_main(0xF);
+    } else {
+        HuPrcSleep(60);
+    }
+    omDelPrcObj(NULL);
+}
 
 void func_80106C2C_w03(Object *arg) {
     Process *prc;

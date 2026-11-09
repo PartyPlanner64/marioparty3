@@ -19,6 +19,7 @@
 #include "../ovl_80_shared_board/106640.h"
 #include "../ovl_80_shared_board/106A50.h"
 #include "../ovl_80_shared_board/F5070.h"
+#include "../ovl_80_shared_board/F5B90.h"
 #include "../ovl_80_shared_board/F5E80.h"
 
 // Sets the shared process state and sleeps until another process changes it.
@@ -944,7 +945,217 @@ void func_80107F0C_w10(void) {
     omDelPrcObj(NULL);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_801084CC_w10);
+void func_801084CC_w10(void) {
+    s32 sprites[3][4]; // [0] = rank anims, [1] = character anims, [2] = sprite groups
+    s32 titleAnim;
+    s32 boxAnim;
+    s32 group;
+    Process *process;
+    s32 box;
+    Unk3 *help;
+    void *data;
+    s32 i;
+    s32 j;
+    s32 count;
+    s32 flag;
+    s32 fading;
+    s32 alpha;
+    f32 angle;
+    f32 step;
+
+    process = HuPrcCurrentGet();
+    data = DataRead(0x1300F7);
+    titleAnim = HuSprAnimRead(data);
+    DataClose(data);
+    data = DataRead(0x1300F8);
+    sprites[0][0] = HuSprAnimRead(data);
+    DataClose(data);
+    data = DataRead(0x1300FB);
+    sprites[0][1] = HuSprAnimRead(data);
+    DataClose(data);
+    data = DataRead(0x1300F9);
+    sprites[0][2] = HuSprAnimRead(data);
+    DataClose(data);
+    data = DataRead(0x1300FA);
+    sprites[0][3] = HuSprAnimRead(data);
+    DataClose(data);
+    data = DataRead(0x1300FC);
+    boxAnim = HuSprAnimRead(data);
+    DataClose(data);
+    for (i = 0; i < 4; i++) {
+        data = DataRead((GwPlayer[i].chr + 8) | 0x210000);
+        sprites[1][i] = HuSprAnimRead(data);
+        DataClose(data);
+    }
+
+    group = HuSprGrpCreate(1, 5);
+    HuSprGrpMemberSet(group, 0, titleAnim, 0);
+    HuSprAttrReset(group, 0, 0xFFFF);
+    HuSprAttrSet(group, 0, 0x1008);
+    HuSprPriSet(group, 0, 0x1000);
+    HuSprPosSet(group, 0, 0xA0, 0x5A);
+    angle = 0.0f;
+    step = 30.0f;
+    count = 0;
+    flag = 0;
+    for (;; angle += step) {
+        if (angle >= 90.0f && !flag) {
+            flag = 1;
+            count++;
+        }
+        if (angle >= 360.0f) {
+            flag = 0;
+            angle -= 360.0f;
+        }
+        if (angle >= 180.0f && angle <= 360.0f) {
+            HuSprAttrSet(group, 0, 2);
+        } else {
+            HuSprAttrReset(group, 0, 2);
+        }
+        HuSprScaleSet(group, 0, 1.0f, sindf(angle >= 180.0f ? angle - 180.0f : angle));
+        if (count >= 2) {
+            break;
+        }
+        HuPrcVSleep();
+    }
+    HuSprAttrReset(group, 0, 2);
+    HuSprScaleSet(group, 0, 1.0f, 1.0f);
+    help = func_800E210C_shared_board(0x14, 0xA0, 1);
+
+    for (i = 0; i < 4; i++) {
+        box = sprites[2][i] = HuSprGrpCreate(6, 5);
+        HuSprGrpMemberSet(box, 0, boxAnim, 0);
+        func_800550F4_main(box, 0, 0);
+        HuSprAttrReset(box, 0, 0xFFFF);
+        if (D_8010BA80_w10[i] != 0) {
+            HuSprAttrSet(box, 0, 8);
+        } else {
+            HuSprDispOff(box, 0);
+        }
+        HuSprPriSet(box, 0, 0x1000);
+        func_800554C4_main(box, 0, -1);
+        HuSprGrpMemberSet(box, 1, sprites[1][i], 0);
+        func_800550F4_main(box, 1, 0);
+        HuSprAttrReset(box, 1, 0xFFFF);
+        if (D_8010BA80_w10[i] != 0) {
+            HuSprAttrSet(box, 1, 8);
+        } else {
+            HuSprDispOff(box, 1);
+        }
+        HuSprPriSet(box, 1, 0x1000);
+        HuSprPosSet(box, 1, 0, -9);
+        func_800554C4_main(box, 1, 0);
+        for (j = 0; j < 4; j++) {
+            HuSprGrpMemberSet(box, j + 2, sprites[0][j], 0);
+            func_800550F4_main(box, j + 2, 1);
+            HuSprAttrReset(box, j + 2, 0xFFFF);
+            if (D_8010BA80_w10[i] == j + 1) {
+                HuSprAttrSet(box, j + 2, 8);
+            } else {
+                HuSprDispOff(box, j + 2);
+            }
+            HuSprPriSet(box, j + 2, 0x1000);
+            HuSprPosSet(box, j + 2, 0, 9);
+            func_800554C4_main(box, j + 2, 0);
+        }
+        HuSprPosSet(box, 0, i * 70 + 55, 200);
+    }
+    HuPrcSleep(20);
+
+    angle = 90.0f;
+    count = 0;
+    fading = 0;
+    flag = 0;
+    alpha = 0xFF;
+    for (;; angle += step) {
+        if (angle >= 360.0f && !flag) {
+            flag = 1;
+            count++;
+        }
+        if (angle >= 360.0f) {
+            flag = 0;
+            angle -= 360.0f;
+        }
+        if (!fading && count != 0 && angle >= 90.0f && angle < 180.0f) {
+            fading = 1;
+        }
+        if (fading) {
+            alpha -= 21;
+            if (alpha <= 0) {
+                alpha = 0;
+            }
+        }
+        HuSprTPLvlSet(group, 0, alpha);
+        if (count >= 2) {
+            break;
+        }
+        HuPrcVSleep();
+    }
+    HuSprScaleSet(group, 0, 1.0f, 0.0f);
+    HuSprGrpKill(group);
+    HuSprAnimKill(titleAnim);
+    process->user_data = (void *)1;
+
+    while (TRUE) {
+        for (i = 0; i < 4; i++) {
+            switch (D_8010BA80_w10[i]) {
+                case 0:
+                    for (j = 0; j < 6; j++) {
+                        HuSprDispOff(sprites[2][i], j);
+                    }
+                    break;
+                case 1:
+                    for (j = 0; j < 6; j++) {
+                        HuSprDispOn(sprites[2][i], j);
+                    }
+                    for (j = 0; j < 4; j++) {
+                        HuSprDispOff(sprites[2][i], j + 2);
+                    }
+                    HuSprDispOn(sprites[2][i], 2);
+                    break;
+                case 2:
+                    for (j = 0; j < 6; j++) {
+                        HuSprDispOn(sprites[2][i], j);
+                    }
+                    for (j = 0; j < 4; j++) {
+                        HuSprDispOff(sprites[2][i], j + 2);
+                    }
+                    HuSprDispOn(sprites[2][i], 3);
+                    break;
+                case 3:
+                    for (j = 0; j < 6; j++) {
+                        HuSprDispOn(sprites[2][i], j);
+                    }
+                    for (j = 0; j < 4; j++) {
+                        HuSprDispOff(sprites[2][i], j + 2);
+                    }
+                    HuSprDispOn(sprites[2][i], 4);
+                    break;
+                case 4:
+                    for (j = 0; j < 6; j++) {
+                        HuSprDispOn(sprites[2][i], j);
+                    }
+                    for (j = 0; j < 4; j++) {
+                        HuSprDispOff(sprites[2][i], j + 2);
+                    }
+                    HuSprDispOn(sprites[2][i], 5);
+                    break;
+                default:
+                    goto end;
+            }
+        }
+        HuPrcVSleep();
+    }
+end:
+    MBHelpWinKill(help);
+    HuSprAnimKill(boxAnim);
+    for (i = 0; i < 4; i++) {
+        HuSprAnimKill(sprites[0][i]);
+        HuSprAnimKill(sprites[1][i]);
+        HuSprGrpKill(sprites[2][i]);
+    }
+    omDelPrcObj(NULL);
+}
 
 void func_80108F28_w10(void) {
     Object *obj;

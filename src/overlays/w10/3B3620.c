@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game/aura.h"
+#include "game/hu3d.h"
 #include "game/input.h"
 #include "game/pause.h"
 #include "game/malloc.h"
@@ -45,6 +46,9 @@ extern Process *D_8010BA28_w10;
 extern Object *D_8010BA2C_w10;
 extern Object *D_8010BA30_w10;
 extern Object *D_8010BA38_w10[2];
+extern u32 D_8010B900_w10[];
+extern u32 D_8010B908_w10[];
+extern s32 D_8010B918_w10;
 extern f32 D_8010B91C_w10[][2];
 extern s32 D_8010BA20_w10;
 extern s16 D_8010BA4C_w10;
@@ -736,7 +740,104 @@ void func_80107D64_w10(void) {
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80107D64_w10);
 #endif
 
+#ifdef NON_MATCHING
+// Register allocation differs: the target computes chestModel directly in $s0,
+// keeps chest in $s1, and reuses $s0 for the constant 1 shared by the *state
+// store and wait loop (same issue as func_80107444_w10).
+void func_80107F0C_w10(void) {
+    s32 *state = HuPrcCurrentGet()->user_data;
+    s32 chestModel = D_8010B918_w10 != 0 ? 0x31 : 0x30;
+    Object *chest;
+    Object *contents;
+    s16 model;
+    f32 angle;
+    f32 scale;
+
+    HuAudFXPlay(0x114);
+    chest = MBModelCreate(chestModel, NULL);
+    MBModelTempAllocFree(chest);
+    HuVecCopyXYZ(&chest->rot, 0.0f, 0.0f, 1.0f);
+    chest->scale.y = 0.0f;
+    MBMotionSet(chest, -1, 1);
+    func_800D9A40_shared_board(chest);
+    HuVecCopy3F(&chest->coords, &MBMasuGet(0x2B)->coords);
+    if (D_8010B918_w10 != 0) {
+        contents = MBModelCreate(0x39, D_8010B908_w10);
+    } else {
+        contents = MBModelCreate(0x1B, D_8010B900_w10);
+    }
+    MBModelTempAllocFree(contents);
+    HuVecCopy3F(&contents->rot, &chest->rot);
+    HuVecCopy3F(&contents->coords, &chest->coords);
+    contents->scale.x = contents->scale.y = contents->scale.z = 1.2f;
+    MBModelDispOff(contents);
+
+    scale = 1.0f / sindf(50.0f);
+    for (angle = 0.0f; angle < 90.0f; angle += 11.25f) {
+        chest->scale.y = sindf(angle) * scale;
+        chest->scale.x = sindf(angle) * scale * 0.2f + 0.8f;
+        chest->scale.z = sindf(angle) * scale * 0.2f + 0.8f;
+        HuPrcVSleep();
+    }
+    for (; angle > 50.0f; angle -= 11.25f) {
+        chest->scale.y = sindf(angle) * scale;
+        chest->scale.x = sindf(angle) * scale * 0.2f + 0.8f;
+        chest->scale.z = sindf(angle) * scale * 0.2f + 0.8f;
+        HuPrcVSleep();
+    }
+    chest->scale.y = chest->scale.x = chest->scale.z = 1.0f;
+
+    func_800D9A40_shared_board(contents);
+    MBMotionSet(chest, -1, 0);
+    Hu3DMotionSpeedSet(chest->omObj1->model[0], 1.2f);
+    while (MBMotionCheck(chest) == 0) {
+        HuPrcVSleep();
+    }
+    MBMotionSet(contents, 0, 0);
+    HuAudFXPlay(D_8010B918_w10 != 0 ? 0x2A0 : 0x298);
+    while (MBMotionCheck(contents) == 0) {
+        HuPrcVSleep();
+    }
+    MBMotionSet(contents, -1, 2);
+    *state = 1;
+    while (*state == 1) {
+        HuPrcVSleep();
+    }
+
+    HuAudFXPlay(0x115);
+    MBMotionSet(chest, -1, 4);
+    Hu3DMotionSpeedSet(chest->omObj1->model[0], 1.2f);
+    model = chest->omObj1->model[0];
+    Hu3DMotionTimeSet(model, D_800CCF58_main[HmfModelData[model].motId].unk02);
+    while (func_800D9E80_shared_board(chest) == 0) {
+        HuPrcVSleep();
+    }
+    MBModelDispOff(contents);
+
+    scale = 1.0f / sindf(50.0f);
+    for (angle = 50.0f; angle < 90.0f; angle += 11.25f) {
+        chest->scale.y = sindf(angle) * scale;
+        chest->scale.x = sindf(angle) * scale * 0.2f + 0.8f;
+        chest->scale.z = sindf(angle) * scale * 0.2f + 0.8f;
+        HuPrcVSleep();
+    }
+    for (angle = 90.0f; angle > 0.0f; angle -= 11.25f) {
+        chest->scale.y = sindf(angle) * scale;
+        chest->scale.x = sindf(angle) * scale * 0.2f + 0.8f;
+        chest->scale.z = sindf(angle) * scale * 0.2f + 0.8f;
+        HuPrcVSleep();
+    }
+    chest->scale.y = 0.0f;
+    chest->scale.x = 0.0f;
+    chest->scale.z = 0.0f;
+    MBModelKill(chest);
+    MBModelKill(contents);
+    *state = 3;
+    omDelPrcObj(NULL);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80107F0C_w10);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_801084CC_w10);
 

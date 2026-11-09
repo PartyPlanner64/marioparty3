@@ -417,7 +417,152 @@ void func_8010687C_w10(s16 arg0) {
     HuPrcChildWatch();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80106908_w10);
+void func_80106908_w10(void) {
+    GW_SYSTEM *system = &GwSystem;
+    GW_PLAYER *player = MBPlayerGet(CUR_PLAYER);
+    SpaceData *space;
+    Vec dir;
+    s16 walkNum;
+    s16 masuId = 0;
+    s16 clink;
+    s16 cidx;
+    s32 i;
+
+    walkNum = func_800DCD9C_shared_board(system->current_player_index);
+    MBPlayerMotionSet(-1, 0, 2);
+    while (walkNum != 0) {
+        clink = player->clink;
+        cidx = player->cidx;
+        player->clink = player->nlink;
+        player->cidx = player->nidx;
+        for (i = 0; i < 4; i++) {
+            MBPlayerPosFixSet(i, 10);
+        }
+        player->clink = clink;
+        player->cidx = cidx;
+
+        space = GET_SPACE_FROM_LINK(player->nlink, player->nidx);
+        if ((space->unk_02 & 0x8000) || func_800F9A68_shared_board(system->current_player_index)) {
+            PlayerFXPlay(0x3A, system->current_player_index);
+            MBPlayerMotionSet(-1, 2, 0);
+            player->player_obj->velocity.y = 4.0f;
+            player->player_obj->velocity.z = -0.5f;
+            switch (system->walk_speed) {
+                case 0:
+                    player->player_obj->velocity.y = 8.0f;
+                    player->player_obj->velocity.z = -2.0f;
+                    MBPlayerPosMoveSet(system->current_player_index, 7);
+                    break;
+                case 1:
+                    player->player_obj->velocity.y = 4.0f;
+                    player->player_obj->velocity.z = -0.5f;
+                    MBPlayerPosMoveSet(system->current_player_index, 15);
+                    break;
+                case 2:
+                    player->player_obj->velocity.y = 2.0f;
+                    player->player_obj->velocity.z = -0.125f;
+                    MBPlayerPosMoveSet(system->current_player_index, 30);
+                    break;
+            }
+        } else {
+            if (player->player_obj->unk46 != 0) {
+                MBPlayerMotionSet(-1, 0, 2);
+            }
+            switch (system->walk_speed) {
+                case 0:
+                    Hu3DMotionSpeedSet(player->player_obj->omObj1->model[0], 2.0f);
+                    MBPlayerPosMoveSet(system->current_player_index, 5);
+                    break;
+                case 1:
+                    Hu3DMotionSpeedSet(player->player_obj->omObj1->model[0], 1.0f);
+                    MBPlayerPosMoveSet(system->current_player_index, 10);
+                    break;
+                case 2:
+                    Hu3DMotionSpeedSet(player->player_obj->omObj1->model[0], 0.75f);
+                    MBPlayerPosMoveSet(system->current_player_index, 15);
+                    break;
+            }
+            Hu3DMotionSpeedSet(player->player_obj->omObj1->model[0], 1.0f);
+        }
+
+        player->clink = player->nlink;
+        player->cidx = player->nidx;
+        player->nidx++;
+        masuId = MBMasuLinkMasuIdGet(player->clink, player->cidx);
+        space = MBMasuGet(masuId);
+        MBMasuCurSet(masuId);
+
+        switch (space->space_type) {
+            case SPACE_BLUE:
+            case SPACE_RED:
+            case SPACE_HAPPENING:
+            case SPACE_CHANCE_TIME:
+            case SPACE_ITEM:
+            case SPACE_BANK:
+            case SPACE_BATTLE:
+            case SPACE_BOWSER:
+            case SPACE_GAME_GUY:
+                func_800DBFBC_shared_board(system->current_player_index);
+                walkNum--;
+                func_800EB97C_shared_board(masuId);
+                break;
+        }
+
+        if (walkNum != 0) {
+            switch (space->space_type) {
+                case SPACE_STAR:
+                    HuAudFXPlay(0x123);
+                    break;
+                case SPACE_BLUE:
+                case SPACE_RED:
+                case SPACE_HAPPENING:
+                case SPACE_CHANCE_TIME:
+                case SPACE_ITEM:
+                case SPACE_BANK:
+                case SPACE_BATTLE:
+                case SPACE_BOWSER:
+                case SPACE_GAME_GUY:
+                    HuAudFXPlay(0x101);
+                    break;
+            }
+        } else {
+            switch (space->space_type) {
+                case SPACE_HAPPENING:
+                case SPACE_ITEM:
+                    HuAudFXPlay(0x108);
+                    break;
+                case SPACE_BLUE:
+                    HuAudFXPlay(0x121);
+                    break;
+                case SPACE_RED:
+                    HuAudFXPlay(0x122);
+                    break;
+                case SPACE_BOWSER:
+                    HuAudFXPlay(0x124);
+                    break;
+                case SPACE_CHANCE_TIME:
+                    HuAudFXPlay(0x12F);
+                    break;
+                case SPACE_BATTLE:
+                case SPACE_GAME_GUY:
+                    HuAudFXPlay(0x12E);
+                    break;
+                case SPACE_BANK:
+                    HuAudFXPlay(0x130);
+                    break;
+                case SPACE_STAR:
+                    HuAudFXPlay(0x123);
+                    break;
+            }
+        }
+        MBMasuEventCall(masuId, 1);
+    }
+    MBPlayerMotionSet(-1, -1, 2);
+    MBMasuEventCall(masuId, 3);
+    MBVecForwardSet(&dir);
+    func_800ED1E4_shared_board(&player->player_obj->rot, &dir, &player->player_obj->rot, 8);
+    func_800F591C_shared_board(system->current_player_index);
+}
 
 void func_80106DEC_w10(void) {
     GW_SYSTEM *system = &GwSystem;
@@ -895,7 +1040,50 @@ void func_80109050_w10(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80109444_w10);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_8010AF68_w10);
+void func_8010AF68_w10(UnkMBGuideData *guide) {
+    GW_SYSTEM *system = &GwSystem;
+    Process *process;
+    Process *proc;
+
+    process = HuPrcCurrentGet();
+    HuPrcChildLink(process, MBCameraZoomMotStart(1.6f));
+    proc = func_800DDDD4_shared_board(system->current_player_index);
+    func_800DE858_shared_board();
+    HuPrcChildWatch();
+    func_80106F40_w10(guide, 0x1617);
+    func_800DE868_shared_board();
+    while (!func_800DE84C_shared_board()) {
+        HuPrcVSleep();
+    }
+    func_80106FE0_w10(guide);
+    func_800DE868_shared_board();
+    HuPrcChildLink(process, proc);
+    HuPrcChildWatch();
+
+    proc = func_800DE7E4_shared_board(system->current_player_index);
+    func_800DE858_shared_board();
+    func_800DE868_shared_board();
+    while (!func_800DE84C_shared_board()) {
+        HuPrcVSleep();
+    }
+    HuPrcChildLink(process, proc);
+    HuPrcChildWatch();
+    func_80106ED8_w10(guide, 0x1618);
+
+    proc = func_800DE414_shared_board(system->current_player_index, 0);
+    func_800DE858_shared_board();
+    func_800DE868_shared_board();
+    while (!func_800DE84C_shared_board()) {
+        HuPrcVSleep();
+    }
+    HuPrcChildLink(process, proc);
+    HuPrcChildWatch();
+    func_80106ED8_w10(guide, 0x1619);
+
+    HuPrcChildLink(process, MBCameraZoomMotStart(1.3f));
+    HuPrcChildWatch();
+    HuPrcSleep(1);
+}
 
 s16 func_8010B12C_w10(s32 player) {
     UnkBoard8 *dimmer;

@@ -22,6 +22,7 @@ s32 func_800F52C4_shared_board(void);
 void MBVsSprCreate(void);
 void MBVsSprCreateY(f32 arg0, f32 arg1);
 void MBVsSprKill(void);
+void func_800F591C_shared_board(s32 arg0);
 void MBCoinTakeCreateSound(s32 playerIndex, s32 coinAmount, s32 arg2);
 void MBCoinTakeCreate(s32 playerNo, s32 arg1);
 s32 MBCoinTakeCheck(s32 playerNo);

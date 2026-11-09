@@ -50,6 +50,9 @@ extern s8 D_8010FEC8_chancetime;
 extern s8 D_8010FEC9_chancetime;
 extern s8 D_80110000_chancetime;
 extern s32 D_80110004_chancetime;
+extern s16 D_80110010_chancetime[10];
+extern s16 D_80110028_chancetime[20];
+extern omObjData *D_80110080_chancetime;
 extern s32 D_80110008_chancetime;
 extern u32 D_8010FD5C_chancetime[];
 extern void (*D_80110084_chancetime)();
@@ -64,6 +67,8 @@ void func_8010C610_chancetime(void);
 void func_8010F44C_chancetime(s32 arg0, s16 arg1, s16 arg2);
 void func_8010D320_chancetime(void);
 void func_8010DB1C_chancetime(s8 arg0);
+void func_8010DF68_chancetime(void);
+void func_8010DF70_chancetime(void);
 void func_8010D6A4_chancetime(s8 arg0);
 void func_8010DFA4_chancetime(void);
 void func_8010E1E0_chancetime(void);
@@ -298,7 +303,58 @@ void func_8010DB98_chancetime(void) {
     D_8010FEC9_chancetime = 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010DBB0_chancetime);
+void func_8010DBB0_chancetime(void) {
+    omObjData *obj;
+    HmfModel *model;
+    s16 sprId;
+    s8 i;
+
+    obj = omAddObj(0x14, 0x15, 0, -1, NULL);
+    D_80110080_chancetime = obj;
+    model = &HmfModelData[D_800D10F2_main];
+    model->unk00 = (model->unk00 & 0xF9) | 3;
+    Hu3DModelCameraSet(D_800D10F2_main, 2);
+    sprId = func_8000B838_main(0x210026);
+    for (i = 0; i < 20; i++) {
+        D_80110028_chancetime[i] = espEntry(sprId, 0, 1);
+        espPriSet(D_80110028_chancetime[i], 0);
+        espDispOff(D_80110028_chancetime[i]);
+        espBankSet(D_80110028_chancetime[i], 0, 0);
+        func_8000BDDC_main(D_80110028_chancetime[i], 1);
+        espScaleSet(D_80110028_chancetime[i], 0.5f, 0.5f);
+    }
+    obj->model[1] = func_8000B0D4_main(0x1301CC, 0x2B9);
+    Hu3DModelScaleSet(obj->model[1], 0.5f, 0.5f, 0.5f);
+    func_8001C814_main(obj->model[1], 2, 2);
+    Hu3DModelCameraSet(obj->model[1], 4);
+    func_8001C258_main(obj->model[1], 4, 4);
+    for (i = 1; i < 10; i++) {
+        obj->model[i + 1] = Hu3DModelLink(obj->model[1]);
+        Hu3DModelScaleSet(obj->model[i + 1], 0.5f, 0.5f, 0.5f);
+        Hu3DModelCameraSet(obj->model[i + 1], 4);
+        func_8001C258_main(obj->model[i + 1], 4, 4);
+        func_8001C814_main(obj->model[i + 1], 2, 2);
+    }
+    for (i = 0; i < 10; i++) {
+        D_80110010_chancetime[i] = func_8000CED8_main(0xB0004, 0x6A9);
+        func_8000CD00_main(D_80110010_chancetime[i], 4.0f, 20.0f, 4.0f);
+        func_8000D018_main(D_80110010_chancetime[i], 60.0f);
+        Hu3DModelCameraSet(D_80110010_chancetime[i], 4);
+        func_800138EC_main(D_80110010_chancetime[i], 1, 0);
+        func_8001C258_main(D_80110010_chancetime[i], 4, 4);
+    }
+    D_80110004_chancetime = func_80060880_main(100, 160, 14);
+    func_80061100_main((s16)D_80110004_chancetime, 5);
+    if (!(GwPlayer[D_801100D0_chancetime[0]].stat & 1)) {
+        HuWinActivePlayerSet((s16)D_80110004_chancetime, 1 << GwPlayer[D_801100D0_chancetime[0]].pad);
+    }
+    omPrcSetDestructor(0, func_8010DF68_chancetime);
+    D_80110084_chancetime = func_8010DF70_chancetime;
+    while (TRUE) {
+        D_80110084_chancetime(obj);
+        HuPrcVSleep();
+    }
+}
 
 void func_8010DF68_chancetime(void) {
 }

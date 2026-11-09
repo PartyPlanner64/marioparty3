@@ -190,6 +190,10 @@ void func_80114FF4_w02(s32 arg0, s32 arg1, f32 *arg2);
 void func_8011512C_w02(void);
 void func_8011529C_w02(omObjData *obj);
 void func_80115464_w02(void);
+extern DecisionTreeNonLeafNode D_8011E254_w02[];
+extern DecisionTreeNonLeafNode *D_8011E338_w02[];
+extern DecisionTreeNonLeafNode *D_8011E73C_w02[];
+extern DecisionTreeNonLeafNode *D_8011E75C_w02[];
 s16 func_801059D0_w02(void) {
     return D_8011C6A0_w02[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
 }
@@ -4845,9 +4849,49 @@ void func_8011B934_w02(void) {
     omAddPrcObj(func_80106120_w02, 0x1005, 0x1000, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_8011B988_w02);
+s32 func_8011B988_w02(void) {
+    s32 i;
+    DecisionTreeNonLeafNode *data;
+    GW_SYSTEM *loc = &GwSystem;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_8011BA58_w02);
+    data = D_8011E338_w02[loc->star_spawn_indices[loc->current_star_spawn]];
+    func_800DA778_shared_board(loc->current_player_index);
+    if (MBComTreeExec(D_8011E254_w02) == 0) {
+        return loc->current_player_index;
+    }
+    for (i = 0; i < 4; i++) {
+        if (i != loc->current_player_index) {
+            func_800DA778_shared_board(i);
+            if (MBComTreeExec(data) == 0) {
+                return i;
+            }
+        }
+    }
+    MBRand(4.0f);
+}
+
+s32 func_8011BA58_w02(void) {
+    s32 i;
+    DecisionTreeNonLeafNode *data1;
+    DecisionTreeNonLeafNode *data2;
+    GW_SYSTEM *loc = &GwSystem;
+
+    data1 = D_8011E73C_w02[loc->star_spawn_indices[loc->current_star_spawn]];
+    data2 = D_8011E75C_w02[loc->star_spawn_indices[loc->current_star_spawn]];
+    func_800DA778_shared_board(loc->current_player_index);
+    if (MBComTreeExec(data1) == 0) {
+        return loc->current_player_index;
+    }
+    for (i = 0; i < 4; i++) {
+        if (i != loc->current_player_index) {
+            func_800DA778_shared_board(i);
+            if (MBComTreeExec(data2) == 0) {
+                return i;
+            }
+        }
+    }
+    MBRand(4.0f);
+}
 
 s32 func_8011BB30_w02(void) {
     GW_SYSTEM *system = &GwSystem;

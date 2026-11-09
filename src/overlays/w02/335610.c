@@ -194,6 +194,15 @@ extern DecisionTreeNonLeafNode D_8011E254_w02[];
 extern DecisionTreeNonLeafNode *D_8011E338_w02[];
 extern DecisionTreeNonLeafNode *D_8011E73C_w02[];
 extern DecisionTreeNonLeafNode *D_8011E75C_w02[];
+extern s32 D_8011D958_w02;
+extern s32 D_8011D95C_w02;
+extern s16 D_8011ED00_w02;
+extern omObjData *D_8011ED04_w02;
+void func_80119360_w02(omObjData *obj);
+void func_80119408_w02(s16 model, f32 arg1, f32 arg2);
+void func_80119438_w02(s16 arg0, f32 arg1, f32 arg2, f32 arg3);
+void func_8011946C_w02(s16 model);
+void func_80119680_w02(s16 model);
 s16 func_801059D0_w02(void) {
     return D_8011C6A0_w02[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
 }
@@ -4806,17 +4815,53 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80117E70_w02);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80118480_w02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80119244_w02);
+void func_80119244_w02(void) {
+    SpaceData *space = MBMasuGet(0x78);
+    s16 model;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80119360_w02);
+    model = D_8011ED00_w02 = func_8000B108_main(0xB0033, 0xAA9);
+    Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
+    func_8001C2FC_main(model, 0x20000, 0x20000);
+    Hu3DModelCameraSet(model, 1);
+    Hu3DModelRemakeStatic(model);
+    func_8001C954_main(model);
+    func_8001C514_main(model);
+    func_80013390_main(model, -1, NULL, func_80119680_w02);
+    func_80119438_w02(model, space->coords.x + 142.0f, space->coords.y, space->coords.z);
+    func_80119408_w02(model, 1.0f, 1000.0f);
+    D_8011D958_w02 = 0;
+    D_8011ED04_w02 = omAddObj(0x7D0, 0xA, 0xA, -1, func_80119360_w02);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_801193C0_w02);
+void func_80119360_w02(omObjData *obj) {
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_801193D0_w02);
+    if (D_8011D958_w02 != 0) {
+        for (i = 0; i < D_8011D95C_w02; i++) {
+            func_8011946C_w02(D_8011ED00_w02);
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_801193DC_w02);
+void func_801193C0_w02(void) {
+    D_8011D958_w02 = 1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80119408_w02);
+void func_801193D0_w02(void) {
+    D_8011D958_w02 = 0;
+}
+
+void func_801193DC_w02(void) {
+    Hu3DModelKill(D_8011ED00_w02);
+    omDelObj(D_8011ED04_w02);
+}
+
+void func_80119408_w02(s16 model, f32 arg1, f32 arg2) {
+    HmfModelData_UnkBC_Struct *bc = HmfModelData[model].unkBC;
+
+    bc->unk08.f = arg2;
+    bc->unk0C.f = arg1;
+}
 
 void func_80119438_w02(s16 arg0, f32 arg1, f32 arg2, f32 arg3) {
     HmfModelData_UnkBC_Struct *model = HmfModelData[arg0].unkBC;

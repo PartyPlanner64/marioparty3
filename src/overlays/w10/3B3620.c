@@ -8,6 +8,7 @@
 #include "../ovl_80_shared_board/EAB00.h"
 #include "../ovl_80_shared_board/ECA50.h"
 #include "../ovl_80_shared_board/EE660.h"
+#include "../ovl_80_shared_board/101840.h"
 #include "../ovl_80_shared_board/10C230.h"
 #include "../ovl_80_shared_board/FA250.h"
 #include "../ovl_80_shared_board/105D50.h"
@@ -25,6 +26,7 @@ extern Vec D_8010B854_w10[];
 extern s16 D_8010B890_w10[];
 extern s16 D_8010B898_w10[];
 extern s32 D_8010B8E8_w10[];
+extern s16 D_8010B8FC_w10;
 extern Object *D_8010BA24_w10;
 extern Process *D_8010BA28_w10;
 extern Object *D_8010BA2C_w10;
@@ -36,6 +38,10 @@ extern s16 D_8010BA50_w10;
 extern s16 D_8010BA52_w10;
 extern s16 D_8010BA54_w10;
 extern Vec D_8010BA58_w10;
+extern Object *D_8010BA68_w10;
+extern Object *D_8010BA6C_w10;
+extern Object *D_8010BA70_w10;
+extern Object *D_8010BA74_w10;
 
 void func_801059D0_w10(void) {
     GwSystem.current_board_index = 6;
@@ -346,13 +352,34 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80106908_w10);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80106DEC_w10);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80106ED8_w10);
+void func_80106ED8_w10(UnkMBGuideData *guide, u32 mess) {
+    HuWinMesSet(guide->amount, mess, -1, -1);
+    func_80060C14_main(guide->amount, 1);
+    func_800EE614_shared_board(guide->amount);
+    func_80060EA8_main(guide->amount, 1);
+    HuWinHomeClear(guide->amount);
+    HuPrcVSleep();
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80106F40_w10);
+void func_80106F40_w10(UnkMBGuideData *guide, u32 mess) {
+    HuWinMesSet(guide->amount, mess, -1, -1);
+    func_80060C14_main(guide->amount, 1);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80106F7C_w10);
+void func_80106F7C_w10(UnkMBGuideData *guide, u32 mess) {
+    HuWinMesSet(guide->amount, mess, -1, -1);
+    func_80060C14_main(guide->amount, 1);
+    while (HuWinStatGet(guide->amount) != 0) {
+        HuPrcVSleep();
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80106FE0_w10);
+void func_80106FE0_w10(UnkMBGuideData *guide) {
+    func_800EE614_shared_board(guide->amount);
+    func_80060EA8_main(guide->amount, 1);
+    HuWinHomeClear(guide->amount);
+    HuPrcVSleep();
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80107028_w10);
 
@@ -362,11 +389,21 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_8010714C_w10);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80107228_w10);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80107344_w10);
+void func_80107344_w10(s16 arg0) {
+    D_8010B8FC_w10 = arg0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80107350_w10);
+void func_80107350_w10(omObjData *obj) {
+    D_8010BA68_w10->coords.y = -sindf(obj->rot.x) * 3.0f;
+    D_8010BA6C_w10->coords.y = -sindf(obj->rot.x) * 3.0f;
+    obj->rot.x += 3.0f;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_801073C8_w10);
+void func_801073C8_w10(omObjData *obj) {
+    D_8010BA70_w10->coords.y = sindf(obj->rot.x) * 3.0f;
+    D_8010BA74_w10->coords.y = sindf(obj->rot.x) * 3.0f;
+    obj->rot.x += 10.0f;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80107444_w10);
 

@@ -13,6 +13,7 @@ void func_800EDF90_shared_board(s32 arg0, s32 arg1, s32 arg2); //unused
 void func_800EDFAC_shared_board(s32 arg0, s32 arg1, s32 arg2); //unused
 void func_800EE2A4_shared_board(s32 arg0);
 void func_800EE2C0_shared_board(s32 arg0);
+void func_800EE614_shared_board(s32 arg0);
 void func_800EE688_shared_board(Object* arg0, f32 arg1, f32 arg2);
 s32 func_800EE694_shared_board(Object* arg0);
 u32 func_800EE884_shared_board(Object* arg0, s16 arg1, s16 arg2);

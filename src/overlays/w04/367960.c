@@ -206,6 +206,7 @@ extern s32 D_8011C724_w04[];
 extern s32 D_8011C730_w04[];
 s32 func_8010CA60_w04(s32 playerIndex);
 void func_800D9F5C_shared_board(Object *arg0, Vec *arg1, s32 arg2);
+extern u8 D_8011C6F0_w04[14][3];
 s16 func_801059D0_w04(void) {
     return D_8011B780_w04[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
 }
@@ -1860,7 +1861,244 @@ void func_8010CA3C_w04(void) {
     omDelPrcObj(NULL);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_8010CA60_w04);
+s32 func_8010CA60_w04(s32 playerIndex) {
+    s32 hasRareItem;
+    s16 grp;
+    void *data;
+    s16 spriteId;
+    s16 playerGrp;
+    s16 playerSpriteId;
+    s32 i;
+    s32 state;
+    s32 playerSpriteVisible;
+    s16 delay;
+    s32 angle;
+    s32 attempts;
+    void *dialog;
+    Process *process;
+
+    hasRareItem = 0;
+    grp = HuSprGrpCreate(1, 5);
+    data = DataRead(0x13020E);
+    spriteId = HuSprAnimRead(data);
+    DataClose(data);
+    HuSprGrpMemberSet(grp, 0, spriteId, 0);
+    HuSprPriSet(grp, 0, 0xA);
+    func_800550F4_main(grp, 0, 0);
+    HuSprAttrSet(grp, 0, 0x1000);
+    HuSprPosSet(grp, 0, D_8011C69C_w04[playerIndex].x,
+                D_8011C69C_w04[playerIndex].y);
+    HuSprTPLvlSet(grp, 0, 0);
+
+    {
+        playerGrp = HuSprGrpCreate(1, 5);
+        playerSpriteVisible = 0;
+        data = DataRead(D_80101040_shared_board[GwPlayer[playerIndex].chr]);
+        playerSpriteId = HuSprAnimRead(data);
+        DataClose(data);
+        HuSprGrpMemberSet(playerGrp, 0, playerSpriteId, 0);
+        HuSprPriSet(playerGrp, 0, 0xA);
+        func_800550F4_main(playerGrp, 0, 1);
+        if (playerIndex & 1) {
+            HuSprAttrSet(playerGrp, 0, 0x1001);
+        } else {
+            HuSprAttrSet(playerGrp, 0, 0x1000);
+        }
+        if (MBItemFind(playerIndex, 0xC) != -1) {
+            HuSprDispOff(playerGrp, 0);
+        }
+        HuSprPosSet(playerGrp, 0,
+                    D_8011C69C_w04[playerIndex].x -
+                        (D_8011C6BC_w04[playerIndex].x * 16.0f) - 8.0f,
+                    D_8011C69C_w04[playerIndex].y +
+                        (D_8011C6BC_w04[playerIndex].y * 16.0f));
+        HuSprTPLvlSet(playerGrp, 0, 0);
+        HuAudFXPlay(0x133);
+
+        for (i = 0; i < 0x11; i++) {
+            HuSprPosSet(grp, 0,
+                        (i * D_8011C6BC_w04[playerIndex].x) +
+                            D_8011C69C_w04[playerIndex].x,
+                        (i * D_8011C6BC_w04[playerIndex].y) +
+                            D_8011C69C_w04[playerIndex].y);
+            HuSprTPLvlSet(grp, 0, i << 4);
+            HuSprTPLvlSet(playerGrp, 0, i << 4);
+            HuPrcVSleep();
+        }
+        HuSprTPLvlSet(grp, 0, 0xFF);
+        HuSprTPLvlSet(playerGrp, 0, 0xFF);
+
+        MBWinInsertOpen(MBItemFind(playerIndex, 0xC) == -1 ? 0x620E : 0x620F,
+                        (char *)mbCharNameMesTbl[GwPlayer[playerIndex].chr], 0, 0, 0, 0);
+        MBPlayerVibrate(playerIndex, 2);
+        func_800EC3C0_shared_board(playerIndex);
+        if (MBItemFind(playerIndex, 0xC) != -1) {
+            omAddPrcObj(func_8010CA3C_w04, 0x1000, 0, 0);
+            HuPrcSleep(0x14);
+        }
+
+        attempts = 0;
+        state = 0;
+        if (MBItemFind(playerIndex, 0xC) != -1) {
+            attempts = 1;
+            hasRareItem = 1;
+            process = omAddPrcObj(func_80112378_w04, 0x4002, 0, 0);
+            process->user_data = (void *)playerIndex;
+        }
+        HuAudFXPlay(0x133);
+        dialog = MBPlayerVibrateObjCreate(playerIndex, 3, 5);
+        delay = MBRand(10.0f) + 1;
+        i = 0;
+        angle = 0;
+
+        for (; i < 0x78; i++, delay--) {
+            if (delay == 0) {
+                HuAudFXPlay(0x257);
+                delay = MBRand(15.0f) + 0x1E;
+            }
+            state -= !(state < 2);
+            if (state == 0) {
+                HuSprPosSet(
+                    grp, 0,
+                    (D_8011C6BC_w04[playerIndex].x * 16.0f) +
+                        D_8011C69C_w04[playerIndex].x,
+                    (D_8011C6BC_w04[playerIndex].y * 16.0f) +
+                        D_8011C69C_w04[playerIndex].y + (sindf(i * 90) * 2.0f));
+            } else if (state == 9) {
+                HuSprPosSet(
+                    grp, 0,
+                    (D_8011C6BC_w04[playerIndex].x * 16.0f) +
+                        D_8011C69C_w04[playerIndex].x + (sindf(angle * 90) * 2.0f),
+                    (D_8011C6BC_w04[playerIndex].y * 16.0f) +
+                        D_8011C69C_w04[playerIndex].y);
+                HuSprPosSet(
+                    playerGrp, 0,
+                    D_8011C69C_w04[playerIndex].x - 8.0f +
+                        (sindf(angle * 90) * 2.0f),
+                    (D_8011C6BC_w04[playerIndex].y * 16.0f) +
+                        D_8011C69C_w04[playerIndex].y);
+                angle++;
+            }
+
+            if (GwPlayer[playerIndex].stat & 1) {
+                if (state == 0) {
+                    goto tryInput;
+                } else {
+                    if (GwPlayer[playerIndex].cpu_difficulty == 0) {
+                        if ((6 - MBRand(3.0f)) >= state) {
+                            goto tryInput;
+                        }
+                    } else if (GwPlayer[playerIndex].cpu_difficulty == 1) {
+                        if ((7 - MBRand(3.0f)) >= state) {
+                            goto tryInput;
+                        }
+                    } else if (GwPlayer[playerIndex].cpu_difficulty == 2) {
+                        if ((8 - MBRand(3.0f)) >= state) {
+                            goto tryInput;
+                        }
+                    } else if ((9 - MBRand(2.0f)) >= state) {
+                        goto tryInput;
+                    }
+                }
+            } else if (D_800C9520_main[GwPlayer[playerIndex].pad] & A_BUTTON) {
+            tryInput:
+                if (!hasRareItem) {
+                    attempts++;
+                    state = 10;
+                    if (!playerSpriteVisible) {
+                        HuSprBankSet(playerGrp, 0, 1, 0);
+                        func_800550F4_main(playerGrp, 0, 1);
+                        playerSpriteVisible = 1;
+                        HuSprPosSet(
+                            playerGrp, 0, D_8011C69C_w04[playerIndex].x - 8.0f,
+                            (D_8011C6BC_w04[playerIndex].y * 16.0f) +
+                                D_8011C69C_w04[playerIndex].y);
+                    }
+                }
+            }
+            if ((state == 0) && (playerSpriteVisible == 1)) {
+                HuSprBankSet(playerGrp, 0, 0, 0);
+                func_800550F4_main(playerGrp, 0, 1);
+                playerSpriteVisible = 0;
+                HuSprPosSet(
+                    playerGrp, 0,
+                    D_8011C69C_w04[playerIndex].x -
+                        (D_8011C6BC_w04[playerIndex].x * 16.0f) - 8.0f,
+                    (D_8011C6BC_w04[playerIndex].y * 16.0f) +
+                        D_8011C69C_w04[playerIndex].y);
+            }
+            HuPrcVSleep();
+        }
+    }
+
+    MBPlayerVibrateObjKill(dialog);
+    if (!hasRareItem) {
+        omAddPrcObj(func_8010CA3C_w04, 0x1000, 0, 0);
+    }
+
+    if (attempts == 0) {
+        for (i = 0x10; i >= 0; i -= 2) {
+            HuSprPosSet(grp, 0,
+                        (i * D_8011C6BC_w04[playerIndex].x) +
+                            D_8011C69C_w04[playerIndex].x,
+                        (i * D_8011C6BC_w04[playerIndex].y) +
+                            D_8011C69C_w04[playerIndex].y);
+            HuSprTPLvlSet(grp, 0, i << 4);
+            HuSprTPLvlSet(playerGrp, 0, i << 4);
+            HuPrcVSleep();
+        }
+    } else {
+        for (i = 0x10; i >= -0x10; i -= 2) {
+            HuSprPosSet(grp, 0,
+                        (i * D_8011C6BC_w04[playerIndex].x) +
+                            D_8011C69C_w04[playerIndex].x,
+                        (i * D_8011C6BC_w04[playerIndex].y) +
+                            D_8011C69C_w04[playerIndex].y);
+            HuSprPosSet(playerGrp, 0,
+                        ((i - 0x10) * D_8011C6BC_w04[playerIndex].x) +
+                            D_8011C69C_w04[playerIndex].x - 8.0f,
+                        (i * D_8011C6BC_w04[playerIndex].y) +
+                            D_8011C69C_w04[playerIndex].y);
+            if (hasRareItem) {
+                i -= 2;
+            }
+            HuPrcVSleep();
+        }
+        HuSprBankSet(playerGrp, 0, 0, 0);
+        func_800550F4_main(playerGrp, 0, 1);
+        for (i = 0x10; i >= 0; i -= 2) {
+            HuSprTPLvlSet(grp, 0, i << 4);
+            HuPrcVSleep();
+        }
+    }
+
+    HuSprGrpKill(grp);
+    HuSprAnimKill(spriteId);
+    HuSprGrpKill(playerGrp);
+    HuSprAnimKill(playerSpriteId);
+
+    playerSpriteVisible = -2;
+    if (!hasRareItem) {
+        for (i = 0; i < ARRAY_COUNTU(D_8011C6DC_w04); i++) {
+            if ((GwSystem.current_turn >= D_8011C6DC_w04[i][0]) &&
+                (GwSystem.current_turn <= D_8011C6DC_w04[i][1])) {
+                break;
+            }
+        }
+        playerSpriteVisible = D_8011C6DC_w04[i][2];
+        for (i = 0; i < ARRAY_COUNTU(D_8011C6F0_w04); i++) {
+            if ((attempts >= D_8011C6F0_w04[i][0]) &&
+                (attempts <= D_8011C6F0_w04[i][1])) {
+                break;
+            }
+        }
+        playerSpriteVisible -= D_8011C6F0_w04[i][2];
+        if (playerSpriteVisible >= GwPlayer[playerIndex].coin) {
+            playerSpriteVisible = -1;
+        }
+    }
+    return playerSpriteVisible;
+}
 
 void func_8010D88C_w04(void) {
     Object *src = HuPrcCurrentGet()->user_data;

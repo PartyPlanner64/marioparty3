@@ -1591,7 +1591,47 @@ void func_80109868_w03(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_801098C8_w03);
+s32 func_801098C8_w03(void) {
+    s32 var_s2 = 0;
+    s16 sp18[MB_MAX_PLAYERS];
+    u8 sp20[MB_MAX_PLAYERS];
+    s32 i;
+    s32 j;
+
+    *(Unk4Bytes *)sp20 = *(Unk4Bytes *)D_8011E910_w03;
+
+    for (i = 0; i < MB_MAX_PLAYERS; i++) {
+        if (i == GwSystem.current_player_index) {
+            if (GwPlayer[i].stat & 1) {
+                var_s2 = 1;
+                sp18[GwPlayer[i].pad] = 0x400;
+            } else {
+                HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
+                sp18[GwPlayer[i].pad] = -1;
+            }
+        } else {
+            sp18[GwPlayer[i].pad] = 0;
+        }
+    }
+
+    if (var_s2 != 0) {
+        func_8005B63C_main(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        for (j = 0; var_s2 != 0; j++) {
+            if (--var_s2 == 0) {
+                sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
+            }
+            if (j == 0) {
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
+            } else {
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], 5);
+            }
+        }
+    } else {
+        HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
+    }
+
+    return HuWinChoiceGet(mbDlgWinId, 0, 1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80109AD8_w03);
 

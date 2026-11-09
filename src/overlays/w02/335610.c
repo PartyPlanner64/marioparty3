@@ -183,6 +183,8 @@ void func_80108CC0_w02(void);
 void func_80108D34_w02(void);
 void func_80108DA8_w02(void);
 omObjData *func_8010EBF0_w02(Vec *arg0, f32 arg1, f32 arg2, s16 arg3, Vec *arg4, s32 arg5);
+extern Object *D_8011EC9C_w02;
+extern Object *D_8011ECD0_w02;
 s16 func_801059D0_w02(void) {
     return D_8011C6A0_w02[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
 }
@@ -1763,7 +1765,28 @@ void func_8010CA04_w02(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_8010CA28_w02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_8010D854_w02);
+void func_8010D854_w02(void) {
+    Object *src = HuPrcCurrentGet()->user_data;
+    Object *obj = MBModelLinkCreate(D_8011EC9C_w02);
+    f32 angle;
+
+    HuVecCopy3F(&obj->coords, &src->coords);
+    HuVecCopyXYZ(&obj->scale, 2.0f, 2.0f, 2.0f);
+    obj->velocity.x = src->velocity.x + 10.0f;
+    MBModelDispOn(obj);
+    angle = MBRand(360.0f);
+    while (1) {
+        HuPrcVSleep();
+        obj->velocity.x += 1.5;
+        if (src->velocity.x + 35.0f <= obj->velocity.x) {
+            break;
+        }
+        angle += 40.0f;
+        func_8008A2A0_main(HmfModelData[obj->omObj1->model[0]].mtx, angle);
+    }
+    MBModelKill(obj);
+    omDelPrcObj(NULL);
+}
 
 void func_8010D9A8_w02(s32 arg) {
     Process *prc = omAddPrcObj(func_8010D854_w02, 0x1000, 0, 0);
@@ -2224,9 +2247,94 @@ void func_8011020C_w02(s32 arg0, s32 arg1, s32 duration, f32 *target, s32 mode) 
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_801104A4_w02);
+void func_801104A4_w02(void) {
+    GW_PLAYER *player;
+    Object *model;
+    f32 scale;
+    f32 angle;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80110730_w02);
+    player = MBPlayerGet(-1);
+    MBKSuitCreate();
+    MBModelDispOff(D_801011FC_shared_board);
+    D_801011FC_shared_board->omObj1->scale.x = 0.0f;
+    D_801011FC_shared_board->omObj1->scale.y = 0.0f;
+    D_801011FC_shared_board->omObj1->scale.z = 0.0f;
+    MBPlayerVibrate(-1, 3);
+    HuAudFXPlay(0x143);
+
+    model = MBModelCreate(0x22, NULL);
+    func_8001C258_main(model->omObj1->model[0], 0x180, 0);
+    Hu3DModelLayerSet(model->omObj1->model[0], 0x1800);
+    Hu3DModelRemakeStatic(model->omObj1->model[0]);
+    HuVecCopy3F(&model->coords, &player->player_obj->coords);
+
+    angle = 0.0f;
+    for (scale = 1.0f; scale < 10.0f; scale = (f32)((f64)scale + 0.5)) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        func_8008A430_main(HmfModelData[model->omObj1->model[0]].mtx, angle);
+        angle += 20.0f;
+        HuPrcVSleep();
+    }
+
+    MBModelDispOff(player->player_obj);
+    MBModelDispOn(D_801011FC_shared_board);
+
+    for (; scale >= 1.0f; scale = (f32)((f64)scale - 0.5)) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        func_8008A430_main(HmfModelData[model->omObj1->model[0]].mtx, angle);
+        angle += 20.0f;
+        HuPrcVSleep();
+    }
+
+    MBModelKill(model);
+    HuPrcSleep(20);
+    PlayerFXPlay(0x274, GwSystem.current_player_index);
+    MBKSuitMotionSet(5, 2);
+    HuPrcSleep(40);
+    MBKSuitMotionSet(-1, 2);
+    MBDlgResultWinExec(0x3A14);
+}
+
+void func_80110730_w02(void) {
+    Vec direction;
+    GW_PLAYER *player;
+    Object *model;
+    f32 scale;
+    f32 angle;
+
+    player = MBPlayerGet(-1);
+    MBKSuitMotionSet(-1, 2);
+    MBVecForwardSet(&direction);
+    func_800ED128_shared_board(&player->player_obj->rot, &direction, &player->player_obj->rot, 8);
+    HuPrcSleep(8);
+    HuAudFXPlay(0x143);
+
+    model = MBModelCreate(0x22, NULL);
+    func_8001C258_main(model->omObj1->model[0], 0x180, 0);
+    Hu3DModelLayerSet(model->omObj1->model[0], 0x1800);
+    Hu3DModelRemakeStatic(model->omObj1->model[0]);
+    HuVecCopy3F(&model->coords, &player->player_obj->coords);
+
+    angle = 0.0f;
+    for (scale = 1.0f; scale < 10.0f; scale = (f32)((f64)scale + 0.5)) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        func_8008A430_main(HmfModelData[model->omObj1->model[0]].mtx, angle);
+        angle += 20.0f;
+        HuPrcVSleep();
+    }
+
+    MBModelDispOn(player->player_obj);
+    MBKSuitKill();
+
+    for (; scale >= 1.0f; scale = (f32)((f64)scale - 0.5)) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        func_8008A430_main(HmfModelData[model->omObj1->model[0]].mtx, angle);
+        angle += 20.0f;
+        HuPrcVSleep();
+    }
+
+    MBModelKill(model);
+}
 
 void func_80110970_w02(void) {
     s32 index;
@@ -2827,7 +2935,28 @@ void func_80112734_w02(void) {
     MBStatusItemTPLvlSet(GwSystem.current_player_index, MBItemSelNoGet(), 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_801127F0_w02);
+void func_801127F0_w02(void) {
+    Object *src = HuPrcCurrentGet()->user_data;
+    Object *obj = MBModelLinkCreate(D_8011ECAC_w02);
+    f32 angle;
+
+    HuVecCopy3F(&obj->coords, &src->coords);
+    HuVecCopyXYZ(&obj->scale, 2.0f, 2.0f, 2.0f);
+    obj->velocity.x = src->velocity.x + 10.0f;
+    MBModelDispOn(obj);
+    angle = MBRand(360.0f);
+    while (1) {
+        HuPrcVSleep();
+        obj->velocity.x += 1.5;
+        if (src->velocity.x + 35.0f <= obj->velocity.x) {
+            break;
+        }
+        angle += 40.0f;
+        func_8008A2A0_main(HmfModelData[obj->omObj1->model[0]].mtx, angle);
+    }
+    MBModelKill(obj);
+    omDelPrcObj(NULL);
+}
 
 void func_80112944_w02(Object *arg) {
     Process *temp = omAddPrcObj(func_801127F0_w02, 0x1000, 0, 0);
@@ -3747,7 +3876,53 @@ void func_8011512C_w02(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_8011529C_w02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80115464_w02);
+void func_80115464_w02(void) {
+    s32 *state = HuPrcCurrentGet()->user_data;
+    Object *model;
+    f32 scale;
+    f32 angle;
+    f32 wait_angle_step;
+
+    HuAudFXPlay(0x143);
+    model = D_8011ECD0_w02;
+    func_800D9A40_shared_board(model);
+
+    angle = 0.0f;
+    for (scale = 1.0f; scale < 18.0f; scale = (f32)((f64)scale + 0.8)) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        func_8008A430_main(HmfModelData[model->omObj1->model[0]].mtx, angle);
+        angle += 20.0f;
+        HuPrcVSleep();
+    }
+
+    if (*state != 1) {
+        wait_angle_step = 20.0f;
+        while (*state != 1) {
+            func_8008A430_main(HmfModelData[model->omObj1->model[0]].mtx, angle);
+            angle += wait_angle_step;
+            HuPrcVSleep();
+        }
+    }
+
+    for (; scale < 40.0f; scale = (f32)((f64)scale + 0.8)) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        func_8008A430_main(HmfModelData[model->omObj1->model[0]].mtx, angle);
+        angle += 20.0f;
+        HuPrcVSleep();
+    }
+
+    if (*state != 2) {
+        scale = 20.0f;
+        while (*state != 2) {
+            func_8008A430_main(HmfModelData[model->omObj1->model[0]].mtx, angle);
+            angle += scale;
+            HuPrcVSleep();
+        }
+    }
+
+    MBModelKill(model);
+    omDelPrcObj(0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_801156E8_w02);
 

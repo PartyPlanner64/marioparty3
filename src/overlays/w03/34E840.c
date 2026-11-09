@@ -1748,7 +1748,60 @@ void func_80109E98_w03(void) {
 void func_80109F3C_w03(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80109F44_w03);
+s32 func_80109F44_w03(s32 arg0, s32 arg1) {
+    s32 var_s2 = 0;
+    s16 sp18[MB_MAX_PLAYERS];
+    u8 sp20[MB_MAX_PLAYERS];
+    s32 i;
+    s32 j;
+
+    *(Unk4Bytes *)sp20 = *(Unk4Bytes *)D_8011E910_w03;
+
+    for (i = 0; i < MB_MAX_PLAYERS; i++) {
+        if (i == GwSystem.current_player_index) {
+            if (GwPlayer[i].stat & 1) {
+                switch (arg0) {
+                    case 0:
+                        var_s2 = func_800EF0D8_shared_board(0) + 1;
+                        break;
+                    case 1:
+                        var_s2 = func_800EF0D8_shared_board(1) + 1;
+                        break;
+                    case 2:
+                        var_s2 = arg1 + 1;
+                        break;
+                    default:
+                        var_s2 = MBComTreeExec((void *)arg0) + 1;
+                        break;
+                }
+                sp18[GwPlayer[i].pad] = 0x400;
+            } else {
+                HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
+                sp18[GwPlayer[i].pad] = -1;
+            }
+        } else {
+            sp18[GwPlayer[i].pad] = 0;
+        }
+    }
+
+    if (var_s2 != 0) {
+        func_8005B63C_main(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        for (j = 0; var_s2 != 0; j++) {
+            if (--var_s2 == 0) {
+                sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
+            }
+            if (j == 0) {
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
+            } else {
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], 5);
+            }
+        }
+    } else {
+        HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
+    }
+
+    return HuWinChoiceGet(mbDlgWinId, 0, 1);
+}
 
 void func_8010A1C8_w03(s16 arg0, s32 arg1, s16 arg2, s32 arg3) {
     s16 sp10[2];

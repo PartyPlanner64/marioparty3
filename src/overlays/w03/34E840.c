@@ -54,6 +54,7 @@ void func_80108820_w03(void);
 void func_801088A0_w03(void);
 void func_80116B78_w03(void);
 void func_8011908C_w03(void);
+void func_8011655C_w03(s16 (*masu)[3], BranchPair *links, DecisionTreeNonLeafNode **trees);
 s32 func_8011C088_w03(void);
 extern s16 D_8011C110_w03[];
 extern s16 D_8011C120_w03[];
@@ -71,6 +72,16 @@ extern s16 D_8011C1D8_w03[];
 extern s32 D_8011C2E4_w03[];
 extern s32 D_8011C308_w03[];
 extern s16 D_8011C350_w03[];
+extern s16 D_8011C368_w03[];
+extern s16 D_8011C378_w03[];
+extern s16 D_8011C388_w03[];
+extern s16 D_8011C398_w03[];
+extern s16 D_8011C3A8_w03[];
+extern s16 D_8011C3B8_w03[];
+extern s16 D_8011C3C8_w03[];
+extern DecisionTreeNonLeafNode *D_8011CABC_w03[];
+extern s16 D_8011CAD8_w03[][3];
+extern BranchPair D_8011CAEC_w03[];
 extern s16 D_8011C354_w03[];
 extern s16 D_8011C358_w03[];
 extern s8 D_8011CF98_w03[][5][7];
@@ -1165,13 +1176,61 @@ s32 func_80108918_w03(s16 *arg0) {
     return ret;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_801089AC_w03);
+s32 func_801089AC_w03(void) {
+    GW_PLAYER *player = MBPlayerGet(-1);
+    s16 *list;
+
+    switch (MBMasuLinkMasuIdGet(player->clink, player->cidx)) {
+        case 0x79:
+            list = D_8011C368_w03;
+            break;
+        case 0x84:
+            list = D_8011C378_w03;
+            break;
+        case 0x89:
+            list = D_8011C388_w03;
+            break;
+        case 0x8A:
+            list = D_8011C398_w03;
+            break;
+        case 0x8B:
+            list = D_8011C3A8_w03;
+            break;
+        case 0x6F:
+            list = D_8011C3B8_w03;
+            break;
+        default:
+            list = D_8011C3C8_w03;
+            break;
+    }
+
+    if (func_80108918_w03(list)) {
+        GwSystem.boardData.halfWordBytes[2] |= 1 << GwSystem.current_player_index;
+    } else {
+        GwSystem.boardData.halfWordBytes[2] &= ~(1 << GwSystem.current_player_index);
+    }
+    return 0;
+}
 
 void func_80108AB8_w03(void) {
     MBMoveNextMasuSet(-1, 1, 7);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80108ADC_w03);
+void func_80108ADC_w03(void) {
+    GW_PLAYER *player = MBPlayerGet(-1);
+
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0x6D) {
+        if (player->rev & 0x80) {
+            if (mbWalkNum != 0) {
+                func_8011655C_w03(D_8011CAD8_w03, D_8011CAEC_w03, D_8011CABC_w03);
+            } else {
+                MBMoveBackMasuSet(-1, 1, 8);
+            }
+        } else {
+            MBMoveBackMasuSet(-1, 1, 6);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80108B98_w03);
 

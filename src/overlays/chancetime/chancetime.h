@@ -18,5 +18,6 @@ void func_80108704_chancetime(void);
 void func_80108A88_chancetime(void);
 void func_80108B50_chancetime(void);
 void func_8010BF48_chancetime(void);
+void func_8010D92C_chancetime(s8 arg0);
 
 #endif

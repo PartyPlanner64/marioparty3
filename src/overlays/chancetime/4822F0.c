@@ -111,7 +111,59 @@ s32 func_80106BE0_chancetime(void) {
     return D_8010FAF0_chancetime;
 }
 
+#ifdef NON_MATCHING
+// Loop/branch ordering differs: GCC moves the CPU-player branch of the first loop after the loop.
+void func_80106BEC_chancetime(omObjData *object) {
+    s8 player = D_801100D0_chancetime[0];
+    f32 time;
+    s16 done;
+
+    D_8010FAF0_chancetime = 0;
+    while (TRUE) {
+        if (GwPlayer[player].stat & 1) {
+            HuPrcSleep((u8)(rand8() % 15) + 15);
+            break;
+        }
+        if (D_800D5558_main[GwPlayer[player].pad] & 0x8000) {
+            break;
+        }
+        HuPrcVSleep();
+    }
+    Hu3DMotionShiftSet(object->model[1], HmfModelData[object->motion[5]].motId, 0, 20, 0);
+    Hu3DMotionSpeedSet(object->model[1], 3.0f);
+    done = FALSE;
+    do {
+        time = Hu3DMotionShiftTimeGet(object->model[1]);
+        if (done == FALSE) {
+            if (time >= 5.0f) {
+                done = TRUE;
+                func_8010D92C_chancetime(D_8010FE78_chancetime);
+                func_8001C814_main(object->model[3], 2, 0);
+                func_8001C814_main(object->model[3], 1, 0);
+                Hu3DMotionTimeSet(object->model[3], 0.0f);
+                Hu3DMotionSpeedSet(object->model[3], 1.2f);
+                func_8001C258_main(object->model[3], 4, 0);
+            }
+        }
+        HuPrcVSleep();
+    } while (time >= 0.0f);
+    Hu3DMotionShiftSet(object->model[1], HmfModelData[object->motion[6]].motId, 0, 20, 0);
+    Hu3DMotionSpeedSet(object->model[1], 3.0f);
+    do {
+        time = Hu3DMotionShiftTimeGet(object->model[1]);
+        HuPrcVSleep();
+    } while (time >= 0.0f);
+    time = 0.0f;
+    Hu3DModelPosSet(object->model[1], 180.0f, time, -50.0f);
+    Hu3DModelPosSet(object->model[3], 180.0f, 220.0f, time);
+    Hu3DMotionShiftSet(object->model[1], HmfModelData[object->motion[0]].motId, 0, 20, 2);
+    Hu3DMotionSpeedSet(object->model[1], 1.0f);
+    D_8010FAF0_chancetime = 1;
+    D_801100C0_chancetime.func = func_80106760_chancetime;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4822F0", func_80106BEC_chancetime);
+#endif
 
 void func_80106F10_chancetime(void) {
     omObjData *object = D_801100C0_chancetime.obj;

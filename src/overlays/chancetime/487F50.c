@@ -7,8 +7,8 @@
 typedef struct ChanceTimeUnkFED0 {
     /* 0x00 */ s8 unk00;
     /* 0x01 */ char unk01[3];
-    /* 0x04 */ s32 unk04;
-    /* 0x08 */ char unk08[4];
+    /* 0x04 */ f32 unk04;
+    /* 0x08 */ f32 unk08;
     /* 0x0C */ f32 unk0C;
     /* 0x10 */ s16 unk10;
     /* 0x12 */ s16 unk12;
@@ -22,6 +22,11 @@ typedef struct ChanceTimeUnkFE3C {
     /* 0x00 */ s16 coins;
     /* 0x02 */ s16 stars;
 } ChanceTimeUnkFE3C; // size = 0x4
+
+typedef struct ChanceTimeReelSpeed {
+    /* 0x00 */ f32 accel;
+    /* 0x04 */ f32 max;
+} ChanceTimeReelSpeed; // size = 0x8
 
 extern s8 D_8010FB80_chancetime;
 extern s8 D_8010FB81_chancetime;
@@ -59,13 +64,15 @@ extern void (*D_80110084_chancetime)();
 extern omObjData *D_801100C8_chancetime;
 extern s8 D_801100DD_chancetime[3];
 extern s8 D_801100DF_chancetime;
-extern void (*D_801100CC_chancetime)(void);
+extern void (*D_801100CC_chancetime)(omObjData *);
+extern const ChanceTimeReelSpeed D_8010FD08_chancetime[3];
+extern Vec D_8010FD38_chancetime[3];
 
 s32 func_8010872C_chancetime(void);
-void func_8010C870_chancetime(void);
-void func_8010C610_chancetime(void);
+void func_8010C870_chancetime(omObjData *object);
+void func_8010C610_chancetime(omObjData *object);
 void func_8010F44C_chancetime(s32 arg0, s16 arg1, s16 arg2);
-void func_8010D320_chancetime(void);
+void func_8010D320_chancetime(omObjData *object);
 void func_8010DB1C_chancetime(s8 arg0);
 void func_8010DF68_chancetime(void);
 void func_8010DF70_chancetime(void);
@@ -81,11 +88,11 @@ void func_8010F42C_chancetime(void);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010BF80_chancetime);
 
-void func_8010C5F4_chancetime(void) {
-    func_8010D320_chancetime();
+void func_8010C5F4_chancetime(omObjData *object) {
+    func_8010D320_chancetime(object);
 }
 
-void func_8010C610_chancetime(void) {
+void func_8010C610_chancetime(omObjData *object) {
     Vec pos;
     Vec2f screen;
 
@@ -118,7 +125,7 @@ void func_8010C610_chancetime(void) {
     espPosSet(D_8010FE94_chancetime[2], D_8010FB84_chancetime[0] + 87, D_8010FB84_chancetime[1] + 116);
 }
 
-void func_8010C870_chancetime(void) {
+void func_8010C870_chancetime(omObjData *object) {
     D_8010FB84_chancetime[0] = 74;
     D_8010FB84_chancetime[1] = 25;
     espPosSet(D_8010FE9A_chancetime, 161, 71);
@@ -198,7 +205,57 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/487F50", D_8010FCE8_chancet
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/487F50", D_8010FCF8_chancetime);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010D320_chancetime);
+void func_8010D320_chancetime(omObjData *object) {
+    ChanceTimeUnkFED0 *reel;
+    s16 idx;
+    s16 tmp;
+    s8 i;
+    s8 j;
+
+    for (i = 0; i < 3; i++) {
+        reel = &D_8010FED0_chancetime[i];
+        if (reel->unk00 == 4) {
+            reel->unk04 += D_8010FD08_chancetime[D_8010FBF0_chancetime - 1].accel;
+            reel->unk04 = (reel->unk04 > D_8010FD08_chancetime[D_8010FBF0_chancetime - 1].max)
+                              ? D_8010FD08_chancetime[D_8010FBF0_chancetime - 1].max
+                              : reel->unk04;
+        }
+        if (reel->unk00 == 1) {
+            reel->unk0C = ((s32)(reel->unk08 / 100.0f) + 1) * 100.0f;
+            reel->unk00 = 2;
+        }
+        reel->unk08 += reel->unk04;
+        reel->unk04 *= 0.98f;
+        if (reel->unk00 == 2 && reel->unk08 >= reel->unk0C) {
+            reel->unk08 = reel->unk0C;
+            reel->unk04 = 0.0f;
+            reel->unk00 = 3;
+        }
+        if (reel->unk08 >= 200.0f) {
+            reel->unk08 -= 200.0f;
+            reel->unk12 = (reel->unk12 < reel->unk1A) ? reel->unk12 : reel->unk12 - reel->unk1A;
+            idx = reel->unk12;
+            reel->unk10 = idx;
+            for (j = 0; j < 3; j++) {
+                func_8003302C_main(reel->unk14[j], reel->unk1B[idx]);
+                tmp = idx - 1;
+                tmp = (tmp < 0) ? reel->unk1A + tmp : tmp;
+                idx = tmp;
+            }
+            reel->unk12 += 2;
+            reel->unk12 = (reel->unk12 < reel->unk1A) ? reel->unk12 : reel->unk12 - reel->unk1A;
+        }
+        if (reel->unk00 == 3) {
+            tmp = reel->unk10 + (s32)(reel->unk08 / 100.0f) - 2;
+            tmp = (tmp < 0) ? reel->unk1A + tmp : tmp;
+            tmp = (tmp < reel->unk1A) ? tmp : tmp - reel->unk1A;
+            D_801100DD_chancetime[i] = reel->unk1B[tmp];
+            reel->unk00 = 0;
+        }
+        Hu3DModelPosSet(object->model[i + 1], D_8010FD38_chancetime[i].x,
+                        D_8010FD38_chancetime[i].y - reel->unk08, D_8010FD38_chancetime[i].z);
+    }
+}
 
 void func_8010D6A4_chancetime(s8 arg0) {
     s8 i;
@@ -557,7 +614,7 @@ void func_8010F984_chancetime(omObjData *object) {
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/487F50", D_8010FD0C_chancetime);
+const ChanceTimeReelSpeed D_8010FD08_chancetime[3] = { { 10.0f, 10.0f }, { 20.0f, 20.0f }, { 40.0f, 40.0f } };
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/487F50", D_8010FD20_chancetime);
 

@@ -6474,7 +6474,102 @@ void func_801191C0_w05(void) {
     }
 }
 
+// Register allocation differs: the target has a CSE boundary (e.g. a loop end note) between the
+// two movement steps, so `&playerObj->coords`/`&playerObj->rot` are recomputed for the second step,
+// `&pos` is rematerialized for the offset adds, and `vib` (not `unk4`) is spilled to the stack.
+// A `do { ... } while (0)` around the offset adds gets most of the way there.
+#ifdef NON_MATCHING
+void func_801192AC_w05(void) {
+    PlayerReactWork *work = HuPrcCurrentGet()->user_data;
+    Object *model = D_801207CC_w05;
+    GW_PLAYER *player = MBPlayerGet(work->playerNo);
+    Object *playerObj = player->player_obj;
+    s32 unk4 = work->unk4;
+    s32 order = work->order;
+    s32 type = work->type;
+    Process *process = HuPrcCurrentGet();
+    UnkVibrateProcess *vib;
+    SpaceData *start;
+    SpaceData *end;
+    Vec pos;
+    f32 *ofs;
+    s32 camMasu;
+
+    switch (type) {
+        case 0:
+            camMasu = 0x92;
+            break;
+        case 1:
+            camMasu = 0x91;
+            break;
+        case 2:
+            camMasu = 0x90;
+            break;
+        default:
+            camMasu = 0x8F;
+            break;
+    }
+    func_800ED20C_shared_board(work->playerNo, 8, camMasu);
+
+    while (HuVecDistance(&playerObj->coords, &model->coords) > order * 20.0f + 30.0f) {
+        HuPrcVSleep();
+    }
+
+    vib = MBPlayerVibrateObjCreate(work->playerNo, 0, 5);
+    PlayerFXPlay(0x286, work->playerNo);
+    if (work->playerNo == GwSystem.current_player_index) {
+        MBPlayerMotionSet(-1, 1, 2);
+    } else {
+        MBMotionSet(playerObj, 1, 2);
+    }
+
+    switch (type) {
+        case 0:
+            start = MBMasuGet(0x35);
+            end = MBMasuGet(0x36);
+            break;
+        case 1:
+            start = MBMasuGet(0x1A);
+            end = MBMasuGet(0x1B);
+            break;
+        case 2:
+            start = MBMasuGet(0x82);
+            end = MBMasuGet(0x43);
+            break;
+        default:
+            start = MBMasuGet(0x6F);
+            end = MBMasuGet(0x11);
+            break;
+    }
+
+    HuVecCopy3F(&pos, &start->coords);
+    MBVecDirGet(&playerObj->coords, &pos, &playerObj->rot);
+    HuPrcChildLink(process, func_800ED75C_shared_board(&playerObj->coords, &pos, &playerObj->coords, 2.0f));
+    HuPrcChildWatch();
+
+    HuVecCopy3F(&pos, &end->coords);
+    ofs = D_8011EF38_w05[unk4 + order];
+    pos.x += ofs[0];
+    pos.z += ofs[1];
+    MBVecDirGet(&playerObj->coords, &pos, &playerObj->rot);
+    HuPrcChildLink(process, func_800ED5E0_shared_board(&playerObj->coords, &pos, &playerObj->coords, 2.0f));
+    HuPrcChildWatch();
+
+    MBPlayerVibrateObjKill(vib);
+    if (work->playerNo == GwSystem.current_player_index) {
+        MBPlayerMotionSet(-1, -1, 2);
+    } else {
+        MBMotionSet(playerObj, -1, 2);
+    }
+
+    HuVecCopyXYZ(&pos, 0.0f, 0.0f, 1.0f);
+    func_800ED128_shared_board(&player->player_obj->rot, &pos, &player->player_obj->rot, 5);
+    func_801178B4_w05(player, type, D_8011EE48_w05);
+    omDelPrcObj(NULL);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_801192AC_w05);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80119610_w05);
 

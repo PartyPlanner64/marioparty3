@@ -1020,9 +1020,27 @@ void func_8010873C_w04(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_801087CC_w04);
+void func_801087CC_w04(s32 index) {
+    Object *obj;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_8010886C_w04);
+    if (D_8011E09C_w04[index] == NULL) {
+        obj = MBModelFileCreate(0x130177, 0, 3.0f, 0, NULL);
+        MBModelTempAllocFree(obj);
+        D_8011E09C_w04[index] = obj;
+        obj->flags |= 2;
+        HuVecCopy3F(&obj->coords, &MBMasuGet(D_8011B9BC_w04[index])->coords);
+    }
+}
+
+void func_8010886C_w04(void) {
+    s32 i;
+
+    for (i = 0; i < 3; i++) {
+        D_8011E09C_w04[i] = NULL;
+        func_801087CC_w04(i);
+    }
+    func_8010873C_w04();
+}
 
 void func_801088C8_w04(void) {
     MBMoveNextMasuSet(-1, 1, 0x15);

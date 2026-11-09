@@ -4,6 +4,7 @@
 extern s32 D_8010FB00_chancetime;
 extern s32 D_8010FB04_chancetime;
 extern s32 D_8010FB08_chancetime;
+extern Vec D_8010FB0C_chancetime;
 extern Vec D_8010FB18_chancetime[4];
 extern Vec D_8010FB48_chancetime;
 extern Vec D_8010FB54_chancetime;
@@ -15,6 +16,7 @@ extern f32 D_8010FB70_chancetime;
 extern f32 D_8010FB74_chancetime;
 extern f32 D_8010FB78_chancetime;
 extern f32 D_8010FB7C_chancetime;
+extern char D_8010FC80_chancetime[];
 extern char D_8010FC8C_chancetime[];
 extern s16 D_8010FE8A_chancetime;
 extern s16 D_8010FE8E_chancetime;
@@ -40,6 +42,7 @@ void func_8010B834_chancetime(omObjData *object, Vec *pos, s32 time, s32 faceDir
 void func_8010BA68_chancetime(omObjData *object, Vec *rot, s32 time);
 void func_8010BC10_chancetime(omObjData *object, f32 x, f32 y, f32 z, s32 arg4);
 void func_8010AA90_chancetime(omObjData *object);
+void func_80108EDC_chancetime(omObjData *object);
 void func_8010963C_chancetime(omObjData *object);
 void func_80109B70_chancetime(omObjData *object);
 void func_8010A0A4_chancetime(omObjData *object);
@@ -265,7 +268,36 @@ void func_80108C08_chancetime(s16 model, s16 slot, s16 animIdx) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80108CDC_chancetime);
+void func_80108CDC_chancetime(void) {
+    omObjData *object;
+    omObjData *motObj;
+    void *data;
+    s32 anim;
+
+    object = omAddObj(20, 4, 0, -1, NULL);
+    D_80110088_chancetime[0].obj = object;
+    motObj = D_801100D4_chancetime.obj;
+    object->model[1] = func_8000B108_main(0xA0000, 0x2A9);
+    Hu3DModelPosSet(object->model[1], D_8010FB0C_chancetime.x, D_8010FB0C_chancetime.y, D_8010FB0C_chancetime.z);
+    Hu3DModelCameraSet(object->model[1], 2);
+    data = DataRead(0xA002A);
+    anim = (s16)HmfAnimCreate(HmfModelData[object->model[1]].hmf, data, 0, D_8010FC80_chancetime);
+    HuMemMemoryFreePerm(data);
+    Hu3DModelRemakeStatic(object->model[1]);
+    func_8001C514_main(object->model[1]);
+    func_80032FC0_main(anim, 1, 0);
+    func_80032FF8_main(anim, 0);
+    object->model[2] = func_8000B108_main(9, 0x2B9);
+    Hu3DModelPosSet(object->model[2], D_8010FB0C_chancetime.x, D_8010FB0C_chancetime.y, D_8010FB0C_chancetime.z);
+    Hu3DModelCameraSet(object->model[2], 2);
+    Hu3DMotionShiftSet(object->model[1], HmfModelData[motObj->motion[0]].motId, 0, 30, 2);
+    func_8001C258_main(object->model[2], 4, 4);
+    D_80110088_chancetime[0].func = func_80108EDC_chancetime;
+    while (TRUE) {
+        D_80110088_chancetime[0].func(object);
+        HuPrcVSleep();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80108EDC_chancetime);
 
@@ -537,7 +569,42 @@ void func_8010BC88_chancetime(omObjData *object, f32 x, f32 y, f32 z, s32 arg4) 
     func_8010B818_chancetime(object, &to, arg4);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010BD40_chancetime);
+void func_8010BD40_chancetime(void) {
+    s16 anim;
+    s16 sprite;
+    f32 scale;
+    s32 i;
+
+    scale = 0.0f;
+    anim = func_8000B838_main(0x1C0006);
+    sprite = espEntry(anim, 0, 0);
+    espPosSet(sprite, 160, 120);
+    espDispOff(sprite);
+    espScaleSet(sprite, scale, scale);
+    espDispOn(sprite);
+    for (i = 0; i < 5; i++) {
+        scale = sindf(i * 18.0f) * 1.2f;
+        espScaleSet(sprite, scale, scale);
+        HuPrcVSleep();
+    }
+    HuAudFXPlay(0x261);
+    scale = 1.0f;
+    espScaleSet(sprite, scale, scale);
+    HuPrcSleep(30);
+    for (i = 0; i < 20; i++) {
+        espScaleSet(sprite, scale, scale);
+        scale = sindf(i * 4.5f);
+        espTPLvlSet(sprite, 256.0f - scale * 256.0f);
+        scale += 1.0f;
+        HuPrcVSleep();
+    }
+    espDispOn(sprite);
+    espKill(sprite);
+    HuSprAnimKill(anim);
+    while (TRUE) {
+        HuPrcVSleep();
+    }
+}
 
 s32 func_8010BF3C_chancetime(void) {
     return D_8010FB60_chancetime;

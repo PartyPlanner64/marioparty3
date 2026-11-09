@@ -6563,7 +6563,235 @@ void func_801178B4_w05(GW_PLAYER *player, s32 index, s16 paths[][6]) {
     player->bidx = *path;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80117908_w05);
+void func_80117908_w05(void) {
+    struct {
+        s32 choiceAnims[4];
+        s32 charAnims[4];
+        s32 grps[4];
+    } spr;
+    s32 titleAnim;
+    s32 frameAnim;
+    s32 titleGrp;
+    Process *process;
+    Unk3 *helpWin;
+    void *data;
+    s32 grp;
+    s32 i;
+    s32 j;
+    s32 count;
+    s32 wrapped;
+    s32 fading;
+    s32 mask;
+    s32 clampedAlpha;
+    s32 alpha;
+    f32 angle;
+    f32 speed;
+
+    process = HuPrcCurrentGet();
+    data = DataRead(0x1300F7);
+    titleAnim = HuSprAnimRead(data);
+    DataClose(data);
+    data = DataRead(0x1300F8);
+    spr.choiceAnims[0] = HuSprAnimRead(data);
+    DataClose(data);
+    data = DataRead(0x1300FB);
+    spr.choiceAnims[1] = HuSprAnimRead(data);
+    DataClose(data);
+    data = DataRead(0x1300F9);
+    spr.choiceAnims[2] = HuSprAnimRead(data);
+    DataClose(data);
+    data = DataRead(0x1300FA);
+    spr.choiceAnims[3] = HuSprAnimRead(data);
+    DataClose(data);
+    data = DataRead(0x1300FC);
+    frameAnim = HuSprAnimRead(data);
+    DataClose(data);
+    for (i = 0; i < 4; i++) {
+        data = DataRead((GwPlayer[i].chr + 8) | 0x210000);
+        spr.charAnims[i] = HuSprAnimRead(data);
+        DataClose(data);
+    }
+
+    titleGrp = HuSprGrpCreate(1, 5);
+    HuSprGrpMemberSet(titleGrp, 0, titleAnim, 0);
+    HuSprAttrReset(titleGrp, 0, 0xFFFF);
+    HuSprAttrSet(titleGrp, 0, 0x1008);
+    HuSprPriSet(titleGrp, 0, 0x1000);
+    HuSprPosSet(titleGrp, 0, 0xA0, 0x5A);
+
+    angle = 0.0f;
+    speed = 30.0f;
+    count = 0;
+    wrapped = 0;
+
+    while (1) {
+        if (angle >= 90.0f && wrapped == 0) {
+            wrapped = 1;
+            count++;
+        }
+        if (angle >= 360.0f) {
+            wrapped = 0;
+            angle -= 360.0f;
+        }
+        if (angle >= 180.0f && angle <= 360.0f) {
+            HuSprAttrSet(titleGrp, 0, 2);
+        } else {
+            HuSprAttrReset(titleGrp, 0, 2);
+        }
+        HuSprScaleSet(titleGrp, 0, 1.0f, sindf(angle >= 180.0f ? angle - 180.0f : angle));
+        if (count >= 2) {
+            break;
+        }
+        HuPrcVSleep();
+        angle += speed;
+    }
+
+    HuSprAttrReset(titleGrp, 0, 2);
+    HuSprScaleSet(titleGrp, 0, 1.0f, 1.0f);
+    helpWin = func_800E210C_shared_board(0x14, 0xA0, 1);
+
+    for (i = 0; i < 4; i++) {
+        grp = spr.grps[i] = HuSprGrpCreate(6, 5);
+        HuSprGrpMemberSet(grp, 0, frameAnim, 0);
+        func_800550F4_main(grp, 0, 0);
+        HuSprAttrReset(grp, 0, 0xFFFF);
+        if (D_801207B0_w05[i] != 0) {
+            HuSprAttrSet(grp, 0, 8);
+        } else {
+            HuSprAttrSet(grp, 0, 0x8000);
+        }
+        HuSprPriSet(grp, 0, 0x1000);
+        func_800554C4_main(grp, 0, -1);
+        HuSprGrpMemberSet(grp, 1, spr.charAnims[i], 0);
+        func_800550F4_main(grp, 1, 0);
+        HuSprAttrReset(grp, 1, 0xFFFF);
+        if (D_801207B0_w05[i] != 0) {
+            HuSprAttrSet(grp, 1, 8);
+        } else {
+            HuSprAttrSet(grp, 1, 0x8000);
+        }
+        HuSprPriSet(grp, 1, 0x1000);
+        HuSprPosSet(grp, 1, 0, -9);
+        func_800554C4_main(grp, 1, 0);
+        for (j = 0; j < 4; j++) {
+            HuSprGrpMemberSet(grp, j + 2, spr.choiceAnims[j], 0);
+            func_800550F4_main(grp, j + 2, 1);
+            HuSprAttrReset(grp, j + 2, 0xFFFF);
+            if (D_801207B0_w05[i] == j + 1) {
+                HuSprAttrSet(grp, j + 2, 8);
+            } else {
+                HuSprAttrSet(grp, j + 2, 0x8000);
+            }
+            HuSprPriSet(grp, j + 2, 0x1000);
+            HuSprPosSet(grp, j + 2, 0, 9);
+            func_800554C4_main(grp, j + 2, 0);
+        }
+        HuSprPosSet(grp, 0, i * 70 + 55, 200);
+    }
+    HuPrcSleep(20);
+
+    angle = 90.0f;
+    count = 0;
+    fading = 0;
+    wrapped = 0;
+    alpha = 255;
+
+    while (1) {
+        if (angle >= 360.0f && wrapped == 0) {
+            wrapped = 1;
+            count++;
+        }
+        if (angle >= 360.0f) {
+            wrapped = 0;
+            angle -= 360.0f;
+        }
+        if (fading == 0 && count != 0) {
+            if (angle >= 90.0f && angle < 180.0f) {
+                fading = 1;
+            }
+        }
+        if (fading != 0) {
+            alpha -= 21;
+            mask = -(alpha > 0);
+            clampedAlpha = mask & alpha;
+            alpha = clampedAlpha;
+        }
+        HuSprTPLvlSet(titleGrp, 0, alpha);
+        if (count >= 2) {
+            break;
+        }
+        HuPrcVSleep();
+        angle += speed;
+    }
+
+    HuSprScaleSet(titleGrp, 0, 1.0f, 0.0f);
+    HuSprGrpKill(titleGrp);
+    HuSprAnimKill(titleAnim);
+    process->user_data = (void *)1;
+
+    i = 0;
+    while (1) {
+        switch (D_801207B0_w05[i]) {
+            case 0:
+                for (j = 0; j < 6; j++) {
+                    HuSprAttrSet(spr.grps[i], j, 0x8000);
+                }
+                break;
+            case 1:
+                for (j = 0; j < 6; j++) {
+                    HuSprAttrReset(spr.grps[i], j, 0x8000);
+                }
+                for (j = 0; j < 4; j++) {
+                    HuSprAttrSet(spr.grps[i], j + 2, 0x8000);
+                }
+                HuSprAttrReset(spr.grps[i], 2, 0x8000);
+                break;
+            case 2:
+                for (j = 0; j < 6; j++) {
+                    HuSprAttrReset(spr.grps[i], j, 0x8000);
+                }
+                for (j = 0; j < 4; j++) {
+                    HuSprAttrSet(spr.grps[i], j + 2, 0x8000);
+                }
+                HuSprAttrReset(spr.grps[i], 3, 0x8000);
+                break;
+            case 3:
+                for (j = 0; j < 6; j++) {
+                    HuSprAttrReset(spr.grps[i], j, 0x8000);
+                }
+                for (j = 0; j < 4; j++) {
+                    HuSprAttrSet(spr.grps[i], j + 2, 0x8000);
+                }
+                HuSprAttrReset(spr.grps[i], 4, 0x8000);
+                break;
+            case 4:
+                for (j = 0; j < 6; j++) {
+                    HuSprAttrReset(spr.grps[i], j, 0x8000);
+                }
+                for (j = 0; j < 4; j++) {
+                    HuSprAttrSet(spr.grps[i], j + 2, 0x8000);
+                }
+                HuSprAttrReset(spr.grps[i], 5, 0x8000);
+                break;
+            default:
+                goto end;
+        }
+        i++;
+        if (i >= 4) {
+            i = 0;
+            HuPrcVSleep();
+        }
+    }
+end:
+    MBHelpWinKill(helpWin);
+    HuSprAnimKill(frameAnim);
+    for (i = 0; i < 4; i++) {
+        HuSprAnimKill(spr.choiceAnims[i]);
+        HuSprAnimKill(spr.charAnims[i]);
+        HuSprGrpKill(spr.grps[i]);
+    }
+    omDelPrcObj(NULL);
+}
 
 void func_80118364_w05(void) {
     GW_PLAYER *player = MBPlayerGet(-1);

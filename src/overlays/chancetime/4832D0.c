@@ -50,6 +50,7 @@ void func_80109B70_chancetime(omObjData *object);
 void func_8010A0A4_chancetime(omObjData *object);
 void func_8010A5D8_chancetime(omObjData *object);
 void func_8010B124_chancetime(omObjData *object);
+void func_8010BD40_chancetime(void);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80107300_chancetime);
 
@@ -334,7 +335,78 @@ void func_80108CDC_chancetime(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_80108EDC_chancetime);
+void func_80108EDC_chancetime(omObjData *object) {
+    s16 model = object->model[1];
+    omObjData *motObj = D_801100D4_chancetime.obj;
+    Vec unusedPos;
+    f32 y;
+    f32 speed;
+    s32 i;
+    s32 j;
+
+    HuPrcSleep(5);
+    HuPrcSleep(2);
+    y = HmfModelData[model].pos.y;
+    for (i = 0; i < 3; i++) {
+        Hu3DMotionShiftSet(model, HmfModelData[motObj->motion[12]].motId, 0, 10, 0);
+        for (j = 0; j < 9; j++) {
+            HmfModelData[model].pos.y = y + sindf(j * 20.0f) * 50.0f;
+            HuPrcVSleep();
+        }
+    }
+    HmfModelData[model].pos.y = y;
+    Hu3DMotionShiftSet(object->model[1], HmfModelData[motObj->motion[0]].motId, 0, 10, 2);
+    HuPrcSleep(3);
+    for (i = 0; i < 1; i++) {
+        for (j = 0; j < 2; j++) {
+            Hu3DMotionShiftSet(model, HmfModelData[motObj->motion[5]].motId, 0, 10, 0);
+            Hu3DMotionSpeedSet(model, 1.5f);
+            func_8010B7A0_chancetime(model);
+        }
+        Hu3DMotionShiftSet(model, HmfModelData[motObj->motion[6]].motId, 0, 10, 0);
+        Hu3DMotionSpeedSet(model, 1.5f);
+        func_8010B7A0_chancetime(model);
+        Hu3DMotionShiftSet(model, HmfModelData[motObj->motion[7]].motId, 0, 10, 0);
+        Hu3DMotionSpeedSet(model, 1.5f);
+        func_8010B7A0_chancetime(model);
+    }
+    HuPrcSleep(1);
+    Hu3DMotionShiftSet(model, HmfModelData[motObj->motion[8]].motId, 0, 10, 0);
+    HuPrcSleep(20);
+    omAddPrcObj(func_8010BD40_chancetime, 0x1001, 0x2000, 0);
+    HuPrcSleep(10);
+    Hu3DMotionShiftSet(object->model[1], HmfModelData[motObj->motion[12]].motId, 0, 10, 0);
+    // Copied but never read in the original.
+    unusedPos.x = HmfModelData[model].pos.x;
+    unusedPos.y = HmfModelData[model].pos.y;
+    unusedPos.z = HmfModelData[model].pos.z;
+    (void)unusedPos;
+    speed = 20.0f;
+    while (TRUE) {
+        HmfModelData[model].pos.y += speed;
+        HmfModelData[model].pos.z += 20.0f;
+        if (HmfModelData[model].pos.z >= -250.0f) {
+            HmfModelData[object->model[2]].pos.x = HmfModelData[model].pos.x;
+            HmfModelData[object->model[2]].pos.y = 0.0f;
+            HmfModelData[object->model[2]].pos.z = HmfModelData[model].pos.z;
+            func_8001C258_main(object->model[2], HU3D_ATTR_DISPOFF, 0);
+        }
+        if (HmfModelData[model].pos.y <= 0.0f) {
+            break;
+        }
+        speed -= 3.0f;
+        HuPrcVSleep();
+    }
+    HmfModelData[model].pos.y = 0.0f;
+    HmfModelData[object->model[2]].pos.x = HmfModelData[model].pos.x;
+    HmfModelData[object->model[2]].pos.y = 0.0f;
+    HmfModelData[object->model[2]].pos.z = HmfModelData[model].pos.z;
+    Hu3DMotionShiftSet(object->model[1], HmfModelData[motObj->motion[1]].motId, 0, 10, 2);
+    func_8010BC88_chancetime(object, 0.0f, 0.0f, 500.0f, 5);
+    func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    func_8001C258_main(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    D_80110088_chancetime[0].func = func_80107A80_chancetime;
+}
 
 void func_801094CC_chancetime(void) {
     omObjData *obj;
@@ -621,7 +693,74 @@ void func_8010A99C_chancetime(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010AA90_chancetime);
+void func_8010AA90_chancetime(omObjData *object) {
+    s16 model = D_801100D4_chancetime.obj->model[1];
+    omObjData *motObj = D_801100D4_chancetime.obj;
+    Vec unusedPos;
+    f32 y;
+    f32 speed;
+    s32 i;
+    s32 j;
+
+    HuPrcSleep(5);
+    HuPrcSleep(3);
+    y = HmfModelData[model].pos.y;
+    for (i = 0; i < 3; i++) {
+        Hu3DMotionShiftSet(model, HmfModelData[motObj->motion[12]].motId, 0, 10, 0);
+        for (j = 0; j < 9; j++) {
+            HmfModelData[model].pos.y = y + sindf(j * 20.0f) * 50.0f;
+            HuPrcVSleep();
+        }
+    }
+    HmfModelData[model].pos.y = y;
+    Hu3DMotionShiftSet(object->model[1], HmfModelData[motObj->motion[0]].motId, 0, 10, 2);
+    HuPrcSleep(2);
+    for (i = 0; i < 1; i++) {
+        for (j = 0; j < 2; j++) {
+            Hu3DMotionShiftSet(model, HmfModelData[motObj->motion[5]].motId, 0, 10, 0);
+            Hu3DMotionSpeedSet(model, 1.5f);
+            func_8010B7A0_chancetime(model);
+        }
+        Hu3DMotionShiftSet(model, HmfModelData[motObj->motion[6]].motId, 0, 10, 0);
+        Hu3DMotionSpeedSet(model, 1.5f);
+        func_8010B7A0_chancetime(model);
+        Hu3DMotionShiftSet(model, HmfModelData[motObj->motion[7]].motId, 0, 10, 0);
+        Hu3DMotionSpeedSet(model, 1.5f);
+        func_8010B7A0_chancetime(model);
+    }
+    HuPrcSleep(1);
+    Hu3DMotionShiftSet(model, HmfModelData[motObj->motion[9]].motId, 0, 10, 0);
+    HuPrcSleep(42);
+    Hu3DMotionShiftSet(object->model[1], HmfModelData[motObj->motion[12]].motId, 0, 10, 0);
+    // Copied but never read in the original.
+    unusedPos.x = HmfModelData[model].pos.x;
+    unusedPos.y = HmfModelData[model].pos.y;
+    unusedPos.z = HmfModelData[model].pos.z;
+    (void)unusedPos;
+    speed = 20.0f;
+    while (TRUE) {
+        HmfModelData[model].pos.y += speed;
+        HmfModelData[model].pos.z += 10.0f;
+        if (HmfModelData[model].pos.z >= -250.0f) {
+            HmfModelData[object->model[2]].pos.x = HmfModelData[model].pos.x;
+            HmfModelData[object->model[2]].pos.y = 0.0f;
+            HmfModelData[object->model[2]].pos.z = HmfModelData[model].pos.z;
+            func_8001C258_main(object->model[2], HU3D_ATTR_DISPOFF, 0);
+        }
+        if (HmfModelData[model].pos.y <= 0.0f) {
+            break;
+        }
+        speed -= 2.0f;
+        HuPrcVSleep();
+    }
+    HmfModelData[model].pos.y = 0.0f;
+    HmfModelData[object->model[2]].pos.x = HmfModelData[model].pos.x;
+    HmfModelData[object->model[2]].pos.y = 0.0f;
+    HmfModelData[object->model[2]].pos.z = HmfModelData[model].pos.z;
+    Hu3DMotionShiftSet(object->model[1], HmfModelData[motObj->motion[5]].motId, 0, 10, 2);
+    D_8010FB60_chancetime = 1;
+    D_801100B0_chancetime.func = func_80107A80_chancetime;
+}
 
 void func_8010B030_chancetime(void) {
     omObjData *parent = D_801100D4_chancetime.obj;
@@ -640,7 +779,76 @@ void func_8010B030_chancetime(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010B124_chancetime);
+void func_8010B124_chancetime(omObjData *object) {
+    s16 model = D_801100D4_chancetime.obj->model[3];
+    omObjData *motObj = D_801100D4_chancetime.obj;
+    Vec unusedPos;
+    f32 y;
+    f32 speed;
+    s32 i;
+    s32 j;
+
+    HuPrcSleep(5);
+    HuPrcSleep(4);
+    y = HmfModelData[model].pos.y;
+    for (i = 0; i < 3; i++) {
+        Hu3DMotionShiftSet(model, HmfModelData[motObj->motion[12]].motId, 0, 10, 0);
+        for (j = 0; j < 9; j++) {
+            HmfModelData[model].pos.y = y + sindf(j * 20.0f) * 50.0f;
+            HuPrcVSleep();
+        }
+    }
+    HmfModelData[model].pos.y = y;
+    Hu3DMotionShiftSet(object->model[1], HmfModelData[motObj->motion[0]].motId, 0, 10, 2);
+    HuPrcSleep(1);
+    for (i = 0; i < 1; i++) {
+        for (j = 0; j < 2; j++) {
+            Hu3DMotionShiftSet(model, HmfModelData[motObj->motion[5]].motId, 0, 10, 0);
+            Hu3DMotionSpeedSet(model, 1.5f);
+            func_8010B7A0_chancetime(model);
+        }
+        Hu3DMotionShiftSet(model, HmfModelData[motObj->motion[6]].motId, 0, 10, 0);
+        Hu3DMotionSpeedSet(model, 1.5f);
+        func_8010B7A0_chancetime(model);
+        Hu3DMotionShiftSet(model, HmfModelData[motObj->motion[7]].motId, 0, 10, 0);
+        Hu3DMotionSpeedSet(model, 1.5f);
+        func_8010B7A0_chancetime(model);
+    }
+    HuPrcSleep(1);
+    Hu3DMotionShiftSet(model, HmfModelData[motObj->motion[10]].motId, 0, 10, 0);
+    HuPrcSleep(42);
+    Hu3DMotionShiftSet(object->model[1], HmfModelData[motObj->motion[12]].motId, 0, 10, 0);
+    // Copied but never read in the original.
+    unusedPos.x = HmfModelData[model].pos.x;
+    unusedPos.y = HmfModelData[model].pos.y;
+    unusedPos.z = HmfModelData[model].pos.z;
+    (void)unusedPos;
+    speed = 20.0f;
+    while (TRUE) {
+        HmfModelData[model].pos.y += speed;
+        HmfModelData[model].pos.z += 10.0f;
+        if (HmfModelData[model].pos.z >= -250.0f) {
+            HmfModelData[object->model[2]].pos.x = HmfModelData[model].pos.x;
+            HmfModelData[object->model[2]].pos.y = 0.0f;
+            HmfModelData[object->model[2]].pos.z = HmfModelData[model].pos.z;
+            func_8001C258_main(object->model[2], HU3D_ATTR_DISPOFF, 0);
+        }
+        if (HmfModelData[model].pos.y <= 0.0f) {
+            break;
+        }
+        speed -= 3.0f;
+        HuPrcVSleep();
+    }
+    HmfModelData[model].pos.y = 0.0f;
+    HmfModelData[object->model[2]].pos.x = HmfModelData[model].pos.x;
+    HmfModelData[object->model[2]].pos.y = 0.0f;
+    HmfModelData[object->model[2]].pos.z = HmfModelData[model].pos.z;
+    Hu3DMotionShiftSet(model, HmfModelData[motObj->motion[1]].motId, 0, 10, 2);
+    func_8010BC88_chancetime(object, 400.0f, 0.0f, 300.0f, 10);
+    func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    func_8001C258_main(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    D_801100B8_chancetime.func = func_80107A80_chancetime;
+}
 
 s32 func_8010B6F4_chancetime(s16 model) {
     f32 time = Hu3DMotionShiftTimeGet(model);

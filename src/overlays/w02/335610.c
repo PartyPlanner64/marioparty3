@@ -43,7 +43,7 @@ extern Unk3 *D_8011EC24_w02;
 extern Unk3 *D_8011EC28_w02;
 extern Unk3 *D_8011EC2C_w02;
 extern Unk3 *D_8011EC30_w02;
-extern s32 D_8011EC70_w02;
+extern Object *D_8011EC70_w02;
 extern Object *D_8011EC80_w02[4];
 extern Object *D_8011ECD8_w02[4];
 extern omObjData *D_8011ECE8_w02[4];
@@ -158,6 +158,16 @@ extern BranchPair D_8011D2B8_w02[];
 void func_8010ED4C_w02(omObjData *arg0);
 extern s32 D_8011C6E8_w02;
 s32 func_80107438_w02(u8 *arg0, s32 arg1, s32 arg2);
+extern event_table_entry D_8011D688_w02[];
+extern event_table_entry D_8011D700_w02[];
+extern event_table_entry D_8011D894_w02[];
+extern event_table_entry D_8011D9CC_w02[];
+void func_8011B8A0_w02(void);
+extern s16 D_8011C73C_w02[][2];
+extern s16 D_8011C744_w02[][2];
+extern s16 D_8011C7EC_w02[];
+extern s16 D_8011C7F0_w02[];
+extern u32 *D_8011C82C_w02[];
 s16 func_801059D0_w02(void) {
     return D_8011C6A0_w02[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
 }
@@ -832,7 +842,19 @@ void func_80107780_w02(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80107830_w02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80107B4C_w02);
+void func_80107B4C_w02(void) {
+    HuAudSeqPlay(0x19);
+    D_800CE198_main = 0x19;
+    func_800F8D6C_shared_board(0x19);
+    Hu3DCamInit(2);
+    func_80107830_w02();
+    MBMasuEventTblAdd(D_8011D688_w02);
+    MBMasuEventTblAdd(D_8011D9CC_w02);
+    MBHatenaFuncSet(&func_8011B8A0_w02);
+    MBMasuEventTblAdd(D_8011D700_w02);
+    MBMasuEventTblAdd(D_8011D894_w02);
+    MBStart(0);
+}
 
 void func_80107BD0_w02(void) {
     Hu3DCamInit(1);
@@ -969,7 +991,34 @@ void func_80108218_w02(void) {
     func_80107FB0_w02();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80108280_w02);
+void func_80108280_w02(s16 arg0) {
+    Object *obj;
+    s32 unk[2]; // unreferenced; preserves an 8-byte stack slot
+
+    if (D_8011EC74_w02[arg0] != NULL) {
+        return;
+    }
+    if (D_8011EC70_w02 == NULL) {
+        s32 board = GwSystem.current_board_index;
+
+        obj = MBModelCreate(D_8011C7F0_w02[board], D_8011C82C_w02[board]);
+        MBModelTempAllocFree(obj);
+        D_8011EC70_w02 = obj;
+    } else {
+        obj = MBModelLinkCreate(D_8011EC70_w02);
+    }
+    D_8011EC74_w02[arg0] = obj;
+    obj->flags |= 2;
+    func_8001C814_main(obj->omObj1->model[0], 2, 1);
+    HuVecCopy3F(&obj->coords, &MBMasuGet(D_8011C7EC_w02[arg0])->coords);
+    {
+        SpaceData *masuA = MBMasuGet(D_8011C744_w02[arg0][0]);
+        SpaceData *masuB = MBMasuGet(D_8011C744_w02[arg0][1]);
+
+        MBVecDirGet(&masuB->coords, &masuA->coords, &obj->rot);
+    }
+    func_800D771C_shared_board(0xC, obj, D_8011C73C_w02[arg0][0], D_8011C73C_w02[arg0][1]);
+}
 
 void func_801083EC_w02(void) {
     s32 i;

@@ -27,26 +27,6 @@
 typedef s16 SpaceTriple[3];
 typedef s16 SpacePair[2];
 
-typedef struct {
-    /* 0x00 */ Object *obj1;
-    /* 0x04 */ Object *obj2;
-    /* 0x08 */ s32 state;
-    /* 0x0C */ s32 flag;
-} ModelAnimWork;
-
-typedef struct {
-    /* 0x00 */ Vec unk00;
-    /* 0x0C */ f32 unk0C;
-    /* 0x10 */ f32 unk10;
-    /* 0x14 */ f32 unk14;
-    /* 0x18 */ Object *model;
-    /* 0x1C */ u16 unk1C;
-} ModelFadeWork;
-
-typedef struct {
-    u8 unk[4];
-} Unk4Bytes;
-
 typedef struct ChanceTable {
     /* 0x00 */ s32 entries[4];
 } ChanceTable; // size 0x10
@@ -61,15 +41,6 @@ typedef struct StarChaseWork {
     /* 0x40 */ ChanceTable eventTableA;
     /* 0x50 */ ChanceTable eventTableB;
 } StarChaseWork; // size 0x60
-
-typedef struct WarpBlockSwapWork {
-    /* 0x00 */ s16 startX;
-    /* 0x02 */ s16 startY;
-    /* 0x04 */ s16 endX;
-    /* 0x06 */ s16 endY;
-    /* 0x08 */ s16 duration;
-    /* 0x0A */ s16 spriteGroup;
-} WarpBlockSwapWork;
 
 /* Star-space order and board model resources. */
 s16 D_8011B580_w06[] = { 2, 3, 4, 5, 6, 7, 0, 1 };

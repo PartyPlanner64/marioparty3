@@ -55,6 +55,40 @@ typedef struct DecisionTreeNonLeafNode {
     } node_data2;
 } DecisionTreeNonLeafNode;
 
+typedef struct {
+    /* 0x00 */ Object *obj1;
+    /* 0x04 */ Object *obj2;
+    /* 0x08 */ s32 state;
+    /* 0x0C */ s32 flag;
+} ModelAnimWork;
+
+typedef struct {
+    /* 0x00 */ Vec unk00;
+    /* 0x0C */ f32 unk0C;
+    /* 0x10 */ f32 unk10;
+    /* 0x14 */ f32 unk14;
+    /* 0x18 */ Object *model;
+    /* 0x1C */ u16 unk1C;
+} ModelFadeWork;
+
+typedef struct {
+    u8 unk[4];
+} Unk4Bytes;
+
+typedef struct WarpBlockSwapWork {
+    /* 0x00 */ s16 startX;
+    /* 0x02 */ s16 startY;
+    /* 0x04 */ s16 endX;
+    /* 0x06 */ s16 endY;
+    /* 0x08 */ s16 duration;
+    /* 0x0A */ s16 spriteGroup;
+} WarpBlockSwapWork;
+
+typedef struct {
+    /* 0x00 */ u16 multiplier;
+    /* 0x02 */ u16 threshold;
+} GameGuyReward;
+
 typedef struct BranchLink {
     /* 0x00 */ s16 link;
     /* 0x02 */ s16 idx;

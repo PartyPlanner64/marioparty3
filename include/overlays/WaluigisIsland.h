@@ -16,11 +16,6 @@ typedef struct MessageTable {
     /* 0x00 */ s32 entries[4];
 } MessageTable; // size 0x10
 
-typedef struct {
-    /* 0x00 */ u16 multiplier;
-    /* 0x02 */ u16 threshold;
-} GameGuyReward;
-
 /* Overlay functions */
 void func_80108B9C_w06(void);
 void func_8010980C_w06(void);

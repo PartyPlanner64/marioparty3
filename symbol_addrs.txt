@@ -1209,6 +1209,7 @@ AddSIClient = 0x8005188C; //rom:0x5248C
 D_80101B40_name_81 = 0x80101B40; //size:0x10 segment:name_81
 D_80101B60_name_81 = 0x80101B60; //size:0x10 segment:name_81
 D_80105508_name_81 = 0x80105508; //size:0x10 segment:name_81
+D_8011D1D4_w05 = 0x8011D1D4; //size:0xC segment:w05
 _RemoveSIClient = 0x800518FC; //rom:0x524FC
 RemoveSIClient = 0x80051968; //rom:0x52568
 CallSIClient = 0x800519D0; //rom:0x525D0

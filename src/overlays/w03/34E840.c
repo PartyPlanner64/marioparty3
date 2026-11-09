@@ -86,7 +86,24 @@ extern Unk3 *D_8011EB1C_w03;
 extern Unk3 *D_8011EB20_w03;
 extern s32 D_8011EB24_w03;
 extern s32 D_8011EB28_w03;
-extern s32 D_8011EB88_w03;
+extern Object *D_8011EB54_w03;
+extern Object *D_8011EB58_w03[1];
+extern Object *D_8011EB5C_w03;
+extern Object *D_8011EB60_w03[10];
+extern Object *D_8011EB88_w03;
+extern Object *D_8011EB8C_w03[2];
+extern s16 D_8011C1A0_w03[][2];
+extern s16 D_8011C1B8_w03[][2];
+extern s16 D_8011C1C0_w03[][2];
+extern s16 D_8011C1E8_w03[];
+extern s16 D_8011C1EC_w03[];
+extern Vec D_8011C1F0_w03[];
+extern Vec D_8011C22C_w03[];
+extern s16 D_8011C268_w03[];
+extern s16 D_8011C26C_w03[];
+extern u32 *D_8011C2A8_w03[];
+extern s32 D_8011C2C0_w03[];
+extern s32 D_8011C32C_w03[];
 extern s32 D_8011EB94_w03;
 extern s32 D_8011EB98_w03;
 extern u8 *D_8011EB9C_w03;
@@ -936,19 +953,128 @@ void func_80107F30_w03(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80107FF8_w03);
+void func_80107FF8_w03(s16 arg0) {
+    Object *obj;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80108118_w03);
+    if (D_8011EB58_w03[arg0] != NULL) {
+        return;
+    }
+    if (D_8011EB54_w03 == NULL) {
+        obj = MBModelCreate(0xA, NULL);
+        func_8001FA68_main(obj->omObj1->model[0]);
+        func_8001FA68_main(obj->omObj2->model[0]);
+        D_8011EB54_w03 = obj;
+    } else {
+        obj = MBModelLinkCreate(D_8011EB54_w03);
+    }
+    MBModelDispOff(obj);
+    D_8011EB58_w03[arg0] = obj;
+    obj->flags |= 2;
+    obj->velocity.x = 15.0f;
+    HuVecCopy3F(&obj->coords, &MBMasuGet(D_8011C1E8_w03[arg0])->coords);
+    func_800D771C_shared_board(0xA, obj, D_8011C1A0_w03[arg0][0], D_8011C1A0_w03[arg0][1]);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80108174_w03);
+void func_80108118_w03(void) {
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80108270_w03);
+    D_8011EB54_w03 = 0;
+    for (i = 0; i <= 0; i++) {
+        D_8011EB58_w03[i] = NULL;
+        func_80107FF8_w03(i);
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_801083DC_w03);
+void func_80108174_w03(void) {
+    s32 i;
+    s32 j;
+    s32 count;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80108444_w03);
+    for (i = 0; i < 2; i++) {
+        count = (GwSystem.bank_coins + 9) / 10;
+        if (count > 5) {
+            count = 5;
+        }
+        for (j = 0; j < count; j++) {
+            MBModelDispOn(D_8011EB60_w03[i * 5 + j]);
+        }
+        for (; j < 5; j++) {
+            MBModelDispOff(D_8011EB60_w03[i * 5 + j]);
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_801085B0_w03);
+void func_80108270_w03(s16 arg0) {
+    Object *obj;
+
+    if (D_8011EB60_w03[arg0] != NULL) {
+        return;
+    }
+    if (D_8011EB5C_w03 == NULL) {
+        obj = MBModelCreate(0x1E, NULL);
+        MBModelTempAllocFree(obj);
+        D_8011EB5C_w03 = obj;
+    } else {
+        obj = MBModelLinkCreate(D_8011EB5C_w03);
+    }
+    D_8011EB60_w03[arg0] = obj;
+    obj->flags |= 2;
+    HuVecCopy3F(&obj->coords, &MBMasuGet(D_8011C1EC_w03[arg0 / 5])->coords);
+    HuVecAdd(&obj->coords, &D_8011C1F0_w03[arg0 % 5], &obj->coords);
+    obj->omObj1->rot.x = D_8011C22C_w03[arg0 % 5].x;
+    obj->omObj1->rot.z = D_8011C22C_w03[arg0 % 5].z;
+    MBModelDispOff(obj);
+}
+
+void func_801083DC_w03(void) {
+    s32 i;
+
+    D_8011EB5C_w03 = 0;
+    for (i = 0; i < 0xA; i++) {
+        D_8011EB60_w03[i] = NULL;
+        func_80108270_w03(i);
+    }
+    func_80108174_w03();
+}
+
+void func_80108444_w03(s16 arg0) {
+    Object *obj;
+    s32 unk[2]; // unreferenced; preserves an 8-byte stack slot
+
+    if (D_8011EB8C_w03[arg0] != NULL) {
+        return;
+    }
+    if (D_8011EB88_w03 == NULL) {
+        s32 board = GwSystem.current_board_index;
+
+        obj = MBModelCreate(D_8011C26C_w03[board], D_8011C2A8_w03[board]);
+        MBModelTempAllocFree(obj);
+        D_8011EB88_w03 = obj;
+    } else {
+        obj = MBModelLinkCreate(D_8011EB88_w03);
+    }
+    D_8011EB8C_w03[arg0] = obj;
+    obj->flags |= 2;
+    func_8001C814_main(obj->omObj1->model[0], 2, 1);
+    HuVecCopy3F(&obj->coords, &MBMasuGet(D_8011C268_w03[arg0])->coords);
+    {
+        SpaceData *masuA = MBMasuGet(D_8011C1C0_w03[arg0][0]);
+        SpaceData *masuB = MBMasuGet(D_8011C1C0_w03[arg0][1]);
+
+        MBVecDirGet(&masuB->coords, &masuA->coords, &obj->rot);
+    }
+    func_800D771C_shared_board(0xC, obj, D_8011C1B8_w03[arg0][0], D_8011C1B8_w03[arg0][1]);
+}
+
+void func_801085B0_w03(void) {
+    s32 i;
+
+    D_8011EB88_w03 = 0;
+    for (i = 0; i < 2; i++) {
+        D_8011EB8C_w03[i] = NULL;
+        func_80108444_w03(i);
+    }
+}
 
 void func_80108610_w03(void) {
     HuPrcSleep(D_8011C308_w03[GwSystem.current_board_index]);
@@ -956,9 +1082,45 @@ void func_80108610_w03(void) {
     omDelPrcObj(NULL);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_8010866C_w03);
+void func_8010866C_w03(s32 arg0, s32 arg1) {
+    MBMotionSet(D_8011EB8C_w03[arg0], arg1 - 1, 0);
+    func_8001C814_main(D_8011EB8C_w03[arg0]->omObj1->model[0], 5, 0);
+    if (D_8011C2C0_w03[GwSystem.current_board_index] != -1) {
+        HuAudFXPlay(D_8011C2C0_w03[GwSystem.current_board_index]);
+    }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80108734_w03);
+    if (D_8011C2E4_w03[GwSystem.current_board_index] != -1) {
+        omAddPrcObj(func_80108610_w03, 0x1000, 0, 0);
+    }
+}
+
+void func_80108734_w03(void) {
+    s32 index;
+    s32 sleep;
+
+    index = (s32)HuPrcCurrentGet()->user_data;
+
+    switch (GwSystem.walk_speed) {
+        case 0:
+            sleep = 5;
+            break;
+        case 1:
+            sleep = 10;
+            break;
+        default:
+            sleep = 15;
+            break;
+    }
+
+    HuPrcSleep(sleep);
+    func_8001C814_main(D_8011EB8C_w03[index]->omObj1->model[0], 1, 4);
+
+    if (D_8011C32C_w03[GwSystem.current_board_index] != -1) {
+        HuAudFXPlay(D_8011C32C_w03[GwSystem.current_board_index]);
+    }
+
+    omDelPrcObj(NULL);
+}
 
 void func_801087E4_w03(s32 arg) {
     Process *prc = omAddPrcObj(func_80108734_w03, 0x1000, 0, 0);

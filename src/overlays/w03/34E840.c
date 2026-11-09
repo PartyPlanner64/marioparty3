@@ -24,6 +24,11 @@
 #include "gcc/memory.h"
 #include "game/mallocblock.h"
 
+typedef struct HatenaPlayerWork {
+    /* 0x00 */ s32 playerNo;
+    /* 0x04 */ s32 order;
+} HatenaPlayerWork;
+
 void func_80105DB0_w03(void);
 void func_80107D54_w03(s16 arg0);
 void func_80107ECC_w03(void);
@@ -143,6 +148,9 @@ extern Unk3 *D_8011EB20_w03;
 extern s32 D_8011EB24_w03;
 extern s32 D_8011EB28_w03;
 extern Object *D_8011EB30_w03;
+extern SpaceData *D_8011EB3C_w03;
+extern s32 D_8011EB50_w03;
+extern Vec2f D_8011D438_w03[];
 extern Object *D_8011EB34_w03;
 extern Object *D_8011EB38_w03;
 extern Object *D_8011EB54_w03;
@@ -6872,7 +6880,52 @@ void func_8011A2BC_w03(void) {
     omDelPrcObj(NULL);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_8011A338_w03);
+void func_8011A338_w03(void) {
+    HatenaPlayerWork *work = HuPrcCurrentGet()->user_data;
+    GW_SYSTEM *sys = &GwSystem;
+    s32 playerNo = work->playerNo;
+    GW_PLAYER *player = MBPlayerGet(playerNo);
+    SpaceData *dest;
+    Object *model;
+
+    if (D_8011EB3C_w03 == MBMasuGet(0x7F)) {
+        dest = MBMasuGet(0x24);
+    } else {
+        dest = MBMasuGet(0x4E);
+    }
+    func_8004AC98_main(0x199, sys->current_player_index);
+    player->player_obj->velocity.x = 0.0f;
+    HuVecCopy3F(&player->player_obj->coords, &D_8011EB3C_w03->coords);
+    model = MBModelCreate(0x36, NULL);
+    HuVecCopy3F(&model->coords, &D_8011EB3C_w03->coords);
+    MBMotionSet(model, -1, 0);
+    func_800EE688_shared_board(player->player_obj, 15.0f, -0.1f);
+    HuPrcSleep(10);
+    player->player_obj->velocity.x = 100.0f;
+    HuVecCopy3F(&player->player_obj->coords, &dest->coords);
+    player->player_obj->coords.x += D_8011D438_w03[D_8011EB50_w03 + work->order].x;
+    player->player_obj->coords.z += D_8011D438_w03[D_8011EB50_w03 + work->order].y;
+    func_800EE688_shared_board(player->player_obj, 0.0f, -1.0f);
+    func_800EE6C0_shared_board(player->player_obj);
+    MBPlayerVibrate(playerNo, 1);
+    MBModelKill(model);
+    if (D_8011EB3C_w03 == MBMasuGet(0x7F)) {
+        player->clink = 5;
+        player->cidx = 0x14;
+        player->nlink = 5;
+        player->nidx = 0x15;
+        player->blink = 5;
+        player->bidx = 0x13;
+    } else {
+        player->clink = 2;
+        player->cidx = 2;
+        player->nlink = 2;
+        player->nidx = 3;
+        player->blink = 2;
+        player->bidx = 1;
+    }
+    omDelPrcObj(NULL);
+}
 
 void func_8011A550_w03(void) {
     s32 playerNo;

@@ -1,11 +1,14 @@
 #include "common.h"
 #include "game/aura.h"
 #include "game/malloc.h"
+#include "game/wipe.h"
 #include "../ovl_80_shared_board/1006F0.h"
 #include "../ovl_80_shared_board/1063F0.h"
 #include "../ovl_80_shared_board/EA790.h"
 #include "../ovl_80_shared_board/EAB00.h"
 #include "../ovl_80_shared_board/ECA50.h"
+#include "../ovl_80_shared_board/EE660.h"
+#include "../ovl_80_shared_board/10C230.h"
 #include "../ovl_80_shared_board/FA250.h"
 #include "../ovl_80_shared_board/105D50.h"
 #include "../ovl_80_shared_board/106A50.h"
@@ -21,6 +24,7 @@ extern Vec D_8010B818_w10[];
 extern Vec D_8010B854_w10[];
 extern s16 D_8010B890_w10[];
 extern s16 D_8010B898_w10[];
+extern s32 D_8010B8E8_w10[];
 extern Object *D_8010BA24_w10;
 extern Process *D_8010BA28_w10;
 extern Object *D_8010BA2C_w10;
@@ -28,7 +32,10 @@ extern Object *D_8010BA30_w10;
 extern Object *D_8010BA38_w10[2];
 extern s16 D_8010BA4C_w10;
 extern s16 D_8010BA4E_w10;
+extern s16 D_8010BA50_w10;
+extern s16 D_8010BA52_w10;
 extern s16 D_8010BA54_w10;
+extern Vec D_8010BA58_w10;
 
 void func_801059D0_w10(void) {
     GwSystem.current_board_index = 6;
@@ -189,7 +196,18 @@ void func_801061E8_w10(W10SprGroup *arg0) {
     HuMemMemoryFreeTemp(arg0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80106230_w10);
+void func_80106230_w10(s16 arg0, s16 x, s16 y) {
+    void *data;
+
+    D_8010BA4C_w10 = HuSprGrpCreate(1, 0);
+    data = DataRead(D_8010B8E8_w10[arg0]);
+    D_8010BA4E_w10 = HuSprAnimRead(data);
+    HuSprGrpMemberSet(D_8010BA4C_w10, 0, D_8010BA4E_w10, 0);
+    HuSprPriSet(D_8010BA4C_w10, 0, 0xB);
+    HuSprAttrSet(D_8010BA4C_w10, 0, 0x1000);
+    HuSprPosSet(D_8010BA4C_w10, 0, x, y);
+    DataClose(data);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80106314_w10);
 
@@ -198,9 +216,52 @@ void func_8010649C_w10(void) {
     HuSprGrpKill(D_8010BA4C_w10);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_801064C8_w10);
+void func_801064C8_w10(void) {
+    f32 scale;
 
+    for (scale = 1.0f; scale > 0.0f; scale -= 1.0f / 6.0f) {
+        HuSprScaleSet(D_8010BA50_w10, 0, 1.0f, scale);
+        HuPrcVSleep();
+    }
+    HuSprScaleSet(D_8010BA50_w10, 0, 1.0f, 0.0f);
+    HuSprAnimKill(D_8010BA52_w10);
+    HuSprGrpKill(D_8010BA50_w10);
+}
+
+// NON_MATCHING: register allocation differs for the player_obj load in the
+// MBPlayerGet(-1) branch (target loads into a0, current into v0).
+#ifdef NON_MATCHING
+void func_80106574_w10(void) {
+    Vec *pos;
+
+    D_8010BA54_w10 = -1;
+    MBPlayerPosFixSet(0, 1);
+    MBPlayerPosFixSet(1, 1);
+    MBPlayerPosFixSet(2, 1);
+    MBPlayerPosFixSet(3, 1);
+    WipeCreateIn(2, 0x10);
+    WipeColorSet(0xFF, 0xFF, 0xFF);
+    while (WipeStatGet() != 0) {
+        HuPrcVSleep();
+    }
+    func_800E6FCC_shared_board();
+    while (TRUE) {
+        if (D_8010BA54_w10 < 0) {
+            if (D_8010BA54_w10 == -2) {
+                pos = &D_8010BA58_w10;
+            } else {
+                pos = &MBPlayerGet(-1)->player_obj->coords;
+            }
+        } else {
+            pos = &MBMasuGet(D_8010BA54_w10)->coords;
+        }
+        MBCameraPos3DSet(pos);
+        HuPrcVSleep();
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80106574_w10);
+#endif
 
 void func_80106670_w10(s16 arg0) {
     D_8010BA54_w10 = arg0;
@@ -231,16 +292,55 @@ void func_80106730_w10(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80106774_w10);
+// NON_MATCHING: the address of GwSystem.current_player_index is CSE'd into a
+// register for the increment/reset, while the target rematerializes it.
+#ifdef NON_MATCHING
+void func_80106774_w10(void) {
+    GW_PLAYER *player;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_8010681C_w10);
+    if (++GwSystem.current_player_index >= 4) {
+        GwSystem.current_player_index = 0;
+    }
+    for (i = 0; i < 4; i++) {
+        player = MBPlayerGet(i);
+        MBPlayerForwardSet(i);
+        MBMotionSet(player->player_obj, -1, 2);
+        MBPlayerPosFixSet(i, 1);
+    }
+    MBCameraZoomSet(1.0f);
+}
+#else
+INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80106774_w10);
+#endif
+
+void func_8010681C_w10(Vec *arg0) {
+    func_800FF840_shared_board(arg0);
+}
 
 void func_80106838_w10(void) {
     HuPrcChildLink(HuPrcCurrentGet(), MBTelopCreate(GwSystem.current_player_index));
     HuPrcChildWatch();
 }
 
+// NON_MATCHING: the address of GwSystem.current_player_index is CSE'd into s0
+// across the calls, while the target reloads it directly each time.
+#ifdef NON_MATCHING
+void func_8010687C_w10(s16 arg0) {
+    Process *process;
+    Process *child;
+
+    func_800DCD64_shared_board(GwSystem.current_player_index, arg0);
+    process = HuPrcCurrentGet();
+    HuPrcChildLink(process, MBCameraZoomMotStart(1.3f));
+    child = func_800DD6C4_shared_board(GwSystem.current_player_index);
+    HuPrcChildWatch();
+    HuPrcChildLink(process, child);
+    HuPrcChildWatch();
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_8010687C_w10);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80106908_w10);
 

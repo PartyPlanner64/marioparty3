@@ -22,6 +22,7 @@ void func_800DCB8C_shared_board(void);
 void func_800DCBCC_shared_board(s32 arg0);
 s32 func_800DCD00_shared_board(s32 arg0);
 void func_800DCD2C_shared_board(s32 arg0, s32 arg1);
+void func_800DCD64_shared_board(s32 arg0, s32 arg1);
 s32 func_800DCD9C_shared_board(s32 arg0);
 Process* func_800DD6C4_shared_board(s32 playerNo);
 Process* func_800DDDD4_shared_board(s32 arg0);

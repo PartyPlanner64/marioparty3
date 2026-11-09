@@ -163,6 +163,9 @@ extern DecisionTreeNonLeafNode D_8011DB00_w04[];
 extern DecisionTreeNonLeafNode *D_8011BA68_w04[];
 extern s16 D_8011C000_w04[][3];
 extern BranchPair D_8011C014_w04[];
+extern DecisionTreeNonLeafNode *D_8011BB40_w04[];
+extern s16 D_8011C090_w04[][3];
+extern BranchPair D_8011C0A4_w04[];
 extern DecisionTreeNonLeafNode *D_8011BBAC_w04[];
 extern s16 D_8011C0D8_w04[][3];
 extern BranchPair D_8011C0EC_w04[];
@@ -1056,7 +1059,18 @@ void func_801089B0_w04(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_80108A58_w04);
+void func_80108A58_w04(void) {
+    if (MBPlayerGet(-1)->rev & 0x80) {
+        func_80116024_w04(D_8011C090_w04, D_8011C0A4_w04, D_8011BB40_w04);
+    } else {
+        if (GwSystem.boardData.halfWordBytes[1] == 0) {
+            MBMoveNextMasuSet(-1, 7, 0);
+        } else {
+            MBMoveNextMasuSet(-1, 8, 0);
+        }
+    }
+    omDelPrcObj(NULL);
+}
 
 void func_80108AD4_w04(void) {
     GW_PLAYER *player = MBPlayerGet(-1);

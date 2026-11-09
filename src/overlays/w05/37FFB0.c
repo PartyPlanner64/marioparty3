@@ -7191,6 +7191,12 @@ void func_801191C0_w05(void) {
 // anywhere from `PlayerFXPlay` on) and doing `p->x += ofs[0]; p->z += ofs[1];` after it leaves
 // only s-register swaps (type/playerObj, player/process) and a v0/v1 swap in the `ofs` math.
 // Declaration order has no effect on those. No natural construct for the boundary is known yet.
+// The s-register swaps are global-alloc priorities (loop-depth-weighted refs / live length). A
+// `do { } while (0)` only adds weight when it contains a real loop; one spanning from the
+// `playerObj` load through `ofs = ...` (containing the HuVecDistance wait loop), plus another around
+// the `func_800ED128_shared_board`/`func_801178B4_w05` calls, fixes all s-registers. The remaining
+// v0/v1 swap means the target's `ofs` was not tied to the `idx << 3` temp in local-alloc, which
+// suggests `ofs` (and `p`) were not block-local there (set before a basic block boundary).
 #ifdef NON_MATCHING
 void func_801192AC_w05(void) {
     PlayerReactWork *work = HuPrcCurrentGet()->user_data;

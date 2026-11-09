@@ -5,6 +5,11 @@ typedef struct ChanceTimeUnkFED0 {
     /* 0x01 */ char unk01[0x27];
 } ChanceTimeUnkFED0; // size = 0x28
 
+typedef struct ChanceTimeUnkFE3C {
+    /* 0x00 */ s16 coins;
+    /* 0x02 */ s16 stars;
+} ChanceTimeUnkFE3C; // size = 0x4
+
 extern s8 D_8010FB80_chancetime;
 extern s8 D_8010FB81_chancetime;
 extern s16 D_8010FB84_chancetime[2];
@@ -21,6 +26,7 @@ extern s32 D_8010FC1C_chancetime;
 extern s16 D_8010FE94_chancetime[3];
 extern u16 D_8010FE9A_chancetime;
 extern s32 D_8010FEC4_chancetime;
+extern ChanceTimeUnkFE3C D_8010FE3C_chancetime[];
 extern ChanceTimeUnkFED0 D_8010FED0_chancetime[3];
 extern s32 D_8010FF48_chancetime[3];
 extern s8 D_8010FEC8_chancetime;
@@ -29,10 +35,14 @@ extern s8 D_80110000_chancetime;
 extern s32 D_80110008_chancetime;
 extern void (*D_80110084_chancetime)();
 extern omObjData *D_801100C8_chancetime;
+extern s8 D_801100D0_chancetime[4];
+extern s8 D_801100DD_chancetime[2];
+extern s8 D_801100DF_chancetime;
 extern void (*D_801100CC_chancetime)(void);
 
 s32 func_8010872C_chancetime(void);
 void func_8010C610_chancetime(void);
+void func_8010F44C_chancetime(s32 arg0, s16 arg1, s16 arg2);
 void func_8010D320_chancetime(void);
 void func_8010D6A4_chancetime(s32 arg0);
 void func_8010DFA4_chancetime(void);
@@ -222,7 +232,47 @@ void func_8010F42C_chancetime(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010F44C_chancetime);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010F984_chancetime);
+void func_8010F984_chancetime(void) {
+    s32 players[4];
+    s32 i;
+    s32 j;
+    s32 coinAmount;
+    s32 starAmount;
+    s16 coins;
+    s16 stars;
+    u16 isStars;
+
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < 4; j++) {
+            if (D_801100DD_chancetime[i] == GwPlayer[D_801100D0_chancetime[j]].chr) {
+                players[i] = D_801100D0_chancetime[j];
+                break;
+            }
+        }
+    }
+
+    coins = D_8010FE3C_chancetime[D_801100DF_chancetime].coins;
+    coinAmount = D_8010FE3C_chancetime[D_801100DF_chancetime].coins;
+    starAmount = D_8010FE3C_chancetime[D_801100DF_chancetime].stars;
+    stars = starAmount;
+    if (coinAmount > 0) {
+        if (GwPlayer[players[0]].coin < coinAmount) {
+            coins = GwPlayer[players[0]].coin;
+        }
+        isStars = FALSE;
+    } else {
+        if (stars > GwPlayer[players[0]].star) {
+            stars = GwPlayer[players[0]].star;
+        }
+        isStars = TRUE;
+    }
+
+    if (!isStars) {
+        func_8010F44C_chancetime(D_801100DF_chancetime, coinAmount, coins);
+    } else {
+        func_8010F44C_chancetime(D_801100DF_chancetime, starAmount, stars);
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/487F50", D_8010FD0C_chancetime);
 

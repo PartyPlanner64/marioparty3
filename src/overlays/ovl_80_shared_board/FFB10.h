@@ -14,6 +14,7 @@ void func_800EC3E4_shared_board(void);
 void MBDlgResultWinExec(s32 arg0);
 void MBDlgWinExecY(s16 arg0, s32 arg1, s32 arg2);
 void MBDlgWinExec(s32 arg0, s32 arg1);
+void func_800EC5B4_shared_board(s16 arg0, s32 arg1);
 void func_800EC5EC_shared_board(s16 arg0, s32 arg1, s16 arg2);
 void MBDlgWinCreate(s32 arg0, s32 arg1);
 void func_800EC6A8_shared_board(void);

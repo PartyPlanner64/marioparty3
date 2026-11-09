@@ -6768,7 +6768,101 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_801183D4_w04);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_801191B8_w04);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_80119FCC_w04);
+void func_80119FCC_w04(s32 arg0, s32 arg1) {
+    s16 spaces[3] = { 0x81, 0x83, 0x82 };
+    Object *base;
+    Object *hammer;
+    Object *target;
+    SpaceData *space;
+    HmfModel *hmfModel;
+    s32 played = 0;
+    s32 i;
+    f32 angle;
+    f32 startAngle;
+
+    base = MBModelFileCreate(0x130178, -1, 1.0f, 0.0f, NULL);
+    Hu3DModelLayerSet(base->omObj1->model[0], 0);
+    func_8001C258_main(base->omObj1->model[0], 0x80000, 0x80000);
+    Hu3DModelRemakeStatic(base->omObj1->model[0]);
+    MBModelTempAllocFree(base);
+    if (arg0 == -1) {
+        space = MBMasuGet(spaces[0]);
+        target = D_8011E09C_w04[0];
+    } else {
+        space = MBMasuGet(spaces[arg0]);
+        target = D_8011E09C_w04[arg0];
+    }
+    HuVecCopy3F(&base->coords, &space->coords);
+
+    hammer = MBModelFileCreate(0xA0156, -1, 0.9f, 0.0f, NULL);
+    HuVecCopyXYZ(&hammer->scale, 1.8f, 1.8f, 1.8f);
+    MBModelTempAllocFree(hammer);
+    HuVecCopy3F(&hammer->coords, &space->coords);
+    hammer->velocity.x = -30.0f;
+    HuAudFXPlay(0x1A2);
+    for (angle = 0.0f; angle <= 135.0f; angle += 15.0f) {
+        hammer->velocity.x = sindf(angle) * 35.0f - 30.0f;
+        HuPrcVSleep();
+    }
+    HuPrcSleep(10);
+
+    angle = startAngle = MBVecAngleGet(&target->rot);
+    for (i = 0; i <= 360; i += 20) {
+        hmfModel = &HmfModelData[hammer->omObj1->model[0]];
+        sincosdf(i, &hmfModel->mtx[2][0], &hmfModel->mtx[2][2]);
+        HmfModelData[hammer->omObj1->model[0]].mtx[0][2] = -HmfModelData[hammer->omObj1->model[0]].mtx[2][0];
+        HmfModelData[hammer->omObj1->model[0]].mtx[0][0] = HmfModelData[hammer->omObj1->model[0]].mtx[2][2];
+        HmfModelData[hammer->omObj1->model[0]].mtx[0][1] = HmfModelData[hammer->omObj1->model[0]].mtx[0][3] =
+            HmfModelData[hammer->omObj1->model[0]].mtx[1][0] = HmfModelData[hammer->omObj1->model[0]].mtx[1][2] =
+                HmfModelData[hammer->omObj1->model[0]].mtx[1][3] = HmfModelData[hammer->omObj1->model[0]].mtx[2][1] =
+                    HmfModelData[hammer->omObj1->model[0]].mtx[2][3] =
+                        HmfModelData[hammer->omObj1->model[0]].mtx[3][0] =
+                            HmfModelData[hammer->omObj1->model[0]].mtx[3][1] =
+                                HmfModelData[hammer->omObj1->model[0]].mtx[3][2] = 0.0f;
+        HmfModelData[hammer->omObj1->model[0]].mtx[1][1] = HmfModelData[hammer->omObj1->model[0]].mtx[3][3] = 1.0f;
+        if (i > 180) {
+            angle -= 20.0f;
+            if (!played) {
+                HuAudFXPlay(0x1A4);
+                played = 1;
+            }
+        }
+        target->rot.x = sindf(angle);
+        target->rot.z = cosdf(angle);
+        HuPrcVSleep();
+    }
+    while (angle >= startAngle - 180.0f) {
+        target->rot.x = sindf(angle);
+        target->rot.z = cosdf(angle);
+        HuPrcVSleep();
+        angle -= 20.0f;
+    }
+
+    HuAudFXPlay(0x1A3);
+    for (angle = 135.0f; angle >= 0.0f; angle -= 20.0f) {
+        hammer->velocity.x = sindf(angle) * 25.0f - 20.0f;
+        HuPrcVSleep();
+    }
+    MBModelKill(hammer);
+    MBModelKill(base);
+    HuPrcSleep(5);
+
+    if (arg0 == -1) {
+        for (i = 0; i < 3; i++) {
+            GwSystem.boardData.halfWordBytes[D_8011B9C4_w04[i]] ^= 1;
+        }
+        func_8010873C_w04();
+        if (arg1 == 0) {
+            MBDlgResultWinExec(0xB03);
+        } else {
+            func_800EC5B4_shared_board(-1, 0xB05);
+        }
+    } else {
+        GwSystem.boardData.halfWordBytes[D_8011B9C4_w04[arg0]] ^= 1;
+        func_8010873C_w04();
+        MBDlgResultWinExec(0xA00);
+    }
+}
 
 void func_8011A4E0_w04(s32 arg0) {
     Vec pos;
@@ -6857,8 +6951,6 @@ void func_8011A5DC_w04(void) {
     func_800DB884_shared_board(system->current_player_index);
     HuPrcSleep(10);
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/w04/367960", D_8011DE80_w04);
 
 // main func for reroll event in woody woods
 void func_8011A858_w04(void) {

@@ -24,7 +24,7 @@
 #include "game/mallocblock.h"
 
 void func_80105CA4_w02(void);
-void func_80106094_w02(void *);
+void func_80106094_w02(UnkMBGuideData *guide);
 void func_801064DC_w02(void);
 void func_80108570_w02(void);
 void func_8010D854_w02(void);
@@ -137,6 +137,8 @@ extern u8 D_8011D854_w02[];
 extern GameGuyReward D_8011D858_w02[];
 extern char D_8011EA74_w02[];
 void func_80109F1C_w02(s16 arg0, s32 arg1, s16 arg2, s32 arg3);
+s32 func_8011C274_w02(void);
+s32 func_8011C5D8_w02(void);
 s16 func_801059D0_w02(void) {
     return D_8011C6A0_w02[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
 }
@@ -292,7 +294,16 @@ void func_80105CA4_w02(void) {
     omDelPrcObj(NULL);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80106094_w02);
+void func_80106094_w02(UnkMBGuideData *guide) {
+    Object *obj = guide->obj;
+
+    obj->velocity.y = 4.0f;
+    obj->velocity.z = -0.6f;
+    HuPrcSleep(3);
+    while (obj->velocity.z != 0.0f) {
+        HuPrcVSleep();
+    }
+}
 
 #define GET_STAR_MODEL() D_8011EBD8_w02[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]]
 // MB3Ev_StarMapView
@@ -428,9 +439,103 @@ void func_80106C64_w02(void) {
     MBHelpWinKill(D_8011EC2C_w02);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80106CC4_w02);
+s32 func_80106CC4_w02(u8 *arg0) {
+    s32 var_s2 = 0;
+    s16 sp18[MB_MAX_PLAYERS];
+    u8 sp20[MB_MAX_PLAYERS];
+    s32 i;
+    s32 j;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80106F58_w02);
+    *(Unk4Bytes *)sp20 = *(Unk4Bytes *)D_8011EA70_w02;
+
+    for (i = 0; i < MB_MAX_PLAYERS; i++) {
+        if (i == GwSystem.current_player_index) {
+            if (GwPlayer[i].stat & 1) {
+                var_s2 = func_8011C274_w02();
+                sp18[GwPlayer[GwSystem.current_player_index].pad] = 0x400;
+            } else {
+                HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
+                sp18[GwPlayer[i].pad] = -1;
+            }
+        } else {
+            sp18[GwPlayer[i].pad] = 0;
+        }
+    }
+
+    if (var_s2 != 0) {
+        func_8005B63C_main(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        for (j = 0; var_s2 != 0; j++) {
+            if (--var_s2 == 0) {
+                sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
+            }
+            if (j == 0) {
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
+            } else {
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], 5);
+            }
+        }
+    } else {
+        HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
+    }
+
+    for (i = 0; i < 9; i++) {
+        if (arg0[i] == 0) {
+            HuWinChoiceDisable(mbDlgWinId, i);
+        }
+    }
+
+    i = 0;
+    do {
+        i = HuWinChoiceGet(mbDlgWinId, i, 0);
+        if (i == -1) {
+            return -1;
+        }
+    } while (arg0[i] == 0);
+    return i;
+}
+
+s32 func_80106F58_w02(void) {
+    s32 var_s2 = 0;
+    s16 sp18[MB_MAX_PLAYERS];
+    u8 sp20[MB_MAX_PLAYERS];
+    s32 i;
+    s32 j;
+
+    *(Unk4Bytes *)sp20 = *(Unk4Bytes *)D_8011EA70_w02;
+
+    for (i = 0; i < MB_MAX_PLAYERS; i++) {
+        if (i == GwSystem.current_player_index) {
+            if (GwPlayer[i].stat & 1) {
+                var_s2 = 1; // dead store; matches func_800FA104_shared_board
+                var_s2 = func_8011C5D8_w02();
+                sp18[GwPlayer[i].pad] = 0x400;
+            } else {
+                HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
+                sp18[GwPlayer[i].pad] = -1;
+            }
+        } else {
+            sp18[GwPlayer[i].pad] = 0;
+        }
+    }
+
+    if (var_s2 != 0) {
+        func_8005B63C_main(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        for (j = 0; var_s2 != 0; j++) {
+            if (--var_s2 == 0) {
+                sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
+            }
+            if (j == 0) {
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], func_800EDC40_shared_board());
+            } else {
+                HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], 5);
+            }
+        }
+    } else {
+        HuWinComKeySet(sp18[0], sp18[1], sp18[2], sp18[3]);
+    }
+
+    HuWinChoiceGet(mbDlgWinId, 0, 1);
+}
 
 void func_80107170_w02(void) {
     s32 i;

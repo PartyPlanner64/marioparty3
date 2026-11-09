@@ -219,6 +219,10 @@ extern DecisionTreeNonLeafNode *D_8011D74C_w05[];
 extern s16 D_8011E5A0_w05[][3];
 extern BranchPair D_8011E5B4_w05[];
 extern DecisionTreeNonLeafNode *D_8011DA88_w05[];
+extern DecisionTreeNonLeafNode D_8011DF38_w05[];
+extern DecisionTreeNonLeafNode D_8011DF68_w05[];
+extern DecisionTreeNonLeafNode D_8011E004_w05[];
+extern DecisionTreeNonLeafNode D_8011E028_w05[];
 extern s16 D_8011E558_w05[][3];
 extern BranchPair D_8011E56C_w05[];
 extern DecisionTreeNonLeafNode *D_8011DA28_w05[];
@@ -6596,7 +6600,191 @@ void func_80118464_w05(void) {
     GwSystem.boardData.halfWordBytes[2] = -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_801184C0_w05);
+void func_801184C0_w05(void) {
+    GW_SYSTEM *system = &GwSystem;
+    GW_PLAYER *player = MBPlayerGet(-1);
+    DecisionTreeNonLeafNode *tree;
+    s32 item;
+    s32 choice;
+    s32 group;
+    s32 anim;
+    void *data;
+    s32 tpLvl;
+
+    switch (MBMasuLinkMasuIdGet(player->clink, player->cidx)) {
+        case 0x8E:
+            if (GwSystem.boardData.halfWordBytes[0] != 0) {
+                func_80115A30_w05(D_8011E438_w05, D_8011E44C_w05, D_8011D74C_w05);
+                return;
+            }
+            break;
+        case 0x7C:
+            if (GwSystem.boardData.halfWordBytes[0] == 0) {
+                func_80115A30_w05(D_8011E5A0_w05, D_8011E5B4_w05, D_8011DA88_w05);
+                return;
+            }
+            break;
+        case 0x3:
+            if (GwSystem.boardData.halfWordBytes[0] != 0) {
+                return;
+            }
+            break;
+        default:
+            if (GwSystem.boardData.halfWordBytes[0] == 0) {
+                MBMoveNextMasuSet(-1, 15, 6);
+                player->rev |= 1;
+                return;
+            }
+            break;
+    }
+
+    func_800DBEC0_shared_board(system->current_player_index);
+    MBPlayerMotionSet(-1, -1, 2);
+    switch (MBMasuLinkMasuIdGet(player->clink, player->cidx)) {
+        case 0x3:
+        case 0x8E:
+            func_800ED20C_shared_board(-1, 8, 0x8D);
+            break;
+        default:
+            func_800ED20C_shared_board(-1, 8, 0x8B);
+            break;
+    }
+    HuPrcSleep(8);
+
+    switch (GwSystem.boardData.halfWordBytes[1]) {
+        case 0:
+            item = 1;
+            break;
+        case 1:
+            item = 0;
+            break;
+        default:
+            item = 2;
+            break;
+    }
+    GwSystem.boardData.halfWordBytes[2] = GwSystem.boardData.halfWordBytes[1];
+    HuAudFXPlay(0x1AC);
+
+    if (MBItemFind(system->current_player_index, item) != -1) {
+        MBDlgWinExec(0xC, 0xC01);
+    retry:
+        MBDlgWinInsertCreate(0xC, 0xC02, GwSystem.boardData.halfWordBytes[1] + 0xC03, 0, 0, 0, 0);
+        switch (MBMasuLinkMasuIdGet(player->clink, player->cidx)) {
+            case 0x8E:
+                tree = D_8011DF38_w05;
+                break;
+            case 0x3:
+                tree = D_8011DF68_w05;
+                break;
+            case 0x7C:
+                tree = D_8011E004_w05;
+                break;
+            default:
+                tree = D_8011E028_w05;
+                break;
+        }
+        choice = func_801096DC_w05((s32)tree, 0);
+        MBDlgWinClose();
+        MBDlgWinKill();
+        switch (choice) {
+            case 0:
+                HuPrcSleep(20);
+                group = HuSprGrpCreate(1, 5);
+                data = DataRead(D_8010197C_shared_board[item]);
+                anim = HuSprAnimRead(data);
+                DataClose(data);
+                HuSprGrpMemberSet(group, 0, anim, 0);
+                HuSprPriSet(group, 0, 10);
+                func_800550F4_main(group, 0, 0);
+                HuSprAttrSet(group, 0, 0x180C);
+                HuSprPosSet(group, 0, 160, 90);
+                HuSprTPLvlSet(group, 0, 0);
+                GwPlayer[system->current_player_index].itemNo[MBItemFind(system->current_player_index, item)] = -1;
+                MBItemRemoveEmpty(system->current_player_index);
+                MBStatusItemIconSprReinit(-1);
+                HuAudFXPlay(0x145);
+                for (tpLvl = 0; tpLvl < 0x100; tpLvl += 25) {
+                    HuSprTPLvlSet(group, 0, tpLvl);
+                    HuPrcVSleep();
+                }
+                HuSprTPLvlSet(group, 0, 0x100);
+                HuPrcSleep(30);
+                for (tpLvl = 0x100; tpLvl > 0; tpLvl -= 12) {
+                    HuSprTPLvlSet(group, 0, tpLvl);
+                    HuPrcVSleep();
+                }
+                HuSprAnimKill(anim);
+                HuSprGrpKill(group);
+                MBDlgWinExec(0xC, 0xC06);
+
+                D_8011D0CC_w05 = 1;
+                while (D_8011D0CC_w05 != 0) {
+                    HuPrcVSleep();
+                }
+                func_80118464_w05();
+                func_800DB884_shared_board(system->current_player_index);
+                HuPrcSleep(10);
+
+                switch (MBMasuLinkMasuIdGet(player->clink, player->cidx)) {
+                    case 0x8E:
+                        func_80115A30_w05(D_8011E438_w05, D_8011E44C_w05, D_8011D74C_w05);
+                        break;
+                    case 0x7C:
+                        func_80115A30_w05(D_8011E5A0_w05, D_8011E5B4_w05, D_8011DA88_w05);
+                        break;
+                    case 0x3:
+                        break;
+                    default:
+                        MBMoveNextMasuSet(-1, 15, 6);
+                        player->rev |= 1;
+                        break;
+                }
+                return;
+            case 1:
+                MBDlgWinExec(0xC, 0xC07);
+                break;
+            default:
+                func_80106AB0_w05();
+                goto retry;
+        }
+    } else {
+        MBDlgWinInsertCreate(0xC, 0xC08, GwSystem.boardData.halfWordBytes[1] + 0xC03, 0, 0, 0, 0);
+        func_800EC9DC_shared_board();
+        MBDlgWinClose();
+        MBDlgWinKill();
+    }
+
+    switch (MBMasuLinkMasuIdGet(player->clink, player->cidx)) {
+        case 0x8E:
+            if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 2) {
+                MBMoveNextMasuSet(-1, 4, 0);
+                player->rev &= ~1;
+            } else {
+                MBMoveNextMasuSet(-1, 3, 3);
+                player->rev |= 1;
+            }
+            break;
+        case 0x7C:
+            if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0x4C) {
+                MBMoveNextMasuSet(-1, 12, 0);
+                player->rev &= ~1;
+            } else {
+                MBMoveNextMasuSet(-1, 15, 3);
+                player->rev |= 1;
+            }
+            break;
+        case 0x3:
+            MBMoveNextMasuSet(-1, 14, 3);
+            player->rev &= ~1;
+            break;
+        default:
+            MBMoveNextMasuSet(-1, 16, 1);
+            player->rev &= ~1;
+            break;
+    }
+    func_800DB884_shared_board(system->current_player_index);
+    HuPrcSleep(10);
+}
 
 void func_80118BBC_w05(void) {
     GW_PLAYER *player = MBPlayerGet(-1);

@@ -41,6 +41,11 @@ void func_801085B4_w05(void);
 void func_8010D298_w05(void);
 void func_801184C0_w05(void);
 void func_8011BB74_w05(void);
+void func_8011AEA4_w05(void);
+void func_80118BBC_w05(void);
+void func_8011C2A8_w05(void);
+void func_8011C2F8_w05(void);
+void func_8011BC40_w05(s32 arg0, SpaceData *space);
 extern DecisionTreeNonLeafNode *D_8011D6BC_w05[];
 extern DecisionTreeNonLeafNode *D_8011D7A0_w05[];
 extern DecisionTreeNonLeafNode *D_8011D818_w05[];
@@ -93,6 +98,9 @@ extern s32 D_801204B8_w05;
 extern s32 D_8011D24C_w05[];
 extern s32 D_8011D270_w05[];
 extern DecisionTreeNonLeafNode *D_8012060C_w05[];
+extern DecisionTreeNonLeafNode D_8011FCC0_w05;
+extern DecisionTreeNonLeafNode D_8011FFA8_w05;
+extern DecisionTreeNonLeafNode D_80120344_w05;
 extern Process *D_80120768_w05[8];
 extern Unk3 *D_80120790_w05;
 extern Unk3 *D_80120794_w05;
@@ -106,6 +114,9 @@ extern u8 *D_8012082C_w05;
 extern omObjData *D_80120880_w05[4];
 extern Object *D_80120870_w05[4];
 extern Object *D_8012078C_w05;
+extern Object *D_801207C4_w05;
+extern s32 D_8011D0CC_w05;
+extern Object *D_801207C8_w05;
 extern s32 D_80120788_w05;
 extern s32 D_8011D090_w05[];
 extern Object *D_80120748_w05[8];
@@ -141,6 +152,12 @@ extern Object *D_80120740_w05;
 extern s16 D_8011E3A8_w05[][3];
 extern BranchPair D_8011E3BC_w05[];
 extern DecisionTreeNonLeafNode *D_8011D524_w05[];
+extern s16 D_8011E438_w05[][3];
+extern BranchPair D_8011E44C_w05[];
+extern DecisionTreeNonLeafNode *D_8011D74C_w05[];
+extern s16 D_8011E5A0_w05[][3];
+extern BranchPair D_8011E5B4_w05[];
+extern DecisionTreeNonLeafNode *D_8011DA88_w05[];
 extern s16 D_8011E558_w05[][3];
 extern BranchPair D_8011E56C_w05[];
 extern DecisionTreeNonLeafNode *D_8011DA28_w05[];
@@ -1123,7 +1140,27 @@ void func_80108720_w05(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80108798_w05);
+s32 func_80108798_w05(void) {
+    s32 result = 1;
+    s32 i;
+
+    for (i = 0; i < 3; i++) {
+        s32 item = GwPlayer[GwSystem.current_player_index].itemNo[i];
+
+        switch (GwSystem.boardData.halfWordBytes[2]) {
+            case 0:
+                result *= (item != 1);
+                break;
+            case 1:
+                result *= (item != 0);
+                break;
+            case 2:
+                result *= (item != 2);
+                break;
+        }
+    }
+    return result;
+}
 
 void func_80108830_w05(s32 masuId, s32 link, s32 idx) {
     GW_PLAYER *player = MBPlayerGet(-1);
@@ -1171,7 +1208,16 @@ void func_80108A58_w05(void) {
     omDelPrcObj(NULL);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80108A90_w05);
+void func_80108A90_w05(void) {
+    GW_PLAYER *player = MBPlayerGet(-1);
+
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) != 0x8D) {
+        func_801184C0_w05();
+    } else {
+        func_80115A30_w05(D_8011E438_w05, D_8011E44C_w05, D_8011D74C_w05);
+    }
+    omDelPrcObj(NULL);
+}
 
 void func_80108B18_w05(void) {
     func_80115A30_w05(D_8011E480_w05, D_8011E494_w05, D_8011D7A0_w05);
@@ -1201,7 +1247,16 @@ void func_80108BC0_w05(void) {
     omDelPrcObj(NULL);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80108C70_w05);
+void func_80108C70_w05(void) {
+    GW_PLAYER *player = MBPlayerGet(-1);
+
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) != 0x8A) {
+        func_801184C0_w05();
+    } else {
+        func_80115A30_w05(D_8011E5A0_w05, D_8011E5B4_w05, D_8011DA88_w05);
+    }
+    omDelPrcObj(NULL);
+}
 
 void func_80108CF8_w05(void) {
     func_801088B8_w05(D_8011E5E8_w05, D_8011E5FC_w05, D_8011DB0C_w05);
@@ -6176,7 +6231,28 @@ void func_801178B4_w05(GW_PLAYER *player, s32 index, s16 paths[][6]) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80117908_w05);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80118364_w05);
+void func_80118364_w05(void) {
+    GW_PLAYER *player = MBPlayerGet(-1);
+
+    switch (MBMasuLinkMasuIdGet(player->clink, player->cidx)) {
+        case 0x2:
+        case 0x4C:
+            func_80118BBC_w05();
+            break;
+        case 0x1A:
+        case 0x1E:
+        case 0x35:
+        case 0x4D:
+        case 0x51:
+        case 0x57:
+            func_8011C2A8_w05();
+            break;
+        default:
+            func_8011C2F8_w05();
+            break;
+    }
+    omDelPrcObj(NULL);
+}
 
 void func_80118464_w05(void) {
     s32 r = MBRand(10.0f);
@@ -6195,13 +6271,88 @@ void func_80118464_w05(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_801184C0_w05);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80118BBC_w05);
+void func_80118BBC_w05(void) {
+    GW_PLAYER *player = MBPlayerGet(-1);
+    SpaceData *space;
+    Vec pos;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80118CF8_w05);
+    HuPrcSleep(20);
+    func_800E6FCC_shared_board();
+    space = MBMasuGet(0x62);
+    HuVecCopy3F(&pos, &player->player_obj->coords);
+    MBCameraFocusModeSet(4);
+    MBCameraFocusVecSet(&pos);
+    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&pos, &space->coords, &pos, 10));
+    HuPrcChildWatch();
+    MBCameraFocusModeSet(2);
+    MBCameraFocusStaticPosSet(&pos);
+
+    D_8011D0CC_w05 = 1;
+    while (D_8011D0CC_w05 != 0) {
+        HuPrcVSleep();
+    }
+
+    MBDlgResultWinExec(0xC00);
+    MBCameraFocusModeSet(4);
+    MBCameraFocusVecSet(&pos);
+    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&pos, &player->player_obj->coords, &pos, 10));
+    HuPrcChildWatch();
+    MBCameraFocusModeSet(1);
+    func_800E6FBC_shared_board();
+}
+
+void func_80118CF8_w05(void) {
+    s32 type = (s32)HuPrcCurrentGet()->user_data;
+    Object *model;
+
+    model = MBModelCreate(0x4D, NULL);
+    MBModelTempAllocFree(model);
+    HuVecCopy3F(&model->coords, &MBMasuGet(0x62)->coords);
+    model->velocity.x = 150.0f;
+
+    switch (type) {
+        case 0:
+            model->coords.z -= 30.0f;
+            HuPrcSleep(2);
+            break;
+        case 1:
+            model->coords.x += 20.0f;
+            model->coords.z += 30.0f;
+            break;
+        default:
+            model->coords.x -= 15.0f;
+            model->coords.z += 40.0f;
+            HuPrcSleep(5);
+            break;
+    }
+
+    func_800EE688_shared_board(model, 0.0f, -1.0f);
+    func_800EE6C0_shared_board(model);
+    MBModelKill(model);
+    omDelPrcObj(NULL);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80118E2C_w05);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_801191C0_w05);
+void func_801191C0_w05(void) {
+    Object *model;
+
+    model = MBModelCreate(0xD, NULL);
+    D_801207C4_w05 = model;
+    MBModelTempAllocFree(model);
+    HuVecCopy3F(&model->coords, &MBMasuGet(GwSystem.boardData.halfWordBytes[3] != 0 ? 0x7F : 0x97)->coords);
+    HuVecCopyXYZ(&model->scale, 1.3f, 1.3f, 1.3f);
+
+    model = MBModelCreate(0xD, NULL);
+    D_801207C8_w05 = model;
+    MBModelTempAllocFree(model);
+    HuVecCopy3F(&model->coords, &MBMasuGet(GwSystem.boardData.halfWordBytes[4] != 0 ? 0x85 : 0x71)->coords);
+    HuVecCopyXYZ(&model->scale, 1.3f, 1.3f, 1.3f);
+
+    while (TRUE) {
+        HuPrcVSleep();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_801192AC_w05);
 
@@ -6247,13 +6398,62 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_8011AD34_w05);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_8011AEA4_w05);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_8011BB74_w05);
+void func_8011BB74_w05(void) {
+    GW_PLAYER *player = MBPlayerGet(-1);
+
+    switch (MBMasuLinkMasuIdGet(player->clink, player->cidx)) {
+        case 0x96:
+            if (GwSystem.boardData.halfWordBytes[3] == 0) {
+                func_8011AEA4_w05();
+            }
+            break;
+        case 0x7E:
+            if (GwSystem.boardData.halfWordBytes[3] != 0) {
+                func_8011AEA4_w05();
+            }
+            break;
+        case 0x70:
+            if (GwSystem.boardData.halfWordBytes[4] == 0) {
+                func_8011AEA4_w05();
+            }
+            break;
+        default:
+            if (GwSystem.boardData.halfWordBytes[4] != 0) {
+                func_8011AEA4_w05();
+            }
+            break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_8011BC40_w05);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_8011C2A8_w05);
+void func_8011C2A8_w05(void) {
+    s32 index;
+    s32 masuIndex;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_8011C2F8_w05);
+    index = 1;
+    if (GwSystem.boardData.halfWordBytes[3] == 0) {
+        index = 0;
+        masuIndex = 0x1A;
+    } else {
+        masuIndex = 0x35;
+    }
+    func_8011BC40_w05(index, MBMasuGet(masuIndex));
+}
+
+void func_8011C2F8_w05(void) {
+    s32 index;
+    s32 masuIndex;
+
+    index = 3;
+    if (GwSystem.boardData.halfWordBytes[4] == 0) {
+        index = 2;
+        masuIndex = 0x10;
+    } else {
+        masuIndex = 0x40;
+    }
+    func_8011BC40_w05(index, MBMasuGet(masuIndex));
+}
 
 void func_8011C348_w05(void) {
     Hu3DCamInit(2);
@@ -6263,9 +6463,42 @@ void func_8011C348_w05(void) {
     omAddPrcObj(func_80106120_w05, 0x1005, 0x1000, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_8011C39C_w05);
+s32 func_8011C39C_w05(void) {
+    s32 best;
+    s32 bestRank;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_8011C448_w05);
+    for (i = 0, bestRank = 99, best = MBPlayerTurnGet(); i < 4; i++) {
+        if (i != MBPlayerTurnGet()) {
+            func_800DA778_shared_board(i);
+            if ((MBComTreeExec(&D_8011FCC0_w05) == 0) && (BoardPlayerRankCalc(i) < bestRank)) {
+                bestRank = BoardPlayerRankCalc(i);
+                best = i;
+            }
+        }
+    }
+    return best;
+}
+
+s32 func_8011C448_w05(void) {
+    s32 best;
+    s32 bestRank;
+    s32 i;
+
+    best = MBPlayerTurnGet();
+    if (MBComTreeExec(&D_8011FFA8_w05) != 0) {
+        for (i = 0, bestRank = 99; i < 4; i++) {
+            if (i != MBPlayerTurnGet()) {
+                func_800DA778_shared_board(i);
+                if ((MBComTreeExec(&D_80120344_w05) == 0) && (BoardPlayerRankCalc(i) < bestRank)) {
+                    bestRank = BoardPlayerRankCalc(i);
+                    best = i;
+                }
+            }
+        }
+    }
+    return best;
+}
 
 s32 func_8011C50C_w05(void) {
     GW_SYSTEM *system = &GwSystem;

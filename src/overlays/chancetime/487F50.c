@@ -6,7 +6,11 @@
 
 typedef struct ChanceTimeUnkFED0 {
     /* 0x00 */ s8 unk00;
-    /* 0x01 */ char unk01[0x27];
+    /* 0x01 */ char unk01[0x13];
+    /* 0x14 */ s16 unk14[3];
+    /* 0x1A */ s8 unk1A;
+    /* 0x1B */ s8 unk1B[3];
+    /* 0x1E */ char unk1E[0xA];
 } ChanceTimeUnkFED0; // size = 0x28
 
 typedef struct ChanceTimeUnkFE3C {
@@ -19,6 +23,8 @@ extern s8 D_8010FB81_chancetime;
 extern s16 D_8010FB84_chancetime[2];
 extern f32 D_8010FB88_chancetime;
 extern f32 D_8010FB8C_chancetime;
+extern Vec D_8010FB94_chancetime[];
+extern s32 D_8010FC00_chancetime;
 extern s32 D_8010FBF0_chancetime;
 extern s32 D_8010FBF4_chancetime;
 extern s32 D_8010FBF8_chancetime;
@@ -46,10 +52,12 @@ extern s8 D_801100DF_chancetime;
 extern void (*D_801100CC_chancetime)(void);
 
 s32 func_8010872C_chancetime(void);
+void func_8010C870_chancetime(void);
 void func_8010C610_chancetime(void);
 void func_8010F44C_chancetime(s32 arg0, s16 arg1, s16 arg2);
 void func_8010D320_chancetime(void);
-void func_8010D6A4_chancetime(s32 arg0);
+void func_8010DB1C_chancetime(s8 arg0);
+void func_8010D6A4_chancetime(s8 arg0);
 void func_8010DFA4_chancetime(void);
 void func_8010E1E0_chancetime(void);
 void func_8010E210_chancetime(void);
@@ -65,7 +73,38 @@ void func_8010C5F4_chancetime(void) {
     func_8010D320_chancetime();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010C610_chancetime);
+void func_8010C610_chancetime(void) {
+    Vec pos;
+    Vec2f screen;
+
+    D_8010FB8C_chancetime += 1.2f;
+    D_8010FB8C_chancetime = (D_8010FB8C_chancetime > 30.0f) ? 30.0f : D_8010FB8C_chancetime;
+    D_8010FB88_chancetime -= D_8010FB8C_chancetime;
+    if (D_8010FB88_chancetime < 0.0f) {
+        D_8010FB8C_chancetime = D_8010FB8C_chancetime * -0.1f;
+        D_8010FB88_chancetime = 0.0f;
+        if (D_8010FC00_chancetime == 0) {
+            func_80108704_chancetime();
+            D_8010FC00_chancetime = 1;
+        }
+        if (D_8010FB8C_chancetime >= -0.24000001f) {
+            D_8010FC00_chancetime = 0;
+            D_801100CC_chancetime = func_8010C870_chancetime;
+            D_8010FB88_chancetime = 0.0f;
+            return;
+        }
+    }
+    pos.x = 0.0f;
+    pos.y = D_8010FB94_chancetime[0].x + D_8010FB88_chancetime - 168.0f;
+    pos.z = D_8010FB94_chancetime[0].y;
+    Hu3D3Dto2D(0, &pos, &screen);
+    D_8010FB84_chancetime[0] = 74;
+    D_8010FB84_chancetime[1] = screen.y - 120.0f + 25.0f;
+    espPosSet(D_8010FE9A_chancetime, 161, D_8010FB84_chancetime[1] + 46);
+    espPosSet(D_8010FE94_chancetime[0], D_8010FB84_chancetime[0] + 51, D_8010FB84_chancetime[1] + 46);
+    espPosSet(D_8010FE94_chancetime[1], D_8010FB84_chancetime[0] + 124, D_8010FB84_chancetime[1] + 46);
+    espPosSet(D_8010FE94_chancetime[2], D_8010FB84_chancetime[0] + 87, D_8010FB84_chancetime[1] + 116);
+}
 
 void func_8010C870_chancetime(void) {
     D_8010FB84_chancetime[0] = 74;
@@ -106,7 +145,41 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/chancetime/487F50", D_8010FCF8_chancet
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010D320_chancetime);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010D6A4_chancetime);
+void func_8010D6A4_chancetime(s8 arg0) {
+    s8 i;
+    s8 j;
+
+    D_8010FBF0_chancetime++;
+    switch (D_8010FBF0_chancetime) {
+        case 1:
+            D_8010FF48_chancetime[0] = HuAudFXPlay(0x4F9);
+            D_8010FBF4_chancetime = 1;
+            break;
+        case 2:
+            D_8010FF48_chancetime[1] = HuAudFXPlay(0x4FA);
+            D_8010FBF8_chancetime = 1;
+            break;
+        case 3:
+            D_8010FF48_chancetime[2] = HuAudFXPlay(0x4FB);
+            D_8010FBFC_chancetime = 1;
+            break;
+    }
+    D_8010FED0_chancetime[arg0].unk00 = 4;
+    if (arg0 < 2 && D_801100DD_chancetime[1 - arg0] != -1) {
+        j = 0;
+        for (i = 0; i < 4; i++) {
+            if (D_801100DD_chancetime[1 - arg0] != GwPlayer[D_801100D0_chancetime[i]].chr) {
+                D_8010FED0_chancetime[arg0].unk1B[j] = GwPlayer[D_801100D0_chancetime[i]].chr;
+                j++;
+            }
+        }
+        D_8010FED0_chancetime[arg0].unk1A = 3;
+        for (i = 0; i < 3; i++) {
+            func_8003302C_main(D_8010FED0_chancetime[arg0].unk14[i], D_8010FED0_chancetime[arg0].unk1B[2 - i]);
+        }
+    }
+    func_8010DB1C_chancetime(arg0);
+}
 
 void func_8010D92C_chancetime(s8 arg0) {
     switch (D_8010FBF0_chancetime) {

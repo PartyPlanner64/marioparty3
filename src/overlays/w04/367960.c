@@ -49,7 +49,7 @@ extern Unk3 *D_8011E044_w04;
 extern Unk3 *D_8011E048_w04;
 extern Unk3 *D_8011E04C_w04;
 extern Unk3 *D_8011E050_w04;
-extern s32 D_8011E090_w04;
+extern Object *D_8011E090_w04;
 extern Object *D_8011E09C_w04[3];
 extern s32 D_8011E0A8_w04;
 extern s32 D_8011E0AC_w04;
@@ -172,6 +172,18 @@ extern BranchPair D_8011C134_w04[];
 extern s16 D_8011B9BC_w04[];
 void func_80119FCC_w04(s32 arg0, s32 arg1);
 
+extern DecisionTreeNonLeafNode *D_8011BAEC_w04[];
+extern s16 D_8011C048_w04[][3];
+extern BranchPair D_8011C05C_w04[];
+extern DecisionTreeNonLeafNode *D_8011BC84_w04[];
+extern s16 D_8011C168_w04[][3];
+extern BranchPair D_8011C17C_w04[];
+extern s32 D_8011B7C8_w04;
+extern s16 D_8011B81C_w04[][2];
+extern s16 D_8011B824_w04[][2];
+extern s16 D_8011B8CC_w04[];
+extern s16 D_8011B8D0_w04[];
+extern u32 *D_8011B90C_w04[];
 s16 func_801059D0_w04(void) {
     return D_8011B780_w04[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
 }
@@ -340,7 +352,102 @@ void func_80106094_w04(UnkMBGuideData *guide) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_80106120_w04);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_801064DC_w04);
+void func_801064DC_w04(void) {
+    Object *playerModel = HuPrcCurrentGet()->user_data;
+    GW_PLAYER *player = MBPlayerGet(-1);
+    Object *model;
+    Vec camPos;
+    f32 scale;
+    f32 angle;
+    s32 obj;
+    s32 i;
+
+    HuAudFXPlay(0x11B);
+    model = MBModelCreate(0x1A, NULL);
+    model->flags |= 4;
+    func_800ECC54_shared_board(model);
+    if (MBMasuLinkMasuIdGet(MBPlayerGet(-1)->clink, MBPlayerGet(-1)->cidx) == 0x8D) {
+        HuVecCopyXYZ(&model->coords, playerModel->coords.x, playerModel->coords.y + 10.0f, playerModel->coords.z);
+        HuVecCopyXYZ(&camPos, gCameraList->pos.x, gCameraList->pos.y, gCameraList->pos.z);
+        model->velocity.x = 15.0f;
+    } else {
+        HuVecCopyXYZ(&model->coords, playerModel->coords.x, playerModel->coords.y + 10.0f, playerModel->coords.z + 30.0f);
+        HuVecCopyXYZ(&camPos, gCameraList->pos.x, gCameraList->pos.y, gCameraList->pos.z);
+        model->velocity.x = 35.0f;
+    }
+
+    obj = func_8000CED8_main(0xB0004, 0xAA9);
+    func_8000CD00_main(obj, 1.0f, 20.0f, 1.0f);
+    func_8000D018_main(obj, 15.0f);
+    Hu3DModelCameraSet(obj, HU3D_CAM0);
+    func_8000CFA4_main(obj, model->coords.x, model->coords.y + model->velocity.x, model->coords.z);
+
+    scale = 0.0f;
+    for (i = 0; i < 6; i++) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        scale += 0.5f;
+        func_8000D018_main(obj, scale * 15.0f);
+        HuPrcVSleep();
+    }
+
+    for (i = 0; i < 3; i++) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        scale -= 0.4f;
+        func_8000D018_main(obj, scale * 15.0f);
+        HuPrcVSleep();
+    }
+
+    func_8000D018_main(obj, scale * 15.0f);
+    HuPrcSleep(20);
+    HuAudFXPlay(0x132);
+
+    angle = 0.0f;
+    HuVecCopyXYZ(&camPos, player->player_obj->coords.x, player->player_obj->coords.y - 10.0f, player->player_obj->coords.z);
+    MBPlayerPosMoveCreate(&model->coords, &camPos, &model->coords, 40);
+
+    for (i = 0; i < 40; i++) {
+        func_8008A2A0_main(HmfModelData[model->omObj1->model[0]].mtx, angle);
+        angle += 20.0f;
+        scale -= 0.05f;
+        if (scale < 0.0f) {
+            scale = 0.0f;
+        }
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        func_8000D018_main(obj, scale * 15.0f);
+        func_8000CFA4_main(obj, model->coords.x, model->coords.y + model->velocity.x, model->coords.z);
+        HuPrcVSleep();
+    }
+
+    MBModelKill(model);
+    func_8000D044_main(obj);
+    MBVecForwardSet(&player->player_obj->rot);
+    MBPlayerVibrate(-1, 5);
+    if (D_8011B7C8_w04 != 0) {
+        func_8004A670_main(0xE);
+    } else {
+        HuAudSeqPlay(0x6F);
+    }
+
+    GwPlayer[GwSystem.current_player_index].star += 1;
+    if (GwPlayer[GwSystem.current_player_index].star >= 100) {
+        GwPlayer[GwSystem.current_player_index].star = 99;
+    }
+
+    MBPlayerMotionSet(-1, 6, 0);
+    PlayerFXPlay(0x262, GwSystem.current_player_index);
+    if (D_8011B7C8_w04 != 0) {
+        HuPrcSleep(16);
+        func_80003A70_main(D_800CDBC8_main);
+        func_8004A918_main(0x6F);
+        func_8004A880_main(0);
+        HuPrcSleep(110);
+        func_80003B70_main(D_800CDBC8_main, 0);
+        func_8004A72C_main(0xF);
+    } else {
+        HuPrcSleep(60);
+    }
+    omDelPrcObj(NULL);
+}
 
 void func_80106A3C_w04(Object *arg) {
     Process *prc;
@@ -639,7 +746,11 @@ s32 func_80107724_w04(u8 *arg0) {
     return func_80107438_w04(arg0, 1, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_80107744_w04);
+void func_80107744_w04(void) {
+    GwSystem.current_board_index = 3;
+    omInitObjMan(0xA, 0);
+    omOvlGotoEx(0x47, 0, 0x192);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_80107780_w04);
 
@@ -782,7 +893,34 @@ void func_80108200_w04(void) {
     func_80107F98_w04();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_80108268_w04);
+void func_80108268_w04(s16 arg0) {
+    Object *obj;
+    s32 unk[2]; // unreferenced; preserves an 8-byte stack slot
+
+    if (D_8011E094_w04[arg0] != NULL) {
+        return;
+    }
+    if (D_8011E090_w04 == NULL) {
+        s32 board = GwSystem.current_board_index;
+
+        obj = MBModelCreate(D_8011B8D0_w04[board], D_8011B90C_w04[board]);
+        MBModelTempAllocFree(obj);
+        D_8011E090_w04 = obj;
+    } else {
+        obj = MBModelLinkCreate(D_8011E090_w04);
+    }
+    D_8011E094_w04[arg0] = obj;
+    obj->flags |= 2;
+    func_8001C814_main(obj->omObj1->model[0], 2, 1);
+    HuVecCopy3F(&obj->coords, &MBMasuGet(D_8011B8CC_w04[arg0])->coords);
+    {
+        SpaceData *masuA = MBMasuGet(D_8011B824_w04[arg0][0]);
+        SpaceData *masuB = MBMasuGet(D_8011B824_w04[arg0][1]);
+
+        MBVecDirGet(&masuB->coords, &masuA->coords, &obj->rot);
+    }
+    func_800D771C_shared_board(0xC, obj, D_8011B81C_w04[arg0][0], D_8011B81C_w04[arg0][1]);
+}
 
 void func_801083D4_w04(void) {
     s32 i;
@@ -906,7 +1044,17 @@ void func_80108934_w04(void) {
     omDelPrcObj(NULL);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_801089B0_w04);
+void func_801089B0_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(-1);
+    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
+
+    if (masu == 0x5C && !(player->rev & 0x80)) {
+        MBMoveNextMasuSet(-1, 6, 0);
+        player->rev &= ~1;
+    } else {
+        func_80116024_w04(D_8011C048_w04, D_8011C05C_w04, D_8011BAEC_w04);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_80108A58_w04);
 
@@ -938,7 +1086,17 @@ void func_80108B4C_w04(void) {
     omDelPrcObj(NULL);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_80108C00_w04);
+void func_80108C00_w04(void) {
+    GW_PLAYER *player = MBPlayerGet(-1);
+    s16 masu = MBMasuLinkMasuIdGet(player->blink, player->bidx);
+
+    if (masu == 0x39 && !(player->rev & 0x80)) {
+        MBMoveNextMasuSet(-1, 1, 0);
+        player->rev &= ~1;
+    } else {
+        func_80116024_w04(D_8011C168_w04, D_8011C17C_w04, D_8011BC84_w04);
+    }
+}
 
 void func_80108CA8_w04(void) {
     GW_PLAYER *player = MBPlayerGet(-1);

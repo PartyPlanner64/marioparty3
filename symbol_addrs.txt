@@ -1212,6 +1212,7 @@ D_80105508_name_81 = 0x80105508; //size:0x10 segment:name_81
 D_8011D1D4_w05 = 0x8011D1D4; //size:0xC segment:w05
 D_8011C26C_w03 = 0x8011C26C; //size:0xC segment:w03
 D_8011C7F0_w02 = 0x8011C7F0; //size:0xC segment:w02
+D_8011B8D0_w04 = 0x8011B8D0; //size:0xC segment:w04
 _RemoveSIClient = 0x800518FC; //rom:0x524FC
 RemoveSIClient = 0x80051968; //rom:0x52568
 CallSIClient = 0x800519D0; //rom:0x525D0

@@ -17,6 +17,8 @@
 #include "../ovl_80_shared_board/EDDB0.h"
 
 void func_80105DB0_w03(void);
+void func_80107D54_w03(s16 arg0);
+void func_80107ECC_w03(void);
 void func_801061A0_w03(UnkMBGuideData *);
 void func_801066CC_w03(void);
 void func_80108734_w03(void);
@@ -61,14 +63,18 @@ extern s16 D_8011C150_w03[];
 extern s16 D_8011C164_w03[];
 extern s16 D_8011C16C_w03[];
 extern s32 D_8011C160_w03;
+extern s16 D_8011C180_w03[][2];
 extern s16 D_8011C1A8_w03[][2];
 extern s16 D_8011C1B0_w03[][2];
+extern s16 D_8011C1C8_w03[];
+extern s16 D_8011C1D8_w03[];
 extern s32 D_8011C2E4_w03[];
 extern s32 D_8011C308_w03[];
 extern s16 D_8011C350_w03[];
 extern s16 D_8011C354_w03[];
 extern s16 D_8011C358_w03[];
 extern s8 D_8011CF98_w03[][5][7];
+extern Object *D_8011EAC0_w03;
 extern Object *D_8011EAC8_w03[];
 extern Process *D_8011EAE8_w03[8];
 extern Process *D_8011EB08_w03;
@@ -871,9 +877,36 @@ void func_80107CA4_w03(void) {
 }
 
 // entrypoint 3
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80107D28_w03);
+void func_80107D28_w03(void) {
+    Hu3DCamInit(1);
+    func_80107A04_w03();
+    MBStart(1);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80107D54_w03);
+void func_80107D54_w03(s16 arg0) {
+    Object *obj;
+
+    if (D_8011EAC8_w03[arg0] != NULL) {
+        return;
+    }
+    obj = MBModelCreate(0x3A, NULL);
+    func_8001FA68_main(obj->omObj1->model[0]);
+    func_8001F9E4_main(obj->omObj1->model[0], 0xFF);
+    func_8001FA68_main(obj->omObj2->model[0]);
+    func_8001F9E4_main(obj->omObj2->model[0], 0xFF);
+    func_800461B4_main(obj->omObj1->model[0]);
+    if (D_8011EAC0_w03 == NULL) {
+        D_8011EAC0_w03 = obj;
+    }
+    D_8011EAC8_w03[arg0] = obj;
+    obj->flags |= 2;
+    HuVecCopyXYZ(&obj->scale, 0.6f, 0.6f, 0.6f);
+    obj->velocity.x = 10.0f;
+    D_8011EAE8_w03[arg0] = func_800EDB98_shared_board(obj, 6.0f, 2.0f);
+    HuVecCopy3F(&obj->coords, &MBMasuGet(D_8011C1C8_w03[arg0])->coords);
+    GwSystem.boardData.halfWordBytes[1] =
+        func_800D771C_shared_board(0xB, obj, D_8011C180_w03[arg0][0], D_8011C180_w03[arg0][1]);
+}
 
 void func_80107ECC_w03(void) {
     s32 i;
@@ -886,7 +919,22 @@ void func_80107ECC_w03(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80107F30_w03);
+void func_80107F30_w03(void) {
+    s32 i;
+
+    D_8011EAC0_w03 = NULL;
+    for (i = 0; i < 8; i++) {
+        D_8011EAC8_w03[i] = NULL;
+        D_8011EAE8_w03[i] = NULL;
+        MBKinokoEffKillHookSet(func_80107ECC_w03);
+        if (!GWBoardFlagCheck(D_8011C1D8_w03[i])) {
+            func_80107D54_w03(i);
+        }
+    }
+    if (GwSystem.boardData.halfWordBytes[0] != -1) {
+        func_80107D54_w03(GwSystem.boardData.halfWordBytes[0]);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80107FF8_w03);
 

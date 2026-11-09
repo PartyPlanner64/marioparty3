@@ -1436,6 +1436,20 @@ void func_80110554_mgmode(void) {
 // only the sign-extended loop index at the loop top allocated to v0 instead of
 // a0 (and a `bnez` instead of `bnezl` at the loop end). Loop shape, player
 // type/variable, and break/default variations did not fix the remaining diff.
+// Further findings: anything that ends a CSE block between the store and the
+// reads gives the same 5-line result (`while (0) {}`, wrapping the store in
+// `do { ... } while (0)`, `for (j = 0; j < 0; j++) { ... }`, or a label that
+// CSE folds away such as `j = 0; if (j != 0) { ... }`), so the kind of boundary
+// does not affect the remaining diff. The `bnezl` is only a consequence of
+// the index being in a0 (reorg treats a0 as live on the fall-through path).
+// In all variants the sign-extended index is a single-block pseudo with no
+// overlapping values, so local-alloc picks v0. For a0, either v0 and v1 must
+// be busy over its short lifetime, or it must be allocated by global-alloc
+// instead, where `i`'s copy preference for v0 would push it off v0.
+// Also tried without success: 40 random declaration orders, pointer/byte
+// arithmetic and (s32)/(u16) casts for the store or read address, an s32 copy
+// of `i` as the index (CSE propagates it away), `j` as the loop variable,
+// do/while(0) wrappers around the calls, and storing before loading `player`.
 s32 func_80111380_mgmode(void) {
     u16 sprites[4];
     s16 i;

@@ -182,6 +182,8 @@ extern DecisionTreeNonLeafNode *D_8011E8EC_w03[];
 extern DecisionTreeNonLeafNode *D_8011E8F4_w03[];
 extern Object *D_8011EBB4_w03;
 extern Object *D_8011EBD8_w03;
+extern s32 D_8011D388_w03;
+extern Object *D_8011EBC0_w03;
 s16 func_801059D0_w03(void) {
     return D_8011C150_w03[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
 }
@@ -2291,7 +2293,63 @@ void func_80112EF0_w03(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80113080_w03);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_8011343C_w03);
+s32 func_8011343C_w03(u8 *arg0, s32 arg1) {
+    s32 delay = 0;
+    s16 inputs[MB_MAX_PLAYERS];
+    u8 buttons[MB_MAX_PLAYERS];
+    s32 i;
+    s32 j;
+
+    *(Unk4Bytes *)buttons = *(Unk4Bytes *)D_8011E910_w03;
+
+    for (i = 0; i < MB_MAX_PLAYERS; i++) {
+        if (i == GwSystem.current_player_index) {
+            if (GwPlayer[i].stat & 1) {
+                delay = 1; // Required for matching register allocation.
+                if (arg1 != 0) {
+                    delay = D_8011EBB8_w03 + 1;
+                } else {
+                    delay = D_8011EBBC_w03 + 1;
+                }
+                inputs[GwPlayer[i].pad] = 0x400;
+            } else {
+                HuWinActivePlayerSet(mbDlgWinId, buttons[GwPlayer[i].pad]);
+                inputs[GwPlayer[i].pad] = -1;
+            }
+        } else {
+            inputs[GwPlayer[i].pad] = 0;
+        }
+    }
+
+    if (delay != 0) {
+        func_8005B63C_main(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        for (j = 0; delay != 0; j++) {
+            if (--delay == 0) {
+                inputs[GwPlayer[GwSystem.current_player_index].pad] = 0x8000;
+            }
+            if (j == 0) {
+                HuWinComKeyWait(inputs[0], inputs[1], inputs[2], inputs[3],
+                                func_800EDC40_shared_board());
+            } else {
+                HuWinComKeyWait(inputs[0], inputs[1], inputs[2], inputs[3], 5);
+            }
+        }
+    } else {
+        HuWinComKeySet(inputs[0], inputs[1], inputs[2], inputs[3]);
+    }
+
+    for (i = 0; i < MB_MAX_PLAYERS; i++) {
+        if (arg0[i] == 0) {
+            HuWinChoiceDisable(mbDlgWinId, i);
+        }
+    }
+
+    i = 0;
+    do {
+        i = HuWinChoiceGet(mbDlgWinId, i, 1);
+    } while (arg0[i] == 0);
+    return i;
+}
 
 void func_801136D4_w03(void) {
     Process *prc = HuPrcCurrentGet();
@@ -2378,7 +2436,130 @@ void func_80114668_w03(void) {
     omDelPrcObj(0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80114728_w03);
+void func_80114728_w03(void) {
+    s32 *processFlag = HuPrcCurrentGet()->user_data;
+    Object *gameGuyModel = D_8011EBC0_w03;
+    Object *model;
+    Process *process;
+    ModelAnimWork *work;
+    s32 effect;
+    f32 angle;
+    f32 angleStep;
+    f32 fallSpeed;
+    f32 scale;
+    s32 i;
+
+    model = MBModelCreate(0x45, NULL);
+    MBModelDispOff(model);
+    effect = func_8000CED8_main(0xB0004, 0xAA9);
+    func_8000CD00_main(effect, 1.0f, 20.0f, 1.0f);
+    func_8000D018_main(effect, 10.0f);
+    Hu3DModelCameraSet(effect, HU3D_CAM0);
+    HuAudFXPlay(0x24C);
+
+    angle = 0.0f;
+    angleStep = 2.0f;
+    while (angleStep < 80.0f) {
+        gameGuyModel->rot.x = -sindf(angle);
+        gameGuyModel->rot.z = cosdf(angle);
+        angle += angleStep;
+        if (angle > 360.0f) {
+            angle -= 360.0f;
+        }
+        angleStep += 1.0f;
+        if (angleStep > 80.0f) {
+            angleStep = 80.0f;
+        }
+        func_8000CFA4_main(effect, gameGuyModel->coords.x,
+                           gameGuyModel->coords.y + gameGuyModel->velocity.x, gameGuyModel->coords.z);
+        HuPrcVSleep();
+    }
+
+    HuAudFXPlay(0x14A);
+    while (gameGuyModel->velocity.x < 110.0f) {
+        gameGuyModel->velocity.x += 7.0f;
+        gameGuyModel->rot.x = -sindf(angle);
+        gameGuyModel->rot.z = cosdf(angle);
+        angle += angleStep;
+        if (angle > 360.0f) {
+            angle -= 360.0f;
+        }
+        func_8000CFA4_main(effect, gameGuyModel->coords.x,
+                           gameGuyModel->coords.y + gameGuyModel->velocity.x, gameGuyModel->coords.z);
+        HuPrcVSleep();
+    }
+
+    *processFlag = 0;
+    while (*processFlag == 0) {
+        if (D_8011D388_w03 != -1) {
+            HuVecCopy3F(&gameGuyModel->coords,
+                        &MBPlayerGet(D_8011D388_w03)->player_obj->coords);
+            func_8000CFA4_main(effect, gameGuyModel->coords.x,
+                               gameGuyModel->coords.y + gameGuyModel->velocity.x, gameGuyModel->coords.z);
+        }
+        HuPrcVSleep();
+    }
+
+    HuAudFXPlay(0x14B);
+    fallSpeed = 3.0f;
+    while (gameGuyModel->velocity.x > 30.0f) {
+        gameGuyModel->velocity.x -= fallSpeed;
+        if (fallSpeed > 1.0f) {
+            fallSpeed -= 0.2f;
+        }
+        gameGuyModel->rot.x = -sindf(angle);
+        gameGuyModel->rot.z = cosdf(angle);
+        angle += angleStep;
+        if (angle > 360.0f) {
+            angle -= 360.0f;
+        }
+        func_8000CFA4_main(effect, gameGuyModel->coords.x,
+                           gameGuyModel->coords.y + gameGuyModel->velocity.x, gameGuyModel->coords.z);
+        HuPrcVSleep();
+    }
+
+    while (1) {
+        gameGuyModel->rot.x = -sindf(angle);
+        gameGuyModel->rot.z = cosdf(angle);
+        angle += angleStep;
+        if (angle > 360.0f) {
+            angle -= 360.0f;
+        }
+        if (angleStep > 15.0f) {
+            angleStep -= 3.0f;
+        } else {
+            angleStep -= 0.5f;
+        }
+        if (angleStep < 1.0f) {
+            break;
+        }
+        func_8000CFA4_main(effect, gameGuyModel->coords.x,
+                           gameGuyModel->coords.y + gameGuyModel->velocity.x, gameGuyModel->coords.z);
+        HuPrcVSleep();
+    }
+
+    func_8000D044_main(effect);
+    process = omAddPrcObj(func_80114668_w03, 0x4800, 0, 0x40);
+    work = HuMemMemoryAlloc(process->heap, 0x20);
+    process->user_data = work;
+    work->obj1 = model;
+    work->obj2 = gameGuyModel;
+    work->state = 0;
+    work->flag = 0;
+    HuPrcSleep(3);
+    *processFlag = 0;
+    HuAudFXPlay(0x24D);
+
+    i = 0;
+    scale = 0.1f;
+    for (; i < 20; i++) {
+        scale += 0.044999998f;
+        func_8001D558_main(gameGuyModel->omObj1->model[0], scale, scale * 10.0f, 1);
+        HuPrcVSleep();
+    }
+    MBModelKill(gameGuyModel);
+    omDelPrcObj(NULL);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80114C58_w03);
 
@@ -2567,7 +2748,14 @@ void func_801169DC_w03(s32 playerNo, s32 type) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80116ADC_w03);
+void func_80116ADC_w03(s32 arg) {
+    D_8011EBF0_w03[arg] = omAddObj(0x3FFF, 0, 0, -1, func_80116830_w03);
+    D_8011EBF0_w03[arg]->work[0] = arg;
+    D_8011EBF0_w03[arg]->work[1] = 0;
+    D_8011EBF0_w03[arg]->work[2] = 0;
+    D_8011EBF0_w03[arg]->rot.x = (f32)MBRand(360.0f);
+    D_8011EBF0_w03[arg]->trans.x = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80116B78_w03);
 

@@ -7185,7 +7185,12 @@ void func_801191C0_w05(void) {
 // Register allocation differs: the target has a CSE boundary (e.g. a loop end note) between the
 // two movement steps, so `&playerObj->coords`/`&playerObj->rot` are recomputed for the second step,
 // `&pos` is rematerialized for the offset adds, and `vib` (not `unk4`) is spilled to the stack.
-// A `do { ... } while (0)` around the offset adds gets most of the way there.
+// The adds go through a pointer (`addiu a0,sp,0x10` then `0(a0)`/`8(a0)`), which means a
+// `Vec *p = &pos` (and `ofs`) were set before the boundary and used after it. Wrapping
+// `HuVecCopy3F(&pos, &end->coords); p = &pos; ofs = ...;` in a `do { } while (0)` (it may start
+// anywhere from `PlayerFXPlay` on) and doing `p->x += ofs[0]; p->z += ofs[1];` after it leaves
+// only s-register swaps (type/playerObj, player/process) and a v0/v1 swap in the `ofs` math.
+// Declaration order has no effect on those. No natural construct for the boundary is known yet.
 #ifdef NON_MATCHING
 void func_801192AC_w05(void) {
     PlayerReactWork *work = HuPrcCurrentGet()->user_data;

@@ -22,6 +22,8 @@
 #include "gcc/memory.h"
 #include "game/mallocblock.h"
 
+#define ABS(x) ((x) < 0 ? -(x) : (x))
+
 typedef struct PlayerReactWork {
     /* 0x00 */ s32 playerNo;
     /* 0x04 */ s32 unk4;
@@ -124,6 +126,7 @@ extern omObjData *D_80120880_w05[4];
 extern Object *D_80120870_w05[4];
 extern Object *D_8012078C_w05;
 extern Object *D_801207C4_w05;
+extern Object *D_801207CC_w05;
 extern s32 D_8011D0CC_w05;
 extern f32 D_8011EF38_w05[][2];
 extern Object *D_801207C8_w05;
@@ -6368,7 +6371,46 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_801192AC_w05);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80119610_w05);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80119A4C_w05);
+void func_80119A4C_w05(void) {
+    s32 type = (s32)HuPrcCurrentGet()->user_data;
+    SpaceData *space;
+    Object *model;
+    f32 angle;
+
+    switch (type) {
+        case 0:
+            space = MBMasuGet(0x80);
+            model = D_801207C4_w05;
+            break;
+        case 1:
+            space = MBMasuGet(0x6E);
+            model = D_801207C4_w05;
+            break;
+        case 2:
+            space = MBMasuGet(0x86);
+            model = D_801207C8_w05;
+            break;
+        default:
+            space = MBMasuGet(0x72);
+            model = D_801207C8_w05;
+            break;
+    }
+
+    angle = 0.0f;
+    while (TRUE) {
+        model->omObj1->rot.x = sindf(angle) * 5.0f;
+        angle += 45.0f;
+        if (angle < 360.0f) {
+            angle -= 360.0f;
+        }
+        if (ABS(space->coords.x - model->coords.x) <= 2.0f) {
+            break;
+        }
+        HuPrcVSleep();
+    }
+    model->omObj1->rot.x = 0.0f;
+    omDelPrcObj(NULL);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80119BC4_w05);
 
@@ -6398,7 +6440,50 @@ void func_80119F04_w05(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80119F7C_w05);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_8011A6E8_w05);
+void func_8011A6E8_w05(void) {
+    s32 type = (s32)HuPrcCurrentGet()->user_data;
+    Object *model = D_801207CC_w05;
+    s16 seNo = HuAudFXPlay(0x1B0);
+    SpaceData *start;
+    SpaceData *end;
+    SpaceData *target;
+    s16 pan;
+
+    switch (type) {
+        case 0:
+        case 1:
+            start = MBMasuGet(0x91);
+            end = MBMasuGet(0x92);
+            break;
+        default:
+            start = MBMasuGet(0x8F);
+            end = MBMasuGet(0x90);
+            break;
+    }
+
+    switch (type) {
+        case 0:
+            target = MBMasuGet(0x91);
+            break;
+        case 1:
+            target = MBMasuGet(0x92);
+            break;
+        case 2:
+            target = MBMasuGet(0x8F);
+            break;
+        default:
+            target = MBMasuGet(0x90);
+            break;
+    }
+
+    while (model->coords.x != target->coords.x) {
+        pan = ABS(start->coords.x - model->coords.x) * 64.0f / ABS(start->coords.x - end->coords.x) + 32.0f;
+        HuAudFXPanning(seNo, pan);
+        HuPrcVSleep();
+    }
+    HuAudFXStop(seNo);
+    omDelPrcObj(NULL);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_8011A8D8_w05);
 

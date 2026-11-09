@@ -35,7 +35,6 @@ void func_80107F58_chancetime(omObjData *object);
 void func_801080EC_chancetime(omObjData *object);
 void func_8010827C_chancetime(omObjData *object);
 void func_80108414_chancetime(omObjData *object);
-void func_80106B18_chancetime(void);
 void func_80108C08_chancetime(s16 model, s16 slot, s16 animIdx);
 s32 func_8010B6F4_chancetime(s16 arg0);
 void func_8010B7A0_chancetime(s16 arg0);

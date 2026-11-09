@@ -329,7 +329,7 @@ void func_8010DA24_chancetime(void) {
     D_801100CC_chancetime = func_8010C610_chancetime;
 }
 
-s8 func_8010DAA4_chancetime(void) {
+s32 func_8010DAA4_chancetime(void) {
     return D_8010FB81_chancetime;
 }
 

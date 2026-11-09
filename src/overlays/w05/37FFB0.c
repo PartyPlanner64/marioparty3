@@ -180,6 +180,11 @@ extern f32 D_8011EF70_w05[2];
 extern Object *D_801207C8_w05;
 extern Vec D_801207D4_w05;
 extern s16 *D_8011EF10_w05[];
+extern Process *D_801207D0_w05;
+extern DecisionTreeNonLeafNode D_8011E0D0_w05[];
+extern DecisionTreeNonLeafNode D_8011E124_w05[];
+extern DecisionTreeNonLeafNode D_8011E1C0_w05[];
+extern DecisionTreeNonLeafNode D_8011E274_w05[];
 extern s16 *D_8011EF28_w05[];
 extern s32 D_80120788_w05;
 extern s32 D_8011D090_w05[];
@@ -7951,7 +7956,318 @@ s32 func_8011AD34_w05(s32 arg0) {
     return count;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_8011AEA4_w05);
+void func_8011AEA4_w05(void) {
+    GW_SYSTEM *system = &GwSystem;
+    GW_PLAYER *player;
+    Object *model;
+    SpaceData *space;
+    SpaceData *target;
+    SpaceData *dest;
+    Object *bridge;
+    DecisionTreeNonLeafNode *tree;
+    Vec pos;
+    s32 type;
+    s32 masu;
+    s32 choice;
+    s32 i;
+
+    player = MBPlayerGet(-1);
+    D_801207C0_w05 = 0;
+    func_800DBEC0_shared_board(system->current_player_index);
+    MBPlayerMotionSet(-1, -1, 2);
+    switch (MBMasuLinkMasuIdGet(player->clink, player->cidx)) {
+        case 0x96:
+            func_800ED20C_shared_board(-1, 8, 0x97);
+            space = MBMasuGet(0x6E);
+            dest = MBMasuGet(0x97);
+            bridge = D_801207C4_w05;
+            type = 0;
+            break;
+        case 0x7E:
+            func_800ED20C_shared_board(-1, 8, 0x7F);
+            space = MBMasuGet(0x80);
+            dest = MBMasuGet(0x7F);
+            bridge = D_801207C4_w05;
+            type = 1;
+            break;
+        case 0x70:
+            func_800ED20C_shared_board(-1, 8, 0x71);
+            space = MBMasuGet(0x72);
+            dest = MBMasuGet(0x71);
+            bridge = D_801207C8_w05;
+            type = 2;
+            break;
+        default:
+            func_800ED20C_shared_board(-1, 8, 0x85);
+            space = MBMasuGet(0x86);
+            dest = MBMasuGet(0x85);
+            bridge = D_801207C8_w05;
+            type = 3;
+            break;
+    }
+    HuPrcSleep(8);
+
+    if (GwPlayer[system->current_player_index].coin < 5) {
+        MBDlgWinExec(8, 0xD01);
+        func_800DB884_shared_board(system->current_player_index);
+        goto end;
+    }
+
+    HuAudFXPlay(0x1AE);
+retry:
+    MBDlgWinInsertCreate(8, 0xD00, 0, 0, 0, 0, 0);
+    switch (type) {
+        case 0:
+            tree = D_8011E0D0_w05;
+            break;
+        case 1:
+            tree = D_8011E124_w05;
+            break;
+        case 2:
+            tree = D_8011E1C0_w05;
+            break;
+        default:
+            tree = D_8011E274_w05;
+            break;
+    }
+    choice = func_801096DC_w05((s32)tree, 0);
+    MBDlgWinClose();
+    MBDlgWinKill();
+    switch (choice) {
+        case 0:
+            MBCoinChangeCreate(system->current_player_index, -5);
+            MBCoinTakeCreate(system->current_player_index, -5);
+            HuPrcSleep(30);
+            MBDlgWinExec(8, 0xD03);
+            break;
+        case 1:
+            MBDlgWinExec(8, 0xD02);
+            func_800DB884_shared_board(system->current_player_index);
+            goto end;
+        default:
+            func_80106AB0_w05();
+            goto retry;
+    }
+
+    mbItemBtnF = 0;
+    D_800A12D8_main = 1;
+    MBStatusHideAll();
+    func_800E6FCC_shared_board();
+    HuVecCopy3F(&pos, &player->player_obj->coords);
+    MBCameraFocusModeSet(4);
+    MBCameraFocusVecSet(&pos);
+    HuPrcChildLink(HuPrcCurrentGet(), MBCameraZoomMotStart(1.2f));
+    HuPrcChildWatch();
+
+    func_800EE688_shared_board(bridge, 10.0f, -1.0f);
+    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&bridge->coords, &space->coords, &bridge->coords, 20));
+    MBPlayerMotionSet(-1, 0, 2);
+    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&player->player_obj->coords, &dest->coords, &player->player_obj->coords, 20));
+    HuPrcChildWatch();
+    func_800EE6C0_shared_board(bridge);
+    HuAudFXPlay(0x1AE);
+    HuAudFXPlay(0x1AF);
+    MBPlayerMotionSet(-1, -1, 2);
+    func_800ED20C_shared_board(-1, 8, MBMasuLinkMasuIdGet(player->clink, player->cidx));
+    HuPrcSleep(8);
+
+    for (i = 0; i < 4; i++) {
+        D_801207B0_w05[i] = 0;
+    }
+    D_801207D0_w05 = omAddPrcObj(func_80117908_w05, 0x4800, 0, 0);
+    while (D_801207D0_w05->user_data == NULL) {
+        HuPrcVSleep();
+    }
+    D_801207B0_w05[system->current_player_index] = 1;
+
+    switch (type) {
+        case 0:
+            space = MBMasuGet(0x92);
+            dest = MBMasuGet(0x91);
+            break;
+        case 1:
+            space = MBMasuGet(0x91);
+            dest = MBMasuGet(0x92);
+            break;
+        case 2:
+            space = MBMasuGet(0x90);
+            dest = MBMasuGet(0x8F);
+            break;
+        default:
+            space = MBMasuGet(0x8F);
+            dest = MBMasuGet(0x90);
+            break;
+    }
+    func_8011ABEC_w05(D_8011EF10_w05[type], type, 0, func_8011AD34_w05(type));
+
+    model = MBModelCreate(0x4C, NULL);
+    D_801207CC_w05 = model;
+    MBModelTempAllocFree(model);
+    HuVecCopy3F(&model->coords, &space->coords);
+    switch (type) {
+        case 0:
+            model->coords.x += 0.8f;
+            HuVecCopyXYZ(&model->rot, -1.0f, 0.0f, 0.0f);
+            break;
+        case 1:
+            HuVecCopyXYZ(&model->rot, 1.0f, 0.0f, 0.0f);
+            break;
+        case 2:
+            model->coords.x += 1.5f;
+            HuVecCopyXYZ(&model->rot, -1.0f, 0.0f, 0.0f);
+            break;
+        default:
+            model->coords.x -= 1.5f;
+            HuVecCopyXYZ(&model->rot, 1.0f, 0.0f, 0.0f);
+            break;
+    }
+    HuPrcChildLink(HuPrcCurrentGet(), func_800ED5E0_shared_board(&model->coords, &dest->coords, &model->coords, 2.0f));
+    omAddPrcObj(func_8011A6E8_w05, 0x4800, 0, 0)->user_data = (void *)type;
+    omAddPrcObj(func_80119BC4_w05, 0x4800, 0, 0)->user_data = (void *)type;
+    omAddPrcObj(func_80119F7C_w05, 0x4800, 0, 0)->user_data = (void *)type;
+
+    target = MBMasuGet(MBMasuLinkMasuIdGet(player->clink, player->cidx));
+    switch (type) {
+        case 0:
+            while (model->coords.x - target->coords.x > -10.0f) {
+                HuPrcVSleep();
+            }
+            target = MBMasuGet(0x7E);
+            dest = MBMasuGet(0x7F);
+            break;
+        case 1:
+            while (target->coords.x - model->coords.x > -10.0f) {
+                HuPrcVSleep();
+            }
+            target = MBMasuGet(0x96);
+            dest = MBMasuGet(0x97);
+            break;
+        case 2:
+            while (model->coords.x - target->coords.x > -10.0f) {
+                HuPrcVSleep();
+            }
+            target = MBMasuGet(0x84);
+            dest = MBMasuGet(0x85);
+            break;
+        default:
+            while (target->coords.x - model->coords.x > -10.0f) {
+                HuPrcVSleep();
+            }
+            target = MBMasuGet(0x70);
+            dest = MBMasuGet(0x71);
+            break;
+    }
+    HuPrcChildLink(HuPrcCurrentGet(), func_800ED5E0_shared_board(&pos, &target->coords, &pos, 2.0f));
+    HuPrcChildWatch();
+    MBModelKill(model);
+    D_801207B0_w05[0] = -1;
+
+    if (D_801207C0_w05 != 0) {
+        MBPlayerMotionSet(-1, 0, 2);
+        func_800EE688_shared_board(bridge, 10.0f, -1.0f);
+        HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&bridge->coords, &dest->coords, &bridge->coords, 20));
+        func_800DB884_shared_board(system->current_player_index);
+        HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&player->player_obj->coords, &target->coords, &player->player_obj->coords, 20));
+        HuPrcChildWatch();
+        func_800DB884_shared_board(system->current_player_index);
+        HuAudFXPlay(0x1AE);
+        HuAudFXPlay(0x1AF);
+        MBPlayerMotionSet(-1, -1, 2);
+        MBCameraFocusModeSet(1);
+        func_800EE6C0_shared_board(bridge);
+        func_800E6FBC_shared_board();
+        MBStatusShowAll();
+        D_800A12D8_main = 0;
+        mbItemBtnF = 1;
+        switch (type) {
+            case 0:
+                player->clink = 8;
+                player->cidx = 0;
+                player->nlink = 8;
+                player->nidx = 1;
+                player->blink = 0x10;
+                player->bidx = 0x11;
+                break;
+            case 1:
+                player->clink = 2;
+                player->cidx = 1;
+                player->nlink = 2;
+                player->nidx = 2;
+                player->blink = 2;
+                player->bidx = 0;
+                break;
+            case 2:
+                player->clink = 10;
+                player->cidx = 0;
+                player->nlink = 10;
+                player->nidx = 1;
+                player->blink = 9;
+                player->bidx = 0xC;
+                break;
+            default:
+                player->clink = 5;
+                player->cidx = 1;
+                player->nlink = 5;
+                player->nidx = 2;
+                player->blink = 5;
+                player->bidx = 0;
+                break;
+        }
+        if (player->rev & 0x80) {
+            HuPrcChildLink(HuPrcCurrentGet(), omAddPrcObj(func_8011A8D8_w05, 0x4800, 0, 0));
+            HuPrcChildWatch();
+        }
+    } else {
+        WipeCreateOut(11, 16);
+        while (WipeStatGet() != 0) {
+            HuPrcVSleep();
+        }
+        func_800E6FBC_shared_board();
+        HuVecCopy3F(&bridge->coords, &dest->coords);
+        HuVecCopy3F(&pos, &player->player_obj->coords);
+        MBCameraFocusVecSet(&pos);
+        HuPrcSleep(5);
+        MBCameraFocusModeSet(1);
+        WipeCreateIn(11, 16);
+        while (WipeStatGet() != 0) {
+            HuPrcVSleep();
+        }
+        MBPlayerMotionSet(-1, 0, 2);
+        func_800DB884_shared_board(system->current_player_index);
+        switch (type) {
+            case 0:
+                masu = 0x96;
+                break;
+            case 1:
+                masu = 0x7E;
+                break;
+            case 2:
+                masu = 0x70;
+                break;
+            default:
+                masu = 0x84;
+                break;
+        }
+        target = MBMasuGet(masu);
+        HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&player->player_obj->coords, &target->coords, &player->player_obj->coords, 20));
+        HuPrcChildWatch();
+        MBStatusShowAll();
+        D_800A12D8_main = 0;
+        mbItemBtnF = 1;
+    }
+
+    switch (type) {
+        case 0:
+        case 1:
+            GwSystem.boardData.halfWordBytes[3] ^= 1;
+            break;
+        default:
+            GwSystem.boardData.halfWordBytes[4] ^= 1;
+            break;
+    }
+end:
+    HuPrcSleep(10);
+}
 
 void func_8011BB74_w05(void) {
     GW_PLAYER *player = MBPlayerGet(-1);

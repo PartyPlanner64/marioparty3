@@ -231,6 +231,9 @@ extern DecisionTreeNonLeafNode D_8011D2CC_w03[];
 extern Vec2f D_8011D358_w03[];
 extern s32 D_8011EBA8_w03;
 extern s32 D_8011EBAC_w03;
+extern u8 D_8011D38C_w03[];
+extern u8 D_8011D390_w03[];
+extern GameGuyReward D_8011D394_w03[];
 s16 func_801059D0_w03(void) {
     return D_8011C150_w03[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
 }
@@ -5581,7 +5584,218 @@ void func_80114728_w03(void) {
     omDelPrcObj(NULL);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80114C58_w03);
+void func_80114C58_w03(void) {
+    Object *coinModel;
+    Object *gameGuyModel;
+    Object *playerObj;
+    Process *process;
+    GW_SYSTEM *system;
+    s32 choice;
+    s32 itemSlot;
+    s32 rewardIndex;
+    s32 randomValue;
+    s32 rewardAmount;
+    s32 i;
+    struct {
+        s32 processFlag;
+        s32 pad;
+        char rewardText[0x10];
+    } locals;
+
+    system = &GwSystem;
+    func_8010FF2C_w03();
+    itemSlot = MBItemFind(-1, 0x11);
+    GwPlayer[system->current_player_index].itemNo[itemSlot] = -1;
+    MBItemRemoveEmpty(system->current_player_index);
+    MBStatusItemIconSprReinit(system->current_player_index);
+    MBStatusShrink(-1);
+    MBStatusItemDispSetAll(0);
+    MBStatusGrow(-1);
+
+    coinModel = MBModelCreate(0x3E, 0);
+    Hu3DModelScaleSet(coinModel->omObj1->model[0], 0, 0, 0);
+    MBModelTempAllocFree(coinModel);
+    coinModel->velocity.x = 30.0f;
+    MBModelDispOff(coinModel);
+
+    gameGuyModel = MBModelCreate(0x43, 0);
+    D_8011EBC0_w03 = gameGuyModel;
+    func_8001C2FC_main(gameGuyModel->omObj1->model[0], 0x20000, 0x20000);
+    Hu3DModelRemakeStatic(gameGuyModel->omObj1->model[0]);
+    func_8001C954_main(gameGuyModel->omObj1->model[0]);
+    func_8001C514_main(gameGuyModel->omObj1->model[0]);
+    HuVecCopy3F(&gameGuyModel->coords, &MBPlayerGet(-1)->player_obj->coords);
+    func_8001C814_main(gameGuyModel->omObj1->model[0], 2, 1);
+    gameGuyModel->velocity.x = 100.0f;
+    HuAudFXPlay(0x14B);
+    while (gameGuyModel->velocity.x > 30.0f) {
+        gameGuyModel->velocity.x -= 1.0f;
+        HuPrcVSleep();
+    }
+
+selectPlayer:
+    MBDlgWinInsertCreate(-1, 0x5C00, GwPlayer[0].chr + 0x1C00, GwPlayer[1].chr + 0x1C00,
+                         GwPlayer[2].chr + 0x1C00, GwPlayer[3].chr + 0x1C00, 0);
+    choice = func_80109F44_w03(0, 0);
+    MBDlgWinClose();
+    MBDlgWinKill();
+    if (choice >= 0) {
+        if (choice < 4) {
+            goto validChoice;
+        }
+        if (choice == 4) {
+            choice = func_800EF0D8_shared_board(0);
+            goto validChoice;
+        }
+    }
+    func_80106D28_w03();
+    D_800CB99C_main = 1;
+    omAllPause();
+    goto selectPlayer;
+
+validChoice:
+    locals.processFlag = 1;
+    process = omAddPrcObj(func_80114728_w03, 0x4002, 0, 0);
+    process->user_data = &locals.processFlag;
+    while (locals.processFlag != 0) {
+        HuPrcVSleep();
+    }
+
+    if (choice != system->current_player_index) {
+        WipeCreateOut(WIPE_TYPE_NORMAL, 0x10);
+        HuPrcSleep(0x10);
+        D_8011D388_w03 = choice;
+        MBCameraFocusModeSet(2);
+        MBCameraFocusStaticPosSet(&MBPlayerGet(choice)->player_obj->coords);
+        MBCameraPos3DSet(&MBPlayerGet(choice)->player_obj->coords);
+        HuPrcVSleep();
+        HuPrcSleep(10);
+        WipeCreateIn(WIPE_TYPE_NORMAL, 0x10);
+        HuPrcSleep(0x10);
+    } else {
+        HuPrcSleep(30);
+        D_8011D388_w03 = choice;
+    }
+
+    locals.processFlag = 1;
+    while (locals.processFlag != 0) {
+        HuPrcVSleep();
+    }
+
+    playerObj = MBPlayerGet(choice)->player_obj;
+    process = func_800EDB98_shared_board(coinModel, 5.0f, 2.0f);
+    HuVecCopy3F(&coinModel->coords, &playerObj->coords);
+    func_800D9A40_shared_board(coinModel);
+    coinModel->scale.x = coinModel->scale.y = coinModel->scale.z = 0.0f;
+    while (coinModel->scale.x < 1.0f) {
+        coinModel->scale.x = coinModel->scale.y = coinModel->scale.z += 0.2f;
+        HuPrcVSleep();
+    }
+
+    MBPlayerVibrate(choice, 4);
+    HuAudFXPlay(0x2A1);
+    if (GwPlayer[choice].coin != 0) {
+        func_8010A1C8_w03(10, 0x2F00, -1, choice);
+        GwPlayer[choice].gameCoin = GwPlayer[choice].coin;
+        MBCoinChangeCreate(choice, -GwPlayer[choice].coin);
+        MBCoinTakeCreate(choice, -GwPlayer[choice].coin);
+        HuPrcSleep(30);
+        func_8010A1C8_w03(10, 0x2F02, -1, choice);
+        omDelPrcObj(process);
+        while (coinModel->velocity.x >= 10.0f) {
+            coinModel->velocity.x -= 2.0f;
+            HuPrcVSleep();
+        }
+        HuPrcSleep(30);
+        while (coinModel->velocity.x < 100.0f) {
+            coinModel->velocity.x += 4.0f;
+            playerObj->velocity.x += 4.0f;
+            HuPrcVSleep();
+        }
+    } else {
+        func_8010A1C8_w03(10, 0x2F01, -1, choice);
+        omDelPrcObj(process);
+        while (coinModel->velocity.x <= 100.0f) {
+            coinModel->velocity.x += 4.0f;
+            HuPrcVSleep();
+        }
+        MBModelKill(coinModel);
+        WipeCreateOut(9, 0x10);
+        HuPrcSleep(0x11);
+        MBCameraFocusModeSet(1);
+        MBCameraPos3DSet(&MBPlayerGet(-1)->player_obj->coords);
+        HuPrcSleep(5);
+        WipeCreateIn(9, 0x10);
+        HuPrcSleep(0x11);
+        return;
+    }
+
+    if (MBPlayerComCheck((s16)choice) != 0 && system->show_com_minigames != 0) {
+        WipeCreateOut(9, 0x10);
+        HuPrcSleep(0x11);
+        MBModelKill(coinModel);
+        func_800EE688_shared_board(playerObj, 0, 0);
+        playerObj->velocity.x = 0.0f;
+        HuPrcSleep(5);
+        WipeCreateIn(9, 0x10);
+        HuPrcSleep(0x11);
+        randomValue = MBRand(100.0f) + 1;
+        for (rewardIndex = 0; rewardIndex < 7; rewardIndex++) {
+            if (randomValue <= D_8011D394_w03[rewardIndex].threshold) {
+                break;
+            }
+        }
+        if (D_8011D394_w03[rewardIndex].multiplier != 0) {
+            rewardAmount = GwPlayer[choice].gameCoin * D_8011D394_w03[rewardIndex].multiplier;
+            if (rewardAmount >= 1000) {
+                rewardAmount = 999;
+            }
+            sprintf(locals.rewardText, D_8011E98C_w03, rewardAmount);
+            MBDlgWinInsertCreate(-1, 0x2F03, (s32)locals.rewardText, 0, 0, 0, 0);
+            MBDlgWinClose();
+            MBDlgWinKill();
+            MBCoinChangeCreate(choice, rewardAmount);
+            MBCoinTakeCreate(choice, rewardAmount);
+            HuPrcSleep(20);
+        } else {
+            MBDlgWinExec(-1, 0x2F04);
+        }
+        HuPrcSleep(10);
+        WipeCreateOut(9, 0x10);
+        HuPrcSleep(0x11);
+        MBCameraFocusModeSet(1);
+        MBCameraPos3DSet(&MBPlayerGet(-1)->player_obj->coords);
+        HuPrcSleep(5);
+        WipeCreateIn(9, 0x10);
+        HuPrcSleep(0x11);
+        return;
+    }
+
+    if (func_800DEB2C_shared_board(system->current_player_index) == 3) {
+        GWBoardFlagSet(0x17);
+    } else {
+        GWBoardFlagClear(0x17);
+    }
+    for (i = 0; i < 4; i++) {
+        GwPlayer[i].group = 1;
+    }
+    MBPlayerGet(choice)->group = 0;
+    randomValue = MBRand(100.0f);
+    for (rewardIndex = 0; (u32)rewardIndex < 3; rewardIndex++) {
+        if (randomValue < D_8011D390_w03[rewardIndex]) {
+            break;
+        }
+    }
+    if (rewardIndex == 3) {
+        rewardIndex = 2;
+    }
+    system->minigame_index = D_8011D38C_w03[rewardIndex];
+    GwSystem.playerIndexVisitingBowser = choice;
+    func_800FC998_shared_board();
+    omAllUPause();
+    func_800FF7F0_shared_board(2);
+    HuPrcSleep(-1);
+}
 
 void func_80115564_w03(s32 arg0, s32 arg1, f32 *arg2) {
     f32 curX;

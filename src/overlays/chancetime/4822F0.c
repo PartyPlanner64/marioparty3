@@ -3,6 +3,7 @@
 
 extern s32 D_8010FAF0_chancetime;
 extern f32 D_8010FAF4_chancetime;
+extern f32 D_8010FAF8_chancetime;
 extern f32 D_8010FAFC_chancetime;
 extern s32 D_8010FE70_chancetime;
 extern s32 D_8010FE74_chancetime;
@@ -10,10 +11,10 @@ extern s8 D_8010FE78_chancetime;
 extern s16 D_8010FE7C_chancetime;
 extern s16 D_8010FE7E_chancetime;
 extern ChanceTimeObjState D_801100C0_chancetime;
-extern s8 D_801100D0_chancetime[];
 
 void func_80106770_chancetime(omObjData *object);
 void func_8010684C_chancetime(omObjData *object);
+void func_80106A2C_chancetime(omObjData *object);
 void func_80106BEC_chancetime(omObjData *object);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4822F0", func_80106320_chancetime);
@@ -40,7 +41,32 @@ void func_80106770_chancetime(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4822F0", func_8010684C_chancetime);
+void func_8010684C_chancetime(omObjData *object) {
+    s16 done = FALSE;
+
+    D_8010FAF8_chancetime += 8.0f;
+    if (D_8010FAF8_chancetime >= 90.0f) {
+        D_8010FAF8_chancetime = 90.0f;
+        done = TRUE;
+    }
+    Hu3DModelRotSet(object->model[1], 0.0f, D_8010FAF8_chancetime + -90.0f, 0.0f);
+    if (done == TRUE) {
+        D_8010FAF8_chancetime = 0.0f;
+        D_8010FE70_chancetime = 0;
+        D_8010FE74_chancetime = done;
+        Hu3DMotionShiftSet(object->model[1], HmfModelData[object->motion[0]].motId, 0, 30, 2);
+        Hu3DModelScaleSet(object->model[3], 0.2f, 0.2f, 0.2f);
+        func_8001C814_main(object->model[3], 2, 0);
+        func_8001C814_main(object->model[3], 1, 1);
+        func_8001C258_main(object->model[3], 4, 0);
+        Hu3DModelPosSet(object->model[4], HmfModelData[object->model[3]].pos.x, HmfModelData[object->model[3]].pos.y,
+                        HmfModelData[object->model[3]].pos.z);
+        func_8001C258_main(object->model[4], 4, 0);
+        func_8001C814_main(object->model[4], 2, 0);
+        func_8001C814_main(object->model[4], 1, 0);
+        D_801100C0_chancetime.func = func_80106A2C_chancetime;
+    }
+}
 
 void func_80106A2C_chancetime(omObjData *object) {
     s32 done = FALSE;

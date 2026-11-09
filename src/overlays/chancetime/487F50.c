@@ -1,4 +1,5 @@
 #include "common.h"
+#include "chancetime.h"
 
 typedef struct ChanceTimeUnkFED0 {
     /* 0x00 */ s8 unk00;
@@ -35,7 +36,6 @@ extern s8 D_80110000_chancetime;
 extern s32 D_80110008_chancetime;
 extern void (*D_80110084_chancetime)();
 extern omObjData *D_801100C8_chancetime;
-extern s8 D_801100D0_chancetime[4];
 extern s8 D_801100DD_chancetime[2];
 extern s8 D_801100DF_chancetime;
 extern void (*D_801100CC_chancetime)(void);

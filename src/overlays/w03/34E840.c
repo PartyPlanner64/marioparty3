@@ -3683,7 +3683,25 @@ void func_8010F9C8_w03(void) {
     omDelPrcObj(NULL);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_8010FC2C_w03);
+Process *func_8010FC2C_w03(s32 spriteGroup, s16 startX, s16 startY, s16 endX, s16 endY,
+                           s16 duration) {
+    Process *process;
+    WarpBlockSwapWork *work;
+
+    process = omAddPrcObj(func_8010F9C8_w03, 0x4002, 0, 0x40);
+    work = HuMemMemoryAlloc(process->heap, 0x10);
+    process->user_data = work;
+    work->startX = startX;
+    work->startY = startY;
+    work->endX = endX;
+    work->endY = endY;
+    if (duration == -1) {
+        duration = 25;
+    }
+    work->duration = duration;
+    work->spriteGroup = spriteGroup;
+    return process;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_8010FCFC_w03);
 

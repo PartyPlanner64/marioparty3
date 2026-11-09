@@ -541,7 +541,20 @@ void func_80106B38_w02(void) {
     mbItemBtnF = 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80106B94_w02);
+void func_80106B94_w02(void) {
+    while (MBCameraStopCheck() != 0) {
+        HuPrcVSleep();
+    }
+    HuPrcVSleep();
+    D_8011EC20_w02 = func_800E210C_shared_board(0, 0x92, 1);
+    D_8011EC24_w02 = func_800E210C_shared_board(1, 0xA0, 1);
+    D_8011EC30_w02 = func_800E210C_shared_board(0xD, 0xAE, 1);
+    D_8011EC28_w02 = func_800E210C_shared_board(3, 0xBC, 1);
+    D_8011EC2C_w02 = func_800E210C_shared_board(0xB, 0xCA, 1);
+    HuPrcSleep(3);
+    mbCameraBtnF = 1;
+    D_800D51F8_main = 1;
+}
 
 void func_80106C64_w02(void) {
     mbCameraBtnF = 0;
@@ -794,9 +807,28 @@ s32 func_80107724_w02(u8 *arg0) {
     return func_80107438_w02(arg0, 1, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80107744_w02);
+void func_80107744_w02(void) {
+    GwSystem.current_board_index = 1;
+    omInitObjMan(0xA, 0);
+    omOvlGotoEx(0x47, 0, 0x192);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80107780_w02);
+void func_80107780_w02(void) {
+    omInitObjMan(0xA, 0);
+    MBMoveMasuSet(0, 0xB, 0);
+    MBMoveMasuSet(1, 0xB, 0);
+    MBMoveMasuSet(2, 0xB, 0);
+    MBMoveMasuSet(3, 0xB, 0);
+    GWBoardFlagSet(3);
+    func_801059F8_w02();
+    GwSystem.bank_coins = 0;
+    GwSystem.slow_dice_flags = 0;
+    GwSystem.forceShopHost = 0;
+    GwSystem.wackyWatchUsedState = 0;
+    GwSystem.boardData.halfWordBytes[0] = 0;
+    GwSystem.boardData.halfWordBytes[1] = MBRand(4.0f);
+    omOvlReturnEx(1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80107830_w02);
 

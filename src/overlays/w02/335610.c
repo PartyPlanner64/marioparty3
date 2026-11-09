@@ -6705,7 +6705,99 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_8011946C_w02);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80119680_w02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_801199EC_w02);
+void func_801199EC_w02(void) {
+    void *data;
+    s32 spriteId;
+    s32 grp;
+    s32 count;
+    s32 wrapped;
+    s32 fading;
+    s32 mask;
+    s32 clampedAlpha;
+    s32 alpha;
+    f32 angle;
+    f32 speed;
+
+    data = DataRead(0x1300F7);
+    spriteId = HuSprAnimRead(data);
+    DataClose(data);
+    grp = HuSprGrpCreate(1, 5);
+    HuSprGrpMemberSet(grp, 0, spriteId, 0);
+    HuSprAttrReset(grp, 0, 0xFFFF);
+    HuSprAttrSet(grp, 0, 0x1008);
+    HuSprPriSet(grp, 0, 0x1000);
+    HuSprPosSet(grp, 0, 0xA0, 0x5A);
+
+    angle = 0.0f;
+    speed = 30.0f;
+    count = 0;
+    wrapped = 0;
+
+    while (1) {
+        if (angle >= 90.0f && wrapped == 0) {
+            wrapped = 1;
+            count++;
+        }
+        if (angle >= 360.0f) {
+            wrapped = 0;
+            angle -= 360.0f;
+        }
+        if (angle >= 180.0f && angle <= 360.0f) {
+            HuSprAttrSet(grp, 0, 2);
+        } else {
+            HuSprAttrReset(grp, 0, 2);
+        }
+        HuSprScaleSet(grp, 0, 1.0f, sindf(angle >= 180.0f ? angle - 180.0f : angle));
+        if (count >= 2) {
+            break;
+        }
+        HuPrcVSleep();
+        angle += speed;
+    }
+
+    HuSprAttrReset(grp, 0, 2);
+    HuSprScaleSet(grp, 0, 1.0f, 1.0f);
+    HuPrcSleep(20);
+
+    angle = 90.0f;
+    count = 0;
+    fading = 0;
+    wrapped = 0;
+    alpha = 255;
+
+    while (1) {
+        if (angle >= 360.0f && wrapped == 0) {
+            wrapped = 1;
+            count++;
+        }
+        if (angle >= 360.0f) {
+            wrapped = 0;
+            angle -= 360.0f;
+        }
+        if (fading == 0 && count != 0) {
+            if (angle >= 90.0f && angle < 180.0f) {
+                fading = 1;
+            }
+        }
+        if (fading != 0) {
+            alpha -= 21;
+            mask = -(alpha > 0);
+            clampedAlpha = mask & alpha;
+            alpha = clampedAlpha;
+        }
+        HuSprTPLvlSet(grp, 0, alpha);
+        if (count >= 2) {
+            break;
+        }
+        HuPrcVSleep();
+        angle += speed;
+    }
+
+    HuSprScaleSet(grp, 0, 1.0f, 0.0f);
+    HuSprGrpKill(grp);
+    HuSprAnimKill(spriteId);
+    omDelPrcObj(NULL);
+}
 
 Process *func_80119D84_w02(void) {
     return omAddPrcObj(func_801199EC_w02, 0x1000, 0, 0);

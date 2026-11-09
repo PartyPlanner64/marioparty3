@@ -117,7 +117,6 @@ extern u8 *D_8011E998_w02[];
 extern s8 *D_8011EA38_w02[];
 extern DecisionTreeNonLeafNode *D_8011EA58_w02[];
 extern DecisionTreeNonLeafNode *D_8011EA60_w02[];
-extern u8 D_8011EA70_w02[];
 extern s16 D_8011C75C_w02[];
 void func_80108280_w02(s16 arg0);
 extern s32 D_8011C844_w02[];
@@ -135,7 +134,6 @@ extern Object *D_8011ECBC_w02;
 extern u8 D_8011D850_w02[];
 extern u8 D_8011D854_w02[];
 extern GameGuyReward D_8011D858_w02[];
-extern char D_8011EA74_w02[];
 void func_80109F1C_w02(s16 arg0, s32 arg1, s16 arg2, s32 arg3);
 s32 func_8011C274_w02(void);
 s32 func_8011C5D8_w02(void);
@@ -184,6 +182,7 @@ void func_80108C4C_w02(void);
 void func_80108CC0_w02(void);
 void func_80108D34_w02(void);
 void func_80108DA8_w02(void);
+omObjData *func_8010EBF0_w02(Vec *arg0, f32 arg1, f32 arg2, s16 arg3, Vec *arg4, s32 arg5);
 s16 func_801059D0_w02(void) {
     return D_8011C6A0_w02[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
 }
@@ -591,6 +590,9 @@ void func_80106C64_w02(void) {
     MBHelpWinKill(D_8011EC28_w02);
     MBHelpWinKill(D_8011EC2C_w02);
 }
+
+// Keep rodata definitions interleaved with functions to preserve the original constant order.
+const u8 D_8011EA70_w02[4] = { 1, 2, 4, 8 };
 
 s32 func_80106CC4_w02(u8 *arg0) {
     s32 var_s2 = 0;
@@ -1605,6 +1607,8 @@ void func_8010A018_w02(void) {
     func_80109C88_w02();
 }
 
+const char D_8011EA74_w02[] = "%d";
+
 INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_8010A3C4_w02);
 
 s32 func_8010AF00_w02(s32 arg0) {
@@ -1829,7 +1833,107 @@ void func_8010ED4C_w02(omObjData *arg0) {
     func_8001F9E4_main(model->omObj1->model[0], (u8)data->unk0C);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_8010EE64_w02);
+void func_8010EE64_w02(void) {
+    Vec pos;
+    s8 link;
+    s8 index;
+    GW_PLAYER *player;
+    Object *lamp;
+    UnkVibrateProcess *vib;
+    s32 angle;
+    s32 i;
+    GW_SYSTEM *system = &GwSystem;
+
+    player = MBPlayerGet(CUR_PLAYER);
+    func_8010F9BC_w02();
+    lamp = MBModelCreate(0x24, NULL);
+    Hu3DModelScaleSet(lamp->omObj1->model[0], 0.0f, 0.0f, 0.0f);
+    HuVecCopy3F(&lamp->coords, &player->player_obj->coords);
+    for (lamp->coords.y = 100.0f; lamp->coords.y > 30.0f;) {
+        lamp->coords.y -= 1.0f;
+        HuPrcVSleep();
+    }
+
+    HuAudFXPlay(0x127);
+    func_8004A7C4_main(0xB4);
+    vib = MBPlayerVibrateObjCreate(CUR_PLAYER, 4, 5);
+
+    angle = 0xB4;
+    i = 0;
+    while (angle < 0x438) {
+        Vec particleDir[8] = {
+            {
+                1.0f,
+                1.0f,
+                1.0f,
+            },
+            { 1.0f, 2.0f, 1.0f },
+            { 0.0f, 2.0f, 1.0f },
+            { -1.0f, 1.0f, 1.0f },
+            { -1.0f, -1.0f, 1.0f },
+            { 0.0f, -1.0f, 1.0f },
+            { -1.0f, 2.0f, 1.0f },
+            { 1.0f, -1.0f, 1.0f }
+        };
+
+        lamp->coords.y = (2.0f * sindf(angle)) + 30.0f;
+        if (i & 1) {
+            HuVecCopyXYZ(&pos, lamp->coords.x, lamp->coords.y, lamp->coords.z);
+            pos.x -= 15.0f;
+            pos.y += 15.0f;
+            func_8010EBF0_w02(&pos, 0.1f, 2.0f, 1, &particleDir[(i / 2) & 7], 0);
+        }
+        angle += 0x14;
+        HuPrcVSleep();
+        i++;
+    }
+
+    MBPlayerVibrateObjKill(vib);
+    WipeColorSet(0xFF, 0xFF, 0xFF);
+    func_800EB24C_shared_board(
+        D_8011C690_w02[system->star_spawn_indices[system->current_star_spawn]], &link, &index);
+    player->clink = link;
+    player->cidx = index;
+    player->nlink = link;
+    player->nidx = index + 1;
+    player->blink = link;
+    player->bidx = index - 1;
+    player->rev &= ~FLAG_REV;
+    func_800FC9E0_shared_board();
+    HuAudFXPlay(0x128);
+    omAllUPause();
+
+    while (1) {
+        Vec particleDir2[8] = {
+            {
+                1.0f,
+                1.0f,
+                1.0f,
+            },
+            { 1.0f, 2.0f, 1.0f },
+            { 0.0f, 2.0f, 1.0f },
+            { -1.0f, 1.0f, 1.0f },
+            { -1.0f, -1.0f, 1.0f },
+            { 0.0f, -1.0f, 1.0f },
+            { -1.0f, 2.0f, 1.0f },
+            { 1.0f, -1.0f, 1.0f }
+        };
+
+        lamp->coords.y = (2.0f * sindf(angle)) + 30.0f;
+        if (i & 1) {
+            HuVecCopyXYZ(&pos, lamp->coords.x, lamp->coords.y, lamp->coords.z);
+            pos.x -= 15.0f;
+            pos.y += 15.0f;
+            func_8010EBF0_w02(&pos, 0.1f, 2.0f, 1, &particleDir2[(i / 2) & 7], 0);
+        }
+        i++;
+        HuPrcVSleep();
+        angle += 0x14;
+        if (angle == 0x500) {
+            func_80003A70_main(0);
+        }
+    }
+}
 
 void func_8010F22C_w02(void) {
     s16 ret;
@@ -2079,7 +2183,46 @@ void func_80110048_w02(void) {
     HuSprDispOff(mbItemCursorGrpId, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_8011020C_w02);
+void func_8011020C_w02(s32 arg0, s32 arg1, s32 duration, f32 *target, s32 mode) {
+    f32 position[2];
+    f32 stepX;
+    f32 stepY;
+    f32 scale;
+    s32 i;
+
+    if (mode == 2) {
+        HuAudFXPlay(0x145);
+    }
+
+    func_800F6848_shared_board(arg0, arg1, &position[0], &position[1]);
+    stepX = (target[0] - position[0]) / duration;
+    stepY = (target[1] - position[1]) / duration;
+
+    for (i = 2; duration != 0; duration--, i++) {
+        position[0] += stepX;
+        position[1] += stepY;
+        MBStatusItemPosSet(arg0, arg1, position[0], position[1]);
+
+        if ((mode == 1) && (i < 11)) {
+            MBStatusItemTPLvlSet(arg0, arg1, i * 25);
+            scale = i * 0.07f;
+            MBStatusItemScaleSet(arg0, arg1, scale + 0.3f,
+                                 (f32)((f64)scale + 0.3));
+        }
+        HuPrcVSleep();
+    }
+
+    MBStatusItemPosSet(arg0, arg1, target[0], target[1]);
+
+    if (mode == 0) {
+        for (i = 1; i < 10; i++) {
+            MBStatusItemTPLvlSet(arg0, arg1, 255 - (i * 25));
+            MBStatusItemScaleSet(arg0, arg1, 1.0f - (i * 0.1f), 1.0f - (i * 0.1f));
+            HuPrcVSleep();
+        }
+        MBStatusItemTPLvlSet(arg0, arg1, 0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_801104A4_w02);
 
@@ -2299,7 +2442,248 @@ selectPlayer:
     HuPrcSleep(-1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_801111E0_w02);
+void func_801111E0_w02(void) {
+    s32 i;
+    s32 j;
+    s32 wipeStarted;
+    GW_SYSTEM *system = &GwSystem;
+    Object *lamp;
+    Object *starModel;
+    Object *targetStar;
+    Process *process;
+    Process *dialogProcess;
+    Vec direction;
+    Vec pos;
+    Vec destination;
+    s32 angle;
+    s32 alpha;
+    f32 speed;
+    f32 rotation;
+    void *dialog;
+
+    {
+        GW_PLAYER *player;
+
+        player = MBPlayerGet(-1);
+        lamp = MBModelCreate(0x3C, NULL);
+        MBMotionSet(lamp, -1, 1);
+        Hu3DModelScaleSet(lamp->omObj1->model[0], 0.0f, 0.0f, 0.0f);
+        HuVecCopy3F(&lamp->coords, &player->player_obj->coords);
+        lamp->velocity.x = 30.0f;
+        lamp->flags |= 1;
+        HuVecCopyXYZ(&lamp->scale, 0.0f, 0.0f, 0.0f);
+        MBModelDispOff(lamp);
+        func_8010F9BC_w02();
+
+        {
+            s32 itemSlot = MBItemFind(-1, 9);
+
+            GwPlayer[system->current_player_index].itemNo[itemSlot] = -1;
+        }
+        MBItemRemoveEmpty(system->current_player_index);
+
+        starModel = MBModelCreate(0x3D, NULL);
+        func_8001FA68_main(starModel->omObj1->model[0]);
+        func_8001F9E4_main(starModel->omObj1->model[0], 0xFF);
+        Hu3DModelScaleSet(starModel->omObj1->model[0], 0.0f, 0.0f, 0.0f);
+        HuVecCopy3F(&starModel->coords, &player->player_obj->coords);
+        starModel->coords.y = 100.0f;
+        while (starModel->coords.y > 30.0f) {
+            starModel->coords.y -= 1.0f;
+            HuPrcVSleep();
+        }
+    }
+
+    HuAudFXPlay(0x127);
+    func_800039A4_main(D_800CDBC8_main, 0xB4);
+    dialog = MBPlayerVibrateObjCreate(-1, 3, 5);
+
+    for (angle = 180, i = 0; angle < 1080; angle += 20, i++) {
+        Vec velocities[8] = {
+            {
+                1.0f,
+                1.0f,
+                1.0f,
+            },
+            { 1.0f, 2.0f, 1.0f },
+            { 0.0f, 2.0f, 1.0f },
+            { -1.0f, 1.0f, 1.0f },
+            { -1.0f, -1.0f, 1.0f },
+            { 0.0f, -1.0f, 1.0f },
+            { -1.0f, 2.0f, 1.0f },
+            { 1.0f, -1.0f, 1.0f }
+        };
+
+        starModel->coords.y = sindf((f32)angle) * 2.0f + 30.0f;
+        if (i & 1) {
+            HuVecCopyXYZ(&pos, starModel->coords.x, starModel->coords.y, starModel->coords.z);
+            pos.x -= 15.0f;
+            pos.y += 15.0f;
+            func_8010EBF0_w02(&pos, 0.1f, 2.0f, 1,
+                              &velocities[(i / 2) & 7], 1);
+        }
+        HuPrcVSleep();
+    }
+
+    alpha = 0xFF;
+    speed = 0.0f;
+    while (1) {
+        Vec velocities2[8] = {
+            {
+                1.0f,
+                1.0f,
+                1.0f,
+            },
+            { 1.0f, 2.0f, 1.0f },
+            { 0.0f, 2.0f, 1.0f },
+            { -1.0f, 1.0f, 1.0f },
+            { -1.0f, -1.0f, 1.0f },
+            { 0.0f, -1.0f, 1.0f },
+            { -1.0f, 2.0f, 1.0f },
+            { 1.0f, -1.0f, 1.0f }
+        };
+
+        starModel->coords.y = sindf((f32)angle) * 2.0f + 30.0f;
+        if (i & 1) {
+            HuVecCopyXYZ(&pos, starModel->coords.x, starModel->coords.y, starModel->coords.z);
+            pos.x -= 15.0f;
+            pos.y += 15.0f;
+            func_8010EBF0_w02(&pos, 0.1f, 2.0f, 1,
+                              &velocities2[(i / 2) & 7], 1);
+        }
+
+        if (alpha > 0) {
+            func_8001F9E4_main(starModel->omObj1->model[0], alpha & 0xFF);
+            alpha -= 12;
+        } else {
+            MBModelDispOff(starModel);
+            func_800D9A40_shared_board(lamp);
+            speed += 0.1f;
+            lamp->scale.z = speed;
+            lamp->scale.y = speed;
+            lamp->scale.x = speed;
+            if (speed > 1.0f) {
+                HuAudSeqPlay(0x3D);
+                break;
+            }
+        }
+        i++;
+        HuPrcVSleep();
+    }
+
+    lamp->scale.x = lamp->scale.y = lamp->scale.z = 1.0f;
+    dialogProcess = func_800EDB98_shared_board(lamp, 3.0f, 2.0f);
+    MBPlayerVibrateObjKill(dialog);
+    HuPrcSleep(30);
+    MBDlgWinExec(0x3C, 0x3A2F);
+    omDelPrcObj(dialogProcess);
+
+    i = 1;
+    lamp->coords.y -= lamp->velocity.x;
+    HuVecSubtract(&direction, &gCameraList->pos, &lamp->coords);
+    MBVecNormalize(&direction);
+    lamp->coords.y += lamp->velocity.x;
+
+    while (lamp->velocity.x < 1800.0f) {
+        lamp->coords.x += direction.x * 40.2f;
+        lamp->velocity.x += direction.y * 40.0f;
+        lamp->coords.z += direction.z * 40.2f;
+        if ((lamp->velocity.x > 300.0f) && (i != 0)) {
+            i = 0;
+            WipeColorSet(0xFF, 0xFF, 0xFF);
+            WipeCreateOut(0xB, 0x32);
+            HuAudFXPlay(0x128);
+        }
+        HuPrcVSleep();
+    }
+
+    while (WipeStatGet() != 0) {
+        HuPrcVSleep();
+    }
+
+    {
+        SpaceData *space;
+        SpaceData *nextSpace;
+
+        space = MBMasuGet(D_8011C690_w02[system->star_spawn_indices[system->current_star_spawn]]);
+        nextSpace = MBMasuGet(D_8011C6A0_w02[system->star_spawn_indices[system->current_star_spawn]]);
+        HuVecCopy3F(&destination, &space->coords);
+        MBCameraPos3DSet(&destination);
+        MBCameraFocusModeSet(4);
+        MBCameraFocusVecSet(&destination);
+        lamp->flags &= ~1;
+        HuVecCopy3F(&lamp->coords, &space->coords);
+        HuVecSubtract(&direction, &nextSpace->coords, &space->coords);
+        MBVecNormalize(&direction);
+        lamp->coords.x -= direction.x * 20.0f;
+        lamp->coords.z -= direction.z * 20.0f;
+    }
+
+    HuAudFXPlay(0x129);
+    WipeCreateIn(0xB, 0x32);
+    lamp->velocity.x = 100.0f;
+    while (lamp->velocity.x > 30.0f) {
+        HuPrcVSleep();
+        lamp->velocity.x -= 3.0f;
+    }
+
+    while (WipeStatGet() != 0) {
+        HuPrcVSleep();
+    }
+
+    process = HuPrcCurrentGet();
+    HuPrcChildLink(process,
+                   func_800ED128_shared_board(&lamp->rot,
+                                              &direction,
+                                              &lamp->rot, 0x10));
+    i = 0;
+    HuPrcChildWatch();
+    dialogProcess = func_800EDB98_shared_board(lamp, 3.0f, 2.0f);
+    MBDlgWinExec(0x3C, 0x3A30);
+    HuAudFXPlay(0x12C);
+    MBMotionSet(lamp, -1, 0);
+    HuPrcSleep(20);
+
+    wipeStarted = 1;
+    for (j = 0; j < 8; j++) {
+        if (D_8011EBF8_w02[j] != NULL) {
+            omDelPrcObj(D_8011EBF8_w02[j]);
+            D_8011EBF8_w02[j] = NULL;
+        }
+    }
+
+    targetStar = D_8011EBD8_w02[system->star_spawn_indices[system->current_star_spawn]];
+    HuAudSeqFadeOut(0x5A);
+    rotation = 0.0f;
+    while (targetStar->velocity.x < 400.0f) {
+        targetStar->velocity.x += 3.0f;
+        targetStar->coords.x += direction.x * 3.0f;
+        targetStar->coords.z += direction.z * 3.0f;
+        targetStar->rot.x = -sindf(rotation);
+        targetStar->rot.z = cosdf(rotation);
+        rotation += 45.0f;
+        if (rotation > 360.0f) {
+            rotation -= 360.0f;
+        }
+        if ((targetStar->velocity.x > 50.0f) && (wipeStarted != 0)) {
+            if (func_800DEB2C_shared_board(system->current_player_index) == 3) {
+                GWBoardFlagSet(0x17);
+            } else {
+                GWBoardFlagClear(0x17);
+            }
+            wipeStarted = 0;
+            WipeColorSet(0, 0, 0);
+            omDelPrcObj(dialogProcess);
+            func_800EDA58_shared_board();
+            func_800FC8A4_shared_board();
+            func_800FF7F0_shared_board(2);
+            func_800FCA14_shared_board();
+            omAllUPause();
+        }
+        HuPrcVSleep();
+    }
+    HuPrcSleep(-1);
+}
 
 void func_80111BDC_w02(void) {
     GW_SYSTEM *system = &GwSystem;
@@ -4035,6 +4419,12 @@ void func_801177C8_w02(void) {
     MBDlgWinKill();
     func_8010FB8C_w02();
 }
+
+// Local initializer tables for func_80117E70_w02, defined here to keep rodata order.
+const s32 D_8011EB20_w02[5] = { 0x1301E1, 0x1301E2, 0x1301E3, 0x1301E4, 0x1301E5 };
+const Vec2f D_8011EB34_w02[5] = {
+    { 160.0f, 120.0f }, { -68.0f, -8.0f }, { -23.0f, -8.0f }, { 23.0f, -8.0f }, { 68.0f, -8.0f },
+};
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80117E70_w02);
 

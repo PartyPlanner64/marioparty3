@@ -526,11 +526,160 @@ void func_801073C8_w10(omObjData *obj) {
     obj->rot.x += 10.0f;
 }
 
+#ifdef NON_MATCHING
+// Register allocation differs: the constant 1 used for the *state wait loop is
+// materialized separately instead of sharing a saved register, and the state
+// pointer gets a different saved register than the target.
+void func_80107444_w10(void) {
+    s32 *state = HuPrcCurrentGet()->user_data;
+    GW_PLAYER *player = MBPlayerGet(-1);
+    omObjData *bobObj;
+    s32 effect;
+
+    D_8010BA68_w10 = MBModelCreate(9, NULL);
+    D_8010BA6C_w10 = MBModelFileCreate(0x1301C8, -1, 1.0f, 0.0f, NULL);
+    effect = func_8000CED8_main(0xB0004, 0xAA9);
+    HuAudFXPlay(0x119);
+    Hu3DModelCameraSet(effect, HU3D_CAM0);
+    func_8000CD00_main(effect, 1.0f, 20.0f, 1.0f);
+    func_8000D018_main(effect, 15.0f);
+    MBModelTempAllocFree(D_8010BA68_w10);
+    D_8010BA68_w10->flags |= 1;
+    MBModelTempAllocFree(D_8010BA6C_w10);
+    HuVecCopy3F(&D_8010BA68_w10->coords, &player->player_obj->coords);
+    HuVecCopy3F(&D_8010BA6C_w10->coords, &player->player_obj->coords);
+    D_8010BA68_w10->velocity.x = 120.0f;
+    D_8010BA6C_w10->velocity.x = 120.0f;
+    while (D_8010BA68_w10->velocity.x > 50.0f) {
+        func_8000CFA4_main(effect, D_8010BA68_w10->coords.x, D_8010BA68_w10->velocity.x - 10.0f,
+                           D_8010BA68_w10->coords.z);
+        HuPrcVSleep();
+        D_8010BA68_w10->velocity.x -= 4.0f;
+        D_8010BA6C_w10->velocity.x -= 4.0f;
+    }
+    bobObj = omAddObj(500, 0, 0, -1, func_80107350_w10);
+    bobObj->rot.x = 180.0f;
+    *state = 1;
+    while (*state == 1) {
+        HuPrcVSleep();
+    }
+    while (D_8010BA68_w10->velocity.x < 120.0f) {
+        func_8000CFA4_main(effect, D_8010BA68_w10->coords.x, D_8010BA68_w10->velocity.x - 10.0f,
+                           D_8010BA68_w10->coords.z);
+        HuPrcVSleep();
+        D_8010BA68_w10->velocity.x += 4.0f;
+        D_8010BA6C_w10->velocity.x += 4.0f;
+    }
+    *state = 3;
+    func_8000D044_main(effect);
+    MBModelKill(D_8010BA68_w10);
+    MBModelKill(D_8010BA6C_w10);
+    omDelObj(bobObj);
+    omDelPrcObj(NULL);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80107444_w10);
+#endif
 
+#ifdef NON_MATCHING
+// Register allocation differs: the constant 1 used for the *state wait loop is
+// materialized separately instead of sharing a saved register, and the state
+// pointer gets a different saved register than the target.
+void func_80107780_w10(void) {
+    s32 *state = HuPrcCurrentGet()->user_data;
+    GW_PLAYER *player = MBPlayerGet(-1);
+    omObjData *bobObj;
+    s32 effect;
+
+    D_8010BA68_w10 = MBModelCreate(0x39, NULL);
+    D_8010BA6C_w10 = MBModelFileCreate(0x130203, -1, 1.0f, 0.0f, NULL);
+    effect = func_8000CED8_main(0xB0005, 0xAA9);
+    HuAudFXPlay(0x11A);
+    Hu3DModelCameraSet(effect, HU3D_CAM0);
+    func_8000CD00_main(effect, 1.0f, 20.0f, 1.0f);
+    func_8000D018_main(effect, 15.0f);
+    MBModelTempAllocFree(D_8010BA68_w10);
+    D_8010BA68_w10->flags |= 1;
+    MBModelTempAllocFree(D_8010BA6C_w10);
+    HuVecCopy3F(&D_8010BA68_w10->coords, &player->player_obj->coords);
+    HuVecCopy3F(&D_8010BA6C_w10->coords, &player->player_obj->coords);
+    D_8010BA68_w10->velocity.x = 120.0f;
+    D_8010BA6C_w10->velocity.x = 120.0f;
+    while (D_8010BA68_w10->velocity.x > 50.0f) {
+        func_8000CFA4_main(effect, D_8010BA68_w10->coords.x, D_8010BA68_w10->velocity.x - 10.0f,
+                           D_8010BA68_w10->coords.z);
+        HuPrcVSleep();
+        D_8010BA68_w10->velocity.x -= 4.0f;
+        D_8010BA6C_w10->velocity.x -= 4.0f;
+    }
+    bobObj = omAddObj(500, 0, 0, -1, func_80107350_w10);
+    bobObj->rot.x = 180.0f;
+    *state = 1;
+    while (*state == 1) {
+        HuPrcVSleep();
+    }
+    while (D_8010BA68_w10->velocity.x < 120.0f) {
+        func_8000CFA4_main(effect, D_8010BA68_w10->coords.x, D_8010BA68_w10->velocity.x - 10.0f,
+                           D_8010BA68_w10->coords.z);
+        HuPrcVSleep();
+        D_8010BA68_w10->velocity.x += 4.0f;
+        D_8010BA6C_w10->velocity.x += 4.0f;
+    }
+    *state = 3;
+    func_8000D044_main(effect);
+    MBModelKill(D_8010BA68_w10);
+    MBModelKill(D_8010BA6C_w10);
+    omDelObj(bobObj);
+    omDelPrcObj(NULL);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80107780_w10);
+#endif
 
+#ifdef NON_MATCHING
+// Register allocation differs: the constant 1 used for the *state wait loop is
+// materialized separately instead of sharing a saved register, and the state
+// pointer gets a different saved register than the target.
+void func_80107ABC_w10(void) {
+    s32 *state = HuPrcCurrentGet()->user_data;
+    GW_PLAYER *player = MBPlayerGet(-1);
+    omObjData *bobObj;
+
+    D_8010BA70_w10 = MBModelCreate(0xC, NULL);
+    Hu3DModelScaleSet(D_8010BA70_w10->omObj1->model[0], 0.0f, 0.0f, 0.0f);
+    func_8001FDE8_main(D_8010BA70_w10->omObj1->model[0]);
+    D_8010BA70_w10->flags |= 1;
+    D_8010BA74_w10 = MBModelCreate(0x1F, NULL);
+    Hu3DModelScaleSet(D_8010BA74_w10->omObj1->model[0], 0.0f, 0.0f, 0.0f);
+    HuVecCopy3F(&D_8010BA70_w10->coords, &player->player_obj->coords);
+    HuVecCopy3F(&D_8010BA74_w10->coords, &player->player_obj->coords);
+    D_8010BA70_w10->velocity.x = 120.0f;
+    D_8010BA74_w10->velocity.x = 122.0f;
+    while (D_8010BA70_w10->velocity.x > 30.0f) {
+        HuPrcVSleep();
+        D_8010BA70_w10->velocity.x -= 2.0f;
+        D_8010BA74_w10->velocity.x -= 2.0f;
+    }
+    bobObj = omAddObj(500, 0, 0, -1, func_801073C8_w10);
+    bobObj->rot.x = 180.0f;
+    *state = 1;
+    while (*state == 1) {
+        HuPrcVSleep();
+    }
+    while (D_8010BA70_w10->velocity.x < 120.0f) {
+        HuPrcVSleep();
+        D_8010BA70_w10->velocity.x += 2.0f;
+        D_8010BA74_w10->velocity.x += 2.0f;
+    }
+    *state = 3;
+    MBModelKill(D_8010BA70_w10);
+    MBModelKill(D_8010BA74_w10);
+    omDelObj(bobObj);
+    omDelPrcObj(NULL);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80107ABC_w10);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80107D64_w10);
 

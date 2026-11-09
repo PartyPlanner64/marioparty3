@@ -235,12 +235,7 @@ void func_801064C8_w10(void) {
     HuSprGrpKill(D_8010BA50_w10);
 }
 
-// NON_MATCHING: register allocation differs for the player_obj load in the
-// MBPlayerGet(-1) branch (target loads into a0, current into v0).
-#ifdef NON_MATCHING
 void func_80106574_w10(void) {
-    Vec *pos;
-
     D_8010BA54_w10 = -1;
     MBPlayerPosFixSet(0, 1);
     MBPlayerPosFixSet(1, 1);
@@ -255,20 +250,16 @@ void func_80106574_w10(void) {
     while (TRUE) {
         if (D_8010BA54_w10 < 0) {
             if (D_8010BA54_w10 == -2) {
-                pos = &D_8010BA58_w10;
+                MBCameraPos3DSet(&D_8010BA58_w10);
             } else {
-                pos = &MBPlayerGet(-1)->player_obj->coords;
+                MBCameraPos3DSet(&MBPlayerGet(-1)->player_obj->coords);
             }
         } else {
-            pos = &MBMasuGet(D_8010BA54_w10)->coords;
+            MBCameraPos3DSet(&MBMasuGet(D_8010BA54_w10)->coords);
         }
-        MBCameraPos3DSet(pos);
         HuPrcVSleep();
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80106574_w10);
-#endif
 
 void func_80106670_w10(s16 arg0) {
     D_8010BA54_w10 = arg0;
@@ -299,15 +290,13 @@ void func_80106730_w10(void) {
     }
 }
 
-// NON_MATCHING: the address of GwSystem.current_player_index is CSE'd into a
-// register for the increment/reset, while the target rematerializes it.
-#ifdef NON_MATCHING
 void func_80106774_w10(void) {
     GW_PLAYER *player;
     s32 i;
+    GW_SYSTEM *system = &GwSystem;
 
-    if (++GwSystem.current_player_index >= 4) {
-        GwSystem.current_player_index = 0;
+    if (++system->current_player_index >= 4) {
+        system->current_player_index = 0;
     }
     for (i = 0; i < 4; i++) {
         player = MBPlayerGet(i);
@@ -317,9 +306,6 @@ void func_80106774_w10(void) {
     }
     MBCameraZoomSet(1.0f);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80106774_w10);
-#endif
 
 void func_8010681C_w10(Vec *arg0) {
     func_800FF840_shared_board(arg0);
@@ -330,24 +316,19 @@ void func_80106838_w10(void) {
     HuPrcChildWatch();
 }
 
-// NON_MATCHING: the address of GwSystem.current_player_index is CSE'd into s0
-// across the calls, while the target reloads it directly each time.
-#ifdef NON_MATCHING
 void func_8010687C_w10(s16 arg0) {
     Process *process;
     Process *child;
+    GW_SYSTEM *system = &GwSystem;
 
-    func_800DCD64_shared_board(GwSystem.current_player_index, arg0);
+    func_800DCD64_shared_board(system->current_player_index, arg0);
     process = HuPrcCurrentGet();
     HuPrcChildLink(process, MBCameraZoomMotStart(1.3f));
-    child = func_800DD6C4_shared_board(GwSystem.current_player_index);
+    child = func_800DD6C4_shared_board(system->current_player_index);
     HuPrcChildWatch();
     HuPrcChildLink(process, child);
     HuPrcChildWatch();
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_8010687C_w10);
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80106908_w10);
 

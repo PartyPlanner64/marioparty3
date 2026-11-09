@@ -25,6 +25,13 @@ typedef struct {
     /* 0x02 */ s16 sprites[3];
 } W10SprGroup; // sizeof 0x08
 
+typedef struct {
+    /* 0x00 */ s32 player;
+    /* 0x04 */ s32 unk4;
+    /* 0x08 */ s32 slot;
+    /* 0x0C */ s32 unkC;
+} W10RunnerData; // sizeof 0x10
+
 extern s16 D_8010B7F0_w10[4];
 extern Vec D_8010B818_w10[];
 extern Vec D_8010B854_w10[];
@@ -38,6 +45,7 @@ extern Process *D_8010BA28_w10;
 extern Object *D_8010BA2C_w10;
 extern Object *D_8010BA30_w10;
 extern Object *D_8010BA38_w10[2];
+extern f32 D_8010B91C_w10[][2];
 extern s32 D_8010BA20_w10;
 extern s16 D_8010BA4C_w10;
 extern s16 D_8010BA4E_w10;
@@ -50,6 +58,7 @@ extern Object *D_8010BA6C_w10;
 extern Object *D_8010BA70_w10;
 extern Object *D_8010BA74_w10;
 extern event_table_entry D_8010B8B0_w10[];
+extern s32 D_8010BA80_w10[];
 extern Object *D_8010BA90_w10;
 extern s32 D_8010BA94_w10;
 
@@ -754,7 +763,74 @@ void func_80108F28_w10(void) {
     omDelPrcObj(NULL);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80109050_w10);
+void func_80109050_w10(void) {
+    W10RunnerData *data = HuPrcCurrentGet()->user_data;
+    Object *target = D_8010BA90_w10;
+    GW_PLAYER *player = MBPlayerGet(data->player);
+    Object *playerObj = player->player_obj;
+    s32 slot = data->slot;
+    Process *process = HuPrcCurrentGet();
+    SpaceData *start;
+    SpaceData *end;
+    Vec pos;
+
+    func_800ED20C_shared_board(data->player, 8, 0x2E);
+    while (HuVecDistance(&playerObj->coords, &target->coords) > slot * 20.0f + 30.0f + 20.0f) {
+        HuPrcVSleep();
+    }
+    D_8010BA80_w10[data->player] = 2;
+    while (HuVecDistance(&playerObj->coords, &target->coords) > slot * 20.0f + 30.0f) {
+        HuPrcVSleep();
+    }
+    if (data->player == 1) {
+        D_8010BA80_w10[1] = 3;
+        PlayerFXPlay(0x274, data->player);
+        PlayerFXPlay(0x3A, data->player);
+        if (data->player == GwSystem.current_player_index) {
+            MBPlayerMotionSet(-1, 2, 0);
+        } else {
+            MBMotionSet(playerObj, 2, 0);
+        }
+        func_800EE688_shared_board(playerObj, 7.0f, -0.45f);
+        func_800EE6C0_shared_board(playerObj);
+        PlayerFXPlay(0x31, data->player);
+        func_800F2388_shared_board(data->player, -1, 0, 5, 2);
+        if (data->player == GwSystem.current_player_index) {
+            MBPlayerMotionSet(-1, -1, 2);
+        } else {
+            MBMotionSet(playerObj, -1, 2);
+        }
+    } else {
+        D_8010BA80_w10[data->player] = 4;
+        PlayerFXPlay(0x286, data->player);
+        if (data->player == GwSystem.current_player_index) {
+            MBPlayerMotionSet(-1, 1, 2);
+        } else {
+            MBMotionSet(playerObj, 1, 2);
+        }
+        start = MBMasuGet(0x26);
+        end = MBMasuGet(0x10);
+        HuVecCopy3F(&pos, &start->coords);
+        MBVecDirGet(&playerObj->coords, &pos, &playerObj->rot);
+        HuPrcChildLink(process, func_800ED75C_shared_board(&playerObj->coords, &pos, &playerObj->coords, 2.0f));
+        HuPrcChildWatch();
+        HuVecCopy3F(&pos, &end->coords);
+        pos.x += D_8010B91C_w10[slot][0];
+        pos.z += D_8010B91C_w10[slot][1];
+        MBVecDirGet(&playerObj->coords, &pos, &playerObj->rot);
+        HuPrcChildLink(process, func_800ED5E0_shared_board(&playerObj->coords, &pos, &playerObj->coords, 2.0f));
+        HuPrcChildWatch();
+        if (data->player == GwSystem.current_player_index) {
+            MBPlayerMotionSet(-1, -1, 2);
+        } else {
+            MBMotionSet(playerObj, -1, 2);
+        }
+        HuVecCopyXYZ(&pos, 0.0f, 0.0f, 1.0f);
+        func_800ED128_shared_board(&player->player_obj->rot, &pos, &player->player_obj->rot, 5);
+        HuPrcSleep(5);
+    }
+    omDelPrcObj(NULL);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80109444_w10);
 

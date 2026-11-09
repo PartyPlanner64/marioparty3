@@ -19,6 +19,8 @@
 #include "../ovl_80_shared_board/EAB00.h"
 #include "../ovl_80_shared_board/EE660.h"
 #include "../ovl_80_shared_board/F5070.h"
+#include "../ovl_80_shared_board/F9DE0.h"
+#include "../ovl_80_shared_board/EC3B0.h"
 
 void func_80105DB0_w03(void);
 void func_80107D54_w03(s16 arg0);
@@ -2205,7 +2207,53 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/w03/34E840", D_8011E998_w03);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/w03/34E840", D_8011E9F8_w03);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80110A14_w03);
+void func_80110A14_w03(void) {
+    GW_PLAYER *player;
+    Object *model;
+    f32 scale;
+    f32 angle;
+
+    player = MBPlayerGet(-1);
+    MBKSuitCreate();
+    MBModelDispOff(D_801011FC_shared_board);
+    D_801011FC_shared_board->omObj1->scale.x = 0.0f;
+    D_801011FC_shared_board->omObj1->scale.y = 0.0f;
+    D_801011FC_shared_board->omObj1->scale.z = 0.0f;
+    MBPlayerVibrate(-1, 3);
+    HuAudFXPlay(0x143);
+
+    model = MBModelCreate(0x22, NULL);
+    func_8001C258_main(model->omObj1->model[0], 0x180, 0);
+    Hu3DModelLayerSet(model->omObj1->model[0], 0x1800);
+    Hu3DModelRemakeStatic(model->omObj1->model[0]);
+    HuVecCopy3F(&model->coords, &player->player_obj->coords);
+
+    angle = 0.0f;
+    for (scale = 1.0f; scale < 10.0f; scale = (f32)((f64)scale + 0.5)) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        func_8008A430_main(HmfModelData[model->omObj1->model[0]].mtx, angle);
+        angle += 20.0f;
+        HuPrcVSleep();
+    }
+
+    MBModelDispOff(player->player_obj);
+    MBModelDispOn(D_801011FC_shared_board);
+
+    for (; scale >= 1.0f; scale = (f32)((f64)scale - 0.5)) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        func_8008A430_main(HmfModelData[model->omObj1->model[0]].mtx, angle);
+        angle += 20.0f;
+        HuPrcVSleep();
+    }
+
+    MBModelKill(model);
+    HuPrcSleep(20);
+    PlayerFXPlay(0x274, GwSystem.current_player_index);
+    MBKSuitMotionSet(5, 2);
+    HuPrcSleep(40);
+    MBKSuitMotionSet(-1, 2);
+    MBDlgResultWinExec(0x3A14);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80110CA0_w03);
 

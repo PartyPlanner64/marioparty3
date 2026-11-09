@@ -29,7 +29,12 @@ s32 MBStatusHideCheck(void);
 void MBStatusHideAll(void);
 void MBStatusShowAll(void);
 void func_800F5E24_shared_board(s32 arg0);
+// Declared without a prototype: chancetime calls this with two arguments.
+void func_800F5E30_shared_board();
 void func_800F5EF0_shared_board(void);
+void func_800F5F4C_shared_board(s32 arg0, s32 arg1);
+void func_800F5F60_shared_board(void);
+void func_800F5F7C_shared_board(void);
 void MBStatusItemIconSprReinit(s32 arg0);
 void MBStatusItemSprKill(s32 playerIndex);
 void MBStatusItemDispSet(s32 playerNo, s32 arg1);

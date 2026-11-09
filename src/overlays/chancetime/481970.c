@@ -1,8 +1,8 @@
 #include "common.h"
+#include "chancetime.h"
 #include "game/window.h"
 #include "../ovl_80_shared_board/106A50.h"
 
-extern s32 D_8010FAE4_chancetime;
 extern s8 D_8010FAE8_chancetime;
 
 void func_801062DC_chancetime(void);

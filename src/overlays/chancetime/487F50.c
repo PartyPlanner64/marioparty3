@@ -2,6 +2,7 @@
 #include "chancetime.h"
 #include "game/window.h"
 #include "../ovl_80_shared_board/101840.h"
+#include "../ovl_80_shared_board/106A50.h"
 
 typedef struct ChanceTimeUnkFED0 {
     /* 0x00 */ s8 unk00;
@@ -52,7 +53,9 @@ void func_8010D6A4_chancetime(s32 arg0);
 void func_8010DFA4_chancetime(void);
 void func_8010E1E0_chancetime(void);
 void func_8010E210_chancetime(void);
-void func_8010E280_chancetime(void);
+void func_8010E280_chancetime(omObjData *object);
+void func_8010E4D0_chancetime(omObjData *object);
+void func_8010F984_chancetime(omObjData *object);
 void func_8010F1F8_chancetime(void);
 void func_8010F42C_chancetime(void);
 
@@ -239,7 +242,49 @@ void func_8010E264_chancetime(void) {
     D_80110084_chancetime = func_8010E280_chancetime;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010E280_chancetime);
+void func_8010E280_chancetime(omObjData *object) {
+    s32 players[2];
+    s32 i;
+    s32 j;
+    s32 coins = GwPlayer[D_801100D0_chancetime[0]].coin;
+    s32 stars = GwPlayer[D_801100D0_chancetime[0]].star;
+
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < 4; j++) {
+            if (D_801100DD_chancetime[i] == GwPlayer[j].chr) {
+                players[i] = j;
+                break;
+            }
+        }
+    }
+
+    func_8010F984_chancetime(object);
+    HuPrcSleep(10);
+    D_8010FAE4_chancetime = 1;
+    func_800F5E30_shared_board(players[0], players[1]);
+    func_800F7108_shared_board();
+    func_800F5F4C_shared_board(players[0], players[1]);
+    func_800F5F60_shared_board();
+    func_800F5F7C_shared_board();
+    HuPrcSleep(40);
+    func_8010E4D0_chancetime(object);
+    if (coins + 1 == GwPlayer[D_801100D0_chancetime[0]].coin) {
+        func_8010705C_chancetime();
+    } else if (coins < GwPlayer[D_801100D0_chancetime[0]].coin) {
+        func_80106F10_chancetime();
+    } else if (stars < GwPlayer[D_801100D0_chancetime[0]].star) {
+        func_80106F10_chancetime();
+    } else if (GwPlayer[D_801100D0_chancetime[0]].coin < coins) {
+        func_801071A8_chancetime();
+    } else if (GwPlayer[D_801100D0_chancetime[0]].star < stars) {
+        func_801071A8_chancetime();
+    } else {
+        func_8010705C_chancetime();
+    }
+    HuPrcSleep(30);
+    D_8010FC18_chancetime = 1;
+    D_80110084_chancetime = func_8010DF70_chancetime;
+}
 
 s32 func_8010E4C4_chancetime(void) {
     return D_8010FC18_chancetime;
@@ -291,7 +336,7 @@ void func_8010F42C_chancetime(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010F44C_chancetime);
 
-void func_8010F984_chancetime(void) {
+void func_8010F984_chancetime(omObjData *object) {
     s32 players[4];
     s32 i;
     s32 j;

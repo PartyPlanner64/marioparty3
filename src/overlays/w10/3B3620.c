@@ -26,6 +26,7 @@ extern Vec D_8010B818_w10[];
 extern Vec D_8010B854_w10[];
 extern s16 D_8010B890_w10[];
 extern s16 D_8010B898_w10[];
+extern s32 D_8010B8C0_w10[];
 extern s32 D_8010B8E8_w10[];
 extern s16 D_8010B8FC_w10;
 extern Object *D_8010BA24_w10;
@@ -193,7 +194,41 @@ void func_80105FA0_w10(void) {
     HuPrcChildWatch();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80105FDC_w10);
+W10SprGroup *func_80105FDC_w10(s16 arg0, s16 x, s16 y) {
+    W10SprGroup *group;
+    void *data;
+
+    group = HuMemMemoryAllocTemp(sizeof(W10SprGroup));
+    group->spriteGroup = HuSprGrpCreate(3, 0);
+
+    data = DataRead(0x130000);
+    group->sprites[0] = HuSprAnimRead(data);
+    HuSprGrpMemberSet(group->spriteGroup, 0, group->sprites[0], 0);
+    HuSprPriSet(group->spriteGroup, 0, 0xB);
+    HuSprAttrSet(group->spriteGroup, 0, 0x1000);
+    HuSprPosSet(group->spriteGroup, 0, x + 5, y);
+    DataClose(data);
+
+    data = DataRead(0x130001);
+    group->sprites[1] = HuSprAnimRead(data);
+    HuSprGrpMemberSet(group->spriteGroup, 1, group->sprites[1], 0);
+    HuSprPriSet(group->spriteGroup, 1, 0xC);
+    HuSprAttrSet(group->spriteGroup, 1, 0x1000);
+    HuSprPosSet(group->spriteGroup, 1, x + 5, y);
+    HuSprTPLvlSet(group->spriteGroup, 1, 0xFF);
+    HuSprColorSet(group->spriteGroup, 1, 0x1F, 0xB0, 0x3F);
+    DataClose(data);
+
+    data = DataRead(D_8010B8C0_w10[arg0]);
+    group->sprites[2] = HuSprAnimRead(data);
+    HuSprGrpMemberSet(group->spriteGroup, 2, group->sprites[2], 0);
+    HuSprPriSet(group->spriteGroup, 2, 0xA);
+    HuSprAttrSet(group->spriteGroup, 2, 0x1000);
+    HuSprPosSet(group->spriteGroup, 2, x, y);
+    DataClose(data);
+
+    return group;
+}
 
 void func_801061E8_w10(W10SprGroup *arg0) {
     HuSprAnimKill(arg0->sprites[0]);
@@ -216,7 +251,26 @@ void func_80106230_w10(s16 arg0, s16 x, s16 y) {
     DataClose(data);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80106314_w10);
+void func_80106314_w10(s16 x, s16 y) {
+    void *data;
+    f32 scale;
+
+    D_8010BA50_w10 = HuSprGrpCreate(1, 0);
+    data = DataRead(0x130015);
+    D_8010BA52_w10 = HuSprAnimRead(data);
+    HuSprGrpMemberSet(D_8010BA50_w10, 0, D_8010BA52_w10, 0);
+    HuSprPriSet(D_8010BA50_w10, 0, 0xC);
+    HuSprAttrSet(D_8010BA50_w10, 0, 0x1000);
+    HuSprColorSet(D_8010BA50_w10, 0, 0, 0xFF, 0);
+    HuSprPosSet(D_8010BA50_w10, 0, x, y);
+    HuSprScaleSet(D_8010BA50_w10, 0, 1.0f, 0.0f);
+    DataClose(data);
+    for (scale = 0.0f; scale < 1.0f; scale += 1.0f / 6.0f) {
+        HuSprScaleSet(D_8010BA50_w10, 0, 1.0f, scale);
+        HuPrcVSleep();
+    }
+    HuSprScaleSet(D_8010BA50_w10, 0, 1.0f, 1.0f);
+}
 
 void func_8010649C_w10(void) {
     HuSprAnimKill(D_8010BA4E_w10);

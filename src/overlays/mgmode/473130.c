@@ -939,11 +939,6 @@ void func_8010EE84_mgmode(s16 arg0) {
     Hu3DMotionShiftSet(D_8011B8A8_mgmode[4], D_8011B788_mgmode, 0, 8, 2);
 }
 
-#ifdef NON_MATCHING
-// Matches except for one register: after `prev = idx;`, CSE substitutes `prev`
-// for `idx` in the following `list[idx]` access (s0 instead of target s2).
-// Reusing `category` for prev/result fixes that but changes register
-// allocation priority so that `count` takes s0 and an extra s4 is saved.
 s16 func_8010F348_mgmode(s16 category) {
     s16 list[32];
     s16 count;
@@ -971,10 +966,14 @@ s16 func_8010F348_mgmode(s16 category) {
     func_80116C18_mgmode(D_800A6D40_main[list[idx]].flags & 0x7FF);
     for (i = 0; i < 30; i++) {
         HuPrcVSleep();
-        while (idx == prev) {
-            idx = (rand8() * count) >> 8;
+        if (idx == prev) {
+            do {
+                idx = (rand8() * count) >> 8;
+            } while (idx == prev);
+            prev = idx;
+        } else {
+            prev = idx;
         }
-        prev = idx;
         func_80116C18_mgmode(D_800A6D40_main[list[idx]].flags & 0x7FF);
         HuAudFXPlay(0x104);
     }
@@ -985,9 +984,6 @@ s16 func_8010F348_mgmode(s16 category) {
     HuAudFXPlay(0x105);
     return prev;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010F348_mgmode);
-#endif
 
 s32 func_8010F648_mgmode(void) {
     s16 i;

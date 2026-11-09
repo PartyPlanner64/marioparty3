@@ -4,6 +4,7 @@
 #include "../ovl_80_shared_board/113520.h"
 #include "../ovl_80_shared_board/106A50.h"
 #include "../ovl_80_shared_board/F5B90.h"
+#include "../ovl_80_shared_board/106640.h"
 #include "../ovl_80_shared_board/F5E80.h"
 #include "../ovl_80_shared_board/101840.h"
 #include "../ovl_80_shared_board/113750.h"
@@ -6650,17 +6651,119 @@ void func_801177C8_w02(void) {
     func_8010FB8C_w02();
 }
 
-// Local initializer tables for func_80117E70_w02, defined here to keep rodata order.
-const s32 D_8011EB20_w02[5] = { 0x1301E1, 0x1301E2, 0x1301E3, 0x1301E4, 0x1301E5 };
-const Vec2f D_8011EB34_w02[5] = {
-    { 160.0f, 120.0f },
-    { -68.0f, -8.0f },
-    { -23.0f, -8.0f },
-    { 23.0f, -8.0f },
-    { 68.0f, -8.0f },
-};
+s32 func_80117E70_w02(void) {
+    s32 curPlayer = MBPlayerTurnGet();
+    s32 files[] = { 0x1301E1, 0x1301E2, 0x1301E3, 0x1301E4, 0x1301E5 };
+    Vec2f pos[] = {
+        { 160.0f, 120.0f },
+        { -68.0f, -8.0f },
+        { -23.0f, -8.0f },
+        { 23.0f, -8.0f },
+        { 68.0f, -8.0f },
+    };
+    UnkBoard8 *sprites;
+    UnkBoard8 *cursor;
+    void *data;
+    Unk3 *helpWin1;
+    Unk3 *helpWin2;
+    s32 timer;
+    s32 prev;
+    s32 sel;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80117E70_w02);
+    sprites = func_800F2C48_shared_board(5, 2);
+    for (i = 0; i < 5; i++) {
+        data = DataRead(files[i]);
+        sprites->model[i] = HuSprAnimRead(data);
+        DataClose(data);
+        HuSprGrpMemberSet(sprites->spriteGroup, i, sprites->model[i], 0);
+        HuSprAttrReset(sprites->spriteGroup, i, 0xFFFF);
+        HuSprAttrSet(sprites->spriteGroup, i, 0);
+        HuSprPriSet(sprites->spriteGroup, i, 0x1000);
+        HuSprPosSet(sprites->spriteGroup, i, pos[i].x, pos[i].y);
+    }
+    for (i = 1; i < 5; i++) {
+        if ((GwSystem.boardData.halfWordBytes[0] >> (i - 1)) & 1) {
+            HuSprDispOff(sprites->spriteGroup, i);
+        }
+    }
+
+    cursor = func_800F2C48_shared_board(1, 2);
+    data = DataRead(0x1301E6);
+    cursor->model[0] = HuSprAnimRead(data);
+    DataClose(data);
+    HuSprGrpMemberSet(cursor->spriteGroup, 0, cursor->model[0], 0);
+    HuSprAttrReset(cursor->spriteGroup, 0, 0xFFFF);
+    HuSprAttrSet(cursor->spriteGroup, 0, 0);
+    HuSprPriSet(cursor->spriteGroup, 0, 0xFFF);
+    for (i = 0; i < 4; i++) {
+        if (!((GwSystem.boardData.halfWordBytes[0] >> i) & 1)) {
+            break;
+        }
+    }
+    sel = i;
+    HuSprPosSet(cursor->spriteGroup, 0, pos[0].x + pos[sel + 1].x, pos[0].y + pos[sel + 1].y - 36.0f);
+    helpWin1 = func_800E210C_shared_board(0, 0xB4, 1);
+    helpWin2 = func_800E210C_shared_board(1, 0xC2, 1);
+
+    timer = 10;
+    while (TRUE) {
+        prev = sel;
+        HuPrcVSleep();
+        if (MBPlayerComCheck(-1)) {
+            if (--timer == 0) {
+                goto decide;
+            }
+            if (timer % 3 != 0) {
+                continue;
+            }
+            if (MBRand(5.0f) == 0) {
+                goto moveLeft;
+            }
+            if (MBRand(5.0f) == 0) {
+                goto moveRight;
+            }
+            continue;
+        }
+        if (D_800C9520_main[GwPlayer[curPlayer].pad] & A_BUTTON) {
+        decide:
+            HuAudFXPlay(0x18E);
+            break;
+        }
+        if (D_800C9520_main[GwPlayer[curPlayer].pad] & L_JPAD) {
+        moveLeft:
+            do {
+                sel--;
+                if (sel < 0) {
+                    sel = 3;
+                }
+            } while ((GwSystem.boardData.halfWordBytes[0] >> sel) & 1);
+        }
+        if (D_800C9520_main[GwPlayer[curPlayer].pad] & R_JPAD) {
+        moveRight:
+            do {
+                sel++;
+                if (sel >= 4) {
+                    sel = 0;
+                }
+            } while ((GwSystem.boardData.halfWordBytes[0] >> sel) & 1);
+        }
+        if (prev != sel) {
+            HuSprPosSet(cursor->spriteGroup, 0, pos[0].x + pos[sel + 1].x,
+                        pos[0].y + pos[sel + 1].y - 36.0f);
+        }
+    }
+    GwSystem.boardData.halfWordBytes[0] |= 1 << sel;
+    func_80108870_w02();
+    HuSprPosSet(cursor->spriteGroup, 0, pos[0].x + pos[sel + 1].x, pos[0].y + pos[sel + 1].y - 16.0f);
+    HuSprDispOff(sprites->spriteGroup, sel + 1);
+    HuPrcSleep(20);
+    MBHelpWinKill(helpWin1);
+    MBHelpWinKill(helpWin2);
+    func_800F2CA4_shared_board(sprites);
+    func_800F2CA4_shared_board(cursor);
+    return sel;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80118480_w02);
 

@@ -193,6 +193,8 @@ extern u32 D_8011C678_w04[];
 extern u32 D_8011C680_w04[];
 extern DecisionTreeNonLeafNode D_8011C508_w04[];
 extern u32 D_8011C520_w04[];
+extern s16 D_8011B7CC_w04[];
+extern s16 D_8011B7D0_w04[];
 
 void func_801064DC_w04(void);
 void func_80108558_w04(void);
@@ -221,6 +223,37 @@ void func_80119FCC_w04(s32 arg0, s32 arg1);
 s32 func_8010CA60_w04(s32 playerIndex);
 void func_800D9F5C_shared_board(Object *arg0, Vec *arg1, s32 arg2);
 void func_80112B48_w04(void);
+void func_80107D70_w04(void);
+void func_80107F3C_w04(void);
+void func_80108200_w04(void);
+void func_801083D4_w04(void);
+void func_80108644_w04(void);
+void func_801086C4_w04(void);
+void func_8010886C_w04(void);
+void func_8010DA1C_w04(void);
+void func_8010EE9C_w04(void);
+void func_8010F264_w04(void);
+void func_8010F2D0_w04(void);
+void func_8010F7C4_w04(void);
+void func_8010FD34_w04(void);
+void func_801104DC_w04(void);
+void func_80110768_w04(void);
+void func_80110BB8_w04(void);
+void func_80110E78_w04(void);
+void func_80111218_w04(void);
+void func_80111C14_w04(void);
+void func_8011276C_w04(void);
+void func_80113484_w04(void);
+void func_80114720_w04(void);
+void func_80115720_w04(void);
+void func_80116640_w04(void);
+void func_8011694C_w04(void);
+void func_80116AFC_w04(void);
+void func_80117244_w04(void);
+void func_8011737C_w04(void);
+void func_80117800_w04(void);
+s32 func_8011AD48_w04(void);
+void func_80110080_w04(void);
 
 s16 func_801059D0_w04(void) {
     return D_8011B780_w04[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
@@ -898,7 +931,66 @@ void func_80107780_w04(void) {
     omOvlReturnEx(1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_80107828_w04);
+void func_80107828_w04(void) {
+    Vec sp10;
+    SpaceData *space;
+    s32 i;
+
+    omInitObjMan(0xA0, 0x28);
+    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    HmfLightColorSet(2, 0xC8, 0xC8, 0xC8);
+    MBObjectSetup(0xC, 0x23D, 0xE, 0);
+    MBMasuBlockTblExtSet(D_8011B7CC_w04);
+    MBMasuBlockTblSet(D_8011B7D0_w04);
+    space = MBMasuGet(0x71);
+    MBVecDirGet(&space->coords, &MBMasuGet(0x75)->coords, &sp10);
+    MBMasuArrowAngleAdd(MBVecAngleGet(&sp10) + 180.0f);
+    space = MBMasuGet(0x8C);
+    MBVecDirGet(&space->coords, &MBMasuGet(0x76)->coords, &sp10);
+    MBMasuArrowAngleAdd(MBVecAngleGet(&sp10) + 180.0f);
+    MBItemHookSet(0, &func_8010DA1C_w04);
+    MBItemHookSet(1, &func_8010EE9C_w04);
+    MBItemHookSet(9, &func_8010F264_w04);
+    MBItemHookSet(2, &func_8010F2D0_w04);
+    MBItemHookSet(3, &func_80117800_w04);
+    MBItemHookSet(4, &func_801104DC_w04);
+    MBItemHookSet(5, &func_80110768_w04);
+    MBItemHookSet(6, &func_8010F7C4_w04);
+    MBItemHookSet(7, &func_8010FD34_w04);
+    MBItemHookSet(8, &func_80110080_w04);
+    MBItemHookSet(0xA, &func_80116AFC_w04);
+    MBItemHookSet(0xB, &func_8011737C_w04);
+    MBItemHookSet(0xE, &func_80110BB8_w04);
+    MBItemHookSet(0xF, &func_80110E78_w04);
+    MBItemHookSet(0x10, &func_80111218_w04);
+    MBItemHookSet(0x11, &func_80111C14_w04);
+    MBItemHookSet(0x12, &func_8011276C_w04);
+    MBItemHookSet(0x13, &func_80113484_w04);
+    MBItemHookSet(0x14, &func_80114720_w04);
+    MBItemHookSet(0x15, &func_80115720_w04);
+    MBItemHookSet(0xC, &func_8011694C_w04);
+    MBItemHookSet(0xD, &func_80117244_w04);
+    MBComItemDecideHookSet(func_8011AD48_w04);
+
+    for (i = 0; i < 8; i++) {
+        MBMasuStarSet(i, D_8011B780_w04[i]);
+    }
+    if (GWBoardFlagCheck(0xE) != 0) {
+        GWBoardFlagClear(0xE);
+        func_80105B00_w04();
+    }
+
+    func_80105B8C_w04();
+    func_80107D70_w04();
+    func_80107F3C_w04();
+    func_80108200_w04();
+    func_801083D4_w04();
+    func_80108644_w04();
+    func_801086C4_w04();
+    func_8010886C_w04();
+    func_80116640_w04();
+    func_800EBDAC_shared_board();
+}
 
 void func_80107B34_w04(void) {
     HuAudSeqPlay(0x1B);

@@ -139,6 +139,23 @@ extern char D_8011EA74_w02[];
 void func_80109F1C_w02(s16 arg0, s32 arg1, s16 arg2, s32 arg3);
 s32 func_8011C274_w02(void);
 s32 func_8011C5D8_w02(void);
+extern DecisionTreeNonLeafNode *D_8011CDD8_w02[];
+extern s16 D_8011D190_w02[][3];
+extern BranchPair D_8011D1A4_w02[];
+void func_80115FEC_w02(s16 (*masu)[3], BranchPair *links, DecisionTreeNonLeafNode **trees);
+extern DecisionTreeNonLeafNode *D_8011CE68_w02[];
+extern s16 D_8011D1D8_w02[][3];
+extern BranchPair D_8011D1EC_w02[];
+extern DecisionTreeNonLeafNode *D_8011CEEC_w02[];
+extern s16 D_8011D220_w02[][3];
+extern BranchPair D_8011D234_w02[];
+extern DecisionTreeNonLeafNode *D_8011CF58_w02[];
+extern s16 D_8011D268_w02[][3];
+extern BranchPair D_8011D27C_w02[];
+extern DecisionTreeNonLeafNode *D_8011CFA0_w02[];
+extern s16 D_8011D2B0_w02[][3];
+extern BranchPair D_8011D2B8_w02[];
+void func_8010ED4C_w02(omObjData *arg0);
 s16 func_801059D0_w02(void) {
     return D_8011C6A0_w02[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
 }
@@ -955,23 +972,33 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80108B6C_w02);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80108BA4_w02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80108C4C_w02);
+void func_80108C4C_w02(void) {
+    func_80115FEC_w02(D_8011D190_w02, D_8011D1A4_w02, D_8011CDD8_w02);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80108C7C_w02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80108CC0_w02);
+void func_80108CC0_w02(void) {
+    func_80115FEC_w02(D_8011D1D8_w02, D_8011D1EC_w02, D_8011CE68_w02);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80108CF0_w02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80108D34_w02);
+void func_80108D34_w02(void) {
+    func_80115FEC_w02(D_8011D220_w02, D_8011D234_w02, D_8011CEEC_w02);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80108D64_w02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80108DA8_w02);
+void func_80108DA8_w02(void) {
+    func_80115FEC_w02(D_8011D268_w02, D_8011D27C_w02, D_8011CF58_w02);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80108DD8_w02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80108E1C_w02);
+void func_80108E1C_w02(void) {
+    func_80115FEC_w02(D_8011D2B0_w02, D_8011D2B8_w02, D_8011CFA0_w02);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80108E4C_w02);
 
@@ -1502,7 +1529,32 @@ void func_8010EBD4_w02(void) {
     func_80108620_w02(1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_8010EBF0_w02);
+omObjData *func_8010EBF0_w02(Vec *arg0, f32 arg1, f32 arg2, s16 arg3, Vec *arg4, s32 arg5) {
+    omObjData *obj;
+    ModelFadeWork *data;
+    Object *model;
+
+    obj = omAddObj(0x1F4, 0, 0, -1, func_8010ED4C_w02);
+    data = obj->data = HuMemAllocTag(0x20, TAG_OVERLAY);
+    data->unk0C = 255.0f;
+    data->unk10 = arg1;
+    data->unk14 = arg2;
+    HuVecCopy3F(&data->unk00, arg4);
+    if (arg5 != 0) {
+        model = MBModelFileCreate(0x1301F8, 0, 1.0f, 0, 0);
+    } else {
+        model = MBModelFileCreate(0x1301F7, 0, 1.0f, 0, 0);
+    }
+    Hu3DModelScaleSet(model->omObj1->model[0], 0.0f, 0.0f, 0.0f);
+    model->coords.x = arg0->x;
+    model->coords.y = arg0->y;
+    model->coords.z = arg0->z;
+    func_8001FA68_main(model->omObj1->model[0]);
+    func_8001F9E4_main(model->omObj1->model[0], 0xFF);
+    data->model = model;
+    data->unk1C = arg3;
+    return obj;
+}
 
 void func_8010ED4C_w02(omObjData *arg0) {
     ModelFadeWork *data = arg0->data;

@@ -146,6 +146,9 @@ void func_80106C64_w04(void) {
     MBHelpWinKill(D_8011E04C_w04);
 }
 
+// Keep rodata definitions interleaved with functions to preserve the original constant order.
+const u8 D_8011DDD0_w04[4] = { 1, 2, 4, 8 };
+
 INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_80106CC4_w04);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_80106F58_w04);
@@ -471,6 +474,8 @@ void func_8010A014_w04(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_8010A054_w04);
 
+const char D_8011DDD4_w04[] = "%d";
+
 INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_8010A400_w04);
 
 s32 func_8010AF34_w04(s32 arg0) {
@@ -525,6 +530,12 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_8010EC0C_w04);
 INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_8010EC28_w04);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_8010ED84_w04);
+
+// Shared particle direction table; replaced by local initializers once its users are matched.
+const Vec D_8011DDE0_w04[8] = {
+    { 1.0f, 1.0f, 1.0f },  { 1.0f, 2.0f, 1.0f },   { 0.0f, 2.0f, 1.0f },  { -1.0f, 1.0f, 1.0f },
+    { -1.0f, -1.0f, 1.0f }, { 0.0f, -1.0f, 1.0f }, { -1.0f, 2.0f, 1.0f }, { 1.0f, -1.0f, 1.0f },
+};
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_8010EE9C_w04);
 

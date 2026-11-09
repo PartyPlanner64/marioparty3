@@ -60,6 +60,10 @@ extern s16 D_8011B7A6_mgmode[];
 extern s16 D_8011B7AE_mgmode[];
 extern s16 D_8011B7B6_mgmode[];
 extern u8 D_8011A3CC_mgmode[];
+extern s32 D_8011946C_mgmode[];
+extern s32 D_80119478_mgmode[];
+extern s32 D_80119484_mgmode[];
+extern MgmodeEspriteDef D_80119F28_mgmode[];
 
 void func_8010CBFC_mgmode(void);
 s16 func_8010DAB8_mgmode(s32 arg0);
@@ -1210,7 +1214,197 @@ s16 func_80110420_mgmode(s16 mgIndex) {
     return D_8011B434_mgmode;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_80110554_mgmode);
+void func_80110554_mgmode(void) {
+    s16 chars[4];
+    s16 counts[8]; // Only 2 entries used, but the size matches the original stack frame.
+    MgmodeEspriteDef *def;
+    u16 sprite;
+    s16 i;
+    s16 j;
+    s16 y;
+    f32 scaleX;
+
+    D_8011B484_mgmode = func_8000B838_main(0x12002C);
+    for (i = 0; i < 28; i++) {
+        sprite = D_8011B488_mgmode[i] = espEntry(D_8011B484_mgmode, 0, 1);
+        espDispOff(sprite);
+        espAttrSet(sprite, 0x4008);
+        espPriSet(sprite, 8);
+    }
+    D_8011B4C0_mgmode = 0;
+    def = &D_80119F28_mgmode[1];
+    D_80119F28_mgmode[0].x = 180;
+    D_80119F28_mgmode[0].y = 116;
+    switch (D_800D4194_main) {
+        case 0:
+        case 3:
+            for (i = 0; i < 4; i++) {
+                def->dataNum = D_8011946C_mgmode[D_800CC438_main];
+                def->x = 180;
+                def->y = i * 24 + 80;
+                def->attr &= 0x7FFF;
+                def++;
+            }
+            for (i = 0; i < 4; i++) {
+                chars[i] = GwPlayer[i].chr;
+            }
+            for (i = 0; i < 4; i++) {
+                for (j = 0; j < D_800D03FE_main[i]; j++) {
+                    espDispOn(D_8011B488_mgmode[D_8011B4C0_mgmode]);
+                    espPosSet(D_8011B488_mgmode[D_8011B4C0_mgmode], D_80119490_mgmode[D_800CC438_main * 7 + j] + 180,
+                              i * 24 + 80);
+                    D_8011B4C0_mgmode++;
+                }
+            }
+            break;
+        case 1:
+            for (i = 0; i < 2; i++) {
+                def->dataNum = D_80119478_mgmode[D_800CC438_main];
+                def->x = 180;
+                def->y = i * 48 + 93;
+                def->attr &= 0x7FFF;
+                def++;
+            }
+            j = 0;
+            for (i = 0; i < 4; i++) {
+                if (D_800D1F20_main[i] == 0) {
+                    chars[j++] = GwPlayer[i].chr;
+                    counts[0] = D_800D03FE_main[i];
+                }
+            }
+            for (i = 0; i < 4; i++) {
+                if (D_800D1F20_main[i] == 1) {
+                    chars[j++] = GwPlayer[i].chr;
+                    counts[1] = D_800D03FE_main[i];
+                }
+            }
+            for (i = 0; i < 2; i++) {
+                for (j = 0; j < counts[i]; j++) {
+                    espDispOn(D_8011B488_mgmode[D_8011B4C0_mgmode]);
+                    espPosSet(D_8011B488_mgmode[D_8011B4C0_mgmode], D_80119490_mgmode[D_800CC438_main * 7 + j] + 180,
+                              i * 48 + 93);
+                    D_8011B4C0_mgmode++;
+                }
+            }
+            break;
+        case 2:
+            def->dataNum = D_8011946C_mgmode[D_800CC438_main];
+            def->x = 180;
+            def->y = 80;
+            def->attr &= 0x7FFF;
+            def++;
+            def->dataNum = D_80119484_mgmode[D_800CC438_main];
+            def->x = 180;
+            def->y = 128;
+            def->attr &= 0x7FFF;
+            j = 0;
+            for (i = 0; i < 4; i++) {
+                if (D_800D1F20_main[i] == 0) {
+                    chars[j++] = GwPlayer[i].chr;
+                    counts[0] = D_800D03FE_main[i];
+                }
+            }
+            for (i = 0; i < 4; i++) {
+                if (D_800D1F20_main[i] == 1) {
+                    chars[j++] = GwPlayer[i].chr;
+                    counts[1] = D_800D03FE_main[i];
+                }
+            }
+            for (i = 0; i < 2; i++) {
+                if (i == 0) {
+                    y = 80;
+                } else {
+                    y = 128;
+                }
+                for (j = 0; j < counts[i]; j++) {
+                    espDispOn(D_8011B488_mgmode[D_8011B4C0_mgmode]);
+                    espPosSet(D_8011B488_mgmode[D_8011B4C0_mgmode], D_80119490_mgmode[D_800CC438_main * 7 + j] + 180, y);
+                    D_8011B4C0_mgmode++;
+                }
+            }
+            break;
+        case 4:
+            for (i = 0; i < 2; i++) {
+                def->dataNum = D_8011946C_mgmode[D_800CC438_main];
+                def->x = 180;
+                def->y = i * 24 + 104;
+                def->attr &= 0x7FFF;
+                def++;
+            }
+            for (i = 0; i < 2; i++) {
+                chars[i] = GwPlayer[i].chr;
+            }
+            for (i = 2; i < 4; i++) {
+                chars[i] = -1;
+            }
+            for (i = 0; i < 2; i++) {
+                for (j = 0; j < D_800D03FE_main[i]; j++) {
+                    espDispOn(D_8011B488_mgmode[D_8011B4C0_mgmode]);
+                    espPosSet(D_8011B488_mgmode[D_8011B4C0_mgmode], D_80119490_mgmode[D_800CC438_main * 7 + j] + 180,
+                              i * 24 + 104);
+                    D_8011B4C0_mgmode++;
+                }
+            }
+            break;
+    }
+    def = &D_80119F28_mgmode[5];
+    for (i = 0; i < 4; i++) {
+        if (chars[i] != -1) {
+            def->dataNum += chars[i];
+            if (D_800CC438_main == 0) {
+                def->x = 149;
+            } else if (D_800CC438_main == 1) {
+                def->x = 128;
+            } else {
+                def->x = 107;
+            }
+            if (D_800D4194_main != 4) {
+                def->y = i * 24 + 80;
+            } else {
+                def->y = i * 24 + 104;
+            }
+        } else {
+            def->attr |= 0x8000;
+        }
+        def++;
+    }
+    D_8011B480_mgmode = func_80116794_mgmode(D_80119F28_mgmode);
+    func_80116A78_mgmode(D_8011B480_mgmode, 0, 0);
+    if (D_800CC438_main == 0) {
+        scaleX = 8.6f;
+    } else if (D_800CC438_main == 1) {
+        scaleX = 12.8f;
+    } else {
+        scaleX = 17.0f;
+    }
+    if (D_800D4194_main == 4) {
+        func_80116A48_mgmode(D_8011B480_mgmode, 0, scaleX, 4.9f);
+    } else {
+        func_80116A48_mgmode(D_8011B480_mgmode, 0, scaleX, 9.8f);
+    }
+    for (i = 0; i < 28; i++) {
+        espScaleSet(D_8011B488_mgmode[i], 0.0f, 0.0f);
+    }
+    for (i = 0; i < 4; i++) {
+        func_80116A78_mgmode(D_8011B480_mgmode, i + 5, 0);
+    }
+    for (j = 0; j < 6; j++) {
+        for (i = 0; i < 4; i++) {
+            func_80116A78_mgmode(D_8011B480_mgmode, i + 1, j / 5.0 * 255.0);
+        }
+        func_80116A78_mgmode(D_8011B480_mgmode, 0, j / 5.0 * 192.0);
+        HuPrcVSleep();
+    }
+    for (j = 0; j < 6; j++) {
+        for (i = 0; i < 4; i++) {
+            func_80116A78_mgmode(D_8011B480_mgmode, i + 5, j / 5.0 * 255.0);
+        }
+        for (i = 0; i < 28; i++) {
+            espScaleSet(D_8011B488_mgmode[i], j / 5.0, j / 5.0);
+        }
+        HuPrcVSleep();
+    }
+}
 
 #ifdef NON_MATCHING
 // Matches except for the `case 4` loop. In the target, the store to

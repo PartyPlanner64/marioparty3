@@ -29,51 +29,6 @@ typedef struct HatenaPlayerWork {
     /* 0x04 */ s32 order;
 } HatenaPlayerWork;
 
-void func_80105DB0_w03(void);
-void func_80107D54_w03(s16 arg0);
-void func_80107ECC_w03(void);
-void func_801061A0_w03(UnkMBGuideData *);
-void func_801066CC_w03(void);
-void func_80108734_w03(void);
-s32 func_8011BD24_w03(void);
-void func_8010DF54_w03(void);
-void func_8010FF2C_w03(void);
-void func_8010F2BC_w03(omObjData *arg0);
-void func_800D9F5C_shared_board(Object *arg0, Vec *arg1, s32 arg2);
-
-void func_8010F3D4_w03(void);
-void func_8010F79C_w03(void);
-void func_8010F808_w03(void);
-void func_80117D38_w03(void);
-void func_80110A14_w03(void);
-void func_80110CA0_w03(void);
-void func_8010FCFC_w03(void);
-void func_8011026C_w03(void);
-void func_801105B8_w03(void);
-void func_80117034_w03(void);
-void func_801178B4_w03(void);
-void func_801110F0_w03(void);
-void func_801113B0_w03(void);
-void func_80111750_w03(void);
-void func_8011214C_w03(void);
-void func_80112CA4_w03(void);
-void func_801139BC_w03(void);
-void func_80114C58_w03(void);
-void func_80115C58_w03(void);
-void func_80116E84_w03(void);
-void func_8011777C_w03(void);
-s32 func_8011B71C_w03(void);
-void func_80107F30_w03(void);
-void func_80108118_w03(void);
-void func_801083DC_w03(void);
-void func_801085B0_w03(void);
-void func_80108820_w03(void);
-void func_801088A0_w03(void);
-void func_80116B78_w03(void);
-void func_8011908C_w03(void);
-void func_80119290_w03(void);
-void func_8011655C_w03(s16 (*masu)[3], BranchPair *links, DecisionTreeNonLeafNode **trees);
-s32 func_8011C088_w03(void);
 extern s16 D_8011C110_w03[];
 extern s16 D_8011C120_w03[];
 extern s16 D_8011C130_w03[];
@@ -184,7 +139,6 @@ extern omObjData *D_8011EBF0_w03[4];
 extern s32 D_8011D0D0_w03;
 extern s32 D_8011E7A8_w03;
 extern DecisionTreeNonLeafNode *D_8011E8FC_w03[];
-
 extern Object *D_8011EBA0_w03;
 extern Object *D_8011EBB0_w03;
 extern DecisionTreeNonLeafNode D_8011DB30_w03[];
@@ -198,8 +152,6 @@ extern s32 D_8011EBB8_w03;
 extern s32 D_8011EBBC_w03;
 extern s32 D_8011EC00_w03;
 extern s32 D_8011EC04_w03;
-s32 func_8011B470_w03(void);
-s32 func_8011B51C_w03(void);
 extern u8 *D_8011E82C_w03[];
 extern s8 *D_8011E8CC_w03[];
 extern DecisionTreeNonLeafNode *D_8011E8EC_w03[];
@@ -212,12 +164,10 @@ extern RGB D_8011D3B0_w03[];
 extern s32 D_8011EBC8_w03[4];
 extern Vec2f D_8011D0E4_w03[];
 extern Vec2f D_8011D104_w03[];
-void func_801128B0_w03(void);
 extern u8 D_8011D124_w03[6][3];
 extern u8 D_8011D138_w03[14][3];
 extern DecisionTreeNonLeafNode D_8011CF50_w03[];
 extern u32 D_8011CF68_w03[];
-void func_80113080_w03(void);
 extern u8 D_8011CF80_w03[2][3][4];
 extern u8 D_8011CFE0_w03[2][3][4];
 extern s8 D_8011CFF8_w03[2][5][10];
@@ -250,6 +200,56 @@ extern s32 D_8011EBAC_w03;
 extern u8 D_8011D38C_w03[];
 extern u8 D_8011D390_w03[];
 extern GameGuyReward D_8011D394_w03[];
+
+void func_80105DB0_w03(void);
+void func_80107D54_w03(s16 arg0);
+void func_80107ECC_w03(void);
+void func_801061A0_w03(UnkMBGuideData *);
+void func_801066CC_w03(void);
+void func_80108734_w03(void);
+s32 func_8011BD24_w03(void);
+void func_8010DF54_w03(void);
+void func_8010FF2C_w03(void);
+void func_8010F2BC_w03(omObjData *arg0);
+void func_800D9F5C_shared_board(Object *arg0, Vec *arg1, s32 arg2);
+void func_8010F3D4_w03(void);
+void func_8010F79C_w03(void);
+void func_8010F808_w03(void);
+void func_80117D38_w03(void);
+void func_80110A14_w03(void);
+void func_80110CA0_w03(void);
+void func_8010FCFC_w03(void);
+void func_8011026C_w03(void);
+void func_801105B8_w03(void);
+void func_80117034_w03(void);
+void func_801178B4_w03(void);
+void func_801110F0_w03(void);
+void func_801113B0_w03(void);
+void func_80111750_w03(void);
+void func_8011214C_w03(void);
+void func_80112CA4_w03(void);
+void func_801139BC_w03(void);
+void func_80114C58_w03(void);
+void func_80115C58_w03(void);
+void func_80116E84_w03(void);
+void func_8011777C_w03(void);
+s32 func_8011B71C_w03(void);
+void func_80107F30_w03(void);
+void func_80108118_w03(void);
+void func_801083DC_w03(void);
+void func_801085B0_w03(void);
+void func_80108820_w03(void);
+void func_801088A0_w03(void);
+void func_80116B78_w03(void);
+void func_8011908C_w03(void);
+void func_80119290_w03(void);
+void func_8011655C_w03(s16 (*masu)[3], BranchPair *links, DecisionTreeNonLeafNode **trees);
+s32 func_8011C088_w03(void);
+s32 func_8011B470_w03(void);
+s32 func_8011B51C_w03(void);
+void func_801128B0_w03(void);
+void func_80113080_w03(void);
+
 s16 func_801059D0_w03(void) {
     return D_8011C150_w03[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
 }
@@ -3695,7 +3695,6 @@ void func_8010F2BC_w03(omObjData *arg0) {
     }
     func_8001F9E4_main(model->omObj1->model[0], (u8)data->unk0C);
 }
-
 
 void func_8010F3D4_w03(void) {
     Vec pos;

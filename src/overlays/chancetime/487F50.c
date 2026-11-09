@@ -2,6 +2,7 @@
 #include "chancetime.h"
 #include "game/window.h"
 #include "../ovl_80_shared_board/101840.h"
+#include "../ovl_80_shared_board/105D50.h"
 #include "../ovl_80_shared_board/106A50.h"
 
 typedef struct ChanceTimeUnkFED0 {
@@ -28,6 +29,11 @@ typedef struct ChanceTimeReelSpeed {
     /* 0x04 */ f32 max;
 } ChanceTimeReelSpeed; // size = 0x8
 
+typedef struct ChanceTimeTransfer {
+    /* 0x00 */ s32 state;
+    /* 0x04 */ s32 timer;
+} ChanceTimeTransfer; // size = 0x8
+
 extern s8 D_8010FB80_chancetime;
 extern s8 D_8010FB81_chancetime;
 extern s16 D_8010FB84_chancetime[2];
@@ -45,6 +51,8 @@ extern s16 D_8010FE94_chancetime[3];
 extern u16 D_8010FE9A_chancetime;
 extern s32 D_8010FEC4_chancetime;
 extern ChanceTimeUnkFE3C D_8010FE3C_chancetime[];
+extern ChanceTimeUnkFE3C D_8010FD68_chancetime[];
+extern ChanceTimeTransfer D_8010FF60_chancetime[20];
 extern ChanceTimeUnkFED0 D_8010FED0_chancetime[3];
 extern s16 D_8010FEB0_chancetime[3][3];
 extern s8 D_8010FF3A_chancetime;
@@ -713,7 +721,236 @@ s32 func_8010E4C4_chancetime(void) {
     return D_8010FC18_chancetime;
 }
 
+// Only diff: GCC combine moves the `coins` table load after the `stars` load, so the two
+// stack stores are emitted in swapped order (and the blez delay slot is not filled).
+#ifdef NON_MATCHING
+void func_8010E4D0_chancetime(omObjData *object) {
+    f32 coinsF[2];
+    f32 starsF[2];
+    s32 players[2];
+    s32 i;
+    s32 j;
+    f32 offsetY;
+    u16 isStars;
+    s32 launched;
+    s32 finished;
+    s32 delay;
+    s16 coins;
+    s16 stars;
+    s32 count;
+    s32 coinAmount;
+    f32 step;
+    f32 lost;
+    f32 gained;
+    s32 frame;
+    s32 timer;
+    f32 value;
+    f32 s;
+    f32 x;
+    f32 y;
+    f32 t;
+    f32 scale;
+
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < 4; j++) {
+            if (D_801100DD_chancetime[i] == GwPlayer[D_801100D0_chancetime[j]].chr) {
+                players[i] = D_801100D0_chancetime[j];
+                break;
+            }
+        }
+    }
+    for (i = 0; i < 2; i++) {
+        coinsF[i] = GwPlayer[players[i]].coin;
+        starsF[i] = GwPlayer[players[i]].star;
+    }
+
+    coins = D_8010FD68_chancetime[D_801100DF_chancetime].coins;
+    stars = D_8010FD68_chancetime[D_801100DF_chancetime].stars;
+    coinAmount = D_8010FD68_chancetime[D_801100DF_chancetime].coins;
+    if (coinAmount > 0) {
+        if (GwPlayer[players[0]].coin < coinAmount) {
+            coins = GwPlayer[players[0]].coin;
+        }
+        isStars = FALSE;
+    } else {
+        if (stars > GwPlayer[players[0]].star) {
+            stars = GwPlayer[players[0]].star;
+        }
+        isStars = TRUE;
+    }
+
+    if ((!isStars ? coins : stars) <= 0) {
+        return;
+    }
+
+    if (!isStars) {
+        offsetY = 0.0f;
+        count = coins;
+        if (count > 20) {
+            count = 20;
+        }
+        step = (f32)coins / count;
+    } else {
+        offsetY = 16.0f;
+        count = stars;
+        if (count > 10) {
+            count = 10;
+        }
+        step = (f32)stars / count;
+    }
+    gained = 0.0f;
+    lost = 0.0f;
+    delay = 20 / count;
+    delay = (delay < 5) ? 5 : delay;
+
+    for (i = 0; i < 20; i++) {
+        D_8010FF60_chancetime[i].state = 0;
+        D_8010FF60_chancetime[i].timer = 0;
+    }
+
+    frame = 0;
+    launched = 0;
+    finished = 0;
+    while (finished < count) {
+        for (i = 0; i < 20; i++) {
+            switch (D_8010FF60_chancetime[i].state) {
+                case 0:
+                    if (delay < frame) {
+                        if (launched < count) {
+                            D_8010FF60_chancetime[i].state = 1;
+                            frame = 0;
+                            launched++;
+                            if (!isStars) {
+                                lost += step;
+                                value = coinsF[0] - lost;
+                                if (value >= 0.0f) {
+                                    GwPlayer[players[0]].coin = (u32)value;
+                                } else {
+                                    GwPlayer[players[0]].coin = 0;
+                                }
+                                HuAudFXPlay(0x109);
+                            } else {
+                                lost += step;
+                                value = starsF[0] - lost;
+                                if (value >= 0.0f) {
+                                    GwPlayer[players[0]].star = (u32)value;
+                                } else {
+                                    GwPlayer[players[0]].star = 0;
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case 1:
+                    if (!isStars) {
+                        espDispOn(D_80110028_chancetime[i]);
+                        func_8000BDDC_main(D_80110028_chancetime[i], 1);
+                        espBankSet(D_80110028_chancetime[i], 0, 0);
+                        espPosSet(D_80110028_chancetime[i], 80, 74.0f - offsetY);
+                    } else {
+                        func_8001C258_main(object->model[i + 1], 4, 0);
+                        func_8001C258_main(D_80110010_chancetime[i], 4, 0);
+                        func_800138EC_main(D_80110010_chancetime[i], 1, 1);
+                        Hu3DModelPosSet(object->model[i + 1], -170.0f, 375.0f, 0.0f);
+                        func_8000CFA4_main(D_80110010_chancetime[i], -170.0f, 375.0f, 0.0f);
+                    }
+                    D_8010FF60_chancetime[i].timer = 0;
+                    D_8010FF60_chancetime[i].state = 3;
+                    break;
+                case 2:
+                    D_8010FF60_chancetime[i].state = 0;
+                    if (!isStars) {
+                        espDispOff(D_80110028_chancetime[i]);
+                        gained += step;
+                        value = gained + coinsF[1];
+                        if (value <= 999.0f) {
+                            GwPlayer[players[1]].coin = value;
+                        } else {
+                            GwPlayer[players[1]].coin = 999;
+                        }
+                        HuAudFXPlay(0x106);
+                    } else {
+                        func_8001C258_main(object->model[i + 1], 4, 4);
+                        func_800138EC_main(D_80110010_chancetime[i], 1, 0);
+                        gained += step;
+                        value = gained + starsF[1];
+                        if (value <= 99.0f) {
+                            GwPlayer[players[1]].star = value;
+                        } else {
+                            GwPlayer[players[1]].star = 99;
+                        }
+                        HuAudFXPlay(0x11B);
+                    }
+                    finished++;
+                    break;
+                case 3:
+                    timer = D_8010FF60_chancetime[i].timer;
+                    if (!isStars) {
+                        x = timer * 8.5f;
+                        s = sindf(timer * 9.0f);
+                        y = s * 32.0f;
+                        espPosSet(D_80110028_chancetime[i], x + 80.0f, 74.0f - y - offsetY);
+                        espScaleSet(D_80110028_chancetime[i], s * 0.5f + 0.5f, s * 0.5f + 0.5f);
+                        D_8010FF60_chancetime[i].timer++;
+                        if (timer >= 20) {
+                            D_8010FF60_chancetime[i].state = 2;
+                        }
+                    } else {
+                        x = timer * 9.25f;
+                        t = timer;
+                        s = sindf(t * 4.5f);
+                        y = s * 88.0f;
+                        Hu3DModelPosSet(object->model[i + 1], x + -170.0f, y + 375.0f, 0.0f);
+                        func_8000CFA4_main(D_80110010_chancetime[i], x + -170.0f, y + 375.0f, 0.0f);
+                        scale = s * 0.5f + 0.5f;
+                        Hu3DModelScaleSet(object->model[i + 1], scale, scale, scale);
+                        Hu3DModelRotSet(object->model[i + 1], 0.0f, t * 15.0f, 0.0f);
+                        func_8000CD00_main(D_80110010_chancetime[i], s + s + 4.0f, 20.0f, s + s + 4.0f);
+                        D_8010FF60_chancetime[i].timer++;
+                        if (timer >= 40) {
+                            D_8010FF60_chancetime[i].state = 2;
+                        }
+                    }
+                    break;
+            }
+        }
+        HuPrcVSleep();
+        frame++;
+    }
+
+    if (!isStars) {
+        value = coinsF[0] - coins;
+        if (value >= 0.0f) {
+            GwPlayer[players[0]].coin = value;
+        } else {
+            GwPlayer[players[0]].coin = 0;
+        }
+        value = coins + coinsF[1];
+        if (value <= 999.0f) {
+            GwPlayer[players[1]].coin = value;
+        } else {
+            GwPlayer[players[1]].coin = 999;
+        }
+    } else {
+        value = starsF[0] - stars;
+        if (value >= 0.0f) {
+            GwPlayer[players[0]].star = value;
+        } else {
+            GwPlayer[players[0]].star = 0;
+        }
+        value = stars + starsF[1];
+        if (value <= 99.0f) {
+            GwPlayer[players[1]].star = value;
+        } else {
+            GwPlayer[players[1]].star = 99;
+        }
+    }
+    MBPlayerCoinAdd(players[1], 0);
+    HuPrcSleep(30);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010E4D0_chancetime);
+#endif
 
 void func_8010F1DC_chancetime(void) {
     D_8010FC10_chancetime = 0;

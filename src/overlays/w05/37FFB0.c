@@ -22,6 +22,13 @@
 #include "gcc/memory.h"
 #include "game/mallocblock.h"
 
+typedef struct PlayerReactWork {
+    /* 0x00 */ s32 playerNo;
+    /* 0x04 */ s32 unk4;
+    /* 0x08 */ s32 order;
+    /* 0x0C */ s32 type;
+} PlayerReactWork;
+
 void func_801064DC_w05(void);
 void func_800D9F5C_shared_board(Object *arg0, Vec *arg1, s32 arg2);
 void func_8010E790_w05(omObjData *arg0);
@@ -41,6 +48,8 @@ void func_801085B4_w05(void);
 void func_8010D298_w05(void);
 void func_801184C0_w05(void);
 void func_8011BB74_w05(void);
+void func_801192AC_w05(void);
+void func_80119610_w05(void);
 void func_8011AEA4_w05(void);
 void func_80118BBC_w05(void);
 void func_8011C2A8_w05(void);
@@ -116,6 +125,7 @@ extern Object *D_80120870_w05[4];
 extern Object *D_8012078C_w05;
 extern Object *D_801207C4_w05;
 extern s32 D_8011D0CC_w05;
+extern f32 D_8011EF38_w05[][2];
 extern Object *D_801207C8_w05;
 extern s32 D_80120788_w05;
 extern s32 D_8011D090_w05[];
@@ -6392,9 +6402,80 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_8011A6E8_w05);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_8011A8D8_w05);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_8011ABEC_w05);
+void func_8011ABEC_w05(s16 *masuList, s32 type, s32 mode, s32 arg3) {
+    s32 order = 0;
+    GW_SYSTEM *system = &GwSystem;
+    PlayerReactWork *work;
+    Process *process;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_8011AD34_w05);
+    do {
+        for (i = 0; i < 4; i++) {
+            GW_PLAYER *player;
+
+            if (i == system->current_player_index && mode == 0) {
+                continue;
+            }
+            player = MBPlayerGet(i);
+            if (*masuList != MBMasuLinkMasuIdGet(player->clink, player->cidx)) {
+                continue;
+            }
+            if (mode == 2) {
+                process = omAddPrcObj(func_80119610_w05, 0x4800, 0, 0x40);
+            } else {
+                process = omAddPrcObj(func_801192AC_w05, 0x4800, 0, 0x40);
+            }
+            work = HuMemMemoryAlloc(process->heap, 0x20);
+            process->user_data = work;
+            work->playerNo = i;
+            work->unk4 = arg3;
+            work->order = order;
+            work->type = type;
+            order++;
+        }
+        masuList++;
+    } while (*masuList != -1);
+}
+
+s32 func_8011AD34_w05(s32 arg0) {
+    Vec pos[4];
+    SpaceData *space;
+    GW_PLAYER *player;
+    s32 masuId;
+    s32 count;
+    s32 i;
+
+    switch (arg0) {
+        case 0:
+            masuId = 0x36;
+            space = MBMasuGet(0x36);
+            break;
+        case 1:
+            masuId = 0x1B;
+            space = MBMasuGet(0x1B);
+            break;
+        case 2:
+            masuId = 0x43;
+            space = MBMasuGet(0x43);
+            break;
+        default:
+            masuId = 0x11;
+            space = MBMasuGet(0x11);
+            break;
+    }
+
+    for (i = 0, count = 0; i < 4; i++) {
+        player = MBPlayerGet(i);
+        if (masuId == MBMasuLinkMasuIdGet(player->clink, player->cidx)) {
+            HuVecCopy3F(&pos[i], &space->coords);
+            pos[i].x += D_8011EF38_w05[count][0];
+            pos[i].z += D_8011EF38_w05[count][1];
+            func_800ED5E0_shared_board(&player->player_obj->coords, &pos[i], &player->player_obj->coords, 2.0f);
+            count++;
+        }
+    }
+    return count;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_8011AEA4_w05);
 

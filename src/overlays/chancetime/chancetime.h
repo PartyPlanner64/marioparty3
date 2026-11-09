@@ -10,6 +10,7 @@ typedef struct ChanceTimeObjState {
 
 extern s32 D_8010FAE4_chancetime;
 extern s8 D_801100D0_chancetime[4];
+extern s8 D_801100DC_chancetime;
 
 void func_80106320_chancetime(void);
 void func_80106B18_chancetime(void);

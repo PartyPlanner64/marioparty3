@@ -8,7 +8,6 @@ extern s8 D_8010FAE0_chancetime;
 extern s8 D_8010FAE8_chancetime;
 extern s32 D_8010FE60_chancetime;
 extern s8 D_8010FE64_chancetime[3];
-extern s8 D_801100DC_chancetime;
 
 s32 func_8010BF3C_chancetime(void);
 void func_8010DA24_chancetime(void);

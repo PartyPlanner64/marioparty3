@@ -212,6 +212,8 @@ extern u32 D_8011D0C8_w03[];
 extern u8 D_8011D164_w03[];
 extern s32 D_8011D16C_w03[];
 extern s32 D_8011D178_w03[];
+extern Vec2f D_8011D26C_w03[];
+extern Vec2f D_8011D24C_w03[];
 s16 func_801059D0_w03(void) {
     return D_8011C150_w03[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
 }
@@ -3705,11 +3707,90 @@ Process *func_8010FC2C_w03(s32 spriteGroup, s16 startX, s16 startY, s16 endX, s1
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_8010FCFC_w03);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_8010FF2C_w03);
+void func_8010FF2C_w03(void) {
+    GW_SYSTEM *system = &GwSystem;
+    f32 position[2];
+    s32 i;
+
+    HuSprBankSet(mbItemCursorGrpId, 0, 1, 0);
+    func_800550F4_main(mbItemCursorGrpId, 0, 1);
+    HuPrcSleep(20);
+    HuAudFXPlay(0x145);
+    MBStatusSprPosGet(mbItemCursorGrpId, 0, &position[0], &position[1]);
+    func_8010FC2C_w03(
+        mbItemCursorGrpId, position[0], position[1],
+        D_8011D26C_w03[system->current_player_index].x,
+        D_8011D26C_w03[system->current_player_index].y, -1);
+    HuPrcSleep(20);
+
+    for (i = 1; i < 10; i++) {
+        MBStatusItemTPLvlSet(system->current_player_index,
+                             MBItemSelNoGet(), 255 - (i * 25));
+        HuSprTPLvlSet(mbItemCursorGrpId, 0, 255 - (i * 25));
+        HuPrcVSleep();
+    }
+
+    MBStatusItemTPLvlSet(system->current_player_index,
+                         MBItemSelNoGet(), 0);
+    HuSprTPLvlSet(mbItemCursorGrpId, 0, 0);
+    HuPrcSleep(2);
+    HuSprDispOff(mbItemCursorGrpId, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_801100FC_w03);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_8011026C_w03);
+void func_8011026C_w03(void) {
+    GW_SYSTEM *system = &GwSystem;
+    f32 position[2];
+    Process *process;
+    s32 i;
+    s32 j;
+
+    HuSprBankSet(mbItemCursorGrpId, 0, 1, 0);
+    func_800550F4_main(mbItemCursorGrpId, 0, 1);
+    HuPrcSleep(20);
+    HuAudFXPlay(0x145);
+    MBStatusSprPosGet(mbItemCursorGrpId, 0, &position[0], &position[1]);
+    process = HuPrcCurrentGet();
+    HuPrcChildLink(process,
+                   func_8010FC2C_w03(mbItemCursorGrpId, position[0], position[1],
+                                     D_8011D24C_w03[system->current_player_index].x,
+                                     D_8011D24C_w03[system->current_player_index].y, -1));
+    HuPrcChildWatch();
+    HuPrcSleep(10);
+    HuSprBankSet(mbItemCursorGrpId, 0, 0, 0);
+    func_800550F4_main(mbItemCursorGrpId, 0, 1);
+
+    for (i = 1; i < 10; i++) {
+        HuSprTPLvlSet(mbItemCursorGrpId, 0, 255 - (i * 25));
+        HuPrcVSleep();
+    }
+
+    HuSprTPLvlSet(mbItemCursorGrpId, 0, 0);
+    if ((GwPlayer[system->current_player_index].itemNo[MBItemSelNoGet()] == 0xB) ||
+        (GwPlayer[system->current_player_index].itemNo[MBItemSelNoGet()] == 8)) {
+        HuAudFXPlay(0x141);
+    }
+
+    for (i = 0; i <= 1080; i += 30) {
+        MBStatusItemRotSet(system->current_player_index,
+                           MBItemSelNoGet(), sindf(i) * 30.0f);
+        HuPrcVSleep();
+    }
+
+    for (j = 1; j < 10; j++) {
+        MBStatusItemTPLvlSet(system->current_player_index,
+                             MBItemSelNoGet(), 255 - (j * 25));
+        MBStatusItemRotSet(system->current_player_index,
+                           MBItemSelNoGet(), sindf(i) * 30.0f);
+        HuPrcVSleep();
+        i += 30;
+    }
+
+    MBStatusItemTPLvlSet(system->current_player_index,
+                         MBItemSelNoGet(), 0);
+    HuSprDispOff(mbItemCursorGrpId, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_801105B8_w03);
 

@@ -4928,7 +4928,11 @@ void func_80112D60_w03(void) {
     omDelPrcObj(NULL);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80112EB4_w03);
+void func_80112EB4_w03(Object *arg) {
+    Process *temp = omAddPrcObj(func_80112D60_w03, 0x1000, 0, 0);
+
+    temp->user_data = arg;
+}
 
 void func_80112EF0_w03(void) {
     s32 *flag = HuPrcCurrentGet()->user_data;

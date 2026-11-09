@@ -852,7 +852,25 @@ void func_80107744_w04(void) {
     omOvlGotoEx(0x47, 0, 0x192);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_80107780_w04);
+void func_80107780_w04(void) {
+    omInitObjMan(0xA, 0);
+    MBMoveMasuSet(0, 0, 0);
+    MBMoveMasuSet(1, 0, 0);
+    MBMoveMasuSet(2, 0, 0);
+    MBMoveMasuSet(3, 0, 0);
+    GWBoardFlagSet(3);
+    func_801059F8_w04();
+    GwSystem.bank_coins = 0;
+    GwSystem.slow_dice_flags = 0;
+    GwSystem.forceShopHost = 0;
+    GwSystem.wackyWatchUsedState = 0;
+    GwSystem.boardData.halfWordBytes[0] = 1;
+    GwSystem.boardData.halfWordBytes[1] = 1;
+    GwSystem.boardData.halfWordBytes[2] = 1;
+    GwSystem.boardData.halfWordBytes[3] = 0;
+    GwSystem.boardData.halfWordBytes[4] = 0;
+    omOvlReturnEx(1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_80107828_w04);
 

@@ -1,5 +1,7 @@
 #include "common.h"
 #include "game/aura.h"
+#include "game/input.h"
+#include "game/pause.h"
 #include "game/malloc.h"
 #include "game/wipe.h"
 #include "../ovl_80_shared_board/1006F0.h"
@@ -12,6 +14,7 @@
 #include "../ovl_80_shared_board/10C230.h"
 #include "../ovl_80_shared_board/FA250.h"
 #include "../ovl_80_shared_board/105D50.h"
+#include "../ovl_80_shared_board/106640.h"
 #include "../ovl_80_shared_board/106A50.h"
 #include "../ovl_80_shared_board/F5070.h"
 #include "../ovl_80_shared_board/F5E80.h"
@@ -34,6 +37,7 @@ extern Process *D_8010BA28_w10;
 extern Object *D_8010BA2C_w10;
 extern Object *D_8010BA30_w10;
 extern Object *D_8010BA38_w10[2];
+extern s32 D_8010BA20_w10;
 extern s16 D_8010BA4C_w10;
 extern s16 D_8010BA4E_w10;
 extern s16 D_8010BA50_w10;
@@ -44,6 +48,8 @@ extern Object *D_8010BA68_w10;
 extern Object *D_8010BA6C_w10;
 extern Object *D_8010BA70_w10;
 extern Object *D_8010BA74_w10;
+extern Object *D_8010BA90_w10;
+extern s32 D_8010BA94_w10;
 
 void func_801059D0_w10(void) {
     GwSystem.current_board_index = 6;
@@ -681,13 +687,68 @@ void func_80107ABC_w10(void) {
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80107ABC_w10);
 #endif
 
+#ifdef NON_MATCHING
+// Register allocation differs: same issue as func_80107444_w10, the constant 1
+// stored to *state is materialized separately instead of reusing the saved
+// register holding 1 for the wait loop comparison.
+void func_80107D64_w10(void) {
+    s32 *state = HuPrcCurrentGet()->user_data;
+    GW_PLAYER *player = MBPlayerGet(-1);
+    Process *process;
+
+    D_8010BA68_w10 = MBModelCreate(0x3E, NULL);
+    MBModelTempAllocFree(D_8010BA68_w10);
+    HuVecCopy3F(&D_8010BA68_w10->coords, &player->player_obj->coords);
+    D_8010BA68_w10->velocity.x = 100.0f;
+    do {
+        D_8010BA68_w10->velocity.x -= 2.0f;
+        HuPrcVSleep();
+    } while (D_8010BA68_w10->velocity.x >= 30.0f);
+    process = func_800EDB98_shared_board(D_8010BA68_w10, 5.0f, 2.0f);
+    *state = 1;
+    while (*state == 1) {
+        HuPrcVSleep();
+    }
+    omDelPrcObj(process);
+
+    while (D_8010BA68_w10->velocity.x < 100.0f) {
+        D_8010BA68_w10->velocity.x += 2.0f;
+        HuPrcVSleep();
+    }
+    *state = 3;
+    MBModelKill(D_8010BA68_w10);
+    omDelPrcObj(NULL);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80107D64_w10);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80107F0C_w10);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_801084CC_w10);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80108F28_w10);
+void func_80108F28_w10(void) {
+    Object *obj;
+
+    D_8010BA94_w10 = 0;
+    obj = MBModelCreate(0x4E, NULL);
+    D_8010BA90_w10 = obj;
+    MBModelTempAllocFree(obj);
+    HuVecCopy3F(&obj->coords, &MBMasuGet(0x2E)->coords);
+    HuVecCopyXYZ(&obj->rot, 0.0f, 0.0f, -1.0f);
+    obj->velocity.x = 15.0f;
+    while (D_8010BA94_w10 == 0) {
+        HuPrcVSleep();
+    }
+    while (D_8010BA94_w10 != 0) {
+        obj->omObj1->rot.z -= 15.0f;
+        if (obj->omObj1->rot.z < 0.0f) {
+            obj->omObj1->rot.z += 360.0f;
+        }
+        HuPrcVSleep();
+    }
+    omDelPrcObj(NULL);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80109050_w10);
 
@@ -695,8 +756,99 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80109444_w10);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_8010AF68_w10);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_8010B12C_w10);
+s16 func_8010B12C_w10(s32 player) {
+    UnkBoard8 *dimmer;
+    UnkBoard8 *icon;
+    void *data;
+    s16 size[2];
+    s16 win;
+    s16 choice;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_8010B434_w10);
+    func_8004A9DC_main(0x60);
+    dimmer = func_800F2C48_shared_board(1, 0);
+    data = DataRead(0x13025D);
+    dimmer->model[0] = HuSprAnimRead(data);
+    HuSprGrpMemberSet(dimmer->spriteGroup, 0, dimmer->model[0], 0);
+    HuSprPriSet(dimmer->spriteGroup, 0, 9);
+    HuSprAttrSet(dimmer->spriteGroup, 0, 0x1000);
+    HuSprPosSet(dimmer->spriteGroup, 0, 0xA0, 0x78);
+    HuSprScaleSet(dimmer->spriteGroup, 0, 40.0f, 30.0f);
+    func_80055484_main(dimmer->spriteGroup, 0, 0, 0, 0, 0xC0);
+    DataClose(data);
+
+    icon = func_800F2C48_shared_board(2, 0);
+    data = DataRead(0x130009);
+    icon->model[0] = HuSprAnimRead(data);
+    DataClose(data);
+    HuSprGrpMemberSet(icon->spriteGroup, 0, icon->model[0], 0);
+    HuSprPriSet(icon->spriteGroup, 0, 8);
+    HuSprAttrSet(icon->spriteGroup, 0, 0x1000);
+    HuSprPosSet(icon->spriteGroup, 0, 0x9E, 0x78);
+    HuSprColorSet(icon->spriteGroup, 0, 0x89, 0xCA, 0xB2);
+
+    HuWinMesMaxSizeGet(1, size, 0x1633);
+    win = HuWinCreate(0x49, 0x4B, size[0], size[1], 0, 2);
+    HuWinPriSet(win, 5);
+    HuWinBGTPLvlSet(win, 0);
+    func_80060144_main(win);
+    HuWinMesPalSet(win, 7, 0, 0, 0xE0);
+    HuWinMesPalSet(win, 0, 0x89, 0xCA, 0xB2);
+    HuWinMesPalSet(win, 4, 0, 0x80, 0);
+    HuWinBGColSet(win, 0x89, 0xCA, 0xB2);
+    HuWinMesSet(win, 0x1633, -1, -1);
+    HuWinMesSpeedSet(win, 0);
+    while (HuWinStatGet(win) != 0) {
+        HuPrcVSleep();
+    }
+    HuWinActivePlayerSet(win, 1 << player);
+    choice = HuWinChoiceGet(win, 0, 0);
+    HuWinKill(win);
+    func_8004A9DC_main(0x7F);
+    func_800F2CA4_shared_board(dimmer);
+    func_800F2CA4_shared_board(icon);
+    return choice == 1;
+}
+
+void func_8010B434_w10(void) {
+    Vec2f pos;
+    s32 player;
+    s32 i;
+
+    D_8010BA20_w10 = 0;
+    while (TRUE) {
+        HuPrcVSleep();
+        if (WipeStatGet() != 0 || wipeMode == 3) {
+            continue;
+        }
+        player = MBPlayerTurnGet();
+        for (i = 0; i < 4; i++) {
+            if (!(D_800C9520_main[i] & START_BUTTON) || D_8010BA20_w10 != 0) {
+                continue;
+            }
+            func_800DE874_shared_board(player);
+            MBCameraPos2DGet(&pos);
+            MBCameraPos2DSet(&pos);
+            D_800CB99C_main = 1;
+            omAllPause();
+            HmfPauseF = 1;
+            if (func_8010B12C_w10(i)) {
+                HuAudSeqFadeOut(0x5A);
+                WipeCreateOut(0, 0x10);
+                HuPrcSleep(0x11);
+                omDelPrcObj(D_8010BA28_w10);
+                MBExit();
+                func_800F884C_shared_board();
+                omOvlReturnEx(1);
+                omOvlKill();
+                HuPrcVSleep();
+            }
+            HmfPauseF = 0;
+            omAllUPause();
+            D_800CB99C_main = 0;
+            func_800DE8D8_shared_board(player);
+            break;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_8010B5A4_w10);

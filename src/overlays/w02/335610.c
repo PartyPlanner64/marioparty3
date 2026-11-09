@@ -157,6 +157,7 @@ extern s16 D_8011D2B0_w02[][3];
 extern BranchPair D_8011D2B8_w02[];
 void func_8010ED4C_w02(omObjData *arg0);
 extern s32 D_8011C6E8_w02;
+s32 func_80107438_w02(u8 *arg0, s32 arg1, s32 arg2);
 s16 func_801059D0_w02(void) {
     return D_8011C6A0_w02[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
 }
@@ -785,9 +786,13 @@ s32 func_80107438_w02(u8 *arg0, s32 arg1, s32 arg2) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80107704_w02);
+s32 func_80107704_w02(u8 *arg0) {
+    return func_80107438_w02(arg0, 0, 1);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80107724_w02);
+s32 func_80107724_w02(u8 *arg0) {
+    return func_80107438_w02(arg0, 1, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80107744_w02);
 

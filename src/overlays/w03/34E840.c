@@ -21,6 +21,8 @@
 #include "../ovl_80_shared_board/F5070.h"
 #include "../ovl_80_shared_board/F9DE0.h"
 #include "../ovl_80_shared_board/EC3B0.h"
+#include "gcc/memory.h"
+#include "game/mallocblock.h"
 
 void func_80105DB0_w03(void);
 void func_80107D54_w03(s16 arg0);
@@ -30,6 +32,7 @@ void func_801066CC_w03(void);
 void func_80108734_w03(void);
 s32 func_8011BD24_w03(void);
 void func_8010DF54_w03(void);
+void func_8010F2BC_w03(omObjData *arg0);
 void func_800D9F5C_shared_board(Object *arg0, Vec *arg1, s32 arg2);
 void func_8010F3D4_w03(void);
 void func_8010F79C_w03(void);
@@ -3608,7 +3611,32 @@ void func_8010F144_w03(void) {
     func_801087E4_w03(1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_8010F160_w03);
+omObjData *func_8010F160_w03(Vec *arg0, f32 arg1, f32 arg2, s16 arg3, Vec *arg4, s32 arg5) {
+    omObjData *obj;
+    ModelFadeWork *data;
+    Object *model;
+
+    obj = omAddObj(0x1F4, 0, 0, -1, func_8010F2BC_w03);
+    data = obj->data = HuMemAllocTag(0x20, TAG_OVERLAY);
+    data->unk0C = 255.0f;
+    data->unk10 = arg1;
+    data->unk14 = arg2;
+    HuVecCopy3F(&data->unk00, arg4);
+    if (arg5 != 0) {
+        model = MBModelFileCreate(0x1301F8, 0, 1.0f, 0, 0);
+    } else {
+        model = MBModelFileCreate(0x1301F7, 0, 1.0f, 0, 0);
+    }
+    Hu3DModelScaleSet(model->omObj1->model[0], 0.0f, 0.0f, 0.0f);
+    model->coords.x = arg0->x;
+    model->coords.y = arg0->y;
+    model->coords.z = arg0->z;
+    func_8001FA68_main(model->omObj1->model[0]);
+    func_8001F9E4_main(model->omObj1->model[0], 0xFF);
+    data->model = model;
+    data->unk1C = arg3;
+    return obj;
+}
 
 void func_8010F2BC_w03(omObjData *arg0) {
     ModelFadeWork *data = arg0->data;

@@ -6614,7 +6614,118 @@ void func_80119A4C_w05(void) {
     omDelPrcObj(NULL);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80119BC4_w05);
+void func_80119BC4_w05(void) {
+    s32 type = (s32)HuPrcCurrentGet()->user_data;
+    Object *other = D_801207CC_w05;
+    Object *model;
+    SpaceData *space;
+    Process *prc;
+    Vec pos;
+    f32 speed;
+    s32 bounced;
+
+    switch (type) {
+        case 0:
+        case 1:
+            model = D_801207C4_w05;
+            break;
+        default:
+            model = D_801207C8_w05;
+            break;
+    }
+
+    HuVecCopy3F(&pos, &model->coords);
+    pos.z = other->coords.z;
+
+    while (TRUE) {
+        switch (type) {
+            case 0:
+            case 2:
+                if (other->coords.x - model->coords.x < -5.0f) {
+                    goto moved;
+                }
+                break;
+            default:
+                if (model->coords.x - other->coords.x < -5.0f) {
+                    goto moved;
+                }
+                break;
+        }
+        HuPrcVSleep();
+    }
+moved:
+    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&model->coords, &pos, &model->coords, 10));
+    bounced = FALSE;
+    speed = 10.0f;
+    while (TRUE) {
+        model->velocity.x += speed;
+        if (bounced && model->velocity.x <= 7.5f) {
+            break;
+        }
+        if (model->velocity.x > 7.5f) {
+            bounced = TRUE;
+        }
+        HuPrcVSleep();
+        speed -= 2.0f;
+    }
+    model->velocity.x = 7.5f;
+    HuAudFXPlay(0x1AE);
+    HuAudFXPlay(0x1AF);
+
+    switch (type) {
+        case 0:
+            space = MBMasuGet(0x80);
+            break;
+        case 1:
+            space = MBMasuGet(0x6E);
+            break;
+        case 2:
+            space = MBMasuGet(0x86);
+            break;
+        default:
+            space = MBMasuGet(0x72);
+            break;
+    }
+    HuVecCopy3F(&pos, &space->coords);
+    prc = omAddPrcObj(func_80119A4C_w05, 0x4800, 0, 0);
+    prc->user_data = (void *)type;
+
+    while (TRUE) {
+        switch (type) {
+            case 0:
+            case 2:
+                model->coords.x -= 2.0f;
+                break;
+            default:
+                model->coords.x += 2.0f;
+                break;
+        }
+        if (ABS(space->coords.x - model->coords.x) <= 2.0f) {
+            break;
+        }
+        HuPrcVSleep();
+    }
+
+    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&model->coords, &pos, &model->coords, 10));
+    bounced = FALSE;
+    speed = 8.0f;
+    while (TRUE) {
+        model->velocity.x += speed;
+        if (bounced && model->velocity.x <= 0.0f) {
+            break;
+        }
+        if (model->velocity.x > 0.0f) {
+            bounced = TRUE;
+        }
+        HuPrcVSleep();
+        speed -= 2.0f;
+    }
+    model->velocity.x = 0.0f;
+    HuAudFXPlay(0x1AE);
+    HuAudFXPlay(0x1AF);
+    HuPrcChildWatch();
+    omDelPrcObj(NULL);
+}
 
 void func_80119F04_w05(void) {
     s32 masuId = (s32)HuPrcCurrentGet()->user_data;

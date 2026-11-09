@@ -161,6 +161,8 @@ extern event_table_entry D_8011D700_w02[];
 extern event_table_entry D_8011D894_w02[];
 extern event_table_entry D_8011D9CC_w02[];
 void func_8011B8A0_w02(void);
+void func_80119DB0_w02(void);
+void func_8011B038_w02(s16 masuId);
 extern s16 D_8011C73C_w02[][2];
 extern s16 D_8011C744_w02[][2];
 extern s16 D_8011C7EC_w02[];
@@ -6807,7 +6809,26 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80119DB0_w02);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_8011B038_w02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_8011B8A0_w02);
+void func_8011B8A0_w02(void) {
+    GW_PLAYER *player = MBPlayerGet(-1);
+    s16 masuId = MBMasuLinkMasuIdGet(player->clink, player->cidx);
+
+    HuPrcSleep(8);
+    switch (masuId) {
+        case 0x50:
+        case 0x51:
+        case 0x52:
+        case 0x53:
+        case 0x54:
+        case 0x55:
+            func_80119DB0_w02();
+            break;
+        default:
+            func_8011B038_w02(masuId);
+            break;
+    }
+    omDelPrcObj(NULL);
+}
 
 void func_8011B934_w02(void) {
     Hu3DCamInit(2);

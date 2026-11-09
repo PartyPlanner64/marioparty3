@@ -1,5 +1,7 @@
 #include "common.h"
 #include "chancetime.h"
+#include "game/window.h"
+#include "../ovl_80_shared_board/101840.h"
 
 typedef struct ChanceTimeUnkFED0 {
     /* 0x00 */ s8 unk00;
@@ -33,7 +35,9 @@ extern s32 D_8010FF48_chancetime[3];
 extern s8 D_8010FEC8_chancetime;
 extern s8 D_8010FEC9_chancetime;
 extern s8 D_80110000_chancetime;
+extern s32 D_80110004_chancetime;
 extern s32 D_80110008_chancetime;
+extern u32 D_8010FD5C_chancetime[];
 extern void (*D_80110084_chancetime)();
 extern omObjData *D_801100C8_chancetime;
 extern s8 D_801100DD_chancetime[2];
@@ -46,9 +50,11 @@ void func_8010F44C_chancetime(s32 arg0, s16 arg1, s16 arg2);
 void func_8010D320_chancetime(void);
 void func_8010D6A4_chancetime(s32 arg0);
 void func_8010DFA4_chancetime(void);
+void func_8010E1E0_chancetime(void);
 void func_8010E210_chancetime(void);
 void func_8010E280_chancetime(void);
 void func_8010F1F8_chancetime(void);
+void func_8010F42C_chancetime(void);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010BF80_chancetime);
 
@@ -180,7 +186,34 @@ void func_8010DF78_chancetime(s32 arg0) {
     D_80110084_chancetime = func_8010DFA4_chancetime;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010DFA4_chancetime);
+void func_8010DFA4_chancetime(void) {
+    s32 index = D_80110008_chancetime;
+
+    HuWinHomeClear(D_80110004_chancetime);
+    if (GwPlayer[D_801100D0_chancetime[0]].stat & 1) {
+        func_8005B63C_main(D_80110004_chancetime, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+    }
+    func_80108B50_chancetime();
+    HuWinMesSet(D_80110004_chancetime, D_8010FD5C_chancetime[index], -1, -1);
+    func_80060C14_main(D_80110004_chancetime, 1);
+    while (HuWinStatGet(D_80110004_chancetime)) {
+        HuPrcVSleep();
+    }
+    func_80060EA8_main(D_80110004_chancetime, 1);
+    func_80108A88_chancetime();
+    if (GwPlayer[D_801100D0_chancetime[0]].stat & 1) {
+        HuWinComKeyReset();
+    }
+    D_80110000_chancetime = index;
+    D_80110084_chancetime = func_8010E1E0_chancetime;
+}
 
 void func_8010E1E0_chancetime(void) {
     func_8010D6A4_chancetime(D_80110000_chancetime);
@@ -219,7 +252,33 @@ void func_8010F1DC_chancetime(void) {
     D_80110084_chancetime = func_8010F1F8_chancetime;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010F1F8_chancetime);
+void func_8010F1F8_chancetime(void) {
+    HuWinHomeClear(D_80110004_chancetime);
+    if (GwPlayer[D_801100D0_chancetime[0]].stat & 1) {
+        func_8005B63C_main(D_80110004_chancetime, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+    }
+    func_80108B50_chancetime();
+    func_8010BF48_chancetime();
+    HuAudFXPlay(0x298);
+    HuWinMesSet(D_80110004_chancetime, 0x1B00, -1, -1);
+    func_80060C14_main(D_80110004_chancetime, 1);
+    while (HuWinStatGet(D_80110004_chancetime)) {
+        HuPrcVSleep();
+    }
+    func_80060EA8_main(D_80110004_chancetime, 1);
+    func_80108A88_chancetime();
+    if (GwPlayer[D_801100D0_chancetime[0]].stat & 1) {
+        HuWinComKeyReset();
+    }
+    D_80110084_chancetime = func_8010F42C_chancetime;
+}
 
 s32 func_8010F420_chancetime(void) {
     return D_8010FC10_chancetime;

@@ -21,6 +21,16 @@
 #include "../ovl_80_shared_board/F5070.h"
 #include "../ovl_80_shared_board/F5E80.h"
 
+// Sets the shared process state and sleeps until another process changes it.
+#define SET_STATE_AND_WAIT(state, value) \
+    do {                                 \
+        s32 _value = (value);            \
+        *(state) = _value;               \
+        while (*(state) == _value) {     \
+            HuPrcVSleep();               \
+        }                                \
+    } while (0)
+
 typedef struct {
     /* 0x00 */ s16 spriteGroup;
     /* 0x02 */ s16 sprites[3];
@@ -549,10 +559,6 @@ void func_801073C8_w10(omObjData *obj) {
     obj->rot.x += 10.0f;
 }
 
-#ifdef NON_MATCHING
-// Register allocation differs: the constant 1 used for the *state wait loop is
-// materialized separately instead of sharing a saved register, and the state
-// pointer gets a different saved register than the target.
 void func_80107444_w10(void) {
     s32 *state = HuPrcCurrentGet()->user_data;
     GW_PLAYER *player = MBPlayerGet(-1);
@@ -582,10 +588,7 @@ void func_80107444_w10(void) {
     }
     bobObj = omAddObj(500, 0, 0, -1, func_80107350_w10);
     bobObj->rot.x = 180.0f;
-    *state = 1;
-    while (*state == 1) {
-        HuPrcVSleep();
-    }
+    SET_STATE_AND_WAIT(state, 1);
     while (D_8010BA68_w10->velocity.x < 120.0f) {
         func_8000CFA4_main(effect, D_8010BA68_w10->coords.x, D_8010BA68_w10->velocity.x - 10.0f,
                            D_8010BA68_w10->coords.z);
@@ -600,14 +603,7 @@ void func_80107444_w10(void) {
     omDelObj(bobObj);
     omDelPrcObj(NULL);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80107444_w10);
-#endif
 
-#ifdef NON_MATCHING
-// Register allocation differs: the constant 1 used for the *state wait loop is
-// materialized separately instead of sharing a saved register, and the state
-// pointer gets a different saved register than the target.
 void func_80107780_w10(void) {
     s32 *state = HuPrcCurrentGet()->user_data;
     GW_PLAYER *player = MBPlayerGet(-1);
@@ -637,10 +633,7 @@ void func_80107780_w10(void) {
     }
     bobObj = omAddObj(500, 0, 0, -1, func_80107350_w10);
     bobObj->rot.x = 180.0f;
-    *state = 1;
-    while (*state == 1) {
-        HuPrcVSleep();
-    }
+    SET_STATE_AND_WAIT(state, 1);
     while (D_8010BA68_w10->velocity.x < 120.0f) {
         func_8000CFA4_main(effect, D_8010BA68_w10->coords.x, D_8010BA68_w10->velocity.x - 10.0f,
                            D_8010BA68_w10->coords.z);
@@ -655,14 +648,7 @@ void func_80107780_w10(void) {
     omDelObj(bobObj);
     omDelPrcObj(NULL);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80107780_w10);
-#endif
 
-#ifdef NON_MATCHING
-// Register allocation differs: the constant 1 used for the *state wait loop is
-// materialized separately instead of sharing a saved register, and the state
-// pointer gets a different saved register than the target.
 void func_80107ABC_w10(void) {
     s32 *state = HuPrcCurrentGet()->user_data;
     GW_PLAYER *player = MBPlayerGet(-1);
@@ -685,10 +671,7 @@ void func_80107ABC_w10(void) {
     }
     bobObj = omAddObj(500, 0, 0, -1, func_801073C8_w10);
     bobObj->rot.x = 180.0f;
-    *state = 1;
-    while (*state == 1) {
-        HuPrcVSleep();
-    }
+    SET_STATE_AND_WAIT(state, 1);
     while (D_8010BA70_w10->velocity.x < 120.0f) {
         HuPrcVSleep();
         D_8010BA70_w10->velocity.x += 2.0f;
@@ -700,14 +683,7 @@ void func_80107ABC_w10(void) {
     omDelObj(bobObj);
     omDelPrcObj(NULL);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80107ABC_w10);
-#endif
 
-#ifdef NON_MATCHING
-// Register allocation differs: same issue as func_80107444_w10, the constant 1
-// stored to *state is materialized separately instead of reusing the saved
-// register holding 1 for the wait loop comparison.
 void func_80107D64_w10(void) {
     s32 *state = HuPrcCurrentGet()->user_data;
     GW_PLAYER *player = MBPlayerGet(-1);
@@ -722,10 +698,7 @@ void func_80107D64_w10(void) {
         HuPrcVSleep();
     } while (D_8010BA68_w10->velocity.x >= 30.0f);
     process = func_800EDB98_shared_board(D_8010BA68_w10, 5.0f, 2.0f);
-    *state = 1;
-    while (*state == 1) {
-        HuPrcVSleep();
-    }
+    SET_STATE_AND_WAIT(state, 1);
     omDelPrcObj(process);
 
     while (D_8010BA68_w10->velocity.x < 100.0f) {
@@ -736,17 +709,10 @@ void func_80107D64_w10(void) {
     MBModelKill(D_8010BA68_w10);
     omDelPrcObj(NULL);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80107D64_w10);
-#endif
 
-#ifdef NON_MATCHING
-// Register allocation differs: the target computes chestModel directly in $s0,
-// keeps chest in $s1, and reuses $s0 for the constant 1 shared by the *state
-// store and wait loop (same issue as func_80107444_w10).
 void func_80107F0C_w10(void) {
     s32 *state = HuPrcCurrentGet()->user_data;
-    s32 chestModel = D_8010B918_w10 != 0 ? 0x31 : 0x30;
+    s16 chestModel = D_8010B918_w10 != 0 ? 0x31 : 0x30;
     Object *chest;
     Object *contents;
     s16 model;
@@ -769,7 +735,7 @@ void func_80107F0C_w10(void) {
     MBModelTempAllocFree(contents);
     HuVecCopy3F(&contents->rot, &chest->rot);
     HuVecCopy3F(&contents->coords, &chest->coords);
-    contents->scale.x = contents->scale.y = contents->scale.z = 1.2f;
+    contents->scale.y = contents->scale.x = contents->scale.z = 1.2f;
     MBModelDispOff(contents);
 
     scale = 1.0f / sindf(50.0f);
@@ -799,10 +765,7 @@ void func_80107F0C_w10(void) {
         HuPrcVSleep();
     }
     MBMotionSet(contents, -1, 2);
-    *state = 1;
-    while (*state == 1) {
-        HuPrcVSleep();
-    }
+    SET_STATE_AND_WAIT(state, 1);
 
     HuAudFXPlay(0x115);
     MBMotionSet(chest, -1, 4);
@@ -835,9 +798,6 @@ void func_80107F0C_w10(void) {
     *state = 3;
     omDelPrcObj(NULL);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80107F0C_w10);
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_801084CC_w10);
 

@@ -739,6 +739,22 @@ void func_8010E40C_mgmode(void) {
 // Partial workaround: putting an empty `if (count) {}` between `slot = 0;` and
 // `rank = slot;` keeps the copy and gets within 2 instructions, but it's an
 // artificial construct. A real fix likely needs a different loop structure.
+// Compiler analysis (gcc 2.7.2 sources, -O1): cse.c always swaps a pseudo copy
+// for a known constant (const_int costs 0, a pseudo costs 1), so the copy can
+// only survive if `slot = 0` and `rank = slot` land in different CSE blocks
+// (a used label or a NOTE_INSN_LOOP_END between them). The target's outer-loop
+// pretest is still folded to `count != 0`, though, which needs CSE to know that
+// rank and slot are both 0. That contradiction is unresolved. A LOOP_END
+// boundary (`slot = 0; do {} while (0); for (rank = slot; ...)`) keeps the copy
+// but the pretest turns into `slot < count` (score 495). The `move a1,v0` next
+// to the pretest is a copy inserted by cse_around_loop. Also brute-forced
+// every s16/int/u16/s8/u8/u32 combination for slot/rank with each initializer
+// spelling, `slot` initialized in its declaration, before `count`, before or
+// in the init of the order loop, `rank`/`slot` aliased onto `arg0`, `for` vs
+// `while` vs guarded `do`/`while`, and `for (;;)` with a `break`. None keep
+// the copy and the folded pretest. No other function in asm/nonmatchings
+// (besides func_8010E6F0_mgmode) and no matched build output shows a
+// zero-then-copy between two pseudos, so there's no reference pattern.
 void func_8010E494_mgmode(s16 arg0) {
     Vec pos[4];
     s16 order[4];
@@ -779,7 +795,10 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010E494_mgmode);
 // constant (`move t2,zero`). Tried `rank = slot = 0`, a while loop, moving
 // `slot = 0` before the order loop or to the top of the function, `|` instead
 // of `||`, and the `if (count) {}` workaround from func_8010E494_mgmode; none
-// produce the copy without other diffs. Notes for the rest of the function:
+// produce the copy without other diffs. See func_8010E494_mgmode for the CSE
+// analysis and the list of other loop shapes and types tried; the
+// `do {} while (0);` boundary keeps the copy here too but unfolds the pretest
+// (score 1204). Notes for the rest of the function:
 // the second Hu3DModelPosSet z coordinate really uses delta[i].x (original
 // bug), model ids must come from the shared D_8011B8A8_mgmode table in the
 // first setup loop to get both table bases hoisted, and `count` must be

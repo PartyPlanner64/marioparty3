@@ -156,6 +156,7 @@ extern DecisionTreeNonLeafNode *D_8011CFA0_w02[];
 extern s16 D_8011D2B0_w02[][3];
 extern BranchPair D_8011D2B8_w02[];
 void func_8010ED4C_w02(omObjData *arg0);
+extern s32 D_8011C6E8_w02;
 s16 func_801059D0_w02(void) {
     return D_8011C6A0_w02[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
 }
@@ -414,7 +415,102 @@ void func_80106120_w02(void) {
     HuPrcVSleep();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_801064DC_w02);
+void func_801064DC_w02(void) {
+    Object *playerModel = HuPrcCurrentGet()->user_data;
+    GW_PLAYER *player = MBPlayerGet(-1);
+    Object *model;
+    Vec camPos;
+    f32 scale;
+    f32 angle;
+    s32 obj;
+    s32 i;
+
+    HuAudFXPlay(0x11B);
+    model = MBModelCreate(0x1A, NULL);
+    model->flags |= 4;
+    func_800ECC54_shared_board(model);
+    if (MBMasuLinkMasuIdGet(MBPlayerGet(-1)->clink, MBPlayerGet(-1)->cidx) == 0x79) {
+        HuVecCopyXYZ(&model->coords, playerModel->coords.x, playerModel->coords.y + 10.0f, playerModel->coords.z);
+        HuVecCopyXYZ(&camPos, gCameraList->pos.x, gCameraList->pos.y, gCameraList->pos.z);
+        model->velocity.x = 15.0f;
+    } else {
+        HuVecCopyXYZ(&model->coords, playerModel->coords.x, playerModel->coords.y + 10.0f, playerModel->coords.z + 30.0f);
+        HuVecCopyXYZ(&camPos, gCameraList->pos.x, gCameraList->pos.y, gCameraList->pos.z);
+        model->velocity.x = 35.0f;
+    }
+
+    obj = func_8000CED8_main(0xB0004, 0xAA9);
+    func_8000CD00_main(obj, 1.0f, 20.0f, 1.0f);
+    func_8000D018_main(obj, 15.0f);
+    Hu3DModelCameraSet(obj, HU3D_CAM0);
+    func_8000CFA4_main(obj, model->coords.x, model->coords.y + model->velocity.x, model->coords.z);
+
+    scale = 0.0f;
+    for (i = 0; i < 6; i++) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        scale += 0.5f;
+        func_8000D018_main(obj, scale * 15.0f);
+        HuPrcVSleep();
+    }
+
+    for (i = 0; i < 3; i++) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        scale -= 0.4f;
+        func_8000D018_main(obj, scale * 15.0f);
+        HuPrcVSleep();
+    }
+
+    func_8000D018_main(obj, scale * 15.0f);
+    HuPrcSleep(20);
+    HuAudFXPlay(0x132);
+
+    angle = 0.0f;
+    HuVecCopyXYZ(&camPos, player->player_obj->coords.x, player->player_obj->coords.y - 10.0f, player->player_obj->coords.z);
+    MBPlayerPosMoveCreate(&model->coords, &camPos, &model->coords, 40);
+
+    for (i = 0; i < 40; i++) {
+        func_8008A2A0_main(HmfModelData[model->omObj1->model[0]].mtx, angle);
+        angle += 20.0f;
+        scale -= 0.05f;
+        if (scale < 0.0f) {
+            scale = 0.0f;
+        }
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        func_8000D018_main(obj, scale * 15.0f);
+        func_8000CFA4_main(obj, model->coords.x, model->coords.y + model->velocity.x, model->coords.z);
+        HuPrcVSleep();
+    }
+
+    MBModelKill(model);
+    func_8000D044_main(obj);
+    MBVecForwardSet(&player->player_obj->rot);
+    MBPlayerVibrate(-1, 5);
+    if (D_8011C6E8_w02 != 0) {
+        func_8004A670_main(0xE);
+    } else {
+        HuAudSeqPlay(0x6F);
+    }
+
+    GwPlayer[GwSystem.current_player_index].star += 1;
+    if (GwPlayer[GwSystem.current_player_index].star >= 100) {
+        GwPlayer[GwSystem.current_player_index].star = 99;
+    }
+
+    MBPlayerMotionSet(-1, 6, 0);
+    PlayerFXPlay(0x262, GwSystem.current_player_index);
+    if (D_8011C6E8_w02 != 0) {
+        HuPrcSleep(16);
+        func_80003A70_main(D_800CDBC8_main);
+        func_8004A918_main(0x6F);
+        func_8004A880_main(0);
+        HuPrcSleep(110);
+        func_80003B70_main(D_800CDBC8_main, 0);
+        func_8004A72C_main(0xF);
+    } else {
+        HuPrcSleep(60);
+    }
+    omDelPrcObj(NULL);
+}
 
 void func_80106A3C_w02(Object *arg) {
     Process *prc;

@@ -26,7 +26,6 @@
 
 typedef s16 SpaceTriple[3];
 typedef s16 SpacePair[2];
-typedef BranchLink BranchPair[2];
 
 typedef struct {
     /* 0x00 */ Object *obj1;

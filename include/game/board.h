@@ -55,6 +55,14 @@ typedef struct DecisionTreeNonLeafNode {
     } node_data2;
 } DecisionTreeNonLeafNode;
 
+typedef struct BranchLink {
+    /* 0x00 */ s16 link;
+    /* 0x02 */ s16 idx;
+    /* 0x04 */ s16 rev;
+} BranchLink; // size 0x6
+
+typedef BranchLink BranchPair[2];
+
 typedef struct UnkMBGuideData {
     Object* obj;
     Process* unk_04;

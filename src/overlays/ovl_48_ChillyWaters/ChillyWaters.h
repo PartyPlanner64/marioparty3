@@ -46,12 +46,6 @@ void MB1Ev_SnowmanStart(void);
 void MB1_BankCoinHide(void);
 void MB1_BankCoinCreate(s16);
 
-typedef struct BranchLink {
-    /* 0x00 */ s16 link;
-    /* 0x02 */ s16 idx;
-    /* 0x04 */ s16 rev;
-} BranchLink; /* size 6 */
-
 s16 MBComTreeExec(DecisionTreeNonLeafNode *arg0);
 void MB1_BranchHelpEnd(void);
 void MB1Ev_BranchMain(s16 (*masu)[3], BranchLink (*links)[2], DecisionTreeNonLeafNode **trees);

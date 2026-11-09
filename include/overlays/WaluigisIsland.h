@@ -16,12 +16,6 @@ typedef struct MessageTable {
     /* 0x00 */ s32 entries[4];
 } MessageTable; // size 0x10
 
-typedef struct BranchLink {
-    /* 0x00 */ s16 link;
-    /* 0x02 */ s16 idx;
-    /* 0x04 */ s16 rev;
-} BranchLink; // size 0x6
-
 typedef struct {
     /* 0x00 */ u16 multiplier;
     /* 0x02 */ u16 threshold;

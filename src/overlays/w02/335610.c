@@ -24,7 +24,20 @@
 #include "gcc/memory.h"
 #include "game/mallocblock.h"
 
+// Inlined Z rotation matrix build (same as func_8008A430_main, but with the
+// 1.0f diagonal written last).
+#define MTX_ROTZ(mtx, angle)                                                                \
+    {                                                                                       \
+        sincosdf(angle, &(mtx)[0][1], &(mtx)[0][0]);                                        \
+        (mtx)[1][0] = -(mtx)[0][1];                                                         \
+        (mtx)[1][1] = (mtx)[0][0];                                                          \
+        (mtx)[0][2] = (mtx)[0][3] = (mtx)[1][3] = (mtx)[1][2] = (mtx)[2][0] = (mtx)[2][1] = \
+            (mtx)[2][3] = (mtx)[3][0] = (mtx)[3][1] = (mtx)[3][2] = 0.0f;                   \
+        (mtx)[2][2] = (mtx)[3][3] = 1.0f;                                                   \
+    }
+
 extern s32 D_8011C6B0_w02[];
+extern s16 D_8011D9A4_w02[20];
 extern s32 D_8011C6CC_w02[];
 extern s32 D_8011C868_w02[];
 extern s32 D_8011C88C_w02[];
@@ -7030,7 +7043,112 @@ Process *func_80119D84_w02(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_80119DB0_w02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_8011B038_w02);
+void func_8011B038_w02(s16 masuId) {
+    f32 screenPos[2];
+    Vec focus;
+    Vec center;
+    GW_PLAYER *player;
+    SpaceData *space;
+    SpaceData *destSpace;
+    Object *model;
+    UnkVibrateProcess *vibrate;
+    s32 useWipe;
+    s32 destMasu;
+    s32 i;
+
+    player = MBPlayerGet(-1);
+    space = MBMasuGet(0x72);
+    destMasu = 0;
+    for (i = 0; i < ARRAY_COUNTU(D_8011D9A4_w02); i += 2) {
+        if (D_8011D9A4_w02[i] == masuId) {
+            destMasu = D_8011D9A4_w02[i + 1];
+            break;
+        }
+    }
+    destSpace = MBMasuGet(destMasu);
+    MBCamera3Dto2D(&space->coords, screenPos);
+    if (screenPos[0] >= 24.0f && screenPos[0] <= 296.0f && screenPos[1] >= 12.0f && screenPos[1] <= 228.0f) {
+        useWipe = FALSE;
+        HuVecCopy3F(&center, &space->coords);
+        HuVecCopy3F(&focus, &player->player_obj->coords);
+        MBCameraFocusModeSet(4);
+        MBCameraFocusVecSet(&focus);
+        HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&focus, &center, &focus, 20));
+        HuPrcChildWatch();
+    } else {
+        useWipe = TRUE;
+        WipeCreateOut(4, 16);
+        while (WipeStatGet()) {
+            HuPrcVSleep();
+        }
+        HuVecCopy3F(&focus, &space->coords);
+        MBCameraFocusModeSet(4);
+        MBCameraFocusVecSet(&focus);
+        func_800E9AF0_shared_board(&focus, 0);
+        HuPrcVSleep();
+        WipeCreateIn(4, 16);
+        while (WipeStatGet()) {
+            HuPrcVSleep();
+        }
+    }
+    MBDlgWinExec(0x3A, 0x500);
+    HuVecAdd(&center, &player->player_obj->coords, &destSpace->coords);
+    HuVecMulScalar(&center, 0.5f, &center);
+    if (!useWipe) {
+        HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&focus, &center, &focus, 20));
+        HuPrcChildWatch();
+    } else {
+        WipeCreateOut(4, 16);
+        while (WipeStatGet()) {
+            HuPrcVSleep();
+        }
+        HuVecCopy3F(&focus, &center);
+        func_800E9AF0_shared_board(&focus, 0);
+        HuPrcVSleep();
+        WipeCreateIn(4, 16);
+        while (WipeStatGet()) {
+            HuPrcVSleep();
+        }
+    }
+
+    model = MBModelFileCreate(0x13016A, -1, 1.0f, 0, NULL);
+    HuVecCopy3F(&model->coords, &player->player_obj->coords);
+    model->velocity.x = 150.0f;
+    for (i = 90; i <= 180; i += 3) {
+        model->velocity.x = sindf(i) * 150.0f;
+        MTX_ROTZ(HmfModelData[model->omObj1->model[0]].mtx, 180 - i);
+        HuPrcVSleep();
+    }
+
+    func_800EB24C_shared_board(destMasu, &player->clink, &player->cidx);
+    MBMoveMasuSet(MBPlayerTurnGet(), player->clink, player->cidx);
+    for (i = 0; i < 4; i++) {
+        if (MBPlayerTurnGet() != i) {
+            MBPlayerPosFixSet(i, 5);
+        }
+    }
+    HuAudFXPlay(0x191);
+    vibrate = MBPlayerVibrateObjCreate(-1, 2, 5);
+    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&player->player_obj->coords, &destSpace->coords,
+                                                            &player->player_obj->coords, 18));
+    HuPrcChildLink(HuPrcCurrentGet(), MBPlayerPosMoveCreate(&model->coords, &destSpace->coords, &model->coords, 18));
+    for (i = 0; i <= 180; i += 10) {
+        model->velocity.x = sindf(i) * 50.0f;
+        MTX_ROTZ(HmfModelData[model->omObj1->model[0]].mtx, -sindf(i) * 30.0f);
+        player->player_obj->velocity.x = sindf(i) * 50.0f;
+        HuPrcVSleep();
+    }
+    MBPlayerVibrateObjKill(vibrate);
+    player->player_obj->velocity.x = 0.0f;
+    for (i = 0; i <= 90; i += 10) {
+        model->velocity.x = sindf(i) * 150.0f;
+        MTX_ROTZ(HmfModelData[model->omObj1->model[0]].mtx, i);
+        HuPrcVSleep();
+    }
+    MBModelKill(model);
+    MBCameraFocusModeSet(3);
+    HuPrcSleep(5);
+}
 
 void func_8011B8A0_w02(void) {
     GW_PLAYER *player = MBPlayerGet(-1);

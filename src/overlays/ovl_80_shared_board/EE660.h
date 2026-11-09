@@ -16,6 +16,7 @@ void func_800DC024_shared_board(s32 arg0);
 void func_800DC06C_shared_board(s32 arg0);
 void func_800DC08C_shared_board(s32 arg0);
 void func_800DC0E0_shared_board(s32 arg0);
+void func_800DC104_shared_board(s32 arg0, s8 arg1);
 s16 func_800DC128_shared_board(s32 arg0);
 void func_800DCA64_shared_board(s32 arg0);
 void func_800DCB8C_shared_board(void);

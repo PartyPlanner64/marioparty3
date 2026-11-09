@@ -71,6 +71,7 @@ void func_80108820_w03(void);
 void func_801088A0_w03(void);
 void func_80116B78_w03(void);
 void func_8011908C_w03(void);
+void func_80119290_w03(void);
 void func_8011655C_w03(s16 (*masu)[3], BranchPair *links, DecisionTreeNonLeafNode **trees);
 s32 func_8011C088_w03(void);
 extern s16 D_8011C110_w03[];
@@ -151,6 +152,10 @@ extern Object *D_8011EB30_w03;
 extern SpaceData *D_8011EB3C_w03;
 extern s32 D_8011EB50_w03;
 extern Vec2f D_8011D438_w03[];
+extern s16 D_8011D458_w03[];
+extern s16 D_8011D460_w03[];
+extern DecisionTreeNonLeafNode D_8011C948_w03[];
+extern DecisionTreeNonLeafNode D_8011C99C_w03[];
 extern Object *D_8011EB34_w03;
 extern Object *D_8011EB38_w03;
 extern Object *D_8011EB54_w03;
@@ -6973,7 +6978,49 @@ void func_8011A550_w03(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_8011A704_w03);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_8011B1FC_w03);
+void func_8011B1FC_w03(void) {
+    GW_SYSTEM *sys = &GwSystem;
+    GW_PLAYER *player = MBPlayerGet(-1);
+    UnkEA790Struct *win;
+    Process *prc;
+    s32 count;
+    s32 sel;
+    s32 i;
+
+    MBPlayerMotionSet(-1, -1, 2);
+    HuPrcVSleep();
+    func_80106D84_w03();
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0x4A) {
+        win = func_800D76A0_shared_board(sys->current_player_index, D_8011D458_w03);
+    } else {
+        win = func_800D76A0_shared_board(sys->current_player_index, D_8011D460_w03);
+    }
+    func_800D742C_shared_board(win, sys->current_player_index, 0);
+    if (MBPlayerComCheck(-1)) {
+        if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0x4A) {
+            count = MBComTreeExec(D_8011C948_w03);
+        } else {
+            count = MBComTreeExec(D_8011C99C_w03);
+        }
+        for (i = 0; i < count; i++) {
+            func_800D7250_shared_board(win, -2);
+        }
+        func_800D7250_shared_board(win, -4);
+    }
+    sel = func_800D7518_shared_board(win);
+    func_800D6CA0_shared_board(win);
+    func_80106E54_w03();
+    if (sel == 0) {
+        prc = omAddPrcObj(func_80119290_w03, 0x4800, 0, 0);
+        HuPrcChildLink(HuPrcCurrentGet(), prc);
+        HuPrcChildWatch();
+    } else if (MBMasuLinkMasuIdGet(player->blink, player->bidx) == 0x4A) {
+        MBMoveNextMasuSet(-1, 9, 0xE);
+    } else {
+        MBMoveNextMasuSet(-1, 9, 0xC);
+    }
+    omDelPrcObj(NULL);
+}
 
 // entrypoint 4
 void func_8011B41C_w03(void) {

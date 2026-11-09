@@ -60,6 +60,11 @@ extern s16 D_80110028_chancetime[20];
 extern omObjData *D_80110080_chancetime;
 extern s32 D_80110008_chancetime;
 extern u32 D_8010FD5C_chancetime[];
+extern u32 D_8010FD8C_chancetime[];
+extern u32 D_8010FDB0_chancetime[];
+extern u32 D_8010FDD4_chancetime[];
+extern u32 D_8010FDF8_chancetime[];
+extern u32 D_8010FE1C_chancetime[];
 extern void (*D_80110084_chancetime)();
 extern omObjData *D_801100C8_chancetime;
 extern s8 D_801100DD_chancetime[3];
@@ -71,7 +76,7 @@ extern Vec D_8010FD38_chancetime[3];
 s32 func_8010872C_chancetime(void);
 void func_8010C870_chancetime(omObjData *object);
 void func_8010C610_chancetime(omObjData *object);
-void func_8010F44C_chancetime(s32 arg0, s16 arg1, s16 arg2);
+void func_8010F44C_chancetime(s32 arg0, s32 arg1, s32 arg2);
 void func_8010D320_chancetime(omObjData *object);
 void func_8010DB1C_chancetime(s8 arg0);
 void func_8010DF68_chancetime(void);
@@ -570,7 +575,78 @@ void func_8010F42C_chancetime(void) {
     D_80110084_chancetime = func_8010DF70_chancetime;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010F44C_chancetime);
+void func_8010F44C_chancetime(s32 arg0, s32 arg1, s32 arg2) {
+    u32 mes;
+    s32 i;
+
+    for (i = 0; i < 2; i++) {
+        HuWinInsertMesSet(D_80110004_chancetime, D_8010FE1C_chancetime[D_801100DD_chancetime[i]], i);
+    }
+    if (D_801100DF_chancetime < 5) {
+        if (D_8010FDF8_chancetime[D_801100DF_chancetime] != 0) {
+            HuWinInsertMesSet(D_80110004_chancetime, D_8010FDF8_chancetime[D_801100DF_chancetime], 2);
+        }
+    } else {
+        if (D_8010FDF8_chancetime[D_801100DF_chancetime] != 0) {
+            HuWinInsertMesSet(D_80110004_chancetime, D_8010FDF8_chancetime[D_801100DF_chancetime], 3);
+        }
+    }
+    HuWinHomeClear(D_80110004_chancetime);
+    if (GwPlayer[D_801100D0_chancetime[0]].stat & 1) {
+        func_8005B63C_main(D_80110004_chancetime, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+    }
+    func_80108B50_chancetime();
+    HuWinMesSet(D_80110004_chancetime, D_8010FD8C_chancetime[arg0], -1, -1);
+    func_80060C14_main(D_80110004_chancetime, 1);
+    while (HuWinStatGet(D_80110004_chancetime)) {
+        HuPrcVSleep();
+    }
+    if (GwPlayer[D_801100D0_chancetime[0]].stat & 1) {
+        func_8005B63C_main(D_80110004_chancetime, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, func_800EDC40_shared_board());
+    }
+    if (arg2 < arg1) {
+        if (arg2 > 0) {
+            mes = D_8010FDB0_chancetime[arg0];
+            if (mes != 0) {
+                func_80060EA8_main(D_80110004_chancetime, 1);
+                HuWinMesSet(D_80110004_chancetime, mes, -1, -1);
+                HuAudFXPlay(0x29A);
+                func_80060C14_main(D_80110004_chancetime, 1);
+                while (HuWinStatGet(D_80110004_chancetime)) {
+                    HuPrcVSleep();
+                }
+            }
+        } else {
+            func_80060EA8_main(D_80110004_chancetime, 1);
+            HuWinMesSet(D_80110004_chancetime, D_8010FDD4_chancetime[arg0], -1, -1);
+            HuAudFXPlay(0x29A);
+            func_80060C14_main(D_80110004_chancetime, 1);
+            while (HuWinStatGet(D_80110004_chancetime)) {
+                HuPrcVSleep();
+            }
+        }
+    }
+    func_80060EA8_main(D_80110004_chancetime, 1);
+    func_80108A88_chancetime();
+    if (GwPlayer[D_801100D0_chancetime[0]].stat & 1) {
+        HuWinComKeyReset();
+    }
+    D_80110084_chancetime = func_8010E1E0_chancetime;
+}
 
 void func_8010F984_chancetime(omObjData *object) {
     s32 players[4];

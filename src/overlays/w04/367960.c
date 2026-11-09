@@ -23,6 +23,8 @@
 #include "gcc/memory.h"
 #include "game/mallocblock.h"
 
+#define GET_STAR_MODEL() D_8011DFF8_w04[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]]
+
 void func_801064DC_w04(void);
 void func_80108558_w04(void);
 void func_80117EA8_w04(void);
@@ -187,6 +189,8 @@ extern s16 D_8011B824_w04[][2];
 extern s16 D_8011B8CC_w04[];
 extern s16 D_8011B8D0_w04[];
 extern u32 *D_8011B90C_w04[];
+extern s32 D_8011B790_w04[];
+extern s32 D_8011B7AC_w04[];
 s16 func_801059D0_w04(void) {
     return D_8011B780_w04[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
 }
@@ -353,7 +357,95 @@ void func_80106094_w04(UnkMBGuideData *guide) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w04/367960", func_80106120_w04);
+void func_80106120_w04(void) {
+    UnkMBGuideData *guide;
+    Process *proc;
+    SpaceData *space;
+    s32 face;
+    s32 mesNum;
+    GW_SYSTEM *system = &GwSystem;
+
+    D_800A12D4_main = 0;
+    guide = MBGuideCreate(0, 0);
+    HuAudSeqPlay(0x12);
+    MBGuideFaceCreate(guide->obj, 2, 0xF, D_8011B790_w04[0]);
+    func_800FFF44_shared_board();
+    MBModelDispOff(GET_STAR_MODEL());
+    WipeCreateIn(2, 0x10);
+    while (WipeStatGet() != 0) {
+        HuPrcVSleep();
+    }
+
+    func_800E6FCC_shared_board();
+    func_800E9730_shared_board(3.0f);
+    func_80106094_w04(guide);
+
+    if ((system->current_star_spawn == 0) && (GWBoardFlagCheck(4) == 0)) {
+        if (system->current_board_index == 2) {
+            mesNum = 0x5E09;
+        } else {
+            mesNum = 0x5E00;
+        }
+    } else {
+        if (system->current_board_index == 2) {
+            mesNum = 0x5E09;
+        } else {
+            mesNum = 0x5E01;
+        }
+    }
+    HuWinMesSet(guide->amount, mesNum, -1, -1);
+    func_80060C14_main(guide->amount, 1);
+    HuAudFXPlay(0x2A7);
+    func_800EE2C0_shared_board(guide->amount);
+    MBMotionShiftSet(guide->obj, -1, 0, 6, 2);
+    func_80060EA8_main(guide->amount, 1);
+    func_8001FDE8_main(guide->obj->omObj1->model[0]);
+
+    if ((system->current_board_index != SPINY_DESERT) || (rand8() & 1)) {
+        space = MBMasuGet(D_8011B780_w04[system->star_spawn_indices[system->current_star_spawn]]);
+    }
+    MBCameraPos3DSet(&space->coords);
+    MBCameraSpeedSet(5.0f);
+    HuPrcSleep(5);
+    while (MBCameraStopCheck() != 0) {
+        HuPrcVSleep();
+    }
+    HuPrcSleep(5);
+
+    face = MBRand(7.0f);
+    MBGuideFaceSet(guide->obj, D_8011B790_w04[face]);
+    MBMotionSet(guide->obj, -1, 2);
+
+    if (system->current_board_index != 2) {
+        proc = omAddPrcObj(func_80105CA4_w04, 0x4800, 0, 0);
+        D_8011E038_w04 = proc;
+        proc->user_data = space;
+        HuPrcSleep(30);
+    } else {
+        D_8011E038_w04 = NULL;
+    }
+
+    HuWinMesSet(guide->amount, D_8011B7AC_w04[face], -1, -1);
+    func_80060C14_main(guide->amount, 1);
+    func_800EE2C0_shared_board(guide->amount);
+    MBMotionShiftSet(guide->obj, -1, 0, 6, 2);
+    func_80060EA8_main(guide->amount, 1);
+
+    HuAudSeqFadeOut(0x5A);
+    HuPrcSleep(30);
+    WipeCreateOut(2, 0x10);
+    HuPrcSleep(0x11);
+    D_800A12D4_main = 1;
+    func_80100130_shared_board();
+    func_80046558_main(D_8011E03C_w04->omObj1->model[0]);
+    MBModelKill(D_8011E03C_w04);
+    MBModelDispOn(GET_STAR_MODEL());
+    MBGuideKill(guide);
+    MBExit();
+    omOvlReturnEx(1);
+    omOvlKill();
+    HuPrcVSleep();
+}
 
 void func_801064DC_w04(void) {
     Object *playerModel = HuPrcCurrentGet()->user_data;

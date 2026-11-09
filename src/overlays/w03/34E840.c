@@ -2255,7 +2255,46 @@ void func_80110A14_w03(void) {
     MBDlgResultWinExec(0x3A14);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80110CA0_w03);
+void func_80110CA0_w03(void) {
+    Vec direction;
+    GW_PLAYER *player;
+    Object *model;
+    f32 scale;
+    f32 angle;
+
+    player = MBPlayerGet(-1);
+    MBKSuitMotionSet(-1, 2);
+    MBVecForwardSet(&direction);
+    func_800ED128_shared_board(&player->player_obj->rot, &direction, &player->player_obj->rot, 8);
+    HuPrcSleep(8);
+    HuAudFXPlay(0x143);
+
+    model = MBModelCreate(0x22, NULL);
+    func_8001C258_main(model->omObj1->model[0], 0x180, 0);
+    Hu3DModelLayerSet(model->omObj1->model[0], 0x1800);
+    Hu3DModelRemakeStatic(model->omObj1->model[0]);
+    HuVecCopy3F(&model->coords, &player->player_obj->coords);
+
+    angle = 0.0f;
+    for (scale = 1.0f; scale < 10.0f; scale = (f32)((f64)scale + 0.5)) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        func_8008A430_main(HmfModelData[model->omObj1->model[0]].mtx, angle);
+        angle += 20.0f;
+        HuPrcVSleep();
+    }
+
+    MBModelDispOn(player->player_obj);
+    MBKSuitKill();
+
+    for (; scale >= 1.0f; scale = (f32)((f64)scale - 0.5)) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        func_8008A430_main(HmfModelData[model->omObj1->model[0]].mtx, angle);
+        angle += 20.0f;
+        HuPrcVSleep();
+    }
+
+    MBModelKill(model);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w03/34E840", func_80110EE0_w03);
 

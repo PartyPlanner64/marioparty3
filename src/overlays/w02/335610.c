@@ -3658,7 +3658,52 @@ void func_8010F22C_w02(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_8010F298_w02);
+void func_8010F298_w02(void) {
+    s32 currentPlayerIndex;
+    GW_PLAYER *player;
+    s16 playerIndex;
+    s16 spaceIndex;
+    s16 fxId;
+    s16 ret;
+
+    currentPlayerIndex = GwSystem.current_player_index;
+    player = MBPlayerGet(CUR_PLAYER);
+    func_8010F9BC_w02();
+    func_800DCA64_shared_board(currentPlayerIndex);
+    MBPlayerVibrate(CUR_PLAYER, 3);
+    GWBoardFlagSet(0x11);
+    func_800DC128_shared_board(currentPlayerIndex);
+    playerIndex = func_800EF0D8_shared_board(1);
+    omAllUPause();
+    func_800FC8A4_shared_board();
+    HuPrcSleep(5);
+    HuPrcSleep(25);
+    MBPlayerMotionSet(currentPlayerIndex, 2, 0);
+    func_800EE688_shared_board(GwPlayer[currentPlayerIndex].player_obj, 2.0f, -0.3f);
+    HuPrcSleep(5);
+    func_800DCBCC_shared_board(currentPlayerIndex);
+    func_800F2388_shared_board(currentPlayerIndex, CUR_PLAYER, 0, 10, 2);
+    HuPrcSleep(20);
+    MBItemWarpBlockSwapInit();
+    MBItemWarpBlockSwapPlayerSet(playerIndex);
+    MBItemWarpBlockSwapCreate();
+    GWBoardFlagClear(0x11);
+    fxId = func_800DC128_shared_board(currentPlayerIndex);
+    HuAudFXStop(fxId);
+    func_800DC06C_shared_board(currentPlayerIndex);
+    MBStatusShrink(CUR_PLAYER);
+    MBStatusItemDispSetAll(0);
+    MBStatusGrow(CUR_PLAYER);
+    func_800DCD2C_shared_board(currentPlayerIndex, CUR_PLAYER);
+    spaceIndex = MBMasuLinkMasuIdGet(player->clink, player->cidx);
+    MBMasuCurSet(spaceIndex);
+    MBMasuEventCall(spaceIndex, 1);
+    ret = func_800FF834_shared_board();
+    if (ret >= 0) {
+        HuPrcSleep(CUR_PLAYER);
+    }
+    func_800DAA40_shared_board(currentPlayerIndex);
+}
 
 void func_8010F458_w02(void) {
     Process *process = HuPrcCurrentGet();

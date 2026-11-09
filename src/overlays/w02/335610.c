@@ -237,6 +237,8 @@ s32 func_8010C5BC_w02(s32 playerIndex);
 s32 func_8010CA28_w02(s32 playerIndex);
 void func_8010D9A8_w02(s32 arg);
 void func_800D9F5C_shared_board(Object *arg0, Vec *arg1, s32 arg2);
+void func_801084A8_w02(s32 arg0, s32 arg1);
+s32 func_8010964C_w02(s32 arg0);
 s16 func_801059D0_w02(void) {
     return D_8011C6A0_w02[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]];
 }
@@ -1492,7 +1494,115 @@ s32 func_8010964C_w02(s32 arg0) {
     HuWinChoiceGet(mbDlgWinId, 0, 1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w02/335610", func_8010985C_w02);
+void func_8010985C_w02(void) {
+    GW_SYSTEM *loc;
+    GW_PLAYER *player;
+    s32 flag;
+    s32 choice;
+    void *prc;
+    s16 sp18;
+    s16 masuId;
+
+    loc = &GwSystem;
+    player = MBPlayerGet(GwSystem.current_player_index);
+    flag = 1;
+
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) != 0x6A) {
+        if (MBMasuLinkMasuIdGet(player->blink, player->bidx) != 0x6B) {
+            if (MBItemFind(GwSystem.current_player_index, 1) != -1) {
+                func_800DBEC0_shared_board(GwSystem.current_player_index);
+                MBPlayerMotionSet(-1, -1, 2);
+                sp18 = MBMasuLinkMasuIdGet(player->clink, player->cidx);
+                switch (sp18) {
+                    case 0x85:
+                    case 0x86:
+                        func_800ED20C_shared_board(-1, 8, 0x6A);
+                        break;
+                    default:
+                        func_800ED20C_shared_board(-1, 8, 0x6B);
+                        break;
+                }
+                HuPrcChildLink(HuPrcCurrentGet(), MBCameraZoomMotStart(1.6f));
+                HuPrcChildWatch();
+                MBPlayerVibrate(-1, 1);
+
+                while (1) {
+                    MBDlgWinCreate(0x38, 0x4103);
+                    choice = func_8010964C_w02(0);
+                    MBDlgWinClose();
+                    MBDlgWinKill();
+
+                    switch (choice) {
+                        case 0:
+                            MBDlgWinExec(0x38, 0x4104);
+                            GwPlayer[loc->current_player_index].itemNo[MBItemFind(loc->current_player_index, 1)] = -1;
+                            MBItemRemoveEmpty(GwSystem.current_player_index);
+                            MBStatusItemIconSprReinit(-1);
+                            sp18 = MBMasuLinkMasuIdGet(player->clink, player->cidx);
+                            switch (sp18) {
+                                case 0x85:
+                                    func_801084A8_w02(0, 0);
+                                    break;
+                                case 0x86:
+                                    func_801084A8_w02(0, 1);
+                                    break;
+                                case 0x87:
+                                    func_801084A8_w02(1, 0);
+                                    break;
+                                default:
+                                    func_801084A8_w02(1, 1);
+                                    break;
+                            }
+                            flag = 0;
+                            prc = MBPlayerVibrateObjCreate(-1, 2, 5);
+                            HuPrcSleep(0x14);
+                            MBPlayerVibrateObjKill(prc);
+                            break;
+                        case 1:
+                            MBDlgWinExec(0x38, 0x4105);
+                            break;
+                        case 2:
+                            func_80106AB0_w02();
+                            continue;
+                        default:
+                            break;
+                    }
+                    break;
+                }
+
+                func_800DB884_shared_board(loc->current_player_index);
+                HuPrcChildLink(HuPrcCurrentGet(), MBCameraZoomMotStart(1.3f));
+                HuPrcChildWatch();
+            } else {
+                MBDlgWinExec(-1, 0x4106);
+            }
+        }
+    }
+
+    if (flag != 0) {
+        masuId = MBMasuLinkMasuIdGet(player->clink, player->cidx);
+        switch (masuId) {
+            case 0x85:
+                MBMoveNextMasuSet(-1, 3, 0);
+                player->rev |= 1;
+                break;
+            case 0x86:
+                MBMoveNextMasuSet(-1, 3, 4);
+                player->rev &= ~1;
+                break;
+            case 0x87:
+                MBMoveNextMasuSet(-1, 9, 0);
+                player->rev |= 1;
+                break;
+            default:
+                MBMoveNextMasuSet(-1, 9, 4);
+                player->rev &= ~1;
+                break;
+        }
+    }
+
+    omDelPrcObj(NULL);
+}
 
 void func_80109C80_w02(void) {
 }

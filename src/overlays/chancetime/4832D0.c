@@ -36,8 +36,8 @@ void func_80106B18_chancetime(void);
 void func_80108C08_chancetime(s16 model, s16 slot, s16 animIdx);
 s32 func_8010B6F4_chancetime(s16 arg0);
 void func_8010B818_chancetime(omObjData *object, Vec *pos, s32 arg2);
-void func_8010B834_chancetime(omObjData *object, Vec *pos, s32 arg2, s32 arg3);
-void func_8010BA68_chancetime(omObjData *object, Vec *pos, s32 arg2);
+void func_8010B834_chancetime(omObjData *object, Vec *pos, s32 time, s32 faceDir);
+void func_8010BA68_chancetime(omObjData *object, Vec *rot, s32 time);
 void func_8010BC10_chancetime(omObjData *object, f32 x, f32 y, f32 z, s32 arg4);
 void func_8010AA90_chancetime(omObjData *object);
 void func_8010963C_chancetime(omObjData *object);
@@ -441,9 +441,69 @@ void func_8010B818_chancetime(omObjData *object, Vec *pos, s32 arg2) {
     func_8010B834_chancetime(object, pos, arg2, 1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010B834_chancetime);
+void func_8010B834_chancetime(omObjData *object, Vec *pos, s32 time, s32 faceDir) {
+    Vec start;
+    Vec diff;
+    Vec step;
+    Vec cur;
+    s16 model = object->model[1];
+    f32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4832D0", func_8010BA68_chancetime);
+    start.x = HmfModelData[model].pos.x;
+    start.y = HmfModelData[model].pos.y;
+    start.z = HmfModelData[model].pos.z;
+    diff.x = pos->x - start.x;
+    diff.y = pos->y - start.y;
+    diff.z = pos->z - start.z;
+    if (faceDir != 0) {
+        Hu3DModelRotSet(model, 0.0f, -(atan2df(diff.z, diff.x) - 90.0f), 0.0f);
+    }
+    i = time;
+    step.x = diff.x / i;
+    step.y = diff.y / i;
+    step.z = diff.z / i;
+    for (i = 0.0f; i < (f32)time; i += 1.0f) {
+        cur.x = i * step.x + start.x;
+        cur.y = i * step.y + start.y;
+        cur.z = i * step.z + start.z;
+        Hu3DModelPosSet(model, cur.x, cur.y, cur.z);
+        if (object->model[2] >= 0) {
+            Hu3DModelPosSet(object->model[2], cur.x, 0.0f, cur.z);
+        }
+        HuPrcVSleep();
+    }
+    Hu3DModelPosSet(model, pos->x, pos->y, pos->z);
+    if (object->model[2] >= 0) {
+        Hu3DModelPosSet(object->model[2], pos->x, 0.0f, pos->z);
+    }
+    HuPrcVSleep();
+}
+
+void func_8010BA68_chancetime(omObjData *object, Vec *rot, s32 time) {
+    Vec start;
+    Vec diff;
+    Vec cur;
+    s16 model = object->model[1];
+    f32 i;
+    f32 t;
+
+    start.x = HmfModelData[model].rot.x;
+    start.y = HmfModelData[model].rot.y;
+    start.z = HmfModelData[model].rot.z;
+    diff.x = rot->x - start.x;
+    diff.y = rot->y - start.y;
+    diff.z = rot->z - start.z;
+    for (i = 0.0f; i < (f32)time; i += 1.0f) {
+        t = 90.0f / time * i;
+        cur.x = sindf(t) * diff.x + start.x;
+        cur.y = sindf(t) * diff.y + start.y;
+        cur.z = sindf(t) * diff.z + start.z;
+        Hu3DModelRotSet(model, cur.x, cur.y, cur.z);
+        HuPrcVSleep();
+    }
+    Hu3DModelRotSet(model, rot->x, rot->y, rot->z);
+    HuPrcVSleep();
+}
 
 void func_8010BC10_chancetime(omObjData *object, f32 x, f32 y, f32 z, s32 arg4) {
     Vec pos;

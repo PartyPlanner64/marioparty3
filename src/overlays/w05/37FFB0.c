@@ -6,6 +6,8 @@
 #include "../ovl_80_shared_board/F5E80.h"
 #include "../ovl_80_shared_board/FFB10.h"
 #include "../ovl_80_shared_board/EDDB0.h"
+#include "../ovl_80_shared_board/EA790.h"
+#include "../ovl_80_shared_board/EAB00.h"
 #include "../ovl_80_shared_board/EB2F0.h"
 #include "../ovl_80_shared_board/101840.h"
 #include "../ovl_80_shared_board/105D50.h"
@@ -15,6 +17,7 @@
 #include "../ovl_80_shared_board/ECA50.h"
 
 void func_801064DC_w05(void);
+void func_80106B94_w05(void);
 void func_80115A30_w05(s16 (*masu)[3], BranchPair *links, DecisionTreeNonLeafNode **trees);
 void func_801085B4_w05(void);
 void func_8010D298_w05(void);
@@ -635,7 +638,69 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80114EA8_w05);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_8011512C_w05);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80115A30_w05);
+void func_80115A30_w05(s16 (*masu)[3], BranchPair *links, DecisionTreeNonLeafNode **trees) {
+    GW_PLAYER *player;
+    UnkEA790Struct *win;
+    BranchLink *link;
+    s32 back;
+    s32 sel;
+    s32 count;
+    s32 row;
+    s32 col;
+    s32 i;
+    s16 *temp;
+    DecisionTreeNonLeafNode **tree;
+
+    link = links[0];
+    tree = trees;
+    MBPlayerMotionSet(-1, -1, 2);
+    HuPrcVSleep();
+    func_80106B94_w05();
+    player = MBPlayerGet(GwSystem.current_player_index);
+    back = MBMasuLinkMasuIdGet(player->blink, player->bidx);
+
+    for (row = 0; row < 3; row++) {
+        for (col = 0; col < 2; col++) {
+            if (masu[row][col] == back) {
+                break;
+            }
+        }
+        if (col == 2) {
+            break;
+        }
+    }
+
+    temp = masu[row];
+    link += row * 2;
+    win = func_800D76A0_shared_board(GwSystem.current_player_index, temp);
+    func_800D742C_shared_board(win, GwSystem.current_player_index, 0);
+
+    if (MBPlayerComCheck(-1)) {
+        count = MBComTreeExec(tree[row]);
+        for (i = 0; i < count; i++) {
+            func_800D7250_shared_board(win, -2);
+        }
+        func_800D7250_shared_board(win, -4);
+    }
+
+    sel = func_800D7518_shared_board(win);
+    func_800D6CA0_shared_board(win);
+    func_80106C64_w05();
+
+    if (sel) {
+        link++;
+    }
+
+    MBMoveNextMasuSet(-1, link->link, link->idx);
+    switch (link->rev) {
+        case 0:
+            player->rev &= ~1;
+            break;
+        case 1:
+            player->rev |= 1;
+            break;
+    }
+}
 
 void func_80115C28_w05(s32 arg0) {
     {

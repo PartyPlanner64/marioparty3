@@ -17,6 +17,8 @@
 void func_801064DC_w05(void);
 void func_801085B4_w05(void);
 void func_8010D298_w05(void);
+void func_801184C0_w05(void);
+void func_8011BB74_w05(void);
 extern s16 D_8011D040_w05[];
 extern s16 D_8011D050_w05[];
 extern s16 D_8011D060_w05[];
@@ -285,51 +287,101 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80108DE8_w05);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80108E18_w05);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80108E48_w05);
+void func_80108E48_w05(void) {
+    func_80108830_w05(0x1C, 4, 9);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80108E6C_w05);
+void func_80108E6C_w05(void) {
+    func_80108830_w05(0x96, 4, 9);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80108E90_w05);
+void func_80108E90_w05(void) {
+    func_80108830_w05(0x1F, 3, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80108EB4_w05);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80108F20_w05);
+void func_80108F20_w05(void) {
+    func_80108830_w05(0x23, 3, 4);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80108F44_w05);
+void func_80108F44_w05(void) {
+    func_80108830_w05(0x8C, 3, 4);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80108F68_w05);
+void func_80108F68_w05(void) {
+    func_80108830_w05(0x70, 14, 16);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80108F8C_w05);
+void func_80108F8C_w05(void) {
+    func_80108830_w05(0x28, 14, 4);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80108FB0_w05);
+void func_80108FB0_w05(void) {
+    func_80108830_w05(0x12, 14, 16);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80108FD4_w05);
+void func_80108FD4_w05(void) {
+    func_80108830_w05(0x13, 4, 3);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80108FF8_w05);
+void func_80108FF8_w05(void) {
+    func_80108830_w05(0x73, 1, 9);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_8010901C_w05);
+void func_8010901C_w05(void) {
+    GW_PLAYER *player = MBPlayerGet(-1);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80109078_w05);
+    if (MBMasuLinkMasuIdGet(player->blink, player->bidx) != 0x8B) {
+        func_801184C0_w05();
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_801090A4_w05);
+void func_80109078_w05(void) {
+    func_80108830_w05(0x54, 16, 17);
+    func_8011BB74_w05();
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_801090C8_w05);
+void func_801090A4_w05(void) {
+    func_80108830_w05(0x56, 16, 4);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_801090EC_w05);
+void func_801090C8_w05(void) {
+    func_80108830_w05(0x38, 16, 17);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80109118_w05);
+void func_801090EC_w05(void) {
+    func_80108830_w05(0x5E, 9, 12);
+    func_8011BB74_w05();
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_8010913C_w05);
+void func_80109118_w05(void) {
+    func_80108830_w05(0x5F, 15, 2);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80109160_w05);
+void func_8010913C_w05(void) {
+    func_80108830_w05(0x44, 9, 12);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80109184_w05);
+void func_80109160_w05(void) {
+    func_80108830_w05(0x4A, 11, 6);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_801091A8_w05);
+void func_80109184_w05(void) {
+    func_80108830_w05(0x8A, 16, 0);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_801091CC_w05);
+void func_801091A8_w05(void) {
+    func_80108830_w05(0x5A, 15, 4);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_801091F0_w05);
+void func_801091CC_w05(void) {
+    func_80108830_w05(0x5C, 9, 4);
+}
+
+void func_801091F0_w05(void) {
+    func_80108830_w05(0x87, 11, 6);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_80109214_w05);
 
@@ -408,9 +460,13 @@ void func_8010D3EC_w05(s32 arg) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_8010D428_w05);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_8010E5FC_w05);
+void func_8010E5FC_w05(void) {
+    func_80108664_w05(0);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_8010E618_w05);
+void func_8010E618_w05(void) {
+    func_80108664_w05(1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w05/37FFB0", func_8010E634_w05);
 

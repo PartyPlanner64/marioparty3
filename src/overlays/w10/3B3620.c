@@ -13,6 +13,7 @@
 #include "../ovl_80_shared_board/FA250.h"
 #include "../ovl_80_shared_board/105D50.h"
 #include "../ovl_80_shared_board/106A50.h"
+#include "../ovl_80_shared_board/F5070.h"
 #include "../ovl_80_shared_board/F5E80.h"
 
 typedef struct {
@@ -350,7 +351,26 @@ INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_8010687C_w10);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80106908_w10);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80106DEC_w10);
+void func_80106DEC_w10(void) {
+    GW_SYSTEM *system = &GwSystem;
+    GW_PLAYER *player = MBPlayerGet(CUR_PLAYER);
+    SpaceData *space = GET_SPACE_FROM_LINK(player->clink, player->cidx);
+
+    MBPlayerMasuColorSet(-1, space->space_type);
+    MBStatusColorSet(system->current_player_index, player->color);
+    switch (space->space_type) {
+        case SPACE_BLUE:
+            MBCoinChangeCreate(system->current_player_index, 3);
+            MBCoinTakeCreate(system->current_player_index, 3);
+            HuPrcSleep(30);
+            break;
+        case SPACE_RED:
+            MBCoinChangeCreate(system->current_player_index, -3);
+            MBCoinTakeCreate(system->current_player_index, -3);
+            HuPrcSleep(30);
+            break;
+    }
+}
 
 void func_80106ED8_w10(UnkMBGuideData *guide, u32 mess) {
     HuWinMesSet(guide->amount, mess, -1, -1);
@@ -381,13 +401,79 @@ void func_80106FE0_w10(UnkMBGuideData *guide) {
     HuPrcVSleep();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80107028_w10);
+void func_80107028_w10(UnkMBGuideData *guide, u32 mess) {
+    HuWinActivePlayerSet(guide->amount, 15);
+    HuWinComKeySet(-1, -1, -1, -1);
+    HuWinMesSet(guide->amount, mess, -1, -1);
+    while (HuWinStatGet(guide->amount) != 0) {
+        HuPrcVSleep();
+    }
+    HuWinComKeyReset();
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_801070B8_w10);
+void func_801070B8_w10(UnkMBGuideData *guide) {
+    Object *obj = guide->obj;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_8010714C_w10);
+    obj->velocity.y = 4.0f;
+    obj->velocity.z = -0.6f;
+    MBMotionSet(guide->obj, 0, 0);
+    HuPrcSleep(3);
+    while (MBMotionCheck(guide->obj) == 0) {
+        HuPrcVSleep();
+    }
+    MBMotionSet(guide->obj, -1, 2);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/w10/3B3620", func_80107228_w10);
+void func_8010714C_w10(UnkMBGuideData *guide, s16 pos) {
+    s32 i;
+    s16 step;
+    s16 curPos = guide->spriteGroup;
+    Object *obj = guide->obj;
+
+    obj->velocity.y = 4.0f;
+    obj->velocity.z = -0.5f;
+    step = (pos - curPos) / 14;
+    for (i = 0; i < 14; i++) {
+        curPos = guide->spriteGroup;
+        MBGuidePosSet(guide, curPos + step, 0);
+        HuPrcVSleep();
+    }
+    MBGuidePosSet(guide, pos, 0);
+}
+
+void func_80107228_w10(void) {
+    UnkMBGuideData *guide = HuPrcCurrentGet()->user_data;
+    s16 motion;
+
+    while (TRUE) {
+        HuPrcVSleep();
+        if (D_8010B8FC_w10 == -1) {
+            continue;
+        }
+        if (D_8010B8FC_w10 == -2) {
+            D_8010B8FC_w10 = -1;
+            MBMotionShiftSet(guide->obj, -1, 0, 10, 0);
+        } else {
+            MBMotionShiftSet(guide->obj, D_8010B8FC_w10, 0, 10, 0);
+        }
+        motion = D_8010B8FC_w10;
+        D_8010B8FC_w10 = -1;
+        while (MBMotionCheck(guide->obj) == 0 && D_8010B8FC_w10 == -1) {
+            HuPrcVSleep();
+        }
+        switch (motion) {
+            case 1:
+                MBMotionSet(guide->obj, 3, 2);
+                break;
+            case 2:
+                MBMotionSet(guide->obj, 4, 2);
+                break;
+            default:
+                MBMotionSet(guide->obj, -1, 2);
+                break;
+        }
+    }
+}
 
 void func_80107344_w10(s16 arg0) {
     D_8010B8FC_w10 = arg0;

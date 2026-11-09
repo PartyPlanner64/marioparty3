@@ -55,9 +55,15 @@ extern HuMtx4F D_8011B3F0_mgmode;
 extern s16 D_8011B884_mgmode;
 extern u8 D_8011B958_mgmode;
 extern s16 D_8011B78A_mgmode;
+extern s16 D_8011B79E_mgmode[];
+extern s16 D_8011B7A6_mgmode[];
+extern s16 D_8011B7AE_mgmode[];
+extern s16 D_8011B7B6_mgmode[];
+extern u8 D_8011A3CC_mgmode[];
 
 void func_8010CBFC_mgmode(void);
 s16 func_8010DAB8_mgmode(s32 arg0);
+void func_8010E494_mgmode(s16 arg0);
 void func_8010E6F0_mgmode(s16 arg0);
 void func_8010D98C_mgmode(void);
 void func_8010E40C_mgmode(void);
@@ -88,6 +94,13 @@ s16 func_801182DC_mgmode(s16 stickX, s16 stickY);
 void func_80118D0C_mgmode(void);
 void func_8010CB20_mgmode(void);
 s32 func_8010F648_mgmode(void);
+void func_80110554_mgmode(void);
+s16 func_80110420_mgmode(s16 mgIndex);
+s32 func_80111380_mgmode(void);
+void func_80111BB0_mgmode(void);
+void func_80111ED8_mgmode(void);
+void func_80111F9C_mgmode(void);
+void func_80112060_mgmode(s32 arg0);
 void func_80116E24_mgmode(s16 arg0);
 void func_8011667C_mgmode(MgmodeModelEntry *entries);
 s16 func_80118678_mgmode(f32 arg0, f32 arg1, f32 arg2, f32 arg3);
@@ -953,9 +966,229 @@ s16 func_8010F348_mgmode(s16 category) {
 INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010F348_mgmode);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010F648_mgmode);
+s32 func_8010F648_mgmode(void) {
+    s16 i;
+    s16 mesId;
+    s16 choice;
+    s16 count;
 
-u8 func_80110420_mgmode(s16 mgIndex) {
+    D_800D1F2C_main++;
+    if (D_8011B928_mgmode[D_800D4194_main] <= D_800D1F2C_main) {
+        D_800D1F2C_main = 0;
+    }
+    func_80116E24_mgmode(2);
+    func_8010E494_mgmode(D_800D4194_main);
+    D_8011B450_mgmode = func_80116794_mgmode(D_80119EB0_mgmode);
+    func_80116968_mgmode(D_8011B450_mgmode, 0, 180, 110);
+    for (i = 0; i < 9; i++) {
+        if (i != 0) {
+            func_801169C8_mgmode(D_8011B450_mgmode, i);
+        }
+        func_801169F0_mgmode(D_8011B450_mgmode, i, 0x4000);
+    }
+    func_801169A0_mgmode(D_8011B450_mgmode, D_800CC438_main + 1);
+    func_80116968_mgmode(D_8011B450_mgmode, D_800CC438_main + 1, 180, 42);
+    func_80116A48_mgmode(D_8011B450_mgmode, D_800CC438_main + 1, 0.7f, 0.7f);
+    func_801169F0_mgmode(D_8011B450_mgmode, D_800CC438_main + 1, 8);
+    func_801169A0_mgmode(D_8011B450_mgmode, D_800D4194_main + 4);
+    func_80116968_mgmode(D_8011B450_mgmode, D_800D4194_main + 4, 180, 59);
+    func_80116A48_mgmode(D_8011B450_mgmode, D_800D4194_main + 4, 0.7f, 0.7f);
+    func_801169F0_mgmode(D_8011B450_mgmode, D_800D4194_main + 4, 8);
+    D_80119340_mgmode = func_80116B20_mgmode();
+    espAttrSet(D_80119340_mgmode, 0x4008);
+    espPosSet(D_80119340_mgmode, 180, 134);
+    func_80116C18_mgmode(D_800A6D40_main[D_800CE29C_main].flags & 0x7FF);
+    WipeCreateIn(0xB, 0xA);
+    while (WipeStatGet() != 0) {
+        HuPrcVSleep();
+    }
+    func_80110554_mgmode();
+    count = func_80110420_mgmode(D_800CE29C_main);
+    for (i = 0; i < count; i++) {
+        HuWinInsertMesSet(D_8011B6A8_mgmode, GwPlayer[D_8011B430_mgmode[i]].chr + 0x1C00, i);
+        Hu3DMotionShiftSet(D_8011B8B6_mgmode[D_8011B430_mgmode[i]], D_8011B79E_mgmode[D_8011B430_mgmode[i]], 0, 8, 0);
+        func_80045ED0_main((D_8011A3CC_mgmode[GwPlayer[D_8011B430_mgmode[i]].chr] << 16) | 0x33);
+    }
+    for (i = 0; i < 4; i++) {
+        if (HmfModelData[D_8011B8B6_mgmode[i]].motIdShift == 0xFF) {
+            Hu3DMotionShiftSet(D_8011B8B6_mgmode[i], D_8011B7A6_mgmode[i], 0, 8, 0);
+        }
+    }
+    switch (count) {
+        case 0:
+            HuWinMesSet(D_8011B6A8_mgmode, 0x5613, -1, -1);
+            break;
+        case 1:
+            HuWinMesSet(D_8011B6A8_mgmode, 0x560F, -1, -1);
+            break;
+        case 2:
+            HuWinMesSet(D_8011B6A8_mgmode, 0x5610, -1, -1);
+            break;
+        case 3:
+            HuWinMesSet(D_8011B6A8_mgmode, 0x5611, -1, -1);
+            break;
+        case 4:
+            HuWinMesSet(D_8011B6A8_mgmode, 0x5612, -1, -1);
+            break;
+    }
+    HuWinExAnimIn(D_8011B6A8_mgmode);
+    if (func_80111380_mgmode()) {
+        for (i = 0; i < D_8011B434_mgmode; i++) {
+            HuWinInsertMesSet(D_8011B6A8_mgmode, GwPlayer[D_8011B430_mgmode[i]].chr + 0x1C00, i);
+        }
+        switch (D_8011B434_mgmode) {
+            case 1:
+                HuWinMesSet(D_8011B6A8_mgmode, 0x5614, -1, -1);
+                break;
+            case 2:
+                HuWinMesSet(D_8011B6A8_mgmode, 0x5615, -1, -1);
+                break;
+            case 3:
+                HuWinMesSet(D_8011B6A8_mgmode, 0x5616, -1, -1);
+                break;
+            case 4:
+                HuWinMesSet(D_8011B6A8_mgmode, 0x5617, -1, -1);
+                break;
+        }
+        while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+            HuPrcVSleep();
+        }
+        HuWinExAnimOut(D_8011B6A8_mgmode, 0);
+        if (D_8011B434_mgmode != 4) {
+            for (i = 0; i < D_8011B434_mgmode; i++) {
+                Hu3DMotionShiftSet(D_8011B8B6_mgmode[D_8011B430_mgmode[i]], D_8011B7AE_mgmode[D_8011B430_mgmode[i]], 0, 8, 0);
+                func_8004AC5C_main(GwPlayer[D_8011B430_mgmode[i]].chr + 0x27E, i);
+            }
+            HuAudFXPlay(0x248);
+            func_80112060_mgmode(1);
+        }
+        for (i = 0; i < 4; i++) {
+            if (HmfModelData[D_8011B8B6_mgmode[i]].motIdShift == 0xFF) {
+                Hu3DMotionShiftSet(D_8011B8B6_mgmode[i], D_8011B7B6_mgmode[i], 0, 8, 0);
+            }
+        }
+        mesId = -1;
+        switch (D_8011B434_mgmode) {
+            case 1:
+                mesId = GMesCreate(0x16, GwPlayer[D_8011B430_mgmode[0]].chr);
+                GMesPosSet(mesId, 160.0f, 120.0f);
+                break;
+            case 2:
+                mesId = GMesCreate(0x1E, GwPlayer[D_8011B430_mgmode[0]].chr, GwPlayer[D_8011B430_mgmode[1]].chr);
+                break;
+            case 3:
+                mesId = GMesCreate(0x22, GwPlayer[D_8011B430_mgmode[0]].chr, GwPlayer[D_8011B430_mgmode[1]].chr,
+                                   GwPlayer[D_8011B430_mgmode[2]].chr);
+                break;
+            case 4:
+                GMesCreate(0x20);
+                mesId = -1;
+                break;
+        }
+        if (mesId != -1) {
+            while (!(GMesStatGet() & 2)) {
+                HuPrcVSleep();
+            }
+        }
+        for (i = 0; i < 60; i++) {
+            if (D_800D5558_main[0] & (A_BUTTON | B_BUTTON)) {
+                break;
+            }
+            HuPrcVSleep();
+        }
+        func_80112060_mgmode(0);
+        HuWinExAnimIn(D_8011B6A8_mgmode);
+        HuWinMesSet(D_8011B6A8_mgmode, 0x5618, -1, -1);
+        while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+            HuPrcVSleep();
+        }
+        choice = (s16)HuWinChoiceGet(D_8011B6A8_mgmode, 0, 0) == 0;
+        if (mesId != -1) {
+            GMesKill(mesId);
+        }
+        func_80111BB0_mgmode();
+        HuWinExAnimOut(D_8011B6A8_mgmode, 0);
+        HuAudSeqFadeOut(60);
+        func_8010EE84_mgmode(D_800D4194_main);
+        func_80111ED8_mgmode();
+        func_80111F9C_mgmode();
+        func_80116D4C_mgmode();
+        D_80119340_mgmode = -1;
+        func_8010D308_mgmode();
+        func_801168E0_mgmode(D_8011B450_mgmode);
+        return choice;
+    }
+    for (i = 0; i < 90; i++) {
+        if (D_800D5558_main[0] & (A_BUTTON | B_BUTTON)) {
+            break;
+        }
+        HuPrcVSleep();
+    }
+    for (i = 0; i < 4; i++) {
+        Hu3DMotionShiftSet(D_8011B8B6_mgmode[i], D_8011B78E_mgmode[i], 0, 8, 2);
+    }
+    HuWinMesSet(D_8011B6A8_mgmode, 0x560C, -1, -1);
+    HuPrcSleep(10);
+    func_80111BB0_mgmode();
+    D_800CE29C_main = func_8010F348_mgmode(D_800D4194_main);
+    HuPrcSleep(20);
+    HuWinInsertMesSet(D_8011B6A8_mgmode, D_800CE29C_main + 0x4700, 0);
+    HuWinMesSet(D_8011B6A8_mgmode, 0x560D, -1, -1);
+    while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+        HuPrcVSleep();
+    }
+    while (TRUE) {
+        HuWinMesSet(D_8011B6A8_mgmode, 0x560E, -1, -1);
+        while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+            HuPrcVSleep();
+        }
+        choice = HuWinChoiceGet(D_8011B6A8_mgmode, 0, 0);
+        if (choice != -1) {
+            break;
+        }
+        HuWinMesSet(D_8011B6A8_mgmode, 0x5619, -1, -1);
+        while (HuWinStatGet(D_8011B6A8_mgmode) != 0) {
+            HuPrcVSleep();
+        }
+        if ((s16)HuWinChoiceGet(D_8011B6A8_mgmode, 0, 0) == 0) {
+            func_8010EE84_mgmode(D_800D4194_main);
+            HuWinExAnimOut(D_8011B6A8_mgmode, 0);
+            func_80111ED8_mgmode();
+            func_80111F9C_mgmode();
+            func_80116D4C_mgmode();
+            D_80119340_mgmode = -1;
+            func_8010D308_mgmode();
+            func_801168E0_mgmode(D_8011B450_mgmode);
+            return 0;
+        }
+    }
+    if (choice == 0) {
+        GwSystem.show_minigame_explanations = 1;
+    } else {
+        GwSystem.show_minigame_explanations = 0;
+    }
+    _SetFlag(0xD);
+    for (i = 0; i < 4; i++) {
+        GwPlayer[i].group = D_800D1F20_main[i];
+    }
+    GwSystem.minigame_index = (u8)D_800CE29C_main + 1;
+    omOvlHisChg(0, 0x69, 4, 0x84);
+    D_80118EB1_mgmode = 1;
+    D_8011B95A_mgmode = 0x70;
+    D_8011B950_mgmode = 0;
+    D_80118EB4_mgmode = 2;
+    if (D_800D4194_main == 0 || D_800D4194_main == 3) {
+        for (i = 0; i < 4; i++) {
+            GwPlayer[i].star = D_800D03FE_main[i];
+            GwPlayer[i].coin = rand8() & 0xF;
+        }
+    }
+    while (TRUE) {
+        HuPrcVSleep();
+    }
+}
+
+s16 func_80110420_mgmode(s16 mgIndex) {
     s16 i;
 
     D_8011B434_mgmode = 0;

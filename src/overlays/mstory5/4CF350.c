@@ -615,7 +615,71 @@ void func_8010734C_mstory5(omObjData *obj, f32 speed, s16 frames) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_801074E8_mstory5);
+void func_801074E8_mstory5(omObjData *obj, f32 x, f32 y, f32 z, s32 frames, s32 faceDir) {
+    Vec start;
+    Vec diff;
+    Vec vel;
+    Vec pos;
+    Vec accel;
+    Vec target;
+    s16 model;
+    f32 t;
+
+    target.x = x;
+    target.y = y;
+    target.z = z;
+    model = obj->model[1];
+    start.x = Hu3DData[model].pos.x;
+    start.y = Hu3DData[model].pos.y;
+    start.z = Hu3DData[model].pos.z;
+    diff.x = target.x - start.x;
+    diff.y = target.y - start.y;
+    diff.z = target.z - start.z;
+    if (faceDir) {
+        Hu3DModelRotSet(model, 0.0f, -(atan2df(diff.z, diff.x) - 90.0f), 0.0f);
+    }
+    t = frames;
+    accel.x = diff.x / t / 90.0f;
+    accel.y = diff.y / t / 90.0f;
+    accel.z = diff.z / t / 90.0f;
+    vel.x = diff.x / t;
+    vel.y = diff.y / t;
+    vel.z = diff.z / t;
+    pos.x = start.x;
+    pos.y = start.y;
+    pos.z = start.z;
+    for (t = 0.0f; t < frames; t += 1.0f) {
+        if (t < 50.0f) {
+            pos.x += vel.x;
+            pos.y += vel.y;
+            pos.z += vel.z;
+        } else {
+            pos.x += vel.x += accel.x;
+            pos.y += vel.y += accel.y;
+            pos.z += vel.z += accel.z;
+        }
+        if (pos.x <= target.x) {
+            pos.x = target.x;
+            pos.y = target.y;
+            pos.z = target.z;
+            Hu3DModelPosSet(model, pos.x, pos.y, pos.z);
+            if (obj->model[2] >= 0) {
+                Hu3DModelPosSet(obj->model[2], pos.x, pos.y - 5.0f, pos.z);
+            }
+            break;
+        }
+        Hu3DModelPosSet(model, pos.x, pos.y, pos.z);
+        if (obj->model[2] >= 0) {
+            Hu3DModelPosSet(obj->model[2], pos.x, pos.y - 5.0f, pos.z);
+        }
+        HuPrcVSleep();
+    }
+    Hu3DModelPosSet(model, target.x, target.y, target.z);
+    if (obj->model[2] >= 0) {
+        Hu3DModelPosSet(obj->model[2], target.x, target.y - 5.0f, target.z);
+    }
+    HuPrcVSleep();
+}
 
 MstoryPath *func_80107850_mstory5(Vec *points, s32 flags) {
     MstoryPath *path;

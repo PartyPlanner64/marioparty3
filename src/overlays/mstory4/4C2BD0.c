@@ -1973,7 +1973,6 @@ void func_80110270_mstory4(void);               /* extern */
 void func_80110DB0_mstory4(f32, f32, f32, s16); /* extern */
 extern Addr D_128CC60;
 
-
 extern s16 D_80112330_mstory4;
 
 void func_8010FC98_mstory4(void) {

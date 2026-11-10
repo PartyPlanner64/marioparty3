@@ -202,6 +202,7 @@ void func_80116D80_mstory2(omObjData *);
 void func_8011B198_mstory2(void);
 void func_8011AB7C_mstory2(omObjData *obj);
 void func_8011B45C_mstory2(void);
+void func_8011B464_mstory2(omObjData *obj);
 void func_8011B64C_mstory2(void);
 void func_8011B818_mstory2(void);
 void func_8011B820_mstory2(omObjData *obj);
@@ -3229,7 +3230,41 @@ void func_8011AC10_mstory2(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory2/49BD40", func_8011AD8C_mstory2);
+void func_8011AD8C_mstory2(omObjData *obj) {
+    Hu3DMotionShiftSet(D_8011CA10_mstory2[1].obj->model[1], Hu3DData[D_8011CA10_mstory2[1].obj->motion[3]].motId, 0, 10, 2);
+    Hu3DMotionShiftSet(D_8011CA10_mstory2[0].obj->model[1], Hu3DData[D_8011CA10_mstory2[0].obj->motion[0]].motId, 0, 10, 0);
+    func_80106D58_mstory2(D_8011CA10_mstory2[0].obj->model[1], D_8011CA7A_mstory2, D_8011CA74_mstory2[1]);
+    D_8011CA10_mstory2[0].func = func_8011B464_mstory2;
+    D_8011CA10_mstory2[0].unk_08 = 1;
+    func_801060A4_mstory2();
+    func_801060F8_mstory2(0x5A81);
+    func_801060D4_mstory2();
+    Hu3DMotionShiftSet(D_8011CA10_mstory2[1].obj->model[1], Hu3DData[D_8011CA10_mstory2[1].obj->motion[0]].motId, 0, 10, 2);
+    D_8011CA10_mstory2[1].unk_08 = 1;
+    D_8011CA10_mstory2[0].unk_08 = 2;
+    HuPrcSleep(20);
+    while (TRUE) {
+        if (D_8011CA10_mstory2[0].unk_08 == 3) {
+            break;
+        }
+        HuPrcVSleep();
+    }
+    while (TRUE) {
+        Hu3DData[D_8011CA10_mstory2[0].obj->model[1]].pos.y += 30.0f;
+        Hu3DData[D_8011CA10_mstory2[1].obj->model[1]].pos.y += 60.0f;
+        Hu3DData[D_8011CA10_mstory2[0].obj->model[2]].scale.x = Hu3DData[D_8011CA10_mstory2[0].obj->model[2]].scale.z -= 0.075f;
+        Hu3DData[D_8011CA10_mstory2[1].obj->model[2]].scale.x = Hu3DData[D_8011CA10_mstory2[1].obj->model[2]].scale.z -= 0.075f;
+        if (Hu3DData[D_8011CA10_mstory2[0].obj->model[1]].pos.y >= 500.0f) {
+            break;
+        }
+        HuPrcVSleep();
+    }
+    HuPrcVSleep();
+    func_80105EB4_mstory2();
+    D_8011CA10_mstory2[1].func = func_8011AB7C_mstory2;
+    D_8011CA10_mstory2[0].func = func_8011AB7C_mstory2;
+    D_8011CA10_mstory2[2].func = func_8011AB7C_mstory2;
+}
 
 void func_8011B080_mstory2(omObjData *obj) {
     func_80106D58_mstory2(D_8011CA10_mstory2[0].obj->model[1], D_8011CA7A_mstory2, D_8011CA74_mstory2[2]);

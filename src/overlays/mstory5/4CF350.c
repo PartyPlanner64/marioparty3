@@ -1189,7 +1189,45 @@ void func_8010D594_mstory5(omObjData *obj) {
     D_801151F0_mstory5[7].func = func_801085D8_mstory5;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010D7D8_mstory5);
+INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4CF350", D_80114C44_mstory5);
+
+void func_8010D7D8_mstory5(omObjData *obj) {
+    omObjData *objs[3];
+    f32 rotY[3] = { 90.0f, 135.0f, 135.0f };
+    f32 rotX[3] = { 0.0f, 10.0f, 20.0f };
+    s32 frames;
+    s32 i;
+    s32 j;
+
+    frames = 20;
+    objs[0] = D_801151F0_mstory5[0].obj;
+    objs[1] = D_801151F0_mstory5[7].obj;
+    objs[2] = D_801151F0_mstory5[1].obj;
+    Hu3DMotionShiftSet(objs[0]->model[1], Hu3DData[objs[0]->motion[3]].motId, 0, 10, 2);
+    for (i = 0; i < frames; i++) {
+        for (j = 0; j < 3; j++) {
+            Hu3DData[objs[j]->model[1]].rot.y += 90.0f / frames;
+        }
+        HuPrcVSleep();
+    }
+    Hu3DMotionShiftSet(objs[0]->model[1], Hu3DData[objs[0]->motion[0]].motId, 0, 10, 2);
+    while (!(D_801151F0_mstory5[7].unk_08 & 2)) {
+        HuPrcVSleep();
+    }
+    Hu3DMotionShiftSet(objs[0]->model[1], Hu3DData[objs[0]->motion[3]].motId, 0, 10, 2);
+    frames = 20;
+    for (i = 0; i < frames; i++) {
+        for (j = 0; j < 3; j++) {
+            Hu3DData[objs[j]->model[1]].rot.y -= rotY[j] / frames;
+            Hu3DData[objs[j]->model[1]].rot.x += rotX[j] / frames;
+        }
+        HuPrcVSleep();
+    }
+    Hu3DMotionShiftSet(objs[0]->model[1], Hu3DData[objs[0]->motion[0]].motId, 0, 10, 2);
+    D_801151F0_mstory5[7].func = func_801085D8_mstory5;
+}
+
+const s32 D_80114C68_mstory5[] = { 0x1D0003, 0x1D0004, 0x1D0005, 0x1D0006 };
 
 void func_8010DADC_mstory5(omObjData *obj) {
     HuPrcSleep(60);
@@ -1532,12 +1570,6 @@ void func_8010F0B8_mstory5(omObjData *obj) {
     Hu3DMotionShiftSet(target->model[1], Hu3DData[target->motion[13]].motId, 0, 10, 0);
     D_801151F0_mstory5[3].func = func_801085D8_mstory5;
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4CF350", D_80114C44_mstory5);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4CF350", D_80114C50_mstory5);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4CF350", D_80114C5C_mstory5);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4CF350", D_80114C78_mstory5);
 

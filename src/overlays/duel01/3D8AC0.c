@@ -146,17 +146,38 @@ void func_801062C0_duel01(Object *arg0, GW_PLAYER *arg1, s32 arg2, f32 arg3) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80106308_duel01);
+void func_80106308_duel01(void) {
+    Duel01CamShakeWork *work = HuPrcCurrentGet()->user_data;
+    s32 magnitude = work->magnitude;
+    s32 decay = work->decay;
+    Vec2f base;
+    Vec2f pos;
 
-Process *func_8010645C_duel01(s32 arg0, s32 arg1) {
+    MBDCameraPos2DGet(&base);
+    func_800FC888_name_81(0);
+    for (; magnitude >= 0; magnitude -= decay) {
+        pos.x = func_800EFE20_name_81(magnitude) + base.x - magnitude / 2;
+        pos.y = func_800EFE20_name_81(magnitude) + base.y - magnitude / 2;
+        MBDCameraPos2DSet(&pos);
+        HuPrcVSleep();
+        pos.x = func_800EFE20_name_81(magnitude) + base.x - magnitude / 2;
+        pos.y = func_800EFE20_name_81(magnitude) + base.y - magnitude / 2;
+        MBDCameraPos2DSet(&pos);
+        HuPrcVSleep();
+    }
+    func_800FC888_name_81(4);
+    omDelPrcObj(NULL);
+}
+
+Process *func_8010645C_duel01(s32 magnitude, s32 decay) {
     Process *process;
-    unkStruct06 *temp_v0_2;
+    Duel01CamShakeWork *work;
 
     process = omAddPrcObj(&func_80106308_duel01, 0xA, 0, 0x40);
-    temp_v0_2 = HuMemMemoryAlloc(process->heap, sizeof(unkStruct06));
-    process->user_data = temp_v0_2;
-    temp_v0_2->unk_00 = arg0;
-    temp_v0_2->unk_04 = arg1;
+    work = HuMemMemoryAlloc(process->heap, sizeof(Duel01CamShakeWork));
+    process->user_data = work;
+    work->magnitude = magnitude;
+    work->decay = decay;
     return process;
 }
 

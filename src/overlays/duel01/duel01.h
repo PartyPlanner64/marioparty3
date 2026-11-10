@@ -27,12 +27,11 @@ typedef struct unkStruct04 {
     /* 0x0C */ Vec unk_0C;
 } unkStruct04;
 
-typedef struct unkStruct06 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s32 unk_04;
-    /* 0x08 */ f32 unk_08;
-    /* 0x0C */ char unk_0C[4];
-} unkStruct06;
+typedef struct Duel01CamShakeWork {
+    /* 0x00 */ s32 magnitude;
+    /* 0x04 */ s32 decay;
+    /* 0x08 */ char unk_08[0x8];
+} Duel01CamShakeWork; // sizeof 0x10
 
 typedef struct Duel01PartnerAttackWork {
     /* 0x00 */ GW_PLAYER *player;

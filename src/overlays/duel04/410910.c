@@ -204,7 +204,28 @@ void func_801062C4_duel04(Object *arg0, GW_PLAYER *arg1, s32 arg2, f32 arg3) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010630C_duel04);
+void func_8010630C_duel04(void) {
+    Duel04CamShakeWork *work = HuPrcCurrentGet()->user_data;
+    s32 magnitude = work->magnitude;
+    s32 decay = work->decay;
+    Vec2f base;
+    Vec2f pos;
+
+    MBDCameraPos2DGet(&base);
+    func_800FC888_name_81(0);
+    for (; magnitude >= 0; magnitude -= decay) {
+        pos.x = func_800EFE20_name_81(magnitude) + base.x - magnitude / 2;
+        pos.y = func_800EFE20_name_81(magnitude) + base.y - magnitude / 2;
+        MBDCameraPos2DSet(&pos);
+        HuPrcVSleep();
+        pos.x = func_800EFE20_name_81(magnitude) + base.x - magnitude / 2;
+        pos.y = func_800EFE20_name_81(magnitude) + base.y - magnitude / 2;
+        MBDCameraPos2DSet(&pos);
+        HuPrcVSleep();
+    }
+    func_800FC888_name_81(4);
+    omDelPrcObj(NULL);
+}
 
 Process *func_80106460_duel04(s32 magnitude, s32 decay) {
     Process *process;

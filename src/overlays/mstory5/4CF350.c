@@ -110,6 +110,10 @@ extern Vec D_80115334_mstory5;
 extern const Vec D_8011493C_mstory5;
 extern Vec D_801154C0_mstory5;
 extern const Vec D_80114D68_mstory5;
+extern Vec D_80115038_mstory5;
+extern Vec D_80115050_mstory5;
+extern Vec D_80115068_mstory5;
+extern Vec D_80115074_mstory5;
 
 void func_8010F7D4_mstory5(MstoryPath *path, f32 t, Vec *out);
 void func_80106028_mstory5(void);
@@ -2146,7 +2150,47 @@ void func_80112F38_mstory5(void) {
 void func_80113130_mstory5(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_80113138_mstory5);
+void func_80113138_mstory5(omObjData *obj) {
+    s16 model = obj->model[1];
+
+    func_8001C258_main(model, 4, 0);
+    func_8001C258_main(obj->model[2], 4, 0);
+    func_80106B48_mstory5(obj, &D_80115038_mstory5, 40);
+    Hu3DMotionShiftSet(model, Hu3DData[obj->motion[0]].motId, 0, 10, 2);
+    while (!(D_801153A0_mstory5[3].unk_08 & 8)) {
+        HuPrcVSleep();
+    }
+    Hu3DMotionShiftSet(model, Hu3DData[obj->motion[3]].motId, 0, 10, 0);
+    func_80107254_mstory5(model);
+    Hu3DMotionShiftSet(model, Hu3DData[obj->motion[0]].motId, 0, 10, 2);
+    while (!(D_801153A0_mstory5[3].unk_08 & 0x10)) {
+        HuPrcVSleep();
+    }
+    HuPrcSleep(10);
+    func_80107080_mstory5(obj, &D_80115074_mstory5, 40);
+    while (!(D_801153A0_mstory5[3].unk_08 & 1)) {
+        HuPrcVSleep();
+    }
+    HuPrcSleep(50);
+    func_80107080_mstory5(obj, &D_80115068_mstory5, 10);
+    Hu3DMotionShiftSet(model, Hu3DData[obj->motion[1]].motId, 0, 10, 2);
+    func_80106B48_mstory5(obj, &D_80115050_mstory5, 10);
+    Hu3DMotionShiftSet(model, Hu3DData[obj->motion[0]].motId, 0, 10, 2);
+    HuPrcSleep(40);
+    func_80107080_mstory5(obj, &D_80115074_mstory5, 10);
+    while (!(D_801153A0_mstory5[3].unk_08 & 4)) {
+        HuPrcVSleep();
+    }
+    HuPrcSleep(20);
+    func_80107080_mstory5(obj, &D_80115068_mstory5, 30);
+    while (!(D_801153A0_mstory5[3].unk_08 & 0x20)) {
+        HuPrcVSleep();
+    }
+    while (TRUE) {
+        Hu3DMotionShiftSet(model, Hu3DData[obj->motion[2]].motId, 0, 10, 0);
+        func_80107254_mstory5(model);
+    }
+}
 
 void func_80113470_mstory5(void) {
     omObjData *obj;

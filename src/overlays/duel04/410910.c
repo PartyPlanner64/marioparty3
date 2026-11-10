@@ -75,6 +75,10 @@ typedef struct Duel04SwayWork {
 } Duel04SwayWork; // sizeof 0x10
 
 void *memcpy(void *, const void *, unsigned int);
+extern DecisionTreeNonLeafNode D_8011AB78_duel04[];
+extern DecisionTreeNonLeafNode D_8011AB54_duel04[];
+extern DecisionTreeNonLeafNode D_8011AB30_duel04[];
+extern s16 D_8011ADDC_duel04[];
 extern DecisionTreeNonLeafNode D_8011A7A0_duel04[];
 extern s16 D_8011AC24_duel04[];
 extern DecisionTreeNonLeafNode D_8011A6E0_duel04[];
@@ -4764,4 +4768,76 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_801198EC_duel04);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80119910_duel04);
 
+#ifdef NON_MATCHING
+// Only diff: the loop guard before the -2 inputs is beqz instead of blez. GCC
+// proves count >= 0 from its constant assignments; the original kept the
+// signed compare, so count is probably set or typed differently.
+void func_80119A30_duel04(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    s32 playerIdx = MBDGetCurrentPlayerIndex();
+    UnkEA790Struct *win;
+    s16 count;
+    s32 sel;
+    s32 i;
+    Process *prc;
+
+    if (player->nnlink != -2 || player->nnidx != -2) {
+        return;
+    }
+    player->nnlink = -1;
+    player->nnidx = -1;
+    func_800F38DC_name_81(-1, -1, 2);
+    HuPrcVSleep();
+    func_80105A58_duel04();
+    win = func_800D76A0_name_81(GwSystem.current_player_index, D_8011ADDC_duel04);
+    func_800D742C_name_81(win, GwSystem.current_player_index, 0);
+    if (func_800F37B8_name_81(CUR_PLAYER)) {
+        if (func_800D97B0_name_81(D_8011AB30_duel04) == 0) {
+            count = 0;
+        } else if (func_800D97B0_name_81(D_8011AB54_duel04) == 0) {
+            count = 1;
+        } else {
+            count = 2;
+            if (func_800D97B0_name_81(D_8011AB78_duel04)) {
+                count++;
+            }
+        }
+        for (i = 0; i < count; i++) {
+            func_800D7250_name_81(win, -2);
+        }
+        func_800D7250_name_81(win, -4);
+    }
+    sel = func_800D7518_name_81(win);
+    func_800D6CA0_name_81(win);
+    func_80105B10_duel04();
+    switch (sel) {
+        case 0:
+            break;
+        case 1:
+            func_800E9F4C_name_81(0xD, &player->nlink, &player->nidx);
+            func_800E9F4C_name_81(0x13, &player->blink, &player->bidx);
+            prc = func_800ED70C_name_81(playerIdx, 1);
+            if (prc != NULL) {
+                HuPrcChildLink(HuPrcCurrentGet(), prc);
+            }
+            prc = func_800EDC6C_name_81(playerIdx, 0);
+            if (prc != NULL) {
+                HuPrcChildLink(HuPrcCurrentGet(), prc);
+            }
+            HuPrcChildWatch();
+            break;
+        case 2:
+            func_800E9F4C_name_81(7, &player->nlink, &player->nidx);
+            func_800ED788_name_81(playerIdx);
+            break;
+        case 3:
+            func_800E9F4C_name_81(0x19, &player->nlink, &player->nidx);
+            func_800ED788_name_81(playerIdx);
+            break;
+    }
+    func_800ECDE8_name_81();
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80119A30_duel04);
+#endif
+

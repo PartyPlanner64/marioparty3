@@ -4276,4 +4276,51 @@ void func_80118414_duel01(void) {
     func_800E27D4_name_81(playerIndex, &pos[0], &pos[1], &pos[2]);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80118530_duel01);
+void func_80118530_duel01(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    UnkEA790Struct *win;
+    s32 sel;
+    s32 i;
+    s8 link;
+    s8 idx;
+    Process *prc;
+
+    if (player->nnlink != -2 || player->nnidx != -2) {
+        return;
+    }
+    player->nnlink = -1;
+    player->nnidx = -1;
+    func_800F38DC_name_81(-1, -1, 2);
+    HuPrcVSleep();
+    func_80105A58_duel01();
+    win = func_800D76A0_name_81(GwSystem.current_player_index, D_80118DE4_duel01);
+    func_800D742C_name_81(win, GwSystem.current_player_index, 0);
+    if (func_800F37B8_name_81(CUR_PLAYER)) {
+        s32 count = func_800D97B0_name_81(D_80118CF0_duel01);
+        for (i = 0; i < count; i++) {
+            func_800D7250_name_81(win, -2);
+        }
+        func_800D7250_name_81(win, -4);
+    }
+    sel = func_800D7518_name_81(win);
+    func_800D6CA0_name_81(win);
+    func_80105B10_duel01();
+    if (sel != 0) {
+        link = player->nlink;
+        idx = player->nidx;
+        player->nlink = player->blink;
+        player->nidx = player->bidx;
+        player->blink = link;
+        player->bidx = idx;
+        func_800ECDE8_name_81();
+        prc = func_800ED70C_name_81(GwSystem.current_player_index, 1);
+        if (prc != NULL) {
+            HuPrcChildLink(HuPrcCurrentGet(), prc);
+        }
+        prc = func_800EDC6C_name_81(GwSystem.current_player_index, 0);
+        if (prc != NULL) {
+            HuPrcChildLink(HuPrcCurrentGet(), prc);
+        }
+        HuPrcChildWatch();
+    }
+}

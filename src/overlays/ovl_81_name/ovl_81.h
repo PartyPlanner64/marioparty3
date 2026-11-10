@@ -220,6 +220,8 @@ void func_800ECD88_name_81(s16 playerIdx, s16 nlink, s16 nidx);
 void func_800ED788_name_81(s32 playerIndex);
 void func_800ECDE8_name_81(void);
 void func_800ECE10_name_81(void);
+Process *func_800ED70C_name_81(s32 playerIdx, s32 arg);
+Process *func_800EDC6C_name_81(s32 playerIdx, s32 arg);
 UnkEA790Struct *func_800D76A0_name_81(s16 playerNo, s16 *choices);
 s32 func_800D742C_name_81(UnkEA790Struct *win, s16 playerNo, s32 arg2);
 s32 func_800D7250_name_81(UnkEA790Struct *win, s32 input);

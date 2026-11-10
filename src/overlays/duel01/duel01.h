@@ -161,3 +161,6 @@ s32 func_800E1854_minigame(s32);
 void func_800FC8DC_name_81(Object *);
 void func_800EB7BC_name_81(Vec *);
 Process *func_800EBC60_name_81(Vec *, Vec *, Vec *, s32);
+void func_800D6CA0_name_81(UnkEA790Struct *win);
+extern s16 D_80118DE4_duel01[];
+extern DecisionTreeNonLeafNode D_80118CF0_duel01[];

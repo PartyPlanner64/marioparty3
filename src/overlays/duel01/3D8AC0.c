@@ -4163,7 +4163,305 @@ void func_8011390C_duel01(void) {
     omDelPrcObj(NULL);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80113CAC_duel01);
+s32 func_80113CAC_duel01(void) {
+    s32 curIndex = MBDGetCurrentPlayerIndex();
+    s32 otherIndex = (s16)(MBDGetCurrentPlayerIndex() ^ 1);
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *other = MBDGetPlayerStruct(otherIndex);
+    s32 walkNum = mbWalkNum;
+    u8 table[6];
+    s32 stars;
+    s32 coins;
+    s32 coins2;
+
+    memcpy(table, D_801193E8_duel01, sizeof(table));
+    switch (other->clink) {
+        case 0:
+            if (other->cidx == walkNum - 6) {
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 1;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 1;
+                }
+                if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD)
+                        ? !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)
+                        : !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
+                    return 1;
+                }
+                if (other->stats.partners.backID == PARTNER_BOO &&
+                    !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                    return 0;
+                }
+                if (func_800F8980_name_81(curIndex) == 0) {
+                    coins = 100;
+                } else {
+                    coins = (GwPlayer[curIndex].coin - 5) / func_800F8980_name_81(curIndex);
+                }
+                if (coins >= 4 && player->stats.partners.frontPower != 0) {
+                    return 1;
+                }
+                return 0;
+            }
+            if (other->cidx < walkNum - 6) {
+                stars = player->star;
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 1;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 1;
+                }
+                if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD)
+                        ? !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)
+                        : !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
+                    return 1;
+                }
+                if (other->stats.partners.backID == PARTNER_BOO) {
+                    if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                        return 0;
+                    }
+                    if (player->stats.partners.frontPower > player->stats.partners.frontHp) {
+                        stars -= player->stats.partners.frontPower - player->stats.partners.frontHp;
+                    }
+                }
+                if (walkNum == 10) {
+                    if (!(player->stats.partners.backPower < other->stats.partners.frontHp + other->star)) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOO &&
+                        !(player->stats.partners.backPower < stars + player->stats.partners.backHp)) {
+                        return 0;
+                    }
+                    return 1;
+                }
+                if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+                    if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                        return 0;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                        return 0;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                        return player->stats.partners.frontHp + player->star > other->stats.partners.frontPower;
+                    }
+                }
+                return 0;
+            }
+            if (walkNum == 6) {
+                if (func_800F8980_name_81(curIndex) == 0) {
+                    coins = 100;
+                    coins2 = 100;
+                } else {
+                    coins = GwPlayer[curIndex].coin / func_800F8980_name_81(curIndex);
+                    coins2 = (GwPlayer[curIndex].coin - 5) / func_800F8980_name_81(curIndex);
+                }
+                if (coins == 0) {
+                    return 0;
+                }
+                if (coins2 > 0 || func_800EFE20_name_81(100.0f) < 50) {
+                    return 1;
+                }
+                return 0;
+            }
+            if (walkNum != 1) {
+                return 0;
+            }
+            if (other->cidx >= 6) {
+                if (player->stats.partners.backID == PARTNER_CHOMP && other->star < 2) {
+                    return 0;
+                }
+                if (player->stats.partners.backID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 0;
+                }
+                if (player->stats.partners.backID == PARTNER_MR_BLIZZARD) {
+                    if (!(other->stats.partners.backHp + other->star > player->stats.partners.backPower)) {
+                        return 0;
+                    }
+                } else if (player->stats.partners.backPower > other->stats.partners.frontHp + other->star) {
+                    return 0;
+                }
+                if (other->stats.partners.frontID == PARTNER_BOO &&
+                    !(player->stats.partners.backPower < player->star + player->stats.partners.backHp)) {
+                    return 1;
+                }
+                return 0;
+            }
+            if (other->stats.partners.frontPower == 0) {
+                return 0;
+            }
+            if (func_800F8980_name_81(curIndex) == 0) {
+                coins = 100;
+            } else {
+                coins = (GwPlayer[curIndex].coin - 5) / func_800F8980_name_81(curIndex);
+            }
+            return coins >= 4;
+        case 1:
+            if (other->cidx == walkNum - 1) {
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB) {
+                    return 0;
+                }
+                if (other->stats.partners.backID != PARTNER_BOO) {
+                    return 0;
+                }
+                if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                    return player->stats.partners.frontPower < other->stats.partners.backHp + other->star;
+                }
+                return 0;
+            }
+            if (other->cidx < walkNum - 1) {
+                stars = player->star;
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 0;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 0;
+                }
+                if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD)
+                        ? !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)
+                        : !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
+                    return 0;
+                }
+                if (other->stats.partners.backID == PARTNER_BOO) {
+                    if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                        return 1;
+                    }
+                    if (player->stats.partners.frontPower > player->stats.partners.frontHp) {
+                        stars -= player->stats.partners.frontPower - player->stats.partners.frontHp;
+                    }
+                }
+                if (walkNum == 7) {
+                    if (!(player->stats.partners.backPower < other->stats.partners.frontHp + other->star)) {
+                        return 0;
+                    } else if (other->stats.partners.frontID == PARTNER_BOO &&
+                               !(player->stats.partners.backPower < stars + player->stats.partners.backHp)) {
+                        return 1;
+                    }
+                    return 0;
+                }
+                if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+                    if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                        return !(player->stats.partners.frontHp + player->star > other->stats.partners.frontPower);
+                    }
+                    if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+                        return 1;
+                    }
+                }
+                return 0;
+            }
+            if (walkNum == 1) {
+                return 0;
+            }
+            if (other->cidx < 8) {
+                return 0;
+            }
+            if (other->stats.partners.frontPower == 0) {
+                return 0;
+            }
+            if (walkNum != 6) {
+                return 0;
+            }
+            if (other->stats.partners.frontID == PARTNER_BOO &&
+                !(player->stats.partners.backPower < player->stats.partners.backHp + player->star)) {
+                return 0;
+            }
+            return 1;
+        case 2:
+            if ((other->rev & 1) || other->nlink == 0) {
+                if (other->cidx > table[walkNum]) {
+                    return 0;
+                }
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 1;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 1;
+                }
+                if (player->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                    if (!(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)) {
+                        return 1;
+                    }
+                } else if (!(player->stats.partners.frontPower < other->star + other->stats.partners.backHp)) {
+                    return 1;
+                }
+                if (other->stats.partners.frontID == PARTNER_BOO) {
+                    if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                        return !(player->stats.partners.frontPower < other->stats.partners.frontHp + other->star);
+                    }
+                    return 1;
+                }
+                if (player->stats.partners.frontPower != 0 || other->stats.partners.frontPower != 0 ||
+                    player->stats.partners.frontID == PARTNER_BOB_OMB) {
+                    return 1;
+                }
+                return 0;
+            }
+            if (other->cidx > table[walkNum]) {
+                if (walkNum == 2 && player->stats.partners.frontPoweredUp != 2) {
+                    if (func_800F8980_name_81(curIndex) == 0) {
+                        coins = 100;
+                    } else {
+                        coins = (GwPlayer[curIndex].coin - 5) / (func_800F8980_name_81(curIndex) * 2);
+                    }
+                } else {
+                    if (func_800F8980_name_81(curIndex) == 0) {
+                        coins = 100;
+                    } else {
+                        coins = (GwPlayer[curIndex].coin - 5) / (func_800F8980_name_81(curIndex) * 2);
+                    }
+                }
+                if (coins >= 4 && player->stats.partners.frontPower != 0) {
+                    return 1;
+                }
+                return 0;
+            }
+            if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                return 1;
+            }
+            if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                return 1;
+            }
+            if (player->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                if (!(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)) {
+                    return 1;
+                }
+            } else if (!(player->stats.partners.frontPower < other->star + other->stats.partners.backHp)) {
+                return 1;
+            }
+            if (other->stats.partners.backID == PARTNER_BOO) {
+                return 0;
+            }
+            if (walkNum == 6) {
+                return 1;
+            }
+            if (other->cidx == table[walkNum]) {
+                if (player->stats.partners.frontPower == 0 && walkNum == 1) {
+                    return 0;
+                }
+                return 1;
+            }
+            if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                return 0;
+            }
+            if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                return 0;
+            }
+            if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                if (player->stats.partners.frontHp + player->star > other->stats.partners.frontPower) {
+                    return 0;
+                }
+            } else if (player->star + player->stats.partners.backHp > other->stats.partners.frontPower) {
+                return 0;
+            }
+            return 0;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_801147FC_duel01);
 
@@ -4219,7 +4517,284 @@ s32 func_80115850_duel01(void) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_801159F8_duel01);
+s32 func_801159F8_duel01(void) {
+    s32 curIndex = MBDGetCurrentPlayerIndex();
+    s32 otherIndex = (s16)(MBDGetCurrentPlayerIndex() ^ 1);
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *other = MBDGetPlayerStruct(otherIndex);
+    s32 walkNum = mbWalkNum;
+    u8 table[6];
+    s32 stars;
+    s32 coins;
+
+    memcpy(table, D_80119410_duel01, sizeof(table));
+    switch (other->clink) {
+        case 1:
+            if (other->cidx == walkNum - 6) {
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 1;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 1;
+                }
+                if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD)
+                        ? !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)
+                        : !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
+                    return 1;
+                }
+                if (other->stats.partners.backID == PARTNER_BOO &&
+                    !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                    return 0;
+                }
+                if (func_800F8980_name_81(curIndex) == 0) {
+                    coins = 100;
+                } else {
+                    coins = (GwPlayer[curIndex].coin - 5) / func_800F8980_name_81(curIndex);
+                }
+                if (coins >= 4 && player->stats.partners.frontPower != 0) {
+                    return 1;
+                }
+                return 0;
+            }
+            if (other->cidx < walkNum - 6) {
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 1;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 1;
+                }
+                if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD)
+                        ? !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)
+                        : !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
+                    return 1;
+                }
+                if (other->stats.partners.backID == PARTNER_BOO &&
+                    !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                    return 0;
+                }
+                if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+                    if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                        return 0;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                        return 0;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                        return player->stats.partners.frontHp + player->star > other->stats.partners.frontPower;
+                    }
+                }
+                return 0;
+            }
+            if (walkNum == 6) {
+                if (func_800F8980_name_81(curIndex) == 0) {
+                    coins = 100;
+                } else {
+                    coins = (GwPlayer[curIndex].coin - 5) / func_800F8980_name_81(curIndex);
+                }
+                if (func_800EFE20_name_81(100.0f) < 30 && coins > 0) {
+                    return 1;
+                }
+                return 0;
+            }
+            if (walkNum != 1) {
+                return 0;
+            }
+            if (other->cidx >= 6) {
+                if (player->stats.partners.backID == PARTNER_CHOMP && other->star < 2) {
+                    return 0;
+                }
+                if (player->stats.partners.backID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 0;
+                }
+                if (player->stats.partners.backID == PARTNER_MR_BLIZZARD) {
+                    if (!(other->stats.partners.backHp + other->star > player->stats.partners.backPower)) {
+                        return 0;
+                    }
+                } else if (player->stats.partners.backPower > other->stats.partners.frontHp + other->star) {
+                    return 0;
+                }
+                if (other->stats.partners.frontID == PARTNER_BOO &&
+                    !(player->stats.partners.backPower < player->star + player->stats.partners.backHp)) {
+                    return 1;
+                }
+                return 0;
+            }
+            if (other->stats.partners.frontPower == 0) {
+                return 0;
+            }
+            if (func_800F8980_name_81(curIndex) == 0) {
+                coins = 100;
+            } else {
+                coins = (GwPlayer[curIndex].coin - 5) / func_800F8980_name_81(curIndex);
+            }
+            return coins >= 4;
+        case 0:
+            if (other->cidx == walkNum - 1) {
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB) {
+                    return 0;
+                }
+                if (other->stats.partners.backID != PARTNER_BOO) {
+                    return 0;
+                }
+                if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                    return player->stats.partners.frontPower < other->stats.partners.backHp + other->star;
+                }
+                return 0;
+            }
+            if (other->cidx < walkNum - 1) {
+                stars = player->star;
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 0;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 0;
+                }
+                if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD)
+                        ? !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)
+                        : !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
+                    return 0;
+                }
+                if (other->stats.partners.backID == PARTNER_BOO) {
+                    if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                        return 1;
+                    }
+                    if (player->stats.partners.frontPower > player->stats.partners.frontHp) {
+                        stars -= player->stats.partners.frontPower - player->stats.partners.frontHp;
+                    }
+                }
+                if (walkNum == 5) {
+                    if (!(player->stats.partners.backPower < other->stats.partners.frontHp + other->star)) {
+                        return 0;
+                    } else if (other->stats.partners.frontID == PARTNER_BOO &&
+                               !(player->stats.partners.backPower < stars + player->stats.partners.backHp)) {
+                        return 1;
+                    }
+                    return 0;
+                }
+                if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+                    if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                        return !(player->stats.partners.frontHp + player->star > other->stats.partners.frontPower);
+                    }
+                    if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+                        return 1;
+                    }
+                }
+                return 0;
+            }
+            if (walkNum == 1) {
+                return 0;
+            }
+            if (other->cidx < 8) {
+                return 0;
+            }
+            if (other->stats.partners.frontID != PARTNER_BOB_OMB && other->stats.partners.frontPower == 0) {
+                return 0;
+            }
+            if (walkNum != 6) {
+                return 0;
+            }
+            if (other->stats.partners.frontID == PARTNER_BOO &&
+                !(player->stats.partners.backPower < player->stats.partners.backHp + player->star)) {
+                return 0;
+            }
+            return 1;
+        case 2:
+            if (!(other->rev & 1) && other->nlink != 0) {
+                if (other->cidx < table[walkNum]) {
+                    return 0;
+                }
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 1;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 1;
+                }
+                if (player->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                    if (!(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)) {
+                        return 1;
+                    }
+                } else if (!(player->stats.partners.frontPower < other->star + other->stats.partners.backHp)) {
+                    return 1;
+                }
+                if (other->stats.partners.frontID == PARTNER_BOO) {
+                    if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                        return !(player->stats.partners.frontPower < other->stats.partners.frontHp + other->star);
+                    }
+                    return 1;
+                }
+                if (player->stats.partners.frontPower != 0 || other->stats.partners.frontPower != 0 ||
+                    player->stats.partners.frontID == PARTNER_BOB_OMB) {
+                    return 1;
+                }
+                return 0;
+            }
+            if (other->cidx < table[walkNum]) {
+                if (walkNum == 4 && player->stats.partners.frontPoweredUp != 2) {
+                    if (func_800F8980_name_81(curIndex) == 0) {
+                        coins = 100;
+                    } else {
+                        coins = (GwPlayer[curIndex].coin - 5) / (func_800F8980_name_81(curIndex) * 2);
+                    }
+                } else {
+                    if (func_800F8980_name_81(curIndex) == 0) {
+                        coins = 100;
+                    } else {
+                        coins = (GwPlayer[curIndex].coin - 5) / (func_800F8980_name_81(curIndex) * 2);
+                    }
+                }
+                if (coins >= 4 && player->stats.partners.frontPower != 0) {
+                    return 1;
+                }
+                return 0;
+            }
+            if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                return 1;
+            }
+            if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                return 1;
+            }
+            if (player->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                if (!(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)) {
+                    return 1;
+                }
+            } else if (!(player->stats.partners.frontPower < other->star + other->stats.partners.backHp)) {
+                return 1;
+            }
+            if (other->stats.partners.backID == PARTNER_BOO) {
+                return 0;
+            }
+            if (walkNum == 6) {
+                return 1;
+            }
+            if (other->cidx == table[walkNum]) {
+                if (player->stats.partners.frontPower == 0 && walkNum == 1) {
+                    return 0;
+                }
+                return 1;
+            }
+            if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                return 0;
+            }
+            if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                return 0;
+            }
+            if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                if (player->stats.partners.frontHp + player->star > other->stats.partners.frontPower) {
+                    return 0;
+                }
+            } else if (player->star + player->stats.partners.backHp > other->stats.partners.frontPower) {
+                return 0;
+            }
+            return 0;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80116484_duel01);
 

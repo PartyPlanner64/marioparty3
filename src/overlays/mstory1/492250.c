@@ -38,6 +38,10 @@ extern Vec D_80115B20_mstory1;
 extern const Vec D_801150F0_mstory1;
 extern Vec D_80115B38_mstory1;
 extern const Vec D_80115108_mstory1;
+extern Vec D_80115B08_mstory1;
+extern const Vec D_801150D8_mstory1;
+extern Vec D_80115B14_mstory1;
+extern const Vec D_801150E4_mstory1;
 
 void func_80106B14_mstory1(omObjData *obj, const Vec *pos, s32 frames);
 s32 func_80106AFC_mstory1(s32 character);
@@ -46,6 +50,9 @@ void func_801068B0_mstory1(s16 model, s16 animSlot, s16 anim);
 void func_80107220_mstory1(s16 model);
 void func_8010CAD8_mstory1(omObjData *obj);
 void func_8010DD70_mstory1(omObjData *obj);
+void func_8010E4C4_mstory1(void);
+void func_8010E4CC_mstory1(omObjData *obj);
+void func_8010E80C_mstory1(void);
 void func_80110248_mstory1(s32 index, s32 seNo);
 void func_8011032C_mstory1(s32 index);
 void func_80106984_mstory1(void);
@@ -208,7 +215,43 @@ void func_8010E12C_mstory1(omObjData *obj) {
     D_80115A30_mstory1[1].func = func_8010CAD8_mstory1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/492250", func_8010E29C_mstory1);
+void func_8010E29C_mstory1(void) {
+    omObjData *obj;
+
+    obj = omAddObj(0x14, 4, 8, -1, NULL);
+    D_80115A30_mstory1[2].obj = obj;
+    D_80115A30_mstory1[2].unk_08 = 0;
+    D_80115A30_mstory1[2].unk_0C = 0;
+    if (func_80106AFC_mstory1(3) == 0) {
+        obj->model[1] = func_8000B108_main(0x400A0, 0x2B9);
+        obj->model[2] = Hu3DModelLink(D_80115B50_mstory1);
+        func_8000B460_main(obj, 0, 0x40000);
+        func_8000B460_main(obj, 1, 0x1D0059);
+        func_8000B460_main(obj, 2, 0x1D005A);
+    } else {
+        obj->model[1] = func_8000B108_main(0x300A0, 0x2B9);
+        obj->model[2] = Hu3DModelLink(D_80115B50_mstory1);
+        func_8000B460_main(obj, 0, 0x30000);
+        func_8000B460_main(obj, 1, 0x1D0046);
+        func_8000B460_main(obj, 2, 0x1D0047);
+    }
+    func_8001C5B4_main(obj->model[1], obj->motion[1]);
+    func_8001C814_main(obj->model[1], 2, 2);
+    obj->trans.x = 0.0f;
+    obj->trans.y = 0.0f;
+    obj->trans.z = 0.0f;
+    Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
+    Hu3DModelRotSet(obj->model[1], 0.0f, 340.0f, 0.0f);
+    D_80115B08_mstory1 = D_801150D8_mstory1;
+    Hu3DModelPosSet(obj->model[1], D_80115B08_mstory1.x, D_80115B08_mstory1.y, D_80115B08_mstory1.z);
+    Hu3DModelPosSet(obj->model[2], D_80115B08_mstory1.x, -5.0f, D_80115B08_mstory1.z);
+    omPrcSetDestructor(0, func_8010E4C4_mstory1);
+    D_80115A30_mstory1[2].func = func_8010E4CC_mstory1;
+    while (1) {
+        D_80115A30_mstory1[2].func(obj);
+        HuPrcVSleep();
+    }
+}
 
 void func_8010E4C4_mstory1(void) {
 }
@@ -261,7 +304,39 @@ void func_8010E4CC_mstory1(omObjData *obj) {
     D_80115A30_mstory1[2].func = func_8010CAD8_mstory1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/492250", func_8010E5FC_mstory1);
+void func_8010E5FC_mstory1(void) {
+    omObjData *obj;
+
+    obj = omAddObj(0x14, 4, 8, -1, NULL);
+    D_80115A30_mstory1[3].obj = obj;
+    D_80115A30_mstory1[3].unk_08 = 0;
+    D_80115A30_mstory1[3].unk_0C = 0;
+    obj->model[1] = func_8000B108_main(0xA002F, 0x2B9);
+    obj->model[2] = Hu3DModelLink(D_80115B50_mstory1);
+    Hu3DModelScaleSet(obj->model[2], 3.0f, 1.0f, 3.0f);
+    func_8000B460_main(obj, 0, 0xA0030);
+    func_8000B460_main(obj, 1, 0xA0035);
+    func_8000B460_main(obj, 2, 0xA0032);
+    func_8000B460_main(obj, 3, 0x1D0035);
+    func_8001C5B4_main(obj->model[1], obj->motion[1]);
+    func_8001C814_main(obj->model[1], 2, 2);
+    func_8001C258_main(obj->model[1], 4, 4);
+    func_8001C258_main(obj->model[2], 4, 4);
+    obj->trans.x = 0.0f;
+    obj->trans.y = 0.0f;
+    obj->trans.z = 0.0f;
+    Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
+    Hu3DModelRotSet(obj->model[1], 0.0f, 90.0f, 0.0f);
+    D_80115B14_mstory1 = D_801150E4_mstory1;
+    Hu3DModelPosSet(obj->model[1], D_80115B14_mstory1.x, D_80115B14_mstory1.y, D_80115B14_mstory1.z);
+    Hu3DModelPosSet(obj->model[2], D_80115B14_mstory1.x, -5.0f, D_80115B14_mstory1.z);
+    omPrcSetDestructor(0, func_8010E80C_mstory1);
+    D_80115A30_mstory1[3].func = func_8010CAD8_mstory1;
+    while (1) {
+        D_80115A30_mstory1[3].func(obj);
+        HuPrcVSleep();
+    }
+}
 
 void func_8010E80C_mstory1(void) {
 }

@@ -4169,7 +4169,55 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_801147FC_duel01);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/duel01/3D8AC0", D_801193E8_duel01);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80115850_duel01);
+s32 func_80115850_duel01(void) {
+    s32 otherIndex = (s16)(MBDGetCurrentPlayerIndex() ^ 1);
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *otherPlayer = MBDGetPlayerStruct(otherIndex);
+    s32 walk = mbWalkNum;
+    u8 table[6];
+
+    memcpy(table, D_801193E8_duel01, sizeof(table));
+    if ((otherPlayer->rev & 1) || otherPlayer->nlink == 0) {
+        if (otherPlayer->cidx == table[walk]) {
+            return 1;
+        }
+        return otherPlayer->cidx <= table[walk];
+    }
+    if (otherPlayer->cidx >= table[walk]) {
+        return 1;
+    }
+    if (otherPlayer->stats.partners.frontPower >= player->star + player->stats.partners.backHp) {
+        return 0;
+    }
+    if (otherPlayer->stats.partners.frontPower < player->stats.partners.frontPower) {
+        return 1;
+    }
+    if (player->stats.partners.frontPower == 0) {
+        return 0;
+    }
+    switch (GwPlayer[MBDGetCurrentPlayerIndex()].chr) {
+        case 4:
+        case 5:
+        case 6:
+            if (func_800EFE20_name_81(100.0f) < 80) {
+                return 1;
+            }
+            break;
+        case 0:
+        case 3:
+        case 7:
+            if (func_800EFE20_name_81(100.0f) < 50) {
+                return 1;
+            }
+            break;
+        default:
+            if (func_800EFE20_name_81(100.0f) < 20) {
+                return 1;
+            }
+            break;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_801159F8_duel01);
 
@@ -4177,7 +4225,55 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80116484_duel01);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/duel01/3D8AC0", D_80119410_duel01);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80117480_duel01);
+s32 func_80117480_duel01(void) {
+    s32 otherIndex = (s16)(MBDGetCurrentPlayerIndex() ^ 1);
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *otherPlayer = MBDGetPlayerStruct(otherIndex);
+    s32 walk = mbWalkNum;
+    u8 table[6];
+
+    memcpy(table, D_80119410_duel01, sizeof(table));
+    if (!(otherPlayer->rev & 1) && otherPlayer->nlink != 0) {
+        if (otherPlayer->cidx == table[walk]) {
+            return 1;
+        }
+        return otherPlayer->cidx >= table[walk];
+    }
+    if (otherPlayer->cidx <= table[walk]) {
+        return 1;
+    }
+    if (otherPlayer->stats.partners.frontPower >= player->star + player->stats.partners.backHp) {
+        return 0;
+    }
+    if (otherPlayer->stats.partners.frontPower < player->stats.partners.frontPower) {
+        return 1;
+    }
+    if (player->stats.partners.frontPower == 0) {
+        return 0;
+    }
+    switch (GwPlayer[MBDGetCurrentPlayerIndex()].chr) {
+        case 4:
+        case 5:
+        case 6:
+            if (func_800EFE20_name_81(100.0f) < 80) {
+                return 1;
+            }
+            break;
+        case 0:
+        case 3:
+        case 7:
+            if (func_800EFE20_name_81(100.0f) < 50) {
+                return 1;
+            }
+            break;
+        default:
+            if (func_800EFE20_name_81(100.0f) < 20) {
+                return 1;
+            }
+            break;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80117624_duel01);
 

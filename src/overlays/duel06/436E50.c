@@ -150,6 +150,10 @@ void func_8010E350_duel06(void);
 void func_8010EAD0_duel06(void);
 void func_8010E95C_duel06(s16);
 extern s16 D_80114D68_duel06[];
+extern s16 D_80114D72_duel06[];
+extern s16 D_801144F0_duel06[];
+extern f32 D_801144FC_duel06[];
+extern s16 D_8011471C_duel06[];
 void func_800FF640_name_81(s32);
 f32 func_800D76D0_name_81(Vec *);
 s32 func_800E88FC_name_81(void);
@@ -2719,7 +2723,28 @@ void func_8010E90C_duel06(void) {
     Hu3DMotionSpeedSet(D_80114D60_duel06->omObj1->model[0], 1.0f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_8010E95C_duel06);
+void func_8010E95C_duel06(s16 index) {
+    s16 model;
+    SpaceData *space;
+
+    if (D_80114D68_duel06[index] == -1) {
+        if (index == 0) {
+            model = D_80114D68_duel06[0] = func_8000B108_main(0x130153, 0x4026A9);
+            D_80114D72_duel06[0] = func_8000B5BC_main(0x130154);
+            func_8001C954_main(model);
+            func_8001F974_main(model, D_80114D72_duel06[0]);
+            func_8001C814_main(model, 2, 1);
+            Hu3DModelCameraSet(model, 1);
+            func_8001C514_main(model);
+        } else {
+            model = D_80114D68_duel06[index] = Hu3DModelLink(D_80114D68_duel06[0]);
+        }
+        Hu3DModelScaleSet(model, 0.1f, 0.1f, 0.1f);
+        space = MBDMasuGet(D_801144F0_duel06[index]);
+        Hu3DModelPosSet(model, space->coords.x, space->coords.y, space->coords.z);
+        Hu3DModelRotSet(model, 0.0f, D_801144FC_duel06[index], 0.0f);
+    }
+}
 
 void func_8010EAD0_duel06(void) {
     s32 i;
@@ -2735,7 +2760,21 @@ void func_8010EAD0_duel06(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_8010EBAC_duel06);
+void func_8010EBAC_duel06(void) {
+    HuAudFXPlay(0x1ED);
+    if (GwSystem.boardData.halfWordBytes[0] != 0) {
+        func_8001C814_main(D_80114D68_duel06[0], 5, 0);
+        while (Hu3DData[D_80114D68_duel06[0]].motTime != D_800CCF58_main[Hu3DData[D_80114D68_duel06[0]].motId].unk02) {
+            HuPrcVSleep();
+        }
+    } else {
+        func_8001C814_main(D_80114D68_duel06[0], 1, 4);
+        while (Hu3DData[D_80114D68_duel06[0]].motTime != 0.0f) {
+            HuPrcVSleep();
+        }
+    }
+    HuPrcSleep(5);
+}
 
 s32 func_8010ED04_duel06(void) {
     GW_SYSTEM *sys = &GwSystem;
@@ -4238,9 +4277,72 @@ void func_801140A0_duel06(s32 playerIndex) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_80114174_duel06);
+void func_80114174_duel06(void) {
+    Vec pos;
+    Vec rot;
+    s16 spaceIndex = func_800EA6A4_name_81();
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    SpaceData *space;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_80114324_duel06);
+    func_800F3880_name_81(-1, -1, 2);
+    func_800EB7BC_name_81(&rot);
+    func_800EBC60_name_81(&player->player_obj->rot, &rot, &player->player_obj->rot, 8);
+    HuPrcSleep(8);
+    func_800F74E4_name_81(-1);
+    for (i = 0; i < 5; i++) {
+        if (D_8011471C_duel06[i] == spaceIndex) {
+            break;
+        }
+    }
+    space = MBDMasuGet(D_801144F0_duel06[i]);
+    HuVecCopy3F(&pos, &player->player_obj->coords);
+    func_800FC888_name_81(4);
+    func_800FC8C4_name_81(&pos);
+    HuPrcChildLink(HuPrcCurrentGet(), func_800EC1E4_name_81(&pos, &space->coords, &pos, 4.0f));
+    HuPrcChildWatch();
+    func_8010EBAC_duel06();
+    GwSystem.boardData.halfWordBytes[0] ^= 1;
+    func_801140A0_duel06(0);
+    func_801140A0_duel06(1);
+    Duel_SwapPartnerPositions(0);
+    Duel_SwapPartnerPositions(1);
+    HuPrcChildLink(HuPrcCurrentGet(), func_800EC1E4_name_81(&pos, &player->player_obj->coords, &pos, 4.0f));
+    HuPrcChildWatch();
+    func_800FC888_name_81(1);
+    func_800F75EC_name_81(-1);
+    func_800EAFC4_name_81(0x2300);
+}
+
+void func_80114324_duel06(void) {
+    s8 link[2];
+    Vec pos[3];
+    s32 playerIndex = (s8)(GwSystem.current_player_index ^ 1);
+    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    SpaceData *space;
+
+    func_800E9F4C_name_81(0x17, &link[0], &link[1]);
+    func_800ECD0C_name_81(playerIndex, link[0], link[1]);
+    player->rev = 0;
+    player->nnlink = -1;
+    player->nnidx = -1;
+    if (GwSystem.boardData.halfWordBytes[0] != 0) {
+        func_801140A0_duel06(playerIndex);
+    }
+    space = MBDMasuGet(0x17);
+    HuVecAdd(&pos[0], &space->coords, &MBDMasuGet(0x1C)->coords);
+    HuVecMulScalar(&pos[0], 0.5f, &pos[0]);
+    HuVecCopy3F(&pos[1], &pos[0]);
+    HuVecCopy3F(&pos[2], &pos[0]);
+    if (GwSystem.boardData.halfWordBytes[0] != 0) {
+        pos[1].x += 12.0f;
+        pos[2].x -= 12.0f;
+    } else {
+        pos[1].x -= 12.0f;
+        pos[2].x += 12.0f;
+    }
+    func_800E27D4_name_81(playerIndex, &pos[0], &pos[1], &pos[2]);
+}
 
 void func_80114474_duel06(void) {
 }

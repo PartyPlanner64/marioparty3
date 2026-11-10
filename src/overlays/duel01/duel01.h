@@ -54,6 +54,8 @@ typedef struct Duel01SwayWork {
 extern s16 omovlevtno;
 f32 func_800D76D0_name_81(Vec *);
 s32 func_800E88FC_name_81(void);
+// Defined in ovl_81_name with a u8 return, but callers here use the full register without masking.
+s32 func_800FD498_name_81(void);
 extern s32 D_80119470_duel01;
 extern s32 D_80119474_duel01;
 extern s32 D_80119478_duel01;

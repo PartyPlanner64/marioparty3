@@ -6361,8 +6361,11 @@ s32 func_801187B8_duel04(void) {
 
 #ifdef NON_MATCHING
 // Only diff: the four loop guards before the -2 inputs are beqz instead of
-// blez (same issue as func_80119A30_duel04). GCC proves count >= 0 from its
-// constant assignments; the original kept the signed compare.
+// blez (same issue as func_80119A30_duel04). combine folds `0 < count` to
+// `count != 0` because every set of count is a nonnegative constant
+// (set_nonzero_bits_and_sign_copies). The guard stays blez only if count is
+// live at function entry (uninitialized on some path) or has a non-constant
+// set at combine time, and neither shows up in the target asm.
 void func_80118850_duel04(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
     s32 masuId = MBDMasuLinkMasuIdGet(player->blink, player->bidx);
@@ -6628,8 +6631,11 @@ void func_80119910_duel04(void) {
 
 #ifdef NON_MATCHING
 // Only diff: the loop guard before the -2 inputs is beqz instead of blez. GCC
-// proves count >= 0 from its constant assignments; the original kept the
-// signed compare, so count is probably set or typed differently.
+// proves count >= 0 from its constant assignments (see func_80118850_duel04).
+// count must be s16 with `count++`. An s32 count lets jump.c turn
+// `count = 2; if (...) count = 3;` into store-flag code (sltu/negu/andi/ori).
+// But a narrow count whose sign is unknown keeps sll/sra extensions that the
+// target lacks.
 void func_80119A30_duel04(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
     s32 playerIdx = MBDGetCurrentPlayerIndex();

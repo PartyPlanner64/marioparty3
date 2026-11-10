@@ -4140,7 +4140,7 @@ s32 func_8011454C_duel03(void) {
     GW_PLAYER *other = MBDGetPlayerStruct(otherIndex);
     s32 walkNum = mbWalkNum;
     s32 stars;
-    s32 hp;
+    s32 ret;
     s32 unused[10]; // unreferenced; pads the stack frame to 0x48
 
     if (other->cidx >= 7 && other->cidx <= 13) {
@@ -4170,12 +4170,9 @@ s32 func_8011454C_duel03(void) {
     if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
         return 1;
     }
-    if (player->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
-        hp = other->stats.partners.frontHp;
-    } else {
-        hp = other->stats.partners.backHp;
-    }
-    if (!(hp + other->star > player->stats.partners.frontPower)) {
+    if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD)
+            ? !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)
+            : !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
         return 1;
     }
     if (other->stats.partners.backID == PARTNER_BOO) {
@@ -4187,12 +4184,12 @@ s32 func_8011454C_duel03(void) {
         }
     }
     if (walkNum == 3) {
+        ret = 1;
         if (player->stats.partners.backPower < other->stats.partners.frontHp + other->star &&
-            other->stats.partners.frontID == PARTNER_BOO &&
-            !(player->stats.partners.backPower < stars + player->stats.partners.backHp)) {
-            return 0;
+            other->stats.partners.frontID == PARTNER_BOO) {
+            ret = player->stats.partners.backPower < stars + player->stats.partners.backHp;
         }
-        return 1;
+        return ret;
     }
     if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
         if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
@@ -4230,9 +4227,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_80114D80_duel03);
 INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_801152E0_duel03);
 
 #ifdef NON_MATCHING
-// Remaining diffs are register allocation only: a few short-lived compare
-// operands get v0 instead of v1/a0 (hp + star sum, the walkNum == 5 block,
-// and the tail's second frontPower check), which changes delay slot filling.
+// Remaining diffs: in the walkNum == 5 block the target reloads backPower for
+// the second compare (this code keeps it in a2), and the tail's second
+// frontPower check gets v0 instead of v1, which changes delay slot filling.
 s32 func_8011580C_duel03(void) {
     s32 curIndex = MBDGetCurrentPlayerIndex();
     s32 otherIndex = (s16)(MBDGetCurrentPlayerIndex() ^ 1);
@@ -4240,7 +4237,7 @@ s32 func_8011580C_duel03(void) {
     GW_PLAYER *other = MBDGetPlayerStruct(otherIndex);
     s32 walkNum = mbWalkNum;
     s32 stars;
-    s32 hp;
+    s32 ret;
     s32 unused[10]; // unreferenced; pads the stack frame to 0x48
 
     if (other->cidx >= 0x16 && other->cidx <= 0x1C) {
@@ -4270,12 +4267,9 @@ s32 func_8011580C_duel03(void) {
     if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
         return 1;
     }
-    if (player->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
-        hp = other->stats.partners.frontHp;
-    } else {
-        hp = other->stats.partners.backHp;
-    }
-    if (!(hp + other->star > player->stats.partners.frontPower)) {
+    if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD)
+            ? !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)
+            : !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
         return 1;
     }
     if (other->stats.partners.backID == PARTNER_BOO) {
@@ -4287,12 +4281,12 @@ s32 func_8011580C_duel03(void) {
         }
     }
     if (walkNum == 5) {
+        ret = 1;
         if (player->stats.partners.backPower < other->stats.partners.frontHp + other->star &&
-            other->stats.partners.frontID == PARTNER_BOO &&
-            !(player->stats.partners.backPower < stars + player->stats.partners.backHp)) {
-            return 0;
+            other->stats.partners.frontID == PARTNER_BOO) {
+            ret = player->stats.partners.backPower < stars + player->stats.partners.backHp;
         }
-        return 1;
+        return ret;
     }
     if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
         if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
@@ -4323,10 +4317,6 @@ s32 func_8011580C_duel03(void) {
 INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_8011580C_duel03);
 #endif
 
-#ifdef NON_MATCHING
-// Remaining diffs are register allocation only (same blocker as
-// func_8011580C_duel03): in both hp + star compares, the target puts the sum in
-// v0 and frontPower/compare result in v1; this code swaps them.
 s32 func_80115B18_duel03(void) {
     s32 curIndex = MBDGetCurrentPlayerIndex();
     s32 otherIndex = MBDGetCurrentPlayerIndex() ^ 1;
@@ -4334,7 +4324,6 @@ s32 func_80115B18_duel03(void) {
     GW_PLAYER *other = MBDGetPlayerStruct(otherIndex);
     s32 walkNum = mbWalkNum;
     s32 stars;
-    s32 hp;
     s32 coins;
 
     if (other->cidx >= 0x16 && other->cidx <= 0x1C) {
@@ -4359,11 +4348,10 @@ s32 func_80115B18_duel03(void) {
             return 1;
         }
         if (player->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
-            hp = other->stats.partners.frontHp;
-        } else {
-            hp = other->stats.partners.backHp;
-        }
-        if (!(hp + other->star > player->stats.partners.frontPower)) {
+            if (!(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)) {
+                return 1;
+            }
+        } else if (!(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
             return 1;
         }
         if (other->stats.partners.backID == PARTNER_BOO) {
@@ -4422,11 +4410,10 @@ s32 func_80115B18_duel03(void) {
                 return 1;
             }
             if (player->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
-                hp = other->stats.partners.frontHp;
-            } else {
-                hp = other->stats.partners.backHp;
-            }
-            if (!(hp + other->star > player->stats.partners.frontPower)) {
+                if (!(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)) {
+                    return 1;
+                }
+            } else if (!(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
                 return 1;
             }
             if (other->stats.partners.backID == PARTNER_BOO) {
@@ -4466,9 +4453,6 @@ s32 func_80115B18_duel03(void) {
     }
     return coins >= 2;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_80115B18_duel03);
-#endif
 
 void func_80116000_duel03(s16 space) {
     Vec target;

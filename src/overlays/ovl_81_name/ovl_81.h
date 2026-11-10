@@ -284,6 +284,8 @@ Process* func_800EC1E4_name_81(Vec*, Vec*, Vec*, f32);
 u32 func_800EFA8C_name_81(Object*, s16, s16);
 void func_800EFABC_name_81(void*);
 void func_800EFB00_name_81(Object*);
+void func_800F0378_name_81(Object *obj, char *hookName, s16 model);
+void func_800EB804_name_81(Object *obj);
 void func_800FB0B8_name_81(Object*, s32, s32);
 void func_800F57B0_name_81(s32);
 void func_800F5E2C_name_81(s32);

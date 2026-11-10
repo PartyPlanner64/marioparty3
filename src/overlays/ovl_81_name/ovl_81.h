@@ -299,6 +299,7 @@ void func_800DD2BC_name_81(s32 model);
 void func_800DD2DC_name_81(s32 model, Vec *pos);
 s32 func_800DD3B4_name_81(s32 model);
 Process *func_800DCB04_name_81(s32, s32, Vec *, f32, s32);
+Process *func_800DCE10_name_81(s32, Vec *, Vec *, f32, s32);
 void func_800FB0B8_name_81(Object*, s32, s32);
 void func_800F57B0_name_81(s32);
 void func_800F5E2C_name_81(s32);

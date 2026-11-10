@@ -270,6 +270,10 @@ void func_8010EDFC_mstory5(omObjData *obj);
 void func_8010F02C_mstory5(omObjData *obj);
 void func_8010F0B8_mstory5(omObjData *obj);
 void func_8010D214_mstory5(void);
+void func_8010D594_mstory5(omObjData *obj);
+void func_8010E648_mstory5(omObjData *obj);
+void func_8010B6F8_mstory5(omObjData *obj);
+void func_8010D7D8_mstory5(omObjData *obj);
 void func_80113974_mstory5(void);
 void func_80113D2C_mstory5(void);
 void func_80113E58_mstory5(void);
@@ -1744,7 +1748,141 @@ void func_8010B77C_mstory5(void) {
 void func_8010B9CC_mstory5(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010B9D4_mstory5);
+void func_8010B9D4_mstory5(omObjData *obj) {
+    s16 model = obj->model[1];
+    omObjData *obj3 = D_801151F0_mstory5[3].obj;
+    omObjData *obj7 = D_801151F0_mstory5[7].obj;
+    omObjData *obj0 = D_801151F0_mstory5[0].obj;
+    omObjData *obj1 = D_801151F0_mstory5[1].obj;
+    Vec rot;
+    Vec pos;
+    Vec vel;
+    f32 scale;
+    f32 shadowScale;
+    f32 t;
+
+    func_8001C258_main(model, HU3D_ATTR_DISPOFF, 0);
+    func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, 0);
+    func_8010D214_mstory5();
+    HuAudSeqPlay(0x21);
+    HuAudFXPlay(0x29D);
+    func_80106A20_mstory5();
+    func_80106A74_mstory5(func_80106B30_mstory5(0) == 0 ? 0x5A55 : 0x5B49);
+    func_80106A50_mstory5();
+    D_801151F0_mstory5[7].func = func_8010D594_mstory5;
+    Hu3DMotionShiftSet(obj3->model[1], Hu3DData[obj3->motion[0]].motId, 0, 10, 2);
+    HuPrcSleep(40);
+    func_80107228_mstory5(obj3, 0.0f, -90.0f, 0.0f, 10);
+    Hu3DMotionShiftSet(obj3->model[1], Hu3DData[obj3->motion[1]].motId, 0, 10, 2);
+    func_8010F14C_mstory5(3, 31);
+    func_80106FC8_mstory5(obj3, Hu3DData[obj3->model[1]].pos.x - 50.0f, Hu3DData[obj3->model[1]].pos.y, Hu3DData[obj3->model[1]].pos.z, 10);
+    func_8010F240_mstory5(3);
+    Hu3DMotionShiftSet(obj3->model[1], Hu3DData[obj3->motion[0]].motId, 0, 10, 2);
+    while (!(D_801151F0_mstory5[7].unk_08 & 1)) {
+        HuPrcVSleep();
+    }
+    func_80106FC8_mstory5(obj, 300.0f, 0.0f, 380.0f, 30);
+    Hu3DMotionShiftSet(model, Hu3DData[obj->motion[2]].motId, 0, 10, 0);
+    func_80107254_mstory5(model);
+    Hu3DMotionShiftSet(model, Hu3DData[obj->motion[0]].motId, 0, 10, 2);
+    func_801068E4_mstory5(obj->model[1], D_80115380_mstory5, D_8011537A_mstory5);
+    func_80107228_mstory5(obj3, 0.0f, 90.0f, 0.0f, 10);
+    Hu3DMotionShiftSet(obj3->model[1], Hu3DData[obj3->motion[7]].motId, 0, 10, 0);
+    HuAudFXPlay(0x2B3);
+    func_80107254_mstory5(obj3->model[1]);
+    Hu3DMotionShiftSet(obj3->model[1], Hu3DData[obj3->motion[0]].motId, 0, 10, 2);
+    Hu3DMotionShiftSet(obj3->model[1], Hu3DData[obj3->motion[8]].motId, 0, 10, 0);
+    HuPrcSleep(3);
+    func_8001C814_main(obj3->model[1], 1, 1);
+    HuPrcSleep(10);
+    func_8001C814_main(obj3->model[1], 1, 0);
+    HuPrcSleep(6);
+    HuAudFXPlay(0x21D);
+    D_801152C8_mstory5.func = func_8010E648_mstory5;
+    D_801151F0_mstory5[3].func = func_8010B6F8_mstory5;
+    Hu3DMotionTimeSet(obj0->model[4], 0.0f);
+    Hu3DModelPosSet(obj0->model[4], 180.0f, 0.0f, 480.0f);
+    func_8001C258_main(obj0->model[4], HU3D_ATTR_DISPOFF, 0);
+    D_801151F0_mstory5[1].func = func_80109F48_mstory5;
+    Hu3DMotionShiftSet(obj7->model[1], Hu3DData[obj7->motion[5]].motId, 0, 10, 2);
+    D_801151F0_mstory5[7].func = func_8010D7D8_mstory5;
+    pos.x = Hu3DData[model].pos.x;
+    pos.y = Hu3DData[model].pos.y;
+    pos.z = Hu3DData[model].pos.z;
+    rot.x = Hu3DData[model].rot.x;
+    rot.y = Hu3DData[model].rot.y;
+    rot.z = Hu3DData[model].rot.z;
+    scale = 1.0f;
+    shadowScale = 3.0f;
+    vel.x = -111.666664f;
+    vel.y = 66.666664f;
+    vel.z = -100.0f;
+    t = 0.0f;
+    while (TRUE) {
+        pos.x += vel.x;
+        pos.y += vel.y;
+        pos.z += vel.z;
+        vel.x *= 0.85f;
+        vel.y *= 0.85f;
+        vel.z *= 0.85f;
+        Hu3DModelPosSet(model, pos.x, pos.y, pos.z);
+        Hu3DModelPosSet(obj->model[2], pos.x, 0.0f, pos.z);
+        rot.z += 2.25f;
+        Hu3DModelRotSet(model, rot.x, rot.y, rot.z);
+        Hu3DModelScaleSet(model, scale, scale, scale);
+        scale = vel.z / -100.0f;
+        Hu3DModelScaleSet(obj->model[2], shadowScale, 1.0f, shadowScale);
+        shadowScale -= 0.5f;
+        if (shadowScale < 0.0f) {
+            shadowScale = 0.0f;
+        }
+        if (t >= 20.0f) {
+            break;
+        }
+        t += 1.0f;
+        HuPrcVSleep();
+    }
+    func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelPosSet(obj->model[3], Hu3DData[model].pos.x, Hu3DData[model].pos.y, Hu3DData[model].pos.z);
+    func_8001C258_main(obj->model[3], HU3D_ATTR_DISPOFF, 0);
+    HuAudFXPlay(0x21E);
+    while (!(D_801151F0_mstory5[4].unk_08 & 0x10)) {
+        HuPrcVSleep();
+    }
+    HuPrcSleep(35);
+    D_801151F0_mstory5[7].unk_08 |= 2;
+    HuPrcSleep(50);
+    func_80107228_mstory5(obj3, 0.0f, 0.0f, 0.0f, 10);
+    func_80017954_main(obj3->model[1], 2, 7, D_8011538A_mstory5[2]);
+    Hu3DMotionShiftSet(obj3->model[1], Hu3DData[obj3->motion[4]].motId, 0, 10, 0);
+    func_80107254_mstory5(obj3->model[1]);
+    HuAudFXPlay(0x27C);
+    Hu3DMotionShiftSet(obj3->model[1], Hu3DData[obj3->motion[5]].motId, 0, 10, 2);
+    HuPrcSleep(20);
+    func_80107228_mstory5(obj3, 0.0f, -90.0f, 0.0f, 20);
+    HuPrcSleep(10);
+    func_80107228_mstory5(obj1, 0.0f, -30.0f, 0.0f, 10);
+    func_80106A20_mstory5();
+    func_80106A74_mstory5(func_80106B30_mstory5(0) == 0 ? 0x5A58 : 0x5B4C);
+    func_80106A50_mstory5();
+    func_80107228_mstory5(obj1, 0.0f, 0.0f, 0.0f, 10);
+    HuPrcSleep(60);
+    func_80107228_mstory5(obj7, 0.0f, 20.0f, 0.0f, 10);
+    Hu3DMotionShiftSet(D_801151F0_mstory5[7].obj->model[1], Hu3DData[D_801151F0_mstory5[7].obj->motion[2]].motId, 0, 10, 2);
+    func_80106A20_mstory5();
+    func_80106A74_mstory5(func_80106B30_mstory5(0) == 0 ? 0x5A59 : 0x5B4D);
+    func_80106A50_mstory5();
+    Hu3DMotionShiftSet(obj7->model[1], Hu3DData[obj7->motion[5]].motId, 0, 10, 2);
+    func_80017954_main(obj3->model[1], 2, 7, D_8011538A_mstory5[0]);
+    func_80107228_mstory5(obj3, 0.0f, 0.0f, 0.0f, 10);
+    Hu3DMotionShiftSet(obj3->model[1], Hu3DData[obj3->motion[13]].motId, 0, 10, 0);
+    func_80107254_mstory5(obj3->model[1]);
+    Hu3DMotionShiftSet(obj3->model[1], Hu3DData[obj3->motion[0]].motId, 0, 10, 2);
+    func_80107228_mstory5(obj3, 0.0f, 90.0f, 0.0f, 10);
+    D_801151F0_mstory5[4].unk_08 |= 2;
+    D_801151F0_mstory5[4].func = func_801085D8_mstory5;
+}
 
 void func_8010C4B8_mstory5(void) {
     omObjData *obj;

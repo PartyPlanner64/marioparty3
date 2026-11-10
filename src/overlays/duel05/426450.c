@@ -151,7 +151,6 @@ void func_8010E1C4_duel05(void);
 extern void func_80105CD0_duel05(void);
 extern void func_80106318_duel05(void);
 extern void func_8010E7D0_duel05(void);
-void func_800ECD88_name_81(s16 playerIdx, s16 nlink, s16 nidx);
 extern omObjData *D_801163BC_duel05;
 extern Object *D_801163C8_duel05;
 extern Object *D_801163D0_duel05;

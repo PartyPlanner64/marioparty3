@@ -57,7 +57,7 @@ void func_800EA760_name_81(void);
 void func_800ECD0C_name_81(s16, s16, s16);
 void func_800EB708_name_81(Vec *, Vec *, Vec *);
 void func_80105CC0_duel01(void); // probably takes object as arg
-void func_800EBF2C_name_81(Vec *, Vec *, Vec *);
+Process *func_800EBF2C_name_81(Vec *, Vec *, Vec *, s32);
 void func_80106308_duel01(void);
 void func_80089A20_main(Vec *, s32);
 void func_800F38DC_name_81(s32, s32, s32);

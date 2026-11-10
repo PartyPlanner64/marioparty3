@@ -145,6 +145,7 @@ void func_800FCF50_name_81(s32, s32);
 void func_800D8E34_name_81(Object*);
 void func_800D8E88_name_81(Object*);
 void func_800D8F3C_name_81(Object*);
+void func_800DCC8C_name_81(s32, Vec *, Vec *, f32, s32, f32);
 void func_800EA8DC_name_81(void);
 void func_800EA97C_name_81(void);
 void func_800EA7D4_name_81(void);

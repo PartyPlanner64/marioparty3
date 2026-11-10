@@ -251,7 +251,43 @@ void func_80106B14_mstory1(omObjData *obj, const Vec *pos, s32 frames) {
     func_80106B30_mstory1(obj, pos, frames, 1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_80106B30_mstory1);
+void func_80106B30_mstory1(omObjData *obj, const Vec *pos, s32 frames, s32 arg3) {
+    Vec start;
+    Vec diff;
+    Vec step;
+    Vec cur;
+    s16 model = obj->model[1];
+    f32 i;
+
+    start.x = Hu3DData[model].pos.x;
+    start.y = Hu3DData[model].pos.y;
+    start.z = Hu3DData[model].pos.z;
+    diff.x = pos->x - start.x;
+    diff.y = pos->y - start.y;
+    diff.z = pos->z - start.z;
+    if (arg3 != 0) {
+        Hu3DModelRotSet(model, 0.0f, -(atan2df(diff.z, diff.x) - 90.0f), 0.0f);
+    }
+    i = frames;
+    step.x = diff.x / i;
+    step.y = diff.y / i;
+    step.z = diff.z / i;
+    for (i = 0.0f; i < (f32)frames; i += 1.0f) {
+        cur.x = i * step.x + start.x;
+        cur.y = i * step.y + start.y;
+        cur.z = i * step.z + start.z;
+        Hu3DModelPosSet(model, cur.x, cur.y, cur.z);
+        if (obj->model[2] >= 0) {
+            Hu3DModelPosSet(obj->model[2], cur.x, -5.0f, cur.z);
+        }
+        HuPrcVSleep();
+    }
+    Hu3DModelPosSet(model, pos->x, pos->y, pos->z);
+    if (obj->model[2] >= 0) {
+        Hu3DModelPosSet(obj->model[2], pos->x, -5.0f, pos->z);
+    }
+    HuPrcVSleep();
+}
 
 void func_80106D64_mstory1(omObjData *obj, Vec *pos, s32 frames) {
     func_80106D80_mstory1(obj, pos, frames, 1);

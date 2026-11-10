@@ -584,7 +584,40 @@ void func_80111FA4_mstory3(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory3/4B9A30", func_8011204C_mstory3);
+void func_8011204C_mstory3(omObjData *obj) {
+    f32 rotY;
+    f32 ofs;
+    s16 i;
+
+    if (D_80115CB0_mstory3[3].unk_08 == 0) {
+        HuPrcSleep(30);
+    }
+    rotY = Hu3DData[obj->model[1]].rot.y;
+    for (i = 0; i < 10; i++) {
+        ofs = sindf(i * 9.0f) * 120.0f;
+        Hu3DData[obj->model[1]].rot.y = rotY + ofs;
+        HuPrcVSleep();
+    }
+    rotY = Hu3DData[obj->model[1]].rot.y;
+    for (i = 0; i < 15; i++) {
+        ofs = sindf(i * 4.5f) * 240.0f;
+        Hu3DData[obj->model[1]].rot.y = rotY - ofs;
+        HuPrcVSleep();
+    }
+    rotY = Hu3DData[obj->model[1]].rot.y;
+    for (i = 0; i < 10; i++) {
+        ofs = sindf(i * 9.0f) * 120.0f;
+        Hu3DData[obj->model[1]].rot.y = rotY + ofs;
+        HuPrcVSleep();
+    }
+    if (D_80115CB0_mstory3[3].unk_08 == 0) {
+        D_80115CB0_mstory3[3].unk_08 = 0;
+        D_80115CB0_mstory3[3].func = func_80111CB8_mstory3;
+    } else {
+        D_80115CB0_mstory3[3].unk_08 = 0;
+        D_80115CB0_mstory3[3].func = func_8010D774_mstory3;
+    }
+}
 
 void func_801122BC_mstory3(void) {
 }
@@ -712,7 +745,31 @@ void func_8011289C_mstory3(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory3/4B9A30", func_80112944_mstory3);
+void func_80112944_mstory3(omObjData *obj) {
+    f32 rotY;
+    f32 ofs;
+    s16 i;
+
+    rotY = Hu3DData[obj->model[1]].rot.y;
+    for (i = 0; i < 15; i++) {
+        ofs = sindf(i * 6.0f) * 30.0f;
+        Hu3DData[obj->model[1]].rot.y = rotY + ofs;
+        HuPrcVSleep();
+    }
+    rotY = Hu3DData[obj->model[1]].rot.y;
+    for (i = 0; i < 30; i++) {
+        ofs = sindf(i * 3.0f) * 60.0f;
+        Hu3DData[obj->model[1]].rot.y = rotY - ofs;
+        HuPrcVSleep();
+    }
+    rotY = Hu3DData[obj->model[1]].rot.y;
+    for (i = 0; i < 15; i++) {
+        ofs = sindf(i * 6.0f) * 30.0f;
+        Hu3DData[obj->model[1]].rot.y = rotY + ofs;
+        HuPrcVSleep();
+    }
+    D_80115CB0_mstory3[4].func = func_8010D774_mstory3;
+}
 
 void func_80112B80_mstory3(void) {
 }

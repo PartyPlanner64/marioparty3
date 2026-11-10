@@ -33,6 +33,11 @@ typedef struct Duel01CamShakeWork {
     /* 0x08 */ char unk_08[0x8];
 } Duel01CamShakeWork; // sizeof 0x10
 
+typedef struct Duel01WinColorWork {
+    /* 0x00 */ s32 window;
+    /* 0x04 */ char unk_04[0xC];
+} Duel01WinColorWork; // sizeof 0x10
+
 typedef struct Duel01PartnerAttackWork {
     /* 0x00 */ GW_PLAYER *player;
     /* 0x04 */ Object *obj;
@@ -58,6 +63,7 @@ extern Object *D_80119498_duel01;
 extern Object *D_801194A0_duel01;
 extern Object *D_801194AC_duel01[5];
 extern s32 D_8011875C_duel01;
+extern s32 D_8011889C_duel01;
 void func_800EA760_name_81(void);
 void func_800ECD0C_name_81(s16, s16, s16);
 void func_800EB708_name_81(Vec *, Vec *, Vec *);

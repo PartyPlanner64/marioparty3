@@ -519,7 +519,47 @@ s16 func_8010ED20_duel01(s32 index) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010EDA0_duel01);
 
+#ifdef NON_MATCHING
+// Frame is 8 bytes smaller than the target, and the green abs() is negated
+// out of place (bgez/move/negu) instead of in place (bltzl negu) then copied.
+void func_8010EFBC_duel01(void) {
+    Duel01WinColorWork *work = HuPrcCurrentGet()->user_data;
+    s32 window;
+    s32 red = 0x43;
+    u8 green;
+    u8 blue;
+    s16 temp;
+    s32 temp2;
+    f32 blueAngle = 0.0f;
+    f32 greenAngle = 90.0f;
+
+    window = work->window;
+    HuWinBGColSet(work->window, 0x43, 0x80, 1);
+    while (TRUE) {
+        if (D_8011889C_duel01 != 0) {
+            temp = sindf(greenAngle) * 128.0f;
+            if (temp < 0) {
+                temp = -temp;
+            }
+            green = temp;
+            greenAngle += 6.0f;
+            if (greenAngle > 360.0f) {
+                greenAngle -= 360.0f;
+            }
+            temp2 = (s16)(sindf(blueAngle) * 64.0f);
+            blue = (temp2 < 0) ? -temp2 : temp2;
+            blueAngle += 3.0f;
+            if (blueAngle > 360.0f) {
+                blueAngle -= 360.0f;
+            }
+            HuWinBGColSet(window, (u8)red, green, blue);
+        }
+        HuPrcVSleep();
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010EFBC_duel01);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010F12C_duel01);
 

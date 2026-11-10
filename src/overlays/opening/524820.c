@@ -3783,10 +3783,10 @@ void opDemoStarWaitCreate(s32 index, s32 modelId, f32 x, f32 y, f32 z, f32 arg5,
 
 void func_801134FC_opening(s32 index, Vec *pos1, Vec *pos2, f32 scale, f32 angle) {
     func_80088800_main(D_801173BC_opening[index][0]->unk58, pos1->x, pos1->y, pos1->z);
-    func_80017CD0_main(D_801173BC_opening[index][0]->unk58, scale, 1.0f, scale);
+    mtxScaleCat(D_801173BC_opening[index][0]->unk58, scale, 1.0f, scale);
     func_800185A4_main(D_801173BC_opening[index][0]->unk58, angle);
     func_80088800_main(D_801173C0_opening[index][0]->unk58, pos2->x, pos2->y + 4.0f, pos2->z);
-    func_80017CD0_main(D_801173C0_opening[index][0]->unk58, scale, 1.0f, scale);
+    mtxScaleCat(D_801173C0_opening[index][0]->unk58, scale, 1.0f, scale);
     func_800185A4_main(D_801173C0_opening[index][0]->unk58, angle);
 }
 

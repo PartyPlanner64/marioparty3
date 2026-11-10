@@ -483,15 +483,15 @@ void func_80016C2C_main(HmfData *hmf, s16 nodeIdx, s16 target) {
 
     func_8008A070_main(mtx);
     if (node->pos.x != 0.0f || node->pos.y != 0.0f || node->pos.z != 0.0f) {
-        func_80017C10_main(mtx, node->pos.x, node->pos.y, node->pos.z);
+        mtxTransCat(mtx, node->pos.x, node->pos.y, node->pos.z);
         pushed = TRUE;
     }
     if (node->rot.x != 0.0f || node->rot.y != 0.0f || node->rot.z != 0.0f) {
-        func_80017D24_main(mtx, node->rot.x, node->rot.y, node->rot.z);
+        mtxRotCat(mtx, node->rot.x, node->rot.y, node->rot.z);
         pushed = TRUE;
     }
     if (node->scale.x != 1.0f || node->scale.y != 1.0f || node->scale.z != 1.0f) {
-        func_80017CD0_main(mtx, node->scale.x, node->scale.y, node->scale.z);
+        mtxScaleCat(mtx, node->scale.x, node->scale.y, node->scale.z);
         pushed = TRUE;
     }
     if (pushed) {
@@ -552,13 +552,13 @@ void func_80017128_main(s16 model, HmfModelSet *set, HuMtx4F mtx, s16 frame) {
     }
     func_8008A070_main(mtx);
     if (modelP->pos.x != 0.0f || modelP->pos.y != 0.0f || modelP->pos.z != 0.0f) {
-        func_80017C10_main(mtx, modelP->pos.x, modelP->pos.y, modelP->pos.z);
+        mtxTransCat(mtx, modelP->pos.x, modelP->pos.y, modelP->pos.z);
     }
     if (modelP->rot.x != 0.0f || modelP->rot.y != 0.0f || modelP->rot.z != 0.0f) {
-        func_80017D24_main(mtx, modelP->rot.x, modelP->rot.y, modelP->rot.z);
+        mtxRotCat(mtx, modelP->rot.x, modelP->rot.y, modelP->rot.z);
     }
     if (modelP->scale.x != 1.0f || modelP->scale.y != 1.0f || modelP->scale.z != 1.0f) {
-        func_80017CD0_main(mtx, modelP->scale.x, modelP->scale.y, modelP->scale.z);
+        mtxScaleCat(mtx, modelP->scale.x, modelP->scale.y, modelP->scale.z);
     }
     guMtxCatF(set->unk_08[frame / set->unk_02], mtx, mtx);
 }

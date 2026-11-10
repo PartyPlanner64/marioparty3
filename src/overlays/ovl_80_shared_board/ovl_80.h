@@ -145,8 +145,8 @@
 // void func_800FC8A4_shared_board(void);
 // void Hu3DCameraSet(s16, Gfx**);
 // void func_800127C4_main(s16, Gfx**);
-// void func_80017C10_main(Mtx*, f32, f32, f32);
-// void func_80017CD0_main(Mtx*, f32, f32, f32);
+// void mtxTransCat(Mtx*, f32, f32, f32);
+// void mtxScaleCat(Mtx*, f32, f32, f32);
 // void func_800185A4_main(Mtx*, f32);
 // u16 func_8004D6AC_main(s32, s32, s32);
 // void func_8004D6E8_main(s16);

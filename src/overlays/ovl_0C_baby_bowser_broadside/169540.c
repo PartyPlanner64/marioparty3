@@ -519,7 +519,7 @@ void func_8010B3B4_baby_bowser_broadside(void) {
             model->rot.x = CRot.x;
             model->rot.y = CRot.y;
             func_8010F878_baby_bowser_broadside(model->mtx[0]);
-            func_80017D24_main(model->mtx, 0.0f, 0.0f, CRot.z);
+            mtxRotCat(model->mtx, 0.0f, 0.0f, CRot.z);
             if (work->unk_04 & 1) {
                 if (work->unk_04 & 2) {
                     func_8010D590_baby_bowser_broadside((u16)work->unk_0C, func_80055194_main(work->unk_0A), (u16)work->unk_10, work->unk_20);

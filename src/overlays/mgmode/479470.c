@@ -158,7 +158,7 @@ void func_80112200_mgmode(void) {
         for (i = 0; i < 19; i++) {
             HuPrcVSleep();
             func_8002367C_main(node->unk58, D_8011B4D0_mgmode);
-            func_80017D24_main(node->unk58, 0.0f, i * 5, 0.0f);
+            mtxRotCat(node->unk58, 0.0f, i * 5, 0.0f);
         }
         func_80116ED4_mgmode(1, 10, 1, (void (*)(s16 *))-1);
         HuPrcSleep(5);
@@ -279,7 +279,7 @@ void func_80112200_mgmode(void) {
                     for (i = 0; i < 19; i++) {
                         HuPrcVSleep();
                         func_8002367C_main(node->unk58, D_8011B4D0_mgmode);
-                        func_80017D24_main(node->unk58, 0.0f, i * 5, 0.0f);
+                        mtxRotCat(node->unk58, 0.0f, i * 5, 0.0f);
                     }
                     func_80116ED4_mgmode(4, 20, 1, (void (*)(s16 *))-1);
                     D_80118EB1_mgmode = 1;

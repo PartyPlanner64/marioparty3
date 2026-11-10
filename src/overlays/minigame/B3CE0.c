@@ -617,7 +617,7 @@ void func_800E2780_minigame(omObjData *obj) {
         func_8008A070_main(data->unk18);
     }
     if (obj->rot.x != 0.0f || obj->rot.y != 0.0f || obj->rot.z != 0.0f) {
-        func_80017D24_main(data->unk18, obj->rot.x, obj->rot.y, obj->rot.z);
+        mtxRotCat(data->unk18, obj->rot.x, obj->rot.y, obj->rot.z);
     }
     if (data->unk06 & 0x100) {
         guMtxCatF(HmfModelData[model].mtx, data->unk18, data->unk18);
@@ -648,7 +648,7 @@ void func_800E28BC_minigame(HuMtx4F mtx, HuMtx4F result, Vec *pos, omObjData *ob
             func_8008A070_main(mtx);
         }
         if (rotX != 0.0f || rotY != 0.0f || rotZ != 0.0f) {
-            func_80017D24_main(mtx, rotX, rotY, rotZ);
+            mtxRotCat(mtx, rotX, rotY, rotZ);
         }
         if (data->unk06 & 0x100) {
             guMtxCatF(HmfModelData[model].mtx, mtx, mtx);

@@ -396,8 +396,8 @@ void func_800579E4_main(Gfx **gfx, HuSprite *sprite, s32 arg2) {
             transform[2][1] = transform[2][3] = transform[3][2] = 0.0f;
         transform[2][2] = transform[3][3] = 1.0f;
         func_8003521C_main(transform, sprite->unk_04 - 160.0f, 120.0f - sprite->unk_08, sprite->unk_20);
-        func_80017CD0_main(transform, scaleX, scaleY, 1.0f);
-        func_80017C10_main(transform, originX, originY, 0.0f);
+        mtxScaleCat(transform, scaleX, scaleY, 1.0f);
+        mtxTransCat(transform, originX, originY, 0.0f);
         func_800898F0_main(transform, &sprite->unk_140[D_800D2008_main]);
         gSPMatrix(gdl++, osVirtualToPhysical(&sprite->unk_140[D_800D2008_main]), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
     }

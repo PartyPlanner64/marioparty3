@@ -4,11 +4,11 @@
 #include "ultra64.h"
 #include "humath.h"
 
-void func_80017C10_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
-void func_80017CD0_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
-void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z);
+void mtxTransCat(HuMtx4F mtx, f32 x, f32 y, f32 z);
+void mtxScaleCat(HuMtx4F mtx, f32 x, f32 y, f32 z);
+void mtxRotCat(HuMtx4F mtx, f32 x, f32 y, f32 z);
 void func_80018044_main(HuMtx4F a, HuMtx4F b, HuMtx4F out);
-s16 func_800183A0_main(HuMtx4F src, HuMtx4F dst);
+s16 HmfInverseMtxF3X3(HuMtx4F src, HuMtx4F dst);
 s32 func_80018544_main(HuMtx4F src, HuMtx4F dst);
 void func_800185A4_main(HuMtx4F mtx, f32 angle);
 void func_8001866C_main(HuMtx4F mtx, f32 x, f32 y, f32 z);

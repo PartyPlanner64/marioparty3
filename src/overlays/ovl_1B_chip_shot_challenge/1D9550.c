@@ -1200,7 +1200,7 @@ void func_801094D8_chip_shot_challenge(omObjData *object) {
     D_8010A978_chip_shot_challenge = func_800202A8_main(D_8010A978_chip_shot_challenge);
     D_8010A97C_chip_shot_challenge = func_800202A8_main(D_8010A97C_chip_shot_challenge);
     object->rot.y = angle;
-    func_80017D24_main(HmfModelData[object->model[0]].mtx, D_8010A978_chip_shot_challenge, 0.0f, 0.0f);
+    mtxRotCat(HmfModelData[object->model[0]].mtx, D_8010A978_chip_shot_challenge, 0.0f, 0.0f);
     if (D_8010AAF0_chip_shot_challenge->trans.y < -100.0f ||
         (D_8010A838_chip_shot_challenge == 0.0f && D_8010A83C_chip_shot_challenge != 1)) {
         D_8010A840_chip_shot_challenge++;

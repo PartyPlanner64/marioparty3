@@ -735,7 +735,7 @@ void func_80023700_main(HmfData *arg0, s16 arg1) {
     } else {
         func_8008A070_main(mtx);
         if (node->pos.x != 0.0f || node->pos.y != 0.0f || node->pos.z != 0.0f) {
-            func_80017C10_main(mtx, node->pos.x, node->pos.y, node->pos.z);
+            mtxTransCat(mtx, node->pos.x, node->pos.y, node->pos.z);
             transformed = 1;
         }
         if (node->rot.x != 0.0f || node->rot.y != 0.0f || node->rot.z != 0.0f) {
@@ -743,9 +743,9 @@ void func_80023700_main(HmfData *arg0, s16 arg1) {
             transformed = 1;
         }
         if (node->scale.x != 1.0f || node->scale.y != 1.0f || node->scale.z != 1.0f) {
-            func_80017CD0_main(mtx, node->scale.x, node->scale.y, node->scale.z);
+            mtxScaleCat(mtx, node->scale.x, node->scale.y, node->scale.z);
             func_8008A070_main(temp);
-            func_80017CD0_main(temp, node->scale.x, node->scale.y, node->scale.z);
+            mtxScaleCat(temp, node->scale.x, node->scale.y, node->scale.z);
             D_800D5214_main++;
             func_80018044_main(temp, D_800D41B0_main[D_800D5214_main], D_800D41B0_main[D_800D5214_main + 1]);
             scaled = 1;
@@ -825,7 +825,7 @@ void func_80023AF8_main(HmfData *arg0, s16 arg1) {
         }
         if (node->scale.x != 1.0f || node->scale.y != 1.0f || node->scale.z != 1.0f) {
             if (transformed) {
-                func_80017CD0_main(mtx, node->scale.x, node->scale.y, node->scale.z);
+                mtxScaleCat(mtx, node->scale.x, node->scale.y, node->scale.z);
             } else {
                 func_80088700_main(mtx, node->scale.x, node->scale.y, node->scale.z);
             }
@@ -981,7 +981,7 @@ void func_80024354_main(HmfData *arg0, s16 arg1) {
         }
         if (node->scale.x != 1.0f || node->scale.y != 1.0f || node->scale.z != 1.0f) {
             if (transformed) {
-                func_80017CD0_main(mtx, node->scale.x, node->scale.y, node->scale.z);
+                mtxScaleCat(mtx, node->scale.x, node->scale.y, node->scale.z);
             } else {
                 func_80088700_main(mtx, node->scale.x, node->scale.y, node->scale.z);
             }
@@ -2318,7 +2318,7 @@ s32 func_8002C5B8_main(HmfData *hmf, s16 nodeIndex, s16 targetIndex) {
     changed = 0;
     guMtxIdentF(mtx);
     if (node->unk08.x != 0.0f || node->unk08.y != 0.0f || node->unk08.z != 0.0f) {
-        func_80017C10_main(mtx, node->unk08.x, node->unk08.y, node->unk08.z);
+        mtxTransCat(mtx, node->unk08.x, node->unk08.y, node->unk08.z);
         changed = 1;
     }
     if (node->unk14.x != 0.0f || node->unk14.y != 0.0f || node->unk14.z != 0.0f) {
@@ -2326,7 +2326,7 @@ s32 func_8002C5B8_main(HmfData *hmf, s16 nodeIndex, s16 targetIndex) {
         changed = 1;
     }
     if (node->scale.x != 1.0f || node->scale.y != 1.0f || node->scale.z != 1.0f) {
-        func_80017CD0_main(mtx, node->scale.x, node->scale.y, node->scale.z);
+        mtxScaleCat(mtx, node->scale.x, node->scale.y, node->scale.z);
         changed = 1;
     }
     if (changed) {
@@ -2428,7 +2428,7 @@ void func_8002CB6C_main(HmfData *hmf, s16 nodeIndex) {
     func_8008A070_main(mtx);
     if (hmf->unk8C == NULL) {
         if (node->unk08.x != 0.0f || node->unk08.y != 0.0f || node->unk08.z != 0.0f) {
-            func_80017C10_main(mtx, node->unk08.x, node->unk08.y, node->unk08.z);
+            mtxTransCat(mtx, node->unk08.x, node->unk08.y, node->unk08.z);
             changed = 1;
         }
         if (node->unk14.x != 0.0f || node->unk14.y != 0.0f || node->unk14.z != 0.0f) {
@@ -2437,7 +2437,7 @@ void func_8002CB6C_main(HmfData *hmf, s16 nodeIndex) {
         }
     }
     if (node->scale.x != 1.0f || node->scale.y != 1.0f || node->scale.z != 1.0f) {
-        func_80017CD0_main(mtx, node->scale.x, node->scale.y, node->scale.z);
+        mtxScaleCat(mtx, node->scale.x, node->scale.y, node->scale.z);
         scaled = 1;
         changed = 1;
     }
@@ -2474,7 +2474,7 @@ void func_8002CDF4_main(HmfData *hmf, s16 nodeIndex) {
     changed = 0;
     func_8008A070_main(mtx);
     if (node->basePos.x != 0.0f || node->basePos.y != 0.0f || node->basePos.z != 0.0f) {
-        func_80017C10_main(mtx, node->basePos.x, node->basePos.y, node->basePos.z);
+        mtxTransCat(mtx, node->basePos.x, node->basePos.y, node->basePos.z);
         changed = 1;
     }
     if (node->baseRot.x != 0.0f || node->baseRot.y != 0.0f || node->baseRot.z != 0.0f) {
@@ -2482,7 +2482,7 @@ void func_8002CDF4_main(HmfData *hmf, s16 nodeIndex) {
         changed = 1;
     }
     if (node->baseScale.x != 1.0f || node->baseScale.y != 1.0f || node->baseScale.z != 1.0f) {
-        func_80017CD0_main(mtx, node->baseScale.x, node->baseScale.y, node->baseScale.z);
+        mtxScaleCat(mtx, node->baseScale.x, node->baseScale.y, node->baseScale.z);
         scaled = 1;
         changed = 1;
     }

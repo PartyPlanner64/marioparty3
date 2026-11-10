@@ -973,8 +973,8 @@ void func_8010F33C_msetup(s16 model, Vec *worldPos, HuMtx4F nodeTransform) {
     HmfModel *entry = &HmfModelData[model];
 
     func_80088800_main(transform, entry->pos.x, entry->pos.y, entry->pos.z);
-    func_80017D24_main(transform, entry->rot.x, entry->rot.y, entry->rot.z);
-    func_80017CD0_main(transform, entry->scale.x, entry->scale.y, entry->scale.z);
+    mtxRotCat(transform, entry->rot.x, entry->rot.y, entry->rot.z);
+    mtxScaleCat(transform, entry->scale.x, entry->scale.y, entry->scale.z);
     func_80018044_main(nodeTransform, transform, combined);
     worldPos->x = combined[0][0] + combined[1][0] + combined[2][0] + combined[3][0];
     worldPos->y = combined[0][1] + combined[1][1] + combined[2][1] + combined[3][1];

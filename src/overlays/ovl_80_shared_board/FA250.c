@@ -1538,11 +1538,11 @@ static void MBMasuDraw(Gfx **arg0, Mtx *arg1, s32 arg2) {
                     }
                     temp_s0 = MBMasuGet(spaceId);
                     func_80089980_main(sp10, &sp5C[1]);
-                    func_80017C10_main(sp10, temp_s0->coords.x, temp_s0->coords.y, temp_s0->coords.z);
+                    mtxTransCat(sp10, temp_s0->coords.x, temp_s0->coords.y, temp_s0->coords.z);
                     if ((i == 0xD) && (var_s5 < D_801052B0_shared_board)) {
                         func_800185A4_main(sp10, D_80105290_shared_board[var_s5++]);
                     }
-                    func_80017CD0_main(sp10, temp_s0->rot.x, 1.0f, temp_s0->rot.z);
+                    mtxScaleCat(sp10, temp_s0->rot.x, 1.0f, temp_s0->rot.z);
                     temp_s0_3 = &MTXBuf[MTXBufNum++];
                     func_800898F0_main(sp10, temp_s0_3);
                     gSPMatrix((*gfxPos)++, OS_K0_TO_PHYSICAL(temp_s0_3), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);

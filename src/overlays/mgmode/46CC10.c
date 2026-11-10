@@ -284,7 +284,7 @@ void func_8010606C_mgmode(void) {
             for (i = 0; i < 19; i++) {
                 HuPrcVSleep();
                 func_8002367C_main(node->unk58, D_8011A848_mgmode);
-                func_80017D24_main(node->unk58, 0.0f, i * 5, 0.0f);
+                mtxRotCat(node->unk58, 0.0f, i * 5, 0.0f);
             }
             func_80116ED4_mgmode(18, 20, 1, (void (*)(s16 *))-1);
             func_8002367C_main(node->unk58, D_8011A848_mgmode);
@@ -300,7 +300,7 @@ void func_8010606C_mgmode(void) {
             for (i = 0; i < 19; i++) {
                 HuPrcVSleep();
                 func_8002367C_main(node->unk58, D_8011A888_mgmode);
-                func_80017D24_main(node->unk58, 0.0f, -i * 5, 0.0f);
+                mtxRotCat(node->unk58, 0.0f, -i * 5, 0.0f);
             }
             func_80116ED4_mgmode(20, 20, 1, (void (*)(s16 *))-1);
             func_8002367C_main(node->unk58, D_8011A888_mgmode);
@@ -409,7 +409,7 @@ void func_8010606C_mgmode(void) {
                         for (i = 0; i < 19; i++) {
                             HuPrcVSleep();
                             func_8002367C_main(node->unk58, D_8011A888_mgmode);
-                            func_80017D24_main(node->unk58, 0.0f, -i * 5, 0.0f);
+                            mtxRotCat(node->unk58, 0.0f, -i * 5, 0.0f);
                         }
                         func_80116ED4_mgmode(15, 20, 1, (void (*)(s16 *))-1);
                         omOvlHisChg(0, 0x69, 7, 0x84);
@@ -460,7 +460,7 @@ void func_8010606C_mgmode(void) {
                         for (i = 0; i < 19; i++) {
                             HuPrcVSleep();
                             func_8002367C_main(node->unk58, D_8011A848_mgmode);
-                            func_80017D24_main(node->unk58, 0.0f, i * 5, 0.0f);
+                            mtxRotCat(node->unk58, 0.0f, i * 5, 0.0f);
                         }
                         func_80116ED4_mgmode(14, 20, 1, (void (*)(s16 *))-1);
                         omOvlHisChg(0, 0x69, 6, 0x84);
@@ -925,7 +925,7 @@ void func_80108824_mgmode(s32 arg0) {
         for (i = 0; i < 11; i++) {
             HuPrcVSleep();
             func_8002367C_main(node->unk58, D_8011A808_mgmode);
-            func_80017D24_main(node->unk58, 0.0f, sindf(i * 9) * 117.0f, 0.0f);
+            mtxRotCat(node->unk58, 0.0f, sindf(i * 9) * 117.0f, 0.0f);
         }
         func_80116ED4_mgmode(6, 10, 1, (void (*)(s16 *))-1);
         func_80107D0C_mgmode(0x12000F, 160, 120);
@@ -934,7 +934,7 @@ void func_80108824_mgmode(s32 arg0) {
         for (i = 0; i < 11; i++) {
             HuPrcVSleep();
             func_8002367C_main(node->unk58, D_8011A808_mgmode);
-            func_80017D24_main(node->unk58, 0.0f, (1.0f - sindf(i * 9)) * 117.0f, 0.0f);
+            mtxRotCat(node->unk58, 0.0f, (1.0f - sindf(i * 9)) * 117.0f, 0.0f);
         }
     }
     func_8011822C_mgmode(D_80119158_mgmode);

@@ -528,7 +528,7 @@ void m257_UpdateBills(void) {
         model->rot.x = CRot.x;
         model->rot.y = CRot.y;
         m257_MakeIdentityMtx(model->mtx[0]);
-        func_80017D24_main(model->mtx, 0.0f, 0.0f, CRot.z);
+        mtxRotCat(model->mtx, 0.0f, 0.0f, CRot.z);
         if (bill->attr & BILL_ATTR_01) {
             if (bill->attr & BILL_ATTR_ANIM) {
                 func_8010CCD4_tick_tock_hop(bill->modelId, func_80055194_main(bill->unk08), bill->timer);

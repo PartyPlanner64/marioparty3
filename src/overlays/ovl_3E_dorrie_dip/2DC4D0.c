@@ -995,8 +995,8 @@ void func_80108A74_dorrie_dip(s16 model, char *hook, s16 time, Vec *pos) {
     func_80016B00_main(model, time, hook, &hookTransform);
     modelData = &HmfModelData[model];
     func_80088800_main(transform, modelData->pos.x, modelData->pos.y, modelData->pos.z);
-    func_80017D24_main(transform, modelData->rot.x, modelData->rot.y, modelData->rot.z);
-    func_80017CD0_main(transform, modelData->scale.x, modelData->scale.y, modelData->scale.z);
+    mtxRotCat(transform, modelData->rot.x, modelData->rot.y, modelData->rot.z);
+    mtxScaleCat(transform, modelData->scale.x, modelData->scale.y, modelData->scale.z);
     func_80018044_main(hookTransform, transform, result);
     pos->x = result[0][0] + result[1][0] + result[2][0] + result[3][0];
     pos->y = result[0][1] + result[1][1] + result[2][1] + result[3][1];

@@ -230,25 +230,25 @@ void func_8002087C_main(HmfModel *model, HuMtx4F mtx) {
     D_800C9940_main = model->attr;
     guMtxL2F(mtx, &D_800D10F4_main->mtxs[D_800D418E_main].lookAtMtx);
     if (model->pos.x != 0.0f || model->pos.y != 0.0f || model->pos.z != 0.0f) {
-        func_80017C10_main(mtx, model->pos.x, model->pos.y, model->pos.z);
+        mtxTransCat(mtx, model->pos.x, model->pos.y, model->pos.z);
     }
     if (model->rot.x != 0.0f || model->rot.y != 0.0f || model->rot.z != 0.0f) {
-        func_80017D24_main(mtx, model->rot.x, model->rot.y, model->rot.z);
+        mtxRotCat(mtx, model->rot.x, model->rot.y, model->rot.z);
     }
     if (model->scale.x != 1.0f || model->scale.y != 1.0f || model->scale.z != 1.0f) {
-        func_80017CD0_main(mtx, model->scale.x, model->scale.y, model->scale.z);
+        mtxScaleCat(mtx, model->scale.x, model->scale.y, model->scale.z);
     }
     func_80018044_main(model->mtx, mtx, mtx);
     node = model->hmf->unk68;
     guMtxIdentF(temp);
     if (node->unk08.x == 0.0f || node->unk08.y == 0.0f || node->unk08.z == 0.0f) {
-        func_80017C10_main(temp, node->unk08.x, node->unk08.y, node->unk08.z);
+        mtxTransCat(temp, node->unk08.x, node->unk08.y, node->unk08.z);
     }
     if (node->unk14.x == 0.0f || node->unk14.y == 0.0f || node->unk14.z == 0.0f) {
-        func_80017D24_main(temp, node->unk14.x, node->unk14.y, node->unk14.z);
+        mtxRotCat(temp, node->unk14.x, node->unk14.y, node->unk14.z);
     }
     if (node->scale.x != 1.0f || node->scale.y != 1.0f || node->scale.z != 1.0f) {
-        func_80017CD0_main(temp, node->scale.x, node->scale.y, node->scale.z);
+        mtxScaleCat(temp, node->scale.x, node->scale.y, node->scale.z);
     }
     guMtxCatF(temp, mtx, mtx);
     guMtxF2L(mtx, &MTXBuf[MTXBufNum]);

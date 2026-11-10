@@ -1268,7 +1268,7 @@ void func_80011F9C_main(HmfData *hmf) {
         D_800A0544_main = 0;
     }
     if (D_800B19B0_main[0x1C] == 0x45) {
-        hmf->unkD4 = func_80017D24_main;
+        hmf->unkD4 = mtxRotCat;
         hmf->unkD8 = func_80088910_main;
     } else {
         hmf->unkD4 = func_8001866C_main;

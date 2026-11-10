@@ -411,7 +411,7 @@ s32 func_8001A894_main(u32 flags, void *dl, s32 mode) {
             hmf->unk60->unk60 = NULL;
             hmf->unkB4 = NULL;
             hmf->unk0A = 0;
-            hmf->unkD4 = func_80017D24_main;
+            hmf->unkD4 = mtxRotCat;
             hmf->unkD8 = func_80088910_main;
             hmf->unk60->boundsMin[0] = hmf->unk60->boundsMin[1] = hmf->unk60->boundsMin[2] = -0x8000;
             hmf->unk60->boundsMax[0] = hmf->unk60->boundsMax[1] = hmf->unk60->boundsMax[2] = -0x8000;
@@ -644,13 +644,13 @@ void Hu3DExec(void *arg0, u16 arg1) {
             if (!(model->attr & 0x40000)) {
                 guMtxL2F(camMtx, &D_800D0444_main->lookAtMtx);
                 if (model->pos.x != 0.0f || model->pos.y != 0.0f || model->pos.z != 0.0f) {
-                    func_80017C10_main(camMtx, model->pos.x, model->pos.y, model->pos.z);
+                    mtxTransCat(camMtx, model->pos.x, model->pos.y, model->pos.z);
                 }
                 if (model->rot.x != 0.0f || model->rot.y != 0.0f || model->rot.z != 0.0f) {
-                    func_80017D24_main(camMtx, model->rot.x, model->rot.y, model->rot.z);
+                    mtxRotCat(camMtx, model->rot.x, model->rot.y, model->rot.z);
                 }
                 if (model->scale.x != 1.0f || model->scale.y != 1.0f || model->scale.z != 1.0f) {
-                    func_80017CD0_main(camMtx, model->scale.x, model->scale.y, model->scale.z);
+                    mtxScaleCat(camMtx, model->scale.x, model->scale.y, model->scale.z);
                     scaleMtx[0][0] = model->scale.x;
                     scaleMtx[1][1] = model->scale.y;
                     scaleMtx[2][2] = model->scale.z;
@@ -665,13 +665,13 @@ void Hu3DExec(void *arg0, u16 arg1) {
             } else {
                 func_8002367C_main(mtx, model->mtx);
                 if (model->pos.x != 0.0f || model->pos.y != 0.0f || model->pos.z != 0.0f) {
-                    func_80017C10_main(mtx, model->pos.x, model->pos.y, model->pos.z);
+                    mtxTransCat(mtx, model->pos.x, model->pos.y, model->pos.z);
                 }
                 if (model->rot.x != 0.0f || model->rot.y != 0.0f || model->rot.z != 0.0f) {
-                    func_80017D24_main(mtx, model->rot.x, model->rot.y, model->rot.z);
+                    mtxRotCat(mtx, model->rot.x, model->rot.y, model->rot.z);
                 }
                 if (model->scale.x != 1.0f || model->scale.y != 1.0f || model->scale.z != 1.0f) {
-                    func_80017CD0_main(mtx, model->scale.x, model->scale.y, model->scale.z);
+                    mtxScaleCat(mtx, model->scale.x, model->scale.y, model->scale.z);
                     scaleMtx[0][0] = model->scale.x;
                     scaleMtx[1][1] = model->scale.y;
                     scaleMtx[2][2] = model->scale.z;

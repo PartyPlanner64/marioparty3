@@ -2384,7 +2384,7 @@ s16 func_801152C4_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButto
             if (oldSelection >= 0) {
                 nodeMatrix = &nodes[oldSelection]->unk58;
                 func_8002367C_main(*nodeMatrix, matrices[oldSelection]);
-                func_80017CD0_main(*nodeMatrix, 1, 1, 1);
+                mtxScaleCat(*nodeMatrix, 1, 1, 1);
             }
             oldSelection = selection;
         }
@@ -2407,7 +2407,7 @@ s16 func_801152C4_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButto
             }
             nodeMatrix = &((HmfMotionNode *)func_8001D33C_main(model, (char *)D_8011A7F8_msetup))->unk58;
             func_8002367C_main(*nodeMatrix, matrix);
-            func_80017D24_main(*nodeMatrix, 0.0f, 0.0f, angle);
+            mtxRotCat(*nodeMatrix, 0.0f, 0.0f, angle);
         }
         phase += 12.0f;
         if (180.0f <= phase) {
@@ -2416,12 +2416,12 @@ s16 func_801152C4_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButto
         scale = sindf(phase) * 0.5f + 1.0f;
         nodeMatrix = &nodes[selection]->unk58;
         func_8002367C_main(*nodeMatrix, matrices[selection]);
-        func_80017CD0_main(*nodeMatrix, scale, scale, scale);
+        mtxScaleCat(*nodeMatrix, scale, scale, scale);
         HuPrcVSleep();
     }
     nodeMatrix = &nodes[oldSelection]->unk58;
     func_8002367C_main(*nodeMatrix, matrices[oldSelection]);
-    func_80017CD0_main(*nodeMatrix, 1, 1, 1);
+    mtxScaleCat(*nodeMatrix, 1, 1, 1);
     return selection;
 }
 
@@ -2538,7 +2538,7 @@ s16 func_80115A9C_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButto
                 HmfMotionNode *node = nodes[oldSelection];
                 nodeMatrix = &node->unk58;
                 func_8002367C_main(*nodeMatrix, matrices[oldSelection]);
-                func_80017CD0_main(*nodeMatrix, 1, 1, 1);
+                mtxScaleCat(*nodeMatrix, 1, 1, 1);
             }
             oldSelection = selection;
         }
@@ -2560,7 +2560,7 @@ s16 func_80115A9C_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButto
             }
             nodeMatrix = &((HmfMotionNode *)func_8001D33C_main(model, (char *)D_8011A7F8_msetup))->unk58;
             func_8002367C_main(*nodeMatrix, matrix);
-            func_80017D24_main(*nodeMatrix, 0.0f, 0.0f, angle);
+            mtxRotCat(*nodeMatrix, 0.0f, 0.0f, angle);
         }
         phase += 12.0f;
         if (180.0f <= phase) {
@@ -2569,12 +2569,12 @@ s16 func_80115A9C_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButto
         scale = sindf(phase) * 0.5f + 1.0f;
         nodeMatrix = &nodes[selection]->unk58;
         func_8002367C_main(*nodeMatrix, matrices[selection]);
-        func_80017CD0_main(*nodeMatrix, scale, scale, scale);
+        mtxScaleCat(*nodeMatrix, scale, scale, scale);
         HuPrcVSleep();
     }
     nodeMatrix = &nodes[oldSelection]->unk58;
     func_8002367C_main(*nodeMatrix, matrices[oldSelection]);
-    func_80017CD0_main(*nodeMatrix, 1, 1, 1);
+    mtxScaleCat(*nodeMatrix, 1, 1, 1);
     return selection;
 }
 
@@ -2635,13 +2635,13 @@ s16 func_80115EE0_msetup(MsetupMenuState *state) {
     message = 0;
     switch (D_8011A938_msetup) {
         case 0:
-            func_80017CD0_main(((HmfMotionNode *)func_8001D33C_main(linkedModel, (char *)D_8011A800_msetup))->unk58, 0, 0, 0);
+            mtxScaleCat(((HmfMotionNode *)func_8001D33C_main(linkedModel, (char *)D_8011A800_msetup))->unk58, 0, 0, 0);
             message = 0x1524;
             break;
         case 1:
-            func_80017CD0_main(((HmfMotionNode *)func_8001D33C_main(linkedModel, (char *)D_8011A7E0_msetup))->unk58, 0, 0, 0);
-            func_80017CD0_main(((HmfMotionNode *)func_8001D33C_main(linkedModel, (char *)D_8011A7E8_msetup))->unk58, 0, 0, 0);
-            func_80017CD0_main(((HmfMotionNode *)func_8001D33C_main(linkedModel, (char *)D_8011A7F0_msetup))->unk58, 0, 0, 0);
+            mtxScaleCat(((HmfMotionNode *)func_8001D33C_main(linkedModel, (char *)D_8011A7E0_msetup))->unk58, 0, 0, 0);
+            mtxScaleCat(((HmfMotionNode *)func_8001D33C_main(linkedModel, (char *)D_8011A7E8_msetup))->unk58, 0, 0, 0);
+            mtxScaleCat(((HmfMotionNode *)func_8001D33C_main(linkedModel, (char *)D_8011A7F0_msetup))->unk58, 0, 0, 0);
             message = 0x242E;
             break;
     }

@@ -2,14 +2,14 @@
 #include "humath.h"
 #include "game/hmfmath.h"
 
-void func_80017C10_main(HuMtx4F mtx, f32 x, f32 y, f32 z) {
+void mtxTransCat(HuMtx4F mtx, f32 x, f32 y, f32 z) {
     mtx[3][0] += x * mtx[0][0] + y * mtx[1][0] + z * mtx[2][0];
     mtx[3][1] += x * mtx[0][1] + y * mtx[1][1] + z * mtx[2][1];
     mtx[3][2] += x * mtx[0][2] + y * mtx[1][2] + z * mtx[2][2];
     mtx[3][3] += x * mtx[0][3] + y * mtx[1][3] + z * mtx[2][3];
 }
 
-void func_80017CD0_main(HuMtx4F mtx, f32 x, f32 y, f32 z) {
+void mtxScaleCat(HuMtx4F mtx, f32 x, f32 y, f32 z) {
     s32 i;
 
     for (i = 0; i < 3; i++) {
@@ -19,7 +19,7 @@ void func_80017CD0_main(HuMtx4F mtx, f32 x, f32 y, f32 z) {
     }
 }
 
-void func_80017D24_main(HuMtx4F mtx, f32 x, f32 y, f32 z) {
+void mtxRotCat(HuMtx4F mtx, f32 x, f32 y, f32 z) {
     f32 rot[3][3];
     f32 sx, cx;
     f32 sy, cy;
@@ -135,7 +135,7 @@ void func_80018044_main(HuMtx4F a, HuMtx4F b, HuMtx4F out) {
     }
 }
 
-s16 func_800183A0_main(HuMtx4F src, HuMtx4F dst) {
+s16 HmfInverseMtxF3X3(HuMtx4F src, HuMtx4F dst) {
     f32 c00 = src[1][1] * src[2][2] - src[1][2] * src[2][1];
     f32 c10 = src[1][2] * src[2][0] - src[1][0] * src[2][2];
     f32 c20 = src[1][0] * src[2][1] - src[1][1] * src[2][0];
@@ -162,7 +162,7 @@ s16 func_800183A0_main(HuMtx4F src, HuMtx4F dst) {
 s32 func_80018544_main(HuMtx4F src, HuMtx4F dst) {
     HuMtx4F inv;
 
-    if (!func_800183A0_main(src, inv)) {
+    if (!HmfInverseMtxF3X3(src, inv)) {
         guMtxIdentF(dst);
         return 0;
     }

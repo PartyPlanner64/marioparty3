@@ -82,7 +82,7 @@ extern Vec D_8011531C_mstory5;
 extern const Vec D_80114924_mstory5;
 extern const Vec D_80114C9C_mstory5;
 extern const Vec D_80114CA8_mstory5;
-extern UnkStoryObj D_801153A0_mstory5[8];
+extern UnkStoryObj D_801153A0_mstory5[9];
 extern Vec D_8011549C_mstory5;
 extern UnkMstory5Particle D_801154F8_mstory5[16];
 extern const Vec D_80114D44_mstory5;
@@ -2426,7 +2426,66 @@ void func_80111FE8_mstory5(omObjData *obj) {
     D_801153A0_mstory5[2].func = func_80110200_mstory5;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_80112104_mstory5);
+void func_80112104_mstory5(void) {
+    omObjData *obj;
+    void *data;
+    s16 first;
+    s16 spr;
+    s16 model;
+    f32 scale;
+    s32 i;
+
+    obj = omAddObj(20, 20, 1, -1, NULL);
+    D_801153A0_mstory5[8].obj = obj;
+    for (i = 0; i < 16; i++) {
+        if (i == 0) {
+            data = DataRead(0x1D0036);
+            first = spr = Hu3DSprModelCreate(data, 0xA89, 8);
+            DataClose(data);
+        } else {
+            spr = func_80014618_main(first, 8);
+        }
+        func_800147FC_main(spr, 0xF0, 0x40, 8);
+        func_80014794_main(spr, 0x80);
+        model = D_800CBB60_main[spr].modelId;
+        Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
+        Hu3DModelRotSet(model, 0.0f, 0.0f, 0.0f);
+        Hu3DModelScaleSet(model, 0.0f, 0.0f, 0.0f);
+        func_8001C2FC_main(model, 0x70000000, 0x70000000);
+        func_8001C814_main(model, 2, 2);
+        func_8001C258_main(model, 4, 4);
+        obj->model[i + 1] = model;
+        D_801154F8_mstory5[i].time = -10.0f;
+        D_801154F8_mstory5[i].pos.x = 0.0f;
+        D_801154F8_mstory5[i].pos.y = 0.0f;
+        D_801154F8_mstory5[i].pos.z = 0.0f;
+        D_801154F8_mstory5[i].vel.x = 0.0f;
+        D_801154F8_mstory5[i].vel.y = 0.0f;
+        D_801154F8_mstory5[i].vel.z = 0.0f;
+    }
+    D_801153A0_mstory5[8].func = func_80110200_mstory5;
+    while (TRUE) {
+        D_801153A0_mstory5[8].func(obj);
+        for (i = 0; i < 16; i++) {
+            if (D_801154F8_mstory5[i].time < 0.0f) {
+                continue;
+            }
+            func_8001C258_main(obj->model[i + 1], 4, 0);
+            scale = D_801154F8_mstory5[i].time / 40.0f * 3.0f + 1.0f;
+            Hu3DModelScaleSet(obj->model[i + 1], scale, scale, scale);
+            Hu3DModelPosSet(obj->model[i + 1], D_801154F8_mstory5[i].pos.x, D_801154F8_mstory5[i].pos.y, D_801154F8_mstory5[i].pos.z);
+            D_801154F8_mstory5[i].pos.x += D_801154F8_mstory5[i].vel.x;
+            D_801154F8_mstory5[i].pos.y += D_801154F8_mstory5[i].vel.y;
+            D_801154F8_mstory5[i].pos.z += D_801154F8_mstory5[i].vel.z;
+            D_801154F8_mstory5[i].time++;
+            if (D_801154F8_mstory5[i].time >= 40.0f) {
+                func_8001C258_main(obj->model[i + 1], 4, 4);
+                D_801154F8_mstory5[i].time = -10.0f;
+            }
+        }
+        HuPrcVSleep();
+    }
+}
 
 void func_80112514_mstory5(omObjData *obj) {
     Vec pos;

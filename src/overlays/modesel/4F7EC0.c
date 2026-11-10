@@ -83,6 +83,24 @@ typedef union UnkModeSelAngle {
     f32 angle;
 } UnkModeSelAngle; // sizeof 0x4
 
+// Summary of the saved party mode board, copied from the loaded save.
+typedef struct UnkModeSelBoardSave {
+    s32 chr[4];
+    s32 cpu[4];
+    s32 gameLength;
+    s32 currentTurn;
+    s32 totalTurns;
+} UnkModeSelBoardSave; // sizeof 0x2C
+
+// Summary of the saved story mode board, copied from the loaded save.
+typedef struct UnkModeSelStorySave {
+    s32 chr[2];
+    s32 cpu[2];
+    s32 gameLength;
+    s32 currentTurn;
+    s32 totalTurns;
+} UnkModeSelStorySave; // sizeof 0x1C
+
 extern f32 D_80110B20_modesel[][7];
 extern f32 D_80110B24_modesel[][7];
 extern f32 D_80110B28_modesel[][7];
@@ -128,6 +146,9 @@ extern HmfMotionNode *D_80110BD4_modesel;
 extern f32 D_8010F2BC_modesel;
 extern f32 D_8010F2C0_modesel;
 extern f32 D_8010F2C4_modesel;
+extern s32 D_80110B70_modesel[6];
+extern UnkModeSelBoardSave D_80110B88_modesel;
+extern UnkModeSelStorySave D_80110BB4_modesel;
 
 void func_801059D0_modesel(void);
 void func_80105C7C_modesel(void);
@@ -552,7 +573,28 @@ s32 func_80106F38_modesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 
     return window;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_801070A0_modesel);
+s32 func_801070A0_modesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
+    s16 window = HuWinCreate(x, y, width, height, 0, 8);
+
+    func_8005B63C_main(window, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
+    HuWinMesSpeedSet(window, 0);
+    func_80060144_main(window);
+    HuWinPriSet(window, 1);
+    HuWinActivePlayerSet(window, HUWIN_PLAYER_1);
+    HuWinMesPalSet(window, 5, 0, 176, 192);
+    HuWinMesPalSet(window, 7, 255, 255, 255);
+    HuWinMesPalSet(window, 0, 0, 0, 0);
+    HuWinMesPalSet(window, 3, 0, 0, 0);
+    HuWinMesPalSet(window, 2, 255, 64, 64);
+    HuWinMesPalSet(window, 4, 96, 255, 64);
+    HuWinMesPalSet(window, 6, 255, 255, 64);
+    func_8005C154_main(window, 192, 192, 0);
+    HuWinBGColSet(window, 255, 255, 255);
+    HuWinMesColSet(window, 6);
+    HuWinHomeClear(window);
+    HuWinMesSet(window, message, -1, -1);
+    return window;
+}
 
 s32 func_80107248_modesel(u32 message, s16 x, s16 y, s16 style) {
     s16 window = func_80060880_main(x, y, 19);
@@ -683,9 +725,64 @@ void func_8010791C_modesel(s32 arg0, s16 arg1) {
     HuWinPriSet(D_80110998_modesel[arg0][0], arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80107954_modesel);
+u16 func_80107954_modesel(s32 value) {
+    char text[0x100];
+    HmfData_UnkBC *camera;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80107B08_modesel);
+    HuPrcSleep(3);
+    while (1) {
+        if (D_800D5558_main[0] & (A_BUTTON | B_BUTTON | START_BUTTON | R_TRIG)) {
+            sprintf(text, "\n%d\n", value);
+            break;
+        }
+        if (D_800D5558_main[0] & Z_TRIG) {
+            camera = Hu3DData[gCameraList[0].unk4].hmf->unkBC;
+            sprintf(text, "POS:%4.2f,%4.2f,%4.2f", camera->unk08, camera->unk0C, camera->unk10);
+            print8(16, 180, text);
+            sprintf(text, "A T:%4.2f,%4.2f,%4.2f", camera->unk14, camera->unk18, camera->unk1C);
+            print8(16, 190, text);
+            sprintf(text, "U P:%4.2f,%4.2f,%4.2f", camera->unk20, camera->unk24, camera->unk28);
+            print8(16, 200, text);
+        } else {
+            sprintf(text, "%d", value);
+            print8(16, 220, text);
+        }
+        HuPrcVSleep();
+    }
+    return D_800D5558_main[0];
+}
+
+void func_80107B08_modesel(void) {
+    s16 i;
+    s16 count;
+    s16 pad;
+    s16 player;
+
+    for (i = 0; i < 4; i++) {
+        GwPlayer[i].pad = 0xFF;
+    }
+    for (i = 0, count = 0; i < 4; i++) {
+        if (CheckControllerRead(i)) {
+            GwPlayer[count].pad = i;
+            count++;
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        if (GwPlayer[i].pad == 0xFF) {
+            for (pad = 0; pad < 4; pad++) {
+                for (player = 0; player < 4; player++) {
+                    if (GwPlayer[player].pad == pad) {
+                        break;
+                    }
+                }
+                if (player == 4) {
+                    break;
+                }
+            }
+            GwPlayer[i].pad = pad;
+        }
+    }
+}
 
 void func_80107CB0_modesel(void) {
     func_80105C50_modesel();
@@ -874,7 +971,49 @@ f32 func_801094A8_modesel(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     return -(atan2df(arg3 - arg1, arg2 - arg0) - 90.0f);
 }
 
+#ifdef NON_MATCHING
+void func_801094F0_modesel(Vec *from, Vec *to, f32 t, Vec *out) {
+    f32 fromAngle;
+    f32 toAngle;
+    f32 endAngle;
+    f32 angle;
+
+    fromAngle = func_801094A8_modesel(0.0f, 0.0f, from->x, from->z);
+    if (fromAngle < 0.0f) {
+        fromAngle += 360.0f;
+    }
+    toAngle = func_801094A8_modesel(0.0f, 0.0f, to->x, to->z);
+    if (toAngle < 0.0f) {
+        toAngle += 360.0f;
+    }
+    if (-from->z * to->x + from->x * to->z > 0.0f) {
+        if (toAngle - fromAngle < 0.0f) {
+            endAngle = toAngle;
+        } else {
+            endAngle = toAngle - 360.0f;
+        }
+        angle = (endAngle - fromAngle) * t + fromAngle;
+        if (angle < 0.0f) {
+            angle += 360.0f;
+        }
+    } else {
+        if (0.0f < toAngle - fromAngle) {
+            endAngle = toAngle;
+        } else {
+            endAngle = toAngle + 360.0f;
+        }
+        angle = (endAngle - fromAngle) * t + fromAngle;
+        if (360.0f < angle) {
+            angle -= 360.0f;
+        }
+    }
+    out->x = sindf(angle);
+    out->y = 0.0f;
+    out->z = cosdf(angle);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_801094F0_modesel);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_801096D4_modesel);
 
@@ -1165,7 +1304,45 @@ void func_8010A62C_modesel(s32 arg0) {
     obj->work[1] = 0;
 }
 
+#ifdef NON_MATCHING
+void func_8010A674_modesel(omObjData *obj) {
+    s32 index = obj->work[0];
+    s32 timer = obj->work[1];
+    f32 bob;
+    f32 angle;
+    f32 diff;
+    Vec pos;
+    Vec base;
+    Vec camPos;
+    Vec camAt;
+    Vec camUp;
+    f32 x;
+    f32 y;
+    f32 z;
+
+    bob = sindf(timer * 1.4117647f);
+    HuVecCopy3F(&base, &D_80110CB0_modesel);
+    HuVecCopyXYZ(&pos, base.x, base.y + bob * 5.0f * 5.0f, base.z);
+    func_8010653C_modesel(index, pos.x, pos.y, pos.z);
+    timer++;
+    func_801089DC_modesel(&camPos, &camAt, &camUp);
+    func_80106618_modesel(10, &x, &y, &z);
+    angle = D_80110CD4_modesel;
+    diff = func_8010EC74_modesel(camPos.x - x, camPos.z - z);
+    diff -= angle;
+    if (diff < -2.0f) {
+        angle -= 2.0f;
+    }
+    angle = (angle < 0.0f) ? angle + 360.0f : angle;
+    angle = (diff > 2.0f) ? angle + 2.0f : angle;
+    angle = (angle > 360.0f) ? angle - 360.0f : angle;
+    D_80110CD4_modesel = angle;
+    func_801064D4_modesel(10, 0.0f, angle, 0.0f);
+    obj->work[1] = timer;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010A674_modesel);
+#endif
 
 void func_8010A84C_modesel(omObjData *obj) {
     Vec pos;
@@ -1414,7 +1591,50 @@ INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010BA70_modesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010C094_modesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010C874_modesel);
+void func_8010C874_modesel(void) {
+    s32 i;
+
+    func_80105FE4_modesel(10);
+    func_80105FE4_modesel(11);
+    func_80105FE4_modesel(12);
+    func_80105FE4_modesel(13);
+    func_80105FE4_modesel(14);
+    for (i = 0; i < 4; i++) {
+        if (D_80110B88_modesel.cpu[i] != 0) {
+            func_80105FE4_modesel(i + 15);
+        }
+    }
+    func_80105FE4_modesel(19);
+    func_80105FE4_modesel(20);
+    func_80105FE4_modesel(21);
+    func_80105FE4_modesel(24);
+    if (D_80110B88_modesel.currentTurn / 10 != 0) {
+        func_80105FE4_modesel(23);
+    }
+    func_80105FE4_modesel(22);
+    func_80105FE4_modesel(26);
+    func_80105FE4_modesel(25);
+    func_80105FE4_modesel(27);
+    func_80105FE4_modesel(28);
+    func_80105FE4_modesel(29);
+    for (i = 0; i < 2; i++) {
+        if (D_80110BB4_modesel.cpu[i] != 0) {
+            func_80105FE4_modesel(i + 30);
+        }
+    }
+    func_80105FE4_modesel(32);
+    func_80105FE4_modesel(33);
+    func_80105FE4_modesel(34);
+    func_80105FE4_modesel(37);
+    if (D_80110BB4_modesel.totalTurns == 20) {
+        if (D_80110BB4_modesel.currentTurn / 10 != 0) {
+            func_80105FE4_modesel(36);
+        }
+        func_80105FE4_modesel(35);
+        func_80105FE4_modesel(39);
+        func_80105FE4_modesel(38);
+    }
+}
 
 void func_8010CA30_modesel(void) {
     func_80106000_modesel(0xA);
@@ -1819,7 +2039,31 @@ void func_8010E790_modesel(Process *arg0) {
     func_80013350_main(0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010E7B4_modesel);
+void func_8010E7B4_modesel(void) {
+    s32 i;
+    s8 value;
+
+    D_80110B70_modesel[0] = D_80110B70_modesel[1] = D_80110B70_modesel[2] = D_80110B70_modesel[3] =
+        D_80110B70_modesel[4] = D_80110B70_modesel[5] = 0;
+    if (func_800465D0_main() == 1) {
+        SLLoadBoard();
+        for (i = 0; i < 4; i++) {
+            D_80110B88_modesel.chr[i] = GwPlayer[i].chr;
+            D_80110B88_modesel.cpu[i] = GwPlayer[i].stat & 1;
+        }
+        D_80110B88_modesel.gameLength = (value = GwSystem.current_game_length) >= 3 ? 3 : value;
+        D_80110B88_modesel.currentTurn = (value = GwSystem.current_turn) >= 99 ? 99 : value;
+        D_80110B88_modesel.totalTurns = (value = GwSystem.total_turns) >= 99 ? 99 : value;
+        SLLoadBoardStory();
+        for (i = 0; i < 2; i++) {
+            D_80110BB4_modesel.chr[i] = GwPlayer[i].chr;
+            D_80110BB4_modesel.cpu[i] = GwPlayer[i].stat & 1;
+        }
+        D_80110BB4_modesel.gameLength = (value = GwSystem.current_game_length) >= 3 ? 3 : value;
+        D_80110BB4_modesel.currentTurn = (value = GwSystem.current_turn) >= 99 ? 99 : value;
+        D_80110BB4_modesel.totalTurns = (value = GwSystem.total_turns) >= 99 ? 99 : value;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010E984_modesel);
 

@@ -4141,6 +4141,26 @@ void func_80118320_duel01(s8 *arg0, s8 *arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80118328_duel01);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80118414_duel01);
+void func_80118414_duel01(void) {
+    s8 link[2];
+    Vec pos[3];
+    s8 playerIndex = GwSystem.current_player_index ^ 1;
+    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    SpaceData *space;
+
+    func_800E9F4C_name_81(0x1E, &link[0], &link[1]);
+    func_800ECD0C_name_81(playerIndex, link[0], link[1]);
+    player->rev = 0;
+    player->nnlink = -2;
+    player->nnidx = -2;
+    space = MBDMasuGet(0x1E);
+    HuVecAdd(&pos[0], &space->coords, &MBDMasuGet(0x1D)->coords);
+    HuVecMulScalar(&pos[0], 0.5f, &pos[0]);
+    HuVecCopy3F(&pos[1], &pos[0]);
+    pos[1].x -= 12.0f;
+    HuVecCopy3F(&pos[2], &pos[0]);
+    pos[2].x += 12.0f;
+    func_800E27D4_name_81(playerIndex, &pos[0], &pos[1], &pos[2]);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80118530_duel01);

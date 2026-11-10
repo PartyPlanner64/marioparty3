@@ -2746,7 +2746,9 @@ void func_8010EB40_duel02(s32 arg0) {
     work->index = arg0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010EB98_duel02);
+void func_8010EB98_duel02(s32 index) {
+    func_800D90D0_name_81(D_80117638_duel02[index], 0, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010EBC8_duel02);
 
@@ -4052,11 +4054,40 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_80115D64_duel02);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_80115EE4_duel02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_80116064_duel02);
+void func_80116064_duel02(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    s32 spaceIndex = MBDMasuLinkMasuIdGet(player->blink, player->bidx);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8011611C_duel02);
+    if (spaceIndex == MBDMasuLinkMasuIdGet(player->clink, player->cidx + 1)) {
+        func_800E9F4C_name_81(0x1F, &player->nlink, &player->nidx);
+        if (mbWalkNum != 0) {
+            func_8010EB98_duel02(1);
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_801161D4_duel02);
+void func_8011611C_duel02(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    s32 spaceIndex = MBDMasuLinkMasuIdGet(player->blink, player->bidx);
+
+    if (spaceIndex == MBDMasuLinkMasuIdGet(player->clink, player->cidx + 1)) {
+        func_800E9F4C_name_81(0x29, &player->nlink, &player->nidx);
+        if (mbWalkNum != 0) {
+            func_8010EB98_duel02(0);
+        }
+    }
+}
+
+void func_801161D4_duel02(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+
+    if (!(player->rev & 1) || mbWalkNum == 0) {
+        func_800E9F4C_name_81(0x19, &player->nnlink, &player->nnidx);
+    }
+    if (player->rev & 1) {
+        func_8010EB40_duel02(1);
+    }
+}
 
 void func_80116240_duel02(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
@@ -4066,7 +4097,16 @@ void func_80116240_duel02(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8011628C_duel02);
+void func_8011628C_duel02(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+
+    if (!(player->rev & 1) || mbWalkNum == 0) {
+        func_800E9F4C_name_81(7, &player->nnlink, &player->nnidx);
+    }
+    if (player->rev & 1) {
+        func_8010EB40_duel02(0);
+    }
+}
 
 void func_801162F8_duel02(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);

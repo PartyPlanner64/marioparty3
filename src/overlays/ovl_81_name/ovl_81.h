@@ -324,3 +324,8 @@ Process *func_800E4A74_name_81(s32 arg0);
 Process *func_800EE40C_name_81(s32 arg0);
 void Duel_PowerUpPartners(s32 playerIndex);
 void Duel_PowerDownPartners(s32 playerIndex);
+void Duel_SwapPartnerPositions(s32 playerIndex);
+void func_800DD41C_name_81(Vec *);
+void func_800DD554_name_81(void);
+void func_800DD564_name_81(void);
+void func_800DD570_name_81(void);

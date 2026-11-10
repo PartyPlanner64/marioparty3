@@ -281,6 +281,8 @@ void func_800E5964_name_81(void);
 void MBDBackTPLvlSet(u8);
 void func_800EAFC4_name_81(s32);
 Process* func_800EC1E4_name_81(Vec*, Vec*, Vec*, f32);
+Process* func_800EC36C_name_81(Vec*, Vec*, Vec*, f32);
+void func_800FAE98_name_81(Object *, s16, s16, s16, s16);
 u32 func_800EFA8C_name_81(Object*, s16, s16);
 void func_800EFABC_name_81(void*);
 void func_800EFB00_name_81(Object*);

@@ -91,14 +91,11 @@ extern UnkModeSelAngle D_80110B30_modesel[][7];
 extern HmfMotionNode *D_80110B18_modesel[][7];
 extern HmfMotionNode *D_80110B1C_modesel[][7];
 extern s32 D_8010F2C8_modesel;
+extern s32 D_80110BD8_modesel;
 extern s16 D_80110BDA_modesel;
-// Parallel float tables with a 0xC stride, one entry per spinner position.
-extern f32 D_8010F2CC_modesel[][3];
-extern f32 D_8010F2D0_modesel[][3];
-extern f32 D_8010F2D4_modesel[][3];
-extern f32 D_8010F304_modesel[][3];
-extern f32 D_8010F308_modesel[][3];
-extern f32 D_8010F30C_modesel[][3];
+// Position tables, one entry per spinner position.
+extern Vec D_8010F2CC_modesel[];
+extern Vec D_8010F304_modesel[];
 extern u8 D_8010F2A0_modesel[];
 extern u8 D_8010F2B0_modesel[];
 // the one-column second dimension keeps these indexed stores addressing the array base symbolically
@@ -118,8 +115,8 @@ extern UnkModeSel3 D_80110BE8_modesel;
 extern Vec D_80110CB0_modesel;
 extern Vec D_80110CBC_modesel;
 extern f32 D_80110CD4_modesel;
-extern f32 D_80110CD8_modesel[3];
-extern Vec D_80110CE4_modesel;
+// Start and end positions for the model 10 hop animation.
+extern Vec D_80110CD8_modesel[2];
 // Three interleaved parallel arrays covering the same 21 slots; each element is 0xC bytes apart.
 extern s32 D_80110CF0_modesel[][3];
 extern s32 D_80110CF4_modesel[][3];
@@ -127,6 +124,7 @@ extern omObjData *D_80110CF8_modesel[][3];
 extern s32 D_80110DEC_modesel;
 extern Process *D_80110BDC_modesel;
 extern omObjData *D_80110BD0_modesel;
+extern HmfMotionNode *D_80110BD4_modesel;
 extern f32 D_8010F2BC_modesel;
 extern f32 D_8010F2C0_modesel;
 extern f32 D_8010F2C4_modesel;
@@ -513,9 +511,46 @@ u32 func_80106B38_modesel(u32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80106BA0_modesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80106DEC_modesel);
+s32 func_80106DEC_modesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
+    s16 window = HuWinCreate(x, y, width, height, 0, 8);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80106F38_modesel);
+    func_8005B63C_main(window, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
+    HuWinMesSpeedSet(window, 0);
+    HuWinBGTPLvlSet(window, 255);
+    func_80060144_main(window);
+    HuWinPriSet(window, 1);
+    HuWinActivePlayerSet(window, HUWIN_PLAYER_1);
+    func_8005C154_main(window, 192, 192, 192);
+    HuWinBGColSet(window, 0, 64, 64);
+    HuWinMesColSet(window, 7);
+    HuWinMesPalSet(window, 2, 255, 64, 64);
+    HuWinMesPalSet(window, 4, 96, 255, 64);
+    HuWinMesPalSet(window, 6, 255, 255, 64);
+    HuWinHomeClear(window);
+    HuWinMesSet(window, message, -1, -1);
+    return window;
+}
+
+s32 func_80106F38_modesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
+    s16 window = HuWinCreate(x, y, width, height, 0, 4);
+
+    func_8005B63C_main(window, -1, HUWIN_ATTR_NOCANCEL | HUWIN_ATTR_KEYLOCK);
+    HuWinMesSpeedSet(window, 0);
+    HuWinBGTPLvlSet(window, 255);
+    func_80060144_main(window);
+    HuWinPriSet(window, 1);
+    HuWinActivePlayerSet(window, HUWIN_PLAYER_1);
+    HuWinMesPalSet(window, 5, 0, 176, 192);
+    HuWinMesPalSet(window, 2, 255, 64, 64);
+    HuWinMesPalSet(window, 4, 96, 255, 64);
+    HuWinMesPalSet(window, 6, 255, 255, 64);
+    func_8005C154_main(window, 192, 192, 192);
+    HuWinBGColSet(window, 255, 255, 255);
+    HuWinMesColSet(window, 1);
+    HuWinHomeClear(window);
+    HuWinMesSet(window, message, -1, -1);
+    return window;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_801070A0_modesel);
 
@@ -723,7 +758,39 @@ void func_80108FC4_modesel(void) {
     D_80110C10_modesel.obj = NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80108FD0_modesel);
+void func_80108FD0_modesel(omObjData *obj) {
+    Vec camPos;
+    Vec at;
+    Vec up;
+    Vec start;
+    Vec end;
+    Vec pos;
+    f32 t;
+    f32 s;
+
+    HuVecCopy3F(&start, &D_80110C10_modesel.unk_10);
+    HuVecCopy3F(&end, &D_80110C10_modesel.unk_1C);
+    t = (f32)D_80110C10_modesel.unk_04 / (f32)D_80110C10_modesel.unk_08;
+    if (t < 0.0f) {
+        t = 0.0f;
+    }
+    if (t > 1.0f) {
+        s = 1.0f;
+    } else {
+        s = sindf(t * 90.0f);
+    }
+    HuVecCopyXYZ(&pos, start.x + (end.x - start.x) * s, start.y + (end.y - start.y) * s,
+                 start.z + (end.z - start.z) * s);
+    func_801089DC_modesel(&camPos, &at, &up);
+    if (D_80110C10_modesel.unk_04 > D_80110C10_modesel.unk_08) {
+        omDelObj(obj);
+        func_80108A34_modesel(&camPos, &end, &up);
+        D_80110C10_modesel.obj = NULL;
+    } else {
+        D_80110C10_modesel.unk_04++;
+        func_80108A34_modesel(&camPos, &pos, &up);
+    }
+}
 
 void func_80109154_modesel(void) {
     if (D_80110C10_modesel.obj != NULL) {
@@ -762,7 +829,32 @@ omObjData *func_80109188_modesel(s32 arg0, s32 arg1) {
     return obj;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80109290_modesel);
+void func_80109290_modesel(omObjData *obj) {
+    Vec pos;
+    Vec at;
+    s32 timer = D_80110C38_modesel.unk_04;
+    f32 shake;
+
+    HuVecCopy3F(&pos, &D_80110C38_modesel.pos);
+    HuVecCopy3F(&at, &D_80110C38_modesel.at);
+    if (timer > 32) {
+        omDelObj(obj);
+        D_80110C38_modesel.unk_00 = NULL;
+        timer = 0;
+    } else {
+        D_80110C38_modesel.unk_08 = ~D_80110C38_modesel.unk_08;
+        if (D_80110C38_modesel.unk_08 != 0) {
+            shake = rand8();
+        } else {
+            shake = -(f32)rand8();
+        }
+        shake = shake * (1.0f / 255.0f) * ((1.0f - timer * (1.0f / 32.0f)) * 0.8f + 0.2f);
+        pos.y += shake * 40.0f;
+        at.y += shake * 40.0f;
+    }
+    func_80108A34_modesel(&pos, &at, &D_80110C38_modesel.up);
+    D_80110C38_modesel.unk_04 = timer + 1;
+}
 
 void func_80109408_modesel(void) {
     if (D_80110C38_modesel.unk_00 != NULL) {
@@ -986,7 +1078,34 @@ void func_8010A020_modesel(s32 arg0) {
     obj->work[1] = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010A068_modesel);
+void func_8010A068_modesel(omObjData *obj) {
+    s32 index = obj->work[0];
+    s32 timer = obj->work[1];
+    f32 t = timer * (1.0f / 255.0f);
+    Vec pos;
+    f32 shadowY;
+
+    pos.x = D_8010F2CC_modesel[index - 7].x;
+    pos.y = D_8010F2CC_modesel[index - 7].y;
+    pos.z = D_8010F2CC_modesel[index - 7].z;
+    pos.y -= t * 400.0f;
+    func_8010653C_modesel(index, 0.0f, 0.0f, 0.0f);
+    shadowY = pos.y + 20.0f - 12.0f;
+    if (shadowY < 0.0f) {
+        shadowY = 0.0f;
+    }
+    func_8010B790_modesel(index, pos.x, pos.y, pos.z, shadowY);
+    func_8010B804_modesel(index, 0);
+    func_8010B824_modesel(index);
+    timer += 20;
+    if (timer == 100) {
+        // Empty in the original; the comparison is still emitted.
+    } else if (timer >= 256) {
+        omDelObj(obj);
+        func_801066FC_modesel(index);
+    }
+    obj->work[1] = timer;
+}
 
 void func_8010A1C4_modesel(omObjData *obj) {
     s32 index = obj->work[0];
@@ -994,9 +1113,9 @@ void func_8010A1C4_modesel(omObjData *obj) {
     Vec pos;
     f32 shadowY;
 
-    pos.x = D_8010F2CC_modesel[index - 7][0];
-    pos.y = D_8010F2D0_modesel[index - 7][0];
-    pos.z = D_8010F2D4_modesel[index - 7][0];
+    pos.x = D_8010F2CC_modesel[index - 7].x;
+    pos.y = D_8010F2CC_modesel[index - 7].y;
+    pos.z = D_8010F2CC_modesel[index - 7].z;
     func_8010653C_modesel(index, 0.0f, 0.0f, 0.0f);
     shadowY = pos.y + 20.0f - 12.0f;
     if (shadowY < 0.0f) {
@@ -1019,9 +1138,9 @@ void func_8010A2E8_modesel(omObjData *obj) {
     s32 timer = obj->work[1];
     Vec pos;
 
-    pos.x = D_8010F2CC_modesel[index - 7][0];
-    pos.y = D_8010F2D0_modesel[index - 7][0];
-    pos.z = D_8010F2D4_modesel[index - 7][0];
+    pos.x = D_8010F2CC_modesel[index - 7].x;
+    pos.y = D_8010F2CC_modesel[index - 7].y;
+    pos.z = D_8010F2CC_modesel[index - 7].z;
     func_8010653C_modesel(index, 0.0f, 0.0f, 0.0f);
     func_8010B790_modesel(index, pos.x, pos.y, pos.z, pos.y + 20.0f - 12.0f);
     func_8010B940_modesel(index, 35.5f);
@@ -1029,9 +1148,9 @@ void func_8010A2E8_modesel(omObjData *obj) {
     timer += 20;
     if (timer >= 256) {
         timer = 0;
-        D_8010F2CC_modesel[index - 7][0] = pos.x;
-        D_8010F2D0_modesel[index - 7][0] = pos.y;
-        D_8010F2D4_modesel[index - 7][0] = pos.z;
+        D_8010F2CC_modesel[index - 7].x = pos.x;
+        D_8010F2CC_modesel[index - 7].y = pos.y;
+        D_8010F2CC_modesel[index - 7].z = pos.z;
         obj->func = func_8010A1C4_modesel;
     }
     obj->work[1] = timer;
@@ -1048,7 +1167,32 @@ void func_8010A62C_modesel(s32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010A674_modesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010A84C_modesel);
+void func_8010A84C_modesel(omObjData *obj) {
+    Vec pos;
+    Vec start;
+    Vec end;
+    s32 index = obj->work[0];
+    s32 timer = obj->work[1];
+    f32 t = timer * 0.05f;
+    f32 s;
+    f32 u;
+
+    s = (1.0f < t) ? 1.0f : t * t;
+    u = s * -3.0f * (s - 1.3333334f);
+    HuVecCopy3F(&start, &D_80110CB0_modesel);
+    HuVecCopy3F(&end, &D_80110CBC_modesel);
+    HuVecCopyXYZ(&pos, start.x + (end.x - start.x) * s, start.y + (end.y - start.y) * u,
+                 start.z + (end.z - start.z) * s);
+    func_8010653C_modesel(index, pos.x, pos.y, pos.z);
+    if (timer > 20) {
+        obj->func = func_8010A674_modesel;
+        HuVecCopy3F(&D_80110CB0_modesel, &pos);
+        timer = 0;
+    } else {
+        timer++;
+    }
+    obj->work[1] = timer;
+}
 
 omObjData *func_8010A9B8_modesel(s32 arg0) {
     omObjData *obj = omAddObj(6, 0, 0, -1, func_8010A84C_modesel);
@@ -1119,9 +1263,9 @@ void func_8010ACA8_modesel(omObjData *obj) {
     s32 timer = obj->work[0];
     f32 t = timer * (1.0f / 255.0f);
 
-    pos.x = D_80110CE4_modesel.x;
-    pos.y = D_80110CE4_modesel.y - t * 400.0f;
-    pos.z = D_80110CE4_modesel.z;
+    pos.x = D_80110CD8_modesel[1].x;
+    pos.y = D_80110CD8_modesel[1].y - t * 400.0f;
+    pos.z = D_80110CD8_modesel[1].z;
     func_8010653C_modesel(model, pos.x, pos.y, pos.z);
     func_8010AC3C_modesel();
     timer += 20;
@@ -1147,13 +1291,31 @@ void func_8010AD74_modesel(omObjData *obj) {
     obj->work[0] = timer;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010ADC8_modesel);
+void func_8010ADC8_modesel(omObjData *obj) {
+    Vec pos;
+    s32 timer = obj->work[0];
+    f32 t = timer * (1.0f / 255.0f);
+    f32 s = (t < 1.0) ? t : 1.0f;
+
+    pos.x = (D_80110CD8_modesel[1].x - D_80110CD8_modesel[0].x) * t + D_80110CD8_modesel[0].x;
+    pos.y = (D_80110CD8_modesel[1].y - D_80110CD8_modesel[0].y) * s + (1.0f - (s - 0.5f) * 4.0f * (s - 0.5f)) * 80.0f +
+            D_80110CD8_modesel[0].y;
+    pos.z = (D_80110CD8_modesel[1].z - D_80110CD8_modesel[0].z) * t + D_80110CD8_modesel[0].z;
+    func_8010653C_modesel(10, pos.x, pos.y, pos.z);
+    func_8010AC3C_modesel();
+    timer += 12;
+    if (timer >= 256) {
+        obj->func = func_8010AD74_modesel;
+        timer = 0;
+    }
+    obj->work[0] = timer;
+}
 
 omObjData *func_8010AF18_modesel(void) {
     omObjData *obj = omAddObj(6, 0, 0, -1, func_8010ADC8_modesel);
 
-    func_80106618_modesel(0xA, &D_80110CD8_modesel[0], &D_80110CD8_modesel[1], &D_80110CD8_modesel[2]);
-    HuVecCopyXYZ(&D_80110CE4_modesel, 0.0f, 200.0f, 300.0f);
+    func_80106618_modesel(0xA, &D_80110CD8_modesel[0].x, &D_80110CD8_modesel[0].y, &D_80110CD8_modesel[0].z);
+    HuVecCopyXYZ(&D_80110CD8_modesel[1], 0.0f, 200.0f, 300.0f);
     obj->work[0] = 0;
     return obj;
 }
@@ -1418,7 +1580,57 @@ void func_8010DFD0_modesel(s32 arg0) {
     func_8010601C_modesel(1, x, y);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010E000_modesel);
+void func_8010E000_modesel(s32 arg0, s32 *x, s32 *y) {
+    Vec pos;
+    Vec2f screenPos;
+    s32 index = 0;
+
+    switch (arg0) {
+        case 0:
+        case 1:
+        case 2:
+            index = D_80110BD8_modesel + 8;
+            break;
+        case 3:
+            index = 3;
+            break;
+        case 4:
+        case 5:
+        case 6:
+            index = 4;
+            break;
+        case 7:
+            index = 0;
+            break;
+        case 8:
+            index = 1;
+            break;
+        case 9:
+            index = 2;
+            break;
+        case 10:
+            if (func_800465D0_main() == 0 && GwStory.unk0 == 12) {
+                index = 7;
+            } else {
+                index = 6;
+            }
+            break;
+        case 14:
+            *x = 0x70;
+            *y = 0x3C;
+            return;
+        case 15:
+            *x = 0x110;
+            *y = 0x3C;
+            return;
+    }
+    pos.x = D_8010F304_modesel[index].x;
+    pos.y = D_8010F304_modesel[index].y;
+    pos.z = D_8010F304_modesel[index].z;
+    Hu3D3Dto2D(0, &pos, &screenPos);
+    *x = screenPos.x;
+    *y = screenPos.y;
+}
 
 #ifdef NON_MATCHING
 // The story check is expected to compile to a branchless store-flag sequence
@@ -1463,9 +1675,9 @@ void func_8010E138_modesel(s32 arg0, f32 *x, f32 *y, f32 *z) {
         case 15:
             break;
     }
-    *x = D_8010F304_modesel[index][0];
-    *y = D_8010F308_modesel[index][0];
-    *z = D_8010F30C_modesel[index][0];
+    *x = D_8010F304_modesel[index].x;
+    *y = D_8010F304_modesel[index].y;
+    *z = D_8010F304_modesel[index].z;
 }
 #else
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010E138_modesel);
@@ -1499,7 +1711,49 @@ void func_8010E280_modesel(s32 arg0, s32 arg1) {
     func_8010601C_modesel(arg0, endX, endY);
 }
 
+#ifdef NON_MATCHING
+// Float register allocation differs: the target loads the 1.0f constant before the
+// sine * 0.1f multiply and keeps the scale in $f4 instead of $f2.
+void func_8010E3A4_modesel(s32 index, f32 t) {
+    s32 slot = index;
+    f32 angle;
+    f32 sine;
+    f32 scale;
+
+    if (t > 1.0f) {
+        t = 1.0f;
+    }
+    if (t < 0.0f) {
+        return;
+    }
+    angle = t * 360.0f;
+    sine = sindf(angle);
+    cosdf(angle);
+    scale = sine * 0.1f + 1.0f;
+    switch (slot) {
+        case 2:
+            func_801065B0_modesel(index, 1.0f, 1.0f, 1.0f);
+            break;
+        case 3:
+            func_801065B0_modesel(index, scale, scale, 1.0f);
+            break;
+        case 5:
+            scale = sine * 0.3f + 1.0f;
+            D_80110BD4_modesel->scale.x = D_80110BD4_modesel->baseScale.x = D_80110BD4_modesel->scale.y =
+                D_80110BD4_modesel->baseScale.y = D_80110BD4_modesel->scale.z = D_80110BD4_modesel->baseScale.z =
+                    scale;
+            break;
+        case 7:
+        case 8:
+        case 9:
+            func_8010B940_modesel(index, 180.0f / 23.0f);
+            func_8010B824_modesel(index);
+            break;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010E3A4_modesel);
+#endif
 
 void func_8010E50C_modesel(void) {
     s32 i;

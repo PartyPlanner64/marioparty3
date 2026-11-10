@@ -70,6 +70,11 @@ extern s16 D_8011C644_mstory2;
 extern u16 D_8011C646_mstory2;
 extern s16 D_8011C648_mstory2;
 extern s32 D_8011C674_mstory2;
+extern s16 D_8011C650_mstory2[8];
+extern s16 D_8011C660_mstory2[8];
+extern s16 D_8011C670_mstory2;
+extern const s32 D_8011BE2C_mstory2[7];
+extern const s16 D_8011BE48_mstory2[][2];
 extern UnkMstory2Obj D_8011C680_mstory2[6];
 extern Vec D_8011C704_mstory2;
 extern Vec D_8011C710_mstory2;
@@ -205,6 +210,7 @@ void func_80118C34_mstory2(omObjData *);
 void func_80111EAC_mstory2(omObjData *);
 void func_80116B6C_mstory2(omObjData *);
 void func_801064AC_mstory2(void);
+void func_80106D50_mstory2(void);
 void func_8011AB84_mstory2(void);
 void func_8011AC08_mstory2(void);
 void func_8011AC10_mstory2(omObjData *);
@@ -513,7 +519,126 @@ void func_80106470_mstory2(s32 arg0) {
     omAddPrcObj(func_801064AC_mstory2, 0x1000, 0x800, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory2/49BD40", func_801064AC_mstory2);
+void func_801064AC_mstory2(void) {
+    void *data;
+    f32 x;
+    f32 y;
+    f32 angle;
+    f32 tpLvl;
+    s32 i;
+    s32 j;
+
+    D_8011C650_mstory2[0] = espEntry(func_8000B838_main(0x1D0001), 0, 0);
+    espPosSet(D_8011C650_mstory2[0], 160, 120);
+    espDispOff(D_8011C650_mstory2[0]);
+    for (i = 0; i < 7; i++) {
+        D_8011C650_mstory2[i + 1] = espEntry(func_8000B838_main(D_8011BE2C_mstory2[i]), 0, 0);
+        espPosSet(D_8011C650_mstory2[i + 1], D_8011BE48_mstory2[i][0] + 48, D_8011BE48_mstory2[i][1] + 48);
+        espAttrSet(D_8011C650_mstory2[i + 1], 8);
+        espDispOff(D_8011C650_mstory2[i + 1]);
+    }
+    data = DataRead(0x1D0002);
+    for (i = 0; i < 8; i++) {
+        D_8011C660_mstory2[i] = espEntry(HuSprAnimRead(data), 0, 1);
+        x = D_8011BE48_mstory2[D_8011C674_mstory2][0] + 48;
+        y = D_8011BE48_mstory2[D_8011C674_mstory2][1] + 48;
+        angle = i * 45.0f;
+        x += cosdf(angle) * 32.0f;
+        y -= sindf(angle) * 32.0f;
+        espPosSet(D_8011C660_mstory2[i], x, y);
+        espAttrSet(D_8011C660_mstory2[i], 0x1000);
+        espColorSet(D_8011C660_mstory2[i], 255, 255, 192);
+        espAttrSet(D_8011C660_mstory2[i], 8);
+        espScaleSet(D_8011C660_mstory2[i], 1.5f, 1.5f);
+        espTPLvlSet(D_8011C660_mstory2[i], 255);
+        espDispOff(D_8011C660_mstory2[i]);
+    }
+    HuMemMemoryFreePerm(data);
+    D_8011C670_mstory2 = espEntry(func_8000B838_main(0x1D0000), 0, 0);
+    espPosSet(D_8011C670_mstory2, 160, 120);
+    espScaleSet(D_8011C670_mstory2, 40.0f, 30.0f);
+    espAttrSet(D_8011C670_mstory2, 0);
+    espDispOff(D_8011C670_mstory2);
+    omPrcSetDestructor(0, func_80106D50_mstory2);
+    espDispOn(D_8011C670_mstory2);
+    espTPLvlSet(D_8011C670_mstory2, 0);
+    for (i = 0; i < 20; i++) {
+        espTPLvlSet(D_8011C670_mstory2, i * (1.0f / 20.0f) * 255.0f);
+        HuPrcVSleep();
+    }
+    espTPLvlSet(D_8011C670_mstory2, 256);
+    for (i = 0; i < D_8011C674_mstory2; i++) {
+        espDispOn(D_8011C650_mstory2[i + 1]);
+    }
+    func_8010620C_mstory2();
+    espDispOn(D_8011C650_mstory2[0]);
+    HuPrcSleep(30);
+    for (i = 0; i < 20; i++) {
+        espTPLvlSet(D_8011C670_mstory2, 255.0f - i * (1.0f / 20.0f) * 255.0f);
+        HuPrcVSleep();
+    }
+    espDispOff(D_8011C670_mstory2);
+    espTPLvlSet(D_8011C650_mstory2[D_8011C674_mstory2 + 1], 0);
+    espDispOn(D_8011C650_mstory2[D_8011C674_mstory2 + 1]);
+    for (j = 0, tpLvl = 0.0f; j < 20; j++) {
+        tpLvl += 12.75f;
+        espTPLvlSet(D_8011C650_mstory2[D_8011C674_mstory2 + 1], tpLvl);
+        HuPrcVSleep();
+    }
+    espTPLvlSet(D_8011C650_mstory2[D_8011C674_mstory2 + 1], 255);
+    espScaleSet(D_8011C650_mstory2[D_8011C674_mstory2 + 1], 1.0f, 1.0f);
+    for (i = 0; i < 8; i++) {
+        espBankSet(D_8011C660_mstory2[i], 0, 0);
+        func_8000BDDC_main(D_8011C660_mstory2[i], 1);
+        espDispOn(D_8011C660_mstory2[i]);
+    }
+    HuPrcSleep(20);
+    for (i = 0; i < 8; i++) {
+        espDispOff(D_8011C660_mstory2[i]);
+    }
+    if (D_8011C674_mstory2 == 6) {
+        HuPrcSleep(40);
+        espDispOn(D_8011C670_mstory2);
+        espTPLvlSet(D_8011C670_mstory2, 0);
+        for (i = 0; i < 5; i++) {
+            espTPLvlSet(D_8011C670_mstory2, i * (1.0f / 8.0f) * 255.0f);
+            HuPrcVSleep();
+        }
+        espTPLvlSet(D_8011C670_mstory2, 256);
+        HuPrcSleep(3);
+        for (i = 0; i < 5; i++) {
+            espTPLvlSet(D_8011C670_mstory2, 255.0f - i * (1.0f / 8.0f) * 255.0f);
+            HuPrcVSleep();
+        }
+        espDispOff(D_8011C670_mstory2);
+        HuPrcSleep(80);
+    } else {
+        HuPrcSleep(60);
+    }
+    espDispOn(D_8011C670_mstory2);
+    espTPLvlSet(D_8011C670_mstory2, 0);
+    for (i = 0; i < 20; i++) {
+        espTPLvlSet(D_8011C670_mstory2, i * (1.0f / 20.0f) * 255.0f);
+        HuPrcVSleep();
+    }
+    espTPLvlSet(D_8011C670_mstory2, 256);
+    espDispOff(D_8011C650_mstory2[D_8011C674_mstory2 + 1]);
+    espDispOff(D_8011C650_mstory2[0]);
+    func_801061EC_mstory2();
+    HuPrcSleep(30);
+    for (i = 0; i < D_8011C674_mstory2; i++) {
+        espDispOff(D_8011C650_mstory2[i + 1]);
+    }
+    for (i = 0; i < 20; i++) {
+        espTPLvlSet(D_8011C670_mstory2, 255.0f - i * (1.0f / 20.0f) * 255.0f);
+        HuPrcVSleep();
+    }
+    espDispOff(D_8011C670_mstory2);
+    D_8011B94C_mstory2 = 1;
+    while (TRUE) {
+        HuPrcVSleep();
+    }
+}
 
 s32 func_80106D44_mstory2(void) {
     return D_8011B94C_mstory2;

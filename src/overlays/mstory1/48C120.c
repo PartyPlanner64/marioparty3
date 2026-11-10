@@ -30,9 +30,13 @@ extern Vec D_80114A98_mstory1;
 extern Vec D_80114AA4_mstory1;
 
 extern s32 D_80114A80_mstory1;
+extern s8 D_80114A88_mstory1;
 extern s32 D_80114AB0_mstory1;
 extern Vec D_80114E40_mstory1;
 extern Vec D_80114E4C_mstory1;
+extern Vec D_80114F00_mstory1;
+extern Vec D_80114F0C_mstory1;
+extern Vec D_80115038_mstory1;
 extern Vec D_80115050_mstory1;
 extern s16 D_801158B0_mstory1;
 extern s16 D_801158B2_mstory1;
@@ -41,10 +45,12 @@ extern s32 D_801158B4_mstory1;
 extern s32 D_801158E4_mstory1;
 extern UnkMstory1Obj D_801158F0_mstory1;
 extern UnkSeEntry D_801158FC_mstory1[];
+extern UnkMstory1Obj D_80115908_mstory1;
 extern UnkMstory1Obj D_80115980_mstory1;
 
 void func_80105FF4_mstory1(void);
-void func_80106B30_mstory1(omObjData *obj, Vec *pos, s32 frames, s32 arg3);
+void func_80106B14_mstory1(omObjData *obj, const Vec *pos, s32 frames);
+void func_80106B30_mstory1(omObjData *obj, const Vec *pos, s32 frames, s32 arg3);
 void func_80106D80_mstory1(omObjData *obj, Vec *pos, s32 frames, s32 arg3);
 void func_8010704C_mstory1(omObjData *obj, Vec *pos, s32 frames);
 s32 func_8010726C_mstory1(s16 model);
@@ -54,7 +60,19 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/48C120", D_80114C50_mstory1);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_80105C90_mstory1);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_80105D80_mstory1);
+void func_80105D80_mstory1(omObjData *obj) {
+    if (D_800D530C_main == 1) {
+        if (D_80114A88_mstory1 == 0) {
+            WipeCreateOut(2, 20);
+            HuAudSeqFadeOut(30);
+            D_80114A88_mstory1 = 1;
+        } else if (WipeStatGet() == 0) {
+            HuWinAllKill();
+            SLCommonSet(1);
+            omOvlReturnEx(1);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_80105E00_mstory1);
 
@@ -139,7 +157,7 @@ s32 func_80106AFC_mstory1(s32 character) {
     return -(character == GwStory.unk1);
 }
 
-void func_80106B14_mstory1(omObjData *obj, Vec *pos, s32 frames) {
+void func_80106B14_mstory1(omObjData *obj, const Vec *pos, s32 frames) {
     func_80106B30_mstory1(obj, pos, frames, 1);
 }
 
@@ -205,7 +223,15 @@ void func_80107220_mstory1(s16 model) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_8010726C_mstory1);
+s32 func_8010726C_mstory1(s16 model) {
+    f32 time = Hu3DMotionShiftTimeGet(model);
+    s32 ret = 0;
+
+    if (time == -1.0f && D_800CCF58_main[Hu3DData[model].motId].unk02 <= Hu3DData[model].motTime) {
+        ret = -1;
+    }
+    return ret;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_80107318_mstory1);
 
@@ -303,7 +329,13 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/48C120", D_80114E64_mstory1);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_80109478_mstory1);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_8010980C_mstory1);
+void func_8010980C_mstory1(omObjData *obj) {
+    func_8010704C_mstory1(obj, &D_80114F0C_mstory1, 10);
+    func_80106B14_mstory1(obj, &D_80114F00_mstory1, 50);
+    func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    D_80115908_mstory1.func = func_801081D8_mstory1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_80109888_mstory1);
 
@@ -396,7 +428,16 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/48C120", D_80114FFC_mstory1);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/48C120", D_80115008_mstory1);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_8010B308_mstory1);
+const Vec D_80115020_mstory1 = { 700.0f, 0.0f, 150.0f };
+const Vec D_8011502C_mstory1 = { 216.66666f, 0.0f, 150.0f };
+
+void func_8010B308_mstory1(omObjData *obj) {
+    func_8010704C_mstory1(obj, &D_80115038_mstory1, 10);
+    func_80106B14_mstory1(obj, &D_80115020_mstory1, 50);
+    func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    D_80115980_mstory1.func = func_801081D8_mstory1;
+}
 
 void func_8010B384_mstory1(omObjData *obj) {
     func_8010704C_mstory1(obj, &D_80115050_mstory1, 20);

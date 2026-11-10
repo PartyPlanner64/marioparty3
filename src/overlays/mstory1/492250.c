@@ -24,11 +24,16 @@ typedef struct MstoryPath {
 
 extern Vec D_80115250_mstory1;
 extern Vec D_8011525C_mstory1;
+extern Vec D_80115310_mstory1;
+extern Vec D_8011531C_mstory1;
+extern Vec D_80115448_mstory1;
 extern Vec D_80115460_mstory1;
 extern UnkMstory1Obj D_80115A30_mstory1;
 extern UnkMstory1Obj D_80115AC0_mstory1;
 extern UnkSeEntry D_80115A3C_mstory1[8];
+extern UnkMstory1Obj D_80115A48_mstory1;
 
+void func_80106B14_mstory1(omObjData *obj, const Vec *pos, s32 frames);
 void func_8010704C_mstory1(omObjData *obj, Vec *pos, s32 frames);
 void func_8010CAD8_mstory1(omObjData *obj);
 
@@ -122,7 +127,13 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/492250", D_80115274_mstory1);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/492250", func_8010DD70_mstory1);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/492250", func_8010E0B0_mstory1);
+void func_8010E0B0_mstory1(omObjData *obj) {
+    func_8010704C_mstory1(obj, &D_8011531C_mstory1, 10);
+    func_80106B14_mstory1(obj, &D_80115310_mstory1, 50);
+    func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    D_80115A48_mstory1.func = func_8010CAD8_mstory1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/492250", func_8010E12C_mstory1);
 
@@ -209,7 +220,16 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/492250", D_8011540C_mstory1);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/492250", D_80115418_mstory1);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/492250", func_8010FA48_mstory1);
+const Vec D_80115430_mstory1 = { 700.0f, 0.0f, 150.0f };
+const Vec D_8011543C_mstory1 = { 216.66666f, 0.0f, 150.0f };
+
+void func_8010FA48_mstory1(omObjData *obj) {
+    func_8010704C_mstory1(obj, &D_80115448_mstory1, 10);
+    func_80106B14_mstory1(obj, &D_80115430_mstory1, 50);
+    func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    D_80115AC0_mstory1.func = func_8010CAD8_mstory1;
+}
 
 void func_8010FAC4_mstory1(omObjData *obj) {
     func_8010704C_mstory1(obj, &D_80115460_mstory1, 20);

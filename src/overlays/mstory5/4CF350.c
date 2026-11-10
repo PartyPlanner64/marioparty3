@@ -26,6 +26,7 @@ extern Vec D_80114748_mstory5;
 extern Vec D_80114754_mstory5;
 
 extern s32 D_80114730_mstory5;
+extern s8 D_80114738_mstory5;
 extern s32 D_80114760_mstory5;
 extern Vec D_80114A88_mstory5;
 extern Vec D_80114C44_mstory5;
@@ -46,6 +47,8 @@ void func_80106028_mstory5(void);
 void func_80106B64_mstory5(omObjData *obj, Vec *pos, s32 frames, s32 arg3);
 void func_80106DB4_mstory5(omObjData *obj, Vec *pos, s32 frames, s32 arg3);
 void func_80107080_mstory5(omObjData *obj, Vec *pos, s32 frames);
+void func_80107228_mstory5(omObjData *obj, f32 x, f32 y, f32 z, s32 frames);
+void func_80107254_mstory5(s16 model);
 s32 func_801072A0_mstory5(s16 model);
 void func_801085D8_mstory5(omObjData *obj);
 void func_8010CFE4_mstory5(void);
@@ -61,7 +64,19 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4CF350", D_801148A8_mstory5);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_80105BDC_mstory5);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_80105CCC_mstory5);
+void func_80105CCC_mstory5(omObjData *obj) {
+    if (D_800D530C_main == 1) {
+        if (D_80114738_mstory5 == 0) {
+            WipeCreateOut(2, 20);
+            HuAudSeqFadeOut(30);
+            D_80114738_mstory5 = 1;
+        } else if (WipeStatGet() == 0) {
+            HuWinAllKill();
+            SLCommonSet(1);
+            omOvlReturnEx(1);
+        }
+    }
+}
 
 void func_80105D4C_mstory5(void) {
     func_8001C814_main(D_801151B2_mstory5, 4, 0);
@@ -70,7 +85,11 @@ void func_80105D4C_mstory5(void) {
     HuAudFXPlay(0x216);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_80105DA0_mstory5);
+void func_80105DA0_mstory5(void) {
+    func_8001C814_main(D_801151B2_mstory5, 4, 4);
+    func_8001C814_main(D_801151B2_mstory5, 1, 0);
+    Hu3DMotionTimeSet(D_801151B2_mstory5, D_800CCF58_main[Hu3DData[D_801151B2_mstory5].motId].unk02);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_80105E34_mstory5);
 
@@ -221,7 +240,15 @@ void func_80107254_mstory5(s16 model) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_801072A0_mstory5);
+s32 func_801072A0_mstory5(s16 model) {
+    f32 time = Hu3DMotionShiftTimeGet(model);
+    s32 ret = 0;
+
+    if (time == -1.0f && D_800CCF58_main[Hu3DData[model].motId].unk02 <= Hu3DData[model].motTime) {
+        ret = -1;
+    }
+    return ret;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010734C_mstory5);
 
@@ -380,7 +407,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010B320_mstory5);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010B5DC_mstory5);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010B6F8_mstory5);
+void func_8010B6F8_mstory5(omObjData *obj) {
+    s16 model = obj->model[1];
+
+    func_80107254_mstory5(model);
+    Hu3DMotionShiftSet(model, Hu3DData[obj->motion[0]].motId, 0, 10, 2);
+    D_801151F0_mstory5[3].func = func_801085D8_mstory5;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010B77C_mstory5);
 
@@ -510,9 +543,21 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010EBCC_mstory5);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010EDFC_mstory5);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010F02C_mstory5);
+void func_8010F02C_mstory5(omObjData *obj) {
+    omObjData *target = D_801151F0_mstory5[0].obj;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010F0B8_mstory5);
+    func_80107228_mstory5(target, 0.0f, 0.0f, 0.0f, 10);
+    Hu3DMotionShiftSet(target->model[1], Hu3DData[target->motion[8]].motId, 0, 10, 0);
+    D_801152C8_mstory5[1].func = func_801085D8_mstory5;
+}
+
+void func_8010F0B8_mstory5(omObjData *obj) {
+    omObjData *target = D_801151F0_mstory5[3].obj;
+
+    func_80107228_mstory5(target, 0.0f, 0.0f, 0.0f, 10);
+    Hu3DMotionShiftSet(target->model[1], Hu3DData[target->motion[13]].motId, 0, 10, 0);
+    D_801151F0_mstory5[3].func = func_801085D8_mstory5;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mstory5/4CF350", D_80114C44_mstory5);
 

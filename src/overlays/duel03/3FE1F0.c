@@ -4438,9 +4438,13 @@ s32 func_80114030_duel03(void) {
 }
 
 #ifdef NON_MATCHING
-// Only remaining diff: in the walkNum block, the target keeps v0 = 1 live
-// across the frontID == PARTNER_BOO test (frontID in a0, 4 in v1, nop delay
-// slot); this code loads frontID into v1 and sets v0 in the delay slot.
+// Only remaining diff is a delay slot in the walkNum block. The registers and
+// the hoisted v0 = 1 match, but reorg fills the first beqz delay slot with
+// `li v1, 4` (target: `li v0, 1`, then a nop after the frontID bne), so this
+// is one instruction short. The target's reorg treats v1 as live at the
+// return-1 branch target, which this function layout doesn't reproduce.
+// The frame is 0x28 bytes bigger than in the sibling callbacks; the 40-byte
+// local that causes this is never referenced.
 s32 func_8011454C_duel03(void) {
     s32 curIndex = MBDGetCurrentPlayerIndex();
     s32 otherIndex = (s16)(MBDGetCurrentPlayerIndex() ^ 1);
@@ -4448,7 +4452,7 @@ s32 func_8011454C_duel03(void) {
     GW_PLAYER *other = MBDGetPlayerStruct(otherIndex);
     s32 walkNum = mbWalkNum;
     s32 stars;
-    s32 unused[10]; // unreferenced; pads the stack frame to 0x48
+    s32 unused[10]; // Unused, but needed to match the stack frame.
 
     if (other->cidx >= 7 && other->cidx <= 13) {
         if (other->stats.partners.frontPower != 0 && player->star == 1 && walkNum < 3) {
@@ -4491,10 +4495,11 @@ s32 func_8011454C_duel03(void) {
             if (!(player->stats.partners.backPower < other->stats.partners.frontHp + other->star)) {
                 return 1;
             }
-            if (other->stats.partners.frontID != PARTNER_BOO) {
-                return 1;
+            if (other->stats.partners.frontID == PARTNER_BOO &&
+                !(player->stats.partners.backPower < stars + player->stats.partners.backHp)) {
+                return 0;
             }
-            return player->stats.partners.backPower < stars + player->stats.partners.backHp;
+            return 1;
         }
         if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
             if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
@@ -4986,9 +4991,13 @@ s32 func_801152E0_duel03(void) {
 }
 
 #ifdef NON_MATCHING
-// Only remaining diff: in the walkNum block, the target keeps v0 = 1 live
-// across the frontID == PARTNER_BOO test (frontID in a0, 4 in v1, nop delay
-// slot); this code loads frontID into v1 and sets v0 in the delay slot.
+// Only remaining diff is a delay slot in the walkNum block. The registers and
+// the hoisted v0 = 1 match, but reorg fills the first beqz delay slot with
+// `li v1, 4` (target: `li v0, 1`, then a nop after the frontID bne), so this
+// is one instruction short. The target's reorg treats v1 as live at the
+// return-1 branch target, which this function layout doesn't reproduce.
+// The frame is 0x28 bytes bigger than in the sibling callbacks; the 40-byte
+// local that causes this is never referenced.
 s32 func_8011580C_duel03(void) {
     s32 curIndex = MBDGetCurrentPlayerIndex();
     s32 otherIndex = (s16)(MBDGetCurrentPlayerIndex() ^ 1);
@@ -4996,7 +5005,7 @@ s32 func_8011580C_duel03(void) {
     GW_PLAYER *other = MBDGetPlayerStruct(otherIndex);
     s32 walkNum = mbWalkNum;
     s32 stars;
-    s32 unused[10]; // unreferenced; pads the stack frame to 0x48
+    s32 unused[10]; // Unused, but needed to match the stack frame.
 
     if (other->cidx >= 0x16 && other->cidx <= 0x1C) {
         if (other->stats.partners.frontPower != 0 && player->star == 1 && walkNum < 3) {
@@ -5039,10 +5048,11 @@ s32 func_8011580C_duel03(void) {
             if (!(player->stats.partners.backPower < other->stats.partners.frontHp + other->star)) {
                 return 1;
             }
-            if (other->stats.partners.frontID != PARTNER_BOO) {
-                return 1;
+            if (other->stats.partners.frontID == PARTNER_BOO &&
+                !(player->stats.partners.backPower < stars + player->stats.partners.backHp)) {
+                return 0;
             }
-            return player->stats.partners.backPower < stars + player->stats.partners.backHp;
+            return 1;
         }
         if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
             if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {

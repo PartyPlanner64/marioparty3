@@ -4,7 +4,7 @@
 #include "game/window.h"
 #include "game/malloc.h"
 
-typedef void (*PartnerFunc)(s16, s32, Object*, Object*, s32, s32);
+typedef void (*PartnerFunc)(s32, s32, Object*, Object*, s32, s32);
 
 typedef enum PartnerObjIndex {
     /* 0 */ PARTNEROBJINDEX_FRONT,
@@ -23,8 +23,8 @@ typedef struct PartnerBaseAttributes {
     /* 0x01 */ u8 hp;
     /* 0x02 */ s8 power;
     /* 0x03 */ s8 cost;
-    /* 0x04 */ void (*func1)(s16, s32, Object*, Object*, s32, s32);
-    /* 0x08 */ void (*func2)(s16, s32, Object*, Object*, s32, s32);
+    /* 0x04 */ PartnerFunc func1;
+    /* 0x08 */ PartnerFunc func2;
     /* 0x0C */ void (*func3)(void);
     /* 0x10 */ void (*func4)(void);
 } PartnerBaseAttributes; //sizeof 0x14

@@ -25,6 +25,11 @@ typedef struct Duel05SwayWork {
 } Duel05SwayWork; // sizeof 0x10
 
 void *memcpy(void *, const void *, unsigned int);
+void func_800FADB4_name_81(void);
+void func_800FAE18_name_81(Object *, s32, s32);
+extern s16 D_80115EA0_duel05[];
+extern char D_80115E78_duel05[];
+extern Object *D_801163C0_duel05;
 extern s16 D_80115EB8_duel05[];
 void func_8010E1C4_duel05(void);
 extern void func_80105CD0_duel05(void);
@@ -209,7 +214,20 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_801079C8_duel05);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_80107ECC_duel05);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_801084B4_duel05);
+void func_801084B4_duel05(s32 playerIndex, s32 arg1, Object *arg2, Object *arg3, s32 arg4, s32 arg5) {
+    func_800FAD04_name_81(5);
+    if (arg5 == 2) {
+        HuAudFXPlay(0x25D);
+        func_800FAE18_name_81(arg2, 0, 0);
+        func_800EFABC_name_81(arg2);
+    }
+    HuAudFXPlay(0x25D);
+    func_800FAE18_name_81(arg2, 0, 0);
+    func_800EFABC_name_81(arg2);
+    func_800D90D0_name_81(arg2, -1, 2);
+    func_800ED214_name_81(playerIndex);
+    func_800FADB4_name_81();
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_80108560_duel05);
 
@@ -293,7 +311,13 @@ void func_8010DB10_duel05(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_8010DB3C_duel05);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_8010DC14_duel05);
+void func_8010DC14_duel05(void) {
+    HmfMotionNode *node;
+
+    func_8002FD8C_main(D_801163C0_duel05->omObj1->model[0], Hu3DData[D_801163C0_duel05->omObj1->model[0]].motId, D_80115E78_duel05, 0x4C, 0x46);
+    node = func_8001D33C_main(D_801163C0_duel05->omObj1->model[0], D_80115E78_duel05);
+    node->baseRot.y = (GwSystem.bank_coins - 5) * 60;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_8010DCB8_duel05);
 
@@ -376,7 +400,16 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_8010EAFC_duel05);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_8010EB58_duel05);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_8010EC48_duel05);
+s16 func_8010EC48_duel05(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    s16 partnerValues[12];
+
+    memcpy(partnerValues, D_80115EA0_duel05, sizeof(partnerValues));
+    if (player->stats.partners.frontID == PARTNER_NONE) {
+        return 0;
+    }
+    return partnerValues[player->stats.partners.frontID];
+}
 
 s16 func_8010ECF0_duel05(s32 index) {
     s16 shakeAngles[12];

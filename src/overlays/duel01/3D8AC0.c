@@ -2,6 +2,7 @@
 #include "duel01.h"
 
 void *memcpy(void *, const void *, unsigned int);
+extern s16 D_80118F30_duel01[];
 extern s16 D_80118F48_duel01[];
 
 void func_801059D0_duel01(void) {
@@ -174,7 +175,20 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_801079B8_duel01);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80107EBC_duel01);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_801084A4_duel01);
+void func_801084A4_duel01(s32 playerIndex, s32 arg1, Object *arg2, Object *arg3, s32 arg4, s32 arg5) {
+    func_800FAD04_name_81(5);
+    if (arg5 == 2) {
+        HuAudFXPlay(0x25D);
+        func_800FAE18_name_81(arg2, 0, 0);
+        func_800EFABC_name_81(arg2);
+    }
+    HuAudFXPlay(0x25D);
+    func_800FAE18_name_81(arg2, 0, 0);
+    func_800EFABC_name_81(arg2);
+    func_800D90D0_name_81(arg2, -1, 2);
+    func_800ED214_name_81(playerIndex);
+    func_800FADB4_name_81();
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80108550_duel01);
 
@@ -275,7 +289,13 @@ void func_8010DB00_duel01(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010DB2C_duel01);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010DC04_duel01);
+void func_8010DC04_duel01(void) {
+    HmfMotionNode *node;
+
+    func_8002FD8C_main(D_80119490_duel01->omObj1->model[0], Hu3DData[D_80119490_duel01->omObj1->model[0]].motId, D_80118F18_duel01, 0x4C, 0x46);
+    node = func_8001D33C_main(D_80119490_duel01->omObj1->model[0], D_80118F18_duel01);
+    node->baseRot.y = (GwSystem.bank_coins - 5) * 60;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010DCA8_duel01);
 
@@ -367,7 +387,16 @@ void func_8010EB44_duel01(s32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010EB88_duel01);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010EC78_duel01);
+s16 func_8010EC78_duel01(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    s16 partnerValues[12];
+
+    memcpy(partnerValues, D_80118F30_duel01, sizeof(partnerValues));
+    if (player->stats.partners.frontID == PARTNER_NONE) {
+        return 0;
+    }
+    return partnerValues[player->stats.partners.frontID];
+}
 
 s16 func_8010ED20_duel01(s32 index) {
     s16 shakeAngles[12];

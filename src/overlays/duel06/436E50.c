@@ -26,6 +26,11 @@ typedef struct Duel06SwayWork {
 
 
 void *memcpy(void *, const void *, unsigned int);
+void func_800FADB4_name_81(void);
+void func_800FAE18_name_81(Object *, s32, s32);
+extern s16 D_80114870_duel06[];
+extern char D_80114858_duel06[];
+extern Object *D_80114D50_duel06;
 extern s16 D_80114888_duel06[];
 void func_8010E1BC_duel06(void);
 extern void func_80105CC8_duel06(void);
@@ -66,18 +71,18 @@ void func_800FC5A8_name_81(process_func);
 void func_80113AD4_duel06(void);
 s32 func_80114034_duel06(void);
 void func_800FAC94_name_81(PartnerFunc *, PartnerFunc *);
-void func_80106830_duel06(s16, s32, Object *, Object *, s32, s32);
-void func_80107190_duel06(s16, s32, Object *, Object *, s32, s32);
-void func_801079C0_duel06(s16, s32, Object *, Object *, s32, s32);
-void func_80107EC4_duel06(s16, s32, Object *, Object *, s32, s32);
-void func_801084AC_duel06(s16, s32, Object *, Object *, s32, s32);
-void func_80108558_duel06(s16, s32, Object *, Object *, s32, s32);
-void func_80109890_duel06(s16, s32, Object *, Object *, s32, s32);
-void func_8010A218_duel06(s16, s32, Object *, Object *, s32, s32);
-void func_8010B554_duel06(s16, s32, Object *, Object *, s32, s32);
-void func_8010BCDC_duel06(s16, s32, Object *, Object *, s32, s32);
-void func_8010CE70_duel06(s16, s32, Object *, Object *, s32, s32);
-void func_8010D42C_duel06(s16, s32, Object *, Object *, s32, s32);
+void func_80106830_duel06(s32, s32, Object *, Object *, s32, s32);
+void func_80107190_duel06(s32, s32, Object *, Object *, s32, s32);
+void func_801079C0_duel06(s32, s32, Object *, Object *, s32, s32);
+void func_80107EC4_duel06(s32, s32, Object *, Object *, s32, s32);
+void func_801084AC_duel06(s32, s32, Object *, Object *, s32, s32);
+void func_80108558_duel06(s32, s32, Object *, Object *, s32, s32);
+void func_80109890_duel06(s32, s32, Object *, Object *, s32, s32);
+void func_8010A218_duel06(s32, s32, Object *, Object *, s32, s32);
+void func_8010B554_duel06(s32, s32, Object *, Object *, s32, s32);
+void func_8010BCDC_duel06(s32, s32, Object *, Object *, s32, s32);
+void func_8010CE70_duel06(s32, s32, Object *, Object *, s32, s32);
+void func_8010D42C_duel06(s32, s32, Object *, Object *, s32, s32);
 
 void func_801059D0_duel06(void) {
     mbCameraBtnF = 1;
@@ -224,7 +229,20 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_801079C0_duel06);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_80107EC4_duel06);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_801084AC_duel06);
+void func_801084AC_duel06(s32 playerIndex, s32 arg1, Object *arg2, Object *arg3, s32 arg4, s32 arg5) {
+    func_800FAD04_name_81(5);
+    if (arg5 == 2) {
+        HuAudFXPlay(0x25D);
+        func_800FAE18_name_81(arg2, 0, 0);
+        func_800EFABC_name_81(arg2);
+    }
+    HuAudFXPlay(0x25D);
+    func_800FAE18_name_81(arg2, 0, 0);
+    func_800EFABC_name_81(arg2);
+    func_800D90D0_name_81(arg2, -1, 2);
+    func_800ED214_name_81(playerIndex);
+    func_800FADB4_name_81();
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_80108558_duel06);
 
@@ -325,7 +343,13 @@ void func_8010DB08_duel06(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_8010DB34_duel06);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_8010DC0C_duel06);
+void func_8010DC0C_duel06(void) {
+    HmfMotionNode *node;
+
+    func_8002FD8C_main(D_80114D50_duel06->omObj1->model[0], Hu3DData[D_80114D50_duel06->omObj1->model[0]].motId, D_80114858_duel06, 0x4C, 0x46);
+    node = func_8001D33C_main(D_80114D50_duel06->omObj1->model[0], D_80114858_duel06);
+    node->baseRot.y = (GwSystem.bank_coins - 5) * 60;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_8010DCB0_duel06);
 
@@ -405,7 +429,16 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_8010EBAC_duel06);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_8010ED04_duel06);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_8010EE40_duel06);
+s16 func_8010EE40_duel06(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    s16 partnerValues[12];
+
+    memcpy(partnerValues, D_80114870_duel06, sizeof(partnerValues));
+    if (player->stats.partners.frontID == PARTNER_NONE) {
+        return 0;
+    }
+    return partnerValues[player->stats.partners.frontID];
+}
 
 s16 func_8010EEE8_duel06(s32 index) {
     s16 shakeAngles[12];

@@ -23,6 +23,11 @@ typedef struct UnkMstory4Work {
     /* 0x04 */ Vec pos;
 } UnkMstory4Work; // sizeof 0x10
 
+typedef struct UnkMstory4SprGroup {
+    /* 0x00 */ s16 count;
+    /* 0x04 */ s16 (*pos)[2];
+} UnkMstory4SprGroup; // sizeof 0x8
+
 extern Vec D_80111B04_mstory4[];
 extern Vec D_80111B34_mstory4[];
 extern f32 D_800CB890_main;
@@ -54,6 +59,10 @@ extern s32 D_80111B8C_mstory4;
 extern f32 D_80111B90_mstory4;
 extern char D_80111FF8_mstory4[];
 extern s16 D_80112326_mstory4;
+extern const UnkMstory4SprGroup D_80112088_mstory4[6];
+extern const s32 D_801120B8_mstory4[];
+extern s16 D_80112378_mstory4[];
+extern s16 D_801123A4_mstory4;
 extern u8 D_80111BFC_mstory4[];
 extern Vec D_80111DB8_mstory4;
 extern Vec D_80111DC4_mstory4;
@@ -1893,7 +1902,67 @@ void func_8010F660_mstory4(void) {
     D_80111B90_mstory4 = 0.0f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010F910_mstory4);
+void func_8010F910_mstory4(void) {
+    omObjData *obj = D_801122A0_mstory4[1].obj;
+    void *data;
+    s32 n;
+    s32 i;
+    s32 j;
+
+    data = DataRead(0x1D001D);
+    n = 0;
+    for (i = 0; i < 6; i++) {
+        for (j = 0; j < D_80112088_mstory4[i].count; j++) {
+            D_801123A4_mstory4 = HuSprAnimRead(data);
+            D_80112378_mstory4[n] = espEntry(D_801123A4_mstory4, 0, 1);
+            espPosSet(D_80112378_mstory4[n], D_80112088_mstory4[i].pos[j][0], D_80112088_mstory4[i].pos[j][1]);
+            espAttrSet(D_80112378_mstory4[n], 0x1000);
+            espColorSet(D_80112378_mstory4[n], 0xFF, 0xFF, 0xDC);
+            espAttrSet(D_80112378_mstory4[n], 8);
+            espTPLvlSet(D_80112378_mstory4[n], 0xFF);
+            espDispOff(D_80112378_mstory4[n]);
+            n++;
+        }
+    }
+    HuMemMemoryFreePerm(data);
+    func_8001C258_main(obj->model[6], 4, 4);
+    func_8010EF28_mstory4(0);
+    func_8010EF00_mstory4(1);
+    D_80111AD0_mstory4.x = 0.0f;
+    D_80111AD0_mstory4.y = 40.0f;
+    D_80111AD0_mstory4.z = 310.0f;
+    D_80111ADC_mstory4.x = 0.0f;
+    D_80111ADC_mstory4.y = -270.0f;
+    D_80111ADC_mstory4.z = -180.0f;
+    HuPrcVSleep();
+    HuPrcSleep(90);
+    func_800138EC_main(D_80112326_mstory4, 1, 0);
+    HuPrcSleep(10);
+    HuAudFXPlay(0x24E);
+    for (j = 1; j < 7; j++) {
+        func_8010EF00_mstory4(j + 1);
+        func_8010EF50_mstory4(j + 1, 0);
+        for (i = 0; i < D_801120B8_mstory4[j]; i++) {
+            func_8010EF50_mstory4(j + 1, 256.0f / D_801120B8_mstory4[j] * i);
+            HuPrcVSleep();
+        }
+        func_8010EF28_mstory4(j);
+        func_8010EF50_mstory4(j + 1, 0x100);
+    }
+    HuAudFXPlay(0x227);
+    n = 0;
+    for (i = 0; i < 6; i++) {
+        for (j = 0; j < D_80112088_mstory4[i].count; j++) {
+            espBankSet(D_80112378_mstory4[n], 0, 0);
+            func_8000BDDC_main(D_80112378_mstory4[n], 1);
+            espDispOn(D_80112378_mstory4[n]);
+            n++;
+            HuPrcSleep(1);
+        }
+    }
+    func_8010F010_mstory4();
+    HuPrcSleep(129);
+}
 
 void func_800E4F50_name_81(u8 *);
 void MBDBackCreate(s32, s32);                   /* extern */
@@ -1904,16 +1973,8 @@ void func_80110270_mstory4(void);               /* extern */
 void func_80110DB0_mstory4(f32, f32, f32, s16); /* extern */
 extern Addr D_128CC60;
 
-typedef struct Unk {
-    s16 unk_00;
-    char unk_02[6];
-} Unk; // sizeof 0x8
-
-extern const Unk D_80112088_mstory4[6];
 
 extern s16 D_80112330_mstory4;
-extern s16 D_80112378_mstory4[];
-extern s16 D_801123A4_mstory4;
 
 void func_8010FC98_mstory4(void) {
     omObjData *temp_s5;
@@ -1941,7 +2002,7 @@ void func_8010FC98_mstory4(void) {
     MBDBackCreate(0x20, 0);
     func_8010EF28_mstory4(7);
     for (i = 0; i < 6; i++) {
-        for (j = 0; j < D_80112088_mstory4[i].unk_00; var_s3++, j++) {
+        for (j = 0; j < D_80112088_mstory4[i].count; var_s3++, j++) {
             espBankSet(D_80112378_mstory4[var_s3], 0, 0);
             func_8000BDDC_main(D_80112378_mstory4[var_s3], 1);
             espDispOff(D_80112378_mstory4[var_s3]);

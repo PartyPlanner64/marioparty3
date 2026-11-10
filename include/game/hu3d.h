@@ -304,14 +304,14 @@ typedef struct HmfData {
     /* 0x1C */ s16 unk1C;
     /* 0x1E */ s16 unk1E;
     /* 0x20 */ s16 unk20;
-    /* 0x22 */ char unk22[2];
+    /* 0x22 */ s16 unk22; // DISP chunk count
     /* 0x24 */ s16 unk24;
-    /* 0x26 */ char unk26[2];
+    /* 0x26 */ s16 unk26; // map count
     /* 0x28 */ s16 unk28;
     /* 0x2A */ s16 unk2A;
-    /* 0x2C */ char unk2C[4];
-    /* 0x30 */ u8 *unk30;
-    /* 0x34 */ u8 *unk34;
+    /* 0x2C */ u8 *unk2C; // file start
+    /* 0x30 */ u8 *unk30; // chunk data end
+    /* 0x34 */ u8 *unk34; // chunk data start
     /* 0x38 */ u8 *unk38; // MAP1 chunk
     /* 0x3C */ HmfModelData_Unk64_Unk3C_Struct *unk3C;
     /* 0x40 */ Vtx *unk40;

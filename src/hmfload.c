@@ -7,196 +7,8 @@
 #include "game/hu3d.h"
 #include "game/hmfload.h"
 #include "game/hmfspr.h"
-
-typedef struct {
-    u8 unk00;
-    char unk01[0x32];
-    u8 unk33;
-} HmfObjectLinkData;
-
-typedef struct {
-    u8 unk00;
-    s8 unk01[3];
-    s16 unk04[4];
-    s32 unk0C[4];
-    s32 unk1C[4];
-    u8 unk2C[4];
-    s16 unk30;
-    s16 unk32;
-} HmfFaceData;
-
-typedef struct {
-    u8 unk00;
-    s8 unk01;
-    u8 unk02;
-    u8 unk03;
-    u8 unk04;
-    u8 unk05;
-    u8 unk06;
-    s8 unk07;
-    u8 unk08;
-    u8 unk09;
-    u8 unk0A;
-    char unk0B[1];
-    s16 unk0C;
-    s16 unk0E;
-    s16 unk10;
-    char unk12[0xA];
-    u8 unk1C;
-    char unk1D[3];
-    s16 unk20;
-    s16 unk22;
-    s16 unk24;
-    s16 unk26;
-    s16 unk28;
-    s16 unk2A;
-    char unk2C[0x16];
-    s16 unk42[3];
-    s16 unk48[3];
-    char unk4E[2];
-    s32 unk50;
-    HmfObjectLinkData *unk54;
-    void *unk58;
-    char unk5C[0xC];
-} HmfObjectData;
-
-typedef struct {
-    s16 unk00;
-    char unk02[2];
-    s32 unk04;
-    s32 unk08;
-    s32 unk0C;
-    s32 unk10;
-    s32 unk14;
-    s32 unk18;
-    s32 unk1C;
-    s32 unk20;
-    s32 unk24;
-    s32 unk28;
-    s32 unk2C;
-    s32 unk30;
-    s32 unk34;
-    s32 unk38;
-    s32 unk3C;
-    s32 unk40;
-    s32 unk44;
-    s32 unk48;
-    u8 unk4C;
-    u8 unk4D;
-    u8 unk4E;
-    char unk4F[1];
-    void *unk50;
-    void *unk54;
-    char unk58[0x40];
-} HmfMotionData;
-
-
-typedef struct {
-    u8 unk00;
-    u8 unk01;
-    u8 unk02;
-    u8 unk03;
-    u8 unk04;
-    u8 unk05;
-    u8 unk06;
-    u8 unk07;
-    u8 unk08;
-    u8 unk09;
-    u8 unk0A;
-} HmfData_Unk88_Entry;
-
-typedef struct {
-    s16 unk00;
-    s16 unk02;
-    s16 unk04;
-    char unk06[2];
-    s32 unk08;
-    s32 unk0C;
-    s32 unk10;
-    s32 unk14;
-    s32 unk18;
-    s32 unk1C;
-    s32 unk20;
-    s32 unk24;
-    s32 unk28;
-    s32 unk2C;
-    s32 unk30;
-    s32 unk34;
-    s32 unk38;
-    s32 unk3C;
-    s32 unk40;
-    u8 unk44;
-    u8 unk45;
-    char unk46[2];
-    void *unk48;
-    char unk4C[0x40];
-} HmfSkeletonData;
-
-/* The loader's view of HmfData (see game/hmfman.h). It differs in some field
- * types, e.g. the loader assembles float fields from raw s32 words, so the
- * functions here that take it are declared locally instead of in a header,
- * until the two views are reconciled. */
-typedef struct {
-    u8 unk00;
-    s8 unk01;
-    char unk02[8];
-    u8 unk0A;
-    s8 unk0B;
-    s8 unk0C;
-    char unk0D[1];
-    s16 unk0E;
-    s16 unk10;
-    s16 unk12;
-    s16 unk14;
-    s16 unk16;
-    char unk18[4];
-    u16 unk1C;
-    s16 unk1E;
-    s16 unk20;
-    s16 unk22;
-    s16 unk24;
-    s16 unk26;
-    char unk28[4];
-    u8 *unk2C;
-    u8 *unk30;
-    u8 *unk34;
-    u8 *unk38;
-    HmfModelData_Unk64_Unk3C_Struct *unk3C;
-    void *unk40;
-    Vtx *unk44[3];
-    void *unk50;
-    u8 *unk54;
-    void *unk58;
-    void *unk5C;
-    HmfObjectData *unk60;
-    s16 unk64;
-    char unk66[2];
-    HmfSkeletonData *unk68;
-    char unk6C[0x14];
-    HmfMotionData *unk80;
-    HmfData_Unk84_Entry *unk84;
-    HmfData_Unk88_Entry *unk88;
-    HmfModelData_Unk64_Unk8C_Struct *unk8C;
-    HmfModelData_Unk64_Unk8C_Struct *unk90;
-    HmfModelData_Unk64_Unk8C_Struct *unk94;
-    HmfModelData_Unk64_Unk98_Struct *unk98;
-    void *unk9C;
-    s32 unkA0;
-    f32 unkA4;
-    f32 unkA8;
-    f32 unkAC;
-    void *unkB0;
-    HmfDispData *unkB4;
-    HmfMtnData *unkB8;
-    HmfData_UnkBC *unkBC;
-    void *unkC0;
-    HmfMapData *unkC4;
-    s32 unkC8;
-    void *unkCC;
-    HmfData_UnkD0 *unkD0;
-    void (*unkD4)(HuMtx4F, f32, f32, f32);
-    void (*unkD8)(HuMtx4F, f32, f32, f32);
-} HmfLoadData;
+#include "game/hmfanim.h"
+#include "game/hmfdraw.h"
 
 typedef struct {
     char unk00[6];
@@ -237,26 +49,21 @@ extern u8 D_800CCF85_main;
 extern s16 D_800CDD6A_main;
 extern s16 D_800D5204_main;
 
-s16 func_8000FA34_main(HmfLoadData *, void *);
-void func_8000FEE4_main(HmfLoadData *);
-s16 func_800100EC_main(HmfLoadData *);
-s16 func_8001052C_main(HmfLoadData *);
-s16 func_8001073C_main(HmfLoadData *, u16, void *);
-void func_80010AF8_main(HmfLoadData *, s16, s16, s16);
-void func_80010EB0_main(HmfFaceData *, u8 *, HmfLoadData *, u16 *);
-HmfData_Unk84_Entry2 *func_80031A08_main(HmfLoadData *, s16);
-s16 func_80011334_main(HmfLoadData *hmf, void *arg1, s16 index);
-s32 func_800114C0_main(HmfLoadData *);
-s32 func_80011874_main(HmfLoadData *);
-void func_80011B94_main(HmfLoadData *, void *, s16);
-s32 func_80011C40_main(HmfLoadData *, void *);
-void func_80011F9C_main(HmfLoadData *);
-void func_8001203C_main(HmfLoadData *, u8 *, s32);
-void func_8002CAE4_main(HmfLoadData *);
-void func_80031630_main(HmfLoadData *);
-void func_800339D0_main(HmfLoadData *);
+s16 func_8000FA34_main(HmfData *, void *);
+void func_8000FEE4_main(HmfData *);
+s16 func_800100EC_main(HmfData *);
+s16 func_8001052C_main(HmfData *);
+s16 func_8001073C_main(HmfData *, u16, void *);
+void func_80010AF8_main(HmfData *, s16, s16, s16);
+void func_80010EB0_main(HmfModelData_Unk64_Unk60_Unk54_Struct *, u8 *, HmfData *, u16 *);
+s32 func_800114C0_main(HmfData *);
+s32 func_80011874_main(HmfData *);
+void func_80011B94_main(HmfData *, void *, s16);
+s32 func_80011C40_main(HmfData *, void *);
+void func_80011F9C_main(HmfData *);
+void func_8001203C_main(HmfData *, u8 *, s32);
 
-void Hmfload(HmfLoadData *hmf, void *fileData, s32 flags) {
+void Hmfload(HmfData *hmf, void *fileData, s32 flags) {
     s16 i;
     s16 recordCount;
     s16 motionCount;
@@ -271,7 +78,7 @@ void Hmfload(HmfLoadData *hmf, void *fileData, s32 flags) {
     u8 *recordStart;
     s16 extraCount;
     s16 objectIndex;
-    HmfObjectData *data;
+    HmfModelData_Unk64_Unk60_Struct *data;
 
     file = fileData;
     fileHeader = (char *)file;
@@ -328,7 +135,7 @@ void Hmfload(HmfLoadData *hmf, void *fileData, s32 flags) {
     recordCount = record[0];
     recordCount = (recordCount << 8) + record[1];
     hmf->unk64 = 0;
-    hmf->unk80 = (HmfMotionData *)-1;
+    hmf->unk80 = (HmfMotionNode *)-1;
     if ((recordCount << 0x10) == 0) {
         hmf->unk16 = 0;
         hmf->unk10 = 0;
@@ -369,7 +176,7 @@ void Hmfload(HmfLoadData *hmf, void *fileData, s32 flags) {
     }
 
     if (motionCount != 0) {
-        hmf->unk80 = HuMemAllocTag(recordCount * sizeof(HmfMotionData), D_800CDD6A_main);
+        hmf->unk80 = HuMemAllocTag(recordCount * sizeof(HmfMotionNode), D_800CDD6A_main);
     }
 
     if (flags & 0x200000) {
@@ -395,7 +202,7 @@ void Hmfload(HmfLoadData *hmf, void *fileData, s32 flags) {
         hmf->unk20 = 0;
     }
 
-    hmf->unk60 = HuMemAllocTag(modelCount * sizeof(HmfObjectData), D_800CDD6A_main);
+    hmf->unk60 = HuMemAllocTag(modelCount * sizeof(HmfModelData_Unk64_Unk60_Struct), D_800CDD6A_main);
     record = recordStart;
     hmf->unk1C = 0;
     i = 0;
@@ -424,7 +231,7 @@ void Hmfload(HmfLoadData *hmf, void *fileData, s32 flags) {
                 if (hmf->unk14 != 0) {
                     func_80010AF8_main(hmf, objectIndex, linkIndex, vertexCount);
                     if (vertexCount != 0) {
-                        hmf->unk60[objectIndex].unk1C = hmf->unk60[objectIndex].unk54->unk33;
+                        hmf->unk60[objectIndex].unk1C = hmf->unk60[objectIndex].unk54->unk32;
                     } else {
                         hmf->unk60[objectIndex].unk1C = 0xFF;
                     }
@@ -482,10 +289,10 @@ void Hmfload(HmfLoadData *hmf, void *fileData, s32 flags) {
     func_800114C0_main(hmf);
 }
 
-void func_8000F978_main(HmfLoadData *hmf) {
+void func_8000F978_main(HmfData *hmf) {
     s16 i;
 
-    if (hmf->unk80 != (HmfMotionData *)-1) {
+    if (hmf->unk80 != (HmfMotionNode *)-1) {
         if (hmf->unk16 > 0) {
             i = 0;
             do {
@@ -501,16 +308,14 @@ void func_8000F978_main(HmfLoadData *hmf) {
     HuMemFree(hmf->unk60);
 }
 
-s16 func_8000FA34_main(HmfLoadData *hmf, void *arg1) {
+s16 func_8000FA34_main(HmfData *hmf, void *arg1) {
     u8 *data;
     u8 *argData;
-    HmfSkeletonData *entry;
+    HmfSkeletonNode *entry;
     s16 target;
     s16 count;
     s16 i;
     s32 value;
-    s32 value2;
-    s32 value3;
 
     argData = arg1;
     target = (argData[0] << 8) + argData[1];
@@ -528,7 +333,7 @@ s16 func_8000FA34_main(HmfLoadData *hmf, void *arg1) {
 
     count = data[0xA];
     hmf->unk64 = count;
-    hmf->unk68 = HuMemAllocTag(count * sizeof(HmfSkeletonData), D_800CDD6A_main);
+    hmf->unk68 = HuMemAllocTag(count * sizeof(HmfSkeletonNode), D_800CDD6A_main);
     data += 0xB;
     for (i = 0; i < count; i++) {
         entry = &hmf->unk68[i];
@@ -539,64 +344,54 @@ s16 func_8000FA34_main(HmfLoadData *hmf, void *arg1) {
         value <<= 0x18;
         value += data[1] << 0x10;
         value += data[2] << 8;
-        entry->unk08 = value + data[3];
+        *(s32 *)&entry->unk08.x = value + data[3];
         value = data[4];
         value <<= 0x18;
         value += data[5] << 0x10;
         value += data[6] << 8;
-        entry->unk0C = value + data[7];
+        *(s32 *)&entry->unk08.y = value + data[7];
         value = data[8];
         value <<= 0x18;
         value += data[9] << 0x10;
         value += data[0xA] << 8;
-        entry->unk10 = value + data[0xB];
+        *(s32 *)&entry->unk08.z = value + data[0xB];
         data += 0xC;
         value = data[0];
         value <<= 0x18;
         value += data[1] << 0x10;
         value += data[2] << 8;
-        entry->unk14 = value + data[3];
+        *(s32 *)&entry->unk14.x = value + data[3];
         value = data[4];
         value <<= 0x18;
         value += data[5] << 0x10;
         value += data[6] << 8;
-        entry->unk18 = value + data[7];
+        *(s32 *)&entry->unk14.y = value + data[7];
         value = data[8];
         value <<= 0x18;
         value += data[9] << 0x10;
         value += data[0xA] << 8;
-        entry->unk1C = value + data[0xB];
+        *(s32 *)&entry->unk14.z = value + data[0xB];
         data += 0xC;
         value = data[0];
         value <<= 0x18;
         value += data[1] << 0x10;
         value += data[2] << 8;
-        entry->unk20 = value + data[3];
+        *(s32 *)&entry->scale.x = value + data[3];
         value = data[4];
         value <<= 0x18;
         value += data[5] << 0x10;
         value += data[6] << 8;
-        entry->unk24 = value + data[7];
+        *(s32 *)&entry->scale.y = value + data[7];
         value = data[8];
         value <<= 0x18;
         value += data[9] << 0x10;
         value += data[0xA] << 8;
-        entry->unk28 = value + data[0xB];
+        *(s32 *)&entry->scale.z = value + data[0xB];
         data += 0x18;
         entry->unk02 = (data[0] << 8) + data[1];
         entry->unk04 = (data[2] << 8) + data[3];
-        value2 = entry->unk08;
-        value = entry->unk0C;
-        value3 = entry->unk10;
-        entry->unk2C = value2;
-        entry->unk30 = value;
-        entry->unk34 = value3;
-        value2 = entry->unk14;
-        value = entry->unk18;
-        value3 = entry->unk1C;
-        entry->unk38 = value2;
-        entry->unk3C = value;
-        entry->unk40 = value3;
+        entry->pos = entry->unk08;
+        entry->rot = entry->unk14;
         entry->unk45 = 0;
         entry->unk44 = 0;
         data += 5;
@@ -655,12 +450,12 @@ s16 func_8000FDAC_main(void *arg0, s16 arg1) {
     return -1;
 }
 
-void func_8000FEE4_main(HmfLoadData *hmf) {
+void func_8000FEE4_main(HmfData *hmf) {
     u8 *data;
     s16 count;
     s16 count2;
     s16 *coords;
-    u8 *colors;
+    s8 *normals;
     s32 coordBytes;
     HmfFloatBits scale;
     s32 value;
@@ -674,9 +469,9 @@ void func_8000FEE4_main(HmfLoadData *hmf) {
         coordBytes = count2 << 1;
         coordBytes += count2;
         hmf->unk50 = HuMemAllocTag(coordBytes * 2, D_800D5204_main);
-        coords = hmf->unk50;
+        coords = hmf->unk50[0];
         hmf->unk54 = HuMemAllocTag(coordBytes, D_800D5204_main);
-        colors = hmf->unk54;
+        normals = hmf->unk54[0];
         value = data[0xC] << 0x18;
         value += data[0xD] << 0x10;
         value += data[0xE] << 8;
@@ -691,19 +486,19 @@ void func_8000FEE4_main(HmfLoadData *hmf) {
                 data += 2;
                 *coords++ = (s16)((f32)(s16)((data[0] << 8) + data[1]) * scale.single);
                 data += 2;
-                *colors++ = *data++;
-                *colors++ = *data++;
-                *colors++ = *data++;
+                *normals++ = *data++;
+                *normals++ = *data++;
+                *normals++ = *data++;
                 i++;
             } while (i < count);
         }
     }
 }
 
-s16 func_800100EC_main(HmfLoadData *hmf) {
+s16 func_800100EC_main(HmfData *hmf) {
     u8 *records;
     u8 *src;
-    HmfData_Unk88_Entry *entry;
+    HmfMaterialData *entry;
     s16 count;
     s16 i;
 
@@ -713,7 +508,7 @@ s16 func_800100EC_main(HmfLoadData *hmf) {
         return 0;
     }
     hmf->unk1E = count;
-    hmf->unk88 = HuMemAllocTag(count * sizeof(HmfData_Unk88_Entry), D_800CDD6A_main);
+    hmf->unk88 = HuMemAllocTag(count * sizeof(HmfMaterialData), D_800CDD6A_main);
     records = D_800B19C0_main + 0xA;
     for (i = 0; i < count; ++i) {
         entry = &hmf->unk88[i];
@@ -740,7 +535,7 @@ s16 func_800100EC_main(HmfLoadData *hmf) {
     return count;
 }
 
-s16 func_8001052C_main(HmfLoadData *hmf) {
+s16 func_8001052C_main(HmfData *hmf) {
     u8 *data;
     u8 *colorData;
     HmfData_Unk84_Entry *entry;
@@ -809,14 +604,12 @@ s16 func_8001052C_main(HmfLoadData *hmf) {
     return count;
 }
 
-s16 func_8001073C_main(HmfLoadData *hmf, u16 motionIndex, void *arg2) {
+s16 func_8001073C_main(HmfData *hmf, u16 motionIndex, void *arg2) {
     u8 *data;
-    HmfMotionData *entry;
+    HmfMotionNode *entry;
     s16 count;
     s16 count2;
     s32 value;
-    s32 value2;
-    s32 value3;
     s16 i;
 
     data = arg2;
@@ -826,7 +619,7 @@ s16 func_8001073C_main(HmfLoadData *hmf, u16 motionIndex, void *arg2) {
     entry->unk50 = HuMemAllocTag(count2 * sizeof(s16), D_800CDD6A_main);
     data += 2;
     for (i = 0; i < count; i++) {
-        ((s16 *)entry->unk50)[i] = func_8000FDAC_main(hmf, (data[0] << 8) + data[1]);
+        entry->unk50[i] = func_8000FDAC_main(hmf, (data[0] << 8) + data[1]);
         data += 2;
     }
     entry->unk54 = hmf;
@@ -834,67 +627,52 @@ s16 func_8001073C_main(HmfLoadData *hmf, u16 motionIndex, void *arg2) {
     value <<= 0x18;
     value += data[1] << 0x10;
     value += data[2] << 8;
-    entry->unk04 = value + data[3];
+    *(s32 *)&entry->basePos.x = value + data[3];
     value = data[4];
     value <<= 0x18;
     value += data[5] << 0x10;
     value += data[6] << 8;
-    entry->unk08 = value + data[7];
+    *(s32 *)&entry->basePos.y = value + data[7];
     value = data[8];
     value <<= 0x18;
     value += data[9] << 0x10;
     value += data[0xA] << 8;
-    entry->unk0C = value + data[0xB];
+    *(s32 *)&entry->basePos.z = value + data[0xB];
     data += 0xC;
     value = data[0];
     value <<= 0x18;
     value += data[1] << 0x10;
     value += data[2] << 8;
-    entry->unk10 = value + data[3];
+    *(s32 *)&entry->baseRot.x = value + data[3];
     value = data[4];
     value <<= 0x18;
     value += data[5] << 0x10;
     value += data[6] << 8;
-    entry->unk14 = value + data[7];
+    *(s32 *)&entry->baseRot.y = value + data[7];
     value = data[8];
     value <<= 0x18;
     value += data[9] << 0x10;
     value += data[0xA] << 8;
-    entry->unk18 = value + data[0xB];
+    *(s32 *)&entry->baseRot.z = value + data[0xB];
     data += 0xC;
     value = data[0];
     value <<= 0x18;
     value += data[1] << 0x10;
     value += data[2] << 8;
-    entry->unk1C = value + data[3];
+    *(s32 *)&entry->baseScale.x = value + data[3];
     value = data[4];
     value <<= 0x18;
     value += data[5] << 0x10;
     value += data[6] << 8;
-    entry->unk20 = value + data[7];
+    *(s32 *)&entry->baseScale.y = value + data[7];
     value = data[8];
     value <<= 0x18;
     value += data[9] << 0x10;
     value += data[0xA] << 8;
-    entry->unk24 = value + data[0xB];
-    value2 = entry->unk04;
-    value = entry->unk08;
-    value3 = entry->unk0C;
-    entry->unk28 = value2;
-    entry->unk2C = value;
-    entry->unk30 = value3;
-    value2 = entry->unk10;
-    value = entry->unk14;
-    value3 = entry->unk18;
-    entry->unk34 = value2;
-    entry->unk38 = value;
-    entry->unk3C = value3;
-    value2 = entry->unk1C;
-    value = entry->unk20;
-    value3 = entry->unk24;
-    entry->unk40 = value2;
-    entry->unk44 = value;
-    entry->unk48 = value3;
+    *(s32 *)&entry->baseScale.z = value + data[0xB];
+    entry->pos = entry->basePos;
+    entry->rot = entry->baseRot;
+    entry->scale = entry->baseScale;
     entry->unk4E = 0;
     entry->unk4D = 0;
     entry->unk4C = 0;
@@ -945,10 +723,10 @@ void *func_80010AC8_main(void *arg0) {
     return data + ((u32)data & 1);
 }
 
-void func_80010AF8_main(HmfLoadData *hmf, s16 objectIndex, s16 linkIndex, s16 faceCount) {
+void func_80010AF8_main(HmfData *hmf, s16 objectIndex, s16 linkIndex, s16 faceCount) {
     u8 *record;
     u8 *next;
-    HmfFaceData *faces;
+    HmfModelData_Unk64_Unk60_Unk54_Struct *faces;
     s16 *p;
     s16 *bounds;
     s16 pointCount;
@@ -967,8 +745,8 @@ void func_80010AF8_main(HmfLoadData *hmf, s16 objectIndex, s16 linkIndex, s16 fa
         return;
     }
 
-    hmf->unk60[objectIndex].unk54 = (HmfObjectLinkData *)HuMemAllocTag(faceCount * sizeof(HmfFaceData), D_800D5204_main);
-    faces = (HmfFaceData *)hmf->unk60[objectIndex].unk54;
+    hmf->unk60[objectIndex].unk54 = HuMemAllocTag(faceCount * sizeof(HmfModelData_Unk64_Unk60_Unk54_Struct), D_800D5204_main);
+    faces = hmf->unk60[objectIndex].unk54;
     record = D_800B19B8_main + 0x10;
     for (i = 0; i < linkIndex; i++) {
         if (record[0] == 0x16) {
@@ -996,7 +774,7 @@ void func_80010AF8_main(HmfLoadData *hmf, s16 objectIndex, s16 linkIndex, s16 fa
         }
 
         for (j = 0; j < pointCount; j++) {
-            p = &((s16 *)hmf->unk50)[faces[i].unk04[j] * 3];
+            p = hmf->unk50[faces[i].unk04[j]];
             v = p[0];
             if (minX > v) {
                 minX = v;
@@ -1035,20 +813,20 @@ void func_80010AF8_main(HmfLoadData *hmf, s16 objectIndex, s16 linkIndex, s16 fa
 
     hmf->unk60[objectIndex].unk50 =
         (flags & 1) ? (hmf->unk60[objectIndex].unk50 | 0x10000) : hmf->unk60[objectIndex].unk50;
-    bounds = hmf->unk60[objectIndex].unk42;
+    bounds = hmf->unk60[objectIndex].boundsMin;
     bounds[0] = minX;
     bounds[1] = minY;
     bounds[2] = minZ;
-    bounds = hmf->unk60[objectIndex].unk48;
+    bounds = hmf->unk60[objectIndex].boundsMax;
     bounds[0] = maxX;
     bounds[1] = maxY;
     bounds[2] = maxZ;
 }
 
-void func_80010EB0_main(HmfFaceData *arg0, u8 *arg1, HmfLoadData *arg2, u16 *arg3) {
+void func_80010EB0_main(HmfModelData_Unk64_Unk60_Unk54_Struct *arg0, u8 *arg1, HmfData *arg2, u16 *arg3) {
     s32 *values1;
     s32 *values2;
-    u8 *colors;
+    s8 *normals;
     u8 *attr;
     u16 *coords1;
     u16 *coords2;
@@ -1076,8 +854,8 @@ void func_80010EB0_main(HmfFaceData *arg0, u8 *arg1, HmfLoadData *arg2, u16 *arg
     }
     arg0->unk00 = count;
     arg1++;
-    values1 = &arg0->unk0C[0];
-    values2 = &arg0->unk1C[0];
+    values1 = (s32 *)arg0->unk0C;
+    values2 = (s32 *)arg0->unk1C;
     i = 0;
     hasColor = 0;
     while (i < count) {
@@ -1096,8 +874,8 @@ void func_80010EB0_main(HmfFaceData *arg0, u8 *arg1, HmfLoadData *arg2, u16 *arg
         arg0->unk04[i] = (arg1[0] << 8) + arg1[1];
         if (arg1[3] != 0xFF) {
             temp = arg0->unk04[i];
-            colors = arg2->unk54;
-            colors[temp * 3 + 0] = colors[temp * 3 + 1] = colors[temp * 3 + 2] = 0;
+            normals = arg2->unk54[0];
+            normals[temp * 3 + 0] = normals[temp * 3 + 1] = normals[temp * 3 + 2] = 0;
             hasColor = -1;
         }
         arg1 += step;
@@ -1107,9 +885,9 @@ void func_80010EB0_main(HmfFaceData *arg0, u8 *arg1, HmfLoadData *arg2, u16 *arg
     if (hasColor != 0) {
         arg0->unk00 |= 0x80;
     }
-    coords1 = &((u16 *)arg2->unk50)[arg0->unk04[0] * 3];
-    coords2 = &((u16 *)arg2->unk50)[arg0->unk04[1] * 3];
-    coords3 = &((u16 *)arg2->unk50)[arg0->unk04[2] * 3];
+    coords1 = (u16 *)arg2->unk50[arg0->unk04[0]];
+    coords2 = (u16 *)arg2->unk50[arg0->unk04[1]];
+    coords3 = (u16 *)arg2->unk50[arg0->unk04[2]];
     func_8001116C_main(arg0->unk01, coords1, coords2, coords3);
     if (D_800B19C0_main != NULL) {
         *arg3 |= arg2->unk88[arg0->unk30].unk09;
@@ -1161,7 +939,7 @@ void func_8001116C_main(s8 *arg0, u16 *arg1, u16 *arg2, u16 *arg3) {
     arg0[2] = (crossZ != 0.0f) ? (crossZ * scale) : 0.0f;
 }
 
-s16 func_80011334_main(HmfLoadData *hmf, void *arg1, s16 index) {
+s16 func_80011334_main(HmfData *hmf, void *arg1, s16 index) {
     u8 *data;
     u8 *src;
     u8 *dst;
@@ -1224,7 +1002,7 @@ s16 func_80011460_main(const u8 *arg0) {
     return sum;
 }
 
-s32 func_800114C0_main(HmfLoadData *hmf) {
+s32 func_800114C0_main(HmfData *hmf) {
     u8 *data;
     u8 *src;
     HmfDispData *entry;
@@ -1293,7 +1071,7 @@ s32 func_800114C0_main(HmfLoadData *hmf) {
                 coords[0] = (s16)((src[2] << 8) + src[3]) * scale.single;
                 coords[1] = (s16)((src[4] << 8) + src[5]) * scale.single;
                 coords[2] = (s16)((src[6] << 8) + src[7]) * scale.single;
-                if (((s8 *)hmf->unk54)[indices[0] * 3 + 0] == 0 && ((s8 *)hmf->unk54)[indices[0] * 3 + 1] == 0 && ((s8 *)hmf->unk54)[indices[0] * 3 + 2] == 0) {
+                if (hmf->unk54[indices[0]][0] == 0 && hmf->unk54[indices[0]][1] == 0 && hmf->unk54[indices[0]][2] == 0) {
                     colors[0] = colors[1] = colors[2] = 0;
                 } else {
                     colors[0] = src[8];
@@ -1313,7 +1091,7 @@ s32 func_800114C0_main(HmfLoadData *hmf) {
     return 1;
 }
 
-s32 func_80011874_main(HmfLoadData *hmf) {
+s32 func_80011874_main(HmfData *hmf) {
     char buf[0x20];
     u8 *data;
     u8 *sub2;
@@ -1395,7 +1173,7 @@ s32 func_80011874_main(HmfLoadData *hmf) {
     return 1;
 }
 
-void func_80011B94_main(HmfLoadData *hmf, void *arg1, s16 index) {
+void func_80011B94_main(HmfData *hmf, void *arg1, s16 index) {
     u8 *data;
     HmfMapData *entry;
     s32 value;
@@ -1411,7 +1189,7 @@ void func_80011B94_main(HmfLoadData *hmf, void *arg1, s16 index) {
     entry->unk28 = value + data[11];
 }
 
-s32 func_80011C40_main(HmfLoadData *hmf, void *arg1) {
+s32 func_80011C40_main(HmfData *hmf, void *arg1) {
     char buf[0x20];
     u8 *data;
     HmfData_UnkBC *env;
@@ -1473,7 +1251,7 @@ s32 func_80011C40_main(HmfLoadData *hmf, void *arg1) {
     return 1;
 }
 
-void func_80011F9C_main(HmfLoadData *hmf) {
+void func_80011F9C_main(HmfData *hmf) {
     u8 *data;
     s32 value;
 
@@ -1497,7 +1275,7 @@ void func_80011F9C_main(HmfLoadData *hmf) {
     }
 }
 
-void func_8001203C_main(HmfLoadData *hmf, u8 *data, s32 index) {
+void func_8001203C_main(HmfData *hmf, u8 *data, s32 index) {
     u8 *entry;
     u8 *colors;
     HmfFloatBits x;

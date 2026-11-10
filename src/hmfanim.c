@@ -21,8 +21,6 @@ HmfData_Unk84_Entry2 D_800A1190_main = {
     "0123456789ABCDE", 0, 2, 4, 4, 0xFF, 0, 0, 0, (u8 *)D_800A1170_main, (struct HmfData *)-1, NULL,
 };
 
-s16 func_80011334_main(HmfData *, void *, s16); // Declared locally: hmfload.c defines this with its HmfLoadData view of HmfData.
-
 void func_80031560_main(void) {
     s16 i;
 

@@ -28,7 +28,6 @@ extern s32 D_800C9940_main;
 // graphics.c
 
 // hmfload.c
-void func_8000F978_main(HmfData *); // Declared locally: hmfload.c defines this with its HmfLoadData view of HmfData.
 
 // hmfparticle.c
 
@@ -62,7 +61,6 @@ extern HmfData_Unk84_Entry2 *D_800D1FCC_main;
 
 extern Gfx *gMainGfxPos;
 
-void Hmfload(HmfData *, void *, s32); // Declared locally: hmfload.c defines this with its HmfLoadData view of HmfData.
 
 extern u8 D_800A0540_main;
 extern u8 D_800A0541_main;

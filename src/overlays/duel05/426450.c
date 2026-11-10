@@ -202,6 +202,13 @@ extern omObjData *D_801163D8_duel05;
 extern s16 D_800D124C_main;
 extern s16 D_800CE1D0_main;
 extern s16 D_80101A50_name_81;
+extern u8 D_801158D5_duel05[];
+extern u8 D_801158E0_duel05[];
+extern u8 D_801158E8_duel05[];
+extern u8 D_80115904_duel05[];
+extern u8 D_801158ED_duel05[];
+extern u8 D_801158F8_duel05[];
+extern u8 D_80115900_duel05[];
 
 void func_801059D0_duel05(void) {
     mbCameraBtnF = 1;
@@ -4167,9 +4174,485 @@ void func_801138DC_duel05(void) {
     omDelPrcObj(NULL);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_80113C7C_duel05);
+s32 func_80113C7C_duel05(void) {
+    s32 curIndex = MBDGetCurrentPlayerIndex();
+    s32 otherIndex = MBDGetCurrentPlayerIndex() ^ 1;
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *other = MBDGetPlayerStruct(otherIndex);
+    s32 walkNum = mbWalkNum;
+    s32 stars;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_80114428_duel05);
+    switch (other->clink) {
+        case 0:
+            if (player->stats.partners.frontPower == 0) {
+                return 1;
+            }
+            if (walkNum < 5) {
+                if (other->stats.partners.frontPower == 0) {
+                    return 0;
+                }
+                if (walkNum != 2) {
+                    return 1;
+                }
+                return func_800EFE20_name_81(100.0f) < 50;
+            }
+            if (other->cidx == 1) {
+                return 1;
+            }
+            if (walkNum < 8 && other->cidx == D_801158D5_duel05[walkNum]) {
+                if (other->stats.partners.backID == PARTNER_BOO &&
+                    !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                    return 1;
+                }
+                return 0;
+            }
+            if (walkNum < 8 && other->cidx < D_801158D5_duel05[walkNum]) {
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 0;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 0;
+                }
+                if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD)
+                        ? !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)
+                        : !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
+                    return 0;
+                }
+                if (other->stats.partners.backID == PARTNER_BOO) {
+                    if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                        return 1;
+                    }
+                }
+                if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+                    if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                        return !(player->stats.partners.frontHp + player->star > other->stats.partners.frontPower);
+                    }
+                    if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+                        return 1;
+                    }
+                }
+                if (player->stats.partners.frontPower != 0 || player->stats.partners.backID == PARTNER_BOO) {
+                    return 0;
+                }
+                return 1;
+            }
+            return 1;
+        case 1:
+            if (walkNum < 5 && other->cidx == D_801158E0_duel05[walkNum]) {
+                if (other->stats.partners.backID == PARTNER_BOO &&
+                    !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                    return 1;
+                }
+                return 0;
+            }
+            if (walkNum >= 6 || other->cidx < D_801158E0_duel05[walkNum]) {
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 0;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 0;
+                }
+                if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD)
+                        ? !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)
+                        : !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
+                    return 0;
+                }
+                if (other->stats.partners.backID == PARTNER_BOO) {
+                    if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                        return 1;
+                    }
+                }
+                if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+                    if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                        return !(player->stats.partners.frontHp + player->star > other->stats.partners.frontPower);
+                    }
+                    if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+                        return 1;
+                    }
+                }
+                if (player->stats.partners.frontPower != 0 || player->stats.partners.backID == PARTNER_BOO) {
+                    return 0;
+                }
+                return 1;
+            }
+            return func_800EFE20_name_81(100.0f) < 50;
+        case 2:
+            if (walkNum < 5 && other->cidx == D_801158E8_duel05[walkNum]) {
+                if (other->stats.partners.backID == PARTNER_BOO &&
+                    !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                    return 0;
+                }
+                return 1;
+            }
+            if (walkNum >= 6 || other->cidx < D_801158E8_duel05[walkNum]) {
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 1;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 1;
+                }
+                if (player->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                    if (!(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)) {
+                        return 1;
+                    }
+                } else if (!(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
+                    return 1;
+                }
+                if (other->stats.partners.backID == PARTNER_BOO) {
+                    if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                        return 0;
+                    }
+                }
+                if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+                    if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                        return 0;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                        return 0;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                        return player->stats.partners.frontHp + player->star > other->stats.partners.frontPower;
+                    }
+                    if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+                        return 0;
+                    }
+                }
+                return 1;
+            }
+            if (walkNum == 2) {
+                return func_800EFE20_name_81(100.0f) < 50;
+            }
+            return 1;
+        case 3:
+        case 4:
+            if (walkNum == 2) {
+                return func_800EFE20_name_81(100.0f) < 50;
+            }
+            return func_800EFE20_name_81(100.0f) < 70;
+        case 5:
+            if (walkNum < 5 || other->stats.partners.frontPower == 0) {
+                return 1;
+            }
+            return 0;
+        case 6:
+            if (walkNum < 5) {
+                return 1;
+            }
+            if (walkNum < 10 && other->cidx == D_80115904_duel05[walkNum]) {
+                if (other->stats.partners.backID == PARTNER_BOO &&
+                    !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                    return 0;
+                }
+                return 1;
+            }
+            if (walkNum >= 10 || other->cidx < D_80115904_duel05[walkNum]) {
+                stars = player->star;
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 1;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 1;
+                }
+                if (player->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                    if (!(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)) {
+                        return 1;
+                    }
+                } else if (!(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
+                    return 1;
+                }
+                if (other->stats.partners.backID == PARTNER_BOO) {
+                    if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                        return 0;
+                    }
+                    if (player->stats.partners.frontPower > player->stats.partners.frontHp) {
+                        stars -= player->stats.partners.frontPower - player->stats.partners.frontHp;
+                    }
+                }
+                if (walkNum == 9) {
+                    if (!(player->stats.partners.backPower < other->stats.partners.frontHp + other->star)) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOO &&
+                        !(player->stats.partners.backPower < stars + player->stats.partners.backHp)) {
+                        return 0;
+                    }
+                    return 1;
+                }
+                if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+                    if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                        return 0;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                        return 0;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                        return player->stats.partners.frontHp + player->star > other->stats.partners.frontPower;
+                    }
+                    if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+                        return 0;
+                    }
+                }
+                return 1;
+            }
+            if (walkNum != 2) {
+                break;
+            }
+            return func_800EFE20_name_81(100.0f) < 50;
+    }
+    return 1;
+}
+
+s32 func_80114428_duel05(void) {
+    s32 curIndex = MBDGetCurrentPlayerIndex();
+    s32 otherIndex = MBDGetCurrentPlayerIndex() ^ 1;
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *other = MBDGetPlayerStruct(otherIndex);
+    s32 walkNum = mbWalkNum;
+    s32 stars;
+
+    switch (other->clink) {
+        case 3:
+            if (player->stats.partners.frontPower == 0) {
+                return 1;
+            }
+            if (walkNum < 5) {
+                if (other->stats.partners.frontPower == 0) {
+                    return 0;
+                }
+                if (walkNum != 2) {
+                    return 1;
+                }
+                return func_800EFE20_name_81(100.0f) < 50;
+            }
+            if (other->cidx == 1) {
+                return 1;
+            }
+            if (walkNum < 8 && other->cidx == D_801158ED_duel05[walkNum]) {
+                if (other->stats.partners.backID == PARTNER_BOO &&
+                    !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                    return 1;
+                }
+                return 0;
+            }
+            if (walkNum < 8 && other->cidx < D_801158ED_duel05[walkNum]) {
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 0;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 0;
+                }
+                if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD)
+                        ? !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)
+                        : !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
+                    return 0;
+                }
+                if (other->stats.partners.backID == PARTNER_BOO) {
+                    if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                        return 1;
+                    }
+                }
+                if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+                    if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                        return !(player->stats.partners.frontHp + player->star > other->stats.partners.frontPower);
+                    }
+                    if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+                        return 1;
+                    }
+                }
+                if (player->stats.partners.frontPower != 0 || player->stats.partners.backID == PARTNER_BOO) {
+                    return 0;
+                }
+                return 1;
+            }
+            return 1;
+        case 4:
+            if (walkNum < 5 && other->cidx == D_801158F8_duel05[walkNum]) {
+                if (other->stats.partners.backID == PARTNER_BOO &&
+                    !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                    return 1;
+                }
+                return 0;
+            }
+            if (walkNum >= 6 || other->cidx < D_801158F8_duel05[walkNum]) {
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 0;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 0;
+                }
+                if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD)
+                        ? !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)
+                        : !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
+                    return 0;
+                }
+                if (other->stats.partners.backID == PARTNER_BOO) {
+                    if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                        return 1;
+                    }
+                }
+                if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+                    if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                        return !(player->stats.partners.frontHp + player->star > other->stats.partners.frontPower);
+                    }
+                    if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+                        return 1;
+                    }
+                }
+                if (player->stats.partners.frontPower != 0 || player->stats.partners.backID == PARTNER_BOO) {
+                    return 0;
+                }
+                return 1;
+            }
+            return func_800EFE20_name_81(100.0f) < 50;
+        case 5:
+            if (walkNum < 5 && other->cidx == D_80115900_duel05[walkNum]) {
+                if (other->stats.partners.backID == PARTNER_BOO &&
+                    !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                    return 0;
+                }
+                return 1;
+            }
+            if (walkNum >= 6 || other->cidx < D_80115900_duel05[walkNum]) {
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 1;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 1;
+                }
+                if (player->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                    if (!(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)) {
+                        return 1;
+                    }
+                } else if (!(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
+                    return 1;
+                }
+                if (other->stats.partners.backID == PARTNER_BOO) {
+                    if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                        return 0;
+                    }
+                }
+                if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+                    if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                        return 0;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                        return 0;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                        return player->stats.partners.frontHp + player->star > other->stats.partners.frontPower;
+                    }
+                    if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+                        return 0;
+                    }
+                }
+                return 1;
+            }
+            if (walkNum == 2) {
+                return func_800EFE20_name_81(100.0f) < 50;
+            }
+            return 1;
+        case 0:
+        case 1:
+            if (walkNum == 2) {
+                return func_800EFE20_name_81(100.0f) < 50;
+            }
+            return func_800EFE20_name_81(100.0f) < 70;
+        case 2:
+            if (walkNum < 5 || other->stats.partners.frontPower == 0) {
+                return 1;
+            }
+            return 0;
+        case 6:
+            if (walkNum < 5) {
+                return 1;
+            }
+            if (walkNum < 10 && other->cidx == D_80115904_duel05[walkNum]) {
+                if (other->stats.partners.backID == PARTNER_BOO &&
+                    !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                    return 0;
+                }
+                return 1;
+            }
+            if (walkNum >= 10 || other->cidx < D_80115904_duel05[walkNum]) {
+                stars = player->star;
+                if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                    return 1;
+                }
+                if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                    return 1;
+                }
+                if (player->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                    if (!(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)) {
+                        return 1;
+                    }
+                } else if (!(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
+                    return 1;
+                }
+                if (other->stats.partners.backID == PARTNER_BOO) {
+                    if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                        return 0;
+                    }
+                    if (player->stats.partners.frontPower > player->stats.partners.frontHp) {
+                        stars -= player->stats.partners.frontPower - player->stats.partners.frontHp;
+                    }
+                }
+                if (walkNum == 9) {
+                    if (!(player->stats.partners.backPower < other->stats.partners.frontHp + other->star)) {
+                        return 1;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOO &&
+                        !(player->stats.partners.backPower < stars + player->stats.partners.backHp)) {
+                        return 0;
+                    }
+                    return 1;
+                }
+                if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+                    if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                        return 0;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                        return 0;
+                    }
+                    if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                        return player->stats.partners.frontHp + player->star > other->stats.partners.frontPower;
+                    }
+                    if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+                        return 0;
+                    }
+                }
+                return 1;
+            }
+            if (walkNum != 2) {
+                break;
+            }
+            return func_800EFE20_name_81(100.0f) < 50;
+    }
+    return 1;
+}
 
 void func_80114BD4_duel05(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);

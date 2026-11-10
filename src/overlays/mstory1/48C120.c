@@ -55,6 +55,8 @@ extern s16 D_80115A28_mstory1;
 extern Vec D_80115A04_mstory1;
 extern const Vec D_80114D04_mstory1;
 extern s16 D_80115A12_mstory1;
+extern Vec D_80114AC4_mstory1[];
+extern Vec D_80114AF4_mstory1[];
 extern const s32 D_8011505C_mstory1[];
 extern Vec D_801159E0_mstory1;
 extern const Vec D_80114CE0_mstory1;
@@ -68,6 +70,9 @@ void func_80106D80_mstory1(omObjData *obj, Vec *pos, s32 frames, s32 arg3);
 void func_8010704C_mstory1(omObjData *obj, Vec *pos, s32 frames);
 s32 func_8010726C_mstory1(s16 model);
 void func_801081D8_mstory1(omObjData *obj);
+MstoryPath *func_801074C0_mstory1(Vec *points, s32 flags);
+void func_801077C4_mstory1(MstoryPath *path, f32 t, Vec *out);
+void func_8010806C_mstory1(MstoryPath *path);
 void func_80109C20_mstory1(void);
 void func_80109FD0_mstory1(void);
 void func_80109C28_mstory1(omObjData *obj);
@@ -92,7 +97,7 @@ void func_8010B69C_mstory1(void);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/48C120", D_80114C50_mstory1);
 
-void func_80105C90_mstory1(void) {
+void func_80105C90_mstory1(omObjData *obj) {
     u32 state = D_80114A80_mstory1;
     s32 btn;
 
@@ -160,7 +165,7 @@ void func_80105EF4_mstory1(void) {
     espDispOn(D_801158B8_mstory1);
 }
 
-void func_80105F28_mstory1(void) {
+void func_80105F28_mstory1(omObjData *obj) {
     D_800CE17C_main[0] = D_80114A8C_mstory1.x;
     D_800CE17C_main[1] = D_80114A8C_mstory1.z;
     D_800CE17C_main[-1] = 0.0f;
@@ -436,7 +441,65 @@ void func_80107318_mstory1(omObjData *obj, f32 speed, s16 frames) {
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_80107318_mstory1);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_801074C0_mstory1);
+MstoryPath *func_801074C0_mstory1(Vec *points, s32 flags) {
+    MstoryPath *path;
+    Vec *current;
+    Vec *next;
+    f32(*interval)[2];
+    f32 totalLength;
+    f32 length;
+    f32 dx;
+    f32 dy;
+    f32 dz;
+    s16 count;
+    s16 i;
+
+    path = HuMemAllocTag(sizeof(MstoryPath), TAG_OVERLAY);
+    path->flags = flags;
+    path->points = points;
+    current = points;
+    next = current + 1;
+    totalLength = 0.0f;
+    for (count = 0; next->x != 9999.0f || next->y != 9999.0f || next->z != 9999.0f; count++, next++, current++) {
+        dx = next->x - current->x;
+        dy = next->y - current->y;
+        dz = next->z - current->z;
+        totalLength += HuSqrtf(dx * dx + dy * dy + dz * dz);
+    }
+    if (flags & 1) {
+        dx = points->x - current->x;
+        dy = points->y - current->y;
+        dz = points->z - current->z;
+        totalLength += HuSqrtf(dx * dx + dy * dy + dz * dz);
+    }
+    count++;
+    path->count = count;
+    interval = HuMemAllocTag(count * sizeof(*interval), TAG_OVERLAY);
+    path->intervals = interval;
+    current = points;
+    next = current + 1;
+    length = 0.0f;
+    for (i = 0; i < count; i++, current++, next++, interval++) {
+        dx = next->x - current->x;
+        dy = next->y - current->y;
+        dz = next->z - current->z;
+        if (flags & 1) {
+            if (i == count - 1) {
+                dx = points->x - current->x;
+                dy = points->y - current->y;
+                dz = points->z - current->z;
+            }
+        }
+        dz = HuSqrtf(dx * dx + dy * dy + dz * dz);
+        (*interval)[0] = length / totalLength;
+        (*interval)[1] = (length + dz) / totalLength;
+        if ((*interval)[1] > 1.0f) {
+            (*interval)[1] = 1.0001f;
+        }
+        length += dz;
+    }
+    return path;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_801077C4_mstory1);
 
@@ -931,7 +994,49 @@ void func_8010B4E4_mstory1(void) {
 void func_8010B69C_mstory1(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_8010B6A4_mstory1);
+void func_8010B6A4_mstory1(omObjData *obj) {
+    Vec pos;
+    MstoryPath *paths[2];
+    omObjData *target;
+    f32 rotY;
+    s32 i;
+
+    paths[0] = func_801074C0_mstory1(D_80114AC4_mstory1, 0);
+    paths[1] = func_801074C0_mstory1(D_80114AF4_mstory1, 0);
+    func_8001C258_main(obj->model[1], 4, 0);
+    func_8001C258_main(D_80115A12_mstory1, 4, 0);
+    func_800138EC_main(D_80115A12_mstory1, 1, 1);
+    HuAudFXPlay(0x215);
+    for (i = 0; i < 50; i++) {
+        func_801077C4_mstory1(paths[0], (i * 0.02f) * (i * 0.02f), &pos);
+        Hu3DModelPosSet(obj->model[1], pos.x, pos.y, pos.z);
+        func_8000CFA4_main(D_80115A12_mstory1, pos.x, pos.y - 40.0f, pos.z);
+        HuPrcVSleep();
+    }
+    HuPrcSleep(40);
+    target = D_801158F0_mstory1[6].obj;
+    Hu3DMotionShiftSet(target->model[1], Hu3DData[target->motion[2]].motId, 0, 10, 0);
+    HuPrcSleep(20);
+    D_801158F0_mstory1[7].unk_08 |= 2;
+    HuAudFXPlay(0x218);
+    Hu3DMotionShiftSet(target->model[1], Hu3DData[target->motion[0]].motId, 0, 10, 2);
+    rotY = 0.0f;
+    for (i = 0; i < 120; i++) {
+        func_801077C4_mstory1(paths[1], (i * 0.008333334f) * (i * 0.008333334f), &pos);
+        rotY -= 24.0f;
+        Hu3DModelPosSet(obj->model[1], pos.x, pos.y, pos.z);
+        Hu3DModelRotSet(obj->model[1], 0.0f, rotY, 0.0f);
+        func_8000CFA4_main(D_80115A12_mstory1, pos.x, pos.y - 40.0f, pos.z);
+        HuPrcVSleep();
+    }
+    func_8001C258_main(obj->model[1], 4, 4);
+    func_8001C258_main(D_80115A12_mstory1, 4, 4);
+    HuAudFXPlay(0x21A);
+    func_8010806C_mstory1(paths[0]);
+    func_8010806C_mstory1(paths[1]);
+    D_801158F0_mstory1[7].unk_08 = 1;
+    D_801158F0_mstory1[7].func = func_801081D8_mstory1;
+}
 
 void func_8010B9C0_mstory1(omObjData *obj, omObjData *target) {
     s16 model[2];

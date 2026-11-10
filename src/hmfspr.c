@@ -35,8 +35,8 @@ s16 D_800A062C_main[] = { 2, 3, 7, 4, 5, 6, 8, 9 }; // unreferenced
 
 /* hmfanim functions. This file does not include game/hmfanim.h: it was compiled
  * against an s16 return type for func_800329B4_main, which is declared s32 there. */
-s32 Hu3DAnimCreate(HmfData *hmf, void *data, s16 bank, char *name);
-s16 Hu3DAnimLink(HmfData *hmf, u16 linkIdx, s16 bank, char *name);
+s32 Hu3DAnimCreate(HmfData *hmf, void *data, s16 bank, const char *name);
+s16 Hu3DAnimLink(HmfData *hmf, u16 linkIdx, s16 bank, const char *name);
 s16 func_800329B4_main(u8 *data);
 void func_80032FC0_main(s16 animIdx, u8 bitmask, u8 flags);
 void Hu3DAnimKill(s16 animIdx);

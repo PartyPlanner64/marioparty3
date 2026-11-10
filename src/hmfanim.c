@@ -357,7 +357,7 @@ void func_8003235C_main(void) {
     Hu3DAnimInit();
 }
 
-s32 Hu3DAnimCreate(HmfData *hmf, void *data, s16 bank, char *name) {
+s32 Hu3DAnimCreate(HmfData *hmf, void *data, s16 bank, const char *name) {
     HmfData_Unk84_Entry2 *tex;
     s16 hash = func_80011460_main((u8 *)name);
     s16 slot;
@@ -409,7 +409,7 @@ s32 Hu3DAnimCreate(HmfData *hmf, void *data, s16 bank, char *name) {
     return slot;
 }
 
-s16 Hu3DAnimLink(HmfData *hmf, u16 linkIdx, s16 bank, char *name) {
+s16 Hu3DAnimLink(HmfData *hmf, u16 linkIdx, s16 bank, const char *name) {
     HmfData_Unk84_Entry2 *tex;
     HmfAnim *anim;
     s16 hash = func_80011460_main((u8 *)name);

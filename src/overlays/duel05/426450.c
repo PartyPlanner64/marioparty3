@@ -275,6 +275,8 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_80106838_duel05);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_80107198_duel05);
 
+INCLUDE_RODATA("asm/nonmatchings/overlays/duel05/426450", D_80115DC0_duel05);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_801079C8_duel05);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_80107ECC_duel05);
@@ -375,6 +377,14 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_8010BCE4_duel05);
 INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_8010CE78_duel05);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_8010D434_duel05);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/duel05/426450", D_80115DF8_duel05);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/duel05/426450", D_80115E04_duel05);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/duel05/426450", D_80115E10_duel05);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/duel05/426450", D_80115E40_duel05);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_8010D96C_duel05);
 

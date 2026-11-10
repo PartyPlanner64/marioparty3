@@ -47,7 +47,6 @@ void func_800EDF78_name_81(void);
 void func_800EE468_name_81(s32);
 void func_800EDDBC_name_81(void);
 void func_800F3880_name_81(s32, s32, s32);
-extern char D_8011AF80_duel04[];
 extern f32 D_80119CBC_duel04;
 extern s16 D_80119CD2_duel04;
 extern s16 D_80119CD0_duel04;
@@ -276,6 +275,8 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010682C_duel04);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010718C_duel04);
 
+INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011AED0_duel04);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_801079BC_duel04);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80107EC0_duel04);
@@ -377,6 +378,14 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010CE6C_duel04);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010D428_duel04);
 
+INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011AF08_duel04);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011AF14_duel04);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011AF20_duel04);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011AF50_duel04);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010D960_duel04);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010D9F8_duel04);
@@ -409,8 +418,8 @@ void func_8010DB3C_duel04(void) {
 
     angle = 0.0f;
     while (TRUE) {
-        func_8002FD8C_main(D_8011B500_duel04->omObj1->model[0], Hu3DData[D_8011B500_duel04->omObj1->model[0]].motId, D_8011AF80_duel04, 0x4C, 0x46);
-        node = func_8001D33C_main(D_8011B500_duel04->omObj1->model[0], D_8011AF80_duel04);
+        func_8002FD8C_main(D_8011B500_duel04->omObj1->model[0], Hu3DData[D_8011B500_duel04->omObj1->model[0]].motId, "neji", 0x4C, 0x46);
+        node = func_8001D33C_main(D_8011B500_duel04->omObj1->model[0], "neji");
         angle += D_80119CBC_duel04;
         if (angle >= 360.0f) {
             angle -= 360.0f;
@@ -477,6 +486,8 @@ void func_8010DF78_duel04(Vec *pos) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010E018_duel04);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011AF88_duel04);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010E1C4_duel04);
 
@@ -609,6 +620,34 @@ void func_80110C94_duel04(void) {
         func_80110124_duel04(1);
     }
 }
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011AFAC_duel04);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011AFC4_duel04);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011AFDC_duel04);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011AFE8_duel04);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011B000_duel04);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011B030_duel04);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011B060_duel04);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011B064_duel04);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011B06C_duel04);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011B08C_duel04);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011B090_duel04);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011B178_duel04);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011B260_duel04);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011B348_duel04);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80110CF8_duel04);
 

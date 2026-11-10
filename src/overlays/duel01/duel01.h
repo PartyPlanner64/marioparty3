@@ -44,6 +44,20 @@ typedef struct unkStruct06 {
     /* 0x0C */ char unk_0C[4];
 } unkStruct06;
 
+typedef void (*PartnerFunc)(s16, s32, Object *, Object *, s32, s32);
+
+typedef struct Duel01PartnerAttackWork {
+    /* 0x00 */ GW_PLAYER *player;
+    /* 0x04 */ Object *obj;
+    /* 0x08 */ s32 delay;
+    /* 0x0C */ s32 waitTime;
+} Duel01PartnerAttackWork; // sizeof 0x10
+
+typedef struct Duel01SwayWork {
+    /* 0x00 */ s32 angle;
+    /* 0x04 */ char unk_04[0xC];
+} Duel01SwayWork; // sizeof 0x10
+
 extern s16 omovlevtno;
 f32 func_800D76D0_name_81(void *);
 void func_80100CEC_name_81(s32 padIdx);
@@ -87,3 +101,36 @@ void func_8010E1B4_duel01(void);
 void func_8010E7C0_duel01(void);
 void func_8010EAD4_duel01(s32);
 void func_80110068_duel01(s32);
+void func_80105F20_duel01(void);
+void func_80106828_duel01(s16, s32, Object *, Object *, s32, s32);
+void func_80107188_duel01(s16, s32, Object *, Object *, s32, s32);
+void func_801079B8_duel01(s16, s32, Object *, Object *, s32, s32);
+void func_80107EBC_duel01(s16, s32, Object *, Object *, s32, s32);
+void func_801084A4_duel01(s16, s32, Object *, Object *, s32, s32);
+void func_80108550_duel01(s16, s32, Object *, Object *, s32, s32);
+void func_80109888_duel01(s16, s32, Object *, Object *, s32, s32);
+void func_8010A210_duel01(s16, s32, Object *, Object *, s32, s32);
+void func_8010B54C_duel01(s16, s32, Object *, Object *, s32, s32);
+void func_8010BCD4_duel01(s16, s32, Object *, Object *, s32, s32);
+void func_8010CE68_duel01(s16, s32, Object *, Object *, s32, s32);
+void func_8010D424_duel01(s16, s32, Object *, Object *, s32, s32);
+void func_8010DDEC_duel01(void);
+void func_8010E3F8_duel01(void);
+void func_8011390C_duel01(void);
+s32 func_80118328_duel01(void);
+void func_800FAC94_name_81(PartnerFunc *, PartnerFunc *);
+void func_800EA46C_name_81(event_table_entry *);
+void func_800FC5A8_name_81(process_func);
+void func_800FC59C_name_81(s32 (*)(void));
+void func_800E18C0_name_81(void);
+void func_800E1960_name_81(void);
+void func_800E1F38_name_81(void);
+void func_800ED214_name_81(s32 playerIndex);
+void func_800E14D8_name_81(s32, s32);
+void func_800F7378_name_81(s32, s32);
+extern event_table_entry D_80118914_duel01[];
+extern event_table_entry D_80118DEC_duel01[];
+extern Process *D_80118744_duel01;
+extern Process *D_8011874C_duel01;
+extern f32 D_8011949C_duel01;
+extern f32 D_801194A4_duel01;

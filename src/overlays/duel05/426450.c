@@ -506,7 +506,16 @@ void func_8010DF78_duel05(Vec *pos) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_8010E018_duel05);
+void func_8010E018_duel05(void) {
+    if (D_801156E4_duel05 != NULL) {
+        while (D_801163CC_duel05 >= 0.0f) {
+            D_801163CC_duel05 -= 1.0f;
+            HuPrcVSleep();
+        }
+        omDelPrcObj(D_801156E4_duel05);
+        MTX_ROTZ(Hu3DData[D_801163C8_duel05->omObj1->model[0]].mtx, 0.0f);
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/duel05/426450", D_80115E78_duel05);
 
@@ -583,7 +592,16 @@ void func_8010E584_duel05(Vec *pos) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_8010E624_duel05);
+void func_8010E624_duel05(void) {
+    if (D_801156EC_duel05 != NULL) {
+        while (D_801163D4_duel05 >= 0.0f) {
+            D_801163D4_duel05 -= 1.0f;
+            HuPrcVSleep();
+        }
+        omDelPrcObj(D_801156EC_duel05);
+        MTX_ROTZ(Hu3DData[D_801163D0_duel05->omObj1->model[0]].mtx, 0.0f);
+    }
+}
 
 void func_8010E7D0_duel05(void) {
     f32 amplitude;

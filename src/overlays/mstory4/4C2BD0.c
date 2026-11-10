@@ -190,6 +190,8 @@ s16 func_801108FC_mstory4(s32 file, s32 flags);
 void func_801109EC_mstory4(s16 model);
 s16 func_80110B4C_mstory4(s32 dataNum, s32 attr);
 void func_80110E3C_mstory4(void);
+void func_80111430_mstory4(s16 model, f32 x, f32 y, f32 z, s16 count, s32 randomAxis);
+void func_80111740_mstory4(s16 model);
 void func_801118F8_mstory4(s32 index, s32 seNo);
 void func_8011196C_mstory4(s32 index);
 
@@ -2458,6 +2460,7 @@ void func_80110DB0_mstory4(f32, f32, f32, s16); /* extern */
 extern Addr D_128CC60;
 
 extern s16 D_80112330_mstory4;
+extern s16 D_80111C00_mstory4;
 
 void func_8010FC98_mstory4(void) {
     omObjData *temp_s5;
@@ -2758,7 +2761,99 @@ void func_80110DB0_mstory4(f32 x, f32 y, f32 z, s16 arg3) {
     work->unk_00 = 0;
 }
 
+// Only difference: the first rand8() term is converted in $f2 instead of
+// directly in rx's register ($f28). Writing it as two statements to rx gets
+// that, but swaps the $f26/$f28 allocation of rx and rz.
+#ifdef NON_MATCHING
+void func_80110E3C_mstory4(void) {
+    UnkMstory4Work *work = HuPrcCurrentGet()->user_data;
+    HmfData *hmf;
+    HmfModelData_Unk64_Unk60_Unk54_Struct *face;
+    HmfModelData_UnkBC_Unk58_Struct *particle;
+    s16 model;
+    s16 models[3];
+    s16 total;
+    s16 count;
+    s16 i;
+    s16 j;
+    f32 rx;
+    f32 ry;
+    f32 rz;
+    f32 x;
+    f32 y;
+    f32 z;
+
+    models[0] = model = func_8000B108_main(0xB0034, 0x28C);
+    func_8001C2FC_main(model, 0x20000, 0x20000);
+    hmf = Hu3DData[model].hmf;
+    for (j = 0; j < hmf->unk10; j++) {
+        count = hmf->unk60[j].unk22;
+        face = hmf->unk60[j].unk54;
+        for (i = 0; i < count; i++, face++) {
+            face->unk00 |= 0x80;
+        }
+    }
+    HuPrcVSleep();
+    Hu3DModelRemakeStatic(model);
+    func_8001C954_main(model);
+    func_8001C514_main(model);
+    func_80013390_main(model, -1, NULL, func_80111740_mstory4);
+    func_800138EC_main(model, 8, 8);
+    func_80013954_main(model, 0);
+    particle = Hu3DData[model].unkBC->unk58;
+    total = hmf->unk1A;
+    for (i = 0; i < total; i++, particle++) {
+        particle->unk08 = particle->unk0C = particle->unk10 = particle->unk14 = 0.0f;
+    }
+    HuPrcVSleep();
+    models[1] = func_8000B108_main(0xB004B, 0x29D);
+    func_8001C814_main(models[1], 2, 2);
+    Hu3DModelScaleSet(models[1], 0.2f, 0.2f, 0.2f);
+    models[2] = func_8000B108_main(0xB004C, 0x29D);
+    Hu3DModelScaleSet(models[2], 0.4f, 0.4f, 0.4f);
+    HuPrcSleep(work->unk_02);
+    func_8001C258_main(model, 4, 0);
+    while (TRUE) {
+        HuPrcVSleep();
+        rx = ((s32)(rand8() * 25U >> 7) + 100.0f) * D_80111C00_mstory4;
+        ry = (rand8() * 75 >> 7) + 50;
+        rz = rand8() * 75 >> 7;
+        rx *= 2.0f;
+        ry *= 2.0f;
+        rz *= 2.0f;
+        D_80111C00_mstory4 *= -1;
+        func_8001C258_main(models[1], 4, 0);
+        for (i = 0; i <= 20; i++) {
+            x = rx * sindf(i / 20.0f * 90.0f) + work->pos.x;
+            y = ry * sindf(i / 20.0f * 135.0f + 45.0f) - ry * sindf(45.0f) + work->pos.y;
+            z = rz * sindf(i / 20.0f * 90.0f) + work->pos.z;
+            Hu3DModelPosSet(models[1], x, y, z);
+            HuPrcVSleep();
+        }
+        func_8001C258_main(models[1], 4, 4);
+        HuPrcSleep(5);
+        if (rand8() & 3) {
+            func_8001C258_main(models[2], 4, 0);
+            Hu3DMotionTimeSet(models[2], 0.0f);
+            Hu3DMotionSpeedSet(models[2], 3.0f);
+            Hu3DModelPosSet(models[2], x, y, z);
+            for (i = 0; i < 8; i++) {
+                func_80111430_mstory4(model, x, y, z, total / 8, i & 3);
+                HuPrcVSleep();
+            }
+            func_8001C258_main(models[2], 4, 4);
+        } else {
+            for (i = 0; i < 8; i++) {
+                func_80111430_mstory4(model, x, y, z, total / 8, i & 3);
+                HuPrcVSleep();
+            }
+        }
+        HuPrcSleep(25);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80110E3C_mstory4);
+#endif
 
 void func_80111430_mstory4(s16 model, f32 x, f32 y, f32 z, s16 count, s32 randomAxis) {
     f32 step = 360.0f / count;

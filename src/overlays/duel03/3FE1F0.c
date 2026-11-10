@@ -191,6 +191,8 @@ void func_800FC59C_name_81(s32 (*)(void));
 void func_800FC5A8_name_81(process_func);
 void func_80113740_duel03(void);
 s32 func_80117264_duel03(void);
+extern u8 D_80117654_duel03[];
+extern u8 D_80117664_duel03[];
 void func_800FAC94_name_81(PartnerFunc *, PartnerFunc *);
 void func_8010682C_duel03(s32, s32, Object *, Object *, s32, s32);
 void func_8010718C_duel03(s32, s32, Object *, Object *, s32, s32);
@@ -4127,7 +4129,97 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_80113AE0_duel03);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_80114030_duel03);
 
+#ifdef NON_MATCHING
+// Same shape and remaining diffs as func_8011580C_duel03.
+s32 func_8011454C_duel03(void) {
+    s32 curIndex = MBDGetCurrentPlayerIndex();
+    s32 otherIndex = (s16)(MBDGetCurrentPlayerIndex() ^ 1);
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *other = MBDGetPlayerStruct(otherIndex);
+    s32 walkNum = mbWalkNum;
+    s32 stars;
+    s32 hp;
+    s32 unused[10]; // unreferenced; pads the stack frame to 0x48
+
+    if (other->cidx >= 7 && other->cidx <= 13) {
+        if (other->stats.partners.frontPower != 0 && player->star == 1 && walkNum < 3) {
+            return 0;
+        }
+        return 1;
+    }
+    if (other->cidx >= 15 && other->cidx <= 20) {
+        if (walkNum < 6 && other->cidx == D_80117664_duel03[walkNum]) {
+            if (other->stats.partners.backID == PARTNER_BOO &&
+                !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                return 0;
+            }
+            return 1;
+        }
+        if (walkNum < 6 && !(other->cidx < D_80117664_duel03[walkNum])) {
+            return 1;
+        }
+    } else {
+        return 1;
+    }
+    stars = player->star;
+    if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+        return 1;
+    }
+    if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+        return 1;
+    }
+    if (player->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+        hp = other->stats.partners.frontHp;
+    } else {
+        hp = other->stats.partners.backHp;
+    }
+    if (!(hp + other->star > player->stats.partners.frontPower)) {
+        return 1;
+    }
+    if (other->stats.partners.backID == PARTNER_BOO) {
+        if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+            return 0;
+        }
+        if (player->stats.partners.frontPower > player->stats.partners.frontHp) {
+            stars -= player->stats.partners.frontPower - player->stats.partners.frontHp;
+        }
+    }
+    if (walkNum == 3) {
+        if (player->stats.partners.backPower < other->stats.partners.frontHp + other->star &&
+            other->stats.partners.frontID == PARTNER_BOO &&
+            !(player->stats.partners.backPower < stars + player->stats.partners.backHp)) {
+            return 0;
+        }
+        return 1;
+    }
+    if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+        if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+            return 0;
+        }
+        if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+            return 0;
+        }
+        if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+            return player->stats.partners.frontHp + player->star > other->stats.partners.frontPower;
+        }
+        if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+            return 0;
+        }
+    }
+    if (player->stats.partners.frontPower != 0) {
+        return 1;
+    }
+    if (player->stats.partners.backID == PARTNER_BOO) {
+        return 1;
+    }
+    if (player->stats.partners.frontPower != 0) {
+        return 1;
+    }
+    return other->stats.partners.frontPower == 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_8011454C_duel03);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_8011485C_duel03);
 
@@ -4135,7 +4227,99 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_80114D80_duel03);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_801152E0_duel03);
 
+#ifdef NON_MATCHING
+// Remaining diffs are register allocation only: a few short-lived compare
+// operands get v0 instead of v1/a0 (hp + star sum, the walkNum == 5 block,
+// and the tail's second frontPower check), which changes delay slot filling.
+s32 func_8011580C_duel03(void) {
+    s32 curIndex = MBDGetCurrentPlayerIndex();
+    s32 otherIndex = (s16)(MBDGetCurrentPlayerIndex() ^ 1);
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *other = MBDGetPlayerStruct(otherIndex);
+    s32 walkNum = mbWalkNum;
+    s32 stars;
+    s32 hp;
+    s32 unused[10]; // unreferenced; pads the stack frame to 0x48
+
+    if (other->cidx >= 0x16 && other->cidx <= 0x1C) {
+        if (other->stats.partners.frontPower != 0 && player->star == 1 && walkNum < 3) {
+            return 0;
+        }
+        return 1;
+    }
+    if (other->cidx >= 0 && other->cidx < 6) {
+        if (walkNum < 6 && other->cidx == D_80117654_duel03[walkNum]) {
+            if (other->stats.partners.backID == PARTNER_BOO &&
+                !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                return 0;
+            }
+            return 1;
+        }
+        if (walkNum < 6 && !(other->cidx < D_80117654_duel03[walkNum])) {
+            return 1;
+        }
+    } else {
+        return 1;
+    }
+    stars = player->star;
+    if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+        return 1;
+    }
+    if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+        return 1;
+    }
+    if (player->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+        hp = other->stats.partners.frontHp;
+    } else {
+        hp = other->stats.partners.backHp;
+    }
+    if (!(hp + other->star > player->stats.partners.frontPower)) {
+        return 1;
+    }
+    if (other->stats.partners.backID == PARTNER_BOO) {
+        if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+            return 0;
+        }
+        if (player->stats.partners.frontPower > player->stats.partners.frontHp) {
+            stars -= player->stats.partners.frontPower - player->stats.partners.frontHp;
+        }
+    }
+    if (walkNum == 5) {
+        if (player->stats.partners.backPower < other->stats.partners.frontHp + other->star &&
+            other->stats.partners.frontID == PARTNER_BOO &&
+            !(player->stats.partners.backPower < stars + player->stats.partners.backHp)) {
+            return 0;
+        }
+        return 1;
+    }
+    if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+        if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+            return 0;
+        }
+        if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+            return 0;
+        }
+        if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+            return player->stats.partners.frontHp + player->star > other->stats.partners.frontPower;
+        }
+        if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+            return 0;
+        }
+    }
+    if (player->stats.partners.frontPower != 0) {
+        return 1;
+    }
+    if (player->stats.partners.backID == PARTNER_BOO) {
+        return 1;
+    }
+    if (player->stats.partners.frontPower != 0) {
+        return 1;
+    }
+    return other->stats.partners.frontPower == 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_8011580C_duel03);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_80115B18_duel03);
 

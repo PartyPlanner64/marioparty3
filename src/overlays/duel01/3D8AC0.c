@@ -368,7 +368,23 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010E008_duel01);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/duel01/3D8AC0", D_80118F18_duel01);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010E1B4_duel01);
+void func_8010E1B4_duel01(void) {
+    f32 amplitude;
+    s32 angle;
+    f32 offset;
+
+    func_8001C814_main(D_80119498_duel01->omObj1->model[0], 5, 0);
+    Hu3DMotionSpeedSet(D_80119498_duel01->omObj1->model[0], 1.5f);
+    func_800EFABC_name_81(D_80119498_duel01);
+    for (angle = 0, amplitude = 0.5f; angle < 2160; angle += 60) {
+        offset = 1.0f - cosdf(angle) * amplitude;
+        amplitude -= 1.0 / 72;
+        HuVecCopyXYZ(&D_80119498_duel01->scale, 1.0f, offset, 1.0f);
+        HuPrcVSleep();
+    }
+    HuVecCopyXYZ(&D_80119498_duel01->scale, 1.0f, 1.0f, 1.0f);
+    omDelPrcObj(NULL);
+}
 
 void func_8010E2CC_duel01(void) {
     omAddPrcObj(func_8010E1B4_duel01, 0xA, 0, 0);
@@ -415,7 +431,23 @@ void func_8010E574_duel01(Vec *pos) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010E614_duel01);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010E7C0_duel01);
+void func_8010E7C0_duel01(void) {
+    f32 amplitude;
+    s32 angle;
+    f32 offset;
+
+    func_8001C814_main(D_801194A0_duel01->omObj1->model[0], 5, 0);
+    Hu3DMotionSpeedSet(D_801194A0_duel01->omObj1->model[0], 1.5f);
+    func_800EFABC_name_81(D_801194A0_duel01);
+    for (angle = 0, amplitude = 0.5f; angle < 2160; angle += 60) {
+        offset = 1.0f - cosdf(angle) * amplitude;
+        amplitude -= 1.0 / 72;
+        HuVecCopyXYZ(&D_801194A0_duel01->scale, 1.0f, offset, 1.0f);
+        HuPrcVSleep();
+    }
+    HuVecCopyXYZ(&D_801194A0_duel01->scale, 1.0f, 1.0f, 1.0f);
+    omDelPrcObj(NULL);
+}
 
 void func_8010E8D8_duel01(void) {
     omAddPrcObj(func_8010E7C0_duel01, 0xA, 0, 0);

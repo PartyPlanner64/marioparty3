@@ -59,7 +59,6 @@ extern Object *D_80119498_duel01;
 extern Object *D_801194A0_duel01;
 extern Object *D_801194AC_duel01[5];
 extern s32 D_8011875C_duel01;
-void func_800E9F4C_name_81(s32, s8 *, s8 *);
 void func_800EA760_name_81(void);
 void func_800ECD0C_name_81(s16, s16, s16);
 void func_800EB708_name_81(Vec *, Vec *, Vec *);

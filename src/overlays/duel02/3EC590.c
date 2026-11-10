@@ -72,6 +72,7 @@ void func_800EB708_name_81(Vec *, Vec *, Vec *);
 void func_800EBF2C_name_81(Vec *, Vec *, Vec *);
 void func_800F38DC_name_81(s32, s32, s32);
 void func_801100A8_duel02(s32);
+void func_8011639C_duel02(s8 *, s8 *);
 void func_800E18C0_name_81(void);
 void func_800E1960_name_81(void);
 void func_800E1F38_name_81(void);
@@ -443,7 +444,23 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010E00C_duel02);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/duel02/3EC590", D_80117128_duel02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010E1B8_duel02);
+void func_8010E1B8_duel02(void) {
+    f32 amplitude;
+    s32 angle;
+    f32 offset;
+
+    func_8001C814_main(D_80117628_duel02->omObj1->model[0], 5, 0);
+    Hu3DMotionSpeedSet(D_80117628_duel02->omObj1->model[0], 1.5f);
+    func_800EFABC_name_81(D_80117628_duel02);
+    for (angle = 0, amplitude = 0.5f; angle < 2160; angle += 60) {
+        offset = 1.0f - cosdf(angle) * amplitude;
+        amplitude -= 1.0 / 72;
+        HuVecCopyXYZ(&D_80117628_duel02->scale, 1.0f, offset, 1.0f);
+        HuPrcVSleep();
+    }
+    HuVecCopyXYZ(&D_80117628_duel02->scale, 1.0f, 1.0f, 1.0f);
+    omDelPrcObj(NULL);
+}
 
 void func_8010E2D0_duel02(void) {
     omAddPrcObj(func_8010E1B8_duel02, 0xA, 0, 0);
@@ -490,7 +507,23 @@ void func_8010E578_duel02(Vec *pos) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010E618_duel02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010E7C4_duel02);
+void func_8010E7C4_duel02(void) {
+    f32 amplitude;
+    s32 angle;
+    f32 offset;
+
+    func_8001C814_main(D_80117630_duel02->omObj1->model[0], 5, 0);
+    Hu3DMotionSpeedSet(D_80117630_duel02->omObj1->model[0], 1.5f);
+    func_800EFABC_name_81(D_80117630_duel02);
+    for (angle = 0, amplitude = 0.5f; angle < 2160; angle += 60) {
+        offset = 1.0f - cosdf(angle) * amplitude;
+        amplitude -= 1.0 / 72;
+        HuVecCopyXYZ(&D_80117630_duel02->scale, 1.0f, offset, 1.0f);
+        HuPrcVSleep();
+    }
+    HuVecCopyXYZ(&D_80117630_duel02->scale, 1.0f, 1.0f, 1.0f);
+    omDelPrcObj(NULL);
+}
 
 void func_8010E8DC_duel02(void) {
     omAddPrcObj(func_8010E7C4_duel02, 0xA, 0, 0);
@@ -651,7 +684,22 @@ void func_801125D0_duel02(void) {
     HuPrcSleep(30);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8011260C_duel02);
+void func_8011260C_duel02(void) {
+    s8 nnlink;
+    s8 nnidx;
+    s8 link2 = -1;
+    s8 idx2 = -1;
+
+    if (MBDGetCurrentPlayerIndex() == 0) {
+        func_800E9F4C_name_81(0x1E, &nnlink, &nnidx);
+    } else {
+        func_800E9F4C_name_81(0x1D, &nnlink, &nnidx);
+    }
+    func_8011639C_duel02(&link2, &idx2);
+    func_800E24AC_name_81(nnlink, nnidx, link2, idx2);
+    func_800ED214_name_81(GwSystem.current_player_index);
+    func_801100A8_duel02(MBDGetCurrentPlayerIndex());
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8011268C_duel02);
 
@@ -695,7 +743,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8011611C_duel02);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_801161D4_duel02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_80116240_duel02);
+void func_80116240_duel02(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+
+    if ((player->rev & 1) && mbWalkNum != 0) {
+        func_800E9F4C_name_81(0x1F, &player->nnlink, &player->nnidx);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8011628C_duel02);
 
@@ -705,7 +759,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_80116344_duel02);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_80116370_duel02);
 
-void func_8011639C_duel02(void) {
+void func_8011639C_duel02(s8 *arg0, s8 *arg1) {
 }
 
 s32 func_801163A4_duel02(void) {
@@ -725,4 +779,5 @@ s32 func_801163A4_duel02(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_80116414_duel02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_80116564_duel02);
+void func_80116564_duel02(void) {
+}

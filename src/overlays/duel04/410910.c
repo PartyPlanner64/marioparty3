@@ -80,7 +80,6 @@ void func_800E1960_name_81(void);
 void func_800E1F38_name_81(void);
 void func_800E14D8_name_81(s32, s32);
 void func_800F7378_name_81(s32, s32);
-void func_800E9F4C_name_81(s32, s8 *, s8 *);
 void func_80105F24_duel04(void);
 extern Process *D_80119CD4_duel04;
 extern f32 D_8011B50C_duel04;

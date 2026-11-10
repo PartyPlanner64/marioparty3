@@ -12,10 +12,14 @@ extern s16 D_80109214_opduel;
 extern Process *D_80109218_opduel;
 extern UnkBoard4 *D_8010921C_opduel;
 extern UnkBoard4 *D_80109220_opduel;
+extern omObjData *D_80109224_opduel;
 extern s32 D_80109228_opduel;
+extern Vec D_8010922C_opduel;
+extern Vec D_8010925C_opduel[];
 extern u8 D_80109570_opduel;
 extern GW_PLAYER *D_80109574_opduel[2];
 
+void func_800F3C98_name_81(s16, u32 *, s16);
 void func_80105E20_opduel(s16 model);
 void func_80106070_opduel(omObjData *obj);
 void func_801066B8_opduel(void);
@@ -289,7 +293,94 @@ void func_80106350_opduel(void) {
     D_8010921C_opduel = NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opduel/460790", func_801066B8_opduel);
+void func_801066B8_opduel(void) {
+    s32 i;
+    f32 scale;
+
+    for (i = 0; i < 2; i++) {
+        D_80109574_opduel[i] = MBDGetPlayerStruct(i);
+        func_800F3C98_name_81(i, D_8010940C_opduel[GwPlayer[i].chr], 2);
+        HuVecCopy3F(&D_80109574_opduel[i]->player_obj->coords, &D_8010925C_opduel[i]);
+        func_800D8944_name_81(D_80109574_opduel[i]->player_obj);
+        D_80109574_opduel[i]->stat |= PLAYER_UNK_04;
+    }
+    D_80109208_opduel = func_800D8314_name_81(0x1301FF, -1, 1.0f, 0, 0);
+    HuVecCopyXYZ(&D_80109208_opduel->scale, 0.625f, 0.625f, 0.625f);
+    D_8010920C_opduel = func_800D8314_name_81(0x1301FD, -1, 1.0f, 0, 0);
+    HuVecCopy3F(&D_80109208_opduel->coords, &D_8010922C_opduel);
+    HuVecCopy3F(&D_8010920C_opduel->coords, &D_8010922C_opduel);
+    D_8010920C_opduel->coords.y = 0;
+    HuVecCopyXYZ(&D_8010920C_opduel->scale, D_8010920C_opduel->coords.y, D_8010920C_opduel->coords.y, D_8010920C_opduel->coords.y);
+    D_80109214_opduel = func_8000CED8_main(0xB0004, 0x6A9);
+    func_8000CD00_main(D_80109214_opduel, 2.0f, 20.0f, 1.0f);
+    func_8000D018_main(D_80109214_opduel, 40.0f);
+    func_800138EC_main(D_80109214_opduel, 1, 0);
+    WipeCreateIn(2, 16);
+    HuPrcSleep(17);
+    D_80109224_opduel = omAddObj(0x1000, 0, 0, -1, func_801061C4_opduel);
+    HuAudSeqPlay(110);
+    func_80106350_opduel();
+    HuPrcSleep(15);
+    HuAudFXPlay(0x2ED);
+    while (D_80109208_opduel->coords.y >= 10.0f) {
+        D_80109208_opduel->coords.y -= 3.0f;
+        for (i = 0; i < 2; i++) {
+            D_80109574_opduel[i]->player_obj->coords.y -= 3.0f;
+        }
+        HuVecCopyXYZ(&D_8010920C_opduel->scale,
+                     0.625f - D_80109208_opduel->coords.y * 0.625f / 250.0f,
+                     0.625f - D_80109208_opduel->coords.y * 0.625f / 250.0f,
+                     0.625f - D_80109208_opduel->coords.y * 0.625f / 250.0f);
+        HuPrcVSleep();
+    }
+    D_80109210_opduel = omAddObj(0x1000, 0, 0, -1, func_80106294_opduel);
+    D_80109210_opduel->rot.x = 180.0f;
+    D_80109210_opduel->rot.y = 5.0f;
+    D_80109210_opduel->rot.z = D_80109208_opduel->coords.y;
+    HuPrcSleep(30);
+    func_8000CFA4_main(D_80109214_opduel, D_80109208_opduel->coords.x,
+                       D_80109208_opduel->coords.y + 40.0f, D_80109208_opduel->coords.z);
+    func_800138EC_main(D_80109214_opduel, 0, 1);
+    HuAudFXPlay(0x2E4);
+    HuPrcSleep(30);
+    for (scale = 1.0f; scale >= 0.0f; scale -= 0.1f) {
+        for (i = 0; i < 2; i++) {
+            HuVecCopyXYZ(&D_80109574_opduel[i]->player_obj->scale, scale, 1.0f, scale);
+        }
+        HuPrcVSleep();
+    }
+    for (i = 0; i < 2; i++) {
+        func_800D8F0C_name_81(D_80109574_opduel[i]->player_obj);
+    }
+    func_800138EC_main(D_80109214_opduel, 1, 0);
+    HuPrcSleep(20);
+    if (D_80109228_opduel != 0) {
+        HuPrcSleep(-1);
+    } else {
+        omDelObj(D_80109224_opduel);
+        D_80109224_opduel = NULL;
+    }
+    for (i = 0, scale = 1.0f; scale < 10.0f; i++, scale += 0.5f) {
+        HuVecCopyXYZ(&D_80109208_opduel->scale, scale, scale, scale);
+        HuPrcVSleep();
+        if (i == 5) {
+            WipeColorSet(255, 255, 255);
+            WipeCreateOut(11, 16);
+        }
+    }
+    while (WipeStatGet() != 0) {
+        HuPrcVSleep();
+    }
+    func_8000D044_main(D_80109214_opduel);
+    D_80109214_opduel = -1;
+    func_800D8F3C_name_81(D_80109208_opduel);
+    D_80109208_opduel = NULL;
+    func_800D8F3C_name_81(D_8010920C_opduel);
+    D_8010920C_opduel = NULL;
+    omDelObj(D_80109210_opduel);
+    D_80109210_opduel = NULL;
+    omDelPrcObj(NULL);
+}
 
 void func_80106CB4_opduel(omObjData *obj) {
     D_80109208_opduel->velocity.x = obj->trans.y - sindf(obj->rot.y) * 10.0f;

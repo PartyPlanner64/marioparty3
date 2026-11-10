@@ -1,18 +1,14 @@
 #include "common.h"
 
-typedef struct UnkSeEntry {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s32 unk_04;
-    /* 0x08 */ s16 unk_08;
-    /* 0x0A */ s16 stopSeNo;
-    char unk_0C[0xC];
-} UnkSeEntry; // sizeof 0x18
-
-typedef struct UnkMstory1Obj {
+typedef struct UnkStoryObj {
     /* 0x00 */ omObjData *obj;
     /* 0x04 */ void (*func)(omObjData *);
     /* 0x08 */ s32 unk_08;
-} UnkMstory1Obj; // sizeof 0xC
+    /* 0x0C */ s32 unk_0C;
+    /* 0x10 */ s32 unk_10;
+    /* 0x14 */ s16 unk_14;
+    /* 0x16 */ s16 stopSeNo;
+} UnkStoryObj; // sizeof 0x18
 
 typedef struct MstoryPath {
     /* 0x00 */ s16 count;
@@ -43,10 +39,7 @@ extern s16 D_801158B2_mstory1;
 extern u16 D_801158B8_mstory1;
 extern s32 D_801158B4_mstory1;
 extern s32 D_801158E4_mstory1;
-extern UnkMstory1Obj D_801158F0_mstory1;
-extern UnkSeEntry D_801158FC_mstory1[];
-extern UnkMstory1Obj D_80115908_mstory1;
-extern UnkMstory1Obj D_80115980_mstory1;
+extern UnkStoryObj D_801158F0_mstory1[7];
 
 void func_80105FF4_mstory1(void);
 void func_80106B14_mstory1(omObjData *obj, const Vec *pos, s32 frames);
@@ -74,7 +67,15 @@ void func_80105D80_mstory1(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_80105E00_mstory1);
+void func_80105E00_mstory1(void) {
+    D_801158B8_mstory1 = espEntry(func_8000B838_main(0x1D0012), 0, 0);
+    espPosSet(D_801158B8_mstory1, 160, 120);
+    espAttrSet(D_801158B8_mstory1, 0x4000);
+    D_801158B2_mstory1 = func_8000B108_main(0x1D0014, 0x2B9);
+    Hu3DModelPosSet(D_801158B2_mstory1, 591.7f, -81.0f, -1305.7f);
+    func_8001C814_main(D_801158B2_mstory1, 2, 0);
+    func_8001C814_main(D_801158B2_mstory1, 1, 1);
+}
 
 void func_80105EC0_mstory1(void) {
     func_8001C258_main(D_801158B2_mstory1, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
@@ -119,7 +120,23 @@ void func_801068A0_mstory1(void) {
 void func_801068A8_mstory1(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_801068B0_mstory1);
+void func_801068B0_mstory1(s16 model, s16 animSlot, s16 anim) {
+    HmfAnim *entry;
+
+    if (animSlot >= 0) {
+        if (anim == -1) {
+            func_80033910_main(Hu3DData[model].hmf);
+        } else {
+            func_80033970_main(Hu3DData[model].hmf);
+            entry = &D_800D1714_main[animSlot];
+            entry->animIdx = anim;
+            entry->rot = 0;
+            entry->flags = 0;
+            entry->interp = 0;
+            entry->frame = 0;
+        }
+    }
+}
 
 void func_80106984_mstory1(void) {
     D_801158B0_mstory1 = func_80060880_main(160, 194, 20);
@@ -292,16 +309,24 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/48C120", D_80114DCC_mstory1);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_801085F8_mstory1);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_80109014_mstory1);
+void func_80109014_mstory1(omObjData *obj) {
+    s16 model = obj->model[1];
+
+    Hu3DMotionShiftSet(model, Hu3DData[obj->motion[9]].motId, 0, 10, 0);
+    func_80107220_mstory1(model);
+    HuPrcSleep(80);
+    Hu3DMotionShiftSet(model, Hu3DData[obj->motion[0]].motId, 0, 10, 2);
+    D_801158F0_mstory1[0].func = func_801081D8_mstory1;
+}
 
 void func_801090D8_mstory1(omObjData *obj) {
     func_8010704C_mstory1(obj, &D_80114E40_mstory1, 10);
-    D_801158F0_mstory1.func = func_801081D8_mstory1;
+    D_801158F0_mstory1[0].func = func_801081D8_mstory1;
 }
 
 void func_8010910C_mstory1(omObjData *obj) {
     func_8010704C_mstory1(obj, &D_80114E4C_mstory1, 10);
-    D_801158F0_mstory1.func = func_801081D8_mstory1;
+    D_801158F0_mstory1[0].func = func_801081D8_mstory1;
 }
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/48C120", D_80114DFC_mstory1);
@@ -334,7 +359,7 @@ void func_8010980C_mstory1(omObjData *obj) {
     func_80106B14_mstory1(obj, &D_80114F00_mstory1, 50);
     func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    D_80115908_mstory1.func = func_801081D8_mstory1;
+    D_801158F0_mstory1[1].func = func_801081D8_mstory1;
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_80109888_mstory1);
@@ -436,12 +461,12 @@ void func_8010B308_mstory1(omObjData *obj) {
     func_80106B14_mstory1(obj, &D_80115020_mstory1, 50);
     func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    D_80115980_mstory1.func = func_801081D8_mstory1;
+    D_801158F0_mstory1[6].func = func_801081D8_mstory1;
 }
 
 void func_8010B384_mstory1(omObjData *obj) {
     func_8010704C_mstory1(obj, &D_80115050_mstory1, 20);
-    D_80115980_mstory1.func = func_801081D8_mstory1;
+    D_801158F0_mstory1[6].func = func_801081D8_mstory1;
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_8010B3B8_mstory1);
@@ -464,12 +489,12 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/48C120", D_8011505C_mstory1);
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_8010BB08_mstory1);
 
 void func_8010BBEC_mstory1(s32 index) {
-    if (D_801158FC_mstory1[index].unk_00 == 1) {
-        D_801158FC_mstory1[index].unk_00 = 0;
+    if (D_801158F0_mstory1[index].unk_0C == 1) {
+        D_801158F0_mstory1[index].unk_0C = 0;
         switch (index) {
             case 0:
             case 2:
-                HuAudFXStop(D_801158FC_mstory1[index].stopSeNo);
+                HuAudFXStop(D_801158F0_mstory1[index].stopSeNo);
                 break;
             case 1:
             case 3:

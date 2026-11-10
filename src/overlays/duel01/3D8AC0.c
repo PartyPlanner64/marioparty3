@@ -67,13 +67,13 @@ void func_80105B9C_duel01(void) {
     omOvlReturnEx(1);
 }
 
-void func_80105C64_duel01(s32 arg0, s32 arg1, unkStruct01 *arg2) {
-    f32 temp_f20;
+void func_80105C64_duel01(Vec *arg0, Vec *arg1, Vec *arg2) {
+    f32 angle;
 
     func_800EB708_name_81(arg0, arg1, arg2);
-    temp_f20 = func_800D76D0_name_81(arg2) + 15.0f;
-    arg2->unk_00 = sindf(temp_f20);
-    arg2->unk_08 = cosdf(temp_f20);
+    angle = func_800D76D0_name_81(arg2) + 15.0f;
+    arg2->x = sindf(angle);
+    arg2->z = cosdf(angle);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80105CC0_duel01);
@@ -299,7 +299,21 @@ void func_8010DC04_duel01(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010DCA8_duel01);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010DD3C_duel01);
+void func_8010DD3C_duel01(void) {
+    Object *obj;
+    SpaceData *space1;
+    SpaceData *space2;
+
+    obj = func_800D8010_name_81(0x32, NULL);
+    func_800D8944_name_81(obj);
+    D_80119498_duel01 = obj;
+    obj->flags |= 2;
+    func_8001C814_main(obj->omObj1->model[0], 2, 1);
+    space1 = MBDMasuGet(D_80118740_duel01);
+    space2 = MBDMasuGet(D_80118742_duel01);
+    HuVecCopy3F(&obj->coords, &space1->coords);
+    func_800EB708_name_81(&space1->coords, &space2->coords, &obj->rot);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010DDEC_duel01);
 
@@ -334,7 +348,21 @@ void func_8010E2F8_duel01(void) {
     Hu3DMotionSpeedSet(D_80119498_duel01->omObj1->model[0], 1.0f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010E348_duel01);
+void func_8010E348_duel01(void) {
+    Object *obj;
+    SpaceData *space1;
+    SpaceData *space2;
+
+    obj = func_800D8010_name_81(0x33, NULL);
+    func_800D8944_name_81(obj);
+    D_801194A0_duel01 = obj;
+    obj->flags |= 2;
+    func_8001C814_main(obj->omObj1->model[0], 2, 1);
+    space1 = MBDMasuGet(D_80118748_duel01);
+    space2 = MBDMasuGet(D_8011874A_duel01);
+    HuVecCopy3F(&obj->coords, &space1->coords);
+    func_800EB708_name_81(&space1->coords, &space2->coords, &obj->rot);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010E3F8_duel01);
 

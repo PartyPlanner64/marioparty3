@@ -26,6 +26,10 @@ typedef struct Duel06SwayWork {
 
 
 void *memcpy(void *, const void *, unsigned int);
+extern s16 D_801144E2_duel06;
+extern s16 D_801144E0_duel06;
+extern s16 D_801144EA_duel06;
+extern s16 D_801144E8_duel06;
 void func_800FADB4_name_81(void);
 void func_800FAE18_name_81(Object *, s32, s32);
 extern s16 D_80114870_duel06[];
@@ -353,7 +357,21 @@ void func_8010DC0C_duel06(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_8010DCB0_duel06);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_8010DD44_duel06);
+void func_8010DD44_duel06(void) {
+    Object *obj;
+    SpaceData *space1;
+    SpaceData *space2;
+
+    obj = func_800D8010_name_81(0x32, NULL);
+    func_800D8944_name_81(obj);
+    D_80114D58_duel06 = obj;
+    obj->flags |= 2;
+    func_8001C814_main(obj->omObj1->model[0], 2, 1);
+    space1 = MBDMasuGet(D_801144E0_duel06);
+    space2 = MBDMasuGet(D_801144E2_duel06);
+    HuVecCopy3F(&obj->coords, &space1->coords);
+    func_800EB708_name_81(&space1->coords, &space2->coords, &obj->rot);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_8010DDF4_duel06);
 
@@ -388,7 +406,21 @@ void func_8010E300_duel06(void) {
     Hu3DMotionSpeedSet(D_80114D58_duel06->omObj1->model[0], 1.0f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_8010E350_duel06);
+void func_8010E350_duel06(void) {
+    Object *obj;
+    SpaceData *space1;
+    SpaceData *space2;
+
+    obj = func_800D8010_name_81(0x33, NULL);
+    func_800D8944_name_81(obj);
+    D_80114D60_duel06 = obj;
+    obj->flags |= 2;
+    func_8001C814_main(obj->omObj1->model[0], 2, 1);
+    space1 = MBDMasuGet(D_801144E8_duel06);
+    space2 = MBDMasuGet(D_801144EA_duel06);
+    HuVecCopy3F(&obj->coords, &space1->coords);
+    func_800EB708_name_81(&space1->coords, &space2->coords, &obj->rot);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_8010E400_duel06);
 

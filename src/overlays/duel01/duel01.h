@@ -10,12 +10,6 @@ typedef struct unkStruct {
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ s16 unk_04;
 } unkStruct;
-typedef struct unkStruct01 {
-    /* 0x00 */ f32 unk_00;
-    /* 0x04 */ char unk_04[4];
-    /* 0x08 */ f32 unk_08;
-} unkStruct01;
-
 typedef struct unkStruct02 {
     /* 0x00 */ Vec unk_00;
     /* 0x0C */ char unk_0C[4];
@@ -53,7 +47,7 @@ typedef struct Duel01SwayWork {
 } Duel01SwayWork; // sizeof 0x10
 
 extern s16 omovlevtno;
-f32 func_800D76D0_name_81(void *);
+f32 func_800D76D0_name_81(Vec *);
 s32 func_800E88FC_name_81(void);
 extern s32 D_80119470_duel01;
 extern s32 D_80119474_duel01;
@@ -68,7 +62,7 @@ extern s32 D_8011875C_duel01;
 void func_800E9F4C_name_81(s32, s8 *, s8 *);
 void func_800EA760_name_81(void);
 void func_800ECD0C_name_81(s16, s16, s16);
-void func_800EB708_name_81(s32, s32, unkStruct01 *);
+void func_800EB708_name_81(Vec *, Vec *, Vec *);
 unkStruct03 *func_80047EA0_main(void *, s32, s32, s32);
 void func_80105CC0_duel01(void); // probably takes object as arg
 void func_800EBF2C_name_81(Vec *, Vec *, Vec *);
@@ -116,3 +110,7 @@ extern f32 D_801194A4_duel01;
 extern char D_80118F18_duel01[];
 void func_800FAE18_name_81(Object *, s32, s32);
 void func_800FADB4_name_81(void);
+extern s16 D_80118748_duel01;
+extern s16 D_8011874A_duel01;
+extern s16 D_80118740_duel01;
+extern s16 D_80118742_duel01;

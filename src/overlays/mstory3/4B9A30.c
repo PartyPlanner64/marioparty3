@@ -51,6 +51,8 @@ extern Vec D_80115B3C_mstory3;
 extern Vec D_80115B48_mstory3;
 extern Vec D_80115B54_mstory3;
 extern Vec D_80115478_mstory3[];
+extern Vec D_80115400_mstory3[];
+extern Vec D_80115430_mstory3[];
 extern Vec D_801154A8_mstory3[];
 extern s16 D_80115C9C_mstory3[];
 extern s16 D_80115CA2_mstory3[];
@@ -1172,7 +1174,51 @@ void func_80113BB0_mstory3(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory3/4B9A30", func_80113E68_mstory3);
+void func_80113E68_mstory3(omObjData *obj) {
+    Vec pos;
+    MstoryPath *path[2];
+    s16 i;
+
+    path[0] = func_8010C9F0_mstory3(D_80115400_mstory3, 0);
+    path[1] = func_8010C9F0_mstory3(D_80115430_mstory3, 0);
+    func_8001C258_main(obj->model[1], 4, 0);
+    func_8001C258_main(obj->model[3], 4, 0);
+    func_800138EC_main(obj->model[3], 1, 1);
+    HuAudFXPlay(0x215);
+    for (i = 0; i < 50; i++) {
+        if (i == 20) {
+            Hu3DMotionShiftSet(D_80115CB0_mstory3[0].obj->model[1], Hu3DData[D_80115CB0_mstory3[0].obj->motion[12]].motId, 0, 10, 2);
+        }
+        func_8010CCF4_mstory3(path[0], (i * (1.0f / 50.0f)) * (i * (1.0f / 50.0f)), &pos);
+        Hu3DModelPosSet(obj->model[1], pos.x, pos.y, pos.z);
+        func_8000CFA4_main(D_80115CB0_mstory3[8].obj->model[3], pos.x, pos.y - 40.0f, pos.z);
+        HuPrcVSleep();
+    }
+    HuPrcSleep(40);
+    Hu3DMotionShiftSet(D_80115CB0_mstory3[4].obj->model[1], Hu3DData[D_80115CB0_mstory3[4].obj->motion[2]].motId, 0, 10, 0);
+    HuPrcSleep(20);
+    D_80115CB0_mstory3[8].unk_08 = 1;
+    Hu3DMotionShiftSet(D_80115CB0_mstory3[4].obj->model[1], Hu3DData[D_80115CB0_mstory3[4].obj->motion[0]].motId, 0, 10, 0);
+    HuAudFXPlay(0x218);
+    for (i = 0; i < 120; i++) {
+        func_8010CCF4_mstory3(path[1], (i * (1.0f / 120.0f)) * (i * (1.0f / 120.0f)), &pos);
+        Hu3DModelPosSet(obj->model[1], pos.x, pos.y, pos.z);
+        func_8000CFA4_main(D_80115CB0_mstory3[8].obj->model[3], pos.x, pos.y - 40.0f, pos.z);
+        Hu3DData[obj->model[1]].rot.y += 24.0f;
+        if (Hu3DData[obj->model[1]].rot.y >= 360.0f) {
+            Hu3DData[obj->model[1]].rot.y -= 360.0f;
+        }
+        HuPrcVSleep();
+    }
+    HuAudFXPlay(0x21A);
+    func_8001C258_main(obj->model[1], 4, 4);
+    func_8001C258_main(obj->model[3], 4, 4);
+    func_800138EC_main(obj->model[3], 1, 0);
+    func_8010D59C_mstory3(path[0]);
+    func_8010D59C_mstory3(path[1]);
+    D_80115CB0_mstory3[8].unk_08 = 2;
+    D_80115CB0_mstory3[8].func = func_8010D774_mstory3;
+}
 
 void func_80114260_mstory3(void) {
     func_80107674_mstory3(D_80115CB0_mstory3[5].obj, D_80115CB0_mstory3[0].obj);

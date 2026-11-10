@@ -65,6 +65,8 @@ extern s32 D_80118730_duel01[];
 extern Object *D_80119498_duel01;
 extern Object *D_801194A0_duel01;
 extern Object *D_801194A8_duel01;
+extern s16 D_80118750_duel01[];
+extern s16 D_80118754_duel01[][2];
 extern Object *D_801194AC_duel01[5];
 extern s32 D_8011875C_duel01;
 extern s32 D_8011889C_duel01;

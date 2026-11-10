@@ -309,6 +309,7 @@ u32 func_800EFA8C_name_81(Object*, s16, s16);
 void func_800EFABC_name_81(void*);
 void func_800EFB00_name_81(Object*);
 void func_800F0378_name_81(Object *obj, char *hookName, s16 model);
+void func_800EB708_name_81(Vec *, Vec *, Vec *);
 void func_800EB804_name_81(Object *obj);
 s32 func_800DD1E0_name_81(s32 dataNum, char *objName);
 void func_800DD2BC_name_81(s32 model);

@@ -2676,7 +2676,27 @@ void func_8010E904_duel01(void) {
     Hu3DMotionSpeedSet(D_801194A0_duel01->omObj1->model[0], 1.0f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010E954_duel01);
+void func_8010E954_duel01(s16 index) {
+    s32 unused[2]; // Retain the original stack frame.
+    Object *obj;
+    SpaceData *space;
+
+    if (D_801194AC_duel01[index] == NULL) {
+        if (D_801194A8_duel01 == NULL) {
+            obj = func_800D8010_name_81(0x2D, NULL);
+            func_800D8944_name_81(obj);
+            D_801194A8_duel01 = obj;
+        } else {
+            obj = func_800D8B18_name_81(D_801194A8_duel01);
+        }
+        D_801194AC_duel01[index] = obj;
+        obj->flags |= 2;
+        func_8001C814_main(obj->omObj1->model[0], 2, 1);
+        HuVecCopy3F(&obj->coords, &MBDMasuGet(D_80118750_duel01[index])->coords);
+        space = MBDMasuGet(D_80118754_duel01[index][0]);
+        func_800EB708_name_81(&space->coords, &MBDMasuGet(D_80118754_duel01[index][1])->coords, &obj->rot);
+    }
+}
 
 void func_8010EA74_duel01(void) {
     s32 i;
@@ -4189,7 +4209,31 @@ void func_80117E7C_duel01(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80117ED8_duel01);
+void func_80117ED8_duel01(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    s32 spaceIndex = MBDMasuLinkMasuIdGet(player->blink, player->bidx);
+
+    if (player->rev & 1) {
+        if (mbWalkNum != 0) {
+            func_8010EAD4_duel01(0);
+        }
+    } else {
+        func_8010EB44_duel01(0);
+    }
+    if (player->rev & 1) {
+        func_800E9F4C_name_81(1, &player->nnlink, &player->nnidx);
+    }
+    if (spaceIndex != 0x22) {
+        if (spaceIndex == MBDMasuLinkMasuIdGet(player->clink, player->cidx + 1)) {
+            func_800E9F4C_name_81(0x22, &player->nlink, &player->nidx);
+            func_800ECE10_name_81();
+        } else {
+            osSyncPrintf("route 3 start error\n");
+            while (TRUE) {
+            }
+        }
+    }
+}
 
 void func_80117FFC_duel01(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
@@ -4199,7 +4243,28 @@ void func_80117FFC_duel01(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80118058_duel01);
+void func_80118058_duel01(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    s32 spaceIndex = MBDMasuLinkMasuIdGet(player->blink, player->bidx);
+
+    if (player->rev & 1) {
+        func_8010EB44_duel01(1);
+    } else if (mbWalkNum != 0) {
+        func_8010EAD4_duel01(1);
+    }
+    if (!(player->rev & 1)) {
+        func_800E9F4C_name_81(0xD, &player->nnlink, &player->nnidx);
+    }
+    if (spaceIndex != 0x21) {
+        if (spaceIndex == MBDMasuLinkMasuIdGet(player->clink, player->cidx - 1)) {
+            func_800E9F4C_name_81(0x21, &player->nlink, &player->nidx);
+        } else {
+            osSyncPrintf("route 3 end error\n");
+            while (TRUE) {
+            }
+        }
+    }
+}
 
 void func_80118178_duel01(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
@@ -4252,7 +4317,30 @@ void func_801182E4_duel01(void) {
 void func_80118320_duel01(s8 *arg0, s8 *arg1) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80118328_duel01);
+s32 func_80118328_duel01(void) {
+    s32 playerIndex = GwSystem.current_player_index;
+    s32 otherIndex = (playerIndex + 1) & 1;
+    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    GW_PLAYER *otherPlayer = MBDGetPlayerStruct(otherIndex);
+
+    if (player->nlink == otherPlayer->clink && player->nidx == otherPlayer->cidx) {
+        if (player->nlink == 2) {
+            if (player->rev & 1) {
+                if (!(otherPlayer->rev & 1) && (player->nidx != 0 || otherPlayer->nlink != 0)) {
+                    return 3;
+                }
+            } else if ((otherPlayer->rev & 1) || (player->nidx == 0 && otherPlayer->nlink == 0)) {
+                return 3;
+            }
+            return 0;
+        }
+        if (player->rev & 4) {
+            return 1;
+        }
+        return 0;
+    }
+    return -1;
+}
 
 void func_80118414_duel01(void) {
     s8 link[2];

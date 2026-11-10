@@ -29,7 +29,6 @@ extern s16 D_80108C30_opdueltutorial[];
 extern u8 D_80101960[];
 
 void func_800F3C98_name_81(s16, u32 *, s16);
-void func_800EB708_name_81(Vec *, Vec *, Vec *);
 void func_800EB7BC_name_81(Vec *);
 Process *func_800EBC60_name_81(Vec *, Vec *, Vec *, s32);
 Process *func_800EBF2C_name_81(Vec *, Vec *, Vec *, s32);

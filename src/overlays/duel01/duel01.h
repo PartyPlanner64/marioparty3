@@ -130,3 +130,4 @@ extern void (*D_801188E4_duel01[])(void);
 void func_800DCE40_name_81(s32, Vec *, s32, f32);
 Process *func_800FAB68_name_81(Object *, s32, s32, s32, s32);
 extern s32 D_80118710_duel01[];
+extern char D_80118E60_duel01[];

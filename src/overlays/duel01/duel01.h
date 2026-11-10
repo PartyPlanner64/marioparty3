@@ -147,6 +147,8 @@ extern Duel01PartnerSpaces D_8011887C_duel01[];
 extern s32 D_80118894_duel01;
 extern Object *D_80118898_duel01;
 void func_8010F12C_duel01(void);
+void func_8010EFBC_duel01(void);
+s32 func_800E1854_minigame(s32);
 void func_800FC8DC_name_81(Object *);
 void func_800EB7BC_name_81(Vec *);
 Process *func_800EBC60_name_81(Vec *, Vec *, Vec *, s32);

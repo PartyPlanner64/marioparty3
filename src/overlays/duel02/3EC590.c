@@ -46,6 +46,11 @@ typedef struct Duel02PartnerAttackWork {
     /* 0x0C */ s32 waitTime;
 } Duel02PartnerAttackWork; // sizeof 0x10
 
+typedef struct Duel02WinColorWork {
+    /* 0x00 */ s32 window;
+    /* 0x04 */ char unk_04[0xC];
+} Duel02WinColorWork; // sizeof 0x10
+
 typedef struct Duel02PartnerRouletteWork {
     /* 0x00 */ s32 player;
     /* 0x04 */ char unk_04[0xC];
@@ -65,6 +70,12 @@ typedef struct Duel02SwayWork {
 
 
 void *memcpy(void *, const void *, unsigned int);
+extern s16 D_80117170_duel02[][2];
+extern s32 D_8011717C_duel02[];
+extern s32 D_80117194_duel02[];
+extern s32 D_80116740_duel02;
+void func_8010EFFC_duel02(void);
+s32 func_800E1854_minigame(s32);
 Process *func_800EBC60_name_81(Vec *, Vec *, Vec *, s32);
 void func_800EB7BC_name_81(Vec *);
 void func_800FC8DC_name_81(Object *);
@@ -1814,7 +1825,149 @@ s32 func_8010EDE0_duel02(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010EFFC_duel02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010F16C_duel02);
+void func_8010F16C_duel02(void) {
+    s16 pos[3][2];
+    s32 files[6];
+    u8 order[32]; // Only 12 are used; the size matches the original stack frame.
+    s32 sfx[12];
+    s32 player;
+    s32 msgWindow;
+    s16 window;
+    Process *colorProcess;
+    s32 state;
+    s32 cpuPartner;
+    Duel02WinColorWork *colorWork;
+    UnkBoard4 *spr;
+    void *data;
+    s32 i;
+    s32 angle;
+    s32 count;
+    u8 last;
+    s32 max;
+    s32 delay;
+
+    memcpy(pos, D_80117170_duel02, sizeof(pos));
+    memcpy(files, D_8011717C_duel02, sizeof(files));
+    player = ((Duel02PartnerRouletteWork *)HuPrcCurrentGet()->user_data)->player;
+    colorProcess = NULL;
+    cpuPartner = -1;
+    mbItemBtnF = 0;
+    if (player == 0) {
+        state = GwSystem.playerIndexVisitingBowser & 0xFF;
+    } else {
+        state = (GwSystem.playerIndexVisitingBowser / 256) & 0xFF;
+    }
+    window = HuWinCreate(60, -160, 200, 160, 0, 0);
+    HuWinBGColSet(window, 0x43, 5, 1);
+    HuWinBGTPLvlSet(window, 0xC0);
+    if (state == 2) {
+        colorProcess = omAddPrcObj(func_8010EFFC_duel02, 10, 0, 0x40);
+        colorWork = HuMemMemoryAlloc(colorProcess->heap, sizeof(Duel02WinColorWork));
+        colorProcess->user_data = colorWork;
+        colorWork->window = window;
+    }
+    spr = func_800F4528_name_81(3, 0);
+    for (i = 0; i < 3; i++) {
+        data = DataRead(files[player * 3 + i]);
+        spr->unk_0C[i] = HuSprAnimRead(data);
+        HuSprGrpMemberSet(spr->unk_0A, i, spr->unk_0C[i], 0);
+        HuSprPriSet(spr->unk_0A, i, i + 1);
+        HuSprAttrSet(spr->unk_0A, i, 0);
+        HuSprPosSet(spr->unk_0A, i, pos[i][0], pos[i][1]);
+        DataClose(data);
+        if (i == 2) {
+            HuSprBankSet(spr->unk_0A, 2, func_800EFE20_name_81(12.0f), 0);
+        }
+    }
+    for (angle = 90; angle < 180; angle += 15) {
+        for (i = 0; i < 3; i++) {
+            HuSprPosSet(spr->unk_0A, i, pos[i][0], pos[i][1] + 215 + sindf(angle) * -200.0f);
+        }
+        HuWinPosSet(window, 60, sindf(angle) * -200.0f + 55.0f);
+        HuPrcVSleep();
+    }
+    for (angle = 0; angle < 180; angle += 20) {
+        for (i = 0; i < 3; i++) {
+            HuSprPosSet(spr->unk_0A, i, pos[i][0], pos[i][1] + 215 + sindf(angle) * -50.0f);
+        }
+        HuWinPosSet(window, 60, sindf(angle) * -50.0f + 55.0f);
+        HuPrcVSleep();
+    }
+    for (angle = 0; angle < 180; angle += 20) {
+        for (i = 0; i < 3; i++) {
+            HuSprPosSet(spr->unk_0A, i, pos[i][0], pos[i][1] + 215 + sindf(angle) * -30.0f);
+        }
+        HuWinPosSet(window, 60, sindf(angle) * -30.0f + 55.0f);
+        HuPrcVSleep();
+    }
+    max = 11;
+    if (func_800F37B8_name_81(-1)) {
+        count = func_800EFE20_name_81(10.0f) + 10;
+        cpuPartner = func_8010EDE0_duel02();
+        if (state == 2 && cpuPartner != -1) {
+            count = 5;
+        }
+    } else {
+        count = -1;
+    }
+    msgWindow = func_800E1824_name_81(0x13, 0xB9, 0);
+    D_80116740_duel02 = 1;
+    last = 0xFF;
+    do {
+        func_800E0310_name_81(order, max);
+        if (last == order[0]) {
+            last = order[max];
+            order[max] = order[0];
+            order[0] = last;
+            last = 0xFF;
+        }
+        for (i = 0; i <= max; i++) {
+            HuAudFXPlay(0x1C8);
+            last = order[i];
+            HuSprBankSet(spr->unk_0A, 2, order[i], 0);
+            func_800550F4_main(spr->unk_0A, 2, 1);
+            for (delay = (state == 2) ? 15 : 1; delay != 0; delay--) {
+                if (count > 0) {
+                    if (state != 2 || cpuPartner == -1 || cpuPartner == order[i]) {
+                        if (--count == 0) {
+                            break;
+                        }
+                    }
+                } else if (D_800C9520_main[GwPlayer[player].pad] & A_BUTTON) {
+                    break;
+                }
+                HuPrcVSleep();
+            }
+            if (delay != 0) {
+                break;
+            }
+        }
+    } while (i == max + 1);
+    memcpy(sfx, D_80117194_duel02, sizeof(sfx));
+    HuAudFXPlay(sfx[order[i]]);
+    D_80116740_duel02 = 0;
+    if (player == 0) {
+        if (state == 2) {
+            GwSystem.playerIndexVisitingBowser &= 0xFF00;
+        } else {
+            GwSystem.playerIndexVisitingBowser++;
+        }
+    } else if (state == 2) {
+        GwSystem.playerIndexVisitingBowser = GwSystem.playerIndexVisitingBowser & 0xFF;
+    } else {
+        GwSystem.playerIndexVisitingBowser += 0x100;
+    }
+    HuPrcSleep(30);
+    D_80116738_duel02 = order[i];
+    func_800E1854_minigame(msgWindow);
+    if (colorProcess != NULL) {
+        omDelPrcObj(colorProcess);
+    }
+    func_800F4584_name_81(spr);
+    HuWinKill(window);
+    mbItemBtnF = 1;
+    omDelPrcObj(NULL);
+}
 
 s32 func_8010F9DC_duel02(s32 index) {
     Vec camPos;

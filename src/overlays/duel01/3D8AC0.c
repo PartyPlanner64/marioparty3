@@ -287,7 +287,22 @@ void func_8010DB00_duel01(void) {
     func_800FF640_name_81(1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010DB2C_duel01);
+void func_8010DB2C_duel01(void) {
+    HmfMotionNode *node;
+    f32 angle;
+
+    angle = 0.0f;
+    while (TRUE) {
+        func_8002FD8C_main(D_80119490_duel01->omObj1->model[0], Hu3DData[D_80119490_duel01->omObj1->model[0]].motId, "neji", 0x4C, 0x46);
+        node = func_8001D33C_main(D_80119490_duel01->omObj1->model[0], "neji");
+        angle += D_8011872C_duel01;
+        if (angle >= 360.0f) {
+            angle -= 360.0f;
+        }
+        node->baseRot.y = angle;
+        HuPrcVSleep();
+    }
+}
 
 void func_8010DC04_duel01(void) {
     HmfMotionNode *node;

@@ -114,3 +114,4 @@ extern s16 D_80118748_duel01;
 extern s16 D_8011874A_duel01;
 extern s16 D_80118740_duel01;
 extern s16 D_80118742_duel01;
+extern f32 D_8011872C_duel01;

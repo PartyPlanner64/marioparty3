@@ -25,6 +25,8 @@ typedef struct Duel04SwayWork {
 } Duel04SwayWork; // sizeof 0x10
 
 void *memcpy(void *, const void *, unsigned int);
+extern char D_8011AF80_duel04[];
+extern f32 D_80119CBC_duel04;
 extern s16 D_80119CD2_duel04;
 extern s16 D_80119CD0_duel04;
 extern s16 D_80119CDA_duel04;
@@ -316,7 +318,22 @@ void func_8010DB10_duel04(void) {
     func_800FF640_name_81(1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010DB3C_duel04);
+void func_8010DB3C_duel04(void) {
+    HmfMotionNode *node;
+    f32 angle;
+
+    angle = 0.0f;
+    while (TRUE) {
+        func_8002FD8C_main(D_8011B500_duel04->omObj1->model[0], Hu3DData[D_8011B500_duel04->omObj1->model[0]].motId, D_8011AF80_duel04, 0x4C, 0x46);
+        node = func_8001D33C_main(D_8011B500_duel04->omObj1->model[0], D_8011AF80_duel04);
+        angle += D_80119CBC_duel04;
+        if (angle >= 360.0f) {
+            angle -= 360.0f;
+        }
+        node->baseRot.y = angle;
+        HuPrcVSleep();
+    }
+}
 
 void func_8010DC14_duel04(void) {
     HmfMotionNode *node;

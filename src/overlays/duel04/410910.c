@@ -5063,7 +5063,124 @@ s32 func_80115B3C_duel04(void) {
     return 0;
 }
 
+#ifdef NON_MATCHING
+// Only one instruction differs: the case 1 tail in the target ends in
+// `li v0,1` (a return-1 block that jump2 cross-jumps into the first switch's
+// return-1 block), but every form that makes GCC emit a constant 1 here gets
+// the whole case 1 tail cross-jumped into the identical case 2 tail.
+// `return curIndex == 0` keeps the tail separate but is not folded to 1.
+s32 func_80115DA8_duel04(void) {
+    s32 curIndex = MBDGetCurrentPlayerIndex();
+    s32 otherIndex = (s16)(MBDGetCurrentPlayerIndex() ^ 1);
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *otherPlayer = MBDGetPlayerStruct(otherIndex);
+    s32 walk = mbWalkNum;
+    s32 rev;
+    s32 ret;
+    s32 unused[8]; // Unused, but needed to match the stack frame.
+
+    switch (otherPlayer->clink) {
+        case 4:
+            if (!(otherPlayer->rev & 1)) {
+                return curIndex == 0;
+            }
+            if (walk >= 8 || otherPlayer->stats.partners.frontPower == 0) {
+                return curIndex == 0;
+            }
+            return 0;
+        case 7:
+            if (walk < 3 && otherPlayer->cidx == D_80119F20_duel04[walk]) {
+                return 1;
+            }
+            if (walk >= 3 || otherPlayer->cidx > D_80119F20_duel04[walk]) {
+                if (otherPlayer->rev & 1) {
+                    return player->stats.partners.frontPower != 0;
+                }
+                return 1;
+            }
+            break;
+        case 3:
+            if (walk >= 3 && walk < 8 && otherPlayer->cidx == D_80119EFA_duel04[walk]) {
+                return 1;
+            }
+            if (walk >= 8 || (walk >= 3 && otherPlayer->cidx > D_80119EFA_duel04[walk])) {
+                return player->stats.partners.frontPower != 0;
+            }
+            if (curIndex == 0) {
+                rev = otherPlayer->rev;
+                ret = 1;
+                rev &= 1;
+                if (!rev) {
+                    ret = otherPlayer->stats.partners.frontPower == 0;
+                }
+                return ret;
+            }
+            return 0;
+        case 0:
+            if (walk >= 3 && walk < 7 && otherPlayer->cidx == D_80119EC2_duel04[walk]) {
+                if (curIndex != 0) {
+                    return player->stats.partners.frontPower != 0;
+                }
+                return 1;
+            }
+            if (walk >= 7 || (walk >= 3 && otherPlayer->cidx > D_80119EC2_duel04[walk])) {
+                return player->stats.partners.frontPower != 0;
+            }
+            if (curIndex == 0) {
+                rev = otherPlayer->rev;
+                ret = 1;
+                rev &= 1;
+                if (rev) {
+                    ret = otherPlayer->stats.partners.frontPower == 0;
+                }
+                return ret;
+            }
+            return 0;
+    }
+
+    switch (otherPlayer->clink) {
+        case 5:
+            if (walk < 3 && otherPlayer->cidx == D_80119F10_duel04[walk]) {
+                return 0;
+            }
+            if (walk >= 3 || otherPlayer->cidx > D_80119F10_duel04[walk]) {
+                if (otherPlayer->rev & 1) {
+                    return player->stats.partners.frontPower == 0;
+                }
+                return 0;
+            }
+            break;
+        case 1:
+            if (walk >= 3 && walk < 8 && otherPlayer->cidx == D_80119EDA_duel04[walk]) {
+                return 0;
+            }
+            if (walk >= 8 || (walk >= 3 && otherPlayer->cidx > D_80119EDA_duel04[walk])) {
+                return player->stats.partners.frontPower == 0;
+            }
+            if (curIndex != 0) {
+                return otherPlayer->stats.partners.frontPower != 0;
+            }
+            return curIndex == 0;
+        case 2:
+            if (walk >= 3 && walk < 7 && otherPlayer->cidx == D_80119EE2_duel04[walk]) {
+                if (curIndex == 0) {
+                    return player->stats.partners.frontPower == 0;
+                }
+                return 0;
+            }
+            if (walk >= 7 || (walk >= 3 && otherPlayer->cidx > D_80119EE2_duel04[walk])) {
+                return player->stats.partners.frontPower == 0;
+            }
+            if (curIndex == 0) {
+                return 1;
+            }
+            return otherPlayer->stats.partners.frontPower != 0;
+    }
+    return curIndex == 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80115DA8_duel04);
+#endif
 
 s32 func_80116168_duel04(void) {
     s32 curIndex = MBDGetCurrentPlayerIndex();

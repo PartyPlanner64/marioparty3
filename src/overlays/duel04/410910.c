@@ -5805,7 +5805,66 @@ void func_80118850_duel04(void) {
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80118850_duel04);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80118D14_duel04);
+void func_80118D14_duel04(void) {
+    GW_PLAYER *player;
+    s32 playerIndex;
+    void *handle;
+    Object *partner;
+    f32 angle;
+
+    player = MBDGetPlayerStruct(CUR_PLAYER);
+    playerIndex = MBDGetCurrentPlayerIndex();
+    func_800DB3E0_name_81(playerIndex);
+    HuAudFXPlay(0x1EB);
+    func_8010EAF0_duel04();
+    handle = func_800FFC2C_name_81(-1, 1, 6);
+    for (angle = 0.0f; angle < 120.0f; angle += 5.0f) {
+        player->player_obj->velocity.x = angle;
+        MTX_ROTY(Hu3DData[player->player_obj->omObj1->model[0]].mtx, angle * 10.0f);
+        if (player->stats.partners.frontID != PARTNER_NONE) {
+            partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
+            partner->velocity.x = angle;
+            MTX_ROTY(Hu3DData[partner->omObj1->model[0]].mtx, angle * 10.0f);
+        }
+        if (player->stats.partners.backID != PARTNER_NONE) {
+            partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
+            partner->velocity.x = angle;
+            MTX_ROTY(Hu3DData[partner->omObj1->model[0]].mtx, angle * 10.0f);
+        }
+        HuPrcVSleep();
+    }
+    Duel_SwapPartnerPositions(playerIndex);
+    for (angle = 120.0f; angle > 0.0f; angle -= 5.0f) {
+        player->player_obj->velocity.x = angle;
+        MTX_ROTY(Hu3DData[player->player_obj->omObj1->model[0]].mtx, angle * 10.0f);
+        if (player->stats.partners.frontID != PARTNER_NONE) {
+            partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
+            partner->velocity.x = angle;
+            MTX_ROTY(Hu3DData[partner->omObj1->model[0]].mtx, angle * 10.0f);
+        }
+        if (player->stats.partners.backID != PARTNER_NONE) {
+            partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
+            partner->velocity.x = angle;
+            MTX_ROTY(Hu3DData[partner->omObj1->model[0]].mtx, angle * 10.0f);
+        }
+        HuPrcVSleep();
+    }
+    func_800FFCCC_name_81(handle);
+    player->player_obj->velocity.x = 0.0f;
+    MTX_ROTY(Hu3DData[player->player_obj->omObj1->model[0]].mtx, angle * 10.0f);
+    if (player->stats.partners.frontID != PARTNER_NONE) {
+        partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
+        partner->velocity.x = 0.0f;
+        MTX_ROTY(Hu3DData[partner->omObj1->model[0]].mtx, angle * 10.0f);
+    }
+    if (player->stats.partners.backID != PARTNER_NONE) {
+        partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
+        partner->velocity.x = 0.0f;
+        MTX_ROTY(Hu3DData[partner->omObj1->model[0]].mtx, angle * 10.0f);
+    }
+    func_8010EC0C_duel04();
+    func_800DADA0_name_81(playerIndex);
+}
 
 void func_80119840_duel04(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);

@@ -1192,13 +1192,13 @@ void func_800FB160_name_81(void) {
     omDelPrcObj(0);
 }
 
-void func_800FB524_name_81(void *arg0) {
+void func_800FB524_name_81(s32 playerIndex) {
     Process *curProcess;
     Process *newProcess;
 
     curProcess = HuPrcCurrentGet();
     newProcess = omAddPrcObj(func_800FB160_name_81, 0x1005, 0, 0);
-    newProcess->user_data = arg0;
+    newProcess->user_data = (void *)playerIndex;
     omPrcSetStatBit(newProcess, OM_STAT_NOALLPAUSE);
     HuPrcChildLink(curProcess, newProcess);
     HuPrcChildWatch();

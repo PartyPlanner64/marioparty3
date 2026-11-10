@@ -64,6 +64,9 @@ typedef struct Duel04SwayWork {
 } Duel04SwayWork; // sizeof 0x10
 
 void *memcpy(void *, const void *, unsigned int);
+extern Vec D_8011B06C_duel04[];
+extern s16 D_8011B064_duel04[];
+extern u8 D_8011B060_duel04[];
 extern s16 D_8011AFDC_duel04[][2];
 extern s32 D_8011AFE8_duel04[];
 extern s32 D_8011B000_duel04[];
@@ -81,7 +84,7 @@ extern Duel04PartnerSpaces D_80119E04_duel04[];
 extern char D_8011AED0_duel04[];
 extern s32 D_80119CA0_duel04[];
 Process *func_800FAB68_name_81(Object *, s32, s32, s32, s32);
-void func_800DCE40_name_81(s32, Vec *, s32, f32);
+Process *func_800DCE40_name_81(s32, Vec *, Vec *, f32);
 extern void (*D_80119E6C_duel04[])(void);
 Process *func_800E0924_name_81(void);
 extern s32 D_80101200_shared_board[];
@@ -2221,7 +2224,7 @@ s32 func_8010ECFC_duel04(void) {
     return (5 - GwPlayer[GwSystem.current_player_index].star) * 10;
 }
 
-s16 func_8010ED34_duel04(void) {
+s32 func_8010ED34_duel04(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
     s16 partnerValues[12];
 
@@ -2232,7 +2235,7 @@ s16 func_8010ED34_duel04(void) {
     return partnerValues[player->stats.partners.frontID];
 }
 
-s16 func_8010EDDC_duel04(s32 index) {
+s32 func_8010EDDC_duel04(s32 index) {
     s16 shakeAngles[12];
 
     memcpy(shakeAngles, D_8011AFC4_duel04, sizeof(shakeAngles));
@@ -2572,7 +2575,204 @@ s32 func_8010FA58_duel04(s32 index) {
     return D_80119E1C_duel04;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80110124_duel04);
+void func_80110124_duel04(s32 index) {
+    Vec pos;
+    u8 playerBits[4];
+    s16 comKeys[4];
+    Vec offsets[3];
+    Vec frontPos;
+    Vec backPos;
+    Vec frontRot;
+    Vec backRot;
+    GW_PLAYER *player;
+    s16 partnerId;
+    s16 choice;
+    Object *partner;
+    s32 i;
+
+    player = MBDGetPlayerStruct(CUR_PLAYER);
+    memcpy(playerBits, D_8011B060_duel04, sizeof(playerBits));
+    memcpy(comKeys, D_8011B064_duel04, sizeof(comKeys));
+    func_800DB3E0_name_81(index);
+    func_800F38DC_name_81(-1, -1, 2);
+    func_800EB7BC_name_81(&pos);
+    func_800EBC60_name_81(&player->player_obj->rot, &pos, &player->player_obj->rot, 8);
+    HuPrcChildLink(HuPrcCurrentGet(), MBDCameraZoomMotStart(2.0f));
+    HuPrcChildWatch();
+    if ((player->stats.partners.frontID != PARTNER_NONE && player->stats.partners.frontPoweredUp == POWERUP_ACTIVE) ||
+        (player->stats.partners.backID != PARTNER_NONE && player->stats.partners.backPoweredUp == POWERUP_ACTIVE)) {
+        func_800EAFC4_name_81(0x1F00);
+        Duel_PowerDownPartners(index);
+    }
+    func_800EDD50_name_81(&MBDMasuGet(D_80119E04_duel04[index].returnSpace)->coords);
+    func_800EE0D0_name_81(0);
+    func_800EDF48_name_81();
+    HuAudFXPlay(0x159);
+    func_800EB140_name_81(0x16, 0x1F01);
+    func_800F3880_name_81(-1, 6, 0);
+    func_800E14D8_name_81(index, 10);
+    func_800F7378_name_81(index, 10);
+    HuPrcSleep(30);
+    func_800F3880_name_81(-1, -1, 2);
+    if (player->stats.partners.frontID == PARTNER_NONE && player->stats.partners.backID == PARTNER_NONE) {
+        func_800EB140_name_81(0x16, 0x1F04);
+        partnerId = func_8010FA58_duel04(index);
+    retryA:
+        func_800EB1D8_name_81(0x16, 0x1F05);
+        if (!func_800F37B8_name_81(index)) {
+            HuWinActivePlayerSet(D_8010555C_name_81, playerBits[GwPlayer[index].pad]);
+            comKeys[GwPlayer[index].pad] = -1;
+            HuWinComKeySet(comKeys[0], comKeys[1], comKeys[2], comKeys[3]);
+        } else {
+            if (func_8010ECFC_duel04() >= func_800EFE20_name_81(100.0f) ||
+                func_8010EDDC_duel04(partnerId) >= func_800EFE20_name_81(100.0f)) {
+                comKeys[GwPlayer[index].pad] = 0x400;
+                HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], func_800EED50_name_81());
+            }
+            comKeys[GwPlayer[index].pad] = -0x8000;
+            HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], func_800EED50_name_81());
+            func_8005B63C_main(D_8010555C_name_81, 2, 2);
+        }
+        choice = HuWinChoiceGet(D_8010555C_name_81, 0, 1);
+        comKeys[GwPlayer[index].pad] = 0;
+        func_800EB278_name_81();
+        func_800EB29C_name_81();
+        if (choice == 2) {
+            func_801059D0_duel04();
+            goto retryA;
+        }
+        if (choice == 3) {
+            mbItemBtnF = 0;
+            func_800FB524_name_81(index);
+            mbItemBtnF = 1;
+            goto retryA;
+        }
+    } else {
+        func_800EB140_name_81(0x16, 0x1F02);
+    retryB:
+        func_800EB1D8_name_81(0x16, 0x1F03);
+        if (!func_800F37B8_name_81(index)) {
+            HuWinActivePlayerSet(D_8010555C_name_81, playerBits[GwPlayer[index].pad]);
+            comKeys[GwPlayer[index].pad] = -1;
+            HuWinComKeySet(comKeys[0], comKeys[1], comKeys[2], comKeys[3]);
+        } else {
+            if (player->stats.partners.backID == PARTNER_NONE ||
+                func_8010ED34_duel04() >= func_800EFE20_name_81(100.0f)) {
+                comKeys[GwPlayer[index].pad] = 0x400;
+                HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], func_800EED50_name_81());
+            }
+            comKeys[GwPlayer[index].pad] = -0x8000;
+            HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], func_800EED50_name_81());
+            func_8005B63C_main(D_8010555C_name_81, 2, 2);
+        }
+        choice = HuWinChoiceGet(D_8010555C_name_81, 0, 1);
+        comKeys[GwPlayer[index].pad] = 0;
+        func_800EB278_name_81();
+        func_800EB29C_name_81();
+        if (choice == 2) {
+            func_801059D0_duel04();
+            goto retryB;
+        }
+        if (choice == 3) {
+            mbItemBtnF = 0;
+            func_800FB524_name_81(index);
+            mbItemBtnF = 1;
+            goto retryB;
+        }
+        partner = MBDGetPlayerPartnerRef(index, choice);
+        if (partner != NULL) {
+            HuVecCopy3F(&pos, &partner->coords);
+            pos.y += 2.0f;
+            memcpy(offsets, D_8011B06C_duel04, sizeof(offsets));
+            for (i = 0; i < 3; i++) {
+                HuPrcChildLink(HuPrcCurrentGet(), func_800DCE40_name_81(0x4E, &pos, &offsets[i], 3.0f));
+            }
+            HuPrcVSleep();
+            HuAudFXPlay(0x1CB);
+            func_800D8F0C_name_81(partner);
+            HuPrcChildWatch();
+            func_800F85A4_name_81(index, choice);
+            func_800F8358_name_81(index);
+            func_800F57B0_name_81(index);
+            func_800F5E2C_name_81(index);
+        }
+        partnerId = func_8010FA58_duel04(index);
+    }
+    func_800ECF1C_name_81(index, &frontPos, &backPos);
+    func_800ED118_name_81(index, &frontRot, &backRot);
+    func_800D918C_name_81(D_80119E20_duel04, 0, 0, 5, 2);
+    if (GwSystem.current_board_index == 2) {
+        func_800EF7C8_name_81(D_80119E20_duel04, 2.0f, -0.2f);
+    }
+    if (choice == 0) {
+        HuVecAdd(&frontPos, &player->player_obj->coords, &frontPos);
+        func_800EB708_name_81(&D_80119E20_duel04->coords, &frontPos, &D_80119E20_duel04->rot);
+        HuPrcChildLink(HuPrcCurrentGet(), func_800EC1E4_name_81(&D_80119E20_duel04->coords, &frontPos,
+                                                                &D_80119E20_duel04->coords, 3.0f));
+        HuPrcChildWatch();
+        HuPrcChildLink(HuPrcCurrentGet(), func_800EBC60_name_81(&D_80119E20_duel04->rot, &frontRot,
+                                                                &D_80119E20_duel04->rot, 7));
+    } else {
+        HuVecAdd(&backPos, &player->player_obj->coords, &backPos);
+        func_800EB708_name_81(&D_80119E20_duel04->coords, &backPos, &D_80119E20_duel04->rot);
+        HuPrcChildLink(HuPrcCurrentGet(), func_800EC1E4_name_81(&D_80119E20_duel04->coords, &backPos,
+                                                                &D_80119E20_duel04->coords, 3.0f));
+        HuPrcChildWatch();
+        HuPrcChildLink(HuPrcCurrentGet(), func_800EBC60_name_81(&D_80119E20_duel04->rot, &backRot,
+                                                                &D_80119E20_duel04->rot, 7));
+    }
+    HuPrcChildWatch();
+    func_800D8F3C_name_81(D_80119E20_duel04);
+    func_800F8418_name_81(index, partnerId, choice);
+    func_800F821C_name_81(index, choice);
+    func_800F89D0_name_81(index, PARTNER_FRONT, -1, 2);
+    func_800F89D0_name_81(index, PARTNER_BACK, -1, 2);
+    func_800ED214_name_81(index);
+    func_800F5BB4_name_81(index);
+    func_800F5EB0_name_81(index);
+    if (player->stats.partners.frontID == player->stats.partners.backID) {
+        switch (player->stats.partners.frontID) {
+        case PARTNER_WHOMP:
+        case PARTNER_THWOMP:
+            func_800EB49C_name_81(0x16, 0x1F09, D_80101A1C_name_81[player->stats.partners.frontID], 0, 0, 0, 0);
+            func_800EB58C_name_81();
+            func_800EB58C_name_81();
+            func_800EB58C_name_81();
+            func_800EB278_name_81();
+            func_800EB29C_name_81();
+            player->stats.partners.frontCost--;
+            player->stats.partners.backCost--;
+            HuAudFXPlay(0x205);
+            func_800F7BB4_name_81(index, 1);
+            func_800F7D94_name_81(index, 1);
+            break;
+        default:
+            func_800EB49C_name_81(0x16, 0x1F08, D_80101A1C_name_81[player->stats.partners.frontID], 0, 0, 0, 0);
+            func_800EB58C_name_81();
+            func_800EB278_name_81();
+            func_800EB29C_name_81();
+            player->stats.partners.frontPower++;
+            player->stats.partners.backPower++;
+            HuAudFXPlay(0x205);
+            func_800F7BB4_name_81(index, 0);
+            func_800F7D94_name_81(index, 0);
+            break;
+        }
+        if (index == 0) {
+            GWBoardFlagSet(0x12);
+        } else {
+            GWBoardFlagSet(0x13);
+        }
+    }
+    func_800FBDD4_name_81();
+    func_800EB140_name_81(0x16, 0x1F06);
+    func_800EDF78_name_81();
+    func_800EE468_name_81(0);
+    func_800EDDBC_name_81();
+    func_800DADA0_name_81(index);
+    HuPrcChildLink(HuPrcCurrentGet(), MBDCameraZoomMotStart(1.7f));
+    HuPrcChildWatch();
+}
 
 void func_80110C38_duel04(void) {
     GW_PLAYER *player;

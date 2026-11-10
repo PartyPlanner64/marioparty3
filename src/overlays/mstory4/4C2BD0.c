@@ -348,7 +348,31 @@ void func_801072A8_mstory4(omObjData *obj, f32 x, f32 y, f32 z, s32 frames, s32 
     func_8010700C_mstory4(obj, &pos, frames, arg3);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_801072D8_mstory4);
+void func_801072D8_mstory4(omObjData *obj, Vec *target, s32 frames) {
+    Vec start;
+    Vec delta;
+    Vec rot;
+    s16 model = obj->model[1];
+    f32 t;
+    f32 angle;
+
+    start.x = Hu3DData[model].rot.x;
+    start.y = Hu3DData[model].rot.y;
+    start.z = Hu3DData[model].rot.z;
+    delta.x = target->x - start.x;
+    delta.y = target->y - start.y;
+    delta.z = target->z - start.z;
+    for (t = 0.0f; t < frames; t += 1.0f) {
+        angle = 90.0f / frames * t;
+        rot.x = sindf(angle) * delta.x + start.x;
+        rot.y = sindf(angle) * delta.y + start.y;
+        rot.z = sindf(angle) * delta.z + start.z;
+        Hu3DModelRotSet(model, rot.x, rot.y, rot.z);
+        HuPrcVSleep();
+    }
+    Hu3DModelRotSet(model, target->x, target->y, target->z);
+    HuPrcVSleep();
+}
 
 void func_80107480_mstory4(omObjData *obj, f32 x, f32 y, f32 z, s32 frames) {
     Vec pos;
@@ -1298,7 +1322,35 @@ s16 func_80110B4C_mstory4(s32 dataNum, s32 attr) {
     return model;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80110BB4_mstory4);
+void func_80110BB4_mstory4(omObjData *obj) {
+    s16 model = obj->model[1];
+    Vec pos;
+    Vec orig;
+    Vec rot;
+    f32 step;
+    f32 y;
+    s32 i;
+
+    orig.x = Hu3DData[model].pos.x;
+    orig.y = Hu3DData[model].pos.y;
+    orig.z = Hu3DData[model].pos.z;
+    pos.y = Hu3DData[model].pos.y;
+    rot.x = Hu3DData[model].rot.x;
+    rot.y = Hu3DData[model].rot.y;
+    rot.z = Hu3DData[model].rot.z;
+    step = (230.0f - rot.y) / 12.0f;
+    for (i = 0; i < 12; i++) {
+        pos.x = Hu3DData[model].pos.x;
+        pos.z = Hu3DData[model].pos.z;
+        y = sindf(i * 15.0f) * 80.0f;
+        rot.y += step;
+        Hu3DModelPosSet(model, pos.x, y + pos.y, pos.z);
+        Hu3DModelRotSet(model, rot.x, y + rot.y, rot.z);
+        HuPrcVSleep();
+    }
+    Hu3DModelPosSet(model, orig.x, orig.y, orig.z);
+    D_801122A0_mstory4[1].func = func_8010BAF0_mstory4;
+}
 
 void func_80110D5C_mstory4(omObjData *obj) {
     HuPrcSleep(30);

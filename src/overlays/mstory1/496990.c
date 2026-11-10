@@ -18,6 +18,7 @@ typedef struct MstoryPath {
 } MstoryPath; // sizeof 0x10
 
 extern s32 D_80114BC0_mstory1;
+extern const Vec D_8011550C_mstory1;
 extern Vec D_80115660_mstory1;
 extern Vec D_8011566C_mstory1;
 extern Vec D_80115714_mstory1;
@@ -30,6 +31,7 @@ extern Vec D_80115828_mstory1;
 extern Vec D_80115834_mstory1;
 extern Vec D_80115840_mstory1;
 extern UnkStoryObj D_80115B70_mstory1[7];
+extern Vec D_80115C6C_mstory1;
 extern s16 D_80115C90_mstory1;
 extern s16 D_80115CA6_mstory1;
 extern s16 D_80115CA8_mstory1;
@@ -51,6 +53,7 @@ void func_80112BD8_mstory1(void);
 void func_80112F4C_mstory1(void);
 void func_801134B4_mstory1(void);
 void func_80113908_mstory1(void);
+void func_80113D2C_mstory1(void);
 void func_80113D34_mstory1(void);
 void func_80114084_mstory1(void);
 void func_801141B0_mstory1(void);
@@ -294,7 +297,35 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/496990", D_8011578C_mstory1);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/496990", func_8011369C_mstory1);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/496990", func_80113908_mstory1);
+void func_80113908_mstory1(void) {
+    omObjData *obj;
+    omObjData *src;
+
+    obj = omAddObj(0x14, 4, 8, -1, NULL);
+    D_80115B70_mstory1[5].obj = obj;
+    D_80115B70_mstory1[5].unk_08 = 0;
+    src = D_80115B70_mstory1[4].obj;
+    obj->model[1] = Hu3DModelLink(src->model[1]);
+    obj->model[2] = Hu3DModelLink(D_80115C90_mstory1);
+    func_8001C5B4_main(obj->model[1], src->motion[1]);
+    func_8001C814_main(obj->model[1], 2, 2);
+    func_8001C258_main(obj->model[1], 4, 4);
+    func_8001C258_main(obj->model[2], 4, 4);
+    obj->trans.x = 0.0f;
+    obj->trans.y = 0.0f;
+    obj->trans.z = 0.0f;
+    Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
+    Hu3DModelRotSet(obj->model[1], 0.0f, 90.0f, 0.0f);
+    D_80115C6C_mstory1 = D_8011550C_mstory1;
+    Hu3DModelPosSet(obj->model[1], D_80115C6C_mstory1.x, D_80115C6C_mstory1.y, D_80115C6C_mstory1.z);
+    Hu3DModelPosSet(obj->model[2], D_80115C6C_mstory1.x, -5.0f, D_80115C6C_mstory1.z);
+    omPrcSetDestructor(0, func_80113D2C_mstory1);
+    D_80115B70_mstory1[5].func = func_80111218_mstory1;
+    while (1) {
+        D_80115B70_mstory1[5].func(obj);
+        HuPrcVSleep();
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/496990", D_801157A4_mstory1);
 

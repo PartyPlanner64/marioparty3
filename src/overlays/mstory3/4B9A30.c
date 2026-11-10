@@ -53,15 +53,31 @@ extern s16 D_80115D90_mstory3;
 extern s16 D_80115D92_mstory3;
 extern s16 D_80115D94_mstory3;
 extern s16 D_80115D96_mstory3;
+extern s16 D_80115DB0_mstory3;
 
+void func_80105F54_mstory3(void);
+void func_8010D77C_mstory3(void);
+void func_8010D97C_mstory3(void);
+void func_8010F660_mstory3(void);
+void func_80110CB4_mstory3(void);
+void func_801110B4_mstory3(void);
+void func_80111764_mstory3(void);
+void func_801122C4_mstory3(void);
+void func_8011249C_mstory3(void);
+void func_80112B88_mstory3(void);
+void func_801134E0_mstory3(void);
+void func_80113968_mstory3(void);
+void func_80113BB0_mstory3(void);
+void func_801149D0_mstory3(void);
+void func_80114B00_mstory3(void);
 void func_801061C4_mstory3(void);
 void func_80106220_mstory3(void);
 void func_80106DC4_mstory3(omObjData *obj, const Vec *pos, s32 frames);
 void func_80106CF0_mstory3(s16 model, s16 arg1, s16 arg2);
 void func_80106DE0_mstory3(omObjData *obj, const Vec *pos, s32 frames, s32 arg3);
 void func_80107070_mstory3(omObjData *obj, const Vec *pos, s32 frames);
-void func_8010733C_mstory3(omObjData *obj, f32 arg1, s32 frames);
-void func_801074D8_mstory3(omObjData *obj, f32 arg1, s32 frames);
+void func_8010733C_mstory3(omObjData *obj, f32 speed, s16 frames);
+void func_801074D8_mstory3(omObjData *obj, f32 speed, s16 frames);
 void func_80107244_mstory3(s16 model);
 void func_80107674_mstory3(omObjData *obj, omObjData *target);
 void func_8010DA00_mstory3(omObjData *obj);
@@ -89,7 +105,27 @@ void func_8010D59C_mstory3(MstoryPath *path) {
     HuMemFree(path);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory3/4B9A30", func_8010D5CC_mstory3);
+void func_8010D5CC_mstory3(void) {
+    D_80115DB0_mstory3 = GwStory.unk1;
+    func_80105F54_mstory3();
+    D_80115D8C_mstory3 = func_8000B108_main(9, 0x2B9);
+    omAddPrcObj(func_8010F660_mstory3, 0x1001, 0x800, 0);
+    omAddPrcObj(func_80110CB4_mstory3, 0x1001, 0x800, 0);
+    omAddPrcObj(func_801110B4_mstory3, 0x1001, 0x800, 0);
+    omAddPrcObj(func_80111764_mstory3, 0x1001, 0x800, 0);
+    omAddPrcObj(func_801122C4_mstory3, 0x1001, 0x800, 0);
+    omAddPrcObj(func_80112B88_mstory3, 0x1001, 0x800, 0);
+    omAddPrcObj(func_801134E0_mstory3, 0x1001, 0x800, 0);
+    omAddPrcObj(func_80113968_mstory3, 0x1001, 0x800, 0);
+    omAddPrcObj(func_80113BB0_mstory3, 0x1001, 0x800, 0);
+    omAddPrcObj(func_80114B00_mstory3, 0x1001, 0x800, 0);
+    omAddPrcObj(func_8010D97C_mstory3, 0x1001, 0x800, 0);
+    omAddPrcObj(func_8011249C_mstory3, 0x1001, 0x800, 0);
+    omAddPrcObj(func_801149D0_mstory3, 0x1001, 0x800, 0);
+    omAddPrcObj(func_8010D77C_mstory3, 0x1001, 0x800, 0);
+    HuPrcVSleep();
+    func_8001C258_main(D_80115D8C_mstory3, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+}
 
 void func_8010D774_mstory3(omObjData *obj) {
 }

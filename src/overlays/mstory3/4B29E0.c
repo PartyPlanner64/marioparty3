@@ -116,7 +116,7 @@ void func_8010C9E0_mstory3(void);
 void func_8010C65C_mstory3(void);
 void func_80108A9C_mstory3(void);
 void func_80108C34_mstory3(void);
-void func_80107A18_mstory3(omObjData *obj, Vec *target, s32 frames, s32 faceDir);
+void func_80107A18_mstory3(omObjData *obj, const Vec *target, s32 frames, s32 faceDir);
 void func_8010A7D0_mstory3(omObjData *obj);
 void func_8010A8EC_mstory3(omObjData *obj);
 void func_8010ACBC_mstory3(omObjData *obj);
@@ -731,7 +731,7 @@ void func_801077BC_mstory3(omObjData *obj, const Vec *pos, s32 frames, s32 arg3)
 // Code matches, but the target is followed by alignment padding, which suggests
 // a file boundary after this function.
 #ifdef NON_MATCHING
-void func_80107A18_mstory3(omObjData *obj, Vec *target, s32 frames, s32 faceDir) {
+void func_80107A18_mstory3(omObjData *obj, const Vec *target, s32 frames, s32 faceDir) {
     Vec start;
     Vec diff;
     Vec vel;

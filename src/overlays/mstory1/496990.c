@@ -38,6 +38,9 @@ s32 func_80106AFC_mstory1(s32 character);
 void func_8010704C_mstory1(omObjData *obj, Vec *pos, s32 frames);
 void func_80107220_mstory1(s16 model);
 void func_80111218_mstory1(omObjData *obj);
+void func_80112644_mstory1(omObjData *obj);
+void func_801147D0_mstory1(s32 index, s32 seNo);
+void func_801148B4_mstory1(s32 index);
 void func_80106984_mstory1(void);
 void func_80111220_mstory1(void);
 void func_80112310_mstory1(void);
@@ -217,7 +220,31 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/496990", D_8011572C_mstory1);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/496990", D_80115738_mstory1);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/496990", func_80112E1C_mstory1);
+const Vec D_80115744_mstory1 = { 200.0f, 0.0f, 1200.0f };
+
+void func_80112E1C_mstory1(omObjData *obj) {
+    HuPrcSleep(10);
+    if (func_80106AFC_mstory1(5) == 0) {
+        CharFXPlay(0x26B, 5);
+    } else {
+        CharFXPlay(0x26B, 1);
+    }
+    HuPrcSleep(20);
+    D_80115B70_mstory1[1].func = func_80112644_mstory1;
+    HuPrcSleep(70);
+    if (func_80106AFC_mstory1(5) == 0) {
+        CharFXPlay(0x286, 5);
+    } else {
+        CharFXPlay(0x286, 1);
+    }
+    Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[2]].motId, 0, 10, 2);
+    func_801147D0_mstory1(2, 40);
+    func_80106B14_mstory1(obj, &D_80115744_mstory1, 40);
+    func_801148B4_mstory1(2);
+    func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    D_80115B70_mstory1[2].func = func_80111218_mstory1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/496990", func_80112F4C_mstory1);
 
@@ -322,7 +349,29 @@ void func_80114364_mstory1(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/496990", func_8011436C_mstory1);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/496990", func_80114688_mstory1);
+void func_80114688_mstory1(omObjData *obj, omObjData *target) {
+    s16 model[2];
+    Vec pos[2];
+    Vec rot;
+    Vec diff;
+    s32 i;
+
+    model[0] = obj->model[1];
+    model[1] = target->model[1];
+    for (i = 0; i < 2; i++) {
+        pos[i].x = Hu3DData[model[i]].pos.x;
+        pos[i].y = Hu3DData[model[i]].pos.y;
+        pos[i].z = Hu3DData[model[i]].pos.z;
+    }
+    rot.x = Hu3DData[model[0]].rot.x;
+    rot.y = Hu3DData[model[0]].rot.y;
+    rot.z = Hu3DData[model[0]].rot.z;
+    diff.x = pos[1].x - pos[0].x;
+    diff.y = pos[1].y - pos[0].y;
+    diff.z = pos[1].z - pos[0].z;
+    rot.y = -(atan2df(diff.z, diff.x) - 90.0f);
+    Hu3DModelRotSet(model[0], rot.x, rot.y, rot.z);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/496990", D_8011581C_mstory1);
 

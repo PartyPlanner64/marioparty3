@@ -557,7 +557,29 @@ void func_8010B69C_mstory1(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_8010B6A4_mstory1);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_8010B9C0_mstory1);
+void func_8010B9C0_mstory1(omObjData *obj, omObjData *target) {
+    s16 model[2];
+    Vec pos[2];
+    Vec rot;
+    Vec diff;
+    s32 i;
+
+    model[0] = obj->model[1];
+    model[1] = target->model[1];
+    for (i = 0; i < 2; i++) {
+        pos[i].x = Hu3DData[model[i]].pos.x;
+        pos[i].y = Hu3DData[model[i]].pos.y;
+        pos[i].z = Hu3DData[model[i]].pos.z;
+    }
+    rot.x = Hu3DData[model[0]].rot.x;
+    rot.y = Hu3DData[model[0]].rot.y;
+    rot.z = Hu3DData[model[0]].rot.z;
+    diff.x = pos[1].x - pos[0].x;
+    diff.y = pos[1].y - pos[0].y;
+    diff.z = pos[1].z - pos[0].z;
+    rot.y = -(atan2df(diff.z, diff.x) - 90.0f);
+    Hu3DModelRotSet(model[0], rot.x, rot.y, rot.z);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/48C120", D_80115038_mstory1);
 

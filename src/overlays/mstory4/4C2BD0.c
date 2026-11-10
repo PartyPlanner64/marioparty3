@@ -35,6 +35,11 @@ extern s32 D_80111AC8_mstory4;
 extern s8 D_80111ACC_mstory4;
 extern s32 D_80111AF4_mstory4;
 extern s32 D_80111B00_mstory4;
+extern s32 D_80111B80_mstory4;
+extern s32 D_80111B84_mstory4;
+extern s32 D_80111B88_mstory4;
+extern s32 D_80111B8C_mstory4;
+extern u8 D_80111BFC_mstory4[];
 extern Vec D_80111DB8_mstory4;
 extern Vec D_80111DC4_mstory4;
 extern Vec D_80111E78_mstory4;
@@ -559,7 +564,29 @@ void func_8010A764_mstory4(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010A76C_mstory4);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010AA88_mstory4);
+void func_8010AA88_mstory4(omObjData *obj, omObjData *target) {
+    s16 model[2];
+    Vec pos[2];
+    Vec rot;
+    Vec diff;
+    s32 i;
+
+    model[0] = obj->model[1];
+    model[1] = target->model[1];
+    for (i = 0; i < 2; i++) {
+        pos[i].x = Hu3DData[model[i]].pos.x;
+        pos[i].y = Hu3DData[model[i]].pos.y;
+        pos[i].z = Hu3DData[model[i]].pos.z;
+    }
+    rot.x = Hu3DData[model[0]].rot.x;
+    rot.y = Hu3DData[model[0]].rot.y;
+    rot.z = Hu3DData[model[0]].rot.z;
+    diff.x = pos[1].x - pos[0].x;
+    diff.y = pos[1].y - pos[0].y;
+    diff.z = pos[1].z - pos[0].z;
+    rot.y = -(atan2df(diff.z, diff.x) - 90.0f);
+    Hu3DModelRotSet(model[0], rot.x, rot.y, rot.z);
+}
 
 void func_8010ABD0_mstory4(s32 index, s32 seNo) {
     if (D_801121C0_mstory4[index].unk_0C == 0) {
@@ -713,11 +740,82 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mstory4/4C2BD0", D_80111F80_mstory4);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010CAF0_mstory4);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010CD40_mstory4);
+void func_8010CD40_mstory4(void) {
+    f32 angle = 0.0f;
+    Vec pos;
+    f32 ofs;
+    s16 model;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010CE90_mstory4);
+    if (D_80111B80_mstory4 != 0) {
+        model = D_801122A0_mstory4[2].obj->model[1];
+        pos.y = Hu3DData[model].pos.y;
+        while (TRUE) {
+            pos.x = Hu3DData[model].pos.x;
+            pos.z = Hu3DData[model].pos.z;
+            ofs = sindf(angle) * 25.0f + 25.0f;
+            angle += 2.0f;
+            angle = (angle >= 360.0f) ? angle - 360.0f : angle;
+            Hu3DModelPosSet(model, pos.x, ofs + pos.y, pos.z);
+            if (D_80111B84_mstory4 == 1) {
+                break;
+            }
+            HuPrcVSleep();
+        }
+        while (TRUE) {
+            HuPrcVSleep();
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010CFE0_mstory4);
+void func_8010CE90_mstory4(void) {
+    f32 angle = 0.0f;
+    Vec pos;
+    f32 ofs;
+    s16 model;
+
+    if (D_80111B88_mstory4 != 0) {
+        model = D_801122A0_mstory4[1].obj->model[6];
+        pos.y = Hu3DData[model].pos.y;
+        while (TRUE) {
+            if (D_80111B8C_mstory4 == 0) {
+                pos.x = Hu3DData[model].pos.x;
+                pos.z = Hu3DData[model].pos.z;
+                ofs = sindf(angle) * 40.0f;
+                angle += 2.0f;
+                angle = (angle >= 360.0f) ? angle - 360.0f : angle;
+                Hu3DModelPosSet(model, pos.x, ofs + pos.y, pos.z);
+            } else {
+                pos.y = Hu3DData[model].pos.y;
+                angle = 0.0f;
+            }
+            HuPrcVSleep();
+        }
+    }
+}
+
+void func_8010CFE0_mstory4(omObjData *obj, omObjData *target) {
+    s16 model[2];
+    Vec pos[2];
+    Vec rot;
+    Vec diff;
+    s32 i;
+
+    model[0] = obj->model[1];
+    model[1] = target->model[1];
+    for (i = 0; i < 2; i++) {
+        pos[i].x = Hu3DData[model[i]].pos.x;
+        pos[i].y = Hu3DData[model[i]].pos.y;
+        pos[i].z = Hu3DData[model[i]].pos.z;
+    }
+    rot.x = Hu3DData[model[0]].rot.x;
+    rot.y = Hu3DData[model[0]].rot.y;
+    rot.z = Hu3DData[model[0]].rot.z;
+    diff.x = pos[1].x - pos[0].x;
+    diff.y = pos[1].y - pos[0].y;
+    diff.z = pos[1].z - pos[0].z;
+    rot.y = -(atan2df(diff.z, diff.x) - 90.0f);
+    Hu3DModelRotSet(model[0], rot.x, rot.y, rot.z);
+}
 
 void func_8010D128_mstory4(void) {
     omObjData *obj = omAddObj(0x14, 0, 0, -1, NULL);
@@ -749,7 +847,27 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010E7C0_mstory4);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010EA34_mstory4);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010EC38_mstory4);
+void func_8010EC38_mstory4(void) {
+    s32 i;
+    s32 j;
+
+    D_80112352_mstory4 = func_8000B838_main(0x1D0028);
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < 2; j++) {
+            D_8011234A_mstory4[i][j] = espEntry(D_80112352_mstory4, 0, 0);
+            espPosSet(D_8011234A_mstory4[i][j], j * 160 + 80, i * 120 + 60);
+            espAttrSet(D_8011234A_mstory4[i][j], 0x4000);
+        }
+    }
+    espAttrSet(D_8011234A_mstory4[0][1], 1);
+    espAttrSet(D_8011234A_mstory4[1][0], 2);
+    espAttrSet(D_8011234A_mstory4[1][1], 3);
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < 2; j++) {
+            espDispOn(D_8011234A_mstory4[i][j]);
+        }
+    }
+}
 
 void func_8010EDA0_mstory4(void) {
     s32 i;
@@ -879,8 +997,6 @@ void func_8010F12C_mstory4(void);                            /* extern */
 void func_80110270_mstory4(void);                            /* extern */
 void func_80110DB0_mstory4(f32, f32, f32, s16);              /* extern */
 extern Addr D_128CC60;
-
-extern s32 D_80111B8C_mstory4;
 
 typedef struct Unk {
     s16 unk_00;
@@ -1023,7 +1139,24 @@ void func_80110500_mstory4(s16 model) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80110528_mstory4);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80110724_mstory4);
+s32 func_80110724_mstory4(s16 model, f32 x, f32 y, f32 z) {
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
+    HmfModelData_UnkBC_Unk58_Struct *particle = bc->unk58;
+    s16 i;
+
+    for (i = 0; i < hmf->unk1A; i++, particle++) {
+        if (particle->unk04 <= 0.0f) {
+            particle->unk0C = x;
+            particle->unk10 = y;
+            particle->unk14 = z;
+            particle->unk04 = particle->unk08 =
+                bc->unk08.f * 0.7f + bc->unk08.f * 0.3f * ((rand8() % 10 + 1) * 0.1f);
+            return 1;
+        }
+    }
+    return 0;
+}
 
 void func_80110888_mstory4(s16 modelId, s32 x, s32 y, f32 z) {
     HmfData *hmf = Hu3DData[modelId].hmf;
@@ -1061,7 +1194,27 @@ s16 func_801108FC_mstory4(s32 file, s32 flags) {
     return model;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_801109EC_mstory4);
+void func_801109EC_mstory4(s16 model) {
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
+    HmfModelData_UnkBC_Unk58_Struct *particle = bc->unk58;
+    s16 i;
+    s16 count;
+
+    for (i = 0, count = hmf->unk1A; i < count; i++, particle++) {
+        if (particle->unk04 > 0.0f) {
+            particle->unk0C = particle->unk0C * 0.04f + particle->unk18 + particle->unk0C;
+            particle->unk10 += particle->unk1C;
+            particle->unk14 = particle->unk14 * 0.04f + particle->unk20 + particle->unk14;
+            particle->unk04 -= bc->unk08.f / bc->unk0C.f;
+            if (particle->unk04 <= 0.0f) {
+                particle->unk04 = 0.0f;
+            }
+            particle->unk08 = (D_80111BFC_mstory4[(bc->unk02 + i) & 3] * 0.15f + 1.0f) * particle->unk04;
+        }
+    }
+    bc->unk02++;
+}
 
 s16 func_80110B4C_mstory4(s32 dataNum, s32 attr) {
     s16 model = func_8000B108_main(dataNum, attr);

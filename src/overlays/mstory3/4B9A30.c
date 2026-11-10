@@ -71,6 +71,8 @@ void func_80111F3C_mstory3(omObjData *obj);
 void func_801125C4_mstory3(omObjData *obj);
 void func_80112834_mstory3(omObjData *obj);
 void func_8011270C_mstory3(omObjData *obj);
+void func_8011268C_mstory3(omObjData *obj);
+void func_80112EF0_mstory3(omObjData *obj);
 void func_80112FB0_mstory3(omObjData *obj);
 void func_8011322C_mstory3(omObjData *obj);
 void func_80113874_mstory3(omObjData *obj);
@@ -356,7 +358,23 @@ void func_80111C50_mstory3(omObjData *obj) {
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mstory3/4B9A30", D_801159F8_mstory3);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory3/4B9A30", func_80111CB8_mstory3);
+void func_80111CB8_mstory3(omObjData *obj) {
+    f32 baseY = Hu3DData[obj->model[1]].pos.y;
+    f32 ofs;
+    s16 i;
+
+    for (i = 0; i < 10; i++) {
+        ofs = sindf(i * 15.0) * 100.0f;
+        Hu3DData[obj->model[1]].pos.y = baseY + ofs;
+        HuPrcVSleep();
+    }
+    func_80106CF0_mstory3(obj->model[1], D_80115D8E_mstory3, D_80115D94_mstory3);
+    D_80115CB0_mstory3[0].func = func_80110558_mstory3;
+    D_80115CB0_mstory3[4].func = func_8011268C_mstory3;
+    D_80115CB0_mstory3[5].func = func_80112EF0_mstory3;
+    D_80115CB0_mstory3[3].unk_08 = 1;
+    D_80115CB0_mstory3[3].func = func_8010D774_mstory3;
+}
 
 void func_80111DF8_mstory3(omObjData *obj) {
     func_80107070_mstory3(obj, &D_80115A10_mstory3, 5);

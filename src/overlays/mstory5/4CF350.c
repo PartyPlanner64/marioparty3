@@ -1,4 +1,5 @@
 #include "common.h"
+#include "game/hmfmath.h"
 
 typedef struct UnkStoryObj {
     /* 0x00 */ omObjData *obj;
@@ -167,7 +168,7 @@ extern const s32 D_80114DC0_mstory5[];
 extern const s32 D_80114DE0_mstory5[];
 extern s16 D_801154DC_mstory5[4];
 
-void func_8010F7D4_mstory5(MstoryPath *path, f32 t, Vec *out);
+void func_8010F7D4_mstory5(MstoryPath *path, f32 time, Vec *result);
 void func_80106028_mstory5(void);
 void func_80106B64_mstory5(omObjData *obj, const Vec *pos, s32 frames, s32 arg3);
 void func_80106DB4_mstory5(omObjData *obj, Vec *pos, s32 frames, s32 arg3);
@@ -190,7 +191,7 @@ void func_8010F41C_mstory5(omObjData *obj);
 void func_801074E8_mstory5(omObjData *obj, f32 x, f32 y, f32 z, s32 frames, s32 faceDir);
 void func_80110200_mstory5(omObjData *obj);
 MstoryPath *func_80107850_mstory5(Vec *points, s32 flags);
-void func_80107B54_mstory5(MstoryPath *path, f32 t, Vec *out);
+void func_80107B54_mstory5(MstoryPath *path, f32 time, Vec *result);
 void func_80105BDC_mstory5(omObjData *obj);
 void func_80105CCC_mstory5(omObjData *obj);
 void func_80105E34_mstory5(void);
@@ -764,7 +765,153 @@ MstoryPath *func_80107850_mstory5(Vec *points, s32 flags) {
     return path;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_80107B54_mstory5);
+void func_80107B54_mstory5(MstoryPath *path, f32 time, Vec *result) {
+    f32 values[4];
+    f32 times[4];
+    Vec *points;
+    f32(*interval)[2];
+    s16 i;
+
+    if (time >= 1.0f) {
+        result->x = path->points[path->count - 1].x;
+        result->y = path->points[path->count - 1].y;
+        result->z = path->points[path->count - 1].z;
+        return;
+    }
+    interval = path->intervals;
+    for (i = 0; i < path->count; i++, interval++) {
+        if (time <= (*interval)[0]) {
+            break;
+        }
+    }
+    i--;
+    if (i < 0) {
+        i = 0;
+    }
+    if (i >= path->count - 1) {
+        i--;
+    }
+    interval = path->intervals;
+    if (path->flags & 1) {
+        times[0] = i == 0 ? -(1.0f - interval[path->count - 1][0]) : interval[i - 1][0];
+        times[1] = interval[i][0];
+        times[2] = i >= path->count - 1 ? interval[path->count - 1][1] : interval[i + 1][0];
+        times[3] = i + 1 >= path->count - 1 ? interval[path->count - 1][1] : interval[i + 2][0];
+        points = path->points;
+        if (i == 0) {
+            values[0] = points[path->count - 1].x;
+        } else {
+            values[0] = points[i - 1].x;
+        }
+        values[1] = points[i].x;
+        if (i >= path->count - 1) {
+            values[2] = points[0].x;
+        } else {
+            values[2] = points[i + 1].x;
+        }
+        if (i + 1 >= path->count - 1) {
+            values[3] = points[0].x;
+        } else {
+            values[3] = points[i + 2].x;
+        }
+        result->x = InterpolateBMLine(values, times, time);
+        if (i == 0) {
+            values[0] = points[path->count - 1].y;
+        } else {
+            values[0] = points[i - 1].y;
+        }
+        values[1] = points[i].y;
+        if (i >= path->count - 1) {
+            values[2] = points[0].y;
+        } else {
+            values[2] = points[i + 1].y;
+        }
+        if (i + 1 >= path->count - 1) {
+            values[3] = points[0].y;
+        } else {
+            values[3] = points[i + 2].y;
+        }
+        result->y = InterpolateBMLine(values, times, time);
+        if (i == 0) {
+            values[0] = points[path->count - 1].z;
+        } else {
+            values[0] = points[i - 1].z;
+        }
+        values[1] = points[i].z;
+        if (i >= path->count - 1) {
+            values[2] = points[0].z;
+        } else {
+            values[2] = points[i + 1].z;
+        }
+        if (i + 1 >= path->count - 1) {
+            values[3] = points[0].z;
+        } else {
+            values[3] = points[i + 2].z;
+        }
+        result->z = InterpolateBMLine(values, times, time);
+    } else {
+        if (i == 0) {
+            times[0] = -1.0f;
+        } else {
+            times[0] = interval[i - 1][0];
+        }
+        times[1] = interval[i][0];
+        times[2] = i >= path->count - 1 ? interval[path->count - 1][1] : interval[i + 1][0];
+        times[3] = i + 1 >= path->count - 1 ? interval[path->count - 1][1] : interval[i + 2][0];
+        points = path->points;
+        if (i == 0) {
+            values[0] = points[0].x;
+        } else {
+            values[0] = points[i - 1].x;
+        }
+        values[1] = points[i].x;
+        if (i >= path->count - 1) {
+            values[2] = points[path->count - 1].x;
+        } else {
+            values[2] = points[i + 1].x;
+        }
+        if (i + 1 >= path->count - 1) {
+            values[3] = points[path->count - 1].x;
+        } else {
+            values[3] = points[i + 2].x;
+        }
+        result->x = InterpolateBMLine(values, times, time);
+        if (i == 0) {
+            values[0] = points[0].y;
+        } else {
+            values[0] = points[i - 1].y;
+        }
+        values[1] = points[i].y;
+        if (i >= path->count - 1) {
+            values[2] = points[path->count - 1].y;
+        } else {
+            values[2] = points[i + 1].y;
+        }
+        if (i + 1 >= path->count - 1) {
+            values[3] = points[path->count - 1].y;
+        } else {
+            values[3] = points[i + 2].y;
+        }
+        result->y = InterpolateBMLine(values, times, time);
+        if (i == 0) {
+            values[0] = points[0].z;
+        } else {
+            values[0] = points[i - 1].z;
+        }
+        values[1] = points[i].z;
+        if (i >= path->count - 1) {
+            values[2] = points[path->count - 1].z;
+        } else {
+            values[2] = points[i + 1].z;
+        }
+        if (i + 1 >= path->count - 1) {
+            values[3] = points[path->count - 1].z;
+        } else {
+            values[3] = points[i + 2].z;
+        }
+        result->z = InterpolateBMLine(values, times, time);
+    }
+}
 
 void func_801083FC_mstory5(MstoryPath *path) {
     HuMemFree(path->intervals);
@@ -2165,7 +2312,153 @@ MstoryPath *func_8010F4D0_mstory5(Vec *points, s32 flags) {
     return path;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010F7D4_mstory5);
+void func_8010F7D4_mstory5(MstoryPath *path, f32 time, Vec *result) {
+    f32 values[4];
+    f32 times[4];
+    Vec *points;
+    f32(*interval)[2];
+    s16 i;
+
+    if (time >= 1.0f) {
+        result->x = path->points[path->count - 1].x;
+        result->y = path->points[path->count - 1].y;
+        result->z = path->points[path->count - 1].z;
+        return;
+    }
+    interval = path->intervals;
+    for (i = 0; i < path->count; i++, interval++) {
+        if (time <= (*interval)[0]) {
+            break;
+        }
+    }
+    i--;
+    if (i < 0) {
+        i = 0;
+    }
+    if (i >= path->count - 1) {
+        i--;
+    }
+    interval = path->intervals;
+    if (path->flags & 1) {
+        times[0] = i == 0 ? -(1.0f - interval[path->count - 1][0]) : interval[i - 1][0];
+        times[1] = interval[i][0];
+        times[2] = i >= path->count - 1 ? interval[path->count - 1][1] : interval[i + 1][0];
+        times[3] = i + 1 >= path->count - 1 ? interval[path->count - 1][1] : interval[i + 2][0];
+        points = path->points;
+        if (i == 0) {
+            values[0] = points[path->count - 1].x;
+        } else {
+            values[0] = points[i - 1].x;
+        }
+        values[1] = points[i].x;
+        if (i >= path->count - 1) {
+            values[2] = points[0].x;
+        } else {
+            values[2] = points[i + 1].x;
+        }
+        if (i + 1 >= path->count - 1) {
+            values[3] = points[0].x;
+        } else {
+            values[3] = points[i + 2].x;
+        }
+        result->x = InterpolateBMLine(values, times, time);
+        if (i == 0) {
+            values[0] = points[path->count - 1].y;
+        } else {
+            values[0] = points[i - 1].y;
+        }
+        values[1] = points[i].y;
+        if (i >= path->count - 1) {
+            values[2] = points[0].y;
+        } else {
+            values[2] = points[i + 1].y;
+        }
+        if (i + 1 >= path->count - 1) {
+            values[3] = points[0].y;
+        } else {
+            values[3] = points[i + 2].y;
+        }
+        result->y = InterpolateBMLine(values, times, time);
+        if (i == 0) {
+            values[0] = points[path->count - 1].z;
+        } else {
+            values[0] = points[i - 1].z;
+        }
+        values[1] = points[i].z;
+        if (i >= path->count - 1) {
+            values[2] = points[0].z;
+        } else {
+            values[2] = points[i + 1].z;
+        }
+        if (i + 1 >= path->count - 1) {
+            values[3] = points[0].z;
+        } else {
+            values[3] = points[i + 2].z;
+        }
+        result->z = InterpolateBMLine(values, times, time);
+    } else {
+        if (i == 0) {
+            times[0] = -1.0f;
+        } else {
+            times[0] = interval[i - 1][0];
+        }
+        times[1] = interval[i][0];
+        times[2] = i >= path->count - 1 ? interval[path->count - 1][1] : interval[i + 1][0];
+        times[3] = i + 1 >= path->count - 1 ? interval[path->count - 1][1] : interval[i + 2][0];
+        points = path->points;
+        if (i == 0) {
+            values[0] = points[0].x;
+        } else {
+            values[0] = points[i - 1].x;
+        }
+        values[1] = points[i].x;
+        if (i >= path->count - 1) {
+            values[2] = points[path->count - 1].x;
+        } else {
+            values[2] = points[i + 1].x;
+        }
+        if (i + 1 >= path->count - 1) {
+            values[3] = points[path->count - 1].x;
+        } else {
+            values[3] = points[i + 2].x;
+        }
+        result->x = InterpolateBMLine(values, times, time);
+        if (i == 0) {
+            values[0] = points[0].y;
+        } else {
+            values[0] = points[i - 1].y;
+        }
+        values[1] = points[i].y;
+        if (i >= path->count - 1) {
+            values[2] = points[path->count - 1].y;
+        } else {
+            values[2] = points[i + 1].y;
+        }
+        if (i + 1 >= path->count - 1) {
+            values[3] = points[path->count - 1].y;
+        } else {
+            values[3] = points[i + 2].y;
+        }
+        result->y = InterpolateBMLine(values, times, time);
+        if (i == 0) {
+            values[0] = points[0].z;
+        } else {
+            values[0] = points[i - 1].z;
+        }
+        values[1] = points[i].z;
+        if (i >= path->count - 1) {
+            values[2] = points[path->count - 1].z;
+        } else {
+            values[2] = points[i + 1].z;
+        }
+        if (i + 1 >= path->count - 1) {
+            values[3] = points[path->count - 1].z;
+        } else {
+            values[3] = points[i + 2].z;
+        }
+        result->z = InterpolateBMLine(values, times, time);
+    }
+}
 
 void func_8011007C_mstory5(MstoryPath *path) {
     HuMemFree(path->intervals);

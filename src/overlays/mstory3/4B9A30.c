@@ -71,7 +71,7 @@ extern s16 D_80115D96_mstory3;
 extern s16 D_80115DB0_mstory3;
 
 MstoryPath *func_8010C9F0_mstory3(Vec *points, s32 flags);
-void func_8010CCF4_mstory3(MstoryPath *path, f32 t, Vec *out);
+void func_8010CCF4_mstory3(MstoryPath *path, f32 time, Vec *result);
 void func_8010D59C_mstory3(MstoryPath *path);
 void func_8010D774_mstory3(omObjData *obj);
 void func_801110AC_mstory3(void);

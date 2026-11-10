@@ -526,7 +526,27 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80110C3C_duel01);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80111DFC_duel01);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_801123E8_duel01);
+void func_801123E8_duel01(void) {
+    GW_PLAYER *player;
+    void *handle;
+
+    player = MBDGetPlayerStruct(CUR_PLAYER);
+    func_800EDD50_name_81(&player->player_obj->coords);
+    func_800EE0F4_name_81(1);
+    func_800EDF48_name_81();
+    HuAudFXPlay(0x1FF);
+    handle = func_800FFC2C_name_81(-1, 3, 5);
+    func_800EE74C_name_81(3);
+    func_800FFCCC_name_81(handle);
+    func_800EDF78_name_81();
+    func_800EE468_name_81(2);
+    func_800EDDBC_name_81();
+    func_800F3880_name_81(-1, 6, 0);
+    PlayerFXPlay(0x2BD, GwSystem.current_player_index);
+    func_800EFABC_name_81(player->player_obj);
+    func_800F3880_name_81(-1, -1, 2);
+    GwPlayer[GwSystem.current_player_index].star = 5;
+}
 
 void func_801124D8_duel01(void) {
     func_800E18C0_name_81();

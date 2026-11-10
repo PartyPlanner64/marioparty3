@@ -26,6 +26,16 @@ typedef struct Duel03SwayWork {
 
 
 void *memcpy(void *, const void *, unsigned int);
+void func_800EDD50_name_81(Vec *);
+void func_800EE0F4_name_81(s32);
+void func_800EDF48_name_81(void);
+void *func_800FFC2C_name_81(s16, s16, s32);
+void func_800EE74C_name_81(s32);
+void func_800FFCCC_name_81(void *);
+void func_800EDF78_name_81(void);
+void func_800EE468_name_81(s32);
+void func_800EDDBC_name_81(void);
+void func_800F3880_name_81(s32, s32, s32);
 extern f32 D_8011744C_duel03;
 extern s16 D_80117462_duel03;
 extern s16 D_80117460_duel03;
@@ -575,7 +585,27 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_80110A70_duel03);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_80111C30_duel03);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_8011221C_duel03);
+void func_8011221C_duel03(void) {
+    GW_PLAYER *player;
+    void *handle;
+
+    player = MBDGetPlayerStruct(CUR_PLAYER);
+    func_800EDD50_name_81(&player->player_obj->coords);
+    func_800EE0F4_name_81(1);
+    func_800EDF48_name_81();
+    HuAudFXPlay(0x1FF);
+    handle = func_800FFC2C_name_81(-1, 3, 5);
+    func_800EE74C_name_81(3);
+    func_800FFCCC_name_81(handle);
+    func_800EDF78_name_81();
+    func_800EE468_name_81(2);
+    func_800EDDBC_name_81();
+    func_800F3880_name_81(-1, 6, 0);
+    PlayerFXPlay(0x2BD, GwSystem.current_player_index);
+    func_800EFABC_name_81(player->player_obj);
+    func_800F3880_name_81(-1, -1, 2);
+    GwPlayer[GwSystem.current_player_index].star = 5;
+}
 
 void func_8011230C_duel03(void) {
     func_800E18C0_name_81();

@@ -204,6 +204,12 @@ extern s16 D_80119CE4_duel04;
 extern u8 D_80119ED4_duel04[];
 extern u8 D_80119EF4_duel04[];
 extern u8 D_80119EFC_duel04[];
+void func_8010EA94_duel04(void);
+extern u8 D_80119EDC_duel04[];
+extern u8 D_80119F1C_duel04[];
+extern u8 D_80119F14_duel04[];
+extern u8 D_80119F0C_duel04[];
+extern u8 D_80119F04_duel04[];
 void func_80118850_duel04(void);
 void func_80118D14_duel04(void);
 void func_801198EC_duel04(void);
@@ -2756,7 +2762,21 @@ void func_8010E914_duel04(void) {
     Hu3DMotionSpeedSet(D_8011B510_duel04->omObj1->model[0], 1.0f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010E964_duel04);
+void func_8010E964_duel04(void) {
+    Object *obj;
+
+    if (D_8011B518_duel04 == NULL) {
+        obj = D_8011B518_duel04 = func_800D8010_name_81(0x2F, NULL);
+        obj->flags |= 2;
+        func_8001C814_main(obj->omObj1->model[0], 2, 1);
+        HuVecCopy3F(&obj->coords, &MBDMasuGet(0x20)->coords);
+    }
+    D_80119CE0_duel04 = DataRead(0x13013A);
+    D_80119CE4_duel04 = Hu3DAnimCreate(Hu3DData[D_8011B518_duel04->omObj1->model[0]].hmf, D_80119CE0_duel04, 0, "tura_DEF");
+    Hu3DAnimBankSet(D_80119CE4_duel04, 0);
+    Hu3DModelRemakeStatic(D_8011B518_duel04->omObj1->model[0]);
+    func_800FC5B4_name_81(func_8010EA94_duel04);
+}
 
 void func_8010EA74_duel04(void) {
     D_8011B518_duel04 = NULL;
@@ -2774,9 +2794,39 @@ void func_8010EA94_duel04(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010EAF0_duel04);
+void func_8010EAF0_duel04(void) {
+    s32 i;
+    f32 speed;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010EC0C_duel04);
+    func_8001C814_main(D_8011B518_duel04->omObj1->model[0], 1, 2);
+    Hu3DAnimBankSet(D_80119CE4_duel04, 1);
+    Hu3DModelRemakeStatic(D_8011B518_duel04->omObj1->model[0]);
+    func_800DD41C_name_81(&D_8011B518_duel04->coords);
+    for (i = 0, speed = 0.0f; speed <= 1.0f; i++) {
+        Hu3DMotionSpeedSet(D_8011B518_duel04->omObj1->model[0], speed);
+        HuPrcVSleep();
+        if (i == 10) {
+            func_800DD554_name_81();
+        }
+        speed += 0.05f;
+    }
+    Hu3DMotionSpeedSet(D_8011B518_duel04->omObj1->model[0], 1.0f);
+}
+
+void func_8010EC0C_duel04(void) {
+    f32 speed;
+
+    func_800DD564_name_81();
+    for (speed = 1.0f; speed >= 0.0f; speed -= 0.05f) {
+        Hu3DMotionSpeedSet(D_8011B518_duel04->omObj1->model[0], speed);
+        HuPrcVSleep();
+    }
+    Hu3DMotionSpeedSet(D_8011B518_duel04->omObj1->model[0], 0.0f);
+    func_8001C814_main(D_8011B518_duel04->omObj1->model[0], 2, 1);
+    Hu3DAnimBankSet(D_80119CE4_duel04, 0);
+    Hu3DModelRemakeStatic(D_8011B518_duel04->omObj1->model[0]);
+    func_800DD570_name_81();
+}
 
 s32 func_8010ECFC_duel04(void) {
     return (5 - GwPlayer[GwSystem.current_player_index].star) * 10;
@@ -4179,15 +4229,84 @@ s32 func_801141DC_duel04(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80114294_duel04);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_801143F8_duel04);
+s32 func_801143F8_duel04(void) {
+    s32 otherIndex = (s16)(MBDGetCurrentPlayerIndex() ^ 1);
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *otherPlayer = MBDGetPlayerStruct(otherIndex);
+    s32 walk = mbWalkNum;
+
+    switch (otherPlayer->clink) {
+        case 0:
+            return 1;
+        case 1:
+            return 1;
+        case 4:
+            if (walk < 3 && otherPlayer->cidx == D_80119F04_duel04[walk]) {
+                return 0;
+            }
+            if (walk < 3 && otherPlayer->cidx >= D_80119F04_duel04[walk]) {
+                return 1;
+            }
+            if (otherPlayer->rev & 1) {
+                return 1;
+            }
+            return player->stats.partners.frontPower == 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_801144E0_duel04);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8011463C_duel04);
+s32 func_8011463C_duel04(void) {
+    s32 otherIndex = (s16)(MBDGetCurrentPlayerIndex() ^ 1);
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *otherPlayer = MBDGetPlayerStruct(otherIndex);
+    s32 walk = mbWalkNum;
+
+    switch (otherPlayer->clink) {
+        case 1:
+            return 1;
+        case 2:
+            return 1;
+        case 5:
+            if (walk < 3 && otherPlayer->cidx == D_80119F0C_duel04[walk]) {
+                return 0;
+            }
+            if (walk < 3 && otherPlayer->cidx >= D_80119F0C_duel04[walk]) {
+                return 1;
+            }
+            if (otherPlayer->rev & 1) {
+                return 1;
+            }
+            return player->stats.partners.frontPower == 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80114724_duel04);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80114884_duel04);
+s32 func_80114884_duel04(void) {
+    s32 otherIndex = (s16)(MBDGetCurrentPlayerIndex() ^ 1);
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *otherPlayer = MBDGetPlayerStruct(otherIndex);
+    s32 walk = mbWalkNum;
+
+    switch (otherPlayer->clink) {
+        case 1:
+            if (walk >= 6 || otherPlayer->cidx == D_80119EDC_duel04[walk]) {
+                return player->stats.partners.frontPower != 0;
+            }
+            if (walk >= 6 || otherPlayer->cidx > D_80119EDC_duel04[walk]) {
+                return player->stats.partners.frontPower != 0;
+            }
+            return 0;
+        case 2:
+            return 0;
+        case 3:
+            return 0;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80114950_duel04);
 
@@ -4219,11 +4338,59 @@ s32 func_801150D0_duel04(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80115188_duel04);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_801152F0_duel04);
+s32 func_801152F0_duel04(void) {
+    s32 otherIndex = (s16)(MBDGetCurrentPlayerIndex() ^ 1);
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *otherPlayer = MBDGetPlayerStruct(otherIndex);
+    s32 walk = mbWalkNum;
+
+    switch (otherPlayer->clink) {
+        case 2:
+            return 1;
+        case 3:
+            return 1;
+        case 6:
+            if (walk < 3 && otherPlayer->cidx == D_80119F14_duel04[walk]) {
+                return 0;
+            }
+            if (walk < 3 && otherPlayer->cidx >= D_80119F14_duel04[walk]) {
+                return 1;
+            }
+            if (otherPlayer->rev & 1) {
+                return 1;
+            }
+            return player->stats.partners.frontPower == 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_801153D8_duel04);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8011553C_duel04);
+s32 func_8011553C_duel04(void) {
+    s32 otherIndex = (s16)(MBDGetCurrentPlayerIndex() ^ 1);
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *otherPlayer = MBDGetPlayerStruct(otherIndex);
+    s32 walk = mbWalkNum;
+
+    switch (otherPlayer->clink) {
+        case 2:
+            return 1;
+        case 3:
+            return 1;
+        case 7:
+            if (walk < 3 && otherPlayer->cidx == D_80119F1C_duel04[walk]) {
+                return 0;
+            }
+            if (walk < 3 && otherPlayer->cidx >= D_80119F1C_duel04[walk]) {
+                return 1;
+            }
+            if (otherPlayer->rev & 1) {
+                return 1;
+            }
+            return player->stats.partners.frontPower == 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80115624_duel04);
 
@@ -4866,7 +5033,27 @@ void func_801198EC_duel04(void) {
     func_80118850_duel04();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80119910_duel04);
+void func_80119910_duel04(void) {
+    Vec pos[3];
+    s8 playerIndex = GwSystem.current_player_index ^ 1;
+    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    SpaceData *space;
+
+    func_800E9F4C_name_81(0x20, &player->clink, &player->cidx);
+    func_800E9F4C_name_81(0x13, &player->nlink, &player->nidx);
+    func_800E9F4C_name_81(0xD, &player->blink, &player->bidx);
+    player->rev = 0;
+    player->nnlink = -2;
+    player->nnidx = -2;
+    space = MBDMasuGet(0x20);
+    HuVecAdd(&pos[0], &space->coords, &MBDMasuGet(0x1F)->coords);
+    HuVecMulScalar(&pos[0], 0.5f, &pos[0]);
+    HuVecCopy3F(&pos[1], &pos[0]);
+    pos[1].z -= 12.0f;
+    HuVecCopy3F(&pos[2], &pos[0]);
+    pos[2].x += 12.0f;
+    func_800E27D4_name_81(playerIndex, &pos[0], &pos[1], &pos[2]);
+}
 
 #ifdef NON_MATCHING
 // Only diff: the loop guard before the -2 inputs is beqz instead of blez. GCC

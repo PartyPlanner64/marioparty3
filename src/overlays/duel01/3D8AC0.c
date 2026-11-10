@@ -2678,7 +2678,15 @@ void func_8010E904_duel01(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010E954_duel01);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010EA74_duel01);
+void func_8010EA74_duel01(void) {
+    s32 i;
+
+    D_801194A8_duel01 = NULL;
+    for (i = 0; i < 2; i++) {
+        D_801194AC_duel01[i] = NULL;
+        func_8010E954_duel01(i);
+    }
+}
 
 void func_8010EAD4_duel01(s32 arg0) {
     if (D_8011875C_duel01 == 0) {
@@ -4042,15 +4050,41 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80117624_duel01);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_801179AC_duel01);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80117D3C_duel01);
+void func_80117D3C_duel01(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    s32 spaceIndex = MBDMasuLinkMasuIdGet(player->blink, player->bidx);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80117DDC_duel01);
+    if (spaceIndex == MBDMasuLinkMasuIdGet(player->clink, player->cidx + 1)) {
+        func_800E9F4C_name_81(0x21, &player->nlink, &player->nidx);
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80117E7C_duel01);
+void func_80117DDC_duel01(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    s32 spaceIndex = MBDMasuLinkMasuIdGet(player->blink, player->bidx);
+
+    if (spaceIndex == MBDMasuLinkMasuIdGet(player->clink, player->cidx + 1)) {
+        func_800E9F4C_name_81(0x22, &player->nlink, &player->nidx);
+    }
+}
+
+void func_80117E7C_duel01(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+
+    if (MBDMasuLinkMasuIdGet(player->nlink, player->nidx) == 0x22) {
+        func_8010EAD4_duel01(0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80117ED8_duel01);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80117FFC_duel01);
+void func_80117FFC_duel01(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+
+    if (MBDMasuLinkMasuIdGet(player->nlink, player->nidx) == 0x21) {
+        func_8010EAD4_duel01(1);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80118058_duel01);
 

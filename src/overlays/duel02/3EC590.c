@@ -137,6 +137,7 @@ void func_800FAE18_name_81(Object *, s32, s32);
 extern s16 D_80117140_duel02[];
 extern char D_80117128_duel02[];
 extern Object *D_80117620_duel02;
+extern Object *D_80117638_duel02[2];
 extern Process *D_80117624_duel02;
 extern s32 D_801165C0_duel02[];
 extern s16 D_80117158_duel02[];
@@ -152,6 +153,7 @@ void func_8010D9F8_duel02(void);
 void func_8010DCAC_duel02(void);
 void func_8010DD40_duel02(void);
 void func_8010E34C_duel02(void);
+void func_8010E958_duel02(s16);
 void func_8010EA10_duel02(void);
 void func_800FF640_name_81(s32);
 f32 func_800D76D0_name_81(Vec *);
@@ -2723,7 +2725,14 @@ void func_8010E908_duel02(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010E958_duel02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010EA10_duel02);
+void func_8010EA10_duel02(void) {
+    s32 i;
+
+    for (i = 0; i < 2; i++) {
+        D_80117638_duel02[i] = NULL;
+        func_8010E958_duel02(i);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010EA68_duel02);
 

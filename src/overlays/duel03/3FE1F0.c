@@ -131,6 +131,7 @@ void func_800FAE18_name_81(Object *, s32, s32);
 extern s16 D_80117C00_duel03[];
 extern char D_80117BD8_duel03[];
 extern Object *D_801180E0_duel03;
+extern Object *D_801180F8_duel03[4];
 extern Process *D_801180E4_duel03;
 extern s32 D_80117450_duel03[];
 extern s16 D_80117C18_duel03[];
@@ -145,6 +146,7 @@ void func_8010D9F8_duel03(void);
 void func_8010DCAC_duel03(void);
 void func_8010DD40_duel03(void);
 void func_8010E34C_duel03(void);
+void func_8010E958_duel03(s16);
 void func_8010EA1C_duel03(void);
 void func_800FF640_name_81(s32);
 f32 func_800D76D0_name_81(Vec *);
@@ -2716,7 +2718,14 @@ void func_8010E908_duel03(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_8010E958_duel03);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_8010EA1C_duel03);
+void func_8010EA1C_duel03(void) {
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        D_801180F8_duel03[i] = NULL;
+        func_8010E958_duel03(i);
+    }
+}
 
 s32 func_8010EA74_duel03(void) {
     return (5 - GwPlayer[GwSystem.current_player_index].star) * 10;
@@ -4036,7 +4045,14 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_80116EB4_duel03);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_80116FE4_duel03);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_80117124_duel03);
+void func_80117124_duel03(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    s32 spaceIndex = MBDMasuLinkMasuIdGet(player->blink, player->bidx);
+
+    if (spaceIndex == MBDMasuLinkMasuIdGet(player->clink, player->cidx + 1)) {
+        func_800E9F4C_name_81(0x23, &player->nlink, &player->nidx);
+    }
+}
 
 void func_801171C4_duel03(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);

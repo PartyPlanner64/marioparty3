@@ -4010,9 +4010,23 @@ void func_80113AD4_duel06(void) {
     omDelPrcObj(NULL);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_80113E74_duel06);
+void func_80113E74_duel06(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    s32 spaceIndex = MBDMasuLinkMasuIdGet(player->blink, player->bidx);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_80113F14_duel06);
+    if (spaceIndex == MBDMasuLinkMasuIdGet(player->clink, player->cidx + 1)) {
+        func_800E9F4C_name_81(0x13, &player->nlink, &player->nidx);
+    }
+}
+
+void func_80113F14_duel06(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    s32 spaceIndex = MBDMasuLinkMasuIdGet(player->blink, player->bidx);
+
+    if (spaceIndex == MBDMasuLinkMasuIdGet(player->clink, player->cidx - 1)) {
+        func_800E9F4C_name_81(0x14, &player->nlink, &player->nidx);
+    }
+}
 
 void func_80113FB4_duel06(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);

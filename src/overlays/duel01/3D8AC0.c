@@ -2702,7 +2702,37 @@ void func_8010EB44_duel01(s32 arg0) {
     D_8011875C_duel01 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010EB88_duel01);
+s32 func_8010EB88_duel01(void) {
+    GW_SYSTEM *sys = &GwSystem;
+    GW_PLAYER *player = MBDGetPlayerStruct(sys->current_player_index ^ 1);
+    s32 curPlayer = sys->current_player_index;
+    s32 chance = (5 - GwPlayer[curPlayer].star) * 10;
+
+    if (mbWalkNum < 4) {
+        if (curPlayer == 0) {
+            if (player->clink == 0) {
+                s32 dist = player->cidx - 8;
+
+                if (dist == mbWalkNum) {
+                    chance = 0;
+                }
+                if (dist < mbWalkNum) {
+                    chance += 20;
+                }
+            }
+        } else if (player->clink == 1) {
+            s32 dist = player->cidx - 8;
+
+            if (dist == mbWalkNum) {
+                chance = 0;
+            }
+            if (dist < mbWalkNum) {
+                chance += 20;
+            }
+        }
+    }
+    return chance;
+}
 
 s32 func_8010EC78_duel01(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);

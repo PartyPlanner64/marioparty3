@@ -2726,7 +2726,37 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_8010EA00_duel05);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_8010EAFC_duel05);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_8010EB58_duel05);
+s32 func_8010EB58_duel05(void) {
+    GW_SYSTEM *sys = &GwSystem;
+    GW_PLAYER *player = MBDGetPlayerStruct(sys->current_player_index ^ 1);
+    s32 curPlayer = sys->current_player_index;
+    s32 chance = (5 - GwPlayer[curPlayer].star) * 10;
+
+    if (mbWalkNum < 5) {
+        if (curPlayer == 0) {
+            if (player->clink == 0) {
+                s32 dist = player->cidx - 1;
+
+                if (dist == mbWalkNum) {
+                    chance = 0;
+                }
+                if (dist < mbWalkNum) {
+                    chance += 20;
+                }
+            }
+        } else if (player->clink == 3) {
+            s32 dist = player->cidx - 1;
+
+            if (dist == mbWalkNum) {
+                chance = 0;
+            }
+            if (dist < mbWalkNum) {
+                chance += 20;
+            }
+        }
+    }
+    return chance;
+}
 
 s32 func_8010EC48_duel05(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);

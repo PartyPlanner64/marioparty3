@@ -20,6 +20,8 @@ typedef struct MstoryPath {
 extern f32 D_800CB890_main;
 extern f32 D_800D5210_main;
 
+extern char *D_8011BA60_mstory2[];
+
 extern Vec D_8011B920_mstory2;
 extern Vec D_8011B92C_mstory2;
 extern Vec D_8011B938_mstory2;
@@ -30,6 +32,7 @@ extern const s32 D_8011BDF4_mstory2[];
 extern s16 D_8011B946_mstory2;
 extern s16 D_8011B948_mstory2;
 extern s32 D_8011B94C_mstory2;
+extern const Vec D_8011BE74_mstory2;
 extern const Vec D_8011BE80_mstory2;
 extern const Vec D_8011BE8C_mstory2;
 extern const Vec D_8011BE98_mstory2;
@@ -61,6 +64,7 @@ extern u16 D_8011C646_mstory2;
 extern s16 D_8011C648_mstory2;
 extern s32 D_8011C674_mstory2;
 extern UnkMstory2Obj D_8011C680_mstory2[6];
+extern Vec D_8011C704_mstory2;
 extern Vec D_8011C710_mstory2;
 extern Vec D_8011C71C_mstory2;
 extern Vec D_8011C728_mstory2;
@@ -123,7 +127,7 @@ extern s16 D_8011C74E_mstory2;
 extern s16 D_8011C750_mstory2;
 extern s16 D_8011C74A_mstory2[2];
 extern const Vec D_8011BFF4_mstory2;
-extern s16 D_8011C752_mstory2[2];
+extern s16 D_8011C752_mstory2[3];
 extern const Vec D_8011C00C_mstory2;
 extern s16 D_8011C832_mstory2[2];
 extern const Vec D_8011C1EC_mstory2;
@@ -167,6 +171,7 @@ s32 func_801072F8_mstory2(s16 model);
 void func_801073A4_mstory2(omObjData *obj, f32 speed, s16 frames);
 void func_801076DC_mstory2(omObjData *obj, omObjData *target);
 void func_8010889C_mstory2(omObjData *);
+void func_8010B108_mstory2(void);
 void func_8010A61C_mstory2(omObjData *);
 void func_8010BCE4_mstory2(omObjData *obj);
 void func_8010A5FC_mstory2(omObjData *obj);
@@ -1061,7 +1066,66 @@ void func_8010A9F0_mstory2(omObjData *obj) {
     D_8011C680_mstory2[0].func = func_8010889C_mstory2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory2/49BD40", func_8010AC1C_mstory2);
+void func_8010AC1C_mstory2(void) {
+    s16 chrs[2] = { 4, 1 };
+    s32 motIds[2] = { 0x61, 0x44 };
+    omObjData *obj;
+    s16 idx;
+    void *data;
+
+    idx = D_8011C75C_mstory2 == 4;
+    obj = omAddObj(20, 20, 20, -1, NULL);
+    D_8011C680_mstory2[1].obj = obj;
+    D_8011C680_mstory2[1].unk_08 = 0;
+    D_8011C680_mstory2[1].func = func_8010889C_mstory2;
+    D_8011C680_mstory2[1].unk_0C = 0;
+    D_8011C680_mstory2[1].unk_10 = 31;
+    obj->model[1] = func_8000B108_main(idx == 0 ? 0x500A0 : 0x300A0, 0x2A9);
+    obj->model[2] = Hu3DModelLink(D_8011C75A_mstory2);
+    obj->model[3] = func_8000B108_main(0x83, 0x2B9);
+    func_8001C258_main(obj->model[1], 4, 4);
+    func_8001C258_main(obj->model[2], 4, 4);
+    func_8001C258_main(obj->model[3], 4, 4);
+    func_8000B460_main(obj, 0, func_80017BB8_main(chrs[idx], 0));
+    func_8000B460_main(obj, 1, func_80017BB8_main(chrs[idx], 1));
+    func_8000B460_main(obj, 2, func_80017BB8_main(chrs[idx], 2));
+    func_8000B460_main(obj, 3, func_80017BB8_main(chrs[idx], 0x13));
+    func_8000B460_main(obj, 4, func_80017BB8_main(chrs[idx], 0x72));
+    func_8000B460_main(obj, 5, motIds[idx] | 0x1D0000);
+    func_8000B460_main(obj, 6, func_80017BB8_main(chrs[idx], 0x21));
+    func_8000B460_main(obj, 7, func_80017BB8_main(chrs[idx], 0x33));
+    func_8000B460_main(obj, 8, func_80017BB8_main(chrs[idx], 0x2F));
+    if (D_8011C75C_mstory2 == 4) {
+        func_8000B460_main(obj, 9, 0x1D0045);
+    }
+    func_8001C5B4_main(obj->model[1], obj->motion[0]);
+    func_8001C814_main(obj->model[1], 2, 2);
+    D_8011C704_mstory2 = D_8011BE74_mstory2;
+    Hu3DModelPosSet(obj->model[1], D_8011C704_mstory2.x, D_8011C704_mstory2.y, D_8011C704_mstory2.z);
+    Hu3DModelPosSet(obj->model[2], D_8011C704_mstory2.x, D_8011C704_mstory2.y - -5.0f, D_8011C704_mstory2.z);
+    Hu3DModelRotSet(obj->model[1], 0.0f, -14.48f, 0.0f);
+    data = DataRead(func_80017BB8_main(chrs[idx], 0xA4));
+    D_8011C752_mstory2[0] = Hu3DAnimCreate(Hu3DData[obj->model[1]].hmf, data, 0, D_8011BA60_mstory2[idx]);
+    HuMemMemoryFreePerm(data);
+    Hu3DModelRemakeStatic(obj->model[1]);
+    func_8001C514_main(obj->model[1]);
+    func_80032FC0_main(D_8011C752_mstory2[0], 1, 0);
+    Hu3DAnimBankSet(D_8011C752_mstory2[0], 0);
+    D_8011C758_mstory2 = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, D_8011C752_mstory2[0], 0, D_8011BA60_mstory2[idx]);
+    data = DataRead(func_80017BB8_main(chrs[idx], 0xA9));
+    D_8011C752_mstory2[1] = func_800329B4_main(data);
+    HuMemMemoryFreePerm(data);
+    D_8011C758_mstory2 = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, D_8011C752_mstory2[0], 0, D_8011BA60_mstory2[idx]);
+    data = DataRead(func_80017BB8_main(chrs[idx], 0xAA));
+    D_8011C752_mstory2[2] = func_800329B4_main(data);
+    HuMemMemoryFreePerm(data);
+    func_80106D58_mstory2(obj->model[1], D_8011C758_mstory2, D_8011C752_mstory2[0]);
+    omPrcSetDestructor(0, func_8010B108_mstory2);
+    while (TRUE) {
+        D_8011C680_mstory2[1].func(obj);
+        HuPrcVSleep();
+    }
+}
 
 void func_8010B108_mstory2(void) {
 }

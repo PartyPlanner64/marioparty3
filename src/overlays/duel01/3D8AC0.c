@@ -89,20 +89,55 @@ void func_80105C64_duel01(Vec *arg0, Vec *arg1, Vec *arg2) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80105CC0_duel01);
 
-void *func_80105EB0_duel01(unkStruct04 *arg0) {
+Process *func_80105EB0_duel01(Object *object) {
     Process *process;
-    unkStruct02 *temp_v0_2;
+    unkStruct02 *work;
 
     process = omAddPrcObj(&func_80105CC0_duel01, 0xA, 0, 0x40);
-    temp_v0_2 = HuMemMemoryAlloc(process->heap, sizeof(unkStruct02));
-    process->user_data = temp_v0_2;
-    temp_v0_2->unk_00.x = arg0->unk_0C.x;
-    temp_v0_2->unk_00.y = arg0->unk_0C.y;
-    temp_v0_2->unk_00.z = arg0->unk_0C.z;
+    work = HuMemMemoryAlloc(process->heap, sizeof(unkStruct02));
+    process->user_data = work;
+    work->unk_00.x = object->coords.x;
+    work->unk_00.y = object->coords.y;
+    work->unk_00.z = object->coords.z;
     return process;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80105F20_duel01);
+void func_80105F20_duel01(void) {
+    Process *process = HuPrcCurrentGet();
+    Duel01PartnerAttackWork *work = HuPrcCurrentGet()->user_data;
+    GW_PLAYER *player = work->player;
+    Object *obj = work->obj;
+    s32 delay = work->delay;
+    s32 waitTime = work->waitTime;
+    Vec offset;
+    Vec origPos;
+
+    delay -= 5;
+    if (delay > 0) {
+        HuPrcSleep(delay);
+    }
+    func_80105EB0_duel01(obj);
+    HuVecSubtract(&offset, &obj->coords, &player->player_obj->coords);
+    if (D_80105620_name_81 == 3 || D_80105620_name_81 == 1) {
+        func_800D7934_name_81(&offset, -90.0f);
+    } else {
+        func_800D7934_name_81(&offset, 90.0f);
+    }
+    HuVecAdd(&offset, &offset, &obj->coords);
+    HuVecCopy3F(&origPos, &obj->coords);
+    func_800FB0B8_name_81(obj, 3, 0);
+    D_80101994_name_81++;
+    HuPrcChildLink(process, func_800EC1E4_name_81(&obj->coords, &offset, &obj->coords, 2.0f));
+    HuPrcChildWatch();
+    HuPrcSleep(waitTime);
+    HuPrcChildLink(process, func_800EC1E4_name_81(&obj->coords, &origPos, &obj->coords, 2.0f));
+    func_8001C814_main(obj->omObj1->model[0], 0, 4);
+    HuPrcChildWatch();
+    func_800EFB00_name_81(obj);
+    func_800D90D0_name_81(obj, -1, 2);
+    D_80101994_name_81--;
+    omDelPrcObj(NULL);
+}
 
 Process *func_801060D0_duel01(GW_PLAYER *player, Object *obj, s32 delay, s32 waitTime) {
     Process *process;

@@ -179,7 +179,42 @@ Process *func_80105EB4_duel02(Object *object) {
     return process;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_80105F24_duel02);
+void func_80105F24_duel02(void) {
+    Process *process = HuPrcCurrentGet();
+    Duel02PartnerAttackWork *work = HuPrcCurrentGet()->user_data;
+    GW_PLAYER *player = work->player;
+    Object *obj = work->obj;
+    s32 delay = work->delay;
+    s32 waitTime = work->waitTime;
+    Vec offset;
+    Vec origPos;
+
+    delay -= 5;
+    if (delay > 0) {
+        HuPrcSleep(delay);
+    }
+    func_80105EB4_duel02(obj);
+    HuVecSubtract(&offset, &obj->coords, &player->player_obj->coords);
+    if (D_80105620_name_81 == 3 || D_80105620_name_81 == 1) {
+        func_800D7934_name_81(&offset, -90.0f);
+    } else {
+        func_800D7934_name_81(&offset, 90.0f);
+    }
+    HuVecAdd(&offset, &offset, &obj->coords);
+    HuVecCopy3F(&origPos, &obj->coords);
+    func_800FB0B8_name_81(obj, 3, 0);
+    D_80101994_name_81++;
+    HuPrcChildLink(process, func_800EC1E4_name_81(&obj->coords, &offset, &obj->coords, 2.0f));
+    HuPrcChildWatch();
+    HuPrcSleep(waitTime);
+    HuPrcChildLink(process, func_800EC1E4_name_81(&obj->coords, &origPos, &obj->coords, 2.0f));
+    func_8001C814_main(obj->omObj1->model[0], 0, 4);
+    HuPrcChildWatch();
+    func_800EFB00_name_81(obj);
+    func_800D90D0_name_81(obj, -1, 2);
+    D_80101994_name_81--;
+    omDelPrcObj(NULL);
+}
 
 Process *func_801060D4_duel02(GW_PLAYER *player, Object *obj, s32 delay, s32 waitTime) {
     Process *process;

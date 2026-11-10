@@ -22,11 +22,6 @@ typedef struct unkStruct03 {
     /* 0x8C */ unkStruct02 *unk_8C;
 } unkStruct03;
 
-typedef struct unkStruct04 {
-    /* 0x00 */ char unk_00[0x0C];
-    /* 0x0C */ Vec unk_0C;
-} unkStruct04;
-
 typedef struct Duel01CamShakeWork {
     /* 0x00 */ s32 magnitude;
     /* 0x04 */ s32 decay;

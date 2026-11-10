@@ -124,3 +124,8 @@ extern Object *D_80119488_duel01;
 extern s32 D_80118718_duel01[];
 extern Object *D_80119480_duel01;
 extern Object *D_80119484_duel01;
+extern s32 D_80101200_shared_board[];
+Process *func_800E0924_name_81(void);
+extern void (*D_801188E4_duel01[])(void);
+void func_800DCE40_name_81(s32, Vec *, s32, f32);
+Process *func_800FAB68_name_81(Object *, s32, s32, s32, s32);

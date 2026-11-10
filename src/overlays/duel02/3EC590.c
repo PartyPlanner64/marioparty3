@@ -23,6 +23,17 @@
         (mtx)[1][1] = (mtx)[3][3] = 1.0f;                                                   \
     }
 
+// Inlined X rotation matrix build.
+#define MTX_ROTX(mtx, angle)                                                                \
+    {                                                                                       \
+        sincosdf(angle, &(mtx)[1][2], &(mtx)[1][1]);                                        \
+        (mtx)[2][1] = -(mtx)[1][2];                                                         \
+        (mtx)[2][2] = (mtx)[1][1];                                                          \
+        (mtx)[0][1] = (mtx)[0][2] = (mtx)[0][3] = (mtx)[1][0] = (mtx)[1][3] = (mtx)[2][0] = \
+            (mtx)[2][3] = (mtx)[3][0] = (mtx)[3][1] = (mtx)[3][2] = 0.0f;                   \
+        (mtx)[0][0] = (mtx)[3][3] = 1.0f;                                                   \
+    }
+
 typedef struct Duel02ModelWaitWork {
     /* 0x00 */ s32 index;
     /* 0x04 */ char unk_04[0xC];
@@ -932,7 +943,194 @@ void func_801084A8_duel02(s32 playerIndex, s32 arg1, Object *arg2, Object *arg3,
     func_800FADB4_name_81();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_80108554_duel02);
+void func_80108554_duel02(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
+    GW_PLAYER *player;
+    Process *process;
+    Object *effect;
+    Object *smoke;
+    s32 model;
+    s32 i;
+    f32 height;
+    f32 scaleY;
+    f32 angle;
+    Vec targetPos;
+    Vec origPos;
+    Vec delta;
+
+    player = MBDGetPlayerStruct(targetPlayer);
+    process = HuPrcCurrentGet();
+    model = -1;
+    if (target == NULL) {
+        HuPrcSleep(20);
+        return;
+    }
+    effect = func_80106744_duel02(0x55);
+    func_80106160_duel02(obj, target, player, &targetPos, &origPos, 9.0f);
+    for (height = 0.0f; height <= 20.0f; height += 2.0f) {
+        obj->velocity.x = height;
+        HuPrcVSleep();
+    }
+    HuPrcSleep(5);
+    func_80106244_duel02();
+    func_80106264_duel02(target, player, flags, 3.0f);
+    MTX_ROTX(Hu3DData[obj->omObj1->model[0]].mtx, 20.0f);
+    HuVecSubtract(&delta, &targetPos, &obj->coords);
+    HuPrcChildLink(process, func_800EBF2C_name_81(&obj->coords, &targetPos, &obj->coords, 10));
+    for (i = 20; i > 0; i--) {
+        MTX_ROTX(Hu3DData[obj->omObj1->model[0]].mtx, i);
+        HuPrcVSleep();
+    }
+    MTX_ROTX(Hu3DData[obj->omObj1->model[0]].mtx, 0.0f);
+    HuPrcSleep(5);
+    for (height = 20.0f; height >= 0.0f; height -= 10.0f) {
+        obj->velocity.x = height;
+        HuPrcVSleep();
+    }
+    func_800DCB04_name_81(0x5A, 1, &obj->coords, 1.0f, 0);
+    HuAudFXPlay(0x1E7);
+    HuAudFXPlay(0x1E8);
+    HuPrcSleep(10);
+    if (target != NULL) {
+        HuPrcSleep(10);
+        for (height = 0.0f; height <= 24.0f; height += 2.0f) {
+            obj->velocity.x = height;
+            HuPrcVSleep();
+        }
+        HuVecCopy3F(&targetPos, &target->coords);
+        HuPrcChildLink(process, func_800EC1E4_name_81(&obj->coords, &targetPos, &obj->coords, 3.0f));
+        HuPrcChildWatch();
+        HuPrcSleep(10);
+        if (flags & 8) {
+            if (mode == 1) {
+                func_801060D4_duel02(player, target, 0, 55);
+            } else {
+                func_801060D4_duel02(player, target, 0, 120);
+            }
+            for (height = 24.0f; height >= 0.0f; height -= 8.0f) {
+                obj->velocity.x = height;
+                HuPrcVSleep();
+            }
+            if (mode == 1) {
+                HuAudFXPlay(0x1E7);
+                HuAudFXPlay(0x1E8);
+            } else {
+                HuAudFXPlay(0x1E9);
+            }
+            func_800DCB04_name_81(0x5A, 1, &obj->coords, 1.0f, 0);
+        } else {
+            for (height = 24.0f; height >= 0.0f; height -= 8.0f) {
+                obj->velocity.x = height;
+                scaleY = height / 24.0f;
+                if (scaleY > 1.0f) {
+                    scaleY = 1.0f;
+                }
+                if (scaleY < 0.1f) {
+                    scaleY = 0.1f;
+                }
+                HuVecCopyXYZ(&target->scale, 1.0f, scaleY, 1.0f);
+                HuPrcVSleep();
+            }
+            if (mode == 1) {
+                HuAudFXPlay(0x1F3);
+            } else {
+                HuAudFXPlay(0x1E9);
+            }
+            HuVecCopyXYZ(&target->scale, 1.0f, 0.1f, 1.0f);
+            func_801064CC_duel02(targetPlayer, 2);
+            if (mode == 1) {
+                func_800EB804_name_81(effect);
+                func_801067D8_duel02(effect, &target->coords);
+                func_800DCE40_name_81(0x47, &target->coords, NULL, 1.0f);
+            } else {
+                smoke = func_800D8010_name_81(0x5A, NULL);
+                func_800D974C_name_81(smoke);
+                HuVecCopy3F(&smoke->coords, &obj->coords);
+                model = func_800DD1E0_name_81(0xB0023, D_80117070_duel02);
+                func_800DD2DC_name_81(model, &obj->coords);
+            }
+        }
+        if (mode == 1) {
+            func_80106460_duel02(10, 1);
+            HuPrcSleep(40);
+        } else {
+            HuPrcChildLink(process, func_80106460_duel02(5, 2));
+            HuPrcChildWatch();
+            for (i = 0; i < 3; i++) {
+                for (height = 0.0f; height < 9.0f; height += 3.0f) {
+                    obj->velocity.x = height;
+                    HuPrcVSleep();
+                }
+                for (; height >= 0.0f; height -= 4.5f) {
+                    obj->velocity.x = height;
+                    HuPrcVSleep();
+                }
+                if (i == 2) {
+                    HuAudFXPlay(0x1F3);
+                    func_800EB804_name_81(effect);
+                    func_801067D8_duel02(effect, &obj->coords);
+                    func_800DCE40_name_81(0x47, &obj->coords, NULL, 1.0f);
+                } else {
+                    HuAudFXPlay(0x1E9);
+                    smoke = func_800D8010_name_81(0x5A, NULL);
+                    func_800D974C_name_81(smoke);
+                    HuVecCopy3F(&smoke->coords, &obj->coords);
+                }
+                HuPrcChildLink(process, func_80106460_duel02(5, 2));
+                HuPrcChildWatch();
+            }
+            angle = func_800D76D0_name_81(&obj->rot);
+            for (i = 0; i < 30; i++) {
+                obj->rot.x = sindf(angle + sindf(i * 60) * (30 - i));
+                obj->rot.z = cosdf(angle + sindf(i * 60) * (30 - i));
+                HuPrcVSleep();
+            }
+            obj->rot.x = sindf(angle);
+            obj->rot.z = cosdf(angle);
+            HuPrcSleep(10);
+        }
+    }
+    for (height = 0.0f; height <= 24.0f; height += 2.0f) {
+        obj->velocity.x = height;
+        HuPrcVSleep();
+    }
+    HuPrcSleep(5);
+    MTX_ROTX(Hu3DData[obj->omObj1->model[0]].mtx, 20.0f);
+    HuVecSubtract(&delta, &origPos, &obj->coords);
+    HuPrcChildLink(process, func_800EBF2C_name_81(&obj->coords, &origPos, &obj->coords, 20));
+    for (i = 20; i > 0; i--) {
+        MTX_ROTX(Hu3DData[obj->omObj1->model[0]].mtx, i);
+        HuPrcVSleep();
+    }
+    MTX_ROTX(Hu3DData[obj->omObj1->model[0]].mtx, 0.0f);
+    HuPrcSleep(5);
+    for (height = 24.0f; height >= 0.0f; height -= 6.0f) {
+        obj->velocity.x = height;
+        HuPrcVSleep();
+    }
+    HuAudFXPlay(0x1E7);
+    HuAudFXPlay(0x1E8);
+    func_800DCB04_name_81(0x5A, 1, &obj->coords, 1.0f, 0);
+    func_800ED214_name_81(playerIndex);
+    if (target != NULL && !(flags & 8)) {
+        func_801064CC_duel02(targetPlayer, 3);
+        angle = 1.0f;
+        for (i = 0; i < 1080; i += 54) {
+            HuVecCopyXYZ(&target->scale, 1.0f, sindf(i) * angle + 1.0f, 1.0f);
+            angle -= 0.025f;
+            HuPrcVSleep();
+        }
+        HuVecCopyXYZ(&target->scale, 1.0f, 1.0f, 1.0f);
+        func_800FAC1C_name_81(&D_80105540_name_81);
+        func_800FAB68_name_81(target, -1, 1, D_80105718_name_81 & 8, D_8010571C_name_81);
+    }
+    func_800D8F3C_name_81(effect);
+    if (model != -1) {
+        while (!func_800DD3B4_name_81(model)) {
+            HuPrcVSleep();
+        }
+        func_800DD2BC_name_81(model);
+    }
+}
 
 void func_80109408_duel02(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player;

@@ -34,6 +34,18 @@ typedef struct Duel01PartnerAttackWork {
     /* 0x0C */ s32 waitTime;
 } Duel01PartnerAttackWork; // sizeof 0x10
 
+typedef struct Duel01PartnerRouletteWork {
+    /* 0x00 */ s32 player;
+    /* 0x04 */ char unk_04[0xC];
+} Duel01PartnerRouletteWork; // sizeof 0x10
+
+// Board space indices used when a player picks up a partner.
+typedef struct Duel01PartnerSpaces {
+    /* 0x00 */ s32 returnSpace;
+    /* 0x04 */ s32 startSpace;
+    /* 0x08 */ s32 partnerSpace;
+} Duel01PartnerSpaces; // sizeof 0xC
+
 typedef struct Duel01SwayWork {
     /* 0x00 */ s32 angle;
     /* 0x04 */ char unk_04[0xC];
@@ -131,3 +143,10 @@ void func_800DCE40_name_81(s32, Vec *, s32, f32);
 Process *func_800FAB68_name_81(Object *, s32, s32, s32, s32);
 extern s32 D_80118710_duel01[];
 extern char D_80118E60_duel01[];
+extern Duel01PartnerSpaces D_8011887C_duel01[];
+extern s32 D_80118894_duel01;
+extern Object *D_80118898_duel01;
+void func_8010F12C_duel01(void);
+void func_800FC8DC_name_81(Object *);
+void func_800EB7BC_name_81(Vec *);
+Process *func_800EBC60_name_81(Vec *, Vec *, Vec *, s32);

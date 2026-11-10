@@ -12,6 +12,17 @@
         (mtx)[2][2] = (mtx)[3][3] = 1.0f;                                                   \
     }
 
+// Inlined Y rotation matrix build.
+#define MTX_ROTY(mtx, angle)                                                                \
+    {                                                                                       \
+        sincosdf(angle, &(mtx)[2][0], &(mtx)[2][2]);                                        \
+        (mtx)[0][2] = -(mtx)[2][0];                                                         \
+        (mtx)[0][0] = (mtx)[2][2];                                                          \
+        (mtx)[0][1] = (mtx)[0][3] = (mtx)[1][0] = (mtx)[1][2] = (mtx)[1][3] = (mtx)[2][1] = \
+            (mtx)[2][3] = (mtx)[3][0] = (mtx)[3][1] = (mtx)[3][2] = 0.0f;                   \
+        (mtx)[1][1] = (mtx)[3][3] = 1.0f;                                                   \
+    }
+
 typedef struct Duel02ModelWaitWork {
     /* 0x00 */ s32 index;
     /* 0x04 */ char unk_04[0xC];
@@ -482,7 +493,133 @@ void func_801067D8_duel02(Object *arg0, Vec *arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010682C_duel02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010718C_duel02);
+void func_8010718C_duel02(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
+    GW_PLAYER *player;
+    Process *process;
+    Object *effect;
+    Object *partner;
+    Object *extra;
+    Process *extraProcess;
+    s32 i;
+    f32 jumpSpeed;
+    f32 jumpAccel;
+    Vec targetPos;
+    Vec origPos;
+    s32 effectModels[2];
+    Vec midPos;
+    Vec *mid;
+
+    player = MBDGetPlayerStruct(targetPlayer);
+    process = HuPrcCurrentGet();
+    extra = NULL;
+    effectModels[0] = 0x48;
+    effectModels[1] = 0x49;
+    extraProcess = NULL;
+    effect = func_80106744_duel02(effectModels[mode - 1]);
+    partner = func_800D8010_name_81(D_801165A0_duel02[mode - 1], NULL);
+    Hu3DModelLayerSet(partner->omObj1->model[0], 0);
+    Hu3DModelRemakeStatic(partner->omObj1->model[0]);
+    func_800D8944_name_81(partner);
+    func_800D8F0C_name_81(partner);
+    if (mode == 2) {
+        extra = func_800D8010_name_81(0x56, NULL);
+        func_800D8944_name_81(extra);
+        func_800D8F0C_name_81(extra);
+    }
+    func_800FAD04_name_81(1);
+    func_800D90D0_name_81(obj, 0, 2);
+    func_80106160_duel02(obj, target, player, &targetPos, &origPos, 7.0f);
+    func_80106244_duel02();
+    func_80106264_duel02(target, player, flags, 3.0f);
+    HuPrcChildLink(process, func_800EC1E4_name_81(&obj->coords, &targetPos, &obj->coords, 3.0f));
+    func_800D8E88_name_81(partner);
+    Hu3DMotionTimeSet(partner->omObj1->model[0], 0.0f);
+    HuVecCopy3F(&partner->coords, &obj->coords);
+    func_800EB708_name_81(&partner->coords, &targetPos, &partner->rot);
+    HuPrcChildLink(process, func_800EC1E4_name_81(&partner->coords, &targetPos, &partner->coords, 3.0f));
+    HuPrcChildWatch();
+    func_800D8F0C_name_81(partner);
+    if (mode == 2) {
+        HuVecCopy3F(&extra->coords, &obj->coords);
+        func_800D8E88_name_81(extra);
+        extraProcess = func_800D9668_name_81(extra, 0, 30.0f, -1);
+        jumpSpeed = 3.0f;
+        jumpAccel = -0.375f;
+        func_800EF7C8_name_81(extra, jumpSpeed, jumpAccel);
+        func_800D8E88_name_81(partner);
+        func_800EF7C8_name_81(partner, jumpSpeed, jumpAccel);
+    }
+    func_800FAE18_name_81(obj, 0, 2);
+    func_800EF7C8_name_81(obj, mode + 1.0f, -(mode + 1.0f) / 8.0f);
+    if (mode == 2) {
+        for (i = 0; i < 8; i++) {
+            MTX_ROTY(Hu3DData[obj->omObj1->model[0]].mtx, i * 45.0f);
+            HuPrcVSleep();
+        }
+        MTX_ROTY(Hu3DData[obj->omObj1->model[0]].mtx, 0.0f);
+    } else {
+        HuPrcSleep(8);
+    }
+    obj->velocity.z = 0.0f;
+    func_800FAE18_name_81(obj, 1, 0);
+    if (mode == 2) {
+        if (extraProcess != NULL) {
+            omDelPrcObj(extraProcess);
+        }
+        func_800D8F0C_name_81(extra);
+        func_800D8F0C_name_81(partner);
+    }
+    if (flags & 8) {
+        func_801060D4_duel02(player, target, 0, 20);
+    } else {
+        HuPrcSleep(3);
+        func_801067D8_duel02(effect, &obj->coords);
+        HuAudFXPlay(0x25B);
+        mid = &midPos;
+        if (flags & 1) {
+            HuVecAdd(mid, &target->coords, &obj->coords);
+        } else {
+            HuVecAdd(mid, &player->player_obj->coords, &obj->coords);
+        }
+        HuVecMulScalar(mid, 0.5f, mid);
+        midPos.y += obj->velocity.x;
+        func_801067D8_duel02(effect, mid);
+        if (mode == 2) {
+            func_800DCE40_name_81(0x4B, &midPos, 0, 2.0f);
+        }
+        func_800FAC1C_name_81(&D_80105540_name_81);
+        if (flags & 1) {
+            func_800FAB68_name_81(target, D_80105550_name_81, 1, D_80105718_name_81 & 8, D_8010571C_name_81);
+            HuAudFXPlay((D_80105718_name_81 & 8) ? 0x1CE : 0x1CD);
+        }
+        if (flags & 2) {
+            func_800FAB68_name_81(player->player_obj, D_80105558_name_81, 3, D_80105718_name_81 & 1, -1);
+            if (!(flags & 1)) {
+                HuAudFXPlay((D_80105718_name_81 & 1) ? 0x1CE : 0x1CD);
+            }
+        }
+    }
+    func_800EFABC_name_81(obj);
+    obj->velocity.z = -(mode + 1.0f) / 8.0f;
+    func_800EF800_name_81(obj);
+    func_800EB708_name_81(&obj->coords, &origPos, &obj->rot);
+    func_800D90D0_name_81(obj, 0, 2);
+    HuPrcChildLink(process, func_800EC1E4_name_81(&obj->coords, &origPos, &obj->coords, 3.0f));
+    func_800D8E88_name_81(partner);
+    Hu3DMotionTimeSet(partner->omObj1->model[0], 0.0f);
+    HuVecCopy3F(&partner->coords, &obj->coords);
+    func_800EB708_name_81(&partner->coords, &origPos, &partner->rot);
+    HuPrcChildLink(process, func_800EC1E4_name_81(&partner->coords, &origPos, &partner->coords, 3.0f));
+    HuPrcChildWatch();
+    func_800D90D0_name_81(obj, -1, 2);
+    func_800ED214_name_81(playerIndex);
+    func_800D8F3C_name_81(effect);
+    func_800D8F3C_name_81(partner);
+    if (mode == 2) {
+        func_800D8F3C_name_81(extra);
+    }
+    func_800FADB4_name_81();
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/duel02/3EC590", D_80117070_duel02);
 

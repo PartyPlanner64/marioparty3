@@ -343,3 +343,7 @@ void func_800F821C_name_81(s32, s32);
 void func_800F7BB4_name_81(s32, s32);
 void func_800F7D94_name_81(s32, s32);
 void func_800FBDD4_name_81(void);
+void func_800EADBC_name_81(s32, char *, s32, s32, s32, s32);
+void func_800EAF70_name_81(s32);
+void func_800EAF94_name_81(void);
+s32 func_800F8980_name_81(s32 playerIndex);

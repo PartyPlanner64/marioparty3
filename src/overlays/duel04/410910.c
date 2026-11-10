@@ -76,6 +76,10 @@ typedef struct Duel04SwayWork {
 
 void *memcpy(void *, const void *, unsigned int);
 extern Vec D_8011B06C_duel04[];
+extern u8 D_8011B090_duel04[];
+extern u8 D_8011B178_duel04[];
+extern u8 D_8011B260_duel04[];
+extern u8 D_8011B348_duel04[];
 extern s16 D_8011B064_duel04[];
 extern u8 D_8011B060_duel04[];
 extern s16 D_8011AFDC_duel04[][2];
@@ -3270,7 +3274,292 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011B260_duel04);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011B348_duel04);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80110CF8_duel04);
+void func_80110CF8_duel04(void) {
+    u8 mes[0x200];
+    u8 playerBits[4];
+    s16 comKeys[4];
+    Vec rot;
+    Vec origRot;
+    Vec camPos;
+    char coinStr[8];
+    Vec effectPos;
+    Vec pos;
+    Vec offsets[3];
+    s32 index;
+    GW_PLAYER *player;
+    s16 win;
+    s32 frontChoice;
+    s32 backChoice;
+    Object *partner;
+    Object *coin;
+    Object *ref;
+    s32 coins;
+    s32 curCoins;
+    s32 side;
+    s32 i;
+    s32 j;
+    s32 k;
+
+    index = GwSystem.current_player_index;
+    player = MBDGetPlayerStruct(index);
+    memcpy(playerBits, D_8011B060_duel04, sizeof(playerBits));
+    memcpy(comKeys, D_8011B064_duel04, sizeof(comKeys));
+    if (index == 0 && GwSystem.current_turn == 1 && player->stats.partners.frontID == -1 &&
+        player->stats.partners.backID == -1) {
+        win = HuWinExCreate(-1, 80, 80, 160, 105, 0);
+        func_8005B63C_main(win, 64, 64);
+        HuWinExAnimIn(win);
+        func_8005FBA4_main(mes, (s32)D_8011B090_duel04);
+        HuWinMesSet(win, (u32)mes, -1, -1);
+        while (HuWinStatGet(win) != 0) {
+            HuPrcVSleep();
+        }
+        if (!func_800F37B8_name_81(index)) {
+            HuWinActivePlayerSet(win, playerBits[GwPlayer[index].pad]);
+            comKeys[GwPlayer[index].pad] = -1;
+            HuWinComKeySet(comKeys[0], comKeys[1], comKeys[2], comKeys[3]);
+        } else {
+            if (GwPlayer[index].chr == 5) {
+                comKeys[GwPlayer[index].pad] = 0x400;
+                HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], func_800EED50_name_81());
+            }
+            comKeys[GwPlayer[index].pad] = -0x8000;
+            HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], func_800EED50_name_81());
+            func_8005B63C_main(win, 2, 2);
+        }
+        frontChoice = (s16)HuWinChoiceGet(win, 0, 1);
+        HuWinExAnimOut(win, 0);
+        HuWinKill(win);
+
+        win = HuWinExCreate(-1, 80, 80, 160, 105, 0);
+        func_8005B63C_main(win, 64, 64);
+        HuWinExAnimIn(win);
+        func_8005FBA4_main(mes, (s32)D_8011B178_duel04);
+        HuWinMesSet(win, (u32)mes, -1, -1);
+        while (HuWinStatGet(win) != 0) {
+            HuPrcVSleep();
+        }
+        if (!func_800F37B8_name_81(index)) {
+            HuWinActivePlayerSet(win, playerBits[GwPlayer[index].pad]);
+            comKeys[GwPlayer[index].pad] = -1;
+            HuWinComKeySet(comKeys[0], comKeys[1], comKeys[2], comKeys[3]);
+        } else {
+            if (GwPlayer[index].chr == 5) {
+                comKeys[GwPlayer[index].pad] = 0x400;
+                HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], func_800EED50_name_81());
+            }
+            comKeys[GwPlayer[index].pad] = -0x8000;
+            HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], func_800EED50_name_81());
+            func_8005B63C_main(win, 2, 2);
+        }
+        backChoice = (s16)HuWinChoiceGet(win, 0, 1);
+        HuWinExAnimOut(win, 0);
+        HuWinKill(win);
+        func_800F8418_name_81(index, frontChoice, PARTNER_FRONT);
+        func_800F8418_name_81(index, backChoice, PARTNER_BACK);
+        func_800F8108_name_81(index);
+        func_800ED214_name_81(index);
+        func_800F5BB4_name_81(index);
+        func_800F5EB0_name_81(index);
+        if (D_800D5546_main[0] & 0x1000) {
+            Duel_PowerUpPartners(index);
+        }
+
+        win = HuWinExCreate(-1, 80, 80, 160, 105, 0);
+        func_8005B63C_main(win, 64, 64);
+        HuWinExAnimIn(win);
+        func_8005FBA4_main(mes, (s32)D_8011B260_duel04);
+        HuWinMesSet(win, (u32)mes, -1, -1);
+        while (HuWinStatGet(win) != 0) {
+            HuPrcVSleep();
+        }
+        if (!func_800F37B8_name_81(index)) {
+            HuWinActivePlayerSet(win, playerBits[GwPlayer[index].pad]);
+            comKeys[GwPlayer[index].pad] = -1;
+            HuWinComKeySet(comKeys[0], comKeys[1], comKeys[2], comKeys[3]);
+        } else {
+            if (GwPlayer[index].chr == 5) {
+                comKeys[GwPlayer[index].pad] = 0x400;
+                HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], func_800EED50_name_81());
+            }
+            comKeys[GwPlayer[index].pad] = -0x8000;
+            HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], func_800EED50_name_81());
+            func_8005B63C_main(win, 2, 2);
+        }
+        frontChoice = (s16)HuWinChoiceGet(win, 0, 0);
+        HuWinExAnimOut(win, 0);
+        HuWinKill(win);
+
+        win = HuWinExCreate(-1, 80, 80, 160, 105, 0);
+        func_8005B63C_main(win, 64, 64);
+        HuWinExAnimIn(win);
+        func_8005FBA4_main(mes, (s32)D_8011B348_duel04);
+        HuWinMesSet(win, (u32)mes, -1, -1);
+        while (HuWinStatGet(win) != 0) {
+            HuPrcVSleep();
+        }
+        if (!func_800F37B8_name_81(index)) {
+            HuWinActivePlayerSet(win, playerBits[GwPlayer[index].pad]);
+            comKeys[GwPlayer[index].pad] = -1;
+            HuWinComKeySet(comKeys[0], comKeys[1], comKeys[2], comKeys[3]);
+        } else {
+            if (GwPlayer[index].chr == 5) {
+                comKeys[GwPlayer[index].pad] = 0x400;
+                HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], func_800EED50_name_81());
+            }
+            comKeys[GwPlayer[index].pad] = -0x8000;
+            HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], func_800EED50_name_81());
+            func_8005B63C_main(win, 2, 2);
+        }
+        backChoice = (s16)HuWinChoiceGet(win, 0, 0);
+        HuWinExAnimOut(win, 0);
+        HuWinKill(win);
+        func_800F8418_name_81(1, frontChoice, PARTNER_FRONT);
+        func_800F8418_name_81(1, backChoice, PARTNER_BACK);
+        func_800F8108_name_81(1);
+        func_800ED214_name_81(1);
+        func_800F5BB4_name_81(1);
+        func_800F5EB0_name_81(1);
+        if (D_800D5546_main[0] & 0x1000) {
+            Duel_PowerUpPartners(1);
+        }
+    }
+    if ((player->stats.partners.frontID == 6 || player->stats.partners.backID == 6) &&
+        func_800EFE20_name_81(100.0f) < 34) {
+        coins = func_800EFE20_name_81(3.0f) + 2;
+        func_800FAD04_name_81(6);
+        if (player->stats.partners.backID == 6) {
+            partner = MBDGetPlayerPartnerRef(index, PARTNER_BACK);
+        } else {
+            partner = MBDGetPlayerPartnerRef(index, PARTNER_FRONT);
+        }
+        HuPrcChildLink(HuPrcCurrentGet(), MBDCameraZoomMotStart(2.0f));
+        HuPrcChildWatch();
+        HuVecCopy3F(&camPos, &player->player_obj->coords);
+        func_800FC888_name_81(4);
+        func_800FC8C4_name_81(&camPos);
+        HuPrcChildLink(HuPrcCurrentGet(), func_800EC1E4_name_81(&camPos, &partner->coords, &camPos, 2.0f));
+        HuPrcChildWatch();
+        func_800EB708_name_81(&partner->coords, &player->player_obj->coords, &rot);
+        HuVecCopy3F(&origRot, &partner->rot);
+        func_800EBC60_name_81(&partner->rot, &rot, &partner->rot, 8);
+        HuPrcSleep(8);
+        for (i = 0; i < 31; i += 5) {
+            func_8008A120_main(Hu3DData[partner->omObj1->model[0]].mtx, -i);
+            partner->velocity.x += 1.0f;
+            HuPrcVSleep();
+        }
+        func_800FAE98_name_81(partner, 2, 0, 5, 2);
+        coin = NULL;
+        for (i = 0; i < coins; i++) {
+            if (coin != NULL) {
+                for (j = 6; j < 12; j++) {
+                    f32 scale = j / 6.0f + 0.5f;
+
+                    if (scale > 1.0f) {
+                        scale = 1.0f;
+                    }
+                    HuVecCopyXYZ(&coin->scale, scale, scale, scale);
+                    func_8008A2A0_main(Hu3DData[coin->omObj1->model[0]].mtx, j * 40);
+                    HuPrcVSleep();
+                }
+            } else {
+                HuPrcSleep(3);
+                HuVecCopy3F(&effectPos, &partner->coords);
+                effectPos.y += 12.0f;
+                func_800DCE40_name_81(0x4E, &effectPos, NULL, 1.0f);
+                HuPrcSleep(1);
+            }
+            if (coin != NULL) {
+                func_800F7378_name_81(index, 1);
+                func_800D8F3C_name_81(coin);
+                HuVecCopy3F(&effectPos, &partner->coords);
+                effectPos.y += 12.0f;
+                func_800DCE40_name_81(0x4E, &effectPos, NULL, 1.0f);
+            }
+            coin = func_800D8010_name_81(0x1C, NULL);
+            coin->velocity.x = 13.0f;
+            HuVecCopy3F(&coin->coords, &partner->coords);
+            HuVecCopyXYZ(&coin->scale, 0.0f, 0.0f, 0.0f);
+            func_800EF7C8_name_81(coin, 2.0f, -0.2f);
+            func_800EBF2C_name_81(&coin->coords, &player->player_obj->coords, &coin->coords, 10);
+            HuAudFXPlay(0x200);
+            for (j = 0; j < 6; j++) {
+                f32 scale = j / 6.0f;
+
+                if (scale > 1.0f) {
+                    scale = 1.0f;
+                }
+                HuVecCopyXYZ(&coin->scale, scale, scale, scale);
+                func_8008A2A0_main(Hu3DData[coin->omObj1->model[0]].mtx, j * 40);
+                HuPrcVSleep();
+            }
+        }
+        for (j = 6; j < 12; j++) {
+            f32 scale = j / 6.0f;
+
+            if (scale > 1.0f) {
+                scale = 1.0f;
+            }
+            HuVecCopyXYZ(&coin->scale, scale, scale, scale);
+            func_8008A2A0_main(Hu3DData[coin->omObj1->model[0]].mtx, j * 40);
+            HuPrcVSleep();
+        }
+        func_800F7378_name_81(index, 1);
+        func_800D8F3C_name_81(coin);
+        func_800D90D0_name_81(partner, -1, 2);
+        for (i = 30; i >= 0; i -= 10) {
+            func_8008A120_main(Hu3DData[partner->omObj1->model[0]].mtx, -i);
+            partner->velocity.x -= 2.0f;
+            HuPrcVSleep();
+        }
+        partner->velocity.x = 0.0f;
+        func_800EBC60_name_81(&partner->rot, &origRot, &partner->rot, 4);
+        HuPrcSleep(4);
+        func_800FADB4_name_81();
+        sprintf(coinStr, "%d", coins);
+        func_800EADBC_name_81(0x4F0C, coinStr, 0, 0, 0, 0);
+        func_800EAF70_name_81(index);
+        func_800EAF94_name_81();
+        HuPrcChildLink(HuPrcCurrentGet(), func_800EC1E4_name_81(&camPos, &player->player_obj->coords, &camPos, 2.0f));
+        HuPrcChildWatch();
+        func_800FC888_name_81(1);
+    }
+    if (GwSystem.current_turn != 1) {
+        coins = func_800F8980_name_81(index);
+        curCoins = GwPlayer[index].coin;
+        if (curCoins < coins) {
+            func_800E14D8_name_81(index, -curCoins);
+            func_800F7378_name_81(index, -curCoins);
+            HuPrcSleep(30);
+            for (side = 0; side < 2; side++) {
+                ref = MBDGetPlayerPartnerRef(index, side);
+                if (ref != NULL) {
+                    HuVecCopy3F(&pos, &ref->coords);
+                    pos.y += 2.0f;
+                    memcpy(offsets, D_8011B06C_duel04, sizeof(offsets));
+                    for (k = 0; k < 3; k++) {
+                        HuPrcChildLink(HuPrcCurrentGet(), func_800DCE40_name_81(0x4E, &pos, &offsets[k], 3.0f));
+                    }
+                    func_800D8F0C_name_81(ref);
+                }
+            }
+            HuPrcVSleep();
+            HuAudFXPlay(0x1CB);
+            HuPrcChildWatch();
+            func_800F85A4_name_81(index, PARTNER_FRONT);
+            func_800F85A4_name_81(index, PARTNER_BACK);
+            func_800F82EC_name_81(index);
+            func_800F57B0_name_81(index);
+            func_800F5E2C_name_81(index);
+            func_800EAFC4_name_81(0x1E01);
+        } else if (coins != 0) {
+            func_800E14D8_name_81(index, -coins);
+            func_800F7378_name_81(index, -coins);
+            HuPrcSleep(30);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80111EB8_duel04);
 

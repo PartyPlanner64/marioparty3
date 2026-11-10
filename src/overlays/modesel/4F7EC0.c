@@ -1632,20 +1632,16 @@ void func_80109B74_modesel(void) {
     }
 }
 
-#ifdef NON_MATCHING
-// The float multiply operands for the sindf argument are emitted in the opposite order.
 void func_80109BC0_modesel(omObjData *obj) {
     s32 index = obj->work[0];
     s32 timer = obj->work[1];
-    f32 wave = sindf(timer * (360.0f / 255.0f));
+    f32 angle = timer * (360.0f / 255.0f);
+    f32 wave = sindf(angle);
 
     func_8010648C_modesel(index);
     func_8010B75C_modesel(index, 0.0f, wave * 8.0f + 8.0f + 8.0f, 0.0f, wave * 16.0f + 20.0f);
     obj->work[1] = timer + 4;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80109BC0_modesel);
-#endif
 
 void func_80109C8C_modesel(s32 arg0) {
     s32 i = arg0 - 7;

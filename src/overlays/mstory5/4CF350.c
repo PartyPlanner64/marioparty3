@@ -639,7 +639,27 @@ void func_8010F240_mstory5(s32 index) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010F2BC_mstory5);
 
+// Code matches, but the target is followed by alignment padding, which suggests
+// a file boundary at func_8010F4D0_mstory5.
+#ifdef NON_MATCHING
+void func_8010F41C_mstory5(void) {
+    f32 step = 0.35f;
+    f32 vol = 0.0f;
+    s32 i;
+
+    if (D_801151F0_mstory5[3].unk_0C == 1) {
+        for (i = 0; i < 180; i++) {
+            HuAudFXVolSet(D_801151F0_mstory5[3].stopSeNo, (s32)vol + 64);
+            vol += step;
+            HuPrcVSleep();
+        }
+        HuAudFXVolSet(D_801151F0_mstory5[3].stopSeNo, 127);
+    }
+    D_801152C8_mstory5[1].func = func_801085D8_mstory5;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010F41C_mstory5);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010F4D0_mstory5);
 

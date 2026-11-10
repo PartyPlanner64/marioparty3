@@ -89,6 +89,7 @@ segments:
       - [0x12E20, c, camera]
       - [0x13F90, c, hmfparticle]
       - [0x14EA0, c, hmfspr]
+      - [0x18810, c, hmfmath]
       - [0x19C30, c, hmflight]
       - [0x1A580, c, mallocblock]
       - [0x1AC70, c, hmfman]

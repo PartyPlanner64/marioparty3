@@ -19,6 +19,7 @@
 #include "game/hmfcoll.h"
 #include "game/esprite.h"
 #include "game/hmfspr.h"
+#include "game/hmfmath.h"
 #include "game/camsetup.h"
 
 #define PLAYERS_TOTAL 2

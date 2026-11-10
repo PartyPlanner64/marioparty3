@@ -2,6 +2,7 @@
 #include "game/window.h"
 #include "game/vibrator.h"
 #include "overlays/msetup_internal.h"
+#include "game/hmfmath.h"
 
 typedef struct MsetupDifficultySprites {
     s16 sprites[8];

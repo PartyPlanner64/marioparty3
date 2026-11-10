@@ -3,6 +3,7 @@
 #include "game/mallocblock.h"
 #include "overlays/minigame.h"
 #include "gcc/memory.h"
+#include "game/hmfmath.h"
 
 // Per-object work block, reached via ObjData->data
 typedef struct ChipShotChallengeWork {

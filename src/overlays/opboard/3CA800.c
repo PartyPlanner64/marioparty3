@@ -12,6 +12,7 @@
 #include "../ovl_80_shared_board/105D50.h"
 #include "../ovl_80_shared_board/101840.h"
 #include "../ovl_80_shared_board/106640.h"
+#include "game/hmfmath.h"
 
 typedef struct OpBoardPath {
     s16 count;

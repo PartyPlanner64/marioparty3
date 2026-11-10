@@ -8,6 +8,7 @@
 #include "game/hmfshape.h"
 #include "game/hmfcoll.h"
 #include "game/hmfspr.h"
+#include "game/hmfmath.h"
 #include "game/hmfanim.h"
 #include "game/graphics.h"
 #include "game/profiler.h"

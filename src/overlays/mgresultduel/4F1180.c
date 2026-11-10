@@ -3,6 +3,7 @@
 #include "game/audio.h"
 #include "game/data.h"
 #include "game/hmfspr.h"
+#include "game/hmfmath.h"
 #include "math.h"
 #include "../ovl_81_name/ovl_81.h"
 

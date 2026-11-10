@@ -3,6 +3,7 @@
 #include "gcc/memory.h"
 
 #include "overlays/baby_bowser_broadside.h"
+#include "game/hmfmath.h"
 
 typedef struct BabyBowserBroadsideColor {
     u8 rgba[4];

@@ -5,6 +5,7 @@
 #include "game/mallocblock.h"
 #include "macros.h"
 #include "game/hmfspr.h"
+#include "game/hmfmath.h"
 
 #define FUNC_GRP_MAX 5
 #define SPRITES_MAX 8

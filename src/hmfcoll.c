@@ -5,6 +5,7 @@
 #include "include_asm.h"
 #include "game/camera.h"
 #include "game/hmfspr.h"
+#include "game/hmfmath.h"
 #include "game/hmflight.h"
 #include "game/hmfdraw.h"
 #include "game/mallocblock.h"

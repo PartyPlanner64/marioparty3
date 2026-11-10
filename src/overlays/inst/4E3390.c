@@ -1,5 +1,6 @@
 #include "common.h"
 #include "inst.h"
+#include "game/hmfmath.h"
 
 extern u8 D_800CB8B1_main[];
 extern s8 D_8010D400_inst[4];

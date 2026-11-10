@@ -6,6 +6,7 @@
 #include "FA250.h"
 #include "EC3B0.h"
 #include "101840.h"
+#include "game/hmfmath.h"
 
 #define BG_TEXEL(entry, off) (*(u16 *)((u8 *)(entry)->pixels + (off)))
 #define BG_TEX_SIZE (64 * 48 * 2)

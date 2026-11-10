@@ -4,6 +4,7 @@
 #include "overlays/msetup.h"
 #include "game/mallocblock.h"
 #include "gcc/string.h"
+#include "game/hmfmath.h"
 
 typedef MsetupLinkedModel Array2D[2];
 

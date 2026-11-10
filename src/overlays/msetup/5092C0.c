@@ -2,6 +2,7 @@
 #include "overlays/msetup_internal.h"
 #include "game/mallocblock.h"
 #include "gcc/string.h"
+#include "game/hmfmath.h"
 
 typedef struct MsetupModelSpriteAnim {
     f32 scale[2];

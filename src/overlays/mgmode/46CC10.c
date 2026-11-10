@@ -1,5 +1,6 @@
 #include "common.h"
 #include "overlays/mgmode.h"
+#include "game/hmfmath.h"
 
 extern u8 D_80118EB1_mgmode;
 extern u8 D_80118EB2_mgmode;

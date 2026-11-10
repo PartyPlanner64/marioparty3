@@ -7,6 +7,7 @@
 #include "game/hmfcoll.h"
 #include "game/hmfdraw.h"
 #include "game/hmfspr.h"
+#include "game/hmfmath.h"
 #include "game/hmfanim.h"
 #include "game/audio.h"
 #include "game/mallocblock.h"

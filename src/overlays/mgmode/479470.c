@@ -2,6 +2,7 @@
 #include "overlays/mgmode.h"
 #include "gcc/memory.h"
 #include "gcc/string.h"
+#include "game/hmfmath.h"
 
 extern u8 D_8011B510_mgmode[256];
 extern GAMEMES D_8011B810_mgmode;

@@ -4,6 +4,7 @@
 #include "game/mallocblock.h"
 #include "game/pause.h"
 #include "gcc/memory.h"
+#include "game/hmfmath.h"
 
 #define PLAYER_WORK(obj) ((LockedOutPlayerWork *)((func_800E1BA8_minigame_ObjData *)(obj)->data)->unk158)
 

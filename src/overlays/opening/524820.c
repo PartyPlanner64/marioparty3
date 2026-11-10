@@ -2,6 +2,7 @@
 #include "../ovl_80_shared_board/FA250.h"
 #include "game/mallocblock.h"
 #include "overlays/opening.h"
+#include "game/hmfmath.h"
 
 typedef struct {
     s32 x;

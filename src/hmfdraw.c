@@ -4,6 +4,7 @@
 #include "game/hmfdraw.h"
 #include "macros.h"
 #include "game/hmfspr.h"
+#include "game/hmfmath.h"
 #include "variables.h"
 #include "game/hmflight.h"
 #include "game/hu3d.h"

@@ -2,6 +2,7 @@
 #include "game/mallocblock.h"
 #include "overlays/minigame.h"
 #include "gcc/memory.h"
+#include "game/hmfmath.h"
 
 typedef struct {
     f32 posX[6];

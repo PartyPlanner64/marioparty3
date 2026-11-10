@@ -4,6 +4,7 @@
 #include "game/sprite.h"
 #include "game/texload.h"
 #include "game/hmfspr.h"
+#include "game/hmfmath.h"
 #include "game/mallocblock.h"
 
 #define SPRPUT_CC_PRIM_DECALA 0, 0, 0, PRIMITIVE, 0, 0, 0, TEXEL0

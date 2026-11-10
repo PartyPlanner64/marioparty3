@@ -8,6 +8,7 @@
 #include "include_asm.h"
 #include "game/mallocblock.h"
 #include "game/hmfspr.h"
+#include "game/hmfmath.h"
 #include "game/hmfdraw.h"
 
 s32 rand8(void);

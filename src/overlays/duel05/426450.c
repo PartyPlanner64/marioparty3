@@ -56,6 +56,19 @@ void func_800FADB4_name_81(void);
 void func_800FAE18_name_81(Object *, s32, s32);
 extern s16 D_80115EA0_duel05[];
 extern char D_80115E78_duel05[];
+void func_800FAC94_name_81(PartnerFunc *, PartnerFunc *);
+void func_80106838_duel05(s32, s32, Object *, Object *, s32, s32);
+void func_80107198_duel05(s32, s32, Object *, Object *, s32, s32);
+void func_801079C8_duel05(s32, s32, Object *, Object *, s32, s32);
+void func_80107ECC_duel05(s32, s32, Object *, Object *, s32, s32);
+void func_801084B4_duel05(s32, s32, Object *, Object *, s32, s32);
+void func_80108560_duel05(s32, s32, Object *, Object *, s32, s32);
+void func_80109898_duel05(s32, s32, Object *, Object *, s32, s32);
+void func_8010A220_duel05(s32, s32, Object *, Object *, s32, s32);
+void func_8010B55C_duel05(s32, s32, Object *, Object *, s32, s32);
+void func_8010BCE4_duel05(s32, s32, Object *, Object *, s32, s32);
+void func_8010CE78_duel05(s32, s32, Object *, Object *, s32, s32);
+void func_8010D434_duel05(s32, s32, Object *, Object *, s32, s32);
 extern Object *D_801163C0_duel05;
 extern s16 D_80115EB8_duel05[];
 void func_8010E1C4_duel05(void);
@@ -382,11 +395,20 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/duel05/426450", D_80115DF8_duel05);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/duel05/426450", D_80115E04_duel05);
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/duel05/426450", D_80115E10_duel05);
+void func_8010D96C_duel05(void) {
+    PartnerFunc attackFuncs[12] = {
+        func_80106838_duel05, func_80107198_duel05, func_801079C8_duel05, func_80107ECC_duel05,
+        func_80109898_duel05, func_801084B4_duel05, func_8010CE78_duel05, func_8010D434_duel05,
+        func_8010BCE4_duel05, func_80108560_duel05, func_8010A220_duel05, func_8010B55C_duel05,
+    };
+    PartnerFunc otherFuncs[12] = {
+        NULL, NULL, NULL, NULL,
+        func_80109898_duel05, NULL, NULL, NULL,
+        NULL, NULL, NULL, NULL,
+    };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/duel05/426450", D_80115E40_duel05);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_8010D96C_duel05);
+    func_800FAC94_name_81(attackFuncs, otherFuncs);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_8010DA04_duel05);
 

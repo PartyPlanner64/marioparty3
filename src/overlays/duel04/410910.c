@@ -56,6 +56,19 @@ void func_800FADB4_name_81(void);
 void func_800FAE18_name_81(Object *, s32, s32);
 extern s16 D_8011AFAC_duel04[];
 extern char D_8011AF88_duel04[];
+void func_800FAC94_name_81(PartnerFunc *, PartnerFunc *);
+void func_8010682C_duel04(s32, s32, Object *, Object *, s32, s32);
+void func_8010718C_duel04(s32, s32, Object *, Object *, s32, s32);
+void func_801079BC_duel04(s32, s32, Object *, Object *, s32, s32);
+void func_80107EC0_duel04(s32, s32, Object *, Object *, s32, s32);
+void func_801084A8_duel04(s32, s32, Object *, Object *, s32, s32);
+void func_80108554_duel04(s32, s32, Object *, Object *, s32, s32);
+void func_8010988C_duel04(s32, s32, Object *, Object *, s32, s32);
+void func_8010A214_duel04(s32, s32, Object *, Object *, s32, s32);
+void func_8010B550_duel04(s32, s32, Object *, Object *, s32, s32);
+void func_8010BCD8_duel04(s32, s32, Object *, Object *, s32, s32);
+void func_8010CE6C_duel04(s32, s32, Object *, Object *, s32, s32);
+void func_8010D428_duel04(s32, s32, Object *, Object *, s32, s32);
 extern Object *D_8011B500_duel04;
 extern s16 D_8011AFC4_duel04[];
 void func_8010E1C4_duel04(void);
@@ -382,11 +395,20 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011AF08_duel04);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011AF14_duel04);
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011AF20_duel04);
+void func_8010D960_duel04(void) {
+    PartnerFunc attackFuncs[12] = {
+        func_8010682C_duel04, func_8010718C_duel04, func_801079BC_duel04, func_80107EC0_duel04,
+        func_8010988C_duel04, func_801084A8_duel04, func_8010CE6C_duel04, func_8010D428_duel04,
+        func_8010BCD8_duel04, func_80108554_duel04, func_8010A214_duel04, func_8010B550_duel04,
+    };
+    PartnerFunc otherFuncs[12] = {
+        NULL, NULL, NULL, NULL,
+        func_8010988C_duel04, NULL, NULL, NULL,
+        NULL, NULL, NULL, NULL,
+    };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011AF50_duel04);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010D960_duel04);
+    func_800FAC94_name_81(attackFuncs, otherFuncs);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010D9F8_duel04);
 
@@ -489,7 +511,23 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010E018_duel04);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/duel04/410910", D_8011AF88_duel04);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010E1C4_duel04);
+void func_8010E1C4_duel04(void) {
+    f32 amplitude;
+    s32 angle;
+    f32 offset;
+
+    func_8001C814_main(D_8011B508_duel04->omObj1->model[0], 5, 0);
+    Hu3DMotionSpeedSet(D_8011B508_duel04->omObj1->model[0], 1.5f);
+    func_800EFABC_name_81(D_8011B508_duel04);
+    for (angle = 0, amplitude = 0.5f; angle < 2160; angle += 60) {
+        offset = 1.0f - cosdf(angle) * amplitude;
+        amplitude -= 1.0 / 72;
+        HuVecCopyXYZ(&D_8011B508_duel04->scale, 1.0f, offset, 1.0f);
+        HuPrcVSleep();
+    }
+    HuVecCopyXYZ(&D_8011B508_duel04->scale, 1.0f, 1.0f, 1.0f);
+    omDelPrcObj(NULL);
+}
 
 void func_8010E2DC_duel04(void) {
     omAddPrcObj(func_8010E1C4_duel04, 0xA, 0, 0);
@@ -548,7 +586,23 @@ void func_8010E584_duel04(Vec *pos) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010E624_duel04);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010E7D0_duel04);
+void func_8010E7D0_duel04(void) {
+    f32 amplitude;
+    s32 angle;
+    f32 offset;
+
+    func_8001C814_main(D_8011B510_duel04->omObj1->model[0], 5, 0);
+    Hu3DMotionSpeedSet(D_8011B510_duel04->omObj1->model[0], 1.5f);
+    func_800EFABC_name_81(D_8011B510_duel04);
+    for (angle = 0, amplitude = 0.5f; angle < 2160; angle += 60) {
+        offset = 1.0f - cosdf(angle) * amplitude;
+        amplitude -= 1.0 / 72;
+        HuVecCopyXYZ(&D_8011B510_duel04->scale, 1.0f, offset, 1.0f);
+        HuPrcVSleep();
+    }
+    HuVecCopyXYZ(&D_8011B510_duel04->scale, 1.0f, 1.0f, 1.0f);
+    omDelPrcObj(NULL);
+}
 
 void func_8010E8E8_duel04(void) {
     omAddPrcObj(func_8010E7D0_duel04, 0xA, 0, 0);

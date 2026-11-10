@@ -404,7 +404,35 @@ void func_8010D97C_mstory3(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory3/4B9A30", func_8010DA00_mstory3);
 
+INCLUDE_RODATA("asm/nonmatchings/overlays/mstory3/4B9A30", D_80115758_mstory3);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/mstory3/4B9A30", D_80115764_mstory3);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/mstory3/4B9A30", D_80115770_mstory3);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/mstory3/4B9A30", D_8011577C_mstory3);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/mstory3/4B9A30", D_80115788_mstory3);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/mstory3/4B9A30", D_80115794_mstory3);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/mstory3/4B9A30", D_801157A0_mstory3);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/mstory3/4B9A30", D_801157AC_mstory3);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/mstory3/4B9A30", D_801157B8_mstory3);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/mstory3/4B9A30", D_801157C4_mstory3);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/mstory3/4B9A30", D_801157D0_mstory3);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory3/4B9A30", func_8010E170_mstory3);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/mstory3/4B9A30", D_801157E8_mstory3);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/mstory3/4B9A30", D_801157F4_mstory3);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/mstory3/4B9A30", D_80115800_mstory3);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory3/4B9A30", func_8010EBE4_mstory3);
 

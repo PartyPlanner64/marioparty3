@@ -302,3 +302,7 @@ void func_800EF3EC_name_81(s32);
 s32 func_800EF7D4_name_81(Object*);
 SpaceData* MBDMasuGet(s16 spaceIdx);
 void func_800F64FC_name_81(void);
+Process *func_800E4A74_name_81(s32 arg0);
+Process *func_800EE40C_name_81(s32 arg0);
+void Duel_PowerUpPartners(s32 playerIndex);
+void Duel_PowerDownPartners(s32 playerIndex);

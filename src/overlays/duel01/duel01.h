@@ -104,6 +104,7 @@ void func_8010DDEC_duel01(void);
 void func_8010E3F8_duel01(void);
 void func_8011390C_duel01(void);
 s32 func_80118328_duel01(void);
+void func_80118414_duel01(void);
 void func_800FAC94_name_81(PartnerFunc *, PartnerFunc *);
 void func_800EA46C_name_81(event_table_entry *);
 void func_800FC5A8_name_81(process_func);

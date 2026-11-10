@@ -76,6 +76,7 @@ typedef struct Duel03SwayWork {
 
 
 void *memcpy(void *, const void *, unsigned int);
+void func_801172D4_duel03(void);
 extern Vec D_80117CC0_duel03[];
 extern u8 D_80117CE4_duel03[];
 extern u8 D_80117DCC_duel03[];
@@ -3628,7 +3629,90 @@ void func_80110A70_duel03(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_80111C30_duel03);
+void func_80111C30_duel03(void) {
+    GW_SYSTEM *sys = &GwSystem;
+    GW_PLAYER *player;
+    SpaceData *space;
+    HmfMotionNode *node;
+    s32 i;
+    f32 offset;
+    Vec pos;
+    char text[8];
+
+    player = MBDGetPlayerStruct(CUR_PLAYER);
+    space = MBDMasuGet(0x1A);
+    func_800DB3E0_name_81(sys->current_player_index);
+    func_800F38DC_name_81(-1, -1, 2);
+    HuPrcChildLink(HuPrcCurrentGet(), MBDCameraZoomMotStart(2.0f));
+    HuVecCopy3F(&pos, &player->player_obj->coords);
+    func_800FC888_name_81(4);
+    func_800FC8C4_name_81(&pos);
+    HuPrcChildLink(HuPrcCurrentGet(), func_800EC1E4_name_81(&pos, &space->coords, &pos, 4.0f));
+    func_800D90D0_name_81(D_801180E0_duel03, 2, 0);
+    func_8002FD8C_main(D_801180E0_duel03->omObj1->model[0], Hu3DData[D_801180E0_duel03->omObj1->model[0]].motId, D_80117BD8_duel03, 0x4C, 0x46);
+    func_8002FD8C_main(D_801180E0_duel03->omObj1->model[0], D_801180E0_duel03->omObj1->motion[2], D_80117BD8_duel03, 0x4C, 0x46);
+    node = func_8001D33C_main(D_801180E0_duel03->omObj1->model[0], D_80117BD8_duel03);
+    node->baseRot.y = (GwSystem.bank_coins - 5) * 60;
+    i = 0;
+    while (!(func_800D9234_name_81(D_801180E0_duel03) & 1)) {
+        if (++i == 8) {
+            HuAudFXPlay(0x1C5);
+        }
+        HuPrcVSleep();
+    }
+    func_8002FD8C_main(D_801180E0_duel03->omObj1->model[0], Hu3DData[D_801180E0_duel03->omObj1->model[0]].motId, D_80117BD8_duel03, 0x4C, 0x46);
+    node = func_8001D33C_main(D_801180E0_duel03->omObj1->model[0], D_80117BD8_duel03);
+    node->baseRot.y = (GwSystem.bank_coins - 5) * 60;
+    HuAudFXPlay(0x1C7);
+    for (offset = 0.0f; offset >= -60.0f; offset -= 4.0f) {
+        node->baseRot.y = (GwSystem.bank_coins - 5) * 60 + offset;
+        HuPrcVSleep();
+    }
+    HuPrcChildWatch();
+    if (GwSystem.bank_coins != 0) {
+        GwSystem.bank_coins--;
+    }
+    func_8010DC08_duel03();
+    D_8011744C_duel03 = 12.0f;
+    if (GwSystem.bank_coins != 0) {
+        HuAudFXPlay(0x207);
+        func_800D918C_name_81(D_801180E0_duel03, 0, 0, 5, 2);
+        func_8002FD8C_main(D_801180E0_duel03->omObj1->model[0], D_801180E0_duel03->omObj1->motion[0], D_80117BD8_duel03, 0x4C, 0x46);
+        Hu3DMotionSpeedSet(D_801180E0_duel03->omObj1->model[0], (5.0f - GwSystem.bank_coins) / 4.0f + 1.0f);
+        HuPrcSleep(24);
+        func_800D90D0_name_81(D_801180E0_duel03, -1, 2);
+    } else {
+        HuAudFXPlay(0x1C6);
+        func_800D918C_name_81(D_801180E0_duel03, 1, 0, 5, 2);
+        func_8002FD8C_main(D_801180E0_duel03->omObj1->model[0], D_801180E0_duel03->omObj1->motion[1], D_80117BD8_duel03, 0x4C, 0x46);
+        Hu3DMotionSpeedSet(D_801180E0_duel03->omObj1->model[0], 1.0f);
+        func_8010DC08_duel03();
+        func_800F74E4_name_81(-1);
+        func_800EEC40_name_81(&pos);
+        if (sys->current_turn < 11) {
+            sprintf(text, "20");
+        } else if (sys->current_turn >= 20) {
+            sprintf(text, "40");
+        } else {
+            sprintf(text, "30");
+        }
+        HuAudFXPlay(0x2A7);
+        func_800EB49C_name_81(0x15, 0x1F30, (s32)text, 0, 0, 0, 0);
+        func_800EB58C_name_81();
+        func_800EB278_name_81();
+        func_800EB29C_name_81();
+        func_801172D4_duel03();
+        D_80100F44_name_81 = D_801180E0_duel03;
+        func_800FD620_name_81();
+        HuPrcSleep(-1);
+    }
+    D_8011744C_duel03 = 3.0f;
+    HuPrcChildLink(HuPrcCurrentGet(), func_800EC1E4_name_81(&pos, &player->player_obj->coords, &pos, 4.0f));
+    func_800DADA0_name_81(sys->current_player_index);
+    HuPrcChildLink(HuPrcCurrentGet(), MBDCameraZoomMotStart(1.7f));
+    HuPrcChildWatch();
+    func_800FC888_name_81(1);
+}
 
 void func_8011221C_duel03(void) {
     GW_PLAYER *player;

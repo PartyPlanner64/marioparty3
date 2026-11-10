@@ -89,7 +89,8 @@ extern Vec D_8011531C_mstory5;
 extern const Vec D_80114924_mstory5;
 extern const Vec D_80114C9C_mstory5;
 extern const Vec D_80114CA8_mstory5;
-extern UnkStoryObj D_801153A0_mstory5[9];
+extern UnkStoryObj D_801153A0_mstory5[8];
+extern UnkStoryObj D_80115460_mstory5;
 extern Vec D_8011549C_mstory5;
 extern UnkMstory5Particle D_801154F8_mstory5[16];
 extern const Vec D_80114D44_mstory5;
@@ -3266,7 +3267,7 @@ void func_80112104_mstory5(void) {
     s32 i;
 
     obj = omAddObj(20, 20, 1, -1, NULL);
-    D_801153A0_mstory5[8].obj = obj;
+    D_80115460_mstory5.obj = obj;
     for (i = 0; i < 16; i++) {
         if (i == 0) {
             data = DataRead(0x1D0036);
@@ -3293,9 +3294,9 @@ void func_80112104_mstory5(void) {
         D_801154F8_mstory5[i].vel.y = 0.0f;
         D_801154F8_mstory5[i].vel.z = 0.0f;
     }
-    D_801153A0_mstory5[8].func = func_80110200_mstory5;
+    D_80115460_mstory5.func = func_80110200_mstory5;
     while (TRUE) {
-        D_801153A0_mstory5[8].func(obj);
+        D_80115460_mstory5.func(obj);
         for (i = 0; i < 16; i++) {
             if (D_801154F8_mstory5[i].time < 0.0f) {
                 continue;
@@ -3394,10 +3395,6 @@ void func_8011275C_mstory5(void) {
 void func_80112994_mstory5(void) {
 }
 
-// Only difference: the first D_801153A0_mstory5[8].func store reuses the
-// D_801153A0_mstory5[3].unk_08 base register (0x74 offset) instead of
-// loading a fresh %hi/%lo address for D_801153A0_mstory5[8].func.
-#ifdef NON_MATCHING
 void func_8011299C_mstory5(omObjData *obj) {
     s16 model = obj->model[1];
 
@@ -3447,11 +3444,11 @@ void func_8011299C_mstory5(omObjData *obj) {
     Hu3DMotionShiftSet(model, Hu3DData[obj->motion[3]].motId, 0, 10, 0);
     HuPrcSleep(30);
     HuAudFXPlay(0x21B);
-    D_801153A0_mstory5[8].func = func_80112514_mstory5;
+    D_80115460_mstory5.func = func_80112514_mstory5;
     func_80107254_mstory5(model);
     Hu3DMotionShiftSet(model, Hu3DData[obj->motion[4]].motId, 0, 10, 0);
     HuPrcSleep(20);
-    D_801153A0_mstory5[8].func = func_80110200_mstory5;
+    D_80115460_mstory5.func = func_80110200_mstory5;
     func_80107254_mstory5(model);
     Hu3DMotionShiftSet(model, Hu3DData[obj->motion[0]].motId, 0, 10, 2);
     HuPrcSleep(40);
@@ -3464,9 +3461,6 @@ void func_8011299C_mstory5(omObjData *obj) {
     func_80105FDC_mstory5();
     D_801153A0_mstory5[3].func = func_80110200_mstory5;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8011299C_mstory5);
-#endif
 
 void func_80112F38_mstory5(void) {
     omObjData *obj;

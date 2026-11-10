@@ -42,12 +42,12 @@ void func_80106BA0_mgresultbattle(void) {
     D_80108F74_mgresultbattle = obj;
 
     data = DataRead(0x210026);
-    sprite1 = HmfSprModelCreate(data, 0x2BD, 8);
+    sprite1 = Hu3DSprModelCreate(data, 0x2BD, 8);
     DataClose(data);
     func_8001C2FC_main(D_800CBB60_main[sprite1].modelId, 0x70000000, 0x70000000);
 
     data = DataRead(0xC);
-    sprite2 = HmfSprModelCreate(data, 0x2BD, 8);
+    sprite2 = Hu3DSprModelCreate(data, 0x2BD, 8);
     DataClose(data);
     func_8001C2FC_main(D_800CBB60_main[sprite2].modelId, 0x70000000, 0x70000000);
 
@@ -241,7 +241,7 @@ void func_80107610_mgresultbattle(omObjData *obj) {
                 }
                 func_80107260_mgresultbattle(
                     D_801089D0_mgresultbattle[player].x, pos.y + 950.0f + 0.0f, 0.0f, count,
-                    HmfModelData[D_80108F50_mgresultbattle[player].obj->model[1]].pos.y + 160.0f);
+                    Hu3DData[D_80108F50_mgresultbattle[player].obj->model[1]].pos.y + 160.0f);
             }
             player--;
         }
@@ -286,7 +286,7 @@ void func_80107610_mgresultbattle(omObjData *obj) {
                     }
                     func_80107260_mgresultbattle(
                         D_801089D0_mgresultbattle[player].x, pos.y + 950.0f + 0.0f, 0.0f, count,
-                        HmfModelData[D_80108F50_mgresultbattle[player].obj->model[1]].pos.y + 160.0f);
+                        Hu3DData[D_80108F50_mgresultbattle[player].obj->model[1]].pos.y + 160.0f);
                 }
                 player = -1;
             }

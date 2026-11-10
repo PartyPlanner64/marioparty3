@@ -130,7 +130,7 @@ void func_801059A0_meschk() {
     omObjData *temp_v0;
 
     Hu3DCamInit(1);
-    Hu3DAnimInit(1);
+    func_8001FE20_main(1);
     func_800142A0_main(0x19);
     omInitObjMan(0x33, 10);
     HuWinInit();
@@ -145,12 +145,12 @@ void func_801059A0_meschk() {
         D_800A1786_main = -1;
     }
     omAddObj(0x2710, 0, 0, -1, func_80106334_meschk);
-    HmfLightMaxSet(3);
-    HmfLightColorSet(0, 0x78, 0x78, 0x78);
-    HmfLightColorSet(1, 0x40, 0x40, 0x60);
-    HmfLightDirSet(1, -100.0f, 100.0f, 100.0f);
-    HmfLightColorSet(2, 0, 0, 0);
-    HmfLightColorSet(3, 0, 0, 0);
+    Hu3DGLightMaxSet(3);
+    Hu3DGLightColorSet(0, 0x78, 0x78, 0x78);
+    Hu3DGLightColorSet(1, 0x40, 0x40, 0x60);
+    Hu3DGLightDirSet(1, -100.0f, 100.0f, 100.0f);
+    Hu3DGLightColorSet(2, 0, 0, 0);
+    Hu3DGLightColorSet(3, 0, 0, 0);
     omAddPrcObj(func_80105B50_meschk, 0x3F00, 0x800, 0);
     omAddPrcObj(func_801063BC_meschk, 0x3F00, 0x800, 0);
     WipeCreateIn(WIPE_TYPE_NORMAL, 0);
@@ -344,7 +344,7 @@ void func_801063BC_meschk() {
             break;
         }
         func_80016FB4_main(model, animation, frame);
-        if (frame >= D_800CCF58_main[HmfModelData[motion].motId].unk02) {
+        if (frame >= D_800CCF58_main[Hu3DData[motion].motId].unk02) {
             frame = 0;
         }
         frame += 2;

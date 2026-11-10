@@ -43,7 +43,7 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F1F0
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", func_801097AC_thwomp_pull);
 
 void func_8010AF18_thwomp_pull(s16 arg0, s16 arg1) {
-    HmfModel *model = &HmfModelData[arg0];
+    HmfModel *model = &Hu3DData[arg0];
     f32 value = arg1;
 
     Hu3DMotionTimeSet(arg0, value);

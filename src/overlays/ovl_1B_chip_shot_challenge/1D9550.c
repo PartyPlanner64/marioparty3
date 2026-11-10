@@ -146,7 +146,7 @@ void func_801059A0_chip_shot_challenge(void) {
     s32 rank;
     s32 i;
 
-    Hu3DAnimInit(50);
+    func_8001FE20_main(50);
     func_80021BE0_main(&D_800EBEB0_minigame, 0x40);
     func_800142A0_main(32);
     omInitObjMan(50, 0);
@@ -157,7 +157,7 @@ void func_801059A0_chip_shot_challenge(void) {
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 40.0f, 80.0f, 8000.0f);
-    HmfLightDirSet(1, 32.0f, 99.0f, 59.0f);
+    Hu3DGLightDirSet(1, 32.0f, 99.0f, 59.0f);
     D_800EC1B8_minigame = 0;
     D_800EC280_minigame = 0;
     D_800EBE28_minigame = 0;
@@ -525,7 +525,7 @@ void func_80107048_chip_shot_challenge(void) {
     for (i = 0; i < 4; i++) {
         model = func_8000B108_main(files[i], 0xAA9);
         D_8010AAD8_chip_shot_challenge[i] = model;
-        func_8003302C_main(HmfAnimRead(HmfModelData[model].hmf, 0xB0048, "e268p01_I8"), i * 2);
+        Hu3DAnmNoSet(Hu3DAnimRead(Hu3DData[model].hmf, 0xB0048, "e268p01_I8"), i * 2);
         Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
         func_8001C2FC_main(model, 0x20000, 0x20000);
         Hu3DModelRemakeStatic(model);
@@ -548,8 +548,8 @@ void func_801071A8_chip_shot_challenge(void) {
 }
 
 void func_80107238_chip_shot_challenge(s16 model) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_UnkBC_Struct *effect = HmfModelData[model].unkBC;
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *effect = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = effect->unk58;
     s16 count = hmf->unk1A;
     s16 i;
@@ -569,8 +569,8 @@ void func_80107238_chip_shot_challenge(s16 model) {
 }
 
 void func_801073D4_chip_shot_challenge(s16 model) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_UnkBC_Struct *effect = HmfModelData[model].unkBC;
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *effect = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle;
     s16 count = hmf->unk1A;
     s16 i;
@@ -1140,7 +1140,7 @@ void func_801094D8_chip_shot_challenge(omObjData *object) {
     f32 floorY;
     u8 bounce = TRUE;
 
-    func_80088800_main(HmfModelData[object->model[0]].mtx, 0.0f, 30.0f, 0.0f);
+    func_80088800_main(Hu3DData[object->model[0]].mtx, 0.0f, 30.0f, 0.0f);
     if (func_800E6E8C_minigame() != 2) {
         return;
     }
@@ -1200,7 +1200,7 @@ void func_801094D8_chip_shot_challenge(omObjData *object) {
     D_8010A978_chip_shot_challenge = func_800202A8_main(D_8010A978_chip_shot_challenge);
     D_8010A97C_chip_shot_challenge = func_800202A8_main(D_8010A97C_chip_shot_challenge);
     object->rot.y = angle;
-    mtxRotCat(HmfModelData[object->model[0]].mtx, D_8010A978_chip_shot_challenge, 0.0f, 0.0f);
+    mtxRotCat(Hu3DData[object->model[0]].mtx, D_8010A978_chip_shot_challenge, 0.0f, 0.0f);
     if (D_8010AAF0_chip_shot_challenge->trans.y < -100.0f ||
         (D_8010A838_chip_shot_challenge == 0.0f && D_8010A83C_chip_shot_challenge != 1)) {
         D_8010A840_chip_shot_challenge++;
@@ -1345,13 +1345,13 @@ f32 func_8010A04C_chip_shot_challenge(ChipShotChallengeSphere *sphere, Vec *norm
     func_800E28BC_minigame(D_800EC240_minigame, D_800EBE30_minigame, &pos, object);
     floorY = -65536.0f;
     model = object->model[0];
-    points = (Hu3DPoint *)HmfModelData[model].hmf->unk50;
+    points = (Hu3DPoint *)Hu3DData[model].hmf->unk50;
     func_80021C14_main(model, &D_800EBEB0_minigame, func_800DB704_minigame, &pos);
     for (quad = func_80022198_main(&D_800EBEB0_minigame); quad != NULL; quad = func_80022198_main(&D_800EBEB0_minigame)) {
         transformed = FALSE;
-        if (HmfModelData[model].pos.x != 0.0f || HmfModelData[model].pos.y != 0.0f ||
-            HmfModelData[model].pos.z != 0.0f || HmfModelData[model].rot.x != 0.0f ||
-            HmfModelData[model].rot.y != 0.0f || HmfModelData[model].rot.z != 0.0f) {
+        if (Hu3DData[model].pos.x != 0.0f || Hu3DData[model].pos.y != 0.0f ||
+            Hu3DData[model].pos.z != 0.0f || Hu3DData[model].rot.x != 0.0f ||
+            Hu3DData[model].rot.y != 0.0f || Hu3DData[model].rot.z != 0.0f) {
             tmp.x = x;
             tmp.y = y + 10.0f;
             tmp.z = z;

@@ -89,7 +89,7 @@ void func_801059A0_eatsa_pizza(void) {
     omObjData *obj;
     u8 camIndex;
 
-    Hu3DAnimInit(1);
+    func_8001FE20_main(1);
     func_80021BE0_main(&D_800EBEB0_minigame, 0x40);
     omInitObjMan(0x10, 0);
     func_8004A208_main();
@@ -479,7 +479,7 @@ void func_8010679C_eatsa_pizza(omObjData *object) {
                 }
                 work->unk14 = currentAngle;
                 object->rot.z = currentAngle - 180.0;
-                if (HmfModelData[object->model[0]].motTime == 0.0) {
+                if (Hu3DData[object->model[0]].motTime == 0.0) {
                     cutResult = 1;
                 }
                 work->unk36 = 4;

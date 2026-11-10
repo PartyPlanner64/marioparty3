@@ -264,7 +264,7 @@ f32 func_800D74AC_minigame(omObjData *arg0, Hu3DSphere *arg1, Vec *normal) {
         pos.z = z;
         func_800E28BC_minigame(D_800EC240_minigame, D_800EBE30_minigame, &pos, obj);
         if (objData->unk06 & 4) {
-            if (func_800E2F40_minigame(HmfModelData[obj->model[0]].hmf->unk60, &pos) == 0) {
+            if (func_800E2F40_minigame(Hu3DData[obj->model[0]].hmf->unk60, &pos) == 0) {
                 continue;
             }
         }
@@ -305,14 +305,14 @@ f32 func_800D74AC_minigame(omObjData *arg0, Hu3DSphere *arg1, Vec *normal) {
             }
         } else {
             model = obj->model[0];
-            points = (Hu3DPoint *)HmfModelData[model].hmf->unk50;
+            points = (Hu3DPoint *)Hu3DData[model].hmf->unk50;
             func_80021C14_main(model, &D_800EBEB0_minigame, func_800DB704_minigame, &pos);
             for (quad = func_80022198_main(&D_800EBEB0_minigame); quad != NULL;
                  quad = func_80022198_main(&D_800EBEB0_minigame)) {
                 transformed = FALSE;
-                if (HmfModelData[model].pos.x != 0.0f || HmfModelData[model].pos.y != 0.0f ||
-                    HmfModelData[model].pos.z != 0.0f || HmfModelData[model].rot.x != 0.0f ||
-                    HmfModelData[model].rot.y != 0.0f || HmfModelData[model].rot.z != 0.0f) {
+                if (Hu3DData[model].pos.x != 0.0f || Hu3DData[model].pos.y != 0.0f ||
+                    Hu3DData[model].pos.z != 0.0f || Hu3DData[model].rot.x != 0.0f ||
+                    Hu3DData[model].rot.y != 0.0f || Hu3DData[model].rot.z != 0.0f) {
                     tmp.x = x;
                     tmp.y = y + 10.0f;
                     tmp.z = z;
@@ -413,7 +413,7 @@ void func_800D7C14_minigame(omObjData *arg0, Hu3DSphere *arg1) {
         local.radius = sphere.radius = arg1->radius;
         func_800E28BC_minigame(D_800EC240_minigame, D_800EBE30_minigame, &local.pos, obj);
         if (objData->unk06 & 4) {
-            if (func_800E2FD8_minigame(HmfModelData[obj->model[0]].hmf->unk60, &local.pos, data->unk48) == 0) {
+            if (func_800E2FD8_minigame(Hu3DData[obj->model[0]].hmf->unk60, &local.pos, data->unk48) == 0) {
                 continue;
             }
         }

@@ -97,8 +97,8 @@ void func_8003186C_main(HmfData *hmf) {
             continue;
         }
         for (j = 0; j < 0x80; j++) {
-            other = HmfModelData[j].hmf;
-            if (other == NULL || HmfModelData[j].unk00 != 0 || hmf == other || other->unk84 == NULL) {
+            other = Hu3DData[j].hmf;
+            if (other == NULL || Hu3DData[j].unk00 != 0 || hmf == other || other->unk84 == NULL) {
                 continue;
             }
             for (k = 0; k < other->unk12; k++) {
@@ -336,8 +336,8 @@ void func_800322AC_main(HmfData_Unk84_Entry2 *tex) {
     s16 j;
 
     for (i = 0; i < 0x80; i++) {
-        if (HmfModelData[i].hmf != NULL) {
-            hmf = HmfModelData[i].hmf;
+        if (Hu3DData[i].hmf != NULL) {
+            hmf = Hu3DData[i].hmf;
             for (j = 0; j < hmf->unk12; j++) {
                 if (hmf->unk84[j].unkC == tex) {
                     hmf->unk84[j].unkC = &D_800A1190_main;
@@ -354,10 +354,10 @@ void func_8003235C_main(void) {
     for (i = 0; i < 0x80; i++) {
         D_800D1714_main[i].animIdx = -1;
     }
-    func_80032950_main();
+    Hu3DAnimInit();
 }
 
-s32 HmfAnimCreate(HmfData *hmf, void *data, s16 bank, char *name) {
+s32 Hu3DAnimCreate(HmfData *hmf, void *data, s16 bank, char *name) {
     HmfData_Unk84_Entry2 *tex;
     s16 hash = func_80011460_main((u8 *)name);
     s16 slot;
@@ -396,8 +396,8 @@ s32 HmfAnimCreate(HmfData *hmf, void *data, s16 bank, char *name) {
         }
     } else {
         for (j = 0; j < 0x80; j++) {
-            if (HmfModelData[j].hmf != NULL && HmfModelData[j].unk00 == 0) {
-                hmf = HmfModelData[j].hmf;
+            if (Hu3DData[j].hmf != NULL && Hu3DData[j].unk00 == 0) {
+                hmf = Hu3DData[j].hmf;
                 for (i = 0; i < hmf->unk12; i++) {
                     if (hmf->unk84[i].unkC == tex) {
                         hmf->unk84[i].unk9 = slot;
@@ -409,7 +409,7 @@ s32 HmfAnimCreate(HmfData *hmf, void *data, s16 bank, char *name) {
     return slot;
 }
 
-s16 HmfAnimLink(HmfData *hmf, u16 linkIdx, s16 bank, char *name) {
+s16 Hu3DAnimLink(HmfData *hmf, u16 linkIdx, s16 bank, char *name) {
     HmfData_Unk84_Entry2 *tex;
     HmfAnim *anim;
     s16 hash = func_80011460_main((u8 *)name);
@@ -446,8 +446,8 @@ s16 HmfAnimLink(HmfData *hmf, u16 linkIdx, s16 bank, char *name) {
         }
     } else {
         for (j = 0; j < 0x80; j++) {
-            if (HmfModelData[j].hmf != NULL && HmfModelData[j].unk00 == 0) {
-                hmf = HmfModelData[j].hmf;
+            if (Hu3DData[j].hmf != NULL && Hu3DData[j].unk00 == 0) {
+                hmf = Hu3DData[j].hmf;
                 for (i = 0; i < hmf->unk12; i++) {
                     if (hmf->unk84[i].unkC == tex) {
                         hmf->unk84[i].unk9 = slot;
@@ -459,7 +459,7 @@ s16 HmfAnimLink(HmfData *hmf, u16 linkIdx, s16 bank, char *name) {
     return slot;
 }
 
-void func_80032950_main(void) {
+void Hu3DAnimInit(void) {
     s16 i;
 
     D_800D408C_main = HuMemAlloc(0x300);
@@ -581,7 +581,7 @@ void func_80032FC0_main(s16 animIdx, u8 bitmask, u8 flags) {
     anim->flags = (anim->flags & ~bitmask) | flags;
 }
 
-void func_80032FF8_main(s16 animIdx, u8 rot) {
+void Hu3DAnimBankSet(s16 animIdx, u8 rot) {
     HmfAnim *anim = &D_800D1714_main[animIdx];
 
     anim->rot = rot;
@@ -589,7 +589,7 @@ void func_80032FF8_main(s16 animIdx, u8 rot) {
     anim->interp = 0;
 }
 
-void func_8003302C_main(s16 animIdx, u8 frame) {
+void Hu3DAnmNoSet(s16 animIdx, u8 frame) {
     HmfAnim *anim = &D_800D1714_main[animIdx];
 
     HmfAnimRot *rot;
@@ -610,7 +610,7 @@ u8 func_800330D4_main(s16 animIdx) {
     return rotFrames[1];
 }
 
-void HmfAnimExec(u16 vcount) {
+void Hu3DAnimExec(u16 vcount) {
     HmfAnim *anim;
     HmfAnimRot *bank;
     s16 i;
@@ -641,11 +641,11 @@ void HmfAnimExec(u16 vcount) {
     }
 }
 
-void func_800332D4_main(s16 animIdx, f32 speed) {
+void Hu3DAnimSpeedSet(s16 animIdx, f32 speed) {
     D_800D1714_main[animIdx].speed = speed * 16.0f;
 }
 
-void func_80033354_main(s16 animIdx) {
+void Hu3DAnimKill(s16 animIdx) {
     HmfAnim *anim = &D_800D1714_main[animIdx];
 
     if (anim->animIdx != -1) {
@@ -665,10 +665,10 @@ void func_800333B0_main(s16 animIdx) {
 }
 
 void func_80033430_main(s16 animIdx) {
-    func_80033354_main(animIdx);
+    Hu3DAnimKill(animIdx);
 }
 
-void func_80033450_main(void) {
+void Hu3DAnimAllKill(void) {
     s16 i;
 
     for (i = 0; i < 0x20; i++) {

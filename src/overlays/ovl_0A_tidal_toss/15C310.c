@@ -108,7 +108,7 @@ void func_801059A0_tidal_toss(void) {
     omObjData *obj;
     u8 camIndex;
 
-    Hu3DAnimInit(3);
+    func_8001FE20_main(3);
     func_80021BE0_main(&D_800EBEB0_minigame, 0x40);
     omInitObjMan(0x10, 0);
     func_8004A208_main();
@@ -708,7 +708,7 @@ void func_80109584_tidal_toss(omObjData *arg0, f32 arg1, f32 arg2, f32 arg3) {
     s32 i;
 
     for (i = 9; i < 12; i++) {
-        if (HmfModelData[arg0->model[i]].attr & 4) {
+        if (Hu3DData[arg0->model[i]].attr & 4) {
             func_800E4C88_minigame(arg0, i, arg1, arg2, arg3, 0.0f, 0.0f);
             return;
         }

@@ -126,22 +126,22 @@ void func_80106B68_mgresultduel(omObjData *arg0) {
 }
 
 void func_80106B70_mgresultduel(omObjData *arg0) {
-    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[arg0->motion[4]].motId, 0, 0x1E, 2);
+    Hu3DMotionShiftSet(arg0->model[1], Hu3DData[arg0->motion[4]].motId, 0, 0x1E, 2);
     D_80109340_mgresultduel.func = func_80106B68_mgresultduel;
 }
 
 void func_80106BD8_mgresultduel(omObjData *arg0) {
-    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[arg0->motion[2]].motId, 0, 0x1E, 0);
+    Hu3DMotionShiftSet(arg0->model[1], Hu3DData[arg0->motion[2]].motId, 0, 0x1E, 0);
     D_80109340_mgresultduel.func = func_80107654_mgresultduel;
 }
 
 void func_80106C3C_mgresultduel(omObjData *arg0) {
-    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[arg0->motion[3]].motId, 0, 0x1E, 0);
+    Hu3DMotionShiftSet(arg0->model[1], Hu3DData[arg0->motion[3]].motId, 0, 0x1E, 0);
     D_80109340_mgresultduel.func = func_80106B68_mgresultduel;
 }
 
 void func_80106CA0_mgresultduel(omObjData *arg0) {
-    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[arg0->motion[3]].motId, 0, 0x1E, 0);
+    Hu3DMotionShiftSet(arg0->model[1], Hu3DData[arg0->motion[3]].motId, 0, 0x1E, 0);
     D_80109340_mgresultduel.func = func_80107654_mgresultduel;
 }
 
@@ -168,7 +168,7 @@ void func_80106D0C_mgresultduel(omObjData *arg0) {
         HuPrcVSleep();
     }
     Hu3DModelRotSet(arg0->model[1], 0.0f, 0.0f, 0.0f);
-    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[arg0->motion[0]].motId, 0, 0x1E, 2);
+    Hu3DMotionShiftSet(arg0->model[1], Hu3DData[arg0->motion[0]].motId, 0, 0x1E, 2);
     D_80109340_mgresultduel.func = func_80106B68_mgresultduel;
     if (D_80109318_mgresultduel != 2) {
         func_80108E04_mgresultduel();
@@ -218,17 +218,17 @@ void func_80107170_mgresultduel(omObjData *arg0) {
 }
 
 void func_80107178_mgresultduel(omObjData *arg0) {
-    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[arg0->motion[4]].motId, 0, 0x1E, 2);
+    Hu3DMotionShiftSet(arg0->model[1], Hu3DData[arg0->motion[4]].motId, 0, 0x1E, 2);
     D_8010932C_mgresultduel.func = func_80107170_mgresultduel;
 }
 
 void func_801071E0_mgresultduel(omObjData *arg0) {
-    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[arg0->motion[2]].motId, 0, 0x1E, 0);
+    Hu3DMotionShiftSet(arg0->model[1], Hu3DData[arg0->motion[2]].motId, 0, 0x1E, 0);
     D_8010932C_mgresultduel.func = func_80107654_mgresultduel;
 }
 
 void func_80107244_mgresultduel(omObjData *arg0) {
-    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[arg0->motion[3]].motId, 0, 0x1E, 0);
+    Hu3DMotionShiftSet(arg0->model[1], Hu3DData[arg0->motion[3]].motId, 0, 0x1E, 0);
     D_8010932C_mgresultduel.func = func_80107170_mgresultduel;
 }
 
@@ -252,7 +252,7 @@ void func_801072A8_mgresultduel(omObjData *arg0) {
         HuPrcVSleep();
     }
     Hu3DModelRotSet(arg0->model[1], 0.0f, 0.0f, 0.0f);
-    Hu3DMotionShiftSet(arg0->model[1], HmfModelData[arg0->motion[0]].motId, 0, 0x1E, 2);
+    Hu3DMotionShiftSet(arg0->model[1], Hu3DData[arg0->motion[0]].motId, 0, 0x1E, 2);
     D_8010932C_mgresultduel.func = func_80107170_mgresultduel;
 }
 
@@ -300,8 +300,8 @@ void func_80107654_mgresultduel(omObjData *obj) {
     s16 model;
 
     model = obj->model[1];
-    time = HmfModelData[model].motTime;
-    endTime = D_800CCF58_main[HmfModelData[model].motId].unk02;
+    time = Hu3DData[model].motTime;
+    endTime = D_800CCF58_main[Hu3DData[model].motId].unk02;
     while (endTime <= time) {
         HuPrcVSleep();
     }
@@ -321,7 +321,7 @@ void func_80107710_mgresultduel(void) {
     D_8010931C_mgresultduel = obj;
 
     data = DataRead(0x210026);
-    D_80108F30_mgresultduel = HmfSprModelCreate(data, 0x2BD, 8);
+    D_80108F30_mgresultduel = Hu3DSprModelCreate(data, 0x2BD, 8);
     DataClose(data);
     func_8001C2FC_main(D_800CBB60_main[D_80108F30_mgresultduel].modelId, 0x70000000, 0x70000000);
     for (i = 0; i < 20; i++) {
@@ -336,7 +336,7 @@ void func_80107710_mgresultduel(void) {
     }
 
     data = DataRead(0xC);
-    D_80108F32_mgresultduel = HmfSprModelCreate(data, 0x2BD, 8);
+    D_80108F32_mgresultduel = Hu3DSprModelCreate(data, 0x2BD, 8);
     DataClose(data);
     func_8001C2FC_main(D_800CBB60_main[D_80108F32_mgresultduel].modelId, 0x70000000, 0x70000000);
     Hu3DModelScaleSet(D_800CBB60_main[D_80108F32_mgresultduel].modelId, 1.0f, 1.0f, 1.0f);
@@ -517,9 +517,9 @@ void func_80108318_mgresultduel(omObjData *arg0) {
         } else {
             obj = D_8010932C_mgresultduel.obj;
         }
-        pos.x = HmfModelData[obj->model[1]].pos.x;
-        pos.y = HmfModelData[obj->model[1]].pos.y + 120.0f;
-        pos.z = HmfModelData[obj->model[1]].pos.z;
+        pos.x = Hu3DData[obj->model[1]].pos.x;
+        pos.y = Hu3DData[obj->model[1]].pos.y + 120.0f;
+        pos.z = Hu3DData[obj->model[1]].pos.z;
         Hu3D3Dto2D(0, &pos, &screenPos);
         func_800E0CEC_name_81();
         if (D_80109318_mgresultduel == -1) {
@@ -550,14 +550,14 @@ void func_801084B0_mgresultduel(void) {
     func_8001C814_main(obj->model[1], 2, 2);
 
     data = DataRead(0xA007E);
-    D_80109300_mgresultduel[0] = (s16)HmfAnimCreate(HmfModelData[obj->model[1]].hmf, data, 0, "c204n_0_DEF");
+    D_80109300_mgresultduel[0] = (s16)Hu3DAnimCreate(Hu3DData[obj->model[1]].hmf, data, 0, "c204n_0_DEF");
     HuMemMemoryFreePerm(data);
     Hu3DModelRemakeStatic(obj->model[1]);
     func_8001C514_main(obj->model[1]);
     func_80032FC0_main(D_80109300_mgresultduel[0], 1, 0);
-    func_80032FF8_main(D_80109300_mgresultduel[0], 0);
+    Hu3DAnimBankSet(D_80109300_mgresultduel[0], 0);
     D_8010930C_mgresultduel =
-        HmfAnimLink(HmfModelData[obj->model[1]].hmf, D_80109300_mgresultduel[0], 0, "c204n_0_DEF");
+        Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, D_80109300_mgresultduel[0], 0, "c204n_0_DEF");
     D_80109300_mgresultduel[0] = D_800D1714_main[D_80109300_mgresultduel[0]].animIdx;
 
     data = DataRead(0xA0081);
@@ -647,7 +647,7 @@ void func_80108820_mgresultduel(omObjData *obj) {
     Hu3DModelPosSet(obj->model[2], x, -0.5f, z);
     func_80108D30_mgresultduel(obj->model[1], D_8010930C_mgresultduel, D_80109306_mgresultduel);
     HuPrcSleep(12);
-    Hu3DMotionShiftSet(obj->model[0], HmfModelData[obj->motion[3]].motId, 0, 10, 0);
+    Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[3]].motId, 0, 10, 0);
     for (i = 0; i < 6; i++) {
         y = sindf(i * 15.0f) * 120.0f;
         Hu3DModelPosSet(obj->model[1], x, pos[1] - y, z);
@@ -659,15 +659,15 @@ void func_80108820_mgresultduel(omObjData *obj) {
     }
 
     HuPrcSleep(2);
-    Hu3DMotionShiftSet(obj->model[0], HmfModelData[obj->motion[0]].motId, 0, 30, 2);
+    Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[0]].motId, 0, 30, 2);
     for (i = 0; i < 12; i++) {
         y = cosdf(i * 7.5f) * 120.0f;
         Hu3DModelPosSet(obj->model[1], x, pos[1] - y, z);
         HuPrcVSleep();
     }
 
-    x = HmfModelData[otherObj->model[1]].pos.x;
-    z = HmfModelData[otherObj->model[1]].pos.z;
+    x = Hu3DData[otherObj->model[1]].pos.x;
+    z = Hu3DData[otherObj->model[1]].pos.z;
     Hu3DModelPosSet(obj->model[1], x, pos[1], z);
     Hu3DModelPosSet(obj->model[2], x, -0.5f, z);
     HuPrcVSleep();
@@ -687,9 +687,9 @@ void func_80108D30_mgresultduel(s16 model, s16 anim, s16 animIdx) {
 
     if (anim >= 0) {
         if (animIdx == -1) {
-            func_80033910_main(HmfModelData[model].hmf);
+            func_80033910_main(Hu3DData[model].hmf);
         } else {
-            func_80033970_main(HmfModelData[model].hmf);
+            func_80033970_main(Hu3DData[model].hmf);
             entry = &D_800D1714_main[anim];
             entry->animIdx = animIdx;
             entry->rot = 0;

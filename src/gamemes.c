@@ -31,7 +31,7 @@ typedef struct {
 } GMesChar; // Size 0x3C
 
 extern Gfx *gMainGfxPos;
-extern s8 HmfPauseF;
+extern s8 Hu3DPauseF;
 
 
 extern u16 D_800D530C_main;
@@ -128,7 +128,7 @@ void GMesExec(Gfx **arg0) {
     s16 result = FALSE;
     s16 i, j;
 
-    if (HmfPauseF != 0 && !gMesCloseF) {
+    if (Hu3DPauseF != 0 && !gMesCloseF) {
         return;
     }
     for (i = 0; i < 8; i++) {
@@ -427,7 +427,7 @@ s32 GameMesKillCheck(void) {
     s32 stat;
     s16 countdown;
 
-    if (HmfPauseF != 0) {
+    if (Hu3DPauseF != 0) {
         return TRUE;
     }
     if (D_800D530C_main != 0) {

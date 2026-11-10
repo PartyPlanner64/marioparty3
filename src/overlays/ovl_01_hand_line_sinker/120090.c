@@ -146,10 +146,10 @@ void func_8010BB58_hand_line_sinker(FishingLine *line, Vec *points, u16 count) {
         osSyncPrintf("Line Count err %d\n", count);
     }
     D_8010C180_hand_line_sinker = line;
-    D_8010C18C_hand_line_sinker = &HmfModelData[line->model];
-    D_8010C188_hand_line_sinker = &HmfModelData[line->model].hmf;
+    D_8010C18C_hand_line_sinker = &Hu3DData[line->model];
+    D_8010C188_hand_line_sinker = &Hu3DData[line->model].hmf;
     D_8010C184_hand_line_sinker = gfx;
-    HmfModelData[line->model].hmf->unk3C->unk00[0] = gfx;
+    Hu3DData[line->model].hmf->unk3C->unk00[0] = gfx;
     gDPSetScissor(gfx++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
     gDPSetCombineMode(gfx++, G_CC_SHADE, G_CC_SHADE);
     gDPSetRenderMode(gfx++, G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2);

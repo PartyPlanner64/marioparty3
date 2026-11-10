@@ -283,7 +283,7 @@ static void MBMapFullMain(void) {
     MBStatusHideAll();
     func_800DC024_shared_board(userData);
     HuPrcVSleep();
-    HmfPauseF = 1;
+    Hu3DPauseF = 1;
     D_80105706_shared_board &= ~1;
     func_800DBEC0_shared_board(GwSystem.current_player_index);
     func_800DC024_shared_board(GwSystem.current_player_index);
@@ -387,7 +387,7 @@ static void MBMapFullMain(void) {
 
     WipeCreateOut(WIPE_TYPE_NORMAL, 8);
     HuPrcSleep(8);
-    HmfPauseF = 0;
+    Hu3DPauseF = 0;
     MBBackKill();
     MBBackLoad(savedBack);
     MBCameraZoomSet(savedZoom);

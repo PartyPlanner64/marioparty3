@@ -123,7 +123,7 @@ void func_801059A0_locked_out(void) {
     omObjData *obj;
     u8 camIndex;
 
-    Hu3DAnimInit(2);
+    func_8001FE20_main(2);
     func_80021BE0_main(&D_800EBEB0_minigame, 0x40);
     omInitObjMan(0x20, 0);
     func_8004A208_main();
@@ -537,8 +537,8 @@ void func_80106FBC_locked_out(omObjData *object) {
         if (entry->unk0C == 0) {
             continue;
         }
-        frames = D_800CCF58_main[HmfModelData[entry->unk0E].motId].unk02;
-        radius = HmfModelData[entry->unk0E].motTime * 175.0 / frames + 50.0;
+        frames = D_800CCF58_main[Hu3DData[entry->unk0E].motId].unk02;
+        radius = Hu3DData[entry->unk0E].motTime * 175.0 / frames + 50.0;
         pos.x = entry->pos.x - 86.5;
         pos.y = entry->pos.y;
         pos.z = entry->pos.z;
@@ -870,7 +870,7 @@ void func_80107ABC_locked_out(omObjData *object) {
     if (work->unk25 != 0) {
         D_800D5558_main[pad] &= ~0x4000;
     } else {
-        HmfModelData[object->model[0]].motIdShape = 0xFF;
+        Hu3DData[object->model[0]].motIdShape = 0xFF;
     }
     entry = &D_8010A638_locked_out[work->unk3E];
     switch (work->unk3C) {
@@ -881,8 +881,8 @@ void func_80107ABC_locked_out(omObjData *object) {
                 D_800D5558_main[pad] = 0;
                 D_800CDA7C_main[pad] = 0;
                 data->unk40 = 0.0f;
-                time = HmfModelData[object->model[0]].motTime;
-                if (time >= D_800CCF58_main[HmfModelData[object->model[0]].motId].unk02) {
+                time = Hu3DData[object->model[0]].motTime;
+                if (time >= D_800CCF58_main[Hu3DData[object->model[0]].motId].unk02) {
                     work->unk26 = 0;
                     if (work->unk25 != 0) {
                         Hu3DMotionShapeSet(object->model[0], object->motion[0x26], 0);
@@ -987,7 +987,7 @@ void func_80107ABC_locked_out(omObjData *object) {
             } else {
                 func_800E5690_minigame(object, 0);
             }
-            if (HmfModelData[entry->unk0E].motTime >= D_800CCF58_main[HmfModelData[entry->unk0E].motId].unk02) {
+            if (Hu3DData[entry->unk0E].motTime >= D_800CCF58_main[Hu3DData[entry->unk0E].motId].unk02) {
                 work->unk3C++;
                 work->unk40 = 30;
             }
@@ -1012,8 +1012,8 @@ void func_80107ABC_locked_out(omObjData *object) {
             break;
         case 4:
             Hu3DMotionSpeedSet(entry->unk0E, 0.0f);
-            Hu3DMotionTimeSet(entry->unk0E, HmfModelData[entry->unk0E].motTime - 1.5);
-            if (HmfModelData[entry->unk0E].motTime < 0.0) {
+            Hu3DMotionTimeSet(entry->unk0E, Hu3DData[entry->unk0E].motTime - 1.5);
+            if (Hu3DData[entry->unk0E].motTime < 0.0) {
                 Hu3DMotionTimeSet(entry->unk0E, 0.0f);
                 omVibrate(data->unk59, 2, 3, 10);
                 entry->unk0C = 0;
@@ -1031,7 +1031,7 @@ void func_80107ABC_locked_out(omObjData *object) {
     }
     work->unk18 = status;
     if (work->unk3C != 0) {
-        func_80088910_main(HmfModelData[object->model[0]].mtx, 0.0f, data->unk3C, 0.0f);
+        func_80088910_main(Hu3DData[object->model[0]].mtx, 0.0f, data->unk3C, 0.0f);
         func_800E4E30_minigame(object);
         func_800E5138_minigame(object);
     }
@@ -1042,7 +1042,7 @@ void func_801089F8_locked_out(omObjData *object, f32 x, f32 y, f32 z) {
     s32 i;
 
     for (i = 9; i < 12; i++) {
-        if (HmfModelData[object->model[i]].attr & 4) {
+        if (Hu3DData[object->model[i]].attr & 4) {
             func_800E4C88_minigame(object, i, x, y, z, 0.0f, 0.0f);
             return;
         }
@@ -1317,7 +1317,7 @@ void func_80109858_locked_out(omObjData *object, u8 isPlayer, u8 canGrab) {
         work->unk08.x = sindf(data->unk3C) * 4.0;
         work->unk08.y = 15.0f;
         work->unk08.z = cosdf(data->unk3C) * 4.0;
-        func_80109E88_locked_out(object->model[0], "item_hook", HmfModelData[object->model[0]].motTime, &hookPos);
+        func_80109E88_locked_out(object->model[0], "item_hook", Hu3DData[object->model[0]].motTime, &hookPos);
         block->trans.x = work->unk08.x * 20.0f + hookPos.x;
         block->trans.y = hookPos.y + 50.0;
         block->trans.z = work->unk08.z * 20.0f + hookPos.z;
@@ -1411,7 +1411,7 @@ void func_80109E88_locked_out(s16 model, char *hook, s16 time, Vec *pos) {
     HmfModel *modelData;
 
     func_80016B00_main(model, time, hook, &hookTransform);
-    modelData = &HmfModelData[model];
+    modelData = &Hu3DData[model];
     func_80088800_main(transform, modelData->pos.x, modelData->pos.y, modelData->pos.z);
     mtxRotCat(transform, modelData->rot.x, modelData->rot.y, modelData->rot.z);
     mtxScaleCat(transform, modelData->scale.x, modelData->scale.y, modelData->scale.z);

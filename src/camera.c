@@ -270,7 +270,7 @@ void func_80012E54_main(s16 camIndex) {
     f32 ux, uy, uz;
 
     camera = &gCameraList[camIndex];
-    hmf = HmfModelData[camera->unk4].hmf;
+    hmf = Hu3DData[camera->unk4].hmf;
     if (hmf == NULL) {
         return;
     }

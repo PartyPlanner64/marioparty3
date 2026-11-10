@@ -67,8 +67,8 @@ void func_801059A0_opduel(void) {
 
     D_80109570_opduel = GwSystem.current_board_index;
     omInitObjMan(50, 20);
-    HmfLightColorSet(1, 255, 255, 255);
-    HmfLightColorSet(2, 200, 200, 200);
+    Hu3DGLightColorSet(1, 255, 255, 255);
+    Hu3DGLightColorSet(2, 200, 200, 200);
     func_80109158_opduel();
     func_801090F8_opduel();
     func_800D87DC_name_81(700.0f);
@@ -106,8 +106,8 @@ s16 func_80105B3C_opduel(s32 file, s32 flags) {
     func_8001C954_main(model);
     func_8001C514_main(model);
     func_80013390_main(model, -1, 0, func_80105E20_opduel);
-    hmf = HmfModelData[model].hmf;
-    effect = HmfModelData[model].unkBC;
+    hmf = Hu3DData[model].hmf;
+    effect = Hu3DData[model].unkBC;
     particle = effect->unk58;
     effect->unk08.f = 30.0f;
     effect->unk0C.f = 720.0f;
@@ -131,8 +131,8 @@ s16 func_80105B3C_opduel(s32 file, s32 flags) {
 }
 
 s32 func_80105CBC_opduel(s16 model, f32 x, f32 y, f32 z) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_UnkBC_Struct *effect = HmfModelData[model].unkBC;
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *effect = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = effect->unk58;
     s16 i;
     f32 angle;
@@ -160,8 +160,8 @@ s32 func_80105CBC_opduel(s16 model, f32 x, f32 y, f32 z) {
 }
 
 void func_80105E20_opduel(s16 model) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_UnkBC_Struct *effect = HmfModelData[model].unkBC;
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *effect = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = effect->unk58;
     s16 i;
     s16 count = hmf->unk1A;
@@ -821,7 +821,7 @@ spin:
     func_800D90D0_name_81(D_80109208_opduel, 0, 2);
     func_800EB164_name_81(-1, 0x270E);
     func_800D90D0_name_81(D_80109208_opduel, -1, 2);
-    func_8002FD8C_main(D_80109208_opduel->omObj1->model[0], HmfModelData[D_80109208_opduel->omObj1->model[0]].motId,
+    func_8002FD8C_main(D_80109208_opduel->omObj1->model[0], Hu3DData[D_80109208_opduel->omObj1->model[0]].motId,
                        "l_mayu", 0x4C, 0x47);
     node = func_8001D33C_main(D_80109208_opduel->omObj1->model[0], "l_mayu");
     for (i = 0; i < 30; i += 2) {
@@ -830,7 +830,7 @@ spin:
     }
     func_800138EC_main(D_80109214_opduel, 0, 1);
     HuAudFXPlay(0x174);
-    func_8002FD8C_main(D_80109208_opduel->omObj1->model[0], HmfModelData[D_80109208_opduel->omObj1->model[0]].motId,
+    func_8002FD8C_main(D_80109208_opduel->omObj1->model[0], Hu3DData[D_80109208_opduel->omObj1->model[0]].motId,
                        "hige", 0x17, 0x46);
     node = func_8001D33C_main(D_80109208_opduel->omObj1->model[0], "hige");
     base = node->basePos.y;

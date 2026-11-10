@@ -89,7 +89,7 @@ void func_801074A0_mgresultdealer(void) {
     D_8010A274_mgresultdealer = obj;
 
     data = DataRead(0x210026);
-    D_80109A70_mgresultdealer = HmfSprModelCreate(data, 0x2BD, 8);
+    D_80109A70_mgresultdealer = Hu3DSprModelCreate(data, 0x2BD, 8);
     DataClose(data);
     func_8001C2FC_main(D_800CBB60_main[D_80109A70_mgresultdealer].modelId, 0x70000000, 0x70000000);
     for (i = 0; i < 40; i++) {
@@ -104,7 +104,7 @@ void func_801074A0_mgresultdealer(void) {
     }
 
     data = DataRead(0xC);
-    D_80109A72_mgresultdealer = HmfSprModelCreate(data, 0x2BD, 8);
+    D_80109A72_mgresultdealer = Hu3DSprModelCreate(data, 0x2BD, 8);
     DataClose(data);
     func_8001C2FC_main(D_800CBB60_main[D_80109A72_mgresultdealer].modelId, 0x70000000, 0x70000000);
     Hu3DModelScaleSet(D_800CBB60_main[D_80109A72_mgresultdealer].modelId, 1.0f, 1.0f, 1.0f);

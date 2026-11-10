@@ -25,18 +25,18 @@ extern Vec D_80106C2C_sldebug;
 
 void func_801059A0_sldebug(void) {
     Hu3DCamInit(1);
-    Hu3DAnimInit(1);
+    func_8001FE20_main(1);
     func_800142A0_main(0x2D);
     omInitObjMan(0x33, 0xA);
     func_8004A208_main();
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     omAddObj(0x2710, 0, 0, -1, func_801068D4_sldebug);
-    HmfLightMaxSet(4);
-    HmfLightColorSet(0, 0x78, 0x78, 0x78);
-    HmfLightColorSet(1, 0x40, 0x40, 0x60);
-    HmfLightDirSet(1, -100.0f, 100.0f, 100.0f);
-    HmfLightColorSet(2, 0, 0, 0);
-    HmfLightColorSet(3, 0, 0, 0);
+    Hu3DGLightMaxSet(4);
+    Hu3DGLightColorSet(0, 0x78, 0x78, 0x78);
+    Hu3DGLightColorSet(1, 0x40, 0x40, 0x60);
+    Hu3DGLightDirSet(1, -100.0f, 100.0f, 100.0f);
+    Hu3DGLightColorSet(2, 0, 0, 0);
+    Hu3DGLightColorSet(3, 0, 0, 0);
     D_80106C10_sldebug.x = D_80106C10_sldebug.y = D_80106C10_sldebug.z = 0.0f;
     D_80106C1C_sldebug = 400.0f;
     D_80106C2C_sldebug.x = D_80106C2C_sldebug.z = 0.0f;

@@ -109,7 +109,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3F_swinging_with_sharks/2E0D20", func
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3F_swinging_with_sharks/2E0D20", func_8010A4DC_swinging_with_sharks);
 
 void func_8010AA68_swinging_with_sharks(void) {
-    D_8010BB48_swinging_with_sharks = HmfModelData[D_8010B938_swinging_with_sharks].rot.y;
+    D_8010BB48_swinging_with_sharks = Hu3DData[D_8010B938_swinging_with_sharks].rot.y;
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3F_swinging_with_sharks/2E0D20", func_8010AAA0_swinging_with_sharks);

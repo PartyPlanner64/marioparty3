@@ -253,16 +253,16 @@ void m254_OverlayMain(void) {
 void m254_InitEnvironment(void) {
     omObjData *temp_v0;
 
-    Hu3DAnimInit(50);
+    func_8001FE20_main(50);
     func_800142A0_main(0x30);
     omInitObjMan(50, 0);
     func_8004A208_main();
     temp_v0 = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     temp_v0->work[0] = 2;
     omSetStatBit(temp_v0, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    HmfLightColorSet(0, 0xFF, 0xFF, 0xFF);
-    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
-    HmfLightDirSet(1, -56.0f, 50.0f, 56.0f);
+    Hu3DGLightColorSet(0, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightDirSet(1, -56.0f, 50.0f, 56.0f);
     func_8000B5F0_main(2);
     func_8000B710_main(2);
     ScissorSet(0, 0.0f, 0.0f, 152.0f, 240.0f);
@@ -1107,7 +1107,7 @@ void func_801091A0_motor_rooter(FuncContext *ctx) {
 
     obstacle = view->obstacleSlots[ctx->work.s16[0]];
     for (i = 0; i < 7; i++) {
-        model = &HmfModelData[object->model[ctx->work.s16[0] * 7 + i]];
+        model = &Hu3DData[object->model[ctx->work.s16[0] * 7 + i]];
         switch (view->obstacleTypes[obstacle]) {
             case 0:
                 direction = view->obstacleDirections[obstacle] + directions0[i];
@@ -1300,7 +1300,7 @@ void func_80109EFC_motor_rooter(FuncContext *ctx) {
     s16 slot = ctx->work.s16[0];
     f32 pitch;
 
-    model = &HmfModelData[object->model[slot]];
+    model = &Hu3DData[object->model[slot]];
     angle = m254_minigame->itemDirections[view->itemSlots[slot]] * 45.0f;
     offset.x = sindf(angle) * 64.0000009536743164;
     offset.y = -cosdf(angle) * 64.0000009536743164;
@@ -1700,23 +1700,23 @@ void func_8010AF0C_motor_rooter(FuncContext *ctx) {
     object->trans.z = CenterM[camera].z + position[2];
     if (player->unk08 & 0x400) {
         object->rot.x = CRotM[camera].x;
-        m254_MakeIdentityMtx(HmfModelData[object->model[0]].mtx[0]);
-        mtxRotCat(HmfModelData[object->model[0]].mtx, 0.0f, player->unk74, 0.0f);
+        m254_MakeIdentityMtx(Hu3DData[object->model[0]].mtx[0]);
+        mtxRotCat(Hu3DData[object->model[0]].mtx, 0.0f, player->unk74, 0.0f);
         object->rot.y = 0.0f;
     } else {
         object->rot.x = 360.0f - CRotM[camera].x;
         if (!(player->unk08 & 1)) {
             object->rot.y = CRotM[camera].y + 180.0f;
         }
-        m254_MakeIdentityMtx(HmfModelData[object->model[0]].mtx[0]);
-        mtxRotCat(HmfModelData[object->model[0]].mtx, 0.0f, 0.0f, 360.0f - angle);
+        m254_MakeIdentityMtx(Hu3DData[object->model[0]].mtx[0]);
+        mtxRotCat(Hu3DData[object->model[0]].mtx, 0.0f, 0.0f, 360.0f - angle);
     }
 }
 
 void func_8010B394_motor_rooter(FuncContext *ctx) {
     D_801137C8_motor_rooter_Struct *player = ctx->data;
     omObjData *object = player->unk00;
-    HmfModel *model = &HmfModelData[object->model[9]];
+    HmfModel *model = &Hu3DData[object->model[9]];
     s16 camera = object->work[0];
     f32 rotX[16];
     f32 rotY[16];
@@ -1738,9 +1738,9 @@ void func_8010B394_motor_rooter(FuncContext *ctx) {
         m254_MakeRotYMtx(rotY, CRotM[camera].y);
         m254_MultiplyMtx(rotX, rotY, transform);
         func_801114B0_motor_rooter(transform, &offset, position);
-        HmfModelData[object->model[9]].pos.x = CenterM[camera].x + position[0];
-        HmfModelData[object->model[9]].pos.y = CenterM[camera].y + position[1];
-        HmfModelData[object->model[9]].pos.z = CenterM[camera].z + position[2];
+        Hu3DData[object->model[9]].pos.x = CenterM[camera].x + position[0];
+        Hu3DData[object->model[9]].pos.y = CenterM[camera].y + position[1];
+        Hu3DData[object->model[9]].pos.z = CenterM[camera].z + position[2];
     } else {
         Hu3DModelPosSet(object->model[9], object->trans.x, object->trans.y + 0.0, object->trans.z);
     }
@@ -1763,21 +1763,21 @@ void func_8010B394_motor_rooter(FuncContext *ctx) {
         m254_MakeRotYMtx(rotY, CRotM[camera].y);
         m254_MultiplyMtx(rotX, rotY, transform);
         func_801114B0_motor_rooter(transform, &offset, position);
-        HmfModelData[object->model[10]].pos.x = CenterM[camera].x + position[0];
-        HmfModelData[object->model[10]].pos.y = CenterM[camera].y + position[1];
-        HmfModelData[object->model[10]].pos.z = CenterM[camera].z + position[2];
+        Hu3DData[object->model[10]].pos.x = CenterM[camera].x + position[0];
+        Hu3DData[object->model[10]].pos.y = CenterM[camera].y + position[1];
+        Hu3DData[object->model[10]].pos.z = CenterM[camera].z + position[2];
     } else {
         func_8001C258_main(object->model[10], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(object->model[10], object->trans.x, object->trans.y - 10.0 + 0.0, object->trans.z);
     }
     if (player->unk08 & 0x400) {
         Hu3DModelRotSet(object->model[10], object->rot.x, object->rot.y, 0.0f);
-        m254_MakeIdentityMtx(HmfModelData[object->model[10]].mtx[0]);
-        mtxRotCat(HmfModelData[object->model[10]].mtx, 0.0f, player->unk74, 0.0f);
+        m254_MakeIdentityMtx(Hu3DData[object->model[10]].mtx[0]);
+        mtxRotCat(Hu3DData[object->model[10]].mtx, 0.0f, player->unk74, 0.0f);
     } else {
         Hu3DModelRotSet(object->model[10], object->rot.x, object->rot.y, object->rot.z);
-        m254_MakeIdentityMtx(HmfModelData[object->model[10]].mtx[0]);
-        mtxRotCat(HmfModelData[object->model[10]].mtx, 0.0f, 0.0f, 360.0f - player->turnAngle);
+        m254_MakeIdentityMtx(Hu3DData[object->model[10]].mtx[0]);
+        mtxRotCat(Hu3DData[object->model[10]].mtx, 0.0f, 0.0f, 360.0f - player->turnAngle);
     }
 }
 
@@ -1856,7 +1856,7 @@ void func_8010BCD0_motor_rooter(FuncContext *ctx) {
 
     player = ctx->data;
     object = player->unk00;
-    model = &HmfModelData[object->model[0]];
+    model = &Hu3DData[object->model[0]];
     if (model->motTime >= D_800CCF58_main[model->motId].unk02 - 1) {
         player->animChange = 1;
     }
@@ -2111,7 +2111,7 @@ void func_8010CB2C_motor_rooter(omObjData *object, s16 item, s16 modelIndex) {
     if (item == 4) {
         jitter = rand16() % 31 - 15;
     }
-    model = &HmfModelData[modelId];
+    model = &Hu3DData[modelId];
     angle = jitter + player->turnAngle;
     offset.x = sindf(angle) * 55.9999990463256836;
     offset.y = -cosdf(angle) * 55.9999990463256836;

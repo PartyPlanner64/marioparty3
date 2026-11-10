@@ -318,7 +318,7 @@ void func_80106034_crazy_cogs(omObjData *arg0, u16 arg1, s16 arg2) {
 
 void func_801060A0_crazy_cogs(omObjData *arg0, u16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     if (arg1 < 0xA) {
-        Hu3DMotionShiftSet(arg0->model[0], HmfModelData[arg0->motion[arg1]].motId, arg2, arg3, arg4);
+        Hu3DMotionShiftSet(arg0->model[0], Hu3DData[arg0->motion[arg1]].motId, arg2, arg3, arg4);
     }
 }
 
@@ -770,7 +770,7 @@ void func_801074A0_crazy_cogs(omObjData *arg0) {
     func_8001C2FC_main(arg0->model[2], 0x80000000, 0);
     Hu3DModelRemakeStatic(arg0->model[2]);
     func_8001C514_main(arg0->model[2]);
-    func_80088800_main(HmfModelData[arg0->model[2]].mtx, 0.0f, 0.0f, 0.0f);
+    func_80088800_main(Hu3DData[arg0->model[2]].mtx, 0.0f, 0.0f, 0.0f);
     Hu3DModelCameraSet(arg0->model[0], HU3D_CAM0);
     Hu3DModelCameraSet(arg0->model[1], HU3D_CAM0);
     Hu3DModelCameraSet(arg0->model[2], HU3D_CAM0);
@@ -839,7 +839,7 @@ void func_80107884_crazy_cogs(omObjData *arg0) {
     func_8001C2FC_main(arg0->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(arg0->model[1]);
     func_8001C514_main(arg0->model[1]);
-    func_80088800_main(HmfModelData[arg0->model[1]].mtx, 0.0f, 0.0f, 0.0f);
+    func_80088800_main(Hu3DData[arg0->model[1]].mtx, 0.0f, 0.0f, 0.0f);
     Hu3DModelCameraSet(arg0->model[0], HU3D_CAM0);
     Hu3DModelCameraSet(arg0->model[1], HU3D_CAM0);
     angle = func_801059BC_crazy_cogs(0.0f, (s16)cog->timer * 120);
@@ -1034,8 +1034,8 @@ void func_80108190_crazy_cogs(omObjData *arg0) {
             cog->unk_44.y = arg0->trans.y;
             cog->unk_12++;
             func_800E5690_minigame(arg0, 0x12);
-            HmfModelData[arg0->model[0]].motTime = 0;
-            HmfModelData[arg0->model[0]].motSpeed = 0;
+            Hu3DData[arg0->model[0]].motTime = 0;
+            Hu3DData[arg0->model[0]].motSpeed = 0;
             func_80105B04_crazy_cogs(arg0->work[1]);
             func_800DDD94_minigame(arg0);
             HuAudFXStop((s16)(arg0->work[3] * 2 + 2));
@@ -1282,7 +1282,7 @@ void func_8010908C_crazy_cogs(omObjData *arg0) {
     func_8001C2FC_main(arg0->model[0], 0x80000000, 0);
     Hu3DModelRemakeStatic(arg0->model[0]);
     func_8001C514_main(arg0->model[0]);
-    func_80088800_main(HmfModelData[arg0->model[0]].mtx, 0.0f, 0.0f, 0.0f);
+    func_80088800_main(Hu3DData[arg0->model[0]].mtx, 0.0f, 0.0f, 0.0f);
     arg0->trans.x = arg0->trans.z = arg0->trans.y = 1000.0f;
     Hu3DModelPosSet(arg0->model[0], arg0->trans.x, arg0->trans.y, arg0->trans.z);
     arg0->scale.x = arg0->scale.y = arg0->scale.z = 2.0f;
@@ -1602,7 +1602,7 @@ void func_80109F64_crazy_cogs(omObjData *arg0) {
         func_8001C2FC_main(arg0->model[1], 0x80000000, 0);
         Hu3DModelRemakeStatic(arg0->model[1]);
         func_8001C514_main(arg0->model[1]);
-        func_80088800_main(HmfModelData[arg0->model[1]].mtx, 0.0f, 0.0f, 0.0f);
+        func_80088800_main(Hu3DData[arg0->model[1]].mtx, 0.0f, 0.0f, 0.0f);
         D_8010DE18_crazy_cogs[0] = arg0->model[0];
         D_8010DE18_crazy_cogs[1] = arg0->model[1];
     } else {
@@ -2061,16 +2061,16 @@ void func_8010B570_crazy_cogs(void) {
 }
 
 void func_8010B6E0_crazy_cogs(void) {
-    Hu3DAnimInit(50);
+    func_8001FE20_main(50);
     func_800142A0_main(32);
     omInitObjMan(50, 0);
     func_8004A208_main();
     func_8010B570_crazy_cogs();
-    HmfLightMaxSet(1);
-    HmfLightColorSet(0, 0x90, 0x90, 0x90);
-    HmfLightDirSet(0, 0.0f, 90.0f, 560.0f);
-    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
-    HmfLightDirSet(1, 0.0f, 90.0f, 560.0f);
+    Hu3DGLightMaxSet(1);
+    Hu3DGLightColorSet(0, 0x90, 0x90, 0x90);
+    Hu3DGLightDirSet(0, 0.0f, 90.0f, 560.0f);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightDirSet(1, 0.0f, 90.0f, 560.0f);
     D_800EC1B8_minigame = 0;
     D_800EC280_minigame = 0;
     D_800EBE28_minigame = 0;

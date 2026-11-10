@@ -58,7 +58,7 @@ void func_801059A0_mgresultbattle(void) {
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 30.0f, 80.0f, 8000.0f);
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
 
     for (var_a0_2 = 0, i = 0; i < MB_MAX_PLAYERS; i++) {
         if (GwPlayer[i].bonusCoin == 3) {
@@ -387,7 +387,7 @@ void func_80106918_mgresultbattle(void) {
         } else {
             motion = 2;
         }
-        Hu3DMotionShiftSet(obj->model[1], HmfModelData[obj->motion[motion]].motId, 0, 0x14, 0);
+        Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[motion]].motId, 0, 0x14, 0);
     }
     D_80108F50_mgresultbattle[0].func = func_801069FC_mgresultbattle;
 }
@@ -402,7 +402,7 @@ void func_801069FC_mgresultbattle(omObjData *obj) {
         HuPrcVSleep();
     }
     while (TRUE) {
-        if (D_800CCF58_main[HmfModelData[obj->model[1]].motId].unk02 <= HmfModelData[obj->model[1]].motTime) {
+        if (D_800CCF58_main[Hu3DData[obj->model[1]].motId].unk02 <= Hu3DData[obj->model[1]].motTime) {
             pressed = 0;
             for (i = 0; i < 40; i++) {
                 for (j = 0; j < 4; j++) {

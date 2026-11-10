@@ -75,7 +75,7 @@ void func_801059A0_mgresultboard(void) {
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     obj->work[0] = 2;
-    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
     minigameType = D_800A6D40_main[GwSystem.minigame_index - 1].minigameType;
 
     if (minigameType < MINIGAME_ITEM) {

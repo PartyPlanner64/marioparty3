@@ -185,14 +185,14 @@ void func_801059A0_baby_bowser_broadside(void) {
 void func_801059BC_baby_bowser_broadside(void) {
     u8 camera;
 
-    Hu3DAnimInit(0x32);
+    func_8001FE20_main(0x32);
     func_800142A0_main(0x30);
     omInitObjMan(0x32, 0);
     func_8004A208_main();
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    HmfLightColorSet(0, 0xFF, 0xFF, 0xFF);
-    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
-    HmfLightDirSet(1, -56.0f, 50.0f, 56.0f);
+    Hu3DGLightColorSet(0, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightDirSet(1, -56.0f, 50.0f, 56.0f);
     func_8000B5F0_main(1);
     camera = func_8000B638_main();
     ScissorSet(camera, 0.0f, 0.0f, 320.0f, 240.0f);
@@ -379,9 +379,9 @@ void func_801062C4_baby_bowser_broadside(omObjData *object) {
     Hu3DModelPosSet((s16)slot->unk_04[3], 0.0f, 455.00003f, 0.0f);
     Hu3DModelPosSet((s16)slot->unk_04[4], 0.0f, 455.00003f, 0.0f);
     Hu3DModelPosSet((s16)slot->unk_04[5], 0.0f, 450.0f, 0.0f);
-    HmfModelData[(s16)slot->unk_04[3]].motSpeed = 0.0f;
+    Hu3DData[(s16)slot->unk_04[3]].motSpeed = 0.0f;
     for (i = 0; i < 4; i++) {
-        HmfModelData[D_80110004_baby_bowser_broadside[i].unk_48].motSpeed = 0.0f;
+        Hu3DData[D_80110004_baby_bowser_broadside[i].unk_48].motSpeed = 0.0f;
     }
     flags |= 0x400;
     for (i = 0; i < 4; i++) {
@@ -743,7 +743,7 @@ void func_801081A4_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBows
 }
 
 void func_80108210_baby_bowser_broadside(BabyBowserBroadsideSlot *slot) {
-    HmfModel *model = &HmfModelData[(s16)slot->unk_04[0]];
+    HmfModel *model = &Hu3DData[(s16)slot->unk_04[0]];
 
     if (D_80110008_baby_bowser_broadside->unk_04 < 600.0f) {
         model->rot.y -= D_80110008_baby_bowser_broadside->unk_38;
@@ -753,7 +753,7 @@ void func_80108210_baby_bowser_broadside(BabyBowserBroadsideSlot *slot) {
             model->rot.y -= 360.0f;
         }
     }
-    model = &HmfModelData[(s16)slot->unk_04[2]];
+    model = &Hu3DData[(s16)slot->unk_04[2]];
     model->rot.y += D_80110008_baby_bowser_broadside->unk_38;
     if (model->rot.y < 0.0f) {
         model->rot.y += 360.0f;
@@ -763,7 +763,7 @@ void func_80108210_baby_bowser_broadside(BabyBowserBroadsideSlot *slot) {
 }
 
 void func_80108350_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler) {
-    HmfModel *model = &HmfModelData[D_80110008_baby_bowser_broadside->unk_50];
+    HmfModel *model = &Hu3DData[D_80110008_baby_bowser_broadside->unk_50];
     f32 startX, startZ, endX, endZ;
     f32 progress;
 
@@ -802,8 +802,8 @@ void func_80108350_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBows
                 break;
             }
         }
-        HmfModelData[(s16)slot->unk_04[4]].pos.x = model->pos.x;
-        HmfModelData[(s16)slot->unk_04[4]].pos.z = model->pos.z;
+        Hu3DData[(s16)slot->unk_04[4]].pos.x = model->pos.x;
+        Hu3DData[(s16)slot->unk_04[4]].pos.z = model->pos.z;
         Hu3DModelPosSet((s16)slot->unk_04[5], model->pos.x, 450.0f, model->pos.z);
     }
 }
@@ -817,8 +817,8 @@ void func_80108614_baby_bowser_broadside(void) {
         D_80110008_baby_bowser_broadside->unk_28 += 15.0f;
         tiltX = sindf(D_80110008_baby_bowser_broadside->unk_28) * 30.0f * D_80110008_baby_bowser_broadside->unk_58;
         tiltZ = -(sindf(D_80110008_baby_bowser_broadside->unk_28) * 30.0f * D_80110008_baby_bowser_broadside->unk_5C);
-        HmfModelData[D_80110008_baby_bowser_broadside->unk_50].rot.x = tiltX;
-        HmfModelData[D_80110008_baby_bowser_broadside->unk_50].rot.z = tiltZ;
+        Hu3DData[D_80110008_baby_bowser_broadside->unk_50].rot.x = tiltX;
+        Hu3DData[D_80110008_baby_bowser_broadside->unk_50].rot.z = tiltZ;
         if (D_80110008_baby_bowser_broadside->unk_28 >= 360.0f) {
             D_80110008_baby_bowser_broadside->unk_28 -= 360.0f;
             progress = D_80110008_baby_bowser_broadside->unk_18 / 6.0f;
@@ -837,8 +837,8 @@ void func_80108614_baby_bowser_broadside(void) {
 }
 
 void func_801087CC_baby_bowser_broadside(s16 arg0) {
-    HmfModelData[arg0].motSpeed = 1.0f;
-    HmfModelData[arg0].motTime = 0.0f;
+    Hu3DData[arg0].motSpeed = 1.0f;
+    Hu3DData[arg0].motTime = 0.0f;
 }
 
 void func_80108804_baby_bowser_broadside(f32 angle) {
@@ -852,7 +852,7 @@ void func_80108804_baby_bowser_broadside(f32 angle) {
 void func_80108860_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler) {
     unk_80109EBC *player = (unk_80109EBC *)handler->unk_3C;
     omObjData *object = slot->unk_00;
-    HmfModel *model = &HmfModelData[D_80110008_baby_bowser_broadside->unk_50];
+    HmfModel *model = &Hu3DData[D_80110008_baby_bowser_broadside->unk_50];
     f32 angle, currentAngle, targetAngle;
     f32 tolerance;
     f32 x, z;
@@ -1252,7 +1252,7 @@ void func_80109D2C_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBows
 void func_80109D94_baby_bowser_broadside(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideHandler *handler) {
     unk_80109EBC *player = (unk_80109EBC *)handler->unk_3C;
     omObjData *object = slot->unk_00;
-    HmfModel *model = &HmfModelData[object->model[0]];
+    HmfModel *model = &Hu3DData[object->model[0]];
 
     if (model->motTime >= D_800CCF58_main[model->motId].unk02 - 1) {
         player->unk_08 = 1;

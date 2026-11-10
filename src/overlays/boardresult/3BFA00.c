@@ -119,7 +119,7 @@ void func_8010BE14_boardresult(void) {
     angle = 0;
     model = func_8000B108_main(0xB0034, 0x2A8);
     func_8001C2FC_main(model, 0x20000, 0x20000);
-    hmf = HmfModelData[model].hmf;
+    hmf = Hu3DData[model].hmf;
     for (k = 0; k < hmf->unk10; k++) {
         count = hmf->unk60[k].unk22;
         face = hmf->unk60[k].unk54;
@@ -132,7 +132,7 @@ void func_8010BE14_boardresult(void) {
     func_8001C514_main(model);
     func_80013390_main(model, -1, NULL, func_8010D36C_boardresult);
     func_800138EC_main(model, 8, 8);
-    effect = HmfModelData[model].unkBC;
+    effect = Hu3DData[model].unkBC;
     func_8001C258_main(model, 4, 4);
     model2 = func_8000B108_main(0xB0035, 0x2B9);
     func_8001C258_main(model2, 4, 4);
@@ -280,8 +280,8 @@ void func_8010CEF4_boardresult(s16 model, s32 dataNum) {
     (void)white;
 
     pixels = sprite->unk_84->unk00->unk00;
-    effect = HmfModelData[model].unkBC;
-    count = HmfModelData[model].hmf->unk1A;
+    effect = Hu3DData[model].unkBC;
+    count = Hu3DData[model].hmf->unk1A;
     particle = effect->unk58;
     for (y = 0, used = 0; y < height; y++) {
         for (x = 0; x < width; x++) {
@@ -309,8 +309,8 @@ void func_8010CEF4_boardresult(s16 model, s32 dataNum) {
 
 HmfModelData_UnkBC_Unk58_Struct *func_8010D28C_boardresult(s16 model, f32 x, f32 y, f32 z, f32 arg4, f32 arg5,
                                                            f32 arg6, u8 r, u8 g, u8 b) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_UnkBC_Unk58_Struct *particle = HmfModelData[model].unkBC->unk58;
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Unk58_Struct *particle = Hu3DData[model].unkBC->unk58;
     s16 i;
     s16 count = hmf->unk1A;
 
@@ -333,8 +333,8 @@ HmfModelData_UnkBC_Unk58_Struct *func_8010D28C_boardresult(s16 model, f32 x, f32
 }
 
 void func_8010D36C_boardresult(s16 model) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_UnkBC_Struct *effect = HmfModelData[model].unkBC;
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *effect = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle;
     HmfModelData_UnkBC_Unk58_Struct *src;
     HmfModelData_UnkBC_Unk58_Struct *dst;
@@ -434,8 +434,8 @@ void func_8010D36C_boardresult(s16 model) {
 }
 
 void func_8010D87C_boardresult(s16 model) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_UnkBC_Struct *effect = HmfModelData[model].unkBC;
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *effect = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle;
     s16 count = hmf->unk1A;
     s16 i;
@@ -498,7 +498,7 @@ void func_8010DA30_boardresult(void) {
     s16 color;
 
     func_8001C2FC_main(model, 0x20000, 0x20000);
-    hmf = HmfModelData[model].hmf;
+    hmf = Hu3DData[model].hmf;
     for (j = 0; j < hmf->unk10; j++) {
         count = hmf->unk60[j].unk22;
         face = hmf->unk60[j].unk54;
@@ -511,7 +511,7 @@ void func_8010DA30_boardresult(void) {
     func_8001C514_main(model);
     func_80013390_main(model, -1, NULL, func_8010D36C_boardresult);
     func_800138EC_main(model, 8, 8);
-    effect = HmfModelData[model].unkBC;
+    effect = Hu3DData[model].unkBC;
     func_8001C258_main(model, 4, 4);
     func_8001C258_main(model, 4, 0);
     func_80013954_main(model, 0);

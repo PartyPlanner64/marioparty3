@@ -108,7 +108,7 @@ void func_801068F4_msetup(MsetupCameraKeyframe *, f32, void (*)(s16, s16, s16));
 
 void func_801059A0_msetup(void) {
     Hu3DCamInit(1);
-    Hu3DAnimInit(1);
+    func_8001FE20_main(1);
     func_800142A0_main(25);
     omInitObjMan(51, 25);
     HuWinInit();
@@ -126,12 +126,12 @@ void func_801059A0_msetup(void) {
     CRot.z = 0;
     D_801198C0_msetup = -1;
     omAddObj(10000, 0, 0, -1, func_80105C4C_msetup);
-    HmfLightMaxSet(3);
-    HmfLightColorSet(2, 0, 0, 0);
-    HmfLightDirSet(2, 0.0f, 0.0f, 100.0f);
-    HmfLightColorSet(3, 240, 240, 240);
-    HmfLightDirSet(3, 0.0f, 100.0f, 0.0f);
-    HmfLightColorSet(1, 255, 255, 255);
+    Hu3DGLightMaxSet(3);
+    Hu3DGLightColorSet(2, 0, 0, 0);
+    Hu3DGLightDirSet(2, 0.0f, 0.0f, 100.0f);
+    Hu3DGLightColorSet(3, 240, 240, 240);
+    Hu3DGLightDirSet(3, 0.0f, 100.0f, 0.0f);
+    Hu3DGLightColorSet(1, 255, 255, 255);
     Hu3DBGColorSet(16, 16, 240);
     omPrcSetStatBit(omAddPrcObj(func_80106320_msetup, 0x1100, 0x400, 0), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     D_8011A944_msetup = 0;
@@ -255,7 +255,7 @@ void func_80105E90_msetup(MsetupModelEntry *entry) {
     for (i = 0; entry->dataId != -1; entry++, i++) {
         model = D_8011A950_msetup[(s16)i] = func_8000B108_main(entry->dataId, entry->flags);
         func_80105F7C_msetup(entry, model);
-        motion = D_8011A9A0_msetup[(s16)i] = HmfModelData[model].motId;
+        motion = D_8011A9A0_msetup[(s16)i] = Hu3DData[model].motId;
         if (motion != -1) {
             func_8001C814_main(model, -1, entry->motion);
         }
@@ -288,7 +288,7 @@ void func_80106030_msetup(MsetupModelEntry *entry, MsetupModelHandle *handle, s3
     for (i = 0; i < count; entry++, i++, handle++) {
         model = handle->model = func_8000B108_main(entry->dataId, entry->flags);
         func_80105F7C_msetup(entry, model);
-        motion = handle->motion = HmfModelData[model].motId;
+        motion = handle->motion = Hu3DData[model].motId;
         if (motion >= 0) {
             func_8001C814_main(model, -1, entry->motion);
         }

@@ -119,8 +119,8 @@ void func_80107678_baby_bowser_bonkers(omObjData *arg0, s32 arg1, s32 arg2) {
     HmfModel *otherModel;
     HmfData *temp;
 
-    model = &HmfModelData[arg0->model[(s16)arg1]];
-    otherModel = &HmfModelData[arg0->model[(s16)arg2]];
+    model = &Hu3DData[arg0->model[(s16)arg1]];
+    otherModel = &Hu3DData[arg0->model[(s16)arg2]];
 
     temp = model->hmf;
     model->hmf = otherModel->hmf;
@@ -160,7 +160,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_80108454_baby_bowser_bonkers);
 
 void func_801089CC_baby_bowser_bonkers(BabyBowserBonkersActor *actor) {
-    HmfModel *model = HmfModelData + actor->unk_02;
+    HmfModel *model = Hu3DData + actor->unk_02;
 
     actor->unk_06 = 0;
     actor->unk_04 = 0;
@@ -176,7 +176,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_80108D6C_baby_bowser_bonkers);
 
 void func_80108E90_baby_bowser_bonkers(BabyBowserBonkersActor *actor) {
-    HmfModel *model = HmfModelData + actor->unk_02;
+    HmfModel *model = Hu3DData + actor->unk_02;
     f32 scale;
 
     actor->unk_06 = 4;

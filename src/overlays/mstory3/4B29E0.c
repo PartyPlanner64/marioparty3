@@ -24,7 +24,7 @@ void func_80108CA8_mstory3(omObjData *);
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory3/4B29E0", func_801059A0_mstory3);
 
 void func_801059BC_mstory3(void) {
-    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
 }
 
 void func_801059E4_mstory3(void) {

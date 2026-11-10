@@ -36,7 +36,7 @@ void func_80107D10_mgresultbattle(void) {
                         D_801089D0_mgresultbattle[i].z);
         Hu3DModelRotSet(obj->model[i + 1], 0.0f, D_80108A10_mgresultbattle[i], 0.0f);
         func_8001C258_main(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-        Hu3DMotionTimeSet(obj->model[i + 1], D_800CCF58_main[HmfModelData[obj->model[i + 1]].motId].unk02);
+        Hu3DMotionTimeSet(obj->model[i + 1], D_800CCF58_main[Hu3DData[obj->model[i + 1]].motId].unk02);
         func_8001C814_main(obj->model[i + 1], 1, 1);
     }
 
@@ -62,7 +62,7 @@ void func_80107F9C_mgresultbattle(omObjData *obj) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        func_80016B00_main(obj->model[i + 1], HmfModelData[obj->model[i + 1]].motTime, "chara", &mtx);
+        func_80016B00_main(obj->model[i + 1], Hu3DData[obj->model[i + 1]].motTime, "chara", &mtx);
         Hu3DModelPosSet(D_80108F50_mgresultbattle[i].obj->model[1], mtx[3][0] + D_801089D0_mgresultbattle[i].x,
                         mtx[3][1] + D_801089D0_mgresultbattle[i].y, mtx[3][2] + D_801089D0_mgresultbattle[i].z);
     }
@@ -128,9 +128,9 @@ void func_801082C0_mgresultbattle(omObjData *obj) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        pos.x = HmfModelData[D_80108F50_mgresultbattle[i].obj->model[1]].pos.x;
-        pos.y = HmfModelData[D_80108F50_mgresultbattle[i].obj->model[1]].pos.y;
-        pos.z = HmfModelData[D_80108F50_mgresultbattle[i].obj->model[1]].pos.z;
+        pos.x = Hu3DData[D_80108F50_mgresultbattle[i].obj->model[1]].pos.x;
+        pos.y = Hu3DData[D_80108F50_mgresultbattle[i].obj->model[1]].pos.y;
+        pos.z = Hu3DData[D_80108F50_mgresultbattle[i].obj->model[1]].pos.z;
         Hu3D3Dto2D(0, &pos, &screen);
         espPosSet(D_80108F30_mgresultbattle[i], screen.x, (s32)screen.y - 48);
         espDispOn(D_80108F30_mgresultbattle[i]);

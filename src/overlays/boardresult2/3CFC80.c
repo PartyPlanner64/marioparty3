@@ -104,12 +104,12 @@ s16 func_80105A8C_boardresult2(s16 model, s32 dataNum, char *name) {
     s32 anim;
     s16 animIdx;
 
-    anim = HmfAnimCreate(HmfModelData[model].hmf, data, 0, name);
+    anim = Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, name);
     D_80109A4C_boardresult2 = anim;
     func_80032FC0_main(anim, 1, 1);
     DataClose(data);
     animIdx = D_800D1714_main[(s16)anim].animIdx;
-    D_80109A4E_boardresult2 = HmfAnimLink(HmfModelData[model].hmf, anim, 0, name);
+    D_80109A4E_boardresult2 = Hu3DAnimLink(Hu3DData[model].hmf, anim, 0, name);
     Hu3DModelRemakeStatic(model);
     return animIdx;
 }
@@ -119,9 +119,9 @@ void func_80105B98_boardresult2(s16 model, s16 animIdx) {
 
     if (D_80109A4E_boardresult2 != 0xFF) {
         if (animIdx == -1) {
-            func_80033910_main(HmfModelData[model].hmf);
+            func_80033910_main(Hu3DData[model].hmf);
         } else {
-            func_80033970_main(HmfModelData[model].hmf);
+            func_80033970_main(Hu3DData[model].hmf);
             anim = &D_800D1714_main[D_80109A4E_boardresult2];
             anim->animIdx = animIdx;
             anim->rot = 0;
@@ -1140,7 +1140,7 @@ void func_80109740_boardresult2(void) {
 
 void func_8010976C_boardresult2(void) {
     Hu3DCamInit(2);
-    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
 }
 
 void func_8010979C_boardresult2(void) {

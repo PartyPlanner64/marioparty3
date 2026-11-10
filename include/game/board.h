@@ -267,7 +267,7 @@ extern BoardStatus mbStatusData[MB_MAX_PLAYERS]; //TODO: this is 4 right? not 5?
 extern s32 mbCharNameMesTbl[];
 extern Object* D_801011FC_shared_board;
 extern omObjData* D_801055E8_shared_board[];
-extern s8 HmfPauseF;
+extern s8 Hu3DPauseF;
 extern s32 D_801055F8_shared_board;
 extern s16 D_80105706_shared_board;
 extern s16 kakusiMasuCoin;

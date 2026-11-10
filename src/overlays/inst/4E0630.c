@@ -220,7 +220,7 @@ void func_80107470_inst(void) {
     D_8010DC18_inst = DataRead((D_8010D4A4_inst + 1) | 0x170000);
     D_8010DC14_inst = DataRead(0x170007);
     func_80108AF0_inst(object->model[1], D_8010DC18_inst, D_8010DC10_inst, D_8010DC14_inst);
-    HmfModelData[object->model[1]].rot.x = -90.0f;
+    Hu3DData[object->model[1]].rot.x = -90.0f;
     omPrcSetDestructor(NULL, func_80107EE0_inst);
     if (D_8010D408_inst == 0) {
         D_8010DDD8_inst.update = func_80107938_inst;
@@ -250,12 +250,12 @@ void func_801079CC_inst(omObjData *obj) {
 }
 
 void func_80107A24_inst(omObjData *object) {
-    f32 duration = D_800CCF58_main[HmfModelData[object->model[3]].motId].unk02 - 25.0f;
+    f32 duration = D_800CCF58_main[Hu3DData[object->model[3]].motId].unk02 - 25.0f;
     f32 angle = ((f32)D_8010D508_inst / duration) * D_8010D414_inst;
     s32 i;
 
-    HmfModelData[object->model[1]].rot.x = angle - 90.0f;
-    HmfModelData[object->model[2]].rot.x = angle;
+    Hu3DData[object->model[1]].rot.x = angle - 90.0f;
+    Hu3DData[object->model[2]].rot.x = angle;
     D_8010D50C_inst = (0.15f / duration) * D_8010D508_inst;
     for (i = 0; i < 3; i++) {
         Hu3DModelScaleSet(object->model[i + 1], D_8010D50C_inst + 0.45f, D_8010D50C_inst + 0.45f,
@@ -318,8 +318,8 @@ void func_80107E18_inst(omObjData *object) {
 
 s32 func_80107E20_inst(void) {
     s16 modelId = D_8010DDD8_inst.object->model[0];
-    f32 unk40 = HmfModelData[modelId].motTime;
-    return D_800CCF58_main[HmfModelData[modelId].motId].unk02 <= unk40;
+    f32 unk40 = Hu3DData[modelId].motTime;
+    return D_800CCF58_main[Hu3DData[modelId].motId].unk02 <= unk40;
 }
 
 void func_80107E98_inst(void) {
@@ -344,11 +344,11 @@ void func_80107F18_inst(void) {
 }
 
 void func_80107F98_inst(omObjData *obj) {
-    f32 duration = D_800CCF58_main[HmfModelData[obj->model[3]].motId].unk02 - 25.0f;
+    f32 duration = D_800CCF58_main[Hu3DData[obj->model[3]].motId].unk02 - 25.0f;
     f32 angle = D_8010D414_inst - ((f32)D_8010D510_inst / duration) * D_8010D414_inst;
 
-    HmfModelData[obj->model[1]].rot.x = angle - 90.0f;
-    HmfModelData[obj->model[2]].rot.x = angle;
+    Hu3DData[obj->model[1]].rot.x = angle - 90.0f;
+    Hu3DData[obj->model[2]].rot.x = angle;
     D_8010D510_inst++;
     if ((f32)D_8010D510_inst == duration) {
         D_8010DDD8_inst.update = func_80107BF8_inst;
@@ -357,7 +357,7 @@ void func_80107F98_inst(omObjData *obj) {
 }
 
 s32 func_801080A8_inst(void) {
-    f32 unk40 = HmfModelData[D_8010DDD8_inst.object->model[0]].motTime;
+    f32 unk40 = Hu3DData[D_8010DDD8_inst.object->model[0]].motTime;
     return unk40 == 0.0f;
 }
 
@@ -372,13 +372,13 @@ void func_801080FC_inst(void) {
 void func_8010815C_inst(omObjData *obj) {
     HmfSkeletonNode *nodes[2];
     s32 i;
-    f32 duration = D_800CCF58_main[HmfModelData[obj->model[0]].motId].unk02;
+    f32 duration = D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02;
 
     func_8001C814_main(obj->model[0], 1, 0);
     func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DMotionTimeSet(obj->model[0], duration);
-    HmfModelData[obj->model[1]].rot.x = D_8010D414_inst - 90.0f;
-    HmfModelData[obj->model[2]].rot.x = D_8010D414_inst;
+    Hu3DData[obj->model[1]].rot.x = D_8010D414_inst - 90.0f;
+    Hu3DData[obj->model[2]].rot.x = D_8010D414_inst;
     for (i = 0; i < 3; i++) {
         Hu3DModelScaleSet(obj->model[i + 1], 0.6f, 0.6f, 0.6f);
         func_8001C258_main(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);

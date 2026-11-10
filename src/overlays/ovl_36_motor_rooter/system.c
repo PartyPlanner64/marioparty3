@@ -271,7 +271,7 @@ s32 m254_SetAnimModel(s32 dir, s32 file, f32 freq, s32 attr, s32 arg4) {
         if (!animModel->set) {
             animModel->modelId = func_8000B108_main((dir << 16) | file, arg4);
             func_8001C258_main(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-            hmfModel = &HmfModelData[animModel->modelId];
+            hmfModel = &Hu3DData[animModel->modelId];
             hmfModel->motTime = 0.0f;
             hmfModel->motSpeed = 0.0f;
             if (hmfModel->hmf->unk98 != NULL) {
@@ -298,7 +298,7 @@ s32 m254_SetAnimModelDispOn(s16 animModelId, f32 posX, f32 posY, f32 posZ, f32 r
         return FALSE;
     }
     animModel = &m254_animModels[animModelId];
-    HmfModel = &HmfModelData[animModel->modelId];
+    HmfModel = &Hu3DData[animModel->modelId];
     if ((HmfModel->attr & 4) && animModel->state == ANIMMDL_STATE_INVISIBLE) {
         Hu3DModelPosSet(animModel->modelId, posX, posY, posZ);
         Hu3DModelRotSet(animModel->modelId, rotX, rotY, rotZ);
@@ -329,7 +329,7 @@ void m254_UpdateAnimModels(void) {
         if (!animModel->set || animModel->state == ANIMMDL_STATE_INVISIBLE) {
             continue;
         }
-        hmfModel = &HmfModelData[animModel->modelId];
+        hmfModel = &Hu3DData[animModel->modelId];
         switch (animModel->state) {
             default:
                 if (D_800CCF58_main[hmfModel->motId].unk02 <= hmfModel->motTime) {
@@ -368,7 +368,7 @@ s16 func_8010E888_motor_rooter(HuSprite_Unk84_Struct *arg0, f32 arg1) {
 
     temp_v0_0 = temp_v0 = HuMemAlloc(0x10000);
     temp_v0_2 = func_8001A894_main(0x4C1, temp_v0_0, 4);
-    temp_s6 = HmfModelData[temp_v0_2].hmf;
+    temp_s6 = Hu3DData[temp_v0_2].hmf;
     temp_s6->unk60->unk50 |= 0x01010000;
     temp_s5 = func_80110A00_motor_rooter(arg0, temp_s6, 1.0f, 0, 0x14);
     gSPDisplayList(temp_v0++, osVirtualToPhysical(D_801135A0_motor_rooter));
@@ -438,7 +438,7 @@ s16 func_8010EFF8_motor_rooter(HuSprite_Unk84_Struct *arg0, f32 arg1) {
 
     temp_v0_0 = temp_v0 = HuMemAlloc(0x10000);
     temp_v0_2 = func_8001A894_main(0x4C1, temp_v0_0, 4);
-    temp_s4 = HmfModelData[temp_v0_2].hmf;
+    temp_s4 = Hu3DData[temp_v0_2].hmf;
     temp_s4->unk60->unk50 |= 0x01010000;
     HuMemFree(temp_s4->unk3C);
     temp_s4->unk3C = HuMemAllocTag(0x14, D_800CDD6A_main);
@@ -541,7 +541,7 @@ s16 func_8010FC10_motor_rooter(HuSprite_Unk84_Struct *arg0, RGBA *arg1) {
 
     temp_v0_0 = temp_v0_2 = HuMemAlloc(0x10000);
     temp_v0 = func_8001A894_main(0x8C1, temp_v0_0, 4);
-    temp_s4 = HmfModelData[temp_v0].hmf;
+    temp_s4 = Hu3DData[temp_v0].hmf;
     temp_s4->unk60->unk50 |= 0x01010000;
     HuMemFree(temp_s4->unk3C);
     temp_s4->unk3C = HuMemAllocTag(0x18, D_800CDD6A_main);
@@ -638,7 +638,7 @@ s16 func_8010FC10_motor_rooter(HuSprite_Unk84_Struct *arg0, RGBA *arg1) {
 
 // Identical to func_8010CCD4_tick_tock_hop (ovl_39/M257)
 void func_801107FC_motor_rooter(u16 modelId, HuSprite_Unk84_Struct *arg1, u16 arg2) {
-    HmfModel *model = &HmfModelData[modelId];
+    HmfModel *model = &Hu3DData[modelId];
     HmfData *temp_s2 = model->hmf;
     Gfx *temp_s0 = temp_s2->unk3C->unk00[D_800D2008_main + 1];
 
@@ -652,7 +652,7 @@ void func_801107FC_motor_rooter(u16 modelId, HuSprite_Unk84_Struct *arg1, u16 ar
 
 // Identical to func_801108CC_motor_rooter (ovl_39/M257)
 void func_801108CC_motor_rooter(u16 modelId, HuSprite_Unk84_Struct *arg1, u16 arg2, RGBA *arg3) {
-    HmfModel *model = &HmfModelData[modelId];
+    HmfModel *model = &Hu3DData[modelId];
     HmfData *temp_s3 = model->hmf;
     HmfModelData_Unk64_Unk3C_Struct *temp_v1 = temp_s3->unk3C;
     Gfx *temp_s0 = temp_v1->unk00[D_800D2008_main + 1];
@@ -789,7 +789,7 @@ void m254_MakeRandPermutation(s16 *out, s16 n) {
 }
 
 void m254_SyncWithModel(omObjData *object) {
-    HmfModel *model = &HmfModelData[object->model[0]];
+    HmfModel *model = &Hu3DData[object->model[0]];
 
     object->scale.x = model->scale.x;
     object->scale.y = model->scale.y;

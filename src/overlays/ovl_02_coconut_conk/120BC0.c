@@ -213,8 +213,8 @@ f32 func_80105B88_coconut_conk(f32 arg0, f32 *arg1, f32 arg2) {
 void func_80105BA4_coconut_conk(omObjData *arg0, u8 arg1) {
     s32 character = GwPlayer[arg0->work[0]].chr;
 
-    func_80033354_main(D_8010B1DC_coconut_conk);
-    D_8010B1DC_coconut_conk = HmfAnimCreate(HmfModelData[arg0->model[0]].hmf, D_8010B1D0_coconut_conk[arg1], 0,
+    Hu3DAnimKill(D_8010B1DC_coconut_conk);
+    D_8010B1DC_coconut_conk = Hu3DAnimCreate(Hu3DData[arg0->model[0]].hmf, D_8010B1D0_coconut_conk[arg1], 0,
                                             D_8010AF98_coconut_conk[character]);
 }
 
@@ -398,7 +398,7 @@ void func_801066E4_coconut_conk(omObjData *arg0) {
             break;
         case 1:
             Hu3DMotionSpeedSet(arg0->model[0], 1.0f);
-            if (D_800CCF58_main[HmfModelData[arg0->model[0]].motId].unk02 == HmfModelData[arg0->model[0]].motTime) {
+            if (D_800CCF58_main[Hu3DData[arg0->model[0]].motId].unk02 == Hu3DData[arg0->model[0]].motTime) {
                 data->unk04 = 0;
             }
             break;
@@ -844,7 +844,7 @@ void func_80107B8C_coconut_conk(omObjData *arg0) {
             coconut->unk04 = 4;
         }
     }
-    if (D_800CCF58_main[HmfModelData[arg0->model[6]].motId].unk02 <= HmfModelData[arg0->model[6]].motTime) {
+    if (D_800CCF58_main[Hu3DData[arg0->model[6]].motId].unk02 <= Hu3DData[arg0->model[6]].motTime) {
         func_8001C258_main(arg0->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         func_8001C258_main(arg0->model[7], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(arg0->model[7], arg0->trans.x, arg0->trans.y + 50.0f, arg0->trans.z + 40.0f);
@@ -985,7 +985,7 @@ void func_8010815C_coconut_conk(omObjData *arg0) {
                     if (arg0->trans.y <= 0.0f) {
                         arg0->trans.y = 0.0f;
                         data->unk08 = 2;
-                        Hu3DMotionShiftSet(arg0->model[0], HmfModelData[arg0->motion[2]].motId, 0, 5, 0);
+                        Hu3DMotionShiftSet(arg0->model[0], Hu3DData[arg0->motion[2]].motId, 0, 5, 0);
                         func_80045ED0_main((D_8010AFD0_coconut_conk[GwPlayer[arg0->work[0]].chr] << 16) | 0x2F);
                     }
                     data->unk20 -= 9.0f;
@@ -993,10 +993,10 @@ void func_8010815C_coconut_conk(omObjData *arg0) {
                         data->unk20 = 0.0f;
                     }
                     func_8001F9E4_main(arg0->model[4], data->unk20);
-                    if (D_800CCF58_main[HmfModelData[arg0->model[4]].motId].unk02 <= HmfModelData[arg0->model[4]].motTime) {
+                    if (D_800CCF58_main[Hu3DData[arg0->model[4]].motId].unk02 <= Hu3DData[arg0->model[4]].motTime) {
                         func_8001C258_main(arg0->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     }
-                    if (D_800CCF58_main[HmfModelData[arg0->model[5]].motId].unk02 <= HmfModelData[arg0->model[5]].motTime) {
+                    if (D_800CCF58_main[Hu3DData[arg0->model[5]].motId].unk02 <= Hu3DData[arg0->model[5]].motTime) {
                         func_8001C258_main(arg0->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     }
                     break;
@@ -1006,10 +1006,10 @@ void func_8010815C_coconut_conk(omObjData *arg0) {
                         data->unk20 = 0.0f;
                     }
                     func_8001F9E4_main(arg0->model[4], data->unk20);
-                    if (D_800CCF58_main[HmfModelData[arg0->model[4]].motId].unk02 <= HmfModelData[arg0->model[4]].motTime) {
+                    if (D_800CCF58_main[Hu3DData[arg0->model[4]].motId].unk02 <= Hu3DData[arg0->model[4]].motTime) {
                         func_8001C258_main(arg0->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     }
-                    if (D_800CCF58_main[HmfModelData[arg0->model[5]].motId].unk02 <= HmfModelData[arg0->model[5]].motTime) {
+                    if (D_800CCF58_main[Hu3DData[arg0->model[5]].motId].unk02 <= Hu3DData[arg0->model[5]].motTime) {
                         func_8001C258_main(arg0->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     }
                     break;
@@ -1074,7 +1074,7 @@ void func_801089DC_coconut_conk(omObjData *obj) {
     for (i = 0; i < 3; i++) {
         D_8010B1D0_coconut_conk[i] = DataRead(model | D_8010AF68_coconut_conk[chr][i]);
     }
-    D_8010B1DC_coconut_conk = HmfAnimCreate(HmfModelData[obj->model[0]].hmf, D_8010B1D0_coconut_conk[0], 0,
+    D_8010B1DC_coconut_conk = Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, D_8010B1D0_coconut_conk[0], 0,
                                             D_8010AF98_coconut_conk[chr]);
     Hu3DModelRemakeStatic(obj->model[0]);
     func_8001C514_main(obj->model[0]);
@@ -1270,7 +1270,7 @@ void func_801095C8_coconut_conk(omObjData *arg0) {
         D_800D20A1_main[arg0->work[3]] = 0;
     }
     func_800DDD94_minigame(arg0);
-    if (HmfModelData[arg0->model[7]].motTime == 0.0f) {
+    if (Hu3DData[arg0->model[7]].motTime == 0.0f) {
         func_8001C258_main(arg0->model[7], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     if (work->unk5C == 0x200 && work->unk50 == 0x80 && data->unk04 == 0) {
@@ -1589,7 +1589,7 @@ void func_8010A55C_coconut_conk(omObjData *arg0) {
     for (i = 0; i < 3; i++) {
         DataClose(D_8010B1D0_coconut_conk[i]);
     }
-    func_80033354_main(D_8010B1DC_coconut_conk);
+    Hu3DAnimKill(D_8010B1DC_coconut_conk);
     osViBlack(0);
     HuAudFXStop(-1);
     omOvlReturnEx(1);
@@ -1785,19 +1785,19 @@ void func_8010AC90_coconut_conk(void) {
 }
 
 void func_8010AE04_coconut_conk(void) {
-    Hu3DAnimInit(50);
+    func_8001FE20_main(50);
     func_800142A0_main(50);
     omInitObjMan(50, 0);
     func_8004A208_main();
     func_8010AC90_coconut_conk();
-    HmfLightMaxSet(1);
-    HmfLightMaxSet(2);
-    HmfLightColorSet(0, 0xFF, 0xFF, 0xFF);
-    HmfLightDirSet(0, -84.0f, 49.0f, 69.0f);
-    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
-    HmfLightDirSet(1, -84.0f, 49.0f, 69.0f);
-    HmfLightColorSet(2, 0xFF, 0xFF, 0xFF);
-    HmfLightDirSet(2, -84.0f, 49.0f, 69.0f);
+    Hu3DGLightMaxSet(1);
+    Hu3DGLightMaxSet(2);
+    Hu3DGLightColorSet(0, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightDirSet(0, -84.0f, 49.0f, 69.0f);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightDirSet(1, -84.0f, 49.0f, 69.0f);
+    Hu3DGLightColorSet(2, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightDirSet(2, -84.0f, 49.0f, 69.0f);
     D_800EC1B8_minigame = 0;
     D_800EC280_minigame = 0;
     D_800EBE28_minigame = 0;

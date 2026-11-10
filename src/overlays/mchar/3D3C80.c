@@ -195,7 +195,7 @@ void func_80105C4C_mchar(omObjData *arg0);
 
 void func_801059A0_mchar(void) {
     Hu3DCamInit(1);
-    Hu3DAnimInit(1);
+    func_8001FE20_main(1);
     func_800142A0_main(0x19);
     omInitObjMan(0x33, 0);
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
@@ -205,12 +205,12 @@ void func_801059A0_mchar(void) {
         D_800A1786_main = -1;
     }
     omAddObj(0x2710, 0, 0, -1, func_80106DF8_mchar);
-    HmfLightMaxSet(3);
-    HmfLightColorSet(0, 0x78, 0x78, 0x78);
-    HmfLightColorSet(1, 0x40, 0x40, 0x60);
-    HmfLightDirSet(1, -100.0f, 100.0f, 100.0f);
-    HmfLightColorSet(2, 0, 0, 0);
-    HmfLightColorSet(3, 0, 0, 0);
+    Hu3DGLightMaxSet(3);
+    Hu3DGLightColorSet(0, 0x78, 0x78, 0x78);
+    Hu3DGLightColorSet(1, 0x40, 0x40, 0x60);
+    Hu3DGLightDirSet(1, -100.0f, 100.0f, 100.0f);
+    Hu3DGLightColorSet(2, 0, 0, 0);
+    Hu3DGLightColorSet(3, 0, 0, 0);
     func_80106D7C_mchar();
     omAddObj(0x7D0, 10, 10, -1, func_80105B38_mchar);
     omAddObj(0x7D0, 0, 0, -1, func_80106898_mchar);
@@ -268,13 +268,13 @@ void func_80105C4C_mchar(omObjData *arg0) {
     }
     if (D_800D5558_main[0] & D_CBUTTONS) {
         func_8001C258_main((s16)D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        model = &HmfModelData[D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar]];
+        model = &Hu3DData[D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar]];
         D_80107118_mchar++;
         if (D_80107118_mchar >= 2) {
             D_80107118_mchar = 0;
         }
         func_8001C258_main((s16)D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-        newModel = &HmfModelData[D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar]];
+        newModel = &Hu3DData[D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar]];
         newModel->motId = model->motId;
         newModel->motTime = model->motTime;
         newModel->motAttr = model->motAttr;
@@ -305,7 +305,7 @@ void func_80105C4C_mchar(omObjData *arg0) {
         func_80045ED0_main((D_80106E84_mchar[D_80107114_mchar] << 16) | D_80107116_mchar);
     }
     if ((u16)D_800D0590_main[1] & (A_BUTTON | B_BUTTON)) {
-        model = &HmfModelData[D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar]];
+        model = &Hu3DData[D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar]];
         if ((u16)D_800D0590_main[1] & B_BUTTON) {
             model->motAttr |= 4;
         }
@@ -321,7 +321,7 @@ void func_80105C4C_mchar(omObjData *arg0) {
         D_80106E82_mchar = !D_80106E82_mchar;
     }
     if (D_80106E82_mchar != 0) {
-        model = &HmfModelData[D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar]];
+        model = &Hu3DData[D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar]];
         fontcolor = FONT_COLOR_BLUE;
         sprintf(D_80107950_mchar, "MOTIONNO.%3d <%s>", D_80107116_mchar, D_80106E94_mchar[D_80107116_mchar]);
         print8(24, 182, D_80107950_mchar);
@@ -357,13 +357,13 @@ void func_8010654C_mchar(s16 arg0) {
         func_80017790_main((s16)D_80107A60_mchar[i][1], 1, i, func_80017BB8_main(i, 0xA4));
         func_8001C514_main((s16)D_80107A60_mchar[i][1]);
         if (D_80107AA0_mchar[i][0] != -1) {
-            func_8002D4B8_main((s16)D_80107AA0_mchar[i][0]);
+            Hu3DMotionKill((s16)D_80107AA0_mchar[i][0]);
         }
         if (D_80107AA0_mchar[i][1] != -1) {
-            func_8002D4B8_main((s16)D_80107AA0_mchar[i][1]);
+            Hu3DMotionKill((s16)D_80107AA0_mchar[i][1]);
         }
         data = DataReadTemp(func_80017BB8_main(i, 0));
-        D_80107AA0_mchar[i][0] = func_8001F1FC_main(data, 0);
+        D_80107AA0_mchar[i][0] = Hu3DMotionCreate(data, 0);
         DataCloseTemp(data);
         D_80107AA0_mchar[i][1] = -1;
         Hu3DMotionSet((s16)D_80107A60_mchar[i][0], (s16)D_80107AA0_mchar[i][0]);
@@ -376,11 +376,11 @@ void func_80106764_mchar(s16 arg0) {
 
     for (i = 0; i < 8; i++) {
         if (D_80107AA0_mchar[i][1] != -1) {
-            func_8002D4B8_main((s16)D_80107AA0_mchar[i][1]);
+            Hu3DMotionKill((s16)D_80107AA0_mchar[i][1]);
         }
         D_80107AA0_mchar[i][1] = D_80107AA0_mchar[i][0];
         data = DataReadTemp(func_80017BB8_main(i, arg0));
-        D_80107AA0_mchar[i][0] = func_8001F1FC_main(data, 0);
+        D_80107AA0_mchar[i][0] = Hu3DMotionCreate(data, 0);
         DataCloseTemp(data);
     }
     Hu3DMotionShiftSet((s16)D_80107A60_mchar[D_80107114_mchar][D_80107118_mchar],

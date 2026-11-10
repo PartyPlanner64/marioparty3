@@ -924,7 +924,7 @@ void func_80107F0C_w10(void) {
     MBMotionSet(chest, -1, 4);
     Hu3DMotionSpeedSet(chest->omObj1->model[0], 1.2f);
     model = chest->omObj1->model[0];
-    Hu3DMotionTimeSet(model, D_800CCF58_main[HmfModelData[model].motId].unk02);
+    Hu3DMotionTimeSet(model, D_800CCF58_main[Hu3DData[model].motId].unk02);
     while (func_800D9E80_shared_board(chest) == 0) {
         HuPrcVSleep();
     }
@@ -1586,7 +1586,7 @@ void func_80109444_w10(void) {
         MBMotionSet(chest, -1, 4);
         Hu3DMotionSpeedSet(chest->omObj1->model[0], 1.2f);
         model = chest->omObj1->model[0];
-        Hu3DMotionTimeSet(model, D_800CCF58_main[HmfModelData[model].motId].unk02);
+        Hu3DMotionTimeSet(model, D_800CCF58_main[Hu3DData[model].motId].unk02);
         while (func_800D9E80_shared_board(chest) == 0) {
             HuPrcVSleep();
         }
@@ -1701,7 +1701,7 @@ void func_80109444_w10(void) {
     MBMotionSet(box, -1, 4);
     Hu3DMotionSpeedSet(box->omObj1->model[0], 1.2f);
     model = box->omObj1->model[0];
-    Hu3DMotionTimeSet(model, D_800CCF58_main[HmfModelData[model].motId].unk02);
+    Hu3DMotionTimeSet(model, D_800CCF58_main[Hu3DData[model].motId].unk02);
     while (func_800D9E80_shared_board(box) == 0) {
         HuPrcVSleep();
     }
@@ -1932,7 +1932,7 @@ void func_8010B434_w10(void) {
             MBCameraPos2DSet(&pos);
             D_800CB99C_main = 1;
             omAllPause();
-            HmfPauseF = 1;
+            Hu3DPauseF = 1;
             if (func_8010B12C_w10(i)) {
                 HuAudSeqFadeOut(0x5A);
                 WipeCreateOut(0, 0x10);
@@ -1944,7 +1944,7 @@ void func_8010B434_w10(void) {
                 omOvlKill();
                 HuPrcVSleep();
             }
-            HmfPauseF = 0;
+            Hu3DPauseF = 0;
             omAllUPause();
             D_800CB99C_main = 0;
             func_800DE8D8_shared_board(player);
@@ -1963,10 +1963,10 @@ void func_8010B5A4_w10(void) {
     Hu3DCamInit(2);
     omInitObjMan(0x50, 0x28);
     func_8004A208_main();
-    HmfLightMaxSet(1);
-    HmfLightColorSet(0, 0x78, 0x78, 0x78);
-    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
-    HmfLightDirSet(1, -100.0f, 100.0f, 300.0f);
+    Hu3DGLightMaxSet(1);
+    Hu3DGLightColorSet(0, 0x78, 0x78, 0x78);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightDirSet(1, -100.0f, 100.0f, 300.0f);
     MBObjectSetup(0x15, 0x240, 0, 0);
     space = MBMasuGet(0x2A);
     MBVecDirGet(&space->coords, &MBMasuGet(0x2B)->coords, &dir);

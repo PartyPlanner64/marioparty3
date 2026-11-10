@@ -33,13 +33,13 @@ void func_80108350_inst(void) {
     func_8001C5B4_main(object->model[0], object->motion[1]);
     func_8001C814_main(object->model[0], 2, 2);
     data = DataRead(0xA007E);
-    D_8010DC20_inst[0] = (s16)HmfAnimCreate(HmfModelData[object->model[0]].hmf, data, 0, "c204n_0_DEF");
+    D_8010DC20_inst[0] = (s16)Hu3DAnimCreate(Hu3DData[object->model[0]].hmf, data, 0, "c204n_0_DEF");
     HuMemMemoryFreePerm(data);
     Hu3DModelRemakeStatic(object->model[0]);
     func_8001C514_main(object->model[0]);
     func_80032FC0_main(D_8010DC22_inst, 1, 0);
-    func_80032FF8_main(D_8010DC22_inst, 0);
-    D_8010DC28_inst = HmfAnimLink(HmfModelData[object->model[0]].hmf, D_8010DC22_inst, 0, "c204n_0_DEF");
+    Hu3DAnimBankSet(D_8010DC22_inst, 0);
+    D_8010DC28_inst = Hu3DAnimLink(Hu3DData[object->model[0]].hmf, D_8010DC22_inst, 0, "c204n_0_DEF");
     D_8010DC20_inst[0] = D_800D1714_main[D_8010DC20_inst[0]].animIdx;
     data = DataRead(0xA007F);
     D_8010DC20_inst[1] = (s16)func_800329B4_main(data);
@@ -114,9 +114,9 @@ void func_80108870_inst(omObjData *object) {
 
 void func_80108954_inst(omObjData *object) {
     s16 model = object->model[0];
-    f32 time = HmfModelData[model].motTime;
+    f32 time = Hu3DData[model].motTime;
 
-    if (D_800CCF58_main[HmfModelData[model].motId].unk02 <= time) {
+    if (D_800CCF58_main[Hu3DData[model].motId].unk02 <= time) {
         func_8001C5B4_main(model, object->motion[3]);
         func_8001C814_main(object->model[0], 2, 2);
         func_8010C848_inst();
@@ -132,9 +132,9 @@ void func_80108A18_inst(s16 model, s16 animSlot, s16 anim) {
 
     if (animSlot >= 0) {
         if (anim == -1) {
-            func_80033910_main(HmfModelData[model].hmf);
+            func_80033910_main(Hu3DData[model].hmf);
         } else {
-            func_80033970_main(HmfModelData[model].hmf);
+            func_80033970_main(Hu3DData[model].hmf);
             entry = &D_800D1714_main[animSlot];
             entry->animIdx = anim;
             entry->rot = 0;

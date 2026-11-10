@@ -330,8 +330,8 @@ static void func_800EE7AC_shared_board(omObjData *func) {
     UnkBoard *temp_s0;
 
     temp_s0 = &D_80105718_shared_board[func->work[0]];
-    if (HmfModelData[temp_s0->unk_04->omObj1->model[0]].motTime ==
-        D_800CCF58_main[HmfModelData[temp_s0->unk_04->omObj1->model[0]].motId].unk02) {
+    if (Hu3DData[temp_s0->unk_04->omObj1->model[0]].motTime ==
+        D_800CCF58_main[Hu3DData[temp_s0->unk_04->omObj1->model[0]].motId].unk02) {
         MBMotionShiftSet(temp_s0->unk_04, temp_s0->unk_00, 0, 0xA, temp_s0->unk_02);
         temp_s0->unk_04 = NULL;
         temp_s0->unk_08 = NULL;
@@ -1649,7 +1649,7 @@ static void MBPauseMain(void) {
     }
     
     HuPrcVSleep();
-    HmfPauseF = 1;
+    Hu3DPauseF = 1;
     temp_s1 = func_800F2C48_shared_board(1, 0);
     temp_v0_2 = DataRead(0x13025D);
     temp_s1->model[0] = HuSprAnimRead(temp_v0_2);
@@ -1667,7 +1667,7 @@ static void MBPauseMain(void) {
     } while (var_s2 != 0);
     
     if (D_80105556_shared_board == 0) {
-        HmfPauseF = 0;
+        Hu3DPauseF = 0;
     }
     
     func_800F2CA4_shared_board(temp_s1);

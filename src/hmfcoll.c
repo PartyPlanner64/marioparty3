@@ -62,7 +62,7 @@ extern s16 D_800D418E_main;
 extern Mtx *MTXBuf;
 extern s16 MTXBufNum;
 
-void Hu3DAnimInit(s16 count) {
+void func_8001FE20_main(s16 count) {
     s32 i;
 
     D_800B19E2_main = 0;
@@ -99,7 +99,7 @@ s16 func_8001FF04_main(s16 model) {
     }
     index = D_800B19E4_main;
     D_800B19E4_main = D_800B19E8_main[index];
-    data = HmfModelData[model].hmf->unk38;
+    data = Hu3DData[model].hmf->unk38;
     size = READ32(&data[4]) - 0x10;
     grid = &D_800D1104_main[index];
     grid->width = READ16(&data[8]);
@@ -556,8 +556,8 @@ void func_80021C14_main(s16 model, Hu3DQuadPool *pool, s32 (*callback)(s32, s16 
 
     pool->curQuad = 0;
     pool->numQuads = 0;
-    hmf = HmfModelData[model].hmf;
-    grid = &D_800D1104_main[HmfModelData[model].unk10];
+    hmf = Hu3DData[model].hmf;
+    grid = &D_800D1104_main[Hu3DData[model].unk10];
     x = (grid->width * grid->cellWidth / 2.0f + pos->x) / grid->cellWidth;
     z = (grid->depth * grid->cellDepth / 2.0f + pos->z) / grid->cellDepth;
     minX = x - 1;

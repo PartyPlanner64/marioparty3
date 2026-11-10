@@ -14,7 +14,7 @@ extern Gfx *D_800D1360[8];
 
 void func_800142A0_main(s32 count);
 void func_800143F0_main(void);
-u16 HmfSprModelCreate(void *data, u32 flags, u16 attr);
+u16 Hu3DSprModelCreate(void *data, u32 flags, u16 attr);
 u16 func_80014618_main(s16 idx, u16 attr);
 void func_800146DC_main(s16 arg0, u16 arg1, u16 arg2);
 void func_80014714_main(s16 arg0, u16 arg1);

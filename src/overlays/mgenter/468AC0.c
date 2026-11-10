@@ -55,13 +55,13 @@ void func_801059D0_mgenter(void) {
     s16 typeBits;
 
     Hu3DCamInit(1);
-    Hu3DAnimInit(1);
+    func_8001FE20_main(1);
     func_800142A0_main(0x19);
     omInitObjMan(0x33, 0x19);
     HuWinInit();
     func_8004A208_main();
     omAddObj(0x2710, 0, 0, -1, func_80108934_mgenter);
-    HmfLightMaxSet(1);
+    Hu3DGLightMaxSet(1);
     D_80109B78_mgenter = 8000.0f;
     D_80109AB0_mgenter = 45.0f;
     D_80109B64_mgenter = 80.0f;
@@ -106,7 +106,7 @@ void func_801059D0_mgenter(void) {
 
 void func_80105C60_mgenter(void) {
     Hu3DCamInit(1);
-    Hu3DAnimInit(1);
+    func_8001FE20_main(1);
     func_800142A0_main(0x19);
     omInitObjMan(0x33, 0x19);
     omOvlHisChg(0, 0x68, 0, 4);
@@ -436,11 +436,11 @@ void func_80106BD0_mgenter(void) {
         model = models[i];
         func_8001C258_main(model, 4, 4);
         func_8001C814_main(model, 1, 1);
-        Hu3DMotionTimeSet(model, D_800CCF58_main[HmfModelData[model].motId].unk02 / 2);
+        Hu3DMotionTimeSet(model, D_800CCF58_main[Hu3DData[model].motId].unk02 / 2);
         Hu3DModelPosSet(model, sindf(i * 120) * 500.0f, 0.0f, cosdf(i * 120) * 500.0f);
-        hmf = HmfModelData[model].hmf;
+        hmf = Hu3DData[model].hmf;
         hmf->unk60[func_8002C834_main(hmf, "atama_2")].unk24 = 1;
-        HmfModelData[model].rot.x = 20.0f;
+        Hu3DData[model].rot.x = 20.0f;
     }
     for (i = 0; i < 3; i++) {
         text = func_800364DC_main((void *)(mesIds[i] + 0x4604));
@@ -474,7 +474,7 @@ void func_80106BD0_mgenter(void) {
                                     cosdf(j * 120 + baseAngle) * 500.0f);
                 }
                 for (i = 0; i < 3; i++) {
-                    if (HmfModelData[models[i]].pos.z > 0.0f) {
+                    if (Hu3DData[models[i]].pos.z > 0.0f) {
                         func_8001C258_main(models[i], 4, 0);
                     } else {
                         func_8001C258_main(models[i], 4, 4);
@@ -519,7 +519,7 @@ void func_80106BD0_mgenter(void) {
                 for (j = 0; j < 3; j++) {
                     Hu3DModelPosSet(models[j], sindf(j * 120 + baseAngle + i * 12 * dir) * 500.0f, 0.0f,
                                     cosdf(j * 120 + baseAngle + i * 12 * dir) * 500.0f);
-                    func_8008A2A0_main(HmfModelData[models[j]].mtx, rotAngle);
+                    func_8008A2A0_main(Hu3DData[models[j]].mtx, rotAngle);
                 }
                 alpha = i * 25;
                 for (j = 0; j < gMes[prevSel].subMode; j++) {
@@ -533,7 +533,7 @@ void func_80106BD0_mgenter(void) {
             }
             prevSel = D_80109B32_mgenter;
             for (i = 0; i < 3; i++) {
-                if (HmfModelData[models[i]].pos.z > 0.0f) {
+                if (Hu3DData[models[i]].pos.z > 0.0f) {
                     func_8001C258_main(models[i], 4, 0);
                 } else {
                     func_8001C258_main(models[i], 4, 4);
@@ -542,7 +542,7 @@ void func_80106BD0_mgenter(void) {
             baseAngle = D_80109B32_mgenter * 120;
         }
         for (j = 0; j < 3; j++) {
-            func_8008A2A0_main(HmfModelData[models[j]].mtx, rotAngle);
+            func_8008A2A0_main(Hu3DData[models[j]].mtx, rotAngle);
         }
         rotAngle += 3.0f;
         HuPrcVSleep();

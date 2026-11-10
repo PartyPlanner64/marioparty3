@@ -1518,15 +1518,15 @@ UnkMBGuideData* MBGuideCreate(u32* arg0, s32 arg1) {
 
         Hu3DModelCameraSet(temp_v0->obj->omObj1->model[0], HU3D_CAM1);
 
-        temp_a2 = &HmfModelData[temp_v0->obj->omObj1->model[0]];
+        temp_a2 = &Hu3DData[temp_v0->obj->omObj1->model[0]];
         sincosdf(15.0f, &temp_a2->mtx[1][2], &temp_a2->mtx[1][1]);
 
-        HmfModelData[temp_v0->obj->omObj1->model[0]].mtx[2][1] = -HmfModelData[temp_v0->obj->omObj1->model[0]].mtx[1][2];
+        Hu3DData[temp_v0->obj->omObj1->model[0]].mtx[2][1] = -Hu3DData[temp_v0->obj->omObj1->model[0]].mtx[1][2];
 
-        temp_hmf = &HmfModelData[temp_v0->obj->omObj1->model[0]];
+        temp_hmf = &Hu3DData[temp_v0->obj->omObj1->model[0]];
         temp_hmf->mtx[2][2] = temp_hmf->mtx[1][1];
 
-        temp_hmf = &HmfModelData[temp_v0->obj->omObj1->model[0]];
+        temp_hmf = &Hu3DData[temp_v0->obj->omObj1->model[0]];
         var_f0 = 0.0f;
         temp_hmf->mtx[3][2] = var_f0;
         temp_hmf->mtx[3][1] = var_f0;
@@ -1539,7 +1539,7 @@ UnkMBGuideData* MBGuideCreate(u32* arg0, s32 arg1) {
         temp_hmf->mtx[0][2] = var_f0;
         temp_hmf->mtx[0][1] = var_f0;
 
-        temp_hmf = &HmfModelData[temp_v0->obj->omObj1->model[0]];
+        temp_hmf = &Hu3DData[temp_v0->obj->omObj1->model[0]];
         var_f1 = 1.0f;
         temp_hmf->mtx[3][3] = var_f1;
         temp_hmf->mtx[0][0] = var_f1;

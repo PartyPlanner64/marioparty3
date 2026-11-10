@@ -35,11 +35,11 @@ s16 D_800A062C_main[] = { 2, 3, 7, 4, 5, 6, 8, 9 }; // unreferenced
 
 /* hmfanim functions. This file does not include game/hmfanim.h: it was compiled
  * against an s16 return type for func_800329B4_main, which is declared s32 there. */
-s32 HmfAnimCreate(HmfData *hmf, void *data, s16 bank, char *name);
-s16 HmfAnimLink(HmfData *hmf, u16 linkIdx, s16 bank, char *name);
+s32 Hu3DAnimCreate(HmfData *hmf, void *data, s16 bank, char *name);
+s16 Hu3DAnimLink(HmfData *hmf, u16 linkIdx, s16 bank, char *name);
 s16 func_800329B4_main(u8 *data);
 void func_80032FC0_main(s16 animIdx, u8 bitmask, u8 flags);
-void func_80033354_main(s16 animIdx);
+void Hu3DAnimKill(s16 animIdx);
 void func_800333B0_main(s16 animIdx);
 void func_80033910_main(HmfData *hmf);
 void func_80033970_main(HmfData *hmf);
@@ -70,7 +70,7 @@ void func_800143F0_main(void) {
     }
 }
 
-u16 HmfSprModelCreate(void *data, u32 flags, u16 attr) {
+u16 Hu3DSprModelCreate(void *data, u32 flags, u16 attr) {
     s16 i;
     s16 id;
 
@@ -109,7 +109,7 @@ u16 HmfSprModelCreate(void *data, u32 flags, u16 attr) {
 }
 
 u16 func_80014618_main(s16 idx, u16 attr) {
-    s16 newIdx = HmfSprModelCreate((void *)-1, HmfModelData[D_800CBB60_main[idx].modelId].attr, attr);
+    s16 newIdx = Hu3DSprModelCreate((void *)-1, Hu3DData[D_800CBB60_main[idx].modelId].attr, attr);
 
     D_800D408C_main[D_800CBB60_main[newIdx].unk_02 = D_800CBB60_main[idx].unk_02].refCount++;
     return newIdx;
@@ -212,7 +212,7 @@ void func_80014A3C_main(s32 frames) {
             continue;
         }
         entry = &D_800CBB60_main[i];
-        if ((HmfModelData[entry->modelId].attr & 4) || (u16)entry->unk_02 == 0xFFFF) {
+        if ((Hu3DData[entry->modelId].attr & 4) || (u16)entry->unk_02 == 0xFFFF) {
             continue;
         }
         if (entry->flags & 0x80) {
@@ -220,7 +220,7 @@ void func_80014A3C_main(s32 frames) {
             entry->flags &= 0xFF7F;
             continue;
         }
-        hmf = HmfModelData[entry->modelId].hmf;
+        hmf = Hu3DData[entry->modelId].hmf;
         *hmf->unk3C->unk00 = D_800D1F30_main;
         animSet = &D_800D408C_main[(u16)entry->unk_02];
         rot = &animSet->rot[entry->pointIdx];
@@ -363,7 +363,7 @@ void func_80014A3C_main(s32 frames) {
 
         gSPEndDisplayList(D_800D1F30_main++);
 
-        if (!(entry->flags & 1) && (HmfPauseF == 0 || (HmfModelData[entry->modelId].attr & 0x8000))) {
+        if (!(entry->flags & 1) && (Hu3DPauseF == 0 || (Hu3DData[entry->modelId].attr & 0x8000))) {
             for (j = 0; j < frames; j++) {
                 entry->unk_08++;
                 entry->unk_0A++;
@@ -415,8 +415,8 @@ void func_800166D0_main(void) {
 // Seems like a good file boundary: ROM 0x17384 (model set / hierarchy helpers start here; the HmfSpr
 // code above does not call into them). Not aligned by 16 though.
 HmfModelSet *func_80016784_main(s16 model, s16 step) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_Unk64_Unk8C_Struct *motion = &D_800CCF58_main[HmfModelData[model].motId];
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_Unk64_Unk8C_Struct *motion = &D_800CCF58_main[Hu3DData[model].motId];
     HmfModelSet *set = HuMemMemoryAllocPerm(sizeof(HmfModelSet));
 
     set->unk_08 = HuMemMemoryAllocPerm((motion->unk02 + step) / step * (hmf->unk16 << 6));
@@ -428,8 +428,8 @@ HmfModelSet *func_80016784_main(s16 model, s16 step) {
 }
 
 HmfModelSet *func_800168A8_main(s16 model, s16 step, char *name) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_Unk64_Unk8C_Struct *motion = &D_800CCF58_main[HmfModelData[model].motId];
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_Unk64_Unk8C_Struct *motion = &D_800CCF58_main[Hu3DData[model].motId];
     s16 node = func_8002C834_main(hmf, name);
     HmfModelSet *set = HuMemMemoryAllocPerm(sizeof(HmfModelSet));
 
@@ -442,8 +442,8 @@ HmfModelSet *func_800168A8_main(s16 model, s16 step, char *name) {
 }
 
 void func_800169E0_main(s16 model, s16 step, HmfModelSet *set, s16 target) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_Unk64_Unk8C_Struct *motion = &D_800CCF58_main[HmfModelData[model].motId];
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_Unk64_Unk8C_Struct *motion = &D_800CCF58_main[Hu3DData[model].motId];
     s16 frame;
 
     D_800D1358_main = set->unk_08;
@@ -459,9 +459,9 @@ void func_800169E0_main(s16 model, s16 step, HmfModelSet *set, s16 target) {
 
 void func_80016B00_main(s16 model, s16 frame, const char *name, HuMtx4F *out) {
     s16 nodeMap[4];
-    HmfData *hmf = HmfModelData[model].hmf;
+    HmfData *hmf = Hu3DData[model].hmf;
     s16 node = func_8002C834_main(hmf, name);
-    HmfModelData_Unk64_Unk8C_Struct *motion = &D_800CCF58_main[HmfModelData[model].motId];
+    HmfModelData_Unk64_Unk8C_Struct *motion = &D_800CCF58_main[Hu3DData[model].motId];
 
     D_800D1358_main = out;
     D_800D04B4_main = nodeMap;
@@ -531,8 +531,8 @@ void func_80016FB4_main(s16 model, HmfModelSet *set, s16 frame) {
     if (frame < 0) {
         frame = 0;
     }
-    hmf = HmfModelData[model].hmf;
-    HmfModelData[model].motId = 0xFF;
+    hmf = Hu3DData[model].hmf;
+    Hu3DData[model].motId = 0xFF;
     start = hmf->unk16 * (frame / set->unk_02);
     D_800CD1B0_main = 0;
     D_800D1358_main = &set->unk_08[start];
@@ -542,7 +542,7 @@ void func_80016FB4_main(s16 model, HmfModelSet *set, s16 frame) {
 }
 
 void func_80017128_main(s16 model, HmfModelSet *set, HuMtx4F mtx, s16 frame) {
-    HmfModel *modelP = &HmfModelData[model];
+    HmfModel *modelP = &Hu3DData[model];
 
     if (frame >= set->nodeCount) {
         frame = set->nodeCount - 1;
@@ -570,8 +570,8 @@ void func_80017320_main(HmfModelSet *set) {
 }
 
 void func_80017358_main(s16 srcModel, const char *srcName, s16 dstModel, const char *dstName) {
-    HmfData *src = HmfModelData[srcModel].hmf;
-    HmfData *dst = HmfModelData[dstModel].hmf;
+    HmfData *src = Hu3DData[srcModel].hmf;
+    HmfData *dst = Hu3DData[dstModel].hmf;
     s16 hash;
     s16 srcObj;
     s16 dstObj;
@@ -701,16 +701,16 @@ s16 func_80017790_main(s16 model, s16 slot, s16 chr, s32 dataNum) {
     s16 animIdx;
 
     if (D_800D20B8_main[chr][slot] != 0xFF) {
-        func_80033354_main(D_800D20B8_main[chr][slot]);
-        func_80033354_main(D_800D5570_main[chr][slot]);
+        Hu3DAnimKill(D_800D20B8_main[chr][slot]);
+        Hu3DAnimKill(D_800D5570_main[chr][slot]);
     }
     data = DataRead(dataNum);
-    anim = HmfAnimCreate(HmfModelData[model].hmf, data, 0, D_800A063C_main[chr + slot * 16]);
+    anim = Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, D_800A063C_main[chr + slot * 16]);
     D_800D5570_main[chr][slot] = anim;
     func_80032FC0_main(anim, 1, 1);
     DataClose(data);
     animIdx = D_800D1714_main[(s16)anim].animIdx;
-    D_800D20B8_main[chr][slot] = HmfAnimLink(HmfModelData[model].hmf, anim, 0, D_800A063C_main[chr + slot * 16]);
+    D_800D20B8_main[chr][slot] = Hu3DAnimLink(Hu3DData[model].hmf, anim, 0, D_800A063C_main[chr + slot * 16]);
     Hu3DModelRemakeStatic(model);
     return animIdx;
 }
@@ -718,11 +718,11 @@ s16 func_80017790_main(s16 model, s16 slot, s16 chr, s32 dataNum) {
 void func_80017954_main(s16 model, s16 slot, s16 chr, s16 animIdx) {
     if (D_800D20B8_main[chr][slot] != 0xFF) {
         if (animIdx == -1) {
-            func_80033910_main(HmfModelData[model].hmf);
+            func_80033910_main(Hu3DData[model].hmf);
         } else {
             HmfAnim *anim;
 
-            func_80033970_main(HmfModelData[model].hmf);
+            func_80033970_main(Hu3DData[model].hmf);
             anim = &D_800D1714_main[D_800D20B8_main[chr][slot]];
             anim->animIdx = animIdx;
             anim->rot = 0;

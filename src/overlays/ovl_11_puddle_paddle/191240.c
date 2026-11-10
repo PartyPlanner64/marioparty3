@@ -211,7 +211,7 @@ s16 func_8010C324_puddle_paddle(s16 arg0, f32 arg1, s16 arg2, s32 arg3) {
         if (work->unk_00 == 0) {
             work->unk_0C = Hu3DModelLink(arg0);
             func_8001C258_main(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-            model = &HmfModelData[work->unk_0C];
+            model = &Hu3DData[work->unk_0C];
             model->motTime = 0;
             model->motSpeed = 0;
             if (model->hmf->unk98 != NULL) {
@@ -257,7 +257,7 @@ HmfModel *func_8010CC9C_puddle_paddle(s16 arg0) {
     HmfModel *ret;
 
     if (arg0 < 0x10) {
-        ret = &HmfModelData[D_80111668_puddle_paddle[arg0].unk_0C];
+        ret = &Hu3DData[D_80111668_puddle_paddle[arg0].unk_0C];
     } else {
         ret = 0;
     }

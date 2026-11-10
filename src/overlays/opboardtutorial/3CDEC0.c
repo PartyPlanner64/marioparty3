@@ -80,8 +80,8 @@ s16 func_80105AFC_opboardtutorial(s32 file, s32 flags) {
     func_8001C954_main(model);
     func_8001C514_main(model);
     func_80013390_main(model, -1, 0, func_80105DE0_opboardtutorial);
-    hmf = HmfModelData[model].hmf;
-    effect = HmfModelData[model].unkBC;
+    hmf = Hu3DData[model].hmf;
+    effect = Hu3DData[model].unkBC;
     particle = effect->unk58;
     effect->unk08.f = 30.0f;
     effect->unk0C.f = 720.0f;
@@ -105,8 +105,8 @@ s16 func_80105AFC_opboardtutorial(s32 file, s32 flags) {
 }
 
 s32 func_80105C7C_opboardtutorial(s16 model, f32 x, f32 y, f32 z) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_UnkBC_Struct *effect = HmfModelData[model].unkBC;
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *effect = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = effect->unk58;
     s16 i;
     f32 angle;
@@ -134,8 +134,8 @@ s32 func_80105C7C_opboardtutorial(s16 model, f32 x, f32 y, f32 z) {
 }
 
 void func_80105DE0_opboardtutorial(s16 model) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_UnkBC_Struct *effect = HmfModelData[model].unkBC;
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *effect = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = effect->unk58;
     s16 i;
     s16 count = hmf->unk1A;
@@ -174,12 +174,12 @@ s16 func_80105FA8_opboardtutorial(s16 model, s32 file, char *name) {
     s16 animIdx;
 
     data = DataRead(file);
-    anim = HmfAnimCreate(HmfModelData[model].hmf, data, 0, name);
+    anim = Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, name);
     D_80107784_opboardtutorial = anim;
     func_80032FC0_main(anim, 1, 1);
     DataClose(data);
     animIdx = D_800D1714_main[(s16)anim].animIdx;
-    D_80107786_opboardtutorial = HmfAnimLink(HmfModelData[model].hmf, (u16)anim, 0, name);
+    D_80107786_opboardtutorial = Hu3DAnimLink(Hu3DData[model].hmf, (u16)anim, 0, name);
     Hu3DModelRemakeStatic(model);
     return animIdx;
 }
@@ -189,9 +189,9 @@ void func_801060B4_opboardtutorial(s16 model, s16 anim) {
 
     if (D_80107786_opboardtutorial != 0xFF) {
         if (anim == -1) {
-            func_80033910_main(HmfModelData[model].hmf);
+            func_80033910_main(Hu3DData[model].hmf);
         } else {
-            func_80033970_main(HmfModelData[model].hmf);
+            func_80033970_main(Hu3DData[model].hmf);
             entry = &D_800D1714_main[D_80107786_opboardtutorial];
             entry->animIdx = anim;
             entry->rot = 0;
@@ -588,7 +588,7 @@ void func_8010751C_opboardtutorial(void) {
 
 void func_80107550_opboardtutorial(void) {
     Hu3DCamInit(1);
-    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
     func_800E6630_shared_board((u32)hvq_data_ROM_START);
     MBBackLoad(0x15);
 }

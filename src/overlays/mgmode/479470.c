@@ -310,8 +310,8 @@ void func_80112200_mgmode(void) {
                 }
                 break;
         }
-        if (HmfModelData[D_8011B8A8_mgmode[4]].motId != D_8011B78A_mgmode &&
-            HmfModelData[D_8011B8A8_mgmode[4]].motIdShift != D_8011B78A_mgmode) {
+        if (Hu3DData[D_8011B8A8_mgmode[4]].motId != D_8011B78A_mgmode &&
+            Hu3DData[D_8011B8A8_mgmode[4]].motIdShift != D_8011B78A_mgmode) {
             Hu3DMotionShiftSet(D_8011B8A8_mgmode[4], D_8011B78A_mgmode, 0, 8, 2);
         }
     }
@@ -334,9 +334,9 @@ void func_80112CF4_mgmode(void) {
             Hu3DModelScaleSet(D_8011B8A8_mgmode[18], 1.0f, sindf(i / 5.0f * 90.0f), 1.0f);
         }
         t = i / 10.0f * 90.0f;
-        HmfModelData[D_8011B8A8_mgmode[4]].pos.x = sindf(t) * radius + -352.0;
-        HmfModelData[D_8011B8A8_mgmode[4]].pos.y = cosdf(t) * 200.0f + 63.75f;
-        HmfModelData[D_8011B8A8_mgmode[4]].rot.y = cosdf(t) * 75.0f + 15.0f;
+        Hu3DData[D_8011B8A8_mgmode[4]].pos.x = sindf(t) * radius + -352.0;
+        Hu3DData[D_8011B8A8_mgmode[4]].pos.y = cosdf(t) * 200.0f + 63.75f;
+        Hu3DData[D_8011B8A8_mgmode[4]].rot.y = cosdf(t) * 75.0f + 15.0f;
         HuPrcVSleep();
     }
     Hu3DMotionShiftSet(D_8011B8A8_mgmode[4], D_8011B788_mgmode, 0, 8, 2);
@@ -417,13 +417,13 @@ void func_80113204_mgmode(void) {
             Hu3DModelScaleSet(D_8011B8A8_mgmode[18], 1.0f, cosdf(i / 5.0f * 90.0f), 1.0f);
         }
         t = i / 8.0f * 90.0f;
-        HmfModelData[D_8011B8A8_mgmode[4]].pos.x = cosdf(t) * radius + -352.0;
-        HmfModelData[D_8011B8A8_mgmode[4]].pos.y = sindf(t) * 100.0f + 63.75f;
-        HmfModelData[D_8011B8A8_mgmode[4]].rot.y = -sindf(t) * 100.0f + 15.0f;
+        Hu3DData[D_8011B8A8_mgmode[4]].pos.x = cosdf(t) * radius + -352.0;
+        Hu3DData[D_8011B8A8_mgmode[4]].pos.y = sindf(t) * 100.0f + 63.75f;
+        Hu3DData[D_8011B8A8_mgmode[4]].rot.y = -sindf(t) * 100.0f + 15.0f;
         HuPrcVSleep();
     }
     Hu3DModelPosSet(D_8011B8A8_mgmode[4], -436.0f, 0.0f, 92.0f);
-    HmfModelData[D_8011B8A8_mgmode[4]].rot.y = 100.0f;
+    Hu3DData[D_8011B8A8_mgmode[4]].rot.y = 100.0f;
     Hu3DMotionShiftSet(D_8011B8A8_mgmode[4], D_8011B788_mgmode, 0, 8, 0);
     func_80116ED4_mgmode(2, 20, 1, (void (*)(s16 *))-1);
     func_8001C258_main(D_8011B8A8_mgmode[18], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
@@ -483,7 +483,7 @@ s32 func_801136EC_mgmode(void) {
     func_80115E9C_mgmode(D_800CE29C_main + 0x4700, 184, 62);
     func_80115C5C_mgmode(D_800D1FE0_main);
     Hu3DModelPosSet(D_8011B8A8_mgmode[4], -208.0f, 63.75f, -332.0f);
-    HmfModelData[D_8011B8A8_mgmode[4]].rot.y = 15.0f;
+    Hu3DData[D_8011B8A8_mgmode[4]].rot.y = 15.0f;
     func_8001C258_main(D_8011B8A8_mgmode[8], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DModelPosSet(D_8011B8A8_mgmode[8], 2.0f, 0.0f, -332.0f);
     func_8001C258_main(D_8011B8A8_mgmode[17], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
@@ -745,8 +745,8 @@ void func_80114404_mgmode(void) {
 
 void func_80114614_mgmode(s16 index) {
     while (Hu3DMotionShiftTimeGet(D_8011B8A8_mgmode[index]) != -1.0f ||
-           HmfModelData[D_8011B8A8_mgmode[index]].motTime <
-               D_800CCF58_main[HmfModelData[D_8011B8A8_mgmode[index]].motId].unk02) {
+           Hu3DData[D_8011B8A8_mgmode[index]].motTime <
+               D_800CCF58_main[Hu3DData[D_8011B8A8_mgmode[index]].motId].unk02) {
         HuPrcVSleep();
     }
 }
@@ -917,12 +917,12 @@ void func_80114FA0_mgmode(void) {
     Hu3DModelPosSet(model, 2.0f, 500.0f, -382.0f);
     func_8000CFA4_main(camera, 2.0f, 500.0f, -332.0f);
     Hu3DModelRotSet(model, 30.0f, 80.0f, 3.0f);
-    func_80088800_main(HmfModelData[model].mtx, 0.0f, 0.0f, 20.0f);
+    func_80088800_main(Hu3DData[model].mtx, 0.0f, 0.0f, 20.0f);
     scale = 1.0f;
     HuAudFXPlay(0x249);
     for (i = 0; i < 51; i++) {
         y = (1.0f - sindf(i / 50.0f * 90.0f)) * 400.0f + 100.0f;
-        HmfModelData[model].pos.y = y;
+        Hu3DData[model].pos.y = y;
         func_8000CFA4_main(camera, 2.0f, y + 30.0f, -332.0f);
         if (i == 10) {
             Hu3DMotionShiftSet(D_8011B8B8_mgmode[0], D_8011B79C_mgmode, 0, 8, 0);
@@ -1009,7 +1009,7 @@ void func_80115590_mgmode(void) {
     Hu3DMotionShiftSet(model, D_8011B790_mgmode, 0, 8, 2);
     for (i = 0; i < 9; i++) {
         t = 1.0f - i / 8.0f;
-        HmfModelData[model].rot.y = t * angle;
+        Hu3DData[model].rot.y = t * angle;
         HuPrcVSleep();
     }
 }
@@ -1029,7 +1029,7 @@ void func_80115848_mgmode(void) {
     angle = atan2df(dx, dz) + 180.0f;
     for (i = 0; i < 9; i++) {
         t = i / 8.0f;
-        HmfModelData[model].rot.y = t * angle;
+        Hu3DData[model].rot.y = t * angle;
         HuPrcVSleep();
     }
     for (i = 0; i < 16; i++) {

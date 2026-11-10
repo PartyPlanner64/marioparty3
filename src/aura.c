@@ -31,7 +31,7 @@ static f32 D_800B23A4_main;
 static f32 D_800B23A8_main;
 
 void func_80046030_main(s16 arg0, s16 arg1) {
-    HmfData *temp_s0 = HmfModelData[arg0].hmf;
+    HmfData *temp_s0 = Hu3DData[arg0].hmf;
     HmfModelData_Unk64_Unk60_Unk54_Struct *var_a0;
     Process *temp_v0_4;
     AuraPrcData *temp_v0_5;
@@ -54,7 +54,7 @@ void func_80046030_main(s16 arg0, s16 arg1) {
     temp_v0_5->unk00 = arg0;
     temp_v0_5->unk02 = temp_v0;
     temp_v0_5->unk04 = arg1;
-    HmfModelData[arg0].unkBC = (void *)temp_v0_4; // TODO: is unkBC just a void* data?
+    Hu3DData[arg0].unkBC = (void *)temp_v0_4; // TODO: is unkBC just a void* data?
     D_800B23A0_main = D_800B23A4_main = D_800B23A8_main = 1.0f;
 }
 
@@ -66,7 +66,7 @@ void func_800461B4_main(s16 arg0) {
 void func_800461D8_main(void) {
     s32 var_s1 = 0;
     AuraPrcData *temp_s4 = HuPrcCurrentGet()->user_data;
-    HmfData *temp_s6 = HmfModelData[temp_s4->unk00].hmf;
+    HmfData *temp_s6 = Hu3DData[temp_s4->unk00].hmf;
     s16 temp_v0_2 = temp_s6->unk60[temp_s4->unk02].unk2A;
     s16 temp_v1_0 = temp_s6->unk60[temp_s4->unk02].unk28;
 
@@ -102,7 +102,7 @@ void func_800461D8_main(void) {
 }
 
 void func_80046558_main(s16 arg0) {
-    Process *temp_s0 = (void *)HmfModelData[arg0].unkBC; // TODO
+    Process *temp_s0 = (void *)Hu3DData[arg0].unkBC; // TODO
 
     HuMemFree(temp_s0->user_data);
     omDelPrcObj(temp_s0);

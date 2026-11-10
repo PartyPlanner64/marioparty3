@@ -22,7 +22,7 @@ void func_8011667C_mgmode(MgmodeModelEntry *entries) {
         model = D_8011B8A8_mgmode[i];
         Hu3DModelCameraSet(model, 1);
         func_80116610_mgmode(entries, i, model);
-        D_8011B780_mgmode[i] = HmfModelData[model].motId;
+        D_8011B780_mgmode[i] = Hu3DData[model].motId;
         if (D_8011B780_mgmode[i] != -1) {
             func_8001C814_main(model, -1, entry->motAttr);
         }

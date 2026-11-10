@@ -223,7 +223,7 @@ void func_8011083C_option(s32 arg0, s32 resourceId, s32 arg2) {
         arg2 = 0x6AD;
     }
     data = DataRead(resourceId);
-    D_80114F70_option[arg0].unk_02 = func_8001F1FC_main(data, (s16)arg2);
+    D_80114F70_option[arg0].unk_02 = Hu3DMotionCreate(data, (s16)arg2);
     DataClose(data);
 }
 
@@ -233,7 +233,7 @@ void func_801108C4_option(s32 arg0) {
         D_80114F70_option[arg0].unk_00 = -1;
     }
     if (D_80114F70_option[arg0].unk_02 != -1) {
-        func_8002D4B8_main(D_80114F70_option[arg0].unk_02);
+        Hu3DMotionKill(D_80114F70_option[arg0].unk_02);
         D_80114F70_option[arg0].unk_02 = -1;
     }
 }
@@ -325,7 +325,7 @@ void func_80110DCC_option(s32 arg0, u32 arg1) {
 }
 
 void func_80110E30_option(s32 arg0) {
-    while (HmfModelData[D_80114F70_option[arg0].unk_00].motTime != D_800CCF58_main[HmfModelData[D_80114F70_option[arg0].unk_00].motId].unk02) {
+    while (Hu3DData[D_80114F70_option[arg0].unk_00].motTime != D_800CCF58_main[Hu3DData[D_80114F70_option[arg0].unk_00].motId].unk02) {
         HuPrcVSleep();
     }
 }
@@ -333,7 +333,7 @@ void func_80110E30_option(s32 arg0) {
 s32 func_80110ED0_option(s32 arg0) {
     s16 modelId = D_80114F70_option[arg0].unk_00;
 
-    return HmfModelData[modelId].motTime == D_800CCF58_main[HmfModelData[modelId].motId].unk02;
+    return Hu3DData[modelId].motTime == D_800CCF58_main[Hu3DData[modelId].motId].unk02;
 }
 
 void func_80110F58_option(s32 arg0, s32 arg1, s32 arg2) {
@@ -588,7 +588,7 @@ u16 func_80111E74_option(s32 value) {
             break;
         }
         if (D_800D5558_main[0] & Z_TRIG) {
-            cam = HmfModelData[gCameraList->unk4].hmf->unkBC;
+            cam = Hu3DData[gCameraList->unk4].hmf->unkBC;
             sprintf(text, posFormat, cam->unk08, cam->unk0C, cam->unk10);
             print8(16, 180, text);
             sprintf(text, atFormat, cam->unk14, cam->unk18, cam->unk1C);
@@ -682,24 +682,24 @@ void func_801123D8_option(void) {
     func_801109F4_option(2, 0.0f, 10.0f, 0.0f);
     model = func_80113218_option(2);
     data = DataRead(0xE0020);
-    func_80032FC0_main(HmfAnimCreate(HmfModelData[model].hmf, data, 0, (char *)parrot), 1, 0);
+    func_80032FC0_main(Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, (char *)parrot), 1, 0);
     DataClose(data);
     Hu3DModelRemakeStatic(model);
-    func_80033910_main(HmfModelData[model].hmf);
+    func_80033910_main(Hu3DData[model].hmf);
     func_80112F48_option(3, 0xE0013, 250.0f, 0.0f, -401.15002f);
     func_801109F4_option(3, 0.0f, -11.0f, 0.0f);
     model = func_80113218_option(3);
     data = DataRead(0xE0021);
-    func_80032FC0_main(HmfAnimCreate(HmfModelData[model].hmf, data, 0, (char *)trumpet), 1, 0);
+    func_80032FC0_main(Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, (char *)trumpet), 1, 0);
     DataClose(data);
     data = DataRead(0xE0022);
-    func_80032FC0_main(HmfAnimCreate(HmfModelData[model].hmf, data, 0, (char *)drum), 1, 0);
+    func_80032FC0_main(Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, (char *)drum), 1, 0);
     DataClose(data);
     data = DataRead(0xE0023);
-    func_80032FC0_main(HmfAnimCreate(HmfModelData[model].hmf, data, 0, (char *)cymbal), 1, 0);
+    func_80032FC0_main(Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, (char *)cymbal), 1, 0);
     DataClose(data);
     Hu3DModelRemakeStatic(model);
-    func_80033910_main(HmfModelData[model].hmf);
+    func_80033910_main(Hu3DData[model].hmf);
     func_80112F48_option(4, 0xE0016, 0.0f, 0.0f, 0.0f);
     func_80112F48_option(5, 0xE0019, 0.0f, 0.0f, 0.0f);
     func_80112FD8_option(17, 0xE0017, 0);

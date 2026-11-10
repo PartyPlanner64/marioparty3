@@ -38,22 +38,22 @@ void func_8010A000_mgresultboard(void) {
                         D_8010AC60_mgresultboard[i & 3].z);
         if (i == 0) {
             animData = DataRead(0x180007);
-            anim = (s16)HmfAnimCreate(HmfModelData[obj->model[1]].hmf, animData, 0, "y004_010_DEF");
+            anim = (s16)Hu3DAnimCreate(Hu3DData[obj->model[1]].hmf, animData, 0, "y004_010_DEF");
             D_8010AE80_mgresultboard[0] = anim;
             HuMemMemoryFreePerm(animData);
         } else {
             D_8010AE80_mgresultboard[i] =
-                HmfAnimLink(HmfModelData[obj->model[i + 1]].hmf, anim, 0, "y004_010_DEF");
+                Hu3DAnimLink(Hu3DData[obj->model[i + 1]].hmf, anim, 0, "y004_010_DEF");
         }
         func_80032FC0_main(D_8010AE80_mgresultboard[i], 1, 1);
         Hu3DModelRemakeStatic(obj->model[i + 1]);
         func_8001C514_main(obj->model[i + 1]);
         if (i < 4) {
             Hu3DMotionTimeSet(obj->model[i + 1], 40.0f);
-            func_80032FF8_main(D_8010AE80_mgresultboard[i], D_8010B048_mgresultboard[i].unk_01);
+            Hu3DAnimBankSet(D_8010AE80_mgresultboard[i], D_8010B048_mgresultboard[i].unk_01);
         } else {
             Hu3DMotionTimeSet(obj->model[i + 1], 20.0f);
-            func_80032FF8_main(D_8010AE80_mgresultboard[i], rand8() & 3);
+            Hu3DAnimBankSet(D_8010AE80_mgresultboard[i], rand8() & 3);
         }
     }
     HuMemMemoryFreePerm(modelData);
@@ -121,8 +121,8 @@ void func_8010A4A0_mgresultboard(omObjData *obj) {
         next = D_8010AFB0_mgresultboard[i].unk_08;
         cur = D_8010AFB0_mgresultboard[i].unk_06;
         model = obj->model[cur + 1];
-        time = HmfModelData[model].motTime;
-        endTime = D_800CCF58_main[HmfModelData[model].motId].unk02;
+        time = Hu3DData[model].motTime;
+        endTime = D_800CCF58_main[Hu3DData[model].motId].unk02;
         switch (D_8010AFB0_mgresultboard[i].unk_00) {
             case 1:
                 if (cur >= 0) {
@@ -137,7 +137,7 @@ void func_8010A4A0_mgresultboard(omObjData *obj) {
                 }
                 if (D_8010AFB0_mgresultboard[i].unk_04 >= 0) {
                     if (endTime <= time) {
-                        func_80032FF8_main(D_8010AE80_mgresultboard[next], D_8010AFB0_mgresultboard[i].unk_04);
+                        Hu3DAnimBankSet(D_8010AE80_mgresultboard[next], D_8010AFB0_mgresultboard[i].unk_04);
                         D_8010AFB0_mgresultboard[i].unk_02 = D_8010AFB0_mgresultboard[i].unk_04;
                         D_8010AFB0_mgresultboard[i].unk_04 = -1;
                         if (cur >= 0) {
@@ -161,7 +161,7 @@ void func_8010A4A0_mgresultboard(omObjData *obj) {
                         func_8001C258_main(obj->model[next + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     }
                     if (cur >= 0) {
-                        func_80032FF8_main(D_8010AE80_mgresultboard[cur], D_8010AFB0_mgresultboard[i].unk_02);
+                        Hu3DAnimBankSet(D_8010AE80_mgresultboard[cur], D_8010AFB0_mgresultboard[i].unk_02);
                         Hu3DMotionTimeSet(obj->model[cur + 1], endTime);
                         func_8001C814_main(obj->model[cur + 1], 1, 1);
                     }

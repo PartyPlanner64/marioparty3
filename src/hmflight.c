@@ -15,7 +15,7 @@ extern s16 D_800CC0B4_main;
 extern UnkLightData *D_800CE1D4_main;
 extern u8 D_800D2008_main;
 
-void HmfLightInit(void) {
+void Hu3DLighInit(void) {
     s16 var_a1;
 
     if (D_800CE1D4_main == NULL) {
@@ -34,10 +34,10 @@ void HmfLightInit(void) {
     func_80019968_main(1);
 }
 
-void HmfLightClose(void) {
+void Hu3DLightClose(void) {
 }
 
-void HmfLightExec(s16 arg0) {
+void Hu3DLightExec(s16 arg0) {
     s16 var_s1;
 
     D_800CB8A8_main = D_800CE1D4_main->unk40[D_800D2008_main][arg0];
@@ -74,7 +74,7 @@ void HmfLightExec(s16 arg0) {
     }
 }
 
-void HmfLightReset(void) {
+void Hu3DLightReset(void) {
     s16 var_a3;
 
     D_800CB8A8_main = D_800CE1D4_main->unk40[D_800D2008_main][0];
@@ -85,21 +85,21 @@ void HmfLightReset(void) {
     }
 }
 
-void HmfLightMaxSet(s16 arg0) {
+void Hu3DGLightMaxSet(s16 arg0) {
     if (arg0 >= 8) {
         arg0 = 7;
     }
     D_800CE1D4_main->unk00 = arg0;
 }
 
-void HmfLightStatSet(s16 arg0, u8 arg1, u8 arg2) {
+void Hu3DGLightStatSet(s16 arg0, u8 arg1, u8 arg2) {
     if (D_800CE1D4_main->unk00 >= arg0) {
         D_800CE1D4_main->unk02[arg0].stat &= ~arg1;
         D_800CE1D4_main->unk02[arg0].stat |= arg2;
     }
 }
 
-void HmfLightColorSet(s16 arg0, u8 arg1, u8 arg2, u8 arg3) {
+void Hu3DGLightColorSet(s16 arg0, u8 arg1, u8 arg2, u8 arg3) {
     if (D_800CE1D4_main->unk00 >= arg0) {
         D_800CE1D4_main->unk02[arg0].r = arg1;
         D_800CE1D4_main->unk02[arg0].g = arg2;
@@ -107,7 +107,7 @@ void HmfLightColorSet(s16 arg0, u8 arg1, u8 arg2, u8 arg3) {
     }
 }
 
-void HmfLightDirSet(s16 arg0, f32 arg1, f32 arg2, f32 arg3) {
+void Hu3DGLightDirSet(s16 arg0, f32 arg1, f32 arg2, f32 arg3) {
     if (D_800CE1D4_main->unk00 >= arg0) {
         f32 temp_f0 = arg1 * arg1 + arg2 * arg2 + arg3 * arg3;
 
@@ -151,15 +151,15 @@ void func_80019668_main(HmfData_UnkD0 *arg0) {
 }
 
 s16 func_80019828_main(s16 arg0, s16 arg1) {
-    HmfData *temp_v0_2 = HmfModelData[arg0].hmf;
+    HmfData *temp_v0_2 = Hu3DData[arg0].hmf;
     UnkLightData_unk02 *temp_s5 = temp_v0_2->unkC0;
     s16 temp_v0 = temp_v0_2->unk20;
     s16 var_s2;
 
     for (var_s2 = 0; var_s2 < temp_v0; var_s2++) {
-        HmfLightColorSet(arg1 + var_s2, temp_s5[var_s2].r, temp_s5[var_s2].g, temp_s5[var_s2].b);
-        HmfLightDirSet(arg1 + var_s2, temp_s5[var_s2].unk04, temp_s5[var_s2].unk05, temp_s5[var_s2].unk06);
-        HmfLightStatSet(arg1 + var_s2, 1, temp_s5[var_s2].stat);
+        Hu3DGLightColorSet(arg1 + var_s2, temp_s5[var_s2].r, temp_s5[var_s2].g, temp_s5[var_s2].b);
+        Hu3DGLightDirSet(arg1 + var_s2, temp_s5[var_s2].unk04, temp_s5[var_s2].unk05, temp_s5[var_s2].unk06);
+        Hu3DGLightStatSet(arg1 + var_s2, 1, temp_s5[var_s2].stat);
     }
     return temp_v0;
 }

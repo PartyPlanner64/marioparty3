@@ -26,7 +26,7 @@ void func_80108AF0_inst(s16 model, void *imageHeader, void *imageData, u8 *alpha
     f32 originX, originY, extentX, extentY;
     s16 left, right, top, bottom;
 
-    hmf = HmfModelData[model].hmf;
+    hmf = Hu3DData[model].hmf;
     decoded = HuMemMemoryAllocPerm(0x6000);
     hvqMpsInit1(255);
     hvqMpsDecodeStart1(imageHeader);

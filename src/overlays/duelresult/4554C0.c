@@ -82,7 +82,7 @@ void func_8010AB1C_duelresult() {
 
 void func_8010AB50_duelresult(void) {
     Hu3DCamInit(1);
-    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
     func_800E4F50_name_81(hvq_data_ROM_START);
     MBDBackLoad(0);
     func_800E8180_name_81(1000.0f, 10000.0f);

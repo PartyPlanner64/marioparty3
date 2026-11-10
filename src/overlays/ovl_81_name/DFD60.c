@@ -1026,7 +1026,7 @@ void func_800FAD04_name_81(s32 arg0) {
     D_80101990_name_81 = *var_s1++;
 
     for (i = 0; i < D_80101990_name_81; i++) {
-        D_80105470_name_81[i] = func_8001F1FC_main(DataRead(*var_s1++), 8);
+        D_80105470_name_81[i] = Hu3DMotionCreate(DataRead(*var_s1++), 8);
     }
 }
 
@@ -1034,7 +1034,7 @@ void func_800FADB4_name_81(void) {
     s32 i;
 
     for (i = 0; i < D_80101990_name_81; i++) {
-        func_8002D4B8_main(D_80105470_name_81[i]);
+        Hu3DMotionKill(D_80105470_name_81[i]);
     }
 }
 
@@ -1067,7 +1067,7 @@ void func_800FAEFC_name_81(s32 arg0) {
     D_80101992_name_81 = *var_s1++;
 
     for (i = 0; i < D_80101992_name_81; i++) {
-        D_80105480_name_81[i] = func_8001F1FC_main(DataRead(*var_s1++), 8);
+        D_80105480_name_81[i] = Hu3DMotionCreate(DataRead(*var_s1++), 8);
     }
 }
 
@@ -1079,7 +1079,7 @@ void func_800FAFAC_name_81(void) {
     }
 
     for (i = 0; i < D_80101992_name_81; i++) {
-        func_8002D4B8_main(D_80105480_name_81[i]);
+        Hu3DMotionKill(D_80105480_name_81[i]);
     }
 }
 

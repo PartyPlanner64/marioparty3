@@ -131,16 +131,16 @@ void func_8010A750_inst(omObjData *object) {
     s8 i;
 
     source = D_8010DDD8_inst.object;
-    duration = D_800CCF58_main[HmfModelData[source->model[0]].motId].unk02;
-    time = HmfModelData[source->model[0]].motTime;
+    duration = D_800CCF58_main[Hu3DData[source->model[0]].motId].unk02;
+    time = Hu3DData[source->model[0]].motTime;
     models = D_8010D4C0_inst[D_8010D40A_inst][0];
     for (i = 0; i < models->count; i++) {
-        model = &HmfModelData[object->model[i + 1]];
+        model = &Hu3DData[object->model[i + 1]];
         func_80016B00_main(source->model[0], time, models->nodes[i], &model->mtx);
     }
     models = D_8010D4C0_inst[D_8010D40A_inst][1];
     for (i = 0; i < models->count; i++) {
-        model = &HmfModelData[object->model[i + 10]];
+        model = &Hu3DData[object->model[i + 10]];
         func_80016B00_main(source->model[0], time, models->nodes[i], &model->mtx);
     }
     if (func_80107E20_inst() == 1) {
@@ -148,7 +148,7 @@ void func_8010A750_inst(omObjData *object) {
         for (i = 0; i < models->count; i++) {
             Hu3DMotionTimeSet(object->model[i + 1], 0);
             func_8001C814_main(object->model[i + 1], 1, 0);
-            HmfModelData[object->model[i + 1]].rot.x = 0;
+            Hu3DData[object->model[i + 1]].rot.x = 0;
             func_80016B00_main(source->model[0], duration, models->nodes[i], &D_8010DC50_inst);
             Hu3DModelPosSet(object->model[i + 5], D_8010DC50_inst[3][0] * 0.5f, D_8010DC50_inst[3][1] * 0.5f,
                             D_8010DC50_inst[3][2] * 0.5f);
@@ -157,7 +157,7 @@ void func_8010A750_inst(omObjData *object) {
         for (i = 0; i < models->count; i++) {
             Hu3DMotionTimeSet(object->model[i + 10], 0);
             func_8001C814_main(object->model[i + 10], 1, 0);
-            HmfModelData[object->model[i + 10]].rot.x = 0;
+            Hu3DData[object->model[i + 10]].rot.x = 0;
             func_80016B00_main(source->model[0], duration, models->nodes[i], &D_8010DC50_inst);
             Hu3DModelPosSet(object->model[i + 15], D_8010DC50_inst[3][0] * 0.5f, D_8010DC50_inst[3][1] * 0.5f,
                             D_8010DC50_inst[3][2] * 0.5f);
@@ -206,18 +206,18 @@ void func_8010AD78_inst(omObjData *object) {
     InstModelHooks *models;
     s8 i;
 
-    duration = D_800CCF58_main[HmfModelData[object->model[5]].motId].unk02 - 20.0f;
+    duration = D_800CCF58_main[Hu3DData[object->model[5]].motId].unk02 - 20.0f;
     models = D_8010D4C0_inst[D_8010D40A_inst][0];
     for (i = 0; i < models->count; i++) {
         func_8008A120_main(rotation, (1.0f / duration) * D_8010D414_inst);
-        func_8002367C_main(matrix, HmfModelData[object->model[i + 1]].mtx);
-        func_80018044_main(rotation, matrix, HmfModelData[object->model[i + 1]].mtx);
+        func_8002367C_main(matrix, Hu3DData[object->model[i + 1]].mtx);
+        func_80018044_main(rotation, matrix, Hu3DData[object->model[i + 1]].mtx);
     }
     models = D_8010D4C0_inst[D_8010D40A_inst][1];
     for (i = 0; i < models->count; i++) {
         func_8008A120_main(rotation, (1.0f / duration) * D_8010D414_inst);
-        func_8002367C_main(matrix, HmfModelData[object->model[i + 10]].mtx);
-        func_80018044_main(rotation, matrix, HmfModelData[object->model[i + 10]].mtx);
+        func_8002367C_main(matrix, Hu3DData[object->model[i + 10]].mtx);
+        func_80018044_main(rotation, matrix, Hu3DData[object->model[i + 10]].mtx);
     }
     D_8010D59C_inst++;
     if (D_8010D59C_inst >= duration) {
@@ -303,18 +303,18 @@ void func_8010B2A4_inst(omObjData *object) {
     InstModelHooks *models;
     s8 i;
 
-    duration = D_800CCF58_main[HmfModelData[object->model[5]].motId].unk02 - 20.0f;
+    duration = D_800CCF58_main[Hu3DData[object->model[5]].motId].unk02 - 20.0f;
     models = D_8010D4C0_inst[D_8010D40A_inst][0];
     for (i = 0; i < models->count; i++) {
         func_8008A120_main(rotation, (1.0f / duration) * D_8010D414_inst);
-        func_8002367C_main(matrix, HmfModelData[object->model[i + 1]].mtx);
-        func_80018044_main(rotation, matrix, HmfModelData[object->model[i + 1]].mtx);
+        func_8002367C_main(matrix, Hu3DData[object->model[i + 1]].mtx);
+        func_80018044_main(rotation, matrix, Hu3DData[object->model[i + 1]].mtx);
     }
     models = D_8010D4C0_inst[D_8010D40A_inst][1];
     for (i = 0; i < models->count; i++) {
         func_8008A120_main(rotation, (1.0f / duration) * D_8010D414_inst);
-        func_8002367C_main(matrix, HmfModelData[object->model[i + 10]].mtx);
-        func_80018044_main(rotation, matrix, HmfModelData[object->model[i + 10]].mtx);
+        func_8002367C_main(matrix, Hu3DData[object->model[i + 10]].mtx);
+        func_80018044_main(rotation, matrix, Hu3DData[object->model[i + 10]].mtx);
     }
     D_8010D5A0_inst++;
     if (D_8010D5A0_inst == duration) {
@@ -339,7 +339,7 @@ void func_8010B628_inst(omObjData *object) {
     InstModelHooks *models;
     s32 i;
 
-    duration = D_800CCF58_main[HmfModelData[object->model[5]].motId].unk02;
+    duration = D_800CCF58_main[Hu3DData[object->model[5]].motId].unk02;
     models = D_8010D4C0_inst[D_8010D40A_inst][0];
     for (i = 0; i < models->count; i++) {
         func_8001C258_main(object->model[i + 5], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
@@ -347,7 +347,7 @@ void func_8010B628_inst(omObjData *object) {
         func_8001C814_main(object->model[i + 5], 1, 0);
     }
     models = D_8010D4C0_inst[D_8010D40A_inst][1];
-    duration = D_800CCF58_main[HmfModelData[object->model[15]].motId].unk02;
+    duration = D_800CCF58_main[Hu3DData[object->model[15]].motId].unk02;
     for (i = 0; i < models->count; i++) {
         func_8001C258_main(object->model[i + 15], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DMotionTimeSet(object->model[i + 15], duration);
@@ -356,14 +356,14 @@ void func_8010B628_inst(omObjData *object) {
     models = D_8010D4C0_inst[D_8010D40A_inst][0];
     for (i = 0; i < models->count; i++) {
         func_8008A120_main(rotation, D_8010D414_inst);
-        func_8002367C_main(matrix, HmfModelData[object->model[i + 1]].mtx);
-        func_80018044_main(rotation, matrix, HmfModelData[object->model[i + 1]].mtx);
+        func_8002367C_main(matrix, Hu3DData[object->model[i + 1]].mtx);
+        func_80018044_main(rotation, matrix, Hu3DData[object->model[i + 1]].mtx);
     }
     models = D_8010D4C0_inst[D_8010D40A_inst][1];
     for (i = 0; i < models->count; i++) {
         func_8008A120_main(rotation, D_8010D414_inst);
-        func_8002367C_main(matrix, HmfModelData[object->model[i + 10]].mtx);
-        func_80018044_main(rotation, matrix, HmfModelData[object->model[i + 10]].mtx);
+        func_8002367C_main(matrix, Hu3DData[object->model[i + 10]].mtx);
+        func_80018044_main(rotation, matrix, Hu3DData[object->model[i + 10]].mtx);
     }
     D_8010DC94_inst = func_8010B038_inst;
 }

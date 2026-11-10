@@ -96,8 +96,8 @@ s16 func_80105AE0_opboard(s32 file, s32 flags) {
     func_8001C954_main(model);
     func_8001C514_main(model);
     func_80013390_main(model, -1, 0, func_80105DC4_opboard);
-    hmf = HmfModelData[model].hmf;
-    effect = HmfModelData[model].unkBC;
+    hmf = Hu3DData[model].hmf;
+    effect = Hu3DData[model].unkBC;
     particle = effect->unk58;
     effect->unk08.f = 30.0f;
     effect->unk0C.f = 720.0f;
@@ -121,8 +121,8 @@ s16 func_80105AE0_opboard(s32 file, s32 flags) {
 }
 
 s32 func_80105C60_opboard(s16 model, f32 x, f32 y, f32 z) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_UnkBC_Struct *effect = HmfModelData[model].unkBC;
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *effect = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = effect->unk58;
     s16 i;
     f32 angle;
@@ -150,8 +150,8 @@ s32 func_80105C60_opboard(s16 model, f32 x, f32 y, f32 z) {
 }
 
 void func_80105DC4_opboard(s16 model) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_UnkBC_Struct *effect = HmfModelData[model].unkBC;
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *effect = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = effect->unk58;
     s16 i;
     s16 count = hmf->unk1A;

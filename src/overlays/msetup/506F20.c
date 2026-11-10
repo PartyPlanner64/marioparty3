@@ -88,16 +88,16 @@ void func_8010AF40_msetup(MsetupModelHandle *models, s16 *animSlot, s16 *anim) {
     D_80119AF0_msetup->work[0] = 0;
     HuAudFXPlay(0x135);
     func_8001C814_main(model, 2, 0);
-    while (HmfModelData[model].motTime < 40.0) {
+    while (Hu3DData[model].motTime < 40.0) {
         HuPrcVSleep();
     }
     func_8001C5B4_main(model, models[2].model);
-    while (HmfModelData[model].motTime < 45.0) {
+    while (Hu3DData[model].motTime < 45.0) {
         HuPrcVSleep();
     }
     HuAudFXPlay(0x2A8);
     func_8010B4B8_msetup(model, animSlot, *anim);
-    while (HmfModelData[model].motTime < 80.0) {
+    while (Hu3DData[model].motTime < 80.0) {
         HuPrcVSleep();
     }
     Hu3DMotionSet(model, models[0].motion);
@@ -152,17 +152,17 @@ s16 func_8010B388_msetup(s16 model, s16 *animSlot, s32 dataId, char *name) {
     s16 length;
 
     if (animSlot[0] >= 0) {
-        func_80033354_main(animSlot[0]);
-        func_80033354_main(animSlot[1]);
+        Hu3DAnimKill(animSlot[0]);
+        Hu3DAnimKill(animSlot[1]);
     }
     data = DataRead(dataId);
-    anim = HmfAnimCreate(HmfModelData[model].hmf, data, 0, name);
+    anim = Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, name);
     animSlot[1] = anim;
     func_80032FC0_main(anim, 1, 1);
     DataClose(data);
     length = D_800D1714_main[(s16)anim].animIdx;
     animSlot[2] = length;
-    animSlot[0] = HmfAnimLink(HmfModelData[model].hmf, anim, 0, name);
+    animSlot[0] = Hu3DAnimLink(Hu3DData[model].hmf, anim, 0, name);
     Hu3DModelRemakeStatic(model);
     return length;
 }
@@ -172,9 +172,9 @@ void func_8010B4B8_msetup(s16 model, s16 *animSlot, s16 anim) {
 
     if (*animSlot >= 0) {
         if (anim == -1) {
-            func_80033910_main(HmfModelData[model].hmf);
+            func_80033910_main(Hu3DData[model].hmf);
         } else {
-            func_80033970_main(HmfModelData[model].hmf);
+            func_80033970_main(Hu3DData[model].hmf);
             entry = &D_800D1714_main[*animSlot];
             entry->animIdx = anim;
             entry->rot = 0;
@@ -415,7 +415,7 @@ void func_8010BEF8_msetup(void) {
     pos = &entry->pos;
     Hu3DModelPosSet(index, entry->pos.x, entry->pos.y, entry->pos.z);
     Hu3DModelRotSet(index, 0.0f, entry->value, 0.0f);
-    motions[3] = HmfModelData[index].motId;
+    motions[3] = Hu3DData[index].motId;
     HuPrcVSleep();
     if (D_80119984_msetup[setupCharacter] != 0) {
         func_80017790_main(index, 1, setupCharacter, func_80017BB8_main(setupCharacter, 0xA4));
@@ -594,7 +594,7 @@ void func_8010BEF8_msetup(void) {
                 break;
             case 17:
                 if (motions[0] >= 0) {
-                    Hu3DMotionShiftSet(model, HmfModelData[motions[0]].motId, 0, 6, 0);
+                    Hu3DMotionShiftSet(model, Hu3DData[motions[0]].motId, 0, 6, 0);
                 }
                 entry->state = 0;
                 playing = 1;
@@ -603,7 +603,7 @@ void func_8010BEF8_msetup(void) {
                 state = -1;
                 break;
         }
-        if (playing && D_800CCF58_main[HmfModelData[model].motId].unk02 <= HmfModelData[model].motTime) {
+        if (playing && D_800CCF58_main[Hu3DData[model].motId].unk02 <= Hu3DData[model].motTime) {
             Hu3DMotionShiftSet(model, motions[3], 0, 30, 2);
             playing = 0;
         }
@@ -650,8 +650,8 @@ void func_8010BEF8_msetup(void) {
         }
     }
     if (D_800D20B8_main[character][1] != 0xFF) {
-        func_80033354_main(D_800D20B8_main[character][1]);
-        func_80033354_main(D_800D5570_main[character][1]);
+        Hu3DAnimKill(D_800D20B8_main[character][1]);
+        Hu3DAnimKill(D_800D5570_main[character][1]);
         D_800D20B8_main[character][1] = 0xFF;
     }
     Hu3DModelKill(model);

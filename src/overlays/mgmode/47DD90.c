@@ -425,9 +425,9 @@ s16 func_801182DC_mgmode(s16 stickX, s16 stickY) {
 }
 
 void func_80118624_mgmode(s16 dstModel, s16 srcModel) {
-    HmfModelData[dstModel].pos.x = HmfModelData[srcModel].pos.x;
-    HmfModelData[dstModel].pos.y = HmfModelData[srcModel].pos.y;
-    HmfModelData[dstModel].pos.z = HmfModelData[srcModel].pos.z;
+    Hu3DData[dstModel].pos.x = Hu3DData[srcModel].pos.x;
+    Hu3DData[dstModel].pos.y = Hu3DData[srcModel].pos.y;
+    Hu3DData[dstModel].pos.z = Hu3DData[srcModel].pos.z;
 }
 
 s16 func_80118678_mgmode(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
@@ -440,16 +440,16 @@ s16 func_80118678_mgmode(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     for (i = 0; i < 4; i++) {
         model = func_8000B108_main(D_8011A3E4_mgmode[i], 0x2A9);
         D_8011B678_mgmode[D_8011A3F4_mgmode][i] = model;
-        anim = HmfAnimRead(HmfModelData[model].hmf, 0xB0048, "e268p01_I8");
+        anim = Hu3DAnimRead(Hu3DData[model].hmf, 0xB0048, "e268p01_I8");
         Hu3DModelCameraSet(model, 2);
-        func_8003302C_main(anim, i * 2);
+        Hu3DAnmNoSet(anim, i * 2);
         Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
         func_8001C2FC_main(model, 0x20000, 0x20000);
         Hu3DModelRemakeStatic(model);
         func_8001C954_main(model);
         func_8001C514_main(model);
         func_80013390_main(model, -1, 0, func_80118B8C_mgmode);
-        bc = HmfModelData[model].unkBC;
+        bc = Hu3DData[model].unkBC;
         bc->unk1C.f = arg0;
         bc->unk20.f = arg1;
         bc->unk24.f = arg2;
@@ -486,8 +486,8 @@ void func_801188BC_mgmode(omObjData *obj) {
 }
 
 void func_801189C4_mgmode(s16 model) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_UnkBC_Struct *bc = HmfModelData[model].unkBC;
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = bc->unk58;
     s16 spread = bc->unk08.f;
     s16 count = hmf->unk1A;
@@ -508,8 +508,8 @@ void func_801189C4_mgmode(s16 model) {
 }
 
 void func_80118B8C_mgmode(s16 model) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_UnkBC_Struct *bc = HmfModelData[model].unkBC;
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle;
     s16 count = hmf->unk1A;
     s16 i;

@@ -68,7 +68,7 @@ extern void *D_800CE1B8_main[3];
 extern u8 D_800D2008_main;
 extern s32 D_800D1FDC_main;
 extern void *D_800D59F4_main;
-extern s8 HmfPauseF;
+extern s8 Hu3DPauseF;
 extern HuSprGrp *HuSprGrpLast;
 extern HuSprGrp *HuSprGrpFirst;
 extern HuSprGrp *HuSprGrpData[HUSPR_GRP_MAX];
@@ -1638,7 +1638,7 @@ void func_80056650_main(HuSprite *sprite) {
             sprite->unk_68.unk04 |= 0x80;
         }
     } else {
-        if (HmfPauseF == 0 || (sprite->unk_24 & 0x1000000)) {
+        if (Hu3DPauseF == 0 || (sprite->unk_24 & 0x1000000)) {
             func_800563A4_main(anm);
         }
     }

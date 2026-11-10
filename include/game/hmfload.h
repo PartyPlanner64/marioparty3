@@ -4,7 +4,7 @@
 #include "ultra64.h"
 #include "game/hu3d.h"
 
-void Hmfload(HmfData *hmf, void *fileData, s32 flags);
+void LoadHMF(HmfData *hmf, void *fileData, s32 flags);
 void func_8000F978_main(HmfData *hmf);
 s16 func_8000FDAC_main(void *arg0, s16 arg1);
 u8 *func_80010A38_main(s32 tag, void *start, void *end);

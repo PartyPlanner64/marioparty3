@@ -115,13 +115,13 @@ void func_8010684C_chancetime(omObjData *object) {
         D_8010FAF8_chancetime = 0.0f;
         D_8010FE70_chancetime = 0;
         D_8010FE74_chancetime = done;
-        Hu3DMotionShiftSet(object->model[1], HmfModelData[object->motion[0]].motId, 0, 30, 2);
+        Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[0]].motId, 0, 30, 2);
         Hu3DModelScaleSet(object->model[3], 0.2f, 0.2f, 0.2f);
         func_8001C814_main(object->model[3], 2, 0);
         func_8001C814_main(object->model[3], 1, 1);
         func_8001C258_main(object->model[3], 4, 0);
-        Hu3DModelPosSet(object->model[4], HmfModelData[object->model[3]].pos.x, HmfModelData[object->model[3]].pos.y,
-                        HmfModelData[object->model[3]].pos.z);
+        Hu3DModelPosSet(object->model[4], Hu3DData[object->model[3]].pos.x, Hu3DData[object->model[3]].pos.y,
+                        Hu3DData[object->model[3]].pos.z);
         func_8001C258_main(object->model[4], 4, 0);
         func_8001C814_main(object->model[4], 2, 0);
         func_8001C814_main(object->model[4], 1, 0);
@@ -190,7 +190,7 @@ void func_80106BEC_chancetime(omObjData *object) {
         }
         HuPrcVSleep();
     }
-    Hu3DMotionShiftSet(object->model[1], HmfModelData[object->motion[5]].motId, 0, 20, 0);
+    Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[5]].motId, 0, 20, 0);
     Hu3DMotionSpeedSet(object->model[1], 3.0f);
     done = FALSE;
     do {
@@ -208,7 +208,7 @@ void func_80106BEC_chancetime(omObjData *object) {
         }
         HuPrcVSleep();
     } while (time >= 0.0f);
-    Hu3DMotionShiftSet(object->model[1], HmfModelData[object->motion[6]].motId, 0, 20, 0);
+    Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[6]].motId, 0, 20, 0);
     Hu3DMotionSpeedSet(object->model[1], 3.0f);
     do {
         time = Hu3DMotionShiftTimeGet(object->model[1]);
@@ -217,7 +217,7 @@ void func_80106BEC_chancetime(omObjData *object) {
     time = 0.0f;
     Hu3DModelPosSet(object->model[1], 180.0f, time, -50.0f);
     Hu3DModelPosSet(object->model[3], 180.0f, 220.0f, time);
-    Hu3DMotionShiftSet(object->model[1], HmfModelData[object->motion[0]].motId, 0, 20, 2);
+    Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[0]].motId, 0, 20, 2);
     Hu3DMotionSpeedSet(object->model[1], 1.0f);
     D_8010FAF0_chancetime = 1;
     D_801100C0_chancetime.func = func_80106760_chancetime;
@@ -234,11 +234,11 @@ void func_80106F10_chancetime(void) {
     HuAudFXPlay(0x502);
     CharFXPlay(0x274, GwPlayer[D_801100D0_chancetime[0]].chr);
     func_80017954_main(object->model[1], 2, GwPlayer[D_801100D0_chancetime[0]].chr, D_8010FE7A_chancetime[1]);
-    Hu3DMotionShiftSet(object->model[1], HmfModelData[object->motion[2]].motId, 0, 30, 0);
+    Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[2]].motId, 0, 30, 0);
     HuPrcSleep(30);
     do {
-        time = HmfModelData[object->model[1]].motTime;
-        length = D_800CCF58_main[HmfModelData[object->model[1]].motId].unk02;
+        time = Hu3DData[object->model[1]].motTime;
+        length = D_800CCF58_main[Hu3DData[object->model[1]].motId].unk02;
         HuPrcVSleep();
     } while (time < length);
 }
@@ -251,11 +251,11 @@ void func_8010705C_chancetime(void) {
     HuAudFXPlay(0x503);
     CharFXPlay(0x26B, GwPlayer[D_801100D0_chancetime[0]].chr);
     func_80017954_main(object->model[1], 2, GwPlayer[D_801100D0_chancetime[0]].chr, D_8010FE7A_chancetime[2]);
-    Hu3DMotionShiftSet(object->model[1], HmfModelData[object->motion[3]].motId, 0, 30, 0);
+    Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[3]].motId, 0, 30, 0);
     HuPrcSleep(30);
     do {
-        time = HmfModelData[object->model[1]].motTime;
-        length = D_800CCF58_main[HmfModelData[object->model[1]].motId].unk02;
+        time = Hu3DData[object->model[1]].motTime;
+        length = D_800CCF58_main[Hu3DData[object->model[1]].motId].unk02;
         HuPrcVSleep();
     } while (time < length);
 }
@@ -268,11 +268,11 @@ void func_801071A8_chancetime(void) {
     HuAudFXPlay(0x503);
     CharFXPlay(0x26B, GwPlayer[D_801100D0_chancetime[0]].chr);
     func_80017954_main(object->model[1], 2, GwPlayer[D_801100D0_chancetime[0]].chr, D_8010FE7A_chancetime[2]);
-    Hu3DMotionShiftSet(object->model[1], HmfModelData[object->motion[4]].motId, 0, 30, 0);
+    Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[4]].motId, 0, 30, 0);
     HuPrcSleep(30);
     do {
-        time = HmfModelData[object->model[1]].motTime;
-        length = D_800CCF58_main[HmfModelData[object->model[1]].motId].unk02;
+        time = Hu3DData[object->model[1]].motTime;
+        length = D_800CCF58_main[Hu3DData[object->model[1]].motId].unk02;
         HuPrcVSleep();
     } while (time < length);
 }

@@ -32,12 +32,12 @@ void func_801094B0_inst(void) {
     func_8001C5B4_main(object->model[0], object->motion[1]);
     func_8001C814_main(object->model[0], 2, 2);
     data = DataRead(0xA002A);
-    D_8010DC30_inst = (s16)HmfAnimCreate(HmfModelData[object->model[0]].hmf, data, 0, "c160n_0_DEF");
+    D_8010DC30_inst = (s16)Hu3DAnimCreate(Hu3DData[object->model[0]].hmf, data, 0, "c160n_0_DEF");
     HuMemMemoryFreePerm(data);
     Hu3DModelRemakeStatic(object->model[0]);
     func_8001C514_main(object->model[0]);
     func_80032FC0_main(D_8010DC32_inst, 1, 0);
-    func_80032FF8_main(D_8010DC32_inst, 0);
+    Hu3DAnimBankSet(D_8010DC32_inst, 0);
     object->trans.x = -91.0f;
     object->trans.y = -171.0f;
     object->trans.z = 210.0f;
@@ -105,8 +105,8 @@ void func_801098D8_inst(omObjData *object) {
 void func_801099C0_inst(omObjData *object) {
     s16 model = object->model[0];
 
-    if (D_800CCF58_main[HmfModelData[model].motId].unk02 <= HmfModelData[model].motTime) {
-        Hu3DMotionShiftSet(model, HmfModelData[object->motion[3]].motId, 0, 30, 2);
+    if (D_800CCF58_main[Hu3DData[model].motId].unk02 <= Hu3DData[model].motTime) {
+        Hu3DMotionShiftSet(model, Hu3DData[object->motion[3]].motId, 0, 30, 2);
         func_8010C848_inst();
         D_8010DDEC_inst = func_80109A84_inst;
     }

@@ -60,7 +60,7 @@ void func_8010D094_msetup(HmfData *arg0, s16 arg1) {
 }
 
 s16 func_8010D0C8_msetup(s16 model, char *name) {
-    HmfData *hmf = HmfModelData[model].hmf;
+    HmfData *hmf = Hu3DData[model].hmf;
     HmfData_Unk84_Entry2 *texture;
     s16 hash = func_80011460_main((u8 *)name);
     s32 i;
@@ -541,7 +541,7 @@ omObjData *func_8010E21C_msetup(void) {
     memset(anim, 0, sizeof(MsetupBoardAnim));
     object->data = anim;
     model = object->model[0] = func_8000CBA0_main(0x110012, 0x289);
-    data = HmfModelData[model].unkBC;
+    data = Hu3DData[model].unkBC;
     data->unk1C.f = data->unk20.f = data->unk24.f = 0.0f;
     data->unk10.f = 100.0f;
     object->trans.x = object->trans.y = object->trans.z = 0.0f;
@@ -970,7 +970,7 @@ void func_8010F320_msetup(Process *process, s16 index, s16 spriteSlot, s16 value
 void func_8010F33C_msetup(s16 model, Vec *worldPos, HuMtx4F nodeTransform) {
     HuMtx4F transform;
     HuMtx4F combined;
-    HmfModel *entry = &HmfModelData[model];
+    HmfModel *entry = &Hu3DData[model];
 
     func_80088800_main(transform, entry->pos.x, entry->pos.y, entry->pos.z);
     mtxRotCat(transform, entry->rot.x, entry->rot.y, entry->rot.z);
@@ -985,7 +985,7 @@ void func_8010F43C_msetup(s16 model, char *node, Vec2f *screenPos) {
     HuMtx4F transform;
     Vec worldPos;
 
-    func_80016B00_main(model, HmfModelData[model].motTime, node, &transform);
+    func_80016B00_main(model, Hu3DData[model].motTime, node, &transform);
     func_8010F33C_msetup(model, &worldPos, transform);
     Hu3D3Dto2D(0, &worldPos, screenPos);
 }

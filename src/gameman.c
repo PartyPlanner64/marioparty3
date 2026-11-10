@@ -71,7 +71,7 @@ void func_8000E3C0_main(void) {
     D_800CD2F4_main = 0x2004;
     D_800D6A56_main = 0x180;
     WipeInit();
-    func_8001A070_main(&HuMemMemoryAllocPerm, &HuMemMemoryFreePerm, D_800D4082_main, D_800CD2F4_main, D_800D6A56_main, D_800D1710_main);
+    Hu3DInit(&HuMemMemoryAllocPerm, &HuMemMemoryFreePerm, D_800D4082_main, D_800CD2F4_main, D_800D6A56_main, D_800D1710_main);
     Hu3DCamInit(1);
     pfInit();
     func_80036380_main((u32)strings_japanese_ROM_START);

@@ -189,7 +189,7 @@ void func_80106EEC_mgresultdealer(void) {
     for (i = 0; i < 4; i++) {
         model = func_8000B108_main(D_801098FC_mgresultdealer[i], 0x2A9);
         D_801099F8_mgresultdealer[i] = model;
-        func_8003302C_main(HmfAnimRead(HmfModelData[model].hmf, 0xB0048, "e268p01_I8"), i * 2);
+        Hu3DAnmNoSet(Hu3DAnimRead(Hu3DData[model].hmf, 0xB0048, "e268p01_I8"), i * 2);
         Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
         func_8001C2FC_main(model, 0x20000, 0x20000);
         Hu3DModelRemakeStatic(model);
@@ -213,8 +213,8 @@ void func_8010705C_mgresultdealer(omObjData *obj) {
 }
 
 void func_801070EC_mgresultdealer(s16 model) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_UnkBC_Struct *bc = HmfModelData[model].unkBC;
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = bc->unk58;
     s16 count = hmf->unk1A;
     s16 i;
@@ -234,8 +234,8 @@ void func_801070EC_mgresultdealer(s16 model) {
 }
 
 void func_801072A8_mgresultdealer(s16 model) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_UnkBC_Struct *bc = HmfModelData[model].unkBC;
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle;
     s16 count = hmf->unk1A;
     s16 i;

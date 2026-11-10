@@ -546,7 +546,7 @@ extern u8 D_800CD280_main;
 extern HmfModelData_Unk64_Unk8C_Struct *D_800CCF58_main;
 #endif
 
-void func_8001A070_main(void *arg0, void *arg1, u16 arg2, u16 arg3, u16 arg4, u8 arg5);
+void Hu3DInit(void *arg0, void *arg1, u16 arg2, u16 arg3, u16 arg4, u8 arg5);
 s16 Hu3DModelCreate(u8 *, u32);
 s32 Hu3DModelLink(s16 linkMdlId);
 s32 func_8001A894_main(u32 flags, void *dl, s32 mode);
@@ -574,21 +574,21 @@ void Hu3DMotionSpeedSet(s16, f32);
 void func_8001C954_main(s16);
 void Hu3DMotionShapeSet(s16, s16, s16);
 void Hu3DFogSet(s32, s32, s32, s32, u8);
-s32 func_8001F1FC_main(void *, s32);
+s32 Hu3DMotionCreate(void *, s32);
 void Hu3DMotionSet(s16, s16);
 void Hu3DBGColorSet(s32, s32, s32);
 void func_8001F450_main(s16, s16, f32);
 void func_8001FDE8_main(s16);
 
 #ifndef NO_EXTERN_VARIABLES
-extern HmfModel *HmfModelData;
+extern HmfModel *Hu3DData;
 #endif
 
 s16 func_8001ABD4_main(s16 arg0, s8 arg1);
 void func_8001AC34_main(s16 arg0, s32 arg1);
-void Hu3DModelAllKill(void);
+void Hu3DAllKill(void);
 Gfx *func_8001BD24_main(Gfx *arg0, s16 arg1, u16 arg2);
-void Hu3DInit(void);
+void func_8001BF14_main(void);
 void Hu3DModelPosGet(s16 idx, Vec *arg1);
 void func_8001C1F0_main(s16 arg0, s32 arg1);
 void func_8001C39C_main(s16 idx, char *name, s32 arg2, s32 arg3);
@@ -627,7 +627,7 @@ void func_8001F9E4_main(s16 arg0, u8 arg1);
 void func_8001FA68_main(s16 idx);
 void Hu3DLLightCreate(s16 arg0, s8 arg1);
 void Hu3DLLightColorSet(s16 arg0, s8 arg1, s8 arg2, s8 arg3);
-void Hu3DLLightInfinitytSet(s16 arg0, f32 arg1, f32 arg2, f32 arg3);
+void Hu3DLLightDirSet(s16 arg0, f32 arg1, f32 arg2, f32 arg3);
 void func_8001FD08_main(s16 idx);
 
 #endif

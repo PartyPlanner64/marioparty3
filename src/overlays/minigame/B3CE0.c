@@ -260,8 +260,8 @@ void func_800E1610_minigame(omObjData *arg0, u8 arg1, s32 arg2, s32 arg3, char *
     HmfModel *model;
 
     arg0->model[arg1] = func_8000B0D4_main(arg2, arg5);
-    model = &HmfModelData[arg0->model[arg1]];
-    anim = HmfAnimRead(model->hmf, arg3, arg4);
+    model = &Hu3DData[arg0->model[arg1]];
+    anim = Hu3DAnimRead(model->hmf, arg3, arg4);
     data->unk21[arg1] = anim;
     Hu3DModelRemakeStatic(arg0->model[arg1]);
     func_80032FC0_main(anim, 1, 1);
@@ -620,7 +620,7 @@ void func_800E2780_minigame(omObjData *obj) {
         mtxRotCat(data->unk18, obj->rot.x, obj->rot.y, obj->rot.z);
     }
     if (data->unk06 & 0x100) {
-        guMtxCatF(HmfModelData[model].mtx, data->unk18, data->unk18);
+        guMtxCatF(Hu3DData[model].mtx, data->unk18, data->unk18);
     }
     func_80018F18_main(data->unk18, data->unk58);
 }
@@ -651,7 +651,7 @@ void func_800E28BC_minigame(HuMtx4F mtx, HuMtx4F result, Vec *pos, omObjData *ob
             mtxRotCat(mtx, rotX, rotY, rotZ);
         }
         if (data->unk06 & 0x100) {
-            guMtxCatF(HmfModelData[model].mtx, mtx, mtx);
+            guMtxCatF(Hu3DData[model].mtx, mtx, mtx);
         }
         func_80018F18_main(mtx, result);
     }
@@ -702,7 +702,7 @@ void func_800E2CA4_minigame(omObjData *arg0, f32 arg1) {
         data->unk50 &= ~0x150;
         itemData->unk50 &= ~0x10;
         func_8001C258_main(item->model[0], 0x4000, HU3D_ATTR_NONE);
-        HmfModelData[arg0->model[0]].motIdShape = 0xFF;
+        Hu3DData[arg0->model[0]].motIdShape = 0xFF;
         if (item->model[1] != 0) {
             func_8001C258_main(item->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
@@ -744,7 +744,7 @@ s32 func_800E2DA4_minigame(omObjData *arg0, omObjData *item) {
 void func_800E2E98_minigame(omObjData *arg0) {
     func_800E1BA8_minigame_ObjData *temp_v0 = arg0->data;
 
-    HmfModelData[arg0->model[0]].motIdShape = 0xFF;
+    Hu3DData[arg0->model[0]].motIdShape = 0xFF;
     temp_v0->unk50 &= 0xFEFF;
 }
 
@@ -886,14 +886,14 @@ void func_800E3584_minigame(s16 model) {
     s16 i;
 
     func_8001C954_main(model);
-    hmf = HmfModelData[model].hmf;
+    hmf = Hu3DData[model].hmf;
     for (i = 0; i < D_800D1FF0_main; i++) {
         bcopy(hmf->unk40, hmf->unk44[i], hmf->unk18 * sizeof(Vtx));
     }
 }
 
 void func_800E3628_minigame(s16 model, Vec *normal) {
-    HmfModel *hmfModel = &HmfModelData[model];
+    HmfModel *hmfModel = &Hu3DData[model];
     HmfData *hmf = hmfModel->hmf;
     Vtx *vtx = hmf->unk44[D_800D2008_main];
     Vtx *src = hmf->unk40;

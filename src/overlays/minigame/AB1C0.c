@@ -125,7 +125,7 @@ f32 func_800D89CC_minigame(omObjData *arg0, f32 x, f32 y, f32 z, Vec *normal) {
         sphere.pos.z = z;
         func_800E28BC_minigame(D_800EC240_minigame, D_800EBE30_minigame, &sphere.pos, obj);
         if (objData->unk06 & 4) {
-            if (func_800E2F40_minigame(HmfModelData[obj->model[0]].hmf->unk60, &sphere.pos) == 0) {
+            if (func_800E2F40_minigame(Hu3DData[obj->model[0]].hmf->unk60, &sphere.pos) == 0) {
                 continue;
             }
         }
@@ -162,7 +162,7 @@ f32 func_800D89CC_minigame(omObjData *arg0, f32 x, f32 y, f32 z, Vec *normal) {
                 }
             }
         } else {
-            points = (Hu3DPoint *)HmfModelData[obj->model[0]].hmf->unk50;
+            points = (Hu3DPoint *)Hu3DData[obj->model[0]].hmf->unk50;
             func_80021C14_main(obj->model[0], &D_800EBEB0_minigame, func_800DB704_minigame, &sphere.pos);
             for (quad = func_80022198_main(&D_800EBEB0_minigame); quad != NULL;
                  quad = func_80022198_main(&D_800EBEB0_minigame)) {
@@ -288,7 +288,7 @@ f32 func_800D9028_minigame(omObjData *arg0, f32 x, f32 y, f32 z, f32 prevY) {
                     }
                 }
             } else {
-                points = (Hu3DPoint *)HmfModelData[D_800EC1C0_minigame[D_800EB734_minigame]->model[0]].hmf->unk50;
+                points = (Hu3DPoint *)Hu3DData[D_800EC1C0_minigame[D_800EB734_minigame]->model[0]].hmf->unk50;
                 func_80021C14_main(D_800EC1C0_minigame[D_800EB734_minigame]->model[0], &D_800EBEB0_minigame,
                                    func_800DB704_minigame, &sphere.pos);
                 for (quad = func_80022198_main(&D_800EBEB0_minigame); quad != NULL;
@@ -443,7 +443,7 @@ f32 func_800D972C_minigame(omObjData *arg0, f32 angle, f32 x, f32 y, f32 z) {
                     }
                 }
             } else {
-                points = (Hu3DPoint *)HmfModelData[D_800EC1C0_minigame[D_800EB734_minigame]->model[0]].hmf->unk50;
+                points = (Hu3DPoint *)Hu3DData[D_800EC1C0_minigame[D_800EB734_minigame]->model[0]].hmf->unk50;
                 func_80021C14_main(D_800EC1C0_minigame[D_800EB734_minigame]->model[0], &D_800EBEB0_minigame,
                                    func_800DB704_minigame, &sphere.pos);
                 for (quad = func_80022198_main(&D_800EBEB0_minigame); quad != NULL;
@@ -1437,7 +1437,7 @@ s8 func_800DD530_minigame(omObjData *arg0, Hu3DSphere *arg1, f32 arg2) {
         local.radius = sphere.radius = arg1->radius;
         func_800E28BC_minigame(D_800EC240_minigame, D_800EBE30_minigame, &local.pos, obj);
         if (objData->unk06 & 4) {
-            if (func_800E2FD8_minigame(HmfModelData[obj->model[0]].hmf->unk60, &local.pos, data->unk48) == 0) {
+            if (func_800E2FD8_minigame(Hu3DData[obj->model[0]].hmf->unk60, &local.pos, data->unk48) == 0) {
                 continue;
             }
         }
@@ -1718,7 +1718,7 @@ void func_800DDD94_minigame(omObjData *arg0) {
         func_800E2250_minigame(arg0, stickX, stickY);
         time = Hu3DMotionShiftTimeGet(model);
         if (time == -1.0f) {
-            time = HmfModelData[model].motTime;
+            time = Hu3DData[model].motTime;
         }
         if (state & 0x4000) {
             data->unk3C += 25.0f;
@@ -1786,7 +1786,7 @@ void func_800DDD94_minigame(omObjData *arg0) {
 
         time = Hu3DMotionShiftTimeGet(model);
         if (time == -1.0f) {
-            time = HmfModelData[model].motTime;
+            time = Hu3DData[model].motTime;
         }
         vy = data->unk38;
         if (!(state & 0x300)) {
@@ -1877,7 +1877,7 @@ void func_800DDD94_minigame(omObjData *arg0) {
             }
             time = Hu3DMotionShiftTimeGet(model);
             if (time == -1.0f) {
-                time = HmfModelData[model].motTime;
+                time = Hu3DData[model].motTime;
             }
             newY = y + vy * vy * (data->unk38 >= 0.0f ? -35.0f : 35.0f);
             if (time > 30.0f) {
@@ -2005,7 +2005,7 @@ void func_800DDD94_minigame(omObjData *arg0) {
                         } else {
                             time = Hu3DMotionShiftTimeGet(model);
                             if (time == -1.0f) {
-                                time = HmfModelData[model].motTime;
+                                time = Hu3DData[model].motTime;
                             }
                             if (time == 0.0f) {
                                 func_800E1A9C_minigame(data, 1);
@@ -2032,7 +2032,7 @@ void func_800DDD94_minigame(omObjData *arg0) {
                         } else {
                             time = Hu3DMotionShiftTimeGet(model);
                             if (time == -1.0f) {
-                                time = HmfModelData[model].motTime;
+                                time = Hu3DData[model].motTime;
                             }
                             if (time == 0.0f) {
                                 func_800E1A9C_minigame(data, 0);
@@ -2100,7 +2100,7 @@ void func_800DDD94_minigame(omObjData *arg0) {
     speed *= (prevVy != 1000.0f) ? data->unk4C * data->unkB4 : data->unkB4;
     x += sindf(data->unk3C) * speed + D_800EBE2C_minigame;
     z += cosdf(data->unk3C) * speed + D_800EC5D8_minigame;
-    func_80088910_main(HmfModelData[arg0->model[0]].mtx, 0.0f, data->unk3C, 0.0f);
+    func_80088910_main(Hu3DData[arg0->model[0]].mtx, 0.0f, data->unk3C, 0.0f);
     func_800E17D4_minigame(arg0, x, y, z);
     if (data->unk104[1] != NULL) {
         data->unk104[1](arg0);
@@ -2152,7 +2152,7 @@ void func_800DFE44_minigame(omObjData *arg0) {
 
     time = Hu3DMotionShiftTimeGet(arg0->model[0]);
     if (time == -1.0f) {
-        time = HmfModelData[arg0->model[0]].motTime;
+        time = Hu3DData[arg0->model[0]].motTime;
     }
     if (time >= 28.0f && time <= 29.0f) {
         func_800E2CA4_minigame(arg0, (data->unk40 + D_800EB768_minigame) * data->unkCC);
@@ -2175,7 +2175,7 @@ void func_800DFF3C_minigame(omObjData *arg0, f32 x, f32 y, f32 z) {
 
     time = Hu3DMotionShiftTimeGet(arg0->model[0]);
     if (time == -1.0f) {
-        time = HmfModelData[arg0->model[0]].motTime;
+        time = Hu3DData[arg0->model[0]].motTime;
     }
     if ((time < 16.0f) | (time > 20.0f)) {
         return;
@@ -2465,14 +2465,14 @@ void func_800E04C8_minigame(omObjData *arg0, s32 arg1) {
     sprintf(D_800D5218_main, "CAMERA :[%s]", D_800EB73B_minigame ? "HOMING" : "LOCK");
     print8(24, 16, D_800D5218_main);
     if (D_800EB73B_minigame) {
-        f32 y = HmfModelData[arg0->model[1]].pos.y;
+        f32 y = Hu3DData[arg0->model[1]].pos.y;
 
         if (y != Center.y) {
             y = Center.y + (y - Center.y) / 20.0f;
         }
-        Center.x = HmfModelData[arg0->model[1]].pos.x;
+        Center.x = Hu3DData[arg0->model[1]].pos.x;
         Center.y = y;
-        Center.z = HmfModelData[arg0->model[1]].pos.z;
+        Center.z = Hu3DData[arg0->model[1]].pos.z;
         // Bug: data is only set by the case 9/10 loops above.
         data->unk60 = CRot.y;
     }

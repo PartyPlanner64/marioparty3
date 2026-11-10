@@ -246,12 +246,12 @@ void func_801059D0_option(void) {
     func_80030030_main(1.0f);
     pfInit();
     HuWinInit();
-    HmfLightMaxSet(3);
-    HmfLightColorSet(0, 128, 128, 128);
-    HmfLightColorSet(1, 64, 64, 96);
-    HmfLightColorSet(2, 0, 0, 0);
-    HmfLightColorSet(3, 0, 0, 0);
-    HmfLightDirSet(1, 0.0f, 64.0f, 192.0f);
+    Hu3DGLightMaxSet(3);
+    Hu3DGLightColorSet(0, 128, 128, 128);
+    Hu3DGLightColorSet(1, 64, 64, 96);
+    Hu3DGLightColorSet(2, 0, 0, 0);
+    Hu3DGLightColorSet(3, 0, 0, 0);
+    Hu3DGLightDirSet(1, 0.0f, 64.0f, 192.0f);
     D_800D2132_main = 0;
 }
 
@@ -382,7 +382,7 @@ s32 func_80105FF8_option(Vec *pos, Vec *at, Vec *up) {
         HuVecCopy3F(up, &D_801146F0_option.up);
         return 0;
     }
-    hmf = HmfModelData[gCameraList->unk4].hmf;
+    hmf = Hu3DData[gCameraList->unk4].hmf;
     if (hmf == NULL || hmf->unkBC == NULL) {
         while (1) {
             HuPrcVSleep();
@@ -1952,7 +1952,7 @@ s32 func_8010BACC_option(s32 selection, s32 arg1) {
             func_801132AC_option(4, 4);
             HuPrcSleep(30);
             model = func_80113218_option(4);
-            while (HmfModelData[(s16)model].motTime != 0.0f) {
+            while (Hu3DData[(s16)model].motTime != 0.0f) {
                 HuPrcVSleep();
             }
             func_80113424_option(0);
@@ -1981,7 +1981,7 @@ s32 func_8010BACC_option(s32 selection, s32 arg1) {
             func_801132AC_option(5, 4);
             HuPrcSleep(30);
             model = func_80113218_option(5);
-            while (HmfModelData[(s16)model].motTime != 0.0f) {
+            while (Hu3DData[(s16)model].motTime != 0.0f) {
                 HuPrcVSleep();
             }
             func_80113424_option(0);
@@ -2291,7 +2291,7 @@ void func_8010E8E0_option(void) {
         buttons = (buttons & ~(A_BUTTON | B_BUTTON)) | (D_800D5558_main[0] & (A_BUTTON | B_BUTTON));
         if (buttons & 0x4000) {
             model = func_80113218_option(2);
-            func_80033910_main(HmfModelData[model].hmf);
+            func_80033910_main(Hu3DData[model].hmf);
             break;
         } else if (buttons & 0x8000) {
             if (menu.pages[page].entries[selected].sound != -1) {
@@ -2300,7 +2300,7 @@ void func_8010E8E0_option(void) {
                 }
                 sound = HuAudFXPlay(menu.pages[page].entries[selected].sound);
                 model = func_80113218_option(2);
-                func_80033970_main(HmfModelData[model].hmf);
+                func_80033970_main(Hu3DData[model].hmf);
                 func_8010FF0C_option(sound);
             } else {
                 func_80113218_option(2);
@@ -2462,7 +2462,7 @@ void func_8010F138_option(void) {
         buttons = (buttons & ~(A_BUTTON | B_BUTTON)) | (D_800D5558_main[0] & (A_BUTTON | B_BUTTON));
         if (buttons & 0x4000) {
             model = func_80113218_option(3);
-            func_80033910_main(HmfModelData[model].hmf);
+            func_80033910_main(Hu3DData[model].hmf);
             break;
         } else if (buttons & 0x8000) {
             HuAudSeqStop();
@@ -2470,7 +2470,7 @@ void func_8010F138_option(void) {
                 HuAudSeqPlay(menu.pages[page].entries[selected].sound);
             }
             model = func_80113218_option(3);
-            func_80033970_main(HmfModelData[model].hmf);
+            func_80033970_main(Hu3DData[model].hmf);
         } else if (buttons & 0x300) {
             if (buttons & 0x200) {
                 page--;
@@ -2612,7 +2612,7 @@ u16 func_8010FC40_option(s32 value) {
             break;
         }
         if (D_800D5558_main[0] & Z_TRIG) {
-            cam = HmfModelData[gCameraList->unk4].hmf->unkBC;
+            cam = Hu3DData[gCameraList->unk4].hmf->unkBC;
             sprintf(text, "POS:%4.2f,%4.2f,%4.2f", cam->unk08, cam->unk0C, cam->unk10);
             print8(16, 180, text);
             sprintf(text, "A T:%4.2f,%4.2f,%4.2f", cam->unk14, cam->unk18, cam->unk1C);
@@ -2641,7 +2641,7 @@ void func_8010FE10_option(void) {
 
     if (D_801147E0_option.obj != NULL) {
         modelId = func_80113218_option(2);
-        func_80033910_main(HmfModelData[modelId].hmf);
+        func_80033910_main(Hu3DData[modelId].hmf);
         HuAudFXStop((s16)D_801147E0_option.seNo);
         omDelObj(D_801147E0_option.obj);
         D_801147E0_option.obj = NULL;
@@ -2653,7 +2653,7 @@ void func_8010FE84_option(omObjData *obj) {
 
     if (msmSeGetStatus(D_801147E0_option.seNo) == 0) {
         modelId = func_80113218_option(2);
-        func_80033910_main(HmfModelData[modelId].hmf);
+        func_80033910_main(Hu3DData[modelId].hmf);
         HuAudFXStop((s16)D_801147E0_option.seNo);
         omDelObj(obj);
         D_801147E0_option.obj = NULL;

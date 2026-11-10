@@ -204,16 +204,16 @@ void m255_OverlayMain(void) {
 void m255_InitEnvironment(void) {
     omObjData *temp_v0;
 
-    Hu3DAnimInit(50);
+    func_8001FE20_main(50);
     func_800142A0_main(0x20);
     omInitObjMan(50, 0);
     func_8004A208_main();
     temp_v0 = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     temp_v0->work[0] = 2;
     omSetStatBit(temp_v0, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    HmfLightColorSet(0, 0xFF, 0xFF, 0xFF);
-    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
-    HmfLightDirSet(1, -56.0f, 50.0f, 56.0f);
+    Hu3DGLightColorSet(0, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightDirSet(1, -56.0f, 50.0f, 56.0f);
     func_8000B5F0_main(2);
     func_8000B710_main(2);
     ScissorSet(0, 0.0f, 0.0f, 159.0f, 240.0f);
@@ -369,7 +369,7 @@ void m255_UpdateWall(omObjData *object) {
         }
     }
     for (i = 0; i < 8; i++) {
-        HmfModel *model = &HmfModelData[object->model[i]];
+        HmfModel *model = &Hu3DData[object->model[i]];
 
         if (i < 5) {
             if (CenterM[object->work[0]].z - 1050.0f < model->pos.z) {
@@ -418,7 +418,7 @@ void m255_UpdateSigns(omObjData *object) {
     s16 i;
 
     for (i = 0; i < SIGNS_TOTAL; i++) {
-        HmfModel *model = &HmfModelData[object->model[i]];
+        HmfModel *model = &Hu3DData[object->model[i]];
 
         if (CenterM[object->work[0]].z - 1050.0f < model->pos.z) {
             func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
@@ -463,7 +463,7 @@ void m255_UpdateScrews(omObjData *object) {
     s16 i;
 
     for (i = 0; i < SCREWS_TOTAL; i++) {
-        HmfModel *model = &HmfModelData[object->model[i]];
+        HmfModel *model = &Hu3DData[object->model[i]];
 
         if (CenterM[object->work[0]].z - 800.0f < model->pos.z) {
             func_8001C258_main(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
@@ -1088,7 +1088,7 @@ void m255_UpdateNutSpinning(FuncContext *ctx) {
             break;
         case 1:
             for (i = 0; i < NUTS_TOTAL; i++, nut++) {
-                HmfModel *nutModel = &HmfModelData[nut->modelId];
+                HmfModel *nutModel = &Hu3DData[nut->modelId];
                 PlayerData *player = &m255_players[ctx->work.s16[0]];
 
                 if (CenterM[ctx->work.s16[0]].z - 800.0f < nutModel->pos.z) {
@@ -1100,8 +1100,8 @@ void m255_UpdateNutSpinning(FuncContext *ctx) {
                 if (player->inputEnabled && player->currNutId == i) {
                     m255_SpinNutModel(nutModel, player);
                     player->object->trans.x = nutModel->pos.x;
-                    HmfModelData[player->object->model[1]].pos.x = nutModel->pos.x;
-                    HmfModelData[player->object->model[1]].pos.y = player->object->trans.y;
+                    Hu3DData[player->object->model[1]].pos.x = nutModel->pos.x;
+                    Hu3DData[player->object->model[1]].pos.y = player->object->trans.y;
                     if (player->speed != 0.0f) {
                         continue;
                     }
@@ -1155,10 +1155,10 @@ void m255_UpdatePlayerCue(FuncContext *ctx) {
                 f32 nextNutPosX;
 
                 if (player->currNutId < NUTS_TOTAL - 1) {
-                    currNutPosX = HmfModelData[nut->modelId].pos.x;
+                    currNutPosX = Hu3DData[nut->modelId].pos.x;
                     nextNutPosX = nut[1].startPosX;
                 } else {
-                    currNutPosX = HmfModelData[nut->modelId].pos.x;
+                    currNutPosX = Hu3DData[nut->modelId].pos.x;
                     nextNutPosX = GOAL_POS_X;
                 }
                 func_8001C258_main(player->object->model[MDL_ARROW], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
@@ -1190,7 +1190,7 @@ void m255_UpdatePlayerCue(FuncContext *ctx) {
                     }
                     cuePosY = player->object->trans.y + 100.0f;
                     cuePosZ = player->object->trans.z - 125.0f - sindf(ctx->work.f32[0] * 90.0f) * 20.0f * 5.0f * 0.5f;
-                    cueModel = &HmfModelData[player->object->model[MDL_ARROW]];
+                    cueModel = &Hu3DData[player->object->model[MDL_ARROW]];
                     func_8001C258_main(player->object->model[MDL_ARROW], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     break;
                 case CUE_BALLOON_B:
@@ -1201,7 +1201,7 @@ void m255_UpdatePlayerCue(FuncContext *ctx) {
                     }
                     cuePosY = player->object->trans.y + 300.0f - sindf(ctx->work.f32[0] * 90.0f) * 20.0f * 5.0f * 0.25f;
                     cuePosZ = player->object->trans.z;
-                    cueModel = &HmfModelData[player->object->model[MDL_BALLOON_B]];
+                    cueModel = &Hu3DData[player->object->model[MDL_BALLOON_B]];
                     func_8001C258_main(player->object->model[MDL_BALLOON_B], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     break;
                 case CUE_BALLOON_A:
@@ -1212,7 +1212,7 @@ void m255_UpdatePlayerCue(FuncContext *ctx) {
                     }
                     cuePosY = player->object->trans.y + 300.0f - sindf(ctx->work.f32[0] * 90.0f) * 20.0f * 5.0f * 0.25f;
                     cuePosZ = player->object->trans.z;
-                    cueModel = &HmfModelData[player->object->model[MDL_BALLOON_A]];
+                    cueModel = &Hu3DData[player->object->model[MDL_BALLOON_A]];
                     func_8001C258_main(player->object->model[MDL_BALLOON_A], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     break;
             }
@@ -1387,7 +1387,7 @@ void m255_UpdatePlayerAnimation(FuncContext *ctx) {
                             player->speed -= 0.5f;
                         }
                         func_800E5690_minigame(player->object, PLAYER_ANIM_RUN);
-                        if (HmfModelData[player->object->model[0]].motTime == 0.0f) {
+                        if (Hu3DData[player->object->model[0]].motTime == 0.0f) {
                             CharFXPlay(0x28, GwPlayer[m255_playerId[player->object->work[0]]].chr);
                         }
                     } else {
@@ -1396,7 +1396,7 @@ void m255_UpdatePlayerAnimation(FuncContext *ctx) {
                             player->speed += 0.5f;
                         }
                         func_800E5690_minigame(player->object, PLAYER_ANIM_RUN);
-                        if (HmfModelData[player->object->model[0]].motTime == 0.0f) {
+                        if (Hu3DData[player->object->model[0]].motTime == 0.0f) {
                             CharFXPlay(0x28, GwPlayer[m255_playerId[player->object->work[0]]].chr);
                         }
                     }
@@ -1405,13 +1405,13 @@ void m255_UpdatePlayerAnimation(FuncContext *ctx) {
                     func_800E5690_minigame(player->object, PLAYER_ANIM_IDLE);
                     break;
                 case PLAYER_STATE_1:
-                    if (HmfModelData[player->object->model[0]].motTime == 0.0f) {
+                    if (Hu3DData[player->object->model[0]].motTime == 0.0f) {
                         CharFXPlay(0x1F, GwPlayer[m255_playerId[player->object->work[0]]].chr);
                     }
                     func_800E5690_minigame(player->object, PLAYER_ANIM_WALK);
                     break;
                 case PLAYER_STATE_FINISHED:
-                    if (HmfModelData[player->object->model[0]].motTime == 0.0f) {
+                    if (Hu3DData[player->object->model[0]].motTime == 0.0f) {
                         CharFXPlay(0x28, GwPlayer[m255_playerId[player->object->work[0]]].chr);
                     }
                     func_800E5690_minigame(player->object, PLAYER_ANIM_WALK);
@@ -1431,7 +1431,7 @@ void m255_UpdatePlayerAnimation(FuncContext *ctx) {
                     }
                     break;
                 default:
-                    if (HmfModelData[player->object->model[0]].motTime == 0.0f) {
+                    if (Hu3DData[player->object->model[0]].motTime == 0.0f) {
                         CharFXPlay(0x28, GwPlayer[m255_playerId[player->object->work[0]]].chr);
                     }
                     func_800E5690_minigame(player->object, PLAYER_ANIM_RUN);
@@ -1606,7 +1606,7 @@ void m255_UpdateComInput(FuncContext *ctx) {
             if (player->currNutId != NUTS_TOTAL) {
                 f32 temp_f6 = func_8010B18C_silly_screws(player);
                 NutData *nut = &m255_minigame->worlds[player->object->work[0]].nuts[player->currNutId];
-                HmfModel *nutModel = &HmfModelData[nut->modelId];
+                HmfModel *nutModel = &Hu3DData[nut->modelId];
                 f32 nextNutPosX;
                 s8 temp_v1_3;
 

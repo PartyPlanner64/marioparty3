@@ -292,7 +292,7 @@ void func_800222B0_main(HuAllocFunc alloc, HuFreeFunc free, u16 vertexCount, u16
     }
     D_800CC0BC_main = HuMemAlloc(0x8400);
     D_800CE1D4_main = NULL;
-    HmfLightInit();
+    Hu3DLighInit();
     func_80031560_main();
     func_80030040_main();
     D_800CB8B0_main = 1;
@@ -319,7 +319,7 @@ void func_800224BC_main(void) {
         if (++D_800D2008_main >= D_800D1FF0_main) {
             D_800D2008_main = 0;
         }
-        HmfLightClose();
+        Hu3DLightClose();
         D_800CE1CE_main = 0;
         MTXBufNum = 0;
         D_800D1FD8_main = 0;
@@ -407,7 +407,7 @@ void func_80022660_main(HmfData *arg0) {
     func_80022F08_main(arg0);
     D_800CE1CE_main = 0;
     D_800D5562_main = 0;
-    HmfLightReset();
+    Hu3DLightReset();
     func_800230F8_main(arg0);
     object = arg0->unk60;
     for (i = 0; i < arg0->unk10; i++, object++) {
@@ -1171,7 +1171,7 @@ Gfx *func_800250D4_main(s16 arg0, Gfx *arg1, Gfx *arg2) {
         gSPDisplayList(gMainGfxPos++, arg2);
     }
     active = D_800CE19A_main != 0;
-    HmfLightExec(arg0);
+    Hu3DLightExec(arg0);
     r = D_800CB8A8_main->l.col[0];
     g = D_800CB8A8_main->l.col[1];
     b = D_800CB8A8_main->l.col[2];
@@ -2540,7 +2540,7 @@ void func_8002D094_main(Gfx **arg0, s16 arg1, s32 color) {
 // Possible file boundary: ROM 0x2DE60 (motion code starts here, like MP4 hsfmotion.c; would be
 // hmfmotion.c). Only the code below uses the motion work D_800CCF58_main. Weak evidence: no nop
 // padding before this function.
-void func_8002D260_main(void) {
+void Hu3DMotionInit(void) {
     s16 i;
 
     func_80030030_main(1.0f);
@@ -2595,7 +2595,7 @@ s32 func_8002D3D0_main(HmfData *hmf, HmfMotionFile *file, s32 arg2) {
     return result;
 }
 
-void func_8002D4B8_main(s32 arg0) {
+void Hu3DMotionKill(s32 arg0) {
     s16 modelIndex = arg0;
 
     if (modelIndex != 0xFF) {
@@ -2604,7 +2604,7 @@ void func_8002D4B8_main(s32 arg0) {
     }
 }
 
-void func_8002D514_main(void) {
+void Hu3DMotionAllKill(void) {
     s16 i;
 
     for (i = 0; i < HU3D_MODEL_MAX; i++) {
@@ -3509,7 +3509,7 @@ void func_8002FE08_main(s16 modelIndex, s16 motionIndex, char *name, s16 target,
     HmfMotionChannel *channel;
 
     motion = &D_800CCF58_main[motionIndex];
-    hmf = HmfModelData[modelIndex].hmf;
+    hmf = Hu3DData[modelIndex].hmf;
     objectIndex = func_8002C834_main(hmf, name);
     for (i = 0; i < hmf->unk16; i++) {
         for (j = 0; j < hmf->unk80[i].unk00; j++) {

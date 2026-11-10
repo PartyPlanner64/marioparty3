@@ -329,7 +329,7 @@ void MB1Ev_StarGuideIn(void) {
 
     angle = 0.0f;
     while (1) {
-        func_8008A2A0_main(HmfModelData[star->omObj1->model[0]].mtx, angle);
+        func_8008A2A0_main(Hu3DData[star->omObj1->model[0]].mtx, angle);
         angle += 20.0f;
         if (angle >= 360.0f) {
             angle -= 360.0f;
@@ -352,7 +352,7 @@ void MB1Ev_StarGuideIn(void) {
         HuPrcVSleep();
     }
 
-    func_8008A2A0_main(HmfModelData[star->omObj1->model[0]].mtx, 0.0f);
+    func_8008A2A0_main(Hu3DData[star->omObj1->model[0]].mtx, 0.0f);
     func_8000D044_main(light);
     D_8011FAB8_ChillyWaters = 0;
     omDelPrcObj(NULL);
@@ -524,7 +524,7 @@ void MB1Ev_StarGet(void) {
     MBPlayerPosMoveCreate(coords, &sp10, coords, 40);
 
     for (i = 0; i < 40; i++) {
-        func_8008A2A0_main(HmfModelData[star->omObj1->model[0]].mtx, angle);
+        func_8008A2A0_main(Hu3DData[star->omObj1->model[0]].mtx, angle);
         angle += 20.0f;
         scale -= 0.05f;
         if (scale < 0.0f) {
@@ -912,8 +912,8 @@ void MB1_ObjectSetup(void) {
     s32 i;
 
     omInitObjMan(0xA0, 0x28);
-    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
-    HmfLightColorSet(2, 0xC8, 0xC8, 0xC8);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightColorSet(2, 0xC8, 0xC8, 0xC8);
     MBObjectSetup(3, 0x23A, 5, 0);
     MBMasuBlockTblExtSet(&D_8011D31C_ChillyWaters);
     MBMasuBlockTblSet(D_8011D320_ChillyWaters);
@@ -2178,7 +2178,7 @@ void MB1Ev_BankMasu(void) {
     MBMotionSet(bank, -1, 4);
     Hu3DMotionSpeedSet(bank->omObj1->model[0], 1.2f);
     Hu3DMotionTimeSet(bank->omObj1->model[0],
-                        (f32)D_800CCF58_main[HmfModelData[bank->omObj1->model[0]].motId].unk02);
+                        (f32)D_800CCF58_main[Hu3DData[bank->omObj1->model[0]].motId].unk02);
     while (func_800D9E80_shared_board(bank) == 0) {
         HuPrcVSleep();
     }
@@ -2640,7 +2640,7 @@ void MB1Ev_TeresaCoin(void) {
             break;
         }
         angle += 40.0f;
-        func_8008A2A0_main(HmfModelData[coin->omObj1->model[0]].mtx, angle);
+        func_8008A2A0_main(Hu3DData[coin->omObj1->model[0]].mtx, angle);
     }
     MBModelKill(coin);
     omDelPrcObj(NULL);
@@ -3149,7 +3149,7 @@ void MB1Ev_KSuitStart(void) {
 
     for (var_f22 = 0.0f, var_f20 = 1.0f; var_f20 < 10.0f; var_f22 += 20.0f, HuPrcVSleep(), var_f20 += 0.5) {
         HuVecCopyXYZ(&obj->scale, var_f20, var_f20, var_f20);
-        func_8008A430_main(HmfModelData[obj->omObj1->model[0]].mtx, var_f22);
+        func_8008A430_main(Hu3DData[obj->omObj1->model[0]].mtx, var_f22);
     }
     
     MBModelDispOff(player->player_obj);
@@ -3157,7 +3157,7 @@ void MB1Ev_KSuitStart(void) {
 
     for (; var_f20 >= 1.0f; var_f22 += 20.0f, HuPrcVSleep(), var_f20 -= 0.5) {
         HuVecCopyXYZ(&obj->scale, var_f20, var_f20, var_f20);
-        func_8008A430_main(HmfModelData[obj->omObj1->model[0]].mtx, var_f22);
+        func_8008A430_main(Hu3DData[obj->omObj1->model[0]].mtx, var_f22);
     }
 
     MBModelKill(obj);
@@ -3191,7 +3191,7 @@ void MB1Ev_KSuitEnd(void) {
 
     for (var_f22 = 0.0f, var_f20 = 1.0f; var_f20 < 10.0f; var_f22 += 20.0f, HuPrcVSleep(), var_f20 += 0.5) {
         HuVecCopyXYZ(&obj->scale, var_f20, var_f20, var_f20);
-        func_8008A430_main(HmfModelData[obj->omObj1->model[0]].mtx, var_f22);
+        func_8008A430_main(Hu3DData[obj->omObj1->model[0]].mtx, var_f22);
     }
     
     MBModelDispOn(player->player_obj);
@@ -3199,7 +3199,7 @@ void MB1Ev_KSuitEnd(void) {
     
     for (; var_f20 >= 1.0f; var_f22 += 20.0f, HuPrcVSleep(), var_f20 -= 0.5) {
         HuVecCopyXYZ(&obj->scale, var_f20, var_f20, var_f20);
-        func_8008A430_main(HmfModelData[obj->omObj1->model[0]].mtx, var_f22);
+        func_8008A430_main(Hu3DData[obj->omObj1->model[0]].mtx, var_f22);
     }
     MBModelKill(obj);
 }
@@ -3922,7 +3922,7 @@ void func_80112C88_ChillyWaters(void) {
             break;
         }
         angle += 40.0f;
-        func_8008A2A0_main(HmfModelData[modelObj->omObj1->model[0]].mtx, angle);
+        func_8008A2A0_main(Hu3DData[modelObj->omObj1->model[0]].mtx, angle);
     }
 
     MBModelKill(modelObj);
@@ -4622,26 +4622,26 @@ void MB1Ev_After5Effect(void) {
 
     for (spin = 0.0f, scale = 1.0f; scale < 18.0f; scale += 0.8) {
         HuVecCopyXYZ(&obj->scale, scale, scale, scale);
-        func_8008A430_main(HmfModelData[obj->omObj1->model[0]].mtx, spin);
+        func_8008A430_main(Hu3DData[obj->omObj1->model[0]].mtx, spin);
         spin += 20.0f;
         HuPrcVSleep();
     }
 
     while (*state != 1) {
-        func_8008A430_main(HmfModelData[obj->omObj1->model[0]].mtx, spin);
+        func_8008A430_main(Hu3DData[obj->omObj1->model[0]].mtx, spin);
         spin += 20.0f;
         HuPrcVSleep();
     }
 
     for (; scale < 40.0f; scale += 0.8) {
         HuVecCopyXYZ(&obj->scale, scale, scale, scale);
-        func_8008A430_main(HmfModelData[obj->omObj1->model[0]].mtx, spin);
+        func_8008A430_main(Hu3DData[obj->omObj1->model[0]].mtx, spin);
         spin += 20.0f;
         HuPrcVSleep();
     }
 
     while (*state != 2) {
-        func_8008A430_main(HmfModelData[obj->omObj1->model[0]].mtx, spin);
+        func_8008A430_main(Hu3DData[obj->omObj1->model[0]].mtx, spin);
         spin += 20.0f;
         HuPrcVSleep();
     }

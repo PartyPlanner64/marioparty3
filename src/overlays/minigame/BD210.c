@@ -367,8 +367,8 @@ void func_800EB3CC_minigame(omObjData *obj) {
                 HuAudFXPlay(0);
                 break;
             case 2:
-                time = HmfModelData[model].motTime;
-                if (D_800CCF58_main[HmfModelData[model].motId].unk02 <= time) {
+                time = Hu3DData[model].motTime;
+                if (D_800CCF58_main[Hu3DData[model].motId].unk02 <= time) {
                     data->unk20 = 3;
                     entry = data->unk24;
                     index = 0;

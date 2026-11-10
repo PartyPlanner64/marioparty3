@@ -263,7 +263,7 @@ s16 func_8010A8C4_baby_bowser_broadside(s32 directory, s32 file, f32 scale, s16 
         if (work->unk_00 == 0) {
             work->unk_0C = func_8000B108_main((directory << 16) | file, flags);
             func_8001C258_main(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-            model = &HmfModelData[work->unk_0C];
+            model = &Hu3DData[work->unk_0C];
             model->motTime = 0;
             model->motSpeed = 0;
             if (model->hmf->unk98 != NULL) {
@@ -289,7 +289,7 @@ s16 func_8010A9D4_baby_bowser_broadside(s16 source, f32 scale, s16 type, s32 arg
         if (work->unk_00 == 0) {
             work->unk_0C = Hu3DModelLink(source);
             func_8001C258_main(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-            model = &HmfModelData[work->unk_0C];
+            model = &Hu3DData[work->unk_0C];
             model->motTime = 0;
             model->motSpeed = 0;
             if (model->hmf->unk98 != NULL) {
@@ -313,7 +313,7 @@ s16 func_8010AADC_baby_bowser_broadside(s16 type) {
 
     for (i = 0; i < 16; i++, work++) {
         if (work->unk_00 != 0 && work->unk_0A == type) {
-            model = &HmfModelData[work->unk_0C];
+            model = &Hu3DData[work->unk_0C];
             if ((model->attr & HU3D_ATTR_DISPOFF) != 0 && work->unk_08 == -1) {
                 break;
             }
@@ -337,7 +337,7 @@ s32 func_8010AB80_baby_bowser_broadside(s16 index, f32 x, f32 y, f32 z, f32 rx, 
     }
     {
         work = &D_8011001C_baby_bowser_broadside[index];
-        model = &HmfModelData[work->unk_0C];
+        model = &Hu3DData[work->unk_0C];
         if ((model->attr & HU3D_ATTR_DISPOFF) != 0 && work->unk_08 == -1) {
             Hu3DModelPosSet(work->unk_0C, x, y, z);
             Hu3DModelRotSet(work->unk_0C, rx, ry, rz);
@@ -366,7 +366,7 @@ void func_8010ACF8_baby_bowser_broadside(void) {
 
     for (i = 0; i < 16; i++, work++) {
         if (work->unk_00 != 0 && work->unk_08 != -1) {
-            model = &HmfModelData[work->unk_0C];
+            model = &Hu3DData[work->unk_0C];
             if (work->unk_08 != 0) {
                 if (model->motTime >= D_800CCF58_main[model->motId].unk02) {
                     model->motTime = 0;
@@ -408,9 +408,9 @@ s16 func_8010AE60_baby_bowser_broadside(s32 directory, s32 file, s16 type, s32 f
             if (flags & 8) {
                 func_8001C258_main(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
-            work->unk_14 = &HmfModelData[work->unk_0C].pos.x;
-            work->unk_18 = &HmfModelData[work->unk_0C].pos.y;
-            work->unk_1C = &HmfModelData[work->unk_0C].pos.z;
+            work->unk_14 = &Hu3DData[work->unk_0C].pos.x;
+            work->unk_18 = &Hu3DData[work->unk_0C].pos.y;
+            work->unk_1C = &Hu3DData[work->unk_0C].pos.z;
             work->unk_08 = type;
             work->unk_04 = flags;
             work->unk_0E = func_80055194_main(frame)->unk10;
@@ -429,7 +429,7 @@ s16 func_8010AFF4_baby_bowser_broadside(s16 type) {
 
     for (i = 0; i < 8; i++, work++) {
         if (work->unk_00 != 0 && work->unk_08 == type) {
-            model = &HmfModelData[work->unk_0C];
+            model = &Hu3DData[work->unk_0C];
             if ((model->attr & HU3D_ATTR_DISPOFF) != 0 && (work->unk_04 & 8) != 0) {
                 break;
             }
@@ -447,7 +447,7 @@ void func_8010B098_baby_bowser_broadside(s16 arg0, f32 arg1, f32 arg2, f32 arg3,
     if (arg0 >= 8) {
         return;
     }
-    model = &HmfModelData[D_80110010_baby_bowser_broadside[arg0].unk_0C];
+    model = &Hu3DData[D_80110010_baby_bowser_broadside[arg0].unk_0C];
     model->pos.x = arg1;
     model->pos.y = arg2;
     model->pos.z = arg3;
@@ -465,7 +465,7 @@ void func_8010B198_baby_bowser_broadside(s16 index, f32 *x, f32 *y, f32 *z) {
     if (index >= 8) {
         return;
     }
-    model = &HmfModelData[D_80110010_baby_bowser_broadside[index].unk_0C];
+    model = &Hu3DData[D_80110010_baby_bowser_broadside[index].unk_0C];
     if (x != NULL) {
         D_80110010_baby_bowser_broadside[index].unk_14 = x;
     } else {
@@ -496,7 +496,7 @@ HmfModel *func_8010B360_baby_bowser_broadside(s16 arg0) {
     HmfModel *model;
 
     if (arg0 < 8) {
-        model = &HmfModelData[D_80110010_baby_bowser_broadside[arg0].unk_0C];
+        model = &Hu3DData[D_80110010_baby_bowser_broadside[arg0].unk_0C];
     } else {
         model = NULL;
     }
@@ -510,7 +510,7 @@ void func_8010B3B4_baby_bowser_broadside(void) {
 
     for (i = 0; i < 8; i++, work++) {
         if (work->unk_00 != 0 && !(work->unk_04 & 8)) {
-            model = &HmfModelData[work->unk_0C];
+            model = &Hu3DData[work->unk_0C];
             if (work->unk_04 & 0x10) {
                 model->pos.x = *work->unk_14;
                 model->pos.y = *work->unk_18;
@@ -551,7 +551,7 @@ s16 func_8010B54C_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, f32 alpha
 
     buffer = HuMemAlloc(0x10000);
     model = func_8001A894_main(0x4C1, buffer, 4);
-    data = HmfModelData[model].hmf;
+    data = Hu3DData[model].hmf;
     data->unk60->unk50 |= 0x1010000;
     count = func_8010D6C4_baby_bowser_broadside(sprite, data, 1.0f, 0, 100);
     gfx = buffer;
@@ -622,7 +622,7 @@ s16 func_8010BCBC_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, f32 alpha
     header = gfx;
     buffer = (u8 *)gfx;
     model = func_8001A894_main(0x4C1, gfx, 4);
-    data = HmfModelData[model].hmf;
+    data = Hu3DData[model].hmf;
     data->unk60->unk50 |= 0x1010000;
     gfx++;
     HuMemFree(data->unk3C);
@@ -722,7 +722,7 @@ s16 func_8010C8D4_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, u8 *color
     header = gfx;
     buffer = (u8 *)gfx;
     model = func_8001A894_main(0x8C1, gfx, 4);
-    data = HmfModelData[model].hmf;
+    data = Hu3DData[model].hmf;
     data->unk60->unk50 |= 0x1010000;
     gfx++;
     HuMemFree(data->unk3C);
@@ -819,7 +819,7 @@ s16 func_8010C8D4_baby_bowser_broadside(HuSprite_Unk84_Struct *sprite, u8 *color
 }
 
 void func_8010D4C0_baby_bowser_broadside(u16 model, HuSprite_Unk84_Struct *sprite, u16 frame) {
-    HmfModel *modelData = HmfModelData + model;
+    HmfModel *modelData = Hu3DData + model;
     HmfData *data = modelData->hmf;
     Gfx *gfx = data->unk3C->unk00[D_800D2008_main + 1];
 
@@ -832,7 +832,7 @@ void func_8010D4C0_baby_bowser_broadside(u16 model, HuSprite_Unk84_Struct *sprit
 }
 
 void func_8010D590_baby_bowser_broadside(u16 model, HuSprite_Unk84_Struct *sprite, u16 frame, u8 *color) {
-    HmfModel *modelData = HmfModelData + model;
+    HmfModel *modelData = Hu3DData + model;
     HmfData *data = modelData->hmf;
     Gfx *gfx = data->unk3C->unk00[D_800D2008_main + 1];
 
@@ -930,12 +930,12 @@ s16 func_8010DB38_baby_bowser_broadside(s16 model, Vec *vertices, s16 count, f32
     for (i = 0; i < 12; i++, boat++) {
         if (boat->unk_04 == 0) {
             if (model != -1) {
-                boat->x = &HmfModelData[model].pos.x;
-                boat->y = &HmfModelData[model].pos.y;
-                boat->z = &HmfModelData[model].pos.z;
-                boat->rx = &HmfModelData[model].rot.x;
-                boat->ry = &HmfModelData[model].rot.y;
-                boat->rz = &HmfModelData[model].rot.z;
+                boat->x = &Hu3DData[model].pos.x;
+                boat->y = &Hu3DData[model].pos.y;
+                boat->z = &Hu3DData[model].pos.z;
+                boat->rx = &Hu3DData[model].rot.x;
+                boat->ry = &Hu3DData[model].rot.y;
+                boat->rz = &Hu3DData[model].rot.z;
             }
             memcpy(boat->vertices, vertices, count * sizeof(Vec));
             boat->unk_DC = arg3;
@@ -1058,9 +1058,9 @@ void func_8010E0B0_baby_bowser_broadside(BabyBowserBroadsideShip *ship) {
     ship->unk_2E = 0;
     ship->unk_00 &= ~1;
     if (ship->unk_28 != -1) {
-        ship->pos.x = HmfModelData[ship->unk_28].pos.x;
-        ship->pos.y = HmfModelData[ship->unk_28].pos.y;
-        ship->pos.z = HmfModelData[ship->unk_28].pos.z;
+        ship->pos.x = Hu3DData[ship->unk_28].pos.x;
+        ship->pos.y = Hu3DData[ship->unk_28].pos.y;
+        ship->pos.z = Hu3DData[ship->unk_28].pos.z;
     }
     for (i = 1; i < ship->unk_08; i++) {
         if (ship->unk_04[i] != -1) {
@@ -1102,9 +1102,9 @@ void func_8010E0B0_baby_bowser_broadside(BabyBowserBroadsideShip *ship) {
     ship->pos.y += ship->facing.y;
     ship->pos.z += ship->facing.z;
     if (ship->unk_28 != -1) {
-        HmfModelData[ship->unk_28].pos.x = ship->pos.x;
-        HmfModelData[ship->unk_28].pos.y = ship->pos.y;
-        HmfModelData[ship->unk_28].pos.z = ship->pos.z;
+        Hu3DData[ship->unk_28].pos.x = ship->pos.x;
+        Hu3DData[ship->unk_28].pos.y = ship->pos.y;
+        Hu3DData[ship->unk_28].pos.z = ship->pos.z;
     }
 }
 
@@ -1442,7 +1442,7 @@ void func_8010F144_baby_bowser_broadside(u16 *order, s16 count) {
 }
 
 void func_8010F250_baby_bowser_broadside(omObjData *object) {
-    HmfModel *model = &HmfModelData[object->model[0]];
+    HmfModel *model = &Hu3DData[object->model[0]];
 
     object->scale.x = model->scale.x;
     object->scale.y = model->scale.y;

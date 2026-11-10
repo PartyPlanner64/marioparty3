@@ -20,7 +20,7 @@ u16 func_8000B0D4_main(s32 arg0, s32 arg1);
 void func_8000B1A0_main(s32 arg0, u8 sectionFlags);
 void OvlLoad(s32 overlayIndex);
 s8 func_8000B4B4_main(void);
-s16 HmfAnimRead(HmfData* arg0, s32 arg1, char* arg2);
+s16 Hu3DAnimRead(HmfData* arg0, s32 arg1, char* arg2);
 s16 func_8000B5BC_main(s32 arg0);
 
 #endif //_GAME_UTIL_H

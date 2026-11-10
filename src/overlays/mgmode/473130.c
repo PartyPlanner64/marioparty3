@@ -156,7 +156,7 @@ void func_8010BEC0_mgmode(void) {
     }
     model = D_8011B8A8_mgmode[4];
     anim = DataRead(0xA002A);
-    HmfAnimCreate(HmfModelData[model].hmf, anim, 0, "c180n_0_DEF");
+    Hu3DAnimCreate(Hu3DData[model].hmf, anim, 0, "c180n_0_DEF");
     DataClose(anim);
     Hu3DModelRemakeStatic(model);
     func_8001C514_main(model);
@@ -327,8 +327,8 @@ loop:
                 }
                 break;
         }
-        if (HmfModelData[D_8011B8A8_mgmode[4]].motId != D_8011B78A_mgmode &&
-            HmfModelData[D_8011B8A8_mgmode[4]].motIdShift != D_8011B78A_mgmode) {
+        if (Hu3DData[D_8011B8A8_mgmode[4]].motId != D_8011B78A_mgmode &&
+            Hu3DData[D_8011B8A8_mgmode[4]].motIdShift != D_8011B78A_mgmode) {
             Hu3DMotionShiftSet(D_8011B8A8_mgmode[4], D_8011B78A_mgmode, 0, 8, 2);
         }
     }
@@ -846,7 +846,7 @@ void func_8010E6F0_mgmode(s16 arg0) {
         Hu3DModelRotSet(D_8011B8A8_mgmode[i + 7], 0.0f, angle[i], 0.0f);
     }
     model = D_8011B8A8_mgmode[4];
-    func_8002FD8C_main(model, HmfModelData[model].motId, "c100_1-atama", 0x4C, 0x46);
+    func_8002FD8C_main(model, Hu3DData[model].motId, "c100_1-atama", 0x4C, 0x46);
     node = func_8001D33C_main(model, "c100_1-atama");
     for (j = 0; j < 31; j++) {
         t = 1.0f - sindf(j * 3.0f);
@@ -858,14 +858,14 @@ void func_8010E6F0_mgmode(s16 arg0) {
             }
         }
         if (j < 10) {
-            rot = atan2df(HmfModelData[D_8011B8A8_mgmode[7]].pos.x - HmfModelData[D_8011B8A8_mgmode[4]].pos.x,
-                          HmfModelData[D_8011B8A8_mgmode[7]].pos.z - HmfModelData[D_8011B8A8_mgmode[4]].pos.z) -
-                  HmfModelData[D_8011B8A8_mgmode[4]].rot.y;
+            rot = atan2df(Hu3DData[D_8011B8A8_mgmode[7]].pos.x - Hu3DData[D_8011B8A8_mgmode[4]].pos.x,
+                          Hu3DData[D_8011B8A8_mgmode[7]].pos.z - Hu3DData[D_8011B8A8_mgmode[4]].pos.z) -
+                  Hu3DData[D_8011B8A8_mgmode[4]].rot.y;
             rot *= j / 10.0f;
         } else if (j < 20) {
-            rot = atan2df(HmfModelData[D_8011B8A8_mgmode[7]].pos.x - HmfModelData[D_8011B8A8_mgmode[4]].pos.x,
-                          HmfModelData[D_8011B8A8_mgmode[7]].pos.z - HmfModelData[D_8011B8A8_mgmode[4]].pos.z) -
-                  HmfModelData[D_8011B8A8_mgmode[4]].rot.y;
+            rot = atan2df(Hu3DData[D_8011B8A8_mgmode[7]].pos.x - Hu3DData[D_8011B8A8_mgmode[4]].pos.x,
+                          Hu3DData[D_8011B8A8_mgmode[7]].pos.z - Hu3DData[D_8011B8A8_mgmode[4]].pos.z) -
+                  Hu3DData[D_8011B8A8_mgmode[4]].rot.y;
         } else {
             rot -= 5.0f;
         }
@@ -903,9 +903,9 @@ void func_8010EE84_mgmode(s16 arg0) {
 
     count = (arg0 != 4) ? 4 : 2;
     for (i = 0; i < count; i++) {
-        pos[i].x = HmfModelData[D_8011B8A8_mgmode[i + 7]].pos.x;
-        pos[i].y = HmfModelData[D_8011B8A8_mgmode[i + 7]].pos.y;
-        pos[i].z = HmfModelData[D_8011B8A8_mgmode[i + 7]].pos.z;
+        pos[i].x = Hu3DData[D_8011B8A8_mgmode[i + 7]].pos.x;
+        pos[i].y = Hu3DData[D_8011B8A8_mgmode[i + 7]].pos.y;
+        pos[i].z = Hu3DData[D_8011B8A8_mgmode[i + 7]].pos.z;
         delta[i].x = 400.0f - pos[i].x;
         delta[i].z = 900.0f - pos[i].z;
         func_8001C258_main(D_8011B8A8_mgmode[i + 7], 4, 0);
@@ -1030,7 +1030,7 @@ s32 func_8010F648_mgmode(void) {
         func_80045ED0_main((D_8011A3CC_mgmode[GwPlayer[D_8011B430_mgmode[i]].chr] << 16) | 0x33);
     }
     for (i = 0; i < 4; i++) {
-        if (HmfModelData[D_8011B8B6_mgmode[i]].motIdShift == 0xFF) {
+        if (Hu3DData[D_8011B8B6_mgmode[i]].motIdShift == 0xFF) {
             Hu3DMotionShiftSet(D_8011B8B6_mgmode[i], D_8011B7A6_mgmode[i], 0, 8, 0);
         }
     }
@@ -1083,7 +1083,7 @@ s32 func_8010F648_mgmode(void) {
             func_80112060_mgmode(1);
         }
         for (i = 0; i < 4; i++) {
-            if (HmfModelData[D_8011B8B6_mgmode[i]].motIdShift == 0xFF) {
+            if (Hu3DData[D_8011B8B6_mgmode[i]].motIdShift == 0xFF) {
                 Hu3DMotionShiftSet(D_8011B8B6_mgmode[i], D_8011B7B6_mgmode[i], 0, 8, 0);
             }
         }

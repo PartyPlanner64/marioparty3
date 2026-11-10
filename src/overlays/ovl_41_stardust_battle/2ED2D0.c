@@ -203,8 +203,8 @@ void func_801089BC_stardust_battle(omObjData *object) {
 
     func_80111FEC_stardust_battle(object);
     data = object->data;
-    model = &HmfModelData[object->model[0]];
-    shadow = &HmfModelData[object->model[10]];
+    model = &Hu3DData[object->model[0]];
+    shadow = &Hu3DData[object->model[10]];
     Hu3DModelPosSet(object->model[10], object->trans.x, -object->trans.y, object->trans.z);
     Hu3DModelRotSet(object->model[10], object->rot.x, data->unk3C, object->rot.z);
     shadow->motId = model->motId;
@@ -329,7 +329,7 @@ void func_8010C2CC_stardust_battle(f32 arg0) {
 
     if (obj != NULL) {
         func_80111FEC_stardust_battle(obj);
-        model = &HmfModelData[obj->model[0]];
+        model = &Hu3DData[obj->model[0]];
         model->motSpeed = arg0;
     }
 }
@@ -343,7 +343,7 @@ f32 func_8010C32C_stardust_battle(void) {
     }
 
     func_80111FEC_stardust_battle(obj);
-    model = &HmfModelData[obj->model[0]];
+    model = &Hu3DData[obj->model[0]];
     return model->motSpeed;
 }
 
@@ -353,7 +353,7 @@ void func_8010C38C_stardust_battle(f32 arg0) {
 
     if (obj != NULL) {
         func_80111FEC_stardust_battle(obj);
-        model = &HmfModelData[obj->model[0]];
+        model = &Hu3DData[obj->model[0]];
         model->motTime = arg0;
     }
 }
@@ -367,7 +367,7 @@ f32 func_8010C3EC_stardust_battle(void) {
     }
 
     func_80111FEC_stardust_battle(obj);
-    model = &HmfModelData[obj->model[0]];
+    model = &Hu3DData[obj->model[0]];
     return model->motTime;
 }
 

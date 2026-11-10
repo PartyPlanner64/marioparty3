@@ -134,8 +134,8 @@ s32 func_80108444_bowser_toss(void) {
 
 // Swaps the shared HmfData pointer of two of the object's models.
 void func_8010847C_bowser_toss(omObjData *object, s16 arg1, s16 arg2) {
-    HmfModel *model1 = &HmfModelData[object->model[arg1]];
-    HmfModel *model2 = &HmfModelData[object->model[arg2]];
+    HmfModel *model1 = &Hu3DData[object->model[arg1]];
+    HmfModel *model2 = &Hu3DData[object->model[arg2]];
     HmfData *hmf = model1->hmf;
 
     model1->hmf = model2->hmf;

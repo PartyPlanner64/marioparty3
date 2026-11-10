@@ -341,7 +341,7 @@ s32 m257_SetAnimModel(s32 dir, s32 file, f32 freq, s32 attr, s32 arg4) {
         if (!animModel->set) {
             animModel->modelId = func_8000B108_main((dir << 16) | file, arg4);
             func_8001C258_main(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-            hmfModel = &HmfModelData[animModel->modelId];
+            hmfModel = &Hu3DData[animModel->modelId];
             hmfModel->motTime = 0.0f;
             hmfModel->motSpeed = 0.0f;
             if (hmfModel->hmf->unk98 != NULL) {
@@ -368,7 +368,7 @@ s32 m257_SetAnimModelDispOn(s16 animModelId, f32 posX, f32 posY, f32 posZ, f32 r
         return FALSE;
     }
     animModel = &m257_animModels[animModelId];
-    hmfModel = &HmfModelData[animModel->modelId];
+    hmfModel = &Hu3DData[animModel->modelId];
     if ((hmfModel->attr & HU3D_ATTR_DISPOFF) && animModel->state == ANIMMDL_STATE_INVISIBLE) {
         Hu3DModelPosSet(animModel->modelId, posX, posY, posZ);
         Hu3DModelRotSet(animModel->modelId, rotX, rotY, rotZ);
@@ -399,7 +399,7 @@ void m257_UpdateAnimModels(void) {
         if (!animModel->set || animModel->state == ANIMMDL_STATE_INVISIBLE) {
             continue;
         }
-        hmfModel = &HmfModelData[animModel->modelId];
+        hmfModel = &Hu3DData[animModel->modelId];
         switch (animModel->state) {
             default:
                 if (D_800CCF58_main[hmfModel->motId].unk02 <= hmfModel->motTime) {
@@ -442,9 +442,9 @@ s32 m257_SetBill(s32 dir, s32 file, s32 attr) {
             if (attr & BILL_ATTR_DISPOFF) {
                 func_8001C258_main(bill->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
-            bill->posX = &HmfModelData[bill->modelId].pos.x;
-            bill->posY = &HmfModelData[bill->modelId].pos.y;
-            bill->posZ = &HmfModelData[bill->modelId].pos.z;
+            bill->posX = &Hu3DData[bill->modelId].pos.x;
+            bill->posY = &Hu3DData[bill->modelId].pos.y;
+            bill->posZ = &Hu3DData[bill->modelId].pos.z;
             bill->attr = attr;
             bill->duration = func_80055194_main(temp_v0_2)->unk10;
             bill->timer = 0;
@@ -460,7 +460,7 @@ s32 m257_SetBill(s32 dir, s32 file, s32 attr) {
 
 void m257_SetBillDispOn(s16 billId, f32 posX, f32 posY, f32 posZ) {
     if (billId < BILLS_MAX) {
-        HmfModel *model = &HmfModelData[m257_billboards[billId].modelId];
+        HmfModel *model = &Hu3DData[m257_billboards[billId].modelId];
 
         model->pos.x = posX;
         model->pos.y = posY;
@@ -472,7 +472,7 @@ void m257_SetBillDispOn(s16 billId, f32 posX, f32 posY, f32 posZ) {
 
 void m257_SetBillDispOnRef(s16 billId, f32 *posX, f32 *posY, f32 *posZ) {
     if (billId < BILLS_MAX) {
-        HmfModel *model = &HmfModelData[m257_billboards[billId].modelId];
+        HmfModel *model = &Hu3DData[m257_billboards[billId].modelId];
 
         if (posX != NULL) {
             m257_billboards[billId].posX = posX;
@@ -506,7 +506,7 @@ HmfModel *m257_GetBillModel(s16 billId) {
     if (billId >= BILLS_MAX) {
         return NULL;
     }
-    return &HmfModelData[m257_billboards[billId].modelId];
+    return &Hu3DData[m257_billboards[billId].modelId];
 }
 
 void m257_UpdateBills(void) {
@@ -519,7 +519,7 @@ void m257_UpdateBills(void) {
         if (!bill->set || (bill->attr & BILL_ATTR_DISPOFF)) {
             continue;
         }
-        model = &HmfModelData[bill->modelId];
+        model = &Hu3DData[bill->modelId];
         if (bill->attr & BILL_ATTR_REF) {
             model->pos.x = *bill->posX;
             model->pos.y = *bill->posY;
@@ -560,7 +560,7 @@ s32 func_8010AD60_tick_tock_hop(HuSprite_Unk84_Struct *arg0, f32 arg1) {
 
     temp_v0_0 = temp_v0 = HuMemAlloc(0x10000);
     temp_v0_2 = func_8001A894_main(0x4C1, temp_v0_0, 4);
-    temp_s6 = HmfModelData[temp_v0_2].hmf;
+    temp_s6 = Hu3DData[temp_v0_2].hmf;
     temp_s6->unk60->unk50 |= 0x01010000;
     temp_s5 = func_8010CED8_tick_tock_hop(arg0, temp_s6, 1.0f, 0, 0x64);
     gSPDisplayList(temp_v0++, osVirtualToPhysical(D_8010E5A0_tick_tock_hop));
@@ -630,7 +630,7 @@ s32 func_8010B4D0_tick_tock_hop(HuSprite_Unk84_Struct *arg0, f32 arg1) {
 
     temp_v0_0 = temp_v0 = HuMemAlloc(0x10000);
     temp_v0_2 = func_8001A894_main(0x4C1, temp_v0_0, 4);
-    temp_s4 = HmfModelData[temp_v0_2].hmf;
+    temp_s4 = Hu3DData[temp_v0_2].hmf;
     temp_s4->unk60->unk50 |= 0x01010000;
     HuMemFree(temp_s4->unk3C);
     temp_s4->unk3C = HuMemAllocTag(0x14, D_800CDD6A_main);
@@ -733,7 +733,7 @@ s16 func_8010C0E8_tick_tock_hop(HuSprite_Unk84_Struct *arg0, RGBA *arg1) {
 
     temp_v0_0 = temp_v0_2 = HuMemAlloc(0x10000);
     temp_v0 = func_8001A894_main(0x8C1, temp_v0_0, 4);
-    temp_s4 = HmfModelData[temp_v0].hmf;
+    temp_s4 = Hu3DData[temp_v0].hmf;
     temp_s4->unk60->unk50 |= 0x01010000;
     HuMemFree(temp_s4->unk3C);
     temp_s4->unk3C = HuMemAllocTag(0x18, D_800CDD6A_main);
@@ -830,7 +830,7 @@ s16 func_8010C0E8_tick_tock_hop(HuSprite_Unk84_Struct *arg0, RGBA *arg1) {
 
 // Identical to func_801107FC_motor_rooter (ovl_36/M254)
 void func_8010CCD4_tick_tock_hop(u16 modelId, HuSprite_Unk84_Struct *arg1, u16 arg2) {
-    HmfModel *model = &HmfModelData[modelId];
+    HmfModel *model = &Hu3DData[modelId];
     HmfData *temp_s2 = model->hmf;
     Gfx *temp_s0 = temp_s2->unk3C->unk00[D_800D2008_main + 1];
 
@@ -844,7 +844,7 @@ void func_8010CCD4_tick_tock_hop(u16 modelId, HuSprite_Unk84_Struct *arg1, u16 a
 
 // Identical to func_801108CC_motor_rooter (ovl_36/M254)
 void func_8010CDA4_tick_tock_hop(u16 modelId, HuSprite_Unk84_Struct *arg1, u16 arg2, RGBA *arg3) {
-    HmfModel *model = &HmfModelData[modelId];
+    HmfModel *model = &Hu3DData[modelId];
     HmfData *temp_s3 = model->hmf;
     HmfModelData_Unk64_Unk3C_Struct *temp_v1 = temp_s3->unk3C;
     Gfx *temp_s0 = temp_v1->unk00[D_800D2008_main + 1];
@@ -950,7 +950,7 @@ void m257_CreateColliders(FuncGroupContext *groupCtx, FuncContext *ctx) {
 }
 
 s32 m257_SetCollider(s16 modelId, Quad *baseQuad, f32 height, s16 maxTrackers, s32 attr) {
-    HmfModel *model = &HmfModelData[modelId];
+    HmfModel *model = &Hu3DData[modelId];
     QuadCollider *collider;
     s16 i;
 
@@ -996,7 +996,7 @@ ModelTracker *m257_SetModelTracker(s16 colliderId, s16 modelId) {
         return NULL;
     }
     tracker = &m257_colliders[colliderId].modelTrackers[m257_colliders[colliderId].trackerCount];
-    model = &HmfModelData[modelId];
+    model = &Hu3DData[modelId];
     tracker->posX = &model->pos.x;
     tracker->posY = &model->pos.y;
     tracker->posZ = &model->pos.z;
@@ -1129,7 +1129,7 @@ void m257_MakeRandPermutation(s16 *out, s16 n) {
 }
 
 void m257_SyncWithModel(omObjData *object) {
-    HmfModel *model = &HmfModelData[object->model[0]];
+    HmfModel *model = &Hu3DData[object->model[0]];
 
     object->scale.x = model->scale.x;
     object->scale.y = model->scale.y;

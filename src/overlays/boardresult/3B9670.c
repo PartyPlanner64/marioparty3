@@ -1,7 +1,7 @@
 #include "common.h"
 #include "../ovl_81_name/ovl_81.h"
 
-#define OBJ_HMF_MODEL(obj) (HmfModelData[(obj)->omObj1->model[0]])
+#define OBJ_HMF_MODEL(obj) (Hu3DData[(obj)->omObj1->model[0]])
 
 #define OBJ_MODEL_ROT_X(obj, angle)                                                                          \
     {                                                                                                        \
@@ -287,7 +287,7 @@ void func_80105BD8_boardresult(void) {
     func_8001C814_main(model, 0, 1);
 
     func_8002FD8C_main(D_8010EAF4_boardresult->omObj1->model[0],
-                       HmfModelData[D_8010EAF4_boardresult->omObj1->model[0]].motId, "l_mayu", 76, 71);
+                       Hu3DData[D_8010EAF4_boardresult->omObj1->model[0]].motId, "l_mayu", 76, 71);
     node = func_8001D33C_main(D_8010EAF4_boardresult->omObj1->model[0], "l_mayu");
     for (i = 0; i < 30; i += 2) {
         node->baseRot.z = i;
@@ -296,7 +296,7 @@ void func_80105BD8_boardresult(void) {
 
     HuAudFXPlay(0x174);
     func_8002FD8C_main(D_8010EAF4_boardresult->omObj1->model[0],
-                       HmfModelData[D_8010EAF4_boardresult->omObj1->model[0]].motId, "hige", 23, 70);
+                       Hu3DData[D_8010EAF4_boardresult->omObj1->model[0]].motId, "hige", 23, 70);
     node = func_8001D33C_main(D_8010EAF4_boardresult->omObj1->model[0], "hige");
     baseY = node->basePos.y;
     for (i = 0; i < 30; i += 2) {
@@ -315,7 +315,7 @@ void func_80105BD8_boardresult(void) {
         HuVecCopyXYZ(&D_8010EB38_boardresult[i]->player_obj->coords, 0.0f, 150.0f, 0.0f);
         HuVecCopy3F(&targets[i], &D_8010E4C8_boardresult);
         targets[i].y += 400.0f;
-        func_8008A120_main(HmfModelData[D_8010EB38_boardresult[i]->player_obj->omObj1->model[0]].mtx, -30.0f);
+        func_8008A120_main(Hu3DData[D_8010EB38_boardresult[i]->player_obj->omObj1->model[0]].mtx, -30.0f);
         func_800D8E88_name_81(D_8010EB38_boardresult[i]->player_obj);
         func_800EBF2C_name_81(&D_8010EB38_boardresult[i]->player_obj->coords, &targets[i],
                               &D_8010EB38_boardresult[i]->player_obj->coords, 5);
@@ -348,12 +348,12 @@ s16 func_8010685C_boardresult(s16 model, s32 dataNum, char *name) {
     s32 anim;
     s16 animIdx;
 
-    anim = HmfAnimCreate(HmfModelData[model].hmf, data, 0, name);
+    anim = Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, name);
     D_8010EB74_boardresult = anim;
     func_80032FC0_main(anim, 1, 1);
     DataClose(data);
     animIdx = D_800D1714_main[(s16)anim].animIdx;
-    D_8010EB76_boardresult = HmfAnimLink(HmfModelData[model].hmf, anim, 0, name);
+    D_8010EB76_boardresult = Hu3DAnimLink(Hu3DData[model].hmf, anim, 0, name);
     Hu3DModelRemakeStatic(model);
     return animIdx;
 }
@@ -363,9 +363,9 @@ void func_80106968_boardresult(s16 model, s16 animIdx) {
 
     if (D_8010EB76_boardresult != 0xFF) {
         if (animIdx == -1) {
-            func_80033910_main(HmfModelData[model].hmf);
+            func_80033910_main(Hu3DData[model].hmf);
         } else {
-            func_80033970_main(HmfModelData[model].hmf);
+            func_80033970_main(Hu3DData[model].hmf);
             anim = &D_800D1714_main[D_8010EB76_boardresult];
             anim->animIdx = animIdx;
             anim->rot = 0;
@@ -1136,7 +1136,7 @@ void func_80109754_boardresult(void) {
         HuVecCopyXYZ(&D_8010EB38_boardresult[i]->player_obj->scale, 1.0f, 1.0f, 1.0f);
         HuVecCopy3F(&D_8010EB38_boardresult[i]->player_obj->coords, &D_8010E4D4_boardresult[i]);
         func_800EB7BC_name_81(&D_8010EB38_boardresult[i]->player_obj->rot);
-        func_8008A120_main(HmfModelData[D_8010EB38_boardresult[i]->player_obj->omObj1->model[0]].mtx, 0.0f);
+        func_8008A120_main(Hu3DData[D_8010EB38_boardresult[i]->player_obj->omObj1->model[0]].mtx, 0.0f);
     }
 
     for (i = 0; i < 3; i++) {
@@ -1700,7 +1700,7 @@ void func_8010BC70_boardresult(void) {
 
 void func_8010BCA4_boardresult(void) {
     Hu3DCamInit(1);
-    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
     func_800E4F50_name_81(hvq_data_ROM_START);
     MBDBackLoad(0);
     func_800E8180_name_81(1000.0f, 10000.0f);

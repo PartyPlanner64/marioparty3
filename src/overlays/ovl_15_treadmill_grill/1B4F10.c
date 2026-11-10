@@ -91,7 +91,7 @@ void func_8010AE6C_treadmill_grill(omObjData *arg0) {
     f32 scale;
 
     for (i = 0; i < 4; i++) {
-        hmf = HmfModelData[arg0->model[i]].hmf;
+        hmf = Hu3DData[arg0->model[i]].hmf;
         scale = D_8010AF8C_treadmill_grill[i] / D_8010AF9C_treadmill_grill[i];
         for (j = 0; j < hmf->unk1A; j++) {
             group = &hmf->unkB0[j];

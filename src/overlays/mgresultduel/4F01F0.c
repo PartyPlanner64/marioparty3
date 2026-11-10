@@ -117,8 +117,8 @@ void func_801059A0_mgresultduel(void) {
         }
     }
 
-    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
-    HmfLightDirSet(1, 0.0f, 50.0f, 100.0f);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightDirSet(1, 0.0f, 50.0f, 100.0f);
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     omAddPrcObj(func_80106930_mgresultduel, 0x1001, 0x2000, 0);
     omAddPrcObj(func_80106F38_mgresultduel, 0x1001, 0x2000, 0);
@@ -239,8 +239,8 @@ void func_80106278_mgresultduel(omObjData *obj) {
 
     scale = 0.9f;
     Hu3DModelScaleSet(obj->model[1], scale, scale, scale);
-    Hu3DMotionShiftSet(obj->model[1], HmfModelData[obj->motion[1]].motId, 0, 0x1E, 2);
-    func_80106850_mgresultduel(obj, HmfModelData[obj->motion[1]].motId);
+    Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[1]].motId, 0, 0x1E, 2);
+    func_80106850_mgresultduel(obj, Hu3DData[obj->motion[1]].motId);
     HuAudFXPlay(0x20F);
     for (i = 0; i < 4; i++) {
         Hu3DModelScaleSet(obj->model[1], 0.9f, 0.9f - sindf(i * 22.5f) * 0.24f, 0.9f);
@@ -253,8 +253,8 @@ void func_80106278_mgresultduel(omObjData *obj) {
     }
     Hu3DModelScaleSet(obj->model[1], 0.9f, 0.9f, 0.9f);
     HuAudFXPlay(0x20D);
-    Hu3DMotionShiftSet(obj->model[1], HmfModelData[obj->motion[3]].motId, 0, 0x1E, 2);
-    func_80106850_mgresultduel(obj, HmfModelData[obj->motion[3]].motId);
+    Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[3]].motId, 0, 0x1E, 2);
+    func_80106850_mgresultduel(obj, Hu3DData[obj->motion[3]].motId);
     Hu3DMotionSpeedSet(obj->model[1], 2.0f);
     func_801074DC_mgresultduel(D_80109318_mgresultduel);
     func_80107C74_mgresultduel(D_80109314_mgresultduel, D_80109318_mgresultduel);
@@ -273,16 +273,16 @@ void func_80106560_mgresultduel(void) {
 }
 
 void func_80106574_mgresultduel(omObjData *obj) {
-    Hu3DMotionShiftSet(obj->model[1], HmfModelData[obj->motion[3]].motId, 0, 0x1E, 0);
+    Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[3]].motId, 0, 0x1E, 0);
     func_8001C814_main(obj->model[1], 2, 0);
     func_8001C814_main(obj->model[1], 4, 4);
-    func_80106850_mgresultduel(obj, HmfModelData[obj->motion[3]].motId);
+    func_80106850_mgresultduel(obj, Hu3DData[obj->motion[3]].motId);
     Hu3DMotionSpeedSet(obj->model[1], 1.0f);
-    while (HmfModelData[obj->model[1]].motTime > 0.0f) {
+    while (Hu3DData[obj->model[1]].motTime > 0.0f) {
         HuPrcVSleep();
     }
-    Hu3DMotionShiftSet(obj->model[1], HmfModelData[obj->motion[4]].motId, 0, 0x1E, 2);
-    func_80106850_mgresultduel(obj, HmfModelData[obj->motion[4]].motId);
+    Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[4]].motId, 0, 0x1E, 2);
+    func_80106850_mgresultduel(obj, Hu3DData[obj->motion[4]].motId);
     D_80109338_mgresultduel.objFunc = func_80106270_mgresultduel;
 }
 
@@ -311,7 +311,7 @@ void func_80106744_mgresultduel(omObjData *obj) {
 void func_80106850_mgresultduel(omObjData *obj, s32 motId) {
     HmfMotionNode *node;
 
-    func_8002FD8C_main(obj->model[1], HmfModelData[obj->model[1]].motId, D_80108EC0_mgresultduel, 0x4C, 0x46);
+    func_8002FD8C_main(obj->model[1], Hu3DData[obj->model[1]].motId, D_80108EC0_mgresultduel, 0x4C, 0x46);
     if ((s16)motId >= 0) {
         func_8002FD8C_main(obj->model[1], motId, D_80108EC0_mgresultduel, 0x4C, 0x46);
     }

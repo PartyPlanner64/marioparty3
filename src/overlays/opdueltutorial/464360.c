@@ -62,8 +62,8 @@ void func_801059A0_opdueltutorial(void) {
 
     D_80108C10_opdueltutorial = GwSystem.current_board_index = 6;
     omInitObjMan(50, 20);
-    HmfLightColorSet(1, 255, 255, 255);
-    HmfLightColorSet(2, 200, 200, 200);
+    Hu3DGLightColorSet(1, 255, 255, 255);
+    Hu3DGLightColorSet(2, 200, 200, 200);
     func_801088C4_opdueltutorial();
     func_80108854_opdueltutorial();
     func_800D87DC_name_81(700.0f);
@@ -105,8 +105,8 @@ s16 func_80105B54_opdueltutorial(s32 file, s32 flags) {
     func_8001C954_main(model);
     func_8001C514_main(model);
     func_80013390_main(model, -1, 0, func_80105E38_opdueltutorial);
-    hmf = HmfModelData[model].hmf;
-    effect = HmfModelData[model].unkBC;
+    hmf = Hu3DData[model].hmf;
+    effect = Hu3DData[model].unkBC;
     particle = effect->unk58;
     effect->unk08.f = 30.0f;
     effect->unk0C.f = 720.0f;
@@ -130,8 +130,8 @@ s16 func_80105B54_opdueltutorial(s32 file, s32 flags) {
 }
 
 s32 func_80105CD4_opdueltutorial(s16 model, f32 x, f32 y, f32 z) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_UnkBC_Struct *effect = HmfModelData[model].unkBC;
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *effect = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = effect->unk58;
     s16 i;
     f32 angle;
@@ -159,8 +159,8 @@ s32 func_80105CD4_opdueltutorial(s16 model, f32 x, f32 y, f32 z) {
 }
 
 void func_80105E38_opdueltutorial(s16 model) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_UnkBC_Struct *effect = HmfModelData[model].unkBC;
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *effect = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = effect->unk58;
     s16 i;
     s16 count = hmf->unk1A;
@@ -199,12 +199,12 @@ s16 func_80106000_opdueltutorial(s16 model, s32 file, char *name) {
     s16 animIdx;
 
     data = DataRead(file);
-    anim = HmfAnimCreate(HmfModelData[model].hmf, data, 0, name);
+    anim = Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, name);
     D_80108C44_opdueltutorial = anim;
     func_80032FC0_main(anim, 1, 1);
     DataClose(data);
     animIdx = D_800D1714_main[(s16)anim].animIdx;
-    D_80108C46_opdueltutorial = HmfAnimLink(HmfModelData[model].hmf, anim, 0, name);
+    D_80108C46_opdueltutorial = Hu3DAnimLink(Hu3DData[model].hmf, anim, 0, name);
     Hu3DModelRemakeStatic(model);
     return animIdx;
 }
@@ -214,9 +214,9 @@ void func_8010610C_opdueltutorial(s16 model, s16 animIdx) {
 
     if (D_80108C46_opdueltutorial != 255) {
         if (animIdx == -1) {
-            func_80033910_main(HmfModelData[model].hmf);
+            func_80033910_main(Hu3DData[model].hmf);
         } else {
-            func_80033970_main(HmfModelData[model].hmf);
+            func_80033970_main(Hu3DData[model].hmf);
             anim = &D_800D1714_main[D_80108C46_opdueltutorial];
             anim->animIdx = animIdx;
             anim->rot = 0;
@@ -340,30 +340,30 @@ void func_8010686C_opdueltutorial(void) {
     func_8001FA68_main(obj->omObj1->model[0]);
     func_8001F9E4_main(obj->omObj1->model[0], 255);
     data[0] = DataRead(0x130135);
-    HmfAnimCreate(HmfModelData[obj->omObj1->model[0]].hmf, data[0], 0, "sitagocoro_DEF");
+    Hu3DAnimCreate(Hu3DData[obj->omObj1->model[0]].hmf, data[0], 0, "sitagocoro_DEF");
     data[1] = DataRead(0x140034);
-    anim = (s16)HmfAnimCreate(HmfModelData[obj->omObj1->model[0]].hmf, data[1], 4, "sitagocoro_DEF");
+    anim = (s16)Hu3DAnimCreate(Hu3DData[obj->omObj1->model[0]].hmf, data[1], 4, "sitagocoro_DEF");
     Hu3DModelRemakeStatic(obj->omObj1->model[0]);
     HuVecCopyXYZ(&obj->coords, 0, 150.0f, 500.0f);
     HuPrcSleep(15);
     func_80033430_main(anim);
-    anim = (s16)HmfAnimCreate(HmfModelData[obj->omObj1->model[0]].hmf, data[1], 3, "sitagocoro_DEF");
+    anim = (s16)Hu3DAnimCreate(Hu3DData[obj->omObj1->model[0]].hmf, data[1], 3, "sitagocoro_DEF");
     Hu3DModelRemakeStatic(obj->omObj1->model[0]);
     HuPrcSleep(15);
     func_80033430_main(anim);
-    anim = (s16)HmfAnimCreate(HmfModelData[obj->omObj1->model[0]].hmf, data[1], 2, "sitagocoro_DEF");
+    anim = (s16)Hu3DAnimCreate(Hu3DData[obj->omObj1->model[0]].hmf, data[1], 2, "sitagocoro_DEF");
     Hu3DModelRemakeStatic(obj->omObj1->model[0]);
     HuPrcSleep(15);
     func_80033430_main(anim);
-    anim = (s16)HmfAnimCreate(HmfModelData[obj->omObj1->model[0]].hmf, data[1], 1, "sitagocoro_DEF");
+    anim = (s16)Hu3DAnimCreate(Hu3DData[obj->omObj1->model[0]].hmf, data[1], 1, "sitagocoro_DEF");
     Hu3DModelRemakeStatic(obj->omObj1->model[0]);
     HuPrcSleep(15);
     func_80033430_main(anim);
-    anim = (s16)HmfAnimCreate(HmfModelData[obj->omObj1->model[0]].hmf, data[1], 0, "sitagocoro_DEF");
+    anim = (s16)Hu3DAnimCreate(Hu3DData[obj->omObj1->model[0]].hmf, data[1], 0, "sitagocoro_DEF");
     Hu3DModelRemakeStatic(obj->omObj1->model[0]);
     HuPrcSleep(15);
     func_80033430_main(anim);
-    anim = (s16)HmfAnimCreate(HmfModelData[obj->omObj1->model[0]].hmf, data[0], 0, "sitagocoro_DEF");
+    anim = (s16)Hu3DAnimCreate(Hu3DData[obj->omObj1->model[0]].hmf, data[0], 0, "sitagocoro_DEF");
     Hu3DModelRemakeStatic(obj->omObj1->model[0]);
     HuPrcSleep(5);
     for (alpha = 255; alpha > 0; alpha -= 10) {
@@ -853,7 +853,7 @@ void func_80108880_opdueltutorial(void) {
 
 void func_801088C4_opdueltutorial(void) {
     Hu3DCamInit(1);
-    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
     func_800E4F50_name_81(hvq_data_ROM_START);
     MBDBackLoad(30);
 }

@@ -132,7 +132,7 @@ void func_80105C88_mgresultdealer(omObjData *unused) {
         case 7:
             func_80107E44_mgresultdealer(D_8010A264_mgresultdealer * D_8010A258_mgresultdealer);
             state++;
-            Hu3DMotionShiftSet(obj->model[0], HmfModelData[obj->motion[3]].motId, 0, 30, 2);
+            Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[3]].motId, 0, 30, 2);
             break;
         case 8:
             if (func_80108034_mgresultdealer() == 1) {
@@ -141,7 +141,7 @@ void func_80105C88_mgresultdealer(omObjData *unused) {
             break;
         case 9:
             func_801073F4_mgresultdealer();
-            Hu3DMotionShiftSet(obj->model[0], HmfModelData[obj->motion[1]].motId, 0, 30, 0);
+            Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[1]].motId, 0, 30, 0);
             PlayerFXPlay(0x274, D_8010A266_mgresultdealer[0]);
             HuAudFXPlay(0x516);
             if (D_8010A264_mgresultdealer * D_8010A258_mgresultdealer >= 100) {
@@ -158,8 +158,8 @@ void func_80105C88_mgresultdealer(omObjData *unused) {
             state++;
             break;
         case 10:
-            time = HmfModelData[obj->model[0]].motTime;
-            if (time >= D_800CCF58_main[HmfModelData[obj->model[0]].motId].unk02) {
+            time = Hu3DData[obj->model[0]].motTime;
+            if (time >= D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02) {
                 D_801098CC_mgresultdealer = 0;
                 state = 15;
             }
@@ -181,13 +181,13 @@ void func_80105C88_mgresultdealer(omObjData *unused) {
                 }
                 func_80107448_mgresultdealer();
                 state++;
-                Hu3DMotionShiftSet(obj->model[0], HmfModelData[obj->motion[2]].motId, 0, 30, 0);
+                Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[2]].motId, 0, 30, 0);
                 PlayerFXPlay(0x26B, D_8010A266_mgresultdealer[0]);
             }
             break;
         case 14:
-            time = HmfModelData[obj->model[0]].motTime;
-            if (time >= D_800CCF58_main[HmfModelData[obj->model[0]].motId].unk02) {
+            time = Hu3DData[obj->model[0]].motTime;
+            if (time >= D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02) {
                 D_801098CC_mgresultdealer = 0;
                 state++;
             }
@@ -250,7 +250,7 @@ void func_801062B4_mgresultdealer(void) {
 }
 
 void func_8010630C_mgresultdealer(s16 model) {
-    HmfData_UnkBC *camera = HmfModelData[model].hmf->unkBC;
+    HmfData_UnkBC *camera = Hu3DData[model].hmf->unkBC;
     HuMtx4F matrix;
     f32 x = camera->unk08 - camera->unk14;
     f32 y = camera->unk0C - camera->unk18;

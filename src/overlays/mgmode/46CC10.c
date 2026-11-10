@@ -153,13 +153,13 @@ void func_801059A0_mgmode(void) {
     D_8011B888_mgmode = 1800.0f;
     Hu3DCameraPerspectiveSet(0, D_8011B6A4_mgmode, D_8011B804_mgmode, D_8011B888_mgmode);
     Hu3DCameraPerspectiveSet(1, D_8011B6A4_mgmode, D_8011B804_mgmode, D_8011B888_mgmode);
-    HmfLightMaxSet(4);
-    HmfLightColorSet(1, 64, 64, 64);
-    HmfLightDirSet(1, 0.0f, 119.0f, 0.0f);
-    HmfLightStatSet(0, 1, 1);
-    HmfLightColorSet(2, 150, 150, 110);
-    HmfLightDirSet(2, 40.0f, 42.0f, 104.0f);
-    HmfLightColorSet(3, 0, 0, 0);
+    Hu3DGLightMaxSet(4);
+    Hu3DGLightColorSet(1, 64, 64, 64);
+    Hu3DGLightDirSet(1, 0.0f, 119.0f, 0.0f);
+    Hu3DGLightStatSet(0, 1, 1);
+    Hu3DGLightColorSet(2, 150, 150, 110);
+    Hu3DGLightDirSet(2, 40.0f, 42.0f, 104.0f);
+    Hu3DGLightColorSet(3, 0, 0, 0);
     omAddObj(10000, 0, 0, -1, func_8010BD28_mgmode);
     omPrcSetStatBit(omAddPrcObj(func_8010AFEC_mgmode, 0x1100, 0x1000, 0), 0xA0);
     omAddPrcObj(func_80117DD0_mgmode, 0x3F00, 0x800, 0);
@@ -170,8 +170,8 @@ void func_801059A0_mgmode(void) {
         HuAudSeqPlay(8);
     } else if (omovlevtno == 2 || omovlevtno == 4) {
         func_8010A8E4_mgmode(1);
-        HmfLightColorSet(3, 130, 130, 50);
-        HmfLightDirSet(3, -17.0f, -101.0f, -61.0f);
+        Hu3DGLightColorSet(3, 130, 130, 50);
+        Hu3DGLightDirSet(3, -17.0f, -101.0f, -61.0f);
         omAddPrcObj(func_8010BEC0_mgmode, 0x3FF6, 0x2000, 0);
         if (omovlevtno == 4) {
             if (func_80111B08_mgmode() == 0) {
@@ -209,7 +209,7 @@ void func_801059A0_mgmode(void) {
     _ClearFlag(13);
     _SetFlag(28);
     D_800CE20A_main = 0;
-    model = &HmfModelData[D_800D0468_main];
+    model = &Hu3DData[D_800D0468_main];
     model->unk00 = (model->unk00 & 0xF9) | 3;
     Hu3DModelCameraSet(D_800D0468_main, 1);
     D_8011B8A4_mgmode = 0;
@@ -306,7 +306,7 @@ void func_8010606C_mgmode(void) {
             func_8002367C_main(node->unk58, D_8011A888_mgmode);
             func_80116ED4_mgmode(1, 30, 1, (void (*)(s16 *))-1);
         }
-        hmf = HmfModelData[D_8011B8A8_mgmode[0]].hmf;
+        hmf = Hu3DData[D_8011B8A8_mgmode[0]].hmf;
         hmf->unk60[func_8002C834_main(hmf, "fog")].unk24 = 1;
         func_8011822C_mgmode(D_80119158_mgmode);
         func_801181F4_mgmode(0);
@@ -334,7 +334,7 @@ void func_8010606C_mgmode(void) {
         }
         HuPrcSleep(5);
     } else if (omovlevtno == 1) {
-        hmf = HmfModelData[D_8011B8A8_mgmode[0]].hmf;
+        hmf = Hu3DData[D_8011B8A8_mgmode[0]].hmf;
         hmf->unk60[func_8002C834_main(hmf, "fog")].unk24 = 1;
         D_8011A700_mgmode = 0;
         func_80116E24_mgmode(2);
@@ -344,11 +344,11 @@ void func_8010606C_mgmode(void) {
         Hu3DMotionShiftSet(D_8011B8A8_mgmode[15], D_8011B7A0_mgmode[0], 0, 8, 2);
     }
     if (D_8011B8A4_mgmode) {
-        hmf = HmfModelData[D_8011B8A8_mgmode[3]].hmf;
+        hmf = Hu3DData[D_8011B8A8_mgmode[3]].hmf;
         hmf->unk60[func_8002C834_main(hmf, "harigami_g")].unk24 = 1;
     }
     if (D_8011B778_mgmode) {
-        hmf = HmfModelData[D_8011B8A8_mgmode[3]].hmf;
+        hmf = Hu3DData[D_8011B8A8_mgmode[3]].hmf;
         hmf->unk60[func_8002C834_main(hmf, "harigami_b")].unk24 = 1;
     }
     while (TRUE) {
@@ -624,7 +624,7 @@ void func_80107610_mgmode(void) {
     Hu3DModelScaleSet(D_8011B8B2_mgmode, 0.5f, 0.5f, 0.5f);
     while (TRUE) {
         HuPrcVSleep();
-        HmfModelData[D_8011B8B2_mgmode].pos.y = sindf(angle) * 20.0f;
+        Hu3DData[D_8011B8B2_mgmode].pos.y = sindf(angle) * 20.0f;
         angle += 2;
         if (angle > 360) {
             angle -= 360;
@@ -680,7 +680,7 @@ void func_801076B0_mgmode(void) {
     Hu3DModelRemakeStatic(model);
     func_8001C954_main(model);
     func_8001C514_main(model);
-    hmf = HmfModelData[model].hmf;
+    hmf = Hu3DData[model].hmf;
     for (i = 0; i < 7; i++) {
         node = func_8002C834_main(hmf, D_801192D8_mgmode[i]);
         group = &hmf->unkB0[hmf->unk60[node].unk2C];
@@ -730,7 +730,7 @@ void func_801076B0_mgmode(void) {
     }
     model = D_8011B8A8_mgmode[15];
     data = DataRead(0xA002A);
-    HmfAnimCreate(HmfModelData[model].hmf, data, 0, "c160n_0_DEF");
+    Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, "c160n_0_DEF");
     DataClose(data);
     Hu3DModelRemakeStatic(model);
     func_8001C514_main(model);
@@ -1508,7 +1508,7 @@ void func_8010B574_mgmode(void) {
     f32 dirZ;
     f32 inv;
 
-    model = &HmfModelData[D_8011B8A8_mgmode[15]];
+    model = &Hu3DData[D_8011B8A8_mgmode[15]];
     if (D_800D5558_main[1] & 0x10) {
         D_80118EB0_mgmode ^= 1;
         if (D_80118EB0_mgmode) {

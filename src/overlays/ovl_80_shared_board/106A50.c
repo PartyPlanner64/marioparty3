@@ -322,7 +322,7 @@ static void MBStatusMain(omObjData *obj) {
     s32 i, j;
 
     while (1) {
-        if (HmfPauseF == 0) {
+        if (Hu3DPauseF == 0) {
             for (i = 0; i < MB_MAX_PLAYERS; i++) {
                 if (D_80101780_shared_board != -1 &&
                     D_80101784_shared_board != -1 &&

@@ -21,8 +21,8 @@ s16 func_8010CAF0_msetup(s32 dataId, s32 flags) {
     func_8001C954_main(model);
     func_8001C514_main(model);
     func_80013390_main(model, -1, 0, func_8010CE8C_msetup);
-    hmf = HmfModelData[model].hmf;
-    data = HmfModelData[model].unkBC;
+    hmf = Hu3DData[model].hmf;
+    data = Hu3DData[model].unkBC;
     entry = data->unk58;
     data->unk08.f = 30.0f;
     data->unk0C.f = 720.0f;
@@ -46,8 +46,8 @@ s16 func_8010CAF0_msetup(s32 dataId, s32 flags) {
 }
 
 void func_8010CC70_msetup(s16 model, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_UnkBC_Struct *data = HmfModelData[model].unkBC;
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *data = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *entry = data->unk58;
     s16 i;
     f32 value1;
@@ -66,8 +66,8 @@ void func_8010CC70_msetup(s16 model, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
 }
 
 s32 func_8010CD14_msetup(s16 model, f32 x, f32 y, f32 z) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_UnkBC_Struct *data = HmfModelData[model].unkBC;
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *data = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *entry = data->unk58;
     s16 i;
     f32 angle;
@@ -98,8 +98,8 @@ s32 func_8010CD14_msetup(s16 model, f32 x, f32 y, f32 z) {
 const f64 D_8011A688_msetup = 0.0;
 
 void func_8010CE8C_msetup(s16 model) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_UnkBC_Struct *data = HmfModelData[model].unkBC;
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *data = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *entry = data->unk58;
     s16 i;
     s16 count = hmf->unk1A;

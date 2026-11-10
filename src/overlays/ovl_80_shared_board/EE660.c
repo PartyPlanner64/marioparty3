@@ -75,7 +75,7 @@ static void func_800DAAAC_shared_board(omObjData *arg0) {
 
     switch (arg0->work[0]) {
         case 0:
-            if (HmfPauseF != 0) {
+            if (Hu3DPauseF != 0) {
                 return;
             }
             arg0->trans.y = GwPlayer[arg0->work[3]].player_obj->coords.y + D_80105708_shared_board;
@@ -124,7 +124,7 @@ static void func_800DAAAC_shared_board(omObjData *arg0) {
             break;
 
         case 1:
-            if (HmfPauseF == 0) {
+            if (Hu3DPauseF == 0) {
                 arg0->trans.y = GwPlayer[arg0->work[3]].player_obj->coords.y
                               + D_80105708_shared_board
                               + (sindf(arg0->work[1] * 2) * 10.0f * base);
@@ -137,7 +137,7 @@ static void func_800DAAAC_shared_board(omObjData *arg0) {
             D_800A0A7C_main = entry->unk48;
             func_8001C2FC_main(*arg0->model, 0x22000, 0x20000);
             func_8001D558_main(*arg0->model, entry->unk40, entry->unk44, 2);
-            if (HmfPauseF == 0) {
+            if (Hu3DPauseF == 0) {
                 entry->unk48 += 39.0f;
                 entry->unk40 += 0.05f;
                 entry->unk44 = ((10.0f - entry->unk44) / 30.0f) + entry->unk44;
@@ -158,7 +158,7 @@ static void func_800DAF1C_shared_board(omObjData *arg0) {
 
     entry = &D_800CDBD0_main[arg0->work[3]];
 
-    if ((arg0->work[0] == 0) && (HmfPauseF == 0)) {
+    if ((arg0->work[0] == 0) && (Hu3DPauseF == 0)) {
         arg0->scale.x = (sindf(arg0->rot.x) * arg0->scale.z) + 1.0f;
         arg0->rot.x += 20.0f;
         arg0->scale.z -= 0.15;
@@ -206,7 +206,7 @@ static void func_800DB318_shared_board(omObjData *arg0) {
 
     entry = &D_800CDBD0_main[arg0->work[3]];
 
-    if ((arg0->work[0] == 0) && (HmfPauseF == 0)) {
+    if ((arg0->work[0] == 0) && (Hu3DPauseF == 0)) {
         arg0->scale.x = (sindf(arg0->rot.x) * arg0->scale.z) + 1.0f;
 
         arg0->rot.x += 20.0f;
@@ -578,22 +578,22 @@ s16 func_800DC128_shared_board(s32 arg0) {
 
     if (entry->unk_0A != 5) {
         entry->unk_2C = DataRead(D_80100D78_shared_board[entry->unk_0A]);
-        entry->unk_1A[0] = HmfAnimCreate(HmfModelData[entry->unk_16].hmf, entry->unk_2C, 0, "tile01_DEF");
-        entry->unk_1A[1] = HmfAnimLink(HmfModelData[entry->unk_16].hmf, entry->unk_1A[0], 0, "tile02_DEF");
-        entry->unk_1A[2] = HmfAnimLink(HmfModelData[entry->unk_16].hmf, entry->unk_1A[0], 0, "tile03_DEF");
-        entry->unk_1A[3] = HmfAnimLink(HmfModelData[entry->unk_16].hmf, entry->unk_1A[0], 0, "tile04_DEF");
-        entry->unk_1A[4] = HmfAnimLink(HmfModelData[entry->unk_16].hmf, entry->unk_1A[0], 0, "tile06_DEF");
-        entry->unk_1A[5] = HmfAnimLink(HmfModelData[entry->unk_16].hmf, entry->unk_1A[0], 0, "tile10_DEF");
+        entry->unk_1A[0] = Hu3DAnimCreate(Hu3DData[entry->unk_16].hmf, entry->unk_2C, 0, "tile01_DEF");
+        entry->unk_1A[1] = Hu3DAnimLink(Hu3DData[entry->unk_16].hmf, entry->unk_1A[0], 0, "tile02_DEF");
+        entry->unk_1A[2] = Hu3DAnimLink(Hu3DData[entry->unk_16].hmf, entry->unk_1A[0], 0, "tile03_DEF");
+        entry->unk_1A[3] = Hu3DAnimLink(Hu3DData[entry->unk_16].hmf, entry->unk_1A[0], 0, "tile04_DEF");
+        entry->unk_1A[4] = Hu3DAnimLink(Hu3DData[entry->unk_16].hmf, entry->unk_1A[0], 0, "tile06_DEF");
+        entry->unk_1A[5] = Hu3DAnimLink(Hu3DData[entry->unk_16].hmf, entry->unk_1A[0], 0, "tile10_DEF");
 
         tile = rand8() % 10;
         rot = rand8() & 3;
         for (i = 0; i < 6; i++) {
             if ((entry->unk_0A < 3)) {
                 if ((entry->unk_0A >= 0)) {
-                    func_80032FF8_main(entry->unk_1A[i], rot);
+                    Hu3DAnimBankSet(entry->unk_1A[i], rot);
                 }
             }
-            func_8003302C_main(entry->unk_1A[i], tile);
+            Hu3DAnmNoSet(entry->unk_1A[i], tile);
         }
     } else {
         entry->unk_2C = NULL;
@@ -701,9 +701,9 @@ static void func_800DC718_shared_board(s32 arg0, s32 arg1, s32 arg2, char *arg3[
         for (i = 0; i < 6; i++) {
             if (arg3[i] != 0) {
                 if (i == 0) {
-                    entry->unk_1A[0] = HmfAnimCreate(HmfModelData[entry->unk_16].hmf, entry->unk_2C, 0, arg3[0]);
+                    entry->unk_1A[0] = Hu3DAnimCreate(Hu3DData[entry->unk_16].hmf, entry->unk_2C, 0, arg3[0]);
                 } else {
-                    entry->unk_1A[1] = HmfAnimLink(HmfModelData[entry->unk_16].hmf, entry->unk_1A[0], 0, arg3[i]);
+                    entry->unk_1A[1] = Hu3DAnimLink(Hu3DData[entry->unk_16].hmf, entry->unk_1A[0], 0, arg3[i]);
                 }
             } else {
                 entry->unk_1A[i] = -1;
@@ -901,7 +901,7 @@ static void func_800DCDD4_shared_board(void) {
                 HuPrcSleep(0x14);
                 break;
             case 1:
-                if (((GwPlayer[temp_s3->unk0].stat & 1) || (D_800D5558_main[GwPlayer[temp_s3->unk0].pad] & A_BUTTON)) && !(HmfModelData[D_800CDBD0_main[temp_s3->unk0].unk_16].attr & 4) && (GWBoardFlagCheck(0x11) == 0)) {
+                if (((GwPlayer[temp_s3->unk0].stat & 1) || (D_800D5558_main[GwPlayer[temp_s3->unk0].pad] & A_BUTTON)) && !(Hu3DData[D_800CDBD0_main[temp_s3->unk0].unk_16].attr & 4) && (GWBoardFlagCheck(0x11) == 0)) {
                     temp_s3->unk4++;
                     MBPlayerMotionSet(temp_s3->unk0, 2, 0);
                     func_800EE688_shared_board(GwPlayer[temp_s3->unk0].player_obj, 2.0f, -0.3f);
@@ -1138,7 +1138,7 @@ static void func_800DD724_shared_board(void) {
     MBPlayerPosMoveCreate(temp_a2, &sp10, temp_a2, 0x28);
 
     for (i = 0; i < 0x28; i++) {
-        func_8008A2A0_main(HmfModelData[temp_v0->omObj1->model[0]].mtx, var_f22);
+        func_8008A2A0_main(Hu3DData[temp_v0->omObj1->model[0]].mtx, var_f22);
         var_f22 += 20.0f;
         var_f20 -= 0.05f;
         
@@ -1390,7 +1390,7 @@ static void func_800DE48C_shared_board(void) {
         HuPrcVSleep();
         temp_v0->velocity.x += 3.0f;
         var_f20 += 40.0f;
-        func_8008A2A0_main(HmfModelData[temp_v0->omObj1->model[0]].mtx, var_f20);
+        func_8008A2A0_main(Hu3DData[temp_v0->omObj1->model[0]].mtx, var_f20);
     }
 
     MBModelKill(temp_v0);

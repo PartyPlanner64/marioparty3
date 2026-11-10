@@ -320,7 +320,7 @@ void func_8010D1E8_staff(void) {
     s16 *temp3;
 
     temp_s2 = HuPrcCurrentGet()->user_data;
-    HmfLightDirSet(1, 0.0f, 0.0f, 100.0f);
+    Hu3DGLightDirSet(1, 0.0f, 0.0f, 100.0f);
     func_800E4F50_name_81(hvq_data_ROM_START);
     MBDBackLoad(0x20);
     func_800E8180_name_81(1000.0f, 10000.0f);
@@ -365,7 +365,7 @@ void func_8010D1E8_staff(void) {
     for (temp2 = sp20, i = 0; i < 8; i++, temp2++) {
         Hu3DModelKill(temp2->unk_18);
         Hu3DModelKill(temp2->unk_1A);
-        func_80033354_main(temp2->unk_1C);
+        Hu3DAnimKill(temp2->unk_1C);
         if (temp2->unk_1E >= 0) {
             Hu3DModelKill(temp2->unk_1E);
         }

@@ -177,14 +177,14 @@ void m257_OverlayMain(void) {
 void m257_InitEnvironment(void) {
     s32 camIndex;
 
-    Hu3DAnimInit(50);
+    func_8001FE20_main(50);
     func_800142A0_main(0x30);
     omInitObjMan(50, 0);
     func_8004A208_main();
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    HmfLightColorSet(0, 0xFF, 0xFF, 0xFF);
-    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
-    HmfLightDirSet(1, -56.0f, 50.0f, 56.0f);
+    Hu3DGLightColorSet(0, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightDirSet(1, -56.0f, 50.0f, 56.0f);
     func_8000B5F0_main(1);
     camIndex = func_8000B638_main();
     ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
@@ -495,8 +495,8 @@ void m257_CheckMinigameEnd(FuncGroupContext *groupCtx, FuncContext *ctx) {
         if (!m257_minigame->finished) {
             m257_minigame->finished = TRUE;
         }
-        clockObstacleRot = HmfModelData[m257_minigame->clockHandModel[HAND_OBSTACLE]].rot.y;
-        clockPlatformRot = HmfModelData[m257_minigame->clockHandModel[HAND_PLATFORM]].rot.y;
+        clockObstacleRot = Hu3DData[m257_minigame->clockHandModel[HAND_OBSTACLE]].rot.y;
+        clockPlatformRot = Hu3DData[m257_minigame->clockHandModel[HAND_PLATFORM]].rot.y;
         m257_MinimizeAngleDiff(&clockObstacleRot, &clockPlatformRot);
         if (ABS(clockObstacleRot - clockPlatformRot) > 90.0f) {
             m257_minigame->clockBaseSpeed[HAND_PLATFORM] = m257_minigame->clockBaseSpeed[HAND_OBSTACLE] = 0.0f;
@@ -522,8 +522,8 @@ void m257_CheckMinigameEnd(FuncGroupContext *groupCtx, FuncContext *ctx) {
         if (!m257_minigame->finished) {
             m257_minigame->finished = TRUE;
         }
-        clockObstacleRot = HmfModelData[m257_minigame->clockHandModel[HAND_OBSTACLE]].rot.y;
-        clockPlatformRot = HmfModelData[m257_minigame->clockHandModel[HAND_PLATFORM]].rot.y;
+        clockObstacleRot = Hu3DData[m257_minigame->clockHandModel[HAND_OBSTACLE]].rot.y;
+        clockPlatformRot = Hu3DData[m257_minigame->clockHandModel[HAND_PLATFORM]].rot.y;
         m257_MinimizeAngleDiff(&clockObstacleRot, &clockPlatformRot);
         if (ABS(clockObstacleRot - clockPlatformRot) > 90.0f) {
             m257_minigame->clockBaseSpeed[HAND_PLATFORM] = m257_minigame->clockBaseSpeed[HAND_OBSTACLE] = 0.0f;
@@ -752,8 +752,8 @@ void m257_UpdateClockSpeed(FuncGroupContext *groupCtx, FuncContext *ctx) {
             }
         } else {
             fxPlayed = FALSE;
-            clockObstacleRot = HmfModelData[groupCtx->modelIds[MDL_OBSTACLE]].rot.y;
-            clockPlatformRot = HmfModelData[groupCtx->modelIds[MDL_PLATFORM]].rot.y;
+            clockObstacleRot = Hu3DData[groupCtx->modelIds[MDL_OBSTACLE]].rot.y;
+            clockPlatformRot = Hu3DData[groupCtx->modelIds[MDL_PLATFORM]].rot.y;
             m257_MinimizeAngleDiff(&clockObstacleRot, &clockPlatformRot);
             if (ABS(clockObstacleRot - clockPlatformRot) > ctx->work.f32[3]) {
                 if (m257_minigame->clockBaseSpeed[HAND_OBSTACLE] > 0.0f) {
@@ -953,12 +953,12 @@ void m257_UpdatePlayerPosition(FuncGroupContext *groupCtx, FuncContext *ctx) {
     }
     object->trans.x = sindf(clockPlatformRot) * ctx->work.f32[0];
     object->trans.z = cosdf(clockPlatformRot) * ctx->work.f32[1];
-    HmfModelData[object->model[1]].pos.x = object->trans.x;
-    HmfModelData[object->model[1]].pos.z = object->trans.z;
+    Hu3DData[object->model[1]].pos.x = object->trans.x;
+    Hu3DData[object->model[1]].pos.z = object->trans.z;
     if (ABS(m257_minigame->clockHandRot[HAND_PLATFORM] - m257_minigame->clockHandRot[HAND_OBSTACLE]) < 10.0f) {
-        HmfModelData[object->model[1]].pos.y = 30.0f;
+        Hu3DData[object->model[1]].pos.y = 30.0f;
     } else {
-        HmfModelData[object->model[1]].pos.y = 5.0f;
+        Hu3DData[object->model[1]].pos.y = 5.0f;
     }
 }
 
@@ -1012,7 +1012,7 @@ void m257_ExecPlayerJump(FuncGroupContext *groupCtx, FuncContext *ctx) {
     }
     var_f2 = Hu3DMotionShiftTimeGet(object->model[0]);
     if (var_f2 == -1.0f) {
-        var_f2 = HmfModelData[object->model[0]].motTime;
+        var_f2 = Hu3DData[object->model[0]].motTime;
     }
     if (var_f2 > 5.0f && var_f2 < 7.0f && !(D_800CDA7C_main[player->padId] & A_BUTTON)) {
         player->accelY = -0.294f;
@@ -1210,8 +1210,8 @@ void m257_ExecPlayerKnockedOut(FuncGroupContext *groupCtx, FuncContext *ctx) {
         scale = 0.5f;
     }
     Hu3DModelScaleSet(object->model[1], scale, scale, scale);
-    HmfModelData[object->model[1]].pos.x = object->trans.x;
-    HmfModelData[object->model[1]].pos.z = object->trans.z;
+    Hu3DData[object->model[1]].pos.x = object->trans.x;
+    Hu3DData[object->model[1]].pos.z = object->trans.z;
     if (object->trans.y < 10.0f) {
         ctx->work.s16[0] = 0;
         object->trans.y = 10.0f;
@@ -1224,7 +1224,7 @@ void m257_ExecPlayerKnockedOut(FuncGroupContext *groupCtx, FuncContext *ctx) {
 void m257_UpdatePlayerAnimation(FuncGroupContext *groupCtx, FuncContext *ctx) {
     PlayerData *player = ctx->data;
     omObjData *object = groupCtx->object;
-    HmfModel *model = &HmfModelData[object->model[0]];
+    HmfModel *model = &Hu3DData[object->model[0]];
 
     if (D_800CCF58_main[model->motId].unk02 - 1 <= model->motTime) {
         player->updateAnimation = TRUE;

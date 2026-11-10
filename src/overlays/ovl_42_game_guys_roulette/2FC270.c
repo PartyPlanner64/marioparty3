@@ -18,9 +18,9 @@ s32 func_801059BC_game_guys_roulette(f32 arg0) {
 }
 
 void func_80105A28_game_guys_roulette(void) {
-    HmfLightColorSet(0, 0xFF, 0xFF, 0xFF);
-    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
-    HmfLightDirSet(1, 0.0f, 0.0f, 95.0f);
+    Hu3DGLightColorSet(0, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightDirSet(1, 0.0f, 0.0f, 95.0f);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_42_game_guys_roulette/2FC270", func_80105A78_game_guys_roulette);

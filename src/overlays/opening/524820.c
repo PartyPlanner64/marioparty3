@@ -284,7 +284,7 @@ void opMotionCreate(s32 slot, s32 resourceId, s32 arg2) {
         arg2 = 0x6AD;
     }
     data = DataRead(resourceId);
-    D_80115630_opening[slot].motionId = func_8001F1FC_main(data, (s16)arg2);
+    D_80115630_opening[slot].motionId = Hu3DMotionCreate(data, (s16)arg2);
     DataClose(data);
 }
 
@@ -294,7 +294,7 @@ void opModelKill(s32 slot) {
         D_80115630_opening[slot].modelId = -1;
     }
     if (D_80115630_opening[slot].motionId != -1) {
-        func_8002D4B8_main(D_80115630_opening[slot].motionId);
+        Hu3DMotionKill(D_80115630_opening[slot].motionId);
         D_80115630_opening[slot].motionId = -1;
     }
 }
@@ -383,8 +383,8 @@ void opMotionTimeSet(s32 slot, u32 time) {
 }
 
 void opMotionEndWait(s32 slot) {
-    while (HmfModelData[D_80115630_opening[slot].modelId].motTime !=
-           D_800CCF58_main[HmfModelData[D_80115630_opening[slot].modelId].motId].unk02) {
+    while (Hu3DData[D_80115630_opening[slot].modelId].motTime !=
+           D_800CCF58_main[Hu3DData[D_80115630_opening[slot].modelId].motId].unk02) {
         HuPrcVSleep();
     }
 }
@@ -392,7 +392,7 @@ void opMotionEndWait(s32 slot) {
 s32 opMotionEndCheck(s32 arg0) {
     s16 modelId = D_80115630_opening[arg0].modelId;
 
-    return HmfModelData[modelId].motTime == D_800CCF58_main[HmfModelData[modelId].motId].unk02;
+    return Hu3DData[modelId].motTime == D_800CCF58_main[Hu3DData[modelId].motId].unk02;
 }
 
 void opMotionSet(s32 modelId, s32 motionId, s16 arg2) {
@@ -680,7 +680,7 @@ u16 func_80107EF4_opening(s32 value) {
             break;
         }
         if (D_800D5558_main[0] & Z_TRIG) {
-            camera = HmfModelData[gCameraList[0].unk4].hmf->unkBC;
+            camera = Hu3DData[gCameraList[0].unk4].hmf->unkBC;
             sprintf(text, "POS:%4.2f,%4.2f,%4.2f", camera->unk08, camera->unk0C, camera->unk10);
             print8(16, 180, text);
             sprintf(text, "A T:%4.2f,%4.2f,%4.2f", camera->unk14, camera->unk18, camera->unk1C);
@@ -953,7 +953,7 @@ void opDemoEvent(void) {
         }
         func_80107CD0_opening(0, 0x4D06U);
         opDemoObjKill(0);
-        temp_s1 = &HmfModelData[opModelIdGet(0xB)];
+        temp_s1 = &Hu3DData[opModelIdGet(0xB)];
         func_8002367C_main(savedMatrix, temp_s1->mtx);
         spinAngle = 0.0f;
         opMotionShiftSet(0xB, 0x6E, 4, 4, (s16)2);
@@ -982,7 +982,7 @@ void opDemoEvent(void) {
             temp_s1->rot.z = spinAngle;
             HuPrcVSleep();
         }
-        temp_s1 = &HmfModelData[opModelIdGet(0xB)];
+        temp_s1 = &Hu3DData[opModelIdGet(0xB)];
         func_8002367C_main(temp_s1->mtx, savedMatrix);
         HuPrcSleep(0x10);
         func_80107C70_opening(0);
@@ -3236,8 +3236,8 @@ s16 func_801117D4_opening(s32 resourceId, s32 arg1) {
     func_8001C954_main(modelId);
     func_8001C514_main(modelId);
     func_80013390_main(modelId, -1, 0, func_80111F58_opening);
-    data = HmfModelData[modelId].hmf;
-    work = HmfModelData[modelId].unkBC;
+    data = Hu3DData[modelId].hmf;
+    work = Hu3DData[modelId].unkBC;
     particle = work->unk58;
     work->unk08.f = 30.0f;
     work->unk0C.f = 720.0f;
@@ -3279,8 +3279,8 @@ s32 func_80111984_opening(s32 resourceId, s32 arg1) {
     func_8001C954_main(modelId);
     func_8001C514_main(modelId);
     func_80013390_main(modelId, -1, 0, func_80112120_opening);
-    data = HmfModelData[modelId].hmf;
-    work = HmfModelData[modelId].unkBC;
+    data = Hu3DData[modelId].hmf;
+    work = Hu3DData[modelId].unkBC;
     particle = work->unk58;
     work->unk08.f = 30.0f;
     work->unk0C.f = 720.0f;
@@ -3332,8 +3332,8 @@ u32 func_80111C30_opening(u32 max) {
 }
 
 s32 func_80111C88_opening(s16 modelId, f32 x, f32 y, f32 z) {
-    HmfData *data = HmfModelData[modelId].hmf;
-    HmfModelData_UnkBC_Struct *work = HmfModelData[modelId].unkBC;
+    HmfData *data = Hu3DData[modelId].hmf;
+    HmfModelData_UnkBC_Struct *work = Hu3DData[modelId].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = work->unk58;
     s16 i;
     f32 angle;
@@ -3357,7 +3357,7 @@ s32 func_80111C88_opening(s16 modelId, f32 x, f32 y, f32 z) {
 }
 
 s32 func_80111DDC_opening(s16 modelId, f32 x, f32 y, f32 z, f32 size) {
-    HmfData *data = HmfModelData[modelId].hmf;
+    HmfData *data = Hu3DData[modelId].hmf;
     HmfModelData_UnkBC_Struct *work;
     HmfModelData_UnkBC_Unk58_Struct *particle;
     s16 i;
@@ -3365,7 +3365,7 @@ s32 func_80111DDC_opening(s16 modelId, f32 x, f32 y, f32 z, f32 size) {
     D_80117378_opening.x = x;
     D_80117378_opening.y = x;
     D_80117378_opening.z = x;
-    work = HmfModelData[modelId].unkBC;
+    work = Hu3DData[modelId].unkBC;
     particle = work->unk58;
     work->unk1C.f = x;
     work->unk20.f = y;
@@ -3387,8 +3387,8 @@ s32 func_80111DDC_opening(s16 modelId, f32 x, f32 y, f32 z, f32 size) {
 }
 
 void func_80111F58_opening(s16 modelId) {
-    HmfData *data = HmfModelData[modelId].hmf;
-    HmfModelData_UnkBC_Struct *work = HmfModelData[modelId].unkBC;
+    HmfData *data = Hu3DData[modelId].hmf;
+    HmfModelData_UnkBC_Struct *work = Hu3DData[modelId].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = work->unk58;
     s16 i;
     s16 count = data->unk1A;
@@ -3419,8 +3419,8 @@ void func_80111F58_opening(s16 modelId) {
 }
 
 void func_80112120_opening(s16 modelId) {
-    HmfData *data = HmfModelData[modelId].hmf;
-    HmfModelData_UnkBC_Struct *work = HmfModelData[modelId].unkBC;
+    HmfData *data = Hu3DData[modelId].hmf;
+    HmfModelData_UnkBC_Struct *work = Hu3DData[modelId].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = work->unk58;
     s16 i;
     s16 count = data->unk1A;
@@ -4054,8 +4054,8 @@ void opWipeWhiteOutCreate(s32 index, s32 totalFrames) {
 
 void func_801149A4_opening(s32 character) {
     if (D_800D20B8_main[character][2] != 0xFF) {
-        func_80033354_main(D_800D20B8_main[character][2]);
-        func_80033354_main(D_800D5570_main[character][2]);
+        Hu3DAnimKill(D_800D20B8_main[character][2]);
+        Hu3DAnimKill(D_800D5570_main[character][2]);
         D_800D20B8_main[character][2] = 0xFF;
     }
 }

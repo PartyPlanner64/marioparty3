@@ -196,17 +196,17 @@ u16 SprModelRead(s32 arg0, s32 arg1, s32 arg2) {
     void *temp_v0;
 
     temp_v0 = DataRead(arg0);
-    temp_s0 = HmfSprModelCreate(temp_v0, arg1, (u8)arg2);
+    temp_s0 = Hu3DSprModelCreate(temp_v0, arg1, (u8)arg2);
     HuMemMemoryFreePerm(temp_v0);
     return temp_s0;
 }
 
-s16 HmfAnimRead(HmfData* arg0, s32 arg1, char* arg2) {
+s16 Hu3DAnimRead(HmfData* arg0, s32 arg1, char* arg2) {
     s32 temp_s0;
     void *temp_v0;
 
     temp_v0 = DataRead(arg1);
-    temp_s0 = HmfAnimCreate(arg0, temp_v0, 0, arg2);
+    temp_s0 = Hu3DAnimCreate(arg0, temp_v0, 0, arg2);
     HuMemMemoryFreePerm(temp_v0);
     return temp_s0;
 }

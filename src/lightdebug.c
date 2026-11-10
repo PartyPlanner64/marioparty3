@@ -153,9 +153,9 @@ void func_80046728_main(omObjData *object) {
                 case 2:
                     if (D_800D1244_main[0] & (A_BUTTON | U_CBUTTONS | D_CBUTTONS)) {
                         if (D_800CE1D4_main->unk02[D_800A1664_main].stat & 1) {
-                            HmfLightStatSet(D_800A1664_main, 1, 0);
+                            Hu3DGLightStatSet(D_800A1664_main, 1, 0);
                         } else {
-                            HmfLightStatSet(D_800A1664_main, 1, 1);
+                            Hu3DGLightStatSet(D_800A1664_main, 1, 1);
                         }
                     }
                     break;
@@ -230,7 +230,7 @@ void func_80046728_main(omObjData *object) {
             x = x * cosY - z * sinY;
             y = x * sinX * sinY + y * cosX + z * sinX * cosY;
             z = x * cosX * sinY - y * sinX + z * cosX * cosY;
-            HmfLightDirSet(D_800A1664_main, x, y, z);
+            Hu3DGLightDirSet(D_800A1664_main, x, y, z);
             break;
     }
 

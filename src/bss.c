@@ -228,7 +228,7 @@ s16 mbItemBtnF BSS; // overlays only
 s16 D_800D037E_main BSS; // audio.c, objsysobj.c
 OSPiHandle __CartRomHandle BSS; // 2.0L/io/cartrominit.c
 HuMallocHeader *gLastMallocBlock BSS; // mallocblock.c
-HmfModel *HmfModelData BSS; // aura.c, camera.c, effect.c, ...
+HmfModel *Hu3DData BSS; // aura.c, camera.c, effect.c, ...
 u16 D_800D03FC BSS; // overlays only
 s16 D_800D03FE_main BSS; // overlays only; accessed as s16[4] in mgmode
 u8 D_800D0400_main[0x8] BSS; // unreferenced
@@ -349,7 +349,7 @@ u8 D_800D20A0_main[8] BSS; // audio.c, hmfdraw.c, input.c, ...; contains D_800D2
 u32 sPrcSleepLoc BSS; // process.c
 s32 D_800D20AC_main BSS; // hmfdraw.c, hmfman.c, mallocblock.c
 u8 D_800D20B0_main BSS; // mgmode
-s8 HmfPauseF BSS; // gamemes.c, hmfman.c, hmfspr.c, ...
+s8 Hu3DPauseF BSS; // gamemes.c, hmfman.c, hmfspr.c, ...
 u8 D_800D20B8_main[16][3] ALIGNED(8) BSS; // hmfspr.c
 u8 D_800D20E8_main[0x4] BSS; // unreferenced
 u8 D_800D20EC_main BSS; // saveload.c

@@ -25,10 +25,10 @@ void func_801059D0_storydebug(void) {
     func_8004A208_main();
     Hu3DCamInit(1);
     Hu3DCameraScissorSet(0, &ScissorDimensions);
-    HmfLightMaxSet(1);
-    HmfLightColorSet(0, 120, 120, 120);
-    HmfLightColorSet(1, 64, 64, 96);
-    HmfLightDirSet(1, -100.0f, 100.0f, 100.0f);
+    Hu3DGLightMaxSet(1);
+    Hu3DGLightColorSet(0, 120, 120, 120);
+    Hu3DGLightColorSet(1, 64, 64, 96);
+    Hu3DGLightDirSet(1, -100.0f, 100.0f, 100.0f);
     omAddPrcObj(func_80106134_storydebug, 0xE000, 0, 0);
     omAddObj(0x500, 0, 0, -1, func_80106108_storydebug);
     WipeCreateIn(WIPE_TYPE_NORMAL, 0);

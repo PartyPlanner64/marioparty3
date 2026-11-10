@@ -26,7 +26,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C45D0", func_800DD2DC_name_81
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C45D0", func_800DD30C_name_81);
 
 s32 func_800DD3B4_name_81(s32 arg0) {
-    return D_800CCF58_main[HmfModelData[arg0].motId].unk02 <= HmfModelData[arg0].motTime;
+    return D_800CCF58_main[Hu3DData[arg0].motId].unk02 <= Hu3DData[arg0].motTime;
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C45D0", func_800DD41C_name_81);
@@ -40,7 +40,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C45D0", func_800DD564_name_81
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C45D0", func_800DD570_name_81);
 
 void func_800DD59C_name_81(s16 arg0, f32 arg1, f32 arg2) {
-    HmfModelData_UnkBC_Struct *unkBC = HmfModelData[arg0].unkBC;
+    HmfModelData_UnkBC_Struct *unkBC = Hu3DData[arg0].unkBC;
     unkBC->unk08.f = arg1;
     unkBC->unk0C.f = arg2;
 }

@@ -21,16 +21,16 @@ typedef struct {
     /* 0x40 */ Light unk40[3][8][8];
 } UnkLightData; // Size 0xC40
 
-void HmfLightExec(s16);
-void HmfLightMaxSet(s16);
-void HmfLightStatSet(s16, u8, u8);
-void HmfLightColorSet(s16, u8, u8, u8);
-void HmfLightDirSet(s16, f32, f32, f32);
+void Hu3DLightExec(s16);
+void Hu3DGLightMaxSet(s16);
+void Hu3DGLightStatSet(s16, u8, u8);
+void Hu3DGLightColorSet(s16, u8, u8, u8);
+void Hu3DGLightDirSet(s16, f32, f32, f32);
 void func_80019968_main(s16);
 
-void HmfLightInit(void);
-void HmfLightClose(void);
-void HmfLightReset(void);
+void Hu3DLighInit(void);
+void Hu3DLightClose(void);
+void Hu3DLightReset(void);
 void func_80019668_main(HmfData_UnkD0 *arg0);
 s16 func_80019828_main(s16 arg0, s16 arg1);
 

@@ -64,7 +64,7 @@ s32 func_80011C40_main(HmfData *, void *);
 void func_80011F9C_main(HmfData *);
 void func_8001203C_main(HmfData *, u8 *, s32);
 
-void Hmfload(HmfData *hmf, void *fileData, s32 flags) {
+void LoadHMF(HmfData *hmf, void *fileData, s32 flags) {
     s16 i;
     s16 recordCount;
     s16 motionCount;

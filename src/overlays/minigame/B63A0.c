@@ -166,10 +166,10 @@ void func_800E3FD8_minigame(omObjData *arg0, f32 x, f32 y, f32 z) {
     if (data->unk104[12] != NULL && data->unk104[12](arg0, &x, &y, &z) == 1) {
         return;
     }
-    HmfModelData[arg0->model[0]].motIdShape = 0xFF;
+    Hu3DData[arg0->model[0]].motIdShape = 0xFF;
     time = Hu3DMotionShiftTimeGet(arg0->model[0]);
     if (time == -1.0f) {
-        time = HmfModelData[arg0->model[0]].motTime;
+        time = Hu3DData[arg0->model[0]].motTime;
     }
     if (time >= 30.0f && time <= 50.0f) {
         x += sindf(data->unk3C) * (data->unk6C + data->unk48);
@@ -204,10 +204,10 @@ void func_800E4248_minigame(omObjData *arg0, f32 x, f32 y, f32 z) {
     if (data->unk104[13] != NULL && data->unk104[13](arg0, &x, &y, &z) == 1) {
         return;
     }
-    HmfModelData[arg0->model[0]].motIdShape = 0xFF;
+    Hu3DData[arg0->model[0]].motIdShape = 0xFF;
     time = Hu3DMotionShiftTimeGet(arg0->model[0]);
     if (time == -1.0f) {
-        time = HmfModelData[arg0->model[0]].motTime;
+        time = Hu3DData[arg0->model[0]].motTime;
     }
     if (time >= 10.0f && time <= 25.0f) {
         angle = data->unk3C - 90.0f + (time - 10.0f) * 12.0f;

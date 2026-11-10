@@ -120,8 +120,8 @@ void func_800E4BA4_minigame(s32 arg0) {
     f32 unk40;
 
     if (arg0 & 0xFF) {
-        unk40 = HmfModelData[arg0 & 0xFF].motTime;
-        if (D_800CCF58_main[HmfModelData[arg0 & 0xFF].motId].unk02 <= unk40) {
+        unk40 = Hu3DData[arg0 & 0xFF].motTime;
+        if (D_800CCF58_main[Hu3DData[arg0 & 0xFF].motId].unk02 <= unk40) {
             func_8001C258_main((u8)arg0, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
     }
@@ -141,10 +141,10 @@ void func_800E4C88_minigame(omObjData *arg0, u8 arg1, f32 x, f32 y, f32 z, f32 r
 
     if (arg0->mdlcnt > arg1) {
         if (model != 0) {
-            motTime = HmfModelData[model].motTime;
-            if (D_800CCF58_main[HmfModelData[model].motId].unk02 <= motTime) {
-                if (HmfModelData[model].hmf->unk98 != NULL) {
-                    HmfModelData[model].hmf->unk98->unk08 = 0;
+            motTime = Hu3DData[model].motTime;
+            if (D_800CCF58_main[Hu3DData[model].motId].unk02 <= motTime) {
+                if (Hu3DData[model].hmf->unk98 != NULL) {
+                    Hu3DData[model].hmf->unk98->unk08 = 0;
                 }
                 Hu3DMotionTimeSet(model, 0.0f);
             }
@@ -164,7 +164,7 @@ void func_800E4D9C_minigame(omObjData *arg0) {
         s16 anim = motion[22] & 0x3FFF;
         Hu3DMotionShapeSet(arg0->model[0], anim, flag);
     } else {
-        s16 anim = HmfModelData[arg0->motion[22] & 0x3FFF].motId;
+        s16 anim = Hu3DData[arg0->motion[22] & 0x3FFF].motId;
         Hu3DMotionShapeSet(arg0->model[0], anim, flag);
     }
 }
@@ -190,8 +190,8 @@ void func_800E4E30_minigame(omObjData *arg0) {
                 data->unkB8 = Hu3DMotionMotionMaxTimeGet(motion);
                 shiftTime = data->unkB8 / 5.0f;
             } else {
-                motion = HmfModelData[arg0->motion[anim->unk02] & 0x3FFF].motId;
-                data->unkB8 = D_800CCF58_main[HmfModelData[arg0->motion[anim->unk02] & 0x3FFF].motId].unk02;
+                motion = Hu3DData[arg0->motion[anim->unk02] & 0x3FFF].motId;
+                data->unkB8 = D_800CCF58_main[Hu3DData[arg0->motion[anim->unk02] & 0x3FFF].motId].unk02;
                 shiftTime = data->unkB8 / 5.0f;
             }
             if (anim->unk00 & 1) {
@@ -201,7 +201,7 @@ void func_800E4E30_minigame(omObjData *arg0) {
                 func_80017954_main(data->unk5A, data->unk5B, chr, anim->unk06);
             }
             Hu3DMotionShiftSet(model, motion, 0, shiftTime, shape);
-            HmfModelData[(u16)model].unk54 = anim->unk0C;
+            Hu3DData[(u16)model].unk54 = anim->unk0C;
             if (data->unk50 & 0x100) {
                 func_800E4D9C_minigame(arg0);
             }
@@ -214,7 +214,7 @@ void func_800E4E30_minigame(omObjData *arg0) {
         }
         time = Hu3DMotionShiftTimeGet(model);
         if (time == -1.0f) {
-            time = HmfModelData[(u16)model].motTime;
+            time = Hu3DData[(u16)model].motTime;
         }
         if (data->unkB8 <= time) {
             data->unkD0++;
@@ -307,7 +307,7 @@ void func_800E5138_minigame(omObjData *arg0) {
         attr = (data->unkC2 & 1) ? 0 : HU3D_ATTR_DISPOFF;
         func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, attr);
         if (attr) {
-            func_8001F038_main(&HmfModelData[arg0->model[0]], 2);
+            func_8001F038_main(&Hu3DData[arg0->model[0]], 2);
         }
         data->unkC2 = (data->unkC2 + 1) & 3;
     }
@@ -469,7 +469,7 @@ void func_800E5A00_minigame(omObjData *arg0, u16 arg1, s32 arg2, s32 arg3, u16 a
     func_800E1BA8_minigame_UnkE8_ObjData *temp_v0_2;
     s16 temp_v0;
 
-    temp_v0 = func_8001F1FC_main(DataRead(arg2), 0x18);
+    temp_v0 = Hu3DMotionCreate(DataRead(arg2), 0x18);
     if (temp_v0 < 0) {
         return;
     }
@@ -521,7 +521,7 @@ void func_800E5C18_minigame(omObjData *arg0, u16 arg1, s32 arg2, s32 arg3, u16 a
     s32 chr;
     s32 unk08;
 
-    modelId = func_8001F1FC_main(DataRead(arg2), 0x18);
+    modelId = Hu3DMotionCreate(DataRead(arg2), 0x18);
     if (modelId < 0) {
         return;
     }

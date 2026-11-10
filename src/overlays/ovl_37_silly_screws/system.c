@@ -253,7 +253,7 @@ s32 m255_SetAnimModel(s32 dir, s32 file, f32 freq, s32 attr, s32 arg4) {
         if (!animModel->set) {
             animModel->modelId = func_8000B108_main((dir << 16) | file, arg4);
             func_8001C258_main(animModel->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-            hmfModel = &HmfModelData[animModel->modelId];
+            hmfModel = &Hu3DData[animModel->modelId];
             hmfModel->motTime = 0.0f;
             hmfModel->motSpeed = 0.0f;
             if (hmfModel->hmf->unk98 != NULL) {
@@ -280,7 +280,7 @@ s32 m255_SetAnimModelDispOn(s16 animModelId, f32 posX, f32 posY, f32 posZ, f32 r
         return FALSE;
     }
     animModel = &m255_animModels[animModelId];
-    HmfModel = &HmfModelData[animModel->modelId];
+    HmfModel = &Hu3DData[animModel->modelId];
     if ((HmfModel->attr & 4) && animModel->state == ANIMMDL_STATE_INVISIBLE) {
         Hu3DModelPosSet(animModel->modelId, posX, posY, posZ);
         Hu3DModelRotSet(animModel->modelId, rotX, rotY, rotZ);
@@ -311,7 +311,7 @@ void m255_UpdateAnimModels(void) {
         if (!animModel->set || animModel->state == ANIMMDL_STATE_INVISIBLE) {
             continue;
         }
-        hmfModel = &HmfModelData[animModel->modelId];
+        hmfModel = &Hu3DData[animModel->modelId];
         switch (animModel->state) {
             default:
                 if (D_800CCF58_main[hmfModel->motId].unk02 <= hmfModel->motTime) {
@@ -361,10 +361,10 @@ f32 m255_CalcQuadraticBezier(f32 t, f32 p0, f32 p1, f32 p2) {
 }
 
 void m255_SyncWithModel(omObjData *object) {
-    object->trans.x = HmfModelData[object->model[0]].pos.x;
-    object->trans.y = HmfModelData[object->model[0]].pos.y;
-    object->trans.z = HmfModelData[object->model[0]].pos.z;
-    object->rot.x = HmfModelData[object->model[0]].rot.x;
-    object->rot.y = HmfModelData[object->model[0]].rot.y;
-    object->rot.z = HmfModelData[object->model[0]].rot.z;
+    object->trans.x = Hu3DData[object->model[0]].pos.x;
+    object->trans.y = Hu3DData[object->model[0]].pos.y;
+    object->trans.z = Hu3DData[object->model[0]].pos.z;
+    object->rot.x = Hu3DData[object->model[0]].rot.x;
+    object->rot.y = Hu3DData[object->model[0]].rot.y;
+    object->rot.z = Hu3DData[object->model[0]].rot.z;
 }

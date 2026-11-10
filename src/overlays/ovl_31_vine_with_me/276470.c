@@ -219,11 +219,11 @@ void func_801059A0_vine_with_me(void) {
     ViewportSet(1, 640.0f, 480.0f, 511.0f, 640.0f, 720.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 22.619865f, 1000.0f, 22000.0f);
     Hu3DCameraPerspectiveSet(1, 22.619865f, 1000.0f, 22000.0f);
-    HmfLightMaxSet(2);
-    HmfLightDirSet(0, 0.0f, 0.0f, 90.0f);
-    HmfLightColorSet(0, 0x90, 0x90, 0x90);
-    HmfLightDirSet(1, 0.0f, 65.0f, 90.0f);
-    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightMaxSet(2);
+    Hu3DGLightDirSet(0, 0.0f, 0.0f, 90.0f);
+    Hu3DGLightColorSet(0, 0x90, 0x90, 0x90);
+    Hu3DGLightDirSet(1, 0.0f, 65.0f, 90.0f);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
     CenterM[0].x = 0.0f;
     CenterM[0].y = -300.0f;
     CenterM[0].z = 0.0f;
@@ -373,12 +373,12 @@ void func_80106004_vine_with_me(omObjData *arg0) {
         case 4:
             temp_s1 = D_801155D0_vine_with_me;
             if (temp_s1 == 1) {
-                HmfModelData[D_80115584_vine_with_me[D_8011558C_vine_with_me]->model[1]].pos.x = D_80115584_vine_with_me[D_8011558C_vine_with_me]->trans.x;
-                HmfModelData[D_80115584_vine_with_me[D_8011558C_vine_with_me]->model[1]].pos.y = D_80115584_vine_with_me[D_8011558C_vine_with_me]->trans.y;
-                HmfModelData[D_80115584_vine_with_me[D_8011558C_vine_with_me]->model[1]].pos.z = D_80115584_vine_with_me[D_8011558C_vine_with_me]->trans.z;
-                HmfModelData[D_80115584_vine_with_me[D_8011558C_vine_with_me]->model[1]].rot.x = D_80115584_vine_with_me[D_8011558C_vine_with_me]->rot.x;
-                HmfModelData[D_80115584_vine_with_me[D_8011558C_vine_with_me]->model[1]].rot.y = D_80115584_vine_with_me[D_8011558C_vine_with_me]->rot.y;
-                HmfModelData[D_80115584_vine_with_me[D_8011558C_vine_with_me]->model[1]].rot.z = D_80115584_vine_with_me[D_8011558C_vine_with_me]->rot.z;
+                Hu3DData[D_80115584_vine_with_me[D_8011558C_vine_with_me]->model[1]].pos.x = D_80115584_vine_with_me[D_8011558C_vine_with_me]->trans.x;
+                Hu3DData[D_80115584_vine_with_me[D_8011558C_vine_with_me]->model[1]].pos.y = D_80115584_vine_with_me[D_8011558C_vine_with_me]->trans.y;
+                Hu3DData[D_80115584_vine_with_me[D_8011558C_vine_with_me]->model[1]].pos.z = D_80115584_vine_with_me[D_8011558C_vine_with_me]->trans.z;
+                Hu3DData[D_80115584_vine_with_me[D_8011558C_vine_with_me]->model[1]].rot.x = D_80115584_vine_with_me[D_8011558C_vine_with_me]->rot.x;
+                Hu3DData[D_80115584_vine_with_me[D_8011558C_vine_with_me]->model[1]].rot.y = D_80115584_vine_with_me[D_8011558C_vine_with_me]->rot.y;
+                Hu3DData[D_80115584_vine_with_me[D_8011558C_vine_with_me]->model[1]].rot.z = D_80115584_vine_with_me[D_8011558C_vine_with_me]->rot.z;
                 func_8001C258_main(D_80115584_vine_with_me[D_8011558C_vine_with_me]->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 func_8001C258_main(D_80115584_vine_with_me[D_8011558C_vine_with_me]->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 GwPlayer[D_80115670_vine_with_me[D_8011558C_vine_with_me]].bonusCoin = 10;
@@ -641,10 +641,10 @@ void func_80106F1C_vine_with_me(omObjData *arg0) {
         D_80111B94_vine_with_me++;
     }
     if (D_80111B94_vine_with_me != 0 && D_80111B94_vine_with_me < 120) {
-        HmfModelData[arg0->model[8]].pos.x = HmfModelData[arg0->model[10]].pos.x =
-            HmfModelData[arg0->model[9]].pos.x = HmfModelData[arg0->model[11]].pos.x =
-                HmfModelData[arg0->model[4]].pos.x = HmfModelData[arg0->model[5]].pos.x = 375.0f;
-        HmfModelData[arg0->model[6]].pos.x = HmfModelData[arg0->model[7]].pos.x = 300.0f;
+        Hu3DData[arg0->model[8]].pos.x = Hu3DData[arg0->model[10]].pos.x =
+            Hu3DData[arg0->model[9]].pos.x = Hu3DData[arg0->model[11]].pos.x =
+                Hu3DData[arg0->model[4]].pos.x = Hu3DData[arg0->model[5]].pos.x = 375.0f;
+        Hu3DData[arg0->model[6]].pos.x = Hu3DData[arg0->model[7]].pos.x = 300.0f;
         if (D_80111B94_vine_with_me == 1) {
             func_8001C258_main(arg0->model[8], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             func_8001C258_main(arg0->model[9], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
@@ -683,8 +683,8 @@ void func_80106F1C_vine_with_me(omObjData *arg0) {
             Hu3DModelPosSet(arg0->model[10], 375.0f, var_f24 + sp48[D_80111B94_vine_with_me - 12], 0.0f);
             Hu3DModelPosSet(arg0->model[11], 375.0f, var_f24 + sp48[D_80111B94_vine_with_me - 12], 0.0f);
             D_8011560C_vine_with_me = sp70[D_80111B94_vine_with_me - 12];
-            HmfModelData[arg0->model[2]].pos.y += ((D_8011560C_vine_with_me + 0.75) / 15.0) * 16.0;
-            HmfModelData[arg0->model[3]].pos.y += ((D_8011560C_vine_with_me + 0.75) / 15.0) * 16.0;
+            Hu3DData[arg0->model[2]].pos.y += ((D_8011560C_vine_with_me + 0.75) / 15.0) * 16.0;
+            Hu3DData[arg0->model[3]].pos.y += ((D_8011560C_vine_with_me + 0.75) / 15.0) * 16.0;
         }
         if (D_80111B94_vine_with_me == 16) {
             Hu3DMotionTimeSet(arg0->model[6], 0.0f);
@@ -700,8 +700,8 @@ void func_80106F1C_vine_with_me(omObjData *arg0) {
         }
         if (D_80111B94_vine_with_me >= 21 && D_80111B94_vine_with_me < 46) {
             D_8011560C_vine_with_me = -31.25f;
-            HmfModelData[arg0->model[2]].pos.y += -33.3333333333333357;
-            HmfModelData[arg0->model[3]].pos.y += -33.3333333333333357;
+            Hu3DData[arg0->model[2]].pos.y += -33.3333333333333357;
+            Hu3DData[arg0->model[3]].pos.y += -33.3333333333333357;
         }
         if (D_80111B94_vine_with_me >= 46 && D_80111B94_vine_with_me < 86) {
             temp_f22 = (D_80111B94_vine_with_me - 45) / 40.0;
@@ -711,8 +711,8 @@ void func_80106F1C_vine_with_me(omObjData *arg0) {
             Hu3DModelPosSet(arg0->model[10], 375.0f, temp_f20_4, 0.0f);
             Hu3DModelPosSet(arg0->model[11], 375.0f, temp_f20_4, 0.0f);
             D_8011560C_vine_with_me = -30.0 - temp_f22 * 600.0;
-            HmfModelData[arg0->model[2]].pos.y += (D_8011560C_vine_with_me / 15.0) * 16.0;
-            HmfModelData[arg0->model[3]].pos.y += (D_8011560C_vine_with_me / 15.0) * 16.0;
+            Hu3DData[arg0->model[2]].pos.y += (D_8011560C_vine_with_me / 15.0) * 16.0;
+            Hu3DData[arg0->model[3]].pos.y += (D_8011560C_vine_with_me / 15.0) * 16.0;
         }
         if (D_80111B94_vine_with_me == 86) {
             func_8001C258_main(arg0->model[8], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
@@ -727,14 +727,14 @@ void func_80106F1C_vine_with_me(omObjData *arg0) {
             func_8001C258_main(arg0->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             func_8001C258_main(arg0->model[7], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
-        HmfModelData[arg0->model[8]].pos.x -= D_80115548_vine_with_me[2] * 450.0;
-        HmfModelData[arg0->model[10]].pos.x -= D_80115548_vine_with_me[2] * 450.0;
-        HmfModelData[arg0->model[9]].pos.x -= D_80115548_vine_with_me[3] * 450.0;
-        HmfModelData[arg0->model[11]].pos.x -= D_80115548_vine_with_me[3] * 450.0;
-        HmfModelData[arg0->model[6]].pos.x -= D_80115548_vine_with_me[2] * 450.0;
-        HmfModelData[arg0->model[7]].pos.x -= D_80115548_vine_with_me[3] * 450.0;
-        HmfModelData[arg0->model[4]].pos.x -= D_80115548_vine_with_me[2] * 450.0;
-        HmfModelData[arg0->model[5]].pos.x -= D_80115548_vine_with_me[3] * 450.0;
+        Hu3DData[arg0->model[8]].pos.x -= D_80115548_vine_with_me[2] * 450.0;
+        Hu3DData[arg0->model[10]].pos.x -= D_80115548_vine_with_me[2] * 450.0;
+        Hu3DData[arg0->model[9]].pos.x -= D_80115548_vine_with_me[3] * 450.0;
+        Hu3DData[arg0->model[11]].pos.x -= D_80115548_vine_with_me[3] * 450.0;
+        Hu3DData[arg0->model[6]].pos.x -= D_80115548_vine_with_me[2] * 450.0;
+        Hu3DData[arg0->model[7]].pos.x -= D_80115548_vine_with_me[3] * 450.0;
+        Hu3DData[arg0->model[4]].pos.x -= D_80115548_vine_with_me[2] * 450.0;
+        Hu3DData[arg0->model[5]].pos.x -= D_80115548_vine_with_me[3] * 450.0;
     }
     for (var_s1 = 0; var_s1 < 8; var_s1++) {
         temp_s2 = D_80115678_vine_with_me[var_s1];
@@ -1258,7 +1258,7 @@ void func_8010D4AC_vine_with_me(omObjData *arg0, s8 arg1, s8 arg2) {
     if (D_80111C3C_vine_with_me[arg1] == 1) {
         D_80111C98_vine_with_me[arg1] += (D_80111C98_vine_with_me[arg1] < 0xFF);
         if (D_80111C78_vine_with_me[arg1] < D_80111C2C_vine_with_me[arg1][D_80111C38_vine_with_me[arg1]] && D_80111C78_vine_with_me[arg1] + 0.4375 >= D_80111C2C_vine_with_me[arg1][D_80111C38_vine_with_me[arg1]]) {
-            Hu3DMotionShiftSet(arg0->model[0], HmfModelData[arg0->motion[1]].motId, 0, 4, 2);
+            Hu3DMotionShiftSet(arg0->model[0], Hu3DData[arg0->motion[1]].motId, 0, 4, 2);
         }
         D_80111C78_vine_with_me[arg1] += 0.4375;
         if (D_80111C2C_vine_with_me[arg1][D_80111C38_vine_with_me[arg1]] <= D_80111C78_vine_with_me[arg1]) {
@@ -1352,7 +1352,7 @@ void func_8010D4AC_vine_with_me(omObjData *arg0, s8 arg1, s8 arg2) {
                 D_80111C3C_vine_with_me[arg1] = 0;
                 D_80112598_vine_with_me[arg1] = D_80111C8C_vine_with_me[arg1] = (D_80111C68_vine_with_me[arg1] - D_801125A8_vine_with_me[arg1]) * 1.25;
                 D_801125A0_vine_with_me[arg1] = (D_80111C70_vine_with_me[arg1] - D_801125B0_vine_with_me[arg1]) * 1.25;
-                Hu3DMotionShiftSet(arg0->model[0], HmfModelData[arg0->motion[3]].motId, 0, 7, sp3D7);
+                Hu3DMotionShiftSet(arg0->model[0], Hu3DData[arg0->motion[3]].motId, 0, 7, sp3D7);
                 var_f4_2 = D_80111C68_vine_with_me[arg1];
                 var_f8 = D_80111C70_vine_with_me[arg1];
                 temp_f12_5 = D_80112598_vine_with_me[arg1];
@@ -1379,7 +1379,7 @@ void func_8010D4AC_vine_with_me(omObjData *arg0, s8 arg1, s8 arg2) {
         D_80111C70_vine_with_me[arg1] += 1.0;
         D_80112598_vine_with_me[arg1] = 10.0f;
         D_801125A0_vine_with_me[arg1] = 30.0f;
-        Hu3DMotionShiftSet(arg0->model[0], HmfModelData[arg0->motion[3]].motId, 0, 4, 1);
+        Hu3DMotionShiftSet(arg0->model[0], Hu3DData[arg0->motion[3]].motId, 0, 4, 1);
     }
     if (D_80111C3C_vine_with_me[arg1] == 0) {
         if (D_80111C70_vine_with_me[arg1] <= -812.5 || D_80111C80_vine_with_me[arg1] > 0.0f) {
@@ -1486,7 +1486,7 @@ void func_8010D4AC_vine_with_me(omObjData *arg0, s8 arg1, s8 arg2) {
                     func_8001C5B4_main(arg0->model[0], arg0->motion[4]);
                     Hu3DMotionTimeSet(arg0->model[0], 8.0f);
                     func_8001C814_main(arg0->model[0], 3, 0);
-                    Hu3DMotionShiftSet(arg0->model[0], HmfModelData[arg0->motion[0]].motId, 0, 0x14, 2);
+                    Hu3DMotionShiftSet(arg0->model[0], Hu3DData[arg0->motion[0]].motId, 0, 0x14, 2);
                     if (D_80111C5C_vine_with_me[arg1] < 8) {
                         Hu3DModelLayerSet(arg0->model[0], 0);
                     }

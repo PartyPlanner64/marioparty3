@@ -251,8 +251,8 @@ s16 func_8010F87C_msetup(MsetupMenuState *state) {
     for (i = 0; i < modelCount; i++) {
         model = func_8000B108_main(0x140003, 0x2A9);
         models[i].model = model;
-        models[i].unk1A = HmfAnimRead(HmfModelData[model].hmf, D_8011A098_msetup[i], (char *)D_8011A6D8_msetup);
-        func_800332D4_main(models[i].unk1A, 0.75f);
+        models[i].unk1A = Hu3DAnimRead(Hu3DData[model].hmf, D_8011A098_msetup[i], (char *)D_8011A6D8_msetup);
+        Hu3DAnimSpeedSet(models[i].unk1A, 0.75f);
         Hu3DModelRemakeStatic(model);
         func_8001C514_main(model);
         entry = &models[i];
@@ -1639,7 +1639,7 @@ s16 func_801132C4_msetup(MsetupMenuState *state) {
     Hu3DModelPosSet(model, 0.0f, -300.0f, -280.0f);
     func_8001C814_main(model, 1, 1);
     if (_CheckFlag(0x2D)) {
-        Hu3DMotionTimeSet(model, D_800CCF58_main[HmfModelData[model].motId].unk02);
+        Hu3DMotionTimeSet(model, D_800CCF58_main[Hu3DData[model].motId].unk02);
         difficultyCount = 4;
     } else {
         Hu3DMotionTimeSet(model, 0.0f);
@@ -1765,11 +1765,11 @@ s32 func_801138F8_msetup(MsetupMenuState *state, s32 dataId, s32 *messages, s32 
     func_8010B998_msetup();
     func_8010E4BC_msetup(&models, 2, 0.0f);
     model = models[0].model;
-    anim = HmfAnimRead(HmfModelData[model].hmf, dataId, (char *)D_8011A6D8_msetup);
+    anim = Hu3DAnimRead(Hu3DData[model].hmf, dataId, (char *)D_8011A6D8_msetup);
     Hu3DModelRemakeStatic(model);
     func_80032FC0_main(anim, 1, 1);
     func_8010E4D8_msetup(models, 2);
-    func_80032FF8_main(anim, selection);
+    Hu3DAnimBankSet(anim, selection);
     arrows = func_8010DE38_msetup(96, 224, 72);
     if (messages != NULL) {
         func_8010B82C_msetup(messages[0]);
@@ -1825,7 +1825,7 @@ s32 func_801138F8_msetup(MsetupMenuState *state, s32 dataId, s32 *messages, s32 
                 Hu3DModelRotSet(model, 0.0f, rotation, 0.0f);
                 HuPrcVSleep();
             }
-            func_80032FF8_main(anim, selection);
+            Hu3DAnimBankSet(anim, selection);
             for (i = 4, rotation = 0.0f; i != 0; i--) {
                 rotation += rotationStep;
                 Hu3DModelRotSet(model, 0.0f, rotation, 0.0f);
@@ -2173,11 +2173,11 @@ s16 func_80114AA0_msetup(MsetupMenuState *state) {
     func_8010B998_msetup();
     func_8010E4BC_msetup(&models, 2, 0);
     model = models[0].model;
-    anim = HmfAnimRead(HmfModelData[model].hmf, 0x140023, (char *)D_8011A6D8_msetup);
+    anim = Hu3DAnimRead(Hu3DData[model].hmf, 0x140023, (char *)D_8011A6D8_msetup);
     Hu3DModelRemakeStatic(model);
     func_80032FC0_main(anim, 1, 1);
     func_8010E4D8_msetup(models, 2);
-    func_80032FF8_main(anim, selection);
+    Hu3DAnimBankSet(anim, selection);
     cursor = func_8010DE38_msetup(96, 224, 72);
     HuAudFXPlay(0x2D9);
     func_8010E8C8_msetup(&models, 2, 15, 720.0f, 565.0f, 0.1f, 1.4f, 1);
@@ -2249,7 +2249,7 @@ s16 func_80114AA0_msetup(MsetupMenuState *state) {
                 Hu3DModelRotSet(model, 0, angle, 0);
                 HuPrcVSleep();
             }
-            func_80032FF8_main(anim, selection);
+            Hu3DAnimBankSet(anim, selection);
             i = 4;
             for (angle = 0.0f; i != 0; i--) {
                 angle += step;
@@ -2431,7 +2431,7 @@ s16 func_801157B8_msetup(s16 model, s16 anim, s16 *controller, s16 selection, Ms
     s16 linkedModel;
     s16 buttons;
 
-    func_80032FF8_main(anim, selection);
+    Hu3DAnimBankSet(anim, selection);
     for (angle = 0.0f; angle <= 180.0f; angle += 180.0f / 7.0f) {
         Hu3DModelRotSet(model, 0.0f, angle, 0.0f);
         HuPrcVSleep();
@@ -2465,7 +2465,7 @@ s16 func_801157B8_msetup(s16 model, s16 anim, s16 *controller, s16 selection, Ms
             obj->work[0] = 3;
         }
         if (oldSelection != selection) {
-            func_80032FF8_main(anim, selection);
+            Hu3DAnimBankSet(anim, selection);
             oldSelection = selection;
         }
         HuPrcVSleep();
@@ -2579,10 +2579,10 @@ s16 func_80115A9C_msetup(s16 model, s16 anim, HuMtx4F matrix, s16 *previousButto
 }
 
 void func_80115E78_msetup(s16 idx, f32 x, f32 y, f32 z) {
-    if (idx >= 0 && HmfModelData[idx].hmf != NULL) {
-        HmfModelData[idx].pos.x += x;
-        HmfModelData[idx].pos.y += y;
-        HmfModelData[idx].pos.z += z;
+    if (idx >= 0 && Hu3DData[idx].hmf != NULL) {
+        Hu3DData[idx].pos.x += x;
+        Hu3DData[idx].pos.y += y;
+        Hu3DData[idx].pos.z += z;
     }
 }
 
@@ -2624,7 +2624,7 @@ s16 func_80115EE0_msetup(MsetupMenuState *state) {
     func_8010E4D8_msetup(models, 2);
     model = func_8000B108_main(0x140008, 0x2A9);
     linkedModel = model;
-    anim = HmfAnimRead(HmfModelData[linkedModel].hmf, 0x140024, "uramen_CIDX");
+    anim = Hu3DAnimRead(Hu3DData[linkedModel].hmf, 0x140024, "uramen_CIDX");
     Hu3DModelRemakeStatic(linkedModel);
     rot.x = rot.y = rot.z = 0;
     Hu3DModelRotSet(linkedModel, 0, 0, 0);
@@ -2774,7 +2774,7 @@ s16 func_80115EE0_msetup(MsetupMenuState *state) {
                 i = D_8011AA30_msetup.totalTurns == 255 ? 9 : 2;
                 break;
         }
-        func_80032FF8_main(anim, i);
+        Hu3DAnimBankSet(anim, i);
         func_8010F320_msetup(D_80119420_msetup, 1, model, anim);
     } else {
         if (anim >= 0) {
@@ -2833,9 +2833,9 @@ s16 func_801167B8_msetup(MsetupMenuState *state) {
     func_8010E32C_msetup(&models, 2, angle, 0);
     for (i = 0; i < 2; i++) {
         model = models[i].model;
-        models[i].unk1A = HmfAnimRead(HmfModelData[model].hmf, D_80119FDC_msetup[i], (char *)D_8011A6D8_msetup);
+        models[i].unk1A = Hu3DAnimRead(Hu3DData[model].hmf, D_80119FDC_msetup[i], (char *)D_8011A6D8_msetup);
         Hu3DModelRemakeStatic(model);
-        func_800332D4_main(models[i].unk1A, 0.75f);
+        Hu3DAnimSpeedSet(models[i].unk1A, 0.75f);
     }
     func_8010E4D8_msetup(models, 2);
     if (connected >= 2) {
@@ -2996,11 +2996,11 @@ s16 func_80116FE0_msetup(MsetupMenuState *state) {
     func_8010E4BC_msetup(&models, 2, 0);
     func_8010E4D8_msetup(models, 2);
     model = func_8000B108_main(0x14000A, 0x2A9);
-    motion = HmfAnimRead(HmfModelData[model].hmf, 0x140034, (char *)nodeName);
+    motion = Hu3DAnimRead(Hu3DData[model].hmf, 0x140034, (char *)nodeName);
     Hu3DModelRemakeStatic(model);
     func_8001C514_main(model);
     func_80032FC0_main(motion, 1, 1);
-    func_80032FF8_main(motion, selection);
+    Hu3DAnimBankSet(motion, selection);
     func_8001C258_main(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     cursor = func_8010DE38_msetup(96, 224, 72);
     HuAudFXPlay(0x2D9);
@@ -3085,7 +3085,7 @@ s16 func_80116FE0_msetup(MsetupMenuState *state) {
                 Hu3DModelRotSet(models[0].model, 0, angle + 180.0f, 0);
                 HuPrcVSleep();
             }
-            func_80032FF8_main(motion, selection);
+            Hu3DAnimBankSet(motion, selection);
             for (i = 4, angle = 180.0f; i != 0; i--) {
                 angle += step;
                 if (angle >= 360.0f) {

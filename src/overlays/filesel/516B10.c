@@ -285,12 +285,12 @@ void func_801059D0_filesel(void) {
     HuAudSeqStop();
     pfInit();
     HuWinInit();
-    HmfLightMaxSet(3);
-    HmfLightColorSet(0, 0x80, 0x80, 0x80);
-    HmfLightColorSet(1, 0x40, 0x40, 0x60);
-    HmfLightColorSet(2, 0, 0, 0);
-    HmfLightColorSet(3, 0, 0, 0);
-    HmfLightDirSet(1, 0.0f, 64.0f, 192.0f);
+    Hu3DGLightMaxSet(3);
+    Hu3DGLightColorSet(0, 0x80, 0x80, 0x80);
+    Hu3DGLightColorSet(1, 0x40, 0x40, 0x60);
+    Hu3DGLightColorSet(2, 0, 0, 0);
+    Hu3DGLightColorSet(3, 0, 0, 0);
+    Hu3DGLightDirSet(1, 0.0f, 64.0f, 192.0f);
     D_800D2132_main = 0;
 }
 
@@ -464,7 +464,7 @@ void func_801062BC_filesel(s32 arg0, s32 arg1, s32 arg2) {
         arg2 = 0x6AD;
     }
     data = DataRead(arg1);
-    D_80113650_filesel[arg0].unk_02 = func_8001F1FC_main(data, (s16)arg2);
+    D_80113650_filesel[arg0].unk_02 = Hu3DMotionCreate(data, (s16)arg2);
     DataClose(data);
 }
 
@@ -474,7 +474,7 @@ void func_80106344_filesel(s32 arg0) {
         D_80113650_filesel[arg0].unk_00 = -1;
     }
     if (D_80113650_filesel[arg0].unk_02 != -1) {
-        func_8002D4B8_main(D_80113650_filesel[arg0].unk_02);
+        Hu3DMotionKill(D_80113650_filesel[arg0].unk_02);
         D_80113650_filesel[arg0].unk_02 = -1;
     }
 }
@@ -566,8 +566,8 @@ void func_8010684C_filesel(s32 arg0, u32 arg1) {
 }
 
 void func_801068B0_filesel(s32 arg0) {
-    while (HmfModelData[D_80113650_filesel[arg0].unk_00].motTime !=
-           D_800CCF58_main[HmfModelData[D_80113650_filesel[arg0].unk_00].motId].unk02) {
+    while (Hu3DData[D_80113650_filesel[arg0].unk_00].motTime !=
+           D_800CCF58_main[Hu3DData[D_80113650_filesel[arg0].unk_00].motId].unk02) {
         HuPrcVSleep();
     }
 }
@@ -575,7 +575,7 @@ void func_801068B0_filesel(s32 arg0) {
 s32 func_80106950_filesel(s32 arg0) {
     s16 modelId = D_80113650_filesel[arg0].unk_00;
 
-    return HmfModelData[modelId].motTime == D_800CCF58_main[HmfModelData[modelId].motId].unk02;
+    return Hu3DData[modelId].motTime == D_800CCF58_main[Hu3DData[modelId].motId].unk02;
 }
 
 void func_801069D8_filesel(s32 arg0, s32 arg1, s16 arg2) {
@@ -868,7 +868,7 @@ u16 func_801078F4_filesel(s32 value) {
             break;
         }
         if (D_800D5558_main[0] & Z_TRIG) {
-            camera = HmfModelData[gCameraList[0].unk4].hmf->unkBC;
+            camera = Hu3DData[gCameraList[0].unk4].hmf->unkBC;
             sprintf(text, "POS:%4.2f,%4.2f,%4.2f", camera->unk08, camera->unk0C, camera->unk10);
             print8(16, 180, text);
             sprintf(text, "A T:%4.2f,%4.2f,%4.2f", camera->unk14, camera->unk18, camera->unk1C);

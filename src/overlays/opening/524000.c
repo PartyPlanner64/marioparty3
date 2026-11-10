@@ -27,11 +27,11 @@ void opObjectInit(void) {
     HuAudSeqStop();
     pfInit();
     HuWinInit();
-    HmfLightMaxSet(2);
-    HmfLightColorSet(0, 128, 128, 128);
-    HmfLightColorSet(1, 255, 255, 255);
-    HmfLightColorSet(2, 0, 0, 0);
-    HmfLightDirSet(1, 0.0f, 64.0f, 192.0f);
+    Hu3DGLightMaxSet(2);
+    Hu3DGLightColorSet(0, 128, 128, 128);
+    Hu3DGLightColorSet(1, 255, 255, 255);
+    Hu3DGLightColorSet(2, 0, 0, 0);
+    Hu3DGLightDirSet(1, 0.0f, 64.0f, 192.0f);
     D_800D2132_main = 0;
 }
 

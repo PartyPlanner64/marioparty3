@@ -7,11 +7,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3C_hey_batter_batter/2D3E70", func_80
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3C_hey_batter_batter/2D3E70", func_801059BC_hey_batter_batter);
 
 void func_80105A4C_hey_batter_batter(void) {
-    HmfLightMaxSet(3);
-    HmfLightDirSet(1, -10.0f, -10.0f, 150.0f);
-    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
-    HmfLightDirSet(2, -82.0f, 255.0f, -60.0f);
-    HmfLightColorSet(2, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightMaxSet(3);
+    Hu3DGLightDirSet(1, -10.0f, -10.0f, 150.0f);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightDirSet(2, -82.0f, 255.0f, -60.0f);
+    Hu3DGLightColorSet(2, 0xFF, 0xFF, 0xFF);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3C_hey_batter_batter/2D3E70", func_80105AB8_hey_batter_batter);

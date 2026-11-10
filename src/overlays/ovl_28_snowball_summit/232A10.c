@@ -94,7 +94,7 @@ typedef struct UnkSnowballSummitMover {
     /* 0x68 */ s32 unk_68;
     /* 0x6C */ s32 unk_6C;
     /* 0x70 */ s32 unk_70;        // -1 when unset, else an index into D_8010FC30_snowball_summit
-    /* 0x74 */ void *unk_74;      // HmfModelData
+    /* 0x74 */ void *unk_74;      // Hu3DData
     /* 0x78 */ omObjData *unk_78; // minigame object that owns the slot
     /* 0x7C */ s32 unk_7C;
     /* 0x80 */ s32 unk_80;

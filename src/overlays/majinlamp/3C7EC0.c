@@ -447,7 +447,7 @@ void func_80106E74_majinlamp(void) {
     }
     HuVecCopyXYZ(&D_8010832C_majinlamp->coords, -1600.0f, -100.0f, 1600.0f);
     D_801080EC_majinlamp = 1;
-    func_8008A120_main(HmfModelData[D_8010832C_majinlamp->omObj1->model[0]].mtx, 60.0f);
+    func_8008A120_main(Hu3DData[D_8010832C_majinlamp->omObj1->model[0]].mtx, 60.0f);
     D_8010832C_majinlamp->rot.x = sindf(45.0f);
     D_8010832C_majinlamp->rot.z = cosdf(45.0f);
     var_f20 = 50.0f;
@@ -486,8 +486,8 @@ void func_80106E74_majinlamp(void) {
     func_80106634_majinlamp((s32)D_8010832C_majinlamp, &sp38, 0x1E, &sp48);
     var_f20 = 60.0f;
     for (i = 0; i < 0x1E; i++) {
-        func_8008A120_main(HmfModelData[D_8010832C_majinlamp->omObj1->model[0]].mtx, var_f20);
-        func_8008A120_main(HmfModelData[D_80108334_majinlamp->player_obj->omObj1->model[0]].mtx,
+        func_8008A120_main(Hu3DData[D_8010832C_majinlamp->omObj1->model[0]].mtx, var_f20);
+        func_8008A120_main(Hu3DData[D_80108334_majinlamp->player_obj->omObj1->model[0]].mtx,
                            var_f20 - 60.0f);
         var_f20 -= 2.0f;
         HuPrcVSleep();
@@ -521,8 +521,8 @@ void func_8010771C_majinlamp(void) {
     D_801080DC_majinlamp = 100.0f;
     D_801080E0_majinlamp = 10.0f;
     D_801080E4_majinlamp = 20000.0f;
-    func_8008A120_main(HmfModelData[D_8010832C_majinlamp->omObj1->model[0]].mtx, 60.0f);
-    func_8008A120_main(HmfModelData[D_80108334_majinlamp->player_obj->omObj1->model[0]].mtx, 0.0f);
+    func_8008A120_main(Hu3DData[D_8010832C_majinlamp->omObj1->model[0]].mtx, 60.0f);
+    func_8008A120_main(Hu3DData[D_80108334_majinlamp->player_obj->omObj1->model[0]].mtx, 0.0f);
     HuVecCopy3F(&D_80108334_majinlamp->player_obj->coords, &D_801080F4_majinlamp[0]);
     HuVecCopy3F(&D_8010832C_majinlamp->coords, &D_801080F4_majinlamp[0]);
     MBMotionSet(D_80108334_majinlamp->player_obj, -1, 2);

@@ -317,7 +317,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80106910_modesel);
 s32 func_801069B0_modesel(s32 arg0) {
     s16 modelId = D_8010FE90_modesel[arg0].unk_00;
 
-    return HmfModelData[modelId].motTime == D_800CCF58_main[HmfModelData[modelId].motId].unk02;
+    return Hu3DData[modelId].motTime == D_800CCF58_main[Hu3DData[modelId].motId].unk02;
 }
 
 void func_80106A38_modesel(s32 arg0, s32 arg1, s16 arg2) {

@@ -19,8 +19,8 @@ s16 func_8000CBA0_main(s32 fileId, s32 attr) {
 
     model = func_8000CC98_main(fileId, attr & ~0x60);
     func_80013390_main(model, -1, NULL, func_8000D268_main);
-    hmf = HmfModelData[model].hmf;
-    bc = HmfModelData[model].unkBC;
+    hmf = Hu3DData[model].hmf;
+    bc = Hu3DData[model].unkBC;
     particle = bc->unk58;
     bc->unk08.f = 5.0f;
     bc->unk0C.f = 20.0f;
@@ -45,8 +45,8 @@ s16 func_8000CC98_main(s32 fileId, s32 attr) {
 }
 
 void func_8000CD00_main(s16 model, f32 arg1, f32 arg2, f32 arg3) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_UnkBC_Struct *bc = HmfModelData[model].unkBC;
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = bc->unk58;
     s16 i;
 
@@ -58,8 +58,8 @@ void func_8000CD00_main(s16 model, f32 arg1, f32 arg2, f32 arg3) {
 }
 
 s32 func_8000CD74_main(s16 model, f32 x, f32 y, f32 z) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_UnkBC_Struct *bc = HmfModelData[model].unkBC;
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = bc->unk58;
     s16 i;
 
@@ -84,7 +84,7 @@ s16 func_8000CED8_main(s32 fileId, s32 attr) {
     obj = omAddObj(1000, 0, 0, -1, func_8000D06C_main);
     model = func_8000CBA0_main(fileId, attr);
     obj->work[0] = model;
-    bc = HmfModelData[model].unkBC;
+    bc = Hu3DData[model].unkBC;
     bc->unk1C.f = bc->unk20.f = bc->unk24.f = 0.0f;
     bc->unk04 |= 1;
     bc->unk10.f = 100.0f;
@@ -93,7 +93,7 @@ s16 func_8000CED8_main(s32 fileId, s32 attr) {
 }
 
 void func_8000CFA4_main(s16 model, f32 x, f32 y, f32 z) {
-    HmfModelData_UnkBC_Struct *bc = HmfModelData[model].unkBC;
+    HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
 
     bc->unk1C.f = x;
     bc->unk20.f = y;
@@ -101,11 +101,11 @@ void func_8000CFA4_main(s16 model, f32 x, f32 y, f32 z) {
 }
 
 void func_8000CFD8_main(s16 model, s16 time) {
-    HmfModelData[model].unkBC->unk14 = time;
+    Hu3DData[model].unkBC->unk14 = time;
 }
 
 void func_8000D018_main(s16 model, f32 range) {
-    HmfModelData[model].unkBC->unk10.f = range;
+    Hu3DData[model].unkBC->unk10.f = range;
 }
 
 void func_8000D044_main(s16 model) {
@@ -114,8 +114,8 @@ void func_8000D044_main(s16 model) {
 
 void func_8000D06C_main(omObjData *obj) {
     s16 model = obj->work[0];
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_UnkBC_Struct *bc = HmfModelData[model].unkBC;
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle;
     s16 i;
     f32 x;
@@ -148,8 +148,8 @@ void func_8000D06C_main(omObjData *obj) {
 }
 
 void func_8000D268_main(s16 model) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_UnkBC_Struct *bc = HmfModelData[model].unkBC;
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = bc->unk58;
     s16 i;
     s16 count;
@@ -237,8 +237,8 @@ s16 func_8000D658_main(s32 attr, s16 count) {
 }
 
 void func_8000D694_main(s16 model) {
-    HmfData *hmf = HmfModelData[model].hmf;
-    HmfModelData_UnkBC_Struct *bc = HmfModelData[model].unkBC;
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
     s16 count = hmf->unk1A;
     HmfModelData_UnkBC_Unk58_Struct *particle;
     s16 i;

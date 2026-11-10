@@ -750,7 +750,7 @@ void omOvlKill(void) {
     D_800A1762_main = 4;
     D_800B23C0_main = D_800CD050_main;
     GMesClose();
-    Hu3DModelAllKill();
+    Hu3DAllKill();
     func_80021AF4_main();
     omDestroyObjMan();
     func_8000BA00_main();
@@ -833,7 +833,7 @@ void omMain(void) {
             if (D_800D1FA0_main != 1) {
                 if (D_800A1780_main == 1) {
                     if (D_800D0A3A_main == 4) {
-                        Hu3DInit();
+                        func_8001BF14_main();
                     }
                     if (D_800D0A3A_main != 0) {
                         D_800D0A3A_main--;
@@ -841,7 +841,7 @@ void omMain(void) {
                     }
                     D_800CCF52_main = D_800D1710_main;
                     func_8000F024_main(D_800A1240_main, (u8)D_800D1710_main, 2);
-                    func_8001A070_main(HuMemMemoryAllocPerm, HuMemMemoryFreePerm, D_800D4082_main, D_800CD2F4_main, (u16)(s32)D_800D6A56_main, (u8)(s32)(u8)D_800D1710_main);
+                    Hu3DInit(HuMemMemoryAllocPerm, HuMemMemoryFreePerm, D_800D4082_main, D_800CD2F4_main, (u16)(s32)D_800D6A56_main, (u8)(s32)(u8)D_800D1710_main);
                     func_800224BC_main();
                     func_8001BF90_main(0x02000000, 0x3D0800);
                     Hu3DCamInit(1);
@@ -897,21 +897,21 @@ void omMain(void) {
             D_800A176C_main = 0;
             func_8004A49C_main();
             OvlLoad(omovl);
-            HmfLightInit();
+            Hu3DLighInit();
             D_800D5410_main = 1.0f;
             D_800D51FC_main = 1.0f;
-            HmfLightMaxSet(3);
-            HmfLightColorSet(0, 0x40, 0x40, 0x40);
-            HmfLightColorSet(1, 0x40, 0x40, 0x60);
-            HmfLightDirSet(1, 0.0f, 0.0f, 100.0f);
-            HmfLightColorSet(2, 0, 0, 0);
-            HmfLightDirSet(2, 100.0f, 100.0f, 100.0f);
-            HmfLightColorSet(3, 0, 0, 0);
-            HmfLightDirSet(3, 100.0f, 100.0f, 100.0f);
-            HmfLightStatSet(0, 0, 0);
-            HmfLightStatSet(1, 0, 0);
-            HmfLightStatSet(2, 0, 0);
-            HmfLightStatSet(3, 0, 0);
+            Hu3DGLightMaxSet(3);
+            Hu3DGLightColorSet(0, 0x40, 0x40, 0x40);
+            Hu3DGLightColorSet(1, 0x40, 0x40, 0x60);
+            Hu3DGLightDirSet(1, 0.0f, 0.0f, 100.0f);
+            Hu3DGLightColorSet(2, 0, 0, 0);
+            Hu3DGLightDirSet(2, 100.0f, 100.0f, 100.0f);
+            Hu3DGLightColorSet(3, 0, 0, 0);
+            Hu3DGLightDirSet(3, 100.0f, 100.0f, 100.0f);
+            Hu3DGLightStatSet(0, 0, 0);
+            Hu3DGLightStatSet(1, 0, 0);
+            Hu3DGLightStatSet(2, 0, 0);
+            Hu3DGLightStatSet(3, 0, 0);
             Hu3DBGColorSet(0, 0, 0);
             D_800CD280_main = 1;
             func_8001F6B0_main(1);
@@ -1177,7 +1177,7 @@ void func_80048EE8_main(omObjData *object) {
         if (close == 1) {
             object->work[0] &= ~1;
             if (!(omDBGSysKeyObj->work[0] & 1)) {
-                HmfPauseF = D_800A1752_main;
+                Hu3DPauseF = D_800A1752_main;
                 for (i = 0; i < ommaxobjs; i++) {
                     if (!(omobjall[i].stat & (OM_STAT_DELETED | OM_STAT_NOPAUSE))) {
                         omResetStatBit(&omobjall[i], OM_STAT_PAUSED);
@@ -1230,8 +1230,8 @@ void func_80048EE8_main(omObjData *object) {
         if ((D_800CCF7C_main[i] | D_800CDD5C_main[i]) & 0x10) {
             continue;
         }
-        D_800A1752_main = HmfPauseF;
-        HmfPauseF = 1;
+        D_800A1752_main = Hu3DPauseF;
+        Hu3DPauseF = 1;
         object->work[0] = 1;
         object->work[1] = i;
         for (i = 0; i < ommaxobjs; i++) {
@@ -1280,7 +1280,7 @@ void omSystemKeyCheck(omObjData *object) {
         if ((D_800CDD5C_main[OM_GET_WORK_PTR(object, PauseObjWork)->halfwords[3]] & 0x1000) ||
             D_800A176C_main == 1 || D_800A1753_main == 1) {
             D_800A1753_main = 0;
-            HmfPauseF = 0;
+            Hu3DPauseF = 0;
             object->work[0] &= ~1;
             for (i = 0; i < ommaxobjs; i++) {
                 if (!(omobjall[i].stat & (OM_STAT_DELETED | OM_STAT_NOPAUSE))) {
@@ -1349,7 +1349,7 @@ void omSystemKeyCheck(omObjData *object) {
         }
         D_800D2132_main = 0;
         D_800A1753_main = 0;
-        HmfPauseF = 1;
+        Hu3DPauseF = 1;
         object->work[0] = 1;
         object->work[1] = GwPlayer[j].pad;
         for (i = 0; i < ommaxobjs; i++) {

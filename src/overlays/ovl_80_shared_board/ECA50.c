@@ -42,7 +42,7 @@ static s16 MBMotionLock(s16 arg0) {
 }
 
 s16 func_800D8E88_shared_board(s32 arg0) {
-    s16 res = func_8001F1FC_main(DataRead(arg0), 8);
+    s16 res = Hu3DMotionCreate(DataRead(arg0), 8);
     D_80102AB8_shared_board[res]++;
     return res;
 }
@@ -52,7 +52,7 @@ void MBMotionKill(s16 arg0) {
         if (D_80102AB8_shared_board[arg0] != 0) {
             D_80102AB8_shared_board[arg0]--;
             if (D_80102AB8_shared_board[arg0] == 0) {
-                func_8002D4B8_main(arg0);
+                Hu3DMotionKill(arg0);
             }
         }
     }
@@ -149,8 +149,8 @@ Object *MBModelFileCreate(s32 arg0, s32 arg1, f32 arg2, f32 arg3, u32 *arg4) {
         func_8001C814_main(mdlIdx, 2, 2);
         Hu3DModelCameraSet(mdlIdx, HU3D_CAM0);
         Hu3DModelScaleSet(mdlIdx, 0.0f, 0.0f, 0.0f);
-        if (HmfModelData[mdlIdx].motId != 0xFF) {
-            object->unk44 = MBMotionLock(HmfModelData[mdlIdx].motId);
+        if (Hu3DData[mdlIdx].motId != 0xFF) {
+            object->unk44 = MBMotionLock(Hu3DData[mdlIdx].motId);
         }
 
         work = HuMemMemoryAllocTemp(sizeof(UnkObj));
@@ -305,8 +305,8 @@ Object *MBModelLinkCreate(Object *src) {
         Hu3DModelCameraSet(mdlIdx, HU3D_CAM0);
         Hu3DModelScaleSet(mdlIdx, 0.0f, 0.0f, 0.0f);
 
-        if (HmfModelData[mdlIdx].motId != 0xFF) {
-            object->unk44 = func_800D8F30_shared_board(HmfModelData[mdlIdx].motId);
+        if (Hu3DData[mdlIdx].motId != 0xFF) {
+            object->unk44 = func_800D8F30_shared_board(Hu3DData[mdlIdx].motId);
         }
 
         work = HuMemMemoryAllocTemp(sizeof(UnkObj));
@@ -461,7 +461,7 @@ void MBMotionShiftSet(Object* arg0, s16 arg1, s32 arg2, s32 arg3, u16 arg4) {
 u16 MBMotionCheck(Object* arg0) {
     u16 ret = 0;
     
-    if (HmfModelData[arg0->omObj1->model[0]].motTime == D_800CCF58_main[HmfModelData[arg0->omObj1->model[0]].motId].unk02) {
+    if (Hu3DData[arg0->omObj1->model[0]].motTime == D_800CCF58_main[Hu3DData[arg0->omObj1->model[0]].motId].unk02) {
         ret = 1;
     }
     return ret;
@@ -471,7 +471,7 @@ u16 func_800D9E80_shared_board(Object* arg0) {
     u16 ret;
 
     ret = 0;
-    if (HmfModelData[arg0->omObj1->model[0]].motTime == 0.0f) {
+    if (Hu3DData[arg0->omObj1->model[0]].motTime == 0.0f) {
         ret = 1;
     }
     return ret;

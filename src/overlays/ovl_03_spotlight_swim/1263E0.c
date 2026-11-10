@@ -288,7 +288,7 @@ void func_80105CE0_spotlight_swim(omObjData *arg0, u16 arg1, s16 arg2) {
 
 void func_80105D4C_spotlight_swim(omObjData *arg0, u16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     if (arg1 < 0xA) {
-        Hu3DMotionShiftSet(arg0->model[0], HmfModelData[arg0->motion[arg1]].motId, arg2, arg3, arg4);
+        Hu3DMotionShiftSet(arg0->model[0], Hu3DData[arg0->motion[arg1]].motId, arg2, arg3, arg4);
     }
 }
 
@@ -433,7 +433,7 @@ void func_801065C4_spotlight_swim(omObjData *obj) {
     data = DataRead(0x24000F);
     for (i = 0, xs = D_8010D380_spotlight_swim, zs = D_8010D38C_spotlight_swim; i < 3; i++) {
         obj->model[i + 1] = func_8000B108_main(0x24000E, 0x289);
-        HmfAnimCreate(HmfModelData[obj->model[i + 1]].hmf, data, 0, "s203_004_DEF");
+        Hu3DAnimCreate(Hu3DData[obj->model[i + 1]].hmf, data, 0, "s203_004_DEF");
         Hu3DModelRemakeStatic(obj->model[i + 1]);
         func_8001C514_main(obj->model[i + 1]);
         Hu3DModelCameraSet(obj->model[i + 1], HU3D_CAM0);
@@ -1573,7 +1573,7 @@ void func_8010A328_spotlight_swim(omObjData *obj) {
     func_8001C2FC_main(obj->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(obj->model[1]);
     func_8001C514_main(obj->model[1]);
-    func_80088800_main(HmfModelData[obj->model[1]].mtx, 0, 0, 0);
+    func_80088800_main(Hu3DData[obj->model[1]].mtx, 0, 0, 0);
     Hu3DModelCameraSet(obj->model[0], HU3D_CAM0);
     Hu3DModelCameraSet(obj->model[1], HU3D_CAM0);
 
@@ -1713,14 +1713,14 @@ void func_8010AAB8_spotlight_swim(omObjData *obj) {
 
     obj->model[0] = func_8000B108_main(0x240002, 0xA9);
     file1 = DataRead(D_8010CDB8_spotlight_swim[idx] | 0x240000);
-    HmfAnimCreate(HmfModelData[obj->model[0]].hmf, file1, 0, "m203_001_DEF");
+    Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, file1, 0, "m203_001_DEF");
     Hu3DModelRemakeStatic(obj->model[0]);
     func_8001C514_main(obj->model[0]);
     DataClose(file1);
 
     obj->model[1] = func_8000B108_main(0x240003, 0x89);
     file2 = DataRead(D_8010CDC0_spotlight_swim[idx] | 0x240000);
-    HmfAnimCreate(HmfModelData[obj->model[1]].hmf, file2, 0, "light_boddy_DEF");
+    Hu3DAnimCreate(Hu3DData[obj->model[1]].hmf, file2, 0, "light_boddy_DEF");
     Hu3DModelRemakeStatic(obj->model[1]);
     func_8001C514_main(obj->model[1]);
     DataClose(file2);
@@ -1917,7 +1917,7 @@ void func_8010B828_spotlight_swim(omObjData *obj) {
 
     data = &D_8010D480_spotlight_swim[13];
     obj->model[0] = func_8000B108_main(0xA0089, 0x2B9);
-    hmf = HmfModelData[obj->model[0]].hmf;
+    hmf = Hu3DData[obj->model[0]].hmf;
     node = func_8002C834_main(hmf, "c205_000-sao");
     for (i = 0; i < hmf->unk10; i++) {
         if (i == node) {
@@ -2299,19 +2299,19 @@ void func_8010CA08_spotlight_swim(void) {
 }
 
 void func_8010CB78_spotlight_swim(void) {
-    Hu3DAnimInit(50);
+    func_8001FE20_main(50);
     func_800142A0_main(50);
     omInitObjMan(50, 0);
     func_8004A208_main();
     func_8010CA08_spotlight_swim();
-    HmfLightMaxSet(1);
-    HmfLightMaxSet(2);
-    HmfLightColorSet(0, 0x90, 0x90, 0x90);
-    HmfLightDirSet(0, 0.0f, 90.0f, 560.0f);
-    HmfLightColorSet(1, 0xFF, 0xFF, 0xFF);
-    HmfLightDirSet(1, 0.0f, 90.0f, 560.0f);
-    HmfLightColorSet(2, 0xFF, 0xFF, 0xFF);
-    HmfLightDirSet(2, 0.0f, 90.0f, 560.0f);
+    Hu3DGLightMaxSet(1);
+    Hu3DGLightMaxSet(2);
+    Hu3DGLightColorSet(0, 0x90, 0x90, 0x90);
+    Hu3DGLightDirSet(0, 0.0f, 90.0f, 560.0f);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightDirSet(1, 0.0f, 90.0f, 560.0f);
+    Hu3DGLightColorSet(2, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightDirSet(2, 0.0f, 90.0f, 560.0f);
     D_800EC1B8_minigame = 0;
     D_800EC280_minigame = 0;
     D_800EBE28_minigame = 0;

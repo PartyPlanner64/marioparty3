@@ -31,11 +31,14 @@ extern Vec D_80115834_mstory1;
 extern Vec D_80115840_mstory1;
 extern UnkStoryObj D_80115B70_mstory1[7];
 extern s16 D_80115C90_mstory1;
+extern s16 D_80115CA6_mstory1;
+extern s16 D_80115CA8_mstory1;
 
 void func_80106B14_mstory1(omObjData *obj, const Vec *pos, s32 frames);
 void func_80106B30_mstory1(omObjData *obj, const Vec *pos, s32 frames, s32 arg3);
 s32 func_80106AFC_mstory1(s32 character);
 void func_8010704C_mstory1(omObjData *obj, Vec *pos, s32 frames);
+void func_801068B0_mstory1(s16 model, s16 animSlot, s16 anim);
 void func_80107220_mstory1(s16 model);
 void func_80111218_mstory1(omObjData *obj);
 void func_80112644_mstory1(omObjData *obj);
@@ -187,7 +190,28 @@ void func_80112984_mstory1(omObjData *obj) {
     D_80115B70_mstory1[1].func = func_80111218_mstory1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/496990", func_80112A68_mstory1);
+void func_80112A68_mstory1(omObjData *obj) {
+    s16 model = obj->model[1];
+    Vec pos;
+    Vec orig;
+    f32 y;
+    s32 i;
+
+    orig.x = Hu3DData[model].pos.x;
+    orig.y = Hu3DData[model].pos.y;
+    orig.z = Hu3DData[model].pos.z;
+    pos.y = Hu3DData[model].pos.y;
+    for (i = 0; i < 12; i++) {
+        pos.x = Hu3DData[model].pos.x;
+        pos.z = Hu3DData[model].pos.z;
+        y = sindf(i * 15.0f) * 80.0f;
+        Hu3DModelPosSet(model, pos.x, y + pos.y, pos.z);
+        HuPrcVSleep();
+    }
+    Hu3DModelPosSet(model, orig.x, y + orig.y, orig.z);
+    func_801068B0_mstory1(obj->model[1], D_80115CA8_mstory1, D_80115CA6_mstory1);
+    D_80115B70_mstory1[1].func = func_80111218_mstory1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/496990", func_80112BD8_mstory1);
 
@@ -424,4 +448,33 @@ void func_801148B4_mstory1(s32 index) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/496990", func_80114930_mstory1);
+void func_80114930_mstory1(void) {
+    s32 i;
+    s32 seNo;
+
+    while (TRUE) {
+        for (i = 0; i < 8; i++) {
+            if (D_80115B70_mstory1[i].unk_0C == 1 && Hu3DData[D_80115B70_mstory1[i].obj->model[1]].motTime == 0.0f) {
+                seNo = D_80115B70_mstory1[i].unk_10;
+                switch (i) {
+                    case 0:
+                        D_80115B70_mstory1[i].unk_14 = CharFXPlay(seNo, GwStory.unk1);
+                        break;
+                    case 2:
+                        if (func_80106AFC_mstory1(5) == 0) {
+                            D_80115B70_mstory1[i].unk_14 = CharFXPlay(seNo, 5);
+                        } else {
+                            D_80115B70_mstory1[i].unk_14 = CharFXPlay(seNo, 1);
+                        }
+                        break;
+                    case 1:
+                    case 3:
+                    case 4:
+                    case 5:
+                        break;
+                }
+            }
+        }
+        HuPrcVSleep();
+    }
+}

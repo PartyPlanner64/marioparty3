@@ -53,6 +53,11 @@ extern s32 D_80112124_mstory4;
 extern u16 D_80112128_mstory4;
 extern s32 D_801121B4_mstory4;
 extern UnkStoryObj D_801121C0_mstory4[5];
+extern s16 D_8011223A_mstory4;
+extern s16 D_8011223E_mstory4;
+extern s16 D_80112242_mstory4;
+extern s16 D_80112246_mstory4;
+extern s16 D_80112248_mstory4;
 extern s16 D_8011228C_mstory4;
 extern u16 D_8011234A_mstory4[2][2];
 extern s16 D_80112352_mstory4;
@@ -77,6 +82,9 @@ void func_8010700C_mstory4(omObjData *obj, Vec *pos, s32 frames, s32 arg3);
 void func_801072D8_mstory4(omObjData *obj, Vec *pos, s32 frames);
 s32 func_801074F8_mstory4(s16 model);
 void func_80108280_mstory4(omObjData *obj);
+void func_80109840_mstory4(omObjData *obj);
+void func_8010ABD0_mstory4(s32 index, s32 seNo);
+void func_8010AC84_mstory4(s32 index);
 void func_80109B5C_mstory4(omObjData *object);
 void func_8010E7C0_mstory4(omObjData *obj, f32 x, f32 y, f32 z, s32 frames, s32 arg5);
 void func_8010BAF0_mstory4(omObjData *obj);
@@ -472,9 +480,51 @@ void func_80109AE0_mstory4(omObjData *obj) {
     D_801121C0_mstory4[1].func = func_80108280_mstory4;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80109B5C_mstory4);
+void func_80109B5C_mstory4(omObjData *obj) {
+    s16 model = obj->model[1];
+    Vec pos;
+    Vec orig;
+    f32 y;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80109CCC_mstory4);
+    orig.x = Hu3DData[model].pos.x;
+    orig.y = Hu3DData[model].pos.y;
+    orig.z = Hu3DData[model].pos.z;
+    pos.y = Hu3DData[model].pos.y;
+    for (i = 0; i < 12; i++) {
+        pos.x = Hu3DData[model].pos.x;
+        pos.z = Hu3DData[model].pos.z;
+        y = sindf(i * 15.0f) * 80.0f;
+        Hu3DModelPosSet(model, pos.x, y + pos.y, pos.z);
+        HuPrcVSleep();
+    }
+    Hu3DModelPosSet(model, orig.x, y + orig.y, orig.z);
+    func_80106B3C_mstory4(obj->model[1], D_80112248_mstory4, D_80112242_mstory4);
+    D_801121C0_mstory4[1].func = func_80108280_mstory4;
+}
+
+void func_80109CCC_mstory4(omObjData *obj) {
+    s16 model = obj->model[1];
+    Vec pos;
+    Vec orig;
+    f32 y;
+    s32 i;
+
+    orig.x = Hu3DData[model].pos.x;
+    orig.y = Hu3DData[model].pos.y;
+    orig.z = Hu3DData[model].pos.z;
+    pos.y = Hu3DData[model].pos.y;
+    for (i = 0; i < 12; i++) {
+        pos.x = Hu3DData[model].pos.x;
+        pos.z = Hu3DData[model].pos.z;
+        y = sindf(i * 15.0f) * 80.0f;
+        Hu3DModelPosSet(model, pos.x, y + pos.y, pos.z);
+        HuPrcVSleep();
+    }
+    Hu3DModelPosSet(model, orig.x, y + orig.y, orig.z);
+    func_80106B3C_mstory4(obj->model[1], D_80112248_mstory4, D_80112246_mstory4);
+    D_801121C0_mstory4[1].func = func_80108280_mstory4;
+}
 
 void func_80109E3C_mstory4(void) {
     HuPrcSleep(5);
@@ -513,7 +563,28 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mstory4/4C2BD0", D_80111E78_mstory4);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mstory4/4C2BD0", D_80111E84_mstory4);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010A064_mstory4);
+const Vec D_80111E9C_mstory4 = { 200.0f, 0.0f, 1200.0f };
+const Vec D_80111EA8_mstory4 = { 166.66666f, 0.0f, 150.0f };
+
+void func_8010A064_mstory4(omObjData *obj) {
+    HuPrcSleep(10);
+    CharFXPlay(0x26B, 6);
+    HuPrcSleep(30);
+    func_80106B3C_mstory4(D_801121C0_mstory4[1].obj->model[1], D_80112248_mstory4, D_8011223E_mstory4);
+    func_80106C78_mstory4();
+    func_80106CCC_mstory4(0x5A70);
+    func_80106CA8_mstory4();
+    func_80106B3C_mstory4(D_801121C0_mstory4[1].obj->model[1], D_80112248_mstory4, D_8011223A_mstory4);
+    D_801121C0_mstory4[1].func = func_80109840_mstory4;
+    CharFXPlay(0x286, 6);
+    Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[2]].motId, 0, 10, 2);
+    func_8010ABD0_mstory4(2, 40);
+    func_80106DA0_mstory4(obj, &D_80111E9C_mstory4, 40);
+    func_8010AC84_mstory4(2);
+    func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    D_801121C0_mstory4[2].func = func_80108280_mstory4;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010A1C4_mstory4);
 

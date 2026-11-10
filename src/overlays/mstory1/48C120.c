@@ -42,6 +42,8 @@ extern s32 D_801158B4_mstory1;
 extern s32 D_801158E4_mstory1;
 extern UnkStoryObj D_801158F0_mstory1[7];
 extern s16 D_80115A10_mstory1;
+extern s16 D_80115A26_mstory1;
+extern s16 D_80115A28_mstory1;
 
 void func_80105FF4_mstory1(void);
 void func_80106B14_mstory1(omObjData *obj, const Vec *pos, s32 frames);
@@ -422,7 +424,28 @@ void func_8010980C_mstory1(omObjData *obj) {
     D_801158F0_mstory1[1].func = func_801081D8_mstory1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_80109888_mstory1);
+void func_80109888_mstory1(omObjData *obj) {
+    s16 model = obj->model[1];
+    Vec pos;
+    Vec orig;
+    f32 y;
+    s32 i;
+
+    orig.x = Hu3DData[model].pos.x;
+    orig.y = Hu3DData[model].pos.y;
+    orig.z = Hu3DData[model].pos.z;
+    pos.y = Hu3DData[model].pos.y;
+    for (i = 0; i < 12; i++) {
+        pos.x = Hu3DData[model].pos.x;
+        pos.z = Hu3DData[model].pos.z;
+        y = sindf(i * 15.0f) * 80.0f;
+        Hu3DModelPosSet(model, pos.x, y + pos.y, pos.z);
+        HuPrcVSleep();
+    }
+    Hu3DModelPosSet(model, orig.x, y + orig.y, orig.z);
+    func_801068B0_mstory1(obj->model[1], D_80115A28_mstory1, D_80115A26_mstory1);
+    D_801158F0_mstory1[1].func = func_801081D8_mstory1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_801099F8_mstory1);
 
@@ -628,4 +651,33 @@ void func_8010BBEC_mstory1(s32 index) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_8010BC68_mstory1);
+void func_8010BC68_mstory1(void) {
+    s32 i;
+    s32 seNo;
+
+    while (TRUE) {
+        for (i = 0; i < 8; i++) {
+            if (D_801158F0_mstory1[i].unk_0C == 1 && Hu3DData[D_801158F0_mstory1[i].obj->model[1]].motTime == 0.0f) {
+                seNo = D_801158F0_mstory1[i].unk_10;
+                switch (i) {
+                    case 0:
+                        D_801158F0_mstory1[i].unk_14 = CharFXPlay(seNo, GwStory.unk1);
+                        break;
+                    case 2:
+                        if (func_80106AFC_mstory1(4) == 0) {
+                            D_801158F0_mstory1[i].unk_14 = CharFXPlay(seNo, 4);
+                        } else {
+                            D_801158F0_mstory1[i].unk_14 = CharFXPlay(seNo, 1);
+                        }
+                        break;
+                    case 1:
+                    case 3:
+                    case 4:
+                    case 5:
+                        break;
+                }
+            }
+        }
+        HuPrcVSleep();
+    }
+}

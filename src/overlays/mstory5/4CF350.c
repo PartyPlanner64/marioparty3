@@ -50,8 +50,12 @@ extern UnkStoryObj D_801151F0_mstory5[9];
 extern UnkStoryObj D_801152C8_mstory5[2];
 extern s16 D_8011537A_mstory5;
 extern s16 D_80115380_mstory5;
+extern s16 D_80115384_mstory5;
+extern s16 D_8011538A_mstory5;
 extern UnkStoryObj D_801153A0_mstory5[8];
 extern s16 D_801154D8_mstory5;
+extern s16 D_801154EE_mstory5;
+extern s16 D_801154F0_mstory5;
 
 void func_80106028_mstory5(void);
 void func_80106B64_mstory5(omObjData *obj, const Vec *pos, s32 frames, s32 arg3);
@@ -778,7 +782,20 @@ void func_8010E870_mstory5(omObjData *obj) {
     D_801151F0_mstory5[7].func = func_801085D8_mstory5;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010E8C0_mstory5);
+void func_8010E8C0_mstory5(omObjData *obj) {
+    omObjData *player = D_801151F0_mstory5[0].obj;
+
+    func_8010E3F0_mstory5(player, D_801151F0_mstory5[3].obj);
+    Hu3DMotionShiftSet(player->model[1], Hu3DData[player->motion[3]].motId, 0, 30, 2);
+    func_8010F14C_mstory5(0, 31);
+    func_8010734C_mstory5(player, 3.5f, 15);
+    func_8010F240_mstory5(0);
+    func_80017954_main(player->model[1], 2, GwStory.unk1, D_80115384_mstory5);
+    Hu3DMotionShiftSet(player->model[1], Hu3DData[player->motion[11]].motId, 0, 30, 2);
+    func_80017954_main(D_801151F0_mstory5[3].obj->model[1], 2, 7, D_8011538A_mstory5);
+    Hu3DMotionShiftSet(D_801151F0_mstory5[3].obj->model[1], Hu3DData[D_801151F0_mstory5[3].obj->motion[11]].motId, 0, 30, 2);
+    D_801152C8_mstory5[1].func = func_801085D8_mstory5;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010EA34_mstory5);
 
@@ -862,7 +879,45 @@ void func_8010F240_mstory5(s32 index) {
     }
 }
 
+// Code matches, but the jump table is followed by alignment padding in rodata,
+// which suggests a file boundary at func_8010F4D0_mstory5.
+#ifdef NON_MATCHING
+void func_8010F2BC_mstory5(void) {
+    s32 i;
+    s32 seNo;
+
+    while (TRUE) {
+        for (i = 0; i < 9; i++) {
+            if (D_801151F0_mstory5[i].unk_0C == 1 && Hu3DData[D_801151F0_mstory5[i].obj->model[1]].motTime == 0.0f) {
+                seNo = D_801151F0_mstory5[i].unk_10;
+                switch (i) {
+                    case 0:
+                        D_801151F0_mstory5[i].unk_14 = CharFXPlay(seNo, GwStory.unk1);
+                        break;
+                    case 2:
+                        if (func_80106B30_mstory5(0) == 0) {
+                            D_801151F0_mstory5[i].unk_14 = CharFXPlay(seNo, 0);
+                        } else {
+                            D_801151F0_mstory5[i].unk_14 = CharFXPlay(seNo, 1);
+                        }
+                        break;
+                    case 3:
+                        D_801151F0_mstory5[i].unk_14 = CharFXPlay(seNo, 7);
+                        break;
+                    case 1:
+                    case 4:
+                    case 5:
+                    case 6:
+                        break;
+                }
+            }
+        }
+        HuPrcVSleep();
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010F2BC_mstory5);
+#endif
 
 // Code matches, but the target is followed by alignment padding, which suggests
 // a file boundary at func_8010F4D0_mstory5.
@@ -1022,7 +1077,28 @@ void func_80111B60_mstory5(omObjData *obj) {
     D_801153A0_mstory5[1].func = func_80110200_mstory5;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_80111C48_mstory5);
+void func_80111C48_mstory5(omObjData *obj) {
+    s16 model = obj->model[1];
+    Vec pos;
+    Vec orig;
+    f32 y;
+    s32 i;
+
+    orig.x = Hu3DData[model].pos.x;
+    orig.y = Hu3DData[model].pos.y;
+    orig.z = Hu3DData[model].pos.z;
+    pos.y = Hu3DData[model].pos.y;
+    for (i = 0; i < 12; i++) {
+        pos.x = Hu3DData[model].pos.x;
+        pos.z = Hu3DData[model].pos.z;
+        y = sindf(i * 15.0f) * 80.0f;
+        Hu3DModelPosSet(model, pos.x, y + pos.y, pos.z);
+        HuPrcVSleep();
+    }
+    Hu3DModelPosSet(model, orig.x, y + orig.y, orig.z);
+    func_801068E4_mstory5(obj->model[1], D_801154F0_mstory5, D_801154EE_mstory5);
+    D_801153A0_mstory5[1].func = func_80110200_mstory5;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_80111DB8_mstory5);
 
@@ -1254,4 +1330,33 @@ void func_80114560_mstory5(s32 index) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_801145DC_mstory5);
+void func_801145DC_mstory5(void) {
+    s32 i;
+    s32 seNo;
+
+    while (TRUE) {
+        for (i = 0; i < 8; i++) {
+            if (D_801153A0_mstory5[i].unk_0C == 1 && Hu3DData[D_801153A0_mstory5[i].obj->model[1]].motTime == 0.0f) {
+                seNo = D_801153A0_mstory5[i].unk_10;
+                switch (i) {
+                    case 0:
+                        D_801153A0_mstory5[i].unk_14 = CharFXPlay(seNo, GwStory.unk1);
+                        break;
+                    case 2:
+                        if (func_80106B30_mstory5(2) == 0) {
+                            D_801153A0_mstory5[i].unk_14 = CharFXPlay(seNo, 2);
+                        } else {
+                            D_801153A0_mstory5[i].unk_14 = CharFXPlay(seNo, 1);
+                        }
+                        break;
+                    case 1:
+                    case 3:
+                    case 4:
+                    case 5:
+                        break;
+                }
+            }
+        }
+        HuPrcVSleep();
+    }
+}

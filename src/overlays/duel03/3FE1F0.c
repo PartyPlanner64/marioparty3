@@ -135,7 +135,9 @@ extern Object *D_801180E0_duel03;
 extern Object *D_801180F8_duel03[4];
 extern s16 D_80117470_duel03[];
 void func_800D6CA0_name_81(UnkEA790Struct *win);
-void func_80116000_duel03(s32 space);
+void func_80116000_duel03(s16 space);
+extern s16 D_80117A34_duel03[];
+extern s16 D_80117A3C_duel03[];
 extern s16 D_80117A44_duel03[];
 extern DecisionTreeNonLeafNode D_80117734_duel03[];
 extern s16 D_80117A5C_duel03[];
@@ -4468,7 +4470,212 @@ s32 func_80115B18_duel03(void) {
 INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_80115B18_duel03);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_80116000_duel03);
+void func_80116000_duel03(s16 space) {
+    Vec target;
+    Vec frontPos;
+    Vec backPos;
+    Vec camPos;
+    Vec midPos;
+    s8 nlink;
+    s8 nidx;
+    GW_PLAYER *player;
+    SpaceData *masu;
+    SpaceData *destMasu;
+    Process *process;
+    Object *obj;
+    Object *partner;
+    void *effect;
+    f32 angle;
+    s32 i;
+    GW_SYSTEM *sys = &GwSystem;
+
+    player = MBDGetPlayerStruct(CUR_PLAYER);
+    masu = MBDMasuGet(space);
+    process = HuPrcCurrentGet();
+    obj = NULL;
+    switch (space) {
+        case 0x19:
+            obj = D_801180F8_duel03[0];
+            break;
+        case 0x1B:
+            obj = D_801180F8_duel03[1];
+            break;
+        case 0x20:
+            obj = D_801180F8_duel03[2];
+            break;
+        case 0x21:
+            obj = D_801180F8_duel03[3];
+            break;
+    }
+    func_800F74E4_name_81(CUR_PLAYER);
+    func_800DB3E0_name_81(sys->current_player_index);
+    func_800FC888_name_81(4);
+    func_800FC8C4_name_81(&camPos);
+    HuVecCopy3F(&camPos, &player->player_obj->coords);
+    HuVecAdd(&midPos, &player->player_obj->coords, &masu->coords);
+    HuVecMulScalar(&midPos, 0.5f, &midPos);
+    HuPrcChildLink(process, func_800EC1E4_name_81(&camPos, &midPos, &camPos, 3.0f));
+    HuPrcChildWatch();
+
+    if (player->stats.partners.frontID != PARTNER_NONE) {
+        partner = MBDGetPlayerPartnerRef(sys->current_player_index, PARTNER_FRONT);
+        func_800EB708_name_81(&partner->coords, &masu->coords, &partner->rot);
+        HuVecCopy3F(&target, &masu->coords);
+        target.y += 20.0f;
+        func_800EBF2C_name_81(&partner->coords, &target, &partner->coords, 15);
+        partner->velocity.y = 5.5f;
+        partner->velocity.z = -0.7f;
+        HuPrcSleep(14);
+        partner->flags |= 1;
+        HuVecCopy3F(&target, &masu->coords);
+        func_800EBF2C_name_81(&partner->coords, &target, &partner->coords, 10);
+        HuAudFXPlay(0x1BC);
+        for (angle = 0.0f; angle < 180.0f; angle += 18.0f) {
+            HuVecCopyXYZ(&obj->scale, 1.0f - sindf(angle) * 0.3f, 1.0f, 1.0f - sindf(angle) * 0.3f);
+            HuPrcVSleep();
+        }
+        func_800D8F0C_name_81(partner);
+        HuVecCopyXYZ(&obj->scale, 1.0f, 1.0f, 1.0f);
+    }
+
+    player->stat |= 4;
+    func_800EB708_name_81(&player->player_obj->coords, &masu->coords, &player->player_obj->rot);
+    HuVecCopy3F(&target, &masu->coords);
+    target.y += 20.0f;
+    func_800EBF2C_name_81(&player->player_obj->coords, &target, &player->player_obj->coords, 15);
+    player->player_obj->velocity.y = 5.5f;
+    player->player_obj->velocity.z = -0.7f;
+    func_800F3880_name_81(CUR_PLAYER, 1, 0);
+    HuPrcSleep(14);
+    func_800F3880_name_81(CUR_PLAYER, -1, 2);
+    player->player_obj->flags |= 1;
+    HuVecCopy3F(&target, &masu->coords);
+    func_800EBF2C_name_81(&player->player_obj->coords, &target, &player->player_obj->coords, 10);
+    effect = func_800FFC2C_name_81(CUR_PLAYER, 2, 5);
+    HuAudFXPlay(0x1BC);
+    for (angle = 0.0f; angle < 180.0f; angle += 18.0f) {
+        HuVecCopyXYZ(&obj->scale, 1.0f - sindf(angle) * 0.3f, 1.0f, 1.0f - sindf(angle) * 0.3f);
+        HuPrcVSleep();
+    }
+    func_800FFCCC_name_81(effect);
+    func_800D8F0C_name_81(player->player_obj);
+    HuVecCopyXYZ(&obj->scale, 1.0f, 1.0f, 1.0f);
+
+    if (player->stats.partners.backID != PARTNER_NONE) {
+        partner = MBDGetPlayerPartnerRef(sys->current_player_index, PARTNER_BACK);
+        func_800EB708_name_81(&partner->coords, &masu->coords, &partner->rot);
+        HuVecCopy3F(&target, &masu->coords);
+        target.y += 20.0f;
+        func_800EBF2C_name_81(&partner->coords, &target, &partner->coords, 15);
+        partner->velocity.y = 5.5f;
+        partner->velocity.z = -0.7f;
+        HuPrcSleep(14);
+        partner->flags |= 1;
+        HuVecCopy3F(&target, &masu->coords);
+        func_800EBF2C_name_81(&partner->coords, &target, &partner->coords, 10);
+        HuAudFXPlay(0x1BC);
+        for (angle = 0.0f; angle < 180.0f; angle += 18.0f) {
+            HuVecCopyXYZ(&obj->scale, 1.0f - sindf(angle) * 0.3f, 1.0f, 1.0f - sindf(angle) * 0.3f);
+            HuPrcVSleep();
+        }
+        func_800D8F0C_name_81(partner);
+        HuVecCopyXYZ(&obj->scale, 1.0f, 1.0f, 1.0f);
+    }
+
+    do {
+        i = func_800EFE20_name_81(4.0f);
+    } while (D_80117A34_duel03[i] == space);
+    WipeCreateOut(0, 16);
+    HuPrcSleep(16);
+    masu = MBDMasuGet(D_80117A34_duel03[i]);
+    destMasu = MBDMasuGet(D_80117A3C_duel03[i]);
+    HuVecAdd(&camPos, &destMasu->coords, &masu->coords);
+    HuVecMulScalar(&camPos, 0.5f, &camPos);
+    func_800E890C_name_81(&camPos, 0);
+    obj = D_801180F8_duel03[i];
+    WipeCreateIn(0, 16);
+    HuPrcSleep(16);
+    func_800E9F4C_name_81(D_80117A3C_duel03[i], &nlink, &nidx);
+    func_800ECD0C_name_81(sys->current_player_index, nlink, nidx);
+    if (D_80117A3C_duel03[i] == 0x23) {
+        func_800E9F4C_name_81(0xB, &player->nlink, &player->nidx);
+    }
+    func_800ECF1C_name_81(sys->current_player_index, &frontPos, &backPos);
+    HuVecAdd(&frontPos, &frontPos, &destMasu->coords);
+    HuVecAdd(&backPos, &backPos, &destMasu->coords);
+
+    if (player->stats.partners.frontID != PARTNER_NONE) {
+        partner = MBDGetPlayerPartnerRef(sys->current_player_index, PARTNER_FRONT);
+        HuVecCopy3F(&partner->coords, &masu->coords);
+        func_800EB7BC_name_81(&partner->rot);
+        HuVecCopy3F(&target, &masu->coords);
+        target.y += 20.0f;
+        func_800EBF2C_name_81(&partner->coords, &target, &partner->coords, 10);
+        HuAudFXPlay(0x1BC);
+        func_800D8E88_name_81(partner);
+        for (angle = 0.0f; angle < 180.0f; angle += 18.0f) {
+            HuVecCopyXYZ(&obj->scale, 1.0f - sindf(angle) * 0.3f, 1.0f, 1.0f - sindf(angle) * 0.3f);
+            HuPrcVSleep();
+        }
+        HuVecCopyXYZ(&obj->scale, 1.0f, 1.0f, 1.0f);
+        partner->flags &= ~1;
+        func_800EB708_name_81(&partner->coords, &frontPos, &partner->rot);
+        func_800EBF2C_name_81(&partner->coords, &frontPos, &partner->coords, 15);
+        partner->velocity.y = 5.5f;
+        partner->velocity.z = -0.75f;
+        HuPrcSleep(15);
+    }
+
+    HuVecCopy3F(&player->player_obj->coords, &masu->coords);
+    func_800EB7BC_name_81(&player->player_obj->rot);
+    HuVecCopy3F(&target, &masu->coords);
+    target.y += 20.0f;
+    func_800EBF2C_name_81(&player->player_obj->coords, &target, &player->player_obj->coords, 10);
+    HuAudFXPlay(0x1BC);
+    func_800D8E88_name_81(player->player_obj);
+    for (angle = 0.0f; angle < 180.0f; angle += 18.0f) {
+        HuVecCopyXYZ(&obj->scale, 1.0f - sindf(angle) * 0.3f, 1.0f, 1.0f - sindf(angle) * 0.3f);
+        HuPrcVSleep();
+    }
+    HuVecCopyXYZ(&obj->scale, 1.0f, 1.0f, 1.0f);
+    player->player_obj->flags &= ~1;
+    func_800EB708_name_81(&player->player_obj->coords, &frontPos, &player->player_obj->rot);
+    func_800EBF2C_name_81(&player->player_obj->coords, &destMasu->coords, &player->player_obj->coords, 15);
+    player->player_obj->velocity.y = 5.5f;
+    player->player_obj->velocity.z = -0.75f;
+    func_800F3880_name_81(CUR_PLAYER, 1, 0);
+    HuPrcSleep(15);
+    func_800F3880_name_81(CUR_PLAYER, -1, 2);
+    player->stat &= ~4;
+
+    if (player->stats.partners.backID != PARTNER_NONE) {
+        partner = MBDGetPlayerPartnerRef(sys->current_player_index, PARTNER_BACK);
+        HuVecCopy3F(&partner->coords, &masu->coords);
+        func_800EB7BC_name_81(&partner->rot);
+        HuVecCopy3F(&target, &masu->coords);
+        target.y += 20.0f;
+        func_800EBF2C_name_81(&partner->coords, &target, &partner->coords, 10);
+        HuAudFXPlay(0x1BC);
+        func_800D8E88_name_81(partner);
+        for (angle = 0.0f; angle < 180.0f; angle += 18.0f) {
+            HuVecCopyXYZ(&obj->scale, 1.0f - sindf(angle) * 0.3f, 1.0f, 1.0f - sindf(angle) * 0.3f);
+            HuPrcVSleep();
+        }
+        HuVecCopyXYZ(&obj->scale, 1.0f, 1.0f, 1.0f);
+        partner->flags &= ~1;
+        func_800EB708_name_81(&partner->coords, &backPos, &partner->rot);
+        func_800EBF2C_name_81(&partner->coords, &backPos, &partner->coords, 15);
+        partner->velocity.y = 5.5f;
+        partner->velocity.z = -0.75f;
+        HuPrcSleep(15);
+    }
+
+    HuPrcChildLink(process, func_800EC1E4_name_81(&camPos, &destMasu->coords, &camPos, 3.0f));
+    HuPrcChildWatch();
+    func_800FC888_name_81(1);
+    func_800DADA0_name_81(sys->current_player_index);
+    func_800F75EC_name_81(CUR_PLAYER);
+}
 
 void func_80116C54_duel03(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);

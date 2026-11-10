@@ -77,6 +77,7 @@ extern s32 D_80110B28_modesel[][7];
 extern f32 D_80110B2C_modesel[][7];
 extern UnkModeSelAngle D_80110B30_modesel[][7];
 extern u8 D_8010F2A0_modesel[];
+extern u8 D_8010F2B0_modesel[];
 // the one-column second dimension keeps these indexed stores addressing the array base symbolically
 extern s16 D_8010FE10_modesel[0x40][1];
 extern UnkModeSel D_8010FE90_modesel[0x40];
@@ -101,6 +102,14 @@ extern s32 D_80110CF4_modesel[][3];
 extern omObjData *D_80110CF8_modesel[][3];
 extern s32 D_80110DEC_modesel;
 
+void func_801059D0_modesel(void);
+void func_80105C7C_modesel(void);
+void func_80105F84_modesel(s32);
+void func_80105FB4_modesel(s32);
+void func_80106234_modesel(void);
+void func_801074AC_modesel(void);
+void func_80107CB0_modesel(void);
+
 void func_8010601C_modesel(s32, s32, s32);
 void func_80106A38_modesel(s32, s32, s16);
 void func_80108F8C_modesel(Vec *, Vec *, Vec *);
@@ -113,13 +122,32 @@ void func_8010ADC8_modesel(omObjData *);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_801059D0_modesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80105BD8_modesel);
+void func_80105BD8_modesel(void) {
+    func_801059D0_modesel();
+    func_80107CB0_modesel();
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80105BFC_modesel);
+void func_80105BFC_modesel(void) {
+    func_801059D0_modesel();
+    func_80107CB0_modesel();
+}
 
+// Code matches, but the target is followed by 0x10 alignment padding, which suggests
+// a file boundary at func_80105C50_modesel.
+#ifdef NON_MATCHING
+void func_80105C20_modesel(void) {
+    func_801059D0_modesel();
+    func_80107CB0_modesel();
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80105C20_modesel);
+#endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80105C50_modesel);
+void func_80105C50_modesel(void) {
+    func_80105C7C_modesel();
+    func_80106234_modesel();
+    func_801074AC_modesel();
+}
 
 void func_80105C7C_modesel(void) {
     UnkModeSel2 *p;
@@ -141,9 +169,13 @@ void func_80105C7C_modesel(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80105D10_modesel);
+s16 func_80105D10_modesel(s32 arg0) {
+    return D_8010FE10_modesel[arg0][0];
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80105D24_modesel);
+s16 func_80105D24_modesel(s32 arg0) {
+    return D_8010F710_modesel[arg0].unk_00;
+}
 
 void func_80105D40_modesel(s32 arg0, s32 arg1) {
     D_8010FE10_modesel[arg0][0] = func_8000B838_main(arg1);
@@ -172,7 +204,10 @@ INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80105EA8_modesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80105EDC_modesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80105F20_modesel);
+void func_80105F20_modesel(s32 arg0) {
+    func_80105E38_modesel(arg0);
+    func_80105D78_modesel(arg0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80105F4C_modesel);
 
@@ -180,9 +215,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80105F84_modesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80105FB4_modesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80105FE4_modesel);
+void func_80105FE4_modesel(s32 arg0) {
+    func_80105F84_modesel(arg0);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80106000_modesel);
+void func_80106000_modesel(s32 arg0) {
+    func_80105FB4_modesel(arg0);
+}
 
 void func_8010601C_modesel(s32 arg0, s32 arg1, s32 arg2) {
     D_8010F710_modesel[arg0].unk_04 = arg1;
@@ -398,7 +437,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_801077FC_modesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80107838_modesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80107870_modesel);
+s16 func_80107870_modesel(s32 arg0) {
+    return D_80110998_modesel[arg0][0];
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010788C_modesel);
 
@@ -454,7 +495,9 @@ void func_80108F8C_modesel(Vec *pos, Vec *at, Vec *up) {
     Hu3DCamUpdateMtx(0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80108FC4_modesel);
+void func_80108FC4_modesel(void) {
+    D_80110C10_modesel = NULL;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80108FD0_modesel);
 
@@ -682,7 +725,9 @@ INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010DE88_modesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010DF70_modesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010DFB4_modesel);
+void func_8010DFB4_modesel(void) {
+    func_80105F20_modesel(1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010DFD0_modesel);
 
@@ -719,7 +764,10 @@ INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010E5F0_modesel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010E6D8_modesel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010E790_modesel);
+void func_8010E790_modesel(Process *arg0) {
+    omDelPrcObj(arg0);
+    func_80013350_main(0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010E7B4_modesel);
 
@@ -751,9 +799,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010ED3C_modesel);
 void func_8010F1F4_modesel(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010F1FC_modesel);
+s32 func_8010F1FC_modesel(void) {
+    return 1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010F204_modesel);
+u8 func_8010F204_modesel(s32 arg0) {
+    return D_8010F2A0_modesel[arg0];
+}
 
 s32 func_8010F214_modesel(s32 arg0) {
     s32 value = D_8010F2A0_modesel[arg0];
@@ -770,4 +822,6 @@ s32 func_8010F234_modesel(s32 arg0) {
     return value < 6 ? 1 : 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010F258_modesel);
+u8 func_8010F258_modesel(s32 arg0) {
+    return D_8010F2B0_modesel[arg0];
+}

@@ -4321,7 +4321,152 @@ s32 func_8011580C_duel03(void) {
 INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_8011580C_duel03);
 #endif
 
+#ifdef NON_MATCHING
+// Remaining diffs are register allocation only (same blocker as
+// func_8011580C_duel03): in both hp + star compares, the target puts the sum in
+// v0 and frontPower/compare result in v1; this code swaps them.
+s32 func_80115B18_duel03(void) {
+    s32 curIndex = MBDGetCurrentPlayerIndex();
+    s32 otherIndex = MBDGetCurrentPlayerIndex() ^ 1;
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    GW_PLAYER *other = MBDGetPlayerStruct(otherIndex);
+    s32 walkNum = mbWalkNum;
+    s32 stars;
+    s32 hp;
+    s32 coins;
+
+    if (other->cidx >= 0x16 && other->cidx <= 0x1C) {
+        return 0;
+    }
+    if (other->cidx >= 0 && other->cidx < 6) {
+        if (walkNum < 6 && other->cidx == D_80117654_duel03[walkNum]) {
+            if (other->stats.partners.backID == PARTNER_BOO &&
+                !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                return 0;
+            }
+            return 1;
+        }
+        if (walkNum < 6 && !(other->cidx < D_80117654_duel03[walkNum])) {
+            return other->stats.partners.frontPower != 0;
+        }
+        stars = player->star;
+        if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+            return 1;
+        }
+        if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+            return 1;
+        }
+        if (player->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+            hp = other->stats.partners.frontHp;
+        } else {
+            hp = other->stats.partners.backHp;
+        }
+        if (!(hp + other->star > player->stats.partners.frontPower)) {
+            return 1;
+        }
+        if (other->stats.partners.backID == PARTNER_BOO) {
+            if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                return 0;
+            }
+            if (player->stats.partners.frontPower > player->stats.partners.frontHp) {
+                stars -= player->stats.partners.frontPower - player->stats.partners.frontHp;
+            }
+        }
+        if (walkNum == 5) {
+            if (!(player->stats.partners.backPower < other->stats.partners.frontHp + other->star)) {
+                return 1;
+            }
+            if (other->stats.partners.frontID == PARTNER_BOO &&
+                !(player->stats.partners.backPower < stars + player->stats.partners.backHp)) {
+                return 0;
+            }
+            return 1;
+        }
+        if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+            if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                return 0;
+            }
+            if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                return 0;
+            }
+            if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                return player->stats.partners.frontHp + player->star > other->stats.partners.frontPower;
+            }
+            if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+                return 0;
+            }
+        }
+        if (player->stats.partners.frontPower != 0 || player->stats.partners.backID == PARTNER_BOO) {
+            return 1;
+        }
+        return 0;
+    }
+    if (other->cidx >= 7 && other->cidx <= 13) {
+        if (walkNum < 6) {
+            return 1;
+        }
+        if (other->cidx == D_80117654_duel03[walkNum + 3]) {
+            if (other->stats.partners.backID == PARTNER_BOO &&
+                !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                return 0;
+            }
+            return 1;
+        }
+        if (other->cidx < D_80117654_duel03[walkNum + 3]) {
+            if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
+                return 1;
+            }
+            if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+                return 1;
+            }
+            if (player->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                hp = other->stats.partners.frontHp;
+            } else {
+                hp = other->stats.partners.backHp;
+            }
+            if (!(hp + other->star > player->stats.partners.frontPower)) {
+                return 1;
+            }
+            if (other->stats.partners.backID == PARTNER_BOO) {
+                if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                    return 0;
+                }
+            }
+            if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+                if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                    return 0;
+                }
+                if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                    return 0;
+                }
+                if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                    return player->stats.partners.frontHp + player->star > other->stats.partners.frontPower;
+                }
+                if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+                    return 0;
+                }
+            }
+            if (player->stats.partners.frontPower != 0 || player->stats.partners.backID == PARTNER_BOO) {
+                return 1;
+            }
+            return 0;
+        } else {
+            return other->stats.partners.frontPower != 0;
+        }
+    }
+    if (player->stats.partners.frontPower == 0) {
+        return 0;
+    }
+    if (func_800F8980_name_81(curIndex) == 0) {
+        coins = 0;
+    } else {
+        coins = GwPlayer[curIndex].coin / func_800F8980_name_81(curIndex);
+    }
+    return coins >= 2;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_80115B18_duel03);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_80116000_duel03);
 

@@ -77,6 +77,11 @@ extern s16 D_80112122_mstory4;
 extern s32 D_80112124_mstory4;
 extern u16 D_80112128_mstory4;
 extern s32 D_801121B4_mstory4;
+extern s16 D_80112130_mstory4[8];
+extern s16 D_80112140_mstory4[7][8];
+extern s16 D_801121B0_mstory4;
+extern const s32 D_80111C34_mstory4[7];
+extern const s16 D_80111C50_mstory4[][2];
 extern s32 D_801123B0_mstory4[4];
 extern void (*const D_80111C10_mstory4[])(void);
 extern const s32 D_80111C18_mstory4[];
@@ -136,6 +141,7 @@ void MBDBackKill(void);
 void MBDBackClose(void);
 void func_801078B4_mstory4(MstoryPath *path, f32 time, Vec *result);
 void func_80106134_mstory4(void);
+void func_80106B2C_mstory4(void);
 void func_80106DA0_mstory4(omObjData *obj, const Vec *pos, s32 frames);
 void func_80106DBC_mstory4(omObjData *obj, const Vec *pos, s32 frames, s32 arg3);
 void func_8010700C_mstory4(omObjData *obj, Vec *pos, s32 frames, s32 arg3);
@@ -371,7 +377,148 @@ void func_801060F8_mstory4(s32 arg0) {
     omAddPrcObj(func_80106134_mstory4, 0x1000, 0x800, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80106134_mstory4);
+void func_80106134_mstory4(void) {
+    void *data;
+    f32 x;
+    f32 y;
+    f32 angle;
+    f32 tpLvl;
+    s32 i;
+    s32 j;
+    s32 k;
+
+    D_80112130_mstory4[0] = espEntry(func_8000B838_main(0x1D0001), 0, 0);
+    espPosSet(D_80112130_mstory4[0], 160, 120);
+    espDispOff(D_80112130_mstory4[0]);
+    for (i = 0; i < 7; i++) {
+        D_80112130_mstory4[i + 1] = espEntry(func_8000B838_main(D_80111C34_mstory4[i]), 0, 0);
+        espPosSet(D_80112130_mstory4[i + 1], D_80111C50_mstory4[i][0] + 48, D_80111C50_mstory4[i][1] + 48);
+        espAttrSet(D_80112130_mstory4[i + 1], 8);
+        espDispOff(D_80112130_mstory4[i + 1]);
+    }
+    data = DataRead(0x1D0002);
+    for (j = 0; j < 7; j++) {
+        for (i = 0; i < 8; i++) {
+            D_80112140_mstory4[j][i] = espEntry(HuSprAnimRead(data), 0, 1);
+            x = D_80111C50_mstory4[j][0] + 48;
+            y = D_80111C50_mstory4[j][1] + 48;
+            angle = i * 45.0f;
+            x += cosdf(angle) * 32.0f;
+            y -= sindf(angle) * 32.0f;
+            espPosSet(D_80112140_mstory4[j][i], x, y);
+            espAttrSet(D_80112140_mstory4[j][i], 0x1000);
+            espColorSet(D_80112140_mstory4[j][i], 255, 255, 192);
+            espAttrSet(D_80112140_mstory4[j][i], 8);
+            espScaleSet(D_80112140_mstory4[j][i], 1.5f, 1.5f);
+            espTPLvlSet(D_80112140_mstory4[j][i], 255);
+            espDispOff(D_80112140_mstory4[j][i]);
+        }
+    }
+    HuMemMemoryFreePerm(data);
+    D_801121B0_mstory4 = espEntry(func_8000B838_main(0x1D0000), 0, 0);
+    espPosSet(D_801121B0_mstory4, 160, 120);
+    espScaleSet(D_801121B0_mstory4, 40.0f, 30.0f);
+    espAttrSet(D_801121B0_mstory4, 0);
+    espDispOff(D_801121B0_mstory4);
+    omPrcSetDestructor(0, func_80106B2C_mstory4);
+    espDispOn(D_801121B0_mstory4);
+    espTPLvlSet(D_801121B0_mstory4, 0);
+    for (i = 0; i < 20; i++) {
+        espTPLvlSet(D_801121B0_mstory4, i * (1.0f / 20.0f) * 255.0f);
+        HuPrcVSleep();
+    }
+    espTPLvlSet(D_801121B0_mstory4, 256);
+    for (i = 0; i < D_801121B4_mstory4; i++) {
+        espDispOn(D_80112130_mstory4[i + 1]);
+    }
+    func_80106000_mstory4();
+    espDispOn(D_80112130_mstory4[0]);
+    HuPrcSleep(30);
+    for (i = 0; i < 20; i++) {
+        espTPLvlSet(D_801121B0_mstory4, 255.0f - i * (1.0f / 20.0f) * 255.0f);
+        HuPrcVSleep();
+    }
+    espDispOff(D_801121B0_mstory4);
+    espTPLvlSet(D_80112130_mstory4[D_801121B4_mstory4 + 1], 0);
+    espDispOn(D_80112130_mstory4[D_801121B4_mstory4 + 1]);
+    for (k = 0, tpLvl = 0.0f; k < 20; k++) {
+        tpLvl += 12.75f;
+        espTPLvlSet(D_80112130_mstory4[D_801121B4_mstory4 + 1], tpLvl);
+        HuPrcVSleep();
+    }
+    espTPLvlSet(D_80112130_mstory4[D_801121B4_mstory4 + 1], 255);
+    espScaleSet(D_80112130_mstory4[D_801121B4_mstory4 + 1], 1.0f, 1.0f);
+    HuAudFXPlay(0x131);
+    for (i = 0; i < 8; i++) {
+        espBankSet(D_80112140_mstory4[D_801121B4_mstory4][i], 0, 0);
+        func_8000BDDC_main(D_80112140_mstory4[D_801121B4_mstory4][i], 1);
+        espDispOn(D_80112140_mstory4[D_801121B4_mstory4][i]);
+    }
+    HuPrcSleep(20);
+    for (i = 0; i < 8; i++) {
+        espDispOff(D_80112140_mstory4[D_801121B4_mstory4][i]);
+    }
+    HuPrcSleep(30);
+    HuAudFXPlay(0x131);
+    for (j = 0; j < 7; j++) {
+        for (i = 0; i < 8; i++) {
+            espBankSet(D_80112140_mstory4[j][i], 0, 0);
+            func_8000BDDC_main(D_80112140_mstory4[j][i], 1);
+            espDispOn(D_80112140_mstory4[j][i]);
+        }
+    }
+    HuPrcSleep(20);
+    for (j = 0; j < 7; j++) {
+        for (i = 0; i < 8; i++) {
+            espDispOff(D_80112140_mstory4[j][i]);
+        }
+    }
+    if (D_801121B4_mstory4 != 6) {
+        HuPrcSleep(60);
+    } else {
+        HuPrcSleep(40);
+        HuAudFXPlay(0x221);
+        for (j = 0; j < 2; j++) {
+            espDispOn(D_801121B0_mstory4);
+            espTPLvlSet(D_801121B0_mstory4, 0);
+            for (i = 0; i < 7; i++) {
+                espTPLvlSet(D_801121B0_mstory4, i * (1.0f / 7.0f) * 255.0f);
+                HuPrcVSleep();
+            }
+            espTPLvlSet(D_801121B0_mstory4, 256);
+            HuPrcSleep(3);
+            for (i = 0; i < 7; i++) {
+                espTPLvlSet(D_801121B0_mstory4, 255.0f - i * (1.0f / 7.0f) * 255.0f);
+                HuPrcVSleep();
+            }
+            espDispOff(D_801121B0_mstory4);
+            HuPrcSleep(5);
+        }
+    }
+    espDispOn(D_801121B0_mstory4);
+    espTPLvlSet(D_801121B0_mstory4, 0);
+    for (i = 0; i < 20; i++) {
+        espTPLvlSet(D_801121B0_mstory4, i * (1.0f / 20.0f) * 255.0f);
+        HuPrcVSleep();
+    }
+    espTPLvlSet(D_801121B0_mstory4, 256);
+    espDispOff(D_80112130_mstory4[D_801121B4_mstory4 + 1]);
+    espDispOff(D_80112130_mstory4[0]);
+    func_80106034_mstory4();
+    HuPrcSleep(30);
+    for (i = 0; i < D_801121B4_mstory4; i++) {
+        espDispOff(D_80112130_mstory4[i + 1]);
+    }
+    for (i = 0; i < 20; i++) {
+        espTPLvlSet(D_801121B0_mstory4, 255.0f - i * (1.0f / 20.0f) * 255.0f);
+        HuPrcVSleep();
+    }
+    espDispOff(D_801121B0_mstory4);
+    D_80111AF4_mstory4 = 1;
+    while (TRUE) {
+        HuPrcVSleep();
+    }
+}
 
 s32 func_80106B20_mstory4(void) {
     return D_80111AF4_mstory4;

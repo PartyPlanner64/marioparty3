@@ -2758,7 +2758,17 @@ void func_8010EA10_duel02(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010EA68_duel02);
+void func_8010EA68_duel02(void) {
+    Duel02ModelWaitWork *work = HuPrcCurrentGet()->user_data;
+
+    func_800D90D0_name_81(D_80117638_duel02[work->index], 0, 4);
+    // The model index is compared against 0 here, so this always reads Hu3DData[0] or Hu3DData[1].
+    while (Hu3DData[D_80117638_duel02[work->index]->omObj1->model[0] != 0].motTime != 0.0f) {
+        HuPrcVSleep();
+    }
+    func_800D90D0_name_81(D_80117638_duel02[work->index], -1, 2);
+    omDelPrcObj(NULL);
+}
 
 void func_8010EB40_duel02(s32 arg0) {
     Process *process;
@@ -2774,7 +2784,37 @@ void func_8010EB98_duel02(s32 index) {
     func_800D90D0_name_81(D_80117638_duel02[index], 0, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010EBC8_duel02);
+s32 func_8010EBC8_duel02(void) {
+    GW_SYSTEM *sys = &GwSystem;
+    GW_PLAYER *player = MBDGetPlayerStruct(sys->current_player_index ^ 1);
+    s32 curPlayer = sys->current_player_index;
+    s32 chance = (5 - GwPlayer[curPlayer].star) * 10;
+
+    if (mbWalkNum < 5) {
+        if (curPlayer == 0) {
+            if (player->clink == 0) {
+                s32 dist = player->cidx - 6;
+
+                if (dist == mbWalkNum) {
+                    chance = 0;
+                }
+                if (dist < mbWalkNum) {
+                    chance += 20;
+                }
+            }
+        } else if (player->clink == 1) {
+            s32 dist = player->cidx - 6;
+
+            if (dist == mbWalkNum) {
+                chance = 0;
+            }
+            if (dist < mbWalkNum) {
+                chance += 20;
+            }
+        }
+    }
+    return chance;
+}
 
 s32 func_8010ECB8_duel02(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);

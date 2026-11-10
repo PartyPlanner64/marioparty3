@@ -162,6 +162,8 @@ extern Vec D_8010F3B0_modesel;
 extern Vec D_8010F3BC_modesel;
 extern Vec D_8010F3C8_modesel;
 extern u8 D_800D2132_main;
+extern s16 D_800EBAF0_minigame;
+extern char D_8010F454_modesel[];
 
 void func_801059D0_modesel(void);
 void func_80105C7C_modesel(void);
@@ -199,6 +201,11 @@ void func_8010E138_modesel(s32, f32 *, f32 *, f32 *);
 void func_8010E3A4_modesel(s32, f32);
 s32 func_80109A58_modesel(s32);
 s32 func_8010C094_modesel(void);
+s32 func_8010CC38_modesel(void);
+void func_8010EBF8_modesel(void);
+void func_8010ED3C_modesel(void);
+s32 func_8010F214_modesel(s32);
+s32 func_8010F234_modesel(s32);
 void func_8010C874_modesel(void);
 void func_8010CA30_modesel(void);
 void func_8010CB34_modesel(void);
@@ -2381,7 +2388,380 @@ s32 func_8010CC38_modesel(void) {
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010CC38_modesel);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010CD00_modesel);
+s32 func_8010CD00_modesel(s32 cur, s32 buttons) {
+    s32 result = -1;
+    s16 selection;
+    Process *process;
+    s32 pick;
+    s32 choice;
+    s32 i;
+    s32 j;
+    s32 index;
+    s32 board;
+    s32 boardNo;
+    s32 best;
+    s32 bestChr;
+    s32 message;
+
+    switch (cur) {
+        case 0:
+        case 1:
+            break;
+        case 2:
+            func_80107700_modesel(0);
+            func_80106000_modesel(1);
+            func_8010EC40_modesel();
+            D_800EBAF0_minigame = 0;
+            selection = D_80110BDA_modesel;
+            HuPrcVSleep();
+            if (func_800E905C_minigame(selection) < 0) {
+                while (1) {
+                    HuPrcVSleep();
+                }
+            }
+            process = omAddPrcObj(func_800E9170_minigame, 0x4000, 0x800, 0);
+            process->user_data = &selection;
+            while (1) {
+                if (selection == -3) {
+                    break;
+                }
+                if (selection == -2) {
+                    break;
+                }
+                if (selection == -1) {
+                    result = 0;
+                    break;
+                }
+                HuPrcVSleep();
+            }
+            func_801076D0_modesel(0);
+            func_80105FE4_modesel(1);
+            func_8010EBF8_modesel();
+            return result;
+        case 3:
+            HuAudFXPlay(3);
+            result = 1;
+            break;
+        case 5:
+            HuAudFXPlay(3);
+            func_801067C0_modesel(10, 0x13, 8, 8, 2);
+            if (func_800465D0_main() == 1) {
+                if (_CheckFlag(0x16) && _CheckFlag(0x17)) {
+                    func_80107730_modesel(0, 0x3112);
+                    pick = func_8010CC38_modesel();
+                    if (pick != -1) {
+                        result = (pick == 14) ? 8 : 5;
+                        func_80107700_modesel(0);
+                        func_80106000_modesel(1);
+                    } else {
+                        func_80107730_modesel(0, 0x3102);
+                    }
+                } else if (_CheckFlag(0x16) && !_CheckFlag(0x17)) {
+                    result = 8;
+                    func_80107700_modesel(0);
+                    func_80106000_modesel(1);
+                } else if (!_CheckFlag(0x16) && _CheckFlag(0x17)) {
+                    result = 5;
+                    func_80107700_modesel(0);
+                    func_80106000_modesel(1);
+                }
+            } else {
+                func_80107700_modesel(0);
+                func_80106000_modesel(1);
+                result = 11;
+            }
+            if (result != -1) {
+                RepeatVibrator(0, 30, 0, 30);
+            }
+            func_801067C0_modesel(10, 0x14, 8, 8, 2);
+            break;
+        case 7:
+            HuAudFXPlay(3);
+            func_801067C0_modesel(10, 0x13, 8, 8, 2);
+            func_80105FB4_modesel(1);
+            if (func_800465D0_main() == 0 && GwStory.unk0 == 12) {
+                func_80107730_modesel(0, 0x3118);
+                func_8010788C_modesel(0);
+                func_80107730_modesel(0, 0x3104);
+            } else if (func_800465D0_main() == 0 && !(GwSystem.playMode & 2)) {
+                func_80107730_modesel(0, 0x3118);
+                func_8010788C_modesel(0);
+                func_80107730_modesel(0, 0x3104);
+            } else {
+                func_80107730_modesel(0, 0x310A);
+                func_8010788C_modesel(0);
+                switch (func_80107838_modesel(0, 1, 0)) {
+                    case 0:
+                        result = 6;
+                        break;
+                    case 1:
+                        if (func_800465D0_main() == 1) {
+                            if (_CheckFlag(0x17)) {
+                                func_80107730_modesel(0, 0x310B);
+                                func_8010788C_modesel(0);
+                                HuPrcVSleep();
+                                func_80107730_modesel(0, 0x310D);
+                                func_8010788C_modesel(0);
+                                if (func_80107838_modesel(0, 1, 1) == 0) {
+                                    func_80107730_modesel(0, 0x310E);
+                                    func_8010788C_modesel(0);
+                                    result = 4;
+                                } else {
+                                    func_80107730_modesel(0, 0x3110);
+                                    func_8010788C_modesel(0);
+                                    func_80107730_modesel(0, 0x3104);
+                                }
+                            } else {
+                                result = 4;
+                            }
+                        } else if (GwSystem.playMode & 2) {
+                            if (_CheckFlag(0x28)) {
+                                func_80107730_modesel(0, 0x310B);
+                                HuPrcSleep(8);
+                                func_801078E0_modesel(0xC000);
+                                func_80107730_modesel(0, 0x310C);
+                                func_8010788C_modesel(0);
+                                if (func_80107838_modesel(0, 1, 1) == 0) {
+                                    func_80107730_modesel(0, 0x310F);
+                                    func_8010788C_modesel(0);
+                                    if (func_80107838_modesel(0, 1, 1) == 0) {
+                                        result = 10;
+                                        break;
+                                    }
+                                }
+                                func_80107730_modesel(0, 0x3110);
+                                func_8010788C_modesel(0);
+                                func_8010DC6C_modesel(cur);
+                            } else {
+                                result = 10;
+                            }
+                        } else {
+                            func_80107730_modesel(0, 0x3118);
+                            func_8010788C_modesel(0);
+                            func_80107730_modesel(0, 0x3104);
+                        }
+                        break;
+                    default:
+                        func_8010DC6C_modesel(cur);
+                        break;
+                }
+            }
+            if (result != -1) {
+            confirmed:
+                func_80107730_modesel(0, 0x3117);
+                func_8010788C_modesel(0);
+                func_80107730_modesel(0, (u32)D_8010F454_modesel);
+            } else {
+                func_80105FE4_modesel(1);
+            }
+            func_801067C0_modesel(10, 0x14, 8, 8, 2);
+            break;
+        case 8:
+            HuAudFXPlay(3);
+            func_801067C0_modesel(10, 0x13, 8, 8, 2);
+            func_80105FB4_modesel(1);
+            if (func_800465D0_main() == 0 && GwStory.unk0 == 12) {
+                func_80107730_modesel(0, 0x3118);
+                func_8010788C_modesel(0);
+                func_80107730_modesel(0, 0x3103);
+            } else if (func_800465D0_main() == 0 && (GwSystem.playMode & 2)) {
+                func_80107730_modesel(0, 0x3118);
+                func_8010788C_modesel(0);
+                func_80107730_modesel(0, 0x3103);
+            } else {
+                func_80107730_modesel(0, 0x3109);
+                func_8010788C_modesel(0);
+                switch (func_80107838_modesel(0, 1, 0)) {
+                    case 0:
+                        result = 9;
+                        break;
+                    case 1:
+                        if (func_800465D0_main() == 1) {
+                            if (_CheckFlag(0x16)) {
+                                func_80107730_modesel(0, 0x310B);
+                                func_8010788C_modesel(0);
+                                HuPrcVSleep();
+                                func_80107730_modesel(0, 0x310D);
+                                func_8010788C_modesel(0);
+                                if (func_80107838_modesel(0, 1, 1) == 0) {
+                                    func_80107730_modesel(0, 0x310E);
+                                    func_8010788C_modesel(0);
+                                    result = 7;
+                                } else {
+                                    func_80107730_modesel(0, 0x3110);
+                                    func_8010788C_modesel(0);
+                                    func_80107730_modesel(0, 0x3103);
+                                }
+                            } else {
+                                result = 7;
+                            }
+                        } else if (GwSystem.playMode & 2) {
+                            func_80107730_modesel(0, 0x3118);
+                            func_8010788C_modesel(0);
+                            func_80107730_modesel(0, 0x3103);
+                        } else if (_CheckFlag(0x28)) {
+                            func_80107730_modesel(0, 0x310B);
+                            func_8010788C_modesel(0);
+                            HuPrcVSleep();
+                            func_80107730_modesel(0, 0x310C);
+                            func_8010788C_modesel(0);
+                            if (func_80107838_modesel(0, 1, 1) == 0) {
+                                func_80107730_modesel(0, 0x310F);
+                                func_8010788C_modesel(0);
+                                if (func_80107838_modesel(0, 1, 1) == 0) {
+                                    result = 10;
+                                    break;
+                                }
+                            }
+                            func_80107730_modesel(0, 0x3110);
+                            func_8010788C_modesel(0);
+                            func_8010DC6C_modesel(cur);
+                        } else {
+                            result = 10;
+                        }
+                        break;
+                    default:
+                        func_8010DC6C_modesel(cur);
+                        break;
+                }
+            }
+            if (result != -1) {
+                goto confirmed;
+            }
+            func_80105FE4_modesel(1);
+            func_801067C0_modesel(10, 0x14, 8, 8, 2);
+            break;
+        case 9:
+            HuAudFXPlay(3);
+            func_801067C0_modesel(10, 0x13, 8, 8, 2);
+            func_80105FB4_modesel(1);
+            for (i = 0; i < 0x48; i++) {
+                if (GWMgUnlockCheck(i)) {
+                    break;
+                }
+            }
+            if (func_800465D0_main() == 0) {
+                func_80107730_modesel(0, 0x3118);
+                func_8010788C_modesel(0);
+                func_80107730_modesel(0, 0x313E);
+            } else if (i == 0x48) {
+                func_80107730_modesel(0, 0x3111);
+                func_8010788C_modesel(0);
+                func_80107730_modesel(0, 0x3105);
+            } else {
+                func_80107730_modesel(0, 0x3133);
+                func_8010788C_modesel(0);
+                if (func_80107838_modesel(0, 1, 0) == 0) {
+                    result = 13;
+                    goto confirmed;
+                }
+                if (func_800465D0_main() == 0) {
+                    func_80107730_modesel(0, 0x313E);
+                } else {
+                    func_80107730_modesel(0, 0x3105);
+                }
+            }
+            func_80105F84_modesel(1);
+            func_801067C0_modesel(10, 0x14, 8, 8, 2);
+            break;
+        case 10:
+            HuAudFXPlay(3);
+            func_801067C0_modesel(10, 0x13, 8, 8, 2);
+            if (func_800465D0_main() == 0 && GwStory.unk0 == 12) {
+                func_80106000_modesel(1);
+                func_80107730_modesel(0, 0x313C);
+                func_8010788C_modesel(0);
+                if (func_80107838_modesel(0, 1, 1) == 0) {
+                    func_80107730_modesel(0, 0x313D);
+                    func_8010788C_modesel(0);
+                    func_80107730_modesel(0, (u32)D_8010F454_modesel);
+                    result = 14;
+                } else {
+                    func_80107730_modesel(0, 0x3119);
+                    func_80105FE4_modesel(1);
+                }
+            } else {
+                func_80106000_modesel(1);
+                if (func_800465D0_main() == 0) {
+                    func_80107730_modesel(0, 0x3137);
+                    func_8010788C_modesel(0);
+                    choice = func_80107838_modesel(0, 1, 0);
+                    if (choice == 0) {
+                        func_80107730_modesel(0, 0x3138);
+                        func_8010788C_modesel(0);
+                        func_801074F0_modesel(0);
+                        func_80106BA0_modesel(0, (u32)D_8010F454_modesel, 0xA0, D_8010F296_modesel + 4, 0, 0, 3);
+                    }
+                    if (choice == 1) {
+                        func_80107730_modesel(0, 0x3139);
+                        func_8010788C_modesel(0);
+                        choice = func_80107838_modesel(0, 1, 0);
+                        if (choice == 0) {
+                            func_8010ED3C_modesel();
+                        }
+                        if (choice == 1) {
+                            func_80107730_modesel(0, 0x313A);
+                            func_8010788C_modesel(0);
+                        }
+                    }
+                    func_80107730_modesel(0, 0x3122);
+                } else {
+                    bestChr = -1;
+                    index = rand8() * (10.0f / 255.0f);
+                    boardNo = func_8010F204_modesel(index);
+                    board = func_8010F214_modesel(index);
+                    best = 0;
+                    if (func_8010F234_modesel(index) == 2) {
+                        for (j = 0; j < 8; j++) {
+                            if (best < GwCommon.boardRecord[1][board].chr[j]) {
+                                best = GwCommon.boardRecord[1][board].chr[j];
+                                bestChr = j;
+                            }
+                        }
+                        for (j = 0; j < 8; j++) {
+                            if (GwCommon.boardRecord[1][board].chr[j] == best) {
+                                if (bestChr != j) {
+                                    bestChr = -1;
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        for (j = 0; j < 8; j++) {
+                            if (best < GwCommon.boardRecord[0][board].chr[j]) {
+                                best = GwCommon.boardRecord[0][board].chr[j];
+                                bestChr = j;
+                            }
+                        }
+                        for (j = 0; j < 8; j++) {
+                            if (GwCommon.boardRecord[0][board].chr[j] == best) {
+                                if (bestChr != j) {
+                                    bestChr = -1;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    message = boardNo + 0x3127;
+                    func_801077FC_modesel(0, 0, message);
+                    func_80107730_modesel(0, 0x3125);
+                    func_8010788C_modesel(0);
+                    if (bestChr != -1) {
+                        func_801077FC_modesel(0, 0, message);
+                        func_801077FC_modesel(0, 1, bestChr + 0x1C00);
+                        func_80107730_modesel(0, 0x3126);
+                        func_8010788C_modesel(0);
+                    }
+                    func_80107730_modesel(0, 0x3124);
+                    HuPrcSleep(3);
+                }
+                func_80105FE4_modesel(1);
+            }
+            func_801067C0_modesel(10, 0x14, 8, 8, 2);
+            break;
+    }
+    return result;
+}
 
 s32 func_8010D8DC_modesel(s32 cur, s32 buttons) {
     s32 next = cur;

@@ -99,9 +99,9 @@ u8 *GWBoardRecordGet(s16 arg0) {
     }
 
     if (GwSystem.playMode & 1) {
-        return (u8 *)&GwCommon.unk_1D[2] + idx * 9;
+        return &GwCommon.boardRecord[0][idx].playCount;
     }
-    return (u8 *)&GwCommon.unk_1D[0x38] + idx * 9;
+    return &GwCommon.boardRecord[1][idx].playCount;
 }
 
 u8 GWPlayNumGet(s16 arg0) {

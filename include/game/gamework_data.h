@@ -9,13 +9,20 @@
 // Indices into GwCommon.flag, for _CheckFlag/_SetFlag/_ClearFlag
 #define FLAG_MG_PRACTICE 15
 
+// Per-board play record: how many times the board was played, then a value per character.
+typedef struct GwBoardRecord {
+/* 0x00 */ u8 playCount;
+/* 0x01 */ u8 chr[8];
+} GwBoardRecord; // sizeof 9
+
 typedef struct GwCommon_s {
 /* 0x00 */ u8 unk_00;
 /* 0x01 */ u8 languageIndex;
 /* 0x02 */ u16 mgRecord[8]; //is this still 8 in length like mp1?
 /* 0x12 */ char unk_12[4];
 /* 0x16 */ u8 mgUnlock[7]; //is this still 7 in length like mp1?
-/* 0x1D */ char unk_1D[0x6E];
+/* 0x1D */ char unk_1D[2];
+/* 0x1F */ GwBoardRecord boardRecord[2][6]; // indexed by mode, then board
 /* 0x8B */ u8 flag[9];
 /* 0x94 */ u8 fileName[10];
 /* 0x9E */ s8 unk9E;

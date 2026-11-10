@@ -1,6 +1,17 @@
 #include "common.h"
 #include "../ovl_81_name/ovl_81.h"
 
+// Inlined Z rotation matrix build (same as MTX_ROTZ in w02).
+#define MTX_ROTZ(mtx, angle)                                                                \
+    {                                                                                       \
+        sincosdf(angle, &(mtx)[0][1], &(mtx)[0][0]);                                        \
+        (mtx)[1][0] = -(mtx)[0][1];                                                         \
+        (mtx)[1][1] = (mtx)[0][0];                                                          \
+        (mtx)[0][2] = (mtx)[0][3] = (mtx)[1][3] = (mtx)[1][2] = (mtx)[2][0] = (mtx)[2][1] = \
+            (mtx)[2][3] = (mtx)[3][0] = (mtx)[3][1] = (mtx)[3][2] = 0.0f;                   \
+        (mtx)[2][2] = (mtx)[3][3] = 1.0f;                                                   \
+    }
+
 typedef struct Duel06CamShakeWork {
     /* 0x00 */ s32 magnitude;
     /* 0x04 */ s32 decay;
@@ -436,7 +447,19 @@ void func_8010DD44_duel06(void) {
     func_800EB708_name_81(&space1->coords, &space2->coords, &obj->rot);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_8010DDF4_duel06);
+void func_8010DDF4_duel06(void) {
+    Duel06SwayWork *work = HuPrcCurrentGet()->user_data;
+    s32 angle = work->angle;
+
+    while (TRUE) {
+        MTX_ROTZ(Hu3DData[D_80114D58_duel06->omObj1->model[0]].mtx, sindf(angle) * D_80114D5C_duel06);
+        angle += 45;
+        if (angle >= 360) {
+            angle -= 360;
+        }
+        HuPrcVSleep();
+    }
+}
 
 void func_8010DF70_duel06(Vec *pos) {
     Process *process;
@@ -501,7 +524,19 @@ void func_8010E350_duel06(void) {
     func_800EB708_name_81(&space1->coords, &space2->coords, &obj->rot);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_8010E400_duel06);
+void func_8010E400_duel06(void) {
+    Duel06SwayWork *work = HuPrcCurrentGet()->user_data;
+    s32 angle = work->angle;
+
+    while (TRUE) {
+        MTX_ROTZ(Hu3DData[D_80114D60_duel06->omObj1->model[0]].mtx, sindf(angle) * D_80114D64_duel06);
+        angle += 45;
+        if (angle >= 360) {
+            angle -= 360;
+        }
+        HuPrcVSleep();
+    }
+}
 
 void func_8010E57C_duel06(Vec *pos) {
     Process *process;

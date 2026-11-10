@@ -10,17 +10,11 @@ typedef struct unkStruct {
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ s16 unk_04;
 } unkStruct;
-typedef struct unkStruct02 {
-    /* 0x00 */ Vec unk_00;
-    /* 0x0C */ char unk_0C[4];
-} unkStruct02;
 
-typedef struct unkStruct03 {
-    /* 0x00 */ char unk_00[0x18];
-    /* 0x18 */ HeapNode *unk_18;
-    /* 0x1C */ char unk_1C[0x70];
-    /* 0x8C */ unkStruct02 *unk_8C;
-} unkStruct03;
+typedef struct Duel01SpriteWork {
+    /* 0x00 */ Vec pos;
+    /* 0x0C */ char unk_0C[0x4];
+} Duel01SpriteWork; // sizeof 0x10
 
 typedef struct Duel01CamShakeWork {
     /* 0x00 */ s32 magnitude;
@@ -62,7 +56,6 @@ extern s32 D_8011889C_duel01;
 void func_800EA760_name_81(void);
 void func_800ECD0C_name_81(s16, s16, s16);
 void func_800EB708_name_81(Vec *, Vec *, Vec *);
-unkStruct03 *func_80047EA0_main(void *, s32, s32, s32);
 void func_80105CC0_duel01(void); // probably takes object as arg
 void func_800EBF2C_name_81(Vec *, Vec *, Vec *);
 void func_80106308_duel01(void);
@@ -127,3 +120,7 @@ void func_800EDF78_name_81(void);
 void func_800EE468_name_81(s32);
 void func_800EDDBC_name_81(void);
 void func_800F3880_name_81(s32, s32, s32);
+extern Object *D_80119488_duel01;
+extern s32 D_80118718_duel01[];
+extern Object *D_80119480_duel01;
+extern Object *D_80119484_duel01;

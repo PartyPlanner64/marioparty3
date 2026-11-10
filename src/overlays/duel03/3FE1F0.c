@@ -37,6 +37,10 @@ typedef struct Duel03SwayWork {
 
 
 void *memcpy(void *, const void *, unsigned int);
+extern Object *D_801180D4_duel03;
+extern Object *D_801180D0_duel03;
+extern s32 D_80117438_duel03[];
+extern Object *D_801180D8_duel03;
 extern s8 *D_80117574_duel03[];
 extern s8 D_80117478_duel03[];
 void func_8010B134_duel03(omObjData *);
@@ -334,7 +338,91 @@ Process *func_80106460_duel03(s32 magnitude, s32 decay) {
     return process;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_801064CC_duel03);
+void func_801064CC_duel03(s32 playerIndex, s32 mode) {
+    GW_PLAYER *player;
+    Object *partner;
+    Object *model;
+
+    player = MBDGetPlayerStruct(playerIndex);
+    switch (mode) {
+        case 0:
+            if (player->stats.partners.frontID == PARTNER_BOB_OMB) {
+                partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
+                model = func_800D8010_name_81(0x28, NULL);
+                D_801180D0_duel03 = model;
+                HuVecCopy3F(&model->coords, &partner->coords);
+                HuVecCopy3F(&model->rot, &partner->rot);
+                func_800D8F0C_name_81(partner);
+            }
+            if (player->stats.partners.backID == PARTNER_BOB_OMB) {
+                partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
+                model = func_800D8010_name_81(0x28, NULL);
+                D_801180D4_duel03 = model;
+                HuVecCopy3F(&model->coords, &partner->coords);
+                HuVecCopy3F(&model->rot, &partner->rot);
+                func_800D8F0C_name_81(partner);
+            }
+            break;
+        case 1:
+            if (player->stats.partners.frontID == PARTNER_BOB_OMB) {
+                partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
+                func_800D8F3C_name_81(D_801180D0_duel03);
+                func_800D8E88_name_81(partner);
+            }
+            if (player->stats.partners.backID == PARTNER_BOB_OMB) {
+                partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
+                func_800D8F3C_name_81(D_801180D4_duel03);
+                func_800D8E88_name_81(partner);
+            }
+            break;
+        case 2:
+            switch (D_80105620_name_81) {
+                case 1:
+                case 3:
+                    if (player->stats.partners.frontID == PARTNER_BOB_OMB) {
+                        partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
+                        model = func_800D8010_name_81(0x28, NULL);
+                        D_801180D0_duel03 = model;
+                        HuVecCopy3F(&model->coords, &partner->coords);
+                        HuVecCopy3F(&model->rot, &partner->rot);
+                        func_800D8F0C_name_81(partner);
+                    }
+                    break;
+                case 0:
+                case 2:
+                    if (player->stats.partners.backID == PARTNER_BOB_OMB) {
+                        partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
+                        model = func_800D8010_name_81(0x28, NULL);
+                        D_801180D4_duel03 = model;
+                        HuVecCopy3F(&model->coords, &partner->coords);
+                        HuVecCopy3F(&model->rot, &partner->rot);
+                        func_800D8F0C_name_81(partner);
+                    }
+                    break;
+            }
+            break;
+        case 3:
+            switch (D_80105620_name_81) {
+                case 1:
+                case 3:
+                    if (player->stats.partners.frontID == PARTNER_BOB_OMB) {
+                        partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
+                        func_800D8F3C_name_81(D_801180D0_duel03);
+                        func_800D8E88_name_81(partner);
+                    }
+                    break;
+                case 0:
+                case 2:
+                    if (player->stats.partners.backID == PARTNER_BOB_OMB) {
+                        partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
+                        func_800D8F3C_name_81(D_801180D4_duel03);
+                        func_800D8E88_name_81(partner);
+                    }
+                    break;
+            }
+            break;
+    }
+}
 
 Object *func_80106744_duel03(s32 arg0) {
     Object *obj;
@@ -388,9 +476,89 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_8010988C_duel03);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_8010A214_duel03);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_8010AAB4_duel03);
+void func_8010AAB4_duel03(Object *obj, s32 swap) {
+    Object *model;
+    f32 scale;
+    f32 angle;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_8010AD4C_duel03);
+    if (swap) {
+        D_801180D8_duel03 = func_800D8010_name_81(8, D_80117438_duel03);
+        func_800D8944_name_81(D_801180D8_duel03);
+        func_800D8F0C_name_81(D_801180D8_duel03);
+    } else {
+        HuPrcSleep(3);
+    }
+    model = func_800D8010_name_81(0x21, NULL);
+    func_8001C258_main(model->omObj1->model[0], 0x180, 0);
+    Hu3DModelLayerSet(model->omObj1->model[0], 0x800);
+    Hu3DModelRemakeStatic(model->omObj1->model[0]);
+    HuVecCopy3F(&model->coords, &obj->coords);
+    model->coords.y += 5.0f;
+    HuAudFXPlay(0x1E3);
+
+    angle = 0.0f;
+    for (scale = 1.0f; scale < 10.0f; scale = scale + 1.0) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
+        angle += 20.0f;
+        HuPrcVSleep();
+    }
+
+    if (swap) {
+        HuVecCopy3F(&D_801180D8_duel03->coords, &obj->coords);
+        HuVecCopy3F(&D_801180D8_duel03->rot, &obj->rot);
+        func_800D8E88_name_81(D_801180D8_duel03);
+        func_800D8F0C_name_81(obj);
+    }
+
+    for (; scale >= 1.0f; scale = scale - 1.0) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
+        angle += 20.0f;
+        HuPrcVSleep();
+    }
+
+    func_800D8F3C_name_81(model);
+}
+
+void func_8010AD4C_duel03(Object *obj) {
+    Object *model;
+    f32 scale;
+    f32 angle;
+
+    model = func_800D8010_name_81(0x21, NULL);
+    func_8001C258_main(model->omObj1->model[0], 0x180, 0);
+    Hu3DModelLayerSet(model->omObj1->model[0], 0x800);
+    Hu3DModelRemakeStatic(model->omObj1->model[0]);
+    HuVecCopy3F(&model->coords, &D_801180D8_duel03->coords);
+    model->coords.y += 5.0f;
+    if (GwSystem.current_board_index == 6) {
+        HuAudFXPlay(0x1E3);
+    }
+
+    angle = 0.0f;
+    for (scale = 1.0f; scale < 10.0f; scale = scale + 1.0) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
+        angle += 20.0f;
+        HuPrcVSleep();
+    }
+
+    HuVecCopy3F(&obj->coords, &D_801180D8_duel03->coords);
+    HuVecCopy3F(&obj->rot, &D_801180D8_duel03->rot);
+    func_800D8F3C_name_81(D_801180D8_duel03);
+    func_800D8E88_name_81(obj);
+    obj->flags &= ~1;
+
+    for (; scale >= 1.0f; scale = scale - 1.0) {
+        HuVecCopyXYZ(&model->scale, scale, scale, scale);
+        func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
+        angle += 20.0f;
+        HuPrcVSleep();
+    }
+
+    func_800D8F3C_name_81(model);
+}
 
 void func_8010AFB8_duel03(void) {
     UnkDuelObjData *data;

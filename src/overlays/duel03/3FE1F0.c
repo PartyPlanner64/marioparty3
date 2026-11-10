@@ -4438,7 +4438,9 @@ s32 func_80114030_duel03(void) {
 }
 
 #ifdef NON_MATCHING
-// Same shape and remaining diffs as func_8011580C_duel03.
+// Only remaining diff: in the walkNum block, the target keeps v0 = 1 live
+// across the frontID == PARTNER_BOO test (frontID in a0, 4 in v1, nop delay
+// slot); this code loads frontID into v1 and sets v0 in the delay slot.
 s32 func_8011454C_duel03(void) {
     s32 curIndex = MBDGetCurrentPlayerIndex();
     s32 otherIndex = (s16)(MBDGetCurrentPlayerIndex() ^ 1);
@@ -4465,58 +4467,56 @@ s32 func_8011454C_duel03(void) {
         if (walkNum < 6 && !(other->cidx < D_80117654_duel03[2][walkNum])) {
             return 1;
         }
-    } else {
-        return 1;
-    }
-    stars = player->star;
-    if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
-        return 1;
-    }
-    if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
-        return 1;
-    }
-    if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD)
-            ? !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)
-            : !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
-        return 1;
-    }
-    if (other->stats.partners.backID == PARTNER_BOO) {
-        if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
-            return 0;
-        }
-        if (player->stats.partners.frontPower > player->stats.partners.frontHp) {
-            stars -= player->stats.partners.frontPower - player->stats.partners.frontHp;
-        }
-    }
-    if (walkNum == 3) {
-        if (!(player->stats.partners.backPower < other->stats.partners.frontHp + other->star)) {
+        stars = player->star;
+        if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
             return 1;
         }
-        if (other->stats.partners.frontID == PARTNER_BOO &&
-            !(player->stats.partners.backPower < stars + player->stats.partners.backHp)) {
+        if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+            return 1;
+        }
+        if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD)
+                ? !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)
+                : !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
+            return 1;
+        }
+        if (other->stats.partners.backID == PARTNER_BOO) {
+            if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                return 0;
+            }
+            if (player->stats.partners.frontPower > player->stats.partners.frontHp) {
+                stars -= player->stats.partners.frontPower - player->stats.partners.frontHp;
+            }
+        }
+        if (walkNum == 3) {
+            if (!(player->stats.partners.backPower < other->stats.partners.frontHp + other->star)) {
+                return 1;
+            }
+            if (other->stats.partners.frontID != PARTNER_BOO) {
+                return 1;
+            }
+            return player->stats.partners.backPower < stars + player->stats.partners.backHp;
+        }
+        if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+            if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                return 0;
+            }
+            if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                return 0;
+            }
+            if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                return player->stats.partners.frontHp + player->star > other->stats.partners.frontPower;
+            }
+            if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+                return 0;
+            }
+        }
+        if (player->stats.partners.frontPower != 0 || player->stats.partners.backID == PARTNER_BOO) {
+            return 1;
+        }
+        if (player->stats.partners.frontPower == 0 && other->stats.partners.frontPower != 0) {
             return 0;
         }
         return 1;
-    }
-    if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
-        if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
-            return 0;
-        }
-        if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
-            return 0;
-        }
-        if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
-            return player->stats.partners.frontHp + player->star > other->stats.partners.frontPower;
-        }
-        if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
-            return 0;
-        }
-    }
-    if (player->stats.partners.frontPower != 0 || player->stats.partners.backID == PARTNER_BOO) {
-        return 1;
-    }
-    if (player->stats.partners.frontPower == 0 && other->stats.partners.frontPower != 0) {
-        return 0;
     }
     return 1;
 }
@@ -4986,9 +4986,9 @@ s32 func_801152E0_duel03(void) {
 }
 
 #ifdef NON_MATCHING
-// Remaining diffs: in the walkNum == 5 block the target reloads backPower for
-// the second compare (this code keeps it in a2), and the tail's second
-// frontPower check gets v0 instead of v1, which changes delay slot filling.
+// Only remaining diff: in the walkNum block, the target keeps v0 = 1 live
+// across the frontID == PARTNER_BOO test (frontID in a0, 4 in v1, nop delay
+// slot); this code loads frontID into v1 and sets v0 in the delay slot.
 s32 func_8011580C_duel03(void) {
     s32 curIndex = MBDGetCurrentPlayerIndex();
     s32 otherIndex = (s16)(MBDGetCurrentPlayerIndex() ^ 1);
@@ -5015,58 +5015,56 @@ s32 func_8011580C_duel03(void) {
         if (walkNum < 6 && !(other->cidx < D_80117654_duel03[0][walkNum])) {
             return 1;
         }
-    } else {
-        return 1;
-    }
-    stars = player->star;
-    if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
-        return 1;
-    }
-    if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
-        return 1;
-    }
-    if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD)
-            ? !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)
-            : !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
-        return 1;
-    }
-    if (other->stats.partners.backID == PARTNER_BOO) {
-        if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
-            return 0;
-        }
-        if (player->stats.partners.frontPower > player->stats.partners.frontHp) {
-            stars -= player->stats.partners.frontPower - player->stats.partners.frontHp;
-        }
-    }
-    if (walkNum == 5) {
-        if (!(player->stats.partners.backPower < other->stats.partners.frontHp + other->star)) {
+        stars = player->star;
+        if (player->stats.partners.frontID == PARTNER_CHOMP && other->star < 2) {
             return 1;
         }
-        if (other->stats.partners.frontID == PARTNER_BOO &&
-            !(player->stats.partners.backPower < stars + player->stats.partners.backHp)) {
+        if (player->stats.partners.frontID == PARTNER_BOB_OMB && !(other->star > player->stats.partners.frontPoweredUp)) {
+            return 1;
+        }
+        if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD)
+                ? !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)
+                : !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
+            return 1;
+        }
+        if (other->stats.partners.backID == PARTNER_BOO) {
+            if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
+                return 0;
+            }
+            if (player->stats.partners.frontPower > player->stats.partners.frontHp) {
+                stars -= player->stats.partners.frontPower - player->stats.partners.frontHp;
+            }
+        }
+        if (walkNum == 5) {
+            if (!(player->stats.partners.backPower < other->stats.partners.frontHp + other->star)) {
+                return 1;
+            }
+            if (other->stats.partners.frontID != PARTNER_BOO) {
+                return 1;
+            }
+            return player->stats.partners.backPower < stars + player->stats.partners.backHp;
+        }
+        if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+            if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+                return 0;
+            }
+            if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+                return 0;
+            }
+            if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+                return player->stats.partners.frontHp + player->star > other->stats.partners.frontPower;
+            }
+            if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+                return 0;
+            }
+        }
+        if (player->stats.partners.frontPower != 0 || player->stats.partners.backID == PARTNER_BOO) {
+            return 1;
+        }
+        if (player->stats.partners.frontPower == 0 && other->stats.partners.frontPower != 0) {
             return 0;
         }
         return 1;
-    }
-    if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
-        if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
-            return 0;
-        }
-        if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
-            return 0;
-        }
-        if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
-            return player->stats.partners.frontHp + player->star > other->stats.partners.frontPower;
-        }
-        if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
-            return 0;
-        }
-    }
-    if (player->stats.partners.frontPower != 0 || player->stats.partners.backID == PARTNER_BOO) {
-        return 1;
-    }
-    if (player->stats.partners.frontPower == 0 && other->stats.partners.frontPower != 0) {
-        return 0;
     }
     return 1;
 }

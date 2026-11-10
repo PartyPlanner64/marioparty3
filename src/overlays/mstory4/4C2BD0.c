@@ -2098,7 +2098,60 @@ void func_80110DB0_mstory4(f32 x, f32 y, f32 z, s16 arg3) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80110E3C_mstory4);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80111430_mstory4);
+void func_80111430_mstory4(s16 model, f32 x, f32 y, f32 z, s16 count, s32 randomAxis) {
+    f32 step = 360.0f / count;
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Unk58_Struct *particle = Hu3DData[model].unkBC->unk58;
+    s16 total = hmf->unk1A;
+    f32 ax;
+    f32 ay;
+    f32 az;
+    f32 len;
+    f32 angle;
+    s16 type;
+    s16 i;
+    s16 j;
+
+    if (randomAxis) {
+        while (TRUE) {
+            ax = rand8() - 128;
+            ay = rand8() - 128;
+            az = rand8() - 128;
+            len = ax * ax + ay * ay + az * az;
+            if (len != 0.0f) {
+                break;
+            }
+        }
+    } else {
+        ax = 0.0f;
+        ay = 0.0f;
+        az = 1.0f;
+        len = ax * ax + ay * ay + az * az;
+    }
+    len = HuSqrtf(len);
+    ax /= len;
+    ay /= len;
+    az /= len;
+    type = rand8() & 3;
+    for (i = 0, j = 0; j < total; j++, particle++) {
+        if (particle->unk08 <= 0.0f) {
+            particle->unk0C = x;
+            particle->unk10 = y;
+            particle->unk14 = z;
+            angle = step * i;
+            particle->unk18 = ax * ay * (1.0f - cosdf(angle)) - az * sindf(angle);
+            particle->unk1C = ay * ay + (1.0f - ay * ay) * cosdf(angle);
+            particle->unk20 = ay * az * (1.0f - cosdf(angle)) + ax * sindf(angle);
+            particle->unk24 = type;
+            particle->unk28 = 0.0f;
+            particle->unk08 = 1.0f;
+            particle->unk04 = 20.0f;
+            if (++i >= count) {
+                break;
+            }
+        }
+    }
+}
 
 void func_80111740_mstory4(s16 model) {
     HmfData *hmf = Hu3DData[model].hmf;

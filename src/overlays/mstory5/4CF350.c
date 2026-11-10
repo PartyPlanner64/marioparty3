@@ -128,6 +128,8 @@ void func_8010734C_mstory5(omObjData *obj, f32 speed, s16 frames);
 void func_8010E8C0_mstory5(omObjData *obj);
 void func_8010F14C_mstory5(s32 index, s32 seNo);
 void func_8010F240_mstory5(s32 index);
+void func_8010F41C_mstory5(omObjData *obj);
+void func_801074E8_mstory5(omObjData *obj, f32 x, f32 y, f32 z, s32 frames, s32 faceDir);
 void func_80110200_mstory5(omObjData *obj);
 MstoryPath *func_80107850_mstory5(Vec *points, s32 flags);
 void func_80107B54_mstory5(MstoryPath *path, f32 t, Vec *out);
@@ -896,7 +898,39 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010AF44_mstory5);
 void func_8010B318_mstory5(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010B320_mstory5);
+void func_8010B320_mstory5(omObjData *obj) {
+    s16 model = obj->model[1];
+
+    func_8001C258_main(model, 4, 0);
+    func_8001C258_main(obj->model[2], 4, 0);
+    func_80105D4C_mstory5();
+    HuPrcSleep(15);
+    Hu3DMotionShiftSet(model, Hu3DData[obj->motion[3]].motId, 0, 10, 0);
+    while (!(D_801151F0_mstory5[1].unk_08 & 2)) {
+        HuPrcVSleep();
+    }
+    HuPrcSleep(20);
+    HuAudFXVolSet(HuAudFXPlay(0x297), 90);
+    func_80107254_mstory5(model);
+    D_801151F0_mstory5[3].unk_08 |= 8;
+    while (!(D_801151F0_mstory5[3].unk_08 & 1)) {
+        HuPrcVSleep();
+    }
+    Hu3DMotionShiftSet(model, Hu3DData[obj->motion[2]].motId, 0, 10, 2);
+    func_8010F14C_mstory5(3, 40);
+    HuAudFXVolSet((s16)D_801151F0_mstory5[3].unk_14, 64);
+    D_801152C8_mstory5[1].func = func_8010F41C_mstory5;
+    func_801074E8_mstory5(obj, 150.0f, 0.0f, 384.0f, 180, 1);
+    func_8010F240_mstory5(3);
+    func_801068E4_mstory5(D_801151F0_mstory5[1].obj->model[1], D_80115380_mstory5, D_80115372_mstory5);
+    Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[10]].motId, 0, 30, 2);
+    D_801151F0_mstory5[3].unk_08 |= 4;
+    HuPrcSleep(60);
+    func_801068E4_mstory5(D_801151F0_mstory5[1].obj->model[1], D_80115380_mstory5, D_80115372_mstory5);
+    Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[0]].motId, 0, 30, 2);
+    D_801151F0_mstory5[3].unk_08 |= 2;
+    D_801151F0_mstory5[3].func = func_801085D8_mstory5;
+}
 
 void func_8010B5DC_mstory5(omObjData *obj) {
     Vec pos;
@@ -1668,7 +1702,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4CF350", func_8010F2BC_mstory5);
 // Code matches, but the target is followed by alignment padding, which suggests
 // a file boundary at func_8010F4D0_mstory5.
 #ifdef NON_MATCHING
-void func_8010F41C_mstory5(void) {
+void func_8010F41C_mstory5(omObjData *obj) {
     f32 step = 0.35f;
     f32 vol = 0.0f;
     s32 i;

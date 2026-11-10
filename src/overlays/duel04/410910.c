@@ -79,6 +79,18 @@ extern DecisionTreeNonLeafNode D_8011AB78_duel04[];
 extern DecisionTreeNonLeafNode D_8011AB54_duel04[];
 extern DecisionTreeNonLeafNode D_8011AB30_duel04[];
 extern s16 D_8011ADDC_duel04[];
+extern s16 D_8011ADBC_duel04[];
+extern s16 D_8011ADC4_duel04[];
+extern s16 D_8011ADCC_duel04[];
+extern s16 D_8011ADD4_duel04[];
+extern DecisionTreeNonLeafNode D_8011A7F4_duel04[];
+extern DecisionTreeNonLeafNode D_8011A86C_duel04[];
+extern DecisionTreeNonLeafNode D_8011A8E4_duel04[];
+extern DecisionTreeNonLeafNode D_8011A950_duel04[];
+extern DecisionTreeNonLeafNode D_8011A9BC_duel04[];
+extern DecisionTreeNonLeafNode D_8011AA1C_duel04[];
+extern DecisionTreeNonLeafNode D_8011AA88_duel04[];
+extern DecisionTreeNonLeafNode D_8011AAF4_duel04[];
 extern DecisionTreeNonLeafNode D_8011A7A0_duel04[];
 extern s16 D_8011AC24_duel04[];
 extern DecisionTreeNonLeafNode D_8011A6E0_duel04[];
@@ -5633,7 +5645,165 @@ s32 func_801187B8_duel04(void) {
     }
 }
 
+#ifdef NON_MATCHING
+// Only diff: the four loop guards before the -2 inputs are beqz instead of
+// blez (same issue as func_80119A30_duel04). GCC proves count >= 0 from its
+// constant assignments; the original kept the signed compare.
+void func_80118850_duel04(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    s32 masuId = MBDMasuLinkMasuIdGet(player->blink, player->bidx);
+    s32 playerIndex = MBDGetCurrentPlayerIndex();
+    UnkEA790Struct *win;
+    s32 sel;
+    s32 count;
+    s32 i;
+
+    func_800ECE10_name_81();
+    switch (masuId) {
+        case 0x13:
+            func_800F38DC_name_81(-1, -1, 2);
+            func_800E9F4C_name_81(0x7, &player->nlink, &player->nidx);
+            HuPrcVSleep();
+            func_80105A58_duel04();
+            win = func_800D76A0_name_81(playerIndex, D_8011ADBC_duel04);
+            func_800D742C_name_81(win, playerIndex, 0);
+            if (func_800F37B8_name_81(CUR_PLAYER)) {
+                if (func_800D97B0_name_81(D_8011A7F4_duel04)) {
+                    count = 1;
+                    if (func_800D97B0_name_81(D_8011A86C_duel04)) {
+                        count = 2;
+                    }
+                } else {
+                    count = 0;
+                }
+                for (i = 0; i < count; i++) {
+                    func_800D7250_name_81(win, -2);
+                }
+                func_800D7250_name_81(win, -4);
+            }
+            sel = func_800D7518_name_81(win);
+            func_800D6CA0_name_81(win);
+            func_80105B10_duel04();
+            if (sel == 0) {
+                break;
+            }
+            if (sel == 1) {
+                func_800E9F4C_name_81(0x19, &player->nlink, &player->nidx);
+            } else {
+                func_800E9F4C_name_81(0xD, &player->nlink, &player->nidx);
+            }
+            func_800ED788_name_81(playerIndex);
+            break;
+        case 0xD:
+            func_800F38DC_name_81(-1, -1, 2);
+            func_800E9F4C_name_81(0x19, &player->nlink, &player->nidx);
+            HuPrcVSleep();
+            func_80105A58_duel04();
+            win = func_800D76A0_name_81(playerIndex, D_8011ADC4_duel04);
+            func_800D742C_name_81(win, playerIndex, 0);
+            if (func_800F37B8_name_81(CUR_PLAYER)) {
+                if (func_800D97B0_name_81(D_8011A8E4_duel04)) {
+                    count = 1;
+                    if (func_800D97B0_name_81(D_8011A950_duel04)) {
+                        count = 2;
+                    }
+                } else {
+                    count = 0;
+                }
+                for (i = 0; i < count; i++) {
+                    func_800D7250_name_81(win, -2);
+                }
+                func_800D7250_name_81(win, -4);
+            }
+            sel = func_800D7518_name_81(win);
+            func_800D6CA0_name_81(win);
+            func_80105B10_duel04();
+            if (sel == 0) {
+                break;
+            }
+            if (sel == 1) {
+                func_800E9F4C_name_81(0x13, &player->nlink, &player->nidx);
+            } else {
+                func_800E9F4C_name_81(0x7, &player->nlink, &player->nidx);
+            }
+            func_800ED788_name_81(playerIndex);
+            break;
+        case 0x7:
+            func_800F38DC_name_81(-1, -1, 2);
+            func_800E9F4C_name_81(0x13, &player->nlink, &player->nidx);
+            HuPrcVSleep();
+            func_80105A58_duel04();
+            win = func_800D76A0_name_81(playerIndex, D_8011ADCC_duel04);
+            func_800D742C_name_81(win, playerIndex, 0);
+            if (func_800F37B8_name_81(CUR_PLAYER)) {
+                if (func_800D97B0_name_81(D_8011A9BC_duel04)) {
+                    count = 1;
+                    if (func_800D97B0_name_81(D_8011AA1C_duel04)) {
+                        count = 2;
+                    }
+                } else {
+                    count = 0;
+                }
+                for (i = 0; i < count; i++) {
+                    func_800D7250_name_81(win, -2);
+                }
+                func_800D7250_name_81(win, -4);
+            }
+            sel = func_800D7518_name_81(win);
+            func_800D6CA0_name_81(win);
+            func_80105B10_duel04();
+            if (sel == 0) {
+                break;
+            }
+            if (sel == 1) {
+                func_800E9F4C_name_81(0xD, &player->nlink, &player->nidx);
+            } else {
+                func_800E9F4C_name_81(0x19, &player->nlink, &player->nidx);
+            }
+            func_800ED788_name_81(playerIndex);
+            break;
+        case 0x19:
+            func_800F38DC_name_81(-1, -1, 2);
+            func_800E9F4C_name_81(0xD, &player->nlink, &player->nidx);
+            HuPrcVSleep();
+            func_80105A58_duel04();
+            win = func_800D76A0_name_81(playerIndex, D_8011ADD4_duel04);
+            func_800D742C_name_81(win, playerIndex, 0);
+            if (func_800F37B8_name_81(CUR_PLAYER)) {
+                if (func_800D97B0_name_81(D_8011AA88_duel04)) {
+                    count = 1;
+                    if (func_800D97B0_name_81(D_8011AAF4_duel04)) {
+                        count = 2;
+                    }
+                } else {
+                    count = 0;
+                }
+                for (i = 0; i < count; i++) {
+                    func_800D7250_name_81(win, -2);
+                }
+                func_800D7250_name_81(win, -4);
+            }
+            sel = func_800D7518_name_81(win);
+            func_800D6CA0_name_81(win);
+            func_80105B10_duel04();
+            if (sel == 0) {
+                break;
+            }
+            if (sel == 1) {
+                func_800E9F4C_name_81(0x7, &player->nlink, &player->nidx);
+            } else {
+                func_800E9F4C_name_81(0x13, &player->nlink, &player->nidx);
+            }
+            func_800ED788_name_81(playerIndex);
+            break;
+        default:
+            return;
+    }
+    func_800ECDE8_name_81();
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80118850_duel04);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80118D14_duel04);
 

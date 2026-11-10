@@ -65,8 +65,6 @@ extern Object *D_801194A0_duel01;
 extern Object *D_801194AC_duel01[5];
 extern s32 D_8011875C_duel01;
 extern s32 D_8011889C_duel01;
-void func_800EA760_name_81(void);
-void func_800ECD0C_name_81(s16, s16, s16);
 void func_800EB708_name_81(Vec *, Vec *, Vec *);
 void func_80105CC0_duel01(void); // probably takes object as arg
 Process *func_800EBF2C_name_81(Vec *, Vec *, Vec *, s32);

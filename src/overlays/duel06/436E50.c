@@ -218,9 +218,35 @@ void func_80105B10_duel06(void) {
     func_800E1854_name_81(D_80114D3C_duel06);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_80105B64_duel06);
+void func_80105B64_duel06(void) {
+    GwSystem.current_board_index = 5;
+    omInitObjMan(0xA, 0);
+    omOvlGotoEx(0x5A, 0, 0x4190);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_80105BA0_duel06);
+void func_80105BA0_duel06(void) {
+    s8 sp10;
+    s8 sp11;
+
+    omInitObjMan(0xA, 0);
+    func_800E94D0_name_81();
+    func_800E9B10_name_81(0x13, 0x246);
+    func_800E9F4C_name_81(0x15, &sp10, &sp11);
+    func_800ECD0C_name_81(0, sp10, sp11);
+    func_800E9F4C_name_81(0x16, &sp10, &sp11);
+    func_800ECD0C_name_81(1, sp10, sp11);
+    GwPlayer[0].nnlink = -1;
+    GwPlayer[0].nnidx = -1;
+    GwPlayer[1].nnlink = -1;
+    GwPlayer[1].nnidx = -1;
+    func_800E9D9C_name_81();
+    func_800E9564_name_81();
+    GwSystem.bank_coins = 5;
+    GwSystem.playerIndexVisitingBowser = 0;
+    GwSystem.boardData.halfWordBytes[0] = 0;
+    func_800EA760_name_81();
+    omOvlReturnEx(1);
+}
 
 void func_80105C6C_duel06(Vec *arg0, Vec *arg1, Vec *arg2) {
     f32 angle;
@@ -3944,9 +3970,21 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_80113E74_duel06);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_80113F14_duel06);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_80113FB4_duel06);
+void func_80113FB4_duel06(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel06/436E50", func_80113FF0_duel06);
+    if (!(player->rev & 1)) {
+        func_800E9F4C_name_81(0x14, &player->nnlink, &player->nnidx);
+    }
+}
+
+void func_80113FF0_duel06(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+
+    if (player->rev & 1) {
+        func_800E9F4C_name_81(0x13, &player->nnlink, &player->nnidx);
+    }
+}
 
 void func_8011402C_duel06(void) {
 }

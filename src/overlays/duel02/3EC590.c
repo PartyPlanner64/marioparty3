@@ -225,9 +225,34 @@ void func_80105B10_duel02(void) {
     func_800E1854_name_81(D_8011760C_duel02);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_80105B64_duel02);
+void func_80105B64_duel02(void) {
+    GwSystem.current_board_index = 1;
+    omInitObjMan(0xA, 0);
+    omOvlGotoEx(0x5A, 0, 0x4190);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_80105BA0_duel02);
+void func_80105BA0_duel02(void) {
+    s8 sp10;
+    s8 sp11;
+
+    omInitObjMan(0xA, 0);
+    func_800E94D0_name_81();
+    func_800E9B10_name_81(0x13, 0x242);
+    func_800E9F4C_name_81(0x1E, &sp10, &sp11);
+    func_800ECD0C_name_81(0, sp10, sp11);
+    func_800E9F4C_name_81(0x1D, &sp10, &sp11);
+    func_800ECD0C_name_81(1, sp10, sp11);
+    GwPlayer[0].nnlink = -1;
+    GwPlayer[0].nnidx = -1;
+    GwPlayer[1].nnlink = -1;
+    GwPlayer[1].nnidx = -1;
+    func_800E9D9C_name_81();
+    func_800E9564_name_81();
+    GwSystem.bank_coins = 5;
+    GwSystem.playerIndexVisitingBowser = 0;
+    func_800EA760_name_81();
+    omOvlReturnEx(1);
+}
 
 void func_80105C68_duel02(Vec *arg0, Vec *arg1, Vec *arg2) {
     f32 angle;
@@ -4006,11 +4031,25 @@ void func_80116240_duel02(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8011628C_duel02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_801162F8_duel02);
+void func_801162F8_duel02(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_80116344_duel02);
+    if ((player->rev & 1) && mbWalkNum != 0) {
+        func_800E9F4C_name_81(0x29, &player->nnlink, &player->nnidx);
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_80116370_duel02);
+void func_80116344_duel02(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+
+    func_800E9F4C_name_81(0x13, &player->nnlink, &player->nnidx);
+}
+
+void func_80116370_duel02(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+
+    func_800E9F4C_name_81(0xE, &player->nnlink, &player->nnidx);
+}
 
 void func_8011639C_duel02(s8 *arg0, s8 *arg1) {
 }

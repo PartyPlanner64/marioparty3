@@ -219,9 +219,36 @@ void func_80105B10_duel05(void) {
     func_800E1854_name_81(D_801163AC_duel05);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_80105B64_duel05);
+void func_80105B64_duel05(void) {
+    GwSystem.current_board_index = 4;
+    omInitObjMan(0xA, 0);
+    omOvlGotoEx(0x5A, 0, 0x4190);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_80105BA0_duel05);
+void func_80105BA0_duel05(void) {
+    s8 sp10;
+    s8 sp11;
+
+    omInitObjMan(0xA, 0);
+    func_800E94D0_name_81();
+    func_800E9B10_name_81(0x13, 0x245);
+    func_800E9F4C_name_81(0x1E, &sp10, &sp11);
+    func_800ECD0C_name_81(0, sp10, sp11);
+    func_800E9F4C_name_81(0x1D, &sp10, &sp11);
+    func_800ECD0C_name_81(1, sp10, sp11);
+    GwPlayer[0].nnlink = -1;
+    GwPlayer[0].nnidx = -1;
+    GwPlayer[1].nnlink = -1;
+    GwPlayer[1].nnidx = -1;
+    func_800E9D9C_name_81();
+    func_800E9564_name_81();
+    GwSystem.bank_coins = 5;
+    GwSystem.playerIndexVisitingBowser = 0;
+    GwSystem.boardData.halfWordBytes[0] = 0;
+    GwSystem.boardData.halfWordBytes[1] = 1;
+    func_800EA760_name_81();
+    omOvlReturnEx(1);
+}
 
 void func_80105C74_duel05(Vec *arg0, Vec *arg1, Vec *arg2) {
     f32 angle;
@@ -3987,13 +4014,35 @@ void func_80114F68_duel05(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_80114FD8_duel05);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_8011505C_duel05);
+void func_8011505C_duel05(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_80115098_duel05);
+    if (player->rev & 1) {
+        func_800E9F4C_name_81(0x28, &player->nlink, &player->nidx);
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_801150D4_duel05);
+void func_80115098_duel05(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_80115120_duel05);
+    if (player->rev & 1) {
+        func_800E9F4C_name_81(0x1F, &player->nlink, &player->nidx);
+    }
+}
+
+void func_801150D4_duel05(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+
+    if (!(player->rev & 1) || mbWalkNum == 0) {
+        func_800E9F4C_name_81(0x1C, &player->nnlink, &player->nnidx);
+    }
+}
+
+void func_80115120_duel05(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+
+    func_800E9F4C_name_81(0xB, &player->nnlink, &player->nnidx);
+}
 
 void func_8011514C_duel05(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
@@ -4011,11 +4060,27 @@ void func_80115198_duel05(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_801151E4_duel05);
+void func_801151E4_duel05(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_80115230_duel05);
+    if (!(player->rev & 1) || mbWalkNum == 0) {
+        func_800E9F4C_name_81(0x12, &player->nnlink, &player->nnidx);
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_8011525C_duel05);
+void func_80115230_duel05(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+
+    func_800E9F4C_name_81(0xA, &player->nnlink, &player->nnidx);
+}
+
+void func_8011525C_duel05(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+
+    if ((player->rev & 1) && mbWalkNum != 0) {
+        func_800E9F4C_name_81(0x28, &player->nnlink, &player->nnidx);
+    }
+}
 
 void func_801152A8_duel05(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
@@ -4058,4 +4123,5 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_80115468_duel05);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_80115550_duel05);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_8011566C_duel05);
+void func_8011566C_duel05(void) {
+}

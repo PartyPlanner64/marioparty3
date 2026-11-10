@@ -211,6 +211,8 @@ void MBDBackLoad(s32);
 void func_800E8D10_name_81(void);
 void func_800E94D0_name_81(void);
 void func_800E9B10_name_81(s32, s16);
+void func_800EA760_name_81(void);
+void func_800ECD0C_name_81(s16 playerIdx, s16 nlink, s16 nidx);
 void func_800EB664_name_81(void);
 void func_800EF840_name_81(void);
 void func_800EF880_name_81(void);

@@ -133,6 +133,7 @@ extern s16 D_80117C00_duel03[];
 extern char D_80117BD8_duel03[];
 extern Object *D_801180E0_duel03;
 extern Object *D_801180F8_duel03[4];
+extern s16 D_80117470_duel03[];
 void func_800D6CA0_name_81(UnkEA790Struct *win);
 void func_80116000_duel03(s32 space);
 extern s16 D_80117A44_duel03[];
@@ -2727,7 +2728,18 @@ void func_8010E908_duel03(void) {
     Hu3DMotionSpeedSet(D_801180F0_duel03->omObj1->model[0], 1.0f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_8010E958_duel03);
+void func_8010E958_duel03(s16 index) {
+    s32 models[4] = { 0x40, 0x41, 0x42, 0x43 };
+    Object *obj;
+
+    if (D_801180F8_duel03[index] == NULL) {
+        obj = func_800D8010_name_81(models[index], NULL);
+        func_800D8944_name_81(obj);
+        D_801180F8_duel03[index] = obj;
+        obj->flags |= 2;
+        HuVecCopy3F(&obj->coords, &MBDMasuGet(D_80117470_duel03[index])->coords);
+    }
+}
 
 void func_8010EA1C_duel03(void) {
     s32 i;
@@ -3311,8 +3323,6 @@ void func_80110A0C_duel03(void) {
         func_8010FE9C_duel03(1);
     }
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/duel03/3FE1F0", D_80117BF0_duel03);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/duel03/3FE1F0", D_80117C00_duel03);
 

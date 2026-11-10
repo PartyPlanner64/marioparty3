@@ -6,8 +6,7 @@ typedef struct UnkStoryObj {
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;
-    /* 0x14 */ s16 unk_14;
-    /* 0x16 */ s16 stopSeNo;
+    /* 0x14 */ s32 unk_14;
 } UnkStoryObj; // sizeof 0x18
 
 typedef struct MstoryPath {
@@ -20,9 +19,15 @@ typedef struct MstoryPath {
 
 extern Vec D_80115660_mstory1;
 extern Vec D_8011566C_mstory1;
+extern Vec D_80115714_mstory1;
+extern Vec D_80115720_mstory1;
+extern Vec D_8011572C_mstory1;
+extern Vec D_80115738_mstory1;
 extern Vec D_80115840_mstory1;
 extern UnkStoryObj D_80115B70_mstory1[7];
 
+void func_80106B14_mstory1(omObjData *obj, const Vec *pos, s32 frames);
+s32 func_80106AFC_mstory1(s32 character);
 void func_8010704C_mstory1(omObjData *obj, Vec *pos, s32 frames);
 void func_80107220_mstory1(s16 model);
 void func_80111218_mstory1(omObjData *obj);
@@ -131,7 +136,20 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/496990", D_80115684_mstory1);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/496990", func_80112644_mstory1);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/496990", func_80112984_mstory1);
+void func_80112984_mstory1(omObjData *obj) {
+    func_8010704C_mstory1(obj, &D_8011572C_mstory1, 20);
+    func_80106B14_mstory1(obj, &D_80115714_mstory1, 20);
+    func_8010704C_mstory1(obj, &D_80115738_mstory1, 10);
+    while (!(D_80115B70_mstory1[3].unk_08 & 1)) {
+        HuPrcVSleep();
+    }
+    HuPrcSleep(20);
+    func_8010704C_mstory1(obj, &D_8011572C_mstory1, 10);
+    func_80106B14_mstory1(obj, &D_80115720_mstory1, 30);
+    func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    D_80115B70_mstory1[1].func = func_80111218_mstory1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/496990", func_80112A68_mstory1);
 
@@ -244,7 +262,29 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/496990", D_80115840_mstory1);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/496990", D_80115854_mstory1);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/496990", func_801147D0_mstory1);
+void func_801147D0_mstory1(s32 index, s32 seNo) {
+    if (D_80115B70_mstory1[index].unk_0C == 0) {
+        D_80115B70_mstory1[index].unk_0C = 1;
+        D_80115B70_mstory1[index].unk_10 = seNo;
+        switch (index) {
+            case 0:
+                D_80115B70_mstory1[index].unk_14 = CharFXPlay(seNo, GwStory.unk1);
+                break;
+            case 2:
+                if (func_80106AFC_mstory1(5) == 0) {
+                    D_80115B70_mstory1[index].unk_14 = CharFXPlay(seNo, 5);
+                } else {
+                    D_80115B70_mstory1[index].unk_14 = CharFXPlay(seNo, 1);
+                }
+                break;
+            case 1:
+            case 3:
+            case 4:
+            case 5:
+                break;
+        }
+    }
+}
 
 void func_801148B4_mstory1(s32 index) {
     if (D_80115B70_mstory1[index].unk_0C == 1) {
@@ -252,7 +292,7 @@ void func_801148B4_mstory1(s32 index) {
         switch (index) {
             case 0:
             case 2:
-                HuAudFXStop(D_80115B70_mstory1[index].stopSeNo);
+                HuAudFXStop((s16)D_80115B70_mstory1[index].unk_14);
                 break;
             case 1:
             case 3:

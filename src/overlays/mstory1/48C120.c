@@ -6,8 +6,7 @@ typedef struct UnkStoryObj {
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;
-    /* 0x14 */ s16 unk_14;
-    /* 0x16 */ s16 stopSeNo;
+    /* 0x14 */ s32 unk_14;
 } UnkStoryObj; // sizeof 0x18
 
 typedef struct MstoryPath {
@@ -26,6 +25,7 @@ extern Vec D_80114A98_mstory1;
 extern Vec D_80114AA4_mstory1;
 
 extern s32 D_80114A80_mstory1;
+extern s32 D_80114A84_mstory1;
 extern s8 D_80114A88_mstory1;
 extern s32 D_80114AB0_mstory1;
 extern Vec D_80114E40_mstory1;
@@ -51,7 +51,39 @@ void func_801081D8_mstory1(omObjData *obj);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/48C120", D_80114C50_mstory1);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_80105C90_mstory1);
+void func_80105C90_mstory1(void) {
+    u32 state = D_80114A80_mstory1;
+    s32 btn;
+
+    switch (state) {
+        case 0:
+            HuAudSeqPlay(0x26);
+            state++;
+            break;
+        case 1:
+            state += WipeStatGet() == 0;
+            break;
+        case 2:
+            if (D_80114A84_mstory1 == 1) {
+                btn = D_800D5558_main[D_801158B4_mstory1] & START_BUTTON;
+                state += btn != 0;
+            }
+            break;
+        case 3:
+            WipeCreateOut(2, 20);
+            HuAudSeqFadeOut(30);
+            state++;
+            break;
+        case 4:
+            if (WipeStatGet() == 0) {
+                HuWinAllKill();
+                SLCommonSet(1);
+                omOvlReturnEx(1);
+            }
+            break;
+    }
+    D_80114A80_mstory1 = state;
+}
 
 void func_80105D80_mstory1(omObjData *obj) {
     if (D_800D530C_main == 1) {
@@ -486,7 +518,29 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/48C120", D_80115050_mstory1);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/48C120", D_8011505C_mstory1);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_8010BB08_mstory1);
+void func_8010BB08_mstory1(s32 index, s32 seNo) {
+    if (D_801158F0_mstory1[index].unk_0C == 0) {
+        D_801158F0_mstory1[index].unk_0C = 1;
+        D_801158F0_mstory1[index].unk_10 = seNo;
+        switch (index) {
+            case 0:
+                D_801158F0_mstory1[index].unk_14 = CharFXPlay(seNo, GwStory.unk1);
+                break;
+            case 2:
+                if (func_80106AFC_mstory1(4) == 0) {
+                    D_801158F0_mstory1[index].unk_14 = CharFXPlay(seNo, 4);
+                } else {
+                    D_801158F0_mstory1[index].unk_14 = CharFXPlay(seNo, 1);
+                }
+                break;
+            case 1:
+            case 3:
+            case 4:
+            case 5:
+                break;
+        }
+    }
+}
 
 void func_8010BBEC_mstory1(s32 index) {
     if (D_801158F0_mstory1[index].unk_0C == 1) {
@@ -494,7 +548,7 @@ void func_8010BBEC_mstory1(s32 index) {
         switch (index) {
             case 0:
             case 2:
-                HuAudFXStop(D_801158F0_mstory1[index].stopSeNo);
+                HuAudFXStop((s16)D_801158F0_mstory1[index].unk_14);
                 break;
             case 1:
             case 3:

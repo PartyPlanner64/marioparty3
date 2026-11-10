@@ -8,17 +8,42 @@ typedef struct UnkSeEntry {
     char unk_0C[0xC];
 } UnkSeEntry; // sizeof 0x18
 
+typedef struct UnkMstory1Obj {
+    /* 0x00 */ omObjData *obj;
+    /* 0x04 */ void (*func)(omObjData *);
+    /* 0x08 */ s32 unk_08;
+} UnkMstory1Obj; // sizeof 0xC
+
+typedef struct MstoryPath {
+    /* 0x00 */ s16 count;
+    /* 0x02 */ u16 flags;
+    /* 0x04 */ s32 unk04;
+    /* 0x08 */ Vec *points;
+    /* 0x0C */ f32 (*intervals)[2];
+} MstoryPath; // sizeof 0x10
+
+extern Vec D_80115660_mstory1;
+extern Vec D_8011566C_mstory1;
+extern Vec D_80115840_mstory1;
+extern UnkMstory1Obj D_80115B70_mstory1;
+extern UnkMstory1Obj D_80115C00_mstory1;
 extern UnkSeEntry D_80115B7C_mstory1[];
+
+void func_8010704C_mstory1(omObjData *obj, Vec *pos, s32 frames);
+void func_80111218_mstory1(omObjData *obj);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/496990", func_80110500_mstory1);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/496990", func_80110804_mstory1);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/496990", func_801110AC_mstory1);
+void func_801110AC_mstory1(MstoryPath *path) {
+    HuMemFree(path->intervals);
+    HuMemFree(path);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/496990", func_801110DC_mstory1);
 
-void func_80111218_mstory1(void) {
+void func_80111218_mstory1(omObjData *obj) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/496990", func_80111220_mstory1);
@@ -68,9 +93,15 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/496990", func_80111634_mstory1);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/496990", func_801121E4_mstory1);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/496990", func_801122A8_mstory1);
+void func_801122A8_mstory1(omObjData *obj) {
+    func_8010704C_mstory1(obj, &D_80115660_mstory1, 10);
+    D_80115B70_mstory1.func = func_80111218_mstory1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/496990", func_801122DC_mstory1);
+void func_801122DC_mstory1(omObjData *obj) {
+    func_8010704C_mstory1(obj, &D_8011566C_mstory1, 10);
+    D_80115B70_mstory1.func = func_80111218_mstory1;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/496990", D_8011561C_mstory1);
 
@@ -184,7 +215,10 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/496990", D_80115804_mstory1);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/496990", func_80113F28_mstory1);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/496990", func_80114050_mstory1);
+void func_80114050_mstory1(omObjData *obj) {
+    func_8010704C_mstory1(obj, &D_80115840_mstory1, 20);
+    D_80115C00_mstory1.func = func_80111218_mstory1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/496990", func_80114084_mstory1);
 

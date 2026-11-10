@@ -276,7 +276,7 @@ extern s32 D_8010570C_name_81;
 extern s32 D_80105718_name_81;
 extern s32 D_8010571C_name_81;
 
-Process *func_800D9668_name_81(Object *, s32, f32, s32);
+Process *func_800D9668_name_81(Object *, f32, f32, s32);
 void func_800E3C6C_name_81(void);
 Process* func_800E415C_name_81(void);
 Process* func_800E47B8_name_81(s16, s8, Vec*, Vec*, s32);

@@ -55,7 +55,7 @@ void func_800EB708_name_81(Vec *, Vec *, Vec *);
 void func_800F3C98_name_81(s16, s32 *, s16);
 void func_800F3EC0_name_81(s16);
 void func_800EB164_name_81(s32, s32);
-Process *func_800D9668_name_81(Object *, s32, f32, s32);
+Process *func_800D9668_name_81(Object *, f32, f32, s32);
 void func_800DB648_name_81(s32);
 void func_800DABE0_name_81(s32);
 void func_800DBEF0_name_81(s32);

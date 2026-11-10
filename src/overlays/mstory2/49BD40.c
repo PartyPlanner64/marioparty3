@@ -686,7 +686,73 @@ void func_801076DC_mstory2(omObjData *obj, omObjData *target) {
     Hu3DModelRotSet(model[0], rot.x, rot.y, rot.z);
 }
 
+// Code matches, but the target is followed by alignment padding, which suggests
+// a file boundary after this function.
+#ifdef NON_MATCHING
+void func_80107824_mstory2(omObjData *obj, Vec *target, s32 frames, s32 faceDir) {
+    Vec start;
+    Vec diff;
+    Vec vel;
+    Vec pos;
+    Vec accel;
+    s16 model;
+    f32 t;
+
+    model = obj->model[1];
+    start.x = Hu3DData[model].pos.x;
+    start.y = Hu3DData[model].pos.y;
+    start.z = Hu3DData[model].pos.z;
+    diff.x = target->x - start.x;
+    diff.y = target->y - start.y;
+    diff.z = target->z - start.z;
+    if (faceDir) {
+        Hu3DModelRotSet(model, 0.0f, -(atan2df(diff.z, diff.x) - 90.0f), 0.0f);
+    }
+    t = frames;
+    accel.x = diff.x / t / 90.0f;
+    accel.y = diff.y / t / 90.0f;
+    accel.z = diff.z / t / 90.0f;
+    vel.x = diff.x / t;
+    vel.y = diff.y / t;
+    vel.z = diff.z / t;
+    pos.x = start.x;
+    pos.y = start.y;
+    pos.z = start.z;
+    for (t = 0.0f; t < frames; t += 1.0f) {
+        if (t < 50.0f) {
+            pos.x += vel.x;
+            pos.y += vel.y;
+            pos.z += vel.z;
+        } else {
+            pos.x += vel.x += accel.x;
+            pos.y += vel.y += accel.y;
+            pos.z += vel.z += accel.z;
+        }
+        if (pos.x <= target->x) {
+            pos.x = target->x;
+            pos.y = target->y;
+            pos.z = target->z;
+            Hu3DModelPosSet(model, pos.x, pos.y, pos.z);
+            if (obj->model[2] >= 0) {
+                Hu3DModelPosSet(obj->model[2], pos.x, pos.y - 5.0f, pos.z);
+            }
+            break;
+        }
+        Hu3DModelPosSet(model, pos.x, pos.y, pos.z);
+        if (obj->model[2] >= 0) {
+            Hu3DModelPosSet(obj->model[2], pos.x, pos.y - 5.0f, pos.z);
+        }
+        HuPrcVSleep();
+    }
+    Hu3DModelPosSet(model, target->x, target->y, target->z);
+    if (obj->model[2] >= 0) {
+        Hu3DModelPosSet(obj->model[2], target->x, target->y - 5.0f, target->z);
+    }
+    HuPrcVSleep();
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory2/49BD40", func_80107824_mstory2);
+#endif
 
 MstoryPath *func_80107B90_mstory2(Vec *points, s32 flags) {
     MstoryPath *path;

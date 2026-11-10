@@ -196,9 +196,13 @@ s32 func_8010B480_duel01(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010B4C0_duel01);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010B528_duel01);
+void func_8010B528_duel01(void) {
+    D_8011948C_duel01->work[0] = 1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010B53C_duel01);
+void func_8010B53C_duel01(void) {
+    D_8011948C_duel01->work[0] = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010B54C_duel01);
 
@@ -214,7 +218,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010D9F4_duel01);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010DA84_duel01);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010DB00_duel01);
+void func_8010DB00_duel01(void) {
+    Hu3DCamInit(1);
+    func_8010D9F4_duel01();
+    func_800FF640_name_81(1);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/duel01/3D8AC0", D_80118E98_duel01);
 

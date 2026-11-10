@@ -22,6 +22,8 @@ extern void func_8010630C_duel04(void);
 extern omObjData *D_8011B4FC_duel04;
 extern Object *D_8011B508_duel04;
 extern Object *D_8011B510_duel04;
+void func_8010D9F8_duel04(void);
+void func_800FF640_name_81(s32);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_801059D0_duel04);
 
@@ -124,9 +126,13 @@ s32 func_8010B484_duel04(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010B4C4_duel04);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010B52C_duel04);
+void func_8010B52C_duel04(void) {
+    D_8011B4FC_duel04->work[0] = 1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010B540_duel04);
+void func_8010B540_duel04(void) {
+    D_8011B4FC_duel04->work[0] = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010B550_duel04);
 
@@ -142,7 +148,11 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010D9F8_duel04);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010DA88_duel04);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010DB10_duel04);
+void func_8010DB10_duel04(void) {
+    Hu3DCamInit(1);
+    func_8010D9F8_duel04();
+    func_800FF640_name_81(1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010DB3C_duel04);
 

@@ -642,82 +642,82 @@ void func_8010AFBC_duel06(void) {
     D_80114D4C_duel06 = omAddObj(0x1F4, 0, 0, -1, func_8010B138_duel06);
     data = D_80114D4C_duel06->data = HuMemAllocTag(sizeof(UnkDuelObjData), 0x7918);
     sprData = DataRead(0xB0047);
-    for (i = 0; i < ARRAY_COUNT(data->unk_1A0); i++) {
+    for (i = 0; i < ARRAY_COUNT(data->sprId); i++) {
         if (i == 0) {
-            data->unk_1A0[0] = Hu3DSprModelCreate(sprData, 0x1A0D, 8);
+            data->sprId[0] = Hu3DSprModelCreate(sprData, 0x1A0D, 8);
         } else {
-            data->unk_1A0[i] = func_80014618_main(data->unk_1A0[0], 8);
+            data->sprId[i] = func_80014618_main(data->sprId[0], 8);
         }
-        func_800146DC_main(data->unk_1A0[i], 6, 0x180);
-        data->unk_1C0[i] = D_800CBB60_main[data->unk_1A0[i]].modelId;
-        func_800147FC_main(data->unk_1A0[i], 0xFF, 0x40, 8);
-        func_80014794_main(data->unk_1A0[i], 0xC8);
-        func_8001C2FC_main(data->unk_1C0[i], 0x70000000, 0x70000000);
+        func_800146DC_main(data->sprId[i], 6, 0x180);
+        data->modelId[i] = D_800CBB60_main[data->sprId[i]].modelId;
+        func_800147FC_main(data->sprId[i], 0xFF, 0x40, 8);
+        func_80014794_main(data->sprId[i], 0xC8);
+        func_8001C2FC_main(data->modelId[i], 0x70000000, 0x70000000);
     }
     DataClose(sprData);
-    for (i = 0; i < ARRAY_COUNT(data->unk_180); i++) {
-        data->unk_180[i] = 0;
+    for (i = 0; i < ARRAY_COUNT(data->active); i++) {
+        data->active[i] = 0;
     }
     D_80114D4C_duel06->work[0] = 0;
-    data->unk_1E0 = 0;
+    data->spawnTimer = 0;
 }
 
 void func_8010B138_duel06(omObjData *object) {
     UnkDuelObjData *data = object->data;
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(data->unk_180); i++) {
-        if (data->unk_180[i] != 0) {
-            data->unk_000[i].x += data->unk_0C0[i].x;
-            data->unk_000[i].y += data->unk_0C0[i].y;
-            data->unk_000[i].z += data->unk_0C0[i].z;
-            if (data->unk_000[i].y < 0.0f) {
-                data->unk_000[i].y = 0.0f;
+    for (i = 0; i < ARRAY_COUNT(data->active); i++) {
+        if (data->active[i] != 0) {
+            data->pos[i].x += data->vel[i].x;
+            data->pos[i].y += data->vel[i].y;
+            data->pos[i].z += data->vel[i].z;
+            if (data->pos[i].y < 0.0f) {
+                data->pos[i].y = 0.0f;
             }
-            Hu3DModelPosSet(data->unk_1C0[i], data->unk_000[i].x, data->unk_000[i].y, data->unk_000[i].z);
-            data->unk_1E4[i] -= 2.0f;
-            if (data->unk_1E4[i] <= 0.0f) {
-                data->unk_180[i] = 0;
-                func_8001C258_main(data->unk_1C0[i], 4, 4);
-                func_800146DC_main(data->unk_1A0[i], 0, 0x80);
+            Hu3DModelPosSet(data->modelId[i], data->pos[i].x, data->pos[i].y, data->pos[i].z);
+            data->life[i] -= 2.0f;
+            if (data->life[i] <= 0.0f) {
+                data->active[i] = 0;
+                func_8001C258_main(data->modelId[i], 4, 4);
+                func_800146DC_main(data->sprId[i], 0, 0x80);
             }
-            data->unk_224[i] += 0.02f;
-            if (data->unk_224[i] >= 3.0f) {
-                data->unk_224[i] = 3.0f;
+            data->scale[i] += 0.02f;
+            if (data->scale[i] >= 3.0f) {
+                data->scale[i] = 3.0f;
             }
-            Hu3DModelScaleSet(data->unk_1C0[i], data->unk_224[i], data->unk_224[i], data->unk_224[i]);
+            Hu3DModelScaleSet(data->modelId[i], data->scale[i], data->scale[i], data->scale[i]);
         }
     }
     if (object->work[0] == 1) {
-        if (data->unk_1E0 == 0) {
-            for (i = 0; i < ARRAY_COUNT(data->unk_180); i++) {
-                if (data->unk_180[i] == 0) {
+        if (data->spawnTimer == 0) {
+            for (i = 0; i < ARRAY_COUNT(data->active); i++) {
+                if (data->active[i] == 0) {
                     break;
                 }
             }
-            if (i != ARRAY_COUNT(data->unk_180)) {
-                data->unk_180[i] = 1;
-                data->unk_1E0 = 1;
-                data->unk_0C0[i].x = D_80114D48_duel06->rot.x;
-                data->unk_0C0[i].y = -0.8f;
-                data->unk_0C0[i].z = D_80114D48_duel06->rot.z;
-                func_800D7828_name_81(&data->unk_0C0[i]);
-                data->unk_0C0[i].x *= 2.0f;
-                data->unk_0C0[i].y *= 2.0f;
-                data->unk_0C0[i].z *= 2.0f;
-                data->unk_000[i].x = D_80114D48_duel06->rot.x * 10.0f + D_80114D48_duel06->coords.x;
-                data->unk_000[i].z = D_80114D48_duel06->rot.z * 10.0f + D_80114D48_duel06->coords.z;
-                data->unk_000[i].y = D_80114D48_duel06->coords.y + 6.0f;
-                data->unk_1E4[i] = 15.0f;
-                data->unk_224[i] = 0.1f;
-                func_8001C258_main(data->unk_1C0[i], 4, 0);
-                func_80014850_main(data->unk_1A0[i]);
-                Hu3DModelPosSet(data->unk_1C0[i], data->unk_000[i].x, data->unk_000[i].y, data->unk_000[i].z);
-                Hu3DModelScaleSet(data->unk_1C0[i], data->unk_224[i], data->unk_224[i], data->unk_224[i]);
-                Hu3DModelCameraSet(data->unk_1C0[i], 1);
+            if (i != ARRAY_COUNT(data->active)) {
+                data->active[i] = 1;
+                data->spawnTimer = 1;
+                data->vel[i].x = D_80114D48_duel06->rot.x;
+                data->vel[i].y = -0.8f;
+                data->vel[i].z = D_80114D48_duel06->rot.z;
+                func_800D7828_name_81(&data->vel[i]);
+                data->vel[i].x *= 2.0f;
+                data->vel[i].y *= 2.0f;
+                data->vel[i].z *= 2.0f;
+                data->pos[i].x = D_80114D48_duel06->rot.x * 10.0f + D_80114D48_duel06->coords.x;
+                data->pos[i].z = D_80114D48_duel06->rot.z * 10.0f + D_80114D48_duel06->coords.z;
+                data->pos[i].y = D_80114D48_duel06->coords.y + 6.0f;
+                data->life[i] = 15.0f;
+                data->scale[i] = 0.1f;
+                func_8001C258_main(data->modelId[i], 4, 0);
+                func_80014850_main(data->sprId[i]);
+                Hu3DModelPosSet(data->modelId[i], data->pos[i].x, data->pos[i].y, data->pos[i].z);
+                Hu3DModelScaleSet(data->modelId[i], data->scale[i], data->scale[i], data->scale[i]);
+                Hu3DModelCameraSet(data->modelId[i], 1);
             }
         } else {
-            data->unk_1E0--;
+            data->spawnTimer--;
         }
     }
 }
@@ -726,8 +726,8 @@ s32 func_8010B488_duel06(void) {
     UnkDuelObjData *data = D_80114D4C_duel06->data;
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(data->unk_180); i++) {
-        if (data->unk_180[i] != 0) {
+    for (i = 0; i < ARRAY_COUNT(data->active); i++) {
+        if (data->active[i] != 0) {
             return 1;
         }
     }
@@ -738,8 +738,8 @@ void func_8010B4C8_duel06(void) {
     UnkDuelObjData *data = D_80114D4C_duel06->data;
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(data->unk_1A0); i++) {
-        func_80016638_main(data->unk_1A0[i]);
+    for (i = 0; i < ARRAY_COUNT(data->sprId); i++) {
+        func_80016638_main(data->sprId[i]);
     }
     omDelObj(D_80114D4C_duel06);
     func_800166D0_main();

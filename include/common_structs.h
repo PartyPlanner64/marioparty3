@@ -153,14 +153,14 @@ typedef struct Unk3 {
 // Per-object data block for the duel overlays, holding per-instance data for
 // 16 model instances. Reached via omObjData::data.
 typedef struct UnkDuelObjData {
-/* 0x000 */ Vec unk_000[16];
-/* 0x0C0 */ Vec unk_0C0[16];
-/* 0x180 */ s16 unk_180[16];
-/* 0x1A0 */ s16 unk_1A0[16];
-/* 0x1C0 */ s16 unk_1C0[16];
-/* 0x1E0 */ s16 unk_1E0;
-/* 0x1E4 */ f32 unk_1E4[16];
-/* 0x224 */ f32 unk_224[16];
+/* 0x000 */ Vec pos[16];
+/* 0x0C0 */ Vec vel[16];
+/* 0x180 */ s16 active[16];
+/* 0x1A0 */ s16 sprId[16];
+/* 0x1C0 */ s16 modelId[16];
+/* 0x1E0 */ s16 spawnTimer;
+/* 0x1E4 */ f32 life[16];
+/* 0x224 */ f32 scale[16];
 } UnkDuelObjData; // size = 0x264
 
 typedef struct Hu3DPoint {

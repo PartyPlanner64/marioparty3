@@ -121,8 +121,8 @@ s32 func_8010B4EC_duel10(void) {
     UnkDuelObjData *data = D_80114CCC_duel10->data;
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(data->unk_180); i++) {
-        if (data->unk_180[i] != 0) {
+    for (i = 0; i < ARRAY_COUNT(data->active); i++) {
+        if (data->active[i] != 0) {
             return 1;
         }
     }

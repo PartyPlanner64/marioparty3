@@ -3492,15 +3492,15 @@ s16 func_8002FD70_main(HmfData *arg0) {
     return arg0->unkA0;
 }
 
-void func_8002FD8C_main(s16 arg0, s16 arg1, char *arg2, s16 arg3, s16 arg4) {
+void func_8002FD8C_main(s16 arg0, s16 arg1, const char *arg2, s16 arg3, s16 arg4) {
     func_8002FE08_main(arg0, arg1, arg2, arg3, arg4, 0x8000);
 }
 
-void func_8002FDCC_main(s16 arg0, s16 arg1, char *arg2, s16 arg3, s16 arg4) {
+void func_8002FDCC_main(s16 arg0, s16 arg1, const char *arg2, s16 arg3, s16 arg4) {
     func_8002FE08_main(arg0, arg1, arg2, arg3, arg4, 0);
 }
 
-void func_8002FE08_main(s16 modelIndex, s16 motionIndex, char *name, s16 target, s16 component, s16 flags) {
+void func_8002FE08_main(s16 modelIndex, s16 motionIndex, const char *name, s16 target, s16 component, s16 flags) {
     HmfModelData_Unk64_Unk8C_Struct *motion;
     HmfData *hmf;
     s16 objectIndex;

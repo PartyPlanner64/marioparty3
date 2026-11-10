@@ -70,7 +70,7 @@ void func_80105FF4_mstory1(void);
 void func_80106B14_mstory1(omObjData *obj, const Vec *pos, s32 frames);
 void func_80106B30_mstory1(omObjData *obj, const Vec *pos, s32 frames, s32 arg3);
 void func_80106D80_mstory1(omObjData *obj, Vec *pos, s32 frames, s32 arg3);
-void func_8010704C_mstory1(omObjData *obj, Vec *pos, s32 frames);
+void func_8010704C_mstory1(omObjData *obj, const Vec *pos, s32 frames);
 s32 func_8010726C_mstory1(s16 model);
 void func_801081D8_mstory1(omObjData *obj);
 MstoryPath *func_801074C0_mstory1(Vec *points, s32 flags);
@@ -373,7 +373,7 @@ void func_8010701C_mstory1(omObjData *obj, f32 x, f32 y, f32 z, s32 frames, s32 
     func_80106D80_mstory1(obj, &pos, frames, arg3);
 }
 
-void func_8010704C_mstory1(omObjData *obj, Vec *target, s32 frames) {
+void func_8010704C_mstory1(omObjData *obj, const Vec *target, s32 frames) {
     Vec start;
     Vec delta;
     Vec rot;

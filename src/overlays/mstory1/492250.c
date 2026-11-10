@@ -52,7 +52,7 @@ extern const Vec D_801150E4_mstory1;
 void func_8010C0C4_mstory1(MstoryPath *path, f32 t, Vec *out);
 void func_80106B14_mstory1(omObjData *obj, const Vec *pos, s32 frames);
 s32 func_80106AFC_mstory1(s32 character);
-void func_8010704C_mstory1(omObjData *obj, Vec *pos, s32 frames);
+void func_8010704C_mstory1(omObjData *obj, const Vec *pos, s32 frames);
 void func_801068B0_mstory1(s16 model, s16 animSlot, s16 anim);
 void func_80107220_mstory1(s16 model);
 void func_8010CAD8_mstory1(omObjData *obj);

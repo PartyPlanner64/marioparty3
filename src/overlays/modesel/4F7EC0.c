@@ -84,6 +84,17 @@ typedef union UnkModeSelAngle {
     f32 angle;
 } UnkModeSelAngle; // sizeof 0x4
 
+// One entry per spinning star (model indices 7 to 9) and its shadow.
+typedef struct UnkModeSelStar {
+    HmfMotionNode *star;
+    HmfMotionNode *shadow;
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 scale;
+    UnkModeSelAngle rot;
+} UnkModeSelStar; // sizeof 0x1C
+
 // Summary of the saved party mode board, copied from the loaded save.
 typedef struct UnkModeSelBoardSave {
     s32 chr[4];
@@ -102,13 +113,7 @@ typedef struct UnkModeSelStorySave {
     s32 totalTurns;
 } UnkModeSelStorySave; // sizeof 0x1C
 
-extern f32 D_80110B20_modesel[][7];
-extern f32 D_80110B24_modesel[][7];
-extern f32 D_80110B28_modesel[][7];
-extern f32 D_80110B2C_modesel[][7];
-extern UnkModeSelAngle D_80110B30_modesel[][7];
-extern HmfMotionNode *D_80110B18_modesel[][7];
-extern HmfMotionNode *D_80110B1C_modesel[][7];
+extern UnkModeSelStar D_80110B18_modesel[3];
 extern s32 D_8010F2C8_modesel;
 extern s32 D_80110BD8_modesel;
 extern s16 D_80110BDA_modesel;
@@ -142,6 +147,8 @@ extern s32 D_80110CF4_modesel[][3];
 extern omObjData *D_80110CF8_modesel[][3];
 extern s32 D_80110DEC_modesel;
 extern Process *D_80110BDC_modesel;
+extern Process *D_80110BE0_modesel;
+extern s16 D_8010F296_modesel;
 extern omObjData *D_80110BD0_modesel;
 extern HmfMotionNode *D_80110BD4_modesel;
 extern f32 D_8010F2BC_modesel;
@@ -215,6 +222,14 @@ s32 func_80107248_modesel(u32 message, s16 x, s16 y, s16 style);
 s32 func_80107314_modesel(u32 message, s16 x, s16 y, s16 style);
 s32 func_801073E0_modesel(u32 message, s16 x, s16 y, s16 style);
 s32 func_8010F204_modesel(s32);
+s32 func_8010CD00_modesel(s32, s32);
+s32 func_8010D8DC_modesel(s32, s32);
+void func_8010DF70_modesel(void);
+void func_8010DFB4_modesel(void);
+void func_8010DFD0_modesel(s32);
+void func_8010E6D8_modesel(s32);
+void func_8010EC40_modesel(void);
+void func_8010ED00_modesel(void);
 
 void func_801059D0_modesel(void) {
     Vec position;
@@ -905,9 +920,9 @@ void func_8010893C_modesel(Process *arg0) {
     omDelPrcObj(arg0);
 }
 
-void func_8010899C_modesel(void) {
+Process *func_8010899C_modesel(void) {
     func_80108AE0_modesel(&D_80110BE8_modesel.pos, &D_80110BE8_modesel.at, &D_80110BE8_modesel.up);
-    omAddPrcObj(func_801088F8_modesel, 0x5000, 0x1800, 0);
+    return omAddPrcObj(func_801088F8_modesel, 0x5000, 0x1800, 0);
 }
 
 void func_801089DC_modesel(Vec *pos, Vec *at, Vec *up) {
@@ -1685,21 +1700,133 @@ omObjData *func_8010AF18_modesel(void) {
     return obj;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/modesel/4F7EC0", D_8010F4C8_modesel);
+void func_8010AF90_modesel(void) {
+    s16 modelId;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/modesel/4F7EC0", D_8010F4D0_modesel);
+    func_80106280_modesel(0, 0xD0000, 0x2002A9);
+    func_8010653C_modesel(0, 0.0f, 0.0f, 0.0f);
+    func_801065B0_modesel(0, 1.0f, 1.0f, 1.0f);
+    func_801068AC_modesel(0, 0);
+    func_8010677C_modesel(0, 1);
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/modesel/4F7EC0", D_8010F4D8_modesel);
+    func_80106280_modesel(1, 0xD0001, 0x229);
+    func_8010653C_modesel(1, 0.0f, 0.0f, 0.0f);
+    func_801065B0_modesel(1, 1.0f, 1.0f, 1.0f);
+    func_801068AC_modesel(1, 0);
+    func_8010677C_modesel(1, 1);
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/modesel/4F7EC0", D_8010F4E0_modesel);
+    func_80106280_modesel(2, 0xD0002, 0x6A9);
+    func_8010653C_modesel(2, 0.0f, 0.0f, -585.0f);
+    func_801065B0_modesel(2, 1.0f, 1.0f, 1.0f);
+    func_801068AC_modesel(2, 0);
+    func_8010677C_modesel(2, 1);
+    {
+        char *names[] = { "mario", "luigi", "peach", "yoshi", "wario", "donkey" };
+        HmfMotionNode *node;
+        s32 i;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/modesel/4F7EC0", D_8010F4E8_modesel);
+        modelId = func_8010648C_modesel(2);
+        for (i = 0; i < 6; i++) {
+            if (func_800E905C_minigame(i) < 0) {
+                node = func_8001D33C_main(modelId, names[i]);
+                func_80088800_main(node->unk58, 0.0f, -4000.0f, 0.0f);
+            }
+        }
+    }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/modesel/4F7EC0", D_8010F4F0_modesel);
+    {
+        Vec pos;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/modesel/4F7EC0", D_8010F4F8_modesel);
+        HuVecCopyXYZ(&pos, 0.0f, 0.0f, -200.0f);
+        pos.z = pos.z - 8.0f - 2.5f;
+        func_80106280_modesel(3, 0xD0003, 0x7A9);
+        func_8010653C_modesel(3, pos.x, pos.y, pos.z);
+    }
+    func_801065B0_modesel(3, 1.0f, 1.0f, 1.0f);
+    func_801068AC_modesel(3, 0);
+    func_8010677C_modesel(3, 1);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010AF90_modesel);
+    func_80106280_modesel(4, 0xD0004, 0xAA9);
+    func_8010653C_modesel(4, 0.0f, 0.0f, 0.0f);
+    func_801065B0_modesel(4, 1.0f, 1.0f, 1.0f);
+    func_801068AC_modesel(4, 0);
+    func_8010677C_modesel(4, 1);
+
+    func_80106280_modesel(5, 0xD0005, 0x6A9);
+    func_8010653C_modesel(5, 325.0f, 9.5f, 45.0f);
+    func_801065B0_modesel(5, 1.0f, 1.0f, 1.0f);
+    func_801068AC_modesel(5, 0);
+    func_8010677C_modesel(5, 1);
+    D_80110BD4_modesel = func_8001D33C_main(func_8010648C_modesel(5), "taiho");
+
+    func_8010631C_modesel(0x11, 0xD000B, -1);
+
+    func_80106280_modesel(0x12, 0xD000C, 0xAA9);
+    func_8010653C_modesel(0x12, 275.0f, 97.0f, 122.5f);
+    func_801065B0_modesel(0x12, 1.0f, 1.0f, 1.0f);
+    func_801068AC_modesel(0x12, 0);
+    func_8010677C_modesel(0x12, 2);
+    func_801066FC_modesel(0x12);
+
+    func_80106280_modesel(7, 0xD0007, 0xAA9);
+    func_8010653C_modesel(7, 250.0f, 25.0f, 355.0f);
+    func_801065B0_modesel(7, 1.0f, 1.0f, 1.0f);
+    func_8010677C_modesel(7, 1);
+    func_80109CEC_modesel(7);
+    modelId = func_8010648C_modesel(7);
+    D_80110B18_modesel[0].star = func_8001D33C_main(modelId, "star_red");
+    D_80110B18_modesel[0].shadow = func_8001D33C_main(modelId, "red_kage");
+    func_8010B804_modesel(7, 0);
+    func_8010B75C_modesel(7, 0.0f, 16.0f, 0.0f, 20.0f);
+
+    func_80106280_modesel(8, 0xD0008, 0xAA9);
+    func_8010653C_modesel(8, -250.0f, 25.0f, 355.0f);
+    func_801065B0_modesel(8, 1.0f, 1.0f, 1.0f);
+    func_8010677C_modesel(8, 1);
+    func_80109CEC_modesel(8);
+    modelId = func_8010648C_modesel(8);
+    D_80110B18_modesel[1].star = func_8001D33C_main(modelId, "star_blue");
+    D_80110B18_modesel[1].shadow = func_8001D33C_main(modelId, "blue_kage");
+    func_8010B804_modesel(8, 0);
+    func_8010B75C_modesel(8, 0.0f, 0.0f, 16.0f, 20.0f);
+
+    func_80106280_modesel(9, 0xD0009, 0x6A9);
+    func_8010653C_modesel(9, 0.0f, 25.0f, 70.0f);
+    func_801065B0_modesel(9, 1.0f, 1.0f, 1.0f);
+    func_8010677C_modesel(9, 1);
+    func_80109CEC_modesel(9);
+    modelId = func_8010648C_modesel(9);
+    D_80110B18_modesel[2].star = func_8001D33C_main(modelId, "star_yellow");
+    D_80110B18_modesel[2].shadow = func_8001D33C_main(modelId, "yellow_kage");
+    func_8010B75C_modesel(9, 0.0f, 0.0f, 16.0f, 20.0f);
+
+    func_80106280_modesel(10, 0xA0122, 0xAA9);
+    if (GwStory.unk0 == 12 && func_800465D0_main() == 0) {
+        func_8010653C_modesel(10, -300.0f, 225.0f, 300.0f);
+        func_8010673C_modesel(10);
+    } else {
+        func_8010653C_modesel(10, 0.0f, -75.0f, 300.0f);
+        func_801066FC_modesel(10);
+    }
+    func_801065B0_modesel(10, 1.0f, 1.0f, 1.0f);
+    func_801068AC_modesel(10, 0);
+    func_800461B4_main(func_8010648C_modesel(10));
+
+    func_8010631C_modesel(0x13, 0xA0125, 0);
+    func_8010631C_modesel(0x14, 0xA0123, 0);
+
+    func_80106280_modesel(11, 0xD000D, 0x200009);
+    func_801068AC_modesel(11, 0);
+    func_8010677C_modesel(11, 1);
+
+    func_80106280_modesel(12, 0xD000E, 0x2002B9);
+    func_801068AC_modesel(12, 0);
+    func_8010677C_modesel(12, 1);
+
+    func_80106280_modesel(13, 0xD000F, 0x2002B9);
+    func_801068AC_modesel(13, 0);
+    func_8010677C_modesel(13, 1);
+}
 
 void func_8010B6B0_modesel(void) {
     func_801063A4_modesel(0);
@@ -1729,27 +1856,27 @@ void func_8010B75C_modesel(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
 void func_8010B790_modesel(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
     s32 index = arg0 - 7;
 
-    D_80110B20_modesel[index][0] = arg1;
-    D_80110B24_modesel[index][0] = arg2;
-    D_80110B28_modesel[index][0] = arg3;
-    D_80110B2C_modesel[index][0] = arg4 < 0.0f ? 0.0f : arg4;
+    D_80110B18_modesel[index].x = arg1;
+    D_80110B18_modesel[index].y = arg2;
+    D_80110B18_modesel[index].z = arg3;
+    D_80110B18_modesel[index].scale = arg4 < 0.0f ? 0.0f : arg4;
 }
 
 void func_8010B804_modesel(s32 arg0, s32 arg1) {
-    D_80110B30_modesel[arg0 - 7][0].word = arg1;
+    D_80110B18_modesel[arg0 - 7].rot.word = arg1;
 }
 
 void func_8010B824_modesel(s32 arg0) {
     s32 index = arg0 - 7;
     f32 shadowY;
 
-    func_80088800_main(D_80110B18_modesel[index][0]->unk58, D_80110B20_modesel[index][0],
-                       D_80110B24_modesel[index][0], D_80110B28_modesel[index][0]);
-    func_800185A4_main(D_80110B18_modesel[index][0]->unk58, D_80110B30_modesel[index][0].angle);
-    shadowY = (8.0f < D_80110B24_modesel[index][0]) ? 4.0f : -200.0f;
-    func_80088800_main(D_80110B1C_modesel[index][0]->unk58, D_80110B20_modesel[index][0], shadowY,
-                       D_80110B28_modesel[index][0]);
-    func_800185A4_main(D_80110B1C_modesel[index][0]->unk58, D_80110B30_modesel[index][0].angle);
+    func_80088800_main(D_80110B18_modesel[index].star->unk58, D_80110B18_modesel[index].x,
+                       D_80110B18_modesel[index].y, D_80110B18_modesel[index].z);
+    func_800185A4_main(D_80110B18_modesel[index].star->unk58, D_80110B18_modesel[index].rot.angle);
+    shadowY = (8.0f < D_80110B18_modesel[index].y) ? 4.0f : -200.0f;
+    func_80088800_main(D_80110B18_modesel[index].shadow->unk58, D_80110B18_modesel[index].x, shadowY,
+                       D_80110B18_modesel[index].z);
+    func_800185A4_main(D_80110B18_modesel[index].shadow->unk58, D_80110B18_modesel[index].rot.angle);
 }
 
 void func_8010B940_modesel(s32 arg0, f32 arg1) {
@@ -1758,9 +1885,9 @@ void func_8010B940_modesel(s32 arg0, f32 arg1) {
     if (360.0f < arg1) {
         arg1 = 360.0f;
     }
-    D_80110B30_modesel[index][0].angle += arg1;
-    if (360.0f < D_80110B30_modesel[index][0].angle) {
-        D_80110B30_modesel[index][0].angle -= 360.0f;
+    D_80110B18_modesel[index].rot.angle += arg1;
+    if (360.0f < D_80110B18_modesel[index].rot.angle) {
+        D_80110B18_modesel[index].rot.angle -= 360.0f;
     }
 }
 
@@ -1775,7 +1902,183 @@ void func_8010B9C4_modesel(void) {
     omAddPrcObj(func_801088AC_modesel, 0x5000, 0x2000, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010BA70_modesel);
+s32 func_8010BA70_modesel(void) {
+    s32 cur = 10;
+    s32 buttons;
+    s32 result;
+    s32 confirm;
+    s16 modelId;
+
+    if (func_800465D0_main() == 1) {
+        if (_CheckFlag(0x16) || _CheckFlag(0x17)) {
+            cur = 5;
+            func_80107730_modesel(0, 0x3106);
+        } else {
+            func_80107730_modesel(0, 0x3124);
+        }
+    } else if (_CheckFlag(0x28)) {
+        cur = 5;
+        func_80107730_modesel(0, 0x3106);
+    } else if (GwStory.unk0 != 12) {
+        cur = 7;
+        func_801077FC_modesel(0, 0, func_8010F204_modesel(GwStory.unk0) + 0x3127);
+        func_80107730_modesel(0, 0x3135);
+        if (GwSystem.playMode & 1) {
+            cur = 8;
+        }
+    }
+    func_8010DF70_modesel();
+    func_8010DFD0_modesel(cur);
+    omDelPrcObj(D_80110BE0_modesel);
+    D_80110BE0_modesel = func_8010899C_modesel();
+    func_80013350_main(0);
+    func_80109188_modesel(cur, 7);
+    while (1) {
+        buttons = D_800D5558_main[0];
+        buttons |= func_80109A58_modesel(0);
+        if (buttons & 0x8000) {
+            result = func_8010CD00_modesel(cur, buttons);
+            if (result >= 0) {
+                break;
+            }
+        } else if (buttons & 0xF00) {
+            result = func_8010D8DC_modesel(cur, buttons);
+            if (result >= 0) {
+                cur = result;
+            }
+        } else if (buttons & 0x4000) {
+            func_80105FB4_modesel(1);
+            func_80109188_modesel(10, 8);
+            HuPrcSleep(8);
+            func_801074F0_modesel(0);
+            func_801067C0_modesel(10, 0x13, 8, 8, 2);
+            func_80106BA0_modesel(0, 0x3115, 0xA0, D_8010F296_modesel + 4, 0, 0, 3);
+            func_8010788C_modesel(0);
+            confirm = func_80107838_modesel(0, 1, 0);
+            func_801067C0_modesel(10, 0x14, 8, 8, 2);
+            if (confirm == 0) {
+                HuPrcVSleep();
+                result = 16;
+                func_80107730_modesel(0, 0x3116);
+                func_8010788C_modesel(0);
+                break;
+            }
+            if (func_800465D0_main() == 1) {
+                HuWinComKeyWait(-0x8000, 0, 0, 0, 1);
+                func_80107730_modesel(0, 0x3101);
+            } else if (GwStory.unk0 == 12) {
+                func_80107730_modesel(0, 0x3136);
+            } else {
+                func_801077FC_modesel(0, 0, func_8010F204_modesel(GwStory.unk0) + 0x3127);
+                func_80107730_modesel(0, 0x3134);
+            }
+            func_8010788C_modesel(0);
+            func_8010DC6C_modesel(cur);
+            func_80109188_modesel(cur, 8);
+            HuPrcSleep(8);
+            func_80105F84_modesel(1);
+        }
+        func_8010DFD0_modesel(cur);
+        func_8010E6D8_modesel(cur);
+        HuPrcVSleep();
+    }
+    switch (result) {
+        case 0:
+            func_80105FB4_modesel(1);
+            break;
+        case 1:
+            func_80105FB4_modesel(1);
+            func_80107700_modesel(0);
+            func_8010EC40_modesel();
+            func_80109188_modesel(-1, 20);
+            func_80109E90_modesel(9);
+            if (GwStory.unk0 != 12 || func_800465D0_main() != 0) {
+                func_8010ABB4_modesel(10);
+            }
+            HuPrcSleep(20);
+            modelId = func_8010648C_modesel(12);
+            func_80013320_main(modelId, 0);
+            Hu3DMotionTimeSet(modelId, 2.0f);
+            Hu3DMotionSpeedSet(modelId, 0.7f);
+            func_8001C814_main(modelId, 3, 0);
+            HuPrcSleep(20);
+            HuAudFXPlay(0x2E1);
+            func_80106830_modesel(3, 3);
+            HuPrcSleep(30);
+            break;
+        case 4:
+        case 6:
+        case 7:
+        case 9:
+        case 10:
+        case 13:
+            func_80105FB4_modesel(1);
+            func_80107700_modesel(0);
+            func_8010EC40_modesel();
+            func_8010E558_modesel(cur);
+            HuAudFXPlay(0x2E0);
+            func_8010A62C_modesel(cur);
+            func_80109188_modesel(-1, 20);
+            omDelObj(D_80110BD0_modesel);
+            if (GwStory.unk0 != 12 || func_800465D0_main() != 0) {
+                D_80110BD0_modesel = func_8010ABB4_modesel(10);
+            }
+            HuPrcSleep(20);
+            modelId = func_8010648C_modesel(11);
+            func_80013320_main(modelId, 0);
+            Hu3DMotionTimeSet(modelId, 0.0f);
+            Hu3DMotionSpeedSet(modelId, 0.7f);
+            func_8001C814_main(modelId, 3, 0);
+            HuPrcSleep(50);
+            func_8010ED00_modesel();
+            break;
+        case 5:
+        case 8:
+        case 11:
+            func_8010E558_modesel(5);
+            D_80110BD4_modesel->scale.x = D_80110BD4_modesel->baseScale.x = D_80110BD4_modesel->scale.y =
+                D_80110BD4_modesel->baseScale.y = D_80110BD4_modesel->scale.z = D_80110BD4_modesel->baseScale.z =
+                    1.0f;
+            HuPrcSleep(8);
+            func_80106A38_modesel(5, 0x11, 0);
+            func_801068AC_modesel(0x12, 0);
+            func_8010677C_modesel(0x12, 0);
+            func_8010673C_modesel(0x12);
+            func_80109154_modesel();
+            HuPrcSleep(4);
+            HuAudFXPlay(0x2FA);
+            func_80109444_modesel();
+            func_80106910_modesel(0x12);
+            HuPrcSleep(24);
+            func_80109408_modesel();
+            break;
+        case 14:
+            func_80105FB4_modesel(1);
+            func_80107700_modesel(0);
+            func_8010EC40_modesel();
+            func_8010E558_modesel(cur);
+            omDelObj(D_80110BD0_modesel);
+            func_8010AF18_modesel();
+            func_80109188_modesel(-1, 20);
+            HuPrcSleep(20);
+            modelId = func_8010648C_modesel(11);
+            func_80013320_main(modelId, 0);
+            Hu3DMotionTimeSet(modelId, 0.0f);
+            Hu3DMotionSpeedSet(modelId, 0.7f);
+            func_8001C814_main(modelId, 3, 0);
+            HuPrcSleep(50);
+            func_8010ED00_modesel();
+            break;
+        case 16:
+            break;
+        default:
+            while (1) {
+                HuPrcVSleep();
+            }
+    }
+    func_8010DFB4_modesel();
+    return result;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_8010C094_modesel);
 

@@ -1764,7 +1764,72 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mstory4/4C2BD0", D_80111FF8_mstory4);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mstory4/4C2BD0", D_80112008_mstory4);
 
+// Code matches, but the string literals end unaligned and the following
+// INCLUDE_RODATA D_80112088_mstory4 table is not padded back to a word
+// boundary, so rodata shifts until that table is defined in C.
+#ifdef NON_MATCHING
+void func_8010F1F4_mstory4(void) {
+    while (TRUE) {
+        if (D_800CDA7C_main[0] & 0x2000) {
+            if (D_800CDA7C_main[0] & 0x100) {
+                D_80111AD0_mstory4.x -= 10.0f;
+            }
+            if (D_800CDA7C_main[0] & 0x200) {
+                D_80111AD0_mstory4.x += 10.0f;
+            }
+        } else {
+            if (D_800CDA7C_main[0] & 0x800) {
+                D_80111AD0_mstory4.z -= 10.0f;
+            }
+            if (D_800CDA7C_main[0] & 0x400) {
+                D_80111AD0_mstory4.z += 10.0f;
+            }
+            if (D_800CDA7C_main[0] & 0x100) {
+                D_80111AD0_mstory4.y -= 10.0f;
+            }
+            if (D_800CDA7C_main[0] & 0x200) {
+                D_80111AD0_mstory4.y += 10.0f;
+            }
+        }
+        if (D_800CDA7C_main[0] & 0x2000) {
+            if (D_800CDA7C_main[0] & 1) {
+                D_80111ADC_mstory4.x -= 10.0f;
+            }
+            if (D_800CDA7C_main[0] & 2) {
+                D_80111ADC_mstory4.x += 10.0f;
+            }
+        } else {
+            if (D_800CDA7C_main[0] & 8) {
+                D_80111ADC_mstory4.z -= 10.0f;
+            }
+            if (D_800CDA7C_main[0] & 4) {
+                D_80111ADC_mstory4.z += 10.0f;
+            }
+            if (D_800CDA7C_main[0] & 1) {
+                D_80111ADC_mstory4.y -= 10.0f;
+            }
+            if (D_800CDA7C_main[0] & 2) {
+                D_80111ADC_mstory4.y += 10.0f;
+            }
+        }
+        sprintf(D_800D5218_main, "POSX   :[%f]", D_80111AD0_mstory4.x);
+        print8(24, 128, D_800D5218_main);
+        sprintf(D_800D5218_main, "POSY   :[%f]", D_80111AD0_mstory4.y);
+        print8(24, 136, D_800D5218_main);
+        sprintf(D_800D5218_main, "POSZ   :[%f]", D_80111AD0_mstory4.z);
+        print8(24, 144, D_800D5218_main);
+        sprintf(D_800D5218_main, "INTERX :[%f]", D_80111ADC_mstory4.x);
+        print8(24, 160, D_800D5218_main);
+        sprintf(D_800D5218_main, "INTERY :[%f]", D_80111ADC_mstory4.y);
+        print8(24, 168, D_800D5218_main);
+        sprintf(D_800D5218_main, "INTERZ :[%f]", D_80111ADC_mstory4.z);
+        print8(24, 176, D_800D5218_main);
+        HuPrcVSleep();
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010F1F4_mstory4);
+#endif
 
 void func_8010F588_mstory4(void) {
     omObjData *obj = D_801122A0_mstory4[1].obj;

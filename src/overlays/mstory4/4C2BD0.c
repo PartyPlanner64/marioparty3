@@ -486,26 +486,17 @@ typedef struct Unk {
     char unk_02[6];
 } Unk; // sizeof 0x8
 
-extern Unk D_80112088_mstory4[6];
+extern const Unk D_80112088_mstory4[6];
 
 extern s16 D_80112330_mstory4;
 extern s16 D_80112378_mstory4[];
 extern s16 D_801123A4_mstory4;
 
-#ifdef NON_MATCHING
 void func_8010FC98_mstory4(void) {
     omObjData *temp_s5;
     omObjData *temp_s7;
-    s32 temp_s4;
-    s32 var_a3;
-    s32 var_s0;
-    s32 var_s1;
-    s32 var_s1_2;
-    s32 var_s2;
     s32 var_s3;
-    s32 var_v0;
     u16 temp_fp;
-    u16 *temp_s0;
     s32 i, j;
 
     temp_s5 = D_801122A0_mstory4.obj;
@@ -523,18 +514,16 @@ void func_8010FC98_mstory4(void) {
 
     D_80111AC4_mstory4 = 1;
     var_s3 = 0;
-    func_800E4F50_name_81((u8 *)hvq_data_ROM_START);
+    func_800E4F50_name_81(hvq_data_ROM_START);
     MBDBackCreate(0x20, 0);
     func_8010EF28_mstory4(7);
     for (i = 0; i < 6; i++) {
-        // if (D_80112088_mstory4[i].unk_00 > 0) {
-        for (j = 0, temp_s4 = D_80112088_mstory4[i].unk_00; j < temp_s4; var_s3++, j++) {
+        for (j = 0; j < D_80112088_mstory4[i].unk_00; var_s3++, j++) {
             espBankSet(D_80112378_mstory4[var_s3], 0, 0);
             func_8000BDDC_main(D_80112378_mstory4[var_s3], 1);
             espDispOff(D_80112378_mstory4[var_s3]);
             espKill(D_80112378_mstory4[var_s3]);
         }
-        // }
     }
 
     HuSprAnimKill(D_801123A4_mstory4);
@@ -585,10 +574,6 @@ void func_8010FC98_mstory4(void) {
         HuPrcSleep(2);
     }
 }
-
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_8010FC98_mstory4);
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C2BD0", func_80110270_mstory4);
 

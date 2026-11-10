@@ -153,7 +153,23 @@ Process *func_801060E0_duel05(GW_PLAYER *player, Object *obj, s32 delay, s32 wai
     return process;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_8010616C_duel05);
+void func_8010616C_duel05(Object *obj, Object *target, GW_PLAYER *player, Vec *targetPos, Vec *origPos, f32 dist) {
+    Vec offset;
+    f32 angle;
+
+    HuVecCopy3F(origPos, &obj->coords);
+    if (target != NULL) {
+        HuVecCopy3F(targetPos, &target->coords);
+    } else {
+        HuVecCopy3F(targetPos, &player->player_obj->coords);
+    }
+    func_800EB708_name_81(&obj->coords, targetPos, &obj->rot);
+    angle = func_800D76D0_name_81(&obj->rot) + 180.0f;
+    offset.x = sindf(angle) * dist;
+    offset.y = 0.0f;
+    offset.z = cosdf(angle) * dist;
+    HuVecAdd(targetPos, targetPos, &offset);
+}
 
 void func_80106250_duel05(void) {
     func_800FC8C4_name_81(&D_80105540_name_81);

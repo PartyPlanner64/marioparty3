@@ -106,6 +106,11 @@ Process *func_800E0924_name_81(void);
 extern s32 D_80101200_shared_board[];
 extern Object *D_801163B4_duel05;
 extern Object *D_801163B0_duel05;
+void func_800D6CA0_name_81(UnkEA790Struct *win);
+extern s16 D_80115B80_duel05[];
+extern DecisionTreeNonLeafNode D_80115A18_duel05[];
+extern s16 D_80115B98_duel05[];
+extern DecisionTreeNonLeafNode D_80115B50_duel05[];
 extern s32 D_801156B8_duel05[];
 extern Object *D_801163B8_duel05;
 extern s8 *D_801157F8_duel05[];
@@ -4047,9 +4052,69 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_80113C7C_duel05);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_80114428_duel05);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_80114BD4_duel05);
+void func_80114BD4_duel05(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    UnkEA790Struct *win;
+    s32 count;
+    s32 sel;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_80114D24_duel05);
+    if (MBDMasuLinkMasuIdGet(player->blink, player->bidx) == 0x12) {
+        return;
+    }
+    func_800F38DC_name_81(-1, -1, 2);
+    func_800ECD88_name_81(CUR_PLAYER, 2, 0);
+    HuPrcVSleep();
+    func_80105A58_duel05();
+    win = func_800D76A0_name_81(GwSystem.current_player_index, D_80115B80_duel05);
+    func_800D742C_name_81(win, GwSystem.current_player_index, 0);
+    if (func_800F37B8_name_81(CUR_PLAYER)) {
+        count = func_800D97B0_name_81(D_80115A18_duel05);
+        for (i = 0; i < count; i++) {
+            func_800D7250_name_81(win, -2);
+        }
+        func_800D7250_name_81(win, -4);
+    }
+    sel = func_800D7518_name_81(win);
+    func_800D6CA0_name_81(win);
+    func_80105B10_duel05();
+    if (sel != 0) {
+        func_800ECD88_name_81(CUR_PLAYER, 1, 0);
+        func_800ED788_name_81(GwSystem.current_player_index);
+    }
+}
+
+void func_80114D24_duel05(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    UnkEA790Struct *win;
+    s32 count;
+    s32 sel;
+    s32 i;
+
+    if (MBDMasuLinkMasuIdGet(player->blink, player->bidx) == 0x1C) {
+        return;
+    }
+    func_800F38DC_name_81(-1, -1, 2);
+    func_800ECD88_name_81(CUR_PLAYER, 5, 0);
+    HuPrcVSleep();
+    func_80105A58_duel05();
+    win = func_800D76A0_name_81(GwSystem.current_player_index, D_80115B98_duel05);
+    func_800D742C_name_81(win, GwSystem.current_player_index, 0);
+    if (func_800F37B8_name_81(CUR_PLAYER)) {
+        count = func_800D97B0_name_81(D_80115B50_duel05);
+        for (i = 0; i < count; i++) {
+            func_800D7250_name_81(win, -2);
+        }
+        func_800D7250_name_81(win, -4);
+    }
+    sel = func_800D7518_name_81(win);
+    func_800D6CA0_name_81(win);
+    func_80105B10_duel05();
+    if (sel != 0) {
+        func_800ECD88_name_81(CUR_PLAYER, 4, 0);
+        func_800ED788_name_81(GwSystem.current_player_index);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_80114E74_duel05);
 

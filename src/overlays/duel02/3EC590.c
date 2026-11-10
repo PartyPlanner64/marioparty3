@@ -138,6 +138,15 @@ extern s16 D_80117140_duel02[];
 extern char D_80117128_duel02[];
 extern Object *D_80117620_duel02;
 extern Object *D_80117638_duel02[2];
+void func_800D6CA0_name_81(UnkEA790Struct *win);
+extern s16 D_80116F28_duel02[];
+extern DecisionTreeNonLeafNode D_801169A0_duel02[];
+extern s16 D_80116F40_duel02[];
+extern DecisionTreeNonLeafNode D_80116B68_duel02[];
+extern s16 D_80116F58_duel02[];
+extern DecisionTreeNonLeafNode D_80116D30_duel02[];
+extern s16 D_80116F70_duel02[];
+extern DecisionTreeNonLeafNode D_80116EF8_duel02[];
 extern Process *D_80117624_duel02;
 extern s32 D_801165C0_duel02[];
 extern s16 D_80117158_duel02[];
@@ -4046,13 +4055,151 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_80114B94_duel02);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_801154DC_duel02);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_80115A54_duel02);
+void func_80115A54_duel02(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    s32 space = MBDMasuLinkMasuIdGet(player->blink, player->bidx);
+    UnkEA790Struct *win;
+    s32 count;
+    s32 sel;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_80115BDC_duel02);
+    if (space == 7) {
+        return;
+    }
+    if (space == 0x28) {
+        func_800ECD88_name_81(CUR_PLAYER, 1, 0);
+        return;
+    }
+    func_800F38DC_name_81(-1, -1, 2);
+    func_800ECD88_name_81(CUR_PLAYER, 1, 0);
+    HuPrcVSleep();
+    func_80105A58_duel02();
+    win = func_800D76A0_name_81(GwSystem.current_player_index, D_80116F28_duel02);
+    func_800D742C_name_81(win, GwSystem.current_player_index, 0);
+    if (func_800F37B8_name_81(CUR_PLAYER)) {
+        count = func_800D97B0_name_81(D_801169A0_duel02);
+        for (i = 0; i < count; i++) {
+            func_800D7250_name_81(win, -2);
+        }
+        func_800D7250_name_81(win, -4);
+    }
+    sel = func_800D7518_name_81(win);
+    func_800D6CA0_name_81(win);
+    func_80105B10_duel02();
+    if (sel != 0) {
+        func_800E9F4C_name_81(0x28, &player->nlink, &player->nidx);
+        func_800ED788_name_81(GwSystem.current_player_index);
+        func_800E9F4C_name_81(0x13, &player->nnlink, &player->nnidx);
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_80115D64_duel02);
+void func_80115BDC_duel02(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    s32 space = MBDMasuLinkMasuIdGet(player->blink, player->bidx);
+    UnkEA790Struct *win;
+    s32 count;
+    s32 sel;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_80115EE4_duel02);
+    if (space == 0x19) {
+        return;
+    }
+    if (space == 0x26) {
+        func_800ECD88_name_81(CUR_PLAYER, 0, 0);
+        return;
+    }
+    func_800F38DC_name_81(-1, -1, 2);
+    func_800ECD88_name_81(CUR_PLAYER, 0, 0);
+    HuPrcVSleep();
+    func_80105A58_duel02();
+    win = func_800D76A0_name_81(GwSystem.current_player_index, D_80116F40_duel02);
+    func_800D742C_name_81(win, GwSystem.current_player_index, 0);
+    if (func_800F37B8_name_81(CUR_PLAYER)) {
+        count = func_800D97B0_name_81(D_80116B68_duel02);
+        for (i = 0; i < count; i++) {
+            func_800D7250_name_81(win, -2);
+        }
+        func_800D7250_name_81(win, -4);
+    }
+    sel = func_800D7518_name_81(win);
+    func_800D6CA0_name_81(win);
+    func_80105B10_duel02();
+    if (sel != 0) {
+        func_800E9F4C_name_81(0x26, &player->nlink, &player->nidx);
+        func_800ED788_name_81(GwSystem.current_player_index);
+        func_800E9F4C_name_81(0xE, &player->nnlink, &player->nnidx);
+    }
+}
+
+void func_80115D64_duel02(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    s32 space = MBDMasuLinkMasuIdGet(player->blink, player->bidx);
+    UnkEA790Struct *win;
+    s32 count;
+    s32 sel;
+    s32 i;
+
+    if (space == 0x1F) {
+        func_800ECD88_name_81(CUR_PLAYER, 3, 0);
+        return;
+    }
+    func_800F38DC_name_81(-1, -1, 2);
+    func_800ECD88_name_81(CUR_PLAYER, 3, 0);
+    HuPrcVSleep();
+    func_80105A58_duel02();
+    win = func_800D76A0_name_81(GwSystem.current_player_index, D_80116F58_duel02);
+    func_800D742C_name_81(win, GwSystem.current_player_index, 0);
+    if (func_800F37B8_name_81(CUR_PLAYER)) {
+        count = func_800D97B0_name_81(D_80116D30_duel02);
+        for (i = 0; i < count; i++) {
+            func_800D7250_name_81(win, -2);
+        }
+        func_800D7250_name_81(win, -4);
+    }
+    sel = func_800D7518_name_81(win);
+    func_800D6CA0_name_81(win);
+    func_80105B10_duel02();
+    if (sel != 0) {
+        func_800E9F4C_name_81(0x1F, &player->nlink, &player->nidx);
+        func_800ED788_name_81(GwSystem.current_player_index);
+        func_800E9F4C_name_81(0x19, &player->nnlink, &player->nnidx);
+    }
+}
+
+void func_80115EE4_duel02(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    s32 space = MBDMasuLinkMasuIdGet(player->blink, player->bidx);
+    UnkEA790Struct *win;
+    s32 count;
+    s32 sel;
+    s32 i;
+
+    if (space == 0x29) {
+        func_800ECD88_name_81(CUR_PLAYER, 2, 0);
+        return;
+    }
+    func_800F38DC_name_81(-1, -1, 2);
+    func_800ECD88_name_81(CUR_PLAYER, 2, 0);
+    HuPrcVSleep();
+    func_80105A58_duel02();
+    win = func_800D76A0_name_81(GwSystem.current_player_index, D_80116F70_duel02);
+    func_800D742C_name_81(win, GwSystem.current_player_index, 0);
+    if (func_800F37B8_name_81(CUR_PLAYER)) {
+        count = func_800D97B0_name_81(D_80116EF8_duel02);
+        for (i = 0; i < count; i++) {
+            func_800D7250_name_81(win, -2);
+        }
+        func_800D7250_name_81(win, -4);
+    }
+    sel = func_800D7518_name_81(win);
+    func_800D6CA0_name_81(win);
+    func_80105B10_duel02();
+    if (sel != 0) {
+        func_800E9F4C_name_81(0x29, &player->nlink, &player->nidx);
+        func_800ED788_name_81(GwSystem.current_player_index);
+        func_800E9F4C_name_81(7, &player->nnlink, &player->nnidx);
+    }
+}
 
 void func_80116064_duel02(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);

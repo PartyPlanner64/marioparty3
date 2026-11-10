@@ -217,6 +217,7 @@ void func_800E9B10_name_81(s32, s16);
 void func_800EA760_name_81(void);
 void func_800ECD0C_name_81(s16 playerIdx, s16 nlink, s16 nidx);
 void func_800ECD88_name_81(s16 playerIdx, s16 nlink, s16 nidx);
+void func_800ED788_name_81(s32 playerIndex);
 UnkEA790Struct *func_800D76A0_name_81(s16 playerNo, s16 *choices);
 s32 func_800D742C_name_81(UnkEA790Struct *win, s16 playerNo, s32 arg2);
 s32 func_800D7250_name_81(UnkEA790Struct *win, s32 input);

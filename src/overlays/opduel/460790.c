@@ -1,7 +1,43 @@
 #include "common.h"
 #include "../ovl_81_name/ovl_81.h"
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opduel/460790", func_801059A0_opduel);
+extern u32 D_8010934C_opduel[];
+extern u32 *D_8010940C_opduel[];
+extern u8 D_80109570_opduel;
+
+void func_80108FDC_opduel(void);
+void func_801090AC_opduel(omObjData *obj);
+void func_801090F8_opduel(void);
+void func_80109158_opduel(void);
+
+void func_801059A0_opduel(void) {
+    GW_PLAYER *player;
+    s32 i;
+    s32 j;
+
+    D_80109570_opduel = GwSystem.current_board_index;
+    omInitObjMan(50, 20);
+    HmfLightColorSet(1, 255, 255, 255);
+    HmfLightColorSet(2, 200, 200, 200);
+    func_80109158_opduel();
+    func_801090F8_opduel();
+    func_800D87DC_name_81(700.0f);
+    func_800D85A8_name_81(1.6f);
+    HuWinInit();
+    omAddPrcObj(func_80108FDC_opduel, 0x300, 0x2000, 0);
+    omAddObj(0x1000, 0, 0, -1, func_801090AC_opduel);
+    for (j = 0; j < 2; j++) {
+        player = MBDGetPlayerStruct(j);
+        player->stats.partners.frontID = -1;
+        player->stats.partners.backID = -1;
+    }
+    for (i = 1; i < 8; i++) {
+        for (j = 0; j < D_8010934C_opduel[0]; j++) {
+            D_8010940C_opduel[i][j + 1] = func_80017BB8_main(i, D_8010934C_opduel[j + 1]);
+        }
+    }
+    func_8004A208_main();
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opduel/460790", func_80105B3C_opduel);
 

@@ -250,7 +250,34 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010AAB0_duel01);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010AD48_duel01);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010AFB4_duel01);
+void func_8010AFB4_duel01(void) {
+    UnkDuelObjData *data;
+    void *sprData;
+    s32 i;
+
+    func_800142A0_main(0x1A);
+    D_8011948C_duel01 = omAddObj(0x1F4, 0, 0, -1, func_8010B130_duel01);
+    data = D_8011948C_duel01->data = HuMemAllocTag(sizeof(UnkDuelObjData), 0x7918);
+    sprData = DataRead(0xB0047);
+    for (i = 0; i < ARRAY_COUNT(data->unk_1A0); i++) {
+        if (i == 0) {
+            data->unk_1A0[0] = Hu3DSprModelCreate(sprData, 0x1A0D, 8);
+        } else {
+            data->unk_1A0[i] = func_80014618_main(data->unk_1A0[0], 8);
+        }
+        func_800146DC_main(data->unk_1A0[i], 6, 0x180);
+        data->unk_1C0[i] = D_800CBB60_main[data->unk_1A0[i]].modelId;
+        func_800147FC_main(data->unk_1A0[i], 0xFF, 0x40, 8);
+        func_80014794_main(data->unk_1A0[i], 0xC8);
+        func_8001C2FC_main(data->unk_1C0[i], 0x70000000, 0x70000000);
+    }
+    DataClose(sprData);
+    for (i = 0; i < ARRAY_COUNT(data->unk_180); i++) {
+        data->unk_180[i] = 0;
+    }
+    D_8011948C_duel01->work[0] = 0;
+    data->unk_1E0 = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_8010B130_duel01);
 

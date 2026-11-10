@@ -1,4 +1,5 @@
 #include "common.h"
+#include "../ovl_81_name/ovl_81.h"
 
 typedef struct Duel03CamShakeWork {
     /* 0x00 */ s32 angle;
@@ -23,11 +24,8 @@ typedef struct Duel03SwayWork {
     /* 0x04 */ char unk_04[0xC];
 } Duel03SwayWork; // sizeof 0x10
 
-typedef void (*PartnerFunc)(s16, s32, Object *, Object *, s32, s32);
 
-void func_800FC8C4_name_81(Vec *arg0);
 void *memcpy(void *, const void *, unsigned int);
-extern Vec D_80105540_name_81;
 extern s16 D_80117C18_duel03[];
 extern void func_8010E1B8_duel03(void);
 extern void func_80105CC4_duel03(void);
@@ -39,28 +37,18 @@ extern Object *D_801180F0_duel03;
 void func_8010D9F8_duel03(void);
 void func_800FF640_name_81(s32);
 f32 func_800D76D0_name_81(Vec *);
-void func_80100CEC_name_81(s32 padIdx);
-s32 func_800E1824_name_81(s32, s32, s32);
 s32 func_800E88FC_name_81(void);
-void func_800E1854_name_81(s32);
 extern s32 D_801180C0_duel03;
 extern s32 D_801180C4_duel03;
 extern s32 D_801180C8_duel03;
 extern s32 D_801180CC_duel03;
 void func_800EB708_name_81(Vec *, Vec *, Vec *);
-void func_800EC1E4_name_81(Vec *, Vec *, Vec *, f32);
 void func_800EBF2C_name_81(Vec *, Vec *, Vec *);
-Object *func_800D8010_name_81(s32, s32);
-void func_800D8944_name_81(Object *);
-void func_800D8F0C_name_81(Object *);
-void func_800D8E88_name_81(void);
-s16 MBDGetCurrentPlayerIndex(void);
 void func_800F38DC_name_81(s32, s32, s32);
 void func_8010FE9C_duel03(s32);
 void func_800E18C0_name_81(void);
 void func_800E1960_name_81(void);
 void func_800E1F38_name_81(void);
-void func_800ED214_name_81(s32 playerIndex);
 void func_800E14D8_name_81(s32, s32);
 void func_800F7378_name_81(s32, s32);
 void func_80105F24_duel03(void);
@@ -221,7 +209,7 @@ Object *func_80106744_duel03(s32 arg0) {
 }
 
 void func_801067D8_duel03(Object *arg0, Vec *arg1) {
-    func_800D8E88_name_81();
+    func_800D8E88_name_81(arg0);
     func_8001C814_main(arg0->omObj1->model[0], 3, 0);
     HuVecCopy3F(&arg0->coords, arg1);
 }

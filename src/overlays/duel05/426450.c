@@ -1,4 +1,5 @@
 #include "common.h"
+#include "../ovl_81_name/ovl_81.h"
 
 typedef struct Duel05CamShakeWork {
     /* 0x00 */ s32 magnitude;
@@ -23,44 +24,31 @@ typedef struct Duel05SwayWork {
     /* 0x04 */ char unk_04[0xC];
 } Duel05SwayWork; // sizeof 0x10
 
-void func_800FC8C4_name_81(Vec *arg0);
 void *memcpy(void *, const void *, unsigned int);
-extern Vec D_80105540_name_81;
 extern s16 D_80115EB8_duel05[];
 void func_8010E1C4_duel05(void);
 extern void func_80105CD0_duel05(void);
 extern void func_80106318_duel05(void);
 extern void func_8010E7D0_duel05(void);
-s16 MBDGetCurrentPlayerIndex(void);
 void func_800ECD88_name_81(s16 playerIdx, s16 nlink, s16 nidx);
-void func_800F8C68_name_81(s32 playerIndex);
 extern omObjData *D_801163BC_duel05;
 extern Object *D_801163C8_duel05;
 extern Object *D_801163D0_duel05;
 void func_8010DA04_duel05(void);
 void func_800FF640_name_81(s32);
 f32 func_800D76D0_name_81(Vec *);
-void func_80100CEC_name_81(s32 padIdx);
-s32 func_800E1824_name_81(s32, s32, s32);
 s32 func_800E88FC_name_81(void);
-void func_800E1854_name_81(s32);
 extern s32 D_801163A0_duel05;
 extern s32 D_801163A4_duel05;
 extern s32 D_801163A8_duel05;
 extern s32 D_801163AC_duel05;
 void func_800EB708_name_81(Vec *, Vec *, Vec *);
-void func_800EC1E4_name_81(Vec *, Vec *, Vec *, f32);
 void func_800EBF2C_name_81(Vec *, Vec *, Vec *);
-Object *func_800D8010_name_81(s32, s32);
-void func_800D8944_name_81(Object *);
-void func_800D8F0C_name_81(Object *);
-void func_800D8E88_name_81(void);
 void func_800F38DC_name_81(s32, s32, s32);
 void func_80110038_duel05(s32);
 void func_800E18C0_name_81(void);
 void func_800E1960_name_81(void);
 void func_800E1F38_name_81(void);
-void func_800ED214_name_81(s32 playerIndex);
 void func_800E14D8_name_81(s32, s32);
 void func_800F7378_name_81(s32, s32);
 void func_80105F30_duel05(void);
@@ -208,7 +196,7 @@ Object *func_80106750_duel05(s32 arg0) {
 }
 
 void func_801067E4_duel05(Object *arg0, Vec *arg1) {
-    func_800D8E88_name_81();
+    func_800D8E88_name_81(arg0);
     func_8001C814_main(arg0->omObj1->model[0], 3, 0);
     HuVecCopy3F(&arg0->coords, arg1);
 }

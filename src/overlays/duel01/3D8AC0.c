@@ -4275,9 +4275,146 @@ s32 func_80117480_duel01(void) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_80117624_duel01);
+void func_80117624_duel01(void) {
+    s32 index = MBDGetCurrentPlayerIndex();
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    u8 playerBits[4];
+    s16 comKeys[4];
+    s16 choice;
+    s16 spaceIndex = MBDMasuLinkMasuIdGet(player->blink, player->bidx);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_801179AC_duel01);
+    if (spaceIndex == 1) {
+        return;
+    }
+    if (spaceIndex == 0x13) {
+        func_800ECD88_name_81(-1, 1, 0);
+        func_8010EB44_duel01(0);
+        return;
+    }
+    func_800ECD88_name_81(-1, 1, 0);
+    func_800F38DC_name_81(-1, -1, 2);
+    func_800EBDDC_name_81(-1, 8, 0x23);
+    HuPrcSleep(8);
+    func_800DB3E0_name_81(index);
+    if (player->coin < 5) {
+        func_800EB140_name_81(0x12, 0x2103);
+    } else {
+        memcpy(playerBits, D_80118FE4_duel01, sizeof(playerBits));
+        memcpy(comKeys, D_80118FE8_duel01, sizeof(comKeys));
+    retry:
+        func_800EB1D8_name_81(0x12, 0x2100);
+        if (!func_800F37B8_name_81(index)) {
+            HuWinActivePlayerSet(D_8010555C_name_81, playerBits[GwPlayer[index].pad]);
+            comKeys[GwPlayer[index].pad] = -1;
+            HuWinComKeySet(comKeys[0], comKeys[1], comKeys[2], comKeys[3]);
+        } else {
+            if (func_800D97B0_name_81(D_80118AEC_duel01) == 0) {
+                comKeys[GwPlayer[index].pad] = 0x400;
+                HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], func_800EED50_name_81());
+            }
+            comKeys[GwPlayer[index].pad] = -0x8000;
+            HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], func_800EED50_name_81());
+            func_8005B63C_main(D_8010555C_name_81, 2, 2);
+        }
+        choice = HuWinChoiceGet(D_8010555C_name_81, 0, 1);
+        comKeys[GwPlayer[index].pad] = 0;
+        func_800EB278_name_81();
+        func_800EB29C_name_81();
+        if (choice == 2) {
+            func_801059D0_duel01();
+            goto retry;
+        }
+        if (choice == 3) {
+            mbItemBtnF = 0;
+            func_800FB524_name_81(index);
+            mbItemBtnF = 1;
+            goto retry;
+        }
+        if (choice == 0) {
+            func_800E14D8_name_81(index, -5);
+            func_800F7378_name_81(index, -5);
+            HuPrcSleep(30);
+            func_800ECD88_name_81(-1, 2, 0);
+            func_800ED788_name_81(index);
+            func_800EB140_name_81(0x12, 0x2101);
+            func_8010EAD4_duel01(0);
+        } else {
+            func_800EB140_name_81(0x12, 0x2102);
+        }
+    }
+    func_800DADA0_name_81(index);
+}
+
+void func_801179AC_duel01(void) {
+    s32 index = MBDGetCurrentPlayerIndex();
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    u8 playerBits[4];
+    s16 comKeys[4];
+    s16 choice;
+    s16 spaceIndex = MBDMasuLinkMasuIdGet(player->blink, player->bidx);
+
+    if (spaceIndex == 0xD) {
+        return;
+    }
+    if (spaceIndex == 0xF) {
+        func_800ECD88_name_81(-1, 0, 0);
+        func_8010EB44_duel01(1);
+        return;
+    }
+    func_800F38DC_name_81(-1, -1, 2);
+    func_800ECD88_name_81(-1, 0, 0);
+    func_800EBDDC_name_81(-1, 8, 0x20);
+    HuPrcSleep(8);
+    func_800DB3E0_name_81(index);
+    if (player->coin < 5) {
+        func_800EB140_name_81(0x12, 0x2103);
+    } else {
+        memcpy(playerBits, D_80118FE4_duel01, sizeof(playerBits));
+        memcpy(comKeys, D_80118FE8_duel01, sizeof(comKeys));
+    retry:
+        func_800EB1D8_name_81(0x12, 0x2100);
+        if (!func_800F37B8_name_81(index)) {
+            HuWinActivePlayerSet(D_8010555C_name_81, playerBits[GwPlayer[index].pad]);
+            comKeys[GwPlayer[index].pad] = -1;
+            HuWinComKeySet(comKeys[0], comKeys[1], comKeys[2], comKeys[3]);
+        } else {
+            if (func_800D97B0_name_81(D_80118CC0_duel01) == 0) {
+                comKeys[GwPlayer[index].pad] = 0x400;
+                HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], func_800EED50_name_81());
+            }
+            comKeys[GwPlayer[index].pad] = -0x8000;
+            HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], func_800EED50_name_81());
+            func_8005B63C_main(D_8010555C_name_81, 2, 2);
+        }
+        choice = HuWinChoiceGet(D_8010555C_name_81, 0, 1);
+        comKeys[GwPlayer[index].pad] = 0;
+        func_800EB278_name_81();
+        func_800EB29C_name_81();
+        if (choice == 2) {
+            func_801059D0_duel01();
+            goto retry;
+        }
+        if (choice == 3) {
+            mbItemBtnF = 0;
+            func_800FB524_name_81(index);
+            mbItemBtnF = 1;
+            goto retry;
+        }
+        if (choice == 0) {
+            func_800E14D8_name_81(index, -5);
+            func_800F7378_name_81(index, -5);
+            HuPrcSleep(30);
+            func_800ECD88_name_81(-1, 2, 5);
+            func_800ECDE8_name_81();
+            func_800ED788_name_81(index);
+            func_800EB140_name_81(0x12, 0x2101);
+            func_8010EAD4_duel01(1);
+        } else {
+            func_800EB140_name_81(0x12, 0x2102);
+        }
+    }
+    func_800DADA0_name_81(index);
+}
 
 void func_80117D3C_duel01(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);

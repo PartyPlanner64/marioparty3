@@ -217,6 +217,7 @@ void func_800E9B10_name_81(s32, s16);
 void func_800EA760_name_81(void);
 void func_800ECD0C_name_81(s16 playerIdx, s16 nlink, s16 nidx);
 void func_800ECD88_name_81(s16 playerIdx, s16 nlink, s16 nidx);
+Process *func_800EBDDC_name_81(s16 playerIndex, s32 time, s16 spaceIndex);
 void func_800ED788_name_81(s32 playerIndex);
 void func_800ECDE8_name_81(void);
 void func_800ECE10_name_81(void);

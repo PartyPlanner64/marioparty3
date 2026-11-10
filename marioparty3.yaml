@@ -2207,7 +2207,7 @@ segments:
     subsegments:
       - [0x460790, c]
       - [0x463FF0, data, 460790] #80109200
-      - [0x4642E0, .rodata, 460790] #801094F0
+      - [0x464280, .rodata, 460790] #80109490
       - {0x464360, type: bss, vram: 0x80109570, name: opduel_bss}
 
   - type: code

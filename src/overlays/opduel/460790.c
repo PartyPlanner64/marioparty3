@@ -18,6 +18,8 @@ extern GW_PLAYER *D_80109574_opduel[2];
 
 void func_80105E20_opduel(s16 model);
 void func_80106070_opduel(omObjData *obj);
+void func_801066B8_opduel(void);
+void func_80106D18_opduel(void);
 void func_80108FDC_opduel(void);
 void func_80109050_opduel(omObjData *obj);
 void func_801090AC_opduel(omObjData *obj);
@@ -244,7 +246,48 @@ void func_80106294_opduel(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opduel/460790", func_80106350_opduel);
+void func_80106350_opduel(void) {
+    s32 titleFiles[] = { 0x130022, 0x130023, 0x130024, 0x130025, 0x130026, 0x130027 };
+    s32 subtitleFiles[] = { 0x130028, 0x130029, 0x13002A, 0x13002B, 0x13002C, 0x13002D };
+    void *data;
+    f32 amplitude;
+    f32 angle;
+
+    HuPrcSleep(10);
+    D_8010921C_opduel = func_800F4528_name_81(1, 0);
+    data = DataRead(titleFiles[D_80109570_opduel]);
+    D_8010921C_opduel->unk_0C[0] = HuSprAnimRead(data);
+    DataClose(data);
+    HuSprGrpMemberSet(D_8010921C_opduel->unk_0A, 0, D_8010921C_opduel->unk_0C[0], 0);
+    HuSprPriSet(D_8010921C_opduel->unk_0A, 0, 10);
+    HuSprAttrSet(D_8010921C_opduel->unk_0A, 0, 0);
+    HuSprPosSet(D_8010921C_opduel->unk_0A, 0, 160, 100);
+    HuSprScaleSet(D_8010921C_opduel->unk_0A, 0, 0.0f, 0.0f);
+    for (amplitude = 0.5f, angle = 0.0f; angle <= 720.0f; angle += 45.0f) {
+        HuSprScaleSet(D_8010921C_opduel->unk_0A, 0,
+                      sindf(angle) * amplitude + 1.0f, sindf(angle) * amplitude + 1.0f);
+        amplitude -= 0.03125f;
+        if (amplitude < 0.0f) {
+            amplitude = 0.0f;
+        }
+        HuPrcVSleep();
+    }
+    HuPrcSleep(20);
+    HuSprScaleSet(D_8010921C_opduel->unk_0A, 0, 1.0f, 1.0f);
+    D_80109220_opduel = func_800F4528_name_81(1, 0);
+    data = DataRead(subtitleFiles[D_80109570_opduel]);
+    D_80109220_opduel->unk_0C[0] = HuSprAnimRead(data);
+    DataClose(data);
+    HuSprGrpMemberSet(D_80109220_opduel->unk_0A, 0, D_80109220_opduel->unk_0C[0], 0);
+    HuSprPriSet(D_80109220_opduel->unk_0A, 0, 9);
+    HuSprAttrSet(D_80109220_opduel->unk_0A, 0, 0);
+    HuSprPosSet(D_80109220_opduel->unk_0A, 0, 160, 130);
+    HuPrcSleep(75);
+    func_800F4584_name_81(D_80109220_opduel);
+    func_800F4584_name_81(D_8010921C_opduel);
+    D_80109220_opduel = NULL;
+    D_8010921C_opduel = NULL;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opduel/460790", func_801066B8_opduel);
 
@@ -253,11 +296,24 @@ void func_80106CB4_opduel(omObjData *obj) {
     obj->rot.y += 5.0f;
 }
 
+INCLUDE_RODATA("asm/nonmatchings/overlays/opduel/460790", D_801094C0_opduel);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/opduel/460790", D_801094D8_opduel);
+
 INCLUDE_RODATA("asm/nonmatchings/overlays/opduel/460790", D_801094F0_opduel);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/opduel/460790", func_80106D18_opduel);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/opduel/460790", func_80108FDC_opduel);
+void func_80108FDC_opduel(void) {
+    D_80109218_opduel = omAddPrcObj(func_801066B8_opduel, 0x300, 0x2000, 0);
+    HuPrcChildLink(HuPrcCurrentGet(), D_80109218_opduel);
+    HuPrcChildWatch();
+    func_80106D18_opduel();
+    D_800D530C_main = 1;
+    while (1) {
+        HuPrcVSleep();
+    }
+}
 
 void func_80109050_opduel(omObjData *obj) {
     if (WipeStatGet() == 0) {

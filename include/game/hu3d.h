@@ -609,7 +609,7 @@ void func_8001E888_main(s16 idx, f32 x, f32 y, u16 width, u16 height, const char
 void func_8001EBC0_main(s16 idx, char *name, u8 r, u8 g, u8 b, u8 reset);
 void func_8001ED54_main(s16 idx);
 void Hu3DFogClear(void);
-void Hu3DModelHookSet(s16 idx, s16 parentIdx, char *name);
+void Hu3DModelHookSet(s16 idx, s16 parentIdx, const char *name);
 void func_8001EFEC_main(s16 idx, char *name);
 void func_8001F038_main(HmfModel *model, u16 speed);
 void func_8001F154_main(HmfModel *model);

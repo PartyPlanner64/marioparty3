@@ -1581,7 +1581,7 @@ void Hu3DFogClear(void) {
     D_800CE1C6_main = 0;
 }
 
-void Hu3DModelHookSet(s16 idx, s16 parentIdx, char *name) {
+void Hu3DModelHookSet(s16 idx, s16 parentIdx, const char *name) {
     HmfData *hmf = Hu3DData[parentIdx].hmf;
     s16 node = func_8002C834_main(hmf, name);
 

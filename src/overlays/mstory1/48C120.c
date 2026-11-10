@@ -28,6 +28,7 @@ extern s32 D_80114A80_mstory1;
 extern s32 D_80114A84_mstory1;
 extern s8 D_80114A88_mstory1;
 extern s32 D_80114AB0_mstory1;
+extern s32 D_80114AC0_mstory1;
 extern Vec D_80114E40_mstory1;
 extern Vec D_80114E4C_mstory1;
 extern Vec D_80114F00_mstory1;
@@ -40,6 +41,7 @@ extern u16 D_801158B8_mstory1;
 extern s32 D_801158B4_mstory1;
 extern s32 D_801158E4_mstory1;
 extern UnkStoryObj D_801158F0_mstory1[7];
+extern s16 D_80115A10_mstory1;
 
 void func_80105FF4_mstory1(void);
 void func_80106B14_mstory1(omObjData *obj, const Vec *pos, s32 frames);
@@ -48,6 +50,17 @@ void func_80106D80_mstory1(omObjData *obj, Vec *pos, s32 frames, s32 arg3);
 void func_8010704C_mstory1(omObjData *obj, Vec *pos, s32 frames);
 s32 func_8010726C_mstory1(s16 model);
 void func_801081D8_mstory1(omObjData *obj);
+void func_80106984_mstory1(void);
+void func_801081E0_mstory1(void);
+void func_80109140_mstory1(void);
+void func_801099F8_mstory1(void);
+void func_80109DC0_mstory1(void);
+void func_8010A424_mstory1(void);
+void func_8010AA98_mstory1(void);
+void func_8010B110_mstory1(void);
+void func_8010B3B8_mstory1(void);
+void func_8010B4E4_mstory1(void);
+void func_8010BC68_mstory1(void);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mstory1/48C120", D_80114C50_mstory1);
 
@@ -293,7 +306,22 @@ void func_8010806C_mstory1(MstoryPath *path) {
     HuMemFree(path);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_8010809C_mstory1);
+void func_8010809C_mstory1(void) {
+    func_80106984_mstory1();
+    D_80115A10_mstory1 = func_8000B108_main(9, 0x2B9);
+    omAddPrcObj(func_801081E0_mstory1, 0x1001, 0x800, 0);
+    omAddPrcObj(func_80109140_mstory1, 0x1001, 0x800, 0);
+    omAddPrcObj(func_801099F8_mstory1, 0x1001, 0x800, 0);
+    omAddPrcObj(func_80109DC0_mstory1, 0x1001, 0x800, 0);
+    omAddPrcObj(func_8010A424_mstory1, 0x1001, 0x800, 0);
+    omAddPrcObj(func_8010AA98_mstory1, 0x1001, 0x800, 0);
+    omAddPrcObj(func_8010B110_mstory1, 0x1001, 0x800, 0);
+    omAddPrcObj(func_8010B3B8_mstory1, 0x1001, 0x800, 0);
+    omAddPrcObj(func_8010B4E4_mstory1, 0x384, 0x800, 0);
+    omAddPrcObj(func_8010BC68_mstory1, 0x384, 0x800, 0);
+    HuPrcVSleep();
+    func_8001C258_main(D_80115A10_mstory1, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+}
 
 void func_801081D8_mstory1(omObjData *obj) {
 }
@@ -501,7 +529,26 @@ void func_8010B384_mstory1(omObjData *obj) {
     D_801158F0_mstory1[6].func = func_801081D8_mstory1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_8010B3B8_mstory1);
+void func_8010B3B8_mstory1(void) {
+    f32 angle = 0.0f;
+    Vec pos;
+    f32 ofs;
+    s16 model;
+
+    if (D_80114AC0_mstory1 != 0) {
+        model = D_801158F0_mstory1[6].obj->model[1];
+        pos.y = Hu3DData[model].pos.y;
+        while (TRUE) {
+            pos.x = Hu3DData[model].pos.x;
+            pos.z = Hu3DData[model].pos.z;
+            ofs = sindf(angle) * 25.0f + 25.0f;
+            angle += 2.0f;
+            angle = (angle >= 360.0f) ? angle - 360.0f : angle;
+            Hu3DModelPosSet(model, pos.x, ofs + pos.y, pos.z);
+            HuPrcVSleep();
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/mstory1/48C120", func_8010B4E4_mstory1);
 

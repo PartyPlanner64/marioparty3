@@ -131,6 +131,8 @@ void func_800FAE18_name_81(Object *, s32, s32);
 extern s16 D_80117C00_duel03[];
 extern char D_80117BD8_duel03[];
 extern Object *D_801180E0_duel03;
+extern Process *D_801180E4_duel03;
+extern s32 D_80117450_duel03[];
 extern s16 D_80117C18_duel03[];
 extern void func_8010E1B8_duel03(void);
 extern void func_80105CC4_duel03(void);
@@ -140,6 +142,10 @@ extern omObjData *D_801180DC_duel03;
 extern Object *D_801180E8_duel03;
 extern Object *D_801180F0_duel03;
 void func_8010D9F8_duel03(void);
+void func_8010DCAC_duel03(void);
+void func_8010DD40_duel03(void);
+void func_8010E34C_duel03(void);
+void func_8010EA1C_duel03(void);
 void func_800FF640_name_81(s32);
 f32 func_800D76D0_name_81(Vec *);
 s32 func_800E88FC_name_81(void);
@@ -151,6 +157,7 @@ void func_800EB708_name_81(Vec *, Vec *, Vec *);
 Process *func_800EBF2C_name_81(Vec *, Vec *, Vec *, s32);
 void func_800F38DC_name_81(s32, s32, s32);
 void func_8010FE9C_duel03(s32);
+void func_8011725C_duel03(s8 *, s8 *);
 void func_800E18C0_name_81(void);
 void func_800E1960_name_81(void);
 void func_800E1F38_name_81(void);
@@ -2465,7 +2472,19 @@ void func_8010D960_duel03(void) {
     func_800FAC94_name_81(attackFuncs, otherFuncs);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_8010D9F8_duel03);
+void func_8010D9F8_duel03(void) {
+    omInitObjMan(0xA0, 0x50);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightColorSet(2, 0xC8, 0xC8, 0xC8);
+    func_800FC260_name_81(0x1A, 0x243, 0);
+    func_800EA7D4_name_81();
+    func_800EA97C_name_81();
+    func_8010DCAC_duel03();
+    func_8010DD40_duel03();
+    func_8010E34C_duel03();
+    func_8010EA1C_duel03();
+    func_8010D960_duel03();
+}
 
 void func_8010DA88_duel03(void) {
     if (GwSystem.playMode & 4) {
@@ -2513,7 +2532,17 @@ void func_8010DC08_duel03(void) {
     node->baseRot.y = (GwSystem.bank_coins - 5) * 60;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_8010DCAC_duel03);
+void func_8010DCAC_duel03(void) {
+    Object *obj = func_800D8010_name_81(0x34, D_80117450_duel03);
+
+    func_800D8944_name_81(obj);
+    D_801180E0_duel03 = obj;
+    obj->flags |= 2;
+    HuVecCopy3F(&obj->coords, &MBDMasuGet(0x1A)->coords);
+    func_8010DC08_duel03();
+    D_801180E4_duel03 = omAddPrcObj(func_8010DB30_duel03, 0xA, 0, 0);
+    omPrcSetStatBit(D_801180E4_duel03, 0xA0);
+}
 
 void func_8010DD40_duel03(void) {
     Object *obj;
@@ -3632,7 +3661,22 @@ void func_801123C4_duel03(void) {
     HuPrcSleep(30);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel03/3FE1F0", func_80112400_duel03);
+void func_80112400_duel03(void) {
+    s8 nnlink;
+    s8 nnidx;
+    s8 link2 = -1;
+    s8 idx2 = -1;
+
+    if (MBDGetCurrentPlayerIndex() == 0) {
+        func_800E9F4C_name_81(0x18, &nnlink, &nnidx);
+    } else {
+        func_800E9F4C_name_81(0x17, &nnlink, &nnidx);
+    }
+    func_8011725C_duel03(&link2, &idx2);
+    func_800E24AC_name_81(nnlink, nnidx, link2, idx2);
+    func_800ED214_name_81(GwSystem.current_player_index);
+    func_8010FE9C_duel03(MBDGetCurrentPlayerIndex());
+}
 
 void func_80112480_duel03(void) {
     GW_PLAYER *player;
@@ -4010,7 +4054,7 @@ void func_80117210_duel03(void) {
     }
 }
 
-void func_8011725C_duel03(void) {
+void func_8011725C_duel03(s8 *arg0, s8 *arg1) {
 }
 
 s32 func_80117264_duel03(void) {

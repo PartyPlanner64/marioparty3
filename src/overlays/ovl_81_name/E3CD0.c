@@ -131,7 +131,7 @@ void func_800FC198_name_81(omObjData *obj) {
     }
 }
 
-void func_800FC260_name_81(s32 arg0, s16 arg1) {
+void func_800FC260_name_81(s32 arg0, s16 arg1, s32 arg2) {
     Process *temp_v0_2;
     UnkOvl81_1 *temp_v0_3;
     s32 frontPartnerID;

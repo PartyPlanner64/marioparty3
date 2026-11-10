@@ -137,6 +137,8 @@ void func_800FAE18_name_81(Object *, s32, s32);
 extern s16 D_80117140_duel02[];
 extern char D_80117128_duel02[];
 extern Object *D_80117620_duel02;
+extern Process *D_80117624_duel02;
+extern s32 D_801165C0_duel02[];
 extern s16 D_80117158_duel02[];
 extern void func_8010E1B8_duel02(void);
 extern void func_80105CC4_duel02(void);
@@ -147,6 +149,10 @@ extern omObjData *D_8011761C_duel02;
 extern Object *D_80117628_duel02;
 extern Object *D_80117630_duel02;
 void func_8010D9F8_duel02(void);
+void func_8010DCAC_duel02(void);
+void func_8010DD40_duel02(void);
+void func_8010E34C_duel02(void);
+void func_8010EA10_duel02(void);
 void func_800FF640_name_81(s32);
 f32 func_800D76D0_name_81(Vec *);
 s32 func_800E88FC_name_81(void);
@@ -2473,7 +2479,19 @@ void func_8010D960_duel02(void) {
     func_800FAC94_name_81(attackFuncs, otherFuncs);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010D9F8_duel02);
+void func_8010D9F8_duel02(void) {
+    omInitObjMan(0xA0, 0x50);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightColorSet(2, 0xC8, 0xC8, 0xC8);
+    func_800FC260_name_81(0x19, 0x242, 0);
+    func_800EA7D4_name_81();
+    func_800EA97C_name_81();
+    func_8010DCAC_duel02();
+    func_8010DD40_duel02();
+    func_8010E34C_duel02();
+    func_8010EA10_duel02();
+    func_8010D960_duel02();
+}
 
 void func_8010DA88_duel02(void) {
     if (GwSystem.playMode & 4) {
@@ -2521,7 +2539,17 @@ void func_8010DC08_duel02(void) {
     node->baseRot.y = (GwSystem.bank_coins - 5) * 60;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_8010DCAC_duel02);
+void func_8010DCAC_duel02(void) {
+    Object *obj = func_800D8010_name_81(0x34, D_801165C0_duel02);
+
+    func_800D8944_name_81(obj);
+    D_80117620_duel02 = obj;
+    obj->flags |= 2;
+    HuVecCopy3F(&obj->coords, &MBDMasuGet(0x20)->coords);
+    func_8010DC08_duel02();
+    D_80117624_duel02 = omAddPrcObj(func_8010DB30_duel02, 0xA, 0, 0);
+    omPrcSetStatBit(D_80117624_duel02, 0xA0);
+}
 
 void func_8010DD40_duel02(void) {
     Object *obj;

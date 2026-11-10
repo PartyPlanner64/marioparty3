@@ -144,6 +144,8 @@ void func_8010BCE4_duel05(s32, s32, Object *, Object *, s32, s32);
 void func_8010CE78_duel05(s32, s32, Object *, Object *, s32, s32);
 void func_8010D434_duel05(s32, s32, Object *, Object *, s32, s32);
 extern Object *D_801163C0_duel05;
+extern Process *D_801163C4_duel05;
+extern s32 D_801156D0_duel05[];
 extern s16 D_80115EB8_duel05[];
 void func_8010E1C4_duel05(void);
 extern void func_80105CD0_duel05(void);
@@ -154,6 +156,10 @@ extern omObjData *D_801163BC_duel05;
 extern Object *D_801163C8_duel05;
 extern Object *D_801163D0_duel05;
 void func_8010DA04_duel05(void);
+void func_8010DCB8_duel05(void);
+void func_8010DD4C_duel05(void);
+void func_8010E358_duel05(void);
+void func_8010EAFC_duel05(void);
 void func_800FF640_name_81(s32);
 f32 func_800D76D0_name_81(Vec *);
 s32 func_800E88FC_name_81(void);
@@ -2469,7 +2475,19 @@ void func_8010D96C_duel05(void) {
     func_800FAC94_name_81(attackFuncs, otherFuncs);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_8010DA04_duel05);
+void func_8010DA04_duel05(void) {
+    omInitObjMan(0xA0, 0x50);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightColorSet(2, 0xC8, 0xC8, 0xC8);
+    func_800FC260_name_81(0x1C, 0x245, 0);
+    func_800EA7D4_name_81();
+    func_800EA97C_name_81();
+    func_8010DCB8_duel05();
+    func_8010DD4C_duel05();
+    func_8010E358_duel05();
+    func_8010EAFC_duel05();
+    func_8010D96C_duel05();
+}
 
 void func_8010DA94_duel05(void) {
     if (GwSystem.playMode & 4) {
@@ -2517,7 +2535,17 @@ void func_8010DC14_duel05(void) {
     node->baseRot.y = (GwSystem.bank_coins - 5) * 60;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel05/426450", func_8010DCB8_duel05);
+void func_8010DCB8_duel05(void) {
+    Object *obj = func_800D8010_name_81(0x34, D_801156D0_duel05);
+
+    func_800D8944_name_81(obj);
+    D_801163C0_duel05 = obj;
+    obj->flags |= 2;
+    HuVecCopy3F(&obj->coords, &MBDMasuGet(0x23)->coords);
+    func_8010DC14_duel05();
+    D_801163C4_duel05 = omAddPrcObj(func_8010DB3C_duel05, 0xA, 0, 0);
+    omPrcSetStatBit(D_801163C4_duel05, 0xA0);
+}
 
 void func_8010DD4C_duel05(void) {
     Object *obj;

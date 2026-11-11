@@ -9,6 +9,9 @@
 #include "math.h"
 #include "overlays/minigame.h"
 
+extern f32 D_800CB890_main;
+extern u8 D_800CE20A_main;
+extern f32 D_800D5210_main;
 extern u8 D_800D6A90_main;
 
 extern Vec D_80109740_dizzy_dinghies[];
@@ -57,12 +60,55 @@ extern s32 D_80109E34_dizzy_dinghies;
 extern s32 D_8010A020_dizzy_dinghies;
 extern Vec D_8010A028_dizzy_dinghies[20];
 
+void func_80105CAC_dizzy_dinghies(omObjData *object);
 void func_80105EB4_dizzy_dinghies(omObjData *object);
 void func_80106970_dizzy_dinghies(omObjData *object);
+void func_80107098_dizzy_dinghies(omObjData *object);
 void func_80107738_dizzy_dinghies(omObjData *object, u16 player);
+void func_80107DE8_dizzy_dinghies(omObjData *object);
+void func_80109420_dizzy_dinghies(omObjData *object);
 void func_80108E30_dizzy_dinghies(Vec *origin, Vec *p, Vec *q, Vec *out);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", func_801059A0_dizzy_dinghies);
+void func_801059A0_dizzy_dinghies(void) {
+    u8 camIndex;
+
+    func_8001FE20_main(50);
+    func_80021BE0_main(&D_800EBEB0_minigame, 0x40);
+    func_800142A0_main(32);
+    omInitObjMan(50, 0);
+    func_8004A208_main();
+    func_800E1804_minigame();
+    func_8000B5F0_main(1);
+    camIndex = func_8000B638_main();
+    ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
+    ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
+    Hu3DCameraPerspectiveSet(0, 20.0f, 80.0f, 8000.0f);
+    D_800D5210_main = 20000.0f;
+    D_800CB890_main = 12000.0f;
+    Hu3DBGColorSet(0, 0, 64);
+    Hu3DGLightMaxSet(2);
+    Hu3DGLightDirSet(1, -98.0f, 14.0f, 66.0f);
+    Hu3DGLightDirSet(2, -84.0f, 83.0f, 12.0f);
+    Hu3DGLightColorSet(1, 64, 64, 64);
+    Hu3DGLightColorSet(2, 230, 230, 230);
+    D_800EC1B8_minigame = 0;
+    D_800EC280_minigame = 0;
+    D_800EBE28_minigame = 0;
+    func_800E18D8_minigame();
+    D_800EB77C_minigame = 0.0f;
+    func_800E1490_minigame(D_800EBE28_minigame);
+    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(1, 40, 0, -1, func_80107098_dizzy_dinghies);
+    D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(3, 13, 0, -1, func_80107DE8_dizzy_dinghies);
+    omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    omSetStatBit(omAddObj(4, 0, 0, -1, func_80105CAC_dizzy_dinghies), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    omSetStatBit(omAddObj(100, 0, 0, -1, func_80109420_dizzy_dinghies), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    D_800EB73C_minigame = 10.0f;
+    WipeCreateIn(WIPE_TYPE_PREV, 16);
+    func_800E5EA0_minigame(&D_80109D3C_dizzy_dinghies);
+    D_800EB930_minigame = 50;
+    D_800EB932_minigame = 72;
+    D_801097EC_dizzy_dinghies = D_800CE20A_main;
+}
 
 void func_80105CAC_dizzy_dinghies(omObjData *object) {
     func_800E1BA8_minigame_ObjData *work = D_800EC598_minigame[0]->data;

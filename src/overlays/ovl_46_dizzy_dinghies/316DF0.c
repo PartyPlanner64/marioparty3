@@ -81,6 +81,8 @@ extern Vec D_80109FC0_dizzy_dinghies[6];
 extern f32 D_8010A008_dizzy_dinghies[6];
 extern s32 D_8010A020_dizzy_dinghies;
 extern Vec D_8010A028_dizzy_dinghies[20];
+extern s32 D_8010A118_dizzy_dinghies;
+extern s32 D_8010A11C_dizzy_dinghies;
 
 extern char D_80109F50_dizzy_dinghies[]; // "atama_2"
 
@@ -92,6 +94,9 @@ void func_80107098_dizzy_dinghies(omObjData *object);
 void func_80107738_dizzy_dinghies(omObjData *object, u16 player);
 void func_80107DE8_dizzy_dinghies(omObjData *object);
 void func_801085F4_dizzy_dinghies(omObjData *object);
+void func_80108EC4_dizzy_dinghies(omObjData *object, f32 x, f32 z);
+f32 func_80109238_dizzy_dinghies(omObjData *object, f32 x, f32 y, f32 z);
+void func_801095D4_dizzy_dinghies(omObjData *object);
 void func_80109420_dizzy_dinghies(omObjData *object);
 void func_80108E30_dizzy_dinghies(Vec *origin, Vec *p, Vec *q, Vec *out);
 
@@ -742,7 +747,7 @@ void func_80107E04_dizzy_dinghies(omObjData *object, f32 speed) {
     }
 }
 
-s32 func_80108488_dizzy_dinghies(omObjData *object, s16 value) {
+s32 func_80108488_dizzy_dinghies(s32 player, s16 value) {
     s32 sum;
     u8 i;
 
@@ -757,7 +762,7 @@ s32 func_80108488_dizzy_dinghies(omObjData *object, s16 value) {
     return sum / 20;
 }
 
-void func_80108514_dizzy_dinghies(omObjData *object, f32 arg1, Vec *out) {
+void func_80108514_dizzy_dinghies(s32 player, f32 speed, Vec *out) {
     s32 i;
 
     out->x = out->y = out->z = 0.0f;
@@ -774,7 +779,170 @@ void func_80108514_dizzy_dinghies(omObjData *object, f32 arg1, Vec *out) {
     out->z /= 20.0f;
 }
 
+// Only mismatch: float register allocation for the int->float conversion when computing `turn`.
+#ifdef NON_MATCHING
+void func_801085F4_dizzy_dinghies(omObjData *object) {
+    func_800E1BA8_minigame_ObjData *work;
+    HmfMotionNode *node;
+    Vec vel;
+    Vec drift;
+    s16 stickX;
+    s16 stickY;
+    s32 player;
+    s32 pad;
+    s32 mode;
+    f32 speed;
+    f32 turn;
+    f32 x, y, z;
+    f32 dist;
+    f32 motTime;
+
+    work = object->data;
+    D_800EBE2C_minigame = D_800EC5D8_minigame = 0.0f;
+    player = work->unk59;
+    pad = work->unk57;
+    speed = work->unk40;
+    D_80109794_dizzy_dinghies.x = x = object->trans.x;
+    D_80109794_dizzy_dinghies.y = y = object->trans.y;
+    D_80109794_dizzy_dinghies.z = z = object->trans.z;
+    D_8010A118_dizzy_dinghies = (u16)D_800CDA7C_main[pad];
+    D_8010A11C_dizzy_dinghies = D_800CBB6E_main[pad];
+    D_800CBB6E_main[pad] = 0;
+    D_800CDA7C_main[pad] = 0;
+    mode = func_800E6E8C_minigame();
+    if (mode == 2) {
+        stickX = D_8010A11C_dizzy_dinghies;
+        stickY = 0;
+        if (stickX > 60) {
+            stickX = 60;
+        }
+        if (stickY > 60) {
+            stickY = 60;
+        }
+        if (stickX < -60) {
+            stickX = -60;
+        }
+        if (stickY < -60) {
+            stickY = -60;
+        }
+        func_800E2308_minigame(&stickX, &stickY);
+    } else {
+        stickY = 0;
+        stickX = 0;
+        D_8010A118_dizzy_dinghies = 0;
+        if (mode == 3) {
+            if (work->unk3C > 180.0f) {
+                work->unk3C += 2.0f;
+                if (work->unk3C > 360.0f) {
+                    work->unk3C = 0.0f;
+                }
+            } else {
+                work->unk3C -= 2.0f;
+                if (work->unk3C < 0.0f) {
+                    work->unk3C = 0.0f;
+                }
+            }
+        }
+    }
+    if (D_8010A118_dizzy_dinghies & 0x8000) {
+        if (speed == 0.0f) {
+            speed = 1.0f;
+        }
+        speed *= 1.08f;
+        D_801097B0_dizzy_dinghies *= D_80109774_dizzy_dinghies;
+    } else {
+        speed *= D_80109778_dizzy_dinghies;
+        D_801097B0_dizzy_dinghies *= 0.9f;
+    }
+    turn = func_80108488_dizzy_dinghies(player, stickX) / 15.0f;
+    if (speed < 1.0f) {
+        speed = 0.0f;
+    }
+    if (speed > D_80109770_dizzy_dinghies) {
+        speed = D_80109770_dizzy_dinghies;
+    }
+    if (D_801097B0_dizzy_dinghies < 0.05f) {
+        D_801097B0_dizzy_dinghies = 0.05f;
+    }
+    if (D_801097B0_dizzy_dinghies > 1.0f) {
+        D_801097B0_dizzy_dinghies = 1.0f;
+    }
+    if (D_801097E8_dizzy_dinghies != -1) {
+        HuAudFXPitchSet((s16)D_801097E8_dizzy_dinghies, (s16)(D_801097B0_dizzy_dinghies * 400.0f + -400.0f));
+    }
+    work->unk40 = speed;
+    vel.x = sindf(work->unk3C) * (speed * D_801097B0_dizzy_dinghies);
+    vel.y = 0.0f;
+    vel.z = cosdf(work->unk3C) * (speed * D_801097B0_dizzy_dinghies);
+    work->unk3C = func_800202A8_main(work->unk3C - turn);
+    func_80108514_dizzy_dinghies(player, speed, &drift);
+    drift.x += vel.x;
+    drift.z += vel.z;
+    dist = HuSqrtf(drift.x * drift.x + drift.z * drift.z);
+    if (speed < dist) {
+        drift.x *= speed / dist;
+        drift.z *= speed / dist;
+    }
+    x += D_801097A0_dizzy_dinghies.x * D_801097AC_dizzy_dinghies + drift.x;
+    z += D_801097A0_dizzy_dinghies.z * D_801097AC_dizzy_dinghies + drift.z;
+    y = func_80109238_dizzy_dinghies(object, x, 0.0f, z);
+    D_80109788_dizzy_dinghies.x = x - D_80109794_dizzy_dinghies.x;
+    D_80109788_dizzy_dinghies.y = 0.0f;
+    D_80109788_dizzy_dinghies.z = z - D_80109794_dizzy_dinghies.z;
+    x += D_800EBE2C_minigame;
+    z += D_800EC5D8_minigame;
+    D_801097D8_dizzy_dinghies -= (object->trans.x - x) * 32.0f / 1000.0f;
+    D_801097DC_dizzy_dinghies += (object->trans.z - z) * 32.0f / 1000.0f;
+    func_80108EC4_dizzy_dinghies(object, x, z);
+    speed = work->unk40;
+    func_80088910_main(Hu3DData[object->model[0]].mtx, 0.0f, work->unk3C, 0.0f);
+    func_800E17D4_minigame(object, x, y - 40.0f, z);
+    func_80107E04_dizzy_dinghies(object, D_801097B0_dizzy_dinghies);
+    if (D_801097AC_dizzy_dinghies != 0.0f) {
+        D_801097AC_dizzy_dinghies *= 0.9f;
+        if (D_801097AC_dizzy_dinghies < 1.0f) {
+            D_801097AC_dizzy_dinghies = 0.0f;
+        }
+    }
+    motTime = Hu3DData[object->model[0]].motTime;
+    if (abs(stickX) < 10) {
+        if (motTime > 5.0f) {
+            motTime *= 0.9f;
+            if (motTime < 5.0f) {
+                motTime = 5.0f;
+            }
+        } else {
+            motTime *= 1.1f;
+            if (motTime > 5.0f) {
+                motTime = 5.0f;
+            }
+            if (motTime < 1.0f) {
+                motTime = 1.0f;
+            }
+        }
+    } else {
+        motTime -= stickX / 100.0f;
+    }
+    if (motTime < 0.0f) {
+        motTime = 0.0f;
+    }
+    if (motTime > 10.0f) {
+        motTime = 10.0f;
+    }
+    Hu3DMotionTimeSet(object->model[0], motTime);
+    func_801095D4_dizzy_dinghies(object);
+    D_800CDA7C_main[pad] = D_8010A118_dizzy_dinghies;
+    D_800CBB6E_main[pad] = D_8010A11C_dizzy_dinghies;
+    node = func_8001D33C_main(object->model[0], D_80109F50_dizzy_dinghies);
+    if (node != (HmfMotionNode *)-1) {
+        node->scale.x = node->scale.y = node->scale.z = node->baseScale.x = node->baseScale.y = node->baseScale.z =
+            D_801097E4_dizzy_dinghies;
+    }
+    func_800EA178_minigame(0, speed);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", func_801085F4_dizzy_dinghies);
+#endif
 
 void func_80108E30_dizzy_dinghies(Vec *origin, Vec *p, Vec *q, Vec *out) {
     f32 ax = p->x - origin->x;

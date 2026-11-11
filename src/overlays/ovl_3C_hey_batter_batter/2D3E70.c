@@ -25,6 +25,14 @@ typedef struct HeyBatterBatterCamera {
     /* 0x10 */ Vec center;
 } HeyBatterBatterCamera; // Size 0x1C
 
+extern s16 D_80109EA0_hey_batter_batter;
+extern s16 D_80109EA2_hey_batter_batter;
+extern s16 D_80109EA4_hey_batter_batter;
+extern s16 D_80109EA6_hey_batter_batter;
+extern s16 D_80109EA8_hey_batter_batter;
+extern s16 D_80109EAA_hey_batter_batter;
+extern s16 D_80109EAC_hey_batter_batter;
+extern s16 D_80109EAE_hey_batter_batter;
 extern HeyBatterBatterCamera D_80109EB4_hey_batter_batter;
 extern s32 D_800A178C_main[][6];
 extern u16 D_800A11D0_main[5];
@@ -52,6 +60,17 @@ extern Vec D_80109C4C_hey_batter_batter[5];
 extern s16 D_80109C88_hey_batter_batter;
 extern s16 D_80109C8A_hey_batter_batter;
 extern s16 D_80109C8C_hey_batter_batter;
+extern s16 D_80109C8E_hey_batter_batter;
+extern f32 D_80109C90_hey_batter_batter;
+extern s16 D_80109C94_hey_batter_batter;
+extern s16 D_80109C96_hey_batter_batter;
+extern f32 D_80109C98_hey_batter_batter;
+extern f32 D_80109C9C_hey_batter_batter;
+extern f32 D_80109CA0_hey_batter_batter;
+extern s16 D_80109CA4_hey_batter_batter;
+extern Vec D_80109CA8_hey_batter_batter[7];
+extern s16 D_80109CFC_hey_batter_batter;
+extern f32 D_80109D00_hey_batter_batter;
 extern Vec D_80109D04_hey_batter_batter[5];
 extern s32 D_80109D40_hey_batter_batter[20];
 extern s16 D_80109D90_hey_batter_batter;
@@ -691,7 +710,206 @@ void func_801079D0_hey_batter_batter(omObjData *object) {
     object->func = func_80107C48_hey_batter_batter;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3C_hey_batter_batter/2D3E70", func_80107C48_hey_batter_batter);
+void func_80107C48_hey_batter_batter(omObjData *object) {
+    f32 scale;
+
+    if (D_80109C8E_hey_batter_batter != D_80109EDA_hey_batter_batter) {
+        switch (D_80109EDA_hey_batter_batter) {
+            case 2:
+            case 4:
+                Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[D_80109EDA_hey_batter_batter]].motId, 0,
+                                   30, 0);
+                break;
+            case 0:
+            case 1:
+            case 3:
+                Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[D_80109EDA_hey_batter_batter]].motId, 0,
+                                   30, 2);
+                break;
+            case 5:
+                Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[D_80109EDA_hey_batter_batter]].motId, 0,
+                                   10, 0);
+                Hu3DMotionSpeedSet(object->model[0], 0.0f);
+                Hu3DMotionTimeSet(object->model[0], 0.0f);
+                break;
+        }
+        D_80109C8E_hey_batter_batter = D_80109EDA_hey_batter_batter;
+    }
+    if (D_80109ED8_hey_batter_batter == 1 && Hu3DData[object->model[0]].motTime >= 26.0f) {
+        HuAudFXPlay(0x4D1);
+        Hu3DModelCameraSet(object->model[1], 0);
+        D_80109EDE_hey_batter_batter = 1;
+        D_80109ED8_hey_batter_batter = 0;
+        D_80109C98_hey_batter_batter = 30.0f;
+        D_80109CA0_hey_batter_batter = rand8() % 50 + 100.0f;
+    }
+    if (D_80109EDE_hey_batter_batter == 1) {
+        switch (D_80109C94_hey_batter_batter) {
+            case 0:
+                Hu3DModelPosSet(object->model[3], -30.0f, 70.0f, -1015.0f);
+                Hu3DModelCameraSet(object->model[3], 1);
+                Hu3DModelCameraSet(object->model[4], 1);
+                D_80109C90_hey_batter_batter = 1.0f;
+                D_80109C96_hey_batter_batter = 0;
+                D_80109EAE_hey_batter_batter = 0;
+                D_80109C94_hey_batter_batter++;
+                break;
+            case 1:
+                Hu3DData[object->model[3]].pos.z += D_80109C9C_hey_batter_batter / D_80109C98_hey_batter_batter;
+                if (Hu3DData[object->model[3]].pos.y > 50.0f) {
+                    Hu3DData[object->model[3]].pos.y =
+                        sindf(90.0f / (D_80109C98_hey_batter_batter / 2.0f) * D_80109C90_hey_batter_batter) *
+                            D_80109CA0_hey_batter_batter +
+                        70.0f;
+                } else {
+                    Hu3DData[object->model[3]].pos.y = 50.0f;
+                }
+                Hu3DData[object->model[3]].rot.x += 30.0f;
+                if (D_80109EAE_hey_batter_batter == 0) {
+                    if (GwPlayer[D_80109ED0_hey_batter_batter].stat & 1) {
+                        if (D_80109C90_hey_batter_batter == D_80109ED6_hey_batter_batter) {
+                            D_80109EAE_hey_batter_batter = 1;
+                            HuAudFXPlay(0x4D0);
+                            D_80109ED2_hey_batter_batter = 4;
+                            if (D_80109C98_hey_batter_batter - 11.0f <= D_80109C90_hey_batter_batter &&
+                                D_80109C90_hey_batter_batter < D_80109C98_hey_batter_batter - 4.0f) {
+                                D_80109CFC_hey_batter_batter =
+                                    D_80109C98_hey_batter_batter - D_80109C90_hey_batter_batter - 5.0f;
+                                D_80109CA4_hey_batter_batter = 1;
+                            } else {
+                                D_80109CA4_hey_batter_batter = 0;
+                            }
+                        }
+                    } else if (D_800D5558_main[GwPlayer[D_80109ED0_hey_batter_batter].pad] & A_BUTTON) {
+                        D_80109EAE_hey_batter_batter = 1;
+                        HuAudFXPlay(0x4D0);
+                        D_80109ED2_hey_batter_batter = 4;
+                        if (D_80109C98_hey_batter_batter - 11.0f <= D_80109C90_hey_batter_batter &&
+                            D_80109C90_hey_batter_batter < D_80109C98_hey_batter_batter - 4.0f) {
+                            omVibrate(D_80109ED0_hey_batter_batter, 2, 2, 20);
+                            D_80109CFC_hey_batter_batter =
+                                D_80109C98_hey_batter_batter - D_80109C90_hey_batter_batter - 5.0f;
+                            D_80109CA4_hey_batter_batter = 1;
+                        } else {
+                            D_80109CA4_hey_batter_batter = 0;
+                        }
+                    }
+                }
+                if (D_80109CA4_hey_batter_batter == 1 && ++D_80109C96_hey_batter_batter == 8) {
+                    D_80109C94_hey_batter_batter++;
+                    break;
+                }
+                if (Hu3DData[object->model[3]].pos.z >= 500.0f) {
+                    Hu3DModelCameraSet(object->model[3], 0);
+                    D_80109C94_hey_batter_batter++;
+                }
+                D_80109C90_hey_batter_batter += 1.0f;
+                break;
+            case 2:
+                if (D_80109CA4_hey_batter_batter == 1) {
+                    if (D_80109CFC_hey_batter_batter == 0 || D_80109CFC_hey_batter_batter == 6) {
+                        HuAudFXPlay(0x4D9);
+                    } else {
+                        HuAudFXPlay(0x4D2);
+                    }
+                    HuAudFXPlay(0x4D6);
+                    D_80109C94_hey_batter_batter++;
+                } else if (D_80109CA4_hey_batter_batter == 0) {
+                    D_80109EDE_hey_batter_batter = 2;
+                    D_80109ED4_hey_batter_batter = 2;
+                    break;
+                }
+            case 3:
+                D_80109EA0_hey_batter_batter = Hu3DData[object->model[3]].pos.x;
+                D_80109EA2_hey_batter_batter = Hu3DData[object->model[3]].pos.y;
+                D_80109EA4_hey_batter_batter = Hu3DData[object->model[3]].pos.z;
+                Hu3DModelPosSet(object->model[3], D_80109EA0_hey_batter_batter, D_80109EA2_hey_batter_batter,
+                                D_80109EA4_hey_batter_batter);
+                D_80109EA6_hey_batter_batter = (D_80109CA8_hey_batter_batter[D_80109CFC_hey_batter_batter].x + rand8() % 50 -
+                                                D_80109EA0_hey_batter_batter) /
+                                               10.0f;
+                D_80109EA8_hey_batter_batter = (D_80109CA8_hey_batter_batter[D_80109CFC_hey_batter_batter].y + rand8() % 50 -
+                                                D_80109EA2_hey_batter_batter) /
+                                               10.0f;
+                D_80109EAA_hey_batter_batter =
+                    (D_80109CA8_hey_batter_batter[D_80109CFC_hey_batter_batter].z - D_80109EA4_hey_batter_batter) / 10.0f;
+                D_80109C98_hey_batter_batter = 10.0f;
+                D_80109C90_hey_batter_batter = 0.0f;
+                D_80109CA0_hey_batter_batter = rand8() % 200;
+                D_80109C94_hey_batter_batter++;
+                D_80109D00_hey_batter_batter = -2.0f;
+                D_80109EAC_hey_batter_batter = 0;
+            case 4:
+            case 6:
+                if (D_80109CFC_hey_batter_batter >= 1 && D_80109CFC_hey_batter_batter <= 5) {
+                    Hu3DData[object->model[3]].pos.x += D_80109EA6_hey_batter_batter;
+                    Hu3DData[object->model[3]].pos.y += D_80109EA8_hey_batter_batter;
+                    Hu3DData[object->model[3]].pos.z += D_80109EAA_hey_batter_batter;
+                    Hu3DData[object->model[3]].rot.x -= 50.0f;
+                    if (D_80109C98_hey_batter_batter == D_80109C90_hey_batter_batter) {
+                        HuAudFXPlay(0x4D3);
+                        D_80109C94_hey_batter_batter++;
+                        break;
+                    }
+                    D_80109C90_hey_batter_batter += 1.0f;
+                    break;
+                }
+                if (D_80109EAC_hey_batter_batter == 10) {
+                    D_80109EDA_hey_batter_batter = 5;
+                }
+                if (D_80109CFC_hey_batter_batter == 0) {
+                    Hu3DData[object->model[3]].pos.z =
+                        D_80109EA4_hey_batter_batter +
+                        sindf(D_80109EAC_hey_batter_batter * 0.75f) * (D_80109EA4_hey_batter_batter + -1300.0f);
+                } else {
+                    Hu3DData[object->model[3]].pos.z =
+                        D_80109EA4_hey_batter_batter +
+                        sindf(D_80109EAC_hey_batter_batter * 0.75f) * (D_80109EA4_hey_batter_batter + -860.0f);
+                }
+                if (Hu3DData[object->model[3]].pos.y >= 0.0f) {
+                    Hu3DData[object->model[3]].pos.y +=
+                        D_80109D00_hey_batter_batter * D_80109D00_hey_batter_batter *
+                        (D_80109D00_hey_batter_batter >= 0.0f ? -35.0f : 35.0f);
+                    if (D_80109D00_hey_batter_batter >= 1.4f) {
+                        D_80109D00_hey_batter_batter = 1.4f;
+                    } else {
+                        D_80109D00_hey_batter_batter += 0.055f;
+                    }
+                }
+                if (D_80109EAC_hey_batter_batter == 75) {
+                    Hu3DMotionSpeedSet(object->model[0], 1.0f);
+                }
+                if (D_80109EAC_hey_batter_batter == 80) {
+                    HuAudFXPlay(0x4D4);
+                    Hu3DModelCameraSet(object->model[1], 1);
+                    Hu3DModelCameraSet(object->model[4], 0);
+                    Hu3DModelCameraSet(object->model[3], 0);
+                }
+                if (D_80109EAC_hey_batter_batter++ >= 85) {
+                    D_80109C94_hey_batter_batter = 5;
+                    Hu3DModelCameraSet(object->model[1], 1);
+                }
+                break;
+            case 5:
+                if (D_80109CFC_hey_batter_batter >= 1 && D_80109CFC_hey_batter_batter <= 5) {
+                    Hu3DModelCameraSet(object->model[3], 0);
+                    Hu3DModelCameraSet(object->model[4], 0);
+                    D_80109ED4_hey_batter_batter = 1;
+                    D_80109EF0_hey_batter_batter = D_80109CFC_hey_batter_batter - 1;
+                    D_80109EEE_hey_batter_batter = 1;
+                } else {
+                    D_80109ED4_hey_batter_batter = 2;
+                }
+                D_80109EDE_hey_batter_batter = 2;
+                D_80109C94_hey_batter_batter = 0;
+                D_80109C90_hey_batter_batter = 0.0f;
+                break;
+        }
+    }
+    scale = 1.0f - Hu3DData[object->model[3]].pos.y * 0.0005f;
+    Hu3DModelPosSet(object->model[4], Hu3DData[object->model[3]].pos.x, 10.0f, Hu3DData[object->model[3]].pos.z);
+    Hu3DModelScaleSet(object->model[4], scale, scale, scale);
+}
 
 void func_80108B48_hey_batter_batter(omObjData *object) {
     s16 i;

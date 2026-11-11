@@ -612,13 +612,12 @@ void func_801083C0_picture_imperfect(s8 player) {
     }
 }
 
-#ifdef NON_MATCHING
 void func_80108688_picture_imperfect(omObjData *object) {
     func_800E1BA8_minigame_ObjData *playerData;
     PictureImperfectWork *work;
     s8 player;
     s16(*sprites)[5];
-    s32 delay;
+    s16 delay;
     s8 i;
 
     playerData = object->data;
@@ -628,16 +627,15 @@ void func_80108688_picture_imperfect(omObjData *object) {
         case 0:
             sprites = D_8010A168_picture_imperfect;
             switch (D_8010A150_picture_imperfect) {
-                case 2:
-                    delay = 6;
+                case 0:
+                default:
+                    delay = 10;
                     break;
                 case 1:
                     delay = 8;
                     break;
-                case 0:
-                    delay = 10;
-                    break;
-                default:
+                case 2:
+                    delay = 6;
                     break;
             }
             break;
@@ -663,7 +661,7 @@ void func_80108688_picture_imperfect(omObjData *object) {
         case 3:
             sprites = D_8010A1E0_picture_imperfect;
             if (D_8010A150_picture_imperfect == 0) {
-                delay = 10;
+                delay = 6;
             } else {
                 delay = 4;
             }
@@ -746,9 +744,6 @@ void func_80108688_picture_imperfect(omObjData *object) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1E_picture_imperfect/1EF420", func_80108688_picture_imperfect);
-#endif
 
 void func_80108A64_picture_imperfect(PictureImperfectWork *work, s8 player) {
     s32 i;

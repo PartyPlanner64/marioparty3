@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game/audio.h"
+#include "game/data.h"
 #include "game/esprite.h"
 #include "game/hmfcoll.h"
 #include "game/mallocblock.h"
@@ -48,10 +49,19 @@ extern s16 D_8010A30C_water_whirled[][20];
 extern s32 D_8010A3AC_water_whirled[];
 extern s32 D_8010A3BC_water_whirled[];
 extern s32 D_8010A3EC_water_whirled[];
+extern f32 D_8010A3FC_water_whirled[4];
+extern f32 D_8010A40C_water_whirled[4];
+extern f32 D_8010A41C_water_whirled[];
+extern s32 D_8010A42C_water_whirled[4];
+extern s32 D_8010A43C_water_whirled[4];
+extern Vec D_8010A44C_water_whirled[][3];
 extern Vec D_8010A560_water_whirled[4][6];
 extern f32 D_8010A680_water_whirled[4][6];
 extern Vec D_8010A6E0_water_whirled[4][6];
 extern f32 D_8010A800_water_whirled[4][6];
+extern Vec2f D_8010A860_water_whirled;
+extern s32 D_8010AC40_water_whirled;
+extern s32 D_8010AC44_water_whirled;
 extern Vec D_8010A880_water_whirled[][20];
 extern s32 D_8010AC48_water_whirled[4];
 extern s32 D_8010AC58_water_whirled[4];
@@ -77,6 +87,10 @@ void func_80107F08_water_whirled(omObjData *object);
 void func_8010860C_water_whirled(Vec *origin, Vec *p, Vec *q, Vec *out);
 void func_80108898_water_whirled(omObjData *object, Vec *pos);
 void func_801089C0_water_whirled(omObjData *object, f32 x, f32 z);
+void func_80109340_water_whirled(s16 player, s16 bank);
+void func_80109458_water_whirled(s16 player);
+void func_8010956C_water_whirled(s16 player);
+s32 func_8010960C_water_whirled(omObjData *object);
 void func_80108DF8_water_whirled(omObjData *object);
 
 void func_801059A0_water_whirled(void) {
@@ -852,9 +866,91 @@ f32 func_80108B98_water_whirled(omObjData *object, f32 x, f32 y, f32 z) {
     return func_801061E4_water_whirled(sphere.pos.x, sphere.pos.z);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_23_water_whirled/211AB0", func_80108DF8_water_whirled);
+// Only mismatch: register allocation (which sprite IDs get spilled to the stack).
+#ifdef NON_MATCHING
+void func_80108DF8_water_whirled(omObjData *object) {
+    s32 framePos[4][2] = { { 56, 31 }, { 265, 31 }, { 56, 209 }, { 265, 209 } };
+    s32 iconPos[4][2] = { { 43, 32 }, { 253, 32 }, { 43, 210 }, { 253, 210 } };
+    s16 frameSprite;
+    s16 lapSprite;
+    s16 finalLapSprite;
+    s16 goalSprite;
+    s16 digitAnim;
+    s16 grp;
+    u16 sprite;
+    void *data;
+    s32 x;
+    s32 y;
+    s32 memberX;
+    s32 i;
+    s32 j;
 
-void func_80109340_water_whirled(s16 player, s32 bank) {
+    sprite = espEntry(func_8000B838_main(0x440011), 0, 1);
+    espDispOn(sprite);
+    espPosSet(sprite, 160, 120);
+    espAttrSet(sprite, 0x4000);
+    espScaleSet(sprite, 2.0f, 2.0f);
+    frameSprite = func_8000B838_main(0x440012);
+    lapSprite = func_8000B838_main(0x440014);
+    finalLapSprite = func_8000B838_main(0x440015);
+    goalSprite = func_8000B838_main(0x440016);
+    data = DataRead(0x440013);
+    digitAnim = HuSprAnimRead(data);
+    DataClose(data);
+    for (i = 0; i < 4; i++) {
+        sprite = espEntry(frameSprite, 0, 1);
+        espDispOn(sprite);
+        espPosSet(sprite, framePos[i][0], framePos[i][1]);
+        espPriSet(sprite, 0xFFFF);
+        espTPLvlSet(sprite, 200);
+        sprite = espEntry(func_8000B838_main((GwPlayer[i].chr + 8) | 0x210000), 0, 1);
+        espDispOn(sprite);
+        espPosSet(sprite, iconPos[i][0] - 10, iconPos[i][1] + 4);
+        espPriSet(sprite, 100);
+        D_8010AC68_water_whirled[i] = espEntry(lapSprite, 0, 1);
+        espDispOn(D_8010AC68_water_whirled[i]);
+        espPosSet(D_8010AC68_water_whirled[i], iconPos[i][0] + 28, iconPos[i][1] - 9);
+        espPriSet(D_8010AC68_water_whirled[i], 100);
+        D_8010AC58_water_whirled[i] = espEntry(finalLapSprite, 0, 1);
+        espDispOff(D_8010AC58_water_whirled[i]);
+        espPosSet(D_8010AC58_water_whirled[i], iconPos[i][0] + 13, iconPos[i][1] - 9);
+        espPriSet(D_8010AC58_water_whirled[i], 100);
+        D_8010AC78_water_whirled[i] = espEntry(goalSprite, 0, 1);
+        espDispOff(D_8010AC78_water_whirled[i]);
+        espPosSet(D_8010AC78_water_whirled[i], iconPos[i][0] + 13, iconPos[i][1] - 9);
+        espPriSet(D_8010AC78_water_whirled[i], 100);
+        x = iconPos[i][0] - 8;
+        y = iconPos[i][1] - 9;
+        grp = D_8010AC48_water_whirled[i] = HuSprGrpCreate(3, 5);
+        HuSprGrpMemberSet(grp, 0, digitAnim, 0);
+        HuSprAttrReset(grp, 0, 0xFFFF);
+        HuSprAttrSet(grp, 0, HUSPR_ATTR_DISPOFF);
+        HuSprPosSet(grp, 0, x, y);
+        HuSprPriSet(grp, 0, 100);
+        memberX = 8;
+        for (j = 1; j < 3; j++) {
+            HuSprPriSet(grp, j, 100);
+            HuSprGrpMemberSet(grp, j, digitAnim, 0);
+            HuSprPosSet(grp, j, memberX, 0);
+            HuSprAttrReset(grp, j, 0xFFFF);
+            HuSprAttrSet(grp, j, HUSPR_ATTR_DISPOFF);
+            memberX += 8;
+            func_800554C4_main(grp, j, 0);
+        }
+        HuSprDispOn(grp, 2);
+        func_800E9F40_minigame(i, iconPos[i][0], iconPos[i][1], 0);
+    }
+    object->func = NULL;
+}
+#else
+INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_23_water_whirled/211AB0", D_8010A520_water_whirled);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_23_water_whirled/211AB0", D_8010A540_water_whirled);
+
+INCLUDE_ASM("asm/nonmatchings/overlays/ovl_23_water_whirled/211AB0", func_80108DF8_water_whirled);
+#endif
+
+void func_80109340_water_whirled(s16 player, s16 bank) {
     s16 grp = D_8010AC48_water_whirled[player];
 
     espDispOn(D_8010AC68_water_whirled[player]);
@@ -917,15 +1013,12 @@ s32 func_8010960C_water_whirled(omObjData *object) {
     return 3;
 }
 
-// Only mismatch: float register allocation for the atan2df angle and the 10.0f step constant.
-#ifdef NON_MATCHING
 void func_801096BC_water_whirled(omObjData *object) {
     func_800E1BA8_minigame_ObjData *work = object->data;
     f32 x = object->trans.x;
     f32 z = object->trans.z;
     Vec dir;
     f32 angle;
-    f32 nextAngle;
 
     if ((x > -1000.0f) & (x < 1000.0f)) {
         if (z > 0.0f) {
@@ -940,28 +1033,160 @@ void func_801096BC_water_whirled(omObjData *object) {
     } else {
         if (x > 0.0f) {
             angle = atan2df(object->trans.x - 1000.0f, object->trans.z);
-            nextAngle = angle + 10.0f;
-            dir.x = sindf(nextAngle) - sindf(angle);
+            dir.x = sindf(angle + 10.0f) - sindf(angle);
             dir.y = 0.0f;
+            dir.z = cosdf(angle + 10.0f) - cosdf(angle);
         } else {
             angle = atan2df(object->trans.x + 1000.0f, object->trans.z);
-            nextAngle = angle + 10.0f;
-            dir.x = sindf(nextAngle) - sindf(angle);
+            dir.x = sindf(angle + 10.0f) - sindf(angle);
             dir.y = 0.0f;
+            dir.z = cosdf(angle + 10.0f) - cosdf(angle);
         }
-        dir.z = cosdf(nextAngle) - cosdf(angle);
     }
-    nextAngle = work->unk3C;
-    work->unk60 = func_800E2ED4_minigame(dir.x, dir.z, sindf(nextAngle), cosdf(nextAngle));
+    angle = work->unk3C;
+    work->unk60 = func_800E2ED4_minigame(dir.x, dir.z, sindf(angle), cosdf(angle));
+}
+
+// Only mismatch: float register allocation for the final heading angle (f22 instead of f20).
+#ifdef NON_MATCHING
+void func_801098AC_water_whirled(omObjData *object) {
+    func_800E1BA8_minigame_ObjData *work = object->data;
+    s32 player = work->unk59;
+    s32 accelerate;
+    f32 dx;
+    f32 dz;
+    f32 angle;
+    f32 dir;
+    f32 radius;
+
+    if (func_800E6E8C_minigame() == 2 && !(GwPlayer[player].stat & 1)) {
+        return;
+    }
+    D_8010AC40_water_whirled = 0;
+    D_8010AC44_water_whirled = 0;
+    accelerate = TRUE;
+    switch (func_8010960C_water_whirled(object)) {
+        case 0:
+            D_8010A860_water_whirled.x = object->trans.x + 100.0f;
+            D_8010A860_water_whirled.y = object->trans.z - 50.0f;
+            if (D_8010A860_water_whirled.y < D_8010A3FC_water_whirled[player] + 400.0f) {
+                D_8010A860_water_whirled.y = D_8010A3FC_water_whirled[player] + 400.0f;
+            }
+            D_8010A40C_water_whirled[player] = rand8() * D_8010A41C_water_whirled[GwPlayer[player].cpu_difficulty];
+            break;
+        case 1:
+            dx = object->trans.x - 700.0f;
+            dz = object->trans.z;
+            angle = atan2df(dx, dz);
+            radius = HuSqrtf(dx * dx + dz * dz) - 150.0f + D_8010A40C_water_whirled[player];
+            D_8010A860_water_whirled.x = sindf(angle + 15.0f) * radius + 700.0f;
+            D_8010A860_water_whirled.y = cosdf(angle + 15.0f) * radius;
+            if (object->trans.x < 800.0f && object->trans.z > 0.0f && work->unk40 > 20.0f) {
+                accelerate = FALSE;
+            }
+            D_8010A3FC_water_whirled[player] = rand8() * D_8010A41C_water_whirled[GwPlayer[player].cpu_difficulty];
+            break;
+        case 2:
+            D_8010A860_water_whirled.x = object->trans.x - 100.0f;
+            D_8010A860_water_whirled.y = object->trans.z + 50.0f;
+            if (D_8010A860_water_whirled.y > D_8010A3FC_water_whirled[player] + -400.0f) {
+                D_8010A860_water_whirled.y = D_8010A3FC_water_whirled[player] + -400.0f;
+            }
+            D_8010A40C_water_whirled[player] = rand8() * D_8010A41C_water_whirled[GwPlayer[player].cpu_difficulty];
+            break;
+        case 3:
+            dx = object->trans.x + 700.0f;
+            dz = object->trans.z;
+            angle = atan2df(dx, dz);
+            radius = HuSqrtf(dx * dx + dz * dz) - 150.0f + D_8010A40C_water_whirled[player];
+            D_8010A860_water_whirled.x = sindf(angle + 15.0f) * radius + -700.0f;
+            D_8010A860_water_whirled.y = cosdf(angle + 15.0f) * radius;
+            if (object->trans.x > -800.0f && object->trans.z < 0.0f && work->unk40 > 20.0f) {
+                accelerate = FALSE;
+            }
+            D_8010A3FC_water_whirled[player] = rand8() * D_8010A41C_water_whirled[GwPlayer[player].cpu_difficulty];
+            break;
+    }
+    angle = work->unk3C - 90.0f;
+    dx = D_8010A860_water_whirled.x - object->trans.x;
+    dz = D_8010A860_water_whirled.y - object->trans.z;
+    D_8010AC44_water_whirled = (s8)(func_800E2ED4_minigame(dx, dz, sindf(angle), cosdf(angle)) * 120.0f);
+    dir = work->unk3C;
+    dx = D_8010A860_water_whirled.x;
+    dz = D_8010A860_water_whirled.y;
+    dx -= object->trans.x;
+    dz -= object->trans.z;
+    if (func_800E2ED4_minigame(dx, dz, sindf(dir), cosdf(dir)) < 0.0f) {
+        D_8010AC44_water_whirled = 60;
+    } else if (accelerate == TRUE) {
+        D_8010AC40_water_whirled |= 0x8000;
+    } else if (D_8010AC44_water_whirled > 0) {
+        D_8010AC44_water_whirled = 60;
+    } else {
+        D_8010AC44_water_whirled = -60;
+    }
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_23_water_whirled/211AB0", func_801096BC_water_whirled);
+INCLUDE_ASM("asm/nonmatchings/overlays/ovl_23_water_whirled/211AB0", func_801098AC_water_whirled);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_23_water_whirled/211AB0", func_801098AC_water_whirled);
+void func_80109E2C_water_whirled(omObjData *object) {
+    func_800E1BA8_minigame_ObjData *work = object->data;
+    s32 player = work->unk59;
+    s32 section = func_8010960C_water_whirled(object);
+    Vec normal;
+    f32 dx;
+    f32 dy;
+    f32 dz;
+    s32 side;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_23_water_whirled/211AB0", func_80109E2C_water_whirled);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_23_water_whirled/211AB0", D_8010A520_water_whirled);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_23_water_whirled/211AB0", D_8010A540_water_whirled);
+    func_8010860C_water_whirled(&D_8010A44C_water_whirled[section][0], &D_8010A44C_water_whirled[section][1],
+                                &D_8010A44C_water_whirled[section][2], &normal);
+    dx = object->trans.x - D_8010A44C_water_whirled[section][0].x;
+    dy = object->trans.y - D_8010A44C_water_whirled[section][0].y;
+    dz = object->trans.z - D_8010A44C_water_whirled[section][0].z;
+    side = dx * normal.x + dy * normal.y + dz * normal.z >= 0.0f;
+    if (section == D_8010A42C_water_whirled[player]) {
+        if (D_8010A43C_water_whirled[player] == 0) {
+            if (side == 1) {
+                D_8010A240_water_whirled[player]++;
+            }
+        } else if (side == 0) {
+            D_8010A240_water_whirled[player]--;
+        }
+        if (D_8010A240_water_whirled[player] < 0) {
+            switch (section) {
+                case 0:
+                    D_8010A240_water_whirled[player] = -1;
+                    break;
+                case 1:
+                    D_8010A240_water_whirled[player] = -4;
+                    break;
+                case 2:
+                    D_8010A240_water_whirled[player] = -3;
+                    break;
+                case 3:
+                    D_8010A240_water_whirled[player] = -2;
+                    break;
+            }
+        }
+        D_8010A43C_water_whirled[player] = side;
+    } else {
+        D_8010A43C_water_whirled[player] = side;
+    }
+    D_8010A42C_water_whirled[player] = section;
+    D_8010A270_water_whirled[player] = D_8010A240_water_whirled[player] / 4;
+    if (D_8010A270_water_whirled[player] < 0) {
+        D_8010A270_water_whirled[player] = 0;
+    }
+    if (D_8010A284_water_whirled == 0 && D_8010A270_water_whirled[player] == 4) {
+        D_8010A284_water_whirled = HuAudFXPlay(0x425);
+    }
+    if (D_8010A270_water_whirled[player] >= 5) {
+        func_8010956C_water_whirled(player);
+    } else if (work->unk60 >= 0.0f) {
+        func_80109340_water_whirled(player, D_8010A270_water_whirled[player] < 5 ? D_8010A270_water_whirled[player] + 1 : 5);
+    } else {
+        func_80109458_water_whirled(player);
+    }
+}

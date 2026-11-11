@@ -1,5 +1,6 @@
 #include "common.h"
 #include "math.h"
+#include "overlays/minigame.h"
 
 // One entry of the 50 entry object table at D_8010AAB0_slapdown. Layout derived
 // from the table clear in func_80105A74_slapdown, which walks 50 entries of 0x84
@@ -34,6 +35,16 @@ typedef struct {
     /* 0x78 */ Vec unk_78;
 } SlapdownEntry; // sizeof 0x84
 
+typedef struct {
+    /* 0x00 */ f32 scissorX;
+    /* 0x04 */ f32 scissorY;
+    /* 0x08 */ f32 scissorWidth;
+    /* 0x0C */ f32 scissorHeight;
+    /* 0x10 */ Vec viewportScale;
+    /* 0x1C */ Vec viewportTranslate;
+    /* 0x28 */ f32 fov;
+} SlapdownCamera; // sizeof 0x2C
+
 extern SlapdownEntry D_8010AAB0_slapdown[50];
 // Fields of the first entry of D_8010AAB0_slapdown are accessed through these
 // separate symbols.
@@ -44,10 +55,44 @@ extern f32 D_8010AAF8_slapdown;
 extern void *D_8010AA20_slapdown[];
 extern u8 D_8010AA6E_slapdown;
 extern s16 D_8010AA90_slapdown[];
+extern s16 D_8010A760_slapdown[][2];
+extern s16 D_8010AA30_slapdown;
+extern s16 D_8010AA12_slapdown;
+extern s16 D_8010AA52_slapdown;
+extern void *D_8010AA58_slapdown[5];
+extern void *D_8010AA9C_slapdown;
+extern const char D_8010A984_slapdown[];
+extern s16 D_8010AA72_slapdown;
+extern u8 D_8010AA50_slapdown;
+extern s16 D_8010AA38_slapdown[10];
+extern void *D_8010AA78_slapdown[6];
+extern s32 D_8010A888_slapdown;
+extern s16 D_8010AA74_slapdown;
+extern SlapdownCamera D_8010A88C_slapdown[1];
+extern const s16 D_8010AA08_slapdown[];
+extern s16 D_8010AA10_slapdown;
+extern s16 D_8010AA14_slapdown;
+extern s16 D_8010AA16_slapdown[5];
+extern s16 D_8010AA32_slapdown;
+extern s32 D_8010AA4C_slapdown;
+extern s16 D_8010AA6C_slapdown;
+extern s16 D_8010AA70_slapdown;
+extern s16 D_8010AA76_slapdown;
+extern s16 D_8010AA98_slapdown;
+extern s16 D_8010AA9A_slapdown;
+extern s16 D_8010AAA0_slapdown;
 
 void func_80106600_slapdown(omObjData *obj);
+void func_8010924C_slapdown(omObjData *obj);
 void func_80106608_slapdown(omObjData *);
 void func_8010820C_slapdown(omObjData *);
+void func_80107DCC_slapdown(void);
+void func_80108BAC_slapdown(omObjData *obj);
+void func_80107858_slapdown(omObjData *obj);
+void func_80108E44_slapdown(void);
+void func_80109EE8_slapdown(omObjData *obj);
+void func_8010A2B8_slapdown(omObjData *obj);
+void func_8010A3E0_slapdown(void);
 void func_8010A550_slapdown(void);
 
 void func_801059A0_slapdown(void) {
@@ -324,25 +369,147 @@ void func_801066E4_slapdown(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_80106780_slapdown);
+void func_80106780_slapdown(omObjData *obj) {
+    if (D_8010AA30_slapdown == 1 && D_8010AA74_slapdown < 50) {
+        if (((rand8() & 0xFF) + (rand8() & 0xFF)) % D_8010A760_slapdown[GwPlayer[obj->work[0]].cpu_difficulty][0] == 0 || D_8010AA74_slapdown < 2) {
+            D_800D5558_main[obj->work[3]] |= 0x8000;
+        }
+    } else {
+        if (((rand8() & 0xFF) + (rand8() & 0xFF)) % D_8010A760_slapdown[GwPlayer[obj->work[0]].cpu_difficulty][1] == 0) {
+            D_800D5558_main[obj->work[3]] |= 0x8000;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_80106900_slapdown);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_80107858_slapdown);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_80107DCC_slapdown);
+void func_80107DCC_slapdown(void) {
+    s16 order[4];
+    SlapdownEntry *entry;
+    omObjData *obj;
+    s16 i;
+    s16 j;
+    s16 pick;
+    u16 player;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_80107FDC_slapdown);
+    for (i = 0; i < 4; i++) {
+        order[i] = i;
+    }
+    for (i = 0; i < 4; i++) {
+        switch (i) {
+            case 0:
+                player = 0;
+                break;
+            case 1:
+                player = 1;
+                break;
+            case 2:
+                player = 2;
+                break;
+            case 3:
+                player = 3;
+                break;
+            default:
+                player = 0;
+                break;
+        }
+        entry = &D_8010AAB0_slapdown[11 + i];
+        obj = omAddObj(0xFA, 10, 60, -1, func_80107858_slapdown);
+        obj->work[0] = player;
+        obj->work[3] = GwPlayer[player].pad;
+        entry->obj = obj;
+        pick = rand8() % (4 - i);
+        obj->work[1] = order[pick];
+        order[pick] = -1;
+        for (j = 1; j < 4 - i; j++) {
+            if (order[j - 1] == -1) {
+                order[j - 1] = order[j];
+                order[j] = -1;
+            }
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_80108064_slapdown);
+void func_80107FDC_slapdown(omObjData *obj, s16 anim) {
+    Hu3DAnimKill(D_8010AA12_slapdown);
+    D_8010AA12_slapdown = Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, D_8010AA58_slapdown[anim], 0, D_8010A984_slapdown);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_801080D0_slapdown);
+void func_80108064_slapdown(void) {
+    s16 i;
+
+    for (i = 0; i < 5; i++) {
+        DataClose(D_8010AA58_slapdown[i]);
+    }
+    Hu3DAnimKill(D_8010AA12_slapdown);
+}
+
+void func_801080D0_slapdown(void) {
+    DataClose(D_8010AA9C_slapdown);
+    Hu3DAnimKill(D_8010AA52_slapdown);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", D_8010A984_slapdown);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_801080FC_slapdown);
+void func_801080FC_slapdown(omObjData *obj) {
+    SlapdownEntry *entry = &D_8010AAB0_slapdown[1];
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_8010820C_slapdown);
+    switch (D_8010AA6E_slapdown) {
+        case 0:
+            break;
+        case 1:
+            if (entry->unk_04 < 60) {
+                if (entry->unk_06 == 0) {
+                    HuAudFXPlay(0x479);
+                    entry->unk_06 = 1;
+                }
+                entry->unk_04++;
+                func_80107FDC_slapdown(obj, entry->unk_04 % 5);
+            } else {
+                if (entry->unk_06 == 1) {
+                    HuAudFXPlay(0x47F);
+                    entry->unk_06 = 2;
+                }
+                func_80107FDC_slapdown(obj, D_8010AA72_slapdown);
+                D_8010AA50_slapdown = 1;
+            }
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            break;
+        case 7:
+            break;
+        case 8:
+            break;
+        case 9:
+            break;
+    }
+}
+
+void func_8010820C_slapdown(omObjData *obj) {
+    obj->model[0] = func_8000B108_main(0x4F0019, 0x2A9);
+    D_8010AA58_slapdown[0] = DataRead(0x4F0011);
+    D_8010AA58_slapdown[1] = DataRead(0x4F0012);
+    D_8010AA58_slapdown[2] = DataRead(0x4F0013);
+    D_8010AA58_slapdown[3] = DataRead(0x4F0014);
+    D_8010AA58_slapdown[4] = DataRead(0x4F0015);
+    D_8010AA12_slapdown = Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, D_8010AA58_slapdown[0], 0, "s246_19_DEF");
+    Hu3DModelRemakeStatic(obj->model[0]);
+    func_8001C514_main(obj->model[0]);
+    D_8010AA72_slapdown = (u8)(rand8() % 5);
+    obj->func = func_801080FC_slapdown;
+}
+
+const char D_8010A9C4_slapdown[] = "";
 
 void func_80108340_slapdown(void) {
     omObjData *obj = omAddObj(0x96, 1, 0, -1, func_8010820C_slapdown);
@@ -350,43 +517,194 @@ void func_80108340_slapdown(void) {
     D_8010AAB0_slapdown[1].obj = obj;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_80108380_slapdown);
+void func_80108380_slapdown(omObjData *obj, s16 anim) {
+    Hu3DAnimKill(D_8010AA38_slapdown[obj->work[0]]);
+    D_8010AA38_slapdown[obj->work[0]] =
+        Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, D_8010AA78_slapdown[anim], 0, D_8010A984_slapdown);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_80108420_slapdown);
+void func_80108420_slapdown(void) {
+    s16 i;
+
+    for (i = 0; i < 6; i++) {
+        DataClose(D_8010AA78_slapdown[i]);
+    }
+    for (i = 0; i < 9; i++) {
+        Hu3DAnimKill(D_8010AA38_slapdown[i]);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_801084BC_slapdown);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_80108BAC_slapdown);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_80108E44_slapdown);
+void func_80108E44_slapdown(void) {
+    s16 order[9];
+    SlapdownEntry *entry;
+    omObjData *obj;
+    s16 i;
+    s16 j;
+    s16 pick;
+
+    for (i = 0; i < 9; i++) {
+        order[i] = i;
+    }
+    for (i = 0; i < 9; i++) {
+        entry = &D_8010AAB0_slapdown[2 + i];
+        obj = omAddObj(0xC8, 1, 0, -1, func_80108BAC_slapdown);
+        obj->work[0] = i;
+        entry->obj = obj;
+        pick = rand8() % (9 - i);
+        obj->work[1] = order[pick];
+        order[pick] = -1;
+        for (j = 1; j < 9 - i; j++) {
+            if (order[j - 1] == -1) {
+                order[j - 1] = order[j];
+                order[j] = -1;
+            }
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_80108FE4_slapdown);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_8010924C_slapdown);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_80109640_slapdown);
+void func_80109640_slapdown(void) {
+    SlapdownEntry *entry;
+    omObjData *obj;
+    s16 i;
+
+    for (i = 0; i < 4; i++) {
+        entry = &D_8010AAB0_slapdown[15 + i];
+        obj = omAddObj(0x12C, 1, 0, -1, func_8010924C_slapdown);
+        obj->work[0] = i;
+        entry->obj = obj;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_801096E4_slapdown);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_801099C0_slapdown);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_80109D54_slapdown);
+void func_80109D54_slapdown(void) {
+    u32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_80109E14_slapdown);
+    if (D_8010A888_slapdown == 0) {
+        D_8010A888_slapdown = 1;
+        for (i = 0; i < 1; i++) {
+            CZoomM[i] = 2037.5552f;
+            CRotM[i].x = 311.9663f;
+            CRotM[i].y = 0.0f;
+            CRotM[i].z = 0.0f;
+            CenterM[i].x = 0.0f;
+            CenterM[i].y = -42.5f;
+            CenterM[i].z = -160.0f;
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_80109E58_slapdown);
+void func_80109E14_slapdown(omObjData *obj) {
+    func_80108064_slapdown();
+    func_80108420_slapdown();
+    func_801066E4_slapdown();
+    HuAudFXStop(-1);
+    osViBlack(FALSE);
+    omOvlReturnEx(1);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_80109E90_slapdown);
+void func_80109E58_slapdown(omObjData *obj) {
+    if (WipeStatGet() == 0) {
+        obj->func = func_80109E14_slapdown;
+    }
+}
+
+void func_80109E90_slapdown(omObjData *obj) {
+    if (D_800D530C_main == 1) {
+        WipeCreateOut(0, 20);
+        obj->func = func_80109E58_slapdown;
+        HuAudSeqFadeOut(30);
+        func_8004AB0C_main(30);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_80109EE8_slapdown);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_8010A2B8_slapdown);
+void func_8010A2B8_slapdown(omObjData *obj) {
+    s16 i;
+
+    WipeCreateIn(0xFF, 16);
+    func_80109D54_slapdown();
+    func_801066A4_slapdown();
+    func_80108340_slapdown();
+    func_80108E44_slapdown();
+    func_80107DCC_slapdown();
+    func_80109640_slapdown();
+    D_8010AA74_slapdown = 0;
+    D_8010AA6E_slapdown = 0;
+    D_8010AA50_slapdown = 0;
+    D_8010AA70_slapdown = 0;
+    D_8010AA10_slapdown = 0;
+    D_8010AA30_slapdown = 0;
+    D_8010AA72_slapdown = 0;
+    D_8010AAA0_slapdown = 0;
+    D_8010AA9A_slapdown = 0;
+    D_8010AA32_slapdown = 0;
+    D_8010AA98_slapdown = 0;
+    D_8010AA4C_slapdown = 0;
+    D_8010AA6C_slapdown = 0;
+    D_8010AA14_slapdown = -1;
+    for (i = 0; i < 4; i++) {
+        D_8010AA16_slapdown[i] = -1;
+    }
+    D_8010AA76_slapdown = 0;
+    obj->func = func_80109EE8_slapdown;
+}
 
 void func_8010A3D8_slapdown(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_8010A3E0_slapdown);
+void func_8010A3E0_slapdown(void) {
+    omObjData *obj;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_8010A550_slapdown);
+    obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
+    obj->work[0] = 1;
+    omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    func_8000B5F0_main(1);
+    func_8000B710_main(1);
+    for (i = 0; i < 1; i++) {
+        ScissorSet(i, D_8010A88C_slapdown[i].scissorX, D_8010A88C_slapdown[i].scissorY,
+                   D_8010A88C_slapdown[i].scissorWidth, D_8010A88C_slapdown[i].scissorHeight);
+        ViewportSet(i, D_8010A88C_slapdown[i].viewportScale.x, D_8010A88C_slapdown[i].viewportScale.y,
+                    D_8010A88C_slapdown[i].viewportScale.z, D_8010A88C_slapdown[i].viewportTranslate.x,
+                    D_8010A88C_slapdown[i].viewportTranslate.y, D_8010A88C_slapdown[i].viewportTranslate.z);
+        Hu3DCameraPerspectiveSet(i, D_8010A88C_slapdown[i].fov, 80.0f, 8000.0f);
+    }
+}
+
+void func_8010A550_slapdown(void) {
+    func_8001FE20_main(50);
+    func_800142A0_main(50);
+    omInitObjMan(60, 0);
+    func_8004A208_main();
+    func_8010A3E0_slapdown();
+    Hu3DGLightMaxSet(1);
+    Hu3DGLightMaxSet(2);
+    Hu3DGLightColorSet(0, 0x90, 0x90, 0x90);
+    Hu3DGLightDirSet(0, -41.0f, 70.0f, 87.0f);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightDirSet(1, -41.0f, 70.0f, 87.0f);
+    Hu3DGLightColorSet(2, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightDirSet(2, -41.0f, 70.0f, 87.0f);
+    D_800EC1B8_minigame = 0;
+    D_800EC280_minigame = 0;
+    D_800EBE28_minigame = 0;
+    func_80045010_main(D_8010AA08_slapdown, 0);
+    func_80045010_main(D_8010AA08_slapdown, 1);
+    omAddObj(1000, 0, 0, -1, func_8010A2B8_slapdown);
+    omAddObj(1000, 0, 0, -1, func_80109E90_slapdown);
+    func_80105A74_slapdown();
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", D_8010AA08_slapdown);

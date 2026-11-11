@@ -310,7 +310,7 @@ void func_800EB29C_name_81(void);
 void func_800EB58C_name_81(void);
 void func_800FA120_name_81(void);
 void func_800FC8C4_name_81(Vec *arg0);
-void func_800EAB6C_name_81(s32, s32);
+void func_800EAB6C_name_81(s16, s32);
 
 extern Vec D_80105460_name_81;
 extern s32 D_801019E0_name_81[][2];

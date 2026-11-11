@@ -1,5 +1,6 @@
 #include "common.h"
 #include "math.h"
+#include "overlays/minigame.h"
 
 // Per-chomp state at D_8010C420_merry_go_chomp, indexed by omObjData::work[0]
 typedef struct D_8010C420_merry_go_chomp_Entry {
@@ -49,6 +50,16 @@ typedef struct {
     /* 0x78 */ Vec unk_78;
 } MerryGoChompEntry; // sizeof 0x84
 
+typedef struct {
+    /* 0x00 */ f32 scissorX;
+    /* 0x04 */ f32 scissorY;
+    /* 0x08 */ f32 scissorWidth;
+    /* 0x0C */ f32 scissorHeight;
+    /* 0x10 */ Vec viewportScale;
+    /* 0x1C */ Vec viewportTranslate;
+    /* 0x28 */ f32 fov;
+} MerryGoChompCamera; // sizeof 0x2C
+
 extern D_8010C420_merry_go_chomp_Entry D_8010C420_merry_go_chomp[];
 extern MerryGoChompEntry D_8010C500_merry_go_chomp[50];
 extern MerryGoChompEntry D_8010C794_merry_go_chomp[];
@@ -80,12 +91,25 @@ extern omObjData *D_8010C4C8_merry_go_chomp;
 extern s8 D_8010C4CE_merry_go_chomp;
 extern u8 D_8010DECC_merry_go_chomp[];
 extern f32 D_8010DED4_merry_go_chomp;
-extern u8 D_8010DEDC_merry_go_chomp;
+extern s8 D_8010DEDC_merry_go_chomp;
 extern s8 D_8010DEDD_merry_go_chomp;
 extern omObjData *D_8010CA28_merry_go_chomp;
 extern omObjData *D_8010CCBC_merry_go_chomp;
 extern omObjData *D_8010D1E4_merry_go_chomp;
 extern omObjData *D_8010D478_merry_go_chomp;
+extern s32 D_8010C254_merry_go_chomp;
+extern MerryGoChompCamera D_8010C258_merry_go_chomp[2];
+extern const s16 D_8010C400_merry_go_chomp[];
+extern s16 D_8010C410_merry_go_chomp;
+extern s8 D_8010C418_merry_go_chomp;
+extern f32 D_8010C4B4_merry_go_chomp[2];
+extern s8 D_8010C4BC_merry_go_chomp;
+extern s16 D_8010C4CC_merry_go_chomp;
+extern s16 D_8010C4C4_merry_go_chomp;
+extern s8 D_8010DEC8_merry_go_chomp;
+extern s16 D_8010DECA_merry_go_chomp;
+extern s16 D_8010DEDA_merry_go_chomp;
+extern s8 D_8010DED8_merry_go_chomp;
 
 void func_80106384_merry_go_chomp(omObjData *);
 void func_801064E0_merry_go_chomp(omObjData *obj);
@@ -97,6 +121,10 @@ void func_80109A04_merry_go_chomp(omObjData *obj);
 void func_8010A9D0_merry_go_chomp(omObjData *);
 void func_8010AE24_merry_go_chomp(omObjData *obj);
 void func_8010AE2C_merry_go_chomp(omObjData *);
+void func_801084C8_merry_go_chomp(void);
+void func_8010AF08_merry_go_chomp(void);
+void func_8010BBA0_merry_go_chomp(omObjData *obj);
+void func_8010BC30_merry_go_chomp(omObjData *obj);
 void func_8010C030_merry_go_chomp(void);
 
 void func_801059A0_merry_go_chomp(void) {
@@ -1259,9 +1287,6 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2D_merry_go_chomp/25E110", func_80109
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2D_merry_go_chomp/25E110", func_80109A04_merry_go_chomp);
 
-#ifdef NON_MATCHING
-// The code matches, but the original rodata has an unreferenced "" string
-// literal following "c165n_4_DEF" that is not reproduced here.
 void func_8010A9D0_merry_go_chomp(omObjData *obj) {
     MerryGoChompEntry *chomp = &D_8010C500_merry_go_chomp[10];
     void *anim = DataRead(0xA00E5);
@@ -1282,8 +1307,7 @@ void func_8010A9D0_merry_go_chomp(omObjData *obj) {
     for (i = 2; i < 6; i++) {
         obj->model[i] = Hu3DModelLink(chain);
     }
-    shadow = func_8000B0A0_main(0, 0xC9);
-    obj->model[6] = shadow;
+    shadow = obj->model[6] = func_8000B0A0_main(0, 0xC9);
     func_8001C2FC_main(obj->model[6], 0x80000000, 0);
     Hu3DModelRemakeStatic(obj->model[6]);
     func_8001C514_main(obj->model[6]);
@@ -1311,9 +1335,8 @@ void func_8010A9D0_merry_go_chomp(omObjData *obj) {
     func_8001C258_main(obj->model[11], 4, 4);
     obj->func = func_80109A04_merry_go_chomp;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2D_merry_go_chomp/25E110", func_8010A9D0_merry_go_chomp);
-#endif
+
+const char D_8010C3C4_merry_go_chomp[] = "";
 
 void func_8010ADE8_merry_go_chomp(void) {
     D_8010CA28_merry_go_chomp = omAddObj(0x384, 0xF, 4, -1, func_8010A9D0_merry_go_chomp);
@@ -1336,25 +1359,382 @@ void func_8010AECC_merry_go_chomp(void) {
     D_8010D478_merry_go_chomp = omAddObj(0x3E8, 1, 1, -1, func_8010AE2C_merry_go_chomp);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2D_merry_go_chomp/25E110", func_8010AF08_merry_go_chomp);
+void func_8010AF08_merry_go_chomp(void) {
+    omObjData *obj = D_8010D1E4_merry_go_chomp;
+    s8 result;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2D_merry_go_chomp/25E110", func_8010BAB8_merry_go_chomp);
+    switch (D_8010C4B0_merry_go_chomp) {
+        case 0:
+            GMesCreate(0x1A, 10, 0xA0, 0x1C);
+            D_8010C4B2_merry_go_chomp = 151;
+            if (D_8010C418_merry_go_chomp == D_8010C4CE_merry_go_chomp) {
+                D_8010C4C4_merry_go_chomp = HuAudFXPlay(0x471);
+                D_8010C410_merry_go_chomp = -1;
+                D_8010C418_merry_go_chomp++;
+            }
+            D_8010DED4_merry_go_chomp = 3.0f;
+            D_8010C4B0_merry_go_chomp = 1;
+            break;
+        case 1:
+            if (D_8010C4B2_merry_go_chomp > 0) {
+                D_8010C4B2_merry_go_chomp--;
+                func_8003F578_main((D_8010C4B2_merry_go_chomp + 29) / 30);
+            } else {
+                func_8003F5C0_main();
+            }
+            if (D_8010DEDC_merry_go_chomp != 0) {
+                D_8010DEDC_merry_go_chomp = 0;
+                func_8003F5C0_main();
+                D_8010C4B2_merry_go_chomp = 0;
+                D_8010C4B0_merry_go_chomp = 2;
+            }
+            break;
+        case 2:
+            if (D_8010C4B2_merry_go_chomp < 15) {
+                D_8010C4B2_merry_go_chomp++;
+            } else if (++D_8010DEDD_merry_go_chomp == 4 - D_8010C4CE_merry_go_chomp) {
+                D_8010C4B0_merry_go_chomp = 3;
+                D_8010C4B2_merry_go_chomp = 0;
+                switch (D_8010C4CE_merry_go_chomp) {
+                    case 0:
+                        D_8010DED8_merry_go_chomp = func_80105CE4_merry_go_chomp(5);
+                        D_8010C4B4_merry_go_chomp[0] =
+                            func_801059BC_merry_go_chomp(270.0f, -D_8010DED8_merry_go_chomp * 72);
+                        break;
+                    case 1:
+                        D_8010DED8_merry_go_chomp = func_80105CE4_merry_go_chomp(4);
+                        D_8010C4B4_merry_go_chomp[0] =
+                            func_801059BC_merry_go_chomp(270.0f, -D_8010DED8_merry_go_chomp * 90);
+                        break;
+                    case 2:
+                        D_8010DED8_merry_go_chomp = func_80105CE4_merry_go_chomp(3);
+                        D_8010C4B4_merry_go_chomp[0] =
+                            func_801059BC_merry_go_chomp(270.0f, -D_8010DED8_merry_go_chomp * 120);
+                        break;
+                }
+                D_8010C4B4_merry_go_chomp[0] = func_801059BC_merry_go_chomp(D_8010C4B4_merry_go_chomp[0], -3.0f);
+                D_8010C4B4_merry_go_chomp[1] = func_801059BC_merry_go_chomp(D_8010C4B4_merry_go_chomp[0], 6.0f);
+                D_8010C410_merry_go_chomp = HuAudFXPlay(0x472);
+            } else {
+                D_8010C4B0_merry_go_chomp = 0;
+            }
+            break;
+        case 3:
+            D_8010DEDA_merry_go_chomp = D_8010DED4_merry_go_chomp * 40.0f;
+            if (D_8010DEDA_merry_go_chomp > 1200) {
+                D_8010DEDA_merry_go_chomp = 1200;
+            }
+            HuAudFXPitchSet(D_8010C4C4_merry_go_chomp, D_8010DEDA_merry_go_chomp);
+            if (D_8010C410_merry_go_chomp > 0) {
+                D_8010C4CC_merry_go_chomp = D_8010DED4_merry_go_chomp * 26.0f;
+                HuAudFXPitchSet(D_8010C410_merry_go_chomp, D_8010DEDA_merry_go_chomp);
+            }
+            if (D_8010C4B2_merry_go_chomp < 54) {
+                D_8010C4B2_merry_go_chomp++;
+                D_8010DED4_merry_go_chomp += 0.5;
+                if (D_8010C4B2_merry_go_chomp == 53) {
+                    obj->rot.y -= 0.5;
+                }
+            } else {
+                D_8010C4B2_merry_go_chomp = 0;
+                D_8010DED4_merry_go_chomp = 30.0f;
+                D_8010C4B0_merry_go_chomp = 4;
+            }
+            break;
+        case 4:
+            D_8010DEDA_merry_go_chomp = D_8010DED4_merry_go_chomp * 40.0f;
+            if (D_8010DEDA_merry_go_chomp > 1200) {
+                D_8010DEDA_merry_go_chomp = 1200;
+            }
+            HuAudFXPitchSet(D_8010C4C4_merry_go_chomp, D_8010DEDA_merry_go_chomp);
+            HuAudFXPitchSet(D_8010C410_merry_go_chomp, D_8010DEDA_merry_go_chomp);
+            D_8010C4B2_merry_go_chomp++;
+            if (D_8010DED4_merry_go_chomp > 3.0f) {
+                D_8010DED4_merry_go_chomp -= 0.2f;
+            } else {
+                D_8010DED4_merry_go_chomp = 3.0f;
+                if ((obj->rot.y >= D_8010C4B4_merry_go_chomp[0] && obj->rot.y <= D_8010C4B4_merry_go_chomp[1]) ||
+                    (obj->rot.y >= D_8010C4B4_merry_go_chomp[0] && obj->rot.y > 355.0f &&
+                     D_8010C4B4_merry_go_chomp[1] < 5.0f) ||
+                    (obj->rot.y < 5.0f && obj->rot.y <= D_8010C4B4_merry_go_chomp[1] &&
+                     D_8010C4B4_merry_go_chomp[0] > 355.0f)) {
+                    D_8010DED4_merry_go_chomp = 0.0f;
+                    D_8010C4B2_merry_go_chomp = 0;
+                    HuAudFXStop(D_8010C4C4_merry_go_chomp);
+                    HuAudFXStop(D_8010C410_merry_go_chomp);
+                    HuAudFXPlay(0x477);
+                    result = func_80107980_merry_go_chomp();
+                    if (result == -1) {
+                        D_8010C4B2_merry_go_chomp = 0;
+                        D_8010C4B0_merry_go_chomp = 6;
+                    } else {
+                        D_8010DEC8_merry_go_chomp = result;
+                        D_8010C4B0_merry_go_chomp = 5;
+                    }
+                }
+            }
+            break;
+        case 6:
+            if (++D_8010C4B2_merry_go_chomp > 60) {
+                switch (D_8010C4CE_merry_go_chomp) {
+                    case 0:
+                        D_8010DED8_merry_go_chomp = func_80105CE4_merry_go_chomp(4) + 1;
+                        D_8010C4B4_merry_go_chomp[0] =
+                            func_801059BC_merry_go_chomp(obj->rot.y, -D_8010DED8_merry_go_chomp * 72);
+                        break;
+                    case 1:
+                        D_8010DED8_merry_go_chomp = func_80105CE4_merry_go_chomp(3) + 1;
+                        D_8010C4B4_merry_go_chomp[0] =
+                            func_801059BC_merry_go_chomp(obj->rot.y, -D_8010DED8_merry_go_chomp * 90);
+                        break;
+                    case 2:
+                        D_8010DED8_merry_go_chomp = func_80105CE4_merry_go_chomp(2) + 1;
+                        D_8010C4B4_merry_go_chomp[0] =
+                            func_801059BC_merry_go_chomp(obj->rot.y, -D_8010DED8_merry_go_chomp * 120);
+                        break;
+                }
+                D_8010C4B4_merry_go_chomp[0] = func_801059BC_merry_go_chomp(D_8010C4B4_merry_go_chomp[0], -3.0f);
+                D_8010C4B4_merry_go_chomp[1] = func_801059BC_merry_go_chomp(D_8010C4B4_merry_go_chomp[0], 6.0f);
+                D_8010C4B0_merry_go_chomp = 7;
+                D_8010DED4_merry_go_chomp = 3.0f;
+                D_8010C4B2_merry_go_chomp = 0;
+                D_8010C4C4_merry_go_chomp = HuAudFXPlay(0x471);
+                D_8010C410_merry_go_chomp = HuAudFXPlay(0x472);
+            }
+            break;
+        case 7:
+            D_8010DEDA_merry_go_chomp = D_8010DED4_merry_go_chomp * 40.0f;
+            if (D_8010DEDA_merry_go_chomp > 1200) {
+                D_8010DEDA_merry_go_chomp = 1200;
+            }
+            HuAudFXPitchSet(D_8010C4C4_merry_go_chomp, D_8010DEDA_merry_go_chomp);
+            if (D_8010C410_merry_go_chomp > 0) {
+                D_8010C4CC_merry_go_chomp = D_8010DED4_merry_go_chomp * 26.0f;
+                HuAudFXPitchSet(D_8010C410_merry_go_chomp, D_8010DEDA_merry_go_chomp);
+            }
+            if (D_8010C4B2_merry_go_chomp < 54) {
+                D_8010C4B2_merry_go_chomp++;
+                D_8010DED4_merry_go_chomp += 0.5;
+                if (D_8010C4B2_merry_go_chomp == 53) {
+                    obj->rot.y -= 0.5;
+                }
+            } else {
+                D_8010C4B2_merry_go_chomp = 0;
+                D_8010DED4_merry_go_chomp = 30.0f;
+                D_8010C4B0_merry_go_chomp = 4;
+            }
+            break;
+        case 8:
+            D_8010DEDA_merry_go_chomp = D_8010DED4_merry_go_chomp * 40.0f;
+            if (D_8010DEDA_merry_go_chomp > 1200) {
+                D_8010DEDA_merry_go_chomp = 1200;
+            }
+            HuAudFXPitchSet(D_8010C4C4_merry_go_chomp, D_8010DEDA_merry_go_chomp);
+            HuAudFXPitchSet(D_8010C410_merry_go_chomp, D_8010DEDA_merry_go_chomp);
+            D_8010C4B2_merry_go_chomp++;
+            if (D_8010DED4_merry_go_chomp > 3.0f) {
+                D_8010DED4_merry_go_chomp -= 0.2f;
+            } else {
+                D_8010DED4_merry_go_chomp = 3.0f;
+                if ((obj->rot.y >= D_8010C4B4_merry_go_chomp[0] && obj->rot.y <= D_8010C4B4_merry_go_chomp[1]) ||
+                    (obj->rot.y >= D_8010C4B4_merry_go_chomp[0] && obj->rot.y > 355.0f &&
+                     D_8010C4B4_merry_go_chomp[1] < 5.0f) ||
+                    (obj->rot.y < 5.0f && obj->rot.y <= D_8010C4B4_merry_go_chomp[1] &&
+                     D_8010C4B4_merry_go_chomp[0] > 355.0f)) {
+                    D_8010DED4_merry_go_chomp = 0.0f;
+                    D_8010C4B2_merry_go_chomp = 0;
+                    HuAudFXStop(D_8010C4C4_merry_go_chomp);
+                    HuAudFXStop(D_8010C410_merry_go_chomp);
+                    HuAudFXPlay(0x477);
+                    result = func_80107980_merry_go_chomp();
+                    if (result == -1) {
+                        D_8010C4B2_merry_go_chomp = 0;
+                        D_8010C4B0_merry_go_chomp = 6;
+                    } else {
+                        D_8010DEC8_merry_go_chomp = result;
+                        D_8010C4B0_merry_go_chomp = 5;
+                    }
+                }
+            }
+            break;
+        case 5:
+            if (D_8010C4B2_merry_go_chomp < 80) {
+                D_8010C4B2_merry_go_chomp++;
+            } else {
+                D_8010C4B2_merry_go_chomp = 0;
+                if (D_8010C4CE_merry_go_chomp == 2) {
+                    D_8010C4B0_merry_go_chomp = 10;
+                } else {
+                    D_8010C4B0_merry_go_chomp = 9;
+                }
+            }
+            break;
+        case 9:
+            if (D_8010C4B2_merry_go_chomp < 50) {
+                D_8010C4B2_merry_go_chomp++;
+            }
+            if ((D_8010C4CE_merry_go_chomp == 0 && D_8010DEDC_merry_go_chomp == 15) ||
+                (D_8010C4CE_merry_go_chomp == 1 && D_8010DEDC_merry_go_chomp == 11)) {
+                D_8010DEDC_merry_go_chomp = 0;
+                D_8010C4B2_merry_go_chomp = 0;
+                D_8010DEDD_merry_go_chomp = 0;
+                D_8010C4BE_merry_go_chomp[0] = 1;
+                D_8010C4BE_merry_go_chomp[1] = 1;
+                D_8010C4BE_merry_go_chomp[2] = 1;
+                D_8010C4BE_merry_go_chomp[3] = 1;
+                D_8010C4CE_merry_go_chomp++;
+                D_8010C4B0_merry_go_chomp = 0;
+            }
+            break;
+        case 10:
+            break;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2D_merry_go_chomp/25E110", func_8010BB7C_merry_go_chomp);
+void func_8010BAB8_merry_go_chomp(void) {
+    u32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2D_merry_go_chomp/25E110", func_8010BBA0_merry_go_chomp);
+    if (D_8010C254_merry_go_chomp == 0) {
+        D_8010C254_merry_go_chomp = 1;
+        for (i = 0; i < 2; i++) {
+            CZoomM[i] = 2023.0191f;
+            CRotM[i].x = 330.45712f;
+            CRotM[i].y = 0.0f;
+            CRotM[i].z = 0.0f;
+            CenterM[i].x = 0.0f;
+            CenterM[i].y = 500.0f;
+            CenterM[i].z = 140.0f;
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2D_merry_go_chomp/25E110", func_8010BBD8_merry_go_chomp);
+void func_8010BB7C_merry_go_chomp(omObjData *obj) {
+    osViBlack(FALSE);
+    omOvlReturnEx(1);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2D_merry_go_chomp/25E110", func_8010BC30_merry_go_chomp);
+void func_8010BBA0_merry_go_chomp(omObjData *obj) {
+    if (WipeStatGet() == 0) {
+        obj->func = func_8010BB7C_merry_go_chomp;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2D_merry_go_chomp/25E110", func_8010BDE8_merry_go_chomp);
+void func_8010BBD8_merry_go_chomp(omObjData *obj) {
+    if (D_800D530C_main == 1) {
+        WipeCreateOut(0, 20);
+        obj->func = func_8010BBA0_merry_go_chomp;
+        HuAudSeqFadeOut(30);
+        func_8004AB0C_main(30);
+    }
+}
+
+void func_8010BC30_merry_go_chomp(omObjData *obj) {
+    switch (D_8010C4BC_merry_go_chomp) {
+        case 0:
+            GMesCreate(7);
+            D_8010C4BC_merry_go_chomp = 1;
+            D_8010DECA_merry_go_chomp = 0;
+            break;
+        case 1:
+            if (GMesStatGet() == 0) {
+                D_8010C4BC_merry_go_chomp = 2;
+                D_8010C4B0_merry_go_chomp = 0;
+            }
+            if (++D_8010DECA_merry_go_chomp == 4) {
+                HuAudSeqPlay(0x34);
+            }
+            break;
+        case 2:
+            if (D_8010C4B0_merry_go_chomp == 9) {
+                func_801084C8_merry_go_chomp();
+            }
+            func_8010AF08_merry_go_chomp();
+            if (D_8010C4B0_merry_go_chomp == 10) {
+                GMesCreate(0x12);
+                func_80109604_merry_go_chomp();
+                HuAudSeqFadeOut(120);
+                D_8010C4B2_merry_go_chomp = 0;
+                D_8010C4BC_merry_go_chomp = 3;
+            }
+            break;
+        case 3:
+            if (GMesStatGet() == 0) {
+                if (++D_8010C4B2_merry_go_chomp == 15) {
+                    HuAudSeqPlay(0x65);
+                    func_80106B9C_merry_go_chomp(D_8010C4C8_merry_go_chomp, 9);
+                }
+                if (D_8010C4B2_merry_go_chomp == 113) {
+                    WipeCreateOut(0, 20);
+                    obj->func = func_8010BBA0_merry_go_chomp;
+                }
+            }
+            break;
+    }
+}
+
+void func_8010BDE8_merry_go_chomp(omObjData *obj) {
+    D_8010C4BC_merry_go_chomp = 0;
+    D_8010C4B0_merry_go_chomp = 20;
+    D_8010DEDC_merry_go_chomp = 0;
+    D_8010C4B2_merry_go_chomp = 0;
+    D_8010C4CE_merry_go_chomp = 0;
+    D_8010DED4_merry_go_chomp = 0;
+    D_8010C4C4_merry_go_chomp = D_8010C410_merry_go_chomp = -1;
+    D_8010DED8_merry_go_chomp = 0;
+    D_8010DEC8_merry_go_chomp = 0;
+    D_8010C418_merry_go_chomp = 0;
+    func_8010BAB8_merry_go_chomp();
+    func_801064A0_merry_go_chomp();
+    func_80109420_merry_go_chomp();
+    func_8010ADE8_merry_go_chomp();
+    func_80106AB8_merry_go_chomp();
+    func_8010662C_merry_go_chomp();
+    func_8010AECC_merry_go_chomp();
+    WipeCreateIn(0xFF, 16);
+    obj->func = func_8010BC30_merry_go_chomp;
+}
 
 void func_8010BEB4_merry_go_chomp(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2D_merry_go_chomp/25E110", func_8010BEBC_merry_go_chomp);
+void func_8010BEBC_merry_go_chomp(void) {
+    omObjData *obj;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2D_merry_go_chomp/25E110", func_8010C030_merry_go_chomp);
+    obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
+    obj->work[0] = 2;
+    omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    func_8000B5F0_main(2);
+    func_8000B710_main(2);
+    for (i = 0; i < 2; i++) {
+        ScissorSet(i, D_8010C258_merry_go_chomp[i].scissorX, D_8010C258_merry_go_chomp[i].scissorY,
+                   D_8010C258_merry_go_chomp[i].scissorWidth, D_8010C258_merry_go_chomp[i].scissorHeight);
+        ViewportSet(i, D_8010C258_merry_go_chomp[i].viewportScale.x, D_8010C258_merry_go_chomp[i].viewportScale.y,
+                    D_8010C258_merry_go_chomp[i].viewportScale.z, D_8010C258_merry_go_chomp[i].viewportTranslate.x,
+                    D_8010C258_merry_go_chomp[i].viewportTranslate.y, D_8010C258_merry_go_chomp[i].viewportTranslate.z);
+        Hu3DCameraPerspectiveSet(i, D_8010C258_merry_go_chomp[i].fov, 80.0f, 8000.0f);
+    }
+}
+
+void func_8010C030_merry_go_chomp(void) {
+    func_8001FE20_main(50);
+    func_800142A0_main(50);
+    omInitObjMan(60, 0);
+    func_8004A208_main();
+    func_8010BEBC_merry_go_chomp();
+    Hu3DGLightMaxSet(1);
+    Hu3DGLightMaxSet(2);
+    Hu3DGLightDirSet(0, -33.0f, 0.0f, 115.0f);
+    Hu3DGLightDirSet(1, -33.0f, 0.0f, 115.0f);
+    Hu3DGLightDirSet(2, -33.0f, 0.0f, 115.0f);
+    D_800EC1B8_minigame = 0;
+    D_800EC280_minigame = 0;
+    D_800EBE28_minigame = 0;
+    func_80045010_main(D_8010C400_merry_go_chomp, 0);
+    func_80045010_main(D_8010C400_merry_go_chomp, 1);
+    omAddObj(1500, 0, 0, -1, func_8010BDE8_merry_go_chomp);
+    omAddObj(1500, 0, 0, -1, func_8010BBD8_merry_go_chomp);
+    func_80105A74_merry_go_chomp();
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_2D_merry_go_chomp/25E110", D_8010C400_merry_go_chomp);

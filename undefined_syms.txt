@@ -139,3 +139,7 @@ D_8010C202_game_guys_magic_boxes = D_8010C200_game_guys_magic_boxes + 0x2;
 D_8010C20A_game_guys_magic_boxes = D_8010C208_game_guys_magic_boxes + 0x2;
 D_8010C212_game_guys_magic_boxes = D_8010C210_game_guys_magic_boxes + 0x2;
 D_8010C21A_game_guys_magic_boxes = D_8010C218_game_guys_magic_boxes + 0x2;
+D_8010C24A_game_guys_magic_boxes = D_8010C248_game_guys_magic_boxes + 0x2;
+D_8010C251_game_guys_magic_boxes = D_8010C250_game_guys_magic_boxes + 0x1;
+D_8010C252_game_guys_magic_boxes = D_8010C250_game_guys_magic_boxes + 0x2;
+D_8010C253_game_guys_magic_boxes = D_8010C250_game_guys_magic_boxes + 0x3;

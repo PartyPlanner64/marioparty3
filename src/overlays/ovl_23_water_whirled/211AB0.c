@@ -5,6 +5,7 @@
 #include "game/hmfcoll.h"
 #include "game/mallocblock.h"
 #include "game/object.h"
+#include "game/pad.h"
 #include "game/sprite.h"
 #include "game/wipe.h"
 #include "gcc/memory.h"
@@ -48,6 +49,8 @@ extern s32 D_8010A2FC_water_whirled[4];
 extern s16 D_8010A30C_water_whirled[][20];
 extern s32 D_8010A3AC_water_whirled[];
 extern s32 D_8010A3BC_water_whirled[];
+extern f32 D_8010A3CC_water_whirled[4];
+extern s32 D_8010A3DC_water_whirled[4];
 extern s32 D_8010A3EC_water_whirled[];
 extern f32 D_8010A3FC_water_whirled[4];
 extern f32 D_8010A40C_water_whirled[4];
@@ -92,6 +95,11 @@ void func_80109458_water_whirled(s16 player);
 void func_8010956C_water_whirled(s16 player);
 s32 func_8010960C_water_whirled(omObjData *object);
 void func_80108DF8_water_whirled(omObjData *object);
+void func_801086A0_water_whirled(omObjData *object, f32 x, f32 z);
+f32 func_80108B98_water_whirled(omObjData *object, f32 x, f32 y, f32 z);
+void func_801096BC_water_whirled(omObjData *object);
+void func_801098AC_water_whirled(omObjData *object);
+void func_80109E2C_water_whirled(omObjData *object);
 
 void func_801059A0_water_whirled(void) {
     u8 camIndex;
@@ -726,7 +734,127 @@ void func_80107DD4_water_whirled(s32 index, f32 unused, Vec *out) {
     out->z /= 20.0f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_23_water_whirled/211AB0", func_80107F08_water_whirled);
+void func_80107F08_water_whirled(omObjData *object) {
+    func_800E1BA8_minigame_ObjData *work = object->data;
+    s32 player;
+    s32 pad;
+    s32 mode;
+    f32 speed;
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 turn;
+    f32 stickAvg;
+    f32 dist;
+    f32 scale;
+    s16 stickX;
+    s16 stickY;
+    Vec vel;
+    Vec drift;
+
+    D_800EBE2C_minigame = D_800EC5D8_minigame = 0.0f;
+    player = work->unk59;
+    pad = work->unk57;
+    speed = work->unk40;
+    D_8010A1D0_water_whirled[player].x = x = object->trans.x;
+    D_8010A1D0_water_whirled[player].y = y = object->trans.y;
+    D_8010A1D0_water_whirled[player].z = z = object->trans.z;
+    D_8010AC40_water_whirled = (u16)D_800CDA7C_main[pad];
+    D_8010AC44_water_whirled = D_800CBB6E_main[pad];
+    D_800CBB6E_main[pad] = 0;
+    D_800CDA7C_main[pad] = 0;
+    mode = func_800E6E8C_minigame();
+    if (mode >= 2) {
+        func_801098AC_water_whirled(object);
+        stickX = D_8010AC44_water_whirled;
+        stickY = 0;
+        if (stickX > 60) {
+            stickX = 60;
+        }
+        if (stickY > 60) {
+            stickY = 60;
+        }
+        if (stickX < -60) {
+            stickX = -60;
+        }
+        if (stickY < -60) {
+            stickY = -60;
+        }
+        func_800E2308_minigame(&stickX, &stickY);
+    } else {
+        stickY = 0;
+        stickX = 0;
+        D_8010AC40_water_whirled = 0;
+    }
+    if (D_8010AC40_water_whirled & 0x8000) {
+        if (speed == 0.0f) {
+            speed = 1.0f;
+        }
+        speed *= 1.08f;
+        D_8010A3CC_water_whirled[player] *= 1.1f;
+    } else {
+        speed *= 0.98f;
+        D_8010A3CC_water_whirled[player] *= 0.9f;
+    }
+    stickAvg = func_80107D18_water_whirled(player, stickX);
+    turn = stickAvg / 15.0f;
+    if (speed < 1.0f) {
+        speed = 0.0f;
+    }
+    if (D_8010A190_water_whirled[player] < speed) {
+        speed = D_8010A190_water_whirled[player];
+    }
+    if (D_8010A3CC_water_whirled[player] < 0.05f) {
+        D_8010A3CC_water_whirled[player] = 0.05f;
+    }
+    if (1.0f < D_8010A3CC_water_whirled[player]) {
+        D_8010A3CC_water_whirled[player] = 1.0f;
+    }
+    if (D_8010A28C_water_whirled[player] != -1 && (D_8010A3DC_water_whirled[player] & 1)) {
+        HuAudFXPitchSet((s16)D_8010A28C_water_whirled[player],
+                        (s16)(D_8010A3CC_water_whirled[player] * 400.0f + -400.0f));
+        HuAudFXVolSet(D_8010A28C_water_whirled[player], D_8010A3CC_water_whirled[player] * 43.0f + 84.0f);
+    }
+    D_8010A3DC_water_whirled[player]++;
+    work->unk40 = speed;
+    vel.x = sindf(work->unk3C) * (speed * D_8010A3CC_water_whirled[player]);
+    vel.y = 0.0f;
+    vel.z = cosdf(work->unk3C) * (speed * D_8010A3CC_water_whirled[player]);
+    work->unk3C = func_800202A8_main(work->unk3C - turn);
+    func_80107DD4_water_whirled(player, speed, &drift);
+    drift.x += vel.x;
+    drift.z += vel.z;
+    dist = HuSqrtf(drift.x * drift.x + drift.z * drift.z);
+    if (speed < dist) {
+        scale = speed / dist;
+        drift.x *= scale;
+        drift.z *= scale;
+    }
+    x += D_8010A200_water_whirled[player].x * D_8010A230_water_whirled[player] + drift.x;
+    z += D_8010A200_water_whirled[player].z * D_8010A230_water_whirled[player] + drift.z;
+    y = func_80108B98_water_whirled(object, x, 0.0f, z);
+    D_8010A1A0_water_whirled[player].x = x - D_8010A1D0_water_whirled[player].x;
+    D_8010A1A0_water_whirled[player].y = 0.0f;
+    D_8010A1A0_water_whirled[player].z = z - D_8010A1D0_water_whirled[player].z;
+    x += D_800EBE2C_minigame;
+    z += D_800EC5D8_minigame;
+    func_801086A0_water_whirled(object, x, z);
+    speed = work->unk40;
+    object->trans.x -= D_8010A3CC_water_whirled[player] * 50.0f;
+    func_80088910_main(Hu3DData[object->model[0]].mtx, 0.0f, work->unk3C, 0.0f);
+    func_800E17D4_minigame(object, x, y - 40.0f, z);
+    func_801078F0_water_whirled(object, D_8010A3CC_water_whirled[player]);
+    if (D_8010A230_water_whirled[player] != 0.0f) {
+        if ((D_8010A230_water_whirled[player] *= 0.9f) < 1.0f) {
+            D_8010A230_water_whirled[player] = 0.0f;
+        }
+    }
+    D_8010A2AC_water_whirled.unk08[player] = speed;
+    func_801096BC_water_whirled(object);
+    func_80109E2C_water_whirled(object);
+    D_800CDA7C_main[pad] = D_8010AC40_water_whirled;
+    D_800CBB6E_main[pad] = D_8010AC44_water_whirled;
+}
 
 void func_8010860C_water_whirled(Vec *origin, Vec *p, Vec *q, Vec *out) {
     f32 ax = p->x - origin->x;

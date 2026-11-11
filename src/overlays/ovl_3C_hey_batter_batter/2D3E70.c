@@ -3,8 +3,10 @@
 #include "game/camera.h"
 #include "game/camsetup.h"
 #include "game/effect.h"
+#include "game/data.h"
 #include "game/esprite.h"
 #include "game/gamemes.h"
+#include "game/hmfanim.h"
 #include "game/hmfparticle.h"
 #include "game/hmfspr.h"
 #include "game/object.h"
@@ -30,13 +32,27 @@ extern s16 D_80109C40_hey_batter_batter;
 extern s16 D_80109C42_hey_batter_batter;
 extern s16 D_80109C44_hey_batter_batter;
 extern s16 D_80109C46_hey_batter_batter;
+extern s16 D_80109C48_hey_batter_batter;
+extern s16 D_80109C4A_hey_batter_batter;
+extern s16 D_80109B60_hey_batter_batter;
+extern Vec D_80109B64_hey_batter_batter[4];
+extern Vec D_80109B94_hey_batter_batter[4];
+extern Vec D_80109BC4_hey_batter_batter[2];
+extern Vec D_80109BDC_hey_batter_batter[2];
+extern Vec D_80109BF4_hey_batter_batter[5];
+extern s16 D_80109C30_hey_batter_batter;
+extern s16 D_80109C32_hey_batter_batter;
+extern s16 D_80109C34_hey_batter_batter;
+extern Vec D_80109C4C_hey_batter_batter[5];
 extern Vec D_80109D04_hey_batter_batter[5];
 
 extern s16 D_80109ED0_hey_batter_batter;
+extern s16 D_80109ED2_hey_batter_batter;
 extern s16 D_80109ED4_hey_batter_batter;
 extern s16 D_80109ED6_hey_batter_batter;
 extern s16 D_80109ED8_hey_batter_batter;
 extern s16 D_80109EDA_hey_batter_batter;
+extern s16 D_80109EDC_hey_batter_batter;
 extern s16 D_80109EDE_hey_batter_batter;
 extern s16 D_80109EE0_hey_batter_batter;
 extern s16 D_80109EE2_hey_batter_batter;
@@ -44,7 +60,11 @@ extern s16 D_80109EE4_hey_batter_batter;
 extern s16 D_80109EE6_hey_batter_batter[2];
 extern s16 D_80109EEA_hey_batter_batter[2];
 extern s16 D_80109EEE_hey_batter_batter;
+extern s16 D_80109EF0_hey_batter_batter;
 extern omObjData *D_80109EF4_hey_batter_batter;
+extern s16 D_80109EFA_hey_batter_batter;
+extern s16 D_80109EFC_hey_batter_batter;
+extern s16 D_80109EFE_hey_batter_batter;
 extern s16 D_80109F00_hey_batter_batter[5];
 extern s16 D_80109F0C_hey_batter_batter[5];
 extern HeyBatterBatterBase D_80109F18_hey_batter_batter[5];
@@ -57,17 +77,25 @@ void func_80105C44_hey_batter_batter(void);
 void func_80105CE8_hey_batter_batter(omObjData *object);
 void func_80105DE0_hey_batter_batter(void);
 void func_80106048_hey_batter_batter(omObjData *object);
+void func_801062E0_hey_batter_batter(omObjData *object);
+void func_80106744_hey_batter_batter(omObjData *object);
+void func_80106928_hey_batter_batter(omObjData *object);
 void func_80106C24_hey_batter_batter(omObjData *object);
 void func_80106C6C_hey_batter_batter(omObjData *object);
 void func_80106CBC_hey_batter_batter(omObjData *object);
 void func_80106CE4_hey_batter_batter(omObjData *object);
+void func_80106FA8_hey_batter_batter(omObjData *object);
 void func_801070D8_hey_batter_batter(omObjData *object);
 void func_80107144_hey_batter_batter(omObjData *object);
 void func_801079D0_hey_batter_batter(omObjData *object);
+void func_80107C48_hey_batter_batter(omObjData *object);
 void func_80108B48_hey_batter_batter(omObjData *object);
 void func_80108D90_hey_batter_batter(omObjData *object);
 void func_8010951C_hey_batter_batter(omObjData *object);
 void func_80109630_hey_batter_batter(omObjData *object);
+void func_801098DC_hey_batter_batter(f32 startZoom, Vec startRot, Vec startCenter, f32 endZoom, Vec endRot,
+                                     Vec endCenter, f32 duration, f32 time);
+s16 func_80109A78_hey_batter_batter(s32 spriteId, u16 attr, u16 priority, s16 x, s16 y);
 s16 func_80109B24_hey_batter_batter(s32 arg0);
 
 void func_801059A0_hey_batter_batter(void) {
@@ -181,7 +209,72 @@ void func_80105DE0_hey_batter_batter(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3C_hey_batter_batter/2D3E70", func_80106048_hey_batter_batter);
+void func_80106048_hey_batter_batter(omObjData *object) {
+    switch (D_80109C30_hey_batter_batter) {
+        case 0:
+            WipeCreateIn(WIPE_TYPE_PREV, 16);
+            D_80109C30_hey_batter_batter++;
+            break;
+        case 1:
+            object->func = func_801062E0_hey_batter_batter;
+            D_80109C30_hey_batter_batter++;
+            break;
+        case 2:
+            if (++D_80109C34_hey_batter_batter == 1) {
+                GMesCreate(8);
+            } else if (GMesStatGet() == 0) {
+                D_80109C34_hey_batter_batter = 0;
+                D_80109C30_hey_batter_batter++;
+            }
+            break;
+        case 3:
+            object->func = func_80106744_hey_batter_batter;
+            D_80109C30_hey_batter_batter++;
+            break;
+        case 4:
+            if (++D_80109C34_hey_batter_batter == 1) {
+                func_80017954_main(D_80109EF4_hey_batter_batter->model[0], 1,
+                                   GwPlayer[D_80109ED0_hey_batter_batter].chr, D_80109EFA_hey_batter_batter);
+                D_80109B60_hey_batter_batter = 1;
+                GMesCreate(0x13);
+                HuAudSeqFadeOut(120);
+            } else if (GMesStatGet() == 0) {
+                D_80109C34_hey_batter_batter = 0;
+                D_80109C30_hey_batter_batter++;
+            }
+            break;
+        case 5:
+            object->func = func_80106928_hey_batter_batter;
+            D_80109C30_hey_batter_batter++;
+            break;
+        case 6:
+            if (++D_80109C34_hey_batter_batter == 1) {
+                switch (D_80109EE0_hey_batter_batter) {
+                    case 0:
+                        HuAudSeqPlay(0x68);
+                        D_80109C32_hey_batter_batter = GMesCreate(0x24);
+                        GwPlayer[D_80109ED0_hey_batter_batter].bonusCoin =
+                            D_800A11D0_main[D_80109EF0_hey_batter_batter];
+                        break;
+                    case 1:
+                        HuAudSeqPlay(0x6B);
+                        D_80109C32_hey_batter_batter = GMesCreate(0x1D);
+                        GwPlayer[D_80109ED0_hey_batter_batter].bonusCoin = -1;
+                        break;
+                }
+                func_800370D0_main(D_80109C32_hey_batter_batter, 120);
+            } else if (D_80109C34_hey_batter_batter >= 135) {
+                D_80109C34_hey_batter_batter = 0;
+                D_80109C30_hey_batter_batter++;
+            }
+            break;
+        case 7:
+            object->func = func_80106C24_hey_batter_batter;
+            break;
+        case 8:
+            break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3C_hey_batter_batter/2D3E70", func_801062E0_hey_batter_batter);
 
@@ -232,7 +325,56 @@ void func_80106744_hey_batter_batter(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3C_hey_batter_batter/2D3E70", func_80106928_hey_batter_batter);
+void func_80106928_hey_batter_batter(omObjData *object) {
+    switch (D_80109C48_hey_batter_batter) {
+        case 0:
+            switch (D_80109ED4_hey_batter_batter) {
+                case 1:
+                    D_80109EE0_hey_batter_batter = 0;
+                    break;
+                case 2:
+                    D_80109EE0_hey_batter_batter = 1;
+                    break;
+            }
+            D_80109C48_hey_batter_batter++;
+            break;
+        case 1:
+            if (D_80109EE0_hey_batter_batter == 0) {
+                D_80109EEE_hey_batter_batter = 3;
+                func_801098DC_hey_batter_batter(D_80109EB4_hey_batter_batter.zoom, D_80109B64_hey_batter_batter[0],
+                                                D_80109B94_hey_batter_batter[0], D_80109EB4_hey_batter_batter.zoom,
+                                                D_80109BC4_hey_batter_batter[0], D_80109BDC_hey_batter_batter[0], 30.0f,
+                                                D_80109C4A_hey_batter_batter);
+                if (sindf(D_80109C4A_hey_batter_batter * 3.0f) >= 1.0f) {
+                    D_80109C48_hey_batter_batter++;
+                    D_80109C4A_hey_batter_batter = 0;
+                } else {
+                    D_80109C4A_hey_batter_batter++;
+                }
+            } else if (D_80109EE0_hey_batter_batter == 1) {
+                D_80109C48_hey_batter_batter++;
+            }
+            break;
+        case 2:
+            if (D_80109EE0_hey_batter_batter == 1) {
+                func_80017954_main(D_80109EF4_hey_batter_batter->model[0], 1,
+                                   GwPlayer[D_80109ED0_hey_batter_batter].chr, D_80109EFE_hey_batter_batter);
+                D_80109ED2_hey_batter_batter = 3;
+                D_80109EDA_hey_batter_batter = 1;
+                HuAudFXPlay(0x4D8);
+            } else if (D_80109EE0_hey_batter_batter == 0) {
+                func_80017954_main(D_80109EF4_hey_batter_batter->model[0], 1,
+                                   GwPlayer[D_80109ED0_hey_batter_batter].chr, D_80109EFC_hey_batter_batter);
+                D_80109ED2_hey_batter_batter = 2;
+                D_80109EDA_hey_batter_batter = 2;
+            }
+            D_80109C48_hey_batter_batter++;
+            break;
+        case 3:
+            object->func = func_80106048_hey_batter_batter;
+            break;
+    }
+}
 
 void func_80106C24_hey_batter_batter(omObjData *object) {
     WipeCreateOut(WIPE_TYPE_NORMAL, 20);
@@ -257,9 +399,32 @@ void func_80106CBC_hey_batter_batter(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3C_hey_batter_batter/2D3E70", func_80106CE4_hey_batter_batter);
+void func_80106CE4_hey_batter_batter(omObjData *object) {
+    s16 i;
+    s16 model;
 
-void func_80106FA8_hey_batter_batter(void) {
+    func_80109A78_hey_batter_batter(0x5D0000, 0x4000, 1000, 160, 120);
+    for (i = 0; i < 2; i++) {
+        model = D_80109F00_hey_batter_batter[i] = func_8000B108_main(0x5D0003, 0x2A9);
+        Hu3DModelPosSet(model, D_80109C4C_hey_batter_batter[i].x, D_80109C4C_hey_batter_batter[i].y,
+                        D_80109C4C_hey_batter_batter[i].z);
+        Hu3DModelScaleSet(model, 2.0f, 2.0f, 2.0f);
+        Hu3DData[model].rot.x = 20.0f;
+        D_80109F0C_hey_batter_batter[i] = rand8() % 90;
+    }
+    for (; i < 5; i++) {
+        model = D_80109F00_hey_batter_batter[i] = func_8000B108_main(0x5D0003, 0x2A9);
+        Hu3DModelPosSet(model, D_80109C4C_hey_batter_batter[i].x, D_80109C4C_hey_batter_batter[i].y,
+                        D_80109C4C_hey_batter_batter[i].z);
+        Hu3DModelScaleSet(model, 2.0f, 2.0f, 2.0f);
+        Hu3DData[model].rot.x = 20.0f;
+        Hu3DData[model].rot.y = 90.0f;
+        D_80109F0C_hey_batter_batter[i] = rand8() % 90;
+    }
+    object->func = func_80106FA8_hey_batter_batter;
+}
+
+void func_80106FA8_hey_batter_batter(omObjData *object) {
     s16 i;
     s16 model;
 
@@ -284,7 +449,38 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3C_hey_batter_batter/2D3E70", func_80
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3C_hey_batter_batter/2D3E70", func_80107464_hey_batter_batter);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3C_hey_batter_batter/2D3E70", func_801079D0_hey_batter_batter);
+void func_801079D0_hey_batter_batter(omObjData *object) {
+    void *data;
+    s16 anim;
+
+    object->model[0] = func_8000B108_main(0xA00EE, 0x2A9);
+    object->model[1] = func_8000B108_main(0x5D0009, 0x2A9);
+    object->model[2] = func_8000B108_main(9, 0x6A9);
+    object->model[3] = func_8000B108_main(0x5D0004, 0x2A9);
+    object->model[4] = func_8000B108_main(9, 0x6A9);
+    data = DataRead(0xA0100);
+    anim = Hu3DAnimCreate(Hu3DData[object->model[0]].hmf, data, 0, "c162n_0_DEF");
+    DataClose(data);
+    Hu3DModelRemakeStatic(object->model[0]);
+    Hu3DAnimBankSet(anim, 0);
+    func_80032FC0_main(anim, 1, 0);
+    func_8000B460_main(object, 0, 0xA00F7);
+    func_8000B460_main(object, 1, 0xA00F6);
+    func_8000B460_main(object, 2, 0xA00F2);
+    func_8000B460_main(object, 3, 0xA00F8);
+    func_8000B460_main(object, 4, 0xA00F9);
+    func_8000B460_main(object, 5, 0xA00FA);
+    func_8001C258_main(object->model[1], 0x4000, 0x4000);
+    Hu3DModelHookSet(object->model[1], object->model[0], "c162_000-te2");
+    Hu3DModelCameraSet(object->model[1], 1);
+    omSetTra(object, 0.0f, 5.5f, -1000.0f);
+    Hu3DModelPosSet(object->model[2], 0.0f, 4.0f, -1000.0f);
+    Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[0]].motId, 0, 2, 2);
+    D_80109EDA_hey_batter_batter = 0;
+    Hu3DModelCameraSet(object->model[3], 0);
+    Hu3DModelCameraSet(object->model[4], 0);
+    object->func = func_80107C48_hey_batter_batter;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3C_hey_batter_batter/2D3E70", func_80107C48_hey_batter_batter);
 
@@ -338,7 +534,42 @@ void func_8010951C_hey_batter_batter(omObjData *object) {
     object->func = func_80109630_hey_batter_batter;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3C_hey_batter_batter/2D3E70", func_80109630_hey_batter_batter);
+void func_80109630_hey_batter_batter(omObjData *object) {
+    s16 i;
+    s16 batter = D_80109EF0_hey_batter_batter;
+
+    if (D_80109EEA_hey_batter_batter[0] == 1) {
+        for (i = 0; i < 5; i++) {
+            if (i == batter) {
+                omSetTra(object, D_80109BF4_hey_batter_batter[i].x, D_80109BF4_hey_batter_batter[i].y,
+                         D_80109BF4_hey_batter_batter[i].z);
+                omSetSca(object, 3.0f, 3.0f, 3.0f);
+                func_8001C5B4_main(object->model[0], D_80109EE6_hey_batter_batter[0]);
+                Hu3DModelCameraSet(object->model[0], 1);
+            } else {
+                Hu3DModelPosSet(object->model[i + 1], D_80109BF4_hey_batter_batter[i].x,
+                                D_80109BF4_hey_batter_batter[i].y, D_80109BF4_hey_batter_batter[i].z);
+                Hu3DModelScaleSet(object->model[i + 1], 3.0f, 3.0f, 3.0f);
+                func_8001C5B4_main(object->model[i + 1], D_80109EE6_hey_batter_batter[1]);
+                Hu3DModelCameraSet(object->model[i + 1], 1);
+            }
+        }
+        D_80109EDC_hey_batter_batter = 1;
+        D_80109EEA_hey_batter_batter[0] = 0;
+    }
+    for (i = 0; i < 7; i++) {
+        if (D_800CCF58_main[Hu3DData[object->model[i]].motId].unk02 == Hu3DData[object->model[i]].motTime) {
+            Hu3DModelCameraSet(object->model[i], 0);
+        }
+    }
+    if (D_80109EEA_hey_batter_batter[1] == 1) {
+        Hu3DModelPosSet(object->model[6], -170.0f, 100.0f, 0.0f);
+        Hu3DModelScaleSet(object->model[6], 1.0f, 1.0f, 1.0f);
+        func_8001C5B4_main(object->model[6], D_80109EE6_hey_batter_batter[0]);
+        Hu3DModelCameraSet(object->model[6], 1);
+        D_80109EEA_hey_batter_batter[1] = 0;
+    }
+}
 
 void func_801098DC_hey_batter_batter(f32 startZoom, Vec startRot, Vec startCenter, f32 endZoom, Vec endRot,
                                      Vec endCenter, f32 duration, f32 time) {

@@ -295,14 +295,14 @@ void func_801008E8_name_81(void) {
     s16 *temp_s0;
     s32 temp_s2;
     UnkBoard4 *temp_s3;
-    s32 temp_s6;
+    DuelHelpWin *temp_s6;
     s16 var_s1;
-    s32 var_s4;
+    DuelHelpWin *var_s4;
     s32 var_s7;
     s16 sixteen;
     f32 sixteenFloat;
 
-    var_s4 = 0;
+    var_s4 = NULL;
 
     // TODO: do-while(0) required for matching
     do {
@@ -365,7 +365,7 @@ void func_801008E8_name_81(void) {
         while (1) {
         label:
             func_800E1854_name_81(temp_s6);
-            if (var_s4 != 0) {
+            if (var_s4 != NULL) {
                 func_800E1854_name_81(var_s4);
             }
             func_80100070_name_81(temp_s3);

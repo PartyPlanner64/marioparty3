@@ -936,8 +936,8 @@ void func_80108E1C_boardresult2(void) {
     s32 timer;
     s32 allCpu;
     s32 showingDetails;
-    s32 leftWindow = 0;
-    s32 rightWindow = 0;
+    DuelHelpWin *leftWindow = NULL;
+    DuelHelpWin *rightWindow = NULL;
     s32 i;
 
     D_801099A0_boardresult2 = func_800F4528_name_81(6, 0);
@@ -1012,10 +1012,10 @@ void func_80108E1C_boardresult2(void) {
             if (--timer == 0) {
                 break;
             }
-            if (leftWindow == 0) {
+            if (leftWindow == NULL) {
                 leftWindow = func_800E172C_name_81(0x16, 60, 207, 1);
             }
-            if (rightWindow == 0) {
+            if (rightWindow == NULL) {
                 rightWindow = func_800E172C_name_81(0x17, 200, 207, 1);
             }
         } else {
@@ -1024,23 +1024,23 @@ void func_80108E1C_boardresult2(void) {
                     continue;
                 }
                 if (!showingDetails) {
-                    if (leftWindow == 0) {
+                    if (leftWindow == NULL) {
                         leftWindow = func_800E172C_name_81(0x16, 60, 207, 1);
                     }
-                    if (rightWindow == 0) {
+                    if (rightWindow == NULL) {
                         rightWindow = func_800E172C_name_81(0x17, 200, 207, 1);
                     }
                     if (D_800C9520_main[GwPlayer[i].pad] & START_BUTTON) {
                         showingDetails = 1;
                         func_801069A4_boardresult2();
                         func_8010879C_boardresult2();
-                        if (leftWindow != 0) {
-                            func_800E1854_minigame(leftWindow);
-                            leftWindow = 0;
+                        if (leftWindow != NULL) {
+                            func_800E1854_name_81(leftWindow);
+                            leftWindow = NULL;
                         }
-                        if (rightWindow != 0) {
-                            func_800E1854_minigame(rightWindow);
-                            rightWindow = 0;
+                        if (rightWindow != NULL) {
+                            func_800E1854_name_81(rightWindow);
+                            rightWindow = NULL;
                         }
                     } else if (D_800C9520_main[GwPlayer[i].pad] & A_BUTTON) {
                         goto exit;
@@ -1091,11 +1091,11 @@ void func_80108E1C_boardresult2(void) {
     }
 
 exit:
-    if (leftWindow != 0) {
-        func_800E1854_minigame(leftWindow);
+    if (leftWindow != NULL) {
+        func_800E1854_name_81(leftWindow);
     }
-    if (rightWindow != 0) {
-        func_800E1854_minigame(rightWindow);
+    if (rightWindow != NULL) {
+        func_800E1854_name_81(rightWindow);
     }
     if (!(GwSystem.playMode & 4) || (GwPlayer[kakusiMasuItemHis[0]].stat & PLAYER_IS_CPU)) {
         HuAudSeqFadeOut(60);

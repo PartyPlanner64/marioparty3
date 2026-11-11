@@ -89,7 +89,6 @@ extern s32 D_80115EDC_duel05[];
 extern s32 D_80115EF4_duel05[];
 extern s32 D_80115838_duel05;
 void func_8010EF8C_duel05(void);
-s32 func_800E1854_minigame(s32);
 Process *func_800EBC60_name_81(Vec *, Vec *, Vec *, s32);
 void func_800EB7BC_name_81(Vec *);
 void func_800FC8DC_name_81(Object *);
@@ -168,10 +167,10 @@ void func_8010EAFC_duel05(void);
 void func_800FF640_name_81(s32);
 f32 MBDVecAngleGet(Vec *);
 s32 func_800E88FC_name_81(void);
-extern s32 D_801163A0_duel05;
-extern s32 D_801163A4_duel05;
-extern s32 D_801163A8_duel05;
-extern s32 D_801163AC_duel05;
+extern DuelHelpWin *D_801163A0_duel05;
+extern DuelHelpWin *D_801163A4_duel05;
+extern DuelHelpWin *D_801163A8_duel05;
+extern DuelHelpWin *D_801163AC_duel05;
 void MBDVecDirGet(Vec *, Vec *, Vec *);
 Process *func_800EBF2C_name_81(Vec *, Vec *, Vec *, s32);
 void func_800F38DC_name_81(s32, s32, s32);
@@ -2880,7 +2879,7 @@ void func_8010F0FC_duel05(void) {
     u8 order[32]; // Only 12 are used; the size matches the original stack frame.
     s32 sfx[12];
     s32 player;
-    s32 msgWindow;
+    DuelHelpWin *msgWindow;
     s16 window;
     Process *colorProcess;
     s32 state;
@@ -3008,7 +3007,7 @@ void func_8010F0FC_duel05(void) {
     }
     HuPrcSleep(30);
     D_80115830_duel05 = order[i];
-    func_800E1854_minigame(msgWindow);
+    func_800E1854_name_81(msgWindow);
     if (colorProcess != NULL) {
         omDelPrcObj(colorProcess);
     }

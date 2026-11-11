@@ -9,10 +9,10 @@ typedef struct UnkE3CD0 {
     f32 unk_30;
 } UnkE3CD0;
 
-extern s32 D_80101AF8_name_81;
-extern s32 D_80101AFC_name_81;
-extern s32 D_80101B00_name_81;
-extern s32 D_80101B04_name_81;
+extern DuelHelpWin *D_80101AF8_name_81;
+extern DuelHelpWin *D_80101AFC_name_81;
+extern DuelHelpWin *D_80101B00_name_81;
+extern DuelHelpWin *D_80101B04_name_81;
 extern UnkE3CD0 *D_801054B0_name_81;
 extern Vec *D_801054AC_name_81;
 extern Vec D_801054A0_name_81;
@@ -573,33 +573,33 @@ u8 func_800FD498_name_81(void) {
 }
 
 void func_800FD4DC_name_81(void) {
-    if (D_80101AF8_name_81 == 0) {
+    if (D_80101AF8_name_81 == NULL) {
         D_80101AF8_name_81 = func_800E1824_name_81(2, 0xAE, 1);
     }
-    if (D_80101B00_name_81 == 0) {
+    if (D_80101B00_name_81 == NULL) {
         D_80101B00_name_81 = func_800E1824_name_81(3, 0xCA, 1);
     }
-    if (D_80101B04_name_81 == 0) {
+    if (D_80101B04_name_81 == NULL) {
         D_80101B04_name_81 = func_800E1824_name_81(0xD, 0xBC, 1);
     }
 }
 
 void func_800FD55C_name_81(void) {
-    if (D_80101AF8_name_81 != 0) {
+    if (D_80101AF8_name_81 != NULL) {
         func_800E1854_name_81(D_80101AF8_name_81);
-        D_80101AF8_name_81 = 0;
+        D_80101AF8_name_81 = NULL;
     }
-    if (D_80101AFC_name_81 != 0) {
+    if (D_80101AFC_name_81 != NULL) {
         func_800E1854_name_81(D_80101AFC_name_81);
-        D_80101AFC_name_81 = 0;
+        D_80101AFC_name_81 = NULL;
     }
-    if (D_80101B00_name_81 != 0) {
+    if (D_80101B00_name_81 != NULL) {
         func_800E1854_name_81(D_80101B00_name_81);
-        D_80101B00_name_81 = 0;
+        D_80101B00_name_81 = NULL;
     }
-    if (D_80101B04_name_81 != 0) {
+    if (D_80101B04_name_81 != NULL) {
         func_800E1854_name_81(D_80101B04_name_81);
-        D_80101B04_name_81 = 0;
+        D_80101B04_name_81 = NULL;
     }
 }
 

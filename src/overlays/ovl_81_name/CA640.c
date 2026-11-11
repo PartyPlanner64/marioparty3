@@ -17,8 +17,6 @@ extern Vec D_80102D10_name_81;
 void func_800E38B0_name_81(void);
 void func_800E4914_name_81(void);
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_81_name/CA640", D_80102450_name_81);
-
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_81_name/CA640", D_80102458_name_81);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_81_name/CA640", D_80102468_name_81);

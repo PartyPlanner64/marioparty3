@@ -732,6 +732,8 @@ segments:
       - [0xE78B0, c]
       - [0xE7AE0, c]
       - [0xE8BE0, data] #80100E10
+      - [0xE8D30, .data, C9330]
+      - [0xE8D90, data]
       - [0xE98E0, .data, E78B0]
       - [0xE98F0, .data, E7AE0] #80101B20
       - [0xE99F0, .data, BE940]
@@ -741,7 +743,8 @@ segments:
       - [0xEA060, .rodata, C1D60]
       - [0xEA0D0, .rodata, C45D0]
       - [0xEA130, .rodata, C5770]
-      - [0xEA220, .rodata, CA640]
+      - [0xEA220, .rodata, C9330]
+      - [0xEA228, .rodata, CA640]
       - [0xEA330, .rodata, D5B20]
       - [0xEA488, .rodata, DC4E0]
       - [0xEA4F8, .rodata, DFD60]

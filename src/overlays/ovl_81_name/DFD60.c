@@ -1119,11 +1119,11 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_81_name/DFD60", D_801027C8_name_81
 void func_800FB160_name_81(void) {
     s16 sp18[2];
     u16 sp36;
-    s32 sp3C;
+    DuelHelpWin *sp3C;
     UnkBoard4 *temp_s4;
     u16 *temp_s1;
-    s32 temp_fp;
-    s32 temp_s7;
+    DuelHelpWin *temp_fp;
+    DuelHelpWin *temp_s7;
     s32 var_s3;
     u8 playerPad;
     void *temp_v0_2;
@@ -1204,7 +1204,196 @@ void func_800FB524_name_81(s32 playerIndex) {
     HuPrcChildWatch();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DFD60", func_800FB59C_name_81);
+void func_800FB59C_name_81(s32 playerIndex, s32 frontOrBackIndex, s32 targetIndex, s32 starDamage, s32 hpDamage, s32 selfStarDamage, s32 selfHpDamage) {
+    GW_PLAYER *player;
+    GW_PLAYER *opposingPlayer;
+    Object *partner;
+    Object *opposingPartner;
+    s32 poweredUp;
+    Process *process;
+    Object *effect;
+    Object *counterEffect;
+    s32 opposingPlayerIndex;
+    s32 flags;
+    s32 counterFlags;
+    s32 i;
+    s32 partnerID;
+
+    opposingPlayerIndex = playerIndex ^ 1;
+    player = MBDGetPlayerStruct(playerIndex);
+    opposingPlayer = MBDGetPlayerStruct(opposingPlayerIndex);
+    counterFlags = 0;
+    process = HuPrcCurrentGet();
+    D_80105558_name_81 = starDamage;
+    D_80105550_name_81 = hpDamage;
+    flags = (starDamage != 0) << 1;
+    if (hpDamage != 0) {
+        flags |= 1;
+    }
+    if (flags == 0 && selfStarDamage != -1 && selfHpDamage != -1) {
+        flags |= 8;
+    }
+    if (selfStarDamage > 0) {
+        counterFlags |= 2;
+    }
+    if (selfHpDamage > 0) {
+        counterFlags |= 1;
+    }
+    func_800FAEE8_name_81();
+
+    if (frontOrBackIndex == 0) {
+        D_80101968_name_81 = &player->stats.partners.frontHp;
+        D_80101974_name_81 = &player->stats.partners.frontID;
+        poweredUp = player->stats.partners.frontPoweredUp;
+    } else {
+        D_80101968_name_81 = &player->stats.partners.backHp;
+        D_80101974_name_81 = &player->stats.partners.backID;
+        poweredUp = player->stats.partners.backPoweredUp;
+    }
+
+    if (targetIndex == 0) {
+        D_8010196C_name_81 = &opposingPlayer->stats.partners.frontHp;
+        D_80101978_name_81 = &opposingPlayer->stats.partners.frontID;
+        D_80101970_name_81 = &opposingPlayer->stats.partners.backHp;
+        D_8010197C_name_81 = &opposingPlayer->stats.partners.backID;
+    } else if (targetIndex == 1) {
+        D_8010196C_name_81 = &opposingPlayer->stats.partners.backHp;
+        D_80101978_name_81 = &opposingPlayer->stats.partners.backID;
+        D_80101970_name_81 = &opposingPlayer->stats.partners.frontHp;
+        D_8010197C_name_81 = &opposingPlayer->stats.partners.frontID;
+    } else {
+        D_8010196C_name_81 = NULL;
+        D_80101978_name_81 = NULL;
+        D_80101970_name_81 = NULL;
+        D_8010197C_name_81 = NULL;
+    }
+
+    partner = MBDGetPlayerPartnerRef(playerIndex, frontOrBackIndex);
+    opposingPartner = MBDGetPlayerPartnerRef(opposingPlayerIndex, targetIndex);
+    HuPrcChildLink(process, MBDCameraZoomMotStart(3.0f));
+    HuPrcChildWatch();
+    func_800F74E4_name_81(-1);
+    HuVecCopy3F(&D_80105540_name_81, &player->player_obj->coords);
+    func_800FC888_name_81(4);
+    func_800FC8C4_name_81(&D_80105540_name_81);
+    HuPrcChildLink(process, func_800EC1E4_name_81(&D_80105540_name_81, &partner->coords, &D_80105540_name_81, 4.0f));
+    HuPrcChildWatch();
+    func_800FC8C4_name_81(&partner->coords);
+
+    if (hpDamage == 200) {
+        *D_8010196C_name_81 -= 1;
+        *D_80101970_name_81 -= 1;
+        opposingPlayer->star -= 1;
+    } else {
+        if (D_8010196C_name_81 != NULL) {
+            *D_8010196C_name_81 -= hpDamage;
+        }
+        opposingPlayer->star -= starDamage;
+    }
+    if (selfHpDamage > 0) {
+        // Adjusts the pointer rather than the HP value; likely an original bug.
+        D_80101968_name_81 -= selfHpDamage;
+    }
+    if (selfStarDamage > 0) {
+        player->star -= selfStarDamage;
+    }
+
+    for (i = 255; i > 64; i -= 16) {
+        MBDBackTPLvlSet(i);
+        HuPrcVSleep();
+    }
+    MBDBackTPLvlSet(64);
+
+    HuPrcChildLink(process, func_800E47B8_name_81(playerIndex, *D_80101974_name_81, &player->player_obj->coords, &opposingPlayer->player_obj->coords, 1));
+    effect = func_800D8010_name_81(0x36, 0);
+    HuVecCopy3F(&effect->coords, &partner->coords);
+    func_8001C814_main(effect->omObj1->model[0], 2, 0);
+    HuAudFXPlay(0x1CC);
+    func_800EFABC_name_81(effect);
+    MBDModelKill(effect);
+    HuPrcChildWatch();
+    func_800FAB1C_name_81();
+
+    if (PartnersBaseStats[*D_80101974_name_81].func1 != NULL) {
+        D_8010571C_name_81 = (D_80101978_name_81 == NULL) ? -1 : *D_80101978_name_81;
+        D_8010570C_name_81 = (D_8010197C_name_81 == NULL) ? -1 : *D_8010197C_name_81;
+        PartnersBaseStats[*D_80101974_name_81].func1(playerIndex, opposingPlayerIndex, partner, opposingPartner, flags, poweredUp);
+    }
+    func_800FAC4C_name_81();
+
+    if (counterFlags != 0) {
+        HuVecCopy3F(&D_80105540_name_81, func_800FC8D0_name_81());
+        func_800FC8C4_name_81(&D_80105540_name_81);
+        func_800FC888_name_81(4);
+        HuPrcChildLink(process, func_800EC1E4_name_81(&D_80105540_name_81, &opposingPartner->coords, &D_80105540_name_81, 4.0f));
+        HuPrcChildWatch();
+        func_800FC8C4_name_81(&opposingPartner->coords);
+
+        HuPrcChildLink(process, func_800E47B8_name_81(opposingPlayerIndex, *D_80101978_name_81, &opposingPlayer->player_obj->coords, &player->player_obj->coords, 0));
+        counterEffect = func_800D8010_name_81(0x36, 0);
+        HuVecCopy3F(&counterEffect->coords, &opposingPartner->coords);
+        func_8001C814_main(counterEffect->omObj1->model[0], 2, 0);
+        HuAudFXPlay(0x1CC);
+        func_800EFABC_name_81(counterEffect);
+        MBDModelKill(counterEffect);
+        HuPrcChildWatch();
+        func_800FAB1C_name_81();
+
+        if (*D_80101978_name_81 != -1 && PartnersBaseStats[*D_80101978_name_81].func2 != NULL) {
+            partnerID = *D_80101974_name_81;
+            if (partnerID == 0) {
+                partnerID = -1;
+            }
+            D_8010571C_name_81 = partnerID;
+            D_8010570C_name_81 = -1;
+            PartnersBaseStats[*D_80101978_name_81].func2(opposingPlayerIndex, playerIndex, opposingPartner, partner, counterFlags, poweredUp + 0x10);
+        }
+        func_800FAC4C_name_81();
+    }
+
+    if (*D_80101974_name_81 != -1 && PartnersBaseStats[*D_80101974_name_81].func3 != NULL) {
+        PartnersBaseStats[*D_80101974_name_81].func3();
+    }
+    if (D_80101978_name_81 != NULL && *D_80101978_name_81 != -1 && PartnersBaseStats[*D_80101978_name_81].func4 != NULL) {
+        PartnersBaseStats[*D_80101978_name_81].func4();
+    }
+
+    if (*D_80101968_name_81 <= 0) {
+        *D_80101974_name_81 = -1;
+        *D_80101968_name_81 = 0;
+        func_800F8358_name_81(playerIndex);
+        func_800F57B0_name_81(playerIndex);
+        func_800F5E2C_name_81(playerIndex);
+    }
+    if (D_8010196C_name_81 != NULL && *D_8010196C_name_81 <= 0) {
+        *D_80101978_name_81 = -1;
+        *D_8010196C_name_81 = 0;
+        func_800F8358_name_81(opposingPlayerIndex);
+        func_800F57B0_name_81(opposingPlayerIndex);
+        func_800F5E2C_name_81(opposingPlayerIndex);
+    }
+    if (D_80101970_name_81 != NULL && *D_80101970_name_81 <= 0) {
+        *D_8010197C_name_81 = -1;
+        *D_80101970_name_81 = 0;
+        func_800F8358_name_81(opposingPlayerIndex);
+        func_800F57B0_name_81(opposingPlayerIndex);
+        func_800F5E2C_name_81(opposingPlayerIndex);
+    }
+
+    for (i = 64; i < 255; i += 16) {
+        MBDBackTPLvlSet(i);
+        HuPrcVSleep();
+    }
+    MBDBackTPLvlSet(255);
+    func_800F75EC_name_81(-1);
+    HuVecCopy3F(&D_80105540_name_81, func_800FC8D0_name_81());
+    func_800FC8C4_name_81(&D_80105540_name_81);
+    func_800FC888_name_81(4);
+    HuPrcChildLink(process, func_800EC1E4_name_81(&D_80105540_name_81, &player->player_obj->coords, &D_80105540_name_81, 4.0f));
+    HuPrcChildWatch();
+    func_800FC888_name_81(1);
+    func_800FAFAC_name_81();
+}
 
 void func_800FBDD4_name_81(void) {
     s32 sp20[1][2];

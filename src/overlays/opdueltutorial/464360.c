@@ -41,7 +41,6 @@ void func_800F76F8_name_81(s32, s32, s16, s32);
 void func_800F79DC_name_81(s32);
 void func_800F79E8_name_81(s32);
 void func_800F8418_name_81(s32, s32, s32);
-s32 func_800E1854_minigame(s32);
 
 void func_80105E38_opdueltutorial(s16 model);
 void func_801062E0_opdueltutorial(void);
@@ -720,8 +719,8 @@ void func_80106BF0_opdueltutorial(void) {
     func_80060EA8_main(D_80108C2C_opdueltutorial, 1);
     {
         s32 choices[2];
-        s32 window1;
-        s32 window2;
+        DuelHelpWin *window1;
+        DuelHelpWin *window2;
 
         choices[0] = 0;
         choices[1] = 0;
@@ -730,8 +729,8 @@ void func_80106BF0_opdueltutorial(void) {
         HuPrcSleep(20);
         choices[0] = 1;
         choices[1] = 2;
-        func_800E1854_minigame(window1);
-        func_800E1854_minigame(window2);
+        func_800E1854_name_81(window1);
+        func_800E1854_name_81(window2);
         MBDMotionSet(D_80108C20_opdueltutorial[0], 0, 2);
         MBDMotionSet(D_80108C20_opdueltutorial[1], 0, 2);
         MBDVecDirGet(&D_80108C20_opdueltutorial[0]->coords, &D_80108A34_opdueltutorial[(choices[0] - 1) * 2],

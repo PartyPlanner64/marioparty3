@@ -2869,7 +2869,7 @@ void func_8010F12C_duel01(void) {
     u8 order[32]; // Only 12 are used; the size matches the original stack frame.
     s32 sfx[12];
     s32 player;
-    s32 msgWindow;
+    DuelHelpWin *msgWindow;
     s16 window;
     Process *colorProcess;
     s32 state;
@@ -2997,7 +2997,7 @@ void func_8010F12C_duel01(void) {
     }
     HuPrcSleep(30);
     D_80118894_duel01 = order[i];
-    func_800E1854_minigame(msgWindow);
+    func_800E1854_name_81(msgWindow);
     if (colorProcess != NULL) {
         omDelPrcObj(colorProcess);
     }

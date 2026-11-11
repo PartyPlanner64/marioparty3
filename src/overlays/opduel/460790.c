@@ -47,7 +47,6 @@ void func_800F76F8_name_81(s32, s32, s16, s32);
 void func_800F79DC_name_81(s32);
 void func_800F79E8_name_81(s32);
 void func_800F8418_name_81(s32, s32, s32);
-s32 func_800E1854_minigame(s32);
 void func_80105E20_opduel(s16 model);
 void func_80106070_opduel(omObjData *obj);
 void func_801066B8_opduel(void);
@@ -879,8 +878,8 @@ spin:
     MBDMotionShiftSet(D_80109208_opduel, -1, 0, 5, 2);
     {
         s32 choices[2];
-        s32 window1;
-        s32 window2;
+        DuelHelpWin *window1;
+        DuelHelpWin *window2;
 
         choices[0] = 0;
         choices[1] = 0;
@@ -918,8 +917,8 @@ spin:
             }
             HuPrcVSleep();
         }
-        func_800E1854_minigame(window1);
-        func_800E1854_minigame(window2);
+        func_800E1854_name_81(window1);
+        func_800E1854_name_81(window2);
         MBDMotionSet(D_8010957C_opduel[0], 0, 2);
         MBDMotionSet(D_8010957C_opduel[1], 0, 2);
         MBDVecDirGet(&D_8010957C_opduel[0]->coords, &D_8010931C_opduel[(choices[0] - 1) * 2],

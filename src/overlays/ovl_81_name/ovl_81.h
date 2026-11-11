@@ -58,6 +58,17 @@ typedef struct UnkOvl81_2 {
     /* 0x08 */ s16 win_id;
 } UnkOvl81_2; //sizeof 0xC
 
+// Duel help window, counterpart of the board overlay's Unk3.
+typedef struct DuelHelpWin {
+    /* 0x00 */ u8 unk_00; // message index
+    /* 0x01 */ u8 unk_01;
+    /* 0x02 */ s16 unk_02; // x position, or -1 to center
+    /* 0x04 */ s16 unk_04; // y position
+    /* 0x08 */ omObjData* unk_08;
+    /* 0x0C */ s16 winID;
+    /* 0x10 */ char* unk_10;
+} DuelHelpWin; //sizeof 0x14
+
 extern UnkBoard4* D_80105400_name_81;
 extern u16 D_80105404_name_81;
 extern PartnerBaseAttributes PartnersBaseStats[];
@@ -114,9 +125,9 @@ void func_800FD55C_name_81(void);
 void func_800DAAB0_name_81(void);
 void func_800DF154_name_81(void);
 s32 func_800F37B8_name_81(s16 playerIndex);
-s32 func_800E1824_name_81(s32, s32, s32);
-s32 func_800E172C_name_81(s32, s32, s32, s32);
-void func_800E1854_name_81(s32);
+DuelHelpWin* func_800E1824_name_81(s16, s16, u16);
+DuelHelpWin* func_800E172C_name_81(s16, s16, s16, u16);
+void func_800E1854_name_81(DuelHelpWin*);
 Process* func_800E0888_name_81(void);
 void func_800EDE1C_name_81(void);
 void func_800EE114_name_81(void);
@@ -164,8 +175,6 @@ void func_800DADA0_name_81(s32);
 s32 func_800DB3E0_name_81(s32);
 void func_800DB544_name_81(s32);
 void func_800DB5AC_name_81(s32);
-s32 func_800E1824_name_81(s32, s32, s32);
-void func_800E1854_name_81(s32);
 void func_800E5954_name_81(void);
 void func_800E5BE8_name_81(void);
 void func_800E5C20_name_81(void);
@@ -183,8 +192,6 @@ s16 func_800EABBC_name_81(s16, s16*, s16);
 void func_800EED68_name_81(s16, s32);
 void func_800EF3B4_name_81(s16);
 UnkBoard4* func_800F4528_name_81(s16 arg0, s16 arg1);
-s32 func_800E1824_name_81(s32, s32, s32);
-void func_800E1854_name_81(s32);
 void func_800F4584_name_81(UnkBoard4*);
 void func_800E0310_name_81(u8 *, s32);
 void func_800E4E64_name_81(UnkOvl81_2*);
@@ -300,7 +307,7 @@ extern s32 D_8010571C_name_81;
 Process *func_800D9668_name_81(Object *, f32, f32, s32);
 void func_800E3C6C_name_81(void);
 Process* func_800E415C_name_81(void);
-Process* func_800E47B8_name_81(s16, s8, Vec*, Vec*, s32);
+Process* func_800E47B8_name_81(s32, s32, Vec*, Vec*, s32);
 void func_800E5954_name_81(void);
 void func_800E5964_name_81(void);
 void MBDBackTPLvlSet(u8);

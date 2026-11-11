@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game/mallocblock.h"
+#include "game/pause.h"
 #include "gcc/memory.h"
 #include "overlays/minigame.h"
 
@@ -36,6 +37,8 @@ typedef struct IceRinkRiskPuckHit {
 } IceRinkRiskPuckHit; // Size 0x14
 
 extern s32 D_800A178C_main[][6];
+extern u8 D_800D6A90_main;
+extern f32 D_800EB760_minigame;
 extern omObjData *D_800EBE70_minigame[];
 extern Vec D_800EC298_minigame[];
 
@@ -47,25 +50,42 @@ extern f32 D_80108584_ice_rink_risk[][3];
 extern IceRinkRiskPuckHit D_801085B0_ice_rink_risk[];
 extern s32 D_801085EC_ice_rink_risk[];
 extern s32 D_801085F8_ice_rink_risk;
+extern s32 D_801085FC_ice_rink_risk[4];
+extern D_80111B50_vine_with_me_Struct D_8010860C_ice_rink_risk;
 extern s32 D_80108634_ice_rink_risk;
-extern s32 D_80108684_ice_rink_risk;
-extern s32 D_801086E8_ice_rink_risk;
-extern s32 D_801086EC_ice_rink_risk;
-extern s32 D_801086F0_ice_rink_risk;
-extern s32 D_801086F4_ice_rink_risk;
+extern s32 D_80108638_ice_rink_risk;
+extern s32 D_8010863C_ice_rink_risk[4];
 extern s32 D_8010864C_ice_rink_risk[4];
 extern s8 D_8010865C_ice_rink_risk[4][2];
 extern f32 D_80108664_ice_rink_risk[4];
 extern f32 D_80108674_ice_rink_risk[4];
-extern s32 D_801085FC_ice_rink_risk[4];
-extern f32 D_800EB760_minigame;
+extern s32 D_80108684_ice_rink_risk;
+extern f32 D_80108688_ice_rink_risk[];
+extern Vec D_801086D0_ice_rink_risk;
+extern Vec D_801086DC_ice_rink_risk;
+extern s32 D_801086E8_ice_rink_risk;
+extern s32 D_801086EC_ice_rink_risk;
+extern s32 D_801086F0_ice_rink_risk;
+extern s32 D_801086F4_ice_rink_risk;
 
+void func_80105E34_ice_rink_risk(omObjData *object);
+void func_80105E60_ice_rink_risk(void);
+void func_80105EA4_ice_rink_risk(void);
+void func_80105FAC_ice_rink_risk(omObjData *object);
+void func_80106198_ice_rink_risk(omObjData *object);
+void func_80106554_ice_rink_risk(omObjData *object);
 void func_80106710_ice_rink_risk(omObjData *object, s32 model, s32 motion, s32 player);
 s32 func_80106A60_ice_rink_risk(omObjData *object, omObjData *other);
 void func_80106C54_ice_rink_risk(omObjData *object);
 s32 func_80106E20_ice_rink_risk(omObjData *object);
 s32 func_80106FC0_ice_rink_risk(omObjData *object);
+void func_80107590_ice_rink_risk(omObjData *object);
+void func_80107604_ice_rink_risk(omObjData *object);
+void func_80107678_ice_rink_risk(omObjData *object);
+void func_801076EC_ice_rink_risk(omObjData *object);
+void func_80107760_ice_rink_risk(omObjData *object);
 void func_8010796C_ice_rink_risk(omObjData *object);
+f32 func_80107CB4_ice_rink_risk(omObjData *object, f32 x, f32 y, f32 z);
 f32 func_80107D14_ice_rink_risk(omObjData *object, Hu3DSphere *sphere);
 void func_80107DEC_ice_rink_risk(omObjData *object, f32 x, f32 y, f32 z, f32 floorY, Vec *normal);
 f32 func_80107F24_ice_rink_risk(omObjData *object, Hu3DSphere *sphere, Vec *normal);
@@ -74,7 +94,54 @@ void func_80108134_ice_rink_risk(omObjData *object, Hu3DSphere *sphere);
 void func_8010826C_ice_rink_risk(omObjData *object);
 void func_80108384_ice_rink_risk(omObjData *object, f32 dx, f32 dz);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_19_ice_rink_risk/1D1C40", func_801059A0_ice_rink_risk);
+void func_801059A0_ice_rink_risk(void) {
+    u8 camIndex;
+    s16 sprite;
+
+    func_8001FE20_main(50);
+    func_80021BE0_main(&D_800EBEB0_minigame, 0x40);
+    func_800142A0_main(32);
+    omInitObjMan(50, 0);
+    func_8004A208_main();
+    func_800E1804_minigame();
+    func_8000B5F0_main(1);
+    camIndex = func_8000B638_main();
+    ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
+    ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
+    Hu3DCameraPerspectiveSet(0, 41.539f, 80.0f, 13000.0f);
+    Hu3DGLightDirSet(1, -79.0f, -10.0f, 89.0f);
+    D_800EC1B8_minigame = 0;
+    D_800EC280_minigame = 0;
+    D_800EBE28_minigame = 0;
+    func_800E18D8_minigame();
+    func_800E19F0_minigame(1);
+    D_800EB77C_minigame = 0.0f;
+    func_800E1490_minigame(D_800EBE28_minigame);
+    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(1, 10, 0, -1, func_80106554_ice_rink_risk);
+    D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(3, 10, 60, -1, func_80107590_ice_rink_risk);
+    D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(3, 10, 60, -1, func_80107604_ice_rink_risk);
+    D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(3, 10, 60, -1, func_80107678_ice_rink_risk);
+    D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(3, 10, 60, -1, func_801076EC_ice_rink_risk);
+    D_800EBE70_minigame[D_800EC1B8_minigame++] = omAddObj(2, 4, 0, -1, func_80107760_ice_rink_risk);
+    D_800EBE70_minigame[D_800EC1B8_minigame++] = omAddObj(2, 4, 0, -1, func_80107760_ice_rink_risk);
+    D_800EBE70_minigame[D_800EC1B8_minigame++] = omAddObj(2, 4, 0, -1, func_80107760_ice_rink_risk);
+    D_801086DC_ice_rink_risk.x = 0.0f;
+    D_801086DC_ice_rink_risk.y = 18.995f;
+    D_801086DC_ice_rink_risk.z = -31.245f;
+    D_801086D0_ice_rink_risk.x = 0.0f;
+    D_801086D0_ice_rink_risk.y = 1100.0f;
+    D_801086D0_ice_rink_risk.z = 710.785f;
+    sprite = espEntry(func_8000B838_main(0x3A0003), 0, 1);
+    espDispOn(sprite);
+    espPosSet(sprite, 160, 120);
+    espAttrSet(sprite, 0x4000);
+    func_8004B760_main(100, sprite, NULL, 41.539f, &D_801086D0_ice_rink_risk, &D_801086DC_ice_rink_risk);
+    CZoom *= 1.25f;
+    WipeCreateIn(WIPE_TYPE_PREV, 0x10);
+    func_800E5EA0_minigame(&D_8010860C_ice_rink_risk);
+    D_800EB930_minigame = 53;
+    D_800EB932_minigame = 20;
+}
 
 void func_80105E34_ice_rink_risk(omObjData *object) {
     if (WipeStatGet() == 0) {
@@ -105,11 +172,160 @@ void func_80105EA4_ice_rink_risk(void) {
     D_80108634_ice_rink_risk = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_19_ice_rink_risk/1D1C40", func_80105FAC_ice_rink_risk);
+void func_80105FAC_ice_rink_risk(omObjData *object) {
+    s32 hidden;
+    s32 i;
+    s32 j;
 
+    for (i = 0; i < 3; i++) {
+        if (D_801085B0_ice_rink_risk[i].unk04 == 0) {
+            hidden = FALSE;
+            for (j = 0; j < 3; j++) {
+                if (j != i && D_801085B0_ice_rink_risk[j].unk00 == i) {
+                    if (D_801085B0_ice_rink_risk[i].unk04 == D_801085B0_ice_rink_risk[j].unk04) {
+                        D_801085B0_ice_rink_risk[j].unk04 = 5;
+                        D_801085B0_ice_rink_risk[j].unk00 = -1;
+                    } else {
+                        hidden = TRUE;
+                    }
+                }
+            }
+            if (!hidden) {
+                func_8001C258_main(object->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelPosSet(object->model[i + 1], D_801085B0_ice_rink_risk[i].pos.x,
+                                D_801085B0_ice_rink_risk[i].pos.y, D_801085B0_ice_rink_risk[i].pos.z);
+                Hu3DMotionTimeSet(object->model[i + 1], 0);
+            }
+            D_801085B0_ice_rink_risk[i].unk04++;
+        } else {
+            D_801085B0_ice_rink_risk[i].unk04++;
+            if (D_801085B0_ice_rink_risk[i].unk04 >= 16) {
+                D_801085B0_ice_rink_risk[i].unk00 = -1;
+            }
+        }
+    }
+}
+
+#ifdef NON_MATCHING
+void func_80106198_ice_rink_risk(omObjData *object) {
+    func_800E1BA8_minigame_ObjData *data;
+    s32 count = 0;
+    u16 time;
+    s32 i;
+    s32 j;
+
+    if (omPauseChk() + D_800D6A90_main != 0) {
+        return;
+    }
+    for (i = 0; i < 4; i++) {
+        count += D_801085FC_ice_rink_risk[i] == 1;
+    }
+    time = func_800E6E9C_minigame();
+    switch (func_800E6F40_minigame()) {
+        case 0:
+            if (time == 5) {
+                HuAudFXPlay(0x3D5);
+            }
+            break;
+        case 1:
+            break;
+        case 2:
+            func_80105FAC_ice_rink_risk(object);
+            switch (D_80108638_ice_rink_risk) {
+                case 0:
+                case 300:
+                case 600:
+                    func_80105E60_ice_rink_risk();
+                    break;
+            }
+            if (count < 2) {
+                func_800E6F0C_minigame(3);
+            }
+            D_80108638_ice_rink_risk++;
+            break;
+        case 3:
+            if (D_80108634_ice_rink_risk == 1) {
+                func_80105EA4_ice_rink_risk();
+            }
+            if (count == 0) {
+                D_8010860C_ice_rink_risk.unk06 = 4;
+            } else {
+                D_8010860C_ice_rink_risk.unk06 = count - 1;
+                for (i = 0, j = 0; i < 4; i++) {
+                    if (D_801085FC_ice_rink_risk[i] == 1) {
+                        D_8010860C_ice_rink_risk.unk18[j++] = i;
+                    }
+                }
+            }
+            for (i = 0; i < 4; i++) {
+                if (D_801085FC_ice_rink_risk[i] == 1) {
+                    data = D_800EC598_minigame[i]->data;
+                    data->unk3C *= 0.8f;
+                }
+            }
+            break;
+        case 4:
+            if (D_800EB934_minigame == 1) {
+                for (i = 0; i < 4; i++) {
+                    if (D_801085FC_ice_rink_risk[i] == 1) {
+                        data = D_800EC598_minigame[i]->data;
+                        func_800E5798_minigame(D_800EC598_minigame[i], 0xD);
+                        GwPlayer[data->unk59].bonusCoin += 10;
+                        func_80045ED0_main(D_800A178C_main[GwPlayer[data->unk59].chr][0] | 0x2F);
+                    }
+                }
+            }
+            break;
+        case 5:
+            WipeCreateOut(WIPE_TYPE_NORMAL, 20);
+            object->func = func_80105E34_ice_rink_risk;
+            break;
+    }
+    for (i = 0; i < D_800EC280_minigame; i++) {
+        OM_GET_DATA_PTR(D_800EC598_minigame[i], func_800E1BA8_minigame_ObjData)->unk60 = CRot.y;
+    }
+    if (D_800D530C_main == 1) {
+        WipeCreateOut(WIPE_TYPE_NORMAL, 20);
+        HuAudSeqFadeOut(30);
+        func_8004AB0C_main(30);
+        object->func = func_80105E34_ice_rink_risk;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_19_ice_rink_risk/1D1C40", func_80106198_ice_rink_risk);
+#endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_19_ice_rink_risk/1D1C40", func_80106554_ice_rink_risk);
+void func_80106554_ice_rink_risk(omObjData *object) {
+    D_800EC1C0_minigame_ObjData *work;
+
+    D_800EB73C_minigame = 20.0f;
+    object->model[0] = func_8000B0A0_main(0x3A0001, 0x80019);
+    object->model[1] = func_8000B108_main(8, 0x88D);
+    object->model[2] = func_8000B108_main(8, 0x88D);
+    object->model[3] = func_8000B108_main(8, 0x88D);
+    object->trans.x = 0.0f;
+    object->trans.y = 0.0f;
+    object->trans.z = 0.0f;
+    object->scale.x = object->scale.y = object->scale.z = 1.0f;
+    Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
+    work = HuMemAllocTag(0xB4, TAG_OVERLAY);
+    object->data = work;
+    memset(work, 0, 0xB4);
+    object->func = func_80106198_ice_rink_risk;
+    work->unk03 = 1;
+    func_800E147C_minigame(object);
+    func_800E1404_minigame(object, 100.0f, 500.0f);
+    func_800E1304_minigame(object, 0.1f);
+    func_800E1310_minigame(object, D_800EB73C_minigame);
+    func_800E131C_minigame(object, 25.0f);
+    func_800E1468_minigame(object);
+    work->unk04 = 0;
+    object->scale.x = object->scale.z = 1.25f;
+    Hu3DModelScaleSet(object->model[1], 0.75f, 0.75f, 0.75f);
+    Hu3DModelScaleSet(object->model[2], 0.75f, 0.75f, 0.75f);
+    Hu3DModelScaleSet(object->model[3], 0.75f, 0.75f, 0.75f);
+    omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+}
 
 void func_80106710_ice_rink_risk(omObjData *object, s32 model, s32 motion, s32 player) {
     func_800E1BA8_minigame_ObjData *data;
@@ -144,9 +360,76 @@ void func_80106710_ice_rink_risk(omObjData *object, s32 model, s32 motion, s32 p
     func_800E3568_minigame(data, 1, func_80106E20_ice_rink_risk);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_19_ice_rink_risk/1D1C40", func_80106A60_ice_rink_risk);
+s32 func_80106A60_ice_rink_risk(omObjData *object, omObjData *other) {
+    func_800E1BA8_minigame_ObjData *data = object->data;
+    Vec dir;
+    f32 x, y, z;
+    f32 half;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_19_ice_rink_risk/1D1C40", func_80106C54_ice_rink_risk);
+    if (func_800E6E8C_minigame() != 2) {
+        return 1;
+    }
+    x = object->trans.x;
+    y = object->trans.y;
+    z = object->trans.z;
+    dir.x = x - other->trans.x;
+    dir.y = object->trans.y - other->trans.y;
+    dir.z = object->trans.z - other->trans.z;
+    half = HuSqrtf(dir.x * dir.x + dir.y * dir.y + dir.z * dir.z) * 0.5f;
+    func_800202FC_main(&dir);
+    x += half * dir.x;
+    y += half * dir.y;
+    z += half * dir.z;
+    func_8004AC98_main(0x3D4, data->unk59);
+    PlayerFXPlay(0x286, data->unk59);
+    func_800E5798_minigame(object, 0x26);
+    data->unk38 = -D_800EB744_minigame;
+    data->unk3C = atan2df(object->trans.x, object->trans.z);
+    data->unk40 = D_800EB760_minigame * 0.8f;
+    func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    func_800E4C88_minigame(object, 7, x, y, z, 0.0f, 0.0f);
+    D_801085FC_ice_rink_risk[data->unk59] = 0;
+    object->func = func_80106C54_ice_rink_risk;
+    data->unk50 |= 0x400;
+    D_8010864C_ice_rink_risk[data->unk59] = 1;
+    omVibrate(data->unk59, 2, 2, 20);
+    return 1;
+}
+
+void func_80106C54_ice_rink_risk(omObjData *object) {
+    func_800E1BA8_minigame_ObjData *data = object->data;
+    f32 x = object->trans.x;
+    f32 y = object->trans.y;
+    f32 z = object->trans.z;
+    f32 velocity;
+    f32 speedSq;
+
+    if (D_8010863C_ice_rink_risk[data->unk59] == 0 && data->unk38 != -D_800EB744_minigame) {
+        data->unk38 = -D_800EB744_minigame;
+    }
+    velocity = data->unk38;
+    if (velocity > D_800EB774_minigame) {
+        velocity = D_800EB774_minigame;
+    }
+    speedSq = velocity * velocity;
+    if (data->unk38 >= 0.0f) {
+        y += speedSq * -35.0f;
+    } else {
+        y += speedSq * 35.0f;
+    }
+    data->unk38 += D_800EB748_minigame * 0.5f;
+    x += sindf(data->unk3C) * data->unk40;
+    z += cosdf(data->unk3C) * data->unk40;
+    if (HuSqrtf(x * x + y * y + z * z) > 2000.0f) {
+        object->func = NULL;
+        func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    }
+    func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    D_8010863C_ice_rink_risk[data->unk59]++;
+    object->trans.x = x;
+    object->trans.y = y;
+    object->trans.z = z;
+}
 
 s32 func_80106E20_ice_rink_risk(omObjData *object) {
     func_800E1BA8_minigame_ObjData *data = object->data;
@@ -333,7 +616,56 @@ void func_80107760_ice_rink_risk(omObjData *object) {
     D_80108684_ice_rink_risk++;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_19_ice_rink_risk/1D1C40", func_8010796C_ice_rink_risk);
+void func_8010796C_ice_rink_risk(omObjData *object) {
+    IceRinkRiskPuckWork *work = OM_GET_DATA_PTR(object, IceRinkRiskPuckWork);
+    f32 x, y, z;
+    f32 angle;
+    f32 floorY;
+    u8 bounce = TRUE;
+    s32 i;
+
+    if (D_801085EC_ice_rink_risk[work->unk56] != 0) {
+        D_800EBE2C_minigame = D_800EC5D8_minigame = 0.0f;
+        x = object->trans.x;
+        y = object->trans.y;
+        z = object->trans.z;
+        angle = work->unk3C;
+        if (work->unk40 > 25.0f) {
+            work->unk40 = 25.0f;
+        }
+        x += sindf(angle) * work->unk40;
+        z += cosdf(angle) * work->unk40;
+        if (work->unk38 != 1000.0f) {
+            y += work->unk38 * work->unk38 * (work->unk38 >= 0.0f ? -35.0f : 35.0f);
+            work->unk38 += D_800EB72C_minigame;
+            if (work->unk38 > D_800EB720_minigame) {
+                work->unk38 = D_800EB720_minigame;
+            }
+            floorY = func_80107CB4_ice_rink_risk(object, x, y, z);
+            if (y < floorY) {
+                y = floorY;
+                if (bounce) {
+                    work->unk38 = -work->unk38 * 0.7f;
+                    if (work->unk38 >= -0.4f) {
+                        work->unk38 = 1000.0f;
+                    }
+                    for (i = 0; i < 4; i++) {
+                        // The original reads the player index without going through ->data.
+                        if (D_801085FC_ice_rink_risk[((func_800E1BA8_minigame_ObjData *)D_800EC598_minigame[i])->unk59] == 1) {
+                            omVibrate(((func_800E1BA8_minigame_ObjData *)D_800EC598_minigame[i])->unk59, 2, 3, 10);
+                        }
+                    }
+                }
+            }
+        } else {
+            y = func_80107CB4_ice_rink_risk(object, x, y, z);
+        }
+        func_800E17D4_minigame(object, x + D_800EBE2C_minigame, y, z + D_800EC5D8_minigame);
+        D_80108688_ice_rink_risk[work->unk56] += work->unk40 / 5.0f;
+        D_80108688_ice_rink_risk[work->unk56] = func_800202A8_main(D_80108688_ice_rink_risk[work->unk56]);
+        func_80088910_main(Hu3DData[object->model[0]].mtx, 0.0f, D_80108688_ice_rink_risk[work->unk56], 0.0f);
+    }
+}
 
 f32 func_80107CB4_ice_rink_risk(omObjData *object, f32 x, f32 y, f32 z) {
     IceRinkRiskPuckWork *work = OM_GET_DATA_PTR(object, IceRinkRiskPuckWork);

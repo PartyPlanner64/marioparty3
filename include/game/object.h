@@ -19,6 +19,7 @@
 #define OM_GET_DATA_PTR(object, type) ((type *)(((object)->data)))
 
 struct om_obj_data;
+struct CameraViewData;
 typedef void (*omObjFunc)(struct om_obj_data *);
 
 typedef struct om_obj_data {
@@ -105,6 +106,7 @@ void omDelObj(omObjData*);
 
 void omOutView(omObjData* object);
 void omOutViewMulti(omObjData* object);
+void func_8004B760_main(s32 priority, s16 spriteGroup, void (*draw)(struct CameraViewData *), f32 fov, Vec *pos, Vec *at);
 
 #ifndef NO_EXTERN_VARIABLES
 extern f32 CZoomM[];

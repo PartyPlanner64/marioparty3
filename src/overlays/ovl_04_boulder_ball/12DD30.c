@@ -7,12 +7,14 @@ extern s32 D_800A178C_main[][6];
 extern f32 D_800EB724_minigame;
 extern u16 D_800EC288_minigame;
 extern Vec D_800EC298_minigame[];
+extern omObjData *D_800EBE70_minigame[];
 
 extern s32 D_80109700_boulder_ball[8];
 extern Vec D_80109720_boulder_ball;
 extern Vec D_8010972C_boulder_ball;
 extern Vec D_80109738_boulder_ball;
 extern s32 D_8010975C_boulder_ball;
+extern D_80111B50_vine_with_me_Struct D_80109760_boulder_ball;
 extern f32 D_801097A4_boulder_ball[4];
 extern s32 D_80109758_boulder_ball;
 extern s32 D_80109794_boulder_ball;
@@ -29,19 +31,82 @@ extern omObjData *D_801098A0_boulder_ball;
 extern omObjData *D_801098A4_boulder_ball;
 
 void func_80106410_boulder_ball(omObjData *object);
+void func_80106B58_boulder_ball(omObjData *object);
+void func_80106C8C_boulder_ball(omObjData *object);
 void func_80106DAC_boulder_ball(omObjData *object, s32 model, s32 motion, u16 player);
 s32 func_8010707C_boulder_ball(omObjData *object, omObjData *other);
 s32 func_80107194_boulder_ball(omObjData *object);
 s32 func_80107298_boulder_ball(omObjData *object);
+void func_80107924_boulder_ball(omObjData *object);
+void func_80107A20_boulder_ball(omObjData *object);
+void func_80107B0C_boulder_ball(omObjData *object);
+void func_80107C08_boulder_ball(omObjData *object);
 void func_80108000_boulder_ball(omObjData *object);
 void func_801083D8_boulder_ball(omObjData *object);
+void func_80108A08_boulder_ball(omObjData *object);
 s32 func_80108CF4_boulder_ball(omObjData *object);
 s32 func_80108E5C_boulder_ball(omObjData *object);
 void func_801093B8_boulder_ball(omObjData *object);
 s32 func_80109410_boulder_ball(omObjData *object);
 s32 func_801095A0_boulder_ball(omObjData *object);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_04_boulder_ball/12DD30", func_801059A0_boulder_ball);
+void func_801059A0_boulder_ball(void) {
+    u8 camIndex;
+
+    func_8001FE20_main(50);
+    func_80021BE0_main(&D_800EBEB0_minigame, 0x40);
+    func_800142A0_main(32);
+    omInitObjMan(50, 0);
+    func_8004A208_main();
+    func_800E1804_minigame();
+    func_8000B5F0_main(1);
+    camIndex = func_8000B638_main();
+    ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
+    ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
+    Hu3DCameraPerspectiveSet(0, 32.0f, 80.0f, 5000.0f);
+    Hu3DGLightDirSet(1, -94.0f, 65.0f, 34.0f);
+    D_800EC1B8_minigame = 0;
+    D_800EC280_minigame = 0;
+    D_800EBE28_minigame = 0;
+    func_800E18D8_minigame();
+    func_800E19F0_minigame(1);
+    D_800EB77C_minigame = 0.0f;
+    func_800E1490_minigame(D_800EBE28_minigame);
+    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(1, 10, 0, -1, func_80106B58_boulder_ball);
+    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(1, 5, 0, -1, func_80106C8C_boulder_ball);
+    D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(3, 10, 60, -1, func_80107924_boulder_ball);
+    D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(3, 10, 60, -1, func_80107A20_boulder_ball);
+    D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(3, 10, 60, -1, func_80107B0C_boulder_ball);
+    D_801098A4_boulder_ball = omAddObj(3, 10, 60, -1, func_80107C08_boulder_ball);
+    D_801098A0_boulder_ball = D_800EBE70_minigame[D_800EC1B8_minigame++] =
+        omAddObj(2, 4, 0, -1, func_80108A08_boulder_ball);
+    D_800EBE70_minigame[D_800EC1B8_minigame++] = omAddObj(2, 10, 0, -1, func_80108A08_boulder_ball);
+    D_800EBE70_minigame[D_800EC1B8_minigame++] = omAddObj(2, 10, 0, -1, func_80108A08_boulder_ball);
+    D_800EBE70_minigame[D_800EC1B8_minigame++] = omAddObj(2, 10, 0, -1, func_80108A08_boulder_ball);
+    omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    Center.x = 0.0f;
+    Center.y = 200.0f;
+    Center.z = 900.0f;
+    CRot.x = 358.0f;
+    CRot.y = 0.0f;
+    CZoom = 1400.0f;
+    WipeCreateIn(WIPE_TYPE_PREV, 16);
+    func_800E5EA0_minigame(&D_80109760_boulder_ball);
+    if (GwPlayer[0].group == 0) {
+        D_8010989C_boulder_ball = 0;
+    }
+    if (GwPlayer[1].group == 0) {
+        D_8010989C_boulder_ball = 1;
+    }
+    if (GwPlayer[2].group == 0) {
+        D_8010989C_boulder_ball = 2;
+    }
+    if (GwPlayer[3].group == 0) {
+        D_8010989C_boulder_ball = 3;
+    }
+    D_800EB930_minigame = 47;
+    D_800EB932_minigame = 36;
+}
 
 void func_80105E74_boulder_ball(omObjData *object) {
     if (WipeStatGet() == 0) {

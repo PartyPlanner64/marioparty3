@@ -712,7 +712,164 @@ void func_800DF594_name_81(s32 arg0) {
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C5770", func_800DF594_name_81);
 #endif
 
+// Regalloc differences only (same as func_800DF594_name_81): arg0 * 4 loses its callee-saved register to
+// &D_80100E88_name_81 by a small global-alloc priority margin.
+#ifdef NON_MATCHING
+void func_800DFBF4_name_81(void) {
+    GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
+    UnkC5770Rect *rects[2] = { D_80100E8C_name_81, D_80100EB4_name_81 };
+    u8 *mgLists[4] = { D_80100E50_name_81, D_80100E64_name_81, D_80100E5C_name_81, D_80100E64_name_81 };
+    u8 mgCounts[4] = { 10, 30, 7, 30 };
+    s32 winStyles[2] = { 5, 20 };
+    UnkC5770B70 *entry;
+    omObjData *obj;
+    s32 listOffset;
+    s32 listIndex;
+    s32 i;
+    s32 j;
+    s32 k;
+    s32 arg0;
+
+    arg0 = D_80102BB8_name_81;
+    D_80102BAD_name_81 = arg0;
+    listOffset = (_CheckFlag(0x20) != 0) * 2;
+    D_80102BAE_name_81 = listOffset;
+    if (D_80100F44_name_81 != NULL) {
+        Hu3DMotionSpeedSet(D_80100F44_name_81->omObj1->model[0], 2.0f);
+    }
+
+    for (i = 0; i < D_80100E84_name_81[arg0]; i++) {
+        entry = &D_80102B70_name_81[i];
+        entry->x = rects[arg0][i].x;
+        entry->y = rects[arg0][i].y;
+        entry->w = rects[arg0][i].w;
+        entry->h = rects[arg0][i].h;
+
+        entry->windowId = HuWinCreate(entry->x + (entry->w / 2), entry->y + (entry->h / 2), entry->w, entry->h, 0, winStyles[arg0]);
+        HuWinPriSet(entry->windowId, 0x2328);
+        func_80060144_main(entry->windowId);
+        HuWinCenterPosSet(entry->windowId, entry->w / 2, entry->h / 2);
+        HuWinBGTPLvlSet(entry->windowId, 0);
+        HuPrcVSleep();
+
+        listIndex = arg0 + listOffset;
+        while (1) {
+            D_80102BA8_name_81[i] = mgLists[listIndex][func_800EFE20_name_81(mgCounts[listIndex])];
+
+            for (j = 0; j < i; j++) {
+                if (j == i) {
+                    continue;
+                }
+                if (D_80102BA8_name_81[j] == D_80102BA8_name_81[i]) {
+                    break;
+                }
+            }
+            if (j != i) {
+                continue;
+            }
+
+            if (arg0 != 1) {
+                for (k = 0; k < D_80100E88_name_81[arg0 + listOffset]; k++) {
+                    if (D_80102BA8_name_81[i] == D_800CC4A0_main.recentMinigames[arg0][k]) {
+                        break;
+                    }
+                }
+                if (k != D_80100E88_name_81[arg0 + listOffset]) {
+                    continue;
+                }
+                break;
+            }
+
+            switch (D_80102BA8_name_81[i]) {
+                case 1:
+                    if (player->star == 5) {
+                        continue;
+                    }
+                    break;
+                case 2:
+                    if (GwPlayer[0].clink == GwPlayer[1].clink && GwPlayer[0].cidx == GwPlayer[1].cidx) {
+                        continue;
+                    }
+                    break;
+                case 3:
+                    if (GwPlayer[GwSystem.current_player_index].coin == 0) {
+                        continue;
+                    }
+                    break;
+                case 7:
+                    if (player->stats.partners.frontID != -1 && player->stats.partners.frontPoweredUp == 2) {
+                        continue;
+                    }
+                    if (player->stats.partners.backID != -1 && player->stats.partners.backPoweredUp == 2) {
+                        continue;
+                    }
+                    if (player->stats.partners.frontID == -1 && player->stats.partners.backID == -1) {
+                        continue;
+                    }
+                    break;
+                case 8:
+                    if (player->stats.partners.frontID != -1 && player->stats.partners.frontPoweredUp == 1) {
+                        continue;
+                    }
+                    if (player->stats.partners.backID != -1 && player->stats.partners.backPoweredUp == 1) {
+                        continue;
+                    }
+                    /* fallthrough */
+                case 9:
+                    if (player->stats.partners.frontID == -1 && player->stats.partners.backID == -1) {
+                        continue;
+                    }
+                    break;
+                case 10:
+                    if (func_800EAA7C_name_81(GwPlayer[GwSystem.current_player_index].chr + 11) != 0) {
+                        break;
+                    }
+                    /* fallthrough */
+                case 6:
+                    if (func_800EAA7C_name_81(GwPlayer[(s8)(GwSystem.current_player_index ^ 1)].chr + 11) == 0) {
+                        continue;
+                    }
+                    break;
+            }
+            break;
+        }
+
+        func_8005D2D4_main(entry->windowId);
+
+        if (D_80102BAD_name_81 != 1 && GWMgUnlockCheck(D_80102BA8_name_81[i] - 1) == FALSE) {
+            HuWinMesSet(entry->windowId, 0x4748, HUWIN_POS_CENTER, 4);
+        } else {
+            HuWinMesSet(entry->windowId, D_80100EE4_name_81[arg0] + D_80102BA8_name_81[i] - 1, HUWIN_POS_CENTER, 4);
+        }
+
+        HuWinMesColSet(entry->windowId, D_80100EEB_name_81[D_80102BA8_name_81[i]]);
+        HuWinMesSpeedSet(entry->windowId, 0);
+        HuPrcVSleep();
+    }
+
+    if (D_80102BAD_name_81 != 1) {
+        obj = omAddObj(-0x8000, 0, 0, -1, func_800DD9EC_name_81);
+        D_80102BA4_name_81 = obj;
+        obj->work[1] = 5;
+    } else {
+        obj = omAddObj(-0x8000, 0, 0, -1, func_800DE4D0_name_81);
+        D_80102BA4_name_81 = obj;
+        obj->work[1] = 0;
+    }
+    obj->work[0] = 3;
+    obj->trans.y = 0.0f;
+    obj->rot.z = 0.0f;
+    obj->scale.x = 10.0f;
+    obj->scale.y = 0.0f;
+    func_800DF348_name_81();
+    if (D_80100F44_name_81 != NULL) {
+        Hu3DMotionSpeedSet(D_80100F44_name_81->omObj1->model[0], 1.0f);
+    }
+    omDelPrcObj(NULL);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C5770", func_800DFBF4_name_81);
+#endif
 
 void func_800E02B4_name_81(s32 arg0) {
     D_80102BB8_name_81 = arg0;

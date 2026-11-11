@@ -19,7 +19,7 @@ typedef struct FridgedBridgesPlayer {
     /* 0x18 */ char unk_18[0x4];
     /* 0x1C */ s16 unk_1C;
     /* 0x1E */ s16 unk_1E;
-    /* 0x20 */ s16 unk_20;
+    /* 0x20 */ u16 unk_20; // CPU: index of the next path point
     /* 0x22 */ s16 unk_22;
     /* 0x24 */ u16 unk_24;
     /* 0x26 */ u16 unk_26;
@@ -31,7 +31,7 @@ typedef struct FridgedBridgesPlayer {
     /* 0x44 */ f32 unk_44;
     /* 0x48 */ u16 unk_48;
     /* 0x4A */ u16 unk_4A;
-    /* 0x4C */ char unk_4C[0x4];
+    /* 0x4C */ f32 unk_4C; // CPU speed multiplier
     /* 0x50 */ f32 scale;
     /* 0x54 */ u16 unk_54;
     /* 0x56 */ s16 unk_56;
@@ -39,7 +39,7 @@ typedef struct FridgedBridgesPlayer {
     /* 0x5A */ char unk_5A[0x2];
     /* 0x5C */ Vec pos;
     /* 0x68 */ s16 unk_68;
-    /* 0x6A */ s16 unk_6A;
+    /* 0x6A */ u16 unk_6A;
 } FridgedBridgesPlayer; // sizeof 0x6C
 
 #endif

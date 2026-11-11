@@ -15,6 +15,26 @@ typedef struct FridgedBridgesCamCollWork {
     /* 0x000 */ char unk_00[0xC18];
 } FridgedBridgesCamCollWork; // sizeof 0xC18
 
+// Data for the objects created by func_8010B164 (one per player area).
+typedef struct FridgedBridgesFoe {
+    /* 0x00 */ u16 state;
+    /* 0x02 */ u16 index;
+    /* 0x04 */ u16 unk_04;
+    /* 0x06 */ u16 unk_06;
+    /* 0x08 */ f32 unk_08;
+    /* 0x0C */ f32 unk_0C;
+    /* 0x10 */ f32 unk_10;
+    /* 0x14 */ f32 unk_14;
+    /* 0x18 */ f32 unk_18;
+} FridgedBridgesFoe; // sizeof 0x1C
+
+// Work area of the dropped-item objects created by func_801084E0.
+typedef struct FridgedBridgesItemWork {
+    /* 0x00 */ omObjData *playerObj;
+    /* 0x04 */ u32 phase;
+    /* 0x08 */ f32 fallSpeed;
+} FridgedBridgesItemWork;
+
 extern omObjData *D_8010D35C_fridged_bridges;
 extern omObjData *D_8010D360_fridged_bridges;
 extern s16 D_8010DA60_fridged_bridges;
@@ -44,6 +64,17 @@ extern Vec2f D_8010D3A0_fridged_bridges[4][3][12];
 extern Vec2f D_8010D820_fridged_bridges[4][12];
 extern f32 D_800CCF98_main[];
 extern f32 D_800D4198_main[];
+extern omObjData *D_8010DA78_fridged_bridges[4];
+extern Vec2f D_8010D17C_fridged_bridges[3];
+extern s16 D_8010D19C_fridged_bridges;
+extern s32 D_8010D1A0_fridged_bridges;
+extern Vec D_8010D1A4_fridged_bridges[4];
+extern f32 D_8010D340_fridged_bridges;
+extern Vec D_8010D344_fridged_bridges;
+extern u16 D_8010D350_fridged_bridges;
+extern Vec2f D_8010D194_fridged_bridges;
+extern Vec2f D_8010D9A0_fridged_bridges[4][3];
+extern Vec2f D_8010DA00_fridged_bridges[4];
 
 void func_80105F34_fridged_bridges(omObjData *arg0);
 void func_80108FBC_fridged_bridges(omObjData *arg0);
@@ -54,6 +85,16 @@ void func_80106438_fridged_bridges(omObjData *arg0);
 void func_80106454_fridged_bridges(omObjData *arg0);
 void func_80106470_fridged_bridges(omObjData *arg0);
 void func_80108720_fridged_bridges(omObjData *arg0);
+void func_80108C60_fridged_bridges(omObjData *arg0);
+s32 func_80109D4C_fridged_bridges(s32 count, s16 *vtx, Hu3DPoint *points, Vec *pos);
+s32 func_80109D6C_fridged_bridges(Vec *pos, s16 *face, Hu3DPoint *points);
+void func_801075AC_fridged_bridges(omObjData *arg0);
+void func_8010775C_fridged_bridges(omObjData *arg0);
+void func_8010AE0C_fridged_bridges(void);
+u16 func_8010AE98_fridged_bridges(f32 arg0);
+void func_80109154_fridged_bridges(omObjData *arg0);
+void func_80108B08_fridged_bridges(omObjData *arg0);
+void func_80108BEC_fridged_bridges(omObjData *arg0);
 void func_80107870_fridged_bridges(void);
 void func_8010BEE8_fridged_bridges(void);
 void func_8010C1D8_fridged_bridges(omObjData *arg0);
@@ -71,7 +112,7 @@ void func_80107164_fridged_bridges(omObjData *arg0);
 void func_801079CC_fridged_bridges(omObjData *arg0, s8 *stickX, s8 *stickY);
 void func_801082D0_fridged_bridges(omObjData *arg0);
 void func_801084E0_fridged_bridges(omObjData *arg0);
-u16 func_80109988_fridged_bridges(omObjData *arg0, FridgedBridgesProbe *probe);
+s32 func_80109988_fridged_bridges(omObjData *arg0, FridgedBridgesProbe *probe);
 u16 func_8010A0F4_fridged_bridges(omObjData *arg0, f32 x, f32 y, f32 z);
 void func_8010B7CC_fridged_bridges(omObjData *arg0);
 void func_8010733C_fridged_bridges(omObjData *arg0);
@@ -666,9 +707,168 @@ void func_80107870_fridged_bridges(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_801079CC_fridged_bridges);
+// CPU input: walks the player along its path points, adjusting speed to avoid the foe.
+void func_801079CC_fridged_bridges(omObjData *arg0, s8 *stickX, s8 *stickY) {
+    FridgedBridgesPlayer *player;
+    FridgedBridgesFoe *foe;
+    u16 playerId;
+    u16 lane;
+    u16 point;
+    f32 speed;
+    f32 angle;
+    f32 foeAngle;
+    f32 dist;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_80108050_fridged_bridges);
+    *stickY = 0;
+    *stickX = 0;
+    player = arg0->data;
+    playerId = player->playerId;
+    lane = player->unk_1E;
+    point = player->unk_20;
+    if (player->unk_6A != 0) {
+        if (--player->unk_6A == 0) {
+            player->unk_22 = -player->unk_22;
+            player->unk_20 += player->unk_22;
+        }
+    }
+    if (HuSqrtf((arg0->trans.x - D_8010D3A0_fridged_bridges[playerId][lane][point].x) *
+                    (arg0->trans.x - D_8010D3A0_fridged_bridges[playerId][lane][point].x) +
+                (arg0->trans.z - D_8010D3A0_fridged_bridges[playerId][lane][point].y) *
+                    (arg0->trans.z - D_8010D3A0_fridged_bridges[playerId][lane][point].y)) < 80.0f) {
+        player->unk_1E = func_80108050_fridged_bridges(arg0);
+        player->unk_20 += player->unk_22;
+        if (player->unk_20 == 11 && player->unk_22 == 1) {
+            player->unk_22 = -1;
+        }
+        if (player->unk_20 == 0 && player->unk_22 == -1) {
+            player->unk_22 = 1;
+        }
+        point = player->unk_20;
+    }
+    switch (GwPlayer[player->playerId].cpu_difficulty) {
+        case 0:
+            speed = 35.0f;
+            break;
+        case 1:
+            speed = 42.0f;
+            break;
+        case 2:
+            speed = 55.0f;
+            break;
+        case 3:
+            speed = 65.0f;
+            break;
+    }
+    speed *= player->unk_4C;
+    if (player->unk_1E != 0) {
+        speed *= 0.5f;
+    }
+    angle = atan2df(-(arg0->trans.x - D_8010D3A0_fridged_bridges[playerId][lane][point].x),
+                    arg0->trans.z - D_8010D3A0_fridged_bridges[playerId][lane][point].y);
+    if (angle < 0.0f) {
+        angle += 360.0f;
+    }
+    foeAngle = atan2df(-(arg0->trans.x - D_8010DA78_fridged_bridges[player->playerId]->trans.x),
+                       arg0->trans.z - D_8010DA78_fridged_bridges[player->playerId]->trans.z) -
+               360.0f - angle;
+    if (foeAngle < 0.0f) {
+        foeAngle += 360.0f;
+    }
+    if (foeAngle > 180.0f) {
+        foeAngle -= 360.0f;
+    }
+    dist = HuSqrtf((arg0->trans.x - D_8010DA78_fridged_bridges[player->playerId]->trans.x) *
+                       (arg0->trans.x - D_8010DA78_fridged_bridges[player->playerId]->trans.x) +
+                   (arg0->trans.z - D_8010DA78_fridged_bridges[player->playerId]->trans.z) *
+                       (arg0->trans.z - D_8010DA78_fridged_bridges[player->playerId]->trans.z));
+    foe = D_8010DA78_fridged_bridges[player->playerId]->data;
+    if (foe->state == 1) {
+        if (dist < 170.0f) {
+            if (fabs(foeAngle) > 80.0) {
+                speed = 65.0f;
+            } else {
+                if (player->unk_22 == 1 && player->unk_20 >= 7 && player->unk_20 <= 8) {
+                    speed = 65.0f;
+                    angle = atan2df(-(arg0->trans.x - D_8010D3A0_fridged_bridges[playerId][lane][point - 1].x),
+                                    arg0->trans.z - D_8010D3A0_fridged_bridges[playerId][lane][point - 1].y);
+                }
+                if (player->unk_22 == -1 && player->unk_20 >= 6 && player->unk_20 <= 8) {
+                    speed = 65.0f;
+                    angle = atan2df(-(arg0->trans.x - D_8010D3A0_fridged_bridges[playerId][lane][point + 1].x),
+                                    arg0->trans.z - D_8010D3A0_fridged_bridges[playerId][lane][point + 1].y);
+                }
+            }
+        } else if (dist < 300.0f) {
+            if (player->unk_22 == 1 && player->unk_20 >= 7 && player->unk_20 <= 8) {
+                speed = 15.0f;
+            }
+            if (player->unk_22 == -1 && player->unk_20 >= 6 && player->unk_20 <= 8) {
+                speed = 15.0f;
+            }
+        }
+    } else if (foe->state == 0) {
+        if (dist < 150.0f && foe->unk_06 < 5) {
+            if (player->unk_22 == 1 && player->unk_20 >= 7 && player->unk_20 <= 8) {
+                speed = 65.0f;
+            }
+            if (player->unk_22 == -1 && player->unk_20 >= 6 && player->unk_20 <= 8) {
+                speed = 65.0f;
+            }
+        } else if (dist < 400.0f && foe->unk_06 < 5) {
+            if (player->unk_22 == 1 && player->unk_20 >= 7 && player->unk_20 <= 8) {
+                speed = 15.0f;
+            }
+            if (player->unk_22 == -1 && player->unk_20 >= 6 && player->unk_20 <= 8) {
+                speed = 15.0f;
+            }
+        }
+    }
+    *stickX = sindf(angle) * speed;
+    *stickY = cosdf(angle) * speed;
+}
+
+// Picks a CPU player's lane and speed multiplier based on its difficulty.
+s16 func_80108050_fridged_bridges(omObjData *arg0) {
+    FridgedBridgesPlayer *player = arg0->data;
+    s16 lane;
+
+    player->unk_4C = 1.0f;
+    switch (GwPlayer[player->playerId].cpu_difficulty) {
+        case 0:
+            if ((u8)(rand8() % 10) < 6) {
+                lane = 0;
+            } else {
+                lane = (u8)(rand8() % 3);
+            }
+            if ((u8)(rand8() % 10) < 4) {
+                player->unk_4C = 0.8f;
+            }
+            break;
+        case 1:
+            if ((u8)(rand8() % 10) < 7) {
+                lane = 0;
+            } else {
+                lane = (u8)(rand8() % 3);
+            }
+            if ((u8)(rand8() % 10) < 4) {
+                player->unk_4C = 0.8f;
+            }
+            break;
+        case 2:
+            lane = 0;
+            if ((u8)(rand8() % 10) < 5) {
+                player->unk_4C = 0.8f;
+            }
+            break;
+        case 3:
+            lane = 0;
+            if ((u8)(rand8() % 10) < 6) {
+                player->unk_4C = 0.8f;
+            }
+            break;
+    }
+    return lane;
+}
 
 void func_801082D0_fridged_bridges(omObjData *arg0) {
     FridgedBridgesPlayer *player = arg0->data;
@@ -702,13 +902,128 @@ void func_801082D0_fridged_bridges(omObjData *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_801084E0_fridged_bridges);
+void func_801084E0_fridged_bridges(omObjData *arg0) {
+    FridgedBridgesPlayer *player = arg0->data;
+    s16 playerId = player->playerId;
+    omObjData *obj;
+    FridgedBridgesItemWork *work;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_80108648_fridged_bridges);
+    player->unk_28 = 0;
+    func_8001C258_main(D_8010DA70_fridged_bridges->model[playerId * 5], 0x4000, 0);
+    func_80108648_fridged_bridges(arg0);
+    player->state = 0;
+    obj = omAddObj(10, 0, 0, -1, func_80108C60_fridged_bridges);
+    work = OM_GET_WORK_PTR(obj, FridgedBridgesItemWork);
+    work->playerObj = arg0;
+    work->phase = 0;
+    work->fallSpeed = 3.0f;
+    obj->trans.x = sindf(arg0->rot.y) * 80.0f + arg0->trans.x;
+    obj->trans.z = cosdf(arg0->rot.y) * 80.0f + arg0->trans.z;
+    obj->trans.y = arg0->trans.y + 80.0f;
+    obj->rot.y = arg0->rot.y;
+    obj->rot.x = obj->rot.z = 0.0f;
+    Hu3DModelPosSet(D_8010DA70_fridged_bridges->model[playerId * 5], arg0->trans.x, arg0->trans.y, arg0->trans.z);
+    Hu3DModelRotSet(D_8010DA70_fridged_bridges->model[playerId * 5], arg0->rot.x, arg0->rot.y, arg0->rot.z);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_80108720_fridged_bridges);
+void func_80108648_fridged_bridges(omObjData *arg0) {
+    FridgedBridgesPlayer *player = arg0->data;
+    u16 motion;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_80108B08_fridged_bridges);
+    if (GwPlayer[player->playerId].chr == 5) {
+        switch (player->motionState) {
+            case 0:
+                motion = arg0->motion[0];
+                break;
+            case 1:
+                motion = arg0->motion[1];
+                break;
+            case 2:
+                motion = arg0->motion[2];
+                break;
+        }
+        func_8001C5B4_main(arg0->model[0], motion);
+    } else {
+        Hu3DData[arg0->model[0]].motIdShape = 0xFF;
+    }
+}
+
+void func_80108720_fridged_bridges(omObjData *arg0) {
+    f32 sign[2][4];
+    omObjData *obj;
+    s32 i;
+    s32 j;
+
+    sign[0][0] = 1.0f;
+    sign[0][1] = -1.0f;
+    sign[0][2] = 1.0f;
+    sign[0][3] = -1.0f;
+    sign[1][0] = 1.0f;
+    sign[1][1] = 1.0f;
+    sign[1][2] = -1.0f;
+    sign[1][3] = -1.0f;
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 3; j++) {
+            D_8010D9A0_fridged_bridges[i][j].x = D_8010D17C_fridged_bridges[j].x * sign[0][i];
+            D_8010D9A0_fridged_bridges[i][j].y = D_8010D17C_fridged_bridges[j].y * sign[1][i];
+        }
+        D_8010DA00_fridged_bridges[i].x = D_8010D194_fridged_bridges.x * sign[0][i];
+        D_8010DA00_fridged_bridges[i].y = D_8010D194_fridged_bridges.y * sign[1][i];
+    }
+    for (i = 0; i < 4; i++) {
+        arg0->model[i * 5] = func_8000B108_main(0x450000, 0x20699);
+        arg0->model[i * 5 + 1] = func_8000B108_main(0x450001, 0x699);
+        arg0->model[i * 5 + 2] = func_8000B108_main(0x450002, 0x699);
+        arg0->model[i * 5 + 3] = func_8000B108_main(0x450003, 0x699);
+        arg0->model[i * 5 + 4] = func_8000B108_main(0x450000, 0x20699);
+        func_8001C258_main(arg0->model[i * 5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        func_8001C258_main(arg0->model[i * 5 + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        func_8001C258_main(arg0->model[i * 5 + 2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        func_8001C258_main(arg0->model[i * 5 + 3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        func_8001C258_main(arg0->model[i * 5 + 4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelCameraSet(arg0->model[i * 5], D_8010CF48_fridged_bridges[i]);
+        Hu3DModelCameraSet(arg0->model[i * 5 + 1], D_8010CF48_fridged_bridges[i]);
+        Hu3DModelCameraSet(arg0->model[i * 5 + 2], D_8010CF48_fridged_bridges[i]);
+        Hu3DModelCameraSet(arg0->model[i * 5 + 3], D_8010CF48_fridged_bridges[i]);
+        Hu3DModelCameraSet(arg0->model[i * 5 + 4], D_8010CF48_fridged_bridges[i]);
+    }
+    arg0->work[2] = 0;
+    omMakeGroup(1, 12);
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 3; j++) {
+            func_8001C258_main(arg0->model[i * 5 + 1 + j], HU3D_ATTR_DISPOFF, 0);
+            obj = omAddObj(10, 1, 0, 1, func_80108B08_fridged_bridges);
+            obj->model[0] = arg0->model[i * 5 + 1 + j];
+            omSetTra(obj, D_8010D9A0_fridged_bridges[i][j].x, 0.0f, D_8010D9A0_fridged_bridges[i][j].y);
+            obj->work[0] = j * 5 + 15;
+            obj->work[1] = 0;
+            obj->work[2] = i;
+        }
+    }
+    arg0->work[0] = 0;
+    arg0->func = func_80108BEC_fridged_bridges;
+}
+
+void func_80108B08_fridged_bridges(omObjData *arg0) {
+    if (arg0->work[0] == 0) {
+        if (arg0->work[1] == 0) {
+            func_8010BFD0_fridged_bridges(0, arg0->work[2], arg0->trans.x, -100.0f, arg0->trans.z);
+            arg0->work[1] = 1;
+            if (D_8010D19C_fridged_bridges == 0) {
+                HuAudFXPlay(0x42C);
+                D_8010D19C_fridged_bridges = 1;
+            }
+        }
+        if (arg0->trans.y < -120.0f) {
+            func_8001C258_main(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            omDelObj(arg0);
+        } else {
+            arg0->trans.y -= 8.0f;
+        }
+    } else {
+        arg0->work[0]--;
+    }
+}
 
 void func_80108BEC_fridged_bridges(omObjData *arg0) {
     omObjData **bridgeObjs = omGetGroupMemberList(1);
@@ -725,7 +1040,42 @@ void func_80108BEC_fridged_bridges(omObjData *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_80108C60_fridged_bridges);
+void func_80108C60_fridged_bridges(omObjData *arg0) {
+    FridgedBridgesItemWork *work = OM_GET_WORK_PTR(arg0, FridgedBridgesItemWork);
+    FridgedBridgesPlayer *player = work->playerObj->data;
+    u16 modelId;
+
+    if (work->phase == 0) {
+        modelId = D_8010DA70_fridged_bridges->model[player->playerId * 5];
+        arg0->trans.y -= work->fallSpeed;
+        work->fallSpeed *= 1.4f;
+        if (arg0->trans.y < -100.0f) {
+            work->phase = 1;
+            func_8010BFD0_fridged_bridges(0, player->playerId, arg0->trans.x, -160.0f, arg0->trans.z);
+            func_8001C258_main(modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            modelId = D_8010DA70_fridged_bridges->model[player->playerId * 5 + 1 + player->unk_24];
+            func_8001C258_main(D_8010DA70_fridged_bridges->model[player->playerId * 5 + 1 + player->unk_24],
+                               HU3D_ATTR_DISPOFF, 0);
+            func_8004AC98_main(0x42B, player->playerId);
+        }
+        Hu3DModelPosSet(modelId, arg0->trans.x, arg0->trans.y, arg0->trans.z);
+        Hu3DModelRotSet(modelId, arg0->rot.x, arg0->rot.y, arg0->rot.z);
+    } else {
+        modelId = D_8010DA70_fridged_bridges->model[player->playerId * 5 + 1 + player->unk_24];
+        arg0->trans.y += 8.0f;
+        if (arg0->trans.y >= 0.0f) {
+            arg0->trans.y = 0.0f;
+        }
+        Hu3DModelPosSet(modelId, D_8010D9A0_fridged_bridges[player->playerId][player->unk_24].x, arg0->trans.y,
+                        D_8010D9A0_fridged_bridges[player->playerId][player->unk_24].y);
+        Hu3DModelRotSet(modelId, 0.0f, 0.0f, 0.0f);
+        if (arg0->trans.y == 0.0f) {
+            player->state = 1;
+            player->unk_24++;
+            omDelObj(arg0);
+        }
+    }
+}
 
 // Shrinking phase of a player's bridge-sink object (created with func_80108C60).
 // Sinks the player model 10 units per frame while scaling it away; when the
@@ -748,23 +1098,348 @@ void func_80108EBC_fridged_bridges(omObjData *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_80108FBC_fridged_bridges);
+void func_80108FBC_fridged_bridges(omObjData *arg0) {
+    FridgedBridgesPlayer *player;
+    omObjData *obj;
+    u32 bit;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_80109154_fridged_bridges);
+    for (i = 0; i < 4; i++) {
+        player = D_8010DA64_fridged_bridges[i]->data;
+        bit = 1 << i;
+        if (!(bit & arg0->work[2]) && player->unk_26 != 3) {
+            obj = omAddObj(30, 1, 0, -1, func_80109154_fridged_bridges);
+            obj->model[0] = arg0->model[i * 5 + 4];
+            omSetTra(obj, D_8010DA00_fridged_bridges[i].x, 25.0f, D_8010DA00_fridged_bridges[i].y);
+            omSetSca(obj, 1.0f, 0.0f, 1.0f);
+            omSetRot(obj, 0.0f, 0.0f, 0.0f);
+            Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
+            Hu3DModelScaleSet(obj->model[0], 1.0f, 0.0f, 1.0f);
+            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, 0);
+            arg0->work[2] |= bit;
+        }
+    }
+}
 
+void func_80109154_fridged_bridges(omObjData *arg0) {
+    f32 *scale = OM_GET_WORK_PTR(arg0, f32);
+
+    *scale += 0.05f;
+    if (*scale >= 1.0f) {
+        *scale = 1.0f;
+    }
+    omSetSca(arg0, 1.0f, *scale, 1.0f);
+    if (*scale == 1.0f) {
+        omDelObj(arg0);
+    }
+}
+
+#ifdef NON_MATCHING
+// Register allocation differs (v0/v1 swapped) when indexing D_8010DA64 in the first loop.
+void func_801091F8_fridged_bridges(omObjData *arg0) {
+    FridgedBridgesPlayer *player;
+    s32 i;
+
+    switch (D_8010D364_fridged_bridges) {
+        case 0:
+            if (D_8010D1A0_fridged_bridges == 0) {
+                for (i = 0; i < 4; i++) {
+                    if (OM_GET_DATA_PTR(D_8010DA64_fridged_bridges[i], FridgedBridgesPlayer)->unk_28 == 0) {
+                        func_801082D0_fridged_bridges(D_8010DA64_fridged_bridges[i]);
+                    }
+                }
+                D_8010D1A0_fridged_bridges = 1;
+                func_8010AE0C_fridged_bridges();
+            }
+            WipeCreateIn(WIPE_TYPE_PREV, 16);
+            D_8010D364_fridged_bridges = 1;
+            break;
+        case 1:
+            if (WipeStatGet() == 0) {
+                D_8010D364_fridged_bridges = 2;
+                HuAudFXPlay(0x42E);
+            }
+            break;
+        case 2:
+            if (D_8010DA70_fridged_bridges->work[0] == 1) {
+                D_8010D364_fridged_bridges = 3;
+            }
+            break;
+        case 3:
+            if (func_8010AE98_fridged_bridges(40.0f) == 1) {
+                for (i = 0; i < 4; i++) {
+                    player = D_8010DA64_fridged_bridges[i]->data;
+                    player->unk_2C->work[0] = 1;
+                }
+                omDelObj(arg0);
+                D_8010D35C_fridged_bridges = NULL;
+                func_800E6F0C_minigame(1);
+            }
+            break;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_801091F8_fridged_bridges);
+#endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_80109390_fridged_bridges);
+// Winner sequence: the winner walks to the goal and the camera zooms in.
+void func_80109390_fridged_bridges(omObjData *arg0) {
+    FridgedBridgesPlayer *player;
+    omObjData *obj;
+    s16 model;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_80109988_fridged_bridges);
+    switch (D_8010D366_fridged_bridges) {
+        case 0:
+            obj = D_8010DA64_fridged_bridges[D_8010DA60_fridged_bridges];
+            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            func_8001C258_main(obj->model[4], HU3D_ATTR_DISPOFF, 0);
+            model = obj->model[0];
+            obj->model[0] = obj->model[4];
+            obj->model[4] = model;
+            Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[1]].motId, 0, 6, 2);
+            obj->rot.y = atan2df(D_8010D1A4_fridged_bridges[D_8010DA60_fridged_bridges].x - obj->trans.x,
+                                 D_8010D1A4_fridged_bridges[D_8010DA60_fridged_bridges].z - obj->trans.z);
+            D_8010D366_fridged_bridges = 1;
+            break;
+        case 1:
+            obj = D_8010DA64_fridged_bridges[D_8010DA60_fridged_bridges];
+            if (HuSqrtf((D_8010D1A4_fridged_bridges[D_8010DA60_fridged_bridges].x - obj->trans.x) *
+                            (D_8010D1A4_fridged_bridges[D_8010DA60_fridged_bridges].x - obj->trans.x) +
+                        (D_8010D1A4_fridged_bridges[D_8010DA60_fridged_bridges].z - obj->trans.z) *
+                            (D_8010D1A4_fridged_bridges[D_8010DA60_fridged_bridges].z - obj->trans.z)) < 80.0f) {
+                D_8010D366_fridged_bridges = 2;
+            } else {
+                obj->trans.x += sindf(obj->rot.y) * 10.0f;
+                obj->trans.z += cosdf(obj->rot.y) * 10.0f;
+                Hu3DModelPosSet(obj->model[1], obj->trans.x, 0.0f, obj->trans.z);
+            }
+            break;
+        case 2:
+            D_8010D340_fridged_bridges = -650.0f / 30.0f;
+            D_8010D344_fridged_bridges.x = 20.0f / 30.0f;
+            D_8010D344_fridged_bridges.y = 0.0f;
+            D_8010D344_fridged_bridges.z = 0.0f;
+            D_8010D350_fridged_bridges = 30;
+            D_8010D366_fridged_bridges = 3;
+            D_8010DA64_fridged_bridges[D_8010DA60_fridged_bridges]->func = func_801075AC_fridged_bridges;
+            D_8010DA64_fridged_bridges[D_8010DA60_fridged_bridges]->work[0] = 0;
+            break;
+        case 3:
+            if (--D_8010D350_fridged_bridges != 0) {
+                CZoomM[D_8010DA60_fridged_bridges] += D_8010D340_fridged_bridges;
+                CRotM[D_8010DA60_fridged_bridges].x += D_8010D344_fridged_bridges.x;
+                CRotM[D_8010DA60_fridged_bridges].y += D_8010D344_fridged_bridges.y;
+                CRotM[D_8010DA60_fridged_bridges].z += D_8010D344_fridged_bridges.z;
+            } else {
+                CZoomM[D_8010DA60_fridged_bridges] = 1065.0f;
+                CRotM[D_8010DA60_fridged_bridges].x = -40.0f;
+                CRotM[D_8010DA60_fridged_bridges].y = 0.0f;
+                CRotM[D_8010DA60_fridged_bridges].z = 0.0f;
+                D_8010D366_fridged_bridges = 4;
+            }
+            break;
+        case 4:
+            if (D_8010DA64_fridged_bridges[D_8010DA60_fridged_bridges]->work[0] == 1 &&
+                func_800E6E8C_minigame() == 4) {
+                player = D_8010DA64_fridged_bridges[D_8010DA60_fridged_bridges]->data;
+                func_80017954_main(D_8010DA64_fridged_bridges[D_8010DA60_fridged_bridges]->model[0], 2,
+                                   GwPlayer[player->playerId].chr,
+                                   D_8010DA64_fridged_bridges[D_8010DA60_fridged_bridges]->model[5]);
+                Hu3DMotionShiftSet(
+                    D_8010DA64_fridged_bridges[D_8010DA60_fridged_bridges]->model[0],
+                    Hu3DData[D_8010DA64_fridged_bridges[D_8010DA60_fridged_bridges]->motion[5]].motId, 0, 6, 0);
+                func_80045ED0_main(D_800A178C_main[GwPlayer[D_8010DA60_fridged_bridges].chr][0] | 0x2F);
+                D_8010D366_fridged_bridges = 5;
+                for (i = 0; i < 4; i++) {
+                    obj = D_8010DA64_fridged_bridges[i];
+                    player = obj->data;
+                    if (player->state != 3 && player->playerId != D_8010DA60_fridged_bridges) {
+                        obj->func = func_8010775C_fridged_bridges;
+                    }
+                    player->unk_44 = 1.0f;
+                    if (player->playerId == D_8010DA60_fridged_bridges) {
+                        GwPlayer[player->playerId].bonusCoin = 10;
+                    }
+                }
+            }
+            break;
+        case 6:
+            if (func_800E6E8C_minigame() == 4) {
+                for (i = 0; i < 4; i++) {
+                    obj = D_8010DA64_fridged_bridges[i];
+                    player = obj->data;
+                    if (player->state != 3) {
+                        obj->func = func_8010775C_fridged_bridges;
+                    }
+                    player->unk_44 = 1.0f;
+                }
+                D_8010D366_fridged_bridges = 5;
+            }
+            break;
+        case 5:
+            break;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_80109D4C_fridged_bridges);
+// Probes the floor height at 8 points around probe->pos plus the center, against
+// both the ice floor and the player's bridges. Returns the number of probe points
+// that found no floor at all.
+s32 func_80109988_fridged_bridges(omObjData *arg0, FridgedBridgesProbe *probe) {
+    FridgedBridgesPlayer *player = arg0->data;
+    Vec pos;
+    s32 missCount = 0;
+    Hu3DPoint *points;
+    Hu3DQuad *quad;
+    f32 angle;
+    f32 height;
+    f32 best;
+    f32 x;
+    f32 y;
+    f32 z;
+    s32 i;
+    s32 j;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_80109D6C_fridged_bridges);
+    player->unk_1C = -1;
+    for (i = 0; i < 9; i++) {
+        if (i != 8) {
+            angle = i * 45.0f;
+            x = pos.x = sindf(angle) * 55.0f + probe->pos.x;
+            y = pos.y = probe->pos.y;
+            z = pos.z = cosdf(angle) * 55.0f + probe->pos.z;
+        } else {
+            x = pos.x = probe->pos.x;
+            y = pos.y = probe->pos.y;
+            z = pos.z = probe->pos.z;
+        }
+        best = probe->height[i] = -10000.0f;
+        probe->bridgeIds[i] = 0xFFFF;
+        points = (Hu3DPoint *)Hu3DData[D_8010DA6C_fridged_bridges->model[player->playerId]].hmf->unk50;
+        func_80021C14_main(D_8010DA6C_fridged_bridges->model[player->playerId], &D_800EBEB0_minigame,
+                           func_80109D4C_fridged_bridges, &pos);
+        for (quad = func_80022198_main(&D_800EBEB0_minigame); quad != NULL;
+             quad = func_80022198_main(&D_800EBEB0_minigame)) {
+            height = func_800204F4_main(x, y, z, points, quad);
+            if (height > best) {
+                probe->height[i] = best = height;
+                probe->bridgeIds[i] = quad->vtx[0] & 0x3F00;
+                if (i == 8) {
+                    player->unk_1C = probe->bridgeIds[8];
+                }
+            }
+        }
+        for (j = 0; j < player->unk_24; j++) {
+            pos.x = x - D_8010D9A0_fridged_bridges[player->playerId][j].x;
+            pos.z = z - D_8010D9A0_fridged_bridges[player->playerId][j].y;
+            points = (Hu3DPoint *)Hu3DData[D_8010DA70_fridged_bridges->model[player->playerId * 5 + 1 + j]]
+                         .hmf->unk50;
+            func_80021C14_main(D_8010DA70_fridged_bridges->model[player->playerId * 5 + 1 + j],
+                               &D_800EBEB0_minigame, func_80109D4C_fridged_bridges, &pos);
+            for (quad = func_80022198_main(&D_800EBEB0_minigame); quad != NULL;
+                 quad = func_80022198_main(&D_800EBEB0_minigame)) {
+                height = func_800204F4_main(x, y, z, points, quad);
+                if (height > best) {
+                    probe->height[i] = best = height;
+                    probe->bridgeIds[i] = player->unk_1C = quad->vtx[0] & 0x3F00;
+                    if (i == 8) {
+                        player->unk_1C = probe->bridgeIds[8];
+                    }
+                }
+            }
+        }
+        if (best == -10000.0f) {
+            missCount++;
+        }
+    }
+    return missCount;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_80109F84_fridged_bridges);
+s32 func_80109D4C_fridged_bridges(s32 count, s16 *vtx, Hu3DPoint *points, Vec *pos) {
+    return func_80109D6C_fridged_bridges(pos, vtx - 1, points);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_8010A0F4_fridged_bridges);
+// Same as func_800DA540_minigame, without the face type check.
+s32 func_80109D6C_fridged_bridges(Vec *pos, s16 *face, Hu3DPoint *points) {
+    f32 x;
+    f32 z;
+    s32 count;
+    s32 i;
+    s32 next;
+
+    x = pos->x;
+    z = pos->z;
+    count = ((u16)face[0] >> 14) + 2;
+    face++;
+    if (func_8002048C_main(x, z, &points[face[0]], &points[face[1]]) > 0.0f) {
+        for (i = 1; i < count; i++) {
+            next = (i + 1) % count;
+            if (func_8002048C_main(x, z, &points[face[i]], &points[face[next]]) < 0.0f) {
+                return FALSE;
+            }
+        }
+    } else {
+        for (i = 1; i < count; i++) {
+            next = (i + 1) % count;
+            if (func_8002048C_main(x, z, &points[face[i]], &points[face[next]]) > 0.0f) {
+                return FALSE;
+            }
+        }
+    }
+    return TRUE;
+}
+
+// Pushes a falling player away from the floor edges it is still touching.
+void func_80109F84_fridged_bridges(omObjData *arg0) {
+    FridgedBridgesProbe probe;
+    f32 angle;
+    f32 dx;
+    f32 dz;
+    u16 attempt;
+    u16 missCount;
+    u16 dir;
+    u16 i;
+
+    attempt = 0;
+    do {
+        probe.pos.x = arg0->trans.x;
+        probe.pos.y = arg0->trans.y;
+        probe.pos.z = arg0->trans.z;
+        func_80109988_fridged_bridges(arg0, &probe);
+        missCount = 0;
+        for (i = 0; i < 8; i++) {
+            if (probe.height[i] == -10000.0f) {
+                missCount++;
+            } else {
+                dir = i + 4;
+                if (dir >= 9) {
+                    dir = i - 4;
+                }
+                angle = dir * 45.0f;
+                dx = sindf(angle) * 5.0f;
+                dz = cosdf(angle) * 5.0f;
+                arg0->trans.x += dx;
+                arg0->trans.z += dz;
+            }
+        }
+    } while (missCount != 8 && ++attempt < 4);
+}
+
+// Returns 1 if the position is within reach of the player's dropped item.
+u16 func_8010A0F4_fridged_bridges(omObjData *arg0, f32 x, f32 y, f32 z) {
+    FridgedBridgesPlayer *player = arg0->data;
+    u16 playerId = player->playerId;
+    f32 dist;
+
+    if (!(D_8010DA70_fridged_bridges->work[2] & (1 << playerId))) {
+        return 0;
+    }
+    dist = HuSqrtf((x - D_8010DA00_fridged_bridges[playerId].x) * (x - D_8010DA00_fridged_bridges[playerId].x) +
+                   (z - D_8010DA00_fridged_bridges[playerId].y) * (z - D_8010DA00_fridged_bridges[playerId].y));
+    if (dist > HuSqrtf(6400.0f)) {
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_8010A1A4_fridged_bridges);
 

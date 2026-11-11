@@ -10,6 +10,7 @@
 #include "game/hmfparticle.h"
 #include "game/hmfspr.h"
 #include "game/object.h"
+#include "game/pause.h"
 #include "game/wipe.h"
 #include "math.h"
 
@@ -48,6 +49,9 @@ extern s16 D_80109C36_hey_batter_batter;
 extern s16 D_80109C38_hey_batter_batter;
 extern f32 D_80109C3C_hey_batter_batter;
 extern Vec D_80109C4C_hey_batter_batter[5];
+extern s16 D_80109C88_hey_batter_batter;
+extern s16 D_80109C8A_hey_batter_batter;
+extern s16 D_80109C8C_hey_batter_batter;
 extern Vec D_80109D04_hey_batter_batter[5];
 
 extern s16 D_80109ED0_hey_batter_batter;
@@ -557,7 +561,96 @@ void func_80107144_hey_batter_batter(omObjData *object) {
     object->func = func_80107464_hey_batter_batter;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3C_hey_batter_batter/2D3E70", func_80107464_hey_batter_batter);
+void func_80107464_hey_batter_batter(omObjData *object) {
+    if (D_80109C88_hey_batter_batter != D_80109ED2_hey_batter_batter) {
+        switch (D_80109ED2_hey_batter_batter) {
+            case 0:
+            case 1:
+                Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[D_80109ED2_hey_batter_batter]].motId, 0,
+                                   30, 2);
+                break;
+            case 2:
+                func_8001C5B4_main(object->model[0], object->motion[2]);
+                func_80045ED0_main(D_800A178C_main[GwPlayer[D_80109ED0_hey_batter_batter].chr][0] | 0x35);
+                break;
+            case 3:
+                func_8001C5B4_main(object->model[0], object->motion[3]);
+                func_80045ED0_main(D_800A178C_main[GwPlayer[D_80109ED0_hey_batter_batter].chr][0] | 0x38);
+                break;
+            case 4:
+                Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[D_80109ED2_hey_batter_batter]].motId, 0,
+                                   15, 0);
+                break;
+            case 5:
+                func_8001C5B4_main(object->model[0], object->motion[4]);
+                Hu3DMotionTimeSet(object->model[0], D_800CCF58_main[Hu3DData[object->model[0]].motId].unk02);
+                Hu3DMotionSpeedSet(object->model[0], -0.9f);
+                break;
+            case 6:
+                Hu3DMotionSpeedSet(object->model[0], 1.0f);
+                break;
+            case 7:
+                Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[5]].motId, 0, 10, 2);
+                break;
+            case 8:
+                func_8001C5B4_main(object->model[0], object->motion[6]);
+                break;
+        }
+        D_80109C88_hey_batter_batter = D_80109ED2_hey_batter_batter;
+    }
+    if (D_80109B60_hey_batter_batter == 1) {
+        switch (D_80109C8A_hey_batter_batter) {
+            case 0:
+                D_80109EEA_hey_batter_batter[1] = 1;
+                if (GwPlayer[D_80109ED0_hey_batter_batter].chr == 5 && D_80109ED2_hey_batter_batter == 4) {
+                    D_80109ED2_hey_batter_batter = 8;
+                } else {
+                    D_80109ED2_hey_batter_batter = 0;
+                }
+                Hu3DModelCameraSet(object->model[1], 0);
+                D_80109C8A_hey_batter_batter++;
+                break;
+            case 1:
+                if (D_80109C8C_hey_batter_batter++ >= 45) {
+                    D_80109C8A_hey_batter_batter++;
+                }
+                break;
+            case 2:
+                if (object->rot.y > 0.0f) {
+                    D_80109ED2_hey_batter_batter = 7;
+                    object->rot.y -= 10.0f;
+                } else {
+                    D_80109ED2_hey_batter_batter = 0;
+                    D_80109C8A_hey_batter_batter++;
+                }
+                break;
+        }
+    }
+    if (D_80109B60_hey_batter_batter == 2) {
+        switch (D_80109C8A_hey_batter_batter) {
+            case 0:
+                HuAudFXPlay(0x4D0);
+                D_80109ED2_hey_batter_batter = 4;
+                D_80109C8A_hey_batter_batter++;
+                break;
+            case 1:
+                if (D_800CCF58_main[Hu3DData[object->model[0]].motId].unk02 == Hu3DData[object->model[0]].motTime) {
+                    D_80109ED2_hey_batter_batter = 5;
+                    D_80109C8A_hey_batter_batter++;
+                }
+                break;
+            case 2:
+                if (Hu3DData[object->model[0]].motTime <= 3.0f) {
+                    D_80109ED2_hey_batter_batter = 1;
+                    Hu3DMotionSpeedSet(object->model[0], 0.0f);
+                    Hu3DMotionTimeSet(object->model[0], 0.0f);
+                    D_80109C8A_hey_batter_batter = 0;
+                    D_80109B60_hey_batter_batter = 0;
+                }
+                break;
+        }
+    }
+}
 
 void func_801079D0_hey_batter_batter(omObjData *object) {
     void *data;

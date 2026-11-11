@@ -2326,8 +2326,8 @@ segments:
       - [0x49B0D0, .rodata, 48BE30] #80114C40
       - [0x49B0E0, .rodata, 48C120] #80114C50
       - [0x49B140, .rodata, 48D950] #80114CB0
-      - [0x49B550, .rodata, 492250] #801150B0
-      - [0x49B960, .rodata, 496990] #801154C0
+      - [0x49B550, .rodata, 492250] #801150C0
+      - [0x49B960, .rodata, 496990] #801154D0
       - {0x49BD40, type: bss, vram: 0x801158B0, name: mstory1_bss}
 
   - type: code

@@ -134,7 +134,7 @@ extern s16 D_80118742_duel01;
 extern f32 D_8011872C_duel01;
 extern s8 D_80118760_duel01[];
 extern s8 *D_8011885C_duel01[];
-void func_800EDD50_name_81(Vec *);
+Object *func_800EDD50_name_81(Vec *);
 void func_800EE0F4_name_81(s32);
 void func_800EDF48_name_81(void);
 void *func_800FFC2C_name_81(s16, s16, s32);

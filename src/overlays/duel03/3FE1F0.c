@@ -111,7 +111,7 @@ extern Object *D_801180D8_duel03;
 extern s8 *D_80117574_duel03[];
 extern s8 D_80117478_duel03[];
 void func_8010B134_duel03(omObjData *);
-void func_800EDD50_name_81(Vec *);
+Object *func_800EDD50_name_81(Vec *);
 void func_800EE0F4_name_81(s32);
 void func_800EDF48_name_81(void);
 void *func_800FFC2C_name_81(s16, s16, s32);

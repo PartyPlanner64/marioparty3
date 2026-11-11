@@ -1,6 +1,9 @@
 #include "common_duel.h"
 #include "ovl_81.h"
 
+void func_800EED68_name_81(s16, s32);
+void func_800EF3B4_name_81(s16);
+
 void Duel_ClearPartnerObjects(void) {
     s32 i, j;
 

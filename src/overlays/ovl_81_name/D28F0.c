@@ -3,7 +3,9 @@
 
 extern s16 D_80105712_name_81;
 
+void func_800EF3B4_name_81(s16);
 void func_800EF3D0_name_81(s16);
+void func_800EED68_name_81(s16, s32);
 void func_800EED84_name_81(s16, s32);
 void func_800EB094_name_81(s16 arg0, s32 arg1, s32 arg2);
 

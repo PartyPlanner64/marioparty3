@@ -1,12 +1,15 @@
 #include "common.h"
 #include "game/audio.h"
 #include "game/data.h"
+#include "game/esprite.h"
 #include "game/hmfanim.h"
 #include "game/hmfspr.h"
 #include "game/malloc.h"
 #include "game/mallocblock.h"
 #include "game/object.h"
+#include "game/pause.h"
 #include "game/util.h"
+#include "game/wipe.h"
 #include "gcc/memory.h"
 #include "overlays/minigame.h"
 
@@ -17,26 +20,37 @@ typedef struct {
     /* 0x02 */ s8 group;
     /* 0x03 */ u8 pad;
     /* 0x04 */ s8 cpuDifficulty; // -1 for human players
-    /* 0x05 */ char unk05[7];
+    /* 0x05 */ char unk05[3];
+    /* 0x08 */ s32 unk08;
 } AwfulTowerPlayer; // Size 0xC
 
 extern s32 D_800A178C_main[][6];
 
-extern s16 D_8010CB60_awful_tower[][2];
+extern s32 D_8010CB60_awful_tower[];
+extern D_80111B50_vine_with_me_Struct D_8010CB70_awful_tower;
 extern s32 D_8010CB98_awful_tower[];
 extern AwfulTowerPlayer D_8010D2D8_awful_tower[4];
 extern AwfulTowerPlayer *D_8010D308_awful_tower[4];
 extern f32 D_8010D320_awful_tower[4];
+extern u16 D_8010D348_awful_tower[4][3];
+extern omObjData *D_8010D360_awful_tower[4][3];
+extern omObjData *D_8010D390_awful_tower[5];
+extern omObjData *D_8010D3A8_awful_tower[4];
+extern s16 D_8010D3B8_awful_tower[4];
+extern s16 D_8010D3D0_awful_tower[4];
 extern u8 D_8010D330_awful_tower[4][5];
 extern u8 D_8010D3CC_awful_tower[4];
-extern s16 D_8010D3D8_awful_tower;
+extern u16 D_8010D3D8_awful_tower;
 extern u32 D_8010D3DC_awful_tower;
 extern s16 D_8010D3E4_awful_tower;
+extern omObjData *D_8010D3E8_awful_tower;
+extern s16 D_8010D3EC_awful_tower[2];
 extern s8 D_8010D3FC_awful_tower;
-extern s8 D_8010D3FD_awful_tower;
-extern s8 D_8010D3FE_awful_tower;
+extern u8 D_8010D3FD_awful_tower;
+extern u8 D_8010D3FE_awful_tower;
 
 void func_801061FC_awful_tower(omObjData *object);
+void func_80107734_awful_tower(omObjData *object);
 void func_80107858_awful_tower(void);
 void func_80108880_awful_tower(omObjData *object, s32 model, s32 motion, u16 group, f32 x, f32 y, f32 z);
 void func_80108E8C_awful_tower(omObjData *object);
@@ -80,13 +94,157 @@ void func_80106028_awful_tower(omObjData *object) {
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_25_awful_tower/21E010", D_8010CCE0_awful_tower);
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_25_awful_tower/21E010", D_8010CD2C_awful_tower);
+void func_801061FC_awful_tower(omObjData *object) {
+    u8 motions[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
+    s32 chrDirs[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+    s32 winFiles[2][8] = {
+        { 0xA4, 0xA4, 0xA4, 0xA4, 0xA4, 0xA4, 0xA4, 0x1B },
+        { 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0x1C },
+    };
+    s8 chr;
+    s16 i;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_25_awful_tower/21E010", D_8010CD34_awful_tower);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_25_awful_tower/21E010", D_8010CD54_awful_tower);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_25_awful_tower/21E010", func_801061FC_awful_tower);
+    D_8010D3DC_awful_tower++;
+    switch (D_8010D3E4_awful_tower) {
+        case 0:
+            if (D_8010D3DC_awful_tower == 51 && D_8010D3D8_awful_tower == 0 && D_800D530C_main == 0) {
+                HuAudSeqPlay(0x33);
+            }
+            break;
+        case 3:
+            if (D_8010D3FE_awful_tower >= 20) {
+                func_800E6F1C_minigame();
+            }
+            break;
+    }
+    func_800E6F40_minigame();
+    switch (D_8010D3E4_awful_tower) {
+        case 0:
+            if (func_800E6E8C_minigame() == 1) {
+                D_8010D3E4_awful_tower = 1;
+                D_8010D3DC_awful_tower = 0;
+            }
+            break;
+        case 1:
+            if (func_800E6E8C_minigame() == 2) {
+                D_8010D3E4_awful_tower = 2;
+                D_8010D3DC_awful_tower = 0;
+            }
+            break;
+        case 2:
+            if (D_8010D3FC_awful_tower != 5 || func_800E6E8C_minigame() == 3) {
+                if (D_8010D3FC_awful_tower == 5) {
+                    D_8010D3E4_awful_tower = 6;
+                    D_8010D3FC_awful_tower = 4;
+                } else {
+                    D_8010D3E4_awful_tower = 3;
+                }
+                D_8010D3DC_awful_tower = 0;
+            }
+            if (D_8010D3E4_awful_tower != 3) {
+                break;
+            }
+        case 3:
+            if (D_8010D3DC_awful_tower == 0) {
+                D_8010CB70_awful_tower.unk22 = 210;
+                if (func_800E6E8C_minigame() != 3) {
+                    func_800E6F1C_minigame();
+                }
+                D_8010CB70_awful_tower.unk06 = 0;
+                D_8010CB70_awful_tower.unk18[0] = D_8010D308_awful_tower[D_8010D3FC_awful_tower]->player;
+                GwPlayer[D_8010D308_awful_tower[D_8010D3FC_awful_tower]->player].bonusCoin = 10;
+            }
+            if (D_8010D3DC_awful_tower == 2) {
+                func_800E6F34_minigame(30);
+            }
+            if (func_800E6E8C_minigame() == 4) {
+                D_8010D3E4_awful_tower = 4;
+                D_8010D3DC_awful_tower = 0;
+            }
+            break;
+        case 6:
+            if (D_8010D3DC_awful_tower == 1) {
+                D_8010CB70_awful_tower.unk06 = 4;
+                D_8010CB70_awful_tower.unk24 = 0x90;
+            }
+            if (func_800E6E8C_minigame() == 4) {
+                D_8010D3E4_awful_tower = 5;
+                D_8010D3DC_awful_tower = 0;
+            }
+            break;
+        case 4:
+            if (D_8010D3DC_awful_tower == 1) {
+                chr = D_8010D308_awful_tower[D_8010D3FC_awful_tower]->chr;
+                D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9] =
+                    func_8000B108_main(D_800A178C_main[chr][0] | D_800A178C_main[chr][2], 0x4AD);
+                D_8010D3EC_awful_tower[0] =
+                    func_80017790_main(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9], 1, motions[chr],
+                                       (chrDirs[chr] << 16) | winFiles[0][chr]);
+                D_8010D3EC_awful_tower[1] = func_80017AD8_main((chrDirs[chr] << 16) | winFiles[1][chr]);
+                func_8001C514_main(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9]);
+                Hu3DModelCameraSet(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9],
+                                   D_8010CB60_awful_tower[D_8010D3FC_awful_tower]);
+                func_8001C258_main(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[0], 4, 4);
+                func_8001C258_main(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9], 4, 0);
+                Hu3DMotionTimeSet(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9],
+                                  Hu3DData[D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[0]].motTime);
+                func_8001C814_main(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9], 2, 2);
+                Hu3DData[D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9]].pos.x =
+                    D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->trans.x;
+                Hu3DData[D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9]].pos.y =
+                    D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->trans.y;
+                Hu3DData[D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9]].pos.z =
+                    D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->trans.z;
+            }
+            if (D_8010D3DC_awful_tower < 16) {
+                Hu3DModelRotSet(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9], 0.0f,
+                                D_8010D3DC_awful_tower / 15.0f * 90.0f + -90.0f, 0.0f);
+            }
+            if (D_8010D3DC_awful_tower == 30) {
+                func_8001C5B4_main(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9],
+                                   D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[10]);
+                func_8001C814_main(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9], 2, 0);
+                func_80017954_main(D_8010D3A8_awful_tower[D_8010D3FC_awful_tower]->model[9], 1,
+                                   motions[D_8010D308_awful_tower[D_8010D3FC_awful_tower]->chr],
+                                   D_8010D3EC_awful_tower[1]);
+                func_80045ED0_main(D_8010D308_awful_tower[D_8010D3FC_awful_tower]->unk08);
+            }
+        case 5:
+            if (D_8010D3E4_awful_tower == 5 && D_8010D3DC_awful_tower == 1) {
+                for (i = 0; i < 4; i++) {
+                    func_800E5690_minigame(D_8010D3A8_awful_tower[i], 14);
+                }
+            }
+            if (func_800E6E8C_minigame() == 5) {
+                D_8010D3E4_awful_tower = 7;
+                D_8010D3DC_awful_tower = 0;
+            }
+            break;
+        case 7:
+            if (D_8010D3DC_awful_tower == 1) {
+                WipeCreateOut(WIPE_TYPE_NORMAL, 20);
+            } else if (D_8010D3DC_awful_tower >= 32) {
+                D_8010D3D8_awful_tower = 1;
+            }
+            break;
+    }
+    if (D_8010D3D8_awful_tower != 0 || D_800D530C_main != 0) {
+        if (D_800D530C_main != 0) {
+            if (D_8010D3FD_awful_tower == 0) {
+                WipeCreateOut(WIPE_TYPE_NORMAL, 20);
+                HuAudSeqFadeOut(20);
+                func_8004AB0C_main(20);
+            }
+            D_8010D3FD_awful_tower++;
+            if (D_8010D3FD_awful_tower < 25) {
+                return;
+            }
+        } else {
+            HuAudSeqFadeOut(30);
+        }
+        omOvlReturnEx(1);
+    }
+}
 
 void func_80106A9C_awful_tower(omObjData *object) {
     D_800EC1C0_minigame_ObjData *work;
@@ -194,19 +352,81 @@ s16 func_80106F58_awful_tower(s32 file, u16 *sprite) {
     return D_800CBB60_main[idx].modelId;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_25_awful_tower/21E010", D_8010CDC0_awful_tower);
+void func_80106FDC_awful_tower(omObjData *object) {
+    s32 sprFiles[4] = { 0x46000A, 0x46000B, 0x46000C, 0x46000D };
+    s16 i;
+    s16 j;
+    s16 k;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_25_awful_tower/21E010", D_8010CDD0_awful_tower);
+    for (i = 0; i < 4; i++) {
+        D_8010D3B8_awful_tower[i] = func_8000B838_main(sprFiles[i]);
+        D_8010D3B8_awful_tower[i] = func_8000B838_main(sprFiles[i]);
+        D_8010D3D0_awful_tower[i] = espEntry(D_8010D3B8_awful_tower[i], 0, 0);
+        espDispOff(D_8010D3D0_awful_tower[i]);
+    }
+    for (j = 0; j < 3; j++) {
+        for (i = 0; i < 4; i++) {
+            s32 modelIdx[3] = { 8, 12, 16 };
+            s32 animFiles[3] = { 7, 8, 9 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_25_awful_tower/21E010", D_8010CDDC_awful_tower);
+            object->model[modelIdx[j] + i] =
+                func_80106F58_awful_tower(animFiles[j] | 0x460000, &D_8010D348_awful_tower[i][j]);
+            func_8001C258_main(object->model[modelIdx[j] + i], 4, 4);
+            Hu3DModelCameraSet(object->model[modelIdx[j] + i], D_8010CB60_awful_tower[i]);
+            if (j < 2) {
+                Hu3DModelScaleSet(object->model[modelIdx[j] + i], 6.0525f, 6.0525f, 6.0525f);
+            } else {
+                Hu3DModelScaleSet(object->model[modelIdx[j] + i], 3.02625f, 3.02625f, 3.02625f);
+            }
+        }
+    }
+    for (i = 0; i < 5; i++) {
+        f32 posX[5] = { 1.0f, -1.0f, 1.0f, -1.0f, 0.25f };
+        f32 posY[5] = { 13.5f, 8.5f, 24.0f, 34.0f, 40.5f };
+        A96F0_ObjData *data = D_8010D390_awful_tower[i]->data;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_25_awful_tower/21E010", D_8010CDE8_awful_tower);
+        D_8010D390_awful_tower[i]->trans.x = posX[i] * 150.0f;
+        D_8010D390_awful_tower[i]->trans.y = posY[i] * 100.0f + 50.0f;
+        D_8010D390_awful_tower[i]->trans.z = 0.0f;
+        data->unk56 = i;
+        func_8001C258_main(D_8010D390_awful_tower[i]->model[0], 4, 0);
+    }
+    for (i = 0; i < 3; i++) {
+        s32 files[3] = { 2, 3, 4 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_25_awful_tower/21E010", D_8010CDFC_awful_tower);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_25_awful_tower/21E010", D_8010CE10_awful_tower);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_25_awful_tower/21E010", func_80106FDC_awful_tower);
+        object->model[i] = func_8000B108_main(files[i] | 0x460000, 0x4BD);
+    }
+    object->model[20] = func_8000B108_main(0x460005, 0x4BD);
+    Hu3DModelCameraSet(object->model[20], 0);
+    Hu3DModelScaleSet(object->model[20], 0.666666f, 0.666666f, 0.666666f);
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 3; j++) {
+            ((D_800EC1C0_minigame_ObjData *)D_8010D360_awful_tower[i][j]->data)->unk04 = i * 3 + j + 1;
+            for (k = 0; k < 3; k++) {
+                D_8010D360_awful_tower[i][j]->model[k + 1] = Hu3DModelLink(D_8010D3E8_awful_tower->model[j]);
+                func_8001C258_main(D_8010D360_awful_tower[i][j]->model[k + 1], 4, 4);
+                Hu3DModelScaleSet(D_8010D360_awful_tower[i][j]->model[k + 1], 0.666666f, 0.666666f, 0.666666f);
+                Hu3DModelCameraSet(D_8010D360_awful_tower[i][j]->model[k + 1], D_8010CB60_awful_tower[i]);
+            }
+        }
+    }
+    object->model[3] = func_8000B108_main(0xA011A, 0x4BD);
+    func_8001C814_main(object->model[3], 2, 2);
+    Hu3DModelPosSet(object->model[3], 0.0f, 4500.0f, 300.0f);
+    Hu3DModelScaleSet(object->model[3], 0.5f, 0.5f, 0.5f);
+    for (i = 0; i < 4; i++) {
+        if (i == 0 || i == 3) {
+            object->model[i + 4] = func_8000B108_main(i == 3 ? 0x460001 : 0x460000, 0x4B9);
+        } else {
+            object->model[i + 4] = Hu3DModelLink(object->model[4]);
+        }
+        Hu3DModelCameraSet(object->model[i + 4], 15);
+        func_8001C814_main(object->model[i + 4], 1, 1);
+        Hu3DModelPosSet(object->model[i + 4], 0.0f, i * 1120.0 - 9.0, -300.0f);
+        Hu3DModelScaleSet(object->model[i + 4], 0.75f, 0.75f, 0.75f);
+    }
+    object->func = func_80107734_awful_tower;
+}
 
 #ifdef NON_MATCHING
 void func_80107734_awful_tower(omObjData *object) {
@@ -214,7 +434,7 @@ void func_80107734_awful_tower(omObjData *object) {
     if (D_8010D3E4_awful_tower == 3) {
         if (D_8010D3DC_awful_tower == 1) {
             func_8001C258_main(object->model[3], 4, 0);
-            Hu3DModelCameraSet(object->model[3], D_8010CB60_awful_tower[D_8010D3FC_awful_tower][1]);
+            Hu3DModelCameraSet(object->model[3], D_8010CB60_awful_tower[D_8010D3FC_awful_tower]);
         }
         if (D_8010D3DC_awful_tower != 0 && D_8010D3DC_awful_tower < 46) {
             f32 t = D_8010D3DC_awful_tower / 45.0f;
@@ -240,7 +460,50 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_25_awful_tower/21E010", D_8010CE80
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_25_awful_tower/21E010", func_80107858_awful_tower);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_25_awful_tower/21E010", func_80108880_awful_tower);
+void func_80108880_awful_tower(omObjData *object, s32 model, s32 motion, u16 group, f32 x, f32 y, f32 z) {
+    s32 chrDirs[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+    s32 attr1 = 0x4B9;
+    s32 attr2 = 0x49D;
+    u16 chr = D_8010D308_awful_tower[group]->chr;
+    func_800E1BA8_minigame_ObjData *data;
+    s32 i;
+
+    func_800E18D8_minigame();
+    func_800E1BA8_minigame(object, model, motion, D_8010D308_awful_tower[group]->player, attr1, attr2);
+    Hu3DModelCameraSet(object->model[0], D_8010CB60_awful_tower[group]);
+    data = object->data;
+    data->unk59 = D_8010D308_awful_tower[group]->player;
+    data->unk50 |= 0x400;
+    data->unk4C = 1.0f;
+    data->unkB4 = 1.0f;
+    object->model[6] = func_8000B108_main(5, 0x80D);
+    Hu3DModelCameraSet(object->model[6], D_8010CB60_awful_tower[group]);
+    Hu3DModelCameraSet(object->model[9], D_8010CB60_awful_tower[group]);
+    D_8010D308_awful_tower[group]->unk08 = (rand8() & 1) ? 0x2F : 0x30;
+    object->model[10] = func_8000B108_main(func_80017BB8_main(chr, D_8010D308_awful_tower[group]->unk08), attr1 | 4);
+    D_8010D308_awful_tower[group]->unk08 |= chrDirs[chr] << 16;
+    func_800E5A00_minigame(object, 0, func_80017BB8_main(chr, 0), 1, 0);
+    func_800E5A00_minigame(object, 1, func_80017BB8_main(chr, 1), 1, 0);
+    func_800E5A00_minigame(object, 2, func_80017BB8_main(chr, 2), 1, 0);
+    func_800E5A00_minigame(object, 6, func_80017BB8_main(chr, 4), 1, 19);
+    func_800E5A00_minigame(object, 17, func_80017BB8_main(chr, 14), 1, 15);
+    func_800E5978_minigame(object, 21, func_80017BB8_main(chr, 31), 0, 0);
+    func_800E5978_minigame(object, 30, func_80017BB8_main(chr, 32), 2, 0);
+    func_800E5978_minigame(object, 31, func_80017BB8_main(chr, 33), 2, 0);
+    func_800E5978_minigame(object, 32, func_80017BB8_main(chr, 34), 0, 0);
+    func_800E5A00_minigame(object, 14, func_80017BB8_main(chr, 58), 1, 120);
+    object->trans.x = x;
+    object->trans.y = y;
+    object->trans.z = z;
+    Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
+    for (i = 0; i < 12; i++) {
+        func_800E149C_minigame(object, i + 1, 1);
+    }
+    func_800E149C_minigame(object, 0, 2);
+    func_800E149C_minigame(object, group * 3 + 1, 2);
+    func_800E149C_minigame(object, group * 3 + 2, 2);
+    func_800E149C_minigame(object, group * 3 + 3, 2);
+}
 
 void func_80108CCC_awful_tower(omObjData *object) {
     s8 chr = D_8010D308_awful_tower[0]->chr;

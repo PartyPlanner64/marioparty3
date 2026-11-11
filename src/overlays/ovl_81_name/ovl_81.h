@@ -56,6 +56,7 @@ typedef struct UnkOvl81_2 {
     /* 0x00 */ Object* obj;
     /* 0x04 */ Process* process;
     /* 0x08 */ s16 win_id;
+    /* 0x0A */ s16 unk_0A;
 } UnkOvl81_2; //sizeof 0xC
 
 // Duel help window, counterpart of the board overlay's Unk3.
@@ -224,7 +225,7 @@ void func_800F4584_name_81(UnkBoard4*);
 void func_800E0310_name_81(u8 *, s32);
 void func_800E4E64_name_81(UnkOvl81_2*);
 UnkOvl81_2* func_800E4B64_name_81(s32, s32);
-void func_800E4EAC_name_81(UnkOvl81_2*, s32, s32);
+void func_800E4EAC_name_81(UnkOvl81_2*, s16, s16);
 void func_800FAD04_name_81(s32 arg0);
 void MBDModelDispOff(Object*);
 Object* func_800D8B18_name_81(Object*);

@@ -144,6 +144,7 @@ void func_800FD55C_name_81(void);
 void func_800DAAB0_name_81(void);
 void func_800DF154_name_81(void);
 s32 func_800F37B8_name_81(s16 playerIndex);
+void func_800F37E0_name_81(s32 playerIndex, s32 amount);
 DuelHelpWin* func_800E1824_name_81(s16, s16, u16);
 DuelHelpWin* func_800E172C_name_81(s16, s16, s16, u16);
 void func_800E1854_name_81(DuelHelpWin*);

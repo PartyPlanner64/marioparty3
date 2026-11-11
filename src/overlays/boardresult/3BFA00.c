@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_duel.h"
 #include "game/mallocblock.h"
 
 // Rodrigues rotation matrix elements for a rotation of angle degrees about the unit axis (x, y, z).

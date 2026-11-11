@@ -1,30 +1,10 @@
-#include "common.h"
+#include "common_duel.h"
 #include "game/object.h"
 #include "game/board.h"
 #include "game/window.h"
 #include "game/malloc.h"
 
-// Duel mode's copy of the board model object (Object). The duel overlay has its
-// own model functions (MBD*), which add a motion count at 0x44 and shift
-// Object's unk44/unk46 to 0x46/0x48.
-typedef struct ObjectDuel {
-    /* 0x00 */ struct ObjectDuel *prev;
-    /* 0x04 */ struct ObjectDuel *next;
-    /* 0x08 */ u8 unk8;
-    /* 0x09 */ s8 unk9;
-    /* 0x0A */ u16 flags;
-    /* 0x0C */ Vec coords;
-    /* 0x18 */ Vec rot;
-    /* 0x24 */ Vec scale;
-    /* 0x30 */ Vec velocity;
-    /* 0x3C */ omObjData* omObj1;
-    /* 0x40 */ omObjData* omObj2;
-    /* 0x44 */ s16 mtncnt; // -1 when the model has no motion table
-    /* 0x46 */ s16 unk46; // Object::unk44
-    /* 0x48 */ s16 unk48; // Object::unk46
-} ObjectDuel; // sizeof 0x4C
-
-typedef void (*PartnerFunc)(s32, s32, ObjectDuel*, ObjectDuel*, s32, s32);
+typedef void (*PartnerFunc)(s32, s32, Object*, Object*, s32, s32);
 
 typedef enum PartnerObjIndex {
     /* 0 */ PARTNEROBJINDEX_FRONT,
@@ -73,7 +53,7 @@ typedef struct UnkBoard5 {
 } UnkBoard5; //sizeof 0x20
 
 typedef struct UnkOvl81_2 {
-    /* 0x00 */ ObjectDuel* obj;
+    /* 0x00 */ Object* obj;
     /* 0x04 */ Process* process;
     /* 0x08 */ s16 win_id;
 } UnkOvl81_2; //sizeof 0xC
@@ -81,7 +61,7 @@ typedef struct UnkOvl81_2 {
 extern UnkBoard4* D_80105400_name_81;
 extern u16 D_80105404_name_81;
 extern PartnerBaseAttributes PartnersBaseStats[];
-extern ObjectDuel* Duel_PartnerObjects[][PARTNEROBJINDEX_MAX];
+extern Object* Duel_PartnerObjects[][PARTNEROBJINDEX_MAX];
 extern process_func D_80101A90_name_81;
 extern s32 D_80101A94_name_81;
 extern s32 D_80101A98_name_81;
@@ -89,7 +69,7 @@ extern s16 D_80105494_name_81;
 extern s16 D_80105496_name_81;
 extern u8* D_80101980_name_81;
 extern s32 D_80101984_name_81;
-extern ObjectDuel* D_80101988_name_81;
+extern Object* D_80101988_name_81;
 extern s32* D_801017DC_name_81[];
 extern Process* D_8010195C_name_81;
 extern s32* D_8010180C_name_81[];
@@ -105,7 +85,7 @@ extern s16 D_801011D0_name_81;
 extern s16 D_801011D2_name_81;
 extern Process* D_801011F4_name_81;
 extern u8 D_80101370_name_81[];
-extern ObjectDuel* D_801029C0_name_81;
+extern Object* D_801029C0_name_81;
 extern s16 D_801029C8_name_81[];
 extern s16 D_80102BF0_name_81;
 extern s16 D_80102BF2_name_81;
@@ -156,11 +136,11 @@ u16 MBDCameraPos2DSet(Vec2f*);
 void MBDCameraPos2DGet(Vec2f*);
 f32 MBDCameraSpeedGet(void);
 void func_80100124_name_81(UnkBoard4*, s32);
-ObjectDuel* MBDModelFileCreate(s32, s32, f32, f32, u32*);
+Object* MBDModelFileCreate(s32, s32, f32, f32, u32*);
 void func_800FCF50_name_81(s32, s32);
-void MBDModelAttrSetDispOn(ObjectDuel*);
-void MBDModelDispOn(ObjectDuel*);
-void MBDModelKill(ObjectDuel*);
+void MBDModelAttrSetDispOn(Object*);
+void MBDModelDispOn(Object*);
+void MBDModelKill(Object*);
 void func_800DCC8C_name_81(s32, Vec *, Vec *, f32, s32, f32);
 void func_800EA8DC_name_81(void);
 void func_800EA97C_name_81(void);
@@ -211,17 +191,17 @@ void func_800E4E64_name_81(UnkOvl81_2*);
 UnkOvl81_2* func_800E4B64_name_81(s32, s32);
 void func_800E4EAC_name_81(UnkOvl81_2*, s32, s32);
 void func_800FAD04_name_81(s32 arg0);
-void MBDModelDispOff(ObjectDuel*);
-ObjectDuel* func_800D8B18_name_81(ObjectDuel*);
+void MBDModelDispOff(Object*);
+Object* func_800D8B18_name_81(Object*);
 void func_800D96F4_name_81(void);
-void func_800D974C_name_81(ObjectDuel*);
-ObjectDuel* MBDGetPlayerPartnerRef(s32 playerIndex, s32 frontOrBackIndex);
+void func_800D974C_name_81(Object*);
+Object* MBDGetPlayerPartnerRef(s32 playerIndex, s32 frontOrBackIndex);
 void func_800ECF1C_name_81(s32, Vec*, Vec*);
 f32 MBDVecAngleGet(Vec*);
 void MBDVecNormalize(Vec*);
 void MBDVecRotateY(Vec*, f32);
 void MBDModelInit(void);
-void MBDModelTempAllocFree(ObjectDuel*);
+void MBDModelTempAllocFree(Object*);
 void func_800DAB1C_name_81(void);
 void func_800DF1B0_name_81(void);
 void func_800E0CEC_name_81(void);
@@ -240,7 +220,7 @@ void func_800ECDE8_name_81(void);
 void func_800ECE10_name_81(void);
 Process *func_800ED70C_name_81(s32 playerIdx, s32 arg);
 Process *func_800EDC6C_name_81(s32 playerIdx, s32 arg);
-void *func_800D6B70_name_81(s32 arg0);
+UnkBoard2 *func_800D6B70_name_81(s32 arg0);
 UnkEA790Struct *func_800D6C6C_name_81(void);
 void func_800D6D2C_name_81(UnkEA790Struct *arg0, UnkBoard2 *arg1, u16 arg2);
 UnkBoard2 *func_800D6EC8_name_81(UnkEA790Struct *arg0, s16 arg1);
@@ -273,18 +253,18 @@ void func_800ED7EC_name_81(void);
 void func_800EDA38_name_81(void);
 void func_800F0FE8_name_81(void);
 void func_800F82EC_name_81(s32);
-ObjectDuel* func_800D8010_name_81(u8, s32*);
-ObjectDuel* func_800F8034_name_81(s32);
-ObjectDuel* func_800F8050_name_81(s32);
+Object* func_800D8010_name_81(u8, s32*);
+Object* func_800F8034_name_81(s32);
+Object* func_800F8050_name_81(s32);
 void func_800F8108_name_81(s32 playerIndex);
 void func_800F85A4_name_81(s32 playerIndex, s32 frontOrBackIndex);
-void MBDMotionSet(ObjectDuel*, s16, u16);
+void MBDMotionSet(Object*, s16, u16);
 s16 MBDGetCurrentPlayerIndex(void);
-void MBDMotionShiftSet(ObjectDuel*, s16, s16, s16, u16);
+void MBDMotionShiftSet(Object*, s16, s16, s16, u16);
 s32 func_800EFE20_name_81(f32);
 void func_800FB160_name_81(void);
 void func_800FAEFC_name_81(s32);
-void func_800FB038_name_81(ObjectDuel*, s16, u16);
+void func_800FB038_name_81(Object*, s16, u16);
 void func_800EB278_name_81(void);
 void func_800EB29C_name_81(void);
 void func_800EB58C_name_81(void);
@@ -313,7 +293,7 @@ extern s32 D_8010570C_name_81;
 extern s32 D_80105718_name_81;
 extern s32 D_8010571C_name_81;
 
-Process *func_800D9668_name_81(ObjectDuel *, f32, f32, s32);
+Process *func_800D9668_name_81(Object *, f32, f32, s32);
 void func_800E3C6C_name_81(void);
 Process* func_800E415C_name_81(void);
 Process* func_800E47B8_name_81(s16, s8, Vec*, Vec*, s32);
@@ -323,22 +303,22 @@ void MBDBackTPLvlSet(u8);
 void func_800EAFC4_name_81(s32);
 Process* func_800EC1E4_name_81(Vec*, Vec*, Vec*, f32);
 Process* func_800EC36C_name_81(Vec*, Vec*, Vec*, f32);
-void func_800EF7C8_name_81(ObjectDuel *, f32, f32);
-void func_800EF800_name_81(ObjectDuel *);
-void func_800FAE98_name_81(ObjectDuel *, s16, s16, s16, s16);
-u32 func_800EFA8C_name_81(ObjectDuel*, s16, s16);
+void func_800EF7C8_name_81(Object *, f32, f32);
+void func_800EF800_name_81(Object *);
+void func_800FAE98_name_81(Object *, s16, s16, s16, s16);
+u32 func_800EFA8C_name_81(Object*, s16, s16);
 void func_800EFABC_name_81(void*);
-void func_800EFB00_name_81(ObjectDuel*);
-void func_800F0378_name_81(ObjectDuel *obj, char *hookName, s16 model);
+void func_800EFB00_name_81(Object*);
+void func_800F0378_name_81(Object *obj, char *hookName, s16 model);
 void MBDVecDirGet(Vec *, Vec *, Vec *);
-void func_800EB804_name_81(ObjectDuel *obj);
+void func_800EB804_name_81(Object *obj);
 s32 func_800DD1E0_name_81(s32 dataNum, char *objName);
 void func_800DD2BC_name_81(s32 model);
 void func_800DD2DC_name_81(s32 model, Vec *pos);
 s32 func_800DD3B4_name_81(s32 model);
 Process *func_800DCB04_name_81(s32, s32, Vec *, f32, s32);
 Process *func_800DCE10_name_81(s32, Vec *, Vec *, f32, s32);
-void func_800FB0B8_name_81(ObjectDuel*, s32, s32);
+void func_800FB0B8_name_81(Object*, s32, s32);
 void func_800F57B0_name_81(s32);
 void func_800F5E2C_name_81(s32);
 s32 func_800EA6A4_name_81(void);
@@ -360,7 +340,7 @@ void func_800EB4DC_name_81(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32
 void func_800D85A8_name_81(f32);
 void func_800D87DC_name_81(f32);
 void func_800EF3EC_name_81(s32);
-s32 func_800EF7D4_name_81(ObjectDuel*);
+s32 func_800EF7D4_name_81(Object*);
 SpaceData* MBDMasuGet(s16 spaceIdx);
 void func_800F64FC_name_81(void);
 Process *func_800E4A74_name_81(s32 arg0);
@@ -386,9 +366,9 @@ void func_800EADBC_name_81(s32, char *, s32, s32, s32, s32);
 void func_800EAF70_name_81(s32);
 void func_800EAF94_name_81(void);
 s32 func_800F8980_name_81(s32 playerIndex);
-u16 MBDMotionCheck(ObjectDuel *);
+u16 MBDMotionCheck(Object *);
 void func_800EEC40_name_81(Vec *);
 void func_800FC5B4_name_81(void (*)(void));
 void func_800FD620_name_81(void);
 
-extern ObjectDuel *D_80100F44_name_81;
+extern Object *D_80100F44_name_81;

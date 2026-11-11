@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_duel.h"
 #include "ovl_81.h"
 
 extern s16 D_80102CA4_name_81;
@@ -7,7 +7,7 @@ extern s16 D_80102CA8_name_81;
 extern s16 D_80102CAA_name_81[];
 extern GAMEMES D_80102C30_name_81;
 extern omObjData *D_80102CB0_name_81;
-extern ObjectDuel *D_80102CB4_name_81;
+extern Object *D_80102CB4_name_81;
 extern Vec D_80102CE0_name_81;
 extern Vec D_80102CEC_name_81;
 extern Vec D_80102CF8_name_81;

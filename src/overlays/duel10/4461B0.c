@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_duel.h"
 
 extern OvlEntrypoint D_801149B0_duel10[];
 

@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_duel.h"
 #include "game/process.h"
 #include "common_structs.h"
 #include "game/malloc.h"
@@ -29,7 +29,7 @@ typedef struct Duel01WinColorWork {
 
 typedef struct Duel01PartnerAttackWork {
     /* 0x00 */ GW_PLAYER *player;
-    /* 0x04 */ ObjectDuel *obj;
+    /* 0x04 */ Object *obj;
     /* 0x08 */ s32 delay;
     /* 0x0C */ s32 waitTime;
 } Duel01PartnerAttackWork; // sizeof 0x10
@@ -61,15 +61,15 @@ extern s32 D_80119474_duel01;
 extern s32 D_80119478_duel01;
 extern s32 D_8011947C_duel01;
 extern omObjData *D_8011948C_duel01;
-extern ObjectDuel *D_80119490_duel01;
+extern Object *D_80119490_duel01;
 extern Process *D_80119494_duel01;
 extern s32 D_80118730_duel01[];
-extern ObjectDuel *D_80119498_duel01;
-extern ObjectDuel *D_801194A0_duel01;
-extern ObjectDuel *D_801194A8_duel01;
+extern Object *D_80119498_duel01;
+extern Object *D_801194A0_duel01;
+extern Object *D_801194A8_duel01;
 extern s16 D_80118750_duel01[];
 extern s16 D_80118754_duel01[][2];
-extern ObjectDuel *D_801194AC_duel01[5];
+extern Object *D_801194AC_duel01[5];
 extern s32 D_8011875C_duel01;
 extern s32 D_8011889C_duel01;
 void MBDVecDirGet(Vec *, Vec *, Vec *);
@@ -92,18 +92,18 @@ void func_8010EAD4_duel01(s32);
 void func_80110068_duel01(s32);
 void func_80118320_duel01(s8 *, s8 *);
 void func_80105F20_duel01(void);
-void func_80106828_duel01(s32, s32, ObjectDuel *, ObjectDuel *, s32, s32);
-void func_80107188_duel01(s32, s32, ObjectDuel *, ObjectDuel *, s32, s32);
-void func_801079B8_duel01(s32, s32, ObjectDuel *, ObjectDuel *, s32, s32);
-void func_80107EBC_duel01(s32, s32, ObjectDuel *, ObjectDuel *, s32, s32);
-void func_801084A4_duel01(s32, s32, ObjectDuel *, ObjectDuel *, s32, s32);
-void func_80108550_duel01(s32, s32, ObjectDuel *, ObjectDuel *, s32, s32);
-void func_80109888_duel01(s32, s32, ObjectDuel *, ObjectDuel *, s32, s32);
-void func_8010A210_duel01(s32, s32, ObjectDuel *, ObjectDuel *, s32, s32);
-void func_8010B54C_duel01(s32, s32, ObjectDuel *, ObjectDuel *, s32, s32);
-void func_8010BCD4_duel01(s32, s32, ObjectDuel *, ObjectDuel *, s32, s32);
-void func_8010CE68_duel01(s32, s32, ObjectDuel *, ObjectDuel *, s32, s32);
-void func_8010D424_duel01(s32, s32, ObjectDuel *, ObjectDuel *, s32, s32);
+void func_80106828_duel01(s32, s32, Object *, Object *, s32, s32);
+void func_80107188_duel01(s32, s32, Object *, Object *, s32, s32);
+void func_801079B8_duel01(s32, s32, Object *, Object *, s32, s32);
+void func_80107EBC_duel01(s32, s32, Object *, Object *, s32, s32);
+void func_801084A4_duel01(s32, s32, Object *, Object *, s32, s32);
+void func_80108550_duel01(s32, s32, Object *, Object *, s32, s32);
+void func_80109888_duel01(s32, s32, Object *, Object *, s32, s32);
+void func_8010A210_duel01(s32, s32, Object *, Object *, s32, s32);
+void func_8010B54C_duel01(s32, s32, Object *, Object *, s32, s32);
+void func_8010BCD4_duel01(s32, s32, Object *, Object *, s32, s32);
+void func_8010CE68_duel01(s32, s32, Object *, Object *, s32, s32);
+void func_8010D424_duel01(s32, s32, Object *, Object *, s32, s32);
 void func_8010DDEC_duel01(void);
 void func_8010E3F8_duel01(void);
 void func_8011390C_duel01(void);
@@ -125,7 +125,7 @@ extern Process *D_8011874C_duel01;
 extern f32 D_8011949C_duel01;
 extern f32 D_801194A4_duel01;
 extern char D_80118F18_duel01[];
-void func_800FAE18_name_81(ObjectDuel *, s32, s32);
+void func_800FAE18_name_81(Object *, s32, s32);
 void func_800FADB4_name_81(void);
 extern s16 D_80118748_duel01;
 extern s16 D_8011874A_duel01;
@@ -144,25 +144,25 @@ void func_800EDF78_name_81(void);
 void func_800EE468_name_81(s32);
 void func_800EDDBC_name_81(void);
 void func_800F3880_name_81(s32, s32, s32);
-extern ObjectDuel *D_80119488_duel01;
+extern Object *D_80119488_duel01;
 extern s32 D_80118718_duel01[];
-extern ObjectDuel *D_80119480_duel01;
-extern ObjectDuel *D_80119484_duel01;
+extern Object *D_80119480_duel01;
+extern Object *D_80119484_duel01;
 extern s32 D_80101200_shared_board[];
 Process *func_800E0924_name_81(void);
 extern void (*D_801188E4_duel01[])(void);
 Process *func_800DCE40_name_81(s32, Vec *, Vec *, f32);
 s32 func_8010EB88_duel01(void);
-Process *func_800FAB68_name_81(ObjectDuel *, s32, s32, s32, s32);
+Process *func_800FAB68_name_81(Object *, s32, s32, s32, s32);
 extern s32 D_80118710_duel01[];
 extern char D_80118E60_duel01[];
 extern Duel01PartnerSpaces D_8011887C_duel01[];
 extern s32 D_80118894_duel01;
-extern ObjectDuel *D_80118898_duel01;
+extern Object *D_80118898_duel01;
 void func_8010F12C_duel01(void);
 void func_8010EFBC_duel01(void);
 s32 func_800E1854_minigame(s32);
-void func_800FC8DC_name_81(ObjectDuel *);
+void func_800FC8DC_name_81(Object *);
 void func_800EB7BC_name_81(Vec *);
 Process *func_800EBC60_name_81(Vec *, Vec *, Vec *, s32);
 void func_800D6CA0_name_81(UnkEA790Struct *win);

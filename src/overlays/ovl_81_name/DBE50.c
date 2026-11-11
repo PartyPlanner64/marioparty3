@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_duel.h"
 #include "ovl_81.h"
 
 extern RectF D_801014D0_name_81;

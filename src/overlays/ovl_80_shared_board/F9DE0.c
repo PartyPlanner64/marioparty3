@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_board.h"
 #include "105D50.h"
 #include "ECA50.h"
 #include "FA250.h"

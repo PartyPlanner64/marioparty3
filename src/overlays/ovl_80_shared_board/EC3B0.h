@@ -1,7 +1,7 @@
 #ifndef _ovl_80_EC3B0
 #define _ovl_80_EC3B0
 
-#include "common.h"
+#include "common_board.h"
 #include "game/board.h"
 
 f32 MBVecAngleGet(Vec *arg0);

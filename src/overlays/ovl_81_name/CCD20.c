@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_duel.h"
 #include "game/rom.h"
 #include "ovl_81.h"
 #include "game/mallocblock.h"
@@ -72,7 +72,7 @@ extern UnkBoard7 D_80104850_name_81[64];
 extern s32 D_8010105C_name_81;
 extern s32 D_80105050_name_81;
 extern Process* D_80101058_name_81;
-extern ObjectDuel* D_80105058_name_81[16];
+extern Object* D_80105058_name_81[16];
 
 static s32 func_800E5CC4_name_81(u16);
 void func_800E77D8_name_81(Gfx** arg0, s32 arg1, u8 arg2);

@@ -1,7 +1,7 @@
 #ifndef _ovl_80_ECA50
 #define _ovl_80_ECA50
 
-#include "common.h"
+#include "common_board.h"
 #include "game/board.h"
 
 s16 func_800D8E88_shared_board(s32 arg0);

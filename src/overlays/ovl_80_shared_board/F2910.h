@@ -1,7 +1,7 @@
 #ifndef _ovl_80_F2910
 #define _ovl_80_F2910
 
-#include "common.h"
+#include "common_board.h"
 
 void MBMgCallHisInit(void);
 void func_800DF854_shared_board(void);

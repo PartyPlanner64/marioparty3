@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_duel.h"
 #include "game/process.h"
 #include "game/malloc.h"
 

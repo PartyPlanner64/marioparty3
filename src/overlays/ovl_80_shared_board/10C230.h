@@ -1,7 +1,7 @@
 #ifndef _ovl_80_10C230
 #define _ovl_80_10C230
 
-#include "common.h"
+#include "common_board.h"
 #include "game/board.h"
 
 void MBOvlCall(s32 id, s16 event, u16 stat);

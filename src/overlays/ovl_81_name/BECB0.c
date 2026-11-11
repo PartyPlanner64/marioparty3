@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_duel.h"
 #include "ovl_81.h"
 
 s16 func_800EBA50_name_81(s16, f32);

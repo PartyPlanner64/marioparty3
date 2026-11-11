@@ -1,7 +1,7 @@
 #ifndef _ovl_80_EDDB0
 #define _ovl_80_EDDB0
 
-#include "common.h"
+#include "common_board.h"
 #include "game/board.h"
 
 s16 MBComTreeExec(DecisionTreeNonLeafNode *arg0);

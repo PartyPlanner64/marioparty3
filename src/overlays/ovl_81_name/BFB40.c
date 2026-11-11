@@ -1,8 +1,8 @@
-#include "common.h"
+#include "common_duel.h"
 #include "ovl_81.h"
 
 typedef struct UnkObj {
-    ObjectDuel *unk_00;
+    Object *unk_00;
     f32 unk_04;
 } UnkObj;
 
@@ -64,10 +64,10 @@ void MBDModelClose(void) {
     }
 }
 
-ObjectDuel *func_800D7F4C_name_81(void) {
-    ObjectDuel *temp_v0;
+Object *func_800D7F4C_name_81(void) {
+    Object *temp_v0;
 
-    temp_v0 = HuMemMemoryAllocTemp(sizeof(ObjectDuel));
+    temp_v0 = HuMemMemoryAllocTemp(sizeof(Object));
     if (temp_v0 != NULL) {
         D_801029C4_name_81++;
         temp_v0->prev = D_801029C0_name_81;
@@ -91,8 +91,8 @@ ObjectDuel *func_800D7F4C_name_81(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D8010_name_81);
 
-ObjectDuel *MBDModelFileCreate(s32 arg0, s32 arg1, f32 arg2, f32 arg3, u32 *arg4) {
-    ObjectDuel *object;
+Object *MBDModelFileCreate(s32 arg0, s32 arg1, f32 arg2, f32 arg3, u32 *arg4) {
+    Object *object;
     omObjData *objData;
     UnkObj *work;
     u32 *dataPtr;
@@ -166,7 +166,7 @@ void func_800D87DC_name_81(f32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D87E8_name_81);
 
-void MBDModelTempAllocFree(ObjectDuel* arg0) {
+void MBDModelTempAllocFree(Object* arg0) {
     func_8001C514_main(arg0->omObj1->model[0]);
 
     if (arg0->omObj2 != NULL) {
@@ -178,8 +178,8 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D898C_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D8B18_name_81);
 
-void MBDModelAttrSetDispOn(ObjectDuel* arg0) {
-    ObjectDuel* temp_s0 = arg0;
+void MBDModelAttrSetDispOn(Object* arg0) {
+    Object* temp_s0 = arg0;
 
     func_8001C258_main(temp_s0->omObj1->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     if (temp_s0->omObj2 != NULL) {
@@ -187,13 +187,13 @@ void MBDModelAttrSetDispOn(ObjectDuel* arg0) {
     }
 }
 
-void MBDModelDispOn(ObjectDuel* arg0) {
+void MBDModelDispOn(Object* arg0) {
     MBDModelAttrSetDispOn(arg0);
     arg0->flags |= 8;
 }
 
-void MBDModelAttrSetDispOff(ObjectDuel* arg0) {
-    ObjectDuel* temp_s0 = arg0;
+void MBDModelAttrSetDispOff(Object* arg0) {
+    Object* temp_s0 = arg0;
 
     func_8001C258_main(temp_s0->omObj1->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     if (temp_s0->omObj2 != NULL) {
@@ -201,12 +201,12 @@ void MBDModelAttrSetDispOff(ObjectDuel* arg0) {
     }
 }
 
-void MBDModelDispOff(ObjectDuel* arg0) {
+void MBDModelDispOff(Object* arg0) {
     MBDModelAttrSetDispOff(arg0);
     arg0->flags &= ~8;
 }
 
-void MBDModelKill(ObjectDuel* arg0) {
+void MBDModelKill(Object* arg0) {
     s32 i;
 
     if (D_801029C0_name_81 != NULL) {
@@ -247,8 +247,8 @@ void MBDModelKill(ObjectDuel* arg0) {
     }
 }
 
-s32 func_800D9098_name_81(ObjectDuel *arg0) {
-    ObjectDuel *node;
+s32 func_800D9098_name_81(Object *arg0) {
+    Object *node;
 
     for (node = D_801029C0_name_81; node != NULL; node = node->prev) {
         if (node == arg0) {
@@ -258,7 +258,7 @@ s32 func_800D9098_name_81(ObjectDuel *arg0) {
     return 0;
 }
 
-void MBDMotionSet(ObjectDuel *arg0, s16 arg1, u16 arg2) {
+void MBDMotionSet(Object *arg0, s16 arg1, u16 arg2) {
     u16 var_v1;
     s16 mtncnt;
 
@@ -281,7 +281,7 @@ void MBDMotionSet(ObjectDuel *arg0, s16 arg1, u16 arg2) {
     func_8001C814_main(arg0->omObj1->model[0], -1, arg2);
 }
 
-void MBDMotionShiftSet(ObjectDuel* arg0, s16 arg1, s16 arg2, s16 arg3, u16 arg4) {
+void MBDMotionShiftSet(Object* arg0, s16 arg1, s16 arg2, s16 arg3, u16 arg4) {
     s16 var;
 
     if (arg0->mtncnt == -1) {
@@ -301,7 +301,7 @@ void MBDMotionShiftSet(ObjectDuel* arg0, s16 arg1, s16 arg2, s16 arg3, u16 arg4)
     Hu3DMotionShiftSet(arg0->omObj1->model[0], var, arg2, arg3, arg4);
 }
 
-u16 MBDMotionCheck(ObjectDuel *arg0) {
+u16 MBDMotionCheck(Object *arg0) {
     u16 ret;
 
     ret = 0;
@@ -311,7 +311,7 @@ u16 MBDMotionCheck(ObjectDuel *arg0) {
     return ret;
 }
 
-u16 func_800D92A8_name_81(ObjectDuel *arg0) {
+u16 func_800D92A8_name_81(Object *arg0) {
     u16 ret;
 
     ret = 0;
@@ -322,7 +322,7 @@ u16 func_800D92A8_name_81(ObjectDuel *arg0) {
 }
 
 void func_800D92F8_name_81(omObjData* arg0) {
-    ObjectDuel* temp_s1;
+    Object* temp_s1;
 
     temp_s1 = arg0->data;
 
@@ -341,7 +341,7 @@ void func_800D92F8_name_81(omObjData* arg0) {
     temp_s1->rot.z = cosdf(arg0->scale.y);
 }
 
-omObjData* func_800D9384_name_81(ObjectDuel* arg0, Vec* arg1, s32 arg2) {
+omObjData* func_800D9384_name_81(Object* arg0, Vec* arg1, s32 arg2) {
     Vec sp18;
     f32 var_f20;
     f32 var_f4;
@@ -373,8 +373,8 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D94C4_name_81
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/BFB40", func_800D9668_name_81);
 
 void func_800D96F4_name_81(void) {
-    ObjectDuel **work = HuPrcCurrentGet()->user_data;
-    ObjectDuel *obj = *work;
+    Object **work = HuPrcCurrentGet()->user_data;
+    Object *obj = *work;
 
     func_8001C814_main(obj->omObj1->model[0], 3, 0);
     func_800EFABC_name_81(obj);
@@ -382,9 +382,9 @@ void func_800D96F4_name_81(void) {
     omDelPrcObj(NULL);
 }
 
-void func_800D974C_name_81(ObjectDuel* arg0) {
+void func_800D974C_name_81(Object* arg0) {
     Process* proc;
-    ObjectDuel** work;
+    Object** work;
 
     proc = omAddPrcObj(func_800D96F4_name_81, 0, 0, 0x40);
     work = HuMemMemoryAlloc(proc->heap, 0x10);

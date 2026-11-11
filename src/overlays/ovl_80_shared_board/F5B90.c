@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_board.h"
 #include "game/malloc.h"
 
 extern u8 D_800D6A90_main;

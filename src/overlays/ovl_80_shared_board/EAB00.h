@@ -1,7 +1,7 @@
 #ifndef _ovl_80_EAB00
 #define _ovl_80_EAB00
 
-#include "common.h"
+#include "common_board.h"
 #include "game/board.h"
 
 s32 func_800D7250_shared_board(UnkEA790Struct* arg0, s32 arg1);

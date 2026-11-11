@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_duel.h"
 #include "ovl_81.h"
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D28F0", func_800EAB20_name_81);

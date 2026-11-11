@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_duel.h"
 #include "ovl_81.h"
 
 typedef struct UnkD3450PrcData {
@@ -182,7 +182,7 @@ void func_800ED214_name_81(s32 playerIndex) {
     Vec sp10;
     Vec sp20;
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
-    ObjectDuel *partner;
+    Object *partner;
 
     func_800ECF1C_name_81(playerIndex, &sp10, &sp20);
 

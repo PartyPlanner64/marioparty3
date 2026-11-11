@@ -1,7 +1,7 @@
 #ifndef _ovl_80_F5E80
 #define _ovl_80_F5E80
 
-#include "common.h"
+#include "common_board.h"
 #include "game/board.h"
 
 extern u8 D_80100F94_shared_board[];

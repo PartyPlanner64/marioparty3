@@ -1,7 +1,7 @@
 #ifndef _ovl_80_101840
 #define _ovl_80_101840
 
-#include "common.h"
+#include "common_board.h"
 #include "game/board.h"
 
 void func_800EE6C0_shared_board(Object*);

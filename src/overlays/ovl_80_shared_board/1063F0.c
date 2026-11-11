@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_board.h"
 
 RectF D_80101770_shared_board = {
     16.0f, 12.0f, 304.0f, 228.0f

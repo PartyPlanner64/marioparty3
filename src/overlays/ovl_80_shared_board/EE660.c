@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_board.h"
 #include "EE660.h"
 #include "101840.h"
 #include "105D50.h"

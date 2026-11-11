@@ -56,6 +56,11 @@ typedef struct UnkPuddlePaddleSpr { // size = 0x8, twenty entries
     /* 0x06 */ s16 unk_06;
 } UnkPuddlePaddleSpr;
 
+typedef struct UnkPuddlePaddlePos {
+    /* 0x00 */ char pad00[0xC];
+    /* 0x0C */ Vec coords;
+} UnkPuddlePaddlePos; // unknown size
+
 extern UnkPuddlePaddleEntry *D_80111668_puddle_paddle;
 extern UnkPuddlePaddleModel *D_80111660_puddle_paddle;
 extern UnkPuddlePaddleSpr *D_80111664_puddle_paddle;
@@ -304,7 +309,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_11_puddle_paddle/191240", func_801101
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_11_puddle_paddle/191240", func_80110284_puddle_paddle);
 
-f32 func_801104C8_puddle_paddle(Object *arg0, Vec *arg1, Vec *arg2) {
+f32 func_801104C8_puddle_paddle(UnkPuddlePaddlePos *arg0, Vec *arg1, Vec *arg2) {
     Vec pos, v1, v2;
 
     pos.x = arg0->coords.x;

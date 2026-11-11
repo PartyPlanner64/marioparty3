@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_duel.h"
 #include "ovl_81.h"
 
 void Duel_ClearPartnerObjects(void) {
@@ -26,12 +26,12 @@ void func_800F7FDC_name_81(void) {
 }
 
 // partnerNo arg goes unused?
-ObjectDuel *func_800F8034_name_81(s32 partnerNo) {
+Object *func_800F8034_name_81(s32 partnerNo) {
     return func_800F8050_name_81(7);
 }
 
-ObjectDuel *func_800F8050_name_81(s32 partnerID) {
-    ObjectDuel *obj = func_800D8010_name_81(PartnersBaseStats[partnerID].unk_00, D_801017DC_name_81[partnerID]);
+Object *func_800F8050_name_81(s32 partnerID) {
+    Object *obj = func_800D8010_name_81(PartnersBaseStats[partnerID].unk_00, D_801017DC_name_81[partnerID]);
 
     if (partnerID == PARTNER_BOO) {
         func_8001FA68_main(obj->omObj1->model[0]);
@@ -76,7 +76,7 @@ void func_800F8108_name_81(s32 playerIndex) {
 
 void func_800F821C_name_81(s32 playerIndex, s32 partnerNo) {
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
-    ObjectDuel *partnerObj = Duel_PartnerObjects[playerIndex][partnerNo];
+    Object *partnerObj = Duel_PartnerObjects[playerIndex][partnerNo];
     s32 partnerID;
 
     if (partnerObj != NULL) {
@@ -212,7 +212,7 @@ void Duel_SwapPartnerPositions(s32 playerIndex) {
     s32 frontPoweredUp = player->stats.partners.frontPoweredUp;
     s32 frontCost = player->stats.partners.frontCost;
     s32 frontPower = player->stats.partners.frontPower;
-    ObjectDuel *tempPartner;
+    Object *tempPartner;
 
     player->stats.partners.frontID = player->stats.partners.backID;
     player->stats.partners.frontHp = player->stats.partners.backHp;
@@ -270,7 +270,7 @@ void Duel_PowerDownPartners(s32 playerIndex) {
     }
 }
 
-ObjectDuel *MBDGetPlayerPartnerRef(s32 playerIndex, s32 frontOrBackIndex) {
+Object *MBDGetPlayerPartnerRef(s32 playerIndex, s32 frontOrBackIndex) {
     return Duel_PartnerObjects[playerIndex][frontOrBackIndex];
 }
 
@@ -344,8 +344,8 @@ s32 func_800F8AEC_name_81(s32 playerIndex, s32 arg1, s16 arg2, s16 arg3, u16 arg
 }
 
 void func_800F8C68_name_81(s32 arg0) {
-    ObjectDuel *frontPartnerObj = Duel_PartnerObjects[arg0][PARTNER_FRONT];
-    ObjectDuel *backPartnerObj;
+    Object *frontPartnerObj = Duel_PartnerObjects[arg0][PARTNER_FRONT];
+    Object *backPartnerObj;
 
     if (frontPartnerObj != NULL) {
         func_8001FDE8_main(frontPartnerObj->omObj1->model[0]);
@@ -538,16 +538,16 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DFD60", func_800F924C_name_81
 //     s32 sp24;
 //     s32 sp2C;
 //     s32 sp34;
-//     ObjectDuel *sp3C;
-//     ObjectDuel *sp44;
+//     Object *sp3C;
+//     Object *sp44;
 //     s32 sp4C;
 //     s32 sp54;
 //     void (*temp_v0_10)(void);
 //     void (*temp_v0_9)(void);
 //     GW_PLAYER *opposingPlayer;
 //     GW_PLAYER *player;
-//     ObjectDuel *temp_v0_6;
-//     ObjectDuel *temp_v0_8;
+//     Object *temp_v0_6;
+//     Object *temp_v0_8;
 //     Process *temp_s6;
 //     s32 curPlayerIndex;
 //     s32 opposingPlayerIndex;
@@ -960,7 +960,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DFD60", func_800F924C_name_81
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DFD60", func_800FA120_name_81);
 
 void func_800FAB1C_name_81(void) {
-    ObjectDuel *temp_v0;
+    Object *temp_v0;
 
     D_80101980_name_81 = 0;
     D_80101984_name_81 = 0;
@@ -1038,14 +1038,14 @@ void func_800FADB4_name_81(void) {
     }
 }
 
-void func_800FAE18_name_81(ObjectDuel *arg0, s16 arg1, s16 arg2) {
+void func_800FAE18_name_81(Object *arg0, s16 arg1, s16 arg2) {
     if (arg1 <= D_80101990_name_81) {
         Hu3DMotionSet(arg0->omObj1->model[0], D_80105470_name_81[arg1]);
         func_8001C814_main(arg0->omObj1->model[0], -1, arg2);
     }
 }
 
-void func_800FAE98_name_81(ObjectDuel *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+void func_800FAE98_name_81(Object *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     Hu3DMotionShiftSet(arg0->omObj1->model[0], D_80105470_name_81[arg1], arg2, arg3, arg4);
 }
 
@@ -1083,14 +1083,14 @@ void func_800FAFAC_name_81(void) {
     }
 }
 
-void func_800FB038_name_81(ObjectDuel *arg0, s16 arg1, u16 arg2) {
+void func_800FB038_name_81(Object *arg0, s16 arg1, u16 arg2) {
     if (arg1 < D_80101992_name_81) {
         Hu3DMotionSet(arg0->omObj1->model[0], D_80105480_name_81[arg1]);
         func_8001C814_main(arg0->omObj1->model[0], -1, arg2);
     }
 }
 
-void func_800FB0B8_name_81(ObjectDuel *arg0, s32 arg1, s32 arg2) {
+void func_800FB0B8_name_81(Object *arg0, s32 arg1, s32 arg2) {
     if (arg0->unk8 == 0x2C) {
         if (D_80101992_name_81 == 0) {
             func_800FAEFC_name_81(7);

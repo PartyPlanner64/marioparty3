@@ -1,7 +1,7 @@
 #ifndef _ovl_80_105D50
 #define _ovl_80_105D50
 
-#include "common.h"
+#include "common_board.h"
 #include "game/board.h"
 
 extern u32 *D_80101734_shared_board[];

@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_board.h"
 #include "game/board.h"
 
 extern omObjData *D_800CE194_main;

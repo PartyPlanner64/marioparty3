@@ -1,7 +1,7 @@
 #ifndef _ovl_80_F5070
 #define _ovl_80_F5070
 
-#include "common.h"
+#include "common_board.h"
 #include "game/board.h"
 
 void MBCoinChangeInit(void);

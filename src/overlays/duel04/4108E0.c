@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_duel.h"
 
 void func_80105B64_duel04(void);
 void func_80105BA0_duel04(void);

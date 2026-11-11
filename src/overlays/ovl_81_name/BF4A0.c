@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_duel.h"
 #include "ovl_81.h"
 
 f32 MBDVecAngleGet(Vec *arg0) {

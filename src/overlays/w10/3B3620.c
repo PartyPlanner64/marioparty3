@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_board.h"
 #include "game/aura.h"
 #include "game/hu3d.h"
 #include "game/input.h"

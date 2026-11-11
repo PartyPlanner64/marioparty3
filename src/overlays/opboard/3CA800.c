@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_board.h"
 #include "game/malloc.h"
 #include "game/mallocblock.h"
 #include "../ovl_80_shared_board/106A50.h"

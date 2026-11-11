@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_board.h"
 
 void func_80107744_w05(void);
 void func_80107780_w05(void);

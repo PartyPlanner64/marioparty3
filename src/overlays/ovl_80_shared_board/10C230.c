@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_board.h"
 #include "game/object.h"
 #include "game/board.h"
 #include "FFB10.h"

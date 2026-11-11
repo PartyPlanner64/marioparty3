@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_board.h"
 #include "../ovl_80_shared_board/1006F0.h"
 #include "../ovl_80_shared_board/ECA50.h"
 #include "../ovl_80_shared_board/106A50.h"

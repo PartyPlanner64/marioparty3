@@ -1,7 +1,7 @@
 #ifndef _ovl_80_F5B90
 #define _ovl_80_F5B90
 
-#include "common.h"
+#include "common_board.h"
 #include "game/board.h"
 
 void func_800E1F70_shared_board(Unk3 *arg0);

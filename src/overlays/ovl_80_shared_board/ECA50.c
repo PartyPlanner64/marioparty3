@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_board.h"
 #include "game/malloc.h"
 #include "F9DE0.h"
 #include "105D50.h"

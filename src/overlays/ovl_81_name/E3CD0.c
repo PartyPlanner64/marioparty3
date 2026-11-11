@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_duel.h"
 #include "ovl_81.h"
 
 // this file is a duplicate of 10C230.c in ovl_80_shared_board
@@ -136,7 +136,7 @@ void func_800FC260_name_81(s32 arg0, s16 arg1, s32 arg2) {
     UnkOvl81_1 *temp_v0_3;
     s32 frontPartnerID;
     s32 backPartnerID;
-    ObjectDuel *playerObj;
+    Object *playerObj;
     s32 i;
 
     func_800E8D10_name_81();
@@ -158,10 +158,10 @@ void func_800FC260_name_81(s32 arg0, s16 arg1, s32 arg2) {
     func_800F3DFC_name_81(1);
 
     for (i = 0; i < MBD_MAX_PLAYERS; i++) {
-        MBDModelTempAllocFree((ObjectDuel *)MBDGetPlayerStruct(i)->player_obj);
-        playerObj = (ObjectDuel *)MBDGetPlayerStruct(i)->player_obj;
+        MBDModelTempAllocFree(MBDGetPlayerStruct(i)->player_obj);
+        playerObj = MBDGetPlayerStruct(i)->player_obj;
         playerObj->flags |= 2;
-        MBDModelDispOn((ObjectDuel *)MBDGetPlayerStruct(i)->player_obj);
+        MBDModelDispOn(MBDGetPlayerStruct(i)->player_obj);
     }
 
     func_8001FDE8_main(MBDGetPlayerStruct(0)->player_obj->omObj1->model[0]);

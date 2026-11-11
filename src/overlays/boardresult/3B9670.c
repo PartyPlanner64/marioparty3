@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_duel.h"
 #include "../ovl_81_name/ovl_81.h"
 
 #define OBJ_HMF_MODEL(obj) (Hu3DData[(obj)->omObj1->model[0]])
@@ -63,7 +63,7 @@ s8 func_800DC0B4_name_81(s32);
 void func_800E0310_name_81(u8 *, s32);
 void func_800EB5E8_name_81(void);
 void func_800EB7BC_name_81(Vec *);
-void func_800EF9C4_name_81(ObjectDuel *, s32, s32);
+void func_800EF9C4_name_81(Object *, s32, s32);
 void func_800EFD24_name_81(void);
 extern s32 D_8010E3E0_boardresult;
 extern s32 D_80100D90_shared_board;
@@ -109,18 +109,18 @@ extern BoardResultCharHeights D_8010E9B0_boardresult;
 extern const BoardResultCharMotions D_8010EA90_boardresult;
 extern const BoardResultCharMotions D_8010EAB0_boardresult;
 extern u8 D_8010EAF0_boardresult;
-extern ObjectDuel *D_8010EAF4_boardresult;
+extern Object *D_8010EAF4_boardresult;
 extern s16 D_8010EAF8_boardresult[4][8];
 extern GW_PLAYER *D_8010EB38_boardresult[4];
-extern ObjectDuel *D_8010EB48_boardresult[6];
-extern ObjectDuel *D_8010EB60_boardresult[4];
-extern ObjectDuel *D_8010EB70_boardresult;
+extern Object *D_8010EB48_boardresult[6];
+extern Object *D_8010EB60_boardresult[4];
+extern Object *D_8010EB70_boardresult;
 extern s16 D_8010EB74_boardresult;
 extern s16 D_8010EB76_boardresult;
 extern s16 D_8010EB78_boardresult[4];
 extern s32 D_8010EB88_boardresult[4];
 extern s32 D_8010EB98_boardresult;
-extern ObjectDuel *D_8010EBA0_boardresult[4];
+extern Object *D_8010EBA0_boardresult[4];
 extern s16 D_8010EBB0_boardresult[4];
 extern f32 D_8010EBB8_boardresult[6];
 extern s16 kakusiMasuItemHis[10];
@@ -204,7 +204,7 @@ void func_80105BD8_boardresult(void) {
         D_8010EB38_boardresult[i] = MBDGetPlayerStruct(i);
         func_800F3C98_name_81(i, D_8010E88C_boardresult[GwPlayer[i].chr], 2);
         HuVecCopy3F(&D_8010EB38_boardresult[i]->player_obj->coords, &D_8010E4C8_boardresult);
-        MBDModelTempAllocFree((ObjectDuel *)D_8010EB38_boardresult[i]->player_obj);
+        MBDModelTempAllocFree(D_8010EB38_boardresult[i]->player_obj);
         D_8010EB38_boardresult[i]->player_obj->flags |= 1;
         D_8010EB38_boardresult[i]->stat |= 4;
     }
@@ -243,7 +243,7 @@ void func_80105BD8_boardresult(void) {
     HuPrcSleep(10);
 
     for (i = 0; i < 4; i++) {
-        MBDMotionSet((ObjectDuel *)D_8010EB38_boardresult[i]->player_obj, 0, 2);
+        MBDMotionSet(D_8010EB38_boardresult[i]->player_obj, 0, 2);
         HuVecCopyXYZ(&targets[i], 0.0f, 0.0f, 0.0f);
         MBDVecDirGet(&targets[i], &D_8010EB38_boardresult[i]->player_obj->coords,
                               &D_8010EB38_boardresult[i]->player_obj->rot);
@@ -276,7 +276,7 @@ void func_80105BD8_boardresult(void) {
                 }
             }
         }
-        MBDModelDispOff((ObjectDuel *)D_8010EB38_boardresult[i]->player_obj);
+        MBDModelDispOff(D_8010EB38_boardresult[i]->player_obj);
     }
 
     HuPrcSleep(10);
@@ -309,13 +309,13 @@ void func_80105BD8_boardresult(void) {
     HuAudFXPlay(0x169);
     for (i = 0; i < 4; i++) {
         PlayerFXPlay(0x286, i);
-        MBDMotionSet((ObjectDuel *)D_8010EB38_boardresult[i]->player_obj, 1, 2);
+        MBDMotionSet(D_8010EB38_boardresult[i]->player_obj, 1, 2);
         func_8001C814_main(D_8010EB38_boardresult[i]->player_obj->omObj1->model[0], 2, 1);
         HuVecCopyXYZ(&D_8010EB38_boardresult[i]->player_obj->coords, 0.0f, 150.0f, 0.0f);
         HuVecCopy3F(&targets[i], &D_8010E4C8_boardresult);
         targets[i].y += 400.0f;
         func_8008A120_main(Hu3DData[D_8010EB38_boardresult[i]->player_obj->omObj1->model[0]].mtx, -30.0f);
-        MBDModelDispOn((ObjectDuel *)D_8010EB38_boardresult[i]->player_obj);
+        MBDModelDispOn(D_8010EB38_boardresult[i]->player_obj);
         func_800EBF2C_name_81(&D_8010EB38_boardresult[i]->player_obj->coords, &targets[i],
                               &D_8010EB38_boardresult[i]->player_obj->coords, 5);
         HuAudFXPlay(0x16A);
@@ -433,7 +433,7 @@ void func_80106CA8_boardresult(omObjData *obj) {
 }
 
 void func_80106DA4_boardresult(omObjData *obj) {
-    ObjectDuel *target = D_8010EB60_boardresult[obj->work[1]];
+    Object *target = D_8010EB60_boardresult[obj->work[1]];
 
     obj->work[0]++;
     target->coords.x += sindf(obj->work[0] * 180.0f / obj->work[2]) * -700.0f;
@@ -445,7 +445,7 @@ void func_80106DA4_boardresult(omObjData *obj) {
 }
 
 void func_80106F54_boardresult(omObjData *obj) {
-    ObjectDuel *target = D_8010EB70_boardresult;
+    Object *target = D_8010EB70_boardresult;
 
     obj->work[0]++;
     target->coords.x += sindf(obj->work[0] * 180.0f / obj->work[2]) * 700.0f;
@@ -467,7 +467,7 @@ void func_801070F8_boardresult(void) {
     HuPrcChildLink(process, func_800EBF2C_name_81(&D_8010EB38_boardresult[index]->player_obj->coords,
                                                   &D_8010E504_boardresult[index],
                                                   &D_8010EB38_boardresult[index]->player_obj->coords, 10));
-    MBDMotionSet((ObjectDuel *)D_8010EB38_boardresult[index]->player_obj, 0, 0);
+    MBDMotionSet(D_8010EB38_boardresult[index]->player_obj, 0, 0);
 
     for (angle = 90.0f; angle > 0.0f; angle -= 9.0f) {
         OBJ_MODEL_ROT_X(D_8010EB60_boardresult[3 - index], angle);
@@ -486,7 +486,7 @@ void func_801070F8_boardresult(void) {
         offset -= 10;
         HuPrcVSleep();
     }
-    MBDMotionSet((ObjectDuel *)D_8010EB38_boardresult[index]->player_obj, -1, 2);
+    MBDMotionSet(D_8010EB38_boardresult[index]->player_obj, -1, 2);
     omDelPrcObj(NULL);
 }
 
@@ -672,7 +672,7 @@ void func_80107F84_boardresult(u8 *flags) {
             if (GwPlayer[i].star >= 100) {
                 GwPlayer[i].star = 99;
             }
-            func_800EFA8C_name_81((ObjectDuel *)GwPlayer[i].player_obj, 1, 0);
+            func_800EFA8C_name_81(GwPlayer[i].player_obj, 1, 0);
             PlayerFXPlay(0x274, i);
             func_800138EC_main(D_8010EBB0_boardresult[i], 0, 1);
             for (j = 800; j >= 250; j -= 15) {
@@ -720,7 +720,7 @@ void func_80107F84_boardresult(u8 *flags) {
     }
     for (j = 0; j < 4; j++) {
         if (flags[j] != 0) {
-            func_800EFA8C_name_81((ObjectDuel *)GwPlayer[j].player_obj, -1, 2);
+            func_800EFA8C_name_81(GwPlayer[j].player_obj, -1, 2);
         }
     }
 }
@@ -1100,7 +1100,7 @@ void func_80109754_boardresult(void) {
     omObjData *rotObj;
     omObjData *swayObj;
     omObjData *obj;
-    ObjectDuel *actor;
+    Object *actor;
     Process *process;
     s16 effect;
     Process *fallProc;
@@ -1128,7 +1128,7 @@ void func_80109754_boardresult(void) {
         D_8010EAF8_boardresult[i][1] = func_80017AD8_main(winMotions.motions[GwPlayer[i].chr]);
         func_80017954_main(D_8010EB38_boardresult[i]->player_obj->omObj1->model[0], 2, GwPlayer[i].chr,
                            D_8010EAF8_boardresult[i][0]);
-        MBDModelTempAllocFree((ObjectDuel *)D_8010EB38_boardresult[i]->player_obj);
+        MBDModelTempAllocFree(D_8010EB38_boardresult[i]->player_obj);
     }
 
     for (i = 0; i < 4; i++) {
@@ -1344,8 +1344,8 @@ void func_80109754_boardresult(void) {
                         if ((GwPlayer[j].stat & PLAYER_IS_CPU) ? work[j] <= 0
                                                                : (D_800C9520_main[GwPlayer[j].pad] & A_BUTTON)) {
                             state[j] = 2;
-                            MBDMotionSet((ObjectDuel *)GwPlayer[j].player_obj, 3, 0);
-                            func_800EF9C4_name_81((ObjectDuel *)GwPlayer[j].player_obj, -1, 2);
+                            MBDMotionSet(GwPlayer[j].player_obj, 3, 0);
+                            func_800EF9C4_name_81(GwPlayer[j].player_obj, -1, 2);
                         }
                         break;
                     case 2:
@@ -1462,7 +1462,7 @@ void func_80109754_boardresult(void) {
     seNo = HuAudFXPlay(0x16E);
     omDelObj(swayObj);
     for (i = 0; i < 4; i++) {
-        MBDMotionShiftSet((ObjectDuel *)D_8010EB38_boardresult[i]->player_obj, 6, 0, 5, 2);
+        MBDMotionShiftSet(D_8010EB38_boardresult[i]->player_obj, 6, 0, 5, 2);
         func_800EBF2C_name_81(&D_8010EB38_boardresult[i]->player_obj->coords, &D_8010E564_boardresult[i],
                               &D_8010EB38_boardresult[i]->player_obj->coords, 20);
         func_800EBF2C_name_81(&D_8010EB60_boardresult[3 - i]->coords, &D_8010E564_boardresult[i],
@@ -1496,7 +1496,7 @@ void func_80109754_boardresult(void) {
                     D_8010EB38_boardresult[state[i]]->player_obj->coords.y +=
                         heights.heights[GwPlayer[state[i]].chr] - 80.0f;
                     seNo = PlayerFXPlay(0x2AB, state[i]);
-                    MBDMotionSet((ObjectDuel *)D_8010EB38_boardresult[state[i]]->player_obj, 4, 2);
+                    MBDMotionSet(D_8010EB38_boardresult[state[i]]->player_obj, 4, 2);
                     HuPrcChildLink(HuPrcCurrentGet(),
                                    func_800EBF2C_name_81(&D_8010EB60_boardresult[3 - state[i]]->coords,
                                                          &D_8010E654_boardresult[state[i]],
@@ -1539,7 +1539,7 @@ void func_80109754_boardresult(void) {
     func_800EB4DC_name_81(-1, 0x1418, D_80101200_shared_board[GwPlayer[kakusiMasuItemHis[0]].chr], 0, 0, 0, 0);
     func_800EB278_name_81();
     func_800EB29C_name_81();
-    MBDMotionShiftSet((ObjectDuel *)D_8010EB38_boardresult[kakusiMasuItemHis[0]]->player_obj, -1, 0, 10, 2);
+    MBDMotionShiftSet(D_8010EB38_boardresult[kakusiMasuItemHis[0]]->player_obj, -1, 0, 10, 2);
     D_8010E908_boardresult = 1;
     while (D_8010E90C_boardresult > 50.0f) {
         D_8010E90C_boardresult -= 6.0f;
@@ -1601,10 +1601,10 @@ void func_80109754_boardresult(void) {
     HuAudFXPlay(GwPlayer[kakusiMasuItemHis[0]].chr + 0x27E);
     func_80017954_main(D_8010EB38_boardresult[kakusiMasuItemHis[0]]->player_obj->omObj1->model[0], 2,
                        GwPlayer[kakusiMasuItemHis[0]].chr, D_8010EAF8_boardresult[kakusiMasuItemHis[0]][1]);
-    MBDMotionSet((ObjectDuel *)D_8010EB38_boardresult[kakusiMasuItemHis[0]]->player_obj, 2, 0);
+    MBDMotionSet(D_8010EB38_boardresult[kakusiMasuItemHis[0]]->player_obj, 2, 0);
     func_800EFABC_name_81(D_8010EB38_boardresult[kakusiMasuItemHis[0]]->player_obj);
     HuAudFXPlay(0x177);
-    MBDMotionSet((ObjectDuel *)D_8010EB38_boardresult[kakusiMasuItemHis[0]]->player_obj, 5, 2);
+    MBDMotionSet(D_8010EB38_boardresult[kakusiMasuItemHis[0]]->player_obj, 5, 2);
     group = func_800F4528_name_81(1, 0);
     data = DataRead(0x1301C6);
     group->unk_0C[0] = HuSprAnimRead(data);

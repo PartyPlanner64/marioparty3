@@ -1,5 +1,5 @@
 #include "SpinyDesert.h"
-#include "common.h"
+#include "common_board.h"
 #include "../ovl_80_shared_board/113520.h"
 #include "game/object.h"
 #include "../ovl_80_shared_board/FA250.h"

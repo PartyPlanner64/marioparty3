@@ -1,7 +1,7 @@
 #ifndef _ovl_80_FA250
 #define _ovl_80_FA250
 
-#include "common.h"
+#include "common_board.h"
 #include "game/board.h"
 
 void func_800E6630_shared_board(u32 arg0);

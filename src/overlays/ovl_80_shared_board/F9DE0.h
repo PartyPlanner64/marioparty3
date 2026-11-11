@@ -1,7 +1,7 @@
 #ifndef _ovl_80_F9DE0
 #define _ovl_80_F9DE0
 
-#include "common.h"
+#include "common_board.h"
 #include "game/board.h"
 
 extern Object *D_801011FC_shared_board;

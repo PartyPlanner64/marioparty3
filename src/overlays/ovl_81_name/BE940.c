@@ -1,31 +1,24 @@
-#include "common.h"
+#include "common_duel.h"
 #include "ovl_81.h"
 
-// Duel's view of UnkBoard2, where obj is an ObjectDuel
-typedef struct UnkBE940 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ char unk_02;
-    /* 0x04 */ ObjectDuel *unk_04;
-} UnkBE940; // sizeof 0x08
-
-void *func_800D6B70_name_81(s32 arg0) {
+UnkBoard2 *func_800D6B70_name_81(s32 arg0) {
     s32 sp10[3] = { 0x00000017, 0x00000018, 0x00000019 };
-    UnkBE940 *temp_v0;
-    ObjectDuel *temp_v0_2;
+    UnkBoard2 *temp_v0;
+    Object *temp_v0_2;
 
-    temp_v0 = HuMemMemoryAllocTemp(sizeof(UnkBE940));
+    temp_v0 = HuMemMemoryAllocTemp(sizeof(UnkBoard2));
     temp_v0->unk_00 = 0;
     temp_v0_2 = func_800D8010_name_81(sp10[arg0], 0);
-    temp_v0->unk_04 = temp_v0_2;
+    temp_v0->obj = temp_v0_2;
     func_8001C258_main(temp_v0_2->omObj1->model[0], 0x180, 0);
-    Hu3DModelLayerSet(temp_v0->unk_04->omObj1->model[0], 0x1400);
-    Hu3DModelRemakeStatic(temp_v0->unk_04->omObj1->model[0]);
-    MBDModelTempAllocFree(temp_v0->unk_04);
+    Hu3DModelLayerSet(temp_v0->obj->omObj1->model[0], 0x1400);
+    Hu3DModelRemakeStatic(temp_v0->obj->omObj1->model[0]);
+    MBDModelTempAllocFree(temp_v0->obj);
     return temp_v0;
 }
 
-void func_800D6C3C_name_81(UnkBE940 *arg0) {
-    MBDModelKill(arg0->unk_04);
+void func_800D6C3C_name_81(UnkBoard2 *arg0) {
+    MBDModelKill(arg0->obj);
     HuMemMemoryFreeTemp(arg0);
 }
 
@@ -48,7 +41,7 @@ void func_800D6CA0_name_81(UnkEA790Struct *arg0) {
 
     if (arg0->unk_02 != 0) {
         for (var_s1 = arg0->unk_04, i = 0; i < arg0->unk_02; var_s1++, i++) {
-            func_800D6C3C_name_81((UnkBE940 *)*var_s1);
+            func_800D6C3C_name_81(*var_s1);
         }
         HuMemMemoryFreeTemp(arg0->unk_04);
     }

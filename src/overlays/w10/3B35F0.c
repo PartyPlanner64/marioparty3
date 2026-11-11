@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_board.h"
 
 extern OvlEntrypoint D_8010B7D0_w10[];
 

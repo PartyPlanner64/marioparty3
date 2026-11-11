@@ -51,22 +51,10 @@ typedef struct {
     omObjData **objs;
 } omObjGroup;
 
-typedef struct Object_s {
-/* 0x00 */ struct Object_s *prev;
-/* 0x04 */ struct Object_s *next;
-/* 0x08 */ u8 unk8;
-/* 0x09 */ s8 unk9;
-/* 0x0A */ u16 flags;
-/* 0x0C */ Vec coords;
-// Three Vec groups (Scale?, Rotation?, Position?)
-/* 0x18 */ Vec rot;
-/* 0x24 */ Vec scale;
-/* 0x30 */ Vec velocity;
-/* 0x3C */ omObjData* omObj1;
-/* 0x40 */ omObjData* omObj2;
-/* 0x44 */ s16 unk44;
-/* 0x46 */ s16 unk46;
-} Object; //sizeof 0x48
+// Model object managed by the board (ovl_80) or duel (ovl_81) overlay. The two
+// overlays have different layouts, so the definition comes from either
+// common_board.h or common_duel.h.
+typedef struct Object_s Object;
 
 typedef struct omOvlHisData { //Object Manager History Data
 /* 0x00 */ s32 overlayID;

@@ -1,7 +1,7 @@
 #ifndef _ovl_80_EE660
 #define _ovl_80_EE660
 
-#include "common.h"
+#include "common_board.h"
 #include "game/board.h"
 
 void func_800DAA40_shared_board(s32 arg0);

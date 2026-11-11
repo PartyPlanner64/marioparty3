@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_duel.h"
 #include "../ovl_81_name/ovl_81.h"
 
 // Inlined Z rotation matrix build (same as MTX_ROTZ in w02).
@@ -52,7 +52,7 @@ typedef struct Duel02SpriteWork {
 
 typedef struct Duel02PartnerAttackWork {
     /* 0x00 */ GW_PLAYER *player;
-    /* 0x04 */ ObjectDuel *obj;
+    /* 0x04 */ Object *obj;
     /* 0x08 */ s32 delay;
     /* 0x0C */ s32 waitTime;
 } Duel02PartnerAttackWork; // sizeof 0x10
@@ -106,23 +106,23 @@ void func_8010EFFC_duel02(void);
 s32 func_800E1854_minigame(s32);
 Process *func_800EBC60_name_81(Vec *, Vec *, Vec *, s32);
 void func_800EB7BC_name_81(Vec *);
-void func_800FC8DC_name_81(ObjectDuel *);
+void func_800FC8DC_name_81(Object *);
 void func_8010F16C_duel02(void);
 extern Vec D_801171C4_duel02[];
-extern ObjectDuel *D_8011673C_duel02;
+extern Object *D_8011673C_duel02;
 extern s32 D_80116738_duel02;
 extern Duel02PartnerSpaces D_80116720_duel02[];
 extern char D_80117070_duel02[];
 extern s32 D_801165A0_duel02[];
-Process *func_800FAB68_name_81(ObjectDuel *, s32, s32, s32, s32);
+Process *func_800FAB68_name_81(Object *, s32, s32, s32, s32);
 Process *func_800DCE40_name_81(s32, Vec *, Vec *, f32);
 extern void (*D_80116788_duel02[])(void);
 Process *func_800E0924_name_81(void);
 extern s32 D_80101200_shared_board[];
-extern ObjectDuel *D_80117614_duel02;
-extern ObjectDuel *D_80117610_duel02;
+extern Object *D_80117614_duel02;
+extern Object *D_80117610_duel02;
 extern s32 D_801165A8_duel02[];
-extern ObjectDuel *D_80117618_duel02;
+extern Object *D_80117618_duel02;
 extern s8 *D_80116700_duel02[];
 extern s8 D_80116604_duel02[];
 void func_8010B134_duel02(omObjData *);
@@ -142,11 +142,11 @@ extern s16 D_801165D0_duel02;
 extern s16 D_801165DA_duel02;
 extern s16 D_801165D8_duel02;
 void func_800FADB4_name_81(void);
-void func_800FAE18_name_81(ObjectDuel *, s32, s32);
+void func_800FAE18_name_81(Object *, s32, s32);
 extern s16 D_80117140_duel02[];
 extern char D_80117128_duel02[];
-extern ObjectDuel *D_80117620_duel02;
-extern ObjectDuel *D_80117638_duel02[2];
+extern Object *D_80117620_duel02;
+extern Object *D_80117638_duel02[2];
 extern s16 D_801165E0_duel02[];
 extern Vec D_801165E4_duel02[];
 extern s32 D_801165FC_duel02[];
@@ -168,8 +168,8 @@ extern void func_8010630C_duel02(void);
 extern void func_8010E7C4_duel02(void);
 extern void func_8010EA68_duel02(void);
 extern omObjData *D_8011761C_duel02;
-extern ObjectDuel *D_80117628_duel02;
-extern ObjectDuel *D_80117630_duel02;
+extern Object *D_80117628_duel02;
+extern Object *D_80117630_duel02;
 void func_8010D9F8_duel02(void);
 void func_8010DCAC_duel02(void);
 void func_8010DD40_duel02(void);
@@ -208,18 +208,18 @@ void func_800FC5A8_name_81(process_func);
 void func_8011394C_duel02(void);
 s32 func_801163A4_duel02(void);
 void func_800FAC94_name_81(PartnerFunc *, PartnerFunc *);
-void func_8010682C_duel02(s32, s32, ObjectDuel *, ObjectDuel *, s32, s32);
-void func_8010718C_duel02(s32, s32, ObjectDuel *, ObjectDuel *, s32, s32);
-void func_801079BC_duel02(s32, s32, ObjectDuel *, ObjectDuel *, s32, s32);
-void func_80107EC0_duel02(s32, s32, ObjectDuel *, ObjectDuel *, s32, s32);
-void func_801084A8_duel02(s32, s32, ObjectDuel *, ObjectDuel *, s32, s32);
-void func_80108554_duel02(s32, s32, ObjectDuel *, ObjectDuel *, s32, s32);
-void func_8010988C_duel02(s32, s32, ObjectDuel *, ObjectDuel *, s32, s32);
-void func_8010A214_duel02(s32, s32, ObjectDuel *, ObjectDuel *, s32, s32);
-void func_8010B550_duel02(s32, s32, ObjectDuel *, ObjectDuel *, s32, s32);
-void func_8010BCD8_duel02(s32, s32, ObjectDuel *, ObjectDuel *, s32, s32);
-void func_8010CE6C_duel02(s32, s32, ObjectDuel *, ObjectDuel *, s32, s32);
-void func_8010D428_duel02(s32, s32, ObjectDuel *, ObjectDuel *, s32, s32);
+void func_8010682C_duel02(s32, s32, Object *, Object *, s32, s32);
+void func_8010718C_duel02(s32, s32, Object *, Object *, s32, s32);
+void func_801079BC_duel02(s32, s32, Object *, Object *, s32, s32);
+void func_80107EC0_duel02(s32, s32, Object *, Object *, s32, s32);
+void func_801084A8_duel02(s32, s32, Object *, Object *, s32, s32);
+void func_80108554_duel02(s32, s32, Object *, Object *, s32, s32);
+void func_8010988C_duel02(s32, s32, Object *, Object *, s32, s32);
+void func_8010A214_duel02(s32, s32, Object *, Object *, s32, s32);
+void func_8010B550_duel02(s32, s32, Object *, Object *, s32, s32);
+void func_8010BCD8_duel02(s32, s32, Object *, Object *, s32, s32);
+void func_8010CE6C_duel02(s32, s32, Object *, Object *, s32, s32);
+void func_8010D428_duel02(s32, s32, Object *, Object *, s32, s32);
 
 void func_801059D0_duel02(void) {
     mbCameraBtnF = 1;
@@ -329,7 +329,7 @@ void func_80105CC4_duel02(void) {
     omDelPrcObj(NULL);
 }
 
-Process *func_80105EB4_duel02(ObjectDuel *object) {
+Process *func_80105EB4_duel02(Object *object) {
     Process *process;
     Duel02SpriteWork *work;
 
@@ -346,7 +346,7 @@ void func_80105F24_duel02(void) {
     Process *process = HuPrcCurrentGet();
     Duel02PartnerAttackWork *work = HuPrcCurrentGet()->user_data;
     GW_PLAYER *player = work->player;
-    ObjectDuel *obj = work->obj;
+    Object *obj = work->obj;
     s32 delay = work->delay;
     s32 waitTime = work->waitTime;
     Vec offset;
@@ -379,7 +379,7 @@ void func_80105F24_duel02(void) {
     omDelPrcObj(NULL);
 }
 
-Process *func_801060D4_duel02(GW_PLAYER *player, ObjectDuel *obj, s32 delay, s32 waitTime) {
+Process *func_801060D4_duel02(GW_PLAYER *player, Object *obj, s32 delay, s32 waitTime) {
     Process *process;
     Duel02PartnerAttackWork *work;
 
@@ -393,7 +393,7 @@ Process *func_801060D4_duel02(GW_PLAYER *player, ObjectDuel *obj, s32 delay, s32
     return process;
 }
 
-void func_80106160_duel02(ObjectDuel *obj, ObjectDuel *target, GW_PLAYER *player, Vec *targetPos, Vec *origPos, f32 dist) {
+void func_80106160_duel02(Object *obj, Object *target, GW_PLAYER *player, Vec *targetPos, Vec *origPos, f32 dist) {
     Vec offset;
     f32 angle;
 
@@ -415,7 +415,7 @@ void func_80106244_duel02(void) {
     func_800FC8C4_name_81(&D_80105540_name_81);
 }
 
-Process *func_80106264_duel02(ObjectDuel *arg0, GW_PLAYER *arg1, s32 arg2, f32 arg3) {
+Process *func_80106264_duel02(Object *arg0, GW_PLAYER *arg1, s32 arg2, f32 arg3) {
     Process *process;
 
     arg3 = arg3 + 0.5f;
@@ -427,7 +427,7 @@ Process *func_80106264_duel02(ObjectDuel *arg0, GW_PLAYER *arg1, s32 arg2, f32 a
     return process;
 }
 
-void func_801062C4_duel02(ObjectDuel *arg0, GW_PLAYER *arg1, s32 arg2, s32 arg3) {
+void func_801062C4_duel02(Object *arg0, GW_PLAYER *arg1, s32 arg2, s32 arg3) {
     if (arg2 & 9) {
         func_800EBF2C_name_81(&D_80105540_name_81, &arg0->coords, &D_80105540_name_81, arg3);
     } else {
@@ -472,8 +472,8 @@ Process *func_80106460_duel02(s32 magnitude, s32 decay) {
 
 void func_801064CC_duel02(s32 playerIndex, s32 mode) {
     GW_PLAYER *player;
-    ObjectDuel *partner;
-    ObjectDuel *model;
+    Object *partner;
+    Object *model;
 
     player = MBDGetPlayerStruct(playerIndex);
     switch (mode) {
@@ -556,8 +556,8 @@ void func_801064CC_duel02(s32 playerIndex, s32 mode) {
     }
 }
 
-ObjectDuel *func_80106744_duel02(s32 arg0) {
-    ObjectDuel *obj;
+Object *func_80106744_duel02(s32 arg0) {
+    Object *obj;
 
     obj = func_800D8010_name_81(arg0 & 0xFF, 0);
     func_8001C258_main(obj->omObj1->model[0], 0x180, 0);
@@ -569,18 +569,18 @@ ObjectDuel *func_80106744_duel02(s32 arg0) {
     return obj;
 }
 
-void func_801067D8_duel02(ObjectDuel *arg0, Vec *arg1) {
+void func_801067D8_duel02(Object *arg0, Vec *arg1) {
     MBDModelDispOn(arg0);
     func_8001C814_main(arg0->omObj1->model[0], 3, 0);
     HuVecCopy3F(&arg0->coords, arg1);
 }
 
-void func_8010682C_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, ObjectDuel *target, s32 flags, s32 mode) {
+void func_8010682C_duel02(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player;
     Process *process;
-    ObjectDuel *effect;
-    ObjectDuel *partner;
-    ObjectDuel *extra;
+    Object *effect;
+    Object *partner;
+    Object *extra;
     s32 model;
     f32 angle;
     f32 speed;
@@ -683,7 +683,7 @@ void func_8010682C_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, Ob
             HuAudFXPlay((D_80105718_name_81 & 8) ? 0x1CE : 0x1CD);
         }
         if (flags & 2) {
-            func_800FAB68_name_81((ObjectDuel *)player->player_obj, D_80105558_name_81, 3, D_80105718_name_81 & 1, -1);
+            func_800FAB68_name_81(player->player_obj, D_80105558_name_81, 3, D_80105718_name_81 & 1, -1);
             if (!(flags & 1)) {
                 HuAudFXPlay((D_80105718_name_81 & 1) ? 0x1CE : 0x1CD);
             }
@@ -731,12 +731,12 @@ void func_8010682C_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, Ob
     func_800FADB4_name_81();
 }
 
-void func_8010718C_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, ObjectDuel *target, s32 flags, s32 mode) {
+void func_8010718C_duel02(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player;
     Process *process;
-    ObjectDuel *effect;
-    ObjectDuel *partner;
-    ObjectDuel *extra;
+    Object *effect;
+    Object *partner;
+    Object *extra;
     Process *extraProcess;
     s32 i;
     f32 jumpSpeed;
@@ -831,7 +831,7 @@ void func_8010718C_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, Ob
             HuAudFXPlay((D_80105718_name_81 & 8) ? 0x1CE : 0x1CD);
         }
         if (flags & 2) {
-            func_800FAB68_name_81((ObjectDuel *)player->player_obj, D_80105558_name_81, 3, D_80105718_name_81 & 1, -1);
+            func_800FAB68_name_81(player->player_obj, D_80105558_name_81, 3, D_80105718_name_81 & 1, -1);
             if (!(flags & 1)) {
                 HuAudFXPlay((D_80105718_name_81 & 1) ? 0x1CE : 0x1CD);
             }
@@ -863,13 +863,13 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/duel02/3EC590", D_80117070_duel02);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/duel02/3EC590", func_801079BC_duel02);
 
-void func_80107EC0_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, ObjectDuel *target, s32 flags, s32 mode) {
+void func_80107EC0_duel02(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player;
     Process *process;
-    ObjectDuel *effect;
-    ObjectDuel *partner;
-    ObjectDuel *orig;
-    ObjectDuel *extra;
+    Object *effect;
+    Object *partner;
+    Object *orig;
+    Object *extra;
     f32 angle;
     Vec targetPos;
     Vec offset;
@@ -975,7 +975,7 @@ void func_80107EC0_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, Ob
     HuPrcVSleep();
     MBDBackTPLvlSet(0x40);
     func_800FAC1C_name_81(&D_80105540_name_81);
-    func_800FAB68_name_81((ObjectDuel *)player->player_obj, D_80105558_name_81, 3, D_80105718_name_81 & 1, -1);
+    func_800FAB68_name_81(player->player_obj, D_80105558_name_81, 3, D_80105718_name_81 & 1, -1);
     HuPrcSleep(30);
     if (mode == 2) {
         MBDModelKill(obj);
@@ -986,7 +986,7 @@ void func_80107EC0_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, Ob
     func_800FADB4_name_81();
 }
 
-void func_801084A8_duel02(s32 playerIndex, s32 arg1, ObjectDuel *arg2, ObjectDuel *arg3, s32 arg4, s32 arg5) {
+void func_801084A8_duel02(s32 playerIndex, s32 arg1, Object *arg2, Object *arg3, s32 arg4, s32 arg5) {
     func_800FAD04_name_81(5);
     if (arg5 == 2) {
         HuAudFXPlay(0x25D);
@@ -1001,11 +1001,11 @@ void func_801084A8_duel02(s32 playerIndex, s32 arg1, ObjectDuel *arg2, ObjectDue
     func_800FADB4_name_81();
 }
 
-void func_80108554_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, ObjectDuel *target, s32 flags, s32 mode) {
+void func_80108554_duel02(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player;
     Process *process;
-    ObjectDuel *effect;
-    ObjectDuel *smoke;
+    Object *effect;
+    Object *smoke;
     s32 model;
     s32 i;
     f32 height;
@@ -1190,7 +1190,7 @@ void func_80108554_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, Ob
     }
 }
 
-void func_80109408_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, ObjectDuel *target, s32 flags, s32 mode) {
+void func_80109408_duel02(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player;
     Process *process;
     Vec targetPos;
@@ -1246,7 +1246,7 @@ void func_80109408_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, Ob
             func_800FAB68_name_81(target, D_80105550_name_81, 1, D_8010554C_name_81 & 8, D_8010571C_name_81);
         }
         if (flags & 2) {
-            func_800FAB68_name_81((ObjectDuel *)player->player_obj, D_80105558_name_81, 3, D_8010554C_name_81 & 1, -1);
+            func_800FAB68_name_81(player->player_obj, D_80105558_name_81, 3, D_8010554C_name_81 & 1, -1);
         }
     }
     if (!(D_80105718_name_81 & 0x10)) {
@@ -1260,7 +1260,7 @@ void func_80109408_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, Ob
     }
 }
 
-void func_8010988C_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, ObjectDuel *target, s32 flags, s32 mode) {
+void func_8010988C_duel02(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player;
     Process *process;
     s32 sound;
@@ -1395,7 +1395,7 @@ void func_8010988C_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, Ob
             HuAudFXPlay((D_80105718_name_81 & 8) ? 0x1CE : 0x1CD);
         }
         if (flags & 2) {
-            func_800FAB68_name_81((ObjectDuel *)player->player_obj, D_80105558_name_81, 3, D_80105718_name_81 & 1, -1);
+            func_800FAB68_name_81(player->player_obj, D_80105558_name_81, 3, D_80105718_name_81 & 1, -1);
             if (!(flags & 1)) {
                 HuAudFXPlay((D_80105718_name_81 & 1) ? 0x1CE : 0x1CD);
             }
@@ -1420,15 +1420,15 @@ void func_8010988C_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, Ob
     func_8001F9E4_main(obj->omObj2->model[0], 255);
 }
 
-void func_8010A214_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, ObjectDuel *target, s32 flags, s32 mode) {
+void func_8010A214_duel02(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player;
     Process *process;
-    ObjectDuel *extra;
-    ObjectDuel *effect;
-    ObjectDuel *partner;
+    Object *extra;
+    Object *effect;
+    Object *partner;
     Vec targetPos;
     Vec pos;
-    ObjectDuel *pieces[16];
+    Object *pieces[16];
     Vec effectPos;
     Vec startPos;
     Vec dir;
@@ -1551,7 +1551,7 @@ void func_8010A214_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, Ob
             HuAudFXPlay((D_80105718_name_81 & 8) ? 0x1CE : 0x1CD);
         }
         if (flags & 2) {
-            func_800FAB68_name_81((ObjectDuel *)player->player_obj, D_80105558_name_81, 3, D_80105718_name_81 & 1, -1);
+            func_800FAB68_name_81(player->player_obj, D_80105558_name_81, 3, D_80105718_name_81 & 1, -1);
             if (!(flags & 1)) {
                 HuAudFXPlay((D_80105718_name_81 & 1) ? 0x1CE : 0x1CD);
             }
@@ -1586,8 +1586,8 @@ void func_8010A214_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, Ob
     func_800FADB4_name_81();
 }
 
-void func_8010AAB4_duel02(ObjectDuel *obj, s32 swap) {
-    ObjectDuel *model;
+void func_8010AAB4_duel02(Object *obj, s32 swap) {
+    Object *model;
     f32 scale;
     f32 angle;
 
@@ -1631,8 +1631,8 @@ void func_8010AAB4_duel02(ObjectDuel *obj, s32 swap) {
     MBDModelKill(model);
 }
 
-void func_8010AD4C_duel02(ObjectDuel *obj) {
-    ObjectDuel *model;
+void func_8010AD4C_duel02(Object *obj) {
+    Object *model;
     f32 scale;
     f32 angle;
 
@@ -1790,10 +1790,10 @@ void func_8010B540_duel02(void) {
     D_8011761C_duel02->work[0] = 0;
 }
 
-void func_8010B550_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, ObjectDuel *target, s32 flags, s32 mode) {
+void func_8010B550_duel02(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player;
     Process *process;
-    ObjectDuel *partner;
+    Object *partner;
     s32 model;
     f32 angle;
     Vec targetPos;
@@ -1873,7 +1873,7 @@ void func_8010B550_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, Ob
                     }
                 }
                 if (flags & 2) {
-                    func_800FAB68_name_81((ObjectDuel *)player->player_obj, D_80105558_name_81, 3, D_80105718_name_81 & 1, -1);
+                    func_800FAB68_name_81(player->player_obj, D_80105558_name_81, 3, D_80105718_name_81 & 1, -1);
                     if (!(flags & 1)) {
                         if (D_80105718_name_81 & 1) {
                             HuAudFXPlay(0x1CE);
@@ -1903,7 +1903,7 @@ void func_8010B550_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, Ob
                     func_800FAB68_name_81(target, D_80105550_name_81, 1, D_80105718_name_81 & 8, D_8010571C_name_81);
                 }
                 if (flags & 2) {
-                    func_800FAB68_name_81((ObjectDuel *)player->player_obj, D_80105558_name_81, 3, D_80105718_name_81 & 1, -1);
+                    func_800FAB68_name_81(player->player_obj, D_80105558_name_81, 3, D_80105718_name_81 & 1, -1);
                 }
             }
             HuPrcSleep(30);
@@ -1950,14 +1950,14 @@ void func_8010B550_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, Ob
     func_800FADB4_name_81();
 }
 
-void func_8010BCD8_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, ObjectDuel *target, s32 flags, s32 mode) {
+void func_8010BCD8_duel02(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player = MBDGetPlayerStruct(targetPlayer);
     Process *process = HuPrcCurrentGet();
-    ObjectDuel *frontPartner = NULL;
-    ObjectDuel *backPartner = NULL;
+    Object *frontPartner = NULL;
+    Object *backPartner = NULL;
     s32 frontID = -1;
     s32 backID = -1;
-    ObjectDuel *partner;
+    Object *partner;
     s32 i;
     f32 scale;
     f32 amplitude;
@@ -2013,8 +2013,8 @@ void func_8010BCD8_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, Ob
         for (i = 0; ; i++) {
             if (i == hitDelays[0]) {
                 HuAudFXPlay((D_80105718_name_81 & 1) ? 0x1CE : 0x1E5);
-                spinProcesses[0] = func_800D9668_name_81((ObjectDuel *)player->player_obj, MBDVecAngleGet(&player->player_obj->rot), 50.0f, -1);
-                func_800EF7C8_name_81((ObjectDuel *)player->player_obj, 7.0f, -0.4f);
+                spinProcesses[0] = func_800D9668_name_81(player->player_obj, MBDVecAngleGet(&player->player_obj->rot), 50.0f, -1);
+                func_800EF7C8_name_81(player->player_obj, 7.0f, -0.4f);
                 hitDelays[0] = -1;
                 HuVecCopy3F(&effectPos, &player->player_obj->coords);
                 effectPos.y += 5.0f;
@@ -2044,8 +2044,8 @@ void func_8010BCD8_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, Ob
             HuPrcVSleep();
         }
         if (hitDelays[0] != -1) {
-            spinProcesses[0] = func_800D9668_name_81((ObjectDuel *)player->player_obj, MBDVecAngleGet(&player->player_obj->rot), 50.0f, -1);
-            func_800EF7C8_name_81((ObjectDuel *)player->player_obj, 7.0f, -0.4f);
+            spinProcesses[0] = func_800D9668_name_81(player->player_obj, MBDVecAngleGet(&player->player_obj->rot), 50.0f, -1);
+            func_800EF7C8_name_81(player->player_obj, 7.0f, -0.4f);
             HuVecCopy3F(&effectPos, &player->player_obj->coords);
             effectPos.y += 5.0f;
             func_800DCE40_name_81(0x4A, &effectPos, NULL, 1.5f);
@@ -2073,7 +2073,7 @@ void func_8010BCD8_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, Ob
         func_800ED214_name_81(playerIndex);
         MBDModelKill(partner);
         while (TRUE) {
-            if (spinProcesses[0] != NULL && !func_800EF7D4_name_81((ObjectDuel *)player->player_obj)) {
+            if (spinProcesses[0] != NULL && !func_800EF7D4_name_81(player->player_obj)) {
                 MTX_ROTY(Hu3DData[player->player_obj->omObj1->model[0]].mtx, 0.0f);
                 omDelPrcObj(spinProcesses[0]);
                 spinProcesses[0] = NULL;
@@ -2179,7 +2179,7 @@ void func_8010BCD8_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, Ob
     }
     func_800FAC1C_name_81(&D_80105540_name_81);
     if (flags & 0x20) {
-        func_800FAB68_name_81((ObjectDuel *)player->player_obj, 4, 3, D_80105718_name_81 & 1, -1);
+        func_800FAB68_name_81(player->player_obj, 4, 3, D_80105718_name_81 & 1, -1);
         if (frontPartner != NULL) {
             func_800FAB68_name_81(frontPartner, 4, 1, D_80105718_name_81 & 2, frontID);
         }
@@ -2187,7 +2187,7 @@ void func_8010BCD8_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, Ob
             func_800FAB68_name_81(backPartner, 4, 1, D_80105718_name_81 & 4, backID);
         }
     } else if (flags & 0x10) {
-        func_800FAB68_name_81((ObjectDuel *)player->player_obj, 2, 3, D_80105718_name_81 & 1, -1);
+        func_800FAB68_name_81(player->player_obj, 2, 3, D_80105718_name_81 & 1, -1);
         if (frontPartner != NULL) {
             func_800FAB68_name_81(frontPartner, 2, 1, D_80105718_name_81 & 2, frontID);
         }
@@ -2195,7 +2195,7 @@ void func_8010BCD8_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, Ob
             func_800FAB68_name_81(backPartner, 2, 1, D_80105718_name_81 & 4, backID);
         }
     } else {
-        func_800FAB68_name_81((ObjectDuel *)player->player_obj, 1, 3, D_80105718_name_81 & 1, -1);
+        func_800FAB68_name_81(player->player_obj, 1, 3, D_80105718_name_81 & 1, -1);
         if (frontPartner != NULL) {
             func_800FAB68_name_81(frontPartner, 1, 1, D_80105718_name_81 & 2, frontID);
         }
@@ -2206,13 +2206,13 @@ void func_8010BCD8_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, Ob
     func_800FADB4_name_81();
 }
 
-void func_8010CE6C_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, ObjectDuel *target, s32 flags, s32 mode) {
+void func_8010CE6C_duel02(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player;
     Process *process;
-    ObjectDuel *partner;
-    ObjectDuel *partner2;
-    ObjectDuel *effect1;
-    ObjectDuel *effect2;
+    Object *partner;
+    Object *partner2;
+    Object *effect1;
+    Object *effect2;
     Vec targetPos;
     Vec pos;
     s32 effectIds[2];
@@ -2324,7 +2324,7 @@ void func_8010CE6C_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, Ob
             }
         }
         if (flags & 2) {
-            func_800FAB68_name_81((ObjectDuel *)player->player_obj, D_80105558_name_81, 3, D_80105718_name_81 & 1, -1);
+            func_800FAB68_name_81(player->player_obj, D_80105558_name_81, 3, D_80105718_name_81 & 1, -1);
             if (mode == 2) {
                 if (!(flags & 1)) {
                     if (D_80105718_name_81 & 1) {
@@ -2362,11 +2362,11 @@ void func_8010CE6C_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, Ob
     func_800FADB4_name_81();
 }
 
-void func_8010D428_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, ObjectDuel *target, s32 flags, s32 mode) {
+void func_8010D428_duel02(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player;
     Process *process;
-    ObjectDuel *effect;
-    ObjectDuel *partner;
+    Object *effect;
+    Object *partner;
     s32 model;
     Vec targetPos;
     Vec origPos;
@@ -2447,7 +2447,7 @@ void func_8010D428_duel02(s32 playerIndex, s32 targetPlayer, ObjectDuel *obj, Ob
             }
         }
         if (flags & 2) {
-            func_800FAB68_name_81((ObjectDuel *)player->player_obj, D_80105558_name_81, 3, D_80105718_name_81 & 1, -1);
+            func_800FAB68_name_81(player->player_obj, D_80105558_name_81, 3, D_80105718_name_81 & 1, -1);
             if (!(flags & 1)) {
                 if (D_80105718_name_81 & 1) {
                     HuAudFXPlay(0x1CE);
@@ -2563,7 +2563,7 @@ void func_8010DC08_duel02(void) {
 }
 
 void func_8010DCAC_duel02(void) {
-    ObjectDuel *obj = func_800D8010_name_81(0x34, D_801165C0_duel02);
+    Object *obj = func_800D8010_name_81(0x34, D_801165C0_duel02);
 
     MBDModelTempAllocFree(obj);
     D_80117620_duel02 = obj;
@@ -2575,7 +2575,7 @@ void func_8010DCAC_duel02(void) {
 }
 
 void func_8010DD40_duel02(void) {
-    ObjectDuel *obj;
+    Object *obj;
     SpaceData *space1;
     SpaceData *space2;
 
@@ -2661,7 +2661,7 @@ void func_8010E2FC_duel02(void) {
 }
 
 void func_8010E34C_duel02(void) {
-    ObjectDuel *obj;
+    Object *obj;
     SpaceData *space1;
     SpaceData *space2;
 
@@ -2745,7 +2745,7 @@ void func_8010E908_duel02(void) {
 }
 
 void func_8010E958_duel02(s16 index) {
-    ObjectDuel *obj;
+    Object *obj;
 
     if (D_80117638_duel02[index] == NULL) {
         obj = func_800D8010_name_81(0x2E, D_801165FC_duel02);
@@ -3041,7 +3041,7 @@ s32 func_8010F9DC_duel02(s32 index) {
     Vec camPos;
     Vec pos;
     Vec target;
-    ObjectDuel *copies[10]; // Only 4 are used; the size matches the original stack frame.
+    Object *copies[10]; // Only 4 are used; the size matches the original stack frame.
     Vec offsets[4];
     s32 unused[2]; // Unused, but needed to match the stack frame.
     SpaceData *startSpace;
@@ -3049,8 +3049,8 @@ s32 func_8010F9DC_duel02(s32 index) {
     GW_PLAYER *player;
     Process *process;
     Duel02PartnerRouletteWork *work;
-    ObjectDuel *model;
-    ObjectDuel *partner;
+    Object *model;
+    Object *partner;
     SpaceData *returnSpace;
     SpaceData *destSpace;
     s32 i;
@@ -3187,7 +3187,7 @@ void func_801100A8_duel02(s32 index) {
     GW_PLAYER *player;
     s16 partnerId;
     s16 choice;
-    ObjectDuel *partner;
+    Object *partner;
     s32 i;
 
     player = MBDGetPlayerStruct(CUR_PLAYER);
@@ -3438,9 +3438,9 @@ void func_80110C7C_duel02(void) {
     s16 win;
     s32 frontChoice;
     s32 backChoice;
-    ObjectDuel *partner;
-    ObjectDuel *coin;
-    ObjectDuel *ref;
+    Object *partner;
+    Object *coin;
+    Object *ref;
     s32 coins;
     s32 curCoins;
     s32 side;
@@ -3863,7 +3863,7 @@ void func_8011260C_duel02(void) {
 
 void func_8011268C_duel02(void) {
     GW_PLAYER *player;
-    ObjectDuel *obj;
+    Object *obj;
     void *handles[2];
     f32 scale;
     f32 angle;
@@ -3926,7 +3926,7 @@ void func_80112A08_duel02(void) {
     GW_SYSTEM *sys = &GwSystem;
     GW_PLAYER *player;
     void *handle;
-    ObjectDuel *partners[2];
+    Object *partners[2];
 
     player = MBDGetPlayerStruct(CUR_PLAYER);
     func_800EDD50_name_81(&player->player_obj->coords);
@@ -3971,7 +3971,7 @@ void func_80112BF4_duel02(void) {
     GW_SYSTEM *sys = &GwSystem;
     GW_PLAYER *player;
     void *handle;
-    ObjectDuel *partners[2];
+    Object *partners[2];
 
     player = MBDGetPlayerStruct(CUR_PLAYER);
     func_800EDD50_name_81(&player->player_obj->coords);
@@ -4016,7 +4016,7 @@ void func_80112DE0_duel02(void) {
     GW_PLAYER *player;
     s32 playerIndex;
     void *handle;
-    ObjectDuel *partner;
+    Object *partner;
     f32 angle;
 
     player = MBDGetPlayerStruct(CUR_PLAYER);
@@ -4079,7 +4079,7 @@ void func_80112DE0_duel02(void) {
 
 void func_80113618_duel02(void) {
     GW_PLAYER *player;
-    ObjectDuel *obj;
+    Object *obj;
     void *handles[2];
     f32 scale;
     f32 angle;

@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_board.h"
 #include "FA250.h"
 
 #define UNK_SIZE 4

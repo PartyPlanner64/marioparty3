@@ -146,7 +146,7 @@ typedef struct GwPlayer_s {
 /* 0x1D */ u8 turn;
 /* 0x1E */ char unk_1E[2]; //likely padding
 /* 0x20 */ void* unk_20;
-/* 0x24 */ Object* player_obj; // ObjectDuel* in duel mode (ovl_81)
+/* 0x24 */ Object* player_obj; // Object* in duel mode (ovl_81)
 /* 0x28 */ s16 gamePrize; //minigame star
 /* 0x2A */ s16 coinPrize; //coin star
 /* 0x2C */ union {

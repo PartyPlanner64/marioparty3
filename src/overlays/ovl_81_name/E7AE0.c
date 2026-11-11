@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_duel.h"
 #include "ovl_81.h"
 
 #define UNK_ARR_SIZE 4
@@ -10,7 +10,7 @@ extern UnkBoard4 *D_80105504_name_81;
 extern s16 D_80105508_name_81[UNK_ARR_SIZE][2];
 extern UnkBoard4 *D_80105518_name_81;
 extern Process *D_8010551C_name_81;
-extern ObjectDuel *D_80105520_name_81[MBD_MAX_PLAYERS];
+extern Object *D_80105520_name_81[MBD_MAX_PLAYERS];
 extern f32 D_80105528_name_81;
 extern Vec2f D_8010552C_name_81;
 
@@ -226,8 +226,8 @@ void func_801005DC_name_81(UnkBoard4 *arg0) {
 void func_80100604_name_81(void) {
     GW_PLAYER *temp_v0;
     s32 i;
-    ObjectDuel **obj;
-    ObjectDuel *temp_a0;
+    Object **obj;
+    Object *temp_a0;
 
     for (i = 0; i < MBD_MAX_PLAYERS; i++) {
         temp_v0 = MBDGetPlayerStruct(i);
@@ -240,8 +240,8 @@ void func_80100604_name_81(void) {
 
     for (i = 0; i < MBD_MAX_PLAYERS; i++) {
         temp_v0 = MBDGetPlayerStruct(i);
-        temp_a0 = (ObjectDuel *)temp_v0->player_obj;
-        temp_v0->player_obj = (Object *)D_80105520_name_81[i];
+        temp_a0 = temp_v0->player_obj;
+        temp_v0->player_obj = D_80105520_name_81[i];
         D_80105520_name_81[i] = temp_a0;
     }
 
@@ -258,19 +258,19 @@ void func_80100604_name_81(void) {
 
 void func_801007C4_name_81(void) {
     GW_PLAYER *temp_v0;
-    ObjectDuel *temp_a0;
+    Object *temp_a0;
     s32 i;
 
     for (i = 0; i < MBD_MAX_PLAYERS; i++) {
         temp_v0 = MBDGetPlayerStruct(i);
-        temp_a0 = (ObjectDuel *)temp_v0->player_obj;
-        temp_v0->player_obj = (Object *)D_80105520_name_81[i];
+        temp_a0 = temp_v0->player_obj;
+        temp_v0->player_obj = D_80105520_name_81[i];
         D_80105520_name_81[i] = temp_a0;
     }
 
     for (i = 0; i < MBD_MAX_PLAYERS; i++) {
         temp_v0 = MBDGetPlayerStruct(i);
-        MBDModelDispOn((ObjectDuel *)temp_v0->player_obj);
+        MBDModelDispOn(temp_v0->player_obj);
         MBDModelKill(D_80105520_name_81[i]);
     }
 }

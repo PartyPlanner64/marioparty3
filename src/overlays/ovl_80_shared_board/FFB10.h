@@ -1,7 +1,7 @@
 #ifndef _ovl_80_FFB10
 #define _ovl_80_FFB10
 
-#include "common.h"
+#include "common_board.h"
 #include "game/board.h"
 
 void func_800EBF98_shared_board(s16 arg0, s32 arg1);

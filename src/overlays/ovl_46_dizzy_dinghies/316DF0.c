@@ -9,6 +9,8 @@
 #include "math.h"
 #include "overlays/minigame.h"
 
+extern u8 D_800D6A90_main;
+
 extern Vec D_80109740_dizzy_dinghies[];
 extern Vec D_80109788_dizzy_dinghies;
 extern f32 D_801097B0_dizzy_dinghies;
@@ -22,7 +24,9 @@ extern f32 D_801097CC_dizzy_dinghies;
 extern f32 D_801097D0_dizzy_dinghies;
 extern s32 D_801097D4_dizzy_dinghies;
 extern f32 D_801097E0_dizzy_dinghies;
+extern s32 D_801097E8_dizzy_dinghies;
 extern f32 D_80109770_dizzy_dinghies;
+extern f32 D_80109778_dizzy_dinghies;
 extern f32 D_80109780_dizzy_dinghies;
 extern f32 D_80109784_dizzy_dinghies;
 extern Vec D_801097A0_dizzy_dinghies;
@@ -32,12 +36,20 @@ extern s32 D_80109E3C_dizzy_dinghies;
 extern s32 D_80109E40_dizzy_dinghies;
 extern Vec D_80109E44_dizzy_dinghies[][3];
 extern s32 D_801097EC_dizzy_dinghies;
+extern D_80111B50_vine_with_me_Struct D_80109D3C_dizzy_dinghies;
+extern f32 D_80109D70_dizzy_dinghies;
+extern f32 D_80109D74_dizzy_dinghies;
+extern f32 D_80109D78_dizzy_dinghies;
+extern f32 D_80109D7C_dizzy_dinghies;
 extern f32 D_80109D80_dizzy_dinghies;
 extern s16 D_80109E08_dizzy_dinghies[20];
 extern s32 D_80109E30_dizzy_dinghies;
 extern s32 D_80109E34_dizzy_dinghies;
+extern s32 D_8010A020_dizzy_dinghies;
 extern Vec D_8010A028_dizzy_dinghies[20];
 
+void func_80105EB4_dizzy_dinghies(omObjData *object);
+void func_80106970_dizzy_dinghies(omObjData *object);
 void func_80107738_dizzy_dinghies(omObjData *object, u16 player);
 void func_80108E30_dizzy_dinghies(Vec *origin, Vec *p, Vec *q, Vec *out);
 
@@ -90,7 +102,33 @@ void func_80106494_dizzy_dinghies(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", func_8010655C_dizzy_dinghies);
+void func_8010655C_dizzy_dinghies(omObjData *object) {
+    f32 x, y, z;
+    s32 time;
+
+    x = D_80109740_dizzy_dinghies[D_801097EC_dizzy_dinghies].x + 400.0f + D_80109D70_dizzy_dinghies;
+    y = D_80109740_dizzy_dinghies[D_801097EC_dizzy_dinghies].y + 500.0f;
+    z = D_80109740_dizzy_dinghies[D_801097EC_dizzy_dinghies].z;
+    Hu3DModelPosSet(object->model[3], x, y, z);
+    x += cosdf(D_80109D74_dizzy_dinghies + 90.0f) * 77.65f;
+    Hu3DModelPosSet(object->model[2], x, y + sindf(D_80109D74_dizzy_dinghies + 90.0f) * 77.65f, z + 140.0f);
+    Hu3DModelRotSet(object->model[3], 0.0f, 0.0f, D_80109D74_dizzy_dinghies);
+    Hu3DModelRotSet(object->model[2], 0.0f, 0.0f, sindf(D_80109D78_dizzy_dinghies) * D_80109D7C_dizzy_dinghies);
+    D_80109D70_dizzy_dinghies *= 0.9f;
+    if (D_80109D70_dizzy_dinghies > -300.0f) {
+        D_80109D78_dizzy_dinghies += 10.0f;
+        D_80109D7C_dizzy_dinghies *= 0.98f;
+        D_80109D74_dizzy_dinghies *= 0.8f;
+    }
+    time = func_800E6E9C_minigame();
+    if (func_800E6E8C_minigame() == 0) {
+        if (time == 60) {
+            func_8001C814_main(object->model[2], 1, 0);
+        }
+    } else if (time == 15.0 || time == 45.0) {
+        HuAudFXPlay(0x426);
+    }
+}
 
 void func_80106818_dizzy_dinghies(omObjData *object) {
     f32 x, y, z;
@@ -110,7 +148,70 @@ void func_80106818_dizzy_dinghies(omObjData *object) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", func_80106970_dizzy_dinghies);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", func_80106DF4_dizzy_dinghies);
+void func_80106DF4_dizzy_dinghies(omObjData *object) {
+    func_800E1BA8_minigame_ObjData *work;
+    s32 time;
+    s32 i;
+
+    func_80105EB4_dizzy_dinghies(object);
+    if (omPauseChk() + D_800D6A90_main != 0) {
+        return;
+    }
+    time = func_800E6E9C_minigame();
+    switch (func_800E6F40_minigame()) {
+        case 0:
+            if (time == 5) {
+                HuAudFXPlay(0x424);
+                D_801097E8_dizzy_dinghies = func_8004AC98_main(D_8010A020_dizzy_dinghies + 0x428, 0);
+            }
+        case 1:
+            func_8010655C_dizzy_dinghies(object);
+            break;
+        case 2:
+            if (time == 0) {
+                HuAudFXPlay(0x427);
+            }
+            func_80106818_dizzy_dinghies(object);
+            break;
+        case 3:
+            if (time == 15.0) {
+                func_8004AEF0_main(D_801097E8_dizzy_dinghies, 30);
+                D_801097E8_dizzy_dinghies = -1;
+            }
+            if (time == 1) {
+                D_80109778_dizzy_dinghies -= 0.025f;
+            }
+            D_801097E0_dizzy_dinghies *= 0.95f;
+            D_80109D3C_dizzy_dinghies.unk06 = 9;
+        case 4:
+            if (D_800EB934_minigame == 1) {
+                if (D_801097D4_dizzy_dinghies == 0) {
+                    HuAudSeqPlay(0x6B);
+                } else if (D_80109D3C_dizzy_dinghies.unk04 == 1) {
+                    HuAudSeqPlay(0x6A);
+                } else {
+                    HuAudSeqPlay(0x65);
+                }
+            }
+            break;
+        case 5:
+            WipeCreateOut(WIPE_TYPE_NORMAL, 20);
+            object->func = func_80105D64_dizzy_dinghies;
+            func_8004AB0C_main(30);
+            break;
+    }
+    for (i = 0; i < D_800EC280_minigame; i++) {
+        work = D_800EC598_minigame[i]->data;
+        work->unk60 = CRot.y;
+    }
+    if (D_800D530C_main == 1) {
+        WipeCreateOut(WIPE_TYPE_NORMAL, 20);
+        HuAudSeqFadeOut(30);
+        func_8004AB0C_main(30);
+        object->func = func_80105D64_dizzy_dinghies;
+    }
+    func_80106970_dizzy_dinghies(object);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", func_80107098_dizzy_dinghies);
 

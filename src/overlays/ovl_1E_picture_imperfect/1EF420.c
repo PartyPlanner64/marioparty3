@@ -43,6 +43,8 @@ typedef struct PictureImperfectScorePos {
     /* 0x02 */ s16 y;
 } PictureImperfectScorePos; // Size 0x4
 
+extern u32 D_800A178C_main[][6];
+extern s32 D_800A1790_main[][6];
 extern u8 D_800CE20A_main;
 extern u8 D_800D6A90_main;
 
@@ -62,6 +64,8 @@ extern u8 D_8010A054_picture_imperfect;
 extern u8 D_8010A055_picture_imperfect;
 extern u8 D_8010A056_picture_imperfect;
 extern s8 D_8010A014_picture_imperfect;
+extern PictureImperfectScorePos D_8010A018_picture_imperfect[4];
+extern s8 D_8010A028_picture_imperfect;
 extern s8 D_8010A110_picture_imperfect;
 extern s8 D_8010A111_picture_imperfect;
 extern s8 D_8010A112_picture_imperfect[4];
@@ -78,6 +82,7 @@ extern s16 D_8010A154_picture_imperfect;
 extern s16 D_8010A156_picture_imperfect;
 extern s16 D_8010A158_picture_imperfect;
 extern s16 D_8010A15A_picture_imperfect;
+extern s16 D_8010A15C_picture_imperfect[4];
 extern s16 D_8010A168_picture_imperfect[4][5];
 extern s16 D_8010A190_picture_imperfect[4][5];
 extern s16 D_8010A1B8_picture_imperfect[4][5];
@@ -118,6 +123,7 @@ void func_80108A64_picture_imperfect(PictureImperfectWork *work, s8 player);
 void func_80108C20_picture_imperfect(PictureImperfectWork *work, s8 player);
 void func_80109284_picture_imperfect(PictureImperfectWork *work, s8 player);
 void func_80109608_picture_imperfect(omObjData *object);
+void func_80107820_picture_imperfect(omObjData *object);
 void func_80109AC4_picture_imperfect(omObjData *object);
 
 void func_801059A0_picture_imperfect(void) {
@@ -278,7 +284,250 @@ void func_80106154_picture_imperfect(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1E_picture_imperfect/1EF420", func_8010629C_picture_imperfect);
+void func_8010629C_picture_imperfect(omObjData *object) {
+    func_800E1BA8_minigame_ObjData *playerData;
+    PictureImperfectWork *work;
+    s8 character;
+    u32 model;
+    s32 motion;
+    s32 camera;
+    s32 i;
+
+    character = GwPlayer[D_8010A028_picture_imperfect].chr;
+    model = D_800A178C_main[character][0];
+    motion = D_800A1790_main[character][0];
+    func_800E19F0_minigame(1);
+    func_800E1BA8_minigame(object, model, motion, D_8010A028_picture_imperfect, 0x2A9, 0x2B9);
+    playerData = object->data;
+    playerData->unk158 = HuMemAllocTag(sizeof(PictureImperfectWork), TAG_OVERLAY);
+    memset(playerData->unk158, 0, sizeof(PictureImperfectWork));
+    work = playerData->unk158;
+    object->rot.x = object->rot.y = object->rot.z = 0.0f;
+    object->scale.x = object->scale.y = object->scale.z = 1.0f;
+    object->trans.x = 0.0f;
+    object->trans.y = -8.0f;
+    object->trans.z = 0.0f;
+    Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
+    Hu3DModelScaleSet(object->model[1], object->scale.x, object->scale.y, object->scale.z);
+    work->unk10 = 272.0f;
+    object->model[2] = func_8000B108_main(0x3F0000, 0x2B9);
+    Hu3DModelPosSet(object->model[2], object->trans.x, work->unk10, object->trans.z);
+    Hu3DModelScaleSet(object->model[2], 1.2f, 1.2f, 1.2f);
+    object->model[3] = func_8000B108_main(8, 0x88D);
+    switch (D_8010A028_picture_imperfect) {
+        case 0:
+        default:
+            camera = 1;
+            break;
+        case 1:
+            camera = 2;
+            break;
+        case 2:
+            camera = 4;
+            break;
+        case 3:
+            camera = 8;
+            break;
+    }
+    Hu3DModelCameraSet(object->model[0], camera);
+    Hu3DModelCameraSet(object->model[1], camera);
+    Hu3DModelCameraSet(object->model[2], camera);
+    Hu3DModelCameraSet(object->model[3], camera);
+    func_800E149C_minigame(object, 0, 2);
+    func_800E5A00_minigame(object, 0, func_80017BB8_main(character, 0), 1, 0);
+    func_800E5A00_minigame(object, 6, func_80017BB8_main(character, 4), 1, 19);
+    func_800E5A00_minigame(object, 21, func_80017BB8_main(character, 0x1F), 0, 0);
+    func_800E5A00_minigame(object, 13, func_80017BB8_main(character, 0x2F), 1, 120);
+    func_800E5A00_minigame(object, 14, func_80017BB8_main(character, 0x36), 1, 120);
+    func_800E5690_minigame(object, 0);
+    object->func = func_80107820_picture_imperfect;
+    work->unk00 = 0;
+    work->unk01 = 0;
+    work->unk02 = 0;
+    work->unk08 = 0;
+    work->unk03 = 0;
+    work->unk04 = 0;
+    work->unk0A = 0xFF;
+    work->unk0C = 1.0f;
+    work->unk14 = 0.0f;
+    work->unk05 = 0;
+    work->unk06 = 0;
+    work->unk07 = 0;
+    work->unk18 = ((rand8() * 15) >> 7) + 30;
+    switch (D_8010A150_picture_imperfect) {
+        case 0:
+            D_8010A15C_picture_imperfect[D_8010A028_picture_imperfect] = HuSprGrpCreate(1, 0);
+            HuSprGrpMemberSet(D_8010A15C_picture_imperfect[D_8010A028_picture_imperfect], 0, D_8010A230_picture_imperfect, 0);
+            HuSprAttrReset(D_8010A15C_picture_imperfect[D_8010A028_picture_imperfect], 0, 0xFFFF);
+            HuSprAttrSet(D_8010A15C_picture_imperfect[D_8010A028_picture_imperfect], 0, 0x5000);
+            HuSprPosSet(D_8010A15C_picture_imperfect[D_8010A028_picture_imperfect], 0,
+                        D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].x,
+                        D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].y);
+            HuSprPriSet(D_8010A15C_picture_imperfect[D_8010A028_picture_imperfect], 0, 0xFFFF);
+            for (i = 0; i < 5; i++) {
+                D_8010A168_picture_imperfect[D_8010A028_picture_imperfect][i] = espEntry(D_8010A232_picture_imperfect[i], 0, 1);
+                espPosSet(D_8010A168_picture_imperfect[D_8010A028_picture_imperfect][i],
+                          D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].x,
+                          D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].y);
+                espAttrSet(D_8010A168_picture_imperfect[D_8010A028_picture_imperfect][i], 0x5000);
+                espPriSet(D_8010A168_picture_imperfect[D_8010A028_picture_imperfect][i], 0xFFF0);
+                espDispOff(D_8010A168_picture_imperfect[D_8010A028_picture_imperfect][i]);
+                D_8010A190_picture_imperfect[D_8010A028_picture_imperfect][i] = espEntry(D_8010A23C_picture_imperfect[i], 0, 1);
+                espPosSet(D_8010A190_picture_imperfect[D_8010A028_picture_imperfect][i],
+                          D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].x,
+                          D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].y);
+                espAttrSet(D_8010A190_picture_imperfect[D_8010A028_picture_imperfect][i], 0x5000);
+                espPriSet(D_8010A190_picture_imperfect[D_8010A028_picture_imperfect][i], 0xFFF0);
+                espDispOff(D_8010A190_picture_imperfect[D_8010A028_picture_imperfect][i]);
+                D_8010A1B8_picture_imperfect[D_8010A028_picture_imperfect][i] = espEntry(D_8010A246_picture_imperfect[i], 0, 1);
+                espPosSet(D_8010A1B8_picture_imperfect[D_8010A028_picture_imperfect][i],
+                          D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].x,
+                          D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].y);
+                espAttrSet(D_8010A1B8_picture_imperfect[D_8010A028_picture_imperfect][i], 0x5000);
+                espPriSet(D_8010A1B8_picture_imperfect[D_8010A028_picture_imperfect][i], 0xFFF0);
+                espDispOff(D_8010A1B8_picture_imperfect[D_8010A028_picture_imperfect][i]);
+                D_8010A1E0_picture_imperfect[D_8010A028_picture_imperfect][i] = espEntry(D_8010A250_picture_imperfect[i], 0, 1);
+                espPosSet(D_8010A1E0_picture_imperfect[D_8010A028_picture_imperfect][i],
+                          D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].x,
+                          D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].y);
+                espAttrSet(D_8010A1E0_picture_imperfect[D_8010A028_picture_imperfect][i], 0x5000);
+                espPriSet(D_8010A1E0_picture_imperfect[D_8010A028_picture_imperfect][i], 0xFFF0);
+                espDispOff(D_8010A1E0_picture_imperfect[D_8010A028_picture_imperfect][i]);
+                D_8010A208_picture_imperfect[D_8010A028_picture_imperfect][i] = espEntry(D_8010A25A_picture_imperfect[i], 0, 1);
+                espPosSet(D_8010A208_picture_imperfect[D_8010A028_picture_imperfect][i],
+                          D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].x,
+                          D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].y);
+                espAttrSet(D_8010A208_picture_imperfect[D_8010A028_picture_imperfect][i], 0x5000);
+                espPriSet(D_8010A208_picture_imperfect[D_8010A028_picture_imperfect][i], 0xFFF0);
+                espDispOff(D_8010A208_picture_imperfect[D_8010A028_picture_imperfect][i]);
+            }
+            break;
+        case 1:
+            D_8010A15C_picture_imperfect[D_8010A028_picture_imperfect] = HuSprGrpCreate(1, 0);
+            HuSprGrpMemberSet(D_8010A15C_picture_imperfect[D_8010A028_picture_imperfect], 0, D_8010A230_picture_imperfect, 0);
+            HuSprAttrReset(D_8010A15C_picture_imperfect[D_8010A028_picture_imperfect], 0, 0xFFFF);
+            HuSprAttrSet(D_8010A15C_picture_imperfect[D_8010A028_picture_imperfect], 0, 0x5000);
+            HuSprPosSet(D_8010A15C_picture_imperfect[D_8010A028_picture_imperfect], 0,
+                        D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].x,
+                        D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].y);
+            HuSprPriSet(D_8010A15C_picture_imperfect[D_8010A028_picture_imperfect], 0, 0xFFFF);
+            for (i = 0; i < 5; i++) {
+                D_8010A168_picture_imperfect[D_8010A028_picture_imperfect][i] = espEntry(D_8010A232_picture_imperfect[i], 0, 1);
+                espPosSet(D_8010A168_picture_imperfect[D_8010A028_picture_imperfect][i],
+                          D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].x,
+                          D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].y);
+                espAttrSet(D_8010A168_picture_imperfect[D_8010A028_picture_imperfect][i], 0x5000);
+                espPriSet(D_8010A168_picture_imperfect[D_8010A028_picture_imperfect][i], 0xFFF0);
+                espDispOff(D_8010A168_picture_imperfect[D_8010A028_picture_imperfect][i]);
+                D_8010A190_picture_imperfect[D_8010A028_picture_imperfect][i] = espEntry(D_8010A23C_picture_imperfect[i], 0, 1);
+                espPosSet(D_8010A190_picture_imperfect[D_8010A028_picture_imperfect][i],
+                          D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].x,
+                          D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].y);
+                espAttrSet(D_8010A190_picture_imperfect[D_8010A028_picture_imperfect][i], 0x5000);
+                espPriSet(D_8010A190_picture_imperfect[D_8010A028_picture_imperfect][i], 0xFFF0);
+                espDispOff(D_8010A190_picture_imperfect[D_8010A028_picture_imperfect][i]);
+                D_8010A1B8_picture_imperfect[D_8010A028_picture_imperfect][i] = espEntry(D_8010A246_picture_imperfect[i], 0, 1);
+                espPosSet(D_8010A1B8_picture_imperfect[D_8010A028_picture_imperfect][i],
+                          D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].x,
+                          D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].y);
+                espAttrSet(D_8010A1B8_picture_imperfect[D_8010A028_picture_imperfect][i], 0x5000);
+                espPriSet(D_8010A1B8_picture_imperfect[D_8010A028_picture_imperfect][i], 0xFFF0);
+                espDispOff(D_8010A1B8_picture_imperfect[D_8010A028_picture_imperfect][i]);
+                D_8010A1E0_picture_imperfect[D_8010A028_picture_imperfect][i] = espEntry(D_8010A250_picture_imperfect[i], 0, 1);
+                espPosSet(D_8010A1E0_picture_imperfect[D_8010A028_picture_imperfect][i],
+                          D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].x,
+                          D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].y);
+                espAttrSet(D_8010A1E0_picture_imperfect[D_8010A028_picture_imperfect][i], 0x5000);
+                espPriSet(D_8010A1E0_picture_imperfect[D_8010A028_picture_imperfect][i], 0xFFF0);
+                espDispOff(D_8010A1E0_picture_imperfect[D_8010A028_picture_imperfect][i]);
+            }
+            break;
+        case 2:
+        default:
+            D_8010A15C_picture_imperfect[D_8010A028_picture_imperfect] = HuSprGrpCreate(1, 0);
+            HuSprGrpMemberSet(D_8010A15C_picture_imperfect[D_8010A028_picture_imperfect], 0, D_8010A230_picture_imperfect, 0);
+            HuSprAttrReset(D_8010A15C_picture_imperfect[D_8010A028_picture_imperfect], 0, 0xFFFF);
+            HuSprAttrSet(D_8010A15C_picture_imperfect[D_8010A028_picture_imperfect], 0, 0x5000);
+            HuSprPosSet(D_8010A15C_picture_imperfect[D_8010A028_picture_imperfect], 0,
+                        D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].x,
+                        D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].y);
+            HuSprPriSet(D_8010A15C_picture_imperfect[D_8010A028_picture_imperfect], 0, 0xFFFF);
+            for (i = 0; i < 5; i++) {
+                D_8010A168_picture_imperfect[D_8010A028_picture_imperfect][i] = espEntry(D_8010A232_picture_imperfect[i], 0, 1);
+                espPosSet(D_8010A168_picture_imperfect[D_8010A028_picture_imperfect][i],
+                          D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].x,
+                          D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].y);
+                espAttrSet(D_8010A168_picture_imperfect[D_8010A028_picture_imperfect][i], 0x5000);
+                espPriSet(D_8010A168_picture_imperfect[D_8010A028_picture_imperfect][i], 0xFFF0);
+                espDispOff(D_8010A168_picture_imperfect[D_8010A028_picture_imperfect][i]);
+                D_8010A190_picture_imperfect[D_8010A028_picture_imperfect][i] = espEntry(D_8010A23C_picture_imperfect[i], 0, 1);
+                espPosSet(D_8010A190_picture_imperfect[D_8010A028_picture_imperfect][i],
+                          D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].x,
+                          D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].y);
+                espAttrSet(D_8010A190_picture_imperfect[D_8010A028_picture_imperfect][i], 0x5000);
+                espPriSet(D_8010A190_picture_imperfect[D_8010A028_picture_imperfect][i], 0xFFF0);
+                espDispOff(D_8010A190_picture_imperfect[D_8010A028_picture_imperfect][i]);
+                D_8010A1B8_picture_imperfect[D_8010A028_picture_imperfect][i] = espEntry(D_8010A246_picture_imperfect[i], 0, 1);
+                espPosSet(D_8010A1B8_picture_imperfect[D_8010A028_picture_imperfect][i],
+                          D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].x,
+                          D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].y);
+                espAttrSet(D_8010A1B8_picture_imperfect[D_8010A028_picture_imperfect][i], 0x5000);
+                espPriSet(D_8010A1B8_picture_imperfect[D_8010A028_picture_imperfect][i], 0xFFF0);
+                espDispOff(D_8010A1B8_picture_imperfect[D_8010A028_picture_imperfect][i]);
+            }
+            break;
+    }
+    D_8010A26E_picture_imperfect[D_8010A028_picture_imperfect] = espEntry(D_8010A264_picture_imperfect, 0, 1);
+    espPosSet(D_8010A26E_picture_imperfect[D_8010A028_picture_imperfect],
+              D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].x,
+              D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].y);
+    espAttrSet(D_8010A26E_picture_imperfect[D_8010A028_picture_imperfect], 0x1000);
+    espPriSet(D_8010A26E_picture_imperfect[D_8010A028_picture_imperfect], 15);
+    espDispOff(D_8010A26E_picture_imperfect[D_8010A028_picture_imperfect]);
+    D_8010A276_picture_imperfect[D_8010A028_picture_imperfect] = espEntry(D_8010A266_picture_imperfect, 0, 1);
+    espPosSet(D_8010A276_picture_imperfect[D_8010A028_picture_imperfect],
+              D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].x,
+              D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].y);
+    espAttrSet(D_8010A276_picture_imperfect[D_8010A028_picture_imperfect], 0x1000);
+    espPriSet(D_8010A276_picture_imperfect[D_8010A028_picture_imperfect], 15);
+    espDispOff(D_8010A276_picture_imperfect[D_8010A028_picture_imperfect]);
+    D_8010A27E_picture_imperfect[D_8010A028_picture_imperfect] = espEntry(D_8010A266_picture_imperfect, 0, 1);
+    espPosSet(D_8010A27E_picture_imperfect[D_8010A028_picture_imperfect],
+              D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].x,
+              D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].y);
+    espAttrSet(D_8010A27E_picture_imperfect[D_8010A028_picture_imperfect], 0x1000);
+    espPriSet(D_8010A27E_picture_imperfect[D_8010A028_picture_imperfect], 15);
+    espDispOff(D_8010A27E_picture_imperfect[D_8010A028_picture_imperfect]);
+    D_8010A286_picture_imperfect[D_8010A028_picture_imperfect] = espEntry(D_8010A268_picture_imperfect, 0, 1);
+    espPosSet(D_8010A286_picture_imperfect[D_8010A028_picture_imperfect],
+              D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].x,
+              D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].y);
+    espAttrSet(D_8010A286_picture_imperfect[D_8010A028_picture_imperfect], 0x1000);
+    espPriSet(D_8010A286_picture_imperfect[D_8010A028_picture_imperfect], 15);
+    espDispOff(D_8010A286_picture_imperfect[D_8010A028_picture_imperfect]);
+    D_8010A28E_picture_imperfect[D_8010A028_picture_imperfect] = espEntry(D_8010A26A_picture_imperfect, 0, 1);
+    espPosSet(D_8010A28E_picture_imperfect[D_8010A028_picture_imperfect],
+              D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].x,
+              D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].y);
+    espAttrSet(D_8010A28E_picture_imperfect[D_8010A028_picture_imperfect], 0x1000);
+    espPriSet(D_8010A28E_picture_imperfect[D_8010A028_picture_imperfect], 15);
+    espDispOff(D_8010A28E_picture_imperfect[D_8010A028_picture_imperfect]);
+    D_8010A296_picture_imperfect[D_8010A028_picture_imperfect] = espEntry(D_8010A26A_picture_imperfect, 0, 1);
+    espPosSet(D_8010A296_picture_imperfect[D_8010A028_picture_imperfect],
+              D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].x,
+              D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].y);
+    espAttrSet(D_8010A296_picture_imperfect[D_8010A028_picture_imperfect], 0x1000);
+    espPriSet(D_8010A296_picture_imperfect[D_8010A028_picture_imperfect], 15);
+    espDispOff(D_8010A296_picture_imperfect[D_8010A028_picture_imperfect]);
+    D_8010A29E_picture_imperfect[D_8010A028_picture_imperfect] = espEntry(D_8010A26C_picture_imperfect, 0, 1);
+    espPosSet(D_8010A29E_picture_imperfect[D_8010A028_picture_imperfect],
+              D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].x,
+              D_8010A018_picture_imperfect[D_8010A028_picture_imperfect].y);
+    espAttrSet(D_8010A29E_picture_imperfect[D_8010A028_picture_imperfect], 0x1000);
+    espPriSet(D_8010A29E_picture_imperfect[D_8010A028_picture_imperfect], 15);
+    espDispOff(D_8010A29E_picture_imperfect[D_8010A028_picture_imperfect]);
+    D_8010A028_picture_imperfect++;
+}
 
 void func_80107820_picture_imperfect(omObjData *object) {
     func_800E1BA8_minigame_ObjData *playerData;

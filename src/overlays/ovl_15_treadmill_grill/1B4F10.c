@@ -69,6 +69,7 @@ void func_80108C64_treadmill_grill(omObjData *object, f32 x, f32 y, f32 z);
 void func_80108DE0_treadmill_grill(omObjData *object);
 void func_80108FCC_treadmill_grill(omObjData *object);
 void func_80109108_treadmill_grill(omObjData *object);
+void func_80109FA8_treadmill_grill(omObjData *object);
 void func_8010980C_treadmill_grill(omObjData *object);
 void func_8010A548_treadmill_grill(void);
 void func_8010A6A4_treadmill_grill(void);
@@ -284,7 +285,84 @@ void func_801065DC_treadmill_grill(omObjData *object) {
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_801067A8_treadmill_grill);
+const char D_8010B288_treadmill_grill[] = "c201_000-eyes";
+
+void func_801067A8_treadmill_grill(omObjData *object) {
+    D_800EC1C0_minigame_ObjData *work;
+
+    D_800D51FC_main = 1.0f;
+    D_800D5410_main = 1.0f;
+    object->model[0] = func_8000B0A0_main(0x360000, 0xAA9);
+    object->model[1] = func_8000B0A0_main(0x360001, 0xAA9);
+    object->model[2] = func_8000B0A0_main(0x360000, 0xAA9);
+    object->model[3] = func_8000B0A0_main(0x360001, 0xAA9);
+    object->model[4] = func_8000B0A0_main(0x360002, 0xA99);
+    object->model[5] = func_8000B0A0_main(0x360003, 0xA99);
+    object->model[6] = func_8000B0A0_main(0x360003, 0xA99);
+    object->model[7] = func_8000B0A0_main(0x360004, 0xA99);
+    object->model[8] = func_8000B0A0_main(0x360004, 0xA99);
+    D_800D51FC_main = 1.0f;
+    D_800D5410_main = 1.0f;
+    object->model[9] = func_8000B0A0_main(0x360006, 0x299);
+    object->model[10] = D_8010B310_treadmill_grill[D_8010AF80_treadmill_grill++];
+    object->model[11] = D_8010B310_treadmill_grill[D_8010AF80_treadmill_grill++];
+    object->model[12] = D_8010B310_treadmill_grill[D_8010AF80_treadmill_grill++];
+    func_8001C2FC_main(object->model[10], 0x70000000, 0);
+    func_8001C2FC_main(object->model[11], 0x70000000, 0);
+    func_8001C2FC_main(object->model[12], 0x70000000, 0);
+    func_8002FD8C_main(object->model[10], Hu3DData[object->model[10]].motId, D_8010B288_treadmill_grill, 0x4C, 0x46);
+    func_8002FD8C_main(object->model[11], Hu3DData[object->model[11]].motId, D_8010B288_treadmill_grill, 0x4C, 0x46);
+    func_8002FD8C_main(object->model[12], Hu3DData[object->model[12]].motId, D_8010B288_treadmill_grill, 0x4C, 0x46);
+    object->model[13] = func_8000B0A0_main(0x360007, 0xAC9);
+    object->model[14] = Hu3DModelLink(object->model[13]);
+    object->model[15] = Hu3DModelLink(object->model[13]);
+    func_8001C2FC_main(object->model[13], 0x80000000, 0x80000000);
+    func_8001C2FC_main(object->model[14], 0x80000000, 0x80000000);
+    func_8001C2FC_main(object->model[15], 0x80000000, 0x80000000);
+    Hu3DModelRemakeStatic(object->model[13]);
+    Hu3DModelRemakeStatic(object->model[14]);
+    Hu3DModelRemakeStatic(object->model[15]);
+    object->trans.x = 0.0f;
+    object->trans.y = 0.0f;
+    object->trans.z = 0.0f;
+    object->rot.y = 0.0f;
+    Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
+    work = HuMemAllocTag(0xB4, TAG_OVERLAY);
+    object->data = work;
+    memset(work, 0, 0xB4);
+    object->func = func_80109FA8_treadmill_grill;
+    work->unk03 = 1;
+    func_800E13CC_minigame(object, 250.0f, 250.0f, -550.0f, -1050.0f, 550.0f, 150.0f);
+    func_8001C2FC_main(object->model[0], 0x20000, 0x20000);
+    Hu3DModelRemakeStatic(object->model[0]);
+    func_8001C954_main(object->model[0]);
+    func_8001C2FC_main(object->model[1], 0x20000, 0x20000);
+    Hu3DModelRemakeStatic(object->model[1]);
+    func_8001C954_main(object->model[1]);
+    func_8001C2FC_main(object->model[2], 0x20000, 0x20000);
+    Hu3DModelRemakeStatic(object->model[2]);
+    func_8001C954_main(object->model[2]);
+    func_8001C2FC_main(object->model[3], 0x20000, 0x20000);
+    Hu3DModelRemakeStatic(object->model[3]);
+    func_8001C954_main(object->model[3]);
+    Hu3DModelPosSet(object->model[1], 0.0f, 0.0f, -300.0f);
+    Hu3DModelPosSet(object->model[2], 0.0f, 0.0f, -600.0f);
+    Hu3DModelPosSet(object->model[3], 0.0f, 0.0f, -900.0f);
+    func_800E147C_minigame(object);
+    func_800E1304_minigame(object, 0.3f);
+    func_800E131C_minigame(object, 15.0f);
+    func_800E17F4_minigame(object, 1.0f, 1.0f, 1.0f);
+    work->unk04 = 1;
+    Hu3DModelPosSet(object->model[4], 0.0f, 0.0f, 0.0f);
+    Hu3DModelPosSet(object->model[5], 480.0f, 150.0f, 165.0f);
+    Hu3DModelPosSet(object->model[6], -480.0f, 150.0f, 165.0f);
+    Hu3DModelPosSet(object->model[7], 430.0f, 220.0f, 155.0f);
+    Hu3DModelPosSet(object->model[8], -430.0f, 220.0f, 155.0f);
+    Hu3DModelPosSet(object->model[9], 0.0f, 0.0f, -450.0f);
+    Hu3DModelScaleSet(object->model[9], 1.1f, 1.0f, 0.8f);
+    omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    func_8010AE6C_treadmill_grill(object);
+}
 
 void func_80106DA0_treadmill_grill(omObjData *object, s32 model, s32 motion, u16 player, f32 x, f32 y, f32 z) {
     func_800E1BA8_minigame_ObjData *data;
@@ -386,8 +464,6 @@ void func_80107238_treadmill_grill(omObjData *object) {
         D_800D20A1_main[data->unk57] = D_8010B30C_treadmill_grill;
     }
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", D_8010B288_treadmill_grill);
 
 void func_80107454_treadmill_grill(omObjData *object, f32 *x, f32 *y, f32 *z) {
     func_800E1BA8_minigame_ObjData *data;

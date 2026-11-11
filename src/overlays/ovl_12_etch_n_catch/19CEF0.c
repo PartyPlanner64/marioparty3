@@ -21,13 +21,26 @@ typedef struct EtchNCatchNode {
     /* 0x04 */ struct EtchNCatchNode *unk_04;
     /* 0x08 */ struct EtchNCatchNode *unk_08;
     /* 0x0C */ struct EtchNCatchNode *unk_0C;
-    /* 0x10 */ char unk_10[0x28];
-} EtchNCatchNode; // sizeof 0x38
+    /* 0x10 */ char unk_10[8];
+    /* 0x18 */ s16 unk_18; // Grid x
+    /* 0x1A */ s16 unk_1A; // Grid y
+    /* 0x1C */ u8 unk_1C;  // Player index
+    /* 0x1E */ s16 unk_1E; // Model, or -1
+    /* 0x20 */ Vec unk_20;
+    /* 0x2C */ s8 unk_2C;
+    /* 0x30 */ f32 unk_30;
+    /* 0x34 */ u8 unk_34; // Index into D_8010C6E8_etch_n_catch[unk_1C]
+} EtchNCatchNode;         // sizeof 0x38
 
 // Heap-allocated (0x20 bytes) work block; unk_0C is the head of a linked list
 // of nodes (func_80108B64 inserts, func_80108BCC removes, func_80108C08 walks).
 typedef struct EtchNCatchWork {
-    /* 0x00 */ char unk_00[0xC];
+    /* 0x00 */ char unk_00[1];
+    /* 0x01 */ u8 unk_01;
+    /* 0x02 */ char unk_02[2];
+    /* 0x04 */ s16 unk_04; // Grid x
+    /* 0x06 */ s16 unk_06; // Grid y
+    /* 0x08 */ char unk_08[4];
     /* 0x0C */ struct EtchNCatchNode *unk_0C;
     /* 0x10 */ char unk_10[0x10];
 } EtchNCatchWork; // sizeof 0x20
@@ -66,7 +79,9 @@ typedef struct EtchNCatchPlayerData {
     /* 0x168 */ s32 unk168;
     /* 0x16C */ f32 unk16C;
     /* 0x170 */ f32 unk170;
-    /* 0x174 */ char unk174[0x1B8 - 0x174];
+    /* 0x174 */ f32 unk174;
+    /* 0x178 */ Vec unk178[5];
+    /* 0x1B4 */ f32 unk1B4;
 } EtchNCatchPlayerData; // sizeof 0x1B8
 
 // Per-object data of the objects created by func_8010B24C_etch_n_catch.
@@ -81,14 +96,17 @@ typedef struct EtchNCatchBoardWork {
 extern s16 D_8010C6A4_etch_n_catch[2][2];
 extern f32 D_8010C6B0_etch_n_catch;
 extern f32 D_8010C6B8_etch_n_catch;
+extern u8 D_8010C6E8_etch_n_catch[4][3];
+extern u8 D_8010C6F4_etch_n_catch[4];
 extern u8 D_8010C840_etch_n_catch;
 extern u16 D_801113E8_etch_n_catch[4];
 extern s8 D_8010C6AC_etch_n_catch;
 extern s8 D_8010C6AD_etch_n_catch;
 extern omObjData *D_8010C858_etch_n_catch[2];
 extern omObjData *D_8010C860_etch_n_catch[2];
-extern void *D_8010C868_etch_n_catch[4];
+extern EtchNCatchWork *D_8010C868_etch_n_catch[4];
 extern void *D_8010C87C_etch_n_catch[2];
+extern s16 D_80111390_etch_n_catch[4][3];
 extern u16 D_801113A8_etch_n_catch[2];
 extern D_80111B50_vine_with_me_Struct D_801113B0_etch_n_catch;
 
@@ -100,6 +118,7 @@ void func_80109A54_etch_n_catch(omObjData *object);
 void func_8010B24C_etch_n_catch(omObjData *object);
 void func_8010B3B4_etch_n_catch(omObjData *object);
 void func_8010BBE4_etch_n_catch(omObjData *object);
+void func_8010BD98_etch_n_catch(omObjData *object);
 void func_8010BE84_etch_n_catch(omObjData *object);
 void func_8010C390_etch_n_catch(omObjData *object);
 void func_8010C444_etch_n_catch(omObjData *object);
@@ -192,7 +211,24 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", func_8010633
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", func_80106A64_etch_n_catch);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", func_80107D38_etch_n_catch);
+s32 func_80107D38_etch_n_catch(f32 x, f32 z, EtchNCatchWork *work) {
+    s32 result;
+
+    if (work->unk_01 == 3) {
+        if (x < -80.0f && x > -450.0f && z < 300.0f && z > -400.0f) {
+            result = FALSE;
+        } else {
+            result = TRUE;
+        }
+    } else {
+        if (x > 80.0f && x < 450.0f && z < 300.0f && z > -400.0f) {
+            result = FALSE;
+        } else {
+            result = TRUE;
+        }
+    }
+    return result;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", func_80107EA4_etch_n_catch);
 
@@ -251,7 +287,38 @@ void func_80108BCC_etch_n_catch(EtchNCatchNode **head, EtchNCatchNode *node) {
     node->unk_00 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", func_80108C08_etch_n_catch);
+s32 func_80108C08_etch_n_catch(EtchNCatchWork *work) {
+    EtchNCatchNode *node;
+    s32 count = 0;
+    s32 i;
+
+    if (D_8010C868_etch_n_catch[0]->unk_0C == NULL && D_8010C868_etch_n_catch[1]->unk_0C == NULL &&
+        D_8010C868_etch_n_catch[2]->unk_0C == NULL && D_8010C868_etch_n_catch[3]->unk_0C == NULL) {
+        return FALSE;
+    }
+    for (i = 0; i < 4; i++) {
+        for (node = D_8010C868_etch_n_catch[i]->unk_0C; node != NULL; node = node->unk_08) {
+            if (node->unk_18 == work->unk_04 - 1) {
+                count += node->unk_1A == work->unk_06 - 1;
+                count += node->unk_1A == work->unk_06;
+                count += node->unk_1A == work->unk_06 + 1;
+            }
+            if (node->unk_18 == work->unk_04) {
+                count += node->unk_1A == work->unk_06 - 1;
+                count += node->unk_1A == work->unk_06 + 1;
+            }
+            if (node->unk_18 == work->unk_04 + 1) {
+                count += node->unk_1A == work->unk_06 - 1;
+                count += node->unk_1A == work->unk_06;
+                count += node->unk_1A == work->unk_06 + 1;
+            }
+            if (count >= 3) {
+                return TRUE;
+            }
+        }
+    }
+    return FALSE;
+}
 
 // Undoes the "filled" mark on every grid cell appended to the touched-cell list
 // up to (but not including) arg0.
@@ -280,7 +347,47 @@ u8 func_80109114_etch_n_catch(s16 x, s16 y) {
     return *p;
 }
 
+#ifdef NON_MATCHING
+void func_8010914C_etch_n_catch(s16 x, s16 y, s32 value) {
+    u8 *cell;
+
+    *func_801090E0_etch_n_catch(x, y) = value;
+    cell = func_801090E0_etch_n_catch(x - 1, y);
+    if (*cell != (u8)value) {
+        *cell = value * 2;
+    }
+    cell = func_801090E0_etch_n_catch(x + 1, y);
+    if (*cell != (u8)value) {
+        *cell = value * 2;
+    }
+    cell = func_801090E0_etch_n_catch(x, y - 1);
+    if (*cell != (u8)value) {
+        *cell = value * 2;
+    }
+    cell = func_801090E0_etch_n_catch(x, y + 1);
+    if (*cell != (u8)value) {
+        *cell = value * 2;
+    }
+    cell = func_801090E0_etch_n_catch(x - 1, y - 1);
+    if (*cell != (u8)value && *cell != (u8)value * 2) {
+        *cell = value * 4;
+    }
+    cell = func_801090E0_etch_n_catch(x - 1, y + 1);
+    if (*cell != (u8)value && *cell != (u8)value * 2) {
+        *cell = value * 4;
+    }
+    cell = func_801090E0_etch_n_catch(x + 1, y + 1);
+    if (*cell != (u8)value && *cell != (u8)value * 2) {
+        *cell = value * 4;
+    }
+    cell = func_801090E0_etch_n_catch(x + 1, y - 1);
+    if (*cell != (u8)value && *cell != (u8)value * 2) {
+        *cell = value * 4;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", func_8010914C_etch_n_catch);
+#endif
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", D_8010C740_etch_n_catch);
 
@@ -292,7 +399,52 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", D_8010C78
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", func_80109370_etch_n_catch);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", func_801097B4_etch_n_catch);
+void func_801097B4_etch_n_catch(EtchNCatchNode *node) {
+    if (node->unk_2C == 0) {
+        if (D_8010C6F4_etch_n_catch[node->unk_1C] == 0) {
+            if (D_8010C6E8_etch_n_catch[node->unk_1C][0] == 0) {
+                node->unk_1E = D_80111390_etch_n_catch[node->unk_1C][0];
+                node->unk_34 = 0;
+                D_8010C6E8_etch_n_catch[node->unk_1C][0] = 1;
+            } else if (D_8010C6E8_etch_n_catch[node->unk_1C][1] == 0) {
+                node->unk_1E = D_80111390_etch_n_catch[node->unk_1C][1];
+                node->unk_34 = 1;
+                D_8010C6E8_etch_n_catch[node->unk_1C][1] = 1;
+            } else if (D_8010C6E8_etch_n_catch[node->unk_1C][2] == 0) {
+                node->unk_1E = D_80111390_etch_n_catch[node->unk_1C][2];
+                node->unk_34 = 2;
+                D_8010C6E8_etch_n_catch[node->unk_1C][2] = 1;
+            } else {
+                node->unk_1E = -1;
+                node->unk_34 = 0xFF;
+            }
+        } else {
+            node->unk_1E = -1;
+            node->unk_34 = 0xFF;
+        }
+        D_8010C6F4_etch_n_catch[node->unk_1C]++;
+        if (D_8010C6F4_etch_n_catch[node->unk_1C] > 8) {
+            D_8010C6F4_etch_n_catch[node->unk_1C] = 0;
+        }
+    }
+    if (node->unk_1E != -1) {
+        node->unk_2C++;
+        node->unk_30 += 0.05f;
+        if (node->unk_30 > 1.5f) {
+            node->unk_30 = 1.5f;
+        }
+        Hu3DModelScaleSet(node->unk_1E, node->unk_30, node->unk_30, node->unk_30);
+        Hu3DModelPosSet(node->unk_1E, node->unk_20.x, node->unk_20.y, node->unk_20.z);
+        node->unk_20.y += 5.0f;
+        if (node->unk_2C >= 15) {
+            func_8001C258_main(node->unk_1E, 4, 4);
+            D_8010C6E8_etch_n_catch[node->unk_1C][node->unk_34] = 0;
+        } else {
+            func_8001F9E4_main(node->unk_1E, 255 - node->unk_2C * 16);
+            func_8001C258_main(node->unk_1E, 4, 0);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", func_80109A54_etch_n_catch);
 
@@ -300,9 +452,36 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", D_8010C7B
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", func_80109EB8_etch_n_catch);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", func_8010AB7C_etch_n_catch);
+void func_8010AB7C_etch_n_catch(omObjData *object) {
+    EtchNCatchPlayerData *data = object->data;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", func_8010AD6C_etch_n_catch);
+    data->unk1B4 += 7.0f;
+    for (i = 0; i < 5; i++) {
+        Hu3DModelPosSet(object->model[i + 1], data->unk178[i].x * data->unk1B4 * 1.5f + object->trans.x,
+                        data->unk178[i].y * data->unk1B4 + object->trans.y,
+                        data->unk178[i].z * data->unk1B4 * 1.5f + object->trans.z);
+        func_8001F9E4_main(object->model[i + 1], 255.0f - data->unk1B4 * 8.0f);
+        Hu3DModelScaleSet(object->model[i + 1], 3.0f, 3.0f, 3.0f);
+        Hu3DModelRotSet(object->model[i + 1], 0.0f, 90.0f, 0.0f);
+        func_8001C258_main(object->model[i + 1], 4, 0);
+    }
+}
+
+void func_8010AD6C_etch_n_catch(EtchNCatchPlayerData *data) {
+    if (data->unk161 == 0) {
+        data->unk170 += 2.0f;
+        if (ABS(data->unk170 - data->unk174) >= 30.0f) {
+            data->unk161 = 1;
+        }
+    } else {
+        data->unk170 -= 2.0f;
+        if (ABS(data->unk170 - data->unk174) >= 30.0f) {
+            data->unk161 = 0;
+        }
+    }
+    espZRotSet(D_801113E8_etch_n_catch[data->unk160], data->unk170);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", D_8010C7F0_etch_n_catch);
 
@@ -387,9 +566,28 @@ void func_8010B24C_etch_n_catch(omObjData *object) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", func_8010B3B4_etch_n_catch);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", func_8010BBE4_etch_n_catch);
+void func_8010BBE4_etch_n_catch(omObjData *object) {
+    s16 pos[2][2] = { { 35, 38 }, { 252, 38 } };
+    s16 sprite;
+    s16 i;
 
-void func_8010BD98_etch_n_catch(void) {
+    sprite = func_8000B838_main(0x21002A);
+    for (i = 0; i < 2; i++) {
+        espPosSet(espEntry(sprite, 0, 1), pos[i][0], pos[i][1]);
+    }
+    sprite = func_8000B838_main(0x21001B);
+    for (i = 0; i < 2; i++) {
+        espPosSet(espEntry(sprite, 0, 1), pos[i][0] + 16, pos[i][1]);
+    }
+    sprite = func_8000B838_main(0x31);
+    for (i = 0; i < 2; i++) {
+        D_801113A8_etch_n_catch[i] = espEntry(sprite, 0, 1);
+        espPosSet(D_801113A8_etch_n_catch[i], D_8010C6A4_etch_n_catch[i][0], D_8010C6A4_etch_n_catch[i][1]);
+    }
+    object->func = func_8010BD98_etch_n_catch;
+}
+
+void func_8010BD98_etch_n_catch(omObjData *object) {
     func_8000BD50_main(D_801113A8_etch_n_catch[0], (s8)(D_8010C6AC_etch_n_catch % 10));
     espPosSet(D_801113A8_etch_n_catch[0], D_8010C6A4_etch_n_catch[0][0], D_8010C6A4_etch_n_catch[0][1]);
     func_8000BD50_main(D_801113A8_etch_n_catch[1], (s8)(D_8010C6AD_etch_n_catch % 10));
@@ -405,10 +603,10 @@ void func_8010C2F4_etch_n_catch(void) {
     HuMemFree(D_8010C87C_etch_n_catch[0]);
     HuMemFree(D_8010C87C_etch_n_catch[1]);
     for (i = 0; i < 4; i++) {
-        void *mem = D_8010C868_etch_n_catch[i];
+        EtchNCatchWork *work = D_8010C868_etch_n_catch[i];
 
         HuMemFree(D_801113D8_etch_n_catch[i]);
-        HuMemFree(mem);
+        HuMemFree(work);
     }
 }
 
@@ -477,5 +675,3 @@ void func_8010C628_etch_n_catch(EtchNCatchObj *obj, f32 scale) {
     Hu3DModelScaleSet(obj->unk_40[1], obj->unk_30, obj->unk_34, obj->unk_38);
     Hu3DModelScaleSet(obj->unk_40[2], obj->unk_30, obj->unk_34, obj->unk_38);
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", D_8010C820_etch_n_catch);

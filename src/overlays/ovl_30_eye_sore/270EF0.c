@@ -1,5 +1,6 @@
 #include "common.h"
 #include "math.h"
+#include "overlays/minigame.h"
 
 // One entry of the 50 entry object table. Layout derived from the table clear
 // in func_80105A74_eye_sore, which walks 50 entries of 0x84 bytes.
@@ -71,6 +72,16 @@ typedef struct {
     /* 0x10 */ omObjData *unk_10;
 } EyeSoreUnkCBC0; // sizeof 0x14
 
+typedef struct {
+    /* 0x00 */ f32 scissorX;
+    /* 0x04 */ f32 scissorY;
+    /* 0x08 */ f32 scissorWidth;
+    /* 0x0C */ f32 scissorHeight;
+    /* 0x10 */ Vec viewportScale;
+    /* 0x1C */ Vec viewportTranslate;
+    /* 0x28 */ f32 fov;
+} EyeSoreCamera; // sizeof 0x2C
+
 extern EyeSoreEntry D_8010AF70_eye_sore[50];
 extern EyeSoreUnkC938 D_8010C938_eye_sore[];
 extern EyeSoreUnkCA60 D_8010CA60_eye_sore[];
@@ -94,13 +105,19 @@ extern const char *D_8010AC78_eye_sore[];
 extern s8 D_8010AF20_eye_sore;
 extern f32 D_8010AF30_eye_sore[];
 extern u8 D_8010AF6C_eye_sore;
-extern u8 D_8010CA5A_eye_sore;
+extern s8 D_8010CA5A_eye_sore;
+extern s16 D_8010CA58_eye_sore;
+extern s16 D_8010CBB0_eye_sore;
+extern s8 D_8010CC11_eye_sore;
 extern s16 D_8010AF22_eye_sore[];
 extern void *D_8010CC18_eye_sore[][2];
 extern s16 D_8010CBB2_eye_sore;
 extern s16 D_8010CBB4_eye_sore[2];
 extern s16 D_8010CBB8_eye_sore;
 extern s8 D_8010CC10_eye_sore;
+extern s32 D_8010ACF4_eye_sore;
+extern EyeSoreCamera D_8010ACF8_eye_sore[4];
+extern const s16 D_8010AF0C_eye_sore[];
 extern s32 D_800A178C_main[][6];
 
 f32 func_801059BC_eye_sore(f32 arg0, f32 arg1);
@@ -111,6 +128,8 @@ void func_8010AAF8_eye_sore(void);
 void func_801063E8_eye_sore(omObjData *obj, s8 motion);
 void func_80106328_eye_sore(omObjData *obj, s8 sound);
 void func_8010683C_eye_sore(omObjData *obj);
+void func_8010A0CC_eye_sore(omObjData *obj);
+void func_80108AAC_eye_sore(void);
 
 void func_801059A0_eye_sore(void) {
     func_8010AAF8_eye_sore();
@@ -1491,25 +1510,178 @@ void func_8010A0CC_eye_sore(omObjData *obj) {
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_30_eye_sore/270EF0", func_8010A0CC_eye_sore);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_30_eye_sore/270EF0", func_8010A3C0_eye_sore);
+void func_8010A3C0_eye_sore(void) {
+    s8 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_30_eye_sore/270EF0", func_8010A464_eye_sore);
+    for (i = 0; i < 8; i++) {
+        EyeSoreEntry *entry = &D_8010AF70_eye_sore[i + 15];
+        omObjData *obj = omAddObj(0x320, 3, 2, -1, func_8010A0CC_eye_sore);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_30_eye_sore/270EF0", func_8010A528_eye_sore);
+        obj->work[0] = i;
+        entry->obj = obj;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_30_eye_sore/270EF0", func_8010A54C_eye_sore);
+void func_8010A464_eye_sore(void) {
+    u32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_30_eye_sore/270EF0", func_8010A62C_eye_sore);
+    if (D_8010ACF4_eye_sore == 0) {
+        D_8010ACF4_eye_sore = 1;
+        for (i = 0; i < 4; i++) {
+            CZoomM[i] = 1627.4962f;
+            CRotM[i].x = 317.99966f;
+            CRotM[i].y = 0.0f;
+            CRotM[i].z = 0.0f;
+            CenterM[i].x = 0.0f;
+            CenterM[i].y = -45.0f;
+            CenterM[i].z = -85.0f;
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_30_eye_sore/270EF0", func_8010A684_eye_sore);
+void func_8010A528_eye_sore(omObjData *obj) {
+    osViBlack(FALSE);
+    omOvlReturnEx(1);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_30_eye_sore/270EF0", func_8010A8EC_eye_sore);
+void func_8010A54C_eye_sore(omObjData *obj) {
+    s8 i;
+    s8 j;
+
+    if (WipeStatGet() == 0) {
+        for (i = 0; i < 4; i++) {
+            for (j = 0; j < 2; j++) {
+                DataClose(D_8010CC18_eye_sore[i][j]);
+            }
+            Hu3DAnimKill(D_8010AF22_eye_sore[i]);
+        }
+        obj->func = func_8010A528_eye_sore;
+    }
+}
+
+void func_8010A62C_eye_sore(omObjData *obj) {
+    if (D_800D530C_main == 1) {
+        WipeCreateOut(0, 20);
+        obj->func = func_8010A54C_eye_sore;
+        HuAudSeqFadeOut(30);
+        func_8004AB0C_main(30);
+    }
+}
+
+void func_8010A684_eye_sore(omObjData *obj) {
+    switch (D_8010AF20_eye_sore) {
+        case 0:
+            GMesCreate(7);
+            D_8010AF20_eye_sore = 1;
+            D_8010CA58_eye_sore = 0;
+            break;
+        case 1:
+            if (GMesStatGet() == 0) {
+                D_8010AF20_eye_sore = 2;
+                GMesCreate(0x1A, 60, 0xA0, 0x1C);
+            }
+            if (++D_8010CA58_eye_sore == 43) {
+                HuAudSeqPlay(0x35);
+            }
+            break;
+        case 2:
+            D_8010CBB0_eye_sore--;
+            func_8003F578_main((D_8010CBB0_eye_sore + 29) / 30);
+            if (D_8010CA5A_eye_sore != 0) {
+                D_8010AF6C_eye_sore += D_8010CA5A_eye_sore;
+                D_8010CC11_eye_sore += D_8010CA5A_eye_sore;
+                D_8010CA5A_eye_sore = 0;
+                func_80108D3C_eye_sore();
+            }
+            if (D_8010CBB0_eye_sore == 0 || D_8010CC11_eye_sore >= 3) {
+                func_8003F5C0_main();
+                GMesCreate(0x12);
+                HuAudSeqFadeOut(120);
+                D_8010CBB0_eye_sore = 0;
+                D_8010AF20_eye_sore = 3;
+            }
+            break;
+        case 3:
+            if (GMesStatGet() == 0) {
+                if (++D_8010CBB0_eye_sore >= 15) {
+                    func_80108BBC_eye_sore();
+                    if (D_8010CC10_eye_sore != 0) {
+                        HuAudSeqPlay(0x6C);
+                        D_8010CBB0_eye_sore = 144;
+                    } else {
+                        HuAudSeqPlay(0x65);
+                        D_8010CBB0_eye_sore = 98;
+                    }
+                    D_8010AF20_eye_sore = 4;
+                }
+            }
+            break;
+        case 4:
+            if (--D_8010CBB0_eye_sore <= 0) {
+                WipeCreateOut(0, 20);
+                obj->func = func_8010A54C_eye_sore;
+            }
+            break;
+    }
+}
+
+void func_8010A8EC_eye_sore(omObjData *obj) {
+    D_8010AF20_eye_sore = 0;
+    D_8010CBB0_eye_sore = 1800;
+    D_8010CA5A_eye_sore = 0;
+    D_8010CC11_eye_sore = 0;
+    D_8010AF6C_eye_sore = 0;
+    D_8010CC10_eye_sore = 0;
+    func_8010A464_eye_sore();
+    func_80106210_eye_sore();
+    func_80108AAC_eye_sore();
+    func_80109854_eye_sore();
+    func_8010A3C0_eye_sore();
+    WipeCreateIn(0xFF, 16);
+    obj->func = func_8010A684_eye_sore;
+}
 
 void func_8010A97C_eye_sore(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_30_eye_sore/270EF0", func_8010A984_eye_sore);
+void func_8010A984_eye_sore(void) {
+    omObjData *obj;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_30_eye_sore/270EF0", func_8010AAF8_eye_sore);
+    obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
+    obj->work[0] = 4;
+    omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    func_8000B5F0_main(4);
+    func_8000B710_main(4);
+    for (i = 0; i < 4; i++) {
+        ScissorSet(i, D_8010ACF8_eye_sore[i].scissorX, D_8010ACF8_eye_sore[i].scissorY,
+                   D_8010ACF8_eye_sore[i].scissorWidth, D_8010ACF8_eye_sore[i].scissorHeight);
+        ViewportSet(i, D_8010ACF8_eye_sore[i].viewportScale.x, D_8010ACF8_eye_sore[i].viewportScale.y,
+                    D_8010ACF8_eye_sore[i].viewportScale.z, D_8010ACF8_eye_sore[i].viewportTranslate.x,
+                    D_8010ACF8_eye_sore[i].viewportTranslate.y, D_8010ACF8_eye_sore[i].viewportTranslate.z);
+        Hu3DCameraPerspectiveSet(i, D_8010ACF8_eye_sore[i].fov, 80.0f, 8000.0f);
+    }
+}
+
+void func_8010AAF8_eye_sore(void) {
+    func_8001FE20_main(50);
+    func_800142A0_main(50);
+    omInitObjMan(60, 0);
+    func_8004A208_main();
+    func_8010A984_eye_sore();
+    Hu3DGLightMaxSet(1);
+    Hu3DGLightMaxSet(2);
+    Hu3DGLightDirSet(0, -33.0f, 0.0f, 115.0f);
+    Hu3DGLightDirSet(1, -33.0f, 0.0f, 115.0f);
+    Hu3DGLightDirSet(2, -33.0f, 0.0f, 115.0f);
+    D_800EC1B8_minigame = 0;
+    D_800EC280_minigame = 0;
+    D_800EBE28_minigame = 0;
+    func_80045010_main(D_8010AF0C_eye_sore, 0);
+    func_80045010_main(D_8010AF0C_eye_sore, 1);
+    omAddObj(1000, 0, 0, -1, func_8010A8EC_eye_sore);
+    omAddObj(1000, 0, 0, -1, func_8010A62C_eye_sore);
+    func_80105A74_eye_sore();
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_30_eye_sore/270EF0", D_8010AF0C_eye_sore);

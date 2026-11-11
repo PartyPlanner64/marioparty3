@@ -51,6 +51,8 @@ extern s16 D_8010B480_swinging_with_sharks;
 extern f32 D_8010B484_swinging_with_sharks;
 extern SharkPathPoint *D_8010B760_swinging_with_sharks[2];
 extern s16 D_8010B768_swinging_with_sharks;
+extern s16 D_8010B76A_swinging_with_sharks;
+extern s16 D_8010B76C_swinging_with_sharks;
 extern HuMtx4F D_8010B860_swinging_with_sharks;
 extern HuMtx4F D_8010B8A0_swinging_with_sharks;
 extern s16 D_8010B8E0_swinging_with_sharks[50]; // model ids, indexed like D_8010ACEC
@@ -81,6 +83,8 @@ extern f32 D_8010BAE8_swinging_with_sharks;
 extern s16 D_8010BAEC_swinging_with_sharks;
 extern s16 D_8010BAEE_swinging_with_sharks;
 extern s16 D_8010BAF0_swinging_with_sharks[];
+extern s16 D_8010BAF8_swinging_with_sharks[20];
+extern s16 D_8010BB20_swinging_with_sharks[20];
 extern s16 D_8010BB48_swinging_with_sharks;
 extern s16 D_8010BB50_swinging_with_sharks;
 extern Vec D_8010BB54_swinging_with_sharks;
@@ -1164,16 +1168,173 @@ void func_80109C90_swinging_with_sharks(SharkPathPoint *points, s16 model, f32 t
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3F_swinging_with_sharks/2E0D20", func_80109C90_swinging_with_sharks);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3F_swinging_with_sharks/2E0D20", func_8010A0C0_swinging_with_sharks);
+void func_8010A0C0_swinging_with_sharks(void) {
+    s16 model = D_8010B8E0_swinging_with_sharks[47];
+    HmfModel *target;
+    HmfModel *self;
+    HmfMotionNode *node;
+    f32 dx;
+    f32 dy;
+    f32 dz;
+    f32 angle;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3F_swinging_with_sharks/2E0D20", func_8010A260_swinging_with_sharks);
+    if (Hu3DData[model].motId != D_8010B948_swinging_with_sharks[47]) {
+        func_8002FDCC_main(model, Hu3DData[model].motId, "c162_000-atama", 0x4C, 0x46);
+        return;
+    }
+    target = &Hu3DData[D_8010B8E0_swinging_with_sharks[32]];
+    self = &Hu3DData[model];
+    dx = target->pos.x - self->pos.x;
+    dy = target->pos.y - self->pos.y;
+    dz = target->pos.z - self->pos.z;
+    angle = atan2df(dx, dz);
+    func_8002FD8C_main(model, Hu3DData[model].motId, "c162_000-atama", 0x4C, 0x46);
+    node = func_8001D33C_main(model, "c162_000-atama");
+    node->baseRot.y = node->rot.y = angle - self->rot.y;
+    func_8002FD8C_main(model, Hu3DData[model].motId, "c162_000-atama", 0x4C, 0x45);
+    node->baseRot.x = node->rot.x = -atan2df(dy, dz);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3F_swinging_with_sharks/2E0D20", func_8010A41C_swinging_with_sharks);
+void func_8010A260_swinging_with_sharks(void) {
+    s16 model = D_8010B8E0_swinging_with_sharks[33];
+    HmfModel *base = &Hu3DData[D_8010B8E0_swinging_with_sharks[32]];
+    s16 alpha;
+    f32 len;
+    f32 dx;
+    f32 dy;
+    f32 dz;
+    f32 t;
+    f32 x;
+    f32 z;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3F_swinging_with_sharks/2E0D20", func_8010A4DC_swinging_with_sharks);
+    if (base->pos.y < 90.0f) {
+        alpha = (base->pos.y - 40.0f) / 50.0f * 102.0f;
+        if (alpha <= 0) {
+            alpha = 0;
+            func_8001C258_main(model, 4, 4);
+        }
+        func_8001F9E4_main(model, alpha);
+    } else {
+        func_8001C258_main(model, 4, 0);
+        func_8001F9E4_main(model, 102);
+    }
+    len = HuSqrtf(-1.3f * -1.3f + -1.0f * -1.0f + -1.3f * -1.3f);
+    dx = -1.3f / len;
+    dy = -1.0f / len;
+    dz = -1.3f / len;
+    t = 1.0f / dy;
+    if (t < 0.0f) {
+        t = -t;
+    }
+    dx *= t;
+    dz *= t;
+    x = dx * base->pos.y + base->pos.x;
+    z = dz * base->pos.y + base->pos.z;
+    Hu3DModelPosSet(model, x, 0.0f, z);
+}
+
+void func_8010A41C_swinging_with_sharks(void) {
+    s16 i;
+
+    func_8001FA68_main(D_8010B8E0_swinging_with_sharks[46]);
+    func_8001C514_main(D_8010B8E0_swinging_with_sharks[46]);
+    for (i = 0; i < 20; i++) {
+        D_8010BB20_swinging_with_sharks[i] = func_8000B108_main(0xB0031, 0xA8C);
+        D_8010BAF8_swinging_with_sharks[i] = 90;
+        func_8001FA68_main(D_8010BB20_swinging_with_sharks[i]);
+        func_8001C514_main(D_8010BB20_swinging_with_sharks[i]);
+    }
+}
+
+void func_8010A4DC_swinging_with_sharks(void) {
+    HmfModel *source;
+    f32 scale;
+    s16 model;
+    s16 i;
+    s16 j;
+
+    for (i = 0; i < 2; i++) {
+        if (((D_8010B76A_swinging_with_sharks + i * 2) & 7) == 0) {
+            source = &Hu3DData[D_8010BAF0_swinging_with_sharks[i]];
+            if (!(source->pos.y < -100.0f)) {
+                for (j = 0; j < 20; j++) {
+                    if (D_8010BAF8_swinging_with_sharks[j] >= 90) {
+                        D_8010BAF8_swinging_with_sharks[j] = 0;
+                        Hu3DModelPosSet(D_8010BB20_swinging_with_sharks[j], source->pos.x, 0.0f, source->pos.z);
+                        Hu3DModelRotSet(D_8010BB20_swinging_with_sharks[j], 0.0f, source->rot.y, 0.0f);
+                        func_8001C258_main(D_8010BB20_swinging_with_sharks[j], 4, 0);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    model = D_8010B8E0_swinging_with_sharks[46];
+    scale = sindf(D_8010B76A_swinging_with_sharks % 90) * 1.5f + 0.5f;
+    Hu3DModelScaleSet(model, scale, scale, scale);
+    func_8001F9E4_main(model, 255.0f - D_8010B76A_swinging_with_sharks * (255.0f / 90.0f));
+    D_8010B76A_swinging_with_sharks += 2;
+    if (D_8010B9E0_swinging_with_sharks >= 3 &&
+        Hu3DData[D_8010B8E0_swinging_with_sharks[47]].motId == D_8010B948_swinging_with_sharks[49]) {
+        if (D_8010B76A_swinging_with_sharks > 90) {
+            func_8001C258_main(model, 4, 4);
+        }
+        if ((D_8010B76A_swinging_with_sharks & 0xF) == 0) {
+            source = &Hu3DData[D_8010B8E0_swinging_with_sharks[44]];
+            for (j = 0; j < 20; j++) {
+                if (D_8010BAF8_swinging_with_sharks[j] >= 90) {
+                    D_8010BAF8_swinging_with_sharks[j] = 0;
+                    Hu3DModelPosSet(D_8010BB20_swinging_with_sharks[j], source->pos.x, 0.0f, source->pos.z);
+                    Hu3DModelRotSet(D_8010BB20_swinging_with_sharks[j], 0.0f, source->rot.y, 0.0f);
+                    func_8001C258_main(D_8010BB20_swinging_with_sharks[j], 4, 0);
+                    break;
+                }
+            }
+        }
+    }
+    if (D_8010B76A_swinging_with_sharks > 90) {
+        D_8010B76A_swinging_with_sharks = 0;
+    }
+    for (i = 0; i < 20; i++) {
+        if (D_8010BAF8_swinging_with_sharks[i] >= 90) {
+            func_8001C258_main(D_8010BB20_swinging_with_sharks[i], 4, 4);
+        } else {
+            scale = sindf(D_8010BAF8_swinging_with_sharks[i] % 90) * 1.5f;
+            Hu3DModelScaleSet(D_8010BB20_swinging_with_sharks[i], scale, scale, scale);
+            func_8001F9E4_main(D_8010BB20_swinging_with_sharks[i],
+                               128.0f - D_8010BAF8_swinging_with_sharks[i] * (128.0f / 90.0f));
+            D_8010BAF8_swinging_with_sharks[i] += 2;
+        }
+    }
+}
 
 void func_8010AA68_swinging_with_sharks(void) {
     D_8010BB48_swinging_with_sharks = Hu3DData[D_8010B8E0_swinging_with_sharks[44]].rot.y;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3F_swinging_with_sharks/2E0D20", func_8010AAA0_swinging_with_sharks);
+void func_8010AAA0_swinging_with_sharks(void) {
+    s16 model = D_8010B8E0_swinging_with_sharks[44];
+    f32 x;
+    f32 y;
+    f32 z;
+
+    if (D_8010B9E0_swinging_with_sharks >= 3 &&
+        Hu3DData[D_8010B8E0_swinging_with_sharks[47]].motId == D_8010B948_swinging_with_sharks[49]) {
+        if (D_8010B76C_swinging_with_sharks == 0) {
+            Hu3DMotionShiftSet(D_8010B8E0_swinging_with_sharks[model], D_8010B948_swinging_with_sharks[45], 0, 4, 2);
+        }
+        if (++D_8010B76C_swinging_with_sharks >= 30) {
+            if (D_8010BB48_swinging_with_sharks < 90) {
+                D_8010BB48_swinging_with_sharks += 1.5f;
+            }
+            x = Hu3DData[model].pos.x + sindf(D_8010BB48_swinging_with_sharks) * 10.0f;
+            y = Hu3DData[model].pos.y;
+            z = Hu3DData[model].pos.z + cosdf(D_8010BB48_swinging_with_sharks) * 10.0f;
+            Hu3DModelPosSet(model, x, y, z);
+            Hu3DData[model].rot.y = D_8010BB48_swinging_with_sharks;
+            Hu3DData[D_8010B8E0_swinging_with_sharks[47]].pos.x = x;
+            Hu3DData[D_8010B8E0_swinging_with_sharks[47]].pos.z = z;
+            Hu3DData[D_8010B8E0_swinging_with_sharks[47]].rot.y = D_8010BB48_swinging_with_sharks;
+        }
+    }
+}

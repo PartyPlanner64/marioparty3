@@ -72,6 +72,10 @@ extern f32 D_8010C1B8_merry_go_chomp[];
 extern f32 D_8010C1C8_merry_go_chomp[];
 extern f32 D_8010C1D8_merry_go_chomp[][5];
 extern Vec2f D_8010C214_merry_go_chomp;
+extern f32 D_8010C21C_merry_go_chomp[];
+extern f32 D_8010C228_merry_go_chomp[];
+extern s16 D_8010C234_merry_go_chomp[8];
+extern s16 D_8010C244_merry_go_chomp[8];
 extern HuSprite_Unk84_Struct *D_8010C414_merry_go_chomp;
 // Fields of the first entry of D_8010C500_merry_go_chomp are accessed through
 // these separate symbols.
@@ -117,6 +121,7 @@ void func_8010637C_merry_go_chomp(omObjData *obj);
 void func_801064E8_merry_go_chomp(omObjData *);
 void func_80106668_merry_go_chomp(omObjData *obj);
 void func_80106920_merry_go_chomp(omObjData *);
+void func_80109670_merry_go_chomp(omObjData *obj);
 void func_80109A04_merry_go_chomp(omObjData *obj);
 void func_8010A9D0_merry_go_chomp(omObjData *);
 void func_8010AE24_merry_go_chomp(omObjData *obj);
@@ -1285,7 +1290,307 @@ void func_80109670_merry_go_chomp(omObjData *obj) {
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2D_merry_go_chomp/25E110", func_80109670_merry_go_chomp);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2D_merry_go_chomp/25E110", func_80109A04_merry_go_chomp);
+void func_80109A04_merry_go_chomp(omObjData *obj) {
+    f32 angle = 0.0f;
+    MerryGoChompEntry *chomp = &D_8010C500_merry_go_chomp[10];
+    MerryGoChompEntry *entry = &D_8010C500_merry_go_chomp[D_8010DEC8_merry_go_chomp + 5];
+    omObjData *player = entry->obj;
+    D_8010C420_merry_go_chomp_Entry *move = &D_8010C420_merry_go_chomp[player->work[0]];
+    MerryGoChompEntry *fence = &D_8010C500_merry_go_chomp[15];
+    omObjData *fenceObj = fence->obj;
+    omObjData *star = D_8010C500_merry_go_chomp[30].obj;
+    f32 dx;
+    f32 dz;
+    f32 limit;
+    s8 frame;
+    s8 pick;
+
+    switch (D_8010C4B0_merry_go_chomp) {
+        case 9:
+            if (chomp->unk_08 != 0) {
+                chomp->unk_10 = 0;
+                chomp->unk_04 = 0;
+                break;
+            }
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+            if ((s16)chomp->unk_0E > 0) {
+                chomp->unk_0E--;
+                break;
+            }
+            if (chomp->unk_04 == 0) {
+                chomp->unk_04 = 1;
+                pick = func_80105CE4_merry_go_chomp(8);
+                if (chomp->unk_0C != pick) {
+                    chomp->unk_0C = pick;
+                } else {
+                    chomp->unk_0C = (pick + 1) % 8;
+                }
+                chomp->unk_20 = D_8010C234_merry_go_chomp[chomp->unk_0C];
+                chomp->unk_24 = D_8010C244_merry_go_chomp[chomp->unk_0C];
+            }
+            chomp->unk_28 = atan2df(chomp->unk_20 - obj->trans.x, chomp->unk_24 - obj->trans.z);
+            chomp->unk_28 = func_801059BC_merry_go_chomp(chomp->unk_28, 0.0f);
+            func_80105F40_merry_go_chomp(obj, chomp->unk_28);
+            func_80107818_merry_go_chomp(obj, &chomp->unk_18, &chomp->unk_1C, 0.1f);
+            dx = chomp->unk_20 - obj->trans.x;
+            dz = chomp->unk_24 - obj->trans.z;
+            if (dx * dx + dz * dz < 900.0f) {
+                chomp->unk_04 = 0;
+            }
+            if (func_80105CE4_merry_go_chomp(65) == 0) {
+                chomp->unk_0E = func_80105CE4_merry_go_chomp(15) + 15;
+                chomp->unk_04 = 0;
+                chomp->unk_18 = 0.0f;
+                chomp->unk_1C = 0.0f;
+            }
+            break;
+        case 4:
+            switch (chomp->unk_10) {
+                case 0:
+                    func_80105E0C_merry_go_chomp(-450.0f, 0.0f, obj->trans.x, obj->trans.z, &chomp->unk_18,
+                                                 &chomp->unk_1C, &obj->rot.y, 13.0f);
+                    if (chomp->unk_18 + chomp->unk_1C == 0.0f) {
+                        func_80105F40_merry_go_chomp(obj, 90.0f);
+                        if (D_8010C4B2_merry_go_chomp >= 110) {
+                            chomp->unk_10 = 1;
+                        }
+                    }
+                    break;
+                case 1:
+                    if (obj->rot.z < 40.0f) {
+                        obj->rot.z += 4.0f;
+                    }
+                    if (obj->trans.y < 70.0f) {
+                        obj->trans.y += 7.0f;
+                    }
+                    if (obj->trans.x < -350.0f) {
+                        obj->trans.x += 10.0f;
+                    }
+                    if (chomp->unk_06 != 2) {
+                        func_80105DA0_merry_go_chomp(obj, 2, 0, 10, 2);
+                        Hu3DMotionSpeedSet(obj->model[0], 2.0f);
+                        chomp->unk_06 = 2;
+                        chomp->unk_34 = 5.0f;
+                        chomp->unk_38 = 90.0f;
+                    }
+                    if (obj->trans.x <= -350.0f) {
+                        chomp->unk_10 = 3;
+                    }
+                    break;
+                case 2:
+                    if (obj->rot.y > 120.0f) {
+                        chomp->unk_34 = -5.0f;
+                    }
+                    if (obj->rot.y < 60.0f) {
+                        chomp->unk_34 = 5.0f;
+                    }
+                    obj->rot.y += chomp->unk_34;
+                    obj->trans.x = sindf(obj->rot.y) * 100.0f + -700.0f;
+                    obj->trans.z = cosdf(obj->rot.y) * 60.0f;
+                    break;
+            }
+            break;
+        case 5:
+            if (chomp->unk_10 == 2) {
+                if (obj->rot.y > 120.0f) {
+                    chomp->unk_34 = -5.0f;
+                }
+                if (obj->rot.y < 60.0f) {
+                    chomp->unk_34 = 5.0f;
+                }
+                obj->rot.y += chomp->unk_34;
+                obj->trans.x = sindf(obj->rot.y) * 100.0f + -450.0f;
+                obj->trans.z = cosdf(obj->rot.y) * 60.0f;
+            }
+            goto chomp_hit;
+        case 6:
+            if (chomp->unk_06 != 1) {
+                func_80105D38_merry_go_chomp(obj, 1, 2);
+                Hu3DMotionSpeedSet(obj->model[0], 1.0f);
+                chomp->unk_06 = 1;
+            }
+            obj->rot.z = 0.0f;
+            obj->trans.y = 0.0f;
+            obj->trans.x = -450.0f;
+            break;
+        case 7:
+            if (obj->rot.z < 40.0f) {
+                obj->rot.z += 4.0f;
+            }
+            if (obj->trans.y < 70.0f) {
+                obj->trans.y += 7.0f;
+            }
+            if (obj->trans.x < -350.0f) {
+                obj->trans.x += 10.0f;
+            }
+            if (chomp->unk_06 != 2) {
+                func_80105DA0_merry_go_chomp(obj, 2, 0, 10, 2);
+                Hu3DMotionSpeedSet(obj->model[0], 2.0f);
+                chomp->unk_06 = 2;
+                chomp->unk_34 = 5.0f;
+                chomp->unk_38 = 90.0f;
+            }
+            break;
+        case 8:
+        chomp_hit:
+            if (chomp->unk_08 == 0 && entry->unk_04 != 0) {
+                chomp->unk_10 = 3;
+                if (func_80105F40_merry_go_chomp(
+                        obj, atan2df(player->trans.x - obj->trans.x, player->trans.z - obj->trans.z))) {
+                    obj->trans.x = sindf(obj->rot.y) * 100.0f + -450.0f;
+                    obj->trans.z = cosdf(obj->rot.y) * 60.0f;
+                }
+                frame = Hu3DData[obj->model[0]].motTime;
+                if (frame >= 25 && frame < 30) {
+                    Hu3DMotionSpeedSet(obj->model[0], 0.0f);
+                }
+                if (chomp->unk_04 == 10) {
+                    func_8001C258_main(star->model[0], 4, 0);
+                    Hu3DMotionSpeedSet(star->model[0], 1.0f);
+                    Hu3DMotionTimeSet(star->model[0], 0.0f);
+                    star->scale.x = star->scale.y = star->scale.z = 2.5f;
+                    star->trans.x = player->trans.x;
+                    star->trans.y = 250.0f;
+                    star->trans.z = player->trans.z;
+                }
+                if (chomp->unk_04 >= 15) {
+                    obj->trans.x -= 30.0f;
+                }
+                if (++chomp->unk_04 >= 20) {
+                    chomp->unk_08 = 1;
+                    obj->rot.z = 0.0f;
+                    obj->trans.y = 0.0f;
+                    obj->trans.x = -700.0f;
+                    chomp->unk_2C = 100.0f;
+                    Hu3DMotionSpeedSet(obj->model[0], 2.0f);
+                    chomp->unk_20 = player->trans.x;
+                    chomp->unk_24 = player->trans.z;
+                }
+            }
+            break;
+    }
+    switch (chomp->unk_08) {
+        case 0:
+            break;
+        case 1:
+            if (++chomp->unk_0A == 2) {
+                player->rot.y = 0.0f;
+                move->unk_00.z = 0.0f;
+                player->trans.y = 110.0f;
+                player->trans.z += 50.0f;
+                func_80106B9C_merry_go_chomp(player, 3);
+                Hu3DMotionSpeedSet(obj->model[0], 0.0f);
+                HuAudFXPlay(0x476);
+                if (!(GwPlayer[player->work[0]].stat & 1)) {
+                    omVibrate(player->work[0], 10, 0, 10);
+                }
+            } else if (chomp->unk_0A >= 3) {
+                if (player->rot.x < 90.0f) {
+                    player->rot.x += 18.0f;
+                }
+                star->scale.z = star->scale.y = star->scale.x -= 0.49;
+                if (star->scale.x < 0.1) {
+                    func_8001C258_main(star->model[0], 4, 4);
+                }
+            }
+            func_80105E0C_merry_go_chomp(chomp->unk_20, chomp->unk_24, obj->trans.x, obj->trans.z, &chomp->unk_18,
+                                         &chomp->unk_1C, &obj->rot.y, chomp->unk_2C);
+            if (chomp->unk_18 + chomp->unk_1C == 0.0f) {
+                chomp->unk_0A = 0;
+                chomp->unk_2C = 13.0f;
+                chomp->unk_08++;
+            }
+            break;
+        case 2:
+            if (chomp->unk_06 != 0) {
+                func_80105D38_merry_go_chomp(obj, 0, 2);
+                chomp->unk_06 = 0;
+            }
+            func_80105E0C_merry_go_chomp(-500.0f, 0.0f, obj->trans.x, obj->trans.z, &chomp->unk_18, &chomp->unk_1C,
+                                         &angle, chomp->unk_2C);
+            func_80105E0C_merry_go_chomp(-420.0f, 0.0f, player->trans.x, player->trans.z, &move->unk_00.x,
+                                         &move->unk_00.y, &angle, chomp->unk_2C);
+            func_801077D0_merry_go_chomp(player);
+            Hu3DModelPosSet(player->model[1], player->trans.x, 5.0f, player->trans.z);
+            if (chomp->unk_18 + chomp->unk_1C == 0.0f) {
+                chomp->unk_08++;
+                player->rot.x = 0.0f;
+                player->trans.x = obj->trans.x + 100.0f;
+                player->trans.z = obj->trans.z - 90.0f;
+                HuAudFXPlay(0x474);
+            }
+            break;
+        case 3:
+            if (fence->unk_44.y < 280.0f) {
+                fence->unk_44.y += 40.0f;
+            }
+            player->rot.z = 270.0f;
+            func_80105E0C_merry_go_chomp(-400.0f, -280.0f, player->trans.x, player->trans.z, &move->unk_00.x,
+                                         &move->unk_00.y, &angle, chomp->unk_2C);
+            func_801077D0_merry_go_chomp(player);
+            Hu3DModelPosSet(player->model[1], player->trans.x, 5.0f, player->trans.z);
+            func_80105E0C_merry_go_chomp(-500.0f, -200.0f, obj->trans.x, obj->trans.z, &chomp->unk_18,
+                                         &chomp->unk_1C, &obj->rot.y, chomp->unk_2C);
+            if (chomp->unk_18 + chomp->unk_1C == 0.0f) {
+                chomp->unk_08++;
+                player->rot.z = 0.0f;
+                player->trans.y = 65.0f;
+                player->trans.x = obj->trans.x;
+                move->unk_00.x = (D_8010C21C_merry_go_chomp[D_8010C4CE_merry_go_chomp] - player->trans.x) / 16.0f;
+                move->unk_00.y = (D_8010C228_merry_go_chomp[D_8010C4CE_merry_go_chomp] - player->trans.z) / 16.0f;
+                move->unk_00.z = atan2df(move->unk_00.x, move->unk_00.y);
+            }
+            goto fence_pos;
+        case 4:
+            if (chomp->unk_0A < 16) {
+                if (chomp->unk_0A == 0) {
+                    PlayerFXPlay(0x3A, player->work[0]);
+                }
+                player->trans.y += D_8010C160_merry_go_chomp[chomp->unk_0A];
+                func_801077D0_merry_go_chomp(player);
+                player->rot.y = 0.0f;
+                func_80105D38_merry_go_chomp(player, 4, 2);
+                entry->unk_06 = 0;
+                Hu3DMotionSpeedSet(player->model[0], 0.0f);
+                Hu3DModelPosSet(player->model[1], player->trans.x, 5.0f, player->trans.z);
+            }
+            if (chomp->unk_0A == 16) {
+                PlayerFXPlay(0x31, player->work[0]);
+                entry->unk_04 = 2;
+            }
+            if (++chomp->unk_0A >= 11) {
+                func_80105E0C_merry_go_chomp(-500.0f, 100.0f, obj->trans.x, obj->trans.z, &chomp->unk_18,
+                                             &chomp->unk_1C, &obj->rot.y, chomp->unk_2C);
+            }
+            if (chomp->unk_0A == 20) {
+                HuAudFXPlay(0x475);
+            }
+            if (chomp->unk_0A >= 21) {
+                if (fence->unk_44.y > 0.0f) {
+                    fence->unk_44.y -= 40.0f;
+                } else if (chomp->unk_18 + chomp->unk_1C == 0.0f) {
+                    chomp->unk_0A = 0;
+                    chomp->unk_08 = 0;
+                }
+            }
+        fence_pos:
+            Hu3DModelPosSet(fenceObj->model[1], fenceObj->trans.x, fence->unk_44.y, fence->unk_44.z);
+            break;
+    }
+    func_80109670_merry_go_chomp(obj);
+    if (chomp->unk_08 == 1 || chomp->unk_08 == 2) {
+        limit = obj->trans.x + 80.0f;
+        if (player->trans.x < limit) {
+            player->trans.x = limit;
+        }
+    }
+    if (chomp->unk_10 == 0) {
+        Hu3DModelPosSet(obj->model[6], obj->trans.x, 5.0f, obj->trans.z);
+    }
+}
 
 void func_8010A9D0_merry_go_chomp(omObjData *obj) {
     MerryGoChompEntry *chomp = &D_8010C500_merry_go_chomp[10];

@@ -108,6 +108,12 @@ extern s16 D_8010CF1C_curtain_call[2];
 extern s8 D_8010CE80_curtain_call[4];
 extern s8 D_8010CF01_curtain_call;
 extern s8 D_8010CF28_curtain_call[4];
+extern s8 D_8010CF33_curtain_call;
+extern s16 D_8010B23C_curtain_call[6];
+// Columns of a 3 byte per-row table, each accessed through its own symbol.
+extern u8 D_8010B248_curtain_call[][3];
+extern u8 D_8010B249_curtain_call[][3];
+extern u8 D_8010B24A_curtain_call[][3];
 extern s32 D_800A178C_main[][6];
 extern u8 D_800D6A90_main;
 
@@ -117,6 +123,7 @@ void func_80106500_curtain_call(omObjData *);
 void func_80108F28_curtain_call(omObjData *);
 void func_8010A948_curtain_call(omObjData *);
 void func_80109AD0_curtain_call(void);
+void func_8010954C_curtain_call(void);
 void func_801092F0_curtain_call(omObjData *);
 
 void func_801059A0_curtain_call(void) {
@@ -1418,7 +1425,255 @@ void func_80109920_curtain_call(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_80109AD0_curtain_call);
+void func_80109AD0_curtain_call(void) {
+    CurtainCallEntry *entry = D_8010B4B0_curtain_call;
+    omObjData *host = entry->obj;
+    omObjData *curtain = D_8010B4B0_curtain_call[11].obj;
+    s8 order[6];
+    s8 avail[6];
+    s8 pick;
+    s8 count;
+    s8 i;
+    s8 j;
+
+    switch (D_8010CEC1_curtain_call) {
+        case 0:
+            switch (D_8010CEFE_curtain_call) {
+                case 0:
+                    D_8010CEC8_curtain_call[0][0] = D_8010CEC8_curtain_call[2][0] = D_8010CEC8_curtain_call[4][0] = 1;
+                    D_8010CEC8_curtain_call[1][0] = D_8010CEC8_curtain_call[3][0] = D_8010CEC8_curtain_call[5][0] = 0;
+                    pick = func_80105B7C_curtain_call(6);
+                    D_8010CEC8_curtain_call[0][1] = D_8010B248_curtain_call[pick][0];
+                    D_8010CEC8_curtain_call[2][1] = D_8010B249_curtain_call[pick][0];
+                    D_8010CEC8_curtain_call[4][1] = D_8010B24A_curtain_call[pick][0];
+                    D_8010CEC8_curtain_call[1][1] = 3;
+                    D_8010CEC8_curtain_call[3][1] = 4;
+                    D_8010CEC8_curtain_call[5][1] = 5;
+                    break;
+                case 1:
+                case 2:
+                    for (i = 0; i < 6; i++) {
+                        order[i] = i;
+                        avail[i] = TRUE;
+                    }
+                    for (i = 0; i < 6; i++) {
+                        pick = func_80105B7C_curtain_call(6 - i);
+                        D_8010CEC9_curtain_call[i][0] = order[pick];
+                        avail[order[pick]] = FALSE;
+                        for (j = 0, count = 0; j < 6; j++) {
+                            if (avail[j] != 0) {
+                                order[count] = j;
+                                count++;
+                            }
+                        }
+                    }
+                    for (i = 0; i < 6; i++) {
+                        D_8010CEC8_curtain_call[i][0] = 1;
+                        if (D_8010CEFE_curtain_call == 1 && D_8010CEC9_curtain_call[i][0] == 5) {
+                            D_8010CEC8_curtain_call[i][0] = 0;
+                        }
+                    }
+                    break;
+            }
+            switch (D_8010CEFE_curtain_call) {
+                case 0:
+                    D_8010CF1C_curtain_call[0] = 108;
+                    D_8010CF1C_curtain_call[1] = 1000;
+                    break;
+                case 1:
+                    D_8010CF1C_curtain_call[0] = func_80105B7C_curtain_call(75) + 60;
+                    D_8010CF1C_curtain_call[1] = func_80105B7C_curtain_call(105) + 135;
+                    D_8010CE86_curtain_call = func_80105B7C_curtain_call(3);
+                    break;
+                case 2:
+                    D_8010CF1C_curtain_call[0] = func_80105B7C_curtain_call(105) + 60;
+                    D_8010CF1C_curtain_call[1] = func_80105B7C_curtain_call(135) + 165;
+                    D_8010CE86_curtain_call = func_80105B7C_curtain_call(6);
+                    break;
+            }
+            for (i = 0; i < 6; i++) {
+                if (D_8010CEC8_curtain_call[i][0] != 0) {
+                    D_8010CECC_curtain_call[i][0]->trans.x = D_8010B23C_curtain_call[D_8010CEC9_curtain_call[i][0]];
+                } else {
+                    D_8010CECC_curtain_call[i][0]->trans.x = -1500.0f;
+                }
+            }
+            D_8010CF38_curtain_call = 0;
+            D_8010CE84_curtain_call = 0;
+            Hu3DMotionSpeedSet(host->model[0], -1.0f);
+            for (i = 0; i < 6; i++) {
+                switch (D_8010CEFE_curtain_call) {
+                    case 0:
+                        if (D_8010CEC9_curtain_call[i][0] == 2) {
+                            D_8010CF33_curtain_call = i;
+                        }
+                        break;
+                    case 1:
+                        if (D_8010CEC9_curtain_call[i][0] == 4) {
+                            D_8010CF33_curtain_call = i;
+                        }
+                        break;
+                    case 2:
+                        if (D_8010CEC9_curtain_call[i][0] == 5) {
+                            D_8010CF33_curtain_call = i;
+                        }
+                        break;
+                }
+            }
+            func_80109920_curtain_call();
+            D_8010CEC1_curtain_call = 1;
+            break;
+        case 1:
+            if ((s32)Hu3DData[host->model[0]].motTime <= 0) {
+                Hu3DMotionTimeSet(host->model[0], 0.0f);
+                Hu3DMotionSpeedSet(host->model[0], 0.0f);
+                func_8001C258_main(host->model[0], 4, 4);
+            }
+            func_8010954C_curtain_call();
+            if (D_8010CECC_curtain_call[D_8010CF33_curtain_call][0]->trans.x >= 500.0f) {
+                D_8010CEC1_curtain_call = 2;
+                func_8001C258_main(host->model[0], 4, 0);
+                func_8001C258_main(curtain->model[0], 4, 0);
+                func_8001C258_main(curtain->model[1], 4, 0);
+            }
+            break;
+        case 2:
+            Hu3DMotionSpeedSet(host->model[0], 1.0f);
+            if (curtain->trans.x < 0.0f) {
+                curtain->trans.x += 7.0f;
+            } else {
+                curtain->trans.x = 0.0f;
+                HuAudFXPlay(0x298);
+                GMesCreate(0x1A, 10, 160, 28);
+                D_8010CE88_curtain_call = 301;
+                func_80106408_curtain_call();
+                HuAudFXPlay(0x414);
+                D_8010CEC1_curtain_call = 3;
+            }
+            break;
+        case 3:
+            if (D_8010CE88_curtain_call > 0) {
+                D_8010CE88_curtain_call--;
+                func_8003F578_main((D_8010CE88_curtain_call + 29) / 30);
+            } else {
+                func_8003F5C0_main();
+                func_8004AD8C_main(0x414);
+                D_8010CEC1_curtain_call = 4;
+            }
+            break;
+        case 4:
+            if (curtain->trans.x > -450.0f) {
+                curtain->trans.x -= 7.0f;
+                if (curtain->trans.x < -300.0f && D_8010CF00_curtain_call == 0) {
+                    func_8004A670_main(30);
+                    D_8010CF00_curtain_call = 1;
+                }
+            } else {
+                curtain->trans.x = -450.0f;
+                func_8001C258_main(curtain->model[0], 4, 4);
+                func_8001C258_main(curtain->model[1], 4, 4);
+                D_8010CF00_curtain_call = 0;
+                for (i = 0; i < 6; i++) {
+                    if (D_8010CEC8_curtain_call[i][0] != 0) {
+                        switch (D_8010CEFE_curtain_call) {
+                            case 0:
+                                D_8010CECC_curtain_call[i][0]->trans.x =
+                                    D_8010B208_curtain_call[D_8010CEC9_curtain_call[i][0]];
+                                break;
+                            case 1:
+                                D_8010CECC_curtain_call[i][0]->trans.x =
+                                    D_8010B210_curtain_call[D_8010CEC9_curtain_call[i][0]];
+                                break;
+                            case 2:
+                                D_8010CECC_curtain_call[i][0]->trans.x =
+                                    D_8010B21C_curtain_call[D_8010CEC9_curtain_call[i][0]];
+                                break;
+                        }
+                    } else {
+                        D_8010CECC_curtain_call[i][0]->trans.x = -1500.0f;
+                    }
+                }
+                D_8010CEC1_curtain_call = 5;
+                HuAudFXPlay(0x419);
+                func_8010644C_curtain_call();
+            }
+            break;
+        case 5:
+            func_80106494_curtain_call();
+            Hu3DMotionSpeedSet(host->model[0], -1.0f);
+            if ((s32)Hu3DData[host->model[0]].motTime <= 0) {
+                Hu3DMotionTimeSet(host->model[0], 0.0f);
+                Hu3DMotionSpeedSet(host->model[0], 0.0f);
+                func_8001C258_main(host->model[0], 4, 4);
+                HuAudFXPlay(0x522);
+                D_8010CE88_curtain_call = 100;
+                D_8010CEC1_curtain_call = 6;
+            }
+            break;
+        case 6:
+            if (D_8010CE88_curtain_call > 0) {
+                D_8010CE88_curtain_call--;
+                break;
+            }
+            switch (D_8010CEFE_curtain_call) {
+                case 0:
+                case 1:
+                    func_8010982C_curtain_call();
+                    if (D_8010CF01_curtain_call < 3) {
+                        break;
+                    }
+                    D_8010CEFE_curtain_call = 3;
+                    pick = func_80105B7C_curtain_call(2);
+                    for (i = 0; i < 6; i++) {
+                        for (j = 0; j < 6; j++) {
+                            if (D_8010CEC9_curtain_call[i][0] == j) {
+                                entry = &D_8010B4B0_curtain_call[i + 5];
+                                if (pick != 0) {
+                                    entry->unk_06 = D_8010CEC9_curtain_call[i][0] * 5;
+                                } else {
+                                    entry->unk_06 = (5 - j) * 5;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    return;
+                case 2:
+                    func_8010982C_curtain_call();
+                    D_8010CEFE_curtain_call++;
+                    pick = func_80105B7C_curtain_call(2);
+                    for (i = 0; i < 6; i++) {
+                        for (j = 0; j < 6; j++) {
+                            if (D_8010CEC9_curtain_call[i][0] == j) {
+                                entry = &D_8010B4B0_curtain_call[i + 5];
+                                if (pick != 0) {
+                                    entry->unk_06 = D_8010CEC9_curtain_call[i][0] * 5;
+                                } else {
+                                    entry->unk_06 = (5 - j) * 5;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    return;
+            }
+            if (D_8010CF00_curtain_call == 0) {
+                D_8010CF00_curtain_call = 1;
+                func_8004AB0C_main(30);
+                func_8004A72C_main(30);
+            }
+            Hu3DMotionSpeedSet(host->model[0], 1.0f);
+            func_8001C258_main(host->model[0], 4, 0);
+            if ((s32)Hu3DData[host->model[0]].motTime >= 60) {
+                Hu3DMotionTimeSet(host->model[0], 60.0f);
+                Hu3DMotionSpeedSet(host->model[0], 0.0f);
+                D_8010CF00_curtain_call = 0;
+                D_8010CEFE_curtain_call++;
+                D_8010CEC1_curtain_call = 0;
+            }
+            break;
+    }
+}
 
 void func_8010A734_curtain_call(void) {
     u32 i;

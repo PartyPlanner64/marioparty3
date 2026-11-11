@@ -12,7 +12,10 @@ typedef struct PictureImperfectWork {
     /* 0x01 */ s8 unk01;
     /* 0x02 */ s8 unk02;
     /* 0x03 */ s8 unk03;
-    /* 0x04 */ s32 unk04;
+    /* 0x04 */ s8 unk04;
+    /* 0x05 */ s8 unk05;
+    /* 0x06 */ s8 unk06;
+    /* 0x07 */ s8 unk07;
     /* 0x08 */ char unk08[0x8];
     /* 0x10 */ f32 unk10;
     /* 0x14 */ char unk14[0x4];
@@ -20,14 +23,22 @@ typedef struct PictureImperfectWork {
     /* 0x1A */ char unk1A[0x2];
 } PictureImperfectWork; // Size 0x1C
 
+typedef struct PictureImperfectScorePos {
+    /* 0x00 */ s16 x;
+    /* 0x02 */ s16 y;
+} PictureImperfectScorePos; // Size 0x4
+
 extern u8 D_800CE20A_main;
 extern u8 D_800D6A90_main;
 
 extern s16 D_80109FE0_picture_imperfect;
 extern s16 D_80109FE2_picture_imperfect;
+extern u8 D_80109FE4_picture_imperfect;
+extern PictureImperfectScorePos D_80109FE8_picture_imperfect[4];
 extern s32 D_8010A010_picture_imperfect;
 extern u32 D_8010A044_picture_imperfect;
 extern s8 D_8010A014_picture_imperfect;
+extern s16 D_8010A11A_picture_imperfect[4];
 extern D_80111B50_vine_with_me_Struct D_8010A128_picture_imperfect;
 extern u8 D_8010A150_picture_imperfect;
 extern u8 D_8010A151_picture_imperfect;
@@ -47,6 +58,9 @@ extern s16 D_8010A266_picture_imperfect;
 extern s16 D_8010A268_picture_imperfect;
 extern s16 D_8010A26A_picture_imperfect;
 extern s16 D_8010A26C_picture_imperfect;
+extern s16 D_8010A28E_picture_imperfect[4];
+extern s16 D_8010A296_picture_imperfect[4];
+extern s16 D_8010A29E_picture_imperfect[4];
 extern s8 D_8010A2AC_picture_imperfect[5];
 
 void func_80105BA8_picture_imperfect(void);
@@ -366,7 +380,44 @@ void func_80108A64_picture_imperfect(PictureImperfectWork *work, s8 player) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1E_picture_imperfect/1EF420", func_80108C20_picture_imperfect);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1E_picture_imperfect/1EF420", func_80109284_picture_imperfect);
+void func_80109284_picture_imperfect(PictureImperfectWork *work, s8 player) {
+    if (D_8010A11A_picture_imperfect[player] < 30) {
+        if (D_8010A11A_picture_imperfect[player] == 0) {
+            HuAudFXPlay(0x3EC);
+        }
+        func_8000BD50_main(D_8010A28E_picture_imperfect[player], (rand8() * 10U) >> 8);
+        espPosSet(D_8010A28E_picture_imperfect[player], D_80109FE8_picture_imperfect[player].x - 32,
+                  D_80109FE8_picture_imperfect[player].y);
+        espDispOn(D_8010A28E_picture_imperfect[player]);
+        func_8000BD50_main(D_8010A296_picture_imperfect[player], (rand8() * 10U) >> 8);
+        espPosSet(D_8010A296_picture_imperfect[player], D_80109FE8_picture_imperfect[player].x - 12,
+                  D_80109FE8_picture_imperfect[player].y);
+        espDispOn(D_8010A296_picture_imperfect[player]);
+        espPosSet(D_8010A29E_picture_imperfect[player], D_80109FE8_picture_imperfect[player].x + 20,
+                  D_80109FE8_picture_imperfect[player].y + 4);
+        espDispOn(D_8010A29E_picture_imperfect[player]);
+    } else if (D_8010A11A_picture_imperfect[player] == 30) {
+        HuAudFXPlay(0x3ED);
+        if (work->unk04 >= 10) {
+            func_8000BD50_main(D_8010A28E_picture_imperfect[player], work->unk04 / 10);
+            espPosSet(D_8010A28E_picture_imperfect[player], D_80109FE8_picture_imperfect[player].x - 32,
+                      D_80109FE8_picture_imperfect[player].y);
+        } else {
+            espDispOff(D_8010A28E_picture_imperfect[player]);
+        }
+        func_8000BD50_main(D_8010A296_picture_imperfect[player], work->unk04 % 10);
+        espPosSet(D_8010A296_picture_imperfect[player], D_80109FE8_picture_imperfect[player].x - 12,
+                  D_80109FE8_picture_imperfect[player].y);
+    } else if (D_8010A11A_picture_imperfect[player] == 90) {
+        espDispOff(D_8010A296_picture_imperfect[player]);
+        espDispOff(D_8010A28E_picture_imperfect[player]);
+        espDispOff(D_8010A29E_picture_imperfect[player]);
+        if (player == 3) {
+            D_80109FE4_picture_imperfect = 2;
+        }
+    }
+    D_8010A11A_picture_imperfect[player]++;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1E_picture_imperfect/1EF420", func_80109608_picture_imperfect);
 

@@ -123,3 +123,6 @@ D_8010BEEA_swing_n_swipe = D_8010BEE8_swing_n_swipe + 0x2;
 /* swinging_with_sharks: halfword following D_8010B428. */
 D_8010B42A_swinging_with_sharks = D_8010B428_swinging_with_sharks + 0x2;
 D_8010B76A_swinging_with_sharks = D_8010B768_swinging_with_sharks + 0x2;
+
+/* crowd_cover: halfword following D_8010CF80. */
+D_8010CF82_crowd_cover = D_8010CF80_crowd_cover + 0x2;

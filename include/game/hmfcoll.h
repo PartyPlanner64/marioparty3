@@ -24,6 +24,19 @@ typedef struct CollisionGrid {
     /* 0x20 */ CollisionGridCell *cells;
 } CollisionGrid; // sizeof 0x24
 
+typedef struct CollisionFanShape {
+    /* 0x00 */ f32 spread;
+    /* 0x04 */ f32 length;
+    /* 0x08 */ f32 offset;
+} CollisionFanShape; // sizeof 0xC
+
+typedef struct CollisionFan {
+    /* 0x00 */ f32 angle;
+    /* 0x04 */ f32 x;
+    /* 0x08 */ f32 z;
+    /* 0x0C */ CollisionFanShape shape;
+} CollisionFan; // sizeof 0x18
+
 typedef struct Hu3DSphere {
     /* 0x00 */ Vec pos;
     /* 0x0C */ f32 radius;
@@ -39,7 +52,6 @@ f32 func_8002048C_main(f32 x, f32 z, Hu3DPoint *p, Hu3DPoint *q);
 f32 func_800204F4_main(f32 x, f32 y, f32 z, Hu3DPoint *points, Hu3DQuad *quad);
 s32 func_80020604_main(f32 x, f32 z, s16 *face, Hu3DPoint *points);
 void func_8002087C_main(HmfModel *model, HuMtx4F mtx);
-struct CollisionFan;
 void func_80020E94_main(struct CollisionFan *fan, struct HmfModel *model);
 s32 func_80021550_main(f32 x, f32 z, Hu3DPoint *tri);
 void func_80021AF4_main(void);

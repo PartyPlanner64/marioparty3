@@ -3,7 +3,18 @@
 
 #include "ultra64.h"
 
+#include "game/hmfcoll.h"
 #include "game/object.h"
+
+// Per-camera collision work buffer passed to func_80012888_main. Starts with the
+// CollisionFan used by func_80020E94_main; the remainder is used by the custom
+// fan-culling draw in func_8010C738_fridged_bridges.
+typedef struct FridgedBridgesCamCollWork {
+    /* 0x000 */ CollisionFan fan;
+    /* 0x018 */ u16 dlCount[3];
+    /* 0x020 */ HmfData hmf[3]; // copies of the model's HMF with a custom display list
+    /* 0x2B8 */ Gfx gfx[3][100];
+} FridgedBridgesCamCollWork; // sizeof 0xC18
 
 // Per-player state for this minigame. Lives in the `data` pointer (0x5C) of each
 // of the four group 0 player objects.
@@ -34,7 +45,7 @@ typedef struct FridgedBridgesPlayer {
     /* 0x4C */ f32 unk_4C; // CPU speed multiplier
     /* 0x50 */ f32 scale;
     /* 0x54 */ u16 unk_54;
-    /* 0x56 */ s16 unk_56;
+    /* 0x56 */ u16 unk_56;
     /* 0x58 */ u16 unk_58;
     /* 0x5A */ char unk_5A[0x2];
     /* 0x5C */ Vec pos;

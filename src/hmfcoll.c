@@ -38,19 +38,6 @@ typedef struct CollisionRect {
     /* 0x0C */ CollisionExtent extent;
 } CollisionRect; // sizeof 0x14
 
-typedef struct CollisionFanShape {
-    /* 0x00 */ f32 spread;
-    /* 0x04 */ f32 length;
-    /* 0x08 */ f32 offset;
-} CollisionFanShape; // sizeof 0xC
-
-typedef struct CollisionFan {
-    /* 0x00 */ f32 angle;
-    /* 0x04 */ f32 x;
-    /* 0x08 */ f32 z;
-    /* 0x0C */ CollisionFanShape shape;
-} CollisionFan; // sizeof 0x18
-
 static s16 D_800B19E0_main;
 static s16 D_800B19E2_main;
 static s16 D_800B19E4_main;

@@ -11,6 +11,7 @@ extern omObjData *D_800EBE70_minigame[];
 
 extern f32 D_8010AF8C_treadmill_grill[4];
 extern f32 D_8010AF9C_treadmill_grill[4];
+extern f32 D_8010B1A4_treadmill_grill[4];
 extern f32 D_8010B1B4_treadmill_grill[4];
 extern f32 D_8010B1C4_treadmill_grill[4];
 extern Vec D_8010AFB0_treadmill_grill[4];
@@ -21,6 +22,7 @@ extern Vec D_8010B330_treadmill_grill[6];
 extern Vec D_8010B378_treadmill_grill[];
 extern s32 D_8010AF80_treadmill_grill;
 extern u8 D_8010AF84_treadmill_grill[4];
+extern f32 D_8010AF88_treadmill_grill;
 extern Vec D_8010B000_treadmill_grill[3];
 extern s16 D_8010B0D4_treadmill_grill;
 extern u32 D_8010B0D8_treadmill_grill[4];
@@ -67,9 +69,14 @@ void func_80108C64_treadmill_grill(omObjData *object, f32 x, f32 y, f32 z);
 void func_80108DE0_treadmill_grill(omObjData *object);
 void func_80108FCC_treadmill_grill(omObjData *object);
 void func_80109108_treadmill_grill(omObjData *object);
+void func_8010980C_treadmill_grill(omObjData *object);
 void func_8010A548_treadmill_grill(void);
+void func_8010A6A4_treadmill_grill(void);
+void func_8010A754_treadmill_grill(omObjData *object);
+void func_8010A9AC_treadmill_grill(omObjData *object);
 s32 func_8010AA2C_treadmill_grill(f32 x, f32 z);
 s32 func_8010AB9C_treadmill_grill(f32 z);
+void func_8010ACBC_treadmill_grill(omObjData *object);
 void func_8010AE6C_treadmill_grill(omObjData *object);
 
 void func_801059A0_treadmill_grill(void) {
@@ -705,7 +712,7 @@ void func_80109108_treadmill_grill(omObjData *object) {
     }
 }
 
-void func_801093E0_treadmill_grill(s32 arg0, s32 arg1) {
+void func_801093E0_treadmill_grill(omObjData *object, s32 index) {
 }
 
 f32 func_801093E8_treadmill_grill(s32 index) {
@@ -767,7 +774,109 @@ f32 func_801093E8_treadmill_grill(s32 index) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_8010980C_treadmill_grill);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_80109FA8_treadmill_grill);
+void func_80109FA8_treadmill_grill(omObjData *object) {
+    func_800E1BA8_minigame_ObjData *data;
+    omObjData *player;
+    s32 lane;
+    s32 i;
+
+    func_8001E65C_main(object->model[0], D_8010B1A4_treadmill_grill[0], 0.0f, 32, 64);
+    func_8001E65C_main(object->model[1], D_8010B1A4_treadmill_grill[1], 0.0f, 32, 64);
+    func_8001E65C_main(object->model[2], D_8010B1A4_treadmill_grill[2], 0.0f, 32, 64);
+    func_8001E65C_main(object->model[3], D_8010B1A4_treadmill_grill[3], 0.0f, 32, 64);
+    func_8010ACBC_treadmill_grill(object);
+    if (omPauseChk() + D_800D6A90_main != 0) {
+        return;
+    }
+    if (func_800E6E8C_minigame() == 0) {
+        func_80106034_treadmill_grill(object);
+    } else if (func_800E6E8C_minigame() == 2) {
+        Hu3DModelRotSet(object->model[5], 0.0f, 0.0f, D_8010B1A4_treadmill_grill[0] * 1.2f);
+        Hu3DModelRotSet(object->model[6], 0.0f, 0.0f, D_8010B1A4_treadmill_grill[0] * 1.2f);
+        D_8010B1A4_treadmill_grill[0] += D_8010B1B4_treadmill_grill[0];
+        D_8010B1A4_treadmill_grill[1] += D_8010B1B4_treadmill_grill[1];
+        D_8010B1A4_treadmill_grill[2] += D_8010B1B4_treadmill_grill[2];
+        D_8010B1A4_treadmill_grill[3] += D_8010B1B4_treadmill_grill[3];
+        func_8010980C_treadmill_grill(object);
+        if (D_8010B19C_treadmill_grill == -1) {
+            func_8010A548_treadmill_grill();
+            D_8010B19C_treadmill_grill = 0;
+            D_8010B224_treadmill_grill[0] = HuAudFXPlay(0x397);
+            D_8010B224_treadmill_grill[1] = HuAudFXPlay(0x398);
+            D_8010B224_treadmill_grill[2] = HuAudFXPlay(0x399);
+            D_8010B224_treadmill_grill[3] = HuAudFXPlay(0x39A);
+        }
+        if (D_8010B19C_treadmill_grill == 0) {
+            if (D_8010B1D8_treadmill_grill != 0) {
+                func_8010A9AC_treadmill_grill(object);
+                D_8010B1D8_treadmill_grill--;
+            }
+        } else {
+            D_8010B19C_treadmill_grill--;
+            if (D_8010B1D8_treadmill_grill != 0) {
+                func_8010A9AC_treadmill_grill(object);
+                D_8010B1D8_treadmill_grill--;
+            } else {
+                func_8010A754_treadmill_grill(object);
+            }
+        }
+        if (D_8010B19C_treadmill_grill == 0) {
+            if (++D_8010B1D4_treadmill_grill == 90) {
+                func_8010A548_treadmill_grill();
+            }
+            if (++D_8010B1DC_treadmill_grill == 300) {
+                func_8010A6A4_treadmill_grill();
+                for (i = 0; i < 4; i++) {
+                    data = D_800EC598_minigame[i]->data;
+                    if (D_8010AF84_treadmill_grill[i] == 0) {
+                        omVibrate(data->unk59, 20, 0, 20);
+                    }
+                }
+            }
+        }
+        for (i = 0; i < D_800EC280_minigame; i++) {
+            player = D_800EC598_minigame[i];
+            data = player->data;
+            if (D_8010AF84_treadmill_grill[i] == 0 && data->unk53[0] == 1) {
+                lane = func_8010AA2C_treadmill_grill(player->trans.x, player->trans.z);
+                switch (lane) {
+                    case -1:
+                        break;
+                    case 0:
+                    case 1:
+                    case 2:
+                    case 3:
+                        player->trans.x -= D_8010B1B4_treadmill_grill[lane] * 3.125f;
+                        break;
+                }
+            }
+        }
+        D_8010AFAC_treadmill_grill = func_800202A8_main(D_8010AFAC_treadmill_grill + 3.0f);
+        func_80109108_treadmill_grill(object);
+    } else if (func_800E6E8C_minigame() == 3) {
+        if (D_8010B224_treadmill_grill[0] != -1) {
+            HuAudFXStop((s16)D_8010B224_treadmill_grill[0]);
+            D_8010B224_treadmill_grill[0] = -1;
+        }
+        if (D_8010B224_treadmill_grill[1] != -1) {
+            HuAudFXStop((s16)D_8010B224_treadmill_grill[1]);
+            D_8010B224_treadmill_grill[1] = -1;
+        }
+        if (D_8010B224_treadmill_grill[2] != -1) {
+            HuAudFXStop((s16)D_8010B224_treadmill_grill[2]);
+            D_8010B224_treadmill_grill[2] = -1;
+        }
+        if (D_8010B224_treadmill_grill[3] != -1) {
+            HuAudFXStop((s16)D_8010B224_treadmill_grill[3]);
+            D_8010B224_treadmill_grill[3] = -1;
+        }
+        func_801061E8_treadmill_grill(object);
+    }
+    D_8010AF88_treadmill_grill = D_8010AF8C_treadmill_grill[0] / 1100.0f;
+    Hu3DModelScaleSet(object->model[4], D_8010AF88_treadmill_grill, 1.0f, 1.0f);
+    Hu3DModelPosSet(object->model[9], 0.0f, 0.0f, -450.0f);
+    Hu3DModelScaleSet(object->model[9], D_8010AF88_treadmill_grill + 0.1f, 1.0f, 0.8f);
+}
 
 void func_8010A548_treadmill_grill(void) {
     f32 speed;
@@ -831,11 +940,11 @@ void func_8010A754_treadmill_grill(omObjData *object) {
     func_800E13CC_minigame(object, 250.0f, 250.0f, minX - 50.0f, -1050.0f, maxX, 150.0f);
 }
 
-void func_8010A9AC_treadmill_grill(s32 arg0) {
+void func_8010A9AC_treadmill_grill(omObjData *object) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        func_801093E0_treadmill_grill(arg0, i);
+        func_801093E0_treadmill_grill(object, i);
         D_8010B1B4_treadmill_grill[i] += D_8010B1C4_treadmill_grill[i];
     }
 }

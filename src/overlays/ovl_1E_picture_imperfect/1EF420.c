@@ -7,14 +7,35 @@
 #include "game/wipe.h"
 #include "overlays/minigame.h"
 
+typedef struct PictureImperfectWork {
+    /* 0x00 */ s8 unk00;
+    /* 0x01 */ s8 unk01;
+    /* 0x02 */ s8 unk02;
+    /* 0x03 */ s8 unk03;
+    /* 0x04 */ s32 unk04;
+    /* 0x08 */ char unk08[0x8];
+    /* 0x10 */ f32 unk10;
+    /* 0x14 */ char unk14[0x4];
+    /* 0x18 */ s16 unk18;
+    /* 0x1A */ char unk1A[0x2];
+} PictureImperfectWork; // Size 0x1C
+
 extern u8 D_800CE20A_main;
 extern u8 D_800D6A90_main;
 
+extern s16 D_80109FE0_picture_imperfect;
+extern s16 D_80109FE2_picture_imperfect;
 extern s32 D_8010A010_picture_imperfect;
+extern u32 D_8010A044_picture_imperfect;
 extern s8 D_8010A014_picture_imperfect;
 extern D_80111B50_vine_with_me_Struct D_8010A128_picture_imperfect;
 extern u8 D_8010A150_picture_imperfect;
 extern u8 D_8010A151_picture_imperfect;
+extern s16 D_8010A168_picture_imperfect[4][5];
+extern s16 D_8010A190_picture_imperfect[4][5];
+extern s16 D_8010A1B8_picture_imperfect[4][5];
+extern s16 D_8010A1E0_picture_imperfect[4][5];
+extern s16 D_8010A208_picture_imperfect[4][5];
 extern s16 D_8010A230_picture_imperfect;
 extern s16 D_8010A232_picture_imperfect[5];
 extern s16 D_8010A23C_picture_imperfect[5];
@@ -26,6 +47,7 @@ extern s16 D_8010A266_picture_imperfect;
 extern s16 D_8010A268_picture_imperfect;
 extern s16 D_8010A26A_picture_imperfect;
 extern s16 D_8010A26C_picture_imperfect;
+extern s8 D_8010A2AC_picture_imperfect[5];
 
 void func_80105BA8_picture_imperfect(void);
 void func_80105E68_picture_imperfect(D_80111B50_vine_with_me_Struct *arg0);
@@ -196,13 +218,151 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1E_picture_imperfect/1EF420", func_80
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1E_picture_imperfect/1EF420", func_80107820_picture_imperfect);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1E_picture_imperfect/1EF420", func_801081E4_picture_imperfect);
+#ifdef NON_MATCHING
+void func_801081E4_picture_imperfect(omObjData *object) {
+    PictureImperfectWork *work;
+    func_800E1BA8_minigame_ObjData *playerData;
+    s32 chance3;
+    s32 chance2;
+    s32 chance1;
+    u8 roll;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1E_picture_imperfect/1EF420", func_801083C0_picture_imperfect);
+    playerData = object->data;
+    work = playerData->unk158;
+    if (work->unk18 != 0) {
+        work->unk18--;
+        return;
+    }
+    switch (GwPlayer[playerData->unk59].cpu_difficulty) {
+        case 3:
+            chance3 = 9;
+            chance2 = 7;
+            chance1 = 5;
+            break;
+        case 2:
+            chance3 = 30;
+            chance2 = 10;
+            chance1 = 5;
+            break;
+        case 1:
+        default:
+            chance3 = 75;
+            chance2 = 40;
+            chance1 = 20;
+            break;
+        case 0:
+            chance3 = 90;
+            chance2 = 70;
+            chance1 = 40;
+            break;
+    }
+    roll = (rand8() * 100) >> 8;
+    if (roll < chance1) {
+        if (work->unk01 != 4) {
+            return;
+        }
+    } else if (roll < chance2) {
+        if (work->unk01 != 3) {
+            return;
+        }
+    } else if (roll < chance3) {
+        if (work->unk01 != 2) {
+            return;
+        }
+    } else if (roll < chance2) {
+        if (work->unk01 != 1) {
+            return;
+        }
+    } else if (work->unk01 != 0) {
+        return;
+    }
+    D_800D5558_main[playerData->unk57] |= A_BUTTON;
+    work->unk18 = ((rand8() * 15) >> 6) + 30;
+}
+#else
+INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1E_picture_imperfect/1EF420", func_801081E4_picture_imperfect);
+#endif
+
+void func_801083C0_picture_imperfect(s8 player) {
+    if (player == 0) {
+        if (D_8010A044_picture_imperfect % 10 == 9) {
+            if (++D_8010A2AC_picture_imperfect[0] >= 5) {
+                D_8010A2AC_picture_imperfect[0] = 0;
+            }
+            if (D_80109FE0_picture_imperfect == -1 && D_80109FE2_picture_imperfect == 1) {
+                D_80109FE0_picture_imperfect = HuAudFXPlay(0x3F4);
+            }
+        }
+        if (D_8010A044_picture_imperfect % 8 == 7) {
+            if (++D_8010A2AC_picture_imperfect[2] >= 5) {
+                D_8010A2AC_picture_imperfect[2] = 0;
+            }
+            if (D_80109FE0_picture_imperfect == -1 && D_80109FE2_picture_imperfect == 1) {
+                D_80109FE0_picture_imperfect = HuAudFXPlay(0x3F4);
+            }
+        }
+        if (D_8010A044_picture_imperfect % 6 == 5) {
+            if (++D_8010A2AC_picture_imperfect[3] >= 5) {
+                D_8010A2AC_picture_imperfect[3] = 0;
+            }
+            if (D_80109FE0_picture_imperfect == -1 && D_80109FE2_picture_imperfect == 1) {
+                D_80109FE0_picture_imperfect = HuAudFXPlay(0x3F4);
+            }
+        }
+        if (D_8010A044_picture_imperfect % 4 == 3) {
+            if (++D_8010A2AC_picture_imperfect[4] >= 5) {
+                D_8010A2AC_picture_imperfect[4] = 0;
+            }
+            if (D_80109FE0_picture_imperfect == -1 && D_80109FE2_picture_imperfect == 1) {
+                D_80109FE0_picture_imperfect = HuAudFXPlay(0x3F4);
+            }
+        }
+        if (D_8010A044_picture_imperfect % 2 == 1) {
+            if (++D_8010A2AC_picture_imperfect[1] >= 5) {
+                D_8010A2AC_picture_imperfect[1] = 0;
+            }
+            if (D_80109FE0_picture_imperfect == -1 && D_80109FE2_picture_imperfect == 1) {
+                D_80109FE0_picture_imperfect = HuAudFXPlay(0x3F4);
+            }
+        }
+    } else if (player == 3) {
+        D_8010A044_picture_imperfect++;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1E_picture_imperfect/1EF420", func_80108688_picture_imperfect);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1E_picture_imperfect/1EF420", func_80108A64_picture_imperfect);
+void func_80108A64_picture_imperfect(PictureImperfectWork *work, s8 player) {
+    s32 i;
+
+    switch (work->unk00) {
+        case 0:
+            for (i = 0; i < 5; i++) {
+                espDispOff(D_8010A168_picture_imperfect[player][i]);
+            }
+            break;
+        case 1:
+            for (i = 0; i < 5; i++) {
+                espDispOff(D_8010A190_picture_imperfect[player][i]);
+            }
+            break;
+        case 2:
+            for (i = 0; i < 5; i++) {
+                espDispOff(D_8010A1B8_picture_imperfect[player][i]);
+            }
+            break;
+        case 3:
+            for (i = 0; i < 5; i++) {
+                espDispOff(D_8010A1E0_picture_imperfect[player][i]);
+            }
+            break;
+        case 4:
+            for (i = 0; i < 5; i++) {
+                espDispOff(D_8010A208_picture_imperfect[player][i]);
+            }
+            break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1E_picture_imperfect/1EF420", func_80108C20_picture_imperfect);
 

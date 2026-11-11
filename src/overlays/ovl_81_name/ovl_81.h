@@ -409,7 +409,7 @@ void func_800EAF94_name_81(void);
 s32 func_800F8980_name_81(s32 playerIndex);
 u16 MBDMotionCheck(Object *);
 u16 func_800D92A8_name_81(Object *);
-void func_800EEC40_name_81(Vec *);
+Object *func_800EEC40_name_81(Vec *);
 void func_800FC5B4_name_81(void (*)(void));
 void func_800FD620_name_81(void);
 

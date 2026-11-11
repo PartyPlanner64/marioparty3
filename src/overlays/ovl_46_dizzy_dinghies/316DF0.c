@@ -36,6 +36,15 @@ extern s32 D_80109E3C_dizzy_dinghies;
 extern s32 D_80109E40_dizzy_dinghies;
 extern Vec D_80109E44_dizzy_dinghies[][3];
 extern s32 D_801097EC_dizzy_dinghies;
+extern Vec D_801097F0_dizzy_dinghies[];
+extern Vec D_801098BC_dizzy_dinghies[];
+extern s8 D_80109988_dizzy_dinghies[];
+extern Vec D_8010999C_dizzy_dinghies[];
+extern Vec D_80109A80_dizzy_dinghies[];
+extern s8 D_80109B64_dizzy_dinghies[];
+extern Vec D_80109B78_dizzy_dinghies[];
+extern Vec D_80109C50_dizzy_dinghies[];
+extern s8 D_80109D28_dizzy_dinghies[];
 extern D_80111B50_vine_with_me_Struct D_80109D3C_dizzy_dinghies;
 extern f32 D_80109D70_dizzy_dinghies;
 extern f32 D_80109D74_dizzy_dinghies;
@@ -146,7 +155,96 @@ void func_80106818_dizzy_dinghies(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", func_80106970_dizzy_dinghies);
+void func_80106970_dizzy_dinghies(omObjData *object) {
+    f32 x, y, z;
+    f32 rotX, rotY, rotZ;
+    f32 dx, dz;
+    f32 scale;
+    s32 type;
+    s32 count0;
+    s32 count1;
+    s32 count2;
+    s32 i;
+
+    count2 = 0;
+    count1 = 0;
+    count0 = 0;
+    for (i = 0; i < 30; i++) {
+        func_8001C258_main(object->model[i + 9], 4, 4);
+    }
+    for (i = 0;; i++) {
+        switch (D_801097EC_dizzy_dinghies) {
+            case 0:
+                type = D_80109988_dizzy_dinghies[i];
+                x = D_801097F0_dizzy_dinghies[i].x;
+                y = D_801097F0_dizzy_dinghies[i].y;
+                z = D_801097F0_dizzy_dinghies[i].z;
+                rotX = D_801098BC_dizzy_dinghies[i].x;
+                rotY = D_801098BC_dizzy_dinghies[i].y;
+                rotZ = D_801098BC_dizzy_dinghies[i].z;
+                break;
+            case 1:
+                type = D_80109B64_dizzy_dinghies[i];
+                x = D_8010999C_dizzy_dinghies[i].x;
+                y = D_8010999C_dizzy_dinghies[i].y;
+                z = D_8010999C_dizzy_dinghies[i].z;
+                rotX = D_80109A80_dizzy_dinghies[i].x;
+                rotY = D_80109A80_dizzy_dinghies[i].y;
+                rotZ = D_80109A80_dizzy_dinghies[i].z;
+                break;
+            case 2:
+                type = D_80109D28_dizzy_dinghies[i];
+                x = D_80109B78_dizzy_dinghies[i].x;
+                y = D_80109B78_dizzy_dinghies[i].y;
+                z = D_80109B78_dizzy_dinghies[i].z;
+                rotX = D_80109C50_dizzy_dinghies[i].x;
+                rotY = D_80109C50_dizzy_dinghies[i].y;
+                rotZ = D_80109C50_dizzy_dinghies[i].z;
+                break;
+        }
+        if (type == -1) {
+            break;
+        }
+        dx = Center.x - x;
+        dz = Center.z - z;
+        if (HuSqrtf(dx * dx + dz * dz) < 2500.0f) {
+            switch (type) {
+                case 0:
+                    if (count0 < 5) {
+                        Hu3DModelPosSet(object->model[count0 + 9], x, y, z);
+                        Hu3DModelRotSet(object->model[count0 + 9], rotX, rotY, rotZ);
+                        Hu3DModelScaleSet(object->model[count0 + 9], 1.5f, 1.5f, 1.5f);
+                        func_8001C258_main(object->model[count0 + 9], 4, 0);
+                        count0++;
+                    }
+                    break;
+                case 1:
+                    if (count1 < 5) {
+                        Hu3DModelPosSet(object->model[count1 + 19], x, y, z);
+                        Hu3DModelRotSet(object->model[count1 + 19], rotX, rotY, rotZ);
+                        Hu3DModelScaleSet(object->model[count1 + 19], 1.5f, 1.5f, 1.5f);
+                        func_8001C258_main(object->model[count1 + 19], 4, 0);
+                        count1++;
+                    }
+                    break;
+                case 2:
+                    if (count2 < 5) {
+                        if (D_801097EC_dizzy_dinghies == 1) {
+                            scale = 0.8f;
+                        } else {
+                            scale = 1.5f;
+                        }
+                        Hu3DModelPosSet(object->model[count2 + 29], x, y, z);
+                        Hu3DModelRotSet(object->model[count2 + 29], rotX, rotY, rotZ);
+                        Hu3DModelScaleSet(object->model[count2 + 29], scale, scale, scale);
+                        func_8001C258_main(object->model[count2 + 29], 4, 0);
+                        count2++;
+                    }
+                    break;
+            }
+        }
+    }
+}
 
 void func_80106DF4_dizzy_dinghies(omObjData *object) {
     func_800E1BA8_minigame_ObjData *work;

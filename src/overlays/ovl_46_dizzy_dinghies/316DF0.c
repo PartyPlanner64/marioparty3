@@ -72,8 +72,13 @@ extern s16 D_80109DFC_dizzy_dinghies;
 extern s16 D_80109DFE_dizzy_dinghies;
 extern s16 D_80109E00_dizzy_dinghies;
 extern s16 D_80109E08_dizzy_dinghies[20];
+extern s32 D_80109E04_dizzy_dinghies;
 extern s32 D_80109E30_dizzy_dinghies;
 extern s32 D_80109E34_dizzy_dinghies;
+extern Vec D_80109F60_dizzy_dinghies[6];
+extern f32 D_80109FA8_dizzy_dinghies[6];
+extern Vec D_80109FC0_dizzy_dinghies[6];
+extern f32 D_8010A008_dizzy_dinghies[6];
 extern s32 D_8010A020_dizzy_dinghies;
 extern Vec D_8010A028_dizzy_dinghies[20];
 
@@ -669,7 +674,73 @@ void func_80107DE8_dizzy_dinghies(omObjData *object) {
     func_80107738_dizzy_dinghies(object, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", func_80107E04_dizzy_dinghies);
+void func_80107E04_dizzy_dinghies(omObjData *object, f32 speed) {
+    f32 angle;
+    f32 offset;
+    f32 backAngle;
+    f32 scale;
+    f32 leftX, leftZ;
+    f32 rightX, rightZ;
+    s32 idx;
+    s32 i;
+
+    angle = ((func_800E1BA8_minigame_ObjData *)object->data)->unk3C;
+    idx = D_80109E04_dizzy_dinghies + 1;
+    idx = (idx != 6) ? idx : 0;
+    D_80109E04_dizzy_dinghies = idx;
+    D_8010A008_dizzy_dinghies[idx] = 1.0f;
+    D_80109FA8_dizzy_dinghies[idx] = speed * 10.0f;
+    offset = (rand8() - 128) / 4;
+    D_80109F60_dizzy_dinghies[idx].x = sindf(angle + 180.0f) * 150.0f + object->trans.x + sindf(angle + 90.0f) + offset;
+    D_80109F60_dizzy_dinghies[idx].y = object->trans.y;
+    D_80109F60_dizzy_dinghies[idx].z = cosdf(angle + 180.0f) * 150.0f + object->trans.z + sindf(angle + 90.0f) + offset;
+    offset = (rand8() - 128) / 4;
+    backAngle = angle + 180.0f + offset;
+    D_80109FC0_dizzy_dinghies[idx].x = sindf(backAngle);
+    D_80109FC0_dizzy_dinghies[idx].z = cosdf(backAngle);
+    if (D_8010A020_dizzy_dinghies == 2) {
+        for (i = 0; i < 6; i++) {
+            if (D_80109FA8_dizzy_dinghies[i] > 0.0f) {
+                leftX = sindf(angle + 90.0f) * 60.0f;
+                leftZ = cosdf(angle + 90.0f) * 60.0f;
+                rightX = sindf(angle + 90.0f) * -60.0f;
+                rightZ = cosdf(angle + 90.0f) * -60.0f;
+                D_80109F60_dizzy_dinghies[i].x += D_80109FC0_dizzy_dinghies[i].x * D_80109FA8_dizzy_dinghies[i] * speed;
+                D_80109F60_dizzy_dinghies[i].y -= 20.0f;
+                D_80109F60_dizzy_dinghies[i].z += D_80109FC0_dizzy_dinghies[i].z * D_80109FA8_dizzy_dinghies[i] * speed;
+                D_8010A008_dizzy_dinghies[i] *= 1.3f;
+                scale = speed * D_8010A008_dizzy_dinghies[i];
+                Hu3DModelPosSet(object->model[i + 1], leftX + D_80109F60_dizzy_dinghies[i].x,
+                                D_80109F60_dizzy_dinghies[i].y, leftZ + D_80109F60_dizzy_dinghies[i].z);
+                Hu3DModelScaleSet(object->model[i + 1], scale, scale, scale);
+                func_8001C258_main(object->model[i + 1], 4, 0);
+                Hu3DModelPosSet(object->model[i + 7], rightX + D_80109F60_dizzy_dinghies[i].x,
+                                D_80109F60_dizzy_dinghies[i].y, rightZ + D_80109F60_dizzy_dinghies[i].z);
+                Hu3DModelScaleSet(object->model[i + 7], scale, scale, scale);
+                func_8001C258_main(object->model[i + 7], 4, 0);
+            } else {
+                func_8001C258_main(object->model[i + 1], 4, 4);
+                func_8001C258_main(object->model[i + 7], 4, 4);
+            }
+        }
+    } else {
+        for (i = 0; i < 6; i++) {
+            if (D_80109FA8_dizzy_dinghies[i] > 0.0f) {
+                D_80109F60_dizzy_dinghies[i].x += D_80109FC0_dizzy_dinghies[i].x * D_80109FA8_dizzy_dinghies[i] * speed;
+                D_80109F60_dizzy_dinghies[i].y -= 20.0f;
+                D_80109F60_dizzy_dinghies[i].z += D_80109FC0_dizzy_dinghies[i].z * D_80109FA8_dizzy_dinghies[i] * speed;
+                Hu3DModelPosSet(object->model[i + 1], D_80109F60_dizzy_dinghies[i].x, D_80109F60_dizzy_dinghies[i].y,
+                                D_80109F60_dizzy_dinghies[i].z);
+                D_8010A008_dizzy_dinghies[i] *= 1.3f;
+                scale = speed * D_8010A008_dizzy_dinghies[i];
+                Hu3DModelScaleSet(object->model[i + 1], scale, scale, scale);
+                func_8001C258_main(object->model[i + 1], 4, 0);
+            } else {
+                func_8001C258_main(object->model[i + 1], 4, 4);
+            }
+        }
+    }
+}
 
 s32 func_80108488_dizzy_dinghies(omObjData *object, s16 value) {
     s32 sum;

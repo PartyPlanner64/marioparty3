@@ -3,23 +3,8 @@
 #include "gcc/memory.h"
 #include "overlays/minigame.h"
 
-// Per-object state for this minigame. Lives in the `data` pointer (0x5C) of the
-// omObjData for the players as well as for the boulder. func_800D6B70_minigame
-// walks it every frame: it places the model using `size` scaled by sin/cos of
-// `phase`, and dispatches the nine callback slots at 0x84.
-typedef struct BoulderBallData {
-    /* 0x00 */ char unk_00[0x38];
-    /* 0x38 */ f32 unk_38;
-    /* 0x3C */ f32 phase;
-    /* 0x40 */ f32 size;
-    /* 0x44 */ char unk_44[0x12];
-    /* 0x56 */ u16 unk_56;
-    /* 0x58 */ char unk_58[0x20];
-    /* 0x78 */ s32 unk_78;
-    /* 0x7C */ char unk_7C[0x30];
-} BoulderBallData; // sizeof 0xAC
-
 extern s32 D_800A178C_main[][6];
+extern f32 D_800EB724_minigame;
 extern u16 D_800EC288_minigame;
 extern Vec D_800EC298_minigame[];
 
@@ -30,6 +15,8 @@ extern Vec D_80109738_boulder_ball;
 extern s32 D_8010975C_boulder_ball;
 extern f32 D_801097A4_boulder_ball[4];
 extern s32 D_801097C4_boulder_ball;
+extern s32 D_801097CC_boulder_ball;
+extern s32 D_801097D0_boulder_ball;
 extern u16 D_8010988E_boulder_ball;
 extern u16 D_80109892_boulder_ball;
 extern s8 D_80109897_boulder_ball;
@@ -40,6 +27,11 @@ void func_80106DAC_boulder_ball(omObjData *object, s32 model, s32 motion, u16 pl
 s32 func_8010707C_boulder_ball(omObjData *object, omObjData *other);
 s32 func_80107194_boulder_ball(omObjData *object);
 s32 func_80107298_boulder_ball(omObjData *object);
+s32 func_80108CF4_boulder_ball(omObjData *object);
+s32 func_80108E5C_boulder_ball(omObjData *object);
+void func_801093B8_boulder_ball(omObjData *object);
+s32 func_80109410_boulder_ball(omObjData *object);
+s32 func_801095A0_boulder_ball(omObjData *object);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_04_boulder_ball/12DD30", func_801059A0_boulder_ball);
 
@@ -49,7 +41,43 @@ void func_80105E74_boulder_ball(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_04_boulder_ball/12DD30", func_80105EA0_boulder_ball);
+void func_80105EA0_boulder_ball(void) {
+    f32 minY = 2000.0f;
+    f32 maxZ = 0.0f;
+    s32 i;
+
+    for (i = 0; i < D_800EC280_minigame; i++) {
+        if (maxZ < D_800EC598_minigame[i]->trans.z) {
+            maxZ = D_800EC598_minigame[i]->trans.z;
+        }
+        if (D_800EC598_minigame[i]->trans.y < minY) {
+            minY = D_800EC598_minigame[i]->trans.y;
+        }
+    }
+    Center.x = 0.0f;
+    Center.y = minY + 200.0f;
+    Center.z = maxZ;
+    if (890.0f < maxZ) {
+        Center.z = 890.0f;
+    }
+    if (Center.y < 325.0f) {
+        Center.y = 325.0f;
+    }
+    if (Center.y > 550.0f) {
+        Center.y = 550.0f;
+    }
+    CRot.x = 362.0f - (Center.z - 600.0f) / 60.0f;
+    CZoom = 1500.0f - (Center.y - 325.0f);
+    if (CRot.x > 370.0f) {
+        CRot.x = 370.0f;
+    }
+    if (CRot.x < 358.0f) {
+        CRot.x = 358.0f;
+    }
+    if (CZoom < 1300.0f) {
+        CZoom = 1300.0f;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_04_boulder_ball/12DD30", func_801060D0_boulder_ball);
 
@@ -233,17 +261,113 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_04_boulder_ball/12DD30", D_8010984
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_04_boulder_ball/12DD30", func_801083D8_boulder_ball);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_04_boulder_ball/12DD30", func_80108798_boulder_ball);
+void func_80108798_boulder_ball(omObjData *object) {
+    func_800E1BA8_minigame_ObjData *data;
+    f32 y;
+    f32 velocity;
+    f32 speedSq;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_04_boulder_ball/12DD30", func_80108A08_boulder_ball);
+    if (func_800E4A90_minigame(object) & 0x20) {
+        data = object->data;
+        velocity = data->unk38;
+        y = object->trans.y;
+        if (velocity > D_800EB774_minigame) {
+            velocity = D_800EB774_minigame;
+        }
+        speedSq = velocity * velocity;
+        if (data->unk38 >= 0.0f) {
+            y += speedSq * -35.0f;
+        } else {
+            y += speedSq * 35.0f;
+        }
+        data->unk38 += D_800EB748_minigame;
+        if (y < 700.0f) {
+            func_800E5690_minigame(object, 0);
+            y = 700.0f;
+        }
+        object->trans.y = y;
+    }
+    switch (D_801097CC_boulder_ball) {
+        case 1:
+            Hu3DModelPosSet(object->model[2], object->trans.x - 10.0f, object->trans.y + 20.0f,
+                            object->trans.z + 30.0f);
+            Hu3DMotionTimeSet(object->model[2], 0.0f);
+            func_8001C258_main(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            break;
+        case 4:
+            Hu3DModelPosSet(object->model[3], object->trans.x + 10.0f, object->trans.y + 40.0f,
+                            object->trans.z + 30.0f);
+            Hu3DMotionTimeSet(object->model[3], 0.0f);
+            func_8001C258_main(object->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            break;
+        case 6:
+            Hu3DModelPosSet(object->model[4], object->trans.x, object->trans.y + 30.0f, object->trans.z + 30.0f);
+            Hu3DMotionTimeSet(object->model[4], 0.0f);
+            func_8001C258_main(object->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            break;
+    }
+    func_800E4E30_minigame(object);
+    D_801097CC_boulder_ball++;
+}
 
-s32 func_80108CF4_boulder_ball(void) {
+void func_80108A08_boulder_ball(omObjData *object) {
+    A96F0_ObjData *data;
+    s32 i;
+
+    object->data = HuMemAllocTag(sizeof(A96F0_ObjData), TAG_OVERLAY);
+    memset(object->data, 0, sizeof(A96F0_ObjData));
+    data = object->data;
+    object->model[0] = func_8000B0A0_main(0x250002, 0xAD9);
+    object->model[1] = func_8000B0D4_main(9, 0xAD9);
+    func_800E3584_minigame(object->model[1]);
+    object->model[2] = func_8000B108_main(4, 0x89D);
+    object->model[3] = func_8000B108_main(4, 0x89D);
+    object->model[4] = func_8000B108_main(4, 0x89D);
+    object->model[5] = func_8000B108_main(4, 0x89D);
+    Hu3DModelScaleSet(object->model[2], 2.0f, 2.0f, 2.0f);
+    Hu3DModelScaleSet(object->model[3], 2.0f, 2.0f, 2.0f);
+    Hu3DModelScaleSet(object->model[4], 2.0f, 2.0f, 2.0f);
+    Hu3DModelScaleSet(object->model[5], 2.0f, 2.0f, 2.0f);
+    object->func = func_800D6B70_minigame;
+    data->unk44 = 0.3f;
+    data->unk48 = 70.0f;
+    data->unk34 = 180.0f;
+    data->unk3C = 0.0f;
+    data->unk78 = 0;
+    data->unk52 = 7;
+    data->unk7C = 0;
+    data->unk50 = 0;
+    data->unk40 = 0.0f;
+    data->unk74 = 0.5f;
+    data->unk56 = D_801097D0_boulder_ball;
+    data->unk54 = 1;
+    for (i = 0; i < 9; i++) {
+        data->unk84[i] = NULL;
+    }
+    func_800E149C_minigame(object, 0, 1);
+    func_800E149C_minigame(object, 1, 2);
+    object->trans.x = 0.0f;
+    object->trans.y = 700.0f;
+    object->trans.z = -600.0f;
+    object->scale.x = object->scale.y = object->scale.z = 1.0f;
+    func_80088700_main(Hu3DData[object->model[1]].mtx, 2.0f, 2.0f, 2.0f);
+    D_801097D0_boulder_ball++;
+    func_800D861C_minigame(data, 2, func_80108CF4_boulder_ball);
+    func_800D861C_minigame(data, 0, func_80108E5C_boulder_ball);
+    // The return value of slot 1 is ignored by func_800D6B70_minigame.
+    func_800D861C_minigame(data, 1, (void *)func_801093B8_boulder_ball);
+    func_800D861C_minigame(data, 4, func_80109410_boulder_ball);
+    func_800D861C_minigame(data, 5, func_801095A0_boulder_ball);
+    D_800EB724_minigame = 35.0f;
+}
+
+s32 func_80108CF4_boulder_ball(omObjData *object) {
     return 1;
 }
 
 void func_80108CFC_boulder_ball(omObjData *object) {
-    BoulderBallData *data = OM_GET_DATA_PTR(object, BoulderBallData);
-    s32 slot = data->unk_56;
+    A96F0_ObjData *data = object->data;
+    s32 slot = data->unk56;
     s32 time;
     f32 maxTime;
     f32 motTime;
@@ -280,23 +404,23 @@ void func_80108CFC_boulder_ball(omObjData *object) {
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_04_boulder_ball/12DD30", func_80108E5C_boulder_ball);
 
 void func_801093B8_boulder_ball(omObjData *arg0) {
-    BoulderBallData *data = OM_GET_DATA_PTR(arg0, BoulderBallData);
+    A96F0_ObjData *data = arg0->data;
 
-    data->size += 0.3f;
-    data->unk_78++;
-    if (35.0f < data->size) {
-        data->size = 35.0f;
+    data->unk40 += 0.3f;
+    data->unk78++;
+    if (35.0f < data->unk40) {
+        data->unk40 = 35.0f;
     }
 }
 
 s32 func_80109410_boulder_ball(omObjData *object) {
-    BoulderBallData *data = OM_GET_DATA_PTR(object, BoulderBallData);
-    s32 slot = data->unk_56;
+    A96F0_ObjData *data = object->data;
+    s32 slot = data->unk56;
     f32 maxTime;
     f32 motTime;
     s32 i;
 
-    if (D_80109700_boulder_ball[slot] == 3 && data->unk_38 > 0.4f) {
+    if (D_80109700_boulder_ball[slot] == 3 && data->unk38 > 0.4f) {
         slot = 0;
         maxTime = 0.0f;
         for (i = 0; i < 4; i++) {
@@ -314,12 +438,12 @@ s32 func_80109410_boulder_ball(omObjData *object) {
         Hu3DMotionTimeSet(object->model[slot + 2], 0.0f);
         func_8001C258_main(object->model[slot + 2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     }
-    data->unk_38 = rand8() / 500.0f + 0.0f;
+    data->unk38 = rand8() / 500.0f + 0.0f;
     return 1;
 }
 
 s32 func_801095A0_boulder_ball(omObjData *object) {
-    BoulderBallData *data = OM_GET_DATA_PTR(object, BoulderBallData);
+    A96F0_ObjData *data = object->data;
     Vec pos;
     Vec dir;
     Vec out;
@@ -329,14 +453,14 @@ s32 func_801095A0_boulder_ball(omObjData *object) {
     pos.x = D_800EC298_minigame[0].x;
     pos.y = dir.y = 0.0f;
     pos.z = D_800EC298_minigame[0].z;
-    dir.x = sindf(data->phase + 180.0f);
-    dir.z = cosdf(data->phase + 180.0f);
+    dir.x = sindf(data->unk3C + 180.0f);
+    dir.z = cosdf(data->unk3C + 180.0f);
     dot = HuVecDot3F(&pos, &dir);
     pos.x = dot * pos.x;
     pos.z = dot * pos.z;
     HuVecSubtract(&out, &pos, &dir);
     HuVecAdd(&out, &pos, &out);
-    data->phase = atan2df(out.x, out.z);
+    data->unk3C = atan2df(out.x, out.z);
     for (i = 0; i < 4; i++) {
         omVibrate(i, 2, 3, 10);
     }

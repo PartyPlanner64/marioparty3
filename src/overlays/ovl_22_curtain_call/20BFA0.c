@@ -1,4 +1,5 @@
 #include "common.h"
+#include "overlays/minigame.h"
 
 // One entry of the 50 entry object table at D_8010B4B0_curtain_call. Layout
 // derived from the table clear in func_80105A3C_curtain_call, which walks 50
@@ -33,6 +34,16 @@ typedef struct {
     /* 0x78 */ Vec unk_78;
 } CurtainCallEntry; // sizeof 0x84
 
+typedef struct {
+    /* 0x00 */ f32 scissorX;
+    /* 0x04 */ f32 scissorY;
+    /* 0x08 */ f32 scissorWidth;
+    /* 0x0C */ f32 scissorHeight;
+    /* 0x10 */ Vec viewportScale;
+    /* 0x1C */ Vec viewportTranslate;
+    /* 0x28 */ f32 fov;
+} CurtainCallCamera; // sizeof 0x2C
+
 extern CurtainCallEntry D_8010B4B0_curtain_call[50];
 // Fields of the first entry of D_8010B4B0_curtain_call are accessed through
 // these separate symbols.
@@ -54,6 +65,14 @@ extern char *D_8010B120_curtain_call[];
 extern s8 D_8010B180_curtain_call[25];
 extern f32 D_8010B19C_curtain_call[25];
 extern s16 D_8010B200_curtain_call[];
+extern s16 D_8010B208_curtain_call[];
+extern s16 D_8010B210_curtain_call[];
+extern s16 D_8010B21C_curtain_call[];
+extern s8 D_8010B228_curtain_call[];
+extern s8 D_8010B22C_curtain_call[];
+extern s8 D_8010B234_curtain_call[];
+extern u8 D_8010B25C_curtain_call[][3];
+extern u8 D_8010B268_curtain_call[][4];
 extern u8 D_8010B140_curtain_call[3][5];
 extern u8 D_8010B150_curtain_call[3][5];
 extern u8 D_8010B160_curtain_call[3][5];
@@ -62,9 +81,12 @@ extern s16 D_8010CE78_curtain_call[4];
 extern s16 D_8010CE88_curtain_call;
 extern void *D_8010CE90_curtain_call[4][3];
 extern s8 D_8010CEC0_curtain_call;
+extern s8 D_8010CEC8_curtain_call[][8];
 // Field at offset 1 of an 8 byte per-player table at D_8010CEC8_curtain_call,
 // accessed through its own symbol.
 extern s8 D_8010CEC9_curtain_call[][8];
+// Field at offset 4 of the same table.
+extern omObjData *D_8010CECC_curtain_call[][2];
 extern s8 D_8010CEF8_curtain_call[4];
 extern s8 D_8010CEFE_curtain_call;
 extern s8 D_8010CEFF_curtain_call;
@@ -72,8 +94,20 @@ extern s16 D_8010CF08_curtain_call[4][2];
 extern s8 D_8010CF18_curtain_call[4];
 extern s8 D_8010CF20_curtain_call[2];
 extern s8 D_8010CF22_curtain_call;
+extern omObjData *D_8010CF24_curtain_call;
 extern s16 D_8010CF2C_curtain_call[3];
 extern s8 D_8010CF32_curtain_call;
+extern s8 D_8010CF00_curtain_call;
+extern s16 D_8010CEFC_curtain_call;
+extern CurtainCallCamera D_8010B280_curtain_call[1];
+extern const s16 D_8010B4A0_curtain_call[];
+extern s8 D_8010CF38_curtain_call;
+extern s16 D_8010CE84_curtain_call;
+extern s8 D_8010CE86_curtain_call;
+extern s16 D_8010CF1C_curtain_call[2];
+extern s8 D_8010CE80_curtain_call[4];
+extern s8 D_8010CF01_curtain_call;
+extern s8 D_8010CF28_curtain_call[4];
 extern s32 D_800A178C_main[][6];
 extern u8 D_800D6A90_main;
 
@@ -81,6 +115,8 @@ void func_801062EC_curtain_call(void);
 void func_8010AF78_curtain_call(void);
 void func_80106500_curtain_call(omObjData *);
 void func_80108F28_curtain_call(omObjData *);
+void func_8010A948_curtain_call(omObjData *);
+void func_80109AD0_curtain_call(void);
 void func_801092F0_curtain_call(omObjData *);
 
 void func_801059A0_curtain_call(void) {
@@ -1041,53 +1077,545 @@ void func_80108670_curtain_call(omObjData *obj) {
     Hu3DModelScaleSet(obj->model[1], entry->unk_5C.x, entry->unk_5C.y, entry->unk_5C.z);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_801089FC_curtain_call);
+void func_801089FC_curtain_call(omObjData *obj) {
+    s8 player = obj->work[0];
+    CurtainCallEntry *entry = &D_8010B4B0_curtain_call[5 + player];
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_80108E64_curtain_call);
+    switch (player) {
+        case 0:
+            obj->model[0] = func_8000B108_main(0xA008E, 0x2B9);
+            func_8000B460_main(obj, 0, 0xA0097);
+            func_8000B460_main(obj, 1, 0xA0098);
+            func_8000B460_main(obj, 2, 0xA0099);
+            obj->work[1] = 0;
+            D_8010CF2C_curtain_call[0] = obj->model[0];
+            D_8010CF24_curtain_call = obj;
+            break;
+        case 1:
+            obj->model[0] = Hu3DModelLink(D_8010CF2C_curtain_call[0]);
+            obj->work[1] = 0;
+            obj->motion[0] = D_8010CF24_curtain_call->motion[0];
+            obj->motion[1] = D_8010CF24_curtain_call->motion[1];
+            obj->motion[2] = D_8010CF24_curtain_call->motion[2];
+            break;
+        case 2:
+            obj->model[0] = func_8000B108_main(0xA00A5, 0x2B9);
+            func_8000B460_main(obj, 0, 0xA00A8);
+            func_8000B460_main(obj, 1, 0xA00A9);
+            func_8000B460_main(obj, 2, 0xA00AA);
+            obj->work[1] = 1;
+            D_8010CF2C_curtain_call[0] = obj->model[0];
+            D_8010CF24_curtain_call = obj;
+            break;
+        case 3:
+            obj->model[0] = Hu3DModelLink(D_8010CF2C_curtain_call[0]);
+            obj->work[1] = 1;
+            obj->motion[0] = D_8010CF24_curtain_call->motion[0];
+            obj->motion[1] = D_8010CF24_curtain_call->motion[1];
+            obj->motion[2] = D_8010CF24_curtain_call->motion[2];
+            break;
+        case 4:
+            obj->model[0] = func_8000B108_main(0xA00C5, 0x2B9);
+            func_8000B460_main(obj, 0, 0xA00CB);
+            func_8000B460_main(obj, 1, 0xA00CC);
+            func_8000B460_main(obj, 2, 0xA00CD);
+            obj->work[1] = 2;
+            D_8010CF2C_curtain_call[0] = obj->model[0];
+            D_8010CF24_curtain_call = obj;
+            break;
+        case 5:
+            obj->model[0] = Hu3DModelLink(D_8010CF2C_curtain_call[0]);
+            obj->work[1] = 2;
+            obj->motion[0] = D_8010CF24_curtain_call->motion[0];
+            obj->motion[1] = D_8010CF24_curtain_call->motion[1];
+            obj->motion[2] = D_8010CF24_curtain_call->motion[2];
+            break;
+    }
+    func_80105BD0_curtain_call(obj, 0, 2);
+    if (obj->work[0] == 0) {
+        obj->model[1] = func_8000B0A0_main(0, 0xC9);
+        func_8001C2FC_main(obj->model[1], 0x80000000, 0);
+        Hu3DModelRemakeStatic(obj->model[1]);
+        func_8001C514_main(obj->model[1]);
+        func_80088800_main(Hu3DData[obj->model[1]].mtx, 0.0f, 0.0f, 0.0f);
+        D_8010CF2C_curtain_call[1] = obj->model[1];
+    } else {
+        obj->model[1] = Hu3DModelLink(D_8010CF2C_curtain_call[1]);
+    }
+    obj->trans.x = -1500.0f;
+    obj->trans.y = 125.0f;
+    obj->trans.z = -725.0f;
+    Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
+    Hu3DModelPosSet(obj->model[1], obj->trans.x, 125.0f, obj->trans.z);
+    if (player >= 0 && player < 2) {
+        obj->scale.x = obj->scale.y = obj->scale.z = 1.0f;
+        Hu3DModelScaleSet(obj->model[0], obj->scale.x, obj->scale.y, obj->scale.z);
+    }
+    if (player >= 2 && player < 4) {
+        obj->scale.x = obj->scale.y = obj->scale.z = 1.0f;
+        Hu3DModelScaleSet(obj->model[0], obj->scale.x, obj->scale.y, obj->scale.z);
+    }
+    if (player >= 4 && player < 6) {
+        obj->scale.x = obj->scale.y = obj->scale.z = 0.52f;
+        Hu3DModelScaleSet(obj->model[0], obj->scale.x, obj->scale.y, obj->scale.z);
+    }
+    entry->unk_5C.x = entry->unk_5C.z = 1.0f;
+    Hu3DModelCameraSet(obj->model[0], 1);
+    Hu3DModelCameraSet(obj->model[1], 1);
+    obj->func = func_80108670_curtain_call;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_80108EF8_curtain_call);
+void func_80108E64_curtain_call(void) {
+    omObjData *obj;
+    s16 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_80108F28_curtain_call);
+    for (i = 0; i < 6; i++) {
+        obj = omAddObj(0x320, 3, 4, -1, func_801089FC_curtain_call);
+        D_8010CECC_curtain_call[i][0] = obj;
+        obj->work[0] = i;
+        D_8010B4B0_curtain_call[5].obj = obj;
+        omSetStatBit(obj, 0xA0);
+    }
+}
+
+void func_80108EF8_curtain_call(omObjData *obj) {
+    Hu3DModelPosSet(obj->model[1], obj->trans.x, 127.0f, obj->trans.z);
+}
+
+void func_80108F28_curtain_call(omObjData *obj) {
+    obj->model[0] = func_8000B108_main(0xA0000, 0x2B9);
+    func_8000B460_main(obj, 0, 0xA000C);
+    func_80105BD0_curtain_call(obj, 0, 2);
+    obj->model[1] = func_8000B0A0_main(0, 0xC9);
+    func_8001C2FC_main(obj->model[1], 0x80000000, 0);
+    Hu3DModelRemakeStatic(obj->model[1]);
+    func_8001C514_main(obj->model[1]);
+    func_80088800_main(Hu3DData[obj->model[1]].mtx, 0.0f, 0.0f, 0.0f);
+    obj->trans.x = -450.0f;
+    obj->trans.y = 125.0f;
+    obj->trans.z = -350.0f;
+    Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
+    Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
+    obj->scale.x = 0.8f;
+    obj->scale.y = 0.8f;
+    obj->scale.z = 0.8f;
+    Hu3DModelScaleSet(obj->model[0], obj->scale.x, obj->scale.y, obj->scale.z);
+    Hu3DModelScaleSet(obj->model[1], obj->scale.x, obj->scale.y, obj->scale.z);
+    func_8001C258_main(obj->model[0], 4, 4);
+    func_8001C258_main(obj->model[1], 4, 4);
+    Hu3DModelCameraSet(obj->model[0], 1);
+    Hu3DModelCameraSet(obj->model[1], 1);
+    obj->func = func_80108EF8_curtain_call;
+}
 
 void func_801090FC_curtain_call(void) {
     D_8010BA5C_curtain_call = omAddObj(0x258, 3, 2, -1, func_80108F28_curtain_call);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_80109138_curtain_call);
+void func_80109138_curtain_call(omObjData *obj) {
+    CurtainCallEntry *entry = &D_8010B4B0_curtain_call[13];
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_801092F0_curtain_call);
+    switch (D_8010CEC1_curtain_call) {
+        case 0:
+            func_8001C258_main(obj->model[0], 4, 4);
+            break;
+        case 5:
+            switch (D_8010CEFE_curtain_call) {
+                case 0:
+                    obj->trans.x = (f32)D_8010B208_curtain_call[D_8010CEC0_curtain_call] +
+                                   D_8010B228_curtain_call[D_8010CEC0_curtain_call];
+                    break;
+                case 1:
+                    obj->trans.x = (f32)D_8010B210_curtain_call[D_8010CEC0_curtain_call] +
+                                   D_8010B22C_curtain_call[D_8010CEC0_curtain_call];
+                    break;
+                case 2:
+                    obj->trans.x = (f32)D_8010B21C_curtain_call[D_8010CEC0_curtain_call] +
+                                   D_8010B234_curtain_call[D_8010CEC0_curtain_call];
+                    break;
+            }
+            func_8001C258_main(obj->model[0], 4, 0);
+            break;
+    }
+    if (D_8010CF32_curtain_call >= 3) {
+        if (entry->unk_04 <= 0) {
+            entry->unk_04 = 0;
+            func_8001C258_main(obj->model[0], 4, 4);
+        } else {
+            entry->unk_04 -= 5;
+            func_8001F9E4_main(obj->model[0], entry->unk_04);
+        }
+    }
+}
+
+void func_801092F0_curtain_call(omObjData *obj) {
+    obj->model[0] = func_8000B108_main(0x430006, 0x2A8);
+    func_8001FA68_main(obj->model[0]);
+    func_8001F9E4_main(obj->model[0], 0xD2);
+    obj->trans.x = 0.0f;
+    obj->trans.y = 125.0f;
+    obj->trans.z = -725.0f;
+    Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
+    D_8010B4B0_curtain_call[13].unk_04 = 0xFF;
+    func_8001C258_main(obj->model[0], 4, 4);
+    Hu3DModelCameraSet(obj->model[0], 1);
+    obj->func = func_80109138_curtain_call;
+}
 
 void func_801093C4_curtain_call(void) {
     D_8010BB64_curtain_call = omAddObj(0x384, 1, 1, -1, func_801092F0_curtain_call);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_80109400_curtain_call);
+void func_80109400_curtain_call(void) {
+    s8 i;
+    s8 frame = D_8010CF38_curtain_call;
 
+    for (i = 0; i < 6; i++) {
+        switch (frame) {
+            case 0:
+                func_80105C3C_curtain_call(D_8010CECC_curtain_call[i][0], 1, 0, 5, 2);
+                break;
+            case 25:
+                func_80105C3C_curtain_call(D_8010CECC_curtain_call[i][0], 2, 0, 5, 2);
+                break;
+            case 50:
+                func_80105C3C_curtain_call(D_8010CECC_curtain_call[i][0], 0, 0, 5, 2);
+                break;
+        }
+    }
+    if (frame == 50) {
+        D_8010CE84_curtain_call++;
+        D_8010CF38_curtain_call = 0;
+    } else {
+        D_8010CF38_curtain_call++;
+    }
+}
+
+#ifdef NON_MATCHING
+// Register allocation differs: the original keeps speed in a0 and shares a1
+// between the D_8010CF1C_curtain_call address, frame and i; GCC swaps them.
+void func_8010954C_curtain_call(void) {
+    s16 frame;
+    s8 speed = 0;
+    s8 i;
+
+    if (D_8010CE84_curtain_call == D_8010CF1C_curtain_call[0] || D_8010CE84_curtain_call == D_8010CF1C_curtain_call[1]) {
+        func_80109400_curtain_call();
+        return;
+    }
+    D_8010CE84_curtain_call++;
+    frame = D_8010CE84_curtain_call;
+    switch (D_8010CEFE_curtain_call) {
+        case 0:
+            speed = 6;
+            break;
+        case 1:
+            if (frame < 60) {
+                speed = 6;
+            } else if (frame < 105) {
+                speed = D_8010B25C_curtain_call[D_8010CE86_curtain_call][0];
+            } else if (frame < 150) {
+                speed = 6;
+            } else if (frame < 195) {
+                speed = D_8010B25C_curtain_call[D_8010CE86_curtain_call][1];
+            } else if (frame < 240) {
+                speed = 6;
+            } else if (frame < 285) {
+                speed = D_8010B25C_curtain_call[D_8010CE86_curtain_call][2];
+            }
+            break;
+        case 2:
+            if (frame < 60) {
+                speed = 6;
+            } else if (frame < 105) {
+                speed = D_8010B268_curtain_call[D_8010CE86_curtain_call][0];
+            } else if (frame < 150) {
+                speed = 6;
+            } else if (frame < 195) {
+                speed = D_8010B268_curtain_call[D_8010CE86_curtain_call][1];
+            } else if (frame < 240) {
+                speed = D_8010B268_curtain_call[D_8010CE86_curtain_call][2];
+            } else if (frame < 285) {
+                speed = 6;
+            } else if (frame < 330) {
+                speed = D_8010B268_curtain_call[D_8010CE86_curtain_call][3];
+            }
+            break;
+    }
+    for (i = 0; i < 6; i++) {
+        if (D_8010CEC8_curtain_call[i][0] != 0) {
+            D_8010CECC_curtain_call[i][0]->trans.x += speed;
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_8010954C_curtain_call);
+#endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_8010982C_curtain_call);
+void func_8010982C_curtain_call(void) {
+    CurtainCallEntry *entry;
+    s8 i;
+    s8 count;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_80109920_curtain_call);
+    D_8010CF01_curtain_call = 0;
+    for (i = 0; i < 4; i++) {
+        D_8010CE80_curtain_call[i] = 0;
+    }
+    for (i = 0, count = 0; i < 4; i++) {
+        entry = &D_8010B4B0_curtain_call[1 + i];
+        if (entry->unk_04 == 0) {
+            D_8010CE80_curtain_call[count] = GwPlayer[entry->obj->work[0]].chr;
+            D_8010CF28_curtain_call[count] = entry->obj->work[0];
+            count++;
+        } else {
+            D_8010CF01_curtain_call++;
+        }
+    }
+}
+
+void func_80109920_curtain_call(void) {
+    s8 slots[6];
+    s8 pick;
+    s8 i;
+
+    for (i = 0; i < 6; i++) {
+        slots[D_8010CEC9_curtain_call[i][0]] = D_8010CECC_curtain_call[i][0]->work[1];
+    }
+    switch (D_8010CEFE_curtain_call) {
+        case 0:
+            pick = func_80105B7C_curtain_call(3);
+            D_8010CEFF_curtain_call = slots[pick];
+            D_8010CEC0_curtain_call = pick;
+            D_8010CE8A_curtain_call[0] = func_80105B7C_curtain_call(2);
+            if (D_8010CE8A_curtain_call[0] != 0) {
+                D_8010CE8A_curtain_call[1] = pick;
+            } else {
+                D_8010CE8A_curtain_call[1] = 2 - pick;
+            }
+            break;
+        case 1:
+            pick = func_80105B7C_curtain_call(5);
+            D_8010CEFF_curtain_call = slots[pick];
+            D_8010CEC0_curtain_call = pick;
+            D_8010CE8A_curtain_call[0] = func_80105B7C_curtain_call(2);
+            if (D_8010CE8A_curtain_call[0] != 0) {
+                D_8010CE8A_curtain_call[1] = pick;
+            } else {
+                D_8010CE8A_curtain_call[1] = 4 - pick;
+            }
+            break;
+        case 2:
+            pick = func_80105B7C_curtain_call(6);
+            D_8010CEFF_curtain_call = slots[pick];
+            D_8010CEC0_curtain_call = pick;
+            D_8010CE8A_curtain_call[0] = func_80105B7C_curtain_call(2);
+            if (D_8010CE8A_curtain_call[0] != 0) {
+                D_8010CE8A_curtain_call[1] = pick;
+            } else {
+                D_8010CE8A_curtain_call[1] = 5 - pick;
+            }
+            break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_80109AD0_curtain_call);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_8010A734_curtain_call);
+void func_8010A734_curtain_call(void) {
+    u32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_8010A7D8_curtain_call);
+    for (i = 0; i < 1; i++) {
+        CZoomM[i] = 1520.0f;
+        CRotM[i].x = 347.14f;
+        CRotM[i].y = 0.0f;
+        CRotM[i].z = 0.0f;
+        CenterM[i].x = 0.0f;
+        CenterM[i].y = 225.0f;
+        CenterM[i].z = -25.0f;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_8010A7FC_curtain_call);
+void func_8010A7D8_curtain_call(omObjData *obj) {
+    osViBlack(FALSE);
+    omOvlReturnEx(1);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_8010A8E8_curtain_call);
+void func_8010A7FC_curtain_call(omObjData *obj) {
+    s8 i;
+    s8 j;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_8010A948_curtain_call);
+    if (WipeStatGet() == 0) {
+        for (i = 0; i < 4; i++) {
+            for (j = 0; j < 3; j++) {
+                DataClose(D_8010CE90_curtain_call[i][j]);
+            }
+            Hu3DAnimKill(D_8010CE78_curtain_call[i]);
+        }
+        obj->func = func_8010A7D8_curtain_call;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_8010AD68_curtain_call);
+void func_8010A8E8_curtain_call(omObjData *obj) {
+    if (D_800D530C_main == 1) {
+        func_8010644C_curtain_call();
+        WipeCreateOut(0, 20);
+        obj->func = func_8010A7FC_curtain_call;
+        HuAudSeqFadeOut(30);
+        func_8004AB0C_main(30);
+    }
+}
+
+void func_8010A948_curtain_call(omObjData *obj) {
+    switch (D_8010CF32_curtain_call) {
+        case 0:
+            GMesCreate(3);
+            D_8010CF32_curtain_call = 1;
+            D_8010CEFC_curtain_call = 0;
+            break;
+        case 1:
+            if (GMesStatGet() == 0) {
+                D_8010CF32_curtain_call = 2;
+                D_8010CEC1_curtain_call = 0;
+            }
+            if (++D_8010CEFC_curtain_call == 62) {
+                HuAudSeqPlay(0x31);
+            }
+            break;
+        case 2:
+            func_80109AD0_curtain_call();
+            if (D_8010CEFE_curtain_call == 3) {
+                GMesCreate(0xE);
+                HuAudSeqFadeOut(120);
+                D_8010CF32_curtain_call = 3;
+            }
+            break;
+        case 3:
+            if (GMesStatGet() == 0) {
+                D_8010CF32_curtain_call = 4;
+                D_8010CE88_curtain_call = 0;
+            }
+            break;
+        case 4:
+            if (D_8010CF01_curtain_call == 4) {
+                if (++D_8010CE88_curtain_call >= 16) {
+                    D_8010CF32_curtain_call = 5;
+                }
+            } else {
+                if (++D_8010CE88_curtain_call >= 16) {
+                    D_8010CF32_curtain_call = 6;
+                }
+            }
+            break;
+        case 6:
+            switch (D_8010CF01_curtain_call) {
+                case 0:
+                    GMesCreate(0x23, D_8010CE80_curtain_call[0], D_8010CE80_curtain_call[1], D_8010CE80_curtain_call[2],
+                               D_8010CE80_curtain_call[3]);
+                    GwPlayer[D_8010CF28_curtain_call[0]].bonusCoin = 10;
+                    GwPlayer[D_8010CF28_curtain_call[1]].bonusCoin = 10;
+                    GwPlayer[D_8010CF28_curtain_call[2]].bonusCoin = 10;
+                    GwPlayer[D_8010CF28_curtain_call[3]].bonusCoin = 10;
+                    HuAudSeqPlay(0x66);
+                    break;
+                case 1:
+                    GMesCreate(0x22, D_8010CE80_curtain_call[0], D_8010CE80_curtain_call[1], D_8010CE80_curtain_call[2]);
+                    GwPlayer[D_8010CF28_curtain_call[0]].bonusCoin = 10;
+                    GwPlayer[D_8010CF28_curtain_call[1]].bonusCoin = 10;
+                    GwPlayer[D_8010CF28_curtain_call[2]].bonusCoin = 10;
+                    HuAudSeqPlay(0x66);
+                    break;
+                case 2:
+                    GMesCreate(0x1E, D_8010CE80_curtain_call[0], D_8010CE80_curtain_call[1]);
+                    GwPlayer[D_8010CF28_curtain_call[0]].bonusCoin = 10;
+                    GwPlayer[D_8010CF28_curtain_call[1]].bonusCoin = 10;
+                    HuAudSeqPlay(0x66);
+                    break;
+                case 3:
+                    GMesCreate(0x16, D_8010CE80_curtain_call[0]);
+                    GwPlayer[D_8010CF28_curtain_call[0]].bonusCoin = 10;
+                    HuAudSeqPlay(0x65);
+                    break;
+            }
+            D_8010CE88_curtain_call = 15;
+            D_8010CF32_curtain_call = 7;
+            break;
+        case 5:
+            GMesCreate(0x20);
+            HuAudSeqPlay(0x6C);
+            D_8010CE88_curtain_call = 15;
+            D_8010CF32_curtain_call = 7;
+            break;
+        case 7:
+            if (GMesStatGet() == 0) {
+                if (--D_8010CE88_curtain_call <= 0) {
+                    WipeCreateOut(0, 20);
+                    obj->func = func_8010A7FC_curtain_call;
+                }
+            }
+            break;
+    }
+}
+
+void func_8010AD68_curtain_call(omObjData *obj) {
+    D_8010CF32_curtain_call = 0;
+    D_8010CEC1_curtain_call = 20;
+    D_8010CE88_curtain_call = 0;
+    D_8010CEFE_curtain_call = 0;
+    D_8010CF34_curtain_call = NULL;
+    D_8010CF00_curtain_call = 0;
+    func_8010A734_curtain_call();
+    func_80106688_curtain_call();
+    func_801093C4_curtain_call();
+    func_801090FC_curtain_call();
+    func_801084A0_curtain_call();
+    func_80108E64_curtain_call();
+    WipeCreateIn(0xFF, 16);
+    obj->func = func_8010A948_curtain_call;
+}
 
 void func_8010AE00_curtain_call(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_8010AE08_curtain_call);
+void func_8010AE08_curtain_call(void) {
+    omObjData *obj;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_8010AF78_curtain_call);
+    obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
+    obj->work[0] = 1;
+    omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    func_8000B5F0_main(1);
+    func_8000B710_main(1);
+    for (i = 0; i < 1; i++) {
+        ScissorSet(i, D_8010B280_curtain_call[i].scissorX, D_8010B280_curtain_call[i].scissorY,
+                   D_8010B280_curtain_call[i].scissorWidth, D_8010B280_curtain_call[i].scissorHeight);
+        ViewportSet(i, D_8010B280_curtain_call[i].viewportScale.x, D_8010B280_curtain_call[i].viewportScale.y,
+                    D_8010B280_curtain_call[i].viewportScale.z, D_8010B280_curtain_call[i].viewportTranslate.x,
+                    D_8010B280_curtain_call[i].viewportTranslate.y, D_8010B280_curtain_call[i].viewportTranslate.z);
+        Hu3DCameraPerspectiveSet(i, D_8010B280_curtain_call[i].fov, 80.0f, 8000.0f);
+    }
+}
+
+void func_8010AF78_curtain_call(void) {
+    func_8001FE20_main(50);
+    func_800142A0_main(50);
+    omInitObjMan(50, 3);
+    func_8004A208_main();
+    func_8010AE08_curtain_call();
+    Hu3DGLightMaxSet(1);
+    Hu3DGLightMaxSet(2);
+    Hu3DGLightColorSet(0, 0x90, 0x90, 0x90);
+    Hu3DGLightDirSet(0, 0.0f, 90.0f, 560.0f);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightDirSet(1, 0.0f, 90.0f, 560.0f);
+    Hu3DGLightColorSet(2, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightDirSet(2, 0.0f, 90.0f, 560.0f);
+    D_800EC1B8_minigame = 0;
+    D_800EC280_minigame = 0;
+    D_800EBE28_minigame = 0;
+    func_80045010_main(D_8010B4A0_curtain_call, 0);
+    func_80045010_main(D_8010B4A0_curtain_call, 1);
+    omAddObj(1500, 0, 0, -1, func_8010AD68_curtain_call);
+    omAddObj(1500, 0, 0, -1, func_8010A8E8_curtain_call);
+    func_80105A3C_curtain_call();
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", D_8010B4A0_curtain_call);

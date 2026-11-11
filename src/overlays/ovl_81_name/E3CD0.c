@@ -607,7 +607,6 @@ void func_800FCD44_name_81(s32 playerIndex, Vec *out) {
     HuVecCopy3F(out, &dir);
 }
 
-#ifdef NON_MATCHING
 void func_800FCF50_name_81(s32 playerIndex, s32 time) {
     Vec offset;
     Vec frontOfs;
@@ -629,9 +628,11 @@ void func_800FCF50_name_81(s32 playerIndex, s32 time) {
 
     playersShareSpace = 0;
     curPlayer = MBDGetPlayerStruct(system->current_player_index);
-    if (player->clink == curPlayer->clink) {
-        playersShareSpace = player->cidx == curPlayer->cidx;
-    }
+    do { // reg alloc hack
+        if (player->clink == curPlayer->clink) {
+            playersShareSpace = player->cidx == curPlayer->cidx;
+        }
+    } while (0);
 
     HuVecCopy3F(&D_801054B8_name_81[playerIndex], &space->coords);
     if (playersShareSpace == 1) {
@@ -673,9 +674,6 @@ void func_800FCF50_name_81(s32 playerIndex, s32 time) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/E3CD0", func_800FCF50_name_81);
-#endif
 
 // if player should jump to next space
 s32 func_800FD298_name_81(s32 playerIndex) {

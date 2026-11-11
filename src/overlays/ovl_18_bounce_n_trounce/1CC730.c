@@ -108,7 +108,11 @@ extern s16 D_8010AEE4_bounce_n_trounce[4];
 
 void func_8004BCE4_main(struct CameraViewData *data);
 
+void func_80105C84_bounce_n_trounce(omObjData *arg0);
 void func_80105CBC_bounce_n_trounce(omObjData *);
+void func_80105E4C_bounce_n_trounce(omObjData *object);
+void func_801069F0_bounce_n_trounce(omObjData *object);
+void func_8010A664_bounce_n_trounce(omObjData *object);
 void func_80106268_bounce_n_trounce(omObjData *object);
 void func_8010675C_bounce_n_trounce(omObjData *object);
 void func_801068F4_bounce_n_trounce(omObjData *object);
@@ -136,7 +140,57 @@ s32 func_8010AB1C_bounce_n_trounce(f32 x, f32 z);
 void func_80108CA8_bounce_n_trounce(omObjData *);
 void func_80108D28_bounce_n_trounce(omObjData *);
 
+#ifdef NON_MATCHING
+void func_801059A0_bounce_n_trounce(void) {
+    s32 i;
+    u8 slot;
+
+    omInitObjMan(40, 0);
+    func_8004A208_main();
+    func_80045C2C_main();
+    func_8000B5F0_main(1);
+    // The original passes 1 to this function, which takes no arguments.
+    func_8000B638_main();
+    Center.x = 0.0f;
+    Center.y = 30.0f;
+    Center.z = 0.0f;
+    CRot.x = -30.0f;
+    CRot.y = 45.0f;
+    CRot.z = 0.0f;
+    CZoom = 2100.0f;
+    ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
+    ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
+    Hu3DGLightMaxSet(3);
+    Hu3DGLightColorSet(1, 0x40, 0x40, 0x60);
+    Hu3DGLightDirSet(1, 3.0f, 89.0f, 80.0f);
+    Hu3DGLightStatSet(1, 1, 1);
+    Hu3DGLightColorSet(3, 0, 0, 0);
+    Hu3DGLightDirSet(3, -115.0f, 6.0f, -33.0f);
+    Hu3DGLightStatSet(2, 1, 1);
+    omAddObj(0, 0, 0, -1, func_80105C84_bounce_n_trounce);
+    D_8010AED0_bounce_n_trounce = omAddObj(10, 0, 0, -1, func_80105E4C_bounce_n_trounce);
+    D_8010AED4_bounce_n_trounce = omAddObj(50, 0, 0, -1, func_8010A664_bounce_n_trounce);
+    D_8010AED4_bounce_n_trounce->work[0] = 0;
+    omMakeGroup(0, 4);
+    D_8010AEDC_bounce_n_trounce = omGetGroupMemberList(0);
+    for (i = 0; i < 4; i++) {
+        omAddObj(30, 7, 6, 0, func_801069F0_bounce_n_trounce)->work[0] = i;
+    }
+    for (i = 0; i < 4; i++) {
+        D_8010AEE4_bounce_n_trounce[i] = -1;
+    }
+    for (i = 0; i < 4;) {
+        slot = rand8() & 3;
+        if (D_8010AEE4_bounce_n_trounce[slot] == -1) {
+            D_8010AEE4_bounce_n_trounce[slot] = i;
+            i++;
+        }
+    }
+    func_800E5EA0_minigame(&D_8010ABB0_bounce_n_trounce);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_18_bounce_n_trounce/1CC730", func_801059A0_bounce_n_trounce);
+#endif
 
 void func_80105C84_bounce_n_trounce(omObjData *arg0) {
     D_8010AEBC_bounce_n_trounce = 4;
@@ -832,7 +886,34 @@ void func_80108CA8_bounce_n_trounce(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_18_bounce_n_trounce/1CC730", func_80108D28_bounce_n_trounce);
+void func_80108D28_bounce_n_trounce(omObjData *object) {
+    BounceNTrounceWork *work = OM_GET_DATA_PTR(object, BounceNTrounceWork);
+    BounceNTrounceWork *otherWork;
+    f32 angle;
+    f32 dist;
+    f32 step;
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        otherWork = OM_GET_DATA_PTR(D_8010AEDC_bounce_n_trounce[i], BounceNTrounceWork);
+        if (otherWork->state == 4) {
+            continue;
+        }
+        if (work->unk_0E[i] & 1 || work->unk_0E[i] & 2) {
+            angle = atan2df(-D_8010AEDC_bounce_n_trounce[i]->trans.x, -D_8010AEDC_bounce_n_trounce[i]->trans.z);
+            otherWork->unk_64 = sindf(angle) * 6.0f;
+            otherWork->unk_68 = cosdf(angle) * 6.0f;
+            otherWork->unk_6C = 0.9f;
+            dist = func_8010AAE0_bounce_n_trounce(work->unk_58.x, work->unk_58.z, object->trans.x, object->trans.z);
+            step = (dist < 50.0f) ? dist : 50.0f;
+            angle = atan2df(work->unk_58.x - object->trans.x, work->unk_58.z - object->trans.z);
+            object->trans.x += sindf(angle) * step;
+            object->trans.z += cosdf(angle) * step;
+            Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, object->trans.z);
+            Hu3DModelPosSet(object->model[2], object->trans.x, 1.0f, object->trans.z);
+        }
+    }
+}
 
 void func_80108EFC_bounce_n_trounce(omObjData *object) {
     func_8001C258_main(object->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);

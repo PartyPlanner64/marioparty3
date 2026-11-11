@@ -430,6 +430,7 @@ extern f32 D_800EB72C_minigame;
 extern u8 D_800EB735_minigame;
 extern s16 D_800EB736_minigame;
 extern f32 D_800EB73C_minigame;
+extern f32 D_800EB740_minigame;
 extern f32 D_800EB744_minigame;
 extern f32 D_800EB748_minigame;
 extern f32 D_800EB774_minigame;

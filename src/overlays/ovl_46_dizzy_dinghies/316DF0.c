@@ -3,6 +3,7 @@
 #include "game/data.h"
 #include "game/esprite.h"
 #include "game/hmfcoll.h"
+#include "game/input.h"
 #include "game/object.h"
 #include "game/wipe.h"
 #include "humath.h"
@@ -11,6 +12,7 @@
 
 extern f32 D_800CB890_main;
 extern u8 D_800CE20A_main;
+extern u8 D_800D2008_main;
 extern f32 D_800D5210_main;
 extern u8 D_800D6A90_main;
 
@@ -26,6 +28,8 @@ extern f32 D_801097C8_dizzy_dinghies;
 extern f32 D_801097CC_dizzy_dinghies;
 extern f32 D_801097D0_dizzy_dinghies;
 extern s32 D_801097D4_dizzy_dinghies;
+extern f32 D_801097D8_dizzy_dinghies;
+extern f32 D_801097DC_dizzy_dinghies;
 extern f32 D_801097E0_dizzy_dinghies;
 extern s32 D_801097E8_dizzy_dinghies;
 extern f32 D_80109770_dizzy_dinghies;
@@ -140,7 +144,79 @@ f32 func_80105D90_dizzy_dinghies(f32 x, f32 z) {
     return height / 2.0f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", func_80105EB4_dizzy_dinghies);
+void func_80105EB4_dizzy_dinghies(omObjData *object) {
+    HmfData *hmf;
+    Vtx *vtx;
+    Vtx *src;
+    f32 boatX;
+    f32 boatZ;
+    f32 x, z;
+    f32 height;
+    s32 i;
+
+    boatX = D_800EC598_minigame[0]->trans.x;
+    boatZ = D_800EC598_minigame[0]->trans.z;
+    hmf = Hu3DData[object->model[1]].hmf;
+    vtx = hmf->unk44[D_800D2008_main];
+    src = hmf->unk40;
+    for (i = 0; i < hmf->unk18; i++, vtx++, src++) {
+        x = src->v.ob[0] + boatX;
+        z = src->v.ob[2] + boatZ;
+        height = sindf((D_801097B4_dizzy_dinghies / D_801097B8_dizzy_dinghies - HuSqrtf(x * x + z * z) / D_801097BC_dizzy_dinghies) *
+                       (2 * M_PI)) *
+                 D_801097C0_dizzy_dinghies;
+        x += 8000.0f;
+        z += 5000.0f;
+        height = (height + sindf((D_801097C4_dizzy_dinghies / D_801097C8_dizzy_dinghies - HuSqrtf(x * x + z * z) / D_801097CC_dizzy_dinghies) *
+                                 (2 * M_PI)) *
+                               D_801097D0_dizzy_dinghies) /
+                 2.0f;
+        vtx->v.ob[1] = height;
+        if (height > 0.0) {
+            height = 256.0f - height;
+            vtx->v.cn[1] = vtx->v.cn[0] = 170;
+            vtx->v.cn[2] = height;
+        } else {
+            height = 175.0f - height;
+            if (height > 255.0f) {
+                height = 255.0f;
+            }
+            vtx->v.cn[0] = height;
+            vtx->v.cn[1] = height;
+            vtx->v.cn[2] = 255;
+        }
+    }
+    if (omPauseChk() + D_800D6A90_main == 0) {
+        D_801097B4_dizzy_dinghies += 0.11f;
+        D_801097C4_dizzy_dinghies += 0.09f;
+        Hu3DModelPosSet(object->model[1], boatX, 0.0f, boatZ);
+    }
+    func_8001E65C_main(object->model[1], D_801097D8_dizzy_dinghies, D_801097DC_dizzy_dinghies, 32, 32);
+    if (D_800CDA7C_main[1] & 8) {
+        D_801097B8_dizzy_dinghies += 0.001f;
+    }
+    if (D_800CDA7C_main[1] & 4) {
+        D_801097B8_dizzy_dinghies -= 0.001f;
+    }
+    if (D_801097B8_dizzy_dinghies < 0.01f) {
+        D_801097B8_dizzy_dinghies = 0.01f;
+    }
+    if (D_800CDA7C_main[1] & 1) {
+        D_801097BC_dizzy_dinghies += 0.1f;
+    }
+    if (D_800CDA7C_main[1] & 2) {
+        D_801097BC_dizzy_dinghies -= 0.1f;
+    }
+    if (D_800CDA7C_main[1] & 0x10) {
+        D_801097C0_dizzy_dinghies -= 0.1f;
+    }
+    if (D_800CDA7C_main[1] & 0x20) {
+        D_801097C0_dizzy_dinghies += 0.1f;
+    }
+    D_801097C8_dizzy_dinghies = D_801097B8_dizzy_dinghies - 0.3f;
+    D_801097CC_dizzy_dinghies = D_801097BC_dizzy_dinghies - 5.0f;
+    D_801097D0_dizzy_dinghies = D_801097C0_dizzy_dinghies - 20.0f;
+}
 
 void func_80106494_dizzy_dinghies(void) {
     omObjData *obj;

@@ -111,6 +111,8 @@ void func_80106090_mstory3(s32 mess);
 void func_801061C4_mstory3(void);
 void func_80106DC4_mstory3(omObjData *obj, const Vec *pos, s32 frames);
 
+const Vec D_80115548_mstory3 = { -120.0f, 0.0f, 480.0f };
+
 INCLUDE_RODATA("asm/nonmatchings/overlays/mstory3/4B4DC0", D_80115554_mstory3);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mstory3/4B4DC0", D_80115560_mstory3);

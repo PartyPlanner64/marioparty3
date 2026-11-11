@@ -15,6 +15,28 @@ typedef struct UnkD3450PrcDataF {
     /* 0x0C */ s32 unk_0C;
 } UnkD3450PrcDataF; // sizeof 0x10
 
+typedef struct UnkD3450RotData {
+    /* 0x00 */ Vec from;
+    /* 0x0C */ Vec to;
+    /* 0x18 */ Vec *out;
+    /* 0x1C */ s32 time;
+    /* 0x20 */ s32 spin;
+} UnkD3450RotData; // sizeof 0x24
+
+typedef struct UnkD3450MoveData {
+    /* 0x00 */ Vec from;
+    /* 0x0C */ Vec to;
+    /* 0x18 */ Vec *out;
+    /* 0x1C */ s32 time;
+} UnkD3450MoveData; // sizeof 0x20
+
+typedef struct UnkD3450StepData {
+    /* 0x00 */ Vec from;
+    /* 0x0C */ Vec to;
+    /* 0x18 */ Vec *out;
+    /* 0x1C */ f32 speed;
+} UnkD3450StepData; // sizeof 0x20
+
 extern s32 D_801011E0_name_81[];
 
 void func_800EED30_name_81(s32);
@@ -156,36 +178,278 @@ void func_800EBAD4_name_81(s16 arg0) {
     func_800EED30_name_81(D_801011E0_name_81[arg0]);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EBB00_name_81);
+void func_800EBB00_name_81(void) {
+    UnkD3450RotData *data = HuPrcCurrentGet()->user_data;
+    s32 time = data->time;
+    f32 angle = MBDVecAngleGet(&data->from);
+    f32 step = MBDVecAngleGet(&data->to) - angle;
+    f32 timeF;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EBC60_name_81);
+    if (step < -180.0f) {
+        step += 360.0f;
+    }
+    if (step > 180.0f) {
+        step -= 360.0f;
+    }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EBD1C_name_81);
+    timeF = (f32)time;
+    step = step / timeF;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EBDDC_name_81);
+    if (data->spin != 0) {
+        if (step >= 0.0f) {
+            step += 720.0f / timeF;
+        } else {
+            step -= 720.0f / timeF;
+        }
+    }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EBE60_name_81);
+    for (angle = 0.0f; data->time != 0;) {
+        HuVecCopy3F(data->out, &data->from);
+        angle += step;
+        MBDVecRotateY(data->out, angle);
+        data->time--;
+        HuPrcVSleep();
+    }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EBF2C_name_81);
+    omDelPrcObj(NULL);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EBFE0_name_81);
+Process *func_800EBC60_name_81(Vec *from, Vec *to, Vec *out, s32 time) {
+    Process *prc = omAddPrcObj(func_800EBB00_name_81, 0x4002, 0, 0x80);
+    UnkD3450RotData *data = HuMemMemoryAlloc(prc->heap, sizeof(UnkD3450RotData));
+
+    prc->user_data = data;
+    HuVecCopyXYZ(&data->from, from->x, 0.0f, from->z);
+    HuVecCopyXYZ(&data->to, to->x, 0.0f, to->z);
+    data->out = out;
+    data->time = time;
+    data->spin = 0;
+    return prc;
+}
+
+Process *func_800EBD1C_name_81(Vec *from, Vec *to, Vec *out, s32 time) {
+    Process *prc = omAddPrcObj(func_800EBB00_name_81, 0x4002, 0, 0x80);
+    UnkD3450RotData *data = HuMemMemoryAlloc(prc->heap, sizeof(UnkD3450RotData));
+
+    prc->user_data = data;
+    HuVecCopyXYZ(&data->from, from->x, 0.0f, from->z);
+    HuVecCopyXYZ(&data->to, to->x, 0.0f, to->z);
+    data->out = out;
+    data->time = time;
+    data->spin = 1;
+    return prc;
+}
+
+Process *func_800EBDDC_name_81(s16 playerIndex, s32 time, s16 spaceIndex) {
+    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    Vec dir;
+
+    HuVecSubtract(&dir, &MBDMasuGet(spaceIndex)->coords, &player->player_obj->coords);
+    MBDVecNormalize(&dir);
+    return func_800EBC60_name_81(&player->player_obj->rot, &dir, &player->player_obj->rot, time);
+}
+
+void func_800EBE60_name_81(void) {
+    UnkD3450MoveData *data = HuPrcCurrentGet()->user_data;
+    s32 time = data->time;
+
+    while (data->time) {
+        HuVecSubtract(data->out, &data->to, &data->from);
+        HuVecMulScalar(data->out, 1.0f - ((1.0f / (f32)time) * (f32)(data->time - 1)), data->out);
+        HuVecAdd(data->out, data->out, &data->from);
+        data->time--;
+        HuPrcVSleep();
+    }
+
+    omDelPrcObj(NULL);
+}
+
+Process *func_800EBF2C_name_81(Vec *from, Vec *to, Vec *out, s32 time) {
+    Process *prc = omAddPrcObj(func_800EBE60_name_81, 0x4002, 0, 0x50);
+    UnkD3450MoveData *data = HuMemMemoryAlloc(prc->heap, sizeof(UnkD3450MoveData));
+
+    prc->user_data = data;
+    data->from = *from;
+    data->to = *to;
+    data->out = out;
+    data->time = time;
+    return prc;
+}
+
+void func_800EBFE0_name_81(s16 playerIndex, s32 time) {
+    Vec from;
+    Vec to;
+    Vec dir;
+    Process *prc;
+    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+
+    func_800EB680_name_81(playerIndex, MBDMasuLinkMasuIdGet(player->clink, player->cidx), &from);
+    func_800EB680_name_81(playerIndex, MBDMasuLinkMasuIdGet(player->nlink, player->nidx), &to);
+    if (!(player->rev & 4)) {
+        MBDVecDirGet(&from, &to, &dir);
+    } else {
+        MBDVecDirGet(&to, &from, &dir);
+    }
+    func_800EBC60_name_81(&player->player_obj->rot, &dir, &player->player_obj->rot, time);
+    prc = func_800EBF2C_name_81(&from, &to, &player->player_obj->coords, time);
+    HuPrcChildLink(HuPrcCurrentGet(), prc);
+    HuPrcChildWatch();
+}
 
 void func_800EC114_name_81(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EC11C_name_81);
+void func_800EC11C_name_81(void) {
+    UnkD3450StepData *data = HuPrcCurrentGet()->user_data;
+    f32 speed = data->speed;
+    Vec *to = &data->to;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EC1E4_name_81);
+    while (!(HuVecDistance(&data->from, to) < speed)) {
+        HuVecSubtract(data->out, to, &data->from);
+        MBDVecNormalize(data->out);
+        HuVecMulScalar(data->out, speed, data->out);
+        HuVecAdd(data->out, data->out, &data->from);
+        HuVecCopy3F(&data->from, data->out);
+        HuPrcVSleep();
+    }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EC298_name_81);
+    HuVecCopy3F(data->out, &data->to);
+    omDelPrcObj(NULL);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EC36C_name_81);
+Process *func_800EC1E4_name_81(Vec *from, Vec *to, Vec *out, f32 speed) {
+    Process *prc = omAddPrcObj(func_800EC11C_name_81, 0x4002, 0, 0x50);
+    UnkD3450StepData *data = HuMemMemoryAlloc(prc->heap, sizeof(UnkD3450StepData));
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EC420_name_81);
+    prc->user_data = data;
+    data->from = *from;
+    data->to = *to;
+    data->out = out;
+    data->speed = speed;
+    return prc;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EC548_name_81);
+void func_800EC298_name_81(void) {
+    UnkD3450StepData *data = HuPrcCurrentGet()->user_data;
+    f32 speed = data->speed;
+    s32 done = FALSE;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EC6F4_name_81);
+    while (TRUE) {
+        HuVecSubtract(data->out, &data->to, &data->from);
+        MBDVecNormalize(data->out);
+        HuVecMulScalar(data->out, speed, data->out);
+        HuVecAdd(data->out, data->out, &data->from);
+        HuVecCopy3F(&data->from, data->out);
+        if (HuVecDistance(&data->from, &data->to) < speed) {
+            done = TRUE;
+        }
+        if (done) {
+            break;
+        }
+        HuPrcVSleep();
+    }
+
+    omDelPrcObj(NULL);
+}
+
+Process *func_800EC36C_name_81(Vec *from, Vec *to, Vec *out, f32 speed) {
+    Process *prc = omAddPrcObj(func_800EC298_name_81, 0x4002, 0, 0x50);
+    UnkD3450StepData *data = HuMemMemoryAlloc(prc->heap, sizeof(UnkD3450StepData));
+
+    prc->user_data = data;
+    data->from = *from;
+    data->to = *to;
+    data->out = out;
+    data->speed = speed;
+    return prc;
+}
+
+void func_800EC420_name_81(s16 playerIndex, f32 speed) {
+    Vec from;
+    Vec to;
+    Process *prc;
+    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+
+    func_800EB680_name_81(playerIndex, MBDMasuLinkMasuIdGet(player->clink, player->cidx), &from);
+    func_800EB680_name_81(playerIndex, MBDMasuLinkMasuIdGet(player->nlink, player->nidx), &to);
+    if (!(player->rev & 4)) {
+        MBDVecDirGet(&from, &to, &player->player_obj->rot);
+    } else {
+        MBDVecDirGet(&to, &from, &player->player_obj->rot);
+    }
+    prc = func_800EC1E4_name_81(&from, &to, &player->player_obj->coords, speed);
+    HuPrcChildLink(HuPrcCurrentGet(), prc);
+    HuPrcChildWatch();
+}
+
+void func_800EC548_name_81(s16 playerIndex, Vec *cur, Vec *next, Vec *after, Vec *dir) {
+    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    s16 spaceIndex;
+
+    func_800EB680_name_81(playerIndex, MBDMasuLinkMasuIdGet(player->clink, player->cidx), cur);
+    func_800EB680_name_81(playerIndex, MBDMasuLinkMasuIdGet(player->nlink, player->nidx), next);
+    if (player->nnlink >= 0 && player->nnidx >= 0) {
+        func_800EB680_name_81(playerIndex, MBDMasuLinkMasuIdGet(player->nnlink, player->nnidx), after);
+    } else {
+        if (!(player->rev & FLAG_REV)) {
+            spaceIndex = MBDMasuLinkMasuIdGet(player->nlink, player->nidx + 1);
+        } else {
+            spaceIndex = MBDMasuLinkMasuIdGet(player->nlink, player->nidx - 1);
+        }
+        func_800EB680_name_81(playerIndex, spaceIndex, after);
+    }
+    if (!(player->rev & 4)) {
+        MBDVecDirGet(cur, next, dir);
+    } else {
+        MBDVecDirGet(next, cur, dir);
+    }
+}
+
+void func_800EC6F4_name_81(void) {
+    UnkD3450PrcDataF *data = HuPrcCurrentGet()->user_data;
+    s16 playerIndex = data->unk_00;
+    f32 speed = data->unk_04;
+    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    Vec cur;
+    Vec next;
+    Vec after;
+    Vec from;
+    Vec to;
+    Vec dir;
+    Process *prc;
+    Object *partner;
+    f32 angle;
+
+    func_800EC548_name_81(playerIndex, &cur, &next, &after, &dir);
+    prc = HuPrcCurrentGet();
+    partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
+    if (!(player->rev & 4)) {
+        HuVecCopy3F(&from, &partner->coords);
+        HuVecCopy3F(&to, &next);
+        HuVecCopy3F(&partner->rot, &dir);
+    } else {
+        MBDVecDirGet(&player->player_obj->coords, &partner->coords, &partner->rot);
+        HuVecCopy3F(&from, &partner->coords);
+        HuVecCopy3F(&to, &cur);
+    }
+    HuPrcChildLink(prc, func_800EC36C_name_81(&from, &to, &partner->coords, speed));
+    HuPrcChildWatch();
+
+    if (player->rev & 4) {
+        angle = MBDVecAngleGet(&dir);
+    } else {
+        MBDVecDirGet(&next, &after, &dir);
+        angle = MBDVecAngleGet(&dir);
+    }
+    to.x = sindf(angle + 0.0f) * 12.0f + next.x;
+    to.z = cosdf(angle + 0.0f) * 12.0f + next.z;
+    to.y = next.y;
+    HuVecCopy3F(&from, &partner->coords);
+    HuVecCopy3F(&partner->rot, &dir);
+    HuPrcChildLink(prc, func_800EC1E4_name_81(&from, &to, &partner->coords, speed));
+    HuPrcChildWatch();
+    omDelPrcObj(NULL);
+}
 
 Process *func_800EC91C_name_81(s16 playerIdx, f32 arg1) {
     Process *prc = omAddPrcObj(func_800EC6F4_name_81, 0x4003, 0, 0x40);
@@ -197,7 +461,51 @@ Process *func_800EC91C_name_81(s16 playerIdx, f32 arg1) {
     return prc;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EC99C_name_81);
+void func_800EC99C_name_81(void) {
+    UnkD3450PrcDataF *data = HuPrcCurrentGet()->user_data;
+    s16 playerIndex = data->unk_00;
+    f32 speed = data->unk_04;
+    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    Vec cur;
+    Vec next;
+    Vec after;
+    Vec from;
+    Vec to;
+    Vec dir;
+    Process *prc;
+    Object *partner;
+    f32 angle;
+
+    func_800EC548_name_81(playerIndex, &cur, &next, &after, &dir);
+    prc = HuPrcCurrentGet();
+    partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
+    if (!(player->rev & 4)) {
+        MBDVecDirGet(&partner->coords, &player->player_obj->coords, &partner->rot);
+        HuVecCopy3F(&from, &partner->coords);
+        HuVecCopy3F(&to, &cur);
+    } else {
+        HuVecCopy3F(&partner->rot, &dir);
+        HuVecCopy3F(&from, &partner->coords);
+        HuVecCopy3F(&to, &next);
+    }
+    HuPrcChildLink(prc, func_800EC36C_name_81(&from, &to, &partner->coords, speed));
+    HuPrcChildWatch();
+
+    if (!(player->rev & 4)) {
+        angle = MBDVecAngleGet(&dir);
+    } else {
+        MBDVecDirGet(&after, &next, &dir);
+        angle = MBDVecAngleGet(&dir);
+    }
+    to.x = sindf(angle + 180.0f) * 12.0f + next.x;
+    to.z = cosdf(angle + 180.0f) * 12.0f + next.z;
+    to.y = next.y;
+    HuVecCopy3F(&from, &partner->coords);
+    HuVecCopy3F(&partner->rot, &dir);
+    HuPrcChildLink(prc, func_800EC1E4_name_81(&from, &to, &partner->coords, speed));
+    HuPrcChildWatch();
+    omDelPrcObj(NULL);
+}
 
 Process *func_800ECBB4_name_81(s16 playerIdx, f32 arg1) {
     Process *prc = omAddPrcObj(func_800EC99C_name_81, 0x4003, 0, 0x40);
@@ -209,7 +517,20 @@ Process *func_800ECBB4_name_81(s16 playerIdx, f32 arg1) {
     return prc;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800ECC34_name_81);
+void func_800ECC34_name_81(s16 playerIndex, f32 speed) {
+    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    Process *prc = HuPrcCurrentGet();
+
+    if (player->stats.partners.frontID != PARTNER_NONE) {
+        HuPrcChildLink(prc, func_800EC91C_name_81(playerIndex, speed));
+    }
+    if (player->stats.partners.backID != PARTNER_NONE) {
+        HuPrcChildLink(prc, func_800ECBB4_name_81(playerIndex, speed));
+    }
+    func_800EC420_name_81(playerIndex, speed);
+    player->nnlink = -1;
+    player->nnidx = -1;
+}
 
 void func_800ECD0C_name_81(s16 playerIdx, s16 nlink, s16 nidx) {
     GW_PLAYER *player = MBDGetPlayerStruct(playerIdx);
@@ -249,11 +570,75 @@ void func_800ECE10_name_81(void) {
     player->rev &= ~FLAG_REV;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800ECE38_name_81);
+void func_800ECE38_name_81(s32 playerIndex) {
+    Vec from;
+    Vec to;
+    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    s32 space;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800ECF1C_name_81);
+    space = MBDMasuLinkMasuIdGet(player->clink, player->cidx);
+    func_800EB680_name_81(playerIndex, space, &from);
+    space = MBDMasuLinkMasuIdGet(player->nlink, player->nidx);
+    func_800EB680_name_81(playerIndex, space, &to);
+    if (!(player->rev & 4)) {
+        MBDVecDirGet(&from, &to, &player->player_obj->rot);
+    } else {
+        MBDVecDirGet(&to, &from, &player->player_obj->rot);
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800ED118_name_81);
+void func_800ECF1C_name_81(s32 playerIndex, Vec *frontOffset, Vec *backOffset) {
+    Vec cur;
+    Vec next;
+    Vec back;
+    Vec dir;
+    f32 angle;
+    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+
+    func_800EC548_name_81(playerIndex, &cur, &next, &back, &dir);
+    func_800EB680_name_81(playerIndex, MBDMasuLinkMasuIdGet(player->blink, player->bidx), &back);
+    if (!(player->rev & 4)) {
+        MBDVecDirGet(&cur, &next, &dir);
+        angle = MBDVecAngleGet(&dir);
+        frontOffset->x = sindf(angle + 0.0f) * 12.0f;
+        frontOffset->z = cosdf(angle + 0.0f) * 12.0f;
+        frontOffset->y = 0.0f;
+        MBDVecDirGet(&back, &cur, &dir);
+        angle = MBDVecAngleGet(&dir);
+        backOffset->x = sindf(angle + 180.0f) * 12.0f;
+        backOffset->z = cosdf(angle + 180.0f) * 12.0f;
+        backOffset->y = 0.0f;
+    } else {
+        MBDVecDirGet(&cur, &back, &dir);
+        angle = MBDVecAngleGet(&dir);
+        frontOffset->x = sindf(angle + 0.0f) * 12.0f;
+        frontOffset->z = cosdf(angle + 0.0f) * 12.0f;
+        frontOffset->y = 0.0f;
+        MBDVecDirGet(&next, &cur, &dir);
+        angle = MBDVecAngleGet(&dir);
+        backOffset->x = sindf(angle + 180.0f) * 12.0f;
+        backOffset->z = cosdf(angle + 180.0f) * 12.0f;
+        backOffset->y = 0.0f;
+    }
+}
+
+void func_800ED118_name_81(s32 playerIndex, Vec *frontDir, Vec *backDir) {
+    Vec cur;
+    Vec next;
+    Vec back;
+    Vec dir;
+    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+
+    func_800EC548_name_81(playerIndex, &cur, &next, &back, &dir);
+    func_800EB680_name_81(playerIndex, MBDMasuLinkMasuIdGet(player->blink, player->bidx), &back);
+    if (!(player->rev & 4)) {
+        MBDVecDirGet(&cur, &next, frontDir);
+        MBDVecDirGet(&back, &cur, backDir);
+    } else {
+        MBDVecDirGet(&cur, &back, frontDir);
+        MBDVecDirGet(&next, &cur, backDir);
+    }
+}
 
 void func_800ED214_name_81(s32 playerIndex) {
     Vec sp10;
@@ -281,7 +666,35 @@ void func_800ED214_name_81(s32 playerIndex) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800ED31C_name_81);
+void func_800ED31C_name_81(void) {
+    UnkD3450PrcData *data = HuPrcCurrentGet()->user_data;
+    s32 time = data->unk_04;
+    s16 playerIndex = data->unk_00;
+    Vec cur;
+    Vec next;
+    Vec after;
+    Vec from;
+    Vec to;
+    Vec dir;
+    Process *prc;
+    Object *partner;
+    f32 angle;
+
+    func_800EC548_name_81(playerIndex, &cur, &next, &after, &dir);
+    prc = HuPrcCurrentGet();
+    partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
+    MBDVecDirGet(&cur, &next, &dir);
+    angle = MBDVecAngleGet(&dir) + 0.0f;
+    to.x = sindf(angle) * 12.0f + cur.x;
+    to.z = cosdf(angle) * 12.0f + cur.z;
+    to.y = cur.y;
+    HuVecCopy3F(&from, &partner->coords);
+    HuVecCopy3F(&partner->rot, &dir);
+    HuPrcChildLink(prc, func_800EBF2C_name_81(&from, &to, &partner->coords, time));
+    func_800EF7C8_name_81(partner, 5.0f, -5.0f / (time / 2));
+    HuPrcChildWatch();
+    omDelPrcObj(NULL);
+}
 
 Process *func_800ED4AC_name_81(s16 playerIdx, s32 arg) {
     Process *prc = omAddPrcObj(func_800ED31C_name_81, 0x4003, 0, 0x40);
@@ -293,7 +706,34 @@ Process *func_800ED4AC_name_81(s16 playerIdx, s32 arg) {
     return prc;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800ED520_name_81);
+void func_800ED520_name_81(void) {
+    UnkD3450PrcDataF *data = HuPrcCurrentGet()->user_data;
+    s16 playerIndex = data->unk_00;
+    f32 speed = data->unk_04;
+    Vec cur;
+    Vec next;
+    Vec after;
+    Vec from;
+    Vec to;
+    Vec dir;
+    Process *prc;
+    Object *partner;
+    f32 angle;
+
+    func_800EC548_name_81(playerIndex, &cur, &next, &after, &dir);
+    prc = HuPrcCurrentGet();
+    partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_FRONT);
+    MBDVecDirGet(&cur, &next, &dir);
+    angle = MBDVecAngleGet(&dir) + 0.0f;
+    to.x = sindf(angle) * 12.0f + cur.x;
+    to.z = cosdf(angle) * 12.0f + cur.z;
+    to.y = cur.y;
+    HuVecCopy3F(&from, &partner->coords);
+    HuVecCopy3F(&partner->rot, &dir);
+    HuPrcChildLink(prc, func_800EC1E4_name_81(&from, &to, &partner->coords, speed));
+    HuPrcChildWatch();
+    omDelPrcObj(NULL);
+}
 
 Process *func_800ED68C_name_81(s16 playerIdx, f32 arg1) {
     Process *prc = omAddPrcObj(func_800ED520_name_81, 0x4003, 0, 0x40);
@@ -318,9 +758,52 @@ Process *func_800ED70C_name_81(s32 playerIdx, s32 arg) {
     return prc;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800ED788_name_81);
+void func_800ED788_name_81(s32 playerIndex) {
+    Process *prc;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800ED7EC_name_81);
+    if (GwSystem.current_board_index == 3) {
+        prc = func_800ED70C_name_81(playerIndex, 1);
+    } else {
+        prc = func_800ED70C_name_81(playerIndex, 0);
+    }
+
+    if (prc != NULL) {
+        HuPrcChildLink(HuPrcCurrentGet(), prc);
+        HuPrcChildWatch();
+    }
+}
+
+void func_800ED7EC_name_81(void) {
+    UnkD3450PrcData *data = HuPrcCurrentGet()->user_data;
+    s32 time = data->unk_04;
+    s16 playerIndex = data->unk_00;
+    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    Vec cur;
+    Vec next;
+    Vec back;
+    Vec from;
+    Vec to;
+    Vec dir;
+    Process *prc;
+    Object *partner;
+    f32 angle;
+
+    func_800EC548_name_81(playerIndex, &cur, &next, &back, &dir);
+    func_800EB680_name_81(playerIndex, MBDMasuLinkMasuIdGet(player->blink, player->bidx), &back);
+    prc = HuPrcCurrentGet();
+    partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
+    MBDVecDirGet(&back, &cur, &dir);
+    angle = MBDVecAngleGet(&dir) + 180.0f;
+    to.x = sindf(angle) * 12.0f + cur.x;
+    to.z = cosdf(angle) * 12.0f + cur.z;
+    to.y = cur.y;
+    HuVecCopy3F(&from, &partner->coords);
+    HuVecCopy3F(&partner->rot, &dir);
+    HuPrcChildLink(prc, func_800EBF2C_name_81(&from, &to, &partner->coords, time));
+    func_800EF7C8_name_81(partner, 5.0f, -5.0f / (time / 2));
+    HuPrcChildWatch();
+    omDelPrcObj(NULL);
+}
 
 Process *func_800ED9C4_name_81(s16 playerIdx, s32 arg) {
     Process *prc = omAddPrcObj(func_800ED7EC_name_81, 0x4003, 0, 0x40);
@@ -332,7 +815,36 @@ Process *func_800ED9C4_name_81(s16 playerIdx, s32 arg) {
     return prc;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EDA38_name_81);
+void func_800EDA38_name_81(void) {
+    UnkD3450PrcDataF *data = HuPrcCurrentGet()->user_data;
+    s16 playerIndex = data->unk_00;
+    f32 speed = data->unk_04;
+    GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
+    Vec cur;
+    Vec next;
+    Vec back;
+    Vec from;
+    Vec to;
+    Vec dir;
+    Process *prc;
+    Object *partner;
+    f32 angle;
+
+    func_800EC548_name_81(playerIndex, &cur, &next, &back, &dir);
+    func_800EB680_name_81(playerIndex, MBDMasuLinkMasuIdGet(player->blink, player->bidx), &back);
+    prc = HuPrcCurrentGet();
+    partner = MBDGetPlayerPartnerRef(playerIndex, PARTNER_BACK);
+    MBDVecDirGet(&back, &cur, &dir);
+    angle = MBDVecAngleGet(&dir) + 180.0f;
+    to.x = sindf(angle) * 12.0f + cur.x;
+    to.z = cosdf(angle) * 12.0f + cur.z;
+    to.y = cur.y;
+    HuVecCopy3F(&from, &partner->coords);
+    HuVecCopy3F(&partner->rot, &dir);
+    HuPrcChildLink(prc, func_800EC1E4_name_81(&from, &to, &partner->coords, speed));
+    HuPrcChildWatch();
+    omDelPrcObj(NULL);
+}
 
 Process *func_800EDBEC_name_81(s16 playerIdx, f32 arg1) {
     Process *prc = omAddPrcObj(func_800EDA38_name_81, 0x4003, 0, 0x40);
@@ -357,4 +869,16 @@ Process *func_800EDC6C_name_81(s32 playerIdx, s32 arg) {
     return prc;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EDCE8_name_81);
+void func_800EDCE8_name_81(s32 playerIndex) {
+    Process *prc;
+
+    if (GwSystem.current_board_index == 3) {
+        prc = func_800EDC6C_name_81(playerIndex, 1);
+    } else {
+        prc = func_800EDC6C_name_81(playerIndex, 0);
+    }
+    if (prc != NULL) {
+        HuPrcChildLink(HuPrcCurrentGet(), prc);
+        HuPrcChildWatch();
+    }
+}

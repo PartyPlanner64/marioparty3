@@ -5,6 +5,8 @@
 #include "math.h"
 #include "overlays/minigame.h"
 
+#define CAMERA_KEEP 65535.0f
+
 typedef struct UnkBowser { // 0x64 bytes, two entries
     omObjData *unk_00;
     s16 unk_04;
@@ -74,9 +76,9 @@ typedef struct BowserTossPlayer { // 0x5C bytes, two entries
 } BowserTossPlayer;
 
 // Per-player slot of the array allocated in func_8010B41C_bowser_toss
-typedef struct BowserTossBowser { // 0x10 bytes, two entries
+typedef struct BowserTossBowser { // 0x10 bytes, three entries
     s16 spriteId;                 // HuSprGrpCreate handle
-    s16 angle;
+    s16 timer;
     s16 state; // toss state, 0x20 once the toss has finished
     char unk_06[2];
     s32 unk_08;
@@ -85,10 +87,10 @@ typedef struct BowserTossBowser { // 0x10 bytes, two entries
 
 // Item data block returned by func_8010D9E0_bowser_toss
 typedef struct BowserTossItem { // 0xC bytes
-    s16 unk_00;
-    s16 unk_02;
-    void *unk_04;
-    void *unk_08;
+    s16 frames;                 // motion length
+    s16 step;                   // frames between baked matrices
+    s16 *nodes;
+    HuMtx4F *mtx; // baked hook matrix per sampled frame
 } BowserTossItem;
 
 // Entry of the array allocated in func_8010A028_bowser_toss
@@ -102,12 +104,39 @@ typedef struct BowserTossEffect { // 0x30 bytes, 32 entries
     Vec unk_24;
 } BowserTossEffect;
 
+typedef struct BowserTossCameraKey { // 0x24 bytes
+    Vec center;
+    Vec rot;
+    f32 zoom;
+    f32 unk_1C;
+    f32 unk_20;
+} BowserTossCameraKey;
+
+// Per-camera interpolation state allocated in func_8010C2DC_bowser_toss
+typedef struct BowserTossCamera { // 0x54 bytes, two entries
+    BowserTossCameraKey keys[2];  // target, origin
+    s32 frame;                    // frames remaining
+    s32 frames;                   // total frames
+    s32 active;
+} BowserTossCamera;
+
 typedef struct BowserTossScissor {
     s16 x;
     s16 y;
     s16 width;
     s16 height;
 } BowserTossScissor;
+
+typedef struct BowserTossSprPos {
+    s16 x;
+    s16 y;
+} BowserTossSprPos;
+
+// Background sprite frame table entry
+typedef struct BowserTossScrollFrame {
+    s16 sprite; // index into D_8010FB98_bowser_toss
+    s16 frame;
+} BowserTossScrollFrame;
 
 typedef union BowserTossWorkBytes { // packs the low byte of each work word
     u32 word;
@@ -119,7 +148,7 @@ typedef union BowserTossWorkBytes { // packs the low byte of each work word
     } bytes;
 } BowserTossWorkBytes;
 
-extern u32 D_8010F150_bowser_toss[];
+extern u8 D_8010F150_bowser_toss[]; // RGBA
 extern s32 D_8010F194_bowser_toss;
 extern Vec D_8010F198_bowser_toss[2];
 extern s32 D_800A178C_main[][6];
@@ -135,10 +164,18 @@ extern f32 D_8010F250_bowser_toss[];
 extern f32 D_8010F260_bowser_toss[];
 extern f32 D_8010F270_bowser_toss[2];
 extern Vec D_8010F278_bowser_toss[14];
-extern u32 D_8010F320_bowser_toss[];
+extern u8 D_8010F320_bowser_toss[4]; // RGBA
 extern s16 D_8010F324_bowser_toss[2][5];
-extern u32 D_8010F338_bowser_toss[];
+extern u8 D_8010F338_bowser_toss[4]; // RGBA
 extern BowserTossScissor D_8010F33C_bowser_toss[2];
+extern f32 D_8010F34C_bowser_toss;
+extern s32 D_8010F3EC_bowser_toss; // camera test mode
+extern s32 D_8010F3F0_bowser_toss; // camera test mode camera index
+extern s32 D_8010F3F4_bowser_toss; // camera test mode text x offset
+extern s32 D_8010F3F8_bowser_toss; // camera test mode text y offset
+extern BowserTossScrollFrame D_8010F350_bowser_toss[];
+extern BowserTossSprPos D_8010F378_bowser_toss[3][8]; // score sprite positions per counter
+extern s32 D_8010F3D8_bowser_toss[5];                 // decimal place divisors
 extern s8 D_800D20A1_main[];
 extern u16 D_800D5558_main[];
 extern s16 D_800CDA7C_main[];
@@ -167,6 +204,14 @@ extern const s16 D_8010F53C_bowser_toss[];
 extern omObjData *D_8010FB88_bowser_toss;
 extern UnkBowser *D_8010FB8C_bowser_toss;
 extern BowserTossBowser *D_8010FBA0_bowser_toss;
+extern s16 D_800CD1B0_main;
+extern u8 D_800D2008_main;
+extern s16 *D_800D04B4_main;
+extern HuMtx4F *D_800D1358_main;
+extern s16 D_800D138A_main;
+extern HuMtx4F D_800D5A00_main[];
+extern BowserTossCamera *D_8010FBA4_bowser_toss;
+extern Vec D_8010FBA8_bowser_toss;
 
 void func_80105C80_bowser_toss(omObjData *object);
 void func_80105CEC_bowser_toss(omObjData *object);
@@ -177,6 +222,14 @@ void func_8010A4A8_bowser_toss(void);
 void func_8010AD98_bowser_toss(void);
 void func_8010B41C_bowser_toss(void);
 void func_8010C2DC_bowser_toss(void);
+void func_8010B7AC_bowser_toss(omObjData *object);
+void func_8010CDB8_bowser_toss(omObjData *object);
+void func_8010D080_bowser_toss(s32 camIndex, s32 key);
+f32 func_8010D8A0_bowser_toss(f32 t, f32 start, f32 end);
+f32 func_8010D8B8_bowser_toss(f32 t, f32 start, f32 end);
+f32 func_8010D5DC_bowser_toss(f32 arg0, f32 arg1);
+f32 func_8010D6E0_bowser_toss(f32 target, f32 current, f32 step);
+void func_8010D43C_bowser_toss(s32 camIndex);
 void func_8010A500_bowser_toss(omObjData *object);
 void func_8010649C_bowser_toss(omObjData *object);
 void func_801064C0_bowser_toss(omObjData *object);
@@ -185,27 +238,29 @@ s16 func_8010840C_bowser_toss(void);
 s16 func_80108444_bowser_toss(void);
 void func_8010847C_bowser_toss(omObjData *object, s16 arg1, s16 arg2);
 s16 func_80109F20_bowser_toss(void);
-void func_8010C1A0_bowser_toss(s16 arg0, s32 arg1);
+void func_8010C1A0_bowser_toss(s16 index, s32 score);
 s16 func_8010C23C_bowser_toss(void);
 void func_8010C274_bowser_toss(void);
 s16 func_8010C2A4_bowser_toss(void);
-void func_8010D250_bowser_toss(s32 camIndex, f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom, s32 frames);
+void func_8010D250_bowser_toss(s32 camIndex, f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom,
+                               s32 frames);
 void func_8010D960_bowser_toss(omObjData *obj, u32 arg1);
 void func_80106BC4_bowser_toss(omObjData *object);
 void func_8010858C_bowser_toss(s16 arg0);
 UnkBowser *func_80108800_bowser_toss(s16 arg0);
 f32 func_801080D0_bowser_toss(f32 arg0, f32 arg1, f32 arg2);
 void func_8010882C_bowser_toss(omObjData *object);
-struct BowserTossItem *func_8010D9E0_bowser_toss(s16 model, s16 arg1, const char *hookName, s16 arg3, u16 arg4);
+struct BowserTossItem *func_8010D9E0_bowser_toss(s16 model, s16 step, const char *hookName, s16 shape, s16 frame);
+void func_8010DB9C_bowser_toss(s16 model, s16 step, struct BowserTossItem *item, s16 node, s16 shape, s16 frame);
 void func_8010DDC4_bowser_toss(struct BowserTossItem *item);
 void func_8010D918_bowser_toss(f32 *arg0, f32 *arg1, f32 *arg2, f32 arg3);
 void func_8010A17C_bowser_toss(omObjData *object);
 void func_8010A908_bowser_toss(omObjData *object);
 void func_8010AF38_bowser_toss(s16 camera, Vec *pos, Vec *rot);
 u16 func_8010AD54_bowser_toss(s32 dirAndFile);
-s16 func_8010DDFC_bowser_toss(HuSprite_Unk84_Struct *sprite, u32 *arg1, s32 arg2);
-s16 func_8010EA0C_bowser_toss(HuSprite_Unk84_Struct *sprite, u16 model, u32 *arg2);
-void func_8010EC10_bowser_toss(u16 model, HuSprite_Unk84_Struct *sprite, u16 frame, u32 *arg3);
+s16 func_8010DDFC_bowser_toss(HuSprite_Unk84_Struct *sprite, u8 *color, s32 arg2);
+s16 func_8010EA0C_bowser_toss(HuSprite_Unk84_Struct *sprite, u16 model, u8 *color);
+void func_8010EC10_bowser_toss(u16 model, HuSprite_Unk84_Struct *sprite, u16 frame, u8 *color);
 BowserTossPlayer *func_8010D98C_bowser_toss(omObjData *object);
 
 void func_801059A0_bowser_toss(void) {
@@ -426,8 +481,8 @@ void func_80105CEC_bowser_toss(omObjData *object) {
                     if (D_8010FB78_bowser_toss == 1) {
                         y -= 15.000000596046448;
                     }
-                    func_8010D250_bowser_toss(D_8010FB78_bowser_toss, x, y, 65535.0f, 65535.0f, 65535.0f, 65535.0f,
-                                              zoom, 30);
+                    func_8010D250_bowser_toss(D_8010FB78_bowser_toss, x, y, CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP,
+                                              CAMERA_KEEP, zoom, 30);
                     func_800E6F0C_minigame(4);
                 }
                 D_8010FB5C_bowser_toss = 0;
@@ -759,7 +814,7 @@ void func_8010858C_bowser_toss(s16 index) {
     size = frames * sizeof(Mtx);
     bowser->unk_60 = HuMemAllocTag(size, TAG_OVERLAY);
     memset(bowser->unk_60, 0, size);
-    memcpy(bowser->unk_60, bowser->unk_5C->unk_08, size);
+    memcpy(bowser->unk_60, bowser->unk_5C->mtx, size);
     func_8010DDC4_bowser_toss(bowser->unk_5C);
     bowser->unk_5C = NULL;
     if (index == 0) {
@@ -1130,13 +1185,365 @@ void func_8010AD98_bowser_toss(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010AF38_bowser_toss);
+void func_8010AF38_bowser_toss(s16 camera, Vec *pos, Vec *rot) {
+    s16 group;
+    f32 x;
+    f32 y;
+    f32 scrollY;
+    f32 signX;
+    f32 signY;
+    s16 frame;
+    BowserTossScrollFrame *entry;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010B41C_bowser_toss);
+    group = D_8010FB9C_bowser_toss[camera];
+    x = (pos->x - Center.x) / D_8010F34C_bowser_toss;
+    y = (pos->y - Center.y) / D_8010F34C_bowser_toss;
+    if (x == 0.0f) {
+        HuSprDispOff(group, 1);
+        HuSprDispOff(group, 3);
+    } else {
+        HuSprDispOn(group, 1);
+        HuSprDispOn(group, 3);
+    }
+    if (y == 0.0f) {
+        HuSprDispOff(group, 2);
+        HuSprDispOff(group, 3);
+    } else {
+        HuSprDispOn(group, 2);
+        HuSprDispOn(group, 3);
+    }
+    frame = y / 120.0f;
+    if (camera == 0) {
+        x = -fmod(x, 320.0);
+        scrollY = fmod(y, 120.0);
+    } else {
+        x = -fmod(x, 320.0);
+        scrollY = fmod(y, 120.0) + 120.0;
+    }
+    signX = (pos->x >= 0.0f) ? 1.0f : -1.0f;
+    signY = (pos->y >= 0.0f) ? 1.0f : -1.0f;
 
+    if (frame >= 8) {
+        frame = 7;
+    } else if (frame < 0) {
+        frame = 0;
+    }
+    entry = &D_8010F350_bowser_toss[frame];
+    HuSprPosSet(group, 0, x, scrollY);
+    HuSprGrpMemberSet(group, 0, D_8010FB98_bowser_toss[entry->sprite], entry->frame);
+    func_80054FF8_main(group, 0, entry->frame);
+    HuSprPosSet(group, 1, x + signX * 320.0f, scrollY);
+    HuSprGrpMemberSet(group, 1, D_8010FB98_bowser_toss[entry->sprite], entry->frame);
+    func_80054FF8_main(group, 1, entry->frame);
+
+    if (signY >= 0.0f) {
+        frame++;
+    } else {
+        frame--;
+    }
+    if (frame >= 8) {
+        frame = 7;
+    } else if (frame < 0) {
+        frame = 0;
+    }
+    entry = &D_8010F350_bowser_toss[frame];
+    HuSprPosSet(group, 2, x, scrollY - signY * 120.0f);
+    HuSprGrpMemberSet(group, 2, D_8010FB98_bowser_toss[entry->sprite], entry->frame);
+    func_80054FF8_main(group, 2, entry->frame);
+    HuSprPosSet(group, 3, x + signX * 320.0f, scrollY - signY * 120.0f);
+    HuSprGrpMemberSet(group, 3, D_8010FB98_bowser_toss[entry->sprite], entry->frame);
+    func_80054FF8_main(group, 3, entry->frame);
+}
+
+void func_8010B41C_bowser_toss(void) {
+    HuSprite_Unk84_Struct *anim;
+    BowserTossBowser *bowser;
+    s32 i;
+    s32 j;
+
+    D_8010FB98_bowser_toss[6] = func_8010AD54_bowser_toss(0x31);
+    D_8010FB98_bowser_toss[7] = func_8010AD54_bowser_toss(0x55000B);
+    D_8010FB98_bowser_toss[8] = func_8010AD54_bowser_toss(0x55000C);
+    anim = func_80055194_main(D_8010FB98_bowser_toss[8]);
+    for (i = 0; i < anim->unk10; i++) {
+        anim->unk00[i].unk08 = 8;
+        anim->unk00[i].unk0A = 8;
+    }
+    D_8010FB98_bowser_toss[9] = func_8010AD54_bowser_toss(0x32);
+    D_8010FB98_bowser_toss[10] = func_8010AD54_bowser_toss(0x55000D);
+    anim = func_80055194_main(D_8010FB98_bowser_toss[10]);
+    for (i = 0; i < anim->unk10; i++) {
+        anim->unk00[i].unk08 = 8;
+        anim->unk00[i].unk0A = 8;
+    }
+
+    D_8010FBA0_bowser_toss = HuMemAllocTag(sizeof(BowserTossBowser) * 3, TAG_OVERLAY);
+    for (i = 0, bowser = D_8010FBA0_bowser_toss; i < 3; i++, bowser++) {
+        bowser->timer = 0;
+        if (i != 2) {
+            bowser->state = 0;
+            bowser->unk_0C = 0;
+            bowser->unk_08 = 0;
+        } else {
+            bowser->state = 0x10;
+            bowser->unk_08 = bowser->unk_0C = D_8010FB80_bowser_toss;
+        }
+        bowser->spriteId = HuSprGrpCreate(8, 0);
+        for (j = 0; j < 8; j++) {
+            switch (j) {
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 7:
+                    if (i != 2) {
+                        HuSprGrpMemberSet(bowser->spriteId, j, D_8010FB98_bowser_toss[6], 0);
+                    } else {
+                        HuSprGrpMemberSet(bowser->spriteId, j, D_8010FB98_bowser_toss[9], 0);
+                    }
+                    HuSprScaleSet(bowser->spriteId, j, 1.2f, 1.2f);
+                    break;
+                case 4:
+                case 5:
+                    if (i != 2) {
+                        HuSprGrpMemberSet(bowser->spriteId, j, D_8010FB98_bowser_toss[8], 0);
+                    } else {
+                        HuSprGrpMemberSet(bowser->spriteId, j, D_8010FB98_bowser_toss[10], 0);
+                    }
+                    if ((i != 2) & (j == 5)) {
+                        HuSprScaleSet(bowser->spriteId, j, 0.88f, 0.88f);
+                    }
+                    break;
+                case 6:
+                default:
+                    HuSprGrpMemberSet(bowser->spriteId, j, D_8010FB98_bowser_toss[7], 0);
+                    HuSprScaleSet(bowser->spriteId, j, 0.75f, 0.75f);
+                    break;
+            }
+            func_800550F4_main(bowser->spriteId, j, 0);
+            func_80054FF8_main(bowser->spriteId, j, 0);
+            HuSprAttrSet(bowser->spriteId, j, 0x903C);
+        }
+    }
+    omAddObj(0x3F, 0, 0, -1, func_8010B7AC_bowser_toss);
+}
+
+// Matches except for minor register allocation and instruction ordering: the
+// TPLvl fade value lands in $f12 instead of $f2, operand registers swap in the
+// score spread lerp, and the hoisted lerp offset adds have swapped operands.
+#ifdef NON_MATCHING
+void func_8010B7AC_bowser_toss(omObjData *object) {
+    s32 digits[5];
+    BowserTossBowser *bowser;
+    BowserTossBowser *other;
+    s32 i;
+    s32 j;
+    s32 done;
+    s32 value;
+    f32 t;
+    f32 center;
+    f32 dy;
+
+    for (i = 0, bowser = D_8010FBA0_bowser_toss; i < 3; i++, bowser++) {
+        done = 0;
+        switch (bowser->state) {
+            case 1:
+                HuSprPosSet(bowser->spriteId, 6, D_8010F378_bowser_toss[i][6].x, D_8010F378_bowser_toss[i][6].y);
+                HuSprTPLvlSet(bowser->spriteId, 6, 0);
+                HuSprDispOn(bowser->spriteId, 6);
+                bowser->state = 2;
+                bowser->timer = 0;
+                break;
+            case 2:
+                t = bowser->timer / 15.0f;
+                HuSprTPLvlSet(bowser->spriteId, 6, (u16)(t * 256.0f));
+                if (bowser->timer >= 15.0f) {
+                    HuSprTPLvlSet(bowser->spriteId, 6, 256);
+                    bowser->state = 0x1F;
+                    bowser->timer = 0;
+                }
+                break;
+            case 3:
+                for (j = 0; j < 6; j++) {
+                    HuSprPosSet(bowser->spriteId, j, D_8010F378_bowser_toss[i][j].x, D_8010F378_bowser_toss[i][j].y);
+                    HuSprDispOn(bowser->spriteId, j);
+                }
+                HuSprPosSet(bowser->spriteId, 7, D_8010F378_bowser_toss[i][7].x, D_8010F378_bowser_toss[i][7].y);
+                func_80054FF8_main(bowser->spriteId, 4, 1);
+                func_80054FF8_main(bowser->spriteId, 5, 0);
+                bowser->state = 4;
+                bowser->timer = 0;
+                break;
+            case 4:
+                bowser->unk_0C += 333;
+                if (bowser->unk_08 < bowser->unk_0C) {
+                    bowser->unk_0C = bowser->unk_08;
+                    done = 1;
+                }
+                value = bowser->unk_0C;
+                for (j = 0; j < 5; j++) {
+                    digits[j] = value / D_8010F3D8_bowser_toss[j];
+                    value -= digits[j] * D_8010F3D8_bowser_toss[j];
+                    if (digits[j] >= 10) {
+                        digits[j] = 9;
+                    } else if (digits[j] < 0) {
+                        digits[j] = 0;
+                    }
+                    if (j == 0) {
+                        if (digits[0] > 0) {
+                            HuSprDispOn(bowser->spriteId, 7);
+                        }
+                        func_80054FF8_main(bowser->spriteId, 7, (s16)digits[j]);
+                    } else {
+                        func_80054FF8_main(bowser->spriteId, j - 1, (s16)digits[j]);
+                    }
+                }
+                if (done) {
+                    if (D_8010FB70_bowser_toss != -1) {
+                        if (i == 0) {
+                            other = &D_8010FBA0_bowser_toss[1];
+                        } else {
+                            other = &D_8010FBA0_bowser_toss[0];
+                        }
+                        if (other->state != 3 && other->state != 4) {
+                            HuAudFXPlay(0x4AC);
+                            D_8010FB70_bowser_toss = -1;
+                        }
+                    }
+                    bowser->state = 5;
+                    bowser->timer = 0;
+                }
+                break;
+            case 5:
+                if (bowser->timer >= 15.0f) {
+                    bowser->state = 0x1F;
+                    bowser->timer = 0;
+                }
+                break;
+            case 16:
+                for (j = 0; j < 6; j++) {
+                    HuSprPosSet(bowser->spriteId, j, D_8010F378_bowser_toss[i][j].x, D_8010F378_bowser_toss[i][j].y);
+                    HuSprDispOn(bowser->spriteId, j);
+                }
+                HuSprPosSet(bowser->spriteId, 7, D_8010F378_bowser_toss[i][7].x, D_8010F378_bowser_toss[i][7].y);
+                func_80054FF8_main(bowser->spriteId, 4, 1);
+                func_80054FF8_main(bowser->spriteId, 5, 0);
+                value = bowser->unk_0C;
+                for (j = 0; j < 5; j++) {
+                    digits[j] = value / D_8010F3D8_bowser_toss[j];
+                    value -= digits[j] * D_8010F3D8_bowser_toss[j];
+                    if (digits[j] >= 10) {
+                        digits[j] = 9;
+                    } else if (digits[j] < 0) {
+                        digits[j] = 0;
+                    }
+                    if (j == 0) {
+                        if (digits[0] > 0) {
+                            HuSprDispOn(bowser->spriteId, 7);
+                        }
+                        func_80054FF8_main(bowser->spriteId, 7, (s16)digits[j]);
+                    } else {
+                        func_80054FF8_main(bowser->spriteId, j - 1, (s16)digits[j]);
+                    }
+                }
+                bowser->state = 0x40;
+                bowser->timer = 0;
+                break;
+            case 18:
+                value = bowser->unk_0C;
+                for (j = 0; j < 5; j++) {
+                    digits[j] = value / D_8010F3D8_bowser_toss[j];
+                    value -= digits[j] * D_8010F3D8_bowser_toss[j];
+                    if (digits[j] >= 10) {
+                        digits[j] = 9;
+                    } else if (digits[j] < 0) {
+                        digits[j] = 0;
+                    }
+                    if (j == 0) {
+                        if (digits[0] > 0) {
+                            HuSprDispOn(bowser->spriteId, 7);
+                        }
+                        func_80054FF8_main(bowser->spriteId, 7, (s16)digits[j]);
+                    } else {
+                        func_80054FF8_main(bowser->spriteId, j - 1, (s16)digits[j]);
+                    }
+                }
+                bowser->state = 0x13;
+                bowser->timer = 0;
+            case 19:
+                center = 0.0f;
+                for (j = 0; j < 6; j++) {
+                    center += D_8010F378_bowser_toss[i][j].x;
+                }
+                center += D_8010F378_bowser_toss[i][7].x;
+                center /= 7.0f;
+                t = bowser->timer / 15.0f;
+                if (t < 0.0f) {
+                    t = 0.0f;
+                } else if (t > 1.0f) {
+                    t = 1.0f;
+                }
+                t = sindf(t * 180.0f);
+                HuSprPosSet(bowser->spriteId, 7,
+                            center + (D_8010F378_bowser_toss[i][7].x - center) * (t + 1.0f),
+                            D_8010F378_bowser_toss[i][7].y);
+                HuSprScaleSet(bowser->spriteId, j, t * 1.2f + 1.2, t * 1.2f + 1.2);
+                for (j = 0; j < 6; j++) {
+                    HuSprPosSet(bowser->spriteId, j, center + (D_8010F378_bowser_toss[i][j].x - center) * (t + 1.0f),
+                                D_8010F378_bowser_toss[i][j].y);
+                    if (j < 4) {
+                        HuSprScaleSet(bowser->spriteId, j, t * 1.2f + 1.2, t * 1.2f + 1.2);
+                    } else {
+                        HuSprScaleSet(bowser->spriteId, j, t + 1.0, t + 1.0);
+                    }
+                }
+                if (bowser->timer >= 15.0f) {
+                    bowser->state = 0x40;
+                    bowser->timer = 0;
+                }
+                break;
+            case 32:
+                t = bowser->timer / 15.0f;
+                center = func_8010D8A0_bowser_toss(t, 0.0f, 81.0f);
+                dy = func_8010D8A0_bowser_toss(t, 0.0f, -35.0f);
+                for (j = 0; j < 8; j++) {
+                    HuSprPosSet(bowser->spriteId, j, D_8010F378_bowser_toss[i][j].x + (s32)center,
+                                D_8010F378_bowser_toss[i][j].y + (s32)dy);
+                }
+                if (bowser->timer >= 15.0f) {
+                    bowser->state = 0x40;
+                    bowser->timer = 0;
+                }
+                break;
+            case 0x40:
+                break;
+        }
+        bowser->timer++;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010B7AC_bowser_toss);
+#endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010C1A0_bowser_toss);
+void func_8010C1A0_bowser_toss(s16 index, s32 score) {
+    BowserTossBowser *bowser = &D_8010FBA0_bowser_toss[index];
+
+    if (score == 0) {
+        bowser->state = 1;
+    } else if (index < 2) {
+        bowser->state = 3;
+        bowser->timer = 0;
+        bowser->unk_08 = score;
+        bowser->unk_0C = 0;
+        if (D_8010FB70_bowser_toss == -1) {
+            D_8010FB70_bowser_toss = HuAudFXPlay(0x4AB);
+        }
+    } else {
+        bowser->state = 0x12;
+        bowser->timer = 0;
+        bowser->unk_08 = bowser->unk_0C = score;
+    }
+}
 
 s16 func_8010C23C_bowser_toss(void) {
     s32 i;
@@ -1150,7 +1557,15 @@ s16 func_8010C23C_bowser_toss(void) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010C274_bowser_toss);
+void func_8010C274_bowser_toss(void) {
+    s32 i;
+    BowserTossBowser *bowser;
+
+    for (i = 0, bowser = D_8010FBA0_bowser_toss; i < 2; i++, bowser++) {
+        bowser->state = 0x20;
+        bowser->timer = 0;
+    }
+}
 
 s16 func_8010C2A4_bowser_toss(void) {
     s32 i;
@@ -1164,19 +1579,332 @@ s16 func_8010C2A4_bowser_toss(void) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010C2DC_bowser_toss);
+void func_8010C2DC_bowser_toss(void) {
+    BowserTossCamera *cam;
+    HuCamera *camera;
+    s32 i;
+    s32 j;
 
+    D_8010FBA4_bowser_toss = HuMemAllocTag(sizeof(BowserTossCamera) * 2, TAG_OVERLAY);
+    memset(D_8010FBA4_bowser_toss, 0, sizeof(BowserTossCamera) * 2);
+    Center.x = 0.0f;
+    Center.y = 212.0f;
+    Center.z = 0.0f;
+    CRot.x = 1.01f;
+    CRot.y = 0.0f;
+    CRot.z = 0.0f;
+    CZoom = 1222.0f;
+    D_8010FBA8_bowser_toss.x = 0.0f;
+    D_8010FBA8_bowser_toss.y = 162.0f;
+    D_8010FBA8_bowser_toss.z = 0.0f;
+    for (i = 0, cam = D_8010FBA4_bowser_toss; i < 2; i++, cam++) {
+        CenterM[i].x = Center.x;
+        CenterM[i].y = Center.y;
+        CenterM[i].z = Center.z;
+        CRotM[i].x = CRot.x;
+        CRotM[i].y = CRot.y;
+        CRotM[i].z = CRot.z;
+        CZoomM[i] = CZoom;
+        func_8010D080_bowser_toss(i, 0);
+        func_8010D080_bowser_toss(i, 1);
+        cam->frame = cam->frames = cam->active = 0;
+        camera = &gCameraList[i];
+        for (j = 0; j < D_800D1FF0_main; j++) {
+            camera->viewports[j].vp.vscale[0] = camera->screenScale.x;
+            camera->viewports[j].vp.vscale[1] = camera->screenScale.y;
+            camera->viewports[j].vp.vscale[2] = camera->screenScale.z;
+            camera->viewports[j].vp.vtrans[0] = camera->screenPos.x;
+            camera->viewports[j].vp.vtrans[1] = camera->screenPos.y;
+            camera->viewports[j].vp.vtrans[2] = camera->screenPos.z;
+        }
+    }
+    omAddObj(0x1F, 0, 0, -1, func_8010CDB8_bowser_toss);
+}
+
+// Matches except that the target loads D_8010F3F0_bowser_toss into a temporary
+// before setting fontcolor and copies it into cam afterwards.
+#ifdef NON_MATCHING
+void func_8010C570_bowser_toss(void) {
+    BowserTossCameraKey delta = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, 0.0f };
+    f32 speed;
+    s32 cam;
+    s32 i;
+    Vec *center;
+    Vec *rot;
+
+    speed = 1.0f;
+    cam = -1;
+    switch (D_8010F3EC_bowser_toss) {
+        case 1:
+            if ((u16)D_800CDA7C_main[0] & A_BUTTON) {
+                speed = 8.0f;
+            }
+            if (D_800CDA7C_main[0] & B_BUTTON) {
+                speed = 0.5f;
+            }
+            if (D_800D5558_main[0] & START_BUTTON) {
+                CenterM[D_8010F3F0_bowser_toss].x = Center.x;
+                CenterM[D_8010F3F0_bowser_toss].y = Center.y;
+                CenterM[D_8010F3F0_bowser_toss].z = Center.z;
+                CRotM[D_8010F3F0_bowser_toss].x = CRot.x;
+                CRotM[D_8010F3F0_bowser_toss].y = CRot.y;
+                CRotM[D_8010F3F0_bowser_toss].z = CRot.z;
+                CZoomM[D_8010F3F0_bowser_toss] = CZoom;
+            } else {
+                delta.rot.x = (f32)D_800D20A1_main[0] * 0.125 * speed;
+                delta.rot.y = (f32)D_800CBB6E_main[0] * 0.125 * speed;
+                if (D_800CDA7C_main[0] & L_JPAD) {
+                    delta.center.x = speed * 2.0;
+                }
+                if (D_800CDA7C_main[0] & R_JPAD) {
+                    delta.center.x = -(speed * 2.0);
+                }
+                if (D_800CDA7C_main[0] & U_JPAD) {
+                    delta.center.z = -(speed * 2.0);
+                }
+                if (D_800CDA7C_main[0] & D_JPAD) {
+                    delta.center.z = speed * 2.0;
+                }
+                if (D_800CDA7C_main[0] & U_CBUTTONS) {
+                    delta.center.y = speed * 2.0;
+                }
+                if (D_800CDA7C_main[0] & D_CBUTTONS) {
+                    delta.center.y = -(speed * 2.0);
+                }
+                if (D_800CDA7C_main[0] & R_CBUTTONS) {
+                    delta.zoom = speed * 2.0;
+                }
+                if (D_800CDA7C_main[0] & L_CBUTTONS) {
+                    delta.zoom = -(speed * 2.0);
+                }
+                delta.center.x += CenterM[D_8010F3F0_bowser_toss].x;
+                delta.center.y += CenterM[D_8010F3F0_bowser_toss].y;
+                delta.center.z += CenterM[D_8010F3F0_bowser_toss].z;
+                delta.rot.x += CRotM[D_8010F3F0_bowser_toss].x;
+                delta.rot.y += CRotM[D_8010F3F0_bowser_toss].y;
+                delta.rot.z += CRotM[D_8010F3F0_bowser_toss].z;
+                delta.zoom += CZoomM[D_8010F3F0_bowser_toss];
+                func_8010D250_bowser_toss(D_8010F3F0_bowser_toss, delta.center.x, delta.center.y, delta.center.z,
+                                          delta.rot.x, delta.rot.y, delta.rot.z, delta.zoom, 1);
+            }
+            cam = D_8010F3F0_bowser_toss;
+            fontcolor = 15;
+            if (D_800D5558_main[0] & R_TRIG) {
+                if (++D_8010F3F0_bowser_toss >= 2) {
+                    D_8010F3F0_bowser_toss = 0;
+                    D_8010F3EC_bowser_toss++;
+                }
+                D_800D5558_main[0] &= ~R_TRIG;
+            }
+            break;
+        case 2:
+            if ((D_800CDA7C_main[0] & R_JPAD) || (D_800CDA7C_main[0] & R_CBUTTONS)) {
+                D_8010F3F4_bowser_toss++;
+            }
+            if (D_800CDA7C_main[0] & (L_JPAD | L_CBUTTONS)) {
+                D_8010F3F4_bowser_toss--;
+            }
+            if (D_800CDA7C_main[0] & (D_JPAD | D_CBUTTONS)) {
+                D_8010F3F8_bowser_toss++;
+            }
+            if (D_800CDA7C_main[0] & (U_JPAD | U_CBUTTONS)) {
+                D_8010F3F8_bowser_toss--;
+            }
+            fontcolor = 8;
+            cam = 1;
+            break;
+        case 3:
+            D_8010F3EC_bowser_toss = 0;
+            break;
+    }
+    if (cam != -1) {
+        center = &CenterM[cam];
+        rot = &CRotM[cam];
+        sprintf(D_800D5218_main, "CAMERA TEST_MODE CAM_%d ", cam);
+        print8((s16)D_8010F3F4_bowser_toss + 20, (s16)D_8010F3F8_bowser_toss + 80, D_800D5218_main);
+        sprintf(D_800D5218_main, " CENTER X>%3.2f Y>%3.2f Z>%3.2f ", center->x, center->y, center->z);
+        print8((s16)D_8010F3F4_bowser_toss + 20, (s16)D_8010F3F8_bowser_toss + 88, D_800D5218_main);
+        sprintf(D_800D5218_main, " ROT    X>%3.2f Y>%3.2f Z>%3.2f ", rot->x, rot->y, rot->z);
+        print8((s16)D_8010F3F4_bowser_toss + 20, (s16)D_8010F3F8_bowser_toss + 96, D_800D5218_main);
+        sprintf(D_800D5218_main, " ZOOM   %3.2f ", CZoomM[cam]);
+        print8((s16)D_8010F3F4_bowser_toss + 20, (s16)D_8010F3F8_bowser_toss + 104, D_800D5218_main);
+    }
+    if (D_800D5558_main[0] & R_TRIG) {
+        if (D_8010F3EC_bowser_toss == 1) {
+            osSyncPrintf("CAMERA TEST_MODE \n");
+            for (i = 0; i < 2; i++) {
+                center = &CenterM[i];
+                rot = &CRotM[i];
+                osSyncPrintf("CAMERA_NO %d \n", i);
+                osSyncPrintf(" CENTER X>%3.3f Y>%3.3f Z>%3.3f \n", center->x, center->y, center->z);
+                osSyncPrintf(" ROT    X>%3.3f Y>%3.3f Z>%3.3f \n", rot->x, rot->y, rot->z);
+                osSyncPrintf(" ZOOM   %3.3f \n", CZoom);
+            }
+            osSyncPrintf(" \n");
+        }
+        if (D_8010F3EC_bowser_toss++ >= 4) {
+            D_8010F3EC_bowser_toss = 0;
+        }
+    }
+}
+#else
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", D_8010F998_bowser_toss);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010C570_bowser_toss);
+#endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010CDB8_bowser_toss);
+void func_8010CDB8_bowser_toss(omObjData *object) {
+    BowserTossCamera *cam;
+    Vec *center;
+    Vec *rot;
+    f32 t;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010D080_bowser_toss);
+    for (i = 0, cam = D_8010FBA4_bowser_toss; i < 2; i++, cam++) {
+        center = &CenterM[i];
+        rot = &CRotM[i];
+        if (cam->frames <= 0) {
+            func_8010D43C_bowser_toss(i);
+            cam->active = 0;
+            continue;
+        }
+        if (cam->frame == 0) {
+            center->x = cam->keys[0].center.x;
+            center->y = cam->keys[0].center.y;
+            center->z = cam->keys[0].center.z;
+            rot->x = cam->keys[0].rot.x;
+            rot->y = cam->keys[0].rot.y;
+            rot->z = cam->keys[0].rot.z;
+            CZoomM[i] = cam->keys[0].zoom;
+            cam->frames = 0;
+        } else {
+            t = 1.0f - (f32)cam->frame / (f32)cam->frames;
+            center->x = func_8010D8A0_bowser_toss(t, cam->keys[1].center.x, cam->keys[0].center.x);
+            center->y = func_8010D8A0_bowser_toss(t, cam->keys[1].center.y, cam->keys[0].center.y);
+            center->z = func_8010D8A0_bowser_toss(t, cam->keys[1].center.z, cam->keys[0].center.z);
+            rot->x = func_8010D8B8_bowser_toss(t, cam->keys[1].rot.x, cam->keys[0].rot.x);
+            rot->y = func_8010D8B8_bowser_toss(t, cam->keys[1].rot.y, cam->keys[0].rot.y);
+            rot->z = func_8010D8B8_bowser_toss(t, cam->keys[1].rot.z, cam->keys[0].rot.z);
+            CZoomM[i] = func_8010D8A0_bowser_toss(t, cam->keys[1].zoom, cam->keys[0].zoom);
+            if (cam->frame > 0) {
+                cam->frame--;
+            } else {
+                cam->frame++;
+            }
+        }
+        if (rot->x >= 360.0) {
+            rot->x -= 360.0;
+        } else if (rot->x < 0.0) {
+            rot->x += 360.0;
+        }
+        if (rot->y >= 360.0) {
+            rot->y -= 360.0;
+        } else if (rot->y < 0.0) {
+            rot->y += 360.0;
+        }
+        if (rot->z >= 360.0) {
+            rot->z -= 360.0;
+        } else if (rot->z < 0.0) {
+            rot->z += 360.0;
+        }
+        cam->active = 1;
+        func_8010D43C_bowser_toss(i);
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010D250_bowser_toss);
+void func_8010D080_bowser_toss(s32 camIndex, s32 key) {
+    BowserTossCamera *cam = &D_8010FBA4_bowser_toss[camIndex];
+    Vec *center = &CenterM[camIndex];
+    Vec *rot = &CRotM[camIndex];
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010D43C_bowser_toss);
+    if (rot->x >= 360.0) {
+        rot->x -= 360.0;
+    } else if (rot->x < 0.0) {
+        rot->x += 360.0;
+    }
+    if (rot->y >= 360.0) {
+        rot->y -= 360.0;
+    } else if (rot->y < 0.0) {
+        rot->y += 360.0;
+    }
+    if (rot->z >= 360.0) {
+        rot->z -= 360.0;
+    } else if (rot->z < 0.0) {
+        rot->z += 360.0;
+    }
+    cam->keys[key].center.x = center->x;
+    cam->keys[key].center.y = center->y;
+    cam->keys[key].center.z = center->z;
+    cam->keys[key].rot.x = rot->x;
+    cam->keys[key].rot.y = rot->y;
+    cam->keys[key].rot.z = rot->z;
+    cam->keys[key].zoom = CZoomM[camIndex];
+    cam->keys[key].unk_1C = cam->keys[key].unk_20 = 0.0f;
+}
+
+// Passing CAMERA_KEEP for a component keeps its current value.
+void func_8010D250_bowser_toss(s32 camIndex, f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom, s32 frames) {
+    BowserTossCamera *cam = &D_8010FBA4_bowser_toss[camIndex];
+    Vec *center = &CenterM[camIndex];
+    Vec *rot = &CRotM[camIndex];
+
+    if (frames > 0) {
+        cam->frame = frames - 1;
+        cam->frames = frames;
+        if (x != CAMERA_KEEP) {
+            cam->keys[0].center.x = x;
+        } else {
+            cam->keys[0].center.x = center->x;
+        }
+        if (y != CAMERA_KEEP) {
+            cam->keys[0].center.y = y;
+        } else {
+            cam->keys[0].center.y = center->y;
+        }
+        if (z != CAMERA_KEEP) {
+            cam->keys[0].center.z = z;
+        } else {
+            cam->keys[0].center.z = center->z;
+        }
+        if (rotX != CAMERA_KEEP) {
+            cam->keys[0].rot.x = rotX;
+        } else {
+            cam->keys[0].rot.x = rot->x;
+        }
+        if (rotY != CAMERA_KEEP) {
+            cam->keys[0].rot.y = rotY;
+        } else {
+            cam->keys[0].rot.y = rot->y;
+        }
+        if (rotZ != CAMERA_KEEP) {
+            cam->keys[0].rot.z = rotZ;
+        } else {
+            cam->keys[0].rot.z = rot->z;
+        }
+        if (zoom != CAMERA_KEEP) {
+            cam->keys[0].zoom = zoom;
+        } else {
+            cam->keys[0].zoom = CZoomM[camIndex];
+        }
+        func_8010D080_bowser_toss(camIndex, 1);
+    }
+}
+
+void func_8010D43C_bowser_toss(s32 camIndex) {
+    HuCamera *camera = &gCameraList[camIndex];
+    f32 rotX = CRotM[camIndex].x;
+    f32 rotY = CRotM[camIndex].y;
+
+    camera->pos.x = sindf(rotY) * cosdf(rotX) * CZoomM[camIndex] + CenterM[camIndex].x;
+    camera->pos.y = -sindf(rotX) * CZoomM[camIndex] + CenterM[camIndex].y;
+    camera->pos.z = cosdf(rotY) * cosdf(rotX) * CZoomM[camIndex] + CenterM[camIndex].z;
+    camera->at.x = CenterM[camIndex].x;
+    camera->at.y = CenterM[camIndex].y;
+    camera->at.z = CenterM[camIndex].z;
+    camera->up.x = sindf(rotY) * sindf(rotX);
+    camera->up.y = cosdf(rotX);
+    camera->up.z = cosdf(rotY) * sindf(rotX);
+}
 
 f32 func_8010D5DC_bowser_toss(f32 arg0, f32 arg1) {
     if (arg0 >= 360.0f) {
@@ -1198,11 +1926,48 @@ f32 func_8010D5DC_bowser_toss(f32 arg0, f32 arg1) {
     return arg0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010D6E0_bowser_toss);
+f32 func_8010D6E0_bowser_toss(f32 target, f32 current, f32 step) {
+    f32 diff;
+    f32 delta;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010D8A0_bowser_toss);
+    if (target >= 360.0) {
+        target -= 360.0;
+    } else if (target < 0.0) {
+        target += 360.0;
+    }
+    if (current >= 360.0) {
+        current -= 360.0;
+    } else if (current < 0.0) {
+        current += 360.0;
+    }
+    diff = fmod(target - current + 360.0, 360.0);
+    if (diff < 180.0) {
+        if (diff <= step) {
+            delta = diff;
+        } else {
+            delta = step;
+        }
+    } else if (360.0 - diff <= step) {
+        delta = -(360.0 - diff);
+    } else {
+        delta = -step;
+    }
+    delta += current;
+    if (delta >= 360.0) {
+        delta -= 360.0;
+    } else if (delta < 0.0) {
+        delta += 360.0;
+    }
+    return delta;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010D8B8_bowser_toss);
+f32 func_8010D8A0_bowser_toss(f32 t, f32 start, f32 end) {
+    return start + t * (end - start);
+}
+
+f32 func_8010D8B8_bowser_toss(f32 t, f32 start, f32 end) {
+    return func_8010D6E0_bowser_toss(end, start, fabsf(func_8010D5DC_bowser_toss(end, start) * t));
+}
 
 void func_8010D918_bowser_toss(f32 *arg0, f32 *arg1, f32 *arg2, f32 arg3) {
     s32 i;
@@ -1229,13 +1994,58 @@ BowserTossPlayer *func_8010D98C_bowser_toss(omObjData *object) {
     return (BowserTossPlayer *)packed.word;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010D9E0_bowser_toss);
+BowserTossItem *func_8010D9E0_bowser_toss(s16 model, s16 step, const char *hookName, s16 shape, s16 frame) {
+    HmfModelData_Unk64_Unk8C_Struct *motion;
+    HmfData *hmf;
+    s16 node;
+    BowserTossItem *item;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010DB9C_bowser_toss);
+    if (shape) {
+        motion = &D_800CCF58_main[Hu3DData[model].motIdShape];
+    } else {
+        motion = &D_800CCF58_main[Hu3DData[model].motId];
+    }
+    hmf = Hu3DData[model].hmf;
+    node = func_8002C834_main(hmf, hookName);
+    item = HuMemAlloc(sizeof(BowserTossItem));
+    item->mtx = HuMemAlloc((motion->unk02 + step) / step * sizeof(HuMtx4F));
+    item->nodes = HuMemAlloc(hmf->unk16 * sizeof(s16));
+    item->frames = motion->unk02;
+    item->step = step;
+    func_8010DB9C_bowser_toss(model, step, item, node, shape, frame);
+    return item;
+}
+
+void func_8010DB9C_bowser_toss(s16 model, s16 step, BowserTossItem *item, s16 node, s16 shape, s16 frame) {
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_Unk64_Unk8C_Struct *motion = &D_800CCF58_main[Hu3DData[model].motId];
+    HmfModelData_Unk64_Unk8C_Struct *shapeMotion = &D_800CCF58_main[Hu3DData[model].motIdShape];
+    s16 i;
+
+    D_800D1358_main = item->mtx;
+    D_800D04B4_main = item->nodes;
+    D_800CD1B0_main = 0;
+    guMtxIdentF(D_800D5A00_main[0]);
+    if (shape) {
+        for (i = 0; i < shapeMotion->unk02; i += step) {
+            func_8002DFF8_main(hmf, frame, motion, 1);
+            func_8002DFF8_main(hmf, i, shapeMotion, 0);
+            D_800D138A_main = 0;
+            func_80016C2C_main(hmf, 0, node);
+        }
+    } else {
+        for (i = 0; i < motion->unk02; i += step) {
+            func_8002DFF8_main(hmf, i, motion, 1);
+            func_8002DFF8_main(hmf, frame, shapeMotion, 0);
+            D_800D138A_main = 0;
+            func_80016C2C_main(hmf, 0, node);
+        }
+    }
+}
 
 void func_8010DDC4_bowser_toss(BowserTossItem *item) {
-    HuMemFree(item->unk_08);
-    HuMemFree(item->unk_04);
+    HuMemFree(item->mtx);
+    HuMemFree(item->nodes);
     HuMemFree(item);
 }
 
@@ -1243,6 +2053,20 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010DDFC
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010EA0C_bowser_toss);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010EC10_bowser_toss);
+void func_8010EC10_bowser_toss(u16 model, HuSprite_Unk84_Struct *sprite, u16 frame, u8 *color) {
+    HmfModel *modelData = Hu3DData + model;
+    HmfData *data = modelData->hmf;
+    Gfx *gfx = data->unk3C->unk00[D_800D2008_main + 1];
+
+    data->unk3C->unk00[0] = gfx;
+    gDPPipeSync(gfx);
+    gSPSegment(gfx + 1, 2, osVirtualToPhysical(sprite->unk00[frame].unk00));
+    gSPDisplayList(gfx + 2, osVirtualToPhysical(data->unk3C->unk10));
+    gDPSetPrimColor(gfx + 3, 0, 0, color[0], color[1], color[2], color[3]);
+    gDPPipeSync(gfx + 4);
+    gSPDisplayList(gfx + 5, osVirtualToPhysical(data->unk3C->unk14));
+    gDPPipeSync(gfx + 6);
+    gSPEndDisplayList(gfx + 7);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010ED44_bowser_toss);

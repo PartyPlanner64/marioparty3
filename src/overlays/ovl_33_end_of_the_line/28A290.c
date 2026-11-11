@@ -153,11 +153,6 @@ void func_8010AA1C_end_of_the_line(omObjData *obj);
 void func_8010C060_end_of_the_line(omObjData *obj);
 void func_8010C3F4_end_of_the_line(void);
 
-#ifdef NON_MATCHING
-// Matches exactly when compiled with plain -O1, but this file is built with
-// -O1 -funroll-loops (needed by func_80105E0C_end_of_the_line), which strength
-// reduces the camera loop and unrolls the object creation loop. This function
-// likely belongs to a separate source file.
 void func_801059A0_end_of_the_line(void) {
     omObjData *obj;
     s32 i;
@@ -197,8 +192,7 @@ void func_801059A0_end_of_the_line(void) {
     D_8010C738_end_of_the_line = omAddObj(10, 30, 0, -1, func_80106444_end_of_the_line);
     omSetStatBit(D_8010C738_end_of_the_line, OM_STAT_MODELPAUSE);
     for (i = 0; i < 2; i++) {
-        obj = omAddObj(20, 6, 12, -1, func_801082D8_end_of_the_line);
-        D_8010C73C_end_of_the_line[i] = obj;
+        D_8010C73C_end_of_the_line[i] = obj = omAddObj(20, 6, 12, -1, func_801082D8_end_of_the_line);
         obj->work[0] = i;
     }
     D_8010C76E_end_of_the_line = func_8000B838_main(0x54001A);
@@ -215,13 +209,8 @@ void func_801059A0_end_of_the_line(void) {
     func_8010C3F4_end_of_the_line();
     func_800E5EA0_minigame(&D_8010C5A0_end_of_the_line);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_801059A0_end_of_the_line);
-#endif
 
 void func_80105E0C_end_of_the_line(omObjData *obj) {
-    int i;
-
     D_8010C734_end_of_the_line = 0;
     D_8010C730_end_of_the_line = 0;
     D_8010C7D0_end_of_the_line = -1;
@@ -229,19 +218,13 @@ void func_80105E0C_end_of_the_line(omObjData *obj) {
     D_8010C75C_end_of_the_line = 0;
     D_8010C758_end_of_the_line = 0;
     D_8010C766_end_of_the_line = 0;
-    for (i = 0; i < 2; i++) {
-        D_8010C75E_end_of_the_line[i] = 0;
-    }
+    D_8010C75E_end_of_the_line[0] = D_8010C75E_end_of_the_line[1] = 0;
     D_8010C762_end_of_the_line = -1;
     D_8010C764_end_of_the_line = -1;
-    for (i = 0; i < 2; i++) {
-        D_8010C782_end_of_the_line[i] = -1;
-    }
+    D_8010C782_end_of_the_line[0] = D_8010C782_end_of_the_line[1] = -1;
     obj->func = func_80105E88_end_of_the_line;
 }
 
-#ifdef NON_MATCHING
-// Matches with -O1 (no -funroll-loops); needs file split.
 void func_80105E88_end_of_the_line(omObjData *obj) {
     EndOfTheLinePlayer *player;
     EndOfTheLinePlayer *player2;
@@ -374,12 +357,7 @@ void func_80105E88_end_of_the_line(omObjData *obj) {
         D_8010C782_end_of_the_line[i] = -1;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_80105E88_end_of_the_line);
-#endif
 
-#ifdef NON_MATCHING
-// Matches with -O1 (no -funroll-loops); needs file split.
 void func_80106444_end_of_the_line(omObjData *obj) {
     EndOfTheLineData *data;
     s32 i;
@@ -460,12 +438,7 @@ void func_80106444_end_of_the_line(omObjData *obj) {
     obj->work[0] = 0;
     obj->func = NULL;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_80106444_end_of_the_line);
-#endif
 
-#ifdef NON_MATCHING
-// Matches with -O1 (no -funroll-loops); needs file split.
 void func_801069D8_end_of_the_line(omObjData *obj) {
     EndOfTheLineData *data = OM_GET_DATA_PTR(obj, EndOfTheLineData);
     EndOfTheLinePlayer *player;
@@ -511,14 +484,9 @@ void func_801069D8_end_of_the_line(omObjData *obj) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_801069D8_end_of_the_line);
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_80106CDC_end_of_the_line);
 
-#ifdef NON_MATCHING
-// Matches with -O1 (no -funroll-loops); needs file split.
 void func_80107F0C_end_of_the_line(void) {
     omObjData *obj;
     EndOfTheLineRiseWork *work;
@@ -536,12 +504,7 @@ void func_80107F0C_end_of_the_line(void) {
         work->cooldown = 0;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_80107F0C_end_of_the_line);
-#endif
 
-#ifdef NON_MATCHING
-// Matches with -O1 (no -funroll-loops); needs file split.
 void func_80107FF0_end_of_the_line(u16 playerIdx) {
     EndOfTheLineRiseWork *work = OM_GET_DATA_PTR(D_8010C744_end_of_the_line[playerIdx], EndOfTheLineRiseWork);
     s32 i;
@@ -552,12 +515,7 @@ void func_80107FF0_end_of_the_line(u16 playerIdx) {
     work->target = D_8010C73C_end_of_the_line[playerIdx];
     D_8010C744_end_of_the_line[playerIdx]->func = func_801080C8_end_of_the_line;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_80107FF0_end_of_the_line);
-#endif
 
-#ifdef NON_MATCHING
-// Matches with -O1 (no -funroll-loops); needs file split.
 void func_801080C8_end_of_the_line(omObjData *obj) {
     EndOfTheLineRiseWork *work = OM_GET_DATA_PTR(obj, EndOfTheLineRiseWork);
     s32 i;
@@ -593,12 +551,7 @@ void func_801080C8_end_of_the_line(omObjData *obj) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_801080C8_end_of_the_line);
-#endif
 
-#ifdef NON_MATCHING
-// Matches with -O1 (no -funroll-loops); needs file split.
 void func_801082D8_end_of_the_line(omObjData *obj) {
     EndOfTheLinePlayer *player;
     s32 i;
@@ -686,12 +639,7 @@ void func_801082D8_end_of_the_line(omObjData *obj) {
     player->unk8C = 3;
     obj->func = func_801088A4_end_of_the_line;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_801082D8_end_of_the_line);
-#endif
 
-#ifdef NON_MATCHING
-// Matches with -O1 (no -funroll-loops); needs file split.
 void func_801088A4_end_of_the_line(omObjData *obj) {
     EndOfTheLinePlayer *player = OM_GET_DATA_PTR(obj, EndOfTheLinePlayer);
     f32 dx;
@@ -789,9 +737,6 @@ void func_801088A4_end_of_the_line(omObjData *obj) {
     Hu3DModelPosSet(obj->model[2], player->pos2.x, player->pos2.y, player->pos2.z);
     Hu3DModelRotSet(obj->model[2], player->rot2.x, player->rot2.y, player->rot2.z);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_33_end_of_the_line/28A290", func_801088A4_end_of_the_line);
-#endif
 
 void func_80108F0C_end_of_the_line(omObjData *obj) {
     EndOfTheLinePlayer *player = OM_GET_DATA_PTR(obj, EndOfTheLinePlayer);

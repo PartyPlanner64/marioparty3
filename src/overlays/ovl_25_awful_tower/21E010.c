@@ -428,7 +428,6 @@ void func_80106FDC_awful_tower(omObjData *object) {
     object->func = func_80107734_awful_tower;
 }
 
-#ifdef NON_MATCHING
 void func_80107734_awful_tower(omObjData *object) {
     func_80107858_awful_tower();
     if (D_8010D3E4_awful_tower == 3) {
@@ -439,14 +438,12 @@ void func_80107734_awful_tower(omObjData *object) {
         if (D_8010D3DC_awful_tower != 0 && D_8010D3DC_awful_tower < 46) {
             f32 t = D_8010D3DC_awful_tower / 45.0f;
 
-            Hu3DModelPosSet(object->model[3], 0.0f, (1.0f - t) * (1.0f - t) * 700.0f + 4430.0, 300.0f);
+            t = (1.0f - t) * (1.0f - t);
+            Hu3DModelPosSet(object->model[3], 0.0f, t * 700.0f + 4430.0, 300.0f);
         }
     }
     omPauseChk();
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_25_awful_tower/21E010", func_80107734_awful_tower);
-#endif
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_25_awful_tower/21E010", D_8010CE40_awful_tower);
 

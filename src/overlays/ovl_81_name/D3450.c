@@ -91,52 +91,41 @@ void func_800EB804_name_81(Object *obj) {
     obj->omObj1->rot.z = 0;
 }
 
-#ifdef NON_MATCHING
-// Matches except for swapped v1/a0 registers in the final rev swap.
 void func_800EB8B0_name_81(s16 playerNoOne, s16 playerNoTwo) {
     GW_PLAYER *playerOne = MBDGetPlayerStruct(playerNoOne);
     GW_PLAYER *playerTwo = MBDGetPlayerStruct(playerNoTwo);
-    u8 prevClink;
-    u8 prevCidx;
-    u8 prevNlink;
-    u8 prevNidx;
-    u8 prevBlink;
-    u8 prevBidx;
-    u8 prevNnlink;
-    u8 prevNnidx;
+    u8 temp;
     u8 prevRev;
 
-    prevClink = playerOne->clink;
+    temp = playerOne->clink;
     playerOne->clink = playerTwo->clink;
-    playerTwo->clink = prevClink;
-    prevCidx = playerOne->cidx;
+    playerTwo->clink = temp;
+    temp = playerOne->cidx;
     playerOne->cidx = playerTwo->cidx;
-    playerTwo->cidx = prevCidx;
-    prevNlink = playerOne->nlink;
+    playerTwo->cidx = temp;
+    temp = playerOne->nlink;
     playerOne->nlink = playerTwo->nlink;
-    playerTwo->nlink = prevNlink;
-    prevNidx = playerOne->nidx;
+    playerTwo->nlink = temp;
+    temp = playerOne->nidx;
     playerOne->nidx = playerTwo->nidx;
-    playerTwo->nidx = prevNidx;
-    prevBlink = playerOne->blink;
+    playerTwo->nidx = temp;
+    temp = playerOne->blink;
     playerOne->blink = playerTwo->blink;
-    playerTwo->blink = prevBlink;
-    prevBidx = playerOne->bidx;
+    playerTwo->blink = temp;
+    temp = playerOne->bidx;
     playerOne->bidx = playerTwo->bidx;
-    playerTwo->bidx = prevBidx;
-    prevNnlink = playerOne->nnlink;
+    playerTwo->bidx = temp;
+    temp = playerOne->nnlink;
     playerOne->nnlink = playerTwo->nnlink;
-    playerTwo->nnlink = prevNnlink;
-    prevNnidx = playerOne->nnidx;
+    playerTwo->nnlink = temp;
+    temp = playerOne->nnidx;
     playerOne->nnidx = playerTwo->nnidx;
-    playerTwo->nnidx = prevNnidx;
+    playerTwo->nnidx = temp;
     prevRev = playerOne->rev;
-    playerOne->rev = playerTwo->rev;
+    temp = playerTwo->rev;
+    playerOne->rev = temp;
     playerTwo->rev = prevRev;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EB8B0_name_81);
-#endif
 
 s16 func_800EB984_name_81(void) {
     s32 i;

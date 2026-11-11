@@ -4,8 +4,10 @@
 #include "game/esprite.h"
 #include "game/hmfcoll.h"
 #include "game/input.h"
+#include "game/mallocblock.h"
 #include "game/object.h"
 #include "game/wipe.h"
+#include "gcc/memory.h"
 #include "humath.h"
 #include "math.h"
 #include "overlays/minigame.h"
@@ -58,6 +60,8 @@ extern f32 D_80109D74_dizzy_dinghies;
 extern f32 D_80109D78_dizzy_dinghies;
 extern f32 D_80109D7C_dizzy_dinghies;
 extern f32 D_80109D80_dizzy_dinghies;
+extern s32 D_80109D84_dizzy_dinghies[][3];
+extern s32 D_80109DA8_dizzy_dinghies[][3];
 extern s16 D_80109E08_dizzy_dinghies[20];
 extern s32 D_80109E30_dizzy_dinghies;
 extern s32 D_80109E34_dizzy_dinghies;
@@ -67,6 +71,7 @@ extern Vec D_8010A028_dizzy_dinghies[20];
 void func_80105CAC_dizzy_dinghies(omObjData *object);
 void func_80105EB4_dizzy_dinghies(omObjData *object);
 void func_80106970_dizzy_dinghies(omObjData *object);
+void func_80106DF4_dizzy_dinghies(omObjData *object);
 void func_80107098_dizzy_dinghies(omObjData *object);
 void func_80107738_dizzy_dinghies(omObjData *object, u16 player);
 void func_80107DE8_dizzy_dinghies(omObjData *object);
@@ -433,7 +438,91 @@ void func_80106DF4_dizzy_dinghies(omObjData *object) {
     func_80106970_dizzy_dinghies(object);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", func_80107098_dizzy_dinghies);
+void func_80107098_dizzy_dinghies(omObjData *object) {
+    D_800EC1C0_minigame_ObjData *work;
+    s16 motion;
+
+    object->model[0] = func_8000B0A0_main((D_801097EC_dizzy_dinghies + 3) | 0x670000, 0x4B9);
+    object->model[1] = func_8000B0A0_main(0x670006, 0x4A9);
+    object->model[2] = func_8000B0A0_main(0x670007, 0x8C9);
+    object->model[3] = func_8000B0A0_main(0xA0089, 0x8C9);
+    object->model[9] = func_8000B0A0_main(D_80109D84_dizzy_dinghies[D_801097EC_dizzy_dinghies][0], 0x4DD);
+    object->model[10] = Hu3DModelLink(object->model[9]);
+    object->model[11] = Hu3DModelLink(object->model[9]);
+    object->model[12] = Hu3DModelLink(object->model[9]);
+    motion = func_8000B13C_main(D_80109DA8_dizzy_dinghies[D_801097EC_dizzy_dinghies][0]);
+    func_8001C5B4_main(object->model[9], motion);
+    func_8001C5B4_main(object->model[10], motion);
+    func_8001C5B4_main(object->model[11], motion);
+    func_8001C5B4_main(object->model[12], motion);
+    func_8001C814_main(object->model[9], 2, 2);
+    func_8001C814_main(object->model[10], 2, 2);
+    func_8001C814_main(object->model[11], 2, 2);
+    func_8001C814_main(object->model[12], 2, 2);
+    object->model[19] = func_8000B0A0_main(D_80109D84_dizzy_dinghies[D_801097EC_dizzy_dinghies][1], 0x4DD);
+    object->model[20] = Hu3DModelLink(object->model[19]);
+    object->model[21] = Hu3DModelLink(object->model[19]);
+    object->model[22] = Hu3DModelLink(object->model[19]);
+    motion = func_8000B13C_main(D_80109DA8_dizzy_dinghies[D_801097EC_dizzy_dinghies][1]);
+    func_8001C5B4_main(object->model[19], motion);
+    func_8001C5B4_main(object->model[20], motion);
+    func_8001C5B4_main(object->model[21], motion);
+    func_8001C5B4_main(object->model[22], motion);
+    func_8001C814_main(object->model[19], 2, 2);
+    func_8001C814_main(object->model[20], 2, 2);
+    func_8001C814_main(object->model[21], 2, 2);
+    func_8001C814_main(object->model[22], 2, 2);
+    object->model[29] = func_8000B0A0_main(D_80109D84_dizzy_dinghies[D_801097EC_dizzy_dinghies][2], 0x4DD);
+    object->model[30] = Hu3DModelLink(object->model[29]);
+    object->model[31] = Hu3DModelLink(object->model[29]);
+    object->model[32] = Hu3DModelLink(object->model[29]);
+    motion = func_8000B13C_main(D_80109DA8_dizzy_dinghies[D_801097EC_dizzy_dinghies][2]);
+    func_8001C5B4_main(object->model[29], motion);
+    func_8001C5B4_main(object->model[30], motion);
+    func_8001C5B4_main(object->model[31], motion);
+    func_8001C5B4_main(object->model[32], motion);
+    func_8001C814_main(object->model[29], 2, 2);
+    func_8001C814_main(object->model[30], 2, 2);
+    func_8001C814_main(object->model[31], 2, 2);
+    func_8001C814_main(object->model[32], 2, 2);
+    object->trans.x = 0.0f;
+    object->trans.y = 0.0f;
+    object->trans.z = 0.0f;
+    object->scale.x = object->scale.y = object->scale.z = 1.0f;
+    Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
+    work = object->data = HuMemAllocTag(0xB4, TAG_OVERLAY);
+    memset(work, 0, 0xB4);
+    object->func = func_80106DF4_dizzy_dinghies;
+    work->unk03 = 1;
+    Center.x = -224.0f;
+    Center.y = 300.0f;
+    Center.z = 300.0f;
+    CRot.x = 330.0f;
+    CRot.y = 5.0f;
+    CZoom = 4500.0f;
+    func_800E147C_minigame(object);
+    func_800E1370_minigame(object, 1, 0.0f);
+    func_800E1304_minigame(object, 0.2f);
+    func_800E1310_minigame(object, D_800EB73C_minigame);
+    func_800E131C_minigame(object, 25.0f);
+    work->unk04 = 0;
+    Hu3DLLightCreate(object->model[1], 1);
+    Hu3DLLightDirSet(object->model[1], -66.0f, -99.0f, -9.0f);
+    func_8001C2FC_main(object->model[1], 0x20000, 0x20000);
+    Hu3DModelRemakeStatic(object->model[1]);
+    func_8001C954_main(object->model[1]);
+    omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    Hu3DModelPosSet(object->model[2], D_80109740_dizzy_dinghies[D_801097EC_dizzy_dinghies].x + 500.0f,
+                    D_80109740_dizzy_dinghies[D_801097EC_dizzy_dinghies].y + 500.0f,
+                    D_80109740_dizzy_dinghies[D_801097EC_dizzy_dinghies].z);
+    Hu3DModelPosSet(object->model[3], D_80109740_dizzy_dinghies[D_801097EC_dizzy_dinghies].x + 500.0f,
+                    D_80109740_dizzy_dinghies[D_801097EC_dizzy_dinghies].y + 500.0f,
+                    D_80109740_dizzy_dinghies[D_801097EC_dizzy_dinghies].z);
+    Hu3DModelScaleSet(object->model[2], 2.0f, 2.0f, 2.0f);
+    Hu3DModelScaleSet(object->model[3], 2.0f, 2.0f, 2.0f);
+    func_8001C814_main(object->model[2], 1, 1);
+    func_8001C814_main(object->model[3], 2, 2);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", func_80107738_dizzy_dinghies);
 

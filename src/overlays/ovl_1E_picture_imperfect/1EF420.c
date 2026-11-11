@@ -20,7 +20,8 @@ typedef struct PictureImperfectWork {
     /* 0x06 */ s8 unk06;
     /* 0x07 */ s8 unk07;
     /* 0x08 */ s16 unk08;
-    /* 0x0A */ char unk0A[0x6];
+    /* 0x0A */ s16 unk0A;
+    /* 0x0C */ f32 unk0C;
     /* 0x10 */ f32 unk10;
     /* 0x14 */ char unk14[0x4];
     /* 0x18 */ s16 unk18;
@@ -51,11 +52,15 @@ extern s8 D_80109FFC_picture_imperfect[4][5];
 extern s32 D_8010A010_picture_imperfect;
 extern u8 D_8010A030_picture_imperfect[][5];
 extern u32 D_8010A044_picture_imperfect;
+extern s8 D_8010A048_picture_imperfect[8];
 extern f32 D_8010A050_picture_imperfect;
 extern u8 D_8010A054_picture_imperfect;
 extern u8 D_8010A055_picture_imperfect;
 extern u8 D_8010A056_picture_imperfect;
 extern s8 D_8010A014_picture_imperfect;
+extern s8 D_8010A111_picture_imperfect;
+extern s8 D_8010A112_picture_imperfect[4];
+extern s8 D_8010A116_picture_imperfect[4];
 extern s16 D_8010A11A_picture_imperfect[4];
 extern s16 D_8010A122_picture_imperfect;
 extern s16 D_8010A124_picture_imperfect;
@@ -83,6 +88,10 @@ extern s16 D_8010A266_picture_imperfect;
 extern s16 D_8010A268_picture_imperfect;
 extern s16 D_8010A26A_picture_imperfect;
 extern s16 D_8010A26C_picture_imperfect;
+extern s16 D_8010A26E_picture_imperfect[4];
+extern s16 D_8010A276_picture_imperfect[4];
+extern s16 D_8010A27E_picture_imperfect[4];
+extern s16 D_8010A286_picture_imperfect[4];
 extern s16 D_8010A28E_picture_imperfect[4];
 extern s16 D_8010A296_picture_imperfect[4];
 extern s16 D_8010A29E_picture_imperfect[4];
@@ -543,7 +552,161 @@ void func_80108A64_picture_imperfect(PictureImperfectWork *work, s8 player) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1E_picture_imperfect/1EF420", func_80108C20_picture_imperfect);
+void func_80108C20_picture_imperfect(PictureImperfectWork *work, s8 player) {
+    u8 color[3];
+    s32 y;
+    s32 offset;
+    s32 rounds;
+
+    if (work->unk03 != 0) {
+        switch (work->unk03) {
+            case 1:
+                if (D_8010A116_picture_imperfect[player]) {
+                    color[0] = 0;
+                    color[1] = 0;
+                    color[2] = 0x80;
+                } else {
+                    color[0] = 0;
+                    color[1] = 0;
+                    color[2] = 0xFF;
+                }
+                break;
+            case 3:
+                if (D_8010A116_picture_imperfect[player]) {
+                    color[0] = 0;
+                    color[1] = 0x80;
+                    color[2] = 0x80;
+                } else {
+                    color[0] = 0;
+                    color[1] = 0xFF;
+                    color[2] = 0xFF;
+                }
+                break;
+            case 5:
+                if (D_8010A116_picture_imperfect[player]) {
+                    color[0] = 0;
+                    color[1] = 0x80;
+                    color[2] = 0;
+                } else {
+                    color[0] = 0;
+                    color[1] = 0xFF;
+                    color[2] = 0;
+                }
+                break;
+            case 7:
+                if (D_8010A116_picture_imperfect[player]) {
+                    color[0] = 0x80;
+                    color[1] = 0x40;
+                    color[2] = 0;
+                } else {
+                    color[0] = 0xFF;
+                    color[1] = 0x80;
+                    color[2] = 0;
+                }
+                break;
+            case 10:
+                if (D_8010A116_picture_imperfect[player]) {
+                    color[0] = 0x80;
+                    color[1] = 0;
+                    color[2] = 0;
+                } else {
+                    color[0] = 0xFF;
+                    color[1] = 0;
+                    color[2] = 0;
+                }
+                break;
+        }
+        switch (D_8010A150_picture_imperfect) {
+            case 0:
+                offset = work->unk00 - 1;
+                break;
+            case 1:
+                if (work->unk00 == 1) {
+                    offset = 0;
+                } else if (work->unk00 == 2) {
+                    offset = 1;
+                } else if (work->unk00 == 3) {
+                    offset = 2;
+                } else {
+                    offset = 4;
+                }
+                break;
+            case 2:
+            default:
+                if (work->unk00 == 1) {
+                    offset = 1;
+                } else if (work->unk00 == 2) {
+                    offset = 3;
+                } else {
+                    offset = 4;
+                }
+                break;
+        }
+        y = D_80109FE8_picture_imperfect[player].y + D_8010A048_picture_imperfect[offset];
+        espColorSet(D_8010A26E_picture_imperfect[player], color[0], color[1], color[2]);
+        espScaleSet(D_8010A26E_picture_imperfect[player], work->unk0C, work->unk0C);
+        espTPLvlSet(D_8010A26E_picture_imperfect[player], work->unk0A);
+        espPosSet(D_8010A26E_picture_imperfect[player], D_80109FE8_picture_imperfect[player].x - 25, y);
+        espDispOn(D_8010A26E_picture_imperfect[player]);
+        if (work->unk03 == 10) {
+            espColorSet(D_8010A276_picture_imperfect[player], color[0], color[1], color[2]);
+            espScaleSet(D_8010A276_picture_imperfect[player], work->unk0C, work->unk0C);
+            espTPLvlSet(D_8010A276_picture_imperfect[player], work->unk0A);
+            func_8000BD50_main(D_8010A276_picture_imperfect[player], work->unk03 / 10);
+            espPosSet(D_8010A276_picture_imperfect[player], D_80109FE8_picture_imperfect[player].x - 14, y);
+            espDispOn(D_8010A276_picture_imperfect[player]);
+        } else {
+            espDispOff(D_8010A276_picture_imperfect[player]);
+        }
+        espColorSet(D_8010A27E_picture_imperfect[player], color[0], color[1], color[2]);
+        espScaleSet(D_8010A27E_picture_imperfect[player], work->unk0C, work->unk0C);
+        espTPLvlSet(D_8010A27E_picture_imperfect[player], work->unk0A);
+        func_8000BD50_main(D_8010A27E_picture_imperfect[player], work->unk03 % 10);
+        espPosSet(D_8010A27E_picture_imperfect[player], D_80109FE8_picture_imperfect[player].x + 2, y);
+        espDispOn(D_8010A27E_picture_imperfect[player]);
+        espColorSet(D_8010A286_picture_imperfect[player], color[0], color[1], color[2]);
+        espScaleSet(D_8010A286_picture_imperfect[player], work->unk0C, work->unk0C);
+        espTPLvlSet(D_8010A286_picture_imperfect[player], work->unk0A);
+        espPosSet(D_8010A286_picture_imperfect[player], D_80109FE8_picture_imperfect[player].x + 30, y);
+        espDispOn(D_8010A286_picture_imperfect[player]);
+        if (D_8010A112_picture_imperfect[player] > 10) {
+            work->unk0C += 0.05f;
+            work->unk0A -= 10;
+            D_8010A116_picture_imperfect[player] = 0;
+        } else {
+            D_8010A112_picture_imperfect[player]++;
+            D_8010A116_picture_imperfect[player] ^= 1;
+        }
+        if (work->unk0A <= 0) {
+            work->unk0C = 1.0f;
+            work->unk0A = 0xFF;
+            work->unk03 = 0;
+            D_8010A112_picture_imperfect[player] = 0;
+            D_8010A116_picture_imperfect[player] = 0;
+            switch (D_8010A150_picture_imperfect) {
+                case 0:
+                default:
+                    rounds = 5;
+                    break;
+                case 1:
+                    rounds = 4;
+                    break;
+                case 2:
+                    rounds = 3;
+                    break;
+            }
+            D_8010A111_picture_imperfect++;
+            if (rounds * 4 == D_8010A111_picture_imperfect) {
+                func_800E6F0C_minigame(3);
+            }
+        }
+    } else {
+        espDispOff(D_8010A26E_picture_imperfect[player]);
+        espDispOff(D_8010A276_picture_imperfect[player]);
+        espDispOff(D_8010A27E_picture_imperfect[player]);
+        espDispOff(D_8010A286_picture_imperfect[player]);
+    }
+}
 
 void func_80109284_picture_imperfect(PictureImperfectWork *work, s8 player) {
     if (D_8010A11A_picture_imperfect[player] < 30) {

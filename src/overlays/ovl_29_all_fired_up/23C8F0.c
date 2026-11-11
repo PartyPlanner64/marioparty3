@@ -43,6 +43,8 @@ extern u8 D_801099D4_all_fired_up[][6];
 extern s32 D_801099F8_all_fired_up;
 extern s8 D_801099C9_all_fired_up;
 extern s8 D_801099FC_all_fired_up;
+extern f32 D_80109A00_all_fired_up;
+extern s8 D_80109A04_all_fired_up;
 extern s8 D_80109A05_all_fired_up;
 extern s32 D_80109A18_all_fired_up[][4];
 extern f32 D_80109A58_all_fired_up[];
@@ -583,7 +585,104 @@ void func_80107440_all_fired_up(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_29_all_fired_up/23C8F0", func_80107578_all_fired_up);
+void func_80107578_all_fired_up(omObjData *object) {
+    AllFiredUpWork *work = object->data;
+    func_800E1BA8_minigame_ObjData *data;
+    s32 i;
+
+    if (D_801099C9_all_fired_up >= work->unk00) {
+        if (work->unk00 == 0) {
+            switch (D_80109C54_all_fired_up) {
+                case 0:
+                    for (i = 0; i < 4; i++) {
+                        data = D_800EC598_minigame[i]->data;
+                        if ((GwPlayer[data->unk59].stat & 1) && data->unk38 != 1000.0f) {
+                            D_80109A04_all_fired_up = 1;
+                            break;
+                        }
+                    }
+                    if (D_801099CC_all_fired_up == 0.0f || D_801099CC_all_fired_up == 700.0f) {
+                        D_80109C59_all_fired_up ^= 1;
+                    } else if (D_80109A04_all_fired_up != 0) {
+                        if (func_800E6E9C_minigame() % 15 == 0 && (rand8() >> 7)) {
+                            D_80109C59_all_fired_up ^= 1;
+                        }
+                    }
+                    break;
+                case 2:
+                    D_80109C59_all_fired_up = 0;
+                    break;
+                default:
+                    if (func_800E6E9C_minigame() % 15 == 0 && (rand8() >> 7)) {
+                        D_80109C59_all_fired_up ^= 1;
+                    }
+                    break;
+            }
+        }
+        switch (D_80109C54_all_fired_up) {
+            case 0:
+                if (D_80109C59_all_fired_up == 0 && D_801099D0_all_fired_up == 0 && (rand8() & 1)) {
+                    D_80109C59_all_fired_up = 1;
+                }
+                if (D_80109C59_all_fired_up != 0) {
+                    D_801099CC_all_fired_up += 0.5f;
+                    if (D_801099CC_all_fired_up > 700.0f) {
+                        D_801099CC_all_fired_up = 700.0f;
+                        D_801099D0_all_fired_up = 1;
+                    }
+                } else {
+                    D_801099CC_all_fired_up -= 0.5f;
+                    if (D_801099CC_all_fired_up < 0.0f) {
+                        D_801099CC_all_fired_up = 0.0f;
+                    }
+                }
+                work->unk0C += 1.5f;
+                if (work->unk0C >= 360.0f) {
+                    work->unk0C -= 360.0f;
+                }
+                object->trans.x = sindf(work->unk0C) * D_801099CC_all_fired_up;
+                object->trans.z = cosdf(work->unk0C) * D_801099CC_all_fired_up;
+                break;
+            case 1:
+                if (work->unk00 == 0 && func_800E6E9C_minigame() % 15 == 0) {
+                    D_80109A00_all_fired_up = (rand8() % 15) / 10.0f + 1.0f;
+                }
+                if (D_80109C59_all_fired_up != 0) {
+                    work->unk0C += D_80109A00_all_fired_up;
+                    if (work->unk0C >= 360.0f) {
+                        work->unk0C -= 360.0f;
+                    }
+                } else {
+                    work->unk0C -= D_80109A00_all_fired_up;
+                    if (work->unk0C < 0.0f) {
+                        work->unk0C += 360.0f;
+                    }
+                }
+                object->trans.x = sindf(work->unk0C) * work->unk14;
+                object->trans.z = cosdf(work->unk0C) * work->unk14;
+                break;
+            case 2:
+                if (work->unk00 == 0 && func_800E6E9C_minigame() % 5 == 0) {
+                    D_80109A00_all_fired_up = (rand8() % 15) / 10.0f + 1.0f;
+                }
+                work->unk0C -= D_80109A00_all_fired_up;
+                if (work->unk0C < 0.0f) {
+                    work->unk0C += 360.0f;
+                }
+                object->trans.x = sindf(work->unk0C) * work->unk14;
+                object->trans.z = cosdf(work->unk0C) * work->unk14;
+                work->unk10 += 2.0f;
+                if (work->unk10 >= 180.0f) {
+                    work->unk10 -= 180.0f;
+                }
+                object->trans.y = sindf(work->unk10) * 350.0f;
+                work->unk08 = 1.0f - sindf(work->unk10) * 0.6f;
+                Hu3DModelScaleSet(object->model[1], work->unk08, work->unk08, work->unk08);
+                break;
+        }
+        Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
+    }
+}
 
 void func_80107BD4_all_fired_up(omObjData *object) {
     func_800E1BA8_minigame_ObjData *data;

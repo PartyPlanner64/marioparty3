@@ -12,6 +12,7 @@
 #include "math.h"
 #include "overlays/minigame.h"
 
+extern s32 D_800A178C_main[][6];
 extern f32 D_800CB890_main;
 extern u8 D_800CE20A_main;
 extern u8 D_800D2008_main;
@@ -19,6 +20,7 @@ extern f32 D_800D5210_main;
 extern u8 D_800D6A90_main;
 
 extern Vec D_80109740_dizzy_dinghies[];
+extern f32 D_80109768_dizzy_dinghies;
 extern Vec D_80109788_dizzy_dinghies;
 extern f32 D_801097B0_dizzy_dinghies;
 extern f32 D_801097B4_dizzy_dinghies;
@@ -33,8 +35,10 @@ extern s32 D_801097D4_dizzy_dinghies;
 extern f32 D_801097D8_dizzy_dinghies;
 extern f32 D_801097DC_dizzy_dinghies;
 extern f32 D_801097E0_dizzy_dinghies;
+extern f32 D_801097E4_dizzy_dinghies;
 extern s32 D_801097E8_dizzy_dinghies;
 extern f32 D_80109770_dizzy_dinghies;
+extern f32 D_80109774_dizzy_dinghies;
 extern f32 D_80109778_dizzy_dinghies;
 extern f32 D_80109780_dizzy_dinghies;
 extern f32 D_80109784_dizzy_dinghies;
@@ -62,11 +66,18 @@ extern f32 D_80109D7C_dizzy_dinghies;
 extern f32 D_80109D80_dizzy_dinghies;
 extern s32 D_80109D84_dizzy_dinghies[][3];
 extern s32 D_80109DA8_dizzy_dinghies[][3];
+extern char *D_80109DCC_dizzy_dinghies[];
+extern s8 D_80109DF8_dizzy_dinghies[4];
+extern s16 D_80109DFC_dizzy_dinghies;
+extern s16 D_80109DFE_dizzy_dinghies;
+extern s16 D_80109E00_dizzy_dinghies;
 extern s16 D_80109E08_dizzy_dinghies[20];
 extern s32 D_80109E30_dizzy_dinghies;
 extern s32 D_80109E34_dizzy_dinghies;
 extern s32 D_8010A020_dizzy_dinghies;
 extern Vec D_8010A028_dizzy_dinghies[20];
+
+extern char D_80109F50_dizzy_dinghies[]; // "atama_2"
 
 void func_80105CAC_dizzy_dinghies(omObjData *object);
 void func_80105EB4_dizzy_dinghies(omObjData *object);
@@ -75,6 +86,7 @@ void func_80106DF4_dizzy_dinghies(omObjData *object);
 void func_80107098_dizzy_dinghies(omObjData *object);
 void func_80107738_dizzy_dinghies(omObjData *object, u16 player);
 void func_80107DE8_dizzy_dinghies(omObjData *object);
+void func_801085F4_dizzy_dinghies(omObjData *object);
 void func_80109420_dizzy_dinghies(omObjData *object);
 void func_80108E30_dizzy_dinghies(Vec *origin, Vec *p, Vec *q, Vec *out);
 
@@ -524,7 +536,134 @@ void func_80107098_dizzy_dinghies(omObjData *object) {
     func_8001C814_main(object->model[3], 2, 2);
 }
 
+// Only mismatch: operand order of the `or` combining the two D_800A178C_main entries.
+#ifdef NON_MATCHING
+void func_80107738_dizzy_dinghies(omObjData *object, u16 player) {
+    func_800E1BA8_minigame_ObjData *work;
+    s32 tag;
+    s32 charModel;
+    s32 boatType;
+    s32 i;
+
+    tag = 0x6D9;
+    for (i = 0; i < object->mdlcnt; i++) {
+        object->model[i] = 0;
+    }
+    object->data = HuMemAllocTag(0x15C, TAG_OVERLAY);
+    memset(object->data, 0, 0x15C);
+    work = object->data;
+    charModel = func_8000B108_main(D_800A178C_main[GwPlayer[player].chr][2] | D_800A178C_main[GwPlayer[player].chr][0],
+                                   tag | 4);
+    D_8010A020_dizzy_dinghies = boatType = D_800CB894_main;
+    object->model[0] = func_8000B108_main(boatType | 0x670000, tag);
+    func_80017358_main(charModel, D_80109DCC_dizzy_dinghies[GwPlayer[player].chr], object->model[0],
+                       D_80109F50_dizzy_dinghies);
+    switch (boatType) {
+        case 0:
+            D_80109770_dizzy_dinghies = 80.0f;
+            D_80109774_dizzy_dinghies = 1.1f;
+            D_80109778_dizzy_dinghies = 0.975f;
+            D_80109780_dizzy_dinghies = 0.925f;
+            D_80109784_dizzy_dinghies = 0.775f;
+            break;
+        case 1:
+            D_80109770_dizzy_dinghies = 85.0f;
+            D_80109774_dizzy_dinghies = 1.025f;
+            D_80109778_dizzy_dinghies = 0.97f;
+            D_80109780_dizzy_dinghies = 0.92f;
+            D_80109784_dizzy_dinghies = 0.76f;
+            break;
+        case 2:
+        default:
+            D_80109770_dizzy_dinghies = 90.0f;
+            D_80109774_dizzy_dinghies = 1.0125f;
+            D_80109778_dizzy_dinghies = 0.96f;
+            D_80109780_dizzy_dinghies = 0.9125f;
+            D_80109784_dizzy_dinghies = 0.75f;
+            break;
+    }
+    work->unk57 = GwPlayer[player].pad;
+    object->func = func_801085F4_dizzy_dinghies;
+    work->unk52 = 0;
+    work->unkB4 = 1.0f;
+    work->unk8C = 65536.0f;
+    work->unkD0 = 0xFFFF;
+    work->unk4C = 0.5f;
+    work->unkCC = 1.0f;
+    work->unk60 = 0.0f;
+    func_800E1328_minigame(object, 100.0f);
+    func_800E1334_minigame(object, 150.0f);
+    func_800E1340_minigame(object, 20.0f);
+    func_800E134C_minigame(object, 30.0f);
+    func_800E12EC_minigame(object, 1000.0f);
+    work->unk9C = work->unkA0 = work->unkA4 = 0.0f;
+    work->unk59 = player;
+    work->unkC3 = -1;
+    work->unkC4 = -1;
+    work->unkAC = work->unkB0 = 1.0f;
+    object->scale.x = object->scale.y = object->scale.z = 1.0f;
+    for (i = 0; i < 6; i++) {
+        if (i == 3 || i == 0) {
+            if (D_80109DFC_dizzy_dinghies < 0) {
+                object->model[i + 1] = D_80109DFC_dizzy_dinghies = func_8000B108_main(0x440006, 0x889);
+            } else {
+                object->model[i + 1] = Hu3DModelLink(D_80109DFC_dizzy_dinghies);
+            }
+        } else if (i == 4 || i == 1) {
+            if (D_80109DFE_dizzy_dinghies < 0) {
+                object->model[i + 1] = D_80109DFE_dizzy_dinghies = func_8000B108_main(0x440007, 0x889);
+            } else {
+                object->model[i + 1] = Hu3DModelLink(D_80109DFE_dizzy_dinghies);
+            }
+        } else {
+            if (D_80109E00_dizzy_dinghies < 0) {
+                object->model[i + 1] = D_80109E00_dizzy_dinghies = func_8000B108_main(0x440008, 0x889);
+            } else {
+                object->model[i + 1] = Hu3DModelLink(D_80109E00_dizzy_dinghies);
+            }
+        }
+        func_8001C2FC_main(object->model[i + 1], 0x70000000, 0x70000000);
+    }
+    if (boatType == 2) {
+        for (i = 0; i < 6; i++) {
+            if (i == 3 || i == 0) {
+                object->model[i + 7] = Hu3DModelLink(D_80109DFC_dizzy_dinghies);
+            } else if (i == 4 || i == 1) {
+                object->model[i + 7] = Hu3DModelLink(D_80109DFE_dizzy_dinghies);
+            } else {
+                object->model[i + 7] = Hu3DModelLink(D_80109E00_dizzy_dinghies);
+            }
+            func_8001C2FC_main(object->model[i + 7], 0x70000000, 0x70000000);
+        }
+    }
+    work = object->data;
+    work->unk3C = D_80109768_dizzy_dinghies;
+    func_800E149C_minigame(object, 0, 2);
+    do {
+        i = rand8() & 3;
+    } while (D_80109DF8_dizzy_dinghies[i] != -1);
+    object->trans.x = D_80109740_dizzy_dinghies[D_801097EC_dizzy_dinghies].x;
+    object->trans.y = D_80109740_dizzy_dinghies[D_801097EC_dizzy_dinghies].y;
+    object->trans.z = D_80109740_dizzy_dinghies[D_801097EC_dizzy_dinghies].z;
+    Center.x = D_80109740_dizzy_dinghies[D_801097EC_dizzy_dinghies].x;
+    Center.y = D_80109740_dizzy_dinghies[D_801097EC_dizzy_dinghies].y;
+    Center.z = D_80109740_dizzy_dinghies[D_801097EC_dizzy_dinghies].z;
+    Hu3DMotionTimeSet(object->model[0], 5.0f);
+    func_8001C814_main(object->model[0], 1, 1);
+    switch (GwPlayer[player].chr) {
+        case 2:
+        case 6:
+        case 7:
+            D_801097E4_dizzy_dinghies = 3.0f;
+            break;
+        case 4:
+            D_801097E4_dizzy_dinghies = 1.8f;
+            break;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", func_80107738_dizzy_dinghies);
+#endif
 
 void func_80107DE8_dizzy_dinghies(omObjData *object) {
     func_80107738_dizzy_dinghies(object, 0);

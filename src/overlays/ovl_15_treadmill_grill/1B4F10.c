@@ -4,6 +4,7 @@
 
 extern s32 D_800A178C_main[][6];
 extern u8 D_800D2008_main;
+extern u8 D_800D6A90_main;
 extern f32 D_800D51FC_main;
 extern f32 D_800D5410_main;
 extern omObjData *D_800EBE70_minigame[];
@@ -16,6 +17,7 @@ extern Vec D_8010AFB0_treadmill_grill[4];
 extern D_80111B50_vine_with_me_Struct D_8010B03C_treadmill_grill;
 extern f32 D_8010B064_treadmill_grill[];
 extern s32 D_8010B098_treadmill_grill[];
+extern Vec D_8010B330_treadmill_grill[6];
 extern Vec D_8010B378_treadmill_grill[];
 extern s32 D_8010AF80_treadmill_grill;
 extern u8 D_8010AF84_treadmill_grill[4];
@@ -41,6 +43,7 @@ extern s32 D_8010B308_treadmill_grill;
 extern s32 D_8010B30C_treadmill_grill;
 extern s16 D_8010B310_treadmill_grill[16];
 
+void func_80106008_treadmill_grill(omObjData *object);
 void func_801062DC_treadmill_grill(omObjData *object);
 void func_801065DC_treadmill_grill(omObjData *object);
 void func_801067A8_treadmill_grill(omObjData *object);
@@ -158,7 +161,78 @@ void func_801061E8_treadmill_grill(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_801062DC_treadmill_grill);
+void func_801062DC_treadmill_grill(omObjData *object) {
+    func_800E1BA8_minigame_ObjData *data;
+    omObjData *player;
+    s32 last;
+    s32 count;
+    s32 i;
+
+    last = 0;
+    if (omPauseChk() + D_800D6A90_main != 0) {
+        return;
+    }
+    count = 0;
+    for (i = 0; i < D_800EC280_minigame; i++) {
+        if (D_8010AF84_treadmill_grill[i] == 0) {
+            count++;
+            last = i;
+        }
+    }
+    switch (func_800E6F40_minigame()) {
+        case 0:
+            if (func_800E6E9C_minigame() == 10) {
+                HuAudSeqPlay(0);
+            }
+            break;
+        case 2:
+            if (count < 2) {
+                func_800E6F0C_minigame(3);
+            }
+            break;
+        case 3:
+            if (count != 1) {
+                D_8010B03C_treadmill_grill.unk06 = 4;
+            } else {
+                D_8010B03C_treadmill_grill.unk18[0] = last;
+                D_8010B03C_treadmill_grill.unk06 = 0;
+            }
+            break;
+        case 4:
+            if (D_800EB934_minigame == 1) {
+                if (D_8010B03C_treadmill_grill.unk06 == 4) {
+                    for (i = 0; i < 4; i++) {
+                        player = D_800EC598_minigame[i];
+                        if (D_8010AF84_treadmill_grill[i] == 0) {
+                            func_800E5798_minigame(player, 14);
+                        }
+                    }
+                } else {
+                    player = D_800EC598_minigame[last];
+                    func_800E5798_minigame(player, 13);
+                    data = player->data;
+                    GwPlayer[data->unk59].bonusCoin += 10;
+                    func_80045ED0_main(D_800A178C_main[GwPlayer[data->unk59].chr][0] | 0x2F);
+                }
+            }
+            break;
+        case 5:
+            WipeCreateOut(0, 20);
+            object->func = func_80106008_treadmill_grill;
+            break;
+    }
+    for (i = 0; i < D_800EC280_minigame; i++) {
+        ((func_800E1BA8_minigame_ObjData *)D_800EC598_minigame[i]->data)->unk60 = CRot.y;
+    }
+    if (D_800D530C_main == 1) {
+        WipeCreateOut(0, 20);
+        HuAudSeqFadeOut(30);
+        func_8004AB0C_main(30);
+        object->func = func_80106008_treadmill_grill;
+    }
+    Center.y = 150.0f;
+    Center.z = -350.0f;
+}
 
 void func_801065DC_treadmill_grill(omObjData *object) {
     D_800EC1C0_minigame_ObjData *work;
@@ -440,7 +514,55 @@ void func_80108FCC_treadmill_grill(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_80109108_treadmill_grill);
+void func_80109108_treadmill_grill(omObjData *object) {
+    Vec dir;
+    f32 length;
+    f32 spacing;
+    f32 halfWidth;
+    f32 dist;
+    f32 t;
+    s32 i;
+    s32 n;
+
+    n = 0;
+    length = 2.0f * (D_8010AF8C_treadmill_grill[0] + 600.0f) + 2000.0f;
+    spacing = length / (D_800EC1B8_minigame - 1);
+    D_8010B330_treadmill_grill[0].x = sindf(D_8010AFAC_treadmill_grill) * (spacing / 2.0f) + object->trans.x + 0.0f;
+    D_8010B330_treadmill_grill[0].y = 50.0f;
+    D_8010B330_treadmill_grill[0].z = 350.0f;
+    halfWidth = D_8010AF8C_treadmill_grill[0] / 2.0f;
+    D_8010B330_treadmill_grill[1].x = halfWidth + object->trans.x + 180.0f;
+    D_8010B330_treadmill_grill[1].y = 50.0f;
+    D_8010B330_treadmill_grill[1].z = 350.0f;
+    D_8010B330_treadmill_grill[2].x = halfWidth + object->trans.x + 180.0f;
+    D_8010B330_treadmill_grill[2].y = 50.0f;
+    D_8010B330_treadmill_grill[2].z = -1150.0f;
+    D_8010B330_treadmill_grill[3].x = object->trans.x - halfWidth - 180.0f;
+    D_8010B330_treadmill_grill[3].y = 50.0f;
+    D_8010B330_treadmill_grill[3].z = -1150.0f;
+    D_8010B330_treadmill_grill[4].x = object->trans.x - halfWidth - 180.0f;
+    D_8010B330_treadmill_grill[4].y = 50.0f;
+    D_8010B330_treadmill_grill[4].z = 350.0f;
+    D_8010B330_treadmill_grill[5].x = D_8010B330_treadmill_grill[0].x;
+    D_8010B330_treadmill_grill[5].y = 50.0f;
+    D_8010B330_treadmill_grill[5].z = 350.0f;
+    t = 0.0f;
+    for (i = 0; i < 5; i++) {
+        dir.x = D_8010B330_treadmill_grill[i + 1].x - D_8010B330_treadmill_grill[i].x;
+        dir.y = D_8010B330_treadmill_grill[i + 1].y - D_8010B330_treadmill_grill[i].y;
+        dir.z = D_8010B330_treadmill_grill[i + 1].z - D_8010B330_treadmill_grill[i].z;
+        dist = HuSqrtf(dir.x * dir.x + dir.z * dir.z);
+        func_800202FC_main(&dir);
+        do {
+            D_8010B378_treadmill_grill[n].x = t * dir.x + D_8010B330_treadmill_grill[i].x;
+            D_8010B378_treadmill_grill[n].y = t * dir.y + D_8010B330_treadmill_grill[i].y;
+            D_8010B378_treadmill_grill[n].z = t * dir.z + D_8010B330_treadmill_grill[i].z;
+            t += spacing;
+            n++;
+        } while (t < dist);
+        t -= dist;
+    }
+}
 
 void func_801093E0_treadmill_grill(s32 arg0, s32 arg1) {
 }

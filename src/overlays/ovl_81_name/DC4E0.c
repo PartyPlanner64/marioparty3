@@ -38,6 +38,18 @@ extern NameSpriteIds D_80105414_name_81;
 extern s16 D_80105420_name_81;
 extern s16 D_80105422_name_81;
 extern NamePlayerData D_80105630_name_81[];
+extern s32 D_801014E0_name_81;
+extern s32 D_801014E4_name_81;
+extern s16 D_801014E8_name_81[][2];
+extern Process *D_80105410_name_81;
+extern omObjData *D_80105444_name_81[];
+
+void func_800F4F20_name_81(void);
+void func_800F6110_name_81(void);
+void func_800F628C_name_81(s32 playerIndex);
+void func_800F6408_name_81(s32 playerIndex);
+void func_800F6F84_name_81(void);
+void func_800F7228_name_81(s32 playerIndex, s32 coins, s32 arg2);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F4710_name_81);
 
@@ -63,7 +75,16 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F53C4_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F54A4_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F55FC_name_81);
+void func_800F55FC_name_81(s32 playerIndex) {
+    NamePlayerData *player = &D_80105630_name_81[playerIndex];
+    s16 group;
+
+    group = player->spriteGroup = HuSprGrpCreate(0x1D, 2);
+    HuSprGrpMemberSet(group, 0, D_80105414_name_81.unk_00, 0);
+    HuSprPriSet(group, 0, playerIndex * 5 + 0x4790);
+    HuSprAttrSet(group, 0, 0);
+    HuSprPosSet(group, 0, 0, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F56C0_name_81);
 
@@ -117,13 +138,40 @@ void func_800F6220_name_81(void) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F628C_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F6390_name_81);
+void func_800F6390_name_81(void) {
+    s32 i;
+
+    func_800F6110_name_81();
+    for (i = 0; i < 2; i++) {
+        func_800F628C_name_81(i);
+    }
+    D_80105410_name_81 = omAddPrcObj(func_800F4F20_name_81, 0, 0x2000, 0);
+    omPrcSetStatBit(D_80105410_name_81, OM_STAT_NOALLPAUSE);
+    D_80105420_name_81 = D_80105422_name_81 = -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F6408_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F64FC_name_81);
+void func_800F64FC_name_81(void) {
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F6550_name_81);
+    for (i = 0; i < 2; i++) {
+        func_800F6408_name_81(i);
+    }
+    func_800F6220_name_81();
+    HuPrcKill(D_80105410_name_81);
+    func_800F6F84_name_81();
+}
+
+void func_800F6550_name_81(s32 playerIndex, s16 x, s16 y) {
+    NamePlayerData *player = &D_80105630_name_81[playerIndex];
+
+    player->xPos = player->unk_14 = x;
+    player->yPos = player->unk_18 = y;
+    player->unk_1C = player->unk_20 = 0.0f;
+    player->unk_08 = -2;
+    HuSprPosSet(player->spriteGroup, 0, x + 0x30, y + 0x18);
+}
 
 void func_800F6600_name_81(s32 playerIndex, s16 *outX, s16 *outY) {
     NamePlayerData *player = &D_80105630_name_81[playerIndex];
@@ -132,9 +180,14 @@ void func_800F6600_name_81(s32 playerIndex, s16 *outX, s16 *outY) {
     *outY = player->yPos;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F664C_name_81);
+void func_800F664C_name_81(s32 playerIndex, s32 mode) {
+    func_800F6550_name_81(playerIndex, D_801014E8_name_81[mode * 2 + playerIndex][0],
+                          D_801014E8_name_81[mode * 2 + playerIndex][1]);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F6688_name_81);
+void func_800F6688_name_81(s32 playerIndex, s32 posIndex) {
+    func_800F6550_name_81(playerIndex, D_801014E8_name_81[posIndex][0], D_801014E8_name_81[posIndex][1]);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F66BC_name_81);
 
@@ -171,11 +224,20 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F6FE8_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F7228_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F7378_name_81);
+void func_800F7378_name_81(s32 playerIndex, s32 coins) {
+    func_800F7228_name_81(playerIndex, coins, 1);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F7394_name_81);
+s32 func_800F7394_name_81(s32 playerIndex) {
+    return D_80105444_name_81[playerIndex] != NULL;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F73AC_name_81);
+s32 func_800F73AC_name_81(void) {
+    if (D_80105630_name_81[0].unk_00 & 1) {
+        return FALSE;
+    }
+    return TRUE;
+}
 
 void func_800F73C0_name_81(void) {
     s32 i;
@@ -193,7 +255,14 @@ void func_800F740C_name_81(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F7458_name_81);
+void func_800F7458_name_81(s32 playerIndex, f32 scaleX, f32 scaleY) {
+    NamePlayerData *player = &D_80105630_name_81[playerIndex];
+    s32 i;
+
+    for (i = 0; i < 0x1D; i++) {
+        HuSprScaleSet(player->spriteGroup, i, scaleX, scaleY);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F74E4_name_81);
 
@@ -201,9 +270,13 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F75EC_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F76F8_name_81);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F79D0_name_81);
+void func_800F79D0_name_81(s32 value) {
+    D_801014E0_name_81 = value;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F79DC_name_81);
+void func_800F79DC_name_81(s32 value) {
+    D_801014E4_name_81 = value;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F79E8_name_81);
 

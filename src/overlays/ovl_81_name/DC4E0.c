@@ -25,7 +25,7 @@ typedef struct NamePlayerData {
     /* 0x20 */ f32 unk_20;
     /* 0x24 */ f32 unk_24;
     /* 0x28 */ f32 unk_28;
-    /* 0x2C */ Object *unk_2C;
+    /* 0x2C */ ObjectDuel *unk_2C;
     /* 0x30 */ char unk_30[0xA];
     /* 0x3A */ s16 unk_3A[11];
     /* 0x50 */ s16 unk_50[11];

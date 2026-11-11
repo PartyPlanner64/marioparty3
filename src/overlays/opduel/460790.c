@@ -5,8 +5,8 @@ extern u32 D_8010934C_opduel[];
 extern u32 *D_8010940C_opduel[];
 extern s32 D_80109200_opduel;
 extern Process *D_80109204_opduel;
-extern Object *D_80109208_opduel;
-extern Object *D_8010920C_opduel;
+extern ObjectDuel *D_80109208_opduel;
+extern ObjectDuel *D_8010920C_opduel;
 extern omObjData *D_80109210_opduel;
 extern s16 D_80109214_opduel;
 extern Process *D_80109218_opduel;
@@ -28,18 +28,18 @@ extern u8 D_80109570_opduel;
 extern s32 *D_80109464_opduel[];
 extern s32 D_80109484_opduel[];
 extern GW_PLAYER *D_80109574_opduel[2];
-extern Object *D_8010957C_opduel[2];
+extern ObjectDuel *D_8010957C_opduel[2];
 extern s32 D_80101200_shared_board[];
 extern u8 D_80101960[];
 
 void func_800F3C98_name_81(s16, u32 *, s16);
 void func_800EB164_name_81(s32, s32);
 void func_800EB5E8_name_81(void);
-void func_800EB708_name_81(Vec *, Vec *, Vec *);
+void MBDVecDirGet(Vec *, Vec *, Vec *);
 void func_800EB7BC_name_81(Vec *);
 Process *func_800EBC60_name_81(Vec *, Vec *, Vec *, s32);
 Process *func_800EBF2C_name_81(Vec *, Vec *, Vec *, s32);
-s32 func_800EFE8C_name_81(Object *, Vec *, f32);
+s32 func_800EFE8C_name_81(ObjectDuel *, Vec *, f32);
 void func_800F6550_name_81(s32, s16, s16);
 void func_800F7228_name_81(s32, s32, s32);
 void func_800F7458_name_81(s32, f32, f32);
@@ -216,11 +216,11 @@ void func_80106070_opduel(omObjData *obj) {
         D_80109214_opduel = -1;
     }
     if (D_80109208_opduel != NULL) {
-        func_800D8F3C_name_81(D_80109208_opduel);
+        MBDModelKill(D_80109208_opduel);
         D_80109208_opduel = NULL;
     }
     if (D_8010920C_opduel != NULL) {
-        func_800D8F3C_name_81(D_8010920C_opduel);
+        MBDModelKill(D_8010920C_opduel);
         D_8010920C_opduel = NULL;
     }
     if (D_80109210_opduel != NULL) {
@@ -240,7 +240,7 @@ void func_80106070_opduel(omObjData *obj) {
         D_80109220_opduel = NULL;
     }
     for (i = 0; i < 2; i++) {
-        func_800D8F0C_name_81(D_80109574_opduel[i]->player_obj);
+        MBDModelDispOff((ObjectDuel *)D_80109574_opduel[i]->player_obj);
     }
     omDelObj(obj);
 }
@@ -329,12 +329,12 @@ void func_801066B8_opduel(void) {
         D_80109574_opduel[i] = MBDGetPlayerStruct(i);
         func_800F3C98_name_81(i, D_8010940C_opduel[GwPlayer[i].chr], 2);
         HuVecCopy3F(&D_80109574_opduel[i]->player_obj->coords, &D_8010925C_opduel[i]);
-        func_800D8944_name_81(D_80109574_opduel[i]->player_obj);
+        MBDModelTempAllocFree((ObjectDuel *)D_80109574_opduel[i]->player_obj);
         D_80109574_opduel[i]->stat |= PLAYER_UNK_04;
     }
-    D_80109208_opduel = func_800D8314_name_81(0x1301FF, -1, 1.0f, 0, 0);
+    D_80109208_opduel = MBDModelFileCreate(0x1301FF, -1, 1.0f, 0, 0);
     HuVecCopyXYZ(&D_80109208_opduel->scale, 0.625f, 0.625f, 0.625f);
-    D_8010920C_opduel = func_800D8314_name_81(0x1301FD, -1, 1.0f, 0, 0);
+    D_8010920C_opduel = MBDModelFileCreate(0x1301FD, -1, 1.0f, 0, 0);
     HuVecCopy3F(&D_80109208_opduel->coords, &D_8010922C_opduel);
     HuVecCopy3F(&D_8010920C_opduel->coords, &D_8010922C_opduel);
     D_8010920C_opduel->coords.y = 0;
@@ -378,7 +378,7 @@ void func_801066B8_opduel(void) {
         HuPrcVSleep();
     }
     for (i = 0; i < 2; i++) {
-        func_800D8F0C_name_81(D_80109574_opduel[i]->player_obj);
+        MBDModelDispOff((ObjectDuel *)D_80109574_opduel[i]->player_obj);
     }
     func_800138EC_main(D_80109214_opduel, 1, 0);
     HuPrcSleep(20);
@@ -401,9 +401,9 @@ void func_801066B8_opduel(void) {
     }
     func_8000D044_main(D_80109214_opduel);
     D_80109214_opduel = -1;
-    func_800D8F3C_name_81(D_80109208_opduel);
+    MBDModelKill(D_80109208_opduel);
     D_80109208_opduel = NULL;
-    func_800D8F3C_name_81(D_8010920C_opduel);
+    MBDModelKill(D_8010920C_opduel);
     D_8010920C_opduel = NULL;
     omDelObj(D_80109210_opduel);
     D_80109210_opduel = NULL;
@@ -464,7 +464,7 @@ void func_80106D18_opduel(void) {
     }
     for (scale = 0.0f; scale <= 1.0f; scale += 0.1f) {
         for (i = 0; i < 2; i++) {
-            func_800D8E88_name_81(D_80109574_opduel[i]->player_obj);
+            MBDModelDispOn((ObjectDuel *)D_80109574_opduel[i]->player_obj);
             HuVecCopyXYZ(&D_80109574_opduel[i]->player_obj->scale, scale, 1.0f, scale);
         }
         HuPrcVSleep();
@@ -491,20 +491,20 @@ void func_80106D18_opduel(void) {
         j++;
         if (j == 40) {
             for (i = 0; i < 2; i++) {
-                func_800EB708_name_81(&D_80109574_opduel[i]->player_obj->coords, &D_8010928C_opduel[i],
+                MBDVecDirGet(&D_80109574_opduel[i]->player_obj->coords, &D_8010928C_opduel[i],
                                       &D_80109574_opduel[i]->player_obj->rot);
                 func_800EBF2C_name_81(&D_80109574_opduel[i]->player_obj->coords, &D_8010928C_opduel[i],
                                       &D_80109574_opduel[i]->player_obj->coords, 20);
-                func_800D90D0_name_81(D_80109574_opduel[i]->player_obj, 2, 2);
+                MBDMotionSet((ObjectDuel *)D_80109574_opduel[i]->player_obj, 2, 2);
             }
         }
         if (j == 60) {
             for (i = 0; i < 2; i++) {
-                func_800EB708_name_81(&D_80109574_opduel[i]->player_obj->coords, &D_80109250_opduel,
+                MBDVecDirGet(&D_80109574_opduel[i]->player_obj->coords, &D_80109250_opduel,
                                       &directions[i]);
                 func_800EBC60_name_81(&D_80109574_opduel[i]->player_obj->rot, &directions[i],
                                       &D_80109574_opduel[i]->player_obj->rot, 10);
-                func_800D918C_name_81(D_80109574_opduel[i]->player_obj, -1, 0, 5, 2);
+                MBDMotionShiftSet((ObjectDuel *)D_80109574_opduel[i]->player_obj, -1, 0, 5, 2);
             }
         }
         HuPrcVSleep();
@@ -516,24 +516,24 @@ void func_80106D18_opduel(void) {
         HuPrcChildLink(HuPrcCurrentGet(), func_800EBF2C_name_81(&D_80109574_opduel[i]->player_obj->coords,
                                                                 &D_801092A4_opduel[i],
                                                                 &D_80109574_opduel[i]->player_obj->coords, 20));
-        func_800D90D0_name_81(D_80109574_opduel[i]->player_obj, 2, 2);
+        MBDMotionSet((ObjectDuel *)D_80109574_opduel[i]->player_obj, 2, 2);
     }
     HuPrcChildWatch();
     for (i = 0; i < 2; i++) {
-        func_800D918C_name_81(D_80109574_opduel[i]->player_obj, -1, 0, 5, 2);
+        MBDMotionShiftSet((ObjectDuel *)D_80109574_opduel[i]->player_obj, -1, 0, 5, 2);
     }
     HuAudSeqPlay(13);
     HuAudFXPlay(0x159);
     {
         s32 messages[] = { 0x2701, 0x2702, 0x2703, 0x2704, 0x2705, 0x2706 };
 
-        func_800D90D0_name_81(D_80109208_opduel, 0, 2);
+        MBDMotionSet(D_80109208_opduel, 0, 2);
         func_800EB4DC_name_81(-1, 0x2700, messages[D_80109570_opduel], 0, 0, 0, 0);
         func_800EB5E8_name_81();
         func_800EB5E8_name_81();
         func_800EB278_name_81();
         func_800EB29C_name_81();
-        func_800D90D0_name_81(D_80109208_opduel, -1, 2);
+        MBDMotionSet(D_80109208_opduel, -1, 2);
     }
     func_800138EC_main(D_80109214_opduel, 0, 1);
     for (angle = 0.0f; angle <= 360.0f; angle += 20.0f) {
@@ -545,12 +545,12 @@ void func_80106D18_opduel(void) {
     func_800EB7BC_name_81(&directions[0]);
     func_800EBC60_name_81(&D_80109574_opduel[0]->player_obj->rot, &directions[0],
                           &D_80109574_opduel[0]->player_obj->rot, 10);
-    func_800D90D0_name_81(D_80109208_opduel, 0, 2);
+    MBDMotionSet(D_80109208_opduel, 0, 2);
     func_800EB4DC_name_81(-1, 0x2707, D_80101200_shared_board[GwPlayer[0].chr], 0, 0, 0, 0);
     func_800EB278_name_81();
     func_800EB29C_name_81();
-    func_800D90D0_name_81(D_80109208_opduel, -1, 2);
-    func_800EB708_name_81(&D_80109574_opduel[0]->player_obj->coords, &D_80109208_opduel->coords, &directions[0]);
+    MBDMotionSet(D_80109208_opduel, -1, 2);
+    MBDVecDirGet(&D_80109574_opduel[0]->player_obj->coords, &D_80109208_opduel->coords, &directions[0]);
     func_800EBC60_name_81(&D_80109574_opduel[0]->player_obj->rot, &directions[0],
                           &D_80109574_opduel[0]->player_obj->rot, 10);
     HuPrcSleep(10);
@@ -564,12 +564,12 @@ void func_80106D18_opduel(void) {
     func_800EB7BC_name_81(&directions[1]);
     func_800EBC60_name_81(&D_80109574_opduel[1]->player_obj->rot, &directions[1],
                           &D_80109574_opduel[1]->player_obj->rot, 10);
-    func_800D90D0_name_81(D_80109208_opduel, 0, 2);
+    MBDMotionSet(D_80109208_opduel, 0, 2);
     func_800EB4DC_name_81(-1, 0x2708, D_80101200_shared_board[GwPlayer[1].chr], 0, 0, 0, 0);
     func_800EB278_name_81();
     func_800EB29C_name_81();
-    func_800D90D0_name_81(D_80109208_opduel, -1, 2);
-    func_800EB708_name_81(&D_80109574_opduel[1]->player_obj->coords, &D_80109208_opduel->coords, &directions[1]);
+    MBDMotionSet(D_80109208_opduel, -1, 2);
+    MBDVecDirGet(&D_80109574_opduel[1]->player_obj->coords, &D_80109208_opduel->coords, &directions[1]);
     func_800EBC60_name_81(&D_80109574_opduel[1]->player_obj->rot, &directions[1],
                           &D_80109574_opduel[1]->player_obj->rot, 10);
     HuPrcSleep(10);
@@ -583,9 +583,9 @@ void func_80106D18_opduel(void) {
     D_80109208_opduel->rot.x = sindf(0.0f);
     D_80109208_opduel->rot.z = cosdf(0.0f);
     func_800138EC_main(D_80109214_opduel, 1, 0);
-    func_800D90D0_name_81(D_80109208_opduel, 0, 2);
+    MBDMotionSet(D_80109208_opduel, 0, 2);
     func_800EB164_name_81(-1, 0x2709);
-    func_800D90D0_name_81(D_80109208_opduel, -1, 2);
+    MBDMotionSet(D_80109208_opduel, -1, 2);
     j = func_800EFE20_name_81(2.0f);
 spin:
     HuAudFXPlay(0x2DE);
@@ -633,9 +633,9 @@ spin:
                 }
                 func_800138EC_main(D_80109214_opduel, 1, 0);
                 HuPrcSleep(30);
-                func_800D90D0_name_81(D_80109208_opduel, 0, 2);
+                MBDMotionSet(D_80109208_opduel, 0, 2);
                 func_800EB164_name_81(-1, 0x270A);
-                func_800D90D0_name_81(D_80109208_opduel, -1, 2);
+                MBDMotionSet(D_80109208_opduel, -1, 2);
                 goto spin;
             }
             // fallthrough
@@ -738,50 +738,50 @@ spin:
     func_800138EC_main(D_80109214_opduel, 1, 0);
     func_800FFAE0_name_81(j, 2);
     HuPrcSleep(20);
-    func_800D90D0_name_81(D_80109208_opduel, 0, 2);
+    MBDMotionSet(D_80109208_opduel, 0, 2);
     func_800EB164_name_81(-1, 0x270B);
-    func_800D90D0_name_81(D_80109208_opduel, -1, 2);
+    MBDMotionSet(D_80109208_opduel, -1, 2);
     if (j == 0) {
-        func_800D90D0_name_81(D_80109208_opduel, 0, 2);
+        MBDMotionSet(D_80109208_opduel, 0, 2);
         func_800EB4DC_name_81(-1, 0x270C, D_80101200_shared_board[GwPlayer[0].chr], 0, 0, 0, 0);
         func_800EB278_name_81();
         func_800EB29C_name_81();
-        func_800D90D0_name_81(D_80109208_opduel, -1, 2);
+        MBDMotionSet(D_80109208_opduel, -1, 2);
     } else {
-        func_800D90D0_name_81(D_80109208_opduel, 0, 2);
+        MBDMotionSet(D_80109208_opduel, 0, 2);
         func_800EB4DC_name_81(-1, 0x270C, D_80101200_shared_board[GwPlayer[1].chr], 0, 0, 0, 0);
         func_800EB278_name_81();
         func_800EB29C_name_81();
-        func_800D90D0_name_81(D_80109208_opduel, -1, 2);
-        func_800EB708_name_81(&D_80109574_opduel[0]->player_obj->coords, &D_80109574_opduel[1]->player_obj->coords,
+        MBDMotionSet(D_80109208_opduel, -1, 2);
+        MBDVecDirGet(&D_80109574_opduel[0]->player_obj->coords, &D_80109574_opduel[1]->player_obj->coords,
                               &D_80109574_opduel[0]->player_obj->rot);
-        func_800EB708_name_81(&D_80109574_opduel[1]->player_obj->coords, &D_80109574_opduel[0]->player_obj->coords,
+        MBDVecDirGet(&D_80109574_opduel[1]->player_obj->coords, &D_80109574_opduel[0]->player_obj->coords,
                               &D_80109574_opduel[1]->player_obj->rot);
-        func_800D90D0_name_81(D_80109574_opduel[0]->player_obj, 2, 2);
-        func_800D90D0_name_81(D_80109574_opduel[1]->player_obj, 2, 2);
+        MBDMotionSet((ObjectDuel *)D_80109574_opduel[0]->player_obj, 2, 2);
+        MBDMotionSet((ObjectDuel *)D_80109574_opduel[1]->player_obj, 2, 2);
         while (TRUE) {
-            j = func_800EFE8C_name_81(D_80109574_opduel[0]->player_obj, &D_801092BC_opduel[0], 10.0f);
-            if (func_800EFE8C_name_81(D_80109574_opduel[1]->player_obj, &D_801092BC_opduel[1], 10.0f) && j) {
+            j = func_800EFE8C_name_81((ObjectDuel *)D_80109574_opduel[0]->player_obj, &D_801092BC_opduel[0], 10.0f);
+            if (func_800EFE8C_name_81((ObjectDuel *)D_80109574_opduel[1]->player_obj, &D_801092BC_opduel[1], 10.0f) && j) {
                 break;
             }
             HuPrcVSleep();
         }
         while (TRUE) {
-            j = func_800EFE8C_name_81(D_80109574_opduel[0]->player_obj, &D_801092A4_opduel[1], 10.0f);
-            if (func_800EFE8C_name_81(D_80109574_opduel[1]->player_obj, &D_801092A4_opduel[0], 10.0f) && j) {
+            j = func_800EFE8C_name_81((ObjectDuel *)D_80109574_opduel[0]->player_obj, &D_801092A4_opduel[1], 10.0f);
+            if (func_800EFE8C_name_81((ObjectDuel *)D_80109574_opduel[1]->player_obj, &D_801092A4_opduel[0], 10.0f) && j) {
                 break;
             }
             HuPrcVSleep();
         }
         func_80105FE8_opduel(0, 1);
-        func_800EB708_name_81(&D_80109574_opduel[1]->player_obj->coords, &D_80109208_opduel->coords, &directions[1]);
+        MBDVecDirGet(&D_80109574_opduel[1]->player_obj->coords, &D_80109208_opduel->coords, &directions[1]);
         func_800EBC60_name_81(&D_80109574_opduel[1]->player_obj->rot, &directions[1],
                               &D_80109574_opduel[1]->player_obj->rot, 5);
-        func_800D90D0_name_81(D_80109574_opduel[0]->player_obj, 0, 2);
-        func_800D90D0_name_81(D_80109574_opduel[1]->player_obj, 0, 2);
+        MBDMotionSet((ObjectDuel *)D_80109574_opduel[0]->player_obj, 0, 2);
+        MBDMotionSet((ObjectDuel *)D_80109574_opduel[1]->player_obj, 0, 2);
     }
     func_800EB7BC_name_81(&D_80109574_opduel[0]->player_obj->rot);
-    func_800D90D0_name_81(D_80109574_opduel[0]->player_obj, 3, 0);
+    MBDMotionSet((ObjectDuel *)D_80109574_opduel[0]->player_obj, 3, 0);
     PlayerFXPlay(0x274, 0);
     func_800F6390_name_81();
     {
@@ -797,20 +797,20 @@ spin:
     func_800FFAE0_name_81(0, 3);
     func_800EFABC_name_81(D_80109574_opduel[0]->player_obj);
     HuPrcSleep(10);
-    func_800D90D0_name_81(D_80109574_opduel[0]->player_obj, 0, 2);
-    func_800D90D0_name_81(D_80109208_opduel, 0, 2);
+    MBDMotionSet((ObjectDuel *)D_80109574_opduel[0]->player_obj, 0, 2);
+    MBDMotionSet(D_80109208_opduel, 0, 2);
     func_800EB4DC_name_81(-1, 0x270D, D_80101200_shared_board[GwPlayer[1].chr], 0, 0, 0, 0);
     func_800EB278_name_81();
     func_800EB29C_name_81();
-    func_800D90D0_name_81(D_80109208_opduel, -1, 2);
+    MBDMotionSet(D_80109208_opduel, -1, 2);
     func_800EB7BC_name_81(&D_80109574_opduel[1]->player_obj->rot);
-    func_800D90D0_name_81(D_80109574_opduel[1]->player_obj, 3, 0);
+    MBDMotionSet((ObjectDuel *)D_80109574_opduel[1]->player_obj, 3, 0);
     PlayerFXPlay(0x274, 1);
     func_800F79E8_name_81(1);
     func_800FFAE0_name_81(1, 3);
     func_800EFABC_name_81(D_80109574_opduel[1]->player_obj);
     HuPrcSleep(10);
-    func_800D90D0_name_81(D_80109574_opduel[1]->player_obj, 0, 2);
+    MBDMotionSet((ObjectDuel *)D_80109574_opduel[1]->player_obj, 0, 2);
     if (j != 0) {
         func_800138EC_main(D_80109214_opduel, 0, 1);
         func_800EB7BC_name_81(&directions[0]);
@@ -818,9 +818,9 @@ spin:
         HuPrcSleep(6);
         func_800138EC_main(D_80109214_opduel, 1, 0);
     }
-    func_800D90D0_name_81(D_80109208_opduel, 0, 2);
+    MBDMotionSet(D_80109208_opduel, 0, 2);
     func_800EB164_name_81(-1, 0x270E);
-    func_800D90D0_name_81(D_80109208_opduel, -1, 2);
+    MBDMotionSet(D_80109208_opduel, -1, 2);
     func_8002FD8C_main(D_80109208_opduel->omObj1->model[0], Hu3DData[D_80109208_opduel->omObj1->model[0]].motId,
                        "l_mayu", 0x4C, 0x47);
     node = func_8001D33C_main(D_80109208_opduel->omObj1->model[0], "l_mayu");
@@ -850,8 +850,8 @@ spin:
             HuAudFXPlay(sounds[GwPlayer[i].chr]);
         }
     }
-    func_800D90D0_name_81(D_8010957C_opduel[0], 0, 2);
-    func_800D90D0_name_81(D_8010957C_opduel[1], 0, 2);
+    MBDMotionSet(D_8010957C_opduel[0], 0, 2);
+    MBDMotionSet(D_8010957C_opduel[1], 0, 2);
     while (TRUE) {
         j = func_800EFE8C_name_81(D_8010957C_opduel[0], &D_80109304_opduel[0], 20.0f);
         if (func_800EFE8C_name_81(D_8010957C_opduel[1], &D_80109304_opduel[1], 20.0f) && j) {
@@ -864,19 +864,19 @@ spin:
     func_800EBC60_name_81(&D_8010957C_opduel[0]->rot, &directions[0], &D_8010957C_opduel[0]->rot, 10);
     func_800EBC60_name_81(&D_8010957C_opduel[1]->rot, &directions[1], &D_8010957C_opduel[1]->rot, 10);
     HuPrcSleep(10);
-    func_800D90D0_name_81(D_8010957C_opduel[0], -1, 2);
-    func_800D90D0_name_81(D_8010957C_opduel[1], -1, 2);
-    func_800EB708_name_81(&D_80109574_opduel[0]->player_obj->coords, &D_80109574_opduel[1]->player_obj->coords,
+    MBDMotionSet(D_8010957C_opduel[0], -1, 2);
+    MBDMotionSet(D_8010957C_opduel[1], -1, 2);
+    MBDVecDirGet(&D_80109574_opduel[0]->player_obj->coords, &D_80109574_opduel[1]->player_obj->coords,
                           &directions[0]);
-    func_800EB708_name_81(&D_80109574_opduel[1]->player_obj->coords, &D_80109574_opduel[0]->player_obj->coords,
+    MBDVecDirGet(&D_80109574_opduel[1]->player_obj->coords, &D_80109574_opduel[0]->player_obj->coords,
                           &directions[1]);
     func_800EBC60_name_81(&D_80109574_opduel[0]->player_obj->rot, &directions[0],
                           &D_80109574_opduel[0]->player_obj->rot, 5);
     func_800EBC60_name_81(&D_80109574_opduel[1]->player_obj->rot, &directions[1],
                           &D_80109574_opduel[1]->player_obj->rot, 5);
-    func_800D918C_name_81(D_80109208_opduel, 0, 0, 5, 2);
+    MBDMotionShiftSet(D_80109208_opduel, 0, 0, 5, 2);
     func_800EB164_name_81(-1, 0x270F);
-    func_800D918C_name_81(D_80109208_opduel, -1, 0, 5, 2);
+    MBDMotionShiftSet(D_80109208_opduel, -1, 0, 5, 2);
     {
         s32 choices[2];
         s32 window1;
@@ -920,26 +920,26 @@ spin:
         }
         func_800E1854_minigame(window1);
         func_800E1854_minigame(window2);
-        func_800D90D0_name_81(D_8010957C_opduel[0], 0, 2);
-        func_800D90D0_name_81(D_8010957C_opduel[1], 0, 2);
-        func_800EB708_name_81(&D_8010957C_opduel[0]->coords, &D_8010931C_opduel[(choices[0] - 1) * 2],
+        MBDMotionSet(D_8010957C_opduel[0], 0, 2);
+        MBDMotionSet(D_8010957C_opduel[1], 0, 2);
+        MBDVecDirGet(&D_8010957C_opduel[0]->coords, &D_8010931C_opduel[(choices[0] - 1) * 2],
                               &D_8010957C_opduel[0]->rot);
-        func_800EB708_name_81(&D_8010957C_opduel[1]->coords, &D_8010931C_opduel[(choices[1] - 1) * 2 + 1],
+        MBDVecDirGet(&D_8010957C_opduel[1]->coords, &D_8010931C_opduel[(choices[1] - 1) * 2 + 1],
                               &D_8010957C_opduel[1]->rot);
         func_800EBF2C_name_81(&D_8010957C_opduel[0]->coords, &D_8010931C_opduel[(choices[0] - 1) * 2],
                               &D_8010957C_opduel[0]->coords, 20);
         func_800EBF2C_name_81(&D_8010957C_opduel[1]->coords, &D_8010931C_opduel[(choices[1] - 1) * 2 + 1],
                               &D_8010957C_opduel[1]->coords, 20);
         HuPrcSleep(20);
-        func_800EB708_name_81(&D_8010957C_opduel[0]->coords, &D_80109574_opduel[1]->player_obj->coords,
+        MBDVecDirGet(&D_8010957C_opduel[0]->coords, &D_80109574_opduel[1]->player_obj->coords,
                               &directions[0]);
-        func_800EB708_name_81(&D_8010957C_opduel[1]->coords, &D_80109574_opduel[0]->player_obj->coords,
+        MBDVecDirGet(&D_8010957C_opduel[1]->coords, &D_80109574_opduel[0]->player_obj->coords,
                               &directions[1]);
         func_800EBC60_name_81(&D_8010957C_opduel[0]->rot, &directions[0], &D_8010957C_opduel[0]->rot, 10);
         func_800EBC60_name_81(&D_8010957C_opduel[1]->rot, &directions[1], &D_8010957C_opduel[1]->rot, 10);
         HuPrcSleep(10);
-        func_800D90D0_name_81(D_8010957C_opduel[0], -1, 2);
-        func_800D90D0_name_81(D_8010957C_opduel[1], -1, 2);
+        MBDMotionSet(D_8010957C_opduel[0], -1, 2);
+        MBDMotionSet(D_8010957C_opduel[1], -1, 2);
         func_800F8418_name_81(0, D_80101960[GwPlayer[0].chr], choices[0] - 1);
         func_800F79DC_name_81(0);
         if (choices[0] == 1) {
@@ -972,21 +972,21 @@ spin:
         }
     }
     func_800F79DC_name_81(1);
-    func_800D918C_name_81(D_80109208_opduel, 0, 0, 5, 2);
+    MBDMotionShiftSet(D_80109208_opduel, 0, 0, 5, 2);
     func_800EB164_name_81(-1, 0x2710);
-    func_800D918C_name_81(D_80109208_opduel, -1, 0, 5, 2);
+    MBDMotionShiftSet(D_80109208_opduel, -1, 0, 5, 2);
     func_800F7228_name_81(0, 10, 1);
     func_800F7228_name_81(1, 10, 0);
     func_800EB7BC_name_81(&D_80109574_opduel[0]->player_obj->rot);
     func_800EB7BC_name_81(&D_80109574_opduel[1]->player_obj->rot);
-    func_800D90D0_name_81(D_80109574_opduel[0]->player_obj, 4, 0);
-    func_800D90D0_name_81(D_80109574_opduel[1]->player_obj, 4, 0);
+    MBDMotionSet((ObjectDuel *)D_80109574_opduel[0]->player_obj, 4, 0);
+    MBDMotionSet((ObjectDuel *)D_80109574_opduel[1]->player_obj, 4, 0);
     HuPrcSleep(60);
-    func_800D918C_name_81(D_80109574_opduel[0]->player_obj, 0, 0, 5, 2);
-    func_800D918C_name_81(D_80109574_opduel[1]->player_obj, 0, 0, 5, 2);
-    func_800D918C_name_81(D_80109208_opduel, 0, 0, 5, 2);
+    MBDMotionShiftSet((ObjectDuel *)D_80109574_opduel[0]->player_obj, 0, 0, 5, 2);
+    MBDMotionShiftSet((ObjectDuel *)D_80109574_opduel[1]->player_obj, 0, 0, 5, 2);
+    MBDMotionShiftSet(D_80109208_opduel, 0, 0, 5, 2);
     func_800EB164_name_81(-1, 0x2711);
-    func_800D918C_name_81(D_80109208_opduel, -1, 0, 5, 2);
+    MBDMotionShiftSet(D_80109208_opduel, -1, 0, 5, 2);
 }
 
 void func_80108FDC_opduel(void) {
@@ -1021,13 +1021,13 @@ void func_801090AC_opduel(omObjData *obj) {
 }
 
 void func_801090F8_opduel(void) {
-    func_800D7EB8_name_81();
+    MBDModelInit();
     func_800F3F4C_name_81();
 }
 
 void func_8010911C_opduel(void) {
     func_800F4030_name_81();
-    func_800D7F0C_name_81();
+    MBDModelClose();
     if (D_80109204_opduel != NULL) {
         omDelPrcObj(D_80109204_opduel);
     }

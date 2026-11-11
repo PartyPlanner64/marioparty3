@@ -136,7 +136,7 @@ void func_800FC260_name_81(s32 arg0, s16 arg1, s32 arg2) {
     UnkOvl81_1 *temp_v0_3;
     s32 frontPartnerID;
     s32 backPartnerID;
-    Object *playerObj;
+    ObjectDuel *playerObj;
     s32 i;
 
     func_800E8D10_name_81();
@@ -152,16 +152,16 @@ void func_800FC260_name_81(s32 arg0, s16 arg1, s32 arg2) {
         func_800E9B10_name_81(0x13, arg1);
     }
 
-    func_800D7EB8_name_81();
+    MBDModelInit();
     func_800F3F4C_name_81();
     func_800F3DFC_name_81(0);
     func_800F3DFC_name_81(1);
 
     for (i = 0; i < MBD_MAX_PLAYERS; i++) {
-        func_800D8944_name_81(MBDGetPlayerStruct(i)->player_obj);
-        playerObj = MBDGetPlayerStruct(i)->player_obj;
+        MBDModelTempAllocFree((ObjectDuel *)MBDGetPlayerStruct(i)->player_obj);
+        playerObj = (ObjectDuel *)MBDGetPlayerStruct(i)->player_obj;
         playerObj->flags |= 2;
-        func_800D8E88_name_81(MBDGetPlayerStruct(i)->player_obj);
+        MBDModelDispOn((ObjectDuel *)MBDGetPlayerStruct(i)->player_obj);
     }
 
     func_8001FDE8_main(MBDGetPlayerStruct(0)->player_obj->omObj1->model[0]);
@@ -217,7 +217,7 @@ void func_800FC4E4_name_81(void) {
     func_800F4314_name_81();
     HuWinAllKill();
     func_800F4030_name_81();
-    func_800D7F0C_name_81();
+    MBDModelClose();
     func_800E9D9C_name_81();
     func_800E9564_name_81();
     MBDBackKill();

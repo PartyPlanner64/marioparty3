@@ -67,7 +67,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/duelresult/4554C0", func_8010A978_duelres
 INCLUDE_ASM("asm/nonmatchings/overlays/duelresult/4554C0", func_8010AA9C_duelresult);
 
 void func_8010AAE8_duelresult() {
-    func_800D7EB8_name_81();
+    MBDModelInit();
     func_800F3F4C_name_81();
     func_800EF840_name_81();
     func_800F4300_name_81();
@@ -77,7 +77,7 @@ void func_8010AB1C_duelresult() {
     func_800F4314_name_81();
     func_800EF880_name_81();
     func_800F4030_name_81();
-    func_800D7F0C_name_81();
+    MBDModelClose();
 }
 
 void func_8010AB50_duelresult(void) {

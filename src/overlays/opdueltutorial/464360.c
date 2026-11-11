@@ -9,7 +9,7 @@ extern u8 D_80108C10_opdueltutorial;
 extern s16 D_80108C44_opdueltutorial;
 extern s16 D_80108C46_opdueltutorial;
 extern GW_PLAYER *D_80108C14_opdueltutorial[2];
-extern Object *D_80108C1C_opdueltutorial;
+extern ObjectDuel *D_80108C1C_opdueltutorial;
 extern Vec D_80108944_opdueltutorial;
 extern Vec D_80108974_opdueltutorial[];
 extern Vec D_80108938_opdueltutorial;
@@ -22,8 +22,8 @@ extern Vec D_80108A1C_opdueltutorial[];
 extern Vec D_80108A34_opdueltutorial[];
 extern s32 *D_80108B74_opdueltutorial[];
 extern s32 D_80108B94_opdueltutorial[];
-extern Object *D_80108C20_opdueltutorial[2];
-extern Object *D_80108C28_opdueltutorial;
+extern ObjectDuel *D_80108C20_opdueltutorial[2];
+extern ObjectDuel *D_80108C28_opdueltutorial;
 extern s16 D_80108C2C_opdueltutorial;
 extern s16 D_80108C30_opdueltutorial[];
 extern u8 D_80101960[];
@@ -33,7 +33,7 @@ void func_800EB7BC_name_81(Vec *);
 Process *func_800EBC60_name_81(Vec *, Vec *, Vec *, s32);
 Process *func_800EBF2C_name_81(Vec *, Vec *, Vec *, s32);
 void func_800EF754_name_81(s16);
-s32 func_800EFE8C_name_81(Object *, Vec *, f32);
+s32 func_800EFE8C_name_81(ObjectDuel *, Vec *, f32);
 void func_800F6550_name_81(s32, s16, s16);
 void func_800F7228_name_81(s32, s32, s32);
 void func_800F7458_name_81(s32, f32, f32);
@@ -248,7 +248,7 @@ void func_80106224_opdueltutorial(omObjData *obj) {
 }
 
 void func_801062E0_opdueltutorial(void) {
-    Object *shadow;
+    ObjectDuel *shadow;
     omObjData *obj;
     s16 effect;
     s32 i;
@@ -258,12 +258,12 @@ void func_801062E0_opdueltutorial(void) {
         D_80108C14_opdueltutorial[i] = MBDGetPlayerStruct(i);
         func_800F3C98_name_81(i, D_80108B24_opdueltutorial[GwPlayer[i].chr], 2);
         HuVecCopy3F(&D_80108C14_opdueltutorial[i]->player_obj->coords, &D_80108974_opdueltutorial[i]);
-        func_800D8944_name_81(D_80108C14_opdueltutorial[i]->player_obj);
+        MBDModelTempAllocFree((ObjectDuel *)D_80108C14_opdueltutorial[i]->player_obj);
         D_80108C14_opdueltutorial[i]->stat |= PLAYER_UNK_04;
     }
-    D_80108C1C_opdueltutorial = func_800D8314_name_81(0x1301FF, -1, 1.0f, 0, 0);
+    D_80108C1C_opdueltutorial = MBDModelFileCreate(0x1301FF, -1, 1.0f, 0, 0);
     HuVecCopyXYZ(&D_80108C1C_opdueltutorial->scale, 0.625f, 0.625f, 0.625f);
-    shadow = func_800D8314_name_81(0x1301FD, -1, 1.0f, 0, 0);
+    shadow = MBDModelFileCreate(0x1301FD, -1, 1.0f, 0, 0);
     HuVecCopy3F(&D_80108C1C_opdueltutorial->coords, &D_80108944_opdueltutorial);
     HuVecCopy3F(&shadow->coords, &D_80108944_opdueltutorial);
     shadow->coords.y = 0;
@@ -303,7 +303,7 @@ void func_801062E0_opdueltutorial(void) {
         HuPrcVSleep();
     }
     for (i = 0; i < 2; i++) {
-        func_800D8F0C_name_81(D_80108C14_opdueltutorial[i]->player_obj);
+        MBDModelDispOff((ObjectDuel *)D_80108C14_opdueltutorial[i]->player_obj);
     }
     func_800138EC_main(effect, 1, 0);
     HuPrcSleep(20);
@@ -319,8 +319,8 @@ void func_801062E0_opdueltutorial(void) {
         HuPrcVSleep();
     }
     func_8000D044_main(effect);
-    func_800D8F3C_name_81(D_80108C1C_opdueltutorial);
-    func_800D8F3C_name_81(shadow);
+    MBDModelKill(D_80108C1C_opdueltutorial);
+    MBDModelKill(shadow);
     omDelObj(obj);
 }
 
@@ -330,12 +330,12 @@ void func_80106808_opdueltutorial(omObjData *obj) {
 }
 
 void func_8010686C_opdueltutorial(void) {
-    Object *obj;
+    ObjectDuel *obj;
     void *data[2];
     s32 anim;
     s32 alpha;
 
-    obj = func_800D8314_name_81(0x14000A, -1, 1.0f, 0, 0);
+    obj = MBDModelFileCreate(0x14000A, -1, 1.0f, 0, 0);
     func_8001FA68_main(obj->omObj1->model[0]);
     func_8001F9E4_main(obj->omObj1->model[0], 255);
     data[0] = DataRead(0x130135);
@@ -372,7 +372,7 @@ void func_8010686C_opdueltutorial(void) {
     func_80033430_main(anim);
     DataClose(data[0]);
     DataClose(data[1]);
-    func_800D8F3C_name_81(obj);
+    MBDModelKill(obj);
     omDelPrcObj(NULL);
 }
 
@@ -437,7 +437,7 @@ void func_80106BF0_opdueltutorial(void) {
     }
     for (scale = 0.0f; scale <= 1.0f; scale += 0.1f) {
         for (i = 0; i < 2; i++) {
-            func_800D8E88_name_81(D_80108C14_opdueltutorial[i]->player_obj);
+            MBDModelDispOn((ObjectDuel *)D_80108C14_opdueltutorial[i]->player_obj);
             HuVecCopyXYZ(&D_80108C14_opdueltutorial[i]->player_obj->scale, scale, 1.0f, scale);
         }
         HuPrcVSleep();
@@ -479,22 +479,22 @@ void func_80106BF0_opdueltutorial(void) {
         j++;
         if (j == 40) {
             for (i = 0; i < 2; i++) {
-                func_800EB708_name_81(&D_80108C14_opdueltutorial[i]->player_obj->coords,
+                MBDVecDirGet(&D_80108C14_opdueltutorial[i]->player_obj->coords,
                                       &D_801089A4_opdueltutorial[i],
                                       &D_80108C14_opdueltutorial[i]->player_obj->rot);
                 func_800EBF2C_name_81(&D_80108C14_opdueltutorial[i]->player_obj->coords,
                                       &D_801089A4_opdueltutorial[i],
                                       &D_80108C14_opdueltutorial[i]->player_obj->coords, 20);
-                func_800D90D0_name_81(D_80108C14_opdueltutorial[i]->player_obj, 2, 2);
+                MBDMotionSet((ObjectDuel *)D_80108C14_opdueltutorial[i]->player_obj, 2, 2);
             }
         }
         if (j == 60) {
             for (i = 0; i < 2; i++) {
-                func_800EB708_name_81(&D_80108C14_opdueltutorial[i]->player_obj->coords,
+                MBDVecDirGet(&D_80108C14_opdueltutorial[i]->player_obj->coords,
                                       &D_80108968_opdueltutorial, &directions[i]);
                 func_800EBC60_name_81(&D_80108C14_opdueltutorial[i]->player_obj->rot, &directions[i],
                                       &D_80108C14_opdueltutorial[i]->player_obj->rot, 10);
-                func_800D918C_name_81(D_80108C14_opdueltutorial[i]->player_obj, -1, 0, 5, 2);
+                MBDMotionShiftSet((ObjectDuel *)D_80108C14_opdueltutorial[i]->player_obj, -1, 0, 5, 2);
             }
         }
         HuPrcVSleep();
@@ -506,11 +506,11 @@ void func_80106BF0_opdueltutorial(void) {
         HuPrcChildLink(HuPrcCurrentGet(), func_800EBF2C_name_81(&D_80108C14_opdueltutorial[i]->player_obj->coords,
                                                                 &D_801089BC_opdueltutorial[i],
                                                                 &D_80108C14_opdueltutorial[i]->player_obj->coords, 20));
-        func_800D90D0_name_81(D_80108C14_opdueltutorial[i]->player_obj, 2, 2);
+        MBDMotionSet((ObjectDuel *)D_80108C14_opdueltutorial[i]->player_obj, 2, 2);
     }
     HuPrcChildWatch();
     for (i = 0; i < 2; i++) {
-        func_800D918C_name_81(D_80108C14_opdueltutorial[i]->player_obj, -1, 0, 5, 2);
+        MBDMotionShiftSet((ObjectDuel *)D_80108C14_opdueltutorial[i]->player_obj, -1, 0, 5, 2);
     }
     func_8010610C_opdueltutorial(D_80108C28_opdueltutorial->omObj1->model[0], D_80108C30_opdueltutorial[0]);
     HuWinMesSet(D_80108C2C_opdueltutorial, 0x2503, -1, -1);
@@ -532,7 +532,7 @@ void func_80106BF0_opdueltutorial(void) {
     func_80060C14_main(D_80108C2C_opdueltutorial, 1);
     func_800EF754_name_81(D_80108C2C_opdueltutorial);
     func_80060EA8_main(D_80108C2C_opdueltutorial, 1);
-    func_800EB708_name_81(&D_80108C14_opdueltutorial[0]->player_obj->coords, &D_80108C1C_opdueltutorial->coords,
+    MBDVecDirGet(&D_80108C14_opdueltutorial[0]->player_obj->coords, &D_80108C1C_opdueltutorial->coords,
                           &directions[0]);
     func_800EBC60_name_81(&D_80108C14_opdueltutorial[0]->player_obj->rot, &directions[0],
                           &D_80108C14_opdueltutorial[0]->player_obj->rot, 10);
@@ -552,7 +552,7 @@ void func_80106BF0_opdueltutorial(void) {
     func_80060C14_main(D_80108C2C_opdueltutorial, 1);
     func_800EF754_name_81(D_80108C2C_opdueltutorial);
     func_80060EA8_main(D_80108C2C_opdueltutorial, 1);
-    func_800EB708_name_81(&D_80108C14_opdueltutorial[1]->player_obj->coords, &D_80108C1C_opdueltutorial->coords,
+    MBDVecDirGet(&D_80108C14_opdueltutorial[1]->player_obj->coords, &D_80108C1C_opdueltutorial->coords,
                           &directions[1]);
     func_800EBC60_name_81(&D_80108C14_opdueltutorial[1]->player_obj->rot, &directions[1],
                           &D_80108C14_opdueltutorial[1]->player_obj->rot, 10);
@@ -632,7 +632,7 @@ void func_80106BF0_opdueltutorial(void) {
     func_8010610C_opdueltutorial(D_80108C28_opdueltutorial->omObj1->model[0], D_80108C30_opdueltutorial[0]);
     func_80060EA8_main(D_80108C2C_opdueltutorial, 1);
     func_800EB7BC_name_81(&D_80108C14_opdueltutorial[0]->player_obj->rot);
-    func_800D90D0_name_81(D_80108C14_opdueltutorial[0]->player_obj, 3, 0);
+    MBDMotionSet((ObjectDuel *)D_80108C14_opdueltutorial[0]->player_obj, 3, 0);
     PlayerFXPlay(0x274, 0);
     func_800F6390_name_81();
     {
@@ -647,7 +647,7 @@ void func_80106BF0_opdueltutorial(void) {
     func_800F79E8_name_81(0);
     func_800EFABC_name_81(D_80108C14_opdueltutorial[0]->player_obj);
     HuPrcSleep(10);
-    func_800D90D0_name_81(D_80108C14_opdueltutorial[0]->player_obj, 0, 2);
+    MBDMotionSet((ObjectDuel *)D_80108C14_opdueltutorial[0]->player_obj, 0, 2);
     HuWinMesSet(D_80108C2C_opdueltutorial, 0x2508, -1, -1);
     func_80060C14_main(D_80108C2C_opdueltutorial, 1);
     func_8010610C_opdueltutorial(D_80108C28_opdueltutorial->omObj1->model[0], D_80108C30_opdueltutorial[3]);
@@ -655,12 +655,12 @@ void func_80106BF0_opdueltutorial(void) {
     func_8010610C_opdueltutorial(D_80108C28_opdueltutorial->omObj1->model[0], D_80108C30_opdueltutorial[0]);
     func_80060EA8_main(D_80108C2C_opdueltutorial, 1);
     func_800EB7BC_name_81(&D_80108C14_opdueltutorial[1]->player_obj->rot);
-    func_800D90D0_name_81(D_80108C14_opdueltutorial[1]->player_obj, 3, 0);
+    MBDMotionSet((ObjectDuel *)D_80108C14_opdueltutorial[1]->player_obj, 3, 0);
     PlayerFXPlay(0x274, 1);
     func_800F79E8_name_81(1);
     func_800EFABC_name_81(D_80108C14_opdueltutorial[1]->player_obj);
     HuPrcSleep(10);
-    func_800D90D0_name_81(D_80108C14_opdueltutorial[1]->player_obj, 0, 2);
+    MBDMotionSet((ObjectDuel *)D_80108C14_opdueltutorial[1]->player_obj, 0, 2);
     func_8010610C_opdueltutorial(D_80108C28_opdueltutorial->omObj1->model[0], D_80108C30_opdueltutorial[6]);
     HuAudFXPlay(0x2E3);
     omDelObj(obj);
@@ -685,8 +685,8 @@ void func_80106BF0_opdueltutorial(void) {
             HuAudFXPlay(sounds[GwPlayer[i].chr]);
         }
     }
-    func_800D90D0_name_81(D_80108C20_opdueltutorial[0], 0, 2);
-    func_800D90D0_name_81(D_80108C20_opdueltutorial[1], 0, 2);
+    MBDMotionSet(D_80108C20_opdueltutorial[0], 0, 2);
+    MBDMotionSet(D_80108C20_opdueltutorial[1], 0, 2);
     while (TRUE) {
         j = func_800EFE8C_name_81(D_80108C20_opdueltutorial[0], &D_80108A1C_opdueltutorial[0], 20.0f);
         if (func_800EFE8C_name_81(D_80108C20_opdueltutorial[1], &D_80108A1C_opdueltutorial[1], 20.0f) && j) {
@@ -699,15 +699,15 @@ void func_80106BF0_opdueltutorial(void) {
     func_800EBC60_name_81(&D_80108C20_opdueltutorial[0]->rot, &directions[0], &D_80108C20_opdueltutorial[0]->rot, 10);
     func_800EBC60_name_81(&D_80108C20_opdueltutorial[1]->rot, &directions[1], &D_80108C20_opdueltutorial[1]->rot, 10);
     HuPrcSleep(10);
-    func_800D90D0_name_81(D_80108C20_opdueltutorial[0], -1, 2);
-    func_800D90D0_name_81(D_80108C20_opdueltutorial[1], -1, 2);
+    MBDMotionSet(D_80108C20_opdueltutorial[0], -1, 2);
+    MBDMotionSet(D_80108C20_opdueltutorial[1], -1, 2);
     HuWinMesSet(D_80108C2C_opdueltutorial, 0x2509, -1, -1);
     func_80060C14_main(D_80108C2C_opdueltutorial, 1);
     func_800EF754_name_81(D_80108C2C_opdueltutorial);
     func_80060EA8_main(D_80108C2C_opdueltutorial, 1);
-    func_800EB708_name_81(&D_80108C14_opdueltutorial[0]->player_obj->coords,
+    MBDVecDirGet(&D_80108C14_opdueltutorial[0]->player_obj->coords,
                           &D_80108C14_opdueltutorial[1]->player_obj->coords, &directions[0]);
-    func_800EB708_name_81(&D_80108C14_opdueltutorial[1]->player_obj->coords,
+    MBDVecDirGet(&D_80108C14_opdueltutorial[1]->player_obj->coords,
                           &D_80108C14_opdueltutorial[0]->player_obj->coords, &directions[1]);
     func_800EBC60_name_81(&D_80108C14_opdueltutorial[0]->player_obj->rot, &directions[0],
                           &D_80108C14_opdueltutorial[0]->player_obj->rot, 5);
@@ -732,11 +732,11 @@ void func_80106BF0_opdueltutorial(void) {
         choices[1] = 2;
         func_800E1854_minigame(window1);
         func_800E1854_minigame(window2);
-        func_800D90D0_name_81(D_80108C20_opdueltutorial[0], 0, 2);
-        func_800D90D0_name_81(D_80108C20_opdueltutorial[1], 0, 2);
-        func_800EB708_name_81(&D_80108C20_opdueltutorial[0]->coords, &D_80108A34_opdueltutorial[(choices[0] - 1) * 2],
+        MBDMotionSet(D_80108C20_opdueltutorial[0], 0, 2);
+        MBDMotionSet(D_80108C20_opdueltutorial[1], 0, 2);
+        MBDVecDirGet(&D_80108C20_opdueltutorial[0]->coords, &D_80108A34_opdueltutorial[(choices[0] - 1) * 2],
                               &D_80108C20_opdueltutorial[0]->rot);
-        func_800EB708_name_81(&D_80108C20_opdueltutorial[1]->coords,
+        MBDVecDirGet(&D_80108C20_opdueltutorial[1]->coords,
                               &D_80108A34_opdueltutorial[(choices[1] - 1) * 2 + 1], &D_80108C20_opdueltutorial[1]->rot);
         func_800EBF2C_name_81(&D_80108C20_opdueltutorial[0]->coords, &D_80108A34_opdueltutorial[(choices[0] - 1) * 2],
                               &D_80108C20_opdueltutorial[0]->coords, 20);
@@ -744,17 +744,17 @@ void func_80106BF0_opdueltutorial(void) {
                               &D_80108A34_opdueltutorial[(choices[1] - 1) * 2 + 1],
                               &D_80108C20_opdueltutorial[1]->coords, 20);
         HuPrcSleep(20);
-        func_800EB708_name_81(&D_80108C20_opdueltutorial[0]->coords, &D_80108C14_opdueltutorial[1]->player_obj->coords,
+        MBDVecDirGet(&D_80108C20_opdueltutorial[0]->coords, &D_80108C14_opdueltutorial[1]->player_obj->coords,
                               &directions[0]);
-        func_800EB708_name_81(&D_80108C20_opdueltutorial[1]->coords, &D_80108C14_opdueltutorial[0]->player_obj->coords,
+        MBDVecDirGet(&D_80108C20_opdueltutorial[1]->coords, &D_80108C14_opdueltutorial[0]->player_obj->coords,
                               &directions[1]);
         func_800EBC60_name_81(&D_80108C20_opdueltutorial[0]->rot, &directions[0], &D_80108C20_opdueltutorial[0]->rot,
                               10);
         func_800EBC60_name_81(&D_80108C20_opdueltutorial[1]->rot, &directions[1], &D_80108C20_opdueltutorial[1]->rot,
                               10);
         HuPrcSleep(10);
-        func_800D90D0_name_81(D_80108C20_opdueltutorial[0], -1, 2);
-        func_800D90D0_name_81(D_80108C20_opdueltutorial[1], -1, 2);
+        MBDMotionSet(D_80108C20_opdueltutorial[0], -1, 2);
+        MBDMotionSet(D_80108C20_opdueltutorial[1], -1, 2);
         func_800F8418_name_81(0, D_80101960[GwPlayer[0].chr], choices[0] - 1);
         func_800F79DC_name_81(0);
         if (choices[0] == 1) {
@@ -795,11 +795,11 @@ void func_80106BF0_opdueltutorial(void) {
     func_800F7228_name_81(1, 10, 0);
     func_800EB7BC_name_81(&D_80108C14_opdueltutorial[0]->player_obj->rot);
     func_800EB7BC_name_81(&D_80108C14_opdueltutorial[1]->player_obj->rot);
-    func_800D90D0_name_81(D_80108C14_opdueltutorial[0]->player_obj, 4, 0);
-    func_800D90D0_name_81(D_80108C14_opdueltutorial[1]->player_obj, 4, 0);
+    MBDMotionSet((ObjectDuel *)D_80108C14_opdueltutorial[0]->player_obj, 4, 0);
+    MBDMotionSet((ObjectDuel *)D_80108C14_opdueltutorial[1]->player_obj, 4, 0);
     HuPrcSleep(60);
-    func_800D918C_name_81(D_80108C14_opdueltutorial[0]->player_obj, 0, 0, 5, 2);
-    func_800D918C_name_81(D_80108C14_opdueltutorial[1]->player_obj, 0, 0, 5, 2);
+    MBDMotionShiftSet((ObjectDuel *)D_80108C14_opdueltutorial[0]->player_obj, 0, 0, 5, 2);
+    MBDMotionShiftSet((ObjectDuel *)D_80108C14_opdueltutorial[1]->player_obj, 0, 0, 5, 2);
     HuWinMesSet(D_80108C2C_opdueltutorial, 0x250C, -1, -1);
     func_80060C14_main(D_80108C2C_opdueltutorial, 1);
     func_800EF754_name_81(D_80108C2C_opdueltutorial);
@@ -836,14 +836,14 @@ void func_80108810_opdueltutorial(omObjData *obj) {
 }
 
 void func_80108854_opdueltutorial(void) {
-    func_800D7EB8_name_81();
+    MBDModelInit();
     func_800F3F4C_name_81();
     func_800F4300_name_81();
 }
 
 void func_80108880_opdueltutorial(void) {
     func_800F4030_name_81();
-    func_800D7F0C_name_81();
+    MBDModelClose();
     func_800F4314_name_81();
     if (D_80108934_opdueltutorial != NULL) {
         omDelPrcObj(D_80108934_opdueltutorial);

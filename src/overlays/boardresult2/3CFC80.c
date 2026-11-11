@@ -817,7 +817,7 @@ void func_801085F8_boardresult2(void) {
     }
 
     HuSprDispOff(D_801099F4_boardresult2->unk_0A, 0);
-    func_800D8F0C_name_81(D_801099C8_boardresult2->obj);
+    MBDModelDispOff(D_801099C8_boardresult2->obj);
     HuWinDispOff(D_801099C8_boardresult2->win_id);
 }
 
@@ -842,7 +842,7 @@ void func_8010879C_boardresult2(void) {
 
     func_801074B4_boardresult2();
     HuSprDispOn(D_801099F4_boardresult2->unk_0A, 0);
-    func_800D8E88_name_81(D_801099C8_boardresult2->obj);
+    MBDModelDispOn(D_801099C8_boardresult2->obj);
     HuWinDispOn(D_801099C8_boardresult2->win_id);
 
     if (D_801097B0_boardresult2 == 0 && D_801097B4_boardresult2 == 0) {
@@ -1127,14 +1127,14 @@ void func_801096F0_boardresult2(omObjData *arg0) {
 }
 
 void func_80109714_boardresult2(void) {
-    func_800D7EB8_name_81();
+    MBDModelInit();
     func_800F3F4C_name_81();
     func_800F4300_name_81();
 }
 
 void func_80109740_boardresult2(void) {
     func_800F4030_name_81();
-    func_800D7F0C_name_81();
+    MBDModelClose();
     func_800F4314_name_81();
 }
 

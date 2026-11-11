@@ -72,7 +72,7 @@ extern UnkBoard7 D_80104850_name_81[64];
 extern s32 D_8010105C_name_81;
 extern s32 D_80105050_name_81;
 extern Process* D_80101058_name_81;
-extern Object* D_80105058_name_81[16];
+extern ObjectDuel* D_80105058_name_81[16];
 
 static s32 func_800E5CC4_name_81(u16);
 void func_800E77D8_name_81(Gfx** arg0, s32 arg1, u8 arg2);
@@ -917,7 +917,7 @@ void func_800E8194_name_81(void) {
         } else {
             D_80102D30_name_81 |= 2;
             if ((D_80102D2C_name_81 >= 0.0f) && (D_80102D2C_name_81 < temp_f2)) {
-                func_800D7828_name_81(&sp38);
+                MBDVecNormalize(&sp38);
                 HuVecMulScalar(&sp38, D_80102D2C_name_81 * 4.0f, &sp38);
             }
             D_80104848_name_81[0] += sp38.x;
@@ -1293,7 +1293,7 @@ void func_800E919C_name_81(void) {
 
     for (i = 0; i < ARRAY_COUNT(D_80105058_name_81); i++) {
         if (D_80105058_name_81[i] != NULL) {
-            func_800D8F3C_name_81(D_80105058_name_81[i]);
+            MBDModelKill(D_80105058_name_81[i]);
             D_80105058_name_81[i] = NULL;
         }
     }

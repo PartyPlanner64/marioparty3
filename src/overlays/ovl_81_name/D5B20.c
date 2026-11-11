@@ -4,7 +4,7 @@
 typedef struct UnkD5B20 {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ s16 unk_02;
-    /* 0x04 */ Object *unk_04;
+    /* 0x04 */ ObjectDuel *unk_04;
     /* 0x08 */ omObjData *unk_08;
 } UnkD5B20; // sizeof 0xC
 
@@ -29,7 +29,7 @@ typedef struct UnkNameVecEntry {
 } UnkNameVecEntry;          // sizeof 0x10
 
 typedef struct UnkNameWobbleData {
-    /* 0x00 */ Object *obj;
+    /* 0x00 */ ObjectDuel *obj;
     /* 0x04 */ f32 unk_04;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
@@ -44,7 +44,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800EDDBC_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800EDE1C_name_81);
 
-Process *func_800EDEC4_name_81(Object *obj, f32 arg1, f32 arg2) {
+Process *func_800EDEC4_name_81(ObjectDuel *obj, f32 arg1, f32 arg2) {
     Process *prc = omAddPrcObj(func_800EDE1C_name_81, 0xA, 0, 0x40);
     UnkNameWobbleData *data = HuMemMemoryAlloc(prc->heap, sizeof(UnkNameWobbleData));
 
@@ -120,7 +120,7 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800EF754_name_81
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D5B20", func_800EF7C8_name_81);
 
-s32 func_800EF7D4_name_81(Object *arg0) {
+s32 func_800EF7D4_name_81(ObjectDuel *arg0) {
     s32 ret = 0;
     if (arg0->velocity.z != 0.0f) {
         ret = 1;
@@ -128,7 +128,7 @@ s32 func_800EF7D4_name_81(Object *arg0) {
     return ret;
 }
 
-void func_800EF800_name_81(Object *arg0) {
+void func_800EF800_name_81(ObjectDuel *arg0) {
     while (func_800EF7D4_name_81(arg0)) {
         HuPrcVSleep();
     }

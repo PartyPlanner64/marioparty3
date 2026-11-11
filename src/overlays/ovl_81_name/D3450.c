@@ -51,7 +51,7 @@ s16 func_800EB984_name_81(void) {
     return totalStars;
 }
 
-s32 func_800EB9D4_name_81(s8 percent) {
+s16 func_800EB9D4_name_81(s8 percent) {
     return percent > ((rand8() & 0xFF) * 99 >> 8);
 }
 

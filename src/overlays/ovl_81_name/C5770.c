@@ -588,10 +588,6 @@ void func_800E0310_name_81(u8 *output, s32 count) {
     }
 }
 
-// The code matches, but the original rodata for this file has 0xC bytes of padding
-// after this function's jump table. Compiling the jump table from C drops that
-// padding and shifts the following rodata.
-#ifdef NON_MATCHING
 void func_800E03F0_name_81(void) {
     Process *process = HuPrcCurrentGet();
     s32 waitTime = 0;
@@ -715,9 +711,6 @@ void func_800E03F0_name_81(void) {
         HuPrcVSleep();
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C5770", func_800E03F0_name_81);
-#endif
 
 Process *func_800E0888_name_81(void) {
     Process *process = omAddPrcObj(func_800E03F0_name_81, 0, 0x2000, 0x40);

@@ -742,6 +742,7 @@ segments:
       - [0xE9FD8, .rodata, C1580]
       - [0xEA060, .rodata, C1D60]
       - [0xEA0D0, .rodata, C45D0]
+      - [0xEA124, pad, pad_EA124] # zero padding: C5770's rodata is 16-byte aligned (li.d literals), but subalign is 8
       - [0xEA130, .rodata, C5770]
       - [0xEA220, .rodata, C9330]
       - [0xEA228, .rodata, CA640]

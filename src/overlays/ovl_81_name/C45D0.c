@@ -107,10 +107,6 @@ Process *func_800DCB04_name_81(s32 modelId, s32 count, Vec *pos, f32 spread, s32
     return process;
 }
 
-// The code matches, but the original rodata for this file has 0xC bytes of padding
-// after this function's zero Vec initializer. Moving the initializer into C drops
-// that padding and shifts the following rodata.
-#ifdef NON_MATCHING
 void func_800DCBA8_name_81(void) {
     EffectMoveWork *work = HuPrcCurrentGet()->user_data;
     Vec *velIn = work->vel;
@@ -133,9 +129,6 @@ void func_800DCBA8_name_81(void) {
     MBDModelKill(obj);
     omDelPrcObj(NULL);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C45D0", func_800DCBA8_name_81);
-#endif
 
 Process *func_800DCC8C_name_81(s32 modelId, Vec *pos, Vec *vel, f32 scale, s32 delay, f32 speed) {
     Object *obj = func_800D8010_name_81(modelId, NULL);
@@ -358,5 +351,3 @@ void func_800DD75C_name_81(s16 model) {
         }
     }
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_81_name/C45D0", D_80102348_name_81);

@@ -290,7 +290,7 @@ s32 func_800F8980_name_81(s32 playerIndex) {
     return totalPartnerCost;
 }
 
-s32 func_800F89D0_name_81(s32 playerIndex, s32 frontOrBackIndex, s16 arg2, s16 arg3) {
+s32 func_800F89D0_name_81(s32 playerIndex, s32 frontOrBackIndex, s16 arg2, u16 arg3) {
     s32 partnerCount = 0;
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
 
@@ -314,7 +314,7 @@ s32 func_800F89D0_name_81(s32 playerIndex, s32 frontOrBackIndex, s16 arg2, s16 a
     return partnerCount;
 }
 
-s32 func_800F8AEC_name_81(s32 playerIndex, s32 arg1, s16 arg2, s16 arg3, u16 arg4, u16 flags) {
+s32 func_800F8AEC_name_81(s32 playerIndex, s32 arg1, s16 arg2, s16 arg3, s16 arg4, u16 flags) {
     s32 partnerCount = 0;
     GW_PLAYER *player = MBDGetPlayerStruct(playerIndex);
     u16 flagsCopy = flags;

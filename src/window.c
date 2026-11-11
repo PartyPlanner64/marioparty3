@@ -1922,7 +1922,7 @@ void HuWinChoiceDisable(s32 winId, s16 spriteIndex) {
     window->choice_data[spriteIndex].stat = HUWIN_CHOICE_STAT_DISABLED;
 }
 
-void func_80060144_main(s16 obj) {
+void func_80060144_main(s32 obj) {
 #ifdef DEBUG
 
 #endif

@@ -178,7 +178,7 @@ void HuWinDispOn(s16);
 void HuWinInsertMesSizeGet(u32 mesg, s16);
 void HuWinMesMaxSizeGet(s16 count, s16 *size, ...);
 void HuWinExAnimIn(s16);
-void func_80060144_main(s16 obj);
+void func_80060144_main(s32 obj);
 void func_800601BC_main(s16, u32, s8);
 s16 HuWinAnimSet(s16 win_id, u32 spriteMainFsPair, s16 arg2, s16 arg3, s16 arg4);
 TextWindow *HuWinGet(s16 win_id);

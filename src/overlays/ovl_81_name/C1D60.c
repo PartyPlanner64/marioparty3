@@ -747,7 +747,7 @@ void func_800DC07C_name_81(s32 arg0, s8 arg1) {
     D_800CDBD0_main[arg0].predecidedRollValue[D_800CDBD0_main[arg0].rollValueIdx] = arg1;
 }
 
-s8 func_800DC0B4_name_81(s32 arg0) {
+s32 func_800DC0B4_name_81(s32 arg0) {
     return D_800CDBD0_main[arg0].rollValue[D_800CDBD0_main[arg0].rollValueIdx];
 }
 

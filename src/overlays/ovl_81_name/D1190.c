@@ -512,7 +512,7 @@ void func_800EA760_name_81(void) {
     }
 }
 
-void func_800EA788_name_81(s8 unk_17_value, s8 unk_2A_value) {
+void func_800EA788_name_81(s16 unk_17_value, s8 unk_2A_value) {
     s32 i;
 
     for (i = 0; i < 0x13; i++) {

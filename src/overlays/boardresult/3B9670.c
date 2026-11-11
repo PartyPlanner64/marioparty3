@@ -59,7 +59,6 @@ void func_800DB648_name_81(s32);
 void func_800DABE0_name_81(s32);
 void func_800DBEF0_name_81(s32);
 void func_800DBFF8_name_81(void);
-s8 func_800DC0B4_name_81(s32);
 void func_800E0310_name_81(u8 *, s32);
 void func_800EB5E8_name_81(void);
 void func_800EB7BC_name_81(Vec *);

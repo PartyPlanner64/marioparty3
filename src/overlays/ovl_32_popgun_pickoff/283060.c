@@ -1,4 +1,6 @@
 #include "common.h"
+#include "overlays/minigame.h"
+#include "game/hmfmath.h"
 
 typedef struct {
     char unk_00[0xC];
@@ -50,10 +52,66 @@ extern PopgunPickoffPlayer *D_8010DDD8_popgun_pickoff;
 extern HuSprite_Unk84_Struct *D_800C9530_main[];
 
 extern u32 D_8010C5F4_popgun_pickoff;
+extern s16 D_8010CC20_popgun_pickoff;
+extern s16 D_8010CC22_popgun_pickoff[2];
+extern f32 D_8010DD50_popgun_pickoff[4][4];
+extern f32 D_8010DD90_popgun_pickoff[4][4];
+extern f32 D_8010DDD0_popgun_pickoff;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_32_popgun_pickoff/283060", func_801059A0_popgun_pickoff);
+void func_80105AFC_popgun_pickoff(omObjData *object);
+void func_80105BF8_popgun_pickoff(HuMtx4F mtx, f32 x, f32 y, f32 z, f32 *dst);
+void func_80105C78_popgun_pickoff(HuMtx4F src, HuMtx4F dst);
+void func_80106068_popgun_pickoff(void);
+void func_801060E8_popgun_pickoff(omObjData *object);
+void func_80107A54_popgun_pickoff(void);
+void func_80109260_popgun_pickoff(s32 arg0);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_32_popgun_pickoff/283060", func_80105AFC_popgun_pickoff);
+void func_801059A0_popgun_pickoff(void) {
+    omObjData *obj;
+    u8 camIndex;
+
+    func_8001FE20_main(1);
+    func_80021BE0_main(&D_800EBEB0_minigame, 0x40);
+    omInitObjMan(0x10, 0);
+    func_8004A208_main();
+    obj = omAddObj(0x7FDA, 0, 0, -1, omOutView);
+    omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    func_8000B5F0_main(1);
+    camIndex = func_8000B638_main();
+    ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
+    ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
+    Hu3DCameraPerspectiveSet(0, 45.0f, 80.0f, 8000.0f);
+    func_800E1804_minigame();
+    func_80105AFC_popgun_pickoff(obj);
+    func_80106068_popgun_pickoff();
+    func_80109260_popgun_pickoff(0x80);
+    func_80107A54_popgun_pickoff();
+    Hu3DBGColorSet(180, 180, 180);
+    WipeCreateIn(WIPE_TYPE_PREV, 0x10);
+}
+
+void func_80105AFC_popgun_pickoff(omObjData *object) {
+    HuCamera *camera;
+    f32 sinFov;
+    f32 cosFov;
+
+    CZoom = 500.0f;
+    CRot.x = 5.0f;
+    CRot.y = 0.0f;
+    CRot.z = 0.0f;
+    Center.x = 0.0f;
+    Center.y = 250.0f;
+    Center.z = 0.0f;
+    omOutView(object);
+
+    camera = gCameraList;
+    sinFov = sindf(camera->fov / 2.0);
+    cosFov = cosdf(camera->fov / 2.0);
+    D_8010DDD0_popgun_pickoff = sinFov / cosFov;
+    guMtxL2F(D_8010DD50_popgun_pickoff, &camera->mtxs[0].lookAtMtx);
+    guMtxL2F(D_8010DD90_popgun_pickoff, &camera->mtxs[0].lookAtMtx);
+    func_80105C78_popgun_pickoff(D_8010DD90_popgun_pickoff, D_8010DD90_popgun_pickoff);
+}
 
 void func_80105BF8_popgun_pickoff(HuMtx4F mtx, f32 x, f32 y, f32 z, f32 *dst) {
     dst[0] = ((x * mtx[0][0]) + (y * mtx[1][0])) + (z * mtx[2][0]);
@@ -61,13 +119,87 @@ void func_80105BF8_popgun_pickoff(HuMtx4F mtx, f32 x, f32 y, f32 z, f32 *dst) {
     dst[2] = ((x * mtx[0][2]) + (y * mtx[1][2])) + (z * mtx[2][2]);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_32_popgun_pickoff/283060", func_80105C78_popgun_pickoff);
+void func_80105C78_popgun_pickoff(HuMtx4F src, HuMtx4F dst) {
+    f32 mtx[4][4];
+    f32 t0;
+    f32 t1;
+    f32 t2;
+    f32 det;
+    f32 *dstRow3;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_32_popgun_pickoff/283060", func_80105E68_popgun_pickoff);
+    func_8002367C_main(mtx, src);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_32_popgun_pickoff/283060", func_80105F74_popgun_pickoff);
+    t0 = mtx[1][1] * mtx[2][2] - mtx[1][2] * mtx[2][1];
+    t1 = mtx[1][2] * mtx[2][0] - mtx[1][0] * mtx[2][2];
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_32_popgun_pickoff/283060", func_80106068_popgun_pickoff);
+    t2 = mtx[1][0] * mtx[2][1] - mtx[1][1] * mtx[2][0];
+
+    det = t0 * mtx[0][0] + t1 * mtx[0][1] + t2 * mtx[0][2];
+
+    dstRow3 = &dst[3][0];
+    if (det != 0.0f) {
+        det = 1.0f / det;
+
+        dst[0][0] = t0 * det;
+        dst[1][0] = t1 * det;
+        dst[2][0] = t2 * det;
+
+        dst[0][1] = (mtx[0][2] * mtx[2][1] - mtx[0][1] * mtx[2][2]) * det;
+        dst[0][2] = (mtx[0][1] * mtx[1][2] - mtx[0][2] * mtx[1][1]) * det;
+        dst[1][1] = (mtx[0][0] * mtx[2][2] - mtx[0][2] * mtx[2][0]) * det;
+
+        dst[1][2] = (mtx[0][2] * mtx[1][0] - mtx[0][0] * mtx[1][2]) * det;
+        dst[2][1] = (mtx[0][1] * mtx[2][0] - mtx[0][0] * mtx[2][1]) * det;
+        dst[2][2] = (mtx[0][0] * mtx[1][1] - mtx[0][1] * mtx[1][0]) * det;
+
+        dst[2][3] = 0.0f;
+        dst[1][3] = 0.0f;
+        dst[0][3] = 0.0f;
+        dst[3][3] = 1.0f;
+
+        func_80105BF8_popgun_pickoff(dst, -mtx[3][0], -mtx[3][1], -mtx[3][2], dstRow3);
+    }
+}
+
+void func_80105E68_popgun_pickoff(f32 *pos, f32 *dst) {
+    f32 mtx[4][4];
+    f32 depth;
+    f32 scale;
+
+    guTranslateF(mtx, pos[0], pos[1], pos[2]);
+    guMtxCatF(mtx, D_8010DD50_popgun_pickoff, mtx);
+    depth = mtx[3][2] * D_8010DDD0_popgun_pickoff;
+    scale = fabsf(depth);
+    if (scale != 0.0) {
+        dst[0] = mtx[3][0] * 160.0f / scale / 1.3333333333333333;
+        dst[1] = -mtx[3][1] * 120.0f / scale;
+    }
+    dst[0] += 160.0;
+    dst[1] += 120.0;
+    dst[2] = scale;
+}
+
+void func_80105F74_popgun_pickoff(f32 x, f32 y, f32 z, f32 *dst) {
+    f32 depth = z + D_8010DD50_popgun_pickoff[3][2];
+    f32 scale = fabsf(depth * D_8010DDD0_popgun_pickoff);
+    f32 mtx[4][4];
+
+    x -= 160.0;
+    y -= 120.0;
+    guTranslateF(mtx, (x + x) * scale * 1.3333333333333333 / 320.0, -((y + y) * scale / 240.0f), depth);
+    guMtxCatF(mtx, D_8010DD90_popgun_pickoff, mtx);
+    dst[0] = mtx[3][0];
+    dst[1] = mtx[3][1];
+    dst[2] = mtx[3][2];
+}
+
+void func_80106068_popgun_pickoff(void) {
+    D_800EBE28_minigame = 0;
+    func_800E1490_minigame(0);
+    D_800EC1C0_minigame[D_800EBE28_minigame++] = omAddObj(5, 10, 0, -1, func_801060E8_popgun_pickoff);
+    D_8010CC20_popgun_pickoff = 0;
+    D_8010CC22_popgun_pickoff[0] = D_8010CC22_popgun_pickoff[1] = 0;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_32_popgun_pickoff/283060", D_8010C8E0_popgun_pickoff);
 

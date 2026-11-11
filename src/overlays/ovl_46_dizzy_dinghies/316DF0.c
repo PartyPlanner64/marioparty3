@@ -1,17 +1,13 @@
 #include "common.h"
+#include "game/audio.h"
+#include "game/data.h"
+#include "game/esprite.h"
 #include "game/hmfcoll.h"
 #include "game/object.h"
 #include "game/wipe.h"
 #include "humath.h"
 #include "math.h"
 #include "overlays/minigame.h"
-
-typedef struct DizzyDinghiesWork {
-    /* 0x000 */ char unk00[0x3C];
-    /* 0x03C */ f32 unk3C;
-    /* 0x040 */ f32 unk40;
-    /* 0x044 */ char unk44[0x118];
-} DizzyDinghiesWork; // size 0x15C
 
 extern Vec D_80109740_dizzy_dinghies[];
 extern Vec D_80109788_dizzy_dinghies;
@@ -26,6 +22,15 @@ extern f32 D_801097CC_dizzy_dinghies;
 extern f32 D_801097D0_dizzy_dinghies;
 extern s32 D_801097D4_dizzy_dinghies;
 extern f32 D_801097E0_dizzy_dinghies;
+extern f32 D_80109770_dizzy_dinghies;
+extern f32 D_80109780_dizzy_dinghies;
+extern f32 D_80109784_dizzy_dinghies;
+extern Vec D_801097A0_dizzy_dinghies;
+extern f32 D_801097AC_dizzy_dinghies;
+extern Vec D_80109794_dizzy_dinghies;
+extern s32 D_80109E3C_dizzy_dinghies;
+extern s32 D_80109E40_dizzy_dinghies;
+extern Vec D_80109E44_dizzy_dinghies[][3];
 extern s32 D_801097EC_dizzy_dinghies;
 extern f32 D_80109D80_dizzy_dinghies;
 extern s16 D_80109E08_dizzy_dinghies[20];
@@ -34,11 +39,12 @@ extern s32 D_80109E34_dizzy_dinghies;
 extern Vec D_8010A028_dizzy_dinghies[20];
 
 void func_80107738_dizzy_dinghies(omObjData *object, u16 player);
+void func_80108E30_dizzy_dinghies(Vec *origin, Vec *p, Vec *q, Vec *out);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", func_801059A0_dizzy_dinghies);
 
 void func_80105CAC_dizzy_dinghies(omObjData *object) {
-    DizzyDinghiesWork *work = D_800EC598_minigame[0]->data;
+    func_800E1BA8_minigame_ObjData *work = D_800EC598_minigame[0]->data;
     f32 angle = work->unk3C;
     f32 dist = D_801097B0_dizzy_dinghies * 100.0f + D_801097E0_dizzy_dinghies + work->unk40 * 2.0f;
 
@@ -164,15 +170,156 @@ void func_80108E30_dizzy_dinghies(Vec *origin, Vec *p, Vec *q, Vec *out) {
     func_800202FC_main(out);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", func_80108EC4_dizzy_dinghies);
+void func_80108EC4_dizzy_dinghies(omObjData *object, f32 x, f32 z) {
+    func_800E1BA8_minigame_ObjData *work;
+    Vec a;
+    Vec b;
+    Vec c;
+    Vec normal;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", func_801090BC_dizzy_dinghies);
+    a.x = x;
+    a.y = func_80105D90_dizzy_dinghies(x, z);
+    a.z = z;
+    b.x = x + sindf(0.0f) * 10.0f;
+    b.z = z + cosdf(0.0f) * 10.0f;
+    b.y = func_80105D90_dizzy_dinghies(b.x, b.z);
+    c.x = x + sindf(90.0f) * 10.0f;
+    c.z = z + cosdf(90.0f) * 10.0f;
+    c.y = func_80105D90_dizzy_dinghies(c.x, c.z);
+    func_80108E30_dizzy_dinghies(&a, &b, &c, &normal);
+    normal.y = 0.0f;
+    func_800202FC_main(&normal);
+    work = object->data;
+    normal.x *= 5.0f;
+    normal.z *= 20.0f;
+    if (work->unk90 < normal.x) {
+        work->unk90 += 1.0f;
+    } else if (normal.x < work->unk90) {
+        work->unk90 -= 1.0f;
+    }
+    if (work->unk98 < normal.z) {
+        work->unk98 += 1.0f;
+    } else if (normal.z < work->unk98) {
+        work->unk98 -= 1.0f;
+    }
+    object->rot.x = work->unk90;
+    object->rot.z = work->unk98;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", func_80109238_dizzy_dinghies);
+void func_801090BC_dizzy_dinghies(omObjData *object, f32 x, f32 z) {
+    func_800E1BA8_minigame_ObjData *work = object->data;
+    f32 limit = work->unk48;
+    f32 mag = HuSqrtf(D_800EBE2C_minigame * D_800EBE2C_minigame + D_800EC5D8_minigame * D_800EC5D8_minigame);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", func_80109420_dizzy_dinghies);
+    if (mag > limit || fabs(D_800EBE2C_minigame) > limit || fabs(D_800EC5D8_minigame) > limit) {
+        D_800EBE2C_minigame = D_80109794_dizzy_dinghies.x - x;
+        D_800EC5D8_minigame = D_80109794_dizzy_dinghies.z - z;
+    }
+    if (func_800E6E8C_minigame() == 2) {
+        if (D_80109E3C_dizzy_dinghies == 0) {
+            if (0.0f < mag) {
+                if (mag < limit / 3.0f) {
+                    omVibrate(work->unk59, 2, 3, 10);
+                } else {
+                    omVibrate(work->unk59, 10, 0, 10);
+                }
+                D_80109E3C_dizzy_dinghies = 10;
+            }
+        } else {
+            D_80109E3C_dizzy_dinghies--;
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", func_801095D4_dizzy_dinghies);
+f32 func_80109238_dizzy_dinghies(omObjData *object, f32 x, f32 y, f32 z) {
+    func_800E1BA8_minigame_ObjData *work = object->data;
+    f32 speed = work->unk40;
+    Hu3DSphere sphere;
+    f32 dist;
+
+    sphere.pos.x = x + sindf(work->unk3C) * speed + D_800EBE2C_minigame;
+    sphere.pos.y = y;
+    sphere.pos.z = z + cosdf(work->unk3C) * speed + D_800EC5D8_minigame;
+    sphere.radius = work->unk48;
+    work->unk53[0] = work->unk53[1] = -1;
+    sphere.pos.x += D_800EBE2C_minigame;
+    sphere.pos.z += D_800EC5D8_minigame;
+    func_800DD530_minigame(object, &sphere, 0.0f);
+    dist = HuSqrtf(D_800EBE2C_minigame * D_800EBE2C_minigame + D_800EC5D8_minigame * D_800EC5D8_minigame);
+    if (dist != 0.0f) {
+        if (dist > D_80109770_dizzy_dinghies * 0.5f) {
+            work->unk40 *= D_80109784_dizzy_dinghies;
+        } else {
+            work->unk40 *= D_80109780_dizzy_dinghies;
+        }
+        if (dist > D_801097AC_dizzy_dinghies) {
+            D_801097A0_dizzy_dinghies.x = D_800EBE2C_minigame;
+            D_801097A0_dizzy_dinghies.y = 0.0f;
+            D_801097A0_dizzy_dinghies.z = D_800EC5D8_minigame;
+            func_800202FC_main(&D_801097A0_dizzy_dinghies);
+            D_801097AC_dizzy_dinghies = 16.0f;
+        }
+    }
+    func_801090BC_dizzy_dinghies(object, x, z);
+    return func_80105D90_dizzy_dinghies(sphere.pos.x, sphere.pos.z);
+}
+
+void func_80109420_dizzy_dinghies(omObjData *object) {
+    s32 pos[4];
+    s16 frameSprite;
+    void *data;
+    u16 sprite;
+    s32 i;
+
+    pos[0] = 62;
+    pos[1] = 32;
+    pos[2] = 44;
+    pos[3] = 28;
+    frameSprite = func_8000B838_main(0x670008);
+    func_8000B838_main(0x440014);
+    func_8000B838_main(0x440015);
+    data = DataRead(0x440013);
+    HuSprAnimRead(data);
+    DataClose(data);
+    for (i = 0; i < 1; i++) {
+        sprite = espEntry(frameSprite, 0, 1);
+        espDispOn(sprite);
+        espPosSet(sprite, pos[0], pos[1]);
+        espPriSet(sprite, 0xFFFF);
+        espTPLvlSet(sprite, 200);
+        sprite = espEntry(func_8000B838_main((GwPlayer[i].chr + 8) | 0x210000), 0, 1);
+        espDispOn(sprite);
+        espPosSet(sprite, pos[2] - 10, pos[3] + 4);
+        espPriSet(sprite, 100);
+        func_800E9C20_minigame(1, 5);
+        func_800EA0FC_minigame(0, 0.0f, D_80109770_dizzy_dinghies);
+        func_800E9F40_minigame(0, 44, 27, 0);
+        func_800EA2A8_minigame(0);
+    }
+    object->func = NULL;
+}
+
+void func_801095D4_dizzy_dinghies(omObjData *object) {
+    Vec normal;
+    f32 dx, dy, dz;
+    s32 inside;
+
+    func_80108E30_dizzy_dinghies(&D_80109E44_dizzy_dinghies[D_801097EC_dizzy_dinghies][0],
+                                 &D_80109E44_dizzy_dinghies[D_801097EC_dizzy_dinghies][1],
+                                 &D_80109E44_dizzy_dinghies[D_801097EC_dizzy_dinghies][2], &normal);
+    dx = object->trans.x - D_80109E44_dizzy_dinghies[D_801097EC_dizzy_dinghies][0].x;
+    dy = object->trans.y - D_80109E44_dizzy_dinghies[D_801097EC_dizzy_dinghies][0].y;
+    dz = object->trans.z - D_80109E44_dizzy_dinghies[D_801097EC_dizzy_dinghies][0].z;
+    inside = (dx * normal.x + dy * normal.y + dz * normal.z >= 0.0f) ? 1 : 0;
+    if (HuSqrtf(dx * dx + dz * dz) > 1400.0f) {
+        inside = 0;
+    }
+    if (inside == 1 && func_800E6E8C_minigame() == 2) {
+        func_800E6F0C_minigame(3);
+        D_801097D4_dizzy_dinghies = inside;
+        D_80109E40_dizzy_dinghies = HuAudFXPlay(0x425);
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", D_80109EF0_dizzy_dinghies);
 

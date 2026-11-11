@@ -1,17 +1,53 @@
 #include "common.h"
 
-extern omObjData *D_8010B4B0_curtain_call;
+// One entry of the 50 entry object table at D_8010B4B0_curtain_call. Layout
+// derived from the table clear in func_80105A3C_curtain_call, which walks 50
+// entries of 0x84 bytes.
+typedef struct {
+    /* 0x00 */ omObjData *obj;
+    /* 0x04 */ s16 unk_04;
+    /* 0x06 */ s16 unk_06;
+    /* 0x08 */ s16 unk_08;
+    /* 0x0A */ s16 unk_0A;
+    /* 0x0C */ s16 unk_0C;
+    /* 0x0E */ s16 unk_0E;
+    /* 0x10 */ s16 unk_10;
+    /* 0x12 */ s16 unk_12;
+    /* 0x14 */ s16 unk_14;
+    /* 0x16 */ s16 unk_16;
+    /* 0x18 */ f32 unk_18;
+    /* 0x1C */ f32 unk_1C;
+    /* 0x20 */ f32 unk_20;
+    /* 0x24 */ f32 unk_24;
+    /* 0x28 */ f32 unk_28;
+    /* 0x2C */ f32 unk_2C;
+    /* 0x30 */ f32 unk_30;
+    /* 0x34 */ f32 unk_34;
+    /* 0x38 */ f32 unk_38;
+    /* 0x3C */ f32 unk_3C;
+    /* 0x40 */ s16 unk_40[2];
+    /* 0x44 */ Vec unk_44;
+    /* 0x50 */ Vec unk_50;
+    /* 0x5C */ Vec unk_5C;
+    /* 0x68 */ f32 unk_68[4];
+    /* 0x78 */ Vec unk_78;
+} CurtainCallEntry; // sizeof 0x84
+
+extern CurtainCallEntry D_8010B4B0_curtain_call[50];
 extern omObjData *D_8010BA5C_curtain_call;
 extern omObjData *D_8010BB64_curtain_call;
 extern Process *D_8010CF34_curtain_call;
 extern s8 D_8010CEC1_curtain_call;
 
 void func_801062EC_curtain_call(void);
+void func_8010AF78_curtain_call(void);
 void func_80106500_curtain_call(omObjData *);
 void func_80108F28_curtain_call(omObjData *);
 void func_801092F0_curtain_call(omObjData *);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_801059A0_curtain_call);
+void func_801059A0_curtain_call(void) {
+    func_8010AF78_curtain_call();
+}
 
 f32 func_801059BC_curtain_call(f32 arg0, f32 arg1) {
     f32 angle = arg0 + arg1;
@@ -27,7 +63,44 @@ f32 func_801059BC_curtain_call(f32 arg0, f32 arg1) {
     return angle;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_80105A3C_curtain_call);
+void func_80105A3C_curtain_call(void) {
+    CurtainCallEntry *entry;
+    u32 i;
+
+    for (i = 0, entry = D_8010B4B0_curtain_call; i < 50; i++, entry++) {
+        entry->obj = NULL;
+        entry->unk_04 = 0;
+        entry->unk_06 = 0;
+        entry->unk_08 = 0;
+        entry->unk_0A = 0;
+        entry->unk_0C = 0;
+        entry->unk_0E = 0;
+        entry->unk_10 = 0;
+        entry->unk_12 = 0;
+        entry->unk_14 = 0;
+        entry->unk_16 = 0;
+        entry->unk_18 = 0;
+        entry->unk_1C = 0;
+        entry->unk_20 = 0;
+        entry->unk_24 = 0;
+        entry->unk_28 = 0;
+        entry->unk_2C = 0;
+        entry->unk_30 = 0;
+        entry->unk_34 = 0;
+        entry->unk_38 = 0;
+        entry->unk_3C = 0;
+        entry->unk_40[0] = -1;
+        entry->unk_40[1] = -1;
+        entry->unk_44.x = entry->unk_44.y = entry->unk_44.z = 0.0f;
+        entry->unk_50.x = entry->unk_50.y = entry->unk_50.z = 0.0f;
+        entry->unk_5C.x = entry->unk_5C.y = entry->unk_5C.z = 0.0f;
+        entry->unk_68[0] = 0.0f;
+        entry->unk_68[1] = 0.0f;
+        entry->unk_68[2] = 0.0f;
+        entry->unk_68[3] = 0.0f;
+        entry->unk_78.x = entry->unk_78.y = entry->unk_78.z = 0.0f;
+    }
+}
 
 void func_80105B04_curtain_call(s32 playerIndex) {
     D_800CDA7C_main[GwPlayer[playerIndex].pad] = 0;
@@ -53,7 +126,13 @@ void func_80105C3C_curtain_call(omObjData *arg0, u16 arg1, s16 arg2, s16 arg3, s
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_80105CB8_curtain_call);
+s32 func_80105CB8_curtain_call(omObjData *obj, f32 target) {
+    if (obj->rot.y != target) {
+        obj->rot.y = func_801059BC_curtain_call(obj->rot.y, 10.0f);
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_80105D14_curtain_call);
 
@@ -83,7 +162,7 @@ void func_801064A0_curtain_call(omObjData *arg0) {
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_80106500_curtain_call);
 
 void func_80106688_curtain_call(void) {
-    D_8010B4B0_curtain_call = omAddObj(0x1F4, 4, 2, -1, func_80106500_curtain_call);
+    D_8010B4B0_curtain_call[0].obj = omAddObj(0x1F4, 4, 2, -1, func_80106500_curtain_call);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_801066C4_curtain_call);

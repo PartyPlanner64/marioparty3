@@ -16,7 +16,8 @@ typedef struct PictureImperfectWork {
     /* 0x05 */ s8 unk05;
     /* 0x06 */ s8 unk06;
     /* 0x07 */ s8 unk07;
-    /* 0x08 */ char unk08[0x8];
+    /* 0x08 */ s16 unk08;
+    /* 0x0A */ char unk0A[0x6];
     /* 0x10 */ f32 unk10;
     /* 0x14 */ char unk14[0x4];
     /* 0x18 */ s16 unk18;
@@ -35,7 +36,9 @@ extern s16 D_80109FE0_picture_imperfect;
 extern s16 D_80109FE2_picture_imperfect;
 extern u8 D_80109FE4_picture_imperfect;
 extern PictureImperfectScorePos D_80109FE8_picture_imperfect[4];
+extern s8 D_80109FFC_picture_imperfect[4][5];
 extern s32 D_8010A010_picture_imperfect;
+extern u8 D_8010A030_picture_imperfect[][5];
 extern u32 D_8010A044_picture_imperfect;
 extern s8 D_8010A014_picture_imperfect;
 extern s16 D_8010A11A_picture_imperfect[4];
@@ -344,7 +347,143 @@ void func_801083C0_picture_imperfect(s8 player) {
     }
 }
 
+#ifdef NON_MATCHING
+void func_80108688_picture_imperfect(omObjData *object) {
+    func_800E1BA8_minigame_ObjData *playerData;
+    PictureImperfectWork *work;
+    s8 player;
+    s16(*sprites)[5];
+    s32 delay;
+    s8 i;
+
+    playerData = object->data;
+    work = playerData->unk158;
+    player = playerData->unk59;
+    switch (work->unk00) {
+        case 0:
+            sprites = D_8010A168_picture_imperfect;
+            switch (D_8010A150_picture_imperfect) {
+                case 2:
+                    delay = 6;
+                    break;
+                case 1:
+                    delay = 8;
+                    break;
+                case 0:
+                    delay = 10;
+                    break;
+                default:
+                    break;
+            }
+            break;
+        case 1:
+            sprites = D_8010A190_picture_imperfect;
+            delay = 2;
+            break;
+        case 2:
+            sprites = D_8010A1B8_picture_imperfect;
+            switch (D_8010A150_picture_imperfect) {
+                case 0:
+                default:
+                    delay = 8;
+                    break;
+                case 1:
+                    delay = 6;
+                    break;
+                case 2:
+                    delay = 4;
+                    break;
+            }
+            break;
+        case 3:
+            sprites = D_8010A1E0_picture_imperfect;
+            if (D_8010A150_picture_imperfect == 0) {
+                delay = 10;
+            } else {
+                delay = 4;
+            }
+            break;
+        case 4:
+            sprites = D_8010A208_picture_imperfect;
+            delay = 4;
+            break;
+        default:
+            if (playerData->unk38 == 1000.0f) {
+                work->unk06 = 1;
+            }
+            return;
+    }
+    if (omPauseChk() + D_800D6A90_main != 0) {
+        for (i = 0; i < 5; i++) {
+            espDispOff(sprites[player][i]);
+        }
+        return;
+    }
+    work->unk01 = D_8010A030_picture_imperfect[D_8010A151_picture_imperfect][D_8010A2AC_picture_imperfect[work->unk00]];
+    if (work->unk08 == 0) {
+        work->unk08 = delay;
+    } else {
+        work->unk08--;
+    }
+    for (i = 0; i < 5; i++) {
+        if (work->unk01 == i) {
+            espDispOn(sprites[player][work->unk01]);
+        } else {
+            espDispOff(sprites[player][i]);
+        }
+    }
+    if (D_800D5558_main[playerData->unk57] & A_BUTTON) {
+        work->unk08 = delay - 2;
+        switch (work->unk01) {
+            case 0:
+                work->unk03 = 10;
+                break;
+            case 1:
+                work->unk03 = 7;
+                break;
+            case 2:
+                work->unk03 = 5;
+                break;
+            case 3:
+                work->unk03 = 3;
+                break;
+            case 4:
+                work->unk03 = 1;
+                break;
+        }
+        work->unk04 += work->unk03;
+        D_80109FFC_picture_imperfect[player][work->unk00] = work->unk01;
+        work->unk01 = (rand8() * 5) >> 8;
+        if (work->unk00 == 0) {
+            work->unk00 = 2;
+        } else if (work->unk00 == 1) {
+            work->unk00 = 10;
+        } else {
+            work->unk00++;
+            switch (D_8010A150_picture_imperfect) {
+                case 0:
+                    if (work->unk00 >= 5) {
+                        work->unk00 = 1;
+                    }
+                    break;
+                case 1:
+                    if (work->unk00 >= 4) {
+                        work->unk00 = 1;
+                    }
+                    break;
+                case 2:
+                default:
+                    if (work->unk00 >= 3) {
+                        work->unk00 = 1;
+                    }
+                    break;
+            }
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1E_picture_imperfect/1EF420", func_80108688_picture_imperfect);
+#endif
 
 void func_80108A64_picture_imperfect(PictureImperfectWork *work, s8 player) {
     s32 i;

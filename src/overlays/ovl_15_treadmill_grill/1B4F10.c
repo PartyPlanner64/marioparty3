@@ -22,6 +22,7 @@ extern Vec D_8010B378_treadmill_grill[];
 extern s32 D_8010AF80_treadmill_grill;
 extern u8 D_8010AF84_treadmill_grill[4];
 extern Vec D_8010B000_treadmill_grill[3];
+extern u32 D_8010B0D8_treadmill_grill[4];
 extern f32 D_8010AFAC_treadmill_grill;
 extern s32 D_8010B128_treadmill_grill[4][4];
 extern f32 D_8010B168_treadmill_grill[4];
@@ -53,6 +54,7 @@ void func_801085D8_treadmill_grill(omObjData *object);
 void func_80108730_treadmill_grill(omObjData *object);
 void func_80108888_treadmill_grill(omObjData *object);
 void func_801089E0_treadmill_grill(void);
+void func_80108C64_treadmill_grill(omObjData *object, f32 x, f32 y, f32 z);
 void func_80108DE0_treadmill_grill(omObjData *object);
 void func_80108FCC_treadmill_grill(omObjData *object);
 void func_80109108_treadmill_grill(omObjData *object);
@@ -317,7 +319,83 @@ void func_80107238_treadmill_grill(omObjData *object) {
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", D_8010B288_treadmill_grill);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_80107454_treadmill_grill);
+void func_80107454_treadmill_grill(omObjData *object, f32 *x, f32 *y, f32 *z) {
+    func_800E1BA8_minigame_ObjData *data;
+    D_800EC1C0_minigame_ObjData *stageData;
+    omObjData *stage;
+    f32 velY;
+    s16 seId;
+
+    data = object->data;
+    stage = D_800EC1C0_minigame[1];
+    if (HuSqrtf(*x * *x + *z * *z) > 2000.0f) {
+        func_8001C258_main(object->model[0], 4, 4);
+        func_8001C258_main(object->model[10], 4, 4);
+        func_8001C258_main(object->model[11], 4, 4);
+        func_8001C258_main(object->model[12], 4, 4);
+        func_8001C258_main(object->model[13], 4, 4);
+        return;
+    }
+    stageData = stage->data;
+    data->unk3C = atan2df(*x - stage->trans.x, *z - stage->trans.z);
+    data->unk40 = 25.0f;
+    velY = data->unk38;
+    if (velY > D_800EB774_minigame) {
+        velY = D_800EB774_minigame;
+    }
+    *y += velY * velY * (data->unk38 >= 0.0f ? -35.0f : 35.0f);
+    if (*x > stageData->unkA0 && *x < stageData->unkA8 && *z > stageData->unkA4 && *z < stageData->unkA8) {
+        if (*y <= stageData->unk14) {
+            data->unk38 = -D_800EB744_minigame;
+            *y = stageData->unk14;
+            switch (D_8010B0D8_treadmill_grill[data->unk59]) {
+                case 0:
+                    seId = 0x39E;
+                    break;
+                case 1:
+                    seId = 0x3A0;
+                    break;
+                case 2:
+                    seId = 0x3A1;
+                    break;
+                case 3:
+                    seId = 0x3A2;
+                    break;
+                case 4:
+                default:
+                    seId = 0x3A3;
+                    break;
+            }
+            func_8004AC98_main(seId, data->unk59);
+            D_8010B0D8_treadmill_grill[data->unk59]++;
+        }
+    } else if (*y <= 0.0f) {
+        data->unk38 = -D_800EB744_minigame;
+        *y = 0.0f;
+        switch (D_8010B0D8_treadmill_grill[data->unk59]) {
+            case 0:
+                seId = 0x39E;
+                break;
+            case 1:
+                seId = 0x3A0;
+                break;
+            case 2:
+                seId = 0x3A1;
+                break;
+            case 3:
+                seId = 0x3A2;
+                break;
+            case 4:
+            default:
+                seId = 0x3A3;
+                break;
+        }
+        func_8004AC98_main(seId, data->unk59);
+        D_8010B0D8_treadmill_grill[data->unk59]++;
+    }
+    data->unk38 += D_800EB748_minigame * 0.6f;
+    func_80108C64_treadmill_grill(object, *x, *y, *z);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_80107798_treadmill_grill);
 

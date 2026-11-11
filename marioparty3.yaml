@@ -2336,11 +2336,22 @@ segments:
     dir: overlays/mstory2
     name: mstory2
     exclusive_ram_id: minigame # ovl_6C
+    subalign: 4
     bss_size: 0x450
     subsegments:
-      - [0x49BD40, c] # TODO: split at 49DF30, 4A7540, 4AC200 and 4B0E80? Having issues with rodata.
+      - [0x49BD40, c]
+      - [0x49DF30, c]
+      - [0x4A28B0, c]
+      - [0x4A7540, c]
+      - [0x4AC200, c]
+      - [0x4B0E80, c]
       - [0x4B1CC0, data, 49BD40] #8011B920
       - [0x4B2180, .rodata, 49BD40] #8011BDE0
+      - [0x4B2208, .rodata, 49DF30] #8011BE68
+      - [0x4B23E8, .rodata, 4A28B0] #8011C048
+      - [0x4B25D4, .rodata, 4A7540] #8011C234
+      - [0x4B27C0, .rodata, 4AC200] #8011C420
+      - [0x4B29AC, .rodata, 4B0E80] #8011C60C
       - {0x4B29E0, type: bss, vram: 0x8011C640, name: mstory2_bss}
 
   - type: code

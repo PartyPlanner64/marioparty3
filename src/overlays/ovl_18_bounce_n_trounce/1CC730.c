@@ -8,26 +8,26 @@ typedef struct BounceNTrounceWork {
     /* 0x00 */ u16 playerId;
     /* 0x02 */ u16 state;
     /* 0x04 */ u16 motState;
-    /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x06 */ u16 unk_06;
+    /* 0x08 */ u16 unk_08;
     /* 0x0A */ u16 unk_0A;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ u16 unk_0E[4];
-    /* 0x16 */ s16 unk_16;
+    /* 0x16 */ u16 unk_16;
     /* 0x18 */ s16 unk_18;
     /* 0x1C */ omObjData *floorTile;
     /* 0x20 */ f32 motSpeed;
     /* 0x24 */ f32 motDir;
     /* 0x28 */ f32 unk_28;
-    /* 0x2C */ s32 unk_2C;
+    /* 0x2C */ f32 jumpVel;
     /* 0x30 */ f32 unk_30;
     /* 0x34 */ f32 unk_34;
     /* 0x38 */ f32 unk_38;
-    /* 0x3C */ s32 unk_3C;
-    /* 0x40 */ f32 unk_40;
+    /* 0x3C */ f32 jumpTime;
+    /* 0x40 */ f32 jumpBaseY;
     /* 0x44 */ f32 unk_44;
     /* 0x48 */ f32 unk_48;
-    /* 0x4C */ Vec startPos;
+    /* 0x4C */ Vec prevPos;
     /* 0x58 */ Vec unk_58;
     /* 0x64 */ f32 unk_64;
     /* 0x68 */ f32 unk_68;
@@ -68,6 +68,7 @@ typedef struct BounceNTrounceTileWork {
 extern s32 D_800A178C_main[][6];
 extern f32 D_800D2120_main;
 
+extern D_80111B50_vine_with_me_Struct D_8010ABB0_bounce_n_trounce;
 extern s8 D_8010ABD8_bounce_n_trounce[4];
 extern s8 D_8010ABDC_bounce_n_trounce[4];
 extern u16 D_8010ABE0_bounce_n_trounce[4];
@@ -85,11 +86,18 @@ extern Vec D_8010AD4C_bounce_n_trounce[4];
 extern u16 D_8010AD7C_bounce_n_trounce[4];
 extern u16 D_8010AD84_bounce_n_trounce;
 extern u16 D_8010AD86_bounce_n_trounce;
+extern u16 D_8010AD88_bounce_n_trounce;
+extern u16 D_8010AD8A_bounce_n_trounce;
+extern u16 D_8010AEB0_bounce_n_trounce;
+extern u16 D_8010AEB2_bounce_n_trounce;
+extern f32 D_8010AEB4_bounce_n_trounce;
+extern f32 D_8010AEB8_bounce_n_trounce;
 extern u16 D_8010AEBC_bounce_n_trounce;
+extern u16 D_8010AEBE_bounce_n_trounce;
 extern omObjData *D_8010AEC0_bounce_n_trounce;
 extern omObjData *D_8010AEC4_bounce_n_trounce;
 extern u16 D_8010AEC8_bounce_n_trounce;
-extern s16 D_8010AECA_bounce_n_trounce;
+extern u16 D_8010AECA_bounce_n_trounce;
 extern s16 D_8010AECC_bounce_n_trounce;
 extern omObjData *D_8010AED0_bounce_n_trounce;
 extern omObjData *D_8010AED4_bounce_n_trounce;
@@ -120,6 +128,8 @@ void func_80107114_bounce_n_trounce(omObjData *object, s8 stickX, s8 stickY, u16
 void func_80107EDC_bounce_n_trounce(omObjData *object);
 void func_80109018_bounce_n_trounce(omObjData *object, s8 *stickX, s8 *stickY, u16 *btn);
 void func_80109478_bounce_n_trounce(omObjData *object);
+f32 func_80106434_bounce_n_trounce(omObjData *object);
+void func_8010846C_bounce_n_trounce(omObjData *object);
 s32 func_80109804_bounce_n_trounce(omObjData *object, s16 arg1);
 s16 func_80109A00_bounce_n_trounce(omObjData *object);
 s32 func_8010AB1C_bounce_n_trounce(f32 x, f32 z);
@@ -503,9 +513,9 @@ void func_801069F0_bounce_n_trounce(omObjData *object) {
     emitter->work[0] = 0;
     emitter->work[1] = (u32)object;
     work->unk_A8 = 0;
-    work->startPos.x = object->trans.x;
-    work->startPos.y = object->trans.y;
-    work->startPos.z = object->trans.z;
+    work->prevPos.x = object->trans.x;
+    work->prevPos.y = object->trans.y;
+    work->prevPos.z = object->trans.z;
     object->func = func_801070CC_bounce_n_trounce;
 }
 
@@ -551,7 +561,83 @@ void func_801070CC_bounce_n_trounce(omObjData *object) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_18_bounce_n_trounce/1CC730", func_80107114_bounce_n_trounce);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_18_bounce_n_trounce/1CC730", func_80107EDC_bounce_n_trounce);
+void func_80107EDC_bounce_n_trounce(omObjData *object) {
+    BounceNTrounceWork *work = OM_GET_DATA_PTR(object, BounceNTrounceWork);
+    f32 rotY = object->rot.y;
+    f32 floorY = func_80106434_bounce_n_trounce(object);
+    Vec pos;
+    Vec2f screenPos;
+
+    if (work->unk_08 == 1) {
+        if (work->unk_44 != 0.0f) {
+            rotY += work->unk_44;
+        }
+        work->jumpTime += 1.0f;
+        object->trans.y =
+            work->jumpVel * work->jumpTime + work->jumpBaseY - work->jumpTime * 2.4f * work->jumpTime;
+        if (work->unk_16 == 1) {
+            object->trans.x += work->unk_64;
+            object->trans.z += work->unk_68;
+        }
+        object->trans.x += work->unk_34;
+        object->trans.z += work->unk_38;
+    }
+    work->unk_64 *= work->unk_6C;
+    work->unk_68 *= work->unk_6C;
+    if (fabs(work->unk_64) < 0.01f) {
+        work->unk_64 = 0.0f;
+    }
+    if (fabs(work->unk_68) < 0.01f) {
+        work->unk_68 = 0.0f;
+    }
+    if (work->unk_64 == 0.0f && work->unk_68 == 0.0f) {
+        work->unk_16 = 0;
+    } else {
+        object->trans.x += work->unk_64;
+        object->trans.z += work->unk_68;
+    }
+    omSetRot(object, object->rot.x, rotY, object->rot.z);
+    if (object->rot.y >= 360.0f) {
+        object->rot.y -= 360.0f;
+    }
+    Hu3DModelRotSet(object->model[1], object->rot.x, object->rot.y, object->rot.z);
+    Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, object->trans.z);
+    if (floorY == -100000.0f) {
+        func_8001C258_main(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    } else {
+        work->unk_28 = 1.5 - fabs(object->trans.y - floorY) / 900.0 * 1.2f;
+        if (work->unk_28 < 0.3f) {
+            work->unk_28 = 0.3f;
+        }
+        func_8001C258_main(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelPosSet(object->model[2], object->trans.x, floorY + 1.0f, object->trans.z);
+        Hu3DModelScaleSet(object->model[2], work->unk_28, 1.0f, work->unk_28);
+    }
+    if (work->unk_06 == 1) {
+        Hu3DModelPosSet(object->model[3], object->trans.x, object->trans.y + 60.0f, object->trans.z);
+    }
+    func_8010846C_bounce_n_trounce(object);
+    if (object->trans.y < -5000.0f) {
+        work->state = 3;
+        func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        func_8001C258_main(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        work->unk_06 = 0;
+        func_8001C258_main(object->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        object->func = NULL;
+    }
+    pos.x = object->trans.x;
+    pos.y = object->trans.y;
+    pos.z = object->trans.z;
+    func_80012B14_main(0, &pos, &screenPos);
+    if (screenPos.y > 240.0f && work->unk_18 == 0) {
+        work->unk_18 = 1;
+        PlayerFXPlay(0x286, work->playerId);
+    }
+    work->prevPos.x = object->trans.x;
+    work->prevPos.y = object->trans.y;
+    work->prevPos.z = object->trans.z;
+}
 
 void func_80108350_bounce_n_trounce(omObjData *object) {
     BounceNTrounceWork *work = OM_GET_DATA_PTR(object, BounceNTrounceWork);
@@ -577,12 +663,12 @@ void func_80108398_bounce_n_trounce(omObjData *object, omObjData *other) {
     otherWork->unk_6C = 0.8f;
 }
 
-void func_80108454_bounce_n_trounce(omObjData *object, s32 arg1) {
+void func_80108454_bounce_n_trounce(omObjData *object, f32 vel) {
     BounceNTrounceWork *work = OM_GET_DATA_PTR(object, BounceNTrounceWork);
 
-    work->unk_2C = arg1;
-    work->unk_3C = 0;
-    work->unk_40 = object->trans.y;
+    work->jumpVel = vel;
+    work->jumpTime = 0.0f;
+    work->jumpBaseY = object->trans.y;
 }
 
 void func_8010846C_bounce_n_trounce(omObjData *object) {
@@ -677,7 +763,7 @@ void func_80108940_bounce_n_trounce(void) {
     }
 }
 
-s32 func_80108994_bounce_n_trounce(void) {
+u16 func_80108994_bounce_n_trounce(void) {
     f32 dists[4];
     u16 order[4];
     s32 count = 0;
@@ -1110,7 +1196,131 @@ void func_80109AF0_bounce_n_trounce(omObjData *object) {
     }
 }
 
+#ifdef NON_MATCHING
+void func_80109F68_bounce_n_trounce(omObjData *object) {
+    omObjData *player;
+    f32 dist;
+    f32 diff;
+    s32 i;
+
+    switch (D_8010AECA_bounce_n_trounce) {
+        case 0:
+            D_8010AED4_bounce_n_trounce->work[0] = 0;
+            D_8010AEB0_bounce_n_trounce = 45;
+            D_8010AECA_bounce_n_trounce = 1;
+            for (i = 0; i < 4; i++) {
+                OM_GET_DATA_PTR(D_8010AEDC_bounce_n_trounce[i], BounceNTrounceWork)->radius = 50.0f;
+            }
+            break;
+        case 1:
+            if (D_8010AEB0_bounce_n_trounce == 0) {
+                if (D_8010AD88_bounce_n_trounce == 1) {
+                    D_8010AECA_bounce_n_trounce = D_8010AEB2_bounce_n_trounce;
+                }
+            } else {
+                D_8010AEB0_bounce_n_trounce--;
+            }
+            if (D_8010AD88_bounce_n_trounce != 0) {
+                break;
+            }
+            if (D_8010AEBC_bounce_n_trounce != 0) {
+                if (func_80108994_bounce_n_trounce() != 1) {
+                    break;
+                }
+                if (D_8010AEBC_bounce_n_trounce == 1) {
+                    for (i = 0; i < 4; i++) {
+                        if (OM_GET_DATA_PTR(D_8010AEDC_bounce_n_trounce[i], BounceNTrounceWork)->state == 4) {
+                            D_8010AEBE_bounce_n_trounce = i;
+                            D_8010ABB0_bounce_n_trounce.unk18[0] = D_8010AEBE_bounce_n_trounce;
+                            D_8010AEB2_bounce_n_trounce = 3;
+                            D_8010AD88_bounce_n_trounce = 1;
+                        }
+                    }
+                    break;
+                }
+            }
+            D_8010ABB0_bounce_n_trounce.unk06 = 4;
+            D_8010AEB2_bounce_n_trounce = 2;
+            D_8010AD88_bounce_n_trounce = 1;
+            break;
+        case 2:
+            func_800E6F0C_minigame(4);
+            for (i = 0; i < 4; i++) {
+                if (OM_GET_DATA_PTR(D_8010AEDC_bounce_n_trounce[i], BounceNTrounceWork)->state == 4) {
+                    Hu3DMotionShiftSet(D_8010AEDC_bounce_n_trounce[i]->model[1],
+                                       Hu3DData[D_8010AEDC_bounce_n_trounce[i]->motion[5]].motId, 0, 6, 0);
+                }
+            }
+            D_8010AECA_bounce_n_trounce = 6;
+            break;
+        case 3:
+            player = D_8010AEDC_bounce_n_trounce[D_8010AEBE_bounce_n_trounce];
+            D_8010AEB8_bounce_n_trounce = 1350.0f;
+            dist = HuSqrtf(player->trans.x * player->trans.x + player->trans.z * player->trans.z);
+            if (dist > 560.0f && (player->trans.z > 0.0f || player->trans.x > 0.0f)) {
+                D_8010AEB8_bounce_n_trounce += (dist - 560.0f) / 113.0f * 400.0f;
+            }
+            D_8010AEB4_bounce_n_trounce = (D_8010AEB8_bounce_n_trounce - CZoom) / 30.0f;
+            Hu3DMotionShiftSet(D_8010AEDC_bounce_n_trounce[D_8010AEBE_bounce_n_trounce]->model[1],
+                               Hu3DData[D_8010AEDC_bounce_n_trounce[D_8010AEBE_bounce_n_trounce]->motion[2]].motId, 0,
+                               6, 0);
+            D_8010AECA_bounce_n_trounce = 4;
+            break;
+        case 4:
+            CZoom += D_8010AEB4_bounce_n_trounce;
+            if (CZoom < D_8010AEB8_bounce_n_trounce) {
+                CZoom = D_8010AEB8_bounce_n_trounce;
+                D_8010AECA_bounce_n_trounce = 5;
+            }
+            if (D_8010AD8A_bounce_n_trounce != 0) {
+                break;
+            }
+            player = D_8010AEDC_bounce_n_trounce[D_8010AEBE_bounce_n_trounce];
+            if (player->rot.y >= 360.0f) {
+                player->rot.y -= 360.0f;
+            }
+            if (player->rot.y < 0.0f) {
+                player->rot.y += 360.0f;
+            }
+            diff = CRot.y + 0.0f - player->rot.y;
+            if (diff < 0.0f) {
+                diff += 360.0f;
+            }
+            if (diff < 180.0f) {
+                if (diff > 8.0f) {
+                    player->rot.y += 8.0f;
+                } else {
+                    player->rot.y += diff;
+                }
+            } else if (360.0f - diff > 8.0f) {
+                player->rot.y -= 8.0f;
+            } else {
+                player->rot.y -= 360.0f - diff;
+            }
+            Hu3DModelRotSet(player->model[1], player->rot.x, player->rot.y, player->rot.z);
+            if (fabs(player->rot.y - (CRot.y + 0.0f)) < 0.1f) {
+                Hu3DMotionShiftSet(player->model[1], Hu3DData[player->motion[1]].motId, 0, 6, 0);
+                D_8010AD8A_bounce_n_trounce = 1;
+            }
+            break;
+        case 5:
+            Hu3DMotionShiftSet(D_8010AEDC_bounce_n_trounce[D_8010AEBE_bounce_n_trounce]->model[1],
+                               Hu3DData[D_8010AEDC_bounce_n_trounce[D_8010AEBE_bounce_n_trounce]->motion[4]].motId, 0,
+                               6, 0);
+            func_800E6F0C_minigame(4);
+            func_80045ED0_main(D_800A178C_main[GwPlayer[D_8010AEBE_bounce_n_trounce].chr][0] | 0x2F);
+            GwPlayer[D_8010AEBE_bounce_n_trounce].bonusCoin = 10;
+            D_8010AECA_bounce_n_trounce = 6;
+            break;
+        case 6:
+            omDelObj(object);
+            D_8010AEC4_bounce_n_trounce = NULL;
+            break;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_18_bounce_n_trounce/1CC730", func_80109F68_bounce_n_trounce);
+#endif
 
 void func_8010A664_bounce_n_trounce(omObjData *object) {
     f32 maxY;

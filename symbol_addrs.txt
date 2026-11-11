@@ -2464,3 +2464,7 @@ D_8010C310_the_beat_goes_on = 0x8010C310; //rom:0x204E40 size:0x1 type:s8 segmen
 D_8010C311_the_beat_goes_on = 0x8010C311; //rom:0x204E41 size:0x1 type:s8 segment:the_beat_goes_on
 D_8010AD84_bounce_n_trounce = 0x8010AD84; //rom:0x1D1B14 size:0x2 type:u16 segment:bounce_n_trounce
 D_8010AD86_bounce_n_trounce = 0x8010AD86; //rom:0x1D1B16 size:0x2 type:u16 segment:bounce_n_trounce
+D_8010AD88_bounce_n_trounce = 0x8010AD88; //rom:0x1D1B18 size:0x2 type:u16 segment:bounce_n_trounce
+D_8010AD8A_bounce_n_trounce = 0x8010AD8A; //rom:0x1D1B1A size:0x2 type:u16 segment:bounce_n_trounce
+D_8010AEB0_bounce_n_trounce = 0x8010AEB0; //size:0x2 type:u16 segment:bounce_n_trounce
+D_8010AEB2_bounce_n_trounce = 0x8010AEB2; //size:0x2 type:u16 segment:bounce_n_trounce

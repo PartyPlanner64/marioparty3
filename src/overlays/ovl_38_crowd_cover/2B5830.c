@@ -1265,8 +1265,8 @@ void func_8010949C_crowd_cover(Gfx **gfx, HuSprite_Unk84_Unk00_Struct *cel, u8 f
 }
 
 #ifdef NON_MATCHING
-// The 0x80000000 flag test is computed with srl instead of slti, and unk_1B/unk_1C are read with lb instead of lbu
-// (switching them to u8 matches the loads but swaps the siz/count registers).
+// unk_1B/unk_1C are read with lb instead of lbu (switching them to u8 matches the loads but swaps the siz/count
+// registers, same as func_80109718_popgun_pickoff).
 s16 func_8010980C_crowd_cover(UnkCrowdCover *crowd) {
     HuSprite_Unk84_Unk00_Struct segCel;
     Gfx *gfx;
@@ -1403,7 +1403,7 @@ s16 func_8010980C_crowd_cover(UnkCrowdCover *crowd) {
     gDPPipeSync(gfx++);
     segCel = *cel;
     segCel.unk00 = (void *)0x0C000000;
-    if (crowd->unk_28 < 0 && count == 1 && remainder == 0) {
+    if ((u32)crowd->unk_28 >= 0x80000000 && count == 1 && remainder == 0) {
         func_8010949C_crowd_cover(&gfx, &segCel, fmt, siz, rows, 0, 0, cel->unk04 - 1, cel->unk06 - 1, cms, cmt, masks,
                                   maskt, mode);
         gSPVertex(gfx++, (Vtx *)0x0E000000, 5, 0);

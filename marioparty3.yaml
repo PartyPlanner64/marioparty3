@@ -724,6 +724,8 @@ segments:
       - [0xD28F0, c]
       - [0xD3450, c]
       - [0xD5B20, c]
+      - [0xD6B00, c]
+      - [0xD8250, c]
       - [0xDBE50, c]
       - [0xDC0D0, c]
       - [0xDC4E0, c]
@@ -747,6 +749,9 @@ segments:
       - [0xEA220, .rodata, C9330]
       - [0xEA228, .rodata, CA640]
       - [0xEA330, .rodata, D5B20]
+      - [0xEA348, pad, pad_EA348] # zero padding: D6B00's rodata is 16-byte aligned (li.d literals), but subalign is 8
+      - [0xEA350, .rodata, D6B00]
+      - [0xEA370, .rodata, D8250]
       - [0xEA488, .rodata, DC4E0]
       - [0xEA4F8, .rodata, DFD60]
       - [0xEA5C8, .rodata, E3CD0]

@@ -1,10 +1,12 @@
 #include "common.h"
 #include "game/hmfmath.h"
 #include "game/mallocblock.h"
+#include "game/pause.h"
 #include "gcc/memory.h"
 #include "overlays/minigame.h"
 
 extern s32 D_800A178C_main[][6];
+extern u8 D_800D6A90_main;
 extern f32 D_800EB724_minigame;
 extern u16 D_800EC288_minigame;
 extern Vec D_800EC298_minigame[];
@@ -18,6 +20,8 @@ extern s32 D_8010975C_boulder_ball;
 extern s32 D_80109744_boulder_ball[4];
 extern f32 D_80109754_boulder_ball;
 extern D_80111B50_vine_with_me_Struct D_80109760_boulder_ball;
+extern f32 D_80109798_boulder_ball;
+extern s32 D_801097A0_boulder_ball;
 extern f32 D_801097A4_boulder_ball[4];
 extern s32 D_80109758_boulder_ball;
 extern s32 D_80109794_boulder_ball;
@@ -28,6 +32,9 @@ extern s32 D_801097CC_boulder_ball;
 extern s32 D_801097D0_boulder_ball;
 extern f32 D_801097D4_boulder_ball[8];
 extern s32 D_801097F4_boulder_ball;
+extern f32 D_80109880_boulder_ball;
+extern f32 D_80109884_boulder_ball;
+extern f32 D_80109888_boulder_ball;
 extern s32 D_8010988C_boulder_ball;
 extern s32 D_80109890_boulder_ball;
 extern s32 D_80109894_boulder_ball;
@@ -36,6 +43,9 @@ extern s32 D_8010989C_boulder_ball;
 extern omObjData *D_801098A0_boulder_ball;
 extern omObjData *D_801098A4_boulder_ball;
 
+void func_80105E74_boulder_ball(omObjData *object);
+void func_80105EA0_boulder_ball(void);
+void func_801060D0_boulder_ball(void);
 void func_80106410_boulder_ball(omObjData *object);
 void func_80106B58_boulder_ball(omObjData *object);
 void func_80106C8C_boulder_ball(omObjData *object);
@@ -48,6 +58,7 @@ void func_80107A20_boulder_ball(omObjData *object);
 void func_80107B0C_boulder_ball(omObjData *object);
 void func_80107C08_boulder_ball(omObjData *object);
 void func_80108000_boulder_ball(omObjData *object);
+void func_80108798_boulder_ball(omObjData *object);
 void func_801083D8_boulder_ball(omObjData *object);
 void func_80108A08_boulder_ball(omObjData *object);
 s32 func_80108CF4_boulder_ball(omObjData *object);
@@ -209,7 +220,145 @@ void func_801060D0_boulder_ball(void) {
     Hu3DModelRotSet(D_801098A4_boulder_ball->model[1], 0.0f, D_801098A4_boulder_ball->rot.y, 0.0f);
 }
 
+#ifdef NON_MATCHING
+void func_80106410_boulder_ball(omObjData *object) {
+    func_800E1BA8_minigame_ObjData *data;
+    func_800E1BA8_minigame_ObjData *work;
+    omObjData *player;
+    f32 velocity;
+    f32 speedSq;
+    f32 y;
+    s32 i;
+    s32 j;
+
+    if (omPauseChk() + D_800D6A90_main != 0) {
+        return;
+    }
+    func_800E6E9C_minigame();
+    switch (func_800E6F40_minigame()) {
+        case 0:
+            func_801060D0_boulder_ball();
+            break;
+        case 2:
+            func_80105EA0_boulder_ball();
+            break;
+        case 3:
+            if (D_801097A0_boulder_ball == 0) {
+                D_801098A4_boulder_ball->func = func_80108798_boulder_ball;
+                func_800E131C_minigame(D_800EC1C0_minigame[0], 0.0f);
+                for (i = 0; i < D_800EC1B8_minigame; i++) {
+                    func_8001C258_main(D_800EBE70_minigame[i]->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    func_8001C258_main(D_800EBE70_minigame[i]->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    if (D_80109744_boulder_ball[i] != -1) {
+                        HuAudFXStop((s16)D_80109744_boulder_ball[i]);
+                        D_80109744_boulder_ball[i] = -1;
+                    }
+                }
+                if (D_8010975C_boulder_ball == 0) {
+                    D_80109760_boulder_ball.unk06 = 0;
+                    D_80109760_boulder_ball.unk18[0] = D_8010989C_boulder_ball;
+                    func_8001C258_main(D_801098A4_boulder_ball->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    func_8001C258_main(D_801098A4_boulder_ball->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    func_800E5798_minigame(D_801098A4_boulder_ball, 6);
+                    work = D_801098A4_boulder_ball->data;
+                    work->unk38 = -D_800EB744_minigame;
+                } else {
+                    D_80109760_boulder_ball.unk06 = 2;
+                    for (j = 0, i = 0; i < 4; i++) {
+                        if (D_8010989C_boulder_ball != i) {
+                            D_80109760_boulder_ball.unk18[j++] = i;
+                        }
+                    }
+                }
+                D_80109880_boulder_ball = (CRot.x - 340.0f) / 60.0f;
+                D_80109884_boulder_ball = (Center.y - 700.0f) / 60.0f;
+                D_80109888_boulder_ball = (Center.z - -800.0f) / 60.0f;
+                D_801097A0_boulder_ball = 1;
+            }
+            for (i = 0; i < 3; i++) {
+                player = D_800EC598_minigame[i];
+                work = player->data;
+                work->unk3C *= 0.8f;
+            }
+            D_801098A4_boulder_ball->rot.y *= 0.8f;
+            if (D_8010975C_boulder_ball == 0) {
+                CRot.x -= D_80109880_boulder_ball;
+                if (CRot.x < 340.0f) {
+                    CRot.x = 340.0f;
+                }
+                Center.y -= D_80109884_boulder_ball;
+                if (Center.y > 700.0f) {
+                    Center.y = 700.0f;
+                }
+                Center.z -= D_80109888_boulder_ball;
+                if (Center.z < -800.0f) {
+                    Center.z = -800.0f;
+                }
+            }
+            break;
+        case 4:
+            if (D_800EB934_minigame == 1) {
+                if (D_8010975C_boulder_ball == 1) {
+                    for (i = 0; i < 3; i++) {
+                        player = D_800EC598_minigame[i];
+                        data = player->data;
+                        func_800E5798_minigame(player, 0xD);
+                        func_80045ED0_main(D_800A178C_main[GwPlayer[data->unk59].chr][0] | 0x2F);
+                        GwPlayer[data->unk59].bonusCoin += 10;
+                    }
+                } else {
+                    GwPlayer[D_8010989C_boulder_ball].bonusCoin += 10;
+                    for (i = 0; i < 3; i++) {
+                        func_800E5798_minigame(D_800EC598_minigame[i], 0xE);
+                    }
+                    func_800E5798_minigame(D_801098A4_boulder_ball, 0xD);
+                    func_80045ED0_main(D_800A178C_main[GwPlayer[D_8010989C_boulder_ball].chr][0] | 0x2F);
+                }
+            }
+            break;
+        case 5:
+            WipeCreateOut(WIPE_TYPE_NORMAL, 20);
+            object->func = func_80105E74_boulder_ball;
+            break;
+    }
+    for (i = 0; i < D_800EC280_minigame; i++) {
+        work = D_800EC598_minigame[i]->data;
+        work->unk60 = CRot.y;
+    }
+    if (D_800D530C_main == 1) {
+        WipeCreateOut(WIPE_TYPE_NORMAL, 20);
+        HuAudSeqFadeOut(30);
+        func_8004AB0C_main(30);
+        object->func = func_80105E74_boulder_ball;
+    }
+    if (D_80109754_boulder_ball != 1000.0f) {
+        velocity = D_80109754_boulder_ball;
+        if (velocity > D_800EB774_minigame) {
+            velocity = D_800EB774_minigame;
+        }
+        speedSq = velocity * velocity;
+        if (D_80109754_boulder_ball >= 0.0f) {
+            y = speedSq * -36.75f;
+        } else {
+            y = speedSq * 36.75f;
+        }
+        y += D_80109798_boulder_ball;
+        D_80109798_boulder_ball = y;
+        D_80109754_boulder_ball = velocity = D_80109754_boulder_ball + D_800EB748_minigame;
+        if (y < 0.0f) {
+            D_80109798_boulder_ball = 0.0f;
+            if (velocity > 0.5f) {
+                D_80109754_boulder_ball = -velocity * 0.5f;
+            } else {
+                D_80109754_boulder_ball = 1000.0f;
+            }
+        }
+        Hu3DModelPosSet(object->model[1], 0.0f, D_80109798_boulder_ball, 0.0f);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_04_boulder_ball/12DD30", func_80106410_boulder_ball);
+#endif
 
 void func_80106B58_boulder_ball(omObjData *object) {
     D_800EC1C0_minigame_ObjData *work;

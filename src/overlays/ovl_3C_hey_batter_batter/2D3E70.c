@@ -2,10 +2,19 @@
 #include "game/audio.h"
 #include "game/camera.h"
 #include "game/camsetup.h"
+#include "game/effect.h"
 #include "game/esprite.h"
+#include "game/gamemes.h"
+#include "game/hmfparticle.h"
+#include "game/hmfspr.h"
 #include "game/object.h"
 #include "game/wipe.h"
 #include "math.h"
+
+typedef struct HeyBatterBatterBase {
+    /* 0x00 */ s16 base;
+    /* 0x02 */ s16 shadow;
+} HeyBatterBatterBase; // Size 0x4
 
 typedef struct HeyBatterBatterCamera {
     /* 0x00 */ f32 zoom;
@@ -14,18 +23,32 @@ typedef struct HeyBatterBatterCamera {
 } HeyBatterBatterCamera; // Size 0x1C
 
 extern HeyBatterBatterCamera D_80109EB4_hey_batter_batter;
+extern u16 D_800A11D0_main[5];
 extern u16 D_800A11DC_main[5];
 
+extern s16 D_80109C40_hey_batter_batter;
+extern s16 D_80109C42_hey_batter_batter;
+extern s16 D_80109C44_hey_batter_batter;
+extern s16 D_80109C46_hey_batter_batter;
+extern Vec D_80109D04_hey_batter_batter[5];
+
 extern s16 D_80109ED0_hey_batter_batter;
+extern s16 D_80109ED4_hey_batter_batter;
 extern s16 D_80109ED6_hey_batter_batter;
+extern s16 D_80109ED8_hey_batter_batter;
+extern s16 D_80109EDA_hey_batter_batter;
+extern s16 D_80109EDE_hey_batter_batter;
 extern s16 D_80109EE0_hey_batter_batter;
 extern s16 D_80109EE2_hey_batter_batter;
 extern s16 D_80109EE4_hey_batter_batter;
 extern s16 D_80109EE6_hey_batter_batter[2];
 extern s16 D_80109EEA_hey_batter_batter[2];
+extern s16 D_80109EEE_hey_batter_batter;
 extern omObjData *D_80109EF4_hey_batter_batter;
 extern s16 D_80109F00_hey_batter_batter[5];
 extern s16 D_80109F0C_hey_batter_batter[5];
+extern HeyBatterBatterBase D_80109F18_hey_batter_batter[5];
+extern s16 D_80109F2C_hey_batter_batter[5];
 
 void func_801059BC_hey_batter_batter(void);
 void func_80105A4C_hey_batter_batter(void);
@@ -42,6 +65,7 @@ void func_801070D8_hey_batter_batter(omObjData *object);
 void func_80107144_hey_batter_batter(omObjData *object);
 void func_801079D0_hey_batter_batter(omObjData *object);
 void func_80108B48_hey_batter_batter(omObjData *object);
+void func_80108D90_hey_batter_batter(omObjData *object);
 void func_8010951C_hey_batter_batter(omObjData *object);
 void func_80109630_hey_batter_batter(omObjData *object);
 s16 func_80109B24_hey_batter_batter(s32 arg0);
@@ -161,7 +185,52 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3C_hey_batter_batter/2D3E70", func_80
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3C_hey_batter_batter/2D3E70", func_801062E0_hey_batter_batter);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3C_hey_batter_batter/2D3E70", func_80106744_hey_batter_batter);
+void func_80106744_hey_batter_batter(omObjData *object) {
+    switch (D_80109C40_hey_batter_batter) {
+        case 0:
+            D_80109C42_hey_batter_batter = 0;
+            D_80109C40_hey_batter_batter = 0;
+            D_80109C44_hey_batter_batter = 0;
+            D_80109C46_hey_batter_batter = 91;
+            D_80109C40_hey_batter_batter = 1;
+            break;
+        case 1:
+            if (D_80109C42_hey_batter_batter++ >= 30) {
+                D_80109EDA_hey_batter_batter = 3;
+                D_80109C40_hey_batter_batter++;
+            }
+            break;
+        case 2:
+            HuAudFXPlay(8);
+            D_80109C44_hey_batter_batter = GMesCreate(0x1A, 3, 150, 160);
+            GMesPosSet(D_80109C44_hey_batter_batter, 150.0f, 160.0f);
+            D_80109C40_hey_batter_batter++;
+            break;
+        case 3:
+            if (D_80109C46_hey_batter_batter-- >= 0) {
+                func_8003F578_main((D_80109C46_hey_batter_batter + 29) / 30);
+            } else {
+                func_8003F5C0_main();
+                D_80109EDA_hey_batter_batter = 4;
+                D_80109C40_hey_batter_batter++;
+            }
+            break;
+        case 4:
+            D_80109ED8_hey_batter_batter = 1;
+            D_80109C40_hey_batter_batter++;
+            break;
+        case 5:
+            if (D_80109EDE_hey_batter_batter == 2) {
+                if ((D_80109ED4_hey_batter_batter == 1 && D_80109C42_hey_batter_batter++ >= 30) ||
+                    D_80109ED4_hey_batter_batter == 2) {
+                    object->func = func_80106048_hey_batter_batter;
+                }
+            }
+            break;
+        case 6:
+            break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3C_hey_batter_batter/2D3E70", func_80106928_hey_batter_batter);
 
@@ -219,7 +288,35 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3C_hey_batter_batter/2D3E70", func_80
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3C_hey_batter_batter/2D3E70", func_80107C48_hey_batter_batter);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3C_hey_batter_batter/2D3E70", func_80108B48_hey_batter_batter);
+void func_80108B48_hey_batter_batter(omObjData *object) {
+    s16 i;
+    HeyBatterBatterBase *base;
+    s16 sprite;
+    s16 model;
+
+    for (i = 0; i < 5; i++) {
+        model = func_8000B108_main(0x5D0006, 0x6A9);
+        base = &D_80109F18_hey_batter_batter[i];
+        base->base = model;
+        Hu3DModelPosSet(base->base, D_80109D04_hey_batter_batter[i].x,
+                        D_80109D04_hey_batter_batter[i].y + 1.0f, D_80109D04_hey_batter_batter[i].z);
+        base->shadow = func_8000B108_main(0x5D0007, 0x2A9);
+        Hu3DModelPosSet(base->shadow, D_80109D04_hey_batter_batter[i].x,
+                        D_80109D04_hey_batter_batter[i].y, D_80109D04_hey_batter_batter[i].z);
+        sprite = SprModelRead(0x21002C, 0xA0, 0x10);
+        model = D_80109F2C_hey_batter_batter[i] = D_800CBB60_main[sprite].modelId;
+        func_8001473C_main(sprite, D_800A11D0_main[i]);
+        Hu3DModelPosSet(model, D_80109D04_hey_batter_batter[i].x, D_80109D04_hey_batter_batter[i].y + 250.0f,
+                        D_80109D04_hey_batter_batter[i].z + 2.0f);
+        Hu3DModelScaleSet(model, 6.0f, 6.0f, 6.0f);
+    }
+    object->model[2] = func_8000B108_main(9, 0x6A9);
+    Hu3DModelCameraSet(object->model[2], 0);
+    object->model[3] = func_8000CED8_main(0xB0004, 0x6A9);
+    func_800138EC_main(object->model[3], 1, 0);
+    D_80109EEE_hey_batter_batter = 0;
+    object->func = func_80108D90_hey_batter_batter;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3C_hey_batter_batter/2D3E70", func_80108D90_hey_batter_batter);
 

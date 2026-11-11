@@ -124,7 +124,7 @@ void func_80014714_main(s16 arg0, u16 arg1) {
     D_800CBB60_main[arg0].nodeIdx = arg1;
 }
 
-void func_8001473C_main(s16 arg0, s16 arg1) {
+void func_8001473C_main(s16 arg0, u16 arg1) {
     D_800CBB60_main[arg0].pointIdx = arg1;
     D_800CBB60_main[arg0].nodeIdx = 0;
     D_800CBB60_main[arg0].unk_08 = 0;

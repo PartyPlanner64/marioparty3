@@ -3,6 +3,7 @@
 #include "overlays/minigame.h"
 
 extern s32 D_800A178C_main[][6];
+extern u8 D_800D2008_main;
 extern omObjData *D_800EBE70_minigame[];
 
 extern f32 D_8010AF8C_treadmill_grill[4];
@@ -16,12 +17,17 @@ extern s32 D_8010B098_treadmill_grill[];
 extern Vec D_8010B378_treadmill_grill[];
 extern s32 D_8010AF80_treadmill_grill;
 extern f32 D_8010AFAC_treadmill_grill;
+extern s32 D_8010B128_treadmill_grill[4][4];
+extern f32 D_8010B168_treadmill_grill[4];
 extern s32 D_8010B178_treadmill_grill;
 extern f32 D_8010B17C_treadmill_grill[4];
 extern s32 D_8010B19C_treadmill_grill;
 extern s32 D_8010B1D4_treadmill_grill;
 extern s32 D_8010B1D8_treadmill_grill;
 extern s32 D_8010B1DC_treadmill_grill;
+extern s32 D_8010B224_treadmill_grill[4];
+extern f32 D_8010B234_treadmill_grill[6];
+extern s16 D_8010B24C_treadmill_grill[6];
 extern s32 D_8010B258_treadmill_grill;
 extern s16 D_8010B310_treadmill_grill[16];
 
@@ -37,6 +43,8 @@ void func_801089E0_treadmill_grill(void);
 void func_80108DE0_treadmill_grill(omObjData *object);
 void func_80108FCC_treadmill_grill(omObjData *object);
 void func_80109108_treadmill_grill(omObjData *object);
+s32 func_8010AA2C_treadmill_grill(f32 x, f32 z);
+s32 func_8010AB9C_treadmill_grill(f32 z);
 
 void func_801059A0_treadmill_grill(void) {
     u8 camIndex;
@@ -267,8 +275,29 @@ void func_80108888_treadmill_grill(omObjData *object) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_801089E0_treadmill_grill);
+void func_80108C64_treadmill_grill(omObjData *object, f32 x, f32 y, f32 z) {
+    s32 player;
+    f32 scale;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_80108C64_treadmill_grill);
+    player = ((func_800E1BA8_minigame_ObjData *)object->data)->unk59;
+    for (i = 0; i < 4; i++) {
+        if (D_8010B128_treadmill_grill[player][i] >= 0) {
+            if (D_8010B128_treadmill_grill[player][i] == 0) {
+                Hu3DModelPosSet(object->model[10 + i], x, y + 30.0f, z);
+                func_8001C258_main(object->model[10 + i], 4, 0);
+            }
+            if (D_8010B128_treadmill_grill[player][i] < 8) {
+                scale = D_8010B168_treadmill_grill[D_8010B128_treadmill_grill[player][i] / 2];
+                Hu3DModelScaleSet(object->model[10 + i], scale, scale, 1.0f);
+            }
+            if (D_8010B128_treadmill_grill[player][i] >= 8) {
+                D_8010B128_treadmill_grill[player][i] = -1;
+            }
+        }
+        D_8010B128_treadmill_grill[player][i]++;
+    }
+}
 
 void func_80108DE0_treadmill_grill(omObjData *object) {
     A96F0_ObjData *data;
@@ -331,7 +360,23 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_8010
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_80109FA8_treadmill_grill);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_8010A548_treadmill_grill);
+void func_8010A548_treadmill_grill(void) {
+    f32 speed;
+    s32 index;
+    s32 i;
+
+    HuAudFXPlay(0x39C);
+    for (i = 0; i < 4; i++) {
+        while (D_8010B1B4_treadmill_grill[i] == (speed = D_8010B234_treadmill_grill[index = (u8)(rand8() % 6)]) * 0.5f) {}
+        D_8010B17C_treadmill_grill[i] = (speed - D_8010B1B4_treadmill_grill[i]) / 20.0f;
+        D_8010B1C4_treadmill_grill[i] = (speed - D_8010B1B4_treadmill_grill[i]) / 20.0f;
+        if (D_8010B224_treadmill_grill[i] >= 0) {
+            HuAudFXPitchSet((s16)D_8010B224_treadmill_grill[i], D_8010B24C_treadmill_grill[index]);
+        }
+    }
+    D_8010B1D8_treadmill_grill = 20;
+    D_8010B1D4_treadmill_grill = 0;
+}
 
 void func_8010A6A4_treadmill_grill(void) {
     s32 i;
@@ -359,11 +404,71 @@ void func_8010A9AC_treadmill_grill(s32 arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_8010AA2C_treadmill_grill);
+s32 func_8010AA2C_treadmill_grill(f32 x, f32 z) {
+    s32 lane = -1;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_8010AB9C_treadmill_grill);
+    if (x <= 550.0f && x >= -550.0f) {
+        if (z <= 150.0f && z > -150.0f) {
+            lane = 0;
+        } else if (z <= -150.0f && z > -450.0f) {
+            lane = 1;
+        } else if (z <= -450.0f && z > -750.0f) {
+            lane = 2;
+        } else {
+            lane = 3;
+        }
+    }
+    return lane;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_8010ACBC_treadmill_grill);
+s32 func_8010AB9C_treadmill_grill(f32 z) {
+    if (z <= 150.0f && z > -150.0f) {
+        return 0;
+    }
+    if (z <= -150.0f && z > -450.0f) {
+        return 1;
+    }
+    if (z <= -450.0f && z > -750.0f) {
+        return 2;
+    }
+    return 3;
+}
+
+void func_8010ACBC_treadmill_grill(omObjData *object) {
+    HmfData *hmf;
+    HmfVertexGroup *group;
+    Vtx *dst;
+    Vtx *src;
+    s32 i;
+    s32 j;
+    s32 k;
+    f32 scale;
+
+    for (i = 0; i < 4; i++) {
+        hmf = Hu3DData[object->model[i]].hmf;
+        scale = D_8010AF8C_treadmill_grill[i] / 1000.0f;
+        for (j = 0; j < hmf->unk1A; j++) {
+            group = &hmf->unkB0[j];
+            if (group->normal[1] == 127) {
+                for (k = 0; k < group->count; k++) {
+                    dst = &hmf->unk44[D_800D2008_main][group->indices[k]];
+                    src = &hmf->unk40[group->indices[k]];
+                    if (src->v.ob[0] > 0) {
+                        dst->v.ob[0] = D_8010AF8C_treadmill_grill[i] * 0.5f;
+                    } else {
+                        dst->v.ob[0] = -D_8010AF8C_treadmill_grill[i] * 0.5f;
+                    }
+                }
+            } else {
+                for (k = 0; k < group->count; k++) {
+                    dst = &hmf->unk44[D_800D2008_main][group->indices[k]];
+                    src = &hmf->unk40[group->indices[k]];
+                    dst->v.ob[0] = src->v.ob[0] * scale;
+                }
+            }
+        }
+    }
+}
 
 void func_8010AE6C_treadmill_grill(omObjData *arg0) {
     HmfData *hmf;

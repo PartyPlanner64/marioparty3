@@ -4,6 +4,8 @@
 #include "gcc/memory.h"
 #include "overlays/minigame.h"
 
+#define ABS(x) ((x) > 0.0f ? (x) : 0.0f - (x))
+
 // Per-object data allocated for each entry of D_80109B00_all_fired_up, stored at omObjData->data
 typedef struct {
     /* 0x00 */ s8 unk00; // Index into D_80109B00_all_fired_up
@@ -22,22 +24,32 @@ typedef struct {
 // Per-player work allocated in func_80107DA4_all_fired_up, stored at func_800E1BA8_minigame_ObjData->unk158
 typedef struct {
     /* 0x00 */ f32 unk00;
-    /* 0x04 */ s32 unk04;
+    /* 0x04 */ f32 unk04;
     /* 0x08 */ s16 unk08;
     /* 0x0C */ f32 unk0C;
 } AllFiredUpPlayerWork; // Size 0x10
 
+extern s32 D_800A178C_main[][6];
 extern u8 D_800D6A90_main;
+
+extern u8 D_80109930_all_fired_up[][4];
+extern Vec D_80109990_all_fired_up[];
+extern s16 D_801099C0_all_fired_up[];
+extern s8 D_801099C8_all_fired_up;
 
 extern s32 D_801099F8_all_fired_up;
 extern s8 D_801099C9_all_fired_up;
 extern s8 D_801099FC_all_fired_up;
+extern s8 D_80109A05_all_fired_up;
 extern s32 D_80109A18_all_fired_up[][4];
 extern f32 D_80109A58_all_fired_up[];
+extern s32 D_80109AC0_all_fired_up;
+extern s8 D_80109AC5_all_fired_up;
 extern D_80111B50_vine_with_me_Struct D_80109AC8_all_fired_up;
 extern u8 D_80109AF0_all_fired_up;
 extern s16 D_80109AF2_all_fired_up[];
 extern omObjData *D_80109B00_all_fired_up[];
+extern Vec D_80109B58_all_fired_up[];
 extern s8 D_80109C54_all_fired_up;
 extern u8 D_80109C58_all_fired_up;
 extern s8 D_80109C59_all_fired_up;
@@ -47,7 +59,17 @@ void func_80105CE8_all_fired_up(void);
 void func_80105E1C_all_fired_up(omObjData *object);
 void func_80105F5C_all_fired_up(void);
 void func_80106348_all_fired_up(omObjData *object);
+void func_80106584_all_fired_up(omObjData *object);
+void func_801067CC_all_fired_up(omObjData *object);
+void func_801068F8_all_fired_up(void);
+void func_80106CDC_all_fired_up(omObjData *object);
+void func_80106F04_all_fired_up(omObjData *object);
+void func_80107440_all_fired_up(omObjData *object);
+void func_80107578_all_fired_up(omObjData *object);
+void func_80107BD4_all_fired_up(omObjData *object);
 void func_80107DA4_all_fired_up(omObjData *object);
+void func_801080C8_all_fired_up(omObjData *object);
+void func_80108958_all_fired_up(omObjData *object);
 void func_801097B0_all_fired_up(omObjData *object);
 
 void func_801059A0_all_fired_up(void) {
@@ -167,9 +189,96 @@ void func_80105E1C_all_fired_up(omObjData *object) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_29_all_fired_up/23C8F0", func_80105F5C_all_fired_up);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_29_all_fired_up/23C8F0", func_80106348_all_fired_up);
+void func_80106348_all_fired_up(omObjData *object) {
+    AllFiredUpWork *work;
+    s16 model;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_29_all_fired_up/23C8F0", func_80106584_all_fired_up);
+    object->func = func_80106584_all_fired_up;
+    work = object->data = HuMemAllocTag(sizeof(AllFiredUpWork), TAG_OVERLAY);
+    memset(work, 0, sizeof(AllFiredUpWork));
+    work->unk00 = D_80109AC0_all_fired_up;
+    work->unk04 = 0.0f;
+    work->unk08 = 0.0f;
+    work->unk1C = 0;
+    work->unk0C = 0.0f;
+    work->unk14 = 0.0f;
+    work->unk10 = 0.0f;
+    work->unk18 = 1.0f;
+    work->unk38 = 0;
+    object->trans.x = D_80109B58_all_fired_up[work->unk00].x;
+    object->trans.y = D_80109B58_all_fired_up[work->unk00].y;
+    object->trans.z = D_80109B58_all_fired_up[work->unk00].z;
+    object->scale.x = object->scale.y = object->scale.z = 1.2f;
+    model = object->model[0] = func_8000B108_main(0xA008A, 0xAA9);
+    if (work->unk00 == 0) {
+        Hu3DAnimRead(Hu3DData[model].hmf, 0xA008C, "c201n_00_DEF");
+    } else {
+        Hu3DAnimLink(Hu3DData[model].hmf, 0, 0, "c201n_00_DEF");
+    }
+    Hu3DModelRemakeStatic(model);
+    func_8001C514_main(model);
+    object->model[1] = func_8000B108_main(0x4A0004, 0x2D9);
+    Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
+    if (work->unk00 >= 15) {
+        func_8001C258_main(object->model[0], 4, 4);
+        func_8001C258_main(object->model[1], 4, 4);
+    }
+    D_80109AC0_all_fired_up++;
+}
+
+void func_80106584_all_fired_up(omObjData *object) {
+    AllFiredUpWork *work;
+
+    if (omPauseChk() + D_800D6A90_main == 0) {
+        work = object->data;
+        switch (func_800E6E8C_minigame()) {
+            case 0:
+                func_801067CC_all_fired_up(object);
+                break;
+            case 2:
+                if (D_801099C9_all_fired_up - 1 >= work->unk00) {
+                    func_80107BD4_all_fired_up(object);
+                }
+                if (work->unk00 == 0) {
+                    func_801068F8_all_fired_up();
+                }
+                switch (D_801099C8_all_fired_up) {
+                    case 0:
+                        func_80106CDC_all_fired_up(object);
+                        break;
+                    case 1:
+                        func_80106F04_all_fired_up(object);
+                        break;
+                    case 2:
+                        func_80107440_all_fired_up(object);
+                        break;
+                    case 3:
+                        func_80107578_all_fired_up(object);
+                        break;
+                }
+                break;
+            case 3:
+                object->scale.x -= 0.05f;
+                if (object->scale.x < 0.0f) {
+                    object->scale.x = 0.0f;
+                }
+                object->scale.y -= 0.05f;
+                if (object->scale.y < 0.0f) {
+                    object->scale.y = 0.0f;
+                }
+                object->scale.z -= 0.05f;
+                if (object->scale.z < 0.0f) {
+                    object->scale.z = 0.0f;
+                }
+                work->unk08 -= 0.05f;
+                if (work->unk08 < 0.0f) {
+                    work->unk08 = 0.0f;
+                }
+                Hu3DModelScaleSet(object->model[1], work->unk08, work->unk08, work->unk08);
+                break;
+        }
+    }
+}
 
 void func_801067CC_all_fired_up(omObjData *object) {
     AllFiredUpWork *work = object->data;
@@ -234,7 +343,33 @@ void func_80106C68_all_fired_up(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_29_all_fired_up/23C8F0", func_80106CDC_all_fired_up);
+void func_80106CDC_all_fired_up(omObjData *object) {
+    AllFiredUpWork *work = object->data;
+
+    if (D_801099C9_all_fired_up >= work->unk00) {
+        if (object->trans.y > 0.0f) {
+            object->trans.y -= 10.0f;
+            if (object->trans.y < 0.0f) {
+                object->trans.y = 0.0f;
+            }
+            work->unk10 = 0.0f;
+            work->unk08 += 0.1f;
+            if (work->unk08 > 1.0f) {
+                work->unk08 = 1.0f;
+            }
+            Hu3DModelScaleSet(object->model[1], work->unk08, work->unk08, work->unk08);
+        }
+        if (func_800E6E9C_minigame() % 15 == 0) {
+            work->unk0C = (rand8() % 180) * 2;
+        }
+        if (HuSqrtf(object->trans.x * object->trans.x + object->trans.z * object->trans.z) >= 700.0f) {
+            work->unk0C = atan2df(-object->trans.x, -object->trans.z);
+        }
+        object->trans.x += sindf(work->unk0C) * 5.0f * work->unk18;
+        object->trans.z += cosdf(work->unk0C) * 5.0f * work->unk18;
+        Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
+    }
+}
 
 void func_80106F04_all_fired_up(omObjData *object) {
     AllFiredUpWork *work = object->data;
@@ -272,15 +407,131 @@ void func_80107440_all_fired_up(omObjData *object) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_29_all_fired_up/23C8F0", func_80107578_all_fired_up);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_29_all_fired_up/23C8F0", func_80107BD4_all_fired_up);
+void func_80107BD4_all_fired_up(omObjData *object) {
+    func_800E1BA8_minigame_ObjData *data;
+    omObjData *player;
+    f32 dx;
+    f32 dz;
+    f32 hitRange = 66.0f;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_29_all_fired_up/23C8F0", func_80107DA4_all_fired_up);
+    for (i = 0; i < 4; i++) {
+        player = D_800EC598_minigame[i];
+        data = player->data;
+        if (player->work[0] != 0) {
+            continue;
+        }
+        dx = ABS(player->trans.x - object->trans.x);
+        dz = ABS(player->trans.z - object->trans.z);
+        if (dx < hitRange && dz < hitRange) {
+            if (player->trans.y < object->trans.y + 36.0f && player->trans.y + 150.0f > object->trans.y - 36.0f) {
+                player->work[0] = 1;
+                D_801099C0_all_fired_up[data->unk59] = func_800E6E9C_minigame();
+                func_8004AC98_main(0x440, data->unk59);
+                PlayerFXPlay(0x286, data->unk59);
+                omVibrate(data->unk59, 2, 2, 20);
+            }
+        }
+    }
+}
+
+void func_80107DA4_all_fired_up(omObjData *object) {
+    func_800E1BA8_minigame_ObjData *data;
+    AllFiredUpPlayerWork *work;
+    s8 chr;
+    s32 model;
+    s32 motion;
+
+    chr = GwPlayer[D_80109A05_all_fired_up].chr;
+    model = D_800A178C_main[chr][0];
+    motion = D_800A178C_main[chr][1];
+    func_800E19F0_minigame(1);
+    func_800E1BA8_minigame(object, model, motion, D_80109A05_all_fired_up, 0x2C9, 0x2D9);
+    data = object->data;
+    data->unk158 = HuMemAllocTag(sizeof(AllFiredUpPlayerWork), TAG_OVERLAY);
+    memset(data->unk158, 0, sizeof(AllFiredUpPlayerWork));
+    work = data->unk158;
+    work->unk04 = 0.0f;
+    work->unk00 = 1.0f;
+    work->unk08 = 0;
+    work->unk0C = 0.0f;
+    object->rot.x = object->rot.y = object->rot.z = work->unk0C;
+    object->scale.x = object->scale.y = object->scale.z = 1.2f;
+    object->work[0] = 0;
+    D_80109AC5_all_fired_up = D_80109930_all_fired_up[D_80109AF0_all_fired_up][D_80109A05_all_fired_up];
+    object->trans.x = D_80109990_all_fired_up[D_80109AC5_all_fired_up].x;
+    object->trans.y = D_80109990_all_fired_up[D_80109AC5_all_fired_up].y;
+    object->trans.z = D_80109990_all_fired_up[D_80109AC5_all_fired_up].z;
+    func_800E149C_minigame(object, 0, 2);
+    Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
+    Hu3DModelScaleSet(object->model[1], object->scale.x, object->scale.y, object->scale.z);
+    func_800E5A00_minigame(object, 0, func_80017BB8_main(chr, 0), 1, 0);
+    func_800E5A00_minigame(object, 1, func_80017BB8_main(chr, 1), 1, 0);
+    func_800E5A00_minigame(object, 2, func_80017BB8_main(chr, 2), 1, 0);
+    func_800E5A00_minigame(object, 6, func_80017BB8_main(chr, 4), 1, 19);
+    func_800E5A00_minigame(object, 21, func_80017BB8_main(chr, 0x1F), 0, 0);
+    func_800E5A00_minigame(object, 14, func_80017BB8_main(chr, 0x1A), 1, 0);
+    func_800E5A00_minigame(object, 13, func_80017BB8_main(chr, 0x2F), 1, 120);
+    func_800E5690_minigame(object, 0);
+    func_800E1328_minigame(object, 60.0f);
+    object->func = func_801080C8_all_fired_up;
+    D_80109A05_all_fired_up++;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_29_all_fired_up/23C8F0", func_801080C8_all_fired_up);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_29_all_fired_up/23C8F0", func_801085A4_all_fired_up);
+void func_801085A4_all_fired_up(omObjData *object) {
+    func_800E1BA8_minigame_ObjData *data = object->data;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_29_all_fired_up/23C8F0", func_80108710_all_fired_up);
+    if (func_800E6E9C_minigame() == 20) {
+        data->unk3C = atan2df(object->trans.x, object->trans.z);
+    } else if (func_800E6E9C_minigame() > 20) {
+        if (HuSqrtf(object->trans.x * object->trans.x + object->trans.z * object->trans.z) < 500.0f) {
+            object->trans.x += sindf(data->unk3C) * 10.0f;
+            object->trans.z += cosdf(data->unk3C) * 10.0f;
+            func_800E5690_minigame(object, 2);
+        } else {
+            data->unk3C = atan2df(-object->trans.x, -object->trans.z);
+            func_800E5690_minigame(object, 0);
+        }
+        func_800E4E30_minigame(object);
+    }
+    func_80088910_main(Hu3DData[object->model[0]].mtx, 0.0f, data->unk3C, 0.0f);
+    Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
+}
+
+void func_80108710_all_fired_up(omObjData *object) {
+    AllFiredUpPlayerWork *work;
+
+    func_80108958_all_fired_up(object);
+    if (object->trans.x > 0.0f) {
+        object->trans.x += 28.0f;
+    } else {
+        object->trans.x -= 28.0f;
+    }
+    if (object->trans.z > 0.0f) {
+        object->trans.z -= 28.0f;
+    } else {
+        object->trans.z += 28.0f;
+    }
+    if (ABS(object->trans.x) > 700.0f) {
+        func_800E149C_minigame(object, 0, 1);
+        func_8001C258_main(object->model[1], 4, 4);
+        if (object->trans.y < -2000.0f) {
+            object->work[0] = 3;
+        }
+    }
+    work = ((func_800E1BA8_minigame_ObjData *)object->data)->unk158;
+    if (work->unk04 < 270.0f) {
+        object->trans.y = sindf(work->unk04) * 400.0f;
+        work->unk04 += 6.0f;
+    } else {
+        object->trans.y -= 50.0f;
+    }
+    work->unk00 = 1.0f - sindf(work->unk04) * 0.8f;
+    Hu3DModelScaleSet(object->model[1], work->unk00, work->unk00, work->unk00);
+    Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
+}
 
 void func_80108958_all_fired_up(omObjData *object) {
     s32 player = ((func_800E1BA8_minigame_ObjData *)object->data)->unk59;

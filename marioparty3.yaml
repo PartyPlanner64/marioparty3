@@ -2349,12 +2349,15 @@ segments:
     dir: overlays/mstory3
     name: mstory3
     exclusive_ram_id: minigame # ovl_6D
+    subalign: 4
     bss_size: 0x240
     subsegments:
       - [0x4B29E0, c]
+      - [0x4B4DC0, c]
       - [0x4B9A30, c]
       - [0x4C22A0, data, 4B29E0] #80115260
       - [0x4C2530, .rodata, 4B29E0] #801154F0
+      - [0x4C2594, .rodata, 4B4DC0] #80115554
       - [0x4C2780, .rodata, 4B9A30] #80115740
       - {0x4C2BD0, type: bss, vram: 0x80115B90, name: mstory3_bss}
 

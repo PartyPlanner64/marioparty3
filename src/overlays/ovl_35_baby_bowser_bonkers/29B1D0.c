@@ -8,13 +8,14 @@
 #include "game/data.h"
 #include "game/sprite.h"
 
+#define CAMERA_KEEP 65535.0f
+
 typedef struct UnkBabyBowserBonkers { // 0x12 bytes
     s16 unk_00;
     s16 unk_02;
     s16 unk_04;
     s16 unk_06;
-    s16 unk_08;
-    s16 unk_0A;
+    s16 unk_08[2]; // digit x offsets
     s16 unk_0C;
     s16 unk_0E;
     s16 unk_10;
@@ -89,6 +90,14 @@ typedef struct BabyBowserBonkersPattern {
     BabyBowserBonkersSpawn *unk_08;
 } BabyBowserBonkersPattern;
 
+typedef struct BabyBowserBonkersCamera {
+    Vec center;
+    Vec rot;
+    f32 zoom;
+    f32 unk_1C;
+    f32 unk_20;
+} BabyBowserBonkersCamera;
+
 typedef union BabyBowserBonkersBytes { // packs the top byte of each work word
     u32 word;
     struct {
@@ -136,6 +145,14 @@ extern Vec D_8010B400_baby_bowser_bonkers[14];
 extern f32 D_800EB760_minigame;
 extern BabyBowserBonkersPattern **D_8010B8F8_baby_bowser_bonkers[4];
 extern s32 D_8010B908_baby_bowser_bonkers[4];
+extern s32 D_8010B918_baby_bowser_bonkers[];
+extern s32 D_8010B938_baby_bowser_bonkers;
+extern s32 D_8010B93C_baby_bowser_bonkers;
+extern s32 D_8010B940_baby_bowser_bonkers;
+extern BabyBowserBonkersCamera D_8010BCB0_baby_bowser_bonkers[2]; // target, origin
+extern s32 D_8010BCF8_baby_bowser_bonkers;
+extern s32 D_8010BCFC_baby_bowser_bonkers;
+extern s32 D_8010BD00_baby_bowser_bonkers;
 
 BabyBowserBonkersPlayer *func_8010B3AC_baby_bowser_bonkers(omObjData *object);
 void func_80109E98_baby_bowser_bonkers(s32, s16);
@@ -147,7 +164,7 @@ void func_8010630C_baby_bowser_bonkers(omObjData *object);
 void func_8010660C_baby_bowser_bonkers(omObjData *object);
 void func_80106AA4_baby_bowser_bonkers(omObjData *object);
 void func_80106CEC_baby_bowser_bonkers(omObjData *object);
-f32 func_8010B148_baby_bowser_bonkers(f32 arg0, f32 arg1, f32 arg2);
+f32 func_8010B148_baby_bowser_bonkers(f32 target, f32 current, f32 step);
 s32 func_80107648_baby_bowser_bonkers(omObjData *object);
 BabyBowserBonkersActor *func_8010919C_baby_bowser_bonkers(s32 arg0);
 void func_801091D4_baby_bowser_bonkers(f32 x, f32 z, BabyBowserBonkersActor **list);
@@ -161,7 +178,7 @@ void func_801076D8_baby_bowser_bonkers(omObjData *obj1, omObjData *obj2, Vec *ve
 void func_80107678_baby_bowser_bonkers(omObjData *arg0, s32 arg1, s32 arg2);
 s32 func_80109080_baby_bowser_bonkers(s32 arg0, s16 arg1, s16 arg2);
 s32 func_801096D0_baby_bowser_bonkers(void);
-void func_8010AD00_baby_bowser_bonkers(f32 x, f32 y, f32 z, f32 arg3, f32 arg4, f32 arg5, f32 arg6, s32 arg7);
+void func_8010AD00_baby_bowser_bonkers(f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom, s32 frames);
 void func_801063B4_baby_bowser_bonkers(void);
 void func_80107CD8_baby_bowser_bonkers(void);
 void func_80107D38_baby_bowser_bonkers(omObjData *object);
@@ -180,6 +197,11 @@ void func_80109890_baby_bowser_bonkers(void);
 void func_80109990_baby_bowser_bonkers(omObjData *object);
 void func_80109BFC_baby_bowser_bonkers(s32 index, s32 chr);
 void func_80109EB8_baby_bowser_bonkers(void);
+void func_8010A6D8_baby_bowser_bonkers(omObjData *object);
+void func_8010AB14_baby_bowser_bonkers(s32 arg0);
+void func_8010AEF0_baby_bowser_bonkers(s32 camIndex);
+f32 func_8010B308_baby_bowser_bonkers(f32 t, f32 start, f32 end);
+f32 func_8010B320_baby_bowser_bonkers(f32 t, f32 start, f32 end);
 
 void func_801059A0_baby_bowser_bonkers(void) {
     omObjData *obj;
@@ -336,7 +358,7 @@ void func_80105C0C_baby_bowser_bonkers(omObjData *object) {
                     player2->unk_04 = 1;
                     HuAudSeqPlay(0x67);
                     func_8010AD00_baby_bowser_bonkers(D_800EC598_minigame[0]->trans.x, D_800EC598_minigame[0]->trans.y + 50.0,
-                                                      D_800EC598_minigame[0]->trans.z, 65535.0f, 65535.0f, 65535.0f,
+                                                      D_800EC598_minigame[0]->trans.z, CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP,
                                                       600.0f, 30);
                 } else if (player1->unk_02 < player2->unk_02) {
                     GMesCreate(0x16, player2->unk_2C);
@@ -347,7 +369,7 @@ void func_80105C0C_baby_bowser_bonkers(omObjData *object) {
                     player2->unk_04 = 0;
                     HuAudSeqPlay(0x67);
                     func_8010AD00_baby_bowser_bonkers(D_800EC598_minigame[1]->trans.x, D_800EC598_minigame[1]->trans.y + 50.0,
-                                                      D_800EC598_minigame[1]->trans.z, 65535.0f, 65535.0f, 65535.0f,
+                                                      D_800EC598_minigame[1]->trans.z, CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP,
                                                       600.0f, 30);
                 } else {
                     GMesCreate(0x20);
@@ -1476,8 +1498,8 @@ void func_80109990_baby_bowser_bonkers(omObjData *object) {
             }
         }
         scale = sindf(entry->unk_10 / 12.0f * 180.0f) * 0.5f + 1.0f;
-        HuSprPosSet(entry->unk_02, 0, entry->unk_04 + entry->unk_08 * scale, entry->unk_06);
-        HuSprPosSet(entry->unk_02, 1, entry->unk_04 + entry->unk_0A * scale, entry->unk_06);
+        HuSprPosSet(entry->unk_02, 0, entry->unk_04 + entry->unk_08[0] * scale, entry->unk_06);
+        HuSprPosSet(entry->unk_02, 1, entry->unk_04 + entry->unk_08[1] * scale, entry->unk_06);
         HuSprScaleSet(entry->unk_02, 0, scale, scale);
         HuSprScaleSet(entry->unk_02, 1, scale, scale);
         if (entry->unk_10 != 0) {
@@ -1486,7 +1508,52 @@ void func_80109990_baby_bowser_bonkers(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_80109BFC_baby_bowser_bonkers);
+void func_80109BFC_baby_bowser_bonkers(s32 index, s32 chr) {
+    UnkBabyBowserBonkers *entry;
+    s32 group;
+    s32 x;
+    s32 y;
+    s32 i;
+
+    entry = &D_8010BCAC_baby_bowser_bonkers[index];
+    entry->unk_00 = func_8010984C_baby_bowser_bonkers(D_8010B918_baby_bowser_bonkers[chr]);
+    group = HuSprGrpCreate(4, 0);
+    entry->unk_02 = group;
+    x = 266;
+    if (index == 0) {
+        x = 56;
+    }
+    y = 30;
+    entry->unk_04 = x + 8;
+    entry->unk_06 = y;
+    entry->unk_08[0] = -6;
+    entry->unk_08[1] = 6;
+    entry->unk_0C = entry->unk_0E = entry->unk_10 = 0;
+    for (i = 0; i < 4; i++) {
+        switch (i) {
+            case 0:
+                HuSprAttrSet(group, i, 0x8000);
+            case 1:
+                HuSprGrpMemberSet(group, i, D_8010BCA8_baby_bowser_bonkers[0], 0);
+                HuSprPosSet(group, i, entry->unk_04 + entry->unk_08[i], y);
+                break;
+            case 2:
+                HuSprGrpMemberSet(group, i, entry->unk_00, 0);
+                HuSprPosSet(group, i, x - 18, y);
+                break;
+            case 3:
+                HuSprGrpMemberSet(group, i, D_8010BCA8_baby_bowser_bonkers[1], 0);
+                HuSprPosSet(group, i, x, y);
+                HuSprScaleSet(group, i, 1.0f, 1.0f);
+                func_80055484_main(group, i, 0, 0, 255, 160);
+                break;
+        }
+        func_800550F4_main(group, i, 0);
+        func_80054FF8_main(group, i, 0);
+        HuSprAttrSet(group, i, 0x1000);
+        HuSprPriSet(group, i, i - 16);
+    }
+}
 
 void func_80109E98_baby_bowser_bonkers(s32 arg0, s16 arg1) {
     s16 *field = &D_8010BCAC_baby_bowser_bonkers[arg0].unk_0E;
@@ -1494,19 +1561,307 @@ void func_80109E98_baby_bowser_bonkers(s32 arg0, s16 arg1) {
     *field = arg1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_80109EB8_baby_bowser_bonkers);
+void func_80109EB8_baby_bowser_bonkers(void) {
+    HuCamera *camera;
+    s32 i;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", D_8010BA00_baby_bowser_bonkers);
+    Center.x = 0.0f;
+    Center.y = -708.8f;
+    Center.z = -781.8f;
+    CRot.x = 318.38f;
+    CRot.y = 0.0f;
+    CRot.z = 0.0f;
+    CZoom = 2938.0f;
+    func_8010AB14_baby_bowser_bonkers(0);
+    func_8010AB14_baby_bowser_bonkers(1);
+    D_8010BD00_baby_bowser_bonkers = 0;
+    D_8010BCFC_baby_bowser_bonkers = 0;
+    D_8010BCF8_baby_bowser_bonkers = 0;
+    omAddObj(31, 0, 0, -1, func_8010A6D8_baby_bowser_bonkers);
+    camera = gCameraList;
+    for (i = 1; i < D_800D1FF0_main; i++) {
+        camera->viewports[i].vp.vscale[0] = camera->viewports[0].vp.vscale[0];
+        camera->viewports[i].vp.vscale[1] = camera->viewports[0].vp.vscale[1];
+        camera->viewports[i].vp.vscale[2] = camera->viewports[0].vp.vscale[2];
+        camera->viewports[i].vp.vtrans[0] = camera->viewports[0].vp.vtrans[0];
+        camera->viewports[i].vp.vtrans[1] = camera->viewports[0].vp.vtrans[1];
+        camera->viewports[i].vp.vtrans[2] = camera->viewports[0].vp.vtrans[2];
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_80109FE8_baby_bowser_bonkers);
+void func_80109FE8_baby_bowser_bonkers(void) {
+    BabyBowserBonkersCamera delta = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, 0.0f };
+    f32 speed;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_8010A6D8_baby_bowser_bonkers);
+    speed = 1.0f;
+    switch (D_8010B938_baby_bowser_bonkers) {
+        case 1:
+            if ((u16)D_800CDA7C_main[0] & A_BUTTON) {
+                speed = 8.0f;
+            }
+            if (D_800CDA7C_main[0] & B_BUTTON) {
+                speed = 0.5f;
+            }
+            if (D_800D5558_main[0] & START_BUTTON) {
+                Center.x = 0.0f;
+                Center.y = 191.2f;
+                Center.z = 0.2f;
+                CRot.x = -14.5f;
+                CRot.y = 0.0f;
+                CRot.z = 0.0f;
+                CZoom = 1069.0f;
+            } else {
+                delta.rot.x = (f32)D_800D20A1_main[0] * 0.125 * speed;
+                delta.rot.y = (f32)D_800CBB6E_main[0] * 0.125 * speed;
+                if (D_800CDA7C_main[0] & L_JPAD) {
+                    delta.center.x = speed * 2.0;
+                }
+                if (D_800CDA7C_main[0] & R_JPAD) {
+                    delta.center.x = -(speed * 2.0);
+                }
+                if (D_800CDA7C_main[0] & U_JPAD) {
+                    delta.center.z = -(speed * 2.0);
+                }
+                if (D_800CDA7C_main[0] & D_JPAD) {
+                    delta.center.z = speed * 2.0;
+                }
+                if (D_800CDA7C_main[0] & U_CBUTTONS) {
+                    delta.center.y = speed * 2.0;
+                }
+                if (D_800CDA7C_main[0] & D_CBUTTONS) {
+                    delta.center.y = -(speed * 2.0);
+                }
+                if (D_800CDA7C_main[0] & R_CBUTTONS) {
+                    delta.zoom = speed * 2.0;
+                }
+                if (D_800CDA7C_main[0] & L_CBUTTONS) {
+                    delta.zoom = -(speed * 2.0);
+                }
+                delta.center.x += Center.x;
+                delta.center.y += Center.y;
+                delta.center.z += Center.z;
+                delta.rot.x += CRot.x;
+                delta.rot.y += CRot.y;
+                delta.rot.z += CRot.z;
+                delta.zoom += CZoom;
+                func_8010AD00_baby_bowser_bonkers(delta.center.x, delta.center.y, delta.center.z, delta.rot.x,
+                                                  delta.rot.y, delta.rot.z, delta.zoom, 1);
+            }
+            sprintf(D_800D5218_main, "CAMERA TEST_MODE");
+            print8((s16)D_8010B93C_baby_bowser_bonkers + 20, (s16)D_8010B940_baby_bowser_bonkers + 80,
+                   D_800D5218_main);
+            sprintf(D_800D5218_main, " CENTER X>%3.3f Y>%3.3f Z>%3.3f ", Center.x, Center.y, Center.z);
+            print8((s16)D_8010B93C_baby_bowser_bonkers + 20, (s16)D_8010B940_baby_bowser_bonkers + 88,
+                   D_800D5218_main);
+            sprintf(D_800D5218_main, " ROT    X>%3.3f Y>%3.3f Z>%3.3f ", CRot.x, CRot.y, CRot.z);
+            print8((s16)D_8010B93C_baby_bowser_bonkers + 20, (s16)D_8010B940_baby_bowser_bonkers + 96,
+                   D_800D5218_main);
+            sprintf(D_800D5218_main, " ZOOM   %3.3f ", CZoom);
+            print8((s16)D_8010B93C_baby_bowser_bonkers + 20, (s16)D_8010B940_baby_bowser_bonkers + 104,
+                   D_800D5218_main);
+            break;
+        case 2:
+            if ((D_800CDA7C_main[0] & R_JPAD) || (D_800CDA7C_main[0] & R_CBUTTONS)) {
+                D_8010B93C_baby_bowser_bonkers++;
+            }
+            if (D_800CDA7C_main[0] & (L_JPAD | L_CBUTTONS)) {
+                D_8010B93C_baby_bowser_bonkers--;
+            }
+            if (D_800CDA7C_main[0] & (D_JPAD | D_CBUTTONS)) {
+                D_8010B940_baby_bowser_bonkers++;
+            }
+            if (D_800CDA7C_main[0] & (U_JPAD | U_CBUTTONS)) {
+                D_8010B940_baby_bowser_bonkers--;
+            }
+            fontcolor = 8;
+            sprintf(D_800D5218_main, "CAMERA TEST_MODE ");
+            print8((s16)D_8010B93C_baby_bowser_bonkers + 20, (s16)D_8010B940_baby_bowser_bonkers + 80,
+                   D_800D5218_main);
+            sprintf(D_800D5218_main, " CENTER X>%3.3f Y>%3.3f Z>%3.3f ", Center.x, Center.y, Center.z);
+            print8((s16)D_8010B93C_baby_bowser_bonkers + 20, (s16)D_8010B940_baby_bowser_bonkers + 88,
+                   D_800D5218_main);
+            sprintf(D_800D5218_main, " ROT    X>%3.3f Y>%3.3f Z>%3.3f ", CRot.x, CRot.y, CRot.z);
+            print8((s16)D_8010B93C_baby_bowser_bonkers + 20, (s16)D_8010B940_baby_bowser_bonkers + 96,
+                   D_800D5218_main);
+            sprintf(D_800D5218_main, " ZOOM   %3.3f ", CZoom);
+            print8((s16)D_8010B93C_baby_bowser_bonkers + 20, (s16)D_8010B940_baby_bowser_bonkers + 104,
+                   D_800D5218_main);
+            break;
+        case 3:
+            D_8010B938_baby_bowser_bonkers = 0;
+            break;
+    }
+    if (D_800D5558_main[0] & R_TRIG) {
+        if (D_8010B938_baby_bowser_bonkers == 1) {
+            osSyncPrintf("CAMERA TEST_MODE \n");
+            osSyncPrintf(" CENTER X>%3.3f Y>%3.3f Z>%3.3f \n", Center.x, Center.y, Center.z);
+            osSyncPrintf(" ROT    X>%3.3f Y>%3.3f Z>%3.3f \n", CRot.x, CRot.y, CRot.z);
+            osSyncPrintf(" ZOOM   %3.3f \n\n", CZoom);
+        }
+        if (D_8010B938_baby_bowser_bonkers++ >= 4) {
+            D_8010B938_baby_bowser_bonkers = 0;
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_8010AB14_baby_bowser_bonkers);
+void func_8010A6D8_baby_bowser_bonkers(omObjData *object) {
+    f32 t;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_8010AD00_baby_bowser_bonkers);
+    if (D_8010BCFC_baby_bowser_bonkers <= 0) {
+        func_8010AEF0_baby_bowser_bonkers(0);
+        D_8010BD00_baby_bowser_bonkers = 0;
+        return;
+    }
+    if (D_8010BCF8_baby_bowser_bonkers == 0) {
+        Center.x = D_8010BCB0_baby_bowser_bonkers[0].center.x;
+        Center.y = D_8010BCB0_baby_bowser_bonkers[0].center.y;
+        Center.z = D_8010BCB0_baby_bowser_bonkers[0].center.z;
+        CRot.x = D_8010BCB0_baby_bowser_bonkers[0].rot.x;
+        CRot.y = D_8010BCB0_baby_bowser_bonkers[0].rot.y;
+        CRot.z = D_8010BCB0_baby_bowser_bonkers[0].rot.z;
+        CZoom = D_8010BCB0_baby_bowser_bonkers[0].zoom;
+        if (CRot.x >= 360.0) {
+            CRot.x -= 360.0;
+        } else if (CRot.x < 0.0) {
+            CRot.x += 360.0;
+        }
+        if (CRot.y >= 360.0) {
+            CRot.y -= 360.0;
+        } else if (CRot.y < 0.0) {
+            CRot.y += 360.0;
+        }
+        if (CRot.z >= 360.0) {
+            CRot.z -= 360.0;
+        } else if (CRot.z < 0.0) {
+            CRot.z += 360.0;
+        }
+        D_8010BCFC_baby_bowser_bonkers = 0;
+    } else {
+        t = (f32)D_8010BCF8_baby_bowser_bonkers / (f32)D_8010BCFC_baby_bowser_bonkers;
+        Center.x = func_8010B308_baby_bowser_bonkers(t, D_8010BCB0_baby_bowser_bonkers[0].center.x,
+                                                     D_8010BCB0_baby_bowser_bonkers[1].center.x);
+        Center.y = func_8010B308_baby_bowser_bonkers(t, D_8010BCB0_baby_bowser_bonkers[0].center.y,
+                                                     D_8010BCB0_baby_bowser_bonkers[1].center.y);
+        Center.z = func_8010B308_baby_bowser_bonkers(t, D_8010BCB0_baby_bowser_bonkers[0].center.z,
+                                                     D_8010BCB0_baby_bowser_bonkers[1].center.z);
+        CRot.x = func_8010B320_baby_bowser_bonkers(t, D_8010BCB0_baby_bowser_bonkers[0].rot.x,
+                                                   D_8010BCB0_baby_bowser_bonkers[1].rot.x);
+        CRot.y = func_8010B320_baby_bowser_bonkers(t, D_8010BCB0_baby_bowser_bonkers[0].rot.y,
+                                                   D_8010BCB0_baby_bowser_bonkers[1].rot.y);
+        CRot.z = func_8010B320_baby_bowser_bonkers(t, D_8010BCB0_baby_bowser_bonkers[0].rot.z,
+                                                   D_8010BCB0_baby_bowser_bonkers[1].rot.z);
+        CZoom = func_8010B308_baby_bowser_bonkers(t, D_8010BCB0_baby_bowser_bonkers[0].zoom,
+                                                  D_8010BCB0_baby_bowser_bonkers[1].zoom);
+        if (CRot.x >= 360.0) {
+            CRot.x -= 360.0;
+        } else if (CRot.x < 0.0) {
+            CRot.x += 360.0;
+        }
+        if (CRot.y >= 360.0) {
+            CRot.y -= 360.0;
+        } else if (CRot.y < 0.0) {
+            CRot.y += 360.0;
+        }
+        if (CRot.z >= 360.0) {
+            CRot.z -= 360.0;
+        } else if (CRot.z < 0.0) {
+            CRot.z += 360.0;
+        }
+        if (D_8010BCF8_baby_bowser_bonkers > 0) {
+            D_8010BCF8_baby_bowser_bonkers--;
+        } else {
+            D_8010BCF8_baby_bowser_bonkers++;
+        }
+    }
+    D_8010BD00_baby_bowser_bonkers = 1;
+    func_8010AEF0_baby_bowser_bonkers(0);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_8010AEF0_baby_bowser_bonkers);
+void func_8010AB14_baby_bowser_bonkers(s32 arg0) {
+    if (CRot.x >= 360.0) {
+        CRot.x -= 360.0;
+    } else if (CRot.x < 0.0) {
+        CRot.x += 360.0;
+    }
+    if (CRot.y >= 360.0) {
+        CRot.y -= 360.0;
+    } else if (CRot.y < 0.0) {
+        CRot.y += 360.0;
+    }
+    if (CRot.z >= 360.0) {
+        CRot.z -= 360.0;
+    } else if (CRot.z < 0.0) {
+        CRot.z += 360.0;
+    }
+    D_8010BCB0_baby_bowser_bonkers[arg0].center.x = Center.x;
+    D_8010BCB0_baby_bowser_bonkers[arg0].center.y = Center.y;
+    D_8010BCB0_baby_bowser_bonkers[arg0].center.z = Center.z;
+    D_8010BCB0_baby_bowser_bonkers[arg0].rot.x = CRot.x;
+    D_8010BCB0_baby_bowser_bonkers[arg0].rot.y = CRot.y;
+    D_8010BCB0_baby_bowser_bonkers[arg0].rot.z = CRot.z;
+    D_8010BCB0_baby_bowser_bonkers[arg0].zoom = CZoom;
+    D_8010BCB0_baby_bowser_bonkers[arg0].unk_1C = D_8010BCB0_baby_bowser_bonkers[arg0].unk_20 = 0.0f;
+}
+
+// Passing CAMERA_KEEP for a component keeps its current value.
+void func_8010AD00_baby_bowser_bonkers(f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom, s32 frames) {
+    if (frames > 0) {
+        D_8010BCF8_baby_bowser_bonkers = frames - 1;
+        D_8010BCFC_baby_bowser_bonkers = frames;
+        if (x != CAMERA_KEEP) {
+            D_8010BCB0_baby_bowser_bonkers[0].center.x = x;
+        } else {
+            D_8010BCB0_baby_bowser_bonkers[0].center.x = Center.x;
+        }
+        if (y != CAMERA_KEEP) {
+            D_8010BCB0_baby_bowser_bonkers[0].center.y = y;
+        } else {
+            D_8010BCB0_baby_bowser_bonkers[0].center.y = Center.y;
+        }
+        if (z != CAMERA_KEEP) {
+            D_8010BCB0_baby_bowser_bonkers[0].center.z = z;
+        } else {
+            D_8010BCB0_baby_bowser_bonkers[0].center.z = Center.z;
+        }
+        if (rotX != CAMERA_KEEP) {
+            D_8010BCB0_baby_bowser_bonkers[0].rot.x = rotX;
+        } else {
+            D_8010BCB0_baby_bowser_bonkers[0].rot.x = CRot.x;
+        }
+        if (rotY != CAMERA_KEEP) {
+            D_8010BCB0_baby_bowser_bonkers[0].rot.y = rotY;
+        } else {
+            D_8010BCB0_baby_bowser_bonkers[0].rot.y = CRot.y;
+        }
+        if (rotZ != CAMERA_KEEP) {
+            D_8010BCB0_baby_bowser_bonkers[0].rot.z = rotZ;
+        } else {
+            D_8010BCB0_baby_bowser_bonkers[0].rot.z = CRot.z;
+        }
+        if (zoom != CAMERA_KEEP) {
+            D_8010BCB0_baby_bowser_bonkers[0].zoom = zoom;
+        } else {
+            D_8010BCB0_baby_bowser_bonkers[0].zoom = CZoom;
+        }
+        func_8010AB14_baby_bowser_bonkers(1);
+    }
+}
+
+void func_8010AEF0_baby_bowser_bonkers(s32 camIndex) {
+    HuCamera *camera = &gCameraList[camIndex];
+    f32 rotX = CRot.x;
+    f32 rotY = CRot.y;
+
+    camera->pos.x = Center.x + sindf(rotY) * cosdf(rotX) * CZoom;
+    camera->pos.y = -sindf(rotX) * CZoom + Center.y;
+    camera->pos.z = cosdf(rotY) * cosdf(rotX) * CZoom + Center.z;
+    camera->at.x = Center.x;
+    camera->at.y = Center.y;
+    camera->at.z = Center.z;
+    camera->up.x = sindf(rotY) * sindf(rotX);
+    camera->up.y = cosdf(rotX);
+    camera->up.z = cosdf(rotY) * sindf(rotX);
+}
 
 f32 func_8010B044_baby_bowser_bonkers(f32 arg0, f32 arg1) {
     if (arg0 >= 360.0f) {
@@ -1528,11 +1883,48 @@ f32 func_8010B044_baby_bowser_bonkers(f32 arg0, f32 arg1) {
     return arg0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_8010B148_baby_bowser_bonkers);
+f32 func_8010B148_baby_bowser_bonkers(f32 target, f32 current, f32 step) {
+    f32 diff;
+    f32 delta;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_8010B308_baby_bowser_bonkers);
+    if (target >= 360.0) {
+        target -= 360.0;
+    } else if (target < 0.0) {
+        target += 360.0;
+    }
+    if (current >= 360.0) {
+        current -= 360.0;
+    } else if (current < 0.0) {
+        current += 360.0;
+    }
+    diff = fmod(target - current + 360.0, 360.0);
+    if (diff < 180.0) {
+        if (diff <= step) {
+            delta = diff;
+        } else {
+            delta = step;
+        }
+    } else if (360.0 - diff <= step) {
+        delta = -(360.0 - diff);
+    } else {
+        delta = -step;
+    }
+    delta += current;
+    if (delta >= 360.0) {
+        delta -= 360.0;
+    } else if (delta < 0.0) {
+        delta += 360.0;
+    }
+    return delta;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_8010B320_baby_bowser_bonkers);
+f32 func_8010B308_baby_bowser_bonkers(f32 t, f32 start, f32 end) {
+    return start + t * (end - start);
+}
+
+f32 func_8010B320_baby_bowser_bonkers(f32 t, f32 start, f32 end) {
+    return func_8010B148_baby_bowser_bonkers(end, start, fabsf(func_8010B044_baby_bowser_bonkers(end, start) * t));
+}
 
 void func_8010B380_baby_bowser_bonkers(omObjData *arg0, u32 arg1) {
     arg0->work[0] = arg1 >> 24;

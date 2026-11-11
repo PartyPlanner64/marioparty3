@@ -22,6 +22,7 @@
 
 f64 fabs(f64 x);
 f32 fabsf(f32 x);
+f64 fmod(f64 x, f64 y);
 int abs(int x);
 
 /* Libultra trigonometry takes angles in radians. */

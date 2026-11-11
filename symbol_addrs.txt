@@ -2451,3 +2451,5 @@ D_80109C40_hey_batter_batter = 0x80109C40; //rom:0x2D8110 size:0x2 type:s16 segm
 D_80109C42_hey_batter_batter = 0x80109C42; //rom:0x2D8112 size:0x2 type:s16 segment:hey_batter_batter
 D_80109C48_hey_batter_batter = 0x80109C48; //rom:0x2D8118 size:0x2 type:s16 segment:hey_batter_batter
 D_80109C4A_hey_batter_batter = 0x80109C4A; //rom:0x2D811A size:0x2 type:s16 segment:hey_batter_batter
+D_80109C34_hey_batter_batter = 0x80109C34; //rom:0x2D8104 size:0x2 type:s16 segment:hey_batter_batter
+D_80109C36_hey_batter_batter = 0x80109C36; //rom:0x2D8106 size:0x2 type:s16 segment:hey_batter_batter

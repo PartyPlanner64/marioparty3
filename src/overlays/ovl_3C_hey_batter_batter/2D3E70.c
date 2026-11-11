@@ -25,6 +25,7 @@ typedef struct HeyBatterBatterCamera {
 } HeyBatterBatterCamera; // Size 0x1C
 
 extern HeyBatterBatterCamera D_80109EB4_hey_batter_batter;
+extern s32 D_800A178C_main[][6];
 extern u16 D_800A11D0_main[5];
 extern u16 D_800A11DC_main[5];
 
@@ -43,6 +44,9 @@ extern Vec D_80109BF4_hey_batter_batter[5];
 extern s16 D_80109C30_hey_batter_batter;
 extern s16 D_80109C32_hey_batter_batter;
 extern s16 D_80109C34_hey_batter_batter;
+extern s16 D_80109C36_hey_batter_batter;
+extern s16 D_80109C38_hey_batter_batter;
+extern f32 D_80109C3C_hey_batter_batter;
 extern Vec D_80109C4C_hey_batter_batter[5];
 extern Vec D_80109D04_hey_batter_batter[5];
 
@@ -62,9 +66,7 @@ extern s16 D_80109EEA_hey_batter_batter[2];
 extern s16 D_80109EEE_hey_batter_batter;
 extern s16 D_80109EF0_hey_batter_batter;
 extern omObjData *D_80109EF4_hey_batter_batter;
-extern s16 D_80109EFA_hey_batter_batter;
-extern s16 D_80109EFC_hey_batter_batter;
-extern s16 D_80109EFE_hey_batter_batter;
+extern s16 D_80109EF8_hey_batter_batter[4];
 extern s16 D_80109F00_hey_batter_batter[5];
 extern s16 D_80109F0C_hey_batter_batter[5];
 extern HeyBatterBatterBase D_80109F18_hey_batter_batter[5];
@@ -87,6 +89,7 @@ void func_80106CE4_hey_batter_batter(omObjData *object);
 void func_80106FA8_hey_batter_batter(omObjData *object);
 void func_801070D8_hey_batter_batter(omObjData *object);
 void func_80107144_hey_batter_batter(omObjData *object);
+void func_80107464_hey_batter_batter(omObjData *object);
 void func_801079D0_hey_batter_batter(omObjData *object);
 void func_80107C48_hey_batter_batter(omObjData *object);
 void func_80108B48_hey_batter_batter(omObjData *object);
@@ -234,7 +237,7 @@ void func_80106048_hey_batter_batter(omObjData *object) {
         case 4:
             if (++D_80109C34_hey_batter_batter == 1) {
                 func_80017954_main(D_80109EF4_hey_batter_batter->model[0], 1,
-                                   GwPlayer[D_80109ED0_hey_batter_batter].chr, D_80109EFA_hey_batter_batter);
+                                   GwPlayer[D_80109ED0_hey_batter_batter].chr, D_80109EF8_hey_batter_batter[1]);
                 D_80109B60_hey_batter_batter = 1;
                 GMesCreate(0x13);
                 HuAudSeqFadeOut(120);
@@ -276,7 +279,83 @@ void func_80106048_hey_batter_batter(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3C_hey_batter_batter/2D3E70", func_801062E0_hey_batter_batter);
+void func_801062E0_hey_batter_batter(omObjData *object) {
+    switch (D_80109C36_hey_batter_batter) {
+        case 0:
+            if (WipeStatGet() != 1) {
+                HuAudSeqPlay(0x44);
+                HuAudFXPlay(0x4D5);
+                D_80109C3C_hey_batter_batter = 0.0f;
+                D_80109C38_hey_batter_batter = 0;
+                D_80109C36_hey_batter_batter = 1;
+            }
+            break;
+        case 1:
+            if (D_80109C38_hey_batter_batter++ >= 5) {
+                D_80109C36_hey_batter_batter++;
+                D_80109C38_hey_batter_batter = 0;
+            }
+            break;
+        case 2:
+            func_801098DC_hey_batter_batter(D_80109EB4_hey_batter_batter.zoom, D_80109B64_hey_batter_batter[0],
+                                            D_80109B94_hey_batter_batter[0], D_80109EB4_hey_batter_batter.zoom,
+                                            D_80109B64_hey_batter_batter[1], D_80109B94_hey_batter_batter[1], 20.0f,
+                                            D_80109C3C_hey_batter_batter);
+            if (sindf(D_80109C3C_hey_batter_batter * 4.5f) >= 1.0f) {
+                D_80109C36_hey_batter_batter++;
+                D_80109C3C_hey_batter_batter = 0.0f;
+                D_80109B60_hey_batter_batter = 2;
+            } else {
+                D_80109C3C_hey_batter_batter += 1.0f;
+            }
+            break;
+        case 3:
+            if (D_80109C38_hey_batter_batter++ >= 30) {
+                D_80109C36_hey_batter_batter++;
+                D_80109C38_hey_batter_batter = 0;
+            }
+            break;
+        case 4:
+            func_801098DC_hey_batter_batter(D_80109EB4_hey_batter_batter.zoom, D_80109B64_hey_batter_batter[1],
+                                            D_80109B94_hey_batter_batter[1], D_80109EB4_hey_batter_batter.zoom,
+                                            D_80109B64_hey_batter_batter[3], D_80109B94_hey_batter_batter[3], 20.0f,
+                                            D_80109C3C_hey_batter_batter);
+            if (sindf(D_80109C3C_hey_batter_batter * 4.5f) >= 1.0f) {
+                D_80109C36_hey_batter_batter++;
+                D_80109C3C_hey_batter_batter = 0.0f;
+            } else {
+                D_80109C3C_hey_batter_batter += 1.0f;
+            }
+            break;
+        case 5:
+            if (D_80109C38_hey_batter_batter++ >= 20) {
+                D_80109C36_hey_batter_batter++;
+                D_80109C38_hey_batter_batter = 0;
+                D_80109ED2_hey_batter_batter = 6;
+            }
+            break;
+        case 6:
+            func_801098DC_hey_batter_batter(D_80109EB4_hey_batter_batter.zoom, D_80109B64_hey_batter_batter[3],
+                                            D_80109B94_hey_batter_batter[3], D_80109EB4_hey_batter_batter.zoom,
+                                            D_80109B64_hey_batter_batter[0], D_80109B94_hey_batter_batter[0], 30.0f,
+                                            D_80109C3C_hey_batter_batter);
+            if (sindf(D_80109C3C_hey_batter_batter * 3.0f) == 1.0f) {
+                D_80109C36_hey_batter_batter++;
+                D_80109C3C_hey_batter_batter = 0.0f;
+            } else {
+                D_80109C3C_hey_batter_batter += 1.0f;
+            }
+            break;
+        case 7:
+            D_80109C3C_hey_batter_batter = 0.0f;
+            D_80109C38_hey_batter_batter = 0;
+            D_80109C36_hey_batter_batter = 0;
+            object->func = func_80106048_hey_batter_batter;
+            break;
+        case 8:
+            break;
+    }
+}
 
 void func_80106744_hey_batter_batter(omObjData *object) {
     switch (D_80109C40_hey_batter_batter) {
@@ -358,13 +437,13 @@ void func_80106928_hey_batter_batter(omObjData *object) {
         case 2:
             if (D_80109EE0_hey_batter_batter == 1) {
                 func_80017954_main(D_80109EF4_hey_batter_batter->model[0], 1,
-                                   GwPlayer[D_80109ED0_hey_batter_batter].chr, D_80109EFE_hey_batter_batter);
+                                   GwPlayer[D_80109ED0_hey_batter_batter].chr, D_80109EF8_hey_batter_batter[3]);
                 D_80109ED2_hey_batter_batter = 3;
                 D_80109EDA_hey_batter_batter = 1;
                 HuAudFXPlay(0x4D8);
             } else if (D_80109EE0_hey_batter_batter == 0) {
                 func_80017954_main(D_80109EF4_hey_batter_batter->model[0], 1,
-                                   GwPlayer[D_80109ED0_hey_batter_batter].chr, D_80109EFC_hey_batter_batter);
+                                   GwPlayer[D_80109ED0_hey_batter_batter].chr, D_80109EF8_hey_batter_batter[2]);
                 D_80109ED2_hey_batter_batter = 2;
                 D_80109EDA_hey_batter_batter = 2;
             }
@@ -445,7 +524,38 @@ void func_801070D8_hey_batter_batter(omObjData *object) {
     object->func = NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3C_hey_batter_batter/2D3E70", func_80107144_hey_batter_batter);
+void func_80107144_hey_batter_batter(omObjData *object) {
+    s32 chr = GwPlayer[D_80109ED0_hey_batter_batter].chr;
+
+    object->model[0] = func_8000B108_main(D_800A178C_main[chr][0] | D_800A178C_main[chr][2], 0x6A8);
+    object->model[1] = func_8000B108_main(0x5D0005, 0x6A9);
+    object->model[2] = func_8000B108_main(9, 0x2A9);
+    func_8000B460_main(object, 0, func_80017BB8_main(chr, 0));
+    func_8000B460_main(object, 1, func_80017BB8_main(chr, 0x82));
+    func_8000B460_main(object, 2, func_80017BB8_main(chr, 0x35));
+    func_8000B460_main(object, 3, func_80017BB8_main(chr, 0x38));
+    func_8000B460_main(object, 4, func_80017BB8_main(chr, 0x83));
+    func_8000B460_main(object, 5, func_80017BB8_main(chr, 1));
+    if (chr == 5) {
+        func_8000B460_main(object, 6, 0x5D000A);
+    }
+    func_8001C258_main(object->model[1], 0x4000, 0x4000);
+    Hu3DModelHookSet(object->model[1], object->model[0], "item_hook");
+    omSetTra(object, -150.0f, 15.0f, 0.0f);
+    omSetRot(object, 0.0f, 180.0f, 0.0f);
+    Hu3DModelPosSet(object->model[2], -150.0f, 15.0f, 0.0f);
+    GwPlayer[D_80109ED0_hey_batter_batter].bonusCoin = -1;
+    Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[1]].motId, 0, 2, 2);
+    D_80109ED2_hey_batter_batter = 1;
+    D_80109EF8_hey_batter_batter[0] = func_80017790_main(object->model[0], 1, chr, func_80017BB8_main(chr, 0xAA));
+    D_80109EF8_hey_batter_batter[1] = func_80017AD8_main(func_80017BB8_main(chr, 0xA4));
+    D_80109EF8_hey_batter_batter[2] = func_80017AD8_main(func_80017BB8_main(chr, 0xA5));
+    D_80109EF8_hey_batter_batter[3] = func_80017AD8_main(func_80017BB8_main(chr, 0xA6));
+    func_8001C514_main(object->model[0]);
+    func_80017954_main(object->model[0], 1, GwPlayer[D_80109ED0_hey_batter_batter].chr,
+                       D_80109EF8_hey_batter_batter[0]);
+    object->func = func_80107464_hey_batter_batter;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3C_hey_batter_batter/2D3E70", func_80107464_hey_batter_batter);
 

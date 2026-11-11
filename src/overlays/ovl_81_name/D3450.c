@@ -15,6 +15,10 @@ typedef struct UnkD3450PrcDataF {
     /* 0x0C */ s32 unk_0C;
 } UnkD3450PrcDataF; // sizeof 0x10
 
+extern s32 D_801011E0_name_81[];
+
+void func_800EED30_name_81(s32);
+
 void func_800EB680_name_81(s16 playerIdx, s16 spaceIdx, Vec *outCoords) {
     SpaceData *space = MBDMasuGet(spaceIdx);
 
@@ -27,19 +31,90 @@ void func_800EB6C4_name_81(s16 playerIdx, s16 spaceIdx) {
     func_800EB680_name_81(playerIdx, spaceIdx, &GwPlayer[playerIdx].player_obj->coords);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", MBDVecDirGet);
+void MBDVecDirGet(Vec *arg0, Vec *arg1, Vec *arg2) {
+    HuVecSubtract(arg2, arg1, arg0);
+    MBDVecNormalize(arg2);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EB740_name_81);
+void func_800EB740_name_81(s16 playerIdx, Vec *arg1) {
+    Object *playerObj;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EB780_name_81);
+    playerObj = MBDGetPlayerStruct(playerIdx)->player_obj;
+    MBDVecDirGet(&playerObj->coords, arg1, &playerObj->rot);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EB7BC_name_81);
+void func_800EB780_name_81(Object *arg0, s16 arg1) {
+    MBDVecDirGet(&arg0->coords, &MBDMasuGet(arg1)->coords, &arg0->rot);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EB7D8_name_81);
+void func_800EB7BC_name_81(Vec *out) {
+    out->x = 0.0f;
+    out->y = 0.0f;
+    out->z = 1.0f;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EB804_name_81);
+void func_800EB7D8_name_81(s16 playerIdx) {
+    func_800EB7BC_name_81(&MBDGetPlayerStruct(playerIdx)->player_obj->rot);
+}
 
+void func_800EB804_name_81(Object *obj) {
+    Vec sp10;
+    Vec sp20;
+
+    HuVecSubtract(&sp10, &gCameraList->pos, &obj->coords);
+    HuVecCopyXYZ(&sp20, sp10.x, 0.0f, sp10.z);
+    obj->omObj1->rot.x = -func_800D7CEC_name_81(&sp10, &sp20);
+    MBDVecDirGet(&obj->coords, &gCameraList->pos, &sp10);
+    obj->omObj1->rot.y = MBDVecAngleGet(&sp10);
+    obj->omObj1->rot.z = 0;
+}
+
+#ifdef NON_MATCHING
+// Matches except for swapped v1/a0 registers in the final rev swap.
+void func_800EB8B0_name_81(s16 playerNoOne, s16 playerNoTwo) {
+    GW_PLAYER *playerOne = MBDGetPlayerStruct(playerNoOne);
+    GW_PLAYER *playerTwo = MBDGetPlayerStruct(playerNoTwo);
+    u8 prevClink;
+    u8 prevCidx;
+    u8 prevNlink;
+    u8 prevNidx;
+    u8 prevBlink;
+    u8 prevBidx;
+    u8 prevNnlink;
+    u8 prevNnidx;
+    u8 prevRev;
+
+    prevClink = playerOne->clink;
+    playerOne->clink = playerTwo->clink;
+    playerTwo->clink = prevClink;
+    prevCidx = playerOne->cidx;
+    playerOne->cidx = playerTwo->cidx;
+    playerTwo->cidx = prevCidx;
+    prevNlink = playerOne->nlink;
+    playerOne->nlink = playerTwo->nlink;
+    playerTwo->nlink = prevNlink;
+    prevNidx = playerOne->nidx;
+    playerOne->nidx = playerTwo->nidx;
+    playerTwo->nidx = prevNidx;
+    prevBlink = playerOne->blink;
+    playerOne->blink = playerTwo->blink;
+    playerTwo->blink = prevBlink;
+    prevBidx = playerOne->bidx;
+    playerOne->bidx = playerTwo->bidx;
+    playerTwo->bidx = prevBidx;
+    prevNnlink = playerOne->nnlink;
+    playerOne->nnlink = playerTwo->nnlink;
+    playerTwo->nnlink = prevNnlink;
+    prevNnidx = playerOne->nnidx;
+    playerOne->nnidx = playerTwo->nnidx;
+    playerTwo->nnidx = prevNnidx;
+    prevRev = playerOne->rev;
+    playerOne->rev = playerTwo->rev;
+    playerTwo->rev = prevRev;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EB8B0_name_81);
+#endif
 
 s16 func_800EB984_name_81(void) {
     s32 i;
@@ -77,7 +152,9 @@ s32 func_800EBA50_name_81(s16 arg0, f32 arg1) {
     return var_v0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EBAD4_name_81);
+void func_800EBAD4_name_81(s16 arg0) {
+    func_800EED30_name_81(D_801011E0_name_81[arg0]);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/D3450", func_800EBB00_name_81);
 

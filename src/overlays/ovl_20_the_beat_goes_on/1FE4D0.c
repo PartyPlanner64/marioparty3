@@ -4,6 +4,7 @@
 #include "game/camsetup.h"
 #include "game/gamemes.h"
 #include "game/hmfanim.h"
+#include "game/hmfspr.h"
 #include "game/mallocblock.h"
 #include "game/sprite.h"
 #include "game/util.h"
@@ -60,6 +61,11 @@ extern s8 D_8010C2EC_the_beat_goes_on;
 extern BeatGoesOnPos D_8010C2F0_the_beat_goes_on[];
 extern s32 D_8010C328_the_beat_goes_on[][4];
 extern f32 D_8010C368_the_beat_goes_on[];
+extern s16 D_8010C460_the_beat_goes_on;
+extern s16 D_8010C462_the_beat_goes_on;
+extern s16 D_8010C464_the_beat_goes_on;
+extern s16 D_8010C466_the_beat_goes_on;
+extern s16 D_8010C468_the_beat_goes_on;
 extern s8 D_8010C474_the_beat_goes_on;
 extern D_80111B50_vine_with_me_Struct D_8010C478_the_beat_goes_on;
 extern BeatGoesOnButton D_8010C4A0_the_beat_goes_on[16];
@@ -82,6 +88,7 @@ void func_80105CDC_the_beat_goes_on(void);
 void func_801060B0_the_beat_goes_on(f32 speed);
 void func_80106358_the_beat_goes_on(omObjData *object);
 void func_80106708_the_beat_goes_on(omObjData *obj);
+void func_80106E40_the_beat_goes_on(omObjData *obj);
 void func_80107504_the_beat_goes_on(omObjData *obj);
 void func_8010775C_the_beat_goes_on(omObjData *obj);
 void func_801080DC_the_beat_goes_on(void);
@@ -356,7 +363,71 @@ void func_80106358_the_beat_goes_on(omObjData *object) {
     }
 }
 
+#ifdef NON_MATCHING
+void func_80106708_the_beat_goes_on(omObjData *obj) {
+    BeatGoesOnPlayerWork *work;
+    s16 sprite;
+    s16 model;
+
+    obj->data = HuMemAllocTag(sizeof(BeatGoesOnPlayerWork), TAG_OVERLAY);
+    memset(obj->data, 0, sizeof(BeatGoesOnPlayerWork));
+    work = obj->data;
+    work->unk_1C = D_8010C466_the_beat_goes_on;
+    if (work->unk_1C == 4) {
+        work->unk_10 = 0;
+    } else if (work->unk_1C != 0) {
+        work->unk_10 = rand8() % 20;
+    } else {
+        work->unk_10 = 20;
+    }
+    work->unk_14 = 0;
+    obj->scale.x = obj->scale.y = obj->scale.z = 3.0f;
+    if (D_8010C466_the_beat_goes_on == 0) {
+        D_8010C462_the_beat_goes_on = sprite = SprModelRead(0x410001, 0, 16);
+    } else {
+        sprite = func_80014618_main(D_8010C462_the_beat_goes_on, 16);
+    }
+    func_80014714_main(sprite, D_8010C466_the_beat_goes_on & 7);
+    work->entry = &D_800CBB60_main[sprite];
+    obj->model[1] = work->entry->modelId;
+    obj->trans.x = sindf(D_8010C466_the_beat_goes_on * 45.0f - 90.0f) * 160.0f;
+    obj->trans.y = 40.0f;
+    obj->trans.z = cosdf(D_8010C466_the_beat_goes_on * 45.0f - 90.0f) * 160.0f;
+    Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
+    Hu3DModelScaleSet(obj->model[1], obj->scale.x, obj->scale.y, obj->scale.z);
+    if (D_8010C466_the_beat_goes_on == 0) {
+        D_8010C460_the_beat_goes_on = sprite = SprModelRead(0x410000, 0, 16);
+    } else {
+        sprite = func_80014618_main(D_8010C460_the_beat_goes_on, 16);
+    }
+    obj->model[0] = D_800CBB60_main[sprite].modelId;
+    func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    if (D_8010C466_the_beat_goes_on == 0) {
+        D_8010C464_the_beat_goes_on = sprite = SprModelRead(0x410002, 0, 16);
+    } else {
+        sprite = func_80014618_main(D_8010C464_the_beat_goes_on, 16);
+    }
+    obj->model[2] = D_800CBB60_main[sprite].modelId;
+    func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    model = obj->model[3] = func_8000B108_main(0x410003, 0xAA9);
+    if (D_8010C466_the_beat_goes_on == 0) {
+        D_8010C468_the_beat_goes_on = Hu3DAnimRead(Hu3DData[model].hmf, 0xA008C, "c201n_00_DEF");
+    } else {
+        Hu3DAnimLink(Hu3DData[model].hmf, D_8010C468_the_beat_goes_on, 0, "c201n_00_DEF");
+        Hu3DAnimLink(Hu3DData[obj->model[3]].hmf, D_8010C468_the_beat_goes_on, 0, "c201n_00_DEF");
+    }
+    Hu3DModelRemakeStatic(model);
+    func_8001C514_main(model);
+    Hu3DModelScaleSet(model, 0.6f, 0.6f, 0.6f);
+    Hu3DModelPosSet(model, (D_8010C466_the_beat_goes_on - 4) * 25 * obj->scale.x, 0.0f, 0.0f);
+    func_8000B460_main(obj, 0, 0x410003);
+    func_8000B460_main(obj, 1, 0x410004);
+    obj->func = func_80106E40_the_beat_goes_on;
+    D_8010C466_the_beat_goes_on++;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_20_the_beat_goes_on/1FE4D0", func_80106708_the_beat_goes_on);
+#endif
 
 void func_80106BE0_the_beat_goes_on(omObjData *obj) {
     BeatGoesOnPlayerWork *work = obj->data;
@@ -583,7 +654,60 @@ void func_8010A88C_the_beat_goes_on(u16 button) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_20_the_beat_goes_on/1FE4D0", func_8010A94C_the_beat_goes_on);
+void func_8010A94C_the_beat_goes_on(omObjData *obj, s8 *state) {
+    func_800E1BA8_minigame_ObjData *data = obj->data;
+
+    if (D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 / 2.0f <= Hu3DData[obj->model[0]].motTime &&
+        obj->work[2] == 0) {
+        if (obj->work[0] == 3) {
+            omVibrate(data->unk59, 5, 0, 5);
+        } else if (obj->work[0] == 4) {
+            omVibrate(data->unk59, 10, 0, 10);
+        }
+        switch (*state) {
+            case 1:
+                if (obj->work[1] == 5) {
+                    Hu3DMotionShiftSet(obj->model[3], Hu3DData[obj->motion[8]].motId, 0, 1, 2);
+                    Hu3DMotionSpeedSet(obj->model[3], 1.0f);
+                    obj->work[2] = 1;
+                    HuAudFXPlay(0x405);
+                }
+                break;
+            case 2:
+                if (obj->work[1] == 3) {
+                    Hu3DMotionShiftSet(obj->model[4], Hu3DData[obj->motion[8]].motId, 0, 1, 2);
+                    Hu3DMotionSpeedSet(obj->model[4], 1.0f);
+                    obj->work[2] = 1;
+                    HuAudFXPlay(0x406);
+                }
+                break;
+            case 3:
+                if (obj->work[1] == 4) {
+                    Hu3DMotionShiftSet(obj->model[5], Hu3DData[obj->motion[8]].motId, 0, 1, 2);
+                    Hu3DMotionSpeedSet(obj->model[5], 1.0f);
+                    obj->work[2] = 1;
+                    HuAudFXPlay(0x407);
+                }
+                break;
+        }
+    }
+    if (D_800CCF58_main[Hu3DData[obj->model[3]].motId].unk02 - 2.0f <= Hu3DData[obj->model[3]].motTime) {
+        func_8001C814_main(obj->model[3], 2, 1);
+        Hu3DMotionTimeSet(obj->model[3], 0.0f);
+        *state = 0;
+        obj->work[2] = 0;
+    } else if (D_800CCF58_main[Hu3DData[obj->model[4]].motId].unk02 - 2.0f <= Hu3DData[obj->model[4]].motTime) {
+        func_8001C814_main(obj->model[4], 2, 1);
+        Hu3DMotionTimeSet(obj->model[4], 0.0f);
+        *state = 0;
+        obj->work[2] = 0;
+    } else if (D_800CCF58_main[Hu3DData[obj->model[5]].motId].unk02 - 2.0f <= Hu3DData[obj->model[5]].motTime) {
+        func_8001C814_main(obj->model[5], 2, 1);
+        Hu3DMotionTimeSet(obj->model[5], 0.0f);
+        *state = 0;
+        obj->work[2] = 0;
+    }
+}
 
 void func_8010AD60_the_beat_goes_on(s8 *state, f32 speed) {
     switch (*state) {

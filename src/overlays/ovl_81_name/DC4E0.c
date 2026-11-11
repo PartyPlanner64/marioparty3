@@ -72,7 +72,123 @@ void func_800F6408_name_81(s32 playerIndex);
 void func_800F6F84_name_81(void);
 void func_800F7228_name_81(s32 playerIndex, s32 coins, s32 arg2);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DC4E0", func_800F4710_name_81);
+void func_800F4710_name_81(s32 playerIndex) {
+    u8 coinDigits[3];
+    GW_PLAYER *gwPlayer;
+    NamePlayerData *player;
+    s32 numDigits;
+    s32 i;
+
+    gwPlayer = MBDGetPlayerStruct(playerIndex);
+    player = &D_80105630_name_81[playerIndex];
+    if (D_801014E0_name_81 != 0) {
+        if (player->unk_02 != GwPlayer[playerIndex].coin) {
+            coinDigits[0] = GwPlayer[playerIndex].coin / 100;
+            coinDigits[1] = (s16)(GwPlayer[playerIndex].coin / 10) % 10;
+            coinDigits[2] = GwPlayer[playerIndex].coin % 10;
+            if (coinDigits[0] != 0) {
+                numDigits = ((coinDigits[0] != 0) ? 3 : 2);
+            } else if (coinDigits[1] != 0) {
+                numDigits = ((coinDigits[0] != 0) ? 3 : 2);
+            } else {
+                numDigits = 1;
+            }
+
+            if (numDigits == 1) {
+                HuSprDispOff(player->spriteGroup, 5);
+                coinDigits[1] = coinDigits[2];
+            } else {
+                HuSprDispOn(player->spriteGroup, 5);
+            }
+
+            if (coinDigits[0] == 0) {
+                coinDigits[0] = 10;
+            }
+            for (i = 0; i < ARRAY_COUNT(coinDigits); i++) {
+                HuSprBankSet(player->spriteGroup, i + 3, coinDigits[i], 0);
+                func_800550F4_main(player->spriteGroup, i + 3, 1);
+            }
+
+            player->unk_02 = GwPlayer[playerIndex].coin;
+        }
+
+        if (player->unk_01 != GwPlayer[playerIndex].star) {
+            if (GwPlayer[playerIndex].star >= 5) {
+                HuSprBankSet(player->spriteGroup, 2, 5, 0);
+            } else {
+                HuSprBankSet(player->spriteGroup, 2, GwPlayer[playerIndex].star, 0);
+            }
+            func_800550F4_main(player->spriteGroup, 2, 1);
+            player->unk_01 = GwPlayer[playerIndex].star;
+        }
+
+        if (gwPlayer->stats.partners.frontID != PARTNER_NONE) {
+            HuSprBankSet(player->spriteGroup, 0xC, gwPlayer->stats.partners.frontHp, 0);
+            HuSprBankSet(player->spriteGroup, 0xD, gwPlayer->stats.partners.frontPower, 0);
+            HuSprBankSet(player->spriteGroup, 0xE, 0xC, 0);
+            if (gwPlayer->stats.partners.frontCost >= 10) {
+                HuSprBankSet(player->spriteGroup, 0xF, gwPlayer->stats.partners.frontCost / 10, 0);
+                HuSprBankSet(player->spriteGroup, 0x10, gwPlayer->stats.partners.frontCost % 10, 0);
+                if (player->unk_6A != gwPlayer->stats.partners.frontCost && D_801014E4_name_81 != 0) {
+                    for (i = 0; i < 3; i++) {
+                        HuSprPosSet(player->spriteGroup, i + 0xE, D_801015A4_name_81[i][0], -D_801015A4_name_81[i][1]);
+                    }
+                }
+            } else {
+                HuSprBankSet(player->spriteGroup, 0xF, gwPlayer->stats.partners.frontCost, 0);
+                HuSprDispOff(player->spriteGroup, 0x10);
+                if (player->unk_6A != gwPlayer->stats.partners.frontCost && D_801014E4_name_81 != 0) {
+                    for (i = 0; i < 3; i++) {
+                        HuSprPosSet(player->spriteGroup, i + 0xE, D_801015B0_name_81[i][0], -D_801015B0_name_81[i][1]);
+                    }
+                }
+            }
+            player->unk_6A = gwPlayer->stats.partners.frontCost;
+            for (i = 5; i < 10; i++) {
+                func_800550F4_main(player->spriteGroup, i + 7, 1);
+            }
+        }
+
+        if (gwPlayer->stats.partners.backID != PARTNER_NONE) {
+            HuSprBankSet(player->spriteGroup, 0x17, gwPlayer->stats.partners.backHp, 0);
+            HuSprBankSet(player->spriteGroup, 0x18, gwPlayer->stats.partners.backPower, 0);
+            HuSprBankSet(player->spriteGroup, 0x19, 0xC, 0);
+            if (gwPlayer->stats.partners.backCost >= 10) {
+                HuSprBankSet(player->spriteGroup, 0x1A, gwPlayer->stats.partners.backCost / 10, 0);
+                HuSprBankSet(player->spriteGroup, 0x1B, gwPlayer->stats.partners.backCost % 10, 0);
+                if (player->unk_6B != gwPlayer->stats.partners.backCost && D_801014E4_name_81 != 0) {
+                    for (i = 0; i < 3; i++) {
+                        HuSprPosSet(player->spriteGroup, i + 0x19, D_801015A4_name_81[i][0], D_801015A4_name_81[i][1]);
+                    }
+                }
+            } else {
+                HuSprBankSet(player->spriteGroup, 0x1A, gwPlayer->stats.partners.backCost, 0);
+                HuSprDispOff(player->spriteGroup, 0x1B);
+                if (player->unk_6B != gwPlayer->stats.partners.backCost && D_801014E4_name_81 != 0) {
+                    for (i = 0; i < 3; i++) {
+                        HuSprPosSet(player->spriteGroup, i + 0x19, D_801015B0_name_81[i][0], D_801015B0_name_81[i][1]);
+                    }
+                }
+            }
+            player->unk_6B = gwPlayer->stats.partners.backCost;
+            for (i = 5; i < 10; i++) {
+                func_800550F4_main(player->spriteGroup, i + 0x12, 1);
+            }
+        }
+    }
+
+    if (gwPlayer->stats.partners.frontPoweredUp == 2) {
+        HuSprDispOn(player->spriteGroup, 0x11);
+    } else {
+        HuSprDispOff(player->spriteGroup, 0x11);
+    }
+
+    if (gwPlayer->stats.partners.backPoweredUp == 2) {
+        HuSprDispOn(player->spriteGroup, 0x1C);
+    } else {
+        HuSprDispOff(player->spriteGroup, 0x1C);
+    }
+}
 
 void func_800F4E90_name_81(void) {
     NamePlayerData *player;

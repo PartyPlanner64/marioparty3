@@ -112,3 +112,7 @@ D_800D6AE4_main = CRotM + 0x4;
 
 /* main bss.c: base of a matrix table indexed from 1. */
 D_800D41B0_main = D_800D41F0_main - 0x40;
+/* swing_n_swipe: state and timer halfwords of D_8010BD40. */
+D_8010BD42_swing_n_swipe = D_8010BD40_swing_n_swipe + 0x2;
+D_8010BD46_swing_n_swipe = D_8010BD44_swing_n_swipe + 0x2;
+D_8010BD4A_swing_n_swipe = D_8010BD48_swing_n_swipe + 0x2;

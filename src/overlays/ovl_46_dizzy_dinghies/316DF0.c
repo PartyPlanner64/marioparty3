@@ -779,8 +779,6 @@ void func_80108514_dizzy_dinghies(s32 player, f32 speed, Vec *out) {
     out->z /= 20.0f;
 }
 
-// Only mismatch: float register allocation for the int->float conversion when computing `turn`.
-#ifdef NON_MATCHING
 void func_801085F4_dizzy_dinghies(omObjData *object) {
     func_800E1BA8_minigame_ObjData *work;
     HmfMotionNode *node;
@@ -793,6 +791,7 @@ void func_801085F4_dizzy_dinghies(omObjData *object) {
     s32 mode;
     f32 speed;
     f32 turn;
+    f32 avg;
     f32 x, y, z;
     f32 dist;
     f32 motTime;
@@ -854,7 +853,8 @@ void func_801085F4_dizzy_dinghies(omObjData *object) {
         speed *= D_80109778_dizzy_dinghies;
         D_801097B0_dizzy_dinghies *= 0.9f;
     }
-    turn = func_80108488_dizzy_dinghies(player, stickX) / 15.0f;
+    avg = func_80108488_dizzy_dinghies(player, stickX);
+    turn = avg / 15.0f;
     if (speed < 1.0f) {
         speed = 0.0f;
     }
@@ -940,9 +940,6 @@ void func_801085F4_dizzy_dinghies(omObjData *object) {
     }
     func_800EA178_minigame(0, speed);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", func_801085F4_dizzy_dinghies);
-#endif
 
 void func_80108E30_dizzy_dinghies(Vec *origin, Vec *p, Vec *q, Vec *out) {
     f32 ax = p->x - origin->x;

@@ -17,6 +17,7 @@ void MB1Ev_BranchMerge(s32 masuAbsIndex, s16 arg1, s16 arg2);
 void func_80116AA0_ChillyWaters(void);
 void MB1Ev_TuruturuMain(void);
 void MB1Ev_SnowmanObjMain(void);
+void MB1Ev_SnowmanRoll(void);
 s32 MB1Ev_SnowmanPathGet(s32);
 void MB1Ev_Teresa(void);
 void MB1Ev_ItemMajinLamp(void);

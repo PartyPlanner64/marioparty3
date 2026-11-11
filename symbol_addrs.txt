@@ -2462,3 +2462,5 @@ D_8010A111_picture_imperfect = 0x8010A111; //size:0x1 type:s8 segment:picture_im
 D_8010A112_picture_imperfect = 0x8010A112; //size:0x4 type:s8 segment:picture_imperfect
 D_8010C310_the_beat_goes_on = 0x8010C310; //rom:0x204E40 size:0x1 type:s8 segment:the_beat_goes_on
 D_8010C311_the_beat_goes_on = 0x8010C311; //rom:0x204E41 size:0x1 type:s8 segment:the_beat_goes_on
+D_8010AD84_bounce_n_trounce = 0x8010AD84; //rom:0x1D1B14 size:0x2 type:u16 segment:bounce_n_trounce
+D_8010AD86_bounce_n_trounce = 0x8010AD86; //rom:0x1D1B16 size:0x2 type:u16 segment:bounce_n_trounce

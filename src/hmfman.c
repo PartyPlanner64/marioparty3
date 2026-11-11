@@ -1806,7 +1806,7 @@ void Hu3DLLightCreate(s16 arg0, s8 arg1) {
     }
 }
 
-void Hu3DLLightColorSet(s16 arg0, s8 arg1, s8 arg2, s8 arg3) {
+void Hu3DLLightColorSet(s16 arg0, u8 arg1, u8 arg2, u8 arg3) {
     HmfData_UnkD0 *light;
 
     light = Hu3DData[arg0].unkB4;

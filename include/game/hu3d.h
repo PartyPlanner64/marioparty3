@@ -626,7 +626,7 @@ void func_8001F974_main(s16 arg0, s16 arg1);
 void func_8001F9E4_main(s16 arg0, u8 arg1);
 void func_8001FA68_main(s16 idx);
 void Hu3DLLightCreate(s16 arg0, s8 arg1);
-void Hu3DLLightColorSet(s16 arg0, s8 arg1, s8 arg2, s8 arg3);
+void Hu3DLLightColorSet(s16 arg0, u8 arg1, u8 arg2, u8 arg3);
 void Hu3DLLightDirSet(s16 arg0, f32 arg1, f32 arg2, f32 arg3);
 void func_8001FD08_main(s16 idx);
 

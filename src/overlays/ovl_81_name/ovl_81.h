@@ -42,14 +42,14 @@ typedef struct UnkBoard4 {
 } UnkBoard4; //sizeof 0x20
 
 typedef struct UnkBoard5 {
-    /* 0x00 */ u8* unk_00;
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ Object* unk_04;
     /* 0x08 */ s32 unk_08;
-    /* 0x0C */ s16* unk_0C;
-    /* 0x10 */ f32* unk_10;
-    /* 0x14 */ f32* unk_14;
-    /* 0x18 */ s16* unk_18;
-    /* 0x1C */ s16* unk_1C;
+    /* 0x0C */ s32 unk_0C;
+    /* 0x10 */ s32 unk_10;
+    /* 0x14 */ s32 unk_14;
+    /* 0x18 */ s32 unk_18;
+    /* 0x1C */ s32 unk_1C;
 } UnkBoard5; //sizeof 0x20
 
 typedef struct UnkOvl81_2 {
@@ -79,9 +79,10 @@ extern s32 D_80101A94_name_81;
 extern s32 D_80101A98_name_81;
 extern s16 D_80105494_name_81;
 extern s16 D_80105496_name_81;
-extern u8* D_80101980_name_81;
+extern s32 D_80101980_name_81;
 extern s32 D_80101984_name_81;
 extern Object* D_80101988_name_81;
+extern void (*D_8010198C_name_81)(void);
 extern s32* D_801017DC_name_81[];
 extern Process* D_8010195C_name_81;
 extern s32* D_8010180C_name_81[];
@@ -318,6 +319,7 @@ void func_800EB278_name_81(void);
 void func_800EB29C_name_81(void);
 void func_800EB58C_name_81(void);
 void func_800FA120_name_81(void);
+Process *func_800DCE40_name_81(s32, Vec *, Vec *, f32);
 void func_800FC8C4_name_81(Vec *arg0);
 void func_800EAB6C_name_81(s16, s32);
 

@@ -3,6 +3,8 @@
 
 void func_800EED68_name_81(s16, s32);
 void func_800EF3B4_name_81(s16);
+void *func_800FFC2C_name_81(s16, s16, s32);
+void func_800FFCCC_name_81(void *);
 
 void Duel_ClearPartnerObjects(void) {
     s32 i, j;
@@ -960,7 +962,205 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DFD60", func_800F924C_name_81
 //     func_800E5954_name_81();
 // }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DFD60", func_800FA120_name_81);
+void func_800FA120_name_81(void) {
+    UnkBoard5 *data = HuPrcCurrentGet()->user_data;
+    s32 order = data->unk_00;
+    Object *obj = data->unk_04;
+    s32 count = data->unk_08;
+    s32 motion = data->unk_0C;
+    s32 flags = data->unk_10;
+    s32 seIdx = data->unk_14;
+    Object *coinObjs[12];
+    Vec coinTargets[12];
+    f32 coinAngles[12] = { 45.0f, -45.0f, 135.0f, 225.0f, 90.0f, 270.0f, 180.0f, 0.0f, 60.0f, -30.0f, 150.0f, 240.0f };
+    Vec2f screenPos;
+    Process *process;
+    UnkBoard4 *sprite;
+    void *file;
+    void *seNo;
+    s32 i;
+    f32 angle;
+    f32 radius;
+
+    radius = 10.0f;
+    seNo = NULL;
+    process = HuPrcCurrentGet();
+
+    while (order != D_80101984_name_81) {
+        HuPrcVSleep();
+    }
+
+    if (D_8010198C_name_81 != NULL) {
+        D_8010198C_name_81();
+    }
+
+    HuPrcChildLink(process, func_800EC1E4_name_81(&D_80105460_name_81, &obj->coords, &D_80105460_name_81, 4.0f));
+    HuPrcChildWatch();
+
+    if (motion != -1 && count != -1) {
+        MBDMotionSet(obj, motion, 0);
+    }
+
+    if (count != -1) {
+        for (i = 0; i < count; i++) {
+            coinObjs[i] = func_800D8B18_name_81(D_80101988_name_81);
+            HuVecCopy3F(&coinObjs[i]->coords, &obj->coords);
+            sincosdf(-45.0f, &Hu3DData[coinObjs[i]->omObj1->model[0]].mtx[1][2], &Hu3DData[coinObjs[i]->omObj1->model[0]].mtx[1][1]);
+            Hu3DData[coinObjs[i]->omObj1->model[0]].mtx[2][1] = -Hu3DData[coinObjs[i]->omObj1->model[0]].mtx[1][2];
+            Hu3DData[coinObjs[i]->omObj1->model[0]].mtx[2][2] = Hu3DData[coinObjs[i]->omObj1->model[0]].mtx[1][1];
+            Hu3DData[coinObjs[i]->omObj1->model[0]].mtx[0][1] = Hu3DData[coinObjs[i]->omObj1->model[0]].mtx[0][2] =
+                Hu3DData[coinObjs[i]->omObj1->model[0]].mtx[0][3] = Hu3DData[coinObjs[i]->omObj1->model[0]].mtx[1][0] =
+                    Hu3DData[coinObjs[i]->omObj1->model[0]].mtx[1][3] = Hu3DData[coinObjs[i]->omObj1->model[0]].mtx[2][0] =
+                        Hu3DData[coinObjs[i]->omObj1->model[0]].mtx[2][3] = Hu3DData[coinObjs[i]->omObj1->model[0]].mtx[3][0] =
+                            Hu3DData[coinObjs[i]->omObj1->model[0]].mtx[3][1] = Hu3DData[coinObjs[i]->omObj1->model[0]].mtx[3][2] = 0.0f;
+            Hu3DData[coinObjs[i]->omObj1->model[0]].mtx[0][0] = Hu3DData[coinObjs[i]->omObj1->model[0]].mtx[3][3] = 1.0f;
+        }
+    }
+
+    if (seIdx == -1) {
+        if (obj == GwPlayer[0].player_obj) {
+            PlayerFXPlay(0x286, 0);
+            seNo = func_800FFC2C_name_81(0, 4, 6);
+        } else if (obj == GwPlayer[1].player_obj) {
+            PlayerFXPlay(0x286, 1);
+            seNo = func_800FFC2C_name_81(1, 4, 6);
+        }
+    } else {
+        s32 partnerSounds[12] = { 0x25A, 0x25B, 0x29A, 0x256, 0x257, 0x25D, 0x2A3, 0x2A4, 0x2A2, 0x258, 0x2A5, 0x2A0 };
+
+        if (seIdx >= 0 && seIdx < 12) {
+            s16 handle = HuAudFXPlay(partnerSounds[seIdx]);
+
+            if (seIdx == 2) {
+                msmSeSetVolume(handle, 0x77);
+            }
+        }
+    }
+
+    if (count != -1) {
+        for (i = 0; i < count; i++) {
+            func_800EF7C8_name_81(coinObjs[i], 5.0f, -1.0f);
+            angle = MBDVecAngleGet(&coinObjs[i]->rot);
+            HuVecCopyXYZ(&coinTargets[i],
+                         coinObjs[i]->coords.x + sindf(angle + coinAngles[i]) * radius,
+                         coinObjs[i]->coords.y,
+                         coinObjs[i]->coords.z + cosdf(angle + coinAngles[i]) * radius);
+            HuPrcChildLink(process, func_800EBF2C_name_81(&coinObjs[i]->coords, &coinTargets[i], &coinObjs[i]->coords, 30));
+        }
+        func_800EF800_name_81(coinObjs[0]);
+
+        for (i = 0; i < count; i++) {
+            func_800EF7C8_name_81(coinObjs[i], 2.5f, -0.5f);
+        }
+        func_800EF800_name_81(coinObjs[0]);
+
+        for (i = 0; i < count; i++) {
+            func_800EF7C8_name_81(coinObjs[i], 1.0f, -0.2f);
+        }
+        func_800EF800_name_81(coinObjs[0]);
+
+        HuPrcChildWatch();
+
+        for (i = 0; i < count; i++) {
+            MBDModelKill(coinObjs[i]);
+        }
+    }
+
+    if (seNo != NULL) {
+        func_800FFCCC_name_81(seNo);
+    }
+
+    if (count != -1) {
+        s32 countSounds[4] = { 0x208, 0x209, 0x20A, 0x20B };
+        s32 soundIdx;
+
+        soundIdx = (count - 1) / 3;
+        if (soundIdx < 0) {
+            soundIdx = 0;
+        }
+        if (soundIdx >= 4) {
+            soundIdx = 3;
+        }
+        HuAudFXPlay(countSounds[soundIdx]);
+
+        MBDCamera3Dto2D(&obj->coords, &screenPos);
+        sprite = func_800F4528_name_81(4, 2);
+
+        for (i = 0; i < 4; i++) {
+            if (i == 0) {
+                file = DataRead(0x130132);
+            } else {
+                file = DataRead(0x1300CF);
+            }
+            sprite->unk_0C[i] = HuSprAnimRead(file);
+            DataClose(file);
+
+            switch (i) {
+                case 0:
+                    HuSprGrpMemberSet(sprite->unk_0A, i, sprite->unk_0C[i], 0);
+                    break;
+                case 1:
+                    HuSprGrpMemberSet(sprite->unk_0A, i, sprite->unk_0C[i], 12);
+                    break;
+                case 2:
+                    if (count >= 10) {
+                        HuSprGrpMemberSet(sprite->unk_0A, i, sprite->unk_0C[i], count / 10);
+                    } else {
+                        HuSprGrpMemberSet(sprite->unk_0A, i, sprite->unk_0C[i], count);
+                    }
+                    break;
+                case 3:
+                    if (count >= 10) {
+                        HuSprGrpMemberSet(sprite->unk_0A, i, sprite->unk_0C[i], count - (count / 10) * 10);
+                    } else {
+                        HuSprGrpMemberSet(sprite->unk_0A, i, sprite->unk_0C[i], 0);
+                        HuSprAttrSet(sprite->unk_0A, i, 0x8000);
+                    }
+                    break;
+            }
+
+            HuSprPriSet(sprite->unk_0A, i, 0x2010 - i);
+            HuSprAttrSet(sprite->unk_0A, i, 0);
+
+            if (i == 0) {
+                HuSprPosSet(sprite->unk_0A, 0, screenPos.x, screenPos.y);
+            } else if (count >= 10) {
+                HuSprPosSet(sprite->unk_0A, i, (i - 1) * 10 - 10, 0);
+            } else {
+                HuSprPosSet(sprite->unk_0A, i, (i - 1) * 10 - 5, 0);
+            }
+        }
+
+        for (i = 0; i < 30; i++) {
+            HuSprPosSet(sprite->unk_0A, 0, screenPos.x, screenPos.y - i);
+            HuPrcVSleep();
+        }
+        func_800F4584_name_81(sprite);
+    }
+
+    if (flags != 0 && !(flags & 1)) {
+        func_800FB0B8_name_81(obj, 2, 0);
+        func_800EFABC_name_81(obj);
+        {
+            Vec effectOffsets[3] = { { 0.0f, 0.5f, 0.0f }, { -0.5f, 0.5f, 0.0f }, { 0.5f, 0.5f, 0.0f } };
+
+            for (i = 0; i < 3; i++) {
+                func_800DCE40_name_81(0x4E, &obj->coords, &effectOffsets[i], 2.0f);
+            }
+        }
+        HuPrcVSleep();
+        HuAudFXPlay(0x1CB);
+        MBDModelDispOff(obj);
+        func_8001FDE8_main(obj->omObj1->model[0]);
+        HuPrcSleep(40);
+    } else {
+        MBDMotionSet(obj, -1, 2);
+    }
+
+    D_80101980_name_81--;
+    D_80101984_name_81++;
+    omDelPrcObj(NULL);
+}
 
 void func_800FAB1C_name_81(void) {
     Object *temp_v0;
@@ -973,9 +1173,9 @@ void func_800FAB1C_name_81(void) {
     MBDModelDispOff(D_80101988_name_81);
 }
 
-Process *func_800FAB68_name_81(s32 arg0, s32 arg1, s16 *arg2, f32 *arg3, f32 *arg4) {
+Process *func_800FAB68_name_81(Object *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     Process *temp_v0;
-    u8 *temp_a0;
+    s32 temp_a0;
     UnkBoard5 *temp_v0_2;
 
     temp_v0 = omAddPrcObj(func_800FA120_name_81, 0, 0, 0x40);
@@ -1110,14 +1310,6 @@ void func_800FB148_name_81(void) {
 
 void func_800FB158_name_81(void) {
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_81_name/DFD60", D_80102758_name_81);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_81_name/DFD60", D_80102788_name_81);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_81_name/DFD60", D_801027B8_name_81);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_81_name/DFD60", D_801027C8_name_81);
 
 void func_800FB160_name_81(void) {
     s16 sp18[2];

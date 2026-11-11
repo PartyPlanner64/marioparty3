@@ -1,17 +1,13 @@
 #include "common.h"
 #include "overlays/minigame.h"
-
-typedef struct {
-    /* 0x00 */ char unk_00[0xC];
-    /* 0x0C */ u8 unk_0C;
-    /* 0x0D */ u8 unk_0D;
-    /* 0x0E */ u8 unk_0E;
-    /* 0x0F */ u8 unk_0F;
-} CrowdCoverEntry; // Size 0x10
+#include "game/hmfmath.h"
+#include "game/mallocblock.h"
+#include "gcc/memory.h"
+#include "game/texload.h"
 
 typedef struct UnkCrowdCover {
     /* 0x00 */ Gfx *displayList;
-    /* 0x04 */ CrowdCoverEntry *entries;
+    /* 0x04 */ Vtx_t *vtx;
     /* 0x08 */ HuSprite_Unk84_Struct *sprite;
     /* 0x0C */ struct UnkCrowdCover *prev;
     /* 0x10 */ struct UnkCrowdCover *next;
@@ -24,12 +20,12 @@ typedef struct UnkCrowdCover {
     /* 0x1D */ u8 unk_1D;
     /* 0x1E */ u8 unk_1E;
     /* 0x1F */ u8 unk_1F;
-    /* 0x20 */ s16 unk_20;
-    /* 0x22 */ s16 unk_22;
+    /* 0x20 */ u16 unk_20;
+    /* 0x22 */ u16 unk_22;
     /* 0x24 */ s16 unk_24;
     /* 0x26 */ char pad_26[2];
     /* 0x28 */ s32 unk_28;
-    /* 0x2C */ s32 unk_2C;
+    /* 0x2C */ f32 unk_2C;
     /* 0x30 */ Vec unk_30;
     /* 0x3C */ f32 unk_3C;
     /* 0x40 */ Vec unk_40;
@@ -69,6 +65,13 @@ extern f32 D_8010D8A0_crowd_cover;
 extern f32 D_8010D8A8_crowd_cover[4][4];
 extern f32 D_8010D8E8_crowd_cover;
 extern UnkCrowdCover *D_8010D8EC_crowd_cover;
+extern void *D_8010D8F0_crowd_cover[3];
+extern UnkCrowdCover D_8010D918_crowd_cover; // List head of opaque entries
+extern UnkCrowdCover D_8010D980_crowd_cover; // List head of translucent entries
+extern void *D_8010D8FC_crowd_cover;
+extern s32 D_8010D900_crowd_cover;
+extern s32 D_8010D904_crowd_cover;
+extern s32 D_8010CA9C_crowd_cover;
 
 extern HuSprite_Unk84_Struct *D_800C9530_main[];
 
@@ -80,6 +83,7 @@ extern u8 D_800CE20A_main;
 extern s16 D_8010C6C4_crowd_cover[3][2];
 extern s16 D_8010CF88_crowd_cover[];
 extern s16 D_8010CFA8_crowd_cover[];
+extern s16 D_8010CFB8_crowd_cover[16];
 extern s16 D_8010CFD8_crowd_cover;
 extern s16 D_8010D860_crowd_cover;
 extern s16 D_8010D862_crowd_cover;
@@ -90,12 +94,20 @@ void func_801060C4_crowd_cover(void);
 void func_80106144_crowd_cover(omObjData *object);
 void func_80106580_crowd_cover(omObjData *object);
 void func_80106CB8_crowd_cover(void);
+void func_80106D4C_crowd_cover(omObjData *object);
 void func_80107E0C_crowd_cover(void);
 void func_80107E40_crowd_cover(omObjData *);
 s32 func_80108F1C_crowd_cover(void);
 s16 func_801091FC_crowd_cover(s32 dataNum);
 s16 func_80109244_crowd_cover(s16 spriteId, s16 count);
-void func_80109354_crowd_cover(s32 arg0);
+void func_80109044_crowd_cover(Vec *dir, f32 *rot);
+void func_80109354_crowd_cover(u16 count);
+void func_8010980C_crowd_cover(UnkCrowdCover *crowd);
+void func_8010B228_crowd_cover(s16 index);
+void func_8010B754_crowd_cover(void);
+void func_8010B8A8_crowd_cover(HuCamera *camera, HuMtx4F lookAt);
+Gfx *func_8010BD74_crowd_cover(Gfx *gfx, UnkCrowdCover *crowd, HuMtx4F lookAt, Vec *rot);
+void func_8010C45C_crowd_cover(void);
 
 void func_801059A0_crowd_cover(void) {
     omObjData *obj;
@@ -281,7 +293,15 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", D_8010CB48
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_80106580_crowd_cover);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_80106CB8_crowd_cover);
+void func_80106CB8_crowd_cover(void) {
+    s32 i;
+
+    func_800E18D8_minigame();
+    D_800EC280_minigame = 0;
+    for (i = 0; i < 2; i++) {
+        D_800EC598_minigame[D_800EC280_minigame++] = omAddObj(2, 0xB, 0x32, -1, func_80106D4C_crowd_cover);
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", D_8010CB70_crowd_cover);
 
@@ -293,7 +313,68 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", D_8010CBE0
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_80106D4C_crowd_cover);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_80107298_crowd_cover);
+void func_80107298_crowd_cover(omObjData *object, s32 arg1, s32 arg2, u16 player, u16 tag) {
+    func_800E1BA8_minigame_ObjData *data;
+    s32 i;
+    u32 character;
+    f32 zero;
+    func_800E1BA8_minigame_UnkE8_ObjData *entry;
+
+    for (i = 0; i < object->mdlcnt; i++) {
+        object->model[i] = 0;
+    }
+    object->data = HuMemAllocTag(sizeof(func_800E1BA8_minigame_ObjData), TAG_OVERLAY);
+    memset(object->data, 0, sizeof(func_800E1BA8_minigame_ObjData));
+    data = object->data;
+    data->unkE8 = HuMemAllocTag(object->mtncnt * 3 * sizeof(s32), TAG_OVERLAY);
+    memset(data->unkE8, 0, object->mtncnt * 3 * sizeof(s32));
+    data->unk158 = HuMemAllocTag(sizeof(UnkCrowdCoverWork), TAG_OVERLAY);
+    memset(data->unk158, 0, sizeof(UnkCrowdCoverWork));
+
+    object->model[0] = func_8000B108_main(arg1 | arg2, tag);
+    object->model[1] = func_8000B0D4_main(9, tag);
+    func_800E3584_minigame(object->model[1]);
+    for (i = 0; i < object->mtncnt; i++) {
+        object->motion[i] = -1;
+    }
+    for (i = 0; i < object->mtncnt; i++) {
+        entry = data->unkE8;
+        entry[i].unk02 = 0;
+        entry[i].unk00 = 0;
+    }
+
+    data->unk57 = GwPlayer[player].pad;
+    data->unk52 = 0;
+    data->unkB4 = 1.0f;
+    data->unkD0 = -1;
+    data->unk4C = 0.5f;
+    data->unkCC = 1.0f;
+    zero = 0.0f;
+    data->unkA4 = zero;
+    data->unk9C = zero;
+    data->unkA0 = zero;
+    data->unk59 = player;
+
+    data->unk3C = atan2df(-object->trans.x, -object->trans.z);
+    func_800E1328_minigame(object, 60.0f);
+    func_800E1334_minigame(object, 150.0f);
+    func_800E1340_minigame(object, 20.0f);
+    func_800E12EC_minigame(object, 1000.0f);
+
+    character = (u32)arg1 >> 16;
+    switch (character) {
+        case 6:
+            data->unkAC = 0.8f;
+            break;
+        case 5:
+            data->unkAC = 0.9f;
+            break;
+        case 0:
+        default:
+            data->unkAC = 1.0f;
+            break;
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", D_8010CBF8_crowd_cover);
 
@@ -317,7 +398,29 @@ u16 func_80107C5C_crowd_cover(omObjData *arg0) {
     return result;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_80107CE0_crowd_cover);
+s16 func_80107CE0_crowd_cover(s16 spriteId, s16 x, s16 y, f32 rot) {
+    s16 group; // Never assigned; the original passes an uninitialized value.
+    s32 i;
+
+    if (spriteId == -1) {
+        return -1;
+    }
+    for (i = 0; i < 16; i++) {
+        if (D_8010CFB8_crowd_cover[i] == 0) {
+            break;
+        }
+    }
+    if (i >= 16) {
+        return -1;
+    }
+    D_8010CFB8_crowd_cover[i] = 1;
+    HuSprGrpMemberSet(group, i, spriteId, 0);
+    func_800550F4_main(group, i, 2);
+    HuSprPosSet(group, i, x, y);
+    HuSprZRotSet(group, i, rot);
+    HuSprAttrReset(group, i, 0x8000);
+    return i;
+}
 
 void func_80107E0C_crowd_cover(void) {
     omAddObj(3, 0xB, 0x32, -1, func_80107E40_crowd_cover);
@@ -339,7 +442,17 @@ s32 func_80108F1C_crowd_cover(void) {
     return D_8010C800_crowd_cover >> 16;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_80108F74_crowd_cover);
+f32 func_80108F74_crowd_cover(f32 y, f32 x) {
+    f32 fullCircle = 360.0f;
+    f32 angle = atan2df(y, x);
+
+    if (angle < 0.0f) {
+        angle += fullCircle;
+    } else if (angle >= fullCircle) {
+        angle -= fullCircle;
+    }
+    return angle;
+}
 
 f32 func_80108FDC_crowd_cover(Vec *arg0, Vec *arg1) {
     return sqrtf(((arg0->x - arg1->x) * (arg0->x - arg1->x)) +
@@ -347,9 +460,29 @@ f32 func_80108FDC_crowd_cover(Vec *arg0, Vec *arg1) {
                  ((arg0->z - arg1->z) * (arg0->z - arg1->z)));
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_80109044_crowd_cover);
+void func_80109044_crowd_cover(Vec *dir, f32 *rot) {
+    *rot++ = func_80108F74_crowd_cover(sqrtf(dir->x * dir->x + dir->z * dir->z), -dir->y);
+    *rot++ = func_80108F74_crowd_cover(dir->z, dir->x);
+    *rot = 0.0f;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_801090CC_crowd_cover);
+void func_801090CC_crowd_cover(s16 model, char *hook, s16 time, Vec *pos) {
+    HuMtx4F transform;
+    HuMtx4F result;
+    HuMtx4F hookTransform;
+    HmfModel *modelData;
+
+    func_80016B00_main(model, time, hook, &hookTransform);
+    modelData = &Hu3DData[model];
+    func_8002367C_main(transform, modelData->mtx);
+    mtxTransCat(transform, modelData->pos.x, modelData->pos.y, modelData->pos.z);
+    mtxRotCat(transform, modelData->rot.x, modelData->rot.y, modelData->rot.z);
+    mtxScaleCat(transform, modelData->scale.x, modelData->scale.y, modelData->scale.z);
+    func_80018044_main(hookTransform, transform, result);
+    pos->x = result[0][0] + result[1][0] + result[2][0] + result[3][0];
+    pos->y = result[0][1] + result[1][1] + result[2][1] + result[3][1];
+    pos->z = result[0][2] + result[1][2] + result[2][2] + result[3][2];
+}
 
 s16 func_801091FC_crowd_cover(s32 dataNum) {
     void *data;
@@ -382,9 +515,60 @@ HuSprite_Unk84_Unk00_Struct *func_8010930C_crowd_cover(s16 groupId, s16 member) 
     return &func_80055194_main(groupId)->unk00[member];
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_80109354_crowd_cover);
+void func_80109354_crowd_cover(u16 count) {
+    UnkCrowdCover *crowd;
+    s16 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_8010949C_crowd_cover);
+    D_8010D904_crowd_cover = count;
+    D_8010D8EC_crowd_cover = HuMemAlloc(count * sizeof(UnkCrowdCover));
+    for (i = 0; i < 3; i++) {
+        D_8010D8F0_crowd_cover[i] = NULL;
+    }
+    for (i = 0; i < D_8010D904_crowd_cover; i++) {
+        crowd = &D_8010D8EC_crowd_cover[i];
+        crowd->sprite = NULL;
+        crowd->callback = NULL;
+        crowd->unk_28 = 0;
+        crowd->unk_20 = 0x100;
+        crowd->unk_1F = 0xFF;
+        crowd->unk_1E = 0xFF;
+        crowd->unk_1D = 0xFF;
+        crowd->unk_2C = 0;
+        crowd->unk_24 = 0;
+        crowd->unk_30.x = 1.0f;
+        crowd->unk_1C = 0;
+        crowd->unk_1B = 0;
+        crowd->unk_30.y = crowd->unk_30.z = crowd->unk_3C = 0.0f;
+        crowd->unk_40.x = crowd->unk_40.y = crowd->unk_40.z = 0.0f;
+        crowd->unk_4C.x = crowd->unk_4C.y = crowd->unk_4C.z = 1.0f;
+        crowd->unk_58.x = crowd->unk_58.y = crowd->unk_58.z = 0.0f;
+    }
+}
+
+void func_8010949C_crowd_cover(Gfx **gfx, HuSprite_Unk84_Unk00_Struct *cel, u8 fmt, u8 siz, u16 height, u16 uls,
+                               u16 ult, u16 lrs, u16 lrt, u16 cms, u16 cmt, u16 masks, u16 maskt, s32 mode) {
+    Gfx *gdl = *gfx;
+
+    switch (mode) {
+        case 0:
+            gDPLoadTextureTile_4b(gdl++, (void *)0x0C000000, fmt, cel->unk04, height, uls, ult, lrs, lrt, 0, cms,
+                                  cmt, masks, maskt, 0, 0);
+            break;
+        case 1:
+            func_80034998_main(&gdl, (void *)0x0C000000, fmt, cel->unk04, height, uls, ult, lrs, lrt, 0, cms, cmt,
+                               masks, maskt, 0, 0);
+            break;
+        case 2:
+            func_800341D0_main(&gdl, (u16 *)0x0C000000, fmt, siz, cel->unk04, cel->unk06, uls, ult, lrs, lrt, 0,
+                               cms, cmt, masks, maskt, 0, 0);
+            break;
+        case 3:
+            func_8003465C_main(&gdl, (void *)0x0C000000, fmt, siz, cel->unk04, height, uls, ult, lrs, lrt, 0, cms,
+                               cmt, masks, maskt, 0, 0);
+            break;
+    }
+    *gfx = gdl;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_8010980C_crowd_cover);
 
@@ -607,7 +791,7 @@ UnkCrowdCover *func_8010B0BC_crowd_cover(s16 index) {
     return crowd;
 }
 
-CrowdCoverEntry *func_8010B0FC_crowd_cover(s16 index) {
+Vtx_t *func_8010B0FC_crowd_cover(s16 index) {
     UnkCrowdCover *crowd;
     s32 i = index;
 
@@ -615,10 +799,33 @@ CrowdCoverEntry *func_8010B0FC_crowd_cover(s16 index) {
         return NULL;
     }
     crowd = &D_8010D8EC_crowd_cover[i];
-    return crowd->entries;
+    return crowd->vtx;
 }
 
+#ifdef NON_MATCHING
+// Index sign extension is computed in a different register than the original.
+s32 func_8010B140_crowd_cover(s16 index, s16 x, s16 y) {
+    UnkCrowdCover *crowd;
+    Vtx_t *vtx;
+
+    if (index != -1) {
+        crowd = &D_8010D8EC_crowd_cover[index];
+        if (crowd->unk_18 == 3) {
+            crowd->unk_28 |= 0x80000000;
+            vtx = &crowd->vtx[4];
+            vtx->ob[0] = x;
+            vtx->ob[1] = -y;
+            vtx->ob[2] = 0;
+            vtx->tc[0] = x * 64;
+            vtx->tc[1] = y * 64;
+            return 1;
+        }
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_8010B140_crowd_cover);
+#endif
 
 void func_8010B1DC_crowd_cover(s16 index, s8 value1, s8 value2, s8 value3, s16 value4) {
     UnkCrowdCover *crowd;
@@ -632,7 +839,32 @@ void func_8010B1DC_crowd_cover(s16 index, s8 value1, s8 value2, s8 value3, s16 v
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_8010B228_crowd_cover);
+void func_8010B228_crowd_cover(s16 index) {
+    UnkCrowdCover *crowd;
+
+    if (index != -1) {
+        crowd = &D_8010D8EC_crowd_cover[index];
+        if (crowd->sprite != NULL) {
+            HuMemFree(crowd->displayList);
+            HuMemFree(crowd->vtx);
+            crowd->sprite = NULL;
+            crowd->unk_28 = 0;
+            crowd->unk_20 = 0x100;
+            crowd->unk_1F = 0xFF;
+            crowd->unk_1E = 0xFF;
+            crowd->unk_1D = 0xFF;
+            crowd->unk_2C = 0;
+            crowd->unk_24 = 0;
+            crowd->unk_1C = 0;
+            crowd->unk_1B = 0;
+            crowd->unk_30.y = crowd->unk_30.z = crowd->unk_3C = 0.0f;
+            crowd->unk_40.x = crowd->unk_40.y = crowd->unk_40.z = 0.0f;
+            crowd->unk_4C.x = crowd->unk_4C.y = crowd->unk_4C.z = 1.0f;
+            crowd->unk_58.x = crowd->unk_58.y = crowd->unk_58.z = 0.0f;
+            crowd->unk_30.x = 1.0f;
+        }
+    }
+}
 
 void func_8010B308_crowd_cover(s32 index, s32 flag) {
     UnkCrowdCover *crowd = &D_8010D8EC_crowd_cover[index];
@@ -641,24 +873,60 @@ void func_8010B308_crowd_cover(s32 index, s32 flag) {
     if (flag != 0) {
         crowd->unk_28 |= 0x10000;
         for (i = 0; i < crowd->unk_18; i++) {
-            crowd->entries[i].unk_0C = 0;
-            crowd->entries[i].unk_0D = 0;
-            crowd->entries[i].unk_0E = 0x80;
+            crowd->vtx[i].cn[0] = 0;
+            crowd->vtx[i].cn[1] = 0;
+            crowd->vtx[i].cn[2] = 0x80;
         }
         return;
     }
     crowd->unk_28 &= ~0x10000;
     for (i = 0; i < crowd->unk_18; i++) {
-        crowd->entries[i].unk_0C = 0xFF;
-        crowd->entries[i].unk_0D = 0xFF;
-        crowd->entries[i].unk_0E = 0xFF;
-        crowd->entries[i].unk_0F = 0xFF;
+        crowd->vtx[i].cn[0] = 0xFF;
+        crowd->vtx[i].cn[1] = 0xFF;
+        crowd->vtx[i].cn[2] = 0xFF;
+        crowd->vtx[i].cn[3] = 0xFF;
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_8010B408_crowd_cover);
+void func_8010B408_crowd_cover(s32 index, s32 flip) {
+    UnkCrowdCover *crowd = &D_8010D8EC_crowd_cover[index];
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_8010B4D8_crowd_cover);
+    if (flip) {
+        for (i = 0; i < crowd->unk_18; i++) {
+            crowd->vtx[i * 2].tc[0] = crowd->sprite->unk00->unk04 << 6;
+            crowd->vtx[i * 2 + 1].tc[0] = 0;
+        }
+    } else {
+        for (i = 0; i < crowd->unk_18; i++) {
+            crowd->vtx[i * 2].tc[0] = 0;
+            crowd->vtx[i * 2 + 1].tc[0] = crowd->sprite->unk00->unk04 << 6;
+        }
+    }
+}
+
+void func_8010B4D8_crowd_cover(s32 index, s32 flip) {
+    UnkCrowdCover *crowd = &D_8010D8EC_crowd_cover[index];
+    s32 remainder = crowd->sprite->unk00->unk06 - (crowd->unk_18 - 2) * crowd->unk_19;
+    s32 i;
+
+    if (flip) {
+        for (i = 0; i < crowd->unk_18 - 1; i++) {
+            crowd->vtx[i * 2].tc[1] = crowd->vtx[i * 2 + 1].tc[1] =
+                crowd->sprite->unk00->unk06 - i * crowd->unk_19;
+        }
+        if (remainder != 0) {
+            crowd->vtx[i * 2].tc[1] = crowd->vtx[i * 2 + 1].tc[1] = 0;
+        }
+    } else {
+        for (i = 0; i < crowd->unk_18 - 1; i++) {
+            crowd->vtx[i * 2].ob[1] = crowd->vtx[i * 2 + 1].ob[1] = i * crowd->unk_19;
+        }
+        if (remainder != 0) {
+            crowd->vtx[i * 2].ob[1] = crowd->vtx[i * 2 + 1].ob[1] = crowd->sprite->unk00->unk06;
+        }
+    }
+}
 
 void func_8010B610_crowd_cover(s16 index, void (*callback)(struct UnkCrowdCover *)) {
     UnkCrowdCover *crowd;
@@ -669,18 +937,222 @@ void func_8010B610_crowd_cover(s16 index, void (*callback)(struct UnkCrowdCover 
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_8010B64C_crowd_cover);
+void func_8010B64C_crowd_cover(s16 index, s8 arg1, s8 arg2, s32 flags) {
+    UnkCrowdCover *crowd;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_8010B6BC_crowd_cover);
+    if (index != -1) {
+        crowd = &D_8010D8EC_crowd_cover[index];
+        crowd->unk_1B = arg1;
+        crowd->unk_1C = arg2;
+        crowd->unk_28 |= flags;
+        HuMemFree(crowd->displayList);
+        func_8010980C_crowd_cover(crowd);
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_8010B754_crowd_cover);
+void func_8010B6BC_crowd_cover(s16 index, s32 flag) {
+    UnkCrowdCover *crowd;
+    s8 color;
+    s8 blue;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_8010B8A8_crowd_cover);
+    if (index != -1) {
+        crowd = &D_8010D8EC_crowd_cover[index];
+        if (flag) {
+            color = 0;
+            blue = 0x70;
+        } else {
+            color = 0xFF;
+            blue = 0xFF;
+        }
+        for (i = 0; i < crowd->unk_18; i++) {
+            crowd->vtx[i].cn[0] = crowd->vtx[i].cn[1] = crowd->vtx[i].cn[3] = color;
+            crowd->vtx[i].cn[2] = blue;
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_8010BB4C_crowd_cover);
+void func_8010B754_crowd_cover(void) {
+    UnkCrowdCover *crowd;
+    s32 i;
+
+    if (++D_8010CA9C_crowd_cover >= 3) {
+        D_8010CA9C_crowd_cover = 0;
+    }
+    D_8010D900_crowd_cover = 0;
+    for (i = 0; i < D_8010D904_crowd_cover; i++) {
+        crowd = &D_8010D8EC_crowd_cover[i];
+        if (crowd->sprite != NULL) {
+            D_8010D900_crowd_cover += 0x40 + (crowd->unk_22 * sizeof(Gfx) + crowd->unk_18 * 2 * sizeof(Vtx));
+        }
+    }
+    if (D_8010D8F0_crowd_cover[D_8010CA9C_crowd_cover] != NULL) {
+        HuMemFree(D_8010D8F0_crowd_cover[D_8010CA9C_crowd_cover]);
+    }
+    if (D_8010D900_crowd_cover != 0) {
+        D_8010D8F0_crowd_cover[D_8010CA9C_crowd_cover] = HuMemAlloc(D_8010D900_crowd_cover);
+    } else {
+        D_8010D8F0_crowd_cover[D_8010CA9C_crowd_cover] = NULL;
+    }
+    D_8010D8FC_crowd_cover = D_8010D8F0_crowd_cover[D_8010CA9C_crowd_cover];
+}
+
+void func_8010B8A8_crowd_cover(HuCamera *camera, HuMtx4F lookAt) {
+    UnkCrowdCover tailOpaque;
+    UnkCrowdCover tailTranslucent;
+    HuMtx4F unused[16]; // Unreferenced, but present in the stack frame.
+    HuMtx4F mtx;
+    UnkCrowdCover *crowd;
+    UnkCrowdCover *node;
+    f32 minX;
+    f32 maxX;
+    f32 minZ;
+    f32 maxZ;
+    s32 i;
+
+    minX = camera->at.x - 640.0;
+    maxX = camera->at.x + 640.0;
+    minZ = camera->at.z - 640.0;
+    maxZ = camera->at.z + 640.0;
+    D_8010D918_crowd_cover.unk_64 = 0.0f;
+    D_8010D980_crowd_cover.unk_64 = 99999.9f;
+    tailOpaque.unk_64 = -99999.9f;
+    tailTranslucent.unk_64 = 0.0f;
+    D_8010D980_crowd_cover.prev = NULL;
+    D_8010D918_crowd_cover.prev = NULL;
+    D_8010D918_crowd_cover.next = &tailOpaque;
+    D_8010D980_crowd_cover.next = &tailTranslucent;
+    tailOpaque.prev = &D_8010D918_crowd_cover;
+    tailTranslucent.prev = &D_8010D980_crowd_cover;
+    tailTranslucent.next = NULL;
+    tailOpaque.next = NULL;
+    for (i = 0; i < D_8010D904_crowd_cover; i++) {
+        crowd = &D_8010D8EC_crowd_cover[i];
+        if (crowd->sprite == NULL) {
+            continue;
+        }
+        if (crowd->unk_40.x < minX || maxX < crowd->unk_40.x) {
+            continue;
+        }
+        if (crowd->unk_40.z < minZ || maxZ < crowd->unk_40.z) {
+            continue;
+        }
+        guTranslateF(mtx, crowd->unk_40.x, crowd->unk_40.y, crowd->unk_40.z);
+        guMtxCatF(mtx, lookAt, mtx);
+        crowd->unk_64 = mtx[3][2];
+        if (crowd->unk_64 > 0.0) {
+            continue;
+        }
+        if ((crowd->unk_28 & 0x1000) && crowd->unk_20 < 0x100) {
+            crowd->unk_64 *= -1.0;
+            node = &D_8010D980_crowd_cover;
+        } else {
+            node = &D_8010D918_crowd_cover;
+        }
+        for (node = node->next; node->unk_64 > crowd->unk_64; node = node->next) {}
+        node->prev->next = crowd;
+        crowd->prev = node->prev;
+        crowd->next = node;
+        node->prev = crowd;
+    }
+    tailOpaque.prev->next = tailTranslucent.prev->next = NULL;
+}
+
+void func_8010BB4C_crowd_cover(Gfx **gfxP, s32 arg1, s32 arg2) {
+    HuCamera *camera = (HuCamera *)arg2;
+    Gfx *gfx = *gfxP;
+    HuMtx4F unused1[2]; // Unreferenced, but present in the stack frame.
+    HuMtx4F lookAt;
+    HuMtx4F unused2[4]; // Unreferenced, but present in the stack frame.
+    Vec rot;
+    Vec dir;
+    HuMtx4F unused3[32]; // Unreferenced, but present in the stack frame.
+    UnkCrowdCover *crowd;
+
+    guLookAtF(lookAt, camera->pos.x, camera->pos.y, camera->pos.z, camera->at.x, camera->at.y, camera->at.z,
+              camera->up.x, camera->up.y, camera->up.z);
+    dir.x = camera->pos.x - camera->at.x;
+    dir.y = camera->pos.y - camera->at.y;
+    dir.z = camera->pos.z - camera->at.z;
+    func_80109044_crowd_cover(&dir, (f32 *)&rot);
+    func_8010B754_crowd_cover();
+    gDPPipeSync(gfx++);
+    gDPSetCycleType(gfx++, G_CYC_2CYCLE);
+    gDPSetTexturePersp(gfx++, G_TP_PERSP);
+    gSPTexture(gfx++, 0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON);
+    gSPClearGeometryMode(gfx++, G_CULL_BOTH | G_LIGHTING | G_TEXTURE_GEN);
+    gSPSetGeometryMode(gfx++, G_SHADE | G_TEXTURE_GEN_LINEAR | G_SHADING_SMOOTH);
+    gDPSetAlphaDither(gfx++, G_AD_PATTERN);
+    func_8010B8A8_crowd_cover(camera, lookAt);
+    for (crowd = D_8010D918_crowd_cover.next; crowd != NULL; crowd = crowd->next) {
+        gfx = func_8010BD74_crowd_cover(gfx, crowd, lookAt, &rot);
+    }
+    for (crowd = D_8010D980_crowd_cover.next; crowd != NULL; crowd = crowd->next) {
+        gfx = func_8010BD74_crowd_cover(gfx, crowd, lookAt, &rot);
+    }
+    gDPSetCycleType(gfx++, G_CYC_1CYCLE);
+    *gfxP = gfx;
+    if (!Hu3DPauseF) {
+        func_8010C45C_crowd_cover();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_8010BD74_crowd_cover);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_8010C45C_crowd_cover);
+void func_8010C45C_crowd_cover(void) {
+    UnkCrowdCover *crowd;
+    s32 frameCount;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_8010C61C_crowd_cover);
+    for (i = 0; i < D_8010D904_crowd_cover; i++) {
+        crowd = &D_8010D8EC_crowd_cover[i];
+        if (crowd->callback != NULL) {
+            crowd->callback(crowd);
+        }
+        if (crowd->sprite == NULL) {
+            continue;
+        }
+        if (crowd->unk_28 & 0x8000) {
+            continue;
+        }
+        if (crowd->unk_28 & 0x10000000) {
+            continue;
+        }
+        frameCount = crowd->sprite->unk10;
+        crowd->unk_2C += crowd->unk_30.x;
+        while (crowd->unk_2C >= 1.0) {
+            crowd->unk_24++;
+            crowd->unk_2C -= 1.0f;
+            if (crowd->unk_24 >= frameCount) {
+                if (crowd->unk_28 & 0x20000000) {
+                    crowd->unk_28 |= 0x8000;
+                    crowd->unk_24--;
+                    crowd->unk_2C += 1.0f;
+                    if (crowd->unk_28 & 0x40000000) {
+                        func_8010B228_crowd_cover(i);
+                    }
+                    break;
+                }
+                if (crowd->unk_28 & 0x40000000) {
+                    crowd->unk_24--;
+                    break;
+                }
+                crowd->unk_24 = 0;
+            }
+        }
+    }
+}
+
+void func_8010C61C_crowd_cover(void) {
+    s32 i;
+
+    for (i = 0; i < D_8010D904_crowd_cover; i++) {
+        func_8010B228_crowd_cover(i);
+    }
+    for (i = 0; i < 3; i++) {
+        if (D_8010D8F0_crowd_cover[i] != NULL) {
+            HuMemFree(D_8010D8F0_crowd_cover[i]);
+        }
+    }
+    HuMemFree(D_8010D8EC_crowd_cover);
+}

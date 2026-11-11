@@ -60,7 +60,7 @@ extern omObjData *D_80109B00_all_fired_up[];
 extern Vec D_80109B58_all_fired_up[];
 extern s8 D_80109C54_all_fired_up;
 extern s16 D_80109C56_all_fired_up;
-extern u8 D_80109C58_all_fired_up;
+extern s8 D_80109C58_all_fired_up;
 extern s8 D_80109C59_all_fired_up;
 
 void func_80105C54_all_fired_up(D_80111B50_vine_with_me_Struct *arg0);
@@ -358,7 +358,6 @@ void func_801067CC_all_fired_up(omObjData *object) {
     }
 }
 
-#ifdef NON_MATCHING
 void func_801068F8_all_fired_up(void) {
     s32 i;
 
@@ -375,24 +374,24 @@ void func_801068F8_all_fired_up(void) {
                     HuAudFXPlay(0x444);
                 }
             }
-            if (D_80109C56_all_fired_up == 90) {
+            if (D_80109C56_all_fired_up != 90) {
+                D_80109C56_all_fired_up++;
+            } else {
                 D_801099C8_all_fired_up = 1;
                 D_80109C56_all_fired_up = 0;
                 func_80106C68_all_fired_up();
-            } else {
-                D_80109C56_all_fired_up = D_80109C56_all_fired_up + 1;
             }
             break;
         case 1:
             if (D_80109C56_all_fired_up == 0) {
                 HuAudFXPlay(0x443);
             }
-            if (D_80109C56_all_fired_up == 30) {
+            if (D_80109C56_all_fired_up != 30) {
+                D_80109C56_all_fired_up++;
+            } else {
                 D_801099C8_all_fired_up = 2;
                 D_80109C56_all_fired_up = 0;
                 func_80106C68_all_fired_up();
-            } else {
-                D_80109C56_all_fired_up = D_80109C56_all_fired_up + 1;
             }
             break;
         case 2:
@@ -404,31 +403,28 @@ void func_801068F8_all_fired_up(void) {
                 func_80106FAC_all_fired_up();
                 HuAudFXPlay(0x442);
             }
-            if (D_80109C56_all_fired_up == 30) {
+            if (D_80109C56_all_fired_up != 30) {
+                D_80109C56_all_fired_up++;
+            } else {
                 D_801099C8_all_fired_up = 3;
                 D_80109C56_all_fired_up = 0;
                 D_801099CC_all_fired_up = 400.0f;
                 D_801099D0_all_fired_up = 0;
-            } else {
-                D_80109C56_all_fired_up = D_80109C56_all_fired_up + 1;
             }
             break;
         case 3:
             if (D_80109C56_all_fired_up == 0) {
                 HuAudFXPlay(0x442);
                 D_80109C56_all_fired_up++;
-            } else if (D_80109C56_all_fired_up == 150) {
+            } else if (D_80109C56_all_fired_up != 150) {
+                D_80109C56_all_fired_up++;
+            } else {
                 D_801099C8_all_fired_up = 0;
                 D_80109C56_all_fired_up = 0;
-            } else {
-                D_80109C56_all_fired_up = D_80109C56_all_fired_up + 1;
             }
             break;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_29_all_fired_up/23C8F0", func_801068F8_all_fired_up);
-#endif
 
 void func_80106B7C_all_fired_up(void) {
     omObjData *first;

@@ -28,7 +28,6 @@ extern f32 D_800EB768_minigame;
 extern f32 D_800EB76C_minigame;
 extern f32 D_800EB770_minigame;
 extern f32 D_800EB778_minigame;
-extern s16 D_800EB784_minigame[][14];
 extern s16 D_800EBE10_minigame[];
 extern s32 D_800EB820_minigame[][7];
 extern s32 D_800A178C_main[][6];

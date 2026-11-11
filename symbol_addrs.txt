@@ -2460,3 +2460,5 @@ D_8010A055_picture_imperfect = 0x8010A055; //rom:0x1F3AD5 size:0x1 type:u8 segme
 D_8010A056_picture_imperfect = 0x8010A056; //rom:0x1F3AD6 size:0x1 type:u8 segment:picture_imperfect
 D_8010A111_picture_imperfect = 0x8010A111; //size:0x1 type:s8 segment:picture_imperfect
 D_8010A112_picture_imperfect = 0x8010A112; //size:0x4 type:s8 segment:picture_imperfect
+D_8010C310_the_beat_goes_on = 0x8010C310; //rom:0x204E40 size:0x1 type:s8 segment:the_beat_goes_on
+D_8010C311_the_beat_goes_on = 0x8010C311; //rom:0x204E41 size:0x1 type:s8 segment:the_beat_goes_on

@@ -534,433 +534,417 @@ void func_800F90BC_name_81(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     HuWinKill(temp_v0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/DFD60", func_800F924C_name_81);
-// void func_800F924C_name_81(s32 arg0) {
-//     UnkDiceRelated *new_var;
-//     s32 sp18;
-//     s32 sp1C;
-//     s32 sp20;
-//     s32 sp24;
-//     s32 sp2C;
-//     s32 sp34;
-//     Object *sp3C;
-//     Object *sp44;
-//     s32 sp4C;
-//     s32 sp54;
-//     void (*temp_v0_10)(void);
-//     void (*temp_v0_9)(void);
-//     GW_PLAYER *opposingPlayer;
-//     GW_PLAYER *player;
-//     Object *temp_v0_6;
-//     Object *temp_v0_8;
-//     Process *temp_s6;
-//     s32 curPlayerIndex;
-//     s32 opposingPlayerIndex;
-//     s32 var_s0;
-//     s32 var_s1;
-//     s32 var_s5;
-//     s32 i;
+void func_800F924C_name_81(s32 attackType) {
+    GW_PLAYER *player;
+    GW_PLAYER *opposingPlayer;
+    Process *process;
+    Object *effect;
+    Object *counterEffect;
+    s32 curPlayerIndex;
+    s32 opposingPlayerIndex;
+    s32 partnerID;
+    s32 targetID;
+    s32 damage;
+    s32 counterDamage;
+    s32 poweredUp = 0;
+    s32 frontOrBackIndex;
+    Object *partner;
+    Object *opposingPartner;
+    s32 targetIndex;
+    s32 flags;
+    s32 counterFlags;
+    s32 musHandle;
+    s32 attackerID;
+    s32 volume;
+    s32 i;
 
-//     sp2C = 0;
-//     curPlayerIndex = MBDGetCurrentPlayerIndex();
-//     opposingPlayerIndex = curPlayerIndex ^ 1;
-//     player = MBDGetPlayerStruct(curPlayerIndex);
-//     opposingPlayer = MBDGetPlayerStruct(opposingPlayerIndex);
-//     temp_s6 = HuPrcCurrentGet();
-//     func_800E5964_name_81();
-//     func_800FAEE8_name_81();
-//     func_800F8D9C_name_81(arg0, &sp18, &sp1C);
-//     new_var = D_800CDBC8_main;
+    curPlayerIndex = MBDGetCurrentPlayerIndex();
+    opposingPlayerIndex = curPlayerIndex ^ 1;
+    player = MBDGetPlayerStruct(curPlayerIndex);
+    opposingPlayer = MBDGetPlayerStruct(opposingPlayerIndex);
+    process = HuPrcCurrentGet();
+    func_800E5964_name_81();
+    func_800FAEE8_name_81();
+    func_800F8D9C_name_81(attackType, &partnerID, &targetID);
 
-//     if (sp18 == 0xA) {
-//         switch (arg0) {
-//             case 0:
-//                 arg0 = 3;
-//                 break;
-//             case 3:
-//                 arg0 = 0;
-//                 break;
-//             case 2:
-//                 arg0 = 1;
-//                 break;
-//             case 1:
-//                 arg0 = 2;
-//                 break;
-//         }
-//     }
+    if (partnerID == PARTNER_MR_BLIZZARD) {
+        switch (attackType) {
+            case 0:
+                attackType = 3;
+                break;
+            case 3:
+                attackType = 0;
+                break;
+            case 2:
+                attackType = 1;
+                break;
+            case 1:
+                attackType = 2;
+                break;
+        }
+    }
 
-//     D_80105620_name_81 = arg0;
-//     func_800F8D9C_name_81(arg0, &sp18, &sp1C);
+    D_80105620_name_81 = attackType;
+    func_800F8D9C_name_81(attackType, &partnerID, &targetID);
 
-//     if (sp18 == (-1)) {
-//         HuPrcChildLink(temp_s6, MBDCameraZoomMotStart(1.0f));
-//         HuPrcChildWatch();
-//         func_800EAFC4_name_81(0x1E00);
-//         HuPrcChildLink(temp_s6, MBDCameraZoomMotStart(1.7f));
-//         HuPrcChildWatch();
-//     } else {
-//         sp20 = 0;
-//         var_s5 = 0;
-//         sp34 = 0;
-//         sp4C = 0;
-//         var_s1 = 0;
-//         switch (arg0) {
-//             case 0:
-//                 D_80101968_name_81 = &player->stats.partners.frontHp;
-//                 D_8010196C_name_81 = &opposingPlayer->stats.partners.backHp;
-//                 D_80101970_name_81 = &opposingPlayer->stats.partners.frontHp;
-//                 D_80101974_name_81 = &player->stats.partners.frontID;
-//                 D_80101978_name_81 = &opposingPlayer->stats.partners.backID;
-//                 D_8010197C_name_81 = &opposingPlayer->stats.partners.frontID;
-//                 sp2C = player->stats.partners.frontPoweredUp;
-//                 sp20 = player->stats.partners.frontPower;
-//                 sp34 = 0;
-//                 var_s5 = 1;
-//                 break;
-//             case 2:
-//                 D_80101968_name_81 = &player->stats.partners.backHp;
-//                 D_8010196C_name_81 = &opposingPlayer->stats.partners.backHp;
-//                 D_80101970_name_81 = &opposingPlayer->stats.partners.frontHp;
-//                 D_80101974_name_81 = &player->stats.partners.backID;
-//                 D_80101978_name_81 = &opposingPlayer->stats.partners.backID;
-//                 D_8010197C_name_81 = &opposingPlayer->stats.partners.frontID;
-//                 sp2C = player->stats.partners.backPoweredUp;
-//                 sp20 = player->stats.partners.backPower;
-//                 sp34 = 1;
-//                 var_s5 = 1;
-//                 break;
-//             case 1:
-//                 D_80101968_name_81 = &player->stats.partners.backHp;
-//                 D_8010196C_name_81 = &opposingPlayer->stats.partners.frontHp;
-//                 D_80101970_name_81 = &opposingPlayer->stats.partners.backHp;
-//                 D_80101974_name_81 = &player->stats.partners.backID;
-//                 D_80101978_name_81 = &opposingPlayer->stats.partners.frontID;
-//                 D_8010197C_name_81 = &opposingPlayer->stats.partners.backID;
-//                 sp2C = player->stats.partners.backPoweredUp;
-//                 sp20 = player->stats.partners.backPower;
-//                 sp34 = 1;
-//                 var_s5 = 0;
-//                 break;
-//             case 3:
-//                 D_80101968_name_81 = &player->stats.partners.frontHp;
-//                 D_8010196C_name_81 = &opposingPlayer->stats.partners.frontHp;
-//                 D_80101970_name_81 = &opposingPlayer->stats.partners.backHp;
-//                 D_80101974_name_81 = &player->stats.partners.frontID;
-//                 D_80101978_name_81 = &opposingPlayer->stats.partners.frontID;
-//                 D_8010197C_name_81 = &opposingPlayer->stats.partners.backID;
-//                 sp2C = player->stats.partners.frontPoweredUp;
-//                 sp20 = player->stats.partners.frontPower;
-//                 sp34 = 0;
-//                 var_s5 = 0;
-//                 break;
-//         }
+    if (partnerID == PARTNER_NONE) {
+        HuPrcChildLink(process, MBDCameraZoomMotStart(1.0f));
+        HuPrcChildWatch();
+        func_800EAFC4_name_81(0x1E00);
+        HuPrcChildLink(process, MBDCameraZoomMotStart(1.7f));
+        HuPrcChildWatch();
+    } else {
+        damage = 0;
+        targetIndex = 0;
+        frontOrBackIndex = 0;
+        counterFlags = 0;
+        flags = 0;
 
-//         sp3C = MBDGetPlayerPartnerRef(curPlayerIndex, sp34);
-//         sp44 = MBDGetPlayerPartnerRef(opposingPlayerIndex, var_s5);
-//         mbItemBtnF = 0;
-//         var_s0 = 0x7F;
-//         HuPrcChildLink(temp_s6, MBDCameraZoomMotStart(1.0f));
+        switch (attackType) {
+            case 0:
+                D_80101968_name_81 = &player->stats.partners.frontHp;
+                D_8010196C_name_81 = &opposingPlayer->stats.partners.backHp;
+                D_80101970_name_81 = &opposingPlayer->stats.partners.frontHp;
+                D_80101974_name_81 = &player->stats.partners.frontID;
+                D_80101978_name_81 = &opposingPlayer->stats.partners.backID;
+                D_8010197C_name_81 = &opposingPlayer->stats.partners.frontID;
+                poweredUp = player->stats.partners.frontPoweredUp;
+                damage = player->stats.partners.frontPower;
+                frontOrBackIndex = 0;
+                targetIndex = 1;
+                break;
+            case 2:
+                D_80101968_name_81 = &player->stats.partners.backHp;
+                D_8010196C_name_81 = &opposingPlayer->stats.partners.backHp;
+                D_80101970_name_81 = &opposingPlayer->stats.partners.frontHp;
+                D_80101974_name_81 = &player->stats.partners.backID;
+                D_80101978_name_81 = &opposingPlayer->stats.partners.backID;
+                D_8010197C_name_81 = &opposingPlayer->stats.partners.frontID;
+                poweredUp = player->stats.partners.backPoweredUp;
+                damage = player->stats.partners.backPower;
+                frontOrBackIndex = 1;
+                targetIndex = 1;
+                break;
+            case 1:
+                D_80101968_name_81 = &player->stats.partners.backHp;
+                D_8010196C_name_81 = &opposingPlayer->stats.partners.frontHp;
+                D_80101970_name_81 = &opposingPlayer->stats.partners.backHp;
+                D_80101974_name_81 = &player->stats.partners.backID;
+                D_80101978_name_81 = &opposingPlayer->stats.partners.frontID;
+                D_8010197C_name_81 = &opposingPlayer->stats.partners.backID;
+                poweredUp = player->stats.partners.backPoweredUp;
+                damage = player->stats.partners.backPower;
+                frontOrBackIndex = 1;
+                targetIndex = 0;
+                break;
+            case 3:
+                D_80101968_name_81 = &player->stats.partners.frontHp;
+                D_8010196C_name_81 = &opposingPlayer->stats.partners.frontHp;
+                D_80101970_name_81 = &opposingPlayer->stats.partners.backHp;
+                D_80101974_name_81 = &player->stats.partners.frontID;
+                D_80101978_name_81 = &opposingPlayer->stats.partners.frontID;
+                D_8010197C_name_81 = &opposingPlayer->stats.partners.backID;
+                poweredUp = player->stats.partners.frontPoweredUp;
+                damage = player->stats.partners.frontPower;
+                frontOrBackIndex = 0;
+                targetIndex = 0;
+                break;
+        }
 
-//         while (HuPrcChildGet(temp_s6) != 0) {
-//             msmMusSetVolume(D_800CDBC8_main->unk_00, var_s0);
-//             var_s0 = ((var_s0 - 5) > 0) ? (var_s0 - 5) : (0);
-//             HuPrcVSleep();
-//         }
+        partner = MBDGetPlayerPartnerRef(curPlayerIndex, frontOrBackIndex);
+        opposingPartner = MBDGetPlayerPartnerRef(opposingPlayerIndex, targetIndex);
+        mbItemBtnF = 0;
+        volume = 127;
+        HuPrcChildLink(process, MBDCameraZoomMotStart(1.0f));
 
-//         func_80003A70_main(new_var->unk_00);
-//         msmMusSetVolume(D_800CDBC8_main->unk_00, 0x7F);
-//         sp54 = func_8004A5C4_main(0x17);
-//         func_800FFAE0_name_81(0, 2);
-//         func_800FFAE0_name_81(1, 2);
-//         HuPrcChildLink(temp_s6, func_800E415C_name_81());
-//         HuPrcChildWatch();
-//         HuPrcChildLink(temp_s6, MBDCameraZoomMotStart(3.0f));
-//         HuPrcChildWatch();
-//         func_800F74E4_name_81(-1);
-//         HuVecCopy3F(&D_80105540_name_81, &player->player_obj->coords);
-//         func_800FC888_name_81(4);
-//         func_800FC8C4_name_81(&D_80105540_name_81);
-//         HuPrcChildLink(temp_s6, func_800EC1E4_name_81(&D_80105540_name_81, &sp3C->coords, &D_80105540_name_81, 4.0f));
-//         HuPrcChildWatch();
-//         func_800FC8C4_name_81(&sp3C->coords);
-//         func_800F8EB8_name_81(sp18, sp1C, &sp20, &sp24, sp2C);
-//         D_80105550_name_81 = 0;
-//         D_80105558_name_81 = 0;
+        while (HuPrcChildGet(process) != NULL) {
+            msmMusSetVolume(D_800CDBC8_main, volume);
+            volume -= 5;
+            if (volume < 0) {
+                volume = 0;
+            }
+            HuPrcVSleep();
+        }
 
-//     loop_38:
-//         if (opposingPlayer->star != 0) {
-//             if (sp20 == 0x12C) {
-//                 sp20 = 0;
-//                 var_s1 |= 8;
-//             } else if (sp20 == 0xC8) {
-//                 opposingPlayer->star--;
-//                 if (opposingPlayer->star < 0) {
-//                     opposingPlayer->star = 0;
-//                 }
-//                 *D_8010196C_name_81 -= 1;
-//                 *D_80101970_name_81 -= 1;
-//                 sp20 = 0;
-//                 var_s1 |= 4;
-//             } else if (sp20 == 0xC9) {
+        func_80003A70_main(D_800CDBC8_main);
+        msmMusSetVolume(D_800CDBC8_main, 127);
+        musHandle = func_8004A5C4_main(0x17);
+        func_800FFAE0_name_81(0, 2);
+        func_800FFAE0_name_81(1, 2);
+        HuPrcChildLink(process, func_800E415C_name_81());
+        HuPrcChildWatch();
+        HuPrcChildLink(process, MBDCameraZoomMotStart(3.0f));
+        HuPrcChildWatch();
+        func_800F74E4_name_81(-1);
+        HuVecCopy3F(&D_80105540_name_81, &player->player_obj->coords);
+        func_800FC888_name_81(4);
+        func_800FC8C4_name_81(&D_80105540_name_81);
+        HuPrcChildLink(process, func_800EC1E4_name_81(&D_80105540_name_81, &partner->coords, &D_80105540_name_81, 4.0f));
+        HuPrcChildWatch();
+        func_800FC8C4_name_81(&partner->coords);
+        func_800F8EB8_name_81(partnerID, targetID, &damage, &counterDamage, poweredUp);
+        D_80105550_name_81 = 0;
+        D_80105558_name_81 = 0;
 
-//                 opposingPlayer->star -= 2;
-//                 if (opposingPlayer->star < 0) {
-//                     opposingPlayer->star = 0;
-//                 }
+    damageLoop:
+        if (opposingPlayer->star == 0) {
+            goto end;
+        }
+        if (damage == 300) {
+            damage = 0;
+            flags |= 8;
+        } else if (damage == 200) {
+            opposingPlayer->star -= 1;
+            if (opposingPlayer->star < 0) {
+                opposingPlayer->star = 0;
+            }
+            *D_8010196C_name_81 -= 1;
+            *D_80101970_name_81 -= 1;
+            damage = 0;
+            flags |= 4;
+        } else if (damage == 201) {
+            opposingPlayer->star -= 2;
+            if (opposingPlayer->star < 0) {
+                opposingPlayer->star = 0;
+            }
+            *D_8010196C_name_81 -= 2;
+            if (*D_8010196C_name_81 < 0) {
+                *D_8010196C_name_81 = 0;
+            }
+            *D_80101970_name_81 -= 2;
+            if (*D_80101970_name_81 < 0) {
+                *D_80101970_name_81 = 0;
+            }
+            damage = 0;
+            flags |= 0x10;
+        } else if (damage == 202) {
+            opposingPlayer->star -= 4;
+            if (opposingPlayer->star < 0) {
+                opposingPlayer->star = 0;
+            }
+            *D_8010196C_name_81 -= 4;
+            if (*D_8010196C_name_81 < 0) {
+                *D_8010196C_name_81 = 0;
+            }
+            *D_80101970_name_81 -= 4;
+            if (*D_80101970_name_81 < 0) {
+                *D_80101970_name_81 = 0;
+            }
+            damage = 0;
+            flags |= 0x20;
+        } else if (damage < 0) {
+            opposingPlayer->star += damage;
+            if (opposingPlayer->star < 0) {
+                opposingPlayer->star = 0;
+            }
+            D_80105558_name_81 = -damage;
+            damage = 0;
+            flags |= 2;
+        } else if (damage > 0) {
+            *D_8010196C_name_81 -= damage;
+            if (*D_8010196C_name_81 < 0) {
+                D_80105550_name_81 = *D_8010196C_name_81 + damage;
+                if (damage != 100) {
+                    damage = *D_8010196C_name_81;
+                } else {
+                    damage = 0;
+                }
+                *D_8010196C_name_81 = 0;
+            } else {
+                D_80105550_name_81 = damage;
+                damage = 0;
+            }
+            flags |= 1;
+            goto damageLoop;
+        }
 
-//                 *D_8010196C_name_81 -= 2;
-//                 if ((*D_8010196C_name_81) < 0) {
-//                     *D_8010196C_name_81 = 0;
-//                 }
+        D_80105718_name_81 = 0;
+        if (opposingPlayer->star <= 0) {
+            D_80105718_name_81 = 1;
+        }
+        if (*D_8010196C_name_81 <= 0) {
+            if (counterDamage == 0) {
+                D_80105718_name_81 |= 8;
+                D_80105718_name_81 |= 2 << targetIndex;
+            } else {
+                D_80105718_name_81 |= 0x10;
+            }
+        }
+        if (*D_80101970_name_81 <= 0) {
+            D_80105718_name_81 |= 2 << (targetIndex ^ 1);
+        }
 
-//                 *D_80101970_name_81 -= 2;
-//                 if ((*D_80101970_name_81) < 0) {
-//                     *D_80101970_name_81 = 0;
-//                 }
+        for (i = 255; i > 64; i -= 16) {
+            MBDBackTPLvlSet(i);
+            HuPrcVSleep();
+        }
+        MBDBackTPLvlSet(64);
 
-//                 sp20 = 0;
-//                 var_s1 |= 0x10;
-//             } else if (sp20 == 0xCA) {
-//                 opposingPlayer->star -= 4;
-//                 if (opposingPlayer->star < 0) {
-//                     opposingPlayer->star = 0;
-//                 }
+        HuPrcChildLink(process, func_800E47B8_name_81(curPlayerIndex, *D_80101974_name_81, &player->player_obj->coords, &opposingPlayer->player_obj->coords, 1));
+        effect = func_800D8010_name_81(0x36, 0);
+        HuVecCopy3F(&effect->coords, &partner->coords);
+        func_8001C814_main(effect->omObj1->model[0], 2, 0);
+        HuAudFXPlay(0x1CC);
+        func_800EFABC_name_81(effect);
+        MBDModelKill(effect);
+        HuPrcChildWatch();
 
-//                 *D_8010196C_name_81 -= 4;
-//                 if ((*D_8010196C_name_81) < 0) {
-//                     *D_8010196C_name_81 = 0;
-//                 }
+        if (curPlayerIndex == 0) {
+            if (GWBoardFlagCheck(0x12) != 0) {
+                HuAudFXPlay(0x20E);
+            }
+        } else if (GWBoardFlagCheck(0x13) != 0) {
+            HuAudFXPlay(0x20E);
+        }
 
-//                 *D_80101970_name_81 -= 4;
-//                 if ((*D_80101970_name_81) < 0) {
-//                     *D_80101970_name_81 = 0;
-//                 }
-//                 sp20 = 0;
-//                 var_s1 |= 0x20;
-//             } else if (sp20 < 0) {
-//                 opposingPlayer->star += sp20;
-//                 if (opposingPlayer->star < 0) {
-//                     opposingPlayer->star = 0;
-//                 }
+        func_800FAB1C_name_81();
 
-//                 D_80105558_name_81 = -sp20;
-//                 sp20 = 0;
-//                 var_s1 |= 2;
-//             } else if (sp20 > 0) {
-//                 *D_8010196C_name_81 -= sp20;
-//                 if ((*D_8010196C_name_81) < 0) {
-//                     D_80105550_name_81 = (*D_8010196C_name_81) + sp20;
-//                     if (sp20 != 0x64) {
-//                         sp20 = *D_8010196C_name_81;
-//                     } else {
-//                         sp20 = 0;
-//                     }
-//                     *D_8010196C_name_81 = 0;
-//                 } else {
-//                     D_80105550_name_81 = sp20;
-//                     sp20 = 0;
-//                 }
-//                 var_s1 |= 1;
-//                 goto loop_38;
-//             }
+        if (PartnersBaseStats[*D_80101974_name_81].func1 != NULL) {
+            D_8010571C_name_81 = (D_80101978_name_81 == NULL) ? -1 : *D_80101978_name_81;
+            D_8010570C_name_81 = (D_8010197C_name_81 == NULL) ? -1 : *D_8010197C_name_81;
+            PartnersBaseStats[*D_80101974_name_81].func1(curPlayerIndex, opposingPlayerIndex, partner, opposingPartner, flags, poweredUp);
+        }
+        func_800FAC4C_name_81();
+        D_80105550_name_81 = 0;
+        D_80105558_name_81 = 0;
 
-//             D_80105718_name_81 = 0;
+    counterLoop:
+        if (player->star == 0) {
+            goto end;
+        }
+        if (counterDamage == 300) {
+            counterDamage = 0;
+            counterFlags |= 8;
+        } else if (counterDamage < 0) {
+            player->star += counterDamage;
+            if (player->star < 0) {
+                player->star = 0;
+            }
+            D_80105558_name_81 = -counterDamage;
+            counterDamage = 0;
+            counterFlags |= 2;
+        } else if (counterDamage > 0) {
+            *D_80101968_name_81 -= counterDamage;
+            if (*D_80101968_name_81 < 0) {
+                D_80105550_name_81 = *D_80101968_name_81 + counterDamage;
+                counterDamage = *D_80101968_name_81;
+                *D_80101968_name_81 = 0;
+            } else {
+                D_80105550_name_81 = counterDamage;
+                counterDamage = 0;
+            }
+            counterFlags |= 1;
+            goto counterLoop;
+        }
 
-//             if (opposingPlayer->star <= 0) {
-//                 D_80105718_name_81 = 1;
-//             }
+        D_8010554C_name_81 = 0;
+        if (player->star <= 0) {
+            D_8010554C_name_81 = 1;
+        }
+        if (*D_80101968_name_81 <= 0) {
+            D_8010554C_name_81 |= 8;
+            D_8010554C_name_81 |= 2 << frontOrBackIndex;
+        }
 
-//             if ((*D_8010196C_name_81) <= 0) {
-//                 if (sp24 == 0) {
-//                     D_80105718_name_81 |= 8;
-//                     D_80105718_name_81 |= 2 << var_s5;
-//                 } else {
-//                     D_80105718_name_81 |= 0x10;
-//                 }
-//             }
+        if (counterFlags != 0) {
+            HuVecCopy3F(&D_80105540_name_81, func_800FC8D0_name_81());
+            func_800FC8C4_name_81(&D_80105540_name_81);
+            func_800FC888_name_81(4);
+            HuPrcChildLink(process, func_800EC1E4_name_81(&D_80105540_name_81, &opposingPartner->coords, &D_80105540_name_81, 4.0f));
+            HuPrcChildWatch();
+            func_800FC8C4_name_81(&opposingPartner->coords);
 
-//             if ((*D_80101970_name_81) <= 0) {
-//                 D_80105718_name_81 |= 2 << (var_s5 ^ 1);
-//             }
+            HuPrcChildLink(process, func_800E47B8_name_81(opposingPlayerIndex, *D_80101978_name_81, &opposingPlayer->player_obj->coords, &player->player_obj->coords, 0));
+            counterEffect = func_800D8010_name_81(0x36, 0);
+            HuVecCopy3F(&counterEffect->coords, &opposingPartner->coords);
+            func_8001C814_main(counterEffect->omObj1->model[0], 2, 0);
+            HuAudFXPlay(0x1CC);
+            func_800EFABC_name_81(counterEffect);
+            MBDModelKill(counterEffect);
+            HuPrcChildWatch();
 
-//             for (i = 255; i > 64; i -= 16) {
-//                 MBDBackTPLvlSet(i);
-//                 HuPrcVSleep();
-//             }
+            switch (attackType) {
+                case 0:
+                    attackType = 1;
+                    break;
+                case 3:
+                    attackType = 3;
+                    break;
+                case 2:
+                    attackType = 2;
+                    break;
+                case 1:
+                    attackType = 0;
+                    break;
+            }
+            D_80105620_name_81 = attackType;
+            func_800FAB1C_name_81();
 
-//             MBDBackTPLvlSet(0x40);
-//             HuPrcChildLink(temp_s6, func_800E47B8_name_81(curPlayerIndex, *D_80101974_name_81, &player->player_obj->coords, &opposingPlayer->player_obj->coords, 1));
-//             temp_v0_6 = func_800D8010_name_81(0x36, 0);
-//             HuVecCopy3F(&temp_v0_6->coords, &sp3C->coords);
-//             func_8001C814_main(temp_v0_6->omObj1->model[0], 2, 0);
-//             HuAudFXPlay(0x1CC);
-//             func_800EFABC_name_81(temp_v0_6);
-//             MBDModelKill(temp_v0_6);
-//             HuPrcChildWatch();
+            if (*D_80101978_name_81 != -1 && PartnersBaseStats[*D_80101978_name_81].func2 != NULL) {
+                attackerID = *D_80101974_name_81;
+                if (attackerID == 0) {
+                    attackerID = -1;
+                }
+                D_8010571C_name_81 = attackerID;
+                D_8010570C_name_81 = -1;
+                PartnersBaseStats[*D_80101978_name_81].func2(opposingPlayerIndex, curPlayerIndex, opposingPartner, partner, counterFlags, poweredUp + 0x10);
+            }
+            func_800FAC4C_name_81();
+        }
 
-//             if (curPlayerIndex == 0) {
-//                 if (GWBoardFlagCheck(0x12) != 0) {
-//                     HuAudFXPlay(0x20E);
-//                 }
-//             } else if (GWBoardFlagCheck(0x13) != 0) {
-//                 HuAudFXPlay(0x20E);
-//             }
+        if (*D_80101974_name_81 != -1 && PartnersBaseStats[*D_80101974_name_81].func3 != NULL) {
+            PartnersBaseStats[*D_80101974_name_81].func3();
+        }
+        if (*D_80101978_name_81 != -1 && PartnersBaseStats[*D_80101978_name_81].func4 != NULL) {
+            PartnersBaseStats[*D_80101978_name_81].func4();
+        }
 
-//             func_800FAB1C_name_81();
+        if (*D_80101968_name_81 <= 0) {
+            *D_80101974_name_81 = -1;
+            *D_80101968_name_81 = 0;
+            func_800F8358_name_81(curPlayerIndex);
+            func_800F57B0_name_81(curPlayerIndex);
+            func_800F5E2C_name_81(curPlayerIndex);
+        }
+        if (*D_8010196C_name_81 <= 0) {
+            *D_80101978_name_81 = -1;
+            *D_8010196C_name_81 = 0;
+            func_800F8358_name_81(opposingPlayerIndex);
+            func_800F57B0_name_81(opposingPlayerIndex);
+            func_800F5E2C_name_81(opposingPlayerIndex);
+        }
+        if (*D_80101970_name_81 <= 0) {
+            *D_8010197C_name_81 = -1;
+            *D_80101970_name_81 = 0;
+            func_800F8358_name_81(opposingPlayerIndex);
+            func_800F57B0_name_81(opposingPlayerIndex);
+            func_800F5E2C_name_81(opposingPlayerIndex);
+        }
 
-//             if (PartnersBaseStats[*D_80101974_name_81].func1 != 0) {
-//                 D_8010571C_name_81 = (D_80101978_name_81 == 0) ? (-1) : (*D_80101978_name_81);
-//                 D_8010570C_name_81 = (D_8010197C_name_81 == 0) ? (-1) : (*D_8010197C_name_81);
-//                 PartnersBaseStats[*D_80101974_name_81].func1(curPlayerIndex, opposingPlayerIndex, sp3C, sp44, var_s1, sp2C);
-//             }
+        for (i = 64; i < 255; i += 16) {
+            MBDBackTPLvlSet(i);
+            HuPrcVSleep();
+        }
+        MBDBackTPLvlSet(255);
+        func_800F75EC_name_81(-1);
+        HuVecCopy3F(&D_80105540_name_81, func_800FC8D0_name_81());
+        func_800FC8C4_name_81(&D_80105540_name_81);
+        func_800FC888_name_81(4);
+        HuPrcChildLink(process, func_800EC1E4_name_81(&D_80105540_name_81, &player->player_obj->coords, &D_80105540_name_81, 4.0f));
+        HuPrcChildWatch();
+        func_800FC888_name_81(1);
+        mbItemBtnF = 1;
 
-//             func_800FAC4C_name_81();
-//             D_80105550_name_81 = 0;
-//             D_80105558_name_81 = 0;
+    end:
+        if (musHandle != -1) {
+            func_800039A4_main(musHandle, 30);
+            func_80003B70_main(D_800CDBC8_main, 90);
+        }
+    }
 
-//         loop_99:
-//             if (player->star != 0) {
-//                 if (sp24 == 0x12C) {
-//                     sp24 = 0;
-//                     sp4C |= 8;
-//                 } else if (sp24 < 0) {
-//                     player->star += (u8)sp24;
-//                     if (player->star < 0) {
-//                         player->star = 0;
-//                     }
-//                     D_80105558_name_81 = -sp24;
-//                     sp24 = 0;
-//                     sp4C |= 2;
-//                 } else if (sp24 > 0) {
-//                     *D_80101968_name_81 -= sp24;
-//                     if ((*D_80101968_name_81) < 0) {
-//                         D_80105550_name_81 = (*D_80101968_name_81) + sp24;
-//                         sp24 = *D_80101968_name_81;
-//                         *D_80101968_name_81 = 0;
-//                     } else {
-//                         D_80105550_name_81 = sp24;
-//                         sp24 = 0;
-//                     }
-//                     sp4C |= 1;
-//                     goto loop_99;
-//                 }
-
-//                 D_8010554C_name_81 = 0;
-//                 if (player->star <= 0) {
-//                     D_8010554C_name_81 = 1;
-//                 }
-
-//                 if ((*D_80101968_name_81) <= 0) {
-//                     D_8010554C_name_81 |= 8;
-//                     D_8010554C_name_81 |= 2 << sp34;
-//                 }
-
-//                 if (sp4C != 0) {
-//                     HuVecCopy3F(&D_80105540_name_81, func_800FC8D0_name_81());
-//                     func_800FC8C4_name_81(&D_80105540_name_81);
-//                     func_800FC888_name_81(4);
-//                     HuPrcChildLink(temp_s6, func_800EC1E4_name_81(&D_80105540_name_81, &sp44->coords, &D_80105540_name_81, 4.0f));
-//                     HuPrcChildWatch();
-//                     func_800FC8C4_name_81(&sp44->coords);
-//                     HuPrcChildLink(temp_s6, func_800E47B8_name_81(opposingPlayerIndex, *D_80101978_name_81, &opposingPlayer->player_obj->coords, &player->player_obj->coords, 0));
-//                     temp_v0_8 = func_800D8010_name_81(0x36, 0);
-//                     HuVecCopy3F(&temp_v0_8->coords, &sp44->coords);
-//                     func_8001C814_main(temp_v0_8->omObj1->model[0], 2, 0);
-//                     HuAudFXPlay(0x1CC);
-//                     func_800EFABC_name_81(temp_v0_8);
-//                     MBDModelKill(temp_v0_8);
-//                     HuPrcChildWatch();
-//                     switch (arg0) {
-//                         case 0:
-//                             arg0 = 1;
-//                             break;
-//                         case 3:
-//                             arg0 = 3;
-//                             break;
-//                         case 2:
-//                             arg0 = 2;
-//                             break;
-//                         case 1:
-//                             arg0 = 0;
-//                             break;
-//                     }
-
-//                     D_80105620_name_81 = arg0;
-//                     func_800FAB1C_name_81();
-
-//                     if (((*D_80101978_name_81) != (-1)) && (PartnersBaseStats[*D_80101978_name_81].func2 != 0)) {
-//                         s8 temp = *D_80101974_name_81;
-//                         D_8010571C_name_81 = !(temp) == 0 ? temp : -1;
-//                         D_8010570C_name_81 = -1;
-//                         PartnersBaseStats[*D_80101978_name_81].func2(opposingPlayerIndex, curPlayerIndex, sp44, sp3C, sp4C, sp2C + 0x10);
-//                     }
-//                     func_800FAC4C_name_81();
-//                 }
-
-//                 if ((*D_80101974_name_81) != (-1)) {
-//                     temp_v0_9 = PartnersBaseStats[*D_80101974_name_81].func3;
-//                     if (temp_v0_9 != 0) {
-//                         temp_v0_9();
-//                     }
-//                 }
-
-//                 if ((*D_80101978_name_81) != (-1)) {
-//                     temp_v0_10 = PartnersBaseStats[*D_80101978_name_81].func4;
-//                     if (temp_v0_10 != 0) {
-//                         temp_v0_10();
-//                     }
-//                 }
-
-//                 if ((*D_80101968_name_81) <= 0) {
-//                     *D_80101974_name_81 = -1;
-//                     *D_80101968_name_81 = 0;
-//                     func_800F8358_name_81(curPlayerIndex);
-//                     func_800F57B0_name_81(curPlayerIndex);
-//                     func_800F5E2C_name_81(curPlayerIndex);
-//                 }
-
-//                 if ((*D_8010196C_name_81) <= 0) {
-//                     *D_80101978_name_81 = -1;
-//                     *D_8010196C_name_81 = 0;
-//                     func_800F8358_name_81(opposingPlayerIndex);
-//                     func_800F57B0_name_81(opposingPlayerIndex);
-//                     func_800F5E2C_name_81(opposingPlayerIndex);
-//                 }
-
-//                 if ((*D_80101970_name_81) <= 0) {
-//                     *D_8010197C_name_81 = -1;
-//                     *D_80101970_name_81 = 0;
-//                     func_800F8358_name_81(opposingPlayerIndex);
-//                     func_800F57B0_name_81(opposingPlayerIndex);
-//                     func_800F5E2C_name_81(opposingPlayerIndex);
-//                 }
-
-//                 for (i = 64; i < 255; i += 16) {
-//                     MBDBackTPLvlSet(i);
-//                     HuPrcVSleep();
-//                 }
-
-//                 MBDBackTPLvlSet(0xFF);
-//                 func_800F75EC_name_81(-1);
-//                 HuVecCopy3F(&D_80105540_name_81, func_800FC8D0_name_81());
-//                 func_800FC8C4_name_81(&D_80105540_name_81);
-//                 func_800FC888_name_81(4);
-//                 HuPrcChildLink(temp_s6, func_800EC1E4_name_81(&D_80105540_name_81, &player->player_obj->coords, &D_80105540_name_81, 4.0f));
-//                 HuPrcChildWatch();
-//                 func_800FC888_name_81(1);
-//                 mbItemBtnF = 1;
-//             }
-//         }
-
-//         if (sp54 != (-1)) {
-//             func_800039A4_main(sp54, 0x1E);
-//             func_80003B70_main(D_800CDBC8_main->unk_00, 0x5A);
-//         }
-//     }
-
-//     func_800FAFAC_name_81();
-//     func_800E5954_name_81();
-// }
+    func_800FAFAC_name_81();
+    func_800E5954_name_81();
+}
 
 void func_800FA120_name_81(void) {
     UnkBoard5 *data = HuPrcCurrentGet()->user_data;

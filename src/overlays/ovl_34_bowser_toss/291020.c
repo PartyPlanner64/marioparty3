@@ -30,7 +30,7 @@ typedef struct UnkBowser { // 0x64 bytes, two entries
     f32 unk_38;
     f32 unk_3C;
     f32 unk_40;
-    s32 unk_44;
+    f32 unk_44; // roll
     f32 unk_48;
     f32 unk_4C;
     s32 unk_50;
@@ -148,7 +148,9 @@ typedef union BowserTossWorkBytes { // packs the low byte of each work word
     } bytes;
 } BowserTossWorkBytes;
 
-extern u8 D_8010F150_bowser_toss[]; // RGBA
+extern u8 D_8010F150_bowser_toss[];  // RGBA
+extern s32 D_8010F154_bowser_toss[]; // per-character
+extern s32 D_8010F174_bowser_toss[]; // per-character
 extern s32 D_8010F194_bowser_toss;
 extern Vec D_8010F198_bowser_toss[2];
 extern s32 D_800A178C_main[][6];
@@ -204,6 +206,8 @@ extern const s16 D_8010F53C_bowser_toss[];
 extern omObjData *D_8010FB88_bowser_toss;
 extern UnkBowser *D_8010FB8C_bowser_toss;
 extern BowserTossBowser *D_8010FBA0_bowser_toss;
+extern s16 D_800CDD6A_main;
+extern Gfx D_8010F4F0_bowser_toss[];
 extern s16 D_800CD1B0_main;
 extern u8 D_800D2008_main;
 extern s16 *D_800D04B4_main;
@@ -258,8 +262,14 @@ void func_8010A17C_bowser_toss(omObjData *object);
 void func_8010A908_bowser_toss(omObjData *object);
 void func_8010AF38_bowser_toss(s16 camera, Vec *pos, Vec *rot);
 u16 func_8010AD54_bowser_toss(s32 dirAndFile);
-s16 func_8010DDFC_bowser_toss(HuSprite_Unk84_Struct *sprite, u8 *color, s32 arg2);
-s16 func_8010EA0C_bowser_toss(HuSprite_Unk84_Struct *sprite, u16 model, u8 *color);
+s32 func_8010DDFC_bowser_toss(HuSprite_Unk84_Struct *sprite, u8 *color, u8 antialias);
+s32 func_8010EA0C_bowser_toss(HuSprite_Unk84_Struct *sprite, u16 model, u8 *color);
+s32 func_8010ED44_bowser_toss(HuSprite_Unk84_Struct *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset);
+void func_80107E84_bowser_toss(omObjData *object);
+void func_80109DB8_bowser_toss(omObjData *object, f32 angle, HuMtx4F mtx);
+void func_80109E4C_bowser_toss(UnkBowser *bowser, f32 *out, f32 time);
+s16 func_80109F68_bowser_toss(f32 x, f32 y, f32 velX, f32 velY);
+s32 func_8010A2D4_bowser_toss(Vec *pos, Vec *vel, Vec *scale, f32 speed, s16 camera);
 void func_8010EC10_bowser_toss(u16 model, HuSprite_Unk84_Struct *sprite, u16 frame, u8 *color);
 BowserTossPlayer *func_8010D98C_bowser_toss(omObjData *object);
 
@@ -657,9 +667,374 @@ void func_801067B0_bowser_toss(omObjData *object) {
     object->func = func_80106BC4_bowser_toss;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", D_8010F5A0_bowser_toss);
+const Vec D_8010F5A0_bowser_toss = { 0.0f, 0.0f, 0.0f };
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_80106BC4_bowser_toss);
+void func_80106BC4_bowser_toss(omObjData *object) {
+    Vec pos = D_8010F5A0_bowser_toss;
+    Vec vel = D_8010F5A0_bowser_toss;
+    Vec scale = D_8010F5A0_bowser_toss;
+    BowserTossPlayer *player;
+    UnkBowser *bowser;
+    HmfModel *model;
+    func_800E1BA8_minigame_ObjData *data;
+    s32 stickPos;
+    f32 temp;
+    f32 stickX;
+    f32 stickY;
+    f32 power;
+    f32 accel;
+    f32 angle;
+    f32 pitch;
+
+    player = func_8010D98C_bowser_toss(object);
+    bowser = func_80108800_bowser_toss(player->index);
+    data = object->data;
+    model = &Hu3DData[object->model[0]];
+    switch (func_800E6E8C_minigame()) {
+        case 0:
+            if (player->unk_0C == 0) {
+                if (player->unk_08 >= 30.0f) {
+                    player->unk_08 = 0;
+                    player->unk_0C = 1;
+                }
+            } else if (D_8010FB74_bowser_toss[0].unk_0C > 0 && D_8010FB74_bowser_toss[1].unk_0C > 0 &&
+                       D_8010FB68_bowser_toss <= 0) {
+                D_8010FB68_bowser_toss++;
+            }
+            break;
+        case 2:
+            if (player->unk_1E) {
+                func_80107E84_bowser_toss(object);
+            }
+            switch (player->unk_0C) {
+                case 1:
+                    if (D_800D5558_main[player->unk_1A] & 0x8000) {
+                        if (func_800E5690_minigame(object, 4)) {
+                            player->unk_30 = 10;
+                            player->unk_32 = 1;
+                            player->unk_44 += 0.5f;
+                            if (player->unk_44 >= 45.0f) {
+                                player->unk_44 = 45.0f;
+                            } else if (player->unk_44 < 3.0f) {
+                                player->unk_44 = 3.0f;
+                            }
+                            player->unk_4C = 1;
+                            model->motShapeSpeed = 0.0f;
+                            player->unk_0C = 2;
+                            player->unk_10 = func_8004AC5C_main(0x4A6, player->index);
+                        } else {
+                            player->unk_44 = 0.0f;
+                        }
+                    }
+                    break;
+                case 2:
+                    stickX = fabs(D_800CBB6E_main[player->unk_1A]);
+                    if (fabs(stickX) < 8.0) {
+                        stickX = 0.0f;
+                    } else if (stickX > 60.0f) {
+                        stickX = 60.0f;
+                    } else if (stickX < -60.0f) {
+                        stickX = -60.0f;
+                    }
+                    if (stickX >= 8.0f) {
+                        stickX -= 8.0f;
+                    }
+                    stickY = fabs(D_800D20A1_main[player->unk_1A]);
+                    if (fabs(stickY) < 8.0) {
+                        stickY = 0.0f;
+                    } else if (stickY > 60.0f) {
+                        stickY = 60.0f;
+                    } else if (stickY < -60.0f) {
+                        stickY = -60.0f;
+                    }
+                    if (stickY >= 8.0f) {
+                        stickY -= 8.0f;
+                    }
+                    stickPos = func_800E2250_minigame(object, stickX, stickY);
+                    stickX = stickPos >> 16;
+                    stickY = stickPos & 0xFFFF;
+                    power = sqrtf(stickX * stickX + stickY * stickY) / 52.0f;
+                    if (power < 0.0f) {
+                        power = 0.0f;
+                    } else if (power > 1.0f) {
+                        power = 1.0f;
+                    }
+                    player->unk_48 = power * player->unk_2C + player->unk_24;
+                    if (model->motIdShift == 0xFF) {
+                        temp = model->motShapeTime - player->unk_48;
+                        if (fabs(temp) < 1.75) {
+                            model->motShapeTime = player->unk_48;
+                        } else if (temp < 0.0f) {
+                            model->motShapeTime += 1.75f;
+                        } else {
+                            model->motShapeTime -= 1.75f;
+                        }
+                    } else {
+                        model->motShapeTime = 0.0f;
+                    }
+                    player->unk_44 -= 0.075f;
+                    accel = (1.0 - bowser->unk_28) * 2;
+                    if (accel < 1.0f) {
+                        accel = 1.0f;
+                    } else if (accel > 2.0f) {
+                        accel = 2.0f;
+                    }
+                    accel *= 0.5f;
+                    if (D_800D5558_main[player->unk_1A] & 0x8000) {
+                        player->unk_44 += accel;
+                        player->unk_0E++;
+                        if (!(player->unk_0E & 1)) {
+                            pos.x = object->trans.x;
+                            pos.y = object->trans.y + 20.0;
+                            pos.z = object->trans.z;
+                            vel.x = sindf(object->rot.y) * 20.0 * 0.2f;
+                            vel.z = cosdf(object->rot.y) * 20.0 * 0.2f;
+                            vel.y = 0.0f;
+                            scale.x = scale.y = scale.z = 0.5f;
+                            func_8010A2D4_bowser_toss(&pos, &vel, &scale, 1.0f, player->index);
+                        }
+                    }
+                    if (player->unk_44 >= 45.0f) {
+                        player->unk_44 = 45.0f;
+                    } else if (player->unk_44 < 3.0f) {
+                        player->unk_44 = 3.0f;
+                    }
+                    model->motSpeed = player->unk_44 * 10.0f / 45.0f;
+                    if (player->unk_44 >= 0.5f && model->motSpeed < 0.3f) {
+                        model->motSpeed = 0.3f;
+                    }
+                    if (model->motSpeed >= 1.0f) {
+                        model->motSpeed = 1.0f;
+                    }
+                    object->rot.y += player->unk_44;
+                    if (object->rot.y >= 360.0f) {
+                        object->rot.y -= 360.0f;
+                    }
+                    bowser->unk_28 = player->unk_44 / 45.0f;
+                    if (bowser->unk_28 >= 1.0f) {
+                        bowser->unk_28 = 1.0f;
+                    } else if (bowser->unk_28 < 0.0f) {
+                        bowser->unk_28 = 0.0f;
+                    }
+                    if (player->unk_10 != -1) {
+                        pitch = (1.0 - bowser->unk_28) * -3600.0;
+                        if (object->rot.y <= 180.0f) {
+                            angle = object->rot.y - 90.0f;
+                        } else {
+                            angle = -(object->rot.y - 270.0f);
+                        }
+                        pitch += angle * (1.0f / 90.0f) * 400.0f;
+                        HuAudFXPitchSet(player->unk_10, (s16)pitch);
+                    }
+                    bowser->unk_2C = (model->motShapeTime - player->unk_24) / player->unk_2C;
+                    if (bowser->unk_2C >= 1.0f) {
+                        bowser->unk_2C = 1.0f;
+                    } else if (bowser->unk_2C < 0.0f) {
+                        bowser->unk_2C = 0.0f;
+                    }
+                    break;
+                case 3:
+                    if (player->unk_4C) {
+                        if (player->unk_48 < player->unk_24) {
+                            player->unk_48 = player->unk_24;
+                        }
+                        if (model->motIdShift == 0xFF) {
+                            temp = model->motShapeTime - player->unk_48;
+                            if (fabs(temp) < 1.75) {
+                                model->motShapeTime = player->unk_48;
+                            } else if (temp < 0.0f) {
+                                model->motShapeTime += 1.75f;
+                            } else {
+                                model->motShapeTime -= 1.75f;
+                            }
+                        } else {
+                            model->motShapeTime = 0.0f;
+                        }
+                        model->motSpeed = player->unk_44 * 10.0f / 45.0f;
+                        if (player->unk_44 >= 0.5f && model->motSpeed < 0.3f) {
+                            model->motSpeed = 0.3f;
+                        }
+                        if (model->motSpeed >= 1.0f) {
+                            model->motSpeed = 1.0f;
+                        }
+                        bowser->unk_28 = player->unk_44 / 45.0f;
+                        if (bowser->unk_28 >= 1.0f) {
+                            bowser->unk_28 = 1.0f;
+                        } else if (bowser->unk_28 < 0.0f) {
+                            bowser->unk_28 = 0.0f;
+                        }
+                        bowser->unk_2C = (model->motShapeTime - player->unk_24) / player->unk_2C;
+                        if (bowser->unk_2C >= 1.0f) {
+                            bowser->unk_2C = 1.0f;
+                        } else if (bowser->unk_2C < 0.0f) {
+                            bowser->unk_2C = 0.0f;
+                        }
+                        if (player->unk_44 >= 45.0f) {
+                            player->unk_44 = 45.0f;
+                        } else if (player->unk_44 < 3.0f) {
+                            player->unk_44 = 3.0f;
+                        }
+                        if (player->unk_10 != -1) {
+                            pitch = (1.0 - bowser->unk_28) * -3600.0;
+                            if (object->rot.y <= 180.0f) {
+                                angle = object->rot.y - 90.0f;
+                            } else {
+                                angle = -(object->rot.y - 270.0f);
+                            }
+                            pitch += angle * (1.0f / 90.0f) * 400.0f;
+                            HuAudFXPitchSet(player->unk_10, (s16)pitch);
+                        }
+                        object->rot.y += player->unk_44;
+                        if (object->rot.y >= 720.0f) {
+                            object->rot.y -= 720.0f;
+                        }
+                        if (object->rot.y >= 450.0f) {
+                            bowser->unk_0A = 1;
+                            bowser->unk_0C = model->motShapeTime;
+                            if (player->unk_10 != -1) {
+                                HuAudFXStop(player->unk_10);
+                            }
+                            player->unk_10 = -1;
+                            func_8004AC98_main(player->unk_1C + 0xB0, player->index);
+                            func_800E5690_minigame(object, 0);
+                            Hu3DData[object->model[0]].motIdShape = 0xFF;
+                            player->unk_3C = 0;
+                            player->unk_0C = 4;
+                        }
+                    } else {
+                        player->unk_0C = 4;
+                    }
+                    break;
+                case 4:
+                    if (player->unk_3C) {
+                        player->unk_0C = 5;
+                        player->unk_08 = 0;
+                        break;
+                    }
+                    object->rot.y += player->unk_44;
+                    if (object->rot.y >= 360.0f) {
+                        object->rot.y -= 360.0f;
+                    }
+                    if (player->unk_44 != 0.0f) {
+                        player->unk_44 *= 0.9f;
+                    }
+                    if (player->unk_44 <= 0.1f) {
+                        player->unk_44 = 0.0f;
+                        player->unk_0C = 5;
+                        player->unk_08 = 0;
+                    }
+                    break;
+                case 5:
+                    break;
+            }
+            break;
+        case 3:
+            switch (player->unk_0C) {
+                case 5:
+                    if (D_8010FB78_bowser_toss == player->index) {
+                        player->unk_0C = 6;
+                    } else {
+                        player->unk_0C = 9;
+                    }
+                case 6:
+                    if (player->unk_04 < 400.0) {
+                        player->unk_0C = 9;
+                    } else if (player->unk_04 < 800.0) {
+                        func_800E5690_minigame(object, 3);
+                        player->unk_34 = 19.0f;
+                        player->unk_0C = 7;
+                        func_8004AC98_main(player->unk_1C + 0x3B, player->index);
+                        temp = (player->unk_04 - 400.0) / 400.0;
+                        player->unk_38 = (temp + 1.0) * 9.000000357627869;
+                    } else {
+                        object->trans.x = bowser->unk_30 - 500.0;
+                        object->trans.y = 700.0f;
+                        func_800E5690_minigame(object, 3);
+                        player->unk_34 = 0.0f;
+                        player->unk_0C = 8;
+                        func_8004AC98_main(player->unk_1C + 0xB9, player->index);
+                    }
+                    break;
+                case 7:
+                    object->trans.x += player->unk_38;
+                    object->trans.y += player->unk_34;
+                    player->unk_34 -= 1.79663f;
+                    object->rot.y = func_8010D6E0_bowser_toss(90.0f, object->rot.y, 10.0f);
+                    if (object->trans.y <= 0.0f) {
+                        func_800E5690_minigame(object, 0);
+                        func_8004AC98_main(player->unk_1C + 0x32, player->index);
+                        object->trans.y = 0.0f;
+                        player->unk_0C = 9;
+                    }
+                    break;
+                case 8:
+                    object->trans.x += 9.000000357627869;
+                    object->trans.y += player->unk_34;
+                    player->unk_34 -= 1.79663f;
+                    object->rot.y = func_8010D6E0_bowser_toss(90.0f, object->rot.y, 10.0f);
+                    if (object->trans.y <= 0.0f) {
+                        func_800E5690_minigame(object, 0);
+                        func_8004AC98_main(player->unk_1C + 0x32, player->index);
+                        if (D_8010FB84_bowser_toss == -1) {
+                            D_8010FB84_bowser_toss = HuAudFXPlay(0x4AA);
+                        }
+                        object->trans.y = 0.0f;
+                        player->unk_0C = 9;
+                    }
+                    break;
+                case 9:
+                    if (player->unk_3C) {
+                        func_800E5690_minigame(object, 0);
+                        Hu3DData[object->model[0]].motIdShape = 0xFF;
+                        bowser->unk_0A = 3;
+                        player->unk_3C = 0;
+                    }
+                    object->rot.y = func_8010D6E0_bowser_toss(0.0f, object->rot.y, 10.0f);
+                    if (object->rot.y < 1.0f || object->rot.y >= 359.0f) {
+                        player->unk_0C = 10;
+                    }
+                    break;
+                case 10:
+                    break;
+            }
+            break;
+        case 4:
+            switch (player->unk_02) {
+                case 0:
+                    if (func_800E5690_minigame(object, 7)) {
+                        func_80017790_main(object->model[0], 2, player->unk_1C, D_8010F154_bowser_toss[player->unk_1C]);
+                        func_80045F1C_main(player->unk_14, -1, player->index);
+                        player->unk_02 = -1;
+                    }
+                    break;
+                case 1:
+                    if (func_800E5690_minigame(object, 8)) {
+                        func_80017790_main(object->model[0], 2, player->unk_1C, D_8010F174_bowser_toss[player->unk_1C]);
+                        player->unk_02 = -1;
+                    }
+                    break;
+            }
+            break;
+    }
+    func_800E4E30_minigame(object);
+    if ((player->unk_30 != 0 || player->unk_32 != 0) && data->unkD6 == 0) {
+        model = &Hu3DData[object->model[0]];
+        if (player->unk_30 != 0) {
+            model->unk0C = player->unk_30;
+        }
+        if (player->unk_30 == 1) {
+            model->unk0E = player->unk_30;
+        }
+        if (player->unk_32) {
+            model->motSpeed = 0.0f;
+            model->motShiftSpeed = 0.0f;
+        }
+        player->unk_32 = 0;
+        player->unk_30 = 0;
+    }
+    player->unk_08++;
+    Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
+}
 
 void func_80107E84_bowser_toss(omObjData *object) {
     BowserTossPlayer *player;
@@ -838,7 +1213,295 @@ UnkBowser *func_80108800_bowser_toss(s16 arg0) {
     return &D_8010FB8C_bowser_toss[arg0];
 }
 
+// Matches except for case 8, where the target schedules the 100.0f constant load before
+// the bowser->unk_30 load (the identical expression in the case 2/4 loops matches).
+#ifdef NON_MATCHING
+void func_8010882C_bowser_toss(omObjData *object) {
+    HuMtx4F rotMtx;
+    HuMtx4F mtx;
+    HuMtx4F hookMtx;
+    Vec pos;
+    Vec vel;
+    Vec scale;
+    BowserTossPlayer *player;
+    UnkBowser *bowser;
+    HmfModel *model;
+    f32 t;
+    f32 ground;
+    f32 pitch;
+    f32 yaw;
+    f32 speed;
+    s32 count;
+    s32 i;
+    s32 j;
+
+    for (i = 0, bowser = D_8010FB8C_bowser_toss; i < 2; i++, bowser++) {
+        player = func_8010D98C_bowser_toss(bowser->unk_00);
+        model = &Hu3DData[bowser->unk_00->model[0]];
+        object->trans.x = bowser->unk_00->trans.x;
+        object->trans.y = bowser->unk_00->trans.y;
+        object->trans.z = bowser->unk_00->trans.z;
+        object->rot.x = bowser->unk_00->rot.x;
+        object->rot.y = bowser->unk_00->rot.y;
+        object->rot.z = bowser->unk_00->rot.z;
+        object->scale.x = bowser->unk_00->scale.x;
+        object->scale.y = bowser->unk_00->scale.y;
+        object->scale.z = bowser->unk_00->scale.z;
+        switch (bowser->unk_0A) {
+            case 0:
+                if (bowser->unk_60 != NULL) {
+                    func_80109DB8_bowser_toss(object, object->rot.y, rotMtx);
+                    func_80109E4C_bowser_toss(bowser, hookMtx[0], model->motShapeTime);
+                    if (model->motIdShape != 0xFF) {
+                        func_80018044_main(hookMtx, rotMtx, mtx);
+                    } else {
+                        func_8002367C_main(mtx, rotMtx);
+                    }
+                    mtxTransCat(mtx, 0.0f, 0.0f, 150.0f);
+                    bowser->unk_30 = mtx[3][0];
+                    bowser->unk_38 = mtx[3][2];
+                }
+                break;
+            case 1:
+                func_8001C258_main(bowser->unk_04, 0x4000, 0);
+                func_80109DB8_bowser_toss(object, 90.0f, rotMtx);
+                func_80109E4C_bowser_toss(bowser, hookMtx[0], model->motShapeTime);
+                func_80018044_main(hookMtx, rotMtx, mtx);
+                mtxTransCat(mtx, 0.0f, 0.0f, 150.0f);
+                bowser->unk_30 = mtx[3][0];
+                bowser->unk_34 = mtx[3][1];
+                bowser->unk_38 = mtx[3][2];
+                bowser->unk_3C = 360.0f - bowser->unk_2C * 85.0f;
+                bowser->unk_40 = 90.0f;
+                bowser->unk_44 = 0.0f;
+                func_8001C258_main(bowser->unk_04, 4, 4);
+                func_8001C258_main(bowser->unk_06, 4, 0);
+                bowser->unk_48 = fabs(cosdf(bowser->unk_3C)) * bowser->unk_28 * 75.99999904632568;
+                bowser->unk_4C = fabs(sindf(bowser->unk_3C)) * bowser->unk_28 * 75.99999904632568;
+                bowser->unk_50 = 0;
+                bowser->unk_30 += bowser->unk_48;
+                bowser->unk_34 += bowser->unk_4C;
+                bowser->unk_22 = 0;
+                bowser->unk_24 = func_80109F68_bowser_toss(bowser->unk_30, bowser->unk_34, bowser->unk_48, bowser->unk_4C);
+                bowser->unk_20 = func_8004AC5C_main(0x4A7, player->index);
+                if (bowser->unk_20 != -1) {
+                    HuAudFXPitchSet(bowser->unk_20, bowser->unk_22);
+                }
+                bowser->unk_0A = 2;
+                bowser->unk_0C = 0;
+                break;
+            case 2:
+                bowser->unk_30 += bowser->unk_48;
+                bowser->unk_34 += bowser->unk_4C;
+                bowser->unk_4C -= 0.65332f;
+                if (bowser->unk_4C < -250.0) {
+                    bowser->unk_4C = -250.0f;
+                }
+                if (bowser->unk_0C < 20) {
+                    t = bowser->unk_0C / 20.0f;
+                    CenterM[i].x = func_8010D8A0_bowser_toss(t, Center.x, bowser->unk_30);
+                    CenterM[i].y = func_8010D8A0_bowser_toss(t, Center.y, bowser->unk_34);
+                } else {
+                    CenterM[i].x = bowser->unk_30;
+                    CenterM[i].y = bowser->unk_34;
+                }
+                if (CenterM[i].x < Center.x) {
+                    CenterM[i].x = Center.x;
+                }
+                if (player->index == 0) {
+                    if (CenterM[i].y < Center.y) {
+                        CenterM[i].y = Center.y;
+                    }
+                } else {
+                    if (CenterM[i].y < D_8010FBA8_bowser_toss.y) {
+                        CenterM[i].y = D_8010FBA8_bowser_toss.y;
+                    }
+                }
+                bowser->unk_3C = atan2df(-bowser->unk_4C, bowser->unk_48);
+                bowser->unk_44 += bowser->unk_28 * 10.0f;
+                if (bowser->unk_44 >= 360.0f) {
+                    bowser->unk_44 -= 360.0f;
+                }
+                ground = -(fabs(bowser->unk_4C) / 250.0 * 100.0);
+                if (bowser->unk_34 <= ground + 10.0) {
+                    bowser->unk_34 = ground + 10.0;
+                    bowser->unk_0E = 0;
+                    bowser->unk_0C = 0;
+                    player->unk_04 = bowser->unk_30;
+                    scale.x = scale.y = scale.z = 1.0f;
+                    count = fabs(bowser->unk_4C) / 250.0 * 8.0 + 8.0;
+                    for (j = 0; j < count; j++) {
+                        pos.x = bowser->unk_30 + 100.0f - (f32)(u8)(rand8() % 100) * 0.01 * 200.0;
+                        pos.z = bowser->unk_38 + (f32)(u8)(rand8() % 100) * 0.01 * 200.0 * 0.5;
+                        pos.y = 0.0f;
+                        pitch = -((f32)(u8)(rand8() % 100) * 0.01 * 90.0);
+                        yaw = (f32)(u8)(rand8() % 100) * 0.01 * 360.0;
+                        speed = (f32)(u8)(rand8() % 100) * 0.01 * 5.000000074505806 + 5.000000074505806;
+                        vel.x = sindf(yaw) * cosdf(pitch) * speed;
+                        vel.y = -sindf(pitch) * speed;
+                        vel.z = cosdf(yaw) * cosdf(pitch) * speed;
+                        func_8010A2D4_bowser_toss(&pos, &vel, &scale, 1.0f, player->index);
+                    }
+                    if (bowser->unk_20 != -1) {
+                        HuAudFXStop(bowser->unk_20);
+                    }
+                    bowser->unk_20 = -1;
+                    func_8004AC5C_main(0x4A8, player->index);
+                    omVibrate(player->unk_18, 20, 0, 20);
+                    if (bowser->unk_28 < 0.4f) {
+                        bowser->unk_0A = 7;
+                    } else {
+                        if (fabs(bowser->unk_48) < 2.0 * fabs(bowser->unk_4C)) {
+                            bowser->unk_18 = 50.0f;
+                        } else {
+                            bowser->unk_18 = bowser->unk_28 / 0.4f * 50.0;
+                        }
+                        bowser->unk_1C = CenterM[i].y;
+                        bowser->unk_0A = 6;
+                    }
+                } else {
+                    if (bowser->unk_4C > 0.0f) {
+                        bowser->unk_22 += 10;
+                    } else {
+                        bowser->unk_22 -= 10;
+                    }
+                    if (bowser->unk_22 > 1200) {
+                        bowser->unk_22 = 1200;
+                    } else if (bowser->unk_22 < 0) {
+                        bowser->unk_22 = 0;
+                    }
+                    if (bowser->unk_20 != -1) {
+                        HuAudFXPitchSet(bowser->unk_20, bowser->unk_22);
+                    }
+                }
+                break;
+            case 3:
+                func_8001C258_main(bowser->unk_04, 0x4000, 0);
+                func_80109DB8_bowser_toss(object, 90.0f, rotMtx);
+                func_80109E4C_bowser_toss(bowser, hookMtx[0], 0.0f);
+                func_80018044_main(hookMtx, rotMtx, mtx);
+                mtxTransCat(mtx, 0.0f, 0.0f, 150.0f);
+                bowser->unk_30 = mtx[3][0];
+                bowser->unk_34 = mtx[3][1];
+                bowser->unk_38 = mtx[3][2];
+                bowser->unk_3C = 45.0f;
+                bowser->unk_40 = 90.0f;
+                bowser->unk_44 = 0.0f;
+                func_8001C258_main(bowser->unk_04, 4, 4);
+                func_8001C258_main(bowser->unk_06, 4, 0);
+                bowser->unk_4C = 0.0f;
+                bowser->unk_0A = 4;
+            case 4:
+                bowser->unk_4C -= 1.95996f;
+                if (bowser->unk_4C < -250.0) {
+                    bowser->unk_4C = -250.0f;
+                }
+                bowser->unk_34 += bowser->unk_4C;
+                ground = -(fabs(bowser->unk_4C) / 250.0 * 100.0);
+                if (bowser->unk_34 <= ground + 10.0) {
+                    bowser->unk_34 = ground + 10.0;
+                    scale.x = scale.y = scale.z = 1.0f;
+                    for (j = 0; j < 5; j++) {
+                        pos.x = bowser->unk_30 + 100.0f - (f32)(u8)(rand8() % 100) * 0.01 * 200.0;
+                        pos.z = bowser->unk_38 + (f32)(u8)(rand8() % 100) * 0.01 * 200.0 * 0.5;
+                        pos.y = 0.0f;
+                        pitch = -((f32)(u8)(rand8() % 100) * 0.01 * 90.0);
+                        yaw = (f32)(u8)(rand8() % 100) * 0.01 * 360.0;
+                        speed = (f32)(u8)(rand8() % 100) * 0.01 * 5.000000074505806 + 5.000000074505806;
+                        vel.x = sindf(yaw) * cosdf(pitch) * speed;
+                        vel.y = -sindf(pitch) * speed;
+                        vel.z = cosdf(yaw) * cosdf(pitch) * speed;
+                        func_8010A2D4_bowser_toss(&pos, &vel, &scale, 1.0f, player->index);
+                    }
+                    func_8004AC5C_main(0x4A8, player->index);
+                    bowser->unk_0A = 9;
+                }
+                break;
+            case 5:
+                bowser->unk_3C = func_8010D6E0_bowser_toss(0.0f, bowser->unk_3C, 5.0f);
+                if (bowser->unk_3C <= 0.0f) {
+                    bowser->unk_0A = 9;
+                    bowser->unk_0C = 0;
+                }
+                break;
+            case 6:
+                bowser->unk_0A = 8;
+                bowser->unk_0C = 0;
+                break;
+            case 7:
+                bowser->unk_48 *= 0.8f;
+                bowser->unk_30 += bowser->unk_48;
+                CenterM[i].x = bowser->unk_30;
+                CenterM[i].y = bowser->unk_34;
+                if (CenterM[i].x < Center.x) {
+                    CenterM[i].x = Center.x;
+                }
+                if (player->index == 0) {
+                    if (CenterM[i].y < Center.y) {
+                        CenterM[i].y = Center.y;
+                    }
+                } else {
+                    if (CenterM[i].y < D_8010FBA8_bowser_toss.y) {
+                        CenterM[i].y = D_8010FBA8_bowser_toss.y;
+                    }
+                }
+                pos.x = bowser->unk_30;
+                pos.y = 0.0f;
+                pos.z = bowser->unk_38;
+                pitch = (f32)(u8)(rand8() % 100) * 0.01 * 180.0;
+                yaw = (f32)(u8)(rand8() % 100) * 0.01 * 360.0;
+                speed = (f32)(u8)(rand8() % 100) * 0.01 * 7.000000029802322 + 7.000000029802322;
+                vel.x = sindf(yaw) * cosdf(pitch) * speed;
+                vel.y = -sindf(pitch) * speed;
+                vel.z = cosdf(yaw) * cosdf(pitch) * speed;
+                scale.x = scale.y = scale.z = 1.0f;
+                func_8010A2D4_bowser_toss(&pos, &vel, &scale, 1.0f, player->index);
+                if (bowser->unk_48 <= 10.0) {
+                    bowser->unk_0A = 9;
+                    bowser->unk_0C = 0;
+                }
+                break;
+            case 8:
+                pos.x = bowser->unk_30 + 100.0f - (f32)(u8)(rand8() % 100) * 0.01 * 200.0;
+                pos.z = bowser->unk_38 + (f32)(u8)(rand8() % 100) * 0.01 * 200.0 * 0.5;
+                pos.y = 0.0f;
+                pitch = -((f32)(u8)(rand8() % 100) * 0.01 * 90.0);
+                yaw = (f32)(u8)(rand8() % 100) * 0.01 * 360.0;
+                speed = (f32)(u8)(rand8() % 100) * 0.01 * 5.000000074505806 + 5.000000074505806;
+                vel.x = sindf(yaw) * cosdf(pitch) * speed;
+                vel.y = -sindf(pitch) * speed;
+                vel.z = cosdf(yaw) * cosdf(pitch) * speed;
+                scale.x = scale.y = scale.z = 1.0f;
+                func_8010A2D4_bowser_toss(&pos, &vel, &scale, 1.0f, player->index);
+                if (bowser->unk_0C >= 6.0f) {
+                    bowser->unk_0A = 9;
+                    bowser->unk_0C = 0;
+                }
+                break;
+        }
+        if (bowser->unk_18 >= 0.1f) {
+            CenterM[i].y = bowser->unk_18 * 0.5f + bowser->unk_1C + sindf(bowser->unk_10) * bowser->unk_18;
+            bowser->unk_10 += bowser->unk_14;
+            if (bowser->unk_10 >= 360.0f) {
+                bowser->unk_10 -= 360.0f;
+            }
+            bowser->unk_18 -= 7.500000298023224;
+        }
+        Hu3DModelPosSet(bowser->unk_04, bowser->unk_30, bowser->unk_34, bowser->unk_38);
+        Hu3DModelRotSet(bowser->unk_04, bowser->unk_3C, bowser->unk_40, 0.0f);
+        func_8008A070_main(Hu3DData[bowser->unk_04].mtx);
+        mtxRotCat(Hu3DData[bowser->unk_04].mtx, 0.0f, 0.0f, bowser->unk_44);
+        Hu3DModelPosSet(bowser->unk_06, bowser->unk_30, bowser->unk_34, bowser->unk_38);
+        Hu3DModelRotSet(bowser->unk_06, bowser->unk_3C, bowser->unk_40, 0.0f);
+        func_8008A070_main(Hu3DData[bowser->unk_06].mtx);
+        mtxRotCat(Hu3DData[bowser->unk_06].mtx, 0.0f, 0.0f, bowser->unk_44);
+        Hu3DModelPosSet(bowser->unk_08, bowser->unk_30, 0.0f, bowser->unk_38);
+        bowser->unk_0C++;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010882C_bowser_toss);
+#endif
 
 void func_80109DB8_bowser_toss(omObjData *object, f32 angle, HuMtx4F mtx) {
     fmod(object->rot.y + angle, 360.0);
@@ -960,7 +1623,7 @@ void func_8010A17C_bowser_toss(omObjData *object) {
     }
 }
 
-s32 func_8010A2D4_bowser_toss(Vec *pos, Vec *vel, Vec *scale, f32 speed, u16 camera) {
+s32 func_8010A2D4_bowser_toss(Vec *pos, Vec *vel, Vec *scale, f32 speed, s16 camera) {
     HuSprite_Unk84_Struct *sprite;
     BowserTossEffect *effect;
     HmfModel *model;
@@ -998,7 +1661,7 @@ s32 func_8010A2D4_bowser_toss(Vec *pos, Vec *vel, Vec *scale, f32 speed, u16 cam
         effect->unk_04 = 0.0f;
         func_8010EC10_bowser_toss(effect->unk_02, sprite, 0, D_8010F150_bowser_toss);
         func_8001C258_main(effect->unk_02, 4, 0);
-        Hu3DModelCameraSet(effect->unk_02, 1 << camera);
+        Hu3DModelCameraSet(effect->unk_02, 1 << (u16)camera);
         model->motTime = 0.0f;
         model->pos.x = effect->unk_0C.x;
         model->pos.y = effect->unk_0C.y;
@@ -2049,9 +2712,149 @@ void func_8010DDC4_bowser_toss(BowserTossItem *item) {
     HuMemFree(item);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010DDFC_bowser_toss);
+s32 func_8010DDFC_bowser_toss(HuSprite_Unk84_Struct *sprite, u8 *color, u8 antialias) {
+    u8 *buffer;
+    Gfx *gfx;
+    Gfx *header;
+    HmfData *data;
+    u16 format;
+    s32 i;
+    s32 model;
+    s32 size;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010EA0C_bowser_toss);
+    gfx = HuMemAlloc(0x10000);
+    header = gfx;
+    buffer = (u8 *)gfx;
+    model = func_8001A894_main(0x8C1, gfx, 4);
+    data = Hu3DData[model].hmf;
+    data->unk60->unk50 |= 0x1010000;
+    gfx++;
+    HuMemFree(data->unk3C);
+    data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), D_800CDD6A_main);
+    func_8010ED44_bowser_toss(sprite, data, 1.0f, 0, 0);
+    gSPDisplayList(header, osVirtualToPhysical(D_8010F4F0_bowser_toss));
+    gDPPipeSync(gfx++);
+    gDPSetCycleType(gfx++, G_CYC_1CYCLE);
+    gDPPipeSync(gfx++);
+    gSPClearGeometryMode(gfx++, G_CULL_BOTH | G_LIGHTING);
+    gSPSetGeometryMode(gfx++, G_ZBUFFER | G_CULL_FRONT | G_TEXTURE_GEN_LINEAR);
+    gDPSetColorDither(gfx++, G_CD_NOISE);
+    gDPSetTexturePersp(gfx++, G_TP_NONE);
+    gDPSetTextureFilter(gfx++, G_TF_BILERP);
+    gDPSetTextureConvert(gfx++, G_TC_FILT);
+    gDPSetAlphaDither(gfx++, G_AD_PATTERN);
+    gDPSetAlphaCompare(gfx++, G_AC_NONE);
+    gDPSetBlendColor(gfx++, 1, 1, 1, 1);
+    gDPPipeSync(gfx++);
+    if (antialias) {
+        gDPSetRenderMode(gfx++, G_RM_AA_ZB_XLU_SURF, G_RM_NOOP2);
+    } else {
+        gDPSetRenderMode(gfx++, G_RM_ZB_CLD_SURF, G_RM_NOOP2);
+    }
+    if (sprite->unk18 & 0x8000) {
+        gDPSetCombineLERP(gfx++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0);
+    } else {
+        gDPSetCombineLERP(gfx++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
+    }
+    gDPPipeSync(gfx++);
+    gSPEndDisplayList(gfx++);
+    size = (u8 *)gfx - buffer;
+    data->unk3C->unk10 = HuMemAllocTag(size, data->unk0E);
+    bcopy(buffer, data->unk3C->unk10, size);
+    HuMemFree(buffer);
+    gfx = HuMemAlloc(0x10000);
+    {
+        Gfx *textureHeader = gfx;
+        buffer = (u8 *)gfx;
+        gfx++;
+        gSPTexture(textureHeader, 0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON);
+    }
+    gDPSetTexturePersp(gfx++, G_TP_PERSP);
+    if (sprite->unk1A >= 2) {
+        gDPSetTextureLUT(gfx++, G_TT_RGBA16);
+        if (sprite->unk18 == 4) {
+            gDPLoadTLUT_pal16(gfx++, 0, sprite->unk0C);
+        } else {
+            gDPLoadTLUT_pal256(gfx++, sprite->unk0C);
+        }
+        gDPPipeSync(gfx++);
+        format = G_IM_FMT_CI;
+    } else {
+        gDPSetTextureLUT(gfx++, G_TT_NONE);
+        gDPPipeSync(gfx++);
+        format = sprite->unk18;
+        format = ((u32)format / 0x8000) * 4;
+    }
+    switch (sprite->unk18 & 0xFFF) {
+        case 4:
+            gDPLoadTextureBlock_4b(gfx++, 0x02000000, format, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+                                   G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+            break;
+        case 8:
+            gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_8b, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+                                G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+            break;
+        case 16:
+            gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_16b, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+                                G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+            break;
+    }
+    gDPPipeSync(gfx++);
+    gSPSegment(gfx++, 1, osVirtualToPhysical(data->unk44[0]));
+    gSPVertex(gfx++, 0x01000000, 4, 0);
+    gSP2Triangles(gfx++, 0, 1, 2, 0, 1, 3, 2, 0);
+    gSPClearGeometryMode(gfx++, -1);
+    gSPSetGeometryMode(gfx++, G_ZBUFFER | G_SHADE | G_CULL_BACK | G_TEXTURE_GEN_LINEAR);
+    gDPPipeSync(gfx++);
+    gSPEndDisplayList(gfx++);
+    size = (u8 *)gfx - buffer;
+    data->unk3C->unk14 = HuMemAllocTag(size, data->unk0E);
+    bcopy(buffer, data->unk3C->unk14, size);
+    HuMemFree(buffer);
+    for (i = 0; i < D_800D1FF0_main; i++) {
+        gfx = (data->unk3C->unk00 + 1)[i] = HuMemAllocTag(0x100, data->unk0E);
+        gDPPipeSync(gfx++);
+        gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->unk00->unk00));
+        gSPDisplayList(gfx++, osVirtualToPhysical(data->unk3C->unk10));
+        gDPSetPrimColor(gfx++, 0, 0, color[0], color[1], color[2], color[3]);
+        gDPPipeSync(gfx++);
+        gSPDisplayList(gfx++, osVirtualToPhysical(data->unk3C->unk14));
+        gDPPipeSync(gfx++);
+        gSPEndDisplayList(gfx++);
+    }
+    data->unk3C->unk00[0] = data->unk3C->unk00[D_800D2008_main + 1];
+    return model;
+}
+
+s32 func_8010EA0C_bowser_toss(HuSprite_Unk84_Struct *sprite, u16 model, u8 *color) {
+    HmfModel *srcModel = Hu3DData + model;
+    HmfData *srcData = srcModel->hmf;
+    HmfData *data;
+    Gfx *gfx;
+    s32 newModel;
+    s32 i;
+
+    newModel = func_8001A894_main(srcModel->attr, NULL, 4);
+    data = Hu3DData[newModel].hmf;
+    data->unk60->unk50 = srcData->unk60->unk50;
+    HuMemFree(data->unk3C);
+    data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), D_800CDD6A_main);
+    data->unk3C->unk10 = srcData->unk3C->unk10;
+    data->unk3C->unk14 = srcData->unk3C->unk14;
+    for (i = 0; i < D_800D1FF0_main; i++) {
+        gfx = (data->unk3C->unk00 + 1)[i] = HuMemAllocTag(0x100, data->unk0E);
+        gDPPipeSync(gfx++);
+        gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->unk00->unk00));
+        gSPDisplayList(gfx++, osVirtualToPhysical(data->unk3C->unk10));
+        gDPSetPrimColor(gfx++, 0, 0, color[0], color[1], color[2], color[3]);
+        gDPPipeSync(gfx++);
+        gSPDisplayList(gfx++, osVirtualToPhysical(data->unk3C->unk14));
+        gDPPipeSync(gfx++);
+        gSPEndDisplayList(gfx++);
+    }
+    data->unk3C->unk00[0] = data->unk3C->unk00[D_800D2008_main + 1];
+    return newModel;
+}
 
 void func_8010EC10_bowser_toss(u16 model, HuSprite_Unk84_Struct *sprite, u16 frame, u8 *color) {
     HmfModel *modelData = Hu3DData + model;
@@ -2069,4 +2872,73 @@ void func_8010EC10_bowser_toss(u16 model, HuSprite_Unk84_Struct *sprite, u16 fra
     gSPEndDisplayList(gfx + 7);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010ED44_bowser_toss);
+s32 func_8010ED44_bowser_toss(HuSprite_Unk84_Struct *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset) {
+    s32 capacity = 0x1000;
+    s32 width, height, scaledWidth, scaledHeight;
+    s32 size, slices, textureHeight, sliceHeight, vertexCount;
+    s32 i, j;
+    Vtx_t *vertices, *start;
+
+    if (sprite->unk1A >= 2) {
+        capacity = 0x800;
+    }
+    width = sprite->unk00->unk04;
+    height = sprite->unk00->unk06;
+    scaledWidth = width * 100.0 * scale / 32.0;
+    scaledHeight = height * 100.0 * scale / 32.0;
+    if ((sprite->unk18 & 0xFFF) == 4) {
+        size = ((width + 1) & 0xFFFE) * height * 4;
+    } else {
+        size = width * height * sprite->unk18;
+    }
+    size /= 8;
+    slices = size / capacity;
+    if (slices <= 0) {
+        slices = 1;
+    }
+    textureHeight = height / slices;
+    sliceHeight = scaledHeight / slices;
+    vertexCount = slices * 4;
+    size = slices * 4 * sizeof(Vtx_t);
+    start = vertices = HuMemAllocTag(size, data->unk0E);
+    memset(start, 0, size);
+    for (i = 0; i < slices; i++, vertices += 4) {
+        vertices[0].ob[0] = scaledWidth * 0.5;
+        vertices[0].ob[1] = scaledHeight * 0.5 - sliceHeight * i;
+        vertices[0].tc[0] = (width - 1) << 6;
+        vertices[0].tc[1] = 0;
+        vertices[1].ob[0] = scaledWidth * 0.5;
+        vertices[1].ob[1] = scaledHeight * 0.5 - sliceHeight * (i + 1);
+        vertices[1].tc[0] = (width - 1) << 6;
+        vertices[1].tc[1] = (textureHeight - 1) << 6;
+        vertices[2].ob[0] = -(scaledWidth * 0.5);
+        vertices[2].ob[1] = scaledHeight * 0.5 - sliceHeight * i;
+        vertices[2].tc[0] = 0;
+        vertices[2].tc[1] = 0;
+        vertices[3].ob[0] = -(scaledWidth * 0.5);
+        vertices[3].ob[1] = scaledHeight * 0.5 - sliceHeight * (i + 1);
+        vertices[3].tc[0] = 0;
+        vertices[3].tc[1] = (textureHeight - 1) << 6;
+        for (j = 0; j < 4; j++) {
+            vertices[j].ob[0] += xOffset;
+            vertices[j].ob[1] += yOffset;
+            vertices[j].ob[2] = 0;
+            vertices[j].flag = 0;
+            vertices[j].cn[3] = 255;
+            vertices[j].cn[0] = vertices[j].cn[1] = vertices[j].cn[2] = 0;
+        }
+    }
+    vertices = start;
+    for (i = 0; i < D_800D1FF0_main; i++) {
+        Vtx_t *destination;
+        Vtx_t *source;
+        data->unk44[i] = HuMemAllocTag(vertexCount * sizeof(Vtx_t), data->unk0E);
+        destination = (Vtx_t *)data->unk44[i];
+        source = vertices;
+        for (j = 0; j < vertexCount; j++) {
+            *destination++ = *source++;
+        }
+    }
+    HuMemFree(start);
+    return slices;
+}

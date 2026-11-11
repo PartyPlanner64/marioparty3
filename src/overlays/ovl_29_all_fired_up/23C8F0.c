@@ -36,6 +36,9 @@ extern u8 D_80109930_all_fired_up[][4];
 extern Vec D_80109990_all_fired_up[];
 extern s16 D_801099C0_all_fired_up[];
 extern s8 D_801099C8_all_fired_up;
+extern f32 D_801099CC_all_fired_up;
+extern s8 D_801099D0_all_fired_up;
+extern u8 D_801099D4_all_fired_up[][6];
 
 extern s32 D_801099F8_all_fired_up;
 extern s8 D_801099C9_all_fired_up;
@@ -44,6 +47,7 @@ extern s8 D_80109A05_all_fired_up;
 extern s32 D_80109A18_all_fired_up[][4];
 extern f32 D_80109A58_all_fired_up[];
 extern s32 D_80109AC0_all_fired_up;
+extern s8 D_80109AC4_all_fired_up;
 extern s8 D_80109AC5_all_fired_up;
 extern D_80111B50_vine_with_me_Struct D_80109AC8_all_fired_up;
 extern u8 D_80109AF0_all_fired_up;
@@ -51,6 +55,7 @@ extern s16 D_80109AF2_all_fired_up[];
 extern omObjData *D_80109B00_all_fired_up[];
 extern Vec D_80109B58_all_fired_up[];
 extern s8 D_80109C54_all_fired_up;
+extern s16 D_80109C56_all_fired_up;
 extern u8 D_80109C58_all_fired_up;
 extern s8 D_80109C59_all_fired_up;
 
@@ -61,9 +66,12 @@ void func_80105F5C_all_fired_up(void);
 void func_80106348_all_fired_up(omObjData *object);
 void func_80106584_all_fired_up(omObjData *object);
 void func_801067CC_all_fired_up(omObjData *object);
+void func_80106B7C_all_fired_up(void);
+void func_80106C68_all_fired_up(void);
 void func_801068F8_all_fired_up(void);
 void func_80106CDC_all_fired_up(omObjData *object);
 void func_80106F04_all_fired_up(omObjData *object);
+void func_80106FAC_all_fired_up(void);
 void func_80107440_all_fired_up(omObjData *object);
 void func_80107578_all_fired_up(omObjData *object);
 void func_80107BD4_all_fired_up(omObjData *object);
@@ -187,7 +195,45 @@ void func_80105E1C_all_fired_up(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_29_all_fired_up/23C8F0", func_80105F5C_all_fired_up);
+void func_80105F5C_all_fired_up(void) {
+    s32 i;
+
+    for (i = 0; i < 15; i++) {
+        D_80109B58_all_fired_up[i].y = (rand8() % 200) * 3 + 1200.0f;
+    }
+    D_80109B58_all_fired_up[0].x = D_80109B58_all_fired_up[0].z = 0.0f;
+    D_80109B58_all_fired_up[1].x = sindf(0.0f) * 80.0f;
+    D_80109B58_all_fired_up[1].z = cosdf(0.0f) * 80.0f;
+    D_80109B58_all_fired_up[2].x = sindf(60.0f) * 80.0f;
+    D_80109B58_all_fired_up[2].z = cosdf(60.0f) * 80.0f;
+    D_80109B58_all_fired_up[3].x = sindf(120.0f) * 80.0f;
+    D_80109B58_all_fired_up[3].z = cosdf(120.0f) * 80.0f;
+    D_80109B58_all_fired_up[4].x = sindf(180.0f) * 80.0f;
+    D_80109B58_all_fired_up[4].z = cosdf(180.0f) * 80.0f;
+    D_80109B58_all_fired_up[5].x = sindf(240.0f) * 80.0f;
+    D_80109B58_all_fired_up[5].z = cosdf(240.0f) * 80.0f;
+    D_80109B58_all_fired_up[6].x = sindf(300.0f) * 80.0f;
+    D_80109B58_all_fired_up[6].z = cosdf(300.0f) * 80.0f;
+    D_80109B58_all_fired_up[7].x = sindf(0.0f) * 80.0f * 2;
+    D_80109B58_all_fired_up[7].z = cosdf(0.0f) * 80.0f * 2;
+    D_80109B58_all_fired_up[8].x = sindf(45.0f) * 80.0f * 2;
+    D_80109B58_all_fired_up[8].z = cosdf(45.0f) * 80.0f * 2;
+    D_80109B58_all_fired_up[9].x = sindf(90.0f) * 80.0f * 2;
+    D_80109B58_all_fired_up[9].z = cosdf(90.0f) * 80.0f * 2;
+    D_80109B58_all_fired_up[10].x = sindf(135.0f) * 80.0f * 2;
+    D_80109B58_all_fired_up[10].z = cosdf(135.0f) * 80.0f * 2;
+    D_80109B58_all_fired_up[11].x = sindf(180.0f) * 80.0f * 2;
+    D_80109B58_all_fired_up[11].z = cosdf(180.0f) * 80.0f * 2;
+    D_80109B58_all_fired_up[12].x = sindf(225.0f) * 80.0f * 2;
+    D_80109B58_all_fired_up[12].z = cosdf(225.0f) * 80.0f * 2;
+    D_80109B58_all_fired_up[13].x = sindf(270.0f) * 80.0f * 2;
+    D_80109B58_all_fired_up[13].z = cosdf(270.0f) * 80.0f * 2;
+    D_80109B58_all_fired_up[14].x = sindf(315.0f) * 80.0f * 2;
+    D_80109B58_all_fired_up[14].z = cosdf(315.0f) * 80.0f * 2;
+    for (i = 15; i < 21; i++) {
+        D_80109B58_all_fired_up[i].x = D_80109B58_all_fired_up[i].y = D_80109B58_all_fired_up[i].z = 0.0f;
+    }
+}
 
 void func_80106348_all_fired_up(omObjData *object) {
     AllFiredUpWork *work;
@@ -305,7 +351,77 @@ void func_801067CC_all_fired_up(omObjData *object) {
     }
 }
 
+#ifdef NON_MATCHING
+void func_801068F8_all_fired_up(void) {
+    s32 i;
+
+    switch (D_801099C8_all_fired_up) {
+        case 0:
+            if (D_80109C56_all_fired_up == 0) {
+                if (D_80109AC4_all_fired_up > 0 && D_801099C9_all_fired_up < 21) {
+                    func_80106B7C_all_fired_up();
+                    for (i = 0; i < 21; i++) {
+                        ((AllFiredUpWork *)D_80109B00_all_fired_up[i]->data)->unk18 += 0.1f;
+                    }
+                }
+                if (D_80109C56_all_fired_up == 0) {
+                    HuAudFXPlay(0x444);
+                }
+            }
+            if (D_80109C56_all_fired_up == 90) {
+                D_801099C8_all_fired_up = 1;
+                D_80109C56_all_fired_up = 0;
+                func_80106C68_all_fired_up();
+            } else {
+                D_80109C56_all_fired_up = D_80109C56_all_fired_up + 1;
+            }
+            break;
+        case 1:
+            if (D_80109C56_all_fired_up == 0) {
+                HuAudFXPlay(0x443);
+            }
+            if (D_80109C56_all_fired_up == 30) {
+                D_801099C8_all_fired_up = 2;
+                D_80109C56_all_fired_up = 0;
+                func_80106C68_all_fired_up();
+            } else {
+                D_80109C56_all_fired_up = D_80109C56_all_fired_up + 1;
+            }
+            break;
+        case 2:
+            if (D_80109C56_all_fired_up == 0) {
+                D_80109C54_all_fired_up = D_801099D4_all_fired_up[D_80109C58_all_fired_up][D_80109AC4_all_fired_up++];
+                if (D_80109AC4_all_fired_up >= 7) {
+                    D_80109AC4_all_fired_up = 0;
+                }
+                func_80106FAC_all_fired_up();
+                HuAudFXPlay(0x442);
+            }
+            if (D_80109C56_all_fired_up == 30) {
+                D_801099C8_all_fired_up = 3;
+                D_80109C56_all_fired_up = 0;
+                D_801099CC_all_fired_up = 400.0f;
+                D_801099D0_all_fired_up = 0;
+            } else {
+                D_80109C56_all_fired_up = D_80109C56_all_fired_up + 1;
+            }
+            break;
+        case 3:
+            if (D_80109C56_all_fired_up == 0) {
+                HuAudFXPlay(0x442);
+                D_80109C56_all_fired_up++;
+            } else if (D_80109C56_all_fired_up == 150) {
+                D_801099C8_all_fired_up = 0;
+                D_80109C56_all_fired_up = 0;
+            } else {
+                D_80109C56_all_fired_up = D_80109C56_all_fired_up + 1;
+            }
+            break;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_29_all_fired_up/23C8F0", func_801068F8_all_fired_up);
+#endif
 
 void func_80106B7C_all_fired_up(void) {
     omObjData *first;
@@ -382,7 +498,69 @@ void func_80106F04_all_fired_up(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_29_all_fired_up/23C8F0", func_80106FAC_all_fired_up);
+void func_80106FAC_all_fired_up(void) {
+    AllFiredUpWork *work;
+    f32 step;
+    s32 half;
+    s32 i;
+
+    switch (D_80109C54_all_fired_up) {
+        case 0:
+            step = 360.0f / D_801099C9_all_fired_up;
+            for (i = 0; i < D_801099C9_all_fired_up; i++) {
+                work = D_80109B00_all_fired_up[i]->data;
+                work->unk0C = step * work->unk00;
+                work->unk2C.x = sindf(work->unk0C) * 400.0f;
+                work->unk2C.y = 0.0f;
+                work->unk2C.z = cosdf(work->unk0C) * 400.0f;
+            }
+            break;
+        case 1:
+            half = D_801099C9_all_fired_up / 2;
+            if (D_801099C9_all_fired_up % 2 != 0) {
+                step = 1400.0f / half;
+            } else {
+                step = 1400.0f / (half - 1);
+            }
+            for (i = 0; i < half; i++) {
+                work = D_80109B00_all_fired_up[i]->data;
+                if (D_801099C9_all_fired_up % 2 != 0) {
+                    work->unk2C.x = -700.0f + step * work->unk00 + step / 2.0f;
+                } else {
+                    work->unk2C.x = -700.0f + step * work->unk00;
+                }
+                work->unk2C.y = 0.0f;
+                work->unk2C.z = 0.0f;
+                work->unk0C = atan2df(work->unk2C.x, work->unk2C.z);
+                work->unk14 = ABS(work->unk2C.x);
+            }
+            for (i = half; i < D_801099C9_all_fired_up; i++) {
+                work = D_80109B00_all_fired_up[i]->data;
+                work->unk2C.x = 0.0f;
+                work->unk2C.y = 0.0f;
+                work->unk2C.z = -700.0f + step * (work->unk00 - half);
+                work->unk0C = atan2df(work->unk2C.x, work->unk2C.z);
+                work->unk14 = ABS(work->unk2C.z);
+            }
+            break;
+        case 2:
+            step = 1400.0f / (D_801099C9_all_fired_up - 1);
+            for (i = 0; i < D_801099C9_all_fired_up; i++) {
+                work = D_80109B00_all_fired_up[i]->data;
+                work->unk2C.x = -700.0f + step * work->unk00;
+                work->unk10 = 360.0f / (D_801099C9_all_fired_up - 1) * work->unk00;
+                if (work->unk10 >= 180.0f) {
+                    work->unk10 -= 180.0f;
+                }
+                work->unk2C.y = sindf(work->unk10) * 350.0f + 0.0f;
+                work->unk2C.z = 0.0f;
+                work->unk0C = atan2df(work->unk2C.x, 0.0f);
+                work->unk14 = ABS(work->unk2C.x);
+                work->unk08 = 1.0f - sindf(work->unk10) * 0.4f;
+            }
+            break;
+    }
+}
 
 void func_80107440_all_fired_up(omObjData *object) {
     AllFiredUpWork *work = object->data;

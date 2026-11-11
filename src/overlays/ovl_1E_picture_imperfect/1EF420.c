@@ -3,7 +3,10 @@
 #include "game/esprite.h"
 #include "game/gamemes.h"
 #include "game/object.h"
+#include "game/mallocblock.h"
 #include "game/pause.h"
+#include "game/sprite.h"
+#include "gcc/memory.h"
 #include "game/wipe.h"
 #include "overlays/minigame.h"
 
@@ -24,6 +27,14 @@ typedef struct PictureImperfectWork {
     /* 0x1A */ char unk1A[0x2];
 } PictureImperfectWork; // Size 0x1C
 
+typedef struct PictureImperfectGameData {
+    /* 0x00 */ u8 unk00[3];
+    /* 0x03 */ u8 unk03;
+    /* 0x04 */ u8 unk04;
+    /* 0x08 */ f32 unk08;
+    /* 0x0C */ u8 unk0C[0xA8];
+} PictureImperfectGameData; // Size 0xB4
+
 typedef struct PictureImperfectScorePos {
     /* 0x00 */ s16 x;
     /* 0x02 */ s16 y;
@@ -40,11 +51,22 @@ extern s8 D_80109FFC_picture_imperfect[4][5];
 extern s32 D_8010A010_picture_imperfect;
 extern u8 D_8010A030_picture_imperfect[][5];
 extern u32 D_8010A044_picture_imperfect;
+extern f32 D_8010A050_picture_imperfect;
+extern u8 D_8010A054_picture_imperfect;
+extern u8 D_8010A055_picture_imperfect;
+extern u8 D_8010A056_picture_imperfect;
 extern s8 D_8010A014_picture_imperfect;
 extern s16 D_8010A11A_picture_imperfect[4];
+extern s16 D_8010A122_picture_imperfect;
+extern s16 D_8010A124_picture_imperfect;
 extern D_80111B50_vine_with_me_Struct D_8010A128_picture_imperfect;
 extern u8 D_8010A150_picture_imperfect;
 extern u8 D_8010A151_picture_imperfect;
+extern s16 D_8010A152_picture_imperfect;
+extern s16 D_8010A154_picture_imperfect;
+extern s16 D_8010A156_picture_imperfect;
+extern s16 D_8010A158_picture_imperfect;
+extern s16 D_8010A15A_picture_imperfect;
 extern s16 D_8010A168_picture_imperfect[4][5];
 extern s16 D_8010A190_picture_imperfect[4][5];
 extern s16 D_8010A1B8_picture_imperfect[4][5];
@@ -64,6 +86,9 @@ extern s16 D_8010A26C_picture_imperfect;
 extern s16 D_8010A28E_picture_imperfect[4];
 extern s16 D_8010A296_picture_imperfect[4];
 extern s16 D_8010A29E_picture_imperfect[4];
+extern s16 D_8010A2A6_picture_imperfect;
+extern s16 D_8010A2A8_picture_imperfect;
+extern s16 D_8010A2AA_picture_imperfect;
 extern s8 D_8010A2AC_picture_imperfect[5];
 
 void func_80105BA8_picture_imperfect(void);
@@ -72,6 +97,7 @@ void func_80105EF4_picture_imperfect(void);
 void func_80106154_picture_imperfect(omObjData *object);
 void func_8010629C_picture_imperfect(omObjData *object);
 void func_80109608_picture_imperfect(omObjData *object);
+void func_80109AC4_picture_imperfect(omObjData *object);
 
 void func_801059A0_picture_imperfect(void) {
     omObjData *object;
@@ -558,6 +584,198 @@ void func_80109284_picture_imperfect(PictureImperfectWork *work, s8 player) {
     D_8010A11A_picture_imperfect[player]++;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1E_picture_imperfect/1EF420", func_80109608_picture_imperfect);
+void func_80109608_picture_imperfect(omObjData *object) {
+    PictureImperfectGameData *data;
+    s32 i;
+    s32 x;
+    s32 y;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1E_picture_imperfect/1EF420", func_80109AC4_picture_imperfect);
+    object->func = func_80109AC4_picture_imperfect;
+    for (i = 0; i < 4; i++) {
+        if (i == 0) {
+            D_8010A122_picture_imperfect = func_8000B838_main(0x3F0002);
+        }
+        D_8010A152_picture_imperfect = HuSprGrpCreate(1, 0);
+        HuSprGrpMemberSet(D_8010A152_picture_imperfect, 0, D_8010A122_picture_imperfect, 0);
+        HuSprAttrReset(D_8010A152_picture_imperfect, 0, 0xFFFF);
+        HuSprAttrSet(D_8010A152_picture_imperfect, 0, 0x5000);
+        HuSprPosSet(D_8010A152_picture_imperfect, 0, D_80109FE8_picture_imperfect[i].x,
+                    D_80109FE8_picture_imperfect[i].y);
+        HuSprPriSet(D_8010A152_picture_imperfect, 0, 0xFF);
+    }
+    D_8010A122_picture_imperfect = func_8000B838_main(0x3F0003);
+    D_8010A154_picture_imperfect = HuSprGrpCreate(1, 0);
+    HuSprGrpMemberSet(D_8010A154_picture_imperfect, 0, D_8010A122_picture_imperfect, 0);
+    HuSprAttrReset(D_8010A154_picture_imperfect, 0, 0xFFFF);
+    HuSprAttrSet(D_8010A154_picture_imperfect, 0, 0x1000);
+    HuSprPosSet(D_8010A154_picture_imperfect, 0, 160, 120);
+    HuSprPriSet(D_8010A154_picture_imperfect, 0, 0xF0);
+    D_8010A122_picture_imperfect = func_8000B838_main(0x3F0001);
+    D_8010A156_picture_imperfect = espEntry(D_8010A122_picture_imperfect, 0, 1);
+    espPosSet(D_8010A156_picture_imperfect, 160, 120);
+    espAttrSet(D_8010A156_picture_imperfect, 0x1000);
+    espPriSet(D_8010A156_picture_imperfect, 15);
+    espDispOn(D_8010A156_picture_imperfect);
+    x = 128;
+    y = 108;
+    switch (D_8010A150_picture_imperfect) {
+        case 0:
+        default:
+            D_8010A122_picture_imperfect = func_8000B838_main(0x3F0008);
+            break;
+        case 1:
+            D_8010A122_picture_imperfect = func_8000B838_main(0x3F000A);
+            break;
+        case 2:
+            D_8010A122_picture_imperfect = func_8000B838_main(0x3F000C);
+            break;
+    }
+    D_8010A158_picture_imperfect = espEntry(D_8010A122_picture_imperfect, 0, 1);
+    espPosSet(D_8010A158_picture_imperfect, x, y);
+    espAttrSet(D_8010A158_picture_imperfect, 0x1000);
+    espPriSet(D_8010A158_picture_imperfect, 15);
+    espDispOn(D_8010A158_picture_imperfect);
+    switch (D_8010A150_picture_imperfect) {
+        case 0:
+        default:
+            D_8010A122_picture_imperfect = func_8000B838_main(0x3F0009);
+            break;
+        case 1:
+            D_8010A122_picture_imperfect = func_8000B838_main(0x3F000B);
+            break;
+        case 2:
+            D_8010A122_picture_imperfect = func_8000B838_main(0x3F000D);
+            break;
+    }
+    D_8010A15A_picture_imperfect = espEntry(D_8010A122_picture_imperfect, 0, 1);
+    espPosSet(D_8010A15A_picture_imperfect, x, y);
+    espAttrSet(D_8010A15A_picture_imperfect, 0x1000);
+    espPriSet(D_8010A15A_picture_imperfect, 15);
+    espDispOn(D_8010A15A_picture_imperfect);
+    D_8010A2A6_picture_imperfect = espEntry(D_8010A26A_picture_imperfect, 0, 1);
+    espPosSet(D_8010A2A6_picture_imperfect, 225, 100);
+    espAttrSet(D_8010A2A6_picture_imperfect, 0x1000);
+    espPriSet(D_8010A2A6_picture_imperfect, 15);
+    espDispOff(D_8010A2A6_picture_imperfect);
+    D_8010A2A8_picture_imperfect = espEntry(D_8010A26A_picture_imperfect, 0, 1);
+    espPosSet(D_8010A2A8_picture_imperfect, 245, 100);
+    espAttrSet(D_8010A2A8_picture_imperfect, 0x1000);
+    espPriSet(D_8010A2A8_picture_imperfect, 15);
+    espDispOff(D_8010A2A8_picture_imperfect);
+    D_8010A2AA_picture_imperfect = espEntry(D_8010A26C_picture_imperfect, 0, 1);
+    espPosSet(D_8010A2AA_picture_imperfect, 277, 104);
+    espAttrSet(D_8010A2AA_picture_imperfect, 0x1000);
+    espPriSet(D_8010A2AA_picture_imperfect, 15);
+    espDispOff(D_8010A2AA_picture_imperfect);
+    data = object->data = HuMemAllocTag(sizeof(PictureImperfectGameData), TAG_OVERLAY);
+    memset(data, 0, sizeof(PictureImperfectGameData));
+    data->unk03 = 1;
+    data->unk04 = 0;
+    data->unk08 = 0.5f;
+    func_800E1370_minigame(object, 2, -8.0f);
+}
+
+void func_80109AC4_picture_imperfect(omObjData *object) {
+    f32 t;
+    s32 x;
+    s32 y;
+
+    if (func_800E6E8C_minigame() == 0) {
+        switch (D_8010A150_picture_imperfect) {
+            case 0:
+            default:
+                func_8000BD50_main(D_8010A2A6_picture_imperfect, 5);
+                break;
+            case 1:
+                func_8000BD50_main(D_8010A2A6_picture_imperfect, 4);
+                break;
+            case 2:
+                func_8000BD50_main(D_8010A2A6_picture_imperfect, 3);
+                break;
+        }
+        func_8000BD50_main(D_8010A2A8_picture_imperfect, 0);
+        if (func_800E6E9C_minigame() == 1) {
+            espDispOn(D_8010A2A6_picture_imperfect);
+            espDispOn(D_8010A2A8_picture_imperfect);
+            espDispOn(D_8010A2AA_picture_imperfect);
+        } else if (func_800E6E9C_minigame() > 26) {
+            switch (D_8010A054_picture_imperfect) {
+                case 0:
+                    if (D_8010A055_picture_imperfect == 0xFF) {
+                        HuAudFXPlay(0x3F6);
+                    }
+                    espTPLvlSet(D_8010A15A_picture_imperfect, D_8010A055_picture_imperfect);
+                    D_8010A055_picture_imperfect -= 5;
+                    if (D_8010A055_picture_imperfect == 0) {
+                        espDispOff(D_8010A2A6_picture_imperfect);
+                        espDispOff(D_8010A2A8_picture_imperfect);
+                        espDispOff(D_8010A2AA_picture_imperfect);
+                        D_8010A054_picture_imperfect++;
+                    }
+                    break;
+                case 1:
+                    D_8010A050_picture_imperfect -= 0.04f;
+                    t = D_8010A056_picture_imperfect / 50.0f;
+                    x = (1.0f - t) * 128.0f + t * 160.0f;
+                    y = (1.0f - t) * 108.0f + t * 120.0f;
+                    if (D_8010A056_picture_imperfect == 0) {
+                        D_8010A124_picture_imperfect = HuAudFXPlay(0x3F5);
+                    }
+                    D_8010A056_picture_imperfect++;
+                    if (D_8010A050_picture_imperfect > 0.02f) {
+                        espScaleSet(D_8010A156_picture_imperfect, D_8010A050_picture_imperfect,
+                                    D_8010A050_picture_imperfect);
+                        espScaleSet(D_8010A158_picture_imperfect, D_8010A050_picture_imperfect,
+                                    D_8010A050_picture_imperfect);
+                        espPosSet(D_8010A158_picture_imperfect, x, y);
+                    } else {
+                        D_8010A050_picture_imperfect = 0.0f;
+                        D_8010A056_picture_imperfect = 0;
+                        D_8010A054_picture_imperfect++;
+                    }
+                    break;
+                case 2:
+                    espDispOff(D_8010A156_picture_imperfect);
+                    espDispOff(D_8010A158_picture_imperfect);
+                    espDispOff(D_8010A15A_picture_imperfect);
+                    if (D_8010A056_picture_imperfect > 10) {
+                        D_8010A054_picture_imperfect++;
+                    } else {
+                        D_8010A056_picture_imperfect++;
+                    }
+                    break;
+                case 3:
+                    D_8010A056_picture_imperfect = 0;
+                    func_800E6F0C_minigame(1);
+                    HuAudFXStop(D_8010A124_picture_imperfect);
+                    break;
+            }
+        }
+    } else if (func_800E6E8C_minigame() == 3) {
+        if (GMesStatGet() == 0 && func_800E6E9C_minigame() > 10) {
+            D_8010A050_picture_imperfect += 0.04f;
+            if (D_8010A050_picture_imperfect > 0.5f) {
+                D_8010A050_picture_imperfect = 0.5f;
+                if (D_80109FE4_picture_imperfect == 0) {
+                    D_80109FE4_picture_imperfect = 1;
+                }
+            }
+        }
+        switch (D_80109FE4_picture_imperfect) {
+            case 4:
+            case 8:
+            case 16:
+                HuSprAttrSet(D_8010A154_picture_imperfect, 0, 0x5000);
+                break;
+            default:
+                espScaleSet(D_8010A158_picture_imperfect, D_8010A050_picture_imperfect, D_8010A050_picture_imperfect);
+                espPosSet(D_8010A158_picture_imperfect, 160, 120);
+                espDispOn(D_8010A158_picture_imperfect);
+                espScaleSet(D_8010A15A_picture_imperfect, D_8010A050_picture_imperfect, D_8010A050_picture_imperfect);
+                espTPLvlSet(D_8010A15A_picture_imperfect, 0xFF);
+                espPosSet(D_8010A15A_picture_imperfect, 160, 120);
+                espDispOn(D_8010A15A_picture_imperfect);
+                break;
+        }
+    }
+}

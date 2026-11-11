@@ -12,8 +12,6 @@ extern s16 D_80115286_mstory3;
 extern s32 D_80115288_mstory3;
 extern void (*D_801154F0_mstory3[])(void);
 extern s32 D_801154F8_mstory3[];
-extern Vec D_8011556C_mstory3;
-extern Vec D_80115578_mstory3;
 extern s16 D_80115B90_mstory3;
 extern s16 D_80115B92_mstory3;
 extern u16 D_80115B94_mstory3;
@@ -24,8 +22,6 @@ extern s16 D_80115BA8_mstory3[8];
 extern s16 D_80115BB8_mstory3;
 extern s32 D_80115510_mstory3[7];
 extern s16 D_8011552C_mstory3[][2];
-extern const Vec D_80115554_mstory3;
-extern const Vec D_80115560_mstory3;
 extern s16 D_80115DC0_mstory3[4];
 
 void func_80105C1C_mstory3(void);

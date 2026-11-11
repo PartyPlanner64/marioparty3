@@ -64,6 +64,12 @@ D_80115B60_mstory3 = 0x80115B60; //rom:0x4C2BA0 type:f32 size:0x10 force_migrati
 D_80111D5C_mstory4 = 0x80111D5C; //rom:0x4CEF8C type:f32 size:0x0C force_migration:True
 D_80111D68_mstory4 = 0x80111D68; //rom:0x4CEF98 type:f32 size:0x0C force_migration:True
 D_80111E30_mstory4 = 0x80111E30; //rom:0x4CF060 type:f32 size:0x0C
+D_80111BA4_mstory4 = 0x80111BA4; //rom:0x4CEDD4 type:s16 size:0x10
+D_80111BB4_mstory4 = 0x80111BB4; //rom:0x4CEDE4 type:s16 size:0x14
+D_80111BC8_mstory4 = 0x80111BC8; //rom:0x4CEDF8 type:s16 size:0x10
+D_80111BD8_mstory4 = 0x80111BD8; //rom:0x4CEE08 type:s16 size:0xC
+D_80111BE4_mstory4 = 0x80111BE4; //rom:0x4CEE14 type:s16 size:0xC
+D_80111BF0_mstory4 = 0x80111BF0; //rom:0x4CEE20 type:s16 size:0xC
 
 //mstory5
 D_80114A24_mstory5 = 0x80114A24; //rom:0x4DE3D4 type:f32 size:0x0C force_migration:True

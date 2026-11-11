@@ -34,7 +34,7 @@ extern u8 D_800D6A90_main;
 
 extern u8 D_80109930_all_fired_up[][4];
 extern Vec D_80109990_all_fired_up[];
-extern s16 D_801099C0_all_fired_up[];
+extern u16 D_801099C0_all_fired_up[];
 extern s8 D_801099C8_all_fired_up;
 extern f32 D_801099CC_all_fired_up;
 extern s8 D_801099D0_all_fired_up;
@@ -46,6 +46,8 @@ extern s8 D_801099FC_all_fired_up;
 extern f32 D_80109A00_all_fired_up;
 extern s8 D_80109A04_all_fired_up;
 extern s8 D_80109A05_all_fired_up;
+extern s8 D_80109A06_all_fired_up;
+extern s32 D_80109A08_all_fired_up[];
 extern s32 D_80109A18_all_fired_up[][4];
 extern f32 D_80109A58_all_fired_up[];
 extern s32 D_80109AC0_all_fired_up;
@@ -79,7 +81,10 @@ void func_80107578_all_fired_up(omObjData *object);
 void func_80107BD4_all_fired_up(omObjData *object);
 void func_80107DA4_all_fired_up(omObjData *object);
 void func_801080C8_all_fired_up(omObjData *object);
+void func_801085A4_all_fired_up(omObjData *object);
+void func_80108710_all_fired_up(omObjData *object);
 void func_80108958_all_fired_up(omObjData *object);
+void func_80108AA0_all_fired_up(omObjData *object);
 void func_801097B0_all_fired_up(omObjData *object);
 
 void func_801059A0_all_fired_up(void) {
@@ -755,7 +760,142 @@ void func_80107DA4_all_fired_up(omObjData *object) {
     D_80109A05_all_fired_up++;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_29_all_fired_up/23C8F0", func_801080C8_all_fired_up);
+void func_801080C8_all_fired_up(omObjData *object) {
+    func_800E1BA8_minigame_ObjData *data = object->data;
+    s32 character;
+    s32 i;
+    s32 count;
+    s32 rank;
+
+    if (omPauseChk() + D_800D6A90_main == 0) {
+        switch (func_800E6E8C_minigame()) {
+            case 0:
+                func_801085A4_all_fired_up(object);
+                break;
+            case 2:
+                if (GwPlayer[data->unk59].stat & 1) {
+                    func_80108AA0_all_fired_up(object);
+                }
+                func_800DDD94_minigame(object);
+                if (object->work[0] == 1) {
+                    func_800E5690_minigame(object, 14);
+                    func_80108710_all_fired_up(object);
+                    object->work[0] = 2;
+                } else if (object->work[0] == 2) {
+                    func_80108710_all_fired_up(object);
+                }
+                if (data->unk59 == 3) {
+                    count = 0;
+                    for (i = 0; i < 4; i++) {
+                        count += D_800EC598_minigame[i]->work[0] != 0;
+                    }
+                    if (count >= 3) {
+                        func_800E6F0C_minigame(3);
+                    }
+                }
+                break;
+            case 3:
+                if (D_80109A08_all_fired_up[data->unk59] == 0) {
+                    rank = 0;
+                    for (i = 0; i < 4; i++) {
+                        if (i != data->unk59 && D_801099C0_all_fired_up[data->unk59] < D_801099C0_all_fired_up[i]) {
+                            rank++;
+                        }
+                    }
+                    GwPlayer[data->unk59].bonusCoin = rank;
+                    D_80109A08_all_fired_up[data->unk59] = 1;
+                }
+                if (object->work[0] == 0) {
+                    data->unk3C *= 0.9f;
+                }
+                func_800DDD94_minigame(object);
+                if (object->work[0] == 2) {
+                    func_80108710_all_fired_up(object);
+                }
+                break;
+            case 4:
+                if (func_800E6E9C_minigame() == 0) {
+                    if (object->work[0] == 0) {
+                        switch (GwPlayer[data->unk59].chr) {
+                            case 0:
+                            default:
+                                character = 2;
+                                break;
+                            case 1:
+                                character = 3;
+                                break;
+                            case 2:
+                                character = 7;
+                                break;
+                            case 3:
+                                character = 4;
+                                break;
+                            case 4:
+                                character = 5;
+                                break;
+                            case 5:
+                                character = 6;
+                                break;
+                            case 6:
+                                character = 8;
+                                break;
+                            case 7:
+                                character = 9;
+                                break;
+                        }
+                        func_80045ED0_main((character << 16) | 0x2F);
+                        func_800E5690_minigame(object, 13);
+                        D_80109A06_all_fired_up = 0;
+                    }
+                    if (data->unk59 == 3 && D_80109A06_all_fired_up == -1) {
+                        D_80109A06_all_fired_up = 1;
+                    }
+                    switch (D_80109A06_all_fired_up) {
+                        case 0:
+                            count = 0;
+                            for (i = 0; i < 4; i++) {
+                                count += GwPlayer[i].bonusCoin == 0;
+                            }
+                            if (count == 1) {
+                                HuAudSeqPlay(0x65);
+                            } else {
+                                HuAudSeqPlay(0x66);
+                            }
+                            break;
+                        case 1:
+                            for (i = 0; i < 3; i++) {
+                                if (D_801099C0_all_fired_up[i] != D_801099C0_all_fired_up[i + 1]) {
+                                    break;
+                                }
+                            }
+                            if (i == 3) {
+                                for (i = 0; i < 4; i++) {
+                                    GwPlayer[i].bonusCoin = 3;
+                                }
+                            }
+                            HuAudSeqPlay(0x6C);
+                            D_80109A06_all_fired_up = 1;
+                            break;
+                    }
+                } else if ((D_80109A06_all_fired_up == 0 && func_800E6E9C_minigame() >= 100) ||
+                           (D_80109A06_all_fired_up == 1 && func_800E6E9C_minigame() > 144)) {
+                    func_800E6F0C_minigame(5);
+                }
+                func_800DDD94_minigame(object);
+                break;
+            default:
+                func_800DDD94_minigame(object);
+                if (object->work[0] == 2) {
+                    func_80108710_all_fired_up(object);
+                }
+                break;
+        }
+        object->scale.x = object->scale.z = 1.2f;
+        if (!(data->unk50 & 6)) {
+            object->scale.y = 1.2f;
+        }
+    }
+}
 
 void func_801085A4_all_fired_up(omObjData *object) {
     func_800E1BA8_minigame_ObjData *data = object->data;

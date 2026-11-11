@@ -5,6 +5,8 @@
 #include "game/pause.h"
 #include "game/input.h"
 #include "math.h"
+#include "game/data.h"
+#include "game/sprite.h"
 
 typedef struct UnkBabyBowserBonkers { // 0x12 bytes
     s16 unk_00;
@@ -58,12 +60,12 @@ typedef struct BabyBowserBonkersActor { // 0x30 bytes, 0xE entries
     s16 unk_0E;
     s16 unk_10;
     s16 unk_12;
-    s32 unk_14;
+    f32 unk_14; // wobble amplitude
     f32 unk_18; // timer
     f32 unk_1C;
     f32 unk_20;
     f32 unk_24;
-    void *unk_28;                                    // callback
+    void (*unk_28)(struct BabyBowserBonkersActor *); // previous callback
     void (*unk_2C)(struct BabyBowserBonkersActor *); // callback
 } BabyBowserBonkersActor;
 
@@ -127,8 +129,13 @@ extern BabyBowserBonkersPlayer *D_8010BC58_baby_bowser_bonkers;
 extern s32 D_800A178C_main[][6];
 extern u8 D_800D6A90_main;
 extern D_80111B50_vine_with_me_Struct D_8010BD08_baby_bowser_bonkers;
+extern s16 *D_8010BCA8_baby_bowser_bonkers;
 extern UnkBabyBowserBonkers *D_8010BCAC_baby_bowser_bonkers;
 extern BabyBowserBonkersActor *D_8010BC60_baby_bowser_bonkers;
+extern Vec D_8010B400_baby_bowser_bonkers[14];
+extern f32 D_800EB760_minigame;
+extern BabyBowserBonkersPattern **D_8010B8F8_baby_bowser_bonkers[4];
+extern s32 D_8010B908_baby_bowser_bonkers[4];
 
 BabyBowserBonkersPlayer *func_8010B3AC_baby_bowser_bonkers(omObjData *object);
 void func_80109E98_baby_bowser_bonkers(s32, s16);
@@ -145,8 +152,10 @@ s32 func_80107648_baby_bowser_bonkers(omObjData *object);
 BabyBowserBonkersActor *func_8010919C_baby_bowser_bonkers(s32 arg0);
 void func_801091D4_baby_bowser_bonkers(f32 x, f32 z, BabyBowserBonkersActor **list);
 s32 func_801093D4_baby_bowser_bonkers(s32 arg0);
-s16 func_8010943C_baby_bowser_bonkers(BabyBowserBonkersActor **list, s32 count, s16 playerIndex);
-s16 func_8010958C_baby_bowser_bonkers(BabyBowserBonkersActor **list, s32 count, s16 playerIndex);
+s32 func_80109388_baby_bowser_bonkers(BabyBowserBonkersActor *arg0, s32 arg1);
+s32 func_801080D0_baby_bowser_bonkers(f32 arg0, f32 arg1);
+s32 func_8010943C_baby_bowser_bonkers(BabyBowserBonkersActor **list, s32 count, s32 playerIndex);
+s32 func_8010958C_baby_bowser_bonkers(BabyBowserBonkersActor **list, s32 count, s32 playerIndex);
 void func_8010B380_baby_bowser_bonkers(omObjData *arg0, u32 arg1);
 void func_801076D8_baby_bowser_bonkers(omObjData *obj1, omObjData *obj2, Vec *vel1, Vec *vel2, s16 recursed);
 void func_80107678_baby_bowser_bonkers(omObjData *arg0, s32 arg1, s32 arg2);
@@ -159,8 +168,17 @@ void func_80107D38_baby_bowser_bonkers(omObjData *object);
 void func_80107E54_baby_bowser_bonkers(omObjData *object);
 void func_80108160_baby_bowser_bonkers(void);
 void func_801081C0_baby_bowser_bonkers(omObjData *object);
+void func_8010831C_baby_bowser_bonkers(omObjData *object);
+void func_801089CC_baby_bowser_bonkers(BabyBowserBonkersActor *actor);
+s16 func_80108454_baby_bowser_bonkers(BabyBowserBonkersActor *actor);
+void func_80108E90_baby_bowser_bonkers(BabyBowserBonkersActor *actor);
+void func_80108B84_baby_bowser_bonkers(BabyBowserBonkersActor *actor);
+void func_80108D6C_baby_bowser_bonkers(BabyBowserBonkersActor *actor);
+void func_80108A0C_baby_bowser_bonkers(BabyBowserBonkersActor *actor);
 void func_80109704_baby_bowser_bonkers(void);
 void func_80109890_baby_bowser_bonkers(void);
+void func_80109990_baby_bowser_bonkers(omObjData *object);
+void func_80109BFC_baby_bowser_bonkers(s32 index, s32 chr);
 void func_80109EB8_baby_bowser_bonkers(void);
 
 void func_801059A0_baby_bowser_bonkers(void) {
@@ -916,11 +934,158 @@ void func_80108160_baby_bowser_bonkers(void) {
     func_80109704_baby_bowser_bonkers();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_801081C0_baby_bowser_bonkers);
+void func_801081C0_baby_bowser_bonkers(omObjData *object) {
+    s32 i;
+    BabyBowserBonkersActor *actor;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_8010831C_baby_bowser_bonkers);
+    object->func = func_8010831C_baby_bowser_bonkers;
+    for (actor = D_8010BC60_baby_bowser_bonkers, i = 0; i < 14; i++, actor++) {
+        if (i == 0) {
+            actor->unk_02 = func_8000B0A0_main(0x560003, 0x299);
+        } else {
+            actor->unk_02 = Hu3DModelLink(D_8010BC60_baby_bowser_bonkers->unk_02);
+        }
+        actor->unk_00 = i;
+        actor->unk_04 = -1;
+        actor->unk_08 = 0;
+        actor->unk_06 = actor->unk_0A = actor->unk_0C = actor->unk_0E = 0;
+        actor->unk_10 = 0;
+        actor->unk_12 = 0;
+        actor->unk_14 = 0.0f;
+        actor->unk_18 = 0.0f;
+        actor->unk_1C = D_8010B400_baby_bowser_bonkers[i].y - 110.000002384185791;
+        actor->unk_20 = 65.0f;
+        actor->unk_24 = 70.0f;
+        actor->unk_28 = func_801089CC_baby_bowser_bonkers;
+        actor->unk_2C = func_801089CC_baby_bowser_bonkers;
+        Hu3DModelPosSet(actor->unk_02, D_8010B400_baby_bowser_bonkers[i].x, D_8010B400_baby_bowser_bonkers[i].y,
+                        D_8010B400_baby_bowser_bonkers[i].z - 20.0000002980232239);
+    }
+}
 
+void func_8010831C_baby_bowser_bonkers(omObjData *object) {
+    s32 i;
+    BabyBowserBonkersActor *actor;
+    HmfModel *model;
+
+    for (actor = D_8010BC60_baby_bowser_bonkers, i = 0; i < 14; i++, actor++) {
+        model = Hu3DData + actor->unk_02;
+        if (actor->unk_2C != NULL) {
+            actor->unk_2C(actor);
+        }
+        model->pos.y = actor->unk_1C + actor->unk_18;
+        if (actor->unk_04 != 0) {
+            actor->unk_08 = func_80108454_baby_bowser_bonkers(actor);
+            if (actor->unk_08 != -1) {
+                HuAudFXPlay(0x4AD);
+                actor->unk_2C = func_80108E90_baby_bowser_bonkers;
+            }
+        }
+        if (model->motSpeed < 0.0f && model->motTime + model->motSpeed <= 0.0f) {
+            model->motSpeed = 0.0f;
+        }
+        if (actor->unk_28 == actor->unk_2C) {
+            actor->unk_0A++;
+        } else {
+            actor->unk_28 = actor->unk_2C;
+            actor->unk_0A = 0;
+        }
+    }
+}
+
+#ifdef NON_MATCHING
+// The 1.2f constant is hoisted out of the loop (the original reloads it in both branches) and the obj/data and
+// model/player register assignments are swapped.
+s16 func_80108454_baby_bowser_bonkers(BabyBowserBonkersActor *actor) {
+    s16 order[4];
+    s16 i;
+    HmfModel *model;
+    omObjData *obj;
+    func_800E1BA8_minigame_ObjData *data;
+    BabyBowserBonkersPlayer *player;
+    f32 dx;
+    f32 dz;
+    f32 dist;
+    f32 radius;
+    f32 speed;
+    s16 stickX;
+    s16 stickY;
+    s16 pad;
+
+    if (D_8010BC40_baby_bowser_bonkers & 1) {
+        for (i = 0; i < D_800EC280_minigame; i++) {
+            order[i] = i;
+        }
+    } else {
+        for (i = 0; i < D_800EC280_minigame; i++) {
+            order[i] = D_800EC280_minigame - i - 1;
+        }
+    }
+    model = Hu3DData + actor->unk_02;
+    for (i = 0; i < D_800EC280_minigame; i++) {
+        obj = D_800EC598_minigame[order[i]];
+        data = obj->data;
+        player = func_8010B3AC_baby_bowser_bonkers(obj);
+        dx = obj->trans.x - model->pos.x;
+        dz = obj->trans.z - model->pos.z;
+        dist = sqrtf(dx * dx + dz * dz);
+        radius = data->unk48 + actor->unk_20;
+        if (!(obj->trans.y + data->unk34 < model->pos.y) &&
+            !(actor->unk_24 * model->scale.y + model->pos.y < obj->trans.y) && dist < radius) {
+            if (data->unk38 == 1000.0f) {
+                obj->trans.y = actor->unk_24 * 1.2f + model->pos.y;
+                func_800E5798_minigame(obj, 6);
+                data->unk38 = -D_800EB744_minigame;
+                data->unk50 &= ~0x80;
+                data->unk40 = 0.0f;
+            } else {
+                obj->trans.y = actor->unk_24 * 1.2f + model->pos.y;
+                pad = GwPlayer[order[i]].pad;
+                stickX = D_800CBB6E_main[pad];
+                if (abs(stickX) < 9) {
+                    stickX = 0;
+                }
+                stickY = D_800D20A1_main[pad];
+                if (abs(stickY) < 9) {
+                    stickY = 0;
+                }
+                if ((stickX != 0) | (stickY != 0)) {
+                    if (stickX > 60) {
+                        stickX = 60;
+                    } else if (stickX < -60) {
+                        stickX = -60;
+                    }
+                    if (stickY > 60) {
+                        stickY = 60;
+                    } else if (stickY < -60) {
+                        stickY = -60;
+                    }
+                    data->unk3C = atan2df(stickX, -stickY) + data->unk60;
+                    speed = D_800EB760_minigame * 0.5f;
+                    data->unk40 = speed * (sqrtf(stickX * stickX + stickY * stickY) / 60.0f);
+                }
+                func_800E5798_minigame(obj, 6);
+                data->unk50 &= ~0x80;
+                if ((u16)D_800CDA7C_main[pad] & 0x8000) {
+                    data->unk38 = -D_800EB744_minigame;
+                } else {
+                    data->unk38 = -D_800EB744_minigame * 0.75f;
+                }
+            }
+            func_800E4C88_minigame(obj, player->unk_4C + 7, obj->trans.x, obj->trans.y, obj->trans.z, 0.0f, 0.0f);
+            omVibrate(player->unk_28, 10, 0, 10);
+            if (++player->unk_4C >= 3) {
+                player->unk_4C = 0;
+            }
+            func_801075F4_baby_bowser_bonkers(obj, model->pos.x, model->pos.z);
+            return order[i];
+        }
+    }
+    return -1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_80108454_baby_bowser_bonkers);
+#endif
 
 void func_801089CC_baby_bowser_bonkers(BabyBowserBonkersActor *actor) {
     HmfModel *model = Hu3DData + actor->unk_02;
@@ -932,11 +1097,98 @@ void func_801089CC_baby_bowser_bonkers(BabyBowserBonkersActor *actor) {
     model->attr |= HU3D_ATTR_DISPOFF;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_80108A0C_baby_bowser_bonkers);
+void func_80108A0C_baby_bowser_bonkers(BabyBowserBonkersActor *actor) {
+    HmfModel *model = Hu3DData + actor->unk_02;
+    f32 t;
+    f32 scale;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_80108B84_baby_bowser_bonkers);
+    actor->unk_06 = 1;
+    if (actor->unk_0C != 0) {
+        t = (f32)actor->unk_0A / (f32)actor->unk_0C;
+    } else {
+        t = 1.0f;
+    }
+    actor->unk_18 = t * 110.0f;
+    scale = t * 0.8f + 0.2f;
+    model->scale.x = scale;
+    model->scale.y = scale;
+    model->scale.z = scale;
+    if (t > 0.3f) {
+        actor->unk_04 = 0;
+    } else {
+        actor->unk_04 = 1;
+    }
+    if (actor->unk_10 != 0 && actor->unk_0A >= 7 && model->motSpeed == 0.0f) {
+        if (--actor->unk_10 <= 0) {
+            model->motSpeed = 1.0f;
+            model->motTime = 0.0f;
+        } else {
+            actor->unk_0A--;
+        }
+    }
+    if (t >= 1.0f) {
+        actor->unk_0A = 0;
+        actor->unk_2C = func_80108B84_baby_bowser_bonkers;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_80108D6C_baby_bowser_bonkers);
+void func_80108B84_baby_bowser_bonkers(BabyBowserBonkersActor *actor) {
+    HmfModel *model = Hu3DData + actor->unk_02;
+
+    actor->unk_06 = 2;
+    actor->unk_04 = 1;
+    switch (actor->unk_12) {
+        case 1:
+            if (actor->unk_14 < 20.0f) {
+                actor->unk_14 += 2.5f;
+            }
+            model->rot.y = sindf((f32)actor->unk_0A / (f32)actor->unk_0E * 720.0f) * actor->unk_14;
+            break;
+        case 2:
+        case 3:
+            if (actor->unk_14 < 20.0f) {
+                actor->unk_14 += 2.5f;
+            }
+            model->rot.y = -(sindf((f32)actor->unk_0A / (f32)actor->unk_0E * 720.0f) * actor->unk_14);
+            break;
+    }
+    if (actor->unk_0A >= actor->unk_0E - 7 && model->motSpeed >= 0.0f) {
+        model->motSpeed = -1.5f;
+        model->motTime = 30.0f;
+    }
+    if (actor->unk_0A >= actor->unk_0E) {
+        actor->unk_0A = 0;
+        actor->unk_2C = func_80108D6C_baby_bowser_bonkers;
+    }
+}
+
+void func_80108D6C_baby_bowser_bonkers(BabyBowserBonkersActor *actor) {
+    HmfModel *model = Hu3DData + actor->unk_02;
+    f32 t;
+    f32 scale;
+
+    actor->unk_06 = 3;
+    if (actor->unk_0C != 0) {
+        t = (f32)actor->unk_0A / (f32)actor->unk_0C;
+    } else {
+        t = 1.0f;
+    }
+    actor->unk_18 = (1.0f - t) * 110.0f;
+    scale = (1.0f - t) * 0.8f + 0.2f;
+    model->scale.x = scale;
+    model->scale.y = scale;
+    model->scale.z = scale;
+    if (t < 0.3f) {
+        actor->unk_04 = 0;
+    } else {
+        actor->unk_04 = 1;
+    }
+    if (t >= 1.0f) {
+        model->attr |= HU3D_ATTR_DISPOFF;
+        actor->unk_0A = 0;
+        actor->unk_2C = func_801089CC_baby_bowser_bonkers;
+    }
+}
 
 void func_80108E90_baby_bowser_bonkers(BabyBowserBonkersActor *actor) {
     HmfModel *model = Hu3DData + actor->unk_02;
@@ -959,9 +1211,58 @@ void func_80108E90_baby_bowser_bonkers(BabyBowserBonkersActor *actor) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_80108F9C_baby_bowser_bonkers);
+void func_80108F9C_baby_bowser_bonkers(BabyBowserBonkersActor *actor) {
+    HmfModel *model = Hu3DData + actor->unk_02;
+    f32 scale;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_80109080_baby_bowser_bonkers);
+    actor->unk_06 = 5;
+    actor->unk_04 = 0;
+    actor->unk_18 -= 9.166667f;
+    scale = model->scale.z - 0.2f;
+    model->scale.z = scale;
+    model->scale.x = scale;
+    if (scale <= 0.1f) {
+        model->scale.x = model->scale.z = 0.0f;
+    }
+    if (actor->unk_18 <= 0.0f) {
+        model->attr |= HU3D_ATTR_DISPOFF;
+        model->scale.y = 1.0f;
+        actor->unk_0A = 0;
+        actor->unk_2C = func_801089CC_baby_bowser_bonkers;
+    }
+}
+
+s32 func_80109080_baby_bowser_bonkers(s32 arg0, s16 arg1, s16 arg2) {
+    BabyBowserBonkersActor *actor;
+    HmfModel *model;
+
+    if (arg0 >= 14) {
+        return -1;
+    }
+    if (arg0 < 0) {
+        return -1;
+    }
+    actor = &D_8010BC60_baby_bowser_bonkers[arg0];
+    model = Hu3DData + actor->unk_02;
+    if (actor->unk_06 != 0) {
+        return -1;
+    }
+    actor->unk_0C = arg1;
+    actor->unk_0E = arg2;
+    actor->unk_0A = 0;
+    actor->unk_10 = 15;
+    actor->unk_14 = 0.0f;
+    if (!(rand8() & 3)) {
+        actor->unk_12 = rand8() % 3 + 1;
+    } else {
+        actor->unk_12 = 0;
+    }
+    actor->unk_2C = func_80108A0C_baby_bowser_bonkers;
+    model->attr &= ~HU3D_ATTR_DISPOFF;
+    model->rot.x = model->rot.y = model->rot.z = 0.0f;
+    model->motTime = model->motSpeed = 0.0f;
+    return arg0;
+}
 
 BabyBowserBonkersActor *func_8010919C_baby_bowser_bonkers(s32 arg0) {
     if (arg0 < 14) {
@@ -972,9 +1273,38 @@ BabyBowserBonkersActor *func_8010919C_baby_bowser_bonkers(s32 arg0) {
     return NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_801091D4_baby_bowser_bonkers);
+void func_801091D4_baby_bowser_bonkers(f32 x, f32 z, BabyBowserBonkersActor **list) {
+    s32 i;
+    s32 j;
+    HmfModel *model1;
+    HmfModel *model2;
+    f32 dx;
+    f32 dz;
+    f32 dist;
+    BabyBowserBonkersActor *temp;
 
-s32 func_80109388_baby_bowser_bonkers(UnkBabyBowserBonkers *arg0, s32 arg1) {
+    for (i = 0; i < 14; i++) {
+        list[i] = &D_8010BC60_baby_bowser_bonkers[i];
+    }
+    for (i = 0; i < 13; i++) {
+        for (j = i + 1; j < 14; j++) {
+            model1 = Hu3DData + list[i]->unk_02;
+            model2 = Hu3DData + list[j]->unk_02;
+            dx = model1->pos.x - x;
+            dz = model1->pos.z - z;
+            dist = sqrtf(dx * dx + dz * dz);
+            dx = model2->pos.x - x;
+            dz = model2->pos.z - z;
+            if (sqrtf(dx * dx + dz * dz) < dist) {
+                temp = list[i];
+                list[i] = list[j];
+                list[j] = temp;
+            }
+        }
+    }
+}
+
+s32 func_80109388_baby_bowser_bonkers(BabyBowserBonkersActor *arg0, s32 arg1) {
     if (arg0->unk_08 == 0) {
         return 0;
     }
@@ -1004,9 +1334,61 @@ s32 func_801093D4_baby_bowser_bonkers(s32 arg0) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_8010943C_baby_bowser_bonkers);
+s32 func_8010943C_baby_bowser_bonkers(BabyBowserBonkersActor **list, s32 count, s32 playerIndex) {
+    s32 candidates[16];
+    s32 i;
+    s32 n;
+    s32 quadrant;
+    HmfModel *model;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_8010958C_baby_bowser_bonkers);
+    quadrant = func_801080D0_baby_bowser_bonkers(D_800EC598_minigame[playerIndex]->trans.x,
+                                                 D_800EC598_minigame[playerIndex]->trans.z);
+    for (i = 0, n = 0; i < 14; i++) {
+        model = Hu3DData + list[i]->unk_02;
+        if (func_80109388_baby_bowser_bonkers(list[i], 9) == 0) {
+            continue;
+        }
+        if (func_801080D0_baby_bowser_bonkers(model->pos.x, model->pos.z) != quadrant) {
+            candidates[n] = list[i]->unk_00;
+            n++;
+            if (n >= count) {
+                break;
+            }
+        }
+    }
+    if (n == 0) {
+        return -1;
+    }
+    return candidates[rand8() % n];
+}
+
+s32 func_8010958C_baby_bowser_bonkers(BabyBowserBonkersActor **list, s32 count, s32 playerIndex) {
+    s32 candidates[16];
+    s32 i;
+    s32 n;
+    s32 quadrant;
+    HmfModel *model;
+
+    quadrant = func_801080D0_baby_bowser_bonkers(D_800EC598_minigame[playerIndex]->trans.x,
+                                                 D_800EC598_minigame[playerIndex]->trans.z);
+    for (i = 0, n = 0; i < 14; i++) {
+        model = Hu3DData + list[i]->unk_02;
+        if (list[i]->unk_04 == 0) {
+            continue;
+        }
+        if (func_801080D0_baby_bowser_bonkers(model->pos.x, model->pos.z) != quadrant) {
+            candidates[n] = list[i]->unk_00;
+            n++;
+            if (n >= count) {
+                break;
+            }
+        }
+    }
+    if (n == 0) {
+        return -1;
+    }
+    return candidates[rand8() % n];
+}
 
 s32 func_801096D0_baby_bowser_bonkers(void) {
     s32 i;
@@ -1020,13 +1402,89 @@ s32 func_801096D0_baby_bowser_bonkers(void) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_80109704_baby_bowser_bonkers);
+void func_80109704_baby_bowser_bonkers(void) {
+    s32 i;
+    s32 j;
+    s32 a;
+    s32 b;
+    BabyBowserBonkersPattern *temp;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_8010984C_baby_bowser_bonkers);
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 4; j++) {
+            D_8010BC68_baby_bowser_bonkers[i][j] = D_8010B8F8_baby_bowser_bonkers[i][j % D_8010B908_baby_bowser_bonkers[i]];
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 255; j++) {
+            a = rand8() & 3;
+            b = rand8() & 3;
+            if (a != b) {
+                temp = D_8010BC68_baby_bowser_bonkers[i][a];
+                D_8010BC68_baby_bowser_bonkers[i][a] = D_8010BC68_baby_bowser_bonkers[i][b];
+                D_8010BC68_baby_bowser_bonkers[i][b] = temp;
+            }
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_80109890_baby_bowser_bonkers);
+u16 func_8010984C_baby_bowser_bonkers(s32 dirAndFile) {
+    void *data;
+    u16 sprite;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_80109990_baby_bowser_bonkers);
+    data = DataRead(dirAndFile);
+    sprite = HuSprAnimRead(data);
+    DataClose(data);
+    return sprite;
+}
+
+void func_80109890_baby_bowser_bonkers(void) {
+    s32 i;
+    UnkBabyBowserBonkers *entry;
+
+    D_8010BCA8_baby_bowser_bonkers = HuMemAllocTag(0x20, TAG_OVERLAY);
+    D_8010BCAC_baby_bowser_bonkers = HuMemAllocTag(sizeof(UnkBabyBowserBonkers) * 2, TAG_OVERLAY);
+    D_8010BCA8_baby_bowser_bonkers[0] = func_8010984C_baby_bowser_bonkers(0x31);
+    D_8010BCA8_baby_bowser_bonkers[1] = func_8010984C_baby_bowser_bonkers(0x560004);
+    for (i = 0, entry = D_8010BCAC_baby_bowser_bonkers; i < 2; i++, entry++) {
+        memset(entry, 0, sizeof(UnkBabyBowserBonkers));
+        func_80109BFC_baby_bowser_bonkers(i, GwPlayer[D_8010BC58_baby_bowser_bonkers[i].unk_28].chr);
+    }
+    omAddObj(30, 0, 0, -1, func_80109990_baby_bowser_bonkers);
+}
+
+void func_80109990_baby_bowser_bonkers(omObjData *object) {
+    s16 i;
+    UnkBabyBowserBonkers *entry;
+    u16 digits[2];
+    f32 scale;
+
+    for (i = 0, entry = D_8010BCAC_baby_bowser_bonkers; i < 2; i++, entry++) {
+        digits[0] = entry->unk_0C / 10;
+        digits[1] = entry->unk_0C - digits[0] * 10;
+        if (digits[0] >= 10) {
+            digits[0] = 9;
+        }
+        if (digits[1] >= 10) {
+            digits[1] = 9;
+        }
+        func_80054FF8_main(entry->unk_02, 0, (s16)digits[0]);
+        func_80054FF8_main(entry->unk_02, 1, (s16)digits[1]);
+        if (entry->unk_0C < entry->unk_0E && entry->unk_10 == 0) {
+            entry->unk_10 = 12;
+            if (++entry->unk_0C == 10) {
+                HuSprAttrReset(entry->unk_02, 0, HUSPR_ATTR_DISPOFF);
+            }
+        }
+        scale = sindf(entry->unk_10 / 12.0f * 180.0f) * 0.5f + 1.0f;
+        HuSprPosSet(entry->unk_02, 0, entry->unk_04 + entry->unk_08 * scale, entry->unk_06);
+        HuSprPosSet(entry->unk_02, 1, entry->unk_04 + entry->unk_0A * scale, entry->unk_06);
+        HuSprScaleSet(entry->unk_02, 0, scale, scale);
+        HuSprScaleSet(entry->unk_02, 1, scale, scale);
+        if (entry->unk_10 != 0) {
+            entry->unk_10--;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_80109BFC_baby_bowser_bonkers);
 

@@ -24,6 +24,7 @@ extern s32 D_8010AF80_treadmill_grill;
 extern u8 D_8010AF84_treadmill_grill[4];
 extern f32 D_8010AF88_treadmill_grill;
 extern Vec D_8010B000_treadmill_grill[3];
+extern s32 D_8010B030_treadmill_grill[3];
 extern s16 D_8010B0D4_treadmill_grill;
 extern u32 D_8010B0D8_treadmill_grill[4];
 extern Vec2f D_8010AFE0_treadmill_grill[4];
@@ -40,6 +41,7 @@ extern s32 D_8010B19C_treadmill_grill;
 extern s32 D_8010B1D4_treadmill_grill;
 extern s32 D_8010B1D8_treadmill_grill;
 extern s32 D_8010B1DC_treadmill_grill;
+extern f32 D_8010B220_treadmill_grill;
 extern s32 D_8010B224_treadmill_grill[4];
 extern f32 D_8010B234_treadmill_grill[6];
 extern s16 D_8010B24C_treadmill_grill[6];
@@ -70,6 +72,7 @@ void func_80108DE0_treadmill_grill(omObjData *object);
 void func_80108FCC_treadmill_grill(omObjData *object);
 void func_80109108_treadmill_grill(omObjData *object);
 void func_80109FA8_treadmill_grill(omObjData *object);
+f32 func_801093E8_treadmill_grill(s32 index, omObjData *object);
 void func_8010980C_treadmill_grill(omObjData *object);
 void func_8010A548_treadmill_grill(void);
 void func_8010A6A4_treadmill_grill(void);
@@ -791,7 +794,7 @@ void func_80109108_treadmill_grill(omObjData *object) {
 void func_801093E0_treadmill_grill(omObjData *object, s32 index) {
 }
 
-f32 func_801093E8_treadmill_grill(s32 index) {
+f32 func_801093E8_treadmill_grill(s32 index, omObjData *object) {
     f32 angle;
     f32 speed;
 
@@ -847,8 +850,101 @@ f32 func_801093E8_treadmill_grill(s32 index) {
     D_8010AFE0_treadmill_grill[index].y += cosdf(angle) * speed;
     return angle;
 }
+void func_8010980C_treadmill_grill(omObjData *object) {
+    HmfMotionNode *node;
+    s32 model;
+    f32 length;
+    f32 end;
+    f32 x;
+    f32 y;
+    f32 rot;
+    f32 scale;
+    f32 angle;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_8010980C_treadmill_grill);
+    if (func_800E6E8C_minigame() == 2 && func_800E6E9C_minigame() < 150) {
+        return;
+    }
+    for (i = 0; i < 3; i++) {
+        angle = func_801093E8_treadmill_grill(i, object);
+        length = D_8010AF8C_treadmill_grill[i] + 100.0f + 200.0f + 200.0f;
+        D_8010AFE0_treadmill_grill[i].x -=
+            D_8010B1B4_treadmill_grill[func_8010AB9C_treadmill_grill(D_8010AFE0_treadmill_grill[i].y)] * 3.125f;
+        if (D_8010AFE0_treadmill_grill[i].x > length) {
+            D_8010AFE0_treadmill_grill[i].x -= length;
+        }
+        if (D_8010AFE0_treadmill_grill[i].x < 0.0f) {
+            D_8010AFE0_treadmill_grill[i].x += length;
+        }
+        if (D_8010AFE0_treadmill_grill[i].x < 100.0f) {
+            y = 0.0f;
+            x = 0.0f;
+            rot = 0.0f;
+            scale = 1.0f;
+            D_8010B030_treadmill_grill[i] = 1;
+        } else if (D_8010AFE0_treadmill_grill[i].x <= 200.0f) {
+            y = D_8010AFE0_treadmill_grill[i].x;
+            x = -(D_8010AF8C_treadmill_grill[i] + 100.0f) / 2.0f;
+            rot = 90.0f;
+            scale = (D_8010AFE0_treadmill_grill[i].x - 100.0f) / 100.0f;
+            D_8010B030_treadmill_grill[i] = 1;
+        } else if (D_8010AFE0_treadmill_grill[i].x <= 250.0f) {
+            rot = 90.0f - (D_8010AFE0_treadmill_grill[i].x - 200.0f) / 50.0f * 90.0f;
+            y = 250.0f - sindf(rot) * 50.0f;
+            x = -(D_8010AF8C_treadmill_grill[i] / 2.0f) + sindf(-rot) * 50.0f;
+            scale = (D_8010AFE0_treadmill_grill[i].x - 200.0f) / 100.0f + 1.0f;
+            D_8010B030_treadmill_grill[i] = 0;
+        } else if (D_8010AFE0_treadmill_grill[i].x < D_8010AF8C_treadmill_grill[i] + 250.0f) {
+            x = -(D_8010AF8C_treadmill_grill[i] + 100.0f) / 2.0f + D_8010AFE0_treadmill_grill[i].x - 250.0f;
+            y = 250.0f;
+            rot = 0.0f;
+            scale = 1.5f;
+            D_8010B030_treadmill_grill[i] = 0;
+        } else if (D_8010AFE0_treadmill_grill[i].x < D_8010AF8C_treadmill_grill[i] + 250.0f + 50.0f) {
+            rot = -((D_8010AFE0_treadmill_grill[i].x - (D_8010AF8C_treadmill_grill[i] + 250.0f)) / 50.0f) * 90.0f;
+            y = sindf(rot) * 50.0f + 250.0f;
+            x = D_8010AF8C_treadmill_grill[i] / 2.0f + sindf(-rot) * 50.0f;
+            scale = (D_8010AF8C_treadmill_grill[i] + 250.0f + 50.0f - D_8010AFE0_treadmill_grill[i].x) / 100.0f + 1.0f;
+            D_8010B030_treadmill_grill[i] = 0;
+        } else if (D_8010AFE0_treadmill_grill[i].x < (end = D_8010AF8C_treadmill_grill[i] + 250.0f + 50.0f + 100.0f)) {
+            y = end - D_8010AFE0_treadmill_grill[i].x + 100.0f;
+            x = (D_8010AF8C_treadmill_grill[i] + 100.0f) / 2.0f;
+            rot = -90.0f;
+            scale = (end - D_8010AFE0_treadmill_grill[i].x) / 100.0f;
+            D_8010B030_treadmill_grill[i] = 1;
+        } else {
+            y = 0.0f;
+            x = 0.0f;
+            rot = 0.0f;
+            scale = 1.0f;
+            D_8010B030_treadmill_grill[i] = 1;
+        }
+        if (y != 0.0f) {
+            model = object->model[10 + i];
+            func_8001C258_main(model, 4, 0);
+            Hu3DModelPosSet(model, x + object->trans.x, y, D_8010AFE0_treadmill_grill[i].y);
+            Hu3DModelRotSet(model, CRot.x, 0.0f, 0.0f);
+            Hu3DModelScaleSet(model, scale, scale, scale);
+            func_80088910_main(Hu3DData[model].mtx, 0.0f, 0.0f, rot);
+            node = func_8001D33C_main(model, D_8010B288_treadmill_grill);
+            node->baseRot.y = node->rot.y = angle;
+            D_8010B220_treadmill_grill += 5.0f;
+            D_8010B220_treadmill_grill = func_800202A8_main(D_8010B220_treadmill_grill);
+            scale = scale * 0.5f + sindf(D_8010B220_treadmill_grill) * 0.3f;
+            model = object->model[13 + i];
+            func_8001C258_main(model, 4, 0);
+            Hu3DModelPosSet(model, x + object->trans.x, y - 3.0f, D_8010AFE0_treadmill_grill[i].y);
+            Hu3DModelScaleSet(model, scale, scale, scale);
+            func_80088910_main(Hu3DData[model].mtx, 0.0f, 0.0f, rot);
+        } else {
+            func_8001C258_main(object->model[10 + i], 4, 4);
+            func_8001C258_main(object->model[13 + i], 4, 4);
+        }
+        D_8010B000_treadmill_grill[i].x = x + object->trans.x;
+        D_8010B000_treadmill_grill[i].y = y;
+        D_8010B000_treadmill_grill[i].z = D_8010AFE0_treadmill_grill[i].y;
+    }
+}
 
 void func_80109FA8_treadmill_grill(omObjData *object) {
     func_800E1BA8_minigame_ObjData *data;

@@ -32,26 +32,73 @@ extern u8 D_8010C1FA_game_guys_magic_boxes;
 extern u8 D_8010C1FB_game_guys_magic_boxes;
 extern u8 D_8010C21C_game_guys_magic_boxes;  // state
 extern u16 D_8010C21E_game_guys_magic_boxes; // sprite alpha timer
+extern f32 D_8010C1E0_game_guys_magic_boxes;
+extern f32 D_8010C1E4_game_guys_magic_boxes;
+extern u8 D_8010C5D0_game_guys_magic_boxes[];
 extern u8 D_8010C750_game_guys_magic_boxes;
+extern u8 D_8010C753_game_guys_magic_boxes[2];
 extern s16 D_8010C756_game_guys_magic_boxes;
+extern f32 D_8010C9D0_game_guys_magic_boxes;
+extern f32 D_8010C9D4_game_guys_magic_boxes;
+extern u8 D_8010C9CA_game_guys_magic_boxes;
+extern u8 D_8010C9D8_game_guys_magic_boxes;
 extern u8 D_8010C9D9_game_guys_magic_boxes;
+extern u8 D_8010C9DB_game_guys_magic_boxes[3][2];
+extern u8 D_8010C9E3_game_guys_magic_boxes[];
+extern u8 D_8010C9E6_game_guys_magic_boxes;
+extern s16 D_8010CA02_game_guys_magic_boxes;
+extern s16 D_8010CA04_game_guys_magic_boxes;
+extern u8 D_8010CA06_game_guys_magic_boxes;
 extern u8 D_8010C9E1_game_guys_magic_boxes;
 extern u8 D_8010C9E2_game_guys_magic_boxes;
 extern u8 D_8010C9E7_game_guys_magic_boxes;
 extern u16 D_8010CA0A_game_guys_magic_boxes;
 extern GameGuysMagicBoxesBonus D_8010C5A0_game_guys_magic_boxes;
-extern Vec D_8010C9B0_game_guys_magic_boxes;
-extern Vec D_8010C9BC_game_guys_magic_boxes;
+extern Vec D_8010C9B0_game_guys_magic_boxes[2];
 extern u8 D_8010C9E8_game_guys_magic_boxes;
 extern HuSprite *D_8010C9EC_game_guys_magic_boxes;
 extern s16 D_8010C9F0_game_guys_magic_boxes;
 extern void *D_8010C9F4_game_guys_magic_boxes[3];
 extern s16 D_8010CA0C_game_guys_magic_boxes;
+extern GameGuysMagicBoxesCamera D_8010C730_game_guys_magic_boxes;
+extern omObjData *D_8010C758_game_guys_magic_boxes;
+extern omObjData *D_8010C75C_game_guys_magic_boxes;
+extern omObjData *D_8010C760_game_guys_magic_boxes;
+extern omObjData *D_8010C764_game_guys_magic_boxes;
+extern omObjData *D_8010C768_game_guys_magic_boxes;
+extern omObjData *D_8010C76C_game_guys_magic_boxes;
+extern omObjData *D_8010C770_game_guys_magic_boxes;
 
+void func_80105A28_game_guys_magic_boxes(void);
+void func_80105AC0_game_guys_magic_boxes(void);
+void func_80105AC8_game_guys_magic_boxes(void);
+void func_80105B44_game_guys_magic_boxes(void);
+void func_80105B60_game_guys_magic_boxes(omObjData *object);
+void func_80105CCC_game_guys_magic_boxes(void);
+void func_80105FB4_game_guys_magic_boxes(omObjData *object);
+void func_80106558_game_guys_magic_boxes(omObjData *object);
+void func_801066F8_game_guys_magic_boxes(omObjData *object);
+void func_80106828_game_guys_magic_boxes(omObjData *object);
+void func_80106A2C_game_guys_magic_boxes(omObjData *object);
+void func_80106B50_game_guys_magic_boxes(omObjData *object);
+void func_80106CB8_game_guys_magic_boxes(omObjData *object);
+void func_80106DC4_game_guys_magic_boxes(omObjData *object);
+void func_801090F0_game_guys_magic_boxes(omObjData *object);
+void func_8010935C_game_guys_magic_boxes(omObjData *object);
 void func_80109884_game_guys_magic_boxes(omObjData *object);
 void func_80109984_game_guys_magic_boxes(omObjData *object);
+void func_801099E4_game_guys_magic_boxes(omObjData *object);
+void func_80109A0C_game_guys_magic_boxes(void);
+void func_80109AD8_game_guys_magic_boxes(GameGuysMagicBoxesCamera *cam, f32 camId, f32 zoom, f32 rotX, f32 rotY,
+                                         f32 rotZ, f32 centerX, f32 centerY, f32 centerZ);
+void func_80109B10_game_guys_magic_boxes(GameGuysMagicBoxesCamera *cam);
+void func_80109E1C_game_guys_magic_boxes(void);
+void func_8010A000_game_guys_magic_boxes(void);
+void func_8010A8C0_game_guys_magic_boxes(s16 x, s16 y);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", func_801059A0_game_guys_magic_boxes);
+void func_801059A0_game_guys_magic_boxes(void) {
+    func_80105A28_game_guys_magic_boxes();
+}
 
 s32 func_801059BC_game_guys_magic_boxes(f32 arg0) {
     u8 randomByte1 = rand8();
@@ -62,24 +109,142 @@ s32 func_801059BC_game_guys_magic_boxes(f32 arg0) {
     return scaledRandom;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", func_80105A28_game_guys_magic_boxes);
+void func_80105A28_game_guys_magic_boxes(void) {
+    func_8001FE20_main(32);
+    func_800142A0_main(32);
+    omInitObjMan(32, 32);
+    func_8004A208_main();
+    func_80105AC0_game_guys_magic_boxes();
+    func_80105AC8_game_guys_magic_boxes();
+    func_80109E1C_game_guys_magic_boxes();
+    func_80105B44_game_guys_magic_boxes();
+    omAddObj(1000, 0, 0, -1, func_80105B60_game_guys_magic_boxes);
+    omAddObj(10000, 0, 0, -1, func_801099E4_game_guys_magic_boxes);
+}
 
 void func_80105AC0_game_guys_magic_boxes(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", func_80105AC8_game_guys_magic_boxes);
+void func_80105AC8_game_guys_magic_boxes(void) {
+    func_80109A0C_game_guys_magic_boxes();
+    func_80109AD8_game_guys_magic_boxes(&D_8010C730_game_guys_magic_boxes, 19.03f, 1498.69f, 334.75f, 0.0f, 0.0f,
+                                        0.0f, 10.82f, -505.55f);
+    func_80109B10_game_guys_magic_boxes(&D_8010C730_game_guys_magic_boxes);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", func_80105B44_game_guys_magic_boxes);
+void func_80105B44_game_guys_magic_boxes(void) {
+    HuWinInit();
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", func_80105B60_game_guys_magic_boxes);
+void func_80105B60_game_guys_magic_boxes(omObjData *object) {
+    func_8010A8C0_game_guys_magic_boxes(160, 190);
+    func_80105CCC_game_guys_magic_boxes();
+    func_8010A000_game_guys_magic_boxes();
+    D_8010C758_game_guys_magic_boxes = omAddObj(1, 10, 10, -1, func_80105FB4_game_guys_magic_boxes);
+    D_8010C75C_game_guys_magic_boxes = omAddObj(2, 10, 10, -1, func_80106558_game_guys_magic_boxes);
+    D_8010C760_game_guys_magic_boxes = omAddObj(3, 10, 10, -1, func_801066F8_game_guys_magic_boxes);
+    D_8010C764_game_guys_magic_boxes = omAddObj(4, 10, 10, -1, func_80106828_game_guys_magic_boxes);
+    D_8010C768_game_guys_magic_boxes = omAddObj(5, 10, 10, -1, func_80106A2C_game_guys_magic_boxes);
+    D_8010C76C_game_guys_magic_boxes = omAddObj(6, 10, 10, -1, func_80106B50_game_guys_magic_boxes);
+    D_8010C770_game_guys_magic_boxes = omAddObj(7, 10, 10, -1, func_80106CB8_game_guys_magic_boxes);
+    WipeCreateIn(0xFF, 0x10);
+    object->func = func_80106DC4_game_guys_magic_boxes;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", func_80105CCC_game_guys_magic_boxes);
+void func_80105CCC_game_guys_magic_boxes(void) {
+    u8 i;
+
+    D_8010C9B0_game_guys_magic_boxes[0].x = -150.0f;
+    D_8010C9B0_game_guys_magic_boxes[0].y = 0.0f;
+    D_8010C9B0_game_guys_magic_boxes[0].z = -1500.0f;
+    D_8010C9B0_game_guys_magic_boxes[1].x = 150.0f;
+    D_8010C9B0_game_guys_magic_boxes[1].y = 0.0f;
+    D_8010C9B0_game_guys_magic_boxes[1].z = -1500.0f;
+    D_8010CA06_game_guys_magic_boxes = 0;
+    D_8010C9D0_game_guys_magic_boxes = -260.0f;
+    D_8010C9D4_game_guys_magic_boxes = 260.0f;
+    D_8010C9D8_game_guys_magic_boxes = 0;
+    D_8010C9D9_game_guys_magic_boxes = 0;
+    D_8010C1E0_game_guys_magic_boxes = 1.0f;
+    D_8010C1E4_game_guys_magic_boxes = 1.0f;
+    for (i = 0; i < 3; i++) {
+        D_8010C9DB_game_guys_magic_boxes[i][0] = func_801059BC_game_guys_magic_boxes(2.0f);
+        if (D_8010C9DB_game_guys_magic_boxes[i][0] == 0) {
+            D_8010C9DB_game_guys_magic_boxes[i][1] = 1;
+        } else {
+            D_8010C9DB_game_guys_magic_boxes[i][1] = 0;
+        }
+    }
+    if (D_8010C753_game_guys_magic_boxes[0] == 0) {
+        D_8010C9E1_game_guys_magic_boxes = 0;
+    } else if (D_8010C753_game_guys_magic_boxes[0] == 1) {
+        D_8010CA04_game_guys_magic_boxes = func_801059BC_game_guys_magic_boxes(3.0f);
+        if (D_8010C753_game_guys_magic_boxes[1] != 0) {
+            D_8010CA04_game_guys_magic_boxes = func_801059BC_game_guys_magic_boxes(D_8010C753_game_guys_magic_boxes[1]);
+            if (D_8010CA04_game_guys_magic_boxes <= 0) {
+                D_8010CA04_game_guys_magic_boxes = 0;
+            }
+        }
+        for (i = 0; i <= D_8010CA04_game_guys_magic_boxes; i++) {
+            D_8010C9E3_game_guys_magic_boxes[i] = func_801059BC_game_guys_magic_boxes(2.0f);
+        }
+        D_8010C9E6_game_guys_magic_boxes = 1;
+        for (i = 0; i <= D_8010CA04_game_guys_magic_boxes; i++) {
+            if (D_8010C9DB_game_guys_magic_boxes[i][D_8010C9E3_game_guys_magic_boxes[i]] == 0) {
+                D_8010C5D0_game_guys_magic_boxes[i] = 0;
+                D_8010C9E6_game_guys_magic_boxes = 0;
+            } else {
+                D_8010C5D0_game_guys_magic_boxes[i] = 1;
+            }
+        }
+        if (D_8010C9E6_game_guys_magic_boxes == 0) {
+            D_8010CA02_game_guys_magic_boxes = 0;
+        } else {
+            D_8010CA02_game_guys_magic_boxes = D_8010C756_game_guys_magic_boxes * ((D_8010CA04_game_guys_magic_boxes + 1) << 1);
+        }
+    }
+    D_8010C9E7_game_guys_magic_boxes = 0;
+    D_8010C9E8_game_guys_magic_boxes = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", func_80105FB4_game_guys_magic_boxes);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", func_80106558_game_guys_magic_boxes);
+void func_80106558_game_guys_magic_boxes(omObjData *object) {
+    object->model[0] = func_8000B108_main(0x650006, 0x2B9);
+    omSetTra(object, 330.0f, -400.0f, -1000.0f);
+    omSetRot(object, 0.0f, 0.0f, 0.0f);
+    omSetSca(object, 1.0f, 1.0f, 1.0f);
+    object->model[1] = Hu3DModelLink(object->model[0]);
+    Hu3DModelPosSet(object->model[1], 460.0f, -400.0f, -1000.0f);
+    Hu3DModelRotSet(object->model[1], 0.0f, 0.0f, 0.0f);
+    Hu3DModelScaleSet(object->model[1], 1.0f, 1.0f, 1.0f);
+    object->model[2] = func_8000B108_main(0x650007, 0x2B9);
+    object->model[3] = Hu3DModelLink(object->model[2]);
+    Hu3DModelPosSet(object->model[2], 460.0f, -400.0f, -999.0f);
+    Hu3DModelRotSet(object->model[2], 0.0f, 0.0f, 0.0f);
+    Hu3DModelScaleSet(object->model[2], 1.0f, 1.0f, 1.0f);
+    Hu3DModelPosSet(object->model[3], 460.0f, -400.0f, -999.0f);
+    Hu3DModelRotSet(object->model[3], 0.0f, 0.0f, 0.0f);
+    Hu3DModelScaleSet(object->model[3], 1.0f, 1.0f, 1.0f);
+    object->func = func_801090F0_game_guys_magic_boxes;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", func_801066F8_game_guys_magic_boxes);
+void func_801066F8_game_guys_magic_boxes(omObjData *object) {
+    object->model[0] = func_8000B108_main(0xA0063, 0x2B9);
+    Hu3DMotionSpeedSet(object->model[0], 1.0f);
+    omSetTra(object, 0.0f, 0.0f, -150.0f);
+    omSetRot(object, -10.0f, 0.0f, 0.0f);
+    omSetSca(object, 1.0f, 1.0f, 1.0f);
+    func_8000B460_main(object, 0, 0xA0063);
+    func_8000B460_main(object, 1, 0xA0068);
+    func_8000B460_main(object, 2, 0xA006C);
+    D_8010C9CA_game_guys_magic_boxes = 0;
+    object->model[1] = func_8000B108_main(9, 0x2B9);
+    Hu3DModelPosSet(object->model[1], 0.0f, 0.0f, -150.0f);
+    Hu3DModelRotSet(object->model[1], 0.0f, 0.0f, 0.0f);
+    Hu3DModelScaleSet(object->model[1], 1.0f, 1.0f, 1.0f);
+    object->func = func_8010935C_game_guys_magic_boxes;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", func_80106828_game_guys_magic_boxes);
 
@@ -180,19 +345,19 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", fun
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", func_8010942C_game_guys_magic_boxes);
 
 void func_80109600_game_guys_magic_boxes(omObjData *object) {
-    omSetTra(object, D_8010C9B0_game_guys_magic_boxes.x, D_8010C9B0_game_guys_magic_boxes.y,
-             D_8010C9B0_game_guys_magic_boxes.z);
-    Hu3DModelPosSet(object->model[1], D_8010C9B0_game_guys_magic_boxes.x, D_8010C9B0_game_guys_magic_boxes.y,
-                    D_8010C9B0_game_guys_magic_boxes.z);
+    omSetTra(object, D_8010C9B0_game_guys_magic_boxes[0].x, D_8010C9B0_game_guys_magic_boxes[0].y,
+             D_8010C9B0_game_guys_magic_boxes[0].z);
+    Hu3DModelPosSet(object->model[1], D_8010C9B0_game_guys_magic_boxes[0].x, D_8010C9B0_game_guys_magic_boxes[0].y,
+                    D_8010C9B0_game_guys_magic_boxes[0].z);
 }
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", func_80109658_game_guys_magic_boxes);
 
 void func_8010982C_game_guys_magic_boxes(omObjData *object) {
-    omSetTra(object, D_8010C9BC_game_guys_magic_boxes.x, D_8010C9BC_game_guys_magic_boxes.y,
-             D_8010C9BC_game_guys_magic_boxes.z);
-    Hu3DModelPosSet(object->model[1], D_8010C9BC_game_guys_magic_boxes.x,
-                    D_8010C9BC_game_guys_magic_boxes.y, D_8010C9BC_game_guys_magic_boxes.z);
+    omSetTra(object, D_8010C9B0_game_guys_magic_boxes[1].x, D_8010C9B0_game_guys_magic_boxes[1].y,
+             D_8010C9B0_game_guys_magic_boxes[1].z);
+    Hu3DModelPosSet(object->model[1], D_8010C9B0_game_guys_magic_boxes[1].x,
+                    D_8010C9B0_game_guys_magic_boxes[1].y, D_8010C9B0_game_guys_magic_boxes[1].z);
 }
 
 void func_80109884_game_guys_magic_boxes(omObjData *object) {

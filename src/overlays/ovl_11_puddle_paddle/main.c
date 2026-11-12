@@ -31,9 +31,10 @@ typedef struct PuddlePaddlePlayer {
 } PuddlePaddlePlayer; // Size 0x5C
 
 typedef struct PuddlePaddleTeam {
-    /* 0x00 */ char unk_00[0x18];
+    /* 0x00 */ Vec velocity;
+    /* 0x0C */ Vec drag;
     /* 0x18 */ f32 unk_18; // boat angle
-    /* 0x1C */ char unk_1C[4];
+    /* 0x1C */ f32 power;
     /* 0x20 */ s8 count;
     /* 0x21 */ char unk_21;
     /* 0x22 */ s16 players[2];
@@ -41,7 +42,12 @@ typedef struct PuddlePaddleTeam {
     /* 0x28 */ s16 onesSprite;
     /* 0x2A */ s16 score;
     /* 0x2C */ s16 unk_2C; // human player
-    /* 0x2E */ char unk_2E[0x36];
+    /* 0x2E */ char unk_2E[0x22];
+    /* 0x50 */ f32 unk_50;
+    /* 0x54 */ f32 unk_54;
+    /* 0x58 */ char unk_58[8];
+    /* 0x60 */ s16 unk_60;
+    /* 0x62 */ s16 unk_62;
 } PuddlePaddleTeam; // Size 0x64
 
 typedef struct PuddlePaddlePositions {
@@ -1177,7 +1183,101 @@ void func_8010A224_puddle_paddle(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_11_puddle_paddle/main", func_8010A398_puddle_paddle);
+void func_8010A398_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler) {
+    PuddlePaddleTeam *team = D_80111650_puddle_paddle;
+    PuddlePaddlePlayer *player;
+    HmfModel *boat;
+    f32 x, z;
+    f32 t;
+    f32 shake;
+    s16 i, j;
+
+    for (i = 0; i < 2; i++, team++) {
+        boat = &Hu3DData[slot->unk_04[i]];
+        team->power = 0.0f;
+        for (j = 0; j < 2; j++) {
+            player = &D_80111654_puddle_paddle[team->players[j]];
+            if ((GwPlayer[team->players[j]].stat & 1) && team->players[j] != team->unk_2C) {
+                if (rand16() % (player->unk_52 + 1) == 0 && (GwPlayer[team->unk_2C].stat & 1)) {
+                    team->unk_60 = 0;
+                    team->unk_62 = rand16() % (player->unk_54 - 4) + 5;
+                }
+                player->unk_04 &= ~6;
+                if (++team->unk_60 > team->unk_62) {
+                    team->unk_60 = team->unk_62;
+                    if (D_80111654_puddle_paddle[team->unk_2C].unk_04 & 4) {
+                        player->unk_04 |= 4;
+                    }
+                    if (D_80111654_puddle_paddle[team->unk_2C].unk_04 & 2) {
+                        player->unk_04 |= 2;
+                    }
+                } else {
+                    if (D_80111654_puddle_paddle[team->unk_2C].unk_04 & 4) {
+                        player->unk_04 |= 2;
+                    }
+                    if (D_80111654_puddle_paddle[team->unk_2C].unk_04 & 2) {
+                        player->unk_04 |= 4;
+                    }
+                }
+            }
+            if (player->unk_04 & 2) {
+                team->unk_18 -= 2.0f;
+            } else if (player->unk_04 & 4) {
+                team->unk_18 += 2.0f;
+            }
+            if (!(player->unk_4C < 0.1f)) {
+                team->power += player->unk_4C;
+            }
+        }
+        if (team->unk_18 < 0.0f) {
+            team->unk_18 += 360.0f;
+        }
+        if (team->unk_18 >= 360.0f) {
+            team->unk_18 -= 360.0f;
+        }
+        boat->rot.y = team->unk_18;
+        x = team->drag.x;
+        if (ABS(team->velocity.x) > team->drag.x) {
+            team->velocity.x = (team->velocity.x > 0.0f) ? team->velocity.x - x : x + team->velocity.x;
+        } else {
+            team->velocity.x = 0.0f;
+        }
+        z = team->drag.z;
+        if (ABS(team->velocity.z) > team->drag.z) {
+            z = team->drag.z;
+            team->velocity.z = (team->velocity.z > 0.0f) ? team->velocity.z - z : z + team->velocity.z;
+        } else {
+            team->velocity.z = 0.0f;
+        }
+        t = handler->unk_1C[0] / 120.0f;
+        if (t > 1.0f) {
+            t = 1.0f;
+        }
+        if (++handler->unk_1C[0] > 120) {
+            handler->unk_1C[0] = 0;
+        }
+        if (player->unk_04 & 0x10) {
+            shake = (rand16() % 7 - 3) * 0.2f;
+            x = shake * 100.0f * 0.2f;
+            shake = (rand16() % 7 - 3) * 0.2f;
+            z = shake * 100.0f * 0.2f;
+            boat->pos.x = x + team->unk_50;
+            boat->pos.z = z + team->unk_54;
+        } else {
+            x = sindf(team->unk_18) * 20.0f * 5.0f * team->power * 0.08f;
+            z = cosdf(team->unk_18) * 20.0f * 5.0f * team->power * 0.08f;
+            boat->pos.x += x;
+            boat->pos.z += z;
+        }
+        boat->pos.y = sindf(t * 180.0f) * 20.0f * 5.0f * 0.1f + 170.0f;
+        if ((x != 0.0f) & (z != 0.0f)) {
+            team->velocity.x += x * 0.005f;
+            team->velocity.z += z * 0.005f;
+            team->drag.x = x * 0.001f;
+            team->drag.z = z * 0.001f;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_11_puddle_paddle/main", func_8010ABCC_puddle_paddle);
 

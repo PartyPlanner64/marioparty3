@@ -184,3 +184,6 @@ D_8010A2AC_winners_wheel = D_8010A2AE_winners_wheel - 0x2;
 
 /* aces_high: second halfword of the timer pair at D_8010DCB0. */
 D_8010DCB2_aces_high = D_8010DCB0_aces_high + 0x2;
+
+/* pipe_cleaners: s32 position table whose low halfwords splat labeled. */
+D_8010A010_pipe_cleaners = D_8010A012_pipe_cleaners - 0x2;

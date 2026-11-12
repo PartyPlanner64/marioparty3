@@ -3,6 +3,10 @@
 
 #include "common.h"
 
+// Track objects have no motions, so the omObjData motion pointer slot instead
+// holds the distance to the nearest light source as an f32.
+#define COSMIC_COASTER_LIGHT_DIST(object) (*(f32 *)&(object)->motion)
+
 // Object data of the two coaster cars, with per-rider state for both riders.
 // targetX is the lane x position a rider steers toward; it holds the 100000.0f
 // sentinel while no target is assigned. carried is the track object that the
@@ -12,19 +16,20 @@ typedef struct CosmicCoasterCarData { // 0x54 bytes
     s16 player[2];                    // 0x02
     u16 finished;                     // 0x06
     f32 progress;                     // 0x08
-    f32 unk0C;                        // 0x0C
+    f32 prevProgress;                 // 0x0C progress of the previous frame
     f32 x[2];                         // 0x10
-    f32 unk18[2];                     // 0x18
-    s16 unk20[2];                     // 0x20
-    s16 unk24[2];                     // 0x24
-    u8 pad28[4];                      // 0x28
+    f32 tilt[2];                      // 0x18 rider tilt after hitting an obstacle
+    u16 stunTimer[2];                 // 0x20 frames before the tilt recovers
+    u16 visible[2];                   // 0x24 toggled to blink a stunned rider
+    u16 endPhase;                     // 0x28 victory sequence phase
+    u8 pad2A[2];                      // 0x2A
     f32 rotY[2];                      // 0x2C
     f32 y[2];                         // 0x34
     f32 targetX[2];                   // 0x3C
     omObjData *carried[2];            // 0x44
     u16 state[2];                     // 0x4C
     u16 hasHuman;                     // 0x50
-    s16 unk52;                        // 0x52
+    s16 rollSfx;                      // 0x52 rolling sound, -1 when not playing
 } CosmicCoasterCarData;
 
 extern omObjData *D_8010C3B0_cosmic_coaster[2];
@@ -33,7 +38,7 @@ extern omObjData *D_8010C3C4_cosmic_coaster; // track object manager
 
 void func_80109900_cosmic_coaster(void);
 void func_8010991C_cosmic_coaster(omObjData *object);
-void func_8010B644_cosmic_coaster(omObjData **found, CosmicCoasterCarData *car, f32 ahead, f32 behind, s16 arg4);
+u32 func_8010B644_cosmic_coaster(omObjData **found, CosmicCoasterCarData *car, f32 ahead, f32 behind, u16 notify);
 s32 func_8010B97C_cosmic_coaster(omObjData *object, s32 slot, omObjData *target);
 
 #endif

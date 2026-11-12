@@ -176,3 +176,5 @@ D_8010CC4A_game_guys_sweet_surprise = D_8010CC48_game_guys_sweet_surprise + 0x2;
 
 /* cosmic_coaster: halfwords packed after the preceding data symbol. */
 D_8010BB5E_cosmic_coaster = D_8010BB5C_cosmic_coaster + 0x2;
+/* cosmic_coaster: s32 priority table whose low halfwords splat labeled. */
+D_8010BF80_cosmic_coaster = D_8010BF82_cosmic_coaster - 0x2;

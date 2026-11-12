@@ -378,6 +378,7 @@ void func_80109DA8_rockin_raceway(void);
 void func_8010A504_rockin_raceway(void);
 s32 func_8010A48C_rockin_raceway(u16 arg0, u16 arg1);
 f32 func_8010E7E0_rockin_raceway(f32 arg0, f32 arg1, f32 arg2);
+f32 func_8010E840_rockin_raceway(f32 arg0, f32 arg1, f32 arg2, f32 arg3);
 void func_8010E8A0_rockin_raceway(f32 arg0, f32 *arg1, f32 *arg2, f32 *arg3, f32 *out);
 void func_8010E994_rockin_raceway(f32 arg0, f32 *arg1, f32 *arg2, f32 *arg3, f32 *out);
 void func_8010EB84_rockin_raceway(Vec *dir, f32 *rot);
@@ -385,7 +386,7 @@ f32 func_8010A258_rockin_raceway(u16 track, f32 arg1, f32 distance, f32 speed, u
 void func_8010B124_rockin_raceway(void);
 void func_8010B774_rockin_raceway(void);
 void func_8010A990_rockin_raceway(omObjData *object);
-void func_8010AAAC_rockin_raceway(s16 arg0, s16 arg1, u16 arg2);
+void func_8010AAAC_rockin_raceway(s16 track, s16 progress, u16 state);
 void func_8010C0D8_rockin_raceway(omObjData *object);
 void func_8010C5E0_rockin_raceway(s32 arg0);
 void func_8010C7CC_rockin_raceway(f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom, s32 frames);
@@ -1834,7 +1835,91 @@ void func_8010A990_rockin_raceway(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2C_rockin_raceway/251FF0", func_8010AAAC_rockin_raceway);
+// Updates the lap meter sprites for a track, scaling the meter up while state is 2.
+void func_8010AAAC_rockin_raceway(s16 track, s16 progress, u16 state) {
+    s16 group;
+    f32 scale;
+    f32 x;
+    s16 remainder;
+    s32 i;
+
+    group = D_80111B6C_rockin_raceway[track];
+    if (state == 2) {
+        if (D_80111B80_rockin_raceway[track].unk02++ > 30.0f) {
+            D_80111B80_rockin_raceway[track].unk02 = 30;
+        }
+        scale = D_80111B80_rockin_raceway[track].unk02;
+        scale = func_8010E840_rockin_raceway(scale / 30.0f, 0.0f, 1.0f, 0.4f) + 1.0;
+    } else {
+        if (D_80111B80_rockin_raceway[track].unk02-- < 0) {
+            D_80111B80_rockin_raceway[track].unk02 = 0;
+        }
+        scale = D_80111B80_rockin_raceway[track].unk02;
+        scale /= 30.0f;
+        scale = scale * 0.4f + 1.0;
+    }
+    if (D_80111B80_rockin_raceway[track].unk02 != D_80111B80_rockin_raceway[track].unk04) {
+        for (i = 0; i < 5; i++) {
+            x = (s16)D_80111B80_rockin_raceway[track].x + D_80111B80_rockin_raceway[track].offsets[i] * scale;
+            HuSprScaleSet(group, i + 1, scale, scale);
+            HuSprPosSet(group, i + 1, x, D_80111B80_rockin_raceway[track].y);
+            if (state == 2) {
+                HuSprAttrSet(group, i + 1, 0x838);
+            } else {
+                HuSprAttrReset(group, i + 1, 0x838);
+            }
+        }
+        D_80111B80_rockin_raceway[track].unk04 = D_80111B80_rockin_raceway[track].unk02;
+    }
+    switch (state) {
+        case 1:
+            if ((D_80111AD0_rockin_raceway & 1) && omPauseChk() + D_800D6A90_main == 0) {
+                HuSprAttrSet(group, 0, HUSPR_ATTR_DISPOFF);
+            } else {
+                HuSprAttrReset(group, 0, HUSPR_ATTR_DISPOFF);
+            }
+            break;
+        case 2:
+            HuSprAttrReset(group, 0, HUSPR_ATTR_DISPOFF);
+            if (!(D_80111AD0_rockin_raceway & 3)) {
+                for (i = 0; i < 5; i++) {
+                    HuSprAttrReset(group, i + 1, HUSPR_ATTR_DISPOFF);
+                    func_80054FF8_main(group, i + 1, 1);
+                    HuSprTPLvlSet(group, i + 1, 0x100);
+                }
+            } else {
+                for (i = 0; i < 5; i++) {
+                    HuSprAttrReset(group, i + 1, HUSPR_ATTR_DISPOFF);
+                    func_80054FF8_main(group, i + 1, 0);
+                    HuSprTPLvlSet(group, i + 1, 0x100);
+                }
+            }
+            return;
+        case 0xFFFF:
+            for (i = 0; i < 7; i++) {
+                HuSprAttrSet(group, i, HUSPR_ATTR_DISPOFF);
+            }
+            return;
+        default:
+            HuSprAttrReset(group, 0, HUSPR_ATTR_DISPOFF);
+            break;
+    }
+    for (i = 0; i < 5; i++) {
+        if (i * 20 < progress) {
+            HuSprAttrReset(group, i + 1, HUSPR_ATTR_DISPOFF);
+            if ((i + 1) * 20 <= progress) {
+                HuSprTPLvlSet(group, i + 1, 0x100);
+                func_80054FF8_main(group, i + 1, 0);
+            } else {
+                remainder = progress % 20;
+                HuSprTPLvlSet(group, i + 1, remainder * 0.05f * 256.0f);
+                func_80054FF8_main(group, i + 1, 0);
+            }
+        } else {
+            HuSprAttrSet(group, i + 1, HUSPR_ATTR_DISPOFF);
+        }
+    }
+}
 
 void func_8010B124_rockin_raceway(void) {
     s32 group;

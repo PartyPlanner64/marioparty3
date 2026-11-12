@@ -1,5 +1,28 @@
 #include "staff.h"
 
+typedef struct StaffCreditEntry { // sizeof 0x4
+    /* 0x00 */ s8 type;
+    /* 0x01 */ s8 wait;
+    /* 0x02 */ u16 arg;
+} StaffCreditEntry;
+
+typedef struct StaffCreditSlot { // sizeof 0x20
+    /* 0x00 */ Vec pos;
+    /* 0x0C */ s16 x;
+    /* 0x0E */ s16 y;
+    /* 0x10 */ s16 win0;
+    /* 0x12 */ s16 win1;
+    /* 0x14 */ s16 sprite;
+    /* 0x16 */ s16 model;
+    /* 0x18 */ s16 motion;
+    /* 0x1A */ s16 linkModel;
+    /* 0x1C */ s16 unk_1C;
+    /* 0x1E */ s16 type;
+} StaffCreditSlot;
+
+extern s32 D_80110B80_staff[];
+extern StaffCreditEntry *D_80110F04_staff[];
+
 StaffPath *func_801085F0_staff(Vec *points, s32 flags) {
     StaffPath *path;
     StaffPathSeg *seg;
@@ -665,7 +688,217 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/staff/544E70", D_801113E4_staff);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/staff/544E70", D_801113F0_staff);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/544E70", func_8010BF84_staff);
+void func_8010BF84_staff(void) {
+    StaffCreditSlot slots[12];
+    s16 models[16];
+    s16 anims[1];
+    s16 sprites[1];
+    Process *prc;
+    UnkStaff_4 *prcWork;
+    s16 *state;
+    StaffCreditSlot *slot;
+    StaffCreditEntry *entry;
+    s32 i;
+    s16 model;
+    s16 link;
+    s16 curState;
+    s16 wait;
+    s16 entryIdx;
+    s16 modelIdx;
+    s16 win0Idx;
+    s16 win1Idx;
+    s16 active;
+    s16 done;
+
+    state = HuPrcCurrentGet()->user_data;
+    prc = omAddPrcObj(func_8010B1E0_staff, 0x4000, 0x1000, 0);
+    HuPrcVSleep();
+    prcWork = prc->user_data;
+    for (slot = slots, i = 0; i < 12; i++, slot++) {
+        slot->type = 0;
+        slot->model = -1;
+        slot->motion = -1;
+        slot->win0 = -1;
+        slot->win1 = -1;
+        slot->sprite = -1;
+        slot->linkModel = -1;
+        slot->unk_1C = -1;
+    }
+    model = -1;
+    for (i = 0; i < 3; i++) {
+        if (model < 0) {
+            model = link = func_8000B108_main(0x160025, 0x2B9);
+        } else {
+            link = Hu3DModelLink(model);
+        }
+        models[i] = link;
+        func_8001C258_main(link, 4, 4);
+    }
+    for (i = 0; i < 1; i++) {
+        anims[i] = func_8000B838_main(D_80110B80_staff[i]);
+        sprites[i] = espEntry(anims[i], 0, 0);
+        espDispOff(sprites[i]);
+    }
+    modelIdx = 0;
+    win0Idx = 0;
+    win1Idx = 0;
+    curState = 0;
+    while (curState >= 0) {
+        if (curState != *state) {
+            switch (*state) {
+                case 0:
+                    break;
+                case 1:
+                    wait = 1;
+                    entry = D_80110F04_staff[0];
+                    entryIdx = 1;
+                    break;
+            }
+            curState = *state;
+        }
+        if (curState == 1) {
+            if (entryIdx >= 0 && --wait == 0) {
+                if (entry->type == -1) {
+                    entry = D_80110F04_staff[entryIdx];
+                    entryIdx++;
+                    if (entry == NULL) {
+                        entryIdx = -1;
+                    }
+                    wait += 127;
+                } else {
+                    for (slot = slots, i = 0; i < 12; i++, slot++) {
+                        if (slot->type == 0) {
+                            break;
+                        }
+                    }
+                    if (i < 12) {
+                        slot->x = 160;
+                        slot->y = 320;
+                        slot->pos.x = 0.0f;
+                        slot->pos.y = -480.0f;
+                        slot->pos.z = 380.0f;
+                        slot->type = entry->type;
+                        switch (slot->type) {
+                            case 1:
+                                func_8010BA30_staff(1, win1Idx, entry->arg, slot->x, slot->y);
+                                slot->win1 = win1Idx;
+                                if (++win1Idx >= 12) {
+                                    win1Idx = 0;
+                                }
+                                break;
+                            case 4:
+                                slot->linkModel = models[modelIdx];
+                                func_8001C258_main(slot->linkModel, 4, 0);
+                                Hu3DModelPosSet(slot->linkModel, slot->pos.x, slot->pos.y, slot->pos.z);
+                                func_8010998C_staff(prc, &slot->model, &slot->motion, &slot->pos);
+                                if (++modelIdx >= 3) {
+                                    modelIdx = 0;
+                                }
+                                /* fallthrough */
+                            case 3:
+                                func_8010BA30_staff(0, win0Idx, entry->arg, slot->x, slot->y);
+                                slot->win0 = win0Idx;
+                                if (++win0Idx >= 6) {
+                                    win0Idx = 0;
+                                }
+                                wait += 22;
+                                break;
+                            case 2:
+                                slot->sprite = sprites[entry->arg];
+                                espDispOn(slot->sprite);
+                                break;
+                        }
+                        wait += entry->wait;
+                        entry++;
+                        if (slot->type == 1 && entry->type >= 3) {
+                            wait += 22;
+                        }
+                        wait += 30;
+                    } else {
+                        wait = 1;
+                    }
+                }
+            }
+            for (slot = slots, i = 0, active = 0; i < 12; i++, slot++) {
+                if (slot->type == 0) {
+                    continue;
+                }
+                active++;
+                done = 0;
+                slot->y--;
+                if (slot->type == 4) {
+                    done = slot->y < -63;
+                } else if (slot->y < -15) {
+                    done++;
+                }
+                if (done) {
+                    slot->type = 0;
+                    if (slot->model >= 0) {
+                        func_8001C258_main(slot->model, 4, 4);
+                        func_8010992C_staff(prc, slot->model);
+                    }
+                    slot->model = -1;
+                    slot->motion = -1;
+                    if (slot->win1 >= 0) {
+                        func_8010B8C0_staff(1, slot->win1, 0);
+                        slot->win1 = -1;
+                    }
+                    if (slot->sprite >= 0) {
+                        espDispOff(slot->sprite);
+                        slot->sprite = -1;
+                    }
+                    if (slot->win0 >= 0) {
+                        func_8010B8C0_staff(0, slot->win0, 0);
+                        slot->win0 = -1;
+                    }
+                    if (slot->linkModel >= 0) {
+                        func_8001C258_main(slot->linkModel, 4, 4);
+                        slot->linkModel = -1;
+                    }
+                } else {
+                    switch (slot->type) {
+                        case 1:
+                            if (slot->win1 >= 0) {
+                                func_8010B9BC_staff(1, slot->win1, slot->x, slot->y);
+                            }
+                            break;
+                        case 4:
+                            slot->pos.y = 288.0 - slot->y * 2.4;
+                            Hu3DModelPosSet(slot->linkModel, slot->pos.x, slot->pos.y, slot->pos.z);
+                            if (slot->model >= 0) {
+                                func_80109D08_staff(prc, slot->model, &slot->pos);
+                            }
+                            /* fallthrough */
+                        case 3:
+                            func_8010B9BC_staff(0, slot->win0, slot->x, slot->y);
+                            break;
+                        case 2:
+                            espPosSet(slot->sprite, slot->x, slot->y);
+                            break;
+                    }
+                }
+            }
+            if (active == 0 && entryIdx < 0) {
+                *state = -1;
+            }
+        }
+        HuPrcVSleep();
+    }
+    prcWork->unk_04 = 1;
+    for (i = 0; i < 3; i++) {
+        Hu3DModelKill(models[i]);
+    }
+    for (i = 0; i < 1; i++) {
+        espKill(sprites[i]);
+        HuSprAnimKill(anims[i]);
+    }
+    HuPrcVSleep();
+    *state = 0;
+    omDelPrcObj(NULL);
+    while (TRUE) {
+        HuPrcVSleep();
+    }
+}
 
 void func_8010C680_staff(s16 *state, f32 *angle, f32 *rotY, UnkStaff *work) {
     Vec pos = work->pos;

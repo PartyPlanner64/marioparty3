@@ -181,6 +181,7 @@ void func_8010B514_staff(s16 arg0, s16 arg1);
 void func_8010B794_staff(s16 arg0);
 void func_8010B8C0_staff(s16 arg0, s16 arg1, s16 visible);
 void func_8010B9BC_staff(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
+void func_8010BA30_staff(s16 arg0, s16 arg1, u32 arg2, s16 arg3, s16 arg4);
 void func_8010BE20_staff(s16 *windows, s16 count);
 void func_8010BF84_staff(void);
 void func_8010C680_staff(s16 *state, f32 *angle, f32 *rotY, UnkStaff *work);

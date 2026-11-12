@@ -21,12 +21,9 @@ extern Vec D_8010AC0C_storyresult;
 extern Vec D_8010AC18_storyresult;
 extern f32 D_8010AC24_storyresult;
 extern f32 D_8010AC2C_storyresult;
-extern s16 D_8010AC30_storyresult;
-extern s16 D_8010AC32_storyresult;
 extern f32 D_800D5210_main;
 extern f32 D_800CB890_main;
 extern s16 kakusiMasuItemHis[10];
-extern u8 D_800CE20A_main;
 
 void func_801059A0_storyresult(void) {
     omInitObjMan(51, 25);

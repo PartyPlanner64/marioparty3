@@ -124,8 +124,6 @@ s16 func_800E7A2C_minigame(u8 *values, s16 alt, s16 start, s16 end, BA4B0_Elem *
     return result;
 }
 
-#ifdef NON_MATCHING
-// Regalloc: the per-rank count is zero-extended with andi instead of a plain move.
 s16 func_800E7BCC_minigame(BA4B0_Work *work) {
     u8 counts[4];
     u8 *entries;
@@ -136,7 +134,7 @@ s16 func_800E7BCC_minigame(BA4B0_Work *work) {
     s16 curX;
     s16 member;
     s16 rank;
-    u8 count;
+    s16 count;
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -178,9 +176,6 @@ s16 func_800E7BCC_minigame(BA4B0_Work *work) {
     work->unk140 = 1;
     return 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/BA4B0", func_800E7BCC_minigame);
-#endif
 
 s16 func_800E7E08_minigame(s16 page, BA4B0_Work *work) {
     u8 *values;

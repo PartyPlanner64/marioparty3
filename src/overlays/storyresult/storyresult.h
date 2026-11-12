@@ -18,5 +18,8 @@ extern s16 D_8010ABE0_storyresult;
 extern s16 D_8010ABE2_storyresult;
 extern s16 D_8010AC28_storyresult;
 extern s16 D_8010AC2A_storyresult;
+extern s16 D_8010AC30_storyresult;
+extern s16 D_8010AC32_storyresult;
+extern u8 D_800CE20A_main;
 
 #endif

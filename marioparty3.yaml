@@ -1043,9 +1043,11 @@ segments:
     exclusive_ram_id: minigame # ovl_10
     bss_size: 0x3C0
     subsegments:
-      - [0x18ABD0, c] # File split at 18EB30? Maybe not possible because of rodata.
+      - [0x18ABD0, c]
+      - [0x18EB30, c]
       - [0x190D60, data, 18ABD0] #8010BB30
       - [0x1911E0, .rodata, 18ABD0] #8010BFB0
+      - [0x191220, .rodata, 18EB30] #8010BFF0
       - {0x191240, type: bss, vram: 0x8010C010, name: ovl_10_bss}
 
   - type: code

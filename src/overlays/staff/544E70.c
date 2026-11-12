@@ -604,7 +604,229 @@ StaffModelEntry *func_80109D74_staff(UnkStaff_3 *work, StaffModelEntry *entry) {
     return entry;
 }
 
+#ifdef NON_MATCHING
+// Register allocation differs in the motion block: the target keeps the motion temp in s1 and
+// reloads `motion` from its stack slot for the unk_1E store.
+StaffModelEntry *func_80109F34_staff(UnkStaff_3 *work, StaffModelEntry *entry) {
+    void *data;
+    s32 i;
+    s16 hasAnim;
+    s16 model;
+    s16 motion;
+    s16 member;
+    s16 link;
+
+    work->unk_3A = 0;
+    switch (work->unk_34) {
+        case 7:
+            for (i = 0; i < 4; i++) {
+                Hu3DModelKill(work->unk_28[i]);
+            }
+            Hu3DAnimKill(work->unk_20);
+            Hu3DAnimKill(work->unk_30);
+            break;
+        case 4:
+        case 8:
+        case 10:
+            Hu3DModelKill(work->unk_28[0]);
+            break;
+        case 12:
+            func_80046558_main(work->unk_1C);
+            break;
+    }
+    if (work->unk_32 >= 0) {
+        Hu3DAnimKill(work->unk_32);
+    }
+    if (work->unk_1C >= 0) {
+        Hu3DModelKill(work->unk_1C);
+    }
+    if (work->unk_1E >= 0) {
+        Hu3DModelKill(work->unk_1E);
+    }
+    work->unk_1C = -1;
+    work->unk_1E = -1;
+    HuPrcVSleep();
+    if (entry->scale == 0.0f) {
+        return entry;
+    }
+    work->unk_34 = entry->unk_12;
+    hasAnim = FALSE;
+    data = DataRead(entry->dataId);
+    HuPrcVSleep();
+    HuPrcVSleep();
+    model = Hu3DModelCreate(data, 0x2AD);
+    work->unk_1C = model;
+    func_8001C814_main(model, -1, 2);
+    Hu3DModelScaleSet(model, entry->scale, entry->scale, entry->scale);
+    work->unk_22 = entry->unk_0C;
+    HuPrcVSleep();
+    HuPrcVSleep();
+    work->unk_32 = -1;
+    if (entry->animNo != 0) {
+        i = entry->animNo - 1;
+        hasAnim = TRUE;
+        data = DataRead(D_80110674_staff[i].dataNum);
+        HuPrcVSleep();
+        HuPrcVSleep();
+        work->unk_32 = Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, D_80110674_staff[i].name);
+        HuMemMemoryFreePerm(data);
+        HuPrcVSleep();
+    }
+    if (entry->motDataId != 0) {
+        data = DataRead(entry->motDataId);
+        HuPrcVSleep();
+        HuPrcVSleep();
+        motion = member = Hu3DModelCreate(data, 0x1D);
+        HuPrcVSleep();
+        func_8001C5B4_main(model, member);
+        func_8001C814_main(model, -1, 2);
+        work->unk_1E = motion;
+    }
+    switch (work->unk_34) {
+        case 1:
+            work->unk_36 = 0;
+            work->unk_0C.x = work->unk_0C.y = work->unk_0C.z = 0.0f;
+            work->unk_18 = 90.0f;
+            Hu3DModelRotSet(model, 0.0f, 90.0f, 0.0f);
+            break;
+        case 2:
+            work->unk_36 = 0;
+            work->unk_38 = entry->unk_14;
+            work->unk_18 = 0.0f;
+            work->unk_0C.x = work->unk_0C.y = work->unk_0C.z = work->unk_18;
+            break;
+        case 3:
+            work->unk_18 = 0.0f;
+            work->unk_36 = 30;
+            work->unk_0C.x = 0.0f;
+            func_8001FA68_main(model);
+            func_8001F9E4_main(model, 0xFF);
+            break;
+        case 4:
+            work->unk_36 = entry->unk_14;
+            data = DataRead(0xA00C3);
+            HuPrcVSleep();
+            HuPrcVSleep();
+            link = Hu3DModelCreate(data, 0x2AD);
+            work->unk_28[0] = link;
+            Hu3DModelScaleSet(link, entry->scale, entry->scale, entry->scale);
+            func_8001C5B4_main(link, motion);
+            func_8001C814_main(link, -1, 2);
+            HuPrcVSleep();
+            func_8001C514_main(link);
+            HuPrcVSleep();
+            break;
+        case 5:
+        case 11:
+            work->unk_18 = 0.0f;
+            break;
+        case 6:
+            work->unk_18 = work->unk_0C.x = work->unk_0C.y = work->unk_0C.z = 0.0f;
+            work->unk_38 = 0;
+            work->unk_36 = 0;
+            break;
+        case 7:
+            data = DataRead(0xA008C);
+            HuPrcVSleep();
+            hasAnim = TRUE;
+            HuPrcVSleep();
+            work->unk_20 = Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, "c201n_00_DEF");
+            func_80034048_main(work->unk_20, 5);
+            HuMemMemoryFreePerm(data);
+            HuPrcVSleep();
+            for (i = 0; i < 4; i++) {
+                switch (i) {
+                    case 0:
+                        data = DataRead(entry->dataId);
+                        HuPrcVSleep();
+                        HuPrcVSleep();
+                        member = link = Hu3DModelCreate(data, 0x2AD);
+                        HuPrcVSleep();
+                        data = DataRead(0xA008D);
+                        HuPrcVSleep();
+                        HuPrcVSleep();
+                        work->unk_30 = Hu3DAnimCreate(Hu3DData[link].hmf, data, 0, "c201n_00_DEF");
+                        HuMemMemoryFreePerm(data);
+                        HuPrcVSleep();
+                        func_80034048_main(work->unk_30, 8);
+                        Hu3DModelRemakeStatic(link);
+                        func_8001C514_main(link);
+                        break;
+                    case 1:
+                        data = DataRead(entry->dataId);
+                        HuPrcVSleep();
+                        HuPrcVSleep();
+                        member = link = Hu3DModelCreate(data, 0x2AD);
+                        HuPrcVSleep();
+                        data = DataRead(0xA008D);
+                        HuPrcVSleep();
+                        HuPrcVSleep();
+                        work->unk_32 = Hu3DAnimCreate(Hu3DData[link].hmf, data, 0, "c201n_00_DEF");
+                        HuMemMemoryFreePerm(data);
+                        HuPrcVSleep();
+                        Hu3DModelRemakeStatic(link);
+                        func_8001C514_main(link);
+                        break;
+                    case 2:
+                        member = Hu3DModelLink(work->unk_28[1]);
+                        break;
+                    case 3:
+                        member = Hu3DModelLink(work->unk_28[0]);
+                        break;
+                }
+                work->unk_28[i] = member;
+                func_8001C814_main(member, -1, 2);
+                Hu3DModelScaleSet(member, entry->scale, entry->scale, entry->scale);
+                HuPrcVSleep();
+            }
+            HuPrcVSleep();
+            HuPrcVSleep();
+            break;
+        case 8:
+            link = Hu3DModelLink(model);
+            work->unk_28[0] = link;
+            work->unk_36 = entry->unk_14;
+            func_8001C814_main(link, -1, 2);
+            Hu3DMotionTimeSet(link, D_800CCF58_main[Hu3DData[link].motId].unk02 * 0.5f);
+            Hu3DModelScaleSet(link, entry->scale, entry->scale, entry->scale);
+            Hu3DModelRotSet(model, -15.0f, 80.0f, 0.0f);
+            Hu3DModelRotSet(link, -15.0f, -80.0f, 0.0f);
+            break;
+        case 10:
+            link = Hu3DModelLink(model);
+            work->unk_28[0] = link;
+            work->unk_36 = entry->unk_14;
+            func_8001C814_main(link, -1, 2);
+            Hu3DMotionTimeSet(link, D_800CCF58_main[Hu3DData[link].motId].unk02 * 0.5f);
+            Hu3DModelScaleSet(link, entry->scale, entry->scale, entry->scale);
+            Hu3DModelRotSet(model, 0.0f, -30.0f, 0.0f);
+            Hu3DModelRotSet(link, 0.0f, 30.0f, 0.0f);
+            break;
+        case 12:
+            func_800461B4_main(model);
+            break;
+        case 9:
+            Hu3DModelRotSet(model, -30.0f, entry->unk_14, 0.0f);
+            break;
+        case 0:
+        default:
+            if (entry->unk_14 != 0) {
+                Hu3DModelRotSet(model, 0.0f, entry->unk_14, 0.0f);
+            }
+            break;
+    }
+    if (hasAnim) {
+        Hu3DModelRemakeStatic(model);
+    }
+    func_8001C514_main(model);
+    work->unk_3A = 1;
+    entry++;
+    HuPrcVSleep();
+    return entry;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/staff/544E70", func_80109F34_staff);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/overlays/staff/544E70", func_8010A848_staff);
 

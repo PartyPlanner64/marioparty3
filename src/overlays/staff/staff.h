@@ -78,7 +78,8 @@ typedef struct StaffAnimEntry { // sizeof 0x8
 
 typedef struct UnkStaff_3 { // sizeof 0x3C
     /* 0x00 */ Vec unk_00;
-    /* 0x0C */ char unk_0C[0x10];
+    /* 0x0C */ Vec unk_0C;
+    /* 0x18 */ f32 unk_18;
     /* 0x1C */ s16 unk_1C;
     /* 0x1E */ s16 unk_1E;
     /* 0x20 */ s16 unk_20;
@@ -88,7 +89,7 @@ typedef struct UnkStaff_3 { // sizeof 0x3C
     /* 0x32 */ s16 unk_32;
     /* 0x34 */ s16 unk_34;
     /* 0x36 */ s16 unk_36;
-    /* 0x38 */ char unk_38[2];
+    /* 0x38 */ s16 unk_38;
     /* 0x3A */ s16 unk_3A;
 } UnkStaff_3;
 

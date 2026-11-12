@@ -250,6 +250,7 @@ typedef struct {
     /* 0x20 */ f32 velZ;
 } RockinRacewayFx; // Size 0x24
 
+extern GAMEMES gMesData[];
 extern s16 D_800CDD6A_main;
 extern s16 D_800D418E_main;
 extern u8 D_800D6A90_main;
@@ -264,12 +265,13 @@ extern f32 D_801112E0_rockin_raceway[];
 extern f32 D_801112F0_rockin_raceway[];
 extern f32 D_80111300_rockin_raceway[4][2]; // per CPU difficulty
 extern s32 D_80111320_rockin_raceway[4];    // per CPU difficulty
-extern RockinRacewayCameraPreset D_80111350_rockin_raceway;
+extern RockinRacewayCameraPreset D_80111350_rockin_raceway[7];
 extern s16 D_80111340_rockin_raceway[8];
 extern RockinRacewayPos16 D_80111330_rockin_raceway[4];
 extern Vec D_80111414_rockin_raceway[4];
 extern Vec D_80111444_rockin_raceway[12];
 extern u8 D_801114D4_rockin_raceway[4];
+extern s32 D_80111558_rockin_raceway; // state on the previous frame
 extern s32 D_8011155C_rockin_raceway;
 // Racer slot per racer; the first element of each pair sits at D_80111560_rockin_raceway.
 extern u16 D_80111562_rockin_raceway[][2];
@@ -349,6 +351,27 @@ const s16 D_8011174C_rockin_raceway[] = { 0x8265, 0x8268, 0x826D, 0x8268, 0x8272
 
 void func_80105C24_rockin_raceway(omObjData *object);
 void func_80105CB0_rockin_raceway(omObjData *object);
+void func_80106A5C_rockin_raceway(omObjData *object);
+void func_80106A80_rockin_raceway(omObjData *object);
+void func_80107E78_rockin_raceway(s32 row, s16 arg1);
+void func_8010803C_rockin_raceway(s32 *order);
+s32 func_80108464_rockin_raceway(void);
+void func_80109044_rockin_raceway(void);
+void func_80109134_rockin_raceway(void);
+void func_801097A0_rockin_raceway(void);
+void func_801098D8_rockin_raceway(void);
+void func_80109D00_rockin_raceway(s32 *players);
+void func_80109D54_rockin_raceway(s32 *values);
+void func_8010B2B8_rockin_raceway(void);
+void func_8010C9BC_rockin_raceway(void);
+void func_8010C9CC_rockin_raceway(void);
+void func_8010CA1C_rockin_raceway(void);
+void func_8010D104_rockin_raceway(void);
+void func_8010D114_rockin_raceway(void);
+void func_8010D600_rockin_raceway(void);
+void func_8010D9C4_rockin_raceway(s32 index);
+void func_8010E08C_rockin_raceway(s32 winner);
+void func_8010E39C_rockin_raceway(void);
 void func_80106B28_rockin_raceway(void);
 void func_80106DC8_rockin_raceway(omObjData *object);
 void func_801071D8_rockin_raceway(omObjData *object);
@@ -474,7 +497,340 @@ void func_80105C24_rockin_raceway(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2C_rockin_raceway/251FF0", func_80105CB0_rockin_raceway);
+void func_80105CB0_rockin_raceway(omObjData *object) {
+    s32 times[2];
+    RockinRacewayRacer *racer;
+    RockinRacewayRacer *other;
+    omObjData *leaderObj;
+    omObjData *otherObj;
+    f32 t;
+    s16 mes;
+    s32 i;
+
+    times[0] = 0;
+    times[1] = 0;
+    func_80106A80_rockin_raceway(object);
+    func_8010E39C_rockin_raceway();
+    if (D_80111BD6_rockin_raceway >= 0) {
+        if (--D_80111BD6_rockin_raceway == 0) {
+            D_80111BD4_rockin_raceway = HuAudFXPlay(0x470);
+            HuAudFXVolSet(D_80111BD4_rockin_raceway, 64);
+            HuAudFXPitchSet(D_80111BD4_rockin_raceway, 0);
+            D_80111BD6_rockin_raceway = -1;
+        }
+    }
+    switch (D_80111AD8_rockin_raceway) {
+        case 0:
+            D_80111AD8_rockin_raceway = 1;
+            D_80111ADC_rockin_raceway = 0;
+            break;
+        case 1:
+            switch (D_80111ADC_rockin_raceway) {
+                case 0:
+                    HuAudFXPlay(0x46F);
+                    func_8010C7CC_rockin_raceway(D_80111350_rockin_raceway[1].center.x, D_80111350_rockin_raceway[1].center.y,
+                                                 D_80111350_rockin_raceway[1].center.z, D_80111350_rockin_raceway[1].rot.x,
+                                                 D_80111350_rockin_raceway[1].rot.y, D_80111350_rockin_raceway[1].rot.z,
+                                                 D_80111350_rockin_raceway[1].zoom, 19);
+                    D_80111C2E_rockin_raceway = 0;
+                    D_80111ADC_rockin_raceway++;
+                    break;
+                case 2:
+                    func_8010C7CC_rockin_raceway(D_80111350_rockin_raceway[2].center.x, D_80111350_rockin_raceway[2].center.y,
+                                                 D_80111350_rockin_raceway[2].center.z, D_80111350_rockin_raceway[2].rot.x,
+                                                 D_80111350_rockin_raceway[2].rot.y, D_80111350_rockin_raceway[2].rot.z,
+                                                 D_80111350_rockin_raceway[2].zoom, 75);
+                    D_80111C2E_rockin_raceway = 0;
+                    D_80111ADC_rockin_raceway++;
+                    break;
+                case 4:
+                    if (D_80111AD0_rockin_raceway >= 5) {
+                        D_80111ADC_rockin_raceway++;
+                    }
+                    break;
+                case 6:
+                    func_8010C7CC_rockin_raceway(D_80111350_rockin_raceway[3].center.x, D_80111350_rockin_raceway[3].center.y,
+                                                 D_80111350_rockin_raceway[3].center.z, D_80111350_rockin_raceway[3].rot.x,
+                                                 D_80111350_rockin_raceway[3].rot.y, D_80111350_rockin_raceway[3].rot.z,
+                                                 D_80111350_rockin_raceway[3].zoom, 75);
+                    D_80111C2E_rockin_raceway = 0;
+                    D_80111AD0_rockin_raceway = 0;
+                    D_80111ADC_rockin_raceway++;
+                    break;
+                case 8:
+                    func_8010C7CC_rockin_raceway(D_80111350_rockin_raceway[4].center.x, D_80111350_rockin_raceway[4].center.y,
+                                                 D_80111350_rockin_raceway[4].center.z, D_80111350_rockin_raceway[4].rot.x,
+                                                 D_80111350_rockin_raceway[4].rot.y, D_80111350_rockin_raceway[4].rot.z,
+                                                 D_80111350_rockin_raceway[4].zoom, 45);
+                    D_80111C2E_rockin_raceway = 2;
+                    D_80111ADC_rockin_raceway++;
+                    break;
+                case 10:
+                    if (D_80111AD0_rockin_raceway != 3) {
+                        if (D_80111AD0_rockin_raceway > 3) {
+                            D_80111AD8_rockin_raceway = 2;
+                            D_80111ADC_rockin_raceway = 0;
+                        }
+                    }
+                    break;
+                default:
+                    if (D_80111ADC_rockin_raceway == 9 && D_80111AD0_rockin_raceway == 20) {
+                        GMesCreate(GMES_MES_3);
+                        HuAudSeqPlay(0x2E);
+                    }
+                    if (D_80111C2C_rockin_raceway == 0) {
+                        if (D_80111ADC_rockin_raceway == 3) {
+                            HuAudSeqPlay(0x6D);
+                        }
+                        D_80111AD0_rockin_raceway = 0;
+                        D_80111ADC_rockin_raceway++;
+                    }
+                    break;
+            }
+            break;
+        case 2:
+            if (D_80111AD0_rockin_raceway == 8) {
+                HuAudFXPlay(0x46C);
+            }
+            if (D_80111AD0_rockin_raceway == 30) {
+                D_80111AE0_rockin_raceway = 1;
+            }
+            if (D_80111AD0_rockin_raceway == 20) {
+                func_8010C9BC_rockin_raceway();
+                func_8010CA1C_rockin_raceway();
+            }
+            func_8010803C_rockin_raceway(D_80111AF0_rockin_raceway);
+            if (D_80111AE0_rockin_raceway != 0) {
+                times[0] = ++D_80111AE4_rockin_raceway;
+                times[1] = D_80111AE8_rockin_raceway;
+                func_8010B5DC_rockin_raceway(times);
+                func_80109D00_rockin_raceway(D_80111AF0_rockin_raceway);
+                func_80109D54_rockin_raceway(times);
+                func_8010D600_rockin_raceway();
+                D_80111AEC_rockin_raceway--;
+            }
+            if (D_80111AEC_rockin_raceway == 900) {
+                mes = GMesCreate(GMES_MES_TIMER, 30, 156, 56);
+                gMesData[mes].pos.x = 156.0f;
+                gMesData[mes].pos.y = 56.0f;
+            } else if (D_80111AEC_rockin_raceway < 900) {
+                func_8003F578_main((D_80111AEC_rockin_raceway + 29) / 30);
+                if (D_80111AEC_rockin_raceway == 0) {
+                    func_8003F5C0_main();
+                }
+            }
+            D_80111B34_rockin_raceway = func_80108464_rockin_raceway();
+            if (D_80111B34_rockin_raceway == -1 && D_80111AEC_rockin_raceway > 0) {
+                break;
+            }
+            func_8010D104_rockin_raceway();
+            func_8010C9CC_rockin_raceway();
+            func_8010C7CC_rockin_raceway(D_80111350_rockin_raceway[5].center.x, D_80111350_rockin_raceway[5].center.y,
+                                         D_80111350_rockin_raceway[5].center.z, D_80111350_rockin_raceway[5].rot.x,
+                                         D_80111350_rockin_raceway[5].rot.y, D_80111350_rockin_raceway[5].rot.z,
+                                         D_80111350_rockin_raceway[5].zoom, 10);
+            D_80111C2E_rockin_raceway = 2;
+            if (D_80111B34_rockin_raceway != -1) {
+                leaderObj = D_800EC598_minigame[D_80111AF0_rockin_raceway[0]];
+                racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(leaderObj);
+                for (i = 1; i < 4; i++) {
+                    otherObj = D_800EC598_minigame[D_80111AF0_rockin_raceway[i]];
+                    other = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(otherObj);
+                    if (other->unk02 == 1) {
+                        continue;
+                    }
+                    if (fabs(racer->unk48 - other->unk48) < 30.0) {
+                        D_80111B38_rockin_raceway = 3;
+                        break;
+                    }
+                    if (racer->unk48 - other->unk48 < 100.0) {
+                        if (fabs(leaderObj->trans.x - otherObj->trans.x) < 30.0) {
+                            D_80111B38_rockin_raceway = 3;
+                        } else {
+                            D_80111B38_rockin_raceway = 1;
+                        }
+                        break;
+                    }
+                }
+            }
+            for (i = 0; i < 4; i++) {
+                racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(D_800EC598_minigame[i]);
+                if (racer->unk04 != -1) {
+                    HuAudFXStop(racer->unk04);
+                    racer->unk04 = -1;
+                }
+                if (racer->unk06 != -1) {
+                    HuAudFXStop(racer->unk06);
+                    racer->unk06 = -1;
+                }
+            }
+            GMesCreate(GMES_MES_14);
+            HuAudSeqFadeOut(120);
+            D_80111AD8_rockin_raceway = 3;
+            D_80111ADC_rockin_raceway = 0;
+            break;
+        case 3:
+            if (D_80111AD0_rockin_raceway == 3 && D_80111BD4_rockin_raceway != -1) {
+                HuAudFXVolSet(D_80111BD4_rockin_raceway, 110);
+                HuAudFXPitchSet(D_80111BD4_rockin_raceway, 200);
+            }
+            if (GMesStatGet() == 0) {
+                D_80111AD8_rockin_raceway = 4;
+                D_80111ADC_rockin_raceway = 0;
+            }
+            break;
+        case 4:
+            if (D_80111AD0_rockin_raceway < 15) {
+                break;
+            }
+            if (D_80111B34_rockin_raceway != -1) {
+                racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(D_800EC598_minigame[D_80111B34_rockin_raceway]);
+                GwPlayer[racer->unk0A].bonusCoin += 10;
+                if (D_80111B38_rockin_raceway != 0) {
+                    func_80109044_rockin_raceway();
+                    func_801097A0_rockin_raceway();
+                    func_8010E08C_rockin_raceway(D_80111B34_rockin_raceway);
+                    D_80111AD8_rockin_raceway = 5;
+                    D_80111ADC_rockin_raceway = 0;
+                    break;
+                }
+            }
+            D_80111AD8_rockin_raceway = 6;
+            D_80111ADC_rockin_raceway = 0;
+            break;
+        case 5:
+            D_80111B3A_rockin_raceway = 1;
+            if (D_80111ADC_rockin_raceway > 0 && D_80111ADC_rockin_raceway < 29) {
+                if (D_80111AD0_rockin_raceway >= 4.5f) {
+                    if (D_80111ADC_rockin_raceway == 10) {
+                        func_80107E78_rockin_raceway(0, 9);
+                    }
+                    D_80111ADC_rockin_raceway++;
+                    D_80111AD0_rockin_raceway = 0;
+                }
+            } else if (D_80111ADC_rockin_raceway < 33) {
+                if (D_80111AD0_rockin_raceway >= 7.5f) {
+                    D_80111ADC_rockin_raceway++;
+                    D_80111AD0_rockin_raceway = 0;
+                }
+            } else if (D_80111AD0_rockin_raceway >= 30.0f) {
+                D_80111ADC_rockin_raceway++;
+                D_80111AD0_rockin_raceway = 0;
+            }
+            if (D_80111ADC_rockin_raceway < 30) {
+                func_8010D9C4_rockin_raceway(D_80111ADC_rockin_raceway);
+                if (D_80111BD4_rockin_raceway != -1) {
+                    t = D_80111ADC_rockin_raceway / 30.0f;
+                    HuAudFXVolSet(D_80111BD4_rockin_raceway, func_8010E7C8_rockin_raceway(t, 64.0f, 110.0f));
+                    HuAudFXPitchSet(D_80111BD4_rockin_raceway, (s16)func_8010E7C8_rockin_raceway(t, 0.0f, 200.0f));
+                }
+                func_8010C7CC_rockin_raceway(D_80111350_rockin_raceway[6].center.x, D_80111350_rockin_raceway[6].center.y,
+                                             D_80111350_rockin_raceway[6].center.z, D_80111350_rockin_raceway[6].rot.x,
+                                             D_80111350_rockin_raceway[6].rot.y, D_80111350_rockin_raceway[6].rot.z,
+                                             D_80111350_rockin_raceway[6].zoom, 1);
+            } else if (D_80111ADC_rockin_raceway < 34) {
+                if (D_80111BD4_rockin_raceway != -1) {
+                    HuAudFXVolSet(D_80111BD4_rockin_raceway, 110);
+                    HuAudFXPitchSet(D_80111BD4_rockin_raceway, 200);
+                }
+                func_8010D9C4_rockin_raceway(29);
+                func_8010C7CC_rockin_raceway(CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP,
+                                             D_80111350_rockin_raceway[6].zoom - (D_80111ADC_rockin_raceway - 29) * 100, 1);
+            } else {
+                func_8010C7CC_rockin_raceway(D_80111350_rockin_raceway[5].center.x, D_80111350_rockin_raceway[5].center.y,
+                                             D_80111350_rockin_raceway[5].center.z, D_80111350_rockin_raceway[5].rot.x,
+                                             D_80111350_rockin_raceway[5].rot.y, D_80111350_rockin_raceway[5].rot.z,
+                                             D_80111350_rockin_raceway[5].zoom, 1);
+                func_80109134_rockin_raceway();
+                func_801098D8_rockin_raceway();
+                D_80111B3A_rockin_raceway = 0;
+                D_80111AD8_rockin_raceway = 6;
+                D_80111ADC_rockin_raceway = 0;
+            }
+            break;
+        case 6:
+            switch (D_80111ADC_rockin_raceway) {
+                case 0:
+                    if (!(D_80111AD0_rockin_raceway >= 15.0f) && D_80111B38_rockin_raceway != 0) {
+                        break;
+                    }
+                    if (D_80111B34_rockin_raceway != -1 && D_80111AE4_rockin_raceway < D_80111AE8_rockin_raceway) {
+                        D_80111AE8_rockin_raceway = D_80111AE4_rockin_raceway;
+                        GWMgRecordSet(3, (u16)D_80111AE8_rockin_raceway);
+                        GMesCreate(GMES_MES_MG_RECORD);
+                        D_80111B7A_rockin_raceway = 15;
+                        D_80111AD4_rockin_raceway = 99;
+                        D_80111B36_rockin_raceway = 1;
+                        D_80111ADC_rockin_raceway++;
+                    } else {
+                        D_80111ADC_rockin_raceway = 2;
+                    }
+                    times[0] = D_80111AE4_rockin_raceway;
+                    times[1] = D_80111AE8_rockin_raceway;
+                    func_8010B5DC_rockin_raceway(times);
+                    D_80111AD0_rockin_raceway = 0;
+                    break;
+                case 1:
+                    if (D_80111AD0_rockin_raceway >= 75.0f) {
+                        D_80111ADC_rockin_raceway++;
+                        D_80111AD0_rockin_raceway = 0;
+                    }
+                    break;
+                case 2:
+                    if (D_80111B34_rockin_raceway != -1) {
+                        racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(D_800EC598_minigame[D_80111B34_rockin_raceway]);
+                        GMesCreate(GMES_MES_MG_WINNER, racer->unk0E);
+                        if (D_80111B36_rockin_raceway == 0) {
+                            HuAudSeqPlay(0x65);
+                            D_80111AD4_rockin_raceway = 138;
+                        } else {
+                            HuAudSeqPlay(0x6A);
+                        }
+                        PlayerFXPlay(0x28F, racer->unk0A);
+                        func_8010C9BC_rockin_raceway();
+                        func_8010D114_rockin_raceway();
+                    } else {
+                        if (D_80111B36_rockin_raceway == 0) {
+                            HuAudSeqPlay(0x6C);
+                            D_80111AD4_rockin_raceway = 144;
+                        }
+                        GMesCreate(GMES_MES_MG_DRAW);
+                    }
+                    D_80111ADC_rockin_raceway++;
+                    D_80111AD0_rockin_raceway = 0;
+                    break;
+                case 3:
+                    if (GMesStatGet() == 0) {
+                        D_80111ADC_rockin_raceway++;
+                        D_80111AD0_rockin_raceway = 0;
+                    }
+                    break;
+                case 4:
+                    if (D_80111AD0_rockin_raceway >= 15) {
+                        WipeCreateOut(WIPE_TYPE_NORMAL, 16);
+                        HuAudSeqFadeOut(16);
+                        func_8004AB0C_main(16);
+                        D_80111AD0_rockin_raceway = 0;
+                        D_80111ADC_rockin_raceway++;
+                    }
+                    break;
+                default:
+                    if (WipeStatGet() == 0) {
+                        object->func = func_80106A5C_rockin_raceway;
+                    }
+                    break;
+            }
+            break;
+    }
+    func_8010B2B8_rockin_raceway();
+    D_80111ACC_rockin_raceway++;
+    if (D_80111558_rockin_raceway == D_80111AD8_rockin_raceway) {
+        D_80111AD0_rockin_raceway++;
+    } else {
+        D_80111AD0_rockin_raceway = 0;
+        D_80111558_rockin_raceway = D_80111AD8_rockin_raceway;
+    }
+}
 
 void func_80106A5C_rockin_raceway(omObjData *object) {
     HuAudSeqStop();
@@ -2032,13 +2388,13 @@ void func_8010B774_rockin_raceway(void) {
     HuCamera *camera;
     s32 i;
 
-    Center.x = D_80111350_rockin_raceway.center.x;
-    Center.y = D_80111350_rockin_raceway.center.y;
-    Center.z = D_80111350_rockin_raceway.center.z;
-    CRot.x = D_80111350_rockin_raceway.rot.x;
-    CRot.y = D_80111350_rockin_raceway.rot.y;
-    CRot.z = D_80111350_rockin_raceway.rot.z;
-    CZoom = D_80111350_rockin_raceway.zoom;
+    Center.x = D_80111350_rockin_raceway[0].center.x;
+    Center.y = D_80111350_rockin_raceway[0].center.y;
+    Center.z = D_80111350_rockin_raceway[0].center.z;
+    CRot.x = D_80111350_rockin_raceway[0].rot.x;
+    CRot.y = D_80111350_rockin_raceway[0].rot.y;
+    CRot.z = D_80111350_rockin_raceway[0].rot.z;
+    CZoom = D_80111350_rockin_raceway[0].zoom;
     func_8010C5E0_rockin_raceway(0);
     func_8010C5E0_rockin_raceway(1);
     D_80111C2E_rockin_raceway = 0;

@@ -117,6 +117,8 @@ extern s32 D_80114A3C_duel10;
 extern UnkBoard4 *D_80114CEC_duel10;
 extern s32 D_80114A10_duel10[];
 extern u8 D_801149D3_duel10;
+extern u8 D_80114C74_duel10[];
+extern s16 D_80114C78_duel10[];
 extern Vec D_80114C80_duel10[];
 s32 func_800FD498_name_81(void);
 extern s16 D_80114A40_duel10;
@@ -3543,7 +3545,138 @@ s32 func_801127A8_duel10(s32 index) {
     return D_80114A84_duel10;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_80112E74_duel10);
+void func_80112E74_duel10(s32 index, s32 comSelectSecond) {
+    Vec pos;
+    u8 playerBits[4];
+    s16 comKeys[4];
+    Vec offsets[3];
+    Vec frontPos;
+    Vec backPos;
+    Vec frontRot;
+    Vec backRot;
+    GW_PLAYER *player;
+    s16 partnerId;
+    s16 choice;
+    Object *partner;
+    s32 i;
+
+    player = MBDGetPlayerStruct(CUR_PLAYER);
+    memcpy(playerBits, D_80114C74_duel10, sizeof(playerBits));
+    memcpy(comKeys, D_80114C78_duel10, sizeof(comKeys));
+    if (player->stats.partners.frontID == PARTNER_NONE && player->stats.partners.backID == PARTNER_NONE) {
+        HuAudFXPlay(0x159);
+        func_800EB140_name_81(0x16, 0x1F04);
+        partnerId = func_801127A8_duel10(index);
+    retryA:
+        func_800EB1D8_name_81(0x16, 0x1F05);
+        if (!func_800F37B8_name_81(index)) {
+            HuWinActivePlayerSet(D_8010555C_name_81, playerBits[GwPlayer[index].pad]);
+            comKeys[GwPlayer[index].pad] = -1;
+            HuWinComKeySet(comKeys[0], comKeys[1], comKeys[2], comKeys[3]);
+        } else {
+            if (comSelectSecond) {
+                comKeys[GwPlayer[index].pad] = 0x400;
+                HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], func_800EED50_name_81());
+            }
+            comKeys[GwPlayer[index].pad] = -0x8000;
+            HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], func_800EED50_name_81());
+            func_8005B63C_main(D_8010555C_name_81, 2, 2);
+        }
+        choice = HuWinChoiceGet(D_8010555C_name_81, 0, 1);
+        comKeys[GwPlayer[index].pad] = 0;
+        func_800EB278_name_81();
+        func_800EB29C_name_81();
+        if (choice == 2) {
+            func_801059D0_duel10();
+            goto retryA;
+        }
+        if (choice == 3) {
+            mbItemBtnF = 0;
+            func_800FB524_name_81(index);
+            mbItemBtnF = 1;
+            goto retryA;
+        }
+    } else {
+        func_800EB140_name_81(0x16, 0x1F02);
+    retryB:
+        func_800EB1D8_name_81(0x16, 0x1F03);
+        if (!func_800F37B8_name_81(index)) {
+            HuWinActivePlayerSet(D_8010555C_name_81, playerBits[GwPlayer[index].pad]);
+            comKeys[GwPlayer[index].pad] = -1;
+            HuWinComKeySet(comKeys[0], comKeys[1], comKeys[2], comKeys[3]);
+        } else {
+            if (player->stats.partners.backID == PARTNER_NONE ||
+                func_80111DC4_duel10() >= func_800EFE20_name_81(100.0f)) {
+                comKeys[GwPlayer[index].pad] = 0x400;
+                HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], func_800EED50_name_81());
+            }
+            comKeys[GwPlayer[index].pad] = -0x8000;
+            HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], func_800EED50_name_81());
+            func_8005B63C_main(D_8010555C_name_81, 2, 2);
+        }
+        choice = HuWinChoiceGet(D_8010555C_name_81, 0, 1);
+        comKeys[GwPlayer[index].pad] = 0;
+        func_800EB278_name_81();
+        func_800EB29C_name_81();
+        if (choice == 2) {
+            func_801059D0_duel10();
+            goto retryB;
+        }
+        if (choice == 3) {
+            mbItemBtnF = 0;
+            func_800FB524_name_81(index);
+            mbItemBtnF = 1;
+            goto retryB;
+        }
+        partner = MBDGetPlayerPartnerRef(index, choice);
+        if (partner != NULL) {
+            HuVecCopy3F(&pos, &partner->coords);
+            pos.y += 2.0f;
+            memcpy(offsets, D_80114C80_duel10, sizeof(offsets));
+            for (i = 0; i < 3; i++) {
+                HuPrcChildLink(HuPrcCurrentGet(), func_800DCE40_name_81(0x4E, &pos, &offsets[i], 3.0f));
+            }
+            HuPrcVSleep();
+            HuAudFXPlay(0x1CB);
+            MBDModelDispOff(partner);
+            HuPrcChildWatch();
+            func_800F85A4_name_81(index, choice);
+            func_800F8358_name_81(index);
+            func_800F57B0_name_81(index);
+            func_800F5E2C_name_81(index);
+        }
+        partnerId = func_801127A8_duel10(index);
+    }
+    func_800ECF1C_name_81(index, &frontPos, &backPos);
+    func_800ED118_name_81(index, &frontRot, &backRot);
+    MBDMotionShiftSet(D_80114A88_duel10, 0, 0, 5, 2);
+    if (choice == 0) {
+        HuVecAdd(&frontPos, &player->player_obj->coords, &frontPos);
+        MBDVecDirGet(&D_80114A88_duel10->coords, &frontPos, &D_80114A88_duel10->rot);
+        HuPrcChildLink(HuPrcCurrentGet(), func_800EC1E4_name_81(&D_80114A88_duel10->coords, &frontPos,
+                                                                &D_80114A88_duel10->coords, 3.0f));
+        HuPrcChildWatch();
+        HuPrcChildLink(HuPrcCurrentGet(), func_800EBC60_name_81(&D_80114A88_duel10->rot, &frontRot,
+                                                                &D_80114A88_duel10->rot, 7));
+    } else {
+        HuVecAdd(&backPos, &player->player_obj->coords, &backPos);
+        MBDVecDirGet(&D_80114A88_duel10->coords, &backPos, &D_80114A88_duel10->rot);
+        HuPrcChildLink(HuPrcCurrentGet(), func_800EC1E4_name_81(&D_80114A88_duel10->coords, &backPos,
+                                                                &D_80114A88_duel10->coords, 3.0f));
+        HuPrcChildWatch();
+        HuPrcChildLink(HuPrcCurrentGet(), func_800EBC60_name_81(&D_80114A88_duel10->rot, &backRot,
+                                                                &D_80114A88_duel10->rot, 7));
+    }
+    HuPrcChildWatch();
+    MBDModelKill(D_80114A88_duel10);
+    func_800F8418_name_81(index, partnerId, choice);
+    func_800F821C_name_81(index, choice);
+    func_800F89D0_name_81(index, PARTNER_FRONT, -1, 2);
+    func_800F89D0_name_81(index, PARTNER_BACK, -1, 2);
+    func_800ED214_name_81(index);
+    func_800F5BB4_name_81(index);
+    func_800F5EB0_name_81(index);
+}
 
 void func_80113644_duel10(s32 playerIndex, s32 frontOrBack, s32 partner) {
     func_800F8418_name_81(playerIndex, partner, frontOrBack);

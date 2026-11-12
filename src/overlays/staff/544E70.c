@@ -1,5 +1,9 @@
 #include "staff.h"
 
+#define ROT_XY(x, y, z, angle) ((x) * (y) * (1.0f - cosdf(angle)) - (z) * sindf(angle))
+#define ROT_YY(x, y, z, angle) ((y) * (y) + (1.0f - (y) * (y)) * cosdf(angle))
+#define ROT_ZY(x, y, z, angle) ((y) * (z) * (1.0f - cosdf(angle)) + (x) * sindf(angle))
+
 typedef struct StaffCreditEntry { // sizeof 0x4
     /* 0x00 */ s8 type;
     /* 0x01 */ s8 wait;
@@ -22,6 +26,7 @@ typedef struct StaffCreditSlot { // sizeof 0x20
 
 extern s32 D_80110B80_staff[];
 extern StaffCreditEntry *D_80110F04_staff[];
+extern u8 D_801111E0_staff[4][4];
 
 StaffPath *func_801085F0_staff(Vec *points, s32 flags) {
     StaffPath *path;
@@ -1850,7 +1855,121 @@ void func_8010FB28_staff(void) {
     data->unk_18.z = 0.0f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/544E70", func_8010FB88_staff);
+void func_8010FB88_staff(void) {
+    s16 angle[2];
+    Vec cur[2];
+    Vec prev[2];
+    f32 rot[2];
+    f32 tilt[2];
+    UnkStaff_5 *work;
+    s16 model;
+    HmfData *hmf;
+    HmfModelData_UnkBC_Struct *effect;
+    HmfModelData_Unk64_Unk60_Unk54_Struct *face;
+    s16 count;
+    s16 i;
+    s16 j;
+    f32 t;
+    f32 dx;
+    f32 dy;
+    f32 dz;
+    f32 dist;
+    f32 vx;
+    f32 vy;
+    f32 vz;
+    s16 color;
+
+    work = HuPrcCurrentGet()->user_data;
+    model = func_8000B108_main(0xB0034, 0x6A8);
+    func_8001C2FC_main(model, 0x20000, 0x20000);
+    hmf = Hu3DData[model].hmf;
+    for (j = 0; j < hmf->unk10; j++) {
+        count = hmf->unk60[j].unk22;
+        face = hmf->unk60[j].unk54;
+        for (i = 0; i < count; i++, face++) {
+            face->unk00 |= 0x80;
+        }
+    }
+    Hu3DModelRemakeStatic(model);
+    func_8001C954_main(model);
+    func_8001C514_main(model);
+    func_80013390_main(model, -1, NULL, func_8010F4C4_staff);
+    func_800138EC_main(model, 8, 8);
+    effect = Hu3DData[model].unkBC;
+    func_8001C258_main(model, 4, 4);
+    func_8001C258_main(model, 4, 0);
+    func_80013954_main(model, 0);
+    effect->unk18 = func_8010F9D4_staff;
+    func_800138EC_main(model, 2, 0);
+    work->unk_30 = work->unk_18;
+    cur[0].x = sindf(0.0f) * 150.0f + work->unk_30.x;
+    cur[0].y = work->unk_30.y;
+    cur[0].z = cosdf(0.0f) * 150.0f + work->unk_30.z;
+    prev[0] = cur[0];
+    tilt[0] = rot[0] = 0.0f;
+    angle[0] = 0;
+    cur[1].x = sindf(180.0f) * 150.0f + work->unk_30.x;
+    cur[1].y = work->unk_30.y;
+    cur[1].z = cosdf(180.0f) * 150.0f + work->unk_30.z;
+    prev[1] = cur[1];
+    tilt[1] = rot[1] = 180.0f;
+    angle[1] = 180;
+    while (TRUE) {
+        HuPrcVSleep();
+        for (i = 0; i < 2; i++) {
+            prev[i] = cur[i];
+            dx = sindf(angle[i]) * 150.0f;
+            dz = cosdf(angle[i]) * 150.0f;
+            t = sindf(tilt[i]) * 10.0f;
+            cur[i].x = dx * cosdf(t) + work->unk_30.x;
+            cur[i].y = dx * -sindf(t) + work->unk_30.y;
+            cur[i].z = dz + work->unk_30.z;
+            angle[i] += 5;
+            if (angle[i] > 360) {
+                angle[i] -= 360;
+            }
+            rot[i] += 20.0f;
+            if (rot[i] > 360.0f) {
+                rot[i] -= 360.0f;
+            }
+            tilt[i] += 1.0f;
+            if (tilt[i] > 360.0f) {
+                tilt[i] -= 360.0f;
+            }
+            dx = prev[i].x - cur[i].x;
+            dy = prev[i].y - cur[i].y;
+            dz = prev[i].z - cur[i].z;
+            dist = HuSqrtf(dx * dx + dy * dy + dz * dz);
+            if (dist == 0.0f) {
+                continue;
+            }
+            dx /= dist;
+            dy /= dist;
+            dz /= dist;
+            t = rot[i];
+            vx = ROT_XY(dx, dy, dz, t);
+            vy = ROT_YY(dx, dy, dz, t);
+            vz = ROT_ZY(dx, dy, dz, t);
+            vx = (dx * 0.7f + vx * 0.3f) * dist * 0.7f;
+            vy = (dy * 0.7f + vy * 0.3f) * dist * 0.7f;
+            vz = (dz * 0.7f + vz * 0.3f) * dist * 0.7f;
+            color = rand8() & 3;
+            func_8010F3E4_staff(model, cur[i].x, cur[i].y, cur[i].z, vx, vy, vz, D_801111E0_staff[color][0],
+                                D_801111E0_staff[color][1], D_801111E0_staff[color][2])
+                ->unk08 = 1.0f;
+            vx = -ROT_XY(dx, dy, dz, t);
+            vy = -ROT_YY(dx, dy, dz, t);
+            vz = -ROT_ZY(dx, dy, dz, t);
+            vx = (dx * 0.7f + vx * 0.3f) * dist * 0.7f;
+            vy = (dy * 0.7f + vy * 0.3f) * dist * 0.7f;
+            vz = (dz * 0.7f + vz * 0.3f) * dist * 0.7f;
+            color = rand8() & 3;
+            func_8010F3E4_staff(model, cur[i].x, cur[i].y, cur[i].z, vx, vy, vz, D_801111E0_staff[color][0],
+                                D_801111E0_staff[color][1], D_801111E0_staff[color][2])
+                ->unk08 = 1.0f;
+        }
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/staff/544E70", D_80111430_staff);
 

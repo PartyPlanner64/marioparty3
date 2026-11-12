@@ -828,7 +828,212 @@ StaffModelEntry *func_80109F34_staff(UnkStaff_3 *work, StaffModelEntry *entry) {
 INCLUDE_ASM("asm/nonmatchings/overlays/staff/544E70", func_80109F34_staff);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/544E70", func_8010A848_staff);
+void func_8010A848_staff(void) {
+    UnkStaff_3 *works;
+    UnkStaff_3 *work;
+    s32 i;
+    s32 j;
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 temp;
+    f32 rot;
+    f32 temp2;
+    f32 vel;
+    s16 model;
+
+    works = HuPrcCurrentGet()->user_data;
+    while (TRUE) {
+        for (work = works, i = 0; i < 3; i++, work++) {
+            if (work->unk_3A != 3) {
+                continue;
+            }
+            x = work->unk_22.unk_00 + work->unk_00.x;
+            y = work->unk_22.unk_02 + work->unk_00.y;
+            z = work->unk_22.unk_04 + work->unk_00.z;
+            model = work->unk_1C;
+            switch (work->unk_34) {
+                case 1:
+                    temp = work->unk_0C.y;
+                    temp += 2.0f;
+                    if (temp >= 360.0f) {
+                        temp -= 360.0f;
+                        work->unk_36 = 0;
+                    }
+                    work->unk_0C.y = temp;
+                    temp2 = sindf(temp) * 120.0f;
+                    rot = work->unk_18;
+                    switch (work->unk_36) {
+                        case 0:
+                            if (temp > 60.0f) {
+                                work->unk_36++;
+                            }
+                            break;
+                        case 1:
+                            rot -= 6.0f;
+                            if (rot <= -90.0f) {
+                                rot = -90.0f;
+                                work->unk_36++;
+                            }
+                            break;
+                        case 2:
+                            if (temp > 240.0f) {
+                                work->unk_36++;
+                            }
+                            break;
+                        case 3:
+                            rot += 6.0f;
+                            if (rot >= 90.0f) {
+                                rot = 90.0f;
+                                work->unk_36++;
+                            }
+                            break;
+                        case 4:
+                            break;
+                    }
+                    work->unk_18 = rot;
+                    if (rot >= 360.0f) {
+                        rot -= 360.0f;
+                    } else if (rot < 0.0f) {
+                        rot += 360.0f;
+                    }
+                    Hu3DModelPosSet(model, temp2 + x, y, z);
+                    Hu3DModelRotSet(model, 0.0f, rot, 0.0f);
+                    break;
+                case 2:
+                    switch (work->unk_36) {
+                        case 0:
+                            temp = work->unk_38 / 15.0f;
+                            work->unk_0C.y += temp;
+                            if (work->unk_0C.y >= work->unk_38) {
+                                work->unk_18 = 8.0f;
+                                work->unk_36++;
+                            }
+                            break;
+                        case 1:
+                            work->unk_18 += 8.0f;
+                            work->unk_0C.y -= work->unk_18;
+                            if (work->unk_0C.y <= 0.0f) {
+                                work->unk_0C.y = 0.0f;
+                                work->unk_18 = 0.0f;
+                                work->unk_36++;
+                            }
+                            break;
+                        case 2:
+                            work->unk_18 += 60.0f;
+                            if (work->unk_18 >= 180.0f) {
+                                work->unk_18 = 0.0f;
+                                work->unk_36++;
+                            }
+                            temp = sindf(work->unk_18) * 10.0f;
+                            work->unk_0C.y = temp;
+                            break;
+                        case 3:
+                            work->unk_18 += 1.0f;
+                            if (work->unk_18 > 15.0f) {
+                                work->unk_18 = 0.0f;
+                                work->unk_36 = 0;
+                            }
+                            break;
+                    }
+                    Hu3DModelPosSet(model, x, y + work->unk_0C.y, z);
+                    break;
+                case 4:
+                    Hu3DModelPosSet(model, x - work->unk_36, y, z);
+                    Hu3DModelPosSet(work->unk_28[0], x + work->unk_36, y, z);
+                    break;
+                case 11:
+                    temp2 = work->unk_18;
+                    temp2 += 4.0f;
+                    if (temp2 >= 360.0f) {
+                        temp2 -= 360.0f;
+                    }
+                    work->unk_18 = temp2;
+                    temp = sindf(temp2) * 15.0f;
+                    Hu3DModelPosSet(model, x, temp + y, z);
+                    break;
+                case 5:
+                    temp = work->unk_18;
+                    temp += 2.4f;
+                    if (temp >= 360.0f) {
+                        temp -= 360.0f;
+                    }
+                    work->unk_18 = temp;
+                    temp2 = sindf(temp) * 50.0f;
+                    Hu3DModelPosSet(model, temp2 + x, y, z);
+                    break;
+                case 6:
+                    switch (work->unk_36) {
+                        case 0:
+                            if (work->unk_38 == 0) {
+                                j = func_80106044_staff(380) - 190;
+                                work->unk_0C.x = j;
+                                Hu3DModelScaleSet(model, 1.0f, 1.0f, 1.0f);
+                                vel = 6.0f;
+                                work->unk_36++;
+                            } else {
+                                work->unk_38--;
+                            }
+                            break;
+                        case 1:
+                            work->unk_0C.y += vel;
+                            vel -= 0.2f;
+                            if (work->unk_0C.y <= 0.0f) {
+                                work->unk_0C.y = 0.0f;
+                                Hu3DModelScaleSet(model, 1.0f, 0.75f, 1.0f);
+                                work->unk_36++;
+                            }
+                            break;
+                        case 2:
+                            work->unk_38 = (rand8() & 0xF) + 15;
+                            work->unk_36 = 0;
+                            Hu3DModelScaleSet(model, 1.0f, 0.5f, 1.0f);
+                            break;
+                    }
+                    Hu3DModelPosSet(model, x + work->unk_0C.x, y + work->unk_0C.y, z);
+                    break;
+                case 7:
+                    Hu3DModelPosSet(model, x, y, z);
+                    for (j = 0; j < 4; j++) {
+                        Hu3DModelPosSet(work->unk_28[j], x + D_8011066C_staff[j], y, z);
+                    }
+                    break;
+                case 8:
+                    Hu3DModelPosSet(model, x - work->unk_36, y, z);
+                    Hu3DModelPosSet(work->unk_28[0], x + work->unk_36, y, z);
+                    break;
+                case 10:
+                    Hu3DModelPosSet(model, x - work->unk_36, y, z);
+                    Hu3DModelPosSet(work->unk_28[0], x + work->unk_36, y, z);
+                    break;
+                case 3:
+                    if (work->unk_36 == 0) {
+                        work->unk_0C.x += 12.0f;
+                        if (work->unk_0C.x >= 360.0f) {
+                            work->unk_0C.x = 0.0f;
+                            work->unk_36 = 30;
+                        }
+                        vel = (cosdf(work->unk_0C.x) + 1.0f) * 127.0f;
+                        func_8001F9E4_main(model, vel);
+                    } else {
+                        func_8001F9E4_main(model, 0xFF);
+                        work->unk_36--;
+                    }
+                    work->unk_18 += 3.0f;
+                    if (work->unk_18 > 360.0f) {
+                        work->unk_18 -= 360.0f;
+                    }
+                    vel = cosdf(work->unk_18) * 60.0f;
+                    Hu3DModelRotSet(model, 0.0f, vel, 0.0f);
+                case 0:
+                default:
+                    Hu3DModelPosSet(model, x, y, z);
+                    break;
+            }
+        }
+        HuPrcVSleep();
+    }
+}
 
 void func_8010B1E0_staff(void) {
     UnkStaff_3 works[3];

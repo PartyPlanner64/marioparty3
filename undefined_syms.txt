@@ -195,3 +195,9 @@ D_8010E218_log_jam = 0x8010E218;
 
 /* slot_synch: s32 sound table whose low halfwords splat labeled. */
 D_8010DA30_slot_synch = D_8010DA32_slot_synch - 0x2;
+
+/* duel10: s32 partner model table whose low bytes splat labeled. */
+D_801149F4_duel10 = D_801149F3_duel10 + 0x1;
+
+/* duel10: s32 partner space table whose low halfwords splat labeled. */
+D_80114A6C_duel10 = D_80114A6E_duel10 - 0x2;

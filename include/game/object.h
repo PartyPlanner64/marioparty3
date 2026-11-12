@@ -74,6 +74,8 @@ typedef struct UnkomOvl {
 extern UnkomOvl D_800A1920_main[128]; // per-overlay arguments for func_8004A468_main
 
 extern s16 omovlevtno;
+extern s32 omprevovl;
+extern u8 D_800A175E_main;
 extern u16 omovlstat;
 extern s16 omovlhisidx;
 extern omOvlHisData omovlhis[12];

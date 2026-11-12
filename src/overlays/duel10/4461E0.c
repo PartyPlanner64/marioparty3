@@ -85,6 +85,7 @@ extern Vec D_80105540_name_81;
 extern u8 D_80100E20_name_81;
 
 void func_800FC8C4_name_81(Vec *arg0);
+void func_800FAC94_name_81(PartnerFunc *, PartnerFunc *);
 extern void func_80105D2C_duel10(void);
 extern void func_80106374_duel10(void);
 extern void func_8010F620_duel10(void);
@@ -834,6 +835,8 @@ void func_801071F4_duel10(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     func_800FADB4_name_81();
 }
 
+INCLUDE_RODATA("asm/nonmatchings/overlays/duel10/4461E0", D_80114AC0_duel10);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_80107A24_duel10);
 
 void func_80107F28_duel10(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
@@ -1559,7 +1562,6 @@ void func_8010A27C_duel10(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     func_800FADB4_name_81();
 }
 
-#ifdef NON_MATCHING
 void func_8010AB1C_duel10(Object *obj, s32 swap) {
     Object *model;
     f32 scale;
@@ -1604,11 +1606,7 @@ void func_8010AB1C_duel10(Object *obj, s32 swap) {
 
     MBDModelKill(model);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010AB1C_duel10);
-#endif
 
-#ifdef NON_MATCHING
 void func_8010ADB4_duel10(Object *obj) {
     Object *model;
     f32 scale;
@@ -1647,9 +1645,6 @@ void func_8010ADB4_duel10(Object *obj) {
 
     MBDModelKill(model);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010ADB4_duel10);
-#endif
 
 void func_8010B020_duel10(void) {
     UnkDuelObjData *data;
@@ -1931,7 +1926,6 @@ void func_8010B5B8_duel10(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     func_800FADB4_name_81();
 }
 
-#ifdef NON_MATCHING
 void func_8010BD40_duel10(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player = MBDGetPlayerStruct(targetPlayer);
     Process *process = HuPrcCurrentGet();
@@ -2187,9 +2181,6 @@ void func_8010BD40_duel10(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     }
     func_800FADB4_name_81();
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010BD40_duel10);
-#endif
 
 void func_8010CED4_duel10(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player;
@@ -2472,7 +2463,6 @@ void func_8010D490_duel10(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     func_800FADB4_name_81();
 }
 
-#ifdef NON_MATCHING
 void func_8010D9C8_duel10(void) {
     PartnerFunc attackFuncs[12] = {
         func_80106894_duel10,
@@ -2505,9 +2495,6 @@ void func_8010D9C8_duel10(void) {
 
     func_800FAC94_name_81(attackFuncs, otherFuncs);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010D9C8_duel10);
-#endif
 
 void func_8010DA60_duel10(void) {
     omInitObjMan(0xA0, 0x50);

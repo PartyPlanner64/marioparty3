@@ -48,6 +48,11 @@ typedef struct RockinRacewaySnapshotRow {
     /* 0x00 */ RockinRacewaySnapshot racers[4];
 } RockinRacewaySnapshotRow; // Size 0xA0
 
+// Vertex quad copied into each of a model's vertex buffers by func_8010FFB8_rockin_raceway.
+typedef struct RockinRacewayQuad {
+    /* 0x00 */ Vtx_t vtx[4];
+} RockinRacewayQuad; // Size 0x40
+
 // Saved model state, see func_80109044_rockin_raceway and func_80109134_rockin_raceway.
 typedef struct RockinRacewayModelState {
     /* 0x00 */ s32 attr;
@@ -264,8 +269,8 @@ extern u16 D_80111562_rockin_raceway[][2];
 extern s32 D_80111570_rockin_raceway[4]; // racer slot occupying each track, or -1
 extern u16 D_80111580_rockin_raceway[];  // model file per character
 extern s32 D_80111590_rockin_raceway[3];
-extern u8 D_801114D8_rockin_raceway[];
-extern u8 D_80111518_rockin_raceway[];
+extern RockinRacewayQuad D_801114D8_rockin_raceway;
+extern RockinRacewayQuad D_80111518_rockin_raceway;
 extern RockinRacewayHudValues D_8011159C_rockin_raceway;
 extern u8 D_801115B4_rockin_raceway[];
 extern s32 D_801115F0_rockin_raceway;    // camera debug mode
@@ -364,7 +369,7 @@ f32 func_8010E608_rockin_raceway(f32 target, f32 current, f32 step);
 u32 func_8010EC38_rockin_raceway(omObjData *object);
 u16 func_8010A4C0_rockin_raceway(s32 dirAndFile);
 s32 func_8010EC8C_rockin_raceway(HuSprite_Unk84_Struct *sprite, u8 *color);
-s32 func_8010FFB8_rockin_raceway(HuSprite_Unk84_Struct *sprite, u8 *color);
+s32 func_8010FFB8_rockin_raceway(HuSprite_Unk84_Struct *sprite, RockinRacewayQuad *quad);
 void func_8010B5DC_rockin_raceway(s32 *frames);
 void func_80109CF8_rockin_raceway(omObjData *object);
 s32 func_8010F874_rockin_raceway(HuSprite_Unk84_Struct *sprite, u16 model, u8 *color);
@@ -1556,7 +1561,7 @@ void func_80109A04_rockin_raceway(omObjData *object) {
     for (i = 0; i < 4; i++) {
         if (i == 0) {
             object->model[3] =
-                func_8010FFB8_rockin_raceway(func_80055194_main(D_80111B68_rockin_raceway[3]), D_801114D8_rockin_raceway);
+                func_8010FFB8_rockin_raceway(func_80055194_main(D_80111B68_rockin_raceway[3]), &D_801114D8_rockin_raceway);
         } else {
             object->model[3 + i] = func_8010F874_rockin_raceway(func_80055194_main(D_80111B68_rockin_raceway[3]),
                                                                 object->model[3], D_801115B4_rockin_raceway);
@@ -1565,7 +1570,7 @@ void func_80109A04_rockin_raceway(omObjData *object) {
     for (i = 0; i < 12; i++) {
         if (i == 0) {
             object->model[7] =
-                func_8010FFB8_rockin_raceway(func_80055194_main(D_80111B68_rockin_raceway[4]), D_80111518_rockin_raceway);
+                func_8010FFB8_rockin_raceway(func_80055194_main(D_80111B68_rockin_raceway[4]), &D_80111518_rockin_raceway);
         } else {
             object->model[7 + i] = func_8010F874_rockin_raceway(func_80055194_main(D_80111B68_rockin_raceway[4]),
                                                                 object->model[7], D_801115B4_rockin_raceway);
@@ -3013,7 +3018,115 @@ s32 func_8010FBAC_rockin_raceway(HuSprite_Unk84_Struct *sprite, HmfData *data, f
     return slices;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2C_rockin_raceway/251FF0", func_8010FFB8_rockin_raceway);
+s32 func_8010FFB8_rockin_raceway(HuSprite_Unk84_Struct *sprite, RockinRacewayQuad *quad) {
+    u8 *buffer;
+    Gfx *gfx;
+    HmfData *data;
+    u16 format;
+    s32 i;
+    s32 model;
+    s32 size;
+
+    gfx = HuMemAlloc(0x10000);
+    buffer = (u8 *)gfx;
+    model = func_8001A894_main(0x4C1, buffer, 4);
+    data = Hu3DData[model].hmf;
+    data->unk60->unk50 |= 0x1000000;
+    HuMemFree(data->unk3C);
+    data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), D_800CDD6A_main);
+    for (i = 0; i < D_800D1FF0_main; i++) {
+        data->unk44[i] = HuMemAllocTag(sizeof(RockinRacewayQuad), data->unk0E);
+        *(RockinRacewayQuad *)data->unk44[i] = *quad;
+    }
+    gSPDisplayList(gfx++, osVirtualToPhysical(D_801116F0_rockin_raceway));
+    gDPPipeSync(gfx++);
+    gDPSetCycleType(gfx++, G_CYC_1CYCLE);
+    gDPPipeSync(gfx++);
+    gSPClearGeometryMode(gfx++, G_CULL_BOTH | G_LIGHTING);
+    gSPSetGeometryMode(gfx++, G_ZBUFFER | G_TEXTURE_GEN_LINEAR);
+    gDPSetColorDither(gfx++, G_CD_NOISE);
+    gDPSetTexturePersp(gfx++, G_TP_NONE);
+    gDPSetTextureFilter(gfx++, G_TF_BILERP);
+    gDPSetTextureConvert(gfx++, G_TC_FILT);
+    gDPSetAlphaDither(gfx++, G_AD_PATTERN);
+    gDPSetAlphaCompare(gfx++, G_AC_NONE);
+    gDPSetBlendColor(gfx++, 1, 1, 1, 1);
+    gDPPipeSync(gfx++);
+    gDPSetRenderMode(gfx++, G_RM_ZB_XLU_SURF, G_RM_NOOP2);
+    if (sprite->unk18 & 0x8000) {
+        gDPSetCombineLERP(gfx++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0);
+    } else {
+        gDPSetCombineLERP(gfx++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
+    }
+    gSPSegment(gfx++, 1, osVirtualToPhysical(data->unk44[0]));
+    gDPPipeSync(gfx++);
+    gSPEndDisplayList(gfx++);
+    size = (u8 *)gfx - buffer;
+    data->unk3C->unk10 = HuMemAllocTag(size, data->unk0E);
+    bcopy(buffer, data->unk3C->unk10, size);
+    HuMemFree(buffer);
+    gfx = HuMemAlloc(0x10000);
+    {
+        Gfx *textureHeader = gfx;
+        buffer = (u8 *)gfx;
+        gfx++;
+        gSPTexture(textureHeader, 0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON);
+    }
+    gDPSetTexturePersp(gfx++, G_TP_PERSP);
+    if (sprite->unk1A >= 2) {
+        gDPSetTextureLUT(gfx++, G_TT_RGBA16);
+        if (sprite->unk18 == 4) {
+            gDPLoadTLUT_pal16(gfx++, 0, sprite->unk0C);
+        } else {
+            gDPLoadTLUT_pal256(gfx++, sprite->unk0C);
+        }
+        gDPPipeSync(gfx++);
+        format = G_IM_FMT_CI;
+    } else {
+        gDPSetTextureLUT(gfx++, G_TT_NONE);
+        gDPPipeSync(gfx++);
+        format = sprite->unk18;
+        format = ((u32)format / 0x8000) * 4;
+    }
+    switch (sprite->unk18 & 0xFFF) {
+        case 4:
+            gDPLoadTextureBlock_4b(gfx++, 0x02000000, format, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+                                   G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+            break;
+        case 8:
+            gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_8b, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+                                G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+            break;
+        case 16:
+            gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_16b, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+                                G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+            break;
+    }
+    gDPPipeSync(gfx++);
+    gSPVertex(gfx++, 0x01000000, 4, 0);
+    gSP2Triangles(gfx++, 0, 1, 2, 0, 1, 3, 2, 0);
+    gSPClearGeometryMode(gfx++, -1);
+    gSPSetGeometryMode(gfx++, G_ZBUFFER | G_SHADE | G_CULL_BACK | G_TEXTURE_GEN_LINEAR);
+    gDPPipeSync(gfx++);
+    gSPEndDisplayList(gfx++);
+    size = (u8 *)gfx - buffer;
+    data->unk3C->unk14 = HuMemAllocTag(size, data->unk0E);
+    bcopy(buffer, data->unk3C->unk14, size);
+    HuMemFree(buffer);
+    for (i = 0; i < D_800D1FF0_main; i++) {
+        gfx = (data->unk3C->unk00 + 1)[i] = HuMemAllocTag(0x200, data->unk0E);
+        gDPPipeSync(gfx++);
+        gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->unk00->unk00));
+        gSPDisplayList(gfx++, osVirtualToPhysical(data->unk3C->unk10));
+        gDPSetPrimColor(gfx++, 0, 0, 255, 255, 255, 255);
+        gDPPipeSync(gfx++);
+        gSPDisplayList(gfx++, osVirtualToPhysical(data->unk3C->unk14));
+        gDPPipeSync(gfx++);
+        gSPEndDisplayList(gfx++);
+    }
+    data->unk3C->unk00[0] = data->unk3C->unk00[D_800D2008_main + 1];
+    return model;
+}
 
 // Shows a character face sprite above each of the 4 slots, or a blank one for a negative player.
 void func_80110C38_rockin_raceway(s16 *models, HuSprite_Unk84_Struct *sprite, s32 *players) {

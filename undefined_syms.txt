@@ -192,3 +192,6 @@ D_8010A010_pipe_cleaners = D_8010A012_pipe_cleaners - 0x2;
    still referenced by asm functions. */
 D_8010E1F0_log_jam = 0x8010E1F0;
 D_8010E218_log_jam = 0x8010E218;
+
+/* slot_synch: s32 sound table whose low halfwords splat labeled. */
+D_8010DA30_slot_synch = D_8010DA32_slot_synch - 0x2;

@@ -145,6 +145,13 @@ typedef struct RockinRacewayReplayFrame {
     /* 0x304 */ RockinRacewayEffectState effects[16];
 } RockinRacewayReplayFrame; // Size 0x644
 
+// Walks the model states and then the effect states of the previous replay frame in
+// func_8010D9C4_rockin_raceway.
+typedef union RockinRacewayReplayStatePtr {
+    RockinRacewayModelState *model;
+    RockinRacewayEffectState *effect;
+} RockinRacewayReplayStatePtr;
+
 // Array of 4 of these allocated in func_80109DA8_rockin_raceway, stored in D_80111B40_rockin_raceway
 typedef struct {
     /* 0x00 */ s16 unk00;
@@ -276,11 +283,13 @@ extern u8 D_801115B4_rockin_raceway[];
 extern s32 D_801115F0_rockin_raceway;    // camera debug mode
 extern s32 D_801115F4_rockin_raceway;    // camera debug text x
 extern s32 D_801115F8_rockin_raceway;    // camera debug text y
+extern s32 D_801115FC_rockin_raceway;    // replay frame last played back
 extern s32 D_801115B8_rockin_raceway[];  // sprite file per character
 extern s32 D_801115D8_rockin_raceway[6]; // sprite member of each time digit
 extern Gfx D_801116F0_rockin_raceway[];
 extern u8 D_80111730_rockin_raceway[4];
 extern u8 D_80111734_rockin_raceway[4];
+extern s32 D_80111AC0_rockin_raceway; // frames spent on the current replay frame
 extern s32 D_80111AC8_rockin_raceway;
 extern s32 D_80111B00_rockin_raceway[2][6];
 extern omObjData *D_80111AC4_rockin_raceway;
@@ -2630,7 +2639,155 @@ RockinRacewayReplayFrame *func_8010D944_rockin_raceway(s32 arg0) {
     return &D_80111C50_rockin_raceway[index];
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2C_rockin_raceway/251FF0", func_8010D9C4_rockin_raceway);
+// Plays back a recorded replay frame, interpolating from the previous frame.
+void func_8010D9C4_rockin_raceway(s32 index) {
+    RockinRacewayReplayFrame *frame;
+    RockinRacewayReplayFrame *prevFrame;
+    RockinRacewayReplayRacer *replay;
+    RockinRacewayReplayRacer *prev;
+    RockinRacewayReplayRacer *prev2;
+    RockinRacewayModelState *state;
+    RockinRacewayReplayStatePtr prevState;
+    RockinRacewayEffectState *effectState;
+    RockinRacewayEffect *effect;
+    RockinRacewaySnapshot *snapshot;
+    omObjData *object;
+    HmfModel *model;
+    s32 times[2];
+    f32 t;
+    s32 i;
+    s32 j;
+
+    if (D_801115FC_rockin_raceway != index) {
+        D_801115FC_rockin_raceway = index;
+        D_80111AC0_rockin_raceway = 0;
+    } else {
+        D_80111AC0_rockin_raceway++;
+    }
+    t = D_80111AC0_rockin_raceway / 4.5f;
+    if (1.0f <= t) {
+        t = 1.0f;
+    } else if (t <= 0.0f) {
+        t = 0.0f;
+    }
+    frame = func_8010D944_rockin_raceway(index);
+    times[0] = frame->unk00;
+    times[1] = D_80111AE8_rockin_raceway;
+    func_8010B5DC_rockin_raceway(times);
+    func_80109D00_rockin_raceway(frame->unk04);
+    func_80109D54_rockin_raceway(times);
+    for (i = 0; i < 4; i++) {
+        replay = &frame->racers[i];
+        object = D_800EC598_minigame[i];
+        if (index - 1 < 0) {
+            prev = replay;
+        } else {
+            prev = &func_8010D944_rockin_raceway(index - 1)->racers[i];
+        }
+        object->trans.x = func_8010E7C8_rockin_raceway(t, prev->trans.x, replay->trans.x);
+        object->trans.y = func_8010E7C8_rockin_raceway(t, prev->trans.y, replay->trans.y);
+        object->trans.z = func_8010E7C8_rockin_raceway(t, prev->trans.z, replay->trans.z);
+        object->rot.x = func_8010E7E0_rockin_raceway(t, prev->rot.x, replay->rot.x);
+        object->rot.y = func_8010E7E0_rockin_raceway(t, prev->rot.y, replay->rot.y);
+        object->rot.z = func_8010E7E0_rockin_raceway(t, prev->rot.z, replay->rot.z);
+        object->scale.x = func_8010E7C8_rockin_raceway(t, prev->scale.x, replay->scale.x);
+        object->scale.y = func_8010E7C8_rockin_raceway(t, prev->scale.y, replay->scale.y);
+        object->scale.z = func_8010E7C8_rockin_raceway(t, prev->scale.z, replay->scale.z);
+    }
+    if (D_80111B3A_rockin_raceway != 0) {
+        for (i = 0; i < 4; i++) {
+            for (j = 0; j < 2; j++) {
+                if (index - (j + 1) < 0) {
+                    prev = &frame->racers[i];
+                } else {
+                    prev = &func_8010D944_rockin_raceway(index - (j + 2))->racers[i];
+                }
+                if (index - (j + 2) < 0) {
+                    prev2 = prev;
+                } else {
+                    prev2 = &func_8010D944_rockin_raceway(index - (j + 3))->racers[i];
+                }
+                model = &Hu3DData[D_800EC598_minigame[i]->model[j + 3]];
+                if (D_80111B3C_rockin_raceway[j].racers[i].active != 0) {
+                    snapshot = &D_80111B3C_rockin_raceway[j].racers[i];
+                    if (snapshot->unk00 != 0) {
+                        model->pos.x = snapshot->trans.x;
+                        model->pos.y = snapshot->trans.y;
+                        model->pos.z = snapshot->trans.z;
+                        model->rot.x = snapshot->rot.x;
+                        model->rot.y = snapshot->rot.y;
+                        model->rot.z = snapshot->rot.z;
+                        model->scale.x = snapshot->scale.x;
+                        model->scale.y = snapshot->scale.y;
+                        model->scale.z = snapshot->scale.z;
+                        snapshot->unk00--;
+                    } else {
+                        model->pos.x = func_8010E7C8_rockin_raceway(t, prev2->trans.x, prev->trans.x);
+                        model->pos.y = func_8010E7C8_rockin_raceway(t, prev2->trans.y, prev->trans.y);
+                        model->pos.z = func_8010E7C8_rockin_raceway(t, prev2->trans.z, prev->trans.z);
+                        model->rot.x = func_8010E7E0_rockin_raceway(t, prev2->rot.x, prev->rot.x);
+                        model->rot.y = func_8010E7E0_rockin_raceway(t, prev2->rot.y, prev->rot.y);
+                        model->rot.z = func_8010E7E0_rockin_raceway(t, prev2->rot.z, prev->rot.z);
+                        model->scale.x = func_8010E7C8_rockin_raceway(t, prev2->scale.x, prev->scale.x);
+                        model->scale.y = func_8010E7C8_rockin_raceway(t, prev2->scale.y, prev->scale.y);
+                        model->scale.z = func_8010E7C8_rockin_raceway(t, prev2->scale.z, prev->scale.z);
+                    }
+                }
+            }
+        }
+    }
+    if (index - 1 < 0) {
+        prevFrame = frame;
+    } else {
+        prevFrame = func_8010D944_rockin_raceway(index - 1);
+    }
+    for (state = frame->models, prevState.model = prevFrame->models, i = 1; i < 13; i++, state++, prevState.model++) {
+        if (D_80111B4C_rockin_raceway->model[i] == -1) {
+            continue;
+        }
+        model = &Hu3DData[D_80111B4C_rockin_raceway->model[i]];
+        model->attr = state->attr;
+        model->motTime = func_8010E7C8_rockin_raceway(t, prevState.model->motTime, state->motTime);
+        model->motSpeed = 0.0f;
+        model->pos.x = state->pos.x;
+        model->pos.y = state->pos.y;
+        model->pos.z = state->pos.z;
+        model->rot.x = state->rot.x;
+        model->rot.y = state->rot.y;
+        model->rot.z = state->rot.z;
+        model->scale.x = state->scale.x;
+        model->scale.y = state->scale.y;
+        model->scale.z = state->scale.z;
+    }
+    for (effectState = frame->effects, prevState.effect = prevFrame->effects, effect = D_80111B5C_rockin_raceway, i = 0;
+         i < 16; i++, effect++, effectState++, prevState.effect++) {
+        if (effect->model == -1) {
+            continue;
+        }
+        model = &Hu3DData[effect->model];
+        effect->active = effectState->active;
+        model->attr = effectState->attr;
+        effect->frame = effectState->frame;
+        effect->speed = effectState->speed;
+        func_8010FA78_rockin_raceway(effect->model, func_80055194_main(D_80111B68_rockin_raceway[2]), effect->frame,
+                                     D_801114D4_rockin_raceway);
+        if (prevState.effect->active != 0) {
+            model->pos.x = func_8010E7C8_rockin_raceway(t, prevState.effect->pos.x, effectState->pos.x);
+            model->pos.y = func_8010E7C8_rockin_raceway(t, prevState.effect->pos.y, effectState->pos.y);
+            model->pos.z = func_8010E7C8_rockin_raceway(t, prevState.effect->pos.z, effectState->pos.z);
+        } else {
+            model->pos.x = effectState->pos.x;
+            model->pos.y = effectState->pos.y;
+            model->pos.z = effectState->pos.z;
+        }
+        model->rot.x = effectState->rot.x;
+        model->rot.y = effectState->rot.y;
+        model->rot.z = effectState->rot.z;
+        model->scale.x = effectState->scale.x;
+        model->scale.y = effectState->scale.y;
+        model->scale.z = effectState->scale.z;
+    }
+}
 
 // Shifts the recorded replay frames so that the winner ends up ahead of the other racers.
 void func_8010E08C_rockin_raceway(s32 winner) {

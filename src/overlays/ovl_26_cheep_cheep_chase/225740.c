@@ -80,7 +80,8 @@ typedef struct {
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ u8 unk_04;
     /* 0x05 */ u8 unk_05;
-    /* 0x06 */ char unk_06[0x6];
+    /* 0x06 */ char unk_06[0x2];
+    /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
 } CheepCheepChaseGameUnk04; // sizeof 0x10
 
@@ -123,6 +124,7 @@ extern u8 D_800D6A90_main;
 
 extern f32 D_8010E014_cheep_cheep_chase;
 extern s16 D_8010E024_cheep_cheep_chase;
+extern s16 D_8010E026_cheep_cheep_chase;
 
 extern CheepCheepChaseGame *D_8010E360_cheep_cheep_chase;
 extern CheepCheepChasePlayer *D_8010E364_cheep_cheep_chase;
@@ -160,6 +162,10 @@ void func_80108C98_cheep_cheep_chase(FuncContext *ctx);
 void func_80108F78_cheep_cheep_chase(FuncContext *ctx);
 void func_801090E0_cheep_cheep_chase(FuncContext *ctx);
 void func_8010D560_cheep_cheep_chase(void);
+void func_8010B63C_cheep_cheep_chase(CheepCheepChasePlayer *player, s16 motion, s8 updateMotion);
+void func_801088F8_cheep_cheep_chase(FuncContext *ctx);
+void func_801091FC_cheep_cheep_chase(u8 index);
+void func_8010D198_cheep_cheep_chase(FuncContext *ctx);
 void func_8010D62C_cheep_cheep_chase(FuncGroup *group, s16 maxFuncs);
 s16 func_8010D6F4_cheep_cheep_chase(s8 groupId, s8 prio, s16 param, s8 state, void *data, void (*func)(FuncContext *), u8 sort, s8 execFunc);
 void func_8010D7F4_cheep_cheep_chase(s8 groupId, FuncContext *ctx);
@@ -592,11 +598,81 @@ void func_8010896C_cheep_cheep_chase(FuncContext *ctx) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_26_cheep_cheep_chase/225740", func_80108AF4_cheep_cheep_chase);
+void func_80108AF4_cheep_cheep_chase(FuncContext *ctx) {
+    if (D_8010E026_cheep_cheep_chase == 1 && GMesStatGet() == 0) {
+        ctx->state = 99;
+        ctx->work.s16[0] = 0;
+        D_8010E026_cheep_cheep_chase = 2;
+    }
+    switch (ctx->state) {
+        case 0:
+            ctx->work.s16[0] = 0;
+            ctx->state = 1;
+            break;
+        case 1:
+            switch (ctx->work.s16[0]++) {
+                case 0:
+                    HuAudSeqFadeOut(120);
+                    GMesCreate(0xE);
+                    func_8010D6F4_cheep_cheep_chase(1, 0, -1, 0, NULL, func_801088F8_cheep_cheep_chase, FALSE, TRUE);
+                    ctx->state = 3;
+                    break;
+                case 15:
+                    GMesCreate(0x20);
+                    HuAudSeqPlay(0x6C);
+                    D_8010E026_cheep_cheep_chase = 1;
+                    break;
+            }
+            break;
+        case 2:
+            if (WipeStatGet() == 0) {
+                omOvlReturnEx(1);
+            }
+            break;
+        case 3:
+            if (GMesStatGet() == 0) {
+                ctx->state = 1;
+            }
+            break;
+        case 99:
+            if (++ctx->work.s16[0] == 15) {
+                WipeCreateOut(WIPE_TYPE_NORMAL, 20);
+                ctx->state = 2;
+            }
+            break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_26_cheep_cheep_chase/225740", func_80108C98_cheep_cheep_chase);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_26_cheep_cheep_chase/225740", func_80108F78_cheep_cheep_chase);
+void func_80108F78_cheep_cheep_chase(FuncContext *ctx) {
+    CheepCheepChaseSegment *segment = &D_8010E360_cheep_cheep_chase->segments[1];
+    HmfModel *model;
+    s16 i;
+
+    switch (ctx->state) {
+        case 0:
+            ctx->work.s8[0] = 5;
+            ctx->state = 1;
+            break;
+        case 1:
+            for (i = 1; i < 6; i++, segment++) {
+                model = &Hu3DData[segment->model];
+                if (Center.z - 700.0f <= model->pos.z) {
+                    func_8001C258_main(segment->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                }
+                if (Center.z + 1700.0f <= model->pos.z) {
+                    func_8001C258_main(segment->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    if (i >= 2 && ctx->work.s8[0] < 7) {
+                        func_801091FC_cheep_cheep_chase(ctx->work.s8[0]++);
+                    }
+                }
+            }
+            break;
+        case 2:
+            break;
+    }
+}
 
 // Register allocation differs: segment->model is not reloaded for the first call.
 #ifdef NON_MATCHING
@@ -814,7 +890,47 @@ void func_8010AF70_cheep_cheep_chase(FuncContext *ctx) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_26_cheep_cheep_chase/225740", func_8010B148_cheep_cheep_chase);
+void func_8010B148_cheep_cheep_chase(FuncContext *ctx) {
+    omObjData *object = D_800EC598_minigame[ctx->work.s16[0]];
+    CheepCheepChasePlayer *player = &D_8010E364_cheep_cheep_chase[ctx->work.s16[0]];
+
+    if (player->unk_01 == 4) {
+        return;
+    }
+    switch (ctx->state) {
+        case 0:
+            ctx->work.s8[0] = 0;
+            ctx->work.s8[1] = 0;
+            ctx->work.s8[2] = 0;
+            ctx->state = 1;
+            break;
+        case 1:
+            if (player->unk_01 != 1) {
+                break;
+            }
+            if (!player->unk_08) {
+                ctx->work.s8[2] = 0;
+                object->trans.z -= sindf(player->unk_14) * (player->unk_18 + 6.0f);
+                if (Hu3DData[object->model[0]].motTime == 0.0f) {
+                    func_8004AC98_main(GwPlayer[object->work[0]].chr + 0x7A, object->work[0] + 4);
+                }
+            } else {
+                object->trans.z -= sindf(player->unk_14) * (player->unk_18 + 6.0f) - 1.0f;
+            }
+            player->unk_14 += 4.0f;
+            if (player->unk_14 >= 180.0f) {
+                player->unk_14 = 0.0f;
+                player->unk_01 = 0;
+                func_8010B63C_cheep_cheep_chase(player, 0x26, FALSE);
+            } else {
+                player->unk_01 = 1;
+                func_8010B63C_cheep_cheep_chase(player, 0x27, TRUE);
+            }
+            break;
+        case 2:
+            break;
+    }
+}
 
 void func_8010B33C_cheep_cheep_chase(FuncContext *ctx) {
     omObjData *object = D_800EC598_minigame[ctx->work.s16[0]];
@@ -968,7 +1084,32 @@ void func_8010CAD4_cheep_cheep_chase(FuncContext *ctx) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_26_cheep_cheep_chase/225740", func_8010CBBC_cheep_cheep_chase);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_26_cheep_cheep_chase/225740", func_8010D02C_cheep_cheep_chase);
+void func_8010D02C_cheep_cheep_chase(FuncContext *ctx) {
+    HmfModel *model = &Hu3DData[ctx->param];
+    CheepCheepChaseGameUnk04 *unk;
+    s16 i;
+
+    if (omPauseChk() + D_800D6A90_main != 0) {
+        return;
+    }
+    if (ctx->state == 1) {
+        for (i = 0; i < 2; i++) {
+            unk = &D_8010E360_cheep_cheep_chase->unk_04[i * 4];
+            if (unk->unk_03 == 0) {
+                if (model->pos.z - (Hu3DData[unk->model].pos.z - unk->unk_08) <= 200.0f) {
+                    func_8010D6F4_cheep_cheep_chase(3, 2, ctx->param, 0, (void *)(i * 4), func_8010D198_cheep_cheep_chase, FALSE, FALSE);
+                    unk->unk_03 = 1;
+                    unk++;
+                    unk->unk_03 = 1;
+                    unk++;
+                    unk->unk_03 = 1;
+                    unk++;
+                    unk->unk_03 = 1;
+                }
+            }
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_26_cheep_cheep_chase/225740", func_8010D198_cheep_cheep_chase);
 

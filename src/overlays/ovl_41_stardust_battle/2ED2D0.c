@@ -48,9 +48,9 @@ typedef struct UnkStardustBattleActor {
     /* 0x12 */ s16 unk_12;
     /* 0x14 */ s16 unk_14;
     /* 0x16 */ s16 unk_16;
-    /* 0x18 */ s32 unk_18;
+    /* 0x18 */ f32 unk_18;
     /* 0x1C */ f32 unk_1C;
-    /* 0x20 */ s32 unk_20;
+    /* 0x20 */ f32 unk_20;
     /* 0x24 */ s16 unk_24;
     /* 0x26 */ s16 unk_26;
     /* 0x28 */ f32 velX;
@@ -62,7 +62,9 @@ typedef struct UnkStardustBattleActor {
     /* 0x50 */ f32 unk_50;
     /* 0x54 */ f32 unk_54;
     /* 0x58 */ f32 unk_58;
-    /* 0x5C */ Vec unk_5C;
+    /* 0x5C */ f32 unk_5C;
+    /* 0x60 */ f32 unk_60;
+    /* 0x64 */ f32 unk_64;
     /* 0x68 */ f32 unk_68;
     /* 0x6C */ f32 unk_6C;
     /* 0x70 */ f32 unk_70;
@@ -373,6 +375,10 @@ extern s32 D_80114BB4_stardust_battle;
 extern s32 D_80114AB8_stardust_battle;
 extern s32 D_80114ABC_stardust_battle;
 extern UnkStardustBattleObj *D_80114AC8_stardust_battle;
+extern s16 D_80113E90_stardust_battle[];
+extern f32 D_80113E98_stardust_battle[];
+extern s16 D_80113EA8_stardust_battle[];
+extern s16 D_80113EB0_stardust_battle[];
 
 const s16 D_80114100_stardust_battle[] = {
     0x8272, 0x8273, 0x8260, 0x8271, 0x8273, 0x0000
@@ -468,6 +474,11 @@ void func_8010CE5C_stardust_battle(omObjData *object);
 s32 func_8010F890_stardust_battle(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color);
 void func_801107E4_stardust_battle(void);
 void func_8010EE7C_stardust_battle(void);
+Vec *func_8010CA48_stardust_battle(s16 index);
+s16 func_8010DE64_stardust_battle(Vec *target, f32 speed);
+void func_80110758_stardust_battle(f32 x, f32 y, f32 z);
+void func_80110780_stardust_battle(s16 arg0);
+void func_801107C4_stardust_battle(void);
 void func_8010F0E8_stardust_battle(omObjData *object);
 void func_801115F8_stardust_battle(s32 arg0);
 void func_80111004_stardust_battle(omObjData *object);
@@ -2205,7 +2216,7 @@ void func_8010A74C_stardust_battle(void) {
     actor->start.x = actor->start.y = actor->start.z = 0.0f;
     actor->unk_4C = actor->unk_50 = actor->unk_54 = 0.0f;
     actor->unk_58 = 0.0f;
-    actor->unk_5C.x = actor->unk_5C.y = actor->unk_5C.z = 0.0f;
+    actor->unk_5C = actor->unk_60 = actor->unk_64 = 0.0f;
     actor->unk_68 = 0.0f;
     actor->unk_6C = 0.0f;
     actor->unk_70 = 1.0f;
@@ -2214,7 +2225,371 @@ void func_8010A74C_stardust_battle(void) {
     object->trans.y = 600.0f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_8010AAC4_stardust_battle);
+void func_8010AAC4_stardust_battle(omObjData *object) {
+    UnkStardustBattleActor *actor = (UnkStardustBattleActor *)func_80111FEC_stardust_battle(object);
+    Vec effectPos;
+    Vec hitDir;
+    Vec prevPos;
+    f32 x;
+    f32 z;
+    f32 amp;
+    f32 t;
+    s16 interval;
+
+    if (actor->unk_24 != 0) {
+        object->trans.y += actor->velY;
+        actor->unk_24--;
+    }
+
+    prevPos.x = object->trans.x;
+    prevPos.y = object->trans.y;
+    prevPos.z = object->trans.z;
+    (void)prevPos; // Copied but never read in the original.
+
+    switch (actor->unk_04) {
+        case 0:
+            if (func_800E6E8C_minigame() == 2) {
+                actor->active = 0;
+                actor->unk_04 = 1;
+            }
+            break;
+        case 1:
+            if (actor->active > 30) {
+                actor->active = 0;
+                if (D_80114AB0_stardust_battle < 5340) {
+                    actor->unk_04 = 2;
+                }
+            }
+            break;
+        case 2:
+            if (actor->active > 30) {
+                amp = 1.0f - (actor->active - 30) / 15.0f;
+            } else {
+                if (actor->active == 1) {
+                    HuAudFXPlay(0x508);
+                }
+                amp = 1.0f;
+            }
+            object->rot.z = sindf(fmod(actor->active * 25.0f, 360.0)) * amp * 30.0f;
+            if (actor->active > 45.0f) {
+                object->rot.z = 0.0f;
+                actor->active = 0;
+                actor->unk_04 = 3;
+            }
+            break;
+        case 3:
+            if (actor->unk_14 >= D_80113EA8_stardust_battle[actor->unk_0C]) {
+                if (actor->unk_12 >= 10) {
+                    func_8010C5A8_stardust_battle(10, 10);
+                    actor->unk_12 = 0;
+                }
+                func_8010DE64_stardust_battle(func_8010CA48_stardust_battle(actor->unk_12),
+                                              D_80113E98_stardust_battle[actor->unk_0C]);
+                HuAudFXPlay(0x50D);
+                actor->unk_14 = 0;
+                actor->unk_12++;
+            }
+            actor->unk_14++;
+            x = actor->target.x - object->trans.x;
+            z = actor->target.z - object->trans.z;
+            actor->unk_1C = func_80111C2C_stardust_battle(atan2df(x, z), actor->unk_1C, 15.0f);
+            object->trans.x += sindf(actor->unk_1C) * actor->unk_58;
+            object->trans.z += cosdf(actor->unk_1C) * actor->unk_58;
+            if (x * x + z * z < 22500.0) {
+                // Pick a new target; z is reused as the angle and x as the distance.
+                z = ((rand8() << 8) | rand8()) % 360;
+                x = fmod((f32)((rand8() << 8) | rand8()), 400.0) + 100.0;
+                actor->target.x = sindf(z) * x;
+                actor->target.z = cosdf(z) * x;
+            }
+            if (actor->active > 150.0f) {
+                if (actor->unk_58 > 0.0f) {
+                    actor->unk_58 -= 0.999999977648258209;
+                    if (actor->unk_58 <= 0.0f) {
+                        actor->unk_58 = 0.0f;
+                        func_8010BFE4_stardust_battle(100.0f, 60);
+                        actor->unk_0A = 1;
+                        actor->active = 0;
+                        actor->unk_04 = 4;
+                    }
+                }
+            } else if (actor->unk_58 < 15.0000005960464478) {
+                actor->unk_58 += 0.999999977648258209;
+            }
+            break;
+        case 4:
+            if (actor->active >= 30) {
+                actor->active = 0;
+                actor->unk_04 = 5;
+            }
+            break;
+        case 5:
+            if (actor->unk_24 == 0) {
+                if (actor->active >= actor->unk_10) {
+                    func_8010BFE4_stardust_battle(450.0f, 60);
+                    actor->active = 0;
+                    actor->unk_04 = 6;
+                }
+            } else {
+                actor->active = 0;
+            }
+            break;
+        case 6:
+            if (actor->unk_24 == 0) {
+                z = ((rand8() << 8) | rand8()) % 360;
+                x = fmod((f32)((rand8() << 8) | rand8()), 500.0);
+                actor->target.x = sindf(z) * x;
+                actor->target.z = cosdf(z) * x;
+                actor->unk_0A = 0;
+                if (actor->unk_06 <= D_80114B28_stardust_battle[actor->unk_0C]) {
+                    actor->unk_0E = actor->unk_0C + 1;
+                }
+                actor->active = 0;
+                if (actor->unk_0C != actor->unk_0E && D_80114AC4_stardust_battle != 0 &&
+                    D_80114AB0_stardust_battle < 5250) {
+                    HuAudFXPlay(0x50E);
+                    actor->unk_04 = 8;
+                } else if (D_80114AB0_stardust_battle < 5340) {
+                    actor->unk_04 = 2;
+                } else {
+                    actor->unk_04 = 1;
+                }
+            }
+            break;
+        case 7:
+            actor->unk_0A = 0;
+            t = 1.0f - actor->active / 9.99f;
+            object->trans.x += actor->velX;
+            object->trans.z += actor->velZ;
+            object->rot.z = -(sindf(actor->unk_20) * t * 45.0f);
+            object->rot.x = cosdf(actor->unk_20) * t * 45.0f;
+            if (actor->active & 1) {
+                object->trans.x += 50.0;
+            } else {
+                object->trans.x -= 50.0;
+            }
+            if (actor->active >= 9.99f) {
+                actor->unk_0A = 0;
+                t = actor->unk_06 / 9.0f;
+                actor->unk_68 = func_80111DF8_stardust_battle(t, 1.0f, 0.0f);
+                actor->unk_70 = func_80111DF8_stardust_battle(t, 0.0f, 1.0f);
+                object->rot.z = object->rot.x = 0.0f;
+                actor->active = 0;
+                if (actor->unk_06 != 0 && func_800E6E8C_minigame() == 2) {
+                    func_8010BFE4_stardust_battle(450.0f, 30);
+                    actor->unk_04 = 6;
+                } else {
+                    actor->unk_04 = 12;
+                }
+            }
+            break;
+        case 8:
+            if (actor->active >= 15.0f) {
+                if (actor->unk_18 < 45.0f) {
+                    actor->unk_18 += 5.0f;
+                }
+                object->rot.y += actor->unk_18;
+                if (object->rot.y > 360.0f) {
+                    object->rot.y -= 360.0f;
+                }
+                if (actor->active >= 45.0f) {
+                    WipeColorSet(255, 255, 255);
+                    WipeCreateOut(11, 30);
+                    actor->active = 0;
+                    actor->unk_04 = 9;
+                    HuAudFXPlay(0x509);
+                }
+            }
+            break;
+        case 9:
+            object->rot.y += actor->unk_18;
+            if (object->rot.y > 360.0f) {
+                object->rot.y -= 360.0f;
+            }
+            if (WipeStatGet() == 0) {
+                func_80109128_stardust_battle(D_80113E90_stardust_battle[actor->unk_0E]);
+                actor->unk_0C = actor->unk_0E;
+                object->rot.y = 0.0f;
+                actor->unk_18 = 0.0f;
+                WipeColorSet(255, 255, 255);
+                WipeCreateIn(11, 15);
+                switch (actor->unk_0C) {
+                    case 1:
+                        HuAudFXPlay(0x50F);
+                        break;
+                    case 2:
+                        HuAudFXPlay(0x510);
+                        break;
+                }
+                actor->active = 0;
+                actor->unk_04 = 10;
+            }
+            break;
+        case 10:
+            if (WipeStatGet() == 0) {
+                actor->active = 0;
+                actor->unk_04 = 1;
+            }
+            break;
+        case 11:
+            actor->unk_0A = 0;
+            object->rot.x = func_80111C2C_stardust_battle(0.0f, object->rot.x, 10.0f);
+            object->rot.y = func_80111C2C_stardust_battle(0.0f, object->rot.y, 10.0f);
+            object->rot.z = func_80111C2C_stardust_battle(0.0f, object->rot.z, 10.0f);
+            if (func_80111B28_stardust_battle(0.0f, object->rot.x) < 10.0f &&
+                func_80111B28_stardust_battle(0.0f, object->rot.y) < 10.0f &&
+                func_80111B28_stardust_battle(0.0f, object->rot.z) < 10.0f) {
+                object->rot.x = object->rot.y = object->rot.z = 0.0f;
+                actor->unk_04 = 12;
+            }
+            break;
+        case 13:
+            actor->unk_0A = 0;
+            t = (f32)actor->active / actor->unk_26;
+            if (t > 1.0f) {
+                t = 1.0f;
+            } else if (t < 0.0f) {
+                t = 0.0f;
+            }
+            t = sindf(t * 90.0f);
+            object->trans.x = func_80111DF8_stardust_battle(t, actor->start.x, actor->target.x);
+            object->trans.y = func_80111DF8_stardust_battle(t, actor->start.y, actor->target.y);
+            object->trans.z = func_80111DF8_stardust_battle(t, actor->start.z, actor->target.z);
+            if (actor->active >= actor->unk_26) {
+                object->trans.x = actor->target.x;
+                object->trans.y = actor->target.y;
+                object->trans.z = actor->target.z;
+                actor->unk_26 = 0;
+                actor->active = 0;
+                actor->unk_04 = 14;
+            }
+            break;
+        case 12:
+        case 14:
+            actor->unk_0A = 0;
+            break;
+        case 16:
+            if (actor->active < 30) {
+                object->rot.x = sindf(actor->active / 30.0f * 90.0f) * 30.0f;
+            } else if (actor->active > 90.0f) {
+                object->rot.x = 30.0f - sindf((actor->active - 90.0f) / 30.0f * 90.0f) * 30.0f;
+                if (actor->active > 120.0f) {
+                    object->rot.x = 0.0f;
+                    actor->active = 0;
+                    actor->unk_04 = 0;
+                }
+            }
+            break;
+        case 17:
+            if (actor->unk_18 < 22.5f) {
+                actor->unk_18 += 5.0f;
+            } else {
+                actor->unk_18 = 22.5f;
+            }
+            object->rot.y += actor->unk_18;
+            if (object->rot.y > 360.0f) {
+                object->rot.y -= 360.0f;
+            }
+            if (actor->active & 1) {
+                object->trans.y =
+                    actor->unk_50 + 5.00000007450580597 + (f32)(u8)(rand8() % 100) * 0.01 * 5.00000007450580597;
+            } else {
+                object->trans.y =
+                    actor->unk_50 - 5.00000007450580597 - (f32)(u8)(rand8() % 100) * 0.01 * 5.00000007450580597;
+            }
+            func_80110758_stardust_battle(actor->unk_4C, actor->unk_50 + 80.0000011920928955, actor->unk_54);
+            if (actor->unk_16 <= 16) {
+                if ((u16)actor->unk_16 < 4) {
+                    if (actor->active >= D_80113EB0_stardust_battle[actor->unk_16]) {
+                        HuAudFXPlay(0x50A);
+                        actor->unk_16++;
+                        actor->active = 0;
+                    }
+                } else if (actor->active & 1) {
+                    HuAudFXPlay(0x50A);
+                    actor->unk_16++;
+                }
+                if (actor->unk_16 < 16) {
+                    func_80110780_stardust_battle(actor->unk_16);
+                } else {
+                    func_801107C4_stardust_battle();
+                }
+            }
+            if ((actor->active & 7) == 0) {
+                effectPos.x = actor->unk_4C + (0.5 - (f32)(u8)(rand8() % 100) * 0.01) * 100.0 * 2.0;
+                effectPos.z = actor->unk_54 + (0.5 - (f32)(u8)(rand8() % 100) * 0.01) * 100.0 * 2.0;
+                effectPos.y = actor->unk_50 + (f32)(u8)(rand8() % 100) * 0.01 * 150.0;
+                Hu3DModelScaleSet(
+                    func_8000D550_main(D_80114B54_stardust_battle, effectPos.x, effectPos.y, effectPos.z), 2.0f,
+                    2.0f, 2.0f);
+            }
+            break;
+    }
+
+    if (actor->unk_0A != 0 && (actor->unk_08 = func_8010E524_stardust_battle(object, 1, &hitDir)) != -1) {
+        if (actor->unk_06 != 0) {
+            actor->unk_06--;
+        }
+        actor->unk_10 -= 4;
+        if (actor->unk_10 < 15.0f) {
+            actor->unk_10 = 15;
+        }
+        actor->unk_20 = atan2df(hitDir.x, hitDir.z);
+        actor->velX = sindf(actor->unk_20) * 100.0 * 0.100100100040435791;
+        actor->velZ = cosdf(actor->unk_20) * 100.0 * 0.100100100040435791;
+        actor->unk_04 = 7;
+        actor->active = 0;
+    }
+
+    func_800465A8_main(object->model[0], actor->unk_68, actor->unk_6C, actor->unk_70);
+
+    x = object->trans.x;
+    z = object->trans.z;
+    if ((x - actor->unk_5C) * (x - actor->unk_5C) + (z - actor->unk_60) * (z - actor->unk_60) >
+        100.000002980232267) {
+        interval = 8;
+        actor->unk_64 = func_80111C2C_stardust_battle(atan2df(x - actor->unk_5C, z - actor->unk_60), actor->unk_64, 10.0f);
+        actor->unk_5C += sindf(actor->unk_64) * 100.0 * 0.0666666701436042786;
+        actor->unk_60 += cosdf(actor->unk_64) * 100.0 * 0.0666666701436042786;
+    } else {
+        interval = 16;
+    }
+
+    if (D_80114B14_stardust_battle == 1 && func_8010929C_stardust_battle() == 1 && actor->unk_02 >= interval) {
+        if (interval != 16) {
+            func_8010A04C_stardust_battle(actor->unk_5C, actor->unk_60, 43.75f, 7.5000005f, 0.125f, 50.0f);
+        } else {
+            func_8010A204_stardust_battle(actor->unk_5C, actor->unk_60, 43.75f, 7.5000005f, 0.125f, 50.0f);
+        }
+        actor->unk_02 = 0;
+    }
+
+    if (func_8010929C_stardust_battle() != 1 &&
+        object->trans.x * object->trans.x + object->trans.z * object->trans.z < 275625.0) {
+        t = 1.0 - object->trans.y * 0.001;
+        if (t < 0.2f) {
+            t = 0.2f;
+        }
+        func_8001C258_main(object->model[1], 4, 0);
+        Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
+        Hu3DModelScaleSet(object->model[1], t * 1.5f, 1.0f, t * 1.5f);
+    } else {
+        func_8001C258_main(object->model[1], 4, 4);
+    }
+
+    if (func_8010929C_stardust_battle() == 2) {
+        func_8001C258_main(object->model[2], 4, 0);
+        Hu3DModelPosSet(object->model[2], object->trans.x, -object->trans.y, object->trans.z);
+        Hu3DModelRotSet(object->model[2], object->rot.x, object->rot.y, object->rot.z);
+        Hu3DData[object->model[2]].motId = Hu3DData[object->model[0]].motId;
+        Hu3DData[object->model[2]].motTime = Hu3DData[object->model[0]].motTime;
+    } else {
+        func_8001C258_main(object->model[2], 4, 4);
+    }
+
+    actor->active++;
+    actor->unk_02++;
+}
 
 void func_8010BFE4_stardust_battle(f32 arg0, s16 arg1) {
     UnkStardustBattleActor *actor;

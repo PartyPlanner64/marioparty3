@@ -181,3 +181,6 @@ D_8010BF80_cosmic_coaster = D_8010BF82_cosmic_coaster - 0x2;
 
 /* winners_wheel: s32 table whose low halfwords splat labeled. */
 D_8010A2AC_winners_wheel = D_8010A2AE_winners_wheel - 0x2;
+
+/* aces_high: second halfword of the timer pair at D_8010DCB0. */
+D_8010DCB2_aces_high = D_8010DCB0_aces_high + 0x2;

@@ -235,7 +235,7 @@ void func_80054EE0_main(s16 group, s16 member, s16 camera, f32 x, f32 y, f32 z);
 void func_80055484_main(s16 group, s16 member, u8 arg2, u8 arg3, u8 arg4, u16 arg5);
 void func_800554F0_main(s16 group, s16 member, u8 arg2, u8 arg3);
 void func_80055548_main(s16 group, s16 member, u16 arg2, u16 arg3, u16 arg4, u16 arg5);
-void func_80055588_main(s16 group, s16 member, s32 arg2, s32 arg3);
+void func_80055588_main(s16 group, s16 member, f32 arg2, f32 arg3);
 void func_800555B8_main(s16 group, s16 member, u16 arg2, u16 arg3);
 void HuSprScissorSet(s16 group, s16 member, u16 arg2, u16 arg3, u16 arg4, u16 arg5);
 void func_80055628_main(void);

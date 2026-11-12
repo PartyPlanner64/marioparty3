@@ -1178,11 +1178,11 @@ void func_80055548_main(s16 group, s16 member, u16 arg2, u16 arg3, u16 arg4, u16
     sprite->unk_42 = arg5;
 }
 
-void func_80055588_main(s16 group, s16 member, s32 arg2, s32 arg3) {
+void func_80055588_main(s16 group, s16 member, f32 arg2, f32 arg3) {
     HuSprite *sprite = HuSprGrpData[group]->members[member];
 
-    sprite->unk_30.i = arg2;
-    sprite->unk_34.i = arg3;
+    sprite->unk_30.f = arg2;
+    sprite->unk_34.f = arg3;
 }
 
 void func_800555B8_main(s16 group, s16 member, u16 arg2, u16 arg3) {

@@ -2926,7 +2926,41 @@ s32 func_8010EE5C_duel04(void) {
     return partner;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_8010F078_duel04);
+void func_8010F078_duel04(void) {
+    Duel04WinColorWork *work = HuPrcCurrentGet()->user_data;
+    s32 unused[2]; // Unreferenced, but present in the original stack frame
+    s32 window;
+    u8 red = 0x43;
+    s16 green;
+    u8 blue;
+    s32 value;
+    f32 blueAngle = 0.0f;
+    f32 greenAngle = 90.0f;
+
+    window = work->window;
+    HuWinBGColSet(work->window, 0x43, 0x80, 1);
+    while (TRUE) {
+        if (D_80119E24_duel04 != 0) {
+            value = (s16)(sindf(greenAngle) * 128.0f);
+            if (value < 0) {
+                value = -value;
+            }
+            green = value;
+            greenAngle += 6.0f;
+            if (greenAngle > 360.0f) {
+                greenAngle -= 360.0f;
+            }
+            value = (s16)(sindf(blueAngle) * 64.0f);
+            blue = (value < 0) ? -value : value;
+            blueAngle += 3.0f;
+            if (blueAngle > 360.0f) {
+                blueAngle -= 360.0f;
+            }
+            HuWinBGColSet(window, red, green & 0xFF, blue);
+        }
+        HuPrcVSleep();
+    }
+}
 
 void func_8010F1E8_duel04(void) {
     s16 pos[3][2];

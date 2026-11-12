@@ -10,7 +10,7 @@
 
 typedef struct PuddlePaddlePlayer {
     /* 0x00 */ s16 unk_00; // player index
-    /* 0x02 */ char unk_02[2];
+    /* 0x02 */ s16 chr;
     /* 0x04 */ s32 unk_04; // flags
     /* 0x08 */ s8 unk_08;
     /* 0x09 */ char unk_09;
@@ -83,10 +83,13 @@ typedef struct PuddlePaddleGame {
 } PuddlePaddleGame; // Size 0x44
 
 extern u8 D_800D6A90_main;
+extern s32 D_800A178C_main[][6];
+extern s32 D_800A1790_main[][6];
 
 extern PuddlePaddleTeam *D_80111650_puddle_paddle;
 extern PuddlePaddlePlayer *D_80111654_puddle_paddle;
 extern PuddlePaddleGame *D_80111658_puddle_paddle;
+extern const PuddlePaddlePositions D_80111614_puddle_paddle;
 
 f32 D_80111220_puddle_paddle = 0.0f;
 f32 D_80111224_puddle_paddle = 0.0f;
@@ -119,6 +122,7 @@ void func_80106064_puddle_paddle(omObjData *object);
 void func_80106958_puddle_paddle(omObjData *object);
 void func_80106988_puddle_paddle(omObjData *object);
 void func_80106CE4_puddle_paddle(omObjData *object);
+void func_801073AC_puddle_paddle(omObjData *object);
 void func_801073E4_puddle_paddle(omObjData *object);
 void func_801075B8_puddle_paddle(void);
 void func_80107638_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
@@ -132,6 +136,8 @@ void func_80108178_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
 void func_80108368_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
 void func_801087DC_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
 void func_80109804_puddle_paddle(PuddlePaddlePlayer *arg0, s16 arg1, u8 arg2);
+void func_801094C4_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
+void func_80109718_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
 void func_80109BD4_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
 void func_801091F8_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
 void func_8010981C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
@@ -414,11 +420,73 @@ void func_80106B6C_puddle_paddle(s16 srcModel, s16 dstModel, u16 dstObj) {
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_11_puddle_paddle/main", D_801113D4_puddle_paddle);
+void func_80106CE4_puddle_paddle(omObjData *object) {
+    s32 attr = 0x2B9;
+    s32 handFiles[8] = { 12, 13, 14, 15, 16, 17, 18, 19 };
+    s32 paddleFiles[8] = { 4, 5, 6, 7, 8, 9, 10, 11 };
+    char objNames[8][2][32] = {
+        { "migi-te2_4", "migi-te3_2_1" },
+        { "c001_000-migi-te2_2", "c001_000-migi-te2_3" },
+        { "C002_000b-bmerge14", "C002_000b-bmerge16" },
+        { "c003_000-bmerge1_13_1", "c003_000-bmerge1_8" },
+        { "Luigi1-migi-te1_2", "Luigi1-migi-te1_1" },
+        { "c005_000-bmerge4", "c005_000-bmerge6" },
+        { "c001_000-migi-te2_2", "c001_000-migi-te2_3" },
+        { "C002_000b-bmerge14", "C002_000b-bmerge16" },
+    };
+    f32 angles[2] = { 0.0f, 180.0f };
+    PuddlePaddlePositions positions = D_80111614_puddle_paddle;
+    PuddlePaddlePlayer *player;
+    s32 modelFile;
+    s32 motionFile;
+    s16 model;
+    f32 angle;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_11_puddle_paddle/main", D_801113F4_puddle_paddle);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_11_puddle_paddle/main", func_80106CE4_puddle_paddle);
+    object->work[0] = D_800EC280_minigame;
+    object->work[1] = object->work[0] + 3;
+    player = &D_80111654_puddle_paddle[object->work[0]];
+    player->chr = GwPlayer[object->work[0]].chr;
+    modelFile = D_800A178C_main[player->chr][0];
+    motionFile = D_800A1790_main[player->chr][0];
+    func_800E1BA8_minigame(object, modelFile, motionFile, object->work[0], attr, attr);
+    object->model[9] = model = func_8000B108_main(handFiles[player->chr] | 0x320000, attr);
+    D_8011122C_puddle_paddle = func_8002C834_main(Hu3DData[object->model[0]].hmf, objNames[player->chr][0]);
+    func_80106B6C_puddle_paddle(model, object->model[0], D_8011122C_puddle_paddle);
+    object->model[10] = model = func_8000B108_main(paddleFiles[player->chr] | 0x320000, attr);
+    D_8011122C_puddle_paddle = func_8002C834_main(Hu3DData[object->model[0]].hmf, objNames[player->chr][1]);
+    func_80106B6C_puddle_paddle(model, object->model[0], D_8011122C_puddle_paddle);
+    object->trans.z = 200.0f;
+    func_800E5A00_minigame(object, 0, func_80017BB8_main(player->chr, 0x98), 0, 0);
+    func_800E5A00_minigame(object, 2, func_80017BB8_main(player->chr, 2), 1, 0);
+    func_800E5A00_minigame(object, 13, func_80017BB8_main(player->chr, 0x9E), 1, 0);
+    func_800E5A00_minigame(object, 14, func_80017BB8_main(player->chr, 0x37), 1, 999);
+    func_800E5A00_minigame(object, 38, func_80017BB8_main(player->chr, 0x92), 0, 0);
+    func_800E5A00_minigame(object, 40, func_80017BB8_main(player->chr, 0x93), 0, 0);
+    func_800E5A00_minigame(object, 39, func_80017BB8_main(player->chr, 0x94), 0, 0);
+    func_800E5A00_minigame(object, 41, func_80017BB8_main(player->chr, 0x95), 0, 0);
+    func_80109804_puddle_paddle(player, 0, 1);
+    func_800E5690_minigame(object, 0);
+    player->unk_0E = -1;
+    angle = player->unk_48 = angles[player->unk_10];
+    angle += D_80111650_puddle_paddle[player->team].unk_18;
+    if (angle > 360.0f) {
+        angle -= 360.0f;
+    }
+    Hu3DModelPosSet(object->model[0], positions.points[player->team].x + sindf(angle) * 20.0f * 5.0f * 0.7f,
+                    positions.points[player->team].y + 37.0f,
+                    positions.points[player->team].z + cosdf(angle) * 20.0f * 5.0f * 0.7f);
+    player->unk_00 = ((func_800E1BA8_minigame_ObjData *)object->data)->unk57;
+    player->unk_04 = 1;
+    player->unk_56 = 0;
+    player->unk_58 = 0;
+    object->rot.x = object->rot.y = object->rot.z = 0.0f;
+    object->scale.x = object->scale.y = object->scale.z = 1.0f;
+    D_800EC280_minigame++;
+    func_8010B8B4_puddle_paddle(object, (s8)object->work[1], 0, 4);
+    func_8010BA04_puddle_paddle((s8)object->work[1], 0xF, player, func_801094C4_puddle_paddle, 0);
+    func_8010BA04_puddle_paddle((s8)object->work[1], 0xFFFF, player, func_80109718_puddle_paddle, 0);
+    object->func = func_801073AC_puddle_paddle;
+}
 
 const PuddlePaddlePositions D_80111614_puddle_paddle = {
     { { -300.0f, 200.0f, 0.0f }, { 300.0f, 200.0f, 0.0f } }

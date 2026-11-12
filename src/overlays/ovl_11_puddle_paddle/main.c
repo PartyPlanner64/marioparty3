@@ -19,7 +19,8 @@ typedef struct PuddlePaddlePlayer {
     /* 0x0E */ s16 unk_0E; // queued motion
     /* 0x10 */ s8 unk_10;
     /* 0x11 */ s8 unk_11;
-    /* 0x12 */ char unk_12[0x3A];
+    /* 0x12 */ char unk_12[0x36];
+    /* 0x48 */ f32 unk_48; // paddle angle offset
     /* 0x4C */ f32 unk_4C; // paddle power
     /* 0x50 */ s16 team;
     /* 0x52 */ s16 unk_52;
@@ -30,7 +31,9 @@ typedef struct PuddlePaddlePlayer {
 } PuddlePaddlePlayer; // Size 0x5C
 
 typedef struct PuddlePaddleTeam {
-    /* 0x00 */ char unk_00[0x20];
+    /* 0x00 */ char unk_00[0x18];
+    /* 0x18 */ f32 unk_18; // boat angle
+    /* 0x1C */ char unk_1C[4];
     /* 0x20 */ s8 count;
     /* 0x21 */ char unk_21;
     /* 0x22 */ s16 players[2];
@@ -1051,7 +1054,97 @@ void func_8010981C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_11_puddle_paddle/main", func_8010981C_puddle_paddle);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_11_puddle_paddle/main", func_80109BD4_puddle_paddle);
+void func_80109BD4_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler) {
+    PuddlePaddleTeam *team = D_80111650_puddle_paddle;
+    PuddlePaddlePlayer *player;
+    HmfModel *boat;
+    HmfModel *model;
+    HmfModel *other;
+    func_800E1BA8_minigame_ObjData *data;
+    Vec diff;
+    f32 x, z;
+    s16 angle;
+    s16 index;
+    s16 left, right;
+    s16 i, j;
+
+    for (i = 0; i < 2; i++, team++) {
+        boat = &Hu3DData[slot->unk_04[i]];
+        for (j = 0; j < 2; j++) {
+            player = &D_80111654_puddle_paddle[team->players[j]];
+            model = &Hu3DData[D_800EC598_minigame[team->players[j]]->model[0]];
+            angle = player->unk_48 + team->unk_18;
+            if (angle > 360.0f) {
+                angle -= 360.0f;
+            }
+            x = sindf(angle) * 20.0f * 5.0f * 0.7f + boat->pos.x;
+            z = cosdf(angle) * 20.0f * 5.0f * 0.7f + boat->pos.z;
+            Hu3DModelPosSet(D_800EC598_minigame[team->players[j]]->model[0], x, boat->pos.y + 37.0f, z);
+            Hu3DModelRotSet(D_800EC598_minigame[team->players[j]]->model[0], 0.0f, boat->rot.y, 0.0f);
+            Hu3DModelPosSet(D_800EC598_minigame[team->players[j]]->model[1], x, boat->pos.y + 34.0f, z);
+            if (player->unk_04 & 8) {
+                if (player->unk_04 & 2) {
+                    func_80109804_puddle_paddle(player, 0x27, 0);
+                } else if (player->unk_04 & 4) {
+                    func_80109804_puddle_paddle(player, 0x28, 0);
+                } else {
+                    func_80109804_puddle_paddle(player, 0x26, 0);
+                }
+            } else {
+                if (player->unk_04 & 2) {
+                    func_80109804_puddle_paddle(player, 0x27, 0);
+                } else if (player->unk_04 & 4) {
+                    func_80109804_puddle_paddle(player, 0x28, 0);
+                } else {
+                    func_80109804_puddle_paddle(player, 0, 0);
+                }
+            }
+            data = D_800EC598_minigame[team->players[j]]->data;
+            left = FALSE;
+            right = FALSE;
+            if (model->motTime == 20.0f) {
+                if (data->unkD8.unk02 == 0x26) {
+                    left = TRUE;
+                    right = TRUE;
+                } else if (data->unkD8.unk02 == 0x27) {
+                    left = TRUE;
+                } else if (data->unkD8.unk02 == 0x28) {
+                    right = TRUE;
+                }
+            }
+            other = &Hu3DData[i == 0 ? slot->unk_04[1] : slot->unk_04[0]];
+            if (left) {
+                index = func_8010C42C_puddle_paddle(0);
+                if (index != -1) {
+                    x = model->pos.x + sindf(team->unk_18 + 70.0f) * 20.0f * 5.0f * 2.0f;
+                    z = model->pos.z + cosdf(team->unk_18 + 70.0f) * 20.0f * 5.0f * 2.0f;
+                    diff.x = x - other->pos.x;
+                    diff.z = z - other->pos.z;
+                    diff.y = HuSqrtf(diff.x * diff.x + diff.z * diff.z);
+                    if (diff.y > 200.0f) {
+                        func_8010C4D0_puddle_paddle(index, x, model->pos.y, z, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+                    }
+                }
+            }
+            if (right) {
+                index = func_8010C42C_puddle_paddle(0);
+                if (index != -1) {
+                    x = model->pos.x + sindf(team->unk_18 + 290.0f) * 20.0f * 5.0f * 2.0f;
+                    z = model->pos.z + cosdf(team->unk_18 + 290.0f) * 20.0f * 5.0f * 2.0f;
+                    diff.x = x - other->pos.x;
+                    diff.z = z - other->pos.z;
+                    diff.y = HuSqrtf(diff.x * diff.x + diff.z * diff.z);
+                    if (diff.y > 200.0f) {
+                        func_8010C4D0_puddle_paddle(index, x, model->pos.y, z, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+                    }
+                }
+            }
+            if (left | right) {
+                func_8004AC5C_main(0x379, team->players[j]);
+            }
+        }
+    }
+}
 
 void func_8010A224_puddle_paddle(void) {
     PuddlePaddleTeam *team = D_80111650_puddle_paddle;

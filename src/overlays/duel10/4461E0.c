@@ -129,6 +129,9 @@ void func_800FC8E8_name_81(void);
 void func_8010FE0C_duel10(void);
 void func_8011450C_duel10(void);
 s32 func_80114940_duel10(void);
+void func_800F38DC_name_81(s32 playerIndex, s16 arg1, u16 arg2);
+void func_800FCC84_name_81(s16 arg0);
+void func_800FCCCC_name_81(s16 arg0);
 extern Duel10PartnerSpaces D_80114A6C_duel10[];
 extern s32 D_80114A84_duel10;
 extern Object *D_80114A88_duel10;
@@ -2722,7 +2725,137 @@ void func_8010E494_duel10(void) {
     HuPrcChildWatch();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010E4B4_duel10);
+void func_8010E4B4_duel10(s32 maxSteps, s32 steps) {
+    GW_SYSTEM *system = &GwSystem;
+    GW_PLAYER *player;
+    Process *process;
+    SpaceData *space;
+    Vec rot;
+    s32 walkSpeed;
+    s32 attackType;
+    s16 walkNum;
+    s16 masuId;
+
+    player = MBDGetPlayerStruct(CUR_PLAYER);
+    walkSpeed = 1;
+    process = HuPrcCurrentGet();
+    if (steps != 0) {
+        walkNum = steps;
+    } else {
+        walkNum = func_800DC0B4_name_81(system->current_player_index);
+    }
+    func_800ECE38_name_81(system->current_player_index);
+    if (!(player->rev & 2)) {
+        func_800F3A04_name_81(-1, 0, 0, 5, 2);
+    } else {
+        func_800F3A04_name_81(-1, 0, 0, 5, 6);
+    }
+
+    while (walkNum != 0 && maxSteps != 0) {
+        if (func_80114940_duel10() != 0) {
+            attackType = func_80114940_duel10();
+            if (attackType != -1) {
+                func_800F38DC_name_81(-1, -1, 2);
+                func_800DB3E0_name_81(player->turn);
+                func_800F924C_name_81(attackType);
+                func_800DADA0_name_81(player->turn);
+                HuPrcChildLink(process, MBDCameraZoomMotStart(1.7f));
+                HuPrcChildWatch();
+                if (!(player->rev & 2)) {
+                    func_800F3A04_name_81(-1, 0, 0, 5, 2);
+                } else {
+                    func_800F3A04_name_81(-1, 0, 0, 5, 6);
+                }
+            }
+        }
+
+        {
+            s16 curLink = player->clink;
+            s16 curIdx = player->cidx;
+
+            player->clink = player->nlink;
+            player->cidx = player->nidx;
+            func_800FCF50_name_81((s8)(system->current_player_index ^ 1), (walkSpeed * 7) + 8);
+            player->clink = curLink;
+            player->cidx = curIdx;
+        }
+
+        space = MBDMasuGet(MBDMasuLinkMasuIdGet(player->nlink, player->nidx));
+
+        if (player->player_obj->unk48 != 0) {
+            if (!(player->rev & 2)) {
+                func_800F3A04_name_81(-1, 0, 0, 5, 2);
+            } else {
+                func_800F3A04_name_81(-1, 0, 0, 5, 6);
+            }
+        }
+
+        switch (walkSpeed) {
+            case 0:
+                func_800F3AF4_name_81(-1, 1.5f);
+                func_800ECC34_name_81(system->current_player_index, 5.0f);
+                break;
+            case 1:
+                func_800F3AF4_name_81(-1, 1.0f);
+                func_800ECC34_name_81(system->current_player_index, 4.0f);
+                break;
+            case 2:
+                func_800F3AF4_name_81(-1, 0.75f);
+                func_800ECC34_name_81(system->current_player_index, 3.0f);
+                break;
+        }
+        func_800F3AF4_name_81(-1, 1.0f);
+
+        player->blink = player->clink;
+        player->bidx = player->cidx;
+        player->clink = player->nlink;
+        player->cidx = player->nidx;
+
+        if (!(player->rev & 1)) {
+            player->nidx++;
+        } else {
+            player->nidx--;
+        }
+
+        masuId = MBDMasuLinkMasuIdGet(player->clink, player->cidx);
+        space = MBDMasuGet(masuId);
+        func_800EA698_name_81(masuId);
+
+        switch (space->space_type) {
+            case 2:
+            case 3:
+            case 5:
+            case 6:
+            case 8:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+            case 16:
+            case 17:
+            case 18:
+                func_800DB4DC_name_81(system->current_player_index);
+                walkNum--;
+                maxSteps--;
+                func_800EA388_name_81(masuId);
+                break;
+        }
+
+        if (steps == 0) {
+            if (walkNum != 0) {
+                func_800FCC84_name_81(space->space_type);
+            } else {
+                func_800FCCCC_name_81(space->space_type);
+            }
+        }
+    }
+
+    func_800F38DC_name_81(-1, -1, 2);
+    func_800EB7BC_name_81(&rot);
+    func_800EBC60_name_81(&player->player_obj->rot, &rot, &player->player_obj->rot, 8);
+}
 
 void func_8010E8D4_duel10(void) {
     func_8010E4B4_duel10(-1, 0);

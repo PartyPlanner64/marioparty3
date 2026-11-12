@@ -689,8 +689,6 @@ void func_80107188_duel01(s32 playerIndex, s32 targetPlayer, Object *obj, Object
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/duel01/3D8AC0", D_80118E60_duel01);
 
-#ifdef NON_MATCHING
-// Only remaining diff: effect and process are allocated to s8/s7 instead of s7/s8.
 void func_801079B8_duel01(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player;
     Process *process;
@@ -762,8 +760,11 @@ void func_801079B8_duel01(s32 playerIndex, s32 targetPlayer, Object *obj, Object
             HuVecAdd(mid, &player->player_obj->coords, &obj->coords);
         }
         HuVecMulScalar(mid, 0.5f, mid);
-        func_800EB804_name_81(effect);
-        func_801067D4_duel01(effect, mid);
+        // The do-while(0) block is needed to match register allocation.
+        do {
+            func_800EB804_name_81(effect);
+            func_801067D4_duel01(effect, mid);
+        } while (0);
         func_800DCE40_name_81(effectIds[mode - 1], &midPos, 0, 2.0f);
         func_800FAC1C_name_81(&D_80105540_name_81);
         if (flags & 1) {
@@ -791,9 +792,6 @@ void func_801079B8_duel01(s32 playerIndex, s32 targetPlayer, Object *obj, Object
     MBDModelKill(partner);
     func_800FADB4_name_81();
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/duel01/3D8AC0", func_801079B8_duel01);
-#endif
 
 void func_80107EBC_duel01(s32 playerIndex, s32 targetPlayer, Object *obj, Object *target, s32 flags, s32 mode) {
     GW_PLAYER *player;

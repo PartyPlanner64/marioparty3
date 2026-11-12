@@ -3,6 +3,10 @@
 #include "game/mallocblock.h"
 #include "gcc/memory.h"
 #include "game/hmfmath.h"
+#include "game/printfunc.h"
+
+#define CAMERA_KEEP 65535.0f
+#define ABS(x) ((x) < 0 ? -(x) : (x))
 
 typedef struct UnkStardustBattleStard {
     /* 0x00 */ s16 active;
@@ -63,7 +67,9 @@ typedef struct UnkStardustBattleStar {
     /* 0x16 */ s16 state;
     /* 0x18 */ s16 unk_18;
     /* 0x1A */ s16 unk_1A;
-    /* 0x1C */ char unk_1C[0x0C];
+    /* 0x1C */ f32 unk_1C;
+    /* 0x20 */ f32 unk_20;
+    /* 0x24 */ f32 unk_24;
     /* 0x28 */ f32 x;
     /* 0x2C */ f32 y;
     /* 0x30 */ f32 z;
@@ -73,7 +79,13 @@ typedef struct UnkStardustBattleStar {
     /* 0x40 */ f32 unk_40;
     /* 0x44 */ f32 unk_44;
     /* 0x48 */ f32 unk_48;
-    /* 0x4C */ char unk_4C[0x1C];
+    /* 0x4C */ f32 unk_4C;
+    /* 0x50 */ f32 unk_50;
+    /* 0x54 */ f32 unk_54;
+    /* 0x58 */ f32 unk_58;
+    /* 0x5C */ f32 unk_5C;
+    /* 0x60 */ f32 unk_60;
+    /* 0x64 */ f32 unk_64;
     /* 0x68 */ f32 unk_68;
     /* 0x6C */ f32 unk_6C;
     /* 0x70 */ f32 unk_70;
@@ -134,6 +146,56 @@ typedef struct UnkStardustBattleStreak {
     /* 0x38 */ f32 unk_38;
 } UnkStardustBattleStreak; // sizeof 0x3C
 
+typedef union UnkStardustBattleColor {
+    u32 word;
+    u8 rgba[4];
+} UnkStardustBattleColor;
+
+typedef struct UnkStardustBattleEffect {
+    /* 0x00 */ u16 active;
+    /* 0x02 */ s16 model;
+    /* 0x04 */ UnkStardustBattleColor color;
+    /* 0x08 */ f32 frame;
+    /* 0x0C */ f32 speed;
+    /* 0x10 */ Vec pos;
+    /* 0x1C */ Vec vel;
+    /* 0x28 */ Vec scale;
+} UnkStardustBattleEffect; // sizeof 0x34
+
+typedef struct UnkStardustBattleCamera {
+    /* 0x00 */ Vec center;
+    /* 0x0C */ Vec rot;
+    /* 0x18 */ f32 zoom;
+    /* 0x1C */ f32 unk_1C;
+    /* 0x20 */ f32 unk_20;
+} UnkStardustBattleCamera; // sizeof 0x24
+
+typedef struct UnkStardustBattlePoint {
+    /* 0x00 */ s16 x;
+    /* 0x02 */ s16 y;
+    /* 0x04 */ s16 z;
+    /* 0x06 */ char unk_06[0x26];
+} UnkStardustBattlePoint; // sizeof 0x2C
+
+typedef struct UnkStardustBattleNearPoint {
+    /* 0x00 */ f32 distSq;
+    /* 0x04 */ s32 index;
+} UnkStardustBattleNearPoint; // sizeof 0x8
+
+typedef struct UnkStardustBattleStarDist {
+    /* 0x00 */ s32 index;
+    /* 0x04 */ f32 distSq;
+} UnkStardustBattleStarDist; // sizeof 0x8
+
+/* Extended form of HmfModelData_Unk64_Unk3C_Struct allocated by
+   func_801122D0_stardust_battle, with a third display list. */
+typedef struct UnkStardustBattleGfxData {
+    /* 0x00 */ Gfx *unk00[4];
+    /* 0x10 */ void *unk10;
+    /* 0x14 */ void *unk14;
+    /* 0x18 */ void *unk18;
+} UnkStardustBattleGfxData; // sizeof 0x1C
+
 /* Work data of the object created by func_80108B34_stardust_battle. */
 typedef struct UnkStardustBattleStage {
     /* 0x00 */ s16 unk_00;
@@ -146,7 +208,7 @@ typedef struct UnkStardustBattleStage {
     /* 0x18 */ f32 unk_18;
     /* 0x1C */ f32 unk_1C;
     /* 0x20 */ s16 unk_20;
-    /* 0x24 */ void *unk_24;
+    /* 0x24 */ UnkStardustBattlePoint *unk_24;
     /* 0x28 */ UnkStardustBattleStreak *streaks;
     /* 0x2C */ s16 unk_2C;
     /* 0x30 */ void (*func_30)(omObjData *);
@@ -156,13 +218,25 @@ typedef struct UnkStardustBattleStage {
 /* Work data of the player object, packed into omObjData.work and retrieved
    with func_80111FEC_stardust_battle. */
 typedef struct UnkStardustBattleObj {
-    /* 0x00 */ char unk_00[0x0A];
+    /* 0x00 */ s16 unk_00;
+    /* 0x02 */ char unk_02[0x02];
+    /* 0x04 */ s16 unk_04;
+    /* 0x06 */ char unk_06[0x04];
     /* 0x0A */ s16 unk_0A;
-    /* 0x0C */ char unk_0C[0x06];
+    /* 0x0C */ s16 unk_0C;
+    /* 0x0E */ s16 unk_0E;
+    /* 0x10 */ char unk_10[0x02];
     /* 0x12 */ s16 unk_12;
-    /* 0x14 */ char unk_14[0x10];
+    /* 0x14 */ char unk_14[0x04];
+    /* 0x18 */ s32 unk_18;
+    /* 0x1C */ s32 unk_1C;
+    /* 0x20 */ s16 unk_20;
+    /* 0x22 */ s16 pad;
     /* 0x24 */ s16 character;
-    /* 0x26 */ char unk_26[0x12];
+    /* 0x26 */ char unk_26[0x06];
+    /* 0x2C */ f32 unk_2C;
+    /* 0x30 */ f32 unk_30;
+    /* 0x34 */ f32 unk_34;
     /* 0x38 */ s16 unk_38;
     /* 0x3A */ s16 unk_3A;
     /* 0x3C */ s16 unk_3C;
@@ -199,12 +273,79 @@ extern void (*D_80113E78_stardust_battle[])(omObjData *);
 extern void (*D_80113E84_stardust_battle[])(omObjData *);
 extern s32 D_80113EF0_stardust_battle[];
 extern s32 D_80113EFC_stardust_battle[];
+extern s32 D_80114AA0_stardust_battle;
+extern s32 D_80114AA4_stardust_battle;
+extern s32 D_80114AA8_stardust_battle;
+extern s32 D_80114AC0_stardust_battle;
+extern s32 D_80114AC4_stardust_battle;
+extern s16 D_80114ACC_stardust_battle;
+extern s16 D_80114ACE_stardust_battle;
+extern HuMtx4F D_80114AD0_stardust_battle;
+extern UnkStardustBattleActor *D_80114B1C_stardust_battle;
+extern s32 D_80114B24_stardust_battle;
+extern s16 *D_80114B28_stardust_battle;
+extern s16 D_80113DBC_stardust_battle[];
+extern s16 D_80113DC4_stardust_battle[];
+extern s16 D_80113DCC_stardust_battle[];
+extern omObjData *D_80114A98_stardust_battle;
+extern s32 D_80114A9C_stardust_battle;
+extern UnkStardustBattleStarDist D_80114A40_stardust_battle[10];
+extern UnkStardustBattleStarDist D_80114A90_stardust_battle;
+extern omObjData *D_80114B34_stardust_battle;
+extern s16 D_80113CE0_stardust_battle[];
+extern s16 D_80113CF0_stardust_battle[];
+extern s32 D_80113ED0_stardust_battle[];
+extern s32 D_80113ED8_stardust_battle[];
+extern UnkStardustBattleNearPoint D_80114940_stardust_battle[32];
+extern s16 D_800CD1B0_main;
+extern s16 *D_800D04B4_main;
+extern HuMtx4F *D_800D1358_main;
+extern s16 D_800D138A_main;
+extern HuMtx4F D_800D5A00_main[];
+extern s32 D_80113DEC_stardust_battle[];
+extern Vec D_80113CB0_stardust_battle[];
+extern u8 D_800D6A90_main;
+extern D_80111B50_vine_with_me_Struct D_80114BB8_stardust_battle;
+extern s32 D_80114AAC_stardust_battle;
+extern s32 D_80114AB0_stardust_battle;
+extern s32 D_80114AB4_stardust_battle;
+extern u8 D_80113DE8_stardust_battle;
+extern s16 D_80114B14_stardust_battle;
+extern s16 *D_80114B30_stardust_battle;
+extern omObjData *D_80114B48_stardust_battle;
+extern UnkStardustBattleEffect *D_80114B4C_stardust_battle;
+extern UnkStardustBattleColor D_80113CF4_stardust_battle;
+extern UnkStardustBattleCamera D_80114B60_stardust_battle[2]; // target, origin
+extern s32 D_80114BA8_stardust_battle;
+extern s32 D_80114BAC_stardust_battle;
+extern Gfx D_80114020_stardust_battle[];
+extern s16 D_800CDD6A_main;
+extern s32 D_80113F08_stardust_battle;
+extern s32 D_80113F0C_stardust_battle;
+extern s32 D_80113F10_stardust_battle;
+extern f32 D_80113F14_stardust_battle[];
+extern s32 D_80114BB0_stardust_battle;
+extern s32 D_80114BB4_stardust_battle;
+extern s32 D_80114AB8_stardust_battle;
+extern s32 D_80114ABC_stardust_battle;
+extern UnkStardustBattleObj *D_80114AC8_stardust_battle;
+
+const s16 D_80114100_stardust_battle[] = {
+    0x8272, 0x8273, 0x8260, 0x8271, 0x8273, 0x0000
+};
+
+const s16 D_8011410C_stardust_battle[] = {
+    0x8265, 0x8268, 0x826D, 0x8268, 0x8272, 0x8267, 0x0000
+};
 
 /* Call sites pass only the object and use the result as a pointer, so this
    can't use the definition's full prototype. */
 u32 func_80111FEC_stardust_battle(); // Unprototyped: called with varying argument counts.
 void func_80108120_stardust_battle(omObjData *object);
 void func_80108C14_stardust_battle(omObjData *object);
+void func_80108D84_stardust_battle(omObjData *object);
+void func_80108EC4_stardust_battle(s16 model, f32 u, f32 v, s32 width, s32 height, s16 index);
+void func_80109128_stardust_battle(s16 mode);
 void func_80107DCC_stardust_battle(omObjData *object, s16 mode);
 void func_8010FBCC_stardust_battle(omObjData *object);
 void func_8010C5A8_stardust_battle(s16 count, s16 arg1);
@@ -216,14 +357,136 @@ void func_8010A5A4_stardust_battle(omObjData *object);
 void func_8010C1F8_stardust_battle(s16 motion, s16 startTime, s16 endTime, u8 attr);
 void func_8010DF70_stardust_battle(s16 index);
 f32 func_80111EB8_stardust_battle(f32 x, f32 y);
+f32 func_80111B28_stardust_battle(f32 arg0, f32 arg1);
+void func_801119D4_stardust_battle(s32 camIndex);
+f32 func_80111DF8_stardust_battle(f32 t, f32 start, f32 end);
+f32 func_80111E10_stardust_battle(f32 arg0, f32 arg1, f32 arg2);
+void func_801117E4_stardust_battle(f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom, s32 frames);
+f32 func_80111C2C_stardust_battle(f32 target, f32 current, f32 step);
+s32 func_8010A04C_stardust_battle(f32 x, f32 z, f32 arg2, f32 arg3, f32 arg4, f32 arg5);
+void func_8010C0C8_stardust_battle(void);
+void func_8010C44C_stardust_battle(void);
+void func_8010C498_stardust_battle(void);
+s16 func_8010C508_stardust_battle(void);
+void func_80105D18_stardust_battle(omObjData *object);
+void func_80105DA0_stardust_battle(omObjData *object);
+void func_80108B34_stardust_battle(void);
+void func_8010F5E0_stardust_battle(void);
+void func_8010FA60_stardust_battle(void);
+void func_80106D0C_stardust_battle(void);
+void func_80106EB0_stardust_battle(omObjData *object);
+void func_8010A74C_stardust_battle(void);
+void func_8010CB34_stardust_battle(void);
+void func_8010CE5C_stardust_battle(omObjData *object);
+void func_801107E4_stardust_battle(void);
+void func_8010EE7C_stardust_battle(void);
+void func_8010F0E8_stardust_battle(omObjData *object);
+void func_801115F8_stardust_battle(s32 arg0);
+void func_80111004_stardust_battle(omObjData *object);
+void func_80107F34_stardust_battle(f32 step);
+void func_8010F400_stardust_battle(s16 index, s32 frames);
+void func_8010F580_stardust_battle(s16 index);
+void func_8010F5B0_stardust_battle(s16 index);
+void func_8010F73C_stardust_battle(omObjData *object);
+u16 func_8010EE38_stardust_battle(s32 dirAndFile);
+s32 func_80112980_stardust_battle(HuSprite_Unk84_Struct *sprite, u8 *color);
+s32 func_80113568_stardust_battle(HuSprite_Unk84_Struct *sprite, u16 model, u8 *color);
+s32 func_801138A0_stardust_battle(HuSprite_Unk84_Struct *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset);
+void func_8011376C_stardust_battle(u16 model, HuSprite_Unk84_Struct *sprite, u16 frame, u8 *color);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_801059A0_stardust_battle);
+void func_801059A0_stardust_battle(void) {
+    u8 camIndex;
+    s32 level;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80105D18_stardust_battle);
+    func_8001FE20_main(50);
+    omInitObjMan(50, 10);
+    func_8004A208_main();
+    func_800142A0_main(64);
+    omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    Hu3DGLightColorSet(0, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightDirSet(1, -56.0f, 50.0f, 56.0f);
+    func_8000B5F0_main(1);
+    camIndex = func_8000B638_main();
+    ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
+    ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
+    Hu3DCameraPerspectiveSet(0, 30.0f, 80.0f, 4000.0f);
+    D_800EC280_minigame = 0;
+    D_800EBE28_minigame = 0;
+    D_800EC1B8_minigame = 0;
+    D_80114AB0_stardust_battle = 0;
+    D_80114AA4_stardust_battle = 0;
+    D_80114AA0_stardust_battle = 0;
+    D_80114AA8_stardust_battle = 0;
+    D_80114AAC_stardust_battle = 0;
+    D_80114AB8_stardust_battle = -1;
+    D_80114ABC_stardust_battle = 0;
+    D_80114AC0_stardust_battle = 0;
+    D_80114B14_stardust_battle = 1;
+    D_80114B24_stardust_battle = 9;
+    D_80114B28_stardust_battle = D_80113DBC_stardust_battle;
+    D_80114AC4_stardust_battle = 1;
+    D_80114AC0_stardust_battle = _CheckFlag(0x1C);
+    if (D_80114AC0_stardust_battle != 0) {
+        D_80114AC0_stardust_battle = 1;
+        D_80114AB4_stardust_battle = GWMgRecordGet(9);
+        if (D_80114AB4_stardust_battle == 0) {
+            D_80114AB4_stardust_battle = 4500;
+        }
+    }
+    if ((GwSystem.playMode & 4) && !_CheckFlag(0x1C)) {
+        level = GwStory.unk2;
+    } else {
+        level = 2;
+    }
+    switch (level) {
+        case 0:
+            D_80114B24_stardust_battle = 3;
+            D_80114B28_stardust_battle = D_80113DCC_stardust_battle;
+            break;
+        case 1:
+            D_80114B24_stardust_battle = 6;
+            D_80114B28_stardust_battle = D_80113DC4_stardust_battle;
+            break;
+        default:
+            D_80114B24_stardust_battle = 9;
+            D_80114B28_stardust_battle = D_80113DBC_stardust_battle;
+            break;
+    }
+    D_80114ACC_stardust_battle = -1;
+    D_80114ACE_stardust_battle = 0;
+    D_80114B30_stardust_battle = HuMemAllocTag(0x40, TAG_OVERLAY);
+    D_80114AC8_stardust_battle = NULL;
+    D_80114B10_stardust_battle = NULL;
+    D_80114B18_stardust_battle = NULL;
+    D_80114B1C_stardust_battle = NULL;
+    D_80114B2C_stardust_battle = NULL;
+    D_80114B58_stardust_battle = NULL;
+    D_80114B5C_stardust_battle = NULL;
+    guMtxIdentF(D_80114AD0_stardust_battle);
+    D_80114A98_stardust_battle = omAddObj(0x20, 0, 0, -1, func_80105D18_stardust_battle);
+    memset(&D_80114BB8_stardust_battle, 0, 0x28);
+    D_80114BB8_stardust_battle.unk01 = 4;
+    func_800E5EA0_minigame(&D_80114BB8_stardust_battle);
+    func_80045010_main(D_80114100_stardust_battle, 1);
+    func_80045010_main(D_8011410C_stardust_battle, 1);
+}
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", D_80114100_stardust_battle);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", D_8011410C_stardust_battle);
+void func_80105D18_stardust_battle(omObjData *object) {
+    object->func = func_80105DA0_stardust_battle;
+    func_80108B34_stardust_battle();
+    func_8010F5E0_stardust_battle();
+    func_8010FA60_stardust_battle();
+    func_80106D0C_stardust_battle();
+    func_8010A74C_stardust_battle();
+    func_8010CB34_stardust_battle();
+    func_801107E4_stardust_battle();
+    func_8010EE7C_stardust_battle();
+    D_80114B54_stardust_battle = func_8000D658_main(0x1CA9, 10);
+    if (_CheckFlag(10)) {
+        D_80114A9C_stardust_battle = 1;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80105DA0_stardust_battle);
 
@@ -247,15 +510,216 @@ void func_801065D8_stardust_battle(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80106690_stardust_battle);
+void func_80106690_stardust_battle(void) {
+    switch (D_80114ABC_stardust_battle) {
+        case 0:
+            if (D_80114AB0_stardust_battle < D_80114AB4_stardust_battle) {
+                D_80114ABC_stardust_battle = 2;
+            } else if (func_8010C508_stardust_battle() == 14) {
+                func_8010C498_stardust_battle();
+                D_80114ABC_stardust_battle = 16;
+                D_80114AA4_stardust_battle = 0;
+            }
+            break;
+        case 2:
+            if (D_80113DE8_stardust_battle == 2) {
+                if (func_8010C508_stardust_battle() == 12) {
+                    func_8010C0C8_stardust_battle();
+                    D_80113DE8_stardust_battle = 1;
+                }
+            } else if (D_80113DE8_stardust_battle == 1 && func_8010C508_stardust_battle() == 14) {
+                func_8010C498_stardust_battle();
+                D_80113DE8_stardust_battle = 0;
+            }
+            if (D_80114AA4_stardust_battle > 15.0f) {
+                D_80114AB4_stardust_battle = D_80114AB0_stardust_battle;
+                GWMgRecordSet(9, (u16)D_80114AB4_stardust_battle);
+                func_8010F400_stardust_battle(0, D_80114AB0_stardust_battle);
+                func_8010F400_stardust_battle(1, D_80114AB4_stardust_battle);
+                func_8010F580_stardust_battle(1);
+                GMesCreate(0x1B);
+                D_80114AAC_stardust_battle = 99;
+                D_80114ABC_stardust_battle++;
+            }
+            break;
+        case 3:
+            if (D_80113DE8_stardust_battle == 2) {
+                if (func_8010C508_stardust_battle() == 12) {
+                    func_8010C0C8_stardust_battle();
+                    D_80113DE8_stardust_battle = 1;
+                }
+            } else if (D_80113DE8_stardust_battle == 1 && func_8010C508_stardust_battle() == 14) {
+                func_8010C498_stardust_battle();
+                D_80113DE8_stardust_battle = 0;
+            }
+            if (GMesStatGet() == 0) {
+                D_80114AA4_stardust_battle = 0;
+                D_80114ABC_stardust_battle++;
+            }
+            break;
+        case 4:
+            if (D_80113DE8_stardust_battle == 2) {
+                if (func_8010C508_stardust_battle() == 12) {
+                    func_8010C0C8_stardust_battle();
+                    D_80113DE8_stardust_battle = 1;
+                }
+            } else if (D_80113DE8_stardust_battle == 1 && func_8010C508_stardust_battle() == 14) {
+                func_8010C498_stardust_battle();
+                D_80113DE8_stardust_battle = 0;
+            }
+            if (D_80114AA4_stardust_battle >= 15) {
+                HuAudSeqPlay(0x6A);
+                D_80114AC8_stardust_battle->unk_04 = 13;
+                GMesCreate(0x16, D_80114AC8_stardust_battle->character);
+                D_80114AA4_stardust_battle = 0;
+                D_80114ABC_stardust_battle++;
+            }
+            break;
+        case 5:
+            if (GMesStatGet() == 0) {
+                D_80114AA4_stardust_battle = 0;
+                D_80114ABC_stardust_battle++;
+            }
+            break;
+        case 16:
+            if (D_80114AA4_stardust_battle > 60.0f) {
+                D_80114AC8_stardust_battle->unk_04 = 13;
+                GMesCreate(0x16, D_80114AC8_stardust_battle->character);
+                HuAudSeqPlay(0x65);
+                D_80114AAC_stardust_battle = 98;
+                D_80114ABC_stardust_battle++;
+            }
+            break;
+        case 17:
+            if (GMesStatGet() == 0) {
+                D_80114AA4_stardust_battle = 0;
+                D_80114ABC_stardust_battle++;
+            }
+            break;
+        case 6:
+        case 18:
+            if (D_80114AA4_stardust_battle >= 15) {
+                D_80114AB8_stardust_battle = 32;
+                D_80114AA4_stardust_battle = 0;
+                D_80114ABC_stardust_battle++;
+            }
+            break;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80106A3C_stardust_battle);
+void func_80106A3C_stardust_battle(void) {
+    switch (D_80114ABC_stardust_battle) {
+        case 0:
+            if (func_8010C508_stardust_battle() == 14) {
+                D_80114AC8_stardust_battle->unk_04 = 14;
+                func_8010C44C_stardust_battle();
+                D_80114AA4_stardust_battle = 0;
+                D_80114ABC_stardust_battle++;
+            }
+            break;
+        case 1:
+            if (D_80114AA4_stardust_battle >= 15.0f) {
+                GMesCreate(0x1D);
+                HuAudSeqPlay(0x6B);
+                D_80114AAC_stardust_battle = 132;
+                D_80114AA4_stardust_battle = 0;
+                D_80114ABC_stardust_battle++;
+            }
+            break;
+        case 2:
+            if (GMesStatGet() == 0) {
+                D_80114AA4_stardust_battle = 0;
+                D_80114ABC_stardust_battle++;
+            }
+            break;
+        case 3:
+            if (D_80114AA4_stardust_battle >= 15) {
+                D_80114AB8_stardust_battle = 32;
+                D_80114AA4_stardust_battle = 0;
+                D_80114ABC_stardust_battle++;
+            }
+            break;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80106B60_stardust_battle);
+void func_80106B60_stardust_battle(void) {
+    switch (D_80114ABC_stardust_battle) {
+        case 0:
+            func_80107F34_stardust_battle(5.0f);
+            if (func_8010C508_stardust_battle() == 14) {
+                func_8010C498_stardust_battle();
+                D_80114AA4_stardust_battle = 0;
+                D_80114ABC_stardust_battle++;
+            }
+            break;
+        case 1:
+            func_80107F34_stardust_battle(5.0f);
+            if (D_80114AA4_stardust_battle >= 150.0f) {
+                D_80114AB8_stardust_battle = 64;
+                D_80114AA4_stardust_battle = 0;
+                D_80114ABC_stardust_battle++;
+            }
+            break;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80106C30_stardust_battle);
+void func_80106C30_stardust_battle(void) {
+    switch (D_80114ABC_stardust_battle) {
+        case 0:
+            D_80114AC8_stardust_battle->unk_04 = 14;
+            D_80114AA4_stardust_battle = 0;
+            D_80114ABC_stardust_battle++;
+            break;
+        case 1:
+            if (func_8010C508_stardust_battle() == 14) {
+                func_8010C44C_stardust_battle();
+                D_80114AA4_stardust_battle = 0;
+                D_80114ABC_stardust_battle++;
+            }
+            break;
+        case 2:
+            if (D_80114AA4_stardust_battle >= 30.0f) {
+                D_80114AB8_stardust_battle = 64;
+                D_80114AA4_stardust_battle = 0;
+                D_80114ABC_stardust_battle++;
+            }
+            break;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80106D0C_stardust_battle);
+void func_80106D0C_stardust_battle(void) {
+    UnkStardustBattleObj *obj;
+    omObjData *object;
+    s16 i;
+
+    obj = D_80114AC8_stardust_battle = HuMemAllocTag(sizeof(UnkStardustBattleObj), TAG_OVERLAY);
+    func_800E19F0_minigame(0);
+    func_800E18D8_minigame();
+    for (i = 0; i < 4; i++) {
+        if (GwPlayer[D_80113DEC_stardust_battle[i]].group == 0) {
+            break;
+        }
+    }
+    if (i >= 4) {
+        i = 0;
+    }
+    obj->unk_00 = i;
+    obj->unk_20 = D_80113DEC_stardust_battle[i];
+    object = omAddObj(16, 11, 60, -1, func_80106EB0_stardust_battle);
+    D_800EC598_minigame[D_800EC280_minigame] = object;
+    D_800EC280_minigame++;
+    object->trans.x = D_80113CB0_stardust_battle[obj->unk_00].x;
+    object->trans.z = D_80113CB0_stardust_battle[obj->unk_00].z;
+    obj->unk_2C = object->trans.x;
+    obj->unk_30 = object->trans.y;
+    obj->unk_34 = object->trans.z;
+    obj->func_6C = NULL;
+    obj->func_70 = NULL;
+    obj->func_74 = NULL;
+    obj->func_78 = NULL;
+    memset(&obj->unk_3A, 0, 0x20);
+    func_80111FC0_stardust_battle(object, (u32)obj);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80106EB0_stardust_battle);
 
@@ -298,7 +762,13 @@ s16 func_80107E84_stardust_battle(s16 arg0) {
     return arg0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80107F34_stardust_battle);
+void func_80107F34_stardust_battle(f32 step) {
+    func_800E1BA8_minigame_ObjData *data = D_800EC598_minigame[0]->data;
+
+    data->unk3C = func_80111C2C_stardust_battle(atan2df(D_80114B18_stardust_battle->trans.x - D_800EC598_minigame[0]->trans.x,
+                                                        D_80114B18_stardust_battle->trans.z - D_800EC598_minigame[0]->trans.z),
+                                                data->unk3C, step);
+}
 
 s16 func_80107FA4_stardust_battle(void) {
     UnkStardustBattleObj *obj;
@@ -380,9 +850,40 @@ void func_80108120_stardust_battle(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_801081FC_stardust_battle);
+void func_801081FC_stardust_battle(omObjData *object) {
+    f32 x = object->trans.x;
+    f32 z = object->trans.z;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_801082C4_stardust_battle);
+    if (x > 200.0) {
+        x = 200.0f;
+    } else if (x < -200.0) {
+        x = -200.0f;
+    }
+    if (z > 300.0) {
+        z = 300.0f;
+    }
+    func_801117E4_stardust_battle(x, CAMERA_KEEP, z, CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP, 1);
+}
+
+void func_801082C4_stardust_battle(omObjData *object) {
+    UnkStardustBattleObj *obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(D_800EC598_minigame[0]);
+    func_800E1BA8_minigame_ObjData *data = object->data;
+
+    if (obj->unk_04 != -1 && data->unk38 == 1000.0f && !(func_800E4A90_minigame(object) & 0x8C00)) {
+        if (obj->unk_04 == 13) {
+            if (func_80111B28_stardust_battle(0.0f, data->unk3C) < 5.0f) {
+                data->unk3C = 0.0f;
+            } else {
+                data->unk3C = func_80111C2C_stardust_battle(0.0f, data->unk3C, 5.0f);
+                return;
+            }
+        }
+        Hu3DData[object->model[0]].motIdShape = 0xFF;
+        func_800E5798_minigame(object, (u16)obj->unk_04);
+        func_80045F1C_main(obj->unk_04 == 13 ? obj->unk_18 : obj->unk_1C, -1, obj->unk_20);
+        obj->unk_04 = -1;
+    }
+}
 
 void func_80108404_stardust_battle(void) {
     D_800EB744_minigame = 1.47f;
@@ -407,9 +908,68 @@ void func_80108454_stardust_battle(void) {
     obj->unk_0A = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_801084B0_stardust_battle);
+void func_801084B0_stardust_battle(omObjData *object) {
+    UnkStardustBattleObj *obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(object);
+    f32 stickX = D_800CBB6E_main[obj->pad];
+    f32 stickY = D_800D20A1_main[obj->pad];
+    f32 scale;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_801086E8_stardust_battle);
+    if (stickX > 60.0f) {
+        stickX = 60.0f;
+    } else if (stickX < -60.0f) {
+        stickX = -60.0f;
+    } else {
+        stickX = D_800CBB6E_main[obj->pad];
+    }
+    if (stickY > 60.0f) {
+        stickY = 60.0f;
+    } else if (stickY < -60.0f) {
+        stickY = -60.0f;
+    } else {
+        stickY = D_800D20A1_main[obj->pad];
+    }
+    if (fabs(stickX) < 8.0) {
+        stickX = 0.0f;
+    }
+    if (fabs(stickY) < 8.0) {
+        stickY = 0.0f;
+    }
+    scale = sqrtf(stickX * stickX + stickY * stickY);
+    if (scale != 0.0f) {
+        scale = 1.0f / scale;
+    } else {
+        scale = 0.0f;
+    }
+    D_800CBB6E_main[obj->pad] = stickX * scale * 60.0f * 0.8f;
+    D_800D20A1_main[obj->pad] = stickY * scale * 60.0f * 0.8f;
+}
+
+void func_801086E8_stardust_battle(omObjData *object) {
+    UnkStardustBattleObj *obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(object);
+    s32 stickX;
+    s32 stickY;
+
+    if (object->trans.y == 0.0f && ((stickX = D_800CBB6E_main[obj->pad], ABS(stickX) > 16) ||
+                                    (stickY = D_800D20A1_main[obj->pad], ABS(stickY) > 16))) {
+        obj->unk_0C = 1;
+    } else {
+        obj->unk_0C = 0;
+    }
+    if (obj->unk_0C != 0) {
+        obj->unk_0E++;
+    } else {
+        obj->unk_0E = 0;
+    }
+    if (D_80114B14_stardust_battle != 1) {
+        if ((object->trans.y != 0.0f || !(obj->unk_30 > 0.0f)) && obj->unk_0C != 0 && obj->unk_0E == 20) {
+            obj->unk_0E = 0;
+        }
+        if (!(obj->unk_0A & 0xF)) {
+            func_8010A04C_stardust_battle(D_80114B18_stardust_battle->trans.x, D_80114B18_stardust_battle->trans.z,
+                                          37.5f, 7.5000005f, 0.0f, 0.0f);
+        }
+    }
+}
 
 void func_8010882C_stardust_battle(omObjData *object) {
     UnkStardustBattleObj *obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(object);
@@ -501,11 +1061,99 @@ void func_80108B34_stardust_battle(void) {
     func_800E1490_minigame(0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80108C14_stardust_battle);
+void func_80108C14_stardust_battle(omObjData *object) {
+    UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(object);
+    D_800EC1C0_minigame_ObjData *work;
+    HmfData *hmf;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80108D84_stardust_battle);
+    work = HuMemAllocTag(0xB4, TAG_OVERLAY);
+    object->data = work;
+    memset(work, 0, 0xB4);
+    work->unk03 = 1;
+    work->unk04 = 0;
+    func_800E131C_minigame(object, 20.0f);
+    func_800E1304_minigame(object, 1.0f);
+    func_800E1310_minigame(object, 10.0f);
+    func_800E1370_minigame(object, 2, 0.0f);
+    func_80109128_stardust_battle(0);
+    object->model[2] = func_8000B108_main(0x62000A, 0x19);
+    Hu3DModelScaleSet(object->model[2], 1.75f, 1.5f, 1.5f);
+    Hu3DModelPosSet(object->model[2], 0.0f, -200.0f, 0.0f);
+    func_8001C954_main(object->model[2]);
+    hmf = Hu3DData[object->model[2]].hmf;
+    stage->unk_02 = func_8002C834_main(hmf, "stardast-cyl10");
+    stage->unk_04 = func_8002C834_main(hmf, "stardast-cyl5_1");
+    stage->unk_08 = stage->unk_0C = 0.0f;
+    stage->unk_10 = stage->unk_14 = 0.0f;
+    stage->unk_18 = stage->unk_1C = 0.0f;
+    object->func = func_80108D84_stardust_battle;
+}
 
+void func_80108D84_stardust_battle(omObjData *object) {
+    UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(object);
+
+    if (omPauseChk() + D_800D6A90_main == 0) {
+        stage->unk_0C += 2.0f;
+        if (stage->unk_0C >= 64.0f) {
+            stage->unk_0C -= 128.0f;
+        }
+        stage->unk_10 -= 0.25f;
+        if (stage->unk_10 <= -32.0f) {
+            stage->unk_10 += 64.0f;
+        }
+    }
+    func_80108EC4_stardust_battle(object->model[2], stage->unk_08, stage->unk_0C, 64, 64, stage->unk_02);
+    func_80108EC4_stardust_battle(object->model[2], stage->unk_10, stage->unk_14, 32, 32, stage->unk_04);
+    if (stage->func_30 != NULL) {
+        stage->func_30(object);
+    }
+}
+
+#ifdef NON_MATCHING
+// Register allocation differs (hmf is assigned a0 instead of a1) and some instructions are scheduled differently.
+/* Scrolls the texture coordinates of one of the model's objects. */
+void func_80108EC4_stardust_battle(s16 model, f32 u, f32 v, s32 width, s32 height, s16 index) {
+    HmfData *hmf = Hu3DData[model].hmf;
+    u16 wrapU;
+    u16 wrapV;
+    HmfModelData_Unk64_Unk60_Struct *obj;
+    Vtx *src;
+    Vtx *dst;
+    u16 count;
+    u16 du;
+    u16 dv;
+    s16 i;
+
+    if (hmf != NULL) {
+        wrapU = width << 5;
+        wrapV = height << 5;
+        obj = &hmf->unk60[index];
+        count = obj->unk2A;
+        src = &hmf->unk40[obj->unk28];
+        dst = &hmf->unk44[D_800D2008_main][obj->unk28];
+        du = u * 32.0f;
+        dv = v * 32.0f;
+        if (u < 0.0f) {
+            u = -u;
+        }
+        if (v < 0.0f) {
+            v = -v;
+        }
+        if (wrapU < u * 32.0f) {
+            du %= wrapU;
+        }
+        if (wrapV < v * 32.0f) {
+            dv %= wrapV;
+        }
+        for (i = 0; i < (s16)count; i++, src++, dst++) {
+            dst->v.tc[0] = du + src->v.tc[0];
+            dst->v.tc[1] = dv + src->v.tc[1];
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80108EC4_stardust_battle);
+#endif
 
 void func_80109128_stardust_battle(s16 mode) {
     omObjData *object;
@@ -654,7 +1302,52 @@ s32 func_8010A04C_stardust_battle(f32 x, f32 z, f32 arg2, f32 arg3, f32 arg4, f3
     return -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_8010A204_stardust_battle);
+/* Spawns a streak at the closest point of the stage's point list, if any is
+   within range of the given position. */
+s16 func_8010A204_stardust_battle(f32 x, f32 z, f32 arg2, f32 arg3, f32 arg4, f32 arg5) {
+    UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(D_800EC1C0_minigame[0]);
+    UnkStardustBattlePoint *point;
+    f32 dx;
+    f32 dz;
+    f32 best;
+    s32 bestIndex;
+    s32 count;
+    s32 i;
+
+    if (stage->streaks == NULL) {
+        return -1;
+    }
+    if (stage->unk_24 == NULL) {
+        return -1;
+    }
+    point = stage->unk_24;
+    count = 0;
+    for (i = 0; i < stage->unk_20; i++, point++) {
+        dx = point->x - x;
+        dz = point->z - z;
+        if (fabs(dx) < 100.0 && fabs(dz) < 100.0) {
+            D_80114940_stardust_battle[count].distSq = dx * dx + dz * dz;
+            D_80114940_stardust_battle[count].index = i;
+            count++;
+            if (count >= 32) {
+                break;
+            }
+        }
+    }
+    if (count != 0) {
+        bestIndex = D_80114940_stardust_battle[0].index;
+        best = D_80114940_stardust_battle[0].distSq;
+        for (i = 1; i < count; i++) {
+            if (D_80114940_stardust_battle[i].distSq < best) {
+                bestIndex = D_80114940_stardust_battle[i].index;
+                best = D_80114940_stardust_battle[i].distSq;
+            }
+        }
+        x = stage->unk_24[bestIndex].x;
+        z = stage->unk_24[bestIndex].z;
+    }
+    return func_8010A04C_stardust_battle(x, z, arg2, arg3, arg4, arg5);
+}
 
 void func_8010A418_stardust_battle(void) {
     UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle();
@@ -719,7 +1412,17 @@ void func_8010A5E0_stardust_battle(omObjData *object) {
     stage->func_30 = func_8010A690_stardust_battle;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_8010A690_stardust_battle);
+void func_8010A690_stardust_battle(omObjData *object) {
+    UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(object);
+
+    if (omPauseChk() + D_800D6A90_main == 0) {
+        stage->unk_1C += 2.0f;
+        if (stage->unk_1C >= 64.0f) {
+            stage->unk_1C -= 128.0f;
+        }
+    }
+    func_80108EC4_stardust_battle(object->model[0], stage->unk_18, stage->unk_1C, 64, 64, stage->unk_2C);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_8010A74C_stardust_battle);
 
@@ -915,7 +1618,60 @@ Vec *func_8010CA48_stardust_battle(s16 index) {
     return &spot->pos;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_8010CB34_stardust_battle);
+void func_8010CB34_stardust_battle(void) {
+    UnkStardustBattleStars *stars;
+    UnkStardustBattleStar *star;
+    s32 i;
+
+    stars = HuMemAllocTag(sizeof(UnkStardustBattleStars), TAG_OVERLAY);
+    D_80114B2C_stardust_battle = stars;
+    memset(stars, 0, sizeof(UnkStardustBattleStars));
+    stars->modelId1 = func_8000B108_main(0x620005, 0x49D);
+    stars->modelId2 = func_8000B108_main(0x620006, 0x49D);
+    stars->effectId1 = func_8000B108_main(0, 0x149D);
+    stars->effectId2 = func_8000B108_main(0x620008, 0x189D);
+    stars->count = 10;
+    star = HuMemAllocTag(sizeof(UnkStardustBattleStar) * 10, TAG_OVERLAY);
+    stars->star = star;
+    memset(star, 0, stars->count * sizeof(UnkStardustBattleStar));
+    for (i = 0; i < stars->count; i++, star++) {
+        star->active = 0;
+        if (i == 0) {
+            star->model[0] = stars->modelId1;
+            star->model[2] = Hu3DModelLink(stars->modelId1);
+            star->model[1] = stars->modelId2;
+            star->model[3] = Hu3DModelLink(stars->modelId2);
+            star->model[4] = stars->effectId1;
+        } else {
+            star->model[0] = Hu3DModelLink(stars->modelId1);
+            star->model[2] = Hu3DModelLink(stars->modelId1);
+            star->model[1] = Hu3DModelLink(stars->modelId2);
+            star->model[3] = Hu3DModelLink(stars->modelId2);
+            star->model[4] = Hu3DModelLink(stars->effectId1);
+        }
+        func_8001C258_main(star->model[0], 4, 4);
+        func_8001C258_main(star->model[2], 4, 4);
+        func_8001C258_main(star->model[1], 4, 4);
+        func_8001C258_main(star->model[3], 4, 4);
+        func_8001C258_main(star->model[4], 4, 4);
+        mtxRotCat(Hu3DData[star->model[2]].mtx, 180.0f, 0.0f, 0.0f);
+        mtxRotCat(Hu3DData[star->model[2]].mtx, 0.0f, 180.0f, 0.0f);
+        mtxRotCat(Hu3DData[star->model[3]].mtx, 180.0f, 0.0f, 0.0f);
+        mtxRotCat(Hu3DData[star->model[3]].mtx, 0.0f, 180.0f, 0.0f);
+        star->model[5] = func_8000B108_main(0x620007, 0x189D);
+        Hu3DModelScaleSet(star->model[5], 0.75f, 0.75f, 0.75f);
+        func_8001C954_main(star->model[5]);
+        star->unk_0E = 0;
+        star->unk_10 = 0;
+        star->unk_12 = 0;
+        star->unk_68 = star->unk_6C = 0.0f;
+        star->unk_70 = star->unk_74 = star->unk_78 = 0.0f;
+        star->unk_14 = 0;
+        star->state = 3;
+        star->unk_1A = -1;
+    }
+    omSetStatBit(omAddObj(18, 0, 0, -1, func_8010CE5C_stardust_battle), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_8010CE5C_stardust_battle);
 
@@ -949,9 +1705,89 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", D_8011
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", D_801145A0_stardust_battle);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_8010DADC_stardust_battle);
+/* Activates a free star falling from pos towards target, returning its index
+   or -1 if none are free. */
+s16 func_8010DADC_stardust_battle(Vec *pos, Vec *target, f32 speed) {
+    UnkStardustBattleStars *stars;
+    UnkStardustBattleStar *star;
+    f32 y;
+    f32 step;
+    s32 frames;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_8010DE64_stardust_battle);
+    if (D_80114B2C_stardust_battle == NULL) {
+        return -1;
+    }
+    stars = D_80114B2C_stardust_battle;
+    star = stars->star;
+    for (i = 0; i < stars->count; i++, star++) {
+        if (star->active == 0) {
+            star->active = 1;
+            func_8001C258_main(star->model[0], 4, 0);
+            func_8001C258_main(star->model[5], 4, 0);
+            star->state = 0;
+            star->unk_14 = 0;
+            star->unk_18 = 1;
+            star->unk_0E = 0;
+            star->unk_10 = 0;
+            star->unk_12 = 4;
+            star->unk_68 = star->unk_6C = 0.0f;
+            star->x = pos->x;
+            star->y = pos->y;
+            star->z = pos->z;
+            star->unk_4C = target->x;
+            star->unk_50 = target->y;
+            star->unk_54 = target->z;
+            star->unk_44 = speed;
+            y = star->y;
+            step = star->unk_44;
+            for (frames = 0; frames < 256; frames++) {
+                y += step;
+                if (y < 0.0f) {
+                    break;
+                }
+            }
+            if (frames != 0) {
+                step = 1.0f / frames;
+            } else {
+                step = 1.0f;
+            }
+            star->unk_40 = (star->unk_4C - star->x) * step;
+            star->unk_48 = (star->unk_54 - star->z) * step;
+            star->unk_70 = atan2df(star->unk_40 * star->unk_40 + star->unk_48 * star->unk_48, -(star->unk_44 * star->unk_44));
+            star->unk_74 = atan2df(star->unk_40, star->unk_48);
+            star->unk_78 = 0.0f;
+            star->targetX = star->targetY = star->targetZ = 0.0f;
+            star->unk_1C = star->x;
+            star->unk_20 = star->y;
+            star->unk_24 = star->z;
+            star->unk_64 = atan2df(star->unk_40, star->unk_48);
+            Hu3DModelPosSet(star->model[0], star->x, star->y, star->z);
+            Hu3DModelPosSet(star->model[2], star->x, -star->y, star->z);
+            Hu3DModelPosSet(star->model[4], star->x, 0.0f, star->z);
+            func_8008A070_main(Hu3DData[star->model[0]].mtx);
+            func_8008A070_main(Hu3DData[star->model[1]].mtx);
+            Hu3DModelPosSet(star->model[5], star->x, star->y + 34.99999940395355, star->z);
+            Hu3DModelScaleSet(star->model[5], 0.75f, 0.75f, 0.75f);
+            func_8001CAA4_main(star->model[5], stars->effectId2, star->unk_68);
+            Hu3DModelRotSet(star->model[5], star->unk_70 + 180.0f, star->unk_74, 0.0f);
+            func_8008A070_main(Hu3DData[star->model[5]].mtx);
+            mtxRotCat(Hu3DData[star->model[5]].mtx, 0.0f, star->unk_78, 0.0f);
+            return i;
+        }
+    }
+    return -1;
+}
+
+/* Spawns a star falling towards target from a randomized position above it. */
+s16 func_8010DE64_stardust_battle(Vec *target, f32 speed) {
+    Vec pos;
+
+    pos.x = target->x + 400.0;
+    pos.z = target->z + (0.5 - (f32)(u8)(rand8() % 100) * 0.01) * 100.0 * 5.0;
+    pos.y = target->y + 600.0;
+    return func_8010DADC_stardust_battle(&pos, target, speed);
+}
 
 void func_8010DF70_stardust_battle(s16 index) {
     UnkStardustBattleStars *stars = D_80114B2C_stardust_battle;
@@ -972,7 +1808,75 @@ void func_8010DF70_stardust_battle(s16 index) {
     }
 }
 
+#ifdef NON_MATCHING
+// Register allocation: stars and data have swapped s4/s5, and v0/v1 are swapped when indexing the chosen star.
+/* Picks up the closest landed star in front of the object, returning its index
+   or -1 if there is none. */
+s16 func_8010E03C_stardust_battle(omObjData *object) {
+    UnkStardustBattleStars *stars;
+    UnkStardustBattleStar *star;
+    func_800E1BA8_minigame_ObjData *data;
+    f32 dx;
+    f32 dz;
+    f32 distSq;
+    f32 angle;
+    f32 range;
+    s32 count;
+    s32 i;
+    s32 j;
+
+    if (D_80114B2C_stardust_battle == NULL) {
+        return -1;
+    }
+    stars = D_80114B2C_stardust_battle;
+    star = stars->star;
+    data = object->data;
+    memset(D_80114A40_stardust_battle, 0, sizeof(D_80114A40_stardust_battle));
+    count = 0;
+    range = data->unk48 + 50.0 + 50.0;
+    range = range * range;
+    for (i = 0; i < stars->count; i++, star++) {
+        if (star->active != 0 && star->state == 3) {
+            dx = star->x - object->trans.x;
+            dz = star->z - object->trans.z;
+            distSq = dx * dx + dz * dz;
+            angle = atan2df(dx, dz);
+            if (distSq < range && fabs(func_80111B28_stardust_battle(angle, data->unk3C)) < 40.0) {
+                D_80114A40_stardust_battle[count].index = i;
+                D_80114A40_stardust_battle[count].distSq = distSq;
+                count++;
+            }
+        }
+    }
+    if (count <= 0) {
+        return -1;
+    }
+    if (count != 1) {
+        for (i = 0; i < count - 1; i++) {
+            for (j = i + 1; j < count; j++) {
+                if (D_80114A40_stardust_battle[i].distSq > D_80114A40_stardust_battle[j].distSq) {
+                    D_80114A90_stardust_battle = D_80114A40_stardust_battle[i];
+                    D_80114A40_stardust_battle[i] = D_80114A40_stardust_battle[j];
+                    D_80114A40_stardust_battle[j] = D_80114A90_stardust_battle;
+                }
+            }
+        }
+    }
+    star = &stars->star[D_80114A40_stardust_battle[0].index];
+    if (star->active != 0) {
+        func_8001C258_main(star->model[star->unk_10], 4, 0);
+        star->unk_58 = star->x;
+        star->unk_5C = star->y;
+        star->unk_60 = star->z;
+        HuAudFXPlay(0x507);
+        star->state = 4;
+        star->unk_14 = 0;
+    }
+    return D_80114A40_stardust_battle[0].index;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_8010E03C_stardust_battle);
+#endif
 
 /* Returns the indexed star, or NULL if the index is out of range or the star
    isn't in use. */
@@ -1039,7 +1943,76 @@ void func_8010E4C8_stardust_battle(s16 arg0, f32 arg1, f32 arg2, f32 arg3) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_8010E524_stardust_battle);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_8010EA04_stardust_battle);
+/* Pushes the object out of any nearby stars and the stardust actor. Note that
+   scale holds the squared push radius until it is first reused. */
+void func_8010EA04_stardust_battle(omObjData *object) {
+    UnkStardustBattleStars *stars;
+    UnkStardustBattleStar *star;
+    func_800E1BA8_minigame_ObjData *data;
+    f32 dx;
+    f32 dy;
+    f32 dz;
+    f32 dist;
+    f32 radius;
+    f32 height;
+    f32 scale;
+    s32 retries;
+    s32 i;
+
+    if (D_80114B2C_stardust_battle == NULL || D_80114B18_stardust_battle == NULL) {
+        return;
+    }
+    stars = D_80114B2C_stardust_battle;
+    star = stars->star;
+    data = object->data;
+    radius = (data->unk48 + 50.0) * 0.699999988079071;
+    height = data->unk34 * 0.7f;
+    scale = radius * radius;
+    retries = 16;
+    for (i = 0; i < stars->count; i++, star++) {
+        if (star->active == 0 || star->state == 4 || star->state == 5) {
+            continue;
+        }
+        dx = star->x - object->trans.x;
+        dy = star->y - object->trans.y;
+        dz = star->z - object->trans.z;
+        dist = dx * dx + dz * dz;
+        if (dist < scale && (dy > -50.0 && dy < height)) {
+            dist = sqrtf(dist);
+            if (dist != 0.0f) {
+                scale = radius / dist;
+            } else {
+                dz = radius;
+                scale = 1.0f;
+            }
+            object->trans.x = star->x - dx * scale;
+            object->trans.z = star->z - dz * scale;
+            if (retries != 0) {
+                retries--;
+                star = stars->star;
+                i = 0;
+            }
+        }
+    }
+    dx = D_80114B18_stardust_battle->trans.x - object->trans.x;
+    dz = D_80114B18_stardust_battle->trans.z - object->trans.z;
+    dy = D_80114B18_stardust_battle->trans.y + 34.99999940395355 - object->trans.y;
+    dist = dx * dx + dz * dz;
+    radius = (data->unk48 + 85.00000238418579) * 0.699999988079071;
+    scale = radius * radius;
+    if (dist < scale && (dy > -150.0 && dy < height)) {
+        dist = sqrtf(dist);
+        if (dist != 0.0f) {
+            scale = radius / dist;
+        } else {
+            dz = radius;
+            dx = 0.0f;
+            scale = 1.0f;
+        }
+        object->trans.x = D_80114B18_stardust_battle->trans.x - dx * scale;
+        object->trans.z = D_80114B18_stardust_battle->trans.z - dz * scale;
+    }
+}
 
 void func_8010ED7C_stardust_battle(void) {
     UnkStardustBattleStars *stars;
@@ -1068,9 +2041,101 @@ u16 func_8010EE38_stardust_battle(s32 dirAndFile) {
     return anim;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_8010EE7C_stardust_battle);
+void func_8010EE7C_stardust_battle(void) {
+    UnkStardustBattleScoreDisp *disp;
+    s32 sprGrp;
+    s32 i;
+    s32 j;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_8010F0E8_stardust_battle);
+    disp = D_80114B44_stardust_battle = HuMemAllocTag(sizeof(UnkStardustBattleScoreDisp) * 2, TAG_OVERLAY);
+    memset(disp, 0, sizeof(UnkStardustBattleScoreDisp) * 2);
+    D_80114B34_stardust_battle = omAddObj(29, 0, 0, -1, func_8010F0E8_stardust_battle);
+    D_80114B34_stardust_battle->work[2] = 0;
+    for (i = 0; i < 2; i++, disp++) {
+        disp->active = 1;
+        disp->sprGrp = -1;
+        disp->state = 0;
+        disp->timer = 0;
+        disp->unk_0C = 1.0f;
+        disp->scale = 1.0f;
+        disp->x = disp->y = 0;
+        if (!D_80114AC0_stardust_battle && i == 1) {
+            disp->active = 0;
+            continue;
+        }
+        D_80114B30_stardust_battle[i + 3] = func_8010EE38_stardust_battle(D_80113ED0_stardust_battle[i]);
+        disp->sprGrp = sprGrp = HuSprGrpCreate(8, 0);
+        for (j = 0; j < 8; j++) {
+            HuSprPosSet(sprGrp, j, D_80113CE0_stardust_battle[j], D_80113CF0_stardust_battle[i]);
+            HuSprGrpMemberSet(sprGrp, j, D_80114B30_stardust_battle[i + 3], 0);
+            func_80054FF8_main(sprGrp, j, 0);
+            HuSprAttrSet(sprGrp, j, 0x1000);
+            func_800550F4_main(sprGrp, j, 0);
+        }
+        HuSprAttrSet(sprGrp, 0, 0x8000);
+        func_80054FF8_main(sprGrp, 2, 10);
+        func_80054FF8_main(sprGrp, 5, 11);
+    }
+    func_8010F400_stardust_battle(0, D_80114AB0_stardust_battle);
+    if (D_80114AC0_stardust_battle != 0) {
+        func_8010F400_stardust_battle(1, D_80114AB4_stardust_battle);
+    }
+}
+
+void func_8010F0E8_stardust_battle(omObjData *object) {
+    UnkStardustBattleScoreDisp *disp = D_80114B44_stardust_battle;
+    u8 *digits;
+    f32 scale;
+    s32 center;
+    s32 i;
+    s32 j;
+    s32 sprGrp;
+
+    if (object->work[2] != 0) {
+        object->work[2]--;
+    }
+    for (i = 0; i < 2; i++, disp++) {
+        if (disp->active == 0) {
+            continue;
+        }
+        sprGrp = disp->sprGrp;
+        digits = D_80114B38_stardust_battle[i];
+        switch (disp->state) {
+            case 0:
+                break;
+            case 1:
+                disp->scale = sindf(disp->timer / 15.0f * 180.0f) + 1.0f;
+                if (disp->timer >= 15) {
+                    disp->scale = 1.0f;
+                    disp->state = 0;
+                }
+                scale = disp->scale;
+                center = disp->x + D_80113CE0_stardust_battle[3] + 6;
+                for (j = 0; j < 8; j++) {
+                    HuSprPosSet(sprGrp, j, disp->x + (center + (D_80113CE0_stardust_battle[j] - center) * scale),
+                                disp->y + D_80113CF0_stardust_battle[i]);
+                    HuSprScaleSet(sprGrp, j, scale, scale);
+                }
+                break;
+            case 2:
+                disp->x -= 3;
+                for (j = 0; j < 8; j++) {
+                    HuSprPosSet(sprGrp, j, disp->x + D_80113CE0_stardust_battle[j], disp->y + D_80113CF0_stardust_battle[i]);
+                }
+                if (disp->x < -74) {
+                    disp->state = 0;
+                }
+                break;
+        }
+        for (j = 0; j < 6; j++) {
+            if (digits[j] >= 10) {
+                digits[j] = 9;
+            }
+            func_80054FF8_main(sprGrp, D_80113ED8_stardust_battle[j], digits[j]);
+        }
+        disp->timer++;
+    }
+}
 
 /* Splits a frame count into minutes, seconds and hundredths, stored as the
    decimal digits of a time display. */
@@ -1116,11 +2181,117 @@ void func_8010F5B0_stardust_battle(s16 index) {
     D_80114B44_stardust_battle[index].timer = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_8010F5E0_stardust_battle);
+void func_8010F5E0_stardust_battle(void) {
+    HuSprite_Unk84_Struct *sprite;
+    UnkStardustBattleEffect *effect;
+    HmfModel *model;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_8010F73C_stardust_battle);
+    D_80114B30_stardust_battle[1] = func_8010EE38_stardust_battle(11);
+    sprite = func_80055194_main(D_80114B30_stardust_battle[1]);
+    D_80114B48_stardust_battle = omAddObj(30, 0, 0, -1, func_8010F73C_stardust_battle);
+    D_80114B4C_stardust_battle = effect = HuMemAllocTag(sizeof(UnkStardustBattleEffect) * 4, TAG_OVERLAY);
+    for (i = 0; i < 4; i++, effect++) {
+        if (i == 0) {
+            effect->model = func_80112980_stardust_battle(sprite, D_80113CF4_stardust_battle.rgba);
+        } else {
+            effect->model =
+                func_80113568_stardust_battle(sprite, D_80114B4C_stardust_battle[0].model, D_80113CF4_stardust_battle.rgba);
+        }
+        effect->active = 0;
+        effect->color = D_80113CF4_stardust_battle;
+        effect->frame = effect->speed = 0.0f;
+        effect->pos.x = effect->pos.y = effect->pos.z = 0.0f;
+        effect->vel.x = effect->vel.y = effect->vel.z = 0.0f;
+        effect->scale.x = effect->scale.y = effect->scale.z = 0.0f;
+        func_8001C258_main(effect->model, 4, 4);
+        model = &Hu3DData[effect->model];
+        model->motTime = 0.0f;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_8010F890_stardust_battle);
+void func_8010F73C_stardust_battle(omObjData *object) {
+    HuSprite_Unk84_Struct *sprite = func_80055194_main(D_80114B30_stardust_battle[1]);
+    UnkStardustBattleEffect *effect;
+    HmfModel *model;
+    s32 i;
+
+    for (i = 0, effect = D_80114B4C_stardust_battle; i < 4; i++, effect++) {
+        if (effect->active == 0) {
+            continue;
+        }
+        model = &Hu3DData[effect->model];
+        if (model->attr & 4) {
+            continue;
+        }
+        effect->pos.x += effect->vel.x;
+        effect->pos.y += effect->vel.y;
+        effect->pos.z += effect->vel.z;
+        model->pos.x = effect->pos.x;
+        model->pos.y = effect->pos.y;
+        model->pos.z = effect->pos.z;
+        model->scale.x = effect->scale.x;
+        model->scale.y = effect->scale.y;
+        model->scale.z = effect->scale.z;
+        func_8011376C_stardust_battle(effect->model, sprite, (s32)effect->frame, effect->color.rgba);
+        effect->frame += effect->speed;
+        if ((s32)effect->frame >= sprite->unk10) {
+            effect->active = 0;
+            effect->frame = 0.0f;
+            model->attr |= 4;
+        }
+    }
+}
+
+s32 func_8010F890_stardust_battle(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color) {
+    HuSprite_Unk84_Struct *sprite = func_80055194_main(D_80114B30_stardust_battle[1]);
+    UnkStardustBattleEffect *effect;
+    HmfModel *model;
+    s32 i;
+
+    for (i = 0, effect = D_80114B4C_stardust_battle; i < 4; i++, effect++) {
+        if (effect->active != 0) {
+            continue;
+        }
+        effect->active = 1;
+        model = &Hu3DData[effect->model];
+        if (pos != NULL) {
+            effect->pos.x = pos->x;
+            effect->pos.y = pos->y;
+            effect->pos.z = pos->z;
+        } else {
+            effect->pos.x = effect->pos.y = effect->pos.z = 0.0f;
+        }
+        if (vel != NULL) {
+            effect->vel.x = vel->x;
+            effect->vel.y = vel->y;
+            effect->vel.z = vel->z;
+        } else {
+            effect->vel.x = effect->vel.y = effect->vel.z = 0.0f;
+        }
+        if (scale != NULL) {
+            effect->scale.x = scale->x;
+            effect->scale.y = scale->y;
+            effect->scale.z = scale->z;
+        } else {
+            effect->scale.x = effect->scale.y = effect->scale.z = 1.0f;
+        }
+        memcpy(effect->color.rgba, color, sizeof(UnkStardustBattleColor));
+        effect->speed = speed;
+        effect->frame = 0.0f;
+        func_8011376C_stardust_battle(effect->model, sprite, 0, effect->color.rgba);
+        func_8001C258_main(effect->model, 4, 0);
+        model->motTime = 0.0f;
+        model->pos.x = effect->pos.x;
+        model->pos.y = effect->pos.y;
+        model->pos.z = effect->pos.z;
+        model->scale.x = effect->scale.x;
+        model->scale.y = effect->scale.y;
+        model->scale.z = effect->scale.z;
+        return i;
+    }
+    return -1;
+}
 
 void func_8010FA60_stardust_battle(void) {
     omObjData *object;
@@ -1257,17 +2428,326 @@ void func_801107C4_stardust_battle(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_801107E4_stardust_battle);
+void func_801107E4_stardust_battle(void) {
+    HuCamera *camera;
+    s32 i;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", D_801146FC_stardust_battle);
+    Center.x = 0.0f;
+    Center.y = 126.8f;
+    Center.z = -0.0f;
+    CRot.x = 330.505f;
+    CRot.y = 0.0f;
+    CRot.z = 0.0f;
+    CZoom = 2062.0f;
+    func_801115F8_stardust_battle(0);
+    func_801115F8_stardust_battle(1);
+    D_80114BB0_stardust_battle = 0;
+    D_80114BAC_stardust_battle = 0;
+    D_80114BA8_stardust_battle = 0;
+    D_80114BB4_stardust_battle = 0;
+    omAddObj(31, 0, 0, -1, func_80111004_stardust_battle);
+    camera = gCameraList;
+    for (i = 1; i < D_800D1FF0_main; i++) {
+        camera->viewports[i].vp.vscale[0] = camera->viewports[0].vp.vscale[0];
+        camera->viewports[i].vp.vscale[1] = camera->viewports[0].vp.vscale[1];
+        camera->viewports[i].vp.vscale[2] = camera->viewports[0].vp.vscale[2];
+        camera->viewports[i].vp.vtrans[0] = camera->viewports[0].vp.vtrans[0];
+        camera->viewports[i].vp.vtrans[1] = camera->viewports[0].vp.vtrans[1];
+        camera->viewports[i].vp.vtrans[2] = camera->viewports[0].vp.vtrans[2];
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80110914_stardust_battle);
+void func_80110914_stardust_battle(void) {
+    UnkStardustBattleCamera delta = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, 0.0f };
+    f32 speed;
 
+    speed = 1.0f;
+    switch (D_80113F08_stardust_battle) {
+        case 1:
+            if ((u16)D_800CDA7C_main[0] & A_BUTTON) {
+                speed = 8.0f;
+            }
+            if (D_800CDA7C_main[0] & B_BUTTON) {
+                speed = 0.5f;
+            }
+            if (D_800D5558_main[0] & START_BUTTON) {
+                Center.x = 0.0f;
+                Center.y = 191.2f;
+                Center.z = 0.2f;
+                CRot.x = -14.5f;
+                CRot.y = 0.0f;
+                CRot.z = 0.0f;
+                CZoom = 1069.0f;
+            } else {
+                delta.rot.x = (f32)D_800D20A1_main[0] * 0.125 * speed;
+                delta.rot.y = (f32)D_800CBB6E_main[0] * 0.125 * speed;
+                if (D_800CDA7C_main[0] & L_JPAD) {
+                    delta.center.x = speed * 2.0;
+                }
+                if (D_800CDA7C_main[0] & R_JPAD) {
+                    delta.center.x = -(speed * 2.0);
+                }
+                if (D_800CDA7C_main[0] & U_JPAD) {
+                    delta.center.z = -(speed * 2.0);
+                }
+                if (D_800CDA7C_main[0] & D_JPAD) {
+                    delta.center.z = speed * 2.0;
+                }
+                if (D_800CDA7C_main[0] & U_CBUTTONS) {
+                    delta.center.y = speed * 2.0;
+                }
+                if (D_800CDA7C_main[0] & D_CBUTTONS) {
+                    delta.center.y = -(speed * 2.0);
+                }
+                if (D_800CDA7C_main[0] & R_CBUTTONS) {
+                    delta.zoom = speed * 2.0;
+                }
+                if (D_800CDA7C_main[0] & L_CBUTTONS) {
+                    delta.zoom = -(speed * 2.0);
+                }
+                delta.center.x += Center.x;
+                delta.center.y += Center.y;
+                delta.center.z += Center.z;
+                delta.rot.x += CRot.x;
+                delta.rot.y += CRot.y;
+                delta.rot.z += CRot.z;
+                delta.zoom += CZoom;
+                func_801117E4_stardust_battle(delta.center.x, delta.center.y, delta.center.z, delta.rot.x,
+                                              delta.rot.y, delta.rot.z, delta.zoom, 1);
+            }
+            sprintf(D_800D5218_main, "CAMERA TEST_MODE");
+            print8((s16)D_80113F0C_stardust_battle + 20, (s16)D_80113F10_stardust_battle + 80,
+                   D_800D5218_main);
+            sprintf(D_800D5218_main, " CENTER X>%3.3f Y>%3.3f Z>%3.3f ", Center.x, Center.y, Center.z);
+            print8((s16)D_80113F0C_stardust_battle + 20, (s16)D_80113F10_stardust_battle + 88,
+                   D_800D5218_main);
+            sprintf(D_800D5218_main, " ROT    X>%3.3f Y>%3.3f Z>%3.3f ", CRot.x, CRot.y, CRot.z);
+            print8((s16)D_80113F0C_stardust_battle + 20, (s16)D_80113F10_stardust_battle + 96,
+                   D_800D5218_main);
+            sprintf(D_800D5218_main, " ZOOM   %3.3f ", CZoom);
+            print8((s16)D_80113F0C_stardust_battle + 20, (s16)D_80113F10_stardust_battle + 104,
+                   D_800D5218_main);
+            break;
+        case 2:
+            if ((D_800CDA7C_main[0] & R_JPAD) || (D_800CDA7C_main[0] & R_CBUTTONS)) {
+                D_80113F0C_stardust_battle++;
+            }
+            if (D_800CDA7C_main[0] & (L_JPAD | L_CBUTTONS)) {
+                D_80113F0C_stardust_battle--;
+            }
+            if (D_800CDA7C_main[0] & (D_JPAD | D_CBUTTONS)) {
+                D_80113F10_stardust_battle++;
+            }
+            if (D_800CDA7C_main[0] & (U_JPAD | U_CBUTTONS)) {
+                D_80113F10_stardust_battle--;
+            }
+            fontcolor = 8;
+            sprintf(D_800D5218_main, "CAMERA TEST_MODE ");
+            print8((s16)D_80113F0C_stardust_battle + 20, (s16)D_80113F10_stardust_battle + 80,
+                   D_800D5218_main);
+            sprintf(D_800D5218_main, " CENTER X>%3.3f Y>%3.3f Z>%3.3f ", Center.x, Center.y, Center.z);
+            print8((s16)D_80113F0C_stardust_battle + 20, (s16)D_80113F10_stardust_battle + 88,
+                   D_800D5218_main);
+            sprintf(D_800D5218_main, " ROT    X>%3.3f Y>%3.3f Z>%3.3f ", CRot.x, CRot.y, CRot.z);
+            print8((s16)D_80113F0C_stardust_battle + 20, (s16)D_80113F10_stardust_battle + 96,
+                   D_800D5218_main);
+            sprintf(D_800D5218_main, " ZOOM   %3.3f ", CZoom);
+            print8((s16)D_80113F0C_stardust_battle + 20, (s16)D_80113F10_stardust_battle + 104,
+                   D_800D5218_main);
+            break;
+        case 3:
+            D_80113F08_stardust_battle = 0;
+            break;
+    }
+    if (D_800D5558_main[0] & R_TRIG) {
+        if (D_80113F08_stardust_battle == 1) {
+            osSyncPrintf("CAMERA TEST_MODE \n");
+            osSyncPrintf(" CENTER X>%3.3f Y>%3.3f Z>%3.3f \n", Center.x, Center.y, Center.z);
+            osSyncPrintf(" ROT    X>%3.3f Y>%3.3f Z>%3.3f \n", CRot.x, CRot.y, CRot.z);
+            osSyncPrintf(" ZOOM   %3.3f \n\n", CZoom);
+        }
+        if (D_80113F08_stardust_battle++ >= 4) {
+            D_80113F08_stardust_battle = 0;
+        }
+    }
+}
+
+#ifdef NON_MATCHING
+// Register allocation: t and the case 5 sine temporary have swapped f20/f22.
+void func_80111004_stardust_battle(omObjData *object) {
+    f32 t = 0.0f;
+
+    if (D_80114BAC_stardust_battle <= 0) {
+        func_801119D4_stardust_battle(0);
+        D_80114BB0_stardust_battle = 0;
+        return;
+    }
+    if (D_80114BA8_stardust_battle == 0) {
+        Center.x = D_80114B60_stardust_battle[0].center.x;
+        Center.y = D_80114B60_stardust_battle[0].center.y;
+        Center.z = D_80114B60_stardust_battle[0].center.z;
+        CRot.x = D_80114B60_stardust_battle[0].rot.x;
+        CRot.y = D_80114B60_stardust_battle[0].rot.y;
+        CRot.z = D_80114B60_stardust_battle[0].rot.z;
+        CZoom = D_80114B60_stardust_battle[0].zoom;
+        if (CRot.x >= 360.0) {
+            CRot.x -= 360.0;
+        } else if (CRot.x < 0.0) {
+            CRot.x += 360.0;
+        }
+        if (CRot.y >= 360.0) {
+            CRot.y -= 360.0;
+        } else if (CRot.y < 0.0) {
+            CRot.y += 360.0;
+        }
+        if (CRot.z >= 360.0) {
+            CRot.z -= 360.0;
+        } else if (CRot.z < 0.0) {
+            CRot.z += 360.0;
+        }
+        D_80114BAC_stardust_battle = 0;
+    } else {
+        switch (D_80114BB4_stardust_battle) {
+            case 0:
+                t = (f32)D_80114BA8_stardust_battle / (f32)D_80114BAC_stardust_battle;
+                break;
+            case 1:
+                t = (f32)D_80114BA8_stardust_battle / (f32)D_80114BAC_stardust_battle;
+                t = sindf(t * 90.0f);
+                break;
+            case 2:
+                t = (f32)D_80114BA8_stardust_battle / (f32)D_80114BAC_stardust_battle;
+                t = sindf(t * 90.0f);
+                t = t * t;
+                break;
+            case 3:
+                if (D_80114BA8_stardust_battle >= 6) {
+                    t = (f32)(D_80114BA8_stardust_battle - 5) / (f32)(D_80114BAC_stardust_battle - 5);
+                    t = sindf(t * 90.0f);
+                    t = t * t;
+                } else {
+                    t = D_80113F14_stardust_battle[5 - D_80114BA8_stardust_battle];
+                }
+                break;
+            case 4:
+                t = (f32)D_80114BA8_stardust_battle / (f32)D_80114BAC_stardust_battle;
+                t = fabsf(sindf(sindf(t * 90.0f) * 450.0f) * t);
+                break;
+            case 5:
+                t = (f32)D_80114BA8_stardust_battle / (f32)D_80114BAC_stardust_battle;
+                t = sindf(t * 90.0f) + sindf(t * 720.0f) * 0.2f;
+                break;
+        }
+        Center.x = func_80111DF8_stardust_battle(t, D_80114B60_stardust_battle[0].center.x,
+                                                 D_80114B60_stardust_battle[1].center.x);
+        Center.y = func_80111DF8_stardust_battle(t, D_80114B60_stardust_battle[0].center.y,
+                                                 D_80114B60_stardust_battle[1].center.y);
+        Center.z = func_80111DF8_stardust_battle(t, D_80114B60_stardust_battle[0].center.z,
+                                                 D_80114B60_stardust_battle[1].center.z);
+        CRot.x = func_80111E10_stardust_battle(t, D_80114B60_stardust_battle[0].rot.x,
+                                               D_80114B60_stardust_battle[1].rot.x);
+        CRot.y = func_80111E10_stardust_battle(t, D_80114B60_stardust_battle[0].rot.y,
+                                               D_80114B60_stardust_battle[1].rot.y);
+        CRot.z = func_80111E10_stardust_battle(t, D_80114B60_stardust_battle[0].rot.z,
+                                               D_80114B60_stardust_battle[1].rot.z);
+        CZoom = func_80111DF8_stardust_battle(t, D_80114B60_stardust_battle[0].zoom, D_80114B60_stardust_battle[1].zoom);
+        if (CRot.x >= 360.0) {
+            CRot.x -= 360.0;
+        } else if (CRot.x < 0.0) {
+            CRot.x += 360.0;
+        }
+        if (CRot.y >= 360.0) {
+            CRot.y -= 360.0;
+        } else if (CRot.y < 0.0) {
+            CRot.y += 360.0;
+        }
+        if (CRot.z >= 360.0) {
+            CRot.z -= 360.0;
+        } else if (CRot.z < 0.0) {
+            CRot.z += 360.0;
+        }
+        if (D_80114BA8_stardust_battle > 0) {
+            D_80114BA8_stardust_battle--;
+        } else {
+            D_80114BA8_stardust_battle++;
+        }
+    }
+    D_80114BB0_stardust_battle = 1;
+    func_801119D4_stardust_battle(0);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80111004_stardust_battle);
+#endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_801115F8_stardust_battle);
+void func_801115F8_stardust_battle(s32 arg0) {
+    if (CRot.x >= 360.0) {
+        CRot.x -= 360.0;
+    } else if (CRot.x < 0.0) {
+        CRot.x += 360.0;
+    }
+    if (CRot.y >= 360.0) {
+        CRot.y -= 360.0;
+    } else if (CRot.y < 0.0) {
+        CRot.y += 360.0;
+    }
+    if (CRot.z >= 360.0) {
+        CRot.z -= 360.0;
+    } else if (CRot.z < 0.0) {
+        CRot.z += 360.0;
+    }
+    D_80114B60_stardust_battle[arg0].center.x = Center.x;
+    D_80114B60_stardust_battle[arg0].center.y = Center.y;
+    D_80114B60_stardust_battle[arg0].center.z = Center.z;
+    D_80114B60_stardust_battle[arg0].rot.x = CRot.x;
+    D_80114B60_stardust_battle[arg0].rot.y = CRot.y;
+    D_80114B60_stardust_battle[arg0].rot.z = CRot.z;
+    D_80114B60_stardust_battle[arg0].zoom = CZoom;
+    D_80114B60_stardust_battle[arg0].unk_1C = D_80114B60_stardust_battle[arg0].unk_20 = 0.0f;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_801117E4_stardust_battle);
+// Passing CAMERA_KEEP for a component keeps its current value.
+void func_801117E4_stardust_battle(f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom, s32 frames) {
+    if (frames > 0) {
+        D_80114BA8_stardust_battle = frames - 1;
+        D_80114BAC_stardust_battle = frames;
+        if (x != CAMERA_KEEP) {
+            D_80114B60_stardust_battle[0].center.x = x;
+        } else {
+            D_80114B60_stardust_battle[0].center.x = Center.x;
+        }
+        if (y != CAMERA_KEEP) {
+            D_80114B60_stardust_battle[0].center.y = y;
+        } else {
+            D_80114B60_stardust_battle[0].center.y = Center.y;
+        }
+        if (z != CAMERA_KEEP) {
+            D_80114B60_stardust_battle[0].center.z = z;
+        } else {
+            D_80114B60_stardust_battle[0].center.z = Center.z;
+        }
+        if (rotX != CAMERA_KEEP) {
+            D_80114B60_stardust_battle[0].rot.x = rotX;
+        } else {
+            D_80114B60_stardust_battle[0].rot.x = CRot.x;
+        }
+        if (rotY != CAMERA_KEEP) {
+            D_80114B60_stardust_battle[0].rot.y = rotY;
+        } else {
+            D_80114B60_stardust_battle[0].rot.y = CRot.y;
+        }
+        if (rotZ != CAMERA_KEEP) {
+            D_80114B60_stardust_battle[0].rot.z = rotZ;
+        } else {
+            D_80114B60_stardust_battle[0].rot.z = CRot.z;
+        }
+        if (zoom != CAMERA_KEEP) {
+            D_80114B60_stardust_battle[0].zoom = zoom;
+        } else {
+            D_80114B60_stardust_battle[0].zoom = CZoom;
+        }
+        func_801115F8_stardust_battle(1);
+    }
+}
 
 void func_801119D4_stardust_battle(s32 camIndex) {
     HuCamera *camera = &gCameraList[camIndex];
@@ -1305,13 +2785,51 @@ f32 func_80111B28_stardust_battle(f32 arg0, f32 arg1) {
     return arg0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80111C2C_stardust_battle);
+f32 func_80111C2C_stardust_battle(f32 target, f32 current, f32 step) {
+    f32 diff;
+    f32 delta;
+
+    if (target >= 360.0) {
+        target -= 360.0;
+    } else if (target < 0.0) {
+        target += 360.0;
+    }
+    if (current >= 360.0) {
+        current -= 360.0;
+    } else if (current < 0.0) {
+        current += 360.0;
+    }
+    diff = target - current + 360.0;
+    while (diff > 360.0f) {
+        diff -= 360.0f;
+    }
+    if (diff < 180.0) {
+        if (diff <= step) {
+            delta = diff;
+        } else {
+            delta = step;
+        }
+    } else if (360.0 - diff <= step) {
+        delta = -(360.0 - diff);
+    } else {
+        delta = -step;
+    }
+    delta += current;
+    if (delta >= 360.0) {
+        delta -= 360.0;
+    } else if (delta < 0.0) {
+        delta += 360.0;
+    }
+    return delta;
+}
 
 f32 func_80111DF8_stardust_battle(f32 t, f32 start, f32 end) {
     return start + t * (end - start);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80111E10_stardust_battle);
+f32 func_80111E10_stardust_battle(f32 arg0, f32 arg1, f32 arg2) {
+    return func_80111C2C_stardust_battle(arg2, arg1, fabsf(func_80111B28_stardust_battle(arg2, arg1) * arg0));
+}
 
 void func_80111E70_stardust_battle(f32 *arg0, f32 *arg1, f32 *arg2, f32 arg3) {
     s32 i;
@@ -1355,17 +2873,223 @@ u32 func_80111FEC_stardust_battle(omObjData *object, s32 arg1, u32 arg2) {
     return packed.word;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80112040_stardust_battle);
+void func_80112040_stardust_battle(s16 model, const char *name, HuMtx4F *out) {
+    s16 nodeMap[4];
+    HmfModel *mdl = &Hu3DData[model];
+    HmfData *hmf = mdl->hmf;
+    s16 node = func_8002C834_main(hmf, name);
+    HmfModelData_Unk64_Unk8C_Struct *motion = &D_800CCF58_main[Hu3DData[model].motId];
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80112220_stardust_battle);
+    D_800D1358_main = out;
+    D_800D04B4_main = nodeMap;
+    D_800CD1B0_main = 0;
+    if (mdl->motIdShape != 0xFF) {
+        hmf->unk94 = &D_800CCF58_main[mdl->motIdShape];
+        hmf->unkAC = mdl->motShapeTime;
+    } else {
+        hmf->unk94 = NULL;
+    }
+    if (mdl->motIdShift != 0xFF && mdl->unk0C != 0) {
+        hmf->unk90 = &D_800CCF58_main[mdl->motIdShift];
+        hmf->unkA4 = mdl->motShiftTime;
+        hmf->unkA8 = (f32)mdl->unk0E / mdl->unk0C;
+    } else {
+        hmf->unk90 = NULL;
+    }
+    guMtxIdentF(D_800D5A00_main[0]);
+    func_8002DFF8_main(hmf, mdl->motTime, motion, 1);
+    if (hmf->unk90 != NULL) {
+        func_8002EAC0_main(hmf, hmf->unkA4, hmf->unkA8);
+    }
+    if (hmf->unk94 != NULL) {
+        func_8002DFF8_main(hmf, hmf->unkAC, hmf->unk94, 0);
+    }
+    D_800D138A_main = 0;
+    func_80016C2C_main(hmf, 0, node);
+    if (D_800CD1B0_main >= 2) {
+        osSyncPrintf("Mtx Made Over\n");
+    }
+}
+
+void func_80112220_stardust_battle(omObjData *object, const char *name, HuMtx4F out) {
+    func_800E1BA8_minigame_ObjData *data = object->data;
+    HuMtx4F mtx;
+    HuMtx4F local;
+
+    func_8008A070_main(mtx);
+    mtxTransCat(mtx, object->trans.x, object->trans.y, object->trans.z);
+    mtxRotCat(mtx, 0.0f, data->unk3C, 0.0f);
+    mtxScaleCat(mtx, object->scale.x, object->scale.y, object->scale.z);
+    func_80112040_stardust_battle(object->model[0], name, &local);
+    func_80018044_main(local, mtx, out);
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_801122D0_stardust_battle);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_801127B8_stardust_battle);
+void func_801127B8_stardust_battle(s16 model, s16 count, s16 buffer) {
+    HmfData *hmf;
+    Gfx *gfx;
+    s16 index;
+    s16 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80112980_stardust_battle);
+    if (buffer != -1) {
+        index = buffer;
+    } else {
+        index = D_800D2008_main;
+    }
+    hmf = Hu3DData[model].hmf;
+    gfx = (hmf->unk3C->unk00 + 1)[index];
+    gDPPipeSync(gfx++);
+    gSPDisplayList(gfx++, osVirtualToPhysical(hmf->unk3C->unk10));
+    for (i = 0; i < count; i++) {
+        gSPSegment(gfx++, 1, osVirtualToPhysical(&hmf->unk40[i * 10]));
+        gSPDisplayList(gfx++, osVirtualToPhysical(hmf->unk3C->unk14));
+    }
+    gSPDisplayList(gfx++, osVirtualToPhysical(((UnkStardustBattleGfxData *)hmf->unk3C)->unk18));
+    gDPPipeSync(gfx++);
+    gSPEndDisplayList(gfx++);
+    hmf->unk3C->unk00[0] = hmf->unk3C->unk00[index + 1];
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80113568_stardust_battle);
+s32 func_80112980_stardust_battle(HuSprite_Unk84_Struct *sprite, u8 *color) {
+    u8 *buffer;
+    Gfx *gfx;
+    Gfx *header;
+    HmfData *data;
+    u16 format;
+    s32 i;
+    s32 model;
+    s32 size;
+
+    gfx = HuMemAlloc(0x10000);
+    header = gfx;
+    buffer = (u8 *)gfx;
+    model = func_8001A894_main(0x1CC1, gfx, 4);
+    data = Hu3DData[model].hmf;
+    data->unk60->unk50 |= 0x1010000;
+    gfx++;
+    HuMemFree(data->unk3C);
+    data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), D_800CDD6A_main);
+    func_801138A0_stardust_battle(sprite, data, 1.0f, 0, 0);
+    gSPDisplayList(header, osVirtualToPhysical(D_80114020_stardust_battle));
+    gDPPipeSync(gfx++);
+    gDPSetCycleType(gfx++, G_CYC_1CYCLE);
+    gDPPipeSync(gfx++);
+    gSPClearGeometryMode(gfx++, G_CULL_BOTH | G_LIGHTING);
+    gSPSetGeometryMode(gfx++, G_ZBUFFER | G_CULL_FRONT | G_TEXTURE_GEN_LINEAR);
+    gDPSetColorDither(gfx++, G_CD_NOISE);
+    gDPSetTexturePersp(gfx++, G_TP_NONE);
+    gDPSetTextureFilter(gfx++, G_TF_BILERP);
+    gDPSetTextureConvert(gfx++, G_TC_FILT);
+    gDPSetAlphaDither(gfx++, G_AD_PATTERN);
+    gDPSetAlphaCompare(gfx++, G_AC_NONE);
+    gDPSetBlendColor(gfx++, 1, 1, 1, 1);
+    gDPPipeSync(gfx++);
+    gDPSetRenderMode(gfx++, G_RM_ZB_CLD_SURF, G_RM_NOOP2);
+    if (sprite->unk18 & 0x8000) {
+        gDPSetCombineLERP(gfx++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0);
+    } else {
+        gDPSetCombineLERP(gfx++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
+    }
+    gDPPipeSync(gfx++);
+    gSPEndDisplayList(gfx++);
+    size = (u8 *)gfx - buffer;
+    data->unk3C->unk10 = HuMemAllocTag(size, data->unk0E);
+    bcopy(buffer, data->unk3C->unk10, size);
+    HuMemFree(buffer);
+    gfx = HuMemAlloc(0x10000);
+    {
+        Gfx *textureHeader = gfx;
+        buffer = (u8 *)gfx;
+        gfx++;
+        gSPTexture(textureHeader, 0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON);
+    }
+    gDPSetTexturePersp(gfx++, G_TP_PERSP);
+    if (sprite->unk1A >= 2) {
+        gDPSetTextureLUT(gfx++, G_TT_RGBA16);
+        if (sprite->unk18 == 4) {
+            gDPLoadTLUT_pal16(gfx++, 0, sprite->unk0C);
+        } else {
+            gDPLoadTLUT_pal256(gfx++, sprite->unk0C);
+        }
+        gDPPipeSync(gfx++);
+        format = G_IM_FMT_CI;
+    } else {
+        gDPSetTextureLUT(gfx++, G_TT_NONE);
+        gDPPipeSync(gfx++);
+        format = sprite->unk18;
+        format = ((u32)format / 0x8000) * 4;
+    }
+    switch (sprite->unk18 & 0xFFF) {
+        case 4:
+            gDPLoadTextureBlock_4b(gfx++, 0x02000000, format, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+                                   G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+            break;
+        case 8:
+            gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_8b, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+                                G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+            break;
+        case 16:
+            gDPLoadTextureBlock(gfx++, 0x02000000, format, G_IM_SIZ_16b, sprite->unk00->unk04, sprite->unk00->unk06, 0,
+                                G_TX_CLAMP, G_TX_CLAMP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+            break;
+    }
+    gDPPipeSync(gfx++);
+    gSPSegment(gfx++, 1, osVirtualToPhysical(data->unk44[0]));
+    gSPVertex(gfx++, 0x01000000, 4, 0);
+    gSP2Triangles(gfx++, 0, 1, 2, 0, 1, 3, 2, 0);
+    gSPClearGeometryMode(gfx++, -1);
+    gSPSetGeometryMode(gfx++, G_ZBUFFER | G_SHADE | G_CULL_BACK | G_TEXTURE_GEN_LINEAR);
+    gDPPipeSync(gfx++);
+    gSPEndDisplayList(gfx++);
+    size = (u8 *)gfx - buffer;
+    data->unk3C->unk14 = HuMemAllocTag(size, data->unk0E);
+    bcopy(buffer, data->unk3C->unk14, size);
+    HuMemFree(buffer);
+    for (i = 0; i < D_800D1FF0_main; i++) {
+        gfx = (data->unk3C->unk00 + 1)[i] = HuMemAllocTag(0x100, data->unk0E);
+        gDPPipeSync(gfx++);
+        gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->unk00->unk00));
+        gSPDisplayList(gfx++, osVirtualToPhysical(data->unk3C->unk10));
+        gDPSetPrimColor(gfx++, 0, 0, color[0], color[1], color[2], color[3]);
+        gDPPipeSync(gfx++);
+        gSPDisplayList(gfx++, osVirtualToPhysical(data->unk3C->unk14));
+        gDPPipeSync(gfx++);
+        gSPEndDisplayList(gfx++);
+    }
+    data->unk3C->unk00[0] = data->unk3C->unk00[D_800D2008_main + 1];
+    return model;
+}
+
+s32 func_80113568_stardust_battle(HuSprite_Unk84_Struct *sprite, u16 model, u8 *color) {
+    HmfModel *srcModel = Hu3DData + model;
+    HmfData *srcData = srcModel->hmf;
+    HmfData *data;
+    Gfx *gfx;
+    s32 newModel;
+    s32 i;
+
+    newModel = func_8001A894_main(srcModel->attr, NULL, 4);
+    data = Hu3DData[newModel].hmf;
+    data->unk60->unk50 = srcData->unk60->unk50;
+    HuMemFree(data->unk3C);
+    data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), D_800CDD6A_main);
+    data->unk3C->unk10 = srcData->unk3C->unk10;
+    data->unk3C->unk14 = srcData->unk3C->unk14;
+    for (i = 0; i < D_800D1FF0_main; i++) {
+        gfx = (data->unk3C->unk00 + 1)[i] = HuMemAllocTag(0x100, data->unk0E);
+        gDPPipeSync(gfx++);
+        gSPSegment(gfx++, 2, osVirtualToPhysical(sprite->unk00->unk00));
+        gSPDisplayList(gfx++, osVirtualToPhysical(data->unk3C->unk10));
+        gDPSetPrimColor(gfx++, 0, 0, color[0], color[1], color[2], color[3]);
+        gDPPipeSync(gfx++);
+        gSPDisplayList(gfx++, osVirtualToPhysical(data->unk3C->unk14));
+        gDPPipeSync(gfx++);
+        gSPEndDisplayList(gfx++);
+    }
+    data->unk3C->unk00[0] = data->unk3C->unk00[D_800D2008_main + 1];
+    return newModel;
+}
 
 void func_8011376C_stardust_battle(u16 model, HuSprite_Unk84_Struct *sprite, u16 frame, u8 *color) {
     HmfModel *modelData = Hu3DData + model;
@@ -1383,4 +3107,73 @@ void func_8011376C_stardust_battle(u16 model, HuSprite_Unk84_Struct *sprite, u16
     gSPEndDisplayList(gfx + 7);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_801138A0_stardust_battle);
+s32 func_801138A0_stardust_battle(HuSprite_Unk84_Struct *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset) {
+    s32 capacity = 0x1000;
+    s32 width, height, scaledWidth, scaledHeight;
+    s32 size, slices, textureHeight, sliceHeight, vertexCount;
+    s32 i, j;
+    Vtx_t *vertices, *start;
+
+    if (sprite->unk1A >= 2) {
+        capacity = 0x800;
+    }
+    width = sprite->unk00->unk04;
+    height = sprite->unk00->unk06;
+    scaledWidth = width * 100.0 * scale / 32.0;
+    scaledHeight = height * 100.0 * scale / 32.0;
+    if ((sprite->unk18 & 0xFFF) == 4) {
+        size = ((width + 1) & 0xFFFE) * height * 4;
+    } else {
+        size = width * height * sprite->unk18;
+    }
+    size /= 8;
+    slices = size / capacity;
+    if (slices <= 0) {
+        slices = 1;
+    }
+    textureHeight = height / slices;
+    sliceHeight = scaledHeight / slices;
+    vertexCount = slices * 4;
+    size = slices * 4 * sizeof(Vtx_t);
+    start = vertices = HuMemAllocTag(size, data->unk0E);
+    memset(start, 0, size);
+    for (i = 0; i < slices; i++, vertices += 4) {
+        vertices[0].ob[0] = scaledWidth * 0.5;
+        vertices[0].ob[1] = scaledHeight * 0.5 - sliceHeight * i;
+        vertices[0].tc[0] = (width - 1) << 6;
+        vertices[0].tc[1] = 0;
+        vertices[1].ob[0] = scaledWidth * 0.5;
+        vertices[1].ob[1] = scaledHeight * 0.5 - sliceHeight * (i + 1);
+        vertices[1].tc[0] = (width - 1) << 6;
+        vertices[1].tc[1] = (textureHeight - 1) << 6;
+        vertices[2].ob[0] = -(scaledWidth * 0.5);
+        vertices[2].ob[1] = scaledHeight * 0.5 - sliceHeight * i;
+        vertices[2].tc[0] = 0;
+        vertices[2].tc[1] = 0;
+        vertices[3].ob[0] = -(scaledWidth * 0.5);
+        vertices[3].ob[1] = scaledHeight * 0.5 - sliceHeight * (i + 1);
+        vertices[3].tc[0] = 0;
+        vertices[3].tc[1] = (textureHeight - 1) << 6;
+        for (j = 0; j < 4; j++) {
+            vertices[j].ob[0] += xOffset;
+            vertices[j].ob[1] += yOffset;
+            vertices[j].ob[2] = 0;
+            vertices[j].flag = 0;
+            vertices[j].cn[3] = 255;
+            vertices[j].cn[0] = vertices[j].cn[1] = vertices[j].cn[2] = 0;
+        }
+    }
+    vertices = start;
+    for (i = 0; i < D_800D1FF0_main; i++) {
+        Vtx_t *destination;
+        Vtx_t *source;
+        data->unk44[i] = HuMemAllocTag(vertexCount * sizeof(Vtx_t), data->unk0E);
+        destination = (Vtx_t *)data->unk44[i];
+        source = vertices;
+        for (j = 0; j < vertexCount; j++) {
+            *destination++ = *source++;
+        }
+    }
+    HuMemFree(start);
+    return slices;
+}

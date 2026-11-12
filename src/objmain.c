@@ -641,9 +641,9 @@ void omDestroyPrcObj(void) {
     --D_800A1776_main;
 }
 
-void omPrcSetDestructor(s32 arg0, void *arg1) {
+void omPrcSetDestructor(Process *prc, void *destructor) {
     unkProcessStruct *unk = &D_800A177C_main[HuPrcCurrentGet()->dtor_idx];
-    unk->destructor = arg1;
+    unk->destructor = destructor;
 }
 
 s32 omOvlCallEx(s32 ovlID, s16 event, u16 stat) {

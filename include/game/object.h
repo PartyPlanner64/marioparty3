@@ -100,7 +100,7 @@ void omOvlGotoEx(s32 ovlID, s16 event, u16 stat);
 void omOvlHisChg(s16 level, s32 overlay, s16 event, s16 stat);
 void omOvlKill(void);
 void omDestroyObjMan(void);
-void omPrcSetDestructor(s32, void*);
+void omPrcSetDestructor(Process* prc, void* destructor);
 void omPrcResetStatBit(Process* prc, s32 stat);
 void omSetTra(omObjData* obj, f32 x, f32 y, f32 z);
 void omSetRot(omObjData* obj, f32 x, f32 y, f32 z);

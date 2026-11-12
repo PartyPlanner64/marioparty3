@@ -17,16 +17,17 @@ extern f32 D_801101F8_snowball_summit;
 extern s32 D_80110248_snowball_summit;
 extern s32 D_8011024C_snowball_summit;
 extern s16 D_80110030_snowball_summit;
-extern s32 D_8010F8C0_snowball_summit;
-extern s32 D_8010F8C8_snowball_summit;
-extern s16 D_8010F8CA_snowball_summit;
-extern HuSprite_Unk84_Struct *D_8010F8CC_snowball_summit;
-extern HuSprite_Unk84_Struct *D_8010F8D4_snowball_summit;
 extern s16 D_801101F0_snowball_summit;
 extern s16 D_8010F8AC_snowball_summit;
 extern s16 D_8010F8AE_snowball_summit;
 extern s16 D_8010F8B0_snowball_summit;
 extern s32 D_800A178C_main[][6];
+extern s16 D_8010F890_snowball_summit;
+extern u8 D_8010F892_snowball_summit;
+extern s32 D_8010F898_snowball_summit[4];
+extern s32 D_8010F8A8_snowball_summit;
+extern s32 D_8010F5C8_snowball_summit;
+extern Vec D_8010F598_snowball_summit[4]; // x: trans.x, y: trans.z, z: rot.y
 
 typedef struct SnowballSummitCamera {
     f32 scissorX;
@@ -40,6 +41,29 @@ typedef struct SnowballSummitCamera {
 
 extern SnowballSummitCamera D_8010F5CC_snowball_summit[];
 extern const s16 D_8010F870_snowball_summit[];
+
+typedef struct UnkSnowballSummitPath {
+    /* 0x00 */ Vec start;
+    /* 0x0C */ Vec end;
+} UnkSnowballSummitPath; // sizeof 0x18
+
+extern UnkSnowballSummitPath D_8010F550_snowball_summit[3];
+
+typedef struct SnowballSummitBackdrop {
+    /* 0x00 */ s32 state; // -1 when not drawn
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s32 hookId;
+    /* 0x0C */ HuSprite_Unk84_Struct *leftSprite;
+    /* 0x10 */ s32 unk_10;
+    /* 0x14 */ HuSprite_Unk84_Struct *rightSprite;
+} SnowballSummitBackdrop; // sizeof 0x18
+
+// func_80106760_snowball_summit accesses the backdrop fields as separate symbols.
+extern s32 D_8010F8C0_snowball_summit;
+extern s32 D_8010F8C8_snowball_summit;
+extern s16 D_8010F8CA_snowball_summit;
+extern HuSprite_Unk84_Struct *D_8010F8CC_snowball_summit;
+extern HuSprite_Unk84_Struct *D_8010F8D4_snowball_summit;
 
 typedef struct UnkSnowballSummitSnowball {
     /* 0x00 */ s32 state; // -1 when the slot is unused, 0 when the snowball is dead, 1 or 2 while in use
@@ -126,11 +150,8 @@ typedef struct UnkSnowballSummitMover {
     /* 0x4C */ s32 unk_4C; // index of the owning object
     /* 0x50 */ f32 unk_50;
     /* 0x54 */ f32 unk_54;
-    /* 0x58 */ f32 unk_58;
-    /* 0x5C */ f32 unk_5C;
-    /* 0x60 */ s32 unk_60;
-    /* 0x64 */ s32 unk_64;
-    /* 0x68 */ s32 unk_68;
+    /* 0x58 */ s32 unk_58;    // set when colliding with another mover
+    /* 0x5C */ s32 unk_5C[4]; // per-player collision flags
     /* 0x6C */ s32 unk_6C;
     /* 0x70 */ s32 unk_70; // -1 when unset, else an index into D_8010FC30_snowball_summit
     /* 0x74 */ s32 unk_74;
@@ -148,17 +169,11 @@ typedef struct UnkSnowballSummitMover {
 
 extern UnkSnowballSummitMover D_8010F9B8_snowball_summit[4];
 
-typedef struct UnkSnowballSummitStick {
-    /* 0x00 */ f32 magnitude;
-    /* 0x04 */ f32 unk_04;
-    /* 0x08 */ f32 angle;
-} UnkSnowballSummitStick; // sizeof 0xC, passed by value
-
 typedef struct UnkSnowballSummitNode {
     /* 0x00 */ s32 id; // -1 when the slot is unused, 0 when the node is dead, 1 when it is in use
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ s32 unk_08; // sound effect id, -1 when unset
-    /* 0x0C */ void *unk_0C;
+    /* 0x0C */ omObjData *unk_0C;
 } UnkSnowballSummitNode; // sizeof 0x10
 
 extern UnkSnowballSummitNode D_80110250_snowball_summit[4];
@@ -181,6 +196,12 @@ void func_80106760_snowball_summit(omObjData *);
 void func_8010683C_snowball_summit(omObjData *);
 void func_801068EC_snowball_summit(omObjData *);
 void func_80106D58_snowball_summit(omObjData *);
+void func_8010699C_snowball_summit(omObjData *object);
+void func_80107B58_snowball_summit(omObjData *object, Vec stick);
+void func_8010B250_snowball_summit(omObjData *object);
+void func_8010A940_snowball_summit(omObjData *object);
+void func_8010D86C_snowball_summit(void);
+void func_8010811C_snowball_summit(omObjData *object);
 void func_801075E0_snowball_summit(omObjData *);
 void func_80107860_snowball_summit(omObjData *);
 void func_8010775C_snowball_summit(omObjData *);
@@ -361,7 +382,34 @@ void func_801062AC_snowball_summit(void) {
     omAddObj(0x96, 1, 0, -1, func_801061DC_snowball_summit);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_801062E0_snowball_summit);
+void func_801062E0_snowball_summit(Gfx **gfxPos, s32 arg1, s32 arg2) {
+    SnowballSummitBackdrop *backdrop = (SnowballSummitBackdrop *)&D_8010F8C0_snowball_summit;
+    Gfx *gfx;
+    s32 y;
+
+    if (backdrop->state == -1) {
+        return;
+    }
+    gfxPos = func_801059BC_snowball_summit(gfxPos);
+    gfx = *gfxPos;
+    gDPSetTextureLUT(gfx++, G_TT_RGBA16);
+    gDPLoadTLUT_pal256(gfx++, backdrop->leftSprite->unk0C);
+    for (y = 0; y < 110; y += 10) {
+        gDPLoadTextureTile(gfx++, backdrop->leftSprite->unk08, G_IM_FMT_CI, G_IM_SIZ_8b, 104, 110,
+                           0, y, 104, y + 10, 0, G_TX_WRAP, G_TX_WRAP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+        gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 104 << 2, 10 << 2);
+        gSPTextureRectangle(gfx++, 0 << 2, (y + 66) << 2, 104 << 2, (y + 76) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+    }
+    gDPSetTextureLUT(gfx++, G_TT_RGBA16);
+    gDPLoadTLUT_pal256(gfx++, backdrop->rightSprite->unk0C);
+    for (y = 0; y < 110; y += 10) {
+        gDPLoadTextureTile(gfx++, backdrop->rightSprite->unk08, G_IM_FMT_CI, G_IM_SIZ_8b, 104, 110,
+                           0, y, 104, y + 10, 0, G_TX_WRAP, G_TX_WRAP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+        gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 104 << 2, 10 << 2);
+        gSPTextureRectangle(gfx++, 216 << 2, (y + 66) << 2, 320 << 2, (y + 76) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+    }
+    *gfxPos = gfx;
+}
 
 void func_80106758_snowball_summit(omObjData *object) {
 }
@@ -411,9 +459,87 @@ void func_80106968_snowball_summit(void) {
     omAddObj(0xAA, 1, 1, -1, func_801068EC_snowball_summit);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010699C_snowball_summit);
+void func_8010699C_snowball_summit(omObjData *object) {
+    UnkSnowballSummitThrow *throw = &D_80110200_snowball_summit[object->work[0]];
+    s32 variant;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_80106D58_snowball_summit);
+    if (throw->state == -1) {
+        return;
+    }
+
+    switch (throw->state) {
+        case 0:
+            if (throw->unk_04 > 0) {
+                throw->unk_04--;
+            } else {
+                throw->state = 1;
+            }
+            break;
+        case 1:
+            variant = rand8() & 1;
+            func_8001C258_main(object->model[variant], HU3D_ATTR_DISPOFF, 0);
+            func_8001C258_main(object->model[variant ^ 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            object->trans.x = D_8010F550_snowball_summit[object->work[0]].start.x;
+            object->trans.y = D_8010F550_snowball_summit[object->work[0]].start.y;
+            object->trans.z = D_8010F550_snowball_summit[object->work[0]].start.z;
+            Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, object->trans.z);
+            throw->unk_08 = (u8)(rand8() % 15) + 30;
+            throw->unk_04++;
+            throw->state = 2;
+            break;
+        case 2:
+            throw->unk_0C = (D_8010F550_snowball_summit[object->work[0]].end.x - D_8010F550_snowball_summit[object->work[0]].start.x) / throw->unk_08 * throw->unk_04;
+            throw->unk_10 = (D_8010F550_snowball_summit[object->work[0]].end.y - D_8010F550_snowball_summit[object->work[0]].start.y) / throw->unk_08 * throw->unk_04;
+            throw->unk_14 = (D_8010F550_snowball_summit[object->work[0]].end.z - D_8010F550_snowball_summit[object->work[0]].start.z) / throw->unk_08 * throw->unk_04;
+            object->trans.x = D_8010F550_snowball_summit[object->work[0]].start.x + throw->unk_0C;
+            object->trans.y = D_8010F550_snowball_summit[object->work[0]].start.y + throw->unk_10;
+            object->trans.z = D_8010F550_snowball_summit[object->work[0]].start.z + throw->unk_14;
+            Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, object->trans.z);
+            if (throw->unk_04 >= throw->unk_08) {
+                func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                throw->state = 0;
+                throw->unk_04 = (u8)(rand8() % 60) + 150;
+                throw->unk_0C = throw->unk_10 = throw->unk_14 = 0.0f;
+            } else {
+                throw->unk_04++;
+            }
+            break;
+    }
+}
+
+void func_80106D58_snowball_summit(omObjData *object) {
+    UnkSnowballSummitThrow *throw;
+    void *data;
+
+    if (object->work[0] == 0) {
+        object->model[0] = D_8010F890_snowball_summit = func_8000B108_main(0x490007, 0x2B9);
+        object->model[1] = func_8000B108_main(0x490007, 0x2A9);
+        data = DataRead(0x490008);
+        object->work[1] = D_8010F892_snowball_summit = Hu3DAnimCreate(Hu3DData[object->model[1]].hmf, data, 0, "s240_002_DEF");
+        HuMemMemoryFreePerm(data);
+    } else {
+        object->model[0] = Hu3DModelLink(D_8010F890_snowball_summit);
+        object->model[1] = func_8000B108_main(0x490007, 0x2A9);
+        object->work[1] = Hu3DAnimLink(Hu3DData[object->model[1]].hmf, D_8010F892_snowball_summit, 0, "s240_002_DEF");
+    }
+    func_80032FC0_main(object->work[1], 1, 1);
+    Hu3DModelRemakeStatic(object->model[1]);
+    func_8001C514_main(object->model[1]);
+    func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    object->trans.x = D_8010F550_snowball_summit[object->work[0]].start.x;
+    object->trans.y = D_8010F550_snowball_summit[object->work[0]].start.y;
+    object->trans.z = D_8010F550_snowball_summit[object->work[0]].start.z;
+    Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, object->trans.z);
+    Hu3DModelCameraSet(object->model[0], HU3D_CAM0);
+    Hu3DModelCameraSet(object->model[1], HU3D_CAM0);
+    throw = &D_80110200_snowball_summit[object->work[0]];
+    throw->state = 0;
+    throw->unk_04 = (u8)(rand8() % 60) + 150;
+    throw->unk_0C = throw->unk_10 = throw->unk_14 = 0.0f;
+    object->func = func_8010699C_snowball_summit;
+}
 
 void func_80107000_snowball_summit(void) {
     s32 i;
@@ -674,9 +800,9 @@ s32 func_80107988_snowball_summit(f32 arg0, f32 arg1, f32 arg2) {
     return 1;
 }
 
-void func_80107A18_snowball_summit(omObjData *object, UnkSnowballSummitStick stick, f32 speed) {
+void func_80107A18_snowball_summit(omObjData *object, Vec stick, f32 speed) {
     UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
-    s32 direction = func_80107988_snowball_summit(object->rot.y, stick.angle, speed);
+    s32 direction = func_80107988_snowball_summit(object->rot.y, stick.z, speed);
     f32 angle;
 
     switch (mover->unk_04) {
@@ -695,7 +821,7 @@ void func_80107A18_snowball_summit(omObjData *object, UnkSnowballSummitStick sti
                 }
                 object->rot.y = angle;
             } else {
-                object->rot.y = stick.angle;
+                object->rot.y = stick.z;
             }
             break;
     }
@@ -704,15 +830,15 @@ void func_80107A18_snowball_summit(omObjData *object, UnkSnowballSummitStick sti
 
 // NON_MATCHING: float register allocation differs around the 0.6/0.4 blend.
 #ifdef NON_MATCHING
-void func_80107B58_snowball_summit(omObjData *object, UnkSnowballSummitStick stick) {
+void func_80107B58_snowball_summit(omObjData *object, Vec stick) {
     UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
     f32 velocity;
     f32 scaled;
 
-    if (stick.magnitude > 70.0f) {
+    if (stick.x > 70.0f) {
         velocity = 7.0f;
     } else {
-        velocity = stick.magnitude * 0.1;
+        velocity = stick.x * 0.1;
     }
     mover->unk_10 = velocity;
     if (mover->unk_70 != -1) {
@@ -775,9 +901,110 @@ s32 func_80107F80_snowball_summit(UnkSnowballSummitMover *mover) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010811C_snowball_summit);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010A0B0_snowball_summit);
+void func_8010A0B0_snowball_summit(omObjData *object) {
+    UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
+    Vec stick;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010A384_snowball_summit);
+    switch (mover->unk_04) {
+        case 0:
+        case 2:
+            if (mover->unk_70 != -1) {
+                func_80107CA4_snowball_summit(object, 3);
+            } else {
+                func_80107CA4_snowball_summit(object, 1);
+            }
+            break;
+        case 5:
+        case 6:
+            if (Hu3DData[object->model[0]].motTime >= D_800CCF58_main[Hu3DData[object->model[0]].motId].unk02 - 2) {
+                func_80107CA4_snowball_summit(object, 1);
+            } else {
+                mover->unk_10 = 0;
+                mover->posZ = mover->unk_28 = mover->unk_10;
+            }
+            break;
+        case 3:
+        case 4:
+            if (mover->unk_70 == -1) {
+                func_80107D30_snowball_summit(object, 1, 0, 10);
+            } else {
+                if (mover->unk_04 == 3 && D_8010FC30_snowball_summit[mover->unk_70].unk_0C >= 1.7) {
+                    func_80107D30_snowball_summit(object, 4, 12, 6);
+                }
+                func_8001C814_main(object->model[0], 2, 2);
+                func_8001C814_main(object->model[0], 1, 0);
+            }
+            break;
+    }
+
+    func_80107908_snowball_summit(D_800CBB6E_main[GwPlayer[object->work[0]].pad], -D_800D20A1_main[GwPlayer[object->work[0]].pad], 0.0f, 0.0f, &stick);
+    if (mover->unk_70 == -1) {
+        func_80107A18_snowball_summit(object, stick, 30.0f);
+    } else {
+        func_80107A18_snowball_summit(object, stick, 1.0f / (D_8010FC30_snowball_summit[mover->unk_70].unk_0C * D_8010FC30_snowball_summit[mover->unk_70].unk_0C) * 30.0f);
+    }
+    if (mover->unk_04 != 5 && mover->unk_04 != 6) {
+        func_80107B58_snowball_summit(object, stick);
+    }
+    if (mover->unk_48 == 0) {
+        mover->unk_40 = 0;
+        mover->unk_44 = 0;
+    }
+}
+
+void func_8010A384_snowball_summit(omObjData *object) {
+    UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
+    Vec stick;
+
+    switch (mover->unk_04) {
+        case 1:
+            func_80107CA4_snowball_summit(object, 0);
+            break;
+        case 2:
+            if (mover->unk_40 > 0) {
+                break;
+            }
+            if (mover->unk_48 == 0) {
+                func_80107D30_snowball_summit(object, 0, 0, 10);
+                break;
+            }
+            func_80107D30_snowball_summit(object, 3, 12, 10);
+            Hu3DMotionTimeSet(object->model[0], 12.0f);
+            func_8001C814_main(object->model[0], 2, 0);
+            func_8001C814_main(object->model[0], 1, 1);
+            break;
+        case 3:
+        case 4:
+            if (mover->unk_70 == -1) {
+                func_80107D30_snowball_summit(object, 0, 0, 10);
+                break;
+            }
+            if (mover->unk_04 == 3 && D_8010FC30_snowball_summit[mover->unk_70].unk_0C >= 1.7) {
+                func_80107D30_snowball_summit(object, 4, 12, 3);
+            }
+            Hu3DMotionTimeSet(object->model[0], 12.0f);
+            func_8001C814_main(object->model[0], 2, 0);
+            func_8001C814_main(object->model[0], 1, 1);
+            break;
+        case 5:
+        case 6:
+            if (Hu3DData[object->model[0]].motTime >= D_800CCF58_main[Hu3DData[object->model[0]].motId].unk02 - 2) {
+                func_80107CA4_snowball_summit(object, 0);
+            }
+            break;
+    }
+    mover->unk_10 = 0;
+    mover->posZ = mover->unk_28 = mover->unk_10;
+
+    if (ABS(D_800CBB6E_main[GwPlayer[object->work[0]].pad]) >= 11 || ABS(D_800D20A1_main[GwPlayer[object->work[0]].pad]) >= 11) {
+        func_80107908_snowball_summit(D_800CBB6E_main[GwPlayer[object->work[0]].pad], -D_800D20A1_main[GwPlayer[object->work[0]].pad], 0.0f, 0.0f, &stick);
+        if (mover->unk_70 == -1) {
+            func_80107A18_snowball_summit(object, stick, 30.0f);
+        } else {
+            func_80107A18_snowball_summit(object, stick, 1.0f / (D_8010FC30_snowball_summit[mover->unk_70].unk_0C * D_8010FC30_snowball_summit[mover->unk_70].unk_0C) * 30.0f);
+        }
+    }
+}
 
 void func_8010A71C_snowball_summit(omObjData *object) {
     UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
@@ -852,7 +1079,30 @@ void func_8010A940_snowball_summit(omObjData *object) {
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010A940_snowball_summit);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010AA78_snowball_summit);
+void func_8010AA78_snowball_summit(omObjData *object) {
+    UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
+
+    if (mover->unk_04 == 5 || mover->unk_04 == 6) {
+        func_8010A384_snowball_summit(object);
+    } else if ((D_800D5558_main[GwPlayer[object->work[0]].pad] & A_BUTTON) && mover->unk_48 == 1) {
+        func_8010A940_snowball_summit(object);
+    } else if (ABS(D_800CBB6E_main[GwPlayer[object->work[0]].pad]) >= 31 || ABS(D_800D20A1_main[GwPlayer[object->work[0]].pad]) >= 31) {
+        func_8010A0B0_snowball_summit(object);
+    } else {
+        func_8010A384_snowball_summit(object);
+    }
+
+    if ((D_800D5558_main[GwPlayer[object->work[0]].pad] & B_BUTTON) && mover->unk_48 == 0) {
+        func_8010A71C_snowball_summit(object);
+    }
+    if (mover->unk_48 == 0) {
+        if (mover->unk_40 > 0) {
+            mover->unk_40--;
+        } else {
+            mover->unk_44 = 0;
+        }
+    }
+}
 
 void func_8010AC94_snowball_summit(omObjData *object) {
     UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
@@ -869,9 +1119,71 @@ void func_8010AC94_snowball_summit(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010AE74_snowball_summit);
+void func_8010AE74_snowball_summit(omObjData *object) {
+    UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010B01C_snowball_summit);
+    if (mover->unk_4C != 0) {
+        if (mover->unk_04 != 8) {
+            func_80107CA4_snowball_summit(object, 8);
+        }
+    } else if (mover->unk_74 == 1) {
+        if (mover->unk_04 != 7) {
+            func_80107CA4_snowball_summit(object, 7);
+            func_8001C814_main(object->model[0], 2, 0);
+            func_8001C814_main(object->model[0], 1, 1);
+        }
+    } else if (mover->unk_74 == 2) {
+        func_80107CA4_snowball_summit(object, 7);
+        func_8001C814_main(object->model[0], 1, 0);
+        mover->unk_74 = 3;
+    } else if (mover->unk_74 == 3) {
+        if (Hu3DData[object->model[0]].motTime >= D_800CCF58_main[Hu3DData[object->model[0]].motId].unk02 - 2) {
+            func_80107CA4_snowball_summit(object, 0);
+            mover->unk_74 = 0;
+            mover->unk_3C = 0;
+        }
+    }
+    if (mover->unk_74 == 1 && mover->unk_3C != 0) {
+        func_8010AC94_snowball_summit(object);
+    }
+}
+
+void func_8010B01C_snowball_summit(omObjData *object) {
+    UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
+    UnkSnowballSummitSlot *slot;
+
+    switch (mover->unk_3C) {
+        case 0:
+            if (mover->unk_04 != 0) {
+                func_80107D30_snowball_summit(object, 0, 0, 10);
+                if (mover->unk_70 != -1) {
+                    slot = &D_8010FC30_snowball_summit[mover->unk_70];
+                    slot->id = 20;
+                    slot->unk_10 = -1;
+                    mover->unk_48 = 0;
+                    mover->unk_70 = -1;
+                }
+            }
+            break;
+        case 1:
+            if (object->trans.y == 0.0f && mover->unk_04 != 0) {
+                func_80107D30_snowball_summit(object, 0, 0, 10);
+                object->rot.y = 0.0f;
+                break;
+            }
+            func_8010AE74_snowball_summit(object);
+            break;
+        case 2:
+            func_8010AE74_snowball_summit(object);
+            break;
+        case 3:
+            func_8010AE74_snowball_summit(object);
+            break;
+    }
+    if (mover->unk_04 == 0) {
+        object->rot.y = 0.0f;
+    }
+}
 
 void func_8010B158_snowball_summit(omObjData *object) {
     UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
@@ -889,9 +1201,154 @@ void func_8010B158_snowball_summit(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010B250_snowball_summit);
+void func_8010B250_snowball_summit(omObjData *object) {
+    UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010B34C_snowball_summit);
+    if (mover->id == -1) {
+        return;
+    }
+
+    switch (D_8010F880_snowball_summit) {
+        case 2:
+            if (mover->unk_08 != 0) {
+                func_8010811C_snowball_summit(object);
+            }
+            if (mover->unk_3C == 0) {
+                func_8010AA78_snowball_summit(object);
+            } else {
+                func_8010AE74_snowball_summit(object);
+            }
+            break;
+        case 3:
+            func_80105B9C_snowball_summit(object->work[0]);
+            func_8010B01C_snowball_summit(object);
+            break;
+        case 4:
+            func_80105B9C_snowball_summit(object->work[0]);
+            func_8010B158_snowball_summit(object);
+            break;
+        case 0:
+        case 1:
+        case 5:
+            func_80105B9C_snowball_summit(object->work[0]);
+            break;
+    }
+}
+
+void func_8010B34C_snowball_summit(omObjData *object) {
+    u16 character = GwPlayer[object->work[0]].chr;
+    UnkSnowballSummitMover *mover;
+
+    object->model[0] = func_8000B108_main(D_800A178C_main[character][0] | D_800A178C_main[character][1], 0x2B9);
+    func_8000B460_main(object, 0, func_80017BB8_main(character, 0));
+    func_8000B460_main(object, 1, func_80017BB8_main(character, 1));
+    func_8000B460_main(object, 2, func_80017BB8_main(character, 0x89));
+    func_8000B460_main(object, 3, func_80017BB8_main(character, 0x85));
+    func_8000B460_main(object, 4, func_80017BB8_main(character, 0x86));
+    func_8000B460_main(object, 5, func_80017BB8_main(character, 0x87));
+    func_8000B460_main(object, 6, func_80017BB8_main(character, 0x88));
+    func_8000B460_main(object, 7, func_80017BB8_main(character, 0xF));
+    func_8000B460_main(object, 8, func_80017BB8_main(character, 0x9F));
+    func_8000B460_main(object, 9, func_80017BB8_main(character, 0x2F));
+    func_8000B460_main(object, 10, func_80017BB8_main(character, 0x38));
+    object->model[1] = func_8000B0A0_main(0, 0xC9);
+    func_8001C2FC_main(object->model[1], 0x80000000, 0);
+    Hu3DModelRemakeStatic(object->model[1]);
+    func_8001C514_main(object->model[1]);
+    func_80088800_main(Hu3DData[object->model[1]].mtx, 0.0f, 10.0f, 0.0f);
+    func_8001C5B4_main(object->model[0], object->motion[0]);
+    func_8001C814_main(object->model[0], 2, 2);
+    if (object->work[0] == 0) {
+        D_8010F8A8_snowball_summit = rand8() & 3;
+        object->trans.x = D_8010F598_snowball_summit[D_8010F8A8_snowball_summit].x;
+        object->trans.y = 0.0f;
+        object->trans.z = D_8010F598_snowball_summit[D_8010F8A8_snowball_summit].y;
+        object->rot.y = D_8010F598_snowball_summit[D_8010F8A8_snowball_summit].z;
+    } else {
+        if (++D_8010F8A8_snowball_summit >= 4) {
+            D_8010F8A8_snowball_summit = 0;
+        }
+        object->trans.x = D_8010F598_snowball_summit[D_8010F8A8_snowball_summit].x;
+        object->trans.y = 0.0f;
+        object->trans.z = D_8010F598_snowball_summit[D_8010F8A8_snowball_summit].y;
+        object->rot.y = D_8010F598_snowball_summit[D_8010F8A8_snowball_summit].z;
+    }
+    Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
+    Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y + 20.0f + 5.0f, object->trans.z);
+    Hu3DModelCameraSet(object->model[0], HU3D_CAM1);
+    Hu3DModelCameraSet(object->model[1], HU3D_CAM1);
+    object->func = func_8010B250_snowball_summit;
+
+    mover = &D_8010F9B8_snowball_summit[object->work[0]];
+    mover->id = 0;
+    mover->unk_04 = 0;
+    mover->unk_08 = GwPlayer[object->work[0]].stat & 1;
+    mover->unk_0C = GwPlayer[object->work[0]].cpu_difficulty;
+    mover->unk_10 = 0.0f;
+    mover->posX = 0.0f;
+    mover->posY = 0.0f;
+    mover->unk_40 = 30;
+    mover->unk_44 = 0;
+    mover->unk_48 = 0;
+    mover->posZ = 0.0f;
+    mover->unk_24 = 0.0f;
+    mover->unk_28 = 0.0f;
+    mover->unk_2C = 0.0f;
+    mover->spawnPosX = object->trans.x;
+    mover->spawnPosY = object->trans.y;
+    mover->spawnPosZ = object->trans.z;
+    mover->unk_3C = 0;
+    mover->unk_4C = 0;
+    mover->unk_50 = 50.0f;
+    mover->unk_54 = 150.0f;
+    mover->unk_6C = 0;
+    mover->unk_70 = -1;
+    mover->unk_74 = 0;
+    mover->unk_78 = object;
+    mover->unk_8C = 0;
+    switch (mover->unk_0C) {
+        case 0:
+            mover->unk_7C = 90;
+            mover->unk_80 = 200;
+            mover->unk_84 = 6;
+            mover->unk_88 = 4;
+            mover->unk_90 = 0;
+            mover->unk_96 = 0;
+            mover->unk_94 = 0;
+            mover->unk_98 = 1.7f;
+            break;
+        case 1:
+            mover->unk_7C = 100;
+            mover->unk_80 = 250;
+            mover->unk_84 = 5;
+            mover->unk_88 = 5;
+            mover->unk_90 = 0;
+            mover->unk_96 = 0;
+            mover->unk_94 = 0;
+            mover->unk_98 = 2.0f;
+            break;
+        case 2:
+            mover->unk_7C = 120;
+            mover->unk_80 = 300;
+            mover->unk_84 = 4;
+            mover->unk_88 = 10;
+            mover->unk_90 = 0;
+            mover->unk_96 = 0;
+            mover->unk_94 = 0;
+            mover->unk_98 = 1.7f;
+            break;
+        default:
+            mover->unk_7C = 140;
+            mover->unk_80 = 400;
+            mover->unk_84 = 10;
+            mover->unk_88 = 12;
+            mover->unk_90 = 0;
+            mover->unk_96 = 0;
+            mover->unk_94 = 0;
+            mover->unk_98 = 2.0f;
+            break;
+    }
+}
 
 void func_8010B8E4_snowball_summit(void) {
     omObjData *object;
@@ -936,7 +1393,67 @@ s32 func_8010B994_snowball_summit(omObjData *object) {
     return -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010B9E4_snowball_summit);
+void func_8010B9E4_snowball_summit(omObjData *object) {
+    UnkSnowballSummitSlot *slot = &D_8010FC30_snowball_summit[object->work[0]];
+    UnkSnowballSummitMover *mover;
+
+    if (slot->id == -1) {
+        return;
+    }
+
+    if (D_8010F880_snowball_summit >= 3 && slot->id > 0 && slot->unk_18 == 0) {
+        slot->id = 20;
+    }
+
+    switch (slot->id) {
+        case 0:
+            break;
+        case 1:
+            func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, 0);
+            func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, 0);
+            slot->unk_0C = 1.0f;
+            slot->id = 2;
+            break;
+        case 2:
+            slot->id = 3;
+            break;
+        case 10:
+            slot->id = 11;
+            break;
+        case 11:
+            slot->id = 12;
+            break;
+        case 20:
+            if (slot->unk_34 == 1 && slot->unk_38 != -1) {
+                HuAudFXStop((s16)slot->unk_38);
+                slot->unk_34 = 0;
+                slot->unk_38 = -1;
+                D_8011024C_snowball_summit = 0;
+            }
+            func_8010738C_snowball_summit(object, 30, 0.1f, slot->unk_0C * 0.5, slot->unk_0C * 0.5 + 0.2, 0.0f, 0.0f, 0.0f);
+            func_8010705C_snowball_summit(object, 40, slot->unk_0C * 0.1 * 0.5, slot->unk_0C * 1.2 * 0.5, 0.0f, 0.0f, 0.0f);
+            if (slot->unk_10 != -1) {
+                mover = &D_8010F9B8_snowball_summit[slot->unk_10];
+                mover->unk_70 = -1;
+                mover->unk_48 = 0;
+                mover->unk_40 = 0;
+                mover->unk_44 = 0;
+            }
+            func_8001C258_main(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            slot->id = 0;
+            slot->unk_04 = 0;
+            slot->unk_08 = 0;
+            slot->unk_0C = 1.0f;
+            slot->unk_14 = 0.0f;
+            slot->unk_18 = 0;
+            slot->unk_10 = -1;
+            slot->unk_28 = 0;
+            slot->unk_2C = 0;
+            slot->unk_30 = 0;
+            break;
+    }
+}
 
 void func_8010BC7C_snowball_summit(omObjData *object) {
     UnkSnowballSummitSlot *slot;
@@ -1313,7 +1830,39 @@ void func_8010CA70_snowball_summit(void) {
     D_8010F884_snowball_summit = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010CA98_snowball_summit);
+s32 func_8010CA98_snowball_summit(UnkSnowballSummitMover *mover) {
+    UnkSnowballSummitMover *other;
+    Vec delta;
+    f32 radius;
+    f32 dist;
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        if (mover->unk_78->work[0] == i) {
+            continue;
+        }
+        if (mover->unk_5C[i] != 0) {
+            continue;
+        }
+        other = &D_8010F9B8_snowball_summit[i];
+        if (other->id == -1) {
+            continue;
+        }
+        func_80107908_snowball_summit(mover->spawnPosX, mover->spawnPosZ, other->spawnPosX, other->spawnPosZ, &delta);
+        radius = mover->unk_50 + other->unk_50;
+        dist = delta.x;
+        if (dist < 0.0f) {
+            dist = -dist;
+        }
+        if (dist < radius && mover->spawnPosY <= other->unk_54 && mover->unk_3C == 0) {
+            mover->unk_5C[i] = 1;
+            mover->unk_58 = 1;
+            other->unk_5C[mover->unk_78->work[0]] = 1;
+            other->unk_58 = 1;
+        }
+    }
+    return mover->unk_58 != 0;
+}
 
 s32 func_8010CC00_snowball_summit(UnkSnowballSummitMover *mover) {
     f32 dx = mover->unk_78->trans.x + mover->posZ;
@@ -1342,7 +1891,54 @@ s32 func_8010CC00_snowball_summit(UnkSnowballSummitMover *mover) {
     return mover->unk_4C;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010CD58_snowball_summit);
+void func_8010CD58_snowball_summit(UnkSnowballSummitMover *mover) {
+    UnkSnowballSummitMover *other;
+    Vec delta;
+    f32 push;
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        if (mover->unk_78->work[0] == i) {
+            continue;
+        }
+        if (mover->unk_5C[i] != 1) {
+            continue;
+        }
+        other = &D_8010F9B8_snowball_summit[i];
+        if (other->id == -1) {
+            continue;
+        }
+        func_80107908_snowball_summit(mover->spawnPosX, mover->spawnPosZ, other->spawnPosX, other->spawnPosZ, &delta);
+        if (mover->unk_3C != 0) {
+            mover->spawnPosX = other->unk_78->trans.x + sindf(delta.z) * (other->unk_50 + mover->unk_50 + 1.0f);
+            mover->spawnPosZ = other->unk_78->trans.z + cosdf(delta.z) * (other->unk_50 + mover->unk_50 + 1.0f);
+            mover->posZ = -mover->posZ;
+            mover->unk_28 = -mover->unk_28;
+            mover->unk_5C[i] = 0;
+        } else if (other->unk_10 == 0.0f) {
+            mover->spawnPosX = other->unk_78->trans.x + sindf(delta.z) * (other->unk_50 + mover->unk_50 + 1.0f);
+            mover->spawnPosZ = other->unk_78->trans.z + cosdf(delta.z) * (other->unk_50 + mover->unk_50 + 1.0f);
+            mover->posZ = mover->spawnPosX - mover->unk_78->trans.x;
+            mover->unk_28 = mover->spawnPosZ - mover->unk_78->trans.z;
+            mover->unk_5C[i] = 0;
+        } else {
+            if (mover->unk_10 == 0.0f) {
+                continue;
+            }
+            push = (other->unk_50 + mover->unk_50 - delta.x) * 0.5;
+            mover->spawnPosX += sindf(delta.z) * (push + 1.0f);
+            mover->spawnPosZ += cosdf(delta.z) * (push + 1.0f);
+            mover->posZ = mover->spawnPosX - mover->unk_78->trans.x;
+            mover->unk_28 = mover->spawnPosZ - mover->unk_78->trans.z;
+            other->spawnPosX += sindf(WRAP_ANGLE(delta.z + 180.0f)) * (push + 1.0f);
+            other->spawnPosZ += cosdf(WRAP_ANGLE(delta.z + 180.0f)) * (push + 1.0f);
+            other->posZ = other->spawnPosX - other->unk_78->trans.x;
+            other->unk_28 = other->spawnPosZ - other->unk_78->trans.z;
+            mover->unk_5C[i] = 0;
+        }
+        other->unk_5C[mover->unk_78->work[0]] = 0;
+    }
+}
 
 void func_8010D108_snowball_summit(UnkSnowballSummitMover *mover) {
     f32 angle;
@@ -1379,11 +1975,141 @@ void func_8010D108_snowball_summit(UnkSnowballSummitMover *mover) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010D304_snowball_summit);
+void func_8010D304_snowball_summit(UnkSnowballSummitMover *mover) {
+    omObjData *object = mover->unk_78;
+    f32 angle;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010D55C_snowball_summit);
+    if (mover->unk_3C == 2 || mover->unk_3C == 3) {
+        object->trans.x = mover->spawnPosX;
+        object->trans.y = mover->spawnPosY;
+        object->trans.z = mover->spawnPosZ;
+        Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
+        Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y + 5.0f, object->trans.z);
+        func_8001C258_main(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    } else {
+        if (mover->unk_3C == 1) {
+            object->trans.x = mover->spawnPosX;
+            object->trans.y = mover->spawnPosY;
+            object->trans.z = mover->spawnPosZ;
+            Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
+        } else {
+            object->trans.x = mover->spawnPosX;
+            object->trans.z = mover->spawnPosZ;
+            mover->posX = object->rot.y;
+            Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
+        }
+        Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y + 20.0f + 5.0f, object->trans.z);
+    }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010D86C_snowball_summit);
+    if ((mover->unk_4C != 0 && object->trans.y > -2000.0f) || mover->unk_74 == 1) {
+        if (mover->spawnPosY > -1900.0f) {
+            if (mover->unk_6C <= 0) {
+                angle = func_8010610C_snowball_summit(mover->spawnPosX, mover->spawnPosZ);
+                func_8010705C_snowball_summit(mover->unk_78, 40, 0.1f, 1.6f, sindf(angle) * 50.0f, 60.0f, cosdf(angle) * 50.0f);
+                mover->unk_6C = 1;
+            } else {
+                mover->unk_6C--;
+            }
+        }
+    }
+}
+
+void func_8010D55C_snowball_summit(UnkSnowballSummitMover *mover) {
+    omObjData *object = mover->unk_78;
+    UnkSnowballSummitMover *other;
+    omObjData *otherObject;
+    Vec delta;
+    f32 radius;
+    f32 dist;
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        if (i == object->work[0]) {
+            continue;
+        }
+        other = &D_8010F9B8_snowball_summit[i];
+        if (other->id == 90) {
+            continue;
+        }
+        if (other->unk_4C != 0) {
+            continue;
+        }
+        otherObject = other->unk_78;
+        func_80107908_snowball_summit(object->trans.x, object->trans.z, otherObject->trans.x, otherObject->trans.z, &delta);
+        radius = mover->unk_50 + other->unk_50;
+        dist = delta.x;
+        if (dist < 0.0f) {
+            dist = -dist;
+        }
+        if (dist < radius && object->trans.y < otherObject->trans.y + other->unk_54) {
+            mover->unk_74 = 1;
+            mover->unk_3C = 1;
+            mover->unk_10 = 10.0f;
+            mover->unk_24 = 20.0f;
+            mover->unk_2C = 4.0f;
+            mover->posX = WRAP_ANGLE(delta.z + 180.0f + (u8)(rand8() % 20));
+        }
+    }
+}
+
+void func_8010D86C_snowball_summit(void) {
+    UnkSnowballSummitMover *mover;
+    s32 iterations = 0;
+    s32 resolved;
+    s32 i;
+    s32 j;
+
+    do {
+        resolved = 1;
+        iterations++;
+        for (i = 0; i < ARRAY_COUNT(D_8010F9B8_snowball_summit); i++) {
+            mover = &D_8010F9B8_snowball_summit[i];
+            for (j = 0; j < ARRAY_COUNT(mover->unk_5C); j++) {
+                mover->unk_5C[j] = 0;
+            }
+            mover->unk_58 = 0;
+        }
+        for (i = 0; i < ARRAY_COUNT(D_8010F9B8_snowball_summit); i++) {
+            mover = &D_8010F9B8_snowball_summit[i];
+            if (mover->id != -1 && mover->unk_3C == 0) {
+                if (func_8010CA98_snowball_summit(mover)) {
+                    resolved = 0;
+                }
+            }
+        }
+        for (i = 0; i < ARRAY_COUNT(D_8010F9B8_snowball_summit); i++) {
+            mover = &D_8010F9B8_snowball_summit[i];
+            if (mover->id != -1 && mover->unk_4C == 0) {
+                func_8010CC00_snowball_summit(mover);
+            }
+        }
+        for (i = 0; i < ARRAY_COUNT(D_8010F9B8_snowball_summit); i++) {
+            mover = &D_8010F9B8_snowball_summit[i];
+            if (mover->id != -1 && mover->unk_58 == 1 && mover->unk_3C == 0) {
+                func_8010CD58_snowball_summit(mover);
+            }
+        }
+    } while (resolved == 0 && iterations < 10);
+
+    for (i = 0; i < ARRAY_COUNT(D_8010F9B8_snowball_summit); i++) {
+        mover = &D_8010F9B8_snowball_summit[i];
+        if (mover->id != -1 && mover->unk_4C == 1) {
+            func_8010D108_snowball_summit(mover);
+        }
+    }
+    for (i = 0; i < ARRAY_COUNT(D_8010F9B8_snowball_summit); i++) {
+        mover = &D_8010F9B8_snowball_summit[i];
+        if (mover->id != -1) {
+            func_8010D304_snowball_summit(mover);
+        }
+    }
+    for (i = 0; i < ARRAY_COUNT(D_8010F9B8_snowball_summit); i++) {
+        mover = &D_8010F9B8_snowball_summit[i];
+        if (mover->id != -1 && mover->unk_3C == 1) {
+            func_8010D55C_snowball_summit(mover);
+        }
+    }
+}
 
 void func_8010DB10_snowball_summit(UnkSnowballSummitSlot *slot) {
     UnkSnowballSummitMover *mover;
@@ -1421,9 +2147,74 @@ void func_8010DB10_snowball_summit(UnkSnowballSummitSlot *slot) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010DD00_snowball_summit);
+void func_8010DD00_snowball_summit(UnkSnowballSummitSlot *slot) {
+    UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[slot->unk_10];
+    omObjData *object = slot->unk_3C;
+    f32 distance;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010DFD0_snowball_summit);
+    if (slot->unk_0C < 4.0f) {
+        slot->unk_0C += mover->unk_10 * 0.003;
+    } else {
+        slot->unk_0C = 4.0f;
+    }
+    object->scale.x = object->scale.y = object->scale.z = slot->unk_0C;
+    Hu3DModelScaleSet(object->model[0], object->scale.x, object->scale.y, object->scale.z);
+    Hu3DModelScaleSet(object->model[1], object->scale.x, object->scale.y, object->scale.z);
+    if (slot->unk_0C < 1.7) {
+        distance = slot->unk_0C * 37.5 + mover->unk_50;
+    } else {
+        distance = slot->unk_0C * 37.5 + mover->unk_50 * 0.6;
+    }
+    object->trans.x = sindf(mover->posX) * distance + mover->spawnPosX;
+    object->trans.y = slot->unk_0C * 37.5 + 20.0;
+    object->trans.z = cosdf(mover->posX) * distance + mover->spawnPosZ;
+    Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
+    Hu3DModelPosSet(object->model[1], object->trans.x, 30.0f, object->trans.z);
+    object->rot.x = object->rot.x + (mover->unk_10 * 0.3) * (mover->unk_10 * 0.3) >= 360.0
+                        ? object->rot.x + (mover->unk_10 * 0.3) * (mover->unk_10 * 0.3) - 360.0
+                    : object->rot.x + (mover->unk_10 * 0.3) * (mover->unk_10 * 0.3) < 0.0
+                        ? object->rot.x + (mover->unk_10 * 0.3) * (mover->unk_10 * 0.3) + 360.0
+                        : object->rot.x + (mover->unk_10 * 0.3) * (mover->unk_10 * 0.3);
+    object->rot.y = mover->posX;
+    Hu3DModelRotSet(object->model[0], object->rot.x, object->rot.y, object->rot.z);
+    if (slot->id == 2) {
+        func_8010705C_snowball_summit(object, 40, 0.1f, 1.6f, 0.0f, 0.0f, 0.0f);
+    }
+}
+
+void func_8010DFD0_snowball_summit(UnkSnowballSummitSlot *slot) {
+    omObjData *object = slot->unk_3C;
+    f32 speed;
+    f32 x;
+    f32 y;
+    f32 z;
+
+    if (D_8011024C_snowball_summit == 0) {
+        slot->unk_38 = HuAudFXPlay(0x43A);
+        if (slot->unk_38 != -1) {
+            slot->unk_34 = 1;
+            D_8011024C_snowball_summit = 1;
+        }
+    }
+
+    speed = 1.0f / (slot->unk_0C * slot->unk_0C + 1.0f) * 25.0f + 9.0f;
+    object->trans.x += sindf(object->rot.y) * speed;
+    object->trans.z += cosdf(object->rot.y) * speed;
+    Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
+    Hu3DModelPosSet(object->model[1], object->trans.x, 30.0f, object->trans.z);
+    object->rot.x = object->rot.x + (speed * 0.3) * (speed * 0.3) >= 360.0
+                        ? object->rot.x + (speed * 0.3) * (speed * 0.3) - 360.0
+                    : object->rot.x + (speed * 0.3) * (speed * 0.3) < 0.0
+                        ? object->rot.x + (speed * 0.3) * (speed * 0.3) + 360.0
+                        : object->rot.x + (speed * 0.3) * (speed * 0.3);
+    Hu3DModelRotSet(object->model[0], object->rot.x, object->rot.y, object->rot.z);
+    if (slot->id == 11) {
+        x = sindf(WRAP_ANGLE(object->rot.y + 180.0f)) * slot->unk_0C;
+        y = object->trans.y - (object->trans.y - 120.0f);
+        z = cosdf(WRAP_ANGLE(object->rot.y + 180.0f)) * slot->unk_0C;
+        func_8010705C_snowball_summit(object, 20, 0.2f, 2.0f, x, y, z);
+    }
+}
 
 void func_8010E2F4_snowball_summit(UnkSnowballSummitSlot *slot) {
     omObjData *object = slot->unk_3C;
@@ -1467,15 +2258,251 @@ void func_8010E2F4_snowball_summit(UnkSnowballSummitSlot *slot) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010E52C_snowball_summit);
+void func_8010E52C_snowball_summit(UnkSnowballSummitSlot *slot) {
+    omObjData *object = slot->unk_3C;
+    UnkSnowballSummitMover *mover;
+    UnkSnowballSummitNode *node;
+    omObjData *moverObject;
+    Vec delta;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010E824_snowball_summit);
+    for (i = 0; i < 4; i++) {
+        if (i == slot->unk_10) {
+            continue;
+        }
+        mover = &D_8010F9B8_snowball_summit[i];
+        if (mover->id == 90) {
+            continue;
+        }
+        if (mover->unk_4C != 0) {
+            continue;
+        }
+        moverObject = mover->unk_78;
+        func_80107908_snowball_summit(object->trans.x, object->trans.z, moverObject->trans.x, moverObject->trans.z, &delta);
+        if (slot->unk_0C * 37.5 + mover->unk_50 > ABS(delta.x) && moverObject->trans.y < slot->unk_0C * 37.5 + slot->unk_0C * 37.5) {
+            if (slot->unk_34 == 1 && slot->unk_38 != -1) {
+                HuAudFXStop((s16)slot->unk_38);
+                slot->unk_34 = 0;
+                slot->unk_38 = -1;
+                D_8011024C_snowball_summit = 0;
+            }
+            if (slot->unk_10 != -1) {
+                node = &D_80110250_snowball_summit[slot->unk_10];
+                if (node->unk_04 == 1 && node->unk_08 != -1) {
+                    HuAudFXStop((s16)node->unk_08);
+                    node->unk_04 = 0;
+                    node->unk_08 = -1;
+                }
+            }
+            func_8004AC98_main(0x43C, mover->unk_78->work[0]);
+            D_8010F898_snowball_summit[moverObject->work[0]] = 30;
+            slot->id = 20;
+            mover->unk_74 = 1;
+            mover->unk_3C = 1;
+            if (slot->unk_0C < 2.0f) {
+                mover->unk_10 = slot->unk_0C * 10.0f;
+                mover->unk_24 = slot->unk_0C * 16.0f;
+            } else {
+                mover->unk_10 = slot->unk_0C * 15.0f;
+                mover->unk_24 = slot->unk_0C * 20.0f;
+                func_8004AC98_main(0x43E, mover->unk_78->work[0]);
+            }
+            mover->unk_2C = 4.0f;
+            mover->posX = delta.z;
+            if (mover->unk_70 != -1) {
+                D_8010FC30_snowball_summit[mover->unk_70].id = 20;
+            }
+            if (mover->unk_08 == 0) {
+                omVibrate(moverObject->work[0], 20, 0, 20);
+            }
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010EA68_snowball_summit);
+void func_8010E824_snowball_summit(UnkSnowballSummitSlot *slot) {
+    omObjData *object = slot->unk_3C;
+    UnkSnowballSummitSlot *other;
+    UnkSnowballSummitNode *node;
+    Vec delta;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010EBC0_snowball_summit);
+    func_8010E52C_snowball_summit(slot);
+    for (i = 0; i < ARRAY_COUNT(D_8010FC30_snowball_summit); i++) {
+        if (i == object->work[0]) {
+            continue;
+        }
+        other = &D_8010FC30_snowball_summit[i];
+        if (other->id <= 0) {
+            continue;
+        }
+        func_80107908_snowball_summit(object->trans.x, object->trans.z, other->unk_3C->trans.x, other->unk_3C->trans.z, &delta);
+        if (slot->unk_0C * 37.5 + other->unk_0C * 37.5 > ABS(delta.x)) {
+            if (slot->unk_10 != -1) {
+                slot->id = 20;
+                if (slot->unk_34 == 1 && slot->unk_38 != -1) {
+                    HuAudFXStop((s16)slot->unk_38);
+                    slot->unk_34 = 0;
+                    slot->unk_38 = -1;
+                    D_8011024C_snowball_summit = 0;
+                }
+                node = &D_80110250_snowball_summit[slot->unk_10];
+                if (node->unk_04 == 1 && node->unk_08 != -1) {
+                    HuAudFXStop((s16)node->unk_08);
+                    node->unk_04 = 0;
+                    node->unk_08 = -1;
+                }
+            } else if (other->unk_10 == -1) {
+                if (!(slot->unk_0C - other->unk_0C < 0.2)) {
+                    continue;
+                }
+                slot->id = 20;
+                if (slot->unk_34 == 1 && slot->unk_38 != -1) {
+                    HuAudFXStop((s16)slot->unk_38);
+                    slot->unk_34 = 0;
+                    slot->unk_38 = -1;
+                    D_8011024C_snowball_summit = 0;
+                }
+            } else {
+                slot->id = 20;
+                if (slot->unk_34 == 1 && slot->unk_38 != -1) {
+                    HuAudFXStop((s16)slot->unk_38);
+                    slot->unk_34 = 0;
+                    slot->unk_38 = -1;
+                    D_8011024C_snowball_summit = 0;
+                }
+            }
+            HuAudFXPlay(0x43F);
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010EEEC_snowball_summit);
+void func_8010EA68_snowball_summit(void) {
+    UnkSnowballSummitSlot *slot;
+    s32 i;
+
+    for (i = 0; i < ARRAY_COUNT(D_8010FC30_snowball_summit); i++) {
+        slot = &D_8010FC30_snowball_summit[i];
+        if (slot->id > 0 && slot->unk_18 == 0) {
+            if (slot->unk_10 != -1) {
+                func_8010DD00_snowball_summit(slot);
+            } else {
+                func_8010DFD0_snowball_summit(slot);
+            }
+        }
+    }
+    for (i = 0; i < ARRAY_COUNT(D_8010FC30_snowball_summit); i++) {
+        slot = &D_8010FC30_snowball_summit[i];
+        if (slot->id > 0 && slot->unk_18 == 0) {
+            func_8010DB10_snowball_summit(slot);
+        }
+    }
+    for (i = 0; i < ARRAY_COUNT(D_8010FC30_snowball_summit); i++) {
+        slot = &D_8010FC30_snowball_summit[i];
+        if (slot->id > 0 && slot->unk_18 == 0) {
+            func_8010E824_snowball_summit(slot);
+        }
+    }
+    for (i = 0; i < ARRAY_COUNT(D_8010FC30_snowball_summit); i++) {
+        slot = &D_8010FC30_snowball_summit[i];
+        if (slot->id > 0 && slot->id < 20 && slot->unk_18 == 1) {
+            func_8010E2F4_snowball_summit(slot);
+        }
+    }
+}
+
+void func_8010EBC0_snowball_summit(void) {
+    UnkSnowballSummitNode *node;
+    UnkSnowballSummitMover *mover;
+    UnkSnowballSummitSlot *slot;
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        node = &D_80110250_snowball_summit[i];
+        if (node->id == -1) {
+            return;
+        }
+        mover = &D_8010F9B8_snowball_summit[i];
+        if (mover->id == -1 || mover->unk_70 == -1 || mover->unk_3C != 0 || mover->unk_10 <= 0.0f) {
+            node->id = 0;
+        }
+        switch (node->id) {
+            case 0:
+                if (node->unk_04 == 1 && node->unk_08 != -1) {
+                    HuAudFXStop((s16)node->unk_08);
+                    node->unk_04 = 0;
+                    node->unk_08 = -1;
+                }
+                func_8001C258_main(node->unk_0C->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                if ((mover->unk_04 == 3 || mover->unk_04 == 4) && mover->unk_10 > 0.0f) {
+                    node->id = 1;
+                }
+                break;
+            case 1:
+                func_8001C258_main(node->unk_0C->model[0], HU3D_ATTR_DISPOFF, 0);
+                if (node->unk_04 != 1 && node->unk_08 == -1) {
+                    node->unk_08 = func_8004AC98_main(0x439, mover->unk_78->work[0]);
+                    if (node->unk_08 != -1) {
+                        node->unk_04 = 1;
+                    }
+                }
+                if (!(mover->unk_04 == 3 || mover->unk_04 == 4) || mover->unk_10 <= 0.0f) {
+                    node->id = 0;
+                    if (node->unk_04 == 1 && node->unk_08 != -1) {
+                        HuAudFXStop((s16)node->unk_08);
+                        node->unk_04 = 0;
+                        node->unk_08 = -1;
+                    }
+                }
+                break;
+        }
+        if (mover->unk_70 != -1) {
+            slot = &D_8010FC30_snowball_summit[mover->unk_70];
+            node->unk_0C->trans.x = slot->unk_3C->trans.x;
+            node->unk_0C->trans.y = slot->unk_3C->trans.y;
+            node->unk_0C->trans.z = slot->unk_3C->trans.z;
+            node->unk_0C->scale.x = node->unk_0C->scale.y = node->unk_0C->scale.z = slot->unk_0C;
+        } else {
+            node->unk_0C->trans.x = mover->spawnPosX;
+            node->unk_0C->trans.y = mover->spawnPosY + 20.0f;
+            node->unk_0C->trans.z = mover->spawnPosZ;
+            if (node->unk_04 == 1 && node->unk_08 != -1) {
+                HuAudFXStop((s16)node->unk_08);
+                node->unk_04 = 0;
+                node->unk_08 = -1;
+            }
+        }
+    }
+    // Only the last node is updated here, as this is outside the loop.
+    Hu3DModelPosSet(node->unk_0C->model[0], node->unk_0C->trans.x, node->unk_0C->trans.y, node->unk_0C->trans.z);
+    if (D_8010F880_snowball_summit >= 3 && node->unk_04 == 1 && node->unk_08 != -1) {
+        HuAudFXStop((s16)node->unk_08);
+        node->unk_04 = 0;
+        node->unk_08 = -1;
+    }
+}
+
+void func_8010EEEC_snowball_summit(omObjData *object) {
+    func_8010CA70_snowball_summit();
+    switch (D_8010F880_snowball_summit) {
+        case 0:
+            break;
+        case 1:
+            if (D_8010F5C8_snowball_summit == -1) {
+                D_8010F5C8_snowball_summit = HuAudFXPlay(0x43D);
+            }
+            break;
+        case 2:
+        case 3:
+            func_8010D86C_snowball_summit();
+            func_8010EA68_snowball_summit();
+            func_8010EBC0_snowball_summit();
+            break;
+        case 5:
+            WipeCreateOut(WIPE_TYPE_NORMAL, 20);
+            object->func = func_8010C9E0_snowball_summit;
+            break;
+    }
+}
 
 void func_8010EFA0_snowball_summit(void) {
     s32 i;

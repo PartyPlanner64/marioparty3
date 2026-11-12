@@ -72,7 +72,10 @@ typedef struct UnkStardustBattleActor {
    The pool is indexed by UnkStardustBattleStars.count. */
 typedef struct UnkStardustBattleStar {
     /* 0x00 */ s16 active;
-    /* 0x02 */ s16 model[6];
+    /* 0x02 */ s16 model[2];
+    /* 0x06 */ s16 reflection[2];
+    /* 0x0A */ s16 shadow;
+    /* 0x0C */ s16 effect;
     /* 0x0E */ s16 unk_0E;
     /* 0x10 */ s16 unk_10;
     /* 0x12 */ s16 unk_12;
@@ -348,6 +351,7 @@ extern s16 *D_80114B30_stardust_battle;
 extern omObjData *D_80114B48_stardust_battle;
 extern UnkStardustBattleEffect *D_80114B4C_stardust_battle;
 extern UnkStardustBattleColor D_80113CF4_stardust_battle;
+extern UnkStardustBattleColor D_80113EC4_stardust_battle[];
 extern UnkStardustBattleCamera D_80114B60_stardust_battle[2]; // target, origin
 extern s32 D_80114BA8_stardust_battle;
 extern s32 D_80114BAC_stardust_battle;
@@ -461,6 +465,7 @@ s32 func_801122D0_stardust_battle(void);
 void func_801127B8_stardust_battle(s16 model, s16 count, s16 buffer);
 void func_8010CB34_stardust_battle(void);
 void func_8010CE5C_stardust_battle(omObjData *object);
+s32 func_8010F890_stardust_battle(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color);
 void func_801107E4_stardust_battle(void);
 void func_8010EE7C_stardust_battle(void);
 void func_8010F0E8_stardust_battle(omObjData *object);
@@ -2492,29 +2497,29 @@ void func_8010CB34_stardust_battle(void) {
         star->active = 0;
         if (i == 0) {
             star->model[0] = stars->modelId1;
-            star->model[2] = Hu3DModelLink(stars->modelId1);
+            star->reflection[0] = Hu3DModelLink(stars->modelId1);
             star->model[1] = stars->modelId2;
-            star->model[3] = Hu3DModelLink(stars->modelId2);
-            star->model[4] = stars->effectId1;
+            star->reflection[1] = Hu3DModelLink(stars->modelId2);
+            star->shadow = stars->effectId1;
         } else {
             star->model[0] = Hu3DModelLink(stars->modelId1);
-            star->model[2] = Hu3DModelLink(stars->modelId1);
+            star->reflection[0] = Hu3DModelLink(stars->modelId1);
             star->model[1] = Hu3DModelLink(stars->modelId2);
-            star->model[3] = Hu3DModelLink(stars->modelId2);
-            star->model[4] = Hu3DModelLink(stars->effectId1);
+            star->reflection[1] = Hu3DModelLink(stars->modelId2);
+            star->shadow = Hu3DModelLink(stars->effectId1);
         }
         func_8001C258_main(star->model[0], 4, 4);
-        func_8001C258_main(star->model[2], 4, 4);
+        func_8001C258_main(star->reflection[0], 4, 4);
         func_8001C258_main(star->model[1], 4, 4);
-        func_8001C258_main(star->model[3], 4, 4);
-        func_8001C258_main(star->model[4], 4, 4);
-        mtxRotCat(Hu3DData[star->model[2]].mtx, 180.0f, 0.0f, 0.0f);
-        mtxRotCat(Hu3DData[star->model[2]].mtx, 0.0f, 180.0f, 0.0f);
-        mtxRotCat(Hu3DData[star->model[3]].mtx, 180.0f, 0.0f, 0.0f);
-        mtxRotCat(Hu3DData[star->model[3]].mtx, 0.0f, 180.0f, 0.0f);
-        star->model[5] = func_8000B108_main(0x620007, 0x189D);
-        Hu3DModelScaleSet(star->model[5], 0.75f, 0.75f, 0.75f);
-        func_8001C954_main(star->model[5]);
+        func_8001C258_main(star->reflection[1], 4, 4);
+        func_8001C258_main(star->shadow, 4, 4);
+        mtxRotCat(Hu3DData[star->reflection[0]].mtx, 180.0f, 0.0f, 0.0f);
+        mtxRotCat(Hu3DData[star->reflection[0]].mtx, 0.0f, 180.0f, 0.0f);
+        mtxRotCat(Hu3DData[star->reflection[1]].mtx, 180.0f, 0.0f, 0.0f);
+        mtxRotCat(Hu3DData[star->reflection[1]].mtx, 0.0f, 180.0f, 0.0f);
+        star->effect = func_8000B108_main(0x620007, 0x189D);
+        Hu3DModelScaleSet(star->effect, 0.75f, 0.75f, 0.75f);
+        func_8001C954_main(star->effect);
         star->unk_0E = 0;
         star->unk_10 = 0;
         star->unk_12 = 0;
@@ -2527,37 +2532,195 @@ void func_8010CB34_stardust_battle(void) {
     omSetStatBit(omAddObj(18, 0, 0, -1, func_8010CE5C_stardust_battle), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_8010CE5C_stardust_battle);
+void func_8010CE5C_stardust_battle(omObjData *object) {
+    UnkStardustBattleStars *stars = D_80114B2C_stardust_battle;
+    UnkStardustBattleStar *star = stars->star;
+    Vec pos;
+    Vec scale;
+    f32 floorY;
+    f32 temp;
+    s32 mode;
+    s32 done;
+    s32 i;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", D_80114528_stardust_battle);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", D_8011452C_stardust_battle);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", D_80114530_stardust_battle);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", jtbl_80114538_stardust_battle);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", D_80114550_stardust_battle);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", D_80114558_stardust_battle);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", D_80114560_stardust_battle);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", D_80114568_stardust_battle);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", D_80114570_stardust_battle);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", D_80114578_stardust_battle);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", D_80114580_stardust_battle);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", D_80114588_stardust_battle);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", D_80114590_stardust_battle);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", D_80114598_stardust_battle);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", D_801145A0_stardust_battle);
+    mode = func_8010929C_stardust_battle();
+    if (mode == 1) {
+        floorY = 25.0f;
+    } else {
+        floorY = 0.0f;
+    }
+    for (i = 0; i < stars->count; i++, star++) {
+        if (star->active == 0) {
+            continue;
+        }
+        if (omPauseChk() + D_800D6A90_main != 0) {
+            if (star->unk_18 != 0) {
+                func_8001CAA4_main(star->effect, stars->effectId2, star->unk_68);
+            }
+            if (star->state == 3) {
+                func_8001C258_main(star->model[star->unk_10], 4, 0);
+            }
+            continue;
+        }
+        star->unk_1C = star->x;
+        star->unk_20 = star->y;
+        star->unk_24 = star->z;
+        done = 0;
+        switch (star->state) {
+            case 0:
+                star->x += star->unk_40;
+                star->y += star->unk_44;
+                star->z += star->unk_48;
+                temp = sindf((star->unk_14 & 7) * (360.0f / 7)) * 0.2f;
+                Hu3DModelScaleSet(star->effect, temp + 0.75f, temp + 0.75f, temp + 0.75f);
+                if (star->y <= floorY) {
+                    temp = (f32)fabs((floorY - star->y) / star->unk_44);
+                    star->x -= temp * star->unk_40;
+                    star->z -= temp * star->unk_48;
+                    star->y = floorY;
+                    pos.x = star->x;
+                    pos.y = star->y;
+                    pos.z = star->z + 50.0;
+                    scale.x = scale.y = scale.z = 1.2f;
+                    func_8010F890_stardust_battle(&pos, NULL, &scale, 1.0f, D_80113EC4_stardust_battle[mode].rgba);
+                    HuAudFXPlay(0x504);
+                    star->state = 2;
+                    star->unk_14 = 0;
+                }
+                break;
+            case 1:
+                temp = sindf((star->unk_14 & 7) * (360.0f / 7)) * 0.2f;
+                Hu3DModelScaleSet(star->effect, temp + 1.0f, temp + 1.0f, temp + 1.0f);
+                if (star->unk_68 < 1.0f) {
+                    star->unk_68 += 0.2f;
+                }
+                if (star->unk_12 & 1) {
+                    star->x -= fabs(star->y - 0.0f);
+                    star->y = floorY;
+                    if (star->unk_12 < 2) {
+                        star->state = 2;
+                        star->unk_14 = 0;
+                    }
+                } else {
+                    star->x += ((f32)(u8)(rand8() % 100) * 0.01 * 0.025f + 0.025f) * 100.0;
+                    star->y = floorY + ((f32)(u8)(rand8() % 100) * 0.01 * 0.025f + 0.025f) * 100.0;
+                }
+                star->unk_12--;
+                break;
+            case 2:
+                if (star->unk_14 >= 30) {
+                    func_8001C258_main(star->model[1], 4, 0);
+                    star->unk_10 = 1;
+                    star->unk_18 = 0;
+                    star->state = 3;
+                    star->unk_14 = 0;
+                    break;
+                }
+                temp = 1.0f - star->unk_14 * (1.0f / 30);
+                if (temp < 0.0f) {
+                    temp = 0.5f;
+                } else {
+                    temp = temp * 0.5f + 0.5f;
+                }
+                temp += sindf((star->unk_14 & 7) * (360.0f / 7)) * 0.2f;
+                Hu3DModelScaleSet(star->effect, temp, temp, temp);
+                if (star->unk_68 < 1.0f) {
+                    star->unk_68 += 0.2f;
+                }
+                if (star->unk_14 >= 15.0f) {
+                    if (star->unk_14 & 1) {
+                        func_8001C258_main(star->model[0], 4, 0);
+                        star->unk_10 = 0;
+                    } else {
+                        func_8001C258_main(star->model[1], 4, 0);
+                        star->unk_10 = 1;
+                    }
+                }
+                break;
+            case 3:
+                if (star->unk_14 >= 60.0f) {
+                    if (star->unk_14 & 1) {
+                        func_8001C258_main(star->model[star->unk_10], 4, 4);
+                    } else {
+                        func_8001C258_main(star->model[star->unk_10], 4, 0);
+                    }
+                    if (star->unk_14 >= 90.0f) {
+                        func_8010DF70_stardust_battle(i);
+                        done = 1;
+                    }
+                }
+                break;
+            case 4:
+                break;
+            case 5:
+                star->unk_44 -= 2.44995f;
+                star->x += star->unk_40;
+                star->y += star->unk_44;
+                star->z += star->unk_48;
+                if ((star->y < floorY && star->x * star->x + star->z * star->z < 330625.0) || (star->unk_1C * star->unk_1C + star->unk_24 * star->unk_24 < 330625.0 && star->x * star->x + star->z * star->z > 330625.0 && star->unk_20 < 50.0 && star->y < 50.0)) {
+                    pos.x = star->x;
+                    pos.z = star->z;
+                    pos.y = 30.000002f;
+                    func_8010FCBC_stardust_battle(&pos, NULL, 1.0f, 1);
+                    func_8010FCBC_stardust_battle(&pos, NULL, 1.0f, 2);
+                    func_8010DF70_stardust_battle(i);
+                    done = 1;
+                }
+                break;
+        }
+        if (done) {
+            continue;
+        }
+        func_8001C258_main(star->model[(s16)(star->unk_10 ^ 1)], 4, 4);
+        func_8001C258_main(star->reflection[(s16)(star->unk_10 ^ 1)], 4, 4);
+        Hu3DModelPosSet(star->model[star->unk_10], star->x, star->y, star->z);
+        Hu3DModelRotSet(star->model[star->unk_10], star->targetX, star->targetY, star->targetZ);
+        if (mode != 2 || star->y <= -50.0 || star->x * star->x + star->z * star->z > 275625.0) {
+            func_8001C258_main(star->reflection[star->unk_10], 4, 4);
+        } else {
+            func_8001C258_main(star->reflection[star->unk_10], 4, 0);
+            Hu3DModelPosSet(star->reflection[star->unk_10], star->x, -star->y, star->z);
+            Hu3DModelRotSet(star->reflection[star->unk_10], star->targetX, star->targetY, star->targetZ);
+        }
+        if (star->unk_18 != 0) {
+            func_8001C258_main(star->effect, 4, 0);
+            Hu3DModelPosSet(star->effect, star->x, star->y + 34.99999940395355, star->z);
+            star->unk_78 += 20.0f;
+            if (star->unk_78 >= 360.0f) {
+                star->unk_74 -= 360.0f;
+            }
+            Hu3DModelRotSet(star->effect, star->unk_70 + 180.0f, star->unk_74, 0.0f);
+            func_8008A070_main(Hu3DData[star->effect].mtx);
+            mtxRotCat(Hu3DData[star->effect].mtx, 0.0f, star->unk_78, 0.0f);
+            if (star->unk_68 > 1.0f) {
+                star->unk_68 = 1.0f;
+            } else if (star->unk_68 < 0.0f) {
+                star->unk_68 = 0.0f;
+            }
+            if (star->unk_68 != star->unk_6C) {
+                func_8001CAA4_main(star->effect, stars->effectId2, star->unk_68);
+            }
+            star->unk_6C = star->unk_68;
+        } else {
+            func_8001C258_main(star->effect, 4, 4);
+        }
+        if (mode != 1 && star->x * star->x + star->z * star->z < 275625.0) {
+            temp = 1.0 - star->y * 0.001;
+            if (temp < 0.2f) {
+                temp = 0.2f;
+            }
+            func_8001C258_main(star->shadow, 4, 0);
+            Hu3DModelPosSet(star->shadow, star->x, 0.0f, star->z);
+            Hu3DModelScaleSet(star->shadow, temp * 0.8f, 1.0f, temp * 0.8f);
+        } else {
+            func_8001C258_main(star->shadow, 4, 4);
+        }
+        if (star->y < -1000.0) {
+            func_8010DF70_stardust_battle(i);
+        }
+        star->unk_14++;
+    }
+}
 
 /* Activates a free star falling from pos towards target, returning its index
    or -1 if none are free. */
@@ -2578,7 +2741,7 @@ s16 func_8010DADC_stardust_battle(Vec *pos, Vec *target, f32 speed) {
         if (star->active == 0) {
             star->active = 1;
             func_8001C258_main(star->model[0], 4, 0);
-            func_8001C258_main(star->model[5], 4, 0);
+            func_8001C258_main(star->effect, 4, 0);
             star->state = 0;
             star->unk_14 = 0;
             star->unk_18 = 1;
@@ -2617,16 +2780,16 @@ s16 func_8010DADC_stardust_battle(Vec *pos, Vec *target, f32 speed) {
             star->unk_24 = star->z;
             star->unk_64 = atan2df(star->unk_40, star->unk_48);
             Hu3DModelPosSet(star->model[0], star->x, star->y, star->z);
-            Hu3DModelPosSet(star->model[2], star->x, -star->y, star->z);
-            Hu3DModelPosSet(star->model[4], star->x, 0.0f, star->z);
+            Hu3DModelPosSet(star->reflection[0], star->x, -star->y, star->z);
+            Hu3DModelPosSet(star->shadow, star->x, 0.0f, star->z);
             func_8008A070_main(Hu3DData[star->model[0]].mtx);
             func_8008A070_main(Hu3DData[star->model[1]].mtx);
-            Hu3DModelPosSet(star->model[5], star->x, star->y + 34.99999940395355, star->z);
-            Hu3DModelScaleSet(star->model[5], 0.75f, 0.75f, 0.75f);
-            func_8001CAA4_main(star->model[5], stars->effectId2, star->unk_68);
-            Hu3DModelRotSet(star->model[5], star->unk_70 + 180.0f, star->unk_74, 0.0f);
-            func_8008A070_main(Hu3DData[star->model[5]].mtx);
-            mtxRotCat(Hu3DData[star->model[5]].mtx, 0.0f, star->unk_78, 0.0f);
+            Hu3DModelPosSet(star->effect, star->x, star->y + 34.99999940395355, star->z);
+            Hu3DModelScaleSet(star->effect, 0.75f, 0.75f, 0.75f);
+            func_8001CAA4_main(star->effect, stars->effectId2, star->unk_68);
+            Hu3DModelRotSet(star->effect, star->unk_70 + 180.0f, star->unk_74, 0.0f);
+            func_8008A070_main(Hu3DData[star->effect].mtx);
+            mtxRotCat(Hu3DData[star->effect].mtx, 0.0f, star->unk_78, 0.0f);
             return i;
         }
     }
@@ -2654,10 +2817,10 @@ void func_8010DF70_stardust_battle(s16 index) {
             star->x = star->targetX = star->unk_40 = 0.0f;
             func_8001C258_main(star->model[0], 4, 4);
             func_8001C258_main(star->model[1], 4, 4);
-            func_8001C258_main(star->model[2], 4, 4);
-            func_8001C258_main(star->model[3], 4, 4);
-            func_8001C258_main(star->model[4], 4, 4);
-            func_8001C258_main(star->model[5], 4, 4);
+            func_8001C258_main(star->reflection[0], 4, 4);
+            func_8001C258_main(star->reflection[1], 4, 4);
+            func_8001C258_main(star->shadow, 4, 4);
+            func_8001C258_main(star->effect, 4, 4);
         }
     }
 }

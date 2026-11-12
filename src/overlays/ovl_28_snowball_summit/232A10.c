@@ -899,7 +899,192 @@ s32 func_80107F80_snowball_summit(UnkSnowballSummitMover *mover) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010811C_snowball_summit);
+void func_8010811C_snowball_summit(omObjData *object) {
+    UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
+    UnkSnowballSummitMover *other;
+    UnkSnowballSummitSlot *slot;
+    omObjData *target;
+    Vec result;
+    f32 angle;
+    f32 offset;
+    f32 maxDistSq;
+    s32 i;
+
+    func_80105B9C_snowball_summit(object->work[0]);
+    if (mover->unk_70 != -1 && mover->unk_8C == 1) {
+        mover->unk_8C = 0;
+        mover->unk_94 = sindf(WRAP_ANGLE(rand16() % 360)) * 70.0f;
+        mover->unk_96 = -(s16)(cosdf(WRAP_ANGLE(rand16() % 360)) * 70.0f);
+        D_800CBB6E_main[GwPlayer[object->work[0]].pad] = mover->unk_94;
+        D_800D20A1_main[GwPlayer[object->work[0]].pad] = mover->unk_96;
+        func_80107DD4_snowball_summit(mover);
+        return;
+    }
+
+    if (mover->unk_8C != 0) {
+        if (rand8() < mover->unk_7C && rand8() < mover->unk_7C) {
+            D_800D5558_main[GwPlayer[object->work[0]].pad] |= B_BUTTON;
+        }
+    }
+
+    if (mover->unk_8C == 0) {
+        maxDistSq = 590.0f * 590.0f;
+        if (object->trans.x * object->trans.x + object->trans.z * object->trans.z > maxDistSq) {
+            func_80107DD4_snowball_summit(mover);
+            angle = func_8010610C_snowball_summit(object->trans.x, object->trans.z);
+            offset = 180.0 - func_80107F80_snowball_summit(mover) * 0.5;
+            mover->unk_94 = sindf(WRAP_ANGLE(angle + offset + func_80107F80_snowball_summit(mover))) * 70.0f;
+            mover->unk_96 = -(s16)(cosdf(WRAP_ANGLE(angle + offset + func_80107F80_snowball_summit(mover))) * 70.0f);
+            D_800CBB6E_main[GwPlayer[object->work[0]].pad] = mover->unk_94;
+            D_800D20A1_main[GwPlayer[object->work[0]].pad] = mover->unk_96;
+            return;
+        }
+    }
+
+    if (mover->unk_70 == -1) {
+        if (mover->unk_90 < 30) {
+            for (i = 0; i < ARRAY_COUNT(D_8010FC30_snowball_summit); i++) {
+                slot = &D_8010FC30_snowball_summit[i];
+                if (slot->id > 0) {
+                    target = slot->unk_3C;
+                    func_80107908_snowball_summit(object->trans.x, object->trans.z, target->trans.x, target->trans.z, &result);
+                    if (ABS(result.x) < mover->unk_80 && rand8() % mover->unk_88 != 0) {
+                        mover->unk_94 = sindf(WRAP_ANGLE(result.z + 70.0f + (u8)(rand8() % 60))) * 70.0f;
+                        mover->unk_96 = -(s16)(cosdf(WRAP_ANGLE(result.z + 70.0f + (u8)(rand8() % 60))) * 70.0f);
+                        D_800CBB6E_main[GwPlayer[object->work[0]].pad] = mover->unk_94;
+                        D_800D20A1_main[GwPlayer[object->work[0]].pad] = mover->unk_96;
+                        mover->unk_8C = 0;
+                        func_80107DD4_snowball_summit(mover);
+                        return;
+                    }
+                }
+            }
+        }
+        if (mover->unk_8C == 0 && mover->unk_70 == -1 && mover->unk_90 == 0 && rand8() % mover->unk_7C != 0) {
+            mover->unk_8C = 1;
+            D_800CBB6E_main[GwPlayer[object->work[0]].pad] = D_800D20A1_main[GwPlayer[object->work[0]].pad] = 0;
+            mover->unk_94 = mover->unk_96 = 0;
+            D_800D5558_main[GwPlayer[object->work[0]].pad] |= B_BUTTON;
+            return;
+        }
+    } else {
+        if (mover->unk_90 < 30) {
+            for (i = 0; i < ARRAY_COUNT(D_8010FC30_snowball_summit); i++) {
+                slot = &D_8010FC30_snowball_summit[i];
+                if (slot->id > 0 && i != mover->unk_70) {
+                    target = slot->unk_3C;
+                    func_80107908_snowball_summit(object->trans.x, object->trans.z, target->trans.x, target->trans.z, &result);
+                    if (ABS(result.x) < mover->unk_80) {
+                        if (rand8() % mover->unk_88 != 0) {
+                            if (rand8() % mover->unk_88 != 0) {
+                                mover->unk_94 = sindf(WRAP_ANGLE(result.z + 180.0f)) * 70.0f;
+                                mover->unk_96 = -(s16)(cosdf(WRAP_ANGLE(result.z + 180.0f)) * 70.0f);
+                            } else {
+                                mover->unk_94 = sindf(WRAP_ANGLE(result.z + 70.0f + (u8)(rand8() % 60))) * 70.0f;
+                                mover->unk_96 = -(s16)(cosdf(WRAP_ANGLE(result.z + 70.0f + (u8)(rand8() % 60))) * 70.0f);
+                            }
+                            D_800CBB6E_main[GwPlayer[object->work[0]].pad] = mover->unk_94;
+                            D_800D20A1_main[GwPlayer[object->work[0]].pad] = mover->unk_96;
+                            func_80107DD4_snowball_summit(mover);
+                            return;
+                        }
+                        mover->unk_94 = sindf(WRAP_ANGLE(result.z + 180.0f)) * 70.0f;
+                        mover->unk_96 = -(s16)(cosdf(WRAP_ANGLE(result.z + 180.0f)) * 70.0f);
+                        D_800CBB6E_main[GwPlayer[object->work[0]].pad] = mover->unk_94;
+                        D_800D20A1_main[GwPlayer[object->work[0]].pad] = mover->unk_96;
+                        func_80107DD4_snowball_summit(mover);
+                        if (func_80107988_snowball_summit(object->rot.y, WRAP_ANGLE(result.z + 180.0f), 20.0f) == 0) {
+                            D_800D5558_main[GwPlayer[object->work[0]].pad] |= A_BUTTON;
+                            if (rand8() % mover->unk_88 != 0) {
+                                mover->unk_8C = 1;
+                                D_800CBB6E_main[GwPlayer[object->work[0]].pad] = D_800D20A1_main[GwPlayer[object->work[0]].pad] = 0;
+                                mover->unk_94 = mover->unk_96 = 0;
+                                D_800D5558_main[GwPlayer[object->work[0]].pad] |= B_BUTTON;
+                                mover->unk_90 = 0;
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        for (i = 0; i < ARRAY_COUNT(D_8010F9B8_snowball_summit); i++) {
+            if (i == object->work[0]) {
+                continue;
+            }
+            other = &D_8010F9B8_snowball_summit[i];
+            if (other->id >= 0 && other->id < 90) {
+                target = other->unk_78;
+                func_80107908_snowball_summit(object->trans.x, object->trans.z, target->trans.x, target->trans.z, &result);
+                if (func_80107988_snowball_summit(object->rot.y, WRAP_ANGLE(result.z + 180.0f), 15.0f) == 0 && mover->unk_98 < D_8010FC30_snowball_summit[mover->unk_70].unk_0C && rand8() % mover->unk_88 != 0) {
+                    D_800D5558_main[GwPlayer[object->work[0]].pad] |= A_BUTTON;
+                    if (rand8() % mover->unk_88 != 0) {
+                        mover->unk_8C = 1;
+                        D_800CBB6E_main[GwPlayer[object->work[0]].pad] = D_800D20A1_main[GwPlayer[object->work[0]].pad] = 0;
+                        mover->unk_94 = mover->unk_96 = 0;
+                        D_800D5558_main[GwPlayer[object->work[0]].pad] |= B_BUTTON;
+                        mover->unk_90 = 0;
+                        return;
+                    }
+                }
+            }
+        }
+        if (mover->unk_90 < 30) {
+            for (i = 0; i < ARRAY_COUNT(D_8010F9B8_snowball_summit); i++) {
+                if (i == object->work[0]) {
+                    continue;
+                }
+                other = &D_8010F9B8_snowball_summit[i];
+                if (other->id >= 0 && other->id < 90 && other->unk_08 == 0) {
+                    target = other->unk_78;
+                    if (rand8() % mover->unk_84 == 0) {
+                        func_80107908_snowball_summit(object->trans.x, object->trans.z, target->trans.x, target->trans.z, &result);
+                        if (ABS(result.x) < mover->unk_80 * 2 && rand8() % mover->unk_88 == 0) {
+                            mover->unk_94 = sindf(WRAP_ANGLE(result.z + 180.0f)) * 70.0f;
+                            mover->unk_96 = -(s16)(cosdf(WRAP_ANGLE(result.z + 180.0f)) * 70.0f);
+                            D_800CBB6E_main[GwPlayer[object->work[0]].pad] = mover->unk_94;
+                            D_800D20A1_main[GwPlayer[object->work[0]].pad] = mover->unk_96;
+                            func_80107DD4_snowball_summit(mover);
+                            return;
+                        }
+                    }
+                }
+            }
+            for (i = 0; i < ARRAY_COUNT(D_8010F9B8_snowball_summit); i++) {
+                if (i == object->work[0]) {
+                    continue;
+                }
+                other = &D_8010F9B8_snowball_summit[i];
+                if (other->id >= 0 && other->id < 90) {
+                    target = other->unk_78;
+                    func_80107908_snowball_summit(object->trans.x, object->trans.z, target->trans.x, target->trans.z, &result);
+                    if (ABS(result.x) < mover->unk_80 * 2) {
+                        mover->unk_94 = sindf(WRAP_ANGLE(result.z + 180.0f)) * 70.0f;
+                        mover->unk_96 = -(s16)(cosdf(WRAP_ANGLE(result.z + 180.0f)) * 70.0f);
+                        D_800CBB6E_main[GwPlayer[object->work[0]].pad] = mover->unk_94;
+                        D_800D20A1_main[GwPlayer[object->work[0]].pad] = mover->unk_96;
+                        func_80107DD4_snowball_summit(mover);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    if (mover->unk_8C == 0) {
+        if (mover->unk_90 > 0) {
+            mover->unk_90--;
+            D_800CBB6E_main[GwPlayer[object->work[0]].pad] = mover->unk_94;
+            D_800D20A1_main[GwPlayer[object->work[0]].pad] = mover->unk_96;
+        } else {
+            mover->unk_94 = sindf(WRAP_ANGLE(rand16() % 360)) * 70.0f;
+            mover->unk_96 = -(s16)(cosdf(WRAP_ANGLE(rand16() % 360)) * 70.0f);
+            D_800CBB6E_main[GwPlayer[object->work[0]].pad] = mover->unk_94;
+            D_800D20A1_main[GwPlayer[object->work[0]].pad] = mover->unk_96;
+            func_80107DD4_snowball_summit(mover);
+        }
+    }
+}
 
 void func_8010A0B0_snowball_summit(omObjData *object) {
     UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];

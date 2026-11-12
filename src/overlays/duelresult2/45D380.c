@@ -6,6 +6,31 @@
 // each of the two players.
 #define DUEL_RECORD(record, player) (GwSystem.boardData.halfWordBytes[(record) * 2 + 2 + (player)])
 
+typedef struct DuelResult2Positions {
+    s32 x[4];
+} DuelResult2Positions;
+
+typedef struct DuelResult2PlayerFiles {
+    s32 files[2][3];
+} DuelResult2PlayerFiles;
+
+typedef struct DuelResult2Portraits {
+    s32 files[8];
+} DuelResult2Portraits;
+
+typedef struct DuelResult2StatFiles {
+    s32 files[11];
+} DuelResult2StatFiles;
+
+extern DuelResult2PlayerFiles D_80108C40_duelresult2;
+extern DuelResult2PlayerFiles D_80108C58_duelresult2;
+extern DuelResult2Portraits D_80108C70_duelresult2;
+extern DuelResult2Positions D_80108C90_duelresult2;
+extern DuelResult2Portraits D_80108D08_duelresult2;
+extern DuelResult2Portraits D_80108D28_duelresult2;
+extern DuelResult2StatFiles D_80108D48_duelresult2;
+
+extern UnkBoard4 *D_80108DB0_duelresult2;
 extern UnkBoard4 *D_80108DB4_duelresult2[2];
 extern UnkBoard4 *D_80108DBC_duelresult2;
 extern UnkOvl81_2 *D_80108DC0_duelresult2;
@@ -24,6 +49,7 @@ extern s32 D_80108C34_duelresult2;
 extern s32 D_80108C38_duelresult2;
 extern s16 D_80108E3C_duelresult2;
 extern s16 D_80108E3E_duelresult2;
+extern s16 kakusiMasuItemHis[10];
 
 void func_80105B98_duelresult2(s16 model, s16 animIdx);
 void func_80106F7C_duelresult2(void);
@@ -93,7 +119,146 @@ s16 func_80105C68_duelresult2(s32 dataNum) {
     return anim;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duelresult2/45D380", func_80105CB0_duelresult2);
+void func_80105CB0_duelresult2(void) {
+    DuelResult2PlayerFiles playerFiles = D_80108C40_duelresult2;
+    DuelResult2PlayerFiles rankFiles = D_80108C58_duelresult2;
+    DuelResult2Portraits portraits = D_80108C70_duelresult2;
+    DuelResult2Positions memberX = D_80108C90_duelresult2;
+    void *data;
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < 2; i++) {
+        D_80108DB4_duelresult2[i] = func_800F4528_name_81(11, 2);
+        for (j = 0; j < 3; j++) {
+            data = DataRead(playerFiles.files[i][j]);
+            D_80108DB4_duelresult2[i]->unk_0C[j + 1] = HuSprAnimRead(data);
+            DataClose(data);
+            HuSprGrpMemberSet(D_80108DB4_duelresult2[i]->unk_0A, j + 1, D_80108DB4_duelresult2[i]->unk_0C[j + 1], 0);
+            HuSprPriSet(D_80108DB4_duelresult2[i]->unk_0A, j + 1, 98 - j);
+            HuSprAttrSet(D_80108DB4_duelresult2[i]->unk_0A, j + 1, 0x4000);
+            HuSprPosSet(D_80108DB4_duelresult2[i]->unk_0A, j + 1, memberX.x[j], 0);
+        }
+
+        data = DataRead(portraits.files[GwPlayer[i].chr]);
+        D_80108DB4_duelresult2[i]->unk_0C[4] = HuSprAnimRead(data);
+        DataClose(data);
+        HuSprGrpMemberSet(D_80108DB4_duelresult2[i]->unk_0A, 4, D_80108DB4_duelresult2[i]->unk_0C[4], 0);
+        HuSprPriSet(D_80108DB4_duelresult2[i]->unk_0A, 4, 95);
+        HuSprAttrSet(D_80108DB4_duelresult2[i]->unk_0A, 4, 0x4000);
+        HuSprPosSet(D_80108DB4_duelresult2[i]->unk_0A, 4, memberX.x[3], 1);
+
+        j = 4;
+        if (GwPlayer[i].star >= 10) {
+            data = DataRead(0xC0086);
+            D_80108DB4_duelresult2[i]->unk_0C[j + 1] = HuSprAnimRead(data);
+        } else {
+            data = DataRead(0xC003C);
+            D_80108DB4_duelresult2[i]->unk_0C[j + 1] = HuSprAnimRead(data);
+        }
+        DataClose(data);
+        HuSprGrpMemberSet(D_80108DB4_duelresult2[i]->unk_0A, j + 1, D_80108DB4_duelresult2[i]->unk_0C[j + 1],
+                          GwPlayer[i].star / 10);
+        HuSprPriSet(D_80108DB4_duelresult2[i]->unk_0A, j + 1, 98 - j);
+        HuSprAttrSet(D_80108DB4_duelresult2[i]->unk_0A, j + 1, 0x4000);
+        HuSprPosSet(D_80108DB4_duelresult2[i]->unk_0A, j + 1, 68, 4);
+
+        data = DataRead(0xC0086);
+        D_80108DB4_duelresult2[i]->unk_0C[6] = HuSprAnimRead(data);
+        DataClose(data);
+        HuSprGrpMemberSet(D_80108DB4_duelresult2[i]->unk_0A, 6, D_80108DB4_duelresult2[i]->unk_0C[6],
+                          GwPlayer[i].star % 10);
+        HuSprPriSet(D_80108DB4_duelresult2[i]->unk_0A, 6, 93);
+        HuSprAttrSet(D_80108DB4_duelresult2[i]->unk_0A, 6, 0x4000);
+        HuSprPosSet(D_80108DB4_duelresult2[i]->unk_0A, 6, 84, 4);
+
+        j = 6;
+        if (GwPlayer[i].coin >= 100) {
+            data = DataRead(0xC0086);
+            D_80108DB4_duelresult2[i]->unk_0C[j + 1] = HuSprAnimRead(data);
+        } else {
+            data = DataRead(0xC003C);
+            D_80108DB4_duelresult2[i]->unk_0C[j + 1] = HuSprAnimRead(data);
+        }
+        DataClose(data);
+        HuSprGrpMemberSet(D_80108DB4_duelresult2[i]->unk_0A, j + 1, D_80108DB4_duelresult2[i]->unk_0C[j + 1],
+                          GwPlayer[i].coin / 100);
+        HuSprPriSet(D_80108DB4_duelresult2[i]->unk_0A, j + 1, 98 - j);
+        HuSprAttrSet(D_80108DB4_duelresult2[i]->unk_0A, j + 1, 0x4000);
+        HuSprPosSet(D_80108DB4_duelresult2[i]->unk_0A, j + 1, 142, 4);
+
+        j = 7;
+        data = DataRead(0xC0086);
+        D_80108DB4_duelresult2[i]->unk_0C[j + 1] = HuSprAnimRead(data);
+        DataClose(data);
+        if (GwPlayer[i].coin >= 10) {
+            HuSprGrpMemberSet(D_80108DB4_duelresult2[i]->unk_0A, j + 1, D_80108DB4_duelresult2[i]->unk_0C[j + 1],
+                              GwPlayer[i].coin / 10 % 10);
+        } else {
+            HuSprGrpMemberSet(D_80108DB4_duelresult2[i]->unk_0A, j + 1, D_80108DB4_duelresult2[i]->unk_0C[j + 1],
+                              GwPlayer[i].coin);
+        }
+        HuSprPriSet(D_80108DB4_duelresult2[i]->unk_0A, j + 1, 98 - j);
+        HuSprAttrSet(D_80108DB4_duelresult2[i]->unk_0A, j + 1, 0x4000);
+        HuSprPosSet(D_80108DB4_duelresult2[i]->unk_0A, j + 1, 158, 4);
+
+        if (GwPlayer[i].coin >= 10) {
+            data = DataRead(0xC0086);
+            D_80108DB4_duelresult2[i]->unk_0C[9] = HuSprAnimRead(data);
+            DataClose(data);
+            HuSprGrpMemberSet(D_80108DB4_duelresult2[i]->unk_0A, 9, D_80108DB4_duelresult2[i]->unk_0C[9],
+                              GwPlayer[i].coin % 10);
+            HuSprPriSet(D_80108DB4_duelresult2[i]->unk_0A, 9, 90);
+            HuSprAttrSet(D_80108DB4_duelresult2[i]->unk_0A, 9, 0x4000);
+            HuSprPosSet(D_80108DB4_duelresult2[i]->unk_0A, 9, 174, 4);
+        }
+
+        j = 9;
+        if (kakusiMasuItemHis[2] == -1) {
+            data = DataRead(rankFiles.files[i][2]);
+        } else if (kakusiMasuItemHis[0] == i) {
+            data = DataRead(rankFiles.files[i][0]);
+        } else {
+            data = DataRead(rankFiles.files[i][1]);
+        }
+        D_80108DB4_duelresult2[i]->unk_0C[j + 1] = HuSprAnimRead(data);
+        DataClose(data);
+        HuSprGrpMemberSet(D_80108DB4_duelresult2[i]->unk_0A, j + 1, D_80108DB4_duelresult2[i]->unk_0C[j + 1], 0);
+        HuSprPriSet(D_80108DB4_duelresult2[i]->unk_0A, j + 1, 98 - j);
+        HuSprAttrSet(D_80108DB4_duelresult2[i]->unk_0A, j + 1, 0x4000);
+        HuSprPosSet(D_80108DB4_duelresult2[i]->unk_0A, j + 1, -56, 0);
+    }
+
+    for (j = 0; j < 2; j++) {
+        HuSprPosSet(D_80108DB4_duelresult2[j]->unk_0A, 0, 111, j * 62 + 91);
+    }
+
+    D_80108DBC_duelresult2 = func_800F4528_name_81(1, 0);
+    data = DataRead(0x130046);
+    D_80108DBC_duelresult2->unk_0C[0] = HuSprAnimRead(data);
+    DataClose(data);
+    HuSprGrpMemberSet(D_80108DBC_duelresult2->unk_0A, 0, D_80108DBC_duelresult2->unk_0C[0], 0);
+    HuSprPriSet(D_80108DBC_duelresult2->unk_0A, 0, 90);
+    HuSprAttrSet(D_80108DBC_duelresult2->unk_0A, 0, 0x4000);
+    HuSprPosSet(D_80108DBC_duelresult2->unk_0A, 0, 160, 33);
+
+    if (kakusiMasuItemHis[2] != -1) {
+        D_80108C30_duelresult2 = func_800F4528_name_81(1, 0);
+        data = DataRead(0x130062);
+        D_80108C30_duelresult2->unk_0C[0] = HuSprAnimRead(data);
+        DataClose(data);
+        HuSprGrpMemberSet(D_80108C30_duelresult2->unk_0A, 0, D_80108C30_duelresult2->unk_0C[0], 0);
+        HuSprPriSet(D_80108C30_duelresult2->unk_0A, 0, 89);
+        HuSprAttrSet(D_80108C30_duelresult2->unk_0A, 0, 0x4000);
+        if (kakusiMasuItemHis[0] == 0) {
+            HuSprPosSet(D_80108C30_duelresult2->unk_0A, 0, 55, 64);
+        } else {
+            HuSprPosSet(D_80108C30_duelresult2->unk_0A, 0, 55, 126);
+        }
+    } else {
+        D_80108C30_duelresult2 = NULL;
+    }
+}
 
 void func_80106848_duelresult2(void) {
     s32 i;
@@ -406,7 +571,154 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/duelresult2/45D380", D_80108D28_duelre
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/duelresult2/45D380", D_80108D48_duelresult2);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duelresult2/45D380", func_80107454_duelresult2);
+void func_80107454_duelresult2(void) {
+    s32 rankFiles[2] = { 0x13004A, 0x130047 };
+    DuelResult2Portraits nameFiles = D_80108D08_duelresult2;
+    DuelResult2Portraits faceFiles = D_80108D28_duelresult2;
+    s32 lengthFiles[2] = { 0x130072, 0x130074 };
+    DuelResult2StatFiles statFiles = D_80108D48_duelresult2;
+    void *data;
+    s32 i;
+
+    D_80108DC4_duelresult2 = func_800F4528_name_81(1, 0);
+    data = DataRead(0x13006F);
+    D_80108DC4_duelresult2->unk_0C[0] = HuSprAnimRead(data);
+    DataClose(data);
+    HuSprGrpMemberSet(D_80108DC4_duelresult2->unk_0A, 0, D_80108DC4_duelresult2->unk_0C[0], 0);
+    HuSprPriSet(D_80108DC4_duelresult2->unk_0A, 0, 110);
+    HuSprAttrSet(D_80108DC4_duelresult2->unk_0A, 0, 0x4000);
+    HuSprPosSet(D_80108DC4_duelresult2->unk_0A, 0, 74, 39);
+
+    D_80108DC8_duelresult2 = func_800F4528_name_81(2, 0);
+    data = DataRead(0x13004B);
+    D_80108DC8_duelresult2->unk_0C[0] = HuSprAnimRead(data);
+    DataClose(data);
+    HuSprGrpMemberSet(D_80108DC8_duelresult2->unk_0A, 0, D_80108DC8_duelresult2->unk_0C[0], 0);
+    HuSprPriSet(D_80108DC8_duelresult2->unk_0A, 0, 100);
+    HuSprAttrSet(D_80108DC8_duelresult2->unk_0A, 0, 0x4000);
+    HuSprPosSet(D_80108DC8_duelresult2->unk_0A, 0, 210, 36);
+
+    if (GwSystem.playMode & 4) {
+        data = DataRead(0x13007C);
+    } else if (GwSystem.total_turns == 20) {
+        data = DataRead(lengthFiles[0]);
+    } else {
+        data = DataRead(lengthFiles[1]);
+    }
+    D_80108DC8_duelresult2->unk_0C[1] = HuSprAnimRead(data);
+    DataClose(data);
+    HuSprGrpMemberSet(D_80108DC8_duelresult2->unk_0A, 1, D_80108DC8_duelresult2->unk_0C[1], 0);
+    HuSprPriSet(D_80108DC8_duelresult2->unk_0A, 1, 99);
+    HuSprAttrSet(D_80108DC8_duelresult2->unk_0A, 1, 0x4000);
+    HuSprPosSet(D_80108DC8_duelresult2->unk_0A, 1, 210, 36);
+
+    D_80108DCC_duelresult2 = func_800F4528_name_81(1, 0);
+    data = DataRead(0x13004C);
+    D_80108DCC_duelresult2->unk_0C[0] = HuSprAnimRead(data);
+    DataClose(data);
+    HuSprGrpMemberSet(D_80108DCC_duelresult2->unk_0A, 0, D_80108DCC_duelresult2->unk_0C[0], 0);
+    HuSprPriSet(D_80108DCC_duelresult2->unk_0A, 0, 99);
+    HuSprAttrSet(D_80108DCC_duelresult2->unk_0A, 0, 0x4000);
+    HuSprPosSet(D_80108DCC_duelresult2->unk_0A, 0, 218, 73);
+
+    for (i = 0; i < 2; i++) {
+        D_80108DD0_duelresult2[i] = func_800F4528_name_81(10, 2);
+        data = DataRead(rankFiles[i]);
+        D_80108DD0_duelresult2[i]->unk_0C[1] = HuSprAnimRead(data);
+        DataClose(data);
+        HuSprGrpMemberSet(D_80108DD0_duelresult2[i]->unk_0A, 1, D_80108DD0_duelresult2[i]->unk_0C[1], 0);
+        HuSprPriSet(D_80108DD0_duelresult2[i]->unk_0A, 1, 98);
+        HuSprAttrSet(D_80108DD0_duelresult2[i]->unk_0A, 1, 0x4000);
+        HuSprPosSet(D_80108DD0_duelresult2[i]->unk_0A, 1, 172, 0);
+
+        data = DataRead(nameFiles.files[GwPlayer[i].chr]);
+        D_80108DD0_duelresult2[i]->unk_0C[2] = HuSprAnimRead(data);
+        DataClose(data);
+        HuSprGrpMemberSet(D_80108DD0_duelresult2[i]->unk_0A, 2, D_80108DD0_duelresult2[i]->unk_0C[2], 0);
+        HuSprPriSet(D_80108DD0_duelresult2[i]->unk_0A, 2, 97);
+        HuSprAttrSet(D_80108DD0_duelresult2[i]->unk_0A, 2, 0x4000);
+        HuSprPosSet(D_80108DD0_duelresult2[i]->unk_0A, 2, 36, 1);
+
+        data = DataRead(faceFiles.files[GwPlayer[i].chr]);
+        D_80108DD0_duelresult2[i]->unk_0C[3] = HuSprAnimRead(data);
+        DataClose(data);
+        HuSprGrpMemberSet(D_80108DD0_duelresult2[i]->unk_0A, 3, D_80108DD0_duelresult2[i]->unk_0C[3], 0);
+        HuSprPriSet(D_80108DD0_duelresult2[i]->unk_0A, 3, 96);
+        HuSprAttrSet(D_80108DD0_duelresult2[i]->unk_0A, 3, 0x4000);
+        HuSprPosSet(D_80108DD0_duelresult2[i]->unk_0A, 3, 77, 1);
+    }
+
+    for (i = 0; i < 2; i++) {
+        HuSprPosSet(D_80108DD0_duelresult2[i]->unk_0A, 0, 0, i * 26 + 99);
+    }
+
+    D_80108DD8_duelresult2 = func_800F4528_name_81(2, 0);
+    for (i = 0; i < 2; i++) {
+        data = DataRead(0x13002E);
+        D_80108DD8_duelresult2->unk_0C[i] = HuSprAnimRead(data);
+        DataClose(data);
+        HuSprGrpMemberSet(D_80108DD8_duelresult2->unk_0A, i, D_80108DD8_duelresult2->unk_0C[i], 0);
+        HuSprPriSet(D_80108DD8_duelresult2->unk_0A, i, 90);
+        HuSprAttrSet(D_80108DD8_duelresult2->unk_0A, i, 0x4000);
+        HuSprPosSet(D_80108DD8_duelresult2->unk_0A, i, i * 154 + 133, 161);
+    }
+    HuSprAttrSet(D_80108DD8_duelresult2->unk_0A, 0, 1);
+
+    D_80108DDC_duelresult2 = func_800F4528_name_81(10, 0);
+    for (i = 0; i < 10; i++) {
+        if (i == 9 && GwSystem.current_board_index == 5) {
+            data = DataRead(statFiles.files[10]);
+        } else {
+            data = DataRead(statFiles.files[i]);
+        }
+        D_80108DDC_duelresult2->unk_0C[i] = HuSprAnimRead(data);
+        DataClose(data);
+        HuSprGrpMemberSet(D_80108DDC_duelresult2->unk_0A, i, D_80108DDC_duelresult2->unk_0C[i], 0);
+        HuSprPriSet(D_80108DDC_duelresult2->unk_0A, i, 80);
+        HuSprAttrSet(D_80108DDC_duelresult2->unk_0A, i, 0xC000);
+    }
+
+    D_80108DE0_duelresult2 = func_800F4528_name_81(64, 0);
+    data = DataRead(0x130077);
+    D_80108DE0_duelresult2->unk_0C[0] = HuSprAnimRead(data);
+    DataClose(data);
+    data = DataRead(0x130078);
+    D_80108DE0_duelresult2->unk_0C[1] = HuSprAnimRead(data);
+    DataClose(data);
+    for (i = 0; i < 64; i++) {
+        HuSprGrpMemberSet(D_80108DE0_duelresult2->unk_0A, i, D_80108DE0_duelresult2->unk_0C[0], 0);
+        HuSprPriSet(D_80108DE0_duelresult2->unk_0A, i, 70);
+        HuSprAttrSet(D_80108DE0_duelresult2->unk_0A, i, 0xC000);
+    }
+
+    D_80108DE4_duelresult2 = func_800F4528_name_81(1, 0);
+    data = DataRead(0x13007B);
+    D_80108DE4_duelresult2->unk_0C[0] = HuSprAnimRead(data);
+    DataClose(data);
+    HuSprGrpMemberSet(D_80108DE4_duelresult2->unk_0A, 0, D_80108DE4_duelresult2->unk_0C[0], 0);
+    HuSprPriSet(D_80108DE4_duelresult2->unk_0A, 0, 60);
+    HuSprAttrSet(D_80108DE4_duelresult2->unk_0A, 0, 0x4000);
+
+    D_80108DC0_duelresult2 = func_800E4B64_name_81(0, 8);
+    func_800E4EAC_name_81(D_80108DC0_duelresult2, 105, 8);
+    HuVecCopyXYZ(&D_80108DC0_duelresult2->obj->scale, 0.1f, 0.1f, 0.1f);
+    HuWinScaleSet(D_80108DC0_duelresult2->win_id, 1.0f, 1.0f);
+    func_8005B63C_main(D_80108DC0_duelresult2->win_id, 0x4000, 0x4000);
+    HuWinMesPalSet(D_80108DC0_duelresult2->win_id, 2, 255, 96, 96);
+    HuWinMesPalSet(D_80108DC0_duelresult2->win_id, 4, 96, 255, 64);
+    HuWinMesPalSet(D_80108DC0_duelresult2->win_id, 6, 64, 255, 255);
+    func_800E4EAC_name_81(D_80108DC0_duelresult2, 113, 8);
+
+    D_80108E28_duelresult2[0] =
+        func_80105A8C_duelresult2(D_80108DC0_duelresult2->obj->omObj1->model[0], 0xA007E, "c204n_0_DEF");
+    D_80108E28_duelresult2[1] = func_80105C68_duelresult2(0xA007F);
+    D_80108E28_duelresult2[2] = func_80105C68_duelresult2(0xA0080);
+    D_80108E28_duelresult2[3] = func_80105C68_duelresult2(0xA0081);
+    D_80108E28_duelresult2[4] = func_80105C68_duelresult2(0xA0082);
+    D_80108E28_duelresult2[5] = func_80105C68_duelresult2(0xA0083);
+    D_80108E28_duelresult2[6] = func_80105C68_duelresult2(0xA0084);
+    func_80105B98_duelresult2(D_80108DC0_duelresult2->obj->omObj1->model[0], D_80108E28_duelresult2[0]);
+}
 
 void func_80107FEC_duelresult2(void) {
     s32 i;
@@ -510,7 +822,156 @@ void func_801083FC_duelresult2(void) {
                               D_80108E28_duelresult2[D_80108DE8_duelresult2[D_80108C34_duelresult2 + D_80108C38_duelresult2]]);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/duelresult2/45D380", func_801084F4_duelresult2);
+void func_801084F4_duelresult2(void) {
+    void *data;
+    s32 prevPage;
+    s32 prevRow;
+    s32 timer;
+    s32 allCpu;
+    s32 showingDetails;
+    DuelHelpWin *leftWindow = NULL;
+    DuelHelpWin *rightWindow = NULL;
+    s32 i;
+
+    D_80108DB0_duelresult2 = func_800F4528_name_81(6, 0);
+    data = DataRead(0x13002F);
+    D_80108DB0_duelresult2->unk_0C[0] = HuSprAnimRead(data);
+    DataClose(data);
+
+    for (i = 0; i < 6; i++) {
+        HuSprGrpMemberSet(D_80108DB0_duelresult2->unk_0A, i, D_80108DB0_duelresult2->unk_0C[0], 0);
+        HuSprPriSet(D_80108DB0_duelresult2->unk_0A, i, 200);
+        HuSprAttrSet(D_80108DB0_duelresult2->unk_0A, i, 0x4000);
+        HuSprPosSet(D_80108DB0_duelresult2->unk_0A, i, (i / 2) * 128 + 64, (i & 1) * 128 + 64);
+    }
+
+    func_80105CB0_duelresult2();
+    showingDetails = 0;
+    func_80107454_duelresult2();
+    func_801083FC_duelresult2();
+    func_8010809C_duelresult2();
+    func_80106974_duelresult2();
+
+    WipeCreateIn(2, 16);
+    while (WipeStatGet() != 0) {
+        HuPrcVSleep();
+    }
+
+    allCpu = 0;
+    for (i = 0; i < 2; i++) {
+        if (!func_800F37B8_name_81(i)) {
+            break;
+        }
+    }
+    if (i == 2) {
+        allCpu = 1;
+    }
+
+    timer = 60;
+    while (1) {
+        if (allCpu) {
+            if (--timer == 0) {
+                break;
+            }
+            if (leftWindow == NULL) {
+                leftWindow = func_800E172C_name_81(0x16, 60, 207, 1);
+            }
+            if (rightWindow == NULL) {
+                rightWindow = func_800E172C_name_81(0x17, 200, 207, 1);
+            }
+        } else {
+            for (i = 0; i < 2; i++) {
+                if (func_800F37B8_name_81(i)) {
+                    continue;
+                }
+                if (!showingDetails) {
+                    if (leftWindow == NULL) {
+                        leftWindow = func_800E172C_name_81(0x16, 60, 207, 1);
+                    }
+                    if (rightWindow == NULL) {
+                        rightWindow = func_800E172C_name_81(0x17, 200, 207, 1);
+                    }
+                    if (D_800C9520_main[GwPlayer[i].pad] & START_BUTTON) {
+                        showingDetails = 1;
+                        func_801068BC_duelresult2();
+                        func_80108240_duelresult2();
+                        if (leftWindow != NULL) {
+                            func_800E1854_name_81(leftWindow);
+                            leftWindow = NULL;
+                        }
+                        if (rightWindow != NULL) {
+                            func_800E1854_name_81(rightWindow);
+                            rightWindow = NULL;
+                        }
+                    } else if (D_800C9520_main[GwPlayer[i].pad] & A_BUTTON) {
+                        goto exit;
+                    }
+                } else {
+                    prevRow = D_80108C38_duelresult2;
+                    prevPage = D_80108C34_duelresult2;
+                    if (D_800C9520_main[GwPlayer[i].pad] & START_BUTTON) {
+                        showingDetails = 0;
+                        func_8010809C_duelresult2();
+                        func_80106974_duelresult2();
+                    } else if (D_800D0590_main[GwPlayer[i].pad] & R_JPAD) {
+                        if (++D_80108C38_duelresult2 >= 4) {
+                            D_80108C38_duelresult2 = 3;
+                            if (++D_80108C34_duelresult2 >= 7) {
+                                D_80108C34_duelresult2 = 6;
+                            }
+                        }
+                    } else if (D_800D0590_main[GwPlayer[i].pad] & L_JPAD) {
+                        if (--D_80108C38_duelresult2 < 0) {
+                            D_80108C38_duelresult2 = 0;
+                            if (--D_80108C34_duelresult2 < 0) {
+                                D_80108C34_duelresult2 = 0;
+                            }
+                        }
+                    }
+                    if (D_80108C38_duelresult2 != prevRow || D_80108C34_duelresult2 != prevPage) {
+                        func_801083FC_duelresult2();
+                        func_80106F7C_duelresult2();
+                    }
+                }
+            }
+
+            if (showingDetails == 1) {
+                if (D_80108C34_duelresult2 == 0 && D_80108C38_duelresult2 == 0) {
+                    HuSprAttrSet(D_80108DD8_duelresult2->unk_0A, 0, 0x8000);
+                } else {
+                    HuSprAttrReset(D_80108DD8_duelresult2->unk_0A, 0, 0x8000);
+                }
+                if (D_80108C34_duelresult2 == 6 && D_80108C38_duelresult2 == 3) {
+                    HuSprAttrSet(D_80108DD8_duelresult2->unk_0A, 1, 0x8000);
+                } else {
+                    HuSprAttrReset(D_80108DD8_duelresult2->unk_0A, 1, 0x8000);
+                }
+            }
+        }
+        HuPrcVSleep();
+    }
+
+exit:
+    if (leftWindow != NULL) {
+        func_800E1854_name_81(leftWindow);
+    }
+    if (rightWindow != NULL) {
+        func_800E1854_name_81(rightWindow);
+    }
+    if (!(GwSystem.playMode & 4) || kakusiMasuItemHis[2] == -1 ||
+        (GwPlayer[kakusiMasuItemHis[0]].stat & PLAYER_IS_CPU)) {
+        HuAudSeqFadeOut(60);
+    }
+    WipeCreateOut(0, 20);
+    HuPrcSleep(20);
+    func_80106848_duelresult2();
+    func_80107FEC_duelresult2();
+    func_800F4584_name_81(D_80108DB0_duelresult2);
+    D_800D530C_main = 1;
+    while (1) {
+        HuPrcVSleep();
+    }
+}
 
 void func_80108B38_duelresult2(omObjData *obj) {
     if (WipeStatGet() == 0) {

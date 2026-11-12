@@ -1,8 +1,15 @@
 #include "staff.h"
 
+// Rodrigues rotation matrix elements for a rotation of angle degrees about the unit axis (x, y, z).
+#define ROT_XX(x, y, z, angle) ((x) * (x) + (1.0f - (x) * (x)) * cosdf(angle))
 #define ROT_XY(x, y, z, angle) ((x) * (y) * (1.0f - cosdf(angle)) - (z) * sindf(angle))
+#define ROT_XZ(x, y, z, angle) ((x) * (z) * (1.0f - cosdf(angle)) + (y) * sindf(angle))
+#define ROT_YX(x, y, z, angle) ((x) * (y) * (1.0f - cosdf(angle)) + (z) * sindf(angle))
 #define ROT_YY(x, y, z, angle) ((y) * (y) + (1.0f - (y) * (y)) * cosdf(angle))
+#define ROT_YZ(x, y, z, angle) ((y) * (z) * (1.0f - cosdf(angle)) - (x) * sindf(angle))
+#define ROT_ZX(x, y, z, angle) ((x) * (z) * (1.0f - cosdf(angle)) - (y) * sindf(angle))
 #define ROT_ZY(x, y, z, angle) ((y) * (z) * (1.0f - cosdf(angle)) + (x) * sindf(angle))
+#define ROT_ZZ(x, y, z, angle) ((z) * (z) + (1.0f - (z) * (z)) * cosdf(angle))
 
 typedef struct StaffCreditEntry { // sizeof 0x4
     /* 0x00 */ s8 type;
@@ -2057,7 +2064,177 @@ void func_8010DF2C_staff(UnkStaff_2 *arg0, s16 arg1) {
     arg0->unk_06 = arg1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/544E70", func_8010DF34_staff);
+void func_8010DF34_staff(void) {
+    s16 model;
+    s16 model2;
+    s16 i;
+    s16 angle;
+    HmfModelData_UnkBC_Struct *effect;
+    UnkStaff_2 *work;
+    f32 rot;
+    HmfData *hmf;
+    HmfModelData_Unk64_Unk60_Unk54_Struct *face;
+    Vec cur;
+    Vec prev;
+    s16 count;
+    s16 j;
+    s16 k;
+    f32 dx;
+    f32 dy;
+    f32 dz;
+    f32 dist;
+    f32 s;
+    f32 s2;
+    f32 scale;
+    f32 vx;
+    f32 vy;
+    f32 vz;
+    s32 range;
+
+    rot = 0.0f;
+    work = HuPrcCurrentGet()->user_data;
+    angle = 0;
+    model = func_8000B108_main(0xB0034, 0x2A8);
+    func_8001C2FC_main(model, 0x20000, 0x20000);
+    hmf = Hu3DData[model].hmf;
+    for (k = 0; k < hmf->unk10; k++) {
+        count = hmf->unk60[k].unk22;
+        face = hmf->unk60[k].unk54;
+        for (j = 0; j < count; j++, face++) {
+            face->unk00 |= 0x80;
+        }
+    }
+    Hu3DModelRemakeStatic(model);
+    func_8001C954_main(model);
+    func_8001C514_main(model);
+    func_80013390_main(model, -1, NULL, func_8010F4C4_staff);
+    func_800138EC_main(model, 8, 8);
+    effect = Hu3DData[model].unkBC;
+    func_8001C258_main(model, 4, 4);
+    model2 = func_8000B108_main(0xB0035, 0x2B9);
+    func_8001C258_main(model2, 4, 4);
+    Hu3DModelScaleSet(model2, 2.0f, 2.0f, 2.0f);
+    Hu3DMotionSpeedSet(model2, 2.0f);
+
+    while (TRUE) {
+        if (work->unk_04 & 4) {
+            break;
+        }
+        if (work->unk_04 & 1) {
+            HuPrcVSleep();
+            continue;
+        }
+        work->unk_04 &= ~1;
+        work->center = work->unk_18;
+        work->unk_24 = work->unk_0C;
+        work->unk_08 = work->unk_0A;
+        range = rand8() * 2 + 400;
+        work->unk_3C.x = range - range / 2.0f;
+        range = rand8() * 2 + 200;
+        work->unk_3C.y = range - range / 2.0f;
+        range = rand8() * 2 + 200;
+        work->unk_3C.z = range - range / 2.0f;
+        work->unk_48 = (rand8() & 1) ? 180.0f : 0.0f;
+        effect->unk08.f = work->unk_06;
+        cur = work->center;
+        prev = cur;
+        HuAudFXPlay(0x16F);
+        func_8001C258_main(model, 4, 0);
+        func_80013954_main(model, 0);
+        effect->unk18 = func_8010F9D4_staff;
+        func_800138EC_main(model, 2, 0);
+
+        for (i = 0; i <= work->unk_08; i++) {
+            HuPrcVSleep();
+            prev = cur;
+            dx = work->unk_24.x - work->center.x;
+            dy = work->unk_24.y - work->center.y;
+            dz = work->unk_24.z - work->center.z;
+            s = sindf(90.0f / work->unk_08 * i);
+            s2 = sindf(180.0f / work->unk_08 * i + work->unk_48);
+            cur.x = s * dx + work->center.x + s2 * work->unk_3C.x;
+            cur.y = s * dy + work->center.y + s2 * work->unk_3C.y;
+            cur.z = s * dz + work->center.z + s2 * work->unk_3C.z;
+            angle += 5;
+            if (angle > 360) {
+                angle -= 360;
+            }
+            rot += 20.0f;
+            if (rot > 360.0f) {
+                rot -= 360.0f;
+            }
+
+            dx = prev.x - cur.x;
+            dy = prev.y - cur.y;
+            dz = prev.z - cur.z;
+            dist = HuSqrtf(dx * dx + dy * dy + dz * dz);
+            if (dist == 0.0f) {
+                continue;
+            }
+            dx /= dist;
+            dy /= dist;
+            dz /= dist;
+
+            for (j = 0; j < 2; j++) {
+                vx = dx * ((rand8() * 15 >> 7) * 0.01f + 1.0f);
+                vy = dy * ((rand8() * 15 >> 7) * 0.01f + 1.0f);
+                vz = dz * ((rand8() * 15 >> 7) * 0.01f + 1.0f);
+                scale = dist * ((s32)(rand8() * 25U >> 7) * 0.01f);
+                vx *= scale;
+                vy *= scale;
+                vz *= scale;
+                func_8010F3E4_staff(model, vx + cur.x, vy + cur.y, vz + cur.z, vx, vy, vz, 0xFF, 0xFF, 0xC0);
+            }
+
+            vx = ROT_XX(dx, dy, dz, rot) * 0.0f + ROT_XY(dx, dy, dz, rot) + ROT_XZ(dx, dy, dz, rot) * 0.0f;
+            vy = ROT_YX(dx, dy, dz, rot) * 0.0f + ROT_YY(dx, dy, dz, rot) + ROT_YZ(dx, dy, dz, rot) * 0.0f;
+            vz = ROT_ZX(dx, dy, dz, rot) * 0.0f + ROT_ZY(dx, dy, dz, rot) + ROT_ZZ(dx, dy, dz, rot) * 0.0f;
+            vx = (dx * 0.5f + vx * 0.5f) * dist / 2.0f;
+            vy = (dy * 0.5f + vy * 0.5f) * dist / 2.0f;
+            vz = (dz * 0.5f + vz * 0.5f) * dist / 2.0f;
+            func_8010F3E4_staff(model, cur.x, cur.y, cur.z, vx, vy, vz, 0xFF, 0x20, 0x20);
+
+            vx = ROT_XX(dx, dy, dz, rot) * 0.0f + ROT_XY(dx, dy, dz, rot) * -1.0f + ROT_XZ(dx, dy, dz, rot) * 0.0f;
+            vy = ROT_YX(dx, dy, dz, rot) * 0.0f + ROT_YY(dx, dy, dz, rot) * -1.0f + ROT_YZ(dx, dy, dz, rot) * 0.0f;
+            vz = ROT_ZX(dx, dy, dz, rot) * 0.0f + ROT_ZY(dx, dy, dz, rot) * -1.0f + ROT_ZZ(dx, dy, dz, rot) * 0.0f;
+            vx = (dx * 0.5f + vx * 0.5f) * dist / 2.0f;
+            vy = (dy * 0.5f + vy * 0.5f) * dist / 2.0f;
+            vz = (dz * 0.5f + vz * 0.5f) * dist / 2.0f;
+            func_8010F3E4_staff(model, cur.x, cur.y, cur.z, vx, vy, vz, 0xFF, 0x40, 0x00);
+        }
+
+        HuPrcSleep(15);
+        func_8001C258_main(model, 4, 4);
+        Hu3DMotionTimeSet(model2, 0.0f);
+        func_8001C258_main(model2, 4, 0);
+        Hu3DModelPosSet(model2, cur.x, cur.y, cur.z);
+        HuPrcVSleep();
+        HuAudFXPlay(0x170);
+        func_8010F04C_staff(model, work->unk_00);
+        effect->unk18 = func_8010F4C4_staff;
+        func_80013954_main(model, 0);
+        func_8001C258_main(model, 4, 0);
+        Hu3DModelPosSet(model, cur.x, cur.y, cur.z);
+        func_800138EC_main(model, 2, 0);
+        while (!(func_80013928_main(model) & 2)) {
+            HuPrcVSleep();
+        }
+        func_8001C258_main(model2, 4, 4);
+        func_8001C258_main(model, 4, 4);
+        Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
+        if (!(work->unk_04 & 2)) {
+            work->unk_04 |= 1;
+        }
+        HuPrcVSleep();
+    }
+    Hu3DModelKill(model);
+    Hu3DModelKill(model2);
+    HuMemFree(work);
+    omDelPrcObj(NULL);
+    while (TRUE) {
+        HuPrcVSleep();
+    }
+}
 
 #ifdef NON_MATCHING
 // Register allocation differs throughout; the target also loads the image width/height

@@ -52,7 +52,10 @@ typedef struct UnkStaff_2 { // sizeof 0x4C
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ Vec unk_0C;
     /* 0x18 */ Vec unk_18;
-    /* 0x24 */ char unk_24[0x28];
+    /* 0x24 */ Vec unk_24;
+    /* 0x30 */ Vec center;
+    /* 0x3C */ Vec unk_3C;
+    /* 0x48 */ f32 unk_48;
 } UnkStaff_2;
 
 typedef struct UnkStaff_8 { // sizeof 0x6

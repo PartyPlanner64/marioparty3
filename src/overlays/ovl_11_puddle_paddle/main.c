@@ -64,7 +64,8 @@ typedef struct PuddlePaddleItem {
     /* 0x18 */ s16 timer;
     /* 0x1A */ s16 unk_1A;
     /* 0x1C */ s16 unk_1C;
-    /* 0x1E */ char unk_1E[6];
+    /* 0x1E */ char unk_1E[2];
+    /* 0x20 */ f32 radius;
     /* 0x24 */ f32 spin;
     /* 0x28 */ f32 spinSpeed;
     /* 0x2C */ char unk_2C[8];
@@ -75,7 +76,8 @@ typedef struct PuddlePaddleGame {
     /* 0x04 */ f32 timer;
     /* 0x08 */ char unk_08[0x30];
     /* 0x38 */ PuddlePaddleItem *items;
-    /* 0x3C */ char unk_3C[4];
+    /* 0x3C */ s16 unk_3C; // effect index
+    /* 0x3E */ char unk_3E[2];
     /* 0x40 */ s16 unk_40;
     /* 0x42 */ char unk_42[2];
 } PuddlePaddleGame; // Size 0x44
@@ -1279,7 +1281,140 @@ void func_8010A398_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_11_puddle_paddle/main", func_8010ABCC_puddle_paddle);
+void func_8010ABCC_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler) {
+    HmfModel *models[3]; // [0], [1] = boats, [2] = item
+    Vec a;
+    Vec b;
+    Vec d;
+    f32 dist;
+    f32 range;
+    f32 maxDist;
+    f32 minDist; // also reused for the squared item distance
+    PuddlePaddleItem *item;
+    s16 i, j, k;
+    s16 index;
+
+    models[0] = &Hu3DData[slot->unk_04[0]];
+    models[1] = &Hu3DData[slot->unk_04[1]];
+    if (D_80111650_puddle_paddle[0].power > D_80111650_puddle_paddle[1].power) {
+        a.x = models[1]->pos.x;
+        b.x = models[0]->pos.x;
+        a.z = models[1]->pos.z;
+        b.z = models[0]->pos.z;
+    } else {
+        a.x = models[0]->pos.x;
+        b.x = models[1]->pos.x;
+        a.z = models[0]->pos.z;
+        b.z = models[1]->pos.z;
+    }
+    d.x = b.x - a.x;
+    d.z = b.z - a.z;
+    dist = HuSqrtf(d.x * d.x + d.z * d.z);
+    if (dist <= 300.0f) {
+        d.x = d.x / dist * 300.0f;
+        a.x = b.x - d.x;
+        d.z = d.z / dist * 300.0f;
+        a.z = b.z - d.z;
+    }
+    if (D_80111650_puddle_paddle[0].power > D_80111650_puddle_paddle[1].power) {
+        models[1]->pos.x = a.x;
+        models[0]->pos.x = b.x;
+        models[1]->pos.z = a.z;
+        models[0]->pos.z = b.z;
+    } else {
+        models[0]->pos.x = a.x;
+        models[1]->pos.x = b.x;
+        models[0]->pos.z = a.z;
+        models[1]->pos.z = b.z;
+    }
+
+    for (i = 0; i < 2; i++) {
+        d.x = models[i]->pos.x;
+        d.z = models[i]->pos.z;
+        maxDist = 700.0f;
+        minDist = 400.0f;
+        dist = HuSqrtf(d.x * d.x + d.z * d.z);
+        if (dist >= maxDist) {
+            d.x = d.x / dist * maxDist;
+            d.z = d.z / dist * maxDist;
+        } else if (dist < minDist) {
+            d.x = minDist * (d.x / dist);
+            d.z = minDist * (d.z / dist);
+        }
+        models[i]->pos.x = d.x;
+        models[i]->pos.z = d.z;
+    }
+
+    for (i = 0; i < 2; i++) {
+        a.x = models[i]->pos.x;
+        a.y = models[i]->pos.y + 50.0f;
+        a.z = models[i]->pos.z;
+        range = 120.00001f;
+        item = D_80111658_puddle_paddle->items;
+        for (j = 0; j < 16; j++, item++) {
+            if (item->state == 0) {
+                continue;
+            }
+            if (item->state == 4 && Hu3DData[item->model].pos.y < 100.0f) {
+                continue;
+            }
+            models[2] = &Hu3DData[item->model];
+            b.x = models[2]->pos.x;
+            b.y = models[2]->pos.y;
+            b.z = models[2]->pos.z;
+            d.x = b.x - a.x;
+            d.y = b.y - a.y;
+            d.z = b.z - a.z;
+            if (item->state < 3 && item->radius < ABS(d.y)) {
+                continue;
+            }
+            minDist = d.x * d.x + d.z * d.z;
+            dist = (minDist == 0.0f) ? 0.0f : HuSqrtf(minDist);
+            if (!(dist < range + item->radius)) {
+                continue;
+            }
+            item->state = 0;
+            func_8001C258_main(item->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            switch (item->type) {
+                case 0:
+                    Hu3DModelScaleSet(func_8000D550_main(D_80111658_puddle_paddle->unk_3C, b.x, b.y, b.z), 2.0f, 2.0f, 2.0f);
+                    D_80111650_puddle_paddle[i].score += 1;
+                    GwPlayer[D_80111650_puddle_paddle[i].players[0]].gameCoin += 1;
+                    GwPlayer[D_80111650_puddle_paddle[i].players[1]].gameCoin += 1;
+                    D_80111654_puddle_paddle[D_80111650_puddle_paddle[i].players[0]].unk_56 += 1;
+                    D_80111654_puddle_paddle[D_80111650_puddle_paddle[i].players[1]].unk_56 += 1;
+                    HuAudFXPlay(9);
+                    break;
+                case 1:
+                    Hu3DModelScaleSet(func_8000D550_main(D_80111658_puddle_paddle->unk_3C, b.x, b.y, b.z), 2.0f, 2.0f, 2.0f);
+                    D_80111650_puddle_paddle[i].score += 5;
+                    GwPlayer[D_80111650_puddle_paddle[i].players[0]].gameCoin += 5;
+                    GwPlayer[D_80111650_puddle_paddle[i].players[1]].gameCoin += 5;
+                    D_80111654_puddle_paddle[D_80111650_puddle_paddle[i].players[0]].unk_56 += 5;
+                    D_80111654_puddle_paddle[D_80111650_puddle_paddle[i].players[1]].unk_56 += 5;
+                    HuAudFXPlay(0x15);
+                    break;
+                case 2:
+                    if (D_80111654_puddle_paddle[D_80111650_puddle_paddle[i].players[0]].unk_04 & 0x10) {
+                        break;
+                    }
+                    for (k = 0; k < 2; k++) {
+                        omVibrate(D_80111650_puddle_paddle[i].players[k], 20, 0, 20);
+                        D_80111654_puddle_paddle[D_80111650_puddle_paddle[i].players[k]].unk_04 |= 0x10;
+                        func_80109804_puddle_paddle(&D_80111654_puddle_paddle[D_80111650_puddle_paddle[i].players[k]], 0x29, 1);
+                        func_8004AC5C_main(GwPlayer[D_80111650_puddle_paddle[i].players[k]].chr + 0x95, D_80111650_puddle_paddle[i].players[k]);
+                        D_80111650_puddle_paddle[i].unk_50 = models[i]->pos.x;
+                        D_80111650_puddle_paddle[i].unk_54 = models[i]->pos.z;
+                    }
+                    index = func_8010C42C_puddle_paddle(1);
+                    if (index != -1) {
+                        func_8010C4D0_puddle_paddle(index, models[i]->pos.x, models[i]->pos.y + 20.0f, models[i]->pos.z, 0.0f, 0.0f, 0.0f, 1.2f, 0.0f);
+                    }
+                    break;
+            }
+        }
+    }
+}
 
 void func_8010B574_puddle_paddle(void) {
     PuddlePaddleTeam *team = D_80111650_puddle_paddle;

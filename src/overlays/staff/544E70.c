@@ -83,7 +83,173 @@ StaffPath *func_801085F0_staff(Vec *points, s32 flags) {
     return path;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/544E70", func_801088F4_staff);
+void func_801088F4_staff(StaffPath *path, f32 t, Vec *out) {
+    f32 value[4];
+    f32 time[4];
+    StaffPathSeg *segs;
+    Vec *points;
+    s16 i;
+
+    if (t >= 1.0f) {
+        out->x = path->points[path->count - 1].x;
+        out->y = path->points[path->count - 1].y;
+        out->z = path->points[path->count - 1].z;
+        return;
+    }
+    segs = path->segs;
+    for (i = 0; i < path->count; i++, segs++) {
+        if (t <= segs->start) {
+            break;
+        }
+    }
+    i--;
+    if (i < 0) {
+        i = 0;
+    }
+    if (i >= path->count - 1) {
+        i--;
+    }
+    segs = path->segs;
+    if (path->flags & 1) {
+        if (i == 0) {
+            time[0] = -(1.0f - segs[path->count - 1].start);
+        } else {
+            time[0] = segs[i - 1].start;
+        }
+        time[1] = segs[i].start;
+        if (i >= path->count - 1) {
+            time[2] = segs[path->count - 1].end;
+        } else {
+            time[2] = segs[i + 1].start;
+        }
+        if (i + 1 >= path->count - 1) {
+            time[3] = segs[path->count - 1].end;
+        } else {
+            time[3] = segs[i + 2].start;
+        }
+        points = path->points;
+        if (i == 0) {
+            value[0] = points[path->count - 1].x;
+        } else {
+            value[0] = points[i - 1].x;
+        }
+        value[1] = points[i].x;
+        if (i >= path->count - 1) {
+            value[2] = points[0].x;
+        } else {
+            value[2] = points[i + 1].x;
+        }
+        if (i + 1 >= path->count - 1) {
+            value[3] = points[0].x;
+        } else {
+            value[3] = points[i + 2].x;
+        }
+        out->x = InterpolateBMLine(value, time, t);
+        if (i == 0) {
+            value[0] = points[path->count - 1].y;
+        } else {
+            value[0] = points[i - 1].y;
+        }
+        value[1] = points[i].y;
+        if (i >= path->count - 1) {
+            value[2] = points[0].y;
+        } else {
+            value[2] = points[i + 1].y;
+        }
+        if (i + 1 >= path->count - 1) {
+            value[3] = points[0].y;
+        } else {
+            value[3] = points[i + 2].y;
+        }
+        out->y = InterpolateBMLine(value, time, t);
+        if (i == 0) {
+            value[0] = points[path->count - 1].z;
+        } else {
+            value[0] = points[i - 1].z;
+        }
+        value[1] = points[i].z;
+        if (i >= path->count - 1) {
+            value[2] = points[0].z;
+        } else {
+            value[2] = points[i + 1].z;
+        }
+        if (i + 1 >= path->count - 1) {
+            value[3] = points[0].z;
+        } else {
+            value[3] = points[i + 2].z;
+        }
+        out->z = InterpolateBMLine(value, time, t);
+    } else {
+        if (i == 0) {
+            time[0] = -1.0f;
+        } else {
+            time[0] = segs[i - 1].start;
+        }
+        time[1] = segs[i].start;
+        if (i >= path->count - 1) {
+            time[2] = segs[path->count - 1].end;
+        } else {
+            time[2] = segs[i + 1].start;
+        }
+        if (i + 1 >= path->count - 1) {
+            time[3] = segs[path->count - 1].end;
+        } else {
+            time[3] = segs[i + 2].start;
+        }
+        points = path->points;
+        if (i == 0) {
+            value[0] = points[0].x;
+        } else {
+            value[0] = points[i - 1].x;
+        }
+        value[1] = points[i].x;
+        if (i >= path->count - 1) {
+            value[2] = points[path->count - 1].x;
+        } else {
+            value[2] = points[i + 1].x;
+        }
+        if (i + 1 >= path->count - 1) {
+            value[3] = points[path->count - 1].x;
+        } else {
+            value[3] = points[i + 2].x;
+        }
+        out->x = InterpolateBMLine(value, time, t);
+        if (i == 0) {
+            value[0] = points[0].y;
+        } else {
+            value[0] = points[i - 1].y;
+        }
+        value[1] = points[i].y;
+        if (i >= path->count - 1) {
+            value[2] = points[path->count - 1].y;
+        } else {
+            value[2] = points[i + 1].y;
+        }
+        if (i + 1 >= path->count - 1) {
+            value[3] = points[path->count - 1].y;
+        } else {
+            value[3] = points[i + 2].y;
+        }
+        out->y = InterpolateBMLine(value, time, t);
+        if (i == 0) {
+            value[0] = points[0].z;
+        } else {
+            value[0] = points[i - 1].z;
+        }
+        value[1] = points[i].z;
+        if (i >= path->count - 1) {
+            value[2] = points[path->count - 1].z;
+        } else {
+            value[2] = points[i + 1].z;
+        }
+        if (i + 1 >= path->count - 1) {
+            value[3] = points[path->count - 1].z;
+        } else {
+            value[3] = points[i + 2].z;
+        }
+        out->z = InterpolateBMLine(value, time, t);
+    }
+}
 
 void func_8010919C_staff(StaffPath *path) {
     HuMemFree(path->segs);

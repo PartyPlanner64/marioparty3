@@ -230,7 +230,7 @@ void func_80012B14_main(s16 camIndex, Vec *worldPos, Vec2f *outPos) {
     outPos->y = ((projectedY * (f4 / y)) + f4);
 }
 
-void Hu3D2Dto3D(s16 camIndex, f32 depth, Vec2f *screenPos, Vec2f *outPos) {
+void Hu3D2Dto3D(s16 camIndex, f32 depth, Vec2f *screenPos, Vec *outPos) {
     HuCamera *camera;
     HuMtx4F viewMtx;
     f32 x;

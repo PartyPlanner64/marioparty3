@@ -1,4 +1,5 @@
 #include "common.h"
+#include "game_guys_lucky_7.h"
 
 typedef struct GameGuysLucky7SpriteDef {
     /* 0x00 */ s32 dataNum;
@@ -169,11 +170,6 @@ void func_8010ADB8_game_guys_lucky_7(s16 win);
 void func_8010ADF8_game_guys_lucky_7(s16 win, s16 player, s16 mode);
 s16 func_8010AF44_game_guys_lucky_7(s16 win, s16 player, s16 mode, s16 count);
 s16 func_8010B13C_game_guys_lucky_7(s16 win, s16 player, s16 mode, s16 count);
-void func_8010B830_game_guys_lucky_7(s16 x, s16 y);
-s16 func_8010BB88_game_guys_lucky_7(void);
-void func_8010BAFC_game_guys_lucky_7(void);
-void func_8010C824_game_guys_lucky_7(void);
-s32 func_8010C670_game_guys_lucky_7(s32 arg0);
 
 void func_801059A0_game_guys_lucky_7(void) {
     func_80105A28_game_guys_lucky_7();

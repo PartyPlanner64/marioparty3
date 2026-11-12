@@ -154,6 +154,12 @@ D_8010D1EE_game_guys_lucky_7 = D_8010D1EC_game_guys_lucky_7 + 0x2;
 D_8010D25A_game_guys_lucky_7 = D_8010D258_game_guys_lucky_7 + 0x2;
 
 /* game_guys_roulette: state/timer bytes packed after the preceding data symbol. */
+D_8010A647_game_guys_roulette = D_8010A646_game_guys_roulette + 0x1;
+D_8010A655_game_guys_roulette = D_8010A654_game_guys_roulette + 0x1;
+D_8010A657_game_guys_roulette = D_8010A656_game_guys_roulette + 0x1;
+D_8010A65E_game_guys_roulette = D_8010A65C_game_guys_roulette + 0x2;
+D_8010A65F_game_guys_roulette = D_8010A65C_game_guys_roulette + 0x3;
+D_8010A661_game_guys_roulette = D_8010A660_game_guys_roulette + 0x1;
 D_8010A67A_game_guys_roulette = D_8010A678_game_guys_roulette + 0x2;
 D_8010A67B_game_guys_roulette = D_8010A678_game_guys_roulette + 0x3;
 D_8010A6A1_game_guys_roulette = D_8010A6A0_game_guys_roulette + 0x1;

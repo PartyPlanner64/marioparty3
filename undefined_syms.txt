@@ -159,3 +159,4 @@ D_8010CBA2_game_guys_sweet_surprise = D_8010CBA0_game_guys_sweet_surprise + 0x2;
 D_8010CBA6_game_guys_sweet_surprise = D_8010CBA4_game_guys_sweet_surprise + 0x2;
 D_8010CBAA_game_guys_sweet_surprise = D_8010CBA8_game_guys_sweet_surprise + 0x2;
 D_8010CBAE_game_guys_sweet_surprise = D_8010CBAC_game_guys_sweet_surprise + 0x2;
+D_8010CBCC_game_guys_sweet_surprise = D_8010CBC8_game_guys_sweet_surprise + 0x4;

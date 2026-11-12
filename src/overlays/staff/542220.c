@@ -8,23 +8,37 @@
 #include "overlays/msetup.h"
 #include "../ovl_81_name/ovl_81.h"
 
-typedef struct UnkStaff {
-    char unk_00[0x18];
+typedef struct UnkStaff { // sizeof 0x20
+    /* 0x00 */ Vec pos;
+    /* 0x0C */ Vec rot;
     s16 unk_18;
     s16 unk_1A;
     s16 unk_1C;
     s16 unk_1E;
 } UnkStaff;
 
-typedef struct UnkStaff_1 {
-    /* 0x00 */ char unk_00[0x18];
-    /* 0x18 */ s16 unk_18;
-    /* 0x1A */ s16 unk_1A;
-    /* 0x1C */ s16 unk_1C;
-    /* 0x1E */ s16 unk_1E;
-    /* 0x20 */ char unk_20[8];
+typedef struct StaffDecoEntry { // sizeof 0x28
+    /* 0x00 */ s32 dataId;
+    /* 0x04 */ s32 subDataId;
+    /* 0x08 */ s32 animDataId;
+    /* 0x0C */ char *animName;
+    /* 0x10 */ Vec pos;
+    /* 0x1C */ Vec rot;
+} StaffDecoEntry;
+
+typedef struct UnkStaff_9 { // sizeof 0x28
+    /* 0x00 */ Vec pos;
+    /* 0x0C */ char unk_0C[0x14];
+    /* 0x20 */ s16 anims[3];
+} UnkStaff_9;
+
+typedef struct UnkStaff_1 { // sizeof 0x2C
+    /* 0x00 */ Vec pos;
+    /* 0x0C */ Vec rot;
+    /* 0x18 */ Vec unk_18;
+    /* 0x24 */ f32 unk_24;
     /* 0x28 */ s16 unk_28;
-    /* 0x2A */ char unk_2A[2];
+    /* 0x2A */ s16 unk_2A;
 } UnkStaff_1;
 
 typedef struct UnkStaff_2 { // sizeof 0x4C
@@ -64,10 +78,10 @@ typedef struct UnkStaff_3 { // sizeof 0x3C
     /* 0x0C */ char unk_0C[0x10];
     /* 0x1C */ s16 unk_1C;
     /* 0x1E */ s16 unk_1E;
-    /* 0x20 */ char unk_20[2];
+    /* 0x20 */ s16 unk_20;
     /* 0x22 */ UnkStaff_8 unk_22;
     /* 0x28 */ s16 unk_28[4];
-    /* 0x30 */ char unk_30[2];
+    /* 0x30 */ s16 unk_30;
     /* 0x32 */ s16 unk_32;
     /* 0x34 */ s16 unk_34;
     /* 0x36 */ s16 unk_36;
@@ -75,9 +89,10 @@ typedef struct UnkStaff_3 { // sizeof 0x3C
     /* 0x3A */ s16 unk_3A;
 } UnkStaff_3;
 
-typedef struct UnkStaff_4 {
+typedef struct UnkStaff_4 { // sizeof 0xC
     /* 0x00 */ UnkStaff_3 *unk_00;
-    /* 0x04 */ char unk_04[4];
+    /* 0x04 */ s16 unk_04;
+    /* 0x06 */ char unk_06[2];
     /* 0x08 */ s16 unk_08;
 } UnkStaff_4;
 
@@ -131,6 +146,8 @@ void func_80107EB8_staff(void);
 void func_80109264_staff(void);
 void func_801095E4_staff(void);
 void func_801088F4_staff(StaffPath *path, f32 t, Vec *out);
+StaffModelEntry *func_80109F34_staff(UnkStaff_3 *work, StaffModelEntry *entry);
+void func_8010A848_staff(void);
 void func_8010B514_staff(s16 arg0, s16 arg1);
 void func_8010B794_staff(s16 arg0);
 void func_8010BF84_staff(void);
@@ -139,8 +156,11 @@ void func_8010D998_staff(void);
 void func_8010DEE4_staff(UnkStaff_2 *arg0, f32 x, f32 y, f32 z);
 void func_8010DEF4_staff(UnkStaff_2 *arg0, f32 x, f32 y, f32 z);
 void func_8010DF04_staff(UnkStaff_2 *arg0, s16 arg1);
+UnkStaff_2 *func_8010DE50_staff(s32 arg0);
+void func_8010DF0C_staff(UnkStaff_2 *arg0, s32 mask, s32 value);
+s16 func_8010DF24_staff(UnkStaff_2 *arg0);
 void func_8010DF34_staff(void);
-void func_8010C680_staff(s16 *, s32 *, f32 *, void *);
+void func_8010C680_staff(s16 *state, f32 *angle, f32 *rotY, UnkStaff *work);
 void func_8010C8F4_staff(UnkStaff_1 *);
 void func_8010CD74_staff(UnkStaff_1 *);
 void func_8010CFD4_staff(UnkStaff *);
@@ -149,6 +169,7 @@ extern u16 D_80110530_staff;
 extern f32 D_80110534_staff;
 extern s8 D_80110538_staff;
 extern u32 D_8011053C_staff;
+extern s32 D_80110540_staff[6];
 extern MsetupCameraPreset D_80110560_staff;
 extern s32 D_8011058C_staff[4];
 extern s32 D_801105F0_staff[2];
@@ -158,10 +179,15 @@ extern Vec D_80110618_staff[];
 extern Vec D_80110648_staff[];
 extern s16 D_8011066C_staff[4];
 extern StaffAnimEntry D_80110674_staff[];
+extern StaffModelEntry D_80110704_staff[];
 extern u8 D_8011059C_staff[4];
 extern u16 D_801105A0_staff[4];
 extern f32 D_801105A8_staff[4];
 extern MsetupModelEntry D_80110FF4_staff[];
+extern Vec D_80110FA0_staff[3];
+extern Vec D_80110FDC_staff;
+extern s32 D_80110FE8_staff[3];
+extern StaffDecoEntry D_80111094_staff[];
 extern s16 D_80111510_staff;
 extern s16 D_80111512_staff;
 extern s16 D_80111514_staff;
@@ -729,7 +755,61 @@ void func_801073EC_staff(UnkStaff_2 *arg0, s32 arg1) {
     func_8010DF04_staff(arg0, func_80106044_staff(60) + 30);
 }
 
+#ifdef NON_MATCHING
+// Code matches, but the original has 3 nops of padding after this function, which
+// suggests a file boundary at 0x543FC0 (func_80107740_staff).
+void func_80107508_staff(void) {
+    s16 *stat = HuPrcCurrentGet()->user_data;
+    UnkStaff_2 *objs[4];
+    s16 timers[3];
+    s16 index;
+    s32 i;
+
+    index = (D_80111514_staff >= 0 && D_80111514_staff < 6) ? D_80111514_staff : 0;
+    for (i = 0; i < 3; i++) {
+        objs[i] = func_8010DE50_staff(D_80110540_staff[index]);
+        func_801073EC_staff(objs[i], i);
+        func_8010DF0C_staff(objs[i], 1, 1);
+        timers[i] = 0;
+    }
+    while (*stat >= 0) {
+        switch (*stat) {
+            case 0:
+                break;
+            case 1:
+                for (i = 0; i < 3; i++) {
+                    timers[i] = 1;
+                }
+                timers[0] = 1;
+                break;
+            case 2:
+                for (i = 0; i < 3; i++) {
+                    func_8010DF0C_staff(objs[i], 4, 4);
+                }
+                *stat = -1;
+                break;
+        }
+        if (*stat == 1) {
+            for (i = 0; i < 3; i++) {
+                if (timers[i] != 0) {
+                    if (--timers[i] == 0) {
+                        func_8010DF0C_staff(objs[i], 1, 0);
+                    }
+                } else if (func_8010DF24_staff(objs[i]) & 1) {
+                    timers[i] = (rand8() & 0xF) + 1;
+                }
+            }
+        }
+        HuPrcVSleep();
+    }
+    omDelPrcObj(NULL);
+    while (TRUE) {
+        HuPrcVSleep();
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_80107508_staff);
+#endif
 
 UnkStaff_7 *func_80107740_staff(void) {
     UnkStaff_7 *work;
@@ -1320,7 +1400,83 @@ INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_80109F34_staff);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010A848_staff);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010B1E0_staff);
+void func_8010B1E0_staff(void) {
+    UnkStaff_3 works[3];
+    UnkStaff_4 *staff;
+    Process *prc;
+    StaffModelEntry *entry;
+    UnkStaff_3 *work;
+    s32 i;
+    s16 state;
+
+    staff = HuMemAllocTag(sizeof(UnkStaff_4), TAG_OVERLAY);
+    memset(staff, 0, sizeof(UnkStaff_4));
+    state = 0;
+    HuPrcCurrentGet()->user_data = staff;
+    prc = omAddPrcObj(func_8010A848_staff, 0x4000, 0x800, 0);
+    prc->user_data = works;
+    staff->unk_00 = works;
+    entry = func_80109D74_staff(works, D_80110704_staff);
+    while (state >= 0) {
+        if (state != staff->unk_04) {
+            switch (staff->unk_04) {
+                case 0:
+                    break;
+                case 1:
+                    state = -1;
+                    continue;
+            }
+            state = staff->unk_04;
+        }
+        for (work = works, i = 0; i < 3; i++, work++) {
+            if (work->unk_3A != 0 && (work->unk_3A & 4)) {
+                entry = func_80109F34_staff(work, entry);
+            }
+        }
+        HuPrcVSleep();
+    }
+    omDelPrcObj(prc);
+    for (work = works, i = 0; i < 3; i++, work++) {
+        if (work->unk_3A == 0) {
+            continue;
+        }
+        work->unk_3A = 0;
+        switch (work->unk_34) {
+            case 7:
+                // Bug: reuses the outer loop counter.
+                for (i = 0; i < 4; i++) {
+                    Hu3DModelKill(work->unk_28[i]);
+                }
+                Hu3DAnimKill(work->unk_20);
+                Hu3DAnimKill(work->unk_30);
+                break;
+            case 4:
+            case 8:
+            case 10:
+                Hu3DModelKill(work->unk_28[0]);
+                break;
+            case 12:
+                func_80046558_main(work->unk_1C);
+                break;
+        }
+        if (work->unk_32 >= 0) {
+            Hu3DAnimKill(work->unk_32);
+        }
+        if (work->unk_1C >= 0) {
+            Hu3DModelKill(work->unk_1C);
+        }
+        if (work->unk_1E >= 0) {
+            Hu3DModelKill(work->unk_1E);
+        }
+        work->unk_1C = -1;
+        work->unk_1E = -1;
+    }
+    HuMemFree(staff);
+    omDelPrcObj(NULL);
+    while (TRUE) {
+        HuPrcVSleep();
+    }
+}
 
 void func_8010B430_staff(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     HuSprGrp *grp = HuSprGrpData[arg0];
@@ -1442,7 +1598,26 @@ void func_8010B9BC_staff(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010BA30_staff);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010BE20_staff);
+void func_8010BE20_staff(s16 *windows, s16 count) {
+    s32 i;
+    s16 window;
+
+    for (i = 0; i < count; i++, windows++) {
+        window = *windows = HuWinCreate(-120, -50, 240, 20, 0, 12);
+        HuWinCenterPosSet(window, 120, 10);
+        HuWinMesSpeedSet(window, 0);
+        HuWinBGTPLvlSet(window, 0);
+        HuWinMesPalSet(window, 2, 255, 0, 0);
+        HuWinMesPalSet(window, 4, 0, 144, 0);
+        HuWinMesPalSet(window, 5, 0, 176, 192);
+        HuWinMesPalSet(window, 6, 255, 173, 0);
+        func_8005C154_main(window, 64, 64, 64);
+        HuWinBGColSet(window, 0, 0, 0);
+        HuWinMesColSet(window, 7);
+        func_8005BF70_main(window, 0x100);
+        HuWinDispOff(window);
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/staff/542220", D_8011133C_staff);
 
@@ -1478,20 +1653,244 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/staff/542220", D_801113F0_staff);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010BF84_staff);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010C680_staff);
+void func_8010C680_staff(s16 *state, f32 *angle, f32 *rotY, UnkStaff *work) {
+    Vec pos = work->pos;
+    Vec *p = &pos;
+    f32 dx;
+    f32 rot;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010C8F4_staff);
+    switch (*state) {
+        case 0:
+            p->x += 6.266667f;
+            if (p->x >= 260.0f) {
+                (*state)++;
+                *angle = 0.0f;
+            }
+            break;
+        case 1:
+            *angle += 12.0f;
+            if (*angle >= 180.0f) {
+                *angle = 180.0f;
+                (*state)++;
+            }
+            dx = cosdf(*angle) * 6.266667f;
+            p->x += dx;
+            rot = 90.0f - *angle;
+            *rotY = rot;
+            break;
+        case 2:
+            p->x -= 6.266667f;
+            if (p->x <= -680.0f) {
+                (*state)++;
+                *angle = 0.0f;
+            }
+            break;
+        case 3:
+            *angle += 12.0f;
+            if (*angle >= 180.0f) {
+                *angle = 180.0f;
+                *state = 0;
+            }
+            dx = cosdf(*angle) * -6.266667f;
+            p->x += dx;
+            rot = *angle + -90.0f;
+            *rotY = rot;
+            break;
+    }
+    work->pos.x = p->x;
+    Hu3DModelPosSet(work->unk_18, p->x, p->y, p->z);
+    Hu3DModelPosSet(work->unk_1E, p->x, 0.0f, p->z);
+    Hu3DModelRotSet(work->unk_18, work->rot.x, *rotY - 8.0f, work->rot.z);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010CD74_staff);
+void func_8010C8F4_staff(UnkStaff_1 *works) {
+    Vec pos[3];
+    UnkStaff_1 *work;
+    Vec *p;
+    s32 i;
+    f32 temp;
+    f32 dx;
+    f32 dz;
+    f32 rot;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010CFD4_staff);
+    for (work = works, p = pos, i = 0; i < 3; i++, work++, p++) {
+        *p = work->pos;
+        work->unk_18.z += 180.0f / 7.0f;
+        if (work->unk_18.z >= 180.0f) {
+            work->unk_18.z -= 180.0f;
+            temp = (f32)(func_8010601C_staff() & 0x1F) - 15.0f;
+            temp += 20.0f;
+            work->unk_24 = temp;
+        }
+        temp = sindf(work->unk_18.z) * work->unk_24;
+        p->y += temp;
+    }
+
+    work = works;
+    p = pos;
+    switch (work->unk_2A) {
+        case 0:
+            p->x += 6.266667f;
+            if (p->x >= 260.0f) {
+                work->unk_2A++;
+                work->unk_18.x = 0.0f;
+            }
+            break;
+        case 1:
+            work->unk_18.x += 12.0f;
+            if (work->unk_18.x >= 180.0f) {
+                work->unk_18.x = 180.0f;
+                work->unk_2A++;
+            }
+            dx = cosdf(work->unk_18.x) * 6.266667f;
+            p->x += dx;
+            rot = work->unk_18.x + -90.0f;
+            work->rot.y = rot;
+            break;
+        case 2:
+            p->x -= 6.266667f;
+            if (p->x <= -680.0f) {
+                work->unk_2A++;
+                work->unk_18.x = 0.0f;
+            }
+            break;
+        case 3:
+            work->unk_18.x += 12.0f;
+            if (work->unk_18.x >= 180.0f) {
+                work->unk_18.x = 180.0f;
+                work->unk_2A = 0;
+            }
+            dx = cosdf(work->unk_18.x) * -6.266667f;
+            p->x += dx;
+            rot = 90.0f - work->unk_18.x;
+            work->rot.y = rot;
+            break;
+    }
+    work->pos.x = p->x;
+
+    for (work = works + 1, p = pos + 1, i = 1; i < 3; i++, work++, p++) {
+        temp = work->unk_18.x;
+        switch (i) {
+            case 1:
+                temp += 6.0f;
+                rot = -90.0f;
+                break;
+            case 2:
+                temp -= 5.0f;
+                rot = 90.0f;
+                break;
+        }
+        if (temp < 0.0f) {
+            temp += 360.0f;
+        } else if (temp >= 360.0f) {
+            temp -= 360.0f;
+        }
+        work->unk_18.x = temp;
+        dx = sindf(temp) * work->unk_18.y;
+        dz = cosdf(temp) * work->unk_18.y;
+        p->x += dx;
+        p->z += dz;
+        rot += temp;
+        if (rot < 0.0f) {
+            rot += 360.0f;
+        } else if (rot >= 360.0f) {
+            rot -= 360.0f;
+        }
+        work->rot.y = rot;
+    }
+
+    for (work = works, p = pos, i = 0; i < 3; i++, work++, p++) {
+        Hu3DModelPosSet(work->unk_28, p->x, p->y, p->z);
+        Hu3DModelRotSet(work->unk_28, work->rot.x, work->rot.y, work->rot.z);
+    }
+}
+
+void func_8010CD74_staff(UnkStaff_1 *works) {
+    s16 base = -1;
+    UnkStaff_1 *work;
+    s32 i;
+    s16 model;
+
+    for (work = works, i = 0; i < 3; i++, work++) {
+        if (base < 0) {
+            base = model = Hu3DModelCreate(DataReadTemp(0xA015E), 0x2B9);
+        } else {
+            model = Hu3DModelLink(base);
+        }
+        work->unk_28 = model;
+        func_8001C814_main(model, -1, 2);
+        work->pos = D_80110FA0_staff[i];
+        Hu3DModelPosSet(model, work->pos.x, work->pos.y, work->pos.z);
+        work->rot.x = work->rot.y = work->rot.z = 0.0f;
+        work->unk_24 = 30.0f;
+        switch (i) {
+            case 0:
+                Hu3DModelScaleSet(model, 0.8f, 0.8f, 0.8f);
+                work->rot.y = -90.0f;
+                Hu3DModelRotSet(model, 0.0f, -90.0f, 0.0f);
+                work->unk_18.y = work->unk_18.x = work->unk_18.z = 0.0f;
+                break;
+            case 1:
+                Hu3DModelScaleSet(model, 0.4f, 0.4f, 0.4f);
+                work->unk_18.z = 60.0f;
+                work->unk_18.x = 0.0f;
+                work->unk_18.y = 50.0f;
+                break;
+            case 2:
+                Hu3DModelScaleSet(model, 0.4f, 0.4f, 0.4f);
+                work->unk_18.z = 120.0f;
+                work->unk_18.x = 180.0f;
+                work->unk_18.y = 80.0f;
+                break;
+        }
+        work->unk_2A = 0;
+    }
+}
+
+void func_8010CFD4_staff(UnkStaff *works) {
+    StaffDecoEntry *entry = D_80111094_staff;
+    UnkStaff *work = works;
+    s16 shadowBase = -1;
+    s32 i;
+    s16 model;
+    s16 shadow;
+    void *data;
+
+    for (i = 0; i < 8; i++, work++, entry++) {
+        model = work->unk_18 = Hu3DModelCreate(DataReadTemp(entry->dataId), 0x2A9);
+        data = DataReadTemp(entry->animDataId);
+        work->unk_1C = Hu3DAnimCreate(Hu3DData[model].hmf, data, 0, entry->animName);
+        HuMemMemoryFreePerm(data);
+        Hu3DModelRemakeStatic(model);
+        func_8001C514_main(model);
+        work->unk_1A = Hu3DModelCreate(DataReadTemp(entry->subDataId), 0x1D);
+        func_8001C5B4_main(model, work->unk_1A);
+        func_8001C814_main(model, -1, 2);
+        Hu3DModelScaleSet(model, 1.0f, 1.0f, 1.0f);
+        work->pos = entry->pos;
+        Hu3DModelPosSet(model, work->pos.x, work->pos.y, work->pos.z);
+        work->rot = entry->rot;
+        Hu3DModelRotSet(model, entry->rot.x, entry->rot.y, entry->rot.z);
+        work->unk_1E = -1;
+        if (i != 0) {
+            if (shadowBase < 0) {
+                shadowBase = shadow = Hu3DModelCreate(DataReadTemp(9), 0x299);
+            } else {
+                shadow = Hu3DModelLink(shadowBase);
+            }
+            work->unk_1E = shadow;
+            Hu3DModelPosSet(shadow, work->pos.x, 0.0f, work->pos.z);
+            Hu3DModelScaleSet(shadow, 1.2f, 1.2f, 1.2f);
+        }
+    }
+}
 
 void func_8010D1E8_staff(void) {
     MsetupModelHandle sp10[3];
     UnkStaff sp20[8];
     UnkStaff_1 sp120[3];
     s16 sp1A8;
-    s32 sp1AC;
+    f32 sp1AC;
     f32 sp1B0;
     s16 var_v0;
     s16 *temp_s2;
@@ -1522,7 +1921,7 @@ void func_8010D1E8_staff(void) {
     *temp_s2 = 0;
     sp1A8 = 0;
     sp1B0 = 90.0f;
-    sp1AC = 0;
+    sp1AC = 0.0f;
     for (var_s0 = 0; var_s0 >= 0;) {
         if (var_s0 != *temp_s2) {
             if (*temp_s2 == -1) {
@@ -1564,11 +1963,205 @@ void func_8010D1E8_staff(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010D450_staff);
+void func_8010D450_staff(s16 model, Vec *pos) {
+    f32 height = pos->y;
+    f32 scale = 400.0f - height;
+    f32 offsetX;
+    f32 offsetZ;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010D580_staff);
+    if (scale < 0.0f) {
+        scale = 0.0f;
+    }
+    scale *= 0.0015f;
+    Hu3DModelScaleSet(model, scale, scale, scale);
+    offsetX = height * (f64)0.2f;
+    offsetZ = height * (0.2f * 1.732);
+    offsetX += pos->x;
+    offsetZ += pos->z;
+    Hu3DModelPosSet(model, offsetX, 0.0f, offsetZ);
+    if (height >= 80.0f) {
+        func_8001C258_main(model, 4, 4);
+    } else {
+        func_8001C258_main(model, 4, 0);
+    }
+}
 
+void func_8010D580_staff(s16 model, s16 shadow, Vec *start) {
+    Vec pos;
+    f32 rotX;
+    f32 rotY;
+    f32 rotZ;
+    f32 *spinAxis;
+    s32 count;
+    f32 angle;
+    f32 speed;
+    f32 remain;
+    s32 i;
+
+    rotZ = 0.0f;
+    rotY = rotZ;
+    rotX = rotZ;
+    count = func_8010601C_staff();
+    i = count & 0xF;
+    if (i >= 10) {
+        rotZ = -90.0f;
+        spinAxis = &rotY;
+    } else {
+        spinAxis = &rotX;
+    }
+    count >>= 4;
+    i = (count & 3) * 90;
+    angle = i;
+    speed = 0.0f;
+    i = 0;
+    pos = *start;
+    do {
+        angle -= 10.0f;
+        if (angle < 0.0f) {
+            angle += 360.0f;
+        }
+        speed += 2.0f;
+        pos.y -= speed;
+        if (pos.y <= 0.0f) {
+            pos.y = 0.0f;
+            speed *= -0.5;
+            RepeatVibrator(D_80111510_staff, 5, 0, 5);
+            i++;
+        }
+        pos.z -= 8.0f;
+        Hu3DModelPosSet(model, pos.x, pos.y + 22.0f, pos.z);
+        *spinAxis = angle;
+        Hu3DModelRotSet(model, rotX, rotY, rotZ);
+        func_8010D450_staff(shadow, &pos);
+        HuPrcVSleep();
+    } while (i < 2);
+
+    i = angle;
+    remain = i % 90;
+    if (remain >= 10.0f) {
+        i = remain;
+        count = i / 10;
+        speed = pos.y / count;
+        for (; count != 0; count--) {
+            angle -= 10.0f;
+            pos.y -= speed;
+            pos.z -= 8.0f;
+            Hu3DModelPosSet(model, pos.x, pos.y + 22.0f, pos.z);
+            *spinAxis = angle;
+            Hu3DModelRotSet(model, rotX, rotY, rotZ);
+            func_8010D450_staff(shadow, &pos);
+            HuPrcVSleep();
+        }
+    }
+    pos.y = 0.0f;
+    Hu3DModelPosSet(model, pos.x, 22.0f, pos.z);
+    *spinAxis -= 8.0f;
+    Hu3DModelRotSet(model, rotX, rotY, rotZ);
+    HuPrcVSleep();
+    *spinAxis += 12.0f;
+    Hu3DModelRotSet(model, rotX, rotY, rotZ);
+    HuPrcVSleep();
+    *spinAxis -= 4.0f;
+    Hu3DModelRotSet(model, rotX, rotY, rotZ);
+    HuPrcVSleep();
+}
+
+#ifdef NON_MATCHING
+// Register allocation differs: the target keeps &work in a saved register for the
+// sprite setup loop, shifting the model/shadow/grp saved registers.
+void func_8010D998_staff(void) {
+    UnkStaff_9 work;
+    s16 *stat;
+    s16 model;
+    s16 shadow;
+    s16 motion;
+    s16 grp;
+    s16 state;
+    s16 x;
+    s16 tpLvl;
+    s16 step;
+    u16 esp;
+    s32 i;
+
+    stat = HuPrcCurrentGet()->user_data;
+    Hu3DGLightDirSet(1, -21.0f, 235.0f, 181.0f);
+    esp = espEntry(func_8000B838_main(0x160024), 0, 0);
+    espAttrSet(esp, 0x4000);
+    espPosSet(esp, 160, 120);
+    espPriSet(esp, 0xFFF0);
+    D_80110538_staff = 1;
+    D_80111540_staff.x = -300.578f;
+    D_80111540_staff.y = 542.5f;
+    D_80111540_staff.z = 595.0f;
+    D_80111534_staff.x = 10.3905f;
+    D_80111534_staff.y = 0.0f;
+    D_80111534_staff.z = 48.0235f;
+    D_80110534_staff = 32.0f;
+    Hu3DCameraPerspectiveSet(0, 32.0f, D_80111564_staff, D_80111560_staff);
+    motion = func_8000B13C_main(0xA007D);
+    model = func_8000B108_main(0xA0075, 0x2A9);
+    func_8001C514_main(model);
+    Hu3DModelScaleSet(model, 0.6f, 0.6f, 0.6f);
+    HuPrcVSleep();
+    func_8001C5B4_main(model, motion);
+    func_8001C814_main(model, 2, 2);
+    shadow = func_8000B108_main(9, 0x299);
+    func_8001C258_main(model, 4, 0);
+    func_8001C258_main(shadow, 4, 0);
+    work.pos = D_80110FDC_staff;
+    Hu3DModelPosSet(model, work.pos.x, work.pos.y + 22.0f, work.pos.z);
+    func_8010D450_staff(shadow, &work.pos);
+    for (i = 0; i < 3; i++) {
+        work.anims[i] = func_8000B838_main(D_80110FE8_staff[i]);
+    }
+    grp = HuSprGrpCreate(3, 0);
+    for (i = 0, x = 268; i < 3; i++, x += 12) {
+        HuSprTPLvlSet(grp, i, 0);
+        HuSprAttrReset(grp, i, 0xFFFF);
+        HuSprAttrSet(grp, i, 0x9000);
+        HuSprScaleSet(grp, i, 1.0f, 1.0f);
+        HuSprGrpMemberSet(grp, i, work.anims[i], 0);
+        func_800550F4_main(grp, i, 0);
+        HuSprPriSet(grp, i, 400);
+        HuSprPosSet(grp, i, x, 214);
+    }
+    *stat = 0;
+    state = 0;
+    while (TRUE) {
+        if (state != *stat) {
+            if (*stat == 1) {
+                func_8001C258_main(model, 4, 0);
+                func_8001C258_main(shadow, 4, 0);
+            }
+            state = *stat;
+        }
+        if (state == 1) {
+            func_8010D580_staff(model, shadow, &work.pos);
+            for (i = 0; i < 3; i++) {
+                HuSprDispOn(grp, i);
+                HuSprTPLvlSet(grp, i, 0);
+            }
+            tpLvl = 0;
+            step = 2;
+            do {
+                tpLvl += step;
+                if (tpLvl >= 256) {
+                    tpLvl = 256;
+                    step = 0;
+                }
+                for (i = 0; i < 3; i++) {
+                    HuSprTPLvlSet(grp, i, tpLvl);
+                }
+                HuPrcVSleep();
+            } while (step != 0);
+            *stat = 0;
+        }
+        HuPrcVSleep();
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010D998_staff);
+#endif
 
 UnkStaff_2 *func_8010DE50_staff(s32 arg0) {
     Process *prc = omAddPrcObj(func_8010DF34_staff, 0x3F00, 0x2000, 0);
@@ -1621,13 +2214,218 @@ void func_8010DF2C_staff(UnkStaff_2 *arg0, s16 arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010DF34_staff);
 
+#ifdef NON_MATCHING
+// Register allocation differs throughout; the target also loads the image width/height
+// with signed halfword loads, suggesting those fields are s16 in the original struct.
+void func_8010F04C_staff(s16 model, s32 dataNum) {
+    s16 anim;
+    s16 grp;
+    HuSprite *sprite;
+    HuSprite_Unk84_Unk00_Struct *img;
+    u16 *pixels;
+    HmfModelData_UnkBC_Struct *bc;
+    HmfModelData_UnkBC_Unk58_Struct *particle;
+    s16 count;
+    s16 width;
+    s16 height;
+    s16 used;
+    s16 i;
+    s16 x;
+    s16 y;
+
+    anim = func_8000B838_main(dataNum);
+    grp = HuSprGrpCreate(1, 0);
+    HuSprGrpMemberSet(grp, 0, anim, 0);
+    sprite = HuSprGet(grp, 0);
+    img = sprite->unk_84->unk00;
+    pixels = img->unk00;
+    width = img->unk04;
+    height = img->unk06;
+    for (i = 0; i < width * height; i++) {
+        pixels++;
+    }
+    pixels = sprite->unk_84->unk00->unk00;
+    bc = Hu3DData[model].unkBC;
+    count = Hu3DData[model].hmf->unk1A;
+    particle = bc->unk58;
+    used = 0;
+    for (y = 0; y < height; y++) {
+        for (x = 0; x < width; x++) {
+            if (*pixels++ == 0xFFFF && used < count) {
+                particle = &bc->unk58[used];
+                particle->unk18 = rand8() & 0xF;
+                particle->unk24 = (x - width / 2) * 12;
+                particle->unk28 = (height / 2 - y) * 12;
+                particle->unk2C = 1.0f;
+                particle->unk08 = 3.0f;
+                particle->unk04 = (rand8() * 5 >> 7) * 0.1f + 3.0f;
+                used++;
+                particle++;
+            }
+        }
+    }
+    for (i = 0; i < count - used; i++, particle++) {
+        particle->unk14 = particle->unk10 = particle->unk0C = particle->unk2C = particle->unk08 = 0.0f;
+    }
+    HuSprGrpKill(grp);
+    HuSprAnimKill(anim);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010F04C_staff);
+#endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010F3E4_staff);
+HmfModelData_UnkBC_Unk58_Struct *func_8010F3E4_staff(s16 model, f32 x, f32 y, f32 z, f32 vx, f32 vy, f32 vz, u8 r,
+                                                     u8 g, u8 b) {
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Unk58_Struct *particle = Hu3DData[model].unkBC->unk58;
+    s16 count = hmf->unk1A;
+    s16 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010F4C4_staff);
+    for (i = 0; i < count; i++, particle++) {
+        if (particle->unk08 <= 0.0f) {
+            particle->unk0C = x;
+            particle->unk10 = y;
+            particle->unk14 = z;
+            particle->unk24 = vx;
+            particle->unk28 = vy;
+            particle->unk2C = vz;
+            particle->unk00[0] = r;
+            particle->unk00[1] = g;
+            particle->unk00[2] = b;
+            particle->unk08 = 2.0f;
+            break;
+        }
+    }
+    return particle;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/542220", func_8010F9D4_staff);
+void func_8010F4C4_staff(s16 model) {
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
+    s16 count = hmf->unk1A;
+    HmfModelData_UnkBC_Unk58_Struct *particle;
+    HmfModelData_UnkBC_Unk58_Struct *src;
+    HmfModelData_UnkBC_Unk58_Struct *dst;
+    s16 i;
+    s16 j;
+    s16 dead;
+    u8 r;
+    u8 g;
+    u8 b;
+    f32 angle;
+
+    if (bc->unk02 == 0) {
+        bc->unk04 &= ~4;
+        particle = bc->unk58;
+        for (i = 0; i < count; i++, particle++) {
+            if (particle->unk2C > 0.0f) {
+                particle->unk08 = 1.0f;
+            }
+        }
+    }
+    particle = bc->unk58;
+    r = rand8() | 0x80;
+    g = rand8() | 0x80;
+    b = rand8() | 0x80;
+    if (bc->unk02 <= bc->unk08.f) {
+        if (bc->unk02 > 20) {
+            for (j = 0; j < 2; j++) {
+                src = &bc->unk58[(rand8() * count) >> 8];
+                if (src->unk2C > 0.0f) {
+                    dst = &bc->unk58[(rand8() * count) >> 8];
+                    if (dst->unk2C <= 0.0f) {
+                        dst->unk0C = src->unk0C;
+                        dst->unk10 = src->unk10;
+                        dst->unk14 = src->unk14;
+                        dst->unk08 = 1.0f;
+                    }
+                }
+            }
+        }
+        for (i = 0; i < count; i++, particle++) {
+            if (particle->unk08 > 0.0f) {
+                particle->unk00[0] = r;
+                particle->unk00[1] = g;
+                particle->unk00[2] = b;
+                if (particle->unk2C > 0.0f) {
+                    angle = bc->unk02 * particle->unk04;
+                    if (angle > 90.0f) {
+                        angle = 90.0f;
+                    }
+                    particle->unk0C = sindf(angle) * particle->unk24;
+                    particle->unk10 = sindf(angle) * particle->unk28;
+                    particle->unk14 = 0.0f;
+                    particle->unk08 = ((bc->unk02 + i) & 1) * 0.5f + 1.0f;
+                } else {
+                    particle->unk10 -= 10.0f;
+                    particle->unk08 -= 0.04f;
+                }
+            } else {
+                particle->unk08 = 0.0f;
+            }
+        }
+    } else {
+        for (i = 0, dead = 0; i < count; i++, particle++) {
+            if (particle->unk08 > 0.0f) {
+                particle->unk00[0] = r;
+                particle->unk00[1] = g;
+                particle->unk00[2] = b;
+                if (particle->unk2C > 0.0f) {
+                    if (particle->unk18 <= 0.0f) {
+                        particle->unk10 -= particle->unk04 * 5.0f;
+                        particle->unk08 -= 0.02f;
+                        if (particle->unk08 < 0.0f) {
+                            particle->unk08 = 0.0f;
+                        }
+                    } else {
+                        particle->unk18 -= 1.0f;
+                        particle->unk08 = ((bc->unk02 + i) & 1) * 0.5f + 1.0f;
+                    }
+                } else {
+                    particle->unk10 -= 10.0f;
+                    particle->unk08 -= 0.04f;
+                }
+            } else {
+                particle->unk08 = 0.0f;
+                dead++;
+            }
+        }
+        if (dead >= i) {
+            bc->unk04 |= 2;
+            return;
+        }
+    }
+    bc->unk02++;
+}
+
+void func_8010F9D4_staff(s16 model) {
+    HmfData *hmf = Hu3DData[model].hmf;
+    HmfModelData_UnkBC_Struct *bc = Hu3DData[model].unkBC;
+    s16 count = hmf->unk1A;
+    HmfModelData_UnkBC_Unk58_Struct *particle;
+    s16 i;
+
+    if (bc->unk02 == 0) {
+        bc->unk04 &= ~4;
+        particle = bc->unk58;
+        for (i = 0; i < count; i++, particle++) {
+            particle->unk08 = particle->unk0C = particle->unk10 = particle->unk14 = 0.0f;
+        }
+        bc->unk02++;
+    }
+    particle = bc->unk58;
+    for (i = 0; i < count; i++, particle++) {
+        if (particle->unk08 > 0.0f) {
+            particle->unk0C += particle->unk24;
+            particle->unk10 += particle->unk28;
+            particle->unk14 += particle->unk2C;
+            particle->unk10 -= 5.0f;
+            particle->unk08 -= 0.05f;
+        } else {
+            particle->unk08 = 0.0f;
+        }
+    }
+}
 
 void func_8010FB28_staff(void) {
     Process *prc = omAddPrcObj(func_8010FB88_staff, 0x3F00, 0x2000, 0);

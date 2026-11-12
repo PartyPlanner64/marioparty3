@@ -1,4 +1,5 @@
 #include "common.h"
+#include "game_guys_magic_boxes.h"
 
 typedef struct GameGuysMagicBoxesCamera { // 0x20 bytes
     f32 unk_00;                           // perspective camera id
@@ -91,7 +92,7 @@ extern Process *D_8010C778_game_guys_magic_boxes;
 extern Process *D_8010C77C_game_guys_magic_boxes;
 extern s16 D_8010CA0E_game_guys_magic_boxes;
 extern u8 D_8010C753_game_guys_magic_boxes[2]; // [0] cpu flag, [1] cpu difficulty
-extern s16 D_8010C756_game_guys_magic_boxes;
+extern s16 D_8010C756_game_guys_magic_boxes[]; // [0] coins
 extern f32 D_8010C9D0_game_guys_magic_boxes;
 extern f32 D_8010C9D4_game_guys_magic_boxes;
 extern u8 D_8010C9C8_game_guys_magic_boxes;
@@ -197,10 +198,7 @@ s16 func_8010A4EC_game_guys_magic_boxes(s16 x, s16 y, s16 lines);
 void func_8010A560_game_guys_magic_boxes(s16 win, s16 player, s16 mode);
 s16 func_8010A6AC_game_guys_magic_boxes(s16 win, s16 player, s16 mode, s16 count, u16 cancel);
 void func_8010A878_game_guys_magic_boxes(s16 win);
-void func_8010A8C0_game_guys_magic_boxes(s16 x, s16 y);
-u8 func_8010AC18_game_guys_magic_boxes(void);
 void func_8010A4CC_game_guys_magic_boxes(void);
-void func_8010B8B4_game_guys_magic_boxes(void);
 
 void func_801059A0_game_guys_magic_boxes(void) {
     func_80105A28_game_guys_magic_boxes();
@@ -306,7 +304,7 @@ void func_80105CCC_game_guys_magic_boxes(void) {
         if (D_8010C9E6_game_guys_magic_boxes == 0) {
             D_8010CA02_game_guys_magic_boxes = 0;
         } else {
-            D_8010CA02_game_guys_magic_boxes = D_8010C756_game_guys_magic_boxes * ((D_8010CA04_game_guys_magic_boxes + 1) << 1);
+            D_8010CA02_game_guys_magic_boxes = D_8010C756_game_guys_magic_boxes[0] * ((D_8010CA04_game_guys_magic_boxes + 1) << 1);
         }
     }
     D_8010C9E7_game_guys_magic_boxes = 0;
@@ -570,11 +568,10 @@ void func_80106DC4_game_guys_magic_boxes(omObjData *object) {
     }
 }
 
-#ifdef NON_MATCHING
-// Register allocation differs: done/win<<16 swap s2/s3 and the loop test lacks a `move v0, s3`.
 void func_80107020_game_guys_magic_boxes(void) {
-    u8 done = FALSE;
     s16 win;
+    s16 choice;
+    s16 done = FALSE;
 
     D_8010CA0E_game_guys_magic_boxes = 0;
     win = func_8010A4EC_game_guys_magic_boxes(130, 160, 12);
@@ -584,14 +581,12 @@ void func_80107020_game_guys_magic_boxes(void) {
     func_8010A560_game_guys_magic_boxes(win, D_8010C751_game_guys_magic_boxes[0], D_8010C751_game_guys_magic_boxes[2]);
     HuWinMesSet(win, 0x2C01, -1, -1);
     while (done == FALSE) {
-        switch (func_8010A6AC_game_guys_magic_boxes(win, D_8010C751_game_guys_magic_boxes[0],
-                                                    D_8010C751_game_guys_magic_boxes[2], 1, 0)) {
+        choice = func_8010A6AC_game_guys_magic_boxes(win, D_8010C751_game_guys_magic_boxes[0], D_8010C751_game_guys_magic_boxes[2], 1, 0);
+        switch (choice) {
             case 0:
                 HuWinMesSet(win, 0x2C02, -1, -1);
-                func_8010A560_game_guys_magic_boxes(win, D_8010C751_game_guys_magic_boxes[0],
-                                                    D_8010C751_game_guys_magic_boxes[2]);
-                done = TRUE;
-                break;
+                func_8010A560_game_guys_magic_boxes(win, D_8010C751_game_guys_magic_boxes[0], D_8010C751_game_guys_magic_boxes[2]);
+                /* fallthrough */
             case 1:
                 done = TRUE;
                 break;
@@ -606,9 +601,6 @@ void func_80107020_game_guys_magic_boxes(void) {
         HuPrcVSleep();
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", func_80107020_game_guys_magic_boxes);
-#endif
 
 void func_801071B8_game_guys_magic_boxes(void) {
     D_8010C9B0_game_guys_magic_boxes[0].y -= D_8010C1F4_game_guys_magic_boxes;
@@ -1104,12 +1096,10 @@ void func_8010861C_game_guys_magic_boxes(void) {
     }
 }
 
-#ifdef NON_MATCHING
-// Regalloc: done/choice/win<<16 land in different s-registers, and the done tests use andi instead of move.
 void func_80108914_game_guys_magic_boxes(void) {
-    u8 done = FALSE;
-    s16 choice = 0;
     s16 win;
+    s16 done = FALSE;
+    s16 choice = 0;
 
     HuPrcSleep(50);
     func_8004A650_main(10);
@@ -1126,16 +1116,13 @@ void func_80108914_game_guys_magic_boxes(void) {
         D_8010C9DA_game_guys_magic_boxes = 1;
     }
     while (done == FALSE) {
-        choice = func_8010A6AC_game_guys_magic_boxes(win, D_8010C751_game_guys_magic_boxes[0],
-                                                     D_8010C751_game_guys_magic_boxes[2],
+        choice = func_8010A6AC_game_guys_magic_boxes(win, D_8010C751_game_guys_magic_boxes[0], D_8010C751_game_guys_magic_boxes[2],
                                                      D_8010C9DA_game_guys_magic_boxes, 1);
         switch (choice) {
             case 0:
                 HuWinMesSet(win, 0x2C07, -1, -1);
-                func_8010A560_game_guys_magic_boxes(win, D_8010C751_game_guys_magic_boxes[0],
-                                                    D_8010C751_game_guys_magic_boxes[2]);
-                done = TRUE;
-                break;
+                func_8010A560_game_guys_magic_boxes(win, D_8010C751_game_guys_magic_boxes[0], D_8010C751_game_guys_magic_boxes[2]);
+                /* fallthrough */
             case 1:
                 done = TRUE;
                 break;
@@ -1152,18 +1139,12 @@ void func_80108914_game_guys_magic_boxes(void) {
         HuPrcVSleep();
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", func_80108914_game_guys_magic_boxes);
-#endif
 
 void func_80108AF8_game_guys_magic_boxes(void) {
-    s16 *coins;
-
     switch (D_8010C21C_game_guys_magic_boxes) {
         case 0:
             D_8010C9E7_game_guys_magic_boxes++;
-            coins = &D_8010C756_game_guys_magic_boxes;
-            *coins = *coins * 2;
+            D_8010C756_game_guys_magic_boxes[0] *= 2;
             D_8010C9E1_game_guys_magic_boxes = 0;
             D_8010C21C_game_guys_magic_boxes++;
             break;
@@ -1230,14 +1211,10 @@ void func_80108C04_game_guys_magic_boxes(void) {
     }
 }
 
-#ifdef NON_MATCHING
-// Only register allocation differs: the target puts every mult/mfhi result in a3 (and keeps the
-// hundreds quotient in a2), this allocates a2.
 void func_80108D88_game_guys_magic_boxes(omObjData *object) {
     s16 x;
     s16 hundreds;
     s16 tens;
-    s16 *coins;
     u8 i;
 
     x = 0;
@@ -1266,15 +1243,13 @@ void func_80108D88_game_guys_magic_boxes(omObjData *object) {
         D_8010C248_game_guys_magic_boxes++;
     }
 
-    coins = &D_8010C756_game_guys_magic_boxes;
-    if (*coins >= 999) {
-        *coins = 999;
-    } else if (*coins <= 0) {
-        *coins = 0;
+    if (D_8010C756_game_guys_magic_boxes[0] >= 999) {
+        D_8010C756_game_guys_magic_boxes[0] = 999;
+    } else if (D_8010C756_game_guys_magic_boxes[0] <= 0) {
+        D_8010C756_game_guys_magic_boxes[0] = 0;
     }
 
-    hundreds = D_8010C756_game_guys_magic_boxes / 100;
-    if (hundreds == 0) {
+    if ((hundreds = D_8010C756_game_guys_magic_boxes[0] / 100) == 0) {
         func_80109D3C_game_guys_magic_boxes(&D_8010C938_game_guys_magic_boxes[2], 0);
     } else {
         func_8000BD50_main(D_8010C938_game_guys_magic_boxes[2].unk_00, hundreds);
@@ -1283,9 +1258,8 @@ void func_80108D88_game_guys_magic_boxes(omObjData *object) {
         x += 12;
     }
 
-    hundreds = D_8010C756_game_guys_magic_boxes / 100;
-    tens = (s16)(D_8010C756_game_guys_magic_boxes % 100) / 10;
-    if (tens == 0 && hundreds == 0) {
+    if ((tens = (s16)(D_8010C756_game_guys_magic_boxes[0] % 100) / 10) == 0 &&
+        (s16)(D_8010C756_game_guys_magic_boxes[0] / 100) == 0) {
         func_80109D3C_game_guys_magic_boxes(&D_8010C938_game_guys_magic_boxes[1], 0);
     } else {
         func_8000BD50_main(D_8010C938_game_guys_magic_boxes[1].unk_00, tens);
@@ -1294,7 +1268,7 @@ void func_80108D88_game_guys_magic_boxes(omObjData *object) {
         x += 12;
     }
 
-    func_8000BD50_main(D_8010C938_game_guys_magic_boxes[0].unk_00, D_8010C756_game_guys_magic_boxes % 10);
+    func_8000BD50_main(D_8010C938_game_guys_magic_boxes[0].unk_00, D_8010C756_game_guys_magic_boxes[0] % 10);
     D_8010C938_game_guys_magic_boxes[0].x = x + 48;
     func_80109D3C_game_guys_magic_boxes(&D_8010C938_game_guys_magic_boxes[0], 1);
 
@@ -1302,9 +1276,6 @@ void func_80108D88_game_guys_magic_boxes(omObjData *object) {
         func_80109D3C_game_guys_magic_boxes(&D_8010C858_game_guys_magic_boxes[i][0], 1);
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", func_80108D88_game_guys_magic_boxes);
-#endif
 
 void func_801090F0_game_guys_magic_boxes(omObjData *object) {
     if (D_8010C9D8_game_guys_magic_boxes == 1) {
@@ -1516,11 +1487,7 @@ void func_80109D3C_game_guys_magic_boxes(GameGuysMagicBoxesSprite *sprite, u8 vi
     }
 }
 
-#ifdef NON_MATCHING
-// Only the coin clamp's else branch differs: the target rematerializes &D_8010C756 into v1 there,
-// while this reuses the `coins` pointer register.
 void func_80109E1C_game_guys_magic_boxes(void) {
-    s16 *coins;
     u8 i;
 
     for (i = 0; i < 4; i++) {
@@ -1562,12 +1529,11 @@ void func_80109E1C_game_guys_magic_boxes(void) {
         D_8010C753_game_guys_magic_boxes[1] = 0;
     }
 
-    coins = &D_8010C756_game_guys_magic_boxes;
-    D_8010CA08_game_guys_magic_boxes = *coins = GwPlayer[i].gameCoin;
-    if (*coins >= 999) {
-        *coins = 999;
-    } else if (*coins <= 0) {
-        *coins = 0;
+    D_8010CA08_game_guys_magic_boxes = D_8010C756_game_guys_magic_boxes[0] = GwPlayer[i].gameCoin;
+    if (D_8010C756_game_guys_magic_boxes[0] >= 999) {
+        D_8010C756_game_guys_magic_boxes[0] = 999;
+    } else if (D_8010C756_game_guys_magic_boxes[0] <= 0) {
+        D_8010C756_game_guys_magic_boxes[0] = 0;
     }
     if (D_8010CA08_game_guys_magic_boxes >= 999) {
         D_8010CA08_game_guys_magic_boxes = 999;
@@ -1575,9 +1541,6 @@ void func_80109E1C_game_guys_magic_boxes(void) {
         D_8010CA08_game_guys_magic_boxes = 0;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_44_game_guys_magic_boxes/308D10", func_80109E1C_game_guys_magic_boxes);
-#endif
 
 void func_8010A000_game_guys_magic_boxes(void) {
     s16 spriteIndex;

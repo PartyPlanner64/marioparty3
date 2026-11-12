@@ -116,6 +116,7 @@ void func_80105CE0_puddle_paddle(void);
 void func_80105DBC_puddle_paddle(omObjData *object);
 void func_80106028_puddle_paddle(omObjData *object);
 void func_80106064_puddle_paddle(omObjData *object);
+void func_80106958_puddle_paddle(omObjData *object);
 void func_80106988_puddle_paddle(omObjData *object);
 void func_80106CE4_puddle_paddle(omObjData *object);
 void func_801073E4_puddle_paddle(omObjData *object);
@@ -126,6 +127,10 @@ void func_80107B2C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
 void func_8010788C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
 void func_80107588_puddle_paddle(omObjData *object);
 void func_80107DB0_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
+void func_80107E1C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
+void func_80108178_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
+void func_80108368_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
+void func_801087DC_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
 void func_80109804_puddle_paddle(PuddlePaddlePlayer *arg0, s16 arg1, u8 arg2);
 void func_80109BD4_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
 void func_801091F8_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
@@ -253,15 +258,99 @@ void func_80106028_puddle_paddle(omObjData *object) {
     func_8010CCF0_puddle_paddle();
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_11_puddle_paddle/main", D_80111398_puddle_paddle);
+void func_80106064_puddle_paddle(omObjData *object) {
+    s32 iconFiles[8] = { 8, 9, 10, 11, 12, 13, 14, 15 };
+    s32 itemFiles[3] = { 0x210026, 0x210027, 0x320014 };
+    s16 itemCounts[3] = { 8, 4, 4 };
+    s16 itemTypes[3] = { 0, 1, 2 };
+    PuddlePaddleSlot *slot;
+    void *data;
+    s16 srcModel;
+    s16 sprModel;
+    s16 sprite;
+    s16 base;
+    s16 i, j;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_11_puddle_paddle/main", D_801113B8_puddle_paddle);
+    object->work[1] = 2;
+    slot = func_8010B8B4_puddle_paddle(object, (s8)object->work[1], 6, 6)->unk_00;
+    slot->unk_04[0] = func_8000B108_main(0xA0117, 0x2D9);
+    slot->unk_04[1] = func_8000B108_main(0x320000, 0x2D9);
+    slot->unk_04[2] = func_8000B108_main(9, 0x2D9);
+    func_8000B460_main(object, 0, 0xA0118);
+    func_8000B460_main(object, 1, 0xA0119);
+    func_8001C5B4_main(slot->unk_04[0], object->motion[0]);
+    func_8001C814_main(slot->unk_04[0], 2, 2);
+    Hu3DModelScaleSet(slot->unk_04[1], 0.8f, 0.8f, 0.8f);
+    Hu3DModelScaleSet(slot->unk_04[0], 1.2f, 1.2f, 1.2f);
+    Hu3DModelPosSet(slot->unk_04[0], 0.0f, 325.0f, 0.0f);
+    Hu3DModelScaleSet(slot->unk_04[2], 1.2f, 1.2f, 1.2f);
+    Hu3DModelPosSet(slot->unk_04[2], 0.0f, 320.0f, 0.0f);
+    D_80111658_puddle_paddle->unk_3C = func_8000D658_main(0x6A9, 4);
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_11_puddle_paddle/main", D_801113C4_puddle_paddle);
+    srcModel = 0;
+    base = 0;
+    for (i = 0; i < 3; i++) {
+        for (j = base; j < base + itemCounts[i]; j++) {
+            D_80111658_puddle_paddle->items[j].type = itemTypes[i];
+            D_80111658_puddle_paddle->items[j].radius = 50.0f;
+            if (j == base) {
+                data = DataRead(itemFiles[i]);
+                sprModel = srcModel = Hu3DSprModelCreate(data, 0x9D, 0);
+                DataClose(data);
+            } else {
+                sprModel = func_80014618_main(srcModel, 0);
+            }
+            D_80111658_puddle_paddle->items[j].model = D_800CBB60_main[sprModel].modelId;
+            Hu3DModelScaleSet(D_800CBB60_main[sprModel].modelId, 3.0f, 3.0f, 1.0f);
+        }
+        base += itemCounts[i];
+    }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_11_puddle_paddle/main", D_801113CC_puddle_paddle);
+    for (i = 0; i < 14; i++) {
+        func_8010C214_puddle_paddle(0x32, 3, 1.0f, 0, 0, 0x499);
+    }
+    for (i = 0; i < 2; i++) {
+        func_8010C214_puddle_paddle(0, 8, 1.0f, 1, 0, 0x499);
+    }
+    for (i = 0; i < 16; i++) {
+        Hu3DModelScaleSet(D_80111668_puddle_paddle[func_8010C804_puddle_paddle(0x32, 0x16, 0, 0, 0xB)].unk_0C,
+                          1.5f, 1.5f, 1.5f);
+    }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_11_puddle_paddle/main", func_80106064_puddle_paddle);
+    sprite = func_8010BEE8_puddle_paddle(0xFFF, 0x32, 0x15, 0, 0x1000);
+    HuSprTPLvlSet(D_80111664_puddle_paddle[sprite].unk_01, 0, 200);
+    func_8010C088_puddle_paddle(sprite, 76, 32);
+    sprite = func_8010BEE8_puddle_paddle(0xFFF, 0x32, 0x15, 0, 0x1000);
+    HuSprTPLvlSet(D_80111664_puddle_paddle[sprite].unk_01, 0, 200);
+    func_8010C088_puddle_paddle(sprite, 236, 32);
+    func_8010C088_puddle_paddle(func_8010BEE8_puddle_paddle(0xFF, 0x21, 0x1A, 0, 0), 76, 32);
+    func_8010C088_puddle_paddle(func_8010BEE8_puddle_paddle(0xFF, 0x21, 0x1A, 0, 0), 236, 32);
+    func_8010C088_puddle_paddle(func_8010BEE8_puddle_paddle(0xFF, 0x21, 0x1B, 0, 0), 92, 32);
+    func_8010C088_puddle_paddle(func_8010BEE8_puddle_paddle(0xFF, 0x21, 0x1B, 0, 0), 252, 32);
+
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < 2; j++) {
+            func_8010C088_puddle_paddle(
+                func_8010BEE8_puddle_paddle(0xEF, 0x21,
+                                            iconFiles[GwPlayer[D_80111650_puddle_paddle[i].players[j]].chr], 0, 0),
+                i * 160 + 40 + j * 18, 32);
+        }
+    }
+    for (i = 0; i < 2; i++) {
+        D_80111650_puddle_paddle[i].tensSprite = sprModel = func_8010BEE8_puddle_paddle(0xEF, 0, 0x31, 0, 0);
+        func_8010C088_puddle_paddle(sprModel, i * 160 + 104, 32);
+        D_80111650_puddle_paddle[i].onesSprite = sprModel = func_8010BEE8_puddle_paddle(0xEF, 0, 0x31, 0, 0);
+        func_8010C088_puddle_paddle(sprModel, i * 160 + 116, 32);
+    }
+
+    func_8010BA04_puddle_paddle((s8)object->work[1], 0xF, 0, func_80107E1C_puddle_paddle, 0);
+    func_8010BA04_puddle_paddle((s8)object->work[1], 0xFF, 0, func_80108178_puddle_paddle, 0);
+    func_8010BA04_puddle_paddle((s8)object->work[1], 0x1FF, 0, func_80108368_puddle_paddle, 0);
+    func_8010BA04_puddle_paddle((s8)object->work[1], 0xFFF, 0, func_801087DC_puddle_paddle, 0);
+    object->model[0] = slot->unk_04[0];
+    func_80110714_puddle_paddle(object);
+    object->func = func_80106958_puddle_paddle;
+}
 
 void func_80106958_puddle_paddle(omObjData *object) {
     func_8010BC14_puddle_paddle(2);

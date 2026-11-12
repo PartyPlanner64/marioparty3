@@ -13,24 +13,6 @@ typedef struct RGBA {
     /* 0x03 */ u8 a;
 } RGBA;
 
-typedef struct UnkPuddlePaddleEntry { // size 0x24, sixteen entries
-    /* 0x00 */ s8 unk_00;
-    /* 0x01 */ char pad01[3];
-    /* 0x04 */ s32 unk_04; // flags
-    /* 0x08 */ s16 unk_08;
-    /* 0x0A */ u8 unk_0A;
-    /* 0x0B */ char pad0B[1];
-    /* 0x0C */ s16 unk_0C; // hmf model index
-    /* 0x0E */ s16 unk_0E; // frame count
-    /* 0x10 */ s16 unk_10; // current frame
-    /* 0x12 */ s16 unk_12; // frame tick
-    /* 0x14 */ s16 unk_14; // ticks per frame
-    /* 0x16 */ char pad16[2];
-    /* 0x18 */ f32 *unk_18;
-    /* 0x1C */ f32 *unk_1C;
-    /* 0x20 */ f32 *unk_20;
-} UnkPuddlePaddleEntry; // size = 0x24
-
 typedef struct UnkPuddlePaddleModel { // size = 0x28, sixteen entries
     /* 0x00 */ s8 unk_00;
     /* 0x01 */ char pad01[3];
@@ -95,7 +77,6 @@ extern s16 D_800CDD6A_main;
 extern u8 D_800D2008_main;
 
 extern UnkPuddlePaddleModel *D_80111660_puddle_paddle;
-extern UnkPuddlePaddleEntry *D_80111668_puddle_paddle;
 extern UnkPuddlePaddleObj *D_8011166C_puddle_paddle;
 extern PuddlePaddleBoat *D_80111670_puddle_paddle;
 

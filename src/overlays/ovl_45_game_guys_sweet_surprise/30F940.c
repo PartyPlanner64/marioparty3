@@ -46,6 +46,34 @@ extern f32 D_8010CBE4_game_guys_sweet_surprise; // y position
 extern s16 D_8010CBE8_game_guys_sweet_surprise; // state
 extern f32 D_8010CBEC_game_guys_sweet_surprise; // velocity
 extern Vec D_8010CBF0_game_guys_sweet_surprise[2];
+extern s16 D_8010CC08_game_guys_sweet_surprise;                            // previous motion
+extern s16 D_8010CC0A_game_guys_sweet_surprise;                            // state
+extern s16 D_8010CC0C_game_guys_sweet_surprise;                            // timer
+extern f32 D_8010CC10_game_guys_sweet_surprise;                            // velocity
+extern f32 D_8010CC14_game_guys_sweet_surprise;                            // shadow scale
+extern s16 D_8010CC18_game_guys_sweet_surprise;                            // bob direction
+extern s16 D_8010CC1A_game_guys_sweet_surprise;                            // bob offset
+extern s16 D_8010CC1C_game_guys_sweet_surprise;                            // previous motion
+extern f32 D_8010CC20_game_guys_sweet_surprise;                            // shadow scale
+extern s16 D_8010CC24_game_guys_sweet_surprise;                            // state
+extern s16 D_8010CC26_game_guys_sweet_surprise;                            // timer
+extern f32 D_8010CC28_game_guys_sweet_surprise;                            // sway speed
+extern f32 D_8010CC2C_game_guys_sweet_surprise;                            // sway angle
+extern f32 D_8010CC30_game_guys_sweet_surprise;                            // start x
+extern s16 D_8010CC34_game_guys_sweet_surprise;                            // bob direction
+extern s16 D_8010CC36_game_guys_sweet_surprise;                            // bob offset
+extern f32 D_8010CC38_game_guys_sweet_surprise;                            // segment spacing
+extern f32 D_8010CC3C_game_guys_sweet_surprise;                            // bob amplitude
+extern s16 D_8010CC40_game_guys_sweet_surprise;                            // previous motion
+extern f32 D_8010CC44_game_guys_sweet_surprise;                            // shadow scale
+extern s16 D_8010CC48_game_guys_sweet_surprise;                            // state
+extern s16 D_8010CC4A_game_guys_sweet_surprise;                            // timer
+extern f32 D_8010CC4C_game_guys_sweet_surprise;                            // sway speed
+extern f32 D_8010CC50_game_guys_sweet_surprise;                            // sway angle
+extern f32 D_8010CC54_game_guys_sweet_surprise;                            // start x
+extern s16 D_8010CC58_game_guys_sweet_surprise;                            // state
+extern s16 D_8010CC5A_game_guys_sweet_surprise;                            // timer
+extern f32 D_8010CC5C_game_guys_sweet_surprise;                            // scale
 extern GameGuysSweetSurprisePadValues D_8010CC70_game_guys_sweet_surprise; // player slots
 extern GameGuysSweetSurpriseRewardTable D_8010CC78_game_guys_sweet_surprise;
 extern GameGuysSweetSurpriseRewardTable D_8010CC84_game_guys_sweet_surprise;
@@ -86,6 +114,7 @@ extern s16 D_8010CFFC_game_guys_sweet_surprise;
 extern s16 D_8010CFFE_game_guys_sweet_surprise;
 extern s16 D_8010D000_game_guys_sweet_surprise;
 extern s16 D_8010D002_game_guys_sweet_surprise; // COM difficulty
+extern s16 D_8010D004_game_guys_sweet_surprise; // linked model source
 
 void func_80105A28_game_guys_sweet_surprise(void);
 void func_80105AB8_game_guys_sweet_surprise(void);
@@ -123,12 +152,20 @@ void func_80108538_game_guys_sweet_surprise(void);
 void func_8010878C_game_guys_sweet_surprise(omObjData *object);
 void func_80108878_game_guys_sweet_surprise(omObjData *object);
 void func_80108AC4_game_guys_sweet_surprise(omObjData *object);
+void func_80108CB8_game_guys_sweet_surprise(omObjData *object);
 void func_80108FE0_game_guys_sweet_surprise(omObjData *object);
+void func_801092F0_game_guys_sweet_surprise(omObjData *object);
 void func_80109AA8_game_guys_sweet_surprise(omObjData *object);
+void func_80109DE4_game_guys_sweet_surprise(omObjData *object);
 void func_8010A604_game_guys_sweet_surprise(omObjData *object);
+void func_8010A784_game_guys_sweet_surprise(omObjData *object);
+void func_8010A820_game_guys_sweet_surprise(omObjData *object);
+void func_8010AA94_game_guys_sweet_surprise(omObjData *object);
 void func_8010AAD8_game_guys_sweet_surprise(omObjData *object);
 void func_8010AB3C_game_guys_sweet_surprise(omObjData *object);
 void func_8010ABD8_game_guys_sweet_surprise(omObjData *object);
+void func_8010AC74_game_guys_sweet_surprise(omObjData *object);
+void func_8010AD04_game_guys_sweet_surprise(omObjData *object);
 s16 func_8010AD94_game_guys_sweet_surprise(s32 dataNum, u16 attr, u16 priority, s16 x, s16 y);
 s16 func_8010AE44_game_guys_sweet_surprise(s16 x, s16 y, s16 lines);
 void func_8010AEB8_game_guys_sweet_surprise(s16 win, s16 player, s16 mode);
@@ -1121,29 +1158,476 @@ void func_80108878_game_guys_sweet_surprise(omObjData *object) {
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", D_8010CD90_game_guys_sweet_surprise);
+void func_80108AC4_game_guys_sweet_surprise(omObjData *object) {
+    s16 i = 0; // initialized early to match register allocation
+    s32 attr = 0x2A9;
+    s32 files[3] = { 0xA0063, 0xA0064, 9 };
+    s32 motions[5] = { 0xA0065, 0xA006E, 0xA006C, 0xA006F, 0xA0071 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", D_8010CD9C_game_guys_sweet_surprise);
+    for (i = 0; i < 3; i++) {
+        object->model[i] = func_8000B108_main(files[i], attr);
+    }
+    omSetTra(object, 0.0f, 0.0f, 200.0f);
+    omSetRot(object, 0.0f, 0.0f, 0.0f);
+    omSetSca(object, 1.0f, 1.0f, 1.0f);
+    Hu3DModelPosSet(object->model[2], object->trans.x, 0.0f, object->trans.z);
+    Hu3DModelRotSet(object->model[2], 0.0f, 0.0f, 0.0f);
+    Hu3DModelScaleSet(object->model[2], 1.0f, 1.0f, 1.0f);
+    for (i = 0; i < 5; i++) {
+        func_8000B460_main(object, i, motions[i]);
+    }
+    D_8010CFEE_game_guys_sweet_surprise = 0;
+    Hu3DModelCameraSet(object->model[1], 0);
+    func_80017358_main(object->model[1], "c203n30-r_hand", object->model[0], "c203_000_new-r_hand");
+    D_8010CFF0_game_guys_sweet_surprise = 0;
+    object->func = func_80108CB8_game_guys_sweet_surprise;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_80108AC4_game_guys_sweet_surprise);
+void func_80108CB8_game_guys_sweet_surprise(omObjData *object) {
+    if (D_8010CC08_game_guys_sweet_surprise != D_8010CFEE_game_guys_sweet_surprise) {
+        switch (D_8010CFEE_game_guys_sweet_surprise) {
+            case 0:
+            case 2:
+                Hu3DMotionShiftSet(object->model[0],
+                                   Hu3DData[object->motion[D_8010CFEE_game_guys_sweet_surprise]].motId, 0, 30, 2);
+                break;
+            case 1:
+            case 3:
+            case 4:
+                func_8001C5B4_main(object->model[0], object->motion[D_8010CFEE_game_guys_sweet_surprise]);
+                break;
+        }
+        D_8010CC08_game_guys_sweet_surprise = D_8010CFEE_game_guys_sweet_surprise;
+    }
+    if (D_8010CFF0_game_guys_sweet_surprise == 1) {
+        switch (D_8010CC0A_game_guys_sweet_surprise) {
+            case 0:
+                D_8010CFEE_game_guys_sweet_surprise = 1;
+                D_8010CC10_game_guys_sweet_surprise = -1.47f;
+                D_8010CC0C_game_guys_sweet_surprise = 0;
+                object->trans.y = 0.0f;
+                object->trans.z = 200.0f;
+                D_8010CC0A_game_guys_sweet_surprise++;
+                break;
+            case 1:
+                if (D_8010CC0C_game_guys_sweet_surprise++ >= 25) {
+                    D_8010CC0A_game_guys_sweet_surprise++;
+                }
+                break;
+            case 2:
+                object->trans.y += D_8010CC10_game_guys_sweet_surprise * D_8010CC10_game_guys_sweet_surprise *
+                                   (D_8010CC10_game_guys_sweet_surprise >= 0.0f ? -35.0f : 35.0f);
+                if (object->trans.y <= 0.0f && D_8010CC10_game_guys_sweet_surprise >= 0.0f) {
+                    D_8010CC0A_game_guys_sweet_surprise++;
+                    object->trans.y = 0.0f;
+                }
+                if (D_8010CC10_game_guys_sweet_surprise >= 1.47f) {
+                    D_8010CC10_game_guys_sweet_surprise = 1.47f;
+                } else {
+                    D_8010CC10_game_guys_sweet_surprise += 0.11f;
+                }
+                object->trans.z -= 22.5f;
+                break;
+            case 3:
+                D_8010CFEE_game_guys_sweet_surprise = 0;
+                D_8010CFF0_game_guys_sweet_surprise = 0;
+                break;
+        }
+    }
+    D_8010CC14_game_guys_sweet_surprise = 1.0f - object->trans.y * 0.001f;
+    Hu3DModelPosSet(object->model[2], object->trans.x, 0.0f, object->trans.z);
+    Hu3DModelScaleSet(object->model[2], D_8010CC14_game_guys_sweet_surprise, D_8010CC14_game_guys_sweet_surprise,
+                      D_8010CC14_game_guys_sweet_surprise);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_80108CB8_game_guys_sweet_surprise);
+void func_80108FE0_game_guys_sweet_surprise(omObjData *object) {
+    s16 i = 0; // initialized early to match register allocation
+    s32 attr = 0x2A9;
+    s32 files[3] = { 0xA00D9, 9, 0xA00E4 };
+    s32 motions[4] = { 0xA00DA, 0xA00DE, 0xA00E1, 0xA00E2 };
+    void *data;
+    s16 anim;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_80108FE0_game_guys_sweet_surprise);
+    D_8010D004_game_guys_sweet_surprise = object->model[0] = func_8000B108_main(files[0], 0x2A9);
+    object->model[1] = func_8000B108_main(files[1], 0x2A9);
+    omSetTra(object, -210.0f, 0.0f, -50.0f);
+    omSetRot(object, 0.0f, 90.0f, 0.0f);
+    omSetSca(object, 0.6f, 0.6f, 0.6f);
+    Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
+    Hu3DModelRotSet(object->model[1], 0.0f, 0.0f, 0.0f);
+    Hu3DModelScaleSet(object->model[1], 2.0f, 1.0f, 2.0f);
+    for (i = 0; i < 4; i++) {
+        func_8000B460_main(object, i, motions[i]);
+    }
+    D_8010CFF2_game_guys_sweet_surprise = 0;
+    data = DataRead(0xA00E5);
+    anim = Hu3DAnimCreate(Hu3DData[object->model[0]].hmf, data, 0, "c165n_4_DEF");
+    DataClose(data);
+    Hu3DModelRemakeStatic(object->model[0]);
+    Hu3DAnimBankSet(anim, 0);
+    func_80032FC0_main(anim, 1, 0);
+    for (i = 0; i < 4; i++) {
+        object->model[i + 2] = func_8000B108_main(files[2], attr);
+        Hu3DModelRotSet(object->model[i + 2], 0.0f, 0.0f, 0.0f);
+        Hu3DModelScaleSet(object->model[i + 2], 0.5f, 0.5f, 0.5f);
+    }
+    Hu3DModelPosSet(object->model[2], -350.0f, 0.0f, -150.0f);
+    Hu3DModelPosSet(object->model[3], -320.0f, 0.0f, -149.0f);
+    Hu3DModelPosSet(object->model[4], -290.0f, 0.0f, -148.0f);
+    Hu3DModelPosSet(object->model[5], -290.0f, 0.0f, -147.0f);
+    object->func = func_801092F0_game_guys_sweet_surprise;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_801092F0_game_guys_sweet_surprise);
+void func_801092F0_game_guys_sweet_surprise(omObjData *object) {
+    f32 delta;
+    f32 angle;
+    f32 amplitude;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_80109AA8_game_guys_sweet_surprise);
+    if (D_8010CC1C_game_guys_sweet_surprise != D_8010CFF2_game_guys_sweet_surprise) {
+        switch (D_8010CFF2_game_guys_sweet_surprise) {
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+                Hu3DMotionShiftSet(object->model[0],
+                                   Hu3DData[object->motion[D_8010CFF2_game_guys_sweet_surprise]].motId, 0, 30, 2);
+                break;
+        }
+        D_8010CC1C_game_guys_sweet_surprise = D_8010CFF2_game_guys_sweet_surprise;
+    }
+    if (D_8010CFF4_game_guys_sweet_surprise == 0) {
+        if (D_8010CFF2_game_guys_sweet_surprise == 2 || D_8010CFF2_game_guys_sweet_surprise == 3) {
+            if (object->trans.x < -190.0f) {
+                object->trans.x += 5.0f;
+            } else {
+                D_8010CC2C_game_guys_sweet_surprise += D_8010CC28_game_guys_sweet_surprise;
+                if (D_8010CC2C_game_guys_sweet_surprise <= -20.0f || D_8010CC2C_game_guys_sweet_surprise >= 20.0f) {
+                    D_8010CC28_game_guys_sweet_surprise = -D_8010CC28_game_guys_sweet_surprise;
+                }
+                object->rot.y = D_8010CC2C_game_guys_sweet_surprise + 90.0f;
+                if (D_8010CC2C_game_guys_sweet_surprise > 0.0f) {
+                    object->trans.x = D_8010CC2C_game_guys_sweet_surprise / 2.0f + -190.0f;
+                } else {
+                    object->trans.x = -190.0f - D_8010CC2C_game_guys_sweet_surprise / 2.0f;
+                }
+            }
+        }
+        if (D_8010CFF2_game_guys_sweet_surprise == 2) {
+            if (Hu3DData[object->model[0]].motTime == 4.0f) {
+                HuAudFXPlay(0x53A);
+            }
+        } else if (D_8010CFF2_game_guys_sweet_surprise == 3) {
+            if (Hu3DData[object->model[0]].motTime == 8.0f) {
+                HuAudFXPlay(0x53A);
+            }
+        }
+    }
+    D_8010CC20_game_guys_sweet_surprise = 2.0f - object->trans.y * 0.002f;
+    Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
+    Hu3DModelScaleSet(object->model[1], D_8010CC20_game_guys_sweet_surprise, D_8010CC20_game_guys_sweet_surprise,
+                      D_8010CC20_game_guys_sweet_surprise);
+    delta = (object->trans.x - 90.0f - Hu3DData[object->model[2]].pos.x) / 3.0f;
+    Hu3DData[object->model[3]].pos.x = delta + Hu3DData[object->model[2]].pos.x;
+    Hu3DData[object->model[4]].pos.x = delta + Hu3DData[object->model[3]].pos.x;
+    Hu3DData[object->model[5]].pos.x = delta + Hu3DData[object->model[4]].pos.x;
+    if (D_8010CC1A_game_guys_sweet_surprise >= 4) {
+        D_8010CC18_game_guys_sweet_surprise = -1;
+    } else if (D_8010CC1A_game_guys_sweet_surprise < -3) {
+        D_8010CC18_game_guys_sweet_surprise = 1;
+    }
+    D_8010CC1A_game_guys_sweet_surprise += D_8010CC18_game_guys_sweet_surprise;
+    amplitude = 10.0f;
+    angle = delta * 3.0f * 0.45f;
+    Hu3DData[object->model[3]].pos.y = sindf(sindf(angle) * 30.0f) * amplitude + D_8010CC1A_game_guys_sweet_surprise;
+    Hu3DData[object->model[4]].pos.y = sindf(sindf(angle) * 60.0f) * 20.0f - D_8010CC1A_game_guys_sweet_surprise;
+    Hu3DData[object->model[5]].pos.y = sindf(sindf(angle) * 90.0f) * 30.0f + D_8010CC1A_game_guys_sweet_surprise;
+    if (D_8010CFF4_game_guys_sweet_surprise == 1) {
+        switch (D_8010CC24_game_guys_sweet_surprise) {
+            case 0:
+                D_8010CC26_game_guys_sweet_surprise = 0;
+                D_8010CC30_game_guys_sweet_surprise = object->trans.x;
+                D_8010CC24_game_guys_sweet_surprise++;
+                break;
+            case 1:
+                object->trans.x = sindf(D_8010CC26_game_guys_sweet_surprise++ * 4.5f) * 100.0f +
+                                  D_8010CC30_game_guys_sweet_surprise;
+                if (D_8010CC26_game_guys_sweet_surprise >= 21) {
+                    D_8010CC26_game_guys_sweet_surprise = 0;
+                    D_8010CC24_game_guys_sweet_surprise++;
+                }
+                break;
+            case 2:
+                object->rot.y = 90.0f - sindf(D_8010CC26_game_guys_sweet_surprise++ * 9.0f) * 90.0f;
+                if (object->rot.y <= 0.0f || D_8010CC26_game_guys_sweet_surprise >= 11) {
+                    D_8010CC24_game_guys_sweet_surprise++;
+                }
+                break;
+            case 3:
+                HuAudFXPlay(0x53E);
+                D_8010CFF2_game_guys_sweet_surprise = 2;
+                D_8010CC24_game_guys_sweet_surprise++;
+                break;
+        }
+    }
+    if (D_8010CFF4_game_guys_sweet_surprise == 3) {
+        if (object->rot.y == 90.0f) {
+            D_8010CFF4_game_guys_sweet_surprise = 0;
+        } else if (object->rot.y > 90.0f) {
+            object->rot.y -= 1.0f;
+            if (object->rot.y <= 90.0f) {
+                object->rot.y = 90.0f;
+                D_8010CFF4_game_guys_sweet_surprise = 0;
+            }
+        } else if (object->rot.y < 90.0f) {
+            object->rot.y += 1.0f;
+            if (object->rot.y >= 90.0f) {
+                object->rot.y = 90.0f;
+                D_8010CFF4_game_guys_sweet_surprise = 0;
+            }
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_80109DE4_game_guys_sweet_surprise);
+void func_80109AA8_game_guys_sweet_surprise(omObjData *object) {
+    s16 i = 0; // initialized early to match register allocation
+    s32 attr = 0x2A9;
+    s32 files[4] = { 0xA00D9, 9, 0xA00E4, 0 };
+    s32 motions[4] = { 0xA00DA, 0xA00DE, 0xA00E1, 0xA00E2 };
+    void *data;
+    s16 anim;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_8010A604_game_guys_sweet_surprise);
+    object->model[0] = Hu3DModelLink(D_8010D004_game_guys_sweet_surprise);
+    object->model[1] = func_8000B108_main(files[1], 0x2A9);
+    omSetTra(object, 195.0f, 0.0f, -100.0f);
+    omSetRot(object, 0.0f, 270.0f, 0.0f);
+    omSetSca(object, 0.3f, 0.3f, 0.3f);
+    Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
+    Hu3DModelRotSet(object->model[1], 0.0f, 0.0f, 0.0f);
+    Hu3DModelScaleSet(object->model[1], 1.0f, 1.0f, 1.0f);
+    for (i = 0; i < 4; i++) {
+        func_8000B460_main(object, i, motions[i]);
+    }
+    D_8010CFF6_game_guys_sweet_surprise = 0;
+    data = DataRead(0xA00E5);
+    anim = Hu3DAnimCreate(Hu3DData[object->model[0]].hmf, data, 0, "c165n_4_DEF");
+    DataClose(data);
+    Hu3DModelRemakeStatic(object->model[0]);
+    Hu3DAnimBankSet(anim, 0);
+    func_80032FC0_main(anim, 1, 0);
+    for (i = 0; i < 4; i++) {
+        object->model[i + 2] = func_8000B108_main(files[2], attr);
+    }
+    for (i = 0; i < 4; i++) {
+        Hu3DModelRotSet(object->model[i + 2], 0.0f, 0.0f, 0.0f);
+        Hu3DModelScaleSet(object->model[i + 2], 0.3f, 0.3f, 0.3f);
+    }
+    Hu3DModelPosSet(object->model[2], 350.0f, 0.0f, -150.0f);
+    Hu3DModelPosSet(object->model[3], 320.0f, 0.0f, -150.0f);
+    Hu3DModelPosSet(object->model[4], 290.0f, 0.0f, -150.0f);
+    Hu3DModelPosSet(object->model[5], 280.0f, 70.0f, -150.0f);
+    object->func = func_80109DE4_game_guys_sweet_surprise;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_8010A784_game_guys_sweet_surprise);
+void func_80109DE4_game_guys_sweet_surprise(omObjData *object) {
+    if (D_8010CC40_game_guys_sweet_surprise != D_8010CFF6_game_guys_sweet_surprise) {
+        switch (D_8010CFF6_game_guys_sweet_surprise) {
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+                Hu3DMotionShiftSet(object->model[0],
+                                   Hu3DData[object->motion[D_8010CFF6_game_guys_sweet_surprise]].motId, 0, 30, 2);
+                break;
+        }
+        D_8010CC40_game_guys_sweet_surprise = D_8010CFF6_game_guys_sweet_surprise;
+    }
+    if (D_8010CFF8_game_guys_sweet_surprise == 0) {
+        if (D_8010CFF6_game_guys_sweet_surprise == 2 || D_8010CFF6_game_guys_sweet_surprise == 3) {
+            if (object->trans.x > 175.0f) {
+                object->trans.x -= 5.0f;
+            } else {
+                D_8010CC50_game_guys_sweet_surprise += D_8010CC4C_game_guys_sweet_surprise;
+                if (D_8010CC50_game_guys_sweet_surprise <= -20.0f || D_8010CC50_game_guys_sweet_surprise >= 20.0f) {
+                    D_8010CC4C_game_guys_sweet_surprise = -D_8010CC4C_game_guys_sweet_surprise;
+                }
+                object->rot.y = D_8010CC50_game_guys_sweet_surprise + 270.0f;
+                if (D_8010CC50_game_guys_sweet_surprise > 0.0f) {
+                    object->trans.x = 175.0f - D_8010CC50_game_guys_sweet_surprise / 2.0f;
+                } else {
+                    object->trans.x = D_8010CC50_game_guys_sweet_surprise / 2.0f + 175.0f;
+                }
+            }
+        }
+        if (D_8010CFF6_game_guys_sweet_surprise == 2) {
+            if (Hu3DData[object->model[0]].motTime == 4.0f) {
+                HuAudFXPlay(0x53B);
+            }
+        } else if (D_8010CFF6_game_guys_sweet_surprise == 3) {
+            if (Hu3DData[object->model[0]].motTime == 8.0f) {
+                HuAudFXPlay(0x53B);
+            }
+        }
+    }
+    D_8010CC44_game_guys_sweet_surprise = 1.0f - object->trans.y * 0.001f;
+    Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
+    Hu3DModelScaleSet(object->model[1], D_8010CC44_game_guys_sweet_surprise, D_8010CC44_game_guys_sweet_surprise,
+                      D_8010CC44_game_guys_sweet_surprise);
+    D_8010CC38_game_guys_sweet_surprise = (object->trans.x + 60.0f - Hu3DData[object->model[2]].pos.x) / 3.0f;
+    Hu3DData[object->model[3]].pos.x = Hu3DData[object->model[2]].pos.x + D_8010CC38_game_guys_sweet_surprise;
+    Hu3DData[object->model[4]].pos.x = Hu3DData[object->model[3]].pos.x + D_8010CC38_game_guys_sweet_surprise;
+    Hu3DData[object->model[5]].pos.x = Hu3DData[object->model[4]].pos.x + D_8010CC38_game_guys_sweet_surprise;
+    if (D_8010CC36_game_guys_sweet_surprise >= 2) {
+        D_8010CC34_game_guys_sweet_surprise = -1;
+    } else if (D_8010CC36_game_guys_sweet_surprise < -1) {
+        D_8010CC34_game_guys_sweet_surprise = 1;
+    }
+    D_8010CC36_game_guys_sweet_surprise += D_8010CC34_game_guys_sweet_surprise;
+    D_8010CC3C_game_guys_sweet_surprise = 20.0f / 3.0f;
+    Hu3DData[object->model[3]].pos.y =
+        sindf(sindf(D_8010CC38_game_guys_sweet_surprise * 3.0f * -0.225f) * 30.0f) * D_8010CC3C_game_guys_sweet_surprise +
+        D_8010CC36_game_guys_sweet_surprise;
+    Hu3DData[object->model[4]].pos.y =
+        D_8010CC3C_game_guys_sweet_surprise * 2.0f *
+            sindf(sindf(D_8010CC38_game_guys_sweet_surprise * 3.0f * -0.225f) * 60.0f) -
+        D_8010CC36_game_guys_sweet_surprise;
+    Hu3DData[object->model[5]].pos.y =
+        D_8010CC3C_game_guys_sweet_surprise * 3.0f *
+            sindf(sindf(D_8010CC38_game_guys_sweet_surprise * 3.0f * -0.225f) * 90.0f) +
+        D_8010CC36_game_guys_sweet_surprise;
+    if (D_8010CFF8_game_guys_sweet_surprise == 1) {
+        switch (D_8010CC48_game_guys_sweet_surprise) {
+            case 0:
+                D_8010CC4A_game_guys_sweet_surprise = 0;
+                D_8010CC54_game_guys_sweet_surprise = object->trans.x;
+                D_8010CC48_game_guys_sweet_surprise++;
+                break;
+            case 1:
+                object->trans.x = D_8010CC54_game_guys_sweet_surprise -
+                                  sindf(D_8010CC4A_game_guys_sweet_surprise++ * 4.5f) * 100.0f;
+                if (D_8010CC4A_game_guys_sweet_surprise >= 21) {
+                    D_8010CC4A_game_guys_sweet_surprise = 0;
+                    D_8010CC48_game_guys_sweet_surprise++;
+                }
+                break;
+            case 2:
+                object->rot.y = sindf(D_8010CC4A_game_guys_sweet_surprise++ * 9.0f) * 90.0f + 270.0f;
+                if (object->rot.y >= 360.0f || D_8010CC4A_game_guys_sweet_surprise >= 11) {
+                    D_8010CC48_game_guys_sweet_surprise++;
+                }
+                break;
+            case 3:
+                HuAudFXPlay(0x53F);
+                D_8010CFF6_game_guys_sweet_surprise = 2;
+                D_8010CC48_game_guys_sweet_surprise++;
+                break;
+        }
+    }
+    if (D_8010CFF8_game_guys_sweet_surprise == 3) {
+        if (object->rot.y == 270.0f) {
+            D_8010CFF8_game_guys_sweet_surprise = 0;
+        } else if (object->rot.y > 270.0f) {
+            object->rot.y -= 1.0f;
+            if (object->rot.y <= 270.0f) {
+                object->rot.y = 270.0f;
+                D_8010CFF8_game_guys_sweet_surprise = 0;
+            }
+        } else if (object->rot.y < 270.0f) {
+            object->rot.y += 1.0f;
+            if (object->rot.y >= 270.0f) {
+                object->rot.y = 270.0f;
+                D_8010CFF8_game_guys_sweet_surprise = 0;
+            }
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_8010A820_game_guys_sweet_surprise);
+void func_8010A604_game_guys_sweet_surprise(omObjData *object) {
+    s16 i = 0; // initialized early to match register allocation
+    s32 attr = 0x2A9;
+    s32 files[2] = { 0x66000D, 9 };
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_8010AA94_game_guys_sweet_surprise);
+    for (i = 0; i < 2; i++) {
+        object->model[i] = func_8000B108_main(files[i], attr);
+    }
+    omSetTra(object, 125.0f, 200.0f, -430.0f);
+    omSetRot(object, 0.0f, 0.0f, 0.0f);
+    omSetSca(object, 0.0f, 0.0f, 0.0f);
+    Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
+    Hu3DModelRotSet(object->model[1], 0.0f, 0.0f, 0.0f);
+    Hu3DModelScaleSet(object->model[1], 1.0f, 1.0f, 1.0f);
+    omAddObj(0x64, 0xA, 0xA, -1, func_8010A784_game_guys_sweet_surprise);
+    Hu3DModelCameraSet(object->model[0], 0);
+    Hu3DModelCameraSet(object->model[1], 0);
+    D_8010CFFA_game_guys_sweet_surprise = 0;
+    object->func = func_8010A820_game_guys_sweet_surprise;
+}
+
+void func_8010A784_game_guys_sweet_surprise(omObjData *object) {
+    object->model[0] = func_8000B108_main(0xB0006, 0x2A9);
+    omSetTra(object, 125.0f, 125.0f, -400.0f);
+    omSetRot(object, 0.0f, 0.0f, 0.0f);
+    omSetSca(object, 2.0f, 2.0f, 2.0f);
+    func_8000B460_main(object, 0, 0xB0006);
+    object->func = func_8010AA94_game_guys_sweet_surprise;
+    D_8010CFFC_game_guys_sweet_surprise = 0;
+}
+
+void func_8010A820_game_guys_sweet_surprise(omObjData *object) {
+    f32 shadowScale;
+
+    if (D_8010CFFA_game_guys_sweet_surprise == 1) {
+        D_8010CC5C_game_guys_sweet_surprise = 1.5f;
+        object->scale.x = object->scale.y = object->scale.z = D_8010CC5C_game_guys_sweet_surprise;
+        D_8010CC5A_game_guys_sweet_surprise = 0;
+        D_8010CFFA_game_guys_sweet_surprise = 0;
+    }
+    if (D_8010CFF0_game_guys_sweet_surprise == 1) {
+        switch (D_8010CC58_game_guys_sweet_surprise) {
+            case 0:
+                HuAudFXPlay(0x53D);
+                object->scale.x = object->scale.y = object->scale.z = 0.0f;
+                Hu3DModelCameraSet(object->model[0], 1);
+                Hu3DModelCameraSet(object->model[1], 1);
+                D_8010CC58_game_guys_sweet_surprise++;
+                break;
+            case 1:
+                if (object->scale.x < 2.0f) {
+                    object->scale.x = object->scale.y = object->scale.z = object->scale.z + 1.0f;
+                } else {
+                    D_8010CC58_game_guys_sweet_surprise++;
+                }
+                break;
+            case 2:
+                if (object->scale.x > 1.0f) {
+                    object->scale.x = object->scale.y = object->scale.z = object->scale.z - 0.5f;
+                } else {
+                    object->scale.x = object->scale.y = object->scale.z = 1.0f;
+                    D_8010CC58_game_guys_sweet_surprise++;
+                }
+                break;
+        }
+    } else if (D_8010CC5C_game_guys_sweet_surprise > 1.0f) {
+        if ((D_8010CC5A_game_guys_sweet_surprise++ & 1) == 0) {
+            object->scale.x = object->scale.y = object->scale.z = 1.0f;
+        } else {
+            D_8010CC5C_game_guys_sweet_surprise -= 0.05f;
+            object->scale.x = object->scale.y = object->scale.z = D_8010CC5C_game_guys_sweet_surprise;
+        }
+    } else {
+        D_8010CC5C_game_guys_sweet_surprise = 1.0f;
+        object->scale.x = object->scale.y = object->scale.z = D_8010CC5C_game_guys_sweet_surprise;
+    }
+    shadowScale = 1.0f - object->trans.y * 0.001f;
+    Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
+    Hu3DModelScaleSet(object->model[1], shadowScale, shadowScale, shadowScale);
+}
+
+void func_8010AA94_game_guys_sweet_surprise(omObjData *object) {
+    if (D_8010CFFC_game_guys_sweet_surprise == 1) {
+        func_8001C5B4_main(object->model[0], object->motion[0]);
+        D_8010CFFC_game_guys_sweet_surprise = 0;
+    }
+}
 
 void func_8010AAD8_game_guys_sweet_surprise(omObjData *object) {
     omAddObj(0xC8, 0xA, 0xA, -1, func_8010AB3C_game_guys_sweet_surprise);
@@ -1151,9 +1635,25 @@ void func_8010AAD8_game_guys_sweet_surprise(omObjData *object) {
     object->func = NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_8010AB3C_game_guys_sweet_surprise);
+void func_8010AB3C_game_guys_sweet_surprise(omObjData *object) {
+    object->model[0] = func_8000B108_main(0x66000E, 0x2A9);
+    omSetTra(object, -80.0f, 0.0f, -400.0f);
+    omSetRot(object, 0.0f, 0.0f, 0.0f);
+    omSetSca(object, 2.0f, 2.0f, 2.0f);
+    func_8000B460_main(object, 0, 0x66000E);
+    object->func = func_8010AC74_game_guys_sweet_surprise;
+    D_8010CFEA_game_guys_sweet_surprise = 0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_8010ABD8_game_guys_sweet_surprise);
+void func_8010ABD8_game_guys_sweet_surprise(omObjData *object) {
+    object->model[0] = func_8000B108_main(0x66000E, 0x2A9);
+    omSetTra(object, 80.0f, 0.0f, -400.0f);
+    omSetRot(object, 0.0f, 0.0f, 0.0f);
+    omSetSca(object, 2.0f, 2.0f, 2.0f);
+    func_8000B460_main(object, 0, 0x66000E);
+    object->func = func_8010AD04_game_guys_sweet_surprise;
+    D_8010CFE8_game_guys_sweet_surprise = 0;
+}
 
 void func_8010AC74_game_guys_sweet_surprise(omObjData *object) {
     if (D_8010CFEA_game_guys_sweet_surprise == 1) {
@@ -1225,7 +1725,29 @@ void func_8010AEB8_game_guys_sweet_surprise(s16 win, s16 player, s16 mode) {
     HuWinComKeyReset();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", func_8010B004_game_guys_sweet_surprise);
+s16 func_8010B004_game_guys_sweet_surprise(s16 win, s16 player, s16 mode, s16 count) {
+    s16 keys[4] = { 0, 0, 0, 0 };
+    s16 players[4] = { 1, 2, 4, 8 };
+    s16 i;
+
+    switch (mode) {
+        case 0:
+            keys[player] = -1;
+            func_8005B63C_main(win, HUWIN_ATTR_COMKEY, HUWIN_ATTR_NONE);
+            HuWinActivePlayerSet(win, players[player]);
+            HuWinComKeySet(keys[0], keys[1], keys[2], keys[3]);
+            break;
+        case 1:
+            for (i = 0; i < count; i++) {
+                HuWinComKeyWait(0x400, 0x400, 0x400, 0x400,
+                                D_8010CB70_game_guys_sweet_surprise[D_8010D002_game_guys_sweet_surprise]);
+            }
+            HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000,
+                            D_8010CB70_game_guys_sweet_surprise[D_8010D002_game_guys_sweet_surprise]);
+            break;
+    }
+    return HuWinChoiceGet(win, 0, 1);
+}
 
 void func_8010B1B4_game_guys_sweet_surprise(s16 win) {
     HuWinHomeClear(win);
@@ -1243,15 +1765,3 @@ Vec2f func_8010B1F4_game_guys_sweet_surprise(f32 x, f32 y, f32 z) {
     Hu3D3Dto2D(0, &pos, &screenPos);
     return screenPos;
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", D_8010CDEC_game_guys_sweet_surprise);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", D_8010CDF8_game_guys_sweet_surprise);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", D_8010CE08_game_guys_sweet_surprise);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", D_8010CE14_game_guys_sweet_surprise);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", D_8010CE24_game_guys_sweet_surprise);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_45_game_guys_sweet_surprise/30F940", D_8010CE2C_game_guys_sweet_surprise);

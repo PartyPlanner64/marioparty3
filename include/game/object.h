@@ -45,6 +45,13 @@ typedef struct om_obj_data {
 } omObjData;
 
 typedef struct {
+    /* 0x00 */ s16 chr;
+    /* 0x04 */ s32 model;
+    /* 0x08 */ s32 motion[3];
+    /* 0x14 */ f32 scale;
+} omCharModelData; // Size 0x18
+
+typedef struct {
     u16 next_idx;
     u16 max_objs;
     u16 num_objs;
@@ -118,6 +125,7 @@ extern Vec CRot;
 extern Vec CenterM[];
 extern Vec Center;
 extern Vec CRotM[];
+extern omCharModelData D_800A1788_main[];
 #endif
 
 void omSetObjPrio(omObjData *obj, s16 prio);

@@ -43,13 +43,6 @@ typedef union PauseObjWork {
     u16 halfwords[8];
 } PauseObjWork;
 
-typedef struct {
-    /* 0x00 */ s16 chr;
-    /* 0x04 */ s32 model;
-    /* 0x08 */ s32 motion[3];
-    /* 0x14 */ f32 scale;
-} omCharModelData; // Size 0x18
-
 static u8 D_800A16B0_main[][2] = {
     { 4, 20 }, { 4, 20 }, { 4, 20 }, { 1, 20 }, { 1, 20 }, { 4, 20 },
     { 1, 20 }, { 1, 20 }, { 1, 20 }, { 1, 20 }, { 1, 20 }, { 1, 20 },

@@ -194,7 +194,15 @@ void func_80105E94_parasol_plummet(void) {
     }
 }
 
+INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010A908_parasol_plummet);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010A928_parasol_plummet);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010A948_parasol_plummet);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", func_80105EC0_parasol_plummet);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010AA8C_parasol_plummet);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", func_80106418_parasol_plummet);
 
@@ -399,6 +407,10 @@ void func_80106E14_parasol_plummet(omObjData *object) {
         }
     }
 }
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010AAB0_parasol_plummet);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010AAC0_parasol_plummet);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", func_801071B4_parasol_plummet);
 
@@ -905,6 +917,10 @@ void func_80108878_parasol_plummet(omObjData *object) {
     }
 }
 
+INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010AAE0_parasol_plummet);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010AAEC_parasol_plummet);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", func_801089E0_parasol_plummet);
 
 void func_80108C1C_parasol_plummet(omObjData *object) {
@@ -1239,6 +1255,12 @@ void func_8010995C_parasol_plummet(s32 index) {
     item->velY = rand8() % 3 + 45;
 }
 
+INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010AAF8_parasol_plummet);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010AB04_parasol_plummet);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010AB08_parasol_plummet);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", func_80109B38_parasol_plummet);
 
 void func_80109D74_parasol_plummet(omObjData *object) {
@@ -1345,7 +1367,15 @@ s16 func_80109F7C_parasol_plummet(omObjData *object, s32 isItem) {
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", func_80109F7C_parasol_plummet);
 #endif
 
+INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010AB14_parasol_plummet);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010AB1C_parasol_plummet);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010AB24_parasol_plummet);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", func_8010A160_parasol_plummet);
+
+INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010AB44_parasol_plummet);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", func_8010A484_parasol_plummet);
 

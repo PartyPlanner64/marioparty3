@@ -96,7 +96,7 @@ extern D_80111B50_vine_with_me_Struct D_8010A8A0_parasol_plummet;
 extern s32 D_8010AB50_parasol_plummet;
 extern u8 D_8010AB54_parasol_plummet;
 extern omObjData *D_8010AB60_parasol_plummet[4];
-extern s16 D_8010ABD0_parasol_plummet;
+extern u16 D_8010ABD0_parasol_plummet;
 extern f32 D_8010AC50_parasol_plummet[4];
 extern s16 D_8010AC64_parasol_plummet;
 extern omObjData *D_8010ABCC_parasol_plummet;
@@ -110,21 +110,44 @@ extern f32 D_8010AB58_parasol_plummet;
 extern s32 D_8010AC60_parasol_plummet;
 extern s16 D_8010ABD8_parasol_plummet[60];
 extern f32 D_8010AC70_parasol_plummet;
+extern u8 D_8010AC74_parasol_plummet;
 extern u8 D_8010AC75_parasol_plummet[5];
 extern omObjData *D_8010AC80_parasol_plummet[5];
 extern f32 D_8010AC94_parasol_plummet;
 extern f32 D_8010AC98_parasol_plummet;
 extern s32 D_8010AC9C_parasol_plummet;
+extern s16 D_8010ACA0_parasol_plummet[3];
+extern s16 D_8010ACA8_parasol_plummet[12];
+extern s16 D_8010ACC0_parasol_plummet;
+extern s16 D_8010ACC2_parasol_plummet[4];
+extern s16 D_8010ACCA_parasol_plummet[4];
+extern s16 D_8010ACD2_parasol_plummet;
+extern s16 D_8010ACD4_parasol_plummet[4];
+extern s16 D_8010ACDC_parasol_plummet;
+extern s16 D_8010ACDE_parasol_plummet[4];
+extern s32 D_8010A8C8_parasol_plummet[];
 
 void func_80105B94_parasol_plummet(omObjData *object);
+void func_80105E94_parasol_plummet(omObjData *object);
 void func_80105EC0_parasol_plummet(s32 playerIndex);
+void func_80106418_parasol_plummet(omObjData *object);
 void func_80106788_parasol_plummet(omObjData *object);
 void func_8010687C_parasol_plummet(omObjData *object);
+void func_801069E4_parasol_plummet(omObjData *object);
+void func_80106AB4_parasol_plummet(omObjData *object);
+void func_80106CDC_parasol_plummet(omObjData *object);
+void func_80106DB0_parasol_plummet(omObjData *object);
+void func_80106E14_parasol_plummet(omObjData *object);
+void func_801071B4_parasol_plummet(omObjData *object);
 s32 func_801074CC_parasol_plummet(omObjData *object);
 u16 func_801076D4_parasol_plummet(omObjData *object);
 f32 func_801079D8_parasol_plummet(omObjData *arg0, s32 arg1);
+void func_80107A44_parasol_plummet(omObjData *object);
 void func_80107B5C_parasol_plummet(omObjData *object);
+void func_80107B78_parasol_plummet(omObjData *object);
 void func_80107C30_parasol_plummet(omObjData *object);
+void func_80107C94_parasol_plummet(omObjData *object);
+void func_80107CD4_parasol_plummet(omObjData *object);
 void func_80107D14_parasol_plummet(omObjData *object);
 void func_80107D30_parasol_plummet(void);
 void func_80107E6C_parasol_plummet(omObjData *object);
@@ -136,6 +159,8 @@ void func_8010856C_parasol_plummet(void);
 void func_801086F0_parasol_plummet(s32 index);
 void func_80108878_parasol_plummet(omObjData *object);
 void func_801089E0_parasol_plummet(omObjData *object);
+void func_80108C1C_parasol_plummet(omObjData *object);
+void func_80108DD0_parasol_plummet(void);
 void func_80108F6C_parasol_plummet(void);
 void func_80108FFC_parasol_plummet(void);
 void func_801090A8_parasol_plummet(s32 index);
@@ -148,6 +173,7 @@ void func_80109B38_parasol_plummet(s32 index);
 void func_80109D74_parasol_plummet(omObjData *object);
 s16 func_80109F7C_parasol_plummet(omObjData *object, s32 isItem);
 void func_8010A160_parasol_plummet(void);
+void func_8010A484_parasol_plummet(void);
 void func_8010A75C_parasol_plummet(f32 zoom, f32 rotX, f32 rotY, f32 rotZ, f32 centerX, f32 centerY, f32 centerZ);
 
 void func_801059A0_parasol_plummet(void) {
@@ -186,25 +212,274 @@ void func_801059A0_parasol_plummet(void) {
     D_8010AC64_parasol_plummet = func_8000D658_main(0x2A9, 4);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", func_80105B94_parasol_plummet);
+void func_80105B94_parasol_plummet(omObjData *object) {
+    ParasolPlummetWork *work;
+    s32 lane[4];
+    f32 x[4];
+    s32 i;
+    s32 j;
+    f32 tempX;
+    s32 tempLane;
 
-void func_80105E94_parasol_plummet(void) {
+    if (D_800D530C_main != 0) {
+        HuAudFXAllStop();
+        HuAudSeqFadeOut(30);
+        WipeCreateOut(0, 20);
+    }
+    switch (D_8010AC66_parasol_plummet = func_800E6F40_minigame(object)) {
+        case 0:
+            if (func_800E6E9C_minigame() == 20) {
+                HuAudFXPlay(0x3E5);
+            }
+            if (func_800E6E9C_minigame() == 150) {
+                HuAudSeqPlay(0x33);
+            }
+            break;
+        case 1:
+            break;
+        case 2:
+            if (D_8010ABD0_parasol_plummet == 0) {
+                for (i = 0; i < 4; i++) {
+                    work = OM_GET_DATA_PTR(D_8010AB60_parasol_plummet[i], ParasolPlummetWork);
+                    if (!(work->flags & FLAG_IDLE)) {
+                        work->flags |= FLAG_IDLE;
+                    }
+                }
+                D_8010ABD0_parasol_plummet++;
+            }
+            break;
+        case 3:
+            work = OM_GET_DATA_PTR(D_8010AB60_parasol_plummet[0], ParasolPlummetWork);
+            if (!(work->flags & 0x40)) {
+                for (i = 0; i < 4; i++) {
+                    work = OM_GET_DATA_PTR(D_8010AB60_parasol_plummet[i], ParasolPlummetWork);
+                    x[i] = work->coords.x;
+                    lane[i] = i;
+                }
+                for (i = 0; i < 4; i++) {
+                    for (j = 0; j < 4; j++) {
+                        if (x[i] < x[j]) {
+                            tempX = x[i];
+                            x[i] = x[j];
+                            x[j] = tempX;
+                            tempLane = lane[i];
+                            lane[i] = lane[j];
+                            lane[j] = tempLane;
+                        }
+                    }
+                }
+                for (i = 0; i < 4; i++) {
+                    work = OM_GET_DATA_PTR(D_8010AB60_parasol_plummet[i], ParasolPlummetWork);
+                    work->lane = lane[i];
+                }
+            }
+            for (i = 0; i < 4; i++) {
+                work = OM_GET_DATA_PTR(D_8010AB60_parasol_plummet[i], ParasolPlummetWork);
+                if (!(work->flags & 0x40)) {
+                    func_80107C30_parasol_plummet(D_8010AB60_parasol_plummet[i]);
+                    func_80107D14_parasol_plummet(D_8010AB60_parasol_plummet[i]);
+                    func_80107D14_parasol_plummet(D_8010AB60_parasol_plummet[i]);
+                    work->flags = (work->flags | 0x40) & ~FLAG_IDLE;
+                    func_8010687C_parasol_plummet(D_8010AB60_parasol_plummet[i]);
+                }
+            }
+            D_8010A8A0_parasol_plummet.unk06 = 9;
+            if (func_800E6E9C_minigame() == 135) {
+                HuAudSeqPlay(0x66);
+            }
+            break;
+        case 4:
+            break;
+        case 5:
+            WipeCreateOut(0, 20);
+            object->func = func_80105E94_parasol_plummet;
+            break;
+    }
+}
+
+void func_80105E94_parasol_plummet(omObjData *object) {
     if (WipeStatGet() == 0) {
         omOvlReturnEx(1);
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010A908_parasol_plummet);
+void func_80105EC0_parasol_plummet(s32 playerIndex) {
+    s32 unusedModelIds[8] = { 0xA2, 0xA2, 0xA2, 0xA2, 0xA2, 0xA2, 0xA2, 3 };
+    s32 modelIds[8] = { 0xA1, 0xA1, 0xA1, 0xA1, 0xA1, 0xA1, 0xA1, 1 };
+    s32 motionIds[8][7] = {
+        { 0x00, 0x44, 0x45, 0x04, 0x46, 0x2F, 0x36 },
+        { 0x00, 0x44, 0x45, 0x04, 0x46, 0x2F, 0x36 },
+        { 0x00, 0x44, 0x45, 0x04, 0x46, 0x2F, 0x36 },
+        { 0x00, 0x44, 0x45, 0x04, 0x46, 0x2F, 0x36 },
+        { 0x00, 0x44, 0x45, 0x04, 0x46, 0x2F, 0x36 },
+        { 0x00, 0x44, 0x45, 0x04, 0x46, 0x2F, 0x36 },
+        { 0x00, 0x44, 0x45, 0x04, 0x46, 0x2F, 0x36 },
+        { 0x00, 0x44, 0x45, 0x04, 0x46, 0x2F, 0x36 },
+    };
+    omObjData *object;
+    ParasolPlummetWork *work;
+    s16 chr;
+    s32 group;
+    s32 modelId;
+    s32 lane;
+    s32 i;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010A928_parasol_plummet);
+    object = omAddObj(0x50, 5, 10, -1, func_80106418_parasol_plummet);
+    object->data = HuMemAllocTag(sizeof(ParasolPlummetWork), 0x7918);
+    D_8010AB60_parasol_plummet[playerIndex] = object;
+    work = OM_GET_DATA_PTR(object, ParasolPlummetWork);
+    work->coords.x = 0.0f;
+    work->coords.y = 0.0f;
+    work->coords.z = 0.0f;
+    work->angle = 0.0f;
+    work->velY = 0.0f;
+    work->unk_30 = 0.0f;
+    work->unk_2C = 0.0f;
+    work->driftVelX = 0.0f;
+    work->playerIndex = playerIndex;
+    work->unk_10 = 1;
+    work->cpuTimer = 0;
+    work->blinkTimer = 0;
+    work->spinTimer = 0;
+    work->driftTimer = 0;
+    work->plummetTimer = 0;
+    work->tiltAngleLimit = 0.0f;
+    work->flags = 0x20;
+    chr = GwPlayer[playerIndex].chr;
+    group = D_8010A8C8_parasol_plummet[chr] << 16;
+    modelId = modelIds[chr];
+    while (TRUE) {
+        lane = rand8() & 3;
+        if (D_8010AC50_parasol_plummet[lane] == 0.0f) {
+            work->lane = lane;
+            D_8010AC50_parasol_plummet[lane] += 1.0f;
+            break;
+        }
+    }
+    object->model[0] = func_8000B108_main(group | modelId, 0x6D9);
+    omSetTra(object, work->coords.x, work->coords.y, work->coords.z);
+    omSetRot(object, 0.0f, 0.0f, 0.0f);
+    omSetSca(object, 1.0f, 1.0f, 1.0f);
+    for (i = 0; i < 7; i++) {
+        func_8000B460_main(object, i, func_80017BB8_main(chr, motionIds[chr][i]));
+    }
+    func_8001C5B4_main(object->model[0], object->motion[0]);
+    func_8001C814_main(object->model[0], 2, 2);
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010A948_parasol_plummet);
+    object->model[1] = func_8000B108_main(0x3D0006, 0x6C9);
+    Hu3DModelPosSet(object->model[1], work->coords.x, work->coords.y, work->coords.z);
+    Hu3DModelRotSet(object->model[1], 0.0f, 0.0f, 0.0f);
+    Hu3DModelScaleSet(object->model[1], 1.0f, 1.0f, 1.0f);
+    func_8001C258_main(object->model[1], 4, 4);
+    func_8000B460_main(object, 8, 0x3D0000);
+    func_8001C5B4_main(object->model[1], object->motion[8]);
+    func_8001C814_main(object->model[1], 2, 2);
+    func_8000B460_main(object, 9, 0x3D0001);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", func_80105EC0_parasol_plummet);
+    object->model[2] = func_8000B108_main(0x3D0007, 0x6D9);
+    Hu3DModelPosSet(object->model[2], 0.0f, 0.0f, 0.0f);
+    Hu3DModelRotSet(object->model[2], 0.0f, 0.0f, 0.0f);
+    Hu3DModelScaleSet(object->model[2], 1.0f, 1.0f, 1.0f);
+    func_8001C258_main(object->model[2], 4, 4);
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010AA8C_parasol_plummet);
+    switch (GwPlayer[playerIndex].chr) {
+        case 1:
+            func_8001E500_main(object->model[1], "ma01_DEF", "ru_DEF");
+            break;
+        case 2:
+            func_8001E500_main(object->model[1], "ma01_DEF", "pi_DEF");
+            break;
+        case 3:
+            func_8001E500_main(object->model[1], "ma01_DEF", "yo_DEF");
+            break;
+        case 4:
+            func_8001E500_main(object->model[1], "ma01_DEF", "wa_DEF");
+            break;
+        case 5:
+            func_8001E500_main(object->model[1], "ma01_DEF", "do_DEF");
+            break;
+        case 6:
+            func_8001E500_main(object->model[1], "ma01_DEF", "waru_DEF");
+            break;
+        case 7:
+            func_8001E500_main(object->model[1], "ma01_DEF", "di_DEF");
+            break;
+    }
+    Hu3DModelRemakeStatic(object->model[1]);
+    func_8001C514_main(object->model[1]);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", func_80106418_parasol_plummet);
+void func_80106418_parasol_plummet(omObjData *object) {
+    Vec2f screen;
+    Vec pos;
+    f32 laneX[4] = { -450.0f, -150.0f, 150.0f, 450.0f };
+    ParasolPlummetWork *work = OM_GET_DATA_PTR(object, ParasolPlummetWork);
+    f32 offsetX;
+    f32 offsetY;
+    s32 screenY;
+
+    offsetX = -sindf(work->angle) * 80.0f;
+    offsetY = cosdf(work->angle) * 80.0f;
+    omSetTra(object, work->coords.x - offsetX, work->coords.y - offsetY, work->coords.z);
+    omSetRot(object, 0.0f, 0.0f, work->angle);
+    Hu3DModelPosSet(object->model[1], work->coords.x - offsetX, work->coords.y - offsetY, work->coords.z);
+    Hu3DModelRotSet(object->model[1], 0.0f, 0.0f, work->angle);
+    func_80106AB4_parasol_plummet(object);
+    func_80107A44_parasol_plummet(object);
+    work->velY = 12.0f;
+    if (work->flags & 0x16) {
+        work->velY = -24.0f;
+    }
+    if (work->flags & 0x10) {
+        work->velY += work->unk_2C;
+        work->unk_2C -= 5.0f;
+        if (work->unk_2C == 0.0f) {
+            work->flags &= ~0x10;
+            work->coords.x = laneX[work->lane];
+            func_8010687C_parasol_plummet(object);
+            func_8001C258_main(object->model[1], 4, 0);
+        }
+    }
+    if ((work->flags & 0x60) == 0x40) {
+        work->velY += work->unk_30;
+        work->unk_30 -= 2.0f;
+        work->angle = 0.0f;
+    }
+    work->coords.y += work->velY;
+    pos.x = work->coords.x;
+    pos.y = work->coords.y;
+    pos.z = work->coords.z;
+    Hu3D3Dto2D(0, &pos, &screen);
+    screenY = screen.y;
+    if (screenY <= 20) {
+        func_8010687C_parasol_plummet(object);
+        func_80107C94_parasol_plummet(object);
+    }
+    if (screenY >= 240) {
+        work->coords.y -= -24.0f;
+        if (work->flags & 0x40) {
+            if (work->coords.y <= OM_GET_DATA_PTR(D_8010ABCC_parasol_plummet, ParasolPlummetGoalWork)->pos.y) {
+                work->flags |= 0x20;
+                work->flags &= ~4;
+                work->flags &= ~0x80;
+                work->flags &= ~FLAG_SPINNING;
+                work->flags &= ~FLAG_IDLE;
+                work->driftTimer = 0;
+                work->angle = 0.0f;
+                func_8001C258_main(object->model[1], 4, 4);
+            }
+        } else if (!(work->flags & FLAG_SPINNING)) {
+            func_80106788_parasol_plummet(object);
+        }
+    }
+    func_801071B4_parasol_plummet(object);
+    func_801069E4_parasol_plummet(object);
+    func_80107B78_parasol_plummet(object);
+    func_80106CDC_parasol_plummet(object);
+    func_80106E14_parasol_plummet(object);
+    func_80106DB0_parasol_plummet(object);
+    func_80107CD4_parasol_plummet(object);
+}
 
 void func_80106788_parasol_plummet(omObjData *object) {
     ParasolPlummetWork *work = OM_GET_DATA_PTR(object, ParasolPlummetWork);
@@ -271,7 +546,57 @@ void func_801069E4_parasol_plummet(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", func_80106AB4_parasol_plummet);
+void func_80106AB4_parasol_plummet(omObjData *object) {
+    Vec2f screen;
+    Vec pos;
+    ParasolPlummetWork *work = OM_GET_DATA_PTR(object, ParasolPlummetWork);
+    s16 stickX;
+    f32 speed;
+    s32 screenX;
+
+    work->tiltAngleLimit = 0.0f;
+    if (!(work->flags & FLAG_IDLE)) {
+        return;
+    }
+    if (work->flags & 4) {
+        return;
+    }
+    if (GwPlayer[work->playerIndex].stat & 1) {
+        stickX = func_801074CC_parasol_plummet(object);
+    } else {
+        stickX = D_800CBB6E_main[GwPlayer[work->playerIndex].pad];
+    }
+    speed = (fabs((f32)stickX) - 30.0) / 5.0;
+    if (stickX >= 30) {
+        work->coords.x = speed + work->coords.x;
+        work->tiltAngleLimit = -30.0f;
+        pos.x = work->coords.x;
+        pos.y = work->coords.y;
+        pos.z = work->coords.z;
+        Hu3D3Dto2D(0, &pos, &screen);
+        screenX = screen.x;
+        if (screenX >= 256) {
+            work->coords.x -= speed;
+        }
+        work->flags &= ~8;
+    }
+    if (stickX <= -30) {
+        work->coords.x -= speed;
+        work->tiltAngleLimit = 30.0f;
+        pos.x = work->coords.x;
+        pos.y = work->coords.y;
+        pos.z = work->coords.z;
+        Hu3D3Dto2D(0, &pos, &screen);
+        screenX = screen.x;
+        if (screenX <= 64) {
+            work->coords.x = speed + work->coords.x;
+        }
+        work->flags &= ~8;
+    }
+    if (abs(stickX) < 30 && !(work->flags & FLAG_SPINNING)) {
+        work->tiltAngleLimit = 0.0f;
+    }
+}
 
 void func_80106CDC_parasol_plummet(omObjData *object) {
     ParasolPlummetWork *work = OM_GET_DATA_PTR(object, ParasolPlummetWork);
@@ -408,11 +733,49 @@ void func_80106E14_parasol_plummet(omObjData *object) {
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010AAB0_parasol_plummet);
+void func_801071B4_parasol_plummet(omObjData *object) {
+    f32 startX[4] = { -260.0f, -100.0f, 100.0f, 260.0f };
+    f32 laneX[4] = { -210.0f, -70.0f, 70.0f, 210.0f };
+    s32 modelIds[8] = { 0xA1, 0xA1, 0xA1, 0xA1, 0xA1, 0xA1, 0xA1, 1 };
+    ParasolPlummetWork *work = OM_GET_DATA_PTR(object, ParasolPlummetWork);
+    ParasolPlummetGoalWork *goal = OM_GET_DATA_PTR(D_8010ABCC_parasol_plummet, ParasolPlummetGoalWork);
+    s32 group;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010AAC0_parasol_plummet);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", func_801071B4_parasol_plummet);
+    if (!(work->flags & 0x20)) {
+        return;
+    }
+    if (D_8010AC66_parasol_plummet == 0) {
+        work->coords.x = goal->pos.x + startX[work->lane];
+        work->coords.y = goal->pos.y + 300.0f;
+        work->coords.z = goal->pos.z + 200.0f;
+        if (fabs(work->coords.x) <= 500.0 && fabs(work->coords.z) <= 100.0) {
+            work->coords.z = 0.0f;
+            work->flags = (work->flags | 0x10) & ~0x20;
+            work->unk_2C = 130.0f;
+            func_8001C5B4_main(object->model[0], object->motion[3]);
+            func_8001C258_main(object->model[4], 4, 0);
+            Hu3DModelPosSet(object->model[4], object->trans.x, object->trans.y, object->trans.z);
+        }
+    } else {
+        if (work->driftTimer == 0) {
+            func_8001C5B4_main(object->model[0], object->motion[0]);
+            func_8001C814_main(object->model[0], 2, 2);
+        }
+        if (work->driftTimer == 120) {
+            group = D_8010A8C8_parasol_plummet[GwPlayer[work->playerIndex].chr] << 16;
+            if (GwPlayer[work->playerIndex].gameCoin != 0) {
+                func_8001C5B4_main(object->model[0], object->motion[5]);
+                func_80045ED0_main(group | 0x2F);
+            } else {
+                func_8001C5B4_main(object->model[0], object->motion[6]);
+            }
+        }
+        work->coords.x = goal->pos.x + laneX[work->lane];
+        work->coords.y = goal->pos.y + 300.0f;
+        work->coords.z = goal->pos.z + 200.0f;
+        work->driftTimer++;
+    }
+}
 
 s32 func_801074CC_parasol_plummet(omObjData *object) {
     s32 stickX = 0;
@@ -917,11 +1280,50 @@ void func_80108878_parasol_plummet(omObjData *object) {
     }
 }
 
+#ifdef NON_MATCHING
+// Register allocation differs: s2/s3 swapped for the loop index and &work->espId[i].
+void func_801089E0_parasol_plummet(omObjData *object) {
+    s32 spriteIndex[3] = { 0, 1, 1 };
+    s32 posX[2] = { 24, 296 };
+    s32 posY[3] = { 360, 600, 840 };
+    s32 spriteIds[2];
+    ParasolPlummetBg2Work *work;
+    s32 i;
+    s32 x;
+    s32 y;
+
+    object->data = HuMemAllocTag(sizeof(ParasolPlummetBg2Work), 0x7918);
+    work = OM_GET_DATA_PTR(object, ParasolPlummetBg2Work);
+    spriteIds[0] = func_8000B838_main(0x3D0005);
+    spriteIds[1] = func_8000B838_main(0x3D0003);
+    for (i = 0; i < 6; i++) {
+        work->espId[i] = espEntry(spriteIds[spriteIndex[i % 3]], 0, 1);
+        work->x[i] = posX[i / 3];
+        work->y[i] = posY[i % 3];
+        x = work->x[i];
+        y = work->y[i];
+        espAttrSet(work->espId[i], 0x4008);
+        if (i >= 3) {
+            espAttrSet(work->espId[i], 1);
+        }
+        espPosSet(work->espId[i], x, y);
+        espDispOn(work->espId[i]);
+        espScaleSet(work->espId[i], 1.0f, 1.0f);
+        espPriSet(work->espId[i], 30);
+    }
+    espAttrReset(work->espId[3], 0x4000);
+    D_8010AC74_parasol_plummet = 0;
+    D_8010AC70_parasol_plummet = 0.0f;
+    omAddPrcObj(func_80108DD0_parasol_plummet, 0x50, 0x2000, 0);
+    object->func = func_80108C1C_parasol_plummet;
+}
+#else
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010AAE0_parasol_plummet);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010AAEC_parasol_plummet);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", func_801089E0_parasol_plummet);
+#endif
 
 void func_80108C1C_parasol_plummet(omObjData *object) {
     ParasolPlummetBg2Work *work = OM_GET_DATA_PTR(object, ParasolPlummetBg2Work);
@@ -1255,13 +1657,34 @@ void func_8010995C_parasol_plummet(s32 index) {
     item->velY = rand8() % 3 + 45;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010AAF8_parasol_plummet);
+void func_80109B38_parasol_plummet(s32 index) {
+    f32 scales[3] = { 3.0f, 3.0f, 3.0f };
+    s8 types[3] = { 1, 2, 3 };
+    s32 files[3] = { 0x210026, 0x210027, 0x3D0004 };
+    omObjData *obj;
+    ParasolPlummetItemWork *item;
+    void *data;
+    s16 model;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010AB04_parasol_plummet);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010AB08_parasol_plummet);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", func_80109B38_parasol_plummet);
+    obj = omAddObj(11, 1, 0, -1, func_80109D74_parasol_plummet);
+    item = obj->data = HuMemAllocTag(sizeof(ParasolPlummetItemWork), 0x7918);
+    item->type = types[index / 6];
+    if (index % 6 == 0) {
+        data = DataRead(files[index / 6]);
+        model = Hu3DSprModelCreate(data, 0x6DD, 8);
+        DataClose(data);
+        D_8010ACA0_parasol_plummet[index / 6] = model;
+    } else {
+        model = func_80014618_main(D_8010ACA0_parasol_plummet[index / 6], 8);
+    }
+    obj->model[0] = D_800CBB60_main[model].modelId;
+    omSetTra(obj, 0.0f, 0.0f, 0.0f);
+    omSetRot(obj, 0.0f, 0.0f, 0.0f);
+    item->scale = scales[index / 6];
+    omSetSca(obj, item->scale, item->scale, item->scale);
+    D_8010AB70_parasol_plummet[index] = obj;
+    item->flags = 0;
+}
 
 void func_80109D74_parasol_plummet(omObjData *object) {
     ParasolPlummetItemWork *item = OM_GET_DATA_PTR(object, ParasolPlummetItemWork);
@@ -1367,17 +1790,82 @@ s16 func_80109F7C_parasol_plummet(omObjData *object, s32 isItem) {
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", func_80109F7C_parasol_plummet);
 #endif
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010AB14_parasol_plummet);
+void func_8010A160_parasol_plummet(void) {
+    s16 posX[4] = { 32, 224, 32, 224 };
+    s16 posY[4] = { 24, 24, 216, 216 };
+    s32 charIcons[8] = { 8, 9, 10, 11, 12, 13, 14, 15 };
+    s16 i;
+    s16 j;
+    s16 x;
+    s16 y;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010AB1C_parasol_plummet);
+    D_8010ACC0_parasol_plummet = func_8000B838_main(0x31);
+    D_8010ACDC_parasol_plummet = func_8000B838_main(0x21001B);
+    D_8010ACD2_parasol_plummet = func_8000B838_main(0x21001A);
+    for (i = 0; i < 4; i++) {
+        x = posX[i];
+        y = posY[i];
+        D_8010ACC2_parasol_plummet[i] = func_8000B838_main(0x210000 | charIcons[GwPlayer[i].chr]);
+        D_8010ACCA_parasol_plummet[i] = espEntry(D_8010ACC2_parasol_plummet[i], 0, 1);
+        espPosSet(D_8010ACCA_parasol_plummet[i], x, y);
+        D_8010ACD4_parasol_plummet[i] = espEntry(D_8010ACD2_parasol_plummet, 0, 1);
+        espPosSet(D_8010ACD4_parasol_plummet[i], x + 16, y);
+        D_8010ACDE_parasol_plummet[i] = espEntry(D_8010ACDC_parasol_plummet, 0, 1);
+        espPosSet(D_8010ACDE_parasol_plummet[i], x + 32, y);
+        for (j = 0; j < 3; j++) {
+            D_8010ACA8_parasol_plummet[i * 3 + j] = espEntry(D_8010ACC0_parasol_plummet, 0, 1);
+            espPriSet(D_8010ACA8_parasol_plummet[i * 3 + j], 10);
+            espAttrSet(D_8010ACA8_parasol_plummet[i * 3 + j], 0x1000);
+            espPosSet(D_8010ACA8_parasol_plummet[i * 3 + j], x + 32 + j * 12, y);
+        }
+    }
+    omPrcSetStatBit(omAddPrcObj(func_8010A484_parasol_plummet, 0, 0, 0), 0x80);
+}
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010AB24_parasol_plummet);
+void func_8010A484_parasol_plummet(void) {
+    s16 posX[4] = { 32, 236, 32, 236 };
+    s16 posY[4] = { 24, 24, 216, 216 };
+    s32 i;
+    s32 j;
+    s32 x;
+    s32 y;
+    s32 total;
+    s32 coins;
+    s32 divisor;
+    s32 digit;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", func_8010A160_parasol_plummet);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010AB44_parasol_plummet);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", func_8010A484_parasol_plummet);
+    while (TRUE) {
+        for (i = 0; i < 4; i++) {
+            x = posX[i];
+            y = posY[i];
+            espPosSet(D_8010ACCA_parasol_plummet[i], x, y);
+            espPosSet(D_8010ACD4_parasol_plummet[i], x + 16, y);
+            espPosSet(D_8010ACDE_parasol_plummet[i], x + 32, y);
+            divisor = 100;
+            total = GwPlayer[i].gameCoin;
+            coins = total;
+            for (j = 0; j < 3; j++) {
+                espPosSet(D_8010ACA8_parasol_plummet[i * 3 + j], x + 32 + j * 12, y);
+                digit = coins / divisor;
+                coins -= digit * divisor;
+                espDispOn(D_8010ACA8_parasol_plummet[i * 3 + j]);
+                if (divisor == 100 && total < 100) {
+                    espDispOff(D_8010ACA8_parasol_plummet[i * 3 + j]);
+                }
+                if (divisor == 10 && total < 10) {
+                    espDispOff(D_8010ACA8_parasol_plummet[i * 3 + j]);
+                }
+                if (total >= 100) {
+                    espDispOff(D_8010ACDE_parasol_plummet[i]);
+                }
+                func_8000BDDC_main(D_8010ACA8_parasol_plummet[i * 3 + j], 1);
+                espBankSet(D_8010ACA8_parasol_plummet[i * 3 + j], (u16)digit, 0);
+                divisor /= 10;
+            }
+        }
+        HuPrcVSleep();
+    }
+}
 
 void func_8010A75C_parasol_plummet(f32 zoom, f32 rotX, f32 rotY, f32 rotZ, f32 centerX, f32 centerY, f32 centerZ) {
     func_8000B5F0_main(1);

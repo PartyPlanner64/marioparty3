@@ -96,8 +96,11 @@ extern s32 D_8010CB00_mpiq[][4];
 extern s16 D_8010CBA0_mpiq[];
 extern s16 D_8010CBB8_mpiq[];
 extern s32 D_8010CC04_mpiq;
+extern s32 D_8010CC10_mpiq[256];
+extern s32 D_8010C6BC_mpiq[];
 extern s32 D_8010CBCC_mpiq;
 extern s32 D_8010CBD0_mpiq[];
+extern s32 D_8010CBF8_mpiq[];
 extern s32 D_8010CBFC_mpiq[];
 extern s32 D_8010D010_mpiq;
 extern s32 D_800A178C_main[][6];
@@ -163,6 +166,10 @@ s32 func_8010AEDC_mpiq(s32 index);
 s32 func_8010AFAC_mpiq(s32 index, s32 range, s32 base, s32 scale);
 void func_8010B0CC_mpiq(void);
 void func_8010C5B8_mpiq(omObjData *obj);
+s16 func_8010BB74_mpiq(void);
+void func_8010C2F0_mpiq(void);
+void func_8010BA64_mpiq(omObjData *obj);
+s16 func_8010BD1C_mpiq(void);
 
 void func_801059A0_mpiq(void) {
     omObjData *obj;
@@ -1261,7 +1268,288 @@ void func_80109414_mpiq(void) {
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_21_mpiq/204F90", func_80109414_mpiq);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_21_mpiq/204F90", func_801096C0_mpiq);
+s32 func_801096C0_mpiq(s32 index, s32 question) {
+    s32 list[2][6];
+    s32 result = TRUE;
+    s32 mes;
+    s32 value;
+    s32 count;
+    s32 pick;
+    s32 temp;
+    s32 swap;
+    s32 i;
+    s32 j;
+
+    if (D_8010C9F8_mpiq != 0) {
+        return TRUE;
+    }
+    if (question >= 36) {
+        if (question >= 49) {
+            if (_CheckFlag(0x1C)) {
+                return FALSE;
+            }
+        }
+        if (question < 49) {
+            mes = question * 2 + 0x52B8;
+        } else {
+            mes = question * 2 + 0x539E;
+        }
+        switch (mes) {
+            case 0x5302:
+                value = D_8010CBB8_mpiq[index] - 0x1C60;
+                count = func_800E905C_minigame(value);
+                if (count == -1) {
+                    return FALSE;
+                }
+                break;
+            case 0x5304:
+                if (GWMgUnlockCheck(12) == 0) {
+                    result = FALSE;
+                }
+                break;
+            case 0x5306:
+                if (GWMgUnlockCheck(34) == 0) {
+                    result = FALSE;
+                }
+                break;
+            case 0x5308:
+                if (GWMgUnlockCheck(51) == 0) {
+                    result = FALSE;
+                }
+                break;
+            case 0x530A:
+                if (GWMgUnlockCheck(43) == 0) {
+                    result = FALSE;
+                }
+                break;
+            case 0x530C:
+                if (GWMgUnlockCheck(70) == 0 || GWMgRecordGet(5) == 1800) {
+                    result = FALSE;
+                }
+                break;
+            case 0x530E:
+                if (GWMgUnlockCheck(70) == 0 || GWMgRecordGet(6) == 1800) {
+                    result = FALSE;
+                }
+                break;
+            case 0x5310:
+                if (GWMgUnlockCheck(70) == 0 || GWMgRecordGet(7) == 1800) {
+                    result = FALSE;
+                }
+                break;
+            case 0x5312:
+            case 0x5314:
+                for (i = 0; i < 6; i++) {
+                    if (mes == 0x5312) {
+                        list[0][i] = GwCommon.boardRecord[0][i].playCount;
+                    } else {
+                        list[0][i] = GwCommon.boardRecord[1][i].playCount;
+                    }
+                    list[1][i] = i;
+                }
+                for (i = 0; i < 6; i++) {
+                    for (j = i; j < 6; j++) {
+                        if (list[0][j] >= list[0][i]) {
+                            swap = list[0][i];
+                            list[0][i] = list[0][j];
+                            list[0][j] = swap;
+                            swap = list[1][i];
+                            list[1][i] = list[1][j];
+                            list[1][j] = swap;
+                        }
+                    }
+                }
+                count = 0;
+                for (i = 0; i < 6; i++) {
+                    if (list[0][i] == list[0][0]) {
+                        count++;
+                    }
+                }
+                if (count >= 5) {
+                    return FALSE;
+                }
+                pick = 0;
+                if (count != 0) {
+                    pick = rand8() % count;
+                }
+                D_8010CBF8_mpiq[0] = list[1][pick];
+                for (i = 0; i < 2; i++) {
+                    do {
+                        pick = rand8() % (6 - count) + count;
+                        for (j = 0, temp = 0; j < i + 1; j++) {
+                            if (list[1][pick] == D_8010CBF8_mpiq[j]) {
+                                temp++;
+                            }
+                        }
+                    } while (temp != 0);
+                    D_8010CBF8_mpiq[i + 1] = list[1][pick];
+                }
+                break;
+            case 0x5316:
+                value = 0;
+                for (i = 0; i < 6; i++) {
+                    if (GwCommon.boardRecord[0][i].playCount != 0) {
+                        list[0][value] = i;
+                        value++;
+                    }
+                }
+                if (value == 0) {
+                    result = FALSE;
+                } else {
+                    D_8010CC04_mpiq = list[0][rand8() % value];
+                }
+                break;
+            case 0x5318:
+                value = 0;
+                for (i = 0; i < 6; i++) {
+                    if (GwCommon.boardRecord[1][i].playCount != 0) {
+                        list[0][value] = i;
+                        value++;
+                    }
+                }
+                if (value == 0) {
+                    result = FALSE;
+                } else {
+                    D_8010CC04_mpiq = list[0][rand8() % value];
+                }
+                break;
+            case 0x5404:
+            case 0x5412:
+            case 0x5414:
+                value = 0;
+                for (i = 0; i < 4; i++) {
+                    switch (mes) {
+                        case 0x5404:
+                            count = GwPlayer[i].gamePrize;
+                            break;
+                        case 0x5412:
+                            count = GwPlayer[i].star;
+                            break;
+                        default:
+                            count = GwPlayer[i].coin;
+                            break;
+                    }
+                    if (count == 0) {
+                        value++;
+                    }
+                }
+                if (value == 4) {
+                    result = FALSE;
+                }
+                break;
+            case 0x5400:
+                value = 0;
+                for (i = 0; i < 4; i++) {
+                    value += GwPlayer[i].star;
+                }
+                if (value == 0) {
+                    result = FALSE;
+                }
+                break;
+            case 0x5402:
+                value = 0;
+                for (i = 0; i < 4; i++) {
+                    value += GwPlayer[i].coin;
+                }
+                if (value == 0) {
+                    result = FALSE;
+                }
+                break;
+            case 0x5406:
+                value = 0;
+                for (i = 0; i < 4; i++) {
+                    value += GwPlayer[i].stats.prize.redPrize;
+                }
+                if (value == 0) {
+                    result = FALSE;
+                }
+                break;
+            case 0x5408:
+                value = 0;
+                for (i = 0; i < 4; i++) {
+                    value += GwPlayer[i].stats.prize.bluePrize;
+                }
+                if (value == 0) {
+                    result = FALSE;
+                }
+                break;
+            case 0x540A:
+                value = 0;
+                for (i = 0; i < 4; i++) {
+                    value += GwPlayer[i].stats.prize.hatenaPrize;
+                }
+                if (value == 0) {
+                    result = FALSE;
+                }
+                break;
+            case 0x540C:
+                if (GwSystem.bank_coins == 0) {
+                    result = FALSE;
+                }
+                break;
+            case 0x541A:
+                value = D_8010CBB8_mpiq[index] - 0x1C60;
+                for (i = 0; i < 4; i++) {
+                    if (GwPlayer[i].chr == value) {
+                        break;
+                    }
+                }
+                if (GwPlayer[i].coin == 0) {
+                    result = FALSE;
+                }
+                break;
+            case 0x541C:
+                value = D_8010CBB8_mpiq[index] - 0x1C60;
+                for (i = 0; i < 4; i++) {
+                    if (GwPlayer[i].chr == value) {
+                        break;
+                    }
+                }
+                if (GwPlayer[i].star == 0) {
+                    result = FALSE;
+                }
+                break;
+            case 0x5410:
+                result = FALSE;
+                break;
+        }
+    } else {
+        mes = question * 4 + 0x5500;
+        switch (mes) {
+            case 0x5578:
+                if (GwCommon.boardRecord[0][0].playCount == 0) {
+                    result = FALSE;
+                }
+                break;
+            case 0x557C:
+                if (GwCommon.boardRecord[0][1].playCount == 0) {
+                    result = FALSE;
+                }
+                break;
+            case 0x5580:
+                if (GwCommon.boardRecord[0][2].playCount == 0) {
+                    result = FALSE;
+                }
+                break;
+            case 0x5584:
+                if (GwCommon.boardRecord[0][3].playCount == 0) {
+                    result = FALSE;
+                }
+                break;
+            case 0x5588:
+                if (GwCommon.boardRecord[0][4].playCount == 0) {
+                    result = FALSE;
+                }
+                break;
+            case 0x558C:
+                if (GwCommon.boardRecord[0][5].playCount == 0) {
+                    result = FALSE;
+                }
+                break;
+        }
+    }
+    return result;
+}
 
 #ifdef NON_MATCHING
 void func_8010A010_mpiq(s32 index) {
@@ -1296,7 +1584,202 @@ void func_8010A010_mpiq(s32 index) {
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_21_mpiq/204F90", func_8010A010_mpiq);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_21_mpiq/204F90", func_8010A184_mpiq);
+void func_8010A184_mpiq(s32 index) {
+    s32 list[4];
+    s32 value;
+    s32 other;
+    s32 count;
+    s32 rank;
+    s32 i;
+
+    for (i = 0; i < 256; i++) {
+        D_8010CC10_mpiq[i] = 0;
+    }
+    switch (D_8010CA50_mpiq[index]) {
+        case 0x5300:
+            D_8010CBA0_mpiq[index] |= 1;
+            value = D_8010CBB8_mpiq[index] - 0x531B;
+            D_8010D010_mpiq = D_8010C6BC_mpiq[value];
+            break;
+        case 0x5302:
+            value = D_8010CBB8_mpiq[index] - 0x1C60;
+            rank = func_800E905C_minigame(value);
+            other = 0x533B;
+            D_8010D010_mpiq = other - rank;
+            if (D_8010C9F8_mpiq != 0) {
+                D_8010D010_mpiq = 0x5337;
+            }
+            break;
+        case 0x5304:
+            D_8010CBA0_mpiq[index] |= 1;
+            D_8010D010_mpiq = GWMgRecordGet(0);
+            break;
+        case 0x5306:
+            D_8010CBA0_mpiq[index] |= 4;
+            D_8010D010_mpiq = GWMgRecordGet(2);
+            break;
+        case 0x5308:
+            D_8010CBA0_mpiq[index] |= 32;
+            D_8010D010_mpiq = GWMgRecordGet(4);
+            break;
+        case 0x530A:
+            D_8010CBA0_mpiq[index] |= 4;
+            D_8010D010_mpiq = GWMgRecordGet(3) * 2;
+            break;
+        case 0x530C:
+            D_8010CBA0_mpiq[index] |= 4;
+            D_8010D010_mpiq = GWMgRecordGet(5);
+            break;
+        case 0x530E:
+            D_8010CBA0_mpiq[index] |= 4;
+            D_8010D010_mpiq = GWMgRecordGet(6);
+            break;
+        case 0x5310:
+            D_8010CBA0_mpiq[index] |= 4;
+            D_8010D010_mpiq = GWMgRecordGet(7);
+            break;
+        case 0x5312:
+            D_8010D010_mpiq = D_8010CBF8_mpiq[0] + 0x532B;
+            break;
+        case 0x5314:
+            D_8010D010_mpiq = D_8010CBF8_mpiq[0] + 0x5331;
+            break;
+        case 0x5316:
+            D_8010CBA0_mpiq[index] |= 1;
+            value = D_8010CBB8_mpiq[index] - 0x532B;
+            D_8010D010_mpiq = GwCommon.boardRecord[0][value].playCount;
+            break;
+        case 0x5318:
+            D_8010CBA0_mpiq[index] |= 1;
+            value = D_8010CBB8_mpiq[index] - 0x5331;
+            D_8010D010_mpiq = GwCommon.boardRecord[1][value].playCount;
+            break;
+        case 0x5400:
+            D_8010CBA0_mpiq[index] |= 1;
+            value = 0;
+            for (i = 0; i < 4; i++) {
+                value += GwPlayer[i].star & 0x7F;
+            }
+            D_8010D010_mpiq = value;
+            break;
+        case 0x5402:
+            D_8010CBA0_mpiq[index] |= 1;
+            value = 0;
+            for (i = 0; i < 4; i++) {
+                value += GwPlayer[i].coin;
+            }
+            D_8010D010_mpiq = value;
+            break;
+        case 0x5404:
+        case 0x5412:
+        case 0x5414:
+        case 0x5416:
+        case 0x5418:
+            other = D_8010CA50_mpiq[index];
+            value = 1000;
+            if (other == 0x5404 || other == 0x5412 || other == 0x5414) {
+                value = 0;
+            }
+            for (i = 0; i < 4; i++) {
+                switch (D_8010CA50_mpiq[index]) {
+                    case 0x5404:
+                        other = GwPlayer[i].gamePrize;
+                        break;
+                    case 0x5412:
+                        other = GwPlayer[i].star & 0x7F;
+                        break;
+                    case 0x5416:
+                        other = GwPlayer[i].star & 0x7F;
+                        break;
+                    default:
+                        other = GwPlayer[i].coin;
+                        break;
+                }
+                if (D_8010CA50_mpiq[index] == 0x5404 || D_8010CA50_mpiq[index] == 0x5412 ||
+                    D_8010CA50_mpiq[index] == 0x5414) {
+                    if (value < other) {
+                        value = other;
+                    }
+                } else {
+                    if (other < value) {
+                        value = other;
+                    }
+                }
+            }
+            count = 0;
+            for (i = 0; i < 4; i++) {
+                switch (D_8010CA50_mpiq[index]) {
+                    case 0x5404:
+                        other = GwPlayer[i].gamePrize;
+                        break;
+                    case 0x5412:
+                        other = GwPlayer[i].star & 0x7F;
+                        break;
+                    case 0x5416:
+                        other = GwPlayer[i].star & 0x7F;
+                        break;
+                    default:
+                        other = GwPlayer[i].coin;
+                        break;
+                }
+                if (other == value) {
+                    list[count] = i;
+                    count++;
+                }
+            }
+            value = rand8() % count;
+            D_8010D010_mpiq = GwPlayer[list[value]].chr + 0x1C60;
+            break;
+        case 0x5406:
+        case 0x5408:
+        case 0x540A:
+            D_8010CBA0_mpiq[index] |= 1;
+            value = 0;
+            for (i = 0; i < 4; i++) {
+                switch (D_8010CA50_mpiq[index]) {
+                    case 0x5406:
+                        value += GwPlayer[i].stats.prize.redPrize & 0x7F;
+                        break;
+                    case 0x5408:
+                        value += GwPlayer[i].stats.prize.bluePrize & 0x7F;
+                        break;
+                    default:
+                        value += GwPlayer[i].stats.prize.hatenaPrize & 0x7F;
+                        break;
+                }
+            }
+            D_8010D010_mpiq = value;
+            break;
+        case 0x540C:
+            D_8010CBA0_mpiq[index] |= 1;
+            D_8010D010_mpiq = GwSystem.bank_coins;
+            break;
+        case 0x540E:
+            D_8010CBA0_mpiq[index] |= 1;
+            D_8010D010_mpiq = index + D_8010C9FC_mpiq + 1;
+            break;
+        case 0x5410:
+            D_8010CBA0_mpiq[index] |= 1;
+            D_8010D010_mpiq = (GwSystem.current_turn + 1) & 0x7F;
+            break;
+        case 0x541A:
+        case 0x541C:
+            D_8010CBA0_mpiq[index] |= 1;
+            value = D_8010CBB8_mpiq[index] - 0x1C60;
+            for (i = 0; i < 4; i++) {
+                if (GwPlayer[i].chr == value) {
+                    break;
+                }
+            }
+            if (D_8010CA50_mpiq[index] == 0x541A) {
+                D_8010D010_mpiq = GwPlayer[i].coin;
+            } else {
+                D_8010D010_mpiq = GwPlayer[i].star & 0x7F;
+            }
+            break;
+    }
+    D_8010CBD0_mpiq[index] = D_8010CA50_mpiq[index] + 1;
+}
 
 #ifdef NON_MATCHING
 s16 func_8010AB44_mpiq(s32 index, s32 answer) {
@@ -1436,7 +1919,185 @@ s32 func_8010AFAC_mpiq(s32 index, s32 range, s32 base, s32 scale) {
     return value;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_21_mpiq/204F90", func_8010B0CC_mpiq);
+void func_8010B0CC_mpiq(void) {
+    s32 counts[4];
+    omObjData *player;
+    MpiqDanceObjData *data;
+    s32 i;
+    s32 round;
+    s32 count;
+    s32 wins;
+    s32 tied;
+
+    while (func_800E6E8C_minigame() != 2) {
+        HuPrcVSleep();
+    }
+    for (i = 0; i < 4; i++) {
+        counts[i] = 0;
+    }
+    D_8010C9D8_mpiq = -1;
+    while (1) {
+        for (round = 0; round < 10; round++) {
+            D_8010C9C0_mpiq = 0;
+            D_8010CA4C_mpiq = round;
+            D_8010C6B8_mpiq = -1;
+            for (i = 0; i < 4; i++) {
+                func_80106664_mpiq(i);
+            }
+            func_801089A4_mpiq(4);
+            D_8010CA00_mpiq = func_8010BB74_mpiq();
+            omAddPrcObj(func_8010C2F0_mpiq, 0x4900, 0, 0);
+            HuPrcVSleep();
+            D_8010C9C2_mpiq = 0;
+            omAddObj(6, 0, 0, -1, func_8010BA64_mpiq);
+            while (HuWinStatGet(D_8010CA00_mpiq) != 0) {
+                if (D_8010C9C0_mpiq & 4) {
+                    break;
+                }
+                HuPrcVSleep();
+            }
+            if (!(D_8010C9C0_mpiq & 4)) {
+                D_8010C9C0_mpiq |= 0x10;
+                while (D_8010C9C0_mpiq & 0x10) {
+                    HuPrcVSleep();
+                }
+            }
+            HuWinKill(D_8010CA00_mpiq);
+            D_8010CA00_mpiq = -1;
+            if (D_8010C9C0_mpiq & 4) {
+                func_8004AC5C_main(0x40D, D_8010C9BC_mpiq);
+                PlayerFXPlay(0xCA, D_8010C9BC_mpiq);
+                D_8010CA00_mpiq = func_8010BD1C_mpiq();
+                func_801089A4_mpiq(2);
+                D_8010C9C0_mpiq |= 0x20;
+                while (D_8010C9C0_mpiq & 0x20) {
+                    HuPrcVSleep();
+                }
+                HuWinKill(D_8010CA00_mpiq);
+                D_8010CA00_mpiq = -1;
+                func_80107C50_mpiq(D_8010C9BC_mpiq);
+                player = D_800EC598_minigame[D_8010C9BC_mpiq];
+                data = D_8010CA78_mpiq->data;
+                if (D_8010C6B8_mpiq == D_8010CA38_mpiq[round]) {
+                    func_8004AC5C_main(0x40E, D_8010C9BC_mpiq);
+                    PlayerFXPlay(0x274, D_8010C9BC_mpiq);
+                    espDispOn(D_8010C9DC_mpiq[0]);
+                    func_800E5798_minigame(player, 0x29);
+                    Hu3DMotionShiftSet(D_8010CA78_mpiq->model[0], Hu3DData[D_8010CA78_mpiq->motion[1]].motId, 0, 10, 0);
+                    data->flags |= 1;
+                    HuPrcSleep(30);
+                    if (D_8010C9F8_mpiq == 0) {
+                        func_80107558_mpiq(D_8010C9BC_mpiq, ++D_8010C9C8_mpiq[D_8010C9BC_mpiq]);
+                        func_801085F4_mpiq(D_8010C9BC_mpiq);
+                        HuPrcSleep(30);
+                    }
+                } else {
+                    func_8004AC5C_main(0x40F, D_8010C9BC_mpiq);
+                    PlayerFXPlay(0x286, D_8010C9BC_mpiq);
+                    espDispOn(D_8010C9DC_mpiq[1]);
+                    func_800E5798_minigame(player, 0x2A);
+                    Hu3DMotionShiftSet(D_8010CA78_mpiq->model[0], Hu3DData[D_8010CA78_mpiq->motion[2]].motId, 0, 10, 0);
+                    data->flags |= 1;
+                    HuPrcSleep(30);
+                    func_80107C18_mpiq(D_8010C9BC_mpiq);
+                    HuPrcSleep(70);
+                    if (D_8010C6B8_mpiq == -1) {
+                        func_800E58F8_minigame(player, 0x26, 0);
+                    }
+                    func_800E5798_minigame(player, 0x2B);
+                    D_8010C9E8_mpiq[D_8010C9BC_mpiq] |= 1;
+                    counts[D_8010C9BC_mpiq] = 2;
+                    HuPrcSleep(20);
+                    func_80107FCC_mpiq(D_8010C9BC_mpiq);
+                }
+                espDispOff(D_8010C9DC_mpiq[0]);
+                espDispOff(D_8010C9DC_mpiq[1]);
+            }
+            count = 0;
+            for (i = 0; i < 4; i++) {
+                player = D_800EC598_minigame[i];
+                if (D_8010C9E8_mpiq[i] & 1) {
+                    counts[i]--;
+                    if (round == 9) {
+                        counts[i] = 0;
+                    }
+                    if (counts[i] == 0) {
+                        func_800E5798_minigame(player, 0x21);
+                        func_8010811C_mpiq();
+                        count++;
+                    }
+                }
+            }
+            if (count != 0) {
+                HuPrcSleep(30);
+            }
+            for (i = 0; i < 4; i++) {
+                player = D_800EC598_minigame[i];
+                if (D_8010C9E8_mpiq[i] & 1) {
+                    if (counts[i] == 0) {
+                        func_800E5798_minigame(player, 0);
+                        D_8010C9E8_mpiq[i] &= ~1;
+                    }
+                }
+            }
+            HuPrcSleep(30);
+            for (i = 0; i < 4; i++) {
+                if (D_8010C9C8_mpiq[i] == 3) {
+                    D_8010C9D8_mpiq = i;
+                }
+            }
+            if (D_8010C9D8_mpiq != -1) {
+                break;
+            }
+        }
+        if (D_8010C9F8_mpiq == 0) {
+            break;
+        }
+        D_8010C9FC_mpiq += 10;
+        func_80109414_mpiq();
+    }
+    if (D_8010C9D8_mpiq == -1) {
+        for (round = 0; round < 2; round++) {
+            wins = 2 - round;
+            tied = 0;
+            D_8010C9D8_mpiq = -1;
+            for (i = 0; i < 4; i++) {
+                if (D_8010C9C8_mpiq[i] == wins) {
+                    tied++;
+                    D_8010C9D8_mpiq = i;
+                }
+            }
+            if (tied == 1) {
+                break;
+            }
+            if (tied > 1) {
+                D_8010C9D8_mpiq = -1;
+                break;
+            }
+        }
+    }
+    func_800E6F0C_minigame(3);
+    func_80107C74_mpiq();
+    func_801089A4_mpiq(2);
+    for (i = 0; i < 16; i++) {
+        for (round = 0; round < 4; round++) {
+            D_800EC598_minigame[round]->rot.y = i * 12 + 180.0f;
+        }
+        HuPrcVSleep();
+    }
+    while (D_800EB934_minigame != 1) {
+        HuPrcVSleep();
+    }
+    for (round = 0; round < 4; round++) {
+        if (round == D_8010C9D8_mpiq) {
+            func_800E5798_minigame(D_800EC598_minigame[round], 0xD);
+            func_80045ED0_main(D_800A178C_main[GwPlayer[round].chr][0] | 0x2F);
+        } else {
+            func_800E5798_minigame(D_800EC598_minigame[round], 0xE);
+        }
+    }
+    omDelPrcObj(NULL);
+}
 
 void func_8010B900_mpiq(void) {
     s32 pressed[4];

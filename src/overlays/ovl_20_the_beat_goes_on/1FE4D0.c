@@ -26,7 +26,7 @@ typedef struct {
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s8 unk_08;
     /* 0x09 */ s8 unk_09;
-    /* 0x0A */ s16 unk_0A;
+    /* 0x0A */ u16 unk_0A;
     /* 0x0C */ s8 unk_0C;
     /* 0x0E */ s16 unk_0E;
     /* 0x10 */ s16 unk_10;
@@ -77,6 +77,7 @@ extern s32 D_8010C2E4_the_beat_goes_on;
 extern s32 D_8010C2E8_the_beat_goes_on;
 extern s8 D_8010C2EC_the_beat_goes_on;
 extern BeatGoesOnPos D_8010C2F0_the_beat_goes_on[];
+extern u8 D_8010C310_the_beat_goes_on;
 extern s8 D_8010C311_the_beat_goes_on;
 extern s32 D_8010C328_the_beat_goes_on[][4];
 extern f32 D_8010C368_the_beat_goes_on[];
@@ -132,6 +133,7 @@ void func_8010B0E0_the_beat_goes_on(omObjData *obj);
 void func_8010B17C_the_beat_goes_on(omObjData *obj);
 Vec *func_8010C1A4_the_beat_goes_on(Vec *out, Vec *from, Vec *to);
 void func_8010B6DC_the_beat_goes_on(omObjData *obj);
+void func_8010C14C_the_beat_goes_on(void);
 
 void func_801059A0_the_beat_goes_on(void) {
     s16 model;
@@ -636,7 +638,132 @@ void func_80107504_the_beat_goes_on(omObjData *obj) {
     func_801080DC_the_beat_goes_on();
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_20_the_beat_goes_on/1FE4D0", func_8010775C_the_beat_goes_on);
+void func_8010775C_the_beat_goes_on(omObjData *obj) {
+    BeatGoesOnConductorWork *work = obj->data;
+    BeatGoesOnNotes *notes;
+
+    if (D_800CCF58_main[Hu3DData[obj->model[1]].motId].unk02 - 2.0f <= Hu3DData[obj->model[1]].motTime) {
+        func_8001C814_main(obj->model[1], 2, 1);
+    }
+    if (D_800CCF58_main[Hu3DData[obj->model[2]].motId].unk02 - 2.0f <= Hu3DData[obj->model[2]].motTime) {
+        func_8001C814_main(obj->model[2], 2, 1);
+    }
+    if (D_800CCF58_main[Hu3DData[obj->model[3]].motId].unk02 - 2.0f <= Hu3DData[obj->model[3]].motTime) {
+        func_8001C814_main(obj->model[3], 2, 1);
+    }
+    notes = D_8010C4E4_the_beat_goes_on->data;
+    if (func_800E6E8C_minigame() == 1) {
+        if (work->unk_02 >= 73) {
+            notes->unk_16 = 1;
+            notes->unk_17 = 1;
+            work->unk_02 = 0;
+        } else {
+            work->unk_02++;
+        }
+    } else if (func_800E6E8C_minigame() == 2) {
+        if (obj->work[0] == 6) {
+            return;
+        }
+        if (obj->work[0] == 0) {
+            func_80106204_the_beat_goes_on(33.0f);
+            if (CZoom == 1060.0f && Center.z == 140.0f && CRot.x == -40.0f) {
+                obj->work[0] = 1;
+            }
+        } else if (obj->work[0] == 5) {
+            if (work->unk_02 >= 30) {
+                HuAudSeqPlay(0x40);
+                work->unk_02 = 0;
+            } else {
+                work->unk_02++;
+            }
+            switch (D_8010C310_the_beat_goes_on) {
+                case 0:
+                    func_801060B0_the_beat_goes_on(63.5f);
+                    if (CZoom == 2200.0f && Center.z == 380.0f && CRot.x == -30.0f) {
+                        D_8010C310_the_beat_goes_on = 1;
+                    }
+                    break;
+                case 1:
+                    func_80105F60_the_beat_goes_on(63.5f);
+                    if (CZoom == 700.0f && Center.z == 880.0f && CRot.x == -10.0f) {
+                        D_8010C310_the_beat_goes_on = 2;
+                        obj->work[0] = 6;
+                    }
+                    break;
+            }
+        } else {
+            notes->unk_08 = 1;
+            if (D_8010C4E9_the_beat_goes_on < 4 &&
+                work->unk_00 >= D_8010C4A0_the_beat_goes_on[D_8010C4E9_the_beat_goes_on].unk_02) {
+                if (D_8010C4A0_the_beat_goes_on[D_8010C4E9_the_beat_goes_on].button == A_BUTTON) {
+                    Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[3]].motId, 0, 1, 2);
+                    Hu3DMotionSpeedSet(obj->model[0], 1.0f);
+                    obj->work[0] = 4;
+                    notes->btnA[D_8010C4E9_the_beat_goes_on] = 1;
+                    notes->unk_0C = 1;
+                    notes->unk_0A = A_BUTTON;
+                } else if (D_8010C4A0_the_beat_goes_on[D_8010C4E9_the_beat_goes_on].button == B_BUTTON) {
+                    Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[1]].motId, 0, 1, 2);
+                    Hu3DMotionSpeedSet(obj->model[0], 1.0f);
+                    obj->work[0] = 2;
+                    notes->btnB[D_8010C4E9_the_beat_goes_on] = 1;
+                    notes->unk_0C = 1;
+                    notes->unk_0A = B_BUTTON;
+                } else if (D_8010C4A0_the_beat_goes_on[D_8010C4E9_the_beat_goes_on].button == Z_TRIG) {
+                    Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[2]].motId, 0, 1, 2);
+                    Hu3DMotionSpeedSet(obj->model[0], 1.0f);
+                    obj->work[0] = 3;
+                    notes->btnZ[D_8010C4E9_the_beat_goes_on] = 1;
+                    notes->unk_0C = 1;
+                    notes->unk_0A = Z_TRIG;
+                }
+                work->unk_00 = 0;
+                D_8010C4E9_the_beat_goes_on++;
+            } else {
+                if (obj->work[0] != 1) {
+                    if (D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 - 2.0f <= Hu3DData[obj->model[0]].motTime) {
+                        Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[0]].motId, 10, 1, 2);
+                        Hu3DMotionSpeedSet(obj->model[0], 1.0f);
+                        obj->work[0] = 1;
+                    }
+                }
+                if (obj->work[0] != 0) {
+                    if (D_8010C4E9_the_beat_goes_on == 3) {
+                        HuAudSeqStop();
+                    }
+                    if (D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 - 2.0f <= Hu3DData[obj->model[0]].motTime) {
+                        if (D_8010C4E9_the_beat_goes_on >= 4) {
+                            HuAudFXPlay(0x40A);
+                            obj->work[0] = 5;
+                            D_8010C4E8_the_beat_goes_on = 4;
+                            D_8010C4E9_the_beat_goes_on = 0;
+                            func_8010C14C_the_beat_goes_on();
+                            notes->unk_08 = 0;
+                        } else {
+                            obj->work[0] = 1;
+                        }
+                    }
+                }
+                work->unk_00++;
+            }
+            if (Hu3DData[obj->model[0]].motTime == D_800CCF58_main[Hu3DData[obj->model[0]].motId].unk02 / 2.0f) {
+                if (obj->work[0] == 4) {
+                    Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[4]].motId, 0, 1, 2);
+                    Hu3DMotionSpeedSet(obj->model[1], 1.0f);
+                    HuAudFXPlay(0x405);
+                } else if (obj->work[0] == 2) {
+                    Hu3DMotionShiftSet(obj->model[2], Hu3DData[obj->motion[4]].motId, 0, 1, 2);
+                    Hu3DMotionSpeedSet(obj->model[2], 1.0f);
+                    HuAudFXPlay(0x406);
+                } else if (obj->work[0] == 3) {
+                    Hu3DMotionShiftSet(obj->model[3], Hu3DData[obj->motion[4]].motId, 0, 1, 2);
+                    Hu3DMotionSpeedSet(obj->model[3], 1.0f);
+                    HuAudFXPlay(0x407);
+                }
+            }
+        }
+    }
+}
 
 void func_801080DC_the_beat_goes_on(void) {
     s32 i;

@@ -30,6 +30,8 @@ extern u32 D_8010F580_toadstool_titan;
 extern u8 D_8010F584_toadstool_titan;
 extern s16 D_8010F586_toadstool_titan;
 extern s16 D_8010F588_toadstool_titan[1];
+extern Gfx D_8010EDF0_toadstool_titan[];
+extern Gfx *gMainGfxPos;
 extern s8 D_8010F58A_toadstool_titan;
 extern D_80111B50_vine_with_me_Struct D_8010F590_toadstool_titan;
 extern u16 D_8010F5BC_toadstool_titan;
@@ -473,7 +475,61 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", D_8010
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", func_80107360_toadstool_titan);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", func_8010AD8C_toadstool_titan);
+void func_8010AD8C_toadstool_titan(s16 left, s16 top, s16 right, s16 bottom) {
+    HuSprite_Unk84_Unk00_Struct *frame;
+    HuSprite *sprite;
+    f32 scaleX;
+    f32 scaleY;
+    f32 offsetX;
+    f32 offsetY;
+    f32 s0;
+    f32 t0;
+    f32 s1;
+    f32 t1;
+    s32 dsdx;
+    s32 dtdy;
+    s32 xl;
+    s32 yl;
+    s32 xh;
+    s32 yh;
+    s32 i;
+    s32 j;
+
+    scaleX = (right - left) / 320.0;
+    offsetX = left;
+    dsdx = (1.0 / scaleX) * 1024.0;
+    scaleY = (bottom - top) / 240.0;
+    offsetY = top;
+    dtdy = (1.0 / scaleY) * 1024.0;
+
+    gSPDisplayList(gMainGfxPos++, D_8010EDF0_toadstool_titan);
+    gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
+    sprite = HuSprGet(D_800CD1DC_main[D_8010F588_toadstool_titan[0]].unk04, 0);
+    frame = &sprite->unk_84->unk00[sprite->unk_90];
+    gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->unk0C);
+    for (i = 0; i < 6; i++) {
+        t0 = i * 40;
+        t1 = t0 + 40.0f + ((i == 5) ? -0.75 : 1.0);
+        for (j = 0; j < 8; j++) {
+            s0 = j * 40;
+            s1 = s0 + 40.0f + ((j < 7) ? 1.0f : 0.0f);
+            xl = (scaleX * s0 + offsetX) * 4.0f;
+            yl = (scaleY * t0 + offsetY) * 4.0f;
+            xh = (scaleX * s1 + offsetX) * 4.0f;
+            yh = (scaleY * t1 + offsetY) * 4.0f;
+            if (xl > 1280 || yl > 960) {
+                continue;
+            }
+            if (xh < 0 || yh < 0) {
+                continue;
+            }
+            gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, G_IM_SIZ_8b, 320, 240, (s32)s0, (s32)t0, (s32)s1,
+                               (s32)t1, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                               G_TX_NOLOD, G_TX_NOLOD);
+            gSPScisTextureRectangle(gMainGfxPos++, xl, yl, xh, yh, G_TX_RENDERTILE, s0 * 32.0f, t0 * 32.0f, dsdx, dtdy);
+        }
+    }
+}
 
 void func_8010B4D4_toadstool_titan(s16 model, s16 time) {
     Hu3DMotionTimeSet(model, time);

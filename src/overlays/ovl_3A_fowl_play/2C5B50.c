@@ -173,7 +173,7 @@ u8 func_8010724C_fowl_play(Vec *pos, Vec *prev, f32 radius);
 void func_801079B0_fowl_play(void);
 void func_80107A4C_fowl_play(omObjData *object);
 void func_80108298_fowl_play(omObjData *object);
-void func_80108B08_fowl_play(omObjData *object);
+u16 func_80108B08_fowl_play(omObjData *object);
 void func_80109410_fowl_play(omObjData *object, func_800E1BA8_minigame_ObjData **data, FowlPlayerWork **work);
 void func_80109424_fowl_play(void);
 void func_801094A4_fowl_play(omObjData *object);
@@ -182,6 +182,7 @@ u8 func_8010A738_fowl_play(omObjData *object, u8 canCatch);
 s32 func_8010A9A0_fowl_play(void);
 f32 func_8010A9EC_fowl_play(f32 y, f32 x);
 f32 func_8010AA64_fowl_play(Vec *arg0, Vec *arg1);
+f32 func_801075B0_fowl_play(Vec *pos, f32 dist, f32 angle);
 f32 func_8010AB40_fowl_play(Vec *vec);
 f32 func_8010AC88_fowl_play(Vec *point, Vec *start, Vec *end, Vec *closest);
 f32 func_8010AE10_fowl_play(Vec *pos1, Vec *dir1, Vec *pos2, Vec *dir2);
@@ -1099,9 +1100,118 @@ void func_80108A70_fowl_play(omObjData *object, f32 x, f32 y, f32 z) {
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_3A_fowl_play/2C5B50", D_8010EE68_fowl_play);
+u16 func_80108B08_fowl_play(omObjData *object) {
+    Vec corners[4] = { { 1000.0f, 0.0f, 0.0f }, { -1000.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 1000.0f }, { 0.0f, 0.0f, -1000.0f } };
+    Vec target;
+    func_800E1BA8_minigame_ObjData *data;
+    FowlPlayerWork *work;
+    omObjData *fox;
+    FowlFoxWork *foxWork;
+    f32 dist;
+    f32 angle;
+    f32 clear;
+    f32 diff;
+    u8 press = FALSE;
+    s16 pad;
+    u16 buttons;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3A_fowl_play/2C5B50", func_80108B08_fowl_play);
+    func_80109410_fowl_play(object, &data, &work);
+    pad = data->unk57;
+    func_800E4A90_minigame(object);
+    fox = D_8010F290_fowl_play[0];
+    foxWork = ((func_800E1BA8_minigame_ObjData *)fox->data)->unk158;
+    if (D_8010F29E_fowl_play > 1500) {
+        target.x = fox->trans.x + sindf(foxWork->unk14) * 60.0;
+        target.z = fox->trans.z + cosdf(foxWork->unk14) * 60.0;
+    } else {
+        target.x = fox->trans.x + (work->unk23 * 0.5 + 1.0) * 20.0 * sindf(foxWork->unk14);
+        target.z = fox->trans.z + (work->unk23 * 0.5 + 1.0) * 20.0 * cosdf(foxWork->unk14);
+    }
+    angle = func_8010A9EC_fowl_play(target.x - object->trans.x, target.z - object->trans.z);
+    dist = func_8010AA64_fowl_play(&object->trans, &fox->trans);
+    work->unk36--;
+    switch (work->unk2C) {
+        case 0:
+            if (dist < (work->unk23 * 5.0 + 20.0) * 20.0) {
+                work->unk2C = 1;
+            }
+            if (work->unk32 != 0) {
+                f32 cornerDist = func_8010AA64_fowl_play(&object->trans, &corners[work->unk32 - 1]);
+
+                angle = func_8010A9EC_fowl_play(corners[work->unk32 - 1].x - object->trans.x,
+                                                corners[work->unk32 - 1].z - object->trans.z);
+                if (cornerDist < 200.0) {
+                    work->unk32 = 0;
+                }
+            } else {
+                work->unk32 = (s32)((f32)func_8010A9A0_fowl_play() * 1.52587890625e-05 * 4.0) + 1;
+            }
+            if (work->unk36 == 0) {
+                work->unk2C = 2;
+                work->unk36 = work->unk23 * 20 + (s16)((s32)((f32)func_8010A9A0_fowl_play() * 1.52587890625e-05 * 40.0) + 30);
+            }
+            break;
+        case 1:
+            if (dist >= (work->unk23 * 5.0 + 25.0) * 20.0) {
+                work->unk2C = 0;
+            }
+            if (work->unk2E == 0) {
+                work->unk2E = (s32)((f32)func_8010A9A0_fowl_play() * 1.52587890625e-05 * 60.0) + 10;
+                work->unk30 = (f32)(func_8010A9A0_fowl_play() - 0x8000) * 3.0517578125e-05 * (55 - work->unk23 * 5);
+            }
+            work->unk2E--;
+            if (dist < data->unk48 + foxWork->unk0C + 26.0) {
+                if (D_8010F29E_fowl_play > 1260) {
+                    work->unk34 = 3;
+                } else if ((s32)((f32)func_8010A9A0_fowl_play() * 1.52587890625e-05 * (6 - work->unk23)) == 0) {
+                    press = TRUE;
+                }
+            } else if (work->unk34 != 0) {
+                if (--work->unk34 == 0) {
+                    press = TRUE;
+                }
+            }
+            if (work->unk36 == 0) {
+                work->unk2C = 2;
+                work->unk36 = work->unk23 * 15 + (s16)((s32)((f32)func_8010A9A0_fowl_play() * 1.52587890625e-05 * 30.0) + 30);
+            }
+            break;
+        case 2:
+            work->unk30 = 0;
+            if (dist < data->unk48 + foxWork->unk0C + 20.0) {
+                press = TRUE;
+            }
+            if (work->unk36 == 0) {
+                work->unk2C = 0;
+                work->unk36 =
+                    135.0 - work->unk23 * 20 + (s32)((f32)func_8010A9A0_fowl_play() * 1.52587890625e-05 * 60.0);
+            }
+            break;
+    }
+    angle += work->unk30;
+    D_800CBB6E_main[pad] = (work->unk23 * 2.0 + 56.0) * sindf(angle);
+    D_800D20A1_main[pad] = (work->unk23 * 2.0 + 56.0) * -cosdf(angle);
+    if (press) {
+        D_800D5558_main[pad] |= B_BUTTON;
+    }
+    target.x = object->trans.x;
+    target.y = 0.0f;
+    target.z = object->trans.z;
+    clear = func_801075B0_fowl_play(&target, 120.0f, angle);
+    diff = angle - data->unk3C;
+    while (diff < -180.0) {
+        diff += 360.0;
+    }
+    while (diff > 180.0) {
+        diff -= 360.0;
+    }
+    if (clear != angle) {
+        if (fabs(diff) < 30.0) {
+            D_800D5558_main[pad] |= A_BUTTON;
+        }
+    }
+    return buttons;
+}
 
 void func_80109410_fowl_play(omObjData *object, func_800E1BA8_minigame_ObjData **data, FowlPlayerWork **work) {
     *data = object->data;

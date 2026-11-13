@@ -2,6 +2,7 @@
 #include "game/vibrator.h"
 #include "game/gamework_data.h"
 #include "game/mallocblock.h"
+#include "game/saveload.h"
 
 #define UNK_VALUE 0x91
 
@@ -200,6 +201,24 @@ u32 func_80106AD8_filesel(u32);
 s32 func_8010AC58_filesel(s32);
 s32 func_80109904_filesel(s32 arg0);
 s32 func_80112494_filesel(s32, u8 *);
+void func_801083AC_filesel(void);
+void func_80108440_filesel(void);
+s32 func_80108EB8_filesel(void);
+s32 func_8010CCA8_filesel(s32 fileIndex);
+void func_8010D13C_filesel(s32 fileIndex);
+void func_8010D660_filesel(s32 fileIndex);
+void func_8010DD54_filesel(void);
+void func_8010DDC0_filesel(s32 fileIndex);
+void func_8010DF58_filesel(void);
+void func_8010DFF4_filesel(s32 fileIndex);
+void func_8010F10C_filesel(void);
+void func_8010F12C_filesel(void);
+void func_8010F168_filesel(void);
+void func_8010F5C8_filesel(void);
+omObjData *func_80110B7C_filesel(s32 arg0, f32 arg1, f32 arg2, f32 arg3, s32 arg4);
+void func_80110C84_filesel(void);
+omObjData *func_80111944_filesel(s32 duration);
+void func_80112684_filesel(void);
 
 extern Vec D_80112EA0_filesel;
 extern Vec D_80112EAC_filesel;
@@ -243,7 +262,7 @@ extern Vec D_80112958_filesel[];
 extern Vec D_8011297C_filesel[];
 extern Vec D_801128C8_filesel[][2];
 extern FileSelectCameraState D_801146B0_filesel;
-extern u8 D_800D09A9_main;
+extern SaveCommonBuf D_800D09A8_main;
 extern s32 D_80114500_filesel;
 extern f32 D_800A0A7C_main;
 extern f32 D_801144F8_filesel;
@@ -252,7 +271,9 @@ extern f32 D_801128A0_filesel;
 extern Vec D_801144D4_filesel;
 extern Vec D_801144E0_filesel;
 extern Vec D_801144EC_filesel;
-extern u8 D_80112A64_filesel[];
+extern const u8 D_80112A64_filesel[];
+extern const u8 D_80112A68_filesel[];
+extern u8 D_800CE20A_main;
 extern u8 D_80112D6C_filesel[];
 extern u8 D_80112D7C_filesel[];
 extern u8 D_80112D8C_filesel[];
@@ -586,9 +607,8 @@ void func_801069D8_filesel(s32 arg0, s32 arg1, s16 arg2) {
     func_8001C814_main(modelId, -1, arg2);
 }
 
-void func_80106A48_filesel(void) {
-    // The original call omits the resource id.
-    D_80114150_filesel = ((s16 (*)())func_8000B838_main)();
+void func_80106A48_filesel(s32 arg0) {
+    D_80114150_filesel = func_8000B838_main(arg0);
     D_80114152_filesel = espEntry(D_80114150_filesel, 0, 0);
     espAttrSet(D_80114152_filesel, 0x4000);
     espPosSet(D_80114152_filesel, 0xA0, 0x78);
@@ -930,7 +950,198 @@ void func_80107C84_filesel(void) {
     D_8011446C_filesel = omAddObj(6, 0, 0, -1, func_80107C50_filesel);
 }
 
+#ifdef NON_MATCHING
+// Two differences remain, everything else matches:
+// - The target hoists the 31.0f constant out of the main loop into $f24 (next to 120.0f and 0.0f); here it is
+//   loaded in place, so its pseudo's lifetime inside the loop must be longer in the original.
+// - In the GwStory branch the target sets a1 = 0 in the delay slot of the 0xFF test, before either a0 load, while
+//   here a1 = 0 is cross-jumped after them. Tried overlay/event locals assigned before or inside the branches.
+void func_80107CF8_filesel(void) {
+    Vec pos;
+    Vec2f screenPos;
+    f32 x;
+    f32 y;
+    f32 z;
+    s32 fileIndex;
+    s32 slot;
+    s32 result;
+    s32 story;
+
+    Hu3DBGColorSet(0, 0x40, 0x40);
+    func_8010F12C_filesel();
+    func_80106A48_filesel(0x1F0000);
+    HuPrcSleep(1);
+    func_8010F168_filesel();
+    HuAudSeqPlay(3);
+    WipeCreateIn(11, 16);
+    HuPrcSleep(16);
+    while (1) {
+        func_8010F65C_filesel();
+        func_8010F678_filesel(0);
+        func_801083AC_filesel();
+        func_80110C84_filesel();
+        func_8010FBE0_filesel(0, 24);
+        func_8010FBE0_filesel(1, 24);
+        func_8010FBE0_filesel(2, 24);
+        HuAudFXPlay(0x2F3);
+        HuPrcSleep(24);
+        func_801076D0_filesel(4, (u32)D_80112A64_filesel);
+        func_80108C34_filesel();
+        func_801088DC_filesel();
+        func_801076D0_filesel(4, 0x2A00);
+        do {
+            fileIndex = func_80108EB8_filesel();
+            HuPrcVSleep();
+        } while (fileIndex < 0);
+        slot = fileIndex;
+        func_80108440_filesel();
+        func_8010F65C_filesel();
+        func_8010F678_filesel(1);
+        func_8010D13C_filesel(fileIndex);
+        func_8010D660_filesel(fileIndex);
+        HuPrcSleep(3);
+        func_801065B8_filesel(fileIndex, &x, &y, &z);
+        if (y < 120.0f) {
+            x = z = 0.0f;
+            y = 120.0f;
+            func_8010F874_filesel(fileIndex);
+            func_80110B7C_filesel(fileIndex, x, y, z, 16);
+            HuAudFXPlay(0x2F0);
+            HuPrcSleep(16);
+        } else {
+            x = z = 0.0f;
+            y = 120.0f;
+            func_8010F874_filesel(slot);
+            func_80110B7C_filesel(slot, x, y, z, 32);
+            HuAudFXPlay(0x2F0);
+            HuPrcSleep(32);
+        }
+        func_801064DC_filesel(slot, x, y, z);
+        func_801064DC_filesel(slot + 3, x, y, z);
+        func_8010F844_filesel(slot);
+        HuVecCopyXYZ(&pos, x, y, z);
+        Hu3D3Dto2D(0, &pos, &screenPos);
+        HuWinPosSet(func_80107810_filesel(slot + 1), screenPos.x - 31.0f, screenPos.y);
+        func_80105FBC_filesel(slot + 13, screenPos.x, screenPos.y + 9.0f);
+        func_801066DC_filesel(slot);
+        func_801066DC_filesel(slot + 3);
+        func_8010F844_filesel(slot);
+        func_801076D0_filesel(4, (u32)D_80112A64_filesel);
+        func_80108C34_filesel();
+        func_801076D0_filesel(4, 0x2A0C);
+        func_8010DDC0_filesel(slot);
+        func_8010DFF4_filesel(slot);
+        while (1) {
+            if (D_800D5558_main[0] & A_BUTTON) {
+                break;
+            }
+            if (D_800D5558_main[0] & B_BUTTON) {
+                break;
+            }
+            HuPrcVSleep();
+        }
+        HuWinHomeClear(D_80114158_filesel[4].unk_00);
+        HuAudFXPlay(0x138);
+        result = func_8010CCA8_filesel(fileIndex);
+        if (result != -1) {
+            break;
+        }
+        func_8010DEEC_filesel();
+        func_8010E1B4_filesel();
+        func_8010F874_filesel(slot);
+        func_80110B7C_filesel(slot, -1000.0f, 1000.0f, 0.0f, 30);
+        HuAudFXPlay(0x2F0);
+        HuPrcSleep(30);
+        func_8010669C_filesel(0);
+        func_8010669C_filesel(3);
+        func_8010669C_filesel(1);
+        func_8010669C_filesel(4);
+        func_8010669C_filesel(2);
+        func_8010669C_filesel(5);
+        func_8010F874_filesel(0);
+        func_8010F874_filesel(1);
+        func_8010F874_filesel(2);
+        func_8010DD54_filesel();
+        func_8010DF58_filesel();
+        HuPrcVSleep();
+    }
+    D_800D09A8_main.boxNo = fileIndex;
+    func_800465F4_main(0);
+    D_800D09A8_main.boxNo = fileIndex;
+    func_80050CFC_main();
+    HuAudFXPlay(0x155);
+    func_8010F10C_filesel();
+    func_8010F874_filesel(fileIndex);
+    func_80111944_filesel(40);
+    func_80105F54_filesel(12);
+    func_8010684C_filesel(fileIndex, 0);
+    func_801067D0_filesel(fileIndex, 7);
+    HuPrcSleep(20);
+    WipeColorSet(255, 255, 255);
+    func_80112684_filesel();
+    WipeCreateOut(11, 20);
+    HuAudSeqFadeOut(20);
+    HuPrcSleep(20);
+    func_8010F5C8_filesel();
+    func_80106AAC_filesel();
+    func_80107574_filesel();
+    HuWinAllKill();
+    omOvlKill();
+    switch (result) {
+        case 0:
+            func_800465DC_main(1);
+            omOvlCallEx(0x77, 1, 0x91);
+            func_80112758_filesel();
+            break;
+        case 1:
+            func_800465DC_main(0);
+            func_80112758_filesel();
+            if (_CheckFlag(0x28)) {
+                omOvlCallEx(0x77, 0, 0x81);
+                omOvlHisChg(1, 0x7A, 0, 0x81);
+            } else {
+                story = GwStory.unk0;
+                if (D_80112A68_filesel[story] != 0xFF) {
+                    omOvlHisData *history = &omovlhis[++omovlhisidx];
+
+                    history->overlayID = 0x7A;
+                    history->event = 0;
+                    history->stat = 0x82;
+                    D_800CE20A_main = D_80112A68_filesel[story];
+                    omOvlCallEx(0x75, 0, 0x81);
+                } else {
+                    omOvlCallEx(0x77, 0, 0x81);
+                }
+                omOvlHisChg(1, 0x77, 0, 0x81);
+            }
+            break;
+        case 2: {
+            omOvlHisData *history;
+
+            func_80112758_filesel();
+            func_800465DC_main(0);
+            history = &omovlhis[++omovlhisidx];
+            history->overlayID = 0x7A;
+            history->event = 0;
+            history->stat = 0x82;
+            omOvlCallEx(0x78, 4, 0x81);
+            omOvlHisChg(1, 0x77, 0, 0x81);
+            break;
+        }
+        default:
+            while (1) {
+                HuPrcVSleep();
+            }
+            break;
+    }
+    omDelPrcObj(D_80114468_filesel);
+    while (1) {
+        HuPrcVSleep();
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_80107CF8_filesel);
+#endif
 
 void func_801083AC_filesel(void) {
     func_80105E48_filesel(1, 0x1F000D);
@@ -951,9 +1162,15 @@ void func_80108440_filesel(void) {
     func_80105EC0_filesel(3);
 }
 
+#ifdef NON_MATCHING
+const u8 D_80112A64_filesel[] = "";
+
+const u8 D_80112A68_filesel[] = { 2, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0xFF, 0xFF, 0xFF, 0xFF };
+#else
 INCLUDE_RODATA("asm/nonmatchings/overlays/filesel/516B10", D_80112A64_filesel);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/filesel/516B10", D_80112A68_filesel);
+#endif
 
 s32 func_8010846C_filesel(void) {
     s32 i;
@@ -3052,7 +3269,7 @@ s32 func_8010C9B4_filesel(s32 preset) {
 INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516B10", func_8010C9B4_filesel);
 #endif
 
-s32 func_8010CCA8_filesel(void) {
+s32 func_8010CCA8_filesel(s32 fileIndex) {
     s32 frame = 0;
     f32 positions[2][2] = { { 80.0f, 48.0f }, { 240.0f, 48.0f } };
     s32 startX;
@@ -4529,7 +4746,7 @@ void func_80111C30_filesel(void) {
     for (i = 0; i < 3; i++) {
         SLCurBoxNoSet(i);
         SLLoadGameStat();
-        if (GwCommon.unk_00 == UNK_VALUE && D_800D09A9_main == i) {
+        if (GwCommon.unk_00 == UNK_VALUE && D_800D09A8_main.boxNo == i) {
             D_801142D8_filesel.selected = i;
         }
         func_801122B0_filesel(i);
@@ -4698,7 +4915,7 @@ void func_80112584_filesel(s32 arg0) {
     SLCurBoxNoSet(arg0);
     SLLoadGameStat();
     bcopy(D_801142D8_filesel.files[arg0].name, GwCommon.fileName, 10);
-    D_800D09A9_main = arg0;
+    D_800D09A8_main.boxNo = arg0;
     SLCommonSet(1);
 }
 

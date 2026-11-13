@@ -23,7 +23,9 @@ extern s8 D_8010F566_thwomp_pull;
 extern omObjData *D_8010F568_thwomp_pull[2];
 extern s16 D_8010F570_thwomp_pull;
 extern f32 D_8010F588_thwomp_pull;
-extern u16 D_8010F590_thwomp_pull[10]; // sprite ids
+extern s16 D_8010F590_thwomp_pull[10]; // sprite ids
+extern Gfx D_8010ED90_thwomp_pull[];
+extern Gfx *gMainGfxPos;
 extern s32 D_8010F5A4_thwomp_pull;
 extern u8 D_8010F5A8_thwomp_pull;
 extern u8 D_8010F5B4_thwomp_pull[4]; // group of each player
@@ -157,7 +159,91 @@ void func_80106D5C_thwomp_pull(omObjData *object) {
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", func_80106E78_thwomp_pull);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", func_80107FF4_thwomp_pull);
+void func_80107FF4_thwomp_pull(s16 *left, s16 *top, s16 *right, s16 *bottom) {
+    s32 scissorLeft[2];
+    s32 scissorRight[2];
+    f32 scaleX[2];
+    f32 offsetX[2];
+    f32 scaleY[2];
+    f32 offsetY[2];
+    s32 dsdx[2];
+    s32 dtdy[2];
+    HuSprite_Unk84_Unk00_Struct *frame;
+    HuSprite *sprite;
+    f32 progress;
+    f32 remain;
+    f32 s0;
+    f32 t0;
+    f32 s1;
+    f32 t1;
+    s32 xl;
+    s32 yl;
+    s32 xh;
+    s32 yh;
+    s32 i;
+    s32 j;
+    s32 k;
+
+    for (i = 0; i < 2; i++) {
+        scaleX[i] = (right[i] - left[i]) / 160.0;
+        offsetX[i] = left[i];
+        dsdx[i] = (1.0 / scaleX[i]) * 1024.0;
+        scaleY[i] = (bottom[i] - top[i]) / 240.0;
+        offsetY[i] = top[i];
+        dtdy[i] = (1.0 / scaleY[i]) * 1024.0;
+        scissorLeft[i] = (i == 0) ? 0 : 180;
+        scissorRight[i] = (i != 0) ? 320 : 140;
+    }
+    if (D_8010F588_thwomp_pull > 0.0f && D_8010F566_thwomp_pull < 2) {
+        progress = D_8010F588_thwomp_pull;
+        remain = 1.0f - progress;
+        i = D_8010F566_thwomp_pull;
+        scissorLeft[i] = scissorLeft[i] * remain + progress * 0.0f;
+        scissorRight[i] = scissorRight[i] * remain + progress * 320.0f;
+        if (i == 0) {
+            scissorLeft[1] = scissorLeft[1] * remain + progress * 318.0f;
+            scissorRight[1] = scissorRight[1] * remain + progress * 320.0f;
+        } else {
+            scissorLeft[0] = scissorLeft[0] * remain + progress * 0.0f;
+            scissorRight[0] = scissorRight[0] * remain + progress * 2.0f;
+        }
+    }
+
+    gSPDisplayList(gMainGfxPos++, D_8010ED90_thwomp_pull);
+    gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
+    sprite = HuSprGet(D_800CD1DC_main[D_8010F590_thwomp_pull[0]].unk04, 0);
+    frame = &sprite->unk_84->unk00[sprite->unk_90];
+    gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->unk0C);
+    for (j = 0; j < 3; j++) {
+        t0 = j * 40;
+        t1 = t0 + 40.0f + ((j == 2) ? -0.75 : 1.0);
+        for (k = 0; k < 4; k++) {
+            s0 = k * 40;
+            s1 = s0 + 40.0f + ((k < 3) ? 1.0f : 0.0f);
+            gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, G_IM_SIZ_8b, 160, 120, (s32)s0, (s32)t0, (s32)s1,
+                               (s32)t1, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                               G_TX_NOLOD, G_TX_NOLOD);
+            for (i = 0; i < 2; i++) {
+                if (D_8010F588_thwomp_pull == 1.0f && i != D_8010F566_thwomp_pull) {
+                    continue;
+                }
+                xl = (s0 * scaleX[i] + offsetX[i]) * 4.0f;
+                yl = ((t0 - 1.0f) * scaleY[i] + offsetY[i]) * 4.0f;
+                xh = (s1 * scaleX[i] + offsetX[i]) * 4.0f;
+                yh = ((t1 - 1.0f) * scaleY[i] + offsetY[i]) * 4.0f;
+                if (xl > 1280 || yl > 960) {
+                    continue;
+                }
+                if (xh < 0 || yh < 0) {
+                    continue;
+                }
+                gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, scissorLeft[i], 0, scissorRight[i], 240);
+                gSPScisTextureRectangle(gMainGfxPos++, xl, yl, xh, yh, G_TX_RENDERTILE, s0 * 32.0f, t0 * 32.0f, dsdx[i],
+                                        dtdy[i]);
+            }
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", func_801089B4_thwomp_pull);
 

@@ -4,6 +4,7 @@
 #include "game/vibrator.h"
 #include "game/mallocblock.h"
 #include "game/pad.h"
+#include "game/saveload.h"
 
 // One entry per on-screen cursor; the object is the 3D cursor for that slot.
 typedef struct {
@@ -134,8 +135,12 @@ extern UnkOption D_80114F70_option[0x40];
 extern s16 D_80115A70_option;
 extern u16 D_80115A72_option;
 extern OptWinEntry D_80115A78_option[0x20];
-extern u8 D_800D09A8_main;
+extern SaveCommonBuf D_800D09A8_main;
 extern s32 D_801139D0_option;
+extern Vec D_8011382C_option[2];
+extern Vec D_80113844_option[2];
+extern Vec D_8011385C_option[2];
+extern Vec D_80113874_option[2];
 
 s32 func_80113204_option(s32 arg0);
 s32 func_8010FE00_option(void);
@@ -225,6 +230,8 @@ void func_80112A44_option(void);
 void func_80112B08_option(void);
 void func_80112E14_option(void);
 void func_8010FFDC_option(void);
+void func_8010E8E0_option(void);
+void func_8010F138_option(void);
 
 void func_801059D0_option(void) {
     omInitObjMan(0x40, 0x20);
@@ -1663,7 +1670,7 @@ void func_8010A8DC_option(s32 arg0, s32 *arg1, s32 *arg2) {
 
     switch (arg0) {
         case 0:
-            if (!(D_800D09A8_main & 1)) {
+            if (!(D_800D09A8_main.flags & 1)) {
                 val1 = 0xE0;
                 val2 = 0x38;
             } else {
@@ -1855,11 +1862,169 @@ s32 func_8010A940_option(s32 selection, s32 buttons) {
     return selection;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_80113CB8_option);
+s32 func_8010AF54_option(s32 selection, s32 buttons) {
+    s32 result = -1;
+    s32 choice;
+    s32 model;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_80113CD0_option);
+    switch (selection) {
+        case 0: {
+            Vec camera[2] = { { 0.0f, 264.9f, 164.26999f }, { 0.0f, 184.59999f, -138.7f } };
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010AF54_option);
+            func_80113258_option(6);
+            func_80113258_option(7);
+            func_801133A0_option(0);
+            func_80113440_option(0);
+            func_80106F88_option(&camera[0], &camera[1], 8);
+            HuPrcSleep(8);
+            func_801133EC_option(0);
+            do {
+                if (!(D_800D09A8_main.flags & 1)) {
+                    func_801133BC_option(0, 0x4E07);
+                    func_80113408_option(0, 0x4E07);
+                    choice = func_8011345C_option(0);
+                    if (choice == 0) {
+                        func_801133A0_option(0);
+                        HuPrcVSleep();
+                        D_800D09A8_main.flags |= 1;
+                        func_80000F30_main(1);
+                        RepeatVibrator(0, 5, 0, 5);
+                        func_80050CFC_main();
+                        func_80113440_option(0);
+                        func_801133EC_option(0);
+                        func_80113338_option(8, 11, 0, 8, 0);
+                        func_801132C8_option(21, 1);
+                        func_801132E4_option(21, 0);
+                        func_80113300_option(8);
+                        func_80113338_option(8, 10, 0, 8, 2);
+                        func_801132C8_option(4, 7);
+                        func_80113300_option(4);
+                        func_8011331C_option(4, 17, 0);
+                        func_801132E4_option(4, 40);
+                        func_801132AC_option(4, 4);
+                        HuAudFXPlay(0x2F5);
+                        func_8011331C_option(5, 19, 0);
+                        func_801132C8_option(5, 7);
+                        func_801132E4_option(5, 0);
+                        func_80113300_option(5);
+                        func_8011331C_option(5, 20, 2);
+                        func_801132AC_option(5, 2);
+                    }
+                } else {
+                    func_801133BC_option(0, 0x4E08);
+                    func_80113408_option(0, 0x4E08);
+                    choice = func_8011345C_option(0);
+                    if (choice == 0) {
+                        func_801133A0_option(0);
+                        HuPrcVSleep();
+                        D_800D09A8_main.flags &= ~1;
+                        func_80000F30_main(0);
+                        RepeatVibrator(0, 5, 0, 5);
+                        func_80050CFC_main();
+                        func_801133EC_option(0);
+                        func_80113338_option(8, 11, 0, 2, 0);
+                        func_801132C8_option(21, 1);
+                        func_801132E4_option(21, 0);
+                        func_80113300_option(8);
+                        func_80113338_option(8, 10, 0, 8, 2);
+                        func_801132C8_option(5, 7);
+                        func_80113300_option(5);
+                        func_8011331C_option(5, 19, 0);
+                        func_801132E4_option(5, 40);
+                        func_801132AC_option(5, 4);
+                        HuAudFXPlay(0x2F5);
+                        func_8011331C_option(4, 17, 0);
+                        func_801132C8_option(4, 7);
+                        func_801132E4_option(4, 0);
+                        func_80113300_option(4);
+                        func_8011331C_option(4, 18, 2);
+                        func_801132AC_option(4, 2);
+                    }
+                }
+                func_8010B654_option(selection, 0);
+            } while (choice == 0);
+            func_80113408_option(0, 0x4E06);
+            {
+                Vec camera[2] = { { 0.0f, 264.9f, 364.27f }, { 0.0f, 184.59999f, 61.300003f } };
+
+                func_80113440_option(0);
+                func_80106F88_option(&camera[0], &camera[1], 8);
+            }
+            HuPrcSleep(8);
+            func_80113384_option(0);
+            func_80113424_option(0);
+            func_8011323C_option(6);
+            func_8011323C_option(7);
+            return result;
+        }
+        case 1:
+            return result;
+        case 2:
+            func_801133A0_option(0);
+            func_80106F88_option(&D_8011382C_option[0], &D_8011382C_option[1], 8);
+            HuAudFXPlay(0x2EA);
+            func_801132E4_option(2, 0);
+            func_801132C8_option(2, 7);
+            func_801132AC_option(2, 0);
+            func_80113300_option(2);
+            func_80113440_option(0);
+            func_8004A9DC_main(0x60);
+            func_8010E8E0_option();
+            func_8004A9DC_main(0x7F);
+            func_80106F88_option(&D_80113844_option[0], &D_80113844_option[1], 8);
+            func_801132E4_option(2, 40);
+            func_801132C8_option(2, 7);
+            func_801132AC_option(2, 4);
+            model = func_80113218_option(2);
+            while (Hu3DData[(s16)model].motTime != 0.0f) {
+                HuPrcVSleep();
+            }
+            func_80113424_option(0);
+            func_80113384_option(0);
+            break;
+        case 3:
+            func_80113440_option(0);
+            func_801133A0_option(0);
+            func_80106F88_option(&D_8011385C_option[0], &D_8011385C_option[1], 8);
+            HuAudFXPlay(0x2EA);
+            func_801132E4_option(3, 0);
+            func_801132C8_option(3, 7);
+            func_801132AC_option(3, 0);
+            func_80113300_option(3);
+            func_8010F138_option();
+            HuAudSeqPlay(0x4A);
+            func_80106F88_option(&D_80113874_option[0], &D_80113874_option[1], 8);
+            func_801132E4_option(3, 40);
+            func_801132C8_option(3, 7);
+            func_801132AC_option(3, 4);
+            model = func_80113218_option(3);
+            while (Hu3DData[(s16)model].motTime != 0.0f) {
+                HuPrcVSleep();
+            }
+            func_80113424_option(0);
+            func_80113384_option(0);
+            break;
+        case 4:
+        case 5:
+            func_801133A0_option(0);
+            func_80113408_option(0, 0x4E0C);
+            if (func_8011345C_option(0) != 0) {
+                func_80113408_option(0, 0x4E0B);
+                func_80113384_option(0);
+                return -1;
+            }
+            result = selection;
+            break;
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        default:
+            result = selection;
+            break;
+    }
+    return result;
+}
 
 void func_8010B654_option(s32 selection, s32 buttons) {
     s32 x, y;

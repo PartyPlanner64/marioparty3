@@ -110,8 +110,18 @@ typedef struct MarioPuzzlePartyMatch {
     /* 0x08 */ s32 type;
 } MarioPuzzlePartyMatch; // sizeof 0xC
 
+// colour and scale of the score display for one chain length
+typedef struct MarioPuzzlePartyChainColor {
+    /* 0x00 */ s32 r;
+    /* 0x04 */ s32 g;
+    /* 0x08 */ s32 b;
+    /* 0x0C */ f32 scale;
+} MarioPuzzlePartyChainColor; // sizeof 0x10
+
 // screen origin of each player's board
 extern s32 D_80110080_marios_puzzle_party[4][2];
+// indexed by chain length; entry 0 is not a colour
+extern MarioPuzzlePartyChainColor D_801100B0_marios_puzzle_party[9];
 extern D_80111B50_vine_with_me_Struct D_80110140_marios_puzzle_party;
 extern MarioPuzzlePartySparkleInit D_80110168_marios_puzzle_party[8];
 
@@ -141,6 +151,9 @@ extern s16 D_801160AE_marios_puzzle_party;
 extern s16 D_801160B2_marios_puzzle_party;
 extern s16 D_801160D2_marios_puzzle_party;
 extern s16 D_801160D6_marios_puzzle_party;
+extern s16 D_801160DA_marios_puzzle_party;
+extern s16 D_801160DE_marios_puzzle_party;
+extern s16 D_801160E2_marios_puzzle_party;
 
 // set once the minigame is ending
 extern s32 D_801160E8_marios_puzzle_party;
@@ -681,7 +694,151 @@ void func_80107BB0_marios_puzzle_party(s32 board) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1F_marios_puzzle_party/1F3B90", func_80107CBC_marios_puzzle_party);
+void func_80107CBC_marios_puzzle_party(void) {
+    s32 lastChain = -1;
+    s32 group;
+    s32 r = 0;
+    s32 g = 0;
+    s32 b = 0;
+    f32 scale = 0.0f;
+    MarioPuzzlePartyChainColor *color = NULL;
+    s32 board = (s32)HuPrcCurrentGet()->user_data;
+    s32 chain;
+    s32 digits;
+    s32 digit;
+    s32 divisor;
+    s32 started;
+    s32 flash;
+    s32 alpha;
+    s32 x;
+    s32 i;
+
+    group = HuSprGrpCreate(6, 5);
+    HuSprGrpMemberSet(group, 1, D_801160DE_marios_puzzle_party, 0);
+    func_800550F4_main(group, 1, 0);
+    HuSprPosSet(group, 1, 0, 0);
+    HuSprAttrReset(group, 1, 0xFFFF);
+    HuSprAttrSet(group, 1, 0x1008);
+    HuSprPriSet(group, 1, 0x100);
+    HuSprColorSet(group, 1, 255, 255, 255);
+    HuSprTPLvlSet(group, 1, 255);
+    func_800554C4_main(group, 1, 0);
+    for (i = 2; i < 5; i++) {
+        HuSprGrpMemberSet(group, i, D_801160DA_marios_puzzle_party, 0);
+        func_800550F4_main(group, i, 0);
+        HuSprPosSet(group, i, 0, 0);
+        HuSprAttrReset(group, i, 0xFFFF);
+        HuSprAttrSet(group, i, 0x1008);
+        HuSprPriSet(group, i, 0x100);
+        HuSprColorSet(group, i, 255, 255, 255);
+        HuSprTPLvlSet(group, i, 255);
+        func_800554C4_main(group, i, 0);
+    }
+    HuSprGrpMemberSet(group, 5, D_801160E2_marios_puzzle_party, 0);
+    func_800550F4_main(group, 5, 0);
+    HuSprPosSet(group, 5, 0, 0);
+    HuSprAttrReset(group, 5, 0xFFFF);
+    HuSprAttrSet(group, 5, 0x1008);
+    HuSprPriSet(group, 5, 0x100);
+    HuSprColorSet(group, 5, 255, 255, 255);
+    HuSprTPLvlSet(group, 5, 255);
+    func_800554C4_main(group, 5, 0);
+    HuSprGrpMemberSet(group, 0, D_801160DE_marios_puzzle_party, 0);
+    HuSprAttrSet(group, 0, 0x8000);
+    func_800554C4_main(group, 0, -1);
+    HuSprPosSet(group, 0, D_80110080_marios_puzzle_party[board][0] + 42, D_80110080_marios_puzzle_party[board][1] - 70);
+    HuSprScaleSet(group, 0, scale, scale);
+    flash = TRUE;
+    while (TRUE) {
+        if (D_80116138_marios_puzzle_party[board] == 0 || D_80116178_marios_puzzle_party[board] == 1) {
+            break;
+        }
+        chain = D_80116108_marios_puzzle_party[board];
+        if (chain > 8) {
+            chain = 8;
+        }
+        color = &D_801100B0_marios_puzzle_party[chain];
+        r = color->r;
+        g = color->g;
+        b = color->b;
+        scale = color->scale;
+        if (chain == 1 && GwPlayer[0].coin == 11) {
+            r = GwPlayer[1].coin;
+            g = GwPlayer[2].coin;
+            b = GwPlayer[3].coin;
+        }
+        for (i = 10, digits = 1; i <= 1000; i *= 10) {
+            if (i < D_80116148_marios_puzzle_party[board]) {
+                digits++;
+            }
+        }
+        x = -(digits * 18 + 54) / 2 + 9;
+        HuSprPosSet(group, 1, x, 0);
+        HuSprScaleSet(group, 1, scale, scale);
+        if (flash) {
+            HuSprTPLvlSet(group, 1, 255);
+            HuSprColorSet(group, 1, r, g, b);
+        } else {
+            HuSprTPLvlSet(group, 1, 128);
+        }
+        for (i = 2; i < 5; i++) {
+            HuSprAttrSet(group, i, 0x8000);
+        }
+        for (i = 4, divisor = 100, started = FALSE; i >= 2; divisor /= 10) {
+            digit = (D_80116148_marios_puzzle_party[board] / divisor) % 10;
+            if (digit > 0 || divisor == 1 || started) {
+                started = TRUE;
+                HuSprAttrReset(group, i, 0x8000);
+                HuSprGrpMemberSet(group, i, D_801160DA_marios_puzzle_party, digit);
+                x += 18;
+                HuSprPosSet(group, i, x, 0);
+                HuSprScaleSet(group, i, scale, scale);
+                if (flash) {
+                    HuSprTPLvlSet(group, i, 255);
+                    HuSprColorSet(group, i, r, g, b);
+                } else {
+                    HuSprTPLvlSet(group, i, 128);
+                }
+            }
+            i--;
+        }
+        x += 27;
+        HuSprPosSet(group, 5, x, 0);
+        HuSprScaleSet(group, 5, scale, scale);
+        if (flash) {
+            HuSprTPLvlSet(group, 5, 255);
+            HuSprColorSet(group, 5, r, g, b);
+        } else {
+            HuSprTPLvlSet(group, 5, 128);
+        }
+        flash = (flash + 1) & 1;
+        if (lastChain != D_80116108_marios_puzzle_party[board]) {
+            lastChain = D_80116108_marios_puzzle_party[board];
+            D_80116128_marios_puzzle_party[board] += D_80116148_marios_puzzle_party[board];
+        }
+        HuPrcVSleep();
+    }
+    for (alpha = 255; alpha > 0; alpha -= 10) {
+        scale += 0.15f;
+        HuSprTPLvlSet(group, 1, alpha);
+        HuSprScaleSet(group, 1, color->scale, scale);
+        HuSprColorSet(group, 1, r, g, b);
+        for (i = 2; i < 5; i++) {
+            HuSprTPLvlSet(group, i, alpha);
+            HuSprScaleSet(group, i, color->scale, scale);
+            HuSprColorSet(group, i, r, g, b);
+        }
+        HuSprTPLvlSet(group, 5, alpha);
+        HuSprScaleSet(group, 5, color->scale, scale);
+        HuSprColorSet(group, 5, r, g, b);
+        HuPrcVSleep();
+    }
+    HuSprGrpKill(group);
+    omDelPrcObj(NULL);
+    while (TRUE) {
+        HuPrcVSleep();
+    }
+}
 
 void func_80108568_marios_puzzle_party(s32 board, s32 arg1) {
     MarioPuzzlePartyPathSpace *space;

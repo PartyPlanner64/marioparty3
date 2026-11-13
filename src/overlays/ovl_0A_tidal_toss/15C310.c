@@ -3,6 +3,8 @@
 #include "game/mallocblock.h"
 #include "gcc/memory.h"
 
+#define TIDAL_TOSS_WORK(obj) ((TidalTossWork *)((func_800E1BA8_minigame_ObjData *)(obj)->data)->unk158)
+
 typedef struct {
     f32 unk00;
     f32 unk04;
@@ -85,6 +87,11 @@ extern s16 D_8010AF38_tidal_toss;
 extern s16 D_8010AF3A_tidal_toss;
 extern TidalTossSpriteWork D_8010AFE8_tidal_toss[3];
 extern D_80111B50_vine_with_me_Struct D_8010AEB0_tidal_toss;
+extern s32 D_8010AA8C_tidal_toss;
+extern u16 D_8010AA90_tidal_toss;
+extern s32 D_8010AA94_tidal_toss;
+extern s16 D_8010ADE0_tidal_toss;
+extern void *D_8010AF3C_tidal_toss;
 
 void func_80108638_tidal_toss(omObjData *);
 void func_80105B04_tidal_toss(omObjData *object);
@@ -338,7 +345,164 @@ void func_80106514_tidal_toss(omObjData *object) {
     object->func = NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0A_tidal_toss/15C310", func_801065AC_tidal_toss);
+void func_801065AC_tidal_toss(omObjData *object) {
+    s8 chars[4];
+    TidalTossStruct *entry;
+    TidalTossSpriteWork *spriteWork;
+    HuSprite *sprite;
+    s16 *spriteGroup;
+    s32 i;
+    s32 active;
+    s32 count;
+
+    switch (D_8010AF40_tidal_toss) {
+        case 0:
+            Hu3DBGColorSet(0, 0, 0);
+            WipeCreateIn(0xFF, 16);
+            GMesCreate(4);
+            HuAudFXPlay(0x42E);
+            D_8010AA8C_tidal_toss = 45;
+            D_8010AA90_tidal_toss = 900;
+            D_8010AF40_tidal_toss++;
+            D_8010ADE0_tidal_toss = 60;
+            // fallthrough
+        case 1:
+            if (--D_8010ADE0_tidal_toss == -1) {
+                HuAudSeqPlay(0x2F);
+            }
+            if (--D_8010AA8C_tidal_toss == -1) {
+                func_8004AB0C_main(45);
+            }
+            if (GMesStatGet() == 0) {
+                func_800E6F0C_minigame(2);
+                D_8010AF40_tidal_toss++;
+                GMesCreate(0x1A, (D_8010AA90_tidal_toss + 29) / 30, 160, 32);
+                HuAudFXPlay(0xE);
+            }
+            break;
+        case 2:
+            active = 0;
+            for (i = 0; i < 4; i++) {
+                if (i != D_8010AA70_tidal_toss) {
+                    active += TIDAL_TOSS_WORK(D_800EC598_minigame[i])->unk2F;
+                }
+            }
+            if (active == 0) {
+                D_8010AA94_tidal_toss = D_8010AA70_tidal_toss;
+                D_8010AF40_tidal_toss = 3;
+            }
+            D_8010AA90_tidal_toss--;
+            func_8003F578_main((D_8010AA90_tidal_toss + 29) / 30);
+            if (D_8010AA90_tidal_toss == 0) {
+                D_8010AF40_tidal_toss = 3;
+            }
+            break;
+        case 3:
+            if (D_8010AA94_tidal_toss == D_8010AA70_tidal_toss) {
+                TIDAL_TOSS_WORK(D_800EC598_minigame[D_8010AA94_tidal_toss])->unk2F = 1;
+            } else {
+                for (i = 0; i < 4; i++) {
+                    if (i != D_8010AA70_tidal_toss) {
+                        TIDAL_TOSS_WORK(D_800EC598_minigame[i])->unk2F = 1;
+                    }
+                }
+            }
+            func_8003F5C0_main();
+            GMesCreate(0xF);
+            HuAudSeqFadeOut(120);
+            D_8010AF40_tidal_toss++;
+            D_8010AA8C_tidal_toss = 15;
+            break;
+        case 4:
+            if (GMesStatGet() == 0) {
+                if (--D_8010AA8C_tidal_toss == 0) {
+                    if (D_8010AA94_tidal_toss == D_8010AA70_tidal_toss) {
+                        GMesCreate(0x16, TIDAL_TOSS_WORK(D_800EC598_minigame[D_8010AA94_tidal_toss])->unk2C);
+                        HuAudSeqPlay(0x65);
+                    } else {
+                        for (i = 0, count = 0; i < 4; i++) {
+                            if (i != D_8010AA70_tidal_toss) {
+                                chars[count] = TIDAL_TOSS_WORK(D_800EC598_minigame[i])->unk2C;
+                                count++;
+                            }
+                        }
+                        GMesCreate(0x22, chars[0], chars[1], chars[2]);
+                        HuAudSeqPlay(0x66);
+                    }
+                    D_8010AA8C_tidal_toss = 15;
+                    D_8010AF40_tidal_toss++;
+                    func_800E6F0C_minigame(4);
+                }
+            }
+            break;
+        case 5:
+            if (GMesStatGet() == 0) {
+                if (--D_8010AA8C_tidal_toss == 0) {
+                    D_8010AF40_tidal_toss++;
+                }
+            }
+            break;
+        case 6:
+            if (D_8010AA8C_tidal_toss != 0) {
+                if (--D_8010AA8C_tidal_toss == 0) {
+                    D_8010AF40_tidal_toss++;
+                }
+            } else {
+                func_800E6F0C_minigame(5);
+                D_8010AA8C_tidal_toss = 16;
+                WipeCreateOut(0, D_8010AA8C_tidal_toss);
+                HuAudSeqFadeOut(D_8010AA8C_tidal_toss);
+                func_8004AB0C_main((s16)D_8010AA8C_tidal_toss);
+            }
+            break;
+        case 7:
+            HuMemFree(D_8010AF3C_tidal_toss);
+            HuAudSeqStop();
+            omOvlReturnEx(1);
+            break;
+    }
+
+    entry = D_8010AF48_tidal_toss;
+    for (i = 0; i < 8; i++) {
+        if (entry->unk10 != 0) {
+            entry->unk00 += entry->unk08;
+            if (entry->unk00 >= 900.0) {
+                entry->unk10 = 0;
+                entry->unk00 = 0.0f;
+            }
+            if (entry->unk00 >= 160.0) {
+                entry->unk08 = (1.15 - entry->unk10 * 0.15) * 20.0;
+            }
+        }
+        entry++;
+    }
+
+    spriteWork = D_8010AFE8_tidal_toss;
+    for (i = 0; i < 3; i++) {
+        spriteWork->unk04 = spriteWork->unk00 + sindf(spriteWork->unk14) * 8.0;
+        spriteWork->unk08 = spriteWork->unk02 + sindf(spriteWork->unk18) * 6.0;
+        spriteWork->unk14 += spriteWork->unk0C;
+        if (spriteWork->unk14 >= 360.0) {
+            spriteWork->unk14 -= 360.0;
+        }
+        spriteWork->unk18 += spriteWork->unk10;
+        if (spriteWork->unk18 >= 360.0) {
+            spriteWork->unk18 -= 360.0;
+        }
+        spriteGroup = &D_8010AEEC_tidal_toss;
+        sprite = HuSprGet(*spriteGroup, i);
+        sprite->pos.x = spriteWork->unk04;
+        sprite->pos.y = spriteWork->unk08;
+        HuSprScaleSet(*spriteGroup, i, spriteWork->unk0C + sindf(spriteWork->unk14 * 6.0) * 0.1,
+                      spriteWork->unk10 - sindf(spriteWork->unk14 * 6.0) * 0.1);
+        spriteWork++;
+    }
+
+    if (D_800D530C_main == 1 && WipeStatGet() == 0) {
+        D_8010AF40_tidal_toss = 6;
+        D_8010AA8C_tidal_toss = 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0A_tidal_toss/15C310", func_80106D24_tidal_toss);
 

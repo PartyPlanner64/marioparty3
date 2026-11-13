@@ -56,7 +56,7 @@ typedef struct {
 } HideAndSneakSoloCpu;    // sizeof 0x08
 
 typedef struct {
-    /* 0x00 */ u8 count;
+    /* 0x00 */ s8 count;
     /* 0x01 */ s8 slots[3];
 } HideAndSneakSpot; // sizeof 0x04
 
@@ -86,8 +86,17 @@ extern s32 D_800A178C_main[][6];
 extern u8 D_800D6A90_main;
 extern s16 D_8010C370_hide_and_sneak[5][4];
 extern s32 D_8010C398_hide_and_sneak[8];
+extern s8 D_8010C3B8_hide_and_sneak[][3];
+extern f32 D_8010C3CC_hide_and_sneak[3];
+extern f32 D_8010C3D8_hide_and_sneak[3];
 extern f32 D_8010C3E4_hide_and_sneak[4];
 extern f32 D_8010C3F4_hide_and_sneak[4];
+extern s8 D_8010C404_hide_and_sneak[][3];
+extern f32 D_8010C410_hide_and_sneak[][3];
+extern s8 (*D_8010C434_hide_and_sneak[4])(omObjData *);
+extern s8 (*D_8010C444_hide_and_sneak[4])(omObjData *);
+extern s8 (*D_8010C454_hide_and_sneak[4])(omObjData *);
+extern s8 (*D_8010C464_hide_and_sneak[4])(omObjData *);
 extern s16 D_8010C474_hide_and_sneak[4];
 extern const char *D_8010C47C_hide_and_sneak[4];
 extern const char *D_8010C48C_hide_and_sneak[4];
@@ -99,6 +108,7 @@ extern HideAndSneakCamera D_8010C4C0_hide_and_sneak[2];
 extern const s16 D_8010C754_hide_and_sneak[];
 extern HideAndSneakSprite D_8010C760_hide_and_sneak[4];
 extern s8 D_8010C780_hide_and_sneak;
+extern s8 D_8010C781_hide_and_sneak;
 extern s8 D_8010C782_hide_and_sneak;
 extern HideAndSneakUnk788 D_8010C788_hide_and_sneak[4];
 // Work slots: [0] obj 0x1F4, [1] solo player, [2..4] team players (by work[1]), [5..8] and [9..12] per-player objects,
@@ -106,21 +116,24 @@ extern HideAndSneakUnk788 D_8010C788_hide_and_sneak[4];
 extern HideAndSneakWork D_8010C7A0_hide_and_sneak[50];
 extern HideAndSneakSoloCpu D_8010E168_hide_and_sneak;
 extern s8 D_8010E170_hide_and_sneak;
+extern s16 D_8010E172_hide_and_sneak;
 extern s8 D_8010E174_hide_and_sneak;
 extern s8 D_8010E175_hide_and_sneak[4];
 extern s16 D_8010E17A_hide_and_sneak;
 extern s8 D_8010E17C_hide_and_sneak;
-extern u8 D_8010E17D_hide_and_sneak[3];
+extern s8 D_8010E17D_hide_and_sneak[3];
 extern s8 D_8010E180_hide_and_sneak;
+extern s8 D_8010E181_hide_and_sneak;
 extern s8 D_8010E182_hide_and_sneak[4];
-extern u8 D_8010E186_hide_and_sneak;
+extern s8 D_8010E186_hide_and_sneak;
 extern HideAndSneakSpot D_8010E188_hide_and_sneak[4];
 extern HuSprite_Unk84_Struct *D_8010E198_hide_and_sneak[4];
-extern u8 D_8010E1A8_hide_and_sneak;
-extern u8 D_8010E1A9_hide_and_sneak[3];
+extern s8 D_8010E1A8_hide_and_sneak;
+extern s8 D_8010E1A9_hide_and_sneak[3];
 extern s8 D_8010E1AC_hide_and_sneak;
 extern s8 D_8010E1AD_hide_and_sneak;
-extern u8 D_8010E1AE_hide_and_sneak[3];
+extern s8 D_8010E1AE_hide_and_sneak[3];
+extern s8 D_8010E1B1_hide_and_sneak;
 extern s8 D_8010E1B2_hide_and_sneak;
 extern s8 D_8010E1B3_hide_and_sneak;
 
@@ -269,7 +282,74 @@ void func_80105D94_hide_and_sneak(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     osSyncPrintf("Rot  = %f\n", 360.0f - rot);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_06_hide_and_sneak/137C00", func_80105EC4_hide_and_sneak);
+void func_80105EC4_hide_and_sneak(s16 conNo) {
+    s16 i;
+
+    if (conNo < 0 || conNo >= 4) {
+        osSyncPrintf("\n ConNo False! \n");
+        return;
+    }
+    if ((u16)D_800CDA7C_main[conNo] & D_JPAD) {
+        for (i = 0; i < 2; i++) {
+            CRotM[i].x = func_801059BC_hide_and_sneak(CRotM[i].x, 1.0f);
+        }
+    }
+    if ((u16)D_800CDA7C_main[GwPlayer[0].pad] & U_JPAD) {
+        for (i = 0; i < 2; i++) {
+            CRotM[i].x = func_801059BC_hide_and_sneak(CRotM[i].x, -1.0f);
+        }
+    }
+    if ((u16)D_800CDA7C_main[conNo] & L_JPAD) {
+        for (i = 0; i < 2; i++) {
+            CRotM[i].y = func_801059BC_hide_and_sneak(CRotM[i].y, 1.0f);
+        }
+    }
+    if ((u16)D_800CDA7C_main[conNo] & R_JPAD) {
+        for (i = 0; i < 2; i++) {
+            CRotM[i].y = func_801059BC_hide_and_sneak(CRotM[i].y, -1.0f);
+        }
+    }
+    if ((u16)D_800CDA7C_main[conNo] & A_BUTTON) {
+        for (i = 0; i < 2; i++) {
+            CZoomM[i] += 10.0f;
+        }
+    }
+    if ((u16)D_800CDA7C_main[conNo] & B_BUTTON) {
+        for (i = 0; i < 2; i++) {
+            CZoomM[i] -= 10.0f;
+        }
+    }
+    if ((u16)D_800CDA7C_main[conNo] & L_CBUTTONS) {
+        for (i = 0; i < 2; i++) {
+            CenterM[i].x -= 10.0f;
+        }
+    }
+    if ((u16)D_800CDA7C_main[conNo] & R_CBUTTONS) {
+        for (i = 0; i < 2; i++) {
+            CenterM[i].x += 10.0f;
+        }
+    }
+    if ((u16)D_800CDA7C_main[conNo] & U_CBUTTONS) {
+        for (i = 0; i < 2; i++) {
+            CenterM[i].y += 10.0f;
+        }
+    }
+    if ((u16)D_800CDA7C_main[conNo] & D_CBUTTONS) {
+        for (i = 0; i < 2; i++) {
+            CenterM[i].y -= 10.0f;
+        }
+    }
+    if (D_800D5558_main[conNo] & Z_TRIG) {
+        osSyncPrintf("\n");
+        for (i = 0; i < 2; i++) {
+            osSyncPrintf("CameraNo / %d   Zoom / %f\n", i, CZoomM[i]);
+            osSyncPrintf("Rot:   X / %f   Y / %f   Z / %f\n", CRotM[i].x, CRotM[i].y, CRotM[i].z);
+            osSyncPrintf("Center:   X / %f   Y / %f   Z / %f\n", CenterM[i].x, CenterM[i].y, CenterM[i].z);
+        }
+    }
+}
+
+const char D_8010C5B4_hide_and_sneak[] = "";
 
 s32 func_801064F4_hide_and_sneak(s32 arg0) {
     return rand8() % arg0;
@@ -284,7 +364,7 @@ void func_801065B0_hide_and_sneak(omObjData *arg0, u16 arg1, s16 arg2, s16 arg3,
     Hu3DMotionShiftSet(arg0->model[0], Hu3DData[arg0->motion[arg1]].motId, arg2, arg3, arg4);
 }
 
-s32 func_8010661C_hide_and_sneak(omObjData *object, f32 target) {
+s8 func_8010661C_hide_and_sneak(omObjData *object, f32 target) {
     f32 current = object->rot.y;
     f32 diff = target - current;
 
@@ -376,7 +456,7 @@ void func_8010699C_hide_and_sneak(omObjData *object, s8 motion) {
     }
 }
 
-s32 func_80106ABC_hide_and_sneak(omObjData *object) {
+s8 func_80106ABC_hide_and_sneak(omObjData *object) {
     HideAndSneakSoloCpu *cpu = &D_8010E168_hide_and_sneak;
 
     if (cpu->unk_00 != 0) {
@@ -421,7 +501,201 @@ s32 func_80106ABC_hide_and_sneak(omObjData *object) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_06_hide_and_sneak/137C00", func_80106D10_hide_and_sneak);
+void func_80106D10_hide_and_sneak(omObjData *object) {
+    HideAndSneakWork *work = &D_8010C7A0_hide_and_sneak[1];
+    s16 pad = object->work[3];
+    s16 x;
+    s16 i;
+
+    if (D_8010E180_hide_and_sneak != 2) {
+        if (D_8010E180_hide_and_sneak >= 3) {
+            if (D_8010E180_hide_and_sneak >= 5) {
+                if (D_8010E1AD_hide_and_sneak == 3) {
+                    func_8010699C_hide_and_sneak(object, 6);
+                } else {
+                    func_8010699C_hide_and_sneak(object, 7);
+                }
+            } else {
+                func_8010699C_hide_and_sneak(object, 0);
+            }
+        }
+        return;
+    }
+    switch (D_8010C780_hide_and_sneak) {
+        case 0:
+            work->unk_0A = 0;
+            D_8010E168_hide_and_sneak.unk_01 = 0;
+            D_8010E17C_hide_and_sneak = -1;
+            func_8010699C_hide_and_sneak(object, 3);
+            break;
+        case 1:
+            break;
+        case 2:
+            if (func_8010661C_hide_and_sneak(object, 0.0f)) {
+                func_8010699C_hide_and_sneak(object, 1);
+            } else {
+                func_8010699C_hide_and_sneak(object, 0);
+            }
+            break;
+        case 3:
+            if (D_8010E1AD_hide_and_sneak == 3) {
+                D_8010C780_hide_and_sneak = 6;
+                D_8010E174_hide_and_sneak = 2;
+                D_8010E17A_hide_and_sneak = 0;
+                break;
+            }
+            work->unk_0C = func_80106ABC_hide_and_sneak(object);
+            if (work->unk_08 <= 0) {
+                if (D_800CBB6E_main[pad] < -10 && -((D_8010C782_hide_and_sneak - 1) * 65) < object->trans.x) {
+                    work->unk_08 = 1;
+                    object->rot.y = 270.0f;
+                    func_8010699C_hide_and_sneak(object, 1);
+                }
+            }
+            if (work->unk_08 >= 0) {
+                if (D_800CBB6E_main[pad] > 10 && object->trans.x < (D_8010C782_hide_and_sneak - 1) * 65) {
+                    work->unk_08 = -1;
+                    object->rot.y = 90.0f;
+                    func_8010699C_hide_and_sneak(object, 1);
+                }
+            }
+            x = object->trans.x;
+            if (work->unk_08 == 0) {
+                if ((D_8010C782_hide_and_sneak == 4 && abs(x) == 195) || (D_8010C782_hide_and_sneak == 3 && abs(x) == 130) || (D_8010C782_hide_and_sneak == 2 && abs(x) == 65) || abs(D_800CBB6E_main[pad]) <= 10) {
+                    if (func_8010661C_hide_and_sneak(object, 0.0f)) {
+                        func_8010699C_hide_and_sneak(object, 1);
+                    } else {
+                        func_8010699C_hide_and_sneak(object, 0);
+                    }
+                }
+            }
+            for (i = 0; i < 4; i++) {
+                if (x == D_8010C370_hide_and_sneak[D_8010C782_hide_and_sneak][i]) {
+                    if ((D_800D5558_main[pad] & 0x8000) || work->unk_0C != 0) {
+                        D_8010E17C_hide_and_sneak = D_8010E175_hide_and_sneak[i];
+                        D_8010E170_hide_and_sneak = 1;
+                        work->unk_08 = 0;
+                        break;
+                    }
+                }
+            }
+            break;
+        case 4:
+            if (D_8010E1B2_hide_and_sneak != 0) {
+                D_8010C780_hide_and_sneak = 5;
+                break;
+            }
+            work->unk_08 = 0;
+            if (D_8010E17C_hide_and_sneak != -1) {
+                if (work->unk_0A < 15) {
+                    if (object->rot.y == 0.0f) {
+                        work->unk_0A = 15;
+                        break;
+                    }
+                    func_8010661C_hide_and_sneak(object, 0.0f);
+                    func_8010699C_hide_and_sneak(object, 1);
+                } else if (work->unk_0A == 15) {
+                    HideAndSneakWork *works = &D_8010C7A0_hide_and_sneak[9];
+
+                    func_80106548_hide_and_sneak(object, 2, 0);
+                    work->unk_06 = 2;
+                    Hu3DMotionSpeedSet(object->model[0], 0.5f);
+                    Hu3DMotionSpeedSet(works[D_8010E17C_hide_and_sneak].obj->model[0], 1.0f);
+                } else if (work->unk_0A == 20) {
+                    HuAudFXPlay(0x329);
+                } else if (work->unk_0A == 24) {
+                    Hu3DMotionSpeedSet(object->model[0], -0.5f);
+                } else if (work->unk_0A >= 32) {
+                    if (work->unk_0A < 50) {
+                        if (func_8010661C_hide_and_sneak(object, 180.0f)) {
+                            func_8010699C_hide_and_sneak(object, 1);
+                        }
+                    } else if (work->unk_0A == 50) {
+                        D_8010E1B3_hide_and_sneak = 1;
+                    } else if (work->unk_0A == 65) {
+                        if (D_8010E188_hide_and_sneak[D_8010E17C_hide_and_sneak].count != 0) {
+                            func_8010699C_hide_and_sneak(object, 4);
+                        } else {
+                            func_8010699C_hide_and_sneak(object, 5);
+                        }
+                    }
+                }
+                if (work->unk_0A == 95) {
+                    D_8010E170_hide_and_sneak = 1;
+                }
+            } else {
+                if (func_8010661C_hide_and_sneak(object, 180.0f)) {
+                    D_8010E1B3_hide_and_sneak = 2;
+                    func_8010699C_hide_and_sneak(object, 1);
+                } else {
+                    func_8010699C_hide_and_sneak(object, 5);
+                }
+                if (work->unk_0A == 70) {
+                    D_8010E170_hide_and_sneak = 1;
+                }
+            }
+            work->unk_0A++;
+            break;
+        case 5:
+            if (object->trans.x > 0.0f) {
+                if (func_8010661C_hide_and_sneak(object, 270.0f)) {
+                    func_8010699C_hide_and_sneak(object, 1);
+                } else {
+                    object->trans.x -= 6.5;
+                }
+            }
+            if (object->trans.x < 0.0f) {
+                if (func_8010661C_hide_and_sneak(object, 90.0f)) {
+                    func_8010699C_hide_and_sneak(object, 1);
+                } else {
+                    object->trans.x += 6.5;
+                }
+            }
+            if (object->trans.x == 0.0f) {
+                if (D_8010E1AD_hide_and_sneak == 3 || D_8010E1B2_hide_and_sneak != 0 || D_8010E174_hide_and_sneak == 2) {
+                    if (func_8010661C_hide_and_sneak(object, 0.0f)) {
+                        func_8010699C_hide_and_sneak(object, 1);
+                    } else {
+                        func_8010699C_hide_and_sneak(object, 0);
+                        D_8010E170_hide_and_sneak |= 1;
+                    }
+                } else {
+                    if (func_8010661C_hide_and_sneak(object, 180.0f)) {
+                        func_8010699C_hide_and_sneak(object, 1);
+                    } else {
+                        func_8010699C_hide_and_sneak(object, 0);
+                        D_8010E170_hide_and_sneak |= 1;
+                    }
+                }
+            }
+            break;
+        case 6:
+            break;
+        case 7:
+            break;
+    }
+    if (work->unk_08 > 0) {
+        object->trans.x -= 6.5;
+        x = object->trans.x;
+        for (i = 0; i < D_8010C782_hide_and_sneak; i++) {
+            if (x == D_8010C370_hide_and_sneak[D_8010C782_hide_and_sneak][i]) {
+                work->unk_08 = 0;
+                break;
+            }
+        }
+    }
+    if (work->unk_08 < 0) {
+        object->trans.x += 6.5;
+        x = object->trans.x;
+        for (i = 0; i < D_8010C782_hide_and_sneak; i++) {
+            if (x == D_8010C370_hide_and_sneak[D_8010C782_hide_and_sneak][i]) {
+                work->unk_08 = 0;
+                break;
+            }
+        }
+    }
+    Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, object->trans.z);
+}
 
 void func_80107638_hide_and_sneak(omObjData *object) {
     HideAndSneakSoloCpu *cpu = &D_8010E168_hide_and_sneak;
@@ -563,7 +837,7 @@ s8 func_80107CF4_hide_and_sneak(omObjData *object) {
     return candidates[func_801064F4_hide_and_sneak(count)];
 }
 
-s32 func_80107D98_hide_and_sneak(omObjData *object) {
+s8 func_80107D98_hide_and_sneak(omObjData *object) {
     HideAndSneakUnk788 *entry = &D_8010C788_hide_and_sneak[object->work[1]];
 
     switch (entry->unk_01) {
@@ -598,7 +872,7 @@ s32 func_80107D98_hide_and_sneak(omObjData *object) {
     return 0;
 }
 
-s32 func_80107EF0_hide_and_sneak(omObjData *object) {
+s8 func_80107EF0_hide_and_sneak(omObjData *object) {
     HideAndSneakUnk788 *entry = &D_8010C788_hide_and_sneak[object->work[1]];
 
     switch (entry->unk_01) {
@@ -633,7 +907,7 @@ s32 func_80107EF0_hide_and_sneak(omObjData *object) {
     return 0;
 }
 
-s32 func_80108040_hide_and_sneak(omObjData *object) {
+s8 func_80108040_hide_and_sneak(omObjData *object) {
     HideAndSneakUnk788 *entry = &D_8010C788_hide_and_sneak[object->work[1]];
 
     switch (entry->unk_01) {
@@ -659,7 +933,7 @@ s32 func_80108040_hide_and_sneak(omObjData *object) {
     return 0;
 }
 
-s32 func_80108130_hide_and_sneak(omObjData *object) {
+s8 func_80108130_hide_and_sneak(omObjData *object) {
     HideAndSneakUnk788 *entry = &D_8010C788_hide_and_sneak[object->work[1]];
 
     switch (entry->unk_01) {
@@ -694,7 +968,7 @@ s32 func_80108130_hide_and_sneak(omObjData *object) {
     return 0;
 }
 
-s32 func_80108278_hide_and_sneak(omObjData *object) {
+s8 func_80108278_hide_and_sneak(omObjData *object) {
     HideAndSneakUnk788 *entry = &D_8010C788_hide_and_sneak[object->work[1]];
 
     switch (entry->unk_01) {
@@ -738,7 +1012,7 @@ s32 func_80108278_hide_and_sneak(omObjData *object) {
     return 0;
 }
 
-s32 func_8010841C_hide_and_sneak(omObjData *object) {
+s8 func_8010841C_hide_and_sneak(omObjData *object) {
     HideAndSneakUnk788 *entry = &D_8010C788_hide_and_sneak[object->work[1]];
 
     switch (entry->unk_01) {
@@ -782,7 +1056,7 @@ s32 func_8010841C_hide_and_sneak(omObjData *object) {
     return 0;
 }
 
-s32 func_80108588_hide_and_sneak(omObjData *object) {
+s8 func_80108588_hide_and_sneak(omObjData *object) {
     HideAndSneakUnk788 *entry = &D_8010C788_hide_and_sneak[object->work[1]];
 
     switch (entry->unk_01) {
@@ -808,7 +1082,7 @@ s32 func_80108588_hide_and_sneak(omObjData *object) {
     return 0;
 }
 
-s32 func_80108670_hide_and_sneak(omObjData *object) {
+s8 func_80108670_hide_and_sneak(omObjData *object) {
     HideAndSneakUnk788 *entry = &D_8010C788_hide_and_sneak[object->work[1]];
 
     switch (entry->unk_01) {
@@ -843,7 +1117,7 @@ s32 func_80108670_hide_and_sneak(omObjData *object) {
     return 0;
 }
 
-s32 func_801087B4_hide_and_sneak(omObjData *object) {
+s8 func_801087B4_hide_and_sneak(omObjData *object) {
     HideAndSneakUnk788 *entry = &D_8010C788_hide_and_sneak[object->work[1]];
 
     switch (entry->unk_01) {
@@ -869,7 +1143,7 @@ s32 func_801087B4_hide_and_sneak(omObjData *object) {
     return 0;
 }
 
-s32 func_801088A0_hide_and_sneak(omObjData *object) {
+s8 func_801088A0_hide_and_sneak(omObjData *object) {
     HideAndSneakUnk788 *entry = &D_8010C788_hide_and_sneak[object->work[1]];
 
     switch (entry->unk_01) {
@@ -895,7 +1169,7 @@ s32 func_801088A0_hide_and_sneak(omObjData *object) {
     return 0;
 }
 
-s32 func_80108990_hide_and_sneak(omObjData *object) {
+s8 func_80108990_hide_and_sneak(omObjData *object) {
     HideAndSneakUnk788 *entry = &D_8010C788_hide_and_sneak[object->work[1]];
 
     switch (entry->unk_01) {
@@ -930,7 +1204,7 @@ s32 func_80108990_hide_and_sneak(omObjData *object) {
     return 0;
 }
 
-s32 func_80108AF0_hide_and_sneak(omObjData *object) {
+s8 func_80108AF0_hide_and_sneak(omObjData *object) {
     HideAndSneakUnk788 *entry = &D_8010C788_hide_and_sneak[object->work[1]];
 
     switch (entry->unk_01) {
@@ -956,11 +1230,265 @@ s32 func_80108AF0_hide_and_sneak(omObjData *object) {
     return 0;
 }
 
-s32 func_80108BD8_hide_and_sneak(void) {
+s8 func_80108BD8_hide_and_sneak(omObjData *object) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_06_hide_and_sneak/137C00", func_80108BE0_hide_and_sneak);
+void func_80108BE0_hide_and_sneak(omObjData *object) {
+    s8 index = object->work[1];
+    HideAndSneakWork *work = &D_8010C7A0_hide_and_sneak[2 + index];
+    HideAndSneakUnk788 *entry = &D_8010C788_hide_and_sneak[index];
+
+    func_80107B30_hide_and_sneak(object);
+    switch (entry->unk_00) {
+        case 0:
+            if (D_8010E174_hide_and_sneak != 0) {
+                entry->unk_00 = 5;
+                break;
+            }
+            switch (func_80107CF4_hide_and_sneak(object)) {
+                case 0:
+                    entry->unk_00 = 1;
+                    entry->unk_04 = 0;
+                    break;
+                case 1:
+                    entry->unk_00 = 2;
+                    entry->unk_04 = 1;
+                    break;
+                case 2:
+                    entry->unk_00 = 3;
+                    entry->unk_04 = 2;
+                    break;
+                case 3:
+                    entry->unk_00 = 4;
+                    entry->unk_04 = 3;
+                    break;
+            }
+            break;
+        case 1:
+            if (object->trans.z > -575.0f) {
+                if (object->trans.x > -220.0f) {
+                    object->trans.x -= 24.0f;
+                    object->rot.y = 270.0f;
+                } else {
+                    object->trans.x = -220.0f;
+                    object->trans.z -= 24.0f;
+                    object->rot.y = 180.0f;
+                }
+            } else if (object->trans.z > -850.0f) {
+                if (object->trans.x < -30.0f) {
+                    object->trans.x += 24.0f;
+                    object->trans.z = -575.0f;
+                    object->rot.y = 90.0f;
+                } else {
+                    object->trans.x = -30.0f;
+                    object->trans.z -= 24.0f;
+                    object->rot.y = 180.0f;
+                }
+            } else if (object->trans.z <= -850.0f) {
+                if (object->trans.x > -400.0f) {
+                    object->trans.x -= 24.0f;
+                    object->trans.z = -850.0f;
+                    object->rot.y = 270.0f;
+                } else {
+                    object->trans.x = -400.0f;
+                    entry->unk_00 = func_801064F4_hide_and_sneak(2) ? 5 : 7;
+                }
+            }
+            break;
+        case 2:
+            if (object->trans.z > -575.0f) {
+                if (object->trans.x > -220.0f) {
+                    object->trans.x -= 24.0f;
+                    object->rot.y = 270.0f;
+                } else {
+                    object->trans.x = -220.0f;
+                    object->trans.z -= 24.0f;
+                    object->rot.y = 180.0f;
+                }
+            } else if (object->trans.z > -1150.0f) {
+                if (object->trans.x < -30.0f) {
+                    object->trans.x += 24.0f;
+                    object->trans.z = -575.0f;
+                    object->rot.y = 90.0f;
+                } else {
+                    object->trans.x = -30.0f;
+                    object->trans.z -= 24.0f;
+                    object->rot.y = 180.0f;
+                }
+            } else if (object->trans.z > -1600.0f) {
+                if (object->trans.x < 90.0f) {
+                    object->trans.x += 24.0f;
+                    object->trans.z = -1150.0f;
+                    object->rot.y = 90.0f;
+                } else {
+                    object->trans.x = 90.0f;
+                    object->trans.z -= 24.0f;
+                    object->rot.y = 180.0f;
+                }
+            } else if (object->trans.z <= -1600.0f) {
+                if (object->trans.x > -250.0f) {
+                    object->trans.x -= 24.0f;
+                    object->trans.z = -1600.0f;
+                    object->rot.y = 270.0f;
+                } else {
+                    object->trans.x = -250.0f;
+                    entry->unk_00 = func_801064F4_hide_and_sneak(2) ? 5 : 7;
+                }
+            }
+            break;
+        case 3:
+            if (object->trans.z > -575.0f) {
+                if (object->trans.x > -220.0f) {
+                    object->trans.x -= 24.0f;
+                    object->rot.y = 270.0f;
+                } else {
+                    object->trans.x = -220.0f;
+                    object->trans.z -= 24.0f;
+                    object->rot.y = 180.0f;
+                }
+            } else if (object->trans.z <= -575.0f) {
+                if (object->trans.x < 150.0f) {
+                    object->trans.x += 24.0f;
+                    object->trans.z = -575.0f;
+                    object->rot.y = 90.0f;
+                } else {
+                    object->trans.x = 150.0f;
+                    entry->unk_00 = func_801064F4_hide_and_sneak(2) ? 5 : 7;
+                }
+            }
+            break;
+        case 4:
+            if (object->trans.z > -575.0f) {
+                if (object->trans.x > -220.0f) {
+                    object->trans.x -= 24.0f;
+                    object->rot.y = 270.0f;
+                } else {
+                    object->trans.x = -220.0f;
+                    object->trans.z -= 24.0f;
+                    object->rot.y = 180.0f;
+                }
+            } else if (object->trans.z > -1150.0f) {
+                if (object->trans.x < -30.0f) {
+                    object->trans.x += 24.0f;
+                    object->trans.z = -575.0f;
+                    object->rot.y = 90.0f;
+                } else {
+                    object->trans.x = -30.0f;
+                    object->trans.z -= 24.0f;
+                    object->rot.y = 180.0f;
+                }
+            } else if (object->trans.z > -1350.0f) {
+                if (object->trans.x < 90.0f) {
+                    object->trans.x += 24.0f;
+                    object->trans.z = -1150.0f;
+                    object->rot.y = 90.0f;
+                } else {
+                    object->trans.x = 90.0f;
+                    object->trans.z -= 24.0f;
+                    object->rot.y = 180.0f;
+                }
+            } else if (object->trans.z <= -1350.0f) {
+                if (object->trans.x < 475.0f) {
+                    object->trans.x += 24.0f;
+                    object->trans.z = -1350.0f;
+                    object->rot.y = 90.0f;
+                } else {
+                    object->trans.x = 475.0f;
+                    entry->unk_00 = func_801064F4_hide_and_sneak(2) ? 5 : 7;
+                }
+            }
+            break;
+        case 5:
+            entry->unk_05 = func_80107CF4_hide_and_sneak(object);
+            entry->unk_02 = func_801064F4_hide_and_sneak(2);
+            entry->unk_03 = 0;
+            entry->unk_00 = 6;
+            entry->unk_01 = 0;
+            work->unk_12 = 0;
+            break;
+        case 6:
+            switch (entry->unk_04) {
+                case 0:
+                    if (D_8010C434_hide_and_sneak[entry->unk_05](object)) {
+                        entry->unk_04 = entry->unk_05;
+                        entry->unk_00 = 7;
+                    }
+                    break;
+                case 1:
+                    if (D_8010C444_hide_and_sneak[entry->unk_05](object)) {
+                        entry->unk_04 = entry->unk_05;
+                        entry->unk_00 = 7;
+                    }
+                    break;
+                case 2:
+                    if (D_8010C454_hide_and_sneak[entry->unk_05](object)) {
+                        entry->unk_04 = entry->unk_05;
+                        entry->unk_00 = 7;
+                    }
+                    break;
+                case 3:
+                    if (D_8010C464_hide_and_sneak[entry->unk_05](object)) {
+                        entry->unk_04 = entry->unk_05;
+                        entry->unk_00 = 7;
+                    }
+                    break;
+            }
+            break;
+        case 7:
+            if (entry->unk_02 != 0) {
+                switch (entry->unk_03) {
+                    case 0:
+                        object->trans.x += 24.0f;
+                        object->rot.y = 90.0f;
+                        work->unk_12++;
+                        if (work->unk_12 > 16) {
+                            entry->unk_03 = 1;
+                        }
+                        break;
+                    case 1:
+                        object->trans.x -= 24.0f;
+                        object->rot.y = 270.0f;
+                        work->unk_12--;
+                        if (work->unk_12 <= 0) {
+                            if (func_801064F4_hide_and_sneak(4) <= 0) {
+                                entry->unk_03 = 0;
+                                entry->unk_02 = 0;
+                            } else {
+                                entry->unk_00 = 5;
+                            }
+                        }
+                        break;
+                }
+            } else {
+                switch (entry->unk_03) {
+                    case 0:
+                        object->trans.x -= 24.0f;
+                        object->rot.y = 270.0f;
+                        work->unk_12++;
+                        if (work->unk_12 > 16) {
+                            entry->unk_03 = 1;
+                        }
+                        break;
+                    case 1:
+                        object->trans.x += 24.0f;
+                        object->rot.y = 90.0f;
+                        work->unk_12--;
+                        if (work->unk_12 <= 0) {
+                            if (func_801064F4_hide_and_sneak(4) <= 0) {
+                                entry->unk_03 = 0;
+                                entry->unk_02 = 1;
+                            } else {
+                                entry->unk_00 = 5;
+                            }
+                        }
+                        break;
+                }
+            }
+            break;
+    }
+    func_801079E8_hide_and_sneak(object);
+}
 
 void func_80109578_hide_and_sneak(void) {
     s8 i;
@@ -1030,9 +1558,80 @@ void func_80109688_hide_and_sneak(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_06_hide_and_sneak/137C00", func_80109870_hide_and_sneak);
+void func_80109870_hide_and_sneak(omObjData *object) {
+    HideAndSneakWork *work = &D_8010C7A0_hide_and_sneak[2 + object->work[1]];
 
-s32 func_80109BF4_hide_and_sneak(omObjData *object) {
+    if (work->unk_08 == -1) {
+        return;
+    }
+    func_80107B30_hide_and_sneak(object);
+    if (object->trans.z < -1350.0f) {
+        if (object->trans.x < 90.0f) {
+            object->trans.x += 24.0f;
+            object->rot.y = 90.0f;
+        } else {
+            object->trans.x = 90.0f;
+            object->trans.z += 24.0f;
+            object->rot.y = 0.0f;
+        }
+    } else if (object->trans.z < -1150.0f) {
+        if (object->trans.x > 90.0f) {
+            object->trans.x -= 24.0f;
+            object->rot.y = 270.0f;
+        } else {
+            object->trans.x = 90.0f;
+            object->trans.z += 24.0f;
+            object->rot.y = 0.0f;
+        }
+    } else if (object->trans.z < -850.0f) {
+        if (object->trans.x > -30.0f) {
+            object->trans.x -= 24.0f;
+            object->rot.y = 270.0f;
+        } else {
+            object->trans.x = -30.0f;
+            object->trans.z += 24.0f;
+            object->rot.y = 0.0f;
+        }
+    } else if (object->trans.z < -575.0f) {
+        if (object->trans.x < -30.0f) {
+            object->trans.x += 24.0f;
+            object->rot.y = 90.0f;
+        } else {
+            object->trans.x = -30.0f;
+            object->trans.z += 24.0f;
+            object->rot.y = 0.0f;
+        }
+    } else if (object->trans.z < -300.0f) {
+        if (object->trans.x > -220.0f) {
+            object->trans.x -= 24.0f;
+            object->rot.y = 270.0f;
+        } else {
+            object->trans.x = -220.0f;
+            object->trans.z += 24.0f;
+            object->rot.y = 0.0f;
+        }
+    } else {
+        if (work->unk_0E < 0 && object->trans.z >= -300.0f) {
+            work->unk_0E = D_8010E1B1_hide_and_sneak;
+            D_8010E1B1_hide_and_sneak++;
+            object->trans.z = -300.0f;
+        }
+        if (object->trans.z == -300.0f) {
+            if (object->trans.x < D_8010C410_hide_and_sneak[2 - D_8010E1AD_hide_and_sneak][work->unk_0E]) {
+                object->trans.x += 24.0f;
+                object->rot.y = 90.0f;
+            } else {
+                object->trans.x = D_8010C410_hide_and_sneak[2 - D_8010E1AD_hide_and_sneak][work->unk_0E];
+                object->rot.y = 0.0f;
+                func_80107BD8_hide_and_sneak(object, 0);
+                work->unk_08 = -1;
+                D_8010E181_hide_and_sneak++;
+            }
+        }
+    }
+}
+
+s8 func_80109BF4_hide_and_sneak(omObjData *object) {
     HideAndSneakWork *work = &D_8010C7A0_hide_and_sneak[2 + object->work[1]];
 
     if (work->unk_04 == 0) {
@@ -1068,7 +1667,106 @@ s32 func_80109BF4_hide_and_sneak(omObjData *object) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_06_hide_and_sneak/137C00", func_80109D88_hide_and_sneak);
+void func_80109D88_hide_and_sneak(omObjData *object) {
+    s8 index = object->work[1];
+    HideAndSneakWork *work = &D_8010C7A0_hide_and_sneak[2 + index];
+    HideAndSneakUnk788 *entry = &D_8010C788_hide_and_sneak[index];
+    s8 spot;
+
+    if (func_80109BF4_hide_and_sneak(object)) {
+        return;
+    }
+    if (D_8010E180_hide_and_sneak != 2) {
+        if (D_8010E180_hide_and_sneak >= 5 && D_8010E1AD_hide_and_sneak != 3) {
+            func_80107BD8_hide_and_sneak(object, 4);
+        }
+        return;
+    }
+    switch (D_8010C780_hide_and_sneak) {
+        case 0:
+            work->unk_08 = -1;
+            work->unk_0A = 0;
+            work->unk_0C = 0;
+            work->unk_0E = -1;
+            work->unk_10 = 0;
+            work->unk_12 = 0;
+            D_8010C781_hide_and_sneak = func_801064F4_hide_and_sneak(6);
+            D_8010E1B1_hide_and_sneak = 0;
+            D_8010E181_hide_and_sneak = 0;
+            entry->unk_00 = 0;
+            entry->unk_02 = func_801064F4_hide_and_sneak(2);
+            entry->unk_03 = 0;
+            D_8010E1A9_hide_and_sneak[index] = 0;
+            break;
+        case 1:
+            func_80107BD8_hide_and_sneak(object, 1);
+            func_80108BE0_hide_and_sneak(object);
+            func_80109688_hide_and_sneak(object);
+            break;
+        case 2:
+            func_80108BE0_hide_and_sneak(object);
+            break;
+        case 3:
+            if (work->unk_08 == -1) {
+                func_8001C258_main(object->model[0], 4, 0);
+                func_80107BD8_hide_and_sneak(object, 2);
+                object->trans.x = D_8010C3CC_hide_and_sneak[D_8010C3B8_hide_and_sneak[D_8010C781_hide_and_sneak][index]];
+                object->trans.z = D_8010C3D8_hide_and_sneak[D_8010C3B8_hide_and_sneak[D_8010C781_hide_and_sneak][index]];
+                object->rot.y = 0.0f;
+                work->unk_0C = 45;
+                work->unk_04 = 1;
+                D_8010E1A9_hide_and_sneak[index] = 1;
+                D_8010E1AD_hide_and_sneak++;
+            } else {
+                spot = work->unk_08;
+                entry->unk_04 = spot;
+                object->trans.x = D_8010C404_hide_and_sneak[D_8010E188_hide_and_sneak[spot].count - 1][D_8010E188_hide_and_sneak[spot].slots[index]] + D_8010C3E4_hide_and_sneak[spot];
+                object->trans.z = D_8010C3F4_hide_and_sneak[spot];
+                func_80107BD8_hide_and_sneak(object, 3);
+                Hu3DMotionSpeedSet(object->model[0], 0.0f);
+                func_8001C258_main(object->model[0], 4, 4);
+                object->rot.y = 0.0f;
+            }
+            break;
+        case 4:
+            func_8001C258_main(object->model[0], 4, 0);
+            if (work->unk_08 == D_8010E17C_hide_and_sneak) {
+                if (work->unk_0C == 40) {
+                    Hu3DMotionSpeedSet(object->model[0], 1.0f);
+                }
+                if (work->unk_0C == 60) {
+                    PlayerFXPlay(0x286, object->work[0]);
+                    work->unk_16++;
+                    if (!(GwPlayer[object->work[0]].stat & 1)) {
+                        omVibrate(object->work[0], 10, 0, 10);
+                    }
+                }
+                if (work->unk_0C == 80) {
+                    func_80107BD8_hide_and_sneak(object, 2);
+                    work->unk_0C = 0;
+                    work->unk_04 = 1;
+                    D_8010E1A9_hide_and_sneak[index] = 1;
+                    D_8010E1AD_hide_and_sneak++;
+                } else {
+                    work->unk_0C++;
+                }
+            } else {
+                func_80107BD8_hide_and_sneak(object, 0);
+            }
+            break;
+        case 5:
+            D_8010E170_hide_and_sneak |= 2;
+            break;
+        case 6:
+            break;
+        case 7:
+            break;
+    }
+    if (work->unk_10 != 0) {
+        func_80109870_hide_and_sneak(object);
+    }
+    Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, object->trans.z);
+}
 
 void func_8010A1CC_hide_and_sneak(omObjData *object) {
     HideAndSneakUnk788 *entry = &D_8010C788_hide_and_sneak[object->work[1]];
@@ -1170,7 +1868,7 @@ void func_8010A6BC_hide_and_sneak(omObjData *object) {
     func_8001E888_main(object->model[0], 0.0f, work->unk_04, 0x60, 0x40, D_8010C48C_hide_and_sneak[object->work[0]], 0);
 }
 
-s32 func_8010A7A4_hide_and_sneak(void) {
+s8 func_8010A7A4_hide_and_sneak(void) {
     s8 i = 0;
     s8 count1 = 0;
     s8 count2 = 0;
@@ -1189,7 +1887,7 @@ s32 func_8010A7A4_hide_and_sneak(void) {
     return count1 == count2;
 }
 
-s32 func_8010A824_hide_and_sneak(void) {
+s8 func_8010A824_hide_and_sneak(void) {
     s8 i = 0;
     s8 count = 0;
     HideAndSneakWork *players = &D_8010C7A0_hide_and_sneak[5];
@@ -1313,7 +2011,32 @@ void func_8010ACB8_hide_and_sneak(void) {
     D_8010C7A0_hide_and_sneak[13].unk_04 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_06_hide_and_sneak/137C00", func_8010ACC4_hide_and_sneak);
+void func_8010ACC4_hide_and_sneak(Gfx **gfxPos, s32 arg1, s32 arg2) {
+    HideAndSneakWork *work = &D_8010C7A0_hide_and_sneak[13];
+    s8 i;
+    Gfx *gfx;
+
+    if (work->unk_04 < 0xFF) {
+        gfxPos = func_80105C98_hide_and_sneak(gfxPos);
+        gfxPos = func_80105D64_hide_and_sneak(gfxPos, (u8)work->unk_04);
+        if (work->unk_04 == 0) {
+            return;
+        }
+    } else {
+        gfxPos = func_80105BB4_hide_and_sneak(gfxPos);
+    }
+    gfx = *gfxPos;
+    gDPSetTextureLUT(gfx++, G_TT_RGBA16);
+    for (i = 0; i < 4; i++) {
+        if (D_8010C760_hide_and_sneak[i].unk_06 == 0) {
+            gDPLoadTLUT_pal16(gfx++, 0, D_8010E198_hide_and_sneak[i]->unk0C);
+            gDPLoadTextureTile_4b(gfx++, D_8010E198_hide_and_sneak[i]->unk08, G_IM_FMT_CI, 32, 32, 0, 0, 32, 32, 0, G_TX_WRAP, G_TX_WRAP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
+            gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 32 << 2, 32 << 2);
+            gSPTextureRectangle(gfx++, D_8010C760_hide_and_sneak[i].x << 2, D_8010C760_hide_and_sneak[i].y << 2, (D_8010C760_hide_and_sneak[i].x + 32) << 2, (D_8010C760_hide_and_sneak[i].y + 32) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+        }
+    }
+    *gfxPos = gfx;
+}
 
 void func_8010AF98_hide_and_sneak(omObjData *object) {
 }
@@ -1439,7 +2162,134 @@ void func_8010B55C_hide_and_sneak(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_06_hide_and_sneak/137C00", func_8010B600_hide_and_sneak);
+void func_8010B600_hide_and_sneak(void) {
+    omObjData *object = D_8010C7A0_hide_and_sneak[0].obj;
+
+    switch (D_8010C780_hide_and_sneak) {
+        case 0:
+            if (func_8010A7A4_hide_and_sneak()) {
+                GMesCreate(GMES_MES_TIMER, 10, 160, 28);
+                D_8010E17A_hide_and_sneak = 151;
+                if (D_8010E174_hide_and_sneak != 0) {
+                    HuAudFXPlay(0x328);
+                }
+                D_8010E1AC_hide_and_sneak = 0;
+                D_8010C780_hide_and_sneak = 1;
+            }
+            break;
+        case 1:
+            if (D_8010E17A_hide_and_sneak > 0) {
+                D_8010E17A_hide_and_sneak--;
+                func_8003F578_main((D_8010E17A_hide_and_sneak + 29) / 30);
+                func_8010AC78_hide_and_sneak();
+            } else {
+                func_8003F5C0_main();
+                D_8010E17A_hide_and_sneak = 30;
+                func_8001C258_main(object->model[0], 4, 0);
+                Hu3DMotionSpeedSet(object->model[0], 1.0f);
+                func_80109578_hide_and_sneak();
+                func_801095DC_hide_and_sneak();
+                func_8010B118_hide_and_sneak();
+                D_8010E1B3_hide_and_sneak = 0;
+                D_8010C780_hide_and_sneak = 2;
+                HuAudFXPlay(0x328);
+            }
+            break;
+        case 2:
+            if ((s32)Hu3DData[object->model[0]].motTime >= 60) {
+                Hu3DMotionTimeSet(object->model[0], 60.0f);
+                Hu3DMotionSpeedSet(object->model[0], 0.0f);
+                if (D_8010E17A_hide_and_sneak > 0) {
+                    D_8010E17A_hide_and_sneak--;
+                } else {
+                    GMesCreate(GMES_MES_TIMER, 10, 160, 28);
+                    D_8010E17A_hide_and_sneak = 301;
+                    func_8010ACB8_hide_and_sneak();
+                    Hu3DMotionSpeedSet(object->model[0], -1.0f);
+                    D_8010C780_hide_and_sneak = 3;
+                }
+            }
+            break;
+        case 3:
+            if ((s32)Hu3DData[object->model[0]].motTime <= 0) {
+                Hu3DMotionTimeSet(object->model[0], 0.0f);
+                Hu3DMotionSpeedSet(object->model[0], 0.0f);
+                func_8001C258_main(object->model[0], 4, 4);
+            }
+            if (D_8010E17A_hide_and_sneak > 0) {
+                D_8010E17A_hide_and_sneak--;
+                func_8003F578_main((D_8010E17A_hide_and_sneak + 29) / 30);
+            } else {
+                func_8003F5C0_main();
+                if (D_8010E174_hide_and_sneak == 2) {
+                    GMesCreate(GMES_MES_15);
+                    HuAudSeqFadeOut(100);
+                    D_8010E1B2_hide_and_sneak = 1;
+                }
+                D_8010C780_hide_and_sneak = 4;
+            }
+            if (D_8010E170_hide_and_sneak != 0) {
+                D_8010E170_hide_and_sneak = 0;
+                func_8003F5C0_main();
+                D_8010C780_hide_and_sneak = 4;
+            }
+            break;
+        case 4:
+            if ((s32)Hu3DData[object->model[0]].motTime <= 0) {
+                Hu3DMotionTimeSet(object->model[0], 0.0f);
+                Hu3DMotionSpeedSet(object->model[0], 0.0f);
+                func_8001C258_main(object->model[0], 4, 4);
+            }
+            if (D_8010E170_hide_and_sneak != 0 && func_8010A824_hide_and_sneak() && D_8010E1B3_hide_and_sneak == 2) {
+                D_8010E1B3_hide_and_sneak = 0;
+                D_8010E170_hide_and_sneak = 0;
+                D_8010C780_hide_and_sneak = 5;
+            }
+            break;
+        case 5:
+            if (D_8010E1AD_hide_and_sneak == 3) {
+                D_8010E174_hide_and_sneak = 2;
+                D_8010E170_hide_and_sneak |= 2;
+            }
+            if (D_8010E170_hide_and_sneak == 3) {
+                D_8010E170_hide_and_sneak = 0;
+                if (D_8010E174_hide_and_sneak < 2) {
+                    D_8010E17A_hide_and_sneak = 20;
+                } else {
+                    D_8010E17A_hide_and_sneak = 0;
+                }
+                if (D_8010E17C_hide_and_sneak != -1) {
+                    D_8010C782_hide_and_sneak--;
+                }
+                D_8010C780_hide_and_sneak = 6;
+            }
+            break;
+        case 6:
+            if ((s32)Hu3DData[object->model[0]].motTime <= 0) {
+                Hu3DMotionTimeSet(object->model[0], 0.0f);
+                Hu3DMotionSpeedSet(object->model[0], 0.0f);
+                func_8001C258_main(object->model[0], 4, 4);
+            }
+            if (D_8010E17A_hide_and_sneak > 0) {
+                D_8010E17A_hide_and_sneak--;
+            } else {
+                func_8003F5C0_main();
+                if (D_8010E1A9_hide_and_sneak[0] == 0 && D_8010E1A9_hide_and_sneak[1] == 0 && D_8010E1A9_hide_and_sneak[2] == 0) {
+                    D_8010E174_hide_and_sneak++;
+                    if (D_8010E174_hide_and_sneak == 3) {
+                        D_8010C780_hide_and_sneak = 7;
+                        D_8010E1B3_hide_and_sneak = 2;
+                    } else {
+                        D_8010C780_hide_and_sneak = 0;
+                        D_8010E1B3_hide_and_sneak = 3;
+                    }
+                }
+            }
+            break;
+        case 7:
+            break;
+    }
+}
 
 void func_8010BBBC_hide_and_sneak(void) {
     u32 i;
@@ -1478,7 +2328,74 @@ void func_8010BCE8_hide_and_sneak(omObjData *object) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_06_hide_and_sneak/137C00", func_8010BD40_hide_and_sneak);
+void func_8010BD40_hide_and_sneak(omObjData *object) {
+    switch (D_8010E180_hide_and_sneak) {
+        case 0:
+            GMesCreate(GMES_MES_4);
+            D_8010E180_hide_and_sneak = 1;
+            D_8010E172_hide_and_sneak = 0;
+            HuAudFXPlay(0x327);
+            break;
+        case 1:
+            if (GMesStatGet() == 0) {
+                D_8010E180_hide_and_sneak = 2;
+                D_8010C780_hide_and_sneak = 0;
+            }
+            D_8010E172_hide_and_sneak++;
+            if (D_8010E172_hide_and_sneak == 64) {
+                HuAudSeqPlay(0x31);
+            }
+            break;
+        case 2:
+            func_8010B600_hide_and_sneak();
+            if (D_8010C780_hide_and_sneak == 7) {
+                if (D_8010E1B2_hide_and_sneak == 0) {
+                    GMesCreate(GMES_MES_15);
+                    HuAudSeqFadeOut(120);
+                }
+                D_8010E180_hide_and_sneak = 3;
+            }
+            break;
+        case 3:
+            if (GMesStatGet() == 0) {
+                D_8010E180_hide_and_sneak = 4;
+                D_8010E17A_hide_and_sneak = 0;
+            }
+            break;
+        case 4:
+            D_8010E17A_hide_and_sneak++;
+            if (D_8010E17A_hide_and_sneak >= 16) {
+                D_8010E180_hide_and_sneak = 5;
+            }
+            break;
+        case 5:
+            if (D_8010E1AD_hide_and_sneak == 3) {
+                GMesCreate(GMES_MES_MG_WINNER, D_8010E186_hide_and_sneak);
+                GwPlayer[D_8010E1A8_hide_and_sneak].bonusCoin = 10;
+                HuAudSeqPlay(0x65);
+                D_8010E17A_hide_and_sneak = 15;
+                D_8010E180_hide_and_sneak = 6;
+            } else {
+                GMesCreate(GMES_MES_MG_WINNERS_3, D_8010E1AE_hide_and_sneak[0], D_8010E1AE_hide_and_sneak[1], D_8010E1AE_hide_and_sneak[2]);
+                GwPlayer[D_8010E17D_hide_and_sneak[0]].bonusCoin = 10;
+                GwPlayer[D_8010E17D_hide_and_sneak[1]].bonusCoin = 10;
+                GwPlayer[D_8010E17D_hide_and_sneak[2]].bonusCoin = 10;
+                HuAudSeqPlay(0x66);
+                D_8010E17A_hide_and_sneak = 15;
+                D_8010E180_hide_and_sneak = 6;
+            }
+            break;
+        case 6:
+            if (GMesStatGet() == 0) {
+                D_8010E17A_hide_and_sneak--;
+                if (D_8010E17A_hide_and_sneak <= 0) {
+                    WipeCreateOut(WIPE_TYPE_NORMAL, 20);
+                    object->func = func_8010BCB0_hide_and_sneak;
+                }
+            }
+            break;
+    }
+}
 
 void func_8010BFE8_hide_and_sneak(omObjData *object) {
     D_8010E180_hide_and_sneak = 0;

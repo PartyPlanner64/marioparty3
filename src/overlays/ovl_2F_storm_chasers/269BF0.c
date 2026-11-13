@@ -1158,7 +1158,42 @@ void func_801090A4_storm_chasers(omObjData *object) {
 
 const char D_8010CC3C_storm_chasers[] = "";
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2F_storm_chasers/269BF0", func_80109170_storm_chasers);
+void func_80109170_storm_chasers(omObjData *object) {
+    StormChaserPlayer *player = &D_8010CD80_storm_chasers[object->work[0]];
+    StormChaserCloud *cloud = &D_8010CCC0_storm_chasers;
+    Vec result;
+    f32 angle;
+
+    if (object->trans.x * object->trans.x + object->trans.z * object->trans.z > 202500.0f) {
+        angle = func_8010610C_storm_chasers(object->trans.x, object->trans.z);
+        D_800CBB6E_main[GwPlayer[object->work[0]].pad] = sindf(WRAP_ANGLE(angle + 180.0f + (u8)(rand8() % 3))) * 70.0f;
+        D_800D20A1_main[GwPlayer[object->work[0]].pad] = -(s32)(cosdf(WRAP_ANGLE(angle + 180.0f + (u8)(rand8() % 3))) * 70.0f);
+        player->unk_54 = D_800CBB6E_main[GwPlayer[object->work[0]].pad];
+        player->unk_56 = D_800D20A1_main[GwPlayer[object->work[0]].pad];
+        player->unk_50 = (u8)(rand8() % 30) + player->unk_4C * 6;
+    }
+
+    if (player->unk_50 > 0) {
+        player->unk_50--;
+        func_80106184_storm_chasers(cloud->unk_18->trans.x, cloud->unk_18->trans.z, object->trans.x, object->trans.z, &result);
+        if (player->unk_48 < ABS(result.x)) {
+            D_800CBB6E_main[GwPlayer[object->work[0]].pad] = sindf(WRAP_ANGLE(result.z + (u8)(rand8() % 3))) * 70.0f;
+            D_800D20A1_main[GwPlayer[object->work[0]].pad] = -(s32)(cosdf(WRAP_ANGLE(result.z + (u8)(rand8() % 3))) * 70.0f);
+            player->unk_54 = D_800CBB6E_main[GwPlayer[object->work[0]].pad];
+            player->unk_56 = D_800D20A1_main[GwPlayer[object->work[0]].pad];
+            player->unk_50 = (u8)(rand8() % 30) + player->unk_4C * 6;
+        }
+        D_800CBB6E_main[GwPlayer[object->work[0]].pad] = player->unk_54;
+        D_800D20A1_main[GwPlayer[object->work[0]].pad] = player->unk_56;
+    } else {
+        func_80106184_storm_chasers(cloud->unk_18->trans.x, cloud->unk_18->trans.z, object->trans.x, object->trans.z, &result);
+        D_800CBB6E_main[GwPlayer[object->work[0]].pad] = sindf(WRAP_ANGLE(result.z + (u8)(rand8() % 3))) * 70.0f;
+        D_800D20A1_main[GwPlayer[object->work[0]].pad] = -(s32)(cosdf(WRAP_ANGLE(result.z + (u8)(rand8() % 3))) * 70.0f);
+        player->unk_54 = D_800CBB6E_main[GwPlayer[object->work[0]].pad];
+        player->unk_56 = D_800D20A1_main[GwPlayer[object->work[0]].pad];
+        player->unk_50 = (u8)(rand8() % 30) + player->unk_4C * 6;
+    }
+}
 
 void func_8010A070_storm_chasers(omObjData *object) {
     StormChaserPlayer *player = &D_8010CD80_storm_chasers[object->work[0]];

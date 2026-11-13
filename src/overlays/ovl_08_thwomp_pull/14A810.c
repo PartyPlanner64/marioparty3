@@ -1,8 +1,66 @@
 #include "common.h"
 
+typedef struct ThwompPullPlayer {
+    /* 0x00 */ s8 playerNo;
+    /* 0x01 */ s8 group;
+    /* 0x02 */ s8 pad;
+    /* 0x03 */ s8 chr;
+    /* 0x04 */ s8 cpuDifficulty; // -1 for human players
+    /* 0x05 */ char unk_05[0xB];
+} ThwompPullPlayer; // sizeof 0x10
+
+extern ThwompPullPlayer D_8010F4B8_thwomp_pull[4];
+extern ThwompPullPlayer *D_8010F4F8_thwomp_pull[4]; // players indexed by group
+extern f32 D_8010F520_thwomp_pull[4];
+extern s16 D_8010F530_thwomp_pull;
+extern s32 D_8010F53C_thwomp_pull;
+extern s16 D_8010F550_thwomp_pull[10]; // sprite data ids
+extern u8 D_8010F564_thwomp_pull[2];
+extern s8 D_8010F566_thwomp_pull;
+extern s16 D_8010F570_thwomp_pull;
+extern f32 D_8010F588_thwomp_pull;
+extern u16 D_8010F590_thwomp_pull[10]; // sprite ids
+extern s32 D_8010F5A4_thwomp_pull;
+extern u8 D_8010F5A8_thwomp_pull;
+extern u8 D_8010F5B4_thwomp_pull[4]; // group of each player
+
+void func_80105F14_thwomp_pull(omObjData *object);
+void func_80106E78_thwomp_pull(omObjData *object);
+void func_801089B4_thwomp_pull(Gfx **gfxPos, s32 arg1, s32 arg2);
+
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", func_801059A0_thwomp_pull);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", func_80105D3C_thwomp_pull);
+void func_80105D3C_thwomp_pull(omObjData *object) {
+    s32 group;
+    s32 i;
+
+    D_8010F570_thwomp_pull = 0;
+    D_8010F530_thwomp_pull = 0;
+    D_8010F5A4_thwomp_pull = 0;
+    D_8010F53C_thwomp_pull = 0;
+    D_8010F566_thwomp_pull = 5;
+    D_8010F5A8_thwomp_pull = 0;
+    D_8010F520_thwomp_pull[0] = D_8010F520_thwomp_pull[1] = D_8010F520_thwomp_pull[2] = D_8010F520_thwomp_pull[3] = 0.0f;
+    D_8010F588_thwomp_pull = 0.0f;
+    D_8010F564_thwomp_pull[0] = D_8010F564_thwomp_pull[1] = 0;
+    for (i = 0; i < 4; i++) {
+        D_8010F4F8_thwomp_pull[i] = &D_8010F4B8_thwomp_pull[i];
+        bzero(D_8010F4F8_thwomp_pull[i], sizeof(ThwompPullPlayer));
+    }
+    for (i = 0; i < 4; i++) {
+        group = GwPlayer[i].group;
+        group = (group == 3) ? 1 : (group == 1) ? 3
+                                                : group;
+        D_8010F5B4_thwomp_pull[i] = group;
+        D_8010F4F8_thwomp_pull[group]->playerNo = i;
+        D_8010F4F8_thwomp_pull[group]->pad = GwPlayer[i].pad;
+        D_8010F4F8_thwomp_pull[group]->chr = GwPlayer[i].chr;
+        D_8010F4F8_thwomp_pull[group]->group = group;
+        D_8010F4F8_thwomp_pull[group]->cpuDifficulty = (GwPlayer[i].stat & 1) ? GwPlayer[i].cpu_difficulty : -1;
+    }
+    Hu3DHookFuncCreate(0, func_801089B4_thwomp_pull, 2);
+    object->func = func_80105F14_thwomp_pull;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010EFD0_thwomp_pull);
 
@@ -14,9 +72,16 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F028
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", func_80105F14_thwomp_pull);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", func_80106D5C_thwomp_pull);
+void func_80106D5C_thwomp_pull(omObjData *object) {
+    s32 spriteFiles[10] = { 0x29001F, 0x290020, 0x210008, 0x210009, 0x21000A, 0x21000B, 0x21000C, 0x21000D, 0x21000E, 0x21000F };
+    s16 i;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F080_thwomp_pull);
+    for (i = 0; i < 10; i++) {
+        D_8010F590_thwomp_pull[i] = espEntry(D_8010F550_thwomp_pull[i] = func_8000B838_main(spriteFiles[i]), 0, 0);
+        espDispOff(D_8010F590_thwomp_pull[i]);
+    }
+    object->func = func_80106E78_thwomp_pull;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", func_80106E78_thwomp_pull);
 

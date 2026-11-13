@@ -1,4 +1,5 @@
 #include "common.h"
+#include "overlays/minigame.h"
 
 typedef struct ThwompPullPlayer {
     /* 0x00 */ s8 playerNo;
@@ -9,14 +10,17 @@ typedef struct ThwompPullPlayer {
     /* 0x05 */ char unk_05[0xB];
 } ThwompPullPlayer; // sizeof 0x10
 
+extern D_80111B50_vine_with_me_Struct D_8010ED60_thwomp_pull;
 extern ThwompPullPlayer D_8010F4B8_thwomp_pull[4];
 extern ThwompPullPlayer *D_8010F4F8_thwomp_pull[4]; // players indexed by group
 extern f32 D_8010F520_thwomp_pull[4];
+extern omObjData *D_8010F52C_thwomp_pull;
 extern s16 D_8010F530_thwomp_pull;
 extern s32 D_8010F53C_thwomp_pull;
 extern s16 D_8010F550_thwomp_pull[10]; // sprite data ids
 extern u8 D_8010F564_thwomp_pull[2];
 extern s8 D_8010F566_thwomp_pull;
+extern omObjData *D_8010F568_thwomp_pull[2];
 extern s16 D_8010F570_thwomp_pull;
 extern f32 D_8010F588_thwomp_pull;
 extern u16 D_8010F590_thwomp_pull[10]; // sprite ids
@@ -24,11 +28,79 @@ extern s32 D_8010F5A4_thwomp_pull;
 extern u8 D_8010F5A8_thwomp_pull;
 extern u8 D_8010F5B4_thwomp_pull[4]; // group of each player
 
+const s16 D_8010EFD0_thwomp_pull[] = {
+    0x8260, 0x8261, 0x8262, 0x8263, 0x8264, 0x8265, 0x8266, 0x8267, 0x8268, 0x8269, 0x826A, 0x826B, 0x826C, 0x826D,
+    0x826E, 0x826F, 0x8270, 0x8271, 0x8272, 0x8273, 0x8274, 0x8275, 0x8276, 0x8277, 0x8278, 0x8279, 0x0000, 0x0000
+};
+
+void func_80105D3C_thwomp_pull(omObjData *object);
+void func_80106D5C_thwomp_pull(omObjData *object);
+void func_8010974C_thwomp_pull(omObjData *object);
+void func_80109780_thwomp_pull(omObjData *object);
+
 void func_80105F14_thwomp_pull(omObjData *object);
 void func_80106E78_thwomp_pull(omObjData *object);
 void func_801089B4_thwomp_pull(Gfx **gfxPos, s32 arg1, s32 arg2);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", func_801059A0_thwomp_pull);
+void func_801059A0_thwomp_pull(void) {
+    omObjData *object;
+
+    func_800142A0_main(0x20);
+    omInitObjMan(50, 0);
+    func_8004A208_main();
+    D_800CD280_main = 1;
+    func_8000B5F0_main(2);
+    func_8000B710_main(2);
+    ScissorSet(0, 0.0f, 0.0f, 140.0f, 240.0f);
+    ScissorSet(1, 180.0f, 0.0f, 320.0f, 240.0f);
+    ViewportSet(0, 640.0f, 480.0f, 511.0f, 320.0f, 480.0f, 511.0f);
+    ViewportSet(1, 640.0f, 480.0f, 511.0f, 960.0f, 480.0f, 511.0f);
+    Hu3DCameraPerspectiveSet(0, 65.0f, 500.0f, 3000.0f);
+    Hu3DCameraPerspectiveSet(1, 65.0f, 500.0f, 3000.0f);
+    Hu3DFogSet(950, 1000, 0xFF, 0xFF, 0xFF);
+    Hu3DBGColorSet(0xFF, 0xFF, 0xFF);
+    Hu3DGLightMaxSet(2);
+    Hu3DGLightDirSet(0, 0.0f, 0.0f, 90.0f);
+    Hu3DGLightColorSet(0, 0x90, 0x90, 0x90);
+    Hu3DGLightDirSet(1, -39.0f, 45.0f, 104.0f);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    CenterM[0].x = 0.0f;
+    CenterM[0].y = 115.0f;
+    CenterM[0].z = -500.0f;
+    CRotM[0].x = -16.0f;
+    CRotM[0].y = 0.0f;
+    CRotM[0].z = 0.0f;
+    CZoomM[0] = 1260.0f;
+    CenterM[1].x = 0.0f;
+    CenterM[1].y = 115.0f;
+    CenterM[1].z = -500.0f;
+    CRotM[1].x = -16.0f;
+    CRotM[1].y = 0.0f;
+    CRotM[1].z = 0.0f;
+    CZoomM[1] = 1260.0f;
+    omAddObj(0, 0, 0, -1, func_80105D3C_thwomp_pull);
+    D_8010F52C_thwomp_pull = omAddObj(8, 1, 1, -1, func_80106D5C_thwomp_pull);
+    omSetStatBit(D_8010F52C_thwomp_pull, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    D_8010F568_thwomp_pull[0] = omAddObj(3, 52, 21, -1, func_8010974C_thwomp_pull);
+    D_8010F568_thwomp_pull[1] = omAddObj(3, 52, 21, -1, func_80109780_thwomp_pull);
+    object = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
+    object->work[0] = 2;
+    omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    func_80045010_main(D_8010EFD0_thwomp_pull, 1);
+    WipeCreateIn(0xFF, 16);
+    D_8010ED60_thwomp_pull.unk01 = 2;
+    D_8010ED60_thwomp_pull.unk1C = -1;
+    D_8010ED60_thwomp_pull.unk1C = 75;
+    D_8010ED60_thwomp_pull.unk1E = 1800;
+    D_8010ED60_thwomp_pull.unk03 = 2;
+    D_8010ED60_thwomp_pull.unk02 = 1;
+    D_8010ED60_thwomp_pull.unk22 = 45;
+    D_8010ED60_thwomp_pull.unk24 = 165;
+    D_8010ED60_thwomp_pull.unk04 = 0;
+    D_8010ED60_thwomp_pull.unk05 = 0;
+    D_8010ED60_thwomp_pull.unk20 = -1;
+    func_800E5EA0_minigame(&D_8010ED60_thwomp_pull);
+}
 
 void func_80105D3C_thwomp_pull(omObjData *object) {
     s32 group;
@@ -61,8 +133,6 @@ void func_80105D3C_thwomp_pull(omObjData *object) {
     Hu3DHookFuncCreate(0, func_801089B4_thwomp_pull, 2);
     object->func = func_80105F14_thwomp_pull;
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010EFD0_thwomp_pull);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F008_thwomp_pull);
 

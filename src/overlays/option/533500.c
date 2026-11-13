@@ -203,7 +203,7 @@ void func_8011019C_option(void);
 void func_80110754_option(void);
 void func_801119CC_option(void);
 void func_8011083C_option(s32, s32, s32);
-void func_801110C0_option(s32, u32, s32, s32, u16, u16, s16);
+void func_801110C0_option(s32, u32, s16, s16, u16, u16, s16);
 void func_80111A10_option(s32);
 void func_80111C50_option(s32, u32);
 void func_80112028_option(s32, s32, s32);
@@ -799,7 +799,55 @@ void func_80107B80_option(Vec *start, Vec *end, f32 weight, Vec *out) {
     out->z = cosdf(angle);
 }
 
+// The function body matches, but the target has an alignment nop after it (the next function,
+// func_80107F50_option at 0x80107F50, starts on a 16-byte boundary). That padding only appears at a file
+// boundary, so this needs marioparty3.yaml to split 533500.c at func_80107F50_option before it can be enabled.
+#ifdef NON_MATCHING
+void func_80107D64_option(Vec *start, Vec *end, f32 weight, Vec *out) {
+    f32 startAngle;
+    f32 endAngle;
+    f32 angle;
+    f32 difference;
+    f32 target;
+
+    startAngle = func_80107B38_option(0.0f, 0.0f, start->x, start->z);
+    if (startAngle < 0.0f) {
+        startAngle += 360.0f;
+    }
+    endAngle = func_80107B38_option(0.0f, 0.0f, end->x, end->z);
+    if (endAngle < 0.0f) {
+        endAngle += 360.0f;
+    }
+    if (-start->z * end->x + start->x * end->z > 0.0f) {
+        if (endAngle - startAngle > 0.0f) {
+            target = endAngle;
+        } else {
+            target = endAngle + 360.0f;
+        }
+        angle = (target - startAngle) * weight + startAngle;
+        if (angle > 360.0f) {
+            angle -= 360.0f;
+        }
+    } else {
+        difference = endAngle - startAngle;
+        target = endAngle;
+        if (difference < 0.0f) {
+            target = endAngle;
+        } else {
+            target = endAngle - 360.0f;
+        }
+        angle = (target - startAngle) * weight + startAngle;
+        if (angle < 0.0f) {
+            angle += 360.0f;
+        }
+    }
+    out->x = sindf(angle);
+    out->y = 0;
+    out->z = cosdf(angle);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80107D64_option);
+#endif
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_80113A20_option);
 

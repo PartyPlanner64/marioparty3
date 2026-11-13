@@ -17,35 +17,113 @@ extern s16 D_800CDBC8_main;
 extern f32 D_800CB890_main;
 extern f32 D_800D5210_main;
 extern omObjData *D_800D6A40_main;
+extern f32 D_800EB760_minigame;
+extern f32 D_800EB764_minigame;
+extern f32 D_800EB768_minigame;
+extern f32 D_800EB76C_minigame;
+extern u8 D_800CD6A6_main;
 extern ToadstoolTitanPlayer D_8010F528_toadstool_titan[4];
 extern ToadstoolTitanPlayer *D_8010F568_toadstool_titan[4]; // players indexed by group
 extern s32 D_8010F580_toadstool_titan;
 extern u8 D_8010F584_toadstool_titan;
 extern s16 D_8010F586_toadstool_titan;
 extern s8 D_8010F58A_toadstool_titan;
+extern D_80111B50_vine_with_me_Struct D_8010F590_toadstool_titan;
 extern s16 D_8010F5BC_toadstool_titan;
 extern u8 D_8010F5F4_toadstool_titan;
+extern omObjData *D_8010F5F8_toadstool_titan;
 extern s16 D_8010F5FC_toadstool_titan;
 extern s8 D_8010F60E_toadstool_titan;
 extern u8 D_8010F614_toadstool_titan[2];
 extern u8 D_8010F616_toadstool_titan[4];
 extern s32 D_8010F61C_toadstool_titan;
+extern omObjData *D_8010F640_toadstool_titan[4];
 extern u8 D_8010F650_toadstool_titan[9];
-extern u8 D_8010F65D_toadstool_titan[4];      // group of each player
-extern u8 D_8010F668_toadstool_titan[4];      // start corner of each group
-extern u8 D_8010F66C_toadstool_titan;         // number of human players
-extern u8 D_8010EDA0_toadstool_titan;         // number of mushrooms created so far
-extern s32 D_8010EE38_toadstool_titan;        // set once the camera has been initialized
-extern Vec D_8010F5C0_toadstool_titan;        // camera target
-extern omObjData *D_8010F5D0_toadstool_titan; // first mushroom object
-extern f32 D_8010F600_toadstool_titan;        // music volume
-extern f32 D_8010F624_toadstool_titan;        // camera fov
-extern Vec D_8010F628_toadstool_titan;        // camera position
+extern u8 D_8010F65D_toadstool_titan[4];         // group of each player
+extern u8 D_8010F668_toadstool_titan[4];         // start corner of each group
+extern u8 D_8010F66C_toadstool_titan;            // number of human players
+extern u8 D_8010EDA0_toadstool_titan;            // number of mushrooms created so far
+extern s32 D_8010EE38_toadstool_titan;           // set once the camera has been initialized
+extern Vec D_8010F5C0_toadstool_titan;           // camera target
+extern omObjData *D_8010F5D0_toadstool_titan[9]; // mushroom objects
+extern f32 D_8010F600_toadstool_titan;           // music volume
+extern f32 D_8010F624_toadstool_titan;           // camera fov
+extern Vec D_8010F628_toadstool_titan;           // camera position
 
+const s16 D_8010EE80_toadstool_titan[] = {
+    0x8260, 0x8261, 0x8262, 0x8263, 0x8264, 0x8265, 0x8266, 0x8267, 0x8268, 0x8269, 0x826A, 0x826B, 0x826C,
+    0x826D, 0x826E, 0x826F, 0x8270, 0x8271, 0x8272, 0x8273, 0x8274, 0x8275, 0x8276, 0x8277, 0x8278, 0x8279,
+    0x824F, 0x8250, 0x8251, 0x8252, 0x8253, 0x8254, 0x8255, 0x8256, 0x8257, 0x8258, 0x0000, 0x0000
+};
+
+void func_80105E50_toadstool_titan(omObjData *object);
 void func_801060AC_toadstool_titan(omObjData *object);
+void func_801069DC_toadstool_titan(omObjData *object);
+void func_80106C98_toadstool_titan(omObjData *object);
+void func_8010B99C_toadstool_titan(omObjData *object);
+void func_8010BA80_toadstool_titan(omObjData *object);
+void func_8010BB64_toadstool_titan(omObjData *object);
+void func_8010BC48_toadstool_titan(omObjData *object);
 void func_8010B510_toadstool_titan(omObjData *object);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", func_801059A0_toadstool_titan);
+void func_801059A0_toadstool_titan(void) {
+    omObjData *object;
+    s32 i;
+
+    func_8001FE20_main(50);
+    func_80021BE0_main(&D_800EBEB0_minigame, 0x40);
+    func_800142A0_main(0x20);
+    omInitObjMan(100, 0);
+    func_8004A208_main();
+    D_800CD280_main = 1;
+    func_8000B5F0_main(1);
+    D_800CD6A6_main = func_8000B638_main();
+    ScissorSet(D_800CD6A6_main, 0.0f, 0.0f, 320.0f, 240.0f);
+    ViewportSet(D_800CD6A6_main, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
+    D_800EC1B8_minigame = 0;
+    D_800EC280_minigame = 0;
+    D_800EBE28_minigame = 0;
+    func_800E18D8_minigame();
+    D_800EB73C_minigame = 15.0f;
+    D_800EB760_minigame = 18.0f;
+    D_800EB764_minigame = 13.5f;
+    D_800EB768_minigame = 9.0f;
+    D_800EB76C_minigame = 4.5f;
+    func_800E19F0_minigame(1);
+    Hu3DGLightMaxSet(2);
+    Hu3DGLightDirSet(0, 0.0f, 73.0f, 95.0f);
+    Hu3DGLightColorSet(0, 0x80, 0x80, 0x80);
+    Hu3DGLightDirSet(1, 0.0f, 95.0f, 55.0f);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xFF);
+    Hu3DGLightDirSet(2, 0.0f, 95.0f, 55.0f);
+    Hu3DGLightColorSet(2, 0xFF, 0xFF, 0xFF);
+    omAddObj(0, 0, 0, -1, func_80105E50_toadstool_titan);
+    func_800E1490_minigame(D_800EBE28_minigame);
+    object = omAddObj(4, 58, 58, -1, func_80106C98_toadstool_titan);
+    D_800EC1C0_minigame[D_800EBE28_minigame++] = D_8010F5F8_toadstool_titan = object;
+    omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    for (i = 0; i < 9; i++) {
+        D_800EC1C0_minigame[D_800EBE28_minigame++] = D_8010F5D0_toadstool_titan[i] = omAddObj(2, 2, 2, -1, func_801069DC_toadstool_titan);
+    }
+    D_800EC598_minigame[D_800EC280_minigame++] = D_8010F640_toadstool_titan[0] = omAddObj(3, 12, 60, -1, func_8010B99C_toadstool_titan);
+    D_800EC598_minigame[D_800EC280_minigame++] = D_8010F640_toadstool_titan[1] = omAddObj(3, 12, 60, -1, func_8010BA80_toadstool_titan);
+    D_800EC598_minigame[D_800EC280_minigame++] = D_8010F640_toadstool_titan[2] = omAddObj(3, 12, 60, -1, func_8010BB64_toadstool_titan);
+    D_800EC598_minigame[D_800EC280_minigame++] = D_8010F640_toadstool_titan[3] = omAddObj(3, 12, 60, -1, func_8010BC48_toadstool_titan);
+    omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, func_8010B510_toadstool_titan), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    WipeCreateIn(0xFF, 30);
+    func_80045010_main(D_8010EE80_toadstool_titan, 1);
+    D_8010F590_toadstool_titan.unk01 = 0;
+    D_8010F590_toadstool_titan.unk1C = 45;
+    D_8010F590_toadstool_titan.unk1E = 1800;
+    D_8010F590_toadstool_titan.unk03 = 2;
+    D_8010F590_toadstool_titan.unk02 = 1;
+    D_8010F590_toadstool_titan.unk22 = 60;
+    D_8010F590_toadstool_titan.unk24 = 165;
+    D_8010F590_toadstool_titan.unk04 = 0;
+    D_8010F590_toadstool_titan.unk05 = 0;
+    D_8010F590_toadstool_titan.unk20 = -1;
+    func_800E5EA0_minigame(&D_8010F590_toadstool_titan);
+}
 
 void func_80105E48_toadstool_titan(void) {
 }
@@ -93,8 +171,6 @@ void func_80105E50_toadstool_titan(omObjData *object) {
     object->func = func_801060AC_toadstool_titan;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", D_8010EE80_toadstool_titan);
-
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", D_8010EECC_toadstool_titan);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", func_801060AC_toadstool_titan);
@@ -116,14 +192,14 @@ void func_801069DC_toadstool_titan(omObjData *object) {
     if (D_8010EDA0_toadstool_titan == 0) {
         object->model[0] = func_8000B108_main(0x370000, 0xBD);
     } else {
-        object->model[0] = Hu3DModelLink(D_8010F5D0_toadstool_titan->model[0]);
+        object->model[0] = Hu3DModelLink(D_8010F5D0_toadstool_titan[0]->model[0]);
     }
     omSetTra(object, xs[D_8010EDA0_toadstool_titan] * 1.11, 375.0f, zs[D_8010EDA0_toadstool_titan] * 1.11 + 20.0);
     omSetSca(object, 0.6666667f, 0.6666667f, 0.6666667f);
     if (D_8010EDA0_toadstool_titan == 0) {
         object->model[1] = func_8000B108_main(0x370001, 0xBD);
     } else {
-        object->model[1] = Hu3DModelLink(D_8010F5D0_toadstool_titan->model[1]);
+        object->model[1] = Hu3DModelLink(D_8010F5D0_toadstool_titan[0]->model[1]);
     }
     Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
     Hu3DModelScaleSet(object->model[1], 0.6666667f, 0.6666667f, 0.6666667f);

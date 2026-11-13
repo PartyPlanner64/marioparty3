@@ -45,7 +45,13 @@ void func_8011019C_option(void);
 void func_80110754_option(void);
 void func_801119CC_option(void);
 void func_8011083C_option(s32, s32, s32);
-void func_801110C0_option(s32, u32, s32, s32, u16, u16, s16);
+void func_801110C0_option(s32, u32, s16, s16, u16, u16, s16);
+s32 func_8011130C_option(s32 message, s16 x, s16 y, s16 width, s16 height, s16 type);
+s32 func_80111458_option(s32 message, s16 x, s16 y, s16 width, s16 height, s16 type);
+s32 func_801115C0_option(s32 message, s16 x, s16 y, s16 width, s16 height, s16 type);
+s32 func_80111768_option(s32 message, s16 x, s16 y, s16 type);
+s32 func_80111834_option(s32 message, s16 x, s16 y, s16 type);
+s32 func_80111900_option(s32 message, s16 x, s16 y, s16 type);
 void func_80111A10_option(s32);
 void func_80111C50_option(s32, u32);
 void func_80112028_option(s32, s32, s32);
@@ -371,9 +377,51 @@ u32 func_80111058_option(u32 arg0) {
     return arg0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/53DCA0", func_801110C0_option);
+// Register allocation only: the target assigns s0=x, s1=ptr, s2=y, s3=type, s4=width, s5=height, while this
+// gives s0=ptr, s1=x, s2=y, s3=width, s4=height, s5=type. Tried s32/s16 x and y, reusing `message` instead of
+// `ptr` (loses the hoisted `move a0,a1`), and both local declaration orders.
+#ifdef NON_MATCHING
+void func_801110C0_option(s32 arg0, u32 message, s16 x, s16 y, u16 width, u16 height, s16 type) {
+    s32 winID;
+    u32 ptr;
 
-s32 func_8011130C_option(s32 message, s16 x, s16 y, s16 width, s16 height) {
+    switch (type) {
+        case 1:
+            ptr = func_80111058_option(message);
+            winID = func_80111458_option(ptr, x, y, width, height, type);
+            break;
+        case 2:
+            ptr = func_80111058_option(message);
+            winID = func_801115C0_option(ptr, x, y, width, height, type);
+            break;
+        case 3:
+            ptr = func_80111058_option(message);
+            winID = func_80111768_option(ptr, x, y, type);
+            break;
+        case 4:
+            ptr = func_80111058_option(message);
+            winID = func_80111834_option(ptr, x, y, type);
+            break;
+        case 5:
+            ptr = func_80111058_option(message);
+            winID = func_80111900_option(ptr, x, y, type);
+            break;
+        case 0:
+        default:
+            ptr = func_80111058_option(message);
+            winID = func_8011130C_option(ptr, x, y, width, height, type);
+            break;
+    }
+    if (0x80000000U < ptr) {
+        D_80115A78_option[arg0].unk_04 = (void *)ptr;
+    }
+    D_80115A78_option[arg0].winID = winID;
+}
+#else
+INCLUDE_ASM("asm/nonmatchings/overlays/option/53DCA0", func_801110C0_option);
+#endif
+
+s32 func_8011130C_option(s32 message, s16 x, s16 y, s16 width, s16 height, s16 type) {
     s16 winID;
 
     winID = HuWinCreate(x, y, width, height, 0, 8);
@@ -394,7 +442,7 @@ s32 func_8011130C_option(s32 message, s16 x, s16 y, s16 width, s16 height) {
     return winID;
 }
 
-s32 func_80111458_option(s32 message, s16 x, s16 y, s16 width, s16 height) {
+s32 func_80111458_option(s32 message, s16 x, s16 y, s16 width, s16 height, s16 type) {
     s16 winID;
 
     winID = HuWinCreate(x, y, width, height, 0, 4);
@@ -416,7 +464,7 @@ s32 func_80111458_option(s32 message, s16 x, s16 y, s16 width, s16 height) {
     return winID;
 }
 
-s32 func_801115C0_option(s32 message, s16 x, s16 y, s16 width, s16 height) {
+s32 func_801115C0_option(s32 message, s16 x, s16 y, s16 width, s16 height, s16 type) {
     s16 winID;
 
     winID = HuWinCreate(x, y, width, height, 0, 8);
@@ -440,7 +488,7 @@ s32 func_801115C0_option(s32 message, s16 x, s16 y, s16 width, s16 height) {
     return winID;
 }
 
-s32 func_80111768_option(s32 message, s16 x, s16 y) {
+s32 func_80111768_option(s32 message, s16 x, s16 y, s16 type) {
     s16 winID;
 
     winID = func_80060880_main(x, y, 19);
@@ -453,7 +501,7 @@ s32 func_80111768_option(s32 message, s16 x, s16 y) {
     return winID;
 }
 
-s32 func_80111834_option(s32 message, s16 x, s16 y) {
+s32 func_80111834_option(s32 message, s16 x, s16 y, s16 type) {
     s16 winID;
 
     winID = func_80060880_main(x, y, 20);
@@ -466,7 +514,7 @@ s32 func_80111834_option(s32 message, s16 x, s16 y) {
     return winID;
 }
 
-s32 func_80111900_option(s32 message, s16 x, s16 y) {
+s32 func_80111900_option(s32 message, s16 x, s16 y, s16 type) {
     s16 winID;
 
     winID = func_80060880_main(x, y, 19);

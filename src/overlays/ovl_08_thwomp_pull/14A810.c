@@ -27,6 +27,7 @@ extern f32 D_8010F520_thwomp_pull[4];
 extern HmfModelSet *D_8010F528_thwomp_pull;
 extern omObjData *D_8010F52C_thwomp_pull;
 extern s16 D_8010F530_thwomp_pull;
+extern f32 D_8010F534_thwomp_pull[2];
 extern s32 D_8010F53C_thwomp_pull;
 extern f32 D_8010F540_thwomp_pull[4];
 extern s16 D_8010F550_thwomp_pull[10]; // sprite data ids
@@ -57,6 +58,7 @@ void func_80109780_thwomp_pull(omObjData *object);
 
 void func_80105F14_thwomp_pull(omObjData *object);
 void func_80106E78_thwomp_pull(omObjData *object);
+void func_80107FF4_thwomp_pull(s16 *left, s16 *top, s16 *right, s16 *bottom);
 void func_801089B4_thwomp_pull(Gfx **gfxPos, s32 arg1, s32 arg2);
 void func_801097AC_thwomp_pull(omObjData *object, s8 group);
 void func_8010AF88_thwomp_pull(omObjData *object);
@@ -379,7 +381,181 @@ void func_80106D5C_thwomp_pull(omObjData *object) {
     object->func = func_80106E78_thwomp_pull;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", func_80106E78_thwomp_pull);
+void func_80106E78_thwomp_pull(omObjData *object) {
+    s16 left[2] = { 0, 160 };
+    s16 top[2] = { 0, 0 };
+    s16 right[2] = { 160, 320 };
+    s16 bottom[2] = { 240, 240 };
+    s32 other;
+    s32 i;
+
+    if (D_8010F53C_thwomp_pull == 100) {
+        CenterM[0].x = CenterM[1].x = 0.0f;
+        CenterM[0].y = CenterM[1].y = 115.0f;
+        CenterM[0].z = CenterM[1].z = -500.0f;
+        CRotM[0].x = CRotM[1].x = -16.0f;
+        CRotM[0].y = CRotM[1].y = 0.0f;
+        CRotM[0].z = CRotM[1].z = 0.0f;
+        CZoomM[0] = CZoomM[1] = 1260.0f;
+        Hu3DCameraPerspectiveSet(0, 65.0f, 500.0f, 3000.0f);
+        Hu3DCameraPerspectiveSet(1, 65.0f, 500.0f, 3000.0f);
+    }
+    if (D_8010F588_thwomp_pull > 0.0f && D_8010F566_thwomp_pull < 2) {
+        f32 progress = D_8010F588_thwomp_pull;
+        f32 remain = 1.0f - progress;
+        f32 scissorLeft[2] = { 0.0f, 180.0f };
+        f32 scissorRight[2] = { 140.0f, 320.0f };
+        f32 viewScale[2] = { 1.0f, 1.0f };
+        f32 viewX[2] = { 320.0f, 960.0f };
+        f32 viewY[2] = { 480.0f, 480.0f };
+        s32 offset;
+
+        CenterM[D_8010F566_thwomp_pull].y = remain * 115.0f - progress * 80.0f;
+        CRotM[D_8010F566_thwomp_pull].x = remain * -16.0f - progress * 6.0f;
+        CZoomM[D_8010F566_thwomp_pull] = remain * 1260.0f + (D_8010F566_thwomp_pull * 150 + 1600) * progress;
+        viewScale[D_8010F566_thwomp_pull] = progress + 1.0f;
+        scissorLeft[D_8010F566_thwomp_pull] = remain * scissorLeft[D_8010F566_thwomp_pull] + progress * 0.0f;
+        scissorRight[D_8010F566_thwomp_pull] = remain * scissorRight[D_8010F566_thwomp_pull] + progress * 320.0f;
+        viewX[D_8010F566_thwomp_pull] = remain * viewX[D_8010F566_thwomp_pull] + progress * 640.0f;
+        viewY[D_8010F566_thwomp_pull] = remain * viewY[D_8010F566_thwomp_pull] + progress * ((D_8010F566_thwomp_pull != 0) ? 780.0 : 720.0);
+        left[D_8010F566_thwomp_pull] = left[D_8010F566_thwomp_pull] * remain + progress * 0.0f;
+        right[D_8010F566_thwomp_pull] = right[D_8010F566_thwomp_pull] * remain + progress * 320.0f;
+        top[D_8010F566_thwomp_pull] =
+            top[D_8010F566_thwomp_pull] * remain + progress * ((D_8010F566_thwomp_pull != 0) ? -30.0f : -60.0f);
+        bottom[D_8010F566_thwomp_pull] =
+            bottom[D_8010F566_thwomp_pull] * remain + progress * ((D_8010F566_thwomp_pull != 0) ? 450.0f : 420.0f);
+        if (D_8010F566_thwomp_pull == 0) {
+            scissorLeft[1] = remain * scissorLeft[1] + progress * 318.0f;
+            scissorRight[1] = remain * scissorRight[1] + progress * 320.0f;
+            viewX[1] = progress * 712.0f + viewX[1];
+            offset = progress * 178.0f;
+            left[1] += offset;
+            right[1] += offset;
+        } else {
+            scissorLeft[0] = remain * scissorLeft[0] + progress * 0.0f;
+            scissorRight[0] = remain * scissorRight[0] + progress * 2.0f;
+            viewX[0] = viewX[0] - progress * 712.0f;
+            offset = progress * 178.0f;
+            left[0] -= offset;
+            right[0] -= offset;
+        }
+        ScissorSet(0, scissorLeft[0], 0.0f, scissorRight[0], 240.0f);
+        ScissorSet(1, scissorLeft[1], 0.0f, scissorRight[1], 240.0f);
+        ViewportSet(0, viewScale[0] * 640.0f, viewScale[0] * 480.0f, 511.0f, viewX[0], viewY[0], 511.0f);
+        ViewportSet(1, viewScale[1] * 640.0f, viewScale[1] * 480.0f, 511.0f, viewX[1], viewY[1], 511.0f);
+        func_80107FF4_thwomp_pull(left, top, right, bottom);
+        if (D_8010F588_thwomp_pull == 1.0f) {
+            object = D_8010F568_thwomp_pull[1 - D_8010F566_thwomp_pull];
+            other = 1 - D_8010F566_thwomp_pull;
+            func_8001C258_main(object->model[7], 4, 4);
+            for (i = 0; i < other * 2 + 1; i++) {
+                func_8001C258_main(object->model[i + 1], 4, 4);
+            }
+            for (i = 0; i < 3; i++) {
+                func_8001C258_main(object->model[i + 4], 4, 4);
+            }
+            for (i = 0; i < 4; i++) {
+                func_8001C258_main(object->model[i + 12], 4, 4);
+                func_8001C258_main(object->model[i + 18], 4, 4);
+            }
+        }
+    } else if (D_8010F53C_thwomp_pull < 100) {
+        f32 progress;
+        f32 remain;
+
+        if (D_8010F53C_thwomp_pull < 80) {
+            progress = D_8010F53C_thwomp_pull / 80.0;
+        } else {
+            progress = 1.0f;
+        }
+        remain = 1.0f - progress;
+        CenterM[0].x = CenterM[1].x = progress * 435.0f - remain * 60.0f;
+        CenterM[0].y = CenterM[1].y = 140.0f;
+        CenterM[0].z = CenterM[1].z = -660.0f;
+        CRotM[0].x = CRotM[1].x = -8.0f;
+        CRotM[0].y = CRotM[1].y = -225.0f;
+        CRotM[0].z = CRotM[1].z = 0.0f;
+        CZoomM[0] = CZoomM[1] = 100.0f;
+        CenterM[1].x = -CenterM[1].x;
+        CRotM[1].y = -CRotM[1].y;
+        Hu3DCameraPerspectiveSet(0, 65.0f, 50.0f, 4000.0f);
+        Hu3DCameraPerspectiveSet(1, 65.0f, 50.0f, 4000.0f);
+        top[0] += D_8010F534_thwomp_pull[0];
+        bottom[0] += D_8010F534_thwomp_pull[0];
+        top[1] += D_8010F534_thwomp_pull[1];
+        bottom[1] += D_8010F534_thwomp_pull[1];
+        func_80107FF4_thwomp_pull(left, top, right, bottom);
+        ViewportSet(0, 640.0f, 480.0f, 511.0f, 320.0f, D_8010F534_thwomp_pull[0] * 4.0f + 480.0f, 511.0f);
+        ViewportSet(1, 640.0f, 480.0f, 511.0f, 960.0f, D_8010F534_thwomp_pull[1] * 4.0f + 480.0f, 511.0f);
+    } else if (D_8010F53C_thwomp_pull < 150) {
+        f32 scale;
+        f32 remain;
+
+        if (D_8010F53C_thwomp_pull >= 100) {
+            if (D_8010F53C_thwomp_pull < 115) {
+                scale = (D_8010F53C_thwomp_pull - 100) / 15.0;
+            } else {
+                scale = 1.0f;
+            }
+        } else {
+            scale = 0.0f;
+        }
+        remain = 1.0f - scale;
+        scale = (remain * remain * remain * 0.75 + remain * 0.25) * 0.5 + 1.0;
+        ViewportSet(0, scale * 640.0f, scale * 480.0f, 511.0f, 320.0f, 480.0f, 511.0f);
+        ViewportSet(1, scale * 640.0f, scale * 480.0f, 511.0f, 960.0f, 480.0f, 511.0f);
+        left[0] = (left[0] - 80) * scale + 80.0f;
+        top[0] = (top[0] - 120) * scale + 120.0f;
+        right[0] = (right[0] - 80) * scale + 80.0f;
+        bottom[0] = (bottom[0] - 120) * scale + 120.0f;
+        left[1] = (left[1] - 240) * scale + 240.0f;
+        top[1] = (top[1] - 120) * scale + 120.0f;
+        right[1] = (right[1] - 240) * scale + 240.0f;
+        bottom[1] = (bottom[1] - 120) * scale + 120.0f;
+        Hu3DCameraPerspectiveSet(0, 65.0f, 500.0f, 3000.0f);
+        Hu3DCameraPerspectiveSet(1, 65.0f, 500.0f, 3000.0f);
+        func_80107FF4_thwomp_pull(left, top, right, bottom);
+    } else {
+        f32 scale;
+
+        if (D_8010F53C_thwomp_pull >= 90) {
+            if (D_8010F53C_thwomp_pull < 120) {
+                scale = 2.5 - (D_8010F53C_thwomp_pull - 90) / 30.0 * 1.5;
+            } else {
+                scale = 1.0f;
+            }
+        } else {
+            scale = 2.5f;
+        }
+        ViewportSet(0, scale * 640.0f, scale * 480.0f, 511.0f, 320.0f, D_8010F534_thwomp_pull[0] * 4.0f + 480.0f,
+                    511.0f);
+        ViewportSet(1, scale * 640.0f, scale * 480.0f, 511.0f, 960.0f, D_8010F534_thwomp_pull[1] * 4.0f + 480.0f,
+                    511.0f);
+        left[0] = (left[0] - 80) * scale + 80.0f;
+        top[0] = (top[0] - 120) * scale + 120.0f;
+        right[0] = (right[0] - 80) * scale + 80.0f;
+        bottom[0] = (bottom[0] - 120) * scale + 120.0f;
+        left[1] = (left[1] - 240) * scale + 240.0f;
+        top[1] = (top[1] - 120) * scale + 120.0f;
+        right[1] = (right[1] - 240) * scale + 240.0f;
+        bottom[1] = (bottom[1] - 120) * scale + 120.0f;
+        top[0] += D_8010F534_thwomp_pull[0];
+        bottom[0] += D_8010F534_thwomp_pull[0];
+        top[1] += D_8010F534_thwomp_pull[1];
+        bottom[1] += D_8010F534_thwomp_pull[1];
+        func_80107FF4_thwomp_pull(left, top, right, bottom);
+    }
+    if (!omPauseChk()) {
+        s32 shake;
+
+        shake = D_8010F564_thwomp_pull[0];
+        D_8010F534_thwomp_pull[0] = ((shake & 1) ? -shake : shake) * 0.5;
+        D_8010F564_thwomp_pull[0] -= (D_8010F564_thwomp_pull[0] != 0) ? 1 : 0;
+        shake = D_8010F564_thwomp_pull[1];
+        D_8010F534_thwomp_pull[1] = ((shake & 1) ? -shake : shake) * 0.5;
+        D_8010F564_thwomp_pull[1] -= (D_8010F564_thwomp_pull[1] != 0) ? 1 : 0;
+    }
+}
 
 void func_80107FF4_thwomp_pull(s16 *left, s16 *top, s16 *right, s16 *bottom) {
     s32 scissorLeft[2];

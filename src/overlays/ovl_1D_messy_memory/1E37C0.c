@@ -18,7 +18,7 @@ typedef struct {
     /* 0x14 */ s16 unk14;
     /* 0x16 */ s16 unk16;
     /* 0x18 */ f32 unk18;
-    /* 0x1C */ s32 unk1C;
+    /* 0x1C */ f32 unk1C;
     /* 0x20 */ s32 unk20;
     /* 0x24 */ s32 unk24;
     /* 0x28 */ s32 unk28;
@@ -58,6 +58,7 @@ extern s32 D_80110FC0_messy_memory[8];
 extern s16 D_80110FE0_messy_memory[5][2];
 extern s16 D_80110FF4_messy_memory[21][2];
 extern s16 D_80111044_messy_memory[21][2];
+extern s16 D_80111094_messy_memory[4][2];
 extern f32 D_801110A4_messy_memory[20][2];
 extern MessyMemorySpriteEntry D_80111148_messy_memory[];
 extern MessyMemorySpriteEntry D_80111198_messy_memory[];
@@ -1161,7 +1162,250 @@ void func_8010C37C_messy_memory(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", func_8010C478_messy_memory);
+void func_8010C478_messy_memory(omObjData *obj) {
+    MessyMemoryWork *work = &D_80111700_messy_memory[obj->work[0] + 8 + obj->work[1] * 10];
+    MessyMemoryWork *marker;
+    MessyMemoryWork *cursor;
+    u8 found;
+    u8 slot;
+    u8 i;
+    u8 j;
+
+    switch (D_80115D8C_messy_memory) {
+        case 2:
+            D_80111674_messy_memory = 7;
+            break;
+        case 3:
+            if (obj->work[1] == 4 && D_80115D90_messy_memory[obj->work[0]] == 10 &&
+                D_80111638_messy_memory < D_80111674_messy_memory) {
+                slot = rand8() % 10;
+                if (slot != D_80115D90_messy_memory[0] && slot != D_80115D90_messy_memory[1] &&
+                    slot != D_80115D90_messy_memory[2] && slot != D_80115D90_messy_memory[3] &&
+                    slot != D_80115D90_messy_memory[4] && slot != D_80115D90_messy_memory[5] &&
+                    slot != D_80115D90_messy_memory[6] && slot != D_80115D90_messy_memory[7] &&
+                    slot != D_80115D90_messy_memory[8] && slot != D_80115D90_messy_memory[9]) {
+                    D_80115D90_messy_memory[obj->work[0]] = slot;
+                    D_80111638_messy_memory++;
+                    for (i = 0; i < 10; i++) {
+                        if (slot == i) {
+                            work->unk44.x = D_80110FF4_messy_memory[slot + 10][0];
+                            work->unk44.y = D_80110FF4_messy_memory[slot + 10][1];
+                        }
+                    }
+                }
+            }
+            if (D_80111638_messy_memory >= D_80111674_messy_memory) {
+                if (obj->work[1] == 4) {
+                    espPriSet(work->unk42, 0x1111);
+                    espPosSet(work->unk42, work->unk44.x, work->unk44.y);
+                }
+                for (i = 0; i < 10; i++) {
+                    work = &D_80111700_messy_memory[i + 48];
+                    obj = work->obj;
+                    for (j = 0; j < 20; j++) {
+                        if (work->unk44.x == D_80110FF4_messy_memory[j][0] &&
+                            work->unk44.y == D_80110FF4_messy_memory[j][1]) {
+                            D_801116E0_messy_memory[j] = obj->work[0];
+                        }
+                    }
+                }
+            }
+            break;
+        case 4:
+            if (obj->work[1] == 4) {
+                espAttrReset(work->unk42, 0x4000);
+            }
+            if (obj->work[1] < 4) {
+                for (i = 0; i < 20; i++) {
+                    if (D_801116E0_messy_memory[i] == obj->work[0]) {
+                        work->unk44.x = D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[obj->work[1]][0];
+                        work->unk44.y = D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[obj->work[1]][1];
+                        espPosSet(work->unk42, work->unk44.x, work->unk44.y);
+                        espScaleSet(work->unk42, work->unk5C.x, work->unk5C.y);
+                        if (i < 15) {
+                            espPriSet(work->unk42, 0xDDDD);
+                        } else {
+                            espPriSet(work->unk42, 0xBBBB);
+                        }
+                    }
+                }
+                if (obj->work[1] * 10 + obj->work[0] == 39) {
+                    D_80115D9A_messy_memory = 4;
+                }
+            }
+            break;
+        case 5:
+            if (obj->work[1] == 4) {
+                u32 index = obj->work[0] + 48;
+
+                work = &D_80111700_messy_memory[index];
+                for (i = 0; i < 20; i++) {
+                    if (work->unk44.x == D_80110FF4_messy_memory[i][0] && work->unk44.y == D_80110FF4_messy_memory[i][1]) {
+                        D_80115D20_messy_memory[obj->work[0]][0] = D_801110A4_messy_memory[i][0] * 2.0f;
+                        D_80115D20_messy_memory[obj->work[0]][1] = D_801110A4_messy_memory[i][1] * 2.0f;
+                    }
+                }
+                work->unk44.x += D_80115D20_messy_memory[obj->work[0]][0];
+                work->unk44.y += D_80115D20_messy_memory[obj->work[0]][1];
+                espPosSet(work->unk42, work->unk44.x, work->unk44.y);
+                work->unk5C.x = work->unk5C.y = D_8011165C_messy_memory;
+                espScaleSet(work->unk42, work->unk5C.x, work->unk5C.y);
+                if (work->unk5C.x <= 0.01 || work->unk5C.y <= 0.01) {
+                    espDispOff(work->unk42);
+                    for (i = 0; i < 10; i++) {
+                        if (obj->work[0] == D_801116A4_messy_memory[i]) {
+                            work->unk44.x = D_80110FF4_messy_memory[i][0];
+                            work->unk44.y = D_80110FF4_messy_memory[i][1];
+                        }
+                    }
+                    for (i = 0; i < 20; i++) {
+                        if (work->unk44.x == D_80110FF4_messy_memory[i][0] &&
+                            work->unk44.y == D_80110FF4_messy_memory[i][1]) {
+                            D_80115D20_messy_memory[obj->work[0]][0] = -D_801110A4_messy_memory[i][0];
+                            D_80115D20_messy_memory[obj->work[0]][1] = -D_801110A4_messy_memory[i][1];
+                            work->unk44.x = 160.0f;
+                            work->unk44.y = 120.0f;
+                        }
+                    }
+                }
+            }
+            break;
+        case 6:
+        case 7:
+        case 8:
+            break;
+        case 9:
+            if (obj->work[1] < 4) {
+                switch (D_801116B0_messy_memory[obj->work[1] * 10 + obj->work[0]]) {
+                    case 0:
+                        espPriSet(work->unk42, 0xDDDD);
+                        for (i = 15; i < 21; i++) {
+                            if (work->unk44.x ==
+                                    D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[obj->work[1]][0] &&
+                                work->unk44.y ==
+                                    D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[obj->work[1]][1]) {
+                                espPriSet(work->unk42, 0xBBBB);
+                            }
+                        }
+                        break;
+                    case 1:
+                        cursor = &D_80111700_messy_memory[obj->work[1]];
+                        work->unk44.x = cursor->unk44.x;
+                        work->unk44.y = cursor->unk44.y;
+                        espPriSet(work->unk42, 0xAAAA);
+                        break;
+                }
+                espPosSet(work->unk42, work->unk44.x, work->unk44.y);
+                espScaleSet(work->unk42, work->unk5C.x, work->unk5C.y);
+            }
+            break;
+        case 10:
+            if (obj->work[1] < 4) {
+                if (D_801116B0_messy_memory[obj->work[1] * 10 + obj->work[0]] == 1) {
+                    marker = &D_80111700_messy_memory[obj->work[0] + 0x56 + obj->work[1] * 10];
+                    if (D_80110FE0_messy_memory[obj->work[1]][1] + 93.0f <= work->unk44.y) {
+                        for (i = 1; i < 4; i++) {
+                            if (abs(D_80110FE0_messy_memory[obj->work[1]][0] + D_80111094_messy_memory[work->unk06][0] -
+                                    work->unk44.x) >
+                                abs(D_80110FE0_messy_memory[obj->work[1]][0] + D_80111094_messy_memory[i][0] -
+                                    work->unk44.x)) {
+                                work->unk06 = i;
+                            }
+                        }
+                        work->unk44.x =
+                            D_80110FE0_messy_memory[obj->work[1]][0] + D_80111094_messy_memory[work->unk06][0];
+                        work->unk44.y =
+                            D_80110FE0_messy_memory[obj->work[1]][1] + D_80111094_messy_memory[work->unk06][1];
+                        espPriSet(marker->unk42, 0xABBB);
+                    }
+                    if (D_80110FE0_messy_memory[obj->work[1]][1] + 93.0f > work->unk44.y) {
+                        if (D_80110FE0_messy_memory[obj->work[1]][0] + 80.0f >= work->unk44.x && work->unk08 == 0) {
+                            work->unk18 = 2.0f;
+                            work->unk08 = 1;
+                        }
+                        if (D_80110FE0_messy_memory[obj->work[1]][0] + 80.0f < work->unk44.x && work->unk08 == 0) {
+                            work->unk18 = -2.0f;
+                            work->unk08 = 1;
+                        }
+                        work->unk1C += 0.5f;
+                        work->unk44.x += work->unk18;
+                        work->unk44.y += work->unk1C;
+                        espPriSet(work->unk42, 0xCDDD);
+                        espPriSet(marker->unk42, 0xCDEE);
+                    }
+                    if (D_80110FE0_messy_memory[obj->work[1]][1] + 93.0f <= work->unk44.y) {
+                        D_801116B0_messy_memory[obj->work[1] * 10 + obj->work[0]] = 0;
+                        espDispOn(marker->unk42);
+                        espPosSet(marker->unk42, work->unk44.x, work->unk44.y + 1.0f);
+                    }
+                }
+                found = FALSE;
+                for (i = 0; i < 40; i++) {
+                    if (D_801116B0_messy_memory[i] == 1) {
+                        found = TRUE;
+                    }
+                }
+                if (!found) {
+                    D_80115D9A_messy_memory = 10;
+                }
+                espPosSet(work->unk42, work->unk44.x, work->unk44.y);
+            }
+            break;
+        case 11:
+            if (obj->work[1] == 4) {
+                work->unk44.x = 160.0f;
+                work->unk44.y = 120.0f;
+            }
+            break;
+        case 12:
+            if (obj->work[1] == 4) {
+                u32 index = obj->work[0] + 48;
+
+                work = &D_80111700_messy_memory[index];
+                work->unk44.x += D_80115D20_messy_memory[obj->work[0]][0];
+                work->unk44.y += D_80115D20_messy_memory[obj->work[0]][1];
+                espPosSet(work->unk42, work->unk44.x, work->unk44.y);
+                work->unk5C.x = work->unk5C.y = D_8011165C_messy_memory;
+                espScaleSet(work->unk42, work->unk5C.x, work->unk5C.y);
+                espDispOn(work->unk42);
+            }
+            break;
+        case 13:
+            if (obj->work[1] < 4) {
+                if (D_80110FE0_messy_memory[obj->work[1]][1] + 80.0f > work->unk44.y) {
+                    espPriSet(work->unk42, 0xDDDD);
+                    if (D_801116A4_messy_memory[D_8011163A_messy_memory] == obj->work[0]) {
+                        for (i = 0; i < 10; i++) {
+                            if (work->unk44.x ==
+                                    D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[obj->work[1]][0] &&
+                                work->unk44.y ==
+                                    D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[obj->work[1]][1]) {
+                                D_801116E0_messy_memory[i] = obj->work[0];
+                                if (D_801116A4_messy_memory[i] == D_801116E0_messy_memory[i]) {
+                                    espPriSet(work->unk42, 0x1111);
+                                    if (work->unk04 == 0) {
+                                        D_80115D76_messy_memory[obj->work[1]]++;
+                                        work->unk04 = 1;
+                                    }
+                                    work->unk5C.x = work->unk5C.y = D_801116A0_messy_memory;
+                                    espScaleSet(work->unk42, work->unk5C.x, work->unk5C.y);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (obj->work[1] == 4) {
+                espPriSet(work->unk42, 0x3333);
+                if (D_801116A4_messy_memory[D_8011163A_messy_memory] == obj->work[0]) {
+                    espPriSet(work->unk42, 0x1111);
+                    work->unk5C.x = work->unk5C.y = D_8011165C_messy_memory;
+                    espScaleSet(work->unk42, work->unk5C.x, work->unk5C.y);
+                }
+            }
+            break;
+    }
+}
 
 void func_8010D55C_messy_memory(omObjData *obj) {
     MessyMemoryWork *work = &D_80111700_messy_memory[obj->work[0] + 8 + obj->work[1] * 10];

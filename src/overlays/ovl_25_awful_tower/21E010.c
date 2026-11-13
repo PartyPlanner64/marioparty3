@@ -25,13 +25,17 @@ typedef struct {
 } AwfulTowerPlayer; // Size 0xC
 
 extern s32 D_800A178C_main[][6];
+extern omObjData *D_800EBE70_minigame[];
 
 extern s32 D_8010CB60_awful_tower[];
 extern D_80111B50_vine_with_me_Struct D_8010CB70_awful_tower;
 extern s32 D_8010CB98_awful_tower[];
+extern const s16 D_8010CCE0_awful_tower[];
+extern s16 D_8010D2CC_awful_tower[4];
 extern AwfulTowerPlayer D_8010D2D8_awful_tower[4];
 extern AwfulTowerPlayer *D_8010D308_awful_tower[4];
 extern f32 D_8010D320_awful_tower[4];
+extern omObjData *D_8010D344_awful_tower;
 extern u16 D_8010D348_awful_tower[4][3];
 extern omObjData *D_8010D360_awful_tower[4][3];
 extern omObjData *D_8010D390_awful_tower[5];
@@ -49,13 +53,104 @@ extern s8 D_8010D3FC_awful_tower;
 extern u8 D_8010D3FD_awful_tower;
 extern u8 D_8010D3FE_awful_tower;
 
+void func_80106028_awful_tower(omObjData *object);
 void func_801061FC_awful_tower(omObjData *object);
+void func_80106A9C_awful_tower(omObjData *object);
+void func_80106CDC_awful_tower(omObjData *object);
+void func_80106E84_awful_tower(omObjData *object);
+void func_80106FDC_awful_tower(omObjData *object);
 void func_80107734_awful_tower(omObjData *object);
 void func_80107858_awful_tower(void);
 void func_80108880_awful_tower(omObjData *object, s32 model, s32 motion, u16 group, f32 x, f32 y, f32 z);
+void func_80108CCC_awful_tower(omObjData *object);
+void func_80108D3C_awful_tower(omObjData *object);
+void func_80108DAC_awful_tower(omObjData *object);
+void func_80108E1C_awful_tower(omObjData *object);
 void func_80108E8C_awful_tower(omObjData *object);
 
+#ifdef NON_MATCHING
+// The instructions match, but the two local arrays (D_8010CCC0/D_8010CCD0) are also the initializers of two
+// local arrays in func_80107858_awful_tower, which GCC merges into one rodata copy. Both functions have to be
+// C at the same time, and the .rodata subsegment in marioparty3.yaml has to start at 0x225330 (0x8010CCC0)
+// instead of 0x225350.
+void func_801059A0_awful_tower(void) {
+    omObjData *object;
+    s32 i;
+    s32 j;
+
+    func_8001FE20_main(50);
+    func_80021BE0_main(&D_800EBEB0_minigame, 0x40);
+    func_800142A0_main(0x20);
+    omInitObjMan(100, 0);
+    func_8004A208_main();
+    D_800CD280_main = 1;
+    func_8000B5F0_main(4);
+    func_8000B710_main(4);
+    for (i = 0; i < 4; i++) {
+        s32 lefts[4] = { 0, 93, 161, 229 };
+        s32 rights[4] = { 92, 160, 228, 320 };
+
+        ScissorSet(i, lefts[i], 0.0f, rights[i], 240.0f);
+        ViewportSet(i, 640.0f, 480.0f, 511.0f, i * 272 + 236, 480.0f, 511.0f);
+        Hu3DCameraPerspectiveSet(i, 7.152669f, 8000.0f, 16000.0f);
+        CenterM[i].x = 0.0f;
+        CenterM[i].y = 650.0f;
+        CenterM[i].z = 0.0f;
+        CRotM[i].x = 0.0f;
+        CRotM[i].y = 0.0f;
+        CRotM[i].z = 0.0f;
+        CZoomM[i] = 12000.0f;
+    }
+    D_800EC1B8_minigame = 0;
+    D_800EC280_minigame = 0;
+    D_800EBE28_minigame = 0;
+    func_800E18D8_minigame();
+    func_800E19F0_minigame(1);
+    Hu3DGLightMaxSet(2);
+    Hu3DGLightDirSet(0, 0.0f, 80.0f, 130.0f);
+    Hu3DGLightColorSet(0, 0x80, 0x80, 0x90);
+    Hu3DGLightDirSet(1, 20.0f, 80.0f, 110.0f);
+    Hu3DGLightColorSet(1, 0xFF, 0xFF, 0xF0);
+    omAddObj(0, 0, 0, -1, func_80106028_awful_tower);
+    D_8010D3E8_awful_tower = omAddObj(4, 21, 21, -1, func_80106FDC_awful_tower);
+    omSetStatBit(D_8010D3E8_awful_tower, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    func_800E1490_minigame(D_800EBE28_minigame);
+    D_800EC1C0_minigame[D_800EBE28_minigame++] = D_8010D344_awful_tower = omAddObj(2, 21, 21, -1, func_80106A9C_awful_tower);
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 3; j++) {
+            D_800EC1C0_minigame[D_800EBE28_minigame++] = D_8010D360_awful_tower[i][j] = omAddObj(2, 4, 4, -1, func_80106E84_awful_tower);
+        }
+    }
+    for (i = 0; i < 5; i++) {
+        D_800EBE70_minigame[D_800EC1B8_minigame++] = D_8010D390_awful_tower[i] = omAddObj(2, 4, 2, -1, func_80106CDC_awful_tower);
+    }
+    D_800EC598_minigame[D_800EC280_minigame++] = D_8010D3A8_awful_tower[0] = omAddObj(3, 12, 60, -1, func_80108CCC_awful_tower);
+    D_800EC598_minigame[D_800EC280_minigame++] = D_8010D3A8_awful_tower[1] = omAddObj(3, 12, 60, -1, func_80108D3C_awful_tower);
+    D_800EC598_minigame[D_800EC280_minigame++] = D_8010D3A8_awful_tower[2] = omAddObj(3, 12, 60, -1, func_80108DAC_awful_tower);
+    D_800EC598_minigame[D_800EC280_minigame++] = D_8010D3A8_awful_tower[3] = omAddObj(3, 12, 60, -1, func_80108E1C_awful_tower);
+    object = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
+    object->work[0] = 4;
+    omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    WipeCreateIn(0xFF, 30);
+    func_80045010_main(D_8010CCE0_awful_tower, 1);
+    D_8010CB70_awful_tower.unk01 = 0;
+    D_8010CB70_awful_tower.unk1C = 60;
+    D_8010CB70_awful_tower.unk1E = 1800;
+    D_8010CB70_awful_tower.unk03 = 2;
+    D_8010CB70_awful_tower.unk02 = 1;
+    D_8010CB70_awful_tower.unk22 = 75;
+    D_8010CB70_awful_tower.unk24 = 165;
+    D_8010CB70_awful_tower.unk04 = 0;
+    D_8010CB70_awful_tower.unk05 = 0;
+    D_8010CB70_awful_tower.unk20 = -1;
+    func_800E5EA0_minigame(&D_8010CB70_awful_tower);
+    for (i = 0; i < 4; i++) {
+        D_8010D2CC_awful_tower[i] = func_8000D658_main(0x6A9, 4);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_25_awful_tower/21E010", func_801059A0_awful_tower);
+#endif
 
 void func_8010600C_awful_tower(void) {
     func_80107858_awful_tower();

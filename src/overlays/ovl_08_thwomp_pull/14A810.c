@@ -41,6 +41,8 @@ void func_80109780_thwomp_pull(omObjData *object);
 void func_80105F14_thwomp_pull(omObjData *object);
 void func_80106E78_thwomp_pull(omObjData *object);
 void func_801089B4_thwomp_pull(Gfx **gfxPos, s32 arg1, s32 arg2);
+void func_801097AC_thwomp_pull(omObjData *object, s8 group);
+void func_8010AF88_thwomp_pull(omObjData *object);
 
 void func_801059A0_thwomp_pull(void) {
     omObjData *object;
@@ -159,9 +161,15 @@ INCLUDE_ASM("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", func_80107FF4
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", func_801089B4_thwomp_pull);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", func_8010974C_thwomp_pull);
+void func_8010974C_thwomp_pull(omObjData *object) {
+    func_801097AC_thwomp_pull(object, 0);
+    object->func = func_8010AF88_thwomp_pull;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", func_80109780_thwomp_pull);
+void func_80109780_thwomp_pull(omObjData *object) {
+    func_801097AC_thwomp_pull(object, 1);
+    object->func = NULL;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F140_thwomp_pull);
 

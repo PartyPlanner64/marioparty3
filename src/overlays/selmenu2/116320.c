@@ -1,4 +1,5 @@
 #include "common.h"
+#include "gcc/string.h"
 
 #define ABS(x) ((x) > 0 ? (x) : -(x))
 
@@ -31,8 +32,17 @@ extern s16 D_80109B02_selmenu2;
 extern UnkSelmenu2Space D_80108BE0_selmenu2[];
 extern UnkSelmenu2SpaceGroups D_801090D0_selmenu2[];
 extern s16 D_80109B08_selmenu2[];
+extern s16 D_80109B18_selmenu2;
+extern s16 D_80109B1A_selmenu2;
+extern s16 D_80109B1C_selmenu2;
 extern GW_PLAYER D_80109B20_selmenu2[];
 extern UnkSelmenu2Sound D_801092F0_selmenu2[];
+extern u16 D_80109304_selmenu2[2][2]; // text colors
+extern u8 D_801093B0_selmenu2;
+extern s32 D_801093C0_selmenu2;
+extern s32 D_801093C4_selmenu2;
+extern s32 D_801093C8_selmenu2;
+extern char D_80109A8C_selmenu2[];
 extern u8 D_80109C38_selmenu2[];
 extern u8 D_80109C3C_selmenu2[];
 extern s16 D_80109C78_selmenu2[];
@@ -57,7 +67,13 @@ void func_80105F74_selmenu2(f32 zoom, f32 rotX, f32 rotY, f32 rotZ, f32 centerX,
 void func_8010600C_selmenu2(omObjData *obj);
 void func_801067B4_selmenu2(omObjData *obj);
 void func_80106A54_selmenu2(omObjData *obj);
+void func_80106D94_selmenu2(omObjData *obj);
+void func_801078CC_selmenu2(omObjData *obj);
+void func_80107D94_selmenu2(omObjData *obj);
 void func_80107DA4_selmenu2(omObjData *obj);
+void func_80108718_selmenu2(u16 index);
+void func_80108764_selmenu2(s16 dir);
+void func_80108910_selmenu2(u16 arg0, u16 arg1, char *arg2, u16 arg3, u16 arg4);
 void func_801087E0_selmenu2(s16 dir);
 void func_80108990_selmenu2(void);
 
@@ -373,11 +389,129 @@ void func_801067B4_selmenu2(omObjData *obj) {
     obj->func = func_80106A54_selmenu2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/selmenu2/116320", func_80106A54_selmenu2);
+void func_80106A54_selmenu2(omObjData *obj) {
+    UnkSelmenu2Space *space;
+    u16 *color;
+    s32 x;
+    s32 i;
+
+    rand8();
+    space = &D_80108BE0_selmenu2[D_80109B00_selmenu2 * 10];
+    for (i = 0; i < 10; i++, space++) {
+        sprintf(D_800D5218_main, space->unk_0C);
+        x = strlen(D_800D5218_main);
+        x = 0x40;
+        if (D_80108BE0_selmenu2[D_80109B00_selmenu2 * 10 + i].available == 0) {
+            color = D_80109304_selmenu2[0];
+        } else {
+            color = D_80109304_selmenu2[1];
+        }
+        if (D_80109B02_selmenu2 == i) {
+            func_80108910_selmenu2(x, (i + 10) * 9, D_800D5218_main, color[1], color[0]);
+        } else {
+            func_80108910_selmenu2(x, (i + 10) * 9, D_800D5218_main, color[0], 0);
+        }
+    }
+    sprintf(D_800D5218_main, D_80109A8C_selmenu2, D_80109B00_selmenu2 + 1, 8);
+    func_80108910_selmenu2(0x80, 0x40, D_800D5218_main, 15, 7);
+    espPosSet(D_80109C8E_selmenu2, 0x3C, (D_80109B02_selmenu2 + 11) * 9 - 1);
+    for (i = 0; i < 4; i++) {
+        if (!CheckControllerRead(i)) {
+            continue;
+        }
+        if ((D_80109CF8_selmenu2[i] & 0x90) && D_80108BE0_selmenu2[D_80109B00_selmenu2 * 10 + D_80109B02_selmenu2].available == 0) {
+            if (D_801093B0_selmenu2 == 0) {
+                omAddObj(2, 0, 0, -1, func_80107D94_selmenu2);
+                D_801093B0_selmenu2 = 1;
+                espDispOff(D_80109C8E_selmenu2);
+                obj->func = func_801078CC_selmenu2;
+                func_80108718_selmenu2(1);
+            }
+        } else if (D_80109CF8_selmenu2[i] & 1) {
+            func_80108764_selmenu2(-1);
+            func_80108990_selmenu2();
+            func_80108718_selmenu2(0);
+        } else if (D_80109CF8_selmenu2[i] & 2) {
+            func_80108764_selmenu2(1);
+            func_80108990_selmenu2();
+            func_80108718_selmenu2(0);
+        } else if (D_80109CF8_selmenu2[i] & 4) {
+            func_801087E0_selmenu2(-1);
+            func_80108990_selmenu2();
+            func_80108718_selmenu2(4);
+        } else if (D_80109CF8_selmenu2[i] & 8) {
+            func_801087E0_selmenu2(1);
+            func_80108990_selmenu2();
+            func_80108718_selmenu2(4);
+        } else if (D_80109CF8_selmenu2[i] & 0x40) {
+            D_80109B18_selmenu2 = 0;
+            D_80109B1A_selmenu2 = 0;
+            D_80109B1C_selmenu2 = 0;
+            obj->func = func_80106D94_selmenu2;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/selmenu2/116320", func_80106D94_selmenu2);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/selmenu2/116320", func_801078CC_selmenu2);
+void func_801078CC_selmenu2(omObjData *obj) {
+    u32 x;
+    s32 y;
+    s32 shadowOfs = 12;
+    // The comparison is folded away, but the join it leaves behind keeps textOfs in a register below.
+    s32 textOfs = MIN(6, shadowOfs);
+    s32 i;
+
+    rand8();
+    sprintf(D_800D5218_main, D_80108BE0_selmenu2[D_80109B00_selmenu2 * 10 + D_80109B02_selmenu2].unk_0C);
+    x = (320 - strlen(D_800D5218_main) * 8) / 2;
+    y = (D_80109B02_selmenu2 + 10) * 9;
+    if (y - D_801093C0_selmenu2 > 48) {
+        if (--D_801093C8_selmenu2 == 0) {
+            D_80109C98_selmenu2[D_801093C4_selmenu2] = espEntry(D_80109C90_selmenu2, 0, 1);
+            espAttrSet(D_80109C98_selmenu2[D_801093C4_selmenu2], 0x4000);
+            espPriSet(D_80109C98_selmenu2[D_801093C4_selmenu2], 0x8000);
+            espScaleSet(D_80109C98_selmenu2[D_801093C4_selmenu2], 0.75f, 0.75f);
+            espSpeedSet(D_80109C98_selmenu2[D_801093C4_selmenu2], 8.0f);
+            espPosSet(D_80109C98_selmenu2[D_801093C4_selmenu2], x, y - (u16)D_801093C0_selmenu2 + textOfs + 8);
+            espColorSet(D_80109C98_selmenu2[D_801093C4_selmenu2], 0xFF, 0xFF, 0xBE);
+            D_801093C4_selmenu2++;
+            D_80109C98_selmenu2[D_801093C4_selmenu2] = espEntry(D_80109C90_selmenu2, 0, 1);
+            espAttrSet(D_80109C98_selmenu2[D_801093C4_selmenu2], 0x4000);
+            espPriSet(D_80109C98_selmenu2[D_801093C4_selmenu2], 0x8000);
+            espScaleSet(D_80109C98_selmenu2[D_801093C4_selmenu2], 0.75f, 0.75f);
+            espSpeedSet(D_80109C98_selmenu2[D_801093C4_selmenu2], 8.0f);
+            espPosSet(D_80109C98_selmenu2[D_801093C4_selmenu2],
+                      x + strlen(D_80108BE0_selmenu2[D_80109B00_selmenu2 * 10 + D_80109B02_selmenu2].unk_0C) * 8,
+                      y - (u16)D_801093C0_selmenu2 + textOfs + 8);
+            espColorSet(D_80109C98_selmenu2[D_801093C4_selmenu2], 0xFF, 0xFF, 0xBE);
+            D_801093C4_selmenu2++;
+            D_801093C8_selmenu2 = 4;
+        }
+        D_801093C0_selmenu2 += 4;
+        if (y < y - D_801093C0_selmenu2 + shadowOfs) {
+            shadowOfs = (y - D_801093C0_selmenu2 + shadowOfs) - y;
+        }
+        if (y < y - D_801093C0_selmenu2 + textOfs) {
+            textOfs = (y - D_801093C0_selmenu2 + textOfs) - y;
+        }
+        fontcolor = 9;
+        print8(x, y - (u16)D_801093C0_selmenu2 + shadowOfs, D_800D5218_main);
+        fontcolor = 13;
+        print8(x, y - (u16)D_801093C0_selmenu2 + textOfs, D_800D5218_main);
+    }
+    for (i = 0; i < D_801093C4_selmenu2; i++) {
+        if (D_80109C98_selmenu2[i] != -1 && (func_8000BE1C_main(D_80109C98_selmenu2[i]) & 6)) {
+            espKill(D_80109C98_selmenu2[i]);
+            D_80109C98_selmenu2[i] = -1;
+        }
+    }
+    x = (320 - strlen(D_800D5218_main) * 8) / 2;
+    fontcolor = 7;
+    print8(x + 1, y + 1 - (u16)D_801093C0_selmenu2, D_800D5218_main);
+    fontcolor = 15;
+    print8(x, y - (u16)D_801093C0_selmenu2, D_800D5218_main);
+}
 
 void func_80107D94_selmenu2(omObjData *obj) {
     obj->func = func_80107DA4_selmenu2;

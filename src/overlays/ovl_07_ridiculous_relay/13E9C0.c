@@ -7,8 +7,9 @@ typedef struct RidiculousRelayPlayer {
     /* 0x02 */ s8 pad;
     /* 0x03 */ s8 chr;
     /* 0x04 */ s8 cpuDifficulty; // -1 for human players
-    /* 0x05 */ char unk_05[7];
-} RidiculousRelayPlayer; // sizeof 0xC
+    /* 0x05 */ char unk_05[3];
+    /* 0x08 */ s32 unk08; // run animation file
+} RidiculousRelayPlayer;  // sizeof 0xC
 
 extern D_80111B50_vine_with_me_Struct D_80110CB0_ridiculous_relay;
 extern RidiculousRelayPlayer D_80111940_ridiculous_relay[4];
@@ -21,13 +22,18 @@ extern omObjData *D_801119BC_ridiculous_relay;
 extern s8 D_801119C0_ridiculous_relay;
 extern f32 D_801119C4_ridiculous_relay;
 extern s32 D_801119C8_ridiculous_relay;
-extern s16 D_801119CC_ridiculous_relay;
+extern u16 D_801119CC_ridiculous_relay;
 extern f32 D_801119D0_ridiculous_relay;
 extern s32 D_801119D4_ridiculous_relay;
 extern s16 D_801119D8_ridiculous_relay;
 extern u8 D_801119DA_ridiculous_relay;
 extern f32 D_801119DC_ridiculous_relay;
+extern s16 D_801119E0_ridiculous_relay[31];
 extern omObjData *D_80111A20_ridiculous_relay[4];
+extern u16 D_80111A40_ridiculous_relay[5];
+extern u16 D_80111A4A_ridiculous_relay;
+extern u16 D_80111A4E_ridiculous_relay;
+extern s16 D_80111A58_ridiculous_relay[31];
 extern s32 D_80111A30_ridiculous_relay[3];
 extern f32 D_80111A50_ridiculous_relay;
 
@@ -44,6 +50,10 @@ void func_8010AEAC_ridiculous_relay(omObjData *object);
 void func_8010AED8_ridiculous_relay(omObjData *object);
 
 void func_80105F48_ridiculous_relay(omObjData *object);
+void func_80106D28_ridiculous_relay(omObjData *object);
+void func_80106D4C_ridiculous_relay(omObjData *object);
+void func_8010AF04_ridiculous_relay(omObjData *object, s8 group);
+void func_8010B4A8_ridiculous_relay(omObjData *object);
 void func_80108DE8_ridiculous_relay(Gfx **gfxPos, s32 arg1, s32 arg2);
 
 void func_801059A0_ridiculous_relay(void) {
@@ -142,7 +152,148 @@ void func_80105D40_ridiculous_relay(omObjData *object) {
     object->func = func_80105F48_ridiculous_relay;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", func_80105F48_ridiculous_relay);
+void func_80105F48_ridiculous_relay(omObjData *object) {
+    s32 i;
+    u8 j;
+
+    D_801119D4_ridiculous_relay++;
+    D_801119C8_ridiculous_relay++;
+    if (D_801119D8_ridiculous_relay == 1 && D_801119D4_ridiculous_relay == 31 && D_801119CC_ridiculous_relay == 0 && D_800D530C_main == 0) {
+        HuAudSeqPlay(0x32);
+    }
+    func_800E6F40_minigame();
+    switch (D_801119D8_ridiculous_relay) {
+        case 0:
+            if (D_801119D4_ridiculous_relay == 1 && D_801119CC_ridiculous_relay == 0 && D_800D530C_main == 0) {
+                D_80111A30_ridiculous_relay[0] = HuAudFXPlay(0x32D);
+                D_80111A30_ridiculous_relay[1] = HuAudFXPlay(0x32E);
+            }
+            if (func_800E6E8C_minigame() == 1) {
+                D_801119D8_ridiculous_relay = 1;
+                D_801119D4_ridiculous_relay = 0;
+            }
+            break;
+        case 1:
+            if (func_800E6E8C_minigame() == 2) {
+                D_801119D8_ridiculous_relay = 2;
+                D_801119D4_ridiculous_relay = 0;
+            }
+            break;
+        case 2:
+            if (D_801119C0_ridiculous_relay != 5 || func_800E6E8C_minigame() == 3) {
+                if (D_801119C0_ridiculous_relay == 5) {
+                    D_801119D8_ridiculous_relay = 5;
+                    D_801119C0_ridiculous_relay = 4;
+                } else {
+                    D_801119D8_ridiculous_relay = 3;
+                }
+                D_801119D4_ridiculous_relay = 0;
+            }
+            if (D_801119D8_ridiculous_relay != 3) {
+                break;
+            }
+        case 3:
+            if (D_801119D4_ridiculous_relay == 0) {
+                if (func_800E6E8C_minigame() != 3) {
+                    func_800E6F1C_minigame();
+                }
+                if (D_80111A30_ridiculous_relay[2] != -1) {
+                    HuAudFXStop((s16)D_80111A30_ridiculous_relay[2]);
+                    D_80111A30_ridiculous_relay[2] = -1;
+                }
+                if (D_801119C0_ridiculous_relay == 0) {
+                    D_80110CB0_ridiculous_relay.unk06 = 0;
+                    D_80110CB0_ridiculous_relay.unk18[0] = D_80111970_ridiculous_relay[0]->playerNo;
+                    GwPlayer[D_80111970_ridiculous_relay[0]->playerNo].bonusCoin = 10;
+                } else {
+                    D_80110CB0_ridiculous_relay.unk06 = 2;
+                    D_80110CB0_ridiculous_relay.unk18[0] = D_80111970_ridiculous_relay[3]->playerNo;
+                    D_80110CB0_ridiculous_relay.unk18[1] = D_80111970_ridiculous_relay[1]->playerNo;
+                    D_80110CB0_ridiculous_relay.unk18[2] = D_80111970_ridiculous_relay[2]->playerNo;
+                    GwPlayer[D_80111970_ridiculous_relay[1]->playerNo].bonusCoin = 10;
+                    GwPlayer[D_80111970_ridiculous_relay[2]->playerNo].bonusCoin = 10;
+                    GwPlayer[D_80111970_ridiculous_relay[3]->playerNo].bonusCoin = 10;
+                }
+            }
+            if (D_801119D4_ridiculous_relay == 2) {
+                func_800E6F34_minigame(30);
+            }
+            if (D_801119D4_ridiculous_relay == 15) {
+                for (i = 0; i < 3; i++) {
+                    if (D_80111A30_ridiculous_relay[i] != -1) {
+                        func_8004AEF0_main(D_80111A30_ridiculous_relay[i], 15);
+                        D_80111A30_ridiculous_relay[i] = -1;
+                    }
+                }
+            }
+            if (func_800E6E8C_minigame() == 4) {
+                D_801119D8_ridiculous_relay = 4;
+                D_801119D4_ridiculous_relay = 0;
+            }
+            break;
+        case 5:
+            if (D_801119D4_ridiculous_relay == 1) {
+                D_80110CB0_ridiculous_relay.unk06 = 4;
+                D_80110CB0_ridiculous_relay.unk22 = 75;
+                D_80110CB0_ridiculous_relay.unk24 = 0x90;
+            }
+            if (func_800E6E8C_minigame() == 4) {
+                D_801119D8_ridiculous_relay = 6;
+                D_801119D4_ridiculous_relay = 0;
+            }
+            break;
+        case 4:
+            if (D_801119D4_ridiculous_relay == 30) {
+                if (D_801119C0_ridiculous_relay == 0) {
+                    func_8001C5B4_main(D_80111A20_ridiculous_relay[0]->model[0], D_80111A20_ridiculous_relay[0]->motion[3]);
+                    func_8001C814_main(D_80111A20_ridiculous_relay[0]->model[0], 3, 0);
+                    func_80045ED0_main(D_80111970_ridiculous_relay[0]->unk08);
+                } else if (D_801119C0_ridiculous_relay == 1) {
+                    func_8001C5B4_main(D_80111A20_ridiculous_relay[3]->model[0], D_80111A20_ridiculous_relay[3]->motion[3]);
+                    func_8001C814_main(D_80111A20_ridiculous_relay[3]->model[0], 3, 0);
+                    func_80045ED0_main(D_80111970_ridiculous_relay[3]->unk08);
+                }
+            }
+        case 6:
+            if (func_800E6E8C_minigame() == 5) {
+                D_801119D8_ridiculous_relay = 7;
+                D_801119D4_ridiculous_relay = 0;
+            }
+            break;
+        case 7:
+            if (D_801119D4_ridiculous_relay == 1) {
+                WipeCreateOut(WIPE_TYPE_NORMAL, 20);
+            } else if (D_801119D4_ridiculous_relay >= 32) {
+                D_801119CC_ridiculous_relay = 1;
+            }
+            break;
+    }
+    if (_CheckFlag(FLAG_MG_PRACTICE) && D_800D530C_main == 0 && D_801119DA_ridiculous_relay == 0 && (u16)D_801119D8_ridiculous_relay == 2) {
+        for (j = 0; j < 2; j++) {
+            if (D_80111970_ridiculous_relay[j]->cpuDifficulty == -1 && (D_800D5558_main[D_80111970_ridiculous_relay[j]->pad] & R_TRIG)) {
+                D_801119DA_ridiculous_relay = 1;
+            }
+        }
+    }
+    if (D_801119CC_ridiculous_relay != 0 || D_800D530C_main != 0 || D_801119DA_ridiculous_relay != 0) {
+        if (D_800D530C_main != 0 && D_801119DA_ridiculous_relay == 0) {
+            D_801119DA_ridiculous_relay = 1;
+        }
+        if (D_801119DA_ridiculous_relay != 0) {
+            if (D_801119DA_ridiculous_relay == 1) {
+                WipeCreateOut(WIPE_TYPE_NORMAL, 20);
+                HuAudSeqFadeOut(20);
+                func_8004AB0C_main(20);
+            }
+            D_801119DA_ridiculous_relay++;
+            if (D_801119DA_ridiculous_relay < 25) {
+                return;
+            }
+        }
+        HuAudSeqFadeOut(30);
+        omOvlReturnEx(1);
+    }
+}
 
 s16 func_80106610_ridiculous_relay(s32 file, u16 *sprite, u16 flags) {
     void *data = DataRead(file);
@@ -155,11 +306,86 @@ s16 func_80106610_ridiculous_relay(s32 file, u16 *sprite, u16 flags) {
     return D_800CBB60_main[idx].modelId;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", func_801066A0_ridiculous_relay);
+void func_801066A0_ridiculous_relay(omObjData *object) {
+    s32 files[31] = { 0x28001B, 0x28001C, 0x28001E, 0x28001F, 0x280020, 0x28001D, 0x280021, 0x280022,
+                      0x280023, 0x210008, 0x210009, 0x21000A, 0x21000B, 0x21000C, 0x21000D, 0x21000E,
+                      0x21000F, 0x280029, 0x280024, 0x280025, 0x280026, 0x280027, 0x280028, 0x280013,
+                      0x280014, 0x280015, 0x280016, 0x280017, 0x280018, 0x280019, 0x28001A };
+    s16 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", func_80106D28_ridiculous_relay);
+    for (i = 0; i < 31; i++) {
+        D_80111A58_ridiculous_relay[i] = espEntry(D_801119E0_ridiculous_relay[i] = func_8000B838_main(files[i]), 0, 0);
+        espDispOff(D_80111A58_ridiculous_relay[i]);
+    }
+    object->model[0] = func_8000B108_main(0xA00E7, 0x4B9);
+    omSetSca(object, 0.3125f, 0.3125f, 0.3125f);
+    Hu3DModelCameraSet(object->model[0], 2);
+    object->model[2] = func_8000B108_main(0x28000E, 0x39);
+    Hu3DModelPosSet(object->model[2], 3787.5f, -26.25f, 0.0f);
+    Hu3DModelScaleSet(object->model[2], 0.125f, 0.125f, 0.125f);
+    Hu3DModelCameraSet(object->model[2], 1);
+    object->model[3] = func_8000B108_main(0x28000F, 0x4B9);
+    Hu3DModelPosSet(object->model[3], 3787.5f, -31.25f, 0.0f);
+    Hu3DModelScaleSet(object->model[3], 0.125f, 0.125f, 0.125f);
+    Hu3DModelCameraSet(object->model[3], 2);
+    object->model[1] = func_8000B108_main(0x280010, 0x4B9);
+    Hu3DModelScaleSet(object->model[1], 0.125f, 0.125f, 0.125f);
+    Hu3DModelCameraSet(object->model[1], 2);
+    for (i = 0; i < 5; i++) {
+        object->model[12 + i] = func_80106610_ridiculous_relay(0x280011, &D_80111A40_ridiculous_relay[i], 0x639);
+        Hu3DModelCameraSet(object->model[12 + i], 1);
+        Hu3DModelScaleSet(object->model[12 + i], 0.7565625f, 0.7565625f, 0.7565625f);
+    }
+    for (i = 0; i < 2; i++) {
+        object->model[10 + i] = func_80106610_ridiculous_relay(0x280012, &D_80111A4A_ridiculous_relay, 0x639);
+        Hu3DModelCameraSet(object->model[10 + i], 1);
+        Hu3DModelScaleSet(object->model[10 + i], 0.7565625f, 0.7565625f, 0.7565625f);
+    }
+    object->model[4] = func_80106610_ridiculous_relay(0xB, &D_80111A4E_ridiculous_relay, 0x639);
+    func_8001C258_main(object->model[4], 4, 4);
+    Hu3DModelScaleSet(object->model[4], 1.6549804f, 0.9457031f, 0.9457031f);
+    Hu3DModelCameraSet(object->model[4], 1);
+    for (i = 0; i < 18; i++) {
+        if (i == 0) {
+            object->model[17] = func_8000B108_main(0x280006, 0x4B9);
+        } else {
+            object->model[17 + i] = Hu3DModelLink(object->model[17]);
+        }
+        func_8001C258_main(object->model[17 + i], 4, 4);
+        func_8001C2FC_main(object->model[17 + i], 0x70000000, 0x70000000);
+        Hu3DModelScaleSet(object->model[17 + i], 0.15625f, 0.15625f, 0.15625f);
+        Hu3DModelCameraSet(object->model[17 + i], 2);
+    }
+    object->model[6] = func_8000B108_main(0x28000C, 0x4B9);
+    func_8001C258_main(object->model[6], 4, 4);
+    func_8001C814_main(object->model[6], 2, 2);
+    Hu3DModelScaleSet(object->model[6], 0.15625f, 0.15625f, 0.15625f);
+    Hu3DModelCameraSet(object->model[6], 2);
+    object->model[7] = func_8000B108_main(0x28000D, 0x4B9);
+    func_8001C258_main(object->model[7], 4, 4);
+    Hu3DModelScaleSet(object->model[7], 0.15625f, 0.15625f, 0.15625f);
+    Hu3DModelCameraSet(object->model[7], 2);
+    object->model[8] = Hu3DModelLink(object->model[7]);
+    func_8001C258_main(object->model[8], 4, 4);
+    Hu3DModelScaleSet(object->model[8], 0.15625f, 0.15625f, 0.15625f);
+    Hu3DModelCameraSet(object->model[8], 2);
+    func_8001C814_main(object->model[8], 2, 2);
+    object->model[9] = func_8000B108_main(0x28000D, 0x839);
+    func_8001C258_main(object->model[9], 4, 4);
+    Hu3DModelScaleSet(object->model[9], 0.15625f, 0.15625f, 0.15625f);
+    Hu3DModelCameraSet(object->model[9], 2);
+    func_8001C814_main(object->model[9], 2, 2);
+    object->model[5] = func_8000B108_main(0x370003, 0x82D);
+    func_8001FA68_main(object->model[5]);
+    Hu3DModelCameraSet(object->model[5], 1);
+    Hu3DModelScaleSet(object->model[5], 0.125f, 0.125f, 0.125f);
+    object->func = func_80106D28_ridiculous_relay;
+}
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_80110EB8_ridiculous_relay);
+void func_80106D28_ridiculous_relay(omObjData *object) {
+    func_80106D4C_ridiculous_relay(object);
+    omPauseChk();
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_80110F34_ridiculous_relay);
 
@@ -179,21 +405,82 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_801
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", func_80108DE8_ridiculous_relay);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", func_8010AE4C_ridiculous_relay);
+void func_8010AE4C_ridiculous_relay(omObjData *object) {
+    func_8010AF04_ridiculous_relay(object, 0);
+    object->func = func_8010B4A8_ridiculous_relay;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", func_8010AE80_ridiculous_relay);
+void func_8010AE80_ridiculous_relay(omObjData *object) {
+    func_8010AF04_ridiculous_relay(object, 1);
+    object->func = NULL;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", func_8010AEAC_ridiculous_relay);
+void func_8010AEAC_ridiculous_relay(omObjData *object) {
+    func_8010AF04_ridiculous_relay(object, 2);
+    object->func = NULL;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", func_8010AED8_ridiculous_relay);
+void func_8010AED8_ridiculous_relay(omObjData *object) {
+    func_8010AF04_ridiculous_relay(object, 3);
+    object->func = NULL;
+}
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_80111030_ridiculous_relay);
+void func_8010AF04_ridiculous_relay(omObjData *object, s8 group) {
+    s32 dirs[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+    s32 files[8] = { 0xA2, 0xA2, 0xA2, 0xA2, 0xA2, 0xA2, 0xA2, 3 };
+    s32 shadowFiles[4] = { 0, 1, 3, 5 };
+    u16 chr = D_80111970_ridiculous_relay[group]->chr;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_80111050_ridiculous_relay);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_80111070_ridiculous_relay);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", func_8010AF04_ridiculous_relay);
+    D_80111970_ridiculous_relay[group]->unk08 = (rand8() & 1) ? 0x2F : 0x30;
+    object->model[0] = func_8000B108_main((dirs[chr] << 16) | files[chr], 0x4B9);
+    switch (group) {
+        case 0:
+        case 3:
+            func_8000B460_main(object, 0, func_80017BB8_main(chr, 0));
+            func_8000B460_main(object, 1, func_80017BB8_main(chr, (group != 0) ? 0x7D : 0x7C));
+            func_8000B460_main(object, 3, func_80017BB8_main(chr, D_80111970_ridiculous_relay[group]->unk08));
+            func_8000B460_main(object, 4, func_80017BB8_main(chr, 0x3A));
+            func_8000B460_main(object, 5, func_80017BB8_main(chr, 4));
+            func_8000B460_main(object, 6, func_80017BB8_main(chr, 0x1F));
+            if (group == 3) {
+                func_8001C258_main(object->model[0], 4, 4);
+            }
+            func_8001C814_main(object->model[0], 1, 1);
+            break;
+        case 1:
+            func_8000B460_main(object, 1, func_80017BB8_main(chr, 0x7E));
+            object->model[2] = func_8000B108_main(0x280002, 0x4B9);
+            Hu3DModelScaleSet(object->model[2], 0.15625f, 0.15625f, 0.15625f);
+            Hu3DModelCameraSet(object->model[2], (group == 0) ? 1 : 2);
+            Hu3DModelHookSet(object->model[2], object->model[0], "item_hook");
+            func_8001C258_main(object->model[2], 0x4000, 0x4000);
+            break;
+        case 2:
+            func_8000B460_main(object, 1, func_80017BB8_main(chr, 0x7F));
+            func_8000B460_main(object, 2, func_80017BB8_main(chr, 0x80));
+            func_8001C258_main(object->model[0], 4, 4);
+            object->model[2] = func_8000B108_main(0x280004, 0x4B9);
+            Hu3DModelScaleSet(object->model[2], 0.15625f, 0.15625f, 0.15625f);
+            func_8001C814_main(object->model[2], 1, 1);
+            Hu3DModelCameraSet(object->model[2], (group == 0) ? 1 : 2);
+            break;
+    }
+    D_80111970_ridiculous_relay[group]->unk08 |= dirs[chr] << 16;
+    omSetSca(object, 0.15625f, 0.15625f, 0.15625f);
+    func_8001C5B4_main(object->model[0], object->motion[1]);
+    func_8001C2FC_main(object->model[0], 0x600, 0x400);
+    Hu3DModelCameraSet(object->model[0], (group != 0) ? 2 : 1);
+    object->model[1] = func_8000B108_main(shadowFiles[group] | 0x280000, 0x4B9);
+    Hu3DModelScaleSet(object->model[1], 0.15625f, 0.15625f, 0.15625f);
+    Hu3DModelCameraSet(object->model[1], (group == 0) ? 1 : 2);
+    if (group == 2) {
+        func_8000B460_main(object, 7, 0x280007);
+        func_8000B460_main(object, 8, 0x280008);
+        func_8000B460_main(object, 9, 0x280009);
+        func_8000B460_main(object, 10, 0x28000A);
+        func_8000B460_main(object, 11, 0x28000B);
+    }
+}
 
 f32 func_8010B474_ridiculous_relay(f32 x) {
     Vec pos;

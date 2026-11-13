@@ -27,12 +27,14 @@ extern ToadstoolTitanPlayer *D_8010F568_toadstool_titan[4]; // players indexed b
 extern s32 D_8010F580_toadstool_titan;
 extern u8 D_8010F584_toadstool_titan;
 extern s16 D_8010F586_toadstool_titan;
+extern s16 D_8010F588_toadstool_titan[1];
 extern s8 D_8010F58A_toadstool_titan;
 extern D_80111B50_vine_with_me_Struct D_8010F590_toadstool_titan;
 extern s16 D_8010F5BC_toadstool_titan;
 extern u8 D_8010F5F4_toadstool_titan;
 extern omObjData *D_8010F5F8_toadstool_titan;
 extern s16 D_8010F5FC_toadstool_titan;
+extern s16 D_8010F60C_toadstool_titan[1];
 extern s8 D_8010F60E_toadstool_titan;
 extern u8 D_8010F614_toadstool_titan[2];
 extern u8 D_8010F616_toadstool_titan[4];
@@ -60,6 +62,7 @@ void func_80105E50_toadstool_titan(omObjData *object);
 void func_801060AC_toadstool_titan(omObjData *object);
 void func_801069DC_toadstool_titan(omObjData *object);
 void func_80106C98_toadstool_titan(omObjData *object);
+void func_80107360_toadstool_titan(omObjData *object);
 void func_8010B99C_toadstool_titan(omObjData *object);
 void func_8010BA80_toadstool_titan(omObjData *object);
 void func_8010BB64_toadstool_titan(omObjData *object);
@@ -216,9 +219,83 @@ void func_801069DC_toadstool_titan(omObjData *object) {
     object->func = NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", func_80106C98_toadstool_titan);
+void func_80106C98_toadstool_titan(omObjData *object) {
+    s32 spriteFiles[1] = { 0x37000C };
+    D_800EC1C0_minigame_ObjData *work;
+    s16 i;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", D_8010EF68_toadstool_titan);
+    object->model[0] = -1;
+    object->trans.x = object->trans.y = object->trans.z = 0.0f;
+    work = object->data = HuMemAllocTag(0xB4, TAG_OVERLAY);
+    memset(work, 0, 0xB4);
+    work->unk03 = 1;
+    func_800E139C_minigame(object, 0.0f, -475.0f, -425.0f, 475.0f, 425.0f);
+    func_800E1304_minigame(object, 1.0f);
+    func_800E1310_minigame(object, 6.0f);
+    func_800E1468_minigame(object);
+    work->unk04 = 0;
+    for (i = 0; i < 1; i++) {
+        D_8010F588_toadstool_titan[i] = espEntry(D_8010F60C_toadstool_titan[i] = func_8000B838_main(spriteFiles[i]), 0, 0);
+        espDispOff(D_8010F588_toadstool_titan[i]);
+    }
+    object->model[1] = func_8000B108_main(0x370002, 0x4BD);
+    Hu3DModelScaleSet(object->model[1], 0.6666667f, 0.6666667f, 0.6666667f);
+    Hu3DModelRotSet(object->model[1], -23.0f, 0.0f, 0.0f);
+    object->model[3] = func_8000B108_main(0x370003, 0x404AD);
+    func_8001FA68_main(object->model[3]);
+    for (i = 1; i < 5; i++) {
+        object->model[3 + i] = Hu3DModelLink(object->model[3]);
+    }
+    object->model[2] = func_8000B108_main(0x370003, 0x404AD);
+    func_8001FA68_main(object->model[2]);
+    for (i = 0; i < 3; i++) {
+        HmfModel *modelP;
+
+        object->model[26 + i] = func_8000B108_main(0x1001F, 0x8BD);
+        Hu3DModelScaleSet(object->model[26 + i], 2.5f, 2.5f, 2.5f);
+        func_8001C2FC_main(object->model[26 + i], 0x70000000, 0x70000000);
+        modelP = &Hu3DData[object->model[26 + i]];
+        modelP->motSpeed = 1.55f;
+    }
+    for (i = 0; i < 14; i++) {
+        s32 files[6] = { 4, 5, 6, 7, 8, 9 };
+        f32 scale = 0.5f;
+
+        if (i < 6) {
+            object->model[29 + i] = func_8000B108_main(files[(s16)(i % 6)] | 0x370000, 0x4BD);
+        } else {
+            object->model[29 + i] = Hu3DModelLink(object->model[29 + (s16)(i % 6)]);
+        }
+        func_8001C2FC_main(object->model[29 + i], 0x70000000, 0x70000000);
+        if (i == 0) {
+            object->model[43] = func_8000B108_main(9, 0xBD);
+        } else {
+            object->model[43 + i] = Hu3DModelLink(object->model[43]);
+        }
+        Hu3DModelScaleSet(object->model[29 + i], scale, scale, scale);
+        scale = 0.875f;
+        Hu3DModelScaleSet(object->model[43 + i], scale, scale, scale);
+    }
+    for (i = 0; i < 9; i++) {
+        if (i == 0) {
+            object->model[8] = func_8000B108_main(0x37000A, 0x8BD);
+        } else {
+            object->model[8 + i] = Hu3DModelLink(object->model[8]);
+        }
+        Hu3DModelPosSet(object->model[8 + i], D_8010F5D0_toadstool_titan[i]->trans.x, D_8010F5D0_toadstool_titan[i]->trans.y + 25.0f,
+                        D_8010F5D0_toadstool_titan[i]->trans.z + 125.0f);
+        Hu3DModelRotSet(object->model[8 + i], -23.0f, 0.0f, 0.0f);
+        Hu3DModelScaleSet(object->model[8 + i], 2.5f, 2.5f, 2.5f);
+        object->model[17 + i] = func_8000B108_main(0x37000B, 0x8BD);
+        Hu3DModelPosSet(object->model[17 + i], D_8010F5D0_toadstool_titan[i]->trans.x, D_8010F5D0_toadstool_titan[i]->trans.y - 100.0f,
+                        D_8010F5D0_toadstool_titan[i]->trans.z);
+        Hu3DModelRotSet(object->model[17 + i], -23.0f, 0.0f, 0.0f);
+        Hu3DModelScaleSet(object->model[17 + i], 0.75f, 0.75f, 0.75f);
+    }
+    object->model[57] = func_8000B108_main(0x37000A, 0x8BD);
+    Hu3DModelScaleSet(object->model[57], 2.0f, 2.0f, 2.0f);
+    object->func = func_80107360_toadstool_titan;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", D_8010EF80_toadstool_titan);
 

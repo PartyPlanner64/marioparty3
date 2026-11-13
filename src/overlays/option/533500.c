@@ -58,6 +58,14 @@ typedef struct {
     OptSoundPage pages[12];
 } OptMusicMenu;
 
+// Window rectangle for a line of the board record pages, relative to the top left of the page.
+typedef struct {
+    /* 0x00 */ f32 x;
+    /* 0x04 */ f32 y;
+    /* 0x08 */ f32 w;
+    /* 0x0C */ f32 h;
+} OptRecordWinRect; // sizeof 0x10
+
 extern OptSoundMenu D_80113DA8_option;
 extern OptMusicMenu D_8011421C_option;
 
@@ -92,9 +100,6 @@ extern Vec D_80113814_option;
 extern Vec D_80113820_option;
 extern Vec D_801138B0_option;
 extern Vec D_801138BC_option;
-extern Vec D_801139E0_option;
-extern Vec D_801139EC_option;
-extern Vec D_801139F8_option;
 extern s8 D_800D2132_main;
 extern Vec D_80113508_option[2];
 extern Vec D_801146BC_option;
@@ -109,7 +114,6 @@ extern Vec D_80113BA8_option;
 extern Vec D_80113BB4_option;
 extern Vec D_80113BC0_option;
 extern Vec D_80113BCC_option;
-extern char D_80113A4C_option[];
 extern Vec D_8011376C_option[];
 extern Vec D_8011367C_option[2];
 extern Vec D_80113694_option[2];
@@ -141,6 +145,10 @@ extern Vec D_8011382C_option[2];
 extern Vec D_80113844_option[2];
 extern Vec D_8011385C_option[2];
 extern Vec D_80113874_option[2];
+extern s32 D_801138C8_option[9];
+extern OptRecordWinRect D_801138EC_option[6];
+extern s32 D_8011394C_option[9];
+extern OptRecordWinRect D_80113970_option[6];
 
 s32 func_80113204_option(s32 arg0);
 s32 func_8010FE00_option(void);
@@ -148,8 +156,8 @@ s32 func_80110018_option(void);
 void func_8010FE10_option(void);
 omObjData *func_8010FF0C_option(s32);
 
-void func_8010C3E4_option(s32, s32, s32);
-void func_8010D5B0_option(s32, s32, s32);
+void func_8010C3E4_option(s32 animFile, s16 x, s16 y);
+void func_8010D5B0_option(s32 animFile, s16 x, s16 y);
 void func_80107F50_option(s32 animFile, s16 x, s16 y);
 s32 func_8010BACC_option(s32, s32);
 void func_801133BC_option(s32, u32);
@@ -241,9 +249,9 @@ void func_801059D0_option(void) {
     ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     {
-        Vec pos = D_801139E0_option;
-        Vec at = D_801139EC_option;
-        Vec up = D_801139F8_option;
+        Vec pos = { 0.0f, 0.0f, 100.0f };
+        Vec at = { 0.0f, 0.0f, 0.0f };
+        Vec up = { 0.0f, 1.0f, 0.0f };
 
         ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
         ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
@@ -261,6 +269,8 @@ void func_801059D0_option(void) {
     Hu3DGLightDirSet(1, 0.0f, 64.0f, 192.0f);
     D_800D2132_main = 0;
 }
+
+const char D_80113A04_option[] = "";
 
 void func_80105C14_option(void) {
     func_801059D0_option();
@@ -856,15 +866,6 @@ void func_80107D64_option(Vec *start, Vec *end, f32 weight, Vec *out) {
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80107D64_option);
 #endif
 
-// The function body matches, but two things are needed before it can be enabled:
-// - The initializers of its three local arrays are at 0x80113A08-0x80113A47, so the .rodata subsegment of
-//   this file in marioparty3.yaml has to start at 0x541538 instead of 0x541550 (D_80113A08_option and
-//   D_80113A14_option, currently the last symbols of the data segment, are really rodata).
-// - func_8010C3E4_option and func_8010D5B0_option (still assembly) reference the "%2d" literal as
-//   D_80113A50_option, so they have to be decompiled first. Then the INCLUDE_RODATA lines for
-//   D_80113A4C_option, D_80113A50_option, D_80113A54_option and jtbl_80113A58_option go away, and
-//   func_8010FC40_option uses a "%d" literal instead of D_80113A4C_option.
-#ifdef NON_MATCHING
 void func_80107F50_option(s32 animFile, s16 x, s16 y) {
     s16 wins[10];
     u8 text0[32];
@@ -880,7 +881,6 @@ void func_80107F50_option(s32 animFile, s16 x, s16 y) {
     s16 j;
     s16 record;
     s32 offsetY;
-    f32 scaleX;
     f32 scale;
 
     HuPrcSleep(3);
@@ -898,8 +898,8 @@ void func_80107F50_option(s32 animFile, s16 x, s16 y) {
     HuWinBGColSet(win, 255, 255, 255);
     HuAudFXPlay(0x2E7);
     for (i = 1; i <= 10; i++) {
-        scaleX = cosdf(i * 36.0f) * 0.5f + 0.5f;
-        espScaleSet(sprite, scaleX, sindf(i * 9.0f));
+        scale = cosdf(i * 36.0f) * 0.5f + 0.5f;
+        espScaleSet(sprite, scale, sindf(i * 9.0f));
         HuPrcVSleep();
     }
     for (i = 0; i < 10; i++) {
@@ -1003,11 +1003,6 @@ void func_80107F50_option(s32 animFile, s16 x, s16 y) {
     espKill(sprite);
     HuSprAnimKill(anim);
 }
-#else
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_80113A20_option);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80107F50_option);
-#endif
 
 void func_80108A68_option(void) {
     func_80108B34_option();
@@ -1031,14 +1026,6 @@ void func_80108B34_option(void) {
     func_8010F94C_option();
     func_8010FDF4_option();
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_80113A4C_option);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_80113A50_option);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_80113A54_option);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", jtbl_80113A58_option);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_80113A80_option);
 
@@ -2530,9 +2517,465 @@ void func_8010C224_option(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010C3E4_option);
+void func_8010C3E4_option(s32 animFile, s16 x, s16 y) {
+    s16 wins[10];
+    s16 icons[8];
+    s16 digits[16];
+    s16 anim;
+    u16 sprite;
+    s16 win;
+    s16 iconAnim;
+    s16 digitAnim;
+    s32 nextPage = 0;
+    s32 messages[6] = { 0x5002, 0x5003, 0x5004, 0x5005, 0x5006, 0x5007 };
+    char text[8];
+    s16 i;
+    s16 j;
+    s32 page;
+    s32 count;
+    s32 buttons;
+    s32 value;
+    s32 ones;
+    f32 scale;
+    f32 baseX;
+    f32 baseY;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_8010D5B0_option);
+    page = 0;
+    HuPrcSleep(3);
+    anim = func_8000B838_main(animFile);
+    sprite = espEntry(anim, 0, 1);
+    espPosSet(sprite, x, y);
+    espPriSet(sprite, 0x8000);
+    espScaleSet(sprite, 0.0f, 0.0f);
+    iconAnim = func_8000B838_main(0x1F0004);
+    for (i = 0; i < 8; i++) {
+        icons[i] = espEntry(iconAnim, 0, 1);
+        espPosSet(icons[i], x + i * 24 - 84, y + 12);
+        espPriSet(icons[i], 0x8000);
+        espScaleSet(icons[i], 1.0f, 1.0f);
+        func_8000BDDC_main(icons[i], 1);
+        espBankSet(icons[i], (u16)D_801138C8_option[i], 0);
+        espDispOff(icons[i]);
+    }
+    digitAnim = func_8000B838_main(0x1F0007);
+    for (i = 0; i < 8; i++) {
+        s32 offsetX;
+
+        digits[i * 2] = espEntry(digitAnim, 0, 1);
+        digits[i * 2 + 1] = espEntry(digitAnim, 0, 1);
+        offsetX = i * 24 - 96;
+        espPosSet(digits[i * 2], x + offsetX + 8, y + 26);
+        espPosSet(digits[i * 2 + 1], x + offsetX + 16, y + 26);
+        espPriSet(digits[i * 2], 0x8000);
+        espPriSet(digits[i * 2 + 1], 0x8000);
+        espScaleSet(digits[i * 2], 1.0f, 1.0f);
+        espScaleSet(digits[i * 2 + 1], 1.0f, 1.0f);
+        func_8000BDDC_main(digits[i * 2], 1);
+        func_8000BDDC_main(digits[i * 2 + 1], 1);
+        value = (u8)(GwCommon.boardRecord[0][page].chr[D_801138C8_option[i]] / 10);
+        if (value >= 10) {
+            value = 9;
+        }
+        ones = (u8)(GwCommon.boardRecord[0][page].chr[D_801138C8_option[i]] % 10);
+        espBankSet(digits[i * 2], (u16)value, 0);
+        espBankSet(digits[i * 2 + 1], (u16)ones, 0);
+        espDispOff(digits[i * 2]);
+        espDispOff(digits[i * 2 + 1]);
+    }
+    win = HuWinExCreate(-1, 0, 0, 210, 14, 1);
+    HuWinBGColSet(win, 255, 255, 255);
+    HuAudFXPlay(0x2E7);
+    for (i = 1; i <= 10; i++) {
+        scale = cosdf(i * 36.0f) * 0.5f + 0.5f;
+        espScaleSet(sprite, scale, sindf(i * 9.0f));
+        HuPrcVSleep();
+    }
+    baseX = x - 104;
+    baseY = y - 71;
+    while (1) {
+        wins[0] = HuWinExCreate(-1, baseX + D_801138EC_option[0].x, baseY + D_801138EC_option[0].y,
+                                D_801138EC_option[0].w, D_801138EC_option[0].h, 0);
+        HuWinBGTPLvlSet(wins[0], 0);
+        HuWinMesSet(wins[0], 0x5000, -1, -1);
+        wins[1] = HuWinExCreate(-1, baseX + D_801138EC_option[1].x, baseY + D_801138EC_option[1].y,
+                                D_801138EC_option[1].w, D_801138EC_option[1].h, 0);
+        HuWinBGTPLvlSet(wins[1], 0);
+        HuWinMesSet(wins[1], messages[page], -1, -1);
+        count = 2;
+        wins[count] = HuWinExCreate(-1, baseX + D_801138EC_option[count].x, baseY + D_801138EC_option[count].y,
+                                    D_801138EC_option[count].w, D_801138EC_option[count].h, 0);
+        HuWinBGTPLvlSet(wins[count], 0);
+        value = GwCommon.boardRecord[0][page].playCount;
+        if (value >= 100) {
+            value = 99;
+        }
+        sprintf(text, "%2d", value);
+        HuWinInsertMesSet(wins[count], (u32)text, 0);
+        HuWinMesSet(wins[count], 0x500E, -1, -1);
+        count++;
+        wins[count] = HuWinExCreate(-1, baseX + D_801138EC_option[count].x, baseY + D_801138EC_option[count].y,
+                                    D_801138EC_option[count].w, D_801138EC_option[count].h, 0);
+        HuWinBGTPLvlSet(wins[count], 0);
+        HuWinMesSet(wins[count], 0x500F, -1, -1);
+        count++;
+        wins[count] = HuWinExCreate(-1, baseX + D_801138EC_option[count].x, baseY + D_801138EC_option[count].y,
+                                    D_801138EC_option[count].w, D_801138EC_option[count].h, 0);
+        HuWinBGTPLvlSet(wins[count], 0);
+        HuWinMesSet(wins[count], 0x5010, -1, -1);
+        count++;
+        wins[count] = HuWinExCreate(-1, baseX + D_801138EC_option[count].x, baseY + D_801138EC_option[count].y,
+                                    D_801138EC_option[count].w, D_801138EC_option[count].h, 0);
+        HuWinBGTPLvlSet(wins[count], 0);
+        HuWinMesSet(wins[count], 0x5011, -1, -1);
+        count++;
+        for (i = 0; i < 4; i++) {
+            HuWinDispOn(wins[i]);
+            HuWinPosSet(win, baseX + 104.0f, baseY + D_801138EC_option[i].y + 9.0f);
+            HuWinDispOn(win);
+            HuAudFXPlay(0x2E8);
+            for (j = 1; j < 4; j++) {
+                HuWinBGTPLvlSet(win, (1.0f - j / 3.0f) * 256.0f);
+                HuPrcVSleep();
+            }
+        }
+        for (i = 0; i < 8; i++) {
+            espDispOn(icons[i]);
+        }
+        HuWinDispOn(win);
+        HuAudFXPlay(0x2E8);
+        for (j = 1; j < 4; j++) {
+            HuWinPosSet(win, x, y + 10);
+            HuWinBGTPLvlSet(win, (1.0f - j / 3.0f) * 256.0f);
+            HuPrcVSleep();
+        }
+        for (i = 0; i < 8; i++) {
+            value = (u8)(GwCommon.boardRecord[0][page].chr[D_801138C8_option[i]] / 10);
+            if (value >= 10) {
+                value = 9;
+            }
+            ones = (u8)(GwCommon.boardRecord[0][page].chr[D_801138C8_option[i]] % 10);
+            espBankSet(digits[i * 2], (u16)value, 0);
+            espBankSet(digits[i * 2 + 1], (u16)ones, 0);
+            func_8000BDDC_main(digits[i * 2], 1);
+            func_8000BDDC_main(digits[i * 2 + 1], 1);
+            if (value != 0) {
+                espDispOn(digits[i * 2]);
+            } else {
+                espDispOff(digits[i * 2]);
+            }
+            espDispOn(digits[i * 2 + 1]);
+        }
+        HuWinDispOn(win);
+        HuAudFXPlay(0x2E8);
+        for (j = 1; j < 4; j++) {
+            HuWinPosSet(win, x, y + 25);
+            HuWinBGTPLvlSet(win, (1.0f - j / 3.0f) * 256.0f);
+            HuPrcVSleep();
+        }
+        HuWinDispOff(win);
+        for (i = 4; i < count; i++) {
+            HuWinDispOn(wins[i]);
+            HuWinPosSet(win, baseX + 104.0f, baseY + D_801138EC_option[i].y + 9.0f);
+            HuWinDispOn(win);
+            HuAudFXPlay(0x2E8);
+            for (j = 1; j < 4; j++) {
+                HuWinBGTPLvlSet(win, (1.0f - j / 3.0f) * 256.0f);
+                HuPrcVSleep();
+            }
+        }
+        do {
+            HuPrcVSleep();
+            buttons = D_800D5558_main[0];
+            buttons |= func_801130E8_option(0);
+        } while (!(buttons & (B_BUTTON | L_JPAD | R_JPAD)));
+        if (buttons & B_BUTTON) {
+            break;
+        }
+        if (buttons & L_JPAD) {
+            nextPage = nextPage - 1 < 0 ? 5 : nextPage - 1;
+            if (!_CheckFlag(0x31) && nextPage == 5) {
+                nextPage = 4;
+            }
+        }
+        if (buttons & R_JPAD) {
+            nextPage = nextPage + 1 < 6 ? nextPage + 1 : 0;
+            if (!_CheckFlag(0x31) && nextPage == 5) {
+                nextPage = 0;
+            }
+        }
+        page = nextPage;
+        for (i = 0; i < 8; i++) {
+            espDispOff(icons[i]);
+            espDispOff(digits[i * 2]);
+            espDispOff(digits[i * 2 + 1]);
+        }
+        for (i = 0; i < count; i++) {
+            HuWinDispOff(wins[i]);
+        }
+        for (i = 0; i < count; i++) {
+            HuWinKill(wins[i]);
+        }
+        HuPrcSleep(3);
+    }
+    HuAudFXPlay(0x2E9);
+    HuWinKill(win);
+    for (i = 0; i < 8; i++) {
+        espDispOff(icons[i]);
+        espDispOff(digits[i * 2]);
+        espDispOff(digits[i * 2 + 1]);
+    }
+    for (i = 0; i < count; i++) {
+        HuWinDispOff(wins[i]);
+    }
+    for (i = 0; i < count; i++) {
+        HuWinKill(wins[i]);
+    }
+    HuPrcSleep(3);
+    for (i = 1; i <= 10; i++) {
+        scale = 1.0f - sindf(i * 9.0f);
+        espScaleSet(sprite, scale, scale);
+        HuPrcVSleep();
+    }
+    for (i = 0; i < 8; i++) {
+        espKill(icons[i]);
+        espKill(digits[i * 2]);
+        espKill(digits[i * 2 + 1]);
+    }
+    HuSprAnimKill(iconAnim);
+    HuSprAnimKill(digitAnim);
+    espKill(sprite);
+    HuSprAnimKill(anim);
+}
+
+void func_8010D5B0_option(s32 animFile, s16 x, s16 y) {
+    s16 wins[10];
+    s16 icons[8];
+    s16 digits[16];
+    s16 anim;
+    u16 sprite;
+    s16 win;
+    s16 iconAnim;
+    s16 digitAnim;
+    s32 nextPage = 0;
+    s32 messages[6] = { 0x5008, 0x5009, 0x500A, 0x500B, 0x500C, 0x500D };
+    char text[8];
+    s16 i;
+    s16 j;
+    s32 page;
+    s32 count;
+    s32 buttons;
+    s32 value;
+    s32 ones;
+    f32 scale;
+    f32 baseX;
+    f32 baseY;
+
+    page = 0;
+    HuPrcSleep(3);
+    anim = func_8000B838_main(animFile);
+    sprite = espEntry(anim, 0, 1);
+    espPosSet(sprite, x, y);
+    espPriSet(sprite, 0x8000);
+    espScaleSet(sprite, 0.0f, 0.0f);
+    iconAnim = func_8000B838_main(0x1F0004);
+    for (i = 0; i < 8; i++) {
+        icons[i] = espEntry(iconAnim, 0, 1);
+        espPosSet(icons[i], x + i * 24 - 84, y + 12);
+        espPriSet(icons[i], 0x8000);
+        espScaleSet(icons[i], 1.0f, 1.0f);
+        func_8000BDDC_main(icons[i], 1);
+        espBankSet(icons[i], (u16)D_8011394C_option[i], 0);
+        espDispOff(icons[i]);
+    }
+    digitAnim = func_8000B838_main(0x1F0007);
+    for (i = 0; i < 8; i++) {
+        s32 offsetX;
+
+        digits[i * 2] = espEntry(digitAnim, 0, 1);
+        digits[i * 2 + 1] = espEntry(digitAnim, 0, 1);
+        offsetX = i * 24 - 96;
+        espPosSet(digits[i * 2], x + offsetX + 8, y + 26);
+        espPosSet(digits[i * 2 + 1], x + offsetX + 16, y + 26);
+        espPriSet(digits[i * 2], 0x8000);
+        espPriSet(digits[i * 2 + 1], 0x8000);
+        espScaleSet(digits[i * 2], 1.0f, 1.0f);
+        espScaleSet(digits[i * 2 + 1], 1.0f, 1.0f);
+        func_8000BDDC_main(digits[i * 2], 1);
+        func_8000BDDC_main(digits[i * 2 + 1], 1);
+        value = (u8)(GwCommon.boardRecord[1][page].chr[D_8011394C_option[i]] / 10);
+        if (value >= 10) {
+            value = 9;
+        }
+        ones = (u8)(GwCommon.boardRecord[1][page].chr[D_8011394C_option[i]] % 10);
+        espBankSet(digits[i * 2], (u16)value, 0);
+        espBankSet(digits[i * 2 + 1], (u16)ones, 0);
+        espDispOff(digits[i * 2]);
+        espDispOff(digits[i * 2 + 1]);
+    }
+    win = HuWinExCreate(-1, 0, 0, 210, 14, 1);
+    HuWinBGColSet(win, 255, 255, 255);
+    HuAudFXPlay(0x2E7);
+    for (i = 1; i <= 10; i++) {
+        scale = cosdf(i * 36.0f) * 0.5f + 0.5f;
+        espScaleSet(sprite, scale, sindf(i * 9.0f));
+        HuPrcVSleep();
+    }
+    baseX = x - 104;
+    baseY = y - 71;
+    while (1) {
+        wins[0] = HuWinExCreate(-1, baseX + D_80113970_option[0].x, baseY + D_80113970_option[0].y,
+                                D_80113970_option[0].w, D_80113970_option[0].h, 0);
+        HuWinBGTPLvlSet(wins[0], 0);
+        HuWinMesSet(wins[0], 0x5001, -1, -1);
+        wins[1] = HuWinExCreate(-1, baseX + D_80113970_option[1].x, baseY + D_80113970_option[1].y,
+                                D_80113970_option[1].w, D_80113970_option[1].h, 0);
+        HuWinBGTPLvlSet(wins[1], 0);
+        HuWinMesSet(wins[1], messages[page], -1, -1);
+        count = 2;
+        wins[count] = HuWinExCreate(-1, baseX + D_80113970_option[count].x, baseY + D_80113970_option[count].y,
+                                    D_80113970_option[count].w, D_80113970_option[count].h, 0);
+        HuWinBGTPLvlSet(wins[count], 0);
+        value = GwCommon.boardRecord[1][page].playCount;
+        if (value >= 100) {
+            value = 99;
+        }
+        sprintf(text, "%2d", value);
+        HuWinInsertMesSet(wins[count], (u32)text, 0);
+        HuWinMesSet(wins[count], 0x500E, -1, -1);
+        count++;
+        wins[count] = HuWinExCreate(-1, baseX + D_80113970_option[count].x, baseY + D_80113970_option[count].y,
+                                    D_80113970_option[count].w, D_80113970_option[count].h, 0);
+        HuWinBGTPLvlSet(wins[count], 0);
+        HuWinMesSet(wins[count], 0x500F, -1, -1);
+        count++;
+        wins[count] = HuWinExCreate(-1, baseX + D_80113970_option[count].x, baseY + D_80113970_option[count].y,
+                                    D_80113970_option[count].w, D_80113970_option[count].h, 0);
+        HuWinBGTPLvlSet(wins[count], 0);
+        HuWinMesSet(wins[count], 0x5010, -1, -1);
+        count++;
+        wins[count] = HuWinExCreate(-1, baseX + D_80113970_option[count].x, baseY + D_80113970_option[count].y,
+                                    D_80113970_option[count].w, D_80113970_option[count].h, 0);
+        HuWinBGTPLvlSet(wins[count], 0);
+        HuWinMesSet(wins[count], 0x5011, -1, -1);
+        count++;
+        for (i = 0; i < 4; i++) {
+            HuWinDispOn(wins[i]);
+            HuWinPosSet(win, baseX + 104.0f, baseY + D_80113970_option[i].y + 9.0f);
+            HuAudFXPlay(0x2E8);
+            HuWinDispOn(win);
+            for (j = 1; j < 4; j++) {
+                HuWinBGTPLvlSet(win, (1.0f - j / 3.0f) * 256.0f);
+                HuPrcVSleep();
+            }
+        }
+        for (i = 0; i < 8; i++) {
+            espDispOn(icons[i]);
+        }
+        HuWinDispOn(win);
+        HuAudFXPlay(0x2E8);
+        for (j = 1; j < 4; j++) {
+            HuWinPosSet(win, x, y + 10);
+            HuWinBGTPLvlSet(win, (1.0f - j / 3.0f) * 256.0f);
+            HuPrcVSleep();
+        }
+        for (i = 0; i < 8; i++) {
+            value = (u8)(GwCommon.boardRecord[1][page].chr[D_8011394C_option[i]] / 10);
+            if (value >= 10) {
+                value = 9;
+            }
+            ones = (u8)(GwCommon.boardRecord[1][page].chr[D_8011394C_option[i]] % 10);
+            espBankSet(digits[i * 2], (u16)value, 0);
+            espBankSet(digits[i * 2 + 1], (u16)ones, 0);
+            func_8000BDDC_main(digits[i * 2], 1);
+            func_8000BDDC_main(digits[i * 2 + 1], 1);
+            if (value != 0) {
+                espDispOn(digits[i * 2]);
+            } else {
+                espDispOff(digits[i * 2]);
+            }
+            espDispOn(digits[i * 2 + 1]);
+        }
+        HuAudFXPlay(0x2E8);
+        HuWinDispOn(win);
+        for (j = 1; j < 4; j++) {
+            HuWinPosSet(win, x, y + 25);
+            HuWinBGTPLvlSet(win, (1.0f - j / 3.0f) * 256.0f);
+            HuPrcVSleep();
+        }
+        HuWinDispOff(win);
+        for (i = 4; i < count; i++) {
+            HuWinDispOn(wins[i]);
+            HuWinPosSet(win, baseX + 104.0f, baseY + D_80113970_option[i].y + 9.0f);
+            HuWinDispOn(win);
+            HuAudFXPlay(0x2E8);
+            for (j = 1; j < 4; j++) {
+                HuWinBGTPLvlSet(win, (1.0f - j / 3.0f) * 256.0f);
+                HuPrcVSleep();
+            }
+        }
+        do {
+            HuPrcVSleep();
+            buttons = D_800D5558_main[0];
+            buttons |= func_801130E8_option(0);
+        } while (!(buttons & (B_BUTTON | L_JPAD | R_JPAD)));
+        if (buttons & B_BUTTON) {
+            break;
+        }
+        if (buttons & L_JPAD) {
+            nextPage = nextPage - 1 < 0 ? 5 : nextPage - 1;
+            if (!_CheckFlag(0x30) && nextPage == 5) {
+                nextPage = 4;
+            }
+        }
+        if (buttons & R_JPAD) {
+            nextPage = nextPage + 1 < 6 ? nextPage + 1 : 0;
+            if (!_CheckFlag(0x30) && nextPage == 5) {
+                nextPage = 0;
+            }
+        }
+        page = nextPage;
+        for (i = 0; i < 8; i++) {
+            espDispOff(icons[i]);
+            espDispOff(digits[i * 2]);
+            espDispOff(digits[i * 2 + 1]);
+        }
+        for (i = 0; i < count; i++) {
+            HuWinDispOff(wins[i]);
+        }
+        for (i = 0; i < count; i++) {
+            HuWinKill(wins[i]);
+        }
+        HuPrcSleep(3);
+    }
+    HuAudFXPlay(0x2E9);
+    HuWinKill(win);
+    for (i = 0; i < 8; i++) {
+        espDispOff(icons[i]);
+        espDispOff(digits[i * 2]);
+        espDispOff(digits[i * 2 + 1]);
+    }
+    for (i = 0; i < count; i++) {
+        HuWinDispOff(wins[i]);
+    }
+    for (i = 0; i < count; i++) {
+        HuWinKill(wins[i]);
+    }
+    HuPrcSleep(3);
+    for (i = 1; i <= 10; i++) {
+        scale = 1.0f - sindf(i * 9.0f);
+        espScaleSet(sprite, scale, scale);
+        HuPrcVSleep();
+    }
+    for (i = 0; i < 8; i++) {
+        espKill(icons[i]);
+        espKill(digits[i * 2]);
+        espKill(digits[i * 2 + 1]);
+    }
+    HuSprAnimKill(iconAnim);
+    HuSprAnimKill(digitAnim);
+    espKill(sprite);
+    HuSprAnimKill(anim);
+}
 
 void func_8010E77C_option(s32 x, s32 y, s32 frame) {
     func_80112028_option(1, (s32)(x + sindf(frame * 18) * 4.0f) - 2, y);
@@ -2955,10 +3398,6 @@ void func_8010FB40_option(s32 index, s32 model) {
     D_80114788_option[index].obj->work[0] = index;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_80113D78_option);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_80113D90_option);
-
 INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_80113DA8_option);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_8011421C_option);
@@ -2982,7 +3421,7 @@ u16 func_8010FC40_option(s32 value) {
             sprintf(text, "U P:%4.2f,%4.2f,%4.2f", cam->unk20, cam->unk24, cam->unk28);
             print8(16, 200, text);
         } else {
-            sprintf(text, D_80113A4C_option, value);
+            sprintf(text, "%d", value);
             print8(16, 220, text);
         }
         HuPrcVSleep();

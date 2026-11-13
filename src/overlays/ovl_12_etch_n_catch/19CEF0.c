@@ -22,6 +22,7 @@
 
 #define ABS(x) ((x) > 0.0f ? (x) : 0.0f - (x))
 #define FABS(x) ((x) < 0.0f ? -(x) : (x))
+#define IABS(x) ((x) < 0 ? -(x) : (x))
 
 // Per-player record. D_801113D8_etch_n_catch points at one 0x100-entry array of
 // these per player, and a record is free for reuse while unk_00 is zero.
@@ -32,7 +33,9 @@ typedef struct EtchNCatchNode {
     /* 0x08 */ struct EtchNCatchNode *unk_08;
     /* 0x0C */ struct EtchNCatchNode *unk_0C;
     /* 0x10 */ struct EtchNCatchNode *unk_10;
-    /* 0x14 */ char unk_14[4];
+    /* 0x14 */ u8 unk_14;
+    /* 0x15 */ u8 unk_15;
+    /* 0x16 */ s16 unk_16; // Countdown
     /* 0x18 */ s16 unk_18; // Grid x
     /* 0x1A */ s16 unk_1A; // Grid y
     /* 0x1C */ u8 unk_1C;  // Player index
@@ -62,6 +65,15 @@ typedef struct EtchNCatchWork {
     /* 0x1C */ s16 unk_1C;
 } EtchNCatchWork; // sizeof 0x20
 
+// Positions of the four players and the offsets applied to them while
+// func_80106A64_etch_n_catch runs the shared player update.
+typedef struct EtchNCatchPlayerOffsets {
+    /* 0x00 */ f32 offsetX[4];
+    /* 0x10 */ f32 offsetZ[4];
+    /* 0x20 */ f32 x[4];
+    /* 0x30 */ f32 z[4];
+} EtchNCatchPlayerOffsets; // sizeof 0x40
+
 // Byte grid of player slots: D_8010C84C_etch_n_catch is the base address and
 // D_8010C846_etch_n_catch the row stride in bytes.
 extern u8 *D_8010C84C_etch_n_catch;
@@ -77,21 +89,6 @@ extern u8 **D_8010C87C_etch_n_catch[2];
 
 // Per-player region bits of each grid cell pair, 160 cells per row.
 extern u8 D_8010C890_etch_n_catch[][160];
-
-// Minigame object owning the etch/catch models. unk_40 points at the three model
-// handles, unk_18/unk_30 are the position and scale triples written to them.
-typedef struct EtchNCatchObj {
-    /* 0x00 */ char unk_00[0x18];
-    /* 0x18 */ f32 unk_18;
-    /* 0x1C */ f32 unk_1C;
-    /* 0x20 */ f32 unk_20;
-    /* 0x24 */ char unk_24[0xC];
-    /* 0x30 */ f32 unk_30;
-    /* 0x34 */ f32 unk_34;
-    /* 0x38 */ f32 unk_38;
-    /* 0x3C */ char unk_3C[4];
-    /* 0x40 */ s16 *unk_40;
-} EtchNCatchObj; // sizeof 0x44
 
 // Per-object data of the player objects created by func_80109A54_etch_n_catch.
 typedef struct EtchNCatchPlayerData {
@@ -118,6 +115,13 @@ typedef struct EtchNCatchBoardWork {
 } EtchNCatchBoardWork; // sizeof 0xC
 
 extern s8 D_8010C6A0_etch_n_catch;
+extern f32 D_8010C6DC_etch_n_catch;
+extern u8 D_8010C6E0_etch_n_catch;
+extern u8 D_8010C6E1_etch_n_catch;
+extern u8 D_8010C6E2_etch_n_catch;
+extern f32 D_8010C834_etch_n_catch;
+extern f32 D_800EB770_minigame;
+extern EtchNCatchWork *D_8010C838_etch_n_catch;
 extern s32 D_800A178C_main[][6];
 extern u8 D_800D6A90_main;
 extern s16 D_8010C6A4_etch_n_catch[2][2];
@@ -154,6 +158,19 @@ void func_80105ED4_etch_n_catch(omObjData *object);
 void func_80106334_etch_n_catch(omObjData *object);
 void func_80106A64_etch_n_catch(omObjData *object);
 void func_80108B20_etch_n_catch(EtchNCatchWork *arg0);
+void func_80107EA4_etch_n_catch(omObjData *object);
+void func_8010880C_etch_n_catch(func_800E1BA8_minigame_ObjData *data);
+EtchNCatchNode *func_80108B28_etch_n_catch(s8 playerId);
+void func_80108B64_etch_n_catch(EtchNCatchNode **head, EtchNCatchNode *node);
+void func_80108BCC_etch_n_catch(EtchNCatchNode **head, EtchNCatchNode *node);
+s32 func_80108C08_etch_n_catch(EtchNCatchWork *work);
+s32 func_80108DD0_etch_n_catch(s16 x, s16 y);
+u8 func_80109114_etch_n_catch(s16 x, s16 y);
+void func_8010914C_etch_n_catch(s16 x, s16 y, s32 value);
+void func_80109370_etch_n_catch(EtchNCatchNode *node, u8 value);
+void func_801097B4_etch_n_catch(EtchNCatchNode *node);
+s32 func_8010B154_etch_n_catch(s16 x, s16 y);
+void func_8010C628_etch_n_catch(omObjData *object, f32 scale);
 void func_80109A54_etch_n_catch(omObjData *object);
 void func_80109EB8_etch_n_catch(omObjData *object);
 void func_8010AB7C_etch_n_catch(omObjData *object);
@@ -484,7 +501,344 @@ void func_80106334_etch_n_catch(omObjData *object) {
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", func_80106334_etch_n_catch);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", func_80106A64_etch_n_catch);
+void func_80106A64_etch_n_catch(omObjData *object) {
+    EtchNCatchNode *nodes[32];
+    Vec pos;
+    Vec2f screenPos;
+    Vec2f dir;
+    EtchNCatchPlayerOffsets saved;
+    func_800E1BA8_minigame_ObjData *data;
+    func_800E1BA8_minigame_ObjData *otherData;
+    EtchNCatchNode *newNode;
+    EtchNCatchNode *node;
+    f32 offsetX;
+    f32 offsetZ;
+    s32 buttons;
+    s32 side;
+    s32 found;
+    s32 count;
+    s32 i;
+    s32 j;
+    s16 gridX;
+    s16 gridY;
+
+    if (omPauseChk() + D_800D6A90_main != 0) {
+        return;
+    }
+    if (func_800E6E8C_minigame() == 5) {
+        return;
+    }
+    data = object->data;
+    D_8010C838_etch_n_catch = D_8010C868_etch_n_catch[data->unk59];
+    if (func_800E6E8C_minigame() == 0) {
+        if (D_8010C860_etch_n_catch[0]->work[0] != 3) {
+            Hu3DModelScaleSet(object->model[1], 0.0f, 0.0f, 0.0f);
+        } else {
+            object->trans.y -= D_8010C834_etch_n_catch + 5.0f;
+            if (object->trans.y < 0.0f) {
+                object->trans.y = 0.0f;
+            } else if (data->unk59 == 0) {
+                D_8010C834_etch_n_catch += 5.0f;
+                D_8010C6DC_etch_n_catch += 0.05f;
+                if (D_8010C6DC_etch_n_catch > 0.75f) {
+                    D_8010C6DC_etch_n_catch = 0.75f;
+                }
+            }
+            func_800DDD94_minigame(object);
+            Hu3DModelPosSet(object->model[2], object->trans.x, object->trans.y, object->trans.z);
+            func_8010C628_etch_n_catch(object, 0.75f);
+            offsetX = sindf(data->unk3C) * 65.0f * 0.75f;
+            offsetZ = cosdf(data->unk3C) * 65.0f * 0.75f;
+            Hu3DModelPosSet(object->model[1], object->trans.x - offsetX, 0.0f, object->trans.z - offsetZ);
+            Hu3DModelScaleSet(object->model[1], D_8010C6DC_etch_n_catch, object->scale.y, D_8010C6DC_etch_n_catch);
+        }
+        return;
+    }
+    buttons = D_800D5558_main[data->unk57];
+    D_800D5558_main[data->unk57] = 0;
+    if (object->trans.x < 0.0f) {
+        side = 0;
+    } else {
+        side = 1;
+    }
+    if (D_8010C858_etch_n_catch[side]->work[0] >= 6 || D_8010C860_etch_n_catch[side]->work[0] != 3) {
+        D_800CBB6E_main[data->unk57] = 0;
+        D_800D20A1_main[data->unk57] = 0;
+    }
+    if (GwPlayer[data->unk59].stat & 1) {
+        func_80107EA4_etch_n_catch(object);
+    }
+    data->unk40 *= 0.9f;
+    func_8010880C_etch_n_catch(data);
+    for (i = 0; i < 4; i++) {
+        saved.x[i] = D_800EC598_minigame[i]->trans.x;
+        saved.z[i] = D_800EC598_minigame[i]->trans.z;
+        otherData = D_800EC598_minigame[i]->data;
+        saved.offsetX[i] = sindf(otherData->unk3C) * 46.875f;
+        saved.offsetZ[i] = cosdf(otherData->unk3C) * 46.875f;
+        D_800EC598_minigame[i]->trans.x -= saved.offsetX[i];
+        D_800EC598_minigame[i]->trans.z -= saved.offsetZ[i];
+    }
+    func_800DDD94_minigame(object);
+    for (i = 0; i < 4; i++) {
+        D_800EC598_minigame[i]->trans.x += saved.offsetX[i];
+        D_800EC598_minigame[i]->trans.z += saved.offsetZ[i];
+    }
+    offsetX = sindf(data->unk3C) * 65.0f * 0.75f;
+    offsetZ = cosdf(data->unk3C) * 65.0f * 0.75f;
+    switch (func_800E6E8C_minigame()) {
+        case 3:
+            if (func_800E6E9C_minigame() == 0) {
+                func_800E1328_minigame(object, 60.0f);
+                object->trans.x -= offsetX;
+                object->trans.z -= offsetZ;
+            }
+            if (data->unk3C == 0.0f) {
+                Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
+            } else {
+                Hu3DModelPosSet(object->model[1], object->trans.x - offsetX, 0.0f, object->trans.z - offsetZ);
+            }
+            break;
+        case 4:
+        case 5:
+            Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
+            break;
+        default:
+            Hu3DModelPosSet(object->model[1], object->trans.x - offsetX, 0.0f, object->trans.z - offsetZ);
+            break;
+    }
+    Hu3DModelPosSet(object->model[2], object->trans.x, object->trans.y, object->trans.z);
+    Hu3DModelRotSet(object->model[2], object->rot.x, data->unk3C, object->rot.z);
+    if (func_800E4A90_minigame(object) == 2) {
+        func_8001C814_main(object->model[2], 2, 1);
+    } else {
+        func_8001C814_main(object->model[2], 2, 2);
+    }
+    switch (func_800E6E8C_minigame()) {
+        case 0:
+        case 1:
+        case 5:
+            func_8010C628_etch_n_catch(object, 0.75f);
+            return;
+        case 3:
+            if (func_800E6E9C_minigame() == 0) {
+                func_8001C258_main(object->model[2], 4, 4);
+                func_800E5690_minigame(object, 38);
+            }
+            data->unk3C = func_8010C4F8_etch_n_catch(data->unk3C);
+            if (data->unk3C < 0.0f) {
+                data->unk3C += 360.0f;
+            } else if (data->unk3C > 360.0f) {
+                data->unk3C -= 360.0f;
+            }
+            if (data->unk3C > 10.0f && data->unk3C < 180.0f) {
+                data->unk3C -= 10.0f;
+            } else if (data->unk3C >= 180.0f && data->unk3C < 350.0f) {
+                data->unk3C += 10.0f;
+            } else {
+                data->unk3C = 0.0f;
+            }
+            func_8010C628_etch_n_catch(object, 0.75f);
+            break;
+    }
+    pos.x = object->trans.x;
+    pos.y = object->trans.y;
+    pos.z = object->trans.z;
+    func_80012B14_main(0, &pos, &screenPos);
+    if (D_8010C838_etch_n_catch->unk_08 != D_8010C838_etch_n_catch->unk_04 ||
+        D_8010C838_etch_n_catch->unk_0A != D_8010C838_etch_n_catch->unk_06) {
+        D_8010C838_etch_n_catch->unk_08 = D_8010C838_etch_n_catch->unk_04;
+        D_8010C838_etch_n_catch->unk_0A = D_8010C838_etch_n_catch->unk_06;
+    }
+    D_8010C838_etch_n_catch->unk_04 = screenPos.x;
+    D_8010C838_etch_n_catch->unk_06 = screenPos.y;
+    if (func_800E6E8C_minigame() == 2) {
+        if (D_8010C838_etch_n_catch->unk_12 == 0 && (data->unk5C & 4) && Hu3DData[object->model[0]].motTime == 0.0f) {
+            D_8010C838_etch_n_catch->unk_10 = PlayerFXPlay(0x37F, data->unk59);
+            if (D_8010C838_etch_n_catch->unk_02 == 8) {
+                HuAudFXPanning(D_8010C838_etch_n_catch->unk_10, 32);
+            } else {
+                HuAudFXPanning(D_8010C838_etch_n_catch->unk_10, 95);
+            }
+            D_8010C838_etch_n_catch->unk_12 = 1;
+        } else if (D_8010C838_etch_n_catch->unk_12 == 1 && data->unk40 == D_800EB770_minigame) {
+            HuAudFXStop(D_8010C838_etch_n_catch->unk_10);
+            D_8010C838_etch_n_catch->unk_12 = 0;
+        }
+    } else if (func_800E6E8C_minigame() == 3) {
+        HuAudFXStop(D_8010C838_etch_n_catch->unk_10);
+        D_8010C838_etch_n_catch->unk_12 = 0;
+    }
+    if (func_800E6E8C_minigame() == 2 && D_8010C838_etch_n_catch->unk_08 != 0 && D_8010C838_etch_n_catch->unk_0A != 0) {
+        while (D_8010C838_etch_n_catch->unk_08 != D_8010C838_etch_n_catch->unk_04 ||
+               D_8010C838_etch_n_catch->unk_0A != D_8010C838_etch_n_catch->unk_06) {
+            newNode = func_80108B28_etch_n_catch(data->unk59);
+            memset(newNode, 0, sizeof(EtchNCatchNode));
+            newNode->unk_00 = 1;
+            newNode->unk_16 = 106;
+            newNode->unk_18 = D_8010C838_etch_n_catch->unk_08;
+            newNode->unk_1A = D_8010C838_etch_n_catch->unk_0A;
+            newNode->unk_1C = data->unk59;
+            newNode->unk_10 = NULL;
+            newNode->unk_0C = NULL;
+            newNode->unk_08 = NULL;
+            newNode->unk_04 = NULL;
+            func_80108B64_etch_n_catch(&D_8010C838_etch_n_catch->unk_0C, newNode);
+            newNode->unk_2C = 0;
+            newNode->unk_30 = 1.0f;
+            switch (rand8() >> 6) {
+                case 0:
+                    newNode->unk_20.x = object->trans.x + 10.0f;
+                    newNode->unk_20.z = object->trans.z + 10.0f;
+                    break;
+                case 1:
+                    newNode->unk_20.x = object->trans.x - 10.0f;
+                    newNode->unk_20.z = object->trans.z - 10.0f;
+                    break;
+                case 2:
+                    newNode->unk_20.x = object->trans.x + 10.0f;
+                    newNode->unk_20.z = object->trans.z - 10.0f;
+                    break;
+                default:
+                    newNode->unk_20.x = object->trans.x - 10.0f;
+                    newNode->unk_20.z = object->trans.z + 10.0f;
+                    break;
+            }
+            newNode->unk_20.y = object->trans.y;
+            if (func_80109114_etch_n_catch(D_8010C838_etch_n_catch->unk_08, D_8010C838_etch_n_catch->unk_0A) ==
+                D_8010C838_etch_n_catch->unk_02) {
+                found = 0;
+                for (i = 0; i < 4; i++) {
+                    if (found == 1) {
+                        break;
+                    }
+                    for (node = D_8010C868_etch_n_catch[i]->unk_0C; node != NULL; node = node->unk_08) {
+                        if (newNode != node && node->unk_18 == newNode->unk_18 && node->unk_1A == newNode->unk_1A) {
+                            while (node->unk_0C != NULL) {
+                                node = node->unk_0C;
+                            }
+                            found = 1;
+                            node->unk_0C = newNode;
+                            newNode->unk_10 = node;
+                            break;
+                        }
+                    }
+                }
+            }
+            newNode->unk_14 |= D_8010C838_etch_n_catch->unk_00;
+            func_8010914C_etch_n_catch(D_8010C838_etch_n_catch->unk_08, D_8010C838_etch_n_catch->unk_0A,
+                                       D_8010C838_etch_n_catch->unk_02);
+            newNode->unk_15 = D_8010C838_etch_n_catch->unk_02;
+            D_8010C890_etch_n_catch[D_8010C838_etch_n_catch->unk_06 / 2][D_8010C838_etch_n_catch->unk_04 / 2] |=
+                D_8010C838_etch_n_catch->unk_00;
+            if ((D_800CBB6E_main[data->unk57] != 0 || D_800D20A1_main[data->unk57] != 0) &&
+                func_80108C08_etch_n_catch(D_8010C838_etch_n_catch)) {
+                if (object->trans.x < 0.0f) {
+                    D_8010C6E0_etch_n_catch = 1;
+                } else {
+                    D_8010C6E1_etch_n_catch = 1;
+                }
+            }
+            dir = func_8010C574_etch_n_catch(D_8010C838_etch_n_catch->unk_08, D_8010C838_etch_n_catch->unk_0A,
+                                             D_8010C838_etch_n_catch->unk_04, D_8010C838_etch_n_catch->unk_06);
+            if (dir.x <= -0.5f) {
+                D_8010C838_etch_n_catch->unk_08--;
+            } else if (dir.x >= 0.5f) {
+                D_8010C838_etch_n_catch->unk_08++;
+            }
+            if (dir.y <= -0.5f) {
+                D_8010C838_etch_n_catch->unk_0A--;
+            } else if (dir.y >= 0.5f) {
+                D_8010C838_etch_n_catch->unk_0A++;
+            }
+        }
+    }
+    if (data->unk59 == 3) {
+        if (D_8010C6E2_etch_n_catch == 0 && D_8010C6E0_etch_n_catch != 0 && D_8010C860_etch_n_catch[0]->work[0] == 3 &&
+            D_8010C858_etch_n_catch[0]->work[0] < 5) {
+            D_8010C858_etch_n_catch[0]->work[1] =
+                func_80108DD0_etch_n_catch(D_8010C850_etch_n_catch[0][0], D_8010C850_etch_n_catch[0][1]);
+            if (D_8010C858_etch_n_catch[0]->work[1] != 0) {
+                D_8010C858_etch_n_catch[0]->work[0] = 5;
+                for (i = 0; i < 4; i++) {
+                    if (D_8010C868_etch_n_catch[i]->unk_01 == 3) {
+                        otherData = D_800EC598_minigame[i]->data;
+                        omVibrate(otherData->unk59, 2, 3, 10);
+                    }
+                }
+            }
+            D_8010C6E0_etch_n_catch = 0;
+        } else if (D_8010C6E2_etch_n_catch != 0 && D_8010C6E1_etch_n_catch != 0 &&
+                   D_8010C860_etch_n_catch[1]->work[0] == 3 && D_8010C858_etch_n_catch[1]->work[0] < 5) {
+            D_8010C858_etch_n_catch[1]->work[1] =
+                func_80108DD0_etch_n_catch(D_8010C850_etch_n_catch[1][0], D_8010C850_etch_n_catch[1][1]);
+            if (D_8010C858_etch_n_catch[1]->work[1] != 0) {
+                D_8010C858_etch_n_catch[1]->work[0] = 5;
+                for (i = 0; i < 4; i++) {
+                    if (D_8010C868_etch_n_catch[i]->unk_01 == 12) {
+                        otherData = D_800EC598_minigame[i]->data;
+                        omVibrate(otherData->unk59, 2, 3, 10);
+                    }
+                }
+            }
+            D_8010C6E1_etch_n_catch = 0;
+        }
+        D_8010C6E2_etch_n_catch ^= 1;
+    }
+    func_8010C628_etch_n_catch(object, 0.75f);
+    gridX = D_8010C850_etch_n_catch[side][0] * 2;
+    gridY = D_8010C850_etch_n_catch[side][1] * 2;
+    if (func_8010B154_etch_n_catch(gridX, gridY)) {
+        for (i = 0; i < 32; i++) {
+            nodes[i] = NULL;
+        }
+        count = 0;
+        for (node = D_8010C838_etch_n_catch->unk_0C; node != NULL; node = node->unk_08) {
+            if (IABS(gridX - node->unk_18) < 2 && IABS(gridY - node->unk_1A) < 2) {
+                nodes[count++] = node;
+            }
+        }
+        for (i = 0; i < count; i++) {
+            for (node = nodes[i]; node != NULL; node = node->unk_04) {
+                node->unk_16 = 17;
+            }
+        }
+    }
+    if (data->unk59 == 3) {
+        for (j = 0; j < 4; j++) {
+            D_8010C838_etch_n_catch = D_8010C868_etch_n_catch[j];
+            if (D_8010C838_etch_n_catch != NULL) {
+                for (node = D_8010C838_etch_n_catch->unk_0C; node != NULL; node = node->unk_08) {
+                    node->unk_16--;
+                    if (node->unk_16 <= 16) {
+                        if (node->unk_16 == 16) {
+                            for (i = 0; i < 4; i++) {
+                                if (node->unk_0C != NULL) {
+                                    if (node->unk_0C->unk_15 != D_8010C868_etch_n_catch[i]->unk_02) {
+                                        D_8010C890_etch_n_catch[node->unk_1A / 2][node->unk_18 / 2] &=
+                                            ~D_8010C868_etch_n_catch[i]->unk_00;
+                                    }
+                                } else {
+                                    D_8010C890_etch_n_catch[node->unk_1A / 2][node->unk_18 / 2] &=
+                                        ~D_8010C868_etch_n_catch[i]->unk_00;
+                                }
+                            }
+                            func_80109370_etch_n_catch(node, D_8010C838_etch_n_catch->unk_02);
+                        } else if (node->unk_16 > 0) {
+                            if (node->unk_1E != -1) {
+                                func_801097B4_etch_n_catch(node);
+                            }
+                        } else {
+                            func_8001C258_main(node->unk_1E, 4, 4);
+                            func_80108BCC_etch_n_catch(&D_8010C838_etch_n_catch->unk_0C, node);
+                        }
+                    }
+                }
+            }
+        }
+        D_800D5558_main[data->unk57] = buttons;
+    }
+}
 
 s32 func_80107D38_etch_n_catch(f32 x, f32 z, EtchNCatchWork *work) {
     s32 result;
@@ -1757,11 +2111,11 @@ Vec2f func_8010C574_etch_n_catch(s32 x0, s32 y0, s32 x1, s32 y1) {
     return dir;
 }
 
-void func_8010C628_etch_n_catch(EtchNCatchObj *obj, f32 scale) {
-    obj->unk_38 = scale;
-    obj->unk_34 = scale;
-    obj->unk_30 = scale;
-    Hu3DModelScaleSet(obj->unk_40[0], scale, obj->unk_34, obj->unk_38);
-    Hu3DModelScaleSet(obj->unk_40[1], obj->unk_30, obj->unk_34, obj->unk_38);
-    Hu3DModelScaleSet(obj->unk_40[2], obj->unk_30, obj->unk_34, obj->unk_38);
+void func_8010C628_etch_n_catch(omObjData *object, f32 scale) {
+    object->scale.z = scale;
+    object->scale.y = scale;
+    object->scale.x = scale;
+    Hu3DModelScaleSet(object->model[0], scale, object->scale.y, object->scale.z);
+    Hu3DModelScaleSet(object->model[1], object->scale.x, object->scale.y, object->scale.z);
+    Hu3DModelScaleSet(object->model[2], object->scale.x, object->scale.y, object->scale.z);
 }

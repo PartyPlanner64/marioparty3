@@ -13,6 +13,8 @@
 #include "math.h"
 #include "overlays/minigame.h"
 
+#define ABS(x) ((x) < 0 ? -(x) : (x))
+
 // Grid position of a single marker in the "Beat Goes On" note field.
 typedef struct {
     /* 0x00 */ s16 x;
@@ -24,23 +26,23 @@ typedef struct {
     /* 0x00 */ f32 unk_00;
     /* 0x04 */ s16 unk_04;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s8 unk_08;
-    /* 0x09 */ s8 unk_09;
+    /* 0x08 */ u8 unk_08;
+    /* 0x09 */ u8 unk_09;
     /* 0x0A */ u16 unk_0A;
-    /* 0x0C */ s8 unk_0C;
+    /* 0x0C */ u8 unk_0C;
     /* 0x0E */ s16 unk_0E;
     /* 0x10 */ s16 unk_10;
     /* 0x12 */ s16 unk_12;
     /* 0x14 */ s16 unk_14;
-    /* 0x16 */ s8 unk_16;
-    /* 0x17 */ s8 unk_17;
-    /* 0x18 */ s8 unk_18;
-    /* 0x19 */ s8 unk_19;
-    /* 0x1A */ s8 noteFlags[15];
+    /* 0x16 */ u8 unk_16;
+    /* 0x17 */ u8 unk_17;
+    /* 0x18 */ u8 unk_18;
+    /* 0x19 */ u8 unk_19;
+    /* 0x1A */ u8 noteFlags[15];
     /* 0x29 */ u8 unk_29;
-    /* 0x2A */ s8 btnA[16];
-    /* 0x3A */ s8 btnB[16];
-    /* 0x4A */ s8 btnZ[16];
+    /* 0x2A */ u8 btnA[16];
+    /* 0x3A */ u8 btnB[16];
+    /* 0x4A */ u8 btnZ[16];
 } BeatGoesOnNotes; // sizeof 0x5A
 
 // Work data for each player object.
@@ -81,6 +83,10 @@ extern u8 D_8010C310_the_beat_goes_on;
 extern s8 D_8010C311_the_beat_goes_on;
 extern s32 D_8010C328_the_beat_goes_on[][4];
 extern f32 D_8010C368_the_beat_goes_on[];
+extern f32 D_8010C378_the_beat_goes_on;
+extern f32 D_8010C37C_the_beat_goes_on;
+extern f32 D_8010C380_the_beat_goes_on;
+extern s8 D_8010C384_the_beat_goes_on;
 extern s16 D_8010C460_the_beat_goes_on;
 extern s16 D_8010C462_the_beat_goes_on;
 extern s16 D_8010C464_the_beat_goes_on;
@@ -89,6 +95,7 @@ extern s16 D_8010C468_the_beat_goes_on;
 extern s8 D_8010C46A_the_beat_goes_on;
 extern s16 D_8010C46C_the_beat_goes_on;
 extern s8 D_8010C474_the_beat_goes_on;
+extern s8 D_8010C475_the_beat_goes_on;
 extern D_80111B50_vine_with_me_Struct D_8010C478_the_beat_goes_on;
 extern BeatGoesOnButton D_8010C4A0_the_beat_goes_on[16];
 extern omObjData *D_8010C4E0_the_beat_goes_on;
@@ -133,6 +140,7 @@ void func_8010B0E0_the_beat_goes_on(omObjData *obj);
 void func_8010B17C_the_beat_goes_on(omObjData *obj);
 Vec *func_8010C1A4_the_beat_goes_on(Vec *out, Vec *from, Vec *to);
 void func_8010B6DC_the_beat_goes_on(omObjData *obj);
+void func_8010C0F4_the_beat_goes_on(BeatGoesOnPos *pos);
 void func_8010C14C_the_beat_goes_on(void);
 
 void func_801059A0_the_beat_goes_on(void) {
@@ -1193,7 +1201,200 @@ void func_8010B17C_the_beat_goes_on(omObjData *obj) {
     obj->func = func_8010B6DC_the_beat_goes_on;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_20_the_beat_goes_on/1FE4D0", func_8010B6DC_the_beat_goes_on);
+void func_8010B6DC_the_beat_goes_on(omObjData *obj) {
+    BeatGoesOnNotes *notes;
+    BeatGoesOnPos pos;
+    f32 scale;
+    s32 i;
+    s32 j;
+
+    if (omPauseChk() + D_800D6A90_main != 0) {
+        espDispOff(D_8010C50C_the_beat_goes_on);
+        espDispOff(D_8010C50E_the_beat_goes_on);
+        espDispOff(D_8010C510_the_beat_goes_on);
+        for (i = 0; i < 2; i++) {
+            espDispOff(D_8010C508_the_beat_goes_on[i]);
+        }
+        for (i = 0; i < 15; i++) {
+            espDispOff(D_8010C518_the_beat_goes_on[i]);
+        }
+        for (j = 0; j < 2; j++) {
+            for (i = 0; i < 8; i++) {
+                espDispOff(D_8010C538_the_beat_goes_on[j * 8 + i]);
+                espDispOff(D_8010C558_the_beat_goes_on[j * 8 + i]);
+                espDispOff(D_8010C578_the_beat_goes_on[j * 8 + i]);
+            }
+        }
+        return;
+    }
+    notes = obj->data;
+    espPosSet(D_8010C50E_the_beat_goes_on, notes->unk_0E, notes->unk_10);
+    for (i = 0; i < 2; i++) {
+        if (notes->unk_16 == 1) {
+            espPriSet(D_8010C508_the_beat_goes_on[i], 0x30);
+            espDispOn(D_8010C508_the_beat_goes_on[i]);
+        } else {
+            espDispOff(D_8010C508_the_beat_goes_on[i]);
+        }
+    }
+    if (notes->unk_17 == 1) {
+        espDispOn(D_8010C50C_the_beat_goes_on);
+    } else {
+        espDispOff(D_8010C50C_the_beat_goes_on);
+        D_8010C378_the_beat_goes_on = 20.0f;
+    }
+    if (notes->unk_18 == 1) {
+        espDispOn(D_8010C50E_the_beat_goes_on);
+    } else {
+        espDispOff(D_8010C50E_the_beat_goes_on);
+    }
+    if (notes->unk_19 == 1) {
+        espDispOn(D_8010C510_the_beat_goes_on);
+    } else {
+        espDispOff(D_8010C510_the_beat_goes_on);
+    }
+    for (i = 0; i < 15; i++) {
+        if (notes->noteFlags[i] == 1) {
+            espDispOn(D_8010C518_the_beat_goes_on[i]);
+        } else {
+            espDispOff(D_8010C518_the_beat_goes_on[i]);
+        }
+    }
+    for (j = 0; j < 2; j++) {
+        for (i = 0; i < 8; i++) {
+            if (notes->btnA[j * 8 + i] == 1) {
+                espDispOn(D_8010C538_the_beat_goes_on[j * 8 + i]);
+            } else {
+                espDispOff(D_8010C538_the_beat_goes_on[j * 8 + i]);
+            }
+            if (notes->btnB[j * 8 + i] == 1) {
+                espDispOn(D_8010C558_the_beat_goes_on[j * 8 + i]);
+            } else {
+                espDispOff(D_8010C558_the_beat_goes_on[j * 8 + i]);
+            }
+            if (notes->btnZ[j * 8 + i] == 1) {
+                espDispOn(D_8010C578_the_beat_goes_on[j * 8 + i]);
+            } else {
+                espDispOff(D_8010C578_the_beat_goes_on[j * 8 + i]);
+            }
+        }
+    }
+    if (notes->unk_08 == 0) {
+        D_8010C384_the_beat_goes_on = 90;
+        espPosSet(D_8010C50C_the_beat_goes_on, notes->unk_04, notes->unk_06);
+        D_8010C380_the_beat_goes_on = 0.0f;
+        espScaleSet(D_8010C50E_the_beat_goes_on, 1.0f, 1.0f);
+        D_8010C37C_the_beat_goes_on = 0.0f;
+        for (j = 0; j < 2; j++) {
+            for (i = 0; i < 8; i++) {
+                espScaleSet(D_8010C538_the_beat_goes_on[j * 8 + i], 1.0f, 1.0f);
+                espScaleSet(D_8010C558_the_beat_goes_on[j * 8 + i], 1.0f, 1.0f);
+                espScaleSet(D_8010C578_the_beat_goes_on[j * 8 + i], 1.0f, 1.0f);
+            }
+        }
+        for (i = 0; i < 15; i++) {
+            espScaleSet(D_8010C518_the_beat_goes_on[i], 1.0f, 1.0f);
+        }
+        return;
+    }
+    if (D_8010C4E9_the_beat_goes_on == D_8010C4E8_the_beat_goes_on) {
+        func_8010C0F4_the_beat_goes_on(&pos);
+        if (notes->unk_18 == 1 && ABS(notes->unk_04 - pos.x) <= 0 && pos.y == notes->unk_06 &&
+            D_8010C384_the_beat_goes_on != 0) {
+            f32 pulse;
+
+            D_8010C384_the_beat_goes_on--;
+            D_8010C380_the_beat_goes_on += 30.0f;
+            if (D_8010C380_the_beat_goes_on >= 180.0f) {
+                D_8010C380_the_beat_goes_on = 0.0f;
+            }
+            pulse = sindf(D_8010C380_the_beat_goes_on) * 0.5f + 1.0f;
+            espScaleSet(D_8010C50E_the_beat_goes_on, pulse, pulse);
+        } else {
+            D_8010C378_the_beat_goes_on += 1.33333f;
+        }
+    } else {
+        D_8010C378_the_beat_goes_on += 1.33333f;
+    }
+    if ((notes->unk_04 = D_8010C378_the_beat_goes_on) >= 280) {
+        if (notes->unk_06 == 30) {
+            if (D_8010C4E8_the_beat_goes_on + 1 == 8) {
+                notes->unk_04 = 280;
+                D_8010C378_the_beat_goes_on = 280.0f;
+            } else {
+                notes->unk_04 = 40;
+                D_8010C378_the_beat_goes_on = 40.0f;
+                if (D_8010C4E8_the_beat_goes_on + 1 >= 9) {
+                    notes->unk_06 += 20;
+                }
+            }
+        } else {
+            notes->unk_04 = 280;
+        }
+    }
+    espPosSet(D_8010C50C_the_beat_goes_on, notes->unk_04, notes->unk_06);
+    if (notes->unk_0C != 0) {
+        if (D_8010C37C_the_beat_goes_on == 0.0f) {
+            D_8010C475_the_beat_goes_on = D_8010C4E9_the_beat_goes_on;
+        }
+        if (notes->unk_19 != 0) {
+            D_8010C37C_the_beat_goes_on += 36.0f;
+            if (D_8010C37C_the_beat_goes_on >= 36.0f) {
+                D_8010C37C_the_beat_goes_on = 36.0f;
+                notes->unk_0C = 0;
+            }
+        } else {
+            D_8010C37C_the_beat_goes_on += 36.0f;
+            if (D_8010C37C_the_beat_goes_on >= 180.0f) {
+                D_8010C37C_the_beat_goes_on = 0.0f;
+                notes->unk_0C = 0;
+            }
+        }
+        scale = sindf(D_8010C37C_the_beat_goes_on) + 1.0f;
+        switch (notes->unk_0A) {
+            case 0x8000:
+                if (D_8010C4E0_the_beat_goes_on->work[0] != 6) {
+                    espScaleSet(D_8010C538_the_beat_goes_on[D_8010C475_the_beat_goes_on - 1], scale, scale);
+                } else {
+                    espScaleSet(D_8010C538_the_beat_goes_on[D_8010C475_the_beat_goes_on], scale, scale);
+                }
+                break;
+            case 0x4000:
+                if (D_8010C4E0_the_beat_goes_on->work[0] != 6) {
+                    espScaleSet(D_8010C558_the_beat_goes_on[D_8010C475_the_beat_goes_on - 1], scale, scale);
+                } else {
+                    espScaleSet(D_8010C558_the_beat_goes_on[D_8010C475_the_beat_goes_on], scale, scale);
+                }
+                break;
+            case 0x2000:
+                if (D_8010C4E0_the_beat_goes_on->work[0] != 6) {
+                    espScaleSet(D_8010C578_the_beat_goes_on[D_8010C475_the_beat_goes_on - 1], scale, scale);
+                } else {
+                    espScaleSet(D_8010C578_the_beat_goes_on[D_8010C475_the_beat_goes_on], scale, scale);
+                }
+                break;
+            case 0x800:
+                espScaleSet(D_8010C518_the_beat_goes_on[D_8010C475_the_beat_goes_on], scale, scale);
+                break;
+            case 0x400:
+                espScaleSet(D_8010C50E_the_beat_goes_on, scale, scale);
+                break;
+        }
+    }
+    if (D_8010C4E0_the_beat_goes_on->work[0] == 6) {
+        func_8010C0F4_the_beat_goes_on(&pos);
+        if (ABS(notes->unk_04 - pos.x) <= 10 && pos.y == notes->unk_06) {
+            notes->unk_09 = 1;
+        } else {
+            notes->unk_09 = 0;
+        }
+        if (notes->unk_09 == 1 && notes->unk_19 == 0) {
+            notes->unk_12 = pos.x;
+            notes->unk_14 = pos.y;
+            espPosSet(D_8010C510_the_beat_goes_on, notes->unk_12, notes->unk_14);
+        }
+    }
+}
 
 void func_8010C0F4_the_beat_goes_on(BeatGoesOnPos *pos) {
     if (D_8010C4E9_the_beat_goes_on < 8) {

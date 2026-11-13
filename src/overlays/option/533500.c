@@ -150,7 +150,7 @@ omObjData *func_8010FF0C_option(s32);
 
 void func_8010C3E4_option(s32, s32, s32);
 void func_8010D5B0_option(s32, s32, s32);
-void func_80107F50_option(s32, s32, s32);
+void func_80107F50_option(s32 animFile, s16 x, s16 y);
 s32 func_8010BACC_option(s32, s32);
 void func_801133BC_option(s32, u32);
 void func_80113368_option(s32, s32 *, s32 *);
@@ -856,9 +856,158 @@ void func_80107D64_option(Vec *start, Vec *end, f32 weight, Vec *out) {
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80107D64_option);
 #endif
 
+// The function body matches, but two things are needed before it can be enabled:
+// - The initializers of its three local arrays are at 0x80113A08-0x80113A47, so the .rodata subsegment of
+//   this file in marioparty3.yaml has to start at 0x541538 instead of 0x541550 (D_80113A08_option and
+//   D_80113A14_option, currently the last symbols of the data segment, are really rodata).
+// - func_8010C3E4_option and func_8010D5B0_option (still assembly) reference the "%2d" literal as
+//   D_80113A50_option, so they have to be decompiled first. Then the INCLUDE_RODATA lines for
+//   D_80113A4C_option, D_80113A50_option, D_80113A54_option and jtbl_80113A58_option go away, and
+//   func_8010FC40_option uses a "%d" literal instead of D_80113A4C_option.
+#ifdef NON_MATCHING
+void func_80107F50_option(s32 animFile, s16 x, s16 y) {
+    s16 wins[10];
+    u8 text0[32];
+    u8 text1[32];
+    u8 text2[32];
+    u8 records[10] = { 0, 1, 2, 4, 3, 5, 6, 7, 9, 8 };
+    s8 minigames[10] = { 13, 16, 35, 52, 44, 71, 71, 71, 0, -1 };
+    s32 messages[10] = { 0x4501, 0x4502, 0x4503, 0x4504, 0x4505, 0x4506, 0x4507, 0x4508, 0x4509, 0x450A };
+    s16 anim;
+    u16 sprite;
+    s16 win;
+    s16 i;
+    s16 j;
+    s16 record;
+    s32 offsetY;
+    f32 scaleX;
+    f32 scale;
+
+    HuPrcSleep(3);
+    anim = func_8000B838_main(animFile);
+    sprite = espEntry(anim, 0, 1);
+    espPosSet(sprite, x, y);
+    espPriSet(sprite, 0x8000);
+    espScaleSet(sprite, 0.0f, 0.0f);
+    for (i = 0; i < 10; i++) {
+        offsetY = i * 14 - 71;
+        wins[i] = HuWinExCreate(-1, x - 104, y + offsetY, 213, 20, 0);
+        HuWinBGTPLvlSet(wins[i], 0);
+    }
+    win = HuWinExCreate(-1, 0, 0, 210, 14, 1);
+    HuWinBGColSet(win, 255, 255, 255);
+    HuAudFXPlay(0x2E7);
+    for (i = 1; i <= 10; i++) {
+        scaleX = cosdf(i * 36.0f) * 0.5f + 0.5f;
+        espScaleSet(sprite, scaleX, sindf(i * 9.0f));
+        HuPrcVSleep();
+    }
+    for (i = 0; i < 10; i++) {
+        record = GWMgRecordGet(records[i]);
+        if (record < 0) {
+            record = 0;
+        }
+        switch (records[i]) {
+            case 0:
+                sprintf((char *)text0, "%3d", record);
+                HuWinInsertMesSet(wins[i], (u32)text0, 0);
+                break;
+            case 1:
+            case 2:
+            case 5:
+            case 6:
+            case 7:
+                sprintf((char *)text0, "%d", record / 3600);
+                HuWinInsertMesSet(wins[i], (u32)text0, 0);
+                record %= 3600;
+                sprintf((char *)text1, "%2d", record / 60);
+                if (text1[0] == ' ') {
+                    text1[0] = '0';
+                }
+                HuWinInsertMesSet(wins[i], (u32)text1, 1);
+                sprintf((char *)text2, "%2d", (s16)((record % 60) / 60.0f * 100.0f));
+                if (text2[0] == ' ') {
+                    text2[0] = '0';
+                }
+                HuWinInsertMesSet(wins[i], (u32)text2, 2);
+                break;
+            case 4:
+                sprintf((char *)text0, "%3d", record / 100);
+                record %= 100;
+                HuWinInsertMesSet(wins[i], (u32)text0, 0);
+                sprintf((char *)text1, "%2d", record);
+                if (text1[0] == ' ') {
+                    text1[0] = '0';
+                }
+                HuWinInsertMesSet(wins[i], (u32)text1, 1);
+                break;
+            case 3:
+            case 9:
+                sprintf((char *)text0, "%d", record / 1800);
+                HuWinInsertMesSet(wins[i], (u32)text0, 0);
+                record %= 1800;
+                sprintf((char *)text1, "%2d", record / 30);
+                if (text1[0] == ' ') {
+                    text1[0] = '0';
+                }
+                HuWinInsertMesSet(wins[i], (u32)text1, 1);
+                sprintf((char *)text2, "%2d", (s16)((record % 30) * (1.0f / 30.0f) * 99.0f));
+                if (text2[0] == ' ') {
+                    text2[0] = '0';
+                }
+                HuWinInsertMesSet(wins[i], (u32)text2, 2);
+                break;
+            case 8:
+                sprintf((char *)text0, "%4d", record);
+                HuWinInsertMesSet(wins[i], (u32)text0, 0);
+                break;
+        }
+        HuWinDispOn(wins[i]);
+        record = minigames[i];
+        record--;
+        if (record == 70 && _CheckFlag(0x2B)) {
+            HuWinMesSet(wins[i], messages[i], -1, -1);
+        } else if (record >= 0 && GWMgUnlockCheck(record)) {
+            HuWinMesSet(wins[i], messages[i], -1, -1);
+        } else if (record == -1 && _CheckFlag(0x1E)) {
+            HuWinMesSet(wins[i], messages[i], -1, -1);
+        } else if (record == -2 && _CheckFlag(0x1F)) {
+            HuWinMesSet(wins[i], messages[i], -1, -1);
+        } else {
+            HuWinMesSet(wins[i], 0x4500, -1, -1);
+        }
+        HuWinPosSet(win, x, y + (s16)(i * 14 - 62));
+        HuWinDispOn(win);
+        HuAudFXPlay(0x2E8);
+        for (j = 1; j < 4; j++) {
+            HuWinBGTPLvlSet(win, (1.0f - j / 3.0f) * 256.0f);
+            HuPrcVSleep();
+        }
+    }
+    HuWinKill(win);
+    do {
+        HuPrcVSleep();
+    } while (!(D_800D5558_main[0] & (A_BUTTON | B_BUTTON)));
+    for (i = 0; i < 10; i++) {
+        HuWinDispOff(wins[i]);
+    }
+    HuAudFXPlay(0x2E9);
+    for (i = 1; i <= 10; i++) {
+        scale = 1.0f - sindf(i * 9.0f);
+        espScaleSet(sprite, scale, scale);
+        HuPrcVSleep();
+    }
+    for (i = 0; i < 10; i++) {
+        HuWinKill(wins[i]);
+    }
+    espKill(sprite);
+    HuSprAnimKill(anim);
+}
+#else
 INCLUDE_RODATA("asm/nonmatchings/overlays/option/533500", D_80113A20_option);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/option/533500", func_80107F50_option);
+#endif
 
 void func_80108A68_option(void) {
     func_80108B34_option();

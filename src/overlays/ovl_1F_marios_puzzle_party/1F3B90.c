@@ -132,7 +132,12 @@ extern MarioPuzzlePartyPath D_801102E0_marios_puzzle_party[4][6];
 
 // per-player input state; CPU players read their input from here rather than a controller
 typedef struct MarioPuzzlePartyPlayerInput {
-    /* 0x00 */ s32 unk_00[16];
+    /* 0x00 */ s32 heights[4];
+    /* 0x10 */ s32 scores[2][4];
+    /* 0x30 */ s32 mode;
+    /* 0x34 */ s32 targetPath;
+    /* 0x38 */ s32 swap;
+    /* 0x3C */ s32 delay;
     /* 0x40 */ u16 direction;
     /* 0x42 */ u16 buttons;
 } MarioPuzzlePartyPlayerInput; // sizeof 0x44
@@ -182,6 +187,8 @@ extern s16 D_801160E2_marios_puzzle_party;
 
 // set once the minigame is ending
 extern s32 D_801160E8_marios_puzzle_party;
+
+extern s32 D_801160F0_marios_puzzle_party[4];
 
 // number of players that took part in the game
 extern s32 D_80116100_marios_puzzle_party;
@@ -378,7 +385,7 @@ u16 func_80105E88_marios_puzzle_party(s32 playerIndex) {
     return buttons;
 }
 
-u16 func_80105FCC_marios_puzzle_party(s32 playerIndex, s16 bits) {
+u16 func_80105FCC_marios_puzzle_party(s32 playerIndex, u16 bits) {
     u16 result;
 
     if (!(GwPlayer[playerIndex].stat & PLAYER_IS_CPU)) {
@@ -1722,7 +1729,674 @@ void func_8010A958_marios_puzzle_party(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1F_marios_puzzle_party/1F3B90", func_8010AD20_marios_puzzle_party);
+void func_8010AD20_marios_puzzle_party(void) {
+    MarioPuzzlePartyScoreDisplay display;
+    s32 heights[4];
+    s32 canDrop[4];
+    s32 k = 0;
+    s32 board;
+    s32 sprite1;
+    s32 speed;
+    s32 level = 1;
+    MarioPuzzlePartyCursor *next;
+    MarioPuzzlePartyPlayerInput *input = NULL;
+    MarioPuzzlePartyCursor *cursor;
+    MarioPuzzlePartyPathSpace *space;
+    MarioPuzzlePartyPath *path;
+    Process *process;
+    s32 sprite0;
+    s32 timer;
+    s32 group;
+    // i and j are also the entry position of a piece and the fall distance / landed flag while it drops
+    s32 i;
+    s32 j;
+    s32 count;
+    s32 best;
+    s32 done;
+    // also the height of a column in the CPU logic
+    s32 row;
+    s32 spaceIdx;
+    f32 nextStepX;
+    f32 nextStepY;
+    f32 stepX;
+    f32 stepY;
+
+    board = (s32)HuPrcCurrentGet()->user_data;
+    omPrcSetDestructor(HuPrcCurrentGet(), func_8010A958_marios_puzzle_party);
+    D_801161D8_marios_puzzle_party[board] = display.sprGroup = HuSprGrpCreate(10, 5);
+    HuSprGrpMemberSet(display.sprGroup, 0, D_801160B4_marios_puzzle_party, 0);
+    func_800550F4_main(display.sprGroup, 0, 0);
+    HuSprPosSet(display.sprGroup, 0, D_80110080_marios_puzzle_party[board][0] + 42,
+                D_80110080_marios_puzzle_party[board][1] - 182 + D_801161A8_marios_puzzle_party[board]);
+    HuSprAttrReset(display.sprGroup, 0, 0xFFFF);
+    HuSprAttrSet(display.sprGroup, 0, 0x4000);
+    HuSprPriSet(display.sprGroup, 0, 0x200);
+    HuSprGrpMemberSet(display.sprGroup, 9, D_801160B8_marios_puzzle_party, 0);
+    func_800550F4_main(display.sprGroup, 9, 0);
+    HuSprPosSet(display.sprGroup, 9, 0, 0);
+    HuSprAttrReset(display.sprGroup, 9, 0xFFFF);
+    HuSprAttrSet(display.sprGroup, 9, 0xC000);
+    HuSprPriSet(display.sprGroup, 9, 0x200);
+    func_800554C4_main(display.sprGroup, 9, 0);
+    process = omAddPrcObj(func_801098A0_marios_puzzle_party, 0x4001, 0x800, 0);
+    display.board = board;
+    process->user_data = &display;
+
+    D_801161E8_marios_puzzle_party[board] = sprite0 = HuSprGrpCreate(1, 5);
+    group = sprite0;
+    HuSprGrpMemberSet(group, 0, D_80116090_marios_puzzle_party, 0);
+    HuSprPosSet(group, 0, D_80110080_marios_puzzle_party[board][0] + 42,
+                D_80110080_marios_puzzle_party[board][1] - 161 + D_801161A8_marios_puzzle_party[board]);
+    HuSprAttrReset(group, 0, 0xFFFF);
+    HuSprAttrSet(group, 0, 0x4008);
+    HuSprPriSet(group, 0, 0x300);
+
+    D_801161F8_marios_puzzle_party[board] = sprite0 = HuSprGrpCreate(1, 5);
+    group = sprite0;
+    HuSprGrpMemberSet(group, 0, D_80116098_marios_puzzle_party, 0);
+    HuSprPosSet(group, 0, D_80110080_marios_puzzle_party[board][0] + 42,
+                D_80110080_marios_puzzle_party[board][1] - 78 + D_801161A8_marios_puzzle_party[board]);
+    HuSprAttrReset(group, 0, 0xFFFF);
+    HuSprAttrSet(group, 0, 0x4008);
+    HuSprPriSet(group, 0, 0x600);
+
+    D_80116208_marios_puzzle_party[board] = sprite0 = HuSprGrpCreate(1, 5);
+    group = sprite0;
+    HuSprGrpMemberSet(group, 0, D_8011609C_marios_puzzle_party, 0);
+    HuSprPosSet(group, 0, D_80110080_marios_puzzle_party[board][0] + 42,
+                D_80110080_marios_puzzle_party[board][1] - 78 + D_801161A8_marios_puzzle_party[board]);
+    HuSprAttrReset(group, 0, 0xFFFF);
+    HuSprAttrSet(group, 0, 0x5008);
+    HuSprPriSet(group, 0, 0x600);
+    HuSprTPLvlSet(group, 0, 0x80);
+
+    D_80116218_marios_puzzle_party[board] = sprite0 = HuSprGrpCreate(1, 5);
+    group = sprite0;
+    HuSprGrpMemberSet(group, 0, D_801160C0_marios_puzzle_party[board], 0);
+    HuSprPosSet(group, 0, D_80110080_marios_puzzle_party[board][0] + 42,
+                D_80110080_marios_puzzle_party[board][1] - 105 + D_801161A8_marios_puzzle_party[board]);
+    HuSprAttrReset(group, 0, 0xFFFF);
+    HuSprAttrSet(group, 0, 0x5008);
+    HuSprPriSet(group, 0, 0x500);
+    HuSprTPLvlSet(group, 0, 0x9A);
+
+    cursor = &D_80116238_marios_puzzle_party[board];
+    cursor->sprite = espEntry(func_8000B838_main(GwPlayer[board].chr + 0x6A), 0, 1);
+    cursor->x = cursor->unk_10 = D_80110080_marios_puzzle_party[board][0] + 28;
+    cursor->y = D_80110080_marios_puzzle_party[board][1] - 70;
+    cursor->pathIdx = 2;
+    cursor->spaceIdx = 10;
+    cursor->moveDir = 0;
+    espPosSet(cursor->sprite, cursor->x + 7.0f, D_801161A8_marios_puzzle_party[board] + cursor->y);
+    espPriSet(cursor->sprite, 0x200);
+    espDispOn(cursor->sprite);
+    HuSprBankSet(display.sprGroup, 0, 0, 2);
+    func_800550F4_main(display.sprGroup, 0, 1);
+    HuPrcVSleep();
+    func_800550F4_main(display.sprGroup, 0, 0);
+    while (TRUE) {
+        if (func_800E6E8C_minigame() == 2) {
+            break;
+        }
+        HuPrcVSleep();
+    }
+    process = omAddPrcObj(func_80109D24_marios_puzzle_party, 0x4001, 0x800, 0);
+    HuPrcChildLink(HuPrcCurrentGet(), process);
+    process->user_data = next = &D_80116308_marios_puzzle_party[board];
+    next->board = board;
+    HuPrcVSleep();
+    if (next->blockOwners[0] != 7) {
+        HuSprBankSet(display.sprGroup, 0, 0, 0);
+        func_800550F4_main(display.sprGroup, 0, 1);
+        HuSprAttrReset(display.sprGroup, 0, HUSPR_ATTR_DISPOFF);
+        HuSprAttrSet(display.sprGroup, 9, HUSPR_ATTR_DISPOFF);
+        HuPrcVSleep();
+        func_800550F4_main(display.sprGroup, 0, 0);
+    } else {
+        HuSprBankSet(display.sprGroup, 9, 0, 0);
+        func_800550F4_main(display.sprGroup, 9, 1);
+        HuSprAttrReset(display.sprGroup, 9, HUSPR_ATTR_DISPOFF);
+        HuSprAttrSet(display.sprGroup, 0, HUSPR_ATTR_DISPOFF);
+        HuPrcVSleep();
+        func_800550F4_main(display.sprGroup, 9, 0);
+    }
+    HuPrcChildWatch();
+    while (TRUE) {
+        // send garbage to the other players for the chain that just ended
+        if (D_80116108_marios_puzzle_party[board] >= 2) {
+            for (j = 0; j < 4; j++) {
+                if (j != board) {
+                    D_80116118_marios_puzzle_party[j] += D_80116108_marios_puzzle_party[board];
+                }
+            }
+        }
+        D_80116108_marios_puzzle_party[board] = 0;
+        D_80116138_marios_puzzle_party[board] = 0;
+        if (D_80116158_marios_puzzle_party == 2 && level * 100 <= D_80116128_marios_puzzle_party[board]) {
+            HuAudFXPlay(0x3FC);
+            level++;
+            D_80116118_marios_puzzle_party[board] = level + 3;
+            if (D_80116118_marios_puzzle_party[board] >= 10) {
+                D_80116118_marios_puzzle_party[board] = 9;
+            }
+        }
+        // drop the garbage blocks this player received
+        count = D_80116118_marios_puzzle_party[board];
+        D_80116118_marios_puzzle_party[board] = 0;
+        if (count >= 2) {
+            for (i = 0; i < 4; i++) {
+                heights[i] = 21 - func_80107000_marios_puzzle_party(board, i + 1);
+            }
+            for (i = 0, j = 0; i < 4; i++) {
+                if (heights[i] >= 2) {
+                    canDrop[i] = TRUE;
+                    j++;
+                } else {
+                    canDrop[i] = FALSE;
+                }
+            }
+            if (j == 0) {
+                break;
+            }
+            for (k = count - 1, row = 0; k != 0; k--) {
+                // pick one of the j columns that still have room
+                s32 target = rand8() * (1.0f / 256.0f) * j;
+
+                for (i = 0, count = 0; i < 4; i++) {
+                    if (canDrop[i]) {
+                        if (target == count) {
+                            s32 playSound = (row == 0);
+
+                            func_80109C04_marios_puzzle_party(board, 6, 1, i + 1, row + 29, playSound);
+                            heights[i] -= 2;
+                            canDrop[i] = FALSE;
+                        }
+                        count++;
+                    }
+                }
+                if (--j <= 0) {
+                    row += 2;
+                    if (row >= 6) {
+                        break;
+                    }
+                    for (i = 0, j = 0; i < 4; i++) {
+                        if (heights[i] >= 2) {
+                            canDrop[i] = TRUE;
+                            j++;
+                        } else {
+                            canDrop[i] = FALSE;
+                        }
+                    }
+                    if (j == 0) {
+                        break;
+                    }
+                }
+            }
+        }
+        HuPrcChildWatch();
+        speed = 2;
+        HuPrcChildWatch();
+        // pick the position (i, j) where the next piece enters the board
+        if (next->blockOwners[0] != 7) {
+            i = D_80110080_marios_puzzle_party[board][0] + 28;
+            j = D_80110080_marios_puzzle_party[board][1] - 119;
+            if (!func_8010A4B4_marios_puzzle_party(board, i, j)) {
+                i = D_80110080_marios_puzzle_party[board][0] + 42;
+                if (!func_8010A4B4_marios_puzzle_party(board, i, j)) {
+                    i = D_80110080_marios_puzzle_party[board][0] + 14;
+                    if (!func_8010A4B4_marios_puzzle_party(board, i, j)) {
+                        i = D_80110080_marios_puzzle_party[board][0] + 56;
+                        if (!func_8010A4B4_marios_puzzle_party(board, i, j)) {
+                            break;
+                        }
+                    }
+                }
+            }
+        } else {
+            s32 top;
+
+            D_80116188_marios_puzzle_party[board] = 0;
+            for (count = 0; count < 4; count++) {
+                space = D_801102E0_marios_puzzle_party[board][2].spaces;
+                if (space[count + 17].type == 0) {
+                    break;
+                }
+            }
+            for (k = 0; k < 4; k++) {
+                space = D_801102E0_marios_puzzle_party[board][3].spaces;
+                if (space[k + 17].type == 0) {
+                    break;
+                }
+            }
+            if (k < count) {
+                top = count + 19;
+            } else {
+                top = k + 19;
+            }
+            i = D_80110080_marios_puzzle_party[board][0] + 42;
+            j = D_80110080_marios_puzzle_party[board][1] - top * 7;
+        }
+        // move the waiting piece and the cursor to the entry position
+        nextStepX = (i - next->x) / 10.0f;
+        nextStepY = (j - next->y) / 10.0f;
+        stepX = (i - cursor->x) / 10.0f;
+        stepY = (j - cursor->y) / 10.0f;
+        if (next->blockOwners[0] != 7) {
+            func_800550F4_main(display.sprGroup, 0, 1);
+        } else {
+            func_800550F4_main(display.sprGroup, 9, 1);
+        }
+        do {
+            next->x = nextStepX + next->x;
+            next->y = nextStepY + next->y;
+            cursor->x = stepX + cursor->x;
+            cursor->y = stepY + cursor->y;
+            if (next->y >= j) {
+                cursor->unk_10 = i;
+                next->x = cursor->x = i;
+                next->y = cursor->y = j;
+            }
+            if (next->blockOwners[0] != 7) {
+                func_8010FF78_marios_puzzle_party(next->blockSprites[0], next->x, next->y);
+                func_8010FF78_marios_puzzle_party(next->blockSprites[1], next->x, next->y - 14.0f);
+            } else {
+                HuSprPosSet(next->blockSprites[0], 0, next->x, D_801161A8_marios_puzzle_party[board] + next->y);
+            }
+            espPosSet(cursor->sprite, cursor->x + 7.0f, D_801161A8_marios_puzzle_party[board] + cursor->y);
+            cursor->pathIdx = (cursor->x - D_80110080_marios_puzzle_party[board][0]) / 14.0f;
+            HuPrcVSleep();
+        } while (next->y != j);
+        if (D_80116158_marios_puzzle_party == 2) {
+            func_8004AC98_main(0x3FD, board);
+        }
+        espBankSet(cursor->sprite, 1, 0);
+        func_8000BDDC_main(cursor->sprite, 1);
+        // the waiting piece becomes the active one
+        sprite0 = cursor->blockSprites[0] = next->blockSprites[0];
+        sprite1 = cursor->blockSprites[1] = next->blockSprites[1];
+        cursor->blockOwners[0] = next->blockOwners[0];
+        cursor->blockOwners[1] = next->blockOwners[1];
+        cursor->moveDir = 0;
+        D_80116228_marios_puzzle_party[board] = sprite0;
+        process = omAddPrcObj(func_80109D24_marios_puzzle_party, 0x4001, 0x800, 0);
+        HuPrcChildLink(HuPrcCurrentGet(), process);
+        process->user_data = next = &D_80116308_marios_puzzle_party[board];
+        next->board = board;
+        HuPrcVSleep();
+        if (next->blockOwners[0] != 7) {
+            HuSprBankSet(display.sprGroup, 0, 0, 0);
+            func_800550F4_main(display.sprGroup, 0, 1);
+            HuPrcVSleep();
+            func_800550F4_main(display.sprGroup, 0, 0);
+            HuSprAttrReset(display.sprGroup, 0, HUSPR_ATTR_DISPOFF);
+            HuSprAttrSet(display.sprGroup, 9, HUSPR_ATTR_DISPOFF);
+        } else {
+            HuSprBankSet(display.sprGroup, 9, 0, 0);
+            func_800550F4_main(display.sprGroup, 9, 1);
+            HuPrcVSleep();
+            func_800550F4_main(display.sprGroup, 9, 0);
+            HuSprAttrReset(display.sprGroup, 9, HUSPR_ATTR_DISPOFF);
+            HuSprAttrSet(display.sprGroup, 0, HUSPR_ATTR_DISPOFF);
+        }
+        // CPU players decide where to put the piece
+        if (GwPlayer[board].stat & PLAYER_IS_CPU) {
+            input = &D_80114DE0_marios_puzzle_party[board];
+            input->direction = 0;
+            input->buttons = 0;
+            if (cursor->blockOwners[0] != 7) {
+                for (i = 1; i < 5; i++) {
+                    j = 1;
+                    while (TRUE) {
+                        path = &D_801102E0_marios_puzzle_party[board][i];
+                        if (path->spaces[j].type == 0) {
+                            break;
+                        }
+                        j++;
+                    }
+                    input->heights[i - 1] = j;
+                    input->scores[0][i - 1] =
+                        func_80108A50_marios_puzzle_party(board, 1, cursor->blockOwners[0], i, j);
+                    input->scores[1][i - 1] =
+                        func_80108A50_marios_puzzle_party(board, 1, cursor->blockOwners[1], i, input->heights[i - 1]);
+                }
+                for (i = 0, j = 0; i < 4; i++) {
+                    j += func_80107070_marios_puzzle_party(board, i + 1);
+                }
+                if (D_8011615C_marios_puzzle_party - 10 < D_80116128_marios_puzzle_party[board]) {
+                    best = 5;
+                } else if (D_8011615C_marios_puzzle_party - 20 < D_80116128_marios_puzzle_party[board]) {
+                    best = 10;
+                } else {
+                    best = 25;
+                }
+                if (best < j) {
+                    input->mode = 0;
+                } else {
+                    input->mode = 1;
+                }
+                switch (input->mode) {
+                    case 0:
+                        // lowest column that touches a matching block
+                        for (i = 0, best = 999, k = 0; i < 2; i++) {
+                            for (j = 0; j < 4; j++) {
+                                if (input->scores[i][j] > 0) {
+                                    k = func_80107000_marios_puzzle_party(board, j + 1);
+                                    if (k < best) {
+                                        best = k;
+                                        input->swap = i;
+                                        input->targetPath = j + 1;
+                                    }
+                                }
+                            }
+                        }
+                        if (best == 999) {
+                            for (i = 1, j = 0, k = 0; i < 5; i++) {
+                                best = func_80107000_marios_puzzle_party(board, i);
+                                if (j < best) {
+                                    j = best;
+                                    k = i;
+                                }
+                            }
+                            input->swap = 0;
+                            input->targetPath = k;
+                        }
+                        break;
+                    case 1:
+                        for (i = 0, best = 999, k = 0; i < 2; i++) {
+                            for (j = 0; j < 4; j++) {
+                                if (input->scores[i][j] < best) {
+                                    best = input->scores[i][j];
+                                    row = func_80107000_marios_puzzle_party(board, j + 1);
+                                    input->swap = i;
+                                    input->targetPath = j + 1;
+                                    if (k < row && row < 18) {
+                                        k = row;
+                                    }
+                                } else if (input->scores[i][j] == best) {
+                                    row = func_80107000_marios_puzzle_party(board, j + 1);
+                                    if (k < row && row < 18) {
+                                        k = row;
+                                        input->swap = i;
+                                        input->targetPath = j + 1;
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    case 2:
+                        for (i = 0, best = 0; i < 2; i++) {
+                            for (j = 0; j < 4; j++) {
+                                if (best < input->scores[i][j]) {
+                                    best = input->scores[i][j];
+                                    input->swap = i;
+                                    input->targetPath = j + 1;
+                                }
+                            }
+                        }
+                        if (best == 0) {
+                            for (i = 1, j = 0; i < 5; i++) {
+                                best = func_80107000_marios_puzzle_party(board, i);
+                                if (j < best) {
+                                    j = best;
+                                    k = i;
+                                }
+                            }
+                            input->swap = 0;
+                            input->targetPath = k;
+                        }
+                        break;
+                }
+            } else {
+                for (i = 0; i < 3; i++) {
+                    input->scores[0][i] = func_80107108_marios_puzzle_party(board, i + 1);
+                    input->scores[0][i] += func_80107108_marios_puzzle_party(board, i + 2);
+                }
+                for (i = 0, j = -1, best = 0; i < 3; i++) {
+                    if (best < input->scores[0][i]) {
+                        best = input->scores[0][i];
+                        j = i;
+                    }
+                }
+                if (j != -1) {
+                    input->targetPath = j + 2;
+                } else {
+                    input->targetPath = (u8)(rand8() % 3) + 2;
+                }
+            }
+            switch (GwPlayer[board].cpu_difficulty) {
+                case 0:
+                    i = rand8() & 1;
+                    input->delay = (u8)(rand8() % 30) + 30;
+                    break;
+                case 1:
+                    i = (u8)(rand8() % 3);
+                    input->delay = (u8)(rand8() % 20) + 20;
+                    break;
+                case 2:
+                    i = rand8() & 3;
+                    input->delay = (u8)(rand8() % 10) + 10;
+                    break;
+                default:
+                    i = (u8)(rand8() % 10);
+                    input->delay = (u8)(rand8() % 10) + 1;
+                    break;
+            }
+            if (i == 0) {
+                // occasionally miss the chosen column
+                input->targetPath += (u8)(rand8() % 3) - 1;
+            }
+        }
+        cursor->unk_28 = 0;
+        timer = 0;
+        if (cursor->blockOwners[0] != 7) {
+            while (TRUE) {
+                cursor->pathIdx = (cursor->x - D_80110080_marios_puzzle_party[board][0]) / 14.0f;
+                cursor->spaceIdx = (D_80110080_marios_puzzle_party[board][1] - cursor->y) / 7.0f;
+                if (GwPlayer[board].stat & PLAYER_IS_CPU) {
+                    input->direction = 0;
+                    input->buttons = 0;
+                    if (cursor->pathIdx > input->targetPath) {
+                        input->direction |= 0x200;
+                    }
+                    if (cursor->pathIdx < input->targetPath) {
+                        input->direction |= 0x100;
+                    }
+                    if (input->swap != 0) {
+                        input->swap = 0;
+                        input->buttons |= 0x8000;
+                    }
+                    row = func_80107000_marios_puzzle_party(board, input->targetPath);
+                    if (input->delay-- <= 0) {
+                        if ((cursor->pathIdx == input->targetPath && input->buttons == 0) ||
+                            cursor->spaceIdx < row) {
+                            input->buttons |= 0x2000;
+                        }
+                        switch (GwPlayer[board].cpu_difficulty) {
+                            case 2:
+                                if (input->delay < -60) {
+                                    input->buttons |= 0x2000;
+                                }
+                                break;
+                            case 3:
+                                if (input->delay < -30) {
+                                    input->buttons |= 0x2000;
+                                }
+                                break;
+                        }
+                    }
+                }
+                i = speed;
+                j = FALSE;
+                while (i >= 8) {
+                    j |= func_80106C98_marios_puzzle_party(board, cursor, 7);
+                    i -= 7;
+                }
+                j |= func_80106C98_marios_puzzle_party(board, cursor, i);
+                if (j) {
+                    spaceIdx = (D_80110080_marios_puzzle_party[board][1] - cursor->y) / 7.0f;
+                    cursor->y = D_80110080_marios_puzzle_party[board][1] - spaceIdx * 7;
+                    if (cursor->moveDir == 0) {
+                        func_8010FF78_marios_puzzle_party(sprite0, cursor->x, cursor->y);
+                        func_8010FF78_marios_puzzle_party(sprite1, cursor->x, cursor->y - 14.0f);
+                        if (timer++ >= 6 || speed != 2) {
+                            func_801088F4_marios_puzzle_party(board, cursor);
+                            break;
+                        }
+                    }
+                }
+                if (cursor->moveDir == 0 && speed != 7 && cursor->unk_28 == 0) {
+                    if ((func_80105E88_marios_puzzle_party(board) & 0x200) &&
+                        !func_80106ACC_marios_puzzle_party(board, cursor, -1)) {
+                        cursor->moveDir = -1;
+                    }
+                    if ((func_80105E88_marios_puzzle_party(board) & 0x100) &&
+                        !func_80106ACC_marios_puzzle_party(board, cursor, 1)) {
+                        cursor->moveDir = 1;
+                    }
+                }
+                if (cursor->moveDir > 0) {
+                    cursor->x += 5.0f;
+                    if (cursor->x > cursor->unk_10 + 14) {
+                        cursor->unk_10 += 14;
+                        cursor->x = cursor->unk_10;
+                        cursor->moveDir = 0;
+                    }
+                }
+                if (cursor->moveDir < 0) {
+                    cursor->x -= 5.0f;
+                    if (cursor->x < cursor->unk_10 - 14) {
+                        cursor->unk_10 -= 14;
+                        cursor->x = cursor->unk_10;
+                        cursor->moveDir = 0;
+                    }
+                }
+                if (cursor->unk_28 == 0) {
+                    speed = (func_80105E88_marios_puzzle_party(board) & 0x400) ? 7 : 2;
+                }
+                if (func_80105FCC_marios_puzzle_party(board, 0x2000)) {
+                    timer = 5;
+                    cursor->unk_28 = 1;
+                    speed = 14;
+                }
+                if (func_80105FCC_marios_puzzle_party(board, 0x8000) && cursor->unk_28 == 0) {
+                    i = cursor->blockOwners[0];
+                    cursor->blockOwners[0] = cursor->blockOwners[1];
+                    cursor->blockOwners[1] = i;
+                    i = sprite0;
+                    cursor->blockSprites[0] = sprite0 = sprite1;
+                    cursor->blockSprites[1] = sprite1 = i;
+                }
+                espPosSet(cursor->sprite, cursor->x + 7.0f, D_801161A8_marios_puzzle_party[board] + cursor->y);
+                func_8010FF78_marios_puzzle_party(sprite0, cursor->x, cursor->y);
+                func_8010FF78_marios_puzzle_party(sprite1, cursor->x, cursor->y - 14.0f);
+                HuPrcVSleep();
+            }
+        } else {
+            done = FALSE;
+            D_80116228_marios_puzzle_party[board] = sprite0;
+            D_801160F0_marios_puzzle_party[board] = 1;
+            while (TRUE) {
+                if (GwPlayer[board].stat & PLAYER_IS_CPU) {
+                    input->direction = 0;
+                    input->buttons = 0;
+                    cursor->pathIdx = (cursor->x - D_80110080_marios_puzzle_party[board][0]) / 14.0f;
+                    if (cursor->pathIdx > input->targetPath) {
+                        input->direction |= 0x200;
+                    }
+                    if (cursor->pathIdx < input->targetPath) {
+                        input->direction |= 0x100;
+                    }
+                    func_80107000_marios_puzzle_party(board, input->targetPath);
+                    if (input->delay-- <= 0) {
+                        if (cursor->pathIdx == input->targetPath) {
+                            input->buttons |= 0x2000;
+                        }
+                        switch (GwPlayer[board].cpu_difficulty) {
+                            case 2:
+                                if (input->delay < -60) {
+                                    input->buttons |= 0x2000;
+                                }
+                                break;
+                            case 3:
+                                if (input->delay < -30) {
+                                    input->buttons |= 0x2000;
+                                }
+                                break;
+                        }
+                    }
+                }
+                if (cursor->moveDir == 0 && speed != 7 && !done && cursor->unk_28 == 0) {
+                    if ((func_80105E88_marios_puzzle_party(board) & 0x200) &&
+                        !func_80106BB0_marios_puzzle_party(board, cursor, -1)) {
+                        cursor->moveDir = -1;
+                    }
+                    if ((func_80105E88_marios_puzzle_party(board) & 0x100) &&
+                        !func_80106BB0_marios_puzzle_party(board, cursor, 1)) {
+                        cursor->moveDir = 1;
+                    }
+                }
+                if (cursor->moveDir > 0) {
+                    cursor->x += 5.0f;
+                    if (cursor->x > cursor->unk_10 + 14) {
+                        cursor->unk_10 += 14;
+                        cursor->x = cursor->unk_10;
+                        cursor->moveDir = 0;
+                    }
+                }
+                if (cursor->moveDir < 0) {
+                    cursor->x -= 5.0f;
+                    if (cursor->x < cursor->unk_10 - 14) {
+                        cursor->unk_10 -= 14;
+                        cursor->x = cursor->unk_10;
+                        cursor->moveDir = 0;
+                    }
+                }
+                i = speed;
+                j = FALSE;
+                while (i >= 8) {
+                    j |= func_80106E40_marios_puzzle_party(board, cursor, 7);
+                    i -= 7;
+                }
+                j |= func_80106E40_marios_puzzle_party(board, cursor, i);
+                if (j) {
+                    spaceIdx = (D_80110080_marios_puzzle_party[board][1] - cursor->y) / 7.0f;
+                    cursor->y = D_80110080_marios_puzzle_party[board][1] - spaceIdx * 7;
+                    if (cursor->moveDir == 0) {
+                        if (timer++ >= 6 || speed != 2) {
+                            if (!func_8010961C_marios_puzzle_party(board, cursor->x, sprite0, cursor,
+                                                                   D_801160F0_marios_puzzle_party[board])) {
+                                D_80116228_marios_puzzle_party[board] = -1;
+                                HuSprGrpKill(sprite0);
+                                break;
+                            }
+                            done = TRUE;
+                            D_801160F0_marios_puzzle_party[board] = 0;
+                            speed = 7;
+                        }
+                    }
+                }
+                if (cursor->unk_28 == 0) {
+                    speed = (func_80105E88_marios_puzzle_party(board) & 0x400) ? 7 : 2;
+                }
+                if ((func_80105E88_marios_puzzle_party(board) & 0x2000) || done) {
+                    timer = 5;
+                    cursor->unk_28 = 1;
+                    speed = 14;
+                }
+                espPosSet(cursor->sprite, cursor->x + 7.0f,
+                          cursor->y + 7.0f + D_801161A8_marios_puzzle_party[board]);
+                HuSprPosSet(sprite0, 0, cursor->x, D_801161A8_marios_puzzle_party[board] + cursor->y);
+                HuPrcVSleep();
+            }
+        }
+        HuPrcVSleep();
+    }
+    D_80116168_marios_puzzle_party[board] = 1;
+    omDelPrcObj(NULL);
+    while (TRUE) {
+        HuPrcVSleep();
+    }
+}
 
 void func_8010CF4C_marios_puzzle_party(void) {
     s32 board = (s32)HuPrcCurrentGet()->user_data;

@@ -18,6 +18,8 @@ typedef struct MarioPuzzlePartySpriteBlock {
 } MarioPuzzlePartySpriteBlock;
 
 extern u8 D_800D2008_main;
+extern u8 D_800D6A90_main;
+extern Gfx D_80110230_marios_puzzle_party[];
 extern MarioPuzzlePartySpriteBlock *D_801168B0_marios_puzzle_party;
 extern s16 D_801168B4_marios_puzzle_party;     // number of sprite blocks in use
 extern s16 D_801168B6_marios_puzzle_party;     // model drawing the sprite display list
@@ -63,7 +65,53 @@ void func_8010F678_marios_puzzle_party(s32 spriteData, s16 count) {
     D_801168B4_marios_puzzle_party++;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1F_marios_puzzle_party/1FD760", func_8010F810_marios_puzzle_party);
+void func_8010F810_marios_puzzle_party(omObjData *object) {
+    Gfx *gfx;
+    MarioPuzzlePartySpriteBlock *block;
+    MarioPuzzlePartySprite *sprite;
+    HuSprite_Unk84_Struct *anim;
+    void *image;
+    s16 width;
+    s16 height;
+    s16 yOffset;
+    s16 i;
+    s16 j;
+
+    gfx = (Gfx *)(Hu3DData[D_801168B6_marios_puzzle_party].hmf->unk3C =
+                      (HmfModelData_Unk64_Unk3C_Struct *)D_801168B8_marios_puzzle_party[D_800D2008_main]);
+    if (D_801168B4_marios_puzzle_party == 0) {
+        gSPEndDisplayList(gfx++);
+        return;
+    }
+    block = D_801168B0_marios_puzzle_party;
+    gSPDisplayList(gfx++, osVirtualToPhysical(D_80110230_marios_puzzle_party));
+    gDPSetTextureLUT(gfx++, G_TT_NONE);
+    if (omPauseChk() + D_800D6A90_main == 0) {
+        for (i = 0; i < D_801168B4_marios_puzzle_party; i++, block++) {
+            sprite = block->sprites;
+            anim = HuSprGet(block->groupHandle, 0)->unk_84;
+            image = anim->unk00->unk00;
+            width = anim->unk14;
+            height = anim->unk16;
+            gDPLoadTextureTile(gfx++, image, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, 0, 0, 0, width, height, 0,
+                               G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
+                               G_TX_NOLOD, G_TX_NOLOD);
+            for (j = 0; j < block->count; j++, sprite++) {
+                if (sprite->flags & 1) {
+                    yOffset = 0;
+                    if (i < 28) {
+                        yOffset = D_801168C8_marios_puzzle_party[i / 7];
+                    }
+                    gSPScisTextureRectangle(gfx++, sprite->x * 4.0f,
+                                            (yOffset + sprite->y - height * sprite->height) * 4.0f,
+                                            (width * sprite->width + sprite->x) * 4.0f, (yOffset + sprite->y) * 4.0f,
+                                            G_TX_RENDERTILE, 0, 0, 1024.0f / sprite->width, 1024.0f / sprite->height);
+                }
+            }
+        }
+    }
+    gSPEndDisplayList(gfx++);
+}
 
 s16 func_8010FEDC_marios_puzzle_party(s16 group, f32 x, f32 y) {
     MarioPuzzlePartySpriteBlock *block = &D_801168B0_marios_puzzle_party[group];

@@ -149,6 +149,7 @@ extern s32 D_801160E8_marios_puzzle_party;
 extern s32 D_80116100_marios_puzzle_party;
 
 extern s32 D_80116158_marios_puzzle_party;
+extern s32 D_8011615C_marios_puzzle_party;
 extern s32 D_80116160_marios_puzzle_party;
 
 // per-player "still waiting for its turn to finish" flag
@@ -1900,4 +1901,182 @@ void func_8010EEB0_marios_puzzle_party(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1F_marios_puzzle_party/1F3B90", func_8010EF30_marios_puzzle_party);
+void func_8010EF30_marios_puzzle_party(void) {
+    s32 flag = FALSE; // Tie flag while picking the winner, then the "new record" flag
+    s32 timer = 0;
+    D_80111B50_vine_with_me_Struct *state;
+    s32 running;
+    Process *process;
+    s32 best;
+    s32 winner;
+    s32 count;
+    s32 pick;
+    s32 i;
+    s32 j;
+
+    D_801160E4_marios_puzzle_party = -1;
+    state = &D_80110140_marios_puzzle_party;
+    func_800E6E4C_minigame(0);
+    D_800EB932_minigame = 60;
+    for (i = 0; i < 4; i++) {
+        D_801161C8_marios_puzzle_party[i] = 240;
+    }
+    if (D_80116158_marios_puzzle_party == 2) {
+        i = 4;
+        process = omAddPrcObj(func_8010A0D8_marios_puzzle_party, 0x4001, 0x800, 0);
+        HuPrcChildLink(HuPrcCurrentGet(), process);
+        process->user_data = (void *)i;
+    } else {
+        for (i = 0; i < 4; i++) {
+            process = omAddPrcObj(func_8010A0D8_marios_puzzle_party, 0x4001, 0x800, 0);
+            HuPrcChildLink(HuPrcCurrentGet(), process);
+            process->user_data = (void *)i;
+        }
+    }
+    HuPrcChildWatch();
+    while (D_801161C8_marios_puzzle_party[0] > 0) {
+        for (i = 0; i < 4; i++) {
+            D_801161C8_marios_puzzle_party[i] -= 5;
+        }
+        HuPrcVSleep();
+    }
+    for (i = 0; i < 4; i++) {
+        D_801161C8_marios_puzzle_party[i] = 0;
+    }
+    running = TRUE;
+    while (running) {
+        switch (func_800E6F40_minigame()) {
+            case 0:
+                func_800E6F1C_minigame();
+                break;
+            case 1:
+                break;
+            case 2:
+                j = 0;
+                best = 0;
+                winner = 0;
+                flag = FALSE;
+                for (; j < D_80116100_marios_puzzle_party; j++) {
+                    if (D_80116128_marios_puzzle_party[j] >= D_8011615C_marios_puzzle_party) {
+                        if (best < D_80116128_marios_puzzle_party[j]) {
+                            best = D_80116128_marios_puzzle_party[j];
+                            winner = j;
+                            flag = FALSE;
+                        } else if (best == D_80116128_marios_puzzle_party[j]) {
+                            flag = TRUE;
+                        }
+                    }
+                }
+                if (best != 0) {
+                    if (!flag) {
+                        D_801160E4_marios_puzzle_party = winner;
+                        func_8010EEB0_marios_puzzle_party();
+                        func_800E6F1C_minigame();
+                    } else {
+                        for (j = 0, count = 0; j < 4; j++) {
+                            if (D_80116128_marios_puzzle_party[j] == best) {
+                                count++;
+                            }
+                        }
+                        pick = rand8() * (1.0f / 256.0f) * count;
+                        for (j = 0, count = 0; j < 4; j++) {
+                            if (D_80116128_marios_puzzle_party[j] == best) {
+                                if (pick == count) {
+                                    D_801160E4_marios_puzzle_party = j;
+                                    func_8010EEB0_marios_puzzle_party();
+                                    func_800E6F1C_minigame();
+                                    break;
+                                }
+                                count++;
+                            }
+                        }
+                    }
+                }
+                if (D_80116158_marios_puzzle_party != 2) {
+                    for (j = 0, count = 0; j < D_80116100_marios_puzzle_party; j++) {
+                        if (D_80116168_marios_puzzle_party[j] == 0) {
+                            winner = j;
+                            count++;
+                        }
+                    }
+                    if (count == 1) {
+                        D_801160E4_marios_puzzle_party = winner;
+                        func_8010EEB0_marios_puzzle_party();
+                        func_800E6F1C_minigame();
+                    }
+                }
+                for (j = 0; j < D_80116100_marios_puzzle_party; j++) {
+                    if (D_80116168_marios_puzzle_party[j] == 0) {
+                        break;
+                    }
+                }
+                if (j >= D_80116100_marios_puzzle_party) {
+                    func_8010EEB0_marios_puzzle_party();
+                    func_800E6F1C_minigame();
+                }
+                if (D_80116158_marios_puzzle_party == 2 && D_80116160_marios_puzzle_party == 0) {
+                    D_801160E4_marios_puzzle_party = 0;
+                    func_8010EEB0_marios_puzzle_party();
+                    func_800E6F1C_minigame();
+                }
+                break;
+            case 3:
+                if (func_800E6E9C_minigame() == 1) {
+                    if (D_80116158_marios_puzzle_party == 2) {
+                        if (D_80116128_marios_puzzle_party[0] > D_8011615C_marios_puzzle_party) {
+                            D_80116128_marios_puzzle_party[0] = D_8011615C_marios_puzzle_party;
+                        }
+                        if (D_801160E4_marios_puzzle_party != -1) {
+                            if (GWMgRecordGet(8) < D_80116128_marios_puzzle_party[0]) {
+                                flag = TRUE;
+                                state->unk04 = 1;
+                                GWMgRecordSet(8, (u16)D_80116128_marios_puzzle_party[0]);
+                                timer = 0;
+                                D_80110140_marios_puzzle_party.unk24 = 0x73;
+                            } else {
+                                flag = FALSE;
+                                timer = 0;
+                                D_80110140_marios_puzzle_party.unk24 = 0x64;
+                            }
+                        } else {
+                            timer = 0;
+                            D_80110140_marios_puzzle_party.unk24 = 0x6B;
+                        }
+                        state->unk06 = 9;
+                    } else if (D_801160E4_marios_puzzle_party != -1) {
+                        D_80110140_marios_puzzle_party.unk24 = 0x96;
+                        state->unk06 = 0;
+                        state->unk18[0] = D_801160E4_marios_puzzle_party;
+                        GwPlayer[D_801160E4_marios_puzzle_party].bonusCoin += 10;
+                    } else {
+                        D_80110140_marios_puzzle_party.unk24 = 0xA0;
+                        state->unk06 = 4;
+                    }
+                }
+                break;
+            case 4:
+                if (D_80116158_marios_puzzle_party == 2) {
+                    if (--timer == -1) {
+                        if (D_801160E4_marios_puzzle_party != -1) {
+                            if (flag) {
+                                HuAudSeqPlay(0x6A);
+                            } else {
+                                HuAudSeqPlay(0x65);
+                            }
+                        } else {
+                            HuAudSeqPlay(0x6B);
+                        }
+                    }
+                }
+                break;
+            case 5:
+                running = FALSE;
+                break;
+        }
+        HuPrcVSleep();
+    }
+    D_800D530C_main = 1;
+    while (TRUE) {
+        HuPrcVSleep();
+    }
+}

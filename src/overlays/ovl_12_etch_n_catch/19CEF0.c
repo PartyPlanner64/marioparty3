@@ -31,7 +31,8 @@ typedef struct EtchNCatchNode {
     /* 0x04 */ struct EtchNCatchNode *unk_04;
     /* 0x08 */ struct EtchNCatchNode *unk_08;
     /* 0x0C */ struct EtchNCatchNode *unk_0C;
-    /* 0x10 */ char unk_10[8];
+    /* 0x10 */ struct EtchNCatchNode *unk_10;
+    /* 0x14 */ char unk_14[4];
     /* 0x18 */ s16 unk_18; // Grid x
     /* 0x1A */ s16 unk_1A; // Grid y
     /* 0x1C */ u8 unk_1C;  // Player index
@@ -785,7 +786,96 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", D_8010C77
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", D_8010C788_etch_n_catch);
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", func_80109370_etch_n_catch);
+void func_80109370_etch_n_catch(EtchNCatchNode *node, u8 value) {
+    u8 *cells[8];
+    u8 *cell;
+    s32 x;
+    s32 y;
+    s32 i;
+
+    cell = func_801090E0_etch_n_catch(node->unk_18, node->unk_1A);
+    if (node->unk_0C == NULL && node->unk_10 == NULL) {
+        *cell = 0;
+    }
+    if (node->unk_10 != NULL && node->unk_0C != NULL) {
+        node->unk_10->unk_0C = node->unk_0C;
+        node->unk_0C->unk_10 = node->unk_10;
+    } else if (node->unk_10 != NULL && node->unk_0C == NULL) {
+        node->unk_10->unk_0C = NULL;
+    } else if (node->unk_10 == NULL && node->unk_0C != NULL) {
+        node->unk_0C->unk_10 = NULL;
+    }
+    for (i = 0; i < 8; i++) {
+        switch (i) {
+            case 0:
+                x = node->unk_18;
+                y = node->unk_1A - 1;
+                break;
+            case 1:
+                x = node->unk_18;
+                y = node->unk_1A + 1;
+                break;
+            case 2:
+                x = node->unk_18 - 1;
+                y = node->unk_1A;
+                break;
+            case 3:
+                x = node->unk_18 + 1;
+                y = node->unk_1A;
+                break;
+            case 4:
+                x = node->unk_18 - 1;
+                y = node->unk_1A - 1;
+                break;
+            case 5:
+                x = node->unk_18 + 1;
+                y = node->unk_1A + 1;
+                break;
+            case 6:
+                x = node->unk_18 - 1;
+                y = node->unk_1A + 1;
+                break;
+            default:
+                x = node->unk_18 + 1;
+                y = node->unk_1A - 1;
+                break;
+        }
+        cell = func_801090E0_etch_n_catch(x, y);
+        if (node->unk_10 != NULL || node->unk_0C != NULL) {
+            if (i >= 0) {
+                if (i < 4) {
+                    if (*cell != value) {
+                        *cell = value << 1;
+                    }
+                } else if (i < 8) {
+                    if (*cell != value && *cell != value * 2) {
+                        *cell = value << 2;
+                    }
+                }
+            }
+        }
+        cells[0] = func_801090E0_etch_n_catch(x, y + 1);
+        cells[1] = func_801090E0_etch_n_catch(x, y - 1);
+        cells[2] = func_801090E0_etch_n_catch(x - 1, y);
+        cells[3] = func_801090E0_etch_n_catch(x + 1, y);
+        cells[4] = func_801090E0_etch_n_catch(x - 1, y - 1);
+        cells[5] = func_801090E0_etch_n_catch(x + 1, y + 1);
+        cells[6] = func_801090E0_etch_n_catch(x - 1, y + 1);
+        cells[7] = func_801090E0_etch_n_catch(x + 1, y - 1);
+        if (*cells[0] != value && *cells[1] != value && *cells[2] != value && *cells[3] != value &&
+            *cells[4] != value && *cells[5] != value && *cells[6] != value && *cells[7] != value) {
+            *cell = 0;
+        } else if (*cells[0] == value || *cells[1] == value || *cells[2] == value || *cells[3] == value) {
+            if (*cell != value) {
+                *cell = value << 1;
+            }
+        } else if (*cells[4] == value || *cells[5] == value || *cells[6] == value || *cells[7] == value) {
+            if (*cell != value && *cell != value * 2) {
+                *cell = value << 2;
+            }
+        }
+    }
+}
 
 void func_801097B4_etch_n_catch(EtchNCatchNode *node) {
     if (node->unk_2C == 0) {

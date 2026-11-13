@@ -21,7 +21,17 @@ typedef struct {
 
 // Note/scoring state block hanging off omObjData::data for one "Beat Goes On" grid.
 typedef struct {
-    /* 0x00 */ u8 unk_00[0x16];
+    /* 0x00 */ f32 unk_00;
+    /* 0x04 */ s16 unk_04;
+    /* 0x06 */ s16 unk_06;
+    /* 0x08 */ s8 unk_08;
+    /* 0x09 */ s8 unk_09;
+    /* 0x0A */ s16 unk_0A;
+    /* 0x0C */ s8 unk_0C;
+    /* 0x0E */ s16 unk_0E;
+    /* 0x10 */ s16 unk_10;
+    /* 0x12 */ s16 unk_12;
+    /* 0x14 */ s16 unk_14;
     /* 0x16 */ s8 unk_16;
     /* 0x17 */ s8 unk_17;
     /* 0x18 */ s8 unk_18;
@@ -36,9 +46,9 @@ typedef struct {
 // Work data for each player object.
 typedef struct {
     /* 0x00 */ Vec pos;
-    /* 0x0C */ u8 unk_0C[4];
-    /* 0x10 */ s8 unk_10;
-    /* 0x14 */ s32 unk_14;
+    /* 0x0C */ u32 unk_0C;
+    /* 0x10 */ u8 unk_10;
+    /* 0x14 */ f32 unk_14;
     /* 0x18 */ HmfModelEntry *entry;
     /* 0x1C */ s8 unk_1C;
 } BeatGoesOnPlayerWork; // sizeof 0x20
@@ -61,6 +71,7 @@ typedef struct {
     /* 0x02 */ s16 unk_02;
 } BeatGoesOnButton; // sizeof 0x4
 
+extern u8 D_8010C280_the_beat_goes_on;
 extern u8 D_8010C284_the_beat_goes_on[][4];
 extern s32 D_8010C2E4_the_beat_goes_on;
 extern s32 D_8010C2E8_the_beat_goes_on;
@@ -89,8 +100,17 @@ extern s16 D_8010C4F4_the_beat_goes_on;
 extern s16 D_8010C4F6_the_beat_goes_on;
 extern s16 D_8010C4F8_the_beat_goes_on;
 extern s16 D_8010C4FA_the_beat_goes_on;
+extern s32 D_8010C4FC_the_beat_goes_on;
 extern u16 D_8010C500_the_beat_goes_on[2];
 extern f32 D_8010C504_the_beat_goes_on;
+extern u16 D_8010C508_the_beat_goes_on[2];
+extern u16 D_8010C50C_the_beat_goes_on;
+extern u16 D_8010C50E_the_beat_goes_on;
+extern u16 D_8010C510_the_beat_goes_on;
+extern u16 D_8010C518_the_beat_goes_on[15];
+extern u16 D_8010C538_the_beat_goes_on[16];
+extern u16 D_8010C558_the_beat_goes_on[16];
+extern u16 D_8010C578_the_beat_goes_on[16];
 extern u32 D_800A178C_main[][6];
 extern s32 D_800A1798_main[][6];
 extern u8 D_800D6A90_main;
@@ -110,6 +130,8 @@ void func_80108810_the_beat_goes_on(omObjData *obj);
 void func_8010B058_the_beat_goes_on(omObjData *obj);
 void func_8010B0E0_the_beat_goes_on(omObjData *obj);
 void func_8010B17C_the_beat_goes_on(omObjData *obj);
+Vec *func_8010C1A4_the_beat_goes_on(Vec *out, Vec *from, Vec *to);
+void func_8010B6DC_the_beat_goes_on(omObjData *obj);
 
 void func_801059A0_the_beat_goes_on(void) {
     s16 model;
@@ -480,7 +502,104 @@ void func_80106BE0_the_beat_goes_on(omObjData *obj) {
     Hu3DModelRotSet(obj->model[3], CRot.x, CRot.y, CRot.z);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_20_the_beat_goes_on/1FE4D0", func_80106E40_the_beat_goes_on);
+void func_80106E40_the_beat_goes_on(omObjData *obj) {
+    BeatGoesOnPlayerWork *work = obj->data;
+    Vec dir;
+    Vec from;
+    Vec to;
+    s32 i;
+
+    switch (D_8010C280_the_beat_goes_on) {
+        case 0:
+            Hu3DModelScaleSet(obj->model[1], obj->scale.x, obj->scale.y, obj->scale.z);
+            Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
+            func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            func_8001C258_main(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            if (D_800CCF58_main[Hu3DData[obj->model[3]].motId].unk02 - 2.0f <= Hu3DData[obj->model[3]].motTime) {
+                Hu3DMotionShiftSet(obj->model[3], Hu3DData[obj->motion[0]].motId, 0, 1, 2);
+            }
+            work->unk_0C = 0;
+            func_80106BE0_the_beat_goes_on(obj);
+            break;
+        case 1:
+            Hu3DModelScaleSet(obj->model[0], obj->scale.x, obj->scale.y, obj->scale.z);
+            Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
+            func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            if (D_800CCF58_main[Hu3DData[obj->model[3]].motId].unk02 - 2.0f <= Hu3DData[obj->model[3]].motTime) {
+                Hu3DMotionShiftSet(obj->model[3], Hu3DData[obj->motion[0]].motId, 0, 1, 2);
+            }
+            func_80106BE0_the_beat_goes_on(obj);
+            work->unk_14 = 0.0f;
+            break;
+        case 2:
+            if (omPauseChk() + D_800D6A90_main == 0) {
+                if (work->unk_0C < work->unk_10) {
+                    work->unk_0C++;
+                } else {
+                    if (work->unk_10 == work->unk_0C) {
+                        if (work->unk_1C == 4) {
+                            HuAudFXPlay(0x408);
+                        }
+                        Hu3DModelScaleSet(obj->model[2], obj->scale.x, obj->scale.y, obj->scale.z);
+                        Hu3DModelPosSet(obj->model[2], obj->trans.x, obj->trans.y, obj->trans.z);
+                        func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                        func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                        func_8001C258_main(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                        Hu3DMotionShiftSet(obj->model[3], Hu3DData[obj->motion[1]].motId, 0, 1, 2);
+                    } else if (work->unk_0C < work->unk_10 + 28) {
+                        if (work->pos.y > -90.0f) {
+                            from.x = work->pos.x;
+                            from.y = work->pos.y;
+                            from.z = work->pos.z;
+                            to.x = 75 - rand8() % 150;
+                            to.y = -100.0f;
+                            to.z = 5 - rand8() % 10 + 600.0f;
+                            func_8010C1A4_the_beat_goes_on(&dir, &from, &to);
+                            work->pos.x += dir.x * 25.0f;
+                            work->pos.y += dir.y * 25.0f;
+                            work->pos.z += dir.z * 25.0f;
+                            Hu3DModelPosSet(obj->model[3], work->pos.x, sindf(work->unk_14) * 300.0f + work->pos.y, work->pos.z);
+                            work->unk_14 += 8.0f;
+                            if (work->unk_14 >= 180.0f) {
+                                work->unk_14 = 180.0f;
+                            }
+                        } else {
+                            func_8001C258_main(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                            Hu3DModelPosSet(obj->model[3], work->pos.x, work->pos.y, work->pos.z);
+                        }
+                    } else if (work->unk_0C == 28) {
+                        work->unk_0C = 29;
+                        if (work->unk_1C == 4) {
+                            for (i = 0; i < 4; i++) {
+                                if (D_800EC598_minigame[i]->work[0] == 5) {
+                                    break;
+                                }
+                            }
+                            D_800EC598_minigame[i]->work[0] = 6;
+                        }
+                        break;
+                    } else if (work->unk_0C > work->unk_10 + 28) {
+                        work->pos.y -= 2.0f;
+                        Hu3DModelPosSet(obj->model[3], work->pos.x, work->pos.y, work->pos.z);
+                        if (work->pos.y < -90.0f && work->unk_1C == 0) {
+                            D_8010C280_the_beat_goes_on = 0;
+                            work->unk_0C = 0;
+                            func_80106BE0_the_beat_goes_on(obj);
+                            break;
+                        }
+                    } else {
+                        break;
+                    }
+                    work->unk_0C++;
+                }
+            }
+            break;
+    }
+}
 
 void func_80107504_the_beat_goes_on(omObjData *obj) {
     BeatGoesOnConductorWork *work;
@@ -858,7 +977,94 @@ void func_8010B0E0_the_beat_goes_on(omObjData *obj) {
                        D_8010C500_the_beat_goes_on[1], "m232_001c-cube7", 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_20_the_beat_goes_on/1FE4D0", func_8010B17C_the_beat_goes_on);
+void func_8010B17C_the_beat_goes_on(omObjData *obj) {
+    BeatGoesOnNotes *notes;
+    s16 sprAnim;
+    s16 anim;
+    s16 animA;
+    s16 animB;
+    s16 animZ;
+    s32 i;
+    s32 j;
+
+    sprAnim = func_8000B838_main(0x41000C);
+    HuSprGrpMemberSet(D_8010C4F4_the_beat_goes_on = HuSprGrpCreate(1, 0), 0, sprAnim, 0);
+    HuSprAttrReset(D_8010C4F4_the_beat_goes_on, 0, 0xFFFF);
+    HuSprAttrSet(D_8010C4F4_the_beat_goes_on, 0, 0x5000);
+    D_8010C4FC_the_beat_goes_on = 120;
+    HuSprPosSet(D_8010C4F4_the_beat_goes_on, 0, 160, D_8010C4FC_the_beat_goes_on);
+    obj->data = HuMemAllocTag(sizeof(BeatGoesOnNotes), TAG_OVERLAY);
+    memset(obj->data, 0, sizeof(BeatGoesOnNotes));
+    notes = obj->data;
+    notes->unk_00 = 1.33333f;
+    notes->unk_04 = 20;
+    notes->unk_06 = 30;
+    notes->unk_0E = 265;
+    notes->unk_10 = 50;
+    anim = func_8000B838_main(0x410011);
+    for (i = 0; i < 2; i++) {
+        D_8010C508_the_beat_goes_on[i] = espEntry(anim, 0, 1);
+        espPriSet(D_8010C508_the_beat_goes_on[i], 0x30);
+        espPosSet(D_8010C508_the_beat_goes_on[i], 160, i * 20 + 30);
+        espTPLvlSet(D_8010C508_the_beat_goes_on[i], 0x40);
+        espDispOff(D_8010C508_the_beat_goes_on[i]);
+        notes->unk_16 = 0;
+    }
+    D_8010C510_the_beat_goes_on = espEntry(func_8000B838_main(0x410015), 0, 1);
+    espPriSet(D_8010C50C_the_beat_goes_on, 0x10);
+    espPosSet(D_8010C510_the_beat_goes_on, notes->unk_12, notes->unk_14);
+    espDispOff(D_8010C510_the_beat_goes_on);
+    notes->unk_19 = 0;
+    D_8010C50C_the_beat_goes_on = espEntry(func_8000B838_main(0x410014), 0, 1);
+    espPriSet(D_8010C50C_the_beat_goes_on, 0x10);
+    espPosSet(D_8010C50C_the_beat_goes_on, notes->unk_04, notes->unk_06);
+    espDispOff(D_8010C50C_the_beat_goes_on);
+    notes->unk_17 = 0;
+    notes->unk_08 = 0;
+    notes->unk_09 = 0;
+    notes->unk_0C = 0;
+    notes->unk_0A = 0;
+    D_8010C50E_the_beat_goes_on = espEntry(func_8000B838_main(0x410012), 0, 1);
+    espPriSet(D_8010C50E_the_beat_goes_on, 0x20);
+    espPosSet(D_8010C50E_the_beat_goes_on, notes->unk_0E, notes->unk_10);
+    espDispOff(D_8010C50E_the_beat_goes_on);
+    notes->unk_18 = 0;
+    anim = func_8000B838_main(0x410013);
+    for (i = 0; i < 15; i++) {
+        D_8010C518_the_beat_goes_on[i] = espEntry(anim, 0, 1);
+        espPriSet(D_8010C518_the_beat_goes_on[i], 0x20);
+        if (i < 8) {
+            espPosSet(D_8010C518_the_beat_goes_on[i], i * 30 + 55, 30);
+        } else {
+            espPosSet(D_8010C518_the_beat_goes_on[i], (i - 8) * 30 + 55, 50);
+        }
+        espDispOff(D_8010C518_the_beat_goes_on[i]);
+        notes->noteFlags[i] = 0;
+    }
+    animA = func_8000B838_main(0x41000E);
+    animB = func_8000B838_main(0x41000F);
+    animZ = func_8000B838_main(0x410010);
+    for (j = 0; j < 2; j++) {
+        for (i = 0; i < 8; i++) {
+            D_8010C538_the_beat_goes_on[j * 8 + i] = espEntry(animA, 0, 1);
+            espPriSet(D_8010C538_the_beat_goes_on[j * 8 + i], 0x20);
+            espPosSet(D_8010C538_the_beat_goes_on[j * 8 + i], i * 30 + 55, j * 20 + 30);
+            espDispOff(D_8010C538_the_beat_goes_on[j * 8 + i]);
+            notes->btnA[j * 8 + i] = 0;
+            D_8010C558_the_beat_goes_on[j * 8 + i] = espEntry(animB, 0, 1);
+            espPriSet(D_8010C558_the_beat_goes_on[j * 8 + i], 0x20);
+            espPosSet(D_8010C558_the_beat_goes_on[j * 8 + i], i * 30 + 55, j * 20 + 30);
+            espDispOff(D_8010C558_the_beat_goes_on[j * 8 + i]);
+            notes->btnB[j * 8 + i] = 0;
+            D_8010C578_the_beat_goes_on[j * 8 + i] = espEntry(animZ, 0, 1);
+            espPriSet(D_8010C578_the_beat_goes_on[j * 8 + i], 0x20);
+            espPosSet(D_8010C578_the_beat_goes_on[j * 8 + i], i * 30 + 55, j * 20 + 30);
+            espDispOff(D_8010C578_the_beat_goes_on[j * 8 + i]);
+            notes->btnZ[j * 8 + i] = 0;
+        }
+    }
+    obj->func = func_8010B6DC_the_beat_goes_on;
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_20_the_beat_goes_on/1FE4D0", func_8010B6DC_the_beat_goes_on);
 

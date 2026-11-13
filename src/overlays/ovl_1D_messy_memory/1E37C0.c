@@ -65,6 +65,8 @@ extern s32 D_801111EC_messy_memory[][2];
 extern f32 D_80111228_messy_memory[7][4];
 extern f32 D_80111298_messy_memory[4][2];
 extern f32 D_801112B8_messy_memory[4][6]; // x/y pairs
+extern s16 D_80111338_messy_memory;
+extern s16 D_8011133A_messy_memory;
 extern s16 D_8011133C_messy_memory;
 extern MessyMemoryCamera D_80111340_messy_memory[2];
 extern const s16 D_801115F4_messy_memory[];
@@ -462,7 +464,211 @@ void func_80106800_messy_memory(Gfx **gfxPos, s32 arg1, s32 arg2) {
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", func_80106800_messy_memory);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", func_80106C60_messy_memory);
+void func_80106C60_messy_memory(omObjData *obj) {
+    u16 playerNo = obj->work[0];
+    MessyMemoryWork *work = &D_80111700_messy_memory[playerNo];
+    MessyMemoryWork *item;
+    MessyMemoryWork *other;
+    omObjData *itemObj;
+    u8 outside;
+    u8 blocked;
+    u8 i;
+    u8 j;
+    u8 k;
+
+    if (D_800D5558_main[GwPlayer[playerNo].pad] & Z_TRIG) {
+        switch (D_80115D80_messy_memory[playerNo]) {
+            case 0:
+                D_80115D80_messy_memory[playerNo] = 1;
+                break;
+            case 1:
+                D_80115D80_messy_memory[playerNo] = 2;
+                break;
+        }
+    }
+    if (D_80115D80_messy_memory[playerNo] != 0) {
+        return;
+    }
+    outside = TRUE;
+    blocked = FALSE;
+    D_80115D72_messy_memory[obj->work[0]] = 0xFF;
+    for (i = 0; i < 10; i++) {
+        if (D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] - 7.0f <= work->unk44.x &&
+            D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] + 7.0f >= work->unk44.x &&
+            D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] - 15.0f <= work->unk44.y &&
+            D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] + 6.0f >= work->unk44.y) {
+            outside = FALSE;
+        }
+    }
+    for (i = 10; i < 20; i++) {
+        if (D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] - 7.0f <= work->unk44.x &&
+            D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] + 7.0f >= work->unk44.x &&
+            D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] - 7.0f <= work->unk44.y &&
+            D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] + 6.0f >= work->unk44.y) {
+            outside = FALSE;
+        }
+    }
+    if (D_80111670_messy_memory[playerNo] == 1) {
+        for (k = 0; k < 10; k++) {
+            s32 base = playerNo * 10 + 8;
+
+            item = &D_80111700_messy_memory[k + base];
+            itemObj = item->obj;
+            if (work->unk44.x == item->unk44.x && work->unk44.y == item->unk44.y) {
+                for (i = 0; i < 10; i++) {
+                    other = &D_80111700_messy_memory[i + base];
+                    if (itemObj->work[1] * 10 + itemObj->work[0] == other->obj->work[1] * 10 + other->obj->work[0]) {
+                        continue;
+                    }
+                    for (j = 0; j < 20; j++) {
+                        if (D_80111044_messy_memory[j][0] + D_80110FE0_messy_memory[playerNo][0] <= other->unk44.x &&
+                            D_80111044_messy_memory[j][0] + D_80110FE0_messy_memory[playerNo][0] >= other->unk44.x) {
+                            if (j < 10) {
+                                if (other->unk44.x - 7.0f <= work->unk44.x && other->unk44.x + 7.0f >= work->unk44.x &&
+                                    other->unk44.y - 15.0f <= work->unk44.y && other->unk44.y + 6.0f >= work->unk44.y) {
+                                    blocked = TRUE;
+                                }
+                            } else {
+                                if (other->unk44.x - 7.0f <= work->unk44.x && other->unk44.x + 7.0f >= work->unk44.x &&
+                                    other->unk44.y - 7.0f <= work->unk44.y && other->unk44.y + 6.0f >= work->unk44.y) {
+                                    blocked = TRUE;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if (outside | blocked) {
+        D_80115D72_messy_memory[obj->work[0]] = 150;
+    }
+    if (D_800D5558_main[GwPlayer[playerNo].pad] & A_BUTTON) {
+        switch (D_80111670_messy_memory[playerNo]) {
+            case 0:
+                for (k = 0; k < 10; k++) {
+                    for (i = 0; i < 4; i++) {
+                        s32 base = i * 10 + 8;
+
+                        item = &D_80111700_messy_memory[k + base];
+                        for (j = 0; j < 20; j++) {
+                            if (D_80111044_messy_memory[j][0] + D_80110FE0_messy_memory[playerNo][0] <= item->unk44.x &&
+                                D_80111044_messy_memory[j][0] + D_80110FE0_messy_memory[playerNo][0] >= item->unk44.x) {
+                                if (j < 10) {
+                                    if (item->unk44.x - 7.0f <= work->unk44.x && item->unk44.x + 7.0f >= work->unk44.x &&
+                                        item->unk44.y - 15.0f <= work->unk44.y && item->unk44.y + 6.0f >= work->unk44.y) {
+                                        D_801116B0_messy_memory[i * 10 + k] = 1;
+                                        D_80111640_messy_memory[obj->work[0]] = 1;
+                                        func_8004AC98_main(D_80111338_messy_memory, obj->work[0]);
+                                        D_80111670_messy_memory[playerNo] = 1;
+                                        omVibrate(playerNo, 5, 0, 5);
+                                    }
+                                } else {
+                                    if (item->unk44.x - 7.0f <= work->unk44.x && item->unk44.x + 7.0f >= work->unk44.x &&
+                                        item->unk44.y - 7.0f <= work->unk44.y && item->unk44.y + 6.0f >= work->unk44.y) {
+                                        D_801116B0_messy_memory[i * 10 + k] = 1;
+                                        D_80111640_messy_memory[obj->work[0]] = 1;
+                                        func_8004AC98_main(D_80111338_messy_memory, obj->work[0]);
+                                        D_80111670_messy_memory[playerNo] = 1;
+                                        omVibrate(playerNo, 5, 0, 5);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
+            case 1:
+                blocked = FALSE;
+                for (k = 0; k < 10; k++) {
+                    s32 base = playerNo * 10 + 8;
+
+                    item = &D_80111700_messy_memory[k + base];
+                    itemObj = item->obj;
+                    if (work->unk44.x == item->unk44.x && work->unk44.y == item->unk44.y) {
+                        for (i = 0; i < 10; i++) {
+                            other = &D_80111700_messy_memory[i + base];
+                            if (itemObj->work[1] * 10 + itemObj->work[0] == other->obj->work[1] * 10 + other->obj->work[0]) {
+                                continue;
+                            }
+                            for (j = 0; j < 20; j++) {
+                                if (D_80111044_messy_memory[j][0] + D_80110FE0_messy_memory[playerNo][0] <= other->unk44.x &&
+                                    D_80111044_messy_memory[j][0] + D_80110FE0_messy_memory[playerNo][0] >= other->unk44.x) {
+                                    if (j < 10) {
+                                        if (other->unk44.x - 7.0f <= work->unk44.x && other->unk44.x + 7.0f >= work->unk44.x &&
+                                            other->unk44.y - 15.0f <= work->unk44.y && other->unk44.y + 6.0f >= work->unk44.y) {
+                                            blocked = TRUE;
+                                        }
+                                    } else {
+                                        if (other->unk44.x - 7.0f <= work->unk44.x && other->unk44.x + 7.0f >= work->unk44.x &&
+                                            other->unk44.y - 7.0f <= work->unk44.y && other->unk44.y + 6.0f >= work->unk44.y) {
+                                            blocked = TRUE;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        if (!blocked) {
+                            for (i = 0; i < 10; i++) {
+                                if (D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] - 7.0f <= work->unk44.x &&
+                                    D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] + 7.0f >= work->unk44.x &&
+                                    D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] - 15.0f <= work->unk44.y &&
+                                    D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] + 6.0f >= work->unk44.y) {
+                                    D_801116B0_messy_memory[obj->work[0] * 10 + k] = 0;
+                                    item->unk44.x = D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0];
+                                    item->unk44.y = D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1];
+                                    D_80111640_messy_memory[obj->work[0]] = 0;
+                                    func_8004AC98_main(D_8011133A_messy_memory, obj->work[0]);
+                                    D_80111670_messy_memory[playerNo] = 0;
+                                    omVibrate(playerNo, 2, 3, 10);
+                                }
+                            }
+                            for (i = 10; i < 20; i++) {
+                                if (D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] - 7.0f <= work->unk44.x &&
+                                    D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] + 7.0f >= work->unk44.x &&
+                                    D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] - 7.0f <= work->unk44.y &&
+                                    D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] + 6.0f >= work->unk44.y) {
+                                    D_801116B0_messy_memory[obj->work[0] * 10 + k] = 0;
+                                    item->unk44.x = D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0];
+                                    item->unk44.y = D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1];
+                                    D_80111640_messy_memory[obj->work[0]] = 0;
+                                    func_8004AC98_main(D_8011133A_messy_memory, obj->work[0]);
+                                    D_80111670_messy_memory[playerNo] = 0;
+                                    omVibrate(playerNo, 2, 3, 10);
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
+        }
+    }
+    if (D_800CBB6E_main[GwPlayer[playerNo].pad] < -29) {
+        work->unk44.x -= 2.0f;
+        if (work->unk44.x < D_80110FE0_messy_memory[playerNo][0] + 30.0f) {
+            work->unk44.x = D_80110FE0_messy_memory[playerNo][0] + 30.0f;
+        }
+    }
+    if (D_800CBB6E_main[GwPlayer[playerNo].pad] >= 30) {
+        work->unk44.x += 2.0f;
+        if (work->unk44.x > D_80110FE0_messy_memory[playerNo][0] + 140.0f) {
+            work->unk44.x = D_80110FE0_messy_memory[playerNo][0] + 140.0f;
+        }
+    }
+    if (D_800D20A1_main[GwPlayer[playerNo].pad] >= 30) {
+        work->unk44.y -= 2.0f;
+        if (work->unk44.y < D_80110FE0_messy_memory[playerNo][1] + 20.0f) {
+            work->unk44.y = D_80110FE0_messy_memory[playerNo][1] + 20.0f;
+        }
+    }
+    if (D_800D20A1_main[GwPlayer[playerNo].pad] < -29) {
+        work->unk44.y += 2.0f;
+        if (work->unk44.y > D_80110FE0_messy_memory[playerNo][1] + 108.0f) {
+            work->unk44.y = D_80110FE0_messy_memory[playerNo][1] + 108.0f;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", func_80107C88_messy_memory);
 

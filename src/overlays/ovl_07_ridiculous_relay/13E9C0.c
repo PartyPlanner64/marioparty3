@@ -12,6 +12,8 @@ typedef struct RidiculousRelayPlayer {
 } RidiculousRelayPlayer;  // sizeof 0xC
 
 extern D_80111B50_vine_with_me_Struct D_80110CB0_ridiculous_relay;
+extern Gfx D_80110CD8_ridiculous_relay[];
+extern u8 D_80110D68_ridiculous_relay;
 extern RidiculousRelayPlayer D_80111940_ridiculous_relay[4];
 extern RidiculousRelayPlayer *D_80111970_ridiculous_relay[4]; // players indexed by group
 extern f32 D_80111980_ridiculous_relay[7];
@@ -36,6 +38,7 @@ extern u16 D_80111A4E_ridiculous_relay;
 extern s16 D_80111A58_ridiculous_relay[31];
 extern s32 D_80111A30_ridiculous_relay[3];
 extern f32 D_80111A50_ridiculous_relay;
+extern Gfx *gMainGfxPos;
 
 const s16 D_80110E60_ridiculous_relay[] = {
     0x8260, 0x8261, 0x8262, 0x8263, 0x8264, 0x8265, 0x8266, 0x8267, 0x8268, 0x8269, 0x826A, 0x826B, 0x826C, 0x826D,
@@ -399,11 +402,203 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_801
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", func_80106D4C_ridiculous_relay);
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_80110FA8_ridiculous_relay);
+void func_80108DE8_ridiculous_relay(Gfx **gfxPos, s32 arg1, s32 arg2) {
+    HuSprite_Unk84_Unk00_Struct *frame;
+    HuSprite *sprite;
+    f32 scroll;
+    f32 x;
+    f32 y;
+    f32 x2;
+    f32 y2;
+    s32 offset;
+    s32 width;
+    s32 height;
+    s32 tileWidth;
+    s32 i;
+    s32 j;
+    s32 k;
+    s32 row;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_80110FC8_ridiculous_relay);
+    D_80110D68_ridiculous_relay = !D_80110D68_ridiculous_relay;
+    if (D_80110D68_ridiculous_relay != 0) {
+        return;
+    }
+    gSPDisplayList(gMainGfxPos++, D_80110CD8_ridiculous_relay);
+    gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
+    for (i = 1; i < 2; i++) {
+        gDPPipeSync(gMainGfxPos++);
+        if (i == 0) {
+            gDPSetRenderMode(gMainGfxPos++, G_RM_AA_TEX_EDGE, G_RM_AA_TEX_EDGE2);
+            gDPSetAlphaCompare(gMainGfxPos++, G_AC_THRESHOLD);
+            gDPSetBlendColor(gMainGfxPos++, 0, 0, 0, 128);
+        } else {
+            gDPSetRenderMode(gMainGfxPos++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
+            gDPSetAlphaCompare(gMainGfxPos++, G_AC_THRESHOLD);
+            gDPSetBlendColor(gMainGfxPos++, 0, 0, 0, 128);
+            gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, 160);
+            gDPSetCombineLERP(gMainGfxPos++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0,
+                              PRIMITIVE, 0);
+        }
+        sprite = HuSprGet(D_800CD1DC_main[D_80111A58_ridiculous_relay[(i == 0) ? 6 : 7]].unk04, 0);
+        frame = &sprite->unk_84->unk00[sprite->unk_90];
+        gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->unk0C);
+        for (j = 0; j < 2; j++) {
+            scroll = D_801119D0_ridiculous_relay * 16.0f + D_8011199C_ridiculous_relay[i] + 640.0f;
+            offset = -(scroll - (s32)(scroll / 320.0f) * 320) + j * 320;
+            for (k = 0; k < 8; k++) {
+                s32 xl;
+                s32 yl;
+                s32 xh;
+                s32 yh;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", func_80108DE8_ridiculous_relay);
+                x = k * 40;
+                x2 = x + 40.0f + ((k < 7) ? 1.0f : 0.0f);
+                y2 = i * 10 + 26;
+                xl = (x + offset) * 4.0f;
+                yl = (((D_801119DC_ridiculous_relay * -16.0f + 120.0f) * i + 120.0f) - y2) * 4.0f;
+                xh = (x2 + offset) * 4.0f - 1.0f;
+                yh = ((D_801119DC_ridiculous_relay * -16.0f + 240.0f) * i + 120.0f) * 4.0f;
+                if (xl >= 1280 || xh < 0) {
+                    continue;
+                }
+                y = 0.0f;
+                gDPLoadTextureTile_4b(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, 320, 0, (s32)x, (s32)y, (s32)x2, (s32)y2,
+                                      0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_MIRROR | G_TX_WRAP, G_TX_NOMASK, 5, G_TX_NOLOD,
+                                      G_TX_NOLOD);
+                gSPScisTextureRectangle(gMainGfxPos++, xl, yl, xh, yh, G_TX_RENDERTILE, x * 32.0f, y * 32.0f, 1024,
+                                        1024);
+            }
+        }
+    }
+    gDPSetCombineMode(gMainGfxPos++, G_CC_DECALRGBA, G_CC_DECALRGBA);
+    gDPSetRenderMode(gMainGfxPos++, G_RM_AA_TEX_EDGE, G_RM_AA_TEX_EDGE2);
+    gDPSetAlphaCompare(gMainGfxPos++, G_AC_THRESHOLD);
+    gDPSetBlendColor(gMainGfxPos++, 0, 0, 0, 224);
+    for (i = 0; i < 8; i++) {
+        f32 offsets[8] = { 40.0f, -40.0f, 40.0f, -40.0f, 40.0f, -40.0f, 0.0f, 0.0f };
+        f32 scales[8] = { 0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f };
+        s32 xl;
+        s32 yl;
+        s32 xh;
+        s32 yh;
+        s32 dsdx;
+        s32 dtdy;
+
+        if (D_80111980_ridiculous_relay[(i < 7) ? i : 6] == 0.0f) {
+            continue;
+        }
+        width = (i == 7) ? 20 : 50;
+        height = (i == 7) ? 22 : 50;
+        tileWidth = (i >= 2 && i < 6) ? 80 : width;
+        if (i == 7) {
+            scales[7] = sindf((D_801119C8_ridiculous_relay % 12) / 12.0 * 360.0) * 0.125 + 0.8125;
+        }
+        x = D_80111980_ridiculous_relay[(i < 7) ? i : 6] + offsets[i] - (tileWidth / 2) * scales[i];
+        x2 = D_80111980_ridiculous_relay[(i < 7) ? i : 6] + offsets[i] + (tileWidth / 2) * scales[i];
+        if (x > 320.0f || x2 < 0.0f) {
+            continue;
+        }
+        sprite = HuSprGet(D_800CD1DC_main[D_80111A58_ridiculous_relay[23 + i]].unk04, 0);
+        frame = &sprite->unk_84->unk00[sprite->unk_90];
+        if (!(i >= 2 && i < 6)) {
+            gDPLoadTextureTile_4b(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, width, height, 0, 0, width, height, 0,
+                                  G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                                  G_TX_NOLOD, G_TX_NOLOD);
+            gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->unk0C);
+            if (i >= 6) {
+                y = sindf((D_801119C8_ridiculous_relay % 30) / 30.0 * 360.0) * 4.0f + 159.0f;
+            } else {
+                y = 159.0f;
+            }
+            xl = x * 4.0f;
+            yl = (y - (height / 2) * scales[i] - ((i == 7) ? 3.0f : 0.0f)) * 4.0f;
+            xh = x2 * 4.0f;
+            yh = (y + (height / 2) * scales[i] - ((i == 7) ? 3.0f : 0.0f)) * 4.0f - 3.0f;
+            dsdx = width * 4.0 / (xh - xl) * 1024.0;
+            dtdy = height * 4.0 / (yh - yl) * 1024.0;
+            gSPScisTextureRectangle(gMainGfxPos++, xl, yl, xh, yh, G_TX_RENDERTILE, 0, 0, dsdx, dtdy);
+        } else {
+            for (row = 0; row < 3; row++) {
+                y = (row == 0) ? 0.0f : (row == 1) ? 17.0f
+                                                   : 34.0f;
+                y2 = (row == 0) ? 19.0f : (row == 1) ? 36.0f
+                                                     : 49.0f;
+                gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, G_IM_SIZ_8b, 80, 0, 0, (s32)y, 80, (s32)y2,
+                                   0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                                   G_TX_NOLOD, G_TX_NOLOD);
+                gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->unk0C);
+                xl = x * 4.0f;
+                yl = (y * scales[i] + 134.0f + (1.0f - scales[i]) * 25.0f) * 4.0f;
+                xh = x2 * 4.0f;
+                yh = (y2 * scales[i] + 134.0f + (1.0f - scales[i]) * 25.0f) * 4.0f;
+                dsdx = 80 * 4.0 / (xh - xl) * 1024.0;
+                dtdy = (y2 - y) * 4.0 / (yh - yl) * 1024.0;
+                yh -= 3;
+                gSPScisTextureRectangle(gMainGfxPos++, xl, yl, xh, yh, G_TX_RENDERTILE, 0, (s32)(y * 32.0f), dsdx,
+                                        dtdy);
+            }
+        }
+    }
+    sprite = HuSprGet(D_800CD1DC_main[D_80111A58_ridiculous_relay[8]].unk04, 0);
+    frame = &sprite->unk_84->unk00[sprite->unk_90];
+    gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->unk0C);
+    gDPSetRenderMode(gMainGfxPos++, G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2);
+    gDPSetAlphaCompare(gMainGfxPos++, G_AC_NONE);
+    gDPSetBlendColor(gMainGfxPos++, 0, 0, 0, 0);
+    for (k = 0; k < 6; k++) {
+        gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, G_IM_SIZ_8b, 320, 28, k * 59, 0, k * 59 + 60, 28, 0,
+                           G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+                           G_TX_NOLOD);
+        x = k * 59;
+        x2 = k * 59 + 60;
+        x2 = MIN(320.0f, x2);
+        gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->unk0C);
+        gSPScisTextureRectangle(gMainGfxPos++, (s32)(x * 4.0f), 106 * 4, (s32)(x2 * 4.0f), 134 * 4, G_TX_RENDERTILE,
+                                (s32)(x * 32.0f), 0, 1024, 1024);
+    }
+    gDPSetCombineMode(gMainGfxPos++, G_CC_DECALRGBA, G_CC_DECALRGBA);
+    gDPSetRenderMode(gMainGfxPos++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
+    gDPSetAlphaCompare(gMainGfxPos++, G_AC_THRESHOLD);
+    gDPSetBlendColor(gMainGfxPos++, 0, 0, 0, 224);
+    for (i = 0; i < 4; i++) {
+        sprite = HuSprGet(D_800CD1DC_main[D_80111A58_ridiculous_relay[9 + D_80111970_ridiculous_relay[i]->chr]].unk04, 0);
+        frame = &sprite->unk_84->unk00[sprite->unk_90];
+        if (D_80111970_ridiculous_relay[i]->chr == 7) {
+            gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->unk0C);
+        } else {
+            gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->unk0C);
+        }
+        if (D_80111970_ridiculous_relay[i]->chr == 7) {
+            gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, G_IM_SIZ_8b, 18, 18, 0, 0, 18, 18, 0,
+                               G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+                               G_TX_NOLOD);
+        } else {
+            gDPLoadTextureTile_4b(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, 18, 18, 0, 0, 18, 18, 0,
+                                  G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                                  G_TX_NOLOD, G_TX_NOLOD);
+        }
+        switch (i) {
+            case 0:
+                x = D_801119A8_ridiculous_relay[0] * 255.0f + 24.0f;
+                break;
+            case 1:
+                x = D_801119A8_ridiculous_relay[1] * 79.0f + 24.0f;
+                break;
+            case 2:
+                x = D_801119A8_ridiculous_relay[2] * 61.0f + 120.0f;
+                break;
+            case 3:
+                x = D_801119A8_ridiculous_relay[3] * 79.0f + 200.0f;
+                break;
+        }
+        y = (i > 0) ? 120.0f : 102.0f;
+        gSPScisTextureRectangle(gMainGfxPos++, (s32)x * 4, (s32)(y * 4.0f), ((s32)x + 18) * 4, (y + 18.0f) * 4.0f,
+                                G_TX_RENDERTILE, 0, 0, 1024, 1024);
+    }
+    gDPPipeSync(gMainGfxPos++);
+    gDPSetBlendColor(gMainGfxPos++, 255, 255, 255, 0);
+    gDPPipeSync(gMainGfxPos++);
+}
 
 void func_8010AE4C_ridiculous_relay(omObjData *object) {
     func_8010AF04_ridiculous_relay(object, 0);

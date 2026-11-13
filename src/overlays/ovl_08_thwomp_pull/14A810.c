@@ -753,17 +753,266 @@ void func_80109780_thwomp_pull(omObjData *object) {
     object->func = NULL;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F150_thwomp_pull);
+void func_801097AC_thwomp_pull(omObjData *object, s8 group) {
+    s32 dirs[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+    s32 files[8] = { 0xA2, 0xA2, 0xA2, 0xA2, 0xA2, 0xA2, 0xA2, 3 };
+    s32 shadowFiles[8] = { 0xA1, 0xA1, 0xA1, 0xA1, 0xA1, 0xA1, 0xA1, 1 };
+    s32 slots[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
+    s32 motionFiles[2][8] = {
+        { 0xA4, 0xA4, 0xA4, 0xA4, 0xA4, 0xA4, 0xA4, 0x1B },
+        { 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0x1C },
+    };
+    s32 attr;
+    u16 i;
+    u16 chr;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F170_thwomp_pull);
+    attr = 0x8B9;
+    for (i = 0; i < ((group != 0) ? 3 : 1); i++) {
+        chr = D_8010F4F8_thwomp_pull[group + i]->chr;
+        object->model[i + 1] = func_8000B108_main((dirs[chr] << 16) | files[chr], attr);
+        Hu3DModelCameraSet(object->model[i + 1], (group != 0) ? 2 : 1);
+        object->model[i + 39] = func_8000B108_main((dirs[chr] << 16) | shadowFiles[chr], 0x8AD);
+        Hu3DModelCameraSet(object->model[i + 39], (group != 0) ? 2 : 1);
+        D_8010F4F8_thwomp_pull[group + i]->unk_06 = func_80017790_main(
+            object->model[i + 39], 1, slots[chr], (dirs[chr] << 16) | motionFiles[0][chr]);
+        D_8010F4F8_thwomp_pull[group + i]->unk_08 =
+            func_80017AD8_main((dirs[chr] << 16) | motionFiles[1][chr]);
+        func_80033910_main(Hu3DData[object->model[i + 39]].hmf);
+        func_8001C514_main(object->model[i + 39]);
+        D_8010F4F8_thwomp_pull[group + i]->unk_0C = (rand8() & 1) ? 0x2F : 0x30;
+        func_8000B460_main(object, i, func_80017BB8_main(chr, 0));
+        func_8000B460_main(object, i + 3, func_80017BB8_main(chr, 0x84));
+        func_8000B460_main(object, i + 6, func_80017BB8_main(chr, 0x21));
+        func_8000B460_main(object, i + 12, func_80017BB8_main(chr, 4));
+        func_8000B460_main(object, i + 15, func_80017BB8_main(chr, 0x1F));
+        func_8000B460_main(object, i + 9, func_80017BB8_main(chr, D_8010F4F8_thwomp_pull[group + i]->unk_0C));
+        D_8010F4F8_thwomp_pull[group + i]->unk_0C |= dirs[chr] << 16;
+        D_8010F578_thwomp_pull[group + i] = (group != 0) ? (1 - i) * 125 : 0.0f;
+        D_8010F510_thwomp_pull[group + i] = 25.0f;
+        D_8010F540_thwomp_pull[group + i] = (group != 0) ? -((i % 2) * 20) : 0.0f;
+        Hu3DModelPosSet(object->model[i + 1], D_8010F578_thwomp_pull[group + i], D_8010F510_thwomp_pull[group + i],
+                        D_8010F540_thwomp_pull[group + i]);
+        Hu3DModelRotSet(object->model[i + 1], 0.0f, 180.0f, 0.0f);
+        func_8001C5B4_main(object->model[i + 1], object->motion[i + 3]);
+        func_8001C814_main(object->model[i + 1], 3, 1);
+        func_8001C5B4_main(object->model[i + 39], object->motion[i + 3]);
+        func_8001C2FC_main(object->model[1], 0x600, 0x400);
+    }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F190_thwomp_pull);
+    attr = 0x8B9;
+    object->model[7] = func_8000B108_main((group == 0) ? 0x290009 : 0x29000A, attr);
+    Hu3DModelCameraSet(object->model[7], (group != 0) ? 2 : 1);
+    Hu3DModelPosSet(object->model[7], 0.0f, 0.0f, (group != 0) ? -25.0f : 35.0f);
+    Hu3DModelRotSet(object->model[7], 0.0f, 180.0f, 0.0f);
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F1B0_thwomp_pull);
+    attr = 0xAB9;
+    for (i = 0; i < 3; i++) {
+        object->model[i + 8] = func_8000B108_main(0x290007, attr);
+        Hu3DModelCameraSet(object->model[i + 8], (group != 0) ? 2 : 1);
+        func_8001C814_main(object->model[i + 8], 3, 1);
+        func_8001FDE8_main(object->model[i + 8]);
+    }
+    if (group == 0) {
+        func_8000B460_main(object, 20, 0x290008);
+        func_8001C5B4_main(object->model[8], object->motion[20]);
+        D_8010F528_thwomp_pull = func_80016784_main(object->model[8], 1);
+        Hu3DModelKill(object->motion[20]);
+    }
+    for (i = 0; i < 3; i++) {
+        func_8001C5B4_main(object->model[i + 8], D_8010F568_thwomp_pull[0]->motion[20]);
+    }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F1F0_thwomp_pull);
+    attr = 0x8B9;
+    for (i = 0; i < 3; i++) {
+        if (group == 0 && i == 0) {
+            object->model[4] = func_8000B108_main(0x290012, attr);
+        } else {
+            object->model[i + 4] = Hu3DModelLink(D_8010F568_thwomp_pull[0]->model[4]);
+        }
+        Hu3DModelPosSet(object->model[i + 4], (1 - i) * (group * 60 + 200), 0.0f, -300.0f);
+        Hu3DModelRotSet(object->model[i + 4], 0.0f, 180.0f, 0.0f);
+        Hu3DModelScaleSet(object->model[i + 4], group * 0.5 + 1.0, group * 0.5 + 1.0, group * 0.5 + 1.0);
+        Hu3DModelCameraSet(object->model[i + 4], (group != 0) ? 2 : 1);
+        func_8001C2FC_main(object->model[i + 4], 0x600, 0);
+    }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", func_801097AC_thwomp_pull);
+    attr = 0xABD;
+    for (i = 0; i < 3; i++) {
+        s32 lightFiles[2][3] = { { 0x13, 0x14, 0x15 }, { 0x16, 0x17, 0x18 } };
+
+        object->model[i + 46] = func_8000B108_main(lightFiles[group][i] | 0x290000, attr);
+        Hu3DModelPosSet(object->model[i + 46], (1 - i) * (group * 60 + 200), 0.0f, -300.0f);
+        Hu3DModelRotSet(object->model[i + 46], -16.0f, 0.0f, 0.0f);
+        Hu3DModelScaleSet(object->model[i + 46], group * 0.5 + 1.0, group * 0.5 + 1.0, group * 0.5 + 1.0);
+        Hu3DModelCameraSet(object->model[i + 46], (group != 0) ? 2 : 1);
+        func_8001C2FC_main(object->model[i + 46], 0x600, 0);
+        func_8001C2FC_main(object->model[i + 46], 0x70000000, 0x70000000);
+        Hu3DLLightCreate(object->model[i + 46], 1);
+        Hu3DLLightColorSet(object->model[i + 46], 255, 255, 255);
+        Hu3DLLightDirSet(object->model[i + 46], 0.0f, 0.0f, 127.0f);
+    }
+
+    attr = 0x8BD;
+    for (i = 0; i < 3; i++) {
+        if (group == 0) {
+            object->model[i + 30] =
+                func_8000B108_main((i == 0) ? 0x29000B : (i == 1) ? 0x29000C
+                                                                  : 0x29000D,
+                                   attr);
+        } else {
+            object->model[i + 30] = Hu3DModelLink(D_8010F568_thwomp_pull[0]->model[i + 30]);
+        }
+        Hu3DModelPosSet(object->model[i + 30],
+                        ((1 - i) * 175 + 50) - (i == 2) * ((group == 0) ? 10 : 60), 300.0f, -300.0f);
+        Hu3DModelScaleSet(object->model[i + 30], 1.6820346f, 1.6820346f, 1.6820346f);
+        func_8001C2FC_main(object->model[i + 30], 0x70000000, 0x70000000);
+        Hu3DModelCameraSet(object->model[i + 30], (group != 0) ? 2 : 1);
+    }
+
+    if (group >= 0) {
+        object->model[33] = func_8000B108_main(0x29001C, 0x4DD);
+    } else {
+        object->model[33] = Hu3DModelLink(D_8010F568_thwomp_pull[0]->model[33]);
+    }
+    Hu3DModelCameraSet(object->model[33], (group != 0) ? 2 : 1);
+    Hu3DModelScaleSet(object->model[33], 4.0f, 4.0f, 4.0f);
+    Hu3DModelRotSet(object->model[33], 0.0f, 45.0f, 0.0f);
+    func_8001FDE8_main(object->model[33]);
+    if (group == 0) {
+        func_8000B460_main(object, 18, 0x29001D);
+        func_8001C5B4_main(object->model[33], object->motion[18]);
+        D_8010F5AC_thwomp_pull[0] = func_80016784_main(object->model[33], 2);
+        Hu3DModelKill(object->motion[18]);
+        func_8000B460_main(object, 19, 0x29001E);
+        func_8001C5B4_main(object->model[33], object->motion[19]);
+        D_8010F5AC_thwomp_pull[1] = func_80016784_main(object->model[33], 2);
+        Hu3DModelKill(object->motion[19]);
+    }
+    func_8001C5B4_main(object->model[33], D_8010F568_thwomp_pull[0]->motion[18]);
+    func_80016FB4_main(object->model[33], D_8010F5AC_thwomp_pull[0], 0);
+
+    object->model[34] = func_8000B108_main(0x29001A, 0x8DD);
+    Hu3DModelCameraSet(object->model[34], (group != 0) ? 2 : 1);
+    Hu3DModelScaleSet(object->model[34], 1.0f, 1.0f, 1.0f);
+    func_8001C814_main(object->model[34], 3, 1);
+    func_8001C2FC_main(object->model[34], 0x600, 0x400);
+
+    object->model[36] = func_8000B108_main(0x29001B, 0x8CD);
+    Hu3DModelCameraSet(object->model[36], (group != 0) ? 2 : 1);
+    Hu3DModelScaleSet(object->model[36], 2.5f, 2.5f, 2.5f);
+    func_8001C2FC_main(object->model[36], 0x600, 0x400);
+
+    for (i = 0; i < 1; i++) {
+        object->model[35] = func_8000B108_main(0x29001A, 0x8CD);
+        func_8001FA68_main(object->model[35]);
+        func_8001F9E4_main(object->model[35], 255);
+        Hu3DModelCameraSet(object->model[i + 35], (group != 0) ? 2 : 1);
+        Hu3DModelScaleSet(object->model[i + 35], 0.25f, 0.25f, 0.25f);
+        func_8001C814_main(object->model[i + 35], 3, 1);
+        func_8001C2FC_main(object->model[i + 35], 0x600, 0x400);
+    }
+
+    object->model[38] = func_8000B108_main(9, 0x4CD);
+    Hu3DModelScaleSet(object->model[38], 3.5f, 3.5f, 3.0f);
+    Hu3DModelCameraSet(object->model[38], (group != 0) ? 2 : 1);
+    func_8001FA68_main(object->model[38]);
+    func_8001F9E4_main(object->model[38], 128);
+
+    for (i = 0; i < group * 2 + 1; i++) {
+        if (i == 0) {
+            object->model[42] = func_8000B108_main(9, 0x4C9);
+            func_8001FA68_main(object->model[42]);
+            func_8001F9E4_main(object->model[42], 128);
+            Hu3DModelLayerSet(object->model[42], 0x800);
+        } else {
+            object->model[i + 42] = Hu3DModelLink(object->model[42]);
+        }
+        Hu3DModelPosSet(object->model[i + 42], D_8010F578_thwomp_pull[group + i], 28.0f,
+                        D_8010F540_thwomp_pull[group + i]);
+        Hu3DModelCameraSet(object->model[i + 42], (group != 0) ? 2 : 1);
+    }
+
+    if (group == 0) {
+        object->model[22] = func_8000B108_main(0x290003, 0x4BD);
+    } else {
+        object->model[22] = Hu3DModelLink(D_8010F568_thwomp_pull[0]->model[22]);
+    }
+    Hu3DModelCameraSet(object->model[22], (group != 0) ? 2 : 1);
+    Hu3DLLightCreate(object->model[22], 1);
+    Hu3DLLightColorSet(object->model[22], 255, 255, 255);
+    Hu3DLLightDirSet(object->model[22], 0.0f, 0.0f, 127.0f);
+
+    for (i = 0; i < 4; i++) {
+        if (group == 0 && i == 0) {
+            object->model[18] = func_8000B108_main(0x290004, 0x4BD);
+        } else {
+            object->model[i + 18] = Hu3DModelLink(D_8010F568_thwomp_pull[0]->model[18]);
+        }
+        Hu3DModelCameraSet(object->model[i + 18], (group != 0) ? 2 : 1);
+        func_8001C2FC_main(object->model[i + 18], 0x600, 0);
+        Hu3DLLightCreate(object->model[i + 18], 1);
+        Hu3DLLightColorSet(object->model[i + 18], 255, 255, 255);
+        Hu3DLLightDirSet(object->model[i + 18], 0.0f, 0.0f, 127.0f);
+    }
+
+    if (group == 0) {
+        object->model[23] = func_8000B108_main(0x290005, 0x4DD);
+    } else {
+        object->model[23] = Hu3DModelLink(D_8010F568_thwomp_pull[0]->model[23]);
+    }
+    Hu3DModelCameraSet(object->model[23], (group != 0) ? 2 : 1);
+    Hu3DLLightCreate(object->model[23], 1);
+    Hu3DLLightColorSet(object->model[23], 255, 255, 255);
+    Hu3DLLightDirSet(object->model[23], 0.0f, 0.0f, 127.0f);
+
+    attr = 0x41D;
+    for (i = 0; i < 2; i++) {
+        object->model[i + 24] = func_8000B108_main((group == 0) ? 0x29000E : 0x29000F, attr);
+        Hu3DModelCameraSet(object->model[i + 24], (group != 0) ? 2 : 1);
+    }
+    func_8001C258_main(object->model[24], 4, 0);
+    Hu3DModelPosSet(object->model[24], 0.0f, 0.0f, -315.0f);
+
+    object->model[11] = func_8000B108_main((group == 0) ? 0x290010 : 0x290011, 0x4D9);
+    Hu3DModelPosSet(object->model[11], 0.0f, 10.0f, 0.0f);
+    Hu3DModelScaleSet(object->model[11], 1.0f, 1.0f, 12.0f);
+    func_8001C2FC_main(object->model[11], 0x600, 0);
+    Hu3DModelCameraSet(object->model[11], (group != 0) ? 2 : 1);
+
+    attr = 0x6CD;
+    for (i = 0; i < 3; i++) {
+        object->model[i + 49] = func_8000B108_main(0x290019, attr);
+        Hu3DModelCameraSet(object->model[i + 49], (group != 0) ? 2 : 1);
+        Hu3DModelScaleSet(object->model[i + 49], group * 0.5 + 1.75, group * 0.5 + 1.75, group * 0.5 + 1.75);
+    }
+
+    if (group == 0) {
+        object->model[16] = func_8000B108_main(0x290000, 0x45D);
+    } else {
+        object->model[16] = Hu3DModelLink(D_8010F568_thwomp_pull[0]->model[16]);
+    }
+    Hu3DModelCameraSet(object->model[16], (group != 0) ? 2 : 1);
+    func_8001C2FC_main(object->model[16], 0x600, 0);
+
+    for (i = 0; i < 4; i++) {
+        if (group == 0 && i == 0) {
+            object->model[12] = func_8000B108_main(0x290001, 0x41D);
+        } else {
+            object->model[i + 12] = Hu3DModelLink(D_8010F568_thwomp_pull[0]->model[12]);
+        }
+        Hu3DModelCameraSet(object->model[i + 12], (group != 0) ? 2 : 1);
+        func_8001C2FC_main(object->model[i + 12], 0x600, 0);
+        func_8001C2FC_main(object->model[i + 12], 0x600, 0);
+    }
+
+    if (group == 0) {
+        object->model[17] = func_8000B108_main(0x290002, 0x45D);
+    } else {
+        object->model[17] = Hu3DModelLink(D_8010F568_thwomp_pull[0]->model[17]);
+    }
+    Hu3DModelCameraSet(object->model[17], (group != 0) ? 2 : 1);
+    func_8001C2FC_main(object->model[17], 0x600, 0);
+}
 
 void func_8010AF18_thwomp_pull(s16 arg0, s16 arg1) {
     HmfModel *model = &Hu3DData[arg0];

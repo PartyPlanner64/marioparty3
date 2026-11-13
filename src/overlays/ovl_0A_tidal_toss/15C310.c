@@ -1,4 +1,8 @@
+// The original source called fmod without a prototype in scope, so its result is read as an int.
+// Hide the math.h prototype so that fmod can be declared here the way the compiler saw it.
+#define fmod fmod_math_h
 #include "common.h"
+#undef fmod
 #include "overlays/minigame.h"
 #include "game/mallocblock.h"
 #include "gcc/memory.h"
@@ -46,6 +50,8 @@ typedef struct {
     u16 unk38;
     u8 unk3A[0xA];
     f32 unk44;
+    f32 unk48;
+    f32 unk4C;
 } TidalTossWork;
 
 typedef struct {
@@ -93,6 +99,7 @@ extern s32 D_8010AA94_tidal_toss;
 extern s16 D_8010ADE0_tidal_toss;
 extern void *D_8010AF3C_tidal_toss;
 
+s32 fmod(f64 x, f64 y);
 void func_80108638_tidal_toss(omObjData *);
 void func_80105B04_tidal_toss(omObjData *object);
 void func_8010600C_tidal_toss(void);
@@ -109,6 +116,9 @@ void func_80105C80_tidal_toss(HuMtx4F, HuMtx4F);
 s16 func_8010A90C_tidal_toss(s32);
 s16 func_8010A954_tidal_toss(s16, s16);
 void func_8010961C_tidal_toss(omObjData *);
+u16 func_8010A490_tidal_toss(omObjData *arg0, f32 arg1);
+f32 func_8010A850_tidal_toss(Vec *arg0, Vec *arg1);
+f32 func_8010A8A4_tidal_toss(f32 arg0, f32 arg1);
 void func_80109180_tidal_toss(omObjData *);
 
 void func_801059A0_tidal_toss(void) {
@@ -879,7 +889,224 @@ void func_80109584_tidal_toss(omObjData *arg0, f32 arg1, f32 arg2, f32 arg3) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0A_tidal_toss/15C310", func_8010961C_tidal_toss);
+void func_8010961C_tidal_toss(omObjData *object) {
+    func_800E1BA8_minigame_ObjData *data;
+    TidalTossWork *work;
+    u8 player;
+    u32 status;
+    f64 dist;
+    TidalTossStruct *entry;
+    s32 i;
+    f32 angle;
+    f32 rot;
+    f32 diff;
+    f64 radius;
+    omObjData *other;
+    func_800E1BA8_minigame_ObjData *otherData;
+
+    data = object->data;
+    work = data->unk158;
+    player = data->unk57;
+    status = func_800E4A90_minigame(object);
+    work->unk0C = object->trans.x;
+    work->unk10 = object->trans.y;
+    work->unk14 = object->trans.z;
+    dist = sqrtf(object->trans.x * object->trans.x + object->trans.z * object->trans.z);
+
+    switch (D_8010AF40_tidal_toss) {
+        case 0:
+            work->unk2F = 1;
+            work->unk2A = 0;
+            work->unk44 = 0.0f;
+            work->unk4C = (s32)((f64)(f32)func_8010A7F8_tidal_toss() * 1.52587890625e-05 * 10.0);
+            break;
+        case 1:
+            break;
+        case 2:
+            if (work->unk30 != 0) {
+                D_800D20A1_main[player] = 0;
+                D_800CBB6E_main[player] = 0;
+                D_800D5558_main[player] = 0;
+                D_800CDA7C_main[player] = 0;
+                func_8010A490_tidal_toss(object, dist);
+            }
+            if (data->unkBE == 0) {
+                entry = D_8010AF48_tidal_toss;
+                for (i = 0; i < 8; i++, entry++) {
+                    if (entry->unk10 == 0) {
+                        continue;
+                    }
+                    diff = entry->unk00 - dist;
+                    if (!(__builtin_fabsf(diff) <= entry->unk08 * 0.75)) {
+                        continue;
+                    }
+                    if (!(object->trans.y < entry->unk04)) {
+                        continue;
+                    }
+                    angle = func_8010A8A4_tidal_toss(object->trans.x, object->trans.z);
+                    if (angle > 180.0) {
+                        angle -= 360.0f;
+                    }
+                    rot = data->unk3C;
+                    if (rot > 180.0) {
+                        rot -= 360.0f;
+                    }
+                    if (fabs(rot - angle) < 90.0) {
+                        func_800E5690_minigame(object, 10);
+                        data->unk3C = angle;
+                        data->unk40 = entry->unk0C;
+                        status |= 0x800;
+                    } else {
+                        func_800E5690_minigame(object, 9);
+                        data->unk3C = angle + 180.0;
+                        data->unk40 = -entry->unk0C;
+                        status |= 0x400;
+                    }
+                    data->unk38 = -0.735f;
+                    data->unkBE = 94;
+                    func_800E19FC_minigame(data, 8);
+                    switch (entry->unk10) {
+                        case 1:
+                            omVibrate(data->unk59, 2, 3, 10);
+                            break;
+                        case 2:
+                            omVibrate(data->unk59, 10, 0, 10);
+                            break;
+                        case 3:
+                            omVibrate(data->unk59, 2, 2, 20);
+                            break;
+                    }
+                }
+            }
+            if (object->trans.y <= 0.0) {
+                object->trans.x += object->trans.x * 0.5 / dist;
+                object->trans.z += object->trans.z * 0.5 / dist;
+            }
+            break;
+        case 3:
+            if (data->unkBE != 0) {
+                data->unkBE = 1;
+            }
+            // fallthrough
+        case 4:
+            D_800CBB6E_main[player] = 0;
+            D_800D20A1_main[player] = -48;
+            D_800D5558_main[player] = 0;
+            D_800CDA7C_main[player] = 0;
+            break;
+        case 5:
+            D_800CBB6E_main[player] = 0;
+            D_800D20A1_main[player] = -48;
+            D_800D5558_main[player] = 0;
+            D_800CDA7C_main[player] = 0;
+            angle = fmod(data->unk3C, 360.0);
+            if ((8.0 < angle && angle < 352.0) || (angle < -8.0 && -352.0 < angle)) {
+                break;
+            }
+            if (work->unk2F == 1) {
+                if (work->unk2A == 0) {
+                    func_800E5798_minigame(object, 13);
+                    func_80045ED0_main(work->unk24);
+                }
+                GwPlayer[data->unk59].bonusCoin += 10;
+                work->unk2F++;
+            } else if (work->unk2F == 0) {
+                work->unk2F--;
+            }
+            break;
+        case 6:
+            if (data != NULL) {
+                HuMemFree(data->unk158);
+                object->data = NULL;
+                object->func = NULL;
+            }
+            return;
+        case 7:
+            return;
+    }
+
+    D_800CBB6E_main[player] = (f32)D_800CBB6E_main[player] * 0.325;
+    D_800D20A1_main[player] = (f32)D_800D20A1_main[player] * 0.325;
+    func_800DDD94_minigame(object);
+    if (dist <= 190.0) {
+        object->trans.x = object->trans.x / dist * 190.0;
+        object->trans.z = object->trans.z / dist * 190.0;
+    }
+    if ((status & 0xC00) && work->unk2A == 0) {
+        if (690.0 - data->unk48 <= dist && D_8010AF40_tidal_toss == 2) {
+            if (status & 0x400) {
+                data->unk40 = -24.0f;
+            } else {
+                data->unk40 = 24.0f;
+            }
+            func_800E149C_minigame(object, 0, 1);
+            func_800E149C_minigame(object, 2, 2);
+            data->unk38 = -1.0289999f;
+            work->unk2A = 1;
+            work->unk2F = 0;
+            func_8004AC5C_main(0x344, data->unk59);
+            func_8004AC5C_main(work->unk2C + 0x287, data->unk59);
+        }
+    } else {
+        if (data->unk40 > 4.0) {
+            data->unk40 = 4.0f;
+        }
+        if (status & 0x20) {
+            if (!(work->unk28 & 0x20)) {
+                work->unk18 = data->unk40;
+            }
+            data->unk40 = work->unk18;
+        } else if (work->unk28 & 0x20) {
+            if (dist <= 590.0) {
+                func_80109584_tidal_toss(object, object->trans.x, 60.0f, object->trans.z + 50.0);
+            }
+        }
+    }
+    if (work->unk2A != 0) {
+        if (data->unk40 > 0.0f) {
+            data->unk40 = 20.0f;
+        } else {
+            data->unk40 = -20.0f;
+        }
+    } else if (690.0 - data->unk48 <= dist) {
+        object->trans.x = (690.0 - data->unk48) * (object->trans.x / dist);
+        object->trans.z = (690.0 - data->unk48) * (object->trans.z / dist);
+    }
+
+    for (i = 0; i < 4; i++) {
+        other = D_800EC598_minigame[i];
+        if (object == other) {
+            continue;
+        }
+        otherData = other->data;
+        if (((TidalTossWork *)otherData->unk158)->unk2D == 0) {
+            continue;
+        }
+        if (fabs(object->trans.y - other->trans.y) > 30.0) {
+            continue;
+        }
+        dist = func_8010A850_tidal_toss(&object->trans, &other->trans);
+        radius = data->unk48 + otherData->unk48;
+        if (radius < dist) {
+            continue;
+        }
+        if (data->unk40 <= otherData->unk40) {
+            angle = func_8010A8A4_tidal_toss(other->trans.x - object->trans.x, other->trans.z - object->trans.z);
+            other->trans.x = object->trans.x + radius * sindf(angle);
+            other->trans.z = object->trans.z + radius * cosdf(angle);
+        } else {
+            angle = func_8010A8A4_tidal_toss(object->trans.x - other->trans.x, object->trans.z - other->trans.z);
+            object->trans.x = other->trans.x + radius * sindf(angle);
+            object->trans.z = other->trans.z + radius * cosdf(angle);
+        }
+    }
+    work->unk28 = status;
+    for (i = 9; i < 12; i++) {
+        if (Hu3DData[object->model[i]].motTime >= D_800CCF58_main[Hu3DData[object->model[i]].motId].unk02) {
+            func_8001C258_main(object->model[i], 4, 4);
+        }
+    }
+}
 
 u16 func_8010A11C_tidal_toss(omObjData *object) {
     TidalTossWork *work;

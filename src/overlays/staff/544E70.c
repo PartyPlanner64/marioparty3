@@ -31,6 +31,8 @@ typedef struct StaffCreditSlot { // sizeof 0x20
     /* 0x1E */ s16 type;
 } StaffCreditSlot;
 
+extern s32 D_80110AA0_staff[27];
+extern s32 D_80110B0C_staff[28];
 extern s32 D_80110B80_staff[];
 extern StaffCreditEntry *D_80110F04_staff[];
 extern u8 D_801111E0_staff[4][4];
@@ -1143,7 +1145,70 @@ void func_8010B4B4_staff(s16 arg0, s16 arg1, s16 arg2) {
     sprite->pos.y = value;
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/544E70", func_8010B514_staff);
+void func_8010B514_staff(s16 arg0, s16 arg1) {
+    UnkStaff_6 *recs;
+    UnkStaff_6 *rec;
+    s32 *files;
+    s16 *animTbl;
+    s16 *anims;
+    s16 memberCount;
+    s8 animCount;
+    s32 i;
+    s32 j;
+    s16 grpId;
+
+    switch (arg0) {
+        case 0:
+        default:
+            animTbl = D_80111490_staff;
+            memberCount = 24;
+            files = D_80110AA0_staff;
+            animCount = ARRAY_COUNT(D_80111490_staff);
+            break;
+        case 1:
+            animTbl = D_801114D0_staff;
+            memberCount = 28;
+            files = D_80110B0C_staff;
+            animCount = ARRAY_COUNT(D_801114D0_staff);
+            break;
+    }
+
+    for (i = 0, anims = animTbl; i < animCount; i++, anims++) {
+        *anims = func_8000B838_main(*files++);
+    }
+    recs = HuMemAllocTag(arg1 * sizeof(UnkStaff_6), TAG_OVERLAY);
+    for (i = 0, rec = recs; i < arg1; i++, rec++) {
+        rec->unk_02 = 160;
+        rec->unk_04 = 120;
+        rec->unk_06 = 0;
+        grpId = rec->unk_00 = HuSprGrpCreate(memberCount, 2);
+        for (j = 0; j < memberCount; j++) {
+            HuSprTPLvlSet(grpId, j, 0x100);
+            HuSprAttrReset(grpId, j, 0xFFFF);
+            HuSprAttrSet(grpId, j, 0x9000);
+            HuSprScaleSet(grpId, j, 1.0f, 1.0f);
+            func_800550F4_main(grpId, j, 0);
+            HuSprPriSet(grpId, j, 400);
+            HuSprColorSet(grpId, j, 255, 255, 255);
+            if (j != 0) {
+                func_800554C4_main(grpId, j, 0);
+            } else {
+                func_800554C4_main(grpId, 0, -1);
+            }
+        }
+    }
+    switch (arg0) {
+        case 0:
+        default:
+            D_801114C8_staff = recs;
+            D_8011150C_staff = arg1;
+            break;
+        case 1:
+            D_80111508_staff = recs;
+            D_8011150E_staff = arg1;
+            break;
+    }
+}
 
 void func_8010B794_staff(s16 arg0) {
     UnkStaff_6 *recs;
@@ -1238,7 +1303,128 @@ void func_8010B9BC_staff(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     }
 }
 
+#ifdef NON_MATCHING
+// The body matches. The target has an alignment nop after this function (the next function starts at
+// 0x8010BE20), so a new C file must begin at ROM 0x5486A0; until the yaml is split there the build is 4 bytes
+// short. The otherwise unused `allocated` store is needed between the two assignments in the else branch so
+// that the call result stays in v0.
+void func_8010BA30_staff(s16 arg0, s16 arg1, u32 arg2, s16 arg3, s16 arg4) {
+    s16 xs[24];
+    UnkStaff_6 *rec;
+    s16 *anims;
+    u8 *text;
+    u8 *str;
+    u8 *allocatedText;
+    u8 allocated;
+    s32 i;
+    s16 maxCount;
+    s16 spacing;
+    s16 grpId;
+    s16 narrowAdjust;
+    s16 count;
+    s16 x;
+    s16 offset;
+    s16 y;
+    u8 c;
+
+    switch (arg0) {
+        case 0:
+        default:
+            rec = &D_801114C8_staff[arg1];
+            anims = D_80111490_staff;
+            maxCount = 24;
+            narrowAdjust = -2;
+            spacing = 10;
+            break;
+        case 1:
+            rec = &D_80111508_staff[arg1];
+            anims = D_801114D0_staff;
+            maxCount = 28;
+            narrowAdjust = 0;
+            spacing = 10;
+            break;
+    }
+    grpId = rec->unk_00;
+    count = rec->unk_06;
+    if (count != 0) {
+        for (i = 0; i < count; i++) {
+            HuSprDispOff(grpId, i);
+        }
+    }
+    rec->unk_02 = arg3;
+    rec->unk_04 = arg4;
+    allocatedText = NULL;
+    if (arg2 > 0x80000000) {
+        allocated = FALSE;
+        text = (u8 *)arg2;
+    } else {
+        text = func_800364DC_main((void *)arg2);
+        allocated = TRUE;
+        allocatedText = text;
+    }
+    str = text;
+    x = 0;
+    for (count = 1; count < maxCount; str++) {
+        c = *str;
+        if (c == 0) {
+            break;
+        }
+        if (c >= 'a' && c <= 'z') {
+            c -= 0x20;
+        }
+        if (c == 0x10 || c == 0x20 || c == 0x1A) {
+            x += spacing;
+        } else if (c >= 'A' && c <= 'Z') {
+            c -= 'A';
+            HuSprGrpMemberSet(grpId, count, anims[c], 0);
+            if (count != 0) {
+                func_800554C4_main(grpId, count, 0);
+            }
+            xs[count] = x;
+            x += spacing;
+            if (c == 8) {
+                x += narrowAdjust;
+            }
+            count++;
+        } else if (c == 0x33) {
+            HuSprGrpMemberSet(grpId, count, anims[26], 0);
+            if (count != 0) {
+                func_800554C4_main(grpId, count, 0);
+            }
+            xs[count] = x;
+            x += spacing;
+            count++;
+        } else if (c >= 0x5B && c <= 0x5C) {
+            c -= 'A';
+            HuSprGrpMemberSet(grpId, count, anims[c], 0);
+            if (count != 0) {
+                func_800554C4_main(grpId, count, 0);
+            }
+            xs[count] = x;
+            x += spacing;
+            count++;
+        }
+    }
+    if (x > spacing) {
+        x -= spacing;
+    }
+    offset = -(x >> 1);
+    y = 0;
+    HuSprPosSet(grpId, 0, rec->unk_02, rec->unk_04);
+    for (i = 1; i < count; i++) {
+        x = offset + xs[i];
+        HuSprPosSet(grpId, i, x, y);
+        HuSprDispOn(grpId, i);
+    }
+    rec->unk_06 = count;
+    if (allocatedText != NULL) {
+        func_800365E8_main(allocatedText);
+    }
+    (void)allocated;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/overlays/staff/544E70", func_8010BA30_staff);
+#endif
 
 void func_8010BE20_staff(s16 *windows, s16 count) {
     s32 i;

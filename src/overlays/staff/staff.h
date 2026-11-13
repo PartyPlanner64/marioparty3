@@ -113,7 +113,8 @@ typedef struct UnkStaff_5 { // sizeof 0x4C
 
 typedef struct UnkStaff_6 { // sizeof 0x8
     /* 0x00 */ s16 unk_00;
-    /* 0x02 */ char unk_02[4];
+    /* 0x02 */ s16 unk_02;
+    /* 0x04 */ s16 unk_04;
     /* 0x06 */ s16 unk_06;
 } UnkStaff_6;
 

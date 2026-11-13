@@ -13,7 +13,9 @@ typedef struct ToadstoolTitanPlayer {
     /* 0x0C */ s32 unk_0C;
 } ToadstoolTitanPlayer; // sizeof 0x10
 
+extern s32 D_800A178C_main[][6];
 extern s16 D_800CDBC8_main;
+extern s16 D_800D037E_main;
 extern f32 D_800CB890_main;
 extern f32 D_800D5210_main;
 extern omObjData *D_800D6A40_main;
@@ -24,13 +26,13 @@ extern f32 D_800EB76C_minigame;
 extern u8 D_800CD6A6_main;
 extern ToadstoolTitanPlayer D_8010F528_toadstool_titan[4];
 extern ToadstoolTitanPlayer *D_8010F568_toadstool_titan[4]; // players indexed by group
-extern s32 D_8010F580_toadstool_titan;
+extern u32 D_8010F580_toadstool_titan;
 extern u8 D_8010F584_toadstool_titan;
 extern s16 D_8010F586_toadstool_titan;
 extern s16 D_8010F588_toadstool_titan[1];
 extern s8 D_8010F58A_toadstool_titan;
 extern D_80111B50_vine_with_me_Struct D_8010F590_toadstool_titan;
-extern s16 D_8010F5BC_toadstool_titan;
+extern u16 D_8010F5BC_toadstool_titan;
 extern u8 D_8010F5F4_toadstool_titan;
 extern omObjData *D_8010F5F8_toadstool_titan;
 extern s16 D_8010F5FC_toadstool_titan;
@@ -60,14 +62,17 @@ const s16 D_8010EE80_toadstool_titan[] = {
 
 void func_80105E50_toadstool_titan(omObjData *object);
 void func_801060AC_toadstool_titan(omObjData *object);
+void func_80106984_toadstool_titan(void);
 void func_801069DC_toadstool_titan(omObjData *object);
 void func_80106C98_toadstool_titan(omObjData *object);
 void func_80107360_toadstool_titan(omObjData *object);
+void func_8010B658_toadstool_titan(omObjData *object, s32 model, s32 motion, u16 group, f32 x, f32 y, f32 z);
 void func_8010B99C_toadstool_titan(omObjData *object);
 void func_8010BA80_toadstool_titan(omObjData *object);
 void func_8010BB64_toadstool_titan(omObjData *object);
 void func_8010BC48_toadstool_titan(omObjData *object);
 void func_8010B510_toadstool_titan(omObjData *object);
+void func_8010BD2C_toadstool_titan(omObjData *object);
 
 void func_801059A0_toadstool_titan(void) {
     omObjData *object;
@@ -174,9 +179,174 @@ void func_80105E50_toadstool_titan(omObjData *object) {
     object->func = func_801060AC_toadstool_titan;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", D_8010EECC_toadstool_titan);
+void func_801060AC_toadstool_titan(omObjData *object) {
+    func_800E1BA8_minigame_ObjData *data;
+    s16 i;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", func_801060AC_toadstool_titan);
+    D_8010F580_toadstool_titan++;
+    func_800E6F40_minigame();
+    switch (D_8010F5FC_toadstool_titan) {
+        case 0:
+            if (func_800E6E8C_minigame() == 1) {
+                D_8010F5FC_toadstool_titan = 1;
+                D_8010F580_toadstool_titan = 0;
+            }
+            break;
+        case 1:
+            if (D_8010F580_toadstool_titan == 61 && D_8010F5BC_toadstool_titan == 0 && D_800D530C_main == 0) {
+                HuAudSeqPlay(0x38);
+                D_8010F614_toadstool_titan[0] = 1;
+            }
+            if (func_800E6E8C_minigame() == 2) {
+                D_8010F5FC_toadstool_titan = 2;
+                D_8010F580_toadstool_titan = 0;
+            }
+            break;
+        case 2:
+            if (D_8010F580_toadstool_titan == 1) {
+                func_80106984_toadstool_titan();
+            }
+            if (D_8010F58A_toadstool_titan != 5 || func_800E6E8C_minigame() == 3) {
+                if (D_8010F58A_toadstool_titan == 5) {
+                    D_8010F5FC_toadstool_titan = 6;
+                    D_8010F58A_toadstool_titan = 4;
+                    if (D_8010F586_toadstool_titan == 5) {
+                        D_8010F61C_toadstool_titan = 150;
+                    }
+                } else {
+                    D_8010F5FC_toadstool_titan = 3;
+                }
+                D_8010F580_toadstool_titan = 0;
+            }
+            if (D_8010F5FC_toadstool_titan != 3) {
+                break;
+            }
+        case 3:
+            if (D_8010F580_toadstool_titan == 0) {
+                if (func_800E6E8C_minigame() != 3) {
+                    func_800E6F1C_minigame();
+                }
+                D_8010F590_toadstool_titan.unk06 = 0;
+                D_8010F590_toadstool_titan.unk18[0] = D_8010F568_toadstool_titan[D_8010F58A_toadstool_titan]->playerNo;
+                GwPlayer[D_8010F568_toadstool_titan[D_8010F58A_toadstool_titan]->playerNo].bonusCoin = 10;
+                D_8010F614_toadstool_titan[0] = 0;
+                if (D_8010F614_toadstool_titan[1] != 0 && D_8010F5BC_toadstool_titan == 0 && D_800D530C_main == 0) {
+                    func_8004A7C4_main(60);
+                    D_8010F614_toadstool_titan[1] = 0;
+                }
+            }
+            if (D_8010F580_toadstool_titan == 2) {
+                func_800E6F34_minigame(30);
+                D_8010F590_toadstool_titan.unk22 = 60;
+            }
+            if (func_800E6E8C_minigame() == 4) {
+                D_8010F5FC_toadstool_titan = 4;
+                D_8010F580_toadstool_titan = 0;
+            }
+            break;
+        case 6:
+            if (D_8010F580_toadstool_titan == 1) {
+                D_8010F590_toadstool_titan.unk06 = 4;
+                D_8010F590_toadstool_titan.unk22 = 90;
+                D_8010F590_toadstool_titan.unk24 = 0x90;
+                D_8010F614_toadstool_titan[0] = 0;
+                if (D_8010F614_toadstool_titan[1] != 0 && D_8010F5BC_toadstool_titan == 0 && D_800D530C_main == 0) {
+                    func_8004A7C4_main(60);
+                    D_8010F614_toadstool_titan[1] = 0;
+                }
+            }
+            if (D_8010F580_toadstool_titan == 64 && D_8010F5BC_toadstool_titan == 0 && D_800D530C_main == 0) {
+                HuAudSeqStop();
+            }
+            if (D_8010F580_toadstool_titan == 67 && D_8010F5BC_toadstool_titan == 0 && D_800D530C_main == 0) {
+                func_8004A72C_main(3);
+            }
+            if (func_800E6E8C_minigame() == 4) {
+                D_8010F5FC_toadstool_titan = 5;
+                D_8010F580_toadstool_titan = 0;
+            }
+            break;
+        case 4:
+            if (D_8010F580_toadstool_titan == 24 && D_8010F5BC_toadstool_titan == 0 && D_800D530C_main == 0) {
+                HuAudSeqStop();
+            }
+            if (D_8010F580_toadstool_titan == 27 && D_8010F5BC_toadstool_titan == 0 && D_800D530C_main == 0) {
+                func_8004A72C_main(3);
+            }
+            if (D_8010F580_toadstool_titan == 29) {
+                if (D_8010F586_toadstool_titan == 9) {
+                    s32 slots[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
+
+                    func_80017954_main(D_8010F640_toadstool_titan[D_8010F58A_toadstool_titan]->model[0], 1,
+                                       slots[D_8010F568_toadstool_titan[D_8010F58A_toadstool_titan]->chr],
+                                       D_8010F568_toadstool_titan[D_8010F58A_toadstool_titan]->unk_08);
+                    func_800E5A00_minigame(
+                        D_8010F640_toadstool_titan[D_8010F58A_toadstool_titan], 13,
+                        func_80017BB8_main(D_8010F568_toadstool_titan[D_8010F58A_toadstool_titan]->chr, (rand8() & 1) ? 0x2F : 0x30), 1, 120);
+                    func_80045ED0_main(D_8010F568_toadstool_titan[D_8010F58A_toadstool_titan]->unk_0C);
+                    msmMusStop(D_800D037E_main);
+                }
+            }
+            if (D_8010F580_toadstool_titan == 30 && D_8010F586_toadstool_titan == 9) {
+                func_800E5690_minigame(D_8010F640_toadstool_titan[D_8010F58A_toadstool_titan], 13);
+            }
+        case 5:
+            if (D_8010F5FC_toadstool_titan == 5) {
+                if (D_8010F580_toadstool_titan == 1) {
+                    for (i = 0; i < 4; i++) {
+                        func_800E5A00_minigame(D_8010F640_toadstool_titan[i], 14, func_80017BB8_main(D_8010F568_toadstool_titan[i]->chr, 0x3A), 1,
+                                               120);
+                    }
+                    msmMusStop(D_800D037E_main);
+                }
+                if (D_8010F5FC_toadstool_titan == 5 && D_8010F580_toadstool_titan >= 2) {
+                    for (i = 0; i < 4; i++) {
+                        data = D_8010F640_toadstool_titan[i]->data;
+                        if (data->unk5C != 0x1000 && data->unk38 == 1000.0f) {
+                            data->unk3C = 0.0f;
+                            func_800E5690_minigame(D_8010F640_toadstool_titan[i], 14);
+                        }
+                    }
+                }
+            }
+            if (func_800E6E8C_minigame() == 5) {
+                D_8010F5FC_toadstool_titan = 7;
+                D_8010F580_toadstool_titan = 0;
+            }
+            break;
+        case 7:
+            if (D_8010F580_toadstool_titan == 1) {
+                WipeCreateOut(WIPE_TYPE_NORMAL, 20);
+            } else if (D_8010F580_toadstool_titan >= 32) {
+                D_8010F5BC_toadstool_titan = 1;
+            }
+            break;
+    }
+    if (D_8010F5BC_toadstool_titan != 0 || D_800D530C_main != 0) {
+        if (D_800D530C_main != 0) {
+            if (D_8010F584_toadstool_titan == 0) {
+                WipeCreateOut(WIPE_TYPE_NORMAL, 20);
+                HuAudSeqFadeOut(20);
+                func_8004A7C4_main(20);
+                func_8004AB0C_main(20);
+            }
+            D_8010F584_toadstool_titan++;
+            if (D_8010F584_toadstool_titan == 21 && D_800D6A40_main != NULL) {
+                msmMusStop(D_800CDBC8_main);
+                msmMusStop(D_800D037E_main);
+            }
+            if (D_8010F584_toadstool_titan == 23 && D_800D6A40_main != NULL && D_8010F600_toadstool_titan != -1.0f) {
+                msmMusSetVolume(D_800CDBC8_main, D_8010F600_toadstool_titan);
+            }
+            if (D_8010F584_toadstool_titan < 25) {
+                return;
+            }
+        }
+        msmMusStop(D_800CDBC8_main);
+        msmMusStop(D_800D037E_main);
+        omOvlReturnEx(1);
+    }
+}
 
 void func_80106984_toadstool_titan(void) {
     UnkAudioObjData *data;
@@ -336,19 +506,79 @@ void func_8010B510_toadstool_titan(omObjData *object) {
     Hu3DCamUpdateMtx(0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", func_8010B658_toadstool_titan);
+void func_8010B658_toadstool_titan(omObjData *object, s32 model, s32 motion, u16 group, f32 x, f32 y, f32 z) {
+    s32 dirs[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+    s32 slots[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
+    s32 files[2][8] = { { 0xA4, 0xA4, 0xA4, 0xA4, 0xA4, 0xA4, 0xA4, 0x1B }, { 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0x1C } };
+    func_800E1BA8_minigame_ObjData *data;
+    s32 modelFlags;
+    s32 motionFlags;
+    u16 chr;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", func_8010B99C_toadstool_titan);
+    modelFlags = 0x4A9;
+    motionFlags = 0x99;
+    chr = D_8010F568_toadstool_titan[group]->chr;
+    func_800E18D8_minigame();
+    func_800E1BA8_minigame(object, model, motion, D_8010F568_toadstool_titan[group]->playerNo, modelFlags, motionFlags);
+    omSetTra(object, x, y, z);
+    Hu3DModelPosSet(object->model[1], x, 0.0f, z);
+    data = object->data;
+    data->unk59 = D_8010F568_toadstool_titan[group]->playerNo;
+    D_8010F568_toadstool_titan[group]->unk_0C = (rand8() & 1) ? 0x2F : 0x30;
+    D_8010F568_toadstool_titan[group]->unk_0C |= dirs[chr] << 16;
+    D_8010F568_toadstool_titan[group]->unk_06 = func_80017790_main(object->model[0], 1, slots[chr], (dirs[chr] << 16) | files[0][chr]);
+    D_8010F568_toadstool_titan[group]->unk_08 = func_80017AD8_main((dirs[chr] << 16) | files[1][chr]);
+    func_80033910_main(Hu3DData[object->model[0]].hmf);
+    func_8001C514_main(object->model[0]);
+    func_800E5A00_minigame(object, 0, func_80017BB8_main(chr, 0), 1, 0);
+    func_800E5A00_minigame(object, 6, func_80017BB8_main(chr, 4), 1, 19);
+    func_800E5978_minigame(object, 21, func_80017BB8_main(chr, 31), 0, 0);
+    func_800E149C_minigame(object, 0, 2);
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", func_8010BA80_toadstool_titan);
+void func_8010B99C_toadstool_titan(omObjData *object) {
+    s32 motion;
+    s32 model;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", func_8010BB64_toadstool_titan);
+    motion = D_800A178C_main[D_8010F568_toadstool_titan[0]->chr][3];
+    model = D_800A178C_main[D_8010F568_toadstool_titan[0]->chr][0];
+    func_8010B658_toadstool_titan(object, model, motion, 0, (D_8010F668_toadstool_titan[0] >> 1) ? -400.0f : 400.0f, 800.0f,
+                                  (D_8010F668_toadstool_titan[0] & 1) ? -350.0f : 350.0f);
+    object->func = func_8010BD2C_toadstool_titan;
+}
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", func_8010BC48_toadstool_titan);
+void func_8010BA80_toadstool_titan(omObjData *object) {
+    s32 motion;
+    s32 model;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", D_8010F218_toadstool_titan);
+    motion = D_800A178C_main[D_8010F568_toadstool_titan[1]->chr][3];
+    model = D_800A178C_main[D_8010F568_toadstool_titan[1]->chr][0];
+    func_8010B658_toadstool_titan(object, model, motion, 1, (D_8010F668_toadstool_titan[1] >> 1) ? -400.0f : 400.0f, 800.0f,
+                                  (D_8010F668_toadstool_titan[1] & 1) ? -350.0f : 350.0f);
+    object->func = func_8010BD2C_toadstool_titan;
+}
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", D_8010F238_toadstool_titan);
+void func_8010BB64_toadstool_titan(omObjData *object) {
+    s32 motion;
+    s32 model;
+
+    motion = D_800A178C_main[D_8010F568_toadstool_titan[2]->chr][3];
+    model = D_800A178C_main[D_8010F568_toadstool_titan[2]->chr][0];
+    func_8010B658_toadstool_titan(object, model, motion, 2, (D_8010F668_toadstool_titan[2] >> 1) ? -400.0f : 400.0f, 800.0f,
+                                  (D_8010F668_toadstool_titan[2] & 1) ? -350.0f : 350.0f);
+    object->func = func_8010BD2C_toadstool_titan;
+}
+
+void func_8010BC48_toadstool_titan(omObjData *object) {
+    s32 motion;
+    s32 model;
+
+    motion = D_800A178C_main[D_8010F568_toadstool_titan[3]->chr][3];
+    model = D_800A178C_main[D_8010F568_toadstool_titan[3]->chr][0];
+    func_8010B658_toadstool_titan(object, model, motion, 3, (D_8010F668_toadstool_titan[3] >> 1) ? -400.0f : 400.0f, 800.0f,
+                                  (D_8010F668_toadstool_titan[3] & 1) ? -350.0f : 350.0f);
+    object->func = func_8010BD2C_toadstool_titan;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", D_8010F278_toadstool_titan);
 

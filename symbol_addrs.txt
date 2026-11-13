@@ -2470,3 +2470,6 @@ D_8010AEB0_bounce_n_trounce = 0x8010AEB0; //size:0x2 type:u16 segment:bounce_n_t
 D_8010AEB2_bounce_n_trounce = 0x8010AEB2; //size:0x2 type:u16 segment:bounce_n_trounce
 D_8010C404_hide_and_sneak = 0x8010C404; //rom:0x13E664 size:0xC type:s8 segment:hide_and_sneak
 D_8010E172_hide_and_sneak = 0x8010E172; //size:0x2 type:s16 segment:hide_and_sneak
+D_8010C960_storm_chasers = 0x8010C960; //rom:0x270BB0 size:0x64 type:s32 segment:storm_chasers
+D_8010C9C4_storm_chasers = 0x8010C9C4; //rom:0x270C14 size:0x64 type:s32 segment:storm_chasers
+D_8010CA28_storm_chasers = 0x8010CA28; //rom:0x270C78 size:0x64 type:s32 segment:storm_chasers

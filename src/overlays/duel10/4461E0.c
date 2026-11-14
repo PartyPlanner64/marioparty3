@@ -2985,16 +2985,13 @@ void func_8010E8D4_duel10(void) {
     func_8010E4B4_duel10(-1, 0);
 }
 
-// Near match: the target does not sign-extend the MBDMasuLinkMasuIdGet result and reads
-// GwSystem directly in the matching-character branch.
-#ifdef NON_MATCHING
 void func_8010E8F4_duel10(void) {
     Vec rot;
     Vec pos;
     GW_SYSTEM *system = &GwSystem;
     GW_PLAYER *player;
     Process *process;
-    s32 masuId;
+    s16 masuId;
     SpaceData *space;
     s32 coins;
     Object *partner;
@@ -3012,9 +3009,14 @@ void func_8010E8F4_duel10(void) {
         case 16:
         case 17:
         case 18:
-            coins = func_800FD498_name_81();
+            // The do-while (0) blocks keep GwSystem reads from being CSE'd with system.
+            do {
+                coins = func_800FD498_name_81();
+            } while (0);
             if (space->space_type - 11 == GwPlayer[GwSystem.current_player_index].chr) {
-                func_800E14D8_name_81(GwSystem.current_player_index, coins);
+                do {
+                    func_800E14D8_name_81(GwSystem.current_player_index, coins);
+                } while (0);
                 func_800F7378_name_81(GwSystem.current_player_index, coins);
                 HuPrcSleep(30);
             } else if (player->stats.partners.frontID == 2 || player->stats.partners.backID == 2) {
@@ -3065,9 +3067,6 @@ void func_8010E8F4_duel10(void) {
             break;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/duel10/4461E0", func_8010E8F4_duel10);
-#endif
 
 void func_8010EC1C_duel10(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);

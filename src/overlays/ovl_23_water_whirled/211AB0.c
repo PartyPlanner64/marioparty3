@@ -994,8 +994,6 @@ f32 func_80108B98_water_whirled(omObjData *object, f32 x, f32 y, f32 z) {
     return func_801061E4_water_whirled(sphere.pos.x, sphere.pos.z);
 }
 
-// Only mismatch: register allocation (which sprite IDs get spilled to the stack).
-#ifdef NON_MATCHING
 void func_80108DF8_water_whirled(omObjData *object) {
     s32 framePos[4][2] = { { 56, 31 }, { 265, 31 }, { 56, 209 }, { 265, 209 } };
     s32 iconPos[4][2] = { { 43, 32 }, { 253, 32 }, { 43, 210 }, { 253, 210 } };
@@ -1009,7 +1007,6 @@ void func_80108DF8_water_whirled(omObjData *object) {
     void *data;
     s32 x;
     s32 y;
-    s32 memberX;
     s32 i;
     s32 j;
 
@@ -1018,7 +1015,10 @@ void func_80108DF8_water_whirled(omObjData *object) {
     espPosSet(sprite, 160, 120);
     espAttrSet(sprite, 0x4000);
     espScaleSet(sprite, 2.0f, 2.0f);
-    frameSprite = func_8000B838_main(0x440012);
+    // do-while(0) needed to match register allocation.
+    do {
+        frameSprite = func_8000B838_main(0x440012);
+    } while (0);
     lapSprite = func_8000B838_main(0x440014);
     finalLapSprite = func_8000B838_main(0x440015);
     goalSprite = func_8000B838_main(0x440016);
@@ -1055,14 +1055,14 @@ void func_80108DF8_water_whirled(omObjData *object) {
         HuSprAttrSet(grp, 0, HUSPR_ATTR_DISPOFF);
         HuSprPosSet(grp, 0, x, y);
         HuSprPriSet(grp, 0, 100);
-        memberX = 8;
+        x = 8;
         for (j = 1; j < 3; j++) {
             HuSprPriSet(grp, j, 100);
             HuSprGrpMemberSet(grp, j, digitAnim, 0);
-            HuSprPosSet(grp, j, memberX, 0);
+            HuSprPosSet(grp, j, x, 0);
             HuSprAttrReset(grp, j, 0xFFFF);
             HuSprAttrSet(grp, j, HUSPR_ATTR_DISPOFF);
-            memberX += 8;
+            x += 8;
             func_800554C4_main(grp, j, 0);
         }
         HuSprDispOn(grp, 2);
@@ -1070,13 +1070,6 @@ void func_80108DF8_water_whirled(omObjData *object) {
     }
     object->func = NULL;
 }
-#else
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_23_water_whirled/211AB0", D_8010A520_water_whirled);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_23_water_whirled/211AB0", D_8010A540_water_whirled);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_23_water_whirled/211AB0", func_80108DF8_water_whirled);
-#endif
 
 void func_80109340_water_whirled(s16 player, s16 bank) {
     s16 grp = D_8010AC48_water_whirled[player];

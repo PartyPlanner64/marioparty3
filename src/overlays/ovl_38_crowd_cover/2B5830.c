@@ -1264,9 +1264,6 @@ void func_8010949C_crowd_cover(Gfx **gfx, HuSprite_Unk84_Unk00_Struct *cel, u8 f
     *gfx = gdl;
 }
 
-#ifdef NON_MATCHING
-// unk_1B/unk_1C are read with lb instead of lbu (switching them to u8 matches the loads but swaps the siz/count
-// registers, same as func_80109718_popgun_pickoff).
 s16 func_8010980C_crowd_cover(UnkCrowdCover *crowd) {
     HuSprite_Unk84_Unk00_Struct segCel;
     Gfx *gfx;
@@ -1311,13 +1308,12 @@ s16 func_8010980C_crowd_cover(UnkCrowdCover *crowd) {
             if (crowd->sprite->unk1A == 1) {
                 fmt = G_IM_FMT_IA;
                 gDPSetTextureLUT(gfx++, G_TT_NONE);
-                mode = 2;
             } else {
                 fmt = G_IM_FMT_CI;
                 gDPLoadTLUT_pal256(gfx++, crowd->sprite->unk0C);
                 gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-                mode = 2;
             }
+            mode = 2;
             break;
         case 16:
             siz = G_IM_SIZ_16b;
@@ -1386,15 +1382,16 @@ s16 func_8010980C_crowd_cover(UnkCrowdCover *crowd) {
             }
         }
     }
+    // The differing masks/maskt byte conversions are required to match register allocation.
     if (crowd->unk_28 & 0xC0000) {
-        masks = crowd->unk_1B;
+        masks = crowd->unk_1B & 0xFF;
         cms = (crowd->unk_28 >> 18) - 1;
     } else {
         masks = 0;
         cms = 0;
     }
     if (crowd->unk_28 & 0x300000) {
-        maskt = crowd->unk_1C;
+        maskt = (u8)crowd->unk_1C;
         cmt = (crowd->unk_28 >> 20) - 1;
     } else {
         maskt = 0;
@@ -1431,9 +1428,6 @@ s16 func_8010980C_crowd_cover(UnkCrowdCover *crowd) {
     HuMemFree(buf);
     return 1;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_8010980C_crowd_cover);
-#endif
 
 s16 func_8010A12C_crowd_cover(s16 spriteId, s32 flags) {
     UnkCrowdCover *crowd;

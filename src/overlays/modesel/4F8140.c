@@ -2636,9 +2636,6 @@ void func_8010CB34_modesel(void) {
     func_80105F20_modesel(0xA);
 }
 
-#ifdef NON_MATCHING
-// The 0x4000 cancel path uses a branch-likely here instead of a jump, and the first
-// func_8010E000_modesel call does not reuse the constant 14.
 s32 func_8010CC38_modesel(void) {
     s32 choice;
     s32 x;
@@ -2648,29 +2645,30 @@ s32 func_8010CC38_modesel(void) {
     func_8010C094_modesel();
     func_8010C874_modesel();
     choice = 14;
+    func_8010E000_modesel(choice, &x, &y);
+    func_8010601C_modesel(1, x, y);
     while (1) {
-        func_8010E000_modesel(choice, &x, &y);
-        func_8010601C_modesel(1, x, y);
         HuPrcVSleep();
         buttons = D_800D5558_main[0];
         buttons |= func_80109A58_modesel(0);
         if (buttons & 0x8000) {
             break;
-        } else if (buttons & 0x4000) {
+        }
+        if (buttons & 0x4000) {
             choice = -1;
             break;
-        } else if (buttons & 0xF00) {
+        }
+        if (buttons & 0xF00) {
             choice = (choice == 14) ? 15 : 14;
             func_8010E280_modesel(1, choice);
         }
+        func_8010E000_modesel(choice, &x, &y);
+        func_8010601C_modesel(1, x, y);
     }
     func_8010CA30_modesel();
     func_8010CB34_modesel();
     return choice;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F8140", func_8010CC38_modesel);
-#endif
 
 s32 func_8010CD00_modesel(s32 cur, s32 buttons) {
     s32 result = -1;

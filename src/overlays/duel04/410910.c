@@ -5453,7 +5453,10 @@ s32 func_80116168_duel04(void) {
 // so it gets cross-jumped). The likely block is the first switch's case 1
 // `return 1`. A 64-variant search (ret/return/order of case 2 and case 3
 // tails), ternaries, `(u32)curIndex > 0`, and temp-variable or
-// `return ret` tails did not produce that.
+// `return ret` tails did not produce that. `ret = curIndex == 0` is also
+// always 1 there, so it should not be kept if this is matched another way.
+// The second switch's case 2/case 3 tails have the same shape as
+// func_80115DA8_duel04's case 1/case 2 tails (see the jump.c notes there).
 s32 func_801163C0_duel04(void) {
     s32 curIndex = MBDGetCurrentPlayerIndex();
     s32 otherIndex = (s16)(MBDGetCurrentPlayerIndex() ^ 1);

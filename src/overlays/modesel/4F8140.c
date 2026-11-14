@@ -1920,11 +1920,14 @@ void func_8010AC3C_modesel(void) {
 
 #ifdef NON_MATCHING
 // Only float register allocation differs: the target puts t (and the int->float temp) in $f6, the
-// t * 400.0f product in $f0 and the y result in $f2. This needs t to be non-local or to live past the
-// D_80110CD8_modesel[1].y load (so the product ties to the 400.0f constant instead of t), but no
-// visible later use exists. Tried: t = timer; t *= k, 400.0f * t / constant in a variable,
-// t *= 400.0f, separate x/y/z locals, pointer to D_80110CD8_modesel[1], pos.y -= ..., an inline
-// helper, and moving the loop barrier / wrapping various statements in do-while(0).
+// t * 400.0f product in $f0 and the y result in $f2. Our t is a block-local pseudo dying at the
+// multiply, so local-alloc ties the product to t. In the target t must be a global-alloc pseudo
+// (product then ties to the 400.0f constant; an artificial early `if (...) return;` reproduces
+// everything except t landing in $f2) and also conflict with $f2, i.e. stay live past the
+// D_80110CD8_modesel[1].y load, yet no visible later use exists. Tried: t = timer; t *= k,
+// 400.0f * t, constants/products in variables, separate x/y/z locals, a float timer local,
+// pointer to D_80110CD8_modesel[1], pos.y = ...; pos.y -= ..., struct copy, an inline helper,
+// identical if/else arms (not cross-jumped), and do-while(0) around every statement combination.
 void func_8010ACA8_modesel(omObjData *obj) {
     Vec pos;
     s32 model = 10;

@@ -2033,13 +2033,12 @@ void func_80109DA8_rockin_raceway(void) {
     }
 }
 
-#ifdef NON_MATCHING
-// Only differs in register allocation: the target keeps i in s1 and numNodes in a0.
 // Advances distance along the track by speed, and evaluates the position and rotation at the
 // resulting point (offset by arg1).
 f32 func_8010A258_rockin_raceway(u16 trackIndex, f32 arg1, f32 distance, f32 speed, u16 *node, f32 *fraction, Vec *pos,
                                  Vec *rot) {
     s32 i;
+    s32 cur;
     s32 next;
     Track *track = &D_80111B40_rockin_raceway[trackIndex];
     f32 newDistance;
@@ -2076,15 +2075,19 @@ f32 func_8010A258_rockin_raceway(u16 trackIndex, f32 arg1, f32 distance, f32 spe
     if (fraction != NULL) {
         *fraction = t;
     }
-    next = (i < track->numNodes - 1) ? i + 1 : 0;
-    func_8010E8A0_rockin_raceway(t, track->unk0C[i], track->unk10[i], track->unk0C[next], &pos->x);
-    rot->x = func_8010E7E0_rockin_raceway(t, track->unk1C[i][0], track->unk1C[next][0]);
-    rot->y = func_8010E7E0_rockin_raceway(t, track->unk1C[i][1], track->unk1C[next][1]);
+    // cur is assigned in both branches (merged by cross-jumping) to match register allocation.
+    if (i < track->numNodes - 1) {
+        next = i + 1;
+        cur = i;
+    } else {
+        next = 0;
+        cur = i;
+    }
+    func_8010E8A0_rockin_raceway(t, track->unk0C[cur], track->unk10[cur], track->unk0C[next], &pos->x);
+    rot->x = func_8010E7E0_rockin_raceway(t, track->unk1C[cur][0], track->unk1C[next][0]);
+    rot->y = func_8010E7E0_rockin_raceway(t, track->unk1C[cur][1], track->unk1C[next][1]);
     return newDistance;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2C_rockin_raceway/251FF0", func_8010A258_rockin_raceway);
-#endif
 
 s32 func_8010A48C_rockin_raceway(u16 arg0, u16 arg1) {
     Track *track = &D_80111B40_rockin_raceway[arg0];

@@ -1285,9 +1285,6 @@ void func_80109640_slapdown(void) {
     }
 }
 
-#ifdef NON_MATCHING
-// Only differs in the first loop: the target recomputes the entries[i]
-// address after storing unk_16, while this reuses it.
 void func_801096E4_slapdown(void) {
     SlapdownEntry *entries[4];
     omObjData *objs[4];
@@ -1304,7 +1301,10 @@ void func_801096E4_slapdown(void) {
     for (i = 0; i < 4; i++) {
         entries[i] = &D_8010AAB0_slapdown[11 + i];
         objs[i] = entries[i]->obj;
-        entries[i]->unk_16 = -1;
+        // do-while(0) needed to match register allocation.
+        do {
+            entries[i]->unk_16 = -1;
+        } while (0);
         if (entries[i]->unk_0A == -2) {
             out++;
         }
@@ -1312,6 +1312,8 @@ void func_801096E4_slapdown(void) {
             active++;
         }
     }
+    // Copied but never read in the original.
+    (void)objs;
     if (active == 0) {
         if (out == 1) {
             for (i = 0; i < 4; i++) {
@@ -1361,9 +1363,6 @@ void func_801096E4_slapdown(void) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2E_slapdown/264B80", func_801096E4_slapdown);
-#endif
 
 void func_801099C0_slapdown(void) {
     SlapdownEntry *entries[4];

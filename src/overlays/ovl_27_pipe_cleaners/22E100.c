@@ -1097,10 +1097,12 @@ void func_801088AC_pipe_cleaners(PipeCleanerSign *sign, s32 arg1) {
     espScaleSet(sign->espId, sign->scale, sign->scale);
 }
 
-// NON_MATCHING: the target reloads scale and uses a second 0.1 rodata constant for the comparison.
-#ifdef NON_MATCHING
 void func_80108964_pipe_cleaners(PipeCleanerSign *sign, s32 arg1) {
-    sign->scale -= 0.1;
+    if (arg1 != 0) {
+        sign->scale -= 0.1;
+    } else {
+        sign->scale -= 0.1;
+    }
     if (sign->scale <= 0.1) {
         sign->scale = 0.1f;
     }
@@ -1112,9 +1114,6 @@ void func_80108964_pipe_cleaners(PipeCleanerSign *sign, s32 arg1) {
     }
     espTPLvlSet(sign->espId, sign->alpha);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80108964_pipe_cleaners);
-#endif
 
 void func_80108A4C_pipe_cleaners(omObjData *obj) {
     PipeCleanerSign *sign;

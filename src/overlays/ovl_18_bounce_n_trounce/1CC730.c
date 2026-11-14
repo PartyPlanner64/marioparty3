@@ -142,7 +142,7 @@ f32 func_80106434_bounce_n_trounce(omObjData *object);
 void func_8010846C_bounce_n_trounce(omObjData *object);
 s32 func_80109804_bounce_n_trounce(omObjData *object, s16 arg1);
 s16 func_80109A00_bounce_n_trounce(omObjData *object);
-s32 func_8010AB1C_bounce_n_trounce(f32 x, f32 z);
+s16 func_8010AB1C_bounce_n_trounce(f32 x, f32 z);
 void func_80108CA8_bounce_n_trounce(omObjData *);
 void func_80108D28_bounce_n_trounce(omObjData *);
 
@@ -1408,38 +1408,30 @@ void func_80109478_bounce_n_trounce(omObjData *object) {
     }
 }
 
-#ifdef NON_MATCHING
 s32 func_80109804_bounce_n_trounce(omObjData *object, s16 arg1) {
+    BounceNTrounceWork *objWork = OM_GET_DATA_PTR(object, BounceNTrounceWork);
+    BounceNTrounceWork *work;
     s16 tile;
     s16 targetTile;
     s16 nextTile;
-    s32 diff;
-    BounceNTrounceWork *work = OM_GET_DATA_PTR(object, BounceNTrounceWork);
 
     tile = func_8010AB1C_bounce_n_trounce(object->trans.x, object->trans.z);
-    targetTile = func_8010AB1C_bounce_n_trounce(work->aiTarget->trans.x, work->aiTarget->trans.z);
-    diff = tile - targetTile;
-    if (diff < 0) {
-        diff = -diff;
-    }
-    if (diff == 1 || diff == 3) {
+    targetTile = func_8010AB1C_bounce_n_trounce(objWork->aiTarget->trans.x, objWork->aiTarget->trans.z);
+    work = objWork;
+    if (abs(tile - targetTile) == 1 || abs(tile - targetTile) == 3) {
         return 0;
     }
     if (tile == 0 || tile == 2 || tile == 6 || tile == 8) {
-        diff = tile - targetTile;
-        if (diff < 0) {
-            diff = -diff;
-        }
-        if (diff != 2 && diff != 6) {
+        if (abs(tile - targetTile) != 2 && abs(tile - targetTile) != 6) {
             return 0;
         }
-        if (tile + 2 == targetTile) {
+        if (tile - targetTile == -2) {
             nextTile = tile + 1;
-        } else if (tile + 6 == targetTile) {
+        } else if (tile - targetTile == -6) {
             nextTile = tile + 3;
-        } else if (tile - 2 == targetTile) {
+        } else if (tile - targetTile == 2) {
             nextTile = tile - 1;
-        } else if (tile - 6 == targetTile) {
+        } else if (tile - targetTile == 6) {
             nextTile = tile - 3;
         } else {
             goto end;
@@ -1455,9 +1447,6 @@ s32 func_80109804_bounce_n_trounce(omObjData *object, s16 arg1) {
 end:
     // The original has no return value here.
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_18_bounce_n_trounce/1CC730", func_80109804_bounce_n_trounce);
-#endif
 
 s16 func_80109A00_bounce_n_trounce(omObjData *object) {
     f32 dists[9]; // Unused stack space retained from the original function.
@@ -1745,7 +1734,7 @@ void func_8010A740_bounce_n_trounce(s16 model) {
             if (particle->unk08 < 0.0f) {
                 particle->unk08 = 0.0f;
             }
-            tile = (s16)func_8010AB1C_bounce_n_trounce(particle->unk0C, particle->unk14);
+            tile = func_8010AB1C_bounce_n_trounce(particle->unk0C, particle->unk14);
             if (tile >= 0 && tile < 9) {
                 floorY = D_8010AED8_bounce_n_trounce[tile]->trans.y;
                 if (particle->unk10 < floorY && particle->unk10 > floorY - 300.0f) {
@@ -1819,7 +1808,7 @@ f32 func_8010AAE0_bounce_n_trounce(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     return HuSqrtf((arg0 - arg2) * (arg0 - arg2) + (arg1 - arg3) * (arg1 - arg3));
 }
 
-s32 func_8010AB1C_bounce_n_trounce(f32 arg0, f32 arg1) {
+s16 func_8010AB1C_bounce_n_trounce(f32 arg0, f32 arg1) {
     s32 x;
     s32 y;
     s16 index;

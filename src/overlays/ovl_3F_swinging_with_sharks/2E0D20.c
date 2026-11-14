@@ -1084,8 +1084,6 @@ f32 func_80109B04_swinging_with_sharks(SharkPathPoint *points, f32 speed) {
     return total;
 }
 
-#ifdef NON_MATCHING
-// Only the prologue differs: the target loads `total` into f4 before materializing 10.0f in f6.
 void func_80109C90_swinging_with_sharks(SharkPathPoint *points, s16 model, f32 total) {
     f32 values[4];
     f32 times[4];
@@ -1101,8 +1099,8 @@ void func_80109C90_swinging_with_sharks(SharkPathPoint *points, s16 model, f32 t
     s16 t;
 
     sink = 0;
-    end = total - 10.0f;
     while (TRUE) {
+        end = total - 10.0f;
         i = 1;
         for (t = 10; t < end; t++) {
             if (t > points[i + 1].dist) {
@@ -1157,9 +1155,6 @@ void func_80109C90_swinging_with_sharks(SharkPathPoint *points, s16 model, f32 t
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3F_swinging_with_sharks/2E0D20", func_80109C90_swinging_with_sharks);
-#endif
 
 void func_8010A0C0_swinging_with_sharks(void) {
     s16 model = D_8010B8E0_swinging_with_sharks[47];

@@ -828,10 +828,9 @@ void func_80107A18_snowball_summit(omObjData *object, Vec stick, f32 speed) {
     mover->posX = object->rot.y;
 }
 
-// NON_MATCHING: float register allocation differs around the 0.6/0.4 blend.
-#ifdef NON_MATCHING
 void func_80107B58_snowball_summit(omObjData *object, Vec stick) {
     UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
+    UnkSnowballSummitSlot *slot;
     f32 velocity;
     f32 scaled;
 
@@ -842,17 +841,15 @@ void func_80107B58_snowball_summit(omObjData *object, Vec stick) {
     }
     mover->unk_10 = velocity;
     if (mover->unk_70 != -1) {
+        slot = &D_8010FC30_snowball_summit[mover->unk_70];
         scaled = velocity * 0.6;
-        mover->unk_10 = velocity * 0.4 + scaled * (1.0f / D_8010FC30_snowball_summit[mover->unk_70].unk_0C);
+        mover->unk_10 = velocity * 0.4 + scaled * (1.0f / slot->unk_0C);
     }
     mover->posZ = sindf(object->rot.y) * mover->unk_10;
     mover->unk_28 = cosdf(object->rot.y) * mover->unk_10;
     mover->spawnPosX = object->trans.x + mover->posZ;
     mover->spawnPosZ = object->trans.z + mover->unk_28;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_80107B58_snowball_summit);
-#endif
 
 void func_80107CA4_snowball_summit(omObjData *object, s32 motion) {
     UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];

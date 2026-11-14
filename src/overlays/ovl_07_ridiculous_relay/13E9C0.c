@@ -1,6 +1,17 @@
 #include "common.h"
 #include "overlays/minigame.h"
 
+#define SPEED_SCALE 0.028935185185185185
+#define ABS(x) ((x) > 0 ? (x) : -(x))
+#define ABS_DIFF(a, b) (((a) - (b) > 0) ? (a) - (b) : (b) - (a))
+#define SETTLE_ANGLE(angle) (((angle) < -10.0f) ? (angle) + 9.0f - (angle) * 0.1 : ((angle) > 10.0f) ? (angle) - 9.0f - (angle) * 0.1 \
+                                                                                                     : 0.0f)
+#define PEDAL_POWER(speed) (((speed) < 20.0f) ? 2.0f * (speed) - 20.0f : (speed))
+#define ROWER_OFFSET()                              \
+    ((D_80110E12_ridiculous_relay == 0)             \
+         ? rowerSpeeds[D_80110E10_ridiculous_relay] \
+         : rowerSpeeds[D_80110E0F_ridiculous_relay] * (1.0f - (f32)D_80110E11_ridiculous_relay / (f32)D_80110E12_ridiculous_relay) + rowerSpeeds[D_80110E10_ridiculous_relay] * ((f32)D_80110E11_ridiculous_relay / (f32)D_80110E12_ridiculous_relay))
+
 typedef struct RidiculousRelayPlayer {
     /* 0x00 */ s8 playerNo;
     /* 0x01 */ s8 group;
@@ -14,6 +25,37 @@ typedef struct RidiculousRelayPlayer {
 extern D_80111B50_vine_with_me_Struct D_80110CB0_ridiculous_relay;
 extern Gfx D_80110CD8_ridiculous_relay[];
 extern u8 D_80110D68_ridiculous_relay;
+extern u32 D_80110D6C_ridiculous_relay;
+extern u32 D_80110D70_ridiculous_relay[2];
+extern u8 D_80110D78_ridiculous_relay;
+extern u16 D_80110D7C_ridiculous_relay[18];
+extern f32 D_80110DA0_ridiculous_relay[2];
+extern u16 D_80110DA8_ridiculous_relay;
+extern f32 D_80110DAC_ridiculous_relay[4];
+extern f32 D_80110DBC_ridiculous_relay[4];
+extern f32 D_80110DCC_ridiculous_relay[4];
+extern f32 D_80110DDC_ridiculous_relay[4];
+extern s16 D_80110DEE_ridiculous_relay[3];
+extern s16 D_80110DF4_ridiculous_relay[4];
+extern u32 D_80110DFC_ridiculous_relay[2];
+extern u8 D_80110E04_ridiculous_relay;
+extern f32 D_80110E08_ridiculous_relay;
+extern u8 D_80110E0C_ridiculous_relay[3];
+extern u8 D_80110E0F_ridiculous_relay;
+extern u8 D_80110E10_ridiculous_relay;
+extern u8 D_80110E11_ridiculous_relay;
+extern u8 D_80110E12_ridiculous_relay;
+extern f32 D_80110E14_ridiculous_relay;
+extern u8 D_80110E18_ridiculous_relay;
+extern f32 D_80110E1C_ridiculous_relay;
+extern f32 D_80110E20_ridiculous_relay[2];
+extern f32 D_80110E28_ridiculous_relay[2];
+extern f32 D_80110E30_ridiculous_relay[2];
+extern u16 D_80110E38_ridiculous_relay[2];
+extern u8 D_80110E3C_ridiculous_relay[4];
+extern u32 D_80110E40_ridiculous_relay[4];
+extern u8 D_80110E50_ridiculous_relay;
+extern f32 D_80110E54_ridiculous_relay;
 extern RidiculousRelayPlayer D_80111940_ridiculous_relay[4];
 extern RidiculousRelayPlayer *D_80111970_ridiculous_relay[4]; // players indexed by group
 extern f32 D_80111980_ridiculous_relay[7];
@@ -38,6 +80,21 @@ extern u16 D_80111A4E_ridiculous_relay;
 extern s16 D_80111A58_ridiculous_relay[31];
 extern s32 D_80111A30_ridiculous_relay[3];
 extern f32 D_80111A50_ridiculous_relay;
+extern f32 D_801117F0_ridiculous_relay;
+extern f32 D_801117F8_ridiculous_relay[18];
+extern f32 D_80111840_ridiculous_relay[18];
+extern f32 D_80111888_ridiculous_relay[18];
+extern f32 D_801118D0_ridiculous_relay[18];
+extern f32 D_80111918_ridiculous_relay;
+extern f32 D_8011191C_ridiculous_relay;
+extern f32 D_80111920_ridiculous_relay;
+extern f32 D_80111924_ridiculous_relay;
+extern f32 D_80111928_ridiculous_relay;
+extern f32 D_8011192C_ridiculous_relay;
+extern f32 D_80111930_ridiculous_relay;
+extern f32 D_80111934_ridiculous_relay;
+extern f32 D_80111938_ridiculous_relay;
+extern f32 D_8011193C_ridiculous_relay;
 extern Gfx *gMainGfxPos;
 
 const s16 D_80110E60_ridiculous_relay[] = {
@@ -58,6 +115,8 @@ void func_80106D4C_ridiculous_relay(omObjData *object);
 void func_8010AF04_ridiculous_relay(omObjData *object, s8 group);
 void func_8010B4A8_ridiculous_relay(omObjData *object);
 void func_80108DE8_ridiculous_relay(Gfx **gfxPos, s32 arg1, s32 arg2);
+s16 func_80110BF4_ridiculous_relay(s16 arg0, s16 arg1);
+s16 func_80110C3C_ridiculous_relay(s16 seId, s16 playerIdx);
 
 void func_801059A0_ridiculous_relay(void) {
     omObjData *object;
@@ -888,6 +947,776 @@ f32 func_8010B474_ridiculous_relay(f32 x) {
     return out.x;
 }
 
+// Close to matching (same size and structure). Remaining differences:
+// - The original reuses the zero-tested value of several unsigned timers for the following decrement or mask
+//   (D_80110E38[j], D_80110E18 twice, D_80110E3C[0], D_80110E3C[1]); this code reloads them, adding about 10
+//   instructions. Tried --, -= 1, x = x - 1, ternaries, casts and MAX forms; only signed types or
+//   -fexpensive-optimizations reuse the value at -O1.
+// - Small register allocation differences in the obstacle spawn offset (D_80110E28) and the CPU obstacle
+//   look-ahead math.
+// `float best` and `int i` (instead of f32/s32) are deliberate: the typedef variants change fold/cross-jumping.
+#ifdef NON_MATCHING
+void func_8010B4A8_ridiculous_relay(omObjData *object) {
+    f32 hurdleX[18] = { 0.0f, 32.0f, 64.0f, 96.0f, 128.0f, 128.0f, 160.0f, 192.0f, 224.0f,
+                        256.0f, 288.0f, 320.0f, 352.0f, 384.0f, 384.0f, 416.0f, 448.0f, 480.0f };
+    f32 hurdleLane[18] = { 0.0f, 1.0f, -1.0f, 0.0f, 1.0f, -1.0f, 1.0f, 0.0f, -1.0f,
+                           1.0f, -1.0f, 1.0f, 0.0f, 1.0f, -1.0f, -1.0f, 0.0f, 1.0f };
+    f32 visX[5];
+    f32 visY[5];
+    u8 visIdx[5];
+    f32 prevCenter[2] = { CenterM[0].x, CenterM[1].x };
+    s32 visCount = 0;
+    s16 cpuParams[3][3][4] = {
+        { { 4, 3, 3, 2 }, { 12, 10, 9, 8 }, { 3, 2, 2, 2 } },
+        { { 2, 3, 2, 2 }, { 6, 7, 6, 6 }, { 3, 5, 4, 3 } },
+        { { 0, 0, 0, 0 }, { 10, 15, 30, 40 }, { 0, 0, 0, 0 } },
+    };
+    f32 rowerSpeeds[5] = { 0.0f, 27.0f, 54.0f, 81.0f, 54.0f };
+    f32 waves[3];
+    omObjData *obj;
+    RidiculousRelayPlayer *player;
+    int i;
+    s32 j;
+    s32 lane;
+    u8 mode;
+    f32 stickX;
+    f32 stickY;
+    f32 x;
+    f32 y;
+
+    mode = ((D_801119D8_ridiculous_relay == 1 && D_801119D4_ridiculous_relay >= 63) || D_801119D8_ridiculous_relay == 2)  ? 1
+           : ((D_801119D8_ridiculous_relay == 1 && D_801119D4_ridiculous_relay < 63) || D_801119D8_ridiculous_relay == 0) ? 2
+                                                                                                                          : 0;
+    for (i = 0; i < 7; i++) {
+        D_80111980_ridiculous_relay[i] = 0.0f;
+    }
+    D_801119D0_ridiculous_relay = (D_80110D6C_ridiculous_relay % 1200) / 1200.0 * 20.0;
+    D_801119DC_ridiculous_relay = sindf(D_80110D6C_ridiculous_relay * 4) * 0.2;
+    waves[0] = sindf(D_80110D6C_ridiculous_relay % 60 * 6) * 20.0f;
+    waves[1] = sindf(D_80110D6C_ridiculous_relay % 60 * 6 + 120) * 20.0f;
+    waves[2] = sindf(D_80110D6C_ridiculous_relay % 60 * 6 + 240) * 20.0f;
+
+    for (i = 0; i < 18; i++) {
+        f32 hx = 2.0 * (hurdleX[i] + 60.0f) * 100.0 / 4.0 * 0.125;
+
+        if (CenterM[0].x - 137.5 < hx && hx < CenterM[0].x + 137.5) {
+            if (visCount >= 5) {
+                break;
+            }
+            visIdx[visCount] = i;
+            visX[visCount] = hx;
+            visY[visCount] = (hurdleLane[i] * 200.0 + waves[i % 3] + D_80110D7C_ridiculous_relay[i] * 10.5) * 0.125;
+            Hu3DModelPosSet(D_801119BC_ridiculous_relay->model[visCount + 12], visX[visCount], visY[visCount], -250.0f);
+            Hu3DModelPosSet(D_801119BC_ridiculous_relay->model[visCount + 12], visX[visCount], visY[visCount], 0.0f);
+            func_8001C258_main(D_801119BC_ridiculous_relay->model[visCount + 12], 4, 0);
+            visCount++;
+        }
+    }
+    for (i = visCount; i < 5; i++) {
+        func_8001C258_main(D_801119BC_ridiculous_relay->model[i + 12], 4, 4);
+    }
+
+    for (j = 0; j < 2; j++) {
+        if (D_80110E20_ridiculous_relay[j] <= -1000.0f && D_80110E38_ridiculous_relay[j] != 0 && D_801119D8_ridiculous_relay == 2 && D_80110DAC_ridiculous_relay[0] >= 50.0 && D_80110DAC_ridiculous_relay[0] < 1775.0) {
+            D_80110E38_ridiculous_relay[j] -= 1;
+        }
+        if (D_80110E20_ridiculous_relay[j] <= -1000.0f && D_80110E38_ridiculous_relay[j] == 0 && D_801119D8_ridiculous_relay == 2 && D_80110DAC_ridiculous_relay[0] >= 50.0 && D_80110DAC_ridiculous_relay[0] < 1775.0) {
+            D_80110E20_ridiculous_relay[j] = CenterM[0].x + 125.0;
+            HuAudFXPlay(0x332);
+            i = rand8() % 9;
+            if (D_801119D8_ridiculous_relay == 2 && D_80110DAC_ridiculous_relay[0] > D_80110DAC_ridiculous_relay[D_80110D78_ridiculous_relay + 1]) {
+                f32 laneDist[3] = { 16382.0f, 16382.0f, 16382.0f };
+                float best = 0.0f;
+                s32 start = rand8() % 3;
+                s32 playerLane = D_80111A20_ridiculous_relay[0]->trans.y / 0.125 + 125.0;
+
+                playerLane = (playerLane >= 100) ? 2 : (playerLane >= -99);
+
+                for (i = 0; i < visCount; i++) {
+                    lane = (s32)hurdleLane[visIdx[i]] + 1;
+                    if (D_80110D7C_ridiculous_relay[visIdx[i]] == 0 && D_80111A20_ridiculous_relay[0]->trans.x < visX[i] + 12.5) {
+                        laneDist[lane] = MIN(visX[i] + 100.0f - D_80111A20_ridiculous_relay[0]->trans.x, laneDist[lane]);
+                    }
+                }
+                for (i = 0, lane = 0; i < 3; i++) {
+                    if (best < laneDist[(i + start) % 3] + ((playerLane == (i + start) % 3) ? 1.0f : 0.0f)) {
+                        lane = (i + start) % 3;
+                        best = laneDist[(i + start) % 3] + ((playerLane == (i + start) % 3) ? 1.0f : 0.0f);
+                    }
+                }
+                if (laneDist[0] != 16382.0f || laneDist[1] != 16382.0f || laneDist[2] != 16382.0f) {
+                    i = lane * 3 + rand8() % 3;
+                } else {
+                    i = rand8() % 9;
+                }
+            }
+            D_80110E28_ridiculous_relay[j] = (((i / 3 - 1) * 25 + (i % 3 - 1) * 5) * 8) * 0.125;
+        }
+        D_80110E20_ridiculous_relay[j] -= D_80110E30_ridiculous_relay[j] * SPEED_SCALE;
+        if (D_80110E20_ridiculous_relay[j] <= CenterM[0].x - 137.5 && D_80110E20_ridiculous_relay[j] > -1000.0f) {
+            D_80110E20_ridiculous_relay[j] = -1000.0f;
+            D_80110E38_ridiculous_relay[j] = (D_80110DAC_ridiculous_relay[0] < 250.0)    ? 20
+                                             : (D_80110DAC_ridiculous_relay[0] > 1250.0) ? 0
+                                                                                         : (s32)((1250.0 - D_80110DAC_ridiculous_relay[0]) / 1000.0 * 20.0);
+        }
+        if (D_80110E20_ridiculous_relay[j] <= -1000.0f) {
+            func_8001C258_main(D_801119BC_ridiculous_relay->model[j + 10], 4, 4);
+        } else {
+            Hu3DModelPosSet(D_801119BC_ridiculous_relay->model[j + 10], D_80110E20_ridiculous_relay[j], D_80110E28_ridiculous_relay[j], 0.0f);
+            func_8001C258_main(D_801119BC_ridiculous_relay->model[j + 10], 4, 0);
+        }
+    }
+
+    // Group 0: hurdle runner
+    obj = D_80111A20_ridiculous_relay[0];
+    player = D_80111970_ridiculous_relay[0];
+    D_80110D70_ridiculous_relay[0] += (D_80110D70_ridiculous_relay[0] != 0 && D_80110D70_ridiculous_relay[0] != 99 && D_80110D70_ridiculous_relay[0] != 199 && D_80110D70_ridiculous_relay[0] != 299);
+    if (D_80110D70_ridiculous_relay[0] != 0 && D_80110D70_ridiculous_relay[0] < 100 && D_80110DAC_ridiculous_relay[0] > 1900.0) {
+        D_80110D70_ridiculous_relay[0] = 100;
+        Hu3DModelPosSet(D_801119BC_ridiculous_relay->model[4], obj->trans.x + 12.5, obj->trans.y - 3.125, obj->trans.z);
+        func_8001C258_main(D_801119BC_ridiculous_relay->model[4], 4, 0);
+        func_8001C258_main(obj->model[1], 4, 4);
+    }
+    if (D_80110D70_ridiculous_relay[0] >= 100) {
+        func_8001C258_main(obj->model[0], 4, 0);
+        if (D_80110D70_ridiculous_relay[0] == 100) {
+            D_80111918_ridiculous_relay = obj->trans.x;
+            D_8011191C_ridiculous_relay = obj->trans.y;
+            D_80111924_ridiculous_relay = 0.0f;
+            D_80111928_ridiculous_relay = 90.0f;
+            D_80111920_ridiculous_relay = 2.0 * (D_80110DCC_ridiculous_relay[0] * SPEED_SCALE);
+            func_8001C5B4_main(obj->model[0], obj->motion[5]);
+            func_8001C814_main(obj->model[0], 2, 0);
+            Hu3DMotionTimeSet(obj->model[0], 14.0f);
+        }
+        if (D_80110D70_ridiculous_relay[0] == 203) {
+            Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[0]].motId, 0, 30, 2);
+        }
+        if (D_80110D70_ridiculous_relay[0] < 200) {
+            D_80111918_ridiculous_relay += D_80111920_ridiculous_relay;
+            D_8011191C_ridiculous_relay += D_80111924_ridiculous_relay;
+            D_80111924_ridiculous_relay -= 0.8125;
+            if (D_8011191C_ridiculous_relay <= -20.0) {
+                D_8011191C_ridiculous_relay = -20.0f;
+                D_80110D70_ridiculous_relay[0] = 200;
+                Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[6]].motId, 10, 4, 0);
+            }
+        } else if (D_80110D70_ridiculous_relay[0] >= 215) {
+            if (D_801119C0_ridiculous_relay == 0) {
+                D_80111928_ridiculous_relay = SETTLE_ANGLE(D_80111928_ridiculous_relay);
+            } else if (D_80110D70_ridiculous_relay[0] >= 215) {
+                if (D_801119D8_ridiculous_relay == 4 && ((D_801119D4_ridiculous_relay > 30 && D_801119D4_ridiculous_relay < 120 && D_80110D70_ridiculous_relay[0] == 215) || (D_801119D4_ridiculous_relay == 30 && D_801119D4_ridiculous_relay < 120 && D_80110D70_ridiculous_relay[0] >= 215))) {
+                    D_80110D70_ridiculous_relay[0] = 300;
+                    func_8001C5B4_main(obj->model[0], obj->motion[4]);
+                    func_8001C814_main(obj->model[0], 3, 0);
+                }
+                if (D_80110D70_ridiculous_relay[0] >= 300) {
+                    D_80111928_ridiculous_relay = SETTLE_ANGLE(D_80111928_ridiculous_relay);
+                }
+            }
+        }
+        omSetTra(obj, D_80111918_ridiculous_relay, D_8011191C_ridiculous_relay, 0.0f);
+        omSetRot(obj, 0.0f, D_80111928_ridiculous_relay, 0.0f);
+    } else {
+        stickX = (mode == 1 && player->cpuDifficulty == -1) ? D_800CBB6E_main[player->pad] : 0.0f;
+        stickY = (mode == 1 && player->cpuDifficulty == -1) ? D_800D20A1_main[player->pad] : 0.0f;
+        if (D_80110D70_ridiculous_relay[0] != 0) {
+            stickX = 0.0f;
+            stickY = (D_80110DBC_ridiculous_relay[0] < -135.0f) ? 60.0f : 0.0f;
+        } else {
+            if (mode == 1 && player->cpuDifficulty != -1) {
+                f32 targetSpeeds[4] = { 35.0f, 39.0f, 42.0f, 46.0f };
+                f32 laneDist[3] = { D_80110E08_ridiculous_relay, D_80110E08_ridiculous_relay, D_80110E08_ridiculous_relay };
+                float best = 0.0f;
+
+                i = targetSpeeds[player->cpuDifficulty];
+                stickX = (D_80110DCC_ridiculous_relay[0] < i - 1)   ? 50.0f
+                         : (i + 1 < D_80110DCC_ridiculous_relay[0]) ? -50.0f
+                                                                    : (D_80110DCC_ridiculous_relay[0] - i) * -50.0f;
+                stickX = (stickX < 0.0f) ? 0.0f : stickX;
+                for (i = 0; i < visCount; i++) {
+                    lane = (s32)hurdleLane[visIdx[i]] + 1;
+                    if (D_80110D7C_ridiculous_relay[visIdx[i]] == 0 && obj->trans.x < visX[i] + 12.5) {
+                        laneDist[lane] = MIN(visX[i] + 100.0f - obj->trans.x, laneDist[lane]);
+                    }
+                }
+                for (j = 0; j < 2; j++) {
+                    f32 range[4] = { 100.0f, 115.0f, 130.0f, 150.0f };
+                    f32 dx;
+                    f32 move;
+
+                    lane = (D_80110E28_ridiculous_relay[j] < -12.5) ? 0 : (D_80110E28_ridiculous_relay[j] < 12.5) ? 1
+                                                                                                                  : 2;
+                    dx = D_80110E20_ridiculous_relay[j] - obj->trans.x;
+                    move = (f32)(dx / ((D_80110DCC_ridiculous_relay[0] + D_80110E30_ridiculous_relay[j]) * SPEED_SCALE)) * -D_80110E30_ridiculous_relay[j] * SPEED_SCALE;
+                    // No braces: keeps range[] alive in this scope, which the original stack layout needs.
+                    // NOLINTBEGIN(readability-braces-around-statements)
+                    if (move < 0.0f && obj->trans.x < move + D_80110E20_ridiculous_relay[j] + 12.5 && dx < range[player->cpuDifficulty])
+                        laneDist[lane] = MIN(move + D_80110E20_ridiculous_relay[j] + 100.0f - obj->trans.x, laneDist[lane]);
+                    // NOLINTEND(readability-braces-around-statements)
+                }
+                lane = 0;
+                for (i = 0; i < 3; i++) {
+                    if (best < laneDist[i] - ABS_DIFF(D_80110E04_ridiculous_relay, i)) {
+                        best = laneDist[i] - ABS_DIFF(D_80110E04_ridiculous_relay, i);
+                        lane = i;
+                    }
+                }
+                if (laneDist[0] != D_80110E08_ridiculous_relay || laneDist[1] != D_80110E08_ridiculous_relay || laneDist[2] != D_80110E08_ridiculous_relay) {
+                    f32 laneMemory[4] = { 185.0f, 200.0f, 215.0f, 230.0f };
+                    f32 laneTolerance[4] = { 30.0f, 37.0f, 44.0f, 50.0f };
+
+                    if (D_80110E04_ridiculous_relay != lane) {
+                        D_80110E08_ridiculous_relay = laneMemory[player->cpuDifficulty];
+                    }
+                    D_80110E04_ridiculous_relay = lane;
+                    i = laneTolerance[player->cpuDifficulty];
+                    if (((D_80110E04_ridiculous_relay - 1) * 200.0 - i) * 0.125 > obj->trans.y + 15.625) {
+                        stickY = i;
+                    } else if (((D_80110E04_ridiculous_relay - 1) * 200.0 + i) * 0.125 < obj->trans.y + 15.625) {
+                        stickY = -i;
+                    }
+                }
+            }
+            stickX = (D_80110DF4_ridiculous_relay[0] != 0) ? -50.0f : (stickX < -50.0f) ? -50.0f
+                                                                  : (stickX > 50.0f)    ? 50.0f
+                                                                                        : stickX;
+            stickY = (D_80110DF4_ridiculous_relay[0] != 0) ? 0.0f : (stickY < -50.0f) ? -50.0f
+                                                                : (stickY > 50.0f)    ? 50.0f
+                                                                                      : stickY;
+            stickY = !(D_80110DBC_ridiculous_relay[0] >= 46.0f && stickY > 0.0f) ? (!(D_80110DBC_ridiculous_relay[0] <= -330.0f && stickY < 0.0f) ? stickY : 0.0f) : 0.0f;
+        }
+        if (D_80110E18_ridiculous_relay < 31) {
+            D_80110DCC_ridiculous_relay[0] += stickX / 50.0 * 5.0 / 30.0;
+            D_80110DCC_ridiculous_relay[0] = (mode == 2)                                            ? 40.0f
+                                             : (D_80110DCC_ridiculous_relay[0] < 35.0 - 5.0 / 30.0) ? D_80110DCC_ridiculous_relay[0] + 5.0 / 30.0
+                                             : (D_80110DCC_ridiculous_relay[0] < 35.0f)             ? 35.0f
+                                             : (D_80110DCC_ridiculous_relay[0] > 46.0f)             ? 46.0f
+                                                                                                    : D_80110DCC_ridiculous_relay[0];
+        }
+        D_80110DAC_ridiculous_relay[0] += D_80110DCC_ridiculous_relay[0] * SPEED_SCALE;
+        if (D_80110DAC_ridiculous_relay[0] > 1871.875 && D_80110D70_ridiculous_relay[0] == 0) {
+            D_80110D70_ridiculous_relay[0] = 1;
+            if (D_801119C0_ridiculous_relay == 5) {
+                D_801119C0_ridiculous_relay = 0;
+            }
+            D_80110E40_ridiculous_relay[0] = D_80110D6C_ridiculous_relay;
+        }
+        D_80110DAC_ridiculous_relay[0] -= D_80110E54_ridiculous_relay;
+        CenterM[0].x = 2.0 * D_80110DAC_ridiculous_relay[0] + 56.25;
+        D_80110E54_ridiculous_relay = (D_80110DCC_ridiculous_relay[0] + -40.0f) * 3.0f;
+        D_80110DAC_ridiculous_relay[0] += D_80110E54_ridiculous_relay;
+        i = (D_80110D70_ridiculous_relay[0] != 0) ? 6 : 3;
+        D_80110DDC_ridiculous_relay[0] = (D_80110DDC_ridiculous_relay[0] < stickY - i)   ? D_80110DDC_ridiculous_relay[0] + i
+                                         : (stickY + i < D_80110DDC_ridiculous_relay[0]) ? D_80110DDC_ridiculous_relay[0] - i
+                                                                                         : stickY;
+        D_80110DBC_ridiculous_relay[0] += D_80110DDC_ridiculous_relay[0] / 5.0;
+        D_80110DBC_ridiculous_relay[0] = (D_80110DBC_ridiculous_relay[0] > 30.0f)     ? 30.0f
+                                         : (D_80110DBC_ridiculous_relay[0] < -330.0f) ? -330.0f
+                                                                                      : D_80110DBC_ridiculous_relay[0];
+        omSetTra(obj, 2.0 * D_80110DAC_ridiculous_relay[0], D_80110DBC_ridiculous_relay[0] * 0.125, 0.0f);
+        omSetRot(obj, -90.0f, 90.0 - D_80110DDC_ridiculous_relay[0] / 8.0, D_80110DDC_ridiculous_relay[0] / 4.0 + -90.0);
+        Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
+        Hu3DModelRotSet(obj->model[1], obj->rot.x, obj->rot.y, obj->rot.z);
+    }
+    if (D_80110D70_ridiculous_relay[0] < 100) {
+        for (i = 0; i < visCount + 2; i++) {
+            x = (i < visCount) ? visX[i] : D_80110E20_ridiculous_relay[i - visCount];
+            y = (i < visCount) ? visY[i] : D_80110E28_ridiculous_relay[i - visCount];
+            j = i - visCount;
+            if ((i < visCount || !(D_80110E20_ridiculous_relay[j] <= -1000.0f)) && mode == 1 && D_80110DF4_ridiculous_relay[0] == 0 && (i >= visCount || D_80110D7C_ridiculous_relay[visIdx[i]] == 0) && D_80110E18_ridiculous_relay == 0) {
+                f32 dx = x - obj->trans.x;
+
+                if (dx < 15.625 && dx > -15.625) {
+                    f32 ax = ABS(dx) * 0.75;
+                    f64 dy = ABS(y - (obj->trans.y + 15.625));
+                    f32 ay;
+
+                    if (i >= visCount) {
+                        dy *= 0.875;
+                    }
+                    ay = dy;
+                    if (HuSqrtf(ax * ax + ay * ay) < 11.25) {
+                        s16 fx;
+
+                        if (i < visCount) {
+                            D_80110D7C_ridiculous_relay[visIdx[i]] = 1;
+                        }
+                        D_80110E1C_ridiculous_relay = D_80110DCC_ridiculous_relay[0];
+                        D_80110DF4_ridiculous_relay[0] = 60;
+                        D_80110E18_ridiculous_relay = 60;
+                        D_80110E50_ridiculous_relay = (i >= visCount);
+                        Hu3DModelPosSet(D_801119BC_ridiculous_relay->model[5], x * 0.5 + obj->trans.x * 0.5, y * 0.5 + obj->trans.y * 0.5 + 5.0, 0.0f);
+                        Hu3DModelRotSet(D_801119BC_ridiculous_relay->model[5], 0.0f, 0.0f, rand8() / 256.0 * 360.0);
+                        Hu3DModelScaleSet(D_801119BC_ridiculous_relay->model[5], 0.1875f, 0.1875f, 0.1875f);
+                        func_8001C258_main(D_801119BC_ridiculous_relay->model[5], 4, 0);
+                        func_8001F9E4_main(D_801119BC_ridiculous_relay->model[5], 0xFF);
+                        obj->trans.y += -0.75;
+                        omVibrate(D_80111970_ridiculous_relay[0]->playerNo, 20, 0, 20);
+                        func_80110C3C_ridiculous_relay(0x286, D_80111970_ridiculous_relay[0]->playerNo);
+                        func_80110BF4_ridiculous_relay(D_80111970_ridiculous_relay[0]->chr + 0x95, D_80111970_ridiculous_relay[0]->playerNo);
+                        if (D_80110E50_ridiculous_relay == 0) {
+                            fx = HuAudFXPlay(0x333);
+                            if (fx != -1) {
+                                HuAudFXPanning(fx, (obj->trans.x - CenterM[0].x) / 90.0 * 32.0 + 64.0);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (D_80110DF4_ridiculous_relay[0] == 58 || D_80110DF4_ridiculous_relay[0] == 56) {
+            i = (D_80110DF4_ridiculous_relay[0] == 58);
+            func_8001F9E4_main(D_801119BC_ridiculous_relay->model[5], i ? 0x80 : 0x30);
+            Hu3DModelScaleSet(D_801119BC_ridiculous_relay->model[5], i ? 0.28125f : 0.34375f, i ? 0.28125f : 0.34375f,
+                              i ? 0.28125f : 0.34375f);
+            obj->trans.x += i ? 0.5 : -0.75;
+        } else if (D_80110DF4_ridiculous_relay[0] == 54) {
+            func_8001C258_main(D_801119BC_ridiculous_relay->model[5], 4, 4);
+            obj->trans.x += 0.25;
+        }
+        if (D_80110DF4_ridiculous_relay[0] != 0) {
+            Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
+        }
+        D_80110DF4_ridiculous_relay[0] = MAX((s16)(D_80110DF4_ridiculous_relay[0] - 2), 0);
+        Hu3DMotionTimeSet(obj->model[0], (D_80110DF4_ridiculous_relay[0] != 0) ? (f32)(60 - D_80110DF4_ridiculous_relay[0]) : 0.0f);
+        if (D_80110E18_ridiculous_relay != 0) {
+            D_80110E18_ridiculous_relay--;
+            if (D_80110E18_ridiculous_relay >= 30) {
+                f32 t = sindf((60 - D_80110E18_ridiculous_relay) / 30.0 * 90.0);
+
+                D_80110DCC_ridiculous_relay[0] = (1.0f - t) * D_80110E1C_ridiculous_relay + t * 35.0f;
+                D_80110DAC_ridiculous_relay[0] -= (1.0f - sindf((60 - D_80110E18_ridiculous_relay) / 30.0 * 90.0)) / 2.0f * (D_80110E50_ridiculous_relay ? 4.0 : 2.5);
+            }
+            if (D_80110E18_ridiculous_relay < 31) {
+                func_8001C258_main(obj->model[0], 4, (D_80110E18_ridiculous_relay & 1) * 4);
+            }
+        } else {
+            func_8001C258_main(obj->model[0], 4, 0);
+        }
+        for (i = 0; i < 18; i++) {
+            D_80110D7C_ridiculous_relay[i] += (D_80110D7C_ridiculous_relay[i] != 0 || D_801119D8_ridiculous_relay >= 3) && D_80110D7C_ridiculous_relay[i] < 0xFFFF;
+        }
+    }
+    D_801119A8_ridiculous_relay[0] = (D_80110DAC_ridiculous_relay[0] < 0.0f) ? 0.0f : D_80110DAC_ridiculous_relay[0] / 1868.75f;
+    D_801119A8_ridiculous_relay[0] = (D_801119A8_ridiculous_relay[0] >= 1.0f) ? 1.0f : D_801119A8_ridiculous_relay[0];
+
+    // Group 1: rowing
+    obj = D_80111A20_ridiculous_relay[1];
+    player = D_80111970_ridiculous_relay[1];
+    if (D_80110D78_ridiculous_relay == 0 || (D_80110D78_ridiculous_relay == 1 && D_80110DAC_ridiculous_relay[2] < 875.0)) {
+        D_80110E0C_ridiculous_relay[0] -= D_80110D78_ridiculous_relay == 0 && D_80110E0C_ridiculous_relay[0] != 0;
+        if (D_80110D78_ridiculous_relay == 0 && mode == 1) {
+            u16 btn = D_800D5558_main[player->pad];
+
+            if ((D_80110DEE_ridiculous_relay[0] ? (btn & (B_BUTTON | Z_TRIG)) : (btn & A_BUTTON)) || (player->cpuDifficulty != -1 && D_80110E0C_ridiculous_relay[0] == 0)) {
+                D_80110DEE_ridiculous_relay[0] = 1 - D_80110DEE_ridiculous_relay[0];
+                D_80110DF4_ridiculous_relay[1] = (D_80110DF4_ridiculous_relay[1] != 0) ? D_80110DF4_ridiculous_relay[1] : 60;
+                D_80110DCC_ridiculous_relay[1] += 40.0 / 9.0;
+                if (player->cpuDifficulty != -1) {
+                    D_80110E0C_ridiculous_relay[0] = cpuParams[0][0][player->cpuDifficulty] + rand8() % cpuParams[1][0][player->cpuDifficulty];
+                }
+            }
+        }
+        if (mode == 2 && D_80110D6C_ridiculous_relay % 24 == 15) {
+            D_80110DF4_ridiculous_relay[1] = (D_80110DF4_ridiculous_relay[1] != 0) ? D_80110DF4_ridiculous_relay[1] : 60;
+        }
+        D_80110DAC_ridiculous_relay[1] += D_80110DCC_ridiculous_relay[1] * SPEED_SCALE;
+        D_80110DCC_ridiculous_relay[1] -= D_80110DCC_ridiculous_relay[1] / 6.0 / 5.0 * (29.0 / 30.0);
+        D_80110DCC_ridiculous_relay[1] = (mode == 2)                                ? 40.0f
+                                         : (D_80110DCC_ridiculous_relay[1] > 43.5)  ? 43.5f
+                                         : (D_80110DCC_ridiculous_relay[1] < -43.5) ? -43.5f
+                                                                                    : D_80110DCC_ridiculous_relay[1];
+        if (D_80110DAC_ridiculous_relay[1] > 626.25) {
+            D_80110DAC_ridiculous_relay[1] = 626.25f;
+            D_80110DCC_ridiculous_relay[1] *= (D_80110DCC_ridiculous_relay[1] > 0.0f) ? -0.25 : 1.0;
+            if (D_80110D78_ridiculous_relay == 0) {
+                D_80110D78_ridiculous_relay = 1;
+                D_80110DFC_ridiculous_relay[0] = 1;
+                D_80110DA8_ridiculous_relay = 1;
+                D_801117F0_ridiculous_relay = (D_801117F0_ridiculous_relay < 0.5) ? 0.5f : D_801117F0_ridiculous_relay;
+                D_80110E40_ridiculous_relay[1] = D_80110D6C_ridiculous_relay;
+                omVibrate(D_80111970_ridiculous_relay[2]->playerNo, 2, 3, 10);
+            }
+        }
+        if (D_80110D78_ridiculous_relay == 0) {
+            f32 camX = 2.0 * D_80110DAC_ridiculous_relay[1] + 56.25;
+
+            D_801117F0_ridiculous_relay = prevCenter[1] - D_80110DA0_ridiculous_relay[1];
+            CenterM[1].x = camX;
+        }
+        func_8001C258_main(obj->model[0], 4, 0);
+        omSetTra(obj, 2.0 * D_80110DAC_ridiculous_relay[1], D_801119DC_ridiculous_relay * 100.0f * 0.125 + -25.0, 0.0f);
+        omSetRot(obj, 0.0f, 90.0f, 0.0f);
+        func_8001C258_main(obj->model[1], 4, 0);
+        Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
+        Hu3DModelRotSet(obj->model[1], obj->rot.x, obj->rot.y, obj->rot.z);
+        {
+            s32 prev = D_80110DF4_ridiculous_relay[1];
+
+            i = prev >= 58;
+            D_80110DF4_ridiculous_relay[1] = prev - ((D_80110DCC_ridiculous_relay[1] < 0.0f) ? 1.0 : D_80110DCC_ridiculous_relay[1] / 15.0);
+            D_80110DF4_ridiculous_relay[1] = MAX(D_80110DF4_ridiculous_relay[1], 0);
+            if (D_80110DF4_ridiculous_relay[1] < 58 && i) {
+                HuAudFXPlay(0x32F);
+            }
+        }
+        Hu3DMotionTimeSet(obj->model[0], (D_80110DF4_ridiculous_relay[1] != 0) ? (f32)(60 - D_80110DF4_ridiculous_relay[1]) : 0.0f);
+        if (D_80110D78_ridiculous_relay == 0 && mode == 1) {
+            D_80111980_ridiculous_relay[D_80110DEE_ridiculous_relay[0]] = obj->trans.x;
+        }
+    } else {
+        func_8001C258_main(obj->model[0], 4, 4);
+        func_8001C258_main(obj->model[1], 4, 4);
+        func_8001C258_main(obj->model[2], 4, 4);
+    }
+    if (D_80110E3C_ridiculous_relay[0] == 1) {
+        func_8001C258_main(D_801119BC_ridiculous_relay->model[7], 4, 4);
+    }
+    D_80110E3C_ridiculous_relay[0] = (D_80110E3C_ridiculous_relay[0] != 0) ? D_80110E3C_ridiculous_relay[0] - 1 : 0;
+    D_801119A8_ridiculous_relay[1] = (D_80110D78_ridiculous_relay != 0)        ? 1.0f
+                                     : (D_80110DAC_ridiculous_relay[1] < 0.0f) ? 0.0f
+                                                                               : D_80110DAC_ridiculous_relay[1] / 626.5625f;
+    D_801119A8_ridiculous_relay[1] = (D_801119A8_ridiculous_relay[1] >= 1.0f) ? 1.0f : D_801119A8_ridiculous_relay[1];
+
+    // Group 2: swimming
+    obj = D_80111A20_ridiculous_relay[2];
+    player = D_80111970_ridiculous_relay[2];
+    if (D_80110D78_ridiculous_relay == 1 || (D_80110D78_ridiculous_relay == 0 && D_80110DAC_ridiculous_relay[1] > 375.0) || (D_80110D78_ridiculous_relay == 2 && D_80110DAC_ridiculous_relay[3] < 1500.0)) {
+        f32 step;
+
+        D_80110E0C_ridiculous_relay[1] -= D_80110D78_ridiculous_relay == 1 && D_80110E0C_ridiculous_relay[1] != 0;
+        if (D_80110D78_ridiculous_relay == 1 && mode == 1 && (((D_800D5558_main[player->pad] & ((D_80110DEE_ridiculous_relay[1] / 2) ? B_BUTTON : A_BUTTON)) && ((D_80110DEE_ridiculous_relay[1] & 1) ? -1 : 1) * D_800D20A1_main[player->pad] > 32) || (player->cpuDifficulty != -1 && D_80110E0C_ridiculous_relay[1] == 0))) {
+            D_80110E0F_ridiculous_relay = D_80110E10_ridiculous_relay;
+            D_80110E10_ridiculous_relay = D_80110DEE_ridiculous_relay[1];
+            D_80110E11_ridiculous_relay = 0;
+            D_80110E12_ridiculous_relay = 2;
+            Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[D_80110DEE_ridiculous_relay[1] + 7]].motId,
+                               (D_80110DEE_ridiculous_relay[1] == 3) ? 7 : 5, 4, 0);
+            D_80110DEE_ridiculous_relay[1]++;
+            D_80110DEE_ridiculous_relay[1] %= 4;
+            if (D_80110DEE_ridiculous_relay[1] == 0) {
+                D_80110DF4_ridiculous_relay[2] = 50;
+                D_80110DCC_ridiculous_relay[2] = 53.0f;
+                if (D_80110D78_ridiculous_relay == 1) {
+                    func_8001C258_main(D_801119BC_ridiculous_relay->model[8], 4, 0);
+                    Hu3DModelScaleSet(D_801119BC_ridiculous_relay->model[8], 0.234375f, 0.234375f, 0.234375f);
+                    Hu3DMotionTimeSet(D_801119BC_ridiculous_relay->model[8], 0.0f);
+                    Hu3DMotionSpeedSet(D_801119BC_ridiculous_relay->model[8], 1.5f);
+                    func_8001C258_main(D_801119BC_ridiculous_relay->model[9], 4, 0);
+                    Hu3DModelScaleSet(D_801119BC_ridiculous_relay->model[9], 0.234375f, 0.234375f, 0.234375f);
+                    Hu3DMotionTimeSet(D_801119BC_ridiculous_relay->model[9], 0.0f);
+                    Hu3DMotionSpeedSet(D_801119BC_ridiculous_relay->model[9], 1.5f);
+                    D_80110E3C_ridiculous_relay[1] = 10;
+                    HuAudFXPlay(0x330);
+                }
+            }
+            Hu3DModelPosSet(D_801119BC_ridiculous_relay->model[8], obj->trans.x - 31.25, obj->trans.y - 3.90625, obj->trans.z);
+            Hu3DModelPosSet(D_801119BC_ridiculous_relay->model[9], obj->trans.x + 23.4375, obj->trans.y - 1.953125, obj->trans.z);
+            if (player->cpuDifficulty != -1) {
+                D_80110E0C_ridiculous_relay[1] = cpuParams[0][1][player->cpuDifficulty] + rand8() % cpuParams[1][1][player->cpuDifficulty];
+            }
+        } else if (D_80110D78_ridiculous_relay == 1 && mode == 1 && D_80110E10_ridiculous_relay != 4 && player->cpuDifficulty == -1 && (D_800D5558_main[player->pad] & (A_BUTTON | B_BUTTON))) {
+            D_80110E0F_ridiculous_relay = D_80110E10_ridiculous_relay;
+            D_80110E10_ridiculous_relay = 4;
+            D_80110E11_ridiculous_relay = 0;
+            D_80110E12_ridiculous_relay = 3;
+            Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[11]].motId, 0, 6, 0);
+            omVibrate(D_80111970_ridiculous_relay[2]->playerNo, 10, 0, 10);
+        }
+        step = D_80110DCC_ridiculous_relay[2] / 60.0 * (125.0 / 60.0);
+        D_80110DAC_ridiculous_relay[2] += step;
+        D_80110DCC_ridiculous_relay[2] = (D_80110DCC_ridiculous_relay[2] > 1.0f)    ? D_80110DCC_ridiculous_relay[2] - 1.0f
+                                         : (D_80110DCC_ridiculous_relay[2] < -1.0f) ? D_80110DCC_ridiculous_relay[2] + 1.0f
+                                                                                    : 0.0f;
+        if (D_80110DAC_ridiculous_relay[2] > 1245.3125) {
+            D_80110DAC_ridiculous_relay[2] = 1245.3125f;
+            D_80110DCC_ridiculous_relay[2] *= (D_80110DCC_ridiculous_relay[2] > 0.0f) ? -0.2 : 1.0;
+            if (D_80110D78_ridiculous_relay < 2) {
+                D_80110D78_ridiculous_relay = 2;
+                D_80110DFC_ridiculous_relay[1] = 1;
+                D_80110DA8_ridiculous_relay = 1;
+                D_801117F0_ridiculous_relay = (D_801117F0_ridiculous_relay < 0.5) ? 0.5f : D_801117F0_ridiculous_relay;
+                if (D_801119D8_ridiculous_relay == 2) {
+                    D_80111A30_ridiculous_relay[2] = HuAudFXPlay(0x331);
+                    HuAudFXVolSet(D_80111A30_ridiculous_relay[2], 127);
+                }
+                D_80110E40_ridiculous_relay[2] = D_80110D6C_ridiculous_relay;
+                omVibrate(D_80111970_ridiculous_relay[3]->playerNo, 2, 3, 10);
+            }
+        }
+        if (D_80110D78_ridiculous_relay == 1) {
+            f32 camX = 2.0 * D_80110DAC_ridiculous_relay[2] + 56.25;
+
+            D_80110DA8_ridiculous_relay = (D_80110DA8_ridiculous_relay != 0 && CenterM[1].x + D_801117F0_ridiculous_relay <= camX) ? D_80110DA8_ridiculous_relay + 1 : 0;
+            if (D_80110DA8_ridiculous_relay != 0) {
+                D_801117F0_ridiculous_relay = (D_801117F0_ridiculous_relay < 2.0 * step) ? 2.0 * step : D_801117F0_ridiculous_relay;
+                CenterM[1].x += D_801117F0_ridiculous_relay;
+            } else {
+                D_801117F0_ridiculous_relay = prevCenter[1] - D_80110DA0_ridiculous_relay[1];
+                CenterM[1].x = camX;
+            }
+        }
+        func_8001C258_main(obj->model[0], 4, 0);
+        func_8001C258_main(obj->model[2], 4, 0);
+        D_80110E11_ridiculous_relay = (D_80110E0F_ridiculous_relay == D_80110E10_ridiculous_relay) ? 0 : D_80110E11_ridiculous_relay + 1;
+        if (D_80110E11_ridiculous_relay > D_80110E12_ridiculous_relay) {
+            u8 prevAnim = D_80110E0F_ridiculous_relay;
+
+            D_80110E0F_ridiculous_relay = D_80110E10_ridiculous_relay;
+            D_80110E11_ridiculous_relay = 0;
+            if (D_80110E10_ridiculous_relay == 4) {
+                D_80110E10_ridiculous_relay = prevAnim;
+                D_80110E12_ridiculous_relay = 10;
+                Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[D_80110E10_ridiculous_relay + 7]].motId, 60, 20, 0);
+            } else {
+                D_80110E12_ridiculous_relay = 0;
+            }
+        }
+        omSetTra(obj, 2.0 * D_80110DAC_ridiculous_relay[2], D_801119DC_ridiculous_relay * 100.0f * 0.125 + -25.0 + 25.0, 0.0f);
+        omSetRot(obj, 0.0f, 90.0f, 0.0f);
+        func_8001C258_main(obj->model[1], 4, 0);
+        Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
+        Hu3DModelRotSet(obj->model[1], obj->rot.x, obj->rot.y, obj->rot.z);
+        obj->trans.x -= ROWER_OFFSET() * 0.125 * 1.25;
+        obj->trans.y -= ROWER_OFFSET() * 0.125 * 1.25;
+        obj->trans.y += 1.875;
+        Hu3DModelPosSet(obj->model[2], obj->trans.x, obj->trans.y, obj->trans.z);
+        Hu3DModelRotSet(obj->model[2], obj->rot.x, obj->rot.y, obj->rot.z);
+        if (D_80110DF4_ridiculous_relay[2] > 0) {
+            if (D_80110DF4_ridiculous_relay[2] == 2) {
+                D_80110DF4_ridiculous_relay[2] = 0;
+                func_8001C5B4_main(obj->model[0], obj->motion[1]);
+                Hu3DMotionTimeSet(obj->model[2], 0.0f);
+            } else {
+                if (D_80110DF4_ridiculous_relay[2] == 50) {
+                    Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[2]].motId, 0, 6, 2);
+                }
+                D_80110DF4_ridiculous_relay[2] = MAX((s16)(D_80110DF4_ridiculous_relay[2] - 2), 0);
+                Hu3DMotionTimeSet(obj->model[0], (D_80110DF4_ridiculous_relay[2] != 0) ? (f32)(50 - D_80110DF4_ridiculous_relay[2]) : 0.0f);
+                Hu3DMotionTimeSet(obj->model[2], (D_80110DF4_ridiculous_relay[2] == 0)   ? 0.0f
+                                                 : (D_80110DF4_ridiculous_relay[2] < 25) ? (f32)D_80110DF4_ridiculous_relay[2]
+                                                                                         : (f32)(50 - D_80110DF4_ridiculous_relay[2]));
+            }
+        }
+        func_8001C814_main(obj->model[0], 3, 2);
+        func_8001C814_main(obj->model[2], 3, 1);
+        if (D_80110D78_ridiculous_relay == 1 && mode == 1) {
+            D_80111980_ridiculous_relay[D_80110DEE_ridiculous_relay[1] + 2] = Hu3DData[obj->model[1]].pos.x;
+        }
+        if (D_80110E0F_ridiculous_relay == 4 && (D_80110E11_ridiculous_relay == 0 || D_80110E11_ridiculous_relay == 4)) {
+            for (i = (D_80110E11_ridiculous_relay != 0) ? 9 : 0; i < ((D_80110E11_ridiculous_relay == 0) ? 9 : 18); i++) {
+                func_8001C258_main(D_801119BC_ridiculous_relay->model[i + 17], 4, 0);
+                D_801117F8_ridiculous_relay[i] = Hu3DData[obj->model[1]].pos.x + ((D_80110E11_ridiculous_relay == 0) ? -31.25 : 27.5);
+                D_80111840_ridiculous_relay[i] = D_801119DC_ridiculous_relay * 100.0f * 0.125 + -25.0;
+                D_80111888_ridiculous_relay[i] = (rand8() / 256.0 * 30.0 - 10.0) * 0.125 * ((D_80110E11_ridiculous_relay != 0) ? 1 : -1);
+                D_801118D0_ridiculous_relay[i] = (rand8() / 256.0 * 30.0 + 20.0) * 0.125;
+                Hu3DModelPosSet(D_801119BC_ridiculous_relay->model[i + 17], D_801117F8_ridiculous_relay[i], D_80111840_ridiculous_relay[i], 0.0f);
+            }
+        }
+    } else {
+        func_8001C258_main(obj->model[0], 4, 4);
+        func_8001C258_main(obj->model[1], 4, 4);
+        func_8001C258_main(obj->model[2], 4, 4);
+    }
+    if (D_80110E3C_ridiculous_relay[1] == 1) {
+        func_8001C258_main(D_801119BC_ridiculous_relay->model[8], 4, 4);
+        func_8001C258_main(D_801119BC_ridiculous_relay->model[9], 4, 4);
+    }
+    D_80110E3C_ridiculous_relay[1] = (D_80110E3C_ridiculous_relay[1] != 0) ? D_80110E3C_ridiculous_relay[1] - 1 : 0;
+    D_801119A8_ridiculous_relay[2] = (D_80110D78_ridiculous_relay >= 2)        ? 1.0f
+                                     : (D_80110DAC_ridiculous_relay[2] < 0.0f) ? 0.0f
+                                                                               : (D_80110DAC_ridiculous_relay[2] - 650.0) / 601.5625;
+    D_801119A8_ridiculous_relay[2] = (D_801119A8_ridiculous_relay[2] >= 1.0f)  ? 1.0f
+                                     : (D_801119A8_ridiculous_relay[2] < 0.0f) ? 0.0f
+                                                                               : D_801119A8_ridiculous_relay[2];
+    for (i = 0; i < 18; i++) {
+        if (D_80111840_ridiculous_relay[i] == -1000.0f) {
+            continue;
+        }
+        D_801117F8_ridiculous_relay[i] += D_80111888_ridiculous_relay[i];
+        D_80111840_ridiculous_relay[i] += D_801118D0_ridiculous_relay[i];
+        D_801118D0_ridiculous_relay[i] -= 0.625;
+        if (D_801118D0_ridiculous_relay[i] < 0.0f && D_80111840_ridiculous_relay[i] < D_801119DC_ridiculous_relay * 100.0f * 0.125 + -25.0) {
+            func_8001C258_main(D_801119BC_ridiculous_relay->model[i + 17], 4, 4);
+            D_80111840_ridiculous_relay[i] = -1000.0f;
+        } else {
+            Hu3DModelPosSet(D_801119BC_ridiculous_relay->model[i + 17], D_801117F8_ridiculous_relay[i], D_80111840_ridiculous_relay[i], 0.0f);
+        }
+    }
+
+    // Group 3: bicycle
+    obj = D_80111A20_ridiculous_relay[3];
+    player = D_80111970_ridiculous_relay[3];
+    if (D_80110D78_ridiculous_relay == 2 || D_80110D78_ridiculous_relay == 3 || (D_80110D78_ridiculous_relay == 1 && D_80110DAC_ridiculous_relay[2] > 1000.0)) {
+        f32 step;
+
+        D_80110E0C_ridiculous_relay[2] -= D_80110D78_ridiculous_relay == 2 && D_80110E0C_ridiculous_relay[2] != 0;
+        if (D_80110D78_ridiculous_relay >= 2 && mode == 1) {
+            if ((D_800D5558_main[player->pad] & A_BUTTON) || (player->cpuDifficulty != -1 && D_80110E0C_ridiculous_relay[2] == 0)) {
+                D_80110DCC_ridiculous_relay[3] += 5.0f;
+                if (player->cpuDifficulty != -1) {
+                    D_80110E0C_ridiculous_relay[2] = cpuParams[0][2][player->cpuDifficulty] + rand8() % cpuParams[1][2][player->cpuDifficulty];
+                }
+            }
+        }
+        step = D_80110DCC_ridiculous_relay[3] * SPEED_SCALE;
+        D_80110DAC_ridiculous_relay[3] = step + D_80110DAC_ridiculous_relay[3];
+        D_80110DCC_ridiculous_relay[3] -= D_80110DCC_ridiculous_relay[3] / 6.0 / 5.0;
+        D_80110DCC_ridiculous_relay[3] = (D_80110DCC_ridiculous_relay[3] > 50.0f)    ? 50.0f
+                                         : (D_80110DCC_ridiculous_relay[3] < -50.0f) ? -50.0f
+                                                                                     : D_80110DCC_ridiculous_relay[3];
+        if (D_80111A30_ridiculous_relay[2] != -1) {
+            HuAudFXPitchSet((s16)D_80111A30_ridiculous_relay[2], (s16)(D_80110DCC_ridiculous_relay[3] / 50.0 * 400.0 - 400.0));
+        }
+        if (D_80110DAC_ridiculous_relay[3] > 1865.625 && D_80110D70_ridiculous_relay[1] == 0) {
+            if (D_801119C0_ridiculous_relay == 5 || (D_801119C0_ridiculous_relay == 0 && D_80110D70_ridiculous_relay[0] == 1 && D_80110DAC_ridiculous_relay[0] < D_80110DAC_ridiculous_relay[3])) {
+                D_801119C0_ridiculous_relay = 1;
+                D_80110D70_ridiculous_relay[1] = 1;
+            }
+            if (D_80110E40_ridiculous_relay[3] == 0) {
+                D_80110E40_ridiculous_relay[3] = D_80110D6C_ridiculous_relay;
+            }
+            D_80110DAC_ridiculous_relay[3] = 1865.625f;
+            D_80110DCC_ridiculous_relay[3] *= (D_80110DCC_ridiculous_relay[3] > 0.0f) ? -0.125 : 1.0;
+        }
+        if (D_80110D78_ridiculous_relay == 2) {
+            f32 camX = 2.0 * D_80110DAC_ridiculous_relay[3] + 56.25;
+
+            D_80110DA8_ridiculous_relay = (D_80110DA8_ridiculous_relay != 0 && CenterM[1].x + D_801117F0_ridiculous_relay <= camX) ? D_80110DA8_ridiculous_relay + 1 : 0;
+            if (D_80110DA8_ridiculous_relay != 0) {
+                D_801117F0_ridiculous_relay = (D_801117F0_ridiculous_relay < 2.0 * step) ? 2.0 * step : D_801117F0_ridiculous_relay;
+                CenterM[1].x += D_801117F0_ridiculous_relay;
+            } else {
+                D_801117F0_ridiculous_relay = prevCenter[1] - D_80110DA0_ridiculous_relay[1];
+                CenterM[1].x = camX;
+            }
+        }
+        D_80110DEE_ridiculous_relay[2] = D_80110DEE_ridiculous_relay[2] * 0.875 + D_80110DCC_ridiculous_relay[3] / 50.0 * 10.0 * 1000.0 * 0.125;
+        func_8001C258_main(obj->model[0], 4, 0);
+        omSetTra(obj, 2.0 * D_80110DAC_ridiculous_relay[3], D_801119DC_ridiculous_relay * 100.0f * 0.125 + -25.0, 0.0f);
+        omSetRot(obj, 0.0f, 90.0f, D_80110DEE_ridiculous_relay[2] / 1000.0);
+        func_8001C258_main(obj->model[1], 4, 0);
+        Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
+        Hu3DModelRotSet(obj->model[1], obj->rot.x, obj->rot.y, obj->rot.z);
+        D_80110DF4_ridiculous_relay[3] += ABS(D_80110DCC_ridiculous_relay[3]) / 50.0 * 350.0;
+        D_80110DF4_ridiculous_relay[3] %= 3000;
+        D_80110E14_ridiculous_relay = (D_80110E14_ridiculous_relay - 4.0 / 47.5 < PEDAL_POWER(D_80110DCC_ridiculous_relay[3]) / 47.5)
+                                          ? PEDAL_POWER(D_80110DCC_ridiculous_relay[3]) / 47.5
+                                          : D_80110E14_ridiculous_relay - 4.0 / 47.5;
+        D_80110E14_ridiculous_relay = (D_80110E14_ridiculous_relay < 0.0f) ? 0.0f : D_80110E14_ridiculous_relay;
+        Hu3DMotionTimeSet(obj->model[1], D_80110DF4_ridiculous_relay[3] / 100.0);
+        func_8001C258_main(D_801119BC_ridiculous_relay->model[6], 4, 0);
+        Hu3DModelPosSet(D_801119BC_ridiculous_relay->model[6], obj->trans.x - (D_80110E14_ridiculous_relay * 40.0f + 200.0f) * 1.25 * 0.125,
+                        obj->trans.y + D_80110E14_ridiculous_relay * 100.0f * 1.25 * 0.125, obj->trans.z);
+        Hu3DModelScaleSet(D_801119BC_ridiculous_relay->model[6], D_80110E14_ridiculous_relay * 1.25 * 0.125 * 1.3,
+                          D_80110E14_ridiculous_relay * 1.25 * 0.125, D_80110E14_ridiculous_relay * 1.25 * 0.125);
+        if (D_80110D70_ridiculous_relay[1] != 0) {
+            if (D_80110D70_ridiculous_relay[1] == 15) {
+                D_80111930_ridiculous_relay = obj->trans.y + 4.375;
+                D_80111938_ridiculous_relay = 7.5f;
+                for (i = 0; i < 85; i++) {
+                    D_80111930_ridiculous_relay += D_80111938_ridiculous_relay;
+                    D_80111938_ridiculous_relay -= 0.8125;
+                    if (D_80111938_ridiculous_relay < 0.0f && D_80111930_ridiculous_relay <= -13.75) {
+                        break;
+                    }
+                }
+                D_8011192C_ridiculous_relay = obj->trans.x + 4.375;
+                D_80111930_ridiculous_relay = obj->trans.y + 4.375;
+                D_8011193C_ridiculous_relay = 90.0f;
+                D_80111934_ridiculous_relay = (3768.75 - obj->trans.x) / (f32)i;
+                D_80111938_ridiculous_relay = 7.5f;
+                func_8001C5B4_main(obj->model[0], obj->motion[5]);
+                func_8001C814_main(obj->model[0], 3, 0);
+                D_80110DCC_ridiculous_relay[3] -= 2.0;
+            }
+            if (D_80110D70_ridiculous_relay[1] >= 16 && D_80110D70_ridiculous_relay[1] < 100) {
+                D_8011192C_ridiculous_relay += D_80111934_ridiculous_relay;
+                D_80111930_ridiculous_relay += D_80111938_ridiculous_relay;
+                D_80111938_ridiculous_relay -= 0.8125;
+                if ((D_80111938_ridiculous_relay < 0.0f && D_80111930_ridiculous_relay <= -13.75) || D_80111930_ridiculous_relay < -1875.0) {
+                    D_80111930_ridiculous_relay = -13.75f;
+                    D_80110D70_ridiculous_relay[1] = 100;
+                } else if (D_80111938_ridiculous_relay < 0.0f && D_80111930_ridiculous_relay + D_80111938_ridiculous_relay <= -13.75) {
+                    Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[6]].motId, 10, 4, 0);
+                }
+            }
+            if (D_80110D70_ridiculous_relay[1] == 102) {
+                Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[0]].motId, 0, 30, 2);
+            }
+            if (D_80110D70_ridiculous_relay[1] >= 115 && D_801119C0_ridiculous_relay == 1) {
+                D_8011193C_ridiculous_relay = SETTLE_ANGLE(D_8011193C_ridiculous_relay);
+            }
+            if (D_80110D70_ridiculous_relay[1] >= 16) {
+                omSetTra(obj, D_8011192C_ridiculous_relay, D_80111930_ridiculous_relay, 0.0f);
+                omSetRot(obj, 0.0f, D_8011193C_ridiculous_relay, 0.0f);
+            }
+            D_80110D70_ridiculous_relay[1]++;
+        } else {
+            func_8001C814_main(obj->model[0], 3, 2);
+        }
+        if (D_80110D78_ridiculous_relay >= 2 && mode == 1) {
+            D_80111980_ridiculous_relay[6] = obj->trans.x;
+        }
+    } else {
+        func_8001C258_main(obj->model[0], 4, 4);
+        func_8001C258_main(obj->model[1], 4, 4);
+    }
+    D_801119A8_ridiculous_relay[3] = (D_80110D78_ridiculous_relay >= 3)        ? 1.0f
+                                     : (D_80110DAC_ridiculous_relay[3] < 0.0f) ? 0.0f
+                                                                               : (D_80110DAC_ridiculous_relay[3] - 1275.0) / 593.75;
+    D_801119A8_ridiculous_relay[3] = (D_801119A8_ridiculous_relay[3] >= 1.0f || D_80110D70_ridiculous_relay[1] != 0) ? 1.0f
+                                     : (D_801119A8_ridiculous_relay[3] < 0.0f)                                       ? 0.0f
+                                                                                                                     : D_801119A8_ridiculous_relay[3];
+
+    // Camera and finish line flags
+    CenterM[0].x = (CenterM[0].x > 3750.0) ? 3750.0f : CenterM[0].x;
+    CenterM[1].x = (CenterM[1].x > 3750.0) ? 3750.0f : CenterM[1].x;
+    i = (CenterM[1].x < 1875.0) ? 0 : 1;
+    omSetTra(D_801119BC_ridiculous_relay, (2.0 * ((i + 1) * 5000) + 950.0) * 0.125,
+             ((D_80110DFC_ridiculous_relay[i] < 10)
+                  ? 0.125 * (D_80110DFC_ridiculous_relay[i] * D_80110DFC_ridiculous_relay[i] / 100.0 * 100.0)
+                  : ((D_80110DFC_ridiculous_relay[i] < 30) ? (D_80110DFC_ridiculous_relay[i] - 10) * 36 + 100
+                     : ((D_80110DFC_ridiculous_relay[i] - 30) * (D_80110DFC_ridiculous_relay[i] - 30) * 2 < 460)
+                         ? 460 - (D_80110DFC_ridiculous_relay[i] - 30) * (D_80110DFC_ridiculous_relay[i] - 30) * 2
+                         : 0) *
+                        0.125) +
+                 -46.875,
+             0.0f);
+    Hu3DModelPosSet(D_801119BC_ridiculous_relay->model[1], (2.0 * ((i + 1) * 5000) + 150.0) * 0.125, -25.0f, 0.0f);
+    D_80110DFC_ridiculous_relay[0] += (D_80110DFC_ridiculous_relay[0] != 0 && D_80110DFC_ridiculous_relay[0] < 24) || (D_80110DFC_ridiculous_relay[0] >= 30 && D_80110DFC_ridiculous_relay[0] < 45);
+    if (D_80110DFC_ridiculous_relay[1] == 44) {
+        HuAudFXPlay(0x334);
+    }
+    D_80110DFC_ridiculous_relay[1] += (D_80110DFC_ridiculous_relay[1] != 0 && D_80110DFC_ridiculous_relay[1] < 20) || (D_80110DFC_ridiculous_relay[1] >= 30 && D_80110DFC_ridiculous_relay[1] < 45);
+    if (D_80110DFC_ridiculous_relay[1] == 20 && CenterM[1].x > 2721.875) {
+        D_80110DFC_ridiculous_relay[1] = 30;
+    }
+    if (D_80110D6C_ridiculous_relay < 123) {
+        CenterM[0].x = CenterM[0].x * 0.75 + 14.5718165;
+        CenterM[1].x = CenterM[1].x * 0.75 + 14.5718165;
+    }
+    D_80110DAC_ridiculous_relay[0] = (D_80110DAC_ridiculous_relay[0] < -2000.0f) ? -2000.0f : D_80110DAC_ridiculous_relay[0];
+    D_8011199C_ridiculous_relay[0] = CenterM[0].x / 0.125 / 100.0 * 16.0;
+    if (CenterM[0].x < 3750.0) {
+        D_801119C4_ridiculous_relay = (D_80110DCC_ridiculous_relay[0] - 35.0f) / 10.0 * 0.25 - 0.5;
+    }
+    D_801119C4_ridiculous_relay = 0.0f;
+    D_80111A50_ridiculous_relay += D_801119C4_ridiculous_relay;
+    D_80111A50_ridiculous_relay -= (D_80111A50_ridiculous_relay >= 320.0f) ? 320.0f : 0.0f;
+    D_80111A50_ridiculous_relay += (D_80111A50_ridiculous_relay < 0.0f) ? 320.0f : 0.0f;
+    D_8011199C_ridiculous_relay[1] = CenterM[1].x / 0.125 / 100.0 * 16.0;
+    for (i = 0; i < 7; i++) {
+        if (D_80111980_ridiculous_relay[i] != 0.0f) {
+            D_80111980_ridiculous_relay[i] = func_8010B474_ridiculous_relay(D_80111980_ridiculous_relay[i]);
+        }
+    }
+    D_80110D6C_ridiculous_relay++;
+    D_80110DA0_ridiculous_relay[0] = prevCenter[0];
+    D_80110DA0_ridiculous_relay[1] = prevCenter[1];
+}
+#else
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_8011108C_ridiculous_relay);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_801110D4_ridiculous_relay);
@@ -907,6 +1736,7 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_801
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", D_801111B4_ridiculous_relay);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_07_ridiculous_relay/13E9C0", func_8010B4A8_ridiculous_relay);
+#endif
 
 s16 func_80110BF4_ridiculous_relay(s16 arg0, s16 arg1) {
     if (D_800A1902_main == 0) {

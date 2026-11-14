@@ -2623,9 +2623,11 @@ segments:
     subsegments:
       - [0x5334D0, c]
       - [0x533500, c]
+      - [0x535A80, c]
       - [0x53DCA0, c]
       - [0x540FE0, data, 533500] #801134B0
       - [0x541510, .rodata, 533500] #801139E0
+      - [0x541538, .rodata, 535A80] #80113A08
       - [0x542138, .rodata, 53DCA0] #80114608
       - {0x542220, type: bss, vram: 0x801146F0, name: option_bss}
 

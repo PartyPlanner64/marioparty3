@@ -750,10 +750,18 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mstory4/4C8050", D_80111FB8_mstory4);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/mstory4/4C8050", D_80111FC8_mstory4);
 
-// Code matches instruction-for-instruction, but the target's stack frame is
-// 0x40 bytes larger (0xD0 vs 0x90). The extra space is unreferenced and lies
-// after the `model` spill slot, so it comes from additional reload stack slots
-// (e.g. constant locals folded away by combine), not from a local array.
+// Remaining differences:
+// - The target's stack frame is 0x40 bytes larger (0xD0 vs 0x90). The extra
+//   space is unreferenced and lies after the `model` spill slot, so it comes
+//   from reload-allocated slots, not a local array. In this version one such
+//   phantom slot exists already: `dist` is folded into `dist / time` by
+//   combine, which leaves a USE of `dist` behind; the original likely had ~8
+//   more such constant-folded locals. Adding variables (e.g. for the 4.5f/0.5f
+//   rotation steps, or an s32 `frames` count) did not reproduce it.
+// - In the final `while (D_800D5558_main[0] == 0)` wait loop, the target hoists
+//   the address of D_800D5558_main into s0 before the loop. Here loop.c
+//   substitutes the single-use address register back into the load instead.
+//   `!x`, `(s16)` casts, `| 0` and for-loop forms all behave the same.
 #ifdef NON_MATCHING
 void func_8010D1A0_mstory4(omObjData *obj) {
     omObjData *obj0;
@@ -945,8 +953,9 @@ void func_8010D1A0_mstory4(omObjData *obj) {
     func_8002FD8C_main(obj1->model[6], Hu3DData[obj1->model[6]].motId, D_80111FF8_mstory4, 76, 69);
     func_8002FD8C_main(obj1->model[6], Hu3DData[obj1->model[6]].motId, D_80111FF8_mstory4, 76, 70);
     nodes[0] = func_8001D33C_main(obj1->model[6], D_80111FF8_mstory4);
-    nodes[0]->baseRot.y = 0.0f;
-    nodes[0]->rot.z = 0.0f;
+    scale = 0.0f;
+    nodes[0]->baseRot.y = scale;
+    nodes[0]->rot.z = scale;
     for (i = 0; i < 10; i++) {
         nodes[0]->baseRot.y += 4.5f;
         nodes[0]->rot.z += 4.5f;
@@ -992,7 +1001,7 @@ void func_8010D1A0_mstory4(omObjData *obj) {
     func_8010F910_mstory4();
     func_8010FC98_mstory4();
     HuPrcSleep(150);
-    while (D_800D5558_main[0] == 0) {
+    while (!(D_800D5558_main[0] & 0xFFFF)) {
         HuPrcVSleep();
     }
     func_801060E8_mstory4();

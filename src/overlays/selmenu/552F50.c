@@ -371,27 +371,28 @@ void func_80106770_selmenu(omObjData *obj) {
     obj->func = func_80106A10_selmenu;
 }
 
-#ifdef NON_MATCHING
-// The x coordinate 0x40 is loaded before the availability branch and zero-extended at the shared call.
 void func_80106A10_selmenu(omObjData *obj) {
     SelMenuConfig *config;
     u16 *color;
+    s32 x;
     s32 i;
 
     rand8();
     config = &D_80108C90_selmenu[D_8010A070_selmenu * 10];
     for (i = 0; i < 10; i++, config++) {
         sprintf(D_800D5218_main, config->name);
-        strlen(D_800D5218_main);
+        // The strlen result is discarded; x is overwritten with a fixed position.
+        x = strlen(D_800D5218_main);
+        x = 0x40;
         if (D_80108C90_selmenu[D_8010A070_selmenu * 10 + i].available == 0) {
             color = D_80109754_selmenu[0];
         } else {
             color = D_80109754_selmenu[1];
         }
         if (D_8010A072_selmenu == i) {
-            func_801089C0_selmenu(0x40, (i + 10) * 9, D_800D5218_main, color[1], color[0]);
+            func_801089C0_selmenu(x, (i + 10) * 9, D_800D5218_main, color[1], color[0]);
         } else {
-            func_801089C0_selmenu(0x40, (i + 10) * 9, D_800D5218_main, color[0], 0);
+            func_801089C0_selmenu(x, (i + 10) * 9, D_800D5218_main, color[0], 0);
         }
     }
     sprintf(D_800D5218_main, D_80109FEC_selmenu, D_8010A070_selmenu + 1, 10);
@@ -439,9 +440,6 @@ void func_80106A10_selmenu(omObjData *obj) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/selmenu/552F50", func_80106A10_selmenu);
-#endif
 
 void func_80106DEC_selmenu(omObjData *obj) {
     SelMenuConfig *space;

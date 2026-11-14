@@ -507,9 +507,6 @@ void func_80106A34_bobbing_bow_loons(omObjData *obj) {
     }
 }
 
-#ifdef NON_MATCHING
-// The original recomputes the work entry address after the two rand8 calls;
-// GCC keeps it live across them in a saved register, shifting register usage.
 void func_80106CC0_bobbing_bow_loons(void) {
     s32 attr = 0x699;
     BobbingBowLoonsWork *work;
@@ -527,8 +524,11 @@ void func_80106CC0_bobbing_bow_loons(void) {
         work->pos_y[i] = 0.0f;
         work->pos_z[i] = player->pos.z;
         work->unk_50[i] = 0.0f;
-        rand8();
-        rand8();
+        // The do-while(0) block ends a CSE block, needed to match register allocation.
+        do {
+            rand8();
+            rand8();
+        } while (0);
         work->unk_64[i] = (i + 1) * 1.3f;
         if (i == 0) {
             obj->model[0] = func_8000B108_main(0x5E0007, attr);
@@ -544,14 +544,11 @@ void func_80106CC0_bobbing_bow_loons(void) {
             omSetTra(obj, work->pos_x[0], work->pos_y[0], work->pos_z[0]);
         } else {
             obj->model[i + 5] = Hu3DModelLink(obj->model[5]);
-            Hu3DModelPosSet(obj->model[i + 5], work->pos_x[i % 5], work->pos_y[i % 5], work->pos_z[i % 5]);
+            Hu3DModelPosSet(obj->model[i], work->pos_x[i % 5], work->pos_y[i % 5], work->pos_z[i % 5]);
         }
     }
     work->rise = 0.0f;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3D_bobbing_bow_loons/2D8370", func_80106CC0_bobbing_bow_loons);
-#endif
 
 void func_80106F44_bobbing_bow_loons(omObjData *obj) {
     BobbingBowLoonsWork *work = obj->data;

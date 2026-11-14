@@ -3338,9 +3338,6 @@ void func_8010E000_modesel(s32 arg0, s32 *x, s32 *y) {
     *y = screenPos.y;
 }
 
-#ifdef NON_MATCHING
-// The story check is expected to compile to a branchless store-flag sequence
-// (-(GwStory.unk0 == 12) & 7 | 2), but this emits a conditional branch.
 void func_8010E138_modesel(s32 arg0, f32 *x, f32 *y, f32 *z) {
     s32 index = 0;
 
@@ -3369,7 +3366,7 @@ void func_8010E138_modesel(s32 arg0, f32 *x, f32 *y, f32 *z) {
             break;
         case 10:
             if (func_800465D0_main() == 0 && GwStory.unk0 == 12) {
-                index = 9;
+                index = 7;
             } else {
                 index = 2;
             }
@@ -3385,9 +3382,6 @@ void func_8010E138_modesel(s32 arg0, f32 *x, f32 *y, f32 *z) {
     *y = D_8010F304_modesel[index].y;
     *z = D_8010F304_modesel[index].z;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F8140", func_8010E138_modesel);
-#endif
 
 void func_8010E22C_modesel(s32 arg0, s32 arg1) {
     s32 x;

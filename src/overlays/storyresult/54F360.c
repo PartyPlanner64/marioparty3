@@ -1510,11 +1510,11 @@ s16 func_8010A5C4_storyresult(s16 playerIdx) {
     return result;
 }
 
-#ifdef NON_MATCHING
-// Scheduling: target computes both GwPlayer offsets before the first load.
 s16 func_8010A738_storyresult(s16 playerIdx) {
-    s32 other = playerIdx == 0;
-    s32 diff = GwPlayer[playerIdx].star - GwPlayer[other].star;
+    s16 stars = GwPlayer[playerIdx].star;
+    s16 other = playerIdx == 0;
+    s16 otherStars = GwPlayer[other].star;
+    s32 diff = stars - otherStars;
     s16 result;
 
     if (diff >= 3) {
@@ -1528,9 +1528,6 @@ s16 func_8010A738_storyresult(s16 playerIdx) {
     }
     return result;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/storyresult/54F360", func_8010A738_storyresult);
-#endif
 
 s16 func_8010A7B0_storyresult(s16 playerIdx) {
     s16 bonusCoin = GwPlayer[playerIdx].bonusCoin;

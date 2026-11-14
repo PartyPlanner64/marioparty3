@@ -1919,13 +1919,21 @@ void func_8010AC3C_modesel(void) {
 }
 
 #ifdef NON_MATCHING
-// The target keeps the model id 10 in a saved register across calls, and float temporaries differ.
+// Only float register allocation differs: the target puts t (and the int->float temp) in $f6, the
+// t * 400.0f product in $f0 and the y result in $f2. This needs t to be non-local or to live past the
+// D_80110CD8_modesel[1].y load (so the product ties to the 400.0f constant instead of t), but no
+// visible later use exists. Tried: t = timer; t *= k, 400.0f * t / constant in a variable,
+// t *= 400.0f, separate x/y/z locals, pointer to D_80110CD8_modesel[1], pos.y -= ..., an inline
+// helper, and moving the loop barrier / wrapping various statements in do-while(0).
 void func_8010ACA8_modesel(omObjData *obj) {
     Vec pos;
     s32 model = 10;
     s32 timer = obj->work[0];
     f32 t = timer * (1.0f / 255.0f);
 
+    // The empty loop ends the CSE block, so the model id stays in a saved register.
+    do {
+    } while (0);
     pos.x = D_80110CD8_modesel[1].x;
     pos.y = D_80110CD8_modesel[1].y - t * 400.0f;
     pos.z = D_80110CD8_modesel[1].z;

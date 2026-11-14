@@ -751,17 +751,19 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mstory4/4C8050", D_80111FB8_mstory4);
 INCLUDE_RODATA("asm/nonmatchings/overlays/mstory4/4C8050", D_80111FC8_mstory4);
 
 // Remaining differences:
-// - The target's stack frame is 0x40 bytes larger (0xD0 vs 0x90). The extra
-//   space is unreferenced and lies after the `model` spill slot, so it comes
-//   from reload-allocated slots, not a local array. In this version one such
-//   phantom slot exists already: `dist` is folded into `dist / time` by
-//   combine, which leaves a USE of `dist` behind; the original likely had ~8
-//   more such constant-folded locals. Adding variables (e.g. for the 4.5f/0.5f
-//   rotation steps, or an s32 `frames` count) did not reproduce it.
-// - In the final `while (D_800D5558_main[0] == 0)` wait loop, the target hoists
-//   the address of D_800D5558_main into s0 before the loop. Here loop.c
-//   substitutes the single-use address register back into the load instead.
-//   `!x`, `(s16)` casts, `| 0` and for-loop forms all behave the same.
+// - Only the `model` spill slot differs (0x3E in the target vs 0x7E here).
+//   The target frame is 0x40 bytes larger than the locals need, but that space
+//   lies after the reload-allocated `model` slot, i.e. it comes from reload
+//   slots (8 bytes each) for pseudos whose only remaining references are USE
+//   insns, like the one combine leaves for `dist` when it folds `dist / time`
+//   into a constant. The original likely had ~8 more such constant-folded
+//   locals; adding variables for the 4.5f/0.5f rotation steps did not
+//   reproduce it. The `unused` array restores the frame size, but since arrays
+//   are allocated before reload slots, it pushes `model` past it.
+// - The final wait loop needs `pad` reassigned in the for-loop increment: the
+//   register then is not single-use inside the loop, so loop.c hoists the
+//   address into s0 as in the target (plain `while (!D_800D5558_main[0])`
+//   forms get the address substituted back into the load).
 #ifdef NON_MATCHING
 void func_8010D1A0_mstory4(omObjData *obj) {
     omObjData *obj0;
@@ -775,6 +777,8 @@ void func_8010D1A0_mstory4(omObjData *obj) {
     f32 time;
     f32 dist;
     f32 scale;
+    u16 *pad;
+    s32 unused[16]; // Retain the original stack frame.
 
     HuPrcVSleep();
     obj0 = D_801122A0_mstory4[0].obj;
@@ -1001,7 +1005,7 @@ void func_8010D1A0_mstory4(omObjData *obj) {
     func_8010F910_mstory4();
     func_8010FC98_mstory4();
     HuPrcSleep(150);
-    while (!(D_800D5558_main[0] & 0xFFFF)) {
+    for (pad = D_800D5558_main; *pad == 0; pad = D_800D5558_main) {
         HuPrcVSleep();
     }
     func_801060E8_mstory4();

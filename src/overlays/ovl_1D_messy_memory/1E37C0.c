@@ -435,8 +435,6 @@ Gfx **func_801067D0_messy_memory(Gfx **gfx, u8 alpha) {
     return gfx;
 }
 
-// NON_MATCHING: the branch for obj->work[0] >= 2 targets one instruction late (label/nop placement).
-#ifdef NON_MATCHING
 void func_80106800_messy_memory(Gfx **gfxPos, s32 arg1, s32 arg2) {
     MessyMemoryWork *work;
     omObjData *obj;
@@ -448,11 +446,14 @@ void func_80106800_messy_memory(Gfx **gfxPos, s32 arg1, s32 arg2) {
     for (i = 0; i < 4; i++) {
         work = &D_80111700_messy_memory[i];
         obj = work->obj;
-        height = 0;
         if (obj->work[0] < 2) {
             if (work->unk44.y - 98.0f > 0.0f) {
                 height = work->unk44.y - 98.0f;
+            } else {
+                height = 0;
             }
+        } else {
+            height = 0;
         }
         height = height * work->unk18;
         if (D_80111658_messy_memory[obj->work[0]] == 0) {
@@ -479,9 +480,6 @@ void func_80106800_messy_memory(Gfx **gfxPos, s32 arg1, s32 arg2) {
         *gfxPos = gfx;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", func_80106800_messy_memory);
-#endif
 
 void func_80106C60_messy_memory(omObjData *obj) {
     u16 playerNo = obj->work[0];

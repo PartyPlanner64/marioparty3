@@ -1774,15 +1774,11 @@ void func_801093CC_stardust_battle(omObjData *object) {
     stage->func_30 = NULL;
 }
 
-#ifdef NON_MATCHING
-// The unused normal-length sqrtf result is allocated to f0 instead of f2, and
-// the operands of the &points[j] address add are swapped.
 void func_80109424_stardust_battle(omObjData *object) {
     UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(object);
     HmfModel *model = &Hu3DData[object->model[1]];
     HmfData *hmf = model->hmf;
     UnkStardustBattlePoint *points;
-    UnkStardustBattlePoint *point;
     Vtx *vtx;
     f32 inv;
     f32 t;
@@ -1808,19 +1804,18 @@ void func_80109424_stardust_battle(omObjData *object) {
     stage->unk_20 = 0;
     for (i = 0; i < hmf->unk18; i++, vtx++) {
         for (j = 0; j < stage->unk_20; j++) {
-            point = &points[j];
-            if (point->x != vtx->v.ob[0]) {
+            if (points[j].x != vtx->v.ob[0]) {
                 continue;
             }
-            if (point->y != vtx->v.ob[1]) {
+            if (points[j].y != vtx->v.ob[1]) {
                 continue;
             }
-            if (point->z != vtx->v.ob[2]) {
+            if (points[j].z != vtx->v.ob[2]) {
                 continue;
             }
-            if (point->vtxCount < 8) {
-                point->vtx[point->vtxCount] = i;
-                point->vtxCount++;
+            if (points[j].vtxCount < 8) {
+                points[j].vtx[points[j].vtxCount] = i;
+                points[j].vtxCount++;
             } else {
                 osSyncPrintf("VTX OVER %d \n", i);
             }
@@ -1849,6 +1844,11 @@ void func_80109424_stardust_battle(omObjData *object) {
         nz = points[stage->unk_20].z * inv * s * 128.0f;
         ny = (1.0f - s) * 128.0f;
         t = sqrtf(nx * nx + ny * ny + nz * nz);
+        if (t != 0.0f) {
+            nx /= t;
+            ny /= t;
+            nz /= t;
+        }
         points[stage->unk_20].normal.x = 0.0f;
         points[stage->unk_20].normal.y = 1.0f;
         points[stage->unk_20].normal.z = 0.0f;
@@ -1874,9 +1874,6 @@ void func_80109424_stardust_battle(omObjData *object) {
     }
     stage->func_30 = func_80109B18_stardust_battle;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80109424_stardust_battle);
-#endif
 
 void func_80109B18_stardust_battle(omObjData *object) {
     UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(object);

@@ -462,9 +462,6 @@ void func_80106A54_river_raiders(void) {
     }
 }
 
-#ifdef NON_MATCHING
-// Target addresses the first unk_06 accesses through the entry pointer register instead of folding
-// &D_8010D9F0_river_raiders[9] into absolute addresses.
 void func_80106AF8_river_raiders(omObjData *obj) {
     RiverRaidersEntry *entry = &D_8010D9F0_river_raiders[9];
     u16 player = obj->work[0];
@@ -479,7 +476,10 @@ void func_80106AF8_river_raiders(omObjData *obj) {
 
     best = 0;
     minDist = 5000.0f;
-    dir = 0;
+    // The loop end note stops CSE from folding entry into an absolute address below.
+    do {
+        dir = 0;
+    } while (0);
     if (--entry->unk_06 <= 0) {
         entry->unk_06 = 0;
     }
@@ -573,9 +573,6 @@ void func_80106AF8_river_raiders(omObjData *obj) {
         entry->unk_0A = 30;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_09_river_raiders/1542E0", func_80106AF8_river_raiders);
-#endif
 
 void func_8010716C_river_raiders(omObjData *obj) {
     func_80106AF8_river_raiders(obj);

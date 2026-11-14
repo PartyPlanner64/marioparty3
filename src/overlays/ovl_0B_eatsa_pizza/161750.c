@@ -844,8 +844,8 @@ void func_80107A64_eatsa_pizza(omObjData *object) {
     }
 }
 
-#if NONMATCHING
-s16 func_80107E6C_eatsa_pizza(omObjData *object) {
+#ifdef NON_MATCHING
+s32 func_80107E6C_eatsa_pizza(omObjData *object) {
     func_800E1BA8_minigame_ObjData *data;
     Work *work;
     u16 *mask;

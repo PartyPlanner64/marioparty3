@@ -4573,11 +4573,16 @@ s32 func_80114030_duel03(void) {
 }
 
 #ifdef NON_MATCHING
-// Only remaining diff is a delay slot in the walkNum block. The registers and
-// the hoisted v0 = 1 match, but reorg fills the first beqz delay slot with
-// `li v1, 4` (target: `li v0, 1`, then a nop after the frontID bne), so this
-// is one instruction short. The target's reorg treats v1 as live at the
-// return-1 branch target, which this function layout doesn't reproduce.
+// The walkNum == 3 block is the only mismatch. The target fills the first
+// beqz delay slot with `li v0, 1` (stolen from the shared return-1 block),
+// leaving a nop after the frontID bne. With the early-return form
+// (`if (!(c1)) return 1; if (BOO && !c2) return 0; return 1;`) everything
+// else matches, but reorg instead fills that slot with the fallthrough
+// `li v1, 4` (score 550). This nested form gets the delay slots right, but
+// CSE then reuses the first backPower load (held in a2) instead of reloading
+// it, and the c1 slt lands in v1 (score 380). Tried: ternary/||/else-if
+// variants of this block, splitting the tail and the Boo block, inner
+// do-while(0); none produce both the reload and the stolen delay slot.
 // The frame is 0x28 bytes bigger than in the sibling callbacks; the 40-byte
 // local that causes this is never referenced.
 s32 func_8011454C_duel03(void) {
@@ -4627,12 +4632,11 @@ s32 func_8011454C_duel03(void) {
             }
         }
         if (walkNum == 3) {
-            if (!(player->stats.partners.backPower < other->stats.partners.frontHp + other->star)) {
-                return 1;
-            }
-            if (other->stats.partners.frontID == PARTNER_BOO &&
-                !(player->stats.partners.backPower < stars + player->stats.partners.backHp)) {
-                return 0;
+            if (player->stats.partners.backPower < other->stats.partners.frontHp + other->star) {
+                if (other->stats.partners.frontID == PARTNER_BOO &&
+                    !(player->stats.partners.backPower < stars + player->stats.partners.backHp)) {
+                    return 0;
+                }
             }
             return 1;
         }

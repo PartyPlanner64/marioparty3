@@ -1012,13 +1012,12 @@ void func_80108330_eye_sore(omObjData *obj) {
     obj->func = func_80107CBC_eye_sore;
 }
 
-#ifdef NON_MATCHING
-// Only differs in the stack frame size (target reserves 8 more bytes).
 void func_80108AAC_eye_sore(void) {
     EyeSoreEntry *entry;
     omObjData *obj;
     u32 player = 0;
     s8 i;
+    s32 unused[2]; // Retain the original stack frame.
 
     for (i = 0; i < 4; i++) {
         switch (i) {
@@ -1041,9 +1040,6 @@ void func_80108AAC_eye_sore(void) {
         entry->obj = obj;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_30_eye_sore/270EF0", func_80108AAC_eye_sore);
-#endif
 
 void func_80108BBC_eye_sore(void) {
     EyeSoreUnkCA60 *state;

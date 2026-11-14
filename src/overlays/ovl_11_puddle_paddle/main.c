@@ -1131,8 +1131,6 @@ void func_80109814_puddle_paddle(PuddlePaddlePlayer *arg0, s16 arg1) {
     arg0->unk_0E = arg1;
 }
 
-// NON_MATCHING: the target keeps `closest` in a stack slot and computes dist/angle in $f12.
-#ifdef NON_MATCHING
 void func_8010981C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler) {
     PuddlePaddleTeam *team = (PuddlePaddleTeam *)handler->unk_3C;
     PuddlePaddleItem *item = D_80111658_puddle_paddle->items;
@@ -1142,10 +1140,8 @@ void func_8010981C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
     Vec itemPos;
     Vec diff;
     f32 minDist;
-    f32 distSq;
-    f32 dist;
-    f32 angle;
-    s16 closest;
+    f32 value;      // Distance in the search loop, then the heading angle.
+    s16 closest[2]; // Only [0] is used; the array keeps it on the stack as in the original.
     s16 i;
 
     player->unk_04 &= ~6;
@@ -1160,7 +1156,7 @@ void func_8010981C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
     boatPos.y = models[0]->pos.y;
     boatPos.z = models[0]->pos.z;
     minDist = 9999.0f;
-    closest = -1;
+    closest[0] = -1;
     for (i = 0; i < 16; i++, item++) {
         if (item->state == 3 && item->type != 2) {
             models[1] = &Hu3DData[item->model];
@@ -1170,36 +1166,36 @@ void func_8010981C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
             diff.x = itemPos.x - boatPos.x;
             diff.y = itemPos.y - boatPos.y;
             diff.z = itemPos.z - boatPos.z;
-            distSq = diff.x * diff.x + diff.z * diff.z;
-            if (distSq == 0.0f) {
-                dist = 0.0f;
+            value = diff.x * diff.x + diff.z * diff.z;
+            if (value != 0.0f) {
+                value = HuSqrtf(value);
             } else {
-                dist = HuSqrtf(distSq);
+                value = 0.0f;
             }
-            if (dist < minDist) {
-                minDist = dist;
-                closest = i;
+            if (value < minDist) {
+                minDist = value;
+                closest[0] = i;
             }
         }
     }
-    if (closest == -1) {
+    if (closest[0] == -1) {
         return;
     }
-    models[1] = &Hu3DData[D_80111658_puddle_paddle->items[closest].model];
+    models[1] = &Hu3DData[D_80111658_puddle_paddle->items[closest[0]].model];
     itemPos.x = models[1]->pos.x;
     itemPos.y = models[1]->pos.y;
     itemPos.z = models[1]->pos.z;
     diff.x = itemPos.x - boatPos.x;
     diff.z = itemPos.z - boatPos.z;
-    angle = atan2df(-diff.z, diff.x) + 90.0f;
-    if (angle < 0.0f) {
-        angle += 360.0f;
+    value = atan2df(-diff.z, diff.x) + 90.0f;
+    if (value < 0.0f) {
+        value += 360.0f;
     }
-    if (angle > 360.0f) {
-        angle -= 360.0f;
+    if (value > 360.0f) {
+        value -= 360.0f;
     }
     diff.x = models[0]->rot.y;
-    diff.y = angle;
+    diff.y = value;
     func_80110BBC_puddle_paddle(&diff.x, &diff.y);
     if (ABS(diff.x - diff.y) < 6.0f) {
         return;
@@ -1210,9 +1206,6 @@ void func_8010981C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
         player->unk_04 |= 4;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_11_puddle_paddle/main", func_8010981C_puddle_paddle);
-#endif
 
 void func_80109BD4_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler) {
     PuddlePaddleTeam *team = D_80111650_puddle_paddle;

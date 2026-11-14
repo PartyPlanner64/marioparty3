@@ -849,12 +849,17 @@ void func_80107A64_eatsa_pizza(omObjData *object) {
 // (0x90 here vs 0xA0 in the target). The target has two extra, never-accessed
 // 8-byte spill slots between `count` (sp+0x40) and the loop-invariant row
 // temps (y*160 etc., sp+0x58..). Slots are assigned in pseudo-number order, so
-// the original source had two extra pseudos created between `count` and the
-// inner loop body that combine eliminated while leaving stale reg_n_refs (the
-// same effect produces unused slots in e.g. func_800257BC_main). Tried without
-// success: all single and pairwise variable type changes, centerX/centerY as
-// s16/s32/f32, alternative clamp forms (ternary, if/else, assignment in
-// condition), for/while loop forms and init/increment orderings, u16/s32 types
+// the original had two extra pseudos numbered after `count` (declared after it
+// or in an inner block). Verified mechanism: a maybe-uninitialized variable
+// (live at function entry per flow) whose only read is simplified away by
+// combine keeps stale reg_n_refs/liveness, so global alloc cannot place it and
+// reload gives it an unused slot. E.g. declaring `u8 a; u8 b;` after `result`
+// and writing `image[maskIndex] = nibble + (a >> 8) + (b >> 8);` matches the
+// whole ROM, but reads uninitialized variables, so it is not used here. Unused
+// local arrays do not help (they are placed before data/work or before the
+// spill slots, shifting every offset). Also tried without success: all single
+// and pairwise variable type changes, centerX/centerY as s16/s32/f32,
+// alternative clamp forms, for/while loop forms and orderings, u16/s32 types
 // for the D_8010927A/7E/82 arrays, and nibble/pattern temporaries per branch.
 s32 func_80107E6C_eatsa_pizza(omObjData *object) {
     func_800E1BA8_minigame_ObjData *data;

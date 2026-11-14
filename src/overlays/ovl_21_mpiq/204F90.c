@@ -1792,7 +1792,6 @@ void func_8010A184_mpiq(s32 index) {
     D_8010CBD0_mpiq[index] = D_8010CA50_mpiq[index] + 1;
 }
 
-#ifdef NON_MATCHING
 s16 func_8010AB44_mpiq(s32 index, s32 answer) {
     s32 offset;
     s32 value = 0;
@@ -1800,81 +1799,82 @@ s16 func_8010AB44_mpiq(s32 index, s32 answer) {
     s32 i;
 
     if (answer == 0) {
-        return D_8010D010_mpiq;
-    }
-    switch (D_8010CA50_mpiq[index]) {
-        case 0x5300:
-            value = func_8010AFAC_mpiq(index, 11, -5, 1);
-            break;
-        case 0x5302:
-            do {
-                found = 0;
-                offset = rand8() & 3;
-                if (D_8010C9F8_mpiq != 0) {
-                    return offset + 0x5337;
-                }
-                for (i = 0; i < 3; i++) {
-                    value = offset + 0x5337;
-                    if (value == D_8010CB00_mpiq[index][i] || value == D_8010D010_mpiq || value < 0) {
-                        found++;
-                        break;
+        value = D_8010D010_mpiq;
+    } else {
+        switch (D_8010CA50_mpiq[index]) {
+            case 0x5300:
+            case 0x540C:
+                value = func_8010AFAC_mpiq(index, 11, -5, 1);
+                break;
+            case 0x5302:
+                do {
+                    offset = rand8() & 3;
+                    if (D_8010C9F8_mpiq != 0) {
+                        return offset + 0x5337;
                     }
-                }
-            } while (found != 0);
-            break;
-        case 0x5304:
-            value = func_8010AFAC_mpiq(index, 16, -5, 10);
-            break;
-        case 0x5306:
-        case 0x530A:
-        case 0x530C:
-        case 0x530E:
-        case 0x5310:
-            value = func_8010AFAC_mpiq(index, 9, -3, 60);
-            break;
-        case 0x5308:
-            value = func_8010AFAC_mpiq(index, 16, -5, 100);
-            break;
-        case 0x5312:
-            value = D_8010CBFC_mpiq[D_8010CBCC_mpiq++] + 0x532B;
-            break;
-        case 0x5314:
-            value = D_8010CBFC_mpiq[D_8010CBCC_mpiq++] + 0x5331;
-            break;
-        case 0x5316:
-        case 0x5318:
-        case 0x540E:
-        case 0x541C:
-            value = func_8010AFAC_mpiq(index, 4, -1, 1);
-            break;
-        case 0x5400:
-            value = func_8010AFAC_mpiq(index, 5, -2, 1);
-            break;
-        case 0x5402:
-        case 0x541A:
-            value = func_8010AFAC_mpiq(index, 21, -10, 1);
-            break;
-        case 0x5404:
-        case 0x5412:
-        case 0x5414:
-        case 0x5416:
-        case 0x5418:
-            value = func_8010AEDC_mpiq(index);
-            break;
-        case 0x5406:
-        case 0x5408:
-        case 0x540A:
-            value = func_8010AFAC_mpiq(index, 7, -3, 1);
-            break;
-        case 0x5410:
-            value = func_8010AFAC_mpiq(index, 9, -3, 1);
-            break;
+                    found = 0;
+                    for (i = 0; i < 3; i++) {
+                        value = offset + 0x5337;
+                        if (value == D_8010CB00_mpiq[index][i] || value == D_8010D010_mpiq || value < 0) {
+                            found++;
+                            break;
+                        }
+                    }
+                } while (found != 0);
+                break;
+            case 0x5304:
+                value = func_8010AFAC_mpiq(index, 16, -5, 10);
+                break;
+            case 0x5306:
+            case 0x530A:
+            case 0x530C:
+            case 0x530E:
+            case 0x5310:
+                value = func_8010AFAC_mpiq(index, 9, -3, 60);
+                break;
+            case 0x5308:
+                value = func_8010AFAC_mpiq(index, 16, -5, 100);
+                break;
+            case 0x5312:
+                value = D_8010CBFC_mpiq[D_8010CBCC_mpiq] + 0x532B;
+                D_8010CBCC_mpiq++;
+                break;
+            case 0x5314:
+                value = D_8010CBFC_mpiq[D_8010CBCC_mpiq] + 0x5331;
+                D_8010CBCC_mpiq++;
+                break;
+            case 0x5316:
+            case 0x5318:
+            case 0x540E:
+            case 0x541C:
+                value = func_8010AFAC_mpiq(index, 4, -1, 1);
+                break;
+            case 0x5400:
+                value = func_8010AFAC_mpiq(index, 5, -2, 1);
+                break;
+            case 0x5402:
+            case 0x541A:
+                value = func_8010AFAC_mpiq(index, 21, -10, 1);
+                break;
+            case 0x5404:
+            case 0x5412:
+            case 0x5414:
+            case 0x5416:
+            case 0x5418:
+                value = func_8010AEDC_mpiq(index);
+                break;
+            case 0x5406:
+            case 0x5408:
+            case 0x540A:
+                value = func_8010AFAC_mpiq(index, 7, -3, 1);
+                break;
+            case 0x5410:
+                value = func_8010AFAC_mpiq(index, 9, -3, 1);
+                break;
+        }
     }
     return value;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_21_mpiq/204F90", func_8010AB44_mpiq);
-#endif
 
 s32 func_8010AEDC_mpiq(s32 index) {
     s32 value = 0;

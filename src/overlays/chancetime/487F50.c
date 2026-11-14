@@ -111,8 +111,6 @@ void func_8010F984_chancetime(omObjData *object);
 void func_8010F1F8_chancetime(void);
 void func_8010F42C_chancetime(void);
 
-// Only diff: sign-extension of the func_8000B838_main result uses s1 instead of v0 as the intermediate register.
-#ifdef NON_MATCHING
 void func_8010BF80_chancetime(void) {
     omObjData *obj;
     void *data;
@@ -189,7 +187,8 @@ void func_8010BF80_chancetime(void) {
         espDispOff(D_8010FE94_chancetime[i]);
     }
     HuMemMemoryFreePerm(data);
-    D_8010FE9A_chancetime = espEntry(func_8000B838_main(0x1C0004), 0, 0);
+    spriteId = func_8000B838_main(0x1C0004);
+    D_8010FE9A_chancetime = espEntry(spriteId, 0, 0);
     espDispOff(D_8010FE9A_chancetime);
 
     obj->trans.x = 0.0f;
@@ -207,9 +206,6 @@ void func_8010BF80_chancetime(void) {
         HuPrcVSleep();
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/487F50", func_8010BF80_chancetime);
-#endif
 
 void func_8010C5F4_chancetime(omObjData *object) {
     func_8010D320_chancetime(object);

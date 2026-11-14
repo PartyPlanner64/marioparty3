@@ -1470,7 +1470,6 @@ u16 func_8010951C_aces_high(omObjData *object, Vec *target, f32 angleTol, f32 he
     return btn;
 }
 
-#ifdef NON_MATCHING
 void func_80109928_aces_high(omObjData *object) {
     u16 actions[4][8] = {
         { 4, 1, 4, 1, 1, 4, 1, 1 },
@@ -1482,7 +1481,7 @@ void func_80109928_aces_high(omObjData *object) {
     omObjData *otherObj;
     s16 chance;
     u16 action;
-    s32 done;
+    u16 done;
     s32 i;
     u16 state;
     f32 angle;
@@ -1530,14 +1529,14 @@ void func_80109928_aces_high(omObjData *object) {
                 }
                 player->unk_98 = otherObj;
                 if (player->unk_54 == 1 && rand8() % 10 < chance) {
-                    done = 1;
                     player->unk_AC = (rand8() & 0xF) + 30;
                     player->unk_AE = 1;
                     player->unk_92 = 3;
-                } else {
                     done = 1;
+                } else {
                     player->unk_B0 = rand8() % 181 + 60;
                     player->unk_92 = 1;
+                    done = 1;
                 }
                 break;
             case 4:
@@ -1563,11 +1562,6 @@ void func_80109928_aces_high(omObjData *object) {
         }
     }
 }
-#else
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", D_8010DDA8_aces_high);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_80109928_aces_high);
-#endif
 
 s16 func_80109EEC_aces_high(omObjData *object, f32 fov, omObjData **list, omObjData **nearest, f32 *minDist) {
     s16 count = 0;

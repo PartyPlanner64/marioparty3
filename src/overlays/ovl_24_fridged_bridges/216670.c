@@ -1148,18 +1148,19 @@ void func_80109154_fridged_bridges(omObjData *arg0) {
     }
 }
 
-#ifdef NON_MATCHING
-// Register allocation differs (v0/v1 swapped) when indexing D_8010DA64 in the first loop.
 void func_801091F8_fridged_bridges(omObjData *arg0) {
     FridgedBridgesPlayer *player;
+    omObjData *obj;
     s32 i;
 
     switch (D_8010D364_fridged_bridges) {
         case 0:
             if (D_8010D1A0_fridged_bridges == 0) {
                 for (i = 0; i < 4; i++) {
-                    if (OM_GET_DATA_PTR(D_8010DA64_fridged_bridges[i], FridgedBridgesPlayer)->unk_28 == 0) {
-                        func_801082D0_fridged_bridges(D_8010DA64_fridged_bridges[i]);
+                    obj = D_8010DA64_fridged_bridges[i];
+                    player = obj->data;
+                    if (player->unk_28 == 0) {
+                        func_801082D0_fridged_bridges(obj);
                     }
                 }
                 D_8010D1A0_fridged_bridges = 1;
@@ -1192,9 +1193,6 @@ void func_801091F8_fridged_bridges(omObjData *arg0) {
             break;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_801091F8_fridged_bridges);
-#endif
 
 // Winner sequence: the winner walks to the goal and the camera zooms in.
 void func_80109390_fridged_bridges(omObjData *arg0) {

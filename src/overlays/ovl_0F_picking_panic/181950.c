@@ -973,12 +973,6 @@ void func_8010B8EC_picking_panic(omObjData *object) {
     func_8010B908_picking_panic(object, 1);
 }
 
-#ifdef NON_MATCHING
-/* Only remaining diff: in the throw block the D_8010EF14 value used for `winner` is allocated to s0 instead of v1
- * (it inherits winner's s0 preference; 4 instructions differ). Tried reordering/splitting the winner/flyFrames
- * declarations, function-scope declarations and swapping the `winner + k` operands without effect.
- * Note `model` must outrank arg1 (spilled) but not the hoisted D_8010EDD0 row pointer in global allocation; the
- * duplicated hide call and the do-while(0) below exist only to get that weighting. */
 void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
     PickingPanicPlayer *player0 = D_8010EEE0_picking_panic[arg1 * 2];
     PickingPanicPlayer *player1 = D_8010EEE0_picking_panic[arg1 * 2 + 1];
@@ -1105,8 +1099,8 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
                 s32 throwFrame = 7;
                 s32 velX = 13;
                 s32 velY = 36;
-                s32 winner = D_8010EF14_picking_panic * 2;
 
+                i = D_8010EF14_picking_panic * 2;
                 if (j == 0 && D_8010EFA4_picking_panic > 30 && D_8010EFA4_picking_panic < 255) {
                     D_8010EE88_picking_panic += D_8010EE94_picking_panic;
                     D_8010EE8C_picking_panic += D_8010EE98_picking_panic;
@@ -1120,20 +1114,20 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
                     D_8010EE98_picking_panic = velY;
                     D_8010EE90_picking_panic = rot;
                     for (k = 0; k < 2; k++) {
-                        func_8001C258_main(D_8010EF00_picking_panic[winner + k]->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                        func_8001C258_main(D_8010EF00_picking_panic[winner + k]->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-                        Hu3DMotionShiftSet(D_8010EF00_picking_panic[winner + k]->model[1],
-                                           Hu3DData[D_8010EF00_picking_panic[winner + k]->motion[2]].motId, 50,
+                        func_8001C258_main(D_8010EF00_picking_panic[i + k]->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                        func_8001C258_main(D_8010EF00_picking_panic[i + k]->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                        Hu3DMotionShiftSet(D_8010EF00_picking_panic[i + k]->model[1],
+                                           Hu3DData[D_8010EF00_picking_panic[i + k]->motion[2]].motId, 50,
                                            flyFrames, 0);
                     }
                 }
                 if (D_8010EFA4_picking_panic > 30 && D_8010EFA4_picking_panic < 255) {
                     t = (f32)(D_8010EFA4_picking_panic - 30) / flyFrames;
                     u = t * t * 0.5 + t * 0.5;
-                    Hu3DModelPosSet(D_8010EF00_picking_panic[winner + j]->model[1],
+                    Hu3DModelPosSet(D_8010EF00_picking_panic[i + j]->model[1],
                                     (j != 0) ? -D_8010EE88_picking_panic : D_8010EE88_picking_panic,
                                     D_8010EE8C_picking_panic, 50.0f);
-                    Hu3DModelRotSet(D_8010EF00_picking_panic[winner + j]->model[1], 0.0f,
+                    Hu3DModelRotSet(D_8010EF00_picking_panic[i + j]->model[1], 0.0f,
                                     (t * 45.0f + 45.0f) * ((j != 0) ? 1.0f : -1.0f),
                                     (u * D_8010EE90_picking_panic + (1.0f - u) * 180.0f) * ((j != 0) ? -1.0f : 1.0f) +
                                         180.0f);
@@ -1142,23 +1136,23 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
                     t = (D_8010EFA4_picking_panic - 1) / 10.0;
                     t = (t > 1.0f) ? 45.0f : (t < 0.0f) ? 0.0f
                                                         : t * 45.0f;
-                    Hu3DModelPosSet(D_8010EF00_picking_panic[winner + j]->model[1],
+                    Hu3DModelPosSet(D_8010EF00_picking_panic[i + j]->model[1],
                                     (j != 0) ? -D_8010EE88_picking_panic : D_8010EE88_picking_panic,
                                     D_8010EE8C_picking_panic, 50.0f);
-                    Hu3DModelRotSet(D_8010EF00_picking_panic[winner + j]->model[1], 0.0f, (j == 0) ? -t : t,
+                    Hu3DModelRotSet(D_8010EF00_picking_panic[i + j]->model[1], 0.0f, (j == 0) ? -t : t,
                                     (j == 0) ? 360.0f : 0.0f);
                 }
                 if (D_8010EFA4_picking_panic == 30) {
-                    func_8004AC98_main(D_8010EEE0_picking_panic[winner + j]->unk3 + 50,
-                                       D_8010EEE0_picking_panic[winner + j]->unk0);
-                    func_8001C5B4_main(D_8010EF00_picking_panic[winner + j]->model[1],
-                                       D_8010EF00_picking_panic[winner + j]->motion[3]);
-                    Hu3DMotionTimeSet(D_8010EF00_picking_panic[winner + j]->model[1], 2.0f);
-                    func_8001C814_main(D_8010EF00_picking_panic[winner + j]->model[1], 3, 0);
+                    func_8004AC98_main(D_8010EEE0_picking_panic[i + j]->unk3 + 50,
+                                       D_8010EEE0_picking_panic[i + j]->unk0);
+                    func_8001C5B4_main(D_8010EF00_picking_panic[i + j]->model[1],
+                                       D_8010EF00_picking_panic[i + j]->motion[3]);
+                    Hu3DMotionTimeSet(D_8010EF00_picking_panic[i + j]->model[1], 2.0f);
+                    func_8001C814_main(D_8010EF00_picking_panic[i + j]->model[1], 3, 0);
                 }
                 if (D_8010EFA4_picking_panic == 26) {
-                    Hu3DMotionShiftSet(D_8010EF00_picking_panic[winner + j]->model[1],
-                                       Hu3DData[D_8010EF00_picking_panic[winner + j]->motion[0]].motId, 0, 20, 2);
+                    Hu3DMotionShiftSet(D_8010EF00_picking_panic[i + j]->model[1],
+                                       Hu3DData[D_8010EF00_picking_panic[i + j]->motion[0]].motId, 0, 20, 2);
                 }
                 if (j == 1 && D_8010EFA4_picking_panic < 255) {
                     if (D_8010EFA4_picking_panic == 1) {
@@ -1220,7 +1214,7 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
              (player0->unk4 != -1 && D_8010E704_picking_panic[arg1].unk0 == 0))) {
             f32 dx = D_8010EE70_picking_panic - -855.0f;
             f32 dy = D_8010EE74_picking_panic - -25.0f;
-            if (dx * dx + dy * dy < 17929.21) {
+            if (dx * dx + dy * dy < 133.9 * 133.9) {
                 slot = D_8010EEF0_picking_panic[arg1];
                 D_8010E700_picking_panic[idx0] = slot;
                 D_8010E6F0_picking_panic[arg1][slot] = 2;
@@ -1256,7 +1250,7 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
             if (D_8010E6F0_picking_panic[arg1][i] == 3) {
                 f32 dx = D_8010EE78_picking_panic - D_8010EDB0_picking_panic[arg1][i];
                 f32 dy = D_8010EE7C_picking_panic - D_8010EDD0_picking_panic[arg1][i];
-                if (dx * dx + dy * dy < 16900.0) {
+                if (dx * dx + dy * dy < 130.0 * 130.0) {
                     D_8010E700_picking_panic[idx1] = i;
                     D_8010E6F0_picking_panic[arg1][i] = 4;
                     D_8010E6F8_picking_panic[idx1] = 6;
@@ -1319,10 +1313,10 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
     if (D_8010EF80_picking_panic >= 2 && D_8010E700_picking_panic[idx1] != -1 &&
         D_8010E6F0_picking_panic[arg1][D_8010E700_picking_panic[idx1]] == 4 &&
         (D_8010EF80_picking_panic != 2 ||
-         (player1->unk4 == -1 && !((u16)D_800CDA7C_main[player1->unk2] & A_BUTTON)) ||
-         (player1->unk4 != -1 && D_8010E704_picking_panic[arg1].unk6 == 0 &&
-          ((D_8010E6EC_picking_panic % 60 >= 43 && D_8010E6EC_picking_panic % 60 < 48 && rand8() % 3 == 0) ||
-           D_8010E6EC_picking_panic % 60 == 48)))) {
+         ((player1->unk4 == -1) ? !((u16)D_800CDA7C_main[player1->unk2] & A_BUTTON)
+                                : (D_8010E704_picking_panic[arg1].unk6 == 0 &&
+                                   ((D_8010E6EC_picking_panic % 60 >= 43 && D_8010E6EC_picking_panic % 60 < 48 && rand8() % 3 == 0) ||
+                                    D_8010E6EC_picking_panic % 60 == 48))))) {
         f32 throwVel[11] = { 30.0f, 30.0f, 26.0f, 25.0f, 24.0f, 26.0f, 23.0f, 23.0f, 25.5f, 26.0f, 30.0f };
 
         j = D_8010E6EC_picking_panic % 30;
@@ -1467,90 +1461,3 @@ void func_8010B908_picking_panic(omObjData *object, s8 arg1) {
         D_8010E6EC_picking_panic++;
     }
 }
-#else
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EA8C_picking_panic);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", func_8010B908_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EAB8_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EAE8_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EAF0_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EAF8_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EAFC_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EB00_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EB04_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EB08_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EB10_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EB18_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EB20_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EB28_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EB30_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EB38_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EB40_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EB48_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EB50_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EB58_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EB60_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EB68_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EB70_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EB78_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EB80_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EB88_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EB90_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EB98_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EBA0_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EBA8_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EBB0_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EBB8_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EBC0_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EBC8_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EBD0_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EBD8_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EBE0_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EBE8_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EBF0_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EBF8_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EC00_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EC08_picking_panic);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0F_picking_panic/181950", D_8010EC10_picking_panic);
-#endif

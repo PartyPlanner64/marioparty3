@@ -727,6 +727,14 @@ s32 func_8010E4C4_chancetime(void) {
 // original 3->2 combine left a dead pseudo (REG_DEAD -> USE) that still got a spill slot. Every
 // table access spelling, statement order, s16/s32 type and inner-branch spelling tried yields
 // either the right order (frame 0xC8) or the right frame (wrong order), never both.
+// The missing 8 bytes are a 10th spill slot at 0x70 that is never referenced: a pseudo left
+// behind by combine's `(use (reg))` death-note insn (here: 180 from the 3->2 combine, plus
+// 189 from the GwPlayer coin compare and 674 from the `while (finished < count)` entry test).
+// An unused local array cannot restore it: arrays are laid out before reload's spill slots, so
+// it shifts every spill offset by 8 (`s32 unused[2]` anywhere in the list: score 288). Also
+// tried without success: s16 coinAmount, a separate s32 starAmount (as in
+// func_8010F984_chancetime), all orderings of the coins/coinAmount/stars statements, and
+// rewrites of the return test, isStars placement and count clamping.
 #ifdef NON_MATCHING
 void func_8010E4D0_chancetime(omObjData *object) {
     f32 coinsF[2];

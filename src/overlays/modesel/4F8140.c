@@ -1393,14 +1393,6 @@ f32 func_801094A8_modesel(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     return -(atan2df(arg3 - arg1, arg2 - arg0) - 90.0f);
 }
 
-#ifdef NON_MATCHING
-// The counterclockwise branch's endAngleCcw lands in $f0 instead of $f12 (two movs + one add
-// and the following sub differ only in that register). It inherits $f0 as a copy preference
-// from toAngle (set from the call return value). The clockwise branch avoids this by copying
-// before the comparison (toAngle stays live, so no preference merge), but doing the same in
-// the counterclockwise branch lets CSE substitute endAngleCcw for toAngle, since endAngleCcw
-// outlives toAngle there. Tried: shared/separate end vars, copy-first/late/if-else forms,
-// swapped conditions, ternaries, a separate cross-product local.
 void func_801094F0_modesel(Vec *from, Vec *to, f32 t, Vec *out) {
     f32 fromAngle;
     f32 toAngle;
@@ -1426,9 +1418,11 @@ void func_801094F0_modesel(Vec *from, Vec *to, f32 t, Vec *out) {
             angle += 360.0f;
         }
     } else {
-        if (0.0f < toAngle - fromAngle) {
+        // The do-while ends the CSE block, so CSE keeps using toAngle (not endAngleCcw) below.
+        do {
             endAngleCcw = toAngle;
-        } else {
+        } while (0);
+        if (!(0.0f < toAngle - fromAngle)) {
             endAngleCcw = toAngle + 360.0f;
         }
         angle = (endAngleCcw - fromAngle) * t + fromAngle;
@@ -1440,9 +1434,6 @@ void func_801094F0_modesel(Vec *from, Vec *to, f32 t, Vec *out) {
     out->y = 0.0f;
     out->z = cosdf(angle);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F8140", func_801094F0_modesel);
-#endif
 
 void func_801096D4_modesel(omObjData *obj) {
     Vec pos, at, up, direction, startAt, endAt, startDir, endDir;

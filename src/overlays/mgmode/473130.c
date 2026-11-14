@@ -806,7 +806,14 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010E494_mgmode);
 // produce the copy without other diffs. See func_8010E494_mgmode for the CSE
 // analysis and the list of other loop shapes and types tried; the
 // `do {} while (0);` boundary keeps the copy here too but unfolds the pretest
-// (score 1204). Notes for the rest of the function:
+// (score 1204). The empty `if (count) {}` trick does not keep the copy here
+// (score 210). The folded pretest `beqz count<<16` comes from combine using
+// nonzero_bits (count is only ever 2 or 4) on the jump.c-duplicated exit test,
+// and the `move a1,v0` next to it is cse_around_loop reusing count<<16 for the
+// exit test, so the loop must stay a rotated for/while: an explicit
+// `if (count > 0)`/`if (count != 0)` guard around a do/while (with the copy
+// split off by `do {} while (0);`) keeps the copy but loses both (score 4190).
+// Notes for the rest of the function:
 // the second Hu3DModelPosSet z coordinate really uses delta[i].x (original
 // bug), model ids must come from the shared D_8011B8A8_mgmode table in the
 // first setup loop to get both table bases hoisted, and `count` must be

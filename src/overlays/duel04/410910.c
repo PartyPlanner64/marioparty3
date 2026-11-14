@@ -5414,9 +5414,14 @@ s32 func_80116168_duel04(void) {
 #ifdef NON_MATCHING
 // The second switch matches only in this ret/break form (its returns then jump
 // to a different label than the first switch's, keeping their return-1 blocks
-// apart). Remaining diff: the case 2 tail's `ret = 1` block is cross-jumped into
-// the identical case 3 tail, giving `beqzl s1` instead of `bnez s1; j; li 1`.
-// func_80115DA8_duel04 has the same blocker.
+// apart). Only one instruction differs: in case 2's last branch the target has
+// `li v0,1`, but writing `ret = 1` there lets jump2 cross-jump that block into
+// case 3's identical `ret = 1` block (with case 2's tail written either way
+// round). `ret = curIndex == 0` keeps the blocks apart but is not folded to 1,
+// so it emits `sltiu v0,s1,1`. Using `return 1` instead (in case 2 and/or case
+// 3) avoids that merge, but then the first switch's case 1 `return 1` block
+// is cross-jumped into the second switch's. func_80115DA8_duel04 has a similar
+// blocker.
 s32 func_801163C0_duel04(void) {
     s32 curIndex = MBDGetCurrentPlayerIndex();
     s32 otherIndex = (s16)(MBDGetCurrentPlayerIndex() ^ 1);
@@ -5509,10 +5514,10 @@ s32 func_801163C0_duel04(void) {
                 }
             } else if (walk >= 7 || (walk >= 3 && otherPlayer->cidx > D_80119EEA_duel04[walk])) {
                 ret = player->stats.partners.frontPower == 0;
-            } else if (curIndex == 0) {
-                ret = 1;
-            } else {
+            } else if (curIndex != 0) {
                 ret = otherPlayer->stats.partners.frontPower != 0;
+            } else {
+                ret = curIndex == 0;
             }
             break;
         case 3:

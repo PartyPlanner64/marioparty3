@@ -318,8 +318,6 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", D_8011144
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", D_8011144C_messy_memory);
 
-// NON_MATCHING: case 12 addresses D_80111910_messy_memory[0] through a base register instead of directly.
-#ifdef NON_MATCHING
 void func_8010622C_messy_memory(omObjData *obj) {
     MessyMemoryWork *work;
 
@@ -331,7 +329,7 @@ void func_8010622C_messy_memory(omObjData *obj) {
             break;
         case 5:
             if (obj->work[0] == 0) {
-                work = &D_80111910_messy_memory[0];
+                work = &D_80111910_messy_memory[obj->work[0]];
                 if (work->unk04 == 0) {
                     HuAudFXPlay(0x3F1);
                     work->unk04 = 1;
@@ -346,21 +344,18 @@ void func_8010622C_messy_memory(omObjData *obj) {
             break;
         case 12:
             if (obj->work[0] == 0) {
-                D_80111910_messy_memory[0].unk5C.x = D_80111910_messy_memory[0].unk5C.y = D_8011165C_messy_memory;
-                espScaleSet(D_80111910_messy_memory[0].unk42, D_80111910_messy_memory[0].unk5C.x,
-                            D_80111910_messy_memory[0].unk5C.y);
-                espDispOn(D_80111910_messy_memory[0].unk42);
-                espAttrSet(D_80111910_messy_memory[0].unk42, 0x4000);
-                if (D_80111910_messy_memory[0].unk5C.x >= 0.23f || D_80111910_messy_memory[0].unk5C.y >= 0.23f) {
+                work = &D_80111910_messy_memory[obj->work[0]];
+                work->unk5C.x = work->unk5C.y = D_8011165C_messy_memory;
+                espScaleSet(work->unk42, work->unk5C.x, work->unk5C.y);
+                espDispOn(work->unk42);
+                espAttrSet(work->unk42, 0x4000);
+                if (work->unk5C.x >= 0.23f || work->unk5C.y >= 0.23f) {
                     D_80115D9A_messy_memory = 12;
                 }
             }
             break;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", func_8010622C_messy_memory);
-#endif
 
 void func_801063FC_messy_memory(omObjData *obj) {
     MessyMemoryWork *work = &D_80111910_messy_memory[obj->work[0]];

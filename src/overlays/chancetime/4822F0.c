@@ -172,24 +172,29 @@ s32 func_80106BE0_chancetime(void) {
     return D_8010FAF0_chancetime;
 }
 
-#ifdef NON_MATCHING
-// Only the block layout of the first loop differs (everything else matches, offset by 2 insns).
-// jump.c's "if (foo) bar; else break;" optimization swaps the CPU-player block (ending in a jump
-// to the loop exit) with the pad-check/HuPrcVSleep block (ending in the jump back to the top), so
-// the CPU block lands after the loop. The target keeps the source order, so something in the
-// original source blocked that swap; while/for/do-while, if/else and continue variants all swap.
 void func_80106BEC_chancetime(omObjData *object) {
-    s8 player = D_801100D0_chancetime[0];
+    s16 player = D_801100D0_chancetime[0];
     f32 time;
     s16 done;
+    s16 delay;
+    u16 btn;
 
     D_8010FAF0_chancetime = 0;
+    // The repeated done checks and the delay/btn temporaries are needed for the original block layout.
     while (TRUE) {
+        done = FALSE;
         if (GwPlayer[player].stat & 1) {
-            HuPrcSleep((u8)(rand8() % 15) + 15);
+            done = TRUE;
+        }
+        if (done) {
+            delay = (u8)(rand8() % 15) + 15;
+            HuPrcSleep(delay);
+        }
+        if (done) {
             break;
         }
-        if (D_800D5558_main[GwPlayer[player].pad] & 0x8000) {
+        btn = D_800D5558_main[GwPlayer[player].pad] & 0x8000;
+        if (btn) {
             break;
         }
         HuPrcVSleep();
@@ -226,9 +231,6 @@ void func_80106BEC_chancetime(omObjData *object) {
     D_8010FAF0_chancetime = 1;
     D_801100C0_chancetime.func = func_80106760_chancetime;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/chancetime/4822F0", func_80106BEC_chancetime);
-#endif
 
 void func_80106F10_chancetime(void) {
     omObjData *object = D_801100C0_chancetime.obj;

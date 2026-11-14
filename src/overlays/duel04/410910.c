@@ -6509,13 +6509,6 @@ s32 func_801187B8_duel04(void) {
     }
 }
 
-#ifdef NON_MATCHING
-// Only diff: the four loop guards before the -2 inputs are beqz instead of
-// blez (same issue as func_80119A30_duel04). combine folds `0 < count` to
-// `count != 0` because every set of count is a nonnegative constant
-// (set_nonzero_bits_and_sign_copies). The guard stays blez only if count is
-// live at function entry (uninitialized on some path) or has a non-constant
-// set at combine time, and neither shows up in the target asm.
 void func_80118850_duel04(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
     s32 masuId = MBDMasuLinkMasuIdGet(player->blink, player->bidx);
@@ -6535,7 +6528,8 @@ void func_80118850_duel04(void) {
             win = func_800D76A0_name_81(playerIndex, D_8011ADBC_duel04);
             func_800D742C_name_81(win, playerIndex, 0);
             if (func_800F37B8_name_81(CUR_PLAYER)) {
-                if (func_800D97B0_name_81(D_8011A7F4_duel04)) {
+                count = func_800D97B0_name_81(D_8011A7F4_duel04);
+                if (count != 0) {
                     count = 1;
                     if (func_800D97B0_name_81(D_8011A86C_duel04)) {
                         count = 2;
@@ -6569,7 +6563,8 @@ void func_80118850_duel04(void) {
             win = func_800D76A0_name_81(playerIndex, D_8011ADC4_duel04);
             func_800D742C_name_81(win, playerIndex, 0);
             if (func_800F37B8_name_81(CUR_PLAYER)) {
-                if (func_800D97B0_name_81(D_8011A8E4_duel04)) {
+                count = func_800D97B0_name_81(D_8011A8E4_duel04);
+                if (count != 0) {
                     count = 1;
                     if (func_800D97B0_name_81(D_8011A950_duel04)) {
                         count = 2;
@@ -6603,7 +6598,8 @@ void func_80118850_duel04(void) {
             win = func_800D76A0_name_81(playerIndex, D_8011ADCC_duel04);
             func_800D742C_name_81(win, playerIndex, 0);
             if (func_800F37B8_name_81(CUR_PLAYER)) {
-                if (func_800D97B0_name_81(D_8011A9BC_duel04)) {
+                count = func_800D97B0_name_81(D_8011A9BC_duel04);
+                if (count != 0) {
                     count = 1;
                     if (func_800D97B0_name_81(D_8011AA1C_duel04)) {
                         count = 2;
@@ -6637,7 +6633,8 @@ void func_80118850_duel04(void) {
             win = func_800D76A0_name_81(playerIndex, D_8011ADD4_duel04);
             func_800D742C_name_81(win, playerIndex, 0);
             if (func_800F37B8_name_81(CUR_PLAYER)) {
-                if (func_800D97B0_name_81(D_8011AA88_duel04)) {
+                count = func_800D97B0_name_81(D_8011AA88_duel04);
+                if (count != 0) {
                     count = 1;
                     if (func_800D97B0_name_81(D_8011AAF4_duel04)) {
                         count = 2;
@@ -6668,9 +6665,6 @@ void func_80118850_duel04(void) {
     }
     func_800ECDE8_name_81();
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80118850_duel04);
-#endif
 
 void func_80118D14_duel04(void) {
     GW_PLAYER *player;

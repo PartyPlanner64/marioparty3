@@ -377,10 +377,6 @@ u32 func_80111058_option(u32 arg0) {
     return arg0;
 }
 
-// Register allocation only: the target assigns s0=x, s1=ptr, s2=y, s3=type, s4=width, s5=height, while this
-// gives s0=ptr, s1=x, s2=y, s3=width, s4=height, s5=type. Tried s32/s16 x and y, reusing `message` instead of
-// `ptr` (loses the hoisted `move a0,a1`), and both local declaration orders.
-#ifdef NON_MATCHING
 void func_801110C0_option(s32 arg0, u32 message, s16 x, s16 y, u16 width, u16 height, s16 type) {
     s32 winID;
     u32 ptr;
@@ -407,6 +403,9 @@ void func_801110C0_option(s32 arg0, u32 message, s16 x, s16 y, u16 width, u16 he
             winID = func_80111900_option(ptr, x, y, type);
             break;
         case 0:
+            ptr = func_80111058_option(message);
+            winID = func_8011130C_option(ptr, x, y, width, height, type);
+            break;
         default:
             ptr = func_80111058_option(message);
             winID = func_8011130C_option(ptr, x, y, width, height, type);
@@ -417,9 +416,6 @@ void func_801110C0_option(s32 arg0, u32 message, s16 x, s16 y, u16 width, u16 he
     }
     D_80115A78_option[arg0].winID = winID;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/option/53DCA0", func_801110C0_option);
-#endif
 
 s32 func_8011130C_option(s32 message, s16 x, s16 y, s16 width, s16 height, s16 type) {
     s16 winID;

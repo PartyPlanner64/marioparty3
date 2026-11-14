@@ -615,8 +615,6 @@ u32 func_80106B38_modesel(u32 arg0) {
     return arg0;
 }
 
-#ifdef NON_MATCHING
-// Code matches except for register allocation of the parameters and text.
 void func_80106BA0_modesel(s32 index, u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
     s32 window;
     u32 text;
@@ -643,6 +641,9 @@ void func_80106BA0_modesel(s32 index, u32 message, s16 x, s16 y, s16 width, s16 
             window = func_801073E0_modesel(text, x, y, style);
             break;
         case 0:
+            text = func_80106B38_modesel(message);
+            window = func_80106DEC_modesel(text, x, y, width, height, style);
+            break;
         default:
             text = func_80106B38_modesel(message);
             window = func_80106DEC_modesel(text, x, y, width, height, style);
@@ -653,9 +654,6 @@ void func_80106BA0_modesel(s32 index, u32 message, s16 x, s16 y, s16 width, s16 
     }
     D_80110998_modesel[index][0] = window;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F7EC0", func_80106BA0_modesel);
-#endif
 
 s32 func_80106DEC_modesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
     s16 window = HuWinCreate(x, y, width, height, 0, 8);

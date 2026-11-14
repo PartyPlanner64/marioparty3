@@ -1013,9 +1013,6 @@ void HuWinCancelCRSet(void) {
     cancelCRF = 1;
 }
 
-#ifdef NON_MATCHING
-/* Two callee-saved registers are swapped: the window ID copy (target s7) and pixelData (target fp).
- * Writing pixels = pixelData + offset fixes that, but then pixels/j swap a2/a3 instead. */
 void charEntry(s16 winId, u8 character, u8 color, s16 x, s16 y) {
     TextWindow *window = &winData[winId];
     u8 *pixels;
@@ -1023,7 +1020,7 @@ void charEntry(s16 winId, u8 character, u8 color, s16 x, s16 y) {
     u8 *glyph;
     s16 width;
     s16 stride;
-    u16 height = 12;
+    s16 height = 12;
     s16 glyphStride = 5;
     s16 i;
     s16 j;
@@ -1049,12 +1046,11 @@ void charEntry(s16 winId, u8 character, u8 color, s16 x, s16 y) {
     if ((window->attr & HUWIN_ATTR_SHOWSPACE) && character != 0x80 && character != 0x81 && color == 0) {
         func_8005D83C_main(winId, x - 1, y - 2, width + ((u8)window->spacing_x + 3), 14);
     }
-    pixels = pixelData;
-    pixels += (x + y * window->unk44) / 2;
+    pixels = pixelData + (x + y * window->unk44) / 2;
     stride = window->unk44 / 2;
+    color++;
     background = window->mess_shadow_color + 1;
     backgroundHigh = background << 4;
-    color++;
     if (x & 1) {
         for (i = 0; i < height; i++) {
             for (j = 0; j < width / 2; j++, glyph++) {
@@ -1102,9 +1098,6 @@ void charEntry(s16 winId, u8 character, u8 color, s16 x, s16 y) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/window", charEntry);
-#endif
 
 void func_8005D83C_main(s16 winId, s16 x, s16 y, s16 width, s16 height) {
     TextWindow *window = &winData[winId];

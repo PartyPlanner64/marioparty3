@@ -858,11 +858,7 @@ void func_801083D0_cosmic_coaster(omObjData *object, s16 slot, s8 *stickX) {
 }
 
 // Intro camera sweep through the D_8010BB90 keyframes for both cameras.
-// Only diffs: the 90.0f constant is hoisted out of the first camera loop, and
-// the float registers used for the zoom computation are permuted.
-#ifdef NON_MATCHING
 void func_8010869C_cosmic_coaster(omObjData *object) {
-    f32 angle;
     s32 i;
 
     switch (D_8010C05A_cosmic_coaster) {
@@ -894,12 +890,12 @@ void func_8010869C_cosmic_coaster(omObjData *object) {
                     CenterM[i].y += D_8010C040_cosmic_coaster;
                     CenterM[i].z += D_8010C044_cosmic_coaster;
                     if (CRotM[i].y > 90.0f) {
-                        angle = sindf(CRotM[i].y);
+                        CZoomM[i] = D_8010C02C_cosmic_coaster +
+                                    fabs(sindf(CRotM[i].y)) * D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].zoom;
                     } else {
-                        angle = cosdf(CRotM[i].y);
+                        CZoomM[i] = D_8010C02C_cosmic_coaster +
+                                    fabs(cosdf(CRotM[i].y)) * D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].zoom;
                     }
-                    CZoomM[i] = D_8010C02C_cosmic_coaster +
-                                fabs(angle) * D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].zoom;
                 }
             } else {
                 for (i = 0; i < 2; i++) {
@@ -910,12 +906,12 @@ void func_8010869C_cosmic_coaster(omObjData *object) {
                     CenterM[i].y = D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].center.y;
                     CenterM[i].z = D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].center.z;
                     if (CRotM[i].y >= 90.0f) {
-                        angle = sindf(CRotM[i].y);
+                        CZoomM[i] = D_8010C02C_cosmic_coaster +
+                                    fabs(sindf(CRotM[i].y)) * D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].zoom;
                     } else {
-                        angle = cosdf(CRotM[i].y);
+                        CZoomM[i] = D_8010C02C_cosmic_coaster +
+                                    fabs(cosdf(CRotM[i].y)) * D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].zoom;
                     }
-                    CZoomM[i] = D_8010C02C_cosmic_coaster +
-                                fabs(angle) * D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].zoom;
                 }
                 if (++D_8010C04C_cosmic_coaster == 2) {
                     D_8010C05A_cosmic_coaster = 3;
@@ -945,9 +941,6 @@ void func_8010869C_cosmic_coaster(omObjData *object) {
             break;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_10_cosmic_coaster/18ABD0", func_8010869C_cosmic_coaster);
-#endif
 
 // Lights the car and its riders from the nearest track object of type 4
 // (work[1]) within range, fading the light out with distance.

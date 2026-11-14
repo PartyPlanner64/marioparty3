@@ -362,8 +362,6 @@ void func_801063E8_pipe_cleaners(omObjData *obj, s32 slot) {
     }
 }
 
-// NON_MATCHING: t1/t2 register swap for the hoisted -1 constant and the (mode == 0) test.
-#ifdef NON_MATCHING
 s32 func_80106540_pipe_cleaners(omObjData *obj, u32 mode) {
     PipeCleanerSlot *slot;
     s32 idx;
@@ -405,6 +403,8 @@ s32 func_80106540_pipe_cleaners(omObjData *obj, u32 mode) {
                     case 4:
                         break;
                     case 1:
+                        found[i] = -1;
+                        break;
                     case 2:
                         found[i] = -1;
                         break;
@@ -429,9 +429,6 @@ s32 func_80106540_pipe_cleaners(omObjData *obj, u32 mode) {
     }
     return -1;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80106540_pipe_cleaners);
-#endif
 
 // NON_MATCHING: the else branch is tail-merged into the identical code in the first branch; the target keeps
 // two copies.

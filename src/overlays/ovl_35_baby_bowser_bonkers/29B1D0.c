@@ -598,9 +598,6 @@ void func_80106AA4_baby_bowser_bonkers(omObjData *object) {
     func_80088910_main(Hu3DData[object->model[0]].mtx, 0.0f, data->unk3C, 0.0f);
 }
 
-#ifdef NON_MATCHING
-// Register allocation differs (player/data and dist/dz swap) and the original duplicates the dist != 0 test into
-// the first branch of the retarget check.
 void func_80106CEC_baby_bowser_bonkers(omObjData *object) {
     BabyBowserBonkersPlayer *player;
     func_800E1BA8_minigame_ObjData *data;
@@ -621,7 +618,11 @@ void func_80106CEC_baby_bowser_bonkers(omObjData *object) {
     D_800CDA7C_main[player->unk_2A] = D_800D5558_main[player->unk_2A] = 0;
     D_800CBB6E_main[player->unk_2A] = 0;
     D_800D20A1_main[player->unk_2A] = 0;
-    ready = (D_8010BC48_baby_bowser_bonkers >= 450 ? player->unk_3C / 2 : player->unk_3C) <= player->unk_02;
+    if (D_8010BC48_baby_bowser_bonkers >= 450) {
+        ready = player->unk_3C / 2 <= player->unk_02;
+    } else {
+        ready = player->unk_3C <= player->unk_02;
+    }
     if (data->unk38 != 1000.0f) {
         player->unk_42 = player->unk_02;
     }
@@ -696,9 +697,21 @@ void func_80106CEC_baby_bowser_bonkers(omObjData *object) {
                 }
             }
         }
-        if ((actor->unk_06 == 4 || actor->unk_06 == 5 ||
-             (actor->unk_04 == 0 && func_80107648_baby_bowser_bonkers(object) == 0)) &&
-            player->unk_34 >= player->unk_36) {
+        if (actor->unk_06 != 4 && actor->unk_06 != 5 &&
+            (actor->unk_04 != 0 || func_80107648_baby_bowser_bonkers(object) != 0)) {
+            if (dist != 0.0f) {
+                dx /= dist;
+                dz /= dist;
+            } else {
+                dx = dz = 0.0f;
+            }
+            scale = dist / 100.0;
+            if (scale >= 1.0f) {
+                scale = 1.0f;
+            }
+            D_800CBB6E_main[player->unk_2A] = dx * 64.0f * scale;
+            D_800D20A1_main[player->unk_2A] = -(dz * 64.0f * scale);
+        } else if (player->unk_34 >= player->unk_36) {
             player->unk_32 = -1;
         } else {
             if (dist != 0.0f) {
@@ -730,9 +743,6 @@ void func_80106CEC_baby_bowser_bonkers(omObjData *object) {
     }
     player->unk_34++;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_80106CEC_baby_bowser_bonkers);
-#endif
 
 void func_801075F4_baby_bowser_bonkers(omObjData *arg0, f32 arg1, f32 arg2) {
     BabyBowserBonkersPlayer *player = func_8010B3AC_baby_bowser_bonkers(arg0);

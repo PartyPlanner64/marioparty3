@@ -419,10 +419,10 @@ s32 func_80106C44_awful_tower(omObjData *player, omObjData *object) {
     return 1;
 }
 
-#ifdef NON_MATCHING
 void func_80106CDC_awful_tower(omObjData *object) {
     A96F0_ObjData *data;
     s16 i;
+    s32 unused[2]; // Retain the original stack frame.
 
     object->data = HuMemAllocTag(sizeof(A96F0_ObjData), TAG_OVERLAY);
     memset(object->data, 0, sizeof(A96F0_ObjData));
@@ -455,9 +455,6 @@ void func_80106CDC_awful_tower(omObjData *object) {
     func_8001C258_main(object->model[0], 4, 4);
     object->func = NULL;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_25_awful_tower/21E010", func_80106CDC_awful_tower);
-#endif
 
 void func_80106E84_awful_tower(omObjData *object) {
     D_800EC1C0_minigame_ObjData *work;

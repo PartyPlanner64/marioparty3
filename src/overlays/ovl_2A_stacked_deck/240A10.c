@@ -273,16 +273,19 @@ void func_80106354_stacked_deck(omObjData *object, u8 anim) {
         Hu3DAnimCreate(Hu3DData[object->model[0]].hmf, D_8010F708_stacked_deck[anim], 0, "card_k_DEF");
 }
 
-#ifdef NON_MATCHING
-// Only differs in f8/f10 register allocation of speed and the absolute z delta.
 void func_801063F4_stacked_deck(f32 x0, f32 z0, f32 x1, f32 z1, f32 *velX, f32 *velZ, f32 speed) {
-    f32 dx = x1 - x0;
-    f32 dz = z1 - z0;
-    f32 absDx = fabsf(dx);
-    f32 absDz = fabsf(dz);
+    f32 dx = x1;
+    f32 dz = z1;
+    f32 absDx;
+    f32 absDz;
     f32 delta;
     f32 dist;
     f32 step;
+
+    dx -= x0;
+    dz -= z0;
+    absDx = fabsf(dx);
+    absDz = fabsf(dz);
 
     if (absDz <= absDx) {
         if (dx >= 0.0f) {
@@ -291,8 +294,8 @@ void func_801063F4_stacked_deck(f32 x0, f32 z0, f32 x1, f32 z1, f32 *velX, f32 *
             *velX = speed;
         }
         delta = dz;
-        step = speed;
         dist = absDx;
+        step = speed;
         if (step == 0.0f) {
             step = 1.0f;
         }
@@ -308,8 +311,8 @@ void func_801063F4_stacked_deck(f32 x0, f32 z0, f32 x1, f32 z1, f32 *velX, f32 *
             *velZ = speed;
         }
         delta = dx;
-        step = speed;
         dist = absDz;
+        step = speed;
         if (step == 0.0f) {
             step = 1.0f;
         }
@@ -320,9 +323,6 @@ void func_801063F4_stacked_deck(f32 x0, f32 z0, f32 x1, f32 z1, f32 *velX, f32 *
         *velX = -(delta / step);
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2A_stacked_deck/240A10", func_801063F4_stacked_deck);
-#endif
 
 void func_80106554_stacked_deck(omObjData *object) {
 }

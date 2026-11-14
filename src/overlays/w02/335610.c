@@ -7333,7 +7333,14 @@ Process *func_80119D84_w02(void) {
 // Instructions and register allocation match. The only remaining difference is
 // the stack frame: the target reserves one extra 8-byte spill slot (0x128, never
 // accessed), so the frame is 0x190 instead of 0x188 and the callee-saved register
-// save offsets are shifted by 8.
+// save offsets are shifted by 8. Reload spill slots here are 0x108 space, 0x110
+// player, 0x118 model, 0x120 helpWin, then the loop-hoisted &moveTimes[result]
+// (0x128 here, 0x130 in the target), so the target has one more pseudo (numbered
+// after helpWin) that failed allocation yet has no remaining references.
+// Tried without effect on the frame: shuffling local declaration order, s32
+// masuId / switch on the call directly, moving or splitting moveTimes and its
+// float conversion, reusing destSpace/curPlayer for other MBMasuGet/MBPlayerGet
+// calls, dead uses of the second cosdf() result, and else-if chains for result.
 void func_80119DB0_w02(void) {
     SpaceData *space = MBMasuGet(0x78);
     SpaceData *destSpace = MBMasuGet(0x52);

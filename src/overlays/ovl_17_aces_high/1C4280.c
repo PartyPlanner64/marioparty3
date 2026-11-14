@@ -2346,7 +2346,6 @@ void func_8010C9DC_aces_high(void) {
     espPriSet(D_8010DF20_aces_high, 0x8064);
 }
 
-#ifdef NON_MATCHING
 void func_8010CA6C_aces_high(omObjData *object) {
     u16 order[4] = { 0, 1, 2, 3 };
     AceHighPlayer *player;
@@ -2392,7 +2391,8 @@ void func_8010CA6C_aces_high(omObjData *object) {
             x = player->unk_6C->trans.x * 0.005063291f + 160.0f;
             y = player->unk_6C->trans.z * 0.005063291f + 120.0f;
             espPosSet(player->unk_1E, x, y);
-            scale = (1.0f + player->unk_6C->trans.y / 500.0f * 0.25f) * 0.5f;
+            scale = 1.0f + player->unk_6C->trans.y / 500.0f * 0.25f;
+            scale *= 0.5f;
             espScaleSet(player->unk_1E, scale, scale);
             espZRotSet(player->unk_1E, player->unk_6C->rot.y);
             espDispOn(player->unk_1E);
@@ -2401,11 +2401,6 @@ void func_8010CA6C_aces_high(omObjData *object) {
         }
     }
 }
-#else
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", D_8010DE28_aces_high);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_8010CA6C_aces_high);
-#endif
 
 void func_8010CD88_aces_high(omObjData *object) {
     switch (D_8010DE88_aces_high) {

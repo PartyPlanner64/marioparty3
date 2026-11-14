@@ -7345,13 +7345,18 @@ Process *func_80119D84_w02(void) {
 // separate locals for the spin speed/lap count, for MBMasuGet(0x53/0x7A/
 // D_8011D960_w02[result]), for MBRand's result and for HuPrcCurrentGet(), and a
 // `time` local for moveTimes[result]. None adds a slot without changing the code.
-// Two compiler paths are known to leave a slot with no accesses: (1) a compare
-// result pseudo (slt) that combine folds into a branch in a three-insn combine
-// that keeps a new i2 pattern (e.g. the entry test of `for (i = 0; i < n; i++)`
-// with a non-constant n), since reg_n_refs is not cleared; (2) a variable that
-// flow sees as possibly read before set (live at entry) whose read is optimized
-// away. The original probably has one of these somewhere before the moveTimes
-// loop.
+// The slot is a pseudo that combine (2.7.2) leaves with a stale reg_n_refs:
+// either (1) i2dest of a three-insn combine that keeps i1 (camsetup.c's
+// `for (i = 0; i < D_80097660_main; i++)`), or (2) a variable live at function
+// entry (possibly read before set) whose read combine simplifies away. The
+// target has no folded compare-against-zero that (1) could explain. Confirmed
+// form (2): adding `s32 tmp;` as the last local and writing `mask = (u8)tmp >> 8;`
+// instead of `mask = 0;` gives the exact 0x190 frame and a full ROM match
+// (with the D_8011EB68_w02 INCLUDE_RODATA dropped), but that is an
+// uninitialized read, so it is not used. Also tried without effect: a
+// separate `stop` angle set in the spin-loop break paths, reversed or
+// rewritten comparisons (`5 <= j`, `-360 > angle`, `<=`/`>` variants), and
+// `for (j = 0; j < 6; j++)` style motion pointer loops.
 void func_80119DB0_w02(void) {
     SpaceData *space = MBMasuGet(0x78);
     SpaceData *destSpace = MBMasuGet(0x52);

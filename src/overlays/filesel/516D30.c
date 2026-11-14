@@ -3104,7 +3104,13 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/filesel/516D30", D_80112DAC_filesel);
 INCLUDE_RODATA("asm/nonmatchings/overlays/filesel/516D30", D_80112DBC_filesel);
 
 #ifdef NON_MATCHING
-// The remaining differences are GCC state-address anchors and saved-register allocation.
+// The remaining differences are GCC state-address anchors and saved-register allocation:
+// - Target keeps &name (D_80114490) as a reg-equiv constant across the first call and
+//   rematerializes it as the base for the field stores; that only happened in experiments
+//   when the first call sat inside a loop (preserve_subexpressions_p), e.g. do { } while (0).
+// - The loop's hoisted base is &keyboard (0x8011447C), which experiments only reproduced by
+//   adding an otherwise unused read of D_80114478_filesel.keyboard at the top of the loop.
+// - The hoisted constant 1 gets s2 and preset gets s6 in the target (s6/s5 here).
 s32 func_8010C9B4_filesel(s32 preset) {
     s32 input;
     s32 option;

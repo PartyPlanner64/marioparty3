@@ -795,13 +795,10 @@ void func_80106D0C_slot_synch(s16 arg0, s16 arg1) {
     }
 }
 
-#ifdef NON_MATCHING
-// The original keeps the TRUE flag in a callee-saved register instead of folding it into an andi.
 void func_80106E8C_slot_synch(omObjData *object) {
+    s16 done = TRUE;
     UnkSlotPlayer *player = (UnkSlotPlayer *)func_8010C428_slot_synch(object);
     UnkSlotSynch *team = &D_8010DF5C_slot_synch[player->unk_02];
-    s32 flag = TRUE;
-    s32 done;
     u16 btn;
     u16 btnDown;
     s16 stickX;
@@ -827,7 +824,9 @@ void func_80106E8C_slot_synch(omObjData *object) {
     player->unk_0C = object->trans.x;
     player->unk_10 = object->trans.y;
     player->unk_14 = object->trans.z;
-    done = func_80108A7C_slot_synch(player->unk_00) == 0 ? flag : 0;
+    if (func_80108A7C_slot_synch(player->unk_00) != 0) {
+        done = FALSE;
+    }
     if (team->unk_1C == 0 || !done) {
         btn = D_800CDA7C_main[player->unk_1E];
         btnDown = D_800D5558_main[player->unk_1E];
@@ -851,9 +850,6 @@ void func_80106E8C_slot_synch(omObjData *object) {
     Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
     player->unk_0A++;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_14_slot_synch/1AC970", func_80106E8C_slot_synch);
-#endif
 
 void func_80107108_slot_synch(omObjData *object) {
     UnkSlotPlayer *player = (UnkSlotPlayer *)func_8010C428_slot_synch(object);

@@ -845,6 +845,17 @@ void func_80107A64_eatsa_pizza(omObjData *object) {
 }
 
 #ifdef NON_MATCHING
+// Instructions and registers match exactly; only the stack frame differs
+// (0x90 here vs 0xA0 in the target). The target has two extra, never-accessed
+// 8-byte spill slots between `count` (sp+0x40) and the loop-invariant row
+// temps (y*160 etc., sp+0x58..). Slots are assigned in pseudo-number order, so
+// the original source had two extra pseudos created between `count` and the
+// inner loop body that combine eliminated while leaving stale reg_n_refs (the
+// same effect produces unused slots in e.g. func_800257BC_main). Tried without
+// success: all single and pairwise variable type changes, centerX/centerY as
+// s16/s32/f32, alternative clamp forms (ternary, if/else, assignment in
+// condition), for/while loop forms and init/increment orderings, u16/s32 types
+// for the D_8010927A/7E/82 arrays, and nibble/pattern temporaries per branch.
 s32 func_80107E6C_eatsa_pizza(omObjData *object) {
     func_800E1BA8_minigame_ObjData *data;
     Work *work;
@@ -950,7 +961,8 @@ s32 func_80107E6C_eatsa_pizza(omObjData *object) {
                     if (mask[otherIndex * 2 + 1] & 1) {
                         removed++;
                     }
-                    color = mask[maskIndex * 2] &= ~1;
+                    mask[maskIndex * 2] &= ~1;
+                    color = mask[maskIndex * 2];
                     mask[maskIndex * 2 + 1] &= ~1;
                     mask[otherIndex * 2] &= ~1;
                     mask[otherIndex * 2 + 1] &= ~1;

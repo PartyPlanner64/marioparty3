@@ -2520,18 +2520,22 @@ void func_8010CFF8_aces_high(void) {
     }
 }
 
+// NON_MATCHING: only register allocation differs. Target keeps the scissor
+// walking pointer in s0 and the viewport pointer in s1 (4 saved regs, 0x50
+// frame); here one `rect` variable gets s1 for both. Using separate scissor and
+// viewport variables gets the scissor part in s0 but puts the viewport pointer in
+// a0 (3 saved regs). Writing [1][0]/[3][0] through the global array (instead of
+// rect[0]) is needed so the reads after the stores reload from memory.
 #ifdef NON_MATCHING
 u16 func_8010D1D8_aces_high(u16 winner) {
     f32 angle;
     f32 moveX;
     f32 moveY;
-    f32 dx;
-    f32 dy;
     s16 x;
     s16 y;
     s16 w;
     s16 h;
-    f32 *viewport;
+    f32 *rect;
 
     angle = atan2df(D_8010DCBC_aces_high[winner].x - D_8010DCB4_aces_high.x,
                     D_8010DCBC_aces_high[winner].y - D_8010DCB4_aces_high.y);
@@ -2543,39 +2547,37 @@ u16 func_8010D1D8_aces_high(u16 winner) {
         if (D_8010DCB4_aces_high.x < D_8010DCBC_aces_high[winner].x) {
             D_8010DCB4_aces_high.x = D_8010DCBC_aces_high[winner].x;
         }
-    } else if (D_8010DCBC_aces_high[winner].x < D_8010DCB4_aces_high.x) {
+    } else if (D_8010DCB4_aces_high.x > D_8010DCBC_aces_high[winner].x) {
         D_8010DCB4_aces_high.x = D_8010DCBC_aces_high[winner].x;
     }
     if (moveY < 0.0f) {
         if (D_8010DCB4_aces_high.y < D_8010DCBC_aces_high[winner].y) {
             D_8010DCB4_aces_high.y = D_8010DCBC_aces_high[winner].y;
         }
-    } else if (D_8010DCBC_aces_high[winner].y < D_8010DCB4_aces_high.y) {
+    } else if (D_8010DCB4_aces_high.y > D_8010DCBC_aces_high[winner].y) {
         D_8010DCB4_aces_high.y = D_8010DCBC_aces_high[winner].y;
     }
-    D_8010DB70_aces_high[0][2] = D_8010DCB4_aces_high.x - 1.0f;
-    D_8010DB70_aces_high[0][3] = D_8010DCB4_aces_high.y - 1.0f;
-    ScissorSet(0, D_8010DB70_aces_high[0][0], D_8010DB70_aces_high[0][1], D_8010DB70_aces_high[0][2],
-               D_8010DB70_aces_high[0][3]);
+    rect = D_8010DB70_aces_high[0];
+    rect[2] = D_8010DCB4_aces_high.x - 1.0f;
+    rect[3] = D_8010DCB4_aces_high.y - 1.0f;
+    ScissorSet(0, rect[0], rect[1], rect[2], rect[3]);
+    rect += 4;
     D_8010DB70_aces_high[1][0] = D_8010DCB4_aces_high.x + 1.0f;
-    D_8010DB70_aces_high[1][3] = D_8010DCB4_aces_high.y - 1.0f;
-    ScissorSet(1, D_8010DB70_aces_high[1][0], D_8010DB70_aces_high[1][1], D_8010DB70_aces_high[1][2],
-               D_8010DB70_aces_high[1][3]);
-    D_8010DB70_aces_high[2][2] = D_8010DCB4_aces_high.x - 1.0f;
-    D_8010DB70_aces_high[2][1] = D_8010DCB4_aces_high.y + 1.0f;
-    ScissorSet(2, D_8010DB70_aces_high[2][0], D_8010DB70_aces_high[2][1], D_8010DB70_aces_high[2][2],
-               D_8010DB70_aces_high[2][3]);
+    rect[3] = D_8010DCB4_aces_high.y - 1.0f;
+    ScissorSet(1, rect[0], rect[1], rect[2], rect[3]);
+    rect += 4;
+    rect[2] = D_8010DCB4_aces_high.x - 1.0f;
+    rect[1] = D_8010DCB4_aces_high.y + 1.0f;
+    ScissorSet(2, rect[0], rect[1], rect[2], rect[3]);
+    rect += 4;
     D_8010DB70_aces_high[3][0] = D_8010DCB4_aces_high.x + 1.0f;
-    D_8010DB70_aces_high[3][1] = D_8010DCB4_aces_high.y + 1.0f;
-    ScissorSet(3, D_8010DB70_aces_high[3][0], D_8010DB70_aces_high[3][1], D_8010DB70_aces_high[3][2],
-               D_8010DB70_aces_high[3][3]);
-    viewport = D_8010DBB0_aces_high[winner];
-    dx = D_8010DCB4_aces_high.x - 160.0f;
-    dy = D_8010DCB4_aces_high.y - 120.0f;
-    x = viewport[0] + fabs(dx) * 320.0 / 158.0;
-    y = viewport[1] + fabs(dy) * 240.0 / 118.0;
-    w = dx * 320.0f / 158.0f + viewport[2];
-    h = dy * 240.0f / 158.0f + viewport[3];
+    rect[1] = D_8010DCB4_aces_high.y + 1.0f;
+    ScissorSet(3, rect[0], rect[1], rect[2], rect[3]);
+    rect = D_8010DBB0_aces_high[winner];
+    x = rect[0] + fabs(D_8010DCB4_aces_high.x - 160.0f) * 320.0 / 158.0;
+    y = rect[1] + fabs(D_8010DCB4_aces_high.y - 120.0f) * 240.0 / 118.0;
+    w = (D_8010DCB4_aces_high.x - 160.0f) * 320.0f / 158.0f + rect[2];
+    h = (D_8010DCB4_aces_high.y - 120.0f) * 240.0f / 158.0f + rect[3];
     ViewportSet(winner, x, y, 511.0f, w, h, 511.0f);
     espPosSet(D_8010DE92_aces_high, 160, D_8010DCB4_aces_high.y);
     espPosSet(D_8010DE94_aces_high, D_8010DCB4_aces_high.x, 120);

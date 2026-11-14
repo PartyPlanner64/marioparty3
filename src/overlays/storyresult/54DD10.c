@@ -212,8 +212,6 @@ void func_801060D0_storyresult(MsetupCameraPreset *preset) {
     }
 }
 
-#ifdef NON_MATCHING
-// Instruction scheduling differs around the Center address load.
 void func_80106190_storyresult(void) {
     Vec pos, at, up;
     f32 rotX, rotY, rotZ;
@@ -225,9 +223,9 @@ void func_80106190_storyresult(void) {
         rotX = CRot.x;
         rotY = CRot.y;
         rotZ = CRot.z;
-        pos.x = sindf(rotY) * cosdf(rotX) * CZoom + Center.x;
-        pos.y = -sindf(rotX) * CZoom + Center.y;
-        pos.z = cosdf(rotY) * cosdf(rotX) * CZoom + Center.z;
+        pos.x = Center.x + sindf(rotY) * cosdf(rotX) * CZoom;
+        pos.y = Center.y + -sindf(rotX) * CZoom;
+        pos.z = Center.z + cosdf(rotY) * cosdf(rotX) * CZoom;
         at.x = Center.x;
         at.y = Center.y;
         at.z = Center.z;
@@ -267,9 +265,6 @@ void func_80106190_storyresult(void) {
     Hu3DCameraPosSetV(0, &pos, &at, &up);
     Hu3DCamUpdateMtx(0);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/storyresult/54DD10", func_80106190_storyresult);
-#endif
 
 void func_80106754_storyresult(void) {
     while (1) {

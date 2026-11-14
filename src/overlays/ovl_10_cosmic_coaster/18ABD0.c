@@ -95,7 +95,7 @@ void func_80108C9C_cosmic_coaster(omObjData *object);
 void func_801080C8_cosmic_coaster(omObjData *arg0);
 void func_801090C0_cosmic_coaster(omObjData *arg0);
 void func_80109290_cosmic_coaster(omObjData *object);
-s32 func_8010923C_cosmic_coaster(CosmicCoasterEffectData *data);
+s16 func_8010923C_cosmic_coaster(CosmicCoasterEffectData *data);
 void func_801096A8_cosmic_coaster(omObjData *object);
 
 void func_801059A0_cosmic_coaster(void) {
@@ -1030,7 +1030,7 @@ void func_801090C0_cosmic_coaster(omObjData *object) {
 
 // Marks the first unused of the 6 star sprite slots as in use, returning its
 // index, or -1 if all are in use.
-s32 func_8010923C_cosmic_coaster(CosmicCoasterEffectData *data) {
+s16 func_8010923C_cosmic_coaster(CosmicCoasterEffectData *data) {
     s16 i;
 
     for (i = 0; i < 6; i++) {
@@ -1044,14 +1044,12 @@ s32 func_8010923C_cosmic_coaster(CosmicCoasterEffectData *data) {
 }
 
 // Periodically launches a shooting star on each half of the screen.
-// Only diff: the 164.0f and 156.0f clamp constants are hoisted out of the loop
-// into s-registers instead of being loaded once per use into $f0.
-#ifdef NON_MATCHING
 void func_80109290_cosmic_coaster(omObjData *object) {
     CosmicCoasterEffectData *data = object->data;
     CosmicCoasterStarData *star;
     omObjData *starObj;
     f32 angle;
+    f32 dir;
     f32 x;
     f32 y;
     s16 slot;
@@ -1076,33 +1074,32 @@ void func_80109290_cosmic_coaster(omObjData *object) {
                 }
                 x = cosdf(angle) * 160.0f;
                 y = -(sindf(angle) * 160.0f + 80.0f);
+                // The clamps must stay unbraced: each braced body emits an
+                // extra block note, lengthening the constants' lifetimes enough
+                // that the loop optimizer hoists 164.0f and 156.0f.
+                // NOLINTBEGIN(readability-braces-around-statements)
                 if (i == 0) {
-                    if (x < -20.0f) {
+                    if (x < -20.0f)
                         x = -20.0f;
-                    }
-                    if (x > 164.0f) {
+                    if (x > 164.0f)
                         x = 164.0f;
-                    }
                 } else {
                     x += 160.0f;
-                    if (x < 156.0f) {
+                    if (x < 156.0f)
                         x = 156.0f;
-                    }
-                    if (x > 340.0f) {
+                    if (x > 340.0f)
                         x = 180.0f;
-                    }
                 }
-                if (y < -20.0f) {
+                if (y < -20.0f)
                     y = -20.0f;
-                }
-                if (y > 80.0f) {
+                if (y > 80.0f)
                     y = 80.0f;
-                }
+                // NOLINTEND(readability-braces-around-statements)
                 star->x = x;
                 star->y = y;
-                angle -= 180.0f;
-                star->vx = cosdf(angle) * 4.5f;
-                star->vy = -sindf(angle) * 4.5f;
+                dir = angle - 180.0f;
+                star->vx = cosdf(dir) * 4.5f;
+                star->vy = -sindf(dir) * 4.5f;
                 star->inUse = &data->inUse[slot];
                 star->sprite = data->sprite[slot];
                 star->sprite2 = data->sprite2[slot];
@@ -1114,9 +1111,6 @@ void func_80109290_cosmic_coaster(omObjData *object) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_10_cosmic_coaster/18ABD0", func_80109290_cosmic_coaster);
-#endif
 
 // Moves a shooting star and frees it once it leaves its half of the screen.
 void func_801096A8_cosmic_coaster(omObjData *object) {

@@ -1280,8 +1280,6 @@ void func_80108878_parasol_plummet(omObjData *object) {
     }
 }
 
-#ifdef NON_MATCHING
-// Register allocation differs: s2/s3 swapped for the loop index and &work->espId[i].
 void func_801089E0_parasol_plummet(omObjData *object) {
     s32 spriteIndex[3] = { 0, 1, 1 };
     s32 posX[2] = { 24, 296 };
@@ -1289,8 +1287,8 @@ void func_801089E0_parasol_plummet(omObjData *object) {
     s32 spriteIds[2];
     ParasolPlummetBg2Work *work;
     s32 i;
-    s32 x;
-    s32 y;
+    s16 x;
+    s16 y;
 
     object->data = HuMemAllocTag(sizeof(ParasolPlummetBg2Work), 0x7918);
     work = OM_GET_DATA_PTR(object, ParasolPlummetBg2Work);
@@ -1317,13 +1315,6 @@ void func_801089E0_parasol_plummet(omObjData *object) {
     omAddPrcObj(func_80108DD0_parasol_plummet, 0x50, 0x2000, 0);
     object->func = func_80108C1C_parasol_plummet;
 }
-#else
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010AAE0_parasol_plummet);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", D_8010AAEC_parasol_plummet);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", func_801089E0_parasol_plummet);
-#endif
 
 void func_80108C1C_parasol_plummet(omObjData *object) {
     ParasolPlummetBg2Work *work = OM_GET_DATA_PTR(object, ParasolPlummetBg2Work);

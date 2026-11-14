@@ -1016,13 +1016,11 @@ void func_80108484_pipe_cleaners(void) {
     }
 }
 
-// NON_MATCHING: register allocation differs around the D_8010AC10_pipe_cleaners / 15 quotient.
-#ifdef NON_MATCHING
 void func_80108708_pipe_cleaners(void) {
     PipeCleanerSlot *slot;
     s32 col;
+    s32 frame;
     s32 type;
-    s32 dir;
     s32 i;
     s32 j;
 
@@ -1043,16 +1041,17 @@ void func_80108708_pipe_cleaners(void) {
         }
         return;
     }
-    if (D_8010AC10_pipe_cleaners % 15 == 14) {
-        col = 59 - D_8010AC10_pipe_cleaners / 15;
+    frame = D_8010AC10_pipe_cleaners % 15;
+    col = 59 - D_8010AC10_pipe_cleaners / 15;
+    if (frame == 14) {
         for (i = 0; i < 4; i++) {
             type = D_8010A838_pipe_cleaners[i][col];
             if (type == -1) {
                 continue;
             }
-            dir = type & 3;
+            j = type & 3;
             type /= 4;
-            slot = &D_8010A968_pipe_cleaners[i * 4 + dir];
+            slot = &D_8010A968_pipe_cleaners[i * 4 + j];
             if (slot->state != 0) {
                 for (j = 0; j < 4; j++) {
                     slot = &D_8010A968_pipe_cleaners[i * 4 + j];
@@ -1074,9 +1073,6 @@ void func_80108708_pipe_cleaners(void) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80108708_pipe_cleaners);
-#endif
 
 void func_801088AC_pipe_cleaners(PipeCleanerSign *sign, s32 arg1) {
     if (arg1 != 0) {

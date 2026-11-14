@@ -1465,14 +1465,11 @@ s32 func_8010A558_storyresult(Process *prc) {
     return result;
 }
 
-#ifdef NON_MATCHING
-// Regalloc: the star difference is allocated to v1 instead of a0.
 s16 func_8010A5C4_storyresult(s16 playerIdx) {
     s16 stars = GwPlayer[playerIdx].star;
     s16 maxStars = 0;
     s16 coins;
     s16 maxCoins;
-    s32 diff;
     s16 result;
     s32 i;
 
@@ -1484,10 +1481,11 @@ s16 func_8010A5C4_storyresult(s16 playerIdx) {
             maxStars = GwPlayer[i].star;
         }
     }
-    diff = stars - maxStars;
-    if (diff >= 2) {
+    // The star lead reuses the loop counter.
+    i = stars - maxStars;
+    if (i >= 2) {
         result = 4;
-    } else if (diff == 1) {
+    } else if (i == 1) {
         result = 3;
     } else {
         coins = GwPlayer[playerIdx].coin;
@@ -1511,9 +1509,6 @@ s16 func_8010A5C4_storyresult(s16 playerIdx) {
     }
     return result;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/storyresult/54F360", func_8010A5C4_storyresult);
-#endif
 
 #ifdef NON_MATCHING
 // Scheduling: target computes both GwPlayer offsets before the first load.

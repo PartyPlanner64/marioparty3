@@ -866,7 +866,6 @@ void func_80108888_treadmill_grill(omObjData *object) {
     data->unk3C = i * 90.0f + 135.0f;
 }
 
-#ifdef NON_MATCHING
 void func_801089E0_treadmill_grill(void) {
     s16 model;
     s32 i;
@@ -904,9 +903,7 @@ void func_801089E0_treadmill_grill(void) {
     D_800D51FC_main = 1.0f;
     D_800D5410_main = 1.0f;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_801089E0_treadmill_grill);
-#endif
+
 void func_80108C64_treadmill_grill(omObjData *object, f32 x, f32 y, f32 z) {
     s32 player;
     f32 scale;

@@ -194,7 +194,7 @@ void Hu3DInit(void *arg0, void *arg1, u16 arg2, u16 arg3, u16 arg4, u8 arg5) {
     D_800D1FE8_main = 0;
 }
 
-s16 Hu3DModelCreate(u8 *data, u32 arg1) {
+s32 Hu3DModelCreate(u8 *data, u32 arg1) {
     HmfModel *modelP;
     HmfData *hmf;
     void *var_a1;

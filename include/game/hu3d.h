@@ -547,7 +547,7 @@ extern HmfModelData_Unk64_Unk8C_Struct *D_800CCF58_main;
 #endif
 
 void Hu3DInit(void *arg0, void *arg1, u16 arg2, u16 arg3, u16 arg4, u8 arg5);
-s16 Hu3DModelCreate(u8 *, u32);
+s32 Hu3DModelCreate(u8 *, u32);
 s32 Hu3DModelLink(s16 linkMdlId);
 s32 func_8001A894_main(u32 flags, void *dl, s32 mode);
 s32 Hu3DHookFuncCreate(s32 arg0, void (*arg1)(Gfx **, s32, s32), u8 arg2);

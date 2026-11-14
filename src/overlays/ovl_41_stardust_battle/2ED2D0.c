@@ -1656,14 +1656,11 @@ void func_80108D84_stardust_battle(omObjData *object) {
     }
 }
 
-#ifdef NON_MATCHING
-// Register allocation differs (hmf is assigned a0 instead of a1) and some instructions are scheduled differently.
 /* Scrolls the texture coordinates of one of the model's objects. */
 void func_80108EC4_stardust_battle(s16 model, f32 u, f32 v, s32 width, s32 height, s16 index) {
     HmfData *hmf = Hu3DData[model].hmf;
     u16 wrapU;
     u16 wrapV;
-    HmfModelData_Unk64_Unk60_Struct *obj;
     Vtx *src;
     Vtx *dst;
     u16 count;
@@ -1672,12 +1669,11 @@ void func_80108EC4_stardust_battle(s16 model, f32 u, f32 v, s32 width, s32 heigh
     s16 i;
 
     if (hmf != NULL) {
+        count = hmf->unk60[index].unk2A;
+        src = &hmf->unk40[hmf->unk60[index].unk28];
+        dst = &hmf->unk44[D_800D2008_main][hmf->unk60[index].unk28];
         wrapU = width << 5;
         wrapV = height << 5;
-        obj = &hmf->unk60[index];
-        count = obj->unk2A;
-        src = &hmf->unk40[obj->unk28];
-        dst = &hmf->unk44[D_800D2008_main][obj->unk28];
         du = u * 32.0f;
         dv = v * 32.0f;
         if (u < 0.0f) {
@@ -1686,21 +1682,18 @@ void func_80108EC4_stardust_battle(s16 model, f32 u, f32 v, s32 width, s32 heigh
         if (v < 0.0f) {
             v = -v;
         }
-        if (wrapU < u * 32.0f) {
+        if (u * 32.0f > wrapU) {
             du %= wrapU;
         }
-        if (wrapV < v * 32.0f) {
+        if (v * 32.0f > wrapV) {
             dv %= wrapV;
         }
-        for (i = 0; i < (s16)count; i++, src++, dst++) {
+        for (i = 0; i < (s16)count; src++, i++, dst++) {
             dst->v.tc[0] = du + src->v.tc[0];
             dst->v.tc[1] = dv + src->v.tc[1];
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80108EC4_stardust_battle);
-#endif
 
 void func_80109128_stardust_battle(s16 mode) {
     omObjData *object;

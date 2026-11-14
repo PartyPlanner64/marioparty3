@@ -206,9 +206,9 @@ void func_80105FAC_ice_rink_risk(omObjData *object) {
     }
 }
 
-#ifdef NON_MATCHING
 void func_80106198_ice_rink_risk(omObjData *object) {
     func_800E1BA8_minigame_ObjData *data;
+    omObjData *obj;
     s32 count = 0;
     u16 time;
     s32 i;
@@ -218,7 +218,9 @@ void func_80106198_ice_rink_risk(omObjData *object) {
         return;
     }
     for (i = 0; i < 4; i++) {
-        count += D_801085FC_ice_rink_risk[i] == 1;
+        if (D_801085FC_ice_rink_risk[i] == 1) {
+            count += D_801085FC_ice_rink_risk[i];
+        }
     }
     time = func_800E6E9C_minigame();
     switch (func_800E6F40_minigame()) {
@@ -251,7 +253,7 @@ void func_80106198_ice_rink_risk(omObjData *object) {
                 D_8010860C_ice_rink_risk.unk06 = 4;
             } else {
                 D_8010860C_ice_rink_risk.unk06 = count - 1;
-                for (i = 0, j = 0; i < 4; i++) {
+                for (j = 0, i = 0; i < 4; i++) {
                     if (D_801085FC_ice_rink_risk[i] == 1) {
                         D_8010860C_ice_rink_risk.unk18[j++] = i;
                     }
@@ -259,8 +261,8 @@ void func_80106198_ice_rink_risk(omObjData *object) {
             }
             for (i = 0; i < 4; i++) {
                 if (D_801085FC_ice_rink_risk[i] == 1) {
-                    data = D_800EC598_minigame[i]->data;
-                    data->unk3C *= 0.8f;
+                    obj = D_800EC598_minigame[i];
+                    OM_GET_DATA_PTR(obj, func_800E1BA8_minigame_ObjData)->unk3C *= 0.8f;
                 }
             }
             break;
@@ -268,8 +270,9 @@ void func_80106198_ice_rink_risk(omObjData *object) {
             if (D_800EB934_minigame == 1) {
                 for (i = 0; i < 4; i++) {
                     if (D_801085FC_ice_rink_risk[i] == 1) {
-                        data = D_800EC598_minigame[i]->data;
-                        func_800E5798_minigame(D_800EC598_minigame[i], 0xD);
+                        obj = D_800EC598_minigame[i];
+                        data = obj->data;
+                        func_800E5798_minigame(obj, 0xD);
                         GwPlayer[data->unk59].bonusCoin += 10;
                         func_80045ED0_main(D_800A178C_main[GwPlayer[data->unk59].chr][0] | 0x2F);
                     }
@@ -291,9 +294,6 @@ void func_80106198_ice_rink_risk(omObjData *object) {
         object->func = func_80105E34_ice_rink_risk;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_19_ice_rink_risk/1D1C40", func_80106198_ice_rink_risk);
-#endif
 
 void func_80106554_ice_rink_risk(omObjData *object) {
     D_800EC1C0_minigame_ObjData *work;

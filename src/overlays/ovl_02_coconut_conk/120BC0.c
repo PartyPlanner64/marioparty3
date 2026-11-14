@@ -558,16 +558,6 @@ void func_80106E80_coconut_conk(void) {
     }
 }
 
-#ifdef NON_MATCHING
-// Matches except that mode and middle swap t2/t3 (target: mode=t2, middle=t3).
-// Cause: global-alloc priority (floor_log2(refs) * refs / live_length). mode has
-// 8 refs over 296 insns (810) and middle 6 refs over 133 insns (902), so middle
-// is allocated first and takes t2. Moving `mode = 0;` inside the if body gives
-// identical code with mode at 271 insns (885), still too low; mode needs about 6
-// fewer insns of live range (e.g. `else if (mode == 0)` reaches 905 and fixes the
-// registers, but changes the branch layout). Declaration order, do-while loops,
-// e/o/entry/obj variable forms, ternaries, init chains, and switch rewrites of the
-// mode == 2 / mode == 0 tail did not help.
 void func_80106F18_coconut_conk(omObjData *arg0) {
     CoconutConkData *data = &D_8010BCC4_coconut_conk;
     u16 player = arg0->work[0];
@@ -586,7 +576,10 @@ void func_80106F18_coconut_conk(omObjData *arg0) {
     CoconutConkData *entry;
 
     input = rand8();
-    mode = 0;
+    // do-while (0) gives mode the loop weighting needed for its register.
+    do {
+        mode = 0;
+    } while (0);
     if (((GwPlayer[player].cpu_difficulty == 0) & (input < 50)) ||
         ((GwPlayer[player].cpu_difficulty == 1) & (input < 150)) ||
         ((GwPlayer[player].cpu_difficulty == 2) & (input < 180)) ||
@@ -719,9 +712,6 @@ void func_80106F18_coconut_conk(omObjData *arg0) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_02_coconut_conk/120BC0", func_80106F18_coconut_conk);
-#endif
 
 void func_80107674_coconut_conk(omObjData *arg0) {
     func_80106F18_coconut_conk(arg0);

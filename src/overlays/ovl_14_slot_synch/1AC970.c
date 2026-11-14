@@ -1842,11 +1842,9 @@ void func_8010A39C_slot_synch(void) {
     omAddObj(0x1E, 0, 0, -1, func_8010A7D0_slot_synch);
 }
 
-#ifdef NON_MATCHING
-// The original sign-extends the HuSprGrpCreate result before storing it.
 void func_8010A480_slot_synch(s16 team, s16 chr0, s16 chr1, s16 arg3) {
     UnkSlotLight *light = &D_8010DF90_slot_synch[team];
-    s16 group;
+    s32 group;
     s32 i;
 
     D_8010DF8C_slot_synch[team * 2 + 13] = func_8010A2C4_slot_synch(D_8010DA40_slot_synch[chr0]);
@@ -1890,9 +1888,6 @@ void func_8010A480_slot_synch(s16 team, s16 chr0, s16 chr1, s16 arg3) {
         HuSprPriSet(group, i, i - 16);
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_14_slot_synch/1AC970", func_8010A480_slot_synch);
-#endif
 
 void func_8010A7D0_slot_synch(omObjData *object) {
     UnkSlotLight *light = D_8010DF90_slot_synch;

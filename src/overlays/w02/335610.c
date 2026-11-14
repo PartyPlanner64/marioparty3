@@ -7341,6 +7341,17 @@ Process *func_80119D84_w02(void) {
 // masuId / switch on the call directly, moving or splitting moveTimes and its
 // float conversion, reusing destSpace/curPlayer for other MBMasuGet/MBPlayerGet
 // calls, dead uses of the second cosdf() result, and else-if chains for result.
+// Also tried (checked with an instrumented cc1 that logs reload slot allocation):
+// separate locals for the spin speed/lap count, for MBMasuGet(0x53/0x7A/
+// D_8011D960_w02[result]), for MBRand's result and for HuPrcCurrentGet(), and a
+// `time` local for moveTimes[result]. None adds a slot without changing the code.
+// Two compiler paths are known to leave a slot with no accesses: (1) a compare
+// result pseudo (slt) that combine folds into a branch in a three-insn combine
+// that keeps a new i2 pattern (e.g. the entry test of `for (i = 0; i < n; i++)`
+// with a non-constant n), since reg_n_refs is not cleared; (2) a variable that
+// flow sees as possibly read before set (live at entry) whose read is optimized
+// away. The original probably has one of these somewhere before the moveTimes
+// loop.
 void func_80119DB0_w02(void) {
     SpaceData *space = MBMasuGet(0x78);
     SpaceData *destSpace = MBMasuGet(0x52);

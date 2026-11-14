@@ -934,8 +934,6 @@ void func_80108158_swing_n_swipe(void) {
     }
 }
 
-#ifdef NON_MATCHING
-// Regalloc: the 360.0f and 270.0f constants are swapped between f30 and s7.
 void func_8010897C_swing_n_swipe(void) {
     s16 work[5][5];
     f32 x;
@@ -952,7 +950,7 @@ void func_8010897C_swing_n_swipe(void) {
                 case 0:
                     D_8010C14A_swing_n_swipe[i] = 3;
                     work[i][0] = (s16)((u8)(rand8() % 180) + 90.0f) % 360;
-                    work[i][1] = rand8() & 1;
+                    work[i][1] = rand8() % 2;
                     D_8010BDE0_swing_n_swipe[i]++;
                     break;
                 case 1:
@@ -1008,7 +1006,7 @@ void func_8010897C_swing_n_swipe(void) {
                     break;
                 case 3:
                     work[i][0] %= 360;
-                    work[i][1] = rand8() & 1;
+                    work[i][1] = rand8() % 2;
                     D_8010BDE0_swing_n_swipe[i] = 1;
                     break;
             }
@@ -1029,9 +1027,6 @@ void func_8010897C_swing_n_swipe(void) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_40_swing_n_swipe/2E6BE0", func_8010897C_swing_n_swipe);
-#endif
 
 void func_801092B4_swing_n_swipe(void) {
     omObjData *obj = D_8010C140_swing_n_swipe;

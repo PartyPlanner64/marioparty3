@@ -454,8 +454,6 @@ void func_801060E8_log_jam(omObjData *object) {
     }
 }
 
-#ifdef NON_MATCHING
-// Register allocation differs around the switch on the player group.
 void func_80106190_log_jam(void) {
     s32 playerIds[2][2];
     LogJamTeam *team;
@@ -468,7 +466,7 @@ void func_80106190_log_jam(void) {
     s32 group1Count;
     s32 group2Count;
     s32 group3Count;
-    s32 index;
+    s32 group;
 
     D_8010E5AC_log_jam = HuMemAllocTag(sizeof(LogJamTeam) * 2, TAG_OVERLAY);
     team = D_8010E5AC_log_jam;
@@ -481,7 +479,7 @@ void func_80106190_log_jam(void) {
     group1Count = 0;
     group0Count = 0;
     for (i = 0; i < 4; i++) {
-        switch (GwPlayer[D_8010DF94_log_jam[i]].group) {
+        switch (group = GwPlayer[D_8010DF94_log_jam[i]].group) {
             case 0:
                 if (group0Count > 0) {
                     invalid = TRUE;
@@ -523,10 +521,10 @@ void func_80106190_log_jam(void) {
         }
     }
     if (invalid) {
-        index = rand8() & 3;
+        group = rand8() & 3;
         for (i = 0; i < 2; i++) {
             for (j = 0; j < 2; j++) {
-                playerIds[i][j] = D_8010DFA4_log_jam[index][i][j];
+                playerIds[i][j] = D_8010DFA4_log_jam[group][i][j];
             }
         }
     }
@@ -571,9 +569,6 @@ void func_80106190_log_jam(void) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_13_log_jam/1A3D80", func_80106190_log_jam);
-#endif
 
 void func_801065E8_log_jam(omObjData *object) {
     Vec pos;

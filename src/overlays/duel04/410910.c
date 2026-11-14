@@ -5199,11 +5199,15 @@ s32 func_80115B3C_duel04(void) {
 }
 
 #ifdef NON_MATCHING
-// Only one instruction differs: the case 1 tail in the target ends in
-// `li v0,1` (a return-1 block that jump2 cross-jumps into the first switch's
-// return-1 block), but every form that makes GCC emit a constant 1 here gets
-// the whole case 1 tail cross-jumped into the identical case 2 tail.
-// `return curIndex == 0` keeps the tail separate but is not folded to 1.
+// Instructions are all correct; only two branch targets differ. With the
+// second switch in ret/break form and case 1's `return 1` going to the return
+// label (case 2's `ret = 1` goes to the break label), the case 1 tail stays
+// separate from case 2's. But in jump2 the first switch's case 7/case 3
+// `cidx == D[walk]` return-1 blocks get cross-jumped into case 1's
+// `return 1` block, the most recent match in the return label's jump
+// chain. The target merges them into case 0's return-1 block (80115F60)
+// instead. Tried 858 of 1024 return-vs-ret combinations across the case 1/2
+// statements; none do better.
 s32 func_80115DA8_duel04(void) {
     s32 curIndex = MBDGetCurrentPlayerIndex();
     s32 otherIndex = (s16)(MBDGetCurrentPlayerIndex() ^ 1);
@@ -5276,42 +5280,48 @@ s32 func_80115DA8_duel04(void) {
     switch (otherPlayer->clink) {
         case 5:
             if (walk < 3 && otherPlayer->cidx == D_80119F10_duel04[walk]) {
-                return 0;
-            }
-            if (walk >= 3 || otherPlayer->cidx > D_80119F10_duel04[walk]) {
+                ret = 0;
+            } else if (walk >= 3 || otherPlayer->cidx > D_80119F10_duel04[walk]) {
                 if (otherPlayer->rev & 1) {
-                    return player->stats.partners.frontPower == 0;
+                    ret = player->stats.partners.frontPower == 0;
+                } else {
+                    ret = 0;
                 }
-                return 0;
+            } else {
+                ret = curIndex == 0;
             }
             break;
         case 1:
             if (walk >= 3 && walk < 8 && otherPlayer->cidx == D_80119EDA_duel04[walk]) {
-                return 0;
+                ret = 0;
+            } else if (walk >= 8 || (walk >= 3 && otherPlayer->cidx > D_80119EDA_duel04[walk])) {
+                ret = player->stats.partners.frontPower == 0;
+            } else if (curIndex != 0) {
+                ret = otherPlayer->stats.partners.frontPower != 0;
+            } else {
+                return 1;
             }
-            if (walk >= 8 || (walk >= 3 && otherPlayer->cidx > D_80119EDA_duel04[walk])) {
-                return player->stats.partners.frontPower == 0;
-            }
-            if (curIndex != 0) {
-                return otherPlayer->stats.partners.frontPower != 0;
-            }
-            return curIndex == 0;
+            break;
         case 2:
             if (walk >= 3 && walk < 7 && otherPlayer->cidx == D_80119EE2_duel04[walk]) {
                 if (curIndex == 0) {
-                    return player->stats.partners.frontPower == 0;
+                    ret = player->stats.partners.frontPower == 0;
+                } else {
+                    ret = 0;
                 }
-                return 0;
+            } else if (walk >= 7 || (walk >= 3 && otherPlayer->cidx > D_80119EE2_duel04[walk])) {
+                ret = player->stats.partners.frontPower == 0;
+            } else if (curIndex == 0) {
+                ret = 1;
+            } else {
+                ret = otherPlayer->stats.partners.frontPower != 0;
             }
-            if (walk >= 7 || (walk >= 3 && otherPlayer->cidx > D_80119EE2_duel04[walk])) {
-                return player->stats.partners.frontPower == 0;
-            }
-            if (curIndex == 0) {
-                return 1;
-            }
-            return otherPlayer->stats.partners.frontPower != 0;
+            break;
+        default:
+            ret = curIndex == 0;
+            break;
     }
-    return curIndex == 0;
+    return ret;
 }
 #else
 INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80115DA8_duel04);

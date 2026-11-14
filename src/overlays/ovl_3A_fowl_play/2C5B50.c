@@ -2421,30 +2421,26 @@ Vtx_t *func_8010D1C4_fowl_play(s16 arg0) {
     return fowl->vtx;
 }
 
-#ifdef NON_MATCHING
-// Index sign extension is computed in a different register than the original.
 s32 func_8010D208_fowl_play(s16 index, s16 x, s16 y) {
     Fowl *fowl;
     Vtx_t *vtx;
 
-    if (index != -1) {
-        fowl = &D_8010F32C_fowl_play[index];
-        if (fowl->unk_18 == 3) {
-            fowl->unk_28 |= 0x80000000;
-            vtx = &fowl->vtx[4];
-            vtx->ob[0] = x;
-            vtx->ob[1] = -y;
-            vtx->ob[2] = 0;
-            vtx->tc[0] = x * 64;
-            vtx->tc[1] = y * 64;
-            return 1;
-        }
+    if (index == -1) {
+        return 0;
     }
-    return 0;
+    fowl = &D_8010F32C_fowl_play[index];
+    if (fowl->unk_18 != 3) {
+        return 0;
+    }
+    fowl->unk_28 |= 0x80000000;
+    vtx = &fowl->vtx[4];
+    vtx->ob[0] = x;
+    vtx->ob[1] = -y;
+    vtx->ob[2] = 0;
+    vtx->tc[0] = x * 64;
+    vtx->tc[1] = y * 64;
+    return 1;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3A_fowl_play/2C5B50", func_8010D208_fowl_play);
-#endif
 
 void func_8010D2A4_fowl_play(s16 arg0, s8 arg1, s8 arg2, s8 arg3, s16 arg4) {
     s32 i = arg0;

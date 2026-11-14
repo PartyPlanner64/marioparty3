@@ -565,7 +565,11 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_81_name/C5770", D_801023C8_name_81
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_81_name/C5770", D_801023D8_name_81);
 
-// Regalloc differences only: arg0 * 4 is spilled while &D_80100E88_name_81 gets a callee-saved register.
+// Regalloc differences only. The do-while (0) is needed for type * 4 to win a callee-saved register over
+// &D_80100E88_name_81. Remaining: type * 4 and listIndex swap s6/s7, listOffset uses v1 instead of a0, and
+// listIndex / `li s8,1` are hoisted in a slightly different order (target hoists &mgCounts before listIndex,
+// which happens when listIndex is not a variable, but that variant spills more). This function also needs
+// the rodata D_801023C8/D_801023D8 shared with func_800DFBF4_name_81, so both must be matched together.
 #ifdef NON_MATCHING
 void func_800DF594_name_81(s32 arg0) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
@@ -580,25 +584,27 @@ void func_800DF594_name_81(s32 arg0) {
     s32 i;
     s32 j;
     s32 k;
+    s32 type;
 
-    D_80102BAD_name_81 = arg0;
+    type = arg0; // A separate copy of arg0 is needed for regalloc.
+    D_80102BAD_name_81 = type;
     listOffset = (_CheckFlag(0x20) != 0) * 2;
     D_80102BAE_name_81 = listOffset;
 
-    for (i = 0; i < D_80100E84_name_81[arg0]; i++) {
+    for (i = 0; i < D_80100E84_name_81[type]; i++) {
         entry = &D_80102B70_name_81[i];
-        entry->x = rects[arg0][i].x;
-        entry->y = rects[arg0][i].y;
-        entry->w = rects[arg0][i].w;
-        entry->h = rects[arg0][i].h;
+        entry->x = rects[type][i].x;
+        entry->y = rects[type][i].y;
+        entry->w = rects[type][i].w;
+        entry->h = rects[type][i].h;
 
-        entry->windowId = HuWinCreate(entry->x + (entry->w / 2), entry->y + (entry->h / 2), entry->w, entry->h, 0, winStyles[arg0]);
+        entry->windowId = HuWinCreate(entry->x + (entry->w / 2), entry->y + (entry->h / 2), entry->w, entry->h, 0, winStyles[type]);
         HuWinPriSet(entry->windowId, 0x2328);
         func_80060144_main(entry->windowId);
         HuWinCenterPosSet(entry->windowId, entry->w / 2, entry->h / 2);
         HuWinBGTPLvlSet(entry->windowId, 0);
 
-        listIndex = arg0 + listOffset;
+        listIndex = type + listOffset;
         while (1) {
             D_80102BA8_name_81[i] = mgLists[listIndex][func_800EFE20_name_81(mgCounts[listIndex])];
 
@@ -614,13 +620,13 @@ void func_800DF594_name_81(s32 arg0) {
                 continue;
             }
 
-            if (arg0 != 1) {
-                for (k = 0; k < D_80100E88_name_81[arg0 + listOffset]; k++) {
-                    if (D_80102BA8_name_81[i] == D_800CC4A0_main.recentMinigames[arg0][k]) {
+            if (type != 1) {
+                for (k = 0; k < D_80100E88_name_81[type + listOffset]; k++) {
+                    if (D_80102BA8_name_81[i] == D_800CC4A0_main.recentMinigames[type][k]) {
                         break;
                     }
                 }
-                if (k != D_80100E88_name_81[arg0 + listOffset]) {
+                if (k != D_80100E88_name_81[type + listOffset]) {
                     continue;
                 }
                 break;
@@ -685,7 +691,9 @@ void func_800DF594_name_81(s32 arg0) {
         if (D_80102BAD_name_81 != 1 && GWMgUnlockCheck(D_80102BA8_name_81[i] - 1) == FALSE) {
             HuWinMesSet(entry->windowId, 0x4748, HUWIN_POS_CENTER, 4);
         } else {
-            HuWinMesSet(entry->windowId, D_80100EE4_name_81[arg0] + D_80102BA8_name_81[i] - 1, HUWIN_POS_CENTER, 4);
+            do { // Needed for regalloc.
+                HuWinMesSet(entry->windowId, D_80100EE4_name_81[type] + D_80102BA8_name_81[i] - 1, HUWIN_POS_CENTER, 4);
+            } while (0);
         }
 
         HuWinMesColSet(entry->windowId, D_80100EEB_name_81[D_80102BA8_name_81[i]]);

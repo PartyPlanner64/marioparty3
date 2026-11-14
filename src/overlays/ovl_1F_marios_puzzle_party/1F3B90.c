@@ -2706,15 +2706,15 @@ void func_8010DB98_marios_puzzle_party(void) {
     }
 }
 
-#ifdef NON_MATCHING
 void func_8010E12C_marios_puzzle_party(void) {
     s32 group = HuSprGrpCreate(6, 5);
+    s32 unused[8]; // Retain the original stack frame.
     s32 record;
     s32 started;
-    s32 divisor;
-    s32 digit;
+    s32 j;
     s32 xOffset;
-    s32 width;
+    s32 newXOffset;
+    s32 newWidth;
     s32 i;
     f32 angle;
 
@@ -2724,14 +2724,15 @@ void func_8010E12C_marios_puzzle_party(void) {
     func_800554C4_main(group, 0, -1);
     HuSprPriSet(group, 0, 0x100);
     record = GWMgRecordGet(8);
-    for (i = 1, divisor = 1000, started = FALSE; i < 5; i++, divisor /= 10) {
-        digit = (record / divisor) % 10;
-        HuSprGrpMemberSet(group, i, D_801160A2_marios_puzzle_party, digit);
+
+    // j is the place value divisor, i is the digit sprite member.
+    for (i = 1, j = 1000, started = FALSE; i < 5; i++, j /= 10) {
+        HuSprGrpMemberSet(group, i, D_801160A2_marios_puzzle_party, (record / j) % 10);
         func_800550F4_main(group, i, 1);
         HuSprAttrReset(group, i, 0xFFFF);
         HuSprAttrSet(group, i, 8);
         if (!started) {
-            if (digit == 0 && i != 4) {
+            if ((record / j) % 10 == 0 && i != 4) {
                 HuSprAttrSet(group, i, HUSPR_ATTR_DISPOFF);
             } else {
                 started = TRUE;
@@ -2740,18 +2741,20 @@ void func_8010E12C_marios_puzzle_party(void) {
         HuSprPriSet(group, i, 0x100);
         func_800554C4_main(group, i, 0);
     }
-    for (i = 4, divisor = 1000; i >= 2; i--, divisor /= 10) {
-        if (record / divisor != 0) {
+    // j is the digit count, i is the place value divisor.
+    for (j = 4, i = 1000; j >= 2; j--, i /= 10) {
+        if (record / i != 0) {
             break;
         }
     }
     xOffset = 58;
-    width = i * 12 + 10;
+    j = j * 12 + 10; // Total width.
     for (i = 1; i < 5; i++) {
-        HuSprPosSet(group, i, i * 12 - xOffset + (width >> 1), 0);
+        HuSprPosSet(group, i, i * 12 - xOffset + (j >> 1), 0);
     }
-    HuSprPosSet(group, 5, (width >> 1) + 65 - xOffset, 0);
-    HuSprPosSet(group, 0, 90 - (width >> 1), 30);
+    HuSprPosSet(group, 5, 65 - xOffset + (j >> 1), 0);
+    HuSprPosSet(group, 0, 90 - (j >> 1), 30);
+
     HuSprGrpMemberSet(group, 5, D_801160A6_marios_puzzle_party, 0);
     func_800550F4_main(group, 5, 0);
     HuSprAttrReset(group, 5, 0xFFFF);
@@ -2761,16 +2764,16 @@ void func_8010E12C_marios_puzzle_party(void) {
     while (D_80110140_marios_puzzle_party.unk00 != 4) {
         HuPrcVSleep();
     }
+
     if (D_801160E4_marios_puzzle_party != -1 && record < D_80116128_marios_puzzle_party[0]) {
         record = D_80116128_marios_puzzle_party[0];
-        for (i = 1, divisor = 1000, started = FALSE; i < 5; i++, divisor /= 10) {
-            digit = (record / divisor) % 10;
-            HuSprGrpMemberSet(group, i, D_801160A2_marios_puzzle_party, digit);
+        for (i = 1, j = 1000, started = FALSE; i < 5; i++, j /= 10) {
+            HuSprGrpMemberSet(group, i, D_801160A2_marios_puzzle_party, (record / j) % 10);
             func_800550F4_main(group, i, 1);
             HuSprAttrReset(group, i, 0xFFFF);
             HuSprAttrSet(group, i, 8);
             if (!started) {
-                if (digit == 0 && i != 4) {
+                if ((record / j) % 10 == 0 && i != 4) {
                     HuSprAttrSet(group, i, HUSPR_ATTR_DISPOFF);
                 } else {
                     started = TRUE;
@@ -2779,18 +2782,19 @@ void func_8010E12C_marios_puzzle_party(void) {
             HuSprPriSet(group, i, 0x100);
             func_800554C4_main(group, i, 0);
         }
-        for (i = 4, divisor = 1000; i >= 2; i--, divisor /= 10) {
-            if (record / divisor != 0) {
+        for (j = 4, i = 1000; j >= 2; j--, i /= 10) {
+            if (record / i != 0) {
                 break;
             }
         }
-        xOffset = 58;
-        width = i * 12 + 10;
+        newXOffset = 58;
+        newWidth = j * 12 + 10;
         for (i = 1; i < 5; i++) {
-            HuSprPosSet(group, i, i * 12 - xOffset + (width >> 1), 0);
+            HuSprPosSet(group, i, i * 12 - newXOffset + (newWidth >> 1), 0);
         }
-        HuSprPosSet(group, 5, (width >> 1) + 65 - xOffset, 0);
-        HuSprPosSet(group, 0, 90 - (width >> 1), 30);
+        HuSprPosSet(group, 5, 65 - newXOffset + (newWidth >> 1), 0);
+        HuSprPosSet(group, 0, 90 - (newWidth >> 1), 30);
+
         for (angle = 0.0f; angle < 180.0f; angle += 9.0f) {
             for (i = 0; i < 6; i++) {
                 HuSprScaleSet(group, i, sindf(angle) + 1.0f, sindf(angle) + 1.0f);
@@ -2805,9 +2809,6 @@ void func_8010E12C_marios_puzzle_party(void) {
         HuPrcVSleep();
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1F_marios_puzzle_party/1F3B90", func_8010E12C_marios_puzzle_party);
-#endif
 
 #ifdef NON_MATCHING
 void func_8010E868_marios_puzzle_party(s16 group, s32 time) {

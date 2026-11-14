@@ -1194,6 +1194,12 @@ void func_80109018_mpiq(void) {
     }
 }
 
+// Logic and instruction sequence match; only register allocation differs.
+// The target keeps i in s3 and 0xAAAAAAAB (for % 3) in s8, spilling
+// &D_8010CB00_mpiq[i] to the stack, and stores D_8010CBA0_mpiq[i] without
+// hoisting the symbol into a register. Here, loop.c hoists D_8010CBA0_mpiq out of
+// the i loop and global-alloc gives s8 to &D_8010CB00_mpiq[i] instead.
+// Local declaration order permutations had no effect.
 #ifdef NON_MATCHING
 void func_80109414_mpiq(void) {
     s32 used[64];
@@ -1202,17 +1208,18 @@ void func_80109414_mpiq(void) {
     s32 i;
     s32 j;
     s32 question;
-    u8 answer;
+    s32 answer;
 
     for (i = 0; i < 64; i++) {
         used[i] = 0;
     }
     for (i = 0; i < 10; i++) {
         D_8010CBA0_mpiq[i] = 0;
-        do {
+        while (TRUE) {
             question = rand8() & 0x3F;
             if (D_8010C9F8_mpiq != 0) {
-                question = D_8010D020_mpiq++;
+                question = D_8010D020_mpiq;
+                D_8010D020_mpiq++;
                 if (D_8010D020_mpiq > 64) {
                     D_8010D020_mpiq = 0;
                 }
@@ -1226,36 +1233,42 @@ void func_80109414_mpiq(void) {
                 D_8010CA50_mpiq[i] = mes;
                 func_8010A010_mpiq(i);
             }
-        } while (used[question] != 0 || !func_801096C0_mpiq(i, question));
-        if (question < 36) {
-            mes = question * 4 + 0x5500;
-            D_8010CA50_mpiq[i] = mes;
-            D_8010CBD0_mpiq[i] = 0x5307;
-        }
-        if (D_8010C9F8_mpiq == 0) {
-            used[question]++;
-        }
-        for (j = 0; j < 3; j++) {
-            answerUsed[j] = 0;
-            D_8010CB00_mpiq[i][j] = -1;
-        }
-        if (question >= 36) {
-            func_8010A184_mpiq(i);
-        }
-        D_8010CBCC_mpiq = 0;
-        for (j = 0; j < 3; j++) {
-            do {
-                answer = rand8() % 3;
-            } while (answerUsed[answer] != 0);
-            if (question < 36) {
-                D_8010CB00_mpiq[i][j] = mes + answer + 1;
-            } else {
-                D_8010CB00_mpiq[i][j] = func_8010AB44_mpiq(i, answer);
+            if (used[question] == 0 && func_801096C0_mpiq(i, question)) {
+                if (question < 36) {
+                    mes = question * 4 + 0x5500;
+                    D_8010CA50_mpiq[i] = mes;
+                    D_8010CBD0_mpiq[i] = 0x5307;
+                }
+                if (D_8010C9F8_mpiq == 0) {
+                    used[question]++;
+                }
+                for (j = 0; j < 3; j++) {
+                    answerUsed[j] = 0;
+                    D_8010CB00_mpiq[i][j] = -1;
+                }
+                if (question >= 36) {
+                    func_8010A184_mpiq(i);
+                }
+                D_8010CBCC_mpiq = 0;
+                for (j = 0; j < 3; j++) {
+                    while (TRUE) {
+                        answer = (u8)(rand8() % 3);
+                        if (answerUsed[answer] == 0) {
+                            if (question < 36) {
+                                D_8010CB00_mpiq[i][j] = mes + 1 + answer;
+                            } else {
+                                D_8010CB00_mpiq[i][j] = func_8010AB44_mpiq(i, answer);
+                            }
+                            if (answer == 0) {
+                                D_8010CA38_mpiq[i] = j;
+                            }
+                            answerUsed[answer]++;
+                            break;
+                        }
+                    }
+                }
+                break;
             }
-            if (answer == 0) {
-                D_8010CA38_mpiq[i] = j;
-            }
-            answerUsed[answer]++;
         }
     }
 }

@@ -1550,9 +1550,8 @@ void func_8010ABA0_river_raiders(void) {
     }
 }
 
-#ifdef NON_MATCHING
-// Matches except for the func_8000D550_main calls: the target passes integer zeros (as if called without a
-// float prototype), while the 0.0f arguments here get CSE'd/hoisted into registers.
+// The original calls func_8000D550_main without its float prototype, passing integer zeros. Calling
+// through an unprototyped function pointer reproduces that.
 void func_8010ACD8_river_raiders(omObjData *obj) {
     RiverRaidersEntry *entries[3];
     omObjData *boats[3];
@@ -1686,8 +1685,10 @@ void func_8010ACD8_river_raiders(omObjData *obj) {
                     bigObj->trans.x - 60.0f <= obj->trans.x + 50.0f && bigObj->trans.z + 60.0f >= obj->trans.z - 50.0f &&
                     bigObj->trans.z - 60.0f <= obj->trans.z + 50.0f) {
                     if (entry->unk_04 == 1) {
+                        s16 (*effectCreate)() = (void *)func_8000D550_main;
+
                         D_80110D84_river_raiders++;
-                        model = func_8000D550_main(D_80110D86_river_raiders, 0.0f, 0.0f, 0.0f);
+                        model = effectCreate(D_80110D86_river_raiders, 0, 0, 0);
                         func_8004AC98_main(D_8010D3B0_river_raiders, bigObj->work[0]);
                         Hu3DModelPosSet(model, obj->trans.x, obj->trans.y, obj->trans.z);
                         Hu3DModelScaleSet(model, 3.0f, 3.0f, 3.0f);
@@ -1700,8 +1701,10 @@ void func_8010ACD8_river_raiders(omObjData *obj) {
                         boats[i]->trans.x - 65.0f <= obj->trans.x + 50.0f && boats[i]->trans.z + 55.0f >= obj->trans.z - 50.0f &&
                         boats[i]->trans.z - 55.0f <= obj->trans.z + 50.0f) {
                         if (entry->unk_04 == 1) {
+                            s16 (*effectCreate)() = (void *)func_8000D550_main;
+
                             D_80110DBD_river_raiders++;
-                            model = func_8000D550_main(D_80110D86_river_raiders, 0.0f, 0.0f, 0.0f);
+                            model = effectCreate(D_80110D86_river_raiders, 0, 0, 0);
                             func_8004AC98_main(D_8010D3B0_river_raiders, boats[i]->work[0]);
                             Hu3DModelPosSet(model, obj->trans.x, obj->trans.y, obj->trans.z);
                             Hu3DModelScaleSet(model, 3.0f, 3.0f, 3.0f);
@@ -1795,8 +1798,10 @@ void func_8010ACD8_river_raiders(omObjData *obj) {
                     bigObj->trans.x - 60.0f <= obj->trans.x + 40.0f && bigObj->trans.z + 60.0f >= obj->trans.z - 40.0f &&
                     bigObj->trans.z - 60.0f <= obj->trans.z + 40.0f) {
                     if (entry->unk_04 == 1) {
+                        s16 (*effectCreate)() = (void *)func_8000D550_main;
+
                         D_80110D84_river_raiders += 5;
-                        model = func_8000D550_main(D_80110D86_river_raiders, 0.0f, 0.0f, 0.0f);
+                        model = effectCreate(D_80110D86_river_raiders, 0, 0, 0);
                         func_8004AC98_main(D_8010D3B2_river_raiders, bigObj->work[0]);
                         Hu3DModelPosSet(model, obj->trans.x, obj->trans.y, obj->trans.z);
                         Hu3DModelScaleSet(model, 3.0f, 3.0f, 3.0f);
@@ -1812,8 +1817,10 @@ void func_8010ACD8_river_raiders(omObjData *obj) {
                         boats[i]->trans.x - 65.0f <= obj->trans.x + 40.0f && boats[i]->trans.z + 55.0f >= obj->trans.z - 40.0f &&
                         boats[i]->trans.z - 55.0f <= obj->trans.z + 40.0f) {
                         if (entry->unk_04 == 1) {
+                            s16 (*effectCreate)() = (void *)func_8000D550_main;
+
                             D_80110DBD_river_raiders += 5;
-                            model = func_8000D550_main(D_80110D86_river_raiders, 0.0f, 0.0f, 0.0f);
+                            model = effectCreate(D_80110D86_river_raiders, 0, 0, 0);
                             func_8004AC98_main(D_8010D3B2_river_raiders, boats[i]->work[0]);
                             Hu3DModelPosSet(model, obj->trans.x, obj->trans.y, obj->trans.z);
                             Hu3DModelScaleSet(model, 3.0f, 3.0f, 3.0f);
@@ -1862,9 +1869,6 @@ void func_8010ACD8_river_raiders(omObjData *obj) {
             break;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_09_river_raiders/1542E0", func_8010ACD8_river_raiders);
-#endif
 
 void func_8010BE88_river_raiders(omObjData *obj) {
     RiverRaidersEntry *entry = &D_8010DF18_river_raiders[obj->work[0]];

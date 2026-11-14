@@ -3103,22 +3103,18 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/filesel/516D30", D_80112DAC_filesel);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/filesel/516D30", D_80112DBC_filesel);
 
-#ifdef NON_MATCHING
-// The remaining differences are GCC state-address anchors and saved-register allocation:
-// - Target keeps &name (D_80114490) as a reg-equiv constant across the first call and
-//   rematerializes it as the base for the field stores; that only happened in experiments
-//   when the first call sat inside a loop (preserve_subexpressions_p), e.g. do { } while (0).
-// - The loop's hoisted base is &keyboard (0x8011447C), which experiments only reproduced by
-//   adding an otherwise unused read of D_80114478_filesel.keyboard at the top of the loop.
-// - The hoisted constant 1 gets s2 and preset gets s6 in the target (s6/s5 here).
 s32 func_8010C9B4_filesel(s32 preset) {
     s32 input;
     s32 option;
     s32 random;
     u8 *name;
     s32 length;
+    s32 firstChar;
+    s32 keyboard;
 
     length = func_801125E8_filesel((UnkFileName *)D_80114478_filesel.name);
+    firstChar = D_80114478_filesel.name[0];
+    (void)firstChar; // Read but never used in the original.
     D_80114478_filesel.keyboard = 6;
     D_80114478_filesel.mode = 1;
     D_80114478_filesel.option = 11;
@@ -3156,6 +3152,8 @@ s32 func_8010C9B4_filesel(s32 preset) {
     func_80106134_filesel(19, 0);
     func_8010A978_filesel(D_80114478_filesel.length + 1);
     while (1) {
+        keyboard = D_80114478_filesel.keyboard;
+        (void)keyboard; // Read but never used in the original.
         option = D_80114478_filesel.option;
         input = D_800D1244_main[0];
         input |= func_80111A08_filesel(0);
@@ -3170,27 +3168,33 @@ s32 func_8010C9B4_filesel(s32 preset) {
                 switch (preset) {
                     case 0:
                         bcopy(D_80112D6C_filesel, D_80114478_filesel.name, 0x12);
+                        D_80114470_filesel = 1;
                         break;
                     case 1:
                         bcopy(D_80112D7C_filesel, D_80114478_filesel.name, 0x12);
+                        D_80114470_filesel = 1;
                         break;
                     case 2:
                         bcopy(D_80112D8C_filesel, D_80114478_filesel.name, 0x12);
+                        D_80114470_filesel = 1;
                         break;
                     case 3:
                         bcopy(D_80112D9C_filesel, D_80114478_filesel.encodedName, 0x12);
+                        D_80114470_filesel = 1;
                         break;
                     case 4:
                         bcopy(D_80112DAC_filesel, D_80114478_filesel.encodedName, 0x12);
+                        D_80114470_filesel = 1;
                         break;
                     case 5:
                         bcopy(D_80112DBC_filesel, D_80114478_filesel.encodedName, 0x12);
+                        D_80114470_filesel = 1;
                         break;
                     default:
                         bcopy(D_80112D6C_filesel, D_80114478_filesel.encodedName, 0x12);
+                        D_80114470_filesel = 1;
                         break;
                 }
-                D_80114470_filesel = 1;
             }
             func_801076D0_filesel(10, (u32)D_80114478_filesel.name);
             HuPrcSleep(3);
@@ -3203,9 +3207,6 @@ s32 func_8010C9B4_filesel(s32 preset) {
         HuPrcVSleep();
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516D30", func_8010C9B4_filesel);
-#endif
 
 s32 func_8010CCA8_filesel(s32 fileIndex) {
     s32 frame = 0;

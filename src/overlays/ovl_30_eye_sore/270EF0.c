@@ -1427,11 +1427,9 @@ void func_801098F8_eye_sore(omObjData *obj) {
     Hu3DModelPosSet(obj->model[1], obj->trans.x, 5.0f, obj->trans.z);
 }
 
-#ifdef NON_MATCHING
-// The target zero-extends the player index into a separate saved register at
-// the start of the function for the `index == 0` check.
 void func_8010A0CC_eye_sore(omObjData *obj) {
     u16 index = obj->work[0];
+    s32 idx = index;
     EyeSoreUnkC938 *eye = &D_8010C938_eye_sore[obj->work[0]];
     void *anim = DataRead(0xA008C);
     u16 i;
@@ -1441,7 +1439,7 @@ void func_8010A0CC_eye_sore(omObjData *obj) {
     Hu3DModelRemakeStatic(obj->model[0]);
     func_8001C514_main(obj->model[0]);
     DataClose(anim);
-    if (index == 0) {
+    if (idx == 0) {
         obj->model[1] = func_8000B108_main(0x510006, 0x2B9);
         D_8010CBB8_eye_sore = obj->model[1];
         obj->trans.x = 0.0f;
@@ -1495,9 +1493,6 @@ void func_8010A0CC_eye_sore(omObjData *obj) {
     eye->unk_11 = 0;
     obj->func = func_801098F8_eye_sore;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_30_eye_sore/270EF0", func_8010A0CC_eye_sore);
-#endif
 
 void func_8010A3C0_eye_sore(void) {
     s8 i;

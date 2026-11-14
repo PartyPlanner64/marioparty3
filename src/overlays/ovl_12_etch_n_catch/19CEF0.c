@@ -168,7 +168,7 @@ void func_80108BCC_etch_n_catch(EtchNCatchNode **head, EtchNCatchNode *node);
 s32 func_80108C08_etch_n_catch(EtchNCatchWork *work);
 s32 func_80108DD0_etch_n_catch(s16 x, s16 y);
 u8 func_80109114_etch_n_catch(s16 x, s16 y);
-void func_8010914C_etch_n_catch(s16 x, s16 y, s32 value);
+void func_8010914C_etch_n_catch(s16 x, s16 y, u8 value);
 void func_80109370_etch_n_catch(EtchNCatchNode *node, u8 value);
 void func_801097B4_etch_n_catch(EtchNCatchNode *node);
 s32 func_8010B154_etch_n_catch(s16 x, s16 y);
@@ -1207,47 +1207,43 @@ u8 func_80109114_etch_n_catch(s16 x, s16 y) {
     return *p;
 }
 
-#ifdef NON_MATCHING
-void func_8010914C_etch_n_catch(s16 x, s16 y, s32 value) {
+void func_8010914C_etch_n_catch(s16 x, s16 y, u8 value) {
     u8 *cell;
 
     *func_801090E0_etch_n_catch(x, y) = value;
     cell = func_801090E0_etch_n_catch(x - 1, y);
-    if (*cell != (u8)value) {
-        *cell = value * 2;
+    if (*cell != value) {
+        *cell = value << 1;
     }
     cell = func_801090E0_etch_n_catch(x + 1, y);
-    if (*cell != (u8)value) {
-        *cell = value * 2;
+    if (*cell != value) {
+        *cell = value << 1;
     }
     cell = func_801090E0_etch_n_catch(x, y - 1);
-    if (*cell != (u8)value) {
-        *cell = value * 2;
+    if (*cell != value) {
+        *cell = value << 1;
     }
     cell = func_801090E0_etch_n_catch(x, y + 1);
-    if (*cell != (u8)value) {
-        *cell = value * 2;
+    if (*cell != value) {
+        *cell = value << 1;
     }
     cell = func_801090E0_etch_n_catch(x - 1, y - 1);
-    if (*cell != (u8)value && *cell != (u8)value * 2) {
-        *cell = value * 4;
+    if (*cell != value && *cell != (value << 1)) {
+        *cell = value << 2;
     }
     cell = func_801090E0_etch_n_catch(x - 1, y + 1);
-    if (*cell != (u8)value && *cell != (u8)value * 2) {
-        *cell = value * 4;
+    if (*cell != value && *cell != (value << 1)) {
+        *cell = value << 2;
     }
     cell = func_801090E0_etch_n_catch(x + 1, y + 1);
-    if (*cell != (u8)value && *cell != (u8)value * 2) {
-        *cell = value * 4;
+    if (*cell != value && *cell != (value << 1)) {
+        *cell = value << 2;
     }
     cell = func_801090E0_etch_n_catch(x + 1, y - 1);
-    if (*cell != (u8)value && *cell != (u8)value * 2) {
-        *cell = value * 4;
+    if (*cell != value && *cell != (value << 1)) {
+        *cell = value << 2;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", func_8010914C_etch_n_catch);
-#endif
 
 void func_80109370_etch_n_catch(EtchNCatchNode *node, u8 value) {
     u8 *cells[8];
@@ -1311,7 +1307,7 @@ void func_80109370_etch_n_catch(EtchNCatchNode *node, u8 value) {
                         *cell = value << 1;
                     }
                 } else if (i < 8) {
-                    if (*cell != value && *cell != value * 2) {
+                    if (*cell != value && *cell != (value << 1)) {
                         *cell = value << 2;
                     }
                 }
@@ -1333,7 +1329,7 @@ void func_80109370_etch_n_catch(EtchNCatchNode *node, u8 value) {
                 *cell = value << 1;
             }
         } else if (*cells[4] == value || *cells[5] == value || *cells[6] == value || *cells[7] == value) {
-            if (*cell != value && *cell != value * 2) {
+            if (*cell != value && *cell != (value << 1)) {
                 *cell = value << 2;
             }
         }

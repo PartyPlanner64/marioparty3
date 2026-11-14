@@ -1168,12 +1168,11 @@ void func_801096BC_water_whirled(omObjData *object) {
     work->unk60 = func_800E2ED4_minigame(dir.x, dir.z, sindf(angle), cosdf(angle));
 }
 
-// Only mismatch: float register allocation for the final heading angle (f22 instead of f20).
-#ifdef NON_MATCHING
 void func_801098AC_water_whirled(omObjData *object) {
     func_800E1BA8_minigame_ObjData *work = object->data;
     s32 player = work->unk59;
     s32 accelerate;
+    s32 section;
     f32 dx;
     f32 dz;
     f32 angle;
@@ -1185,8 +1184,9 @@ void func_801098AC_water_whirled(omObjData *object) {
     }
     D_8010AC40_water_whirled = 0;
     D_8010AC44_water_whirled = 0;
+    section = func_8010960C_water_whirled(object);
     accelerate = TRUE;
-    switch (func_8010960C_water_whirled(object)) {
+    switch (section) {
         case 0:
             D_8010A860_water_whirled.x = object->trans.x + 100.0f;
             D_8010A860_water_whirled.y = object->trans.z - 50.0f;
@@ -1232,11 +1232,14 @@ void func_801098AC_water_whirled(omObjData *object) {
     dx = D_8010A860_water_whirled.x - object->trans.x;
     dz = D_8010A860_water_whirled.y - object->trans.z;
     D_8010AC44_water_whirled = (s8)(func_800E2ED4_minigame(dx, dz, sindf(angle), cosdf(angle)) * 120.0f);
-    dir = work->unk3C;
-    dx = D_8010A860_water_whirled.x;
-    dz = D_8010A860_water_whirled.y;
-    dx -= object->trans.x;
-    dz -= object->trans.z;
+    // do-while(0) needed for float register allocation of dir.
+    do {
+        dir = work->unk3C;
+        dx = D_8010A860_water_whirled.x;
+        dz = D_8010A860_water_whirled.y;
+        dx -= object->trans.x;
+        dz -= object->trans.z;
+    } while (0);
     if (func_800E2ED4_minigame(dx, dz, sindf(dir), cosdf(dir)) < 0.0f) {
         D_8010AC44_water_whirled = 60;
     } else if (accelerate == TRUE) {
@@ -1247,9 +1250,6 @@ void func_801098AC_water_whirled(omObjData *object) {
         D_8010AC44_water_whirled = -60;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_23_water_whirled/211AB0", func_801098AC_water_whirled);
-#endif
 
 void func_80109E2C_water_whirled(omObjData *object) {
     func_800E1BA8_minigame_ObjData *work = object->data;

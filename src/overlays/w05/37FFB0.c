@@ -7182,21 +7182,18 @@ void func_801191C0_w05(void) {
     }
 }
 
-// Register allocation differs: the target has a CSE boundary (e.g. a loop end note) between the
-// two movement steps, so `&playerObj->coords`/`&playerObj->rot` are recomputed for the second step,
-// `&pos` is rematerialized for the offset adds, and `vib` (not `unk4`) is spilled to the stack.
-// The adds go through a pointer (`addiu a0,sp,0x10` then `0(a0)`/`8(a0)`), which means a
-// `Vec *p = &pos` (and `ofs`) were set before the boundary and used after it. Wrapping
-// `HuVecCopy3F(&pos, &end->coords); p = &pos; ofs = ...;` in a `do { } while (0)` (it may start
-// anywhere from `PlayerFXPlay` on) and doing `p->x += ofs[0]; p->z += ofs[1];` after it leaves
-// only s-register swaps (type/playerObj, player/process) and a v0/v1 swap in the `ofs` math.
-// Declaration order has no effect on those. No natural construct for the boundary is known yet.
-// The s-register swaps are global-alloc priorities (loop-depth-weighted refs / live length). A
-// `do { } while (0)` only adds weight when it contains a real loop; one spanning from the
-// `playerObj` load through `ofs = ...` (containing the HuVecDistance wait loop), plus another around
-// the `func_800ED128_shared_board`/`func_801178B4_w05` calls, fixes all s-registers. The remaining
-// v0/v1 swap means the target's `ofs` was not tied to the `idx << 3` temp in local-alloc, which
-// suggests `ofs` (and `p`) were not block-local there (set before a basic block boundary).
+// Logic matches the target; only register allocation differs. The target has a CSE boundary
+// (loop end note) between `Vec *p = &pos; ofs = D_8011EF38_w05[unk4 + order];` and
+// `p->x += ofs[0]; p->z += ofs[1];`: the adds go through `addiu a0,sp,0x10`/`0(a0)`, and the
+// later `&pos`, `&playerObj->coords` and `&playerObj->rot` are recomputed instead of being CSE'd
+// from step 1 (here `rot` gets an s-register, so `unk4` is spilled instead of `vib`). Without a
+// boundary, `p` replaces the later `&pos` uses instead. The only form found is artificial:
+// `do { HuVecCopy3F(&pos, &end->coords); p = &pos; ofs = ...; } while (0);` (score 210), plus a
+// second `do { } while (0)` around the `func_800ED128_shared_board`/`func_801178B4_w05` calls
+// (loop-weighted refs fix the type/work/playerObj s-registers, score 65). Still left: `unk4` and
+// `process` swap s7/s8 (also with a do-while spanning the wait loop), and v0/v1 swap in the `ofs`
+// math (not fixed by `&D[i][0]`, `D + i`, or `&D[0][0] + i * 2`). Empty do-while, a static inline
+// add helper, and direct `pos.x += D_8011EF38_w05[i][0]` did not help.
 #ifdef NON_MATCHING
 void func_801192AC_w05(void) {
     PlayerReactWork *work = HuPrcCurrentGet()->user_data;

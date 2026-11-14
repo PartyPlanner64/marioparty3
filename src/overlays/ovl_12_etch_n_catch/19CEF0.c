@@ -60,6 +60,7 @@ typedef struct EtchNCatchWork {
     /* 0x10 */ s16 unk_10;
     /* 0x12 */ u8 unk_12;
     /* 0x14 */ s16 unk_14;
+    /* 0x16 */ u8 unk_16;
     /* 0x17 */ u8 unk_17;
     /* 0x18 */ s32 unk_18;
     /* 0x1C */ s16 unk_1C;
@@ -127,7 +128,8 @@ extern u8 D_800D6A90_main;
 extern s16 D_8010C6A4_etch_n_catch[2][2];
 extern s32 D_8010C6D4_etch_n_catch;
 extern s8 D_8010C6D9_etch_n_catch;
-extern s8 D_8010C6DA_etch_n_catch[2];
+extern s8 D_8010C6DA_etch_n_catch; // Team 0 players placed so far
+extern s8 D_8010C6DB_etch_n_catch; // Team 1 players placed so far
 extern s8 D_8010C6D8_etch_n_catch;
 extern Vec D_8010C6B0_etch_n_catch[3];
 extern u8 D_8010C6E4_etch_n_catch[4];
@@ -380,7 +382,6 @@ void func_80105ED4_etch_n_catch(omObjData *object) {
     }
 }
 
-#ifdef NON_MATCHING
 void func_80106334_etch_n_catch(omObjData *object) {
     Vec team0PosA[2] = { { -350.0f, 1000.0f, -200.0f }, { -150.0f, 1000.0f, 250.0f } };
     Vec team0PosB[2] = { { -150.0f, 1000.0f, 250.0f }, { -350.0f, 1000.0f, -200.0f } };
@@ -388,7 +389,6 @@ void func_80106334_etch_n_catch(omObjData *object) {
     Vec team1PosB[2] = { { 350.0f, 1000.0f, 250.0f }, { 150.0f, 1000.0f, -200.0f } };
     func_800E1BA8_minigame_ObjData *data;
     EtchNCatchWork *work;
-    Vec *pos;
     f32 offsetX;
     f32 offsetZ;
     s8 chr;
@@ -417,43 +417,45 @@ void func_80106334_etch_n_catch(omObjData *object) {
     switch (GwPlayer[data->unk59].group) {
         case 0:
             if (!(D_8010C830_etch_n_catch & 1)) {
-                pos = &team0PosA[D_8010C6DA_etch_n_catch[0]];
+                object->trans.x = team0PosA[D_8010C6DA_etch_n_catch].x;
+                object->trans.y = team0PosA[D_8010C6DA_etch_n_catch].y;
+                object->trans.z = team0PosA[D_8010C6DA_etch_n_catch].z;
             } else {
-                pos = &team0PosB[D_8010C6DA_etch_n_catch[0]];
+                object->trans.x = team0PosB[D_8010C6DA_etch_n_catch].x;
+                object->trans.y = team0PosB[D_8010C6DA_etch_n_catch].y;
+                object->trans.z = team0PosB[D_8010C6DA_etch_n_catch].z;
             }
-            object->trans.x = pos->x;
-            object->trans.y = pos->y;
-            object->trans.z = pos->z;
             work->unk_02 = 8;
             work->unk_01 = 3;
-            if (D_8010C6DA_etch_n_catch[0] == 0) {
+            if (D_8010C6DA_etch_n_catch == 0) {
                 work->unk_00 = 1;
             } else {
                 work->unk_00 = 2;
             }
             func_800E149C_minigame(object, 0, 2);
             func_800E149C_minigame(object, 1, 1);
-            D_8010C6DA_etch_n_catch[0]++;
+            D_8010C6DA_etch_n_catch++;
             break;
         case 1:
             if (!(D_8010C830_etch_n_catch & 1)) {
-                pos = &team1PosA[D_8010C6DA_etch_n_catch[1]];
+                object->trans.x = team1PosA[D_8010C6DB_etch_n_catch].x;
+                object->trans.y = team1PosA[D_8010C6DB_etch_n_catch].y;
+                object->trans.z = team1PosA[D_8010C6DB_etch_n_catch].z;
             } else {
-                pos = &team1PosB[D_8010C6DA_etch_n_catch[1]];
+                object->trans.x = team1PosB[D_8010C6DB_etch_n_catch].x;
+                object->trans.y = team1PosB[D_8010C6DB_etch_n_catch].y;
+                object->trans.z = team1PosB[D_8010C6DB_etch_n_catch].z;
             }
-            object->trans.x = pos->x;
-            object->trans.y = pos->y;
-            object->trans.z = pos->z;
             work->unk_02 = 1;
             work->unk_01 = 12;
-            if (D_8010C6DA_etch_n_catch[1] == 0) {
+            if (D_8010C6DB_etch_n_catch == 0) {
                 work->unk_00 = 4;
             } else {
                 work->unk_00 = 8;
             }
             func_800E149C_minigame(object, 0, 1);
             func_800E149C_minigame(object, 1, 2);
-            D_8010C6DA_etch_n_catch[1]++;
+            D_8010C6DB_etch_n_catch++;
             break;
     }
     work->unk_0A = 0;
@@ -496,9 +498,6 @@ void func_80106334_etch_n_catch(omObjData *object) {
     func_800E5690_minigame(object, 0);
     D_8010C6D9_etch_n_catch++;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", func_80106334_etch_n_catch);
-#endif
 
 void func_80106A64_etch_n_catch(omObjData *object) {
     EtchNCatchNode *nodes[32];
@@ -1253,14 +1252,6 @@ void func_8010914C_etch_n_catch(s16 x, s16 y, s32 value) {
 #else
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", func_8010914C_etch_n_catch);
 #endif
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", D_8010C740_etch_n_catch);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", D_8010C758_etch_n_catch);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", D_8010C770_etch_n_catch);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", D_8010C788_etch_n_catch);
 
 void func_80109370_etch_n_catch(EtchNCatchNode *node, u8 value) {
     u8 *cells[8];

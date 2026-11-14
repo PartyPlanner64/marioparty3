@@ -1722,8 +1722,8 @@ void func_80109D74_parasol_plummet(omObjData *object) {
     }
 }
 
-#ifdef NON_MATCHING
 s16 func_80109F7C_parasol_plummet(omObjData *object, s32 isItem) {
+    ParasolPlummetWork *work;
     ParasolPlummetWork *other;
     ParasolPlummetItemWork *item;
     f32 minDist;
@@ -1732,14 +1732,17 @@ s16 func_80109F7C_parasol_plummet(omObjData *object, s32 isItem) {
     f32 y;
     f32 otherX;
     f32 otherY;
+    f32 ofs;
     s32 hit;
     s32 i;
 
     minDist = 100.0f;
     hit = -1;
     if (isItem == 0) {
-        x = OM_GET_DATA_PTR(object, ParasolPlummetWork)->coords.x - 0.0f;
-        y = OM_GET_DATA_PTR(object, ParasolPlummetWork)->coords.y - 0.0f + 0.0f;
+        work = OM_GET_DATA_PTR(object, ParasolPlummetWork);
+        ofs = 0.0f;
+        x = work->coords.x - ofs;
+        y = work->coords.y - ofs + ofs;
     } else {
         x = OM_GET_DATA_PTR(object, ParasolPlummetItemWork)->x;
         y = OM_GET_DATA_PTR(object, ParasolPlummetItemWork)->y;
@@ -1749,8 +1752,9 @@ s16 func_80109F7C_parasol_plummet(omObjData *object, s32 isItem) {
             continue;
         }
         other = OM_GET_DATA_PTR(D_8010AB60_parasol_plummet[i], ParasolPlummetWork);
-        otherX = other->coords.x - 0.0f;
-        otherY = other->coords.y - 0.0f;
+        ofs = 0.0f;
+        otherX = other->coords.x - ofs;
+        otherY = other->coords.y - ofs;
         dist = HuSqrtf((otherX - x) * (otherX - x) + (otherY - y) * (otherY - y));
         if (dist < minDist) {
             hit = i | 0x10;
@@ -1777,9 +1781,6 @@ s16 func_80109F7C_parasol_plummet(omObjData *object, s32 isItem) {
     }
     return hit;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1C_parasol_plummet/1DE610", func_80109F7C_parasol_plummet);
-#endif
 
 void func_8010A160_parasol_plummet(void) {
     s16 posX[4] = { 32, 224, 32, 224 };

@@ -1727,10 +1727,6 @@ void func_80110DB0_mstory4(f32 x, f32 y, f32 z, s16 arg3) {
     work->unk_00 = 0;
 }
 
-// Only difference: the first rand8() term is converted in $f2 instead of
-// directly in rx's register ($f28). Writing it as two statements to rx gets
-// that, but swaps the $f26/$f28 allocation of rx and rz.
-#ifdef NON_MATCHING
 void func_80110E3C_mstory4(void) {
     UnkMstory4Work *work = HuPrcCurrentGet()->user_data;
     HmfData *hmf;
@@ -1781,9 +1777,13 @@ void func_80110E3C_mstory4(void) {
     func_8001C258_main(model, 4, 0);
     while (TRUE) {
         HuPrcVSleep();
-        rx = ((s32)(rand8() * 25U >> 7) + 100.0f) * D_80111C00_mstory4;
+        rx = (s32)(rand8() * 25U >> 7);
+        rx = (rx + 100.0f) * D_80111C00_mstory4;
         ry = (rand8() * 75 >> 7) + 50;
-        rz = rand8() * 75 >> 7;
+        // do-while(0) needed for rz to be register-allocated before rx.
+        do {
+            rz = rand8() * 75 >> 7;
+        } while (0);
         rx *= 2.0f;
         ry *= 2.0f;
         rz *= 2.0f;
@@ -1817,9 +1817,6 @@ void func_80110E3C_mstory4(void) {
         HuPrcSleep(25);
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory4/4C8050", func_80110E3C_mstory4);
-#endif
 
 void func_80111430_mstory4(s16 model, f32 x, f32 y, f32 z, s16 count, s32 randomAxis) {
     f32 step = 360.0f / count;

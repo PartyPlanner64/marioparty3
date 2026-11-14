@@ -742,9 +742,6 @@ void func_80108178_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
     }
 }
 
-// NON_MATCHING: register allocation differs (the target spills `count` to the stack and
-// hoists the inner loop's entry test).
-#ifdef NON_MATCHING
 void func_80108368_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler) {
     omObjData *object = slot->unk_00;
     f32 angles[5];
@@ -755,7 +752,7 @@ void func_80108368_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
     s16 chance;
     s16 type;
     s16 i, j;
-    s32 overlap;
+    s16 overlap;
 
     if (D_80111658_puddle_paddle->unk_40 == 0) {
         return;
@@ -765,9 +762,10 @@ void func_80108368_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
         D_80111658_puddle_paddle->unk_40 = 0;
         count = rand16() % 3 + 2;
         for (i = 0; i < count; i++) {
-            chance = 65;
             if (D_80111234_puddle_paddle < 11) {
                 chance = rand16() % 101;
+            } else {
+                chance = 65;
             }
             pitch = rand16() % 41 + 30;
             do {
@@ -796,9 +794,6 @@ void func_80108368_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_11_puddle_paddle/main", func_80108368_puddle_paddle);
-#endif
 
 void func_801087DC_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler) {
     PuddlePaddleItem *item = D_80111658_puddle_paddle->items;

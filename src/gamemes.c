@@ -1815,7 +1815,11 @@ s16 func_8003AE44_main(s16 fileNo) {
    That means the load and its zero-extension were never combined. Declaring the table as
    `volatile u8 D_800A13B0_main[]` matches exactly, because combine rejects volatile MEMs. No
    non-volatile form tried so far reproduces it: u8/s8 casts, u8/s32/u16/s16 temporaries, reusing the
-   flags param, pointer indexing, and while/do-while/condition-in-for loop shapes. */
+   flags param, pointer indexing, and while/do-while/condition-in-for loop shapes. Also no effect:
+   (u16)/(s16) casts on either side, assignment inside the condition, xor/subtract compares, a const
+   table, a struct-of-bitfield table, and static inline helpers (getter, compare, or whole search).
+   Combine only keeps the andi if the loaded QI value is not dead at the extension, crosses a block
+   boundary, or a store/call/address-reg update sits between the load and the compare. */
 s16 CreateFontChar(u8 c, u8 flags) {
     s16 *animId;
     s32 fileNo;

@@ -1833,13 +1833,9 @@ void func_8010A468_pump_pump_away(void) {
     }
 }
 
-// TODO: match the random-angle conversion registers.
-#ifdef NON_MATCHING
 void func_8010A570_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[obj->work[0]];
     s16 sound;
-    f32 angle;
-    s32 randomAngle;
     PumpPumpAwayAngleState *state;
 
     switch (player->unk_04) {
@@ -1867,18 +1863,10 @@ void func_8010A570_pump_pump_away(omObjData *obj) {
             } else if (player->unk_14 < 20) {
                 obj->trans.y -= player->unk_30;
             } else {
-                if ((u8)(rand8() % 10) + player->unk_2C >= 360.0f) {
-                    randomAngle = (u8)(rand8() % 10);
-                    angle = randomAngle + player->unk_2C - 360.0f;
-                } else if ((u8)(rand8() % 10) + player->unk_2C < 0.0f) {
-                    randomAngle = (u8)(rand8() % 10);
-                    angle = randomAngle + player->unk_2C + 360.0f;
-                } else {
-                    randomAngle = (u8)(rand8() % 10);
-                    angle = randomAngle + player->unk_2C;
-                }
-                player->unk_2C = angle;
-                obj->trans.y += sindf(angle) * 3.0;
+                player->unk_2C = player->unk_2C + (u8)(rand8() % 10) >= 360.0f ? player->unk_2C + (u8)(rand8() % 10) - 360.0f
+                                 : player->unk_2C + (u8)(rand8() % 10) < 0.0f  ? player->unk_2C + (u8)(rand8() % 10) + 360.0f
+                                                                               : player->unk_2C + (u8)(rand8() % 10);
+                obj->trans.y += sindf(player->unk_2C) * 3.0;
                 player->unk_30 = (obj->trans.y - 200.0f) * 0.05;
             }
             func_8010A3F0_pump_pump_away(obj);
@@ -1954,9 +1942,6 @@ void func_8010A570_pump_pump_away(omObjData *obj) {
         obj->trans.y = 2000.0f;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", func_8010A570_pump_pump_away);
-#endif
 
 void func_8010AD24_pump_pump_away(omObjData *obj) {
     UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[obj->work[0]];

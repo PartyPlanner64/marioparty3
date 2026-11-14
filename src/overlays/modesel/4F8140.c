@@ -1394,10 +1394,18 @@ f32 func_801094A8_modesel(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
 }
 
 #ifdef NON_MATCHING
+// The counterclockwise branch's endAngleCcw lands in $f0 instead of $f12 (two movs + one add
+// and the following sub differ only in that register). It inherits $f0 as a copy preference
+// from toAngle (set from the call return value). The clockwise branch avoids this by copying
+// before the comparison (toAngle stays live, so no preference merge), but doing the same in
+// the counterclockwise branch lets CSE substitute endAngleCcw for toAngle, since endAngleCcw
+// outlives toAngle there. Tried: shared/separate end vars, copy-first/late/if-else forms,
+// swapped conditions, ternaries, a separate cross-product local.
 void func_801094F0_modesel(Vec *from, Vec *to, f32 t, Vec *out) {
     f32 fromAngle;
     f32 toAngle;
-    f32 endAngle;
+    f32 endAngleCw;
+    f32 endAngleCcw;
     f32 angle;
 
     fromAngle = func_801094A8_modesel(0.0f, 0.0f, from->x, from->z);
@@ -1409,22 +1417,21 @@ void func_801094F0_modesel(Vec *from, Vec *to, f32 t, Vec *out) {
         toAngle += 360.0f;
     }
     if (-from->z * to->x + from->x * to->z > 0.0f) {
-        if (toAngle - fromAngle < 0.0f) {
-            endAngle = toAngle;
-        } else {
-            endAngle = toAngle - 360.0f;
+        endAngleCw = toAngle;
+        if (!(toAngle - fromAngle < 0.0f)) {
+            endAngleCw = toAngle - 360.0f;
         }
-        angle = (endAngle - fromAngle) * t + fromAngle;
+        angle = (endAngleCw - fromAngle) * t + fromAngle;
         if (angle < 0.0f) {
             angle += 360.0f;
         }
     } else {
         if (0.0f < toAngle - fromAngle) {
-            endAngle = toAngle;
+            endAngleCcw = toAngle;
         } else {
-            endAngle = toAngle + 360.0f;
+            endAngleCcw = toAngle + 360.0f;
         }
-        angle = (endAngle - fromAngle) * t + fromAngle;
+        angle = (endAngleCcw - fromAngle) * t + fromAngle;
         if (360.0f < angle) {
             angle -= 360.0f;
         }

@@ -7182,18 +7182,13 @@ void func_801191C0_w05(void) {
     }
 }
 
-// Logic matches the target; only register allocation differs. The target has a CSE boundary
-// (loop end note) between `Vec *p = &pos; ofs = D_8011EF38_w05[unk4 + order];` and
-// `p->x += ofs[0]; p->z += ofs[1];`: the adds go through `addiu a0,sp,0x10`/`0(a0)`, and the
-// later `&pos`, `&playerObj->coords` and `&playerObj->rot` are recomputed instead of being CSE'd
-// from step 1 (here `rot` gets an s-register, so `unk4` is spilled instead of `vib`). Without a
-// boundary, `p` replaces the later `&pos` uses instead. The only form found is artificial:
-// `do { HuVecCopy3F(&pos, &end->coords); p = &pos; ofs = ...; } while (0);` (score 210), plus a
-// second `do { } while (0)` around the `func_800ED128_shared_board`/`func_801178B4_w05` calls
-// (loop-weighted refs fix the type/work/playerObj s-registers, score 65). Still left: `unk4` and
-// `process` swap s7/s8 (also with a do-while spanning the wait loop), and v0/v1 swap in the `ofs`
-// math (not fixed by `&D[i][0]`, `D + i`, or `&D[0][0] + i * 2`). Empty do-while, a static inline
-// add helper, and direct `pos.x += D_8011EF38_w05[i][0]` did not help.
+// Logic matches the target; only register allocation differs (score 65). The target has a CSE
+// boundary between `p = &pos; ofs = D_8011EF38_w05[unk4 + order];` and the `p->x`/`p->z` adds,
+// so the later `&pos`, `&playerObj->coords` and `&playerObj->rot` are recomputed instead of
+// CSE'd; the first `do { } while (0)` reproduces it. The second `do { } while (0)` around the
+// final calls gives loop weighting that fixes the type/work/playerObj s-registers. Still left:
+// `unk4` and `process` swap s7/s8, and v0/v1 swap in the `ofs` math (not fixed by
+// `&D[i][0]`, `D + i`, or `&D[0][0] + i * 2`).
 #ifdef NON_MATCHING
 void func_801192AC_w05(void) {
     PlayerReactWork *work = HuPrcCurrentGet()->user_data;
@@ -7208,6 +7203,7 @@ void func_801192AC_w05(void) {
     SpaceData *start;
     SpaceData *end;
     Vec pos;
+    Vec *p;
     f32 *ofs;
     s32 camMasu;
 
@@ -7263,10 +7259,14 @@ void func_801192AC_w05(void) {
     HuPrcChildLink(process, func_800ED75C_shared_board(&playerObj->coords, &pos, &playerObj->coords, 2.0f));
     HuPrcChildWatch();
 
-    HuVecCopy3F(&pos, &end->coords);
-    ofs = D_8011EF38_w05[unk4 + order];
-    pos.x += ofs[0];
-    pos.z += ofs[1];
+    // do-while (0) acts as a CSE / loop-weighting boundary.
+    do {
+        HuVecCopy3F(&pos, &end->coords);
+        p = &pos;
+        ofs = D_8011EF38_w05[unk4 + order];
+    } while (0);
+    p->x += ofs[0];
+    p->z += ofs[1];
     MBVecDirGet(&playerObj->coords, &pos, &playerObj->rot);
     HuPrcChildLink(process, func_800ED5E0_shared_board(&playerObj->coords, &pos, &playerObj->coords, 2.0f));
     HuPrcChildWatch();
@@ -7279,8 +7279,10 @@ void func_801192AC_w05(void) {
     }
 
     HuVecCopyXYZ(&pos, 0.0f, 0.0f, 1.0f);
-    func_800ED128_shared_board(&player->player_obj->rot, &pos, &player->player_obj->rot, 5);
-    func_801178B4_w05(player, type, D_8011EE48_w05);
+    do {
+        func_800ED128_shared_board(&player->player_obj->rot, &pos, &player->player_obj->rot, 5);
+        func_801178B4_w05(player, type, D_8011EE48_w05);
+    } while (0);
     omDelPrcObj(NULL);
 }
 #else

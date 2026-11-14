@@ -107,7 +107,7 @@ static u16 D_801155B8_vine_with_me;
 // Original sizes unknown; split to keep each array below the assembler's
 // 0x10-byte minimum 8-byte alignment for common symbols.
 static u8 D_801155BC_vine_with_me[0xC]; // unused?
-static u8 D_801155C8_vine_with_me[8]; // unused?
+static u8 D_801155C8_vine_with_me[8];   // unused?
 static s32 D_801155D0_vine_with_me;
 static u8 D_801155D4_vine_with_me[4]; // unused?
 static f32 D_801155D8_vine_with_me[2][4];
@@ -777,28 +777,195 @@ void func_80106F1C_vine_with_me(omObjData *arg0) {
     D_80115548_vine_with_me[1] -= (D_80115548_vine_with_me[1] > 0);
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_31_vine_with_me/276470", D_80111FA0_vine_with_me);
+void func_801087BC_vine_with_me(void) {
+    s32 widths[4] = { 150, 150, 150, 80 };
+    s32 heights[4] = { 100, 100, 119, 119 };
+    s32 spacing[4] = { 150, 150, 150, 144 };
+    s32 scrollIdx[4] = { 0, 0, 1, 2 };
+    s32 yOffsets[4] = { 19, 19, 0, 0 };
+    s32 rowHeights[4] = { 12, 12, 12, 15 };
+    s32 rowCounts[4] = { 9, 9, 10, 8 };
+    s32 goalSide[2] = { 0 };
+    f32 xPos[2][4] = { { 0.0f, 0.0f, 0.0f, 12.0f }, { 0.0f, 0.0f, 0.0f, 12.0f } };
+    f32 scales[4] = { 0.05f, 0.05f, 0.1f, 0.16f };
+    s32 sprites[4] = { 2, 4, 1, 0 };
+    HuSprite_Unk84_Unk00_Struct *frame;
+    HuSprite *sprite;
+    s16 i;
+    s16 pass;
+    s16 row;
+    s16 j;
+    s16 k;
+    s32 y1;
+    s32 y2;
+    s32 s;
+    s32 dsdx;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_31_vine_with_me/276470", D_80111FB0_vine_with_me);
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 2; j++) {
+            if (i != 1) {
+                if (D_801155D8_vine_with_me[j][scrollIdx[i]] > spacing[i] / scales[i]) {
+                    D_801155D8_vine_with_me[j][scrollIdx[i]] -= spacing[i] / scales[i];
+                    D_801155A4_vine_with_me[j] += (i == 3);
+                    D_8011554C_vine_with_me[j] += (i == 0);
+                }
+                if (D_801155D8_vine_with_me[j][scrollIdx[i]] < 0.0) {
+                    D_801155D8_vine_with_me[j][scrollIdx[i]] += spacing[i] / scales[i];
+                    D_801155A4_vine_with_me[j] -= (i == 3);
+                    D_8011554C_vine_with_me[j] -= (i == 0);
+                }
+            }
+            xPos[j][i] -= D_801155D8_vine_with_me[j][scrollIdx[i]] * scales[i];
+        }
+    }
+    gSPDisplayList(gMainGfxPos++, D_80111B98_vine_with_me);
+    gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
+    for (i = 0, pass = 0; i < 4; i++) {
+        sprite = HuSprGet(D_800CD1DC_main[D_80115640_vine_with_me.unk00[(i != 0 || pass != 1) ? sprites[i] : 3]].unk04, 0);
+        frame = &sprite->unk_84->unk00[sprite->unk_90];
+        if (i != 20) {
+            gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->unk0C);
+        } else {
+            gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->unk0C);
+        }
+        for (row = 0; row < rowCounts[i]; row++) {
+            if (i != 20) {
+                gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, G_IM_SIZ_8b, widths[i], 0, 0,
+                                   row * rowHeights[i], widths[i], row * rowHeights[i] + rowHeights[i], 0,
+                                   G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                                   G_TX_NOLOD, G_TX_NOLOD);
+            } else {
+                gDPLoadTextureTile_4b(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, widths[i], 0, 0, row * rowHeights[i],
+                                      widths[i], row * rowHeights[i] + rowHeights[i], 0, G_TX_NOMIRROR | G_TX_WRAP,
+                                      G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            }
+            for (j = 0; j < 2; j++) {
+                y1 = row * rowHeights[i];
+                if (y1 > heights[i]) {
+                    continue;
+                }
+                y2 = y1 + rowHeights[i] + 1;
+                y2 = (y2 > heights[i]) ? heights[i] : y2;
+                for (k = 0; k < 4; k++) {
+                    s32 pos;
+                    s32 layerIdx;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_31_vine_with_me/276470", D_80111FC0_vine_with_me);
+                    if (i == 0 && k + D_8011554C_vine_with_me[j] >= 3) {
+                        continue;
+                    }
+                    layerIdx = i;
+                    if (layerIdx == 0 && ((k + pass + D_8011554C_vine_with_me[j] + 16) & 1) == 0) {
+                        continue;
+                    }
+                    if (i == 1 && k + D_8011554C_vine_with_me[j] < 3) {
+                        continue;
+                    }
+                    if (i == 3) {
+                        pos = k + D_801155A4_vine_with_me[j];
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_31_vine_with_me/276470", D_80111FD0_vine_with_me);
+                        if (pos == 0 || pos == 8) {
+                            s32 side;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_31_vine_with_me/276470", D_80111FE0_vine_with_me);
+                            goalSide[j] = side = (pos == 8) ? 2 : 1;
+                            continue;
+                        }
+                    }
+                    if ((s32)((k * spacing[i] * 4 + (s32)(xPos[j][i] * 4.0f)) * D_80115604_vine_with_me + D_80115608_vine_with_me) >= 0xA00) {
+                        continue;
+                    }
+                    if ((s32)((y1 + yOffsets[i] + j * 121) * 4 * D_80115604_vine_with_me + D_80115638_vine_with_me) >= 0x780) {
+                        continue;
+                    }
+                    gSPScisTextureRectangle(gMainGfxPos++,
+                                            (s32)((k * spacing[i] * 4 + (s32)(xPos[j][i] * 4.0f)) * D_80115604_vine_with_me + D_80115608_vine_with_me),
+                                            (s32)((y1 + yOffsets[i] + j * 121) * 4 * D_80115604_vine_with_me + D_80115638_vine_with_me),
+                                            (s32)(((k * spacing[i] + widths[i]) * 4 + (s32)(xPos[j][i] * 4.0f)) * D_80115604_vine_with_me + D_80115608_vine_with_me),
+                                            (s32)((y2 + yOffsets[i] + j * 121) * 4 * D_80115604_vine_with_me + D_80115638_vine_with_me),
+                                            0, 0, row * rowHeights[i] * 32, (s32)(D_80115558_vine_with_me * 1024.0f), (s32)(D_80115558_vine_with_me * 1024.0f));
+                }
+            }
+        }
+        if (i == 0 && pass == 0) {
+            i--;
+        } else if (i == 1) {
+            gDPSetAlphaCompare(gMainGfxPos++, G_AC_THRESHOLD);
+            gDPSetBlendColor(gMainGfxPos++, 0, 0, 0, 224);
+        }
+        pass++;
+    }
+    if (goalSide[0] != 0 || goalSide[1] != 0) {
+        i = 3;
+        sprite = HuSprGet(D_800CD1DC_main[D_80115640_vine_with_me.unk00[14]].unk04, 0);
+        frame = &sprite->unk_84->unk00[sprite->unk_90];
+        gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->unk0C);
+        for (row = 0; row < rowCounts[i]; row++) {
+            gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, G_IM_SIZ_8b, 54, 0, 0, row * rowHeights[i], 54,
+                               row * rowHeights[i] + rowHeights[i], 0, G_TX_MIRROR | G_TX_WRAP,
+                               G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            for (j = 0; j < 2; j++) {
+                y1 = row * rowHeights[i];
+                if (y1 > heights[i]) {
+                    continue;
+                }
+                y2 = y1 + rowHeights[i] + 1;
+                y2 = (y2 > heights[i]) ? heights[i] : y2;
+                k = 0;
+                do {
+                    if (D_801155A4_vine_with_me[j] + k == 0 || D_801155A4_vine_with_me[j] + k == 8) {
+                        if (goalSide[j] == 1) {
+                            s = 0;
+                            dsdx = 1024;
+                        } else {
+                            s = 54;
+                            dsdx = -1024;
+                        }
+                        if ((s32)(((k * spacing[i] + 10 - ((goalSide[j] == 1) ? 12 : 0)) * 4 + (s32)(xPos[j][i] * 4.0f)) * D_80115604_vine_with_me + D_80115608_vine_with_me) < 0xA00 && (s32)((y1 + yOffsets[i] + j * 125 - 2) * 4 * D_80115604_vine_with_me + D_80115638_vine_with_me) < 0x780) {
+                            gSPScisTextureRectangle(gMainGfxPos++,
+                                                    (s32)(((k * spacing[i] + 10 - ((goalSide[j] == 1) ? 12 : 0) + ((goalSide[j] == 1) ? 0 : 1)) * 4 + (s32)(xPos[j][i] * 4.0f)) * D_80115604_vine_with_me + D_80115608_vine_with_me),
+                                                    (s32)((y1 + yOffsets[i] + j * 125 - 2) * 4 * D_80115604_vine_with_me + D_80115638_vine_with_me),
+                                                    (s32)(((k * spacing[i] + 10 - ((goalSide[j] == 1) ? 12 : 0) + ((goalSide[j] != 1) ? 55 : 54)) * 4 + (s32)(xPos[j][i] * 4.0f)) * D_80115604_vine_with_me + D_80115608_vine_with_me),
+                                                    (s32)((y2 + yOffsets[i] + j * 125 - 2) * 4 * D_80115604_vine_with_me + D_80115638_vine_with_me),
+                                                    0, s * 32, row * rowHeights[i] * 32, (s32)(dsdx * D_80115558_vine_with_me), (s32)(D_80115558_vine_with_me * 1024.0f));
+                        }
+                    }
+                    k++;
+                } while (k < 4);
+            }
+        }
+    }
+    if (D_8011563C_vine_with_me < 3 || D_8011558C_vine_with_me >= 2) {
+        s16 layer = 3;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_31_vine_with_me/276470", D_80111FF0_vine_with_me);
+        sprite = HuSprGet(D_800CD1DC_main[D_80115640_vine_with_me.unk00[15]].unk04, 0);
+        frame = &sprite->unk_84->unk00[sprite->unk_90];
+        gDPSetTextureLUT(gMainGfxPos++, G_TT_NONE);
+        for (row = 0; row < 4; row++) {
+            gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 0, 0, row * 8, 64,
+                               row * 8 + 8 + (row != 3), 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                               G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            for (j = 0; j < 2; j++) {
+                s32 x;
+                s32 top;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_31_vine_with_me/276470", D_80112000_vine_with_me);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_31_vine_with_me/276470", D_80112010_vine_with_me);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_31_vine_with_me/276470", D_80112030_vine_with_me);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_31_vine_with_me/276470", D_80112040_vine_with_me);
-
-// https://decomp.me/scratch/mEGSE
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_31_vine_with_me/276470", func_801087BC_vine_with_me);
+                if (D_801155A4_vine_with_me[j] < 5) {
+                    continue;
+                }
+                x = ((-D_801155A4_vine_with_me[j] + 7) * spacing[layer] + 121) * 4 + (s32)(xPos[j][layer] * 4.0);
+                top = 57;
+                if ((s32)(x * D_80115604_vine_with_me + D_80115608_vine_with_me) < 0xA00) {
+                    if ((s32)((top + j * 125 - 2 + row * 8) * 4 * D_80115604_vine_with_me + D_80115638_vine_with_me) < 0x780) {
+                        gSPScisTextureRectangle(gMainGfxPos++,
+                                                (s32)(x * D_80115604_vine_with_me + D_80115608_vine_with_me),
+                                                (s32)((top + j * 125 - 2 + row * 8) * 4 * D_80115604_vine_with_me + D_80115638_vine_with_me),
+                                                (s32)((x + 252) * D_80115604_vine_with_me + D_80115608_vine_with_me),
+                                                (s32)((top + j * 125 - 2 + row * 8 + 7 + ((row != 3) ? 1 : 0)) * 4 * D_80115604_vine_with_me + D_80115638_vine_with_me),
+                                                0, 0, row * 256, (s32)(D_80115558_vine_with_me * 1024.0f), (s32)(D_80115558_vine_with_me * 1024.0f));
+                    }
+                }
+            }
+        }
+    }
+}
 
 void func_8010ADB0_vine_with_me(Gfx **arg0, s32 arg1, s32 arg2) {
     f32 xOffset[2];
@@ -1134,8 +1301,8 @@ void func_8010D4AC_vine_with_me(omObjData *arg0, s8 arg1, s8 arg2) {
         }
     }
     D_80111C8C_vine_with_me[arg1] = (D_80111C68_vine_with_me[arg1] > D_80111C60_vine_with_me[arg1])
-                                               ? ((D_80111C68_vine_with_me[arg1] - D_80111C60_vine_with_me[arg1]) * 0.0625 + 20.0)
-                                               : 20.0f;
+                                        ? ((D_80111C68_vine_with_me[arg1] - D_80111C60_vine_with_me[arg1]) * 0.0625 + 20.0)
+                                        : 20.0f;
     if (!(D_80111C80_vine_with_me[arg1] >= 10.0f) && (D_8011563C_vine_with_me != 0) && (D_8011563C_vine_with_me != 1 || D_801155D0_vine_with_me >= 5)) {
         if (D_80111C70_vine_with_me[arg1] > -550.0) {
             if (D_80111C3C_vine_with_me[arg1] == 1) {
@@ -1271,14 +1438,14 @@ void func_8010D4AC_vine_with_me(omObjData *arg0, s8 arg1, s8 arg2) {
         temp_f0_5 = temp_f2_7;
         temp_f6_3 = temp_f2_7 - temp_f0_5;
         D_80111C68_vine_with_me[arg1] = (temp_f6_3 == 0.0)
-                                                   ? sp60[D_80111C38_vine_with_me[arg1]][temp_f0_5]
-                                                   : (sp60[D_80111C38_vine_with_me[arg1]][temp_f0_5] * (1.0 - temp_f6_3) + temp_f6_3 * sp60[D_80111C38_vine_with_me[arg1]][temp_f0_5 + 1]);
+                                            ? sp60[D_80111C38_vine_with_me[arg1]][temp_f0_5]
+                                            : (sp60[D_80111C38_vine_with_me[arg1]][temp_f0_5] * (1.0 - temp_f6_3) + temp_f6_3 * sp60[D_80111C38_vine_with_me[arg1]][temp_f0_5 + 1]);
         D_80111C70_vine_with_me[arg1] = (temp_f6_3 == 0.0)
-                                                   ? sp138[D_80111C38_vine_with_me[arg1]][temp_f0_5]
-                                                   : (sp138[D_80111C38_vine_with_me[arg1]][temp_f0_5] * (1.0 - temp_f6_3) + temp_f6_3 * sp138[D_80111C38_vine_with_me[arg1]][temp_f0_5 + 1]);
+                                            ? sp138[D_80111C38_vine_with_me[arg1]][temp_f0_5]
+                                            : (sp138[D_80111C38_vine_with_me[arg1]][temp_f0_5] * (1.0 - temp_f6_3) + temp_f6_3 * sp138[D_80111C38_vine_with_me[arg1]][temp_f0_5 + 1]);
         D_80112590_vine_with_me[arg1] = (temp_f6_3 == 0.0)
-                                                   ? sp210[D_80111C38_vine_with_me[arg1]][temp_f0_5]
-                                                   : (sp210[D_80111C38_vine_with_me[arg1]][temp_f0_5] * (1.0 - temp_f6_3) + temp_f6_3 * sp210[D_80111C38_vine_with_me[arg1]][temp_f0_5 + 1]);
+                                            ? sp210[D_80111C38_vine_with_me[arg1]][temp_f0_5]
+                                            : (sp210[D_80111C38_vine_with_me[arg1]][temp_f0_5] * (1.0 - temp_f6_3) + temp_f6_3 * sp210[D_80111C38_vine_with_me[arg1]][temp_f0_5 + 1]);
         if (D_80111C94_vine_with_me[arg1] == 0) {
             if (sp3D7 != -1) {
                 if (sp3C4->unk04 != -1) {
@@ -1470,7 +1637,7 @@ void func_8010D4AC_vine_with_me(omObjData *arg0, s8 arg1, s8 arg2) {
                     D_80111C68_vine_with_me[arg1] =
                         (D_80111C68_vine_with_me[arg1] > temp_f20_3 + 75.0)   ? (temp_f20_3 + 75.0)
                         : (D_80111C68_vine_with_me[arg1] < temp_f20_3 - 95.0) ? (temp_f20_3 - 95.0)
-                                                                                     : D_80111C68_vine_with_me[arg1];
+                                                                              : D_80111C68_vine_with_me[arg1];
                     D_80111C70_vine_with_me[arg1] = (D_8011563C_vine_with_me == 0) ? -176.25f : -182.5f;
                     D_80112590_vine_with_me[arg1] = 270.0f;
                     D_80112598_vine_with_me[arg1] = 0.0f;
@@ -1547,14 +1714,14 @@ void func_8010D4AC_vine_with_me(omObjData *arg0, s8 arg1, s8 arg2) {
         temp_f0_13 = temp_f2_17;
         temp_f6_4 = temp_f2_17 - temp_f0_13;
         D_80111C68_vine_with_me[arg1] = (temp_f6_4 == 0.0)
-                                                   ? sp60[D_80111C38_vine_with_me[arg1]][temp_f0_13]
-                                                   : (sp60[D_80111C38_vine_with_me[arg1]][temp_f0_13] * (1.0 - temp_f6_4) + temp_f6_4 * sp60[D_80111C38_vine_with_me[arg1]][temp_f0_13 + 1]);
+                                            ? sp60[D_80111C38_vine_with_me[arg1]][temp_f0_13]
+                                            : (sp60[D_80111C38_vine_with_me[arg1]][temp_f0_13] * (1.0 - temp_f6_4) + temp_f6_4 * sp60[D_80111C38_vine_with_me[arg1]][temp_f0_13 + 1]);
         D_80111C70_vine_with_me[arg1] = (temp_f6_4 == 0.0)
-                                                   ? sp138[D_80111C38_vine_with_me[arg1]][temp_f0_13]
-                                                   : (sp138[D_80111C38_vine_with_me[arg1]][temp_f0_13] * (1.0 - temp_f6_4) + temp_f6_4 * sp138[D_80111C38_vine_with_me[arg1]][temp_f0_13 + 1]);
+                                            ? sp138[D_80111C38_vine_with_me[arg1]][temp_f0_13]
+                                            : (sp138[D_80111C38_vine_with_me[arg1]][temp_f0_13] * (1.0 - temp_f6_4) + temp_f6_4 * sp138[D_80111C38_vine_with_me[arg1]][temp_f0_13 + 1]);
         D_80112590_vine_with_me[arg1] = (temp_f6_4 == 0.0)
-                                                   ? sp210[D_80111C38_vine_with_me[arg1]][temp_f0_13]
-                                                   : (sp210[D_80111C38_vine_with_me[arg1]][temp_f0_13] * (1.0 - temp_f6_4) + temp_f6_4 * sp210[D_80111C38_vine_with_me[arg1]][temp_f0_13 + 1]);
+                                            ? sp210[D_80111C38_vine_with_me[arg1]][temp_f0_13]
+                                            : (sp210[D_80111C38_vine_with_me[arg1]][temp_f0_13] * (1.0 - temp_f6_4) + temp_f6_4 * sp210[D_80111C38_vine_with_me[arg1]][temp_f0_13 + 1]);
     }
     omSetTra(arg0,
              D_80111C68_vine_with_me[arg1] + cosdf(D_80112590_vine_with_me[arg1]) * 125.0,

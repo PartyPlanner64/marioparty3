@@ -471,10 +471,6 @@ void func_8010B5C4_cosmic_coaster(omObjData *arg0) {
 // Finds, for each rider of a car, the first track object of type 0, 1 or 4 that
 // overlaps the rider's lane between the ahead and behind distances. Returns the
 // types that were found (0xFFFF if none), the second rider's in the upper half.
-// Only diffs: the 70.0f and 150.0f constants are hoisted in the opposite order
-// (with swapped float registers), and the laneMax address is hoisted out of the
-// outer loop instead of being set up before the inner loop.
-#ifdef NON_MATCHING
 u32 func_8010B644_cosmic_coaster(omObjData **found, CosmicCoasterCarData *car, f32 ahead, f32 behind, u16 notify) {
     u16 hits[2];
     Vec objMin;
@@ -509,6 +505,14 @@ u32 func_8010B644_cosmic_coaster(omObjData **found, CosmicCoasterCarData *car, f
             continue;
         }
         switch (other->work[1]) {
+            case 0:
+                objMin.x = other->trans.x - 70.0f;
+                objMin.y = other->trans.y - 100.0f;
+                objMin.z = other->trans.z;
+                objMax.x = other->trans.x + 70.0f;
+                objMax.y = other->trans.y + 100.0f;
+                objMax.z = other->trans.z;
+                break;
             case 1:
                 objMin.x = other->trans.x - 150.0f;
                 objMin.y = other->trans.y - 100.0f;
@@ -517,7 +521,6 @@ u32 func_8010B644_cosmic_coaster(omObjData **found, CosmicCoasterCarData *car, f
                 objMax.y = other->trans.y + 100.0f;
                 objMax.z = other->trans.z;
                 break;
-            case 0:
             case 4:
                 objMin.x = other->trans.x - 70.0f;
                 objMin.y = other->trans.y - 100.0f;
@@ -540,9 +543,6 @@ u32 func_8010B644_cosmic_coaster(omObjData **found, CosmicCoasterCarData *car, f
     }
     return (hits[1] << 16) | hits[0];
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_10_cosmic_coaster/18EB30", func_8010B644_cosmic_coaster);
-#endif
 
 s32 func_8010B97C_cosmic_coaster(omObjData *object, s32 slot, omObjData *target) {
     omObjData **list;

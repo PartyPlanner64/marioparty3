@@ -1403,9 +1403,6 @@ void func_8010A08C_cheep_cheep_chase(FuncContext *ctx) {
     }
 }
 
-// Same remaining difference as func_8010A938_cheep_cheep_chase below: `li -0x8000` instead of
-// `ori 0x8000` for the A_BUTTON store, because D_800CDA7C_main is declared s16 in the shared headers.
-#ifdef NON_MATCHING
 void func_8010A57C_cheep_cheep_chase(FuncContext *ctx) {
     omObjData *object = D_800EC598_minigame[ctx->work.s16[0]];
     CheepCheepChasePlayer *player = &D_8010E364_cheep_cheep_chase[ctx->work.s16[0]];
@@ -1448,12 +1445,12 @@ void func_8010A57C_cheep_cheep_chase(FuncContext *ctx) {
                     continue;
                 }
                 if (ctx->work.s8[0] == 0) {
-                    if (-(D_8010E360_cheep_cheep_chase->unk_0C[item->unk_04] * 100) + item->unk_08 + 100.0 > object->trans.z) {
+                    if (-(D_8010E360_cheep_cheep_chase->unk_0C[item->unk_04] * 100) + item->unk_08 + 140.0 > object->trans.z) {
                         found = TRUE;
                         item->unk_05 = 1;
                     }
                 } else {
-                    if (-(D_8010E360_cheep_cheep_chase->unk_0C[item->unk_04] * 100) + 100.0 > object->trans.z) {
+                    if (-(D_8010E360_cheep_cheep_chase->unk_0C[item->unk_04] * 100) + 140.0 > object->trans.z) {
                         found = TRUE;
                         item->unk_05 = 1;
                     }
@@ -1466,7 +1463,7 @@ void func_8010A57C_cheep_cheep_chase(FuncContext *ctx) {
             if (ctx->work.s8[1]++ > ctx->work.s8[0] + ctx->work.s8[3]) {
                 ctx->work.s8[1] = 0;
                 ctx->work.s8[3] = rand16() % (ctx->work.s8[2] + 1);
-                D_800CDA7C_main[player->padId] = A_BUTTON;
+                ((u16 *)D_800CDA7C_main)[player->padId] = A_BUTTON;
             } else {
                 D_800CDA7C_main[player->padId] = 0;
             }
@@ -1475,9 +1472,6 @@ void func_8010A57C_cheep_cheep_chase(FuncContext *ctx) {
             break;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_26_cheep_cheep_chase/225740", func_8010A57C_cheep_cheep_chase);
-#endif
 
 // Matches except for the A_BUTTON store: the target loads 0x8000 with `ori` (D_800CDA7C_main is a u16
 // array there) but the shared headers declare it s16, which gives `li -0x8000`. Verified to match when

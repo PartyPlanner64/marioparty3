@@ -5220,6 +5220,17 @@ s32 func_80115B3C_duel04(void) {
 // case 0's block gets merged into case 1's again. A 2048-variant search of
 // ret/return and if-order for every case 1/2 statement, on top of the case 0
 // rewrite, did no better.
+// jump.c detail: find_cross_jump skips labels on the candidate side and then
+// stops at a BARRIER without the jump-around --minimum, so a `return 1` whose
+// `li 1` follows a branch over its own block (case 7's first, case 3's) only
+// merges into a candidate whose `li 1` follows a conditional branch, never
+// one after a label/barrier. With the second switch written as
+// `else if (curIndex == 0) { ret = 1; } else { ret = other; }` in both case 1
+// and case 2 (no `return 1` there), the whole first switch matches, but case
+// 1's ret-1 block then merges into case 2's and is inverted
+// (`beqzl s1,end; li 1; j other`), and the score is worse (525). Any pair of
+// ret/return/if-order/ternary forms for those two tails (64 tried) merges or
+// inverts one of them; the target keeps both separate and non-inverted.
 s32 func_80115DA8_duel04(void) {
     s32 curIndex = MBDGetCurrentPlayerIndex();
     s32 otherIndex = (s16)(MBDGetCurrentPlayerIndex() ^ 1);

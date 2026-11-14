@@ -2810,38 +2810,30 @@ void func_8010E12C_marios_puzzle_party(void) {
     }
 }
 
-#ifdef NON_MATCHING
 void func_8010E868_marios_puzzle_party(s16 group, s32 time) {
     s32 minutes;
     s32 tens;
     s32 seconds;
     s32 tenths;
 
-    minutes = time / 3600;
-    HuSprBankSet(group, 1, minutes, 0);
+    HuSprBankSet(group, 1, minutes = time / 3600, 0);
     func_800550F4_main(group, 1, 1);
     time -= minutes * 3600;
     HuSprBankSet(group, 2, 10, 0);
     func_800550F4_main(group, 2, 1);
-    tens = time / 600;
-    HuSprBankSet(group, 3, tens, 0);
+    HuSprBankSet(group, 3, tens = time / 600, 0);
     func_800550F4_main(group, 3, 1);
     time -= tens * 600;
-    seconds = time / 60;
-    HuSprBankSet(group, 4, seconds, 0);
+    HuSprBankSet(group, 4, seconds = time / 60, 0);
     func_800550F4_main(group, 4, 1);
     time = time * 100 / 60 - seconds * 100;
     HuSprBankSet(group, 5, 11, 0);
     func_800550F4_main(group, 5, 1);
-    tenths = time / 10;
-    HuSprBankSet(group, 6, tenths, 0);
+    HuSprBankSet(group, 6, tenths = time / 10, 0);
     func_800550F4_main(group, 6, 1);
     HuSprBankSet(group, 7, time - tenths * 10, 0);
     func_800550F4_main(group, 7, 1);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1F_marios_puzzle_party/1F3B90", func_8010E868_marios_puzzle_party);
-#endif
 
 #ifdef NON_MATCHING
 void func_8010EAA0_marios_puzzle_party(void) {

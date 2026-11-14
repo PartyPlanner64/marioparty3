@@ -1225,17 +1225,13 @@ void func_80109604_merry_go_chomp(void) {
     }
 }
 
-#ifdef NON_MATCHING
-// Differs in register usage: the 0.0f constant is materialized after the first
-// load, and the D_8010C4D0_merry_go_chomp[0] stores go through a saved base
-// register instead of direct symbol addressing.
 void func_80109670_merry_go_chomp(omObjData *obj) {
     MerryGoChompEntry *chomp = &D_8010C500_merry_go_chomp[10];
     Vec2f *link;
     f32 angle;
     f32 divisor;
     f32 dx;
-    f32 dz;
+    f32 dz = 0.0f;
     f32 dist;
     s8 i;
 
@@ -1243,8 +1239,9 @@ void func_80109670_merry_go_chomp(omObjData *obj) {
         obj->trans.x += chomp->unk_18;
         obj->trans.z += chomp->unk_1C;
         angle = func_801059BC_merry_go_chomp(obj->rot.y, 180.0f);
-        D_8010C4D0_merry_go_chomp[0].x = sindf(angle) * 70.0f + obj->trans.x;
-        D_8010C4D0_merry_go_chomp[0].y = cosdf(angle) * 70.0f + obj->trans.z;
+        link = D_8010C4D0_merry_go_chomp;
+        link->x = sindf(angle) * 70.0f + obj->trans.x;
+        link->y = cosdf(angle) * 70.0f + obj->trans.z;
         if (chomp->unk_2C > 15.0f) {
             divisor = 2.0f;
         } else {
@@ -1282,9 +1279,6 @@ void func_80109670_merry_go_chomp(omObjData *obj) {
     }
     chomp->unk_30 = obj->rot.y;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2D_merry_go_chomp/25E110", func_80109670_merry_go_chomp);
-#endif
 
 void func_80109A04_merry_go_chomp(omObjData *obj) {
     f32 angle = 0.0f;

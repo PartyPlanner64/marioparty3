@@ -2762,11 +2762,9 @@ void func_8010DEBC_stacked_deck(void) {
     obj->work[0] = 0;
 }
 
-#ifdef NON_MATCHING
-// Only differs in v0/v1 register allocation of the spinner address in the
-// four small loops over STACKED_DECK_SPINNERS.
 void func_8010DEF4_stacked_deck(omObjData *object) {
     StackedDeckCard *card = &D_8010F730_stacked_deck[object->work[0] + 23];
+    StackedDeckCard *spinner;
     f32 speed;
     s16 i;
     s16 moving;
@@ -2822,13 +2820,15 @@ void func_8010DEF4_stacked_deck(omObjData *object) {
                     }
                     moving = FALSE;
                     for (i = 0; i < 3; i++) {
-                        if (STACKED_DECK_SPINNERS[i].unk_18[0] != -40.0f) {
+                        spinner = &STACKED_DECK_SPINNERS[i];
+                        if (spinner->unk_18[0] != -40.0f) {
                             moving = TRUE;
                         }
                     }
                     if (!moving) {
                         for (i = 0; i < 3; i++) {
-                            STACKED_DECK_SPINNERS[i].unk_04[0] = 1;
+                            spinner = &STACKED_DECK_SPINNERS[i];
+                            spinner->unk_04[0] = 1;
                         }
                     }
                     break;
@@ -2840,13 +2840,15 @@ void func_8010DEF4_stacked_deck(omObjData *object) {
                     }
                     moving = FALSE;
                     for (i = 0; i < 3; i++) {
-                        if (STACKED_DECK_SPINNERS[i].unk_18[0] != 40.0f) {
+                        spinner = &STACKED_DECK_SPINNERS[i];
+                        if (spinner->unk_18[0] != 40.0f) {
                             moving = TRUE;
                         }
                     }
                     if (!moving) {
                         for (i = 0; i < 3; i++) {
-                            STACKED_DECK_SPINNERS[i].unk_04[0] = 0;
+                            spinner = &STACKED_DECK_SPINNERS[i];
+                            spinner->unk_04[0] = 0;
                         }
                     }
                     break;
@@ -2857,9 +2859,6 @@ void func_8010DEF4_stacked_deck(omObjData *object) {
     object->rot.z = func_801059BC_stacked_deck(card->unk_18[0], 0.0f);
     Hu3DModelRotSet(object->model[0], object->rot.x, object->rot.y, object->rot.z);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2A_stacked_deck/240A10", func_8010DEF4_stacked_deck);
-#endif
 
 void func_8010E368_stacked_deck(omObjData *object) {
     StackedDeckCard *card = &D_8010F730_stacked_deck[object->work[0] + 23];

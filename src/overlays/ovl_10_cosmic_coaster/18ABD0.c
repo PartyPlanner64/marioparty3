@@ -308,15 +308,16 @@ void func_801063CC_cosmic_coaster(omObjData *object) {
 
 // Positions the four repeating track segment models of one car's view and
 // switches their texture animation once enough segments have scrolled past.
-// Only diff: the sign extension of `car` is emitted after the hud load instead
-// of before it.
-#ifdef NON_MATCHING
 void func_80106530_cosmic_coaster(s16 car) {
-    CosmicCoasterHudData *hud = D_8010C3C0_cosmic_coaster->data;
-    s32 frame = hud->trackFrame[car];
-    s32 count = hud->trackCount[car];
+    CosmicCoasterHudData *hud;
+    s32 frame;
+    s32 count;
     s32 i;
+    s32 carIndex = car;
 
+    hud = D_8010C3C0_cosmic_coaster->data;
+    frame = hud->trackFrame[carIndex];
+    count = hud->trackCount[carIndex];
     for (i = 0; i < 4; i++) {
         Hu3DModelPosSet(D_8010C3C0_cosmic_coaster->model[car * 4 + frame], 0.0f, 0.0f,
                         hud->trackOffset[car] - i * 3000.0f);
@@ -337,9 +338,6 @@ void func_80106530_cosmic_coaster(s16 car) {
         hud->trackCount[car]++;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_10_cosmic_coaster/18ABD0", func_80106530_cosmic_coaster);
-#endif
 
 void func_80106720_cosmic_coaster(omObjData *object) {
     func_80106758_cosmic_coaster(object, 0);

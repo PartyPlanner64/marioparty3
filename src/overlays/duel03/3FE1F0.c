@@ -5130,11 +5130,17 @@ s32 func_801152E0_duel03(void) {
 }
 
 #ifdef NON_MATCHING
-// Only remaining diff is a delay slot in the walkNum block. The registers and
-// the hoisted v0 = 1 match, but reorg fills the first beqz delay slot with
-// `li v1, 4` (target: `li v0, 1`, then a nop after the frontID bne), so this
-// is one instruction short. The target's reorg treats v1 as live at the
-// return-1 branch target, which this function layout doesn't reproduce.
+// Only remaining diff is a delay slot in the walkNum == 5 block. The registers
+// and the hoisted v0 = 1 match, but reorg fills the backPower beqz delay slot
+// with `li v1, 4` (target: `li v0, 1`, then a nop after the frontID bne), so
+// this is one instruction short. The matched sibling func_80115B18_duel03 has
+// the same body and the same `li v1, 4` fill, so the difference comes from the
+// surrounding layout: the target's reorg treats v1 as live at the final
+// return-1 block, which happens when mark_target_live_regs can't find that
+// label as a flow basic-block head (e.g. a label made by cross-jumping).
+// Tried: nested/else-if/ternary/do-while/while forms of the walkNum block
+// (nested forms fix the delay slot but CSE the backPower reload), early
+// return for the cidx range check, else-if chain, other tail forms.
 // The frame is 0x28 bytes bigger than in the sibling callbacks; the 40-byte
 // local that causes this is never referenced.
 s32 func_8011580C_duel03(void) {

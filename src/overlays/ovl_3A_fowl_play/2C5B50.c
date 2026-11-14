@@ -1866,9 +1866,6 @@ void func_8010B564_fowl_play(Gfx **gfx, HuSprite_Unk84_Unk00_Struct *cel, u8 fmt
     *gfx = gdl;
 }
 
-#ifdef NON_MATCHING
-// unk_1B/unk_1C are read with lb instead of lbu (switching them to u8 matches the loads but swaps the siz/count
-// registers, same as func_80109718_popgun_pickoff).
 s16 func_8010B8D4_fowl_play(Fowl *fowl) {
     HuSprite_Unk84_Unk00_Struct segCel;
     Gfx *gfx;
@@ -1988,15 +1985,16 @@ s16 func_8010B8D4_fowl_play(Fowl *fowl) {
             }
         }
     }
+    // The differing masks/maskt byte conversions are required to match register allocation.
     if (fowl->unk_28 & 0xC0000) {
-        masks = fowl->unk_1B;
+        masks = fowl->unk_1B & 0xFF;
         cms = (fowl->unk_28 >> 18) - 1;
     } else {
         masks = 0;
         cms = 0;
     }
     if (fowl->unk_28 & 0x300000) {
-        maskt = fowl->unk_1C;
+        maskt = (u8)fowl->unk_1C;
         cmt = (fowl->unk_28 >> 20) - 1;
     } else {
         maskt = 0;
@@ -2033,9 +2031,6 @@ s16 func_8010B8D4_fowl_play(Fowl *fowl) {
     HuMemFree(buf);
     return 1;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3A_fowl_play/2C5B50", func_8010B8D4_fowl_play);
-#endif
 
 s16 func_8010C1F4_fowl_play(s16 spriteId, s32 flags) {
     Fowl *fowl;

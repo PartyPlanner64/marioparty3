@@ -587,13 +587,10 @@ Process *func_8010832C_storyresult(s16 *arg0, s16 arg1) {
     return prc;
 }
 
-#ifdef NON_MATCHING
-// Regalloc: loop counters and the cycling value are assigned different registers.
 void func_801083A4_storyresult(void) {
     s16 status;
     u16 sprite;
     s16 value;
-    s16 buttons;
     s32 i;
     s32 j;
 
@@ -629,21 +626,25 @@ void func_801083A4_storyresult(void) {
             value = 1;
         }
     }
-    for (i = 0; i < ARRAY_COUNT(GwStory.unk58); i++) {
-        GwStory.unk5E[i] = i & 3;
-        GwStory.unk58[i] = 4;
-        for (j = 0; j < ARRAY_COUNT(GwStory.unk10[i]); j++) {
-            GwStory.unk10[i][j] = 4;
+    for (j = 0; j < ARRAY_COUNT(GwStory.unk58); j++) {
+        GwStory.unk5E[j] = j & 3;
+        GwStory.unk58[j] = 4;
+        for (i = 0; i < ARRAY_COUNT(GwStory.unk10[j]); i++) {
+            GwStory.unk10[j][i] = 4;
         }
     }
-    buttons = (D_800CDA7C_main[0] & 4) != 0;
+    // i is reused to hold the button flags.
+    i = 0;
+    if (D_800CDA7C_main[0] & 4) {
+        i |= 1;
+    }
     if (D_800CDA7C_main[0] & 1) {
-        buttons |= 2;
+        i |= 2;
     }
     if (D_800CDA7C_main[0] & 8) {
-        buttons |= 4;
+        i |= 4;
     }
-    func_8010832C_storyresult(&status, buttons);
+    func_8010832C_storyresult(&status, i);
     while (status >= 0) {
         HuPrcVSleep();
     }
@@ -652,9 +653,6 @@ void func_801083A4_storyresult(void) {
         HuPrcVSleep();
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/storyresult/54F360", func_801083A4_storyresult);
-#endif
 
 void func_801085E8_storyresult(s16 group, s16 member, s16 graphic, s16 prio, s16 x, s16 y) {
     HuSprTPLvlSet(group, member, 256);

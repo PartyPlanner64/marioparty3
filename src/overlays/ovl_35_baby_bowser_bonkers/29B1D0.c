@@ -1025,9 +1025,6 @@ void func_8010831C_baby_bowser_bonkers(omObjData *object) {
     }
 }
 
-#ifdef NON_MATCHING
-// The 1.2f constant is hoisted out of the loop (the original reloads it in both branches) and the obj/data and
-// model/player register assignments are swapped.
 s16 func_80108454_baby_bowser_bonkers(BabyBowserBonkersActor *actor) {
     s16 order[4];
     s16 i;
@@ -1070,6 +1067,13 @@ s16 func_80108454_baby_bowser_bonkers(BabyBowserBonkersActor *actor) {
                 data->unk38 = -D_800EB744_minigame;
                 data->unk50 &= ~0x80;
                 data->unk40 = 0.0f;
+                func_800E4C88_minigame(obj, player->unk_4C + 7, obj->trans.x, obj->trans.y, obj->trans.z, 0.0f, 0.0f);
+                omVibrate(player->unk_28, 10, 0, 10);
+                if (++player->unk_4C >= 3) {
+                    player->unk_4C = 0;
+                }
+                func_801075F4_baby_bowser_bonkers(obj, model->pos.x, model->pos.z);
+                return order[i];
             } else {
                 obj->trans.y = actor->unk_24 * 1.2f + model->pos.y;
                 pad = GwPlayer[order[i]].pad;
@@ -1103,21 +1107,18 @@ s16 func_80108454_baby_bowser_bonkers(BabyBowserBonkersActor *actor) {
                 } else {
                     data->unk38 = -D_800EB744_minigame * 0.75f;
                 }
+                func_800E4C88_minigame(obj, player->unk_4C + 7, obj->trans.x, obj->trans.y, obj->trans.z, 0.0f, 0.0f);
+                omVibrate(player->unk_28, 10, 0, 10);
+                if (++player->unk_4C >= 3) {
+                    player->unk_4C = 0;
+                }
+                func_801075F4_baby_bowser_bonkers(obj, model->pos.x, model->pos.z);
+                return order[i];
             }
-            func_800E4C88_minigame(obj, player->unk_4C + 7, obj->trans.x, obj->trans.y, obj->trans.z, 0.0f, 0.0f);
-            omVibrate(player->unk_28, 10, 0, 10);
-            if (++player->unk_4C >= 3) {
-                player->unk_4C = 0;
-            }
-            func_801075F4_baby_bowser_bonkers(obj, model->pos.x, model->pos.z);
-            return order[i];
         }
     }
     return -1;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_35_baby_bowser_bonkers/29B1D0", func_80108454_baby_bowser_bonkers);
-#endif
 
 void func_801089CC_baby_bowser_bonkers(BabyBowserBonkersActor *actor) {
     HmfModel *model = Hu3DData + actor->unk_02;

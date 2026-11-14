@@ -5208,6 +5208,18 @@ s32 func_80115B3C_duel04(void) {
 // chain. The target merges them into case 0's return-1 block (80115F60)
 // instead. Tried 858 of 1024 return-vs-ret combinations across the case 1/2
 // statements; none do better.
+// Later findings: rewriting the first switch's case 0 as
+// `if (cidx == D) { if (curIndex == 0) return 1; } else if (walk < 7 &&
+// (walk < 3 || cidx <= D)) goto rev; return pf != 0; rev: ...` keeps its
+// return-1 block from being cross-jumped (its `bnez s1` no longer jumps
+// around it), so case 7/3 do end up there. Combined with case 1 as
+// `else if (curIndex == 0) return 1; else ret = other;` this fixes the two
+// branch targets, but case 1's tail becomes `beql s1,zero,ret; li v0,1;
+// j other` (one fewer instruction) because jump2 inverts its jump around
+// the merged blocks. With case 1's `else if (curIndex != 0)` order instead,
+// case 0's block gets merged into case 1's again. A 2048-variant search of
+// ret/return and if-order for every case 1/2 statement, on top of the case 0
+// rewrite, did no better.
 s32 func_80115DA8_duel04(void) {
     s32 curIndex = MBDGetCurrentPlayerIndex();
     s32 otherIndex = (s16)(MBDGetCurrentPlayerIndex() ^ 1);

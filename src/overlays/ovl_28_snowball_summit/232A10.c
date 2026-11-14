@@ -1226,8 +1226,6 @@ void func_8010A71C_snowball_summit(omObjData *object) {
     }
 }
 
-// NON_MATCHING: the double intermediates for `distance` are allocated to $f20 instead of $f2.
-#ifdef NON_MATCHING
 void func_8010A940_snowball_summit(omObjData *object) {
     UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
     UnkSnowballSummitSlot *slot;
@@ -1236,30 +1234,36 @@ void func_8010A940_snowball_summit(omObjData *object) {
     switch (mover->unk_04) {
         case 3:
             func_80107CA4_snowball_summit(object, 5);
+            slot = &D_8010FC30_snowball_summit[mover->unk_70];
+            distance = slot->unk_0C * 37.5 + mover->unk_50;
+            slot->unk_3C->trans.x = sindf(mover->posX) * distance + object->trans.x;
+            slot->unk_3C->trans.z = cosdf(mover->posX) * distance + object->trans.z;
+            if (slot->id != 20) {
+                slot->id = 10;
+            }
+            slot->unk_10 = -1;
+            mover->unk_10 = 0;
+            mover->posZ = mover->unk_28 = mover->unk_10;
+            mover->unk_48 = 0;
+            mover->unk_70 = -1;
             break;
         case 4:
             func_80107CA4_snowball_summit(object, 6);
+            slot = &D_8010FC30_snowball_summit[mover->unk_70];
+            distance = slot->unk_0C * 37.5 + mover->unk_50;
+            slot->unk_3C->trans.x = sindf(mover->posX) * distance + object->trans.x;
+            slot->unk_3C->trans.z = cosdf(mover->posX) * distance + object->trans.z;
+            if (slot->id != 20) {
+                slot->id = 10;
+            }
+            slot->unk_10 = -1;
+            mover->unk_10 = 0;
+            mover->posZ = mover->unk_28 = mover->unk_10;
+            mover->unk_48 = 0;
+            mover->unk_70 = -1;
             break;
-        default:
-            return;
     }
-
-    slot = &D_8010FC30_snowball_summit[mover->unk_70];
-    distance = slot->unk_0C * 37.5 + mover->unk_50;
-    slot->unk_3C->trans.x = sindf(mover->posX) * distance + object->trans.x;
-    slot->unk_3C->trans.z = cosdf(mover->posX) * distance + object->trans.z;
-    if (slot->id != 20) {
-        slot->id = 10;
-    }
-    slot->unk_10 = -1;
-    mover->unk_10 = 0;
-    mover->posZ = mover->unk_28 = mover->unk_10;
-    mover->unk_48 = 0;
-    mover->unk_70 = -1;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_28_snowball_summit/232A10", func_8010A940_snowball_summit);
-#endif
 
 void func_8010AA78_snowball_summit(omObjData *object) {
     UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];

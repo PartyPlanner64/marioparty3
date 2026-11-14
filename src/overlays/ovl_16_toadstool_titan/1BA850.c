@@ -1,5 +1,6 @@
 #include "common.h"
 #include "gcc/memory.h"
+#include "game/hmfmath.h"
 #include "overlays/minigame.h"
 
 typedef struct ToadstoolTitanPlayer {
@@ -24,6 +25,38 @@ extern f32 D_800EB764_minigame;
 extern f32 D_800EB768_minigame;
 extern f32 D_800EB76C_minigame;
 extern u8 D_800CD6A6_main;
+extern s16 D_800D418E_main;
+extern u8 D_800D6A90_main;
+extern f32 D_8010EDA4_toadstool_titan; // screen rect left
+extern f32 D_8010EDA8_toadstool_titan; // screen rect top
+extern f32 D_8010EDAC_toadstool_titan; // screen rect right
+extern f32 D_8010EDB0_toadstool_titan; // screen rect bottom
+extern u8 D_8010EDB4_toadstool_titan[14];
+extern u8 D_8010EDC4_toadstool_titan[9];
+extern u8 D_8010EDCD_toadstool_titan;
+extern s16 D_8010EDCE_toadstool_titan;
+extern s16 D_8010EDD0_toadstool_titan;
+extern f32 D_8010EDD4_toadstool_titan;
+extern f32 D_8010EDD8_toadstool_titan;
+extern f32 D_8010EDDC_toadstool_titan;
+extern f32 D_8010EDE0_toadstool_titan;
+extern s16 D_8010EDE4_toadstool_titan;
+extern s16 D_8010EDE8_toadstool_titan[3];
+extern f32 D_8010F3D0_toadstool_titan[14];
+extern f32 D_8010F408_toadstool_titan[14];
+extern f32 D_8010F440_toadstool_titan[14];
+extern f32 D_8010F478_toadstool_titan[14];
+extern f32 D_8010F4B0_toadstool_titan[14];
+extern f32 D_8010F4E8_toadstool_titan[14];
+extern f32 D_8010F58C_toadstool_titan;
+extern f32 D_8010F5B8_toadstool_titan;
+extern f32 D_8010F604_toadstool_titan;
+extern f32 D_8010F608_toadstool_titan;
+extern f32 D_8010F610_toadstool_titan;
+extern u8 D_8010F620_toadstool_titan;
+extern u8 D_8010F659_toadstool_titan[4];
+extern f32 D_8010F664_toadstool_titan;
+extern f32 D_8010F670_toadstool_titan;
 extern ToadstoolTitanPlayer D_8010F528_toadstool_titan[4];
 extern ToadstoolTitanPlayer *D_8010F568_toadstool_titan[4]; // players indexed by group
 extern u32 D_8010F580_toadstool_titan;
@@ -42,7 +75,7 @@ extern s16 D_8010F60C_toadstool_titan[1];
 extern s8 D_8010F60E_toadstool_titan;
 extern u8 D_8010F614_toadstool_titan[2];
 extern u8 D_8010F616_toadstool_titan[4];
-extern s32 D_8010F61C_toadstool_titan;
+extern u32 D_8010F61C_toadstool_titan;
 extern omObjData *D_8010F640_toadstool_titan[4];
 extern u8 D_8010F650_toadstool_titan[9];
 extern u8 D_8010F65D_toadstool_titan[4];         // group of each player
@@ -68,6 +101,8 @@ void func_80106984_toadstool_titan(void);
 void func_801069DC_toadstool_titan(omObjData *object);
 void func_80106C98_toadstool_titan(omObjData *object);
 void func_80107360_toadstool_titan(omObjData *object);
+void func_8010AD8C_toadstool_titan(s16 left, s16 top, s16 right, s16 bottom);
+void func_8010B4D4_toadstool_titan(s16 model, s16 time);
 void func_8010B658_toadstool_titan(omObjData *object, s32 model, s32 motion, u16 group, f32 x, f32 y, f32 z);
 void func_8010B99C_toadstool_titan(omObjData *object);
 void func_8010BA80_toadstool_titan(omObjData *object);
@@ -469,11 +504,802 @@ void func_80106C98_toadstool_titan(omObjData *object) {
     object->func = func_80107360_toadstool_titan;
 }
 
+#ifdef NON_MATCHING
+void func_80107360_toadstool_titan(omObjData *object) {
+    func_800E1BA8_minigame_ObjData *data;
+    HuCamMtxs *camMtxs;
+    f32 t;
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 angle;
+    s32 count;
+    s32 tries;
+    s32 i;
+    s32 j;
+    s32 k;
+
+    i = 0;
+    if (D_8010F5FC_toadstool_titan == 4 && D_8010F580_toadstool_titan >= 30 && D_8010F580_toadstool_titan < 50) {
+        Vec2f screenMin;
+        Vec2f screenMax;
+        Vec2f center;
+        Vec pos;
+        Vec pos2;
+        Vec pos3;
+        f32 width;
+        f32 scale;
+        f32 left;
+        f32 top;
+        f32 right;
+        f32 bottom;
+        f32 blend;
+        f32 inv;
+        omObjData *player = D_8010F640_toadstool_titan[D_8010F58A_toadstool_titan];
+
+        pos2.x = player->trans.x;
+        pos2.y = player->trans.y + 75.0f;
+        pos2.z = player->trans.z;
+        pos = pos2;
+        pos3.x = player->trans.x + 25.0f;
+        pos3.y = player->trans.y + 75.0f;
+        pos3.z = player->trans.z;
+        pos2 = pos3;
+        ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
+        func_80012B14_main(0, &pos, &screenMin);
+        func_80012B14_main(0, &pos2, &screenMax);
+        width = (screenMax.x - screenMin.x) * 12.0f;
+        screenMax.x = width + screenMin.x;
+        screenMin.x = screenMin.x - width;
+        screenMin.y = screenMin.y - (screenMax.x - screenMin.x) * 0.75 * 0.5;
+        screenMax.y = screenMax.y + (screenMax.x - screenMin.x) * 0.75 * 0.5;
+        blend = 1.0f - (f32)(D_8010F580_toadstool_titan - 30) / 20.0f;
+        blend = 1.0f - blend * blend * blend * blend;
+        inv = 1.0f - blend;
+        screenMin.x = blend * screenMin.x + inv * 0.0f;
+        screenMin.y = blend * screenMin.y + inv * 0.0f;
+        screenMax.x = blend * screenMax.x + inv * 320.0f;
+        screenMax.y = blend * screenMax.y + inv * 240.0f;
+        scale = 320.0f / (screenMax.x - screenMin.x);
+        if (screenMin.x < 0.0f) {
+            screenMax.x -= screenMin.x;
+            screenMin.x -= screenMin.x;
+        }
+        if (screenMin.y < 0.0f) {
+            screenMax.y -= screenMin.y;
+            screenMin.y -= screenMin.y;
+        }
+        if (screenMax.x > 320.0f) {
+            f32 over = screenMax.x - 320.0f;
+
+            screenMin.x -= over;
+            screenMax.x -= over;
+        }
+        if (screenMax.y > 240.0f) {
+            f32 over = screenMax.y - 240.0f;
+
+            screenMin.y -= over;
+            screenMax.y -= over;
+        }
+        center.x = (screenMin.x + screenMax.x) * 0.5;
+        center.y = (screenMin.y + screenMax.y) * 0.5;
+        D_8010EDA4_toadstool_titan = (s32)((0.0f - center.x) / (screenMin.x - center.x) * (0.0f - center.x) + center.x);
+        D_8010EDA8_toadstool_titan = (s32)((0.0f - center.y) / (screenMin.y - center.y) * (0.0f - center.y) + center.y);
+        D_8010EDAC_toadstool_titan = (s32)((320.0f - center.x) / (screenMax.x - center.x) * (320.0f - center.x) + center.x);
+        D_8010EDB0_toadstool_titan = (s32)((240.0f - center.y) / (screenMax.y - center.y) * (240.0f - center.y) + center.y);
+        left = 0.0f;
+        if (screenMin.x != left) {
+            left = left - (screenMin.x - left) * scale;
+        }
+        D_8010EDA4_toadstool_titan = left;
+        top = 0.0f;
+        if (screenMin.y != top) {
+            top = top - (screenMin.y - top) * scale;
+        }
+        D_8010EDA8_toadstool_titan = top;
+        right = 320.0f;
+        if (screenMax.x != right) {
+            right = right - (screenMax.x - right) * scale;
+        }
+        D_8010EDAC_toadstool_titan = right;
+        bottom = 240.0f;
+        if (screenMax.y != bottom) {
+            bottom = bottom - (screenMax.y - bottom) * scale;
+        }
+        D_8010EDB0_toadstool_titan = bottom;
+        ViewportSet(0, (s32)(scale * 640.0f), (s32)(scale * 480.0f), 511.0f,
+                    (s32)((D_8010EDA4_toadstool_titan + D_8010EDAC_toadstool_titan) / 2.0 * 4.0),
+                    (s32)((D_8010EDA8_toadstool_titan + D_8010EDB0_toadstool_titan) / 2.0 * 4.0), 511.0f);
+    } else if (D_8010F5F4_toadstool_titan != 0 && D_8010F5F4_toadstool_titan < 13) {
+        f32 shakeAngle;
+
+        if (omPauseChk() + D_800D6A90_main == 0) {
+            shakeAngle = D_8010F670_toadstool_titan + rand8() / 255.0 * 30.0 - 15.0;
+        } else {
+            shakeAngle = D_8010F670_toadstool_titan;
+        }
+        D_8010EDA4_toadstool_titan = (s16)(sindf(shakeAngle) * 0.5 *
+                                           ((D_8010F5F4_toadstool_titan % 2 == 0) ? D_8010F5F4_toadstool_titan : -D_8010F5F4_toadstool_titan));
+        D_8010EDAC_toadstool_titan = D_8010EDA4_toadstool_titan + 320.0f;
+        D_8010EDA8_toadstool_titan = (s16)(cosdf(shakeAngle) * 0.5 *
+                                           ((D_8010F5F4_toadstool_titan % 2 == 0) ? D_8010F5F4_toadstool_titan : -D_8010F5F4_toadstool_titan));
+        D_8010EDB0_toadstool_titan = D_8010EDA8_toadstool_titan + 240.0f;
+        D_8010F5F4_toadstool_titan -= (omPauseChk() + D_800D6A90_main == 0) ? 1 : 0;
+        ViewportSet(0, 640.0f, 480.0f, 511.0f, (s32)((D_8010EDA4_toadstool_titan + D_8010EDAC_toadstool_titan) / 2.0 * 4.0),
+                    (s32)((D_8010EDA8_toadstool_titan + D_8010EDB0_toadstool_titan) / 2.0 * 4.0), 511.0f);
+    } else if (D_8010F5F4_toadstool_titan == 13) {
+        D_8010F5F4_toadstool_titan -= (omPauseChk() + D_800D6A90_main == 0) ? 1 : 0;
+    }
+    func_8010AD8C_toadstool_titan(D_8010EDA4_toadstool_titan, D_8010EDA8_toadstool_titan, D_8010EDAC_toadstool_titan,
+                                  D_8010EDB0_toadstool_titan);
+    if (omPauseChk() + D_800D6A90_main != 0) {
+        return;
+    }
+    D_8010F61C_toadstool_titan++;
+    switch (D_8010F586_toadstool_titan) {
+        case 0:
+            if (D_8010F61C_toadstool_titan >= 47) {
+                D_8010F586_toadstool_titan = 7;
+                D_8010F61C_toadstool_titan = 0;
+                for (j = 0; j < 4; j++) {
+                    s16 chr = D_8010F568_toadstool_titan[j]->chr;
+
+                    D_8010F640_toadstool_titan[j]->model[6] = func_8000B108_main(5, 0x88D);
+                    D_8010F640_toadstool_titan[j]->model[7] = func_8000B108_main(8, 0x88D);
+                    D_8010F640_toadstool_titan[j]->model[8] = func_8000B108_main(7, 0x88D);
+                    func_800E5A00_minigame(D_8010F640_toadstool_titan[j], 1, func_80017BB8_main(chr, 1), 1, 0);
+                    func_800E5A00_minigame(D_8010F640_toadstool_titan[j], 18, func_80017BB8_main(chr, 15), 2, 0);
+                    func_800E5A00_minigame(D_8010F640_toadstool_titan[j], 2, func_80017BB8_main(chr, 2), 1, 0);
+                    func_800E5A00_minigame(D_8010F640_toadstool_titan[j], 17, func_80017BB8_main(chr, 14), 1, 15);
+                    func_800E5978_minigame(D_8010F640_toadstool_titan[j], 30, func_80017BB8_main(chr, 32), 2, 0);
+                    func_800E5978_minigame(D_8010F640_toadstool_titan[j], 31, func_80017BB8_main(chr, 33), 2, 0);
+                    func_800E5978_minigame(D_8010F640_toadstool_titan[j], 32, func_80017BB8_main(chr, 34), 0, 0);
+                    func_800E5A00_minigame(D_8010F640_toadstool_titan[j], 5, func_80017BB8_main(chr, 3), 0, 0);
+                    func_800E5A00_minigame(D_8010F640_toadstool_titan[j], 8, func_80017BB8_main(chr, 6), 1, 27);
+                    func_800E5A00_minigame(D_8010F640_toadstool_titan[j], 12, func_80017BB8_main(chr, 37), 1, 120);
+                }
+            }
+            break;
+        case 1:
+        case 2:
+            for (tries = 0, i = rand8() & 3; tries < 4; tries++) {
+                i++;
+                i %= 4;
+                data = D_8010F640_toadstool_titan[i]->data;
+                if (D_8010F586_toadstool_titan == 1 && D_8010F61C_toadstool_titan < 4 && data->unk53[3] >= 1 && data->unk53[3] <= 9 &&
+                    D_8010F650_toadstool_titan[data->unk53[3] - 1] == 2) {
+                    s32 start;
+                    s32 n;
+                    s32 slot;
+
+                    for (n = 0, start = (u8)(rand8() % 9); n < 9; n++) {
+                        slot = (n + start) % 9;
+                        if (D_8010F650_toadstool_titan[slot] == 1) {
+                            D_8010F650_toadstool_titan[data->unk53[3] - 1] = 1;
+                            D_8010F650_toadstool_titan[slot] = 2;
+                            break;
+                        }
+                    }
+                }
+                if (data->unk53[3] >= 1 && data->unk53[3] <= 9 && D_8010F650_toadstool_titan[data->unk53[3] - 1] != 3) {
+                    j = data->unk53[3] - 1;
+                    if (D_8010F650_toadstool_titan[j] == 2) {
+                        data->unk38 += 0.5;
+                        Hu3DData[D_8010F640_toadstool_titan[i]->model[0]].unk0E = Hu3DData[D_8010F640_toadstool_titan[i]->model[0]].unk0C;
+                        D_8010F620_toadstool_titan = j;
+                        for (k = 0; k < 9; k++) {
+                            D_8010F650_toadstool_titan[k] = D_8010F650_toadstool_titan[k] != 0;
+                        }
+                        D_8010F650_toadstool_titan[j] = 3;
+                        D_8010F586_toadstool_titan = 2;
+                        D_8010F61C_toadstool_titan = 0;
+                        D_8010F60E_toadstool_titan = i;
+                    } else if (D_8010F650_toadstool_titan[j] != 3) {
+                        D_8010F650_toadstool_titan[j] = 0;
+                        data->unkC5 = func_8004AC98_main(0x3A5, data->unk59);
+                        data->unkC4 = -1;
+                        for (k = 0; k < 4; k++) {
+                            func_800E149C_minigame(D_8010F640_toadstool_titan[k], j + 1, 1);
+                        }
+                        func_8001C258_main(D_8010F5D0_toadstool_titan[j]->model[0], 4, 4);
+                        func_8001C258_main(D_8010F5D0_toadstool_titan[j]->model[1], 4, 4);
+                        func_8001C258_main(D_8010F5F8_toadstool_titan->model[17 + j], 4, 0);
+                        func_8010B4D4_toadstool_titan(D_8010F5F8_toadstool_titan->model[17 + j], 0);
+                        D_8010EDC4_toadstool_titan[j] = 1;
+                        count = 0;
+                        for (k = 0; count < 4 && k < 14; k++) {
+                            if (D_8010EDB4_toadstool_titan[k] != 0) {
+                                continue;
+                            }
+                            D_8010EDB4_toadstool_titan[k] = 1;
+                            D_8010F3D0_toadstool_titan[k] = (count & 1) ? 25.0f : -25.0f;
+                            D_8010F408_toadstool_titan[k] = (count / 2) ? 25.0f : -25.0f;
+                            D_8010F440_toadstool_titan[k] = rand8() / 255.0 * 50.0 - 25.0;
+                            D_8010F478_toadstool_titan[k] = rand8() / 255.0 * 15.0;
+                            D_8010F4B0_toadstool_titan[k] = 30.0 - rand8() / 255.0 * 10.0;
+                            D_8010F4B0_toadstool_titan[k] = HuSqrtf(D_8010F478_toadstool_titan[k] * D_8010F478_toadstool_titan[k] +
+                                                                    D_8010F4B0_toadstool_titan[k] * D_8010F4B0_toadstool_titan[k]);
+                            D_8010F4E8_toadstool_titan[k] = rand8() / 255.0 * 20.0;
+                            D_8010F478_toadstool_titan[k] =
+                                (D_8010F3D0_toadstool_titan[k] < 0.0f) ? -D_8010F478_toadstool_titan[k] : D_8010F478_toadstool_titan[k];
+                            D_8010F4E8_toadstool_titan[k] =
+                                (D_8010F440_toadstool_titan[k] < 0.0f) ? -D_8010F4E8_toadstool_titan[k] : D_8010F4E8_toadstool_titan[k];
+                            D_8010F3D0_toadstool_titan[k] += D_8010F5D0_toadstool_titan[j]->trans.x;
+                            D_8010F408_toadstool_titan[k] += D_8010F5D0_toadstool_titan[j]->trans.y;
+                            D_8010F440_toadstool_titan[k] += D_8010F5D0_toadstool_titan[j]->trans.z;
+                            func_8001C258_main(object->model[29 + k], 4, 0);
+                            func_8001C258_main(object->model[43 + k], 4, 0);
+                            count++;
+                        }
+                    }
+                }
+            }
+            if (D_8010F586_toadstool_titan == 1) {
+                break;
+            }
+            if (D_8010F61C_toadstool_titan >= 55) {
+                D_8010F586_toadstool_titan = 3;
+                D_8010F61C_toadstool_titan = 0;
+                func_8001C258_main(D_8010F5F8_toadstool_titan->model[1], 4, 4);
+                func_8001C258_main(D_8010F5F8_toadstool_titan->model[56], 4, 4);
+                msmMusSetVolume(D_800CDBC8_main, D_8010F600_toadstool_titan);
+                break;
+            }
+            if (D_8010F61C_toadstool_titan == 35) {
+                f32 visible = 0.0f;
+
+                for (j = 0; j < 9; j++) {
+                    if (D_8010F650_toadstool_titan[j] != 0) {
+                        visible += 1.0f;
+                        func_8001C258_main(D_8010F5F8_toadstool_titan->model[8 + j], 4, 0);
+                        func_8010B4D4_toadstool_titan(D_8010F5F8_toadstool_titan->model[8 + j], 0);
+                    }
+                }
+                D_8010EDCD_toadstool_titan = 1;
+                if (visible > 0.0f) {
+                    HuAudFXPlay(0x3A9);
+                }
+            } else if (D_8010F61C_toadstool_titan == 42) {
+                for (j = 0; j < 9; j++) {
+                    D_8010F650_toadstool_titan[j] = 0;
+                    for (k = 0; k < 4; k++) {
+                        func_800E149C_minigame(D_8010F640_toadstool_titan[k], j + 1, 1);
+                    }
+                }
+            } else if (D_8010F61C_toadstool_titan == 45) {
+                for (j = 0; j < 9; j++) {
+                    func_8001C258_main(D_8010F5D0_toadstool_titan[j]->model[0], 4, 4);
+                    func_8001C258_main(D_8010F5D0_toadstool_titan[j]->model[1], 4, 4);
+                }
+            }
+            if (D_8010F61C_toadstool_titan < 7) {
+                f32 bounce = (D_8010F61C_toadstool_titan + 1) / 7.0;
+
+                bounce = 2.0f * bounce - 1.0f;
+                bounce = -(bounce * bounce - 1.0f);
+                D_8010F5D0_toadstool_titan[D_8010F620_toadstool_titan]->trans.y = bounce * 25.0f + 375.0f;
+                Hu3DData[D_8010F5D0_toadstool_titan[D_8010F620_toadstool_titan]->model[0]].pos.y = bounce * 25.0f + 375.0f;
+            } else if (D_8010F61C_toadstool_titan >= 12 && D_8010F61C_toadstool_titan < 45) {
+                if (D_8010F61C_toadstool_titan < 35) {
+                    t = (D_8010F61C_toadstool_titan - 12) / 23.0;
+                } else {
+                    t = 1.0f;
+                }
+                func_8001C258_main(object->model[1], 4, 0);
+                Hu3DModelPosSet(object->model[1], D_8010F5D0_toadstool_titan[D_8010F620_toadstool_titan]->trans.x,
+                                t * 75.0f + D_8010F5D0_toadstool_titan[D_8010F620_toadstool_titan]->trans.y + 12.5,
+                                D_8010F5D0_toadstool_titan[D_8010F620_toadstool_titan]->trans.z - 25.0f);
+                if (D_8010F61C_toadstool_titan == 12) {
+                    func_800E1BA8_minigame_ObjData *playerData;
+                    s32 n;
+
+                    HuAudFXPlay(0x3A8);
+                    for (n = 0; n < 4; n++) {
+                        playerData = D_8010F640_toadstool_titan[i]->data;
+                        playerData->unkC4 = -1;
+                        playerData->unkC5 = -1;
+                    }
+                }
+            } else if (D_8010F61C_toadstool_titan >= 45) {
+                f32 dx;
+                f32 dy;
+                f32 dz;
+                f32 dist;
+                f32 bestDist;
+
+                bestDist = 32767.0f;
+                k = -1;
+                if (D_8010F61C_toadstool_titan == 45) {
+                    s32 dir = rand8() / 256.0 * 360.0;
+
+                    D_8010F610_toadstool_titan = Hu3DData[object->model[1]].pos.x;
+                    D_8010F664_toadstool_titan = Hu3DData[object->model[1]].pos.y;
+                    D_8010F604_toadstool_titan = Hu3DData[object->model[1]].pos.z;
+                    D_8010F5B8_toadstool_titan = cosdf(dir) * 7.0f;
+                    D_8010F608_toadstool_titan = -sindf(dir) * 7.0f;
+                    D_8010F58C_toadstool_titan = 0.0f;
+                }
+                D_8010F610_toadstool_titan += D_8010F5B8_toadstool_titan;
+                D_8010F664_toadstool_titan += D_8010F58C_toadstool_titan;
+                D_8010F604_toadstool_titan += D_8010F608_toadstool_titan;
+                D_8010F58C_toadstool_titan -= 3.0f;
+                if (D_8010F664_toadstool_titan < 50.0f) {
+                    D_8010F664_toadstool_titan = 50.0f;
+                    D_8010F58C_toadstool_titan = 0.0f;
+                }
+                if (D_8010F610_toadstool_titan < -450.0f) {
+                    D_8010F610_toadstool_titan = -D_8010F610_toadstool_titan - 900.0f;
+                    D_8010F5B8_toadstool_titan = -D_8010F5B8_toadstool_titan;
+                }
+                if (D_8010F610_toadstool_titan > 450.0f) {
+                    D_8010F610_toadstool_titan = -D_8010F610_toadstool_titan + 900.0f;
+                    D_8010F5B8_toadstool_titan = -D_8010F5B8_toadstool_titan;
+                }
+                if (D_8010F604_toadstool_titan < -400.0f) {
+                    D_8010F604_toadstool_titan = -D_8010F604_toadstool_titan - 800.0f;
+                    D_8010F608_toadstool_titan = -D_8010F608_toadstool_titan;
+                }
+                if (D_8010F604_toadstool_titan > 400.0f) {
+                    D_8010F604_toadstool_titan = -D_8010F604_toadstool_titan + 800.0f;
+                    D_8010F608_toadstool_titan = -D_8010F608_toadstool_titan;
+                }
+                Hu3DModelPosSet(object->model[1], D_8010F610_toadstool_titan, D_8010F664_toadstool_titan, D_8010F604_toadstool_titan);
+                Hu3DModelPosSet(object->model[56], D_8010F610_toadstool_titan, 0.0f, D_8010F604_toadstool_titan);
+                func_8001C258_main(object->model[56], 4, 0);
+                for (j = 0; j < 4; j++) {
+                    dx = D_8010F640_toadstool_titan[j]->trans.x - D_8010F610_toadstool_titan;
+                    dy = (D_8010F640_toadstool_titan[j]->trans.y + 75.0f - D_8010F664_toadstool_titan) / 1.75;
+                    dz = D_8010F640_toadstool_titan[j]->trans.z - D_8010F604_toadstool_titan;
+                    dist = HuSqrtf(dx * dx + dy * dy + dz * dz);
+                    if (dist <= 100.0f && dist < bestDist) {
+                        k = j;
+                        bestDist = dist;
+                    }
+                }
+                if (k != -1) {
+                    D_8010F60E_toadstool_titan = k;
+                    D_8010F61C_toadstool_titan = 54;
+                } else {
+                    D_8010F61C_toadstool_titan = 46;
+                }
+                if (D_8010F5FC_toadstool_titan == 5 || D_8010F5FC_toadstool_titan == 6) {
+                    D_8010F586_toadstool_titan = 9;
+                    D_8010F61C_toadstool_titan = 0;
+                    func_8001C258_main(object->model[1], 4, 4);
+                    func_8001C258_main(object->model[56], 4, 4);
+                    func_8001C258_main(object->model[57], 4, 0);
+                    Hu3DModelPosSet(object->model[57], D_8010F610_toadstool_titan, D_8010F664_toadstool_titan, D_8010F604_toadstool_titan);
+                    func_8010B4D4_toadstool_titan(object->model[57], 6);
+                }
+            }
+            break;
+        case 3:
+            if ((D_8010F5FC_toadstool_titan == 5 || D_8010F5FC_toadstool_titan == 6) && D_8010F61C_toadstool_titan >= 2 &&
+                D_8010EDD0_toadstool_titan == 0) {
+                D_8010F586_toadstool_titan = 9;
+                D_8010F61C_toadstool_titan = 0;
+                func_800E5690_minigame(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan], 0);
+                D_8010EDD0_toadstool_titan = 1;
+            }
+            if (D_8010F61C_toadstool_titan == 1) {
+                D_8010EDCE_toadstool_titan = 1;
+                if (D_8010F5BC_toadstool_titan == 0 && D_800D530C_main == 0) {
+                    func_8004A670_main(90);
+                    D_8010F614_toadstool_titan[0] = 0;
+                }
+                HuAudFXPlay(0x3AB);
+                omSetSca(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan], 1.0f, 1.0f, 1.0f);
+                if (!(D_8010F5FC_toadstool_titan == 5 || D_8010F5FC_toadstool_titan == 6)) {
+                    func_800E5690_minigame(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan], 12);
+                }
+                Hu3DModelLayerSet(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->model[0], 0x800);
+                for (j = 0; j < 5; j++) {
+                    Hu3DModelLayerSet(D_8010F5F8_toadstool_titan->model[3 + j], 0x800);
+                }
+            } else if (D_8010F61C_toadstool_titan == 46) {
+                func_800E5690_minigame(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan], 0);
+            } else if (D_8010F61C_toadstool_titan >= 55) {
+                D_8010F586_toadstool_titan = 4;
+                D_8010F61C_toadstool_titan = 0;
+                for (j = 0; j < 5; j++) {
+                    Hu3DModelLayerSet(D_8010F5F8_toadstool_titan->model[3 + j], 0x400);
+                }
+            }
+            break;
+        case 4:
+            if (D_8010F61C_toadstool_titan == 3) {
+                func_800E1BA8_minigame_ObjData *work = D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->data;
+
+                work->unkC5 = func_8004AC98_main(0x3A7, work->unk59);
+                work->unkC4 = -1;
+                omVibrate(D_8010F568_toadstool_titan[D_8010F60E_toadstool_titan]->playerNo, 10, 0, 10);
+            }
+            Hu3DModelScaleSet(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->model[1],
+                              D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->scale.x,
+                              D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->scale.y,
+                              D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->scale.z);
+            if (D_8010F61C_toadstool_titan < 24) {
+                u8 pulse[8] = { 0, 0, 1, 0, 1, 1, 0, 1 };
+                f32 scale;
+
+                scale = pulse[D_8010F61C_toadstool_titan & 7];
+                scale = (D_8010F61C_toadstool_titan < 12) ? scale * 0.5 + 1.0 : 2.0 - scale * 0.5;
+                omSetSca(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan], scale, scale, scale);
+            } else {
+                omSetSca(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan], 2.0f, 2.0f, 2.0f);
+            }
+            if (D_8010F61C_toadstool_titan >= 35) {
+                func_800E1BA8_minigame_ObjData *work = D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->data;
+
+                if (D_8010F5FC_toadstool_titan == 2) {
+                    work->unk50 |= 0x400;
+                }
+                D_8010F586_toadstool_titan = 5;
+                D_8010F61C_toadstool_titan = (D_8010F5FC_toadstool_titan != 2) ? 150 : 0;
+                Hu3DModelLayerSet(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->model[0], 0x400);
+                if (D_8010F5FC_toadstool_titan == 2 && D_8010F5BC_toadstool_titan == 0 && D_800D530C_main == 0) {
+                    func_80003A70_main(D_800CDBC8_main);
+                    func_8004A5C4_main(0x45);
+                    D_8010F614_toadstool_titan[1] = 1;
+                }
+            }
+            break;
+        case 5:
+            omSetSca(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan], 2.0f, 2.0f, 2.0f);
+            if (D_8010F61C_toadstool_titan >= 150) {
+                func_800E1BA8_minigame_ObjData *work = D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->data;
+
+                work->unk50 &= ~0x400;
+                D_8010F586_toadstool_titan = 6;
+                D_8010F61C_toadstool_titan = 0;
+                if (D_8010F5FC_toadstool_titan == 2 && D_8010F5BC_toadstool_titan == 0 && D_800D530C_main == 0) {
+                    func_8004A7C4_main(40);
+                    D_8010F614_toadstool_titan[1] = 0;
+                }
+            } else {
+                for (i = 0; i < 4; i++) {
+                    if (D_8010F616_toadstool_titan[i] == 0 && D_8010F60E_toadstool_titan != i && D_8010F5FC_toadstool_titan == 2) {
+                        f32 dx;
+                        f32 dy;
+                        f32 dz;
+
+                        dx = D_8010F640_toadstool_titan[i]->trans.x - D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->trans.x;
+                        dx *= dx;
+                        dy = D_8010F640_toadstool_titan[i]->trans.y - D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->trans.y;
+                        dy *= 0.5;
+                        dy *= dy;
+                        dz = D_8010F640_toadstool_titan[i]->trans.z - D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->trans.z;
+                        dz *= dz;
+                        if (dx + dy + dz < 22500.0f && D_8010F640_toadstool_titan[i]->trans.y < 270.0f) {
+                            func_800E1BA8_minigame_ObjData *work = D_8010F640_toadstool_titan[i]->data;
+
+                            work->unk50 |= 0x400;
+                            work->unkC5 = func_8004AC98_main(0x3A6, work->unk59);
+                            work->unkC4 = -1;
+                            omVibrate(D_8010F568_toadstool_titan[i]->playerNo, 20, 0, 20);
+                            D_8010F616_toadstool_titan[i] = 1;
+                            D_8010F659_toadstool_titan[i] =
+                                (D_8010F640_toadstool_titan[i]->trans.x < D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->trans.x) ? 0 : 1;
+                            D_8010F66C_toadstool_titan -= (D_8010F568_toadstool_titan[i]->cpuDifficulty == -1) ? 1 : 0;
+                            for (j = 0, k = 0; j < 4; j++) {
+                                k += D_8010F616_toadstool_titan[j] != 0;
+                            }
+                            if (k == 3) {
+                                D_8010F58A_toadstool_titan = D_8010F60E_toadstool_titan;
+                                D_8010F61C_toadstool_titan = 120;
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        case 6:
+            if (D_8010F61C_toadstool_titan < 24) {
+                u8 pulse[8] = { 0, 1, 0, 1, 0, 1, 0, 1 };
+                f32 scale;
+
+                scale = pulse[D_8010F61C_toadstool_titan & 7];
+                scale = (D_8010F61C_toadstool_titan < 6) ? scale * 0.5 + 1.5 : 1.5 - scale * 0.5;
+                omSetSca(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan], scale, scale, scale);
+                if (D_8010F61C_toadstool_titan == 1) {
+                    func_800E1BA8_minigame_ObjData *work = D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->data;
+
+                    work->unkC5 = func_8004AC98_main(0x3A4, work->unk59);
+                    work->unkC4 = -1;
+                }
+            } else {
+                omSetSca(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan], 1.0f, 1.0f, 1.0f);
+            }
+            Hu3DModelScaleSet(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->model[1],
+                              D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->scale.x,
+                              D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->scale.y,
+                              D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->scale.z);
+            if (D_8010F61C_toadstool_titan == 13) {
+                if (D_8010F5FC_toadstool_titan == 2) {
+                    D_8010F586_toadstool_titan = 7;
+                    D_8010F61C_toadstool_titan = 0;
+                } else {
+                    D_8010F586_toadstool_titan = 9;
+                    D_8010F61C_toadstool_titan = 0;
+                    func_800E5A00_minigame(D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan], 13,
+                                           func_80017BB8_main(D_8010F568_toadstool_titan[D_8010F60E_toadstool_titan]->chr,
+                                                              D_8010F568_toadstool_titan[i]->unk_0C),
+                                           1, 120);
+                }
+            }
+            break;
+        case 7:
+            if (D_8010F61C_toadstool_titan == 1) {
+                for (j = 0; j < 9; j++) {
+                    func_8001C258_main(D_8010F5F8_toadstool_titan->model[8 + j], 4, 0);
+                    func_8010B4D4_toadstool_titan(D_8010F5F8_toadstool_titan->model[8 + j], 0);
+                }
+                D_8010EDCD_toadstool_titan = 1;
+                HuAudFXPlay(0x3A9);
+                if (D_8010F5FC_toadstool_titan == 2 && D_8010F5BC_toadstool_titan == 0 && D_800D530C_main == 0 &&
+                    D_8010F614_toadstool_titan[0] == 0) {
+                    msmMusStop(D_800D037E_main);
+                    func_80003B70_main(D_800CDBC8_main, 0);
+                    func_8004A72C_main(35);
+                    D_8010F614_toadstool_titan[0] = 1;
+                }
+            }
+            if (D_8010F61C_toadstool_titan == 10) {
+                D_8010F586_toadstool_titan = 1;
+                D_8010F61C_toadstool_titan = 0;
+                for (j = 0; j < 9; j++) {
+                    D_8010F650_toadstool_titan[j] = 1;
+                    func_8001C258_main(D_8010F5D0_toadstool_titan[j]->model[0], 4, 0);
+                    func_8001C258_main(D_8010F5D0_toadstool_titan[j]->model[1], 4, 0);
+                    for (k = 0; k < 4; k++) {
+                        func_800E149C_minigame(D_8010F640_toadstool_titan[k], j + 1, 2);
+                    }
+                }
+                j = (u8)(rand8() % 9);
+                do {
+                    k = (u8)(rand8() % 9);
+                } while (j == k);
+                D_8010F650_toadstool_titan[k] = 2;
+                D_8010F650_toadstool_titan[j] = 2;
+            }
+            break;
+        case 9:
+            if (D_8010F5FC_toadstool_titan >= 3 && D_8010F58A_toadstool_titan < 4 && D_8010F61C_toadstool_titan >= 7) {
+                func_800E1BA8_minigame_ObjData *winnerData = D_8010F640_toadstool_titan[D_8010F58A_toadstool_titan]->data;
+
+                winnerData->unk3C = (winnerData->unk3C < -10.0f)  ? (winnerData->unk3C + 9.0f) - winnerData->unk3C * 0.1
+                                    : (winnerData->unk3C > 10.0f) ? (winnerData->unk3C - 9.0f) - winnerData->unk3C * 0.1
+                                                                  : 0.0f;
+            }
+            break;
+    }
+    for (i = 0; i < 4; i++) {
+        data = D_8010F640_toadstool_titan[i]->data;
+        data->unk53[3] = 0;
+        if (D_8010F616_toadstool_titan[i] != 0 && D_8010F616_toadstool_titan[i] < 60) {
+            func_800E5690_minigame(D_8010F640_toadstool_titan[i], 18);
+            Hu3DData[D_8010F640_toadstool_titan[i]->model[0]].motTime = 0.0f;
+            Hu3DData[D_8010F640_toadstool_titan[i]->model[0]].motSpeed = 0.0f;
+            func_800E4E30_minigame(D_8010F640_toadstool_titan[i]);
+            Hu3DData[D_8010F640_toadstool_titan[i]->model[0]].unk0E = Hu3DData[D_8010F640_toadstool_titan[i]->model[0]].unk0C;
+            func_800E5138_minigame(D_8010F640_toadstool_titan[i]);
+            D_8010F640_toadstool_titan[i]->trans.x += sindf(D_8010F640_toadstool_titan[i]->rot.z) * -50.0f;
+            D_8010F640_toadstool_titan[i]->trans.y += cosdf(D_8010F640_toadstool_titan[i]->rot.z) * 50.0f;
+            D_8010F640_toadstool_titan[i]->rot.y += 33.0f;
+            D_8010F640_toadstool_titan[i]->rot.z += 33.0f;
+            D_8010F640_toadstool_titan[i]->rot.x = 0.0f;
+            D_8010F640_toadstool_titan[i]->trans.x += (D_8010F659_toadstool_titan[i] != 0) ? 30.0f : -30.0f;
+            D_8010F640_toadstool_titan[i]->trans.y +=
+                (D_8010F616_toadstool_titan[i] < 14) ? (1.0 - D_8010F616_toadstool_titan[i] / 13.0) * 65.0 + 15.0 : 15.0;
+            D_8010F640_toadstool_titan[i]->trans.x -= sindf(D_8010F640_toadstool_titan[i]->rot.z) * -50.0f;
+            D_8010F640_toadstool_titan[i]->trans.y -= cosdf(D_8010F640_toadstool_titan[i]->rot.z) * 50.0f;
+            D_8010F616_toadstool_titan[i]++;
+            if (D_8010F616_toadstool_titan[i] == 15) {
+                data->unkC5 = PlayerFXPlay(0x286, data->unk59);
+                data->unkC4 = -1;
+            }
+        }
+    }
+    for (j = 0; j < 9; j++) {
+        if (D_8010EDC4_toadstool_titan[j] != 0) {
+            if (D_8010EDC4_toadstool_titan[j] > 60) {
+                D_8010EDC4_toadstool_titan[j] = 0;
+                func_8001C258_main(object->model[17 + j], 4, 4);
+            } else {
+                D_8010EDC4_toadstool_titan[j]++;
+            }
+        }
+    }
+    if (D_8010EDCD_toadstool_titan != 0) {
+        if (D_8010EDCD_toadstool_titan > 18) {
+            D_8010EDCD_toadstool_titan = 0;
+            for (j = 0; j < 9; j++) {
+                func_8001C258_main(object->model[8 + j], 4, 4);
+            }
+        } else {
+            D_8010EDCD_toadstool_titan++;
+        }
+    }
+    for (j = 0; j < 14; j++) {
+        if (D_8010EDB4_toadstool_titan[j] != 0) {
+            if (D_8010EDB4_toadstool_titan[j] > 12) {
+                D_8010EDB4_toadstool_titan[j] = 0;
+                func_8001C258_main(object->model[29 + j], 4, 4);
+                func_8001C258_main(object->model[43 + j], 4, 4);
+            } else {
+                D_8010EDB4_toadstool_titan[j]++;
+                D_8010F4B0_toadstool_titan[j] -= 5.0f;
+                D_8010F3D0_toadstool_titan[j] += D_8010F478_toadstool_titan[j];
+                D_8010F408_toadstool_titan[j] += D_8010F4B0_toadstool_titan[j];
+                D_8010F440_toadstool_titan[j] += D_8010F4E8_toadstool_titan[j];
+                if (D_8010F408_toadstool_titan[j] < 0.0f) {
+                    D_8010F408_toadstool_titan[j] = 0.0f;
+                    D_8010F4B0_toadstool_titan[j] = -D_8010F4B0_toadstool_titan[j] * 0.3;
+                }
+                Hu3DModelPosSet(object->model[29 + j], D_8010F3D0_toadstool_titan[j], D_8010F408_toadstool_titan[j], D_8010F440_toadstool_titan[j]);
+                Hu3DModelPosSet(object->model[43 + j], D_8010F3D0_toadstool_titan[j], 0.0f, D_8010F440_toadstool_titan[j]);
+            }
+        }
+    }
+    if (D_8010EDCE_toadstool_titan != 0 && D_8010EDD0_toadstool_titan == 0) {
+        HuMtx4F mtx;
+        HuCamera *camera;
+        f32 ease;
+
+        camera = gCameraList;
+        camMtxs = &camera->mtxs[D_800D418E_main];
+        D_8010EDD4_toadstool_titan = D_8010EDDC_toadstool_titan = 0.0f;
+        if (D_8010EDCE_toadstool_titan == 1) {
+            func_8001F9E4_main(object->model[3], 0xFF);
+            for (j = 0; j < 5; j++) {
+                func_8001C258_main(D_8010F5F8_toadstool_titan->model[3 + j], 4, 0);
+            }
+        } else if (D_8010EDCE_toadstool_titan == 55) {
+            for (j = 0; j < 5; j++) {
+                func_8001C258_main(D_8010F5F8_toadstool_titan->model[3 + j], 4, 4);
+            }
+        }
+        if (D_8010EDCE_toadstool_titan >= 1 && D_8010EDCE_toadstool_titan < 55) {
+            if (D_8010EDCE_toadstool_titan < 15) {
+                ease = 1.0 - D_8010EDCE_toadstool_titan / 15.0;
+                ease = 1.0f - ease * ease * ease;
+                D_8010EDD4_toadstool_titan = ease * 100.0f;
+            } else {
+                D_8010EDD4_toadstool_titan = 90.0f;
+            }
+            if (D_8010EDCE_toadstool_titan < 45) {
+                D_8010EDD4_toadstool_titan += D_8010EDCE_toadstool_titan / 45.0 * 125.0;
+            }
+            if (D_8010EDCE_toadstool_titan >= 45 && D_8010EDCE_toadstool_titan <= 55) {
+                ease = 1.0 - (D_8010EDCE_toadstool_titan - 45) / 10.0;
+                ease = 1.0 - (ease * ease * 0.75 + ease * 0.25);
+                D_8010EDD4_toadstool_titan = 215.0f - ease * 180.0f;
+            }
+            if (D_8010EDCE_toadstool_titan < 55) {
+                ease = D_8010EDCE_toadstool_titan / 45.0;
+                D_8010EDD8_toadstool_titan += ease * 7.0f + 8.0f;
+            }
+            if (D_8010EDCE_toadstool_titan >= 45 && D_8010EDCE_toadstool_titan < 55) {
+                ease = 1.0 - (D_8010EDCE_toadstool_titan - 45) / 10.0;
+                ease = 1.0 - (ease * ease * 0.75 + ease * 0.25);
+                D_8010EDD8_toadstool_titan += ease * 12.0f;
+            }
+        }
+        if (D_8010EDCE_toadstool_titan == 55) {
+            for (j = 0; j < 5; j++) {
+                func_8001C258_main(D_8010F5F8_toadstool_titan->model[2], 4, 0);
+            }
+        } else if (D_8010EDCE_toadstool_titan == 85) {
+            for (j = 0; j < 5; j++) {
+                func_8001C258_main(D_8010F5F8_toadstool_titan->model[2], 4, 4);
+            }
+        }
+        if (D_8010EDCE_toadstool_titan >= 55 && D_8010EDCE_toadstool_titan < 85) {
+            ease = 1.0 - (D_8010EDCE_toadstool_titan - 55) / 30.0;
+            ease = ease * ease * 0.75 + ease * 0.25;
+            D_8010EDDC_toadstool_titan = 2.0 * (1.0f - ease) + 1.0;
+            if (D_8010EDCE_toadstool_titan >= 75) {
+                D_8010EDD8_toadstool_titan += 5.0f;
+            } else {
+                D_8010EDD8_toadstool_titan += (1.0 - (D_8010EDCE_toadstool_titan - 55) / 30.0) * 15.0;
+            }
+            D_8010EDE0_toadstool_titan = 1.0 - (D_8010EDCE_toadstool_titan - 55) / 30.0;
+        }
+        if (D_8010EDD4_toadstool_titan > 0.0f) {
+            for (j = 0; j < 5; j++) {
+                f32 weight;
+                f32 invWeight;
+
+                if (D_8010EDCE_toadstool_titan >= 45) {
+                    weight = (D_8010EDCE_toadstool_titan - 45) / 10.0;
+                } else {
+                    weight = 0.0f;
+                }
+                invWeight = 1.0f - weight;
+                x = weight * D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->trans.x + invWeight * Hu3DData[object->model[1]].pos.x;
+                y = (D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->trans.y + 175.0f) * weight +
+                    invWeight * Hu3DData[object->model[1]].pos.y;
+                z = (D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->trans.z + 85.0f) * weight +
+                    invWeight * Hu3DData[object->model[1]].pos.z;
+                guMtxL2F(mtx, &camMtxs->lookAtMtx);
+                angle = j * 72;
+                mtxTransCat(mtx, cosdf(angle + D_8010EDD8_toadstool_titan) * D_8010EDD4_toadstool_titan + x,
+                            sindf(angle + D_8010EDD8_toadstool_titan) * D_8010EDD4_toadstool_titan + y, z);
+                mtx[0][0] = 0.45f;
+                mtx[0][1] = 0.0f;
+                mtx[0][2] = 0.0f;
+                mtx[1][0] = 0.0f;
+                mtx[1][1] = 0.45f;
+                mtx[1][2] = 0.0f;
+                mtx[2][0] = 0.0f;
+                mtx[2][1] = 0.0f;
+                mtx[2][2] = 0.45f;
+                func_8002367C_main(Hu3DData[D_8010F5F8_toadstool_titan->model[3 + j]].mtx, mtx);
+            }
+        }
+        if (D_8010EDDC_toadstool_titan > 0.0f) {
+            x = D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->trans.x;
+            y = D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->trans.y + 175.0f;
+            z = D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->trans.z + 85.0f;
+            guMtxL2F(mtx, &camMtxs->lookAtMtx);
+            mtxTransCat(mtx, x, y, z);
+            mtx[0][0] = -sindf(D_8010EDD8_toadstool_titan) * D_8010EDDC_toadstool_titan;
+            mtx[0][1] = cosdf(D_8010EDD8_toadstool_titan) * D_8010EDDC_toadstool_titan;
+            mtx[0][2] = 0.0f;
+            mtx[1][0] = cosdf(D_8010EDD8_toadstool_titan) * D_8010EDDC_toadstool_titan;
+            mtx[1][1] = sindf(D_8010EDD8_toadstool_titan) * D_8010EDDC_toadstool_titan;
+            mtx[1][2] = 0.0f;
+            mtx[2][0] = 0.0f;
+            mtx[2][1] = 0.0f;
+            mtx[2][2] = D_8010EDDC_toadstool_titan;
+            func_8002367C_main(Hu3DData[D_8010F5F8_toadstool_titan->model[2]].mtx, mtx);
+            func_8001F9E4_main(object->model[2], D_8010EDE0_toadstool_titan * 255.0f);
+        }
+        if (++D_8010EDCE_toadstool_titan == 90) {
+            D_8010EDCE_toadstool_titan = 0;
+        }
+    } else if (D_8010EDD0_toadstool_titan != 0) {
+        f32 fade;
+
+        fade = 1.0 - D_8010EDD0_toadstool_titan / 20.0;
+        func_8001F9E4_main(object->model[3], (s32)(fade * fade * 255.0f));
+        if (++D_8010EDD0_toadstool_titan == 20) {
+            D_8010EDD0_toadstool_titan = 0;
+            D_8010EDCE_toadstool_titan = 0;
+            for (j = 0; j < 5; j++) {
+                func_8001C258_main(D_8010F5F8_toadstool_titan->model[3 + j], 4, 4);
+            }
+        }
+    }
+    if (D_8010F586_toadstool_titan == 5) {
+        D_8010EDE4_toadstool_titan = (s16)(D_8010EDE4_toadstool_titan + 1) % 51;
+        if (D_8010EDE4_toadstool_titan % 17 == 0) {
+            s32 cloud = D_8010EDE4_toadstool_titan / 17;
+
+            D_8010EDE8_toadstool_titan[cloud] = 0;
+            func_8010B4D4_toadstool_titan(object->model[26 + cloud], 0);
+            func_8001C258_main(object->model[26 + cloud], 4, 0);
+            Hu3DModelPosSet(object->model[26 + cloud], D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->trans.x * 0.9, 300.0f,
+                            D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->trans.z - 15.0f);
+        }
+    } else {
+        D_8010EDE4_toadstool_titan = 0;
+    }
+    for (j = 0; j < 3; j++) {
+        D_8010EDE8_toadstool_titan[j] += (D_8010EDE8_toadstool_titan[j] >= 55) ? 0 : 1;
+        if (D_8010EDE8_toadstool_titan[j] >= 55) {
+            D_8010EDE8_toadstool_titan[j] = 55;
+            func_8001C258_main(object->model[26 + j], 4, 4);
+        }
+    }
+}
+#else
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", D_8010EF80_toadstool_titan);
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", D_8010EF88_toadstool_titan);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", func_80107360_toadstool_titan);
+#endif
 
 void func_8010AD8C_toadstool_titan(s16 left, s16 top, s16 right, s16 bottom) {
     HuSprite_Unk84_Unk00_Struct *frame;

@@ -24,6 +24,7 @@ extern f32 D_800EB760_minigame;
 extern f32 D_800EB764_minigame;
 extern f32 D_800EB768_minigame;
 extern f32 D_800EB76C_minigame;
+extern f32 D_800EB75C_minigame;
 extern u8 D_800CD6A6_main;
 extern s16 D_800D418E_main;
 extern u8 D_800D6A90_main;
@@ -33,6 +34,14 @@ extern f32 D_8010EDAC_toadstool_titan; // screen rect right
 extern f32 D_8010EDB0_toadstool_titan; // screen rect bottom
 extern u8 D_8010EDB4_toadstool_titan[14];
 extern u8 D_8010EDC4_toadstool_titan[9];
+extern u8 D_8010EE3C_toadstool_titan;
+extern u8 D_8010EE40_toadstool_titan[4];
+extern s16 D_8010EE44_toadstool_titan[4];
+extern s16 D_8010EE4C_toadstool_titan[4];
+extern f32 D_8010EE54_toadstool_titan[4];
+extern f32 D_8010EE64_toadstool_titan[4];
+extern f32 D_8010F520_toadstool_titan;
+extern s16 D_8010F634_toadstool_titan[4];
 extern u8 D_8010EDCD_toadstool_titan;
 extern s16 D_8010EDCE_toadstool_titan;
 extern s16 D_8010EDD0_toadstool_titan;
@@ -1208,6 +1217,8 @@ void func_80107360_toadstool_titan(omObjData *object) {
         if (D_8010EDD4_toadstool_titan > 0.0f) {
             for (j = 0; j < 5; j++) {
                 f32 weight;
+                f32 speed;
+                f32 halfSpeed;
                 f32 invWeight;
 
                 if (D_8010EDCE_toadstool_titan >= 45) {
@@ -1462,6 +1473,552 @@ void func_8010BC48_toadstool_titan(omObjData *object) {
     object->func = func_8010BD2C_toadstool_titan;
 }
 
+// Very close: the only remaining difference is the register chosen for the
+// D_8010EE4C_toadstool_titan[group] result in the D_8010F66C_toadstool_titan
+// branch of case 8/9 (a0 instead of v0).
+#ifdef NON_MATCHING
+void func_8010BD2C_toadstool_titan(omObjData *object) {
+    u8 flags[4];
+    func_800E1BA8_minigame_ObjData *data;
+    u16 savedBtn;
+    u16 savedBtn2;
+    u16 savedBtn3;
+    s8 savedStickX;
+    s8 savedStickY;
+    s16 savedStick2;
+    s16 savedStick3;
+    func_800E1BA8_minigame_ObjData *otherData;
+    func_800E1BA8_minigame_ObjData *work;
+    ToadstoolTitanPlayer *player;
+    s16 group;
+    s32 i;
+    s32 best;
+    f32 bestDist;
+    f32 dz;
+    f32 dx;
+    f32 dist;
+    f32 dirX;
+    f32 dirZ;
+    f32 cornerX;
+    f32 cornerZ;
+    f32 bestScore;
+    f32 weight;
+    f32 speed;
+    f32 halfSpeed;
+    f32 sinVal;
+    f32 cosVal;
+    f32 normX;
+    f32 normZ;
+    f32 signSin;
+    f32 signCos;
+    f32 hitX;
+    f32 hitZ;
+    f32 posX;
+    f32 posZ;
+    f32 otherX;
+    f32 otherZ;
+    f32 velX;
+    f32 velZ;
+    f32 otherVelX;
+    f32 otherVelZ;
+    s32 range;
+    s32 rnd;
+    s16 *timer;
+
+    data = object->data;
+    group = D_8010F65D_toadstool_titan[data->unk59];
+    player = D_8010F568_toadstool_titan[group];
+    if (group == 0) {
+        for (i = 0; i < 4; i++) {
+            flags[i] = (D_8010F640_toadstool_titan[i]->trans.y <= 0.0f) ? 1 : ((D_8010F616_toadstool_titan[i] != 0) ? 2 : 0);
+        }
+    }
+    savedBtn = D_800CDA7C_main[player->pad];
+    savedBtn2 = D_800D5558_main[player->pad];
+    savedBtn3 = D_800D1244_main[player->pad];
+    savedStickX = D_800CBB6E_main[player->pad];
+    savedStickY = D_800D20A1_main[player->pad];
+    savedStick2 = D_800D056A_main[player->pad];
+    savedStick3 = D_800D1382_main[player->pad];
+    if (player->cpuDifficulty != -1) {
+        s16 params[22][4] = {
+            { 0, 0, 0, 0 },
+            { 300, 300, 200, 150 },
+            { 11, 9, 6, 3 },
+            { 6, 6, 6, 6 },
+            { 11, 9, 5, 2 },
+            { 4, 4, 3, 1 },
+            { -30, -40, -40, -200 },
+            { 15, 20, 20, 100 },
+            { 45, 35, 25, 25 },
+            { 1, 1, 1, 15 },
+            { 36, 46, 56, 66 },
+            { 1, 1, 1, 1 },
+            { 20, 20, 15, 15 },
+            { 35, 25, 12, 8 },
+            { 0, 0, 6, 6 },
+            { 1, 8, 4, 5 },
+            { 0, 24, 16, 32 },
+            { 1, 8, 24, 1 },
+            { 14, 9, 6, 0 },
+            { 6, 8, 5, 7 },
+            { 0, 0, 0, 0 },
+            { 1, 1, 1, 1 },
+        };
+
+        D_800CDA7C_main[player->pad] = 0;
+        D_800D5558_main[player->pad] = 0;
+        D_800D1244_main[player->pad] = 0;
+        D_800CBB6E_main[player->pad] = 0;
+        D_800D20A1_main[player->pad] = 0;
+        D_800D056A_main[player->pad] = 0;
+        D_800D1382_main[player->pad] = 0;
+        if (D_8010F616_toadstool_titan[group] != 0) {
+            D_8010EE40_toadstool_titan[group] = 13;
+        }
+        if (D_8010F586_toadstool_titan == 2) {
+            if (D_8010F61C_toadstool_titan >= ((D_8010F60E_toadstool_titan == group) ? 10 : 30)) {
+                if (D_8010EE40_toadstool_titan[group] > 0 && D_8010EE40_toadstool_titan[group] < 4) {
+                    D_8010EE40_toadstool_titan[group] = 10;
+                    D_8010EE44_toadstool_titan[group] = 0;
+                }
+            }
+        }
+        if (D_8010F586_toadstool_titan == 3) {
+            if ((D_8010EE40_toadstool_titan[group] > 0 && D_8010EE40_toadstool_titan[group] < 4) ||
+                (D_8010EE40_toadstool_titan[group] >= 10 && D_8010EE40_toadstool_titan[group] < 13)) {
+                D_8010EE40_toadstool_titan[group] = (D_8010F60E_toadstool_titan == group) ? 4 : 7;
+                D_8010EE44_toadstool_titan[group] = 0;
+            }
+        }
+        if (D_8010F586_toadstool_titan == 7) {
+            if ((D_8010EE40_toadstool_titan[group] >= 4 && D_8010EE40_toadstool_titan[group] < 7) ||
+                (D_8010EE40_toadstool_titan[group] >= 7 && D_8010EE40_toadstool_titan[group] < 10)) {
+                D_8010EE40_toadstool_titan[group] = 1;
+                D_8010EE44_toadstool_titan[group] = params[12][player->cpuDifficulty] + rand8() % params[13][player->cpuDifficulty];
+                D_8010EE4C_toadstool_titan[group] = 0;
+            }
+        }
+        switch (D_8010EE40_toadstool_titan[group]) {
+            case 0:
+                D_8010EE40_toadstool_titan[group] = 1;
+                D_8010EE44_toadstool_titan[group] = 5;
+            case 1:
+                D_8010EE44_toadstool_titan[group] -= (D_8010EE44_toadstool_titan[group] > 0) ? 1 : 0;
+                if (D_8010EE44_toadstool_titan[group] > 0) {
+                    break;
+                }
+                for (i = 0, bestDist = 16777216.0f, best = -1; i < 9; i++) {
+                    if (D_8010F650_toadstool_titan[i] != 0) {
+                        dx = object->trans.x - D_8010F5D0_toadstool_titan[i]->trans.x;
+                        dz = object->trans.z - D_8010F5D0_toadstool_titan[i]->trans.z;
+                        dist = dx * dx + dz * dz + rand8() / 255.0 * params[1][player->cpuDifficulty] * params[1][player->cpuDifficulty];
+                        if (dist < bestDist) {
+                            bestDist = dist;
+                            best = i;
+                        }
+                    }
+                }
+                if (best == -1) {
+                    D_8010EE44_toadstool_titan[group] = 1;
+                    break;
+                }
+                D_8010EE40_toadstool_titan[group] = 2;
+                D_8010EE44_toadstool_titan[group] = best;
+                D_8010EE4C_toadstool_titan[group] = 0;
+                break;
+            case 2:
+            case 3:
+                dx = D_8010F5D0_toadstool_titan[D_8010EE44_toadstool_titan[group]]->trans.x - object->trans.x;
+                dz = D_8010F5D0_toadstool_titan[D_8010EE44_toadstool_titan[group]]->trans.z - object->trans.z;
+                dist = (dx != 0.0f || dz != 0.0f) ? HuSqrtf(dx * dx + dz * dz) : 16777216.0f;
+                D_800CBB6E_main[player->pad] = dx / dist * ((dist > 33.0f) ? 1.0 : dist / 33.0) * params[10][player->cpuDifficulty];
+                D_800D20A1_main[player->pad] = -(dz / dist * ((dist > 33.0f) ?: dist / 33.0) * params[10][player->cpuDifficulty]);
+                if (object->trans.y > 375.0f && data->unk38 == 1000.0f) {
+                    D_800CBB6E_main[player->pad] = 0;
+                    D_800D20A1_main[player->pad] = 66;
+                }
+                if (D_8010EE40_toadstool_titan[group] == 3 && D_8010EE4C_toadstool_titan[group] == 0 && object->trans.y <= 0.0f) {
+                    D_8010EE40_toadstool_titan[group] = 2;
+                    D_8010EE4C_toadstool_titan[group] = 0;
+                } else if (D_8010EE40_toadstool_titan[group] == 2 && D_8010EE4C_toadstool_titan[group] == 0 && object->trans.y <= 0.0f &&
+                           (dist < 50.0f || data->unk53[1] != -1)) {
+                    switch ((dist < 50.0f) ? 1 : rand8() % 5 / 2) {
+                        case 0:
+                            break;
+                        case 1:
+                            D_8010EE40_toadstool_titan[group] = 3;
+                            D_800D5558_main[player->pad] |= 0x8000;
+                            D_8010EE4C_toadstool_titan[group] = params[4][player->cpuDifficulty] + rand8() % params[5][player->cpuDifficulty];
+                            break;
+                        case 2:
+                            D_8010EE40_toadstool_titan[group] = 1;
+                            D_8010EE44_toadstool_titan[group] = params[2][player->cpuDifficulty] + rand8() % params[3][player->cpuDifficulty];
+                            break;
+                    }
+                }
+                if (D_8010EE40_toadstool_titan[group] == 3) {
+                    D_800CDA7C_main[player->pad] |= 0x8000;
+                }
+                D_8010EE4C_toadstool_titan[group] -= (D_8010EE4C_toadstool_titan[group] > 0) ? 1 : 0;
+                if (D_8010F650_toadstool_titan[D_8010EE44_toadstool_titan[group]] == 0) {
+                    D_8010EE40_toadstool_titan[group] = 1;
+                    D_8010EE44_toadstool_titan[group] = params[2][player->cpuDifficulty] + rand8() % params[3][player->cpuDifficulty];
+                }
+                break;
+            case 4:
+                D_8010EE44_toadstool_titan[group] -= (D_8010EE44_toadstool_titan[group] > 0) ? 1 : 0;
+                work = D_8010F640_toadstool_titan[group]->data;
+                if (D_8010EE44_toadstool_titan[group] > 0 || work->unk5C == 0x8000) {
+                    break;
+                }
+                for (i = 0, bestDist = 16777216.0f, best = -1; i < 4; i++) {
+                    if (i == group || D_8010F616_toadstool_titan[i] != 0) {
+                        continue;
+                    }
+                    dx = object->trans.x - D_8010F640_toadstool_titan[i]->trans.x;
+                    dz = object->trans.z - D_8010F640_toadstool_titan[i]->trans.z;
+                    dist = dx * dx + dz * dz + params[6][player->cpuDifficulty] + rand8() % params[7][player->cpuDifficulty];
+                    if (dist < bestDist) {
+                        bestDist = dist;
+                        best = i;
+                    }
+                }
+                if (best == -1) {
+                    D_8010EE44_toadstool_titan[group] = 1;
+                    break;
+                }
+                D_8010EE40_toadstool_titan[group] = 5;
+                D_8010EE44_toadstool_titan[group] = best;
+                if (params[14][player->cpuDifficulty] + rand8() % params[15][player->cpuDifficulty] < 8) {
+                    break;
+                }
+                dx = (D_8010F640_toadstool_titan[best]->trans.x > 0.0f) ? D_8010F640_toadstool_titan[best]->trans.x - 350.0f
+                                                                        : -D_8010F640_toadstool_titan[best]->trans.x - 350.0f;
+                dz = (D_8010F640_toadstool_titan[best]->trans.z > 0.0f) ? D_8010F640_toadstool_titan[best]->trans.z - 350.0f
+                                                                        : -D_8010F640_toadstool_titan[best]->trans.z - 350.0f;
+                if (dx * dx + dz * dz < 62500.0f) {
+                    D_8010EE44_toadstool_titan[group] += 4;
+                    D_8010EE54_toadstool_titan[group] = D_8010EE64_toadstool_titan[group] = 0.0f;
+                    if (((D_8010F640_toadstool_titan[best]->trans.x - object->trans.x > 0.0f)
+                             ? D_8010F640_toadstool_titan[best]->trans.x - object->trans.x
+                             : -(D_8010F640_toadstool_titan[best]->trans.x - object->trans.x)) <
+                        ((D_8010F640_toadstool_titan[best]->trans.z - object->trans.z > 0.0f)
+                             ? D_8010F640_toadstool_titan[best]->trans.z - object->trans.z
+                             : -(D_8010F640_toadstool_titan[best]->trans.z - object->trans.z))) {
+                        D_8010EE54_toadstool_titan[group] = rand8() / 255.0 * 200.0 * ((D_8010F640_toadstool_titan[best]->trans.x < 0.0f) ? 1 : -1);
+                    } else {
+                        D_8010EE64_toadstool_titan[group] = rand8() / 255.0 * 200.0 * ((D_8010F640_toadstool_titan[best]->trans.z < 0.0f) ? 1 : -1);
+                    }
+                }
+                break;
+            case 5:
+            case 6:
+                dx = D_8010F640_toadstool_titan[D_8010EE44_toadstool_titan[group] % 4]->trans.x - object->trans.x +
+                     ((D_8010EE44_toadstool_titan[group] >= 4) ? D_8010EE54_toadstool_titan[group] : 0.0f);
+                dz = D_8010F640_toadstool_titan[D_8010EE44_toadstool_titan[group] % 4]->trans.z - object->trans.z +
+                     ((D_8010EE44_toadstool_titan[group] >= 4) ? D_8010EE64_toadstool_titan[group] : 0.0f);
+                dist = (dx != 0.0f || dz != 0.0f) ? HuSqrtf(dx * dx + dz * dz) : 16777216.0f;
+                D_800CBB6E_main[player->pad] = dx / dist * ((dist > 33.0f) ? 66.0f : dist * 2);
+                D_800D20A1_main[player->pad] = -(dz / dist * ((dist > 33.0f) ? 66.0f : dist * 2));
+                if (D_8010EE40_toadstool_titan[group] == 5 && D_8010EE4C_toadstool_titan[group] <= 0 && D_8010EE3C_toadstool_titan != 0) {
+                    D_8010EE40_toadstool_titan[group] = 6;
+                    D_8010EE4C_toadstool_titan[group] = 0;
+                }
+                D_8010EE4C_toadstool_titan[group] -= (D_8010EE4C_toadstool_titan[group] > 0) ? 1 : 0;
+                if (D_8010EE40_toadstool_titan[group] == 6 && D_8010EE3C_toadstool_titan == 0) {
+                    D_8010EE40_toadstool_titan[group] = 4;
+                    D_8010EE44_toadstool_titan[group] = params[8][player->cpuDifficulty] + rand8() % params[9][player->cpuDifficulty];
+                }
+                break;
+            case 7:
+                D_8010EE44_toadstool_titan[group] -= (D_8010EE44_toadstool_titan[group] > 0) ? 1 : 0;
+                if (D_8010EE44_toadstool_titan[group] <= 0) {
+                    D_8010EE40_toadstool_titan[group] = 8;
+                    D_8010EE44_toadstool_titan[group] = -1;
+                    D_8010EE4C_toadstool_titan[group] = 0;
+                }
+                break;
+            case 8:
+            case 9:
+                if (D_8010EE44_toadstool_titan[group] == -1) {
+                    bestScore = 100.0f;
+                    dx = D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->trans.x - object->trans.x;
+                    dz = D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->trans.z - object->trans.z;
+                    dist = (dx != 0.0f || dz != 0.0f) ? 1.0f / HuSqrtf(dx * dx + dz * dz) : 0.000001f;
+                    dirX = dx * dist;
+                    dirZ = dz * dist;
+                    for (i = 0, best = 0; i < 4; i++) {
+                        cornerX = (i < 2) ? -400.0f : 400.0f;
+                        dx = cornerX - object->trans.x;
+                        cornerZ = ((i + 1) % 4 < 2) ? -350.0f : 350.0f;
+                        dz = cornerZ - object->trans.z;
+                        dist = (dx != 0.0f || dz != 0.0f) ? HuSqrtf(dx * dx + dz * dz) : 16777216.0f;
+                        normX = dx / dist;
+                        normZ = dz / dist;
+                        bestDist = dirX * normX + dirZ * normZ + 1.0f;
+                        weight = (dist == 16777216.0f) ? 10.0f : ((dist > 500.0f) ? 0.0f : 1.0 - dist / 500.0);
+                        bestDist = bestDist * bestDist + weight * weight * 4.0f;
+                        if (D_8010EE40_toadstool_titan[group] == 9) {
+                            otherData = D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->data;
+                            sinVal = sindf(otherData->unk3C);
+                            cosVal = cosdf(otherData->unk3C);
+                            dx = (sinVal > 0.0f) ? sinVal : -sinVal;
+                            signSin = (sinVal < 0.0f) ? -1.0f : 1.0f;
+                            dz = (cosVal > 0.0f) ? cosVal : -cosVal;
+                            signCos = (cosVal < 0.0f) ? -1.0f : 1.0f;
+                            hitZ = 1000.0f;
+                            if (dz < dx) {
+                                hitZ = (401.0f - signSin * D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->trans.x) / dx * dz +
+                                       signCos * D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->trans.z;
+                            }
+                            if (hitZ > 351.0f) {
+                                hitX = (351.0f - signCos * D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->trans.z) / dz * dx +
+                                       signSin * D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->trans.x;
+                                if (hitX > 401.0f) {
+                                    hitZ = (401.0f - signSin * D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->trans.x) / dx * dz +
+                                           signCos * D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->trans.z;
+                                    hitX = 401.0f;
+                                } else {
+                                    hitZ = 351.0f;
+                                }
+                            } else {
+                                hitX = 401.0f;
+                            }
+                            hitX = hitX * signSin - cornerX;
+                            hitZ = hitZ * signCos - cornerZ;
+                            dist = (hitX != 0.0f || hitZ != 0.0f) ? HuSqrtf(hitX * hitX + hitZ * hitZ) : 0.0f;
+                            bestDist += (dist > 600.0f) ? 0.0 : (1.0 - dist / 600.0) * 8.0;
+                        }
+                        if ((D_8010EE40_toadstool_titan[group] == 8 || D_8010EE40_toadstool_titan[group] == 9) && bestDist < bestScore) {
+                            best = i;
+                            bestScore = bestDist;
+                        }
+                        if (bestScore != 100.0f) {
+                            D_8010EE44_toadstool_titan[group] = best;
+                        }
+                    }
+                }
+                dx = ((D_8010EE44_toadstool_titan[group] < 2) ? -400.0f : 400.0f) - object->trans.x;
+                dz = (((D_8010EE44_toadstool_titan[group] + 1) % 4 < 2) ? -350.0f : 350.0f) - object->trans.z;
+                dist = (dx != 0.0f || dz != 0.0f) ? HuSqrtf(dx * dx + dz * dz) : 16777216.0f;
+                D_800CBB6E_main[player->pad] = dx / dist * ((dist > 70.0f) ? 70.0f : ((dist > 35.0f) ? dist : 0.0f));
+                D_800D20A1_main[player->pad] = -(dz / dist * ((dist > 70.0f) ? 70.0f : ((dist > 35.0f) ? dist : 0.0f)));
+                if (D_8010EE3C_toadstool_titan != 0) {
+                    D_8010EE4C_toadstool_titan[group] -= (D_8010EE4C_toadstool_titan[group] > 0) ? 1 : 0;
+                    if (D_8010EE4C_toadstool_titan[group] <= 0) {
+                        D_8010EE40_toadstool_titan[group] = 9;
+                        D_8010EE44_toadstool_titan[group] = -1;
+                        range = params[19][player->cpuDifficulty];
+                        timer = &D_8010EE4C_toadstool_titan[group];
+                        rnd = rand8();
+                        *timer = params[18][player->cpuDifficulty] + ((D_8010F66C_toadstool_titan == 0) ? 5 + rnd % (range + 12) : rnd % range);
+                    }
+                } else {
+                    D_8010EE4C_toadstool_titan[group] -= (D_8010EE4C_toadstool_titan[group] > 0) ? 1 : 0;
+                    if (D_8010EE4C_toadstool_titan[group] <= 0) {
+                        D_8010EE40_toadstool_titan[group] = 8;
+                        D_8010EE44_toadstool_titan[group] = -1;
+                        D_8010EE4C_toadstool_titan[group] = params[18][player->cpuDifficulty] + rand8() % params[19][player->cpuDifficulty];
+                    }
+                }
+                if (data->unk38 != 1000.0f) {
+                    D_800CDA7C_main[player->pad] |= 0x8000;
+                } else if (D_8010F66C_toadstool_titan != 0) {
+                    if (params[16][player->cpuDifficulty] + rand8() % params[17][player->cpuDifficulty] < 32) {
+                        break;
+                    }
+                    posX = object->trans.x;
+                    posZ = object->trans.z;
+                    otherX = D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->trans.x;
+                    otherZ = D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->trans.z;
+                    otherData = D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->data;
+                    velX = sindf(data->unk3C) * data->unk40;
+                    velZ = cosdf(data->unk3C) * data->unk40;
+                    otherVelX = sindf(otherData->unk3C) * otherData->unk40;
+                    otherVelZ = cosdf(otherData->unk3C) * otherData->unk40;
+                    for (i = 0; i < 6; i++) {
+                        if ((posX - otherX) * (posX - otherX) + (posZ - otherZ) * (posZ - otherZ) < 22500.0f) {
+                            D_800CDA7C_main[player->pad] |= 0x8000;
+                            D_800D5558_main[player->pad] |= 0x8000;
+                            D_800D1244_main[player->pad] |= 0x8000;
+                            break;
+                        }
+                        posX += velX;
+                        posZ += velZ;
+                        otherX += otherVelX;
+                        otherZ += otherVelZ;
+                    }
+                }
+                break;
+            case 10:
+                D_8010EE44_toadstool_titan[group] -= (D_8010EE44_toadstool_titan[group] > 0) ? 1 : 0;
+                if (D_8010EE44_toadstool_titan[group] <= 0) {
+                    D_8010EE40_toadstool_titan[group] = 11;
+                    D_8010EE44_toadstool_titan[group] = 0;
+                    D_8010EE4C_toadstool_titan[group] = 0;
+                }
+                break;
+            case 11:
+            case 12:
+                dx = Hu3DData[D_8010F5F8_toadstool_titan->model[1]].pos.x - object->trans.x;
+                dz = Hu3DData[D_8010F5F8_toadstool_titan->model[1]].pos.z - object->trans.z;
+                dist = (dx != 0.0f || dz != 0.0f) ? HuSqrtf(dx * dx + dz * dz) : 16777216.0f;
+                D_800CBB6E_main[player->pad] = dx / dist * ((dist > 33.0f) ? 1.0 : dist / 33.0) * params[10][player->cpuDifficulty];
+                D_800D20A1_main[player->pad] = -(dz / dist * ((dist > 33.0f) ?: dist / 33.0) * params[10][player->cpuDifficulty]);
+                if (D_8010EE40_toadstool_titan[group] == 12 && D_8010EE4C_toadstool_titan[group] == 0 && object->trans.y <= 0.0f) {
+                    D_8010EE40_toadstool_titan[group] = 11;
+                    D_8010EE4C_toadstool_titan[group] = 0;
+                } else if (D_8010EE40_toadstool_titan[group] == 11 && D_8010EE4C_toadstool_titan[group] == 0 && object->trans.y <= 0.0f &&
+                           player->cpuDifficulty > 0 && dist < 50.0f && D_8010F61C_toadstool_titan >= 42) {
+                    switch ((dist < 50.0f) ? 1 : (rand8() & 3) < 3) {
+                        case 1:
+                            D_8010EE40_toadstool_titan[group] = 12;
+                            D_800D5558_main[player->pad] |= 0x8000;
+                            D_8010EE4C_toadstool_titan[group] = params[4][player->cpuDifficulty] + rand8() % params[5][player->cpuDifficulty];
+                            break;
+                    }
+                }
+                if (D_8010EE40_toadstool_titan[group] == 12) {
+                    D_800CDA7C_main[player->pad] |= 0x8000;
+                }
+                D_8010EE4C_toadstool_titan[group] -= (D_8010EE4C_toadstool_titan[group] > 0) ? 1 : 0;
+                break;
+        }
+        D_800D056A_main[player->pad] = D_800CBB6E_main[player->pad] * 2;
+        D_800D1382_main[player->pad] = D_800D20A1_main[player->pad] * 2;
+    }
+    if (D_8010F586_toadstool_titan == 3 && D_8010F60E_toadstool_titan == group) {
+        D_800CDA7C_main[player->pad] = 0;
+        D_800D5558_main[player->pad] = 0;
+        D_800D1244_main[player->pad] = 0;
+        D_800CBB6E_main[player->pad] = 0;
+        D_800D20A1_main[player->pad] = 0;
+        D_800D056A_main[player->pad] = 0;
+        D_800D1382_main[player->pad] = 0;
+    } else if (D_8010F586_toadstool_titan == 5 && D_8010F60E_toadstool_titan == group) {
+        D_800CDA7C_main[player->pad] = 0;
+        D_800D5558_main[player->pad] = 0;
+        D_800D1244_main[player->pad] = 0;
+    }
+    if (D_8010F586_toadstool_titan == 5 && D_8010F60E_toadstool_titan == group) {
+        D_800EB73C_minigame = 30.0f;
+        D_800EB75C_minigame = 1.6666666f;
+        speed = 18.0f;
+        D_800EB760_minigame = speed * 2;
+        D_800EB764_minigame = speed * 1.5f;
+        halfSpeed = speed / 2;
+        D_800EB768_minigame = speed;
+        D_800EB76C_minigame = halfSpeed;
+    }
+    if (D_8010F586_toadstool_titan == 5 && D_8010F60E_toadstool_titan == group) {
+        if (D_8010EE3C_toadstool_titan == 0 && data->unk40 > 9.0f) {
+            D_8010EE3C_toadstool_titan = 1;
+            if (D_800CBB6E_main[player->pad] * D_800CBB6E_main[player->pad] + D_800D20A1_main[player->pad] * D_800D20A1_main[player->pad] > 1600) {
+                data->unk3C = (D_800CBB6E_main[player->pad] == 0) ? ((D_800D20A1_main[player->pad] >= 0) ? 180.0f : 0.0f)
+                                                                  : atan2df(D_800CBB6E_main[player->pad], -D_800D20A1_main[player->pad]);
+            }
+            D_8010F520_toadstool_titan = data->unk3C;
+        }
+        if (D_8010EE3C_toadstool_titan != 0) {
+            D_800CBB6E_main[player->pad] = sindf(D_8010F520_toadstool_titan) * 63.0f + D_800CBB6E_main[player->pad] / 6;
+            D_800D20A1_main[player->pad] = cosdf(D_8010F520_toadstool_titan) * -63.0f + D_800D20A1_main[player->pad] / 6;
+            D_800D056A_main[player->pad] = D_800CBB6E_main[player->pad] * 2;
+            D_800D1382_main[player->pad] = D_800D20A1_main[player->pad] * 2;
+        }
+    } else if (D_8010F586_toadstool_titan != 5) {
+        D_8010EE3C_toadstool_titan = 0;
+    }
+    if ((D_8010F586_toadstool_titan == 3 || D_8010F586_toadstool_titan == 4 || D_8010F586_toadstool_titan == 6) && group != D_8010F60E_toadstool_titan) {
+        work = D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->data;
+        work->unkBE = 1;
+        work->unk50 |= 0x200;
+    }
+    if (D_8010F5FC_toadstool_titan >= 3 && data->unk53[0] == -1) {
+        D_800CBB6E_main[player->pad] = rand8() % 40;
+        D_800D20A1_main[player->pad] = rand8() % 40;
+        D_800D056A_main[player->pad] = D_800CBB6E_main[player->pad] * 2;
+        D_800D1382_main[player->pad] = D_800D20A1_main[player->pad] * 2;
+    }
+    if (data->unk53[0] == 5 || data->unk53[0] == 6) {
+        if (object->trans.z > 330.0f) {
+            object->trans.z = 330.0f;
+        }
+    }
+    if (object->trans.y >= 425.0f) {
+        if (object->trans.z > 345.0f) {
+            object->trans.z = 345.0f;
+        }
+    }
+    if ((D_8010F5FC_toadstool_titan != 0 || D_8010F580_toadstool_titan < 46 || D_8010F580_toadstool_titan > 54) &&
+        ((D_8010F586_toadstool_titan != 4 && D_8010F586_toadstool_titan != 6) || D_8010F60E_toadstool_titan != group) &&
+        D_8010F616_toadstool_titan[group] == 0) {
+        func_800DDD94_minigame(object);
+        D_8010F634_toadstool_titan[group] = -1;
+    } else if (D_8010F634_toadstool_titan[group] == -1 || D_8010F634_toadstool_titan[group] > Hu3DData[object->model[0]].motTime) {
+        D_8010F634_toadstool_titan[group] = Hu3DData[object->model[0]].motTime;
+    } else {
+        Hu3DMotionTimeSet(object->model[0], D_8010F634_toadstool_titan[group]);
+    }
+    if (D_8010F5FC_toadstool_titan == 0 && (D_8010F580_toadstool_titan < 10 || group != 0)) {
+        HuAudFXStop(data->unkC5);
+    }
+    if ((D_8010F586_toadstool_titan == 3 || D_8010F586_toadstool_titan == 4 || D_8010F586_toadstool_titan == 6) && group != D_8010F60E_toadstool_titan) {
+        work = D_8010F640_toadstool_titan[D_8010F60E_toadstool_titan]->data;
+        work->unkBE = 0;
+        work->unk50 &= ~0x200;
+    }
+    if (D_8010F5FC_toadstool_titan == 0 && D_8010F580_toadstool_titan < 10) {
+        data->unk38 = 0.0f;
+    }
+    if (D_8010F60E_toadstool_titan == group && D_8010F586_toadstool_titan == 5) {
+        omSetSca(object, 2.0f, 2.0f, 2.0f);
+        if (D_8010EE3C_toadstool_titan != 0) {
+            if ((data->unk3C > -145.0f && data->unk3C < -35.0f && object->trans.x <= -400.0f) ||
+                (data->unk3C > 35.0f && data->unk3C < 145.0f && object->trans.x >= 400.0f) ||
+                ((data->unk3C > 125.0f || data->unk3C < -125.0f) && object->trans.z <= -350.0f) ||
+                (data->unk3C > -55.0f && data->unk3C < 55.0f && object->trans.z >= 350.0f)) {
+                object->trans.x = (object->trans.x <= -400.0f) ? -400.0f : ((object->trans.x >= 400.0f) ? 400.0f : object->trans.x);
+                object->trans.z = (object->trans.z <= -350.0f) ? -350.0f : ((object->trans.z >= 350.0f) ? 350.0f : object->trans.z);
+                data->unk40 = -D_800EB768_minigame;
+                func_800E5690_minigame(object, 30);
+                omVibrate(data->unk59, 20, 0, 20);
+                for (i = 0; i < 4; i++) {
+                    if (D_8010F616_toadstool_titan[i] == 0 && D_8010F568_toadstool_titan[i]->playerNo != data->unk59) {
+                        omVibrate(D_8010F568_toadstool_titan[i]->playerNo, 10, 0, 10);
+                    }
+                }
+                D_8010EE3C_toadstool_titan = 0;
+                D_8010F5F4_toadstool_titan = 13;
+                D_8010F670_toadstool_titan = data->unk3C;
+                HuAudFXPlay(0x3AA);
+            }
+        }
+    }
+    D_800EB73C_minigame = 15.0f;
+    D_800EB75C_minigame = 3.3333333f;
+    D_800EB760_minigame = 18.0f;
+    D_800EB764_minigame = 13.5f;
+    D_800EB768_minigame = 9.0f;
+    D_800EB76C_minigame = 4.5f;
+    D_800CDA7C_main[player->pad] = savedBtn;
+    D_800D5558_main[player->pad] = savedBtn2;
+    D_800D1244_main[player->pad] = savedBtn3;
+    D_800CBB6E_main[player->pad] = savedStickX;
+    D_800D20A1_main[player->pad] = savedStickY;
+    D_800D056A_main[player->pad] = savedStick2;
+    D_800D1382_main[player->pad] = savedStick3;
+    if (D_8010F616_toadstool_titan[group] >= 60) {
+        func_8001C258_main(object->model[0], 4, 4);
+    }
+    if (D_8010F616_toadstool_titan[group] != 0) {
+        func_8001C258_main(object->model[1], 4, 4);
+    } else {
+        Hu3DModelScaleSet(object->model[1], object->scale.x, object->scale.y, object->scale.z);
+    }
+}
+#else
 INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", D_8010F278_toadstool_titan);
 
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", func_8010BD2C_toadstool_titan);
+#endif

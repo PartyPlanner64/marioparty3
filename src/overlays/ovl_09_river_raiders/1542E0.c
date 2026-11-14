@@ -1517,12 +1517,10 @@ void func_8010A6A8_river_raiders(omObjData *obj) {
     obj->func = func_80109C08_river_raiders;
 }
 
-#ifdef NON_MATCHING
-// Target does not hoist the func_8010A6A8_river_raiders address out of the loop, which changes register allocation.
 void func_8010ABA0_river_raiders(void) {
     RiverRaidersEntry *entry;
     omObjData *obj;
-    s32 playerIndex = 0;
+    u16 playerIndex = 0;
     s32 count = 0;
     s16 i;
 
@@ -1551,9 +1549,6 @@ void func_8010ABA0_river_raiders(void) {
         entry->obj = obj;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_09_river_raiders/1542E0", func_8010ABA0_river_raiders);
-#endif
 
 #ifdef NON_MATCHING
 // Matches except for the func_8000D550_main calls: the target passes integer zeros (as if called without a

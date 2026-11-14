@@ -998,18 +998,15 @@ void func_8010DF34_staff(void) {
     }
 }
 
-#ifdef NON_MATCHING
-// Register allocation differs throughout; the target also loads the image width/height
-// with signed halfword loads, suggesting those fields are s16 in the original struct.
 void func_8010F04C_staff(s16 model, s32 dataNum) {
     s16 anim;
     s16 grp;
     HuSprite *sprite;
     HuSprite_Unk84_Unk00_Struct *img;
     u16 *pixels;
+    s16 count;
     HmfModelData_UnkBC_Struct *bc;
     HmfModelData_UnkBC_Unk58_Struct *particle;
-    s16 count;
     s16 width;
     s16 height;
     s16 used;
@@ -1023,17 +1020,19 @@ void func_8010F04C_staff(s16 model, s32 dataNum) {
     sprite = HuSprGet(grp, 0);
     img = sprite->unk_84->unk00;
     pixels = img->unk00;
+    used = 0;
     width = img->unk04;
     height = img->unk06;
     for (i = 0; i < width * height; i++) {
-        pixels++;
+        if (*pixels++ == 0xFFFF) {
+            used++;
+        }
     }
     pixels = sprite->unk_84->unk00->unk00;
     bc = Hu3DData[model].unkBC;
     count = Hu3DData[model].hmf->unk1A;
     particle = bc->unk58;
-    used = 0;
-    for (y = 0; y < height; y++) {
+    for (y = 0, used = 0; y < height; y++) {
         for (x = 0; x < width; x++) {
             if (*pixels++ == 0xFFFF && used < count) {
                 particle = &bc->unk58[used];
@@ -1042,21 +1041,18 @@ void func_8010F04C_staff(s16 model, s32 dataNum) {
                 particle->unk28 = (height / 2 - y) * 12;
                 particle->unk2C = 1.0f;
                 particle->unk08 = 3.0f;
-                particle->unk04 = (rand8() * 5 >> 7) * 0.1f + 3.0f;
+                particle->unk04 = ((u16)(rand8() * 5) >> 7) * 0.1f + 3.0f;
                 used++;
                 particle++;
             }
         }
     }
     for (i = 0; i < count - used; i++, particle++) {
-        particle->unk14 = particle->unk10 = particle->unk0C = particle->unk2C = particle->unk08 = 0.0f;
+        particle->unk08 = particle->unk2C = particle->unk0C = particle->unk10 = particle->unk14 = 0.0f;
     }
     HuSprGrpKill(grp);
     HuSprAnimKill(anim);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/5486A0", func_8010F04C_staff);
-#endif
 
 HmfModelData_UnkBC_Unk58_Struct *func_8010F3E4_staff(s16 model, f32 x, f32 y, f32 z, f32 vx, f32 vy, f32 vz, u8 r,
                                                      u8 g, u8 b) {

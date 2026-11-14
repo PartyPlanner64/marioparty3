@@ -882,9 +882,6 @@ void func_80107E34_merry_go_chomp(omObjData *obj) {
     }
 }
 
-#ifdef NON_MATCHING
-// Only difference: GCC hoists the D_8010C420_merry_go_chomp address out of the
-// first loop into a saved register, which the original does not.
 void func_801084C8_merry_go_chomp(void) {
     D_8010C420_merry_go_chomp_Entry *move;
     D_8010C420_merry_go_chomp_Entry *other;
@@ -904,6 +901,7 @@ void func_801084C8_merry_go_chomp(void) {
     for (i = 0; i < 4; i++) {
         move = &D_8010C420_merry_go_chomp[i];
         entry = &D_8010C500_merry_go_chomp[i + 5];
+        obj = entry->obj;
         if (move->unk_1C >= 2 && entry->unk_04 == 0) {
             dist = sqrtf(move->unk_14 * move->unk_14 + move->unk_18 * move->unk_18);
             if (dist < 350.0f) {
@@ -935,44 +933,45 @@ void func_801084C8_merry_go_chomp(void) {
                 }
                 dx = move->unk_14 - other->unk_14;
                 dz = move->unk_18 - other->unk_18;
-                if (sqrtf(dx * dx + dz * dz) >= 120.0f) {
-                    continue;
-                }
-                dx = move->unk_14 - 490.0f;
-                dz = move->unk_18 + 20.0f;
-                dist = sqrtf(dx * dx + dz * dz);
-                dx = other->unk_14 - 490.0f;
-                dz = other->unk_18 + 20.0f;
-                if (dist < sqrtf(dx * dx + dz * dz)) {
-                    push = 2;
-                }
-                if (obj->trans.y > 5.0f && obj->trans.y < 160.0f) {
-                    push = 2;
-                }
-                if (otherObj->trans.y > 5.0f && otherObj->trans.y < 160.0f) {
-                    push = 1;
-                }
-                if (obj->trans.y > 160.0f) {
-                    push = 0;
-                }
-                if (otherObj->trans.y > 160.0f) {
-                    push = 0;
-                }
-                switch (push) {
-                    case 1:
-                        angle = func_801059BC_merry_go_chomp(
-                            atan2df(move->unk_14 - other->unk_14, move->unk_18 - other->unk_18), 0.0f);
-                        move->unk_14 = sindf(angle) * 121.0f + other->unk_14;
-                        move->unk_18 = cosdf(angle) * 121.0f + other->unk_18;
-                        move->unk_1E = collided = 1;
-                        break;
-                    case 2:
-                        angle = func_801059BC_merry_go_chomp(
-                            atan2df(other->unk_14 - move->unk_14, other->unk_18 - move->unk_18), 0.0f);
-                        other->unk_14 = sindf(angle) * 121.0f + move->unk_14;
-                        other->unk_18 = cosdf(angle) * 121.0f + move->unk_18;
-                        collided = 1;
-                        break;
+                if (sqrtf(dx * dx + dz * dz) < 120.0f) {
+                    dx = move->unk_14 - 490.0f;
+                    dz = move->unk_18 + 20.0f;
+                    dist = sqrtf(dx * dx + dz * dz);
+                    dx = other->unk_14 - 490.0f;
+                    dz = other->unk_18 + 20.0f;
+                    if (dist < sqrtf(dx * dx + dz * dz)) {
+                        push = 2;
+                    }
+                    if (obj->trans.y > 5.0f && obj->trans.y < 160.0f) {
+                        push = 2;
+                    }
+                    if (otherObj->trans.y > 5.0f && otherObj->trans.y < 160.0f) {
+                        push = 1;
+                    }
+                    if (obj->trans.y > 160.0f) {
+                        push = 0;
+                    }
+                    if (otherObj->trans.y > 160.0f) {
+                        push = 0;
+                    }
+                    switch (push) {
+                        case 0:
+                            break;
+                        case 1:
+                            angle = func_801059BC_merry_go_chomp(
+                                atan2df(move->unk_14 - other->unk_14, move->unk_18 - other->unk_18), 0.0f);
+                            move->unk_14 = sindf(angle) * 121.0f + other->unk_14;
+                            move->unk_18 = cosdf(angle) * 121.0f + other->unk_18;
+                            move->unk_1E = collided = 1;
+                            break;
+                        case 2:
+                            angle = func_801059BC_merry_go_chomp(
+                                atan2df(other->unk_14 - move->unk_14, other->unk_18 - move->unk_18), 0.0f);
+                            other->unk_14 = sindf(angle) * 121.0f + move->unk_14;
+                            other->unk_18 = cosdf(angle) * 121.0f + move->unk_18;
+                            collided = 1;
+                            break;
+                    }
                 }
             }
         }
@@ -989,9 +988,6 @@ void func_801084C8_merry_go_chomp(void) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2D_merry_go_chomp/25E110", func_801084C8_merry_go_chomp);
-#endif
 
 void func_80108A88_merry_go_chomp(omObjData *obj) {
     s8 index = obj->work[0];

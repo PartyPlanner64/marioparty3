@@ -173,7 +173,11 @@ s32 func_80106BE0_chancetime(void) {
 }
 
 #ifdef NON_MATCHING
-// Loop/branch ordering differs: GCC moves the CPU-player branch of the first loop after the loop.
+// Only the block layout of the first loop differs (everything else matches, offset by 2 insns).
+// jump.c's "if (foo) bar; else break;" optimization swaps the CPU-player block (ending in a jump
+// to the loop exit) with the pad-check/HuPrcVSleep block (ending in the jump back to the top), so
+// the CPU block lands after the loop. The target keeps the source order, so something in the
+// original source blocked that swap; while/for/do-while, if/else and continue variants all swap.
 void func_80106BEC_chancetime(omObjData *object) {
     s8 player = D_801100D0_chancetime[0];
     f32 time;

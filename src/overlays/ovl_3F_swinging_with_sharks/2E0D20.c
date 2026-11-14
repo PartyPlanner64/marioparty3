@@ -867,19 +867,15 @@ void func_80108E00_swinging_with_sharks(Vec *pos) {
     func_80108F20_swinging_with_sharks(D_8010B8E0_swinging_with_sharks[2], pos, node->unk4C);
 }
 
-#ifdef NON_MATCHING
-// The target keeps the scaled angle in f12 and saves it to the stack around the sinf call,
-// rather than assigning it a callee-saved register.
 void func_80108E50_swinging_with_sharks(HuMtx4F mtx, f32 angle) {
     f32 row[3];
-    f32 rad;
     f32 s;
     f32 c;
     s32 i;
 
-    rad = angle * D_8010B484_swinging_with_sharks;
-    s = sinf(rad);
-    c = cosf(rad);
+    row[0] = angle * D_8010B484_swinging_with_sharks;
+    s = sinf(row[0]);
+    c = cosf(row[0]);
     for (i = 0; i < 3; i++) {
         row[i] = mtx[0][i];
     }
@@ -888,9 +884,6 @@ void func_80108E50_swinging_with_sharks(HuMtx4F mtx, f32 angle) {
         mtx[1][i] = -row[i] * s + c * mtx[1][i];
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3F_swinging_with_sharks/2E0D20", func_80108E50_swinging_with_sharks);
-#endif
 
 void func_80108F20_swinging_with_sharks(s16 model, Vec *pos, HuMtx4F mtx) {
     HmfModel *hmf = &Hu3DData[model];

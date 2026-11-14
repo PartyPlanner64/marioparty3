@@ -1466,9 +1466,11 @@ void func_8010BC48_toadstool_titan(omObjData *object) {
     object->func = func_8010BD2C_toadstool_titan;
 }
 
-// Very close: the only remaining difference is the register chosen for the
-// D_8010EE4C_toadstool_titan[group] result in the D_8010F66C_toadstool_titan
-// branch of case 8/9 (a0 instead of v0).
+// Only differs in the two D_800D20A1_main stick computations (cases 2/3 and
+// 11/12): the target converts the int result of (dist > 33.0f) to double rather
+// than loading 1.0. Writing them with the GNU omitted-middle-operand form
+// `((dist > 33.0f) ?: dist / 33.0)` gives a full match; standard C forms tried
+// (`c ? c : ...`, `(double)` cast, inverted condition, MIN) do not.
 #ifdef NON_MATCHING
 void func_8010BD2C_toadstool_titan(omObjData *object) {
     u8 flags[4];
@@ -1516,16 +1518,20 @@ void func_8010BD2C_toadstool_titan(omObjData *object) {
     f32 otherVelZ;
     s32 range;
     s32 rnd;
+    s32 minTime;
+    s32 newTime;
     s16 *timer;
 
     data = object->data;
     group = D_8010F65D_toadstool_titan[data->unk59];
     player = D_8010F568_toadstool_titan[group];
+    // Computed but never read in the original.
     if (group == 0) {
         for (i = 0; i < 4; i++) {
             flags[i] = (D_8010F640_toadstool_titan[i]->trans.y <= 0.0f) ? 1 : ((D_8010F616_toadstool_titan[i] != 0) ? 2 : 0);
         }
     }
+    (void)flags;
     savedBtn = D_800CDA7C_main[player->pad];
     savedBtn2 = D_800D5558_main[player->pad];
     savedBtn3 = D_800D1244_main[player->pad];
@@ -1626,7 +1632,7 @@ void func_8010BD2C_toadstool_titan(omObjData *object) {
                 dz = D_8010F5D0_toadstool_titan[D_8010EE44_toadstool_titan[group]]->trans.z - object->trans.z;
                 dist = (dx != 0.0f || dz != 0.0f) ? HuSqrtf(dx * dx + dz * dz) : 16777216.0f;
                 D_800CBB6E_main[player->pad] = dx / dist * ((dist > 33.0f) ? 1.0 : dist / 33.0) * params[10][player->cpuDifficulty];
-                D_800D20A1_main[player->pad] = -(dz / dist * ((dist > 33.0f) ?: dist / 33.0) * params[10][player->cpuDifficulty]);
+                D_800D20A1_main[player->pad] = -(dz / dist * ((dist > 33.0f) ? 1.0 : dist / 33.0) * params[10][player->cpuDifficulty]);
                 if (object->trans.y > 375.0f && data->unk38 == 1000.0f) {
                     D_800CBB6E_main[player->pad] = 0;
                     D_800D20A1_main[player->pad] = 66;
@@ -1805,7 +1811,14 @@ void func_8010BD2C_toadstool_titan(omObjData *object) {
                         range = params[19][player->cpuDifficulty];
                         timer = &D_8010EE4C_toadstool_titan[group];
                         rnd = rand8();
-                        *timer = params[18][player->cpuDifficulty] + ((D_8010F66C_toadstool_titan == 0) ? 5 + rnd % (range + 12) : rnd % range);
+                        minTime = params[18][player->cpuDifficulty];
+                        if (D_8010F66C_toadstool_titan == 0) {
+                            minTime += 5;
+                            newTime = minTime + rnd % (range + 12);
+                        } else {
+                            newTime = minTime + rnd % range;
+                        }
+                        *timer = newTime;
                     }
                 } else {
                     D_8010EE4C_toadstool_titan[group] -= (D_8010EE4C_toadstool_titan[group] > 0) ? 1 : 0;
@@ -1858,7 +1871,7 @@ void func_8010BD2C_toadstool_titan(omObjData *object) {
                 dz = Hu3DData[D_8010F5F8_toadstool_titan->model[1]].pos.z - object->trans.z;
                 dist = (dx != 0.0f || dz != 0.0f) ? HuSqrtf(dx * dx + dz * dz) : 16777216.0f;
                 D_800CBB6E_main[player->pad] = dx / dist * ((dist > 33.0f) ? 1.0 : dist / 33.0) * params[10][player->cpuDifficulty];
-                D_800D20A1_main[player->pad] = -(dz / dist * ((dist > 33.0f) ?: dist / 33.0) * params[10][player->cpuDifficulty]);
+                D_800D20A1_main[player->pad] = -(dz / dist * ((dist > 33.0f) ? 1.0 : dist / 33.0) * params[10][player->cpuDifficulty]);
                 if (D_8010EE40_toadstool_titan[group] == 12 && D_8010EE4C_toadstool_titan[group] == 0 && object->trans.y <= 0.0f) {
                     D_8010EE40_toadstool_titan[group] = 11;
                     D_8010EE4C_toadstool_titan[group] = 0;

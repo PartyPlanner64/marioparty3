@@ -2522,10 +2522,17 @@ void func_8010CFF8_aces_high(void) {
 
 // NON_MATCHING: only register allocation differs. Target keeps the scissor
 // walking pointer in s0 and the viewport pointer in s1 (4 saved regs, 0x50
-// frame); here one `rect` variable gets s1 for both. Using separate scissor and
-// viewport variables gets the scissor part in s0 but puts the viewport pointer in
-// a0 (3 saved regs). Writing [1][0]/[3][0] through the global array (instead of
-// rect[0]) is needed so the reads after the stores reload from memory.
+// frame); here one `rect` variable gets s1 for both (s0 is taken by the local
+// `winner` zero-extension pseudo that overlaps the viewport part). Using separate
+// scissor and viewport variables gets the scissor part in s0, but the viewport
+// pointer is then a block-local, non-call-crossing pseudo that local-alloc ties
+// to the shift temp (a0, 3 saved regs). To land in s1 it must be a global
+// pseudo that crosses a call, yet the target shows no other use of s1 there.
+// Writing [1][0]/[3][0] through the global array (instead of rect[0]) is needed
+// so the reads after the stores reload from memory. Also tried: per-section
+// `rect = D_8010DB70_aces_high[i]`, all-global indexing, a Vec2f pointer for the
+// target position, deriving the viewport pointer from rect, do-while(0) around
+// the scissor or viewport part, s32 x/y/w/h, declaration order.
 #ifdef NON_MATCHING
 u16 func_8010D1D8_aces_high(u16 winner) {
     f32 angle;

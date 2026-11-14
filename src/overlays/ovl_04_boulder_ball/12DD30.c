@@ -220,7 +220,6 @@ void func_801060D0_boulder_ball(void) {
     Hu3DModelRotSet(D_801098A4_boulder_ball->model[1], 0.0f, D_801098A4_boulder_ball->rot.y, 0.0f);
 }
 
-#ifdef NON_MATCHING
 void func_80106410_boulder_ball(omObjData *object) {
     func_800E1BA8_minigame_ObjData *data;
     func_800E1BA8_minigame_ObjData *work;
@@ -337,12 +336,7 @@ void func_80106410_boulder_ball(omObjData *object) {
             velocity = D_800EB774_minigame;
         }
         speedSq = velocity * velocity;
-        if (D_80109754_boulder_ball >= 0.0f) {
-            y = speedSq * -36.75f;
-        } else {
-            y = speedSq * 36.75f;
-        }
-        y += D_80109798_boulder_ball;
+        y = D_80109798_boulder_ball + speedSq * (D_80109754_boulder_ball >= 0.0f ? -36.75f : 36.75f);
         D_80109798_boulder_ball = y;
         D_80109754_boulder_ball = velocity = D_80109754_boulder_ball + D_800EB748_minigame;
         if (y < 0.0f) {
@@ -356,9 +350,6 @@ void func_80106410_boulder_ball(omObjData *object) {
         Hu3DModelPosSet(object->model[1], 0.0f, D_80109798_boulder_ball, 0.0f);
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_04_boulder_ball/12DD30", func_80106410_boulder_ball);
-#endif
 
 void func_80106B58_boulder_ball(omObjData *object) {
     D_800EC1C0_minigame_ObjData *work;

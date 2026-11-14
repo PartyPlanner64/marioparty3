@@ -268,7 +268,6 @@ void func_80105D5C_etch_n_catch(void) {
     camera->up.z = -0.8660254f;
 }
 
-#ifdef NON_MATCHING
 void func_80105ED4_etch_n_catch(omObjData *object) {
     s32 voice;
     s8 i;
@@ -325,38 +324,41 @@ void func_80105ED4_etch_n_catch(omObjData *object) {
             case 4:
                 if (D_800EB934_minigame != 0) {
                     for (i = 0; i < 4; i++) {
-                        if (D_801113B0_etch_n_catch.unk06 == 1 &&
-                            (i == D_801113B0_etch_n_catch.unk18[0] || i == D_801113B0_etch_n_catch.unk18[1])) {
-                            func_800E5690_minigame(D_800EC598_minigame[i], 13);
-                            switch (GwPlayer[i].chr) {
-                                case 0:
-                                default:
-                                    voice = 2;
-                                    break;
-                                case 1:
-                                    voice = 3;
-                                    break;
-                                case 2:
-                                    voice = 7;
-                                    break;
-                                case 3:
-                                    voice = 4;
-                                    break;
-                                case 4:
-                                    voice = 5;
-                                    break;
-                                case 5:
-                                    voice = 6;
-                                    break;
-                                case 6:
-                                    voice = 8;
-                                    break;
-                                case 7:
-                                    voice = 9;
-                                    break;
+                        if (D_801113B0_etch_n_catch.unk06 == 1) {
+                            if (i == D_801113B0_etch_n_catch.unk18[0] || i == D_801113B0_etch_n_catch.unk18[1]) {
+                                func_800E5690_minigame(D_800EC598_minigame[i], 13);
+                                switch (GwPlayer[i].chr) {
+                                    case 0:
+                                    default:
+                                        voice = 2;
+                                        break;
+                                    case 1:
+                                        voice = 3;
+                                        break;
+                                    case 2:
+                                        voice = 7;
+                                        break;
+                                    case 3:
+                                        voice = 4;
+                                        break;
+                                    case 4:
+                                        voice = 5;
+                                        break;
+                                    case 5:
+                                        voice = 6;
+                                        break;
+                                    case 6:
+                                        voice = 8;
+                                        break;
+                                    case 7:
+                                        voice = 9;
+                                        break;
+                                }
+                                HuAudFXAllStop();
+                                func_80045ED0_main((voice << 16) | 0x2F);
+                            } else {
+                                func_800E5690_minigame(D_800EC598_minigame[i], 14);
                             }
-                            HuAudFXAllStop();
-                            func_80045ED0_main((voice << 16) | 0x2F);
                         } else {
                             func_800E5690_minigame(D_800EC598_minigame[i], 14);
                         }
@@ -377,9 +379,6 @@ void func_80105ED4_etch_n_catch(omObjData *object) {
         Hu3DCamUpdateMtx(0);
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", func_80105ED4_etch_n_catch);
-#endif
 
 #ifdef NON_MATCHING
 void func_80106334_etch_n_catch(omObjData *object) {

@@ -1314,9 +1314,16 @@ s32 HuWinChoiceGet(s16 winId, s16 arg1, s32 arg2) {
  * prune_preferences drops any v1 preference they have and nothing in
  * regs_someone_prefers excludes v1. `sprite` has no hard reg preference of its
  * own, so find_reg takes v1 first. The original must give `sprite` an a0
- * preference or a v1 conflict that is not yet understood. Tried without
- * success: two separate pointers, a saved s8/s16/s32 previous choice, pointer
- * arithmetic, reversed compare, static inline helpers, and folded `if` blocks.
+ * preference or a v1 conflict that is not yet understood. None of the visible
+ * insns can supply one: the address set is (plus window tmp), so
+ * set_preference only sees `window`, and the loads use (plus sprite 2/4).
+ * `sprite` cannot be local either, because local-alloc would tie it to the
+ * index temp (target keeps the temp in v0 and the pointer in a0). A single-death
+ * `sprite += ...` form does make the chain local and puts it in a0, but it is
+ * still tied. Tried without success: two separate pointers, a saved s8/s16/s32
+ * previous choice, pointer arithmetic, reversed or casted compares, block-scope
+ * or `register` declarations, copies inside the macro, wrapping the stores in
+ * the do/while, static inline helpers, and folded `if` blocks.
  */
 s32 HuWinChoice(s16 winId) {
     TextWindow *window = &winData[winId];

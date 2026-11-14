@@ -756,6 +756,13 @@ void func_8010E40C_mgmode(void) {
 // the copy and the folded pretest. No other function in asm/nonmatchings
 // (besides func_8010E6F0_mgmode) and no matched build output shows a
 // zero-then-copy between two pseudos, so there's no reference pattern.
+// Later passes can't create the copy either: cse_set_around_loop only copies
+// into exit-test temporaries (none of which end up in t3), combine has no
+// LOG_LINK from the pretest to `slot = 0` (only the first use gets one) and
+// cannot split the resulting two-set PARALLEL, and loop.c only emits
+// reg-reg copies for STRICT_LOW_PART partial movables. Also tried the
+// `count` if/else and `==` spellings, swapped `order[i] == rank`, and
+// alternate `pos[i].x` arithmetic; all stay at the same single diff.
 void func_8010E494_mgmode(s16 arg0) {
     Vec pos[4];
     s16 order[4];

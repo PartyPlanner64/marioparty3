@@ -1194,16 +1194,9 @@ void func_80109018_mpiq(void) {
     }
 }
 
-// Logic and instruction sequence match; only register allocation differs.
-// The target keeps i in s3 and 0xAAAAAAAB (for % 3) in s8, spilling
-// &D_8010CB00_mpiq[i] to the stack, and stores D_8010CBA0_mpiq[i] without
-// hoisting the symbol into a register. Here, loop.c hoists D_8010CBA0_mpiq out of
-// the i loop and global-alloc gives s8 to &D_8010CB00_mpiq[i] instead.
-// Local declaration order permutations had no effect.
-#ifdef NON_MATCHING
 void func_80109414_mpiq(void) {
     s32 used[64];
-    s32 answerUsed[5];
+    s32 answerUsed[3];
     s32 mes = 0;
     s32 i;
     s32 j;
@@ -1216,7 +1209,7 @@ void func_80109414_mpiq(void) {
     for (i = 0; i < 10; i++) {
         D_8010CBA0_mpiq[i] = 0;
         while (TRUE) {
-            question = rand8() & 0x3F;
+            question = rand8() % 64;
             if (D_8010C9F8_mpiq != 0) {
                 question = D_8010D020_mpiq;
                 D_8010D020_mpiq++;
@@ -1226,9 +1219,9 @@ void func_80109414_mpiq(void) {
             }
             if (question >= 36) {
                 if (question < 49) {
-                    mes = question * 2 + 0x52B8;
+                    mes = (question - 36) * 2 + 0x5300;
                 } else {
-                    mes = question * 2 + 0x539E;
+                    mes = (question - 49) * 2 + 0x5400;
                 }
                 D_8010CA50_mpiq[i] = mes;
                 func_8010A010_mpiq(i);
@@ -1272,9 +1265,6 @@ void func_80109414_mpiq(void) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_21_mpiq/204F90", func_80109414_mpiq);
-#endif
 
 s32 func_801096C0_mpiq(s32 index, s32 question) {
     s32 list[2][6];

@@ -2877,8 +2877,6 @@ end:
     return 0;
 }
 
-#ifdef NON_MATCHING
-// GCC reloads the input-state address at selectOptions, adding two instructions.
 s32 func_8010C25C_filesel(u32 buttons) {
     if (buttons & 0x1000) {
         D_80114478_filesel.mode = 1;
@@ -2892,17 +2890,20 @@ s32 func_8010C25C_filesel(u32 buttons) {
         if (buttons & 0x800) {
             if (--D_80114478_filesel.row < 0) {
                 D_80114478_filesel.row = 0;
-                goto selectOptions;
-            }
-        } else if (buttons & 0x400) {
-            if (++D_80114478_filesel.row >= 5) {
-                D_80114478_filesel.row = 4;
-            selectOptions:
                 D_80114478_filesel.mode = 1;
                 D_80114478_filesel.option = 8;
                 func_8010B6F4_filesel(8);
                 func_8010BE14_filesel();
                 return 0;
+            }
+        } else if (buttons & 0x400) {
+            if (++D_80114478_filesel.row >= 5) {
+                D_80114478_filesel.row = 4;
+                D_80114478_filesel.mode = 1;
+                D_80114478_filesel.option = 8;
+                func_8010B6F4_filesel(8);
+                func_8010BE14_filesel();
+                goto end;
             }
         } else if (buttons & 0x200) {
             if (--D_80114478_filesel.column < 0) {
@@ -2994,12 +2995,9 @@ s32 func_8010C25C_filesel(u32 buttons) {
         func_8010BDC4_filesel();
         func_8010B684_filesel(D_80114478_filesel.keyboard);
     }
+end:
     return 0;
 }
-
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516D30", func_8010C25C_filesel);
-#endif
 
 #ifdef NON_MATCHING
 // GCC reloads the input-state address at selectOptions, adding two instructions.

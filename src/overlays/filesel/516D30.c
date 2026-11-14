@@ -2481,52 +2481,52 @@ void func_8010B6F4_filesel(s32 arg0) {
     D_8011448C_filesel = 0;
 }
 
-#ifdef NON_MATCHING
-// GCC folds the first alpha conversion; the original keeps the floating-point operations.
 void func_8010B80C_filesel(s32 arg0) {
     s32 frame;
     s32 direction;
     f32 alpha;
-    u32 opacity;
+    u8 opacity;
+    s32 *counter;
 
     frame = D_8011448C_filesel;
     if (frame < 0) {
         frame = -frame;
     }
     direction = D_8011448C_filesel >= 0;
-    alpha = 1.0f;
+    // The do-while(0) ends a CSE block, keeping GCC from folding the alpha math.
+    do {
+        alpha = 1.0f;
+    } while (0);
     frame++;
     if (direction != 0) {
         opacity = alpha * 255.0f;
     } else {
         opacity = (1.0f - alpha) * 255.0f;
     }
-    D_8011448C_filesel = frame;
+    counter = &D_8011448C_filesel;
+    *counter = frame;
     if (direction < 0) {
-        D_8011448C_filesel = -D_8011448C_filesel;
+        *counter = -frame;
     }
     if (arg0 != -1) {
-        func_80106094_filesel(arg0, (u8)opacity);
+        func_80106094_filesel(arg0, opacity);
     }
     if (arg0 != 7) {
-        func_80106094_filesel(7, (u8)opacity);
+        func_80106094_filesel(7, opacity);
     }
     if (arg0 != 8) {
-        func_80106094_filesel(8, (u8)opacity);
+        func_80106094_filesel(8, opacity);
     }
     if (arg0 != 9) {
-        func_80106094_filesel(9, (u8)opacity);
+        func_80106094_filesel(9, opacity);
     }
     if (arg0 != 10) {
-        func_80106094_filesel(10, (u8)opacity);
+        func_80106094_filesel(10, opacity);
     }
     if (arg0 != 11) {
-        func_80106094_filesel(11, (u8)opacity);
+        func_80106094_filesel(11, opacity);
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516D30", func_8010B80C_filesel);
-#endif
 
 INCLUDE_RODATA("asm/nonmatchings/overlays/filesel/516D30", D_80112B18_filesel);
 

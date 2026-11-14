@@ -1213,9 +1213,6 @@ UnkBowser *func_80108800_bowser_toss(s16 arg0) {
     return &D_8010FB8C_bowser_toss[arg0];
 }
 
-// Matches except for case 8, where the target schedules the 100.0f constant load before
-// the bowser->unk_30 load (the identical expression in the case 2/4 loops matches).
-#ifdef NON_MATCHING
 void func_8010882C_bowser_toss(omObjData *object) {
     HuMtx4F rotMtx;
     HuMtx4F mtx;
@@ -1462,7 +1459,10 @@ void func_8010882C_bowser_toss(omObjData *object) {
                 }
                 break;
             case 8:
-                pos.x = bowser->unk_30 + 100.0f - (f32)(u8)(rand8() % 100) * 0.01 * 200.0;
+                // do-while(0) needed to match the scheduling of the 100.0f constant load.
+                do {
+                    pos.x = bowser->unk_30 + 100.0f - (f32)(u8)(rand8() % 100) * 0.01 * 200.0;
+                } while (0);
                 pos.z = bowser->unk_38 + (f32)(u8)(rand8() % 100) * 0.01 * 200.0 * 0.5;
                 pos.y = 0.0f;
                 pitch = -((f32)(u8)(rand8() % 100) * 0.01 * 90.0);
@@ -1477,6 +1477,8 @@ void func_8010882C_bowser_toss(omObjData *object) {
                     bowser->unk_0A = 9;
                     bowser->unk_0C = 0;
                 }
+                break;
+            case 9:
                 break;
         }
         if (bowser->unk_18 >= 0.1f) {
@@ -1499,9 +1501,6 @@ void func_8010882C_bowser_toss(omObjData *object) {
         bowser->unk_0C++;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010882C_bowser_toss);
-#endif
 
 void func_80109DB8_bowser_toss(omObjData *object, f32 angle, HuMtx4F mtx) {
     fmod(object->rot.y + angle, 360.0);

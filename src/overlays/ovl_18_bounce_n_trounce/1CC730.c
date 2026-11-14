@@ -1417,7 +1417,7 @@ s32 func_80109804_bounce_n_trounce(omObjData *object, s16 arg1) {
 
     tile = func_8010AB1C_bounce_n_trounce(object->trans.x, object->trans.z);
     targetTile = func_8010AB1C_bounce_n_trounce(objWork->aiTarget->trans.x, objWork->aiTarget->trans.z);
-    work = objWork;
+    work = objWork; // Second pointer copy is needed for register allocation to match.
     if (abs(tile - targetTile) == 1 || abs(tile - targetTile) == 3) {
         return 0;
     }
@@ -1565,9 +1565,9 @@ void func_80109AF0_bounce_n_trounce(omObjData *object) {
     }
 }
 
-#ifdef NON_MATCHING
 void func_80109F68_bounce_n_trounce(omObjData *object) {
     omObjData *player;
+    BounceNTrounceWork *work;
     f32 dist;
     f32 diff;
     s32 i;
@@ -1578,7 +1578,8 @@ void func_80109F68_bounce_n_trounce(omObjData *object) {
             D_8010AEB0_bounce_n_trounce = 45;
             D_8010AECA_bounce_n_trounce = 1;
             for (i = 0; i < 4; i++) {
-                OM_GET_DATA_PTR(D_8010AEDC_bounce_n_trounce[i], BounceNTrounceWork)->radius = 50.0f;
+                work = OM_GET_DATA_PTR(D_8010AEDC_bounce_n_trounce[i], BounceNTrounceWork);
+                work->radius = 50.0f;
             }
             break;
         case 1:
@@ -1598,7 +1599,8 @@ void func_80109F68_bounce_n_trounce(omObjData *object) {
                 }
                 if (D_8010AEBC_bounce_n_trounce == 1) {
                     for (i = 0; i < 4; i++) {
-                        if (OM_GET_DATA_PTR(D_8010AEDC_bounce_n_trounce[i], BounceNTrounceWork)->state == 4) {
+                        work = OM_GET_DATA_PTR(D_8010AEDC_bounce_n_trounce[i], BounceNTrounceWork);
+                        if (work->state == 4) {
                             D_8010AEBE_bounce_n_trounce = i;
                             D_8010ABB0_bounce_n_trounce.unk18[0] = D_8010AEBE_bounce_n_trounce;
                             D_8010AEB2_bounce_n_trounce = 3;
@@ -1615,7 +1617,8 @@ void func_80109F68_bounce_n_trounce(omObjData *object) {
         case 2:
             func_800E6F0C_minigame(4);
             for (i = 0; i < 4; i++) {
-                if (OM_GET_DATA_PTR(D_8010AEDC_bounce_n_trounce[i], BounceNTrounceWork)->state == 4) {
+                work = OM_GET_DATA_PTR(D_8010AEDC_bounce_n_trounce[i], BounceNTrounceWork);
+                if (work->state == 4) {
                     Hu3DMotionShiftSet(D_8010AEDC_bounce_n_trounce[i]->model[1],
                                        Hu3DData[D_8010AEDC_bounce_n_trounce[i]->motion[5]].motId, 0, 6, 0);
                 }
@@ -1687,9 +1690,6 @@ void func_80109F68_bounce_n_trounce(omObjData *object) {
             break;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_18_bounce_n_trounce/1CC730", func_80109F68_bounce_n_trounce);
-#endif
 
 void func_8010A664_bounce_n_trounce(omObjData *object) {
     f32 maxY;

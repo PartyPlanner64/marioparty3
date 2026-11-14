@@ -180,8 +180,6 @@ void func_8010C46C_fridged_bridges(HmfModel *model, HuMtx4F mtx) {
     guMtxF2L(mtx, &MTXBuf[MTXBufNum]);
 }
 
-#ifdef NON_MATCHING
-// Register allocation differs (work/model/grid/loop counters land in different s-registers).
 // Variant of func_80020E94_main that batches the visible objects of each of the
 // three object layers into a single display list per layer.
 void func_8010C738_fridged_bridges(FridgedBridgesCamCollWork *work, HmfModel *model) {
@@ -196,7 +194,6 @@ void func_8010C738_fridged_bridges(FridgedBridgesCamCollWork *work, HmfModel *mo
     s32 z;
     s32 cell;
     s32 object;
-    s32 i;
     f32 x0;
     f32 x1;
     f32 z0;
@@ -251,38 +248,51 @@ void func_8010C738_fridged_bridges(FridgedBridgesCamCollWork *work, HmfModel *mo
             x1 = x0 + cellWidth;
             object = grid->unk_14[cell];
             if (object != -1) {
-                if (func_80021550_main(x0, z0, tri) == TRUE || func_80021550_main(x1, z0, tri) == TRUE ||
-                    func_80021550_main(x0, z1, tri) == TRUE || func_80021550_main(x1, z1, tri) == TRUE) {
+                if (func_80021550_main(x0, z0, tri) == TRUE) {
+                    func_8010CDE4_fridged_bridges(0, work, model->hmf, object);
+                } else if (func_80021550_main(x1, z0, tri) == TRUE) {
+                    func_8010CDE4_fridged_bridges(0, work, model->hmf, object);
+                } else if (func_80021550_main(x0, z1, tri) == TRUE) {
+                    func_8010CDE4_fridged_bridges(0, work, model->hmf, object);
+                } else if (func_80021550_main(x1, z1, tri) == TRUE) {
                     func_8010CDE4_fridged_bridges(0, work, model->hmf, object);
                 }
             }
             object = grid->unk_18[cell];
             if (object != -1) {
-                if (func_80021550_main(x0, z0, tri) == TRUE || func_80021550_main(x1, z0, tri) == TRUE ||
-                    func_80021550_main(x0, z1, tri) == TRUE || func_80021550_main(x1, z1, tri) == TRUE) {
+                if (func_80021550_main(x0, z0, tri) == TRUE) {
+                    func_8010CDE4_fridged_bridges(1, work, model->hmf, object);
+                } else if (func_80021550_main(x1, z0, tri) == TRUE) {
+                    func_8010CDE4_fridged_bridges(1, work, model->hmf, object);
+                } else if (func_80021550_main(x0, z1, tri) == TRUE) {
+                    func_8010CDE4_fridged_bridges(1, work, model->hmf, object);
+                } else if (func_80021550_main(x1, z1, tri) == TRUE) {
                     func_8010CDE4_fridged_bridges(1, work, model->hmf, object);
                 }
             }
             object = grid->unk_1C[cell];
             if (object != -1) {
-                if (func_80021550_main(x0, z0, tri) == TRUE || func_80021550_main(x1, z0, tri) == TRUE ||
-                    func_80021550_main(x0, z1, tri) == TRUE || func_80021550_main(x1, z1, tri) == TRUE) {
+                if (func_80021550_main(x0, z0, tri) == TRUE) {
+                    func_8010CDE4_fridged_bridges(2, work, model->hmf, object);
+                } else if (func_80021550_main(x1, z0, tri) == TRUE) {
+                    func_8010CDE4_fridged_bridges(2, work, model->hmf, object);
+                } else if (func_80021550_main(x0, z1, tri) == TRUE) {
+                    func_8010CDE4_fridged_bridges(2, work, model->hmf, object);
+                } else if (func_80021550_main(x1, z1, tri) == TRUE) {
                     func_8010CDE4_fridged_bridges(2, work, model->hmf, object);
                 }
             }
         }
     }
-    for (i = 0; i < 3; i++) {
-        if (work->dlCount[i] != 0) {
-            gSPEndDisplayList(&work->gfx[i][work->dlCount[i]]);
-            func_80024DF0_main(&work->hmf[i], 0, &MTXBuf[MTXBufNum], ident);
+    // The column counter is reused as the layer index here.
+    for (x = 0; x < 3; x++) {
+        if (work->dlCount[x] != 0) {
+            gSPEndDisplayList(&work->gfx[x][work->dlCount[x]]);
+            func_80024DF0_main(&work->hmf[x], 0, &MTXBuf[MTXBufNum], ident);
         }
     }
     MTXBufNum++;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/21CAC0", func_8010C738_fridged_bridges);
-#endif
 
 #ifdef NON_MATCHING
 // GCC threads the jump between the two identical dlCount checks, which the original does not.

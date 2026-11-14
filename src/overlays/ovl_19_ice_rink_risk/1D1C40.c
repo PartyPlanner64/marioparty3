@@ -731,6 +731,16 @@ f32 func_80107F24_ice_rink_risk(omObjData *object, Hu3DSphere *sphere, Vec *norm
     return floorY;
 }
 
+// NON_MATCHING: the target hoists both the 0.0f and 1000.0f compare constants
+// out of the loop (0.0f in $f24, 1000.0f in $s4), which needs loop.c's
+// threshold * savings * lifetime >= insn_count (61) test to pass for 0.0f.
+// Indexing D_800EBE70_minigame directly makes its address the first movable,
+// dropping the threshold to 58 so the 0.0f constant (life 1) stays in the loop.
+// Reading through a local pointer lets 0.0f be hoisted, but the pointer is then
+// loaded before the loop entry test and 0.0f/1000.0f swap register classes.
+// Tried: do-while(0) wrapper (fixes $f/$s assignment, 0.0f still not hoisted),
+// a redundant second `dist < 0.0f` test (hoists 0.0f but leaves an extra bc1f),
+// a `zero` local, continue/if forms, compare spellings, assignment in condition.
 #ifdef NON_MATCHING
 void func_80107F58_ice_rink_risk(omObjData *object, f32 x, f32 y, f32 z) {
     IceRinkRiskPuckWork *work = OM_GET_DATA_PTR(object, IceRinkRiskPuckWork);
@@ -739,12 +749,13 @@ void func_80107F58_ice_rink_risk(omObjData *object, f32 x, f32 y, f32 z) {
     f32 dx, dy, dz;
     f32 dist;
     s32 i;
+    omObjData **objs = D_800EBE70_minigame;
 
     for (i = 0; i < D_801085F8_ice_rink_risk; i++) {
         if (i == work->unk56) {
             continue;
         }
-        other = D_800EBE70_minigame[i];
+        other = objs[i];
         otherWork = other->data;
         dx = other->trans.x - (x + D_800EBE2C_minigame);
         dy = other->trans.y - y;

@@ -1605,13 +1605,6 @@ s32 func_8010A4B4_marios_puzzle_party(s32 board, s32 x, s32 y) {
     return !(i < 4);
 }
 
-// NON_MATCHING: only register allocation differs in the tail. x should be in s2,
-// the loop-hoisted &D_801161D8[board] in s4 (first loop) / s3 (bobbing loop).
-// global-alloc priority of x (4 refs / 45 insns) is just below the first loop's
-// hoisted pointer (3 refs / 16 insns), so the pointer takes s2 first. Tried: loop
-// forms (while/for/if+do-while), declaration orders, s16/u16 types, casts, temps,
-// x = D + 42 split into two statements (fixes regs but breaks delay slot fill).
-#ifdef NON_MATCHING
 void func_8010A588_marios_puzzle_party(void) {
     s32 board = (s32)HuPrcCurrentGet()->user_data;
     MarioPuzzlePartyCursor *next = &D_80116308_marios_puzzle_party[board];
@@ -1654,7 +1647,10 @@ void func_8010A588_marios_puzzle_party(void) {
         HuPrcVSleep();
     }
     y = 130;
-    HuSprPosSet(D_801161D8_marios_puzzle_party[board], 0, x, y);
+    // do-while (0) adds loop weight to x's refs so it wins s2 in global alloc.
+    do {
+        HuSprPosSet(D_801161D8_marios_puzzle_party[board], 0, x, y);
+    } while (0);
     angle = 0.0f;
     while (TRUE) {
         angle += 8.0f;
@@ -1665,9 +1661,6 @@ void func_8010A588_marios_puzzle_party(void) {
         HuPrcVSleep();
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1F_marios_puzzle_party/1F3B90", func_8010A588_marios_puzzle_party);
-#endif
 
 void func_8010A958_marios_puzzle_party(void) {
     s32 board = (s32)HuPrcCurrentGet()->user_data;

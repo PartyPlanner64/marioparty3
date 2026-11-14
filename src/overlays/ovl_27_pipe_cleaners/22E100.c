@@ -569,13 +569,9 @@ void func_80106E10_pipe_cleaners(omObjData *obj) {
     Hu3DMotionTimeSet(obj->model[0], 0.0f);
 }
 
-// NON_MATCHING: the |time - 20| branches are laid out differently (target keeps an explicit jump over the
-// else block).
-#ifdef NON_MATCHING
 void func_80106FD8_pipe_cleaners(omObjData *obj, u16 chr, f32 time, s32 motion) {
     f32 base;
     f32 range;
-    f32 scale;
 
     range = base = 1.0f;
     if (motion < 3) {
@@ -609,14 +605,12 @@ void func_80106FD8_pipe_cleaners(omObjData *obj, u16 chr, f32 time, s32 motion) 
     }
     if (range == 0.0f) {
         Hu3DModelScaleSet(obj->model[1], base, 1.0f, base);
+    } else if (time < 20.0f) {
+        Hu3DModelScaleSet(obj->model[1], base + (20.0f - time) / range, 1.0f, base + (20.0f - time) / range);
     } else {
-        scale = (time < 20.0f) ? 20.0f - time : time - 20.0f;
-        Hu3DModelScaleSet(obj->model[1], base + scale / range, 1.0f, base + scale / range);
+        Hu3DModelScaleSet(obj->model[1], base + (time - 20.0f) / range, 1.0f, base + (time - 20.0f) / range);
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80106FD8_pipe_cleaners);
-#endif
 
 void func_80107114_pipe_cleaners(omObjData *obj) {
     PipeCleanerWork *work = &D_8010AB30_pipe_cleaners[obj->work[0]];

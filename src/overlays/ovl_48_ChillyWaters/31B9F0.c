@@ -7070,8 +7070,6 @@ void func_80118E2C_ChillyWaters() {
     }
 }
 
-// Only mismatch: `order + 1 - work->count` gets folded to `order - (count - 1)` when computing `idx`.
-#ifdef NON_MATCHING
 void MB1Ev_SnowmanRoll(void) {
     Vec playerPos;
     Vec snowmanPos;
@@ -7090,6 +7088,7 @@ void MB1Ev_SnowmanRoll(void) {
     s32 frames;
     s32 count;
     s32 idx;
+    s32 temp;
     f32 spacing;
     f32 dist;
     f32 gravity;
@@ -7208,7 +7207,7 @@ void MB1Ev_SnowmanRoll(void) {
                                                         D_8011FAE0_ChillyWaters));
         HuPrcChildWatch();
         HuVecCopy3F(&playerPos, &MBMasuGet(D_8011E64C_ChillyWaters[path])->coords);
-        idx = (order + 1 - work->count < 0) ? -(order + 1 - work->count) : order + 1 - work->count;
+        idx = (order - (work->count - 1) < 0) ? -(order - (work->count - 1)) : order - (work->count - 1);
         switch (work->count) {
             case 2:
                 playerPos.x += D_8011E664_ChillyWaters[idx][0];
@@ -7281,12 +7280,12 @@ void MB1Ev_SnowmanRoll(void) {
                 break;
         }
         if (GwSystem.current_player_index == work->player && (player->rev & 0x80)) {
-            idx = player->nlink;
+            temp = player->nlink;
             player->nlink = player->blink;
-            player->blink = idx;
-            idx = player->nidx;
+            player->blink = temp;
+            temp = player->nidx;
             player->nidx = player->bidx;
-            player->bidx = idx;
+            player->bidx = temp;
         }
     }
     motion = (u16 *)D_80101734_shared_board[0];
@@ -7296,9 +7295,6 @@ void MB1Ev_SnowmanRoll(void) {
     MBPlayerMotionLoad(work->player, 6, motion[1]);
     omDelPrcObj(NULL);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_48_ChillyWaters/31B9F0", MB1Ev_SnowmanRoll);
-#endif
 
 s32 MB1Ev_SnowmanPathGet(s32 path) {
     GW_PLAYER *player;

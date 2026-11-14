@@ -6761,8 +6761,6 @@ void MB1Ev_ItemRobBox(void) {
     func_80110024_ChillyWaters();
 }
 
-// Only mismatch: the `success` flag is reused from v0 for its first test instead of being reloaded from the stack.
-#ifdef NON_MATCHING
 void MB1Ev_TuruturuMain(void) {
     Vec dest;
     Vec target;
@@ -6790,7 +6788,11 @@ void MB1Ev_TuruturuMain(void) {
     system = &GwSystem;
     MBPlayerMotionLoad(system->current_player_index, 5, 10);
     MBPlayerMotionLoad(system->current_player_index, 6, 16);
-    success = MBRandCheck100(((GwSystem.boardData.halfWordBytes[1] >> system->current_player_index) & 1) ? 90 : 70) != 0;
+    if ((GwSystem.boardData.halfWordBytes[1] >> system->current_player_index) & 1) {
+        success = MBRandCheck100(90) != 0;
+    } else {
+        success = MBRandCheck100(70) != 0;
+    }
     if (!success) {
         GwSystem.boardData.halfWordBytes[1] |= 1 << system->current_player_index;
         mbWalkNum = 0;
@@ -6951,9 +6953,6 @@ void MB1Ev_TuruturuMain(void) {
         MBItemKSuitEnd();
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_48_ChillyWaters/31B9F0", MB1Ev_TuruturuMain);
-#endif
 
 void MB1Ev_Turuturu() {
     GW_PLAYER *player;

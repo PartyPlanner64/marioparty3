@@ -675,8 +675,6 @@ void func_80106DEC_selmenu(omObjData *obj) {
     espPosSet(D_8010A206_selmenu, x - 4, y);
 }
 
-#ifdef NON_MATCHING
-// The initial textOfs value is constant-folded into the sprite y positions, and shadowOfs/textOfs registers swap.
 void func_80107924_selmenu(omObjData *obj) {
     u32 x;
     s32 y;
@@ -688,6 +686,9 @@ void func_80107924_selmenu(omObjData *obj) {
     sprintf(D_800D5218_main, D_80108C90_selmenu[D_8010A070_selmenu * 10 + D_8010A072_selmenu].name);
     x = (320 - strlen(D_800D5218_main) * 8) / 2;
     y = (D_8010A072_selmenu + 10) * 9;
+    // The do-while(0) ends a CSE block, keeping GCC from folding textOfs into the sprite positions.
+    do {
+    } while (0);
     if (y - D_80109810_selmenu > 48) {
         if (--D_80109818_selmenu == 0) {
             D_8010A210_selmenu[D_80109814_selmenu] = espEntry(D_8010A208_selmenu, 0, 1);
@@ -734,9 +735,6 @@ void func_80107924_selmenu(omObjData *obj) {
     fontcolor = 15;
     print8(x, y - (u16)D_80109810_selmenu, D_800D5218_main);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/selmenu/552F50", func_80107924_selmenu);
-#endif
 
 void func_80107DEC_selmenu(omObjData *obj) {
     obj->func = func_80107DFC_selmenu;

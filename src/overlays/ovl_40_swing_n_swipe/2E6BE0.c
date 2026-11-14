@@ -1540,18 +1540,6 @@ s16 func_8010B8EC_swing_n_swipe(s32 arg0) {
     return temp;
 }
 
-#ifdef NON_MATCHING
-// Only remaining diff: z and the hoisted 100.0f constant have swapped
-// registers (target: z in f22, 100.0f in f20). Global alloc gives z higher
-// priority (3 refs / ~37 insns) than the constant-equivalent 100.0f pseudo,
-// whose live length local-alloc doubles (3 refs / 64).
-// The dead `li s1, 3` comes from a variable holding 3 whose only use inside
-// the loop is cancelled by combine after flow (so it stays live); `i + j - j`
-// reproduces this exactly but is surely not the original code.
-// Reusing `pz` for the z computation makes it a multi-block pseudo, which
-// stops local-alloc from tying the pos.z load to dz (matches f2/f12 usage).
-// Tried without success for the z/100.0f swap: dist temporaries, radius
-// variables, comparison forms, and x/z/dx/dz/px/pz variable-reuse sweeps.
 s16 func_8010B920_swing_n_swipe(void) {
     omObjData *obj = D_8010C140_swing_n_swipe;
     f32 x;
@@ -1568,19 +1556,22 @@ s16 func_8010B920_swing_n_swipe(void) {
     z = pz;
     j = 3;
     for (i = 0; i < 5; i++) {
+        // TODO: `j` is an otherwise unused variable that the original code
+        // keeps live (dead `li s1, 3`); `i + j - j` is an unknown stand-in.
         px = Hu3DData[D_8010C170_swing_n_swipe[i + j - j][0]].pos.x;
         pz = Hu3DData[D_8010C170_swing_n_swipe[i + j - j][0]].pos.z;
         dx = x - px;
         dz = z - pz;
-        if (HuSqrtf(dx * dx + dz * dz) < 100.0f) {
-            return 1;
-        }
+        // The do-while(0) raises the loop depth weighting of the 100.0f
+        // constant use, needed to match float register allocation.
+        do {
+            if (HuSqrtf(dx * dx + dz * dz) < 100.0f) {
+                return 1;
+            }
+        } while (0);
     }
     return 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_40_swing_n_swipe/2E6BE0", func_8010B920_swing_n_swipe);
-#endif
 
 s16 func_8010BA40_swing_n_swipe(s16 index) {
     omObjData *obj = D_8010C140_swing_n_swipe;

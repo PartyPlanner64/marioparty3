@@ -1615,14 +1615,15 @@ omObjData *func_80109CEC_modesel(s32 arg0) {
     return obj;
 }
 
-#ifdef NON_MATCHING
-// Float register allocation differs for the clamped scale.
 void func_80109DB8_modesel(omObjData *obj) {
     s32 index = obj->work[0];
     s32 i = index - 7;
     s32 timer = obj->work[1];
-    f32 t = 1.0f - timer * 0.1f;
-    f32 scale = (t < 0.0f) ? 0.0f : t;
+    f32 t = timer * 0.1f;
+    f32 scale;
+
+    t = 1.0f - t;
+    scale = (t < 0.0f) ? 0.0f : t;
 
     func_8010B75C_modesel(index, 0.0f, (D_80110C68_modesel[i].unk_0C.y - 10.0f) * scale + 10.0f, 0.0f, 0.0f);
     if (timer < 10) {
@@ -1630,9 +1631,6 @@ void func_80109DB8_modesel(omObjData *obj) {
     }
     obj->work[1] = timer;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F8140", func_80109DB8_modesel);
-#endif
 
 omObjData *func_80109E90_modesel(s32 arg0) {
     s32 i = arg0 - 7;

@@ -1376,8 +1376,6 @@ void func_8010A174_motor_rooter(FuncContext *ctx) {
     }
 }
 
-#ifdef NON_MATCHING
-// The body matches, but GCC allocates a 0x60 stack frame instead of 0xC0.
 void func_8010A440_motor_rooter(FuncContext *ctx) {
     D_801137C8_motor_rooter_Struct *player = ctx->data;
     omObjData *object = player->unk00;
@@ -1396,6 +1394,7 @@ void func_8010A440_motor_rooter(FuncContext *ctx) {
     s16 itemTargetDirection;
     s16 obstacleDifference;
     s16 itemDifference;
+    s32 unused[24]; // Unreferenced, but present in the stack frame.
 
     if (!ctx->state) {
         switch (GwPlayer[m254_playerId[object->work[0]]].cpu_difficulty) {
@@ -1551,9 +1550,6 @@ void func_8010A440_motor_rooter(FuncContext *ctx) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_36_motor_rooter/main", func_8010A440_motor_rooter);
-#endif
 
 void func_8010ABC4_motor_rooter(FuncContext *ctx) {
     D_801137C8_motor_rooter_Struct *player = ctx->data;

@@ -800,23 +800,21 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_31_vine_with_me/276470", D_8011204
 // https://decomp.me/scratch/mEGSE
 INCLUDE_ASM("asm/nonmatchings/overlays/ovl_31_vine_with_me/276470", func_801087BC_vine_with_me);
 
-// TODO: only works with -Wa,--vr4300mul-off.
-#ifdef NON_MATCHING
 void func_8010ADB0_vine_with_me(Gfx **arg0, s32 arg1, s32 arg2) {
-    f32 sp10[2];
-    s16 var_s1;
-    s16 var_t3;
-    s16 var_t8;
-    s16 var_t9;
-    s32 temp_a3_3;
-    s32 temp_s2;
-    s32 temp_t2;
-    s32 var_a2;
-    s32 var_v1_2;
-    HuSprite_Unk84_Unk00_Struct *temp_s5;
-    HuSprite_Unk84_Unk00_Struct *new_s5;
-    HuSprite *temp_t1;
-    s32 temp_3b;
+    f32 xOffset[2];
+    s16 i;
+    s16 k;
+    s16 row;
+    s16 j;
+    s32 signX;
+    s32 xPos;
+    s32 y2;
+    s32 n;
+    s32 x2;
+    HuSprite_Unk84_Unk00_Struct *frame;
+    HuSprite_Unk84_Unk00_Struct *iconFrame;
+    HuSprite *sprite;
+    s32 x;
 
     D_80111C28_vine_with_me = (D_80111C28_vine_with_me == 0);
     if (D_80111C28_vine_with_me != 0) {
@@ -824,140 +822,142 @@ void func_8010ADB0_vine_with_me(Gfx **arg0, s32 arg1, s32 arg2) {
     }
     gSPDisplayList(gMainGfxPos++, D_80111BE0_vine_with_me);
     gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
-    temp_t1 = HuSprGet(D_800CD1DC_main[D_80115640_vine_with_me.unk00[16]].unk04, 0);
-    temp_s5 = &temp_t1->unk_84->unk00[temp_t1->unk_90];
-    gDPLoadTLUT_pal16(gMainGfxPos++, 0, temp_t1->unk_84->unk0C);
+    sprite = HuSprGet(D_800CD1DC_main[D_80115640_vine_with_me.unk00[16]].unk04, 0);
+    frame = &sprite->unk_84->unk00[sprite->unk_90];
+    gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->unk0C);
     gDPSetRenderMode(gMainGfxPos++, G_RM_AA_TEX_EDGE, G_RM_AA_TEX_EDGE2);
     gDPSetAlphaCompare(gMainGfxPos++, G_AC_THRESHOLD);
-    gDPSetBlendColor(gMainGfxPos++, 0x00, 0x00, 0x00, 0xE0);
-    for (var_s1 = 0; var_s1 < 2; var_s1++) {
-        if (D_801155D8_vine_with_me[var_s1][3] > 720.0) {
-            D_801155D8_vine_with_me[var_s1][3] -= 654.5454545454545;
+    gDPSetBlendColor(gMainGfxPos++, 0, 0, 0, 224);
+    for (i = 0; i < 2; i++) {
+        if (D_801155D8_vine_with_me[i][3] > 720.0) {
+            D_801155D8_vine_with_me[i][3] -= 654.5454545454545;
         }
-        if (D_801155D8_vine_with_me[var_s1][3] < 0.0) {
-            D_801155D8_vine_with_me[var_s1][3] += 654.5454545454545;
+        if (D_801155D8_vine_with_me[i][3] < 0.0) {
+            D_801155D8_vine_with_me[i][3] += 654.5454545454545;
         }
-        sp10[var_s1] = -D_801155D8_vine_with_me[var_s1][3] * 0.22;
+        xOffset[i] = -D_801155D8_vine_with_me[i][3] * 0.22;
     }
-    for (var_t8 = 0; var_t8 < 3; var_t8++) {
-        s32 var_s4 = 15;
+    for (row = 0; row < 3; row++) {
+        s32 rowHeight = 15;
 
-        gDPLoadTextureTile_4b(gMainGfxPos++, temp_s5->unk00, G_IM_FMT_CI, 124, 0, 0, var_t8 * var_s4, 124, var_t8 * var_s4 + 15, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        for (var_t9 = 0; var_t9 < 2; var_t9++) {
-            s32 var_t1_x = var_t8 * var_s4;
+        gDPLoadTextureTile_4b(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, 124, 0, 0, row * rowHeight, 124, row * rowHeight + 15, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        for (j = 0; j < 2; j++) {
+            s32 y1 = row * rowHeight;
 
-            if (var_t1_x >= 0x1D) {
+            if (y1 > 28) {
                 continue;
             }
-            temp_t2 = var_t1_x + var_s4 + 1;
-            for (var_t3 = 0; var_t3 < 4; var_t3++) {
-                s32 new_a1 = var_t3 * 0x24 * 4;
+            y2 = y1 + rowHeight + 1;
+            for (k = 0; k < 4; k++) {
+                s32 left = k * 144;
 
-                if ((s32)((var_t3 * 0x240 + (s32)(sp10[var_t9] * 4.0f)) * D_80115604_vine_with_me + D_80115608_vine_with_me) < 0xA00) {
-                    if ((s32)((var_t1_x + var_t9 * 0x79) * 4 * D_80115604_vine_with_me + D_80115638_vine_with_me) < 0x780) {
+                if ((s32)((k * 144 * 4 + (s32)(xOffset[j] * 4.0f)) * D_80115604_vine_with_me + D_80115608_vine_with_me) < 0xA00) {
+                    if ((s32)((y1 + j * 121) * 4 * D_80115604_vine_with_me + D_80115638_vine_with_me) < 0x780) {
                         gSPScisTextureRectangle(gMainGfxPos++,
-                                                (s32)((var_t3 * 0x24 * 4 * 4 + (s32)(sp10[var_t9] * 4.0f)) * D_80115604_vine_with_me + D_80115608_vine_with_me),
-                                                (s32)((var_t1_x + var_t9 * 0x79) * 4 * D_80115604_vine_with_me + D_80115638_vine_with_me),
-                                                (s32)(((new_a1 + 0x7C) * 4 + (s32)(sp10[var_t9] * 4.0f)) * D_80115604_vine_with_me + D_80115608_vine_with_me),
-                                                (s32)(((temp_t2 >= 0x1D) ? (var_t9 * 0x79 * 4 + 0x6E) : ((temp_t2 + var_t9 * 0x79) * 4)) * D_80115604_vine_with_me + D_80115638_vine_with_me),
-                                                0, 0, var_t8 * var_s4 * 32, (s32)(D_80115558_vine_with_me * 1024.0f), (s32)(D_80115558_vine_with_me * 1024.0f));
+                                                (s32)((k * 144 * 4 + (s32)(xOffset[j] * 4.0f)) * D_80115604_vine_with_me + D_80115608_vine_with_me),
+                                                (s32)((y1 + j * 121) * 4 * D_80115604_vine_with_me + D_80115638_vine_with_me),
+                                                (s32)(((left + 124) * 4 + (s32)(xOffset[j] * 4.0f)) * D_80115604_vine_with_me + D_80115608_vine_with_me),
+                                                (s32)(((y2 > 28) ? (j * 121 * 4 + 110) : ((y2 + j * 121) * 4)) * D_80115604_vine_with_me + D_80115638_vine_with_me),
+                                                0, 0, row * rowHeight * 32, (s32)(D_80115558_vine_with_me * 1024.0f), (s32)(D_80115558_vine_with_me * 1024.0f));
                     }
                 }
             }
         }
     }
-    temp_t1 = HuSprGet(D_800CD1DC_main[D_80115640_vine_with_me.unk00[5]].unk04, 0);
-    temp_s5 = &temp_t1->unk_84->unk00[temp_t1->unk_90];
-    gDPLoadTLUT_pal16(gMainGfxPos++, 0, temp_t1->unk_84->unk0C);
+    sprite = HuSprGet(D_800CD1DC_main[D_80115640_vine_with_me.unk00[5]].unk04, 0);
+    frame = &sprite->unk_84->unk00[sprite->unk_90];
+    gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->unk0C);
     gDPSetRenderMode(gMainGfxPos++, G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2);
     gDPSetAlphaCompare(gMainGfxPos++, G_AC_NONE);
-    gDPSetBlendColor(gMainGfxPos++, 0x00, 0x00, 0x00, 0x00);
-    for (var_t3 = 0; var_t3 < 6; var_t3++) {
-        gDPLoadTextureTile_4b(gMainGfxPos++, temp_s5->unk00, G_IM_FMT_CI, 320, 0,
-                              var_t3 * 0x3B, 0, var_t3 * 0x3B + 0x3C, 0x22, 0,
+    gDPSetBlendColor(gMainGfxPos++, 0, 0, 0, 0);
+    for (k = 0; k < 6; k++) {
+        gDPLoadTextureTile_4b(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, 320, 0,
+                              k * 59, 0, k * 59 + 60, 34, 0,
                               G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        temp_3b = var_t3 * 0x3B;
-        var_v1_2 = temp_3b + 0x3C;
-        var_v1_2 = MIN(0x140, var_v1_2);
-        if ((s32)(temp_3b * 4 * D_80115604_vine_with_me + D_80115608_vine_with_me) < 0xA00) {
-            if ((s32)(D_80115604_vine_with_me * 412.0f + D_80115638_vine_with_me) < 0x780) {
-                gDPLoadTLUT_pal16(gMainGfxPos++, 0, temp_t1->unk_84->unk0C);
-                gSPScisTextureRectangle(gMainGfxPos++,
-                                        (s32)(temp_3b * 4 * D_80115604_vine_with_me + D_80115608_vine_with_me),
-                                        (s32)(D_80115604_vine_with_me * 412.0f + D_80115638_vine_with_me),
-                                        (s32)(var_v1_2 * 4 * D_80115604_vine_with_me + D_80115608_vine_with_me),
-                                        (s32)(D_80115604_vine_with_me * 548.0f + D_80115638_vine_with_me),
-                                        0, temp_3b * 32, 0, (s32)(D_80115558_vine_with_me * 1024.0f), (s32)(D_80115558_vine_with_me * 1024.0f));
-            }
+        x = k * 59;
+        x2 = x + 60;
+        x2 = MIN(320, x2);
+        if ((s32)(x * 4 * D_80115604_vine_with_me + D_80115608_vine_with_me) >= 0xA00) {
+            continue;
         }
+        if ((s32)(D_80115604_vine_with_me * 412.0f + D_80115638_vine_with_me) >= 0x780) {
+            continue;
+        }
+        gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->unk0C);
+        gSPScisTextureRectangle(gMainGfxPos++,
+                                (s32)(x * 4 * D_80115604_vine_with_me + D_80115608_vine_with_me),
+                                (s32)(D_80115604_vine_with_me * 412.0f + D_80115638_vine_with_me),
+                                (s32)(x2 * 4 * D_80115604_vine_with_me + D_80115608_vine_with_me),
+                                (s32)(D_80115604_vine_with_me * 548.0f + D_80115638_vine_with_me),
+                                0, x * 32, 0, (s32)(D_80115558_vine_with_me * 1024.0f), (s32)(D_80115558_vine_with_me * 1024.0f));
     }
     gDPSetCombineMode(gMainGfxPos++, G_CC_DECALRGBA, G_CC_DECALRGBA);
     gDPSetRenderMode(gMainGfxPos++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
     gDPSetAlphaCompare(gMainGfxPos++, G_AC_THRESHOLD);
-    gDPSetBlendColor(gMainGfxPos++, 0x00, 0x00, 0x00, 0xE0);
-    for (var_s1 = 0; var_s1 < 2; var_s1++) {
-        temp_s2 = (D_80115540_vine_with_me[var_s1] * (1.0 - D_80115548_vine_with_me[var_s1] / 20.0) + D_801155FC_vine_with_me[var_s1] * (D_80115548_vine_with_me[var_s1] / 20.0)) * 14.0 + 32.0;
-        temp_t1 = HuSprGet(D_800CD1DC_main[D_80115640_vine_with_me.unk00[6 + D_80115530_vine_with_me[var_s1]->unk03]].unk04, 0);
-        temp_s5 = new_s5 = &temp_t1->unk_84->unk00[temp_t1->unk_90];
-        if (D_80115530_vine_with_me[var_s1]->unk03 == 7) {
-            gDPLoadTLUT_pal256(gMainGfxPos++, temp_t1->unk_84->unk0C);
+    gDPSetBlendColor(gMainGfxPos++, 0, 0, 0, 224);
+    for (i = 0; i < 2; i++) {
+        xPos = (D_80115540_vine_with_me[i] * (1.0 - D_80115548_vine_with_me[i] / 20.0) + D_801155FC_vine_with_me[i] * (D_80115548_vine_with_me[i] / 20.0)) * 14.0 + 32.0;
+        sprite = HuSprGet(D_800CD1DC_main[D_80115640_vine_with_me.unk00[6 + D_80115530_vine_with_me[i]->unk03]].unk04, 0);
+        // The extra alias is needed for matching register allocation.
+        frame = iconFrame = &sprite->unk_84->unk00[sprite->unk_90];
+        if (D_80115530_vine_with_me[i]->unk03 == 7) {
+            gDPLoadTLUT_pal256(gMainGfxPos++, sprite->unk_84->unk0C);
         } else {
-            gDPLoadTLUT_pal16(gMainGfxPos++, 0, temp_t1->unk_84->unk0C);
+            gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->unk_84->unk0C);
         }
-        if ((s32)(temp_s2 * 4 * D_80115604_vine_with_me + D_80115608_vine_with_me) < 0xA00 && (s32)((var_s1 * 64 + 0x1A0) * D_80115604_vine_with_me + D_80115638_vine_with_me) < 0x780) {
-            if (D_80115530_vine_with_me[var_s1]->unk03 == 7) {
-                gDPLoadTextureTile(gMainGfxPos++, temp_s5->unk00, G_IM_FMT_CI, G_IM_SIZ_8b, 18, 0, 0, 0, 18, 18, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-            } else {
-                gDPLoadTextureTile_4b(gMainGfxPos++, temp_s5->unk00, G_IM_FMT_CI, 18, 0, 0, 0, 18, 18, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-            }
-            gSPScisTextureRectangle(gMainGfxPos++,
-                                    (s32)(temp_s2 * 4 * D_80115604_vine_with_me + D_80115608_vine_with_me),
-                                    (s32)((var_s1 * 0x12 + 0x66) * 4 * D_80115604_vine_with_me + D_80115638_vine_with_me),
-                                    (s32)((temp_s2 + 0x12) * 4 * D_80115604_vine_with_me + D_80115608_vine_with_me),
-                                    (s32)(((var_s1 * 0x12 + 0x78) * 4 - 3) * D_80115604_vine_with_me + D_80115638_vine_with_me),
-                                    0, 0, 0, (s32)(D_80115558_vine_with_me * 1024.0f), (s32)(D_80115558_vine_with_me * 1024.0f));
+        if ((s32)(xPos * 4 * D_80115604_vine_with_me + D_80115608_vine_with_me) >= 0xA00) {
+            continue;
         }
+        if ((s32)((i * 64 + 416) * D_80115604_vine_with_me + D_80115638_vine_with_me) >= 0x780) {
+            continue;
+        }
+        if (D_80115530_vine_with_me[i]->unk03 == 7) {
+            gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, G_IM_SIZ_8b, 18, 0, 0, 0, 18, 18, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        } else {
+            gDPLoadTextureTile_4b(gMainGfxPos++, frame->unk00, G_IM_FMT_CI, 18, 0, 0, 0, 18, 18, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        }
+        gSPScisTextureRectangle(gMainGfxPos++,
+                                (s32)(xPos * 4 * D_80115604_vine_with_me + D_80115608_vine_with_me),
+                                (s32)((i * 18 + 102) * 4 * D_80115604_vine_with_me + D_80115638_vine_with_me),
+                                (s32)((xPos + 18) * 4 * D_80115604_vine_with_me + D_80115608_vine_with_me),
+                                (s32)(((i * 18 + 120) * 4 - 3) * D_80115604_vine_with_me + D_80115638_vine_with_me),
+                                0, 0, 0, (s32)(D_80115558_vine_with_me * 1024.0f), (s32)(D_80115558_vine_with_me * 1024.0f));
     }
     gDPSetTextureLUT(gMainGfxPos++, G_TT_NONE);
     if (D_8011563C_vine_with_me >= 3 && D_8011558C_vine_with_me < 2) {
-        temp_t1 = HuSprGet(D_800CD1DC_main[D_80115640_vine_with_me.unk00[15]].unk04, 0);
-        temp_s5 = &temp_t1->unk_84->unk00[temp_t1->unk_90];
+        sprite = HuSprGet(D_800CD1DC_main[D_80115640_vine_with_me.unk00[15]].unk04, 0);
+        frame = &sprite->unk_84->unk00[sprite->unk_90];
         gDPSetTextureLUT(gMainGfxPos++, G_TT_NONE);
-        for (var_t8 = 0; var_t8 < 4; var_t8++) {
-            gDPLoadTextureTile(gMainGfxPos++, temp_s5->unk00, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 0,
-                               0, var_t8 * 8, 64, var_t8 * 8 + 8 + (var_t8 != 3), 0,
+        for (row = 0; row < 4; row++) {
+            gDPLoadTextureTile(gMainGfxPos++, frame->unk00, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 0,
+                               0, row * 8, 64, row * 8 + 8 + (row != 3), 0,
                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-            for (var_a2 = 0; var_a2 < 2; var_a2++) {
-                s32 temp_s32;
-                s32 temp_37 = 0x37;
+            for (n = 0; n < 2; n++) {
+                s32 top = 55;
 
-                if (D_801155A4_vine_with_me[var_a2] < 5) {
+                if (D_801155A4_vine_with_me[n] < 5) {
                     continue;
                 }
-                temp_s32 = (-D_801155A4_vine_with_me[var_a2] + 7) * 0x240 + 0x1E4;
-                temp_a3_3 = temp_s32 + (s32)((12.0 - D_801155D8_vine_with_me[var_a2][2] * 0.16) * 4.0);
-                if ((s32)(temp_a3_3 * D_80115604_vine_with_me + D_80115608_vine_with_me) >= 0xA00) {
+                signX = ((-D_801155A4_vine_with_me[n] + 7) * 144 + 121) * 4 + (s32)((12.0 - D_801155D8_vine_with_me[n][2] * 0.16) * 4.0);
+                if ((s32)(signX * D_80115604_vine_with_me + D_80115608_vine_with_me) >= 0xA00) {
                     continue;
                 }
-                if ((s32)((var_a2 * 0x7D + (var_t8 * 8 + (temp_37 - 2))) * 4 * D_80115604_vine_with_me + D_80115638_vine_with_me) >= 0x780) {
+                if ((s32)((n * 125 + (row * 8 + (top - 2))) * 4 * D_80115604_vine_with_me + D_80115638_vine_with_me) >= 0x780) {
                     continue;
                 }
                 gSPScisTextureRectangle(gMainGfxPos++,
-                                        (s32)(temp_a3_3 * D_80115604_vine_with_me + D_80115608_vine_with_me),
-                                        (s32)((var_a2 * 0x7D + (var_t8 * 8 + temp_37)) * 4 * D_80115604_vine_with_me + D_80115638_vine_with_me),
-                                        (s32)((temp_a3_3 + 0xFC) * D_80115604_vine_with_me + D_80115608_vine_with_me),
-                                        (s32)((var_a2 * 0x7D + (var_t8 * 8 + temp_37) + 7 + (var_t8 != 3 ? 2 : 0)) * 4 * D_80115604_vine_with_me + D_80115638_vine_with_me),
-                                        0, 0, var_t8 * 256, (s32)(D_80115558_vine_with_me * 1024.0f), (s32)(D_80115558_vine_with_me * 1024.0f));
+                                        (s32)(signX * D_80115604_vine_with_me + D_80115608_vine_with_me),
+                                        (s32)((n * 125 + (row * 8 + top)) * 4 * D_80115604_vine_with_me + D_80115638_vine_with_me),
+                                        (s32)((signX + 252) * D_80115604_vine_with_me + D_80115608_vine_with_me),
+                                        (s32)((n * 125 + (row * 8 + top) + 7 + (row != 3 ? 2 : 0)) * 4 * D_80115604_vine_with_me + D_80115638_vine_with_me),
+                                        0, 0, row * 256, (s32)(D_80115558_vine_with_me * 1024.0f), (s32)(D_80115558_vine_with_me * 1024.0f));
             }
         }
     }
     gDPPipeSync(gMainGfxPos++);
-    gDPSetBlendColor(gMainGfxPos++, 0xFF, 0xFF, 0xFF, 0x00);
+    gDPSetBlendColor(gMainGfxPos++, 255, 255, 255, 0);
     gDPPipeSync(gMainGfxPos++);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_31_vine_with_me/276470", func_8010ADB0_vine_with_me);
-#endif
 
 void func_8010CEA8_vine_with_me(omObjData *arg0) {
     func_8010CF18_vine_with_me(arg0, 0, 0);

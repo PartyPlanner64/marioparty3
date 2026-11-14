@@ -1792,7 +1792,6 @@ void func_8010A62C_modesel(s32 arg0) {
     obj->work[1] = 0;
 }
 
-#ifdef NON_MATCHING
 void func_8010A674_modesel(omObjData *obj) {
     s32 index = obj->work[0];
     s32 timer = obj->work[1];
@@ -1808,7 +1807,9 @@ void func_8010A674_modesel(omObjData *obj) {
     f32 y;
     f32 z;
 
-    bob = sindf(timer * 1.4117647f);
+    // diff is reused to hold the float timer; a separate temporary changes register allocation.
+    diff = timer;
+    bob = sindf(diff * 1.4117647f);
     HuVecCopy3F(&base, &D_80110CB0_modesel);
     HuVecCopyXYZ(&pos, base.x, base.y + bob * 5.0f * 5.0f, base.z);
     func_8010653C_modesel(index, pos.x, pos.y, pos.z);
@@ -1828,9 +1829,6 @@ void func_8010A674_modesel(omObjData *obj) {
     func_801064D4_modesel(10, 0.0f, angle, 0.0f);
     obj->work[1] = timer;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F8140", func_8010A674_modesel);
-#endif
 
 void func_8010A84C_modesel(omObjData *obj) {
     Vec pos;

@@ -1837,8 +1837,6 @@ void func_8010B5A8_three_door_monty(void) {
     }
 }
 
-#ifdef NON_MATCHING
-// Only differs in s0/s1 allocation of obj and entry.
 void func_8010B7B8_three_door_monty(omObjData *obj) {
     ThreeDoorMontyEntry *entry = &D_8010D260_three_door_monty[obj->work[0] * 4 + 13 + obj->work[1]];
     ThreeDoorMontyEntry *entries[4];
@@ -1887,7 +1885,11 @@ void func_8010B7B8_three_door_monty(omObjData *obj) {
                         D_8010EC40_three_door_monty = 1;
                     }
                     if (obj->work[1] == 1) {
-                        entry->unk_04 = 11;
+                        // The do-while(0) raises entry's loop-weighted ref count so it
+                        // outranks obj in register allocation (entry in s0, obj in s1).
+                        do {
+                            entry->unk_04 = 11;
+                        } while (0);
                         func_8000BD50_main(entry->unk_40[1], 11);
                     } else {
                         entry->unk_04++;
@@ -1927,9 +1929,6 @@ void func_8010B7B8_three_door_monty(omObjData *obj) {
             break;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2B_three_door_monty/24A760", func_8010B7B8_three_door_monty);
-#endif
 
 void func_8010BC08_three_door_monty(omObjData *obj) {
     ThreeDoorMontyEntry *entry = &D_8010D260_three_door_monty[obj->work[0] * 4 + 13 + obj->work[1]];

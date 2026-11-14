@@ -1605,6 +1605,12 @@ s32 func_8010A4B4_marios_puzzle_party(s32 board, s32 x, s32 y) {
     return !(i < 4);
 }
 
+// NON_MATCHING: only register allocation differs in the tail. x should be in s2,
+// the loop-hoisted &D_801161D8[board] in s4 (first loop) / s3 (bobbing loop).
+// global-alloc priority of x (4 refs / 45 insns) is just below the first loop's
+// hoisted pointer (3 refs / 16 insns), so the pointer takes s2 first. Tried: loop
+// forms (while/for/if+do-while), declaration orders, s16/u16 types, casts, temps,
+// x = D + 42 split into two statements (fixes regs but breaks delay slot fill).
 #ifdef NON_MATCHING
 void func_8010A588_marios_puzzle_party(void) {
     s32 board = (s32)HuPrcCurrentGet()->user_data;
@@ -1622,23 +1628,19 @@ void func_8010A588_marios_puzzle_party(void) {
     } else {
         HuSprAttrSet(next->blockSprites[0], 0, HUSPR_ATTR_DISPOFF);
     }
-    angle = 0.0f;
-    while (TRUE) {
+    for (angle = 0.0f; angle != 360.0f;) {
         angle += 10.0f;
         if (angle > 360.0f) {
             angle = 360.0f;
         }
         HuSprZRotSet(D_801161D8_marios_puzzle_party[board], 0, sindf(angle) * 45.0f);
         HuPrcVSleep();
-        if (angle == 360.0f) {
-            break;
-        }
     }
     HuSprGrpKill(D_801161E8_marios_puzzle_party[board]);
     group = D_801161E8_marios_puzzle_party[board] = HuSprGrpCreate(1, 5);
     HuSprGrpMemberSet(group, 0, D_80116096_marios_puzzle_party, 0);
     HuSprPosSet(group, 0, D_80110080_marios_puzzle_party[board][0] + 42,
-                D_801161A8_marios_puzzle_party[board] - 161 + D_80110080_marios_puzzle_party[board][1]);
+                D_80110080_marios_puzzle_party[board][1] - 161 + D_801161A8_marios_puzzle_party[board]);
     HuSprAttrReset(group, 0, 0xFFFF);
     HuSprAttrSet(group, 0, 0x4008);
     HuSprPriSet(group, 0, 0x300);
@@ -1652,7 +1654,7 @@ void func_8010A588_marios_puzzle_party(void) {
         HuPrcVSleep();
     }
     y = 130;
-    HuSprPosSet(D_801161D8_marios_puzzle_party[board], 0, x, 130);
+    HuSprPosSet(D_801161D8_marios_puzzle_party[board], 0, x, y);
     angle = 0.0f;
     while (TRUE) {
         angle += 8.0f;

@@ -1951,24 +1951,24 @@ void func_8010BD98_etch_n_catch(omObjData *object) {
     espPosSet(D_801113A8_etch_n_catch[1], D_8010C6A4_etch_n_catch[1][0], D_8010C6A4_etch_n_catch[1][1]);
 }
 
-#ifdef NON_MATCHING
 void func_8010BE84_etch_n_catch(omObjData *object) {
     D_800EC1C0_minigame_ObjData *work;
     HuSprite *sprite;
     u16 *palette;
     u8 *grid;
-    s16 spriteId;
+    s16 spriteId1;
+    s16 spriteId2;
     s32 i;
 
-    spriteId = func_8000B838_main(0x330003);
+    spriteId1 = func_8000B838_main(0x330003);
     D_8010C842_etch_n_catch = HuSprGrpCreate(1, 0);
-    HuSprGrpMemberSet(D_8010C842_etch_n_catch, 0, spriteId, 0);
+    HuSprGrpMemberSet(D_8010C842_etch_n_catch, 0, spriteId1, 0);
     HuSprAttrReset(D_8010C842_etch_n_catch, 0, 0xFFFF);
     HuSprAttrSet(D_8010C842_etch_n_catch, 0, 0x5000);
     HuSprPosSet(D_8010C842_etch_n_catch, 0, 160, 120);
-    spriteId = func_8000B838_main(0x330004);
+    spriteId2 = func_8000B838_main(0x330004);
     D_8010C844_etch_n_catch = HuSprGrpCreate(1, 0);
-    HuSprGrpMemberSet(D_8010C844_etch_n_catch, 0, spriteId, 0);
+    HuSprGrpMemberSet(D_8010C844_etch_n_catch, 0, spriteId2, 0);
     HuSprAttrReset(D_8010C844_etch_n_catch, 0, 0xFFFF);
     HuSprAttrSet(D_8010C844_etch_n_catch, 0, 0x5000);
     HuSprPosSet(D_8010C844_etch_n_catch, 0, 160, 120);
@@ -1991,13 +1991,12 @@ void func_8010BE84_etch_n_catch(omObjData *object) {
     palette[ETCH_N_CATCH_CELL_EDGE] = 0xFFFE;
     for (i = 0; i < D_8010C846_etch_n_catch * D_8010C848_etch_n_catch; i++) {
         if (i > D_8010C846_etch_n_catch * 50 && i < D_8010C846_etch_n_catch * 51) {
-            *grid = ETCH_N_CATCH_CELL_EDGE;
+            *grid++ = ETCH_N_CATCH_CELL_EDGE;
         } else if (i > D_8010C846_etch_n_catch * 200 && i < D_8010C846_etch_n_catch * 201) {
-            *grid = ETCH_N_CATCH_CELL_EDGE;
+            *grid++ = ETCH_N_CATCH_CELL_EDGE;
         } else {
-            *grid = 0;
+            *grid++ = 0;
         }
-        grid++;
     }
     grid = D_8010C84C_etch_n_catch;
     for (i = 30; i < D_8010C846_etch_n_catch * D_8010C848_etch_n_catch; i += D_8010C846_etch_n_catch) {
@@ -2018,9 +2017,6 @@ void func_8010BE84_etch_n_catch(omObjData *object) {
     work->unk08 = 0.5f;
     func_800E1370_minigame(object, 2, 0.0f);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", func_8010BE84_etch_n_catch);
-#endif
 
 void func_8010C2F4_etch_n_catch(void) {
     s32 i;

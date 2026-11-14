@@ -1298,9 +1298,6 @@ void func_80109400_curtain_call(void) {
     }
 }
 
-#ifdef NON_MATCHING
-// Register allocation differs: the original keeps speed in a0 and shares a1
-// between the D_8010CF1C_curtain_call address, frame and i; GCC swaps them.
 void func_8010954C_curtain_call(void) {
     s16 frame;
     s8 speed = 0;
@@ -1329,6 +1326,8 @@ void func_8010954C_curtain_call(void) {
                 speed = 6;
             } else if (frame < 285) {
                 speed = D_8010B25C_curtain_call[D_8010CE86_curtain_call][2];
+            } else {
+                speed = 6;
             }
             break;
         case 2:
@@ -1346,6 +1345,8 @@ void func_8010954C_curtain_call(void) {
                 speed = 6;
             } else if (frame < 330) {
                 speed = D_8010B268_curtain_call[D_8010CE86_curtain_call][3];
+            } else {
+                speed = 6;
             }
             break;
     }
@@ -1355,9 +1356,6 @@ void func_8010954C_curtain_call(void) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_22_curtain_call/20BFA0", func_8010954C_curtain_call);
-#endif
 
 void func_8010982C_curtain_call(void) {
     CurtainCallEntry *entry;

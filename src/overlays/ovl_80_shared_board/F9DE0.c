@@ -2,16 +2,17 @@
 #include "105D50.h"
 #include "ECA50.h"
 #include "FA250.h"
+#include "F9DE0.h"
 
-//TODO: properly split data/rodata in F5E80.c and F9DE0.c
+// TODO: properly split data/rodata in F5E80.c and F9DE0.c
 
 extern u16 D_80101204_shared_board[24];
 extern u32 D_801011A0_shared_board;
-extern char* D_801011C0_shared_board[];
+extern char *D_801011C0_shared_board[];
 extern u32 D_801011E0_shared_board;
-extern omObjData* D_80101200_shared_board;
+extern omObjData *D_80101200_shared_board;
 extern s16 D_80102DA0_shared_board;
-extern Object* D_80105710_shared_board;
+extern Object *D_80105710_shared_board;
 
 // void MBKSuitKill(void);
 // void func_80017358_main(s16, s32, s16, const char*);
@@ -19,8 +20,8 @@ extern Object* D_80105710_shared_board;
 // void MBMotionKill(s16 arg0);
 // s16 func_800D8E88_shared_board(s32);
 
-static void MBKSuitMain(omObjData* arg0) {
-    GW_PLAYER* player;
+static void MBKSuitMain(omObjData *arg0) {
+    GW_PLAYER *player;
 
     player = MBPlayerGet(arg0->work[0]);
     HuVecCopy3F(&D_801011FC_shared_board->coords, &player->player_obj->coords);
@@ -38,56 +39,39 @@ const char D_80102220_shared_board[] = " 2 VS 2 GAME";
 const char D_80102230_shared_board[] = " 1 VS 3 GAME";
 const char D_80102240_shared_board[] = "4=PLAYER GAME";
 
+const u8 D_80102250_shared_board[] = { 0, 0, 1, 2, 3, 3, 3, 3, 3, 4 };
+const u16 D_8010225C_shared_board[] = { 0xEE, 0xEF, 0xF0, 0xF1, 0xF2, 0xF3, 0xF4, 0xF5 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_80_shared_board/F9DE0", D_80102250_shared_board);
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_80_shared_board/F9DE0", D_8010225C_shared_board);
+const char D_8010226C_shared_board[] = "c005_000-bmerge1";
+const char D_80102280_shared_board[] = "Luigi1-atama_1";
+const char D_80102290_shared_board[] = "c003_000-head_1";
+const char D_801022A0_shared_board[] = "C002_000b-bmerge10_1";
+const char D_801022B8_shared_board[] = "c001_000-atama_2";
+const char D_801022CC_shared_board[] = "atama_2";
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_80_shared_board/F9DE0", D_8010226C_shared_board);
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_80_shared_board/F9DE0", D_80102280_shared_board);
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_80_shared_board/F9DE0", D_80102290_shared_board);
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_80_shared_board/F9DE0", D_801022A0_shared_board);
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_80_shared_board/F9DE0", D_801022B8_shared_board);
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_80_shared_board/F9DE0", D_801022CC_shared_board);
+Object *MBKSuitCreate(void) {
+    GW_PLAYER *player;
+    omObjData *obj;
+    u32 playerIndex;
 
-// char const D_8010226C_shared_board[] = "c005_000-bmerge1";
-// char const D_80102280_shared_board[] = "Luigi1-atama_1";
-// char const D_80102290_shared_board[] = "c003_000-head_1";
-// char const D_801022A0_shared_board[] = "C002_000b-bmerge10_1";
-// char const D_801022B8_shared_board[] = "c001_000-atama_2";
-// char const D_801022CC_shared_board[] = "atama_3";
-
-// INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_80_shared_board/F9DE0", D_801022CC_shared_board);
-
-// const char D_801022CC_shared_board[] = "atama_3";
-
-extern const char D_801022CC_shared_board[];
-//matches, rodata/data issues
-// Object* MBKSuitCreate(void) {
-//     GW_PLAYER* temp_s1;
-//     Object* temp_v0_2;
-//     omObjData* temp_v0;
-//     u32 temp_s0;
-
-//     temp_s0 = GwSystem.current_player_index;
-//     temp_s1 = MBPlayerGet(CUR_PLAYER);
-//     MBKSuitKill();
-//     if (temp_s0 < 4) {
-//         D_801011FC_shared_board = MBModelCreate(0x23, &D_801011A0_shared_board);
-//         temp_v0 = omAddObj(0x3FFF, 0U, 0U, -1, MBKSuitMain);
-//         D_80101200_shared_board = temp_v0;
-//         temp_v0->work[0] = temp_s0 & 0xFF; //? forced cast, remaining from mp1 where work is u8?
-//         func_80017358_main(temp_s1->player_obj->omObj1->model[0], D_801011C0_shared_board[GwPlayer[temp_s0].chr], D_801011FC_shared_board->omObj1->model[0], D_801022CC_shared_board);
-//         HuVecCopy3F(&D_801011FC_shared_board->coords, &temp_s1->player_obj->coords);
-//     } else {
-//         temp_v0_2 = MBModelCreate(8, &D_801011E0_shared_board);
-//         D_801011FC_shared_board = temp_v0_2;
-//         GwPlayer[4].player_obj = temp_v0_2;
-//         MBModelDispOff(temp_v0_2);
-//     }
-//     return D_801011FC_shared_board;
-// }
-
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_80_shared_board/F9DE0", MBKSuitCreate);
+    playerIndex = GwSystem.current_player_index;
+    player = MBPlayerGet(CUR_PLAYER);
+    MBKSuitKill();
+    if (playerIndex < 4) {
+        D_801011FC_shared_board = MBModelCreate(0x23, &D_801011A0_shared_board);
+        obj = omAddObj(0x3FFF, 0, 0, -1, MBKSuitMain);
+        D_80101200_shared_board = obj;
+        obj->work[0] = playerIndex & 0xFF;
+        func_80017358_main(player->player_obj->omObj1->model[0], D_801011C0_shared_board[GwPlayer[playerIndex].chr],
+                           D_801011FC_shared_board->omObj1->model[0], "atama_3");
+        HuVecCopy3F(&D_801011FC_shared_board->coords, &player->player_obj->coords);
+    } else {
+        D_801011FC_shared_board = MBModelCreate(8, &D_801011E0_shared_board);
+        GwPlayer[4].player_obj = D_801011FC_shared_board;
+        MBModelDispOff(D_801011FC_shared_board);
+    }
+    return D_801011FC_shared_board;
+}
 
 void MBKSuitKill(void) {
     if (D_801011FC_shared_board != NULL) {
@@ -145,7 +129,7 @@ void MBKSuitMotionLoad(s32 arg0, s32 arg1) {
     s16 motion;
     s32 dataNum;
     u32 i;
-    Object* obj = D_801011FC_shared_board;
+    Object *obj = D_801011FC_shared_board;
 
     objData = obj->omObj1;
 
@@ -155,7 +139,7 @@ void MBKSuitMotionLoad(s32 arg0, s32 arg1) {
         }
     }
 
-    dataNum = D_80101204_shared_board[i+1] | 0x000A0000;
+    dataNum = D_80101204_shared_board[i + 1] | 0x000A0000;
     motion = objData->motion[arg0];
 
     if ((motion != -1) && (obj->unk46 != arg0)) {

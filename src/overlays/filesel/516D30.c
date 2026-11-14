@@ -248,7 +248,7 @@ extern s32 D_80114470_filesel;
 extern FileSelectInputState D_80114478_filesel;
 extern s32 D_801146D8_filesel;
 extern s32 D_801129A0_filesel;
-extern u8 D_801129A4_filesel[];
+extern u8 D_801129A4_filesel[][2];
 extern s32 D_801146D4_filesel;
 extern Process *D_80114468_filesel;
 extern omObjData *D_8011446C_filesel;
@@ -4880,25 +4880,19 @@ void func_80112684_filesel(void) {
     omAddObj(6, 0, 0, -1, func_80112630_filesel);
 }
 
-#ifdef NON_MATCHING
 void func_801126C0_filesel(s32 arg0, u8 *arg1, u8 *arg2) {
-    s32 index;
-
-    *arg1 = D_801129A4_filesel[0];
-    *arg2 = D_801129A4_filesel[1];
+    *arg1 = D_801129A4_filesel[0][0];
+    *arg2 = D_801129A4_filesel[0][1];
     if (_CheckFlag(0x18)) {
         if (_CheckFlag(0x28)) {
-            index = arg0 * 2;
+            *arg1 = D_801129A4_filesel[arg0][0];
+            *arg2 = D_801129A4_filesel[arg0][1];
         } else {
-            index = (arg0 - 1) * 2;
+            *arg1 = D_801129A4_filesel[arg0 - 1][0];
+            *arg2 = D_801129A4_filesel[arg0 - 1][1];
         }
-        *arg1 = D_801129A4_filesel[index];
-        *arg2 = D_801129A4_filesel[index + 1];
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516D30", func_801126C0_filesel);
-#endif
 
 void func_80112758_filesel(void) {
     func_80050ABC_main();

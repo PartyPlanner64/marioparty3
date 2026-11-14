@@ -1566,8 +1566,6 @@ void func_80109508_slot_synch(void) {
     D_8010DF84_slot_synch = omAddObj(0x19, 0, 6, -1, func_80109754_slot_synch);
 }
 
-#ifdef NON_MATCHING
-// The constant 64 is hoisted into a saved register instead of 90.0f, which shifts register allocation.
 void func_80109754_slot_synch(omObjData *object) {
     UnkSlotSpin *spin;
     HmfModel *model;
@@ -1577,7 +1575,6 @@ void func_80109754_slot_synch(omObjData *object) {
     f32 baseAngle;
     f32 angle;
     f32 shadowScale;
-    f32 targetRot;
     s32 modelId;
     s32 i;
     s32 j;
@@ -1591,10 +1588,11 @@ void func_80109754_slot_synch(omObjData *object) {
         }
         if (spin->unk_26 != 4) {
             modelId = spin->unk_04[spin->unk_26];
+            model = &Hu3DData[modelId];
         } else {
             modelId = spin->unk_04[0];
+            model = &Hu3DData[modelId];
         }
-        model = &Hu3DData[modelId];
         switch (spin->unk_28) {
             case 0:
                 spin->unk_34[1] += 20.0000002980232239;
@@ -1672,12 +1670,11 @@ void func_80109754_slot_synch(omObjData *object) {
                 }
                 if (!(spin->unk_01 & 1)) {
                     spin->unk_34[0] -= spin->unk_30;
-                    targetRot = -90.0f;
+                    spin->unk_34[4] = func_8010C1C4_slot_synch(-90.0f, spin->unk_34[4], 15.0f);
                 } else {
                     spin->unk_34[0] += spin->unk_30;
-                    targetRot = 90.0f;
+                    spin->unk_34[4] = func_8010C1C4_slot_synch(90.0f, spin->unk_34[4], 15.0f);
                 }
-                spin->unk_34[4] = func_8010C1C4_slot_synch(targetRot, spin->unk_34[4], 15.0f);
                 if (fabs(spin->unk_34[0]) >= 600.0) {
                     spin->unk_2A = 0;
                     spin->unk_28 = 64;
@@ -1720,13 +1717,6 @@ void func_80109754_slot_synch(omObjData *object) {
         spin->unk_2A++;
     }
 }
-#else
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_14_slot_synch/1AC970", D_8010DC78_slot_synch);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_14_slot_synch/1AC970", D_8010DC7C_slot_synch);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_14_slot_synch/1AC970", func_80109754_slot_synch);
-#endif
 
 s16 func_80109FA4_slot_synch(s16 arg0, s16 arg1) {
     UnkSlotSpin *spin;

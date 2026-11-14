@@ -51,7 +51,7 @@ extern s16 D_8010FE94_chancetime[3];
 extern u16 D_8010FE9A_chancetime;
 extern s32 D_8010FEC4_chancetime;
 extern ChanceTimeUnkFE3C D_8010FE3C_chancetime[];
-extern ChanceTimeUnkFE3C D_8010FD68_chancetime[];
+extern const ChanceTimeUnkFE3C D_8010FD68_chancetime[];
 extern ChanceTimeTransfer D_8010FF60_chancetime[20];
 extern ChanceTimeUnkFED0 D_8010FED0_chancetime[3];
 extern s16 D_8010FEB0_chancetime[3][3];
@@ -717,8 +717,10 @@ s32 func_8010E4C4_chancetime(void) {
     return D_8010FC18_chancetime;
 }
 
-// Only diff: GCC combine moves the `coins` table load after the `stars` load, so the two
-// stack stores are emitted in swapped order (and the blez delay slot is not filled).
+// Only diff (score 26): CSE turns the `coinAmount` load into a sign-extension of `coins`, and
+// combine then moves the `coins` table load down next to it (after the `stars` load). The
+// coins/stars loads and stack stores are therefore swapped, so the store placed in the blez
+// delay slot is coins' instead of stars'.
 #ifdef NON_MATCHING
 void func_8010E4D0_chancetime(omObjData *object) {
     f32 coinsF[2];

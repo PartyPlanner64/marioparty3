@@ -546,12 +546,12 @@ void func_80107098_dizzy_dinghies(omObjData *object) {
     func_8001C814_main(object->model[3], 2, 2);
 }
 
-// Only mismatch: operand order of the `or` combining the two D_800A178C_main entries.
-#ifdef NON_MATCHING
 void func_80107738_dizzy_dinghies(omObjData *object, u16 player) {
     func_800E1BA8_minigame_ObjData *work;
     s32 tag;
     s32 charModel;
+    s32 model;
+    s32 motion;
     s32 boatType;
     s32 i;
 
@@ -562,8 +562,9 @@ void func_80107738_dizzy_dinghies(omObjData *object, u16 player) {
     object->data = HuMemAllocTag(0x15C, TAG_OVERLAY);
     memset(object->data, 0, 0x15C);
     work = object->data;
-    charModel = func_8000B108_main(D_800A178C_main[GwPlayer[player].chr][2] | D_800A178C_main[GwPlayer[player].chr][0],
-                                   tag | 4);
+    motion = D_800A178C_main[GwPlayer[player].chr][2];
+    model = D_800A178C_main[GwPlayer[player].chr][0];
+    charModel = func_8000B108_main(model | motion, tag | 4);
     D_8010A020_dizzy_dinghies = boatType = D_800CB894_main;
     object->model[0] = func_8000B108_main(boatType | 0x670000, tag);
     func_80017358_main(charModel, D_80109DCC_dizzy_dinghies[GwPlayer[player].chr], object->model[0],
@@ -671,9 +672,6 @@ void func_80107738_dizzy_dinghies(omObjData *object, u16 player) {
             break;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_46_dizzy_dinghies/316DF0", func_80107738_dizzy_dinghies);
-#endif
 
 void func_80107DE8_dizzy_dinghies(omObjData *object) {
     func_80107738_dizzy_dinghies(object, 0);

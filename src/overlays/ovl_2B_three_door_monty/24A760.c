@@ -283,17 +283,19 @@ void func_80106390_three_door_monty(omObjData *obj, s16 motion, s16 start, s16 e
     }
 }
 
-#ifdef NON_MATCHING
-// Only differs in f8/f10 register allocation of speed and the absolute z delta,
-// like func_801063F4_stacked_deck.
 void func_8010642C_three_door_monty(f32 x0, f32 z0, f32 x1, f32 z1, f32 *velX, f32 *velZ, f32 speed) {
-    f32 dx = x1 - x0;
-    f32 dz = z1 - z0;
+    f32 dx = x1;
+    f32 dz = z1;
+    f32 absDx;
+    f32 absDz;
     f32 delta;
     f32 dist;
     f32 step;
-    f32 absDx = fabsf(dx);
-    f32 absDz = fabsf(dz);
+
+    dx -= x0;
+    dz -= z0;
+    absDx = fabsf(dx);
+    absDz = fabsf(dz);
 
     if (absDz <= absDx) {
         if (dx >= 0.0f) {
@@ -302,8 +304,8 @@ void func_8010642C_three_door_monty(f32 x0, f32 z0, f32 x1, f32 z1, f32 *velX, f
             *velX = speed;
         }
         delta = dz;
-        step = speed;
         dist = absDx;
+        step = speed;
         if (step == 0.0f) {
             step = 1.0f;
         }
@@ -319,8 +321,8 @@ void func_8010642C_three_door_monty(f32 x0, f32 z0, f32 x1, f32 z1, f32 *velX, f
             *velZ = speed;
         }
         delta = dx;
-        step = speed;
         dist = absDz;
+        step = speed;
         if (step == 0.0f) {
             step = 1.0f;
         }
@@ -331,9 +333,6 @@ void func_8010642C_three_door_monty(f32 x0, f32 z0, f32 x1, f32 z1, f32 *velX, f
         *velX = -(delta / step);
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2B_three_door_monty/24A760", func_8010642C_three_door_monty);
-#endif
 
 void func_8010658C_three_door_monty(omObjData *obj, f32 *outX, f32 *outZ, f32 scale) {
     f32 angle = obj->rot.y;

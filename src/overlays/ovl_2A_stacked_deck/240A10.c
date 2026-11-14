@@ -403,25 +403,25 @@ void func_80106780_stacked_deck(omObjData *object) {
     }
 }
 
-#ifdef NON_MATCHING
-// The card state check reads offset 0x04 of the table card as a word (lw) rather
-// than a halfword, despite the halfword stores to the same field.
 void func_801069A0_stacked_deck(omObjData *object) {
     StackedDeckCard *card = &D_8010F730_stacked_deck[object->work[0] + 2];
     func_800E1BA8_minigame_ObjData *data = object->data;
+    StackedDeckCard *other;
     omObjData *cardObj;
     s16 i;
 
     if (card->unk_04[0] == 0 && data->unk5C == 0x200 && data->unk50 == 0x80) {
         card->unk_04[0] = 1;
         for (i = 0; i < 12; i++) {
-            cardObj = STACKED_DECK_CARDS[i].obj;
+            other = &STACKED_DECK_CARDS[i];
+            cardObj = other->obj;
             if (cardObj->trans.x - 90.0f < object->trans.x && object->trans.x < cardObj->trans.x + 90.0f &&
                 cardObj->trans.z - 135.0f < object->trans.z && object->trans.z < cardObj->trans.z + 135.0f &&
-                STACKED_DECK_CARDS[i].unk_04[0] == 1) {
+                // The original reads this halfword field as a word.
+                *(s32 *)other->unk_04 == 1) {
                 card->unk_04[8] = 0;
                 card->unk_04[9] = 0;
-                STACKED_DECK_CARDS[i].unk_04[0] = 1;
+                other->unk_04[0] = 1;
                 D_8010F6F0_stacked_deck = cardObj->work[1];
                 D_80111169_stacked_deck = 6;
             }
@@ -444,9 +444,6 @@ void func_801069A0_stacked_deck(omObjData *object) {
         object->trans.x = 500.0f;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2A_stacked_deck/240A10", func_801069A0_stacked_deck);
-#endif
 
 #ifdef NON_MATCHING
 // Only differs in register allocation in the two player search loops of state 8,

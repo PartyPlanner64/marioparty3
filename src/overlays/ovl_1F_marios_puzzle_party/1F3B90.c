@@ -258,7 +258,7 @@ void func_8010D490_marios_puzzle_party(void);
 void func_8010D9AC_marios_puzzle_party(void);
 void func_8010DB98_marios_puzzle_party(void);
 void func_8010E12C_marios_puzzle_party(void);
-void func_8010E868_marios_puzzle_party(s16 group, s32 time);
+void func_8010E868_marios_puzzle_party(s32 group, s32 time);
 void func_8010EAA0_marios_puzzle_party(void);
 void func_8010ECD8_marios_puzzle_party(void);
 void func_8010EF30_marios_puzzle_party(void);
@@ -2810,7 +2810,7 @@ void func_8010E12C_marios_puzzle_party(void) {
     }
 }
 
-void func_8010E868_marios_puzzle_party(s16 group, s32 time) {
+void func_8010E868_marios_puzzle_party(s32 group, s32 time) {
     s32 minutes;
     s32 tens;
     s32 seconds;
@@ -2835,11 +2835,10 @@ void func_8010E868_marios_puzzle_party(s16 group, s32 time) {
     func_800550F4_main(group, 7, 1);
 }
 
-#ifdef NON_MATCHING
 void func_8010EAA0_marios_puzzle_party(void) {
     s32 group = HuSprGrpCreate(8, 5);
     s32 i;
-    s32 x;
+    s16 x;
 
     HuSprGrpMemberSet(group, 0, D_801160AA_marios_puzzle_party, 0);
     HuSprAttrReset(group, 0, 0xFFFF);
@@ -2872,10 +2871,7 @@ void func_8010EAA0_marios_puzzle_party(void) {
     while (func_800E6E8C_minigame() != 2) {
         HuPrcVSleep();
     }
-    while (D_80116160_marios_puzzle_party != 0) {
-        if (D_80116168_marios_puzzle_party[0] != 0) {
-            break;
-        }
+    while (D_80116160_marios_puzzle_party != 0 && D_80116168_marios_puzzle_party[0] == 0) {
         func_8010E868_marios_puzzle_party(group, D_80116160_marios_puzzle_party * 2);
         HuPrcVSleep();
         D_80116160_marios_puzzle_party--;
@@ -2883,9 +2879,6 @@ void func_8010EAA0_marios_puzzle_party(void) {
     func_8010E868_marios_puzzle_party(group, D_80116160_marios_puzzle_party * 2);
     omDelPrcObj(NULL);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1F_marios_puzzle_party/1F3B90", func_8010EAA0_marios_puzzle_party);
-#endif
 
 void func_8010ECD8_marios_puzzle_party(void) {
     s32 startX = (s32)HuPrcCurrentGet()->user_data;

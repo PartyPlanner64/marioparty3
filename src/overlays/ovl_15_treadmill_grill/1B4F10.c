@@ -550,10 +550,9 @@ void func_80107454_treadmill_grill(omObjData *object, f32 *x, f32 *y, f32 *z) {
     data->unk38 += D_800EB748_minigame * 0.6f;
     func_80108C64_treadmill_grill(object, *x, *y, *z);
 }
-#ifdef NON_MATCHING
-// CPU input logic. Remaining diff is register allocation only (swapped s3/s4, s7/s8 and f20/f22).
-// Some locals are deliberately reused (minX is also used as an angle, dist as the lane width third)
-// to get closer to the original register allocation.
+
+// CPU input logic. minX doubles as the search angle and dist as the lane width third; these reused
+// locals and the do-while around the player load are needed for matching register allocation.
 void func_80107798_treadmill_grill(omObjData *object) {
     func_800E1BA8_minigame_ObjData *data;
     D_800EC1C0_minigame_ObjData *stageData;
@@ -578,9 +577,12 @@ void func_80107798_treadmill_grill(omObjData *object) {
     f32 minDist;
     f32 bestAngle;
     f32 candAngle;
+    f32 rotY;
 
     data = object->data;
-    player = data->unk59;
+    do {
+        player = data->unk59;
+    } while (0);
     pad = data->unk57;
     if (func_800E6E8C_minigame() == 3) {
         data->unk3C *= 0.8f;
@@ -748,8 +750,8 @@ void func_80107798_treadmill_grill(omObjData *object) {
                         nearest = i;
                     }
                     if (dist < 2.0f * data->unk48 + 80.0f) {
-                        minX = data->unk3C;
-                        if (func_800E2ED4_minigame(x, z, sindf(minX), cosdf(minX)) < -0.8f) {
+                        rotY = data->unk3C;
+                        if (func_800E2ED4_minigame(x, z, sindf(rotY), cosdf(rotY)) < -0.8f) {
                             D_800D5558_main[pad] = 0x4000;
                             D_8010B0F8_treadmill_grill[player] = 16;
                             break;
@@ -785,9 +787,6 @@ void func_80107798_treadmill_grill(omObjData *object) {
     }
     D_8010B118_treadmill_grill[player]++;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_15_treadmill_grill/1B4F10", func_80107798_treadmill_grill);
-#endif
 
 void func_801084B4_treadmill_grill(omObjData *object) {
     func_800E1BA8_minigame_ObjData *data;

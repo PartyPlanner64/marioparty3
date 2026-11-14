@@ -1841,30 +1841,26 @@ Vtx_t *func_8010AFF4_popgun_pickoff(s16 playerId) {
     return player->vtx;
 }
 
-#ifdef NON_MATCHING
-// The original sign-extends playerId twice (once for the -1 check and again from a copy for the index).
 s32 func_8010B038_popgun_pickoff(s16 playerId, s16 x, s16 y) {
     PopgunPickoffPlayer *player;
     Vtx_t *vtx;
 
-    if (playerId != -1) {
-        player = D_8010DDD8_popgun_pickoff + playerId;
-        if (player->unk_18 == 3) {
-            player->unk_28 |= 0x80000000;
-            vtx = &player->vtx[4];
-            vtx->ob[0] = x;
-            vtx->ob[1] = -y;
-            vtx->ob[2] = 0;
-            vtx->tc[0] = x * 64;
-            vtx->tc[1] = y * 64;
-            return 1;
-        }
+    if (playerId == -1) {
+        return 0;
     }
-    return 0;
+    player = D_8010DDD8_popgun_pickoff + playerId;
+    if (player->unk_18 != 3) {
+        return 0;
+    }
+    player->unk_28 |= 0x80000000;
+    vtx = &player->vtx[4];
+    vtx->ob[0] = x;
+    vtx->ob[1] = -y;
+    vtx->ob[2] = 0;
+    vtx->tc[0] = x * 64;
+    vtx->tc[1] = y * 64;
+    return 1;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_32_popgun_pickoff/283060", func_8010B038_popgun_pickoff);
-#endif
 
 void func_8010B0D4_popgun_pickoff(s16 playerId, s8 value1, s8 value2, s8 value3, s16 value4) {
     PopgunPickoffPlayer *player;

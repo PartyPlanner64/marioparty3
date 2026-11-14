@@ -1559,38 +1559,41 @@ s32 func_801096C0_mpiq(s32 index, s32 question) {
     return result;
 }
 
-#ifdef NON_MATCHING
 void func_8010A010_mpiq(s32 index) {
     s32 value;
 
     switch (D_8010CA50_mpiq[index]) {
         case 0x5300:
-        case 0x540C:
-            value = func_8010AFAC_mpiq(index, 11, -5, 1);
+            value = rand8() & 0xF;
+            D_8010CBB8_mpiq[index] = value + 0x531B;
+            D_8010CBA0_mpiq[index] |= 2;
             break;
         case 0x5302:
-            value = (u8)(rand8() % 6) + 0x1C60;
+            value = (u8)(rand8() % 6);
+            D_8010CBB8_mpiq[index] = value + 0x1C60;
+            D_8010CBA0_mpiq[index] |= 2;
             break;
         case 0x5316:
-            value = D_8010CC04_mpiq + 0x532B;
+            value = D_8010CC04_mpiq;
+            D_8010CBB8_mpiq[index] = value + 0x532B;
+            D_8010CBA0_mpiq[index] |= 2;
             break;
         case 0x5318:
-            value = D_8010CC04_mpiq + 0x5331;
+            value = D_8010CC04_mpiq;
+            D_8010CBB8_mpiq[index] = value + 0x5331;
+            D_8010CBA0_mpiq[index] |= 2;
             break;
         case 0x541A:
         case 0x541C:
-            value = GwPlayer[rand8() & 3].chr + 0x1C60;
+            value = rand8() & 3;
+            D_8010CBB8_mpiq[index] = GwPlayer[value].chr + 0x1C60;
+            D_8010CBA0_mpiq[index] |= 2;
             break;
         default:
             D_8010CBB8_mpiq[index] = 0;
-            return;
+            break;
     }
-    D_8010CBB8_mpiq[index] = value;
-    D_8010CBA0_mpiq[index] |= 2;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_21_mpiq/204F90", func_8010A010_mpiq);
-#endif
 
 void func_8010A184_mpiq(s32 index) {
     s32 list[4];

@@ -934,8 +934,6 @@ void func_80108020_fowl_play(omObjData *object, s32 arg1, s32 arg2, u16 player, 
     }
 }
 
-#ifdef NON_MATCHING
-// The address of D_800D5558_main[pad] is computed before the func_800E4A90_minigame call in the original.
 void func_80108298_fowl_play(omObjData *object) {
     FowlCharMotions motions = D_8010ED88_fowl_play; // Copied but never read.
     Vec pos;
@@ -1014,6 +1012,7 @@ void func_80108298_fowl_play(omObjData *object) {
         case 9:
             return;
     }
+    buttons = D_800D5558_main[pad]; // Overwritten immediately, but needed to match.
     buttons = func_800E4A90_minigame(object);
     work->prevPos.x = object->trans.x;
     work->prevPos.y = object->trans.y;
@@ -1090,9 +1089,6 @@ void func_80108298_fowl_play(omObjData *object) {
     func_801070FC_fowl_play(object, data->unk48);
     work->buttons = buttons;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3A_fowl_play/2C5B50", func_80108298_fowl_play);
-#endif
 
 void func_80108A70_fowl_play(omObjData *object, f32 x, f32 y, f32 z) {
     s32 i;

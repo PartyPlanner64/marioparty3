@@ -753,13 +753,19 @@ INCLUDE_RODATA("asm/nonmatchings/overlays/mstory4/4C8050", D_80111FC8_mstory4);
 // Remaining differences:
 // - Only the `model` spill slot differs (0x3E in the target vs 0x7E here).
 //   The target frame is 0x40 bytes larger than the locals need, but that space
-//   lies after the reload-allocated `model` slot, i.e. it comes from reload
-//   slots (8 bytes each) for pseudos whose only remaining references are USE
-//   insns, like the one combine leaves for `dist` when it folds `dist / time`
-//   into a constant. The original likely had ~8 more such constant-folded
-//   locals; adding variables for the 4.5f/0.5f rotation steps did not
-//   reproduce it. The `unused` array restores the frame size, but since arrays
-//   are allocated before reload slots, it pushes `model` past it.
+//   lies after the reload-allocated `model` slot, i.e. it comes from 8 more
+//   reload slots (8 bytes each) for pseudos with no remaining insns. `dist` is
+//   one such pseudo: loop.c hoists `dist / time` next to the constant sets,
+//   then combine folds the three insns with `time` as i1 (kept, it is still
+//   used by the loop test) and `dist` as i2; because the result needs a new
+//   i2 pattern, combine does not zero dist's reg_n_refs, so reload gives it a
+//   slot. A variable only reproduces this when it is the later-set operand of
+//   a hoisted constant expression whose other operand stays live. Named
+//   locals for the 4.5f/0.5f rotation steps (e.g. `rotY / time`) add at most
+//   one slot per distinct variable, and extra variables in the `dist` loop
+//   would need separate registers. The `unused` array restores the frame
+//   size, but since arrays are allocated before reload slots, it pushes
+//   `model` past it.
 // - The final wait loop needs `pad` reassigned in the for-loop increment: the
 //   register then is not single-use inside the loop, so loop.c hoists the
 //   address into s0 as in the target (plain `while (!D_800D5558_main[0])`

@@ -681,9 +681,6 @@ void func_8010D580_staff(s16 model, s16 shadow, Vec *start) {
     HuPrcVSleep();
 }
 
-#ifdef NON_MATCHING
-// Register allocation differs: the target keeps &work in a saved register for the
-// sprite setup loop, shifting the model/shadow/grp saved registers.
 void func_8010D998_staff(void) {
     UnkStaff_9 work;
     s16 *stat;
@@ -730,12 +727,17 @@ void func_8010D998_staff(void) {
         work.anims[i] = func_8000B838_main(D_80110FE8_staff[i]);
     }
     grp = HuSprGrpCreate(3, 0);
-    for (i = 0, x = 268; i < 3; i++, x += 12) {
+    for (x = 268, i = 0; i < 3; i++, x += 12) {
         HuSprTPLvlSet(grp, i, 0);
         HuSprAttrReset(grp, i, 0xFFFF);
         HuSprAttrSet(grp, i, 0x9000);
         HuSprScaleSet(grp, i, 1.0f, 1.0f);
-        HuSprGrpMemberSet(grp, i, work.anims[i], 0);
+        {
+            // A local pointer to work is needed for the address to be hoisted out of the loop.
+            UnkStaff_9 *w = &work;
+
+            HuSprGrpMemberSet(grp, i, w->anims[i], 0);
+        }
         func_800550F4_main(grp, i, 0);
         HuSprPriSet(grp, i, 400);
         HuSprPosSet(grp, i, x, 214);
@@ -774,9 +776,6 @@ void func_8010D998_staff(void) {
         HuPrcVSleep();
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/5486A0", func_8010D998_staff);
-#endif
 
 UnkStaff_2 *func_8010DE50_staff(s32 arg0) {
     Process *prc = omAddPrcObj(func_8010DF34_staff, 0x3F00, 0x2000, 0);

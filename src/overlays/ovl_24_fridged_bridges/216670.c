@@ -1795,16 +1795,13 @@ void func_8010B164_fridged_bridges(void) {
     }
 }
 
-#ifdef NON_MATCHING
-// Register allocation differs in case 2 (f2/f4 swapped for the turn angle and difference).
 void func_8010B3EC_fridged_bridges(omObjData *arg0) {
     FridgedBridgesFoe *foe = arg0->data;
     FridgedBridgesPlayer *player = D_8010DA64_fridged_bridges[foe->index]->data;
     f32 step;
     f32 t;
-    f32 prevY;
+    f32 temp; // previous Y while jumping, angle difference while turning
     f32 angle;
-    f32 diff;
 
     switch (foe->state) {
         case 0:
@@ -1826,9 +1823,9 @@ void func_8010B3EC_fridged_bridges(omObjData *arg0) {
             }
             foe->jumpPos += step;
             t = foe->jumpPos - foe->jumpDist / 2.0f;
-            prevY = arg0->trans.y;
+            temp = arg0->trans.y;
             arg0->trans.y = -foe->arcScale * t * t + 60.0f;
-            arg0->rot.x = atan2df(prevY - arg0->trans.y, step);
+            arg0->rot.x = atan2df(temp - arg0->trans.y, step);
             arg0->trans.x += sindf(arg0->rot.y) * step;
             arg0->trans.z += cosdf(arg0->rot.y) * step;
             if (foe->state == 2) {
@@ -1843,17 +1840,17 @@ void func_8010B3EC_fridged_bridges(omObjData *arg0) {
                 angle += 360.0f;
             }
             if (angle != arg0->rot.y) {
-                diff = angle - arg0->rot.y;
-                if (diff < 0.0f) {
-                    diff += 360.0f;
+                temp = angle - arg0->rot.y;
+                if (temp < 0.0f) {
+                    temp += 360.0f;
                 }
-                if (diff < 180.0f) {
-                    if (diff > 13.5f) {
+                if (temp < 180.0f) {
+                    if (temp > 13.5f) {
                         arg0->rot.y += 13.5f;
                     } else {
                         arg0->rot.y = angle;
                     }
-                } else if (360.0f - diff > 13.5f) {
+                } else if (360.0f - temp > 13.5f) {
                     arg0->rot.y -= 13.5f;
                 } else {
                     arg0->rot.y = angle;
@@ -1872,9 +1869,6 @@ void func_8010B3EC_fridged_bridges(omObjData *arg0) {
             break;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/216670", func_8010B3EC_fridged_bridges);
-#endif
 
 // Pushes the player out of the foe's reach, stunning the player on first contact.
 void func_8010B7CC_fridged_bridges(omObjData *arg0) {

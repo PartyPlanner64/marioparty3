@@ -1401,7 +1401,6 @@ void func_80108810_the_beat_goes_on(omObjData *obj) {
     }
 }
 
-#ifdef NON_MATCHING
 u16 func_8010A5FC_the_beat_goes_on(func_800E1BA8_minigame_ObjData *data) {
     u16 button = 0;
     u8 roll;
@@ -1414,7 +1413,7 @@ u16 func_8010A5FC_the_beat_goes_on(func_800E1BA8_minigame_ObjData *data) {
         D_8010C4A0_the_beat_goes_on[D_8010C4E9_the_beat_goes_on].button == 0) {
         button = func_80108198_the_beat_goes_on(D_8010C4E9_the_beat_goes_on);
     } else {
-        roll = rand8() * 100 / 256;
+        roll = rand8() * 100U / 256;
         switch (GwPlayer[data->unk59].cpu_difficulty) {
             case 1:
                 chance = 65;
@@ -1464,9 +1463,6 @@ u16 func_8010A5FC_the_beat_goes_on(func_800E1BA8_minigame_ObjData *data) {
     }
     return button;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_20_the_beat_goes_on/1FE4D0", func_8010A5FC_the_beat_goes_on);
-#endif
 
 void func_8010A88C_the_beat_goes_on(u16 button) {
     BeatGoesOnNotes *notes = (BeatGoesOnNotes *)D_8010C4E4_the_beat_goes_on->data;

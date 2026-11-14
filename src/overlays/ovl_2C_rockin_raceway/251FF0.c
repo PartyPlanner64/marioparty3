@@ -2848,8 +2848,6 @@ void func_8010D134_rockin_raceway(s32 camIndex) {
     camera->up.z = cosdf(rotY) * sindf(rotX);
 }
 
-#ifdef NON_MATCHING
-// Only differs in float register allocation: viewZ and the sine result are swapped between f22 and f24.
 // Projects pos with the camera; screen receives the pixel position and depth, and normalized the
 // position relative to the screen center.
 void func_8010D288_rockin_raceway(s32 camIndex, f32 *pos, f32 *screen, f32 *normalized) {
@@ -2858,8 +2856,6 @@ void func_8010D288_rockin_raceway(s32 camIndex, f32 *pos, f32 *screen, f32 *norm
     Mtx mtx;
     u16(*integer)[4] = (u16(*)[4])mtx.m;
     u16(*fraction)[4] = (u16(*)[4])mtx.m[2];
-    f32 viewZ;
-    f32 depth;
     f32 viewX, viewY, viewZ;
     f32 depth;
     f32 x, y;
@@ -2871,7 +2867,8 @@ void func_8010D288_rockin_raceway(s32 camIndex, f32 *pos, f32 *screen, f32 *norm
     viewX = (s32)(((u32)integer[3][0] << 16) | fraction[3][0]) >> 16;
     viewY = (s32)(((u32)integer[3][1] << 16) | fraction[3][1]) >> 16;
     viewZ = (s32)(((u32)integer[3][2] << 16) | fraction[3][2]) >> 16;
-    depth = fabsf(viewZ * sindf(gCameraList[camIndex].fov / 2.0) / cosdf(gCameraList[camIndex].fov / 2.0));
+    viewZ = viewZ * sindf(gCameraList[camIndex].fov / 2.0) / cosdf(gCameraList[camIndex].fov / 2.0);
+    depth = fabsf(viewZ);
     if (depth != 0.0) {
         x = camera->viewports[D_800D418E_main].vp.vscale[0] / 4.0 * viewX / depth / (4.0f / 3.0f);
         y = camera->viewports[D_800D418E_main].vp.vscale[1] / 4.0 * -viewY / depth;
@@ -2888,9 +2885,6 @@ void func_8010D288_rockin_raceway(s32 camIndex, f32 *pos, f32 *screen, f32 *norm
         screen[0] = screen[1] = screen[2] = 0.0f;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2C_rockin_raceway/251FF0", func_8010D288_rockin_raceway);
-#endif
 
 void func_8010D5B8_rockin_raceway(void) {
     RockinRacewayReplayFrame *pool = HuMemAllocTag(30 * sizeof(RockinRacewayReplayFrame), TAG_OVERLAY);

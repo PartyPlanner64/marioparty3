@@ -294,20 +294,17 @@ void func_8010C738_fridged_bridges(FridgedBridgesCamCollWork *work, HmfModel *mo
     MTXBufNum++;
 }
 
-#ifdef NON_MATCHING
-// GCC threads the jump between the two identical dlCount checks, which the original does not.
 // Adds an object's display list to the batch for the given layer.
 void func_8010CDE4_fridged_bridges(u16 index, FridgedBridgesCamCollWork *work, HmfData *hmf, u16 object) {
-    if (work->dlCount[index] == 0) {
+    u16 *count = &work->dlCount[index];
+
+    if (*count == 0) {
         work->hmf[index] = *hmf;
         work->hmf[index].unk3C->unk00[0] = work->gfx[index];
         work->hmf[index].unk10 = 1;
     }
     if (work->dlCount[index] == 0) {
-        gSPDisplayList(work->gfx[index], hmf->unk3C->unk00[object]);
+        gSPDisplayList(&work->gfx[index][work->dlCount[index]], *(hmf->unk3C->unk00 + object));
         work->dlCount[index]++;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_24_fridged_bridges/21CAC0", func_8010CDE4_fridged_bridges);
-#endif

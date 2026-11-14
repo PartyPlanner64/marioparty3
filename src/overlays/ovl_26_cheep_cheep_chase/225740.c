@@ -1111,26 +1111,27 @@ void func_80108F78_cheep_cheep_chase(FuncContext *ctx) {
     }
 }
 
-// Register allocation differs: segment->model is not reloaded for the first call.
-#ifdef NON_MATCHING
 void func_801090E0_cheep_cheep_chase(FuncContext *ctx) {
     CheepCheepChaseSegment *segment = D_8010E360_cheep_cheep_chase->segments;
     HmfModel *model = &Hu3DData[segment->model];
 
-    if (ctx->state == 1) {
-        if (Center.z - 700.0f <= model->pos.z) {
-            func_8001C258_main(segment->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-        }
-        if (model->pos.z >= Center.z + 1700.0f + 400.0) {
-            func_8001C258_main(segment->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-            func_8010D7F4_cheep_cheep_chase(2, ctx);
-            func_8001C258_main(D_8010E360_cheep_cheep_chase->unk_24, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        }
+    switch (ctx->state) {
+        case 0:
+            break;
+        case 1:
+            if (Center.z - 700.0f <= model->pos.z) {
+                func_8001C258_main(segment->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            }
+            if (model->pos.z >= Center.z + 1700.0f + 400.0) {
+                func_8001C258_main(segment->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                func_8010D7F4_cheep_cheep_chase(2, ctx);
+                func_8001C258_main(D_8010E360_cheep_cheep_chase->unk_24, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            }
+            break;
+        case 2:
+            break;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_26_cheep_cheep_chase/225740", func_801090E0_cheep_cheep_chase);
-#endif
 
 void func_801091FC_cheep_cheep_chase(u8 index) {
     f32 z = 0.0f;

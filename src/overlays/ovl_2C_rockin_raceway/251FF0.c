@@ -2311,12 +2311,9 @@ void func_8010B124_rockin_raceway(void) {
     }
 }
 
-#ifdef NON_MATCHING
-// Logic matches; register allocation differs (the target rematerializes &D_80111B76_rockin_raceway in the
-// last loop and keeps the digit table base in s5).
 // Updates the current and record time digits, pulsing the record time when it is beaten.
 void func_8010B2B8_rockin_raceway(void) {
-    s32(*digits)[6];
+    s32 *digits;
     f32 scale = 1.0f;
     u16 group;
     s32 i;
@@ -2330,7 +2327,7 @@ void func_8010B2B8_rockin_raceway(void) {
             }
         }
     } else {
-        digits = D_80111B00_rockin_raceway;
+        digits = D_80111B00_rockin_raceway[0];
         for (i = 0; i < 2; i++) {
             group = D_80111B76_rockin_raceway[i];
             for (j = 0; j < 8; j++) {
@@ -2346,12 +2343,12 @@ void func_8010B2B8_rockin_raceway(void) {
         for (i = 0; i < 2; i++) {
             group = D_80111B76_rockin_raceway[i];
             for (j = 0; j < 6; j++) {
-                if (digits[i][j] >= 10) {
-                    digits[i][j] = 9;
-                } else if (digits[i][j] < 0) {
-                    digits[i][j] = 0;
+                if (digits[i * 6 + j] >= 10) {
+                    digits[i * 6 + j] = 9;
+                } else if (digits[i * 6 + j] < 0) {
+                    digits[i * 6 + j] = 0;
                 }
-                func_80054FF8_main(group, D_801115D8_rockin_raceway[j], (s16)digits[i][j]);
+                func_80054FF8_main(group, D_801115D8_rockin_raceway[j], (s16)digits[i * 6 + j]);
             }
             if (D_80111B7A_rockin_raceway != 0 && i == 1) {
                 for (j = 0; j < 8; j++) {
@@ -2362,9 +2359,6 @@ void func_8010B2B8_rockin_raceway(void) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2C_rockin_raceway/251FF0", func_8010B2B8_rockin_raceway);
-#endif
 
 // Converts the two frame counts into minute, second and hundredth digits in D_80111B00_rockin_raceway.
 void func_8010B5DC_rockin_raceway(s32 *frames) {

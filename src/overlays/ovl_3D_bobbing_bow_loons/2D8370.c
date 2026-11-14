@@ -652,9 +652,6 @@ void func_80107368_bobbing_bow_loons(omObjData *obj) {
     func_8001C258_main(obj->model[6], 4, 4);
 }
 
-#ifdef NON_MATCHING
-// Only differs in register allocation: the original keeps the item index in a1
-// rather than a0.
 void func_801074CC_bobbing_bow_loons(void) {
     s32 counts[16];
     s32 itemFiles[16] = { 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 };
@@ -663,9 +660,8 @@ void func_801074CC_bobbing_bow_loons(void) {
     omObjData *obj;
     void *spriteData;
     s16 sprite;
-    s32 chance;
     s32 total;
-    s32 item;
+    s32 value; // Item index, then reused for the random roll
     s32 i;
     s32 j;
 
@@ -678,10 +674,10 @@ void func_801074CC_bobbing_bow_loons(void) {
         counts[i] = 0;
     }
     for (i = 0; i < 5; i++) {
-        item = D_800A11D0_main[4 - i];
-        counts[item]++;
-        D_80109B40_bobbing_bow_loons[i] = item;
-        spriteData = DataRead(itemFiles[item] | 0x210000);
+        value = D_800A11D0_main[4 - i];
+        counts[value]++;
+        D_80109B40_bobbing_bow_loons[i] = value;
+        spriteData = DataRead(itemFiles[value] | 0x210000);
         sprite = Hu3DSprModelCreate(spriteData, 0x699, 8);
         DataClose(spriteData);
         obj->model[i] = D_800CBB60_main[sprite].modelId;
@@ -701,9 +697,9 @@ void func_801074CC_bobbing_bow_loons(void) {
     items->heldX = 0.0f;
     items->heldY = 0.0f;
     if (GwPlayer[D_80109B0C_bobbing_bow_loons].stat & 1) {
-        chance = (u8)(rand8() % 100);
+        value = (u8)(rand8() % 100);
         for (j = 0, total = 0; j < 5; j++) {
-            if (chance >= total && chance < total + D_800A11DC_main[j]) {
+            if (value >= total && value < total + D_800A11DC_main[j]) {
                 break;
             }
             total += D_800A11DC_main[j];
@@ -714,9 +710,6 @@ void func_801074CC_bobbing_bow_loons(void) {
         D_80109B14_bobbing_bow_loons = j;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3D_bobbing_bow_loons/2D8370", func_801074CC_bobbing_bow_loons);
-#endif
 
 void func_80107830_bobbing_bow_loons(omObjData *obj) {
     BobbingBowLoonsItems *items = obj->data;
@@ -873,8 +866,6 @@ void func_80107F94_bobbing_bow_loons(void) {
     func_8003F5C0_main();
     omDelPrcObj(NULL);
 }
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_3D_bobbing_bow_loons/2D8370", D_801099A8_bobbing_bow_loons);
 
 void func_8010805C_bobbing_bow_loons(void) {
     BobbingBowLoonsHook *hook;

@@ -4175,10 +4175,10 @@ void func_80110914_stardust_battle(void) {
     }
 }
 
-#ifdef NON_MATCHING
-// Register allocation: t and the case 5 sine temporary have swapped f20/f22.
 void func_80111004_stardust_battle(omObjData *object) {
     f32 t = 0.0f;
+    f32 temp;
+    f32 temp2;
 
     if (D_80114BAC_stardust_battle <= 0) {
         func_801119D4_stardust_battle(0);
@@ -4234,11 +4234,14 @@ void func_80111004_stardust_battle(omObjData *object) {
                 break;
             case 4:
                 t = (f32)D_80114BA8_stardust_battle / (f32)D_80114BAC_stardust_battle;
-                t = fabsf(sindf(sindf(t * 90.0f) * 450.0f) * t);
+                temp = sindf(t * 90.0f);
+                temp2 = sindf(temp * 450.0f) * t;
+                t = fabsf(temp2);
                 break;
             case 5:
                 t = (f32)D_80114BA8_stardust_battle / (f32)D_80114BAC_stardust_battle;
-                t = sindf(t * 90.0f) + sindf(t * 720.0f) * 0.2f;
+                temp = sindf(t * 90.0f);
+                t = temp + sindf(t * 720.0f) * 0.2f;
                 break;
         }
         Center.x = func_80111DF8_stardust_battle(t, D_80114B60_stardust_battle[0].center.x,
@@ -4278,9 +4281,6 @@ void func_80111004_stardust_battle(omObjData *object) {
     D_80114BB0_stardust_battle = 1;
     func_801119D4_stardust_battle(0);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_80111004_stardust_battle);
-#endif
 
 void func_801115F8_stardust_battle(s32 arg0) {
     if (CRot.x >= 360.0) {

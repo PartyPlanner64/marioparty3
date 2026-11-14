@@ -4406,8 +4406,6 @@ void func_801110F0_filesel(u32 arg0) {
     func_8010642C_filesel(arg0);
 }
 
-// Remaining differences are floating-point register allocation for progress and scale.
-#ifdef NON_MATCHING
 void func_80111144_filesel(omObjData *object) {
     s32 index;
     s32 angle;
@@ -4440,16 +4438,9 @@ void func_80111144_filesel(omObjData *object) {
     }
     D_80114598_filesel[index].unk_54 = angle;
     D_80114598_filesel[index].unk_50 = frame + 1;
-    progress = 0.8f;
-    x += progress;
-    progress = y + progress;
-    func_80106550_filesel(index, x, progress, x);
-    func_80106550_filesel(index + 3, x, progress, x);
+    func_80106550_filesel(index, x + 0.8f, y + 0.8f, x + 0.8f);
+    func_80106550_filesel(index + 3, x + 0.8f, y + 0.8f, x + 0.8f);
 }
-
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516D30", func_80111144_filesel);
-#endif
 
 void func_8011132C_filesel(s32 arg0) {
     func_80110E70_filesel(arg0, func_80111144_filesel);

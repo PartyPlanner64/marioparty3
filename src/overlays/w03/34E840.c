@@ -7592,9 +7592,18 @@ void func_8011A550_w03(void) {
 }
 
 #ifdef NON_MATCHING
-// Matches except for the if/else after the hatena space search loop: the target
-// tests *hatena != -1, then reloads and tests it again before falling into the
-// 0x47 branch. GCC here folds this into a single test.
+// Matches except for the if/else right after the hatena space search loop: the
+// target tests *hatena != -1 (-> 0x47 branch), reloads *hatena, and tests it
+// again (== -1 -> 0x48 branch); we emit a single test. The second test survives
+// only if the first one reads *hatena through an RTL address that differs from
+// the loop's test (blocks pre-CSE jump threading) and from the second test
+// (blocks CSE). The meaningless form
+//     if (D_8011D3F8_w03[hatena - D_8011D3F8_w03] != -1 || *hatena != -1)
+// produces both tests (score 805 -> 220); it still differs in v0/v1 for the
+// second test, and the empty-list branch goes to the first test instead of the
+// 0x48 branch. Identical-operand forms (||, &&, nested else-if, goto, casts,
+// hatena[0]) are folded or CSE'd into one test. Also tried: for/while/do-while
+// and flag variable forms of the search loop, switch, ternaries.
 void func_8011A704_w03(void) {
     Vec pos;
     UnkVibrateProcess *vibrate[4];
@@ -7604,6 +7613,7 @@ void func_8011A704_w03(void) {
     GW_PLAYER *player;
     s32 i;
     SpaceData *space;
+    SpaceData *destSpace;
     Object *eye;
     omObjData *scroll;
     Process *process;
@@ -7766,16 +7776,16 @@ void func_8011A704_w03(void) {
 
     if (*hatena != -1) {
         masuId = 0x24;
-        space = MBMasuGet(0x24);
+        destSpace = MBMasuGet(0x24);
     } else {
         masuId = 0x4E;
-        space = MBMasuGet(0x4E);
+        destSpace = MBMasuGet(0x4E);
     }
     D_8011EB50_w03 = 0;
     for (i = 0; i < 4; i++) {
         player = MBPlayerGet(i);
         if (MBMasuLinkMasuIdGet(player->clink, player->cidx) == masuId) {
-            HuVecCopy3F(&player->player_obj->coords, &space->coords);
+            HuVecCopy3F(&player->player_obj->coords, &destSpace->coords);
             player->player_obj->coords.x += D_8011D438_w03[D_8011EB50_w03].x;
             player->player_obj->coords.z += D_8011D438_w03[D_8011EB50_w03].y;
             D_8011EB50_w03++;

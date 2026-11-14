@@ -1093,8 +1093,8 @@ s32 func_80108C08_etch_n_catch(EtchNCatchWork *work) {
 }
 
 // Undoes the "filled" mark on every grid cell appended to the touched-cell list
-// up to (but not including) arg0.
-void func_80108D84_etch_n_catch(u8 **arg0, u8 *arg1) {
+// up to (but not including) arg0. arg1-arg3 are unused.
+void func_80108D84_etch_n_catch(u8 **arg0, u8 *arg1, u8 **arg2, s32 arg3) {
     u8 **cellPtr = D_8010C878_etch_n_catch;
     // arg0 points one past the last appended cell, so the difference is a byte offset.
     s32 count = ((s32)arg0 - (s32)cellPtr) >> 2;
@@ -1108,7 +1108,6 @@ void func_80108D84_etch_n_catch(u8 **arg0, u8 *arg1) {
     }
 }
 
-#ifdef NON_MATCHING
 s32 func_80108DD0_etch_n_catch(s16 x, s16 y) {
     u8 **list;
     u8 **readBuf;
@@ -1145,7 +1144,7 @@ s32 func_80108DD0_etch_n_catch(s16 x, s16 y) {
                 *cell = ETCH_N_CATCH_CELL_FILLED;
                 *write++ = *list++ = cell;
             } else if (*cell == ETCH_N_CATCH_CELL_EDGE) {
-                func_80108D84_etch_n_catch(list, cell);
+                func_80108D84_etch_n_catch(list, cell, readBuf, count);
                 return FALSE;
             } else if ((*cell & 9) == 0) {
                 *list++ = cell;
@@ -1157,7 +1156,7 @@ s32 func_80108DD0_etch_n_catch(s16 x, s16 y) {
                 *cell = ETCH_N_CATCH_CELL_FILLED;
                 *write++ = *list++ = cell;
             } else if (*cell == ETCH_N_CATCH_CELL_EDGE) {
-                func_80108D84_etch_n_catch(list, cell);
+                func_80108D84_etch_n_catch(list, cell, readBuf, count);
                 return FALSE;
             } else if ((*cell & 9) == 0) {
                 *list++ = cell;
@@ -1169,7 +1168,7 @@ s32 func_80108DD0_etch_n_catch(s16 x, s16 y) {
                 *cell = ETCH_N_CATCH_CELL_FILLED;
                 *write++ = *list++ = cell;
             } else if (*cell == ETCH_N_CATCH_CELL_EDGE) {
-                func_80108D84_etch_n_catch(list, cell);
+                func_80108D84_etch_n_catch(list, cell, readBuf, count);
                 return FALSE;
             } else if ((*cell & 9) == 0) {
                 *list++ = cell;
@@ -1181,7 +1180,7 @@ s32 func_80108DD0_etch_n_catch(s16 x, s16 y) {
                 *cell = ETCH_N_CATCH_CELL_FILLED;
                 *write++ = *list++ = cell;
             } else if (*cell == ETCH_N_CATCH_CELL_EDGE) {
-                func_80108D84_etch_n_catch(list, cell);
+                func_80108D84_etch_n_catch(list, cell, readBuf, count);
                 return FALSE;
             } else if ((*cell & 9) == 0) {
                 *list++ = cell;
@@ -1195,12 +1194,9 @@ s32 func_80108DD0_etch_n_catch(s16 x, s16 y) {
         writeBuf = write;
         read = readBuf;
     }
-    func_80108D84_etch_n_catch(list, cell);
+    func_80108D84_etch_n_catch(list, cell, readBuf, count);
     return flags == 3 || flags == 12;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_12_etch_n_catch/19CEF0", func_80108DD0_etch_n_catch);
-#endif
 
 u8 *func_801090E0_etch_n_catch(s16 x, s16 y) {
     return D_8010C84C_etch_n_catch + D_8010C846_etch_n_catch * y + x;

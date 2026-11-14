@@ -424,11 +424,9 @@ void func_80106358_the_beat_goes_on(omObjData *object) {
     }
 }
 
-#ifdef NON_MATCHING
 void func_80106708_the_beat_goes_on(omObjData *obj) {
     BeatGoesOnPlayerWork *work;
-    s16 sprite;
-    s16 model;
+    u16 id;
 
     obj->data = HuMemAllocTag(sizeof(BeatGoesOnPlayerWork), TAG_OVERLAY);
     memset(obj->data, 0, sizeof(BeatGoesOnPlayerWork));
@@ -436,20 +434,20 @@ void func_80106708_the_beat_goes_on(omObjData *obj) {
     work->unk_1C = D_8010C466_the_beat_goes_on;
     if (work->unk_1C == 4) {
         work->unk_10 = 0;
-    } else if (work->unk_1C != 0) {
-        work->unk_10 = rand8() % 20;
-    } else {
+    } else if (work->unk_1C == 0) {
         work->unk_10 = 20;
+    } else {
+        work->unk_10 = rand8() % 20;
     }
     work->unk_14 = 0;
     obj->scale.x = obj->scale.y = obj->scale.z = 3.0f;
     if (D_8010C466_the_beat_goes_on == 0) {
-        D_8010C462_the_beat_goes_on = sprite = SprModelRead(0x410001, 0, 16);
+        id = D_8010C462_the_beat_goes_on = SprModelRead(0x410001, 0, 16);
     } else {
-        sprite = func_80014618_main(D_8010C462_the_beat_goes_on, 16);
+        id = func_80014618_main(D_8010C462_the_beat_goes_on, 16);
     }
-    func_80014714_main(sprite, D_8010C466_the_beat_goes_on & 7);
-    work->entry = &D_800CBB60_main[sprite];
+    func_80014714_main(id, D_8010C466_the_beat_goes_on & 7);
+    work->entry = &D_800CBB60_main[(s16)id];
     obj->model[1] = work->entry->modelId;
     obj->trans.x = sindf(D_8010C466_the_beat_goes_on * 45.0f - 90.0f) * 160.0f;
     obj->trans.y = 40.0f;
@@ -457,38 +455,35 @@ void func_80106708_the_beat_goes_on(omObjData *obj) {
     Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
     Hu3DModelScaleSet(obj->model[1], obj->scale.x, obj->scale.y, obj->scale.z);
     if (D_8010C466_the_beat_goes_on == 0) {
-        D_8010C460_the_beat_goes_on = sprite = SprModelRead(0x410000, 0, 16);
+        id = D_8010C460_the_beat_goes_on = SprModelRead(0x410000, 0, 16);
     } else {
-        sprite = func_80014618_main(D_8010C460_the_beat_goes_on, 16);
+        id = func_80014618_main(D_8010C460_the_beat_goes_on, 16);
     }
-    obj->model[0] = D_800CBB60_main[sprite].modelId;
+    obj->model[0] = D_800CBB60_main[(s16)id].modelId;
     func_8001C258_main(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     if (D_8010C466_the_beat_goes_on == 0) {
-        D_8010C464_the_beat_goes_on = sprite = SprModelRead(0x410002, 0, 16);
+        id = D_8010C464_the_beat_goes_on = SprModelRead(0x410002, 0, 16);
     } else {
-        sprite = func_80014618_main(D_8010C464_the_beat_goes_on, 16);
+        id = func_80014618_main(D_8010C464_the_beat_goes_on, 16);
     }
-    obj->model[2] = D_800CBB60_main[sprite].modelId;
+    obj->model[2] = D_800CBB60_main[(s16)id].modelId;
     func_8001C258_main(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    model = obj->model[3] = func_8000B108_main(0x410003, 0xAA9);
+    id = obj->model[3] = func_8000B108_main(0x410003, 0xAA9);
     if (D_8010C466_the_beat_goes_on == 0) {
-        D_8010C468_the_beat_goes_on = Hu3DAnimRead(Hu3DData[model].hmf, 0xA008C, "c201n_00_DEF");
+        D_8010C468_the_beat_goes_on = Hu3DAnimRead(Hu3DData[(s16)id].hmf, 0xA008C, "c201n_00_DEF");
     } else {
-        Hu3DAnimLink(Hu3DData[model].hmf, D_8010C468_the_beat_goes_on, 0, "c201n_00_DEF");
+        Hu3DAnimLink(Hu3DData[(s16)id].hmf, D_8010C468_the_beat_goes_on, 0, "c201n_00_DEF");
         Hu3DAnimLink(Hu3DData[obj->model[3]].hmf, D_8010C468_the_beat_goes_on, 0, "c201n_00_DEF");
     }
-    Hu3DModelRemakeStatic(model);
-    func_8001C514_main(model);
-    Hu3DModelScaleSet(model, 0.6f, 0.6f, 0.6f);
-    Hu3DModelPosSet(model, (D_8010C466_the_beat_goes_on - 4) * 25 * obj->scale.x, 0.0f, 0.0f);
+    Hu3DModelRemakeStatic(id);
+    func_8001C514_main(id);
+    Hu3DModelScaleSet(id, 0.6f, 0.6f, 0.6f);
+    Hu3DModelPosSet(id, (D_8010C466_the_beat_goes_on - 4) * 25 * obj->scale.x, 0.0f, 0.0f);
     func_8000B460_main(obj, 0, 0x410003);
     func_8000B460_main(obj, 1, 0x410004);
     obj->func = func_80106E40_the_beat_goes_on;
     D_8010C466_the_beat_goes_on++;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_20_the_beat_goes_on/1FE4D0", func_80106708_the_beat_goes_on);
-#endif
 
 void func_80106BE0_the_beat_goes_on(omObjData *obj) {
     BeatGoesOnPlayerWork *work = obj->data;

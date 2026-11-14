@@ -1437,9 +1437,6 @@ void func_8010B100_swing_n_swipe(omObjData *object) {
     object->func = func_8010B23C_swing_n_swipe;
 }
 
-#ifdef NON_MATCHING
-// Register allocation only: the s16 loop counter and its sign-extended copy
-// swap s1/s2, and the final x value lands in f20 instead of f24.
 void func_8010B23C_swing_n_swipe(omObjData *object) {
     s16 i;
     s16 skip;
@@ -1453,9 +1450,10 @@ void func_8010B23C_swing_n_swipe(omObjData *object) {
         skip = (D_8010C13C_swing_n_swipe == 0) ? D_8010C15E_swing_n_swipe : -1;
         for (i = 0; i < 5; i++) {
             if (i != skip) {
+                x = Hu3DData[D_8010C170_swing_n_swipe[i][0]].pos.x;
                 y = Hu3DData[D_8010C170_swing_n_swipe[i][0]].pos.y + 125.0f;
                 z = Hu3DData[D_8010C170_swing_n_swipe[i][0]].pos.z + 50.0f;
-                Hu3DModelPosSet(D_8010C1C0_swing_n_swipe[i], Hu3DData[D_8010C170_swing_n_swipe[i][0]].pos.x, y, z);
+                Hu3DModelPosSet(D_8010C1C0_swing_n_swipe[i], x, y, z);
                 Hu3DModelCameraSet(D_8010C1C0_swing_n_swipe[i], 1);
                 func_8001C5B4_main(D_8010C1C0_swing_n_swipe[i], D_8010C1D0_swing_n_swipe[0]);
                 Hu3DModelCameraSet(D_8010C190_swing_n_swipe[i][0], 0);
@@ -1469,11 +1467,13 @@ void func_8010B23C_swing_n_swipe(omObjData *object) {
     if (D_8010C156_swing_n_swipe == 2 &&
         D_800CCF58_main[Hu3DData[D_8010C1C0_swing_n_swipe[0]].motId].unk02 ==
             Hu3DData[D_8010C1C0_swing_n_swipe[0]].motTime) {
-        for (i = 0; i < 5; i++) {
-            if (i != D_8010C15E_swing_n_swipe) {
-                Hu3DModelCameraSet(D_8010C1C0_swing_n_swipe[i], 0);
+        do {
+            for (i = 0; i < 5; i++) {
+                if (i != D_8010C15E_swing_n_swipe) {
+                    Hu3DModelCameraSet(D_8010C1C0_swing_n_swipe[i], 0);
+                }
             }
-        }
+        } while (0); // TODO: required to match (loop depth affects i register allocation)
     }
     if (D_8010C158_swing_n_swipe == 1) {
         index = D_8010C15E_swing_n_swipe;
@@ -1521,9 +1521,6 @@ void func_8010B23C_swing_n_swipe(omObjData *object) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_40_swing_n_swipe/2E6BE0", func_8010B23C_swing_n_swipe);
-#endif
 
 s16 func_8010B840_swing_n_swipe(s32 dataNum, u16 attr, u16 pri, s16 x, s16 y) {
     s16 sprite = espEntry(func_8000B838_main(dataNum), 0, 0);

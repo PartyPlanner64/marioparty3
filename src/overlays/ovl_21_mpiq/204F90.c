@@ -48,8 +48,7 @@ typedef struct {
     /* 0x00 */ char unk_00[8];
     /* 0x08 */ f32 x;
     /* 0x0C */ char unk_0C[0xC];
-    /* 0x18 */ f32 unk_18;
-    /* 0x1C */ f32 barY[3];
+    /* 0x18 */ f32 posY[4]; // [0] is the base model, [1..3] are the bars
     /* 0x28 */ f32 barScale[3];
     /* 0x34 */ char unk_34[4];
     /* 0x38 */ s32 stage;
@@ -872,7 +871,6 @@ void func_8010811C_mpiq(void) {
     }
 }
 
-#ifdef NON_MATCHING
 void func_80108178_mpiq(void) {
     Vec2f screenPos;
     Vec pos;
@@ -908,20 +906,17 @@ void func_80108178_mpiq(void) {
         omSetTra(obj, pos.x, -144.0f, 0.0f);
         omSetSca(obj, 2.0f, 4.0f, 2.0f);
         work->x = pos.x;
-        work->unk_18 = 0.0f;
-        Hu3DModelPosSet(obj->model[4], pos.x, work->unk_18, work->unk_18);
+        work->posY[0] = 0.0f;
+        Hu3DModelPosSet(obj->model[4], pos.x, work->posY[0], work->posY[0]);
         Hu3DModelScaleSet(obj->model[4], 2.0f, 1.0f, 2.0f);
         for (j = 0; j < 3; j++) {
             Hu3DModelScaleSet(obj->model[j + 1], 2.0f, 2.0f, 2.0f);
-            work->barY[j] = j * 50.0f - 44.0f;
-            Hu3DModelPosSet(obj->model[j + 1], pos.x, work->barY[j], 0.0f);
+            work->posY[j + 1] = j * 50.0f - 44.0f;
+            Hu3DModelPosSet(obj->model[j + 1], pos.x, work->posY[j + 1], 0.0f);
             work->barScale[j] = 0.0f;
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_21_mpiq/204F90", func_80108178_mpiq);
-#endif
 
 void func_80108494_mpiq(omObjData *obj) {
     MpiqMeterWork *work;

@@ -749,7 +749,6 @@ void func_80107820_picture_imperfect(omObjData *object) {
     func_8001C258_main(object->model[1], 4, 4);
 }
 
-#ifdef NON_MATCHING
 void func_801081E4_picture_imperfect(omObjData *object) {
     PictureImperfectWork *work;
     func_800E1BA8_minigame_ObjData *playerData;
@@ -789,30 +788,30 @@ void func_801081E4_picture_imperfect(omObjData *object) {
     }
     roll = (rand8() * 100) >> 8;
     if (roll < chance1) {
-        if (work->unk01 != 4) {
-            return;
+        if (work->unk01 == 4) {
+            D_800D5558_main[playerData->unk57] |= A_BUTTON;
+            work->unk18 = ((rand8() * 15) >> 6) + 30;
         }
     } else if (roll < chance2) {
-        if (work->unk01 != 3) {
-            return;
+        if (work->unk01 == 3) {
+            D_800D5558_main[playerData->unk57] |= A_BUTTON;
+            work->unk18 = ((rand8() * 15) >> 6) + 30;
         }
     } else if (roll < chance3) {
-        if (work->unk01 != 2) {
-            return;
+        if (work->unk01 == 2) {
+            D_800D5558_main[playerData->unk57] |= A_BUTTON;
+            work->unk18 = ((rand8() * 15) >> 6) + 30;
         }
     } else if (roll < chance2) {
-        if (work->unk01 != 1) {
-            return;
+        if (work->unk01 == 1) {
+            D_800D5558_main[playerData->unk57] |= A_BUTTON;
+            work->unk18 = ((rand8() * 15) >> 6) + 30;
         }
-    } else if (work->unk01 != 0) {
-        return;
+    } else if (work->unk01 == 0) {
+        D_800D5558_main[playerData->unk57] |= A_BUTTON;
+        work->unk18 = ((rand8() * 15) >> 6) + 30;
     }
-    D_800D5558_main[playerData->unk57] |= A_BUTTON;
-    work->unk18 = ((rand8() * 15) >> 6) + 30;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1E_picture_imperfect/1EF420", func_801081E4_picture_imperfect);
-#endif
 
 void func_801083C0_picture_imperfect(s8 player) {
     if (player == 0) {

@@ -89,6 +89,8 @@ extern s16 D_8010EC4A_three_door_monty[3];
 extern s16 D_8010EC50_three_door_monty;
 // unk_18 of D_8010D260_three_door_monty[12], accessed through a separate symbol.
 extern f32 D_8010D8A8_three_door_monty;
+// unk_18 of D_8010D260_three_door_monty[8], accessed through a separate symbol.
+extern f32 D_8010D698_three_door_monty;
 extern omObjData *D_8010D680_three_door_monty;
 extern omObjData *D_8010D890_three_door_monty;
 
@@ -1195,9 +1197,6 @@ void func_8010916C_three_door_monty(omObjData *obj) {
     obj->scale.x = obj->scale.y = entry->unk_18;
 }
 
-#ifdef NON_MATCHING
-// The target reloads D_8010D260_three_door_monty[8].unk_18 for scale.y directly
-// from its absolute address; this version keeps the address in a register.
 void func_80109594_three_door_monty(omObjData *obj) {
     obj->model[0] = func_8000B108_main(0x4C000E, 0x2A9);
     D_8010D238_three_door_monty[0] = DataRead(0x4C0000);
@@ -1213,15 +1212,12 @@ void func_80109594_three_door_monty(omObjData *obj) {
     obj->trans.x = 0.0f;
     obj->trans.y = 450.0f;
     obj->trans.z = 0.0f;
-    obj->scale.x = D_8010D260_three_door_monty[8].unk_18 = 0.1f;
+    obj->scale.x = D_8010D698_three_door_monty = 0.1f;
     obj->scale.y = D_8010D260_three_door_monty[8].unk_18;
     obj->scale.z = 1.0f;
     Hu3DModelCameraSet(obj->model[0], 2);
     obj->func = func_8010916C_three_door_monty;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2B_three_door_monty/24A760", func_80109594_three_door_monty);
-#endif
 
 void func_801096FC_three_door_monty(void) {
     omObjData *obj = omAddObj(0xC8, 5, 0xA, -1, func_80109594_three_door_monty);

@@ -1840,30 +1840,26 @@ Vtx_t *func_8010B0FC_crowd_cover(s16 index) {
     return crowd->vtx;
 }
 
-#ifdef NON_MATCHING
-// Index sign extension is computed in a different register than the original.
 s32 func_8010B140_crowd_cover(s16 index, s16 x, s16 y) {
     UnkCrowdCover *crowd;
     Vtx_t *vtx;
 
-    if (index != -1) {
-        crowd = &D_8010D8EC_crowd_cover[index];
-        if (crowd->unk_18 == 3) {
-            crowd->unk_28 |= 0x80000000;
-            vtx = &crowd->vtx[4];
-            vtx->ob[0] = x;
-            vtx->ob[1] = -y;
-            vtx->ob[2] = 0;
-            vtx->tc[0] = x * 64;
-            vtx->tc[1] = y * 64;
-            return 1;
-        }
+    if (index == -1) {
+        return 0;
     }
-    return 0;
+    crowd = &D_8010D8EC_crowd_cover[index];
+    if (crowd->unk_18 != 3) {
+        return 0;
+    }
+    crowd->unk_28 |= 0x80000000;
+    vtx = &crowd->vtx[4];
+    vtx->ob[0] = x;
+    vtx->ob[1] = -y;
+    vtx->ob[2] = 0;
+    vtx->tc[0] = x * 64;
+    vtx->tc[1] = y * 64;
+    return 1;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_38_crowd_cover/2B5830", func_8010B140_crowd_cover);
-#endif
 
 void func_8010B1DC_crowd_cover(s16 index, s8 value1, s8 value2, s8 value3, s16 value4) {
     UnkCrowdCover *crowd;

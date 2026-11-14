@@ -2,6 +2,29 @@
 #include "math.h"
 #include "overlays/minigame.h"
 
+// Sets the CPU cursor's movement direction towards its target position
+// (unk1C, unk20): 1.0f moves negatively along an axis, 2.0f positively.
+#define MM_CPU_STEER(work)                        \
+    (work)->unk24 = 0.0f;                         \
+    (work)->unk28 = 0.0f;                         \
+    if ((work)->unk1C + 5.0f < (work)->unk44.x) { \
+        (work)->unk24 = 1.0f;                     \
+    }                                             \
+    if ((work)->unk44.x < (work)->unk1C - 5.0f) { \
+        (work)->unk24 = 2.0f;                     \
+    }                                             \
+    if ((work)->unk20 + 5.0f < (work)->unk44.y) { \
+        (work)->unk28 = 1.0f;                     \
+    }                                             \
+    if ((work)->unk44.y < (work)->unk20 - 5.0f) { \
+        (work)->unk28 = 2.0f;                     \
+    }
+
+// Whether the cursor is within 5 units of the given position on both axes.
+#define MM_CPU_NEAR(work, posX, posY)                                        \
+    ((posX) - 5.0f <= (work)->unk44.x && (posX) + 5.0f >= (work)->unk44.x && \
+     (posY) - 5.0f <= (work)->unk44.y && (posY) + 5.0f >= (work)->unk44.y)
+
 // Generic per-object work entry. The overlay keeps a pool of 0x88 of these in
 // D_80111700_messy_memory; several sub-ranges of the pool have their own
 // symbols (e.g. D_80113A94_messy_memory is entry 69).
@@ -19,14 +42,14 @@ typedef struct {
     /* 0x16 */ s16 unk16;
     /* 0x18 */ f32 unk18;
     /* 0x1C */ f32 unk1C;
-    /* 0x20 */ s32 unk20;
-    /* 0x24 */ s32 unk24;
-    /* 0x28 */ s32 unk28;
+    /* 0x20 */ f32 unk20;
+    /* 0x24 */ f32 unk24;
+    /* 0x28 */ f32 unk28;
     /* 0x2C */ s32 unk2C;
     /* 0x30 */ s32 unk30;
     /* 0x34 */ s32 unk34;
-    /* 0x38 */ s32 unk38;
-    /* 0x3C */ s32 unk3C;
+    /* 0x38 */ f32 unk38;
+    /* 0x3C */ f32 unk3C;
     /* 0x40 */ s16 unk40;
     /* 0x42 */ s16 unk42;
     /* 0x44 */ Vec unk44;
@@ -671,7 +694,562 @@ void func_80106C60_messy_memory(omObjData *obj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", func_80107C88_messy_memory);
+void func_80107C88_messy_memory(omObjData *obj) {
+    u16 playerNo = obj->work[0];
+    MessyMemoryWork *work = &D_80111700_messy_memory[playerNo];
+    MessyMemoryWork *item;
+    MessyMemoryWork *other;
+    omObjData *itemObj;
+    u8 outside;
+    u8 blocked;
+    u8 found;
+    u8 slot;
+    u8 i;
+    u8 j;
+    u8 k;
+
+    if (work->unk14 >= 7) {
+        if (work->unk12 == 0) {
+            switch (GwPlayer[playerNo].cpu_difficulty) {
+                case 0:
+                    if (rand8() < 30) {
+                        work->unk12 = 1;
+                    }
+                    break;
+                case 1:
+                    if (rand8() < 20) {
+                        work->unk12 = 1;
+                    }
+                    break;
+                case 2:
+                    if (rand8() < 20) {
+                        work->unk12 = 1;
+                    }
+                    break;
+                case 3:
+                    if (rand8() < 30) {
+                        work->unk12 = 1;
+                    }
+                    break;
+            }
+        }
+        if (work->unk12 == 2) {
+            if (D_80115D8E_messy_memory == 300 || D_80115D8E_messy_memory == 210) {
+                switch (GwPlayer[playerNo].cpu_difficulty) {
+                    case 0:
+                        if (rand8() < 250) {
+                            work->unk12 = 3;
+                        }
+                        break;
+                    case 1:
+                        if (rand8() < 200) {
+                            work->unk12 = 3;
+                        }
+                        break;
+                    case 2:
+                        if (rand8() < 150) {
+                            work->unk12 = 3;
+                        }
+                        break;
+                    case 3:
+                        if (rand8() < 50) {
+                            work->unk12 = 3;
+                        }
+                        break;
+                }
+            }
+        }
+        if (work->unk12 == 5) {
+            switch (GwPlayer[playerNo].cpu_difficulty) {
+                case 0:
+                    if (rand8() < 250) {
+                        work->unk12 = 6;
+                    }
+                    break;
+                case 1:
+                    if (rand8() < 250) {
+                        work->unk12 = 6;
+                    }
+                    break;
+                case 2:
+                    if (rand8() < 250) {
+                        work->unk12 = 6;
+                    }
+                    break;
+                case 3:
+                    if (rand8() < 250) {
+                        work->unk12 = 6;
+                    }
+                    break;
+            }
+        }
+    }
+    if (work->unk12 == 1 || work->unk12 == 3 || work->unk12 == 6) {
+        switch (D_80115D80_messy_memory[playerNo]) {
+            case 0:
+                D_80115D80_messy_memory[playerNo] = 1;
+                work->unk12++;
+                work->unk06 = 0;
+                break;
+            case 1:
+                D_80115D80_messy_memory[playerNo] = 2;
+                work->unk12++;
+                work->unk06 = 0;
+                break;
+        }
+    }
+    if (D_80115D80_messy_memory[playerNo] != 0) {
+        return;
+    }
+    outside = TRUE;
+    blocked = FALSE;
+    D_80115D72_messy_memory[obj->work[0]] = 0xFF;
+    for (i = 0; i < 10; i++) {
+        if (D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] - 7.0f <= work->unk44.x &&
+            D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] + 7.0f >= work->unk44.x &&
+            D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] - 15.0f <= work->unk44.y &&
+            D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] + 6.0f >= work->unk44.y) {
+            outside = FALSE;
+        }
+    }
+    for (i = 10; i < 20; i++) {
+        if (D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] - 7.0f <= work->unk44.x &&
+            D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] + 7.0f >= work->unk44.x &&
+            D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] - 7.0f <= work->unk44.y &&
+            D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] + 6.0f >= work->unk44.y) {
+            outside = FALSE;
+        }
+    }
+    if (D_80111670_messy_memory[playerNo] == 1) {
+        for (k = 0; k < 10; k++) {
+            s32 base = playerNo * 10 + 8;
+
+            item = &D_80111700_messy_memory[k + base];
+            itemObj = item->obj;
+            if (work->unk44.x == item->unk44.x && work->unk44.y == item->unk44.y) {
+                for (i = 0; i < 10; i++) {
+                    other = &D_80111700_messy_memory[i + base];
+                    if (itemObj->work[1] * 10 + itemObj->work[0] == other->obj->work[1] * 10 + other->obj->work[0]) {
+                        continue;
+                    }
+                    for (j = 0; j < 20; j++) {
+                        if (D_80111044_messy_memory[j][0] + D_80110FE0_messy_memory[playerNo][0] <= other->unk44.x &&
+                            D_80111044_messy_memory[j][0] + D_80110FE0_messy_memory[playerNo][0] >= other->unk44.x) {
+                            if (j < 10) {
+                                if (other->unk44.x - 7.0f <= work->unk44.x && other->unk44.x + 7.0f >= work->unk44.x &&
+                                    other->unk44.y - 15.0f <= work->unk44.y && other->unk44.y + 6.0f >= work->unk44.y) {
+                                    blocked = TRUE;
+                                }
+                            } else {
+                                if (other->unk44.x - 7.0f <= work->unk44.x && other->unk44.x + 7.0f >= work->unk44.x &&
+                                    other->unk44.y - 7.0f <= work->unk44.y && other->unk44.y + 6.0f >= work->unk44.y) {
+                                    blocked = TRUE;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if (outside | blocked) {
+        D_80115D72_messy_memory[obj->work[0]] = 150;
+    }
+
+    if (work->unk12 == 0) {
+        switch (work->unk06) {
+            case 0:
+                slot = rand8() % 10;
+                item = &D_80111700_messy_memory[slot + 8 + playerNo * 10];
+                if (D_80110FE0_messy_memory[playerNo][1] + 80.0f < item->unk44.y) {
+                    work->unk08 = slot;
+                    work->unk1C = item->unk44.x;
+                    work->unk20 = item->unk44.y;
+                    work->unk06 = 1;
+                }
+                if (work->unk06 != 1 && D_80111678_messy_memory[playerNo][slot] == 0 &&
+                    D_80115D8E_messy_memory > 450) {
+                    work->unk08 = slot;
+                    work->unk1C = item->unk44.x;
+                    work->unk20 = item->unk44.y;
+                    work->unk06 = 10;
+                }
+                break;
+            case 10:
+                MM_CPU_STEER(work);
+                item = &D_80111700_messy_memory[work->unk08 + 8 + playerNo * 10];
+                if (MM_CPU_NEAR(work, item->unk44.x, item->unk44.y)) {
+                    work->unk06 = 0;
+                }
+                break;
+            case 9:
+                for (k = 0; k < 10; k++) {
+                    if (k != work->unk08) {
+                        item = &D_80111700_messy_memory[k + 8 + playerNo * 10];
+                        if (D_80110FE0_messy_memory[playerNo][1] + 80.0f < item->unk44.y) {
+                            work->unk08 = k;
+                            work->unk1C = item->unk44.x;
+                            work->unk20 = item->unk44.y;
+                            work->unk06 = 1;
+                        }
+                    }
+                }
+                if (work->unk06 != 1) {
+                    work->unk06 = 0;
+                }
+                break;
+            case 1:
+                MM_CPU_STEER(work);
+                item = &D_80111700_messy_memory[work->unk08 + 8 + playerNo * 10];
+                if (MM_CPU_NEAR(work, item->unk44.x, item->unk44.y)) {
+                    D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 1;
+                    D_80111640_messy_memory[obj->work[0]] = 1;
+                    func_8004AC98_main(D_80111338_messy_memory, obj->work[0]);
+                    D_80111670_messy_memory[playerNo] = 1;
+                    if (D_80111678_messy_memory[playerNo][work->unk08] == 1) {
+                        work->unk06 = 2;
+                    } else {
+                        work->unk06 = 3;
+                    }
+                }
+                break;
+            case 2:
+                itemObj = D_80111700_messy_memory[work->unk08 + 8 + playerNo * 10].obj;
+                for (k = 0; k < 10; k++) {
+                    if (D_801116A4_messy_memory[k] == itemObj->work[0]) {
+                        work->unk1C = D_80111044_messy_memory[k][0] + D_80110FE0_messy_memory[playerNo][0];
+                        work->unk20 = D_80111044_messy_memory[k][1] + D_80110FE0_messy_memory[playerNo][1];
+                        work->unk0A = k;
+                        work->unk06 = 4;
+                    }
+                }
+                break;
+            case 3:
+                item = &D_80111700_messy_memory[work->unk08 + 8 + playerNo * 10];
+                itemObj = item->obj;
+                slot = rand8() % 10;
+                found = FALSE;
+                for (k = 0; k < 10; k++) {
+                    other = &D_80111700_messy_memory[k + 8 + playerNo * 10];
+                    if (D_80111044_messy_memory[slot][0] + D_80110FE0_messy_memory[playerNo][0] == other->unk44.x &&
+                        D_80111044_messy_memory[slot][1] + D_80110FE0_messy_memory[playerNo][1] == other->unk44.y) {
+                        found = TRUE;
+                    }
+                }
+                for (k = 0; k < 10; k++) {
+                    if (D_80111678_messy_memory[playerNo][k] == 1 && D_801116A4_messy_memory[slot] == k) {
+                        found = TRUE;
+                    }
+                }
+                if (!found && D_801116A4_messy_memory[slot] != itemObj->work[0]) {
+                    work->unk1C = D_80111044_messy_memory[slot][0] + D_80110FE0_messy_memory[playerNo][0];
+                    work->unk20 = D_80111044_messy_memory[slot][1] + D_80110FE0_messy_memory[playerNo][1];
+                    work->unk0A = slot;
+                    work->unk06 = 4;
+                    work->unk0E = 0;
+                }
+                if (!found && D_801116A4_messy_memory[slot] == itemObj->work[0] && work->unk14 >= 6) {
+                    work->unk1C = D_80111044_messy_memory[10][0] + D_80110FE0_messy_memory[playerNo][0];
+                    work->unk20 = D_80111044_messy_memory[10][1] + D_80110FE0_messy_memory[playerNo][1];
+                    work->unk0A = slot;
+                    work->unk0C = 10;
+                    work->unk06 = 5;
+                    work->unk0E = 0;
+                }
+                if (++work->unk0E >= 50) {
+                    work->unk0E = 0;
+                    work->unk06 = 9;
+                    for (i = 0; i < 20; i++) {
+                        if (D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] - 7.0f <= work->unk44.x &&
+                            D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] + 7.0f >= work->unk44.x &&
+                            D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] - 7.0f <= work->unk44.y &&
+                            D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] + 6.0f >= work->unk44.y) {
+                            D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 0;
+                            item->unk44.x = D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0];
+                            item->unk44.y = D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1];
+                            D_80111640_messy_memory[obj->work[0]] = 0;
+                            func_8004AC98_main(D_8011133A_messy_memory, obj->work[0]);
+                            D_80111670_messy_memory[playerNo] = 0;
+                        }
+                    }
+                }
+                break;
+            case 4:
+                MM_CPU_STEER(work);
+                if (D_80115D8E_messy_memory > 150) {
+                    switch (GwPlayer[playerNo].cpu_difficulty) {
+                        case 0:
+                            if (rand8() < 30) {
+                                work->unk06 = 8;
+                            }
+                            break;
+                        case 1:
+                            if (rand8() < 7) {
+                                work->unk06 = 8;
+                            }
+                            break;
+                        case 2:
+                            if (rand8() < 5) {
+                                work->unk06 = 8;
+                            }
+                            break;
+                        case 3:
+                            if (rand8() < 3) {
+                                work->unk06 = 8;
+                            }
+                            break;
+                    }
+                }
+                item = &D_80111700_messy_memory[work->unk08 + 8 + playerNo * 10];
+                if (MM_CPU_NEAR(work, work->unk1C, work->unk20)) {
+                    D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 0;
+                    D_80111640_messy_memory[obj->work[0]] = 0;
+                    func_8004AC98_main(D_8011133A_messy_memory, obj->work[0]);
+                    D_80111670_messy_memory[playerNo] = 0;
+                    item->unk44.x = D_80111044_messy_memory[work->unk0A][0] + D_80110FE0_messy_memory[playerNo][0];
+                    item->unk44.y = D_80111044_messy_memory[work->unk0A][1] + D_80110FE0_messy_memory[playerNo][1];
+                    work->unk06 = 0;
+                    work->unk14++;
+                }
+                break;
+            case 8:
+                if (++work->unk10 % 10 == 0) {
+                    work->unk24 = 0.0f;
+                    work->unk28 = 0.0f;
+                    slot = rand8();
+                    if (slot % 2 == 0) {
+                        work->unk24 = 1.0f;
+                    }
+                    if (slot % 2 == 1) {
+                        work->unk24 = 2.0f;
+                    }
+                    if (slot % 3 == 0) {
+                        work->unk28 = 1.0f;
+                    }
+                    if (slot % 3 == 1) {
+                        work->unk28 = 2.0f;
+                    }
+                }
+                if (work->unk10 > 30) {
+                    work->unk10 = 0;
+                    work->unk06 = 4;
+                }
+                break;
+            case 5:
+                MM_CPU_STEER(work);
+                item = &D_80111700_messy_memory[work->unk08 + 8 + playerNo * 10];
+                if (MM_CPU_NEAR(work, work->unk1C, work->unk20)) {
+                    D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 0;
+                    D_80111640_messy_memory[obj->work[0]] = 0;
+                    func_8004AC98_main(D_8011133A_messy_memory, obj->work[0]);
+                    D_80111670_messy_memory[playerNo] = 0;
+                    item->unk44.x = D_80111044_messy_memory[work->unk0C][0] + D_80110FE0_messy_memory[playerNo][0];
+                    item->unk44.y = D_80111044_messy_memory[work->unk0C][1] + D_80110FE0_messy_memory[playerNo][1];
+                    work->unk06 = 6;
+                }
+                break;
+            case 6:
+                slot = rand8() % 10;
+                item = &D_80111700_messy_memory[slot + 8 + playerNo * 10];
+                if (item->unk44.y < D_80110FE0_messy_memory[playerNo][1] + 80.0f &&
+                    D_80111678_messy_memory[playerNo][slot] != 1) {
+                    work->unk08 = slot;
+                    work->unk1C = item->unk44.x;
+                    work->unk20 = item->unk44.y;
+                    work->unk06 = 7;
+                }
+                break;
+            case 7:
+                MM_CPU_STEER(work);
+                item = &D_80111700_messy_memory[work->unk08 + 8 + playerNo * 10];
+                if (MM_CPU_NEAR(work, item->unk44.x, item->unk44.y)) {
+                    D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 1;
+                    D_80111640_messy_memory[obj->work[0]] = 1;
+                    func_8004AC98_main(D_80111338_messy_memory, obj->work[0]);
+                    D_80111670_messy_memory[playerNo] = 1;
+                    work->unk1C = D_80111044_messy_memory[work->unk0A][0] + D_80110FE0_messy_memory[playerNo][0];
+                    work->unk20 = D_80111044_messy_memory[work->unk0A][1] + D_80110FE0_messy_memory[playerNo][1];
+                    work->unk06 = 4;
+                    work->unk14--;
+                }
+                break;
+        }
+    }
+
+    if (work->unk12 == 4) {
+        switch (work->unk06) {
+            case 0:
+                slot = rand8() % 10;
+                item = &D_80111700_messy_memory[slot + 8 + playerNo * 10];
+                if (item->unk44.y < D_80110FE0_messy_memory[playerNo][1] + 80.0f) {
+                    work->unk08 = slot;
+                    work->unk38 = work->unk1C = item->unk44.x;
+                    work->unk3C = work->unk20 = item->unk44.y;
+                    work->unk06 = 1;
+                }
+                break;
+            case 1:
+                MM_CPU_STEER(work);
+                item = &D_80111700_messy_memory[work->unk08 + 8 + playerNo * 10];
+                if (MM_CPU_NEAR(work, item->unk44.x, item->unk44.y)) {
+                    D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 1;
+                    D_80111640_messy_memory[obj->work[0]] = 1;
+                    func_8004AC98_main(D_80111338_messy_memory, obj->work[0]);
+                    D_80111670_messy_memory[playerNo] = 1;
+                    work->unk14--;
+                    work->unk06 = 2;
+                }
+                break;
+            case 2:
+                slot = rand8() % 10;
+                work->unk1C = D_80111044_messy_memory[slot + 10][0] + D_80110FE0_messy_memory[playerNo][0];
+                work->unk20 = D_80111044_messy_memory[slot + 10][1] + D_80110FE0_messy_memory[playerNo][1];
+                work->unk0A = slot + 10;
+                work->unk06 = 3;
+                break;
+            case 3:
+                MM_CPU_STEER(work);
+                item = &D_80111700_messy_memory[work->unk08 + 8 + playerNo * 10];
+                if (MM_CPU_NEAR(work, work->unk1C, work->unk20)) {
+                    D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 0;
+                    D_80111640_messy_memory[obj->work[0]] = 0;
+                    func_8004AC98_main(D_8011133A_messy_memory, obj->work[0]);
+                    D_80111670_messy_memory[playerNo] = 0;
+                    item->unk44.x = D_80111044_messy_memory[work->unk0A][0] + D_80110FE0_messy_memory[playerNo][0];
+                    item->unk44.y = D_80111044_messy_memory[work->unk0A][1] + D_80110FE0_messy_memory[playerNo][1];
+                    work->unk06 = 4;
+                }
+                break;
+            case 4:
+                slot = rand8() % 10;
+                item = &D_80111700_messy_memory[slot + 8 + playerNo * 10];
+                if (item->unk44.y < D_80110FE0_messy_memory[playerNo][1] + 80.0f) {
+                    work->unk08 = slot;
+                    work->unk1C = item->unk44.x;
+                    work->unk20 = item->unk44.y;
+                    work->unk06 = 5;
+                }
+                break;
+            case 5:
+                MM_CPU_STEER(work);
+                item = &D_80111700_messy_memory[work->unk08 + 8 + playerNo * 10];
+                if (MM_CPU_NEAR(work, item->unk44.x, item->unk44.y)) {
+                    D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 1;
+                    D_80111640_messy_memory[obj->work[0]] = 1;
+                    func_8004AC98_main(D_80111338_messy_memory, obj->work[0]);
+                    D_80111670_messy_memory[playerNo] = 1;
+                    work->unk14--;
+                    work->unk06 = 6;
+                }
+                break;
+            case 6:
+                for (k = 0; k < 10; k++) {
+                    if (work->unk38 == D_80111044_messy_memory[k][0] + D_80110FE0_messy_memory[playerNo][0] &&
+                        work->unk3C == D_80111044_messy_memory[k][1] + D_80110FE0_messy_memory[playerNo][1]) {
+                        work->unk1C = D_80111044_messy_memory[k][0] + D_80110FE0_messy_memory[playerNo][0];
+                        work->unk20 = D_80111044_messy_memory[k][1] + D_80110FE0_messy_memory[playerNo][1];
+                        work->unk0A = k;
+                        work->unk06 = 7;
+                    }
+                }
+                break;
+            case 7:
+                MM_CPU_STEER(work);
+                item = &D_80111700_messy_memory[work->unk08 + 8 + playerNo * 10];
+                if (MM_CPU_NEAR(work, work->unk1C, work->unk20)) {
+                    D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 0;
+                    D_80111640_messy_memory[obj->work[0]] = 0;
+                    func_8004AC98_main(D_8011133A_messy_memory, obj->work[0]);
+                    D_80111670_messy_memory[playerNo] = 0;
+                    item->unk44.x = D_80111044_messy_memory[work->unk0A][0] + D_80110FE0_messy_memory[playerNo][0];
+                    item->unk44.y = D_80111044_messy_memory[work->unk0A][1] + D_80110FE0_messy_memory[playerNo][1];
+                    work->unk06 = 8;
+                    work->unk14++;
+                }
+                break;
+            case 8:
+                for (k = 0; k < 10; k++) {
+                    item = &D_80111700_messy_memory[k + 8 + playerNo * 10];
+                    if (D_80110FE0_messy_memory[playerNo][1] + 80.0f < item->unk44.y) {
+                        work->unk08 = k;
+                        work->unk1C = item->unk44.x;
+                        work->unk20 = item->unk44.y;
+                        work->unk06 = 9;
+                    }
+                }
+                break;
+            case 9:
+                MM_CPU_STEER(work);
+                item = &D_80111700_messy_memory[work->unk08 + 8 + playerNo * 10];
+                if (MM_CPU_NEAR(work, item->unk44.x, item->unk44.y)) {
+                    D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 1;
+                    D_80111640_messy_memory[obj->work[0]] = 1;
+                    func_8004AC98_main(D_80111338_messy_memory, obj->work[0]);
+                    D_80111670_messy_memory[playerNo] = 1;
+                    work->unk06 = 10;
+                }
+                break;
+            case 10:
+                for (k = 0; k < 10; k++) {
+                    found = FALSE;
+                    for (i = 0; i < 10; i++) {
+                        other = &D_80111700_messy_memory[i + 8 + playerNo * 10];
+                        if (D_80111044_messy_memory[k][0] + D_80110FE0_messy_memory[playerNo][0] == other->unk44.x &&
+                            D_80111044_messy_memory[k][1] + D_80110FE0_messy_memory[playerNo][1] == other->unk44.y) {
+                            found = TRUE;
+                        }
+                    }
+                    if (!found) {
+                        work->unk1C = D_80111044_messy_memory[k][0] + D_80110FE0_messy_memory[playerNo][0];
+                        work->unk20 = D_80111044_messy_memory[k][1] + D_80110FE0_messy_memory[playerNo][1];
+                        work->unk0A = k;
+                        work->unk06 = 11;
+                    }
+                }
+                break;
+            case 11:
+                MM_CPU_STEER(work);
+                item = &D_80111700_messy_memory[work->unk08 + 8 + playerNo * 10];
+                if (MM_CPU_NEAR(work, work->unk1C, work->unk20)) {
+                    D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 0;
+                    D_80111640_messy_memory[obj->work[0]] = 0;
+                    func_8004AC98_main(D_8011133A_messy_memory, obj->work[0]);
+                    D_80111670_messy_memory[playerNo] = 0;
+                    item->unk44.x = D_80111044_messy_memory[work->unk0A][0] + D_80110FE0_messy_memory[playerNo][0];
+                    item->unk44.y = D_80111044_messy_memory[work->unk0A][1] + D_80110FE0_messy_memory[playerNo][1];
+                    work->unk06 = 12;
+                    work->unk14++;
+                    work->unk12 = 5;
+                }
+                break;
+        }
+    }
+
+    if (work->unk24 == 1.0f) {
+        work->unk44.x -= 2.0f;
+        if (work->unk44.x < D_80110FE0_messy_memory[playerNo][0] + 30.0f) {
+            work->unk44.x = D_80110FE0_messy_memory[playerNo][0] + 30.0f;
+        }
+    }
+    if (work->unk24 == 2.0f) {
+        work->unk44.x += 2.0f;
+        if (work->unk44.x > D_80110FE0_messy_memory[playerNo][0] + 140.0f) {
+            work->unk44.x = D_80110FE0_messy_memory[playerNo][0] + 140.0f;
+        }
+    }
+    if (work->unk28 == 1.0f) {
+        work->unk44.y -= 2.0f;
+        if (work->unk44.y < D_80110FE0_messy_memory[playerNo][1] + 20.0f) {
+            work->unk44.y = D_80110FE0_messy_memory[playerNo][1] + 20.0f;
+        }
+    }
+    if (work->unk28 == 2.0f) {
+        work->unk44.y += 2.0f;
+        if (work->unk44.y > D_80110FE0_messy_memory[playerNo][1] + 108.0f) {
+            work->unk44.y = D_80110FE0_messy_memory[playerNo][1] + 108.0f;
+        }
+    }
+}
 
 void func_8010ACE4_messy_memory(omObjData *obj) {
     s32 playerIndex = (u16)obj->work[0];

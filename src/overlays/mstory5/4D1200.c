@@ -1681,7 +1681,6 @@ void func_8010DADC_mstory5(omObjData *obj) {
     D_801151F0_mstory5[7].func = func_801085D8_mstory5;
 }
 
-#ifdef NON_MATCHING
 void func_8010DB30_mstory5(void) {
     f32 angle = 0.0f;
     omObjData *obj;
@@ -1691,7 +1690,8 @@ void func_8010DB30_mstory5(void) {
 
     if (D_80114774_mstory5 != 0) {
         obj = D_801151F0_mstory5[7].obj;
-        pos.y = Hu3DData[obj->model[1]].pos.y;
+        model = obj->model[1];
+        pos.y = Hu3DData[model].pos.y;
         while (TRUE) {
             model = obj->model[1];
             pos.x = Hu3DData[model].pos.x;
@@ -1706,9 +1706,6 @@ void func_8010DB30_mstory5(void) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/mstory5/4D1200", func_8010DB30_mstory5);
-#endif
 
 void func_8010DC78_mstory5(void) {
     omObjData *obj;

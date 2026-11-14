@@ -1944,31 +1944,31 @@ void func_8010B498_game_guys_lucky_7(omObjData *object) {
     D_8010D804_game_guys_lucky_7++;
 }
 
-#ifdef NON_MATCHING
-// Only differs by FPU register swap (f0/f2) in the unk0C computation.
 void func_8010B528_game_guys_lucky_7(s16 model) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *effect = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = effect->unk58;
     s16 i;
     s16 count = hmf->unk1A;
+    f32 temp;
 
     for (i = 0; i < count; i++, particle++) {
         if (particle->unk10 <= 0.0f) {
-            particle->unk0C = rand8() % 200 + -450.0f;
+            temp = rand8() % 200 + -450.0f;
+            particle->unk0C = temp;
             particle->unk10 = 1000.0f;
-            particle->unk14 = (rand8() * 1000 >> 8) - 500;
-            particle->unk18 = ((rand8() * 10 >> 8) - 5) / 2.0f;
+            temp = (rand8() * 1000 >> 8) - 500;
+            particle->unk14 = temp;
+            temp = ((rand8() * 10 >> 8) - 5) / 2.0f;
+            particle->unk18 = temp;
             particle->unk1C = 0.0f;
-            particle->unk20 = ((rand8() * 10 >> 8) - 5) / 2.0f;
+            temp = ((rand8() * 10 >> 8) - 5) / 2.0f;
+            particle->unk20 = temp;
             particle->unk08 = 5.0f;
             break;
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", func_8010B528_game_guys_lucky_7);
-#endif
 
 void func_8010B6E0_game_guys_lucky_7(s16 model) {
     HmfData *hmf = Hu3DData[model].hmf;

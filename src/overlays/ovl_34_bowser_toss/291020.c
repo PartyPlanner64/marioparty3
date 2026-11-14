@@ -2270,13 +2270,11 @@ void func_8010C2DC_bowser_toss(void) {
     omAddObj(0x1F, 0, 0, -1, func_8010CDB8_bowser_toss);
 }
 
-// Matches except that the target loads D_8010F3F0_bowser_toss into a temporary
-// before setting fontcolor and copies it into cam afterwards.
-#ifdef NON_MATCHING
 void func_8010C570_bowser_toss(void) {
     BowserTossCameraKey delta = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, 0.0f };
     f32 speed;
     s32 cam;
+    s32 index;
     s32 i;
     Vec *center;
     Vec *rot;
@@ -2336,8 +2334,9 @@ void func_8010C570_bowser_toss(void) {
                 func_8010D250_bowser_toss(D_8010F3F0_bowser_toss, delta.center.x, delta.center.y, delta.center.z,
                                           delta.rot.x, delta.rot.y, delta.rot.z, delta.zoom, 1);
             }
-            cam = D_8010F3F0_bowser_toss;
+            index = D_8010F3F0_bowser_toss;
             fontcolor = 15;
+            cam = index;
             if (D_800D5558_main[0] & R_TRIG) {
                 if (++D_8010F3F0_bowser_toss >= 2) {
                     D_8010F3F0_bowser_toss = 0;
@@ -2396,11 +2395,6 @@ void func_8010C570_bowser_toss(void) {
         }
     }
 }
-#else
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", D_8010F998_bowser_toss);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010C570_bowser_toss);
-#endif
 
 void func_8010CDB8_bowser_toss(omObjData *object) {
     BowserTossCamera *cam;

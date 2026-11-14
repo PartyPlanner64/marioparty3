@@ -445,9 +445,6 @@ void func_801069A0_stacked_deck(omObjData *object) {
     }
 }
 
-#ifdef NON_MATCHING
-// Only differs in register allocation in the two player search loops of state 8,
-// where the target keeps the player object in v1 instead of reusing a0.
 void func_80106BC8_stacked_deck(omObjData *object) {
     StackedDeckCard *card = &STACKED_DECK_PLAYERS[object->work[0]];
     func_800E1BA8_minigame_ObjData *data = object->data;
@@ -767,31 +764,31 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                         break;
                     case 1:
                         for (i = 0; i < 4; i++) {
-                            player = STACKED_DECK_PLAYERS[i].obj;
+                            other = &STACKED_DECK_PLAYERS[i];
+                            player = other->obj;
                             if (player->work[1] == 0) {
                                 break;
                             }
                         }
-                        if (STACKED_DECK_PLAYERS[i].unk_04[2] == 1 && player->trans.z > 800.0f &&
-                            player->trans.x > -150.0f && player->trans.x < 450.0f) {
-                            u8 speed = rand8() % 100;
-
+                        if (other->unk_04[2] == 1 && player->trans.z > 800.0f && player->trans.x > -150.0f &&
+                            player->trans.x < 450.0f) {
+                            slot = rand8() % 100;
                             switch (object->work[1]) {
                                 case 1:
                                     card->unk_18[0] = -60.0f;
-                                    card->unk_18[1] = -speed;
+                                    card->unk_18[1] = -slot;
                                     break;
                                 case 2:
                                     if (!(rand8() & 1)) {
-                                        card->unk_18[0] = speed;
+                                        card->unk_18[0] = slot;
                                     } else {
-                                        card->unk_18[0] = -speed;
+                                        card->unk_18[0] = -slot;
                                     }
                                     card->unk_18[1] = -60.0f;
                                     break;
                                 case 3:
                                     card->unk_18[0] = 60.0f;
-                                    card->unk_18[1] = -speed;
+                                    card->unk_18[1] = -slot;
                                     break;
                             }
                             card->unk_04[2] = 2;
@@ -813,13 +810,15 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                 found = FALSE;
                 for (i = 0; i < 4; i++) {
                     other = &STACKED_DECK_PLAYERS[i];
-                    if (other->unk_04[2] != 3 && other->obj->work[1] <= D_8011116E_stacked_deck) {
+                    player = other->obj;
+                    if (other->unk_04[2] != 3 && player->work[1] <= D_8011116E_stacked_deck) {
                         found = TRUE;
                     }
                 }
                 if (!found && effect->unk_04[0] == 5) {
                     for (i = 0; i < 4; i++) {
-                        STACKED_DECK_PLAYERS[i].unk_04[2] = 0;
+                        other = &STACKED_DECK_PLAYERS[i];
+                        other->unk_04[2] = 0;
                     }
                     D_80111169_stacked_deck = 9;
                     effect->unk_04[0] = 0;
@@ -831,17 +830,20 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                 switch (card->unk_04[2]) {
                     case 0:
                         slot = (rand8() & 0xFF) % (D_8011116E_stacked_deck + 1);
-                        while (D_80111142_stacked_deck[slot] != 0) {
+                        while (TRUE) {
+                            if (D_80111142_stacked_deck[slot] == 0) {
+                                object->work[1] = slot;
+                                object->trans.x = slot * 140.0f;
+                                object->trans.z = 1500.0f;
+                                card->unk_04[2] = 1;
+                                data->unk40 = 0.0f;
+                                D_80111142_stacked_deck[slot] = 1;
+                                break;
+                            }
                             if (++slot > D_8011116E_stacked_deck) {
                                 slot = 0;
                             }
                         }
-                        object->work[1] = slot;
-                        object->trans.x = slot * 140.0f;
-                        object->trans.z = 1500.0f;
-                        card->unk_04[2] = 1;
-                        data->unk40 = 0.0f;
-                        D_80111142_stacked_deck[slot] = 1;
                         break;
                     case 1:
                         if (object->trans.z > 1100.0f) {
@@ -852,19 +854,23 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                             card->unk_04[2] = 2;
                         }
                         break;
+                    case 2:
+                        break;
                 }
             }
             if (object->work[0] == 3) {
                 found = FALSE;
                 for (i = 0; i < 4; i++) {
                     other = &STACKED_DECK_PLAYERS[i];
-                    if (other->unk_04[2] != 2 && other->obj->work[1] <= D_8011116E_stacked_deck) {
+                    player = other->obj;
+                    if (other->unk_04[2] != 2 && player->work[1] <= D_8011116E_stacked_deck) {
                         found = TRUE;
                     }
                 }
                 if (!found) {
                     for (i = 0; i < 4; i++) {
-                        STACKED_DECK_PLAYERS[i].unk_04[2] = 0;
+                        other = &STACKED_DECK_PLAYERS[i];
+                        other->unk_04[2] = 0;
                         D_80111142_stacked_deck[i] = 0;
                     }
                     D_80111169_stacked_deck = 10;
@@ -884,7 +890,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                             card->unk_04[1] = 0x29;
                             card->unk_04[7] = D_8011116E_stacked_deck;
                         }
-                        if (object->trans.x < obj->trans.x) {
+                        if (obj->trans.x > object->trans.x) {
                             card->unk_04[6] = 1;
                         } else {
                             card->unk_04[6] = 2;
@@ -932,11 +938,13 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                 }
             } else if (object->work[1] <= D_8011116E_stacked_deck) {
                 for (i = 0; i < 4; i++) {
-                    if (STACKED_DECK_PLAYERS[i].obj->work[1] == 0) {
+                    other = &STACKED_DECK_PLAYERS[i];
+                    player = other->obj;
+                    if (player->work[1] == 0) {
                         break;
                     }
                 }
-                if (STACKED_DECK_PLAYERS[i].unk_04[2] > 0) {
+                if (other->unk_04[2] > 0) {
                     if (object->work[1] == 1) {
                         if (object->trans.z > 800.0f) {
                             D_800D20A1_main[object->work[3]] = 60;
@@ -951,7 +959,8 @@ void func_80106BC8_stacked_deck(omObjData *object) {
             }
             if (object->work[0] == 3 && D_80111169_stacked_deck == 11) {
                 for (i = 0; i < 4; i++) {
-                    player = STACKED_DECK_PLAYERS[i].obj;
+                    other = &STACKED_DECK_PLAYERS[i];
+                    player = other->obj;
                     if (player->work[1] == 0) {
                         player->work[1] = 99;
                     } else if (player->work[1] <= D_8011116E_stacked_deck) {
@@ -975,7 +984,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                             card->unk_04[1] = 0x29;
                             card->unk_04[7] = D_8011116E_stacked_deck;
                         }
-                        if (object->trans.x < obj->trans.x) {
+                        if (obj->trans.x > object->trans.x) {
                             card->unk_04[6] = 1;
                         } else {
                             card->unk_04[6] = 2;
@@ -1012,6 +1021,8 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                             card->unk_04[2] = 2;
                         }
                         break;
+                    case 2:
+                        break;
                 }
             } else if (object->work[1] <= D_8011116E_stacked_deck && D_8010F6F4_stacked_deck == 15) {
                 if (data->unk3C <= 20.0f || data->unk3C >= 340.0f) {
@@ -1045,7 +1056,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                             card->unk_04[1] = 0x29;
                             card->unk_04[7] = D_8011116E_stacked_deck;
                         }
-                        if (object->trans.x < obj->trans.x) {
+                        if (obj->trans.x > object->trans.x) {
                             card->unk_04[6] = 1;
                         } else {
                             card->unk_04[6] = 2;
@@ -1132,9 +1143,6 @@ void func_80106BC8_stacked_deck(omObjData *object) {
         object->trans.z = -499.0f;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2A_stacked_deck/240A10", func_80106BC8_stacked_deck);
-#endif
 
 #ifdef NON_MATCHING
 // Only differs in v0/v1 register allocation of the player address in the final

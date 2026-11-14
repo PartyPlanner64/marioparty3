@@ -1679,7 +1679,10 @@ f32 func_8010AAEC_hand_line_sinker(f32 x) {
 
 #ifdef NON_MATCHING
 /* Only difference: the target has an extra nop between the second logf call's delay slot and the
- * following mul.s (assembler vr4300 mul fix, likely triggered by a label at that point in the original). */
+ * following mul.s. The KMC assembler inserts a nop before any mul.s that directly follows a label
+ * (VR4300 mul errata workaround), so the original asm must have had a code label right after
+ * `jal logf` in the second block. Neither the if/else, ternary, early-return, goto, inline-helper
+ * nor split-statement forms tried so far leave such a label. */
 f32 func_8010ABD4_hand_line_sinker(f32 a) {
     f32 b;
     f32 t;

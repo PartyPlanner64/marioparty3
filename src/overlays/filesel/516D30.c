@@ -585,8 +585,6 @@ u32 func_80106AD8_filesel(u32 arg0) {
     return arg0;
 }
 
-// Remaining differences are saved-register allocation for the message and window parameters.
-#ifdef NON_MATCHING
 void func_80106B40_filesel(s32 index, u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
     u32 copiedMessage;
     s16 window;
@@ -613,6 +611,9 @@ void func_80106B40_filesel(s32 index, u32 message, s16 x, s16 y, s16 width, s16 
             window = func_80107380_filesel(copiedMessage, x, y, style);
             break;
         case 0:
+            copiedMessage = func_80106AD8_filesel(message);
+            window = func_80106D8C_filesel(copiedMessage, x, y, width, height, style);
+            break;
         default:
             copiedMessage = func_80106AD8_filesel(message);
             window = func_80106D8C_filesel(copiedMessage, x, y, width, height, style);
@@ -623,10 +624,6 @@ void func_80106B40_filesel(s32 index, u32 message, s16 x, s16 y, s16 width, s16 
     }
     D_80114158_filesel[index].unk_00 = window;
 }
-
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516D30", func_80106B40_filesel);
-#endif
 
 s32 func_80106D8C_filesel(u32 message, s16 x, s16 y, s16 width, s16 height, s16 style) {
     s16 window = HuWinCreate(x, y, width, height, 0, 8);

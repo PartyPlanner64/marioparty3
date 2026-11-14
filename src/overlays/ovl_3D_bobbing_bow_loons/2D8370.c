@@ -992,9 +992,6 @@ void func_80108894_bobbing_bow_loons(void) {
     omAddPrcObj(func_801088C0_bobbing_bow_loons, 0x50, 0, 0);
 }
 
-#ifdef NON_MATCHING
-// Only differs in FPU register allocation in the final loop: the original keeps
-// y in f4 and y - 20.0f in f6.
 void func_801088C0_bobbing_bow_loons(void) {
     f32 angles[5];
     f32 minAngles[5] = { 120.0f, 300.0f, 120.0f, 320.0f, 160.0f };
@@ -1028,8 +1025,8 @@ void func_801088C0_bobbing_bow_loons(void) {
                 hit++;
             }
             if (hit != 0) {
-                y = work->pos_y[D_80109B14_bobbing_bow_loons];
                 hit = 0;
+                y = work->pos_y[D_80109B14_bobbing_bow_loons];
                 for (i = D_80109B14_bobbing_bow_loons + 1; i < 5; i++) {
                     if (work->pos_y[i] >= y - 20.0f && work->pos_y[i] < y + 20.0f) {
                         hit++;
@@ -1049,13 +1046,6 @@ void func_801088C0_bobbing_bow_loons(void) {
     } while (!done);
     omDelPrcObj(NULL);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3D_bobbing_bow_loons/2D8370", func_801088C0_bobbing_bow_loons);
-#endif
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_3D_bobbing_bow_loons/2D8370", D_80109A54_bobbing_bow_loons);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_3D_bobbing_bow_loons/2D8370", D_80109A68_bobbing_bow_loons);
 
 void func_80108C18_bobbing_bow_loons(s32 recolor) {
     BobbingBowLoonsEffect *effect;

@@ -1453,12 +1453,10 @@ void func_8010B4CC_messy_memory(void) {
     }
 }
 
-// NON_MATCHING: `near` is tested via a register copy in the target.
-#ifdef NON_MATCHING
 void func_8010B5C8_messy_memory(omObjData *obj) {
     u16 index = obj->work[0];
     MessyMemoryWork *work = &D_80113B18_messy_memory[obj->work[0]];
-    s32 near;
+    s16 near;
     s16 i;
 
     switch (D_80115D8C_messy_memory) {
@@ -1642,9 +1640,6 @@ void func_8010B5C8_messy_memory(omObjData *obj) {
         Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y - 10.0f, obj->trans.z + 30.0f);
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", func_8010B5C8_messy_memory);
-#endif
 
 void func_8010C03C_messy_memory(omObjData *obj) {
     u32 playerNo = obj->work[0];

@@ -513,7 +513,6 @@ void func_80106C98_toadstool_titan(omObjData *object) {
     object->func = func_80107360_toadstool_titan;
 }
 
-#ifdef NON_MATCHING
 void func_80107360_toadstool_titan(omObjData *object) {
     func_800E1BA8_minigame_ObjData *data;
     HuCamMtxs *camMtxs;
@@ -1065,9 +1064,10 @@ void func_80107360_toadstool_titan(omObjData *object) {
                     }
                 }
                 j = (u8)(rand8() % 9);
-                do {
+                k = (u8)(rand8() % 9);
+                while (j == k) {
                     k = (u8)(rand8() % 9);
-                } while (j == k);
+                }
                 D_8010F650_toadstool_titan[k] = 2;
                 D_8010F650_toadstool_titan[j] = 2;
             }
@@ -1304,13 +1304,6 @@ void func_80107360_toadstool_titan(omObjData *object) {
         }
     }
 }
-#else
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", D_8010EF80_toadstool_titan);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", D_8010EF88_toadstool_titan);
-
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_16_toadstool_titan/1BA850", func_80107360_toadstool_titan);
-#endif
 
 void func_8010AD8C_toadstool_titan(s16 left, s16 top, s16 right, s16 bottom) {
     HuSprite_Unk84_Unk00_Struct *frame;

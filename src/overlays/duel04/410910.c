@@ -5434,6 +5434,15 @@ s32 func_80116168_duel04(void) {
 // 3) avoids that merge, but then the first switch's case 1 `return 1` block
 // is cross-jumped into the second switch's. func_80115DA8_duel04 has a similar
 // blocker.
+// RTL dumps (-dJ) show the target's separate `j end; li v0,1` tails are
+// reorg delay-slot copies of one `li 1` block. Here case 2's tail after jump2
+// is `bnez s1,<case 3 fp>; j <default sltiu>`, and reorg copies the sltiu. To
+// match, case 2 would need to end jump2 as `bnez s1,<case 3 fp>; j <li 1>`,
+// where the li 1 block is not case 3's (code before that one is the same bnez,
+// so it gets cross-jumped). The likely block is the first switch's case 1
+// `return 1`. A 64-variant search (ret/return/order of case 2 and case 3
+// tails), ternaries, `(u32)curIndex > 0`, and temp-variable or
+// `return ret` tails did not produce that.
 s32 func_801163C0_duel04(void) {
     s32 curIndex = MBDGetCurrentPlayerIndex();
     s32 otherIndex = (s16)(MBDGetCurrentPlayerIndex() ^ 1);

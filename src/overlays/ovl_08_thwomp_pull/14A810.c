@@ -14,6 +14,35 @@ typedef struct ThwompPullPlayer {
 
 extern D_80111B50_vine_with_me_Struct D_8010ED60_thwomp_pull;
 extern u32 D_8010ED88_thwomp_pull;
+extern u32 D_8010EE24_thwomp_pull;
+extern f32 D_8010EE28_thwomp_pull[2];
+extern u8 D_8010EE30_thwomp_pull[2];
+extern u8 D_8010EE34_thwomp_pull[2][3];
+extern u16 D_8010EE3C_thwomp_pull[2];
+extern u8 D_8010EE40_thwomp_pull[2];
+extern u8 D_8010EE44_thwomp_pull[2];
+extern u8 D_8010EE48_thwomp_pull[2][3];
+extern u8 D_8010EE50_thwomp_pull[2];
+extern f32 D_8010EE54_thwomp_pull[2][2];
+extern u8 D_8010EE64_thwomp_pull[2][2];
+extern f32 D_8010EE68_thwomp_pull[2][4];
+extern f32 D_8010EE88_thwomp_pull[2][4];
+extern f32 D_8010EEA8_thwomp_pull[2][4];
+extern f32 D_8010EEC8_thwomp_pull[2][4];
+extern f32 D_8010EEE8_thwomp_pull[2][4];
+extern f32 D_8010EF08_thwomp_pull[2][4];
+extern u8 D_8010EF28_thwomp_pull[2];
+extern f32 D_8010EF2C_thwomp_pull[2];
+extern u8 D_8010EF34_thwomp_pull[2];
+extern s8 D_8010EF38_thwomp_pull[4];
+extern u8 D_8010EF3C_thwomp_pull[4];
+extern u8 D_8010EF40_thwomp_pull[4];
+extern u8 D_8010EF44_thwomp_pull[4];
+extern u16 D_8010EF48_thwomp_pull[2];
+extern u8 D_8010EF4C_thwomp_pull[2][3];
+extern f32 D_8010EF54_thwomp_pull[2][3];
+extern u8 D_8010EF6C_thwomp_pull[2];
+extern f32 D_8010EF70_thwomp_pull[21];
 extern f32 D_8010F470_thwomp_pull[3];
 extern f32 D_8010F47C_thwomp_pull[3];
 extern f32 D_8010F488_thwomp_pull[3];
@@ -1022,96 +1051,620 @@ void func_8010AF18_thwomp_pull(s16 arg0, s16 arg1) {
     model->hmf->unk98->unk08 = value;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F238_thwomp_pull);
+void func_8010AF88_thwomp_pull(omObjData *object) {
+    s32 pressed[4][3];
+    s32 buttons[3] = { A_BUTTON, B_BUTTON, Z_TRIG };
+    s16 cpuParams[5][4] = {
+        { 17, 15, 13, 14 },
+        { 5, 3, 2, 1 },
+        { 1006, 1012, 1030, 1024 },
+        { 12, 12, 8, 2 },
+        { 5, 5, 6, 1 },
+    };
+    u8 visible[3];
+    HmfMotionNode *node;
+    s32 group;
+    s32 i;
+    s32 j;
+    s32 k;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F244_thwomp_pull);
+    if (D_8010EE24_thwomp_pull == 0) {
+        for (i = 0; i < 2; i++) {
+            D_8010EE48_thwomp_pull[i][0] = rand8() % 3;
+            D_8010EE48_thwomp_pull[i][1] = (D_8010EE48_thwomp_pull[i][0] + (rand8() & 1) + 1) % 3;
+            D_8010EE48_thwomp_pull[i][2] = 3 - (D_8010EE48_thwomp_pull[i][0] + D_8010EE48_thwomp_pull[i][1]);
+        }
+        for (i = 0; i < 4; i++) {
+            D_8010EF38_thwomp_pull[i] = cpuParams[0][D_8010F4F8_thwomp_pull[i]->cpuDifficulty] +
+                                        rand8() % cpuParams[1][D_8010F4F8_thwomp_pull[i]->cpuDifficulty];
+        }
+    }
+    D_800CD280_main = (D_8010F530_thwomp_pull < 2 || D_8010F588_thwomp_pull > 0.0f);
+    for (group = 0; group < 2; group++) {
+        object = D_8010F568_thwomp_pull[group];
+        for (i = 0; i < 3; i++) {
+            for (j = group; j < group * 3 + 1; j++) {
+                pressed[j][i] =
+                    D_8010EF40_thwomp_pull[j] == 0 && D_8010F530_thwomp_pull == 2 &&
+                    ((D_8010F4F8_thwomp_pull[j]->cpuDifficulty == -1)
+                         ? (D_800D5558_main[D_8010F4F8_thwomp_pull[j]->pad] & buttons[i]) != 0
+                         : (D_8010EF3C_thwomp_pull[j] != 0 &&
+                            i == D_8010EE48_thwomp_pull[group][D_8010EE44_thwomp_pull[group]] &&
+                            D_8010EE40_thwomp_pull[group] == 1 && D_8010EE3C_thwomp_pull[group] == 18));
+            }
+            visible[i] =
+                (Hu3DData[object->model[30 + D_8010EE48_thwomp_pull[group][D_8010EE44_thwomp_pull[group]]]].attr & 4) !=
+                0;
+            func_8001C258_main(object->model[30 + i], 4, 4);
+        }
+        D_8010EE3C_thwomp_pull[group]++;
+        if (D_8010EE40_thwomp_pull[group] == 1 && D_8010EE3C_thwomp_pull[group] >= 20) {
+            D_8010EE40_thwomp_pull[group] = 0;
+            D_8010EE3C_thwomp_pull[group] = 0;
+        }
+        if (D_8010EE40_thwomp_pull[group] == 0 &&
+            D_8010EE34_thwomp_pull[group][0] + D_8010EE34_thwomp_pull[group][1] + D_8010EE34_thwomp_pull[group][2] == 0) {
+            if (D_8010F530_thwomp_pull == 2 &&
+                D_8010EF40_thwomp_pull[(group != 0) ? D_8010EE48_thwomp_pull[group][D_8010EE44_thwomp_pull[group]] + 1 : 0] == 0) {
+                if (visible[D_8010EE48_thwomp_pull[group][D_8010EE44_thwomp_pull[group]]]) {
+                    HuAudFXPlay((group != 0) ? 0x33F : 0x33E);
+                }
+                func_8001C258_main(object->model[30 + D_8010EE48_thwomp_pull[group][D_8010EE44_thwomp_pull[group]]], 4, 0);
+            }
+            j = group + D_8010EE48_thwomp_pull[group][D_8010EE44_thwomp_pull[group]] * group;
+            if (D_8010F4F8_thwomp_pull[j]->cpuDifficulty == 3 && D_8010EE44_thwomp_pull[group] == 2 &&
+                D_8010EF38_thwomp_pull[j] >= 3) {
+                D_8010EF38_thwomp_pull[j] = (rand8() & 1) + 1;
+            }
+            D_8010EF38_thwomp_pull[j] -=
+                (D_8010EF38_thwomp_pull[j] > 0 && D_8010EF40_thwomp_pull[j] == 0 && D_8010F530_thwomp_pull == 2);
+            if ((D_8010F4F8_thwomp_pull[j]->cpuDifficulty == -1)
+                    ? pressed[j][D_8010EE48_thwomp_pull[group][D_8010EE44_thwomp_pull[group]]]
+                    : D_8010EF38_thwomp_pull[j] <= 0) {
+                pressed[j][D_8010EE48_thwomp_pull[group][D_8010EE44_thwomp_pull[group]]] = FALSE;
+                D_8010EF38_thwomp_pull[j] = cpuParams[0][D_8010F4F8_thwomp_pull[j]->cpuDifficulty] +
+                                            rand8() % cpuParams[1][D_8010F4F8_thwomp_pull[j]->cpuDifficulty];
+                D_8010EF3C_thwomp_pull[j] = rand8() % cpuParams[2][D_8010F4F8_thwomp_pull[j]->cpuDifficulty] == 1;
+                D_8010EE40_thwomp_pull[group] = 1;
+                D_8010EE3C_thwomp_pull[group] = 0;
+                D_8010EE30_thwomp_pull[group] = 1;
+                D_8010EE50_thwomp_pull[group]++;
+                D_8010EE50_thwomp_pull[group] %= 2;
+                D_8010EF44_thwomp_pull[j] = 20;
+                HuAudFXPlay((group != 0) ? 0x33B : 0x33A);
+                D_8010EE44_thwomp_pull[group]++;
+                D_8010EE44_thwomp_pull[group] %= 3;
+                if (D_8010EE44_thwomp_pull[group] == 0) {
+                    D_8010EE48_thwomp_pull[group][0] = rand8() % 3;
+                    D_8010EE48_thwomp_pull[group][1] = (D_8010EE48_thwomp_pull[group][0] + (rand8() & 1) + 1) % 3;
+                    D_8010EE48_thwomp_pull[group][2] =
+                        3 - (D_8010EE48_thwomp_pull[group][0] + D_8010EE48_thwomp_pull[group][1]);
+                }
+            }
+            if (D_8010EE40_thwomp_pull[group] == 0 && D_8010F530_thwomp_pull == 2 &&
+                D_8010EF40_thwomp_pull[(group != 0) ? D_8010EE48_thwomp_pull[group][D_8010EE44_thwomp_pull[group]] + 1 : 0] == 0) {
+                if (visible[D_8010EE48_thwomp_pull[group][D_8010EE44_thwomp_pull[group]]]) {
+                    HuAudFXPlay((group != 0) ? 0x33F : 0x33E);
+                }
+                func_8001C258_main(object->model[30 + D_8010EE48_thwomp_pull[group][D_8010EE44_thwomp_pull[group]]], 4, 0);
+            }
+        }
+        for (j = group; j < group * 3 + 1; j++) {
+            D_8010EF44_thwomp_pull[j] -= (D_8010EF44_thwomp_pull[j] != 0) ? 1 : 0;
+            if (D_8010EF44_thwomp_pull[j] == 19) {
+                Hu3DMotionShiftSet(object->model[1 + j - group], Hu3DData[object->motion[3 + j - group]].motId, 2, 1, 0);
+            }
+        }
+        if (D_8010EE34_thwomp_pull[group][0] + D_8010EE34_thwomp_pull[group][1] + D_8010EE34_thwomp_pull[group][2] == 0) {
+            for (i = 0; i < 3; i++) {
+                for (j = group; j < group * 3 + 1; j++) {
+                    if (pressed[j][i]) {
+                        D_8010EE34_thwomp_pull[group][(group != 0) ? j - 1 : i] = 15;
+                        HuAudFXPlay((group != 0) ? 0x339 : 0x338);
+                        if (D_8010F4F8_thwomp_pull[j]->cpuDifficulty != -1) {
+                            D_8010EF3C_thwomp_pull[j] = 0;
+                            D_8010EF38_thwomp_pull[j] = cpuParams[3][D_8010F4F8_thwomp_pull[j]->cpuDifficulty] +
+                                                        rand8() % cpuParams[4][D_8010F4F8_thwomp_pull[j]->cpuDifficulty];
+                        }
+                    }
+                }
+            }
+        }
+        if (-D_8010EE28_thwomp_pull[group] <= 1500.0f || ((s32)-D_8010EE28_thwomp_pull[group] - 1000) % 3000 < 500) {
+            i = ((s32)-D_8010EE28_thwomp_pull[group] - 1000) / 3000;
+            i = (i == 0 || D_8010EE28_thwomp_pull[1 - group] < D_8010EE28_thwomp_pull[group]) ? 80 : (i == 1) ? 17
+                                                                                                              : 7;
+            D_8010EF48_thwomp_pull[group] = (i + D_8010EE24_thwomp_pull + rand8() % 10 - 5) % 90;
+        }
+        if (D_8010EE24_thwomp_pull % 90 == D_8010EF48_thwomp_pull[group] && D_8010EF28_thwomp_pull[group] == 0 &&
+            D_8010F530_thwomp_pull == 2 && !(Hu3DData[object->model[33]].attr & 4) &&
+            -D_8010EE28_thwomp_pull[group] >= 1500.0f &&
+            ((s32)-D_8010EE28_thwomp_pull[group] - 1000) % 3000 >= 500 &&
+            ((s32)-D_8010EE28_thwomp_pull[group] - 1000) % 3000 <= 2900) {
+            D_8010EF34_thwomp_pull[group] = 1;
+            D_8010EF28_thwomp_pull[group] = 1;
+            func_8001C5B4_main(object->model[33], D_8010F568_thwomp_pull[0]->motion[18]);
+            func_8001C258_main(object->model[35], 4, 0);
+            func_8001C258_main(object->model[35], 0x4000, 0);
+            func_8001F9E4_main(object->model[35], 255);
+        }
+        if (D_8010EF34_thwomp_pull[group] != 0) {
+            if (D_8010EF34_thwomp_pull[group] < 16) {
+                func_80016FB4_main(object->model[33], D_8010F5AC_thwomp_pull[0], D_8010EF34_thwomp_pull[group] * 2 - 2);
+            }
+            if (D_8010EF34_thwomp_pull[group] >= 8 && D_8010EF34_thwomp_pull[group] < 16) {
+                f32 t;
+                f32 u;
 
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", func_8010AF88_thwomp_pull);
+                t = (D_8010EF34_thwomp_pull[group] - 8) / 8.0;
+                t = (t > 1.0f) ? 1.0f : t;
+                u = 1.0f - t;
+                D_8010EE68_thwomp_pull[group][0] = u * u * -35.0f - (1.0f - u * u) * 176.0f;
+                D_8010EE88_thwomp_pull[group][0] = (1.0f - t * t) * 140.0f + t * t * 190.0f;
+                D_8010EEA8_thwomp_pull[group][0] = (1.0f - t * t) * -130.0f;
+                Hu3DModelScaleSet(object->model[35], (1.0f - u * u) * 0.5 + 0.5, (1.0f - u * u) * 0.5 + 0.5,
+                                  (1.0f - u * u) * 0.5 + 0.5);
+                func_8001F9E4_main(object->model[35], (s32)((1.0f - u * u) * 191.0f) + 64);
+            } else if (D_8010EF34_thwomp_pull[group] < 16) {
+                D_8010EE68_thwomp_pull[group][0] = D_8010EE88_thwomp_pull[group][0] = D_8010EEA8_thwomp_pull[group][0] =
+                    0.0f;
+                Hu3DModelScaleSet(object->model[35], 0.0f, 0.0f, 0.0f);
+                func_8001F9E4_main(object->model[35], 16);
+            }
+            if (D_8010EF34_thwomp_pull[group] == 16) {
+                func_8001C5B4_main(object->model[33], D_8010F568_thwomp_pull[0]->motion[19]);
+                func_8001C258_main(object->model[35], 4, 0);
+                Hu3DModelHookSet(object->model[35], object->model[33], "srowman-item_fook");
+                func_8001C258_main(object->model[35], 0x4000, 0x4000);
+                func_8001F9E4_main(object->model[35], 255);
+            }
+            if (D_8010EF34_thwomp_pull[group] >= 16 && D_8010EF34_thwomp_pull[group] < 46) {
+                func_80016FB4_main(object->model[33], D_8010F5AC_thwomp_pull[1], (D_8010EF34_thwomp_pull[group] - 16) * 2);
+            }
+            if (D_8010EF34_thwomp_pull[group] < 26) {
+                node = func_8001D33C_main(object->model[33], "srowman-item_fook");
+                node->baseScale.x = 0.25f;
+                node->baseScale.y = 0.25f;
+                node->baseScale.z = 0.25f;
+                node->basePos.x = 300.0f;
+                node->basePos.y = 150.0f;
+                node->basePos.z = 150.0f;
+                node->unk4C = 0;
+            }
+            if (D_8010EF34_thwomp_pull[group] == 26) {
+                D_8010EF28_thwomp_pull[group] = 2;
+                func_8001C258_main(object->model[35], 0x4000, 0);
+                func_8001C258_main(object->model[35], 4, 4);
+                func_8001C258_main(object->model[34], 4, 0);
+                func_8001C258_main(object->model[38], 4, 0);
+                D_8010EE68_thwomp_pull[group][0] = Hu3DData[object->model[33]].pos.x + -105.0f;
+                D_8010EE88_thwomp_pull[group][0] = Hu3DData[object->model[33]].pos.y + 219.0f;
+                D_8010EEA8_thwomp_pull[group][0] = Hu3DData[object->model[33]].pos.z + -18.0f + D_8010EE28_thwomp_pull[group];
+                D_8010EEC8_thwomp_pull[group][0] = 20.0f;
+                D_8010EEE8_thwomp_pull[group][0] = 50.0f;
+                D_8010EF08_thwomp_pull[group][0] = 0.0f;
+            }
+            if (D_8010EF34_thwomp_pull[group] >= 27 && D_8010EF34_thwomp_pull[group] < 76) {
+                for (k = 0; (D_8010EF28_thwomp_pull[group] == 3) ? k < 3 : k < 1; k++) {
+                    if (D_8010EE88_thwomp_pull[group][k] > 0.0f) {
+                        D_8010EE68_thwomp_pull[group][k] += D_8010EEC8_thwomp_pull[group][k];
+                        D_8010EE88_thwomp_pull[group][k] += D_8010EEE8_thwomp_pull[group][k];
+                        D_8010EEA8_thwomp_pull[group][k] += D_8010EF08_thwomp_pull[group][k];
+                        D_8010EEE8_thwomp_pull[group][k] -= (D_8010EF28_thwomp_pull[group] == 3) ? 0 : 4;
+                    } else {
+                        D_8010EE88_thwomp_pull[group][k] = 0.0f;
+                    }
+                }
+                if (D_8010EF28_thwomp_pull[group] == 2) {
+                    j = D_8010EEA8_thwomp_pull[group][0] - D_8010EE28_thwomp_pull[group];
+                    if (j >= -549 && j <= -251) {
+                        j = 1;
+                        i = D_8010EE88_thwomp_pull[group][0] <= Hu3DData[object->model[5]].pos.y + 90.0f + group * 55;
+                    } else if (j >= -249 && j < 100) {
+                        j = 2;
+                        i = D_8010EE88_thwomp_pull[group][0] <= 100.0f;
+                    } else {
+                        j = 0;
+                        i = D_8010EE88_thwomp_pull[group][0] <= 0.0f;
+                    }
+                    if (i) {
+                        D_8010EF28_thwomp_pull[group] = 3;
+                        if (j == 2) {
+                            HuAudFXPlay((group != 0) ? 0x33D : 0x33C);
+                        } else {
+                            s32 seNo = HuAudFXPlay((group != 0) ? 0x33D : 0x33C);
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F280_thwomp_pull);
+                            if (seNo != -1) {
+                                f32 vol = D_8010EEA8_thwomp_pull[group][0] - D_8010EE28_thwomp_pull[group] - 200.0f;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F2A0_thwomp_pull);
+                                vol = (vol > 0.0f) ? 0.0f : vol / 2000.0 * 26.0;
+                                HuAudFXVolSet(seNo, (s32)vol + 127);
+                            }
+                        }
+                        func_8001C258_main(object->model[34], 4, 4);
+                        func_8001C258_main(object->model[38], 4, 4);
+                        D_8010EE68_thwomp_pull[group][3] = D_8010EE68_thwomp_pull[group][0];
+                        D_8010EE88_thwomp_pull[group][3] = D_8010EE88_thwomp_pull[group][0];
+                        D_8010EEA8_thwomp_pull[group][3] = D_8010EEA8_thwomp_pull[group][0];
+                        if (j == 2) {
+                            D_8010EEA8_thwomp_pull[group][0] =
+                                (D_8010EEA8_thwomp_pull[group][0] < D_8010EE28_thwomp_pull[group] + 35.0f)
+                                    ? D_8010EE28_thwomp_pull[group] + 35.0f
+                                    : D_8010EEA8_thwomp_pull[group][0];
+                        }
+                        if (j == 2 && D_8010F530_thwomp_pull == 2) {
+                            for (i = 0; i < group * 2 + 1; i++) {
+                                D_8010EF40_thwomp_pull[i + group] = 31;
+                                Hu3DMotionShiftSet(object->model[i + 1], Hu3DData[object->motion[i + 6]].motId, 0, 14, 0);
+                                omVibrate(D_8010F4F8_thwomp_pull[i + group]->playerNo, 20, 0, 20);
+                            }
+                        }
+                        i = rand8() / 255.0 * 360.0;
+                        for (k = 0; k < 1; k++) {
+                            f32 dir;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F2C0_thwomp_pull);
+                            D_8010EF2C_thwomp_pull[group] = 0.0f;
+                            j = rand8() / 3 - 42;
+                            dir = i + k * 120 + j;
+                            D_8010EEC8_thwomp_pull[group][k] = sindf(dir) * 20.0f;
+                            D_8010EF08_thwomp_pull[group][k] = cosdf(dir) * 20.0f;
+                            D_8010EEE8_thwomp_pull[group][k] = rand8() / 255.0 * 30.0 + 20.0;
+                            D_8010EEC8_thwomp_pull[group][k] = D_8010EEE8_thwomp_pull[group][k] =
+                                D_8010EF08_thwomp_pull[group][k] = 0.0f;
+                            D_8010EE68_thwomp_pull[group][k] =
+                                D_8010EE68_thwomp_pull[group][0] + D_8010EEC8_thwomp_pull[group][k] * 2.0f;
+                            D_8010EE88_thwomp_pull[group][k] =
+                                D_8010EE88_thwomp_pull[group][0] + D_8010EEE8_thwomp_pull[group][k] * 2.0f;
+                            D_8010EEA8_thwomp_pull[group][k] =
+                                D_8010EEA8_thwomp_pull[group][0] + D_8010EF08_thwomp_pull[group][k] * 2.0f;
+                            func_8001C258_main(object->model[34], 4, 4);
+                            func_8001C258_main(object->model[35], 4, 4);
+                            func_8001C258_main(object->model[36], 4, 0);
+                            Hu3DModelPosSet(object->model[36], D_8010EE68_thwomp_pull[group][0],
+                                            D_8010EE88_thwomp_pull[group][0] + 100.0f,
+                                            D_8010EEA8_thwomp_pull[group][0] - D_8010EE28_thwomp_pull[group]);
+                            Hu3DModelRotSet(object->model[36], 0.0f, rand8() / 256.0 * 360.0, 0.0f);
+                            func_8010AF18_thwomp_pull(object->model[36], 4);
+                            D_8010EF6C_thwomp_pull[group] = 20;
+                        }
+                    }
+                }
+            }
+            if (D_8010EF34_thwomp_pull[group] == 76) {
+                D_8010EF34_thwomp_pull[group] = 0;
+                D_8010EF28_thwomp_pull[group] = 0;
+                func_8001C258_main(object->model[34], 4, 4);
+                func_8001C258_main(object->model[35], 4, 4);
+            }
+            if (D_8010EF28_thwomp_pull[group] >= 2 &&
+                D_8010EEA8_thwomp_pull[group][0] - D_8010EE28_thwomp_pull[group] + 35.0f >= 378.0f) {
+                D_8010EF34_thwomp_pull[group] = 0;
+                D_8010EF28_thwomp_pull[group] = 0;
+                func_8001C258_main(object->model[34], 4, 4);
+                func_8001C258_main(object->model[35], 4, 4);
+                func_8001C258_main(object->model[38], 4, 4);
+                func_8001C258_main(object->model[36], 4, 4);
+            }
+            D_8010EF34_thwomp_pull[group] += (D_8010EF34_thwomp_pull[group] != 0) ? 1 : 0;
+        }
+        D_8010EF6C_thwomp_pull[group] += (D_8010EF6C_thwomp_pull[group] != 0) ? 1 : 0;
+        func_8001C258_main(object->model[36], 4, (D_8010EF6C_thwomp_pull[group] == 0) ? 4 : 0);
+        D_8010EE30_thwomp_pull[group] += (D_8010EE30_thwomp_pull[group] != 0) ? 1 : 0;
+        if (D_8010EE30_thwomp_pull[group] > 20) {
+            D_8010EE30_thwomp_pull[group] = 0;
+            omVibrate(D_8010F4F8_thwomp_pull[group]->playerNo, 10, 0, 10);
+            if (group == 1) {
+                omVibrate(D_8010F4F8_thwomp_pull[2]->playerNo, 10, 0, 10);
+                omVibrate(D_8010F4F8_thwomp_pull[3]->playerNo, 10, 0, 10);
+            }
+        }
+        D_8010EE28_thwomp_pull[group] -=
+            (D_8010EE30_thwomp_pull[group] != 0 &&
+             D_8010EE34_thwomp_pull[group][0] + D_8010EE34_thwomp_pull[group][1] + D_8010EE34_thwomp_pull[group][2] == 0) *
+            450 / 20.0;
+        for (i = 0; i < 3; i++) {
+            D_8010EE34_thwomp_pull[group][i] -= (D_8010EE34_thwomp_pull[group][i] != 0) ? 1 : 0;
+            if (D_8010F530_thwomp_pull == 0) {
+                f32 time;
+                f32 fall;
+                f32 height;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F2D8_thwomp_pull);
+                if (group == 0) {
+                    time = D_8010F5A4_thwomp_pull - (2 - i) * 20;
+                } else {
+                    time = D_8010F5A4_thwomp_pull - i * 20;
+                }
+                fall = (time >= 28.0f && time < 34.0f) ? (time - 28.0f) / 6.0 : 0.0f;
+                if (time < 0.0f) {
+                    height = 0.0f;
+                } else if (time < 20.0f) {
+                    height = time / 20.0 * 120.0;
+                } else if (time < 28.0f) {
+                    height = 120.0f;
+                } else if (time < 34.0f) {
+                    fall = 1.0f - fall * fall;
+                    height = fall * 120.0f;
+                } else {
+                    height = 0.0f;
+                }
+                if (Hu3DData[object->model[i + 4]].pos.y > 0.0f && height <= 0.0f) {
+                    D_8010F564_thwomp_pull[group] = 4;
+                    HuAudFXPlay((group != 0) ? 0x337 : 0x336);
+                    func_8001C258_main(object->model[i + 49], 4, 0);
+                    func_8010AF18_thwomp_pull(object->model[i + 49], 6);
+                    D_8010EF4C_thwomp_pull[group][i] = 27;
+                    D_8010EF54_thwomp_pull[group][i] = D_8010EE28_thwomp_pull[group];
+                }
+                Hu3DData[object->model[i + 4]].pos.y = height;
+                D_8010EE54_thwomp_pull[group][0] = D_8010EE28_thwomp_pull[group] - 300.0f;
+            } else {
+                if (D_8010EF70_thwomp_pull[D_8010EE30_thwomp_pull[group]] == 0.0f && D_8010EE30_thwomp_pull[group] != 0 &&
+                    D_8010EE30_thwomp_pull[group] < 20) {
+                    D_8010EF70_thwomp_pull[D_8010EE30_thwomp_pull[group]] =
+                        sindf(D_8010EE30_thwomp_pull[group] / 20.0 * 180.0);
+                }
+                Hu3DData[object->model[i + 4]].pos.y =
+                    (D_8010EE30_thwomp_pull[group] != 0) ? D_8010EF70_thwomp_pull[D_8010EE30_thwomp_pull[group]] * 100.0f
+                                                         : 0.0f;
+                if (D_8010EE30_thwomp_pull[group] == 20) {
+                    if (i == 0) {
+                        D_8010F564_thwomp_pull[group] = 2;
+                        HuAudFXPlay((group != 0) ? 0x337 : 0x336);
+                    }
+                    func_8001C258_main(object->model[i + 49], 4, 0);
+                    func_8010AF18_thwomp_pull(object->model[i + 49], 0);
+                    D_8010EE54_thwomp_pull[group][D_8010EE50_thwomp_pull[group]] = D_8010EE28_thwomp_pull[group] - 300.0f;
+                    D_8010EE64_thwomp_pull[group][D_8010EE50_thwomp_pull[group]] = 0;
+                    D_8010EE64_thwomp_pull[group][(D_8010EE50_thwomp_pull[group] + 1) % 2] = 1;
+                    func_8001C258_main(object->model[D_8010EE50_thwomp_pull[group] + 24], 4, 0);
+                    func_8010AF18_thwomp_pull(object->model[D_8010EE50_thwomp_pull[group] + 24], 0);
+                    D_8010EF4C_thwomp_pull[group][i] = 22;
+                    D_8010EF54_thwomp_pull[group][i] = D_8010EE28_thwomp_pull[group];
+                }
+            }
+            if (D_8010EE34_thwomp_pull[group][i] != 0) {
+                if ((D_8010EE24_thwomp_pull & 1) == group % 2) {
+                    f32 shake;
+                    f64 rot;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F2F0_thwomp_pull);
+                    shake = D_8010EE34_thwomp_pull[group][i] / 15.0;
+                    shake = 1.0f - (1.0f - shake) * (1.0f - shake);
+                    shake = shake * 0.5 + 0.5;
+                    rot = rand8() / 256.0 * 10.0 * shake;
+                    shake = ((D_8010EE24_thwomp_pull & 3) >= 2) ? -rot : rot;
+                    Hu3DData[object->model[i + 4]].rot.z = shake;
+                } else {
+                    Hu3DData[object->model[i + 4]].rot.z *= 0.5;
+                }
+            } else {
+                Hu3DData[object->model[i + 4]].rot.z = 0.0f;
+            }
+        }
+        for (i = 0; i < 3; i++) {
+            Hu3DModelPosSet(object->model[i + 49], Hu3DData[object->model[i + 4]].pos.x, 0.0f,
+                            Hu3DData[object->model[i + 4]].pos.z + D_8010EF54_thwomp_pull[group][i] -
+                                D_8010EE28_thwomp_pull[group]);
+            if (D_8010EF4C_thwomp_pull[group][i] == 1) {
+                func_8001C258_main(object->model[i + 49], 4, 4);
+            }
+            D_8010EF4C_thwomp_pull[group][i] -= (D_8010EF4C_thwomp_pull[group][i] != 0) ? 1 : 0;
+        }
+        for (i = 0; i < group * 2 + 1; i++) {
+            if (D_8010EF40_thwomp_pull[i + group] == 11) {
+                Hu3DMotionShiftSet(object->model[i + 1], Hu3DData[object->motion[i + 3]].motId, 0, 20, 1);
+            }
+            D_8010EF40_thwomp_pull[i + group] -= (D_8010EF40_thwomp_pull[i + group] != 0) ? 1 : 0;
+            func_8001C258_main(object->model[i + 1], 4,
+                               ((D_8010EF40_thwomp_pull[i + group] & 1) ||
+                                (D_8010F566_thwomp_pull == group && D_8010F588_thwomp_pull > 0.0f))
+                                   ? 4
+                                   : 0);
+            func_8001C258_main(object->model[i + 42], 4,
+                               ((D_8010EF40_thwomp_pull[i + group] & 1) &&
+                                !(D_8010F566_thwomp_pull == group && D_8010F588_thwomp_pull != 0.0f))
+                                   ? 4
+                                   : 0);
+        }
+        if (group == 1) {
+            i = rand8() & 1;
+            if (D_8010EE28_thwomp_pull[i] <= -10210.0f) {
+                j = i;
+            } else if (D_8010EE28_thwomp_pull[1 - i] <= -10210.0f) {
+                j = 1 - i;
+            } else {
+                j = -1;
+            }
+            if (j != -1 && D_8010F566_thwomp_pull == 5) {
+                D_8010F566_thwomp_pull = j;
+            }
+        }
+        D_8010EE28_thwomp_pull[group] =
+            (D_8010EE28_thwomp_pull[group] < -10950.0f) ? -10950.0f : D_8010EE28_thwomp_pull[group];
+        D_8010F520_thwomp_pull[group] = D_8010EE28_thwomp_pull[group] / 10280.0f + 1.0f;
+        D_8010F520_thwomp_pull[group] = (D_8010F520_thwomp_pull[group] < 0.0f) ? 0.0f : D_8010F520_thwomp_pull[group];
+        for (i = 0; i < 1; i++) {
+            for (j = 0; j < 2; j++) {
+                Hu3DModelPosSet(object->model[j + 24], 0.0f, 0.0f,
+                                D_8010EE54_thwomp_pull[group][j] - D_8010EE28_thwomp_pull[group] - 0.0f);
+                if (D_8010EE64_thwomp_pull[group][j] < 60 && D_8010EE64_thwomp_pull[group][j] + 1 >= 60) {
+                    func_8001C258_main(object->model[j + 24], 4, 4);
+                    Hu3DMotionTimeSet(object->model[j + 24], 0.0f);
+                }
+                D_8010EE64_thwomp_pull[group][j] +=
+                    (D_8010EE64_thwomp_pull[group][j] != 0 && D_8010EE64_thwomp_pull[group][j] < 60 &&
+                     D_8010EE30_thwomp_pull[group] != 0 && D_8010EE30_thwomp_pull[group] < 20) *
+                    3;
+                if (D_8010EE64_thwomp_pull[group][j] < 60) {
+                    Hu3DMotionTimeSet(object->model[j + 24], D_8010EE64_thwomp_pull[group][j]);
+                }
+            }
+        }
+        for (i = 0; i < group * 2 + 1; i++) {
+            HmfModel *model = &Hu3DData[object->model[1]];
+            f32 pullOffsets[8] = { 23.0f, 56.0f, 0.0f, 35.0f, 7.0f, 19.0f, 23.0f, 0.0f };
+            f32 walkOffsets[8] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -40.0f, 0.0f, 0.0f };
+            f32 from;
+            f32 to;
+            f32 blend;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F308_thwomp_pull);
+            if (model->motId == Hu3DData[object->motion[3]].motId) {
+                from = pullOffsets[D_8010F4F8_thwomp_pull[group + i]->chr];
+            } else if (model->motId == Hu3DData[object->motion[6]].motId) {
+                from = walkOffsets[D_8010F4F8_thwomp_pull[group + i]->chr];
+            } else {
+                from = 0.0f;
+            }
+            if (model->motIdShift != 0xFF) {
+                if (model->motIdShift == Hu3DData[object->motion[3]].motId) {
+                    to = pullOffsets[D_8010F4F8_thwomp_pull[group + i]->chr];
+                } else if (model->motIdShift == Hu3DData[object->motion[6]].motId) {
+                    to = walkOffsets[D_8010F4F8_thwomp_pull[group + i]->chr];
+                } else {
+                    to = 0.0f;
+                }
+            } else {
+                to = from;
+            }
+            if (model->unk0E < model->unk0C && model->unk0C > 0) {
+                blend = (f32)model->unk0E / (f32)model->unk0C;
+            } else {
+                blend = 1.0f;
+            }
+            blend = from * (1.0f - blend) + to * blend;
+            Hu3DModelPosSet(object->model[i + 1], D_8010F578_thwomp_pull[group + i], D_8010F510_thwomp_pull[group + i],
+                            blend + D_8010F540_thwomp_pull[group + i]);
+        }
+        for (i = 0; i < 3; i++) {
+            f32 x = D_8010F578_thwomp_pull[group + group * i];
+            f32 y = D_8010F510_thwomp_pull[group + group * i] + 75.0f -
+                    ((D_8010F566_thwomp_pull == 0) ? D_8010F588_thwomp_pull * 105.0f : 0.0f);
+            f32 z = D_8010F540_thwomp_pull[group + group * i] - 50.0f;
+            f32 px;
+            f32 py;
+            f32 pz;
+            f32 dx;
+            f32 dy;
+            f32 dz;
+            f32 dist;
+            f32 yaw;
+            f32 pitch;
+            f32 rotX;
+            f32 frac;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F320_thwomp_pull);
+            px = Hu3DData[object->model[i + 4]].pos.x -
+                 ((Hu3DData[object->model[i + 4]].rot.z != 0.0f)
+                      ? sindf(Hu3DData[object->model[i + 4]].rot.z) * 20.6426 * 5.0
+                      : 0.0) *
+                     ((group != 0) ? 1.5 : 1.0);
+            py = Hu3DData[object->model[i + 4]].pos.y +
+                 ((Hu3DData[object->model[i + 4]].rot.z != 0.0f)
+                      ? cosdf(Hu3DData[object->model[i + 4]].rot.z) * 20.6426 * 5.0
+                      : 20.6426 * 5.0) *
+                     ((group != 0) ? 1.5 : 1.0);
+            pz = Hu3DData[object->model[i + 4]].pos.z + 79.0315 * ((group != 0) ? 1.5 : 1.0);
+            dx = px - x;
+            dy = py - y;
+            dz = pz - z;
+            dist = HuSqrtf(dx * dx + dy * dy + dz * dz);
+            yaw = atan2df(-dx, -dz);
+            pitch = atan2df(dy, -dz);
+            rotX = pitch * (1.0f - ((yaw > 0.0f) ? yaw : -yaw) / 90.0f / 2.0f);
+            Hu3DModelPosSet(object->model[i + 8], x, y, z);
+            Hu3DModelRotSet(object->model[i + 8], 360.0f - (rotX + 90.0f), yaw + 180.0f, 0.0f);
+            {
+                f32 far[2][3] = { { 282.0f, 199.0f, 282.0f }, { 268.0f, 187.0f, 268.0f } };
+                f32 near[2][3] = { { 276.0f, 170.0f, 276.0f }, { 183.0f, 92.0f, 183.0f } };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F338_thwomp_pull);
+                far[group][i] = far[group][i] * 0.625 + near[group][i] * 0.375;
+                near[group][i] *= (i != 0) ? 0.5 : 0.625;
+                if (dist < near[group][i]) {
+                    frac = 1.0f;
+                } else if (far[group][i] < dist) {
+                    frac = 0.0f;
+                } else {
+                    frac = 1.0f - (dist - near[group][i]) / (far[group][i] - near[group][i]);
+                }
+            }
+            Hu3DModelScaleSet(object->model[i + 8], 1.0f, dist / 500.0, 1.0f);
+            func_80016FB4_main(object->model[i + 8], D_8010F528_thwomp_pull, frac * 60.0f);
+        }
+        func_8001C258_main(object->model[16], 4, 4);
+        func_8001C258_main(object->model[22], 4, 4);
+        func_8001C258_main(object->model[17], 4, 4);
+        func_8001C258_main(object->model[23], 4, 4);
+        func_8001C258_main(object->model[33], 4, 4);
+        for (i = 0; i < 4; i++) {
+            f32 rem = (D_8010EE28_thwomp_pull[group] - 3000.0f) -
+                      (s32)((D_8010EE28_thwomp_pull[group] - 3000.0f) / 1000.0f) * 1000;
+            s32 seg = (D_8010EE28_thwomp_pull[group] - 3000.0f) / 1000.0f + 3.0f - i;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F350_thwomp_pull);
+            if (seg >= -11 && seg <= 0) {
+                if (seg == -4 || seg == -7 || seg == -10) {
+                    f32 z = (500 - i * 1000) - rem;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F358_thwomp_pull);
+                    if (z + 750.0f > -3000.0f) {
+                        func_8001C258_main(object->model[33], 4, 0);
+                        Hu3DModelPosSet(object->model[33], -515.0f, 85.0f, z - 250.0f);
+                        switch (D_8010EF28_thwomp_pull[group]) {
+                            case 1:
+                                Hu3DModelPosSet(object->model[35], D_8010EE68_thwomp_pull[group][0] + -515.0f,
+                                                D_8010EE88_thwomp_pull[group][0] + 85.0f,
+                                                (500 - i * 1000) - rem - 250.0f + D_8010EEA8_thwomp_pull[group][0]);
+                                break;
+                            case 2:
+                                Hu3DModelPosSet(object->model[34], D_8010EE68_thwomp_pull[group][0],
+                                                D_8010EE88_thwomp_pull[group][0],
+                                                D_8010EEA8_thwomp_pull[group][0] - D_8010EE28_thwomp_pull[group]);
+                                Hu3DModelPosSet(object->model[38], D_8010EE68_thwomp_pull[group][0], 0.0f,
+                                                D_8010EEA8_thwomp_pull[group][0] - D_8010EE28_thwomp_pull[group]);
+                                break;
+                            case 3:
+                                Hu3DModelPosSet(object->model[36], 0.0f, 0.0f,
+                                                D_8010EEA8_thwomp_pull[group][0] - D_8010EE28_thwomp_pull[group] + 35.0f);
+                                D_8010EF2C_thwomp_pull[group] += 1.0f;
+                                break;
+                        }
+                    }
+                }
+                func_8001C258_main(object->model[i + 12], 4, 4);
+                func_8001C258_main(object->model[i + 18], 4, 4);
+                seg = (seg == 0) ? 16 : (seg == -11) ? 17
+                                                     : i + 12;
+                if (D_8010F588_thwomp_pull < 1.0f || D_8010F566_thwomp_pull == group) {
+                    func_8001C258_main(object->model[seg], 4, 0);
+                }
+                Hu3DModelPosSet(object->model[seg], 0.0f, 0.0f, (500 - i * 1000) - rem);
+                seg = (seg == 45) ? i + 18 : seg + 6;
+                if (D_8010F588_thwomp_pull < 1.0f || D_8010F566_thwomp_pull == group) {
+                    func_8001C258_main(object->model[seg], 4, 0);
+                }
+                Hu3DModelPosSet(object->model[seg], 0.0f, 0.0f, (500 - i * 1000) - rem);
+            }
+        }
+    }
+    for (group = 0; group < 2; group++) {
+        f32 lightOfsX[2][3] = { { 3.0f, 1.0f, -6.5f }, { 11.0f, -0.5f, -11.0f } };
+        f32 lightOfsY[2][3] = { { 76.0f, 81.5f, 76.0f }, { 106.5f, 107.0f, 110.0f } };
+        f32 lightScaleXZ[2][3] = { { 0.813f, 0.781f, 0.828f }, { 0.008f, -0.188f, -0.117f } };
+        f32 lightScaleY[2][3] = { { 0.883f, 0.773f, 0.906f }, { -0.117f, -0.141f, -0.117f } };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F360_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F368_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F370_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F378_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F380_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F388_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F390_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F398_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F3A0_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F3A8_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F3B0_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F3B8_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F3C0_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F3C8_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F3D0_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F3D8_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F3E0_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F3E8_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F3F0_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F3F8_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F400_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F408_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F410_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F418_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F420_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F428_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F430_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F438_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F440_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F448_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F450_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F458_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F460_thwomp_pull);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_08_thwomp_pull/14A810", D_8010F468_thwomp_pull);
+        object = D_8010F568_thwomp_pull[group];
+        for (i = 0; i < 3; i++) {
+            Hu3DModelPosSet(object->model[i + 46], Hu3DData[object->model[i + 4]].pos.x + lightOfsX[group][i],
+                            Hu3DData[object->model[i + 4]].pos.y + lightOfsY[group][i],
+                            Hu3DData[object->model[i + 4]].pos.z);
+            Hu3DModelScaleSet(object->model[i + 46], Hu3DData[object->model[i + 4]].scale.x + lightScaleXZ[group][i],
+                              Hu3DData[object->model[i + 4]].scale.y + lightScaleY[group][i],
+                              Hu3DData[object->model[i + 4]].scale.z + lightScaleXZ[group][i]);
+            if (D_8010F588_thwomp_pull == 0.0f && CRotM[group].x == -16.0f &&
+                Hu3DData[object->model[i + 4]].rot.z == 0.0f) {
+                func_8001C258_main(object->model[i + 46], 4, 0);
+                func_8001C258_main(object->model[i + 4], 4, 4);
+            } else {
+                func_8001C258_main(object->model[i + 4], 4, 0);
+                func_8001C258_main(object->model[i + 46], 4, 4);
+            }
+        }
+    }
+    D_8010EE24_thwomp_pull++;
+}

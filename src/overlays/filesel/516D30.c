@@ -899,12 +899,6 @@ void func_80107C84_filesel(void) {
     D_8011446C_filesel = omAddObj(6, 0, 0, -1, func_80107C50_filesel);
 }
 
-#ifdef NON_MATCHING
-// Two differences remain, everything else matches:
-// - The target hoists the 31.0f constant out of the main loop into $f24 (next to 120.0f and 0.0f); here it is
-//   loaded in place, so its pseudo's lifetime inside the loop must be longer in the original.
-// - In the GwStory branch the target sets a1 = 0 in the delay slot of the 0xFF test, before either a0 load, while
-//   here a1 = 0 is cross-jumped after them. Tried overlay/event locals assigned before or inside the branches.
 void func_80107CF8_filesel(void) {
     Vec pos;
     Vec2f screenPos;
@@ -915,6 +909,7 @@ void func_80107CF8_filesel(void) {
     s32 slot;
     s32 result;
     s32 story;
+    f32 winOffsetX;
 
     Hu3DBGColorSet(0, 0x40, 0x40);
     func_8010F12C_filesel();
@@ -970,7 +965,9 @@ void func_80107CF8_filesel(void) {
         func_8010F844_filesel(slot);
         HuVecCopyXYZ(&pos, x, y, z);
         Hu3D3Dto2D(0, &pos, &screenPos);
-        HuWinPosSet(func_80107810_filesel(slot + 1), screenPos.x - 31.0f, screenPos.y);
+        // keeping the offset in a local gives the 31.0f constant a long enough lifetime to be hoisted out of the loop
+        winOffsetX = 31.0f;
+        HuWinPosSet(func_80107810_filesel(slot + 1), screenPos.x - winOffsetX, screenPos.y);
         func_80105FBC_filesel(slot + 13, screenPos.x, screenPos.y + 9.0f);
         func_801066DC_filesel(slot);
         func_801066DC_filesel(slot + 3);
@@ -1058,9 +1055,10 @@ void func_80107CF8_filesel(void) {
                     history->stat = 0x82;
                     D_800CE20A_main = D_80112A68_filesel[story];
                     omOvlCallEx(0x75, 0, 0x81);
-                } else {
-                    omOvlCallEx(0x77, 0, 0x81);
+                    omOvlHisChg(1, 0x77, 0, 0x81);
+                    break;
                 }
+                omOvlCallEx(0x77, 0, 0x81);
                 omOvlHisChg(1, 0x77, 0, 0x81);
             }
             break;
@@ -1088,9 +1086,6 @@ void func_80107CF8_filesel(void) {
         HuPrcVSleep();
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516D30", func_80107CF8_filesel);
-#endif
 
 void func_801083AC_filesel(void) {
     func_80105E48_filesel(1, 0x1F000D);
@@ -1111,15 +1106,9 @@ void func_80108440_filesel(void) {
     func_80105EC0_filesel(3);
 }
 
-#ifdef NON_MATCHING
 const u8 D_80112A64_filesel[] = "";
 
 const u8 D_80112A68_filesel[] = { 2, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0xFF, 0xFF, 0xFF, 0xFF };
-#else
-INCLUDE_RODATA("asm/nonmatchings/overlays/filesel/516D30", D_80112A64_filesel);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/filesel/516D30", D_80112A68_filesel);
-#endif
 
 s32 func_8010846C_filesel(void) {
     s32 i;

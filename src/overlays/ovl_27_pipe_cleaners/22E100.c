@@ -430,9 +430,6 @@ s32 func_80106540_pipe_cleaners(omObjData *obj, u32 mode) {
     return -1;
 }
 
-// NON_MATCHING: the else branch is tail-merged into the identical code in the first branch; the target keeps
-// two copies.
-#ifdef NON_MATCHING
 void func_801066E4_pipe_cleaners(omObjData *obj) {
     PipeCleanerWork *work;
     s32 slot;
@@ -442,35 +439,32 @@ void func_801066E4_pipe_cleaners(omObjData *obj) {
     if (work->motionId != 0) {
         return;
     }
-    if (work->unk34 != 0) {
-        work->unk34--;
-        return;
-    }
-    if (rand8() % work->unk28 == 0) {
-        slot = func_80106540_pipe_cleaners(obj, rand8() % 3);
-        if (slot == -1) {
-            return;
-        }
-        if (rand8() % work->unk2C == 0) {
-            func_801063E8_pipe_cleaners(obj, slot);
+    if (work->unk34 == 0) {
+        if (rand8() % work->unk28 == 0) {
+            slot = func_80106540_pipe_cleaners(obj, rand8() % 3);
+            if (slot == -1) {
+                return;
+            }
+            if (rand8() % work->unk2C == 0) {
+                func_801063E8_pipe_cleaners(obj, slot);
+            } else {
+                slot = (rand8() & 3) + obj->work[0] * 4;
+                if (rand8() % work->unk2C != 0) {
+                    func_801063E8_pipe_cleaners(obj, slot);
+                }
+            }
+            work->unk34 = (rand8() % work->unk30) * 5;
         } else {
             slot = (rand8() & 3) + obj->work[0] * 4;
             if (rand8() % work->unk2C != 0) {
                 func_801063E8_pipe_cleaners(obj, slot);
             }
+            work->unk34 = (rand8() % work->unk30) * 5;
         }
-        work->unk34 = (rand8() % work->unk30) * 5;
     } else {
-        slot = (rand8() & 3) + obj->work[0] * 4;
-        if (rand8() % work->unk2C != 0) {
-            func_801063E8_pipe_cleaners(obj, slot);
-        }
-        work->unk34 = (rand8() % work->unk30) * 5;
+        work->unk34--;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_801066E4_pipe_cleaners);
-#endif
 
 void func_8010698C_pipe_cleaners(omObjData *obj, u8 anim) {
     s8 chr = GwPlayer[obj->work[0]].chr;

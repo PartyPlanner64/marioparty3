@@ -1984,10 +1984,6 @@ void func_8010B41C_bowser_toss(void) {
     omAddObj(0x3F, 0, 0, -1, func_8010B7AC_bowser_toss);
 }
 
-// Matches except for minor register allocation and instruction ordering: the
-// TPLvl fade value lands in $f12 instead of $f2, operand registers swap in the
-// score spread lerp, and the hoisted lerp offset adds have swapped operands.
-#ifdef NON_MATCHING
 void func_8010B7AC_bowser_toss(omObjData *object) {
     s32 digits[5];
     BowserTossBowser *bowser;
@@ -1999,6 +1995,7 @@ void func_8010B7AC_bowser_toss(omObjData *object) {
     f32 t;
     f32 center;
     f32 dy;
+    f32 dx;
 
     for (i = 0, bowser = D_8010FBA0_bowser_toss; i < 3; i++, bowser++) {
         done = 0;
@@ -2140,13 +2137,12 @@ void func_8010B7AC_bowser_toss(omObjData *object) {
                     t = 1.0f;
                 }
                 t = sindf(t * 180.0f);
-                HuSprPosSet(bowser->spriteId, 7,
-                            center + (D_8010F378_bowser_toss[i][7].x - center) * (t + 1.0f),
-                            D_8010F378_bowser_toss[i][7].y);
+                dx = D_8010F378_bowser_toss[i][7].x - center;
+                HuSprPosSet(bowser->spriteId, 7, center + dx * (t + 1.0f), D_8010F378_bowser_toss[i][7].y);
                 HuSprScaleSet(bowser->spriteId, j, t * 1.2f + 1.2, t * 1.2f + 1.2);
                 for (j = 0; j < 6; j++) {
-                    HuSprPosSet(bowser->spriteId, j, center + (D_8010F378_bowser_toss[i][j].x - center) * (t + 1.0f),
-                                D_8010F378_bowser_toss[i][j].y);
+                    dx = D_8010F378_bowser_toss[i][j].x - center;
+                    HuSprPosSet(bowser->spriteId, j, center + dx * (t + 1.0f), D_8010F378_bowser_toss[i][j].y);
                     if (j < 4) {
                         HuSprScaleSet(bowser->spriteId, j, t * 1.2f + 1.2, t * 1.2f + 1.2);
                     } else {
@@ -2163,8 +2159,8 @@ void func_8010B7AC_bowser_toss(omObjData *object) {
                 center = func_8010D8A0_bowser_toss(t, 0.0f, 81.0f);
                 dy = func_8010D8A0_bowser_toss(t, 0.0f, -35.0f);
                 for (j = 0; j < 8; j++) {
-                    HuSprPosSet(bowser->spriteId, j, D_8010F378_bowser_toss[i][j].x + (s32)center,
-                                D_8010F378_bowser_toss[i][j].y + (s32)dy);
+                    HuSprPosSet(bowser->spriteId, j, D_8010F378_bowser_toss[i][j].x + (s16)center,
+                                D_8010F378_bowser_toss[i][j].y + (s16)dy);
                 }
                 if (bowser->timer >= 15.0f) {
                     bowser->state = 0x40;
@@ -2177,9 +2173,6 @@ void func_8010B7AC_bowser_toss(omObjData *object) {
         bowser->timer++;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010B7AC_bowser_toss);
-#endif
 
 void func_8010C1A0_bowser_toss(s16 index, s32 score) {
     BowserTossBowser *bowser = &D_8010FBA0_bowser_toss[index];

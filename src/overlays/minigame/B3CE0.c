@@ -498,7 +498,6 @@ void func_800E21B8_minigame(omObjData *arg0, s32 arg1, s32 arg2) {
         func_80017AD8_main(D_800EB820_minigame[GwPlayer[arg1].chr][arg2] | D_800A178C_main[GwPlayer[0].chr][0]);
 }
 
-#ifdef NON_MATCHING
 s32 func_800E2250_minigame(omObjData *arg0, s16 arg1, s16 arg2) {
     func_800E1BA8_minigame_ObjData *temp_a3 = arg0->data;
     s32 value = (arg1 << 16) | (arg2 & 0xFFFF);
@@ -518,11 +517,9 @@ s32 func_800E2250_minigame(omObjData *arg0, s16 arg1, s16 arg2) {
     }
     sumHi /= 6;
     sumLo /= 6;
-    return (sumHi << 16) | (sumLo & 0xFFFF);
+    value = (sumHi << 16) | (sumLo & 0xFFFF);
+    return value;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/minigame/B3CE0", func_800E2250_minigame);
-#endif
 
 void func_800E2308_minigame(s16 *arg0, s16 *arg1) {
     Vec vec;

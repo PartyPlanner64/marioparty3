@@ -4538,26 +4538,19 @@ void func_80111790_filesel(omObjData *object) {
     }
 }
 
-#ifdef NON_MATCHING
-// The final state stores still use separate symbolic addresses instead of one base register.
 omObjData *func_80111944_filesel(s32 duration) {
     omObjData *obj = omAddObj(6, 0, 0, -1, func_80111790_filesel);
-    FileSelectCameraTransition *transition;
 
     obj->work[0] = 0;
     obj->work[1] = duration;
     obj->work[2] = 0;
     HuVecCopyXYZ(&D_801146B0_filesel.center, 0.0f, 200.0f, 0.0f);
     HuVecCopyXYZ(&D_801146B0_filesel.rotation, 0.0f, 0.0f, 0.0f);
-    transition = &D_801146B0_filesel.transition;
-    transition->distance = 3000.0f;
-    transition->duration = duration;
-    transition->frame = 0;
+    D_801146B0_filesel.transition.distance = 3000.0f;
+    D_801146B0_filesel.transition.duration = duration;
+    D_801146B0_filesel.transition.frame = 0;
     return obj;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/filesel/516D30", func_80111944_filesel);
-#endif
 
 void func_801119F4_filesel(void) {
     D_801129A0_filesel = 0;

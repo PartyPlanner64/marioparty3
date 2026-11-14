@@ -444,9 +444,6 @@ void func_80106718_eye_sore(omObjData *obj) {
     }
 }
 
-#ifdef NON_MATCHING
-// Only differs in the load of entry->unk_0C being emitted before the 60.0f
-// constant in the distance check.
 void func_8010683C_eye_sore(omObjData *obj) {
     s16 player = obj->work[0];
     s16 base = player * 2;
@@ -483,37 +480,36 @@ void func_8010683C_eye_sore(omObjData *obj) {
     if (state->unk_02 < 5) {
         for (i = 0; i < 2; i++) {
             entry = &D_8010C938_eye_sore[base + i];
-            if (entry->unk_10 == 0 || entry->unk_05 != 0) {
-                continue;
-            }
-            angle = func_801059BC_eye_sore(state->unk_48, -entry->unk_00);
-            tmp = func_801059BC_eye_sore(entry->unk_00, -state->unk_48);
-            if ((angle < 90.0f) | (tmp < 45.0f)) {
-                if (entry->unk_08 < unkCBC0->unk_04 + (280.0f - unkCBC0->unk_04) * 0.5) {
-                    state->unk_02 = 4;
-                } else {
-                    state->unk_02 = 3;
-                }
-                found = TRUE;
-            }
-            tmp = (state->unk_24 < 120.0f) ? 50.0f : 25.0f;
-            if (angle < tmp) {
-                tmp = state->unk_24 - entry->unk_08;
-                if (tmp < 0.0f) {
-                    dist = 0.0f - tmp;
-                } else {
-                    dist = tmp;
-                }
-                if (entry->unk_0C + 60.0f > dist) {
-                    if (entry->unk_08 < unkCBC0->unk_04 + entry->unk_0C + (280.0f - unkCBC0->unk_04) * 0.5) {
-                        state->unk_02 = 6;
+            if (entry->unk_10 != 0 && entry->unk_05 == 0) {
+                angle = func_801059BC_eye_sore(state->unk_48, -entry->unk_00);
+                tmp = func_801059BC_eye_sore(entry->unk_00, -state->unk_48);
+                if ((angle < 90.0f) | (tmp < 45.0f)) {
+                    if (entry->unk_08 < unkCBC0->unk_04 + (280.0f - unkCBC0->unk_04) * 0.5) {
+                        state->unk_02 = 4;
                     } else {
-                        state->unk_02 = 7;
+                        state->unk_02 = 3;
                     }
-                    state->unk_4C = base + i;
-                    break;
+                    found = TRUE;
                 }
-                found = TRUE;
+                tmp = (state->unk_24 < 120.0f) ? 50.0f : 25.0f;
+                if (angle < tmp) {
+                    tmp = state->unk_24 - entry->unk_08;
+                    if (tmp < 0.0f) {
+                        dist = 0.0f - tmp;
+                    } else {
+                        dist = tmp;
+                    }
+                    if (entry->unk_0C + 60.0f > dist) {
+                        if (entry->unk_08 < unkCBC0->unk_04 + entry->unk_0C + (280.0f - unkCBC0->unk_04) * 0.5) {
+                            state->unk_02 = 6;
+                        } else {
+                            state->unk_02 = 7;
+                        }
+                        state->unk_4C = base + i;
+                        break;
+                    }
+                    found = TRUE;
+                }
             }
         }
         if (!found && (state->unk_02 == 3 || state->unk_02 == 4)) {
@@ -629,9 +625,6 @@ void func_8010683C_eye_sore(omObjData *obj) {
         func_801063E8_eye_sore(obj, 0);
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_30_eye_sore/270EF0", func_8010683C_eye_sore);
-#endif
 
 void func_801070CC_eye_sore(omObjData *obj) {
     u8 pad = obj->work[3];

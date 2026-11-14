@@ -1745,10 +1745,6 @@ void func_8010A500_bowser_toss(omObjData *object) {
     object->func = func_8010A908_bowser_toss;
 }
 
-// Matches except for register allocation and floating-point constant hoisting: the
-// target loads the 955.695 constant from rodata at each use (two copies) instead of
-// keeping it in a callee-saved register, and spills the table row pointer.
-#ifdef NON_MATCHING
 void func_8010A908_bowser_toss(omObjData *object) {
     HuSprite_Unk84_Struct *sprite;
     s32 i;
@@ -1756,7 +1752,8 @@ void func_8010A908_bowser_toss(omObjData *object) {
     s32 k;
     s32 base;
     s32 start;
-    u16 parity;
+    s32 first;
+    s16 parity;
     s32 index;
     s32 frame;
 
@@ -1774,8 +1771,8 @@ void func_8010A908_bowser_toss(omObjData *object) {
             func_8001C258_main(object->model[base + j], 4, 0);
         }
         j++;
-        parity = start & 1;
         for (k = 0; k < 5; k++) {
+            parity = (start & 1) ? 1 : 0;
             index = start + k;
             if (CenterM[i].x == Center.x) {
                 func_8001C258_main(object->model[base + j + D_8010F324_bowser_toss[parity][k]], 4, 4);
@@ -1786,24 +1783,24 @@ void func_8010A908_bowser_toss(omObjData *object) {
             }
         }
         j += 5;
-        start = CenterM[i].x / 500.0 - 1.0;
-        if (start <= 0) {
-            start = 1;
+        first = CenterM[i].x / 500.0 - 1.0;
+        if (first <= 0) {
+            first = 1;
         }
         for (k = 0; k < 4; k++) {
-            Hu3DModelPosSet(object->model[base + j + k], (f32)(start + k) * 500.0, 0.0f, 0.0f);
+            Hu3DModelPosSet(object->model[base + j + k], (f32)(first + k) * 500.0, 0.0f, 0.0f);
         }
         j += 4;
         for (k = 0; k < 4; k++) {
-            Hu3DModelPosSet(object->model[base + j + k], (f32)(start + k) * 500.0, 75.0f, -300.0f);
-            frame = start + k - 1;
+            Hu3DModelPosSet(object->model[base + j + k], (f32)(first + k) * 500.0, 75.0f, -300.0f);
+            frame = first + k - 1;
             if (frame >= 20) {
                 frame = 19;
                 func_8001C258_main(object->model[base + j + k], 4, 4);
+            } else if (frame < 0) {
+                frame = 0;
+                func_8001C258_main(object->model[base + j + k], 4, 0);
             } else {
-                if (frame < 0) {
-                    frame = 0;
-                }
                 func_8001C258_main(object->model[base + j + k], 4, 0);
             }
             func_8010EC10_bowser_toss(object->model[base + j + k], sprite, frame, D_8010F338_bowser_toss);
@@ -1811,9 +1808,6 @@ void func_8010A908_bowser_toss(omObjData *object) {
         func_8010AF38_bowser_toss(i, &CenterM[i], &CRotM[i]);
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_34_bowser_toss/291020", func_8010A908_bowser_toss);
-#endif
 
 u16 func_8010AD54_bowser_toss(s32 dirAndFile) {
     void *data;

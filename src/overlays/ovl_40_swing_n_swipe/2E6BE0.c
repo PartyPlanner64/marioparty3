@@ -1541,23 +1541,37 @@ s16 func_8010B8EC_swing_n_swipe(s32 arg0) {
 }
 
 #ifdef NON_MATCHING
-// The target keeps an otherwise unused constant 3 live in s1 across the loop,
-// which also shifts the float register allocation of z and 100.0f.
+// Only remaining diff: z and the hoisted 100.0f constant have swapped
+// registers (target: z in f22, 100.0f in f20). Global alloc gives z higher
+// priority (3 refs / ~37 insns) than the constant-equivalent 100.0f pseudo,
+// whose live length local-alloc doubles (3 refs / 64).
+// The dead `li s1, 3` comes from a variable holding 3 whose only use inside
+// the loop is cancelled by combine after flow (so it stays live); `i + j - j`
+// reproduces this exactly but is surely not the original code.
+// Reusing `pz` for the z computation makes it a multi-block pseudo, which
+// stops local-alloc from tying the pos.z load to dz (matches f2/f12 usage).
+// Tried without success for the z/100.0f swap: dist temporaries, radius
+// variables, comparison forms, and x/z/dx/dz/px/pz variable-reuse sweeps.
 s16 func_8010B920_swing_n_swipe(void) {
     omObjData *obj = D_8010C140_swing_n_swipe;
     f32 x;
     f32 z;
     f32 dx;
     f32 dz;
+    f32 px;
+    f32 pz;
     s16 i;
+    s16 j;
 
     x = obj->trans.x + cosdf(obj->rot.y - 90.0f) * 50.0f;
-    z = obj->trans.z - sindf(obj->rot.y - 90.0f) * 50.0f;
+    pz = obj->trans.z - sindf(obj->rot.y - 90.0f) * 50.0f;
+    z = pz;
+    j = 3;
     for (i = 0; i < 5; i++) {
-        dx = Hu3DData[D_8010C170_swing_n_swipe[i][0]].pos.x;
-        dz = Hu3DData[D_8010C170_swing_n_swipe[i][0]].pos.z;
-        dx = x - dx;
-        dz = z - dz;
+        px = Hu3DData[D_8010C170_swing_n_swipe[i + j - j][0]].pos.x;
+        pz = Hu3DData[D_8010C170_swing_n_swipe[i + j - j][0]].pos.z;
+        dx = x - px;
+        dz = z - pz;
         if (HuSqrtf(dx * dx + dz * dz) < 100.0f) {
             return 1;
         }

@@ -721,6 +721,12 @@ s32 func_8010E4C4_chancetime(void) {
 // combine then moves the `coins` table load down next to it (after the `stars` load). The
 // coins/stars loads and stack stores are therefore swapped, so the store placed in the blez
 // delay slot is coins' instead of stars'.
+// Reading the amount through a differently-shaped address, e.g.
+// `coinAmount = (&D_8010FD68_chancetime[D_801100DF_chancetime])->coins;`, defeats that CSE and
+// gives the exact target instruction order, but the frame then shrinks from 0xD0 to 0xC8: the
+// original 3->2 combine left a dead pseudo (REG_DEAD -> USE) that still got a spill slot. Every
+// table access spelling, statement order, s16/s32 type and inner-branch spelling tried yields
+// either the right order (frame 0xC8) or the right frame (wrong order), never both.
 #ifdef NON_MATCHING
 void func_8010E4D0_chancetime(omObjData *object) {
     f32 coinsF[2];

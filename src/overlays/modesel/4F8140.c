@@ -3411,13 +3411,12 @@ void func_8010E280_modesel(s32 arg0, s32 arg1) {
     func_8010601C_modesel(arg0, endX, endY);
 }
 
-#ifdef NON_MATCHING
-// Float register allocation differs: the target loads the 1.0f constant before the
-// sine * 0.1f multiply and keeps the scale in $f4 instead of $f2.
 void func_8010E3A4_modesel(s32 index, f32 t) {
     s32 slot = index;
     f32 angle;
     f32 sine;
+    f32 amplitude;
+    f32 base;
     f32 scale;
 
     if (t > 1.0f) {
@@ -3429,7 +3428,9 @@ void func_8010E3A4_modesel(s32 index, f32 t) {
     angle = t * 360.0f;
     sine = sindf(angle);
     cosdf(angle);
-    scale = sine * 0.1f + 1.0f;
+    amplitude = 0.1f;
+    base = 1.0f;
+    scale = sine * amplitude + base;
     switch (slot) {
         case 2:
             func_801065B0_modesel(index, 1.0f, 1.0f, 1.0f);
@@ -3451,9 +3452,6 @@ void func_8010E3A4_modesel(s32 index, f32 t) {
             break;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/modesel/4F8140", func_8010E3A4_modesel);
-#endif
 
 void func_8010E50C_modesel(void) {
     s32 i;

@@ -2553,8 +2553,9 @@ segments:
     subsegments:
       - [0x4F7E90, c]
       - [0x4F7EC0, c]
-      - [0x501760, data, 4F7EC0] #8010F270
-      - [0x5018D0, .rodata, 4F7EC0] #8010F3E0
+      - [0x4F8140, c]
+      - [0x501760, data, 4F8140] #8010F270
+      - [0x5018D0, .rodata, 4F8140] #8010F3E0
       - {0x501C00, type: bss, vram: 0x8010F710, name: modesel_bss}
 
   - type: code

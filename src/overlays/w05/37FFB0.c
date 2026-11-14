@@ -7182,13 +7182,20 @@ void func_801191C0_w05(void) {
     }
 }
 
-// Logic matches the target; only register allocation differs (score 65). The target has a CSE
+// Logic matches the target; only register allocation differs (score 40). The target has a CSE
 // boundary between `p = &pos; ofs = D_8011EF38_w05[unk4 + order];` and the `p->x`/`p->z` adds,
 // so the later `&pos`, `&playerObj->coords` and `&playerObj->rot` are recomputed instead of
-// CSE'd; the first `do { } while (0)` reproduces it. The second `do { } while (0)` around the
-// final calls gives loop weighting that fixes the type/work/playerObj s-registers. Still left:
-// `unk4` and `process` swap s7/s8, and v0/v1 swap in the `ofs` math (not fixed by
-// `&D[i][0]`, `D + i`, or `&D[0][0] + i * 2`).
+// CSE'd; the first `do { } while (0)` reproduces it, and extending it up over the first
+// HuPrcChildLink(process, ...) loop-weights `process` so it beats `unk4` (fixes s7/s8). The
+// second `do { } while (0)` fixes the type/work/playerObj s-registers. Still left: v0/v1 swap in
+// the `ofs` math (target ties `ofs` to the table base, we tie it to the scaled index). Not fixed
+// by: `order + unk4`, `&D[i][0]`, `D + i`, `(f32 *)D + i * 2`, an `idx` local, `f32 (*ofs)[2]`,
+// `*ofs++`, base-then-add (`ofs = D[0]; ofs += i * 2;` gets the registers right but loads the
+// base before the `sll`, score 60), or moving the adds into the loop. The target looks like `ofs`
+// spans two basic blocks: replacing both do-whiles with `if (<anything>) { A } else { A }` where
+// A = `HuVecCopy3F(&pos, &end->coords); p = &pos; ofs = ...;` (arms cross-jumped after reload)
+// gives the CSE boundary and index/base in v0/v1 as in the target, but `ofs` still lands in v0
+// (target v1) and `unk4`/`process` swap s7/s8 again (score 40).
 #ifdef NON_MATCHING
 void func_801192AC_w05(void) {
     PlayerReactWork *work = HuPrcCurrentGet()->user_data;
@@ -7256,11 +7263,11 @@ void func_801192AC_w05(void) {
 
     HuVecCopy3F(&pos, &start->coords);
     MBVecDirGet(&playerObj->coords, &pos, &playerObj->rot);
-    HuPrcChildLink(process, func_800ED75C_shared_board(&playerObj->coords, &pos, &playerObj->coords, 2.0f));
-    HuPrcChildWatch();
-
     // do-while (0) acts as a CSE / loop-weighting boundary.
     do {
+        HuPrcChildLink(process, func_800ED75C_shared_board(&playerObj->coords, &pos, &playerObj->coords, 2.0f));
+        HuPrcChildWatch();
+
         HuVecCopy3F(&pos, &end->coords);
         p = &pos;
         ofs = D_8011EF38_w05[unk4 + order];

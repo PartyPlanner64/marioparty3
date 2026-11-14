@@ -1144,9 +1144,6 @@ void func_80106BC8_stacked_deck(omObjData *object) {
     }
 }
 
-#ifdef NON_MATCHING
-// Only differs in v0/v1 register allocation of the player address in the final
-// positioning loop.
 void func_80108E48_stacked_deck(omObjData *object) {
     StackedDeckCard *card = &STACKED_DECK_PLAYERS[object->work[0]];
     u16 character = GwPlayer[object->work[0]].chr;
@@ -1154,6 +1151,7 @@ void func_80108E48_stacked_deck(omObjData *object) {
     s32 motionFile = D_800A1790_main[character][0];
     func_800E1BA8_minigame_ObjData *work;
     omObjData *obj;
+    StackedDeckCard *player;
     s32 values[4];
     s16 i;
     s16 j;
@@ -1190,7 +1188,8 @@ void func_80108E48_stacked_deck(omObjData *object) {
     // then by stars.
     if (object->work[0] == 3) {
         for (i = 0; i < 4; i++) {
-            obj = STACKED_DECK_PLAYERS[i].obj;
+            player = &STACKED_DECK_PLAYERS[i];
+            obj = player->obj;
             for (j = 0; j < 4; j++) {
                 values[j] = GwPlayer[j].coin;
             }
@@ -1202,7 +1201,8 @@ void func_80108E48_stacked_deck(omObjData *object) {
             D_8010F6FA_stacked_deck[i] = rank;
         }
         for (i = 0; i < 4; i++) {
-            obj = STACKED_DECK_PLAYERS[i].obj;
+            player = &STACKED_DECK_PLAYERS[i];
+            obj = player->obj;
             for (j = 0; j < 4; j++) {
                 values[j] = GwPlayer[j].star;
             }
@@ -1219,7 +1219,8 @@ void func_80108E48_stacked_deck(omObjData *object) {
             D_80111102_stacked_deck[i] = rank;
         }
         for (i = 0; i < 4; i++) {
-            obj = STACKED_DECK_PLAYERS[i].obj;
+            player = &STACKED_DECK_PLAYERS[i];
+            obj = player->obj;
             rank = D_80111102_stacked_deck[i];
             obj->work[1] = rank;
             D_80111110_stacked_deck[rank][D_8010F6F5_stacked_deck[rank]] = obj->work[0];
@@ -1242,7 +1243,8 @@ void func_80108E48_stacked_deck(omObjData *object) {
             }
         }
         for (i = 0; i < 4; i++) {
-            obj = STACKED_DECK_PLAYERS[i].obj;
+            player = &STACKED_DECK_PLAYERS[i];
+            obj = player->obj;
             obj->trans.x = obj->work[1] * 140.0f;
             obj->trans.y = 0.0f;
             obj->trans.z = 1100.0f;
@@ -1256,9 +1258,6 @@ void func_80108E48_stacked_deck(omObjData *object) {
     work->unk3C = 180.0f;
     object->func = func_80106BC8_stacked_deck;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_2A_stacked_deck/240A10", func_80108E48_stacked_deck);
-#endif
 
 void func_8010969C_stacked_deck(void) {
     StackedDeckCard *card;

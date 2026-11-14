@@ -2432,19 +2432,14 @@ u32 func_8010C428_slot_synch(omObjData *arg0) {
     return packed.word;
 }
 
-#ifdef NON_MATCHING
-// The sign extension of the result is shared with the comparison instead of being recomputed.
 s16 func_8010C47C_slot_synch(s32 file) {
     s16 motion = Hu3DMotionCreate(DataRead(file), 0x18);
 
-    if (motion < 0) {
-        return -1;
+    if (motion >= 0) {
+        return motion;
     }
-    return motion;
+    return -1;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_14_slot_synch/1AC970", func_8010C47C_slot_synch);
-#endif
 
 s32 func_8010C4C0_slot_synch(HuSprite_Unk84_Struct *sprite, u8 *color) {
     u8 *buffer;

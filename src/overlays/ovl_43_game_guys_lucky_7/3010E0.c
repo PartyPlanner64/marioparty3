@@ -376,8 +376,6 @@ void func_80105F70_game_guys_lucky_7(omObjData *object) {
     }
 }
 
-#ifdef NON_MATCHING
-// The target dispatches these five dense cases with a compare tree; this emits a jump table.
 void func_80106248_game_guys_lucky_7(omObjData *object) {
     switch (D_8010D1B4_game_guys_lucky_7) {
         case 0:
@@ -405,11 +403,10 @@ void func_80106248_game_guys_lucky_7(omObjData *object) {
         case 4:
             object->func = func_80105F70_game_guys_lucky_7;
             break;
+        case 999:
+            break;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_43_game_guys_lucky_7/3010E0", func_80106248_game_guys_lucky_7);
-#endif
 
 void func_80106370_game_guys_lucky_7(void) {
     s16 win;

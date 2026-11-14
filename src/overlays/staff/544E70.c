@@ -367,9 +367,6 @@ void func_80109264_staff(void) {
     }
 }
 
-#ifdef NON_MATCHING
-// Register allocation differs: state/path use swapped saved registers, and the
-// path interpolation factor uses swapped FPU temporaries.
 void func_801095E4_staff(void) {
     Vec pos;
     StaffPath *path;
@@ -383,8 +380,8 @@ void func_801095E4_staff(void) {
     f32 angleSpeed;
     s16 model;
     s32 done;
+    f32 cosAngle;
 
-    state = 0;
     stat = HuPrcCurrentGet()->user_data;
     model = func_8000B108_main(0xA015F, 0x2A9);
     func_8001C814_main(model, -1, 2);
@@ -397,7 +394,7 @@ void func_801095E4_staff(void) {
     rotTarget = angle;
     rotSpeed = rotTarget;
     rot = rotTarget;
-    while (state >= 0) {
+    for (state = 0; state >= 0;) {
         if (state != *stat) {
             switch (*stat) {
                 case 0:
@@ -436,7 +433,9 @@ void func_801095E4_staff(void) {
                 angleSpeed = angle;
                 done = 1;
             }
-            func_801088F4_staff(path, (cosdf(angle) + 1.0f) * 0.5f, &pos);
+            cosAngle = cosdf(angle);
+            cosAngle += 1.0f;
+            func_801088F4_staff(path, cosAngle * 0.5f, &pos);
             Hu3DModelPosSet(model, pos.x, pos.y, pos.z);
             if (done) {
                 func_8010919C_staff(path);
@@ -471,9 +470,6 @@ void func_801095E4_staff(void) {
         HuPrcVSleep();
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/staff/544E70", func_801095E4_staff);
-#endif
 
 void func_8010992C_staff(Process *prc, s16 modelId) {
     UnkStaff_4 *staff = prc->user_data;

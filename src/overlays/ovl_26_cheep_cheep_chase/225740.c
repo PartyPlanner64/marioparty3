@@ -1473,10 +1473,6 @@ void func_8010A57C_cheep_cheep_chase(FuncContext *ctx) {
     }
 }
 
-// Matches except for the A_BUTTON store: the target loads 0x8000 with `ori` (D_800CDA7C_main is a u16
-// array there) but the shared headers declare it s16, which gives `li -0x8000`. Verified to match when
-// game/pad.h and game/input.h declare it u16, but that breaks msetup, which reads it as s16.
-#ifdef NON_MATCHING
 void func_8010A938_cheep_cheep_chase(FuncContext *ctx) {
     omObjData *object = D_800EC598_minigame[ctx->work.s16[0]];
     CheepCheepChasePlayer *player = &D_8010E364_cheep_cheep_chase[ctx->work.s16[0]];
@@ -1537,7 +1533,7 @@ void func_8010A938_cheep_cheep_chase(FuncContext *ctx) {
             if (ctx->work.s8[1]++ > ctx->work.s8[0] + ctx->work.s8[3]) {
                 ctx->work.s8[1] = 0;
                 ctx->work.s8[3] = rand16() % (ctx->work.s8[2] + 1);
-                D_800CDA7C_main[player->padId] = A_BUTTON;
+                ((u16 *)D_800CDA7C_main)[player->padId] = A_BUTTON;
             } else {
                 D_800CDA7C_main[player->padId] = B_BUTTON;
             }
@@ -1546,9 +1542,6 @@ void func_8010A938_cheep_cheep_chase(FuncContext *ctx) {
             break;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_26_cheep_cheep_chase/225740", func_8010A938_cheep_cheep_chase);
-#endif
 
 void func_8010ACD8_cheep_cheep_chase(s32 arg0) {
     arg0 &= 0xFF;

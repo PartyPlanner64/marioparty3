@@ -3190,8 +3190,6 @@ void func_8010DF70_stardust_battle(s16 index) {
     }
 }
 
-#ifdef NON_MATCHING
-// Register allocation: stars and data have swapped s4/s5, and v0/v1 are swapped when indexing the chosen star.
 /* Picks up the closest landed star in front of the object, returning its index
    or -1 if there is none. */
 s16 func_8010E03C_stardust_battle(omObjData *object) {
@@ -3206,11 +3204,15 @@ s16 func_8010E03C_stardust_battle(omObjData *object) {
     s32 count;
     s32 i;
     s32 j;
+    s32 index;
 
     if (D_80114B2C_stardust_battle == NULL) {
         return -1;
     }
-    stars = D_80114B2C_stardust_battle;
+    // The do-while gives stars the loop weighting needed for its register.
+    do {
+        stars = D_80114B2C_stardust_battle;
+    } while (0);
     star = stars->star;
     data = object->data;
     memset(D_80114A40_stardust_battle, 0, sizeof(D_80114A40_stardust_battle));
@@ -3244,7 +3246,11 @@ s16 func_8010E03C_stardust_battle(omObjData *object) {
             }
         }
     }
-    star = &stars->star[D_80114A40_stardust_battle[0].index];
+    // The do-while gives index the loop weighting needed for its register.
+    do {
+        index = D_80114A40_stardust_battle[0].index;
+    } while (0);
+    star = &stars->star[index];
     if (star->active != 0) {
         func_8001C258_main(star->model[star->unk_10], 4, 0);
         star->unk_58 = star->x;
@@ -3256,9 +3262,6 @@ s16 func_8010E03C_stardust_battle(omObjData *object) {
     }
     return D_80114A40_stardust_battle[0].index;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_41_stardust_battle/2ED2D0", func_8010E03C_stardust_battle);
-#endif
 
 /* Returns the indexed star, or NULL if the index is out of range or the star
    isn't in use. */

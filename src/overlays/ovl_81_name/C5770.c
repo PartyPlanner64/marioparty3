@@ -561,16 +561,6 @@ void func_800DF49C_name_81(void) {
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_81_name/C5770", D_801023C8_name_81);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_81_name/C5770", D_801023D8_name_81);
-
-// Regalloc differences only. The do-while (0) is needed for type * 4 to win a callee-saved register over
-// &D_80100E88_name_81. Remaining: type * 4 and listIndex swap s6/s7, listOffset uses v1 instead of a0, and
-// listIndex / `li s8,1` are hoisted in a slightly different order (target hoists &mgCounts before listIndex,
-// which happens when listIndex is not a variable, but that variant spills more). This function also needs
-// the rodata D_801023C8/D_801023D8 shared with func_800DFBF4_name_81, so both must be matched together.
-#ifdef NON_MATCHING
 void func_800DF594_name_81(s32 arg0) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
     UnkC5770Rect *rects[2] = { D_80100E8C_name_81, D_80100EB4_name_81 };
@@ -580,7 +570,6 @@ void func_800DF594_name_81(s32 arg0) {
     UnkC5770B70 *entry;
     omObjData *obj;
     s32 listOffset;
-    s32 listIndex;
     s32 i;
     s32 j;
     s32 k;
@@ -604,9 +593,8 @@ void func_800DF594_name_81(s32 arg0) {
         HuWinCenterPosSet(entry->windowId, entry->w / 2, entry->h / 2);
         HuWinBGTPLvlSet(entry->windowId, 0);
 
-        listIndex = type + listOffset;
         while (1) {
-            D_80102BA8_name_81[i] = mgLists[listIndex][func_800EFE20_name_81(mgCounts[listIndex])];
+            D_80102BA8_name_81[i] = mgLists[type + listOffset][func_800EFE20_name_81(mgCounts[type + listOffset])];
 
             for (j = 0; j < i; j++) {
                 if (j == i) {
@@ -629,75 +617,74 @@ void func_800DF594_name_81(s32 arg0) {
                 if (k != D_80100E88_name_81[type + listOffset]) {
                     continue;
                 }
-                break;
+            } else {
+                switch (D_80102BA8_name_81[i]) {
+                    case 1:
+                        if (player->star == 5) {
+                            continue;
+                        }
+                        break;
+                    case 2:
+                        if (GwPlayer[0].clink == GwPlayer[1].clink && GwPlayer[0].cidx == GwPlayer[1].cidx) {
+                            continue;
+                        }
+                        break;
+                    case 3:
+                        if (GwPlayer[GwSystem.current_player_index].coin == 0) {
+                            continue;
+                        }
+                        break;
+                    case 7:
+                        if (player->stats.partners.frontID != -1 && player->stats.partners.frontPoweredUp == 2) {
+                            continue;
+                        }
+                        if (player->stats.partners.backID != -1 && player->stats.partners.backPoweredUp == 2) {
+                            continue;
+                        }
+                        if (player->stats.partners.frontID == -1 && player->stats.partners.backID == -1) {
+                            continue;
+                        }
+                        break;
+                    case 8:
+                        if (player->stats.partners.frontID != -1 && player->stats.partners.frontPoweredUp == 1) {
+                            continue;
+                        }
+                        if (player->stats.partners.backID != -1 && player->stats.partners.backPoweredUp == 1) {
+                            continue;
+                        }
+                        /* fallthrough */
+                    case 9:
+                        if (player->stats.partners.frontID == -1 && player->stats.partners.backID == -1) {
+                            continue;
+                        }
+                        break;
+                    case 10:
+                        if (func_800EAA7C_name_81(GwPlayer[GwSystem.current_player_index].chr + 11) != 0) {
+                            break;
+                        }
+                        /* fallthrough */
+                    case 6:
+                        if (func_800EAA7C_name_81(GwPlayer[(s8)(GwSystem.current_player_index ^ 1)].chr + 11) == 0) {
+                            continue;
+                        }
+                        break;
+                }
             }
 
-            switch (D_80102BA8_name_81[i]) {
-                case 1:
-                    if (player->star == 5) {
-                        continue;
-                    }
-                    break;
-                case 2:
-                    if (GwPlayer[0].clink == GwPlayer[1].clink && GwPlayer[0].cidx == GwPlayer[1].cidx) {
-                        continue;
-                    }
-                    break;
-                case 3:
-                    if (GwPlayer[GwSystem.current_player_index].coin == 0) {
-                        continue;
-                    }
-                    break;
-                case 7:
-                    if (player->stats.partners.frontID != -1 && player->stats.partners.frontPoweredUp == 2) {
-                        continue;
-                    }
-                    if (player->stats.partners.backID != -1 && player->stats.partners.backPoweredUp == 2) {
-                        continue;
-                    }
-                    if (player->stats.partners.frontID == -1 && player->stats.partners.backID == -1) {
-                        continue;
-                    }
-                    break;
-                case 8:
-                    if (player->stats.partners.frontID != -1 && player->stats.partners.frontPoweredUp == 1) {
-                        continue;
-                    }
-                    if (player->stats.partners.backID != -1 && player->stats.partners.backPoweredUp == 1) {
-                        continue;
-                    }
-                    /* fallthrough */
-                case 9:
-                    if (player->stats.partners.frontID == -1 && player->stats.partners.backID == -1) {
-                        continue;
-                    }
-                    break;
-                case 10:
-                    if (func_800EAA7C_name_81(GwPlayer[GwSystem.current_player_index].chr + 11) != 0) {
-                        break;
-                    }
-                    /* fallthrough */
-                case 6:
-                    if (func_800EAA7C_name_81(GwPlayer[(s8)(GwSystem.current_player_index ^ 1)].chr + 11) == 0) {
-                        continue;
-                    }
-                    break;
+            func_8005D2D4_main(entry->windowId);
+
+            if (D_80102BAD_name_81 != 1 && GWMgUnlockCheck(D_80102BA8_name_81[i] - 1) == FALSE) {
+                HuWinMesSet(entry->windowId, 0x4748, HUWIN_POS_CENTER, 4);
+            } else {
+                do { // Needed for regalloc.
+                    HuWinMesSet(entry->windowId, D_80100EE4_name_81[type] + D_80102BA8_name_81[i] - 1, HUWIN_POS_CENTER, 4);
+                } while (0);
             }
+
+            HuWinMesColSet(entry->windowId, D_80100EEB_name_81[D_80102BA8_name_81[i]]);
+            HuWinMesSpeedSet(entry->windowId, 0);
             break;
         }
-
-        func_8005D2D4_main(entry->windowId);
-
-        if (D_80102BAD_name_81 != 1 && GWMgUnlockCheck(D_80102BA8_name_81[i] - 1) == FALSE) {
-            HuWinMesSet(entry->windowId, 0x4748, HUWIN_POS_CENTER, 4);
-        } else {
-            do { // Needed for regalloc.
-                HuWinMesSet(entry->windowId, D_80100EE4_name_81[type] + D_80102BA8_name_81[i] - 1, HUWIN_POS_CENTER, 4);
-            } while (0);
-        }
-
-        HuWinMesColSet(entry->windowId, D_80100EEB_name_81[D_80102BA8_name_81[i]]);
-        HuWinMesSpeedSet(entry->windowId, 0);
     }
 
     if (D_80102BAD_name_81 != 1) {
@@ -716,13 +703,7 @@ void func_800DF594_name_81(s32 arg0) {
     obj->scale.y = 0.0f;
     func_800DF348_name_81();
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C5770", func_800DF594_name_81);
-#endif
 
-// Regalloc differences only (same as func_800DF594_name_81): arg0 * 4 loses its callee-saved register to
-// &D_80100E88_name_81 by a small global-alloc priority margin.
-#ifdef NON_MATCHING
 void func_800DFBF4_name_81(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
     UnkC5770Rect *rects[2] = { D_80100E8C_name_81, D_80100EB4_name_81 };
@@ -732,7 +713,6 @@ void func_800DFBF4_name_81(void) {
     UnkC5770B70 *entry;
     omObjData *obj;
     s32 listOffset;
-    s32 listIndex;
     s32 i;
     s32 j;
     s32 k;
@@ -760,9 +740,8 @@ void func_800DFBF4_name_81(void) {
         HuWinBGTPLvlSet(entry->windowId, 0);
         HuPrcVSleep();
 
-        listIndex = arg0 + listOffset;
         while (1) {
-            D_80102BA8_name_81[i] = mgLists[listIndex][func_800EFE20_name_81(mgCounts[listIndex])];
+            D_80102BA8_name_81[i] = mgLists[arg0 + listOffset][func_800EFE20_name_81(mgCounts[arg0 + listOffset])];
 
             for (j = 0; j < i; j++) {
                 if (j == i) {
@@ -785,73 +764,74 @@ void func_800DFBF4_name_81(void) {
                 if (k != D_80100E88_name_81[arg0 + listOffset]) {
                     continue;
                 }
-                break;
+            } else {
+                switch (D_80102BA8_name_81[i]) {
+                    case 1:
+                        if (player->star == 5) {
+                            continue;
+                        }
+                        break;
+                    case 2:
+                        if (GwPlayer[0].clink == GwPlayer[1].clink && GwPlayer[0].cidx == GwPlayer[1].cidx) {
+                            continue;
+                        }
+                        break;
+                    case 3:
+                        if (GwPlayer[GwSystem.current_player_index].coin == 0) {
+                            continue;
+                        }
+                        break;
+                    case 7:
+                        if (player->stats.partners.frontID != -1 && player->stats.partners.frontPoweredUp == 2) {
+                            continue;
+                        }
+                        if (player->stats.partners.backID != -1 && player->stats.partners.backPoweredUp == 2) {
+                            continue;
+                        }
+                        if (player->stats.partners.frontID == -1 && player->stats.partners.backID == -1) {
+                            continue;
+                        }
+                        break;
+                    case 8:
+                        if (player->stats.partners.frontID != -1 && player->stats.partners.frontPoweredUp == 1) {
+                            continue;
+                        }
+                        if (player->stats.partners.backID != -1 && player->stats.partners.backPoweredUp == 1) {
+                            continue;
+                        }
+                        /* fallthrough */
+                    case 9:
+                        if (player->stats.partners.frontID == -1 && player->stats.partners.backID == -1) {
+                            continue;
+                        }
+                        break;
+                    case 10:
+                        if (func_800EAA7C_name_81(GwPlayer[GwSystem.current_player_index].chr + 11) != 0) {
+                            break;
+                        }
+                        /* fallthrough */
+                    case 6:
+                        if (func_800EAA7C_name_81(GwPlayer[(s8)(GwSystem.current_player_index ^ 1)].chr + 11) == 0) {
+                            continue;
+                        }
+                        break;
+                }
             }
 
-            switch (D_80102BA8_name_81[i]) {
-                case 1:
-                    if (player->star == 5) {
-                        continue;
-                    }
-                    break;
-                case 2:
-                    if (GwPlayer[0].clink == GwPlayer[1].clink && GwPlayer[0].cidx == GwPlayer[1].cidx) {
-                        continue;
-                    }
-                    break;
-                case 3:
-                    if (GwPlayer[GwSystem.current_player_index].coin == 0) {
-                        continue;
-                    }
-                    break;
-                case 7:
-                    if (player->stats.partners.frontID != -1 && player->stats.partners.frontPoweredUp == 2) {
-                        continue;
-                    }
-                    if (player->stats.partners.backID != -1 && player->stats.partners.backPoweredUp == 2) {
-                        continue;
-                    }
-                    if (player->stats.partners.frontID == -1 && player->stats.partners.backID == -1) {
-                        continue;
-                    }
-                    break;
-                case 8:
-                    if (player->stats.partners.frontID != -1 && player->stats.partners.frontPoweredUp == 1) {
-                        continue;
-                    }
-                    if (player->stats.partners.backID != -1 && player->stats.partners.backPoweredUp == 1) {
-                        continue;
-                    }
-                    /* fallthrough */
-                case 9:
-                    if (player->stats.partners.frontID == -1 && player->stats.partners.backID == -1) {
-                        continue;
-                    }
-                    break;
-                case 10:
-                    if (func_800EAA7C_name_81(GwPlayer[GwSystem.current_player_index].chr + 11) != 0) {
-                        break;
-                    }
-                    /* fallthrough */
-                case 6:
-                    if (func_800EAA7C_name_81(GwPlayer[(s8)(GwSystem.current_player_index ^ 1)].chr + 11) == 0) {
-                        continue;
-                    }
-                    break;
+            func_8005D2D4_main(entry->windowId);
+
+            if (D_80102BAD_name_81 != 1 && GWMgUnlockCheck(D_80102BA8_name_81[i] - 1) == FALSE) {
+                HuWinMesSet(entry->windowId, 0x4748, HUWIN_POS_CENTER, 4);
+            } else {
+                do { // Needed for regalloc.
+                    HuWinMesSet(entry->windowId, D_80100EE4_name_81[arg0] + D_80102BA8_name_81[i] - 1, HUWIN_POS_CENTER, 4);
+                } while (0);
             }
+
+            HuWinMesColSet(entry->windowId, D_80100EEB_name_81[D_80102BA8_name_81[i]]);
+            HuWinMesSpeedSet(entry->windowId, 0);
             break;
         }
-
-        func_8005D2D4_main(entry->windowId);
-
-        if (D_80102BAD_name_81 != 1 && GWMgUnlockCheck(D_80102BA8_name_81[i] - 1) == FALSE) {
-            HuWinMesSet(entry->windowId, 0x4748, HUWIN_POS_CENTER, 4);
-        } else {
-            HuWinMesSet(entry->windowId, D_80100EE4_name_81[arg0] + D_80102BA8_name_81[i] - 1, HUWIN_POS_CENTER, 4);
-        }
-
-        HuWinMesColSet(entry->windowId, D_80100EEB_name_81[D_80102BA8_name_81[i]]);
-        HuWinMesSpeedSet(entry->windowId, 0);
         HuPrcVSleep();
     }
 
@@ -875,9 +855,6 @@ void func_800DFBF4_name_81(void) {
     }
     omDelPrcObj(NULL);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_81_name/C5770", func_800DFBF4_name_81);
-#endif
 
 void func_800E02B4_name_81(s32 arg0) {
     D_80102BB8_name_81 = arg0;

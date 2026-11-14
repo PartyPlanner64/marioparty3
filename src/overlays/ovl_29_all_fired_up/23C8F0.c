@@ -972,7 +972,6 @@ void func_80108958_all_fired_up(omObjData *object) {
     }
 }
 
-#ifdef NON_MATCHING
 void func_80108AA0_all_fired_up(omObjData *object) {
     func_800E1BA8_minigame_ObjData *data;
     AllFiredUpPlayerWork *work;
@@ -980,8 +979,7 @@ void func_80108AA0_all_fired_up(omObjData *object) {
     f32 nearX;
     f32 nearZ;
     f32 minDist;
-    f32 distSq;
-    f32 radius;
+    f32 len;
     f32 dist;
     f32 dx;
     f32 dz;
@@ -1033,11 +1031,11 @@ void func_80108AA0_all_fired_up(omObjData *object) {
         fire = D_80109B00_all_fired_up[i];
         dx = fire->trans.x - object->trans.x;
         dz = fire->trans.z - object->trans.z;
-        distSq = dx * dx + dz * dz;
-        if (distSq < minDist) {
+        len = dx * dx + dz * dz;
+        if (len < minDist) {
             nearX = fire->trans.x;
             nearZ = fire->trans.z;
-            minDist = distSq;
+            minDist = len;
         }
     }
     dist = HuSqrtf(object->trans.x * object->trans.x + object->trans.z * object->trans.z);
@@ -1111,7 +1109,7 @@ void func_80108AA0_all_fired_up(omObjData *object) {
         tries++;
         work->unk0C += 0.022222222222222223;
     } while (tries < 8);
-    radius = HuSqrtf(object->trans.x * object->trans.x + object->trans.x * object->trans.x);
+    len = HuSqrtf(object->trans.x * object->trans.x + object->trans.x * object->trans.x);
     if (D_801099C8_all_fired_up == 1) {
         if (D_80109C56_all_fired_up < 21) {
             work->unk0C = atan2df(object->trans.x, object->trans.z);
@@ -1158,7 +1156,7 @@ void func_80108AA0_all_fired_up(omObjData *object) {
         }
     } else if (D_801099C8_all_fired_up == 3) {
         if (D_80109C54_all_fired_up == 1 || D_80109C54_all_fired_up == 2) {
-            func_80109660_all_fired_up(object, radius, jump);
+            func_80109660_all_fired_up(object, len, jump);
             if (D_800EB76C_minigame <= data->unk40) {
                 x = object->trans.x + sindf(data->unk3C) * 200.0f - nearX;
                 z = object->trans.z + cosdf(data->unk3C) * 200.0f - nearZ;
@@ -1181,9 +1179,6 @@ void func_80108AA0_all_fired_up(omObjData *object) {
         D_800D5558_main[data->unk57] &= 0x7FFF;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_29_all_fired_up/23C8F0", func_80108AA0_all_fired_up);
-#endif
 
 void func_80109660_all_fired_up(omObjData *object, f32 dist, s8 arg2) {
     AllFiredUpPlayerWork *work = ((func_800E1BA8_minigame_ObjData *)object->data)->unk158;

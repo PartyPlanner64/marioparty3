@@ -2463,7 +2463,6 @@ void func_8010CE5C_aces_high(omObjData *object) {
     }
 }
 
-#ifdef NON_MATCHING
 void func_8010CFF8_aces_high(void) {
     s32 count = 0;
     u16 numAlive = 0;
@@ -2471,13 +2470,15 @@ void func_8010CFF8_aces_high(void) {
     u16 alive[4];
     AceHighPlayer *player;
     s32 i;
+    omObjData *obj;
 
     if (D_8010DE90_aces_high == 1) {
         return;
     }
     D_8010DE90_aces_high = 0;
     for (i = 0; i < 4; i++) {
-        player = D_8010DE68_aces_high[i]->data;
+        obj = D_8010DE68_aces_high[i];
+        player = obj->data;
         count++;
         if (player->unk_00 == 4 || player->unk_00 == 5) {
             continue;
@@ -2494,7 +2495,7 @@ void func_8010CFF8_aces_high(void) {
     D_8010DE8E_aces_high = -1;
     for (i = 0; i < numAlive; i++) {
         player = D_8010DE68_aces_high[alive[i]]->data;
-        if (maxLives < player->unk_26) {
+        if (player->unk_26 > maxLives) {
             maxLives = player->unk_26;
         }
     }
@@ -2510,16 +2511,14 @@ void func_8010CFF8_aces_high(void) {
         D_8010DE8E_aces_high = alive[i];
     }
     if (numAlive != 0 && D_8010DE8E_aces_high != -1) {
-        player = D_8010DE68_aces_high[D_8010DE8E_aces_high]->data;
+        obj = D_8010DE68_aces_high[D_8010DE8E_aces_high];
+        player = obj->data;
         player->unk_92 = 5;
         player->unk_9C.x = 0.0f;
         player->unk_9C.y = 0.0f;
         player->unk_9C.z = 0.0f;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_17_aces_high/1C4280", func_8010CFF8_aces_high);
-#endif
 
 #ifdef NON_MATCHING
 u16 func_8010D1D8_aces_high(u16 winner) {

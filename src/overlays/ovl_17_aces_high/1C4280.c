@@ -2533,6 +2533,12 @@ void func_8010CFF8_aces_high(void) {
 // `rect = D_8010DB70_aces_high[i]`, all-global indexing, a Vec2f pointer for the
 // target position, deriving the viewport pointer from rect, do-while(0) around
 // the scissor or viewport part, s32 x/y/w/h, declaration order.
+// -O1 has no insn scheduling, so the target's viewport pointer is computed
+// after ScissorSet(3) and dead before ViewportSet, i.e. it crosses no call in
+// RTL; local- and global-alloc both give such pseudos a caller-saved register,
+// so s1 is unexplained. Also tried: do-while(0) around each candidate
+// statement (no effect); `view = D_8010DBB0_aces_high[0]` before ScissorSet(3)
+// then `view += winner * 4` (gets s1, but the la stays before the call).
 #ifdef NON_MATCHING
 u16 func_8010D1D8_aces_high(u16 winner) {
     f32 angle;

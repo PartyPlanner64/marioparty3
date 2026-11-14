@@ -737,15 +737,14 @@ void func_8010E40C_mgmode(void) {
 // Matches except for one register copy: target emits `move t3,a2` for rank = 0,
 // but GCC propagates the constant (`move t3,zero`) whenever `slot = 0` and
 // `rank = 0` share a basic block, regardless of how the initializer is written.
-// Partial workaround: putting an empty `if (count) {}` between `slot = 0;` and
-// `rank = slot;` keeps the copy and gets within 2 instructions, but it's an
-// artificial construct. A real fix likely needs a different loop structure.
+// An empty `if (count) {}` between `slot = 0;` and `rank = slot;` does not keep
+// the copy (it moves `move t3,zero` into a delay slot, 3 diffs).
 // Compiler analysis (gcc 2.7.2 sources, -O1): cse.c always swaps a pseudo copy
 // for a known constant (const_int costs 0, a pseudo costs 1), so the copy can
 // only survive if `slot = 0` and `rank = slot` land in different CSE blocks
 // (a used label or a NOTE_INSN_LOOP_END between them). The target's outer-loop
 // pretest is still folded to `count != 0`, though, which needs CSE to know that
-// rank and slot are both 0. That contradiction is unresolved. A LOOP_END
+// rank and slot are both 0, or needs combine to fold it (see below). A LOOP_END
 // boundary (`slot = 0; do {} while (0); for (rank = slot; ...)`) keeps the copy
 // but the pretest turns into `slot < count` (score 495). The `move a1,v0` next
 // to the pretest is a copy inserted by cse_around_loop. Also brute-forced
@@ -763,6 +762,15 @@ void func_8010E40C_mgmode(void) {
 // reg-reg copies for STRICT_LOW_PART partial movables. Also tried the
 // `count` if/else and `==` spellings, swapped `order[i] == rank`, and
 // alternate `pos[i].x` arithmetic; all stay at the same single diff.
+// What does work: an initial slot value that CSE can't see is 0 but combine
+// can prove is 0 (from nonzero_bits, since count is only ever 2 or 4).
+// `for (slot = (count & 1) * 2, rank = slot; ...)` (also `* 40`) gives a
+// full ROM match for both this function and func_8010E6F0_mgmode. CSE keeps
+// the copy, CSE substitutes the SImode temporary into the pretest, and
+// combine folds both to 0. It isn't used because the expression is
+// meaningless. `count & 1`, `count % 2`, `count >> 3`, `count / 8`,
+// `(4 - count) & 1`, `(4 - count) % 2`, and `(count & 1) << 1` leave the
+// computation in place.
 void func_8010E494_mgmode(s16 arg0) {
     Vec pos[4];
     s16 order[4];
@@ -807,7 +815,8 @@ INCLUDE_ASM("asm/nonmatchings/overlays/mgmode/473130", func_8010E494_mgmode);
 // analysis and the list of other loop shapes and types tried; the
 // `do {} while (0);` boundary keeps the copy here too but unfolds the pretest
 // (score 1204). The empty `if (count) {}` trick does not keep the copy here
-// (score 210). The folded pretest `beqz count<<16` comes from combine using
+// (score 210). The `(count & 1) * 2` initializer described at
+// func_8010E494_mgmode gives a full match here too. The folded pretest `beqz count<<16` comes from combine using
 // nonzero_bits (count is only ever 2 or 4) on the jump.c-duplicated exit test,
 // and the `move a1,v0` next to it is cse_around_loop reusing count<<16 for the
 // exit test, so the loop must stay a rotated for/while: an explicit

@@ -183,7 +183,7 @@ u8 func_8010A738_fowl_play(omObjData *object, u8 canCatch);
 s32 func_8010A9A0_fowl_play(void);
 f32 func_8010A9EC_fowl_play(f32 y, f32 x);
 f32 func_8010AA64_fowl_play(Vec *arg0, Vec *arg1);
-f32 func_801075B0_fowl_play(Vec *pos, f32 dist, f32 angle);
+f32 func_801075B0_fowl_play(Vec *pos, f32 dist, f32 dir);
 f32 func_8010AB40_fowl_play(Vec *vec);
 f32 func_8010AC88_fowl_play(Vec *point, Vec *start, Vec *end, Vec *closest);
 f32 func_8010AE10_fowl_play(Vec *pos1, Vec *dir1, Vec *pos2, Vec *dir2);
@@ -692,20 +692,20 @@ u8 func_8010724C_fowl_play(Vec *pos, Vec *prev, f32 radius) {
     return count;
 }
 
-#ifdef NON_MATCHING
-// The copies of dist/angle into FP registers at entry are emitted in the opposite order.
-f32 func_801075B0_fowl_play(Vec *pos, f32 dist, f32 angle) {
+f32 func_801075B0_fowl_play(Vec *pos, f32 dist, f32 dir) {
     Vec hit;
     Vec newPos;
     Vec wall;
     Vec move;
     f32 minDist;
+    f32 angle;
     f32 t;
     f32 d;
     f32 diff;
     s32 i;
 
     minDist = dist;
+    angle = dir;
     move.x = dist * sindf(angle);
     move.y = 0.0f;
     move.z = dist * cosdf(angle);
@@ -761,9 +761,6 @@ f32 func_801075B0_fowl_play(Vec *pos, f32 dist, f32 angle) {
     pos->z = newPos.z;
     return angle;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3A_fowl_play/2C5B50", func_801075B0_fowl_play);
-#endif
 
 void func_801079B0_fowl_play(void) {
     s32 i;

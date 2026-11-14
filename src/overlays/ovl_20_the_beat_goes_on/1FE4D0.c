@@ -1562,34 +1562,29 @@ void func_8010AD60_the_beat_goes_on(s8 *state, f32 speed) {
     }
 }
 
-#ifdef NON_MATCHING
 void func_8010AF10_the_beat_goes_on(omObjData *obj) {
     func_800E1BA8_minigame_ObjData *data = obj->data;
     s32 player = data->unk59;
-    s32 i = 0;
-    s32 *timers = D_8010C328_the_beat_goes_on[player];
     f32 scale;
+    s32 i;
 
-    for (; i < 4; i++) {
-        if (timers[i] >= 0) {
-            if (timers[i] == 0) {
+    for (i = 0; i < 4; i++) {
+        if (D_8010C328_the_beat_goes_on[player][i] >= 0) {
+            if (D_8010C328_the_beat_goes_on[player][i] == 0) {
                 Hu3DModelPosSet(D_8010C4EC_the_beat_goes_on[i], obj->trans.x, obj->trans.y, obj->trans.z);
                 func_8001C258_main(D_8010C4EC_the_beat_goes_on[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
-            if (timers[i] < 8) {
-                scale = D_8010C368_the_beat_goes_on[timers[i] / 2];
+            if (D_8010C328_the_beat_goes_on[player][i] < 8) {
+                scale = D_8010C368_the_beat_goes_on[D_8010C328_the_beat_goes_on[player][i] / 2];
                 Hu3DModelScaleSet(D_8010C4EC_the_beat_goes_on[i], scale, scale, 1.0f);
             }
-            if (timers[i] >= 8) {
-                timers[i] = -1;
+            if (D_8010C328_the_beat_goes_on[player][i] >= 8) {
+                D_8010C328_the_beat_goes_on[player][i] = -1;
             }
         }
-        timers[i]++;
+        D_8010C328_the_beat_goes_on[player][i]++;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_20_the_beat_goes_on/1FE4D0", func_8010AF10_the_beat_goes_on);
-#endif
 
 void func_8010B058_the_beat_goes_on(omObjData *obj) {
     obj->func = func_8010B0E0_the_beat_goes_on;

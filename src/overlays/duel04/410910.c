@@ -6773,18 +6773,11 @@ void func_80119910_duel04(void) {
     func_800E27D4_name_81(playerIndex, &pos[0], &pos[1], &pos[2]);
 }
 
-#ifdef NON_MATCHING
-// Only diff: the loop guard before the -2 inputs is beqz instead of blez. GCC
-// proves count >= 0 from its constant assignments (see func_80118850_duel04).
-// count must be s16 with `count++`. An s32 count lets jump.c turn
-// `count = 2; if (...) count = 3;` into store-flag code (sltu/negu/andi/ori).
-// But a narrow count whose sign is unknown keeps sll/sra extensions that the
-// target lacks.
 void func_80119A30_duel04(void) {
     GW_PLAYER *player = MBDGetPlayerStruct(CUR_PLAYER);
     s32 playerIdx = MBDGetCurrentPlayerIndex();
     UnkEA790Struct *win;
-    s16 count;
+    s32 count;
     s32 sel;
     s32 i;
     Process *prc;
@@ -6800,15 +6793,21 @@ void func_80119A30_duel04(void) {
     win = func_800D76A0_name_81(GwSystem.current_player_index, D_8011ADDC_duel04);
     func_800D742C_name_81(win, GwSystem.current_player_index, 0);
     if (func_800F37B8_name_81(CUR_PLAYER)) {
-        if (func_800D97B0_name_81(D_8011AB30_duel04) == 0) {
-            count = 0;
-        } else if (func_800D97B0_name_81(D_8011AB54_duel04) == 0) {
-            count = 1;
-        } else {
-            count = 2;
-            if (func_800D97B0_name_81(D_8011AB78_duel04)) {
+        count = func_800D97B0_name_81(D_8011AB30_duel04);
+        if (count != 0) {
+            if (func_800D97B0_name_81(D_8011AB54_duel04) == 0) {
+                count = 1;
+            } else {
+                // Written as an increment rather than `count = 2`; a constant
+                // here makes GCC turn the following branch into store-flag code.
+                count = 1;
                 count++;
+                if (func_800D97B0_name_81(D_8011AB78_duel04)) {
+                    count = 3;
+                }
             }
+        } else {
+            count = 0;
         }
         for (i = 0; i < count; i++) {
             func_800D7250_name_81(win, -2);
@@ -6845,7 +6844,4 @@ void func_80119A30_duel04(void) {
     }
     func_800ECDE8_name_81();
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/duel04/410910", func_80119A30_duel04);
-#endif
 

@@ -146,17 +146,15 @@ s32 func_8010AB1C_bounce_n_trounce(f32 x, f32 z);
 void func_80108CA8_bounce_n_trounce(omObjData *);
 void func_80108D28_bounce_n_trounce(omObjData *);
 
-#ifdef NON_MATCHING
 void func_801059A0_bounce_n_trounce(void) {
     s32 i;
-    u8 slot;
+    s16 slot;
 
     omInitObjMan(40, 0);
     func_8004A208_main();
     func_80045C2C_main();
     func_8000B5F0_main(1);
-    // The original passes 1 to this function, which takes no arguments.
-    func_8000B638_main();
+    func_8000B638_main(1);
     Center.x = 0.0f;
     Center.y = 30.0f;
     Center.z = 0.0f;
@@ -186,7 +184,7 @@ void func_801059A0_bounce_n_trounce(void) {
         D_8010AEE4_bounce_n_trounce[i] = -1;
     }
     for (i = 0; i < 4;) {
-        slot = rand8() & 3;
+        slot = (u8)(rand8() & 3);
         if (D_8010AEE4_bounce_n_trounce[slot] == -1) {
             D_8010AEE4_bounce_n_trounce[slot] = i;
             i++;
@@ -194,9 +192,6 @@ void func_801059A0_bounce_n_trounce(void) {
     }
     func_800E5EA0_minigame(&D_8010ABB0_bounce_n_trounce);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_18_bounce_n_trounce/1CC730", func_801059A0_bounce_n_trounce);
-#endif
 
 void func_80105C84_bounce_n_trounce(omObjData *arg0) {
     D_8010AEBC_bounce_n_trounce = 4;

@@ -1464,6 +1464,16 @@ void func_80110554_mgmode(void) {
 // D_8011B430_mgmode[i] directly instead of player, an s32 index copy, and
 // (from earlier rounds) 40 declaration orders, address casts, `j` as the
 // loop variable.
+// RTL dumps (-dl/-dg) confirm the index qty (sll/sra feeding the lbu) is
+// local and no other qty overlaps it, so local-alloc must pick v0. Getting a0
+// needs v0/v1 qtys born before the index dies, or a global index pseudo whose
+// conflicts/lower-priority preferences exclude v0/v1 (e.g. live across the
+// loop-bottom compare). Also tried without success: do/while with an n != 0
+// pre-check, plain while, `D_8011B430_mgmode[i++]`, index temp (s32/s16/u8),
+// `u8 *` pointer temp, `sprites[(s16)count]` / `*(sprites + count)` / pointer
+// stores (CSE merges the addresses without the do/while(0)), store after the
+// player load, swapping the count/D_8011B4C0_mgmode increments,
+// `sprites[count++]` in espPosSet, and `D_8011B4C0_mgmode++` in the store.
 s32 func_80111380_mgmode(void) {
     u16 sprites[4];
     s16 i;

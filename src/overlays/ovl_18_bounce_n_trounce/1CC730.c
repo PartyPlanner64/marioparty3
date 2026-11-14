@@ -1746,7 +1746,6 @@ void func_8010A740_bounce_n_trounce(s16 model) {
     modelData->unk02++;
 }
 
-#ifdef NON_MATCHING
 void func_8010A8F0_bounce_n_trounce(omObjData *object) {
     omObjData *player = (omObjData *)object->work[1];
     BounceNTrounceWork *playerWork = OM_GET_DATA_PTR(player, BounceNTrounceWork);
@@ -1754,7 +1753,6 @@ void func_8010A8F0_bounce_n_trounce(omObjData *object) {
     HmfModelData_UnkBC_Struct *modelData;
     HmfModelData_UnkBC_Unk58_Struct *particle;
     HmfData *hmf;
-    s16 count;
     s32 i;
     f32 angle;
     f32 speed;
@@ -1770,8 +1768,7 @@ void func_8010A8F0_bounce_n_trounce(omObjData *object) {
     modelData = Hu3DData[player->model[5]].unkBC;
     hmf = Hu3DData[player->model[5]].hmf;
     particle = modelData->unk58;
-    count = hmf->unk1A;
-    for (i = 0; i < count; i++, particle++) {
+    for (i = 0; i < hmf->unk1A; i++, particle++) {
         if (particle->unk08 <= 0.0f) {
             break;
         }
@@ -1800,9 +1797,6 @@ void func_8010A8F0_bounce_n_trounce(omObjData *object) {
     particle->unk04 = -0.22f;
     particle->unk08 = 10.0f;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_18_bounce_n_trounce/1CC730", func_8010A8F0_bounce_n_trounce);
-#endif
 
 f32 func_8010AAE0_bounce_n_trounce(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     return HuSqrtf((arg0 - arg2) * (arg0 - arg2) + (arg1 - arg3) * (arg1 - arg3));

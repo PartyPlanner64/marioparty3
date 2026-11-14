@@ -1259,12 +1259,10 @@ void func_8010ACE4_messy_memory(omObjData *obj) {
     }
 }
 
-// NON_MATCHING: `found` is tested via a register copy in the target instead of an andi.
-#ifdef NON_MATCHING
 void func_8010AD40_messy_memory(omObjData *obj) {
     u16 playerNo = obj->work[0];
     MessyMemoryWork *work = &D_80111700_messy_memory[playerNo];
-    u8 found;
+    s8 found;
     s8 count;
     s8 i;
     s8 j;
@@ -1366,10 +1364,10 @@ void func_8010AD40_messy_memory(omObjData *obj) {
                     }
                 }
                 for (i = 9; i >= 0; i--) {
+                    found = FALSE;
                     if (count >= work->unk04) {
                         break;
                     }
-                    found = FALSE;
                     for (j = 0; j < 10; j++) {
                         if (D_801116E0_messy_memory[j] == i) {
                             found = TRUE;
@@ -1400,9 +1398,6 @@ void func_8010AD40_messy_memory(omObjData *obj) {
             break;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_1D_messy_memory/1E37C0", func_8010AD40_messy_memory);
-#endif
 
 void func_8010B32C_messy_memory(omObjData *obj) {
     s32 chr = GwPlayer[obj->work[0]].chr;

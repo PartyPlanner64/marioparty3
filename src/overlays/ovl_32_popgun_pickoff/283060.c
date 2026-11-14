@@ -24,8 +24,8 @@ typedef struct PopgunPickoffPlayer {
     /* 0x18 */ u8 unk_18;
     /* 0x19 */ u8 unk_19;
     /* 0x1A */ u8 unk_1A;
-    /* 0x1B */ u8 unk_1B;
-    /* 0x1C */ u8 unk_1C;
+    /* 0x1B */ s8 unk_1B;
+    /* 0x1C */ s8 unk_1C;
     /* 0x1D */ u8 unk_1D;
     /* 0x1E */ u8 unk_1E;
     /* 0x1F */ u8 unk_1F;
@@ -1270,9 +1270,6 @@ void func_801093A8_popgun_pickoff(Gfx **gfx, HuSprite_Unk84_Unk00_Struct *cel, u
     *gfx = gdl;
 }
 
-#ifdef NON_MATCHING
-// Register allocation differs: siz and count swap s3/s4 (they match when unk_1B/unk_1C are s8, but then the loads
-// become lb instead of lbu).
 s16 func_80109718_popgun_pickoff(PopgunPickoffPlayer *player) {
     HuSprite_Unk84_Unk00_Struct segCel;
     Gfx *gfx;
@@ -1317,13 +1314,12 @@ s16 func_80109718_popgun_pickoff(PopgunPickoffPlayer *player) {
             if (player->sprite->unk1A == 1) {
                 fmt = G_IM_FMT_IA;
                 gDPSetTextureLUT(gfx++, G_TT_NONE);
-                mode = 2;
             } else {
                 fmt = G_IM_FMT_CI;
                 gDPLoadTLUT_pal256(gfx++, player->sprite->unk0C);
                 gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-                mode = 2;
             }
+            mode = 2;
             break;
         case 16:
             siz = G_IM_SIZ_16b;
@@ -1392,15 +1388,16 @@ s16 func_80109718_popgun_pickoff(PopgunPickoffPlayer *player) {
             }
         }
     }
+    // The differing masks/maskt byte conversions are required to match register allocation.
     if (player->unk_28 & 0xC0000) {
-        masks = player->unk_1B;
+        masks = player->unk_1B & 0xFF;
         cms = (player->unk_28 >> 18) - 1;
     } else {
         masks = 0;
         cms = 0;
     }
     if (player->unk_28 & 0x300000) {
-        maskt = player->unk_1C;
+        maskt = (u8)player->unk_1C;
         cmt = (player->unk_28 >> 20) - 1;
     } else {
         maskt = 0;
@@ -1436,9 +1433,6 @@ s16 func_80109718_popgun_pickoff(PopgunPickoffPlayer *player) {
     HuMemFree(buf);
     return 1;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_32_popgun_pickoff/283060", func_80109718_popgun_pickoff);
-#endif
 
 s16 func_8010A024_popgun_pickoff(s16 spriteId, s32 flags) {
     PopgunPickoffPlayer *player;

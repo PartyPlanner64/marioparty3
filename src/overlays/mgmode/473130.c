@@ -1437,30 +1437,24 @@ void func_80110554_mgmode(void) {
 }
 
 #ifdef NON_MATCHING
-// Matches except for the `case 4` loop. In the target, the store to
-// sprites[count] and the following reads of sprites[count] use separately
-// computed addresses (as in `case 2`, where the if/else separates them), and
-// the sprites base (sp+0x10) is hoisted into a saved register. The compiled
-// version below instead CSEs the store/read addresses.
-// Partial (artificial) workaround: inserting `do {} while (0);` between the
-// sprites[count] store and espDispOn() in `case 4` fixes all of that, leaving
-// only the sign-extended loop index at the loop top allocated to v0 instead of
-// a0 (and a `bnez` instead of `bnezl` at the loop end). Loop shape, player
-// type/variable, and break/default variations did not fix the remaining diff.
-// Further findings: anything that ends a CSE block between the store and the
-// reads gives the same 5-line result (`while (0) {}`, wrapping the store in
-// `do { ... } while (0)`, `for (j = 0; j < 0; j++) { ... }`, or a label that
-// CSE folds away such as `j = 0; if (j != 0) { ... }`), so the kind of boundary
-// does not affect the remaining diff. The `bnezl` is only a consequence of
-// the index being in a0 (reorg treats a0 as live on the fall-through path).
-// In all variants the sign-extended index is a single-block pseudo with no
-// overlapping values, so local-alloc picks v0. For a0, either v0 and v1 must
-// be busy over its short lifetime, or it must be allocated by global-alloc
-// instead, where `i`'s copy preference for v0 would push it off v0.
-// Also tried without success: 40 random declaration orders, pointer/byte
-// arithmetic and (s32)/(u16) casts for the store or read address, an s32 copy
-// of `i` as the index (CSE propagates it away), `j` as the loop variable,
-// do/while(0) wrappers around the calls, and storing before loading `player`.
+// Only remaining diff: in the `case 4` loop, the sign-extended loop index used
+// to load `player` is allocated to a0 in the target but v0 here (which also
+// turns the target's `bnezl` at the loop end into `bnez`).
+// The `do {} while (0);` after the sprites[count] store ends the CSE block so
+// that the store and the following reads of sprites[count] use separately
+// computed addresses with the sprites base hoisted into a saved register, as
+// in the target (without it, everything after `case 4` is shifted).
+// The index pseudo is local to the loop-top block and nothing occupies v0/v1
+// there, so local-alloc picks v0; a0 suggests v0/v1 are live across it in the
+// original RTL (e.g. a global pseudo). An unrotated `while` test makes the
+// index global but lands it in a3 and changes the loop shape.
+// Tried without success: do/while(0) at every combination of statement gaps
+// and around every contiguous statement range, player temp types
+// (u8/u16/s32), store before player load, count++ in the for increment,
+// `continue`, while-loop form, static inline helper for the calls, using
+// D_8011B430_mgmode[i] directly instead of player, an s32 index copy, and
+// (from earlier rounds) 40 declaration orders, address casts, `j` as the
+// loop variable.
 s32 func_80111380_mgmode(void) {
     u16 sprites[4];
     s16 i;
@@ -1527,6 +1521,8 @@ s32 func_80111380_mgmode(void) {
             for (i = 0; i < D_8011B434_mgmode; i++) {
                 player = D_8011B430_mgmode[i];
                 sprites[count] = D_8011B488_mgmode[D_8011B4C0_mgmode];
+                do {
+                } while (0);
                 espDispOn(sprites[count]);
                 espPosSet(sprites[count], D_80119490_mgmode[D_800CC438_main * 7 + D_800D03FE_main[player]] + 180,
                           player * 24 + 104);

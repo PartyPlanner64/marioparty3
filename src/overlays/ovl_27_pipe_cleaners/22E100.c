@@ -209,28 +209,26 @@ void func_80105BB4_pipe_cleaners(omObjData *obj) {
     espPosSet(work[1].espId, work[1].pos.x, work[1].pos.y);
 }
 
-// NON_MATCHING: entry 0 is addressed through a base register holding D_8010A300_pipe_cleaners, while
-// entry 1 uses direct symbol addressing; this version gets the base register offset wrong.
-#ifdef NON_MATCHING
 void func_80105C50_pipe_cleaners(omObjData *obj) {
-    D_8010A300_pipe_cleaners[1].pos.x = 160.0f;
-    D_8010A300_pipe_cleaners[1].pos.y = 120.0f;
-    D_8010A300_pipe_cleaners[1].spriteFileId = func_8000B838_main(0x48000C);
-    D_8010A300_pipe_cleaners[1].espId = espEntry(D_8010A300_pipe_cleaners[1].spriteFileId, 0, 0);
-    espAttrSet(D_8010A300_pipe_cleaners[1].espId, 0x5000);
-    espPosSet(D_8010A300_pipe_cleaners[1].espId, D_8010A300_pipe_cleaners[1].pos.x, D_8010A300_pipe_cleaners[1].pos.y);
+    PipeCleanerSpriteWork *work;
 
-    D_8010A300_pipe_cleaners[0].pos.x = 160.0f;
-    D_8010A300_pipe_cleaners[0].pos.y = 120.0f;
-    D_8010A300_pipe_cleaners[0].spriteFileId = func_8000B838_main(0x48000A);
-    D_8010A300_pipe_cleaners[0].espId = espEntry(D_8010A300_pipe_cleaners[0].spriteFileId, 0, 0);
-    espAttrSet(D_8010A300_pipe_cleaners[0].espId, 0x1000);
-    espPosSet(D_8010A300_pipe_cleaners[0].espId, D_8010A300_pipe_cleaners[0].pos.x, D_8010A300_pipe_cleaners[0].pos.y);
+    work = &D_8010A300_pipe_cleaners[1];
+    work->pos.x = 160.0f;
+    work->pos.y = 120.0f;
+    work->spriteFileId = func_8000B838_main(0x48000C);
+    work->espId = espEntry(work->spriteFileId, 0, 0);
+    espAttrSet(work->espId, 0x5000);
+    espPosSet(work->espId, work->pos.x, work->pos.y);
+
+    work = &D_8010A300_pipe_cleaners[0];
+    work->pos.x = 160.0f;
+    work->pos.y = 120.0f;
+    work->spriteFileId = func_8000B838_main(0x48000A);
+    work->espId = espEntry(work->spriteFileId, 0, 0);
+    espAttrSet(work->espId, 0x1000);
+    espPosSet(work->espId, work->pos.x, work->pos.y);
     obj->func = func_80105BB4_pipe_cleaners;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_27_pipe_cleaners/22E100", func_80105C50_pipe_cleaners);
-#endif
 
 void func_80105DB4_pipe_cleaners(void) {
     omAddObj(0x64, 1, 0, -1, func_80105C50_pipe_cleaners);

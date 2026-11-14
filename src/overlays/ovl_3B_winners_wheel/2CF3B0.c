@@ -804,10 +804,6 @@ void func_80107CB4_winners_wheel(void) {
                        10, 0);
 }
 
-#ifdef NON_MATCHING
-// The original passes the zero arguments of the Hu3DModelPosSet/Hu3DModelRotSet
-// calls as integer zero moves rather than from the hoisted 0.0f FP register,
-// which also swaps the FP registers holding -10.5f and 0.0f.
 void func_80107D50_winners_wheel(void) {
     s32 attr;
     WinnersWheelPointer *pointer;
@@ -823,11 +819,11 @@ void func_80107D50_winners_wheel(void) {
     pointer->count = 0;
     pointer->mode = 0;
     for (i = 0; i < 18; i++) {
-        pointer->rot[i] = pointer->rawRot[i] = i * 20.0f;
+        pointer->rawRot[i] = pointer->rot[i] = i * 20.0f;
         if (i == 0) {
-            obj->model[0] = func_8000B108_main(0x5C0005, attr);
-            omSetTra(obj, sindf(pointer->rot[0]) * -10.5f, cosdf(pointer->rot[0]) * -10.5f, 0.0f);
-            omSetRot(obj, 0.0f, 0.0f, -pointer->rot[0]);
+            obj->model[i] = func_8000B108_main(0x5C0005, attr);
+            omSetTra(obj, sindf(pointer->rot[i]) * -10.5f, cosdf(pointer->rot[i]) * -10.5f, 0.0f);
+            omSetRot(obj, 0.0f, 0.0f, -pointer->rot[i]);
         } else {
             obj->model[i] = Hu3DModelLink(obj->model[0]);
             Hu3DModelPosSet(obj->model[i], sindf(pointer->rot[i]) * -10.5f, cosdf(pointer->rot[i]) * -10.5f, 0.0f);
@@ -835,9 +831,6 @@ void func_80107D50_winners_wheel(void) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_3B_winners_wheel/2CF3B0", func_80107D50_winners_wheel);
-#endif
 
 void func_80107F4C_winners_wheel(omObjData *obj) {
     WinnersWheelPointer *pointer = obj->data;

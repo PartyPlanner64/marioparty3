@@ -7655,10 +7655,6 @@ void func_8011A8B8_ChillyWaters() {
     MBModelKill(D_8011FAEC_ChillyWaters);
 }
 
-#ifdef NON_MATCHING
-// Close: control flow matches, but register allocation differs. `slot` gets spilled to the
-// stack instead of living in $fp (the target spills the loop base address of the order arrays
-// instead), which also prevents the 20.0f constant from being hoisted into $f22.
 void MB1Ev_SnowmanStart(void) {
     Vec pos;
     Vec dir;
@@ -7671,27 +7667,25 @@ void MB1Ev_SnowmanStart(void) {
     SpaceData *prevSpace;
     Object *snowman;
     Process *proc;
-    Process *moveProc;
     SnowmanRollWork *work;
+    SnowmanRollWork *work2;
     s16 *masuList;
     s32 path;
     s16 count;
-    s32 masuId;
     s16 slot;
     s16 sfx;
-    s32 target;
     s32 swap;
+    s32 temp;
     s32 n;
     s32 i;
     s32 j;
     f32 x;
     f32 z;
-    f32 angle;
 
     MBPlayerGet(-1);
     mbItemBtnF = 0;
     D_800A12D8_main = 1;
-    path = (rand8() & 1) << 1;
+    path = (rand8() & 1) ? 2 : 0;
     count = MB1Ev_SnowmanPathGet(path);
     if (count != 0) {
         func_80119A60_ChillyWaters(-1);
@@ -7716,17 +7710,17 @@ void MB1Ev_SnowmanStart(void) {
     }
 
     space = MBMasuGet(D_8011E64C_ChillyWaters[path]);
-    masuId = D_8011E64C_ChillyWaters[path];
-    for (n = 0, i = 0; i < 4; i++) {
-        if (MBMasuLinkMasuIdGet(MBPlayerGet(i)->clink, MBPlayerGet(i)->cidx) == masuId) {
+    j = D_8011E64C_ChillyWaters[path];
+    for (i = 0, n = 0; i < 4; i++) {
+        if (MBMasuLinkMasuIdGet(MBPlayerGet(i)->clink, MBPlayerGet(i)->cidx) == j) {
             n++;
         }
     }
     count += n;
-    target = (path == 0) ? 32 : 15;
+    n = (path == 0) ? 32 : 15;
     for (i = 0, slot = 0; i < 4; i++) {
         player = MBPlayerGet(i);
-        if (MBMasuLinkMasuIdGet(player->clink, player->cidx) == masuId) {
+        if (MBMasuLinkMasuIdGet(player->clink, player->cidx) == j) {
             switch (count) {
                 case 2:
                     x = D_8011E664_ChillyWaters[slot][0];
@@ -7747,7 +7741,7 @@ void MB1Ev_SnowmanStart(void) {
             player->player_obj->coords.x = x + space->coords.x;
             player->player_obj->coords.z = z + space->coords.z + 35.0f;
             slot++;
-        } else if (MBMasuLinkMasuIdGet(player->clink, player->cidx) == target) {
+        } else if (MBMasuLinkMasuIdGet(player->clink, player->cidx) == n) {
             player->player_obj->coords.z += 15.0f;
         }
     }
@@ -7860,13 +7854,13 @@ void MB1Ev_SnowmanStart(void) {
         func_800E6FCC_shared_board();
         sfx = HuAudFXPlay(0x185);
         MBMotionSet(snowman, -1, 2);
-        moveProc = func_80119C54_ChillyWaters(&snowman->coords, &MBMasuGet(D_8011E654_ChillyWaters[path])->coords,
-                                              &snowman->coords, 0.0f);
+        proc = func_80119C54_ChillyWaters(&snowman->coords, &MBMasuGet(D_8011E654_ChillyWaters[path])->coords,
+                                          &snowman->coords, 0.0f);
         space = MBMasuGet(D_8011E65C_ChillyWaters[path]);
         HuPrcChildLink(HuPrcCurrentGet(), func_80119C54_ChillyWaters(&pos, &space->coords, &pos, 0.0f));
         HuPrcChildWatch();
         func_80119C54_ChillyWaters(&pos, &MBMasuGet(D_8011E65C_ChillyWaters[path + 1])->coords, &pos, 0.0f);
-        HuPrcChildLink(HuPrcCurrentGet(), moveProc);
+        HuPrcChildLink(HuPrcCurrentGet(), proc);
         HuPrcChildWatch();
         HuAudFXStop(sfx);
 
@@ -7907,16 +7901,16 @@ void MB1Ev_SnowmanStart(void) {
         } else {
             func_80119A60_ChillyWaters(-1);
             space = MBMasuGet(D_8011E64C_ChillyWaters[path]);
-            masuId = D_8011E64C_ChillyWaters[path];
-            for (n = 0, i = 0; i < 4; i++) {
-                if (MBMasuLinkMasuIdGet(MBPlayerGet(i)->clink, MBPlayerGet(i)->cidx) == masuId) {
+            j = D_8011E64C_ChillyWaters[path];
+            for (i = 0, n = 0; i < 4; i++) {
+                if (MBMasuLinkMasuIdGet(MBPlayerGet(i)->clink, MBPlayerGet(i)->cidx) == j) {
                     n++;
                 }
             }
             count += n;
             for (i = 0, slot = 0; i < 4; i++) {
                 player = MBPlayerGet(i);
-                if (MBMasuLinkMasuIdGet(player->clink, player->cidx) == masuId) {
+                if (MBMasuLinkMasuIdGet(player->clink, player->cidx) == j) {
                     switch (count) {
                         case 2:
                             x = D_8011E664_ChillyWaters[slot][0];
@@ -7938,7 +7932,8 @@ void MB1Ev_SnowmanStart(void) {
                     player->player_obj->coords.z = z + space->coords.z;
                     slot++;
                     if (path == 1) {
-                        player->player_obj->coords.x -= 20.0f;
+                        f32 ofs = 20.0f;
+                        player->player_obj->coords.x -= ofs;
                     }
                 }
             }
@@ -7950,9 +7945,9 @@ void MB1Ev_SnowmanStart(void) {
             for (i = 0; i < 3; i++) {
                 for (j = i + 1; j < 4; j++) {
                     if (MBPlayerGet(order2[i])->player_obj->coords.z > MBPlayerGet(order2[j])->player_obj->coords.z) {
-                        swap = order2[i];
+                        temp = order2[i];
                         order2[i] = order2[j];
-                        order2[j] = swap;
+                        order2[j] = temp;
                     }
                 }
             }
@@ -7962,12 +7957,12 @@ void MB1Ev_SnowmanStart(void) {
                     curPlayer = MBPlayerGet(order2[i]);
                     if (*masuList == MBMasuLinkMasuIdGet(curPlayer->clink, curPlayer->cidx)) {
                         proc = omAddPrcObj(MB1Ev_SnowmanRoll, 0x4800, 0, 0x40);
-                        proc->user_data = work = HuMemMemoryAlloc(proc->heap, sizeof(SnowmanRollWork));
-                        work->player = order2[i];
-                        work->unk04 = slot;
-                        work->order = n;
-                        work->path = path;
-                        work->count = count;
+                        proc->user_data = work2 = HuMemMemoryAlloc(proc->heap, sizeof(SnowmanRollWork));
+                        work2->player = order2[i];
+                        work2->unk04 = slot;
+                        work2->order = n;
+                        work2->path = path;
+                        work2->count = count;
                         n++;
                     }
                 }
@@ -7988,9 +7983,9 @@ void MB1Ev_SnowmanStart(void) {
         prevSpace = MBMasuGet(D_8011E654_ChillyWaters[path - 1]);
         while (WipeStatGet()) {
             MBVecDirGet(&prevSpace->coords, &space->coords, &dir);
-            angle = atan2df(dir.x, -dir.z);
-            snowman->coords.x += sindf(angle) * D_8011FADC_ChillyWaters;
-            snowman->coords.z -= cosdf(angle) * D_8011FADC_ChillyWaters;
+            x = atan2df(dir.x, -dir.z);
+            snowman->coords.x += sindf(x) * D_8011FADC_ChillyWaters;
+            snowman->coords.z -= cosdf(x) * D_8011FADC_ChillyWaters;
             HuPrcVSleep();
         }
         HuPrcSleep(5);
@@ -8014,9 +8009,6 @@ void MB1Ev_SnowmanStart(void) {
     mbItemBtnF = 1;
     omDelPrcObj(NULL);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/overlays/ovl_48_ChillyWaters/31B9F0", MB1Ev_SnowmanStart);
-#endif
 
 void MB1Ev_Snowman(void) {
     Process* proc;

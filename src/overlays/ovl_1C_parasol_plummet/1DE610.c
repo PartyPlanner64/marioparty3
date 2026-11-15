@@ -90,34 +90,64 @@ typedef struct ParasolPlummetFlyerWork {
     /* 0x22 */ s16 timer;
 } ParasolPlummetFlyerWork; // Size 0x24
 
-extern omObjData *D_8010AB70_parasol_plummet[0x12];
-extern u8 D_8010ABB8_parasol_plummet[0x14];
-extern D_80111B50_vine_with_me_Struct D_8010A8A0_parasol_plummet;
-extern s32 D_8010AB50_parasol_plummet;
-extern u8 D_8010AB54_parasol_plummet;
-extern omObjData *D_8010AB60_parasol_plummet[4];
-extern u16 D_8010ABD0_parasol_plummet;
-extern f32 D_8010AC50_parasol_plummet[4];
-extern s16 D_8010AC64_parasol_plummet;
-extern omObjData *D_8010ABCC_parasol_plummet;
-extern u8 D_8010AC66_parasol_plummet;
-extern f32 D_8010AC68_parasol_plummet;
-extern omObjData *D_8010AC6C_parasol_plummet;
-extern s16 D_8010ACF0_parasol_plummet[5];
-extern s16 D_8010ACFA_parasol_plummet;
-extern u8 D_8010ACFC_parasol_plummet[5];
-extern f32 D_8010AB58_parasol_plummet;
-extern s32 D_8010AC60_parasol_plummet;
-extern s16 D_8010ABD8_parasol_plummet[60];
-extern f32 D_8010AC70_parasol_plummet;
+typedef struct {
+    /* 0x00 */ u8 unk00;
+    /* 0x01 */ u8 unk01[5];
+} ParasolPlummetBssAC74;
+
+typedef struct {
+    /* 0x00 */ s16 unk00;
+    /* 0x02 */ s16 unk02[4];
+    /* 0x0A */ s16 unk0A[4];
+    /* 0x12 */ s16 unk12;
+    /* 0x14 */ s16 unk14[4];
+    /* 0x1C */ s16 unk1C;
+    /* 0x1E */ s16 unk1E[4];
+} ParasolPlummetBssACC0;
+
+D_80111B50_vine_with_me_Struct D_8010A8A0_parasol_plummet = {
+    0, 0, 1, 2, 0, 0, 9, 0,
+    { 0.0f, 0.0f, 0.0f, 0.0f },
+    { 0, 0, 0, 0 },
+    180, 900, -1, 210, 60
+};
+s32 D_8010A8C8_parasol_plummet[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+
+s32 D_8010AB50_parasol_plummet BSS;
+u8 D_8010AB54_parasol_plummet BSS;
+f32 D_8010AB58_parasol_plummet BSS;
+u8 D_8010AB5C_parasol_plummet[4] BSS; /* Unreferenced. */
+omObjData *D_8010AB60_parasol_plummet[4] BSS;
+omObjData *D_8010AB70_parasol_plummet[0x12] BSS;
+u8 D_8010ABB8_parasol_plummet[0x14] BSS;
+omObjData *D_8010ABCC_parasol_plummet BSS;
+u16 D_8010ABD0_parasol_plummet BSS;
+u8 D_8010ABD4_parasol_plummet[4] BSS; /* Unreferenced. */
+s16 D_8010ABD8_parasol_plummet[60] BSS;
+f32 D_8010AC50_parasol_plummet[4] BSS;
+s32 D_8010AC60_parasol_plummet BSS;
+s16 D_8010AC64_parasol_plummet BSS;
+u8 D_8010AC66_parasol_plummet BSS;
+f32 D_8010AC68_parasol_plummet BSS;
+omObjData *D_8010AC6C_parasol_plummet BSS;
+f32 D_8010AC70_parasol_plummet BSS;
+ParasolPlummetBssAC74 parasolPlummetBssAC74 BSS;
+u8 D_8010AC7C_parasol_plummet[4] BSS; /* Unreferenced. */
+omObjData *D_8010AC80_parasol_plummet[5] BSS;
+f32 D_8010AC94_parasol_plummet BSS;
+f32 D_8010AC98_parasol_plummet BSS;
+s32 D_8010AC9C_parasol_plummet BSS;
+s16 D_8010ACA0_parasol_plummet[3] BSS;
+s16 D_8010ACA8_parasol_plummet[12] BSS;
+ParasolPlummetBssACC0 parasolPlummetBssACC0 BSS;
+u8 D_8010ACE8_parasol_plummet[8] BSS; /* Unreferenced. */
+s16 D_8010ACF0_parasol_plummet[5] BSS;
+s16 D_8010ACFA_parasol_plummet BSS;
+u8 D_8010ACFC_parasol_plummet[5] BSS;
+
+/* Fields of parasolPlummetBssAC74 and parasolPlummetBssACC0 (aliased in undefined_syms.txt). */
 extern u8 D_8010AC74_parasol_plummet;
 extern u8 D_8010AC75_parasol_plummet[5];
-extern omObjData *D_8010AC80_parasol_plummet[5];
-extern f32 D_8010AC94_parasol_plummet;
-extern f32 D_8010AC98_parasol_plummet;
-extern s32 D_8010AC9C_parasol_plummet;
-extern s16 D_8010ACA0_parasol_plummet[3];
-extern s16 D_8010ACA8_parasol_plummet[12];
 extern s16 D_8010ACC0_parasol_plummet;
 extern s16 D_8010ACC2_parasol_plummet[4];
 extern s16 D_8010ACCA_parasol_plummet[4];
@@ -125,7 +155,6 @@ extern s16 D_8010ACD2_parasol_plummet;
 extern s16 D_8010ACD4_parasol_plummet[4];
 extern s16 D_8010ACDC_parasol_plummet;
 extern s16 D_8010ACDE_parasol_plummet[4];
-extern s32 D_8010A8C8_parasol_plummet[];
 
 void func_80105B94_parasol_plummet(omObjData *object);
 void func_80105E94_parasol_plummet(omObjData *object);

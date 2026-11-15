@@ -241,3 +241,13 @@ D_8010BA30_crazy_cogs = D_8010B9F0_crazy_cogs + 0x40; /* [0].unk_40 */
 D_8010BA32_crazy_cogs = D_8010B9F0_crazy_cogs + 0x42; /* [0].unk_42 */
 D_8010BA34_crazy_cogs = D_8010B9F0_crazy_cogs + 0x44; /* [0].unk_44.x */
 D_8010BA38_crazy_cogs = D_8010B9F0_crazy_cogs + 0x48; /* [0].unk_44.y */
+/* parasol_plummet field aliases: ParasolPlummetBssAC74, ParasolPlummetBssACC0. */
+D_8010AC74_parasol_plummet = parasolPlummetBssAC74;
+D_8010AC75_parasol_plummet = parasolPlummetBssAC74 + 0x1;
+D_8010ACC0_parasol_plummet = parasolPlummetBssACC0;
+D_8010ACC2_parasol_plummet = parasolPlummetBssACC0 + 0x2;
+D_8010ACCA_parasol_plummet = parasolPlummetBssACC0 + 0xA;
+D_8010ACD2_parasol_plummet = parasolPlummetBssACC0 + 0x12;
+D_8010ACD4_parasol_plummet = parasolPlummetBssACC0 + 0x14;
+D_8010ACDC_parasol_plummet = parasolPlummetBssACC0 + 0x1C;
+D_8010ACDE_parasol_plummet = parasolPlummetBssACC0 + 0x1E;

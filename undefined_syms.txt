@@ -355,6 +355,36 @@ D_8010928E_eatsa_pizza = D_80109288_eatsa_pizza + 0x6;
 /* ice_rink_risk: unk04 of the first puck hit entry, referenced by the INCLUDE_ASM function func_80107F58_ice_rink_risk. */
 D_801085B4_ice_rink_risk = D_801085B0_ice_rink_risk + 0x4;
 
+/* pump_pump_away: fields of BSS structs accessed through separate symbols. */
+D_8011175C_pump_pump_away = D_80111758_pump_pump_away + 0x4;
+D_8011175E_pump_pump_away = D_80111758_pump_pump_away + 0x6;
+D_80111760_pump_pump_away = D_80111758_pump_pump_away + 0x8;
+D_80111762_pump_pump_away = D_80111758_pump_pump_away + 0xA;
+D_80111764_pump_pump_away = D_80111758_pump_pump_away + 0xC;
+D_80111788_pump_pump_away = D_80111758_pump_pump_away + 0x30;
+D_80111790_pump_pump_away = D_80111758_pump_pump_away + 0x38;
+D_80111792_pump_pump_away = D_80111758_pump_pump_away + 0x3A;
+D_80111794_pump_pump_away = D_80111758_pump_pump_away + 0x3C;
+D_80111796_pump_pump_away = D_80111758_pump_pump_away + 0x3E;
+D_80111798_pump_pump_away = D_80111758_pump_pump_away + 0x40;
+D_801117BC_pump_pump_away = D_80111758_pump_pump_away + 0x64;
+D_80111990_pump_pump_away = D_80111978_pump_pump_away + 0x18;
+D_8011351C_pump_pump_away = D_80113518_pump_pump_away + 0x4;
+D_80113520_pump_pump_away = D_80113518_pump_pump_away + 0x8;
+D_80113534_pump_pump_away = D_80113530_pump_pump_away + 0x4;
+D_80113536_pump_pump_away = D_80113530_pump_pump_away + 0x6;
+D_80113538_pump_pump_away = D_80113530_pump_pump_away + 0x8;
+D_8011353A_pump_pump_away = D_80113530_pump_pump_away + 0xA;
+D_8011353C_pump_pump_away = D_80113530_pump_pump_away + 0xC;
+D_80113540_pump_pump_away = D_80113530_pump_pump_away + 0x10;
+D_80113544_pump_pump_away = D_80113530_pump_pump_away + 0x14;
+D_801135B4_pump_pump_away = D_801135B0_pump_pump_away + 0x4;
+D_801135B8_pump_pump_away = D_801135B0_pump_pump_away + 0x8;
+D_801135BE_pump_pump_away = D_801135B0_pump_pump_away + 0xE;
+D_801135CC_pump_pump_away = D_801135B0_pump_pump_away + 0x1C;
+D_801135DC_pump_pump_away = D_801135D8_pump_pump_away + 0x4;
+D_801135E0_pump_pump_away = D_801135D8_pump_pump_away + 0x8;
+
 /* picking_panic: pickingPanicBssEF14 fields. */
 D_8010EF14_picking_panic = pickingPanicBssEF14;
 D_8010EF15_picking_panic = pickingPanicBssEF14 + 0x1;

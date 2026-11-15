@@ -184,96 +184,181 @@ typedef struct PumpPumpAwaySkyColor {
 
 extern u8 D_800D2008_main;
 extern u8 D_800D6A90_main;
-extern PumpPumpAwaySkyColor D_80110EB8_pump_pump_away[];
 extern s32 D_800A178C_main[][6];
-extern Vec D_80110E70_pump_pump_away[4];
-extern Vec D_80110EA0_pump_pump_away[2];
-extern f32 D_80110F9C_pump_pump_away[];
-extern Vec D_80110F6C_pump_pump_away[4];
-extern s32 D_80113528_pump_pump_away;
-extern s32 D_8011352C_pump_pump_away;
-extern Vec D_80110FC4_pump_pump_away[];
-extern u16 D_80110FDC_pump_pump_away[2][2];
-extern u16 D_80110FE4_pump_pump_away[8][2];
-extern Vec D_80111004_pump_pump_away[];
-extern f32 D_8011101C_pump_pump_away[];
-extern f32 D_8011102C_pump_pump_away[];
-extern f32 D_8011103C_pump_pump_away[];
-extern s32 D_80111970_pump_pump_away;
-extern f32 D_8011109C_pump_pump_away[];
-extern s32 D_801133F8_pump_pump_away;
-extern u16 D_80111114_pump_pump_away;
-extern s32 D_80111118_pump_pump_away;
-extern s16 D_80111108_pump_pump_away;
-extern s16 D_8011110A_pump_pump_away;
-extern s16 D_8011110C_pump_pump_away;
-extern s16 D_8011110E_pump_pump_away;
-extern s32 D_80111110_pump_pump_away;
-extern PumpPumpAwayCamera D_8011111C_pump_pump_away[];
-extern u8 D_801116E8_pump_pump_away;
-extern s16 D_801116EA_pump_pump_away;
-extern s16 D_801116EC_pump_pump_away;
-extern s16 D_801116EE_pump_pump_away;
-extern s16 D_801116F0_pump_pump_away;
-extern s16 D_801116F2_pump_pump_away;
-extern s32 D_801116F4_pump_pump_away;
-extern s32 D_801116F8_pump_pump_away;
-extern s32 D_801116FC_pump_pump_away;
-extern s32 D_80111700_pump_pump_away;
-extern s32 D_80111704_pump_pump_away;
-extern s32 D_80111708_pump_pump_away;
-extern UnkPumpPumpAwaySpray D_80111710_pump_pump_away[6];
-extern UnkPumpPumpAwayNode D_80111758_pump_pump_away[2];
-extern s32 D_8011175C_pump_pump_away;
-extern s16 D_8011175E_pump_pump_away;
-extern s32 D_80111760_pump_pump_away;
-extern s16 D_80111762_pump_pump_away;
-extern HuSprite_Unk84_Struct *D_80111764_pump_pump_away;
-extern s32 D_80111788_pump_pump_away;
-extern s32 D_80111790_pump_pump_away;
-extern s16 D_80111792_pump_pump_away;
-extern s32 D_80111794_pump_pump_away;
-extern s16 D_80111796_pump_pump_away;
-extern HuSprite_Unk84_Struct *D_80111798_pump_pump_away;
-extern s32 D_801117BC_pump_pump_away;
-extern UnkPumpPumpAwayHose D_801117C0_pump_pump_away[2];
-extern UnkPumpPumpAwayParticle D_801117E0_pump_pump_away[20];
-extern UnkPumpPumpAwayNozzle D_80111920_pump_pump_away[4];
-extern UnkPumpPumpAwayPlayer D_80111978_pump_pump_away[2];
-extern s32 D_801119E4_pump_pump_away;
-extern f32 D_80111990_pump_pump_away;
-extern UnkPumpPumpAwaySpray D_801119E8_pump_pump_away[6];
-extern UnkPumpPumpAwayEntry D_80111A30_pump_pump_away[50];
-extern UnkPumpPumpAwayState D_80113400_pump_pump_away[3];
-extern PumpPumpAwayMilestone D_80113418_pump_pump_away[2];
-extern UnkPumpPumpAwayJet D_80113438_pump_pump_away[4];
-extern PumpPumpAwayAngleState D_80113518_pump_pump_away;
-extern s32 D_8011351C_pump_pump_away;
-extern f32 D_80113520_pump_pump_away;
-extern omObjData *D_80113524_pump_pump_away;
-extern PumpPumpAwayFade D_80113530_pump_pump_away;
-extern s32 D_80113534_pump_pump_away;
-extern s16 D_80113536_pump_pump_away;
-extern s32 D_80113538_pump_pump_away;
-extern s16 D_8011353A_pump_pump_away;
-extern HuSprite_Unk84_Struct *D_8011353C_pump_pump_away;
-extern s32 D_80113540_pump_pump_away;
-extern s32 D_80113544_pump_pump_away;
-extern UnkPumpPumpAway D_80113570_pump_pump_away[2];
-extern UnkPumpPumpAwayRecord D_801135B0_pump_pump_away;
-extern s16 D_801135B4_pump_pump_away;
-extern s16 D_801135B8_pump_pump_away;
-extern s16 D_801135BE_pump_pump_away;
-extern u16 D_801135CC_pump_pump_away;
-extern PumpPumpAwayRecordMarker D_801135D8_pump_pump_away;
-extern u16 D_801135DC_pump_pump_away;
-extern s32 D_801135E0_pump_pump_away;
-extern PumpPumpAwayMovingEffect D_801135E8_pump_pump_away[4];
-extern u16 D_80113548_pump_pump_away[2];
-extern f32 D_801116E0_pump_pump_away;
-extern f32 D_801116E4_pump_pump_away;
-extern s32 D_801135E4_pump_pump_away;
 extern const s16 D_801116D8_pump_pump_away[];
+
+Vec D_80110E70_pump_pump_away[] = {
+    { -295.0f, 10.0f, 600.0f },
+    { -135.0f, 10.0f, 600.0f },
+    { 135.0f, 10.0f, 600.0f },
+    { 295.0f, 10.0f, 600.0f }
+};
+
+Vec D_80110EA0_pump_pump_away[] = {
+    { -215.0f, 200.0f, 0.0f },
+    { 215.0f, 200.0f, 0.0f }
+};
+
+PumpPumpAwaySkyColor D_80110EB8_pump_pump_away[15] = {
+    { 200, 230, 255 },
+    { 20, 150, 255 },
+    { 135, 225, 255 },
+    { 65, 170, 250 },
+    { 20, 100, 220 },
+    { 10, 60, 170 },
+    { 10, 40, 130 },
+    { 10, 30, 110 },
+    { 15, 25, 100 },
+    { 15, 25, 90 },
+    { 15, 25, 90 },
+    { 15, 25, 90 },
+    { 15, 25, 90 },
+    { 15, 25, 90 },
+    { 15, 25, 90 }
+};
+
+Vec D_80110F6C_pump_pump_away[] = {
+    { -295.0f, 10.0f, 600.0f },
+    { -135.0f, 10.0f, 600.0f },
+    { 135.0f, 10.0f, 600.0f },
+    { 295.0f, 10.0f, 600.0f }
+};
+
+f32 D_80110F9C_pump_pump_away[] = {
+    0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f, 1.1f, 1.2f,
+    1.3f, 1.4f
+};
+
+Vec D_80110FC4_pump_pump_away[] = {
+    { -215.0f, 0.0f, 0.0f },
+    { 215.0f, 0.0f, 0.0f }
+};
+
+u16 D_80110FDC_pump_pump_away[][2] = {
+    { 23, 208 },
+    { 238, 208 }
+};
+
+u16 D_80110FE4_pump_pump_away[][2] = {
+    { 29, 211 },
+    { 29, 211 },
+    { 38, 211 },
+    { 47, 211 },
+    { 244, 211 },
+    { 244, 211 },
+    { 253, 211 },
+    { 262, 211 }
+};
+
+Vec D_80111004_pump_pump_away[] = {
+    { -215.0f, 0.0f, 0.0f },
+    { 215.0f, 0.0f, 0.0f }
+};
+
+f32 D_8011101C_pump_pump_away[] = { 1500.0f, 1750.0f, 2250.0f, 2500.0f };
+
+f32 D_8011102C_pump_pump_away[] = { 2750.0f, 3250.0f, 3500.0f, 3750.0f };
+
+f32 D_8011103C_pump_pump_away[] = {
+    4200.0f, 4400.0f, 4600.0f, 4800.0f, 5200.0f, 5400.0f, 5600.0f, 5800.0f,
+    6200.0f, 6400.0f, 6600.0f, 6800.0f, 7200.0f, 7400.0f, 7600.0f, 7800.0f,
+    8200.0f, 8400.0f, 8600.0f, 8800.0f, 9200.0f, 9400.0f, 9600.0f, 9800.0f
+};
+
+f32 D_8011109C_pump_pump_away[] = {
+    1250.0f, 1500.0f, 1750.0f, 2250.0f, 2500.0f, 2750.0f, 3250.0f, 3500.0f,
+    3750.0f, 4250.0f, 4500.0f, 4750.0f, 5250.0f, 5500.0f, 5750.0f, 6250.0f,
+    6500.0f, 6750.0f, 7250.0f, 7500.0f, 7750.0f, 8250.0f, 8500.0f, 8750.0f,
+    9250.0f, 9500.0f, 9750.0f
+};
+s16 D_80111108_pump_pump_away = 0;
+s16 D_8011110A_pump_pump_away = 0;
+s16 D_8011110C_pump_pump_away = 18;
+s16 D_8011110E_pump_pump_away = 0;
+s32 D_80111110_pump_pump_away = 0;
+u16 D_80111114_pump_pump_away = 0;
+s32 D_80111118_pump_pump_away = 0;
+
+PumpPumpAwayCamera D_8011111C_pump_pump_away[1] = {
+    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 20.0f },
+};
+
+f32 D_801116E0_pump_pump_away BSS;
+f32 D_801116E4_pump_pump_away BSS;
+u8 D_801116E8_pump_pump_away BSS;
+s16 D_801116EA_pump_pump_away BSS;
+s16 D_801116EC_pump_pump_away BSS;
+s16 D_801116EE_pump_pump_away BSS;
+s16 D_801116F0_pump_pump_away BSS;
+s16 D_801116F2_pump_pump_away BSS;
+s32 D_801116F4_pump_pump_away BSS;
+s32 D_801116F8_pump_pump_away BSS;
+s32 D_801116FC_pump_pump_away BSS;
+s32 D_80111700_pump_pump_away BSS;
+s32 D_80111704_pump_pump_away BSS;
+s32 D_80111708_pump_pump_away BSS;
+u8 D_8011170C_pump_pump_away[4] BSS; /* Unreferenced. */
+UnkPumpPumpAwaySpray D_80111710_pump_pump_away[6] BSS;
+UnkPumpPumpAwayNode D_80111758_pump_pump_away[2] BSS;
+UnkPumpPumpAwayHose D_801117C0_pump_pump_away[2] BSS;
+UnkPumpPumpAwayParticle D_801117E0_pump_pump_away[20] BSS;
+UnkPumpPumpAwayNozzle D_80111920_pump_pump_away[4] BSS;
+s32 D_80111970_pump_pump_away BSS;
+u8 D_80111974_pump_pump_away[4] BSS; /* Unreferenced. */
+UnkPumpPumpAwayPlayer D_80111978_pump_pump_away[2] BSS;
+u8 D_801119E0_pump_pump_away[4] BSS; /* Unreferenced. */
+s32 D_801119E4_pump_pump_away BSS;
+UnkPumpPumpAwaySpray D_801119E8_pump_pump_away[6] BSS;
+UnkPumpPumpAwayEntry D_80111A30_pump_pump_away[50] BSS;
+s32 D_801133F8_pump_pump_away BSS;
+u8 D_801133FC_pump_pump_away[4] BSS; /* Unreferenced. */
+UnkPumpPumpAwayState D_80113400_pump_pump_away[3] BSS;
+PumpPumpAwayMilestone D_80113418_pump_pump_away[2] BSS;
+UnkPumpPumpAwayJet D_80113438_pump_pump_away[4] BSS;
+PumpPumpAwayAngleState D_80113518_pump_pump_away BSS;
+omObjData *D_80113524_pump_pump_away BSS;
+s32 D_80113528_pump_pump_away BSS;
+s32 D_8011352C_pump_pump_away BSS;
+PumpPumpAwayFade D_80113530_pump_pump_away BSS;
+u16 D_80113548_pump_pump_away[2] BSS;
+u8 D_8011354C_pump_pump_away[0x24] BSS; /* Unreferenced. */
+UnkPumpPumpAway D_80113570_pump_pump_away[2] BSS;
+u8 D_80113590_pump_pump_away[0x20] BSS; /* Unreferenced. */
+UnkPumpPumpAwayRecord D_801135B0_pump_pump_away BSS;
+PumpPumpAwayRecordMarker D_801135D8_pump_pump_away BSS;
+s32 D_801135E4_pump_pump_away BSS;
+PumpPumpAwayMovingEffect D_801135E8_pump_pump_away[4] BSS;
+
+// Fields of the structs above, accessed through separate symbols
+// (see undefined_syms.txt).
+extern s32 D_8011175C_pump_pump_away; // D_80111758_pump_pump_away[0].unk_04
+extern s16 D_8011175E_pump_pump_away; // D_80111758_pump_pump_away[0].unk_04 (low half)
+extern s32 D_80111760_pump_pump_away; // D_80111758_pump_pump_away[0].unk_08
+extern s16 D_80111762_pump_pump_away; // D_80111758_pump_pump_away[0].unk_08 (low half)
+extern HuSprite_Unk84_Struct *D_80111764_pump_pump_away; // D_80111758_pump_pump_away[0].unk_0C
+extern s32 D_80111788_pump_pump_away; // D_80111758_pump_pump_away[0].unk_30
+extern s32 D_80111790_pump_pump_away; // D_80111758_pump_pump_away[1].unk_04
+extern s16 D_80111792_pump_pump_away; // D_80111758_pump_pump_away[1].unk_04 (low half)
+extern s32 D_80111794_pump_pump_away; // D_80111758_pump_pump_away[1].unk_08
+extern s16 D_80111796_pump_pump_away; // D_80111758_pump_pump_away[1].unk_08 (low half)
+extern HuSprite_Unk84_Struct *D_80111798_pump_pump_away; // D_80111758_pump_pump_away[1].unk_0C
+extern s32 D_801117BC_pump_pump_away; // D_80111758_pump_pump_away[1].unk_30
+extern f32 D_80111990_pump_pump_away; // D_80111978_pump_pump_away[0].unk_18
+extern s32 D_8011351C_pump_pump_away; // D_80113518_pump_pump_away.player
+extern f32 D_80113520_pump_pump_away; // D_80113518_pump_pump_away.angle
+extern s32 D_80113534_pump_pump_away; // D_80113530_pump_pump_away.spriteId
+extern s16 D_80113536_pump_pump_away; // D_80113530_pump_pump_away.spriteId (low half)
+extern s32 D_80113538_pump_pump_away; // D_80113530_pump_pump_away.modelId
+extern s16 D_8011353A_pump_pump_away; // D_80113530_pump_pump_away.modelId (low half)
+extern HuSprite_Unk84_Struct *D_8011353C_pump_pump_away; // D_80113530_pump_pump_away.sprite
+extern s32 D_80113540_pump_pump_away; // D_80113530_pump_pump_away.alpha
+extern s32 D_80113544_pump_pump_away; // D_80113530_pump_pump_away.timer
+extern s16 D_801135B4_pump_pump_away; // D_801135B0_pump_pump_away.spriteData
+extern s16 D_801135B8_pump_pump_away; // D_801135B0_pump_pump_away.group
+extern s16 D_801135BE_pump_pump_away; // D_801135B0_pump_pump_away.digits[0] (low half)
+extern u16 D_801135CC_pump_pump_away; // D_801135B0_pump_pump_away.record
+extern u16 D_801135DC_pump_pump_away; // D_801135D8_pump_pump_away.record
+extern s32 D_801135E0_pump_pump_away; // D_801135D8_pump_pump_away.hidden
 
 void func_80106A6C_pump_pump_away(omObjData *obj);
 void func_80105EE4_pump_pump_away(Vec *position, Vec *target, Vec *result);
@@ -3885,4 +3970,4 @@ void func_80110D28_pump_pump_away(void) {
     func_80105C54_pump_pump_away();
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_0D_pump_pump_away/16F670", D_801116D8_pump_pump_away);
+const s16 D_801116D8_pump_pump_away[] = { 0x8260, 0x8261, 0x8262, 0 };

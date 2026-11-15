@@ -148,63 +148,116 @@ typedef union LogJamWorkBytes { // packs the top byte of each work word
     } bytes;
 } LogJamWorkBytes;
 
-extern f32 D_8010E010_log_jam[8];
-extern s32 D_8010E030_log_jam[9];
-extern UnkLogJamSprites *D_8010E5D0_log_jam;
-extern LogJamPlayerWork *D_8010E5C4_log_jam;
-extern LogJamLogWork *D_8010E5B8_log_jam;
-extern omObjData *D_8010E5C0_log_jam;
-extern s16 *D_8010E5C8_log_jam;
-extern s32 D_8010DF50_log_jam[8];
-extern s32 D_8010DF70_log_jam[8];
-extern s32 D_8010DF90_log_jam;
-extern s32 D_8010E004_log_jam[3];
-extern s32 D_8010E594_log_jam;
-extern Vec D_8010DE90_log_jam[4];
-extern Vec D_8010DEC0_log_jam[4];
-extern Vec D_8010DEF0_log_jam[4];
-extern f32 D_8010DF20_log_jam[4];
-extern Vec D_8010DF30_log_jam[2];
-extern LogJamColor D_8010DF48_log_jam;
-extern LogJamColor D_8010DF4C_log_jam;
-extern s32 D_8010DF94_log_jam[4];
-extern s16 D_8010DFA4_log_jam[4][2][2];
-extern s16 D_8010DFC4_log_jam[4];
-extern s16 D_8010DFCC_log_jam[4];
-extern s32 D_8010DFD4_log_jam[8];
-extern s32 D_8010DFF4_log_jam[4];
-extern omObjData *D_8010E590_log_jam;
-extern s32 D_8010E598_log_jam;
-extern s32 D_8010E59C_log_jam;
-extern s32 D_8010E5A0_log_jam;
-extern s32 D_8010E5A4_log_jam;
-extern s32 D_8010E5A8_log_jam;
-extern s16 D_8010E5BC_log_jam;
-extern LogJamTeam *D_8010E5AC_log_jam;
-extern omObjData *D_8010E5B0_log_jam[2];
-extern D_80111B50_vine_with_me_Struct D_8010E640_log_jam;
-extern Vec2f D_8010E054_log_jam[5];
-extern f32 D_8010E07C_log_jam[5];
-extern s16 D_8010E090_log_jam[2];
-extern s32 D_8010E094_log_jam;
-extern s32 D_8010E098_log_jam;
-extern s32 D_8010E09C_log_jam;
-extern s16 *D_8010E5CC_log_jam;
-extern LogJamCloud *D_8010E5D4_log_jam;
-extern omObjData *D_8010E5D8_log_jam;
-extern LogJamEffect *D_8010E5DC_log_jam;
-extern omObjData *D_8010E5E0_log_jam;
-extern LogJamEffect *D_8010E5E4_log_jam;
-extern LogJamCamera D_8010E5E8_log_jam[2]; // target, origin
-extern s32 D_8010E630_log_jam;
-extern s32 D_8010E634_log_jam;
-extern s32 D_8010E638_log_jam;
+Vec D_8010DE90_log_jam[4] = { { -233.0f, 0.0f, 70.0f }, { -131.0f, 0.0f, -5.0f }, { 131.0f, 0.0f, -5.0f }, { 233.0f, 0.0f, 70.0f } };
+Vec D_8010DEC0_log_jam[4] = { { -170.0f, 0.0f, 40.0f }, { -128.0f, 0.0f, 20.0f }, { 128.0f, 0.0f, 20.0f }, { 170.0f, 0.0f, 40.0f } };
+Vec D_8010DEF0_log_jam[4] = { { -70.0f, 0.0f, 200.0f }, { -190.0f, 0.0f, 250.0f }, { 190.0f, 0.0f, 250.0f }, { 70.0f, 0.0f, 200.0f } };
+f32 D_8010DF20_log_jam[4] = { 45.0f, 15.0f, -15.0f, -45.0f };
+Vec D_8010DF30_log_jam[2] = { { -100.0f, 50.0f, 115.0f }, { 100.0f, 50.0f, 115.0f } };
+LogJamColor D_8010DF48_log_jam = { 0xE9DDA180 };
+LogJamColor D_8010DF4C_log_jam = { 0xFFFFFFFF };
+s32 D_8010DF50_log_jam[8] = { 0x000200A5, 0x000300A5, 0x000700A5, 0x000400A5, 0x000500A5, 0x000600A5, 0x000800A5, 0x0009001C };
+s32 D_8010DF70_log_jam[8] = { 0x000200A6, 0x000300A6, 0x000700A6, 0x000400A6, 0x000500A6, 0x000600A6, 0x000800A6, 0x0009001D };
+s32 D_8010DF90_log_jam = 0;
+s32 D_8010DF94_log_jam[4] = { 0, 1, 2, 3 };
+s16 D_8010DFA4_log_jam[4][2][2] = { { { 0, 1 }, { 2, 3 } }, { { 3, 0 }, { 1, 2 } }, { { 2, 3 }, { 0, 1 } }, { { 1, 2 }, { 3, 0 } } };
+s16 D_8010DFC4_log_jam[4] = { 0, 1, 1, 0 };
+s16 D_8010DFCC_log_jam[4] = { 18, 19, 21, 20 };
+s32 D_8010DFD4_log_jam[8] = { 0x00020000, 0x00030000, 0x00070000, 0x00040000, 0x00050000, 0x00060000, 0x00080000, 0x00090000 };
+s32 D_8010DFF4_log_jam[4] = { 0x2F, 0x30, 0x36, 0x37 };
+s32 D_8010E004_log_jam[3] = { 3, 4, 5 };
+f32 D_8010E010_log_jam[8] = { 200.0f, 200.0f, 200.0f, 200.0f, 200.0f, 250.0f, 200.0f, 200.0f };
+s32 D_8010E030_log_jam[9] = { 0x00340003, 0x00340004, 0x00340005, 0x00340006, 0x00340007, 0x00340008, 0x00340009, 0x0034000A, 0x0034000B };
+Vec2f D_8010E054_log_jam[5] = { { 120.0f, 30.0f }, { 360.0f, 45.0f }, { 0.0f, 52.0f }, { 240.0f, 60.0f }, { 480.0f, 75.0f } };
+f32 D_8010E07C_log_jam[5] = { 0.7f, 0.6f, 0.55f, 0.47f, 0.4f };
+s16 D_8010E090_log_jam[2] = { 38, 282 };
+s32 D_8010E094_log_jam = 0;
+s32 D_8010E098_log_jam = 0;
+s32 D_8010E09C_log_jam = 0;
+
+Gfx D_8010E0A0_log_jam[] = {
+    gsSPSegment(0x00, 0x00000000),
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsDPPipelineMode(G_PM_1PRIMITIVE),
+    gsDPSetTextureLOD(G_TL_TILE),
+    gsDPSetTextureLUT(G_TT_NONE),
+    gsDPSetTextureDetail(G_TD_CLAMP),
+    gsDPSetTexturePersp(G_TP_NONE),
+    gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, 0, 0),
+    gsDPSetTileSize(1, 0, 0, 0, 0),
+    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_4b, 0, 0x0000, G_TX_RENDERTILE, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD),
+    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_4b, 0, 0x0000, 1, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD,
+                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD),
+    gsDPSetTextureFilter(G_TF_BILERP),
+    gsDPSetTextureConvert(G_TC_FILT),
+    gsDPSetCombineMode(G_CC_SHADE, G_CC_SHADE),
+    gsDPSetCombineKey(G_CK_NONE),
+    gsDPSetAlphaCompare(G_AC_NONE),
+    gsDPSetDepthSource(G_ZS_PIXEL),
+    gsDPSetRenderMode(G_RM_OPA_SURF, G_RM_OPA_SURF2),
+    gsDPNoOp(),
+    gsDPSetColorDither(G_CD_DISABLE),
+    gsDPPipeSync(),
+    gsSPEndDisplayList(),
+};
+
+Gfx D_8010E158_log_jam[] = {
+    gsSPClearGeometryMode(0xFFFFFFFF),
+    gsSPTexture(0, 0, 0, G_TX_RENDERTILE, G_OFF),
+    gsSPSetGeometryMode(G_SHADE | G_SHADING_SMOOTH),
+    gsSPEndDisplayList(),
+};
+
+Gfx D_8010E178_log_jam[] = {
+    gsSPDisplayList(D_8010E158_log_jam),
+    gsSPDisplayList(D_8010E0A0_log_jam),
+    gsSPEndDisplayList(),
+};
+
+Gfx D_8010E190_log_jam[] = {
+    gsDPPipeSync(),
+    gsSPDisplayList(D_8010E178_log_jam),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsSPSetGeometryMode(G_ZBUFFER | G_CULL_BACK | G_LIGHTING | G_SHADING_SMOOTH),
+    gsDPSetBlendColor(0x00, 0x00, 0x00, 0x00),
+    gsDPSetPrimColor(0, 0, 0x00, 0x00, 0x00, 0xFF),
+    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
+    gsSPEndDisplayList(),
+};
+
+omObjData *D_8010E590_log_jam BSS;
+s32 D_8010E594_log_jam BSS;
+s32 D_8010E598_log_jam BSS;
+s32 D_8010E59C_log_jam BSS;
+s32 D_8010E5A0_log_jam BSS;
+s32 D_8010E5A4_log_jam BSS;
+s32 D_8010E5A8_log_jam BSS;
+LogJamTeam *D_8010E5AC_log_jam BSS;
+omObjData *D_8010E5B0_log_jam[2] BSS;
+LogJamLogWork *D_8010E5B8_log_jam BSS;
+s16 D_8010E5BC_log_jam BSS;
+omObjData *D_8010E5C0_log_jam BSS;
+LogJamPlayerWork *D_8010E5C4_log_jam BSS;
+s16 *D_8010E5C8_log_jam BSS;
+s16 *D_8010E5CC_log_jam BSS;
+UnkLogJamSprites *D_8010E5D0_log_jam BSS;
+LogJamCloud *D_8010E5D4_log_jam BSS;
+omObjData *D_8010E5D8_log_jam BSS;
+LogJamEffect *D_8010E5DC_log_jam BSS;
+omObjData *D_8010E5E0_log_jam BSS;
+LogJamEffect *D_8010E5E4_log_jam BSS;
+LogJamCamera D_8010E5E8_log_jam[2] BSS; // target, origin
+s32 D_8010E630_log_jam BSS;
+s32 D_8010E634_log_jam BSS;
+s32 D_8010E638_log_jam BSS;
+u8 D_8010E63C_log_jam[4] BSS; /* Unreferenced. */
+D_80111B50_vine_with_me_Struct D_8010E640_log_jam BSS;
 extern s32 D_800A178C_main[][6];
 extern s16 D_800CD1B0_main;
 extern u8 D_800D6A90_main;
 extern s16 D_800CDD6A_main;
 extern u8 D_800D2008_main;
-extern Gfx D_8010E190_log_jam[];
 extern s16 *D_800D04B4_main;
 extern HuMtx4F *D_800D1358_main;
 extern s16 D_800D138A_main;

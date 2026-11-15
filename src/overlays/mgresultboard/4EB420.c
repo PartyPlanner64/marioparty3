@@ -7,7 +7,6 @@ extern PlayerResult D_8010B048_mgresultboard[4];
 extern omObjData *D_8010AFE0_mgresultboard;
 extern void (*D_8010AFE4_mgresultboard)(omObjData *);
 extern s32 D_8010AE80_mgresultboard[8];
-extern Vec D_8010AC60_mgresultboard[4];
 extern s32 D_8010AAF8_mgresultboard;
 extern f32 D_8010AAF4_mgresultboard;
 
@@ -17,6 +16,13 @@ void func_8010A358_mgresultboard(void);
 void func_8010A3E4_mgresultboard(omObjData *);
 s32 func_8010A454_mgresultboard(omObjData *, s8, s8);
 void func_8010A4A0_mgresultboard(omObjData *);
+
+Vec D_8010AC60_mgresultboard[4] = {
+    { -142.5f, 90.0f, 0.0f },
+    { -142.5f, 30.0f, 0.0f },
+    { -142.5f, -30.0f, 0.0f },
+    { -142.5f, -90.0f, 0.0f }
+};
 
 void func_8010A000_mgresultboard(void) {
     omObjData *obj;

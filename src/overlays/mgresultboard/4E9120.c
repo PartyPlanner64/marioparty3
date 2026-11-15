@@ -1,7 +1,7 @@
 #include "common.h"
 #include "overlays/mgresultboard.h"
 
-extern UnkTemp D_8010AEA8_mgresultboard[5][5];
+extern UnkTemp D_8010AEA8_mgresultboard[4][5];
 extern UnkTemp D_8010AFE8_mgresultboard[];
 extern PlayerResult D_8010B048_mgresultboard[4];
 extern s32 D_8010ADB0_mgresultboard[8];
@@ -9,14 +9,10 @@ extern f32 D_8010AAF4_mgresultboard;
 extern s32 D_8010AAF8_mgresultboard;
 extern omObjData *D_8010AFA8_mgresultboard;
 extern void (*D_8010AFAC_mgresultboard)(omObjData *);
-extern Vec D_8010AB40_mgresultboard[4];
-extern u8 D_8010AD28_mgresultboard[4][3];
 extern omObjData *D_8010AEA0_mgresultboard;
 extern void (*D_8010AEA4_mgresultboard)(omObjData *);
 extern s32 D_8010ADD0_mgresultboard[40];
 extern s32 D_8010AE70_mgresultboard[2];
-extern Vec D_8010AB70_mgresultboard[8];
-extern Vec D_8010ABD0_mgresultboard[12];
 
 void func_801080C4_mgresultboard(void);
 void func_80108150_mgresultboard(omObjData *);
@@ -32,6 +28,50 @@ void func_80109144_mgresultboard(void);
 s32 func_80109744_mgresultboard(omObjData *, s8, s16);
 s32 func_80109DAC_mgresultboard(omObjData *, s8, s16);
 void func_80109F30_mgresultboard(s16, s16, s16);
+
+Vec D_8010AB40_mgresultboard[4] = {
+    { -84.0f, 90.0f, 0.0f },
+    { -84.0f, 30.0f, 0.0f },
+    { -84.0f, -30.0f, 0.0f },
+    { -84.0f, -90.0f, 0.0f }
+};
+
+Vec D_8010AB70_mgresultboard[8] = {
+    { 16.0f, 90.0f, 0.0f },
+    { 36.0f, 90.0f, 0.0f },
+    { 16.0f, 30.0f, 0.0f },
+    { 36.0f, 30.0f, 0.0f },
+    { 16.0f, -30.0f, 0.0f },
+    { 36.0f, -30.0f, 0.0f },
+    { 16.0f, -90.0f, 0.0f },
+    { 36.0f, -90.0f, 0.0f }
+};
+
+Vec D_8010ABD0_mgresultboard[12] = {
+    { 121.0f, 90.0f, 0.0f },
+    { 141.0f, 90.0f, 0.0f },
+    { 161.0f, 90.0f, 0.0f },
+    { 121.0f, 30.0f, 0.0f },
+    { 141.0f, 30.0f, 0.0f },
+    { 161.0f, 30.0f, 0.0f },
+    { 121.0f, -30.0f, 0.0f },
+    { 141.0f, -30.0f, 0.0f },
+    { 161.0f, -30.0f, 0.0f },
+    { 121.0f, -90.0f, 0.0f },
+    { 141.0f, -90.0f, 0.0f },
+    { 161.0f, -90.0f, 0.0f }
+};
+
+const u8 D_8010AD28_mgresultboard[8][3] = {
+    { 0, 1, 2 },
+    { 3, 4, 5 },
+    { 6, 7, 8 },
+    { 9, 10, 11 },
+    { 12, 13, 14 },
+    { 15, 16, 17 },
+    { 18, 19, 20 },
+    { 21, 22, 23 }
+};
 
 void func_80107D00_mgresultboard(void) {
     omObjData *obj;
@@ -65,11 +105,11 @@ void func_80107D00_mgresultboard(void) {
         if (i < 4) {
             Hu3DMotionTimeSet(obj->model[i + 1], 40.0f);
             Hu3DAnimBankSet(D_8010ADB0_mgresultboard[i],
-                               D_8010AD28_mgresultboard[D_8010B048_mgresultboard[i].unk_02][D_8010B048_mgresultboard[i].unk_03]);
+                            D_8010AD28_mgresultboard[D_8010B048_mgresultboard[i].unk_02][D_8010B048_mgresultboard[i].unk_03]);
         } else {
             Hu3DMotionTimeSet(obj->model[i + 1], 20.0f);
             Hu3DAnimBankSet(D_8010ADB0_mgresultboard[i],
-                               D_8010AD28_mgresultboard[D_8010B048_mgresultboard[rand8() & 3].unk_02][rand8() % 3]);
+                            D_8010AD28_mgresultboard[D_8010B048_mgresultboard[rand8() & 3].unk_02][rand8() % 3]);
         }
     }
     HuMemMemoryFreePerm(modelData);
@@ -311,7 +351,7 @@ void func_80108C60_mgresultboard(omObjData *obj) {
                     if (D_8010AEA8_mgresultboard[i][j].unk_04 >= 0) {
                         if (time >= maxTime) {
                             Hu3DAnimBankSet(D_8010ADD0_mgresultboard[nextModel],
-                                               D_8010AEA8_mgresultboard[i][j].unk_04);
+                                            D_8010AEA8_mgresultboard[i][j].unk_04);
                             D_8010AEA8_mgresultboard[i][j].unk_02 = D_8010AEA8_mgresultboard[i][j].unk_04;
                             D_8010AEA8_mgresultboard[i][j].unk_04 = -1;
                             if (curModel >= 0) {
@@ -346,7 +386,7 @@ void func_80108C60_mgresultboard(omObjData *obj) {
                         }
                         if (curModel >= 0) {
                             Hu3DAnimBankSet(D_8010ADD0_mgresultboard[curModel],
-                                               D_8010AEA8_mgresultboard[i][j].unk_02);
+                                            D_8010AEA8_mgresultboard[i][j].unk_02);
                             Hu3DMotionTimeSet(obj->model[curModel + 1], maxTime);
                             func_8001C814_main(obj->model[curModel + 1], 1, 1);
                         }

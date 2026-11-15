@@ -4,7 +4,6 @@
 
 extern PlayerResult D_8010B018_mgresultboard[4];
 extern PlayerResult D_8010B048_mgresultboard[4];
-extern s8 D_8010AAFC_mgresultboard;
 
 void func_8010705C_mgresultboard(Gfx **, s32, s32);
 void func_80107B40_mgresultboard(void);
@@ -23,7 +22,7 @@ void func_800E6630_shared_board(u32);
 void MBBackCreate(s32, s32);
 void func_80107024_mgresultboard(void);
 void func_8010705C_mgresultboard(Gfx **, s32, s32);
-extern s32 D_8010AD0C_mgresultboard[];
+extern const s32 D_8010AD0C_mgresultboard[];
 void MBBackClose(void);
 void MBBackKill(void);
 s32 func_80106A80_mgresultboard(s8);
@@ -46,19 +45,21 @@ extern Unk D_8010AEA0_mgresultboard; // unknown size
 extern omObjData *D_8010AF98_mgresultboard;
 extern omObjData *D_8010AFA0_mgresultboard;
 extern omObjData *D_8010AFA8_mgresultboard;
-extern u32 D_8010AAF0_mgresultboard;
-extern f32 D_8010AAF4_mgresultboard;
-extern s32 D_8010AAF8_mgresultboard;
 extern s32 D_8010AD90_mgresultboard;
 extern s8 D_8010AD94_mgresultboard;
 s32 func_8010A864_mgresultboard(omObjData *, s8, s8); /* extern */
 extern omObjData *D_8010AFE0_mgresultboard;
-extern s32 D_8010AB00_mgresultboard[3];
-extern s32 D_8010AB0C_mgresultboard;
 extern s16 D_8010AD96_mgresultboard[3];
-extern u8 D_8010AD24_mgresultboard[];
+extern const u8 D_8010AD24_mgresultboard[];
 
 // updates mg star coins on results scene load
+u32 D_8010AAF0_mgresultboard = 0;
+f32 D_8010AAF4_mgresultboard = 1.0f;
+s32 D_8010AAF8_mgresultboard = 0;
+s8 D_8010AAFC_mgresultboard = 0;
+s32 D_8010AB00_mgresultboard[3] = { 0, 0, 0 };
+s32 D_8010AB0C_mgresultboard = 0;
+
 void func_801059A0_mgresultboard(void) {
     omObjData *obj;
     s32 minigameType;
@@ -747,8 +748,6 @@ void func_80107A58_mgresultboard(void) {
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultboard/4E6DC0", D_8010AD0C_mgresultboard);
+const s32 D_8010AD0C_mgresultboard[6] = { 4, 7, 10, 13, 16, 19 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultboard/4E6DC0", D_8010AD24_mgresultboard);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/mgresultboard/4E6DC0", D_8010AD28_mgresultboard);
+const u8 D_8010AD24_mgresultboard[4] = { 1, 0, 0, 2 };

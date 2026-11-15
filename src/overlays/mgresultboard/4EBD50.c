@@ -3,11 +3,17 @@
 
 extern omObjData *D_8010AFA0_mgresultboard;
 extern s32 D_8010AAF8_mgresultboard;
-extern Vec D_8010AC90_mgresultboard[];
 extern void (*D_8010AFA4_mgresultboard)(omObjData *);
 
 void func_8010AADC_mgresultboard(omObjData *);
 void func_8010AAE4_mgresultboard(void);
+
+Vec D_8010AC90_mgresultboard[4] = {
+    { -19.0f, 90.0f, 0.0f },
+    { -19.0f, 30.0f, 0.0f },
+    { -19.0f, -30.0f, 0.0f },
+    { -19.0f, -90.0f, 0.0f }
+};
 
 void func_8010A930_mgresultboard(void) {
     omObjData *obj;

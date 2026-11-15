@@ -4,14 +4,8 @@
 extern f32 D_800CB890_main;
 extern f32 D_800D5210_main;
 
-extern Vec D_80115260_mstory3;
-extern Vec D_8011526C_mstory3;
-extern Vec D_80115278_mstory3;
-extern s16 D_80115284_mstory3;
-extern s16 D_80115286_mstory3;
-extern s32 D_80115288_mstory3;
-extern void (*D_801154F0_mstory3[])(void);
-extern s32 D_801154F8_mstory3[];
+extern void (*const D_801154F0_mstory3[])(void);
+extern const s32 D_801154F8_mstory3[];
 extern s16 D_80115B90_mstory3;
 extern s16 D_80115B92_mstory3;
 extern u16 D_80115B94_mstory3;
@@ -20,8 +14,8 @@ extern s32 D_80115BBC_mstory3;
 extern s16 D_80115B98_mstory3[8];
 extern s16 D_80115BA8_mstory3[8];
 extern s16 D_80115BB8_mstory3;
-extern s32 D_80115510_mstory3[7];
-extern s16 D_8011552C_mstory3[][2];
+extern const s32 D_80115510_mstory3[7];
+extern const s16 D_8011552C_mstory3[][2];
 extern s16 D_80115DC0_mstory3[4];
 
 void func_80105C1C_mstory3(void);
@@ -40,6 +34,15 @@ void func_80107674_mstory3(omObjData *obj, omObjData *target);
 void func_8010643C_mstory3(void);
 void func_80106CE8_mstory3(void);
 void func_80107A18_mstory3(omObjData *obj, const Vec *target, s32 frames, s32 faceDir);
+void func_8010895C_mstory3(void);
+void func_8010D5CC_mstory3(void);
+
+Vec D_80115260_mstory3 = { 14.0f, 193.0f, 1400.0f };
+Vec D_8011526C_mstory3 = { -25.0f, 0.0f, -650.0f };
+Vec D_80115278_mstory3 = { 0.0f, 1.0f, -0.0001f };
+s16 D_80115284_mstory3 = 0;
+s16 D_80115286_mstory3 = 0;
+s32 D_80115288_mstory3 = 0;
 
 void func_801059A0_mstory3(void) {
     func_80105C1C_mstory3();
@@ -96,9 +99,9 @@ void func_80105B60_mstory3(void) {
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory3/4B29E0", D_801154F0_mstory3);
+void (*const D_801154F0_mstory3[])(void) = { func_8010D5CC_mstory3, func_8010895C_mstory3 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory3/4B29E0", D_801154F8_mstory3);
+const s32 D_801154F8_mstory3[] = { 61, 59 };
 
 void func_80105C1C_mstory3(void) {
     s16 chapter;
@@ -199,9 +202,17 @@ void func_80105F54_mstory3(void) {
     HuWinComKeySet(comKeys[0], comKeys[1], comKeys[2], comKeys[3]);
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory3/4B29E0", D_80115510_mstory3);
+const s32 D_80115510_mstory3[7] = { 0x1D000B, 0x1D000C, 0x1D000D, 0x1D000E, 0x1D000F, 0x1D0010, 0x1D0011 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/mstory3/4B29E0", D_8011552C_mstory3);
+const s16 D_8011552C_mstory3[7][2] = {
+    { 57, 20 },
+    { 129, 36 },
+    { 200, 22 },
+    { 215, 91 },
+    { 150, 124 },
+    { 81, 105 },
+    { 12, 122 },
+};
 
 void func_8010603C_mstory3(void) {
     HuWinHomeClear(D_80115B92_mstory3);

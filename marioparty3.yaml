@@ -2439,11 +2439,13 @@ segments:
       - [0x4B29E0, c]
       - [0x4B4DC0, c]
       - [0x4B9A30, c]
-      - [0x4C22A0, data, 4B29E0] #80115260
+      - [0x4C22A0, .data, 4B29E0] #80115260
+      - [0x4C22D0, .data, 4B4DC0] #80115290
+      - [0x4C23F0, .data, 4B9A30] #801153B0
       - [0x4C2530, .rodata, 4B29E0] #801154F0
       - [0x4C2588, .rodata, 4B4DC0] #80115548
       - [0x4C2780, .rodata, 4B9A30] #80115740
-      - {0x4C2BD0, type: bss, vram: 0x80115B90, name: mstory3_bss}
+      - {0x4C2BD0, type: .bss, vram: 0x80115B90, name: bss}
 
   - type: code
     start: 0x4C2BD0

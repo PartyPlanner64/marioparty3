@@ -616,3 +616,16 @@ D_8011538A_mstory5 = mstory5Bss5380 + 0xA;
 D_801154E6_mstory5 = D_801154E4_mstory5 + 0x2;
 D_801154EA_mstory5 = D_801154E4_mstory5 + 0x6;
 D_801154EE_mstory5 = D_801154E4_mstory5 + 0xA;
+
+/* mstory3: misaligned BSS groups. */
+D_80115C80_mstory3 = mstory3BssC80;
+D_80115C86_mstory3 = mstory3BssC80 + 0x6;
+D_80115C88_mstory3 = mstory3BssC80 + 0x8;
+D_80115C8A_mstory3 = mstory3BssC80 + 0xA;
+D_80115C90_mstory3 = mstory3BssC80 + 0x10;
+D_80115C92_mstory3 = mstory3BssC80 + 0x12;
+D_80115C98_mstory3 = mstory3BssC80 + 0x18;
+D_80115C9A_mstory3 = mstory3BssC80 + 0x1A;
+D_80115C9C_mstory3 = mstory3BssC9C;
+D_80115C9E_mstory3 = mstory3BssC9C + 0x2;
+D_80115CA2_mstory3 = mstory3BssC9C + 0x6;

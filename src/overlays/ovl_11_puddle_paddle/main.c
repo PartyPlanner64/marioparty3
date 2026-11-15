@@ -86,9 +86,8 @@ extern u8 D_800D6A90_main;
 extern s32 D_800A178C_main[][6];
 extern s32 D_800A1790_main[][6];
 
-extern PuddlePaddleTeam *D_80111650_puddle_paddle;
-extern PuddlePaddlePlayer *D_80111654_puddle_paddle;
-extern PuddlePaddleGame *D_80111658_puddle_paddle;
+extern UnkPuddlePaddleSpr *D_80111664_puddle_paddle;
+extern UnkPuddlePaddleEntry *D_80111668_puddle_paddle;
 extern const PuddlePaddlePositions D_80111614_puddle_paddle;
 
 f32 D_80111220_puddle_paddle = 0.0f;
@@ -99,6 +98,10 @@ s16 D_8011122E_puddle_paddle = 0;
 s16 D_80111230_puddle_paddle = 0;
 s16 D_80111232_puddle_paddle = 0;
 s16 D_80111234_puddle_paddle = 0;
+
+PuddlePaddleTeam *D_80111650_puddle_paddle BSS;
+PuddlePaddlePlayer *D_80111654_puddle_paddle BSS;
+PuddlePaddleGame *D_80111658_puddle_paddle BSS;
 
 const s16 D_80111370_puddle_paddle[] = {
     0x8272, 0x8273, 0x8260, 0x8271, 0x8273, 0x0000

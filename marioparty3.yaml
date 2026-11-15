@@ -1074,10 +1074,11 @@ segments:
       - [0x191240, c, main]
       - [0x1970C0, c, system] #8010B820
       - [0x19CAC0, .data, main] #80111220
-      - [0x19CAE0, data, system] #80111240
+      - [0x19CAE0, .data, system] #80111240
       - [0x19CC10, .rodata, main] #80111370
       - [0x19CEE0, .rodata, system] #80111640
-      - {0x19CEF0, type: bss, vram: 0x80111650, name: ovl_11_bss}
+      - {0x19CEF0, type: .bss, vram: 0x80111650, name: main}
+      - {0x19CEF0, type: .bss, vram: 0x80111660, name: system}
 
   - type: code
     start: 0x19CEF0

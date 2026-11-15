@@ -69,9 +69,6 @@ typedef struct UnkPuddlePaddleEntry { // size 0x24, sixteen entries
     /* 0x20 */ f32 *unk_20;
 } UnkPuddlePaddleEntry; // size = 0x24
 
-extern UnkPuddlePaddleSpr *D_80111664_puddle_paddle;
-extern UnkPuddlePaddleEntry *D_80111668_puddle_paddle;
-
 s16 func_8010C42C_puddle_paddle(s16 type);
 s32 func_8010C4D0_puddle_paddle(s16 index, f32 x, f32 y, f32 z, f32 rx, f32 ry, f32 rz, f32 scale, f32 delay);
 void func_80110BBC_puddle_paddle(f32 *angle, f32 *target);

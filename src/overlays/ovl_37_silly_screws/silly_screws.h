@@ -1,5 +1,5 @@
-#ifndef _OVL_37_H
-#define _OVL_37_H
+#ifndef _SILLY_SCREWS_H
+#define _SILLY_SCREWS_H
 
 #include "ultra64.h"
 

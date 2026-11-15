@@ -1,4 +1,4 @@
-#include "overlays/ovl_36.h"
+#include "motor_rooter.h"
 #include "macros.h"
 #include "overlays/minigame.h"
 #include "gcc/memory.h"

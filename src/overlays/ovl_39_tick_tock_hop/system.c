@@ -1,4 +1,4 @@
-#include "overlays/ovl_39.h"
+#include "tick_tock_hop.h"
 #include "gcc/memory.h"
 #include "game/esprite.h"
 #include "game/sprite.h"

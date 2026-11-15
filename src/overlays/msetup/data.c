@@ -1,5 +1,5 @@
 #include "common.h"
-#include "overlays/msetup_internal.h"
+#include "msetup_internal.h"
 
 extern const char D_8011A6E4_msetup[];
 extern const char D_8011A6F0_msetup[];

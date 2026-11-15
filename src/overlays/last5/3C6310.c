@@ -1,12 +1,12 @@
 #include "common_board.h"
-#include "../ovl_80_shared_board/FA250.h"
-#include "../ovl_80_shared_board/ECA50.h"
-#include "../ovl_80_shared_board/105D50.h"
-#include "../ovl_80_shared_board/101840.h"
-#include "../ovl_80_shared_board/106A50.h"
-#include "../ovl_80_shared_board/106640.h"
-#include "../ovl_80_shared_board/1006F0.h"
-#include "../ovl_80_shared_board/113520.h"
+#include "overlays/ovl_80_shared_board/FA250.h"
+#include "overlays/ovl_80_shared_board/ECA50.h"
+#include "overlays/ovl_80_shared_board/105D50.h"
+#include "overlays/ovl_80_shared_board/101840.h"
+#include "overlays/ovl_80_shared_board/106A50.h"
+#include "overlays/ovl_80_shared_board/106640.h"
+#include "overlays/ovl_80_shared_board/1006F0.h"
+#include "overlays/ovl_80_shared_board/113520.h"
 
 static Vec D_80107480_last5 = { 750.0f, 0.0f, 2250.0f };
 static Vec D_8010748C_last5 = { 150.0f, 0.0f, 1750.0f };

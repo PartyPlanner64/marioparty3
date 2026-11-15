@@ -1,5 +1,5 @@
-#ifndef _OVL_39_H
-#define _OVL_39_H
+#ifndef _TICK_TOCK_HOP_H
+#define _TICK_TOCK_HOP_H
 
 #include "ultra64.h"
 #include "humath.h"

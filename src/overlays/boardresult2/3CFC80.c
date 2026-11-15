@@ -1,5 +1,5 @@
 #include "common.h"
-#include "../ovl_81_name/ovl_81.h"
+#include "overlays/ovl_81_name/ovl_81.h"
 #include "overlays/minigame.h"
 
 typedef struct BoardResult2Positions {

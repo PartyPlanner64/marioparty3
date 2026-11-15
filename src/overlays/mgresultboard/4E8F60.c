@@ -1,5 +1,5 @@
 #include "common.h"
-#include "overlays/mgresultboard.h"
+#include "mgresultboard.h"
 
 extern omObjData *D_8010AF98_mgresultboard;
 extern s32 D_8010AAF8_mgresultboard;

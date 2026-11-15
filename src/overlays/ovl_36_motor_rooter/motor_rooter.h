@@ -1,5 +1,5 @@
-#ifndef _OVL_36_H
-#define _OVL_36_H
+#ifndef _MOTOR_ROOTER_H
+#define _MOTOR_ROOTER_H
 
 #include "ultra64.h"
 

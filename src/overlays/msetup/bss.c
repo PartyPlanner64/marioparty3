@@ -1,5 +1,5 @@
 #include "common.h"
-#include "overlays/msetup_internal.h"
+#include "msetup_internal.h"
 
 typedef struct MsetupMenuContext {
     s16 playerCount;

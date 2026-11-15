@@ -1,5 +1,5 @@
 #include "common.h"
-#include "../ovl_80_shared_board/FA250.h"
+#include "overlays/ovl_80_shared_board/FA250.h"
 #include "game/mallocblock.h"
 #include "overlays/opening.h"
 

@@ -2,7 +2,7 @@
 #include "game/hmfmath.h"
 #include "game/pause.h"
 #include "overlays/minigame.h"
-#include "../ovl_81_name/ovl_81.h"
+#include "overlays/ovl_81_name/ovl_81.h"
 #define NO_EXTERN_VARIABLES
 #include "storyresult.h"
 

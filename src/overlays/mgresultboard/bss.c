@@ -1,6 +1,6 @@
 #define NO_EXTERN_VARIABLES
 #include "common.h"
-#include "overlays/mgresultboard.h"
+#include "mgresultboard.h"
 
 // Misaligned s16 array after an s8 (see undefined_syms.txt for aliases).
 typedef struct MgResultBoardBssAD94 {

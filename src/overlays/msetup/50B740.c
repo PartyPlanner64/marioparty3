@@ -1,7 +1,7 @@
 #include "common.h"
 #include "game/window.h"
 #include "game/vibrator.h"
-#include "overlays/msetup_internal.h"
+#include "msetup_internal.h"
 #include "game/hmfmath.h"
 
 typedef struct MsetupDifficultySprites {

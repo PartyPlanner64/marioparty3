@@ -1,5 +1,5 @@
 #include "common.h"
-#include "overlays/mgresultboard.h"
+#include "mgresultboard.h"
 
 extern UnkTemp D_8010AEA8_mgresultboard[4][5];
 extern UnkTemp D_8010AFE8_mgresultboard[];

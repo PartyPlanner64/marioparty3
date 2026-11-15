@@ -2,7 +2,7 @@
 #include "game/mallocblock.h"
 #include "gcc/memory.h"
 
-#include "overlays/baby_bowser_broadside.h"
+#include "baby_bowser_broadside.h"
 #include "game/hmfmath.h"
 
 typedef struct BabyBowserBroadsideColor {

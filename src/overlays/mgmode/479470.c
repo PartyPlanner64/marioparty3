@@ -1,5 +1,5 @@
 #include "common.h"
-#include "overlays/mgmode.h"
+#include "mgmode.h"
 #include "gcc/memory.h"
 #include "gcc/string.h"
 #include "game/hmfmath.h"

@@ -1,5 +1,5 @@
 #include "common.h"
-#include "overlays/msetup_internal.h"
+#include "msetup_internal.h"
 #include "game/mallocblock.h"
 
 extern MsetupPlayerConfig D_8011AA30_msetup;

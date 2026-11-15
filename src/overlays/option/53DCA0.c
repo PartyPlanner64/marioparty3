@@ -1,5 +1,5 @@
 #include "common.h"
-#include "overlays/option.h"
+#include "option.h"
 #include "game/mallocblock.h"
 
 extern const Vec D_801146BC_option;

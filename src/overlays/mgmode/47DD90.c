@@ -3,7 +3,7 @@
 #include "game/malloc.h"
 #include "game/mallocblock.h"
 #include "math.h"
-#include "overlays/mgmode.h"
+#include "mgmode.h"
 
 extern u8 D_8011B630_mgmode[0x20];
 extern s16 D_8011B650_mgmode;

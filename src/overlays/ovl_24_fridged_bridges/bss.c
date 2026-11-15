@@ -1,6 +1,6 @@
 #include "common.h"
 #include "macros.h"
-#include "overlays/ovl_24.h"
+#include "fridged_bridges.h"
 
 /* The overlay's BSS is shared by all of its code units. Keep allocation order here. */
 f32 D_8010D340_fridged_bridges BSS;

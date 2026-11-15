@@ -1,6 +1,6 @@
 #include "common.h"
 #include "game/vibrator.h"
-#include "overlays/msetup_internal.h"
+#include "msetup_internal.h"
 #include "gcc/memory.h"
 
 typedef struct MsetupStoryMenu {

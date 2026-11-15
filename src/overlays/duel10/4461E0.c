@@ -1,7 +1,7 @@
 #include "common_duel.h"
 #include "game/process.h"
 #include "game/malloc.h"
-#include "../ovl_81_name/ovl_81.h"
+#include "overlays/ovl_81_name/ovl_81.h"
 
 // Inlined Z rotation matrix build (same as MTX_ROTZ in w02).
 #define MTX_ROTZ(mtx, angle)                                                                \

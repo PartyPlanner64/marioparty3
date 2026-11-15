@@ -1,5 +1,5 @@
 #include "common.h"
-#include "overlays/mgmode.h"
+#include "mgmode.h"
 #include "game/hmfmath.h"
 
 extern MgmodeEsprite *D_8011B450_mgmode;

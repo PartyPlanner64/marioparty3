@@ -1,6 +1,6 @@
 #include "common.h"
 #include "game/gamemes.h"
-#include "overlays/mgmode.h"
+#include "mgmode.h"
 
 // Misaligned s8 array after an s16 (see undefined_syms.txt for aliases).
 typedef struct MgmodeBssB3E4 {

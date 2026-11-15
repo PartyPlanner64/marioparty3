@@ -3,7 +3,7 @@
 #include "common_structs.h"
 #include "game/malloc.h"
 #include "game/board.h"
-#include "../ovl_81_name/ovl_81.h"
+#include "overlays/ovl_81_name/ovl_81.h"
 
 typedef struct unkStruct {
     /* 0x00 */ s16 unk_00;

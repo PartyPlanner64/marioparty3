@@ -1,6 +1,6 @@
 #include "common.h"
 #include "game/mallocblock.h"
-#include "overlays/mgmode.h"
+#include "mgmode.h"
 
 extern s16 D_8011B780_mgmode[];
 extern s16 D_8011B8A8_mgmode[];

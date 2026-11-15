@@ -1,5 +1,5 @@
 #include "common_duel.h"
-#include "../ovl_81_name/ovl_81.h"
+#include "overlays/ovl_81_name/ovl_81.h"
 
 #define OBJ_HMF_MODEL(obj) (Hu3DData[(obj)->omObj1->model[0]])
 

@@ -1,7 +1,7 @@
 #include "common.h"
 #include "game/hmfmath.h"
 #include "game/mallocblock.h"
-#include "overlays/ovl_24.h"
+#include "fridged_bridges.h"
 
 #define CLAMP_S16(x)            \
     if ((x) > 0x7FFF) {         \

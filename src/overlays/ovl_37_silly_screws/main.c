@@ -1,4 +1,4 @@
-#include "overlays/ovl_37.h"
+#include "silly_screws.h"
 #include "overlays/minigame.h"
 #include "gcc/memory.h"
 #include "game/audio.h"

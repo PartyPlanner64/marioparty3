@@ -1,5 +1,5 @@
 #include "common.h"
-#include "overlays/option.h"
+#include "option.h"
 #include "overlays/minigame.h"
 #include "game/vibrator.h"
 #include "game/mallocblock.h"

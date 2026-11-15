@@ -1,7 +1,7 @@
 #include "common.h"
 #include "math.h"
 #include "overlays/minigame.h"
-#include "overlays/ovl_24.h"
+#include "fridged_bridges.h"
 
 // Result of the ice-floor probe performed by func_80109988.
 typedef struct FridgedBridgesProbe {

@@ -1,5 +1,5 @@
-#ifndef _OVL_24_H
-#define _OVL_24_H
+#ifndef _FRIDGED_BRIDGES_H
+#define _FRIDGED_BRIDGES_H
 
 #include "ultra64.h"
 

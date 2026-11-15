@@ -2,7 +2,7 @@
 #include "overlays/minigame.h"
 #include "game/mallocblock.h"
 #include "game/pause.h"
-#include "overlays/baby_bowser_broadside.h"
+#include "baby_bowser_broadside.h"
 #include "gcc/memory.h"
 
 typedef struct BabyBowserBroadsideEntry {

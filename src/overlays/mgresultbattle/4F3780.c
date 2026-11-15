@@ -2,8 +2,8 @@
 #include "game/gamework_data.h"
 #include "game/object.h"
 #include "game/wipe.h"
-#include "../ovl_80_shared_board/FA250.h"
-#include "../ovl_80_shared_board/105D50.h"
+#include "overlays/ovl_80_shared_board/FA250.h"
+#include "overlays/ovl_80_shared_board/105D50.h"
 #include "mgresultbattle.h"
 
 void func_80105E0C_mgresultbattle(void);

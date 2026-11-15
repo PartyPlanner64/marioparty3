@@ -14,6 +14,20 @@ This is a matching decompilation project for Mario Party 3 (N64). The goal is to
 
 As more matching C code is written in `src`, the MIPS code under `asm/nonmatchings` decreases.
 
+### Source Layout
+
+- `src/game` game engine code from the main segment. Headers are in `include/game`.
+- `src/game/overlays` game overlays, grouped by area:
+  - `minigames` minigames (named `<overlay index>_<name>`), the shared minigame library (`common`), instructions, and minigame result screens (`results`).
+  - `party` party boards (`boards/w01_chilly_waters`, ...), the shared board library (`common`), board events, intros, and results.
+  - `duel` duel boards (`boards/duel01_gate_guy`, ...), the shared duel board library (`common`), intros, and results.
+  - `story`, `menus`, `debug` story mode, front-end screens, and debug tools.
+- `src/2.0L`, `src/libhmath`, `src/libkmc`, `src/libleo`, `src/libm`, `src/lib` libultra and other library code. A few SDK-derived and segment-wide files remain at the top of `src`.
+
+Overlay directories are set with `dir:` in `marioparty3.yaml`; the segment `name:` is independent and determines symbol suffixes (e.g. `_shared_board`), so moving a directory does not rename symbols.
+
+Headers used by a single overlay live next to its source. Headers shared across overlays go in `include/game/overlays`. Include headers from other directories with paths rooted at `src/` or `include/` (e.g. `"game/overlays/party/common/FA250.h"`), not `../` relative paths.
+
 The binary splitting tool [splat](https://github.com/ethteck/splat) is the backbone of this decompilation. It takes as input our `marioparty3.yaml`, which describes the structure of the ROM. It processes and splits out assets from the ROM into readable formats. The ROM can then be rebuilt using `splat` as well, with the C code being compiled and used in this process. If the C code is an exact match to the original game code, the resulting ROM will be identical.
 
 The primary code committed to this repository is the C code in `src` and `include`. We do not touch the `asm/nonmatchings` or other assets that are produced from `splat`.

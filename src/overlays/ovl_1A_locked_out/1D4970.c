@@ -67,35 +67,55 @@ typedef struct {
     u8 values[8];
 } LockedOutCharMotions;
 
-extern u8 D_8010A179_locked_out[][2];
-extern u8 D_8010A180_locked_out;
-extern Vec D_8010A184_locked_out[];
-extern f32 D_8010A1B4_locked_out[];
-extern Vec D_8010A1C4_locked_out[];
-extern u32 D_8010A1E8_locked_out;
 extern s32 D_800A178C_main[][6];
-extern f32 D_8010A680_locked_out[4][4];
-extern f32 D_8010A6B8_locked_out;
-extern f32 D_8010A6C0_locked_out[4][4];
-extern f32 D_8010A700_locked_out;
-extern u8 D_8010A704_locked_out[];
-extern omObjData *D_8010A610_locked_out[];
-extern Vec D_8010A110_locked_out[];
-extern LockedOutUnkStruct D_8010A638_locked_out[3];
-extern s16 D_8010A676_locked_out;
-extern s16 D_8010A678_locked_out;
-extern s16 D_8010A674_locked_out;
-extern s16 D_8010A67A_locked_out;
-extern D_80111B50_vine_with_me_Struct D_8010A588_locked_out;
-extern s32 D_8010A164_locked_out;
-extern u16 D_8010A168_locked_out;
-extern s32 D_8010A16C_locked_out;
-extern s16 D_8010A170_locked_out;
-extern s8 D_8010A172_locked_out;
-extern s8 D_8010A173_locked_out;
-extern u8 D_8010A174_locked_out;
-extern s32 D_8010A580_locked_out;
-extern s16 D_8010A584_locked_out;
+
+Vec D_8010A110_locked_out[7] = {
+    { 0.0f, 0.0f, -615.0f },
+    { 227.5f, 0.0f, -615.0f },
+    { 0.0f, 0.0f, -615.0f },
+    { 345.0f, 0.0f, -615.0f },
+    { -227.5f, 0.0f, -615.0f },
+    { 0.0f, 0.0f, -615.0f },
+    { -345.0f, 0.0f, -615.0f }
+};
+s32 D_8010A164_locked_out = 0;
+u16 D_8010A168_locked_out = 0;
+s32 D_8010A16C_locked_out = -1;
+s16 D_8010A170_locked_out = 180;
+s8 D_8010A172_locked_out = 4;
+s8 D_8010A173_locked_out = 3;
+u8 D_8010A174_locked_out = 1;
+u8 D_8010A178_locked_out[4][2] = { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 0, 3 } };
+u8 D_8010A180_locked_out = 0;
+Vec D_8010A184_locked_out[4] = {
+    { -300.0f, 0.0f, 400.0f },
+    { -100.0f, 0.0f, 400.0f },
+    { 100.0f, 0.0f, 400.0f },
+    { 300.0f, 0.0f, 400.0f }
+};
+f32 D_8010A1B4_locked_out[4] = { 180.0f, 180.0f, 180.0f, 180.0f };
+Vec D_8010A1C4_locked_out[3] = {
+    { -200.0f, 0.0f, 400.0f },
+    { 200.0f, 0.0f, 400.0f },
+    { 0.0f, 0.0f, 400.0f }
+};
+u32 D_8010A1E8_locked_out = 0x41C64E6D;
+
+s32 D_8010A580_locked_out BSS;
+s16 D_8010A584_locked_out BSS;
+D_80111B50_vine_with_me_Struct D_8010A588_locked_out BSS;
+u8 D_8010A5B0_locked_out[0x60] BSS; /* Unreferenced. */
+omObjData *D_8010A610_locked_out[10] BSS;
+LockedOutUnkStruct D_8010A638_locked_out[3] BSS;
+s16 D_8010A674_locked_out BSS;
+s16 D_8010A676_locked_out BSS;
+s16 D_8010A678_locked_out BSS;
+s16 D_8010A67A_locked_out BSS;
+u8 D_8010A67C_locked_out[4] BSS; /* Unreferenced. */
+f32 D_8010A680_locked_out[4][4] BSS;
+f32 D_8010A6C0_locked_out[4][4] BSS;
+f32 D_8010A700_locked_out BSS;
+u8 D_8010A704_locked_out[12] BSS;
 
 void func_80105B38_locked_out(omObjData *object);
 void func_80105CB4_locked_out(HuMtx4F, HuMtx4F);
@@ -236,7 +256,7 @@ void func_80105EA4_locked_out(f32 *pos, f32 *dst) {
 }
 
 void func_80105F74_locked_out(f32 x, f32 y, f32 z, f32 *dst) {
-    f32 depth = z + D_8010A6B8_locked_out;
+    f32 depth = z + D_8010A680_locked_out[3][2];
     f32 scale = __builtin_fabsf(depth * D_8010A700_locked_out);
     f32 mtx[4][4];
 
@@ -579,7 +599,7 @@ void func_801071D8_locked_out(omObjData *object) {
     s32 motion;
     s32 linkModel;
 
-    player = D_8010A179_locked_out[D_8010A180_locked_out][0];
+    player = D_8010A178_locked_out[D_8010A180_locked_out][1];
     character = GwPlayer[player].chr;
     model = D_800A178C_main[character][0];
     motion = D_800A178C_main[character][1];

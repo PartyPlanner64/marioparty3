@@ -12,68 +12,98 @@ typedef struct ThwompPullPlayer {
     /* 0x0C */ s32 unk_0C;
 } ThwompPullPlayer; // sizeof 0x10
 
-extern D_80111B50_vine_with_me_Struct D_8010ED60_thwomp_pull;
-extern u32 D_8010ED88_thwomp_pull;
-extern u32 D_8010EE24_thwomp_pull;
-extern f32 D_8010EE28_thwomp_pull[2];
-extern u8 D_8010EE30_thwomp_pull[2];
-extern u8 D_8010EE34_thwomp_pull[2][3];
-extern u16 D_8010EE3C_thwomp_pull[2];
-extern u8 D_8010EE40_thwomp_pull[2];
-extern u8 D_8010EE44_thwomp_pull[2];
-extern u8 D_8010EE48_thwomp_pull[2][3];
-extern u8 D_8010EE50_thwomp_pull[2];
-extern f32 D_8010EE54_thwomp_pull[2][2];
-extern u8 D_8010EE64_thwomp_pull[2][2];
-extern f32 D_8010EE68_thwomp_pull[2][4];
-extern f32 D_8010EE88_thwomp_pull[2][4];
-extern f32 D_8010EEA8_thwomp_pull[2][4];
-extern f32 D_8010EEC8_thwomp_pull[2][4];
-extern f32 D_8010EEE8_thwomp_pull[2][4];
-extern f32 D_8010EF08_thwomp_pull[2][4];
-extern u8 D_8010EF28_thwomp_pull[2];
-extern f32 D_8010EF2C_thwomp_pull[2];
-extern u8 D_8010EF34_thwomp_pull[2];
-extern s8 D_8010EF38_thwomp_pull[4];
-extern u8 D_8010EF3C_thwomp_pull[4];
-extern u8 D_8010EF40_thwomp_pull[4];
-extern u8 D_8010EF44_thwomp_pull[4];
-extern u16 D_8010EF48_thwomp_pull[2];
-extern u8 D_8010EF4C_thwomp_pull[2][3];
-extern f32 D_8010EF54_thwomp_pull[2][3];
-extern u8 D_8010EF6C_thwomp_pull[2];
-extern f32 D_8010EF70_thwomp_pull[21];
-extern f32 D_8010F470_thwomp_pull[3];
-extern f32 D_8010F47C_thwomp_pull[3];
-extern f32 D_8010F488_thwomp_pull[3];
-extern f32 D_8010F494_thwomp_pull[3];
-extern f32 D_8010F4A0_thwomp_pull[3];
-extern f32 D_8010F4AC_thwomp_pull[3];
-extern ThwompPullPlayer D_8010F4B8_thwomp_pull[4];
-extern ThwompPullPlayer *D_8010F4F8_thwomp_pull[4]; // players indexed by group
-extern f32 D_8010F510_thwomp_pull[4];
-extern f32 D_8010F520_thwomp_pull[4];
-extern HmfModelSet *D_8010F528_thwomp_pull;
-extern omObjData *D_8010F52C_thwomp_pull;
-extern s16 D_8010F530_thwomp_pull;
-extern f32 D_8010F534_thwomp_pull[2];
-extern s32 D_8010F53C_thwomp_pull;
-extern f32 D_8010F540_thwomp_pull[4];
-extern s16 D_8010F550_thwomp_pull[10]; // sprite data ids
-extern u8 D_8010F564_thwomp_pull[2];
-extern s8 D_8010F566_thwomp_pull;
-extern omObjData *D_8010F568_thwomp_pull[2];
-extern u16 D_8010F570_thwomp_pull;
-extern f32 D_8010F578_thwomp_pull[4];
-extern f32 D_8010F588_thwomp_pull;
-extern s16 D_8010F590_thwomp_pull[10]; // sprite ids
-extern Gfx D_8010ED90_thwomp_pull[];
-extern u8 D_8010EE20_thwomp_pull;
 extern Gfx *gMainGfxPos;
-extern s32 D_8010F5A4_thwomp_pull;
-extern u8 D_8010F5A8_thwomp_pull;
-extern HmfModelSet *D_8010F5AC_thwomp_pull[2];
-extern u8 D_8010F5B4_thwomp_pull[4]; // group of each player
+
+D_80111B50_vine_with_me_Struct D_8010ED60_thwomp_pull = { 0 };
+u32 D_8010ED88_thwomp_pull = 0;
+
+Gfx D_8010ED90_thwomp_pull[] = {
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
+    gsDPSetRenderMode(G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2),
+    gsDPSetAlphaCompare(G_AC_NONE),
+    gsDPSetTexturePersp(G_TP_NONE),
+    gsDPSetTextureFilter(G_TF_BILERP),
+    gsDPSetScissor(G_SC_NON_INTERLACE, 0, 0, 320, 240),
+    gsSPEndDisplayList(),
+};
+
+/* Unreferenced. */
+Gfx D_8010EDD8_thwomp_pull[] = {
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
+    gsDPSetRenderMode(G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2),
+    gsDPSetAlphaCompare(G_AC_NONE),
+    gsDPSetTexturePersp(G_TP_NONE),
+    gsDPSetTextureFilter(G_TF_BILERP),
+    gsDPSetScissor(G_SC_NON_INTERLACE, 0, 0, 320, 240),
+    gsSPEndDisplayList(),
+};
+
+u8 D_8010EE20_thwomp_pull = 0;
+u32 D_8010EE24_thwomp_pull = 0;
+f32 D_8010EE28_thwomp_pull[2] = { -20.0f, -20.0f };
+u8 D_8010EE30_thwomp_pull[2] = { 0 };
+u8 D_8010EE34_thwomp_pull[2][3] = { 0 };
+u16 D_8010EE3C_thwomp_pull[2] = { 0 };
+u8 D_8010EE40_thwomp_pull[2] = { 0 };
+u8 D_8010EE44_thwomp_pull[2] = { 0 };
+u8 D_8010EE48_thwomp_pull[2][3] = { { 0, 1, 2 }, { 0, 1, 2 } };
+u8 D_8010EE50_thwomp_pull[2] = { 0 };
+f32 D_8010EE54_thwomp_pull[2][2] = { 0 };
+u8 D_8010EE64_thwomp_pull[2][2] = { 0 };
+f32 D_8010EE68_thwomp_pull[2][4] = { 0 };
+f32 D_8010EE88_thwomp_pull[2][4] = { 0 };
+f32 D_8010EEA8_thwomp_pull[2][4] = { 0 };
+f32 D_8010EEC8_thwomp_pull[2][4] = { 0 };
+f32 D_8010EEE8_thwomp_pull[2][4] = { 0 };
+f32 D_8010EF08_thwomp_pull[2][4] = { 0 };
+u8 D_8010EF28_thwomp_pull[2] = { 0 };
+f32 D_8010EF2C_thwomp_pull[2] = { 0 };
+u8 D_8010EF34_thwomp_pull[2] = { 0 };
+s8 D_8010EF38_thwomp_pull[4] = { 0 };
+u8 D_8010EF3C_thwomp_pull[4] = { 0 };
+u8 D_8010EF40_thwomp_pull[4] = { 0 };
+u8 D_8010EF44_thwomp_pull[4] = { 0 };
+u16 D_8010EF48_thwomp_pull[2] = { 30, 30 };
+u8 D_8010EF4C_thwomp_pull[2][3] = { 0 };
+f32 D_8010EF54_thwomp_pull[2][3] = { 0 };
+u8 D_8010EF6C_thwomp_pull[2] = { 0 };
+f32 D_8010EF70_thwomp_pull[21] = { 0 };
+
+f32 D_8010F470_thwomp_pull[3] BSS;
+f32 D_8010F47C_thwomp_pull[3] BSS;
+f32 D_8010F488_thwomp_pull[3] BSS;
+f32 D_8010F494_thwomp_pull[3] BSS;
+f32 D_8010F4A0_thwomp_pull[3] BSS;
+f32 D_8010F4AC_thwomp_pull[3] BSS;
+ThwompPullPlayer D_8010F4B8_thwomp_pull[4] BSS;
+ThwompPullPlayer *D_8010F4F8_thwomp_pull[4] BSS; // players indexed by group
+u8 D_8010F508_thwomp_pull[8] BSS; /* Unreferenced. */
+f32 D_8010F510_thwomp_pull[4] BSS;
+f32 D_8010F520_thwomp_pull[2] BSS;
+HmfModelSet *D_8010F528_thwomp_pull BSS;
+omObjData *D_8010F52C_thwomp_pull BSS;
+s16 D_8010F530_thwomp_pull BSS;
+f32 D_8010F534_thwomp_pull[2] BSS;
+s32 D_8010F53C_thwomp_pull BSS;
+f32 D_8010F540_thwomp_pull[4] BSS;
+s16 D_8010F550_thwomp_pull[10] BSS; // sprite data ids
+u8 D_8010F564_thwomp_pull[2] BSS;
+s8 D_8010F566_thwomp_pull BSS;
+omObjData *D_8010F568_thwomp_pull[2] BSS;
+u16 D_8010F570_thwomp_pull BSS;
+u8 D_8010F574_thwomp_pull[4] BSS; /* Unreferenced. */
+f32 D_8010F578_thwomp_pull[4] BSS;
+f32 D_8010F588_thwomp_pull BSS;
+u8 D_8010F58C_thwomp_pull[4] BSS; /* Unreferenced. */
+s16 D_8010F590_thwomp_pull[10] BSS; // sprite ids
+s32 D_8010F5A4_thwomp_pull BSS;
+u8 D_8010F5A8_thwomp_pull BSS;
+HmfModelSet *D_8010F5AC_thwomp_pull[2] BSS;
+u8 D_8010F5B4_thwomp_pull[4] BSS; // group of each player
 
 const s16 D_8010EFD0_thwomp_pull[] = {
     0x8260, 0x8261, 0x8262, 0x8263, 0x8264, 0x8265, 0x8266, 0x8267, 0x8268, 0x8269, 0x826A, 0x826B, 0x826C, 0x826D,

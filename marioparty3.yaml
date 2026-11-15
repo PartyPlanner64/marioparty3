@@ -2658,9 +2658,12 @@ segments:
       - [0x516AE0, c]
       - [0x516B10, c]
       - [0x516D30, c]
-      - [0x5238E0, data, 516D30] #801127A0
+      - [0x5238E0, .data, 516AE0] #801127A0
+      - [0x5238F0, .data, 516D30] #801127B0
+      - [0x523B00, .rodata, 516B10] #801129C0
       - [0x523B30, .rodata, 516D30] #801129F0
-      - {0x523FD0, type: bss, vram: 0x80112E90, name: filesel_bss}
+      - {0x523FD0, type: .bss, vram: 0x80112E90, name: 516B10}
+      - {0x523FD0, type: .bss, vram: 0x80112EA0, name: 516D30}
 
   - type: code
     start: 0x523FD0

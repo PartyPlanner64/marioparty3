@@ -1,12 +1,15 @@
 #include "common.h"
 
-extern Vec D_801129C0_filesel;
-extern Vec D_801129CC_filesel;
-extern Vec D_801129D8_filesel;
-extern s32 D_80112E90_filesel;
 extern u8 D_800D2132_main;
 
 void func_80107C84_filesel(void);
+
+const Vec D_801129C0_filesel = { 0.0f, 0.0f, 100.0f };
+const Vec D_801129CC_filesel = { 0.0f, 0.0f, 0.0f };
+const Vec D_801129D8_filesel = { 0.0f, 1.0f, 0.0f };
+const Vec D_801129E4_filesel = { 0.0f, 0.0f, 0.0f }; /* Unreferenced. */
+
+s32 D_80112E90_filesel BSS;
 
 void func_801059D0_filesel(void) {
     Vec position;

@@ -1169,9 +1169,9 @@ segments:
     subsegments:
       - [0x1CC730, c]
       - [0x1D1920, c]
-      - [0x1D1940, data, 1CC730] #8010ABB0
+      - [0x1D1940, .data, 1CC730] #8010ABB0
       - [0x1D1B20, .rodata, 1CC730] #8010AD90
-      - {0x1D1C40, type: bss, vram: 0x8010AEB0, name: ovl_18_bss}
+      - {start: 0x1D1C40, type: .bss, vram: 0x8010AEB0, name: 1CC730}
 
   - type: code
     start: 0x1D1C40

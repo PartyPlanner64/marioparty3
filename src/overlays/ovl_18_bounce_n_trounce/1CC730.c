@@ -68,43 +68,81 @@ typedef struct BounceNTrounceTileWork {
 extern s32 D_800A178C_main[][6];
 extern f32 D_800D2120_main;
 
-extern D_80111B50_vine_with_me_Struct D_8010ABB0_bounce_n_trounce;
-extern s8 D_8010ABD8_bounce_n_trounce[4];
-extern s8 D_8010ABDC_bounce_n_trounce[4];
-extern u16 D_8010ABE0_bounce_n_trounce[4];
-extern Vec D_8010ABEC_bounce_n_trounce[9];
-extern Vec D_8010AC58_bounce_n_trounce[7];
-extern s32 D_8010ACAC_bounce_n_trounce[7];
-extern s32 D_8010ACC8_bounce_n_trounce[7];
-extern s16 D_8010ACE4_bounce_n_trounce[9];
-extern u16 D_8010ACF6_bounce_n_trounce;
-extern u16 D_8010ACF8_bounce_n_trounce;
-extern Vec D_8010ACFC_bounce_n_trounce[4];
-extern s32 D_8010AD2C_bounce_n_trounce[8];
-extern u16 D_8010ABE8_bounce_n_trounce;
-extern Vec D_8010AD4C_bounce_n_trounce[4];
-extern u16 D_8010AD7C_bounce_n_trounce[4];
-extern u16 D_8010AD84_bounce_n_trounce;
-extern u16 D_8010AD86_bounce_n_trounce;
-extern u16 D_8010AD88_bounce_n_trounce;
-extern u16 D_8010AD8A_bounce_n_trounce;
-extern u16 D_8010AEB0_bounce_n_trounce;
-extern u16 D_8010AEB2_bounce_n_trounce;
-extern f32 D_8010AEB4_bounce_n_trounce;
-extern f32 D_8010AEB8_bounce_n_trounce;
-extern u16 D_8010AEBC_bounce_n_trounce;
-extern u16 D_8010AEBE_bounce_n_trounce;
-extern omObjData *D_8010AEC0_bounce_n_trounce;
-extern omObjData *D_8010AEC4_bounce_n_trounce;
-extern u16 D_8010AEC8_bounce_n_trounce;
-extern u16 D_8010AECA_bounce_n_trounce;
-extern s16 D_8010AECC_bounce_n_trounce;
-extern omObjData *D_8010AED0_bounce_n_trounce;
-extern omObjData *D_8010AED4_bounce_n_trounce;
-extern omObjData **D_8010AED8_bounce_n_trounce;
-extern omObjData **D_8010AEDC_bounce_n_trounce;
-extern omObjData **D_8010AEE0_bounce_n_trounce;
-extern s16 D_8010AEE4_bounce_n_trounce[4];
+D_80111B50_vine_with_me_Struct D_8010ABB0_bounce_n_trounce = {
+    0, 0, 1, 2, 0, 0, 0, 0,
+    { 0.0f, 0.0f, 0.0f, 0.0f },
+    { 0, 0, 0, 0 },
+    -1, 0x384, -1, -1, 0x87
+};
+s8 D_8010ABD8_bounce_n_trounce[4] = { 0, 0, 0, 0 };
+s8 D_8010ABDC_bounce_n_trounce[4] = { 0, 0, 0, 0 };
+u16 D_8010ABE0_bounce_n_trounce[4] = { 0, 0, 0, 0 };
+u16 D_8010ABE8_bounce_n_trounce = 0;
+Vec D_8010ABEC_bounce_n_trounce[9] = {
+    { -300.0f, 0.0f, -300.0f },
+    { 0.0f, 0.0f, -300.0f },
+    { 300.0f, 0.0f, -300.0f },
+    { -300.0f, 0.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f },
+    { 300.0f, 0.0f, 0.0f },
+    { -300.0f, 0.0f, 300.0f },
+    { 0.0f, 0.0f, 300.0f },
+    { 300.0f, 0.0f, 300.0f }
+};
+Vec D_8010AC58_bounce_n_trounce[7] = {
+    { -750.0f, 100.0f, -900.0f },
+    { 50.0f, 300.0f, -900.0f },
+    { 1100.0f, -500.0f, -200.0f },
+    { -1100.0f, -700.0f, -400.0f },
+    { 700.0f, 100.0f, -900.0f },
+    { 950.0f, 400.0f, -900.0f },
+    { -1050.0f, -350.0f, -950.0f }
+};
+s32 D_8010ACAC_bounce_n_trounce[7] = {
+    0x0039000D, 0x0039000E, 0x0039000D, 0x0039000E, 0x0039000D, 0x0039000E, 0x0039000D
+};
+s32 D_8010ACC8_bounce_n_trounce[7] = { 160, 115, 140, 94, 120, 98, 150 };
+s16 D_8010ACE4_bounce_n_trounce[9] = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+u16 D_8010ACF6_bounce_n_trounce = 300;
+u16 D_8010ACF8_bounce_n_trounce = 0;
+Vec D_8010ACFC_bounce_n_trounce[4] = {
+    { -90.0f, 0.0f, -90.0f },
+    { 90.0f, 0.0f, -90.0f },
+    { -90.0f, 0.0f, 90.0f },
+    { 90.0f, 0.0f, 90.0f }
+};
+s32 D_8010AD2C_bounce_n_trounce[8] = {
+    0x00390003, 0x00390004, 0x00390005, 0x00390006, 0x00390007, 0x00390008, 0x00390009, 0x0039000A
+};
+Vec D_8010AD4C_bounce_n_trounce[4] = {
+    { -150.0f, 0.0f, -150.0f },
+    { 150.0f, 0.0f, -150.0f },
+    { -150.0f, 0.0f, 150.0f },
+    { 150.0f, 0.0f, 150.0f }
+};
+u16 D_8010AD7C_bounce_n_trounce[4] = { 0, 0, 0, 0 };
+u16 D_8010AD84_bounce_n_trounce = 0;
+u16 D_8010AD86_bounce_n_trounce = 0;
+u16 D_8010AD88_bounce_n_trounce = 0;
+u16 D_8010AD8A_bounce_n_trounce = 0;
+
+u16 D_8010AEB0_bounce_n_trounce BSS;
+u16 D_8010AEB2_bounce_n_trounce BSS;
+f32 D_8010AEB4_bounce_n_trounce BSS;
+f32 D_8010AEB8_bounce_n_trounce BSS;
+u16 D_8010AEBC_bounce_n_trounce BSS;
+u16 D_8010AEBE_bounce_n_trounce BSS;
+omObjData *D_8010AEC0_bounce_n_trounce BSS;
+omObjData *D_8010AEC4_bounce_n_trounce BSS;
+u16 D_8010AEC8_bounce_n_trounce BSS;
+u16 D_8010AECA_bounce_n_trounce BSS;
+s16 D_8010AECC_bounce_n_trounce BSS;
+omObjData *D_8010AED0_bounce_n_trounce BSS;
+omObjData *D_8010AED4_bounce_n_trounce BSS;
+omObjData **D_8010AED8_bounce_n_trounce BSS;
+omObjData **D_8010AEDC_bounce_n_trounce BSS;
+omObjData **D_8010AEE0_bounce_n_trounce BSS;
+s16 D_8010AEE4_bounce_n_trounce[4] BSS;
 
 void func_8004BCE4_main(struct CameraViewData *data);
 

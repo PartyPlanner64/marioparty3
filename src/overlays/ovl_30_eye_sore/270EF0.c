@@ -82,42 +82,11 @@ typedef struct {
     /* 0x28 */ f32 fov;
 } EyeSoreCamera; // sizeof 0x2C
 
-extern EyeSoreEntry D_8010AF70_eye_sore[50];
-extern EyeSoreUnkC938 D_8010C938_eye_sore[];
-extern EyeSoreUnkCA60 D_8010CA60_eye_sore[];
-extern EyeSoreUnkCBC0 D_8010CBC0_eye_sore[];
-// The first entry of D_8010AF70_eye_sore is accessed through these separate
-// symbols.
-extern s16 D_8010AFB0_eye_sore;
-extern s16 D_8010AFB2_eye_sore;
-extern f32 D_8010AFB4_eye_sore;
-extern f32 D_8010AFB8_eye_sore;
-extern s32 D_8010AC10_eye_sore[];
-extern s16 D_8010AC30_eye_sore[];
-extern s8 D_8010AC38_eye_sore[];
-extern u16 D_8010AC58_eye_sore[][2];
-extern u8 D_8010AC50_eye_sore[];
-extern u8 D_8010AC98_eye_sore[];
-extern f32 D_8010ACA0_eye_sore[];
-extern s8 D_8010ACF0_eye_sore[];
-extern s8 D_8010AC54_eye_sore[];
-extern const char *D_8010AC78_eye_sore[];
-extern s8 D_8010AF20_eye_sore;
-extern f32 D_8010AF30_eye_sore[];
-extern u8 D_8010AF6C_eye_sore;
-extern s8 D_8010CA5A_eye_sore;
-extern s16 D_8010CA58_eye_sore;
-extern s16 D_8010CBB0_eye_sore;
-extern s8 D_8010CC11_eye_sore;
-extern s16 D_8010AF22_eye_sore[];
-extern void *D_8010CC18_eye_sore[][2];
-extern s16 D_8010CBB2_eye_sore;
-extern s16 D_8010CBB4_eye_sore[2];
-extern s16 D_8010CBB8_eye_sore;
-extern s8 D_8010CC10_eye_sore;
-extern s32 D_8010ACF4_eye_sore;
-extern EyeSoreCamera D_8010ACF8_eye_sore[4];
-extern const s16 D_8010AF0C_eye_sore[];
+typedef struct {
+    /* 0x00 */ s8 unk_00;
+    /* 0x02 */ s16 unk_02[7];
+} EyeSoreBssAF20; // sizeof 0x10
+
 extern s32 D_800A178C_main[][6];
 
 f32 func_801059BC_eye_sore(f32 arg0, f32 arg1);
@@ -130,6 +99,56 @@ void func_80106328_eye_sore(omObjData *obj, s8 sound);
 void func_8010683C_eye_sore(omObjData *obj);
 void func_8010A0CC_eye_sore(omObjData *obj);
 void func_80108AAC_eye_sore(void);
+
+s32 D_8010AC10_eye_sore[] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+s16 D_8010AC30_eye_sore[] = { 0, 0x1F, 0x28, 0 };
+s8 D_8010AC38_eye_sore[] = { 33, 30, 27, 24, 21, 18, 15, 12, 9, 6, 3, 0, -3, -6, -9, -12, -15, -18, -21, -24, -27, -30, -33 };
+u8 D_8010AC50_eye_sore[] = { 150, 145, 140, 135 };
+s8 D_8010AC54_eye_sore[] = { 5, 4, 2, 1 };
+
+u16 D_8010AC58_eye_sore[][2] = {
+    { 0xA4, 0xA5 },
+    { 0xA4, 0xA5 },
+    { 0xA4, 0xA5 },
+    { 0xA4, 0xA5 },
+    { 0xA4, 0xA5 },
+    { 0xA4, 0xA5 },
+    { 0xA4, 0xA5 },
+    { 0x1A, 0x1C },
+};
+
+EyeSoreBssAF20 eyeSoreBssAF20 BSS;
+f32 D_8010AF30_eye_sore[15] BSS;
+u8 D_8010AF6C_eye_sore BSS;
+EyeSoreEntry D_8010AF70_eye_sore[50] BSS;
+EyeSoreUnkC938 D_8010C938_eye_sore[12] BSS;
+s16 D_8010CA58_eye_sore BSS;
+s8 D_8010CA5A_eye_sore BSS;
+u8 D_8010CA5C_eye_sore[4] BSS; /* Unreferenced. */
+EyeSoreUnkCA60 D_8010CA60_eye_sore[4] BSS;
+s16 D_8010CBB0_eye_sore BSS;
+s16 D_8010CBB2_eye_sore BSS;
+s16 D_8010CBB4_eye_sore[2] BSS;
+s16 D_8010CBB8_eye_sore BSS;
+u8 D_8010CBBC_eye_sore[4] BSS; /* Unreferenced. */
+EyeSoreUnkCBC0 D_8010CBC0_eye_sore[4] BSS;
+s8 D_8010CC10_eye_sore BSS;
+s8 D_8010CC11_eye_sore BSS;
+u8 D_8010CC14_eye_sore[4] BSS; /* Unreferenced. */
+void *D_8010CC18_eye_sore[4][2] BSS;
+
+extern const char *D_8010AC78_eye_sore[];
+extern const s16 D_8010AF0C_eye_sore[];
+
+/* Aliases of eyeSoreBssAF20 fields (undefined_syms.txt). */
+extern s8 D_8010AF20_eye_sore;
+extern s16 D_8010AF22_eye_sore[];
+
+/* Aliases of D_8010AF70_eye_sore[0] fields (undefined_syms.txt). */
+extern s16 D_8010AFB0_eye_sore; // [0].unk_40[0]
+extern s16 D_8010AFB2_eye_sore; // [0].unk_40[1]
+extern f32 D_8010AFB4_eye_sore; // [0].unk_44.x
+extern f32 D_8010AFB8_eye_sore; // [0].unk_44.y
 
 void func_801059A0_eye_sore(void) {
     func_8010AAF8_eye_sore();
@@ -337,21 +356,33 @@ void func_80106328_eye_sore(omObjData *obj, s8 sound) {
     obj->work[2] = (obj->work[2] + 1) % 11;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_30_eye_sore/270EF0", D_8010ADC8_eye_sore);
+const char *D_8010AC78_eye_sore[] = {
+    "c000l_0_DEF",
+    "c001l_0_DEF",
+    "c002l_0_DEF",
+    "c003l_0_DEF",
+    "c004l_0_DEF",
+    "c005l_0_DEF",
+    "c300l_0_DEF",
+    "c301l_0_DEF",
+};
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_30_eye_sore/270EF0", D_8010ADD4_eye_sore);
+u8 D_8010AC98_eye_sore[] = { 70, 60, 70, 90, 70, 100, 90, 70 };
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_30_eye_sore/270EF0", D_8010ADE0_eye_sore);
+f32 D_8010ACA0_eye_sore[] = {
+    1.0f, 2.0f, 2.1f, 2.2f, 2.3f, 2.4f, 2.5f, 2.6f, 2.7f, 2.75f,
+    2.8f, 2.85f, 2.9f, 2.95f, 3.0f, 3.05f, 3.1f, 3.15f, 3.2f, 3.25f
+};
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_30_eye_sore/270EF0", D_8010ADEC_eye_sore);
+s8 D_8010ACF0_eye_sore[] = { 6, 8, 10, 15 };
+s32 D_8010ACF4_eye_sore = 0;
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_30_eye_sore/270EF0", D_8010ADF8_eye_sore);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_30_eye_sore/270EF0", D_8010AE04_eye_sore);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_30_eye_sore/270EF0", D_8010AE10_eye_sore);
-
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_30_eye_sore/270EF0", D_8010AE1C_eye_sore);
+EyeSoreCamera D_8010ACF8_eye_sore[4] = {
+    { 0.0f, 0.0f, 160.0f, 120.0f, { 320.0f, 240.0f, 511.0f }, { 350.0f, 240.0f, 511.0f }, 25.0f },
+    { 160.0f, 0.0f, 320.0f, 120.0f, { 320.0f, 240.0f, 511.0f }, { 930.0f, 240.0f, 511.0f }, 25.0f },
+    { 0.0f, 120.0f, 160.0f, 240.0f, { 320.0f, 240.0f, 511.0f }, { 350.0f, 700.0f, 511.0f }, 25.0f },
+    { 160.0f, 120.0f, 320.0f, 240.0f, { 320.0f, 240.0f, 511.0f }, { 930.0f, 700.0f, 511.0f }, 25.0f },
+};
 
 void func_801063E8_eye_sore(omObjData *obj, s8 motion) {
     s8 chr = GwPlayer[obj->work[0]].chr;
@@ -1668,4 +1699,4 @@ void func_8010AAF8_eye_sore(void) {
     func_80105A74_eye_sore();
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_30_eye_sore/270EF0", D_8010AF0C_eye_sore);
+const s16 D_8010AF0C_eye_sore[] = { 0x8260, 0x8261, 0x8262, 0 };

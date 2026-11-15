@@ -355,6 +355,20 @@ D_8010928E_eatsa_pizza = D_80109288_eatsa_pizza + 0x6;
 /* ice_rink_risk: unk04 of the first puck hit entry, referenced by the INCLUDE_ASM function func_80107F58_ice_rink_risk. */
 D_801085B4_ice_rink_risk = D_801085B0_ice_rink_risk + 0x4;
 
+/* river_raiders: D_8010D9D0_river_raiders/D_8010D9F0_river_raiders entries and fields, riverRaidersBssDB8 fields. */
+D_8010D9DC_river_raiders = D_8010D9D0_river_raiders + 0xC;
+D_8010DD08_river_raiders = D_8010D9F0_river_raiders + 0x318;
+D_8010DE98_river_raiders = D_8010D9F0_river_raiders + 0x4A8;
+D_8010DE9A_river_raiders = D_8010D9F0_river_raiders + 0x4AA;
+D_8010DED4_river_raiders = D_8010D9F0_river_raiders + 0x4E4;
+D_8010DED6_river_raiders = D_8010D9F0_river_raiders + 0x4E6;
+D_8010DF18_river_raiders = D_8010D9F0_river_raiders + 0x528;
+D_8010EEA8_river_raiders = D_8010D9F0_river_raiders + 0x14B8;
+D_80110DB8_river_raiders = riverRaidersBssDB8;
+D_80110DBA_river_raiders = riverRaidersBssDB8 + 0x2;
+D_80110DBD_river_raiders = riverRaidersBssDB8 + 0x5;
+D_80110DBE_river_raiders = riverRaidersBssDB8 + 0x6;
+
 /* pump_pump_away: fields of BSS structs accessed through separate symbols. */
 D_8011175C_pump_pump_away = D_80111758_pump_pump_away + 0x4;
 D_8011175E_pump_pump_away = D_80111758_pump_pump_away + 0x6;

@@ -53,57 +53,130 @@ typedef struct RiverRaidersCamera {
     f32 fov;
 } RiverRaidersCamera; // sizeof 0x2C
 
-extern s16 D_8010D3B0_river_raiders;
-extern s16 D_8010D3B2_river_raiders;
-extern s16 D_8010D3B4_river_raiders;
-extern s16 D_8010D3B6_river_raiders;
-extern s32 D_8010D3B8_river_raiders[];
-extern f32 D_8010D3C4_river_raiders[];
-extern s32 D_8010D3D0_river_raiders[];
-extern f32 D_8010D570_river_raiders[4][3][16];
-extern Vec2f D_8010D870_river_raiders[];
-extern Vec2f D_8010D888_river_raiders[];
-extern RiverRaidersCamera D_8010D8C8_river_raiders[];
-extern const s16 D_8010D9BC_river_raiders[];
-extern RiverRaidersEntry D_8010D9F0_river_raiders[100];
-// D_8010D9F0_river_raiders[9].unk_04 and unk_06, addressed through their own symbols in some functions
-// D_8010D9F0_river_raiders[6] onward, addressed through its own symbol in some functions
-extern RiverRaidersEntry D_8010DD08_river_raiders[];
-extern s16 D_8010DE98_river_raiders;
-// D_8010D9F0_river_raiders[10] onward, addressed through its own symbol in some functions
-extern RiverRaidersEntry D_8010DF18_river_raiders[];
-extern s16 D_8010DE9A_river_raiders;
-// D_8010D9F0_river_raiders[9].sprite and esp, addressed through their own symbols in some functions
-extern s16 D_8010DED4_river_raiders;
-extern s16 D_8010DED6_river_raiders;
-// D_8010D9F0_river_raiders[40].unk_18, addressed through its own symbol in some functions
-extern f32 D_8010EEA8_river_raiders;
-extern f32 D_8010D9D0_river_raiders[5];
-// D_8010D9D0_river_raiders[3] onward, addressed through its own symbol in some functions
-extern f32 D_8010D9DC_river_raiders[2];
-extern s16 D_8010D9E4_river_raiders;
-extern u8 D_8010D9E6_river_raiders;
+// Group of misaligned variables (see undefined_syms.txt for aliases).
+typedef struct RiverRaidersBssDB8 {
+    /* 0x00 */ s16 unk00; // D_80110DB8_river_raiders
+    /* 0x02 */ u8 unk02[3]; // D_80110DBA_river_raiders
+    /* 0x05 */ u8 unk05; // D_80110DBD_river_raiders
+    /* 0x06 */ s16 unk06; // D_80110DBE_river_raiders
+} RiverRaidersBssDB8; // sizeof 0x08
+
 extern s32 D_800A178C_main[][6];
 extern u8 D_800D6A90_main;
-extern u8 D_80110D80_river_raiders;
-extern u8 D_80110D81_river_raiders;
-extern s16 D_80110D82_river_raiders;
-extern u8 D_80110D84_river_raiders;
-extern s16 D_80110D86_river_raiders;
-extern u16 D_80110D88_river_raiders[2];
-extern u8 D_80110D90_river_raiders;
-extern u8 D_80110D91_river_raiders;
-extern s16 D_80110D98_river_raiders[][5];
-extern f32 D_80110DC8_river_raiders[3][2];
-extern s16 D_80110DE0_river_raiders;
-extern s16 D_80110DE2_river_raiders;
-extern s16 D_80110DE4_river_raiders;
+extern const s16 D_8010D9BC_river_raiders[];
+
+s16 D_8010D3B0_river_raiders = 9;
+s16 D_8010D3B2_river_raiders = 21;
+s16 D_8010D3B4_river_raiders = 833;
+s16 D_8010D3B6_river_raiders = 832;
+s32 D_8010D3B8_river_raiders[3] = { 0x2A0001, 0x2A0002, 0x2A0003 };
+f32 D_8010D3C4_river_raiders[3] = { 0.0f, -1875.0f, -3750.0f };
+s32 D_8010D3D0_river_raiders[8] = { 0x210008, 0x210009, 0x21000A, 0x21000B, 0x21000C, 0x21000D, 0x21000E, 0x21000F };
+/* Unreferenced. */
+s32 D_8010D3F0_river_raiders[8][6][2] = {
+    { { 0, 39 }, { 0, 40 }, { 0, 79 }, { 0, 80 }, { 0, 81 }, { 0, 82 } },
+    { { 0, 39 }, { 0, 40 }, { 0, 79 }, { 0, 80 }, { 0, 81 }, { 0, 82 } },
+    { { 0, 39 }, { 0, 40 }, { 0, 79 }, { 0, 80 }, { 0, 81 }, { 0, 82 } },
+    { { 0, 39 }, { 0, 40 }, { 0, 79 }, { 0, 80 }, { 0, 81 }, { 0, 82 } },
+    { { 0, 39 }, { 0, 40 }, { 0, 79 }, { 0, 80 }, { 0, 81 }, { 0, 82 } },
+    { { 0, 39 }, { 0, 40 }, { 0, 79 }, { 0, 80 }, { 0, 81 }, { 0, 82 } },
+    { { 0, 39 }, { 0, 40 }, { 0, 79 }, { 0, 80 }, { 0, 81 }, { 0, 82 } },
+    { { 0, 39 }, { 0, 40 }, { 0, 79 }, { 0, 80 }, { 0, 81 }, { 0, 82 } },
+};
+f32 D_8010D570_river_raiders[4][3][16] = {
+    {
+        { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+          0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f },
+        { 25.8971f, 25.8421f, 25.4961f, 24.9248f, 24.2387f, 23.5411f, 22.9655f, 22.6184f,
+          22.6072f, 22.8636f, 23.3336f, 23.9238f, 24.5449f, 25.1392f, 25.6064f, 25.8727f },
+        { 4.7879f, 4.7879f, 4.78129f, 4.7774f, 4.78282f, 4.7879f, 4.78844f, 4.78837f,
+          4.7882f, 4.78802f, 4.7879f, 4.78789f, 4.78789f, 4.7879f, 4.7879f, 4.7879f },
+    },
+    {
+        { -5.64f, -5.64f, -5.64f, -5.64f, -5.64f, -5.64f, -5.64f, -5.64f,
+          -5.64f, -5.64f, -5.64f, -5.64f, -5.64f, -5.64f, -5.64f, -5.64f },
+        { 25.276f, 25.228f, 24.884f, 24.3064f, 23.614f, 22.92f, 22.3436f, 22.0046f,
+          21.9955f, 22.2599f, 22.724f, 23.3036f, 23.9172f, 24.5033f, 24.9819f, 25.24f },
+        { 4.76f, 4.76f, 4.76f, 4.76f, 4.76f, 4.76f, 4.76f, 4.76f,
+          4.76f, 4.76f, 4.76f, 4.76f, 4.76f, 4.76f, 4.76f, 4.76f },
+    },
+    {
+        { 5.896f, 5.896f, 5.896f, 5.896f, 5.896f, 5.896f, 5.896f, 5.896f,
+          5.896f, 5.896f, 5.896f, 5.896f, 5.896f, 5.896f, 5.896f, 5.896f },
+        { 25.212f, 25.1642f, 24.8196f, 24.2434f, 23.5528f, 22.86f, 22.2838f, 21.9449f,
+          21.9278f, 22.2038f, 22.664f, 23.2423f, 23.859f, 24.4433f, 24.9074f, 25.176f },
+        { 4.764f, 4.764f, 4.764f, 4.764f, 4.764f, 4.764f, 4.764f, 4.764f,
+          4.764f, 4.764f, 4.764f, 4.764f, 4.764f, 4.764f, 4.764f, 4.764f },
+    },
+    {
+        { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+          0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f },
+        { 25.468f, 25.4198f, 25.0776f, 24.4899f, 23.7667f, 23.044f, 22.4632f, 22.1069f,
+          22.1678f, 22.5799f, 23.224f, 23.9554f, 24.683f, 25.3047f, 25.7288f, 25.895f },
+        { -6.648f, -6.6128f, -6.26563f, -5.69009f, -4.95789f, -4.096f, -3.1391f, -2.26568f,
+          -1.44279f, -0.398738f, 0.74f, 1.91003f, 2.99774f, 3.91425f, 4.52865f, 4.768f },
+    },
+};
+Vec2f D_8010D870_river_raiders[3] = {
+    { 200.0f, 210.0f },
+    { 215.0f, 200.0f },
+    { 230.0f, 210.0f },
+};
+Vec2f D_8010D888_river_raiders[8] = {
+    { 50.0f, 210.0f },
+    { 70.0f, 210.0f },
+    { 80.0f, 210.0f },
+    { 90.0f, 210.0f },
+    { 250.0f, 210.0f },
+    { 270.0f, 210.0f },
+    { 280.0f, 210.0f },
+    { 290.0f, 210.0f },
+};
+RiverRaidersCamera D_8010D8C8_river_raiders[1] = {
+    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 36.0f },
+};
+
+f32 D_8010D9D0_river_raiders[5] BSS;
+s16 D_8010D9E4_river_raiders BSS;
+u8 D_8010D9E6_river_raiders BSS;
+u8 D_8010D9E8_river_raiders[8] BSS; /* Unreferenced. */
+RiverRaidersEntry D_8010D9F0_river_raiders[100] BSS;
+u8 D_80110D80_river_raiders BSS;
+u8 D_80110D81_river_raiders BSS;
+s16 D_80110D82_river_raiders BSS;
+u8 D_80110D84_river_raiders BSS;
+s16 D_80110D86_river_raiders BSS;
+u16 D_80110D88_river_raiders[2] BSS;
+u8 D_80110D8C_river_raiders[4] BSS; /* Unreferenced. */
+u8 D_80110D90_river_raiders BSS;
+u8 D_80110D91_river_raiders BSS;
+u8 D_80110D94_river_raiders[4] BSS; /* Unreferenced. */
+s16 D_80110D98_river_raiders[3][5] BSS;
+s16 D_80110DB6_river_raiders BSS;
+RiverRaidersBssDB8 riverRaidersBssDB8 BSS;
+u8 D_80110DC0_river_raiders BSS;
+u8 D_80110DC4_river_raiders[4] BSS; /* Unreferenced. */
+f32 D_80110DC8_river_raiders[3][2] BSS;
+s16 D_80110DE0_river_raiders BSS;
+s16 D_80110DE2_river_raiders BSS;
+s16 D_80110DE4_river_raiders BSS;
+
+// D_8010D9D0_river_raiders[3] onward (see undefined_syms.txt).
+extern f32 D_8010D9DC_river_raiders[2];
+// Entries and entry fields of D_8010D9F0_river_raiders, accessed through
+// separate symbols (see undefined_syms.txt).
+extern RiverRaidersEntry D_8010DD08_river_raiders[]; // &[6]
+extern s16 D_8010DE98_river_raiders; // [9].unk_04
+extern s16 D_8010DE9A_river_raiders; // [9].unk_06
+extern s16 D_8010DED4_river_raiders; // [9].sprite
+extern s16 D_8010DED6_river_raiders; // [9].esp
+extern RiverRaidersEntry D_8010DF18_river_raiders[]; // &[10]
+extern f32 D_8010EEA8_river_raiders; // [40].unk_18
+// Aliases into riverRaidersBssDB8 (see undefined_syms.txt).
+extern s16 D_80110DB8_river_raiders;
 extern u8 D_80110DBA_river_raiders[];
 extern u8 D_80110DBD_river_raiders;
 extern s16 D_80110DBE_river_raiders;
-extern s16 D_80110DB6_river_raiders;
-extern s16 D_80110DB8_river_raiders;
-extern u8 D_80110DC0_river_raiders;
 
 void func_80105BA4_river_raiders(omObjData *obj);
 void func_80105D1C_river_raiders(omObjData *obj);
@@ -2307,4 +2380,4 @@ void func_8010D268_river_raiders(void) {
     func_80105A3C_river_raiders();
 }
 
-INCLUDE_RODATA("asm/nonmatchings/overlays/ovl_09_river_raiders/1542E0", D_8010D9BC_river_raiders);
+const s16 D_8010D9BC_river_raiders[] = { 0x8260, 0x8261, 0x8262, 0 };
